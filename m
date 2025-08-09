@@ -2,130 +2,99 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5DF17C87FCF
-	for <linux-mm@archiver.kernel.org>; Sat,  9 Aug 2025 18:32:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 11A89C87FCB
+	for <linux-mm@archiver.kernel.org>; Sat,  9 Aug 2025 18:32:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A3C36B0089; Sat,  9 Aug 2025 14:32:12 -0400 (EDT)
+	id 681E86B009C; Sat,  9 Aug 2025 14:32:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 854906B008C; Sat,  9 Aug 2025 14:32:12 -0400 (EDT)
+	id 6320E6B009D; Sat,  9 Aug 2025 14:32:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76A1E6B009C; Sat,  9 Aug 2025 14:32:12 -0400 (EDT)
+	id 5481F6B009E; Sat,  9 Aug 2025 14:32:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 681366B0089
-	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 14:32:12 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 115B457D37
-	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 18:32:12 +0000 (UTC)
-X-FDA: 83758063704.04.67CB778
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1D4E94000F
-	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 18:32:09 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=R3QZt9ZO;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754764330; a=rsa-sha256;
-	cv=none;
-	b=sJxEfn+f4INxM1LLJ6UFsgcmaivFWumZLesnD3F1w8mG690/26doVWCXwBwEfShkCpMdkI
-	Fc33zZC7vpH4KsCLPyZReYR8eGQcpDbWxwdaLyVDOzx2lJcU5lHVckcJT3lgLdiNlxFKLm
-	aGqc093CqgeNVfwcOcCugXq6Lu1/WXI=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=R3QZt9ZO;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 459146B009C
+	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 14:32:26 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0D2841601A4
+	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 18:32:26 +0000 (UTC)
+X-FDA: 83758064292.03.F3ABD42
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 5C240A000D
+	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 18:32:24 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mFbFXvxg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of tj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=tj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754764330;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1754764344;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9s/fBeEFb/0n5Z77cYt+rcfLlCaa7g5SQq4WcqQ9I+g=;
-	b=2WbuyWaeenlSFC0TvTtyUf1hoJ2eBeP3MXRvOiMFeOlHTtT2UPVJv9ZrOdW/lNxfmroXHl
-	S+aT0ppOI6w3kaGu4OceRBmPDP0x2RQPcqww/fRRWWfWZkfhDvHdzlby4AgWj7C9H2rrx3
-	xM37UH+x4bqqsHWU8bDc69DjAwpwuE0=
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-af9611d8ff7so587979766b.1
-        for <linux-mm@kvack.org>; Sat, 09 Aug 2025 11:32:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754764328; x=1755369128; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9s/fBeEFb/0n5Z77cYt+rcfLlCaa7g5SQq4WcqQ9I+g=;
-        b=R3QZt9ZO8WXqmvYp3I8gOSO9+mYR+Ex8xoDvNwAHsBQD1AbyoOM6NCd21ipYgA8T+o
-         IKnHGI0gTUkck0oEbe84HNYgWHiyklDY6Dtf0supDDLMqmz02zTEZTsMXn3ngMR+oh8c
-         YkafIVwkQZ/g3QwNgzH90trEhop1bX3au6F7EezKOJ/toRYY8S/CXefQLzz3tjJFN13R
-         LYmgWV0uNHYw7HwFu+ZyjfHkDATx2wkODFLUsYdVUEP9gwJEESdVt4pI1xmIBxkOTIB/
-         epbXvsiHyImjVaeVrJp/h8yPaDrBuXdNugCPhz8bQw+u5qjUcsoeIXix0PH0Eo4DQKlf
-         Xmnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754764328; x=1755369128;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9s/fBeEFb/0n5Z77cYt+rcfLlCaa7g5SQq4WcqQ9I+g=;
-        b=VeepNjJ4L6zg/zH6U+cx7uiHeGdeEWWM1/EqXsDUreK+clujVzda1LJkr8M0GKNhDE
-         rwXwbZXjEzbr//qNn5ulBpcdjITF8YoC/jK066Dor2W0tSU0+YXNqIAryjhTR3pnJKkh
-         DAo0+1Lmb8aSWVm4gs4dwz3tFqiXtwIL5kCBlDzo5PDF8L9CetZwtaDjWTNOSbjGVc3N
-         YfMppYd4WTV8U7xEcVkP5XTVc8Cukx00q39tCvypqAgP6e9NrZbNpr1v1smhgSGn7P+E
-         Y2eUB3ZyWce5kaI37RrVMWQUV2x5evlEd3Ih8oIJT7+DjfC5W/2butTLzmJEMSTX9ml/
-         DzMg==
-X-Forwarded-Encrypted: i=1; AJvYcCUAuxLKJxLdl2cYxNoVwBVmHuLZtzg7dK2WKj6eHRSyyWDbtx7cmGzn+mP6EKgQElthUHmenKgBIg==@kvack.org
-X-Gm-Message-State: AOJu0YzlJ6ks+GWY7aBIxG7uFuOvFWA/7hvMAia0IcxxQHLRiPjA1OwD
-	YmNOck3tkRBCSrB+qm95CQ/1vw9agI7vqvJo9Dsc031OxmdRKr+cQuq9
-X-Gm-Gg: ASbGncv9qNVL2WLncGckCfiFxxUfuwj4iuR778BYbBgrgxiG3MfpkjKfyZ7JT/8rGSL
-	MsTn5HgY9ViN3ti8ySybTR+AKvO42oNaX7SJh6mGZt1o0FaLUDwjUKL8ow37sp0wQW5ldwylwsm
-	i6gOwt707uoG2lB3mnQ3NBQWbFoylGyIgUJVBU4OWBJh+9Opb3Xavb8NRq5PoxD1leRcnsngbAY
-	MSLU7Du4kiZ1kVcb6IRtYsMLhesrjJIorz+24imJHDnmZyMYJLG/DFEMZrbg5I7+jMCtzokZc12
-	GZG7jl8UmwxTJatqgoc50gngdVwrIx0Twd4X96YZVOk2WCip546/BJ9f9N4i3kagvbg+wb6P6H7
-	j9B7SG5AoCtne2VWyG+it8Q==
-X-Google-Smtp-Source: AGHT+IHbu6+/jA8LdZVqHL1WWQcHp/s9Y+pab9NC8J94dNGk70WHYDDncBcYtCWmCpOWWCCNlU7Qbg==
-X-Received: by 2002:a17:907:7213:b0:af9:9e50:470 with SMTP id a640c23a62f3a-af9c705a837mr672476866b.28.1754764328248;
-        Sat, 09 Aug 2025 11:32:08 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af99148eab9sm752111466b.77.2025.08.09.11.32.07
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 09 Aug 2025 11:32:07 -0700 (PDT)
-Date: Sat, 9 Aug 2025 18:32:07 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Donet Tom <donettom@linux.ibm.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
-	akpm@linux-foundation.org, Liam.Howlett@oracle.com,
-	lorenzo.stoakes@oracle.com, shuah@kernel.org, pfalcato@suse.de,
-	david@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	ritesh.list@gmail.com
-Subject: Re: [PATCH v3 3/7] selftest/mm: Fix ksm_funtional_test failures
-Message-ID: <20250809183207.yx3eetkmr7bd3356@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250729053403.1071807-1-aboorvad@linux.ibm.com>
- <20250729053403.1071807-4-aboorvad@linux.ibm.com>
- <20250804091141.ifwryfmgjepwrog4@master>
- <20fb853c-7d79-4d26-9c8a-f6ce9367d424@linux.ibm.com>
- <20250805170353.6vlbyg6qn5hv4yzz@master>
- <e9079694-1e30-46b6-97e7-b79be01c65a6@linux.ibm.com>
- <20250806145432.nygrslkiyvzulujn@master>
- <111d2351-3fb7-4011-af07-78b40874d956@linux.ibm.com>
- <20250808025804.b7cv47gcq2yscka7@master>
- <c237c703-3ed6-4d7d-aaff-bd6291f9220f@linux.ibm.com>
+	bh=nUhNlqQ6VnKeXh2Xn+h8lfDf+kthAcMWidGMDbgJaF8=;
+	b=U5SLdV1wLsrZ2S5w9fN0VCnK2cVaWiIa5JY8lkR7m3Rc61nSYriQuzkbqHjc+fOoeDFQ6z
+	LBqYJBsU0DGI/GnSRtUQxGnG/Nut8hd1QU936H2jNL05L6aGEiwm+L3EbEMS4AWg9rQokt
+	FLouc2O0gQGozlLgd6SwCS3hFglzrFE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754764344; a=rsa-sha256;
+	cv=none;
+	b=o9LpXbZMVaBTpWzLMK7S5Z91ys4y5pv9hcgoGulLGNs+yVcEhOXt4KbsXHX6atL4hDdEJG
+	c6HJqwWnjEuL97CvQ3NJLPw+B2kfGYlJmOIsDPlhYXUmePSatwpG7Kdggk79vj7Gn02H9m
+	zPIgcFLaQSbCFg4eDxCV2p9CNJDMdLU=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mFbFXvxg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of tj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=tj@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 8E75EA55BCF;
+	Sat,  9 Aug 2025 18:32:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 131AEC4CEE7;
+	Sat,  9 Aug 2025 18:32:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754764343;
+	bh=17cj85UdavT53nLzrHXasrniy7Ghl4dWzlwAnf7kfeo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mFbFXvxgend+sAk55A+p+MqT4U8ca8v3hHJ97OFvQLrSJgmlQALZjnhzjfsQ1O4GE
+	 o5sIHr483/YCoKeFiqMn/koKEog2V97LFzZNs9o8SpRoy7iNkwJHNbUWddlqEU6SVD
+	 kploU/2KbwgkDpUH0IH9f7BbcYUVNZqVlRA4ZIgXW+sdaga7/QnlaL105oDPYVDGGq
+	 w8j9kbLwkwwLr0H0kzzejWGIzpbvVN/KFnib5LPZjwdo6d3snArbJrG5EEq6GeJtn/
+	 DBoFCLHStQ7pD1LCDoBfMK/Al/4wF1dk50oLG2BhApEXkKIeyfRqdWajeWWn3OnoIA
+	 qSVy7PMU3WfcA==
+Date: Sat, 9 Aug 2025 08:32:22 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Daniel Sedlak <daniel.sedlak@cdn77.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org,
+	netdev@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Matyas Hurtik <matyas.hurtik@cdn77.com>
+Subject: Re: [PATCH v4] memcg: expose socket memory pressure in a cgroup
+Message-ID: <aJeUNqwzRuc8N08y@slm.duckdns.org>
+References: <20250805064429.77876-1-daniel.sedlak@cdn77.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c237c703-3ed6-4d7d-aaff-bd6291f9220f@linux.ibm.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Stat-Signature: wreyp5e6pyjdj7nm7uk1gmei5jgpsd5c
+In-Reply-To: <20250805064429.77876-1-daniel.sedlak@cdn77.com>
+X-Rspamd-Queue-Id: 5C240A000D
+X-Stat-Signature: rdpxghxkkcxnx3apbq4fgj4w8uxake4a
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1D4E94000F
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1754764329-105320
-X-HE-Meta: U2FsdGVkX1+EOvWN4BvGqQVmKHRSwNALJSHbAtc/VUd1jRSsW6u3XnoJOPfO/265k2nVIbxlXY5gkV91bFPwsScWfz1NewCSBIVZivNxHDdVkWmZS8iwuPpFx1qUlK14gxX2kY1l5CrHRClmO9wUKvC9DindaSCcWMCRrM+wz9nsvXsJQepAYmA81tPGy5Dhj+VU1PEV0QCxwDQYsdz27GQy/PCbSGa2/FCanIPfj/jRFJnIXcP9tQ1trrZBFAliU4auir8DK6sPW3n2fhw3SAA2tm2rqBDWe5O5s2QyUP5nNWqvpxD9kndyxHIo0WZpHDaAaJv6terWEGQ1nqLxzofJ1+uKYfN0aHlr0vS/1tx3GO+Re/Ptg8bDXzTZ6fT89mQRYw6LChNmFnq9PXehlzWRJgZgmNw7M9vId+TYjiQcGVicF1A5Rl31WJmpA6NGkV08SMvQG71chlt8V+9vvX/9FK3IuEaRTi6JFfZ2QS+n9vhvmRP/TEbm9vSnmPjfG0iMKqiuZEA9H/L24Imy1TdG6nXbjdNjahkhglbfb363XkvD8NIzXHwcB275/7lTmDrfuxeMlU5mjz0an4b6YPeNTN0H/mvzBJ0XE12PyKoGfOtjQ36UAShKEw221z1ajKS7PN1euhHJjtXEBba8SwohyY9VwqtyCDQdGlk8blcjgsosvBjSojy+UjEMHvT8fxC/DKfm7tXE01wqtSaUwOmtmQuORTPtlmSF+XXThDr0uIWUe93PwJH//LugKa2M/g9Ytzos90ki5c+/wUGfOBkUcF/XKtguzGJ5Dl9/a6WLyOkLweDTcibe8KVYh3T2pl4HcdpTcjfo2gGBdHNycWM6+SwWbvvX0WNfIKA8MLbdkXj2YlQrM0wMwFrsT9QpTocXI/6cWJjwaLa/G61ouBfdd3zpFWiFThLSnB7d2mtEcFHrpFpLXUwUmh2AS0CRpLu908w/lszL4WsThsq
- 9zeXcwiC
- dmOAYqFLO8vlWd/jPy/eSn/ODByFY0ZzE9pkQ8ka4wl4Ctg8FIyez77gVk+zuA4cX4zg6cmFBz44mfw2FxxFutqoT6Cy8yBUkfIMbNK0M0Kx+FyPssrO11LKqQOvJQhmve+SBXw7PFoTF8Mb812cLO/mWLLo24rYH1nNL95HXMxOsnIidSSe/qLEbd1ikZFlJCuRozk+lqFU/2M0t4i2PiHDkMlv+BhjSc0xqHaCjPA33UnVeUj1Ke3SL13eegguKPh4jAkC4HQfJjHo13MLFCH+ibBtWkn7SOn5KeXFZ9Eu2SL690J7/ns553DcGInfzqLz7wkWm53Hd9FyBaJRWAt0d8ZPTYF9QsVoQOfXNu2RmufJNe6Y2ZFyW2r3C3M0/4Y8wqgIuR3w2rJD3nTyllHXg13JD0EWAwcv0iajXWeg9YHqFkOl8OM7WScKSi1RxD8n5FDtYBbgNRD6Myk4obNWH+84uV1XpQhuEHmncfTZmRIqHXkWw1BCgZ1PaVjfkkWwrkQdx9fPgICRU2q2N08CnAsWZq2PPsH4nC3rD0hByqpYmDCoLDcO5S72JYVzf1siodxew6Wj3zKSQKPfOsj2zrJWqrS3/wr0S2uNXVQW+s9azr1izSugcs8IJF+VDnl/QGufi7Tsj/zY4dtqZrKUZMhmUtqx+DKEj3P6pfvk/s4mvEpxTwuEqPouWTsrdEnTuqIFnQQKvFJyXGxu3/IcwpsTIdVCBYIMO26adAQGwzO6EEQ/quukEs/fQryjDXTMk
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1754764344-581701
+X-HE-Meta: U2FsdGVkX1+55VDa5B4f/QDENpUNKsbOu9WbuZsvuaGDKpNBRxHxPxEbdA1j690yGIy557DoO2vdx3IIYWsMnPtyo/9KpLico97fv5ihwBkNpywmhNdfZPFIKza94mnT+oFdNEG0Rd2nE0QI+oXDVHMXpsGTDIPT18GigVfvKGrfzf3Cn4QKmLieOCVj7DHk/aXEfIEPLiJ0yGiDcvPydXGJfdRR2QTezlZo2SotBILHh7MpRJnDV1J0cAGTyLrOY13ydVgVan7c7ceuWl0N0J25Yg3Kfa9svHrUI63bwy2gKqviBzoIdXxqIXVhOx4aNCTQPij1S0vcHnO3fRO3UXyVhcuI8Uomy0N2aA2/P5ncUGhocQlUAJ54tNUg93RTSI1F/oEHcjfMNiM79g+zEFkC3QvU0PfLIitoe2oADIxUvsNmocdpYns2QntxSbZfRxRFvF/gx1PHj5RCWjsUQI1xul4G3+GF0wzffWwaxdrZD5tx9LtsMDAq41Mw1y/hAOED0zqdQwhPOT3dScF4BhRWrOrpcYqnBGMbR6dRYSLtGHlBV+aNZSjYvt5WxX8kwEzi0kjxboYKulO15fnH4UyQdTBwsFZPlOl0tRBinNu/RZU3nPUxxFhF+y02e4cqfK9LEF1Zd+k0U+au0rzlK4ndeYVaS6bWaAcO0xstDfFAjcas/raR8P6NcMpdphiNzyC5GDj4Gq8Xz31NKjKyOGdBKBJ7Pr5MWAyKaKDEqCXp4gvhQuz8D3SrJtohSiRoKlq08VoJYuZsNMHqXIs7hH2wMbRH9eFG6OEsZ0DcQ1NGTQoOaqv3caWGZO34Y3ESD+VlNGmxheusKMeyavP0pT50QMdlGjuJ1jsHCMqFRDQpsmbKTNIgS5owlfWvA6Nj4f/mMWdOL0ea9z3kOI5w2cxXD5KQ1QeoNBN/X96z/hFaYGu8oN+ndj1FKiDb3hmkven4MXBl2LIihVx08hC
+ x6rPlqn6
+ 7eZSiDtGPZiaWhthFeyI1XbgK8TBP5kzn0DUMIOrT8CC/KEYKfjKP05u61JZrMNQRFbvdI1y8G5J0I4DOBdcb1ZYe61V9aNV0qGpJAW8cz9B88mY+YPGAl/d/2NS2OuLPnWU0Pmwo15PcYwQyv8bboS0xqa1VNxPnnti2He4sup20ENgClMNzFBBUMHj1+S5VXz72h5xam8pqfCXgzdqwnf+SwSIqLWK1rQdqyDl3sbz7mIwBt7v1a8stoqa69CjJm+bxdMd6EQKF7Qw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,32 +103,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 08, 2025 at 07:55:37PM +0530, Donet Tom wrote:
-[...]
->> Thanks for the detailed analysis.
->> 
->> So the key is child has no ksm_rmap_item which will not clear ksm_merging_page
->> on ksm_unmerge().
->> 
->> > So, only processes that performed KSM merging will have their counters
->> > updated during ksm_unmerge(). The child process, having not initiated any
->> > merging, retains the inherited counter value without any update.
->> > 
->> > So from a testing point of view, I think it is better to reset the
->> > counters as part of the cleanup code to ensure that the next tests do
->> > not get incorrect values.
->> > 
->> Hmm... I agree from the test point of view based on current situation.
->> 
->> While maybe this is also a check point for later version.
->
->Are you okay to proceed with the current patch in this series?
->
+Hello,
 
-Sure.
+On Tue, Aug 05, 2025 at 08:44:29AM +0200, Daniel Sedlak wrote:
+> This patch exposes a new file for each cgroup in sysfs which signals
+> the cgroup socket memory pressure. The file is accessible in
+> the following path.
+> 
+>   /sys/fs/cgroup/**/<cgroup name>/memory.net.socket_pressure
+> 
+> The output value is a cumulative sum of microseconds spent
+> under pressure for that particular cgroup.
 
+I'm not sure the pressure name fits the best when the content is the
+duration. Note that in the memory.pressure file, the main content is
+time-averaged percentages which are the "pressure" numbers. Can this be an
+entry in memory.stat which signifies that it's a duration? net_throttle_us
+or something like that?
+
+Also, as Shakeel already pointed out, this would need to be accumulated
+hierarchically. The tricky thing is determining how the accumulation should
+work. Hierarchical summing up is simple and we can use the usual rstat
+propagation; however, that would deviate from how pressure durations are
+propagated for .pressure metrics, where each cgroup tracks all / some
+contention states in its descendants. For simplicity's sake and if the
+number ends up in memory.stat, I think simple summing up should be fine as
+long as it's so noted in the documentation. Note that this semantical
+difference would be another reason to avoid the "pressure" name.
+
+Thanks.
 
 -- 
-Wei Yang
-Help you, Help me
+tejun
 
