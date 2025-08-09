@@ -2,105 +2,104 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 85DC9CA0EC0
-	for <linux-mm@archiver.kernel.org>; Sat,  9 Aug 2025 13:52:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D56AAC87FCF
+	for <linux-mm@archiver.kernel.org>; Sat,  9 Aug 2025 13:52:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0175C6B00A0; Sat,  9 Aug 2025 09:52:18 -0400 (EDT)
+	id E47886B00A2; Sat,  9 Aug 2025 09:52:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F31A96B00A1; Sat,  9 Aug 2025 09:52:17 -0400 (EDT)
+	id DFA7F6B00A3; Sat,  9 Aug 2025 09:52:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAAFE6B00A2; Sat,  9 Aug 2025 09:52:17 -0400 (EDT)
+	id CC0D96B00A4; Sat,  9 Aug 2025 09:52:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CD83E6B00A0
-	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 09:52:17 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8D0A01A0221
-	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 13:52:17 +0000 (UTC)
-X-FDA: 83757358314.27.0BB0833
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B88FD6B00A2
+	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 09:52:19 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3AD0F811F5
+	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 13:52:19 +0000 (UTC)
+X-FDA: 83757358398.23.C624196
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 849DF80010
-	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 13:52:15 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=MOO3ZX1u;
-	spf=none (imf30.hostedemail.com: domain of thomas.hellstrom@linux.intel.com has no SPF policy when checking 198.175.65.13) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by imf25.hostedemail.com (Postfix) with ESMTP id 0B445A0003
+	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 13:52:16 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=KHyazKfH;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=none (imf25.hostedemail.com: domain of thomas.hellstrom@linux.intel.com has no SPF policy when checking 198.175.65.13) smtp.mailfrom=thomas.hellstrom@linux.intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754747537; a=rsa-sha256;
+	cv=none;
+	b=ObRF2BoCt23btkOgu3KzI9/4s0OwXYOVn6YLFBouEYlOyXXUmrKeVtGdseXf6urDoIXTKl
+	piZcbgQmh9lyJ4sIZEnH4WCYwbYQBlR23nREyovU0nAa0i8DGcPISGi9/EYVOe5fr5gAtp
+	Vpfyx1pFVuoLL6CY46YwP+kXl2/coBg=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=KHyazKfH;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=none (imf25.hostedemail.com: domain of thomas.hellstrom@linux.intel.com has no SPF policy when checking 198.175.65.13) smtp.mailfrom=thomas.hellstrom@linux.intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754747535;
+	s=arc-20220608; t=1754747537;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oTtEWT/nBL8L0962EkgBZHXKgdp1EZ8YoiSbnR2jdgc=;
-	b=Fw5FRN+wpqTtQag6mOPzCd/GyyQOWaYVg58VqHA5EtpAC4/9T8GOq7fCYRvHJIaPDMlqla
-	e+xbOZG9DQ1Ng1n8i8hS4d2HrAbhcIwgnaXPiIiO+87LTlIp7IU6FxH6iriHUWanRCcduo
-	5V6LKKToV0bsaTlkU/dtgmAHdHAoizo=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=MOO3ZX1u;
-	spf=none (imf30.hostedemail.com: domain of thomas.hellstrom@linux.intel.com has no SPF policy when checking 198.175.65.13) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754747535; a=rsa-sha256;
-	cv=none;
-	b=KSWDdOSgNtsNHS2J7svD3Ht6FAdrFnPYKgVdtO+0F3vszsYRU9JTG1eqfd+v99sBwN13C+
-	fwKAVx8jlYVv9Q6MyNJ4SUiHYaIftzwoMsl9HuuzPb3vidclyUx95AOKC8jTVj8dQS1cMC
-	99KWfLvQ7ZIcBAdHXVuO+ORWGUqNCqU=
+	bh=7TRNAbAEGT/ZKZWMEx4a9FR89j0JYe+cZehrg3Q9JbU=;
+	b=F5mf8+d5ltlmvfmenmA9/t7i7ZLiuM4B/4jZq6cB1UaOZt0ZFJ9AhH76SvYPjhF4LQnjFV
+	VoQGmMlfHGeT+5Rcqnb3fTfVZxSs3ok59z4sHrjYjRnGShu6STY7h3mI/1s/yzxM/MM41x
+	gwbtSqZc9IEcBTjVrFbVX1HJPuYzAwM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754747535; x=1786283535;
+  t=1754747537; x=1786283537;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=I0S46TL3ZGNQAM5NlfugwXaH73kKnXUT2H7X0Wkzjqo=;
-  b=MOO3ZX1uxQk8DoMhE+m425sqEdbpks+vtCXEMrmSoFwDrTOEKvnoZJ6t
-   xr9JCXwDuy0YPKguEdN9hB0CPu7J/tWcdigf+HEYuehAHuaMH6p+L8TG7
-   6tfxJeJc1mhHnvUOPMDhPDz+dDLf2owzPLE3yg/HpikmOFdi0VGtpRAba
-   ZlIWiIh9FYZxQi1GKvuvL34HT/nsTAGKQ77VoZF5rSKT74FmLCH0jmkfH
-   aFxOBmyqSWHclgjCQoQ2GMHVrlulBw8nmk6b/sTL4aJxajg7ecoHN46Bx
-   TalXAD5cHYGi/8/fTUBmtODO+tgluNYU+ktM33NyuiIZeJSBgfopf4j7i
-   A==;
-X-CSE-ConnectionGUID: Ad8XuGX8RhirQshFca/13g==
-X-CSE-MsgGUID: u4GeBei+RjS5wRV9N3m5Bg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11515"; a="68153542"
+  bh=M1dPRbREHCZNm03J/0kaw2ckl1FuinNQkvsu+9otm4E=;
+  b=KHyazKfHOVdFBagKMI6boSzRKAElOs5EtZ57CpK90ETS2B+9pRx9t7UK
+   DwBmzeMozNc1tzUYhUhj7nBSLcNqYL5khbLKxe5OsVgEhoJcYB8riOxtp
+   sOqkGRgPhr9d7ReHshZQJwXYSI4ZVqgZGhqmfbycYlx6Lzq2IxUFQk7mn
+   w1Y81pxHW3WgAY9+Ro/FGLC9ughpaHw5FKkW+2XCV3i5Ic/P/DSPC/RPQ
+   VFPpKKa2+IhZjlGMpNy6cy3+aleNrPww2OWTPwG+nYTz5tOgsz4XcEN9z
+   al1JvWQUXWPK9PhsE8qiAc1JDtfKZFvpE92S41/qWfXKww6I90Qr3T3su
+   w==;
+X-CSE-ConnectionGUID: pDOhHiZxRDaGxMD+mxsRxg==
+X-CSE-MsgGUID: V7uCevR8Qr6cLsaW4Sk4uA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11515"; a="68153551"
 X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; 
-   d="scan'208";a="68153542"
+   d="scan'208";a="68153551"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2025 06:52:14 -0700
-X-CSE-ConnectionGUID: q0EFfHMxTtm9eDHUSNIpJA==
-X-CSE-MsgGUID: Qrzeux62Rea+AK85jOp5yg==
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2025 06:52:16 -0700
+X-CSE-ConnectionGUID: wW5KpTcnRz+LewKSRZMlhQ==
+X-CSE-MsgGUID: axquRza3SkGznZ/c7UT2LA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; 
-   d="scan'208";a="165903744"
+   d="scan'208";a="165903751"
 Received: from smoticic-mobl1.ger.corp.intel.com (HELO fedora) ([10.245.244.28])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2025 06:52:11 -0700
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2025 06:52:14 -0700
 From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
 To: intel-xe@lists.freedesktop.org
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+Cc: Matthew Brost <matthew.brost@intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	dri-devel@lists.freedesktop.org,
 	Jason Gunthorpe <jgg@ziepe.ca>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Simona Vetter <simona.vetter@ffwll.ch>,
 	Dave Airlie <airlied@gmail.com>,
-	dri-devel@lists.freedesktop.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Subject: [RFC PATCH 1/6] mm/mmu_notifier: Allow multiple struct mmu_interval_notifier passes
-Date: Sat,  9 Aug 2025 15:51:32 +0200
-Message-ID: <20250809135137.259427-2-thomas.hellstrom@linux.intel.com>
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 2/6] drm/gpusvm: Update GPU SVM / Xe to twopass MMU notifier
+Date: Sat,  9 Aug 2025 15:51:33 +0200
+Message-ID: <20250809135137.259427-3-thomas.hellstrom@linux.intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250809135137.259427-1-thomas.hellstrom@linux.intel.com>
 References: <20250809135137.259427-1-thomas.hellstrom@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: d6e8ab7ijkuq99ddqpcb8puchcykc63d
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 849DF80010
-X-Rspamd-Server: rspam06
-X-Stat-Signature: uytgg1mihdwpex1dmfq1pup11xxi9xh8
-X-HE-Tag: 1754747535-478017
-X-HE-Meta: U2FsdGVkX19zocKWr0nmnxZgcGeLLVgbwrSfxi6wItnqvqGyjafaf5/PHt934F15Ox53O8pBiPhfpVArE2KPysEIKRY8SePAcQlJAYH/oYE6oWXIZgA/uobQHxw22TFAK1ip4PsOnUqrzzOG2+5lqEZnB80Z7CkWnKIa9187JBpgkjVHtjxPyaudbMauI3Kjd2Ar0/I6uJ9m+CQ7EALR1PElO0RmNWXQz2rKJUjjBagUu1x5AFFXJ9K5adAyMtRBl8SFAazScwJUd/i7e/pqUDB8h+k+y34nUj10puIG+tVSLtX6sh/q1im36c3bzVpr6P96lfP7bDUJGSWP1v4joYrWTZroQzL89HWovOWc82b43lrZIjsIgTqpOX6K/weyOy2RgS6dVCEasfG9y5k+6h5DfGtrrIDoDPsHobbfDYAvPi35hZybn/KX2AnFwPbvS++AUg61Z0hpxgOdNrC7YtLegYCFDMrhLq3E004s36AVNTRSFECvvAZW7TyqjS3ULBq65d0SbX763oM6MfcP+7s2FFUFtv8+D/oZ8qxx/y4+IYiOUr6LkzBQ7m6ZWJNfDjaYVMOwaJ1llOXnCoZRG5QMrRas/Z8EerL/g/nA6AocFquqryxNfsDEfjeCYhrJBfOUNYfQTmVA1e/DMXhQAd+M429GaDtg5g+wN5U6H8oVAWvD4ZiUjlM6NTzzXjUA7gnt7IhrTuWszi3Mkw8Iu8CdCNu9o1XhGHYfXD5On5gzNX5FOOvMYfbUw0UXnXJzuwBCe+Vo/8X1IllCbW8IScOF7FHUQoVom7Ka3T67eGbMw26DiU9gDHosNrwzraIum+uRI0/LiukMpvRz4FFhkfK6A63AT1yPTh75b+mH/yMNsehtZSsHBA==
+X-Rspamd-Queue-Id: 0B445A0003
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1754747536-25361
+X-HE-Meta: U2FsdGVkX1+YAdlvw89w5UdFFtk9Dmh6KZvc8tRkscNvCuwid9VBIztfivRF0ybAjIuCG+cE6Ip8PpP+s9xabLkpjldi8y2zqPl+UHFQSXrZkNsr/1DACeYV+7a11+SrFJo9NdY6dLwwMLC4EsdhdP93e/YmBjy5Gz/3/haNVxHwX31tPPvZrWynBPp0JYGRaK5y2ECPieZG8poom/ZGenkmOq3QcrZTS7d6DApW+X6StamJoAoJei+Us184F7AcPpOfl8+IfuWRrb8HMcaI23ETNzNLG5meaFWlt+65KECgYerp06ZU10TCpaheCG5zk1W6czg85iLRD+ibaekxpQTUrqHsJ+pnFCJC5aUO7IzUQSVbC+XeNYhrWHuP+ONw7vnqhu9eNn4Nm6LfmZrjbokPfzzJBCfx59dl30QFLGjiQZHTZAsswh6Zdk9GFI+3pS0cJZWf2vPunuTvN0DMiwkIfq5hV5lLlBet5IePBagjQ3wPpIKLBUUKE7+2hlBzUFxlmIYYtMXcu/G9SNNdaHpzGSfRrew+EBHW2UGSsutHJSwTJ9QXKFJBVMzZsHHfjjYqI0bOMPrIq73Hz2gT+JkJ5eodo7WoTiaPXrWlRcneW2JVvqWNQojIzoyOPNS7rQqImmvxvpaXyWHrLwaNlV0YWSppWWVJ1Qy14JwvsDrtygdqVAlhuxptOfkXxGgo/C+s2qwMl9Uuibrr+piNGoLjv/m5ck3q22RneUm4TK7iGYpnBjRg726oB1ulxMR+O4I+auGsSV5Ee8P07uJmeh+p/RAmuCe5VqrFOnOEVvymtoW2vOUBAQvw/iJV5ZCc1SzOZsf63e128ozpnTq0AMazhHIh0FMVtpiLOxwcRbbWa5kh59iJaxDyFlIlmVGK27UAB09j1vhUXb28uBwc8jHw5o3IcpRjtizEUapiYT46XOkD5lh/OJ/w94c/YcI2nkp9Na7KWlf9wb2inz6
+ RYVTyzCd
+ QLkecm/owVGWFSblUPR4j+ugTAeRlXGK+LxLHdfTkMC6JFvmHdSUJQ5EqrHyreIMVoD0/ZpqcaxJP5vq+fNcFuRAW4Om7ak/3xbHfHPh19qvyS4mRj/C8MqVhmIs10XKMYtXmyG6yYqpAwQ4uJihTgr5chSx5virBm3hkDuA18yGQ9uy9nQYwtKwNcJkuHO4SG9y0qnYcSIkPFLMD5OW5YJ1sKg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,204 +108,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-GPU use-cases for mmu_interval_notifiers with hmm often involve
-starting a gpu operation and then waiting for it to complete.
-These operations are typically context preemption or TLB flushing.
+From: Matthew Brost <matthew.brost@intel.com>
 
-With single-pass notifiers per GPU this doesn't scale in
-multi-gpu scenarios. In those scenarios we'd want to first start
-preemption- or TLB flushing on all GPUs and as a second pass wait
-for them to complete on all gpus.
+Update GPU SVM and Xe to use two-pass MMU notifiers, enabling pipelined
+TLB invalidations across VMs or multiple devices.
 
-One can do this on per-driver basis multiplexing per-driver
-notifiers but that would mean sharing the notifier "user" lock
-across all GPUs and that doesn't scale well either, so adding support
-for multi-pass in the core appears like the right choice.
+The driver-side (Xe) implementation is not yet implemented.
 
-Implement multi-pass capability in the mmu_interval_notifier. Use a
-linked list for the additional passes to minimize the impact for
-use-cases that don't need the multi-pass functionality.
-
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Simona Vetter <simona.vetter@ffwll.ch>
-Cc: Dave Airlie <airlied@gmail.com>
-Cc: <dri-devel@lists.freedesktop.org>
-Cc: <linux-mm@kvack.org>
-Cc: <linux-kernel@vger.kernel.org>
-
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 ---
- include/linux/mmu_notifier.h | 30 ++++++++++++++++
- mm/mmu_notifier.c            | 67 +++++++++++++++++++++++++++++++-----
- 2 files changed, 88 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/drm_gpusvm.c | 18 +++++++++++-------
+ drivers/gpu/drm/xe/xe_svm.c  |  9 +++++----
+ include/drm/drm_gpusvm.h     | 11 +++++++----
+ 3 files changed, 23 insertions(+), 15 deletions(-)
 
-diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
-index d1094c2d5fb6..1107a8eafd8a 100644
---- a/include/linux/mmu_notifier.h
-+++ b/include/linux/mmu_notifier.h
-@@ -233,6 +233,32 @@ struct mmu_notifier {
- 	unsigned int users;
- };
+diff --git a/drivers/gpu/drm/drm_gpusvm.c b/drivers/gpu/drm/drm_gpusvm.c
+index 661306da6b2d..92dc7d2bd6cf 100644
+--- a/drivers/gpu/drm/drm_gpusvm.c
++++ b/drivers/gpu/drm/drm_gpusvm.c
+@@ -374,10 +374,13 @@ notifier_iter_first(struct rb_root_cached *root, unsigned long start,
+ 	     (notifier__) = (next__), (next__) = __drm_gpusvm_notifier_next(notifier__))
  
-+/**
-+ * struct mmu_interval_notifier_pass - mmu_interval_notifier multi-pass abstraction
-+ * @link: List link for the notifiers pending pass list
-+ *
-+ * Allocate, typically using GFP_NOWAIT in the interval notifier's first pass.
-+ * If allocation fails (which is not unlikely under memory pressure), fall back
-+ * to single-pass operation.
-+ */
-+struct mmu_interval_notifier_pass {
-+	struct list_head link;
-+	/**
-+	 * @pass: Driver callback for additionall pass.
-+	 * @additional_pass: Pointer to the mmu_interval_notifier_pass structure.
-+	 * @range: The mmu_notifier_range.
-+	 * @cur_seq: The current sequence set by the first pass.
-+	 *
-+	 * Return: Either a pointer to a valid mmu_interval_notifier_pass for
-+	 * another pass to be called, or %NULL if processing is complete for this
-+	 * notifier. There is no error reporting mechanism for additional passes.
-+	 */
-+	struct mmu_interval_notifier_pass *
-+	(*pass) (struct mmu_interval_notifier_pass *additional_pass,
-+		 const struct mmu_notifier_range *range,
-+		 unsigned long cur_seq);
-+};
-+
  /**
-  * struct mmu_interval_notifier_ops
-  * @invalidate: Upon return the caller must stop using any SPTEs within this
-@@ -243,6 +269,10 @@ struct mmu_interval_notifier_ops {
- 	bool (*invalidate)(struct mmu_interval_notifier *interval_sub,
- 			   const struct mmu_notifier_range *range,
- 			   unsigned long cur_seq);
-+	bool (*invalidate_multipass)(struct mmu_interval_notifier *interval_sub,
-+				     const struct mmu_notifier_range *range,
-+				     unsigned long cur_seq,
-+				     struct mmu_interval_notifier_pass **pass);
+- * drm_gpusvm_notifier_invalidate() - Invalidate a GPU SVM notifier.
++ * drm_gpusvm_notifier_invalidate_twopass() - Invalidate a GPU SVM notifie,
++ * fist pass.
++ *
+  * @mni: Pointer to the mmu_interval_notifier structure.
+  * @mmu_range: Pointer to the mmu_notifier_range structure.
+  * @cur_seq: Current sequence number.
++ * @pass: First pass of MMU notifier
+  *
+  * This function serves as a generic MMU notifier for GPU SVM. It sets the MMU
+  * notifier sequence number and calls the driver invalidate vfunc under
+@@ -386,9 +389,10 @@ notifier_iter_first(struct rb_root_cached *root, unsigned long start,
+  * Return: true if the operation succeeds, false otherwise.
+  */
+ static bool
+-drm_gpusvm_notifier_invalidate(struct mmu_interval_notifier *mni,
+-			       const struct mmu_notifier_range *mmu_range,
+-			       unsigned long cur_seq)
++drm_gpusvm_notifier_invalidate_twopass(struct mmu_interval_notifier *mni,
++				       const struct mmu_notifier_range *mmu_range,
++				       unsigned long cur_seq,
++				       struct mmu_interval_notifier_pass **pass)
+ {
+ 	struct drm_gpusvm_notifier *notifier =
+ 		container_of(mni, typeof(*notifier), notifier);
+@@ -399,7 +403,7 @@ drm_gpusvm_notifier_invalidate(struct mmu_interval_notifier *mni,
+ 
+ 	down_write(&gpusvm->notifier_lock);
+ 	mmu_interval_set_seq(mni, cur_seq);
+-	gpusvm->ops->invalidate(gpusvm, notifier, mmu_range);
++	gpusvm->ops->invalidate_twopass(gpusvm, notifier, mmu_range, pass);
+ 	up_write(&gpusvm->notifier_lock);
+ 
+ 	return true;
+@@ -409,7 +413,7 @@ drm_gpusvm_notifier_invalidate(struct mmu_interval_notifier *mni,
+  * drm_gpusvm_notifier_ops - MMU interval notifier operations for GPU SVM
+  */
+ static const struct mmu_interval_notifier_ops drm_gpusvm_notifier_ops = {
+-	.invalidate = drm_gpusvm_notifier_invalidate,
++	.invalidate_twopass = drm_gpusvm_notifier_invalidate_twopass,
  };
  
- struct mmu_interval_notifier {
-diff --git a/mm/mmu_notifier.c b/mm/mmu_notifier.c
-index 8e0125dc0522..dd6af87db103 100644
---- a/mm/mmu_notifier.c
-+++ b/mm/mmu_notifier.c
-@@ -260,6 +260,22 @@ mmu_interval_read_begin(struct mmu_interval_notifier *interval_sub)
- }
- EXPORT_SYMBOL_GPL(mmu_interval_read_begin);
- 
-+static void mn_itree_additional_passes(struct list_head *additional_passes,
-+				       const struct mmu_notifier_range *range,
-+				       unsigned long cur_seq)
-+{
-+	struct mmu_interval_notifier_pass *p, *next;
-+
-+	while (!list_empty(additional_passes)) {
-+		list_for_each_entry_safe(p, next, additional_passes, link) {
-+			list_del_init(&p->link);
-+			p = p->pass(p, range, cur_seq);
-+			if (p)
-+				list_add_tail(&p->link, additional_passes);
-+		}
-+	}
-+}
-+
- static void mn_itree_release(struct mmu_notifier_subscriptions *subscriptions,
- 			     struct mm_struct *mm)
+ /**
+@@ -440,7 +444,7 @@ int drm_gpusvm_init(struct drm_gpusvm *gpusvm,
+ 		    const struct drm_gpusvm_ops *ops,
+ 		    const unsigned long *chunk_sizes, int num_chunks)
  {
-@@ -272,17 +288,32 @@ static void mn_itree_release(struct mmu_notifier_subscriptions *subscriptions,
- 	};
- 	struct mmu_interval_notifier *interval_sub;
- 	unsigned long cur_seq;
-+	LIST_HEAD(additional_passes);
- 	bool ret;
+-	if (!ops->invalidate || !num_chunks)
++	if (!ops->invalidate_twopass || !num_chunks)
+ 		return -EINVAL;
  
- 	for (interval_sub =
- 		     mn_itree_inv_start_range(subscriptions, &range, &cur_seq);
- 	     interval_sub;
- 	     interval_sub = mn_itree_inv_next(interval_sub, &range)) {
--		ret = interval_sub->ops->invalidate(interval_sub, &range,
--						    cur_seq);
-+		if (interval_sub->ops->invalidate_multipass) {
-+			struct mmu_interval_notifier_pass *second = NULL;
-+
-+			ret = interval_sub->ops->invalidate_multipass(interval_sub,
-+								      &range,
-+								      cur_seq,
-+								      &second);
-+			if (ret && second)
-+				list_add_tail(&second->link, &additional_passes);
-+
-+		} else {
-+			ret = interval_sub->ops->invalidate(interval_sub,
-+							    &range,
-+							    cur_seq);
-+		}
- 		WARN_ON(!ret);
- 	}
- 
-+	mn_itree_additional_passes(&additional_passes, &range, cur_seq);
- 	mn_itree_inv_end(subscriptions);
+ 	gpusvm->name = name;
+diff --git a/drivers/gpu/drm/xe/xe_svm.c b/drivers/gpu/drm/xe/xe_svm.c
+index e35c6d4def20..23c5b363261c 100644
+--- a/drivers/gpu/drm/xe/xe_svm.c
++++ b/drivers/gpu/drm/xe/xe_svm.c
+@@ -171,9 +171,10 @@ xe_svm_range_notifier_event_end(struct xe_vm *vm, struct drm_gpusvm_range *r,
+ 						   mmu_range);
  }
  
-@@ -431,6 +462,8 @@ static int mn_itree_invalidate(struct mmu_notifier_subscriptions *subscriptions,
+-static void xe_svm_invalidate(struct drm_gpusvm *gpusvm,
+-			      struct drm_gpusvm_notifier *notifier,
+-			      const struct mmu_notifier_range *mmu_range)
++static void xe_svm_invalidate_twopass(struct drm_gpusvm *gpusvm,
++				      struct drm_gpusvm_notifier *notifier,
++				      const struct mmu_notifier_range *mmu_range,
++				      struct mmu_interval_notifier_pass **p)
  {
- 	struct mmu_interval_notifier *interval_sub;
- 	unsigned long cur_seq;
-+	LIST_HEAD(additional_passes);
-+	int err = 0;
+ 	struct xe_vm *vm = gpusvm_to_vm(gpusvm);
+ 	struct xe_device *xe = vm->xe;
+@@ -553,7 +554,7 @@ static const struct drm_pagemap_devmem_ops dpagemap_devmem_ops = {
+ static const struct drm_gpusvm_ops gpusvm_ops = {
+ 	.range_alloc = xe_svm_range_alloc,
+ 	.range_free = xe_svm_range_free,
+-	.invalidate = xe_svm_invalidate,
++	.invalidate_twopass = xe_svm_invalidate_twopass,
+ };
  
- 	for (interval_sub =
- 		     mn_itree_inv_start_range(subscriptions, range, &cur_seq);
-@@ -438,23 +471,39 @@ static int mn_itree_invalidate(struct mmu_notifier_subscriptions *subscriptions,
- 	     interval_sub = mn_itree_inv_next(interval_sub, range)) {
- 		bool ret;
+ static const unsigned long fault_chunk_sizes[] = {
+diff --git a/include/drm/drm_gpusvm.h b/include/drm/drm_gpusvm.h
+index 8d613e9b2690..8b5e159857fc 100644
+--- a/include/drm/drm_gpusvm.h
++++ b/include/drm/drm_gpusvm.h
+@@ -63,17 +63,20 @@ struct drm_gpusvm_ops {
+ 	void (*range_free)(struct drm_gpusvm_range *range);
  
--		ret = interval_sub->ops->invalidate(interval_sub, range,
--						    cur_seq);
-+		if (interval_sub->ops->invalidate_multipass) {
-+			struct mmu_interval_notifier_pass *second = NULL;
-+
-+			ret = interval_sub->ops->invalidate_multipass(interval_sub,
-+								      range,
-+								      cur_seq,
-+								      &second);
-+			if (ret && second)
-+				list_add_tail(&second->link, &additional_passes);
-+
-+		} else {
-+			ret = interval_sub->ops->invalidate(interval_sub,
-+							    range,
-+							    cur_seq);
-+		}
- 		if (!ret) {
- 			if (WARN_ON(mmu_notifier_range_blockable(range)))
- 				continue;
--			goto out_would_block;
-+			err = -EAGAIN;
-+			break;
- 		}
- 	}
--	return 0;
- 
--out_would_block:
-+	mn_itree_additional_passes(&additional_passes, range, cur_seq);
-+
- 	/*
- 	 * On -EAGAIN the non-blocking caller is not allowed to call
- 	 * invalidate_range_end()
+ 	/**
+-	 * @invalidate: Invalidate GPU SVM notifier (required)
++	 * @invalidate_twopass: Invalidate first pass GPU SVM notifier (required)
+ 	 * @gpusvm: Pointer to the GPU SVM
+ 	 * @notifier: Pointer to the GPU SVM notifier
+ 	 * @mmu_range: Pointer to the mmu_notifier_range structure
++	 * @pass: Pass of MMU notifier, optionally populated driver side
++	 * if a second pass of MMU notifier is desired
+ 	 *
+ 	 * Invalidate the GPU page tables. It can safely walk the notifier range
+ 	 * RB tree/list in this function. Called while holding the notifier lock.
  	 */
--	mn_itree_inv_end(subscriptions);
--	return -EAGAIN;
-+	if (err)
-+		mn_itree_inv_end(subscriptions);
-+
-+	return err;
- }
+-	void (*invalidate)(struct drm_gpusvm *gpusvm,
+-			   struct drm_gpusvm_notifier *notifier,
+-			   const struct mmu_notifier_range *mmu_range);
++	void (*invalidate_twopass)(struct drm_gpusvm *gpusvm,
++				   struct drm_gpusvm_notifier *notifier,
++				   const struct mmu_notifier_range *mmu_range,
++				   struct mmu_interval_notifier_pass **pass);
+ };
  
- static int mn_hlist_invalidate_range_start(
+ /**
 -- 
 2.50.1
 
