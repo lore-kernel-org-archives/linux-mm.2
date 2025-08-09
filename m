@@ -2,90 +2,106 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 93EA0C87FCB
-	for <linux-mm@archiver.kernel.org>; Sat,  9 Aug 2025 01:24:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 652FFC87FCF
+	for <linux-mm@archiver.kernel.org>; Sat,  9 Aug 2025 06:28:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 084606B009F; Fri,  8 Aug 2025 21:24:01 -0400 (EDT)
+	id 5569A6B009C; Sat,  9 Aug 2025 02:28:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F28AA6B00A0; Fri,  8 Aug 2025 21:24:00 -0400 (EDT)
+	id 507BF6B009D; Sat,  9 Aug 2025 02:28:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E176F6B00A1; Fri,  8 Aug 2025 21:24:00 -0400 (EDT)
+	id 3F6976B009E; Sat,  9 Aug 2025 02:28:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D1A706B009F
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 21:24:00 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 85E94116878
-	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 01:24:00 +0000 (UTC)
-X-FDA: 83755472640.18.79DFDD6
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 30D3340005
-	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 01:23:56 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf12.hostedemail.com: domain of tujinjiang@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754702638; a=rsa-sha256;
-	cv=none;
-	b=01zA3xYId+lYb5XBJuhQg4qeGX6gFVtHrrtmrEoj5g6JfSbU3NxHM7ByeTD2iouCq4Cs/w
-	nd2T5UOedETb+I+eW24MxrI2pd/rJY0uCc8IPiPadd9s2r4G9M6gMnC3rvJ/jfuehaQNwy
-	vDfim8zo7+l/b0SkGgOc7rN4QAuwwKU=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf12.hostedemail.com: domain of tujinjiang@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B9406B009C
+	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 02:28:13 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 77AC0C07B8
+	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 06:28:12 +0000 (UTC)
+X-FDA: 83756239224.27.8A7222E
+Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 91C53100004
+	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 06:28:10 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cjd8roFV;
+	spf=pass (imf14.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.161.41 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754702638;
+	s=arc-20220608; t=1754720890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0Lk/PnO8AvdyvTGyJEKTaGkXNKNryrYzNMJqFq6qIzc=;
-	b=BhMOFAfASccbS2WRLc2LtmgJ224ITYRkSkY9rBXYrXLv7NHy7cVhU4NTABrUSzfmAWEvup
-	3indSvc92wjkNXncE+vJ37Zg7BkXz08OM+PddsBQOYJl/462pRzi2G11ZI7+q2vf2EuHgZ
-	AGlWoGCSx8KoDJdLqtSZMT5JnNfMZYo=
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4bzNMd5VN5z14MGc;
-	Sat,  9 Aug 2025 09:18:53 +0800 (CST)
-Received: from kwepemo200002.china.huawei.com (unknown [7.202.195.209])
-	by mail.maildlp.com (Postfix) with ESMTPS id 33C611800B1;
-	Sat,  9 Aug 2025 09:23:51 +0800 (CST)
-Received: from [10.174.178.49] (10.174.178.49) by
- kwepemo200002.china.huawei.com (7.202.195.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Sat, 9 Aug 2025 09:23:50 +0800
-Content-Type: multipart/alternative;
-	boundary="------------0BeSeBVMaLG3eoBPdIV3UzOe"
-Message-ID: <256ee1e4-72b4-4332-9bf4-2b70e2712887@huawei.com>
-Date: Sat, 9 Aug 2025 09:23:49 +0800
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1NUSGToIpiCqsxYy/mriGOw/xYEuRpv/gUdvOiAMf24=;
+	b=b5cdcbzvcMsehnKSvZwtvTy03WC1i8mfnE5qHuL8bKmPfckwOTMED4n+iDTc749Ep9w5L7
+	NhqlRuIh5SBdylH8Gbdi6KbY7nZm8kbBxFifX1QTh8KyBcJCISQUWgvjt3iFChe1d/cZ6N
+	qXwLBwH3uovJDam2odi8x1ZMxHrM0xk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754720890; a=rsa-sha256;
+	cv=none;
+	b=W8zG6bt83wJQLCjmsU5CrAqkFc0Pws5SHbRtZaxeecsx2Af7ENrOJHgbQro4pT78CuWvhD
+	/y5DvVekudq7qXaSZsCqO5k7589d8hY+IFQ1SCoVjqfkxCJBSMTkIE8fWAfVbgXbvgst7u
+	iibGX9SIQWV8hLVVrTYDCNcyOPyeumg=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cjd8roFV;
+	spf=pass (imf14.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.161.41 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-61b6779bb45so489032eaf.3
+        for <linux-mm@kvack.org>; Fri, 08 Aug 2025 23:28:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754720889; x=1755325689; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=1NUSGToIpiCqsxYy/mriGOw/xYEuRpv/gUdvOiAMf24=;
+        b=cjd8roFVH9SWp6r+ZAGRtPJdhoUtK+NWeZYkmNTnyiupOZaZuUSGWczjtN9BOuti3h
+         VlcKHYpK2j3lFTN7uKpr4WNM350i/yUQomvrzePFLjvqZqvQYjJjiNx54wSy313mq9o1
+         efhW9fhBoUN6rAKsoXfOOqrbPR748opuWjv6umE+GvZ+toqDZUOLBPvczo9I+0M89QXC
+         gLbIdrcN7Hy6Y5PrUeY0yxT58u3wnbayA2YzXpvEAa/AtBVhAzD+ziNma4N0yVwwslXy
+         BFSIzqhTIwhKrsL+0RiOHkumfEDuH9NDLNLTIh+bFFYzfP+MkCsLoorXYz2yh9LRmJNh
+         5IKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754720889; x=1755325689;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1NUSGToIpiCqsxYy/mriGOw/xYEuRpv/gUdvOiAMf24=;
+        b=EGc3R8RZ2sySuEKbGSK3NKB33+rbJfXl0W9Cj1AP0gIgMFPvfjLKd98QNvf4LBDc7H
+         UK+yy3+O65fyB0X0zMT2hyaOyRH7w8relMwTw1Og1vdibp3P/U6WjiZHF9nh7sDSqCIU
+         x0UiNb/iRaQlFejl7KgtW/lKlfFmHLX7rICoFiTaAIh02181yAgyc3Ky/7vwYTxjNtuh
+         I0BzouGB5ogYYAQ0hePLhachBp8cdBa3NMjZhtLmJGWgpXsYRmjhmegJm3XqZAN1tIVA
+         8bi1c7CXkhMGsKbRG++JKwNblrYO9YzSHEqP8du2365KHYQVCsMHp+4+/5VKntD/u4hf
+         oyWg==
+X-Forwarded-Encrypted: i=1; AJvYcCUvmEjV2uhNajjw6i5F8Z39i7baKTJEA6B2CY/81Te7pvC/0gM2n4RP5TlPhoMqtVTjkV6CelB8YA==@kvack.org
+X-Gm-Message-State: AOJu0YzkD2kbl/KwF9b5xxQc4j8SLhGgC8uzISMZ1sYFa+/Q3xeJO+gJ
+	FB5uK787wypX+hlcegmKzhLrFdrLtXCox17woQeBT7c75Rp4UitxxzXn87/ParSJnp7WNCO3kd/
+	m2x7gnqjX+5wa2tcQPxJJxLQnLx5NQAg=
+X-Gm-Gg: ASbGncthvc6uDxABAPfnKuZ6ztfhKSTL7CQjYQvsTa7kx2B4BLUTrVq3fSZfCnyTKgq
+	3ickq8v0GXXpLqsOAhnNPkaKXFRAir5dOEoJlO41WxJc30sei1LIfq7fCA4z47e6X33y7J1+PuT
+	2sfGQ3J507B/1EiG61G56tv8pNbhSCd9ITqlKsdXGHU7HrS9BcWRnDKPfE0iJ8h13yYCJP7S6CD
+	Mo+
+X-Google-Smtp-Source: AGHT+IFrlR5YprEy/GaibTOAZY+V7FODMyfPqVTljLVSUEP0uQ3mypGib8iRbJ9xcNQr9tnCe9f099T4XnJ5KpmHOaA=
+X-Received: by 2002:a05:6871:82c:b0:30b:cba0:31d2 with SMTP id
+ 586e51a60fabf-30c211d8bb8mr4138083fac.31.1754720889178; Fri, 08 Aug 2025
+ 23:28:09 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/memory-failure: fix infinite UCE for VM_PFNMAP pfn
-To: David Hildenbrand <david@redhat.com>, Miaohe Lin <linmiaohe@huawei.com>
-CC: <wangkefeng.wang@huawei.com>, <nao.horiguchi@gmail.com>,
-	<akpm@linux-foundation.org>, <xueshuai@linux.alibaba.com>, <ziy@nvidia.com>,
-	<osalvador@suse.de>, <linux-mm@kvack.org>
-References: <20250806020520.631203-1-tujinjiang@huawei.com>
- <1e63c37f-8eb2-865d-d3f4-9ef928f1a959@huawei.com>
- <35e24029-d58c-47e8-b5fe-e182f143ebff@huawei.com>
- <c5567040-6f1b-46d1-890e-7dc6b0b46703@redhat.com>
- <156267ef-f834-4bea-9dc0-c8ad32d066b0@huawei.com>
- <864f2ef6-51bd-42f3-9988-16b5e94f05d9@redhat.com>
-From: Jinjiang Tu <tujinjiang@huawei.com>
-In-Reply-To: <864f2ef6-51bd-42f3-9988-16b5e94f05d9@redhat.com>
-X-Originating-IP: [10.174.178.49]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemo200002.china.huawei.com (7.202.195.209)
-X-Rspamd-Queue-Id: 30D3340005
-X-Stat-Signature: mnjuh7jkztigu79dbsdpexgm4o6at9dw
+References: <20250808195518.563053-2-ekffu200098@gmail.com> <20250808220526.49546-1-sj@kernel.org>
+In-Reply-To: <20250808220526.49546-1-sj@kernel.org>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Sat, 9 Aug 2025 15:27:57 +0900
+X-Gm-Features: Ac12FXzAzwBpm7AyG2CHnE6TzB9iPM9xjCqKZwKuSloyw7T9cWBa-XZiuVLbQzs
+Message-ID: <CABFDxMHeHYgKPmOy4gAK_-w+4CiVZ-QHyZcxFPT-dLsM9jcdjQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] selftests/damon: test no-op commit broke DAMON status
+To: SeongJae Park <sj@kernel.org>
+Cc: honggyu.kim@sk.com, damon@lists.linux.dev, linux-mm@kvack.org
+Content-Type: multipart/alternative; boundary="000000000000478fc6063be8cb0d"
+X-Rspamd-Queue-Id: 91C53100004
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1754702636-229119
-X-HE-Meta: U2FsdGVkX1+yhFwh5DicR28UoANL9rg3wMYB3xIUHj0/z6G9K6Z3YqW+IY308ztBoTjMdiiNtRdSHLQJcIwEd0B/TclJ7kO9kPrtB04RtRFnC/0Kz9NuK/FmK9fHYzAwSofDxqD+Dlj9znFOx68/66vY5f7LfL+2BCHVcZ6cjp6I2U7y3Zo9dCGb5b7ynRpfdVsEBOBtb8fNBogGmLX14Ydc49o60hBY0mDLpqs6BNcM5Jw68hgUMik69mR0jqehE3/67IWP+qOfEyBc2TjbpwF68pGxml4tx6HQKQ20ls8W/u7wnZgcjmZh+dR8IKOdkCQDn75F1FmrfK76+Z0LKQe1ddCjbPFhyWyvSeKW+awiHxSEVrenn0MUVjK0FF/iZ1BKHErflwOLd+QqPQJsuJQsrUgrOXgjWMFmEDR65rxZCEvJZDbgtsbUSDXiDyS4QYb0aL9yLThXsVYrBoXYyyJoXquT+9KWqIoV5hWtVDSgSZmttTV8yk9+4JbCJtxUI6oY+TwCyLngtBsmhmHpbp9h+fyn2XroJK7TC1RlayWheXe1NB+y2jfKgq1Og3VdMYI2W/ZRy8tdidYBS9a0zqQWLCXkymtx/ugqq4Tk9FjC5Dg56EslpVVyISY1yPmF9gU+/BI68p+LTGlcVVh1zAz8SUUTxWXmT5aMv89RNBC3iDjPHvNhJHfyi1sjfuMdCmNz+EgMyvRoYVHS7DonwnVf1XQdrNG2wng8NDpHe5xAqJf9sfGh1p2rEBOoTQIw/CeZYuIubyp71V0SjC6V34s7Ji9ATeBkk0d9kmhs4LB/YfVl/np+GumcGbZJR7DHsJ7tLiewxWos37BthFUrxarAmthJqVjaZtkcDPC1/iFVuvl/J6pH2lOuqWOCqaVijvO1dsHRBzdep9mWFM+pchMYd8iyQyEbcmQM9xRmj5rq49U8Mms5XVxFqgg+lg5FB7GCIvoSgQSMcQTBptQ
- IQrjmUR/
- AHK2yonbAL34ErFGu0TRriFFbeGoxnfFi9wiTwfrJnkUt/0QQwuOvgI//Ivk3NoqkibsanN5QYF7SRTO/ieeE3TqkP6RXeUa8q5ssn12lrBvSKaOBFWfbyImy5vwi+RllJh/v4p872JgU7Mt+2YH8JV0KkylQqQgSUslmjNP0a6rQA9OFr7WWYSLFzFdjCPwPHE0Zc1dL3tZQ3MQKWVQvurhAND7kvZdASZ9SwavFS6ctawkI7I9GMj7xxBqrbRIBcrkkLBiRpCnv+8IM1HBw4WkKvcLeNqVpO9p5ARcSD/cv9ahFc8mT1nOHeZDbMJDmOPZkp2yk0aTUp+pFS02Qq2VyEEoES8D3+LOcJ25xSVfAhxEjMfQyaCEQBOes0Rvj09iAEAceh7crImcS97l4viCe+7XU6Rb5wCRnSNYT8iQwb5zrPOuilGk6uQI8oDzeFD2KvXRt5iRqTJ8OVQW/8i4Zt670yjsC4YMKBPV6ObPlARs=
+X-Rspamd-Server: rspam09
+X-Stat-Signature: zcpio6fqgfi1zjnqy1wfm1q4dmw6sok3
+X-HE-Tag: 1754720890-791324
+X-HE-Meta: U2FsdGVkX18ZIr6jURanjUVAIA/Q/fd6ixoeVhDW1sQlQs1vPk84vrOKfH4wqh3v1f3sCBMVP4nn92kyv/zo6Jc9Q3fZpHgLbGlQlr8HaOyQ8L41CFLwCVyJrgJcGHNIo/PJtLvu5SVIoOwRUgEqTcZsVZFVwHX1fCPJy7PDUk19ui+pOFDFBImDz0uYfRrnUBua8PC5HJHgn+irk8MjL/4OkPi751uS07XFiHrceeOIGC94e4STUkuWEO7qpm/0BLEhcBJ8UbUzbMUoFVQyUGMMWDPUyOeisUrFbMupgdODp0/gRV5GNgoL1ZN30snnW/a9ognsonMKN88pH/AsOqy2XGgFxOSBngtqt+G0a4gclBuH58rnC1zcNX/WlkIRUxYkFShZpq4Rl0es12mEAb1Rhoy2NyEgIurlXkNccE0fVzItBfopWMw6dU6t2+P78PVootgxR0Iz0IwiPnwwhJ/nMYKqpmqEel0YFiGMOhOO1orGnBkWaXGWNidh4shgTXF8/sXBwuMKO7i4Ps2bJSeb53Jiw3ezRm56Z2uXaevxewmms/2ov79eAO+H9mRa46RxUXlVne0Ltu5tYcZttj7zbOAL9fHU1aM+gTQY8OsVkKu6E+yVNlUcpQ9SeLfmgVVqRBN400tFb2PjU9Mcp5hcWqpT+nkWBNWqC5flqkzRC+MGAl1iMNR0fK3sT72N9DLvKjHZEQ7kR9/kRxNpzOD++EXXCmImr7KW8F1r+lRA22TaCSjrLe0X/QpS/Mux5BYc8uLfcOQlbuNAydIi/Xw4MQOZVBR1WStL7dqy1rFYpnTRN4V5PUnb44ifX9bqs6H2p6Hy6UJmajQlBhteGl6ebDFy2M+9od3qhxmLUofYeLzrYgBwZLmMXPjxhfegxeFdwa4/JsqTbqZBN43exEgdH2mCeFTHAcatMtvJeL4G2rMf+1h7F3/oKotzHDL7czSl7odtmfgYVpJDDn5
+ 3rxwPiZ+
+ wibTc9/MOCuIT6qbqcg6mW4LraA+A9zvqPG1GAvZlUsDipXPgj4erQT9ZUJ9xl252LYtmPaE8ZPH+djjTaaE+tHNP3/+J5eBWGL2GCLimUOFqIxGC1rLyUcZzphrzp+hb2bf28gkVttis8wyLCCmQnEUeCNGYV8cC197P+P2k2n1mN2OSzc22ikHWS3/Jj78+07TgkMHmFPdE2/gF1wTIXxRls+jwG8xl4sqN+dSeStjhmBFCVFerS4QjzAz601rdnz22zKWH9+XxXC06KIoMayrrLmiKUtgArBZhMuO4Kq1sIyojpKDQQPEZOC9n0aL2KudGsrajhoKI+fPIU1GrHwLb9wl4qi9NT/Oy93FTdd2SuqfzuQlXUhJ0PLXizjJrJFSAAZiz0Bq/DtUpV8Hs1UsANWpwdus3VgnQiy/SKKdYu6K2mT0lr5R65FGXS6PQAEWwik9jsvuqlmFuQSvBHLjuc1oAVXoQKXblPW6YTxICguBYZd/LWO/JZG5sLxxYgPJEWQLwXO7w3v4iex7Ctxsxyg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,288 +110,517 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---------------0BeSeBVMaLG3eoBPdIV3UzOe
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+--000000000000478fc6063be8cb0d
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi SeongJae
 
-在 2025/8/8 16:21, David Hildenbrand 写道:
-> On 07.08.25 13:13, Jinjiang Tu wrote:
->>
->> 在 2025/8/6 20:41, David Hildenbrand 写道:
->>> On 06.08.25 05:24, Jinjiang Tu wrote:
->>>>
->>>> 在 2025/8/6 11:05, Miaohe Lin 写道:
->>>>> On 2025/8/6 10:05, Jinjiang Tu wrote:
->>>>>> When memory_failure() is called for a already hwpoisoned pfn,
->>>>>> kill_accessing_process() will be called to kill current task. 
->>>>>> However, if
->>>>> Thanks for your patch.
->>>>>
->>>>>> the vma of the accessing vaddr is VM_PFNMAP, walk_page_range() 
->>>>>> will skip
->>>>>> the vma in walk_page_test() and return 0.
->>>>>>
->>>>>> Before commit aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to 
->>>>>> processes
->>>>>> with recovered clean pages"), kill_accessing_process() will 
->>>>>> return EFAULT.
->>>>> I'm not sure but pfn_to_online_page should return NULL for 
->>>>> VM_PFNMAP pages?
->>>>> So memory_failure_dev_pagemap should handle these pages?
->>>>
->>>> We could call remap_pfn_range() for those pfns with struct page. 
->>>> IIUC, VM_PFNMAP
->>>> means we should assume the pfn doesn't have struct page, but it can 
->>>> have.
->>>>
->>>>>> For x86, the current task will be killed in kill_me_maybe().
->>>>>>
->>>>>> However, after this commit, kill_accessing_process() simplies 
->>>>>> return 0,
->>>>>> that means UCE is handled properly, but it doesn't actually. In 
->>>>>> such case,
->>>>>> the user task will trigger UCE infinitely.
->>>>> Did you ever trigger this loop?
->>>>
->>>> Yes. Our test is as follow steps:
->>>> 1) create a user task allocates a clean anonymous page, wihout 
->>>> accessing it.
->>>> 2) use einj to inject UCE for the page
->>>> 3) create task devmem to use /dev/mem to map the pfn and keep 
->>>> accessing it.
->>>
->>> What is the use case for that? It sounds extremely questionable.
->>>
->> This case is only for test, and is strange indeed.
->>
->> But considering another case, a driver may map same RAM pfn to 
->> several processes with remap_pfn_range().
->> If the first task triggers UCE when accessing the pfn, the task will 
->> be killed. But the other tasks couldn't be killed
->> and triggers UCE infinitely.
+On Sat, Aug 9, 2025 at 7:05=E2=80=AFAM SeongJae Park <sj@kernel.org> wrote:
 >
-> Yes, the "anon page" example is confusing though. We really just want 
-> to test here if the PFN is mapped. And I would agree that your patch 
-> is correct in that case.
+> Hello Sang-Heon,
 >
-> For memory poisoning handling you really need a "struct page". 
-> struct-less memory is only handled in special ways for DAX (see 
-> pfn_to_online_page() logic in memory_failure()).
+> On Sat,  9 Aug 2025 04:55:17 +0900 Sang-Heon Jeon <ekffu200098@gmail.com>
+wrote:
 >
-> So what you describe here really only works when a process uses 
-> remap_pfn_range() to VM_PFNMAP a struct-page-backed PFN.
+> > Add test to verify that DAMON status is not changed after a no-op
+> > commit.
 >
+> Thank you for this patch!  I have some comments below, though.
 >
-> Likely your patch description should be:
+> > Currently, it is failing. but after fix the bug it should be
+> > success.
 >
-> "
-> mm/memory-failure: fix infinite UCE for VM_PFNMAP'ed page
->
-> When memory_failure() is called for an already hardware poisoned page,
-> kill_accessing_process() will conditionally send a SIGBUS to the 
-> current (triggering) process if it still maps the page.
->
-> However, in case the page is not ordinarily mapped, but was mapped 
-> through remap_pfn_range(), kill_accessing_process() would not identify 
-> it as mapped even though hwpoison_pte_range() would be prepared to 
-> handle it, because walk_page_range() will skip VM_PFNMAP as default in 
-> walk_page_test().
->
-> walk_page_range() will return 0, assuming "not mapped" and the SIGBUS 
-> will be skipped. In this case, the user task will trigger UCE 
-> infinitely because it will not receive a SIGBUS on access and simply 
-> retry.
->
->
-> Before commit aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to 
-> processes with recovered clean pages"), kill_accessing_process() would 
-> return EFAULT in that case, and on x86, the current task would be 
-> killed in kill_me_maybe().
->
-> Let's fix it by adding our custom .test_walk callback that will also
-> process VM_PFNMAP VMAs.
-> "
->
-Thanks, I will update the patch description to emphasize the pfn is backed with struct page.
+> To keep bisecting goes smoothly, let's introduce failing tests _after_
+their
+> fixes are landed.
 
---------------0BeSeBVMaLG3eoBPdIV3UzOe
+I see. As mentioned in another comment, I'll merge this patch set into one
+patch. I think this comment will be resolved then.
+
+> >
+> > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> > ---
+> >  tools/testing/selftests/damon/Makefile        |  1 +
+> >  .../damon/sysfs_no_op_commit_break.py         | 78 +++++++++++++++++++
+> >  2 files changed, 79 insertions(+)
+> >  create mode 100755
+tools/testing/selftests/damon/sysfs_no_op_commit_break.py
+> >
+> > diff --git a/tools/testing/selftests/damon/Makefile
+b/tools/testing/selftests/damon/Makefile
+> > index 5b230deb19e8..44a4a819df55 100644
+> > --- a/tools/testing/selftests/damon/Makefile
+> > +++ b/tools/testing/selftests/damon/Makefile
+> > @@ -17,6 +17,7 @@ TEST_PROGS +=3D reclaim.sh lru_sort.sh
+> >  TEST_PROGS +=3D sysfs_update_removed_scheme_dir.sh
+> >  TEST_PROGS +=3D sysfs_update_schemes_tried_regions_hang.py
+> >  TEST_PROGS +=3D sysfs_memcg_path_leak.sh
+> > +TEST_PROGS +=3D sysfs_no_op_commit_break.py
+> >
+> >  EXTRA_CLEAN =3D __pycache__
+> >
+> > diff --git a/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
+b/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
+> > new file mode 100755
+> > index 000000000000..300cdbaa7eda
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
+> > @@ -0,0 +1,78 @@
+> > +#!/usr/bin/env python3
+> > +# SPDX-License-Identifier: GPL-2.0
+> > +
+> > +import json
+> > +import os
+> > +import subprocess
+> > +import sys
+> > +
+> > +import _damon_sysfs
+> > +
+> > +def dump_damon_status_dict(pid):
+> > +    try:
+> > +        subprocess.check_output(['which', 'drgn'],
+stderr=3Dsubprocess.DEVNULL)
+> > +    except:
+> > +        return None, 'drgn not found'
+> > +    file_dir =3D os.path.dirname(os.path.abspath(__file__))
+> > +    dump_script =3D os.path.join(file_dir, 'drgn_dump_damon_status.py'=
+)
+> > +    rc =3D subprocess.call(['drgn', dump_script, pid,
+'damon_dump_output'],
+> > +        stderr=3Dsubprocess.DEVNULL)
+> > +
+> > +    if rc !=3D 0:
+> > +        return None, f'drgn fail : return code({rc})'
+>
+> Let's not add a space before ':', for the consistency.
+
+I see. I made so many mistakes like these; (I worked this very late
+night...) I will fix them all. Thank you for checking this moment.
+
+> > +    try:
+> > +        with open('damon_dump_output', 'r') as f:
+> > +            return json.load(f), None
+> > +    except Exception as e:
+> > +        return None, 'json.load fail (%s)' % e
+> > +
+> > +def main():
+> > +    # We can extend this test to change only the Given and reuse the
+When/Then.
+>
+> Above comment seems unnecessary to me, since that's obvious.
+
+I agree. As you said, it is obvious. I'll remove all pseudo like comment.
+
+> > +
+> > +    # Given : setup filter with allow =3D True
+>
+> Again, I don't think the above comment is necessary.  And this looks like
+a
+> pseudo code more than a formal comment.  If you think it is necessary,
+please
+> use more formal tone.
+>
+> Also let's not add a space before ':', for consistency.
+>
+> > +    proc =3D subprocess.Popen(['sleep', '10'])
+> > +    kdamonds =3D _damon_sysfs.Kdamonds(
+> > +        [_damon_sysfs.Kdamond(
+> > +            contexts=3D[_damon_sysfs.DamonCtx(
+> > +                targets=3D[_damon_sysfs.DamonTarget(pid=3Dproc.pid)],
+>
+> Can't we start this kdamond with paddr ops, and drop the 'sleep' process
+> invocation?
+
+I just referred other tests. And i think we can remove unnecessary targets
+and sleep process. I'll fix it on v2 patch.
+
+> > +                schemes=3D[_damon_sysfs.Damos(
+> > +                    ops_filters=3D[
+> > +                        _damon_sysfs.DamosFilter(type_=3D'anon',
+matching=3DTrue, allow=3DTrue)
+>
+> Let's keep 80 columns limit[1].
+
+Oh, I thought it only applied to 'C' related codes. I'm wrong. Thank you
+for reminding me. i'll fix it.
+
+> > +                    ]
+> > +                )],
+> > +            )])]
+> > +    )
+> > +
+> > +    err =3D kdamonds.start()
+> > +    if err is not None:
+> > +        print('kdamond start failed: %s' % err)
+> > +        exit(1)
+> > +
+> > +    before_commit_status, err =3D
+dump_damon_status_dict(kdamonds.kdamonds[0].pid)
+> > +    if err is not None:
+> > +        print(err)
+> > +        exit(1)
+> > +
+> > +    # When : No-op commit, it should not break anything
+>
+> Again, I don't think the above comment is necessary.  And this looks like
+a
+> pseudo code more than a formal comment.  If you think it is necessary,
+please
+> use more formal tone.
+
+ditto (wil be removed)
+
+> Also let's not add a space before ':', for consistency.
+>
+> > +    kdamonds.kdamonds[0].commit()
+> > +
+> > +    # Then : Check value with drgn
+>
+> Again, I don't think the above comment is necessary.  And this looks like
+a
+> pseudo code more than a formal comment.  If you think it is necessary,
+please
+> use more formal tone.
+>
+> Also let's not add a space before ':', for consistency.
+
+ditto.
+
+> > +    after_commit_status, err =3D
+dump_damon_status_dict(kdamonds.kdamonds[0].pid)
+> > +    if err is not None:
+> > +        print(err)
+> > +        exit(1)
+> > +
+> > +    before_commit_dump =3D json.dumps(before_commit_status,
+sort_keys=3DTrue, indent=3D2)
+> > +    after_commit_dump =3D json.dumps(after_commit_status,
+sort_keys=3DTrue, indent=3D2)
+>
+> Let's keep 80 columns limit[1].
+
+ditto.
+
+> > +    if before_commit_dump !=3D after_commit_dump:
+>
+> Can't we jsut compare before_commit_status and after_commit_status?
+
+Yeah, I think i'm just confused. I'll change it.
+
+> > +        print("[TEST FAILED] : no-op commit break damon status")
+>
+> Let's not add a space before ':', for consistency.  In this case, I think
+':'
+> is not necessary at all.  Actually, since this test is for the single tes=
+t
+> case, and kselftest framework will say this failed, I think the above
+print()
+> is not necessary at all?
+
+So, kselftest framework identifies whether the test was successful or not
+by exit code. Then, i'll remove this one.
+
+To be honest, I didn't use kselftest framework while making these patch set
+because I don't know how kernel developers use it.
+
+If you are okay, could you share how you use it? I just build kernel with
+custom patch, and execute output images by vm, and setup env, then just
+execute tests(it's so raw.. i know)
+
+Maybe is there a kernel build option that automatically includes tests to
+output image? Or just a general or smarter way to execute the whole test?
+
+> > +        print("=3D=3D=3D=3D=3D before_commit =3D=3D=3D=3D=3D")
+> > +        print(before_commit_dump)
+> > +        print("=3D=3D=3D=3D=3D after_commit =3D=3D=3D=3D=3D")
+> > +        print(after_commit_dump)
+> > +        exit(1)
+> > +
+> > +    kdamonds.stop()
+> > +
+> > +if __name__ =3D=3D '__main__':
+> > +    main()
+> > --
+> > 2.43.0
+>
+> [1]
+https://docs.kernel.org/process/coding-style.html#breaking-long-lines-and-s=
+trings
+>
+>
+> Thanks,
+> SJ
+
+Thanks for reviewing! Have a nice weekend. I'll do this job after my
+personal schedule finishes.
+
+Best Regards.
+Sang-Heon Jeon
+Sang-Heon Jeon
+
+--000000000000478fc6063be8cb0d
 Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">在 2025/8/8 16:21, David Hildenbrand 写道:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:864f2ef6-51bd-42f3-9988-16b5e94f05d9@redhat.com">On
-      07.08.25 13:13, Jinjiang Tu wrote:
-      <br>
-      <blockquote type="cite">
-        <br>
-        在 2025/8/6 20:41, David Hildenbrand 写道:
-        <br>
-        <blockquote type="cite">On 06.08.25 05:24, Jinjiang Tu wrote:
-          <br>
-          <blockquote type="cite">
-            <br>
-            在 2025/8/6 11:05, Miaohe Lin 写道:
-            <br>
-            <blockquote type="cite">On 2025/8/6 10:05, Jinjiang Tu
-              wrote:
-              <br>
-              <blockquote type="cite">When memory_failure() is called
-                for a already hwpoisoned pfn,
-                <br>
-                kill_accessing_process() will be called to kill current
-                task. However, if
-                <br>
-              </blockquote>
-              Thanks for your patch.
-              <br>
-              <br>
-              <blockquote type="cite">the vma of the accessing vaddr is
-                VM_PFNMAP, walk_page_range() will skip
-                <br>
-                the vma in walk_page_test() and return 0.
-                <br>
-                <br>
-                Before commit aaf99ac2ceb7 ("mm/hwpoison: do not send
-                SIGBUS to processes
-                <br>
-                with recovered clean pages"), kill_accessing_process()
-                will return EFAULT.
-                <br>
-              </blockquote>
-              I'm not sure but pfn_to_online_page should return NULL for
-              VM_PFNMAP pages?
-              <br>
-              So memory_failure_dev_pagemap should handle these pages?
-              <br>
-            </blockquote>
-            <br>
-            We could call remap_pfn_range() for those pfns with struct
-            page. IIUC, VM_PFNMAP
-            <br>
-            means we should assume the pfn doesn't have struct page, but
-            it can have.
-            <br>
-            <br>
-            <blockquote type="cite">
-              <blockquote type="cite">For x86, the current task will be
-                killed in kill_me_maybe().
-                <br>
-                <br>
-                However, after this commit, kill_accessing_process()
-                simplies return 0,
-                <br>
-                that means UCE is handled properly, but it doesn't
-                actually. In such case,
-                <br>
-                the user task will trigger UCE infinitely.
-                <br>
-              </blockquote>
-              Did you ever trigger this loop?
-              <br>
-            </blockquote>
-            <br>
-            Yes. Our test is as follow steps:
-            <br>
-            1) create a user task allocates a clean anonymous page,
-            wihout accessing it.
-            <br>
-            2) use einj to inject UCE for the page
-            <br>
-            3) create task devmem to use /dev/mem to map the pfn and
-            keep accessing it.
-            <br>
-          </blockquote>
-          <br>
-          What is the use case for that? It sounds extremely
-          questionable.
-          <br>
-          <br>
-        </blockquote>
-        This case is only for test, and is strange indeed.
-        <br>
-        <br>
-        But considering another case, a driver may map same RAM pfn to
-        several processes with remap_pfn_range().
-        <br>
-        If the first task triggers UCE when accessing the pfn, the task
-        will be killed. But the other tasks couldn't be killed
-        <br>
-        and triggers UCE infinitely.
-        <br>
-      </blockquote>
-      <br>
-      Yes, the "anon page" example is confusing though. We really just
-      want to test here if the PFN is mapped. And I would agree that
-      your patch is correct in that case.
-      <br>
-      <br>
-      For memory poisoning handling you really need a "struct page".
-      struct-less memory is only handled in special ways for DAX (see
-      pfn_to_online_page() logic in memory_failure()).
-      <br>
-      <br>
-      So what you describe here really only works when a process uses
-      remap_pfn_range() to VM_PFNMAP a struct-page-backed PFN.
-      <br>
-      <br>
-      <br>
-      Likely your patch description should be:
-      <br>
-      <br>
-      "
-      <br>
-      mm/memory-failure: fix infinite UCE for VM_PFNMAP'ed page
-      <br>
-      <br>
-      When memory_failure() is called for an already hardware poisoned
-      page,
-      <br>
-      kill_accessing_process() will conditionally send a SIGBUS to the
-      current (triggering) process if it still maps the page.
-      <br>
-      <br>
-      However, in case the page is not ordinarily mapped, but was mapped
-      through remap_pfn_range(), kill_accessing_process() would not
-      identify it as mapped even though hwpoison_pte_range() would be
-      prepared to handle it, because walk_page_range() will skip
-      VM_PFNMAP as default in walk_page_test().
-      <br>
-      <br>
-      walk_page_range() will return 0, assuming "not mapped" and the
-      SIGBUS will be skipped. In this case, the user task will trigger
-      UCE infinitely because it will not receive a SIGBUS on access and
-      simply retry.
-      <br>
-      <br>
-      <br>
-      Before commit aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to
-      processes with recovered clean pages"), kill_accessing_process()
-      would return EFAULT in that case, and on x86, the current task
-      would be killed in kill_me_maybe().
-      <br>
-      <br>
-      Let's fix it by adding our custom .test_walk callback that will
-      also
-      <br>
-      process VM_PFNMAP VMAs.
-      <br>
-      " <br>
-      <br>
-    </blockquote>
-    <pre>Thanks, I will update the patch description to emphasize the pfn is backed with struct page.</pre>
-  </body>
-</html>
+<div dir=3D"ltr"><div><div dir=3D"auto">Hi SeongJae</div></div><div><div><b=
+r>
+On Sat, Aug 9, 2025 at 7:05=E2=80=AFAM SeongJae Park &lt;<a href=3D"mailto:=
+sj@kernel.org" target=3D"_blank">sj@kernel.org</a>&gt; wrote:<br>
+&gt;<br>
+&gt; Hello Sang-Heon,<br>
+&gt;<br>
+&gt; On Sat,=C2=A0 9 Aug 2025 04:55:17 +0900 Sang-Heon Jeon &lt;<a href=3D"=
+mailto:ekffu200098@gmail.com" target=3D"_blank">ekffu200098@gmail.com</a>&g=
+t; wrote:<br>
+&gt;<br>
+&gt; &gt; Add test to verify that DAMON status is not changed after a no-op=
+<br>
+&gt; &gt; commit.<br>
+&gt;<br>
+&gt; Thank you for this patch!=C2=A0 I have some comments below, though.<br=
+>
+&gt;<br>
+&gt; &gt; Currently, it is failing. but after fix the bug it should be<br>
+&gt; &gt; success.<br>
+&gt;<br>
+&gt; To keep bisecting goes smoothly, let&#39;s introduce failing tests _af=
+ter_ their<br>
+&gt; fixes are landed.<br>
+<br></div></div><div><div dir=3D"auto">
+I see. As mentioned in another comment, I&#39;ll merge this patch set into =
+one patch. I think this comment will be resolved then.</div></div><div><div=
+>
+<br>
+&gt; &gt;<br>
+&gt; &gt; Signed-off-by: Sang-Heon Jeon &lt;<a href=3D"mailto:ekffu200098@g=
+mail.com" target=3D"_blank">ekffu200098@gmail.com</a>&gt;<br>
+&gt; &gt; ---<br>
+&gt; &gt;=C2=A0 tools/testing/selftests/damon/Makefile=C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 |=C2=A0 1 +<br>
+&gt; &gt;=C2=A0 .../damon/sysfs_no_op_commit_break.py=C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0| 78 +++++++++++++++++++<br>
+&gt; &gt;=C2=A0 2 files changed, 79 insertions(+)<br>
+&gt; &gt;=C2=A0 create mode 100755 tools/testing/selftests/damon/sysfs_no_o=
+p_commit_break.py<br>
+&gt; &gt;<br>
+&gt; &gt; diff --git a/tools/testing/selftests/damon/Makefile b/tools/testi=
+ng/selftests/damon/Makefile<br>
+&gt; &gt; index 5b230deb19e8..44a4a819df55 100644<br>
+&gt; &gt; --- a/tools/testing/selftests/damon/Makefile<br>
+&gt; &gt; +++ b/tools/testing/selftests/damon/Makefile<br>
+&gt; &gt; @@ -17,6 +17,7 @@ TEST_PROGS +=3D reclaim.sh lru_sort.sh<br>
+&gt; &gt;=C2=A0 TEST_PROGS +=3D sysfs_update_removed_scheme_dir.sh<br>
+&gt; &gt;=C2=A0 TEST_PROGS +=3D sysfs_update_schemes_tried_regions_hang.py<=
+br>
+&gt; &gt;=C2=A0 TEST_PROGS +=3D sysfs_memcg_path_leak.sh<br>
+&gt; &gt; +TEST_PROGS +=3D sysfs_no_op_commit_break.py<br>
+&gt; &gt;<br>
+&gt; &gt;=C2=A0 EXTRA_CLEAN =3D __pycache__<br>
+&gt; &gt;<br>
+&gt; &gt; diff --git a/tools/testing/selftests/damon/sysfs_no_op_commit_bre=
+ak.py b/tools/testing/selftests/damon/sysfs_no_op_commit_break.py<br>
+&gt; &gt; new file mode 100755<br>
+&gt; &gt; index 000000000000..300cdbaa7eda<br>
+&gt; &gt; --- /dev/null<br>
+&gt; &gt; +++ b/tools/testing/selftests/damon/sysfs_no_op_commit_break.py<b=
+r>
+&gt; &gt; @@ -0,0 +1,78 @@<br>
+&gt; &gt; +#!/usr/bin/env python3<br>
+&gt; &gt; +# SPDX-License-Identifier: GPL-2.0<br>
+&gt; &gt; +<br>
+&gt; &gt; +import json<br>
+&gt; &gt; +import os<br>
+&gt; &gt; +import subprocess<br>
+&gt; &gt; +import sys<br>
+&gt; &gt; +<br>
+&gt; &gt; +import _damon_sysfs<br>
+&gt; &gt; +<br>
+&gt; &gt; +def dump_damon_status_dict(pid):<br>
+&gt; &gt; +=C2=A0 =C2=A0 try:<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 subprocess.check_output([&#39;which&=
+#39;, &#39;drgn&#39;], stderr=3Dsubprocess.DEVNULL)<br>
+&gt; &gt; +=C2=A0 =C2=A0 except:<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 return None, &#39;drgn not found&#39=
+;<br>
+&gt; &gt; +=C2=A0 =C2=A0 file_dir =3D os.path.dirname(os.path.abspath(__fil=
+e__))<br>
+&gt; &gt; +=C2=A0 =C2=A0 dump_script =3D os.path.join(file_dir, &#39;drgn_d=
+ump_damon_status.py&#39;)<br>
+&gt; &gt; +=C2=A0 =C2=A0 rc =3D subprocess.call([&#39;drgn&#39;, dump_scrip=
+t, pid, &#39;damon_dump_output&#39;],<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 stderr=3Dsubprocess.DEVNULL)<br>
+&gt; &gt; +<br>
+&gt; &gt; +=C2=A0 =C2=A0 if rc !=3D 0:<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 return None, f&#39;drgn fail : retur=
+n code({rc})&#39;<br>
+&gt;<br>
+&gt; Let&#39;s not add a space before &#39;:&#39;, for the consistency.<br>
+<br></div></div><div><div dir=3D"auto">
+I see. I made so many mistakes like these; (I worked this very late night..=
+.) I will fix them all. Thank you for checking this moment.<br>
+<br>
+&gt; &gt; +=C2=A0 =C2=A0 try:<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 with open(&#39;damon_dump_output&#39=
+;, &#39;r&#39;) as f:<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return json.load(f), N=
+one<br>
+&gt; &gt; +=C2=A0 =C2=A0 except Exception as e:<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 return None, &#39;json.load fail (%s=
+)&#39; % e<br>
+&gt; &gt; +<br>
+&gt; &gt; +def main():<br>
+&gt; &gt; +=C2=A0 =C2=A0 # We can extend this test to change only the Given=
+ and reuse the When/Then.<br>
+&gt;<br>
+&gt; Above comment seems unnecessary to me, since that&#39;s obvious.<br><b=
+r></div></div><div>I agree. As you said, it is obvious. I&#39;ll remove all=
+ pseudo like comment.<br><br>
+&gt; &gt; +<br>
+&gt; &gt; +=C2=A0 =C2=A0 # Given : setup filter with allow =3D True<br>
+&gt;<br>
+&gt; Again, I don&#39;t think the above comment is necessary.=C2=A0 And thi=
+s looks like a<br>
+&gt; pseudo code more than a formal comment.=C2=A0 If you think it is neces=
+sary, please<br>
+&gt; use more formal tone.<br>
+&gt;<br>
+&gt; Also let&#39;s not add a space before &#39;:&#39;, for consistency.<br=
+>
+&gt;<br>
+&gt; &gt; +=C2=A0 =C2=A0 proc =3D subprocess.Popen([&#39;sleep&#39;, &#39;1=
+0&#39;])<br>
+&gt; &gt; +=C2=A0 =C2=A0 kdamonds =3D _damon_sysfs.Kdamonds(<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 [_damon_sysfs.Kdamond(<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 contexts=3D[_damon_sys=
+fs.DamonCtx(<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 targets=
+=3D[_damon_sysfs.DamonTarget(pid=3Dproc.pid)],<br>
+&gt;<br>
+&gt; Can&#39;t we start this kdamond with paddr ops, and drop the &#39;slee=
+p&#39; process<br>
+&gt; invocation?<br><br></div><div>I just referred other tests. And i think=
+ we can remove unnecessary targets and sleep process. I&#39;ll fix it on v2=
+ patch.<br><br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 schemes=
+=3D[_damon_sysfs.Damos(<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 ops_filters=3D[<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 _damon_sysfs.DamosFilter(type_=3D&#39;anon&#39;, match=
+ing=3DTrue, allow=3DTrue)<br>
+&gt;<br>
+&gt; Let&#39;s keep 80 columns limit[1].<br><br></div><div>Oh, I thought it=
+ only applied to &#39;C&#39; related codes. I&#39;m wrong. Thank you for re=
+minding me. i&#39;ll fix it.<br><br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 ]<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 )],<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 )])]<br>
+&gt; &gt; +=C2=A0 =C2=A0 )<br>
+&gt; &gt; +<br>
+&gt; &gt; +=C2=A0 =C2=A0 err =3D kdamonds.start()<br>
+&gt; &gt; +=C2=A0 =C2=A0 if err is not None:<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 print(&#39;kdamond start failed: %s&=
+#39; % err)<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 exit(1)<br>
+&gt; &gt; +<br>
+&gt; &gt; +=C2=A0 =C2=A0 before_commit_status, err =3D dump_damon_status_di=
+ct(kdamonds.kdamonds[0].pid)<br>
+&gt; &gt; +=C2=A0 =C2=A0 if err is not None:<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 print(err)<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 exit(1)<br>
+&gt; &gt; +<br>
+&gt; &gt; +=C2=A0 =C2=A0 # When : No-op commit, it should not break anythin=
+g<br>
+&gt;<br>
+&gt; Again, I don&#39;t think the above comment is necessary.=C2=A0 And thi=
+s looks like a<br>
+&gt; pseudo code more than a formal comment.=C2=A0 If you think it is neces=
+sary, please<br>
+&gt; use more formal tone.<br><br></div><div>ditto (wil be removed)<br><br>
+&gt; Also let&#39;s not add a space before &#39;:&#39;, for consistency.<br=
+>
+&gt;<br>
+&gt; &gt; +=C2=A0 =C2=A0 kdamonds.kdamonds[0].commit()<br>
+&gt; &gt; +<br>
+&gt; &gt; +=C2=A0 =C2=A0 # Then : Check value with drgn<br>
+&gt;<br>
+&gt; Again, I don&#39;t think the above comment is necessary.=C2=A0 And thi=
+s looks like a<br>
+&gt; pseudo code more than a formal comment.=C2=A0 If you think it is neces=
+sary, please<br>
+&gt; use more formal tone.<br>
+&gt;<br>
+&gt; Also let&#39;s not add a space before &#39;:&#39;, for consistency.<br=
+><br></div><div>ditto.</div><div><br>
+&gt; &gt; +=C2=A0 =C2=A0 after_commit_status, err =3D dump_damon_status_dic=
+t(kdamonds.kdamonds[0].pid)<br>
+&gt; &gt; +=C2=A0 =C2=A0 if err is not None:<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 print(err)<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 exit(1)<br>
+&gt; &gt; +<br>
+&gt; &gt; +=C2=A0 =C2=A0 before_commit_dump =3D json.dumps(before_commit_st=
+atus, sort_keys=3DTrue, indent=3D2)<br>
+&gt; &gt; +=C2=A0 =C2=A0 after_commit_dump =3D json.dumps(after_commit_stat=
+us, sort_keys=3DTrue, indent=3D2)<br>
+&gt;<br>
+&gt; Let&#39;s keep 80 columns limit[1].<br><br></div><div>ditto.</div><div=
+><br>
+&gt; &gt; +=C2=A0 =C2=A0 if before_commit_dump !=3D after_commit_dump:<br>
+&gt;<br>
+&gt; Can&#39;t we jsut compare before_commit_status and after_commit_status=
+?<br><br></div><div>Yeah, I think i&#39;m just confused. I&#39;ll change it=
+.<br><br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 print(&quot;[TEST FAILED] : no-op co=
+mmit break damon status&quot;)<br>
+&gt;<br>
+&gt; Let&#39;s not add a space before &#39;:&#39;, for consistency.=C2=A0 I=
+n this case, I think &#39;:&#39;<br>
+&gt; is not necessary at all.=C2=A0 Actually, since this test is for the si=
+ngle test<br>
+&gt; case, and kselftest framework will say this failed, I think the above =
+print()<br>
+&gt; is not necessary at all?<br><br></div><div>So, kselftest framework ide=
+ntifies whether the test was successful or not by exit code. Then, i&#39;ll=
+ remove this one.</div><div><br><div dir=3D"auto">To be honest, I didn&#39;=
+t use kselftest framework while making these patch set because I don&#39;t =
+know how kernel developers use it.=C2=A0</div><div dir=3D"auto"><br></div><=
+div dir=3D"auto">If you are okay, could you share how you use it? I just bu=
+ild kernel with custom patch, and execute output images by vm, and setup en=
+v, then just execute tests(it&#39;s so raw.. i know)</div><div dir=3D"auto"=
+><br></div><div dir=3D"auto">Maybe is there a kernel build option that auto=
+matically includes tests to output image? Or just a general or smarter way =
+to execute the whole test?</div></div><div><div dir=3D"auto"><br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 print(&quot;=3D=3D=3D=3D=3D before_c=
+ommit =3D=3D=3D=3D=3D&quot;)<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 print(before_commit_dump)<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 print(&quot;=3D=3D=3D=3D=3D after_co=
+mmit =3D=3D=3D=3D=3D&quot;)<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 print(after_commit_dump)<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 exit(1)<br>
+&gt; &gt; +<br>
+&gt; &gt; +=C2=A0 =C2=A0 kdamonds.stop()<br>
+&gt; &gt; +<br>
+&gt; &gt; +if __name__ =3D=3D &#39;__main__&#39;:<br>
+&gt; &gt; +=C2=A0 =C2=A0 main()<br>
+&gt; &gt; --<br>
+&gt; &gt; 2.43.0<br>
+&gt;<br>
+&gt; [1] <a href=3D"https://docs.kernel.org/process/coding-style.html#break=
+ing-long-lines-and-strings" rel=3D"noreferrer" target=3D"_blank">https://do=
+cs.kernel.org/process/coding-style.html#breaking-long-lines-and-strings</a>=
+<br>
+&gt;<br>
+&gt;<br>
+&gt; Thanks,<br>
+&gt; SJ<br>
+</div><div dir=3D"auto"><br></div></div><div><div dir=3D"auto">Thanks for r=
+eviewing! Have a nice weekend. I&#39;ll do this job after my personal sched=
+ule finishes.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Best Regar=
+ds.<br></div><div>Sang-Heon Jeon</div></div></div><div><div dir=3D"auto">Sa=
+ng-Heon Jeon</div>
+</div>
 
---------------0BeSeBVMaLG3eoBPdIV3UzOe--
+--000000000000478fc6063be8cb0d--
 
