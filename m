@@ -2,99 +2,111 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C2DEC87FCB
-	for <linux-mm@archiver.kernel.org>; Sat,  9 Aug 2025 19:42:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 54E0AC87FCB
+	for <linux-mm@archiver.kernel.org>; Sat,  9 Aug 2025 19:42:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DBE46B009F; Sat,  9 Aug 2025 15:42:00 -0400 (EDT)
+	id D3A5E6B00A2; Sat,  9 Aug 2025 15:42:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08CAE6B00A0; Sat,  9 Aug 2025 15:42:00 -0400 (EDT)
+	id D10706B00A3; Sat,  9 Aug 2025 15:42:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE4FF6B00A1; Sat,  9 Aug 2025 15:41:59 -0400 (EDT)
+	id C4D5B6B00A4; Sat,  9 Aug 2025 15:42:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DC7B96B009F
-	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 15:41:59 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2DD42140273
-	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 19:41:59 +0000 (UTC)
-X-FDA: 83758239558.21.753F319
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 864BE40005
-	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 19:41:56 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="G/Yh/RPh";
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754768517; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B4A766B00A2
+	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 15:42:17 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 44859B7BE6
+	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 19:42:17 +0000 (UTC)
+X-FDA: 83758240314.27.2187399
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 9B8D940005
+	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 19:42:15 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jL7T0+CA;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754768535; a=rsa-sha256;
 	cv=none;
-	b=WtT97rdSQrPYlZaehME+4MXZO14AH/+NIqWpPl+iBI6gC+mH6NeohLc8P9wZ2eJ0hrsOsQ
-	gTVfzW2lwQ2FbbYvVFykPnpsptV9mPZnB1ACnK2ew4zN+hls69o10l93p6PtooxswBesXa
-	Zt/khF/toWWvLIp+yI45Wq2s+8d7yLY=
+	b=3BlkdeIzWUWTr0KZ7nnx6m7QPLtwRUkP91/0oNLfVz1M5q1Yit574HOb6OVtX1+uEhZJGH
+	QdMqfj0i7jLpAbZYKvxCCC028KkqCmOlnbWw+2buwgITWcHNWta7CTs9s1wGZUdgO0imap
+	J70kX6AMOlYQ9ores4zZjK4lFx3LRpk=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="G/Yh/RPh";
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jL7T0+CA;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754768517;
+	s=arc-20220608; t=1754768535;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=kMq9Vt6UlIlgE9lxn7ARGSRVmWoeBCfQoYID6oE7Xis=;
-	b=vAPpL9nbE7nRLIYgQIwCiZxLtQWiQBvzAvr2+845twL5/AEXtvMVZZb/wFJwznvjB90saR
-	j7cjc6ZLm4TGDju2Ypc5yScp2/eUzP33FWYSYMdGoGorDaNPLC3wchCz7hVhdU3nXqxEQz
-	TlSUZvrHCly+UxpJk4n/KZ1e3FxyziE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754768517; x=1786304517;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=06Kjz4k4lavK7HKHl+Pl1kS3zK+LVKSZHsr67K/P29g=;
-  b=G/Yh/RPhm2RY04mIcBqT0qP0f7w8MgYeSQhT/+BlxzTbbRqtKcMhbW/b
-   PXA+iv2edXOwYtAss1utEwpJHHua9b+tfrq6gi8bIHB+Sf6UKMn37j5kg
-   8U27/kd8E89p7/DXLzelefWuCnWsN75woU9nGRBbUkDgVrejxo+gRP6wn
-   AKVYHqdCxdCnCLrp+2U020QfSBX/tmRQPUeUZQlHtYc6jK6UBeg7A2kUc
-   cgP7gO1njs5/GLOYbgi8DmAriO6kHAXXlFy83Lj6CQJnUTv5ynxsEGqOg
-   yAxKDMXBb0XnMnsDiZO6jaDFuKU7S3jPt7DbdXUsAgCU+x27cs7jLaAmN
-   A==;
-X-CSE-ConnectionGUID: QipaxE/wTymyAmNc1C2fyQ==
-X-CSE-MsgGUID: Dn1egBZwTDaizIY19RV7NA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11516"; a="57003104"
-X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; 
-   d="scan'208";a="57003104"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2025 12:41:55 -0700
-X-CSE-ConnectionGUID: iO5wYnCDQYu33ub9GsimoQ==
-X-CSE-MsgGUID: /OKTt80pTkKEbSvIQti18w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; 
-   d="scan'208";a="202765763"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa001.jf.intel.com with ESMTP; 09 Aug 2025 12:41:53 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ukpQu-00051g-0M;
-	Sat, 09 Aug 2025 19:41:01 +0000
-Date: Sun, 10 Aug 2025 03:40:23 +0800
-From: kernel test robot <lkp@intel.com>
-To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: [akpm-mm:mm-new 72/77] arch/um/include/asm/kasan.h:29:2: error: UML
- does not work in KASAN_INLINE mode with STATIC_LINK enabled!
-Message-ID: <202508100304.92cGHfSj-lkp@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Stat-Signature: btru9fodt5dyr7aw3muh94161pksdt4k
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=Ic3K7UCH8w0cHNlR6jBGkNggzwSb+Jje246b5cUnyGw=;
+	b=ueMoFy/nULfs31gTRg5V8ITjO7/Tc7ZHXpUhhGTyqeW87n8ZN209XdwsTjzbzpIWahz/WG
+	cJiFPb99f09JG5q06lG+NgMTlhmuNS45fi3eVknIhemC2jX1s/IT+WuSPLF3uCuEeyxseo
+	fzfDAdLu44RMxRpK9Pl+1QUENK7y3xg=
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-af98b77d2f0so596826366b.3
+        for <linux-mm@kvack.org>; Sat, 09 Aug 2025 12:42:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754768534; x=1755373334; darn=kvack.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ic3K7UCH8w0cHNlR6jBGkNggzwSb+Jje246b5cUnyGw=;
+        b=jL7T0+CARQK8F7bNw5NtUzIejN88N9iFmPiIovwXbozSo8qa4bDPBKbS7OlPcMNfMc
+         1/FvdUhjjWf3vWMl14lHhYlNuTXC83UMw6YXv6BbAgFggwQj0mNjJr91BvSvJ2G+xyxb
+         Nrdmpz+l49beN6elgTE8gZLbRYjZpPgHQAjxTGHId2eub06asTqs3ggZ465yzvI/7e9E
+         0VR370YjUNtz71ZUFUbgeIoKvJmGVDwbZq2SYeyI1eXUZOfSHXRhsc5i8AL5m4uYkKv1
+         AByXQnBm7UAMuLwH9EHzRKAro3k/Le1ygzZyKy45emqOTYsHSinLWwjZDtgoy+RFCckh
+         wa2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754768534; x=1755373334;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ic3K7UCH8w0cHNlR6jBGkNggzwSb+Jje246b5cUnyGw=;
+        b=EFSH9ssxAe4a+M4OHhtcAM7f+0DYKmtAIGY+u0ljSCSgBAjj5fqlE8qr4+Nn/A9OvT
+         BR3A20VWV6/HLisiD/NSuaI0AEpf3eGYVdRkhmi1f4fDAtzkC2HTpvV8l6fkXGy4wbhx
+         uXz1SerfcMTQhCNEN5DxN2vjyy04lmNCV0+bdji62/rAOVHxuQxvI6ocgspfO3mV9AxB
+         sTmCpussoTQFCNqDftf1DqFys7NwA3ugI/ost9R4oTPq1n+hUSnhWJYVzSo9kxJ9TAvT
+         J0NeEdNQ1vb9TKbRki1LQTLW5OJKpjCxPTEWZAozvGzexJ9HCEksSzJBJemq9EGkE9Ol
+         Likg==
+X-Gm-Message-State: AOJu0YzGLZTwejZYfZN6XjVVu9C7+FFGhZy0Sdr38tc8Uw2CIWSx+WmX
+	+c2pJHiLvnzAErojMNKaUnc6IjcNuBmviGrC6o1w8qwDOXc+66XF3AGR
+X-Gm-Gg: ASbGncvzxPfbvS579CZwJAX40NU9RwNrL2a71iUEXjgy6HxzNJdXMENl1txMP4VtOcE
+	J4a2mvbtK9BcUQVhEmrKRWZtQ+lPfSUZrKh/EUg91jgwm/EOQDmz+vw/EfHMhDts2dTtvm7QFc2
+	0CmAn9GINCGMwCDfVQuANuXaza0/97rA4xOroiMbseaTYWLCmZ5AFVRZV8JjeyUhis9bZOVtq8D
+	7ynTUPb5XQYp2+j45dXqTg7kEpQiCuY/94L18siP8gFg692Jqa8Nv19m0bf2cqcjDdlkBfWwD9z
+	YAOZROw/RMDQuAGn8o4HLOUlTEx3DPg55V228IwuDbJypllzWONUQOwTOuO5WxcWwozOuTh0r35
+	CVtggKe1vH8FCmweoozcOPI83nZtfDS5l
+X-Google-Smtp-Source: AGHT+IE7x1UXlTbQaKb/FHpNY+rq/S0rmCS/wR19xs1S9zT+TQJ9dYKv7J4ktAbnBOq5oVMDmgkn9w==
+X-Received: by 2002:a17:906:fe05:b0:ade:4339:9367 with SMTP id a640c23a62f3a-af9c648edcbmr748294866b.26.1754768533931;
+        Sat, 09 Aug 2025 12:42:13 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a0a3361sm1711636766b.39.2025.08.09.12.42.13
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 09 Aug 2025 12:42:13 -0700 (PDT)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Donet Tom <donettom@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Zi Yan <ziy@nvidia.com>
+Subject: [Patch v2] selftests/mm: do check_huge_anon() with a number been passed in
+Date: Sat,  9 Aug 2025 19:42:09 +0000
+Message-Id: <20250809194209.30484-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
+X-Stat-Signature: detp1azwezej1ocwryadx4ubjt9nw7hi
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 864BE40005
+X-Rspamd-Queue-Id: 9B8D940005
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1754768516-651979
-X-HE-Meta: U2FsdGVkX18I++HowPTNOD+joUcTll+WMNNRKbbJ1QGPAOXJC/rYWtSaqyrX7GBftlQJWpX69LWopRG+oNcrcy2hT5K5V5pPQTpGq+yd83qFVyX5cTKha7iohJS+NgiIGDUApjN4Iu3F5WRINIpF8jEPfeWR9cM1b47pcWPbX4NnANo1jXF1CDOcJ5pq51pFflm8gcBVsXewrr3jW8UOJv+mhOAqOxPc0O9CnUi+vCzyhyp+cVf4KXPQovq1Ac6PGDr3lD3os9GqUv6XUMa7pOLBcNczkRV9pqzrdhRst7Cmlt70gYobnG1HjTkagM9nWPuLLkvSZSfFcdUoYhwbNeN+J1WDnWD6WNoRXK8xMm5U1hhKsbSVY80l/7Xe2iC6U7h4ZDOzLBW/h+xDlJfnRfaIsmRpCWUb819zal45GewfsuPNww5/wcMjF3nGxKLaZ489WAVdFEpFVSgn875ufDh/NGdjm3nZ5dAoWFYwIoFCXBM13djrcuQNCVBM19278xLgD3gIQNqS8e82xGKiyPxjpqa2RgS0WjlLCVikCJjyQEw5+4hGRARW7pK9/bIuNbT9Vkl/2lNYHgE6TCu3+dwC08wjPz3atE3VUqkqkMXPGQ68YM2gbPw7OYsS6gkczGtC9I9xDmhLyQdZygCqtbUTtxAE5+wQDkTGHXsmC1k3L1B2oX3av3oZ5PlH5vsOUpMAS1NXAk2Xdl6g4OKlVKKJf6/oxafIBtPX77Aq+1E2Qgy71514AJx5HnAcoGGnVBplrdoudAo1k+79lV71dlnFLSX+HbahqRktC9Sn5pY9pSJcDicSq6yia4Qms0rQs6DByV4T/JzilvoKQMaxXu69N67wgYUUn+ZHf8s7nOf/frOITvy2kBoW2fkoi0G3S8IS9SR2f+iuERsxy6+irQSk0nhkn9c9ASxYKN7aSThQ0hQreY8hnObnIi4jRyVIWYbzksYUwMW7EBnGpQY
- agmJ+A3z
- ttP5rV2KbW/6aWpRsrCf3w5cWsTg8l1IeseQuZ2NgPnG7d8hLe1wbQTt8u/cGZl9yYXmVbO/kNf01J+StGpoN22k02yM/BUOCYuUuYGxIi6HPu6I8qW6lYN3UlP6yjm6u9Ur6IfQbMul2Amicli0gjihy/ooVcTIby5AOsd2kqNXKAzQShav6L2Y639mr7/ixFXghTX/NtxanJbDKMo/QBQRINKJ5WiiFYKJS3667LIsB/GsCpYoTIXlBdHUrAUj2319o003x78bTgIyVzUeDfllGGV6YXA+dUBXytbkCOIhTxYjG+YF+Ax+RT4SIad89D5L0sR8tMp+FbWHoAwN5FxA5YrS+H3P95l8ho2Vz+m96VrbI5zvfRblcNcgP/Epiy/BavrYynQ6Y2SMcdBRLlh+vNpJ3jc2FKbwIyJBNGgeu2cWFSmzrdIAGXKzX5rk9RMbn0IcqaXhG6kw=
+X-HE-Tag: 1754768535-541895
+X-HE-Meta: U2FsdGVkX19PfP+ee45oGlASqB2pu+xa6/jYOjtePmoJH1vtLoHQmPogZFprNxI5JQeKwOO4kSC1sDRtbGsy69zoJQYV1GyKEXUfIEN+2tgUt0FbPN0kQeCWU2+wc5NzDSxFYw2iTSlVHNfkwOTpE5SbDXc68fdYl5Arw33n9atM6vLtaW5n1LIQJYvVBpJiBAkvF/pLALL47A/MdJipQm9q3QpMJwK7O0jr/3vuRNfB1epYf1qVWDJ0+tJLNUXfrc/gYrrxy5Lo6dS62JJHyJ1StHa3hnwtX3ukiMCMKiUV1GISp5O137RXU3GrdAvMBNGSbFJnnZK5Y+/OLG/BqBxNNi7BUzOPzUYEaCqCcrM2BNo6szGVVwC24hV1KGTNYoZMwPS4ZRmqPE/aUsoxG6aJpGX/2O6UQdXdDCrE2znuGSXZUrp2fZw2XtoF3uKBolVrzmx0nHUdrqCMq/eRqvgSsOSZu4xXun76jYv6rsDEa0ZP+TUqTj23iU1HHB/t2yjgOyhi6hAL/X9V+Cs3qwJcWInIMiB1bquoM1zk73YFdjHdj2yGXrS9GWGJwYDKj7qk97oJhoH48MyHIn8umIpdTM//PiMCerpFTRDaPBG11K6rqKIzvoKPGPtThXUu0iNp0103rzLL8qVWEBus6Kou8YsGm3LAYNujKFsm9tagSwxXZ27ZkSiKPSsaMqeMg4XC2M2S+JU3AOMXcynLZ82pBAe4368T7+xr4O2dlcS24Eo/NZyWmUtBKNkXPe1JPLGJ1c/RebxNhRwXi63bhMqE8OmiDUSu1nEG9oZCdWEWbcspu7fJ9Tl/4+G+g7vzeX1zRQprELgj91jbV1RKDZcPTdL8Vn4SHWw4A0sgZAOVc5X0+N5UpByMQQ8KNYB6IiJG6wCn6zLY1kgy3bLFqgu6spIjz+zlVvTO/6V1vz1Cja7T4TqejUhUg8y3B+kuuKwoxJKocal3Pg9cy14
+ 4W8Lgkx/
+ /Pols8tTlhZnrEba+FDPycfDW+7stkPVQ3y6ilfOgIyVwyzbGgAprBxWFr55a4HhMyQ6jFIODr0U6CYXJ5N3GXDFihTb59jDF3L3naBVxaiIW3WOnx191iwJd0Y+0SiyVX97YpF3VpkJ9b/xzah98ru7X563b1tlqk3FLLj5BdmG96VL2Hv99DSircj9KhdsFHRZtIBbiJw2Nq1JKQX5IIfk0QpC5VkyB7h0dGjPbaNFsc/OKSEvLSHXMfKuDkp8hkCJeL5TC1nqJaMOsNZ87IR1UAKVe7YGVn9vF6PFSNJwMw4ctOGQf2FBh0CrDnmuJpFNnd1HGNJP8Lk2+cxGrawttPQ9ndfYhKytn/dok8ATotK5hXRwmIVRrRd95WBatPqsSVxSqZq6wK2InAJYzKOCCU6bneKAtJ3ifBwLBua2OTL+Yz5NaFE/2AgSDzv38fVOcrnhTQ8IEA7vdc81yqqSLpqheE1WF6xyX2PqkXE4mA2n3xNw/RSymKj5TK0LPjLt1ZIoahCjEkoA/VxkwGVzjO5f7hdA+NAUnf3Xe5cvW1VvEovHdylr8UxRwwBP0/2W1H6355shiF/zxyi35cclZ9m3AjoTutm6FW4Nhc19EUaz8rfiK+AcmW17I6cD6vuY6s3htWFhjsGhMGX0v9OtaoWA4Inz1oEMDgBEN4+DHRLNJDUUSfVT2TeyVgARTP9mXZGpEwpP/Jsc9aFKYpf4VOLK6DHGRb4PToEEgB//2umSTJ6LqiiPlIw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,140 +115,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-head:   53c448023185717d0ed56b5546dc2be405da92ff
-commit: 5594d8bbb347972a06d703063bb65cccc8820c84 [72/77] kasan: introduce ARCH_DEFER_KASAN and unify static key across modes
-config: um-randconfig-002-20250810 (https://download.01.org/0day-ci/archive/20250810/202508100304.92cGHfSj-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 3769ce013be2879bf0b329c14a16f5cb766f26ce)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250810/202508100304.92cGHfSj-lkp@intel.com/reproduce)
+Currently it hard codes the number of hugepage to check for
+check_huge_anon(), but it would be more reasonable to do the check based
+on a number passed in.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508100304.92cGHfSj-lkp@intel.com/
+Pass in the hugepage number and do the check based on it.
 
-All errors (new ones prefixed by >>):
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Donet Tom <donettom@linux.ibm.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Zi Yan <ziy@nvidia.com>
 
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:5:
-   In file included from include/linux/crypto.h:18:
-   In file included from include/linux/slab.h:260:
-   In file included from include/linux/kasan.h:21:
->> arch/um/include/asm/kasan.h:29:2: error: UML does not work in KASAN_INLINE mode with STATIC_LINK enabled!
-      29 | #error UML does not work in KASAN_INLINE mode with STATIC_LINK enabled!
-         |  ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:98:11: warning: array index 3 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-      98 |                 return (set->sig[3] | set->sig[2] |
-         |                         ^        ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:98:25: warning: array index 2 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-      98 |                 return (set->sig[3] | set->sig[2] |
-         |                                       ^        ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:99:4: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-      99 |                         set->sig[1] | set->sig[0]) == 0;
-         |                         ^        ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:101:11: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-     101 |                 return (set->sig[1] | set->sig[0]) == 0;
-         |                         ^        ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:114:11: warning: array index 3 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     114 |                 return  (set1->sig[3] == set2->sig[3]) &&
-         |                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:114:27: warning: array index 3 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     114 |                 return  (set1->sig[3] == set2->sig[3]) &&
-         |                                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:115:5: warning: array index 2 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     115 |                         (set1->sig[2] == set2->sig[2]) &&
-         |                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:115:21: warning: array index 2 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     115 |                         (set1->sig[2] == set2->sig[2]) &&
-         |                                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:116:5: warning: array index 1 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     116 |                         (set1->sig[1] == set2->sig[1]) &&
-         |                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
+---
+v2:
+  * use mm-new
+  * add back nr_hpages which is removed by an early commit
+  * adjust the change log a little
+  * drop RB and resend
+---
+ tools/testing/selftests/mm/split_huge_page_test.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-
-vim +29 arch/um/include/asm/kasan.h
-
-    27	
-    28	#if defined(CONFIG_STATIC_LINK) && defined(CONFIG_KASAN_INLINE)
-  > 29	#error UML does not work in KASAN_INLINE mode with STATIC_LINK enabled!
-    30	#endif
-    31	#else
-    32	static inline void kasan_init(void) { }
-    33	#endif /* CONFIG_KASAN */
-    34	
-
+diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+index 5ab488fab1cd..63ac82f0b9e0 100644
+--- a/tools/testing/selftests/mm/split_huge_page_test.c
++++ b/tools/testing/selftests/mm/split_huge_page_test.c
+@@ -105,12 +105,12 @@ static char *allocate_zero_filled_hugepage(size_t len)
+ 	return result;
+ }
+ 
+-static void verify_rss_anon_split_huge_page_all_zeroes(char *one_page, size_t len)
++static void verify_rss_anon_split_huge_page_all_zeroes(char *one_page, int nr_hpages, size_t len)
+ {
+ 	unsigned long rss_anon_before, rss_anon_after;
+ 	size_t i;
+ 
+-	if (!check_huge_anon(one_page, 4, pmd_pagesize))
++	if (!check_huge_anon(one_page, nr_hpages, pmd_pagesize))
+ 		ksft_exit_fail_msg("No THP is allocated\n");
+ 
+ 	rss_anon_before = rss_anon();
+@@ -141,7 +141,7 @@ void split_pmd_zero_pages(void)
+ 	size_t len = nr_hpages * pmd_pagesize;
+ 
+ 	one_page = allocate_zero_filled_hugepage(len);
+-	verify_rss_anon_split_huge_page_all_zeroes(one_page, len);
++	verify_rss_anon_split_huge_page_all_zeroes(one_page, nr_hpages, len);
+ 	ksft_test_result_pass("Split zero filled huge pages successful\n");
+ 	free(one_page);
+ }
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
 
