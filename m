@@ -2,109 +2,176 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2440CC87FCB
-	for <linux-mm@archiver.kernel.org>; Sat,  9 Aug 2025 06:39:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 66FEAC87FCB
+	for <linux-mm@archiver.kernel.org>; Sat,  9 Aug 2025 11:59:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 830786B009C; Sat,  9 Aug 2025 02:39:56 -0400 (EDT)
+	id 46F2E8E0002; Sat,  9 Aug 2025 07:59:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E1C16B009D; Sat,  9 Aug 2025 02:39:56 -0400 (EDT)
+	id 41FD28E0001; Sat,  9 Aug 2025 07:59:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F73B6B009E; Sat,  9 Aug 2025 02:39:56 -0400 (EDT)
+	id 30EBF8E0002; Sat,  9 Aug 2025 07:59:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F6076B009C
-	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 02:39:56 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F413F1407FE
-	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 06:39:55 +0000 (UTC)
-X-FDA: 83756268750.15.06C15CF
-Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 1F92F140002
-	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 06:39:53 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="JKb/J0IG";
-	spf=pass (imf09.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.161.50 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754721594; a=rsa-sha256;
-	cv=none;
-	b=MFYnYrkOS+tk1a63N+711ehyw9eSZ+AMtgu6aP08EaP0iBPxeD6KJ/GUOf2oTin3jnM+hz
-	afYKQnH1MMCbKIusdQ0AcV0a5WkZq84LojJHtwat+BcVyS8W2BTyEDuN8PbWY2hjM1u0Yp
-	12LnLxuc1Q/o02TClhvI5XecoQ5IQEk=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="JKb/J0IG";
-	spf=pass (imf09.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.161.50 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754721594;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 21E3F8E0001
+	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 07:59:25 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5048FC015D
+	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 11:59:24 +0000 (UTC)
+X-FDA: 83757073848.08.2CB30C9
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013058.outbound.protection.outlook.com [52.101.83.58])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 4E62D40009
+	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 11:59:21 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=nokia.com header.s=selector2 header.b=t9MEV8mJ;
+	dmarc=pass (policy=reject) header.from=nokia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf12.hostedemail.com: domain of subrata.nath@nokia.com designates 52.101.83.58 as permitted sender) smtp.mailfrom=subrata.nath@nokia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754740761; a=rsa-sha256;
+	cv=pass;
+	b=qy1WdZ3xPx16Hlc30THDAENi+IDOOzxI+kbcg5cP8zEIneAQuCXSOuX/BxY03dDJkoF3qh
+	VziVgNeoshq0+mEXO2pr0bffxAefm6xvxo9brO3dk4/GIIw9ZcY1novJLGFWa4/acG7gHj
+	JQEGXRrD6JvGaVPI0LiMMHna5x5ktHU=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=nokia.com header.s=selector2 header.b=t9MEV8mJ;
+	dmarc=pass (policy=reject) header.from=nokia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf12.hostedemail.com: domain of subrata.nath@nokia.com designates 52.101.83.58 as permitted sender) smtp.mailfrom=subrata.nath@nokia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754740761;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=veV+M239TKy4G3gr61ocAU8YtRih4s6PgN9gAB5Yo7E=;
-	b=g6AQLWZ9lu3N94yvWWbRU2W847Y/6Jcx94tFBYzjMff3/kP1UkdiavUX3uDcgmCciDaSYE
-	rfuIEMYbz/a0ceK+Xe766Wdy0jaRkYgRdtcLGFJ+2phgzR5oqvFdRg8gMZMlVn98CB81BC
-	aY3Om7gxzRkJXFgt85sBJ+D1gmkOpec=
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-61b6779bb45so489870eaf.3
-        for <linux-mm@kvack.org>; Fri, 08 Aug 2025 23:39:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754721593; x=1755326393; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=veV+M239TKy4G3gr61ocAU8YtRih4s6PgN9gAB5Yo7E=;
-        b=JKb/J0IG3K/Ok8k8NVj/jssqcKj6vJvIqJ5m6R3dBDjFhz1xQO/rPQYIotfrnJ0nHL
-         qNMaF6cg591nyvgip92/yGAYOkH66G/Fh6A1M9J6MY8DJqrJLBeWup4/V+wTlcNxw/9m
-         LlZuFongRsS0/FLxC5msqyA611vXzqcRZ3QJ4rS5wPAQTh9Oh1UPhTVT56Ysw8A2yR9Y
-         H9MZ1RxRJ2K3Aiu0nTxNDcJz/ABM4LzFTDFtHC3oYGZngEcGj63+xRf5vMRfmwNbfIYO
-         oD4LLlyR+a0b6N0lGBa6OkKaAJ1tZfcdN5NB7RLoNORxSBlUCbT/SJg+GRNSCdo8lWqr
-         LcGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754721593; x=1755326393;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=veV+M239TKy4G3gr61ocAU8YtRih4s6PgN9gAB5Yo7E=;
-        b=ROExwcrdldWgbIUufQKeXEwPCc2dwLhPm30fsNZY760qLJcdFeSL93CmszXgmuJCLP
-         IQ4D5n8nxq4tgtnTSTNV+JyKVa9NuIGBzRV+JzNhiCCkYTo7B68G4iakTU8wAE5A5UCV
-         zgC+oC4BMMKLdAUgjjd+fQYt61/xFVRymXFg0LZTR3hv70O+6Q1dySNPTHzyEYzzo+WM
-         ZHQEiCNz2zEH2f3PGIgmyKQv9MxjDXapF+uHq9u3RotriRiGZrHGJemygE3G3aHmnpwZ
-         JW2jWYX9q54P/YtBGA3QZZ46jXVDTscuTkFwzXnOaZ1YIfnUm12eR4CkG89VoU0mhvYv
-         R6UA==
-X-Forwarded-Encrypted: i=1; AJvYcCVS3Vh/FMSFrcknOPAREpj+fziE4dFFVwONvINp49OBew3Rs+DaN44eMIH2Q0lNQB8eFer+zJ0Z4A==@kvack.org
-X-Gm-Message-State: AOJu0YwuzcCZYwrKQ8I+KvHkG5f4QWIFs2R2HnAVc1Mwru3Y4HI+pJmy
-	xuOq9khmcVrg+nVbYDZ8ZkWSsMPW9ijOafjeiRVfpxdBh9ELQ+gnAQ1dvcYCZr5PMBamtW+OcWB
-	h9XfWgUw+6LeQDTMwd4phWoLU67dzL3JyzJHYS12pTQ==
-X-Gm-Gg: ASbGncv8S3EVxFi6cP3awOXe83O1GzfVQrlvJzqTVU3vFbzQLgCDttOgBw7vSFbfixA
-	yavhInvHSo/FAvfd86sseIzeWt/dGKPrRxDpxMSlNl6lB6GW4MwXAOJnQZQkUIg3tifPrTum6T7
-	iG03OQ6+jldZi8xQKJ8oLssn2HAoQsHIwAIDzVl2PXQSVmoh0k5GjW5yzEabTxi6upFc7ywfC1b
-	bNK
-X-Google-Smtp-Source: AGHT+IGJd6d5iQ+IAgCBUGEHC07giPLKhEeoKHtoKrti76CPTOW7eWcPtYT1PnqpDMkVDsJg6TSVe1NAbWrjqgN8sHk=
-X-Received: by 2002:a05:6871:5b21:b0:30b:9750:3085 with SMTP id
- 586e51a60fabf-30c20f8d5f8mr4072412fac.10.1754721592943; Fri, 08 Aug 2025
- 23:39:52 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250808195518.563053-2-ekffu200098@gmail.com> <20250808220526.49546-1-sj@kernel.org>
-In-Reply-To: <20250808220526.49546-1-sj@kernel.org>
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-Date: Sat, 9 Aug 2025 15:39:41 +0900
-X-Gm-Features: Ac12FXxLSMV9ojkBvMIF5dWN25ReJEbVQLVtmtN-3sVjXP8LH_0UgKFz2cGvtgc
-Message-ID: <CABFDxMH0LDLLdJf-t2DEHCD40EJDfcq35cJM-HS5GkLX7KqsHA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] selftests/damon: test no-op commit broke DAMON status
-To: SeongJae Park <sj@kernel.org>
-Cc: honggyu.kim@sk.com, damon@lists.linux.dev, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=CpogrnmNXbs7L2SYwjsXSswHpfTMlfEwAVkljkW7XBg=;
+	b=lbSOY0rrqQ67mRYsFzi7LjVr4gWIdGzGbCc4LaTdxHne4cxT6c6iQ2yvzz3sNbQoEX05i1
+	2WW4UacyCMiKPsROUfup9ZldMPRdMWaEno9KPXcc7rCBFIAb4/4zx4D2iWEEpg5l2k488P
+	Xt40O1+uy0N6jhEWcEzRLDY/hJBwOdk=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oQA3u7RKtV38neDKX5btPgVp6x5OFd1SAkTt/srnA9Q64/timFPkw+yFN/3IYSQzOiQKEgOeXW5ar3YmdbaqHhLVaWFxmgWH626iuHQobpTxAdmfkKAnUauvseubDxf9/8F2BqI8IFKcY+yxfG7u1zIUM2QftaxBDCE6Y/HQfL9SrCzEFspyKNDJRW28v++C1XJVEjIxrtavwpl6iklBFZ6926YZf0ut4anbUKVCNx0N3YYNlEvqIjNM6Eh5Lf+C383g/uksvGQfPDCO9WupZDeFzJXmhKftViFjsniOn6g8v0jngurbcL9ccaHj4A9u3NV1XKqauG95KSe0b2hEiA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CpogrnmNXbs7L2SYwjsXSswHpfTMlfEwAVkljkW7XBg=;
+ b=JCGgcwzMBXaHkVVdvYdpFkpe3gFyfVpso18q9j9QLfrYJAC5vxSC7/g6wMDWCjnS9SH6q7T0zuVHGkApdW47tKbl6xso8cKo/t1yIGGE02LGWi8s8YyGJ+sIkPZem15PZxrWwJfv/9hMg6T3VMv5cv8rUwB1uwZYMSAfS6lqcYxpmNIvnxKE4l9Po8hXSWt/CvCyCI3FhJ9dGp8XWan6WT5KzE06hNOlze5GcbDtFzXwKW7czUthsebV/q4JHsrydG0rkFhHyDr+A5GliVWZeLMxqmQLLuI39oFf7qA4OhTLidDIfqVIEmAPcBxrkiMb6Bm+nLmUA4iQ84CtJCmfZg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nokia.com; dmarc=pass action=none header.from=nokia.com;
+ dkim=pass header.d=nokia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CpogrnmNXbs7L2SYwjsXSswHpfTMlfEwAVkljkW7XBg=;
+ b=t9MEV8mJOWdgjo3+NfE6Lzr3z2lMXMzuGOUfwldI6s8xFk/dTIctwLZ6D1koqikWt/jK5E091kuQTSRJCC7eVrLFxiM1qmiRC3A/l6qdElpZ6KaxYOvppWHYh7uhwxISikrqHO+Cy4nmQnrWlLrmTpo0wNZpM0FATxrjkjY2OAIqBU+gs3P0vxnUMpzhfP+xkIBRzu1ukJctpFxgOyMnPAtvzov2VxRsACTUzrRSfG0xCeb7pS/rq0CB7o1RlH9fZHz6CeW124+EFNGP/7RTOgdbZE3Wgu34OHeHMAoq3jmdvozI+LNPKA+OR83Mchgd361U/x2r9oAUKk3JvzaVnA==
+Received: from AM9PR07MB7811.eurprd07.prod.outlook.com (2603:10a6:20b:303::22)
+ by VI1PR07MB6463.eurprd07.prod.outlook.com (2603:10a6:800:13e::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.18; Sat, 9 Aug
+ 2025 11:59:17 +0000
+Received: from AM9PR07MB7811.eurprd07.prod.outlook.com
+ ([fe80::6891:ab46:309c:2ee3]) by AM9PR07MB7811.eurprd07.prod.outlook.com
+ ([fe80::6891:ab46:309c:2ee3%7]) with mapi id 15.20.9009.018; Sat, 9 Aug 2025
+ 11:59:17 +0000
+From: "Subrata Nath (Nokia)" <subrata.nath@nokia.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+CC: "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH] mm: prevent RCU stalls in kswapd by adding cond_resched()
+Thread-Topic: [PATCH] mm: prevent RCU stalls in kswapd by adding
+ cond_resched()
+Thread-Index: AdwJI9DGIQFwZQopSbiFIrzGx24uNg==
+Date: Sat, 9 Aug 2025 11:59:16 +0000
+Message-ID:
+ <AM9PR07MB78119166E41E86BE5E7DDCC0882EA@AM9PR07MB7811.eurprd07.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AM9PR07MB7811:EE_|VI1PR07MB6463:EE_
+x-ms-office365-filtering-correlation-id: 3ccb08fd-ad17-4d9e-8be1-08ddd73c2aac
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?RMB9sr6FPiomRbAjBuO35cMh+4Sosy3nDOno6a0KQuFA4TsAfwzoNyTTGk8F?=
+ =?us-ascii?Q?zfpcmqk4U/mNBMyAvFKwAvWxJBG32fZdOR09VgCUTrs7IhrprXFxGg1ryoAg?=
+ =?us-ascii?Q?bjGEjmI4FwllyenXoYi43Y9oPoW0s61q2db/QW091v+hHvmQtSdKdLLPUAKG?=
+ =?us-ascii?Q?VRPywqg0Xqjk3fFkZeLscxJOICrp6kx8H7h1Rucghi1T8NlXKYMPaHj+kUk3?=
+ =?us-ascii?Q?4fhpUaauBia6EFml4YIOugEi+0D/J+v5r/z4Iosq2gN9Qx5y/UMWdTzo0eIM?=
+ =?us-ascii?Q?SMQ5vVveKEtKpMRVKqNHmin3bcbn88rtme6gtVmnQMlw0btMYDkDZ0GKvhZA?=
+ =?us-ascii?Q?CXggic2FWrwLrAFGrctRxIwsSoHN2+rZH/YsQgcfZKndxijg3iluOouu6UIe?=
+ =?us-ascii?Q?qcXLXxxkpkV84FGV3WVcs/PZeV+AcOyzLPI4xy5DlNzH5T+54f9BuNq1tltv?=
+ =?us-ascii?Q?x09ZjJgiS7FU/uM/sdVqkuk4ZwihKaYE60KwYvgFL/jVBcxDl8wAAv3hAxrO?=
+ =?us-ascii?Q?fYqib1KkWJ7axJFkM4zSDDWmDrYhW3aLKAxWCFMjtSaVaHFszDG6QP1POKl9?=
+ =?us-ascii?Q?BmDm/OENHqQpkJXc/izjxkQ9pKojSN4XReoAK1pskQ8g9NXyAJgVX5JooQSW?=
+ =?us-ascii?Q?LVArncc1gnKhvzck79jfvxseKCOmzllcjzo8sz8jISHrFklDW4WbWrrsm1Si?=
+ =?us-ascii?Q?HhdjuUs7sAEuJzkmgvrucF7JJLPJqUNykMA+iTdXhm1ZokpJeiBkueyPH/ln?=
+ =?us-ascii?Q?OwH42D/KJNfvwMKbdPpc27twRr0MwTXn5j72dCoQA2YSzrEBHEn5KmPYNt98?=
+ =?us-ascii?Q?Yy6K34sXqWOi7DzIsNWretFJ/jmU+wTL9YczAvrOYsaR+R2zGdsj2N6LBKUv?=
+ =?us-ascii?Q?Ooj1mWVeVa+bP71R7Yqy4m1eLarz/W9/xelW0NfxZFlhrxf/T1lAf5cuRSVs?=
+ =?us-ascii?Q?O0DoQIOAbq6F2F2Oq7clo19ef60a08qZvqzNNED3kiOaxfgIVPUz007TSHjj?=
+ =?us-ascii?Q?KcMH6YJRf94xKREqt9GviiPZRJk4V7f3UPwIhNSrBLxh4Uz52r4Vn4BR6rTw?=
+ =?us-ascii?Q?607Hai0AzanWgis0sQ93B2srmKrWi35rlo8cejvRr8cckX5epnuGLNEwHRjF?=
+ =?us-ascii?Q?LoCJHQaFFmblvxteKGxcjU88cWXlbQAiVyWOqiQhFjoa/+vHHx95Ea+d4lqD?=
+ =?us-ascii?Q?9slx60i1Tg4pCFdqBE3S9286DcQMz3P99qXx9SqctjHHB5YmCVqqG6PnsSrx?=
+ =?us-ascii?Q?vRVpfCLZbJ7wI7W/OVLy0Hcq7/KlDwWzAKY0FPDV0uG1Bw6PQRIXnWb271An?=
+ =?us-ascii?Q?MSKMQHRAWAA3KfhkYjkh4iQWXir3Et4Xh4YT06lszG80CNS/9PVogb4sBpw2?=
+ =?us-ascii?Q?MNJ8DrhL0Xy14x5H2lQNx/JG/vRkwglfYPwjpFSG2VO8K+gJ17URPPYThrTa?=
+ =?us-ascii?Q?WPeIa8jQsQW+q8VSAQIl5XBHohoRjrGxSXhijbXzMP8OOVRlL1uL5Q=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR07MB7811.eurprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?0LxDjCjv5hhKEfPSOSBPwz1f1Pj9y7+SbEDIqsE/Wt7jJTPraN8+e/FIRAZi?=
+ =?us-ascii?Q?jgepohsAHKY40piE7mLWZ/YxuMd3EfeRzOMEjP4okoE6GMRXkghE2APnKhy2?=
+ =?us-ascii?Q?IO51CfcIfabdR7EfA0b5gn0CfMlphwO0+8q4T1URapEx4eWQLBRBBzLC5mxD?=
+ =?us-ascii?Q?L4sgmKRaSDZZs74MOzs4cSA3bAIgeTRi/rI0mU99iVrSgim/DTx4eKM2o/IF?=
+ =?us-ascii?Q?M+lxjejoF7K2JXYCOYxg0rO2yD7xji6EZVAeCQsmA/mlbqG/pU7Rcm6F5E4a?=
+ =?us-ascii?Q?67Af6/Gg2C+vIzZs3BrGZQKJ697HYNLryIPT6armZUCSZouiwtpOwLK59kh/?=
+ =?us-ascii?Q?pEEviDWWpkaOlITnaW6ajmwK7r6Ws+ObMIoT8cPj/ZywC3rS9CWoZfUfezWq?=
+ =?us-ascii?Q?NR0T3YeV8b40Y2Jbgf0KdFJy20q0gJEX/o4OL5Fvzg15yS0Krj+ihj4OCZVz?=
+ =?us-ascii?Q?HXxZ1YDLqajANu3NGeZ0HJ504yWzXNAkcjPExMBE8hV24AsmCdfZ9P6KJhFZ?=
+ =?us-ascii?Q?r8JCGB6BcfL+dSn6UTqgzYzUoB9L+/28/NwfjJSXfYAtaHiEGTrzIgWpbmCi?=
+ =?us-ascii?Q?sCNGS6SqCg1HiY2mngQ4K+I00T5XwT71gCb4X2Yq7mt48016z5lTVXd0BPmk?=
+ =?us-ascii?Q?ixn8Bp2KnCbvkzkFKPHTcVc/t1X0ruL19NFGVUaAjUqM2qDFeayIVyKCkZ+s?=
+ =?us-ascii?Q?7nLOE/VkgDzvs2D2bsv3AvTVEVKnCYnBHcRpC1MSP1n70+tnTrYG0Lh3XvWv?=
+ =?us-ascii?Q?QqvAe4Ert2iF5D0R6an2+1qnoo74rhV91qtIUgaoZ2KVkySqGmbfXeuXxqvX?=
+ =?us-ascii?Q?GENbBUyWOCbpYcHOn7rukPni/Y3HT89uE+nP02OsdA/uQJc3HQoasP9fA953?=
+ =?us-ascii?Q?LZUpln6tdaKtJLaePlKN9qgne2S6a7cF/xPx8nR9paXHDw4M4K393z4eNsgd?=
+ =?us-ascii?Q?hPBQhrXGUQdK4yt6PrY0tH4+MfUCiwZsVZgKKVzwHnjYwgetpvY0EKRMmekG?=
+ =?us-ascii?Q?kp38UUlDT3oLZuLct5q0yd9PPAocOfdIbTGidsk39zuNLQbsLxFZMIpxSmOk?=
+ =?us-ascii?Q?ANytgaGn8Qjbrz1grsruXjd0w+yAh5na9eIpZjkfIhit3of8/SQDaCB/+Cp3?=
+ =?us-ascii?Q?tVzzDZB5+EzE7tr5bSyqzQqRu51QNwUbXneI8L7mlVUYG2T2czOLNhvhbkoP?=
+ =?us-ascii?Q?CycTzcSWf+g5GzzedhQHjBVwTp3cZJVY2GWAhxLb/XgzAOuu6bOd9b0vHDtf?=
+ =?us-ascii?Q?Kqu3FAhS2siFUrdYx/3UOyHWyeF/Lb1xsAJ7Zm7fUXMKNMNDE7pQuodt5DHw?=
+ =?us-ascii?Q?harhbarF1CyA5pA55bwpbOwzuqhajMxe6BgpC2zBW8c66MIY0bEenzjvLQFt?=
+ =?us-ascii?Q?x78L6QRHcVvJn04SJI8oROv0Clb85tGweQqCO+7bT06G+mPyvYRU15WGy3wM?=
+ =?us-ascii?Q?cdIbLjREQA2T70NiHyiMsQoRgx4m7u5YuhVH202aHD0u6yJhyjUYA9uIdW78?=
+ =?us-ascii?Q?KrQfyHuT4H2Eh4FdondpEK/3Nn8VZiyx8T7KtZFiesgOmLPcHfHykcreTJAV?=
+ =?us-ascii?Q?rZ+wfOcC+HjvM8MYQhrPEnkNBOnnN/X6h62VgV8e?=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: nokia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR07MB7811.eurprd07.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3ccb08fd-ad17-4d9e-8be1-08ddd73c2aac
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Aug 2025 11:59:17.0135
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 5d471751-9675-428d-917b-70f44f9630b0
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: EfcaBNudHSIcTA7yWLWEAsiYIGxM64aH0jcmAXP9NpBHYkFn7/pHCbjNKTjM/m3O8E3zzZu1Bh6PQAKprrIK0w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR07MB6463
+X-Stat-Signature: taj7ju1cimruu7bj3ihrwox8j8tboepu
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1F92F140002
-X-Stat-Signature: x6osjrhz383acphy81omezdink4qg884
-X-HE-Tag: 1754721593-513512
-X-HE-Meta: U2FsdGVkX1+9YE4CyiaEPpYkRIr3aBnoynu3VZc9yHo8ybEiyxINRtwDuINFiy/GF3uSrKDsN9WRY3y7CvpMlZqZRN3nx7oVzaOcqPDzHmVLgE7QwZaO67GPk0OPLJn07J6QB0pKvq/dlZ+FKp30/D//X/GmF+24Weow12pD2A7yX+qDafmiPppy1tjKERw4P6+yzZnOOuUtWsELwMyCzeCns1cccRS+cqe9b0GVaUAidqgJqx1R787hru2SRt/R/7esRg/Vj7bhZd34eo/KzRvghkcY9y8tec6du5GvK+BeQfFQzTlnp6IYB4Bm4dRsmBet6D1R/KkB5LL3f/xX1a7fhx6IqhX0tkS3eW6a7NGs4d2Ztad3QwzC54+NxID7qeiTPCmhN41xBnx1VPPsW84RjQj5A9n7XQU7NzEOq6xtGw6e4hgeFWzfSI1Bz79r4XdiePNqOlSFA8E9Fm+28cWAkQRv4T5oNHw/YTqjEcMA3chLrai1WYHUZe0egg6s0t0zLtS5r1+fWJPxMstthsecyy+RkabsbYSEUHSB2FkNJ+qAynBClxS74eLN/TBQXdfmWP79CG+Aev7D9ALFA0o/COS9qmdxbGPXXFV+ZdJMMG929XiXxt5T4TXTypAGvg0P+gt7vhBke+Ef2StgbYPsW7/vNz1fDPprG2eEA3hP6ARtRUf/3+IBCmrOrlUmzTIXWmmDt72GGUX4PSS7xTPB4lecMu2YkcMDSbRcNi1tV3Ut2G6glTLgU+sOZQ+5qFUVXYKxfjW7TYo7ABwX15dJVmGSv5zdmpoZAM81qiLGKPDhwIKjaGiBx5KIJJKFSQCXSEM7Sk6cLqNqjDGFt8Ws39MqxLq9UyxBf1sm50Y/7ony/t9l2KVjPxliWipvYMUhoo6P8WynUVZ+gRfhnvF6eTEKqSYoytfEQmktNoZ5lSz2nRq4t+8yOB2BijfEJYVIYp9tRVMVw8uA+2P
- 1kXbZMTu
- VarduNm6OyZ/UlO5XoCLCZttiC5rrL+CmIKVBt/nprQ2NeCOwSuHu5vpHBRvH923xUlIjiQ1FyCaTbN/ZzXX7MhK70kWVS77hfEvJM3tIwbR8x5+Aj7eUfSoffH7vnMY7e6BZDn1tqKXbJMi4QWs+fEQHLoYo4BqS0OChOHQ90qUA086tEXqud7W/fvbv/Ir9bouOnp+2SsTJ4F6gJtSApihX847N+tdLOJCr4hgOD2F2yGILpYGwPpBH14097ZVeg5z2t8un+CRoEHVBvB2ie7qOKie/0owQkfgebP2Rk1w0vshq80XWv656TnErbJX6wSUVwHRrPjpanH/VqSBLd6Z6LDyNpDubI+MNU1XU+XvDVaadNEw0WZQgiLWEy84rjQsrjcAJUaYOFepYaprR4SOrCjcFZpYYYTLk6MULu0w4X/c=
+X-Rspamd-Queue-Id: 4E62D40009
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1754740761-468334
+X-HE-Meta: U2FsdGVkX1+CEdaHGJj2r7tqo2zLZ5t0MB+jx95IFTvoSBz36wSvflUlMbt9JUdP5zBM+9mMaQbqd0TxX/cSrF1v7fT5F5VZb2p+uhSy+18yk54z8y2UofpZBqQuAlyRRfyJV07hfTaFpseRN74AHlDyix60a2GI8HFKcwwv5hMKFI0jhOwvi543MwO7TFI2juMTIhbf0OdXJQGiPYWmQpyTGXFzwes9Y8dqQ4PgHpCaV+nUYva2MSNvmWWCeqaW51APCBAKRo2jsiWqqh4+gqWTmldeGyxnsDqIJK07ZRaSElhZCnQoCjrVlpFPJgFmDYI8ZUkb/kcLYf3FRo/BNHA7JyKs6lhKUYG28nmedeeaIBCpdQ1zDLugSvt4G2qfAk48RuOc6lMBJo6EfYVjFci3I6pI16PKeHPGGJq8XwBlol46/yybht5J8a2ohoVooDa7FTTsHlw3eGdv9wNkI81iOFTwiiXAvius7j3MdTsbfDAjTPnPnoPaY6jGMg0nD95708n59J/1dgFC0X6RHC2KwyO4pawdJ6V5i/ZSDeDYXLsCuVJHKBkdFUdo0htKOT21gBvRkuvJYcYgrtmbe1rl9vCfSoMt7QuAz4MbFn4n7muJYyq8sG1/Fdvip9u8tj+WclonYv8qEqIJjuDDpvpeHAq3DiamfrOQwkI33sdPUmUCqhwaJpti+HnVNg/rDeNzpAXp+BonJHw1BMS6K+1hxeo9EpP0G2+BP6z0jTg8mZuS8aLJqQtdTkX2vp9CGlkkKLRiPpDu0Y5dmccoeKv3/Ch4GjyrlHQfrOFJYVgvMBDqt/gWNVBybfPdER0qIwSqaLc7Vb2NGWLmfCmllb7SootKFa8OX6rZ69Y338A4qOdQxVludUOT2KfjNj7aab0VyUsB21nEBGnx8nzphJk9FBzm4vZoc+Wq13/m9XSvAMD5b/CwnGKW6cf97PiP6mS+2G33UZApLRWCv4i
+ leRIpweV
+ KZNbapMDYRyU6K0f6HJzOCcMbuffg17sME2UrrKEdKeJaKZPcVNA3lLHQODexDSXzeia7oXpA8RHPj0TtaqOonnQEliqIE8ATgTh4TbJsS+PNdkM/zbJXdCknWHhiUqMBNJ7W2zQCB+QQ8SeuN2QwKfhHpwJJ388S2A1x3SGkJ1oaDbVjdlnB03ZF63fu7BQNWh4nDjhSmsXIUOsG9b5BI1UadaA2s/NR2OjpbkmXGf2KFq+TjeRkd49vWU3qcbBT25dz0Goxvh9UpruJ+EQfr6EH3qDsTG87qYEZXkdQaVcQYEPy/GqfKuMpJOO6F/mxjE0XKL/pYK0ME61l4LM6DmNCNrYxeOojio68ANP/2g7XaDSXPaZjyhvS+wWKvGi+4VbZaIIaZecRbomaPpVo0kO2/twcEM6RqZqRqnPRr/XGKkuugvQ+ckcXiYMQgvTW9lb4LVgXrO27EM9z6COczwtlsq6DMglwrGGp7qE3ZP/fX964/plKTHpycYaWkYsjI17M+Ce3+E8fiIIT3NGd9wPdsVdVUa0m9EXsLFSwBK+IE68ZCXgvpIUVuZgu4fh9SBlY39OsiGsKr7+m6+CZJwwpx6GW4T/68WeKNHVwp15mZTGnFDmn0DS6UIW007C9VHVDhXHcnimA5yIlRVILC6V95w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,248 +180,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SeongJae
+From b21478b5333e2bf48391914d109bfd97a50d5203 Mon Sep 17 00:00:00 2001
+From: Subrata Nath <subrata.nath@nokia.com>
+Date: Sat, 9 Aug 2025 11:08:30 +0000
+Subject: [PATCH] mm: prevent RCU stalls in kswapd by adding cond_resched()
+Based on: v6.1.128
 
-On Sat, Aug 9, 2025 at 7:05=E2=80=AFAM SeongJae Park <sj@kernel.org> wrote:
->
-> Hello Sang-Heon,
->
-> On Sat,  9 Aug 2025 04:55:17 +0900 Sang-Heon Jeon <ekffu200098@gmail.com>=
- wrote:
->
-> > Add test to verify that DAMON status is not changed after a no-op
-> > commit.
->
-> Thank you for this patch!  I have some comments below, though.
->
-> > Currently, it is failing. but after fix the bug it should be
-> > success.
->
-> To keep bisecting goes smoothly, let's introduce failing tests _after_ th=
-eir
-> fixes are landed.
+The kswapd0 thread can spend extended time in
+page_vma_mapped_walk() -> queued_spin_lock_slowpath() without
+yielding the CPU. Even with CONFIG_PREEMPTION=3Dy, the rcu_preempt
+kthread cannot preempt kswapd0 because preemption and interrupts
+are disabled while holding the spinlock.
 
-I see. As mentioned in another comment, I'll merge this patch set into
-one patch. I think this comment will be resolved then.
+Example stall report:
+  rcu: INFO: rcu_preempt self-detected stall on CPU
+  rcu: rcu_preempt kthread starved for 65939907 jiffies!
+  Call trace:
+    queued_spin_lock_slowpath
+    page_vma_mapped_walk
+    folio_referenced_one
+    kswapd
 
-> >
-> > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-> > ---
-> >  tools/testing/selftests/damon/Makefile        |  1 +
-> >  .../damon/sysfs_no_op_commit_break.py         | 78 +++++++++++++++++++
-> >  2 files changed, 79 insertions(+)
-> >  create mode 100755 tools/testing/selftests/damon/sysfs_no_op_commit_br=
-eak.py
-> >
-> > diff --git a/tools/testing/selftests/damon/Makefile b/tools/testing/sel=
-ftests/damon/Makefile
-> > index 5b230deb19e8..44a4a819df55 100644
-> > --- a/tools/testing/selftests/damon/Makefile
-> > +++ b/tools/testing/selftests/damon/Makefile
-> > @@ -17,6 +17,7 @@ TEST_PROGS +=3D reclaim.sh lru_sort.sh
-> >  TEST_PROGS +=3D sysfs_update_removed_scheme_dir.sh
-> >  TEST_PROGS +=3D sysfs_update_schemes_tried_regions_hang.py
-> >  TEST_PROGS +=3D sysfs_memcg_path_leak.sh
-> > +TEST_PROGS +=3D sysfs_no_op_commit_break.py
-> >
-> >  EXTRA_CLEAN =3D __pycache__
-> >
-> > diff --git a/tools/testing/selftests/damon/sysfs_no_op_commit_break.py =
-b/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
-> > new file mode 100755
-> > index 000000000000..300cdbaa7eda
-> > --- /dev/null
-> > +++ b/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
-> > @@ -0,0 +1,78 @@
-> > +#!/usr/bin/env python3
-> > +# SPDX-License-Identifier: GPL-2.0
-> > +
-> > +import json
-> > +import os
-> > +import subprocess
-> > +import sys
-> > +
-> > +import _damon_sysfs
-> > +
-> > +def dump_damon_status_dict(pid):
-> > +    try:
-> > +        subprocess.check_output(['which', 'drgn'], stderr=3Dsubprocess=
-.DEVNULL)
-> > +    except:
-> > +        return None, 'drgn not found'
-> > +    file_dir =3D os.path.dirname(os.path.abspath(__file__))
-> > +    dump_script =3D os.path.join(file_dir, 'drgn_dump_damon_status.py'=
-)
-> > +    rc =3D subprocess.call(['drgn', dump_script, pid, 'damon_dump_outp=
-ut'],
-> > +        stderr=3Dsubprocess.DEVNULL)
-> > +
-> > +    if rc !=3D 0:
-> > +        return None, f'drgn fail : return code({rc})'
->
-> Let's not add a space before ':', for the consistency.
+Similar stalls occur in shrink_zones(), where long-running loops
+prevent CPUs from reporting a quiescent state during the RCU grace
+period. Without such reports, RCU stall warnings can escalate to
+soft lockups or OOM kills.
 
-I see. I made so many mistakes like these; (I worked this very late
-night...) I will fix them all. Thank you for checking this moment.
+A quiescent state is reported when a CPU exits an RCU read-side
+critical section, enters idle/user mode, performs a context switch,
+or voluntarily reschedules.
 
-> > +    try:
-> > +        with open('damon_dump_output', 'r') as f:
-> > +            return json.load(f), None
-> > +    except Exception as e:
-> > +        return None, 'json.load fail (%s)' % e
-> > +
-> > +def main():
-> > +    # We can extend this test to change only the Given and reuse the W=
-hen/Then.
->
-> Above comment seems unnecessary to me, since that's obvious.
+Fix this by adding cond_resched() after all spinlock release points
+in page_vma_mapped_walk() and in the main loop of shrink_zones().
+These calls, placed outside spinlock-held sections, allow voluntary
+scheduling and ensure timely quiescent state reporting, avoiding
+prolonged RCU stalls.
 
-I agree. As you said, it is obvious. I'll remove all pseudo like comment.
+Signed-off-by: Subrata Nath <subrata.nath@nokia.com>
+---
+ mm/page_vma_mapped.c | 3 +++
+ mm/vmscan.c          | 3 +++
+ 2 files changed, 6 insertions(+)
 
-> > +
-> > +    # Given : setup filter with allow =3D True
->
-> Again, I don't think the above comment is necessary.  And this looks like=
- a
-> pseudo code more than a formal comment.  If you think it is necessary, pl=
-ease
-> use more formal tone.
->
-> Also let's not add a space before ':', for consistency.
->
-> > +    proc =3D subprocess.Popen(['sleep', '10'])
-> > +    kdamonds =3D _damon_sysfs.Kdamonds(
-> > +        [_damon_sysfs.Kdamond(
-> > +            contexts=3D[_damon_sysfs.DamonCtx(
-> > +                targets=3D[_damon_sysfs.DamonTarget(pid=3Dproc.pid)],
->
-> Can't we start this kdamond with paddr ops, and drop the 'sleep' process
-> invocation?
+diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+index 93e13fc17..7775c151f 100644
+--- a/mm/page_vma_mapped.c
++++ b/mm/page_vma_mapped.c
+@@ -234,6 +234,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *=
+pvmw)
+ 			}
+ 			/* THP pmd was split under us: handle on pte level */
+ 			spin_unlock(pvmw->ptl);
++			cond_resched();
+ 			pvmw->ptl =3D NULL;
+ 		} else if (!pmd_present(pmde)) {
+ 			/*
+@@ -247,6 +248,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *=
+pvmw)
+ 				spinlock_t *ptl =3D pmd_lock(mm, pvmw->pmd);
+=20
+ 				spin_unlock(ptl);
++				cond_resched();
+ 			}
+ 			step_forward(pvmw, PMD_SIZE);
+ 			continue;
+@@ -265,6 +267,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *=
+pvmw)
+ 			if ((pvmw->address & (PMD_SIZE - PAGE_SIZE)) =3D=3D 0) {
+ 				if (pvmw->ptl) {
+ 					spin_unlock(pvmw->ptl);
++					cond_resched();
+ 					pvmw->ptl =3D NULL;
+ 				}
+ 				pte_unmap(pvmw->pte);
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index be863204d..02064b4fe 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -6415,6 +6415,7 @@ static void shrink_zones(struct zonelist *zonelist, s=
+truct scan_control *sc)
+ 			continue;
+ 		last_pgdat =3D zone->zone_pgdat;
+ 		shrink_node(zone->zone_pgdat, sc);
++		cond_resched();
+ 	}
+=20
+ 	if (first_pgdat)
+@@ -6490,6 +6491,7 @@ static unsigned long do_try_to_free_pages(struct zone=
+list *zonelist,
+ 		 */
+ 		if (sc->priority < DEF_PRIORITY - 2)
+ 			sc->may_writepage =3D 1;
++		cond_resched();
+ 	} while (--sc->priority >=3D 0);
+=20
+ 	last_pgdat =3D NULL;
+@@ -6508,6 +6510,7 @@ static unsigned long do_try_to_free_pages(struct zone=
+list *zonelist,
+ 						   zone->zone_pgdat);
+ 			clear_bit(LRUVEC_CONGESTED, &lruvec->flags);
+ 		}
++		cond_resched();
+ 	}
+=20
+ 	delayacct_freepages_end();
+--=20
+2.34.1
 
-I just referred other tests. And i think we can remove unnecessary
-targets and sleep process. I'll fix it on v2 patch.
-
-> > +                schemes=3D[_damon_sysfs.Damos(
-> > +                    ops_filters=3D[
-> > +                        _damon_sysfs.DamosFilter(type_=3D'anon', match=
-ing=3DTrue, allow=3DTrue)
->
-> Let's keep 80 columns limit[1].
-
-Oh, I thought it only applied to 'C' related codes. I'm wrong. Thank
-you for reminding me. i'll fix it.
-
-
-> > +                    ]
-> > +                )],
-> > +            )])]
-> > +    )
-> > +
-> > +    err =3D kdamonds.start()
-> > +    if err is not None:
-> > +        print('kdamond start failed: %s' % err)
-> > +        exit(1)
-> > +
-> > +    before_commit_status, err =3D dump_damon_status_dict(kdamonds.kdam=
-onds[0].pid)
-> > +    if err is not None:
-> > +        print(err)
-> > +        exit(1)
-> > +
-> > +    # When : No-op commit, it should not break anything
->
-> Again, I don't think the above comment is necessary.  And this looks like=
- a
-> pseudo code more than a formal comment.  If you think it is necessary, pl=
-ease
-> use more formal tone.
-> Also let's not add a space before ':', for consistency.
->
-
-ditto (wil be removed)
-
-> > +    kdamonds.kdamonds[0].commit()
-> > +
-> > +    # Then : Check value with drgn
->
-> Again, I don't think the above comment is necessary.  And this looks like=
- a
-> pseudo code more than a formal comment.  If you think it is necessary, pl=
-ease
-> use more formal tone.
->
-> Also let's not add a space before ':', for consistency.
-
-ditto.
-
-> > +    after_commit_status, err =3D dump_damon_status_dict(kdamonds.kdamo=
-nds[0].pid)
-> > +    if err is not None:
-> > +        print(err)
-> > +        exit(1)
-> > +
-> > +    before_commit_dump =3D json.dumps(before_commit_status, sort_keys=
-=3DTrue, indent=3D2)
-> > +    after_commit_dump =3D json.dumps(after_commit_status, sort_keys=3D=
-True, indent=3D2)
->
-> Let's keep 80 columns limit[1].
-
-ditto.
-
-> > +    if before_commit_dump !=3D after_commit_dump:
->
-> Can't we jsut compare before_commit_status and after_commit_status?
-
-Yeah, I think i'm just confused. I'll change it.
-
-> > +        print("[TEST FAILED] : no-op commit break damon status")
->
-> Let's not add a space before ':', for consistency.  In this case, I think=
- ':'
-> is not necessary at all.  Actually, since this test is for the single tes=
-t
-> case, and kselftest framework will say this failed, I think the above pri=
-nt()
-> is not necessary at all?
-
-So, kselftest framework identifies whether the test was successful or
-not by exit code. Then, i'll remove this one.
-
-To be honest, I didn't use kselftest framework while making these
-patch set because I don't know how kernel developers use it.
-
-If you are okay, could you share how you use it? I just build kernel
-with custom patch, and execute output images by vm, and setup env,
-then just execute tests(it's so raw.. i know)
-
-Maybe is there a kernel build option that automatically includes tests
-to output image? Or just a general or smarter way to execute the whole
-test?
-
-> > +        print("=3D=3D=3D=3D=3D before_commit =3D=3D=3D=3D=3D")
-> > +        print(before_commit_dump)
-> > +        print("=3D=3D=3D=3D=3D after_commit =3D=3D=3D=3D=3D")
-> > +        print(after_commit_dump)
-> > +        exit(1)
-> > +
-> > +    kdamonds.stop()
-> > +
-> > +if __name__ =3D=3D '__main__':
-> > +    main()
-> > --
-> > 2.43.0
->
-> [1] https://docs.kernel.org/process/coding-style.html#breaking-long-lines=
--and-strings
->
->
-> Thanks,
-> SJ
-
-Thanks for reviewing! Have a nice weekend. I'll do this job after my
-personal schedule finishes.
-
-Best Regards.
-Sang-Heon Jeon
 
