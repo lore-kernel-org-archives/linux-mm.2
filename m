@@ -2,87 +2,88 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D0E84C87FCF
-	for <linux-mm@archiver.kernel.org>; Sat,  9 Aug 2025 17:38:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 05D31C87FCF
+	for <linux-mm@archiver.kernel.org>; Sat,  9 Aug 2025 17:48:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5BA8D6B0099; Sat,  9 Aug 2025 13:38:49 -0400 (EDT)
+	id 647346B009B; Sat,  9 Aug 2025 13:48:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56B6A6B009B; Sat,  9 Aug 2025 13:38:49 -0400 (EDT)
+	id 5D0AF6B009C; Sat,  9 Aug 2025 13:48:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 480E86B009C; Sat,  9 Aug 2025 13:38:49 -0400 (EDT)
+	id 497E36B009D; Sat,  9 Aug 2025 13:48:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 380006B0099
-	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 13:38:49 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AC5E71401A4
-	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 17:38:48 +0000 (UTC)
-X-FDA: 83757929136.06.8A6FADA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 00102180004
-	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 17:38:46 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=v71QqACL;
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 36FC26B009B
+	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 13:48:45 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A94BC1DA7E4
+	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 17:48:44 +0000 (UTC)
+X-FDA: 83757954168.26.8225117
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id DD388140006
+	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 17:48:42 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y8nbYeg1;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754761127;
+	s=arc-20220608; t=1754761723;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=koFjiF/kAEQdMPslyFm015mecWl5PIz0kECR7Wjk8O8=;
-	b=slaiSaA6ZlqZES7QeH+KHdpzg34enTfqqSf/ACX1yP1R2yuePwzhNHj6shpHqWjRmqD8c1
-	CEiRFYVmCMqPuPiWZjpYIzu8nDgbpns4+xmU29WbanietVIfJHjFQgDT1vyrBo+2UYhEDm
-	9vQVyq+zhojQn2fe8rvf2Svbl7abETI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754761127; a=rsa-sha256;
+	bh=K7iN1/TVQIzWnaBbjH8QJk/0Q2lcOgPaBps+jeVc+Mc=;
+	b=bI0/P7kGyNX3q3z2GVbMoXIJQKaBE7EJRagHJlXOvH5eQQdOVcNMO6w/XrtT7X3VKxT68R
+	8hwuzt5cv47u1qDPPEN0bQY51NvpqDheqZ1rFC2vKE9Xe9L2uHx5yKaAn8XaH0nDgpgo6w
+	3rhxYkSNrR0Ym8EmZBfsImZ4JDcHrJo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754761723; a=rsa-sha256;
 	cv=none;
-	b=yIW55ExPE5T8LuXaITmHwiX06hpcbhBv+y5p/3d9t8wetm9zm46+srZO9mFtEIATS84CnG
-	VG8ob3JCvCLGff4jiqiVxLyXyNhBBoJ7m3o52IEd6+7NlEqyUjskxa7+6/jAeCteTfWxdZ
-	7LjIosuRLxlIEbY7qAEWdXMt5c2eO8k=
+	b=BEQqqpXeBippA/7dR5QZdxMtXJ7rqISaE87uhyl4GXlH98LVCoHQAg613oK/kssHHdzJfm
+	U5Wp/2AY7C+Jg7meASi0Lmmnh4p/kSV4W6/Tm7SUdx2kJa/yR+NzfPgpvQV2sDD8J09AE/
+	3PGcDFlgL/ecATslxBVpKO1Lcq7zyk0=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=v71QqACL;
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y8nbYeg1;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 22B1F6141F;
-	Sat,  9 Aug 2025 17:38:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B8EC4CEE7;
-	Sat,  9 Aug 2025 17:38:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1754761125;
-	bh=Wot/69dsHs/GESb54RZeUFnXDmcOEqiL63MrJD9t7XU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=v71QqACLAlEXZHsJC8YNMN9x1cZKNM313wf7JjuOJkxWPIINOxUYRf1+qfmLGBBws
-	 dtp/D9xGTnOqAUzIqeAjnr0aSpvDo7W3WqVEEuztO/9dZCASuFpXPUTKxCGDHqI7V9
-	 a+9ZDQnabITo35u/Q5NJ2P97bECh29wOOR8T8eXI=
-Date: Sat, 9 Aug 2025 10:38:45 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: "Subrata Nath (Nokia)" <subrata.nath@nokia.com>, "linux-mm@kvack.org"
- <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] mm: prevent RCU stalls in kswapd by adding
- cond_resched()
-Message-Id: <20250809103845.21ca58f0a97c0c1f61c0879c@linux-foundation.org>
-In-Reply-To: <aJdkmCP41RhNC9FH@casper.infradead.org>
-References: <AM9PR07MB78119166E41E86BE5E7DDCC0882EA@AM9PR07MB7811.eurprd07.prod.outlook.com>
-	<aJdkmCP41RhNC9FH@casper.infradead.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 00102180004
+	by sea.source.kernel.org (Postfix) with ESMTP id 8421C43BD7;
+	Sat,  9 Aug 2025 17:48:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B059C4CEE7;
+	Sat,  9 Aug 2025 17:48:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754761721;
+	bh=aKDkF5RSgXGbhrjBrkjvDv3sHb1LUhd6gxPgYdPrLoY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Y8nbYeg1V3Bj9tiIH2hWtnSPho7Srv+KMTxfn8pnWyK6hdtiMxPK++yQ1KeQzD8eQ
+	 a5piVkWP0R/tTqmdZvX1FRART50cKQqY+k4aaFndhzGuiooUZ5AEC0/UPqG1aBQhy3
+	 IrizXo+tBDtE50v3H01dpCeW5NDq8x9ZYYk+GF3QsId5hMsTSjA9Lj9qt8M/ebSm9H
+	 tvkKqiLd3e60qwo0HfrYiXBEHt/6q5vc776usWnQx3iSbKMLQSqq2KttmIOrQ1X/0z
+	 ufPH6tli8Nb4LqKCQ4aWzu69tqHVpFozRoDsnbiaGFgZ8ZX/e+ZMvnZJQoJEHFoofl
+	 eRucwiUvXLBoA==
+From: SeongJae Park <sj@kernel.org>
+To: Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	honggyu.kim@sk.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm/damon/core: fix commit_ops_filters by using correct nth function
+Date: Sat,  9 Aug 2025 10:48:38 -0700
+Message-Id: <20250809174838.71485-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250809130756.637304-1-ekffu200098@gmail.com>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: DD388140006
+X-Stat-Signature: 9nz1a1jqzt86userh7ho3jy8w37m4pxk
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: axn5fpweyznxnbfwjte1ajgim1ktxuiy
-X-HE-Tag: 1754761126-833456
-X-HE-Meta: U2FsdGVkX1/ftUxoedavNJU/EEqGDRNpKRkfC0+r7sXUma/SncXfuOepK6Jh8WOfC0ia9jU8Nj5uOV6mNHKSz4geo+axVfN7Ic0CHsmp3Rsj4L5Fc27eGRFpbJxp08cFFfOTnntxwCAkYQRgfat9dvJDfDiGRX1xZl7FDRNIK/4gKIgDnvhG3fXKZ+52P0AcYmt/MVZ5hMzLSQnbScYmls0RVnmRO27ZWg1ADp1VxMrdgMyD54u+dD2VumM2YCNM2rzjLI47EaZGalo1T/Vt413dT+lfh4i6zjC/CKTUnL5fj/lQKcRU3w8pqfqH9DbpriSx/J++irjqOGbVUkJI604rdDBMq3+X28GtUerzJUqxATDovOloAfVhb2NHuKtswYWaxS0DnIzwjezzs8rVuLYM4Or/TtLXmLN+B2Mt4cMC0YcyuSQGWWP3o40QuWt3bIYLf5o8HBAcsnQcQ/UiLrzf7jzpGIit5eYKH+8GJcEQsAo422nrkOPpYEw4vyzCcp2IMP8Lc5VOtICb+RpJ0YZE8mffuvEoAH0WMsSGvzPwMrklfsY9V7P9Uhp+pUyT8P+nmBteG+1bIEYrxFSEEaXF91OS/797YLZYAAsBjvueG5CFf/VkllssmckR5ddd5Ji8bwB2rOE/5DjPM6xh6M2QyXM9WlvxqwzB+MnqXNdZffVNE/JdGDXVpNW8cPfXU3wYkvd2jL8XulNbJhHtHXiWJQ4BeDq7eGLzLNelK2IlmoWidR50fGG+Kuv/1Q+iRIxVqdp1mnabVOH8sLyVEyt5GN6WLBqYyKMpNe7DPX4RYbciX4BbKuNIsPciwnjTPJv5uyc5mAKrFpZdtnAvxbw5gLCUCC3QrGsq9HZ2iWJ6LwaysD6P4v+jsDYOHn4XBlHdAn8IE412mAezyz3Fqx0eV+2WydO5B23V8hCbKvAj11Fh5rbxlpsUhY1nICKeGT5Zu0RAdr99eLsAA7m
- hbukJu3M
- uqp/t8yiLuPq1ZJWQr94QKrjwV9PTmQlHYlBPG0t4ayYavdo1Qcky6P805Csv7RE4AdklwHw0KrbEvPPAwc6t4VpgzDiGWreBq5Jtkw78OIC8oMCtMCK7bdspLHYbWeRUgPgpA3UF7ZJDDlsUkUTnCJqFogyO0ADG9a7PulK14sPovXHmJsnsJpBLva7JMmMtGyRhdhSnI7u57NC//4wiKrBgPeL6IY8UGwo6DYOScMNuokktJuayOt5FwMyVF7KIBfNs7/MLOBErVCi9nLjKdgl4IknFlkOcThpQE3UFht5nH+/jkH3sFDhnSmDWqSC+vbiCLW5GbheesyDSTU7DH1bySL5KcLxVqWGLMBMVt1J8pYZgmEZ5aMjvHYSZa9K9DDgBiM2n+YYysB0o1uxW9P94A/fBT+gY89nO
+X-HE-Tag: 1754761722-850993
+X-HE-Meta: U2FsdGVkX18xVTu2n3F6vy7nBjdP/V1OVGRQkLrfVW5Fida1v2ZfypIBNuHWangpzwRNw9etqLrra8GWRj8agUZckfPIE+hSo3M+ciHRMf2CISOhbiTUcSYQbZZL489PnXvlO4XJSDa520bl2oMZI894C8NhJ+6VYDxVqa2SjN0IRQLbYNhMMpVzRHLDJdv+ZDrVC7/1edmV18sMvxexb7zLHgb3d7/SylwZTu1DD0c0NOTwKZJhxHTGAuOoHJvKoh9ZkeQ5bXyUNZf10Ak2wZF7FnqSx7ZQ5iQ3NuqpOWYEkTDcqmimCV/Y2vfxfKh9NfNeOykBkD16x2qJas3sm/5Fx7KE4AN77Pg3/IMQ6rPt1C1fhE7FS6QPEP+s98SrBBthuTThbNFy7JpY6zn0V9Nd5puWOrBPnz5zxjlP5CSeKGYmO62YkuxJjNIzs1Cg5sX5ZYvkaHKa3YxVYpNy7lKyf1RNK25EF6LPiGWElgqLF1NnxerRgPTh1+T510O3TlZPH2YdMLTb5wmigcO0bwu6YjAHo/kXc7dARixGeMlSYsOeyeICclC7L3/5KukuwApO2H/H3GPoe1q+l5RCFunL2EfeKQ8JhrSJL9rqWejEHP25E76lT1CitxdrQ4Indq0WTCcjFzSv4aJtMeWyfKP8Ud4Lnv23v3tRNsCIbztUBumzijj4pEgx5OWHnjNUd3ghj9M+Y9d6HuWRw/g1rapS3zK4I9DX168E1vFY0Uyy7XQq/li/BCmlMBMzJIIThBb1S3FW35nQ++VFTly67vV0u4Ej/hcanc8gBP1zOzHJmjgoQvEYlnm+l/goZhIDxt1abr2X8SIR2YF1QW9uPLIxqkpi5bX+mck22CpVPFxopLHZ+/wt4OetbKddODf4RGtNua9Jlr3FjkOzG+cIjTBzt87GzNm22Zsbiho8SZatEFJ0X4Ukc/KFrvS6ebWgIbgh7cUCeF4/2FvHBLR
+ +ThdByXE
+ 9hTqNiAq34TeDmBXRWbu0GnCEQxPWG31SFVbjp3x8FnzF2S50FeNlL6OcJIgvFcX984FFRLTiNmKcSYdofMlaKRS61tsySbRedzkZkx3Fkn1Exxx32E8AAINuPY1q/0m957bTRmczYjucWoZGjNhi0bLBWyNo+XR2lsgmjAN/7UAsWWiW+kOesQYC9/GYFHlsOQU/UvxlD1nlR8KWChfgGEqLt5rqyIUShfYI4So1qNjlVi1fCUw/OWIt/jx+bmBJlkx7ek2njhv6dw5QsX39He4n+ZNWofHliUELsCAYhOyaVZk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,26 +92,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 9 Aug 2025 16:09:12 +0100 Matthew Wilcox <willy@infradead.org> wrote:
+On Sat,  9 Aug 2025 22:07:56 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
 
-> On Sat, Aug 09, 2025 at 11:59:16AM +0000, Subrata Nath (Nokia) wrote:
-> > Fix this by adding cond_resched() after all spinlock release points
-> > in page_vma_mapped_walk() and in the main loop of shrink_zones().
-> > These calls, placed outside spinlock-held sections, allow voluntary
-> > scheduling and ensure timely quiescent state reporting, avoiding
-> > prolonged RCU stalls.
+> damos_commit_ops_filters() incorrectly uses damos_nth_filter() which
+> iterates core_filters. As a result, performing a commit unintentionally
+> corrupts ops_filters.
 > 
-> No.  We're removing cond_resched().  See
-> https://lore.kernel.org/linux-mm/87cyyfxd4k.ffs@tglx/
-> and many many other emails over the past few years.
+> Add damos_nth_ops_filter() which iterates ops_filters. Use this function
+> to fix issues caused by wrong iteration.
+> 
+> Also, add test to verify that modification is right way.
 
-tglx's email was sent two years ago.
+As I mentioned on v1 thread, please drop the test part, for ease of
+backporting.
 
-Meanwhile we have shipped kernels which are emitting nasty warning
-splats (which are indications of possible other misbehavior).  So I
-think we should proceed with Subrata's change and give it a cc:stable
-also.
+> 
+> Fixes: 3607cc590f18 ("mm/damon/core: support committing ops_filters") # 6.15.x
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> ---
+> Changes from v1 [1]:
+> 1. Fix code and commit message style.
+> 2. Merge patch set into one patch.
+> 3. Add fixes and cc section for backporting.
+> 
+> [1] https://lore.kernel.org/damon/20250808195518.563053-1-ekffu200098@gmail.com/
+> 
+> ---
+> I tried to fix your all comments, but maybe i miss something. Then
+> please let me know; I'll fix it as soon as possible.
+> 
+> ---
+>  mm/damon/core.c                               | 14 +++-
+>  tools/testing/selftests/damon/Makefile        |  1 +
+>  .../damon/sysfs_no_op_commit_break.py         | 72 +++++++++++++++++++
+>  3 files changed, 86 insertions(+), 1 deletion(-)
+>  create mode 100755 tools/testing/selftests/damon/sysfs_no_op_commit_break.py
+> 
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index 883d791a10e5..19c8f01fc81a 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -862,6 +862,18 @@ static struct damos_filter *damos_nth_filter(int n, struct damos *s)
+>  	return NULL;
+>  }
+>  
+> +static struct damos_filter *damos_nth_ops_filter(int n, struct damos *s)
+> +{
+> +	struct damos_filter *filter;
+> +	int i = 0;
+> +
+> +	damos_for_each_ops_filter(filter, s) {
+> +		if (i++ == n)
+> +			return filter;
+> +	}
+> +	return NULL;
+> +}
+> +
+>  static void damos_commit_filter_arg(
+>  		struct damos_filter *dst, struct damos_filter *src)
+>  {
+> @@ -925,7 +937,7 @@ static int damos_commit_ops_filters(struct damos *dst, struct damos *src)
+>  	int i = 0, j = 0;
+>  
+>  	damos_for_each_ops_filter_safe(dst_filter, next, dst) {
+> -		src_filter = damos_nth_filter(i++, src);
+> +		src_filter = damos_nth_ops_filter(i++, src);
+>  		if (src_filter)
+>  			damos_commit_filter(dst_filter, src_filter);
+>  		else
+> diff --git a/tools/testing/selftests/damon/Makefile b/tools/testing/selftests/damon/Makefile
+> index 5b230deb19e8..44a4a819df55 100644
+> --- a/tools/testing/selftests/damon/Makefile
+> +++ b/tools/testing/selftests/damon/Makefile
+> @@ -17,6 +17,7 @@ TEST_PROGS += reclaim.sh lru_sort.sh
+>  TEST_PROGS += sysfs_update_removed_scheme_dir.sh
+>  TEST_PROGS += sysfs_update_schemes_tried_regions_hang.py
+>  TEST_PROGS += sysfs_memcg_path_leak.sh
+> +TEST_PROGS += sysfs_no_op_commit_break.py
+>  
+>  EXTRA_CLEAN = __pycache__
+>  
+> diff --git a/tools/testing/selftests/damon/sysfs_no_op_commit_break.py b/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
+> new file mode 100755
+> index 000000000000..fbefb1c83045
+> --- /dev/null
+> +++ b/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
+> @@ -0,0 +1,72 @@
+> +#!/usr/bin/env python3
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +import json
+> +import os
+> +import subprocess
+> +import sys
+> +
+> +import _damon_sysfs
+> +
+> +def dump_damon_status_dict(pid):
+> +    try:
+> +        subprocess.check_output(['which', 'drgn'], stderr=subprocess.DEVNULL)
+> +    except:
+> +        return None, 'drgn not found'
+> +    file_dir = os.path.dirname(os.path.abspath(__file__))
+> +    dump_script = os.path.join(file_dir, 'drgn_dump_damon_status.py')
+> +    rc = subprocess.call(['drgn', dump_script, pid, 'damon_dump_output'],
+> +        stderr=subprocess.DEVNULL)
+> +
+> +    if rc != 0:
+> +        return None, f'drgn fail: return code({rc})'
+> +    try:
+> +        with open('damon_dump_output', 'r') as f:
+> +            return json.load(f), None
+> +    except Exception as e:
+> +        return None, 'json.load fail (%s)' % e
+> +
+> +def main():
+> +    kdamonds = _damon_sysfs.Kdamonds(
+> +        [_damon_sysfs.Kdamond(
+> +            contexts=[_damon_sysfs.DamonCtx(
+> +                schemes=[_damon_sysfs.Damos(
+> +                    ops_filters=[
+> +                        _damon_sysfs.DamosFilter(
+> +                            type_='anon',
+> +                            matching=True,
+> +                            allow=True,
+> +                        )
+> +                    ]
+> +                )],
+> +            )])]
+> +    )
+> +
+> +    err = kdamonds.start()
+> +    if err is not None:
+> +        print('kdamond start failed: %s' % err)
+> +        exit(1)
+> +
+> +    before_commit_status, err = \
+> +        dump_damon_status_dict(kdamonds.kdamonds[0].pid)
+> +    if err is not None:
+> +        print(err)
 
-We already have 285 cond_resched()s in mm/.  If Thomas's idea ever gets
-implemented then six more won't kill us.
+Adding more context would be nice, e.g.,
+
+    print('before-commit status dump failed: %s' % err)
+
+> +        exit(1)
+> +
+> +    kdamonds.kdamonds[0].commit()
+> +
+> +    after_commit_status, err = \
+> +        dump_damon_status_dict(kdamonds.kdamonds[0].pid)
+> +    if err is not None:
+> +        print(err)
+
+Adding more context would be nice, e.g.,
+
+    print('after-commit status dump failed: %s' % err)
+
+> +        exit(1)
+> +
+> +    if before_commit_status != after_commit_status:
+> +        print(f'before: {json.dump(before_commit_status, indent=2)}')
+> +        print(f'after: {json.dump(after_commit_status, indent=2)}')
+> +        exit(1)
+> +
+> +    kdamonds.stop()
+> +
+> +if __name__ == '__main__':
+> +    main()
+> -- 
+> 2.43.0
+
+Other than above two trivial comments, nothing stands out to me.
+
+
+Thanks,
+SJ
 
