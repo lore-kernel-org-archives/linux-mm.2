@@ -2,88 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 81D5EC87FDA
-	for <linux-mm@archiver.kernel.org>; Sun, 10 Aug 2025 19:26:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B85A0C87FDA
+	for <linux-mm@archiver.kernel.org>; Sun, 10 Aug 2025 19:32:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 747726B00C5; Sun, 10 Aug 2025 15:26:00 -0400 (EDT)
+	id 449186B00C7; Sun, 10 Aug 2025 15:32:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F86E6B00C6; Sun, 10 Aug 2025 15:26:00 -0400 (EDT)
+	id 420ED6B00C8; Sun, 10 Aug 2025 15:32:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 635406B00C7; Sun, 10 Aug 2025 15:26:00 -0400 (EDT)
+	id 35DC96B00C9; Sun, 10 Aug 2025 15:32:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F89F6B00C5
-	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 15:26:00 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B712CB8D54
-	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 19:25:59 +0000 (UTC)
-X-FDA: 83761828038.08.ECCFB48
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 35F0212000D
-	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 19:25:58 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uxUn9Yoa;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 263F26B00C7
+	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 15:32:35 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7AF69C040D
+	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 19:32:34 +0000 (UTC)
+X-FDA: 83761844628.28.1E68FA7
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf12.hostedemail.com (Postfix) with ESMTP id E076640009
+	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 19:32:32 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Qph/Chm2";
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754853958;
+	s=arc-20220608; t=1754854352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=h305VlshYKh+Vd5nKwOxiGnLuAg5/oCgYo9LoXrtREQ=;
-	b=tyc5Q8VwQ83ej9amCyDEiwniDQVTF7e3WBj9Bx0JAB6XZkX/hunUTOjACnTw2IWwM2lQji
-	LzesYpV9v11xq0F6v7830gV93zgTNrPAvr4KTX7wSoPPLNTNloXJAu01I7hFpZE1RV4Swd
-	t6NApZzrbO2NlcOHYH6AIjLncKqjGXU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754853958; a=rsa-sha256;
-	cv=none;
-	b=2LthD3W6/TMXdwhuyrGMPIY92dH6+PsHgqJ1BXJ7DAX5tu3n5mCPBOEHlXGgAEkOjmyohy
-	OqWBEOmWyKI1AvteXNyhNc4hjanw4UKSwBKsc+2KO/Wsi0J5g2pZgeshxmENBkA2Klhede
-	g3U2S8lLPW5KFqa+ZQ/htUwHcPuoMLM=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=D2bNPkyCODFzXmbjRr0Tn5kBVqgc6Zaa3q80s0PwqQ4=;
+	b=fMebR8oDRxFHfo0wP+3+MnwX8lHGOec1D0O3lmDL1UkZ/ESRpngQVUkO+80VC9rLdgKM+N
+	qwsUNENNQcAG6QCZlzfk29ZimTOO4CO5+qpKbickbOFwYyoZeS1rmHxN5AFC1+gDQR33k4
+	FGa2r0wMucAvZzE6DQyN4Kd8Qpt4Tzo=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uxUn9Yoa;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Qph/Chm2";
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754854352; a=rsa-sha256;
+	cv=none;
+	b=Fk44ffkeKHoX6sMJlZGhmD7O2D8wsSn08Nis2FuQPxeooq9ORCnKKxm2zOg7KeFA8nd/IZ
+	NBLRl/XN7DPeeuJ1Q2GDLgiX67QSPxR+sm4SWXAkCpBR1ZKZT2kseEfqomS8ACuWgH0lkc
+	+Wnw3jMvX06JgiqjSGdTOqC87N/jw9c=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 2B1835C578F;
-	Sun, 10 Aug 2025 19:25:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABAAFC4CEF1;
-	Sun, 10 Aug 2025 19:25:56 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 164FBA56765;
+	Sun, 10 Aug 2025 19:32:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76474C4CEEB;
+	Sun, 10 Aug 2025 19:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754853956;
-	bh=WyO8PtQO+3C+ZYPrF+e4+P/lETANCz26Qlp1GXs3gLk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=uxUn9Yoag0uQmngugzY8heUDdXJBQMyMWguEvZk9gszM5AtoVS+y0oL+HbQ4/muuR
-	 Pg7scW8udvbYhVhnK+3ZGYmDb806r/ZJKHJARJ1B40yQ6+VociJGe6n9fu5SX7U+63
-	 IA+YoqnbBBJd0SROziim8ay5KbxWpcCTTMM1WnHEcxjO5yEQyCzo1xCf+W0IgrHfdx
-	 NSSiMR1YXFTdBpIp63FPJJRXMf6323/Nm6ABuOTO2XgcU8xTlFXuqdh2/PKwirzDgM
-	 49BhiUbqus2eqDET0C2W6ZbqoJsxtNtPh9XdyZimG1CCw1zQshAVl6K4fMwdgFRNM6
-	 PSb4p27OEDAtA==
+	s=k20201202; t=1754854351;
+	bh=7wFxe8f/K+rx3+UiMfHpQ9dhNKDAw8Dtp38fU8iBzeo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Qph/Chm2kmd4Ejz4y09GSDvWAbiq5rHvkeIdIqzwBUvwqnBN8hhDZTehzmpMDkkpi
+	 AkmIEyEFYsqs2qH86ZtTxZUF6TUh462rSmZ56kGYOxJas+Mc7dnZ0q2ePNHZDpJwFC
+	 MHP57tC8dewdMofXGcShbSvJuGZLdY33KFKgAtRBE/vgSKCdklPp7FmOt9DwHdVPi3
+	 3qMs5sCgLzDmd2LsaeO4Utpt4TeQUobci8HhCsCdLJUlAi4jxdExKRF3crWD3Gck+o
+	 uo1JWyNU9hfyOOGe4VP4UanlgAi+VH94RfxWiL3eKTL33JIDEW22SYqCztRCwUdFxA
+	 L1aTxCjUKXfhA==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Sang-Heon Jeon <ekffu200098@gmail.com>,
-	sj@kernel.org,
-	kernel-team@meta.com,
+Cc: SeongJae Park <sj@kernel.org>,
+	Sang-Heon Jeon <ekffu200098@gmail.com>,
+	honggyu.kim@sk.com,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	Dev Jain <dev.jain@arm.com>,
-	Honggyu Kim <honggyu.kim@sk.com>
-Subject: [PATCH v2] docs/mm/damon/design: fix typo: s/sz_trtied/sz_tried/
-Date: Sun, 10 Aug 2025 12:25:47 -0700
-Message-ID: <20250729144414.31958-1-ekffu200098@gmail.com>
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v3] mm/damon: update expired description of damos_action
+Date: Sun, 10 Aug 2025 12:32:29 -0700
+Message-Id: <20250810193229.51219-1-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250805173205.7385-1-sj@kernel.org>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 35F0212000D
-X-Stat-Signature: cndw7fp88yspdg3ibocmrwus68dgxuxj
+X-Stat-Signature: rw5kcbw86q61tcrcg4f4hza1aa9yd4ha
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E076640009
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1754853958-938015
-X-HE-Meta: U2FsdGVkX18WpjS5FM5HWX9l7tyMEyPPONX9j9HnEguXEWWfeU+E4pJljRxPQPlmDIj0eNDcuYljkUalYetFCDdm+4Ja/06yOX/rcgcjmsep7AooG+R2FTDdiHY0WHRJk1EdhxD3jBob50HU1DjFYOgom3MXyeqXZbcUjGdXNZxQi6AQSRn1C37zic3GoTy7k9h86qXcXJWcq6SVfh0rclIWjZFwPab/IwB+aYDoNWo5Rj99fUgX6Km7SZWLdd+BkFC4Izeakz6l6abIkERVHFDKnxrqITektcvR2LooiWdJpD2fI7zzDUMZiKUE+Vcol87YCGjsRu3DnuMTDmgsvVR3/9BjU9mSeNfdw/gYho/EVJO7tcqPbVIhFU4tUtcZGHHcjVzWcOUy76PvsOH/MeKQDgrI8/HH/b333RgSHYmdcYa0pUkgazpKkBvZCOn+EqIHY9/yLZ3l545vsHWuTZd7a3LWoWZFTU8pEHxLx2me0fq1WKZlo8ZFIJRHQpLSJnZefgJTPV3lgnc8l4f0Ht+oLdk0jP4A0QsImjPcGRpMhGO559JU+LzOPWMvIn9rxHkZwL5oou/f4z05MsoDOac9Ri21NaXr3+t+PjPnmTl7flOSDp3Bh/Rd/vsqNI/V5/UyoGWj+ZhJit1oDvCyP5xFIznFjIzSLypwIMyCbE0MmqM+NuIELXB8F6Svv3C6g2/SCM6yyAQC6M4BauE93XU0bfmSF2izl+2B5TLE0lY43sxI0JN3GuGQD7wwk6gaoYGHLP21qvlFOe2U9dIyAS9DQI3n+idpRLGgiaM9NEv1C1/C3zBm2uvwMxQlMS/9glX0KvO7GZTUxz439BjaVWkW4gb1jbAo0HVu9bv6uEdL6jUJvx9j+YmFizaJmj4tlMjkSGTmrfYs6PaCCWFip7bJxtejb3fuAMhHxsoEB/DupPxoQHM+6KYPqRbhHIWxo59JKj/KwuFGOOemlVs
- dGUcc7rn
- W6EV+EwYXz1voxWf/VSuh7k0f/UAuhQF64CeQ2OD7+E0f6pl2ePI4UbHC4e0tlPW/f2FNkZzpGNUvaeVyOASL7UZNNeejvOk2P2i0Ioydk+T2MWIe7uwJM4urV+KQsdgbZ1I9JD62O+Iej5Or6hi2+zirVNbvFvhfkkSSEtvZDI7W532Sn9NFduF7VbsbLzrbdSvgH6VsP+JsE5uS0kQx6+iMQRj2DHPP3Mjg6Hu3nMfjrOUx0527QRB91wWYNNTQVVDzN8Gj8nD6xHh9K4Z5tatrTHVYxL/KmlZ915GxE86e5dxPlKPNa/g8buklNgPShfFQSNw8XwiKiIgA7KrV02nKvg==
+X-HE-Tag: 1754854352-771132
+X-HE-Meta: U2FsdGVkX1/pQCY992muv+tAoTHh8XWbP67zQTPo/+KHaTVvG9Vslxe4G1ATj2RjXOt3gl85mulq5EaNXxoQnkfS15/sAlxBv9wEw+SUzBhWswtkEVvyVfAdPIuebzTpK3LKNTKVxYMTR41xGDoCWzlJobCPaf63s8FHZjh9N4UY4xnDH8a0gq0Ts1BohVDEAEqtVQ4T4w6n0IElLFy3FkLrC84MbYvDjPCeskTMd7diYNH/LkfIOOnex6ully7dDKfzbKtafi8sG5KGamlRQtgNSOBm+cqpCiWcU3mcLTlWImyKrI4IWFrp4G/AZYoBAt9vJdv85wQlZTzt9qi9iRCyejVkSYSQUBAyGlLAeofp54Lh/3YnLIssIl5zaQ+nAzCuRzPfB9efJKMBF2dRquigbCzFIGVAPN649EDzNkfty/cwqiUXv2RQ3jQn6KympMxOM5vHhrxTJ7um3kTz4ySXkFHrRRz9JWztnt4zpRmcIAGMlpDD7AsX92Inlijy8RnrJsDfelL2F+HHGcDwjE8F4CLqCZ6rk7dkkWLVgVoqjPZG93vCAh4Rv33HO35PF4jIaYm8l70R4a5t7JEQxt3N7bC1hGA0Aw7hz/sr/EyepIWpWRXEe7RmrNsu9lB4XD+s6Yb2cVY8AG7CsKjFtPzQkZbs4gh7IPzB2I5K5t135prycyukvaH5RqPhgqy4foizpYmkJROQG43aJX51oSBSqEX6+CdGjFqtbkKgvAasJXWgbbaoFK9al6Yvm4eXa+0bxH1AVxKTI3VotnhIwB9yhPOeeY547o3b8u8nCm9dC211c6fSAj4Aj8KF1/CvS8NSddGKdCytvRYSYebZPlcuPq+nll16Je2YpC0q0xPYGK34MsLNyf2nGP2zuqBh3O4ySw8RgQWdYr2W0bpR7WyYnbSyo9wWR6YHFfzGikliaGksj8epKk2LVyJ3xtMPal7OCPChxauX1WsKgd1
+ 250JF54I
+ 6T6qtUfC8CgIyPAz25CRwOUBq5Rk0hoaG5nBWsysT75RVqQAcWe2C7wBbzVCR1shbSUeWHPvEIf4I2xntm4acvOwBXs7o/ez1fntJw6jDnxjXGDbKq/lOsSeMveTQNPaPWcQIleEE2+v6cFKnVpgOcleCNUVMZ9SgHIOs33AjKXqkIoKGCNTB/C06dacx6rZWEfaOriE8mFBVxZnhFueJqpiZD1lWB3XEsVn2EWhZRzSPdLm3fJV6FJ6OMBEpmHuHl+IawdaetgT86wBIHPTv/QgDAi/wnDL8Yubs/x1RrzkgoIk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,40 +93,24 @@ X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
-Message-ID: <20250810192547.EBiQB9ySC4qrfPKDm3ZAnpZjcspLULWSW5_d6tRICbk@z>
 
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Andrew, could you please merge this patch into mm tree?
 
-There are some typo in statistics section of DAMON design docs
-- sz_trtied -> sz_tried
+On Tue,  5 Aug 2025 10:32:05 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Honggyu Kim <honggyu.kim@sk.com>
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
-Changes from v1
-(https://lkml.kernel.org/r/20250729144414.31958-1-ekffu200098@gmail.com)
-- update the subject to be more specific
+> On Tue,  5 Aug 2025 21:39:40 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
+> 
+> > Nowadays, damos operation actions support more various operation set.
+> > But comments(also, generated documentation) doesn't updated.
+> > So, fix the comments with current support status.
+> > 
+> > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> 
+> Reviewed-by: SeongJae Park <sj@kernel.org>
+> 
 
- Documentation/mm/damon/design.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks,
+SJ
 
-diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-index 03f8137256f5..2f6ba5c7f4c7 100644
---- a/Documentation/mm/damon/design.rst
-+++ b/Documentation/mm/damon/design.rst
-@@ -689,7 +689,7 @@ DAMOS accounts below statistics for each scheme, from the beginning of the
- scheme's execution.
- 
- - ``nr_tried``: Total number of regions that the scheme is tried to be applied.
--- ``sz_trtied``: Total size of regions that the scheme is tried to be applied.
-+- ``sz_tried``: Total size of regions that the scheme is tried to be applied.
- - ``sz_ops_filter_passed``: Total bytes that passed operations set
-   layer-handled DAMOS filters.
- - ``nr_applied``: Total number of regions that the scheme is applied.
--- 
-2.43.0
-
+[...]
 
