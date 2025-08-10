@@ -2,101 +2,110 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5ACC9C87FCA
-	for <linux-mm@archiver.kernel.org>; Sun, 10 Aug 2025 05:14:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DFA67C87FCF
+	for <linux-mm@archiver.kernel.org>; Sun, 10 Aug 2025 05:43:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 806D96B008A; Sun, 10 Aug 2025 01:14:21 -0400 (EDT)
+	id 5FFC76B0092; Sun, 10 Aug 2025 01:43:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 790D06B008C; Sun, 10 Aug 2025 01:14:21 -0400 (EDT)
+	id 589E76B0093; Sun, 10 Aug 2025 01:43:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 658CE6B0092; Sun, 10 Aug 2025 01:14:21 -0400 (EDT)
+	id 478776B0095; Sun, 10 Aug 2025 01:43:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F0DF6B008A
-	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 01:14:21 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 96DEF823A4
-	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 05:14:20 +0000 (UTC)
-X-FDA: 83759681880.12.7FC167D
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B4BB612000A
-	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 05:14:18 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VDAgLSST;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of ardb@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=ardb@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754802858; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 32B7C6B0092
+	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 01:43:32 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9F29C16044E
+	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 05:43:31 +0000 (UTC)
+X-FDA: 83759755422.08.60FABBE
+Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C17EEC0008
+	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 05:43:29 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Cyrpk22p;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.167.175 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754804609; a=rsa-sha256;
 	cv=none;
-	b=tIByvnRz0MLNH3jbtQ0Rb1l0uFOwaG0I80jNC0vdbyFY4hvJVHZNNQalz54h4KJJDpsCqy
-	HbTmo9muWqqfnYf0O1OkEoCY0Sxr9epU4A7KQPkTa+yWhLQAgGJbKoUDdjxJ5vBEdWor8g
-	tXnrEAs9ybjJlRQz1BQSNdYQ1D0pCLQ=
+	b=O6dOfhMe6HZH+OBh3iWwWMRSaspdYZHbaLQa72LMb9NH6PO4zzbmKqk+hZX+qdK462mdOR
+	MHQnoPMOjJZrDGLj5745sRB7GawyD3OsNqdmFVMjL18Yb2T3XRGSLIYEklPfcGxgQ3josC
+	7UAxOIQytfkaGQTqVGBZZvxVdJjTb68=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VDAgLSST;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of ardb@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=ardb@kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Cyrpk22p;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.167.175 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754802858;
+	s=arc-20220608; t=1754804609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NNn7b32meLG+SQ+LD3+YgK6AHOyjjnsGIzBDLrBqoSY=;
-	b=5krSkP2t5eqi31kGEqn0LXeG0AIC6egwgBMTBDj0/wQAcps1exdGzEfC0SzfObM/sFg1gF
-	FQhp9/4V++PiDM/iQ3ePzd0xU81XsqmGKeJ9gvE1gB1aM0rgFFGN/NZRpY2BsWTEVF3Bab
-	yPxR6TjhyMqymQj2fHlNo2EZnyK9Jz0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id EABA6A54121
-	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 05:14:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36353C4CEEB
-	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 05:14:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754802857;
-	bh=CsX0+8wPsF+NVaEYBtYgUl5OhjzH9LZHcssQWkW2mKc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=VDAgLSST380FoqNiTqfUzCjE+01RJMt/CStnUKgOcI34/24d74D8i6rZL4vyuOkMB
-	 9bYVbh1OQ4XENgXaOS7FwxACkgXygu/Ij0eUGT2W/pQpVm5nlZ85us5bLqvvo2kuMx
-	 Wx+68IEHmMztUQsf7bS4VHn7zjtL1AdhMzEIt1QN+NlnLlceTRkfFsbfeikVpGjUpo
-	 p5F4uMlYeYlalPrOB66R2NSL4XjZVAUKzObIfi+293Uil6GOS3JPZvfpbXopM6+gws
-	 fP3E5e9LkymxfJJmGYZziemKjk6HCvuSSWQhD0RKeAN1hzTT0Ni99XO/BZ6+QP5/yi
-	 BfKsAq7pZDC8w==
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-332612dc0d1so26706991fa.1
-        for <linux-mm@kvack.org>; Sat, 09 Aug 2025 22:14:17 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWacCt1W/g73zT30059aXBXGsTIWw+/AqFwsqoSSPCchkdA3wvoC6emjKv6hmOMjvOw515rEIsRcQ==@kvack.org
-X-Gm-Message-State: AOJu0YzbQXikjTJaA/kRjWL7UQvBGgWyqxyDEabqdQ6OreNHowoS9jyJ
-	8GzuljY19ZSjvYy3Yq3GVlsRT4Whb90bmGO/mfq3UtMTvI/2Q8zgPWOEJQ1vZpqeHyBuNf1kN80
-	N0ZEglXOV9teQrG5xM5jHjiYKVqPZn54=
-X-Google-Smtp-Source: AGHT+IHL5VOMKYC7wfesoWjZEqnCd5gQuxwltrN3JRoIqGTots354Q4H6YVOxkJlFKo25XIJ0ZLg8dQ2+7XSNVjY0Ts=
-X-Received: by 2002:a2e:a987:0:b0:330:8d4c:ae6a with SMTP id
- 38308e7fff4ca-333a2145753mr23339921fa.6.1754802855620; Sat, 09 Aug 2025
- 22:14:15 -0700 (PDT)
+	bh=1VF7q0WLeklegOu3HyhvX8CcabjELygMV30fjl5+vF4=;
+	b=OiAMI6u5jbH1cJTWLAqxJc6JkecjNQI0QWln/gML6I7OYdNulKEFnSRcblfAVH3uRb6SUv
+	LiIyyedKwSFWfRCMHcyYAHi9D2GoWx1xpdvrmPxCFpv3cRMbPcsjwuX8cGOrE/dBAFuHaD
+	awMMUY+NMy9j8LO6DcQkp/Fi2w0clfE=
+Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-433f78705feso1189757b6e.0
+        for <linux-mm@kvack.org>; Sat, 09 Aug 2025 22:43:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754804609; x=1755409409; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1VF7q0WLeklegOu3HyhvX8CcabjELygMV30fjl5+vF4=;
+        b=Cyrpk22pUDi10vpZiDuwb8kEEBWY/G2ucZMGfuH0gpiwhNTFj0hx0s+xrBEGF68UPt
+         Dtzukyw8JEuh0gMTDksG6T7qqBrgvc99488V7dZTZmyYxI6yesusot97IBOS5GAqDO45
+         A/zM/BL0RRP6FOUryonetobzt1CMJFq/SISifFBR6KtAdMpUCHc2Ig/R8q91fp4djStJ
+         lCnkRHioHrw5fgtx33UW1dejPKj6x4Yvb7AAH8b5pL8BzoEPq7MurwMBfwIct4pwM21C
+         J9VTt6t0F7Mm1gx1WACUPZZ8OVgUL0p+bXGAMjP8XtOz4Xw5BzqQtS45SU20gfYiGoo4
+         AmyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754804609; x=1755409409;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1VF7q0WLeklegOu3HyhvX8CcabjELygMV30fjl5+vF4=;
+        b=sfeh1j8BccUMeCkgS3rYZaokegeltCuKzQnh8nhOYu9gLGbUQUp1zW3h9En+IuDmz0
+         rrYatCBB+ZxfZ4SxdGnDk8JzfRrCsoJByH/KfkoSBJ3ikS7bgxGwijPQkLoeTaUEntAm
+         PlvmQ3Zb7YB5uMnzVTNy6nERmGcoGcYMSvrbyKDwAiDomQnAUdBApwK/LqtYogXl9f0q
+         iM/7d7dYThnj4WOLejy9uX5aVuzTHeObDvONsZtwXaxqephKomzJWI9HyCqjs8/vk5sQ
+         9JDxFqqK8PRG29GD0gDOI7EMldpYCK0BmipO3aPtl6VTpztO6aZRi62P2RworeT9sL7s
+         E3jg==
+X-Forwarded-Encrypted: i=1; AJvYcCUYXvF66Lj5eDN9jSC1oj6pF70mD8rEs7Jz+qOPZsy2TO0BBaGYXczYsnpWaB29TECbpkHLRtoVWg==@kvack.org
+X-Gm-Message-State: AOJu0YzaFDQUjLeh2J3UsPFP8Q79rpB8BolDdX+lcTWSQavZdX9KZ35O
+	4uBaYTdog6sKLkmiQ+SPhnKsno+uYSE9mlDUPMh1NWg8SUxQ21vgYKSJHs9rPfp1X+cCS0tTNbg
+	N3FCyJua1t6caKTjruCooaunZVxH9wxfP04NvL093nA==
+X-Gm-Gg: ASbGnct3hXbv5oGAkHxkVehkRFdGqA2JzpvT4nRvLhcMi/+WhOL2KRON3+qAB8AK39B
+	tkSIV+2e1htMg0JQMb8xZTv26HXUYqxEpNGHn/SNwGjA/6v2mgyWdcElFfLcCK/Drrpdz2A5LWu
+	srjga1jVPHwtcQDXm9NDDl+8DLsCsO5dRIaQsa4O2O9S3RDdOv3DfImEpE3eGwTxGenGZ/iO4SA
+	Wigc4w=
+X-Google-Smtp-Source: AGHT+IHJxGMU/wk8QP5vJyCNj2dWjhPvgi4dMUxGNQQj6i6HmeNlJ8gTWRRCGf/0ap7DyAgfXV1rAyxSCplBWIqXv2A=
+X-Received: by 2002:a05:6871:5b21:b0:30b:9750:3085 with SMTP id
+ 586e51a60fabf-30c20f8d5f8mr6278198fac.10.1754804608515; Sat, 09 Aug 2025
+ 22:43:28 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250717085723.1875462-1-mawupeng1@huawei.com>
- <aHjQp9zPVPuPyP3B@kernel.org> <9688e968-e9af-4143-b550-16c02a0b4ceb@huawei.com>
- <aHj8mfecDhJJZW1Y@kernel.org> <8d604308-36d3-4b55-8ddb-b33f8b586c1a@huawei.com>
- <aHzjOxg_oPp06blC@kernel.org> <CAMj1kXGKGXeKGKWT3VzkBtACtjFyz8ntiyoTU26DA4aR6mi88g@mail.gmail.com>
- <aH9JMT93itrztZ+m@kernel.org> <113b914f-1597-41ca-b714-7ea048c3c6df@huawei.com>
- <aJM1RFjpQxQzfASv@kernel.org>
-In-Reply-To: <aJM1RFjpQxQzfASv@kernel.org>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Sun, 10 Aug 2025 15:14:03 +1000
-X-Gmail-Original-Message-ID: <CAMj1kXHg-xB8KxkgL1FYu8PpBVqXUsR7wMxUXwfUXm=BfuUHGg@mail.gmail.com>
-X-Gm-Features: Ac12FXzf35_uvtEOeRokVqVCBseAN6ZGkichFEJ0PZx8nn7rv48lzsCRiSNtW0w
-Message-ID: <CAMj1kXHg-xB8KxkgL1FYu8PpBVqXUsR7wMxUXwfUXm=BfuUHGg@mail.gmail.com>
-Subject: Re: [PATCH] mm: ignore nomap memory during mirror init
-To: Mike Rapoport <rppt@kernel.org>
-Cc: mawupeng <mawupeng1@huawei.com>, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
+References: <CABFDxMH0LDLLdJf-t2DEHCD40EJDfcq35cJM-HS5GkLX7KqsHA@mail.gmail.com>
+ <20250809173559.71327-1-sj@kernel.org>
+In-Reply-To: <20250809173559.71327-1-sj@kernel.org>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Sun, 10 Aug 2025 14:43:17 +0900
+X-Gm-Features: Ac12FXwPPpoJ3Atc3Fc0faMpuO09tCnt-cxUYqEXvY3Fy45GYsSbzi1FInUggjA
+Message-ID: <CABFDxMG-2+VQvWNHqCLKy4jZXBJzsWPS9DOkV-gfYovF5Xo-Jg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] selftests/damon: test no-op commit broke DAMON status
+To: SeongJae Park <sj@kernel.org>
+Cc: honggyu.kim@sk.com, damon@lists.linux.dev, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 8qt1nb64nsjwyxd31gejz9uaa5pfwuj9
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: C17EEC0008
+X-Stat-Signature: 67hib6n5ox9y3t3zpfp4hzry4nnwgnpq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B4BB612000A
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1754802858-816315
-X-HE-Meta: U2FsdGVkX1+BO8jFbjRT1mz58IW/JIOUF0Wgkc1iMSFSDZ5247bb8eBR1MwHisAnu/LkTpyU9QyedIH8umdvgfFiwQG9srVe3ApKlkCAatTF+PmEznXyby/f0BOqBosg2z93dzh1KoDjAZ2DbwSs6I+f+ojgjTHibVeVS/LmS1i9dEZ/ts+t+i8ctCXd7fAOgT+lAkgwqRgcJqq9o5VwMM56ZrvqOlONL7QLRpYhAFRF6jz8aJxCXS40ZGduzUVjVK8HdVzP/ApORI8evOa1KAAmF1ZRBEJpEDlmCu7pijyXkUZuL9XX80vTc2Y6XhktYrGd1Jcm+E8ccmTm2bU2mqCdL735NotchxCoi7m1sFwLh564USRP1Hw/X5WKhUHl5sl7DCzW+dEauyOFIWYviS/QWguwJl6bT1seeA9ydG/pTR4+At47HLVINFCeZrQtXwfF5OZm30wveLwbLo3Acb4FQ7ZRJ7UtaowBwGBlG2moZwVzx1etuxwQpoRd6UUl14RzjqpBwcNV+zCDDP+MtfOwF9f120OkDac/Rc9dnziYuFTMlEU2tBwwMLIfs7ZbKeM9c9zuiHl+d4ZNQqVB8BRRhY7vGQQFCt22CgjHF/3ckx0kwo78mg2DymwzXTr8KFoAdXrvUSxop1PRJtdWXg4x+sczyXU6KzgoOxe0x6tYxzkTYpgNFCLZioMTNblvOQtY2qXNsyh90MKSMVvhbQfCbQvZRxdOLa4nmDRXKmTNTd48D1FEc0xx5NY3AzY8E/s0SuaaUS8c60H6NkeK3Q5sI804LAy/tOLlywV3gXjFFpLSgERoRKEc4oKO1Q64ZWlUK5NMYstqMk5MehS1/egqJhczIwN5MLygpi2VEIVkb1z15JBtFf0fQ/vKbpD0pfHOa0uSEM+GwOCLm91LNTu3Qs5+IhDc+aHBXqrWJzL10JqbuU34t8a4j4SLJRk3MiRkYVI41GdS90K/EEG
- 5EFTMbV9
- n8+tnYKKIDbeHmv3VnY480zVIpG76dx1fibM32XHKSMPU4CDBorj2Yu+e7xzh1EiuRZFhSUwdYoNnLS1mfezyKA6PusdXAKvU7eGmlFowWedFibPoDN5v1Q98XYhBbFSx7WG8chlDfq7GXa+psf7Z2u4Ljr8v17I5LUOi2XzsKZP3uaU4TWr+QU64XrNW6Vlza3ZARR2QmnTJGKmzFunQ2dJAWDwPmnerjg9zW7Y7Umz3S0KDbzo1SRxQ8hY47SMjwnwzh0Z52s5qLcg2s9bF4RT6mne92hdyq7JnVmN6hS5k8uE=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1754804609-441871
+X-HE-Meta: U2FsdGVkX18d/R06P37dQRItVALTSf+I7Nfn3nUhRiMt77oMYpOclWKg5jGhQaxmZP7cPOK6GYkirsFSEWbhebi8AgG78WygOI0liBu86iF5jzjRlzvnTLTuWrqDKh3vIUQx0qRLDbZRRarx9nA8zHm8XoxeZHiU4xfUDfcfr0zmb7fz+ONVUG8X1+VmXnT3uOcEHU/pyMjparc6QO1d4r+3S3N0PlIK7EPNiqV5Cx4nz2kjaQkLMicNEpFZiUHHk8FPXuIGcMNNB+Uj864+sTopIUByq6X+WzYCvzgguDNgs4Zqxv+av3qVcLrUDlrLWruGct+rSzkwTd/9NJkjcfM9G6TyAkWekOFa4x+IaP8IbbZZHWkh96GkFrrJNReiDPi95/R+M4iCVTf2NMq/iQImVHE/0Tb8DBCvdQvB7umu7hqmb+zoNe/FsOJaNELiSoBhoXY6vOLjQCHhsLXe5QPvoa755H7b6q0hjKBgQt39P6guVu+VIAHzRC5SPcp2i6IvtlR/ngEWsGWUL3feS1j9N7SRnCDdWyM04JqH8q9sdviTKktS71+pKjTwMjxAkN5ma+mVIGWeiGV4Qwayi1BqiK+lgePRggO7Z5S90vKmLtGWee9JjVOLzF874WPXsq90I9Wl2RyeDMJ9EgMv5jj2LYOHb2bh6T1Ffi5ajGurB17n4O1p0867m0G8G9EgHhov23Za/BQYwgozT+5REsZf+qjjfyVXcTkqFEOHtNzl8ekF12F/VVGjlSa4QYxGYcgLO4rmIPLEMebFdZWm6FHeghg5yOCPyLIfFe0uPUcUdkuk74E5NJOgUHpN6woXqbrtVFup0Gz7KvYYdBEFonYWtEZ6+svgbjhDp0ecWpvEeN38py3TCULCML05nGiANM6h6tQCxu5ZB/mS4T3m2hb/WUVkzl2OdAXN83C8qmPGtpLjWTNglIVXXuYrM6PJO3MboLwsgnE9CjmD++C
+ lfta6V02
+ wsddgvNRCTtQRUk3cebf4h+2vxh73a76vb/zBpd9XI3HpKpLveB2V/Du/ARDuPOigLUQx6wQUpKiZ5JvpUUEMqwW35rWxtucgsAQ2kA3ZrTUgNCHHzCLg2hP+XXM/kh1UNBStBOyndxW7tx4IxIVgTZRu9zM169uj6qaPGAtGz9ckzgcrYIeKNZLhF2M7/Nkeqx5w4pXHo0V2T8OkbigEF8a6qX1hMvlBRkA7hsI9AEaF+0fD9+3pJNEEoRl9/vSUvc8tgpJx+25RmTYzqVWcmEAiKAJ5h/zae92Dp3ij60ZucXpt9ABtV7veJk9dO+apBfi62GerzhWzlJH05X/y4ihKJsdDT8K0UbAEom/Bio18Oxrfqv5cMec6OIzibSX120N7gDPZ3sEs1PsBPnl7k6Ic4mAwR/PKhCKAD2dx9rRi6sRk4iNZo4lvq5jV/ByE65Zg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,91 +114,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 6 Aug 2025 at 20:58, Mike Rapoport <rppt@kernel.org> wrote:
->
-> On Tue, Aug 05, 2025 at 04:47:31PM +0800, mawupeng wrote:
-> >
-> > On 2025/7/22 16:17, Mike Rapoport wrote:
-> > > Hi Ard,
-> > >
-> > > On Mon, Jul 21, 2025 at 03:08:48PM +1000, Ard Biesheuvel wrote:
-> > >> On Sun, 20 Jul 2025 at 22:38, Mike Rapoport <rppt@kernel.org> wrote:
-> > >>>
-> > >> ...
-> > >>>
-> > >>>> w/o this patch
-> > >>>> [root@localhost ~]# lsmem --output-all
-> > >>>> RANGE                                  SIZE  STATE REMOVABLE         BLOCK NODE   ZONES
-> > >>>> 0x0000084000000000-0x00000847ffffffff   32G online       yes   67584-67839    0 Movable
-> > >>>> 0x0000085000000000-0x0000085fffffffff   64G online       yes   68096-68607    0 Movable
-> > >>>>
-> > >>>> w/ this patch
-> > >>>> [root@localhost ~]# lsmem --output-all
-> > >>>> RANGE                                  SIZE  STATE REMOVABLE         BLOCK NODE   ZONES
-> > >>>> 0x0000084000000000-0x00000847ffffffff   32G online       yes   8448-8479    0  Normal
-> > >>>> 0x0000085000000000-0x0000085fffffffff   64G online       yes   8512-8575    0 Movable
-> > >>>
-> > >>> As I see the problem, you have a problematic firmware that fails to report
-> > >>> memory as mirrored because it reserved for firmware own use. This causes
-> > >>> for non-mirrored memory to appear before mirrored memory. And this breaks
-> > >>> an assumption in find_zone_movable_pfns_for_nodes() that mirrored memory
-> > >>> always has lower addresses than non-mirrored memory and you end up wiht
-> > >>> having all the memory in movable zone.
-> > >>>
-> > >>
-> > >> That assumption seems highly problematic to me on non-x86
-> > >> architectures: why should mirrored (or 'more reliable' in EFI speak)
-> > >> memory always appear before ordinary memory in the physical memory
-> > >> map?
-> > >
-> > > It's not really x86, although historically it probably comes from there.
-> > > ZONE_NORMAL is always before ZONE_MOVABLE, so in order to have ZONE_NORMAL
-> > > with mirrored (more reliable) memory, the mirrored memory should be before
-> > > non-mirrored.
-> > >
-> > >>> So to workaround this firmware issue you propose a hack that would skip
-> > >>> NOMAP regions while calculating zone_movable_pfn because your particular
-> > >>> firmware reports the reserved mirrored memory as NOMAP.
-> > >>>
-> > >>
-> > >> NOMAP is a Linux construct - the particular firmware reports a
-> > >> 'reserved' memory region, but other more widely used memory types such
-> > >> as EfiRuntimeServicesCode or *Data would result in an omitted region
-> > >> as well, and can appear anywhere in the physical memory map. There is
-> > >> no requirement for the firmware to do anything here wrt the
-> > >> MORE_RELIABLE attribute even though such regions may be carved out of
-> > >> a block of memory that is reported as such to the OS.
-> > >>
-> > >> So I agree with Wupeng Ma that there is an issue here: reporting it as
-> > >> mirrored even though it is reserved should not be needed to prevent
-> > >> the kernel from mishandling it.
-> > >
-> > > But a check for NOMAP won't actually fix it in the general case, especially
-> > > if it can appear anywhere in the physical memory map. E.g. if there's an MR
-> > > region followed by two reserved regions and one of these regions is not
-> > > NOMAP and then MR region again, ZONE_NORMAL will only include the first MR
-> > > region.
-> >
-> > What kind of memory is reserved and is not nomap.
->
-> EFI_ACPI_RECLAIM_MEMORY is surely reserved and it won't be nomap if it can
-> be mapped WB. I believe other types may be treated the same, I don't
-> familiar with efi code enough to tell.
->
-> > > We may want to consider scanning the entire memblock.memory to find all
-> > > mirrored regions in a and than make a decision where to cut ZONE_NORMAL
-> > > based on that.
-> >
-> > AFICT, mirrored memory should always locate at the top of numa memory
-> > region due the linux's zone management. there maybe no good decision
-> > based on memblock.memory rather that use the the first non-mirror
-> > usable memory pfn to cut.
->
-> Thinking out loud, if nomap is not usable to Linux why would efi add it to
-> memblock.memory at all?
->
+Hi SeongJae
 
-Because the region has RAM semantics and not MMIO semantics. This is
-important on architectures such as arm64, where mapping RAM with
-device attributes breaks cache coherency.
+On Sun, Aug 10, 2025 at 2:36=E2=80=AFAM SeongJae Park <sj@kernel.org> wrote=
+:
+>
+> On Sat, 9 Aug 2025 15:39:41 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> =
+wrote:
+>
+> > Hi SeongJae
+> >
+> > On Sat, Aug 9, 2025 at 7:05=E2=80=AFAM SeongJae Park <sj@kernel.org> wr=
+ote:
+> > >
+> > > Hello Sang-Heon,
+> > >
+> > > On Sat,  9 Aug 2025 04:55:17 +0900 Sang-Heon Jeon <ekffu200098@gmail.=
+com> wrote:
+> > >
+> > > > Add test to verify that DAMON status is not changed after a no-op
+> > > > commit.
+> > >
+> > > Thank you for this patch!  I have some comments below, though.
+> > >
+> > > > Currently, it is failing. but after fix the bug it should be
+> > > > success.
+> > >
+> > > To keep bisecting goes smoothly, let's introduce failing tests _after=
+_ their
+> > > fixes are landed.
+> >
+> > I see. As mentioned in another comment, I'll merge this patch set into
+> > one patch. I think this comment will be resolved then.
+>
+> That could make the patch be unnecessarily difficult to apply on older ke=
+rnels
+> due to the test part.  Please keep those separated.
+
+Oh, I misunderstand your previous comment. Now, I understand your
+point. I'll separate them back and make two v3 patch(one for fix bug,
+one for test) not a patch set.
+Thanks for the explanation, I feel like I'm learning more and more.
+
+> [...]
+> > > > +    if rc !=3D 0:
+> > > > +        return None, f'drgn fail : return code({rc})'
+> > >
+> > > Let's not add a space before ':', for the consistency.
+> >
+> > I see. I made so many mistakes like these; (I worked this very late
+> > night...) I will fix them all. Thank you for checking this moment.
+>
+> I'm sorry to hear that you had to work on late night :'(  I hope you to h=
+ave
+> sufficient rests.
+
+Never mind. just I went with that :) Thanks as always.
+
+> [...]
+> > To be honest, I didn't use kselftest framework while making these
+> > patch set because I don't know how kernel developers use it.
+> >
+> > If you are okay, could you share how you use it?
+>
+> Sure.  I do below for running DAMON selftests.
+>
+>     $ sudo make -C tools/testing/selftests/damon run_tsets
+>
+> You could also run DAMON kunit tests like below.
+>
+>     $ ./tools/testing/kunit/kunit.py run --kunitconfig mm/damon/tests/
+
+Thanks for sharing. I'll try it with my vm environment.
+
+> I usually run all those together with additional tests, using DAMON tests
+> suite[2].
+>
+> > I just build kernel
+> > with custom patch, and execute output images by vm, and setup env,
+> > then just execute tests(it's so raw.. i know)
+>
+> It's ok.  No one fits all, so different tests are needed for different ha=
+cks.
+> Please keep using whatever works best for you :)
+
+You're so right. Maybe I just want to learn some tips from the experts. hah=
+a
+
+> >
+> > Maybe is there a kernel build option that automatically includes tests
+> > to output image? Or just a general or smarter way to execute the whole
+> > test?
+>
+> To be honest I'm also not an expert of kselftest and kunit :)  You coule =
+refer
+> to the kselftest documentation[1] for more details.
+
+Thanks for sharing!
+
+> [...]
+> > Thanks for reviewing! Have a nice weekend. I'll do this job after my
+> > personal schedule finishes.
+>
+> No worry, take your time and fun! :)
+> [...]
+
+:)
+
+> [1] https://docs.kernel.org/dev-tools/kselftest.html
+> [2] https://github.com/damonitor/damon-tests/blob/master/corr/run.sh
+>
+>
+> Thanks,
+> SJ
+
+Best Regards.
+Sang-Heon Jeon
 
