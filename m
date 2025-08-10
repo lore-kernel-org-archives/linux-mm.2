@@ -2,135 +2,109 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C082C87FCA
-	for <linux-mm@archiver.kernel.org>; Sun, 10 Aug 2025 12:58:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 366AEC87FCF
+	for <linux-mm@archiver.kernel.org>; Sun, 10 Aug 2025 12:58:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BCDF86B00AD; Sun, 10 Aug 2025 08:58:15 -0400 (EDT)
+	id CE1286B00AF; Sun, 10 Aug 2025 08:58:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA5C46B00AE; Sun, 10 Aug 2025 08:58:15 -0400 (EDT)
+	id CB8D26B00B0; Sun, 10 Aug 2025 08:58:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABC1B6B00AF; Sun, 10 Aug 2025 08:58:15 -0400 (EDT)
+	id BF5E06B00B1; Sun, 10 Aug 2025 08:58:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9752C6B00AD
-	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 08:58:15 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3932A1604B2
-	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 12:58:15 +0000 (UTC)
-X-FDA: 83760850950.08.6BACE95
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 42E0620008
-	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 12:58:13 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HnSxRUx8;
-	spf=pass (imf13.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=snovitoll@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id ADE476B00AF
+	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 08:58:57 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5ED00114DE4
+	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 12:58:57 +0000 (UTC)
+X-FDA: 83760852714.20.360C76D
+Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7EC41100004
+	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 12:58:55 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OoM0Ytf+;
+	spf=pass (imf14.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.160.45 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754830693;
+	s=arc-20220608; t=1754830735;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qPUEdIdCRmt+MYJsQtBbxjY1GnPuX9CU1RwbVybqcDU=;
-	b=uVFOqrSHaLS/ijRD+8HIWigNdrYzIsbjC8oUljwV324MALnpnsVvJBKmNKIReAWcIhk8Eg
-	jAkhyOQy/Bo2aQY5K9lrY2HPgluIhWMBkJEE4m257oMgxwX2syCSgjVKXUkOd2SoEcEdzS
-	9S06AjoEkvK3ypZKH23pFr+vDV9gEc4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754830693; a=rsa-sha256;
+	bh=DuqcSADnXqnWDt2KXmVA1zBALEN31klBjKcBY7VnF4M=;
+	b=Pi8aBFuuonk0f7RTJ5IwYHGhiwoLQuQPzen8Zf5HAq0Ym/D73xu5sdGSTS059ogE01mmH8
+	AYJ9kmI3kyehScgFt3neTMulS1EK0qUjsPbbt0N2qAA10oWfAZE/nBkWurRK+xE1LX2hqp
+	EaEdjY453Vd+Z8oRm6l/A15y8BkWubY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754830735; a=rsa-sha256;
 	cv=none;
-	b=qbQXtSfO1eDNjIMbnCv2DL2nvo9MUysalOc0BhME+aQ9k9WZ6WKwa57FiPcerSpElkm/yt
-	hXQwRTHzJFD8tH4IEXA4dnkx0/vWmnbpN9+R2kvwflPl7ZZbJSBp8ytiVWLjJBhugjbuty
-	9Bi4GCToQ/oAsyc4GSiyQX/OD93gZuQ=
+	b=TL3SWMd4NoCWliFeh0dYeAwo+mPNXOsxQZOIuvZVljhs8AsIRssaoQbaA83PJVCP6Hf7NO
+	680pcGJka8J6QBT/PwA6rkohWOu4r2So81eVMYpaCFOPozp/JIytg9bMYrJxuoQ4AexOKL
+	ydPQ8Ercsii2hnAMXTpTI1JcBp69g64=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HnSxRUx8;
-	spf=pass (imf13.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=snovitoll@gmail.com;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OoM0Ytf+;
+	spf=pass (imf14.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.160.45 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-332426c78a2so27844691fa.2
-        for <linux-mm@kvack.org>; Sun, 10 Aug 2025 05:58:12 -0700 (PDT)
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-30799a41109so1368423fac.2
+        for <linux-mm@kvack.org>; Sun, 10 Aug 2025 05:58:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754830692; x=1755435492; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1754830734; x=1755435534; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qPUEdIdCRmt+MYJsQtBbxjY1GnPuX9CU1RwbVybqcDU=;
-        b=HnSxRUx8ey1fDtf8Znl52uFftopAQ4nHMPTQOBaskOWQ8Whf9deEfmKp2mH5Y5e0Ta
-         1/L2eBtsW5vW2tLArlD5RiTOgTxkmSS4mEyKTirOPuA5b7wZMO2t1A1U8osAgnyNJwbi
-         ZCIEpwAXcqBvcw7ubLaR3de6DT3fiChRJzLEiFcBQ9GNH/vc4gU9/4LEx2dOXwNW3wcl
-         8BZygdtv6IURCro2eQSAeHOXeXczUWOL8HpLl/LW7xP2433cZEscmd4Q7mF2iqdp/bzM
-         v2jdGLNT4Nin/48lAi527QRRInxH01u77Cdz84XCgHNSaSrC8FsFY/b1W/E11Q/2VxYe
-         Ovtw==
+        bh=DuqcSADnXqnWDt2KXmVA1zBALEN31klBjKcBY7VnF4M=;
+        b=OoM0Ytf+gjqpu1uY3KuNXJFX8h/6cCge2WAzbgh7xWrv/JEpJbk4ZjXt3IHoxx6SW4
+         N5/IerBrXCMC/YaRcSyrrH0wBVNmWPsSz/U9girU0wS0F5y27bY7LMiac5Zhlrizdkw0
+         FTVp4rZV+fDt5hnlceKH32gXfYCqK7l+OJ0VxQafkt2VQ/yg9fHnEOWCItgtHuKRBnI+
+         1Q7hI6prf9EMQPzr1WPkyAX2uBAfNufVlnqt4OPfqcIderWL9w6DcgK+CE8JhSLT9reU
+         Oam2a3jrEEt2jq+dYXzbVv5NVEjTm7vENRqyMN54i12derERaom4/iTYmM/3N5b4Mh6O
+         FSBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754830692; x=1755435492;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1754830734; x=1755435534;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qPUEdIdCRmt+MYJsQtBbxjY1GnPuX9CU1RwbVybqcDU=;
-        b=n3TQ978oQl2HKcrX2SRCgklf3GunYCM9naChVZ4LnpbI4ReAn33Ql9lEardHlWh7ls
-         D3LkCGN/LNGDClQnRUigWsQHGGKbVOpPQd0IgfYhUPBzM1rUJEPV4DK5xBQ49K2PcJZN
-         /7u5U1otHHez3KHHhbm7ujd8bczdnZNDXRFJfB/s5o9DuOOulvLt6KonuM/yD1CPCtAt
-         XKpc7QY9Nf1JIlj2ywZdHZ1uesw+GCFjDESZ9lKkZMzH2dVNHuhZkcGNbh96u4HuRzKM
-         qJV8tP+GE11siOIY3kFYnL/xZDs0+PKzEaOCWP+ZP4uByWJWGn3jTcfgtEDpxuVmuDYy
-         IlIg==
-X-Forwarded-Encrypted: i=1; AJvYcCXTay609KZJowkVt0ByYrWJJUmU0uNy8demfhOSstxhlCS31/XJW9SxobU1faVZg5ISLn2ce6y7FA==@kvack.org
-X-Gm-Message-State: AOJu0YyIjGM0GTGhgpCOH5loxv4hVyUFpNmpBcxRqRXvOfq1FqEz9n0V
-	tI7D4Gym5gzCQpvJzy1P5UFx0+kgTmS9OSXgSO2A9iDxzXBNRyVThxsv
-X-Gm-Gg: ASbGncsk7IiPs9VOBJ/p+i/SOdcINH9lN8FGMcCLz0uFur8X2GJH7h8p9lDsehDPPxV
-	B4sKzNDpvYK6ut/sfpLBzwIwRTwStjmXIn9FtMyy5n9REEdD3ICCPvoJhGSx21eflxPi06mH8Ry
-	bQ4Xj9SW7I/Z9zFafZ91WN00GZ0RZ9jhg2+XOkHlsrkfFPO0/4NBPzd4ucyoydunu0wfZSytTA5
-	RrUGXfBDCnY9ItbXdQFUeUdc9CK6350FqM+H5GiRclG2+ahBxMQzTa2Ftcup/wGKo+Nz62tzeUy
-	TwOkd4dHCMiaNdxcX3TqK2nISfuXlfvCLquyeG+9b+8Dh6QE3APsYLyigmrApAb6/PMOWRPMND9
-	c4oWHarTaL5vgGRsd9ZGIsl5RmpGPNQR2z/4vug==
-X-Google-Smtp-Source: AGHT+IFrIl3eJCoqqHt0ANltzYIq2yL9Jka0mZA2tOEeoGsTnUPJed1OxDGIgQlZCm+SP4loyYZbRA==
-X-Received: by 2002:a05:6512:3502:b0:55b:732d:931 with SMTP id 2adb3069b0e04-55cc00b14c8mr2560689e87.12.1754830691289;
-        Sun, 10 Aug 2025 05:58:11 -0700 (PDT)
-Received: from localhost.localdomain ([2a03:32c0:2e:37dd:bfc4:9fdc:ddc6:5962])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b88c9908esm3804561e87.76.2025.08.10.05.58.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Aug 2025 05:58:10 -0700 (PDT)
-From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-To: ryabinin.a.a@gmail.com,
-	christophe.leroy@csgroup.eu,
-	bhe@redhat.com,
-	hca@linux.ibm.com,
-	andreyknvl@gmail.com,
-	akpm@linux-foundation.org,
-	zhangqing@loongson.cn,
-	chenhuacai@loongson.cn,
-	davidgow@google.com,
-	glider@google.com,
-	dvyukov@google.com,
-	alexghiti@rivosinc.com
-Cc: alex@ghiti.fr,
-	agordeev@linux.ibm.com,
-	vincenzo.frascino@arm.com,
-	elver@google.com,
-	kasan-dev@googlegroups.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	linux-mm@kvack.org,
-	snovitoll@gmail.com
-Subject: [PATCH v6 2/2] kasan: call kasan_init_generic in kasan_init
-Date: Sun, 10 Aug 2025 17:57:46 +0500
-Message-Id: <20250810125746.1105476-3-snovitoll@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250810125746.1105476-1-snovitoll@gmail.com>
-References: <20250810125746.1105476-1-snovitoll@gmail.com>
+        bh=DuqcSADnXqnWDt2KXmVA1zBALEN31klBjKcBY7VnF4M=;
+        b=nu59bQwl74XHHYtzXFBTf6M8f7vZY9g/ohEg1ib64igh9G7B4wiQnCcA4vBuTR6zOD
+         JUoFNHztsUDnyL1qkpbsiFmcCeQq1q4CIZQCH5RuDYyR6hhHNVc+TxHJgS4PfLyC6kqX
+         sdzsImzX/etQ8VF8f3FENRXDMUs2+Q20pdgI8SIprxBKo5pB26MDMcnvI+URLiDwgr79
+         irtS5y3CgXWAHreogVmtUNBpWAEuSec9HJM/5BvjVsCyfr6MBCLrvSpHjPgY2biR5Yi1
+         xijrAT77CbO2tcWQ1guTOj0mCYF+kN33qn06QDV6frhKjK+3lIbG5Vi6oPWJR+6HnqjG
+         +bCw==
+X-Forwarded-Encrypted: i=1; AJvYcCWTrwq3dPgJ7yw5V79NBfh9bYEAScfTOpzCGQ8ZOmSHCm27mYhRuuPON4PVd9cg7HOZLwgMzoNg1w==@kvack.org
+X-Gm-Message-State: AOJu0YzIo9EhFSCBj4N0PTmSd13Mz8mTIdur1psPDHY0QBgUsgg7rKtn
+	aBQDgxNFipKQx5mZIkyiszJIOlQOvzEMl/jDuLxrUqy7gsQqticPn+vIK7m4n0IZncrMDsjB+hy
+	SJ2H6Z33ObY6RFyWSRbNn/1Dbc1XosXU=
+X-Gm-Gg: ASbGncvt9EhxlcSj5fNcsmoyNJgqPwAYewvKFrC1T/YifXadzrzx6dzz/7UAI5XBs78
+	jGBIyZdQ3e02zz2bDdA684GvhbUPoCWms2e+81EOuolDqIEs2MKVIUHAY6TNpYoKukZmvIs55FN
+	tIXF4G6DDsRrmQMO3syvS2dWPwvL26x+yDKzg4UPej3Oqg2olMizHyHRh3eSIjOqD7k6NrkN4oE
+	Pvj
+X-Google-Smtp-Source: AGHT+IGWxdU8yg429wV/BEb3fwg5pdBborKVwW4JfYTj0EisAf/O7g6UCqz7QBFgg2+6oztJ/ZtPGCd/hmS6rk//c8U=
+X-Received: by 2002:a05:6870:d60a:b0:2d6:2a40:fbe7 with SMTP id
+ 586e51a60fabf-30c20ea1839mr6002024fac.6.1754830734392; Sun, 10 Aug 2025
+ 05:58:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 42E0620008
+References: <20250810124354.16456-1-ekffu200098@gmail.com>
+In-Reply-To: <20250810124354.16456-1-ekffu200098@gmail.com>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Sun, 10 Aug 2025 21:58:43 +0900
+X-Gm-Features: Ac12FXyAVojbHXaYNEc1bAVyQmTG6kEonLtZC-nGoddoNe4AthOe6g-HBOLDrJ0
+Message-ID: <CABFDxMGHz_DJJncoE=ZUkBJwyph=_3WTfgd7H-0XyAdtuKtWJg@mail.gmail.com>
+Subject: Re: [PATCH v3] selftests/damon: test no-op commit broke DAMON status
+To: sj@kernel.org, honggyu.kim@sk.com
+Cc: damon@lists.linux.dev, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 7EC41100004
+X-Stat-Signature: d3soph3jtaozka8rmyqni58sxd6i8jyn
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: bct1wgw73xso6u1urrcsh4u8saj6fb5e
-X-HE-Tag: 1754830693-575681
-X-HE-Meta: U2FsdGVkX1+JJGzhQLkoKE2kuhz2tf7OdzXUWWLuGncqt9V5f8QSEgaCmSnQYQKMBDtw/HMEpr9cHH/CKjW61CLwyT2zI49GssA9FFkMjZGwA79Gc0gh4TJL6NPwopr00Qm7RF0zDYwA3/mmLHeUME4fWyn2PVJC7+f2PTl3WjnD8qvf6ljTEbVoYVfp9NvRK113bEjHtoqrKciv+j8OapsNZzAJWqv7AoTDGahbGcaEIJ7BrwmNwAAYk+iq7iQ8AzSLx20+JWA/Y/9S7FtFVfAcLMvzo7j8Y50KvbRdZZkL3ebJokGmFjpXV8pEewPF9gf9Mt18tN106Hf97OTuNNyawMUBhCX0aBojIlDwgSUZJQlk5s3j93EMR38Bz+oMeTIZKDt0wDjCEn9koMuiOZAx/MtnQG41P6TS0Jv8Ia0gOM/kGyv9XQclXa4NLZ/ivv6T2X7TkyWUMNYhKuiWlP8yy2FQ8qN3ZnJRzUZnZ7QdekE8GbWfqqt+QzJ1cJlGjhOSuiESMeKX2GqwFnCi6InKWDCiBo+zek/iTwstokdH4sSvfjvHE+IP5jpHs9KU+0E+RpYjlPyYdDfy+XTuytNS5ZE2Q1C0BsSP/g8lWzMYLfGr5/lUFNGOQrokpdd1OFGK7HWmMaitz3yFlEcqFzpmKH0D7yyPbqRBIqAOgNBDqasZQ3QqApq3ABi50/spU8SdVyMPCtfc3i4OuEkcU6xwK9NKPb2GBZkfcaE7+CEhwiOfdYPK8qiYjb6Tke+jZ+82ZhwjFFc/9I+SCgFe6S27nQSaVqRzO2OS6IMvx5dvgWXLulC/vlFJ8+Wn6e6+r9lncbnLtiw17Smvy5yhL6oqkaoHs7J5/qxcGenSEDAzXpxC/lUX2X13i/m6nrjG8VY0ahlJzf9ubFLsIa9sdJJteNF3z/fcFSBZVQOG7LU43unfDp/ZR4Gf1wgArsEhEVrAfCTYZECr5qrpXC4
- 0WwPzxrX
- 5Q6QbSK/f04+IxCOg6WDJ8uaX6h5QkK1/iQA3z2rMIdJc6fb+8Vj1y9WrIcs9vHnQb54XVyy+DT3xQZ87ZsAhcW/I2tDVp1L4odtcqr5WdkrvDyhzDiZIaRgAbYh+y7qKbJyxIBQL8VUI2Ws8uTjCGrR8jaLCke4tjISO6YQs0+nr3clcs/7x5WEs4ZSxa52AdfYK6z3fcHY1gsXY8UW52iAIcfB3V2fDCFbl7LkYDEm+X8HQ8LgzDuSuv69ElkMR7CL8Wq3QxKA89bKIMAu2VgaQIHv93WQ2J3+ThTKRFoduyPR1hTF2/eI/ImYjHDLiy67mIashZN++ga5zfbelMrWtCjIITU4+E/z5/06msIbqxIl9jY5pUiXAQMZ0Vsf0dDoxCcmZ4VKTlNho4Jm5mMBctm8MzCZD/1QmT2kCu++4IUo0hSrUsLQ/goTBytKV870X70M+HKnQm2/YmD0F3avsTpLhVsCu9eOTNX6C50kHNqy9tu2+MisZWZb4eTTSygxbtTsHy4e+dvJy2x1XQQNgKv1SKwXYbn8qEXhqqOODSIFAYPBSipVRVmDAd/YJBVcMjort1H5GUFXeVzecc4Tet7kRjlWBW7Zez7ImU6cRrKtubNsBCt8TdrKySO4OX1qtd6j9xn7SZfQ=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1754830735-847484
+X-HE-Meta: U2FsdGVkX18F7f79w+QYHGN+Oc+mU8JqaFfMUNHHVqpWu1CJoCU3a15xdtU8qrciBWFyy9A82yXYLwHumT+cDcLFjsPwyfhtaCmQ8hY5jUEHZGyl8otoh5tlCLc7CJ7BG5WhwDSpiM/tIrNNUw88TJ00cSwtDO+Nef0YLfRe4Bifo8njObKA6fr0HPx4cm9awimdcDWii1hVZlF2WDnmXmc11vVwcTSdjfKvRNHwMu59g/su1Ohpack6tV75L5MUxdv+PBHy2xXydJfzqbzsKKiD2VoeTcIFk9Rx0jY+UKpt4SyACbx2Op/3Y/pxp/60DVJn5oSJPbBUxiDymgSR8lmiCdfheQCl6L0RRPBl4E0oiVM+DMyeRHN1Qy6Il6tFsNWFpTVZhoPnbXyukdE2o3WzITbfDNhFur8VRHSNJdJkc5kSGPTkEDm1dvtVNK9sPRfhytqWmP4/9WI7aoaKFvVJ9etc7WPDigsdrZ9YgZI1LODOvpyHL2Tg6RXGaBrWvegTqbcX5Nhhek6Q480JDvLDwXPuqwMPCcMObqZ/KwdFrxCKDfSnQ5YnlUVJlEIsK3R0bJZrMFV2Ufbwx0lXZK7cidRpA8HdVyktmmShduzGuG7kG6gYvMrFtiOV73/Mn5hvfiDkykkWqQXK9Uvnqzmuo28UrOepTPlBCNeFfil3d27FhOsPfb540f8aRyFqFLysf7SaGKAqIuOuqfXrpLTKMV6pB2qiY9o5G5Mptgmid4m+Z7phyJiuL+PjCZTtNssn5jHSOEfIcaLOz88kk+mdoLEOL5wZfK1VDyO6TZFU2JNeBsCdu9p+t23/pLof5+D9vSaBAXK/lEFgDslU/Su1EFxkQdR40qGiyx6JgP1aeVE27kEHwX8Wnfa47sAYk9wRV/tbcmnKPx8d6waE33cuvSEjLJQxrYnp6o3GTupfzXyQZZB3hMo7cWlRTn5o1stkCldV1Iv/8LnEWXB
+ 1x6MAUGW
+ JTcuZDWgIFcttC3UdxBfxANRDcVaz+WSviSjYDfYnJ+v+IsO6xOOdth6AQae7uGqdIOKdl0TX1he8VBModGB1dbeoHGcopDOM73Lx0euZWgr2Ah1aWI/dAtppu0ZqcOgd78zrWF58+eRZCLTjjNyRQis9te0U+wd5DOLr32FxX3mLZ4KMDgFUz68iY/att6iTkGWS+JXg2YiHtlGtmIsTNmW0mmlTgdxgx3sr+jcJhcQ3wlb26zz47OXQWgf8oDRzClaoNCQghN1w8FVYNPDfA5/Ui44p3IWr1QpPH5dyqODW6FKxNJpu4UM1NS+4qk8p2zBN7slPabRVrRxWlO7GsyS8RwdXGStxU2RgC7rWxF5b9+y+0XXfQ8Ix6/6FP0nL2yDDOeISSvrfgVi1K2vmBV5sFA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,116 +113,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Call kasan_init_generic() which handles Generic KASAN initialization.
-For architectures that do not select ARCH_DEFER_KASAN,
-this will be a no-op for the runtime flag but will
-print the initialization banner.
+On Sun, Aug 10, 2025 at 9:44=E2=80=AFPM Sang-Heon Jeon <ekffu200098@gmail.c=
+om> wrote:
+>
+> Add test to verify that DAMON status is not changed after a no-op
+> commit.
+>
+> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> ---
 
-For SW_TAGS and HW_TAGS modes, their respective init functions will
-handle the flag enabling, if they are enabled/implemented.
+I just forgot to add change logs.
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217049
-Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Tested-by: Alexandre Ghiti <alexghiti@rivosinc.com> # riscv
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com> # s390
----
-Changes in v6:
-- Call kasan_init_generic() in arch/riscv _after_ local_flush_tlb_all()
----
- arch/arm/mm/kasan_init.c    | 2 +-
- arch/arm64/mm/kasan_init.c  | 4 +---
- arch/riscv/mm/kasan_init.c  | 1 +
- arch/s390/kernel/early.c    | 3 ++-
- arch/x86/mm/kasan_init_64.c | 2 +-
- arch/xtensa/mm/kasan_init.c | 2 +-
- 6 files changed, 7 insertions(+), 7 deletions(-)
+Changes from v1 [1]:
+1. Fix code and commit message style.
+2. Merge patch set into one patch.
+3. Add fixes and cc section for backporting.
 
-diff --git a/arch/arm/mm/kasan_init.c b/arch/arm/mm/kasan_init.c
-index 111d4f703136..c6625e808bf8 100644
---- a/arch/arm/mm/kasan_init.c
-+++ b/arch/arm/mm/kasan_init.c
-@@ -300,6 +300,6 @@ void __init kasan_init(void)
- 	local_flush_tlb_all();
- 
- 	memset(kasan_early_shadow_page, 0, PAGE_SIZE);
--	pr_info("Kernel address sanitizer initialized\n");
- 	init_task.kasan_depth = 0;
-+	kasan_init_generic();
- }
-diff --git a/arch/arm64/mm/kasan_init.c b/arch/arm64/mm/kasan_init.c
-index d541ce45daeb..abeb81bf6ebd 100644
---- a/arch/arm64/mm/kasan_init.c
-+++ b/arch/arm64/mm/kasan_init.c
-@@ -399,14 +399,12 @@ void __init kasan_init(void)
- {
- 	kasan_init_shadow();
- 	kasan_init_depth();
--#if defined(CONFIG_KASAN_GENERIC)
-+	kasan_init_generic();
- 	/*
- 	 * Generic KASAN is now fully initialized.
- 	 * Software and Hardware Tag-Based modes still require
- 	 * kasan_init_sw_tags() and kasan_init_hw_tags() correspondingly.
- 	 */
--	pr_info("KernelAddressSanitizer initialized (generic)\n");
--#endif
- }
- 
- #endif /* CONFIG_KASAN_GENERIC || CONFIG_KASAN_SW_TAGS */
-diff --git a/arch/riscv/mm/kasan_init.c b/arch/riscv/mm/kasan_init.c
-index 41c635d6aca4..c4a2a9e5586e 100644
---- a/arch/riscv/mm/kasan_init.c
-+++ b/arch/riscv/mm/kasan_init.c
-@@ -533,4 +533,5 @@ void __init kasan_init(void)
- 
- 	csr_write(CSR_SATP, PFN_DOWN(__pa(swapper_pg_dir)) | satp_mode);
- 	local_flush_tlb_all();
-+	kasan_init_generic();
- }
-diff --git a/arch/s390/kernel/early.c b/arch/s390/kernel/early.c
-index 9adfbdd377dc..544e5403dd91 100644
---- a/arch/s390/kernel/early.c
-+++ b/arch/s390/kernel/early.c
-@@ -21,6 +21,7 @@
- #include <linux/kernel.h>
- #include <asm/asm-extable.h>
- #include <linux/memblock.h>
-+#include <linux/kasan.h>
- #include <asm/access-regs.h>
- #include <asm/asm-offsets.h>
- #include <asm/machine.h>
-@@ -65,7 +66,7 @@ static void __init kasan_early_init(void)
- {
- #ifdef CONFIG_KASAN
- 	init_task.kasan_depth = 0;
--	pr_info("KernelAddressSanitizer initialized\n");
-+	kasan_init_generic();
- #endif
- }
- 
-diff --git a/arch/x86/mm/kasan_init_64.c b/arch/x86/mm/kasan_init_64.c
-index 0539efd0d216..998b6010d6d3 100644
---- a/arch/x86/mm/kasan_init_64.c
-+++ b/arch/x86/mm/kasan_init_64.c
-@@ -451,5 +451,5 @@ void __init kasan_init(void)
- 	__flush_tlb_all();
- 
- 	init_task.kasan_depth = 0;
--	pr_info("KernelAddressSanitizer initialized\n");
-+	kasan_init_generic();
- }
-diff --git a/arch/xtensa/mm/kasan_init.c b/arch/xtensa/mm/kasan_init.c
-index f39c4d83173a..0524b9ed5e63 100644
---- a/arch/xtensa/mm/kasan_init.c
-+++ b/arch/xtensa/mm/kasan_init.c
-@@ -94,5 +94,5 @@ void __init kasan_init(void)
- 
- 	/* At this point kasan is fully initialized. Enable error messages. */
- 	current->kasan_depth = 0;
--	pr_info("KernelAddressSanitizer initialized\n");
-+	kasan_init_generic();
- }
--- 
-2.34.1
+Changes from v2 [2]:
+1. Separate the patch into two parts(code modifications and tests) And
+this is part of test
+2. Improve warning message on dump failure.
 
+[1] https://lore.kernel.org/damon/20250808195518.563053-1-ekffu200098@gmail=
+.com/
+[2] https://lore.kernel.org/damon/20250809130756.637304-1-ekffu200098@gmail=
+.com/
+
+>  tools/testing/selftests/damon/Makefile        |  1 +
+>  .../damon/sysfs_no_op_commit_break.py         | 72 +++++++++++++++++++
+>  2 files changed, 73 insertions(+)
+>  create mode 100755 tools/testing/selftests/damon/sysfs_no_op_commit_brea=
+k.py
+>
+> diff --git a/tools/testing/selftests/damon/Makefile b/tools/testing/selft=
+ests/damon/Makefile
+> index 5b230deb19e8..44a4a819df55 100644
+> --- a/tools/testing/selftests/damon/Makefile
+> +++ b/tools/testing/selftests/damon/Makefile
+> @@ -17,6 +17,7 @@ TEST_PROGS +=3D reclaim.sh lru_sort.sh
+>  TEST_PROGS +=3D sysfs_update_removed_scheme_dir.sh
+>  TEST_PROGS +=3D sysfs_update_schemes_tried_regions_hang.py
+>  TEST_PROGS +=3D sysfs_memcg_path_leak.sh
+> +TEST_PROGS +=3D sysfs_no_op_commit_break.py
+>
+>  EXTRA_CLEAN =3D __pycache__
+>
+> diff --git a/tools/testing/selftests/damon/sysfs_no_op_commit_break.py b/=
+tools/testing/selftests/damon/sysfs_no_op_commit_break.py
+> new file mode 100755
+> index 000000000000..f557587ebc81
+> --- /dev/null
+> +++ b/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
+> @@ -0,0 +1,72 @@
+> +#!/usr/bin/env python3
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +import json
+> +import os
+> +import subprocess
+> +import sys
+> +
+> +import _damon_sysfs
+> +
+> +def dump_damon_status_dict(pid):
+> +    try:
+> +        subprocess.check_output(['which', 'drgn'], stderr=3Dsubprocess.D=
+EVNULL)
+> +    except:
+> +        return None, 'drgn not found'
+> +    file_dir =3D os.path.dirname(os.path.abspath(__file__))
+> +    dump_script =3D os.path.join(file_dir, 'drgn_dump_damon_status.py')
+> +    rc =3D subprocess.call(['drgn', dump_script, pid, 'damon_dump_output=
+'],
+> +        stderr=3Dsubprocess.DEVNULL)
+> +
+> +    if rc !=3D 0:
+> +        return None, f'drgn fail: return code({rc})'
+> +    try:
+> +        with open('damon_dump_output', 'r') as f:
+> +            return json.load(f), None
+> +    except Exception as e:
+> +        return None, 'json.load fail (%s)' % e
+> +
+> +def main():
+> +    kdamonds =3D _damon_sysfs.Kdamonds(
+> +        [_damon_sysfs.Kdamond(
+> +            contexts=3D[_damon_sysfs.DamonCtx(
+> +                schemes=3D[_damon_sysfs.Damos(
+> +                    ops_filters=3D[
+> +                        _damon_sysfs.DamosFilter(
+> +                            type_=3D'anon',
+> +                            matching=3DTrue,
+> +                            allow=3DTrue,
+> +                        )
+> +                    ]
+> +                )],
+> +            )])]
+> +    )
+> +
+> +    err =3D kdamonds.start()
+> +    if err is not None:
+> +        print('kdamond start failed: %s' % err)
+> +        exit(1)
+> +
+> +    before_commit_status, err =3D \
+> +        dump_damon_status_dict(kdamonds.kdamonds[0].pid)
+> +    if err is not None:
+> +        print('before-commit status dump failed: %s' % err)
+> +        exit(1)
+> +
+> +    kdamonds.kdamonds[0].commit()
+> +
+> +    after_commit_status, err =3D \
+> +        dump_damon_status_dict(kdamonds.kdamonds[0].pid)
+> +    if err is not None:
+> +        print('after-commit status dump failed: %s' % err)
+> +        exit(1)
+> +
+> +    if before_commit_status !=3D after_commit_status:
+> +        print(f'before: {json.dump(before_commit_status, indent=3D2)}')
+> +        print(f'after: {json.dump(after_commit_status, indent=3D2)}')
+> +        exit(1)
+> +
+> +    kdamonds.stop()
+> +
+> +if __name__ =3D=3D '__main__':
+> +    main()
+> --
+> 2.43.0
+>
 
