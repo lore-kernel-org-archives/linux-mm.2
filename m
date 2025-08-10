@@ -2,89 +2,88 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 34C5FC87FCF
-	for <linux-mm@archiver.kernel.org>; Sun, 10 Aug 2025 17:59:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 81D5EC87FDA
+	for <linux-mm@archiver.kernel.org>; Sun, 10 Aug 2025 19:26:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59AB66B00A8; Sun, 10 Aug 2025 13:59:40 -0400 (EDT)
+	id 747726B00C5; Sun, 10 Aug 2025 15:26:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 572366B00C3; Sun, 10 Aug 2025 13:59:40 -0400 (EDT)
+	id 6F86E6B00C6; Sun, 10 Aug 2025 15:26:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 487DD6B00AB; Sun, 10 Aug 2025 13:59:40 -0400 (EDT)
+	id 635406B00C7; Sun, 10 Aug 2025 15:26:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A7196B00C3
-	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 13:59:40 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 82FC716056F
-	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 17:59:39 +0000 (UTC)
-X-FDA: 83761610478.24.8DF923B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D58481A0003
-	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 17:59:37 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lx5H9vs6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754848778; a=rsa-sha256;
-	cv=none;
-	b=xFZEWX788uGtxP6Jt9GTmvleJ/zYO7VWhKyaHDy9feMAxat0J/SvOZ8OjVSejTGWlzi0EG
-	J4LspuL2I9RW6A7v9Ya+qj4R7jfI6f2kAJyA7dSUiEKGRdoVh4NAiT4hHz0aO3vdGYjiAM
-	e6+evqA2xlqwV/nsxu0P4VWoPA8LOCY=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lx5H9vs6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F89F6B00C5
+	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 15:26:00 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B712CB8D54
+	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 19:25:59 +0000 (UTC)
+X-FDA: 83761828038.08.ECCFB48
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 35F0212000D
+	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 19:25:58 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uxUn9Yoa;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754848778;
+	s=arc-20220608; t=1754853958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HRUwz2fq1JP1GMsMe11ZelKRNKkapWYljIw4KOn0mHg=;
-	b=QwzRGhxnFgikfgySNTVCrGjU+/tEF3M6ZWR3xgDuNczpZGwVg+U8CbMANLJ4S/wnUu3ujX
-	uCCw5Lmf8m9mhNssMkzYOiuU8ZiYnsJBoIHrDpukIhSk8xe/5oqErpQPDJTnEu3/7e943c
-	b6z85jzvLDAre0o3zVO+AY9ET6S7Ick=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=h305VlshYKh+Vd5nKwOxiGnLuAg5/oCgYo9LoXrtREQ=;
+	b=tyc5Q8VwQ83ej9amCyDEiwniDQVTF7e3WBj9Bx0JAB6XZkX/hunUTOjACnTw2IWwM2lQji
+	LzesYpV9v11xq0F6v7830gV93zgTNrPAvr4KTX7wSoPPLNTNloXJAu01I7hFpZE1RV4Swd
+	t6NApZzrbO2NlcOHYH6AIjLncKqjGXU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754853958; a=rsa-sha256;
+	cv=none;
+	b=2LthD3W6/TMXdwhuyrGMPIY92dH6+PsHgqJ1BXJ7DAX5tu3n5mCPBOEHlXGgAEkOjmyohy
+	OqWBEOmWyKI1AvteXNyhNc4hjanw4UKSwBKsc+2KO/Wsi0J5g2pZgeshxmENBkA2Klhede
+	g3U2S8lLPW5KFqa+ZQ/htUwHcPuoMLM=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uxUn9Yoa;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A14C545851;
-	Sun, 10 Aug 2025 17:59:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20CF2C4CEEB;
-	Sun, 10 Aug 2025 17:59:33 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 2B1835C578F;
+	Sun, 10 Aug 2025 19:25:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABAAFC4CEF1;
+	Sun, 10 Aug 2025 19:25:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754848776;
-	bh=HRUwz2fq1JP1GMsMe11ZelKRNKkapWYljIw4KOn0mHg=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=lx5H9vs6vrbgHptM9+HhKsU62R0SrZDySXhhribT5ghSYyoLEwnAVbY/wxlKFe/VS
-	 vRuIDIvUkMuKL6STahHy5UdBy/eSQL/vvD45AnPH4/rQ8AOGARMtVM+H/6CF05kX8v
-	 1ll4ToGkjrD5zIkUQiaTWRJwM/HqfyNCBupPgz+qsETF/cddzOLO4MBJ4oZqEaWhkx
-	 bsXahkp0cLbDuDkszWfmDd3xv61MIPpARI03njshXOID6C0S7dVXgqnFaSQOtH9Cxd
-	 cfTCplM2gakLhsQ3slLDnFMwUwnkPhFWl+40OeTVCebLyb2bCFal87E4wIe7vZiqjb
-	 FWVrF88XHrTMg==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 10 Aug 2025 19:59:32 +0200
-Message-Id: <DBYXZ0RQ58Z7.2UBHDTZ2LCT2B@kernel.org>
-Subject: Re: [PATCH] mm/vmscan: fix inverted polarity in lru_gen_seq_show()
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, "Alexander Viro"
- <viro@zeniv.linux.org.uk>, "Matthew Wilcox" <willy@infradead.org>
-To: <akpm@linux-foundation.org>, <hannes@cmpxchg.org>, <david@redhat.com>,
- <mhocko@kernel.org>, <zhengqi.arch@bytedance.com>,
- <shakeel.butt@linux.dev>, <lorenzo.stoakes@oracle.com>,
- <gregkh@linuxfoundation.org>, <rafael@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250727105937.7480-1-dakr@kernel.org>
-In-Reply-To: <20250727105937.7480-1-dakr@kernel.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D58481A0003
-X-Stat-Signature: hre1dc6ftkfbenj66ardsgp8py1dt3tp
+	s=k20201202; t=1754853956;
+	bh=WyO8PtQO+3C+ZYPrF+e4+P/lETANCz26Qlp1GXs3gLk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=uxUn9Yoag0uQmngugzY8heUDdXJBQMyMWguEvZk9gszM5AtoVS+y0oL+HbQ4/muuR
+	 Pg7scW8udvbYhVhnK+3ZGYmDb806r/ZJKHJARJ1B40yQ6+VociJGe6n9fu5SX7U+63
+	 IA+YoqnbBBJd0SROziim8ay5KbxWpcCTTMM1WnHEcxjO5yEQyCzo1xCf+W0IgrHfdx
+	 NSSiMR1YXFTdBpIp63FPJJRXMf6323/Nm6ABuOTO2XgcU8xTlFXuqdh2/PKwirzDgM
+	 49BhiUbqus2eqDET0C2W6ZbqoJsxtNtPh9XdyZimG1CCw1zQshAVl6K4fMwdgFRNM6
+	 PSb4p27OEDAtA==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Sang-Heon Jeon <ekffu200098@gmail.com>,
+	sj@kernel.org,
+	kernel-team@meta.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	Dev Jain <dev.jain@arm.com>,
+	Honggyu Kim <honggyu.kim@sk.com>
+Subject: [PATCH v2] docs/mm/damon/design: fix typo: s/sz_trtied/sz_tried/
+Date: Sun, 10 Aug 2025 12:25:47 -0700
+Message-ID: <20250729144414.31958-1-ekffu200098@gmail.com>
+X-Mailer: git-send-email 2.39.5
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 35F0212000D
+X-Stat-Signature: cndw7fp88yspdg3ibocmrwus68dgxuxj
 X-Rspam-User: 
-X-HE-Tag: 1754848777-432874
-X-HE-Meta: U2FsdGVkX18BZJ3rOvjaaGgdYdr8kvdXF7FBLX7jj4//l1GLXRzCJLZrCxYq7c46mN6NELc1Yqy24vYGBxKSKfGrxqj3Xvl+RxrTbqepMeYtcCHeHPkshosHMzvecyVYqnAXGuRNSO87NzKp4QBuEmCcqWpwmQEfjOY8jMum+mHu3w5Pdn247X5Nalp6peSByTevh03BkrdZwv6bW+o8GU9MwKNL4ZItAx3hZ9OCSNTjKicOwBfSqwMv4Kflh9f2KUhYHFhBdZ0tMWOHyD0i+tGDLzbqGwkDY0TlHZg9yDwPcoTQi+TX0Ysz+tU0nc2sdPmAK90MfWqrM5UxYbs8Gz3xY81D1DD2d1f09TYS/Uv1gH8laflwo14UOSOne4Qq/bcPXsuNHPkGvuirixp+0cVSkSnyg8GwSkzzcXw/NZ0uJhiAEVX0Q6JPYQNdc74ayJfIBSAhMQNaNfwcD/7qdD5qFS0qM0txZIx3V2H9amntMNi26lnPIw8Zd5qbHeek4qrMmKoXaoUKH7xO3GslmMn1X9jByxh2kQYojfiaqL3DKViNcK1fdnYmveiD//SWJCNhZvvAMIZOX57jT7Oj36Ngw9ZA3gyv3QH6EoYSOMvRxGaNtkXkhjmAkcYzYsUU6Hcf4mUIRDfxZheJL4VIgbmkYJ3L6VdIqKZE54oxWLR5jc+pCUMjlqHkFivrjiWV/CjI9UA1ZNSzajivqW5J5zud1vwI7Qs2gH5qwQYrI1QyBRHb5J7ISSn6lqSNN5YRXzE0rEkrSO7RKx8azdPDdEtcWD9tLiudTCiT7C6XT3CTb1EJE4W6PdLuqXZSkqBNRjFvHyHmDaI/OG04dqlm7YqM50JLnA3mYKGgJZ423hydrbxZVycAU0Ix00DOvtn8+dWyTASpb7GT8eG4OY5XWGgRZeSjJyd1mKGCNuAC2B6uksfTqZ6DBoSwJsoJsJjNDLlkIqnxHCKQYV+FBDW
- py1KdPjY
- 3CgVPvi/19r5xtjTUJgefmXcHYN6A6mB0akk7L6N8tTcy2cDWyMjhdGMtq6hflXOd1vY2/7zGxIpDWyIWi4QvsSy/n1+yEt5Ob7qXJ5hpPBZLZ9iQ50t7jnHFrmboxhpvmGpVVWw8tx1RNXd3MO0VdxcYzApuWPdRZ11EN7WpyIGxhswVgMW5LLxi6WtOCPVxveS26jmjXNMgcznR4vHlzfnTxTYATaRCqsTwyethBVSiwkPE8HNB2K6GrDYeKOyKGiTo+MQ7rnEh+IUL+wDRUHUs7BO9I9UfiuAmwRHVWcJwa/tMWunSzH3uVPqOjM1X+qj7g//S8F2GtqJyB2Nqgf4NkVo9U+jDr+18Q4o/mBohWxeBeJinzG0J1c1GSaMwzTaccJ9t2EB8RIdPwbDH0n+jQM1tsbhbTF9tATA/3NrcBqxLHv1beUQNW2LHIjaj1+Xcid7+xYntrfsu9DkwCBOLmoUaBD8uG+lndRVGgBZcmBakOpb+Xjf9dTuDEXquvk/1zY6iBYfB9eg5X7UKAjXBKQ==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1754853958-938015
+X-HE-Meta: U2FsdGVkX18WpjS5FM5HWX9l7tyMEyPPONX9j9HnEguXEWWfeU+E4pJljRxPQPlmDIj0eNDcuYljkUalYetFCDdm+4Ja/06yOX/rcgcjmsep7AooG+R2FTDdiHY0WHRJk1EdhxD3jBob50HU1DjFYOgom3MXyeqXZbcUjGdXNZxQi6AQSRn1C37zic3GoTy7k9h86qXcXJWcq6SVfh0rclIWjZFwPab/IwB+aYDoNWo5Rj99fUgX6Km7SZWLdd+BkFC4Izeakz6l6abIkERVHFDKnxrqITektcvR2LooiWdJpD2fI7zzDUMZiKUE+Vcol87YCGjsRu3DnuMTDmgsvVR3/9BjU9mSeNfdw/gYho/EVJO7tcqPbVIhFU4tUtcZGHHcjVzWcOUy76PvsOH/MeKQDgrI8/HH/b333RgSHYmdcYa0pUkgazpKkBvZCOn+EqIHY9/yLZ3l545vsHWuTZd7a3LWoWZFTU8pEHxLx2me0fq1WKZlo8ZFIJRHQpLSJnZefgJTPV3lgnc8l4f0Ht+oLdk0jP4A0QsImjPcGRpMhGO559JU+LzOPWMvIn9rxHkZwL5oou/f4z05MsoDOac9Ri21NaXr3+t+PjPnmTl7flOSDp3Bh/Rd/vsqNI/V5/UyoGWj+ZhJit1oDvCyP5xFIznFjIzSLypwIMyCbE0MmqM+NuIELXB8F6Svv3C6g2/SCM6yyAQC6M4BauE93XU0bfmSF2izl+2B5TLE0lY43sxI0JN3GuGQD7wwk6gaoYGHLP21qvlFOe2U9dIyAS9DQI3n+idpRLGgiaM9NEv1C1/C3zBm2uvwMxQlMS/9glX0KvO7GZTUxz439BjaVWkW4gb1jbAo0HVu9bv6uEdL6jUJvx9j+YmFizaJmj4tlMjkSGTmrfYs6PaCCWFip7bJxtejb3fuAMhHxsoEB/DupPxoQHM+6KYPqRbhHIWxo59JKj/KwuFGOOemlVs
+ dGUcc7rn
+ W6EV+EwYXz1voxWf/VSuh7k0f/UAuhQF64CeQ2OD7+E0f6pl2ePI4UbHC4e0tlPW/f2FNkZzpGNUvaeVyOASL7UZNNeejvOk2P2i0Ioydk+T2MWIe7uwJM4urV+KQsdgbZ1I9JD62O+Iej5Or6hi2+zirVNbvFvhfkkSSEtvZDI7W532Sn9NFduF7VbsbLzrbdSvgH6VsP+JsE5uS0kQx6+iMQRj2DHPP3Mjg6Hu3nMfjrOUx0527QRB91wWYNNTQVVDzN8Gj8nD6xHh9K4Z5tatrTHVYxL/KmlZ915GxE86e5dxPlKPNa/g8buklNgPShfFQSNw8XwiKiIgA7KrV02nKvg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,25 +91,40 @@ X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
+Message-ID: <20250810192547.EBiQB9ySC4qrfPKDm3ZAnpZjcspLULWSW5_d6tRICbk@z>
 
-On Sun Jul 27, 2025 at 12:59 PM CEST, Danilo Krummrich wrote:
-> Commit a7694ff11aa9 ("vmscan: don't bother with debugfs_real_fops()")
-> started using debugfs_get_aux_num() to distinguish between the RW
-> "lru_gen" and the RO "lru_gen_full" file [1].
->
-> Willy reported the inverted polarity [2] and Al fixed it up in [3].
->
-> However, the patch in [1] was applied. Hence, fix this up accordingly.
->
-> Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-> Cc: Matthew Wilcox <willy@infradead.org>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Link: https://lore.kernel.org/all/20250704040720.GP1880847@ZenIV/ [1]
-> Link: https://lore.kernel.org/all/aGZu3Z730FQtqxsE@casper.infradead.org/ =
-[2]
-> Link: https://lore.kernel.org/all/20250704040720.GP1880847@ZenIV/ [3]
-> Fixes: a7694ff11aa9 ("vmscan: don't bother with debugfs_real_fops()")
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
 
-Applied to driver-core-linus, thanks!
+There are some typo in statistics section of DAMON design docs
+- sz_trtied -> sz_tried
+
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Honggyu Kim <honggyu.kim@sk.com>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+Changes from v1
+(https://lkml.kernel.org/r/20250729144414.31958-1-ekffu200098@gmail.com)
+- update the subject to be more specific
+
+ Documentation/mm/damon/design.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index 03f8137256f5..2f6ba5c7f4c7 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -689,7 +689,7 @@ DAMOS accounts below statistics for each scheme, from the beginning of the
+ scheme's execution.
+ 
+ - ``nr_tried``: Total number of regions that the scheme is tried to be applied.
+-- ``sz_trtied``: Total size of regions that the scheme is tried to be applied.
++- ``sz_tried``: Total size of regions that the scheme is tried to be applied.
+ - ``sz_ops_filter_passed``: Total bytes that passed operations set
+   layer-handled DAMOS filters.
+ - ``nr_applied``: Total number of regions that the scheme is applied.
+-- 
+2.43.0
+
 
