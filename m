@@ -2,99 +2,93 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DB650C87FCA
-	for <linux-mm@archiver.kernel.org>; Sun, 10 Aug 2025 14:34:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D3340C87FCA
+	for <linux-mm@archiver.kernel.org>; Sun, 10 Aug 2025 14:50:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79A5B6B00B5; Sun, 10 Aug 2025 10:34:33 -0400 (EDT)
+	id 4145F6B00B1; Sun, 10 Aug 2025 10:50:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 772196B00B6; Sun, 10 Aug 2025 10:34:33 -0400 (EDT)
+	id 3EB756B00B8; Sun, 10 Aug 2025 10:50:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6880B6B00B7; Sun, 10 Aug 2025 10:34:33 -0400 (EDT)
+	id 328916B00B9; Sun, 10 Aug 2025 10:50:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 501CB6B00B5
-	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 10:34:33 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DF6011A0528
-	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 14:34:32 +0000 (UTC)
-X-FDA: 83761093584.27.029AC02
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 09BBF40006
-	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 14:34:30 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="bE/b6jb8";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of chenhuacai@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754836471; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2143D6B00B1
+	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 10:50:06 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8759A160329
+	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 14:50:05 +0000 (UTC)
+X-FDA: 83761132770.23.91A58BD
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
+	by imf14.hostedemail.com (Postfix) with ESMTP id DE709100003
+	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 14:50:03 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf14.hostedemail.com: domain of 3m7GYaAkbAKweklWMXXQdMbbUP.SaaSXQgeQdOaZfQZf.OaY@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.71 as permitted sender) smtp.mailfrom=3m7GYaAkbAKweklWMXXQdMbbUP.SaaSXQgeQdOaZfQZf.OaY@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754837404; a=rsa-sha256;
 	cv=none;
-	b=RkFYvOhYweQT7m1+aSuDo8SErQJg56OkSTR7S2Dn4LxQULVVD7qQUF/g5qB74dgSSaYGS/
-	O5B/JqJLqTm5a5hdhPGWNz1267Tqqb1mUBySxns9eXGJ6VRekTGlCYDryDfSt442+h8wz7
-	gAPiMKAzTaIE50H5etBmU+5rkmUYhGE=
+	b=0GbUGJ5Fs0susOuiFErlZaSJCicxw88HLs5o6D3loRysNVY9Ph1Pd5vEcfwRikZHtRvK8A
+	cHbeQsnDrrnzqiPyka5mwSuydOWrw7xum17mZ4qzlQup3FmQ+LfI0cLfzkgqANdXnX8G/P
+	rULrwtj88ZXrp3GHDhd2eAnWodHHgu0=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="bE/b6jb8";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of chenhuacai@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org
+	imf14.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf14.hostedemail.com: domain of 3m7GYaAkbAKweklWMXXQdMbbUP.SaaSXQgeQdOaZfQZf.OaY@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.71 as permitted sender) smtp.mailfrom=3m7GYaAkbAKweklWMXXQdMbbUP.SaaSXQgeQdOaZfQZf.OaY@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754836471;
+	s=arc-20220608; t=1754837404;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ifH3Ecmw1QsoyRMJWkehe3NqX8B/gPIoSIFYx2/dAFw=;
-	b=j1DQfFxNVal6gDXCFJXSrM6nCRM095iLFNcCl8LhcS+cTfSB90OhA/uXWdctJyYgVfN1XP
-	91XfEX/++NfZjdssGIwonQ3l289HPg5ASaRj6Jad56pPUD346fTvaC2SUGHrlqCAmgJxZI
-	vvlLoDW+bbuMUjZw2QndjS9WEWleYWo=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 4ABB9A526F6
-	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 14:34:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5ED4C4CEF6
-	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 14:34:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754836469;
-	bh=Vs6zCVzNYOOBeaFgHyVlLxbYIuRdFhTAig9mwdgEfDQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=bE/b6jb8qYgeLQqPPzjS7lIcQt7MSLTioMwQiWOl4zLFfoQVSokaOMVi0HbJ+q99U
-	 1HhhWeTBO/p9pYEfQ2T3irZMpCLD3c/n1e216b7sH8xAJ2NFPo16mtxeFJgNTfBxWV
-	 GMeL/6fSnEIR8DXApCWYNRqWkFEuBMtfkVRziWWctxZZEM1xYTbx6/B6aGqH5iX+JQ
-	 pqrqutzB0iftz3Xkdg171jGKWT6+wx+8a+/rc5NKdjbJzfpenaOVB/gqHT4/nOAvx8
-	 Fy4g+IRIogu8REQOk9flilF1eSzWQLi0zqj6TnbEz4StoUq3nqnZiafwNtHBhkuzVo
-	 XcZpRvEquyhHQ==
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6182ea5a6c0so131583a12.0
-        for <linux-mm@kvack.org>; Sun, 10 Aug 2025 07:34:29 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUYYa198Gd7kD8pXKusd5qLYrp4ivULztu745CQmGSoaAS/nrmRI1+4ecG/stxpL7UDAr1nmQLuFQ==@kvack.org
-X-Gm-Message-State: AOJu0YykXtDZEFTcjzrlnFBeu50LZ7mE/5UMy4QG4aO0c8JxwYkZgLal
-	kE8IE9lj28NC/FerY0f4p/3Tw5baxJz2lMH9IotHuelPyEKEiFTG0MobgSumOezgKmn8XPWST5p
-	VGRp0UdzNOum3lu7Y6t4ux2dkzs0TpQ0=
-X-Google-Smtp-Source: AGHT+IG4o84/rM7QVQPWh7TEB1TD66BC3/NtSFnHTksgcfeKzFYNg4vkE3t6ZzTFlBzTgE7WDqS1OXBxCK5OvRJhOis=
-X-Received: by 2002:a17:906:d542:b0:af9:1ee4:a30c with SMTP id
- a640c23a62f3a-af9c64d3cfbmr962040166b.36.1754836468386; Sun, 10 Aug 2025
- 07:34:28 -0700 (PDT)
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=60eUBaP4S1YM8bshFqm4Sr3laTofYKn/0WXOd9xAoMg=;
+	b=AR+RRx4uT1s2opR3YSWwesfAKRFO5CurvRJv9IYYROnO7IiloJSb7jkqlR3cuhMvecrsRt
+	sXhpDVRRQZrr9CRVsenhK+4DgoyoO9p23W9XDgMb+2FjHQwYSHlWS5U1xnkPV/XutMLO8u
+	3M+3rnCDUaEWMnhXxjsnK3OPQYUCbj0=
+Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-881814e7585so900824439f.2
+        for <linux-mm@kvack.org>; Sun, 10 Aug 2025 07:50:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754837403; x=1755442203;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=60eUBaP4S1YM8bshFqm4Sr3laTofYKn/0WXOd9xAoMg=;
+        b=btXXL/bhwCbNT0tYiHKy99/fVIlgR07StLACyVQswVwQG9EMyNsFLhHCUTR4x7p1ob
+         nlOBY6DX3mllq7McUOEUkDR6qyTMAOEBfmypBqEYvdNac4fdbK0BOwgZM0m8gsk2RP0g
+         GVt4gKaVwROFvb2r0p0mNat0xzC8XD8emL7DXyzxNkwgEEZwQ2fFY3VzSQEJgQvXjWGB
+         O+En4eqxkU2hCcsupcbG/zjGFYo29ABNNWnqlMUZGAi1v/6Mv4SO0AC6oA03CBnksKp3
+         AIr6C5y6jQlgM1MggFV5x9Sn9GyUUwBnVKiCMz1a7+86Ygcu9x8t77F2l8vl61pivt/i
+         pbLA==
+X-Forwarded-Encrypted: i=1; AJvYcCUWZCoOSjCuzK++gYiGAgmoiGx58zzEsqWxNIZvL2wdGl0rXAFtZ0QsnY+Z9LRO68/Qq+2+C7Xx1w==@kvack.org
+X-Gm-Message-State: AOJu0YyjAKk701rq4HPaImj8S4V4H+aXiT9DuS4QewXAUJzyx6rvdbcm
+	XlbM2Ej5NChv+a1kNZmLrhS9kQw+uGM4FbYZOnlwrDJ6Aj4qM7oCl+z7AA72BGJwYEpR7tU8W0P
+	YpiKwrRSIE6o2qLb6bWlAnp1+2jjVHkPMfrjXBDlmGxfcx0TUHIpkHjNdI9g=
+X-Google-Smtp-Source: AGHT+IGf9Dq1NnHv965MWqAJj5twYpG+w/zwXyElvrhHtv8GVEAHg8eBNnkmhJP75MeCWIFzQEBVoBse4UZb0smPCb1kIzGobyZe
 MIME-Version: 1.0
-References: <20250721101343.3283480-1-chenhuacai@loongson.cn>
-In-Reply-To: <20250721101343.3283480-1-chenhuacai@loongson.cn>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Sun, 10 Aug 2025 22:34:10 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4TToP7AY8yMUjikTLChMpMQMB1=HRaMDS7Ern5nf92Fg@mail.gmail.com>
-X-Gm-Features: Ac12FXxpVhYI7CqxcRy_NIXh4NRe49UwUMvXTV70a1B4VMSu132CrmAPg_2WB9I
-Message-ID: <CAAhV-H4TToP7AY8yMUjikTLChMpMQMB1=HRaMDS7Ern5nf92Fg@mail.gmail.com>
-Subject: Re: [PATCH V3] init: Handle bootloader identifier in kernel parameters
-To: Huacai Chen <chenhuacai@loongson.cn>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+X-Received: by 2002:a5d:9ac1:0:b0:87c:49fe:cafe with SMTP id
+ ca18e2360f4ac-883f1255323mr1470374339f.11.1754837403031; Sun, 10 Aug 2025
+ 07:50:03 -0700 (PDT)
+Date: Sun, 10 Aug 2025 07:50:03 -0700
+In-Reply-To: <6897b156.050a0220.51d73.0082.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6898b19b.050a0220.7f033.00cf.GAE@google.com>
+Subject: Re: [syzbot] [mm?] WARNING in try_to_migrate_one (3)
+From: syzbot <syzbot+63859a31071a369082b1@syzkaller.appspotmail.com>
+To: Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@redhat.com, 
+	dev.jain@arm.com, harry.yoo@oracle.com, hdanton@sina.com, 
+	liam.howlett@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	lorenzo.stoakes@oracle.com, riel@surriel.com, syzkaller-bugs@googlegroups.com, 
+	vbabka@suse.cz, ziy@nvidia.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: puetjat5ihthnwrq8yu7fb87nq8yiqfe
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 09BBF40006
-X-Stat-Signature: phjtcahypaewwjg7da7na6r8dg6a7xg5
-X-HE-Tag: 1754836470-643172
-X-HE-Meta: U2FsdGVkX1+J+VIkTLjjCQyDlc/Ebo8iDV8oF12woJ5qbW84BuDYqvzLFq/YMLMqQtaSgXqQVzdyaXrIoAcvXnMiu51CcpyyFK4Y26pOaz+CmvAFiZTn6+rl2c900Z6urMiDdOwuyvay5WTTnxlprg8HLLkIw8QNs+6GGPxIzaruioTsLGTxz+d3Ra0qU5r5a0C3UOvYXQKTAR0Wm0zpWG4mQ9rkKUnfB5LPGuGt+DCXK1B2NXDITobZovgbnQQAYwTjL3KJzCcnCiFw3f40CJCHVUhoex4jDoSH4H7AjGcToSojtdmlAie7BP48vPLIDNvv3RsvmG2TvZk0oPEBD45PuqbZbCcwhSPGEn8OEmwNA341CUd4zhW6KrZtNK/2UbUVC187YAVZdX3pc+t4KCMmgVY4Nda2OJJIeQPgK8gb8HSYuMqDPOmsHCzM2+YjFZvk5n2k1+F3cA/G41CdHvoIaX0GFM2IYOTQ8+ROqjKtUi7RzqWkLCmaFWUCLY27dDQn0BYKHUU1XkMwEuhOvxtfnudqJy8TzIeD9/FH8u2Dji2H7ajYpqe0eFHno3hmU0b3GLEAJK+Io7hOMSd2FST+Y7dIeLkOgZEMqK1Uw8Ronj65KYeKJzYfwmSnFgftYp9rF1fAlwBsmgdDuFhTUNoaR48g2zInJJJo8Jt2jpaf7MrjvqupK+QoN9Y5VnpTwXBNxKu9zxKHmofByqFxxx66eCtV6oFADfQCwXRwJScXu1Y7Kot3NcKCS4zHGz67ZKCfDNDd3wjor/F7d8B+L8OifYOvFB7I/3LS/9iKALaTZwOS7njaGHcTVTECSqz/yAv6P0oIMFM0WdCexjg78Zgu8P4IGsBgdzmrZ0In7pR/nPOR5vTa2GUZA6sC6yX49pg0f0QD2ikQc+Ta73wgR0bUxH18PqGhbMGY/J9dYt1lmKQip6+6ynseKK2P2yICg4NBcHA9rxdeGydDWMN
- PS0+v7rt
- ymNX/GHKwulN8V0RZTPcQ+pqdcOgCaOA2E5RPg1glhWghfAT2woQhidAIDAQ8L8tNJJo3iWXdk7SCGVt4X6l1szKFePRziKd206j56l87I5rlXKwHUjpSBzYxriB8skr94TRS/uZJwK2wIaejZR1Sx2J/Fe8MHLr+SreYBAFlrrPDSZFLQs/0AvWNrP7YxuAD13gBgn9oP9ud5Q/MJ7Isc1F/AB7jInlGJoxFa15V3NAkHSy+LApmaD5aZ1TXeTL9yLv+drWADXJiW3lxM31H7wgKN6/88slL40i0pDNciasLVdAMLkfwc6dlGOHfZiUOPMATlm6tIaWohjk=
+X-Rspamd-Queue-Id: DE709100003
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1754837403-57970
+X-HE-Meta: U2FsdGVkX18k4/oXfcrKEE47f/DC4Mh0c1gLkCOGZFGr7YhV/FK+BzHXXf7XGM/mCbLAbFS6mCWe8Z3vsIi7+MhPYYhHgk4KLY+sixPZHGLSm5Fi5QxClxBSU0pIJnzgVBsGoYmzzRhGepILwPUa3wNS/1kckNxiCR/3rBgR3tcIocn0B0OXy7iwSu8ALRr6hURrLM/h/W02j4PibEFy2ccy0u9x+EQ6SUZ/PJ9WZfwydjvBLj7CW9LPAmjD9EejNy3CSaH97yhm8bKZqgU1VcWUaT1tYyMNZiAS/IpdF7nxmr0/Z/Dyf+R2taku8MEUDEN0xwfq/auu/DfrY7Dykv0Q8DTvn4s1bQn75A82//0NHoZ0yEYH8yArNA1gXqnUFaVPtUDDcerEnOLkbPSWNWHqEkN0h+BGVI2yaZ3YfPHBaQiXhSQs1iEB2V45AotkGdNZjTVVYT+uOlWEFJ7io5drrNwLeaOhEZPvLvXhhy1ZWpev2bTOuSXwXMW78547TRw3g3OrdmfdAd79ktXRdOEIY5TDK6OPe71edcRXtIlfsDOMAV+dvVdjs3lKwX8HWIySLq6Gw0iETDWBUao/XiMEUM5mmdqp+QnR+XfHvo4+egHNRFRQ/TmRfIr3NzpwLanTJzFxlQEhHPV8fCNSSJMvYU43dcyZEAHlq1+bMtMyEABEU/tVp6KKki62dNRIpTvfIsSIZ5sZSou7LLcH2fcwJih6E89XdcA8VEdq4NaHsXpviJx3aEcPRmlMGDquSa0vjSi2lxQ2wxnl8kwuTL8PTGFubUvEDPUwIMMWvL2xK7WZZ1luXKyzz8dlc9nbxOrglnBlU5B5BFrJw5Ax0gUJqZ3Pfl3mTJbW+f2EnnKGfvpbo5+rGrgHglyyUHdzXTomR4UCHhaUtOkA/qn0/HJ4n4OYNodMFGXpBvJFAHj17s9S3r4RyPq5kcfF58/hJbg/+tg/fHwVz0Pey3c
+ 98LakwG3
+ VwUd1R2B8WrEX4/fONF0p41XrhdR8e7tOuvauQn7ro0zUu2QY8J68QNtJrSpULg9FzUfFTk6ELLT+m8pvhuLvb9OSuEsI6Wlo2H65BYjSdlz8+DiqKuqD3S8Q0CZaOQyV+xXhxMATyrxjUMLQUiEkOMCfJKA0CoKONgwl6QXTsx8nee2RQcI7Mnjla+tPOwGfjJVGkq127/7ZA6RnjFljOzZBeosPCXrfAXHAQdBWSJ9b4OE/flKO1ydYk+BdOEdPHS3D4mf3m0qjarwUIj4MBLpnbzZGNLxEyeTSjbXXLU0cwdjKVl6gfhCNgbO1ReUL/4e5i0ISoLDxS83bU4hgYa6V9lDVs+JEB4wDhUc4Ov0hHXD9Jb7kVg7ecr/9GFCQmtnLWbogUmm1HWnvNoooEkPdz5PdlWVajs8LeD51ZgS3VtXOQ/tXiPrgdvrdTnB246GLxZ/Ygv/fwUajzhtZkEPXr2jv30xkYhT/NK9pBjUE3th43VJZBInSof4K8rvqTEAAj/UWbHrhMJJCSoGgKHzXKk/B8z2nubD8tFKzoCdathjyfdkhcyzI+duY3JtDaDHJru2qjNfPVF8JcnuudpROeHnPNA0EVrnFrIeyC+tEbQ9XXA3jSvwwhcbqQDFQpE/duMyu9/NyhZozs7TFAhfzER/fIors5Wfn
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,86 +97,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, Andrew,
+syzbot has bisected this issue to:
 
-Can you take this patch to linux-mm (seems the best tree for it)?
+commit cac1db8c3aad97d6ffb56ced8868d6cbbbd2bfbe
+Author: Dev Jain <dev.jain@arm.com>
+Date:   Fri Jul 18 09:02:43 2025 +0000
 
-Huacai
+    mm: optimize mprotect() by PTE batching
 
-On Mon, Jul 21, 2025 at 6:14=E2=80=AFPM Huacai Chen <chenhuacai@loongson.cn=
-> wrote:
->
-> BootLoader (Grub, LILO, etc) may pass an identifier such as "BOOT_IMAGE=
-=3D
-> /boot/vmlinuz-x.y.z" to kernel parameters. But these identifiers are not
-> recognized by the kernel itself so will be passed to user space. However
-> user space init program also doesn't recognized it.
->
-> KEXEC/KDUMP (kexec-tools) may also pass an identifier such as "kexec" on
-> some architectures.
->
-> We cannot change BootLoader's behavior, because this behavior exists for
-> many years, and there are already user space programs search BOOT_IMAGE=
-=3D
-> in /proc/cmdline to obtain the kernel image locations:
->
-> https://github.com/linuxdeepin/deepin-ab-recovery/blob/master/util.go
-> (search getBootOptions)
-> https://github.com/linuxdeepin/deepin-ab-recovery/blob/master/main.go
-> (search getKernelReleaseWithBootOption)
->
-> So the the best way is handle (ignore) it by the kernel itself, which
-> can avoid such boot warnings (if we use something like init=3D/bin/bash,
-> bootloader identifier can even cause a crash):
->
-> Kernel command line: BOOT_IMAGE=3D(hd0,1)/vmlinuz-6.x root=3D/dev/sda3 ro=
- console=3Dtty
-> Unknown kernel command line parameters "BOOT_IMAGE=3D(hd0,1)/vmlinuz-6.x"=
-, will be passed to user space.
->
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> ---
-> V2: Update comments and commit messages.
-> V3: Document bootloader identifiers.
->
->  init/main.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
->
-> diff --git a/init/main.c b/init/main.c
-> index 225a58279acd..b25e7da5347a 100644
-> --- a/init/main.c
-> +++ b/init/main.c
-> @@ -545,6 +545,12 @@ static int __init unknown_bootoption(char *param, ch=
-ar *val,
->                                      const char *unused, void *arg)
->  {
->         size_t len =3D strlen(param);
-> +       /*
-> +        * Well-known bootloader identifiers:
-> +        * 1. LILO/Grub pass "BOOT_IMAGE=3D...";
-> +        * 2. kexec/kdump (kexec-tools) pass "kexec".
-> +        */
-> +       const char *bootloader[] =3D { "BOOT_IMAGE=3D", "kexec", NULL };
->
->         /* Handle params aliased to sysctls */
->         if (sysctl_is_alias(param))
-> @@ -552,6 +558,12 @@ static int __init unknown_bootoption(char *param, ch=
-ar *val,
->
->         repair_env_string(param, val);
->
-> +       /* Handle bootloader identifier */
-> +       for (int i =3D 0; bootloader[i]; i++) {
-> +               if (!strncmp(param, bootloader[i], strlen(bootloader[i]))=
-)
-> +                       return 0;
-> +       }
-> +
->         /* Handle obsolete-style parameters */
->         if (obsolete_checksetup(param))
->                 return 0;
-> --
-> 2.47.3
->
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=12ac8842580000
+start commit:   0227b49b5027 Merge tag 'gpio-updates-for-v6.17-rc1-part2' ..
+git tree:       upstream
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=11ac8842580000
+console output: https://syzkaller.appspot.com/x/log.txt?x=16ac8842580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=2ae1da3a7f4a6ba4
+dashboard link: https://syzkaller.appspot.com/bug?extid=63859a31071a369082b1
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=117c72f0580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17ab7ea2580000
+
+Reported-by: syzbot+63859a31071a369082b1@syzkaller.appspotmail.com
+Fixes: cac1db8c3aad ("mm: optimize mprotect() by PTE batching")
+
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
 
