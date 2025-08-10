@@ -2,110 +2,111 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DFA67C87FCF
-	for <linux-mm@archiver.kernel.org>; Sun, 10 Aug 2025 05:43:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C2643C87FCF
+	for <linux-mm@archiver.kernel.org>; Sun, 10 Aug 2025 05:50:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5FFC76B0092; Sun, 10 Aug 2025 01:43:32 -0400 (EDT)
+	id 3C6696B0095; Sun, 10 Aug 2025 01:50:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 589E76B0093; Sun, 10 Aug 2025 01:43:32 -0400 (EDT)
+	id 376F36B0098; Sun, 10 Aug 2025 01:50:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 478776B0095; Sun, 10 Aug 2025 01:43:32 -0400 (EDT)
+	id 265A66B0099; Sun, 10 Aug 2025 01:50:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 32B7C6B0092
-	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 01:43:32 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9F29C16044E
-	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 05:43:31 +0000 (UTC)
-X-FDA: 83759755422.08.60FABBE
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C17EEC0008
-	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 05:43:29 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Cyrpk22p;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 163D96B0095
+	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 01:50:58 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8723DB7A26
+	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 05:50:57 +0000 (UTC)
+X-FDA: 83759774154.12.4DCD388
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
+	by imf25.hostedemail.com (Postfix) with ESMTP id AC249A0004
+	for <linux-mm@kvack.org>; Sun, 10 Aug 2025 05:50:55 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FaIMItc8;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.167.175 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754804609; a=rsa-sha256;
-	cv=none;
-	b=O6dOfhMe6HZH+OBh3iWwWMRSaspdYZHbaLQa72LMb9NH6PO4zzbmKqk+hZX+qdK462mdOR
-	MHQnoPMOjJZrDGLj5745sRB7GawyD3OsNqdmFVMjL18Yb2T3XRGSLIYEklPfcGxgQ3josC
-	7UAxOIQytfkaGQTqVGBZZvxVdJjTb68=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Cyrpk22p;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.167.175 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
+	spf=pass (imf25.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.167.178 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754804609;
+	s=arc-20220608; t=1754805055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1VF7q0WLeklegOu3HyhvX8CcabjELygMV30fjl5+vF4=;
-	b=OiAMI6u5jbH1cJTWLAqxJc6JkecjNQI0QWln/gML6I7OYdNulKEFnSRcblfAVH3uRb6SUv
-	LiIyyedKwSFWfRCMHcyYAHi9D2GoWx1xpdvrmPxCFpv3cRMbPcsjwuX8cGOrE/dBAFuHaD
-	awMMUY+NMy9j8LO6DcQkp/Fi2w0clfE=
-Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-433f78705feso1189757b6e.0
-        for <linux-mm@kvack.org>; Sat, 09 Aug 2025 22:43:29 -0700 (PDT)
+	bh=+RplhLYKRbowPs0ffqGClhSE7xF+vOLgbG7MzNAT9Ds=;
+	b=2b0PqiE8dBi7fpnAMKttu7JLwhAU7FQ/V1lv1fLnAHDuELlcpKZUZp3juChC0u78J5jIiZ
+	3KqNodv8fYTojHHCHYvfX1q9HK9G0kzr34GPPgHdm7gXVgKrnbAIaZucMOH++f7dXb+9SR
+	bJvpfgEjqyw0+QKaKSl/o4Ahn+qw2P0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754805055; a=rsa-sha256;
+	cv=none;
+	b=32gB9/oZIghASH7s6TfZPcgwSTb+pkeyvBz7lpre3NZ2kMqKX+Z7k3t3F2lu7ba3oIyAFm
+	ZQurOAb7ODIfEfdvHmiZhBe3l8lswMNcjKZpp7oTZvO/11D3fWPGD7PrDaGWVrXqq38dhf
+	dJlQ02Kxemq952y8bEiepAzgVy8Edok=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FaIMItc8;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.167.178 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-433f681befbso1223616b6e.3
+        for <linux-mm@kvack.org>; Sat, 09 Aug 2025 22:50:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754804609; x=1755409409; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1754805055; x=1755409855; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1VF7q0WLeklegOu3HyhvX8CcabjELygMV30fjl5+vF4=;
-        b=Cyrpk22pUDi10vpZiDuwb8kEEBWY/G2ucZMGfuH0gpiwhNTFj0hx0s+xrBEGF68UPt
-         Dtzukyw8JEuh0gMTDksG6T7qqBrgvc99488V7dZTZmyYxI6yesusot97IBOS5GAqDO45
-         A/zM/BL0RRP6FOUryonetobzt1CMJFq/SISifFBR6KtAdMpUCHc2Ig/R8q91fp4djStJ
-         lCnkRHioHrw5fgtx33UW1dejPKj6x4Yvb7AAH8b5pL8BzoEPq7MurwMBfwIct4pwM21C
-         J9VTt6t0F7Mm1gx1WACUPZZ8OVgUL0p+bXGAMjP8XtOz4Xw5BzqQtS45SU20gfYiGoo4
-         AmyQ==
+        bh=+RplhLYKRbowPs0ffqGClhSE7xF+vOLgbG7MzNAT9Ds=;
+        b=FaIMItc8UEdZDdoGngbCqbDfwUnBrfnBxmvzTFs6EoKfABj4bAAxoxeA4wQUfSFvVf
+         ELOGPucGIWIWebErS13hBNJv9r89T7LNn7ZiCix89pIRphM0a5qnFgh/cBF+lTU1Lf11
+         wVUtta4XSAn5As1PxAqpTkowjv20hkRonxzGGwvaOxLx0JsR9WkSL5c8SEJH5S3MJERX
+         aA/Agd+/vEEDPzeqReA6V7Zhv8yJk4yQE+zEbKqG9Yc7Fm7vdF73ISmc2uUBb1J4Xynj
+         o4kmbhiBUQ6XtHRBjB7VDy/hbPlDUH+ojVcEYS4x/sRaY1K9hFYDuzL5Rjf43F8EW3mb
+         SrDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754804609; x=1755409409;
+        d=1e100.net; s=20230601; t=1754805055; x=1755409855;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1VF7q0WLeklegOu3HyhvX8CcabjELygMV30fjl5+vF4=;
-        b=sfeh1j8BccUMeCkgS3rYZaokegeltCuKzQnh8nhOYu9gLGbUQUp1zW3h9En+IuDmz0
-         rrYatCBB+ZxfZ4SxdGnDk8JzfRrCsoJByH/KfkoSBJ3ikS7bgxGwijPQkLoeTaUEntAm
-         PlvmQ3Zb7YB5uMnzVTNy6nERmGcoGcYMSvrbyKDwAiDomQnAUdBApwK/LqtYogXl9f0q
-         iM/7d7dYThnj4WOLejy9uX5aVuzTHeObDvONsZtwXaxqephKomzJWI9HyCqjs8/vk5sQ
-         9JDxFqqK8PRG29GD0gDOI7EMldpYCK0BmipO3aPtl6VTpztO6aZRi62P2RworeT9sL7s
-         E3jg==
-X-Forwarded-Encrypted: i=1; AJvYcCUYXvF66Lj5eDN9jSC1oj6pF70mD8rEs7Jz+qOPZsy2TO0BBaGYXczYsnpWaB29TECbpkHLRtoVWg==@kvack.org
-X-Gm-Message-State: AOJu0YzaFDQUjLeh2J3UsPFP8Q79rpB8BolDdX+lcTWSQavZdX9KZ35O
-	4uBaYTdog6sKLkmiQ+SPhnKsno+uYSE9mlDUPMh1NWg8SUxQ21vgYKSJHs9rPfp1X+cCS0tTNbg
-	N3FCyJua1t6caKTjruCooaunZVxH9wxfP04NvL093nA==
-X-Gm-Gg: ASbGnct3hXbv5oGAkHxkVehkRFdGqA2JzpvT4nRvLhcMi/+WhOL2KRON3+qAB8AK39B
-	tkSIV+2e1htMg0JQMb8xZTv26HXUYqxEpNGHn/SNwGjA/6v2mgyWdcElFfLcCK/Drrpdz2A5LWu
-	srjga1jVPHwtcQDXm9NDDl+8DLsCsO5dRIaQsa4O2O9S3RDdOv3DfImEpE3eGwTxGenGZ/iO4SA
-	Wigc4w=
-X-Google-Smtp-Source: AGHT+IHJxGMU/wk8QP5vJyCNj2dWjhPvgi4dMUxGNQQj6i6HmeNlJ8gTWRRCGf/0ap7DyAgfXV1rAyxSCplBWIqXv2A=
-X-Received: by 2002:a05:6871:5b21:b0:30b:9750:3085 with SMTP id
- 586e51a60fabf-30c20f8d5f8mr6278198fac.10.1754804608515; Sat, 09 Aug 2025
- 22:43:28 -0700 (PDT)
+        bh=+RplhLYKRbowPs0ffqGClhSE7xF+vOLgbG7MzNAT9Ds=;
+        b=SccCYCtmEoWXD8vj5z20y7k14ppVQ9KjtnkpgXi2DzTFJRyI1VJhS/JYa1qF+qme7G
+         dhzbXVTdBgLk3GBfrII3HMN5dt381MT2LYsK54DTzxys7xYQGj5js62eUt3Y0pHyEA5H
+         GIlI8O5AVIuR4AbU6NU47sDiunWT4wl0o6pG+gTgYbK6g6t6zweV6vTkjNbDgcQqs2bs
+         huPfYmEIpB1XhURgj/dAvmxRF0SKajJwbvQ6NTmhkzVpNVIJyax88jfIDwoXnnJbmz/b
+         v28KaFKFg6V5nyhrUzc7D3Qwh999gU273fD5m7fd0iH/DU6Z8oStMAPYhfLem4F1s7m5
+         Svhg==
+X-Forwarded-Encrypted: i=1; AJvYcCUR48IFOKrID2gsYC1ifPCy0wCwBCDUcsGLeN1m/+PCxElrYQTLVIkhI5vCKex7Ls0D/PBBSsLQtA==@kvack.org
+X-Gm-Message-State: AOJu0Yy9yCSed6D6BfXEp261cpK4mdeGqWIsvgRCG5/qVz2/H1CxDRnn
+	6qb46/E75Nli8Gi7qJUzn1POGz7OYGJKj4DAYBZdcFRHoLbIRcV+AxSTJLPKn9bTbjSTAKqWJIe
+	MzQ1kp0ULAfl/qeS/zFq46FXOTar0VNg=
+X-Gm-Gg: ASbGnctxZdtMchLP2pPtWI5h9whWhS6PngfdkImH8S1ZO6v3WKfvqNU/AqjSyUOPA/C
+	kWXOkvVVtsbmL3TSz9VGVG8UT+hWR6NjIqD+xm8dQXvL9KaWkD0DnXkhmQAkIe3efrmdQghxa7U
+	I0xe5Omp3JF0QPr06YjNKa3hdDXD7PznoYL09gG3kKBwb+vMBc3L/dGfszkX140bq+aAn+XWTne
+	4LuER0=
+X-Google-Smtp-Source: AGHT+IEDLol32kwZanNgYwxdv2mlzock6ARZkJaYvaJ+31EKV4GmrEL64Zokee7BM+3DiafITMb2/+OAXFUxEFMYvpw=
+X-Received: by 2002:a05:6870:55c6:b0:2c6:72d3:fc93 with SMTP id
+ 586e51a60fabf-30c20f1de91mr4817604fac.12.1754805054636; Sat, 09 Aug 2025
+ 22:50:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <CABFDxMH0LDLLdJf-t2DEHCD40EJDfcq35cJM-HS5GkLX7KqsHA@mail.gmail.com>
- <20250809173559.71327-1-sj@kernel.org>
-In-Reply-To: <20250809173559.71327-1-sj@kernel.org>
+References: <20250809130756.637304-1-ekffu200098@gmail.com> <20250809174838.71485-1-sj@kernel.org>
+In-Reply-To: <20250809174838.71485-1-sj@kernel.org>
 From: Sang-Heon Jeon <ekffu200098@gmail.com>
-Date: Sun, 10 Aug 2025 14:43:17 +0900
-X-Gm-Features: Ac12FXwPPpoJ3Atc3Fc0faMpuO09tCnt-cxUYqEXvY3Fy45GYsSbzi1FInUggjA
-Message-ID: <CABFDxMG-2+VQvWNHqCLKy4jZXBJzsWPS9DOkV-gfYovF5Xo-Jg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] selftests/damon: test no-op commit broke DAMON status
+Date: Sun, 10 Aug 2025 14:50:43 +0900
+X-Gm-Features: Ac12FXxV2eNezNgvc_e4rqGAi29JIh7FFDT5Kj18LpEB1lM6Giec7lzpKEQ6NF4
+Message-ID: <CABFDxMFzWyN-edgiEeWufZLOsHM4BWe6kU5x7erJYV79kJOztw@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/damon/core: fix commit_ops_filters by using correct
+ nth function
 To: SeongJae Park <sj@kernel.org>
-Cc: honggyu.kim@sk.com, damon@lists.linux.dev, linux-mm@kvack.org
+Cc: honggyu.kim@sk.com, damon@lists.linux.dev, linux-mm@kvack.org, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: C17EEC0008
-X-Stat-Signature: 67hib6n5ox9y3t3zpfp4hzry4nnwgnpq
+X-Stat-Signature: 4b3181ddcepkhnqsjnaco4hsorhh8gwa
+X-Rspamd-Queue-Id: AC249A0004
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1754804609-441871
-X-HE-Meta: U2FsdGVkX18d/R06P37dQRItVALTSf+I7Nfn3nUhRiMt77oMYpOclWKg5jGhQaxmZP7cPOK6GYkirsFSEWbhebi8AgG78WygOI0liBu86iF5jzjRlzvnTLTuWrqDKh3vIUQx0qRLDbZRRarx9nA8zHm8XoxeZHiU4xfUDfcfr0zmb7fz+ONVUG8X1+VmXnT3uOcEHU/pyMjparc6QO1d4r+3S3N0PlIK7EPNiqV5Cx4nz2kjaQkLMicNEpFZiUHHk8FPXuIGcMNNB+Uj864+sTopIUByq6X+WzYCvzgguDNgs4Zqxv+av3qVcLrUDlrLWruGct+rSzkwTd/9NJkjcfM9G6TyAkWekOFa4x+IaP8IbbZZHWkh96GkFrrJNReiDPi95/R+M4iCVTf2NMq/iQImVHE/0Tb8DBCvdQvB7umu7hqmb+zoNe/FsOJaNELiSoBhoXY6vOLjQCHhsLXe5QPvoa755H7b6q0hjKBgQt39P6guVu+VIAHzRC5SPcp2i6IvtlR/ngEWsGWUL3feS1j9N7SRnCDdWyM04JqH8q9sdviTKktS71+pKjTwMjxAkN5ma+mVIGWeiGV4Qwayi1BqiK+lgePRggO7Z5S90vKmLtGWee9JjVOLzF874WPXsq90I9Wl2RyeDMJ9EgMv5jj2LYOHb2bh6T1Ffi5ajGurB17n4O1p0867m0G8G9EgHhov23Za/BQYwgozT+5REsZf+qjjfyVXcTkqFEOHtNzl8ekF12F/VVGjlSa4QYxGYcgLO4rmIPLEMebFdZWm6FHeghg5yOCPyLIfFe0uPUcUdkuk74E5NJOgUHpN6woXqbrtVFup0Gz7KvYYdBEFonYWtEZ6+svgbjhDp0ecWpvEeN38py3TCULCML05nGiANM6h6tQCxu5ZB/mS4T3m2hb/WUVkzl2OdAXN83C8qmPGtpLjWTNglIVXXuYrM6PJO3MboLwsgnE9CjmD++C
- lfta6V02
- wsddgvNRCTtQRUk3cebf4h+2vxh73a76vb/zBpd9XI3HpKpLveB2V/Du/ARDuPOigLUQx6wQUpKiZ5JvpUUEMqwW35rWxtucgsAQ2kA3ZrTUgNCHHzCLg2hP+XXM/kh1UNBStBOyndxW7tx4IxIVgTZRu9zM169uj6qaPGAtGz9ckzgcrYIeKNZLhF2M7/Nkeqx5w4pXHo0V2T8OkbigEF8a6qX1hMvlBRkA7hsI9AEaF+0fD9+3pJNEEoRl9/vSUvc8tgpJx+25RmTYzqVWcmEAiKAJ5h/zae92Dp3ij60ZucXpt9ABtV7veJk9dO+apBfi62GerzhWzlJH05X/y4ihKJsdDT8K0UbAEom/Bio18Oxrfqv5cMec6OIzibSX120N7gDPZ3sEs1PsBPnl7k6Ic4mAwR/PKhCKAD2dx9rRi6sRk4iNZo4lvq5jV/ByE65Zg
+X-HE-Tag: 1754805055-618409
+X-HE-Meta: U2FsdGVkX1/orIWq6gnEDVA9TMupX1Srf86a79r8qwRtPoFuzY5vxK1fCyqXfTp92Nh3F62I3tsWHJpARHSRAVzKNnnF1zww/hLHeQHVIRJCNvJdwcN5ctHM+yxzCqpqa9rfozbL42ItaKj4MxN/2bKJnKpnGy61+ov9y7fK4Uupmr1E7SH0FGSV0dfB1eXXXaR7Vf2S7DXuR8MI/NzwgZoUTDyZQ0bxPQbo5uykoLlpOuzr1YvAQkuCSxSuco0gGXYiiK9+spe+UREnR9FQgoqcU4KuUHNaeH6C6q70i5Gwl64JQnE7Z1j1xGxiuIQPq60UVx45Y5N7a1I3rYgv4GlzrLRb3siTQKVT5HFqrhvZTlkh8Dzgx934xGo4G/6X3HfAREv65k1MO7qW/E6dUMKsblpfNm41W1abMquX+Ig+PcJL9xakdvKWsokSwcoAqnt8Z5Yh3IYIx8CnechTWzYqy44UyA6k91VmfLH+xg49sjhIBDwDky4wfmDDFq//HHAO+azDyz3CGsi3ve9iA1b1WjMKqZYBkrwEDiDu0fEk+H3ZU8bkDS6j6WmNvAGqVvJQhd4VJmdHR0SqBrEDErZ16EBKi04to0uQdG/x+9EE6Ffddtz9uGPkQaSlW+w8x1YGFZna8poAZ9hN+v2McEhIvPLk6TqDc0fzMyrGdiupTFVIU6Hs5XQ6K1XcQjPsE4jhpDfnCWfeRtONjRkF1whuzlUj+BvKeVSFbo4Ofk4R2T0AtOZOW23AaEGx985XKZImsfWoBtFDy6I5o0pG5jaOBvWYp5yORDBg2ZyVTT4/McfsrYnfwr9ZEPGXOSPoRBeTawNmxj+IaXyRuh4f8T9uJ6Q2zSsq6vMG6X97x01+v7L4ZbLdOu+njwciQIpL++zfouoMUr+hBewEXI7rwPF3TjcIYxnGzS4ykqNAfEnrkuMtkr47bkuCNwROQl9oJT7Lh+bDoGnf4PbbbWC
+ m5XcEnjZ
+ IYPktNforYLPX12Wd64loVxLWfgEJ5WRh9MLiK9K/9UU1EMIQhQrhCZO7gYmmDzIKApEcLTg98XKBKybq3GiOaboKEmZhEr7A7YoL3EQG616Jb3VBP1zcbFf3gmfM2B1kU7UOLJgJkR8+MdNr1VnLx7mCHyJPYgONtgLvYOwhcxGmhvpLVXF7lgc4kD1P7fnVGemzfZrHRlzCOiOX3d4xpFEb6jNksWaCjpxTOaIp63sX+I3owzUaUuX45h8UQ/R8HT8kwXSHABsBLvsciVPEolg6YWBnMynvfnwYduhTei0CVmIhkkpTrheGkDMdF7G2kxf13YQBpfJEmcRz3+dJB9lsIIoR+m0SLtYpJLxBFkXNMcVsL6nqSv5zNkQ0vqfdlPIJzNvAT9lrD7n4d21uKPPe1d1VlakaTBZtTgy5TsuyNk2gqLU8Rikzh5gFYFEtY0uW
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,118 +117,209 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Hi SeongJae
 
-On Sun, Aug 10, 2025 at 2:36=E2=80=AFAM SeongJae Park <sj@kernel.org> wrote=
+On Sun, Aug 10, 2025 at 2:48=E2=80=AFAM SeongJae Park <sj@kernel.org> wrote=
 :
 >
-> On Sat, 9 Aug 2025 15:39:41 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> =
-wrote:
+> On Sat,  9 Aug 2025 22:07:56 +0900 Sang-Heon Jeon <ekffu200098@gmail.com>=
+ wrote:
 >
-> > Hi SeongJae
+> > damos_commit_ops_filters() incorrectly uses damos_nth_filter() which
+> > iterates core_filters. As a result, performing a commit unintentionally
+> > corrupts ops_filters.
 > >
-> > On Sat, Aug 9, 2025 at 7:05=E2=80=AFAM SeongJae Park <sj@kernel.org> wr=
-ote:
-> > >
-> > > Hello Sang-Heon,
-> > >
-> > > On Sat,  9 Aug 2025 04:55:17 +0900 Sang-Heon Jeon <ekffu200098@gmail.=
-com> wrote:
-> > >
-> > > > Add test to verify that DAMON status is not changed after a no-op
-> > > > commit.
-> > >
-> > > Thank you for this patch!  I have some comments below, though.
-> > >
-> > > > Currently, it is failing. but after fix the bug it should be
-> > > > success.
-> > >
-> > > To keep bisecting goes smoothly, let's introduce failing tests _after=
-_ their
-> > > fixes are landed.
+> > Add damos_nth_ops_filter() which iterates ops_filters. Use this functio=
+n
+> > to fix issues caused by wrong iteration.
 > >
-> > I see. As mentioned in another comment, I'll merge this patch set into
-> > one patch. I think this comment will be resolved then.
+> > Also, add test to verify that modification is right way.
 >
-> That could make the patch be unnecessarily difficult to apply on older ke=
-rnels
-> due to the test part.  Please keep those separated.
+> As I mentioned on v1 thread, please drop the test part, for ease of
+> backporting.
 
-Oh, I misunderstand your previous comment. Now, I understand your
-point. I'll separate them back and make two v3 patch(one for fix bug,
-one for test) not a patch set.
-Thanks for the explanation, I feel like I'm learning more and more.
-
-> [...]
-> > > > +    if rc !=3D 0:
-> > > > +        return None, f'drgn fail : return code({rc})'
-> > >
-> > > Let's not add a space before ':', for the consistency.
-> >
-> > I see. I made so many mistakes like these; (I worked this very late
-> > night...) I will fix them all. Thank you for checking this moment.
->
-> I'm sorry to hear that you had to work on late night :'(  I hope you to h=
-ave
-> sufficient rests.
-
-Never mind. just I went with that :) Thanks as always.
-
-> [...]
-> > To be honest, I didn't use kselftest framework while making these
-> > patch set because I don't know how kernel developers use it.
-> >
-> > If you are okay, could you share how you use it?
->
-> Sure.  I do below for running DAMON selftests.
->
->     $ sudo make -C tools/testing/selftests/damon run_tsets
->
-> You could also run DAMON kunit tests like below.
->
->     $ ./tools/testing/kunit/kunit.py run --kunitconfig mm/damon/tests/
-
-Thanks for sharing. I'll try it with my vm environment.
-
-> I usually run all those together with additional tests, using DAMON tests
-> suite[2].
->
-> > I just build kernel
-> > with custom patch, and execute output images by vm, and setup env,
-> > then just execute tests(it's so raw.. i know)
->
-> It's ok.  No one fits all, so different tests are needed for different ha=
-cks.
-> Please keep using whatever works best for you :)
-
-You're so right. Maybe I just want to learn some tips from the experts. hah=
-a
+As I mentioned on the v1 thread as well, I'll separate them back.
 
 > >
-> > Maybe is there a kernel build option that automatically includes tests
-> > to output image? Or just a general or smarter way to execute the whole
-> > test?
+> > Fixes: 3607cc590f18 ("mm/damon/core: support committing ops_filters") #=
+ 6.15.x
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> > ---
+> > Changes from v1 [1]:
+> > 1. Fix code and commit message style.
+> > 2. Merge patch set into one patch.
+> > 3. Add fixes and cc section for backporting.
+> >
+> > [1] https://lore.kernel.org/damon/20250808195518.563053-1-ekffu200098@g=
+mail.com/
+> >
+> > ---
+> > I tried to fix your all comments, but maybe i miss something. Then
+> > please let me know; I'll fix it as soon as possible.
+> >
+> > ---
+> >  mm/damon/core.c                               | 14 +++-
+> >  tools/testing/selftests/damon/Makefile        |  1 +
+> >  .../damon/sysfs_no_op_commit_break.py         | 72 +++++++++++++++++++
+> >  3 files changed, 86 insertions(+), 1 deletion(-)
+> >  create mode 100755 tools/testing/selftests/damon/sysfs_no_op_commit_br=
+eak.py
+> >
+> > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > index 883d791a10e5..19c8f01fc81a 100644
+> > --- a/mm/damon/core.c
+> > +++ b/mm/damon/core.c
+> > @@ -862,6 +862,18 @@ static struct damos_filter *damos_nth_filter(int n=
+, struct damos *s)
+> >       return NULL;
+> >  }
+> >
+> > +static struct damos_filter *damos_nth_ops_filter(int n, struct damos *=
+s)
+> > +{
+> > +     struct damos_filter *filter;
+> > +     int i =3D 0;
+> > +
+> > +     damos_for_each_ops_filter(filter, s) {
+> > +             if (i++ =3D=3D n)
+> > +                     return filter;
+> > +     }
+> > +     return NULL;
+> > +}
+> > +
+> >  static void damos_commit_filter_arg(
+> >               struct damos_filter *dst, struct damos_filter *src)
+> >  {
+> > @@ -925,7 +937,7 @@ static int damos_commit_ops_filters(struct damos *d=
+st, struct damos *src)
+> >       int i =3D 0, j =3D 0;
+> >
+> >       damos_for_each_ops_filter_safe(dst_filter, next, dst) {
+> > -             src_filter =3D damos_nth_filter(i++, src);
+> > +             src_filter =3D damos_nth_ops_filter(i++, src);
+> >               if (src_filter)
+> >                       damos_commit_filter(dst_filter, src_filter);
+> >               else
+> > diff --git a/tools/testing/selftests/damon/Makefile b/tools/testing/sel=
+ftests/damon/Makefile
+> > index 5b230deb19e8..44a4a819df55 100644
+> > --- a/tools/testing/selftests/damon/Makefile
+> > +++ b/tools/testing/selftests/damon/Makefile
+> > @@ -17,6 +17,7 @@ TEST_PROGS +=3D reclaim.sh lru_sort.sh
+> >  TEST_PROGS +=3D sysfs_update_removed_scheme_dir.sh
+> >  TEST_PROGS +=3D sysfs_update_schemes_tried_regions_hang.py
+> >  TEST_PROGS +=3D sysfs_memcg_path_leak.sh
+> > +TEST_PROGS +=3D sysfs_no_op_commit_break.py
+> >
+> >  EXTRA_CLEAN =3D __pycache__
+> >
+> > diff --git a/tools/testing/selftests/damon/sysfs_no_op_commit_break.py =
+b/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
+> > new file mode 100755
+> > index 000000000000..fbefb1c83045
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
+> > @@ -0,0 +1,72 @@
+> > +#!/usr/bin/env python3
+> > +# SPDX-License-Identifier: GPL-2.0
+> > +
+> > +import json
+> > +import os
+> > +import subprocess
+> > +import sys
+> > +
+> > +import _damon_sysfs
+> > +
+> > +def dump_damon_status_dict(pid):
+> > +    try:
+> > +        subprocess.check_output(['which', 'drgn'], stderr=3Dsubprocess=
+.DEVNULL)
+> > +    except:
+> > +        return None, 'drgn not found'
+> > +    file_dir =3D os.path.dirname(os.path.abspath(__file__))
+> > +    dump_script =3D os.path.join(file_dir, 'drgn_dump_damon_status.py'=
+)
+> > +    rc =3D subprocess.call(['drgn', dump_script, pid, 'damon_dump_outp=
+ut'],
+> > +        stderr=3Dsubprocess.DEVNULL)
+> > +
+> > +    if rc !=3D 0:
+> > +        return None, f'drgn fail: return code({rc})'
+> > +    try:
+> > +        with open('damon_dump_output', 'r') as f:
+> > +            return json.load(f), None
+> > +    except Exception as e:
+> > +        return None, 'json.load fail (%s)' % e
+> > +
+> > +def main():
+> > +    kdamonds =3D _damon_sysfs.Kdamonds(
+> > +        [_damon_sysfs.Kdamond(
+> > +            contexts=3D[_damon_sysfs.DamonCtx(
+> > +                schemes=3D[_damon_sysfs.Damos(
+> > +                    ops_filters=3D[
+> > +                        _damon_sysfs.DamosFilter(
+> > +                            type_=3D'anon',
+> > +                            matching=3DTrue,
+> > +                            allow=3DTrue,
+> > +                        )
+> > +                    ]
+> > +                )],
+> > +            )])]
+> > +    )
+> > +
+> > +    err =3D kdamonds.start()
+> > +    if err is not None:
+> > +        print('kdamond start failed: %s' % err)
+> > +        exit(1)
+> > +
+> > +    before_commit_status, err =3D \
+> > +        dump_damon_status_dict(kdamonds.kdamonds[0].pid)
+> > +    if err is not None:
+> > +        print(err)
 >
-> To be honest I'm also not an expert of kselftest and kunit :)  You coule =
-refer
-> to the kselftest documentation[1] for more details.
-
-Thanks for sharing!
-
-> [...]
-> > Thanks for reviewing! Have a nice weekend. I'll do this job after my
-> > personal schedule finishes.
+> Adding more context would be nice, e.g.,
 >
-> No worry, take your time and fun! :)
-> [...]
+>     print('before-commit status dump failed: %s' % err)
 
-:)
+Sure, I'll add that to v3 patch.
 
-> [1] https://docs.kernel.org/dev-tools/kselftest.html
-> [2] https://github.com/damonitor/damon-tests/blob/master/corr/run.sh
+> > +        exit(1)
+> > +
+> > +    kdamonds.kdamonds[0].commit()
+> > +
+> > +    after_commit_status, err =3D \
+> > +        dump_damon_status_dict(kdamonds.kdamonds[0].pid)
+> > +    if err is not None:
+> > +        print(err)
 >
+> Adding more context would be nice, e.g.,
 >
+>     print('after-commit status dump failed: %s' % err)
+
+ditto.
+
+> > +        exit(1)
+> > +
+> > +    if before_commit_status !=3D after_commit_status:
+> > +        print(f'before: {json.dump(before_commit_status, indent=3D2)}'=
+)
+> > +        print(f'after: {json.dump(after_commit_status, indent=3D2)}')
+> > +        exit(1)
+> > +
+> > +    kdamonds.stop()
+> > +
+> > +if __name__ =3D=3D '__main__':
+> > +    main()
+> > --
+> > 2.43.0
+>
+> Other than above two trivial comments, nothing stands out to me.
+>
+
+Sounds great!
+
 > Thanks,
 > SJ
 
 Best Regards.
-Sang-Heon Jeon
+Sang-Heon Jeon.
 
