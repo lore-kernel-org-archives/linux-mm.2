@@ -2,94 +2,117 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BC64C87FD2
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 09:21:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B063CA0EC0
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 09:25:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C50678E0024; Mon, 11 Aug 2025 05:21:01 -0400 (EDT)
+	id A38216B00F1; Mon, 11 Aug 2025 05:25:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C01408E000A; Mon, 11 Aug 2025 05:21:01 -0400 (EDT)
+	id A0FFC6B00F3; Mon, 11 Aug 2025 05:25:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3EB68E0024; Mon, 11 Aug 2025 05:21:01 -0400 (EDT)
+	id 94C8F6B00F4; Mon, 11 Aug 2025 05:25:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A4FBE8E000A
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 05:21:01 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DF5881DD981
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:21:00 +0000 (UTC)
-X-FDA: 83763932280.02.F1ECC3C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 1E27080009
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:20:58 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oksEQOqM;
-	spf=pass (imf30.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754904059; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 862A96B00F1
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 05:25:32 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 448A8BB412
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:25:32 +0000 (UTC)
+X-FDA: 83763943704.15.F6FC5AA
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 439C240008
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:25:28 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	spf=pass (imf07.hostedemail.com: domain of zhangzihuan@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangzihuan@kylinos.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754904330; a=rsa-sha256;
 	cv=none;
-	b=bqTKj/m5kYlVN0jGR6ZuyC9HMv85PljQ+vpzcM5gVG+Fjyke//MaZUQCLFltDnFrgZh918
-	iXZ58tXnsn+gMBDqbrCR1iH6hOxGziHCf7TB+tKjWRgGzc4dGzUylGPOAXjVtxuTYkl+i3
-	5GJ4lnMtNj1hR2+6VuQ2U6vpMIxQgEc=
+	b=iIrhzXdm8n0IVReBfLHGp/vO+JrdPiYvRSOjZwk8Ur0BKTYnYDPEGZJM5CJaJzaxXEuZru
+	BCAUtDhx3V9v4JEazbcU35otoLBJDdTYyAyYWykaOlFkfNEotRR50xTMWEaltPcUWmnL5V
+	eYdA3V9/ZYVLmVSCVasTzYu7DzjB+lU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oksEQOqM;
-	spf=pass (imf30.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of zhangzihuan@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangzihuan@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754904059;
+	s=arc-20220608; t=1754904330;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uzkyks50EWUz2MZ1OFoqF3BpHb/X7mvPXbtH2QPEdk4=;
-	b=fb6IgLhQw5BiuWm+w0qXOXdA5GjXhD4EoLPts67Gkxm94ChbExRYVTN1G2lBaiM7f8+FgJ
-	hhYbtKuKqy0bJcYILdDJRevN4sFVEmunLV08Jkb1nd1yOvB2jH+VCo0trGVzZBr7FyjTem
-	rYdFcPTzc5MhuFZDTo6+iL9prR1HimE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1EC5E4570F;
-	Mon, 11 Aug 2025 09:20:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953FCC4CEF7;
-	Mon, 11 Aug 2025 09:20:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754904058;
-	bh=zVWx4ZTneBogMsOlcaZR03vsIq0ezyb2I7LWj7kgLSg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oksEQOqMUdyBxuwfuLKe37pFoOb6VRj3GDQarDMsJbDnBbc/9AwEbBuijT6yE5gjX
-	 Aza7iUY+J8HW+ykZdsXkx1WgmVMRM3m3dIm1IJ+Qj+zZy79pMGLdum9EgqQFdkI/bP
-	 XJLAcgxv74KTK+drCslPeAHb0IhVk41s1KqERWrzDoKJpExThxKw0qaYhINetJr5NG
-	 Rp3xwx0tmN4m+mPzFMQUnIf4y0XLSttdNCMRAPFeU+023/YRULigbX1alYCc2T1wQ5
-	 /KEYWWQk3a8mJiTdEm3cGp9HtqffW7Qa143N0XfozT1jl+1/PvvhfodGx58uFRZgOy
-	 zDYZZPN6DXr7Q==
-Date: Mon, 11 Aug 2025 11:20:48 +0200
-From: Alejandro Colomar <alx@kernel.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: linux-man@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Peter Xu <peterx@redhat.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] man/man2/mremap.2: describe previously
- undocumented shrink behaviour
-Message-ID: <ac37lpfte2my6wlrk7omoeaul5spekd4pjzhutlmzanxtshneu@dsxs65meb74r>
-References: <cover.1754414738.git.lorenzo.stoakes@oracle.com>
- <c7ba8ba09b1c0b015134c54824788ef4aa47fd46.1754414738.git.lorenzo.stoakes@oracle.com>
- <iolucvrp6is43yjulbluchhw5wy6urq2gtwmcelg5atwuv63se@ovzuthfrup26>
- <0b0928a3-03b0-4a36-817b-b75c1f5c78f9@lucifer.local>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Pd87iunJHFRWcILRtFWKZ2FeAzjIeCZuwvCnTv7xREU=;
+	b=YMd+JdClE/GzCPyv9/7+wx7M3TiOy0KilonWN3A2wDVjWJuFxGXlxLST7JIqdhN+j7Bhkf
+	TQE4fOuXnx3OxKRXHB3ev1TP//xXUohOBzaVdgEETyNxh54WmGItkPvTQvuJElNgvaFalM
+	XbH6cZz2+/0trRpwUm+vF8cBMx4OjtQ=
+X-UUID: 1918392e769511f0b29709d653e92f7d-20250811
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:482ea64d-9d7c-4d03-b134-789f2a05fb1b,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:d6456464c6e6748e41fc8f4c855f847f,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
+	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 1918392e769511f0b29709d653e92f7d-20250811
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 2091135485; Mon, 11 Aug 2025 17:25:19 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id C5CB2E00901E;
+	Mon, 11 Aug 2025 17:25:18 +0800 (CST)
+X-ns-mid: postfix-6899B6FE-684577930
+Received: from [172.25.120.24] (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id EE6C2E008FED;
+	Mon, 11 Aug 2025 17:25:10 +0800 (CST)
+Message-ID: <0754e3e3-9c47-47d5-81d9-4574e5b413bc@kylinos.cn>
+Date: Mon, 11 Aug 2025 17:25:10 +0800
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="lgj4tlj4klqgw6oe"
-Content-Disposition: inline
-In-Reply-To: <0b0928a3-03b0-4a36-817b-b75c1f5c78f9@lucifer.local>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v1 5/9] freezer: set default freeze priority for
+ PF_SUSPEND_TASK processes
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, David Hildenbrand <david@redhat.com>,
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+ len brown <len.brown@intel.com>, pavel machek <pavel@kernel.org>,
+ Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Nico Pache <npache@redhat.com>,
+ xu xin <xu.xin16@zte.com.cn>, wangfushuai <wangfushuai@baidu.com>,
+ Andrii Nakryiko <andrii@kernel.org>, Christian Brauner <brauner@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Jeff Layton <jlayton@kernel.org>,
+ Al Viro <viro@zeniv.linux.org.uk>, Adrian Ratiu
+ <adrian.ratiu@collabora.com>, linux-pm@vger.kernel.org, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250807121418.139765-1-zhangzihuan@kylinos.cn>
+ <20250807121418.139765-6-zhangzihuan@kylinos.cn>
+ <20250808143943.GB21685@redhat.com>
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+In-Reply-To: <20250808143943.GB21685@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: h86w489ix4wuturtyknk46ehtk4m9s68
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1E27080009
-X-Stat-Signature: keb7doc3148zd4e8fjzg75nj11rm89cp
-X-HE-Tag: 1754904058-557174
-X-HE-Meta: U2FsdGVkX18Cm3OpXLuxkE9hpt6+mglX70AuOEDKxMNKzPYKWawsA8rGpv5j4pZCl3aAmvece2jfG4eEqkh4tDqNhK2S/OF6yu/RLWDA81zDGFM1zuL+fo3ZJgHgrEGNLHDeBZFrAHhm5c5AyNRbtZGnkJv9thMbfElD3kD9fNR5uJeyyUsHQTP9IAdvWkngGa8W8X2BDt2Pgk5pjwOFdS8cKa9LJIQn8RZ+yPtsAm6LFHDSEkHy83d+tN8q0Sd8wMJp5CFI5y2Uw8U/xAU3aXT3MaBxeyQ2KgLk3RJ7CFQYoQRb+oOAvlimN9Hd1jZQ/9VCVuoy3kCdfEXjWQLKbKnUI/jcxxd74JW/pj86U87qOeT99FD6UvP0iNOSJi4PhMB8v2VKUFKoIo4OnMQDR+JNu/9cdEy807tUmX0t/m2A1+rcay53qq9NVcC11uXJs7vS7nbAO3DGQMRuwHOmzGTXoPqNA4YZZl78AH3sKKlKjrA7ekULs2bEVQIU+8FnVfCtIGunmlbnTJsClWHtb77EpNJAP4zttMiHXIIL4i5CD7N5sxP40HA2TU66RuCUAN9mLCwF66D9ilE6pOE8kv/tTvyCeHBtkuSd5oCMU+oEz5VRX3sYBKRu1421deO4bY6mcB2gyLqD/VEjLPHXLYwDVHyffe2CvYIetjCFTBiWTgxvkZT85LMjzZaZeOnAPEi4NKDtX/sDOjYbnrafX9eE4THq6A28tWlRIpDd5pTt9SAajlFe2OZwf5QvQ7NcVnGjfNDGKZ09OiSCxJtspGzObC6zZGmOZgpPttAIwfVNgO3R2wm9y/YYahMstGq7ZGCOdP254nxEB3iTuof/n8kX5H4D7s/NmGEV46Q6DnaoyRF7Vrgj+AyEI73b5tcdv0XGOOHoyx8OfCxgyekOwQA/x5Ua416Fkr3j3xNavA2wiWyPteiYTNFRjlIo3VyAZ3z8Hu9y75E3TFCJL80
- IgoMtySE
- vFoanM6VYjzREGFZXiT99BaRO2pG+CbNqnw+2basNFfguHzJrENUDQmzbBzIj0M05kdb/1z6whG/ihAASIFzqT0ukxzggdaNin+7tweIO+rW/6/ZYSGob+JS73Ikr/gj7dK3+9jLCdK4BZpZMEOe8Z92A6E2r1UPH4yVkqfb4wQ3jz7MNpWxAzeNEwXXtCYZYna/SzrFTnbznON/+21NnTaXm1o3tZDB3XMG3+/KhuddxdbBl2VTn2E8ZQnjmnPG9JSKki7fLsiOj9WDS3ONr9t02yvcxVGaLUvgNT/RIjPaqYi5MPIQyB2BXm9V5Hv2mJGMe0BQFzM+RFy2DVLiwctN/H/PAfFRS40GbcJeMHHHhGoNUp4RAzmOE2oP+Cy4a2L5ZWVWy06cT1bZlhSgOrLzgp1S9BzgZFEak
+X-Rspamd-Queue-Id: 439C240008
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1754904328-991719
+X-HE-Meta: U2FsdGVkX18StlrMy8YQYDgQa510r0bgC+aMMsNgXPKKvaffMs0+oIKz7IERIQtb0RUZA+6pAfnl90uijCypL+Yf0XEYj+weR9gbM0suwOcy2OihjsCgh51Mo+apgmveD6c0rS2bAhQWY/driMr0B6kkPT6QFGivzLrayFS0IJ8PzP+/t+sTq9XwZ/sBqRdLDvU4edkmbqf1KuoGmNHQC8kOE2m9sAEL5FGoslU7hpF6lN93Evqopm25bFjF0MqLuARNbBJTLubkY3Rm7oARpMp+jGHjA75Gy2kUQ2ptTIBnGEOsVe9gx2FmC4xzxijsOg1jLv+3CDwQm7h2ZTrD+a5DtzROFWqBxTF6YasovC8rPobMCgLSiH0v5xPH8PiCYtj69izXZwarzE5svyWCjBbPXYe79ypVgP8mqwxyOAro2B0bxruyrKmkQkFm+siEeizOz4+zHownDJMSJApKNViS74vdLhVOjb4YIbnX89i76vVsxwE5rFovcPJKJbC/6uA9+DFtWfJetu3Mrh5vBOjmDsBhdf5LZhRX7RGFo9uCaLLNx8noiDdDWB69Uv8yJHfIbINy5OVjWLRwHsNadGdQP0KrFOu9ZEqhlUZZl67mMG8ZHp25CNlXhBO4FTw2SQiJ2C75slQocnEDgyhiTuARuPlP0p4cB4Ut+vLI1srBjhjUXmdDv8GFhq3YIn9IUvctBs1xyYaXMXet6lYMG2TjNcXZqzBH1mjJoBLLvw3mKiauuS7juVj2UvDmvDf12Q7P+AgnxmK4PuoaZlf5d9fDU7342Y93xKGGOVFUOPseQNDhlJKE9ZCsHo4+7xfsIwMsAZhU3/0E9xCH8J9OfU3miClcJwIhvJmbGNUS6XvsN6IZry8wja7z+GM/6wtTobxz1C31PXoFzj38gPgy7Se+AP1oYfm2vKooA/0PCODL8NM+ci3xz/8Mh1vZ47lSesqxwk365lEWGlzvvQN
+ gWbeslhx
+ Qeu1+7xLzVslYhEaWVEAWixXS2d4yS9u5KZFA+kpRIxVGV1ffUehqJC5tRFx1VqBtkbiQDW8++wy7FuAEDXRNLHz82M4bPGX3XBZVudgaaXV8pLNnDOI0uZdGUdj+fpdUSGb7aPkHpLkatm2UKuSmd7SXfeO5MqlXGHSrO7nuh5fijHJnlLKr8abc+g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,67 +122,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
---lgj4tlj4klqgw6oe
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-From: Alejandro Colomar <alx@kernel.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: linux-man@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Peter Xu <peterx@redhat.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] man/man2/mremap.2: describe previously
- undocumented shrink behaviour
-References: <cover.1754414738.git.lorenzo.stoakes@oracle.com>
- <c7ba8ba09b1c0b015134c54824788ef4aa47fd46.1754414738.git.lorenzo.stoakes@oracle.com>
- <iolucvrp6is43yjulbluchhw5wy6urq2gtwmcelg5atwuv63se@ovzuthfrup26>
- <0b0928a3-03b0-4a36-817b-b75c1f5c78f9@lucifer.local>
-MIME-Version: 1.0
-In-Reply-To: <0b0928a3-03b0-4a36-817b-b75c1f5c78f9@lucifer.local>
+=E5=9C=A8 2025/8/8 22:39, Oleg Nesterov =E5=86=99=E9=81=93:
+> On 08/07, Zihuan Zhang wrote:
+>> --- a/kernel/power/process.c
+>> +++ b/kernel/power/process.c
+>> @@ -147,6 +147,7 @@ int freeze_processes(void)
+>>
+>>   	pm_wakeup_clear(0);
+>>   	pm_freezing =3D true;
+>> +	freeze_set_default_priority(current, FREEZE_PRIORITY_NEVER);
+> But why?
+>
+> Again, freeze_task() will return false anyway, this process is
+> PF_SUSPEND_TASK.
 
-On Mon, Aug 11, 2025 at 06:31:25AM +0100, Lorenzo Stoakes wrote:
-> > Since this is documenting old behavior, could we have this patch before
-> > the patch documenting new behavior?  Or do you prefer it in this order?
->=20
-> I think it's fine in this order, it's more convenient for me as it'd be a=
- pain
-> to re-order otherwise, and we've waited ~20 years (or longer?) to documen=
-t this
-> so a delay in ordering is probably fine :P
->=20
-> Cheers, Lorenzo
+I=C2=A0 think there is resaon put it here. For example, systemd-sleep is =
+a=20
+user-space process that executes the suspend flow.
 
-Okay, that's fine.  Thanks!
+ =C2=A0If we don=E2=80=99t set its freeze priority explicitly, our curren=
+t code may=20
+end up with this user process being the last one that cannot freeze.
+
+Of course, we could adjust the code logic to handle it differently, but=20
+in our model its freeze priority is considered the lowest, so setting it=20
+here ensures consistent behavior.
 
 
-Cheers,
-Alex
+>> @@ -218,6 +219,7 @@ void thaw_processes(void)
+>>   	WARN_ON(!(curr->flags & PF_SUSPEND_TASK));
+>>   	curr->flags &=3D ~PF_SUSPEND_TASK;
+>>
+>> +	freeze_set_default_priority(current, FREEZE_PRIORITY_NORMAL);
+>>   	usermodehelper_enable();
+> What if current->freeze_priority was changed via
+> /proc/pid/freeze_priority you add in 9/9 ?
 
---=20
-<https://www.alejandro-colomar.es/>
+Sorry, my oversight. You are right =E2=80=94 in this case we probably sho=
+uld not=20
+allow user space to change the freeze_priority of a PF_SUSPEND_TASK.=20
+This would avoid unintended behavior during suspend.
 
---lgj4tlj4klqgw6oe
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEES7Jt9u9GbmlWADAi64mZXMKQwqkFAmiZte8ACgkQ64mZXMKQ
-wqkvnw/+IdbsJsVOUcmRIygS4HeChREWaNfeJQO7+UgsDPRw4CHPhxXhQyBGepCG
-fY6zcpBYX69RhF/1zNj9hDHSY7a4YlXQIVC4qs+AaAucT9IOzTH2hyykYU7O/gfu
-ltdePdwvQ7qs7PSkKgmwbOYEUODi0WmZrTJT4Jt8OW9C2sPGZ01IWE+7DsZYITIv
-awdWYSPkeSe0oeGAsQ33ZyP/kN/jRt+pHFbPE5dcbCxBkOFOCq8z5RcXtebrgq+T
-HBYO4J+OMjwkGqNMTY5DIry731B19BwvmI03NbcMApuMuEx6kK8HtDRfO3000hs3
-kRtR+glT+9RvfgzKcz/gadkFfVlhk/rMzFjQGCRD0FjSAlgbvIzPujM80Lgljk9Y
-FGQ///2DeH+Mf2vk9+WweEj+ciTFCPeok2i6rnNofTjq+cbaijpEny+c4ra4mJeH
-+AwxzrWdNjhxUZnr50B/WTT61bXBTVIHQuSnyHGbq/zSU8zuJiY2q7FFprgMnLq1
-pMWdkf1/cladI86zQH3d5QeX8BQN0MazjTNSV+FRECLrJJOSeLn1a5ip5nY+nJs4
-0U9WVtJhQ5MZcwNfPVEZp8aNqO2hTxS7OUYBjmiEWdLD+CKYmFJi8ygDy931sk7Y
-PEFHGbRwkh3vnLgGk/mTFFuCGbxEbTfC2a1lN+7xbdEuiYb2iRI=
-=0pEu
------END PGP SIGNATURE-----
-
---lgj4tlj4klqgw6oe--
+>
+> Oleg.
+>
 
