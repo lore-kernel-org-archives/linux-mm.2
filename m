@@ -2,90 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E11C8CA0EC4
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 17:31:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A4A7BCA0EC4
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 17:32:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DB038E0088; Mon, 11 Aug 2025 13:31:48 -0400 (EDT)
+	id C5D2B8E0089; Mon, 11 Aug 2025 13:31:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88AF08E0060; Mon, 11 Aug 2025 13:31:48 -0400 (EDT)
+	id C0D968E0060; Mon, 11 Aug 2025 13:31:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 752A28E0088; Mon, 11 Aug 2025 13:31:48 -0400 (EDT)
+	id AD4D78E0089; Mon, 11 Aug 2025 13:31:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D7A38E0060
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 13:31:48 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E4A9EB72BE
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 17:31:47 +0000 (UTC)
-X-FDA: 83765169054.01.D1B5BBA
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 916888E0060
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 13:31:49 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 515A0C0278
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 17:31:49 +0000 (UTC)
+X-FDA: 83765169138.06.2B41BB0
 Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 295A140002
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 17:31:45 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=WfrZlwTN;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 7D357C0008
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 17:31:47 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=UHV4HFNE;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of 3ACmaaAYKCAcr1up51nvvnsl.jvtspu14-ttr2hjr.vyn@flex--kuniyu.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3ACmaaAYKCAcr1up51nvvnsl.jvtspu14-ttr2hjr.vyn@flex--kuniyu.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754933506; a=rsa-sha256;
+	spf=pass (imf28.hostedemail.com: domain of 3AimaaAYKCAkt3wr73pxxpun.lxvurw36-vvt4jlt.x0p@flex--kuniyu.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3AimaaAYKCAkt3wr73pxxpun.lxvurw36-vvt4jlt.x0p@flex--kuniyu.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754933507; a=rsa-sha256;
 	cv=none;
-	b=vvGHNIozFvIx+8PGGIWX2svHZihMJ6dnBJvnMc3uI1FFsYkR3oc/1Vt/81oPhMNHAaLoYQ
-	5LgBDEGaKuNtRftb+9sZwdk1PNNYw3mOoyMnUkeDlUlrxNtH8AgakSeBA/ZfCTCYxNN6eR
-	2Su0t5OlO4aSDKeQ+MhZ/cZo3MNNfjg=
+	b=j+bneRrnAMVuZB4XTjn80ukGdGBarvkiEO8dkJ+NoNArvmNuXf7QApEwj6tKUwkRaSA+LR
+	DggIpw6ReMZ3n0g7gmFCQVrjJ7s6sAOCVD91PyXKrD0nuYaDGe/vZh6MoNbzwsumprBIde
+	BYcNrSM9XvhqLVh5ePVwsdzticLnHbI=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=WfrZlwTN;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=UHV4HFNE;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of 3ACmaaAYKCAcr1up51nvvnsl.jvtspu14-ttr2hjr.vyn@flex--kuniyu.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3ACmaaAYKCAcr1up51nvvnsl.jvtspu14-ttr2hjr.vyn@flex--kuniyu.bounces.google.com
+	spf=pass (imf28.hostedemail.com: domain of 3AimaaAYKCAkt3wr73pxxpun.lxvurw36-vvt4jlt.x0p@flex--kuniyu.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3AimaaAYKCAkt3wr73pxxpun.lxvurw36-vvt4jlt.x0p@flex--kuniyu.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754933506;
+	s=arc-20220608; t=1754933507;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M5aWSC3VweCjbJoCLklfizXMRwOKGjiP4PRbbUtyan4=;
-	b=EkuT/MbByf/wxMMVrrLOcNAbotuoBXpk3FM1W9OcKJgIJhI4o6Ja02PMtlcAjO1Wxvpql6
-	vfCmvVKGYUxKRdx+jqcLFIpc6KwVBpjNBKBQuH1yF7ETQ8BVnFtPmt4UKqbYled9NeCcqz
-	VkKDJH3gRgX44bQtjCURLopjKMNCbCo=
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-23ff063d087so40360555ad.1
-        for <linux-mm@kvack.org>; Mon, 11 Aug 2025 10:31:45 -0700 (PDT)
+	bh=UmnhomKCr3e2ahj1QMW8pKbPe/+04IGBoELpRw2IfXA=;
+	b=8fZjsGsF+gmaTEqUAt+Vx4BN79WovO1ol5Z0mNYAPtgnw1u8v3xqz9p0kgOG6HddMzzx+a
+	mowp17sigF5+Dmf5zvWMSe0/LE2NKXRsq7t/xb0fk/zV4fvCswvALeFRsXi9T5mBtwOsCM
+	VgFblu7C/IHFlcOf6j3ARmvIT+GNMvM=
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2403c86ff97so68654355ad.1
+        for <linux-mm@kvack.org>; Mon, 11 Aug 2025 10:31:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754933505; x=1755538305; darn=kvack.org;
+        d=google.com; s=20230601; t=1754933506; x=1755538306; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=M5aWSC3VweCjbJoCLklfizXMRwOKGjiP4PRbbUtyan4=;
-        b=WfrZlwTN8rPBabqGtMKbJW65YpeVR6EiCNrBdXXPQ1f3qJDl9yflcp/eVQwOQUSv5G
-         HDTWzZkVg2wqOvjeVSHUkLe3ilvV0y6PaHmkn2CpM5nb3mTyn7C3iMdh+tt5NnR8tBq0
-         iDZcyPnMo7DoueUejRV0kb3T2RYODUMnhLPczrFTEbpYx1q/pOz2gK7E/msPT2X5/ED0
-         KE5DtI6bxCuB/ZESvk9SKIPeT1F7HPkkTCOaSOtRqMNAhQON9z549HFhqH440EzCHtws
-         IONul8lnX1t8Y9TT6WtnSr0P1w7xTpy6pig+F5tWgpXojotPwWHfKBPNrIczhVC+a/Zk
-         h19A==
+        bh=UmnhomKCr3e2ahj1QMW8pKbPe/+04IGBoELpRw2IfXA=;
+        b=UHV4HFNEmWooJOst6Jgz9M3a+l/RajV5yfgz3m5Uh8CAbt+JFZ072TD8+RPcJvn/Xg
+         s3+v+Knm1fZvtkSfZRLXJVEFHVPYe5ppQqsWMJP91uRy/vu0Nwm6teNEXtQS6pk+jPiz
+         v0CZUAFaVLBqkd2iEZnpwRQtJ1ys8NBC4y+lSeF58rFWJ7p1z+FR0fr0PUg8eY0fP3r2
+         gs4LE806Y4bp+6c7MsTh56My3p5gfDmfRGsJWtCw8PEoS8YIbjwjaRwQe+FELq+VOKP5
+         QjDzIbEHPnNlGDX02R+1TNUNgxElOyaxoigsSZw/E2Kgxn/wvkgI2o5DAL68wYIOpVCd
+         Yq5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754933505; x=1755538305;
+        d=1e100.net; s=20230601; t=1754933506; x=1755538306;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=M5aWSC3VweCjbJoCLklfizXMRwOKGjiP4PRbbUtyan4=;
-        b=olaU3o6wUen9VvuiFcEv42WhjTLf7i3vX9joiT5gX+Fa3GnmZwkMAv0gMW7i2jMEGQ
-         Ie3AKMaW3w+phArSPPJC1Rr1QsP1wFtE+5CnGOyrkiKAmyPJTJRkj3FkaDqw3cQqor8U
-         vm2oAhwSnRYDkUdAMbLEwAUynMVkdAvOr926qsgxrvm1O59QSwsPq9lRbWI8niZ3n5Sz
-         S3J3l8YHfYAzXuZpGkoH7EeqEJEyqxFK0YOS5uZ1pRSR4gGg4oCICH9pQMzRpo58U6UC
-         lAAK3z52nboFUja6veAwUgBB/L0GT9lmXXU9IrNKW0mJInfiLqXzMBKyfdFuuyasr13y
-         OkIw==
-X-Forwarded-Encrypted: i=1; AJvYcCVBx/MjycZ0D3/XgP11QQphX7NyB5s+vU2dBVUqLL1wd/tH2K3vv4DDEjTIDHCy9vIB9LH9nwhpDA==@kvack.org
-X-Gm-Message-State: AOJu0YzJ/2oRJSkUCYe3ghuWzpTf0YPPzS7e2+pf6rsoGSuMRm+pdvqE
-	gQ3fZE6hMnYmTDDPRRRKZoav5VkqbKg8i75AtVZkJtKTkvV4VHOGF8xOSKDOPocnxmGlQp0RPry
-	dPJ2qaA==
-X-Google-Smtp-Source: AGHT+IEtI0hZmQkLl6do9xR5bq6fk+hkwUvmFCZYReLtL0+PGPBf8SbdQd0pvNwlObuC5a18Dro3jK8mXEE=
-X-Received: from plbmi15.prod.google.com ([2002:a17:902:fccf:b0:23f:cd4f:c45d])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ecc2:b0:234:f4da:7eeb
- with SMTP id d9443c01a7336-242c1ffb1f7mr164182355ad.7.1754933504815; Mon, 11
- Aug 2025 10:31:44 -0700 (PDT)
-Date: Mon, 11 Aug 2025 17:30:37 +0000
+        bh=UmnhomKCr3e2ahj1QMW8pKbPe/+04IGBoELpRw2IfXA=;
+        b=c2bzLWG/sF9mCZi+6LPQchsO0rvic87f1vUdcYmKKHR9bnrD7TnDjbHUVF+AfA2tdN
+         dNxgSDvJFpfOoh5ZtyJ3ZvZT6rgdgC7JBhElFNaos50/KgcATOMyiGreCN1E7VMXmgAc
+         4+Ge3n89Vg6tIpAIWrt81n9AyYUN6EGZ8GncVBhoSXhVMAX38ts0JOn4Wr6oAtKf3d9v
+         aeVbDZMtlc+e2xZvpzOoSqHhbO96N2wKc4p3OqYTRqOS7Dp5XA0n+5x3EV2Mw4q+/Rf/
+         81ZIfHMT8Go6GmCrmkMKtSvNDW8V47IPpDyf2zdSDdkO9O9PImfCugZ4CXnVKi6PoLfM
+         +3xA==
+X-Forwarded-Encrypted: i=1; AJvYcCXZwYdKPgSXvOjSnvm3bJl3WWex7nr6WNzNl8O2GY9n+jrvLVfjhra1Qkc/P/CLjtX+zuUhh+rNGg==@kvack.org
+X-Gm-Message-State: AOJu0YyTWdNpOkv964NPW66SngugDpqgIiIo9DdRiD2iAbpbQBGkRqnt
+	U77isiG61bTUxUDjqItmTjVa/23bNGBD2KugLnMUyPCGTMBGw9GqDjtUyP3XKA9P3cx2/m1Guy7
+	+DIjXjQ==
+X-Google-Smtp-Source: AGHT+IEbQbPObtr4lDb3C6IUSrTWzurWfQ/uCHMXicVSCI8UFHPyb3Vp4pwMwBuWD+yHcnEb6yN4kCs20/w=
+X-Received: from pjsa15.prod.google.com ([2002:a17:90a:be0f:b0:31f:26b:cc66])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2ace:b0:234:b123:b4ff
+ with SMTP id d9443c01a7336-242c2011167mr203387105ad.21.1754933506388; Mon, 11
+ Aug 2025 10:31:46 -0700 (PDT)
+Date: Mon, 11 Aug 2025 17:30:38 +0000
 In-Reply-To: <20250811173116.2829786-1-kuniyu@google.com>
 Mime-Version: 1.0
 References: <20250811173116.2829786-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.51.0.rc0.155.g4a0f42376b-goog
-Message-ID: <20250811173116.2829786-10-kuniyu@google.com>
-Subject: [PATCH v2 net-next 09/12] net-memcg: Pass struct sock to mem_cgroup_sk_under_memory_pressure().
+Message-ID: <20250811173116.2829786-11-kuniyu@google.com>
+Subject: [PATCH v2 net-next 10/12] net: Define sk_memcg under CONFIG_MEMCG.
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
 	Jakub Kicinski <kuba@kernel.org>, Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
@@ -99,14 +99,14 @@ Cc: Simon Horman <horms@kernel.org>, Geliang Tang <geliang@kernel.org>,
 	Kuniyuki Iwashima <kuniyu@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
 	mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 295A140002
-X-Stat-Signature: 9e39bdh3x6mxoxw734m9bwubbge7pwbq
+X-Rspamd-Queue-Id: 7D357C0008
+X-Stat-Signature: 8m6s8kbpbhhfhiq57zd84m9ji91eueua
 X-Rspam-User: 
-X-HE-Tag: 1754933505-886625
-X-HE-Meta: U2FsdGVkX19h798OK7sy24XOCviv9Y66y3UecJVw6fpimbNIpG3M5Uq/Yjmg4/lyoXoUNIrkd3oNklspS/NoiYmBAaZwbyzt/X9dswyayEuozGaYnrId7s4DZx1TNntbF6RzwnjddVyIqvGCZIUnbu/pyY1CuVvCfF7k2P8j4tGLA5OPJ0JX/1v05gdUYZTG6N41o1kVPkMyk9AqSohgFxfvv07FTHOYd9AM2ZGUZqzxj+mWbIavAhMBcCASka6BvfTrH2fPjDpY/yjBkcIal3eJzM8DcPFUL5PKh8bITvikC/konLEYfBGxyBnNPisftumLp5hTBn1BCL0NPGeWtTWW3sWl3HocTYiLjB/MZQQki0Eeof/FWbrL4SHQRvvBa3E0Z5gwxp4u324jJBFlUTWkJwjhGOuzkRxbCjofyx7OKwIx/Q+G1HvN2gBmpuoG/dYbXloXztYorSkleQ7CIGeP1fnKF7MO3uvpwX2VX2ejZBOXVzRVZ5vSTEVoRq+tboLLq2HIWKzlpXQ/YMHVEiy1+TT9VJz3o0fyH0BC6N4aFChCWUFs8Ky5W7+Fuj/t7UieiXUxJPFhY5BwBZKQGPqc2dwy2eip5xyzIKG3hZ/TNJB6PypsekUqf4Hh3k6AVzx1t8ZCrDnV44vDfqNZd9AFoGzdz4fOfll3ntpOI/OY/mxmS6J885aePjdaFlPO8hg6iSv4//eJ6OqBe7k5PCbfvuzm1MGidMMfKR9hXRVRXM87bsQhGeijjZ5wXD9lGbbTFwFYkM6wwDqS0LpXxgwJhyEsDkIov1KxkProUVZXhqDqikLj/MmvgjcMUlCp3bNRCbIJ7tCd9wIims9UReAIGX0NoSkLQWyKbQPLs84jgzwS7WW6WdCuz8CDqxDmFll1L4m0BuXzA7kp6D+n3Iml2C9cjEXy2DqvHOaAJ++hoGWhJhQnUbv6eiYAjAFPa+kItY72f7LGYTGuzHX
- lGyK8RjJ
- UazsKJPUAoEPdB1mtAnzpMPn4fSC/lzBYLcbITsC0vCNcWQjRNlAzLiEQjoMO1qiwKVsTWFWSfeC/fN/rPMtkKbA+LfzNCIJI4FJUu1CSskYjeng98PGz2YI5RvKhKENenFZK7lBAJ6Qte7n4FOE0BoWsmOxKZBgpXht5hQWh6zbcHVLThQTjk524LARFYnFu+ONMRyme/ugYnKHDI0fnWJewvgO3DQ1jNh+UyIqNLerb30+ELk179yfyoV8Ljav/Ggg+0lVmINC8RNh/aBD2EQcTXz20C+yz6o7a9BAJmU4vNnNotn7/MHiTfb1M2xrrNJLuwaOdUFg2eEezsO8ON+MfIk6fIfene53hirjeMBZhnpr1Kd+dsS9/NmEAVY8P+1tyap7ViozOUclmXNBGFJYlRJj6xG22SksMzXk48tMj9Dz7aXlRlsCSA0OUuEVFlcd7fHkico3ao1Ai7s/qK+850nkef1PJPptCnAU2uWeRQItVH50JAkeQ/pkxOxPZPUmQCcPj5sU//M9uu+kF9mfGO/yMxMo1ycI6pZkoizl4qegx6Zk+TJge8HUb/Em+EoZpfnrRNGBiFM6+Ujpf48oUsw==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1754933507-710285
+X-HE-Meta: U2FsdGVkX1/2vEEiyf6aNOgIsn9ux6hNdja3vRpOpyEc6UfCxHwzpwUmd5CS9/+QnxMdQqpKpvJD6V7GGfd+jMYlVEqD5FZdSvz9A63BArLPcF+bxgKLk5sj4tcFrVuE/eCNeGb1NRWSuDhyh79EDlXjWVOEWSjnggSATQq90Za1N+lHqsPsirPZ2VJ1VUYPmdS9/byoh509X3IIultofWqY2wyKauHi471N5QEpmqn5rb8AzA+F3x+w8yl9D+l2XMCzyF+X8OXPMYojHwShnuC5BGC2i3FIXFA9MQOuihJTlSNko1/hool9r/tbWW4LFV0p4WBGO0vMfpTORtWU20NuJrvHwjBH2xvpu+eGdm2SYZcqjbidFj2524zuIe0crAkDjYmT2ApfZJpLVvcNSoz6TzSeuZvHi9vpRLo7LJgSx/wWcvz65fAsXJRAUYjjnU+9D/fbKewBd/hTV2UtmsKTMQsHWDiLBzwKHAMzvy3VBX5elyehnkVTiTYIam58HhlD7BkAnKR1J3wuOB61suUGS4sWe6Dvxzl4iiF1Xbr59RGyQ6W6HbxxKHju1nWjN+N9b6A9jbjE+0K3gBsHs39eVhW+sKjq7IP7FndwiEUYhnR4T7cpRYb6c8sZCfRgMUXEcQ7lT1UxKv+QBn5wm46q73JDMeFSq4WIiX8YibpG6xRIqiRsKkv3N5JLTTycIwwVJV1o3oxbqU0Xh5gF3agMTzJ6kYnZrIRH3HWPvBnJjJ6KO+64ULZwZzymp2lyDopI0Uq+Wx2eZezzXp7l2/TKHmYjgQdEs54wRpLNC/iwyCjcmY0SKHA4FFwc+Kw2fxxWamiXXE0o7782gsb2xjyiK13b8p+S3WMVHNc64s2XV2GNiC84BHGApDt46THnWY3KL8YK2xLgVsLURncNSH3lGTeUgI2n4eC+DgW7dqQMlRD6hkmJlRp1UWFArUQ9X7jQNj3qeZ78lPWL4/o
+ 3O7cmB7O
+ 2kyo5J6dGo9Rn+uAS0G8/HFoHZPYJ1mYIJ8Rv/TxB0ZlGvdm75HS7fD5SqmsLtPhOOm9+09z/3XIe1yaqYWVsBXLPS6wLF6UOa1eioC1e56BP0HN4uPgsIf1JoiixkTM0cmo1azxMfEIiBtM3jeosy5HEtCLrdGrBEOczsu7iDHlNgwkaj/fscsgD06TW78f0zUdV5zQhFieiKnf8QzptulWmx3uL41jMbv6ELC46HYP/6aD+DTrLEztIVD/ZX7YdGaEgCPoi3pqlPhz1Encuf9nklcNDFzxPimdYmDeNwMyNF4jz9X9VbiIsH+hhYts+Fy55I6D/VeNd314ezXR6djmWLUTpBwTJ3fgN3rDaoRmIZResXRrsclRc6UvcgA5JKBzcMYq0SuMBpR1ESqUkiruaFDkk+FNBsOdYnXykbSPQlpYYAzNLTEyiVOUEL3SWuLgRKDs0emKO5aSVYF9R3QCg5vJM/kfmfUxNCtflGWHjaA2XLh6sxgnsu2dAgo4Nikerdj6SX/aARzAZoHOIx766wZNKlYBBGD6vxqicbJ8gV0y2uiNP/CMjM3dgOSClFF6BAISWd3vIpVW8vqLaruBoIA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,126 +115,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We will store a flag in the lowest bit of sk->sk_memcg.
+Except for sk_clone_lock(), all accesses to sk->sk_memcg
+is done under CONFIG_MEMCG.
 
-Then, we cannot pass the raw pointer to mem_cgroup_under_socket_pressure().
-
-Let's pass struct sock to it and rename the function to match other
-functions starting with mem_cgroup_sk_.
-
-Note that the helper is moved to sock.h to use mem_cgroup_from_sk().
+As a bonus, let's define sk->sk_memcg under CONFIG_MEMCG.
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 Reviewed-by: Eric Dumazet <edumazet@google.com>
 ---
- include/linux/memcontrol.h | 18 ------------------
- include/net/proto_memory.h |  2 +-
- include/net/sock.h         | 22 ++++++++++++++++++++++
- include/net/tcp.h          |  2 +-
- 4 files changed, 24 insertions(+), 20 deletions(-)
+ include/net/sock.h | 2 ++
+ net/core/sock.c    | 4 ++++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 0837d3de3a68..fb27e3d2fdac 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -1642,19 +1642,6 @@ static inline u64 mem_cgroup_get_socket_pressure(struct mem_cgroup *memcg)
- }
- #endif
- 
--static inline bool mem_cgroup_under_socket_pressure(struct mem_cgroup *memcg)
--{
--#ifdef CONFIG_MEMCG_V1
--	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
--		return !!memcg->tcpmem_pressure;
--#endif /* CONFIG_MEMCG_V1 */
--	do {
--		if (time_before64(get_jiffies_64(), mem_cgroup_get_socket_pressure(memcg)))
--			return true;
--	} while ((memcg = parent_mem_cgroup(memcg)));
--	return false;
--}
--
- int alloc_shrinker_info(struct mem_cgroup *memcg);
- void free_shrinker_info(struct mem_cgroup *memcg);
- void set_shrinker_bit(struct mem_cgroup *memcg, int nid, int shrinker_id);
-@@ -1686,11 +1673,6 @@ static inline void mem_cgroup_sk_uncharge(const struct sock *sk,
- {
- }
- 
--static inline bool mem_cgroup_under_socket_pressure(struct mem_cgroup *memcg)
--{
--	return false;
--}
--
- static inline void set_shrinker_bit(struct mem_cgroup *memcg,
- 				    int nid, int shrinker_id)
- {
-diff --git a/include/net/proto_memory.h b/include/net/proto_memory.h
-index 859e63de81c4..8e91a8fa31b5 100644
---- a/include/net/proto_memory.h
-+++ b/include/net/proto_memory.h
-@@ -32,7 +32,7 @@ static inline bool sk_under_memory_pressure(const struct sock *sk)
- 		return false;
- 
- 	if (mem_cgroup_sk_enabled(sk) &&
--	    mem_cgroup_under_socket_pressure(sk->sk_memcg))
-+	    mem_cgroup_sk_under_memory_pressure(sk))
- 		return true;
- 
- 	return !!READ_ONCE(*sk->sk_prot->memory_pressure);
 diff --git a/include/net/sock.h b/include/net/sock.h
-index 3efdf680401d..3bc4d566f7d0 100644
+index 3bc4d566f7d0..1c49ea13af4a 100644
 --- a/include/net/sock.h
 +++ b/include/net/sock.h
-@@ -2604,6 +2604,23 @@ static inline bool mem_cgroup_sk_enabled(const struct sock *sk)
- {
- 	return mem_cgroup_sockets_enabled && mem_cgroup_from_sk(sk);
- }
-+
-+static inline bool mem_cgroup_sk_under_memory_pressure(const struct sock *sk)
-+{
-+	struct mem_cgroup *memcg = mem_cgroup_from_sk(sk);
-+
-+#ifdef CONFIG_MEMCG_V1
-+	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
-+		return !!memcg->tcpmem_pressure;
-+#endif /* CONFIG_MEMCG_V1 */
-+
-+	do {
-+		if (time_before64(get_jiffies_64(), mem_cgroup_get_socket_pressure(memcg)))
-+			return true;
-+	} while ((memcg = parent_mem_cgroup(memcg)));
-+
-+	return false;
-+}
- #else
- static inline struct mem_cgroup *mem_cgroup_from_sk(const struct sock *sk)
- {
-@@ -2614,6 +2631,11 @@ static inline bool mem_cgroup_sk_enabled(const struct sock *sk)
- {
- 	return false;
- }
-+
-+static inline bool mem_cgroup_sk_under_memory_pressure(const struct sock *sk)
-+{
-+	return false;
-+}
+@@ -443,7 +443,9 @@ struct sock {
+ 	__cacheline_group_begin(sock_read_rxtx);
+ 	int			sk_err;
+ 	struct socket		*sk_socket;
++#ifdef CONFIG_MEMCG
+ 	struct mem_cgroup	*sk_memcg;
++#endif
+ #ifdef CONFIG_XFRM
+ 	struct xfrm_policy __rcu *sk_policy[2];
  #endif
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 5537ca263858..ab6953d295df 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2512,8 +2512,10 @@ struct sock *sk_clone_lock(const struct sock *sk, const gfp_t priority)
  
- static inline long sock_rcvtimeo(const struct sock *sk, bool noblock)
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 9f01b6be6444..2936b8175950 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -276,7 +276,7 @@ extern unsigned long tcp_memory_pressure;
- static inline bool tcp_under_memory_pressure(const struct sock *sk)
- {
- 	if (mem_cgroup_sk_enabled(sk) &&
--	    mem_cgroup_under_socket_pressure(sk->sk_memcg))
-+	    mem_cgroup_sk_under_memory_pressure(sk))
- 		return true;
+ 	sock_reset_flag(newsk, SOCK_DONE);
  
- 	return READ_ONCE(tcp_memory_pressure);
++#ifdef CONFIG_MEMCG
+ 	/* sk->sk_memcg will be populated at accept() time */
+ 	newsk->sk_memcg = NULL;
++#endif
+ 
+ 	cgroup_sk_clone(&newsk->sk_cgrp_data);
+ 
+@@ -4452,7 +4454,9 @@ static int __init sock_struct_check(void)
+ 
+ 	CACHELINE_ASSERT_GROUP_MEMBER(struct sock, sock_read_rxtx, sk_err);
+ 	CACHELINE_ASSERT_GROUP_MEMBER(struct sock, sock_read_rxtx, sk_socket);
++#ifdef CONFIG_MEMCG
+ 	CACHELINE_ASSERT_GROUP_MEMBER(struct sock, sock_read_rxtx, sk_memcg);
++#endif
+ 
+ 	CACHELINE_ASSERT_GROUP_MEMBER(struct sock, sock_write_rxtx, sk_lock);
+ 	CACHELINE_ASSERT_GROUP_MEMBER(struct sock, sock_write_rxtx, sk_reserved_mem);
 -- 
 2.51.0.rc0.155.g4a0f42376b-goog
 
