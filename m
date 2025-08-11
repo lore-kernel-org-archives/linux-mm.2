@@ -2,79 +2,79 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 54F69C87FD2
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 09:29:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E91E5CA0EC0
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 09:32:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EADCD6B0111; Mon, 11 Aug 2025 05:29:38 -0400 (EDT)
+	id 73A236B011F; Mon, 11 Aug 2025 05:32:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5E4A6B0114; Mon, 11 Aug 2025 05:29:38 -0400 (EDT)
+	id 6EB168E000A; Mon, 11 Aug 2025 05:32:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4D796B0115; Mon, 11 Aug 2025 05:29:38 -0400 (EDT)
+	id 5D8F26B0123; Mon, 11 Aug 2025 05:32:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C14C66B0111
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 05:29:38 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 679E014065F
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:29:38 +0000 (UTC)
-X-FDA: 83763954036.07.3B45B26
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 49B9A6B011F
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 05:32:11 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D7ED35B60D
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:32:10 +0000 (UTC)
+X-FDA: 83763960420.13.B9FA1F9
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 7F455180006
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:29:35 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	spf=pass (imf06.hostedemail.com: domain of zhangzihuan@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangzihuan@kylinos.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754904576; a=rsa-sha256;
+	by imf05.hostedemail.com (Postfix) with ESMTP id EB9F8100007
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:32:07 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	spf=pass (imf05.hostedemail.com: domain of zhangzihuan@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangzihuan@kylinos.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754904728; a=rsa-sha256;
 	cv=none;
-	b=3HDkeDJjpWLmsVjc0hF2FWFG17qoDQELR0BCNDsGRMv/9oEyg7HXCAcyB7HezlVwvdIfAZ
-	c36NkQLuaYpv6EpxLzm7KmJ4C0db8R31QOleD8unIEk5LeJVJLB64JWSO/804PIrbe7DRK
-	nRSNra44yvEFlDkwwtlRa0l5HtsTDwk=
+	b=6dN4Z1uhTI3Q4UMQ1Ue88lt+KxxEKPy4oYP8cvdnNh5PAdiA4UNXLOwINro9weKVzlYdYa
+	6azPo0FqSPY4I3X/l9efU1lZHnBSwsg43lYZrPj2mrEXY29/hCi5kDZs5htJVTRL6G+Ic/
+	fL+USZjWgiFKOPxkVZ0p6rAGehrWU3Y=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
+	imf05.hostedemail.com;
 	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of zhangzihuan@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangzihuan@kylinos.cn;
+	spf=pass (imf05.hostedemail.com: domain of zhangzihuan@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangzihuan@kylinos.cn;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754904576;
+	s=arc-20220608; t=1754904728;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4iW3W/cx9SLpvTA6KnqI7K8K4I2aGQbYPmZCrAgO9uE=;
-	b=2sPji2KWYCktRmETSfHUnA0VMcG2BEb09arvSCoYIGfdUpk3V5ScBC7uq0TTkaVXI/AaEG
-	As2NU6eceIqa2pFRZZuD1HR9F7iqdtoBU6j7gqytoKxhlCpZ/ONtBk8gpMXLs2UaLJz9sr
-	11SknZ3h+9v5sIDv5UZJybj4yW78bgQ=
-X-UUID: ae29d144769511f0b29709d653e92f7d-20250811
+	bh=uBLHq633myHRhMcuyw+oBVBl9eWfkDKb+/cDgxxY95U=;
+	b=qI+Uo2fyzr8jMHXC1G6MtEmWVacT/MNfvNAC3ac1AYdaO6IIVX3yU1yb8erDzrlfCAf8d3
+	zFyPfNfbtoqt85SucMjtrIbJbzH1bBLc38mw8GAFpaP58H2q5NUXxGRZuLLSAEj994p2XD
+	IIh6ch1oGRJuzzrTBxcHwVDoHqAA+K8=
+X-UUID: 09119de4769611f0b29709d653e92f7d-20250811
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:9f072084-4e7a-426d-bf9a-ff0089cf6e29,IP:0,U
+X-CID-O-INFO: VERSION:1.1.45,REQID:6894e59b-7da2-4bdd-9d45-8007d9a3ccca,IP:0,U
 	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
 	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:c7b9f30b8c3086fe46fc61c8f7f14481,BulkI
+X-CID-META: VersionHash:6493067,CLOUDID:116d6fe237f848fad94ae5ca94f49707,BulkI
 	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
 	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
 	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 0,NGT
 X-CID-BAS: 0,NGT,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: ae29d144769511f0b29709d653e92f7d-20250811
+X-UUID: 09119de4769611f0b29709d653e92f7d-20250811
 Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
 	(envelope-from <zhangzihuan@kylinos.cn>)
 	(Generic MTA)
-	with ESMTP id 2014897367; Mon, 11 Aug 2025 17:29:29 +0800
+	with ESMTP id 1613669997; Mon, 11 Aug 2025 17:32:01 +0800
 Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id 54C52E00901E;
-	Mon, 11 Aug 2025 17:29:27 +0800 (CST)
-X-ns-mid: postfix-6899B7F7-180263939
+	by mail.kylinos.cn (NSMail) with SMTP id 2F02AE009021;
+	Mon, 11 Aug 2025 17:32:01 +0800 (CST)
+X-ns-mid: postfix-6899B890-891391949
 Received: from [172.25.120.24] (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 7F470E008FED;
-	Mon, 11 Aug 2025 17:29:23 +0800 (CST)
-Message-ID: <393a4509-9b05-45b8-8496-699ace9a5438@kylinos.cn>
-Date: Mon, 11 Aug 2025 17:29:23 +0800
+	by mail.kylinos.cn (NSMail) with ESMTPA id CD093E00901E;
+	Mon, 11 Aug 2025 17:31:57 +0800 (CST)
+Message-ID: <ee4191ab-ecce-481f-999d-e65bfee799e7@kylinos.cn>
+Date: Mon, 11 Aug 2025 17:31:57 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 6/9] freezer: Set default freeze priority for
- zombie tasks
+Subject: Re: [RFC PATCH v1 7/9] freezer: raise freeze priority of tasks failed
+ to freeze last time
 To: Oleg Nesterov <oleg@redhat.com>
 Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
  Peter Zijlstra <peterz@infradead.org>, David Hildenbrand <david@redhat.com>,
@@ -99,20 +99,20 @@ Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
  linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20250807121418.139765-1-zhangzihuan@kylinos.cn>
- <20250807121418.139765-7-zhangzihuan@kylinos.cn>
- <20250808142948.GA21685@redhat.com>
+ <20250807121418.139765-8-zhangzihuan@kylinos.cn>
+ <20250808145349.GC21685@redhat.com>
 From: Zihuan Zhang <zhangzihuan@kylinos.cn>
-In-Reply-To: <20250808142948.GA21685@redhat.com>
+In-Reply-To: <20250808145349.GC21685@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7F455180006
-X-Stat-Signature: 5x9bfanh7yjgkwyyfxqpmmjcxkt8ara6
 X-Rspam-User: 
-X-HE-Tag: 1754904575-441172
-X-HE-Meta: U2FsdGVkX19sw5BYVNBqlno7UDFQtxThgsp0Obdnxn9POrXo223E0OMN/osXEshmoRcgObOveQcgtlrC7PT5FZyAyFf5NioT8rOdYTcHv9o8lAFghc0P5gHaKd62k9GQXXlM1PuYFvMB5VMg1By7z9oRXUqSWZGdb7gYgE2FEQqTmj98jfpvb4TxQQ39cg0abl3vNZfBZvQZvNxCaDR4Komtz9tcRAZzgnoZdbkWGCDwiWHLzMoL/SamrThkE4+kHT5KR0Fa6phYd1i1JkUlI5N4eQ5cD0HGBYz5d8YdDcYBqesDwOERUUEokeT6P4V9mmnDd9ZFE2r2EpKVhrgFv/9Dp2PHIHOQW53CCfTXK3O4uk4dvJIC/NQ0snrLMkmMc118i7VWJIHIFlmLupA5TGgdrrV6h0dDRCuWHyhHQE0AvcoPP1uilC0xhIn8jztBE7V/0cvGsskqqMQfgc5Q5/qFkr2W6vgRNSDkyI9VSHNuguW610u0Vn+IdsL9aaPUjKSnrE2KXeS57gWtsfRVwVzzdsjHR+Grw0k6+wUwytC1Gb4kAGOsj+R/jOR9MwSYVkYghGvgODmkgQ13epKTtwgRe0A8fmV29t/ih3xzFMOCoTogdRzB45OKhwFzKynpECHa7PNc93B77pi+sTjp9kjJtC0Xyi4jYrL9jGM/nY15rWCq6B4VL4PgDDobg9HJ4/gSTDNA8J+bbPPDqcSrS+JiscBVFP9DxvvF4YpZYYLFTasGR0SX0l1Iev0tGTkNRZfixxmZgZeOqqeT22cNuekzwyUdvCjnNY+ByVBGP4Yj4dANn5Kex8HdyiSETv4VdmGr7n9O/iWswIq+s3KzhW+0E67NPKm+E/2PdvHnNSMTveI+ficNy6GwlMuRTcE2jN27iZqvG+ZdCzHXtGEmcFGKQ10UPQPbfsuOxPQazEOhist66wkmsNvTm+xGz+vvJaKFoVEKCN8nyceZjAl
- lLdpuxL4
- 75GNGwV11oprx5LQE1BvB4Yt+E5xdufgyB7rB42JBoUeFcBkGxtE/hZA5BFIZRws6zL5L5iqWTvSKlBjSumQWieY3Q1+pyFOQrkcpztdWwSThidRZI6bu5gBPKjAZ1ZpTOE9taeEDRM/QHTs=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: EB9F8100007
+X-Stat-Signature: 7nxx1dt6sooq1a7c9w8r9zkibujzie9a
+X-HE-Tag: 1754904727-492012
+X-HE-Meta: U2FsdGVkX1+5oxp5JdgYaVY1RE5L5lPmWmlXmTIm77Ne20oXQPs51Xj2Zokt/jew5H53CdzmckRXf8moQ54EMg14toYGbO6+2mBFLYPFHG5qdUb7PbbEQLytIBHWYUq2Vt0gM1QmUv/D9pw/JLFQys5yL8X9AgBsZg7VoiquEgjUdMB5cAjS2ZHHhTdWC1wAcQdH3NCj3Pc4x06d0BkCZ9s5bZbz9AGUz66dFKsAdSJIK3oorGjZvEjLFfFxwqdVtqzxr1EzIUHuUMWeMo1euMVwXEz9IDqq6bI3i3AHVXTzx+f63rv11I2PcO+vbYtSyoI20nMs1065snYZ6MgvpHiDDqKpW2Pkcm4870+gZ0rMoOUh3v7UAJgH+8JzAuT8TmaPkUiC8K/UlcuiR+Sw41BRdgECdb9gi8PKe4nJQtml0pVJX2uVSkq8H+EZit4WzpXCciUM+43ZODSI07Jm4/UWrznfwg3B/k6QOR+FPAjYzASEyK72uCvHuGzRFav8LH/dbkGbYPsKtclg0rnqSPh9PWk7xBotMJckRutVQmOvuZRtm63rMGbsguPQBoVlernsp5fbRI9iAeuNqfZbedPR6vAXBVU7QDrboxK4Mezbj+fnsSBKeQCOAyIOVb0QuC2mnoQfUAv6N3gTBQjRlswDQ6Qvwn7Spj8OarT+oCZIoYGjPN/2TlaFhLH3sQFqZg3wGT+dinBsb7DpBnV3cA8s7QMtcfDN8ely/mKLQF+8cq8bsrriqfXz1L+D0WA13OKvGRQfRSc0oWu9SG3az0y99/teL8Ho91/QXZRdf7zHzcd6zcaU/oZYDxLs1TMj0dGYHd5KPIzTeiesvWClWSFKPcMPbfmK77dzYmp5rsATQbQz2dkBMLDfaT1BSlLQmh5OeZAR+4KIoZKHKHKaf08RIZh4cL8+SN/ZNMkQIXrNE0CiOO3FG/vgGllbBdPB/h9z/hSo9yV9NBIBun5
+ 5TZD2tdF
+ k6SxMIrjsi6S3g23rZ0xqMGcVw+iHOFTBZmClyMppVggBACXXaH3BQcC2zYcpl5qlj/ENK++xOz/j3L54Xfu/Dh3At2bYKfi4Ebhj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,25 +122,16 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-=E5=9C=A8 2025/8/8 22:29, Oleg Nesterov =E5=86=99=E9=81=93:
-> On 08/07, Zihuan Zhang wrote:
->> @@ -6980,6 +6981,7 @@ void __noreturn do_task_dead(void)
->>   	current->flags |=3D PF_NOFREEZE;
->>
->>   	__schedule(SM_NONE);
->> +	freeze_set_default_priority(current, FREEZE_PRIORITY_NEVER);
->>   	BUG();
-> But this change has no effect?
->
-> Firstly, this last __schedule() should not return, note the BUG() we ha=
-ve.
->
-> Secondly, this zombie is already PF_NOFREEZE, freeze_task() will return
-> false anyway.
-Sorry, but in our tests with a large number of zombie tasks, returning=20
-early reduced the overhead. Even though freeze_task() would return false=20
-for PF_NOFREEZE, skipping the extra path still saved time in our=20
-suspend/freezer loop.
-> Oleg.
->
+=E5=9C=A8 2025/8/8 22:53, Oleg Nesterov =E5=86=99=E9=81=93:
+>> -				if (p !=3D current && freezing(p) && !frozen(p))
+>> +				if (p !=3D current && freezing(p) && !frozen(p)) {
+>> +					freeze_set_default_priority(p, FREEZE_PRIORITY_HIGH);
+>>   					sched_show_task(p);
+>> +				}
+> IMO, this change should go into 3/9 to make the intent more clear.
+Will do. Indeed, D-state tasks are not easy to solve, so our plan is to=20
+provide a fallback-like mechanism.
+> Other than that, I leave this series to maintainers and other reviewers=
+.
+> Personally, I am skeptical.
 
