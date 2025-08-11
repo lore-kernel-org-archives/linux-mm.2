@@ -2,106 +2,107 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 14E68C87FD2
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 09:49:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 39CC5C87FD2
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 09:52:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 95BA16B00DC; Mon, 11 Aug 2025 05:49:29 -0400 (EDT)
+	id CBEE88E002D; Mon, 11 Aug 2025 05:52:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90C8E6B00E0; Mon, 11 Aug 2025 05:49:29 -0400 (EDT)
+	id C96968E000A; Mon, 11 Aug 2025 05:52:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FC326B00DD; Mon, 11 Aug 2025 05:49:29 -0400 (EDT)
+	id BACD58E002D; Mon, 11 Aug 2025 05:52:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 715D96B0143
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 05:49:29 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 234D71DD56B
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:49:29 +0000 (UTC)
-X-FDA: 83764004058.16.7843B20
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf12.hostedemail.com (Postfix) with ESMTP id B411D40008
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:49:26 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VWYv7bV6;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id ABCA88E000A
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 05:52:21 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 21BA2160798
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:52:21 +0000 (UTC)
+X-FDA: 83764011282.19.7CEA806
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 196BEC0005
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:52:17 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TAforr8z;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf12.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	spf=pass (imf28.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754905766;
+	s=arc-20220608; t=1754905938;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zy7zoeBHdfB1I6ns8dWDx/bnOQrMxjU4C6kURFFGtA8=;
-	b=OtJMCGNM3U+4INrIpvoXMD4g3tuP69MaKNtNOHsYQFdNm83/58UxR9B7ZbBDxtCdqYhDaJ
-	mHvonTZq8c2UqEv9dE1hpTIK8wNQxP+PbObzqRoZSNsyaO1WTWrBdmrmrwlpCaHyIx5w0k
-	zSMgpl+2ovkj42aG2CG8P2EzMoqXUcA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754905766; a=rsa-sha256;
+	bh=YXhxGhlzJsMH44DSBwLZywxa+L4HWbx5c6OEzPGb9fI=;
+	b=R2FflSvxaV1lgLmuoyCsEQvi3JRg8QcfQtYykok4kGizRHQiiggTxCNGOEE1FTFI7bYyz4
+	8B1Ut2clEoIxNeYpS5pa2mPMN9P5z2uCDFVjVYMjUKY4TD0vQDSV7KNgT+YWXGnZkd2Wyp
+	JaoL/ifkZ1XpddjDSZYpaWn3cVEzReM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754905938; a=rsa-sha256;
 	cv=none;
-	b=q6dDxmI+REhTRdbkh8QzR5MNNXfBIVAA3TuQzucVabetsuG7k12E6Uu+V/r1FnF/Zdvfaf
-	pispQ9pRnR8pkC7wWqSaika5fjiBDVsxl14ldekPAZLiBeelHn/ZLrOp0ta1zu0S4t37FE
-	+3dFiqbXlDU8BX+ZxTIshMFs4bfufoA=
+	b=3YNG9JH4nIpBrIcOWE5QmGsAlrvNUe7FVRV49FpBeRDvAYb6SYzOYBgp21rD51F1kWBvU/
+	7DdAVbsSTzGG2CN8dUqQK4BLOrpEJHBlZKFVOXdc4Z+j/D5zZZ1IccGy/8Bns8Ig4/oXXb
+	dy8lmyxBmhKsX9xBfZPeW6lrldhL+kU=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VWYv7bV6;
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TAforr8z;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf12.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	spf=pass (imf28.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754905766;
+	s=mimecast20190719; t=1754905937;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=zy7zoeBHdfB1I6ns8dWDx/bnOQrMxjU4C6kURFFGtA8=;
-	b=VWYv7bV6C/BQN5hkAjr/z90J1ZBFgx+Pui0b8UHAYtTbwHTxU+35QAWGn2mm4JEUhI/6vb
-	BpdZYlq+YsbHSuUc9IigqvaFzg40/Dy5wLibKOc0HouaV/AbkRoE/qJes8EYUlgbAOKrEP
-	YkUuAZLlBV7dKY5v9jf5CEvg9CC0sd8=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=YXhxGhlzJsMH44DSBwLZywxa+L4HWbx5c6OEzPGb9fI=;
+	b=TAforr8zDtAzvRSj7w401taho2c9ryUTcV2yOabFFZRu96/mBAu6E9tqV50S5P1HxFFeU6
+	trSRynsVtNnsQ2WxGkwjBFIMqePChfRY9ifDnK+mj9UmtzHJmBuMGZwCDJ+FUMLtdWqMBL
+	3D+6nG2RaFSk9SPBETgOpxv6T6GI2/0=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-679-QYb1pb6tNT-FA-7KCeRspA-1; Mon, 11 Aug 2025 05:49:24 -0400
-X-MC-Unique: QYb1pb6tNT-FA-7KCeRspA-1
-X-Mimecast-MFC-AGG-ID: QYb1pb6tNT-FA-7KCeRspA_1754905763
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-459de0d5fb1so33111985e9.0
-        for <linux-mm@kvack.org>; Mon, 11 Aug 2025 02:49:23 -0700 (PDT)
+ us-mta-222-9YNTax2fOjqh8ae9V0B-Mg-1; Mon, 11 Aug 2025 05:52:15 -0400
+X-MC-Unique: 9YNTax2fOjqh8ae9V0B-Mg-1
+X-Mimecast-MFC-AGG-ID: 9YNTax2fOjqh8ae9V0B-Mg_1754905933
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-459d7da3647so35576585e9.0
+        for <linux-mm@kvack.org>; Mon, 11 Aug 2025 02:52:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754905763; x=1755510563;
+        d=1e100.net; s=20230601; t=1754905933; x=1755510733;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
+         :content-language:references:cc:to:from:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=zy7zoeBHdfB1I6ns8dWDx/bnOQrMxjU4C6kURFFGtA8=;
-        b=EViyWHAP/0EFRh1sLRForCccwDPFeJ9L0IrLv4omHG237KKOrp91h/OgNOHRaVvaHW
-         JXKFYLxFPppQ8bqWJ69MhBq1HyBKd1Axb5aakaqMdRkl+0jta7+ebz96bw/fO5JZ2Bf8
-         GNSs6mJOo/Wq1WSDf/8XXe/PzagZKK/iBWQKg5GSdRdXtV+XF3xGCp9PXT4GD/ZdknqJ
-         6dAbJ/OUZbJRsbjSgsrHRL6tf7EOP+d8EPlz90G5qCRqwnxa6mguJqgm/zX0GsntImIV
-         S8HmXU+8kbkWEP46eWiqLEB5fMog461peIRXF/a25D6xG2RNddMGgXYGqdrxPYMtPRcB
-         zYaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXDcUZ5jO5ykr4u4R5Gly6BFMQKoUqnFQxJfrDFkSHIpbie5C5gmOKQuM3jaN6L4LL0d9Vr/Ke83g==@kvack.org
-X-Gm-Message-State: AOJu0YyY8UC//rz/+Tjtv14LQr9OGyNATpjSyM/EYKJ3JTFqIS39rh9J
-	fpOM/6zbA0YcsJzzeL4Qh3njqbqREYFFeiFQqNoFAiyd2OBQiEVfqgj+6sCHdeA5fwjeOjlJGli
-	Ka8Z1wkVpg4AdA7SPHCmNZOYIC/zdjHxK/S9Otb4PUeMF5n26aKkZ
-X-Gm-Gg: ASbGncvfMBixl7mnTE5bYDuPqOLOsMRxWX6/SDm7edM8da92EwnJDfXE+AVyKQUVQMO
-	fVb5FjVsO8MztMDWttr7sxXPQb/amccR+JTkGMwZRq+4H821b0g6Z0GJMU8Gb6iMdjpyMvjuT0J
-	TYABOqV388ilHTOyCYVX/ZqtG5tvPDVsJ4o7rHcaGlJ5bkVK3UTBeMN3G0i69d/nBPX11a7f/EA
-	VE1/EE+wTdjpptnUH9zU9xdIZYAs4WgtGkShdw+dDlOqZ3PVg3JYmROtU3iusz/R8Hk+LfsYNin
-	ZlHLFZWPm0vYOE2SQrGq6LMSOC5hmgoC3V6FLZ9cfF7xofX0D12kgReN/oWGz9COztY1W4/IAEl
-	nwAR734SwZLNvCpRMkToEZwu9PfWvSvtBvHe7Y1VnjUZ9mbB2IcJcjIr0UiAtI96B0Lc=
-X-Received: by 2002:a05:600c:8207:b0:459:dc81:b189 with SMTP id 5b1f17b1804b1-459f4fc40e3mr130800495e9.31.1754905762850;
-        Mon, 11 Aug 2025 02:49:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGEa+lMPdCvEQQa/1iCFQjPws3MuVXvht3etKiuOL4kCcQ5Vr73iEgsX0YCT2GWYa35XBoE9g==
-X-Received: by 2002:a05:600c:8207:b0:459:dc81:b189 with SMTP id 5b1f17b1804b1-459f4fc40e3mr130800075e9.31.1754905762394;
-        Mon, 11 Aug 2025 02:49:22 -0700 (PDT)
+        bh=YXhxGhlzJsMH44DSBwLZywxa+L4HWbx5c6OEzPGb9fI=;
+        b=xUVxdB9+I0KsK/NnsuWv8A+PMRX7t3J4CJZAN6NrvDzFRagPn5wm3fFJWuCTLjOkJj
+         YOlaiT+DZBBZqeItYsfuddkLayp5jU7PjP1CH9vNlcJqIhUa44KmeiM/doWSOBqA2tX5
+         eCGr3h+85zbFPGVuCAuAWmx7WkQVgzasA3D1JcaYouCCWzH5Ygb02cWKXF1TohGT6qez
+         xFwNiJBGnjRrM2hi1KwnjVwxERfGTtbcBQ7SJLQjxEv0hRzKUfAq31Pbc7KaglmUXVti
+         KMdp6csPPAFbvAJRFOYxSEK8kj5uSWXz8xDtBau+inG5EF3EQBn0VhIAem4qqlO0qrFn
+         shjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXi24a8/4LfBxi7Au7LNf77QsWZEzlamCHojvhqse4MknRjJUTDEnn/O7MmeJfd+1iVyH+xC76LsQ==@kvack.org
+X-Gm-Message-State: AOJu0YzX6YTfXz7iGibWv1h+nX5/DLyJn1Stf+odqsFpZ1c3uTpYUR4G
+	YUXj+S2w3lB57OQRYVwJmCf3UH8E6ozR0/VAnZxqUOHGeoU1IcbgzW1vzXDHcEGJJKQLHODy48W
+	hEveGsf3Q9WUDbdPh2fUcwhxPe0vIxNjhCE+4xliiiCpFLUkptkue
+X-Gm-Gg: ASbGncsJe0PkntexwOzxNj5EN5Pnah0T9W34CEpZ5MkizOZAdbAo6FwS5KTn3NFzvEE
+	40O52SPskdw/5wUK2lqq4AXQGVe3sq0lsQgvuP9xuEzAu92ozUuUoxHjwRQQ3wGGQzM3DauAdU/
+	D7M5rmBpn6Yf9TEvauDK84Zj9ThJ3c2RoBWExYnGOeLX/CyTjXR/FTCOxV81lnWFKR+mDHQ/og9
+	tb4HbsN44kEP8PVnSzsoHQQcv2DtTMz7J21zlZrUJp8q+BakvV5sRywnLHYqzkE7BdBxh/uiNSg
+	XFfvfY2+RED9IZeo/2lHGFHe+RZ0tsfVbbLE/PzQotjDuLKurSE34Bp+t5dtbfSlVYtujVvQEh2
+	OCVWEHI2cSzOeGgMg5QNPzYtsu3PyYQgixQU5hq106Mn+8NhheEASCOsbMP+3tpLS89k=
+X-Received: by 2002:a05:600c:a06:b0:459:4441:1c07 with SMTP id 5b1f17b1804b1-459f4f9b5c6mr84913675e9.20.1754905933439;
+        Mon, 11 Aug 2025 02:52:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGdmdGHNNshi3yohcSrFEtt4H3QesbQ89l/f0p1bYBymKlSnx3ncfbPaKz1LYKXIyvDOoZ7FQ==
+X-Received: by 2002:a05:600c:a06:b0:459:4441:1c07 with SMTP id 5b1f17b1804b1-459f4f9b5c6mr84913375e9.20.1754905932957;
+        Mon, 11 Aug 2025 02:52:12 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f06:a600:a397:de1d:2f8b:b66f? (p200300d82f06a600a397de1d2f8bb66f.dip0.t-ipconnect.de. [2003:d8:2f06:a600:a397:de1d:2f8b:b66f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c3b9386sm40066956f8f.18.2025.08.11.02.49.20
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-459e6214640sm256183205e9.1.2025.08.11.02.52.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Aug 2025 02:49:21 -0700 (PDT)
-Message-ID: <dfb01243-7251-444c-8ac6-d76666742aa9@redhat.com>
-Date: Mon, 11 Aug 2025 11:49:19 +0200
+        Mon, 11 Aug 2025 02:52:12 -0700 (PDT)
+Message-ID: <112b4bcd-230a-4482-ae2e-67fa22b3596f@redhat.com>
+Date: Mon, 11 Aug 2025 11:52:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 0/5] add persistent huge zero folio support
+From: David Hildenbrand <david@redhat.com>
 To: Kiryl Shutsemau <kirill@shutemov.name>,
  "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>
 Cc: Suren Baghdasaryan <surenb@google.com>,
@@ -121,7 +122,7 @@ Cc: Suren Baghdasaryan <surenb@google.com>,
  Pankaj Raghav <p.raghav@samsung.com>
 References: <20250811084113.647267-1-kernel@pankajraghav.com>
  <hzk7e52sfhfqvo5bh7btthtyyo2tf4rwe24jxtp3fqd62vxo7k@cylwrbxqj47b>
-From: David Hildenbrand <david@redhat.com>
+ <dfb01243-7251-444c-8ac6-d76666742aa9@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -167,21 +168,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  WBe5lqcozu9LpNDH/brVSzHCSb7vjNGvvSVESDuoiHK8gNlf0v+epy5WYd7CGAgODPvDShGN
  g3eXuA==
 Organization: Red Hat
-In-Reply-To: <hzk7e52sfhfqvo5bh7btthtyyo2tf4rwe24jxtp3fqd62vxo7k@cylwrbxqj47b>
+In-Reply-To: <dfb01243-7251-444c-8ac6-d76666742aa9@redhat.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: NDIN1fY0G9W7ViNT2xIcVYLGFgzO87Bdx6tKqTN3o5s_1754905763
+X-Mimecast-MFC-PROC-ID: tk1fuU23hau4pdnPnqXy3ILdNha1tMa7MJWQr94KWo4_1754905933
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 8e3gsjieu5goih73uit7a3984gdno889
-X-Rspamd-Queue-Id: B411D40008
-X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 196BEC0005
+X-Stat-Signature: ttjoe8ud6ft8qg6by3psjmi6fzuhr9k3
 X-Rspam-User: 
-X-HE-Tag: 1754905766-527109
-X-HE-Meta: U2FsdGVkX1/zuxYdBvu6S39+5MfPASCAwI+0OpqeKaZyODXP3tN8yoHAFWta/X/2jtOXwrYab8rsqTg37JGVqyQFtPELt6VnR8NJgVWohr74N5ARGHX2LQYtChRwVGjnWYCCB+uY6Ic3hEAo8Y6e5w12uSmEWEMcuII2I8qL6rXGgFsFQgDHJ+0P1162XEomuAaHx58LEjf1qzw3jG/YAL1EXikczUdcyvbEiLleJU0A1z7zy0jfX7J8NH/j2y57NPAilh11rZMAaQPCPIagfYIErOAgrNg/anmL4EIp1BWntY7EeWSifqSvxAD1S+fmdP9pxboIvwdY4OVY06ZR+M+1KEIhCz2DA0U1KYPeZ3fE2dCJ2mOl0ziJp/0Zsn3CErWLOTLjOzMSMHYd7VZTqb+i4M3ayMz59C7ErZoDyRQi9B5b7ckropZl+8ZYE2Rhwtq/EiAFTrYq4GHyhf/a5SziZqgLvF9ESEobUS7VPtXiuor1pCmL29jYiRe8U5V4riJjL0MGp0pZ25RW/cXg8kHWZSjZT1JxDabSRtACwGmH955/qsAUtdonUwdrngeCU6GtuhOUMI0evN+5WIIOcWXnnnrIEYip8UIaNMKlpMjEV0Z2N1xgIk29iGpjA80z18bEZXai2ztf8UHdtnPRyuoj3ydpFQ7egomZdU3pRNF8SerCJpDAJEFev8/klqWDnfGPCLNmEXP+VDHaRDYO8tEYHmh6REa1PB5Sr3kTDqzhIT367UphwYyWNt0S92HFZtjDyE6ZEHd86nL4c+npJwp9cuulQLPbq9AMTvNU82kVRaNX7OWZUa+PzUSRB1vqnpu089tJObHbbdnQCHyr4D5zXfjJOj92Bnr/C0L7PXnObrz15ek1vWDMcTK7ua/ptep+JUAaJKZl4XQUcDFKS/+0YmgOmoz6cB7IKuZI667tnSuch4KZQCar4Twwo5aNuGT7fDThJf4Jn7Ar5dz
- CeuMFB0F
- Zrp8YRDio1s/CutkwdAiv//HUusQ7ECD13EfagJjloeBuujWrSzdhdT91umyHy4yzI6Ik1bVDMikeWWJcLuilGJjGWp1eTlzIwWBFj+HQD+PZt00sdt1g/rjmeT2LOPHXqC1u1sttgpbvQGathMNhDtYaM5XhV8ceg/Uqpa0YBfmcaUnqsddVCwwhUbXjqSQU17FIamm6FLlu6z+y7U53gmhaDzfcPIgV7QItatOfPIJlroVcUFx1fLwTRoAFLVhGYfALH5I2Nibj5U7WMDiuiE/p+ta07hb2fjJlNvO5CPxvOarMz/DQo2KBFY4iI0LCif+DTrMdTsgHxy1jyMbSweS6SciWDkQ4Jz27vYfZ77bma3G36NLjYDBJsDl+XeTjPiwvbWZpCxr9qOh2P3HIf7ch5hVFcy/X2k0AHFQfrNmjVYUa44DdqPsqcrW41a94kQQek3pd3G+Um5P31UzCIdJ544BfOF2Wau1FR6iGV6JZrjhAffFzC0TykdtjUR9ZxXp7L/Ewdmi5gZqZH4NDtsQ2oEnOXuQM3Nmu39tdOs1rSeldTxYZdwM0MA==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1754905937-930733
+X-HE-Meta: U2FsdGVkX18XuxFlM21So2Te92eDJVlNhWhBvBFaKZwg8DkynSQ5uszm3UUrIzcoW2P4SjIo1LMYI1os0etJDDBixzTVEnWCmrcUQAITgLGj0Fuu1YsZHYi8xaG+YSYMzkUlJdNC+v3wC6BW7U1cZ4KOgehJXH7p3gQ3sn2xiI3XsmtZfrMEC+mpo0C7Ul4md7tNtNFVL6CxTUdPW6EcLiNNI15nCiDL1fpXL+4umbLSJslKRgIfkfdkQlO7fJbCMsyv1nHVpotmXDcHvIZUjTJscnLESdeaHdNek4fYmcmyNMFDY7Wehk3/gkHr9AHOtH/5HYff/m167GM4Y5SbLAOe5OOUIZhT6BF+XaYdSm4hBoUW6WSD8U7oFc4Lg+PHvZxl3Fvln2w5n0jvmkOtZyWv7zqZ8RJUlqnuOypENJPx71IZX+krQy4ui1aiwy6W4mKFgsgrUGewKMuk49eO2kRPFeNtaOx6+UcFtYVyriVNh074nuj2CuIju7ALVCCnsUqmgZC8kwD1N9f/6XItKR7Zl8I1Emkzpvn0SOZPOOljqx2biq/3P79YIjJlHSwKWrhG1c6nuDkY8FKMP2BRr0YVuf7HIlEH8g5oNedpESiroDv0a2a4bl74VaUzKkxcSVhbAo1hS2KfpUWVsPToS3qxgMC2pOcEYzImN0Z+bJ/ncC31JBO/RfwvlIx1ZObmCjVHAAWtpwxL2nO51mKi2hsuEKAqEdUjlr63deJWubhIzSXqr+1wsonxYmsK+SJ/qjtNrd2TGMPCMC7apXb9tfa2tmnoz/iz2Kcy7djBEb5Ms8T6Zsr75yG4zKbvKzzcWnG74AMezaN+H8ID13w8w5L6enlq7yznQqvFiOFQoh67J5qb6QdottsP9m9XAKJUuCXLcfE6GXnMtynO4JK2j/Cr73b8NYUjnK7ImdKEuum3ZuQjN7wec++OmmSwzQp3C6ERYiXWRi8ZVYCdqD3
+ RvQepKZE
+ KDmfg+8EmnVQqRLT41vs0488wUAQSMwMrmoIVWZotfKGMVuKg99K+WKvnQ9Us986a7hIBMk8Yuhjhrl9gSOzR+nkF8c6x+dKH/gM3KB7qkfmMFWibPZdHsgoIOQCkF3kRghVS9pZIJn9lxHnzATL2jaOAT1GQlRVPC0eKw8Wh0/mEsTj23WX8IVfpmASKtI978xnHw4ncpuZuD+7ROkNB1YR+fiqg0v1b+a4yiM0ZbxlE9gArY+MIXm8ne0eF6bZjHPm3MRXO9gFo2MKPrQhSeCeOrLkKfSp/VdUjohGBXFb5JbmjBMHK1iYm275EU9mdKCMbnPyuvCVQbtE8bkrC4wWedhbU9UHQ7uteweuBmneZ8QcNTTApNrTFrzUBp/Cg8TnEpOPvNJt2ueMzq32GLU5eDlvLOiz7twEAo6+X5bJsdL1aarEBHGu0KUyf0VwW79dakEbgjQXzaB7S2qc2Hu4b96CxNa8ETrymrdjoFkPFJJnTbNNaaBrdMljvlkBl4mUzsPE5qzK2Dx0OHUXsLD3YbbGOpj4CXUa9OfuFgR9svlbKiHSTWDrHXg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -190,60 +191,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11.08.25 11:43, Kiryl Shutsemau wrote:
-> On Mon, Aug 11, 2025 at 10:41:08AM +0200, Pankaj Raghav (Samsung) wrote:
->> From: Pankaj Raghav <p.raghav@samsung.com>
+On 11.08.25 11:49, David Hildenbrand wrote:
+> On 11.08.25 11:43, Kiryl Shutsemau wrote:
+>> On Mon, Aug 11, 2025 at 10:41:08AM +0200, Pankaj Raghav (Samsung) wrote:
+>>> From: Pankaj Raghav <p.raghav@samsung.com>
+>>>
+>>> Many places in the kernel need to zero out larger chunks, but the
+>>> maximum segment we can zero out at a time by ZERO_PAGE is limited by
+>>> PAGE_SIZE.
+>>>
+>>> This concern was raised during the review of adding Large Block Size support
+>>> to XFS[2][3].
+>>>
+>>> This is especially annoying in block devices and filesystems where
+>>> multiple ZERO_PAGEs are attached to the bio in different bvecs. With multipage
+>>> bvec support in block layer, it is much more efficient to send out
+>>> larger zero pages as a part of single bvec.
+>>>
+>>> Some examples of places in the kernel where this could be useful:
+>>> - blkdev_issue_zero_pages()
+>>> - iomap_dio_zero()
+>>> - vmalloc.c:zero_iter()
+>>> - rxperf_process_call()
+>>> - fscrypt_zeroout_range_inline_crypt()
+>>> - bch2_checksum_update()
+>>> ...
+>>>
+>>> Usually huge_zero_folio is allocated on demand, and it will be
+>>> deallocated by the shrinker if there are no users of it left. At the moment,
+>>> huge_zero_folio infrastructure refcount is tied to the process lifetime
+>>> that created it. This might not work for bio layer as the completions
+>>> can be async and the process that created the huge_zero_folio might no
+>>> longer be alive. And, one of the main point that came during discussion
+>>> is to have something bigger than zero page as a drop-in replacement.
+>>>
+>>> Add a config option PERSISTENT_HUGE_ZERO_FOLIO that will always allocate
+>>> the huge_zero_folio, and disable the shrinker so that huge_zero_folio is
+>>> never freed.
+>>> This makes using the huge_zero_folio without having to pass any mm struct and does
+>>> not tie the lifetime of the zero folio to anything, making it a drop-in
+>>> replacement for ZERO_PAGE.
+>>>
+>>> I have converted blkdev_issue_zero_pages() as an example as a part of
+>>> this series. I also noticed close to 4% performance improvement just by
+>>> replacing ZERO_PAGE with persistent huge_zero_folio.
+>>>
+>>> I will send patches to individual subsystems using the huge_zero_folio
+>>> once this gets upstreamed.
+>>>
+>>> Looking forward to some feedback.
 >>
->> Many places in the kernel need to zero out larger chunks, but the
->> maximum segment we can zero out at a time by ZERO_PAGE is limited by
->> PAGE_SIZE.
->>
->> This concern was raised during the review of adding Large Block Size support
->> to XFS[2][3].
->>
->> This is especially annoying in block devices and filesystems where
->> multiple ZERO_PAGEs are attached to the bio in different bvecs. With multipage
->> bvec support in block layer, it is much more efficient to send out
->> larger zero pages as a part of single bvec.
->>
->> Some examples of places in the kernel where this could be useful:
->> - blkdev_issue_zero_pages()
->> - iomap_dio_zero()
->> - vmalloc.c:zero_iter()
->> - rxperf_process_call()
->> - fscrypt_zeroout_range_inline_crypt()
->> - bch2_checksum_update()
->> ...
->>
->> Usually huge_zero_folio is allocated on demand, and it will be
->> deallocated by the shrinker if there are no users of it left. At the moment,
->> huge_zero_folio infrastructure refcount is tied to the process lifetime
->> that created it. This might not work for bio layer as the completions
->> can be async and the process that created the huge_zero_folio might no
->> longer be alive. And, one of the main point that came during discussion
->> is to have something bigger than zero page as a drop-in replacement.
->>
->> Add a config option PERSISTENT_HUGE_ZERO_FOLIO that will always allocate
->> the huge_zero_folio, and disable the shrinker so that huge_zero_folio is
->> never freed.
->> This makes using the huge_zero_folio without having to pass any mm struct and does
->> not tie the lifetime of the zero folio to anything, making it a drop-in
->> replacement for ZERO_PAGE.
->>
->> I have converted blkdev_issue_zero_pages() as an example as a part of
->> this series. I also noticed close to 4% performance improvement just by
->> replacing ZERO_PAGE with persistent huge_zero_folio.
->>
->> I will send patches to individual subsystems using the huge_zero_folio
->> once this gets upstreamed.
->>
->> Looking forward to some feedback.
+>> Why does it need to be compile-time? Maybe whoever needs huge zero page
+>> would just call get_huge_zero_page()/folio() on initialization to get it
+>> pinned?
 > 
-> Why does it need to be compile-time? Maybe whoever needs huge zero page
-> would just call get_huge_zero_page()/folio() on initialization to get it
-> pinned?
+> That's what v2 did, and this way here is cleaner.
 
-That's what v2 did, and this way here is cleaner.
+Sorry, RFC v2 I think. It got a bit confusing with series names/versions.
 
 -- 
 Cheers,
