@@ -2,144 +2,89 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 10AA6C87FDA
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 07:09:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F14BFC87FD2
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 07:52:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 77E8B6B00C3; Mon, 11 Aug 2025 03:09:43 -0400 (EDT)
+	id 2391E6B00F7; Mon, 11 Aug 2025 03:52:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72FBB6B00C8; Mon, 11 Aug 2025 03:09:43 -0400 (EDT)
+	id 1E9D36B00F8; Mon, 11 Aug 2025 03:52:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 645916B00CD; Mon, 11 Aug 2025 03:09:43 -0400 (EDT)
+	id 127306B00F9; Mon, 11 Aug 2025 03:52:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 569A66B00C3
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 03:09:43 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E2B4416069A
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 07:09:42 +0000 (UTC)
-X-FDA: 83763601404.08.387F581
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id BA88F2000C
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 07:09:40 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jSgMoSnb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754896180; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F31C06B00F7
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 03:52:33 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A47D91DCCF1
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 07:52:33 +0000 (UTC)
+X-FDA: 83763709386.16.4F2014A
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf28.hostedemail.com (Postfix) with ESMTP id BF913C000B
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 07:52:30 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=xHpaFjAN;
+	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754898751; a=rsa-sha256;
 	cv=none;
-	b=x/R+vMNgbDlcMOac4PWXByqmlYLVpaA7Oa6QyO2drkPaXvW2ZdAl9GvIKFZwtijVAMpeyA
-	AqTCYi83k1a+MxBtAA24A4uMNd1KiZVW8cWQxoMCtevIvs16uymU0mLx5av5ayH+QG/ZN9
-	uD8VPc4JRwb8h8huHS2DiLrGtpipJ2k=
+	b=Kasg1mWE7J19Wyv/JnZmpS1EqXoNDYkdZHQuK7o+IeYUOLjy43FMDstSdlr2/xRbRJG5sN
+	uSD8E44jRKDPFyLz0U3XT9B3hG65GL41MMExRaWNPXb/PQUbjujq+sQ9M4KuxCNIe6robj
+	KBpeAeOwVd4AkEbLjTPhHbjRI1vH9IU=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jSgMoSnb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=xHpaFjAN;
+	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754896180;
+	s=arc-20220608; t=1754898751;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nYGW20HOdxmPiEoqhRtBhvf9IFz/tFlA/9VUt4ajYtM=;
-	b=ilgfIbGE3ghcDjl5xQcGRyHlI2g707G7xyhS22L8GThcJPDae2B6Ci6bGMNZhRdvDzosGR
-	WVtaAsy9B01dkwJ2BppbLlW9TsjiRZ7LOUlsfvGpmot7MVs64qe9tOkPAajVRFDIMQAfLy
-	X8xVhmq4X9xHyTkTjfdSIzy0akyRr+I=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5942A45D44;
-	Mon, 11 Aug 2025 07:09:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED5EC4CEF6;
-	Mon, 11 Aug 2025 07:09:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754896179;
-	bh=7z//XUu8T6I5PWiVUYkgzX56lekKtAuXc9LA1vkAIVo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jSgMoSnbXdeC3hTmMa5rxqnU+TWuL44ft9yhN6jzlYEmA7jwdSGYiQnLF6BFOYKsr
-	 5R/fr9QjyFbzxrlBrIv2gCok7gC8JkgAppw6IXD/F87bUVX5sLc2JR+i0hiKjHB/eg
-	 cfP9T2kKrEeWB53CBUEIYKgIVeFsIdkopEWkV1obWsWDyqrTyQ0SMRBRBszN1XGf6p
-	 a/x4EjKoAuphTOp/i4iZkdRFQSga+eMCJZDAvNlPeoiQXnyWXFuLlWT0mOaSgKnz9o
-	 oU2KCRXlBAKJHbtJRS6w71U3Eb8UeQ9PSpr4qZWggtwXe60/vHe8hYUg6SLwi5/Qqk
-	 j0QU/Hr3uRHzA==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 61606F40068;
-	Mon, 11 Aug 2025 03:09:37 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Mon, 11 Aug 2025 03:09:37 -0400
-X-ME-Sender: <xms:MZeZaAKhv47jBdQVbZBUzCxovzHYH_0rrP55uhLzR3Dqu-Hy8rtmog>
-    <xme:MZeZaDm4-FA4AmkgD2YQQA1xH-F3sHPexYTS35ALEVFWRqWFjvQXtfar8y28gGpiS
-    cXt0_A1OFnzm3zDBmM>
-X-ME-Received: <xmr:MZeZaM-CyM-RA_V15WzO_HJwVVjXwS5bJQX1q813TA-nJyYUmhcLGBheIsW3>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddufedukeduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepheeikeeuveduheevtddvffekhfeufefhvedtudehheektdfhtdehjeevleeuffeg
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepkedtpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopehhrghrrhihrdihohhosehorhgrtghlvgdrtghomhdprhgtphhtthhopeguvghnnh
-    hisheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhu
-    nhgurghtihhonhdrohhrghdprhgtphhtthhopehrhigrsghinhhinhdrrgdrrgesghhmrg
-    hilhdrtghomhdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtphhtthho
-    pegsphesrghlihgvnhekrdguvgdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvg
-    grugdrohhrghdprhgtphhtthhopehluhhtoheskhgvrhhnvghlrdhorhhgpdhrtghpthht
-    ohepthhglhigsehlihhnuhhtrhhonhhigidruggv
-X-ME-Proxy: <xmx:MZeZaGZbB5w_M42lUmZvSVfIC5VjvScMKskxvkLxG0mVV0m3V7kKAw>
-    <xmx:MZeZaBc00jAWL5dtGe5myKZzMdQ7PLHS6rajsmRqWQuvhtwgycMP1g>
-    <xmx:MZeZaGGN3-BRzRyZ3VTcErLpqp_9MdvkA37zFIuvtc29YHSY7cqBRg>
-    <xmx:MZeZaEPqxrTYCm-gaYlP41qi_-NhCIWpAR2UzkynZnOmQu5E2MBG4Q>
-    <xmx:MZeZaO4ZV2QSxZoQAn7qeAHqpWYLVxkPnxGf8XyRRwOEAG9Iw4NuNkCY>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 11 Aug 2025 03:09:36 -0400 (EDT)
-Date: Mon, 11 Aug 2025 07:46:13 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Dennis Zhou <dennis@kernel.org>,
- 	Andrew Morton <akpm@linux-foundation.org>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>, x86@kernel.org,
- 	Borislav Petkov <bp@alien8.de>, Peter Zijlstra <peterz@infradead.org>,
- 	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- 	Ingo Molnar <mingo@redhat.com>, Tejun Heo <tj@kernel.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- 	Dave Hansen <dave.hansen@linux.intel.com>,
- Christoph Lameter <cl@gentwo.org>, 	David Hildenbrand <david@redhat.com>,
- Andrey Konovalov <andreyknvl@gmail.com>,
- 	Vincenzo Frascino <vincenzo.frascino@arm.com>,
- "H. Peter Anvin" <hpa@zytor.com>, kasan-dev@googlegroups.com,
- 	Mike Rapoport <rppt@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
- linux-kernel@vger.kernel.org, 	Dmitry Vyukov <dvyukov@google.com>,
- Alexander Potapenko <glider@google.com>,
- 	Vlastimil Babka <vbabka@suse.cz>,
- Suren Baghdasaryan <surenb@google.com>, 	Thomas Huth <thuth@redhat.com>,
- John Hubbard <jhubbard@nvidia.com>,
- 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Michal Hocko <mhocko@suse.com>,
- 	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org,
- Oscar Salvador <osalvador@suse.de>, 	Jane Chu <jane.chu@oracle.com>,
- Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
- 	"Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Joerg Roedel <joro@8bytes.org>, 	Alistair Popple <apopple@nvidia.com>,
- Joao Martins <joao.m.martins@oracle.com>, 	linux-arch@vger.kernel.org
-Subject: Re: [PATCH V4 mm-hotfixes 0/3] mm, x86: fix crash due to missing
- page table sync and make it harder to miss
-Message-ID: <qsprh2qiisldfsielpx6inuiw3rrh5owr3urin7maxvwtlhipz@zbioc6hgqe3r>
-References: <20250811053420.10721-1-harry.yoo@oracle.com>
+	bh=C2dG7lIQa9l5kZL/Iawtixi2ty+fhGYumGN8z5y2DYg=;
+	b=sQVP1nJ4a1x97W02RFkeuuh0/O8WcEwZcfyaKgS/PgQj9zjvbvN+XGrDBJtGshotCpMhOm
+	FdvKrSy8DH6bMH6gkKl4JNB6uvLtHILraOY54Cfl7Kg+0tVfAUadl7EExRe713Bv9OVU4W
+	NA3xkSAouG4ZezpSDA9CLbZskCqyV28=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1754898747; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=C2dG7lIQa9l5kZL/Iawtixi2ty+fhGYumGN8z5y2DYg=;
+	b=xHpaFjANunt7FUGW2sCq+hYtPn4roGvE5pdewAPmZ7bhk1/2kGcwhP1wSpRKFEgymIc0j7wJIqz13TkOtuWa6UTemGusSh8bGEe+76N3T3Xmev7SS2VGMcNjwXz7Za30hs0wT3hQjvabJG4zNo5NkdpYoIbFgdW8qCs7wod2ue4=
+Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WlQRCgi_1754898745 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 11 Aug 2025 15:52:26 +0800
+Message-ID: <f0711fe8-88e9-4634-98ee-1e37453a7e53@linux.alibaba.com>
+Date: Mon, 11 Aug 2025 15:52:25 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250811053420.10721-1-harry.yoo@oracle.com>
-X-Stat-Signature: zimq5qwjsgh8c5d9eyh9kca6fmbioojt
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] selftests/mm: add check_folio_orders() helper.
+To: Zi Yan <ziy@nvidia.com>, Wei Yang <richard.weiyang@gmail.com>,
+ wang lian <lianux.mm@gmail.com>, David Hildenbrand <david@redhat.com>,
+ linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20250808190144.797076-1-ziy@nvidia.com>
+ <20250808190144.797076-3-ziy@nvidia.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20250808190144.797076-3-ziy@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BA88F2000C
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1754896180-258186
-X-HE-Meta: U2FsdGVkX181RxeURczi1dZpjlMt4BueI5uN1pZA782QNVIZuoOLRhW5GflW+3uPhHb70MLZI5NEXx9NVeQ6czqq8r/lSUHHgWpdJeQumnjEh4bHFXgqlL1bHDIgPJsGL7cKFrazJsYgWdXAbY2sTy25UEedybotJ+y5dGJZfWgFYraZ12ufk5pZAu1I4gFnDr9SMdndiZf4bDxhc+EMOVshYlmqG/s6dcBgooS9KVV0xk6PTYE4BYnYlJHsWVlOb8dralBCBYrleAJacNmtzDE+DQFO+J6reuaqqZUDMM0S/b6ioGSoU/bnpyR/WNFXLXgDWBDe/wameeja08NIKvkXWop3LuhNx335F+smXZB68LOy5ebNNaDxuiXrNeHXKhEOIgySpUljKyHcSfOMjrZE8+eqx7tbdMQL9cBjPWeMIHHwjLiTXJJlS4I3GQv4RbFolCyIzYRHEPP74+oCWLE6ljSJ2A/EKxoMun22xTDHR4xIgELTSCpkoSxQ0fB0Nd+eH85biq5OM1hhs926XNfJnyhQecYjyZM7cv+pvs1lP4fwkAJZm6LlJye/h5RLzmj4ZJGJmEBQ50hc0wnJFuxxYHTDdKcTCupdaa4My/Frv+JeAWhtsy6mVdc2QoFuBghbXChcT59whXdnWFoixvmRlrpGV7W6h+9U6Cd/soY8/x+5yffEOSp+EhQ6QYPZhef75fCeMF++ekbvrA4XredvOKeb2fHSv4W6Fpe9cxXc7hqyqT97HdLcuAE5jQyh9OATYu0040z0+0Wu1LJwzMm6ulqr/tVyoVhlGrJgjH4QlkGe6kc+LkJlwR0XNLNBqlLy9lhonOsLDcTrPgRhpI1WQ820glh3mxUrBdDyAvLx+RPfNRmXSS6BSuPNCe7ldnwC/2ovndBAe4VYqUMDJBdX4q5wMzH7EhE5vdapcUbIgcyuz4R0qA7AM5kiN8YTroqisqZTJRhvyUs5Gvs
- JH/nsS4Z
- CVQRO2hM1z66ldMF3TYiLL4QEQqxUIRB9baZ2ivSY9QerD5UR/cVdeVU29O1VdmJZ9F9rIAJNJ/XcBK9xmg+MxHyn+Mm+FUDSaZoKkW933SMKRmXjQ1N/fUb78/y07qik/eoavcBL34LrQKmctAp6HBuGrIz2K0RINiRpGc2isTP3MOpBnSEQImmIpefJgVdmtNN0oq5OaHGVXn40Y5OzTxHz71o+4DJbQA2Yu0f+7PIZNBOQptx1sFEfkFuOYipaU/OB0qZodZW1XvnRzV0WOkYlW2tuyeb9By5vcYYCu67dpBicTPj6T/1sR14wFbOoWI4VJf47qe8jFRZ98snD98J2p9IoDTHR3NHrHo59NJUV4RqUwv97ar/XhUzGwB2BeKO0izJRsYJy9NZJkC5SRrObHQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BF913C000B
+X-Stat-Signature: 7jmuj7cjnua47dapaijwabj6nq6oy46f
+X-HE-Tag: 1754898750-220041
+X-HE-Meta: U2FsdGVkX1+9bwbi41LL3sEhNdb3fpI8LdSVMUydr+DLy60viKmYFeMndNXafm+86PhKY0oySs/ZCqmGpMkBTj30aSD/IZn5SUSe6GlJCbypsxMERdASWqw0CJ4Aq9iWCVtc2mWt+SZhfYHqaS9S1W4VZpplTOONA8QOrD90Q3HMHMJF58a5VV83P/cWOboLBGNVKvrk35Pus/NtjG7vIG79vbLeK6mbKYGjzF0Z5WwdWwvXolol8hNx1Cqn+HqCwykBHGTv2+kvmI0be9/84TVGFWF5ScpNPno0eBRAX9scL5qe0ZbOjN1Bbgkle0CrU7X5d0A3kpBNIqLnSN8TFWHP7c2r1l3PCqcJ1KTKTRGapMywsNUpuB3DlDMLUnl+z7wYI422MXlR8YAqCnlGnKOgpsbdb9GVxkm6Ln8dBX+10eIqWjuzf2obYPDU2bvp9DRt1P4uJ7exd+6YqWcLG17bEsC8Urx5R83j+9WHk2IikjqGDaW6RATm3wv70weNBU8caNTw/Fk1f0v0m0rgWhoipC/mTWtq2j6zGEOhkXzZQhYngf9Ez8oYXJlY3XjMSG0QHpGvKWKmHLCmcSdlCy6/vEfiLTvfusI+Llrm+SYbUArxncwG89YUSsOAbLtS5RFDsN7dDV8ffChFu6mZ+CBm7wy0f2bcH6u26mKLeJk+MBoW5v9DEbYrUdSFjSjfkdi7G5gktR0KcomQ3wbY5g07d7lZFSk7DJE6eK2tu6LhCtS5O7oEslCwO/IiSY1ZG+AJeUvOVkwAhaFLFlDs5S337fjkShaeUIbZbXIG750OHrvT03QdCy9Kj8HXyQy7a3sdRkA1GU3yw+38k2YJhQ2RSa2kg/TX1ngZqP+L00/ToqpX2AC7YI/nU838rtSgxON/8jukRjKwBdrmGj0aaMop0HDjv/CopSwA21ApXVFge7FwoOKPQTyjTrGxpTB1na5yQJUtNFVvWqVuOR8
+ 4AXdZHt0
+ Yl/q7liYAZDZMg7dJ3SBxL6Yx7u9ObL4kBgva0OJb6sx9ZibPSRs/Ag2SZ6/6dkYwdG0XJshLrv67wv4MNdd1PR3xVg5JqkKEzGH1YMCPL57A0yLXdsKZxr3usCAh5CP1IpmR04z282PVUalXjt8oWNm50DQHpPuz8guw/gcG7ggqHTtOI1SOzRevONnmLBif+O5W1F9yR5HWKxlKe056TGXcHOdHx5iwYOiFdSFR8WdOTTVRcSpwpP/4kL4aFg0nQRE2DFwYUFtKs4dHON6DWVLjdvzWmRt3NbFWVQE2gwNrvoX5ue/SKBYFSHBHoe1EdR/kqdWq+uepp/SMckUH+zA9Q8L8KrdO8S9B8uc019jUOgKtXf9SSf2Lh5jVEqVSrQiHOA+OFj9jBG1OLcuXR7d9pHGfNMgCXeYBKMOFLuSM6WTWzZ66LdkXvKQDR+UhLm4Glx3cxvivmoc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,41 +93,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 11, 2025 at 02:34:17PM +0900, Harry Yoo wrote:
-> # The solution: Make page table sync more code robust and harder to miss
+
+
+On 2025/8/9 03:01, Zi Yan wrote:
+> The helper gathers an folio order statistics of folios within a virtual
+> address range and checks it against a given order list. It aims to provide
+> a more precise folio order check instead of just checking the existence of
+> PMD folios.
 > 
-> To address this, Dave Hansen suggested [3] [4] introducing
-> {pgd,p4d}_populate_kernel() for updating kernel portion
-> of the page tables and allow each architecture to explicitly perform
-> synchronization when installing top-level entries. With this approach,
-> we no longer need to worry about missing the sync step, reducing the risk
-> of future regressions.
-
-Looks sane:
-
-Acked-by: Kiryl Shutsemau <kas@kernel.org>
-
-> The new interface reuses existing ARCH_PAGE_TABLE_SYNC_MASK,
-> PGTBL_P*D_MODIFIED and arch_sync_kernel_mappings() facility used by
-> vmalloc and ioremap to synchronize page tables.
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> ---
+>   .../selftests/mm/split_huge_page_test.c       |   4 +-
+>   tools/testing/selftests/mm/vm_util.c          | 133 ++++++++++++++++++
+>   tools/testing/selftests/mm/vm_util.h          |   7 +
+>   3 files changed, 141 insertions(+), 3 deletions(-)
 > 
-> pgd_populate_kernel() looks like this:
-> static inline void pgd_populate_kernel(unsigned long addr, pgd_t *pgd,
->                                        p4d_t *p4d)
-> {
->         pgd_populate(&init_mm, pgd, p4d);
->         if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_PGD_MODIFIED)
->                 arch_sync_kernel_mappings(addr, addr);
-> }
-> 
-> It is worth noting that vmalloc() and apply_to_range() carefully
-> synchronizes page tables by calling p*d_alloc_track() and
-> arch_sync_kernel_mappings(), and thus they are not affected by
-> this patch series.
 
-Well, except ARCH_PAGE_TABLE_SYNC_MASK is not defined on x86-64 until
-now. So I think it is affected.
+[snip]
 
--- 
-Kiryl Shutsemau / Kirill A. Shutemov
+> +
+> +int check_folio_orders(char *vaddr_start, size_t len, int pagemap_file,
+> +			int kpageflags_file, int orders[], int nr_orders)
+> +{
+> +	int *vaddr_orders;
+> +	int status;
+> +	int i;
+> +
+> +	vaddr_orders = (int *)malloc(sizeof(int) * nr_orders);
+> +
+> +	if (!vaddr_orders)
+> +		ksft_exit_fail_msg("Cannot allocate memory for vaddr_orders");
+> +
+> +	memset(vaddr_orders, 0, sizeof(int) * nr_orders);
+> +	status = gather_folio_orders(vaddr_start, len, pagemap_file,
+> +				     kpageflags_file, vaddr_orders, nr_orders);
+> +	if (status)
+
+Missed calling free(vaddr_orders) before returning.
+
+> +		return status;
+> +
+> +	status = 0;
+> +	for (i = 0; i < nr_orders; i++)
+> +		if (vaddr_orders[i] != orders[i]) {
+> +			ksft_print_msg("order %d: expected: %d got %d\n", i,
+> +				       orders[i], vaddr_orders[i]);
+> +			status = -1;
+> +		}
+> +
+
+Ditto.
+
+> +	return status;
+> +}
+> +
+>   /* If `ioctls' non-NULL, the allowed ioctls will be returned into the var */
+>   int uffd_register_with_ioctls(int uffd, void *addr, uint64_t len,
+>   			      bool miss, bool wp, bool minor, uint64_t *ioctls)
+> diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
+> index 1843ad48d32b..02e3f1e7065b 100644
+> --- a/tools/testing/selftests/mm/vm_util.h
+> +++ b/tools/testing/selftests/mm/vm_util.h
+> @@ -18,6 +18,11 @@
+>   #define PM_SWAP                       BIT_ULL(62)
+>   #define PM_PRESENT                    BIT_ULL(63)
+>   
+> +#define KPF_COMPOUND_HEAD             BIT_ULL(15)
+> +#define KPF_COMPOUND_TAIL             BIT_ULL(16)
+> +#define KPF_THP                       BIT_ULL(22)
+> +
+> +
+>   /*
+>    * Ignore the checkpatch warning, we must read from x but don't want to do
+>    * anything with it in order to trigger a read page fault. We therefore must use
+> @@ -85,6 +90,8 @@ bool check_huge_shmem(void *addr, int nr_hpages, uint64_t hpage_size);
+>   int64_t allocate_transhuge(void *ptr, int pagemap_fd);
+>   unsigned long default_huge_page_size(void);
+>   int detect_hugetlb_page_sizes(size_t sizes[], int max);
+> +int check_folio_orders(char *vaddr_start, size_t len, int pagemap_file,
+> +			int kpageflags_file, int orders[], int nr_orders);
+>   
+>   int uffd_register(int uffd, void *addr, uint64_t len,
+>   		  bool miss, bool wp, bool minor);
+
 
