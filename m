@@ -2,78 +2,78 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D8D7CA0EC0
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 09:09:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B0BF7CA0EC0
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 09:10:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E334B8E001F; Mon, 11 Aug 2025 05:09:49 -0400 (EDT)
+	id 50C058E0020; Mon, 11 Aug 2025 05:10:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE4248E000A; Mon, 11 Aug 2025 05:09:49 -0400 (EDT)
+	id 4E3C68E000A; Mon, 11 Aug 2025 05:10:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C84598E001F; Mon, 11 Aug 2025 05:09:49 -0400 (EDT)
+	id 3AB208E0020; Mon, 11 Aug 2025 05:10:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B65E38E000A
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 05:09:49 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 64824160682
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:09:49 +0000 (UTC)
-X-FDA: 83763904098.26.6769C0A
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2086.outbound.protection.outlook.com [40.107.220.86])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 6D1B8160003
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:09:46 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=o3xGfD3c;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 23BEF8E000A
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 05:10:04 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D82F5140750
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:10:03 +0000 (UTC)
+X-FDA: 83763904686.17.6F850A0
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2076.outbound.protection.outlook.com [40.107.92.76])
+	by imf12.hostedemail.com (Postfix) with ESMTP id F244B40008
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:10:00 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b="cCQ3ND/B";
 	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf08.hostedemail.com: domain of shivankg@amd.com designates 40.107.220.86 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754903386; a=rsa-sha256;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf12.hostedemail.com: domain of shivankg@amd.com designates 40.107.92.76 as permitted sender) smtp.mailfrom=shivankg@amd.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754903401; a=rsa-sha256;
 	cv=pass;
-	b=SjcinPvb8hrGPOfuYoB8dSCc57rYgjR3EBuf8YPNnNt4hCs+6LDYvZG6m23O7dPqmDqKlQ
-	jmrLwdJ3m/ofSK3bdQBqOXp5kmSVSW+6o8ipZhma8L8SJ7TgB1+2bstpml0YmMT6Rs54h2
-	+5LQ3PL03irU5ZmrikSjzrPwy8wkULg=
+	b=eBeX2YO+W+12/nZZBP2etgl3lqGLjCjVZthmufA8+pNHfdKmuAEgmVYMQ1Y/E85wyYLqfP
+	htLhPcl0+R/C4NrO2fOwPqcAkp0J5cpvdyazLy/OlvuuwqZNaKjOmcjfghYDTgbXAkDbNE
+	jpYm9EnAx8lAxKgI9Gnqucz6oyMXuuM=
 ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=o3xGfD3c;
+	imf12.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b="cCQ3ND/B";
 	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf08.hostedemail.com: domain of shivankg@amd.com designates 40.107.220.86 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf12.hostedemail.com: domain of shivankg@amd.com designates 40.107.92.76 as permitted sender) smtp.mailfrom=shivankg@amd.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754903386;
+	s=arc-20220608; t=1754903401;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=99yeTHvEb0G/s0XfJ7JQXUrD11ZNBAqE0QxxPNgjeNc=;
-	b=4vaWDxecQxqDG1DqJ784iERPLFNDkTqia8wLajKPTVf5At+iKypLVjfOZ3xE0XjPn+/6U/
-	IU5SgCbW+8NcdMAHt8v/i47tuLbxb5BDoiSoh+qGQiof3ZoXh2mZ+in5+n1ZJxSoJc71Tc
-	EAypSy76kgZ38BduXEX3CkQzeJvVf8I=
+	bh=XPDfLyt/MPaUAMCoHLY3T7BwEtSKTurKhRPa+CQpITI=;
+	b=N0rCDSI71/KsuuPrA+UZLu6sIaaTM+ofer+Jb9wtXJHT4+hjZvJOz+BqoYF9keEHmfgmD6
+	5J1gbnwKi5mHPbxfp6SXxdLsF+KD7w+Cy22HHxR8Fg2PVdruuoLw8GDqYSFhG0Q52flVPq
+	YQvC/hLTq+l0RrrzFMTQB0vDn/WAaqk=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EYyvPkaYpKocTUhaBb33rZJd/NtSafFT7ZFJesoN5LsJnm2jdSsXKJLZ8gEZ46YZFH8Ot92W3E8oBX4i0P0KuM6OOfE0gKxuXN3SF4H8nUeJRS7vmiAkYGjDNxAsmc/e/Cg6gzWHNyICAO0WXrlr80+A+5hENMyjNcKV1f3SSmSRnmciASsI8n24pfjdsakEUtfYeTrziO9V+NNprxmbBLh/uaPlNGdzz/Oxt1jl4cQDolB/JaAy8yZTndcJY1v/ZhCh1GEYeZnn5285Jm9CGab09ZcdpZRgUmquKmEW5krGqSow4O2H3m6isUGUUlHsb34QZ7RQSUrbXmwdX56uTw==
+ b=aDWDRtYSOJaFP96DlX8ZpH6KExqhlEIXbNlXFf8sqMIxFXWCd9VqDR0UEkBM7e3J+MF56ibHt++FrdUHacgEkppF025DuD20LL68Fdy/fPGibgTpnX5ZWcwbY13BmRgx/Y1xwjW4bGwfysgPZuSAq5+66OETLeaarNWEdJLNPLUOBeMBLps1pOggJZJsXIwuc5u1R/+ehk1oma3wUUWO26LOgf+RKfeWIXs2X3SCI9CNzjd3mCLab/u5/5bAQCZGX7IWoPMVu8412eL62am+Cb4RfEfA/OMB0kqg0vG2xM8yEUCfe91PthsqNXHwolCMpkOJyRb+i4/rpaustvB2QA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=99yeTHvEb0G/s0XfJ7JQXUrD11ZNBAqE0QxxPNgjeNc=;
- b=gJVDPzxbB+yeQ+tCodfJD7IMEDXmixxsR0C9+5u/aNbyvl9zZX6u2v55/4vlHusAH4ZjUYiojVwsral/9A/kFowM/Sy0w1HiaaosjiRAGj/vgRkTA5G93tkiJ5725is5l7qzVGA2RvIkMZG1TewfmEl1uwpzmmgR1VJbJv1uUrpXt9pf/nNlVfa84KyvGqZaVzJaUkqXzem6fRcHZk2sMLh6GZTQdDNYsdQlb6ox1nPpn0Tf0CtdHmGZmRMpPEa/kFcV+UAtK2fI1HFo53iH9BYQcIMPX0t9/Pcpg1+lHdatF+6pGTnwZhT3xpN+5jKzH4Ir/hxWpoJJSSAS/v8rEA==
+ bh=XPDfLyt/MPaUAMCoHLY3T7BwEtSKTurKhRPa+CQpITI=;
+ b=n5qj+/iLpWJ51qyAjFRSZu1mkjciTnFImOWXUDzT6Nd0OVmjv/s54wvoQjhH67BhMWRID1msyjJCD+NF4uBqxgai97qkkeOP0Ik0Ky7iu5Ir8e6Q6ruvXdDKZo15DUsmJBptteex4fKIbY94woyyoc8Q6mZ6n1YtTrgGspCtjnlorSZpIEoGGWNGPW07XCzM19XI0VbeCTXSpPVxj7RcgLHyuuVzV2l8Q3IcWlKhmFWnxV1hDa+qUxxpSOs1w8BXjymBAKHDGoNe2GGPgcGvm7PPV1/T1CbNLqCuDbKMAo1IQE8XQqpLNRoQYimC8LggVdRiwdUN/nUlF7Q0xxt2WA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=99yeTHvEb0G/s0XfJ7JQXUrD11ZNBAqE0QxxPNgjeNc=;
- b=o3xGfD3ckCfK8xXwwXOSNygNvGwTvurD4LqkmGNONJ+LdNUXjVpMeeQIkLcMrutCbEmNKq33w0D6dltPFfptS6HyVEgdOJv7l5pmLmTJWm/axJVkIZX3ZyeZgOh6fkR8Ld4j35UmeHZbcD3vlj/7ohi0G9azww1EE9onGOY6eG4=
-Received: from MN2PR12CA0011.namprd12.prod.outlook.com (2603:10b6:208:a8::24)
- by CH1PPFF9270C127.namprd12.prod.outlook.com (2603:10b6:61f:fc00::62b) with
+ bh=XPDfLyt/MPaUAMCoHLY3T7BwEtSKTurKhRPa+CQpITI=;
+ b=cCQ3ND/BY6BuPE/cZ2JSFTmGQ8HCYkRtmSdzWmyoGCZLdRZ4vHxePDJBxpGh5TZ+1FQJPWKmotOf9pFG1sZB8s6H33Qej2HoqQ6Ld/UrD2cFTRzveohwkRXx3/E1s6S43u7OFguZzH2RQjXnffp1tnCgDYpwHtD0qgV25myzBUA=
+Received: from MN2PR12CA0027.namprd12.prod.outlook.com (2603:10b6:208:a8::40)
+ by CH3PR12MB7498.namprd12.prod.outlook.com (2603:10b6:610:143::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.26; Mon, 11 Aug
- 2025 09:09:41 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.21; Mon, 11 Aug
+ 2025 09:09:57 +0000
 Received: from BL02EPF00021F6A.namprd02.prod.outlook.com
- (2603:10b6:208:a8:cafe::c9) by MN2PR12CA0011.outlook.office365.com
- (2603:10b6:208:a8::24) with Microsoft SMTP Server (version=TLS1_3,
+ (2603:10b6:208:a8:cafe::7a) by MN2PR12CA0027.outlook.office365.com
+ (2603:10b6:208:a8::40) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9009.21 via Frontend Transport; Mon,
- 11 Aug 2025 09:09:41 +0000
+ 11 Aug 2025 09:09:56 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -83,11 +83,11 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
  BL02EPF00021F6A.mail.protection.outlook.com (10.167.249.6) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.9031.11 via Frontend Transport; Mon, 11 Aug 2025 09:09:41 +0000
+ 15.20.9031.11 via Frontend Transport; Mon, 11 Aug 2025 09:09:56 +0000
 Received: from kaveri.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 11 Aug
- 2025 04:09:25 -0500
+ 2025 04:09:41 -0500
 From: Shivank Garg <shivankg@amd.com>
 To: <seanjc@google.com>, <david@redhat.com>, <vbabka@suse.cz>,
 	<willy@infradead.org>, <akpm@linux-foundation.org>, <shuah@kernel.org>,
@@ -113,9 +113,9 @@ CC: <ackerleytng@google.com>, <paul@paul-moore.com>, <jmorris@namei.org>,
 	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
 	<linux-security-module@vger.kernel.org>, <kvm@vger.kernel.org>,
 	<linux-kselftest@vger.kernel.org>, <linux-coco@lists.linux.dev>
-Subject: [PATCH RFC V10 6/7] KVM: guest_memfd: Enforce NUMA mempolicy using shared policy
-Date: Mon, 11 Aug 2025 09:06:08 +0000
-Message-ID: <20250811090605.16057-12-shivankg@amd.com>
+Subject: [PATCH RFC V10 7/7] KVM: guest_memfd: selftests: Add tests for mmap and NUMA policy support
+Date: Mon, 11 Aug 2025 09:06:09 +0000
+Message-ID: <20250811090605.16057-13-shivankg@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250811090605.16057-2-shivankg@amd.com>
 References: <20250811090605.16057-2-shivankg@amd.com>
@@ -127,60 +127,60 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF00021F6A:EE_|CH1PPFF9270C127:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7beeb009-852c-4061-a2e8-08ddd8b6ce2b
+X-MS-TrafficTypeDiagnostic: BL02EPF00021F6A:EE_|CH3PR12MB7498:EE_
+X-MS-Office365-Filtering-Correlation-Id: 31473fa7-8bfe-4f6a-a4fb-08ddd8b6d7a0
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|7416014|36860700013|1800799024;
+	BCL:0;ARA:13230040|376014|7416014|36860700013|82310400026|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?vXOwtBuVTxIdKK+xhTUp6tagw6+FT1+cd1DFuI3bgzOEc7m78XZKAWo5N26Y?=
- =?us-ascii?Q?uaWFmryQKjiC8fDVrsgVXddypI0ehkyEHl5pxyV/GQHw+xaxcqw5idjcM/Of?=
- =?us-ascii?Q?GHfE6gAobxqmt5VyeGB+/U2sZltr4rusoybgkoEjPEZIqEWn8g+D6ZLloYB3?=
- =?us-ascii?Q?kS697SZR1NPrI6Snh3XRGuO1hKgemPpDe3jQpvMyic9XFoy7pYn5LDqXTOP4?=
- =?us-ascii?Q?h4XwftTfRFuu6C0otPO5a8wd6hh9BDSr1L9SLAVBrRqFvmqQmVwSP72Z8jon?=
- =?us-ascii?Q?vW4OrBxTNZzBFJyP5m8fSyV2pmbjYIEXx0jJLBcLvbCGSt5n649AsSgtbdqx?=
- =?us-ascii?Q?coWHR0Ih4kI6Kl0fNNVU4HtNRAxPxN6hINZR6Cs7IXdrUebu3djFXYqZbjbQ?=
- =?us-ascii?Q?ZBWiNYoibt3VRNoFZwdX7qco4Zz3Qo6Cv+xPaTbW96P9KqzkMBX+OouO3W/s?=
- =?us-ascii?Q?QV00I93iPb07DeIj4p9kNlKhvrlXpNunTMNcd+FZej5qBfk5IoTD2VglQz3R?=
- =?us-ascii?Q?dBgF7Ol051k/3tl+SKNnfQSE7hfW6GjCq5AbK9hoWAMjLIsYdn82W/UWxXpD?=
- =?us-ascii?Q?qmnApvQ8uxr6OmPMJkVD0tY26oIoURiHh+RbWWZ2FKc6p1NMNJp7qaN+mdwJ?=
- =?us-ascii?Q?koFBYd2SDiu3gXv9ft1hdi4YpkOlH802nIo7mbuzd+jeV38SgYH1ypCgpkLZ?=
- =?us-ascii?Q?0gZmwWQRX6CU1e/KLLKSHwtKCmuUf3TlsWt2eHQVVDqKYFV9fomcf7O3XhNN?=
- =?us-ascii?Q?DCtHMcaiBx7MWf+QeHzykWAgUeGkwbda3PEoy+iiZIlVstB/SaroVuA40r6q?=
- =?us-ascii?Q?dvPmU9g3Yr9456kf3FCupGdH8URiaSCoa3YXplI65KKK0IqwgmS5VZhFJLV3?=
- =?us-ascii?Q?tIw/pV/GxfkZJwyco7U3okMnF7ECLyLtnLtWfqVE/pALsruQXQPGATkTH9em?=
- =?us-ascii?Q?LWGjCQJMgQSeEXdGY03l3BhYDXvgtmPsLql246ranHO9+rHywvS+F1e0CJs0?=
- =?us-ascii?Q?igfaZs+znFCkxkWMXsHGH+dWVIPYupIY5JMBEhqiL/zvAN0j8zCP0iibPHpg?=
- =?us-ascii?Q?93piefxXM9lSZPiqCMFU2WGDy26m6Nhl2MqI7RyWjgg1pQyrh8KaZYOpkmOI?=
- =?us-ascii?Q?+xoaG+BCQNKNWX2Ie5yZ1e7CAqqg+19drQflITJM4xW1ELr6mwNfsPPkvUWP?=
- =?us-ascii?Q?P7an2udeAPjIJzWkQO4FS5oJY4e4HEDPwlta59TB0gnLdgWa5VCI20DJMqv/?=
- =?us-ascii?Q?POjkSSNwp1MOeWx2o0iXcR6tRPmMvGdjHHmkpcnZil5trurhL7cZBOLMcUnF?=
- =?us-ascii?Q?23GW0eolH8hcOUSGitYAd+nQXCRfJY2MBQsH+wZErJwVm/w61A3cStRecMtT?=
- =?us-ascii?Q?r2Lg7p+o45hG9+IkGV8W/6HnmlClDzhoXztEjA+l0GoJVqOJz2mWIRGw/eFq?=
- =?us-ascii?Q?lgrvVSZXoDgzgFd7qi8X9Z3JJRBCp2wN3T5QkVlOBULf+uaiEuQ+I2yYwF8q?=
- =?us-ascii?Q?IH6oSwVxQmaxTWjXCQ2Z1pWYZyKrxPe7IzUI?=
+	=?us-ascii?Q?vjLIh5qPZ3GZBc1s5AAtnvzkJda+p+9yLObiZUQvf5SwPLtWpia5mK7+9PoE?=
+ =?us-ascii?Q?QiU+ryVS8mnQa32iyqVXxc7fMMWnT+F4maZJKqK69l9ps0gfGIyB+yXflBLp?=
+ =?us-ascii?Q?CotUoWI07qutKZUEYBf1jEF9RvQ0BpeEqemFNPR+q3vOMPpwBlphH84qJ+dX?=
+ =?us-ascii?Q?U0QfdPR+aSUgZLWMJoiTPSIiMH1FF7H31w9YxFbPDOf3YkSoRTpUTmIXlxns?=
+ =?us-ascii?Q?BKlzPbjKA7ymFnZA3TzplTR6EObtMl2maUGtjnduwNXdL+2aR4c817h51t4N?=
+ =?us-ascii?Q?yy9qT48T0jMI5QAE2KrRIroGIQNoFvfHKqjFk1NxOwlTwSZplAXVyW65l8bK?=
+ =?us-ascii?Q?fg/9XopPj80hQvLYrEqZ47Vn9ywHHpQ1yfl/gv5JExDu2cEgvU3rUVaShwy9?=
+ =?us-ascii?Q?k4UGmbgN2J1QmwIkwygQFonX58ZqsQp/sEBQgaBtjCe93CYHKLeNg2++/Jjr?=
+ =?us-ascii?Q?cpfXi0jzUj87wGr2g01cM+3fRolxSP9xCM5+HZp4t/Pfa3u7cG0DxSkOlrnD?=
+ =?us-ascii?Q?OBymW44LlaQdhKBiliFlvYAj51atPhJpfI6kL/vAR4x/RnNVaYVgY1fFHlOt?=
+ =?us-ascii?Q?gYbQxBM6JXnPc0OLhGcts5irhCtL8Ia9Hz84kR+/7jYiESCJTFWUKOmkA83g?=
+ =?us-ascii?Q?jguJdUEvyJjFfpGVlhU90csI/62uvJUEPq6TwZgMX2UIz0culJb9udiDoymn?=
+ =?us-ascii?Q?O51fHjKjR3n+qhykVv8R9cMJgx2G5TfduGjEw10I+zxi5k2mUoSEj+dnmvff?=
+ =?us-ascii?Q?Tm6YNaMFgJhSHsynQQoasEfnyl/3Ah99G+BYfuaRVFPnbei0eFL2QVHtP76a?=
+ =?us-ascii?Q?fuTfCjxZOm5uj/+5XU+eoHAnVEYgLDdg71o2OaGLr+pai0apFvEKycCmsYQK?=
+ =?us-ascii?Q?MnVT6Rx/QLDjXtosuXZn4ckIzusCRH0tqHXqp3i7glY/x2InzOmxuyNuNu/3?=
+ =?us-ascii?Q?XxzqzPLf9jsUZs9fCUrX+1UjUgMtfPY968IP1lNw6oUFLgX4y2wGoy0Jur9c?=
+ =?us-ascii?Q?hmdRH7Uo7G5NL4nmRqt93rLQFdVgG4080w6P0naNyZCaiH90VFWLhQdhWT9U?=
+ =?us-ascii?Q?8WtDK1zf7yWkjnP0L2/pUo3M5Ugx+N5WWN5dXHZbYZACEr75/H671yVTO6i6?=
+ =?us-ascii?Q?+XgBnFv9HW3o7ZFrcBYi3wlxpUwsf/nSvh1FwdRW4UrcSY06s/Qyk+9kqJwU?=
+ =?us-ascii?Q?+0Kk45fZb/7k57wNln4tY6AbMWYFEO+65t+ikvuH7YFTs2lUKNudvGDiEdjx?=
+ =?us-ascii?Q?nnKRoz8sh/IXdmcOSbQXCnOP9CL1VI+oiOlqRkg/hBT1m1RVWHM2t/w+Vn2S?=
+ =?us-ascii?Q?0IYc3htSwerbERLVgUj4og3+1QaWoLR2UJvlsQCs1+N4TaC5M21zUsBzqArU?=
+ =?us-ascii?Q?Qgihd7eBcYmxiM3Iowzt8V1mW+/tQYzr6HqlvnORtW/nwm2qZzl2Db+uZpPV?=
+ =?us-ascii?Q?//Ll4hkv3fVWvdm//5Bov3CoK7lnwXlcYmEhsuW+rDpRBMMUJTfU3NAwFkHR?=
+ =?us-ascii?Q?v8l7DdiNZ89l1NvWKmq+H1dc3rNp+7HChAr3?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(7416014)(36860700013)(1800799024);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700013)(82310400026)(1800799024);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2025 09:09:41.0627
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2025 09:09:56.9302
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7beeb009-852c-4061-a2e8-08ddd8b6ce2b
+X-MS-Exchange-CrossTenant-Network-Message-Id: 31473fa7-8bfe-4f6a-a4fb-08ddd8b6d7a0
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	BL02EPF00021F6A.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPFF9270C127
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6D1B8160003
-X-Stat-Signature: cn534f9ie74a8bfc861gjhufmaou6bit
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7498
+X-Stat-Signature: mhh7x1swec1hxbqcrietcworihontqry
 X-Rspam-User: 
-X-HE-Tag: 1754903386-757563
-X-HE-Meta: U2FsdGVkX19PTsuQ03cZOcfkG3lx8/QU+07C8h19Jrni5oxebeqHphHU3sA42QN//JiWKvhwXs4j2JD6zn65wrDGpp4tOnFHccDLbcrRbthxxWoIJvV+kwsuKBVr/OYL7LwLj3FCBlKbbz5PwLwTC8QSzF/dkKUl+yX6Xt8noHq5C1LR6ua0MRvF5k0yWVEjtFvkRVVb7kDJelbbPIekkP6O4l9TVw2WRWh4mxklQJ/wd/ensf/bEQPncB4YqjfXGQ63NUrDuANMMXmj6Htq7r8XTgJjh6rRy5rY48ZEMLpK2n+rQvgBi5VY+ASnZJzrIdS++ybIjvgjJ9mwRwzsrHRRz3w8ERtGPCBX5Xmx5KK0dK5sbejx027WoYWU/MqdY2iBn9y8+6/PeXpRua72nG4P9RQHx7K16650ZLDQ6yLjGqz57p0wWTrRtlBoeLjUmz2P0pDhq7GjVw6q8B8SMRmjilsK/Y692F04wtKpwmH5/8MQu8Bv1xOx+UVDK95BdfG861GsoinbUVw9TSsPqpYQb4c3cxETSnH/hE1qsUCwhu4wLTlrky2Ka0PabyhkIZ/VilA4hTzFbp0SuNnJ768NtIz1umZRXadfsBbx5v6KwZqkioJ5iio4mJd6z5CRfQepQ6LXZbVBLobCWJLYAj4R9VYnP8/XfCy2RD4FKjOojNO8Za1mTu4GJS+SwmQzmoQnBvWSLKfU5BzSyZOX0KCAPrYlIMndJY9g0J2mkD2LgnZF/LNzucCuoFniVc8/q2Iz+TfrkKhjlL9HNxtoOZgCmIBb3x2jaXIrpN8PeUITW1MFboGDh9u7DSv4BzNsShqwIaqnjZL74Di1qCJGKu8w1OZZ7R7JDUEbDBK1LYus3ZMb0DzDL4YoS+cA51u/U/fWwZ6/K2U0iWxwz/JzC5hm91ikco3SKj1Q9K5ntkuxPXGGc3ndurnCEKm7YWvNLAJUPW6XAVbBGLd46q7
- hguNvSkR
- XafrwlaE7WX45pFKS6WKqJ3qEP6b7h+Zelx7y1rb+wieSuZpOhqNtDn6gtYJQN+YOsllryMO5A2yZwgH+UviI2PxfjZQOecFM2fUGb2jeOAgw4qW4VDCGDyuxp/zpIcvy+QJe2gokalSyYFrbidQ8PIjTNkSneYmA5E65++viz6N1IW/m5qADyuCm64lz+/PGk/5P+eHa1wnf7S/UwCBMG9j7qvcEO5zYzuEqyXJQ1r9AuWLoum4aPTAC1XXnjea64+kGCFMEn+YaPU8ymmeCkgP1fblUDMhFkui2pXSC2AHlZvIZxXIRTPqwsWcinUo3SuilPO5fzRUAJKAvUDps+V3SgzNa7jKFiv6bt5XQV8Jrn51cm8zSR+QN5WIEdWTzLpCknsywjGxahOxXJNrQfszbwDnMMCZBPoumvUistHrGQM9nKNVhXPJ7eOVUTKo2rkBq5KYlK3At1/0WsGit/1MVsiuVVrvTI8Px44rHF/JOHiHxfc6/g4B9Da3OOWAQJI7aoxFNfAMxns8E2RoMYnkW8hlIdLdLZqJMehKv/ONtvunFtw9xrRmljjzZB6P77MBcw+jeQ6JjzTC9ZRuN1JShZ9OGlLVBzXtHgxiDloD91LcLZxZOR4B1ao9BfL390PoWHT8TdRJ6R/gDcyD5F+xjv6gioWnjKfxRkPypcSMPbAM=
+X-Rspamd-Queue-Id: F244B40008
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1754903400-408416
+X-HE-Meta: U2FsdGVkX1+7lvCldYuKX8AlW9k99oFQ+f/x/roB5BS+rJ9IhrRAGyiAasaztnZ5y0PO7stqprHrYtIo0McsA+CPhQ0IEZqJCo01+arm/rQoI+Q9Yufk6xUm+p595ZY+i8BZtbvxlB0k5ewdEMadw7OayC2d+aOVjScA2FTOU9XFcOIt0td560x9kEju4DzKM/6+QIiMv/YwBchqx3IAJpzXFpx2C+YOK61L1gFw/LDpSNG+rFkjjQoBMEzHTrw9edLWW023mlPcrum5l424pi9dOvz8VHrRfm9ofRzFETqK+hPh6WbcnFb3QtdgjIt8OqSEk+mi9aB9TOkNIBCo/5pcv0CILEHj7NedPJ4g57JgLL5sxIl6LHQRp5rPJoRKMhQ+EBz18wrKqpZej2tXlAlbdZNOYxZrHhWPnmbag7ifmdWQj4YD9qLHziiaY6TeziiwvSEAoMjdxs+ev9YwUUpZy6Gig6HJ2Q1b0tDANJ2kKO3CvCwK8w3zIwbbZfdyKkKETd/tnniiIVdtPBrwiw748Kr3liwAwDYD0VaFR0WENdydaJYC0vzH36IwiWoqzjEIEkmZ4whnWOC7qbYpLMWuTErgdFFMQWmk1zFa3QXt4pUB38Cd6X8ZHIuvmEDgMdynuLhkvHqR0nqEO55GYwZKVuZ6B6KdwIijmbWQupC5O17/dgprBSd5/8gg6qrpG/J9OIMspmkIgVpBnyrdPA6VmcNWLrc8hPOE0RF33FnIcL541mZ2GopOi6MOmAF3R1Wesc4AeQfH1BKCUyV0+YQKpoezwcz4PfyXioEBH6j4U67ju0XchcsRQ2DIF+dGlwChRm/zxB3W/HQe+/rMKnfQTXkpm+xBZjiP9/LBZl5Ho3eUKxLUkTtk4x6TAN371ru6FPnEdkVw/Vq/jbunt7Pxxw7mhHb6XOyz5JnttIt7BB3o8j+3rqE4Mzn+ojkDD11KHkEtOrv/YqpsS1p
+ BQMIDSmN
+ t7EKg/dOWnWfxsfT6dUzGGJ8aRyZ3KhTr9l5sKSW7VVrsJ7HFI90fZT6ic6iZhql8hIkvy6lgESnkBN/eMRjou50zBbmC1OR9yJz+ZS4oif6psTjF6Zefdq03nwaq4SemUDBasQZO5+g9eMbWGofySkkMUYx+NcJrjSEqxQvKOZdu8/XErEWCd4yzhkfrag7iiAjE8mTvGJ24ca97/50QrVPUUzr0gNXSSmskLOKXXdwjrIxF0XSNGKEGnzNfJdkovl5WA+Huk0t8Hx335pBSLJF6AjYTxqNwXJZCtKLY0EM4xu/m7tH5dzIuhWXTInBgSDy5Hs8XcDDdfaPj5Cdkx9NKNnkJe07eAFF0c++hVMrT5cO9DqVwirSwMDt+lEZgFwJedkeDuTIIKZ9gQ4YrZH6n04Mgkw/4EEC/DrpvbdmCTgJF8XmwL69o3gclITLWNKu7yuQ8+/nMs0VXlwGP1EmgxvEqMpSEd0f+pnMwy8crXhCj8vaDWL539pTg4g2MTrMpTiw3ASA4ok/H4QWD+KV7nYyI9VprpK6yBjWkpRFzRWpfDF65EHbr+ijouuvM+AiSbviVTLI8t5OVyccSktJoR2hasLhaLXNfEX41vwXK63mpp5FfqDY5W7WCa70M8Y60/Wsai6jD295F6o45SGHKS1JhQpKcxWPGHL1QrQtlv7wb5ZyyKSpKWA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -189,155 +189,186 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Previously, guest-memfd allocations followed local NUMA node id in absence
-of process mempolicy, resulting in arbitrary memory allocation.
-Moreover, mbind() couldn't be used  by the VMM as guest memory wasn't
-mapped into userspace when allocation occurred.
+Add tests for NUMA memory policy binding and NUMA aware allocation in
+guest_memfd. This extends the existing selftests by adding proper
+validation for:
+- KVM GMEM set_policy and get_policy() vm_ops functionality using
+  mbind() and get_mempolicy()
+- NUMA policy application before and after memory allocation
 
-Enable NUMA policy support by implementing vm_ops for guest-memfd mmap
-operation. This allows the VMM to map the memory and use mbind() to set the
-desired NUMA policy. The policy is stored in the inode structure via
-kvm_gmem_inode_info, as memory policy is a property of the memory (struct
-inode) itself. The policy is then retrieved via mpol_shared_policy_lookup()
-and passed to filemap_grab_folio_mpol() to ensure that allocations follow
-the specified memory policy.
+These tests help ensure NUMA support for guest_memfd works correctly.
 
-This enables the VMM to control guest memory NUMA placement by calling
-mbind() on the mapped memory regions, providing fine-grained control over
-guest memory allocation across NUMA nodes.
-
-The policy change only affect future allocations and does not migrate
-existing memory. This matches mbind(2)'s default behavior which affects
-only new allocations unless overridden with MPOL_MF_MOVE/MPOL_MF_MOVE_ALL
-flags, which are not supported for guest_memfd as it is unmovable.
-
-Suggested-by: David Hildenbrand <david@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Shivank Garg <shivankg@amd.com>
 ---
- virt/kvm/guest_memfd.c | 67 ++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 65 insertions(+), 2 deletions(-)
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../testing/selftests/kvm/guest_memfd_test.c  | 121 ++++++++++++++++++
+ 2 files changed, 122 insertions(+)
 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index d9c23401e770..7821c1036e49 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -4,6 +4,7 @@
- #include <linux/falloc.h>
- #include <linux/fs.h>
- #include <linux/kvm_host.h>
-+#include <linux/mempolicy.h>
- #include <linux/pseudo_fs.h>
- #include <linux/pagemap.h>
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 90f03f00cb04..c46cef2a7cd7 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -275,6 +275,7 @@ pgste-option = $(call try-run, echo 'int main(void) { return 0; }' | \
+ 	$(CC) -Werror -Wl$(comma)--s390-pgste -x c - -o "$$TMP",-Wl$(comma)--s390-pgste)
  
-@@ -18,6 +19,7 @@ struct kvm_gmem {
- };
+ LDLIBS += -ldl
++LDLIBS += -lnuma
+ LDFLAGS += -pthread $(no-pie-option) $(pgste-option)
  
- struct kvm_gmem_inode_info {
-+	struct shared_policy policy;
- 	struct inode vfs_inode;
- };
+ LIBKVM_C := $(filter %.c,$(LIBKVM))
+diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
+index b86bf89a71e0..4d33c225d9f7 100644
+--- a/tools/testing/selftests/kvm/guest_memfd_test.c
++++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+@@ -7,6 +7,8 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <unistd.h>
++#include <numa.h>
++#include <numaif.h>
+ #include <errno.h>
+ #include <stdio.h>
+ #include <fcntl.h>
+@@ -19,6 +21,7 @@
+ #include <sys/mman.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
++#include <sys/syscall.h>
  
-@@ -26,6 +28,9 @@ static inline struct kvm_gmem_inode_info *KVM_GMEM_I(struct inode *inode)
- 	return container_of(inode, struct kvm_gmem_inode_info, vfs_inode);
+ #include "kvm_util.h"
+ #include "test_util.h"
+@@ -72,6 +75,122 @@ static void test_mmap_supported(int fd, size_t page_size, size_t total_size)
+ 	TEST_ASSERT(!ret, "munmap() should succeed.");
  }
  
-+static struct mempolicy *kvm_gmem_get_pgoff_policy(struct kvm_gmem_inode_info *info,
-+						   pgoff_t index);
++#define TEST_REQUIRE_NUMA_MULTIPLE_NODES()	\
++	TEST_REQUIRE(numa_available() != -1 && numa_max_node() >= 1)
 +
- /**
-  * folio_file_pfn - like folio_file_page, but return a pfn.
-  * @folio: The folio which contains this index.
-@@ -112,7 +117,25 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
- static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
++static void test_mbind(int fd, size_t page_size, size_t total_size)
++{
++	unsigned long nodemask = 1; /* nid: 0 */
++	unsigned long maxnode = 8;
++	unsigned long get_nodemask;
++	int get_policy;
++	char *mem;
++	int ret;
++
++	TEST_REQUIRE_NUMA_MULTIPLE_NODES();
++
++	mem = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
++	TEST_ASSERT(mem != MAP_FAILED, "mmap for mbind test should succeed");
++
++	/* Test MPOL_INTERLEAVE policy */
++	ret = syscall(__NR_mbind, mem, page_size * 2, MPOL_INTERLEAVE,
++		      &nodemask, maxnode, 0);
++	TEST_ASSERT(!ret, "mbind with INTERLEAVE to node 0 should succeed");
++	ret = syscall(__NR_get_mempolicy, &get_policy, &get_nodemask,
++		      maxnode, mem, MPOL_F_ADDR);
++	TEST_ASSERT(!ret && get_policy == MPOL_INTERLEAVE && get_nodemask == nodemask,
++		    "Policy should be MPOL_INTERLEAVE and nodes match");
++
++	/* Test basic MPOL_BIND policy */
++	ret = syscall(__NR_mbind, mem + page_size * 2, page_size * 2, MPOL_BIND,
++		      &nodemask, maxnode, 0);
++	TEST_ASSERT(!ret, "mbind with MPOL_BIND to node 0 should succeed");
++	ret = syscall(__NR_get_mempolicy, &get_policy, &get_nodemask,
++		      maxnode, mem + page_size * 2, MPOL_F_ADDR);
++	TEST_ASSERT(!ret && get_policy == MPOL_BIND && get_nodemask == nodemask,
++		    "Policy should be MPOL_BIND and nodes match");
++
++	/* Test MPOL_DEFAULT policy */
++	ret = syscall(__NR_mbind, mem, total_size, MPOL_DEFAULT, NULL, 0, 0);
++	TEST_ASSERT(!ret, "mbind with MPOL_DEFAULT should succeed");
++	ret = syscall(__NR_get_mempolicy, &get_policy, &get_nodemask,
++		      maxnode, mem, MPOL_F_ADDR);
++	TEST_ASSERT(!ret && get_policy == MPOL_DEFAULT && get_nodemask == 0,
++		    "Policy should be MPOL_DEFAULT and nodes zero");
++
++	/* Test with invalid policy */
++	ret = syscall(__NR_mbind, mem, page_size, 999, &nodemask, maxnode, 0);
++	TEST_ASSERT(ret == -1 && errno == EINVAL,
++		    "mbind with invalid policy should fail with EINVAL");
++
++	TEST_ASSERT(munmap(mem, total_size) == 0, "munmap should succeed");
++}
++
++static void test_numa_allocation(int fd, size_t page_size, size_t total_size)
++{
++	unsigned long node0_mask = 1;  /* Node 0 */
++	unsigned long node1_mask = 2;  /* Node 1 */
++	unsigned long maxnode = 8;
++	void *pages[4];
++	int status[4];
++	char *mem;
++	int ret, i;
++
++	TEST_REQUIRE_NUMA_MULTIPLE_NODES();
++
++	/* Clean slate: deallocate all file space, if any */
++	ret = fallocate(fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE, 0, total_size);
++	TEST_ASSERT(!ret, "fallocate(PUNCH_HOLE) should succeed");
++
++	mem = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
++	TEST_ASSERT(mem != MAP_FAILED, "mmap should succeed");
++
++	for (i = 0; i < 4; i++)
++		pages[i] = (char *)mem + page_size * i;
++
++	/* Set NUMA policy after allocation */
++	memset(mem, 0xaa, page_size);
++	ret = syscall(__NR_mbind, pages[0], page_size, MPOL_BIND, &node0_mask, maxnode, 0);
++	TEST_ASSERT(!ret, "mbind after allocation page 0 to node 0 should succeed");
++	ret = fallocate(fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE, 0, page_size);
++	TEST_ASSERT(!ret, "fallocate(PUNCH_HOLE) should succeed");
++
++	/* Set NUMA policy before allocation */
++	ret = syscall(__NR_mbind, pages[0], page_size * 2, MPOL_BIND, &node1_mask, maxnode, 0);
++	TEST_ASSERT(!ret, "mbind page 0, 1 to node 1 should succeed");
++	ret = syscall(__NR_mbind, pages[2], page_size * 2, MPOL_BIND, &node0_mask, maxnode, 0);
++	TEST_ASSERT(!ret, "mbind page 2, 3 to node 0 should succeed");
++	memset(mem, 0xaa, total_size);
++
++	/* Validate if pages are allocated on specified NUMA nodes */
++	ret = syscall(__NR_move_pages, 0, 4, pages, NULL, status, 0);
++	TEST_ASSERT(ret >= 0, "move_pages should succeed for status check");
++	TEST_ASSERT(status[0] == 1, "Page 0 should be allocated on node 1");
++	TEST_ASSERT(status[1] == 1, "Page 1 should be allocated on node 1");
++	TEST_ASSERT(status[2] == 0, "Page 2 should be allocated on node 0");
++	TEST_ASSERT(status[3] == 0, "Page 3 should be allocated on node 0");
++
++	/* Punch hole for all pages */
++	ret = fallocate(fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE, 0, total_size);
++	TEST_ASSERT(!ret, "fallocate(PUNCH_HOLE) should succeed");
++
++	/* Change NUMA policy nodes and reallocate */
++	ret = syscall(__NR_mbind, pages[0], page_size * 2, MPOL_BIND, &node0_mask, maxnode, 0);
++	TEST_ASSERT(!ret, "mbind page 0, 1 to node 0 should succeed");
++	ret = syscall(__NR_mbind, pages[2], page_size * 2, MPOL_BIND, &node1_mask, maxnode, 0);
++	TEST_ASSERT(!ret, "mbind page 2, 3 to node 1 should succeed");
++	memset(mem, 0xaa, total_size);
++
++	ret = syscall(__NR_move_pages, 0, 4, pages, NULL, status, 0);
++	TEST_ASSERT(ret >= 0, "move_pages should succeed after reallocation");
++	TEST_ASSERT(status[0] == 0, "Page 0 should be allocated on node 0");
++	TEST_ASSERT(status[1] == 0, "Page 1 should be allocated on node 0");
++	TEST_ASSERT(status[2] == 1, "Page 2 should be allocated on node 1");
++	TEST_ASSERT(status[3] == 1, "Page 3 should be allocated on node 1");
++
++	TEST_ASSERT(munmap(mem, total_size) == 0, "munmap should succeed");
++}
++
+ static sigjmp_buf jmpbuf;
+ void fault_sigbus_handler(int signum)
  {
- 	/* TODO: Support huge pages. */
--	return filemap_grab_folio(inode->i_mapping, index);
-+	struct mempolicy *policy;
-+	struct folio *folio;
-+
-+	/*
-+	 * Fast-path: See if folio is already present in mapping to avoid
-+	 * policy_lookup.
-+	 */
-+	folio = __filemap_get_folio(inode->i_mapping, index,
-+				    FGP_LOCK | FGP_ACCESSED, 0);
-+	if (!IS_ERR(folio))
-+		return folio;
-+
-+	policy = kvm_gmem_get_pgoff_policy(KVM_GMEM_I(inode), index);
-+	folio = __filemap_get_folio_mpol(inode->i_mapping, index,
-+					 FGP_LOCK | FGP_ACCESSED | FGP_CREAT,
-+					 mapping_gfp_mask(inode->i_mapping), policy);
-+	mpol_cond_put(policy);
-+
-+	return folio;
- }
- 
- static void kvm_gmem_invalidate_begin(struct kvm_gmem *gmem, pgoff_t start,
-@@ -372,8 +395,45 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
- 	return ret;
- }
- 
-+#ifdef CONFIG_NUMA
-+static int kvm_gmem_set_policy(struct vm_area_struct *vma, struct mempolicy *mpol)
-+{
-+	struct inode *inode = file_inode(vma->vm_file);
-+
-+	return mpol_set_shared_policy(&KVM_GMEM_I(inode)->policy, vma, mpol);
-+}
-+
-+static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct *vma,
-+					     unsigned long addr, pgoff_t *pgoff)
-+{
-+	struct inode *inode = file_inode(vma->vm_file);
-+
-+	*pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
-+	return mpol_shared_policy_lookup(&KVM_GMEM_I(inode)->policy, *pgoff);
-+}
-+
-+static struct mempolicy *kvm_gmem_get_pgoff_policy(struct kvm_gmem_inode_info *info,
-+						   pgoff_t index)
-+{
-+	struct mempolicy *mpol;
-+
-+	mpol = mpol_shared_policy_lookup(&info->policy, index);
-+	return mpol ? mpol : get_task_policy(current);
-+}
-+#else
-+static struct mempolicy *kvm_gmem_get_pgoff_policy(struct kvm_gmem_inode_info *info,
-+						   pgoff_t index)
-+{
-+	return NULL;
-+}
-+#endif /* CONFIG_NUMA */
-+
- static const struct vm_operations_struct kvm_gmem_vm_ops = {
--	.fault = kvm_gmem_fault_user_mapping,
-+	.fault		= kvm_gmem_fault_user_mapping,
-+#ifdef CONFIG_NUMA
-+	.get_policy	= kvm_gmem_get_policy,
-+	.set_policy	= kvm_gmem_set_policy,
-+#endif
- };
- 
- static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
-@@ -408,11 +468,14 @@ static struct inode *kvm_gmem_alloc_inode(struct super_block *sb)
- 	if (!info)
- 		return NULL;
- 
-+	mpol_shared_policy_init(&info->policy, NULL);
-+
- 	return &info->vfs_inode;
- }
- 
- static void kvm_gmem_destroy_inode(struct inode *inode)
- {
-+	mpol_free_shared_policy(&KVM_GMEM_I(inode)->policy);
- }
- 
- static void kvm_gmem_free_inode(struct inode *inode)
+@@ -286,6 +405,8 @@ static void test_guest_memfd(unsigned long vm_type)
+ 	if (flags & GUEST_MEMFD_FLAG_MMAP) {
+ 		test_mmap_supported(fd, page_size, total_size);
+ 		test_fault_overflow(fd, page_size, total_size);
++		test_mbind(fd, page_size, total_size);
++		test_numa_allocation(fd, page_size, total_size);
+ 	} else {
+ 		test_mmap_not_supported(fd, page_size, total_size);
+ 	}
 -- 
 2.43.0
 
