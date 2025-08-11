@@ -2,115 +2,144 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 381F1C87FDA
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 07:00:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 10AA6C87FDA
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 07:09:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B3BE36B0112; Mon, 11 Aug 2025 03:00:58 -0400 (EDT)
+	id 77E8B6B00C3; Mon, 11 Aug 2025 03:09:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B13616B0113; Mon, 11 Aug 2025 03:00:58 -0400 (EDT)
+	id 72FBB6B00C8; Mon, 11 Aug 2025 03:09:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A01F16B0114; Mon, 11 Aug 2025 03:00:58 -0400 (EDT)
+	id 645916B00CD; Mon, 11 Aug 2025 03:09:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F46C6B0112
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 03:00:58 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4B83911717B
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 07:00:58 +0000 (UTC)
-X-FDA: 83763579396.13.00AC52D
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 6283E40013
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 07:00:56 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b="DQ/BexqC";
-	dmarc=pass (policy=none) header.from=linaro.org;
-	spf=pass (imf04.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.44 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754895656; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 569A66B00C3
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 03:09:43 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E2B4416069A
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 07:09:42 +0000 (UTC)
+X-FDA: 83763601404.08.387F581
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id BA88F2000C
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 07:09:40 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jSgMoSnb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754896180; a=rsa-sha256;
 	cv=none;
-	b=Pn3zu8fZ7gMq4B9IR2nUzi19bgf28/BKR9kP4s8TTslHSB/1Mw+9JPTcW34meJX32VGse8
-	p/pa0bM5kgNaDuNvzDl2X/MtAt5qzkR0juOiIywGWiePoXaVqiwWNNt7uBZCPEyGBz4+bR
-	I7OBL+CDZiebd+3IWuXa4TUyLRSZR3k=
+	b=x/R+vMNgbDlcMOac4PWXByqmlYLVpaA7Oa6QyO2drkPaXvW2ZdAl9GvIKFZwtijVAMpeyA
+	AqTCYi83k1a+MxBtAA24A4uMNd1KiZVW8cWQxoMCtevIvs16uymU0mLx5av5ayH+QG/ZN9
+	uD8VPc4JRwb8h8huHS2DiLrGtpipJ2k=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b="DQ/BexqC";
-	dmarc=pass (policy=none) header.from=linaro.org;
-	spf=pass (imf04.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.44 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jSgMoSnb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754895656;
+	s=arc-20220608; t=1754896180;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=/hwWzDFSbMSy9EZ6eh9Z+w3E0hJBaTZziN3cHZhQKeU=;
-	b=oIVCspj3MTBQSM9/GEQkhmzEeKDxR8hJ7bpoh/QyXGjUES29kW+SUQAltIasv4qeccChKu
-	w5PlkDQ7j072HSoNj0sCUNTBDhPxg5enk+5yM3QgM7nOxUL8m8p7L6SvXrav652yvnl6O2
-	uSJHE+qJnZeEXrmu1FjNc3vCeTfVKT0=
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-459e794b331so23793435e9.3
-        for <linux-mm@kvack.org>; Mon, 11 Aug 2025 00:00:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1754895655; x=1755500455; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/hwWzDFSbMSy9EZ6eh9Z+w3E0hJBaTZziN3cHZhQKeU=;
-        b=DQ/BexqCJfPIrWWkEVUvttVgS+xyYV78gdG+Z/7B0yLIVzD+KT6H+XSYiM3YxcBAsi
-         HtBgIcHRjkISRRVOrcfa3sl7laos9BgqfgNV49DLdE3grcxEzKfxVhCXtPiStQVQsoRn
-         IFUMUV3nb1bJUPeh5VTIxpbo4mFIiw+4o4C+UY37uH3g3ejTTU8K5HtBODvbfEmmcsSg
-         VYaMv2vPCZkdDFcfpriwZmwNDNvhqqTSdoZih/tXROTRc/3rZFVuL1AuKA01anVoeSkb
-         7FLbrTALZfO2qEm4Z+C1+8kzCPTLcCCpqjyYoSKxLBc8Y87WHO2XvcxiHfhq45cH5mnM
-         /S6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754895655; x=1755500455;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/hwWzDFSbMSy9EZ6eh9Z+w3E0hJBaTZziN3cHZhQKeU=;
-        b=GGEKH0vOSR3e7a/g6HqvETjsE9IxNHKjkt5DV3tnQfK16x8uGYyN3mTvfLqvCl+QH5
-         Liv0AIYBgxvE/QjTIV3qdS30EX93UW4Px+/MkNjIGmMAjQbGU47O04KssrrZzWozpirM
-         ve6esRVzCHJ/tYBF1ocUw8+kSwIPoIhLsOekzIj5S4wnHFZaD9dX68bgwJTo1jECy1Gf
-         NmS/t3VJoU9k0W+WQOaR56Q+fuYi9+Phu7xMfskIHcDfnQyDZ80uAhqRUBB5HzIvGHEo
-         TQ1qgpgrbHcutkYrYO8j/TNoS4EuLOT9V3F+czJAZwAImC38Q6zNBa83t/H8UIXMm6GL
-         998A==
-X-Forwarded-Encrypted: i=1; AJvYcCVcRpnVGYUJ8TSnfQr2cA78iMLIS9kXe8AOeDKRqasazRSZ00JNczesShXcJUyZVAVMEs5xgTXTyg==@kvack.org
-X-Gm-Message-State: AOJu0YxTZMxciYkUOXTGdW6r4cUQ+E4eZzKpxb8qnLSKe/tNNogowqm2
-	F0rV2wHSCj4lbqYkFWvg+LVMan7cWjWa/lDiccQ/PwhYAjRUpsJf0tR67/quB2moBc8=
-X-Gm-Gg: ASbGncv37x8fCed/vee1jD/ybNJ2KhvqBR2XCgPcV9ReBZqA55KBJDpyDtOSsSE6Ai/
-	uyAcaOP0B/YpUfYmsvG04Vo5V8RKm6s3sjY0UEnXHPnQi3S18bf3jv9pG5w75qT/UqVXbuHJfge
-	7yGXOeSu2ATkFMElGlA1ZPTYbwF5DI/kNdrl4H5jhcf+zY9x8Bx/XhRMM72Ts4nEO4OlsznQgZ0
-	v8XJSnhr2UycPUZ2AJsQNfXXlQI6w95NCQY/THLL78fmrhJurPH98hr8r5TpxQovLzK9Es7wgj2
-	/p/hYzfWmkuMl3bxm4LBwHdxaUsmF62GWQ1ZiU/QnEzy5ogOXwx1zjVw7/luoYUtRVzfnvCs/BH
-	aGSO3JAhmP99GPNqyzm2zwxenhPciV0xKSbP0vw==
-X-Google-Smtp-Source: AGHT+IHRURi+b8G7dagGCHr+89qFgRkhvYaQGSCmp70FV+PfG/xE/6yTSPpoTAWNO1orRt9InmbSaA==
-X-Received: by 2002:a05:6000:40ce:b0:3b7:c703:ce4 with SMTP id ffacd0b85a97d-3b900b6aad8mr8041910f8f.59.1754895654564;
-        Mon, 11 Aug 2025 00:00:54 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-459dc900606sm305322985e9.15.2025.08.11.00.00.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Aug 2025 00:00:53 -0700 (PDT)
-Date: Mon, 11 Aug 2025 10:00:50 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: oe-kbuild@lists.linux.dev, Bijan Tabatabai <bijan311@gmail.com>,
-	damon@lists.linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev, sj@kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>, corbet@lwn.net,
-	Bijan Tabatabai <bijantabatab@micron.com>
-Subject: Re: [PATCH 2/5] mm/damon/sysfs: Implement a command to only commit
- scheme dests
-Message-ID: <202508101330.XRQqvfiN-lkp@intel.com>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nYGW20HOdxmPiEoqhRtBhvf9IFz/tFlA/9VUt4ajYtM=;
+	b=ilgfIbGE3ghcDjl5xQcGRyHlI2g707G7xyhS22L8GThcJPDae2B6Ci6bGMNZhRdvDzosGR
+	WVtaAsy9B01dkwJ2BppbLlW9TsjiRZ7LOUlsfvGpmot7MVs64qe9tOkPAajVRFDIMQAfLy
+	X8xVhmq4X9xHyTkTjfdSIzy0akyRr+I=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5942A45D44;
+	Mon, 11 Aug 2025 07:09:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED5EC4CEF6;
+	Mon, 11 Aug 2025 07:09:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754896179;
+	bh=7z//XUu8T6I5PWiVUYkgzX56lekKtAuXc9LA1vkAIVo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jSgMoSnbXdeC3hTmMa5rxqnU+TWuL44ft9yhN6jzlYEmA7jwdSGYiQnLF6BFOYKsr
+	 5R/fr9QjyFbzxrlBrIv2gCok7gC8JkgAppw6IXD/F87bUVX5sLc2JR+i0hiKjHB/eg
+	 cfP9T2kKrEeWB53CBUEIYKgIVeFsIdkopEWkV1obWsWDyqrTyQ0SMRBRBszN1XGf6p
+	 a/x4EjKoAuphTOp/i4iZkdRFQSga+eMCJZDAvNlPeoiQXnyWXFuLlWT0mOaSgKnz9o
+	 oU2KCRXlBAKJHbtJRS6w71U3Eb8UeQ9PSpr4qZWggtwXe60/vHe8hYUg6SLwi5/Qqk
+	 j0QU/Hr3uRHzA==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 61606F40068;
+	Mon, 11 Aug 2025 03:09:37 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Mon, 11 Aug 2025 03:09:37 -0400
+X-ME-Sender: <xms:MZeZaAKhv47jBdQVbZBUzCxovzHYH_0rrP55uhLzR3Dqu-Hy8rtmog>
+    <xme:MZeZaDm4-FA4AmkgD2YQQA1xH-F3sHPexYTS35ALEVFWRqWFjvQXtfar8y28gGpiS
+    cXt0_A1OFnzm3zDBmM>
+X-ME-Received: <xmr:MZeZaM-CyM-RA_V15WzO_HJwVVjXwS5bJQX1q813TA-nJyYUmhcLGBheIsW3>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddufedukeduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepheeikeeuveduheevtddvffekhfeufefhvedtudehheektdfhtdehjeevleeuffeg
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepkedtpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehhrghrrhihrdihohhosehorhgrtghlvgdrtghomhdprhgtphhtthhopeguvghnnh
+    hisheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhu
+    nhgurghtihhonhdrohhrghdprhgtphhtthhopehrhigrsghinhhinhdrrgdrrgesghhmrg
+    hilhdrtghomhdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtphhtthho
+    pegsphesrghlihgvnhekrdguvgdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvg
+    grugdrohhrghdprhgtphhtthhopehluhhtoheskhgvrhhnvghlrdhorhhgpdhrtghpthht
+    ohepthhglhigsehlihhnuhhtrhhonhhigidruggv
+X-ME-Proxy: <xmx:MZeZaGZbB5w_M42lUmZvSVfIC5VjvScMKskxvkLxG0mVV0m3V7kKAw>
+    <xmx:MZeZaBc00jAWL5dtGe5myKZzMdQ7PLHS6rajsmRqWQuvhtwgycMP1g>
+    <xmx:MZeZaGGN3-BRzRyZ3VTcErLpqp_9MdvkA37zFIuvtc29YHSY7cqBRg>
+    <xmx:MZeZaEPqxrTYCm-gaYlP41qi_-NhCIWpAR2UzkynZnOmQu5E2MBG4Q>
+    <xmx:MZeZaO4ZV2QSxZoQAn7qeAHqpWYLVxkPnxGf8XyRRwOEAG9Iw4NuNkCY>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 11 Aug 2025 03:09:36 -0400 (EDT)
+Date: Mon, 11 Aug 2025 07:46:13 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Dennis Zhou <dennis@kernel.org>,
+ 	Andrew Morton <akpm@linux-foundation.org>,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>, x86@kernel.org,
+ 	Borislav Petkov <bp@alien8.de>, Peter Zijlstra <peterz@infradead.org>,
+ 	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ 	Ingo Molnar <mingo@redhat.com>, Tejun Heo <tj@kernel.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ 	Dave Hansen <dave.hansen@linux.intel.com>,
+ Christoph Lameter <cl@gentwo.org>, 	David Hildenbrand <david@redhat.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>,
+ 	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, kasan-dev@googlegroups.com,
+ 	Mike Rapoport <rppt@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+ linux-kernel@vger.kernel.org, 	Dmitry Vyukov <dvyukov@google.com>,
+ Alexander Potapenko <glider@google.com>,
+ 	Vlastimil Babka <vbabka@suse.cz>,
+ Suren Baghdasaryan <surenb@google.com>, 	Thomas Huth <thuth@redhat.com>,
+ John Hubbard <jhubbard@nvidia.com>,
+ 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Michal Hocko <mhocko@suse.com>,
+ 	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org,
+ Oscar Salvador <osalvador@suse.de>, 	Jane Chu <jane.chu@oracle.com>,
+ Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
+ 	"Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Joerg Roedel <joro@8bytes.org>, 	Alistair Popple <apopple@nvidia.com>,
+ Joao Martins <joao.m.martins@oracle.com>, 	linux-arch@vger.kernel.org
+Subject: Re: [PATCH V4 mm-hotfixes 0/3] mm, x86: fix crash due to missing
+ page table sync and make it harder to miss
+Message-ID: <qsprh2qiisldfsielpx6inuiw3rrh5owr3urin7maxvwtlhipz@zbioc6hgqe3r>
+References: <20250811053420.10721-1-harry.yoo@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250805162022.4920-3-bijan311@gmail.com>
-X-Stat-Signature: zzwukukzmyxnhoci9kxafg1deyb86inr
+In-Reply-To: <20250811053420.10721-1-harry.yoo@oracle.com>
+X-Stat-Signature: zimq5qwjsgh8c5d9eyh9kca6fmbioojt
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6283E40013
+X-Rspamd-Queue-Id: BA88F2000C
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1754895656-29598
-X-HE-Meta: U2FsdGVkX1/HSYNaSahZ5W6Xl4dTWJjSZAh8LxMrvRJfaj0brztA37aLIPiAvL/f8X4v++fF6ifYw3Vs5fDTdy2nQX8UJTQWfkw1qnEi5CG1aarUSwouGzRCKXK8ICK1mLfcCh8wD00jZz1Qq/60xIrggRpE8czwQuhB5oVsptimDuK62J2pu+sxUvWAxToZK+6WJIztUftecaXZ7QZP+OYsJsZEQkFxVhN4zHXuNp64xkESz0ZL7kPKUq7uz1YRoVANyTPUtFtjgRvcA9gaDUidjWG36GZfLS5JSSZcbSBudCD8eI7TOB4/BIh9UI3tKojpRATeyThUPCnpOP1DApBYgZkLasTTBNkTtuplPHw9aKZCfxySC32BwFN45FngP9YmnEWDf8NNpCHSN8EXnxMu+k6NxaAqQU9nhsmpP+ppXO5rJe/Gt3g33+4OuEnkyRFnF8oFls6q5rSyzgItH2RWLlVH9qx23i9bVaTIbU130vXPcpMrGXnHkwYC/J1BTaXslzPXVCjpD2xrMGGAVKxGyKzgCnLABQOy4Ew/+uemxLmy4jnRDxz+cWuVQmvb+xRNcmVQrX9v9hMuxkQF1pgvpZ4yXXm67KWjiw+tQ10DaRWPPFw5Z1F/EelAFDoGoACx/yxrlg1qCBb1qa/IpqPtjJjMcn7FINMbt1H6KrWRIaaObDT3jrZ5ioHRL+qG56su0NANRonGYDF8Jg+SL0CHSCkdVEVVKmbSR1k5HJirfsb54fK/l3d8wQOgQqeGMb82nWd/8Zt9bEAulwe1xyA3R485Kr8Ho7ef8rlepc0pxZiLuVHIhYKaAFkdYUxk69LdpvOloeOuFgFgWzfMxtOQBQyTnNNYt2WKh+9JOqBVr3vVnJpWAXoiuDzFDWNFwZ7h7pE+0mA05foKwPbwj8MIZs9mkKmmX09EwtwpeDYSR0HLaiuazX+PDHFPockzXB0Vu12xHBlWa9Drfy8
- Evn+sDF3
- q5axxijm4vEovzjO4kGDcWz+Y12DWRNaxjUWvWSfmje3ScLL5jUkidAtQLSS7tIrGluEsjwbOfZgx7ejkNdbVf2co6xaKLhE+9e5pcyF5Pc8+VXkNxiMb5iQ5QBPa9Sv7OVgOqcoKSuDbdKhB1e6E12L6789OvQlBpGXsY5wzsMdDGSStgQEgQimpA46k2SC+6m/THLgWFYOx8wPFsM/VTKe53QJ1VU+B3OLka64oyirF6PsMxplBUNhL5Ri5q6BBSe0akwq61LbkBO6VKYnHM1soStcH20qiU7g8GnbzVt1+EHr8mot7j3F8H/TcsSg5/tK7Wi2t/2gIg7Xc5cfhyME1kiLEW3Flxm17E7YCVC6XsD8U4u48rCCkNXTvLExiy6W9Vg5zvwewADvZl7D1fEtb9lUXZiNccoVSCNkGpvrDzY5bZB9xN4Nq7FKentRtqlAC+gr6mXwfieysbXNV1LzZpiFm9VxLIdMsTzZfPwqAGuM=
+X-HE-Tag: 1754896180-258186
+X-HE-Meta: U2FsdGVkX181RxeURczi1dZpjlMt4BueI5uN1pZA782QNVIZuoOLRhW5GflW+3uPhHb70MLZI5NEXx9NVeQ6czqq8r/lSUHHgWpdJeQumnjEh4bHFXgqlL1bHDIgPJsGL7cKFrazJsYgWdXAbY2sTy25UEedybotJ+y5dGJZfWgFYraZ12ufk5pZAu1I4gFnDr9SMdndiZf4bDxhc+EMOVshYlmqG/s6dcBgooS9KVV0xk6PTYE4BYnYlJHsWVlOb8dralBCBYrleAJacNmtzDE+DQFO+J6reuaqqZUDMM0S/b6ioGSoU/bnpyR/WNFXLXgDWBDe/wameeja08NIKvkXWop3LuhNx335F+smXZB68LOy5ebNNaDxuiXrNeHXKhEOIgySpUljKyHcSfOMjrZE8+eqx7tbdMQL9cBjPWeMIHHwjLiTXJJlS4I3GQv4RbFolCyIzYRHEPP74+oCWLE6ljSJ2A/EKxoMun22xTDHR4xIgELTSCpkoSxQ0fB0Nd+eH85biq5OM1hhs926XNfJnyhQecYjyZM7cv+pvs1lP4fwkAJZm6LlJye/h5RLzmj4ZJGJmEBQ50hc0wnJFuxxYHTDdKcTCupdaa4My/Frv+JeAWhtsy6mVdc2QoFuBghbXChcT59whXdnWFoixvmRlrpGV7W6h+9U6Cd/soY8/x+5yffEOSp+EhQ6QYPZhef75fCeMF++ekbvrA4XredvOKeb2fHSv4W6Fpe9cxXc7hqyqT97HdLcuAE5jQyh9OATYu0040z0+0Wu1LJwzMm6ulqr/tVyoVhlGrJgjH4QlkGe6kc+LkJlwR0XNLNBqlLy9lhonOsLDcTrPgRhpI1WQ820glh3mxUrBdDyAvLx+RPfNRmXSS6BSuPNCe7ldnwC/2ovndBAe4VYqUMDJBdX4q5wMzH7EhE5vdapcUbIgcyuz4R0qA7AM5kiN8YTroqisqZTJRhvyUs5Gvs
+ JH/nsS4Z
+ CVQRO2hM1z66ldMF3TYiLL4QEQqxUIRB9baZ2ivSY9QerD5UR/cVdeVU29O1VdmJZ9F9rIAJNJ/XcBK9xmg+MxHyn+Mm+FUDSaZoKkW933SMKRmXjQ1N/fUb78/y07qik/eoavcBL34LrQKmctAp6HBuGrIz2K0RINiRpGc2isTP3MOpBnSEQImmIpefJgVdmtNN0oq5OaHGVXn40Y5OzTxHz71o+4DJbQA2Yu0f+7PIZNBOQptx1sFEfkFuOYipaU/OB0qZodZW1XvnRzV0WOkYlW2tuyeb9By5vcYYCu67dpBicTPj6T/1sR14wFbOoWI4VJf47qe8jFRZ98snD98J2p9IoDTHR3NHrHo59NJUV4RqUwv97ar/XhUzGwB2BeKO0izJRsYJy9NZJkC5SRrObHQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,62 +148,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Bijan,
+On Mon, Aug 11, 2025 at 02:34:17PM +0900, Harry Yoo wrote:
+> # The solution: Make page table sync more code robust and harder to miss
+> 
+> To address this, Dave Hansen suggested [3] [4] introducing
+> {pgd,p4d}_populate_kernel() for updating kernel portion
+> of the page tables and allow each architecture to explicitly perform
+> synchronization when installing top-level entries. With this approach,
+> we no longer need to worry about missing the sync step, reducing the risk
+> of future regressions.
 
-kernel test robot noticed the following build warnings:
+Looks sane:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Bijan-Tabatabai/mm-damon-core-Add-damos_destroy_dests/20250806-120845
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20250805162022.4920-3-bijan311%40gmail.com
-patch subject: [PATCH 2/5] mm/damon/sysfs: Implement a command to only commit scheme dests
-config: microblaze-randconfig-r072-20250810 (https://download.01.org/0day-ci/archive/20250810/202508101330.XRQqvfiN-lkp@intel.com/config)
-compiler: microblaze-linux-gcc (GCC) 8.5.0
+Acked-by: Kiryl Shutsemau <kas@kernel.org>
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-| Closes: https://lore.kernel.org/r/202508101330.XRQqvfiN-lkp@intel.com/
+> The new interface reuses existing ARCH_PAGE_TABLE_SYNC_MASK,
+> PGTBL_P*D_MODIFIED and arch_sync_kernel_mappings() facility used by
+> vmalloc and ioremap to synchronize page tables.
+> 
+> pgd_populate_kernel() looks like this:
+> static inline void pgd_populate_kernel(unsigned long addr, pgd_t *pgd,
+>                                        p4d_t *p4d)
+> {
+>         pgd_populate(&init_mm, pgd, p4d);
+>         if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_PGD_MODIFIED)
+>                 arch_sync_kernel_mappings(addr, addr);
+> }
+> 
+> It is worth noting that vmalloc() and apply_to_range() carefully
+> synchronizes page tables by calling p*d_alloc_track() and
+> arch_sync_kernel_mappings(), and thus they are not affected by
+> this patch series.
 
-smatch warnings:
-mm/damon/sysfs-schemes.c:2605 damos_sysfs_set_schemes_dests() warn: iterator 'i' not incremented
-
-vim +/i +2605 mm/damon/sysfs-schemes.c
-
-8014d822c9939b Bijan Tabatabai 2025-08-05  2601  int damos_sysfs_set_schemes_dests(struct damon_sysfs_schemes *sysfs_schemes,
-8014d822c9939b Bijan Tabatabai 2025-08-05  2602  		struct damon_ctx *ctx)
-8014d822c9939b Bijan Tabatabai 2025-08-05  2603  {
-8014d822c9939b Bijan Tabatabai 2025-08-05  2604  	struct damos *scheme;
-8014d822c9939b Bijan Tabatabai 2025-08-05 @2605  	int i = 0;
-8014d822c9939b Bijan Tabatabai 2025-08-05  2606  
-8014d822c9939b Bijan Tabatabai 2025-08-05  2607  	damon_for_each_scheme(scheme, ctx) {
-8014d822c9939b Bijan Tabatabai 2025-08-05  2608  		struct damos_sysfs_dests *sysfs_dests;
-8014d822c9939b Bijan Tabatabai 2025-08-05  2609  		struct damos_migrate_dests dests = {};
-8014d822c9939b Bijan Tabatabai 2025-08-05  2610  		int err;
-8014d822c9939b Bijan Tabatabai 2025-08-05  2611  
-8014d822c9939b Bijan Tabatabai 2025-08-05  2612  		/* user could have removed the scheme sysfs dir */
-8014d822c9939b Bijan Tabatabai 2025-08-05  2613  		if (i >= sysfs_schemes->nr)
-
-i is always zero.
-
-8014d822c9939b Bijan Tabatabai 2025-08-05  2614  			break;
-8014d822c9939b Bijan Tabatabai 2025-08-05  2615  
-8014d822c9939b Bijan Tabatabai 2025-08-05  2616  		sysfs_dests = sysfs_schemes->schemes_arr[i]->dests;
-8014d822c9939b Bijan Tabatabai 2025-08-05  2617  		err = damos_sysfs_add_migrate_dest(&dests, sysfs_dests);
-8014d822c9939b Bijan Tabatabai 2025-08-05  2618  		if (err) {
-8014d822c9939b Bijan Tabatabai 2025-08-05  2619  			damos_destroy_dests(&dests);
-8014d822c9939b Bijan Tabatabai 2025-08-05  2620  			return err;
-8014d822c9939b Bijan Tabatabai 2025-08-05  2621  		}
-8014d822c9939b Bijan Tabatabai 2025-08-05  2622  
-8014d822c9939b Bijan Tabatabai 2025-08-05  2623  		damos_destroy_dests(&scheme->migrate_dests);
-8014d822c9939b Bijan Tabatabai 2025-08-05  2624  		scheme->migrate_dests = dests;
-8014d822c9939b Bijan Tabatabai 2025-08-05  2625  	}
-8014d822c9939b Bijan Tabatabai 2025-08-05  2626  
-8014d822c9939b Bijan Tabatabai 2025-08-05  2627  	return 0;
-8014d822c9939b Bijan Tabatabai 2025-08-05  2628  }
+Well, except ARCH_PAGE_TABLE_SYNC_MASK is not defined on x86-64 until
+now. So I think it is affected.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+Kiryl Shutsemau / Kirill A. Shutemov
 
