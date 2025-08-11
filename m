@@ -2,252 +2,120 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B6D0DCA0EC0
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 09:11:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CE8F6C87FD2
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 09:14:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 537FE8E0021; Mon, 11 Aug 2025 05:11:44 -0400 (EDT)
+	id 6C29E6B00F2; Mon, 11 Aug 2025 05:14:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4EF7E8E000A; Mon, 11 Aug 2025 05:11:44 -0400 (EDT)
+	id 6733C6B00F3; Mon, 11 Aug 2025 05:14:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 361B08E0021; Mon, 11 Aug 2025 05:11:44 -0400 (EDT)
+	id 588DA6B00F4; Mon, 11 Aug 2025 05:14:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 206358E000A
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 05:11:44 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E726E14073A
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:11:43 +0000 (UTC)
-X-FDA: 83763908886.12.B4E6115
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 67187180007
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:11:40 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=rMBjP9L8;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="QKBOa/Nj";
-	spf=pass (imf06.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754903500;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 43FBF6B00F2
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 05:14:05 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EF3E21DD75F
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:14:04 +0000 (UTC)
+X-FDA: 83763914808.27.5CC0E45
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 43F0E140002
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:14:00 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	spf=pass (imf23.hostedemail.com: domain of zhangzihuan@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangzihuan@kylinos.cn
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754903642;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GazEp2Unr/pH4TG/HiBdoLnCaVnKBWnQUTOARKFYIBY=;
-	b=yfTOm9hFQW0G/Yf5GL+Ft2K6KHDfub9VlRRelnp3/gTR5rOKvE+aCfmZJGLLJA4DPkC4/L
-	XrKzD6tcrCLK0tqvz6Uw0hx1PDP+Vmm3vbEb6sI9pqN2lw9fF9VvpVvGYPYgtg1CSTzGfh
-	kpGjtx4OCHPyrkY5d5+v2HGL/jbL4gA=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754903500; a=rsa-sha256;
-	cv=pass;
-	b=5L0nMEaAwOvAsTyMZ1GNHZ1OtAd3vjeBK0jHXxRLcPc5oBjg+L7M6/TBBvvv4mKR+CM8V3
-	d3NrOw88vbIhHBN8zDA6QksXWKTrXjrL75z80+c1XpdOlg9xv+28DV2qXCTNfsze06xeMv
-	3EjPOCYilKoh4OVfCKRQETHsxphXSuA=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=rMBjP9L8;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="QKBOa/Nj";
-	spf=pass (imf06.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57B5uA7v015015;
-	Mon, 11 Aug 2025 09:11:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=GazEp2Unr/pH4TG/Hi
-	BdoLnCaVnKBWnQUTOARKFYIBY=; b=rMBjP9L83S+i7ADXcNjd5oqQDxpXZl6kHt
-	8YeK762mYeGEHFmRfkPwyi4dxY9+VSSD3+ZkDu/+ISkL4tQFNZlTWmV1k82pbK62
-	Pj5dtSKZQUitmBBVEvTenT+xj1SrUROPph6tCHr1MKa0eIMr2LetQ81zNkhVZRWP
-	Fm1iHE0HvbfDa8/2W7C0vsAXCzrBPoOCMpaptdhRFA8NFCgg5UAOM1RC1g7ldKLz
-	J4fW22kY1Tdph1I5dBB4wQFHbGN4Q42wKa6TW+xNhzH4X80h/ZVnwykT726V8Slp
-	dgL4n0M95RK/rYiWp2cQY+onTU4Jc0S/fHg5O5Xl0+jrdoktxroA==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48dw44t3hy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 11 Aug 2025 09:11:14 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57B8d17F006475;
-	Mon, 11 Aug 2025 09:11:13 GMT
-Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11on2043.outbound.protection.outlook.com [40.107.220.43])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 48dvs85g2u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 11 Aug 2025 09:11:13 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gaKIPG7EG89KL6J+gf5ldJhzsjWuGdxaIrfq0vTWBf0sgZVUFdN0brUb5Vl6vSV1vXQ9P+5+ygWAIzAGXXkhTuVlrcZc+UiFb49vmyQk6fuVQ9xmxI8THVFppYIVLFLDsicw4KjLVwYaj0TvGhA02yYtu4YMLFYmlxpvbwXhh3t7DbdIIMInU4q961bnt2f6tah8g9zAIe7DanEvGEDO89XmcmM5vfEC1FSSA+gKfXJRiPFEJIT082r6MuT8YqcbayOrpNxsCEfRkYDnkr+GD8YUqxsTudHa1jXGSpx2CXlwXu4kOetYarNOCN5LchkwD3yoL9xj8NPZmcj4lMK6TQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GazEp2Unr/pH4TG/HiBdoLnCaVnKBWnQUTOARKFYIBY=;
- b=rpfL+6V0HgyRj66Or51H906ms9XvF3FN19f9ZrMZN+gruZN8EWrRtzJdZ7tOSDiBQGYz7BIBJjLxvfh8tO0+WTqiHzDdADR9CxaGYAYyqgQcHw4JKmpq0GkiVFrF/SWCpE2DrEc1n5S6Z0EewNK6rTZ2MXHOOCX+YMEUiczyUxwywmGH6uSsBuTi46OIFZwuY9HmoCqx16p16FYQjvjDP1CC708Fzw8fjFSVuF7TUDmxpNUyMmp6v2EgmbU/kTeeziouNloNFmlDe17qrqlXbZYVdLp09ATvvpw8pGjdvJzfoUy57VZzesTxCnMtPWzY8VXT+YOTB+oUpZsXruB1oA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GazEp2Unr/pH4TG/HiBdoLnCaVnKBWnQUTOARKFYIBY=;
- b=QKBOa/NjWWULoHCHSqdCugTEop0Vc5kYXPsBsa5wSDhaUdAA/v43qqNnTs/pDFYRdTBgi+onVkr2R+coXVBoThYUoqYRNVM4rE10leZjSFP/K2Xsb5lhe9S084qBDWObP9uTijxQLo8NXJJRVVXayvV32ZhXEB0ki/QOoNPG0KM=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by DM6PR10MB4281.namprd10.prod.outlook.com (2603:10b6:5:216::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.18; Mon, 11 Aug
- 2025 09:11:10 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9009.018; Mon, 11 Aug 2025
- 09:11:10 +0000
-Date: Mon, 11 Aug 2025 10:10:58 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Dennis Zhou <dennis@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>, x86@kernel.org,
-        Borislav Petkov <bp@alien8.de>, Peter Zijlstra <peterz@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Tejun Heo <tj@kernel.org>, Uladzislau Rezki <urezki@gmail.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Christoph Lameter <cl@gentwo.org>,
-        David Hildenbrand <david@redhat.com>,
-        Andrey Konovalov <andreyknvl@gmail.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, kasan-dev@googlegroups.com,
-        Mike Rapoport <rppt@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-        linux-kernel@vger.kernel.org, Dmitry Vyukov <dvyukov@google.com>,
-        Alexander Potapenko <glider@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Suren Baghdasaryan <surenb@google.com>, Thomas Huth <thuth@redhat.com>,
-        John Hubbard <jhubbard@nvidia.com>, Michal Hocko <mhocko@suse.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org,
-        "Kirill A. Shutemov" <kas@kernel.org>,
-        Oscar Salvador <osalvador@suse.de>, Jane Chu <jane.chu@oracle.com>,
-        Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
-        "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
-        Joerg Roedel <joro@8bytes.org>, Alistair Popple <apopple@nvidia.com>,
-        Joao Martins <joao.m.martins@oracle.com>, linux-arch@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH V4 mm-hotfixes 2/3] mm: introduce and use
- {pgd,p4d}_populate_kernel()
-Message-ID: <1e8ca159-bf4a-47ab-b965-c7e30ad51b28@lucifer.local>
-References: <20250811053420.10721-1-harry.yoo@oracle.com>
- <20250811053420.10721-3-harry.yoo@oracle.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250811053420.10721-3-harry.yoo@oracle.com>
-X-ClientProxiedBy: MM0P280CA0043.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:190:b::14) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FiDXReHGJgObCuImuu0XOLUbBb/9qpylK8gKxAyO7H0=;
+	b=5vGuBPDT+QWoZGPxAq4V34tP4EDLbdkR71g5ut9M5EyKyDL7L8sZgwZ51QVjwE9EBsql2y
+	ekLngvO3ehq+lhPWxA9Lq/8WtyWX85ZY9d59kclhh1pqJ0k892+BP3MNTLDBapUup7emdV
+	frcRd9vvbzThRBr67kAC2iQuJDUbI/o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754903643; a=rsa-sha256;
+	cv=none;
+	b=Yy8jS6oajX0kzm8PB78dZuHo+n/zFwYGy5+tRMrSyYIoi4+k/bu3TSK8eegg9HUsxzDx+f
+	cnaFno8TfFOSKGfvSYPFBTwIvaUo6mUUmuUYoLUgpLY7rWW0rRXjH4tb3ajAO4NoVI8Tir
+	ONnOxlTvR3tCvX0/GvpCdttu8KeJLHM=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of zhangzihuan@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangzihuan@kylinos.cn
+X-UUID: 7f6c73fe769311f0b29709d653e92f7d-20250811
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:3ba7c0db-18e1-43fc-a896-13f729196999,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:dbc7cdf834544e741f770fa4c9a5deb7,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
+	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 1,FCT|NGT
+X-CID-BAS: 1,FCT|NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 7f6c73fe769311f0b29709d653e92f7d-20250811
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1790700532; Mon, 11 Aug 2025 17:13:51 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id 76C64E00901E;
+	Mon, 11 Aug 2025 17:13:51 +0800 (CST)
+X-ns-mid: postfix-6899B44F-304809903
+Received: from [172.25.120.24] (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 4529AE008FED;
+	Mon, 11 Aug 2025 17:13:44 +0800 (CST)
+Message-ID: <09df0911-9421-40af-8296-de1383be1c58@kylinos.cn>
+Date: Mon, 11 Aug 2025 17:13:43 +0800
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|DM6PR10MB4281:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3ac84b8f-45b0-4999-4e85-08ddd8b70317
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Cgv7Fh3/Cth5fiAUOPYCZtp/WnJ+dtFd0GVMP8cjp8qCi02MSq62OEWpiXnc?=
- =?us-ascii?Q?tVh8BOckqT7I81b0lIjI/DhWxV6jMrY5BdSeHXjbzvuDOkDB+3hkuj3wKmHg?=
- =?us-ascii?Q?iX/aQZrnNRAKMxyjzqsr+MKJUZNruZpt7DQICYhgJr0z0fZ3HHPNvHHlJltK?=
- =?us-ascii?Q?84fx15HxJxbe9XnLp5chREHciJ0zRj1lbH46JBe0afjnth2idjptRibVnxe3?=
- =?us-ascii?Q?8M018bW7HvwaAQTmNiboHO6OAXVBCG2rwMy0nFS7bj+p3lZs8yxSGlMULnRi?=
- =?us-ascii?Q?PQFCn/N04rSk4mbSmXfXZI7pdf6epLkPwF+gEy8WGA+vN1vcXuXKBOySI6gT?=
- =?us-ascii?Q?+AnZaj9yTDAeURZIztnKwhD2jP6EXDrdkU8V8GdhJAVd/DgczW1yLw+ODjiH?=
- =?us-ascii?Q?CevLEuiBX09lcqNgnuTy0D+2aSbiLo885oVmjB9AcFhJScjVocOa1E4ddxo+?=
- =?us-ascii?Q?T/8mVKOdIQHVnqwi+93fJXYBJvWk8KoBrGtnswkeHDryCJC3Q3nxx+Txf3Rv?=
- =?us-ascii?Q?fLe5VTtQaqyGcuisaym4uG4qabzJMChMk2ASrcD7XEBtnVrXYByfHPLUxINh?=
- =?us-ascii?Q?yJkzaLzaB67tye76GdAynzKtRATDIxGlNVw0gh19/YGpMGl3k7Wq+mZTjpq9?=
- =?us-ascii?Q?pyAMKdPRG8gtt8KVRGX268n0ckR+3HQnD9C2QnegrXysHSJ/mpV18hwhUPb6?=
- =?us-ascii?Q?mTHqVOVzl8ndglRYpBCMg8ATzk2+qYjFXeDV3IbNMhE0iOOrQVnm2evpBt1i?=
- =?us-ascii?Q?y9MRx6SlCnEDR7lQ/g9n8rQ2zc2sJ4sYkareCNT930f9nmaObXHlUs/37UK0?=
- =?us-ascii?Q?rrwBdv3dOt9yKaFYdJCjLBAkMgQqOLSfLfaRXVUz+hNAHBJx4TlJXMQAlpzt?=
- =?us-ascii?Q?Eu58mgcaZ0AcMEkwi2xkpTQgpq6cDumhbEmnij2OItszcuADd2yKFSESQrf2?=
- =?us-ascii?Q?b50vgwd9ESjv5UQIF6aVnxfPDwKdIZ5o+aX40tcjpAUQL6P98602ua1dhoGO?=
- =?us-ascii?Q?bjoWYeUO8ylpRlX/IGVIZn5kIoiS8skChS8RPf7kG4OORFrAOY2GjbzTF7wV?=
- =?us-ascii?Q?s+w2snxwxWZ1xZjG21XP+bgGw2Kx12j9XJj9G7BmdXrsfrlpXDqcUM2UG19x?=
- =?us-ascii?Q?wIx2LDz8BOXkZ7JKxEMypLTqsSElX1BFDUKh4QYKFCCSjGXffzGV9pXPrAL5?=
- =?us-ascii?Q?PCwrfUY54mLZ3yBtcBkrx1Mzn06g2WcPg2WZGKNcyPrtI/qzQbBfq75aPROi?=
- =?us-ascii?Q?/EN9tqTTI9qwuKQ4uLrBiYNgjCk99HxASWDE/5t1oVfphH8Tg6yLqjnYF/zL?=
- =?us-ascii?Q?iKOSvOtkOwUdM1bJpF/zRQebhglLtGuEwo6JZLSAfgCk3gGNBk4rpcG5losv?=
- =?us-ascii?Q?K0I45ZoY/PcVZNT6jv3EIEjhBUGjy68Er9sZb2QIw/UL/FltQzwuvAAGvfQk?=
- =?us-ascii?Q?yZWfI1aLXKc=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?YcQuPGzpZVaZdRM8TcnX2/yNTxO74sGMnHShF4M5O6E62sjO/slnw8XuZ28l?=
- =?us-ascii?Q?liTz29W7wzrtVj7g6Qdbl7d7Ja8t6Dz50CqyegnJA2g8LdTHGpLIv+xP6Q9J?=
- =?us-ascii?Q?6wnz8qNpG31Ngu2HqXgJleiDmuieIzzRsi5vJWZpBB6qt1oHJWONUpSoIUEk?=
- =?us-ascii?Q?fRIz55YPqQsq8JbYCj9zKheyOF9g4Oxq+MyhbIsRBVinNHFDY8ADL3wEiNnG?=
- =?us-ascii?Q?zQn62N1TY+Ra1DvCGNE+iJMjEd7MekxdaF2zxCFbWNrefOALPc1VfmAF8ElZ?=
- =?us-ascii?Q?7a4ORYclnPjmN6ovmVNUkptGyxROFW0atXF4EJaE4TqEFldlgwUrPsXE1xE9?=
- =?us-ascii?Q?lH9zW9m57DrVBgWeeH4FZ05j0sXJ0gKK+C2mvR9IcodUKaFfdXyDBhrP0ji5?=
- =?us-ascii?Q?zhyzUCokGuXCaP7Wwj7RWObBLa2GEIzVl1JI7+Cf5sseEWQtbJPPwoSECBcJ?=
- =?us-ascii?Q?qBiwci1D5k5KDuuvHSF1caOdEQ2IrCJi1xgUO/i8kPp42U5UjCjJ0yML49iF?=
- =?us-ascii?Q?BxWB4wmBEQFZNRz3kCm33ya5DHRQxvhK2FQxm4rYipDo/MWyo4zqzri4NrTf?=
- =?us-ascii?Q?MIXzb9bn/UyI2qmrZImYqnqu7Nf/8YjvaSz8cP3Y09g4GIAixTPTGUiPxKj1?=
- =?us-ascii?Q?jawgz8rWT/42VS9pb/D7Crc7yMckGlJ+/JpZXg3cSNJhs1042nPFFI5hVbsO?=
- =?us-ascii?Q?xN3lKAb9AGT+LS43u7SpKAijCd+IzYTkuOpvWRRADyMoF9mzAzf1invyA3Ht?=
- =?us-ascii?Q?Qmcn4HALm/HYe8U/xKPi2SjfBn2+M+lxMpXhYe0qXe0aeFrQyE6fhHBk2fYc?=
- =?us-ascii?Q?UPwRjQFpWK24plzcBQEQ+oUWDwXdO6YPW3BT2lmqKjZeXK2bqrzVSeumZVYC?=
- =?us-ascii?Q?GQaZ6zA6ifg9ANhlhDeDb4T5nMe1lBQSCacZbQ5pInol538jHKQypMjcY8G1?=
- =?us-ascii?Q?jZGC/SnSy37IMoIjCXxNiyy25WXjcy3wcWyHdMQam2/iQv2FtsVy5I4Fa0x9?=
- =?us-ascii?Q?CgxUeKA7vpaD9iZqnuKEwBdmMkEcFKn4RwFuJHaFJpmXO+taGBzHBjdp7Zmt?=
- =?us-ascii?Q?eZZ45JVZIFV/nTdq5tb03uWZALZmlhtTg+LLw7nkuBuuX6b7mWGUN2Q0mhj5?=
- =?us-ascii?Q?3u7I533VGEj3NIXh+PZl4ALJTx7gGrqO8x+mYaIY2gD5Bu161AQIV+YaiXN7?=
- =?us-ascii?Q?CsQ3VtLevVxfgIpX0GobkQA30ZUw2KI7BT8X61Qb6ZaO8AIX9gF4a2k439/z?=
- =?us-ascii?Q?EgM3RRmQmdigiHgBr5YpAFzJxcM4B0SYFQe5K7mt9Y3M23i96bTudqay5gRh?=
- =?us-ascii?Q?nvG1uEl7/LxEL9/nMefmkzQbbJKGelTprloW4Qv6QfKN/DPniNlTR61+VXVC?=
- =?us-ascii?Q?MjmPSMiTwinhdtCTlROeYcemdo9YVBvoJICCDGIFqyhilV5epsdXGbFaZe85?=
- =?us-ascii?Q?zZxa05/JxXghQ3OL1BH8vQe+iM4FHn8G8iLbLJou7losQ50MBV9xolEPAGV8?=
- =?us-ascii?Q?jM8pm/URa26FDBLr6EzhLeUgyBrw3WqNhumrm8P/Ew+6I65ei4daKVwKKoMu?=
- =?us-ascii?Q?BaDFMeGrdIun3bPOgVN9IIMBOynkz8A/zksNrh6u4s09OZRXALwaOoIIzN5y?=
- =?us-ascii?Q?aQ=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	jq/ZgIvxY6LmVaWZmnh/7bh4LzB/jT/OelT+7Av+4CfU+51dd+xZsbH27rIUrM6sPZ1l6SUase8J16UMguUK9RGyQahv0CjXTk3h4mJJQFXIvyrULMUmHfe6ZIObbwsCDXhOrGObTZW8QVtRhceckFoev7vz9UgTtAweTxKY1/ZZxIFlsi9s2WMpajr//7MiMP5cBrBv4eptw0ajxBia+t0uIvNrqoIyWxfLSRvsgGzLwOa7UEtaQc8W7/R0P2wLTgD6N6Z7JeKjr4VaKgPcSAa8mn6165zYcXpuGSB/zL0QTwrtvK9z3pqDmxAz6+I1pzuXtUDhqHOmT0vQUlsIwV21/5fgk1PI1TbAvFCGzxjKf6u6hoLusSNnLMWyP7rgDlLYcwqcX1BVIceUsjAjOyDp6Tc/IxoD58oOvDCy8pxUwRGuSvV0NgVe2yoW8WXR3yBrCYSWHObYunAGVHZKF7fxtaDad6riPtQsS7aM14r3XnKei2Iqs8fFxJiTczR7iPgBk0maJm+u39a4gPl1rBstxHnRigbuhU2yJv6fUbVJjNdUDzaZL+joZpHLM/tnG6Ui0pTdu1R1xK9TbqrZpmOklMQ6A03gAL8xJmtHtTU=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3ac84b8f-45b0-4999-4e85-08ddd8b70317
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2025 09:11:10.0756
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4ZstwEZRRnc3hjUgTp/UZ/qSz6tY0orKWgd36iMNaoUnkJFXERd8ZMOJKTjHzvgvI32eGqilbxkVJewSyktjA47DgPCunYbFqSZ5jK6HgK4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR10MB4281
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-11_01,2025-08-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 adultscore=0 malwarescore=0
- spamscore=0 bulkscore=0 suspectscore=0 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2507300000
- definitions=main-2508110060
-X-Proofpoint-ORIG-GUID: jwxE_B392GQfOucNP_8IB4jkLjFZigM0
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODExMDA2MSBTYWx0ZWRfX27lLTy36X2Vc
- gFyYJV/uvR6iulD161q3f0wbaIoPZe27hnktZG7I9cXM+CvILxq7Kx4NzHfBCp8iEKXixPVtMDL
- Uy9q1yoqWvYCiMwNyrBNhvUMqg3dF7E07t/NOcBqUQXVybrTUWed3Ij1Wm6GaqJ4uJTIKhMjtbg
- CKqc5WqAGuW4zbmk1EIOKjpm7hiBXCAJTWmGP4eDSS4ADYjVh8xA4LaHi6jRpbSA3karDTw2Vl5
- ycqnMTIFK/A8HfjpSFMHsYEA4yZNwD2Dlv0Evb59uMEIH5P10sU27gSjLfpWHNWOvhILM5ufl6t
- 99vvlEAXf8a7kzLJFo4Fx9Prd1G7JGy6U4L30oAehFiodLVuUNHl9Y+2n00QVOrtGTLhD+MhrPp
- vJ4mtPiOTTaomkU+DUOynTwbDOh0A0SlU+B0vlEOrmcqr3olugxJPk6aYBi71ym+7SWz61sy
-X-Authority-Analysis: v=2.4 cv=X9FSKHTe c=1 sm=1 tr=0 ts=6899b3b2 b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8
- a=yPCof4ZbAAAA:8 a=UsRtJFEanIWlDYqK5fwA:9 a=CjuIK1q_8ugA:10 cc=ntf
- awl=host:13600
-X-Proofpoint-GUID: jwxE_B392GQfOucNP_8IB4jkLjFZigM0
-X-Rspamd-Queue-Id: 67187180007
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v1 0/9] freezer: Introduce freeze priority model to
+ address process dependency issues
+To: Michal Hocko <mhocko@suse.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+ Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+ len brown <len.brown@intel.com>, pavel machek <pavel@kernel.org>,
+ Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Nico Pache <npache@redhat.com>,
+ xu xin <xu.xin16@zte.com.cn>, wangfushuai <wangfushuai@baidu.com>,
+ Andrii Nakryiko <andrii@kernel.org>, Christian Brauner <brauner@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Jeff Layton <jlayton@kernel.org>,
+ Al Viro <viro@zeniv.linux.org.uk>, Adrian Ratiu
+ <adrian.ratiu@collabora.com>, linux-pm@vger.kernel.org, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250807121418.139765-1-zhangzihuan@kylinos.cn>
+ <aJSpTpB9_jijiO6m@tiehlicka>
+ <4c46250f-eb0f-4e12-8951-89431c195b46@kylinos.cn>
+ <aJWglTo1xpXXEqEM@tiehlicka>
+ <ba9c23c4-cd95-4dba-9359-61565195d7be@kylinos.cn>
+ <aJW8NLPxGOOkyCfB@tiehlicka>
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+In-Reply-To: <aJW8NLPxGOOkyCfB@tiehlicka>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 43F0E140002
+X-Stat-Signature: 8b8gna6iix37qng7jjr1xr4rsiigep4f
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: g88rqokqiztxbf35mdq4kdy4ggfkab8w
-X-HE-Tag: 1754903500-663487
-X-HE-Meta: U2FsdGVkX19MeGiOjch5xvszHAd/geioMcNhwU7YNApAG7n37z4FRZcBLdbD+frXqIAWkjMq20XqFpzqGIfzkZrCe46zJ+14MmCuby6G/Hlvzpwj9Rcz7K6Af7cwv3aDacnAM1Pfy6l/SiqNdMwWHmjmnxtn8JWMnMQIzBeSfjSlhZNIwR8ORO+X5MMQM0F675HbTz0raOef8REHwAebN2UPFph8G2XVgNoVu56mFhKjb/yQQ13zkztHv8GEcGtLhXqTsVXyNJq3lJxobGgisACBOjp5iu2OCo/j1HvJkCxrT7SSY7ejaRrCFRijCs0fuWUXK1n1NfIDxpZauOgme8E8htWSRkifXE5AgfDVzVpDwT9l/mWp3nP8PHF8s2a6Wr0Yrl6M4fEVNXq6kYgRsCkbYMWrQYZnIyloVKD1wQ95VaoUN2Hl5pxkfsX6Fde9rKMROVcxHe3Um/KFOgmqrwIfP02oZxOrZHzKvfESHZFG7KSzg3adCBqNRwaQZlmEEQuLgPwnUeQALFve/gqOTmHAMc1w1GnUF5zRh+OLDimf9klFQtoVuL2DTfDFXYRA3Mon6NkCKjhzfkPVM9UMSwPRvp5LzWIe41Oax5fPuTk80gd6AoR8QKF8UJz/kLd4BjwArk8NW+U0VkmTRFtXr75q9rjnBovArxqJC5sLYvVMlr1+dYeBYIzMrwaKHbc6SI4MndZJKHd+nzL8PoLEBlWrxffSuUNO2weoLGjH1jkBsTTw5T9ieIDEesyRMFDBFwXYsn2BFwUr51VqykMepnuTkAnjgnPF383khEP019NRzA8+8ecWLiLhxTSSZeZvCQMWNj47LF9hSGma92QnWYTPRaCtkuhSdB9pOQ1GayerKD6MX8YD8i3dBWcVbO11S6HBakGrOheGqO5rPI0XTrS/6a1+KZPoE/Ifq8U5h58KOoRMjx0casItuqGreczufN3CCucQ4HqQtVkFXRq
- YdZQTiD6
- 4WaFH0DJg/FKNUbm8pOf6NPQLsPHLuQDvBdD3GKEf+9NUR/a/KQ34aW6OKLgvzSZOvSsw/2mWYhEudm6Ha7FEwaZJywJNo/rURhRj4o20xM7CaVrirl3Hr6XzBb8FuJcfxpA7rwThoVNHwC4tXes/Iva2oACOk/1a0nXehZ2ezeH9rjfsJUkLqdB7GmZ2oYCKM8QuRvwUr7zf3jIpcOlVJniWIxaMa+SL66nybhwnJJAiJyYEKPgjNHCeozpbMpp2BgtTMHT2i5VtNK1hAw7lqUxpIH+Jipq7wqjEp7ipgd4eTN8mpqeJDamVYVJykWMm8B4GMbYiGMQ5MIkD/fp0LNYByDDe7VqoVVc4R8PpPw7if8j9BfQ9IVxF++2MO7gCGlMjYbgoNXgbrugolkNaL7N9dP6NYyQa2vusoxKJuxMtCuc2iyUxTvhs7acHVYPXVgd8p6zNbWp4l0JFkIqJx1+h6cyE0Lm4JZjMBUJFPgBB29SPwzJl09kc35ExHI/6u4qOm753XhG0/WztkxIDnEXj5lW2vhL/fslbvUmUXfgrXe607AIZGZwEAh1Nb/FZ0XfnRMRsBwMogDMgrMw68GhuopL2jN+769Yy9VH/CqOg28rLP5ZCvM8ZTaUp8AggzSq7fGmq/JETaKBYq1dmSGIZzOPS4pCI2x3/uOWE8O6Tun26kP6/Cw1RyzBDdOBhtP/XrCXkEwW+4uc9d0l1iGYT5GxIpQk1YSNAKixDXevHtQuqF1ZwCkWrmzmrx9Jizc1AuMU4PBRpig6SwbH4Z+elKMkeHWIEmEjBVDEraS19KkO+2cKm0InYohs7/NNGrSqFnIfDmEZHPF+LOCx5xC1DOqtB/N6kFQIcqXOLKG1Ohgy5UE82P4mdr5iCeCyhn4QtCX2X2XAa+zs99NzTuYArrg==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1754903640-23340
+X-HE-Meta: U2FsdGVkX18iComRf9enKw7Gf8KXbKjLo0PuqCY3nKHDuWJE16PVUkVhDPUKQ0O6pADpj42Z0ieLfoRkWb1pFv/Ez+JDEytvc0e6zavYPPaMo7u8Ei2k/8GU1KznlYNhe5G+nk3uMa1CgMc6dzhWX73TSIlxjovuaEME6vR6ZnlcUhUIhd31sc6N9UIMbCyuXKcA0ciw8TqhkCkyvrrlyxFy+UebySLlIdafCm3i1224unUg1+7TwrZwrm6vW2F1xDNf+FjWV8llwTg9zZV5MKVjEi9cLCeFTAxOfazP77jkpvjhqYGIhIEyURQuURC2dpU+FUQvyZprfdmBnYJB5XEtITmpuIq+XNGD3IIL4zf37/Wjas84gNHgFcJ7SobsVk5Jw0x7nP0rvwwm/ojUBcvALNwqEIlYXDLFH3yDX50OvET0FyHFrvd68GPDCxlKY5/viRRXCwLnV++6sQzCFr3X3vUQjZEzsJ1Pu9sUutuAx4aI9G9pRTg9gEETV1R67TlFx7txrEtA7yCNAKTbTGFtS9jnDJ41tcIXdaAwQNemK4FTP32OMMu9QHZydOBHO3X2kIRjLeI1qmmUQmbn0rKcvRCBVk+V0C2rpDYPKNgq9D8dxaJH69azF8EaOnPVMUb6d1bRyVYuNlCuuMGpkxBEzShraWHw0CEd909jqK0/3iybkEnI6RgBlXF8yKMm35P2JrEOWCVmO/jyvAfgvU2uFJx6Yvgq6Lm4o0jimvVuT0lUsOor7S0cTdP/N0xCfS7vv0A32y6WTxoOGjBiN4x/iUZhrRhn75kGnuo8s59rsRuYBdWtjoHoE24RVluYRQNs9Vnte0A9YRye7QkO+V62HoBYl5ac4yYbNzQw36a2jrVFAG3WS6uO6wN8Hm08JfWZcPtriW99Y3s1JMSJkTdKXUL6Aboat4EQfgE7qExZ3jNccYxQapUj0NmRk2uDrjhKAXorcCiK8zb0Bqe
+ /gl6YS2c
+ mTD6+9pDi4jee9SefTNjcLiG/CIn5RXJdUvmMF0labTbYB8qa4U6vJc32G5Z49UoquWETN6+RT9eM0Fu7bMJd+iIujJ6P2UTPiK86
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -256,58 +124,204 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 11, 2025 at 02:34:19PM +0900, Harry Yoo wrote:
-> Introduce and use {pgd,p4d}_populate_kernel() in core MM code when
-> populating PGD and P4D entries for the kernel address space.
-> These helpers ensure proper synchronization of page tables when
-> updating the kernel portion of top-level page tables.
->
-> Until now, the kernel has relied on each architecture to handle
-> synchronization of top-level page tables in an ad-hoc manner.
-> For example, see commit 9b861528a801 ("x86-64, mem: Update all PGDs for
-> direct mapping and vmemmap mapping changes").
->
-> However, this approach has proven fragile for following reasons:
->
->   1) It is easy to forget to perform the necessary page table
->      synchronization when introducing new changes.
->      For instance, commit 4917f55b4ef9 ("mm/sparse-vmemmap: improve memory
->      savings for compound devmaps") overlooked the need to synchronize
->      page tables for the vmemmap area.
->
->   2) It is also easy to overlook that the vmemmap and direct mapping areas
->      must not be accessed before explicit page table synchronization.
->      For example, commit 8d400913c231 ("x86/vmemmap: handle unpopulated
->      sub-pmd ranges")) caused crashes by accessing the vmemmap area
->      before calling sync_global_pgds().
->
-> To address this, as suggested by Dave Hansen, introduce _kernel() variants
-> of the page table population helpers, which invoke architecture-specific
-> hooks to properly synchronize page tables. These are introduced in a new
-> header file, include/linux/pgalloc.h, so they can be called from common code.
->
-> They reuse existing infrastructure for vmalloc and ioremap.
-> Synchronization requirements are determined by ARCH_PAGE_TABLE_SYNC_MASK,
-> and the actual synchronization is performed by arch_sync_kernel_mappings().
->
-> This change currently targets only x86_64, so only PGD and P4D level
-> helpers are introduced. In theory, PUD and PMD level helpers can be added
-> later if needed by other architectures.
->
-> Currently this is a no-op, since no architecture sets
-> PGTBL_{PGD,P4D}_MODIFIED in ARCH_PAGE_TABLE_SYNC_MASK.
->
-> Cc: <stable@vger.kernel.org>
-> Fixes: 8d400913c231 ("x86/vmemmap: handle unpopulated sub-pmd ranges")
-> Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> ---
->  include/linux/pgalloc.h | 24 ++++++++++++++++++++++++
 
-Could we put this in the correct place in MAINTAINERS please? I think
-MEMORY MANAGEMENT - CORE is correct, given the below file is there.
+=E5=9C=A8 2025/8/8 16:58, Michal Hocko =E5=86=99=E9=81=93:
+> On Fri 08-08-25 15:52:31, Zihuan Zhang wrote:
+>> =E5=9C=A8 2025/8/8 15:00, Michal Hocko =E5=86=99=E9=81=93:
+>>> On Fri 08-08-25 09:13:30, Zihuan Zhang wrote:
+>>> [...]
+>>>> However, in practice, we=E2=80=99ve observed cases where tasks appea=
+r stuck in
+>>>> uninterruptible sleep (D state) during the freeze phase=C2=A0 =E2=80=
+=94 and thus cannot
+>>>> respond to signals or enter the refrigerator. These tasks are techni=
+cally
+>>>> TASK_FREEZABLE, but due to the nature of their sleep state, they don=
+=E2=80=99t
+>>>> freeze promptly, and may require multiple retry rounds, or cause the=
+ entire
+>>>> suspend to fail.
+>>> Right, but that is an inherent problem of the freezer implemenatation=
+.
+>>> It is not really clear to me how priorities or layers improve on that=
+.
+>>> Could you please elaborate on that?
+>> Thanks for the follow-up.
+>>
+>>  From our observations, we=E2=80=99ve seen processes like Xorg that ar=
+e in a normal
+>> state before freezing begins, but enter D state during the freeze wind=
+ow.
+>> Upon investigation,
+>>
+>> we found that these processes often depend on other user processes (e.=
+g.,
+>> I/O helpers or system services), and when those dependencies are froze=
+n
+>> first, the dependent process (like Xorg) gets stuck and can=E2=80=99t =
+be frozen
+>> itself.
+> OK, I see.
+>
+>> This led us to treat such processes as =E2=80=9Chard to freeze=E2=80=9D=
+ tasks =E2=80=94 not because
+>> they=E2=80=99re inherently unfreezable, but because they are more like=
+ly to become
+>> problematic if not frozen early enough.
+>>
+>> So our model works as follows:
+>>  =C2=A0 =C2=A0 =E2=80=A2=C2=A0 =C2=A0 By default, freezer tries to fre=
+eze all freezable tasks in each
+>> round.
+>>  =C2=A0 =C2=A0 =E2=80=A2=C2=A0 =C2=A0 With our approach, we only attem=
+pt to freeze tasks whose
+>> freeze_priority is less than or equal to the current round number.
+>>  =C2=A0 =C2=A0 =E2=80=A2=C2=A0 =C2=A0 This ensures that higher-priorit=
+y (i.e., harder-to-freeze) tasks
+>> are attempted earlier, increasing the chance that they freeze before b=
+eing
+>> blocked by others.
+>>
+>> Since we cannot know in advance which tasks will be difficult to freez=
+e, we
+>> use heuristics:
+>>  =C2=A0 =C2=A0 =E2=80=A2=C2=A0 =C2=A0 Any task that causes freeze fail=
+ure or is found in D state during
+>> the freeze window is treated as hard-to-freeze in the next attempt and=
+ its
+>> priority is increased.
+>>  =C2=A0 =C2=A0 =E2=80=A2=C2=A0 =C2=A0 Additionally, users can manually=
+ raise/reduce the freeze priority
+>> of known problematic tasks via an exposed sysfs interface, giving them
+>> fine-grained control.
+> This would have been a very useful information for the changelog so tha=
+t
+> we can understand what you are trying to achieve.
+>
+Got it, I=E2=80=99ll add that info to the changelog. Thanks!
+>> This doesn=E2=80=99t change the fundamental logic of the freezer =E2=80=
+=94 it still retries
+>> until all tasks are frozen =E2=80=94 but by adjusting the traversal or=
+der,
+>>
+>>  =C2=A0we=E2=80=99ve observed significantly fewer retries and more rel=
+iable success in
+>> scenarios where these D state transitions occur.
+>  =20
+> OK, I believe I do understand what you are trying to achieve but I am
+> not conviced this is a robust way to deal with the problem. This all
+> seems highly timing specific that might work in very specific usecase
+> but you are essentially trying to fight tiny race windows with a very
+> probabilitistic interface.
 
->  include/linux/pgtable.h |  4 ++--
+Actually, our approach does not conflict with solving the problem. We=20
+plan to keep the freeze priority mechanism disabled by default and only=20
+enable it when issues arise, so as to maintain the consistency of the=20
+existing code flow as much as possible. It acts like a fallback mechanism=
+.
 
-Thanks!
+We acknowledge that the causes of D-state tasks are complex and require=20
+high effort to fully resolve, which the current freezer mechanism cannot=20
+achieve. Our solution is low-cost and able to capture some problematic=20
+tasks effectively.
+
+> Also the interface seems to be really coarse grained and it can easily
+> turn out insufficient for other usecases while it is not entirely clear
+> to me how this could be extended for those.
+ =C2=A0We recognize that the current interface is relatively coarse-grain=
+ed=20
+and may not be sufficient for all scenarios. The present implementation=20
+is a basic version.
+
+Our plan is to introduce a classification-based mechanism that assigns=20
+different freeze priorities according to process categories. For=20
+example, filesystem and graphics-related processes will be given higher=20
+default freeze priority, as they are critical in the freezing workflow.=20
+This classification approach helps target important processes more=20
+precisely.
+
+However, this requires further testing and refinement before full=20
+deployment. We believe this incremental, category-based design will make=20
+the mechanism more effective and adaptable over time while keeping it=20
+manageable.
+> I believe it would be more useful to find sources of those freezer
+> blockers and try to address those. Making more blocked tasks
+> __set_task_frozen compatible sounds like a general improvement in
+> itself.
+
+we have already identified some causes of D-state tasks, many of which=20
+are related to the filesystem. On some systems, certain processes=20
+frequently execute ext4_sync_file, and under contention this can lead to=20
+D-state tasks.
+
+ =C2=A06616.650482] task:ThreadPoolForeg state:D stack:0=C2=A0 =C2=A0 =C2=
+=A0pid:262026=20
+tgid:4065=C2=A0 ppid:2490=C2=A0 =C2=A0task_flags:0x400040 flags:0x0000400=
+4
+[ 6616.650485] Call Trace:
+[ 6616.650486]=C2=A0 <TASK>
+[ 6616.650489]=C2=A0 __schedule+0x532/0xea0
+[ 6616.650494]=C2=A0 schedule+0x27/0x80
+[ 6616.650496]=C2=A0 jbd2_log_wait_commit+0xa6/0x120
+[ 6616.650499]=C2=A0 ? __pfx_autoremove_wake_function+0x10/0x10
+[ 6616.650502]=C2=A0 ext4_sync_file+0x1ba/0x380
+[ 6616.650505]=C2=A0 do_fsync+0x3b/0x80
+[ 6616.650507]=C2=A0 __x64_sys_fdatasync+0x17/0x20
+[ 6616.650509]=C2=A0 do_syscall_64+0x7d/0x2c0
+[ 6616.650512]=C2=A0 ? syscall_exit_work+0x108/0x140
+[ 6616.650515]=C2=A0 ? do_syscall_64+0x1f3/0x2c0
+[ 6616.650517]=C2=A0 ? syscall_exit_work+0x108/0x140
+[ 6616.650519]=C2=A0 ? do_syscall_64+0x1d5/0x2c0
+[ 6616.650522]=C2=A0 ? audit_reset_context.part.0+0x284/0x2f0
+[ 6616.650524]=C2=A0 ? syscall_exit_work+0x108/0x140
+[ 6616.650527]=C2=A0 ? do_syscall_64+0x1f3/0x2c0
+[ 6616.650529]=C2=A0 ? futex_unqueue+0x4e/0x80
+[ 6616.650531]=C2=A0 ? __futex_wait+0x9b/0x100
+[ 6616.650534]=C2=A0 ? __pfx_futex_wake_mark+0x10/0x10
+[ 6616.650536]=C2=A0 ? timerqueue_del+0x2e/0x50
+[ 6616.650539]=C2=A0 ? __remove_hrtimer+0x39/0x70
+[ 6616.650542]=C2=A0 ? hrtimer_try_to_cancel+0x85/0x100
+[ 6616.650544]=C2=A0 ? hrtimer_cancel+0x15/0x30
+[ 6616.650546]=C2=A0 ? futex_wait+0x7d/0x110
+[ 6616.650549]=C2=A0 ? __pfx_hrtimer_wakeup+0x10/0x10
+[ 6616.650552]=C2=A0 ? audit_reset_context.part.0+0x284/0x2f0
+[ 6616.650554]=C2=A0 ? syscall_exit_work+0x108/0x140
+[ 6616.650556]=C2=A0 ? do_syscall_64+0x1d5/0x2c0
+[ 6616.650558]=C2=A0 ? switch_fpu_return+0x4f/0xd0
+[ 6616.650560]=C2=A0 ? do_syscall_64+0x1d5/0x2c0
+[ 6616.650563]=C2=A0 entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[ 6616.650565] RIP: 0033:0x7f095ef8f3eb
+[ 6616.650567] RSP: 002b:00007f07409fa360 EFLAGS: 00000293 ORIG_RAX:=20
+000000000000004b
+[ 6616.650569] RAX: ffffffffffffffda RBX: 00000d38021f03a0 RCX:=20
+00007f095ef8f3eb
+[ 6616.650570] RDX: 0000000000000000 RSI: 0000000000000000 RDI:=20
+000000000000009a
+[ 6616.650571] RBP: 00007f07409fa410 R08: 0000000000000000 R09:=20
+00007f07409fa570
+[ 6616.650572] R10: 00007f0960a60000 R11: 0000000000000293 R12:=20
+00000d38021f0380
+[ 6616.650573] R13: 000055c28c70b400 R14: 00007f07409fa3a0 R15:=20
+00007f07409fa380
+
+
+While the kernel already supports freezing the filesystem, which can=20
+address this problem, it is quite expensive =E2=80=94 enabling this featu=
+re=20
+increases the suspend time by about=C2=A0 3~4 seconds in our tests. We ar=
+e=20
+therefore exploring lower-cost approaches to mitigate the issue without=20
+such a heavy performance impact.
+
+root@zzhwaxy-pc:/sys/power# echo 1 > freeze_filesystems
+root@zzhwaxy-pc:/sys/power# sudo dmesg | grep -E 'suspend'
+[ 9844.984658] PM: suspend entry (deep)
+[ 9850.998197] PM: suspend exit
+
+root@zzhwaxy-pc:/sys/power# echo 0 > freeze_filesystems
+root@zzhwaxy-pc:/sys/power# sudo dmesg | grep -E 'suspend'
+[ 9893.928486] PM: suspend entry (deep)
+[ 9896.239425] PM: suspend exit
+
+> Thanks
 
