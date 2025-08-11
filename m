@@ -2,124 +2,141 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 87C18CA0EC0
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 09:54:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 03E65C87FD2
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 10:07:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 23EA38E002F; Mon, 11 Aug 2025 05:54:53 -0400 (EDT)
+	id 3953A6B00ED; Mon, 11 Aug 2025 06:07:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1EF068E000A; Mon, 11 Aug 2025 05:54:53 -0400 (EDT)
+	id 36CF76B00EE; Mon, 11 Aug 2025 06:07:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B7328E002F; Mon, 11 Aug 2025 05:54:53 -0400 (EDT)
+	id 282B06B00EF; Mon, 11 Aug 2025 06:07:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EC1188E000A
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 05:54:52 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9BC68C072F
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:54:52 +0000 (UTC)
-X-FDA: 83764017624.01.23609EA
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D5E61180004
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:54:41 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=none;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1805C6B00ED
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 06:07:59 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AB0041405D7
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 10:07:58 +0000 (UTC)
+X-FDA: 83764050636.05.8C316C3
+Received: from flow-b4-smtp.messagingengine.com (flow-b4-smtp.messagingengine.com [202.12.124.139])
+	by imf02.hostedemail.com (Postfix) with ESMTP id ADE8F80004
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 10:07:56 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="U lUAzQz";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=CNCTDk+m;
 	dmarc=none;
-	spf=temperror (imf16.hostedemail.com: error in processing during lookup of zhangzihuan@kylinos.cn: DNS error) smtp.mailfrom=zhangzihuan@kylinos.cn
+	spf=pass (imf02.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754906876; a=rsa-sha256;
+	cv=none;
+	b=AKzdWr9SCOhikdPNISGHpzs36CizVm6Ld2goOEJo/GrYVwkz9N1MZpEaa8pq1v9suT6jfs
+	1Uw2mnTgKR4v1QHdhKbh/fXjZJQkdojTALBPk5n1QmC3WFoJn1wsOkdWOcabjdhbf807O6
+	l6esxgBR79BepE+vxg7/h/vc1Sxab9Y=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="U lUAzQz";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=CNCTDk+m;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754906087;
+	s=arc-20220608; t=1754906876;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q6d4mCwhqCUjW1C03cCUKBw5cNwfV9qVOoJh5u245K0=;
-	b=kKenRxZmC1PcM/qikHOjFn3CducowOe18XzZZ/GaMcHPaWcX/L3SdNwaBJCfH57dlWUg5i
-	saVZTCdSNsXe8KaVmCdH1Smuv0kw1WI4fNYdO52r0s5uTJHz4f2pseBOl028S3h8QAka4j
-	Ut2pCbDRwQ6hhYRXpdhe9oAa/BQ+zJo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754906087; a=rsa-sha256;
-	cv=none;
-	b=AMDkvXsRG+8kEm6Z3/Pxi+rITl8jjlUL8kdJ5sMaGxKQ1ecSjrjnxX13xxeQIR88WAsV0T
-	gvtxg/8spMU1Vw82M4dNZPYEc6fGfbzFDJC2+XHKEhlUq6xmaaCzTZQKNbpIQS0wyz4qiB
-	X/hLEmkgNgieHN3Ae0qMR6Rv+2que4w=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=temperror (imf16.hostedemail.com: error in processing during lookup of zhangzihuan@kylinos.cn: DNS error) smtp.mailfrom=zhangzihuan@kylinos.cn
-X-UUID: 2b9da468769911f0b29709d653e92f7d-20250811
-X-CID-CACHE: Type:Local,Time:202508111725+08,HitQuantity:2
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:acc68978-f090-491f-984d-775e43d21c34,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:d6456464c6e6748e41fc8f4c855f847f,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
-	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
-	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 2b9da468769911f0b29709d653e92f7d-20250811
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <zhangzihuan@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 1249145062; Mon, 11 Aug 2025 17:54:28 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id 9F9D3E009021;
-	Mon, 11 Aug 2025 17:54:27 +0800 (CST)
-X-ns-mid: postfix-6899BDD3-5075201002
-Received: from [172.25.120.24] (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 81F3EE008FED;
-	Mon, 11 Aug 2025 17:54:24 +0800 (CST)
-Message-ID: <4ceb0e8c-d164-4323-add0-a0770ec2afc6@kylinos.cn>
-Date: Mon, 11 Aug 2025 17:54:23 +0800
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=YMVHbKt84ajobxpDslMW7shZLCihMMdqMX7Bu7K6MQc=;
+	b=ad/bWSkYrJvZPuJPodwSBEhNMBz8+O2qiEBQ67BlkeTjwabtLMSX4Mo1oKwJ/KAzc2x/2s
+	2Gbo/3R/hpUB6NVD0h78Z3SwszYT2RF2HSDbzgsmF38anZOHP5xTVcBV5zf7rV93N+2tM6
+	4OdmfBwozOwAuTowiFhICKXhrJ+aL2A=
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailflow.stl.internal (Postfix) with ESMTP id 4A95B1300168;
+	Mon, 11 Aug 2025 06:07:54 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Mon, 11 Aug 2025 06:07:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1754906874; x=
+	1754914074; bh=YMVHbKt84ajobxpDslMW7shZLCihMMdqMX7Bu7K6MQc=; b=U
+	lUAzQzLiTBAPDTVtOK64KS4Yag1rkY3R7Ig8f8E9UtChnbtz5HASBIVq2pl9rPIN
+	swtt2+1lpWIHjNFtkqlMFLD8L9YSYFzC/Wy0LR1UQeZwJX7Kkjh7ltz00WVyflKp
+	IK3L8Qc2HALu/gu45rStzT2u1TnbnKBZ8SBD9j/JqHTaUS5UG5M+rhqQZfPc3DWM
+	vkRh7dQGN1NQTF4klOJsYPQFoTbufs8fd194I7lGGFPHxdtCNHVaJbwuD4DPpAgm
+	FsWTzXmHUXcDpP0JfenrDpDiG9Duiu2z3alsiC4DS/9RwXlQaI9ivq/vr+ha1Suo
+	TS3nkp1Lh0NTjQTdedI0w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1754906874; x=1754914074; bh=YMVHbKt84ajobxpDslMW7shZLCihMMdqMX7
+	Bu7K6MQc=; b=CNCTDk+m/R8DW2A5rWRfgIuozvJ/fJg4fquLl5cey7hAs4g/0kL
+	F8QlBLVfJRYav7mTNnNf4lHYIi60o9ACQP/q64y2XHedY9VDvILXG+5NNIV3kqWp
+	eRPVx/BPAHasEXVsnoFK32WoE68mnIMCTdKk7hxLVRVS7LyS3JUPQMHS3PZckhBq
+	TTkROi/cC8fPiaUe4TPK8eyXWzKQ2V0bVndfYFAnd93eBvybb+1fg2YP1WVb14k2
+	Liy/M8Fv2d0/rmEmXzzuhsgHaavl/7QljjBY1dZka99D0XejlMZYvgYOuZZPdsmi
+	UaVW2NQ93fwai3J65RtLZCDpUENyuEnUXBw==
+X-ME-Sender: <xms:98CZaG9aKnMFKfDBk16aqYN5V9ARSsbYFCtJkucvVn8zvHCPCASnBQ>
+    <xme:98CZaJrDhNJ5UQOyAV5SaCp6pswEZWT2w1WUvQk-vuDLTSKRYqno6rdYQt6fE_61y
+    LaEtQbIpzxMJNEKwzY>
+X-ME-Received: <xmr:98CZaCzWWjtIjDEIbmyf2PmDXrzPc4yw5ycncCFoqEazPriq1FiJQypuoia->
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddufedvudejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
+    ftrfgrthhtvghrnhepjeehueefuddvgfejkeeivdejvdegjefgfeeiteevfffhtddvtdel
+    udfhfeefffdunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeeh
+    iedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepuggrvhhiugesrhgvughhrghtrd
+    gtohhmpdhrtghpthhtohepkhgvrhhnvghlsehprghnkhgrjhhrrghghhgrvhdrtghomhdp
+    rhgtphhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtghpthhtoheprhihrg
+    hnrdhrohgsvghrthhssegrrhhmrdgtohhmpdhrtghpthhtohepsggrohhlihhnrdifrghn
+    gheslhhinhhugidrrghlihgsrggsrgdrtghomhdprhgtphhtthhopehvsggrsghkrgessh
+    hushgvrdgtiidprhgtphhtthhopeiiihihsehnvhhiughirgdrtghomhdprhgtphhtthho
+    pehrphhptheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrvhgvrdhhrghnshgvnh
+    eslhhinhhugidrihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:98CZaIk1g2pwnQF0ZCmAGsoZLEWfhdiqeMEMRwt6usFGJ0Z10Eq_3A>
+    <xmx:98CZaOnLoiGDJjCwNk9y_0rIqxSexo1YPGRQCKaef_P_Z-NeIQf8hw>
+    <xmx:98CZaOwcAoRr88sQNj8EsQDLYwPiFrzeoGpcp61tm8q1HdOyhfhrgQ>
+    <xmx:98CZaFZ-7tIQCWXSINvVQZEBCDXAn-WG-vqKTLT35EnFrp5WIzvP9Q>
+    <xmx:-sCZaCvSYdCPW6f41s1J5E9AZKAdplnP3VG2J6p6QFiaKVLC-CLJYKox>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 11 Aug 2025 06:07:51 -0400 (EDT)
+Date: Mon, 11 Aug 2025 11:07:48 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: David Hildenbrand <david@redhat.com>
+Cc: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>, 
+	Mike Rapoport <rppt@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Michal Hocko <mhocko@suse.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Nico Pache <npache@redhat.com>, Dev Jain <dev.jain@arm.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Jens Axboe <axboe@kernel.dk>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, willy@infradead.org, Ritesh Harjani <ritesh.list@gmail.com>, 
+	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	"Darrick J . Wong" <djwong@kernel.org>, mcgrof@kernel.org, gost.dev@samsung.com, hch@lst.de, 
+	Pankaj Raghav <p.raghav@samsung.com>
+Subject: Re: [PATCH v3 0/5] add persistent huge zero folio support
+Message-ID: <rr6kkjxizlpruc46hjnx72jl5625rsw3mcpkc5h4bvtp3wbmjf@g45yhep3ogjo>
+References: <20250811084113.647267-1-kernel@pankajraghav.com>
+ <hzk7e52sfhfqvo5bh7btthtyyo2tf4rwe24jxtp3fqd62vxo7k@cylwrbxqj47b>
+ <dfb01243-7251-444c-8ac6-d76666742aa9@redhat.com>
+ <112b4bcd-230a-4482-ae2e-67fa22b3596f@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 5/9] freezer: set default freeze priority for
- PF_SUSPEND_TASK processes
-To: Oleg Nesterov <oleg@redhat.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, David Hildenbrand <david@redhat.com>,
- Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
- Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
- len brown <len.brown@intel.com>, pavel machek <pavel@kernel.org>,
- Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Nico Pache <npache@redhat.com>,
- xu xin <xu.xin16@zte.com.cn>, wangfushuai <wangfushuai@baidu.com>,
- Andrii Nakryiko <andrii@kernel.org>, Christian Brauner <brauner@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Jeff Layton <jlayton@kernel.org>,
- Al Viro <viro@zeniv.linux.org.uk>, Adrian Ratiu
- <adrian.ratiu@collabora.com>, linux-pm@vger.kernel.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250807121418.139765-1-zhangzihuan@kylinos.cn>
- <20250807121418.139765-6-zhangzihuan@kylinos.cn>
- <20250808143943.GB21685@redhat.com>
- <0754e3e3-9c47-47d5-81d9-4574e5b413bc@kylinos.cn>
- <20250811093216.GB11928@redhat.com>
- <428beb0d-2484-4816-86c3-01e91bd7715a@kylinos.cn>
- <20250811094651.GD11928@redhat.com>
-From: Zihuan Zhang <zhangzihuan@kylinos.cn>
-In-Reply-To: <20250811094651.GD11928@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: D5E61180004
-X-Stat-Signature: xue4b6casw198717wuow3hdustasjdze
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <112b4bcd-230a-4482-ae2e-67fa22b3596f@redhat.com>
+X-Stat-Signature: 54hs4tx7zzenr6fec38ymzps8pp3u8jw
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1754906081-341852
-X-HE-Meta: U2FsdGVkX18epQ8bp+tnsBz+1AgJcseIq1iYr1uRHFuUJS6t+9m/fmPe0bChD685jc9vnd9uHwdVGj07D7GhFQRtSFSrBLqeUd2Jda/+JDnU6valogfBZHGb+o6e9X2rU4w0CT8S/oIA0iG+H/WB74nEq4dPFyO8N66gP1CWScsK6M0OdSfhan9iIHlQ84LTQ/ULw2Z3Km4gKodV2AWE3ZIrypMCQfqppuBs4amNp4vg47vittbczPqO0BZxe5Vgp3t7SBFqdjRYH8l2l7nBcTHVL52WsJivZppnkPSJzLKATcqPmaKN3WirZGoa/QkID0OvOOEEghOTtGxe9eF7SLYMZaDwcUL6Togo9jHtsWb/of0WSpgQq/EwXXe1Jpi1k7MJwcbFtZj14QX7ZpPPkV22dB6TpwmrdwtaeLj6aqaZSUvFEwgXH6C3cPeMD55ciOREUUVSj531+Dzpg0iPFj94ZI0i+QAV3IqCh/Q0Hxajv1oNNZmaRuH5nf0INMbqbaQFHj7o9mFXXFxeEeeWflZxt/CPOhgBON4oTrar7TP9OtNHBe9PHDCZ+EbiZTp1mXntu1FyA8CNQF40IeBIwj5sxjIKeLzZ48JA5RjiWA9LjpURsifj4L0bDWTAJiei3XVHlahHaWknP8K9PcKu0//LQ4jhpnlrfVB5KIToCcvXzL6kMkgYiT9OBNuaMDHzO9hHQrvZ3Sf1PbsULGM2pKCYzNgLYtZTTX4eFl/WJl3OtvcD5f42SCMPWj55YEGG8gyBI7s/eahlwc9A+0PIQoElN6wlUl5GpK2cDA54MAa+EbIM4b1ybYWRM4I67V//UYv9iLuZOIQ4oj194YWJ5Vjm92oyExSkMT1ZQORAvPq4oaY8R2j3g8OMR70WjFiJ8jVXz6MoNy+jc4jFgsuRzU8cu0v8j7i1MvPVowcPQY1dgdKKy2oYeT4IRZchakq5KLqdk7V9v5zO5wOogzB
- bm2rUqyd
- DV67raFZtYEc/d/L6y3O+YLw811ok3CX3Gb6dbm5baXqz2Z+RwYXX7HV295SaNQnKKHMtj3vr3/F1WlZ7xAb8MD3ftmIwWMmVyFgt0Z4MFHiL2wDMrvyIuvsD2jlTBl1FmbWMI5ocZYFFPiRf3N0Povj8/Xh3fydEKI1jVP+5bvAuGUvW7ErvTPfr52KQzjaNFfyqVHGJO9bbrcty8v5p9SZ0dVptTjL8UZE2xfFH/XN25mNQKOi8rV0cMN9vXzbCzbNTD+THDTzOX72WnXrrSX8vSNsOeyRqJkkeoJrouT98Q+RiL+QoGaZS76Yf9TyGs3OnPFkCg1LupPoEaWq20/LqFubYA2aP2itr9zhqND1evH7PkFqNq5+f9rXgEreqmEqQnMRD9F4y62Y=
+X-Rspamd-Queue-Id: ADE8F80004
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1754906876-701014
+X-HE-Meta: U2FsdGVkX1+d2mlYZae9k56S+fng6oRPM3wzI+5FI2lnOXyYrg6aJ+TLIwoB2FULIcZrkuJ56D4PXU5VTsyT9Pi14m8ft0AQv0je7Bk1GUkCulaBeLwYByf+BKqlTnDCvpztSv72l1szomDhZDw24KSBfrtBn5+LMazg6CNoFhys+P84KLjJTlo3I7HSvVNO5APvl6LewvYRcJ6OyieSaeu9GGU9VWT8bwEiWIfHIzuy/RASlGVo4a+FkLlvWlAMpIYyA4694D5/cgQqd9ulFnLOKzm1IDZns87HWomCf4TZeXaa4sfF5bv+qc+nKm/ZKHzwgmfJLCN9nQknX+Em4sfeCeIqISnRYgDGGLXCwDs7FUPzK2ueC9YNQLCRhqORtJqyVW5K/zyhFBRxFfBrqeS6owEgFwwW5LBczuN+Yon9LudwH+qNcxlMz7e7vGwNdpC+YXOBOVMkkJR+wYa0GciwimHCzntKLWgJ0/e5B/OlqbivozTw2wwaRuTl1Ud3NjkFdmsz2Zwbvxp0ReRPunuTHHh6cgZi44rcy60oOvdJmN20BagjjAUu6CU5TicGigBpOUyvyxvUxdK2aezBT6pE1UlmSV3YjMTG2zB4Tr70tRgmZ4jDAhgo/XtYSNH1P4wr2GV6knckv2BRrlG8m5OvthlUcTjT3Z43lm0lPXBIswZdJcV5jF1rjXedgF5NhS1Pux4Mb9BexvFbmCoi4oNcS9t9fpZameEawwqbEXDSrl/zztJ/a+kJcAWNjJ9DMNVaY4sMQo0PZAJRT0PZmpg0z3rG2jVQHnzx/gAHJgFUXbo6scferav2QRHOiaxZftK5YZVj+fQAWLBfGWOMOhf4psSgJFt3TS+s+4i2swcJOO9m9AOBeFmvlSDze0uR1bgEB36bn+vuH2Fv+hGBADgjoJZbX1N4qt8yBjSsAG9N1zuhiOFNZXEJJX+gdfn/HL05FkQwg5cKVN9OR+J
+ Gdwkgw5X
+ /8brAH7uF5jSB9u2R0VfPQ+7dGlyVhJZKfyEsl2anq6HjV7IiXmEtgQvHKxfemVpKm+NWLSpGpMoIhwvglt8yAQckWirProQXuOWThTF43XAdJsoe3ineB0/Cbub5BBmyv1fpEJ4rH48boscFbRZkrCtYAtMLSrz7Iwt2Nkxf/hx9fgdbDzof/sRLzo7pncfsdeOvIZJgCv5QQR0q3r7+A4+ojor4t0FFupTYaZ4M8Q7p1v8F655ERkxltA5Op3ZuiiALgWLZemaOCo+fj9RDJgJHWcilkWNO7q5346xR1+PhgukvL31HHMDcfKy7tkeP9X9/GwF/np/Q6Eifs73WsCj3a491npcaXuxBDJ/sfsdhh3/v6rppvM1FUqGkJxCuVL5BklRaddwT4RBKJjR8BakWB5q50WdP1hKviIAW1MW62PLTm9OS6+DsnNa36Hr1sPYqxcRiNMQby91oawsqnVUq59u+E4B3nXkoSXRSXIIvkxDSiE2Ff1pj8VaAEyGpkWh3rx5VlzLO+8TE/KaCvw5Vre2FlfTfUvTJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,59 +145,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Aug 11, 2025 at 11:52:11AM +0200, David Hildenbrand wrote:
+> On 11.08.25 11:49, David Hildenbrand wrote:
+> > On 11.08.25 11:43, Kiryl Shutsemau wrote:
+> > > On Mon, Aug 11, 2025 at 10:41:08AM +0200, Pankaj Raghav (Samsung) wrote:
+> > > > From: Pankaj Raghav <p.raghav@samsung.com>
+> > > > 
+> > > > Many places in the kernel need to zero out larger chunks, but the
+> > > > maximum segment we can zero out at a time by ZERO_PAGE is limited by
+> > > > PAGE_SIZE.
+> > > > 
+> > > > This concern was raised during the review of adding Large Block Size support
+> > > > to XFS[2][3].
+> > > > 
+> > > > This is especially annoying in block devices and filesystems where
+> > > > multiple ZERO_PAGEs are attached to the bio in different bvecs. With multipage
+> > > > bvec support in block layer, it is much more efficient to send out
+> > > > larger zero pages as a part of single bvec.
+> > > > 
+> > > > Some examples of places in the kernel where this could be useful:
+> > > > - blkdev_issue_zero_pages()
+> > > > - iomap_dio_zero()
+> > > > - vmalloc.c:zero_iter()
+> > > > - rxperf_process_call()
+> > > > - fscrypt_zeroout_range_inline_crypt()
+> > > > - bch2_checksum_update()
+> > > > ...
+> > > > 
+> > > > Usually huge_zero_folio is allocated on demand, and it will be
+> > > > deallocated by the shrinker if there are no users of it left. At the moment,
+> > > > huge_zero_folio infrastructure refcount is tied to the process lifetime
+> > > > that created it. This might not work for bio layer as the completions
+> > > > can be async and the process that created the huge_zero_folio might no
+> > > > longer be alive. And, one of the main point that came during discussion
+> > > > is to have something bigger than zero page as a drop-in replacement.
+> > > > 
+> > > > Add a config option PERSISTENT_HUGE_ZERO_FOLIO that will always allocate
+> > > > the huge_zero_folio, and disable the shrinker so that huge_zero_folio is
+> > > > never freed.
+> > > > This makes using the huge_zero_folio without having to pass any mm struct and does
+> > > > not tie the lifetime of the zero folio to anything, making it a drop-in
+> > > > replacement for ZERO_PAGE.
+> > > > 
+> > > > I have converted blkdev_issue_zero_pages() as an example as a part of
+> > > > this series. I also noticed close to 4% performance improvement just by
+> > > > replacing ZERO_PAGE with persistent huge_zero_folio.
+> > > > 
+> > > > I will send patches to individual subsystems using the huge_zero_folio
+> > > > once this gets upstreamed.
+> > > > 
+> > > > Looking forward to some feedback.
+> > > 
+> > > Why does it need to be compile-time? Maybe whoever needs huge zero page
+> > > would just call get_huge_zero_page()/folio() on initialization to get it
+> > > pinned?
+> > 
+> > That's what v2 did, and this way here is cleaner.
+> 
+> Sorry, RFC v2 I think. It got a bit confusing with series names/versions.
 
-=E5=9C=A8 2025/8/11 17:46, Oleg Nesterov =E5=86=99=E9=81=93:
-> On 08/11, Zihuan Zhang wrote:
->> =E5=9C=A8 2025/8/11 17:32, Oleg Nesterov =E5=86=99=E9=81=93:
->>> On 08/11, Zihuan Zhang wrote:
->>>> =E5=9C=A8 2025/8/8 22:39, Oleg Nesterov =E5=86=99=E9=81=93:
->>>>> On 08/07, Zihuan Zhang wrote:
->>>>>> --- a/kernel/power/process.c
->>>>>> +++ b/kernel/power/process.c
->>>>>> @@ -147,6 +147,7 @@ int freeze_processes(void)
->>>>>>
->>>>>>   	pm_wakeup_clear(0);
->>>>>>   	pm_freezing =3D true;
->>>>>> +	freeze_set_default_priority(current, FREEZE_PRIORITY_NEVER);
->>>>> But why?
->>>>>
->>>>> Again, freeze_task() will return false anyway, this process is
->>>>> PF_SUSPEND_TASK.
->>>> I=C2=A0 think there is resaon put it here. For example, systemd-slee=
-p is a
->>>> user-space process that executes the suspend flow.
->>>>
->>>>  =C2=A0If we don=E2=80=99t set its freeze priority explicitly, our c=
-urrent code may end up
->>>> with this user process being the last one that cannot freeze.
->>> How so? sorry I don't follow.
->> The problem is in this part:
->>
->> +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (user_only && !(p->flags=
- & PF_KTHREAD) && round <
->> p->freeze_priority)
->> +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 continue;
->>
->> PF_SUSPEND_TASK is a user process, so it meets the =E2=80=9Cneeds free=
-zing=E2=80=9D
->> condition and todo gets incremented.
->              ^^^^^^^^^^^^^^^^^^^^^^^^^
->
-> No.
-> 	if (p =3D=3D current || !freeze_task(p))
-> 		continue;
->
-> 	todo++;
->
-> Again, again, freeze_task(p) returns false.
->
->> But it actually doesn=E2=80=99t need to freeze,
->> so resulting in an infinite loop
-> I don't think so.
->
-> Oleg.
-Sorry, you=E2=80=99re right =E2=80=94 it=E2=80=99s indeed unnecessary. In=
- an earlier version, I=20
-incremented the counter before the continue, but I later removed that=20
-and forgot about it.
+Well, my worry is that 2M can be a high tax for smaller machines.
+Compile-time might be cleaner, but it has downsides.
+
+It is also not clear if these users actually need physical HZP or virtual
+is enough. Virtual is cheap.
+
+-- 
+Kiryl Shutsemau / Kirill A. Shutemov
 
