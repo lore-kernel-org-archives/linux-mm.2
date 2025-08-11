@@ -2,120 +2,129 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 09C6EC87FD2
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 13:56:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 957C8C87FD2
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 14:00:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A2B9D8E005A; Mon, 11 Aug 2025 09:56:47 -0400 (EDT)
+	id 26AE88E005B; Mon, 11 Aug 2025 10:00:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A02C38E0045; Mon, 11 Aug 2025 09:56:47 -0400 (EDT)
+	id 21B9C8E0045; Mon, 11 Aug 2025 10:00:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91A848E005A; Mon, 11 Aug 2025 09:56:47 -0400 (EDT)
+	id 10AB68E005B; Mon, 11 Aug 2025 10:00:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7681D8E0045
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:56:47 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2EC6E1146CE
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 13:56:47 +0000 (UTC)
-X-FDA: 83764627254.02.9A8D432
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 4E29E40004
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 13:56:45 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gowW3LjX;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E1DD68E0045
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 10:00:28 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 91DDC115672
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 14:00:28 +0000 (UTC)
+X-FDA: 83764636536.13.B17A632
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 30EB5120016
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 14:00:26 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=S0C2K5yf;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf29.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754920826; a=rsa-sha256;
+	cv=none;
+	b=QJJmJD0e/sKYP5nEKJUY8UtcaFRIhSCEgp4rjMWXji9ICnvwm87HAJoCpGXo3IABUMXPLp
+	JG8BxABG+G6L5U5/1nExrMZnSgYc1XsxgxnfDzG8j9IZWUtaS6WK4/l4jGLItpcbCIe1fR
+	eQ0eT8xij/n8alWTRZpQKjnml00LzyU=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=S0C2K5yf;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf29.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754920605;
+	s=arc-20220608; t=1754920826;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tCOQyeQgQCrSvbOG3qdi00ec7ZXwXD5w2RBXU1VKOdY=;
-	b=S2gbZ1Cy88mJ8x+ygAWQ92a8M5+eVjmxj5KJrWtxxgngT+JTzQsrCwb1FpYG5+8WtEqWHM
-	G90mioMboiGFjqHsMImVz0zIacozSdV954Ee0R8i+EiZYYxaSUz5C+2gra2gKQ7gk7Bk0U
-	SgRsThzTU22s0J7EjDCnQ84IzBizEbM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754920605; a=rsa-sha256;
-	cv=none;
-	b=UEm/bjaQ8dyiOvUILGhwY7Jo7B1WUb2EUYvdZHpnUJcPj8D6peGnXBFCXbBILvZtQtVNAQ
-	UbjHcU8Ou/AUq9ekt6QVAIZofutH8VmbqblmuId/1LGhP5YZmW4yza1MMT8DgwyrvOV0r7
-	B+Yd3+VCI3tHchpOMcBszGQ5AfbjNOw=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gowW3LjX;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b44819668cfso58809a12.0
-        for <linux-mm@kvack.org>; Mon, 11 Aug 2025 06:56:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754920604; x=1755525404; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tCOQyeQgQCrSvbOG3qdi00ec7ZXwXD5w2RBXU1VKOdY=;
-        b=gowW3LjXFcklmzDESlwMBAFmaPU3LeV12MUbMum30l6MHFw+KB36vyZ2OiLrC9Ib9Q
-         kkS1JoQLow33v+lXBpPrM6Y8nk0RqmTRoZlPrfEnb8ubvXT4G7PNhOarZ/IhIE9aUKEk
-         b21IVnKwJag4bPPeeNw8Aoo2oYVnqwpMDc3QwFBb6SmeiYFYYKBGw2Ks6VoumFnJoAmF
-         zhvl1ziMHF44ylpz4ngl0poX37i1UhjnTRhBdIOIWa2aJS6kvVEiZXjbjU2WedokpCOr
-         qrCxfwSiK61YGnFmvBj2qwI7lu71C0S8q/iUhklstqtS5wrsvZHIXz1jMm9a02/1cNC2
-         bnFQ==
+	bh=/lG6B8pei2eYuQuxEro82WAinqULNxMleyX0BHmMNsk=;
+	b=pzitjiSdl/bavSEwmV1kp9PpHHSUrwocGbh2glsV3WLXgZWfoi2U57tZov/AqXEkr69Jjv
+	PiACGbmNRC7WOFq0jNccLOIsZW2XPNljX1KvtecZ69nS9yoMNaTgwwRDNN0gabtAwq5S00
+	WuDRb29TvYRu22jPc/ZxxyHyzNWVEY4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1754920825;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/lG6B8pei2eYuQuxEro82WAinqULNxMleyX0BHmMNsk=;
+	b=S0C2K5yfyoV6Xen6OTOeKcOGd9hZY9dBtwy8p34coeEXT1eHHOCNsP0+xxm+1GDXxHxjUj
+	c/9CSdKAWmJvfB2p05ihuoXp6HxE+6Vrek6NffvaVefGCTeodcpntmRxvTmmQ6esysy2sM
+	VxYmrV/tPrb+3YyWir6vHITWpejhlNw=
+Received: from mail-yb1-f200.google.com (mail-yb1-f200.google.com
+ [209.85.219.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-386-BbpBRzLXOsKI1UvhYNtvIA-1; Mon, 11 Aug 2025 10:00:24 -0400
+X-MC-Unique: BbpBRzLXOsKI1UvhYNtvIA-1
+X-Mimecast-MFC-AGG-ID: BbpBRzLXOsKI1UvhYNtvIA_1754920824
+Received: by mail-yb1-f200.google.com with SMTP id 3f1490d57ef6-e72b0980138so2692690276.1
+        for <linux-mm@kvack.org>; Mon, 11 Aug 2025 07:00:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754920604; x=1755525404;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tCOQyeQgQCrSvbOG3qdi00ec7ZXwXD5w2RBXU1VKOdY=;
-        b=ftTJ6acupq5+f02TEAy1JevidlDBIWZPXko8uUQJNGfH22Shnl4z+69PKmpZD1dLA2
-         PMg//9Vq9HHFM1TkaywBK1wzqKXB1SEuGYrTUxO8G225LrKrB3Bm8wu//avEXO28ssFD
-         Z3SA2lf2WWmmy0rgrinq0sx2jjDf+6qpeI0alC4fC/BTMBn6gIkBqhoTO4D34jd/xFQd
-         TSq6IyJ8QHHMEIefFCWPBAOKQRvq4jyzA+pGAVrlW4z3L5qOOuMUI8p+u5eWml8WbE4F
-         +T+2vbXe4o3rnd2ENiworiF5TowguuAu6Pc9ITzATmR73dnkM+RopgK9qdD6OdO/3FxW
-         9EDA==
-X-Forwarded-Encrypted: i=1; AJvYcCWCk3Hs4dtsiqGUaZg3nFdu40+M9DQEvq8qcVVaMf0Kamzuvh4PTcv/mulm052WlJ+k2HWxK8d+Ag==@kvack.org
-X-Gm-Message-State: AOJu0YxEIQXMK0ouEb84wKes8HH8VCG7+cT8kF3+Xudx1C93rP5+cojW
-	HCmiW3CWqlX8mNVSgJmRPHd/oEyop2u3pn423yQgNhsMBZfRlhg0E/tBGTm0FARgJR7o/zilqEp
-	7it+ug6wP7QnHIZjQCRntNuyC2zy0umU=
-X-Gm-Gg: ASbGncssxWO1yIYfImu/SBu858wYnfmZ+CSFmAtHDi7u06JlFnXLxcA4W7WOEDUi8pF
-	5NZCuPWXzXpJkSO7sLgU8tAqERE4ucj3kbWHW6LXuH/3yjAtzEubM4bb4EMYUpuJz6hIbBjDoyu
-	iLgKqXWaVoHofBtCL9jLBtMMSAsWpQxi2HHW5JKS5+NV/lHx25OOJ24dREkgj1igwZq9NleNL2E
-	XNRSGMK
-X-Google-Smtp-Source: AGHT+IGm51CikGHL6+jYmpTwxrPxuovvEiRL6i4rcZPBDkpdQusZ94Avk47mANayPiICPGjLYk5AoIIPxCie5iZ/BD8=
-X-Received: by 2002:a17:90b:1c85:b0:31f:3d6:6d98 with SMTP id
- 98e67ed59e1d1-32199dcd917mr5571397a91.5.1754920604001; Mon, 11 Aug 2025
- 06:56:44 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1754920824; x=1755525624;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/lG6B8pei2eYuQuxEro82WAinqULNxMleyX0BHmMNsk=;
+        b=EapEUH1z8SjwnI9xcMDkgNJ5dLl/O8PJ5JAXfiaj0VuFFJeC+RNXu8Lg+wDAng1NPs
+         o9cUBvilO5qPJawV9TK5OWlp0Dfg1SUM2kP5UnnFCnGRranYP2gZ9Yep+D5I8cOPbS4p
+         rvaf0S9hvP4U2IU3RBrxWfi2U6bLbFBSn1/wbmOAXwMeBUkG35WiLdr7UZkQz2z39fp7
+         2fx30sZWs1oRLcGIHAuUanpNEXPJbJjFBDV5fgk000es5f9D1WObfYDAzNrDuSEJ40W/
+         pGRhNXP762lnBI/OA9Bg2wp7EMZP31bAllEKtTwM4xrER7o9ZEN82F1ofJ/4upsyotri
+         O+ZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX6iQ1ZmuiEUHchRZPwF8MwZUPrJ4sWanpYKNGYKVd6UzAtKFVBibiT4SnkUON3rW3yzdeumsEQlg==@kvack.org
+X-Gm-Message-State: AOJu0YwzS22uWVn6kkxGDPdAS/mN+l6QPyJJiaTvllDUEk1aRFGv9kVx
+	FLcOfKO4W1k8Fpw9C/T026mN/p2Cj6wz07ekaV8ogRzkCClrGWX5N8VPlmzh9U9+4dK+UF/lknb
+	caM8Cztgqj3pO6765ptiDoTHG7ujGh+oMIYXb8zdGgu0ImZAwbydX
+X-Gm-Gg: ASbGncuIRVCKgdtxDneIXwLHtY/nTbGWXH2Ln8/qgAMfmz4PwBUN0wihwaQS4umiCjC
+	XSnIk02aI20MBzsZWMSGWrQqUwB329YM7LQuWXwkM8tIPcYuAnYm8NxI3psOaAJ+IR01AtIx6XI
+	nofMBdUOg7ej/c6x+iw4B/9faxDd54dWvlPxO7QRRP0RUF9bHI6Y+8pArUVcfocatFTDHdwmOaA
+	YWp3XigoLyi/THFjTe1uvsiXXiz1DhEfWk1RovSpFiTrJCRtYUfTDitnZfb81h+prgtzPiS0amQ
+	b9cWnYOjJWiPzuf0CYlRAcifOXnGCBY2
+X-Received: by 2002:a05:6902:26ca:b0:e90:33c8:1b2d with SMTP id 3f1490d57ef6-e904b4a29cdmr12331024276.14.1754920823306;
+        Mon, 11 Aug 2025 07:00:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGObVjBZuwdQ+dSw6tzVznx3yYM1y550DASu5Gp1CEzbUS3E9GPq/e/G9AAjaDuhhSGdHdGWA==
+X-Received: by 2002:a05:6902:26ca:b0:e90:33c8:1b2d with SMTP id 3f1490d57ef6-e904b4a29cdmr12330859276.14.1754920821822;
+        Mon, 11 Aug 2025 07:00:21 -0700 (PDT)
+Received: from x1.local ([174.89.135.171])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e8fd388478dsm9710327276.31.2025.08.11.07.00.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Aug 2025 07:00:21 -0700 (PDT)
+Date: Mon, 11 Aug 2025 10:00:07 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Lokesh Gidra <lokeshgidra@google.com>
+Cc: akpm@linux-foundation.org, aarcange@redhat.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, 21cnbao@gmail.com,
+	ngeoffray@google.com, Suren Baghdasaryan <surenb@google.com>,
+	Kalesh Singh <kaleshsingh@google.com>,
+	Barry Song <v-songbaohua@oppo.com>,
+	David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v3] userfaultfd: opportunistic TLB-flush batching for
+ present pages in MOVE
+Message-ID: <aJn3Z3q_kZl4Nob2@x1.local>
+References: <20250807103902.2242717-1-lokeshgidra@google.com>
+ <aJT7qQzEs_p36yfI@x1.local>
+ <CA+EESO64MOZaJHyY_mTy6Gqvaz=CkPLHgc-UZ1rg8FXcPyh0aA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20250713-xarray-insert-reserve-v2-0-b939645808a2@gmail.com>
- <iPv7ly-33WYOq_9Fait3DBD6dQCAn1WCRGwXjlPgNBmuj5yejzu0D6-qfg3VYyJfwu9uS4rJOu9o3L2ebudROw==@protonmail.internalid>
- <20250713-xarray-insert-reserve-v2-3-b939645808a2@gmail.com>
- <87o6smf0no.fsf@t14s.mail-host-address-is-not-set> <CAJ-ks9kTacXO_PbcH8c-60Ae88vJ_w6_pbmXLzOpzTKgRjiXPw@mail.gmail.com>
-In-Reply-To: <CAJ-ks9kTacXO_PbcH8c-60Ae88vJ_w6_pbmXLzOpzTKgRjiXPw@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 11 Aug 2025 15:56:32 +0200
-X-Gm-Features: Ac12FXxaMvGNNkQ2aB4e9UkhjuY-poUIRWZU0YDLB8I_zmJcCDsbhfY45An33jQ
-Message-ID: <CANiq72nR1EfB3SRyusswrHY0Wo1JYky_Cap8Lb1NjuHGwC9ggA@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] rust: xarray: add `insert` and `reserve`
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Janne Grunau <j@jannau.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 4E29E40004
-X-Stat-Signature: b7zbyzx4qrsf9mon35jfcs86pog4635p
+In-Reply-To: <CA+EESO64MOZaJHyY_mTy6Gqvaz=CkPLHgc-UZ1rg8FXcPyh0aA@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: SA5JYvJsbWg2M-b_QEiJ5cmqsq1p1T4CzR4TSI31R8U_1754920824
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: yb6e97z54tjjtahqxbjhaap9k5hogdg8
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1754920605-588025
-X-HE-Meta: U2FsdGVkX1/nczbUYM92RAPJulnkZPmQammDLf0atFV8C3t7GrHE/5TNqRfp0PwyD1oMs0RuLVPLic9Ig0j49ZJBVCxaSUyKxkN293XKx+rQrmn5M/YZETnEnOLcu10b2AsMNxuMVGZBtmggsiPDQWWtcSPj3pvvpLfjJ6wXyZgzU6PYzBI/yBjCF+jaLIHFNcP6IjnigHuOPMGrv5hIdajgIcJzEAmSHL2iPjLXLpSF1hMxLb67GlSibly8NjnJxccuHlNFelgYN/16GQQy+gI8PuMAs9B7rApmdPepvxpnRAKxfn4P0AHM1t/1CB5aNM7lGVb+55SWaQ+PaiaKB7e0IdQQSoXoOHGecAeyWBRGPxadpxdgfu5Ib7kh1sbclr9sa44keTpM6HWpPQgPvQOuesslAzxmAqphipupMw+HuEAda1NVaEr+wa6zwG5wUD+9irgdMMVX32GRCzO8sAJju8CESXRuUF5MTRC5OVfVgDRb0IXfH2ZFqx5aEjDQaeXwpijBEfXA7rRi/vpMxfXjJcNoM05+aYa9dullyw/zAEh9x5d1sDe8ps7nM4LKhXqcJtzuI/miEcXni6sfrZyYMeEEIB2+VH/vkcQSYp3KD3V7aM21lSLa5JGb8K2d7biBtAWNfbFvv+8A7ELhR5jnmyDAQ0wo8DBzP+7GOxSBp2WLwpgE9ATqYXAllisD33dCgwzBCqWocGrOTm9PApb+uGr6TVgFmYWVHMcnDI2sqPUc9CkDYCTVsYgkjLGb/3f+omrlETYoD56nIoZXx2y8TE3eoQ+CZ2byrVuQVgZ+WYkaVGAM4cjcUw8jXIqoLuVsFdxo3yAkzk7SZQBFtxiMBM37Wk8/IqhB97Eb/sqNLHfkQ7jNB2Wvnky0eVortH5Pp3cgFYI2zqSjvzkVX3s+gHPUpNoKGVBbFe53/ehSjGJma/B4Mx8ry8awEYy04SVsSq4xeZ7zHE+b5Lp
- kQQ2hpod
- mPfhol0al85A/WDOWymj8Nv80JWPWc4XOpMiNj+yhiPTVMGJIceZrg6doO6rcRLsdXw0D7Rv03AxayPaYV//vgwSUek8NlUdnOhVALGl8YquWNPupOoYpHVElg37QaJp+XGmlE4ree0nkQ5aGqi/UxYbIERRDIzMe9jE/vab0aSl3SHPzcMpyOzB0dBSCJ1vEqshJQJjgujLc/7basx6eGQXXZT8ywloxTBylUvvy3/HFrOlPrR1dzNhBYhYUxVnilkC5EQZqcOgHqqZ5nyqeYsYGzV5IgAFrzvzIAKMCT67sWsIgs0pDtWh1SPFM9mjjx3cm3M9i4lI1/XGP41NjUbD6NBwrerg9Di23I8zsb1lETIlqaVbvudsSPtwPY+r8RrL5oQxIZ+0g8o4TP1lnUIk0aKFrCO8qeJLD03LsmtkAfLsO84y3unhidkivNPYgYv9Gr1//BG3ln95ZNxsnjW3oorGgSxZszMpLWP7J6kHCQeBxf/XE63+/4AjjrdrtZ7VY
+X-Rspamd-Queue-Id: 30EB5120016
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1754920826-682925
+X-HE-Meta: U2FsdGVkX192sPNaNKYbwvE/hE4CFbeX7fIZABxUlk6+FD0+r4aalfizaEEV9js74MvgMwIWIJdEPv/xT5Llfe2ms20g6iDOvreIQym+N4eZnItpWwf1wYADLm4B5swYSEHnmeKOQXecjjiE+gVEVfk8Ts6LzJ6svDWFAisfFaah+SrPsGbsOzCyLMLvCWgMqGwOtoMgNPiyVaYq3WJgWp+zspZvkvSgZBkmBOQrhQnlBhhJAeIsn0rmyF/TWfEjC1DyJIdipFOF2IpXgwvb2S2OzK5bzCnW0WA+zYY+ayoof1zaSMEkOZ2TBk35gu5hRmXsStnLjO742c+VNn8NAEM2iRYQ7xqpe4ftvZS+GCdUVttcjvuyTB9W2tbBI7lB7gB81SRElXGy8oTiO6vkEot5w8ISJGPoIMWudLcy+zvumMIJgljJhbWFQF/dmwrJvTx1TBx07isn49SLY0lxcW3qJDtFffbtaTVAM3oT8JiGy4QIycG6NLhedVNFfq2cIMHYOos/hTyNSJuMBI34IifxCQgQ7tBLpFt2KIkL43XhMVVwzSD6nA+S3B47gQnXE0XqXyIoUvZEq1clOvJ1GFztWAq7NB3GhdYi1AhJ11artjq95IBDOwt/VbgD08eOxKbxzAC1gyLU063S0lnBDd3f8rFn6dgld+0Uok05VZ4cGJXlmm2Ip5IPpEvHIqEUJj5RrfoWLXU+ZuKkSIV9zGlbNjdOFiWRDqEc0/H8luNSlgdYudqaBc0Lno+1D+sDkOp1xd2M9+THmXIks+0QxGGkhB6PG7KAd/RPI0O9t7uG5ozMwb+3MQVmWNju/VxKiZcWoOIt8L6GTKWg2z4Nx4nepnj1jyTftF8c5WKJZFI/4ghH6Yu8JvGtcYHYmHBI6nOM2hseyIZLB/wW4bP3BbAFT/4E+6LR8cOJbVqHw3/af7aO/1RYvJuQfWkVfxVD6I93yYJroQy3Wn3oREO
+ djg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,27 +133,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 11, 2025 at 3:43=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
- wrote:
->
-> I think I prefer to hew close to the C naming. Is there prior art
-> where Rust names deviate from C names?
+On Fri, Aug 08, 2025 at 09:29:58AM -0700, Lokesh Gidra wrote:
+> On Thu, Aug 7, 2025 at 12:17 PM Peter Xu <peterx@redhat.com> wrote:
+> >
+> > Hi, Lokesh,
+> >
+> > On Thu, Aug 07, 2025 at 03:39:02AM -0700, Lokesh Gidra wrote:
+> > > MOVE ioctl's runtime is dominated by TLB-flush cost, which is required
+> > > for moving present pages. Mitigate this cost by opportunistically
+> > > batching present contiguous pages for TLB flushing.
+> > >
+> > > Without batching, in our testing on an arm64 Android device with UFFD GC,
+> > > which uses MOVE ioctl for compaction, we observed that out of the total
+> > > time spent in move_pages_pte(), over 40% is in ptep_clear_flush(), and
+> > > ~20% in vm_normal_folio().
+> > >
+> > > With batching, the proportion of vm_normal_folio() increases to over
+> > > 70% of move_pages_pte() without any changes to vm_normal_folio().
+> >
+> > Do you know why vm_normal_folio() could be expensive? I still see quite
+> > some other things this path needs to do.
+> >
+> Let's discuss this in Andrew's reply thread.
 
-If it is a name that exists in the standard library and that we have
-to use (e.g. for another standard type/trait), then sometimes we pick
-that name instead of the kernel one.
+Sorry to get back to this late.  Thanks for the link, Andrew!
 
-For certain things, like constructors, we try to follow the usual Rust
-conventions.
+> 
+> > > Furthermore, time spent within move_pages_pte() is only ~20%, which
+> > > includes TLB-flush overhead.
+> >
+> > Indeed this should already prove the optimization, I'm just curious whether
+> > you've run some benchmark on the GC app to show the real world benefit.
+> >
+> I did! The same benchmark through which I gathered these numbers, when
+> run on cuttlefish (qemu android instance on x86_64), the completion
+> time of the benchmark went down from ~45mins to ~20mins. The benchmark
+> is very GC intensive and the overhead of IPI on vCPUs seems to be
+> enormous leading to this drastic improvement.
+> 
+> In another instance, system_server, one of the most critical system
+> processes on android, saw over 50% reduction in GC compaction time on
+> an arm64 android device.
 
-Moreover, sometimes there has been arguments about the chance to
-improve naming on Rust abstractions vs. the underlying APIs, e.g.
-`iget_locked()` vs. `get_or_create_inode()`.
+Would you mind add some of these numbers into the commit message when you
+repost?
 
-But, generally, we stick to the C names unless there is a good reason.
-It depends on not just the code, but also the C side maintainers and
-their plans.
+Thanks,
 
-Cheers,
-Miguel
+-- 
+Peter Xu
+
 
