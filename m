@@ -2,129 +2,95 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B741DCA0ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 16:30:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EB1E3CA0ED1
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 16:35:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 231608E0062; Mon, 11 Aug 2025 12:30:12 -0400 (EDT)
+	id 8CEF08E007A; Mon, 11 Aug 2025 12:35:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BB5F8E0060; Mon, 11 Aug 2025 12:30:12 -0400 (EDT)
+	id 8A4D28E0060; Mon, 11 Aug 2025 12:35:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0837E8E0062; Mon, 11 Aug 2025 12:30:12 -0400 (EDT)
+	id 7BA4F8E007A; Mon, 11 Aug 2025 12:35:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E473A8E0060
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 12:30:11 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BC1DF81B52
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 16:30:11 +0000 (UTC)
-X-FDA: 83765013822.23.4580563
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 3490640010
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 16:30:08 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=quicinc.com header.s=qcppdkim1 header.b=RZyKPJdh;
-	dmarc=pass (policy=none) header.from=quicinc.com;
-	spf=pass (imf01.hostedemail.com: domain of quic_charante@quicinc.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=quic_charante@quicinc.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 66F2F8E0060
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 12:35:11 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F01D51368E6
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 16:35:10 +0000 (UTC)
+X-FDA: 83765026380.29.C24CD37
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4607080013
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 16:35:09 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="qsEskb/x";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754930109; a=rsa-sha256;
+	cv=none;
+	b=SAPjBxwZpljy9kqHD81tpp7YPcFazOPLPdz1JwtNQvAZWRZ9aPncQS5lCs1+vN+80t8zdF
+	6oXGFcssRV9imgsO7bG/VpfuhyohWNlPYEoj4JrE+cV+qkdJSji8Rn2qpA0DqKlZZ7V8V0
+	bP26/+H5q15bxyu9KxFCjkUstMQlFz4=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="qsEskb/x";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754929809;
+	s=arc-20220608; t=1754930109;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HlMP3HUL6Cc8PMyjMVeTRfAvfp9gV/f6PuorDrC/x9M=;
-	b=1ED5PXfAr2F9shmtgKUI4pw2N0/A7KeeyI68CjFHmmMgEPtTVRJVtcXUztlP3mrTkgb1sR
-	ok4XkAN/Mc3fr/tfrnZV/FJIOP6wp7eplkDwyZDqjFcXt/WtdjTeAx9IWGc+N1gghB3wsP
-	Sig7ROopJ9Crxunv9raP0rvQ0moh4hE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754929809; a=rsa-sha256;
-	cv=none;
-	b=4h8BMejEOTlk6WXlhCPADDZ9MVxULKmSrSj5XiBeNi3T2SnussqU2EzYFd0AIIE3msIzyA
-	oDGHHnsAvIWqYWWU/bkYQWdBJvziHBNE6eq0i5SX4ZJkWdjVDeJclh4fLbJN9RdBzZHi66
-	2CJZ0mE5Zo4LiotoUULMOSTXWDedGxg=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=quicinc.com header.s=qcppdkim1 header.b=RZyKPJdh;
-	dmarc=pass (policy=none) header.from=quicinc.com;
-	spf=pass (imf01.hostedemail.com: domain of quic_charante@quicinc.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=quic_charante@quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57BBWOV5007754;
-	Mon, 11 Aug 2025 16:29:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	HlMP3HUL6Cc8PMyjMVeTRfAvfp9gV/f6PuorDrC/x9M=; b=RZyKPJdhen1V4+Hr
-	zW2NEPk4jQDgQ7MYOS5fc1lmVUVeFQWVbb20VyG60DZl7yVnWonD3XNH4BNO6JBl
-	yiFFK8qRpZi6wTqEhSZvIWV98cIooL+0rPy7budq1lz4Y8F9KWeRtkRn4QvmyD76
-	QsClMxdjqCCKaNZFTvnewjzKcij2PiTyF/d2LW1fIgaM21+WCEl4YEHAAqahFJm+
-	uPdnW6WoCTVdtXaDGmXo3iLUxAuTE8euMbCJhEE1+GfOfamrFUfsbfdkfOrp0C8s
-	v9jyPQhqsuQXrLhKB3jRXy+qBoiaiLsepYhq3nz91/f8g2RORx7S3/M+nahKFLuE
-	0RGXww==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ffq6gx3m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 Aug 2025 16:29:56 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 57BGTtYc030278
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 Aug 2025 16:29:55 GMT
-Received: from [10.216.45.192] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Mon, 11 Aug
- 2025 09:29:51 -0700
-Message-ID: <25f6b30a-75fd-429c-ad3a-29cfc3a677a8@quicinc.com>
-Date: Mon, 11 Aug 2025 21:59:49 +0530
+	bh=TDrXg4lSCK4itLDP74MhSKr+GFauxn/ypS0n58V4Syo=;
+	b=ntTkjZQ93bYufcVMCie0mFV76D5+U6OiI9DvTH2qal8fKhB/gqcJAEWvT29ZHMif//jWKw
+	49q/F+KPEw3aBDrPdQuHcewgXN7Mkams032dB9E4s2c6AY8dFY78gxol2bGfRfE9BhHkcB
+	Bc9qdlU4H3Xe6lYQ4tqXVXTWPJu4suA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id BF608449A1;
+	Mon, 11 Aug 2025 16:35:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D41AC4CEED;
+	Mon, 11 Aug 2025 16:35:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754930107;
+	bh=U3ajoq2JrlMt/JwLVtLkb6ZXEGfnsVViHIOqNoUf92Y=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=qsEskb/xJAz3GxhKxE0sBOWRebcAIO53TMFP/Yn85IgldEGEVADeuMoXhjJiPSAB4
+	 ye5JPikwIET8n/WchW2Q8XAS5bdZN9ld4i6Y0Le46v7rWK+6APLIudA9Sv93N5dVWf
+	 55SHBcT9dVIRHsY1cx3FeXqF0fW+co2jmNu05J+V15mH3U6Qypk02fS1K894eSmBEq
+	 jaswoGPazb0RApM38bHVXjxBnHLr/ZB+2iYyI9eR0o0vEQpgac3OxRMagD2rMzWWqp
+	 NFJcaa86W4/7B/UQ7Nsp0VkiDKE0RIvn+4jLQ4nyqs05v9lZNeiVZsa5SjIfzFqP6W
+	 yz4kiyxBk+YBA==
+From: SeongJae Park <sj@kernel.org>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	oe-kbuild@lists.linux.dev,
+	Bijan Tabatabai <bijan311@gmail.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	lkp@intel.com,
+	oe-kbuild-all@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	corbet@lwn.net,
+	Bijan Tabatabai <bijantabatab@micron.com>
+Subject: Re: [PATCH 2/5] mm/damon/sysfs: Implement a command to only commit scheme dests
+Date: Mon, 11 Aug 2025 09:35:05 -0700
+Message-Id: <20250811163505.62056-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <202508101330.XRQqvfiN-lkp@intel.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: swap: check for xa_zero_entry() on vma in swapoff
- path
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-CC: <akpm@linux-foundation.org>, <shikemeng@huaweicloud.com>,
-        <kasong@tencent.com>, <nphamcs@gmail.com>, <bhe@redhat.com>,
-        <baohua@kernel.org>, <chrisl@kernel.org>, <david@redhat.com>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-References: <20250808092156.1918973-1-quic_charante@quicinc.com>
- <46d4a5bb-5734-40b4-a5f1-3094500ef1c3@lucifer.local>
-Content-Language: en-US
-From: Charan Teja Kalla <quic_charante@quicinc.com>
-In-Reply-To: <46d4a5bb-5734-40b4-a5f1-3094500ef1c3@lucifer.local>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODExMDA3NSBTYWx0ZWRfX3cOyk7cOWaNP
- X9O6YD0qm4tN42PMd2cVWr4rmsRn728khHrJMWs/qobrWaMvg4RtLXsudawgppGwIfXcLYEMTDs
- KnJgyKSAszS0V0IekerdkFlSTN99leBMVSw8npoeg96NEoLSoHnIK3u2IiPt5XjYWVk1to6e/Wm
- OUV+h0+nzky3WHvhSC8TQtVBrgcl17/6MIgzxwGyHlsA1T9y+BziezB4rO9RorilhzhU64s+5t2
- GSiQawACZX9kw+8zg++Ru1ZBl32Yq1KnYG5s3iScUlYZfYPIoSCpr721dCqXJJJFZnZZI4W5PY8
- MP+sENMEGy/NXlmfHIeTcC+PSP83FfB21witL+OVFBmA7W0d2i7H+4vFVL4cM17ZxmZwNzMnxfq
- 4CBQW2NC
-X-Authority-Analysis: v=2.4 cv=TLZFS0la c=1 sm=1 tr=0 ts=689a1a84 cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10
- a=Eu7-4bY5xJMfsWnsbBEA:9 a=NqO74GWdXPXpGKcKHaDJD/ajO6k=:19 a=QEXdDO2ut3YA:10
- a=QYH75iMubAgA:10
-X-Proofpoint-GUID: dgL5N7pKdAMMncEIiKUWYf5ebzNIeq1P
-X-Proofpoint-ORIG-GUID: dgL5N7pKdAMMncEIiKUWYf5ebzNIeq1P
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-11_03,2025-08-11_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 phishscore=0 malwarescore=0 spamscore=0 priorityscore=1501
- bulkscore=0 adultscore=0 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508110075
-X-Rspamd-Queue-Id: 3490640010
-X-Stat-Signature: 9x8bhomnjazwmukm94aqxp5uaoce57u3
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1754929808-540668
-X-HE-Meta: U2FsdGVkX1/a1zI5bklra0NtpEMNo1OGAgxOQ8WfcrPSALzgVYbnH4NmWOxFjoWs7opghpZ1oPgjjRYfLwF2Wn6roRPeRyI7ecRGGwhrnHQZ7RG0RAdrWpKX3Dz68OwDevraOLUapBUh2HanKyt1t5rvUpGKj4Kmrr772ajxZLdYglE6iUKS9GCrJRS85Maee7U0J+ha4jXj3/sti0JhISnavpJsmOVvd824/I+A73X4ytoEonr8c+5jWIYH5wHATLEqmoZkwctnDwTznMJyioIWVCB+VkZseycUjXvDRp9xe3gtP1rBn0cPHkpeQxOGn+R8AyTH8qRPyKNBJ7nmuVOHahZH46HrstU7PKirB+QrPm/Gp6vVJMvTI5f5KnHA0I+EKlnoERyHTEEfaeRryD/bnzDLFbiSXeE68JOlKBSIYtH3z9RgNf7lqMaVJcDJbVhEqz8bTVC8d71WzX+8fUKddsbpYwCP9V7tZ2gQH3lkDMzVTc+4+Ej/pWW8IoC50QFa6qnHQbe0KydMyZm+pAaBG7t1WX70aDysHVd+OjmljS3BKHLEWTnAckazmh3LZLQEo3S9jcOEnhG9LPxS4eA2KhN9yqONJh7sOw/ByJm7elvKyP7ZfRfvdfkGgLLVrt+Hm8qk1KEoqGggaSXnZozccOyp32NatBktDb+HI72uCVWb9ezCAHjJssGJXXoz9Df944QE4Om+fG2lUmZzkAN0LmoI/oR3ezFDHG0voM0tH00+w3diq0fZLmlr+U1HnWfi89fR9ifvLzEWLwWVlydiHxmIw2gXYIIArWOseGHh5nM2q/bZPqTG/uixlLOHwlRh5esPeggT65zlQG+KqLumU1nziWKZHO42ywzQvnRqZBnrdGKSfhqemvVqGowaFFO4Qv4CcuJ+UWlR26va8Bka1+R7OWWvkm0o0Xzx6PDninvRyfPHb+F2L65DqX8SoJqxoBB4Q1T1DucLyj5
- x1WImAZ6
- 6kBPFFtMKpxXsGvfM0SrPrV81YOwm8SGAvpKQxq81mBbonhgGDqJBDC6Lzr6FTFt5fTud23b/jY64rQkJ45rchJ5tvIOFWNciKFx1ERYy97Dr5M6aYorL7Jpzj2aBKiS33F26X/cuzjdQp8Ua2DPOoCVOdTSiwSpB8BO/h3n3SuJ8/gkGT0hTs6A5XxxtYeeZyh+ioTR7huRgGbG4WkaHkUf46JjHLVt9BK/MR4T5OmjGZ4lgRTx+MExD46nkOv8oRe8a6rw7sUGlj6aKWDFmvwg5YukanSp05LedgEovizDWpvp4s6xUSYA++UjodgWpp8hdmpBHZBj28ekgRI/qkGAe6U/Hu7PFLXgFR7H8bVBbl4OgP02NXZpnHO2phwUBb687gMMVqqTEd7fPEcwoK7okp6iFVDMINk8ZGNGS24Bhkp4hykKKRdKXs5CX0FHsQPxV68U+VCYGAmJQSV2SfvEFbQ==
+X-Rspamd-Queue-Id: 4607080013
+X-Stat-Signature: 1q9fhe7dy5bfhhopo69mic5zo1whob65
+X-HE-Tag: 1754930109-83712
+X-HE-Meta: U2FsdGVkX186S6cxcGBD0rk8kC+PH5iAqKgRzwNstgJO/weu0gm0SbB1vitoC/7ItCr0HpKgIlrVISgbRjvKCQXfoF+R4NC4c6DbesqnSOAxDdEcjh9YNkBrAuZGx2wynmexsZzMU4PoEXRw6s820sj29yQrN/r+bftQOuOR2AqHonOGbVLBLnCf8aZc2Mlqz2YVlRPuOMUUmmuHBiupkfRVjbmwSfKBNS2QmI4yNp+X8fwzoITT6sNdhTNENl0U4UFnRsRQ/Wm7OR9nFi4dUeKZPP0nph7ZDTehx+V25MabVFigCS33bWmB0hOQHFg4zj53eawXXpvB+R7Q/0QuUsbTT422uyaXXUBo11p0meWbpHFY+iPtM718LU85yPJXGlLu7ev+B6/c3f1VaYH5UBU/BDsZSEpdDQmlAR0LMn/TYXNhTjYp3YF3A0r+uoTAjQGPkVminScUc9okWU10+WyJTMtHKOSct9mupKArVWhBfhOA3xMk8aYHbk1dWCbO7GVt3l5Ki5RgSwX81IEAV2MlxFRgYdm5xbDg8Jf2rK5ynLc7PFvRby7XBZqo/x8BcLFE+zIHIRwJfUO6tnlbmNq5zzMGxAHoLzL0mGeu955mbSLfP/Sp6kABf4PMvrNYOmROcMadpbmwrdHZ/LPmILTyHA3CRMbSVJ4DD5BMBn3hR+azdRkdwpEXXbk6ZljYU5Yk71NU/VslDBEsGskv+te5gb2VvpIZSbMrGTBs5CSKTEveXzP8QngOIZmqjI3OJRIEbROOrGKcTYx8E2DnfkIQN5w/W9Hr8acWb+gD2l42+GCZn5+uYwLbN6KzPqg8hiRSQ070oc08M8bK91PF+o9TA4xNpSi2geP6Fa7QFN0O/Fq8ES2Ut6nfCVY5ti3lug8MWItSQYmXgVy8PL/crkmAOKosAAPoYykaQh3Gbgcgblc+QVOgh0us53ETkKgn+1CgQxA64UDWzRn1g7W
+ 43+0CoKA
+ pZ5VZBE0hh1w/su2nXIsOpwExhCW2A8Vu8iWEgupoxudWHVqBsPu/pN5lCvPYAsSuqyPqA0FDqjg9sJ5Xs+KvOV/keO0FouG9g0B1TxyyszMTBjBAYsP1I9MBdS7pjGRqnST0Io1QK2k77Een3UXDCwIpsrSFT5aDBudZarsEp6mm/UjMjkBMJFet878J2yXQc8Pnm8HIuy/+hMDpdw0ZKQd/CdtUQdtp+bNlC6toqVSaOhQ/S4UmQ9mZ1PlyXXfGqHB1cgLIdzErrdrH7kcJcoH1fRUG/ky92Bh56NNywZ4dj75P1TMp4L0NqoLGOCiNi3KyUCN+8UwvmvCwrqD199FhfFdX1JcVRJlZRDP/zsWfa47wel43SfLYrAuBxPoTYyHn7nd1sugVLWDsJgfacc1Q4UndgQ4QxuFDXyExRQPFRLo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,18 +99,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, 11 Aug 2025 10:00:50 +0300 Dan Carpenter <dan.carpenter@linaro.org> wrote:
 
-
-On 8/11/2025 5:37 PM, Lorenzo Stoakes wrote:
-> Any syzbot link or further information as to where this bug was found? Was this
-> on your system?
+> Hi Bijan,
 > 
-> Has this happened in reality or due to fault injection?
-Sorry, missed to mention this information on the commit message.
+> kernel test robot noticed the following build warnings:
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Bijan-Tabatabai/mm-damon-core-Add-damos_destroy_dests/20250806-120845
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+> patch link:    https://lore.kernel.org/r/20250805162022.4920-3-bijan311%40gmail.com
+> patch subject: [PATCH 2/5] mm/damon/sysfs: Implement a command to only commit scheme dests
+> config: microblaze-randconfig-r072-20250810 (https://download.01.org/0day-ci/archive/20250810/202508101330.XRQqvfiN-lkp@intel.com/config)
+> compiler: microblaze-linux-gcc (GCC) 8.5.0
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> | Closes: https://lore.kernel.org/r/202508101330.XRQqvfiN-lkp@intel.com/
+> 
+> smatch warnings:
+> mm/damon/sysfs-schemes.c:2605 damos_sysfs_set_schemes_dests() warn: iterator 'i' not incremented
 
-Yes this is really reported on the 6.12 LTS kernel, while running the
-tests on the device farm, though, reproduction rate is very low.
+Thank you for this report.  Nonetheless, this patch has replaced with another
+one[1].  Hence, we have no plan to make this patch be merged into the mainline,
+and we have no action item for this report.  Please let me know if I'm missing
+something.
 
-Thanks
-Charan
+[1] https://lore.kernel.org/20250806234254.10572-1-bijan311@gmail.com
+
+
+Thanks,
+SJ
+
+[...]
 
