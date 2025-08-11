@@ -2,119 +2,129 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5AE78CA0EC4
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 16:06:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B741DCA0ED1
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 16:30:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF7FB8E0079; Mon, 11 Aug 2025 12:06:22 -0400 (EDT)
+	id 231608E0062; Mon, 11 Aug 2025 12:30:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA8108E0060; Mon, 11 Aug 2025 12:06:22 -0400 (EDT)
+	id 1BB5F8E0060; Mon, 11 Aug 2025 12:30:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B70A78E0079; Mon, 11 Aug 2025 12:06:22 -0400 (EDT)
+	id 0837E8E0062; Mon, 11 Aug 2025 12:30:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E5158E0060
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 12:06:22 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id E473A8E0060
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 12:30:11 -0400 (EDT)
 Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6E1C41DB9D5
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 16:06:22 +0000 (UTC)
-X-FDA: 83764953804.23.47658BD
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 988991C000B
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 16:06:20 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=MZ3HVFxI;
-	spf=pass (imf21.hostedemail.com: domain of rientjes@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BC1DF81B52
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 16:30:11 +0000 (UTC)
+X-FDA: 83765013822.23.4580563
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 3490640010
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 16:30:08 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=quicinc.com header.s=qcppdkim1 header.b=RZyKPJdh;
+	dmarc=pass (policy=none) header.from=quicinc.com;
+	spf=pass (imf01.hostedemail.com: domain of quic_charante@quicinc.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=quic_charante@quicinc.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754928380;
+	s=arc-20220608; t=1754929809;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b4XB7rbDMRDvsKK6fD02IRXzMhRU39sjlSTEErIcNrs=;
-	b=bQ73bOXHt1U93rxKxlgIuXYTgq0uFLRLrzmDLNMcFGKEl/LorwWwhxPABFatQe25DUPSZL
-	pxzsdroTqj6psh0lUOKfwF+G5cgAvLPvRRx/IQ1RmZeD2KfK3m+AyDsM4noU67LOWeXwSr
-	5/59hPXrfwOlZWjoQbn2/jv5Fdj7F7w=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=MZ3HVFxI;
-	spf=pass (imf21.hostedemail.com: domain of rientjes@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754928380; a=rsa-sha256;
+	bh=HlMP3HUL6Cc8PMyjMVeTRfAvfp9gV/f6PuorDrC/x9M=;
+	b=1ED5PXfAr2F9shmtgKUI4pw2N0/A7KeeyI68CjFHmmMgEPtTVRJVtcXUztlP3mrTkgb1sR
+	ok4XkAN/Mc3fr/tfrnZV/FJIOP6wp7eplkDwyZDqjFcXt/WtdjTeAx9IWGc+N1gghB3wsP
+	Sig7ROopJ9Crxunv9raP0rvQ0moh4hE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754929809; a=rsa-sha256;
 	cv=none;
-	b=nF9yTTrYipvxzWw2hT0j7Za6d2P7Q5hMQ82cb1YpOvp4oGeD4T0YXrtPtq2Fc8ewZrWg/V
-	OpQ38BoZy276LR+skbmLCAZHJzf0lYC1+QJYXbzKTDJnVPtCC7RLKMTuZ+7OMSRPlO52Zs
-	QZNQ15/xDP2zgJBi6Yo6wUE6weUIJFk=
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-242d1e947feso347425ad.0
-        for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:06:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754928379; x=1755533179; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=b4XB7rbDMRDvsKK6fD02IRXzMhRU39sjlSTEErIcNrs=;
-        b=MZ3HVFxIj7NSEKjviegCi44UXxMOPOqMqfFev8y8pGOlWkmGJmG0GOvMBXUg0lLL6Q
-         3lYmZDSlfXExuSe1CaKc3dUZ0I6zj9L3/NCQkYU8x9zyaLL41heVzJwSWrLSOoNjr+Cq
-         0RQfaCuynRHdqwPdb3Q2ddrMBjcYNcjukWxnWuHQ3tCXoHDyGnnX67cispUvunMocDm6
-         RZXjX26o4J1f1C3GvwG//NzviKAnPMlGFQ6bnyuDdLTeETBYnGd6MD8r7Wkhz5WYLxa1
-         JguUOQcKWDsz+XkN6ScEM18I5Pdk7rHf0gXqp860JZ6KfsPsg3mC0+TYyeJ8JSZYdcHL
-         uj5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754928379; x=1755533179;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b4XB7rbDMRDvsKK6fD02IRXzMhRU39sjlSTEErIcNrs=;
-        b=QRj3pKLoTsX87iTk5jFaWquonEv16UbFceFEMqpeaqrCYd6dngwLAiMPCOQ/chcMGX
-         2gNV+R7m7px5CKr54u5O2frPX0QBfKJ2alm+lWD3aLFuxwAAyRkWEoAhy9rQCBf8vS5V
-         ySjJasEghO1KIYmNBiMlYeC+A/ulf8/Ax0oNDxOBsD9L9VB4M39IDOpKwRUkP9VhSIXw
-         MnYUkcJUGABKSIQhrr5/K8p4UmYT9Gwwx/Z5AAo3Eod/mRNS+lsL65TBSB1DCoh75i5m
-         75lrEmeWCxPKkmhRaMUYBOerdVzOpUxcT28DQCFYRH3ncUYfYiCjnGeK1l6Ya/0pWvXI
-         MoPw==
-X-Forwarded-Encrypted: i=1; AJvYcCW33K5gyhLbezAbL9ICnmBG2d5RZdOnsjRyP5T8BULNW6cVokCKZqSxI3PTgXH34rey/sh5IZHqUg==@kvack.org
-X-Gm-Message-State: AOJu0Ywh9MxLdvoHa3MLtcucoU1H7Vo79XI2/kn6lt/q06ayA/yZksaN
-	gZEOOpK3J0nZ9JWuUJ+pLZTE1Q9dbzSh2BIBmPsIJAWwjttEfoMAuR48Eg0OSTfygbCKt98alUY
-	2YwWVjfj+
-X-Gm-Gg: ASbGncvvaevlIxgdNNbRjI1w86LRRKYuApZCyY8CTuoYz2xNhTpg89ZBpGK+p7vT7e6
-	xccGlu2p61yj7jlYbDq4u7RpXiQCq9E8ZdUUcFqRlZWqHtMv6RTAuPsY16J0gswJOKG0GeqLXaZ
-	BHD0l7Tgxh+XYJv51MlGjj1Cl4xQpRYiteqpWNoUzp26RQUyIUsKvxWKotEOL3bYZL3vg0DhSY/
-	PS3AnaFbzqocEkBw7HfuTxRA+AKC2P11nq7AJcqJZ7si6p26fto5tLFZPZ6udXPvRs2TRs/mBv5
-	HXDFFidvPi+JWjWBUlsYMoqhl6GuIfxXbqoyysng7Nuy4v16YBnBxTuHLo5PdU76nwL6WFSFRCe
-	+Q8MIwMz2h75KRcBJKzgTimiFyTT3oI2JViwL2EOgQYdqPtaUdFrUYBj7juEB49Ostoeh8nTwst
-	RNOh2dCw84X6rU4N++
-X-Google-Smtp-Source: AGHT+IHfX3J5jPQcjeR7PGp0tVsL7ZVLWcGPT//n+uMiE8TlGUsCOcJGCeSa/IqlMj8LeXBSgpTeEA==
-X-Received: by 2002:a17:903:246:b0:23d:eb0f:f49 with SMTP id d9443c01a7336-242d2bc6116mr5965795ad.14.1754928378887;
-        Mon, 11 Aug 2025 09:06:18 -0700 (PDT)
-Received: from [2a00:79e0:2eb0:8:bf4b:17b7:3044:fe58] ([2a00:79e0:2eb0:8:bf4b:17b7:3044:fe58])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bccfbd174sm27194145b3a.63.2025.08.11.09.06.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Aug 2025 09:06:18 -0700 (PDT)
-Date: Mon, 11 Aug 2025 09:06:16 -0700 (PDT)
-From: David Rientjes <rientjes@google.com>
-To: Oleksandr Natalenko <oleksandr@natalenko.name>
-cc: linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
-    Jens Axboe <axboe@kernel.dk>, Damien Le Moal <dlemoal@kernel.org>, 
-    John Garry <john.g.garry@oracle.com>, Christoph Hellwig <hch@lst.de>, 
-    "Martin K. Petersen" <martin.petersen@oracle.com>, linux-mm@kvack.org, 
-    Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-    Shakeel Butt <shakeel.butt@linux.dev>, 
-    Qi Zheng <zhengqi.arch@bytedance.com>, Michal Hocko <mhocko@kernel.org>, 
-    David Hildenbrand <david@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-    Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [REGRESSION][BISECTED] Unexpected OOM instead of reclaiming
- inactive file pages
-In-Reply-To: <5905724.LvFx2qVVIh@natalenko.name>
-Message-ID: <199fb020-19ee-89d1-6373-7cc7f5babab8@google.com>
-References: <5905724.LvFx2qVVIh@natalenko.name>
+	b=4h8BMejEOTlk6WXlhCPADDZ9MVxULKmSrSj5XiBeNi3T2SnussqU2EzYFd0AIIE3msIzyA
+	oDGHHnsAvIWqYWWU/bkYQWdBJvziHBNE6eq0i5SX4ZJkWdjVDeJclh4fLbJN9RdBzZHi66
+	2CJZ0mE5Zo4LiotoUULMOSTXWDedGxg=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=quicinc.com header.s=qcppdkim1 header.b=RZyKPJdh;
+	dmarc=pass (policy=none) header.from=quicinc.com;
+	spf=pass (imf01.hostedemail.com: domain of quic_charante@quicinc.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=quic_charante@quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57BBWOV5007754;
+	Mon, 11 Aug 2025 16:29:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	HlMP3HUL6Cc8PMyjMVeTRfAvfp9gV/f6PuorDrC/x9M=; b=RZyKPJdhen1V4+Hr
+	zW2NEPk4jQDgQ7MYOS5fc1lmVUVeFQWVbb20VyG60DZl7yVnWonD3XNH4BNO6JBl
+	yiFFK8qRpZi6wTqEhSZvIWV98cIooL+0rPy7budq1lz4Y8F9KWeRtkRn4QvmyD76
+	QsClMxdjqCCKaNZFTvnewjzKcij2PiTyF/d2LW1fIgaM21+WCEl4YEHAAqahFJm+
+	uPdnW6WoCTVdtXaDGmXo3iLUxAuTE8euMbCJhEE1+GfOfamrFUfsbfdkfOrp0C8s
+	v9jyPQhqsuQXrLhKB3jRXy+qBoiaiLsepYhq3nz91/f8g2RORx7S3/M+nahKFLuE
+	0RGXww==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ffq6gx3m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Aug 2025 16:29:56 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 57BGTtYc030278
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Aug 2025 16:29:55 GMT
+Received: from [10.216.45.192] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Mon, 11 Aug
+ 2025 09:29:51 -0700
+Message-ID: <25f6b30a-75fd-429c-ad3a-29cfc3a677a8@quicinc.com>
+Date: Mon, 11 Aug 2025 21:59:49 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: swap: check for xa_zero_entry() on vma in swapoff
+ path
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+CC: <akpm@linux-foundation.org>, <shikemeng@huaweicloud.com>,
+        <kasong@tencent.com>, <nphamcs@gmail.com>, <bhe@redhat.com>,
+        <baohua@kernel.org>, <chrisl@kernel.org>, <david@redhat.com>,
+        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+References: <20250808092156.1918973-1-quic_charante@quicinc.com>
+ <46d4a5bb-5734-40b4-a5f1-3094500ef1c3@lucifer.local>
+Content-Language: en-US
+From: Charan Teja Kalla <quic_charante@quicinc.com>
+In-Reply-To: <46d4a5bb-5734-40b4-a5f1-3094500ef1c3@lucifer.local>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODExMDA3NSBTYWx0ZWRfX3cOyk7cOWaNP
+ X9O6YD0qm4tN42PMd2cVWr4rmsRn728khHrJMWs/qobrWaMvg4RtLXsudawgppGwIfXcLYEMTDs
+ KnJgyKSAszS0V0IekerdkFlSTN99leBMVSw8npoeg96NEoLSoHnIK3u2IiPt5XjYWVk1to6e/Wm
+ OUV+h0+nzky3WHvhSC8TQtVBrgcl17/6MIgzxwGyHlsA1T9y+BziezB4rO9RorilhzhU64s+5t2
+ GSiQawACZX9kw+8zg++Ru1ZBl32Yq1KnYG5s3iScUlYZfYPIoSCpr721dCqXJJJFZnZZI4W5PY8
+ MP+sENMEGy/NXlmfHIeTcC+PSP83FfB21witL+OVFBmA7W0d2i7H+4vFVL4cM17ZxmZwNzMnxfq
+ 4CBQW2NC
+X-Authority-Analysis: v=2.4 cv=TLZFS0la c=1 sm=1 tr=0 ts=689a1a84 cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10
+ a=Eu7-4bY5xJMfsWnsbBEA:9 a=NqO74GWdXPXpGKcKHaDJD/ajO6k=:19 a=QEXdDO2ut3YA:10
+ a=QYH75iMubAgA:10
+X-Proofpoint-GUID: dgL5N7pKdAMMncEIiKUWYf5ebzNIeq1P
+X-Proofpoint-ORIG-GUID: dgL5N7pKdAMMncEIiKUWYf5ebzNIeq1P
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-11_03,2025-08-11_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 phishscore=0 malwarescore=0 spamscore=0 priorityscore=1501
+ bulkscore=0 adultscore=0 impostorscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508110075
+X-Rspamd-Queue-Id: 3490640010
+X-Stat-Signature: 9x8bhomnjazwmukm94aqxp5uaoce57u3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 988991C000B
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ahoe53tkuy3q7pdp4qp1b44tk4j81ir1
-X-HE-Tag: 1754928380-917458
-X-HE-Meta: U2FsdGVkX19t6MWzRQjKO2NYiE/GSyFtTkazJSEnJmVpV5N6tBWHLcv5KVJLEsnMieipEQDtw7UwsY9tpxWLcZ+3VH4zMEcmfjBuuy+ytrtLObBqSta9C6iI+lmJh8JyIgcKnQF4buiTHrsesRunvLrMfxzLsXgmQB2wvC4lx7F5Q1zmPdgrf4cjLtGKhOIKV34h8hbVr6BD52+GcKaCI8Tlfh5nqOQNFK/IQdarH3W98JrYY+pOcQePDeojWl9rPImhNTsfjnZ/cjtGzjUh9QYH+KvJ006BC9/OI8gHVgU8UTq4fUAmFwAmsSMxyEEPnbu361r7cdhaJ9yCCY6pon16isBtHOylWnHdN411qa/eAjb5pE/UPBsIg3sLtCTC2Qe0agDxBHLYUNrDgI5B+dJzkHhp9TbKNV4cqaas+90qkD3lMeVScqxlcUSkkn/K3I2cprMogDd2VXd/q6zHVqaW/ldjMmYjAXww7cAH9TuhwjHRDJjcQO36f+7LWWH43/8PuI/+YeW1AtJNSaXk8vlb0aXaPmTU0oEyWvY6fEkPPpdqwWb502lawNj6MzpzP3mO8sll4itWpO/QE/oRV/BLN7y6j8vo1S/d766DSEchnQeRLdoK2Iruwiya7S6bzvrxy0ARytRJAPeNfwLs2MP0qLBM8NyULTXGaS/RnibmcBEO2I+QTzrb4cxnyp+8cXAQHkYU+4BD7FZs71VGdXapIPR8hFHpwIO+/RrH/qa1qxDa3TPg5YSv86wbpqLpfPpra0Z1m4CNZ9I2XImbbnVfgL/Q1tpJjlu99tBfQH9opav1dS0XA3SPYmga15/ZWOwH8RP1NRjOxPymL3Re+VE7RB2E0vNsn7EcMS3t6fgnUvLqNvaKuJZY/JWeinXglzQ8BcT0jPeZCPm4ffUkuApHj3+NpCe6k8IpNg00oA4XQV+npyHOSC3UasUMpKVQ+TTblN7P3KbBWBTNaCf
- gk0gOr1a
- RCjNBJSsWpttGXY9UpkMveclJotjBkuM9VV2g14kGZzycW9FBiKlvF2OiM8Xw9MT7M/ffb6G8SRUff1nxmrAKTx3Bn6bdOJztQPbyEAgOnCJ89zXMqwjHW8DSs9rSvF2k3hKBg0eH7zijh3OwNh1WSbzHYFsouxPnHsrMUV0sesdFc56ETQ5tdqyFiMoXI+YaPGNjqtnlJ2Kg+YaKU6lxWLkE57KOTHOlAkRTJmG+wiW6NJSdy0QEjGzx5vsyv71TcwL6L61tiV7VjJxN5nfH+vTicA/yrJwBG5yi35v40h0Rz3bd4GPMGXeuoKFTs65GUsxJ7fskcWIhnO6O6hNOz3Qee8YdLcSA94Gu7Gfc4xrO2jwvn81S7lY/VQ==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1754929808-540668
+X-HE-Meta: U2FsdGVkX1/a1zI5bklra0NtpEMNo1OGAgxOQ8WfcrPSALzgVYbnH4NmWOxFjoWs7opghpZ1oPgjjRYfLwF2Wn6roRPeRyI7ecRGGwhrnHQZ7RG0RAdrWpKX3Dz68OwDevraOLUapBUh2HanKyt1t5rvUpGKj4Kmrr772ajxZLdYglE6iUKS9GCrJRS85Maee7U0J+ha4jXj3/sti0JhISnavpJsmOVvd824/I+A73X4ytoEonr8c+5jWIYH5wHATLEqmoZkwctnDwTznMJyioIWVCB+VkZseycUjXvDRp9xe3gtP1rBn0cPHkpeQxOGn+R8AyTH8qRPyKNBJ7nmuVOHahZH46HrstU7PKirB+QrPm/Gp6vVJMvTI5f5KnHA0I+EKlnoERyHTEEfaeRryD/bnzDLFbiSXeE68JOlKBSIYtH3z9RgNf7lqMaVJcDJbVhEqz8bTVC8d71WzX+8fUKddsbpYwCP9V7tZ2gQH3lkDMzVTc+4+Ej/pWW8IoC50QFa6qnHQbe0KydMyZm+pAaBG7t1WX70aDysHVd+OjmljS3BKHLEWTnAckazmh3LZLQEo3S9jcOEnhG9LPxS4eA2KhN9yqONJh7sOw/ByJm7elvKyP7ZfRfvdfkGgLLVrt+Hm8qk1KEoqGggaSXnZozccOyp32NatBktDb+HI72uCVWb9ezCAHjJssGJXXoz9Df944QE4Om+fG2lUmZzkAN0LmoI/oR3ezFDHG0voM0tH00+w3diq0fZLmlr+U1HnWfi89fR9ifvLzEWLwWVlydiHxmIw2gXYIIArWOseGHh5nM2q/bZPqTG/uixlLOHwlRh5esPeggT65zlQG+KqLumU1nziWKZHO42ywzQvnRqZBnrdGKSfhqemvVqGowaFFO4Qv4CcuJ+UWlR26va8Bka1+R7OWWvkm0o0Xzx6PDninvRyfPHb+F2L65DqX8SoJqxoBB4Q1T1DucLyj5
+ x1WImAZ6
+ 6kBPFFtMKpxXsGvfM0SrPrV81YOwm8SGAvpKQxq81mBbonhgGDqJBDC6Lzr6FTFt5fTud23b/jY64rQkJ45rchJ5tvIOFWNciKFx1ERYy97Dr5M6aYorL7Jpzj2aBKiS33F26X/cuzjdQp8Ua2DPOoCVOdTSiwSpB8BO/h3n3SuJ8/gkGT0hTs6A5XxxtYeeZyh+ioTR7huRgGbG4WkaHkUf46JjHLVt9BK/MR4T5OmjGZ4lgRTx+MExD46nkOv8oRe8a6rw7sUGlj6aKWDFmvwg5YukanSp05LedgEovizDWpvp4s6xUSYA++UjodgWpp8hdmpBHZBj28ekgRI/qkGAe6U/Hu7PFLXgFR7H8bVBbl4OgP02NXZpnHO2phwUBb687gMMVqqTEd7fPEcwoK7okp6iFVDMINk8ZGNGS24Bhkp4hykKKRdKXs5CX0FHsQPxV68U+VCYGAmJQSV2SfvEFbQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,46 +133,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 11 Aug 2025, Oleksandr Natalenko wrote:
 
-> Hello Damien.
-> 
-> I'm fairly confident that the following commit
-> 
-> 459779d04ae8d block: Improve read ahead size for rotational devices
-> 
-> caused a regression in my test bench.
-> 
-> I'm running v6.17-rc1 in a small QEMU VM with virtio-scsi disk. It has got 1 GiB of RAM, so I can saturate it easily causing reclaiming mechanism to kick in.
-> 
-> If MGLRU is enabled:
-> 
-> $ echo 1000 | sudo tee /sys/kernel/mm/lru_gen/min_ttl_ms
-> 
-> then, once page cache builds up, an OOM happens without reclaiming inactive file pages: [1]. Note that inactive_file:506952kB, I'd expect these to be reclaimed instead, like how it happens with v6.16.
-> 
-> If MGLRU is disabled:
-> 
-> $ echo 0 | sudo tee /sys/kernel/mm/lru_gen/min_ttl_ms
-> 
-> then OOM doesn't occur, and things seem to work as usual.
-> 
-> If MGLRU is enabled, and 459779d04ae8d is reverted on top of v6.17-rc1, the OOM doesn't happen either.
-> 
-> Could you please check this?
-> 
 
-This looks to be an MGLRU policy decision rather than a readahead 
-regression, correct?
+On 8/11/2025 5:37 PM, Lorenzo Stoakes wrote:
+> Any syzbot link or further information as to where this bug was found? Was this
+> on your system?
+> 
+> Has this happened in reality or due to fault injection?
+Sorry, missed to mention this information on the commit message.
 
-Mem-Info:
-active_anon:388 inactive_anon:5382 isolated_anon:0
- active_file:9638 inactive_file:126738 isolated_file:0
+Yes this is really reported on the 6.12 LTS kernel, while running the
+tests on the device farm, though, reproduction rate is very low.
 
-Setting min_ttl_ms to 1000 is preserving the working set and triggering 
-the oom kill is the only alternative to free memory in that configuration.  
-The oom kill is being triggered by kswapd for this purpose.
-
-So additional readahead would certainly increase that working set.  This 
-looks working as intended.
+Thanks
+Charan
 
