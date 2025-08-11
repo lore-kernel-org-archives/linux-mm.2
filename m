@@ -2,112 +2,192 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 68A8ACA0ECD
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 15:29:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B73BCA0ECD
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 15:34:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E52E48E0072; Mon, 11 Aug 2025 11:29:00 -0400 (EDT)
+	id C89068E0073; Mon, 11 Aug 2025 11:34:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2A8C8E0060; Mon, 11 Aug 2025 11:29:00 -0400 (EDT)
+	id C66C58E0060; Mon, 11 Aug 2025 11:34:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D677A8E0072; Mon, 11 Aug 2025 11:29:00 -0400 (EDT)
+	id B507F8E0073; Mon, 11 Aug 2025 11:34:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C58648E0060
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 11:29:00 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 73AD21A021D
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 15:29:00 +0000 (UTC)
-X-FDA: 83764859640.04.656D289
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf21.hostedemail.com (Postfix) with ESMTP id F04BA1C0003
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 15:28:57 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=lZC6zGWj;
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf21.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A2D518E0060
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 11:34:05 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E138313678C
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 15:34:04 +0000 (UTC)
+X-FDA: 83764872408.14.42A56D7
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 419E0140008
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 15:34:02 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Dh/LHX1J";
+	spf=pass (imf23.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754926138;
+	s=arc-20220608; t=1754926442;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lAb2hlkPZfqAZ5oWuzo7LQdnJ5lfu4VxJv8CxW4eSIk=;
-	b=DRJpljjxUlIfTpdi94HPQxYrQU+A+WvgotL7uUJRW/GUMUzj/yf+qsXMrJFnACYyRKrNtk
-	vPA097FpB25pQZZ9J6mgoYEmxQVSHapYEqbKSMqtGjvoPoG+EOOXdOcik39dGkCk9/BlA6
-	Cix83Sop67rImziD+snFLnL68YfnPZc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754926138; a=rsa-sha256;
+	bh=UlyMvpUnFPwPIrW3E7xZ89HT91V0N5XoNHgGKm394UY=;
+	b=dlTFhf15rAqvaMpPdNv+NZoaaRn2urp0VJ73G/7/3LSGGzXhKXVPtNuZmLFbIIEet1MZjI
+	mqsblIDiSoJ88lkVsRY0EUrKinNz2969nL5Ay2lSuqDaGkE1XyN0zUM+xl1grpvtQSwRpH
+	O4K0+aIF0eNYaZywHrPU/Uz/qA5Cvi0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754926442; a=rsa-sha256;
 	cv=none;
-	b=lF1l6keq0I02D1C92sigGaPJbtRQ5veSzgYa2fiu8N6y/1YZw78cQrKPgG3gDkHaLOM3ET
-	Kj1VGkoEBNxg2K0o2sawYNuhmFoHRh4ZkGoSjKVrmiZVg+08zes5UJS7DceAIlDXmu2TfO
-	FrccLXJOchZgrOkQ5s4k5jp7EIysp6g=
+	b=DS62uaMfZeHoVutZBA/C3/7jGHqlbmYdllzObN8Iai5ihxB00jgWT7ut9m07zmrTiMTkrt
+	0NdW8Wf0pig8c7t8jPvc6yoKGVawU9zenfRHyqUGJdOn8my4ptftjVDjpvXdBilZH673+v
+	ZYdF9XrY7ZxOQOcL/xObRno4VViSGX4=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=lZC6zGWj;
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf21.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1018140E0217;
-	Mon, 11 Aug 2025 15:28:54 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id xeBqMQ4xZ56G; Mon, 11 Aug 2025 15:28:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1754926127; bh=lAb2hlkPZfqAZ5oWuzo7LQdnJ5lfu4VxJv8CxW4eSIk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lZC6zGWjMEAOrzyuS+/HRWJJ1Y5enmj8JYL1MKqrjAIrKXnhRlg2pks3w1t1dsm8s
-	 VgQX7hQzICo+PlFDtKKfkpeYervMPLDU1LhRUmdYbCvFGkaKprxvff3Mny9tP0tK2v
-	 jFLzfDeVcj09bsLeiYZW3ydDPvhP0bOf0qjbjebHvZeEEdxpYt9w+BNODv0evjjCfd
-	 qu2Gmm/t8q07TtzWK3Hcx8ljbaxBs6vOK6SnBsavBpWB46ACbgdiCECq9RKYMeT6Yu
-	 Rv6X4mZl0SjClJac/fpdhQUjKJWTGsmK3wIQsEIhVRqgtjS+sXYS6s4h0cRPaZjzB2
-	 pNr1bPmpciuI3xNvSgW/dh223zY92QujuDd0lBtF/D1tu0iCfgwLJVJDlGAEaZKUAy
-	 qnJlAojA8dd2jiRnG3g52vs5QkI3tnJ5ImVf/utDnXdsOqcHcsdTwGsgmCpCL3w6kF
-	 aYsQW7HTUQC+mNq/ySVjmhhEGcv9t0QWKVbSs97sbSzHcemNCpgivFTEyEWpPGoJZ3
-	 PRsCJ7tZ27OiTfdgQHeKb5EUbHLX4AdEkqkM/5y/BpenmCMbmeZSbPbI5PJOKvtyB+
-	 NDA8ZPylW9J5ncjOHY3xdti3LjniPgMVCo9TpAU5cT4tmQNkN2NImOEP0Ndd8yyN8r
-	 bCYs0gIfNWAyVOOWrYpT03oQ=
-Received: from zn.tnic (pd953092e.dip0.t-ipconnect.de [217.83.9.46])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 561AA40E023B;
-	Mon, 11 Aug 2025 15:28:11 +0000 (UTC)
-Date: Mon, 11 Aug 2025 17:28:05 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: shiju.jose@huawei.com
-Cc: rafael@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
-	dferguson@amperecomputing.com, linux-edac@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	linux-doc@vger.kernel.org, tony.luck@intel.com, lenb@kernel.org,
-	leo.duran@amd.com, Yazen.Ghannam@amd.com, mchehab@kernel.org,
-	jonathan.cameron@huawei.com, linuxarm@huawei.com,
-	rientjes@google.com, jiaqiyan@google.com, Jon.Grimm@amd.com,
-	dave.hansen@linux.intel.com, naoya.horiguchi@nec.com,
-	james.morse@arm.com, jthoughton@google.com, somasundaram.a@hpe.com,
-	erdemaktas@google.com, pgonda@google.com, duenwen@google.com,
-	gthelen@google.com, wschwartz@amperecomputing.com,
-	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
-	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
-	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
-	wanghuiqiang@huawei.com
-Subject: Re: [PATCH v10 1/3] mm: Add node_to_range lookup facility to
- numa_memblks
-Message-ID: <20250811152805.GQaJoMBecC4DSDtTAu@fat_crate.local>
-References: <20250801172040.2175-1-shiju.jose@huawei.com>
- <20250801172040.2175-2-shiju.jose@huawei.com>
+	imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Dh/LHX1J";
+	spf=pass (imf23.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1754926441;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=UlyMvpUnFPwPIrW3E7xZ89HT91V0N5XoNHgGKm394UY=;
+	b=Dh/LHX1JKysEGLodY7EdveyqnDz+HVGARQ4STcNFW8a1ksEhVLXkV1gMPo05MSgE9PQ8b/
+	4dE+I0/db/eKvktUA3QX9hapRgx9VIAJS6RHwRkhD2gnqmkgVcZ3STKDT4j47NL5EjidhF
+	NTckDpn8xrJpBK6grhmGvPiYJPRO8rk=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-630-8O2S5RdSM4uYbVDlTokjFQ-1; Mon, 11 Aug 2025 11:34:00 -0400
+X-MC-Unique: 8O2S5RdSM4uYbVDlTokjFQ-1
+X-Mimecast-MFC-AGG-ID: 8O2S5RdSM4uYbVDlTokjFQ_1754926439
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-459edc72b65so39016145e9.3
+        for <linux-mm@kvack.org>; Mon, 11 Aug 2025 08:33:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754926439; x=1755531239;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=UlyMvpUnFPwPIrW3E7xZ89HT91V0N5XoNHgGKm394UY=;
+        b=KbmJAixSYTglv4pbB/8ZmyVDSuKsMBZR8Se1K9Idsjaz2YpVYQ8bUf37VdfnSgpFz+
+         jPFSc3hsM6slVLjItFgG31wvKFFHRSgJ/vEFQYcaY7ZD4HzuvMQV3QVnk6NWN8VuOh11
+         ws5VAYan9xJSJg7t+MjIvcI/4z9nyswWPkp1THmF/C3VUZBvkE5awkbN+RUU/I3TT+bc
+         IW+GDIR/s5M0Crzq9eJnF/LwRF64D2etA1ls6jMJPOYBnt63rkhV5MBh5G5fePhffZHq
+         2WkVVpcMKaQADqwiKvnoqRJ4hstRgz7jaorG9XekcCutmjtXnZNSNeI9BiuARJHQCuOh
+         nFRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWsoBL0V8Fgxy3b0zINFBJEmRIv+rNND9jb7CBBQBIYrX7FX3oivnnnZ3vf0eP7Meu7MAPi2CrTAw==@kvack.org
+X-Gm-Message-State: AOJu0YxoYBXc/QHvwOIlW2oB/zcYfVsXzfXX4AvDBsIjvwCiTcEBopFf
+	P68hrtcThKYqyGyjDXFtUGrocpBOMCW3VKy0HnzTdC2V1lgaPQC/6WSnlIq4eAY+X40L008QZzM
+	ZIqjm8M2QV7oCcKoCmFYX2BSAgetDgrIsUAO0wteS7S4VoA278VNu
+X-Gm-Gg: ASbGncvN507l/kXLEIc4gFgdzZ2yPWUbjh0PRqkqDmQE2YsYFTqeU3tMrTilUVTFX11
+	a3Q5Y2ADXcqFg0G7ZXfkFSk/r1mrgYMbUsZmAByx3iWhkL1TQMgYWL/It3VMsuCQw/deRD+kMWm
+	qBQL7kXflzGdnbewa7GzmFqn+ysBf5CIue3xMY+hqIQZRf9xY3+KcMQVlrsLoG7AUhkiCCQWaiB
+	gMv2BRNrLtjvyERq6HlnM3b6xRkAbQcuQHtauQLwz9531xAclVz9G30RowX98ejf6MfOiUOtnUc
+	GxQHeLgI7qBTIjTMvSs//zEcLBUv6uIKumVv2s/NPfOw+ZHiqjxByct7BDA1DEibn4Qx6//5zis
+	mdC3JsacGPgwbJqEjaB9wcn6QVaaZLL0AEGQYEAH5fLXt1YMJ8HkXj/4jsyRzjlqKFkY=
+X-Received: by 2002:a05:600c:1d02:b0:43c:fe5e:f03b with SMTP id 5b1f17b1804b1-459f4fc25cfmr136879615e9.30.1754926438573;
+        Mon, 11 Aug 2025 08:33:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHINfJIfd1vEQZgbnQNpr4RSjW8SQx0Umc0SOrTSEmk4pWketl28AJxCUWIgT4ujrBbIgNggA==
+X-Received: by 2002:a05:600c:1d02:b0:43c:fe5e:f03b with SMTP id 5b1f17b1804b1-459f4fc25cfmr136878395e9.30.1754926437911;
+        Mon, 11 Aug 2025 08:33:57 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f06:a600:a397:de1d:2f8b:b66f? (p200300d82f06a600a397de1d2f8bb66f.dip0.t-ipconnect.de. [2003:d8:2f06:a600:a397:de1d:2f8b:b66f])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-459e58542f3sm257349755e9.10.2025.08.11.08.33.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Aug 2025 08:33:57 -0700 (PDT)
+Message-ID: <cee2e489-d3c9-46d4-8d34-37c637c7bbd8@redhat.com>
+Date: Mon, 11 Aug 2025 17:33:54 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250801172040.2175-2-shiju.jose@huawei.com>
-X-Rspamd-Queue-Id: F04BA1C0003
-X-Stat-Signature: 8wjkcj4x6wy95a6d6fsyzat8nokxt9n8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC V10 4/7] KVM: guest_memfd: Use guest mem inodes
+ instead of anonymous inodes
+To: Shivank Garg <shivankg@amd.com>, seanjc@google.com, vbabka@suse.cz,
+ willy@infradead.org, akpm@linux-foundation.org, shuah@kernel.org,
+ pbonzini@redhat.com, brauner@kernel.org, viro@zeniv.linux.org.uk
+Cc: ackerleytng@google.com, paul@paul-moore.com, jmorris@namei.org,
+ serge@hallyn.com, pvorel@suse.cz, bfoster@redhat.com, tabba@google.com,
+ vannapurve@google.com, chao.gao@intel.com, bharata@amd.com, nikunj@amd.com,
+ michael.day@amd.com, shdhiman@amd.com, yan.y.zhao@intel.com,
+ Neeraj.Upadhyay@amd.com, thomas.lendacky@amd.com, michael.roth@amd.com,
+ aik@amd.com, jgg@nvidia.com, kalyazin@amazon.com, peterx@redhat.com,
+ jack@suse.cz, rppt@kernel.org, hch@infradead.org, cgzones@googlemail.com,
+ ira.weiny@intel.com, rientjes@google.com, roypat@amazon.co.uk,
+ ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ kent.overstreet@linux.dev, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+ chao.p.peng@intel.com, amit@infradead.org, ddutile@redhat.com,
+ dan.j.williams@intel.com, ashish.kalra@amd.com, gshan@redhat.com,
+ jgowans@amazon.com, pankaj.gupta@amd.com, papaluri@amd.com,
+ yuzhao@google.com, suzuki.poulose@arm.com, quic_eberman@quicinc.com,
+ aneeshkumar.kizhakeveetil@arm.com, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-security-module@vger.kernel.org, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-coco@lists.linux.dev
+References: <20250811090605.16057-2-shivankg@amd.com>
+ <20250811090605.16057-10-shivankg@amd.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ g3eXuA==
+Organization: Red Hat
+In-Reply-To: <20250811090605.16057-10-shivankg@amd.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: mHitH4rSZwvWLa321_p0jfzjrulOZ66U2eEhuAomy3o_1754926439
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 419E0140008
+X-Stat-Signature: 43q51o7453qafdeof36uxgfubscd7tec
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1754926137-984396
-X-HE-Meta: U2FsdGVkX1/UK2WkehAWFAopYVt7TLMy3lO9FMSG7hHMTsI5zPkx5maiNuI3RhL9BwEAIFmx/NlrdgIyDWiefUGi4IhJsXTjGS/r4HQtIaJaGRrUW1FLpMFx/gRt9UOv6lTC90kaKpp5z/Eh5ZmRW+1WNm08oZ7T1z3NBEyKRFlPmV3K1nN9FtVEJIQ6akNrWkWisk4ZmZqIyp5bvYviR/3QCmfxGLEtkB/y3vYW31ltGXFr3/ddHwlZQIGTeBlgesXkQl4RLrcoiH0JVk3yM3SRaE2xZAXU9wsIjm/QU+9mS3sW+eJ8VohzIWzm3zaTSD8fel745AsbtMUuxH9BcW7kUUK6BRhKwa4bFvKDXckURIAKhoyayOLW/AOYoUv64z1JZZc/O3qsl8Pj4uArb26evZ2kmXq803td3Bv6Jy0VZgC7EZkbF7g95My0XYD3D73+T2Ei+lDvUZhfD4keMDkk07824q0AT48D6McSn3+K2UbLogzvxbq1VLK+UTXCrWx2ML7/ZJcKN/4TKqispM1iY4xqqQtqX9sM8h2/1J365uF1vbgOw3UptR7fRfCFXnXWINQYwMPMpr4p6SC6KOlT6/XPDBN7WxXLMMXLAJWTfx1K9EdjgSg9eouSxCh5RYVVPgyARKB2RoeDH1whthiLFNNLxTTSsqGpvGque7emQYnpAS6VqdIpvu16Jpdvmati2RaPWYhlyJZtoQA4IGKsvUf0a2Wu8xxArji/rLaH9gLANhA7KQM7x56Eym3cMCwqg/QQKIbKIz1Jnuw/c7CJXl5RPv8AJ1abkcsw/KvGlGgaS6kUDnnT0LhqBdZy7I1gqciZMuPE9/h7Hh99dvdSA4UF7DJMz2zJJInM2ePu3eVNq733nu6TGtWmssBSVLcB7TBDaLq4udsJAluM/U6A1naI6fxAzacf3y9gSzkI/VB4YFCc74G/TUxZ2mw2agPbFGMCofRGTeIXStl
- lwdxc0Ft
- +flLjmUyCHCj/wTUOGTcxZpB31Y/nwKT/2sNDW/g7MzX2JlOqO+TaTLla7/SKu9YdLOvFjlqL4WmQ/kz3fW34FsCeAuS62zzgA3tJjytNBwYTnKuqS243peE7/8v4VohTDybcGA0PC2tJgr0BywyVlnWQdn4kKQ7xbVV9akBFMxgaxacX9i3eQfO4naj5Y5CuAmQaeI6O8pXyWvMJ7+IrxO21a0JyA+rq5JHbK/1KjVmsutEl41zm0ao94/BYEYa59DPLiGlRs+5CfEypua0f0Bv4UZauDsBZPzbimf8lTcimKfocKZnvIr+ohCRyXQ1SPz+x79bv0hsZ+psNyXAbo1ieB+Z2sTU7KvC8V5kpqTnQvw3GW1hfam+C0Q==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1754926442-646948
+X-HE-Meta: U2FsdGVkX1/8WMPn+2sCS0VMIiXWsYMykTZtG5Av8TlovtwBZBp1X4CcfTQDjS915uBBvpN7BXsHzG9vFoZfNcniki9jruDHhDzZTX/d0jNW/H6mxY8BJ7k+XHMZmQ/c6jBtAzU6iyBAa4I6GR/rm7DQG5jkJfPmDycmbpvyvpyMkaUjH20K8uvupHNxxq/LfEn9tXHQ6ae4AETZ4UOoYkiH3aTcHjY0/Zrje3zqI9gTT7aGGAEtscFWBC7TAKiXxqWHWIWqk5G2C+OI+1Tj+fHxttIPez3GCTWodp5eeZour6wPNppJFU7eRKbLgHq8QeqrpyMG03GqJNzi0Ix3HbBOZySRCsMQCzxHtZNVzQ68YiApPWSmzMVRddfYLA+vhPNFwVmj8YUJv0kr+Vv6YwFGANXiqzLRL072ETvXFPTIrrhadFYNWofqd8pxkm6UodMcdpE9nlgyvgHKCLiYlbAUKK+HekXdXMWTq1tK0prUBBVGp5MpmihvVNeBxVNeVfxUka6xVgpp1UxW4epIWXnc6ou3v62E1tUAmi8qIZMjU8AIPOvTsG0qpE2yfU2WuJizjag3OeTp/D6FnxOic8NdrPV7El46j3JZ+942ZxsSulTPbpNiMc1BTEF77lHRC0zq33+mn/LSLVLWRsKMb68ylea/+ySKpMu2s+5NwYPap+NHJGnrNrF56AEQGPZqNHc/Zd8JBrKxVuNdS/OqzNwC3Ir+fVkltGAyDjB0vlq1X51XhvvsN/S1E2/qSoBY54JX1guqWz6xFfZNsr1PCe79pZTzNoQcl60Xe2kX4O3YSEAedLMvwHpAcavMhgI1ffbSvaFVlTsljRh+X9PaRclpXHutyk/fJuAI+SbNMKrevElbKz+0jlrynI4xLcjNXkOKm8RYVddTJmtJn1hqVUmDsdfhyWJesb5EkgXSmtlVgYnxFHlcv7VS2+DfVUDTXS7MboC5Ptc3W9lLel3
+ Nxuf+xCp
+ eun5HqCQ8BMX/auxIU5s8ySXe3eEFNon0Rzh2WMfSYX1eLuDnquq6uCw70/aGKv+uoOAgu3+r6DafCuBzhmoY2bpIbtRwngYogp3p/2i5TYt31BqyaK/7+N6eXwOnvRycTbQBFaLMPF4t0lIGuTj5rAODh7NkJnpomTbsIzb0De+T4zXvcVLCYx9ZdAfxoMNz2uYoGltB4Fmpf1YO1hHMhTKgjaMla47SeUrsKES2yNi97m1COQDcZsjikN60+oFuP79syL0OIczZVH99V4x36AQl8pL2QFRSAyTZOhoTKISCQVuDCf1qud54JoIxgRV0QKy0yMO57DOvVIrwSjw6q0vt127rW98kC0uYZJ11jLYo6Mb1v7qkVtX8wYme44T9lprRUfPXFtrvzvJ1792VotM/wOkyq8zQiNS/rRY1s8sGWjZIH8Ag3bSTec5zVW/YHO64DEZstmLvS7DOU6hnH24HrZXbou/pVv8BBw8HtD7bAHdxvAFUBKhlS8jAGHQ4LS2Q7bUJDdaszSPFKbYWQ0G8baoSreuUX3mPI7nhdHDUldwUtAeUftx/AaMaYtHmtl/Vje9WFIZGYRWH2TKMIJJsb95cJSnitxG3c61g9oC2CJAN/juScBHjZbK34ObCkiuG8qCxK+3+UeO3svxqP+L13ay5vh+GtsyrdPHLML+b7WZ3+A8Y3Cb7UFizCk6cdDFMuxRHh3pKmpbGwfzt7/m+cwIIuF6ho2Xo9O4lNAR0eTg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,65 +196,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 01, 2025 at 06:20:27PM +0100, shiju.jose@huawei.com wrote:
-> From: Shiju Jose <shiju.jose@huawei.com>
+On 11.08.25 11:06, Shivank Garg wrote:
+> From: Ackerley Tng <ackerleytng@google.com>
 > 
-> Lookup facility to retrieve memory phys lowest continuous range for
-			
-A commit message is not code. Please write it for humans.
-
-> a NUMA node is required in the numa_memblks for the ACPI RAS2 memory
-> scrub use case.
+> guest_memfd's inode represents memory the guest_memfd is
+> providing. guest_memfd's file represents a struct kvm's view of that
+> memory.
 > 
-> Suggested-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+> Using a custom inode allows customization of the inode teardown
+> process via callbacks. For example, ->evict_inode() allows
+> customization of the truncation process on file close, and
+> ->destroy_inode() and ->free_inode() allow customization of the inode
+> freeing process.
+> 
+> Customizing the truncation process allows flexibility in management of
+> guest_memfd memory and customization of the inode freeing process
+> allows proper cleanup of memory metadata stored on the inode.
+> 
+> Memory metadata is more appropriately stored on the inode (as opposed
+> to the file), since the metadata is for the memory and is not unique
+> to a specific binding and struct kvm.
+> 
+> Co-developed-by: Fuad Tabba <tabba@google.com>
+> Signed-off-by: Fuad Tabba <tabba@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
 > ---
->  include/linux/numa.h         | 10 ++++++++++
->  include/linux/numa_memblks.h |  2 ++
->  mm/numa.c                    | 10 ++++++++++
->  mm/numa_memblks.c            | 23 +++++++++++++++++++++++
->  4 files changed, 45 insertions(+)
 
-...
+[...]
 
-> +static int nid_to_meminfo(struct numa_meminfo *mi, int nid, u64 *start, u64 *end)
-
-This function name sounds like it converts a node ID to meminfo. But it
-doesn't do that.
-
+>   
+>   static int kvm_gmem_migrate_folio(struct address_space *mapping,
+> @@ -463,11 +503,71 @@ bool __weak kvm_arch_supports_gmem_mmap(struct kvm *kvm)
+>   	return true;
+>   }
+>   
+> +static struct inode *kvm_gmem_inode_make_secure_inode(const char *name,
+> +						      loff_t size, u64 flags)
 > +{
-> +	int i;
+> +	struct inode *inode;
 > +
-> +	if (!numa_valid_node(nid))
-> +		return -EINVAL;
+> +	inode = anon_inode_make_secure_inode(kvm_gmem_mnt->mnt_sb, name, NULL);
+> +	if (IS_ERR(inode))
+> +		return inode;
 > +
-> +	for (i = 0; i < mi->nr_blks; i++) {
-> +		if (mi->blk[i].nid == nid) {
-> +			*start = mi->blk[i].start;
-> +			*end = mi->blk[i].end;
-
-It looks like it returns the start and end range of a node ID.
-
-> +			return 0;
-> +		}
-> +	}
+> +	inode->i_private = (void *)(unsigned long)flags;
+> +	inode->i_op = &kvm_gmem_iops;
+> +	inode->i_mapping->a_ops = &kvm_gmem_aops;
+> +	inode->i_mode |= S_IFREG;
+> +	inode->i_size = size;
+> +	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
+> +	mapping_set_inaccessible(inode->i_mapping);
+> +	/* Unmovable mappings are supposed to be marked unevictable as well. */
+> +	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
 > +
-> +	return -ENODEV;
+> +	return inode;
 > +}
 > +
-> +int node_to_phys_lowest_continuous_range(int nid, u64 *start, u64 *end)
+> +static struct file *kvm_gmem_inode_create_getfile(void *priv, loff_t size,
+> +						  u64 flags)
 > +{
-> +	return nid_to_meminfo(&numa_meminfo, nid, start, end);
+> +	static const char *name = "[kvm-gmem]";
+> +	struct inode *inode;
+> +	struct file *file;
+> +	int err;
+> +
+> +	err = -ENOENT;
 
-Where is the "lowest" thing here?
+Maybe add a comment here when the module reference will get
+dropped. And maybe we should just switch to fops_get() + fops_put?
 
-And where is the "continuous" thing?
+/* __fput() will take care of fops_put(). */
+if (!fops_get(&kvm_gmem_fops))
+	goto err;
 
-This thing simply hides the struct numa_meminfo from the exported interface.
+> +
+> +	inode = kvm_gmem_inode_make_secure_inode(name, size, flags);
+> +	if (IS_ERR(inode)) {
+> +		err = PTR_ERR(inode);
+> +		goto err_put_module;
+> +	}
+> +
+> +	file = alloc_file_pseudo(inode, kvm_gmem_mnt, name, O_RDWR,
+> +				 &kvm_gmem_fops);
+> +	if (IS_ERR(file)) {
+> +		err = PTR_ERR(file);
+> +		goto err_put_inode;
+> +	}
+> +
+> +	file->f_flags |= O_LARGEFILE;
+> +	file->private_data = priv;
+> +
+> +out:
+> +	return file;
+> +
+> +err_put_inode:
+> +	iput(inode);
+> +err_put_module:
+> +	module_put(kvm_gmem_fops.owner);
+
+fops_put(&kvm_gmem_fops);
+
+?
+
+
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
-Regards/Gruss,
-    Boris.
+Cheers,
 
-https://people.kernel.org/tglx/notes-about-netiquette
+David / dhildenb
+
 
