@@ -2,116 +2,81 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0FF5DC87FDA
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 04:23:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 14902C87FD2
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 04:30:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 680F26B009E; Mon, 11 Aug 2025 00:23:15 -0400 (EDT)
+	id 9774E6B00E4; Mon, 11 Aug 2025 00:30:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 658236B00A4; Mon, 11 Aug 2025 00:23:15 -0400 (EDT)
+	id 928796B00E5; Mon, 11 Aug 2025 00:30:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56E476B00A0; Mon, 11 Aug 2025 00:23:15 -0400 (EDT)
+	id 8651B6B00E6; Mon, 11 Aug 2025 00:30:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FD616B00C2
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 00:23:15 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DFD01828D2
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 04:23:14 +0000 (UTC)
-X-FDA: 83763181908.12.11E3705
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0197140008
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 04:23:12 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=HjInaA4C;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf07.hostedemail.com: domain of rientjes@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=rientjes@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754886193; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 76EA26B00E4
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 00:30:49 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2D9F11A05D4
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 04:30:49 +0000 (UTC)
+X-FDA: 83763201018.21.30E9D52
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 16FC5C0005
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 04:30:46 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754886647; a=rsa-sha256;
 	cv=none;
-	b=Vhb7oos1QkV6zPFv1TZ3cjfyZKLCKM8Elj9s6XpGO5E1yPNlnzRH6TgvdDXqpq143124Jg
-	79YQX8jfLoMScwAR0E+FQkPRxBQXLQkfkou8eg6I9nZ5yfySm3wMAL2txw5iut3Xvdv2QP
-	FMu7XjtAIQ7AMIGrVXcES7Mi4NpGapI=
+	b=AoxhPfSy+Gp0DYfoXPANK2DoOyzb0ve4Dfx0vHPrzlDVKPbDuOG4cLP82sIhOZXhpdFi59
+	YuK7WZ8EDgdqdfINqb1TtzAOC8t8M9lJAfgih8IopmWtwI8et6t4AdLnVYh3D9wW5BHO5v
+	TZ68zL4ULZ5hC1CpnPCW/JVPtthG4Bs=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=HjInaA4C;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf07.hostedemail.com: domain of rientjes@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=rientjes@google.com
+	imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754886193;
+	s=arc-20220608; t=1754886647;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=UCSBCXnMQmaIVAH+e3b7TVmR3mlo8rlRXRLYG8Vjwv0=;
-	b=OYC4/XbMYwivJZEST18Fzpj4POxxJYF7M2RLkxvdd34TUcU0UwlqYY3/2nUmbOyE4Em31G
-	Xw/hGFWajd1VvyeIWXW71fuwKvMrc8qGhGM+7rtHlqV+45vVtZzB7k79UcaACOCnTorr7p
-	BZqVB75JB2rWQL7dwnjGggDw4kxo0V0=
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-242d1e947feso234545ad.0
-        for <linux-mm@kvack.org>; Sun, 10 Aug 2025 21:23:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754886192; x=1755490992; darn=kvack.org;
-        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=UCSBCXnMQmaIVAH+e3b7TVmR3mlo8rlRXRLYG8Vjwv0=;
-        b=HjInaA4CgFEJjTUzM0dVOpM5JS93Fu+2snmICyYyEmDiFXIS9IjZaFzy3ti865ft4s
-         y4PN0I/7uXJF1j9rHexvgKImnAKA3bjpAtmaIcYqBeTQII7cQNP2fmVVRvCXmn1HrlZf
-         dxtQaEAsNJmuvvyOIWOFzce80qlwGXrv3Z0X3++UO8ak9DkNIOfucFeZrp5lxwhxIevi
-         Lsyt4KHHSqIXFkcd2yuS+8eqWFnQqD0+Y+VsvoPJDbWLn+NrPENMnfcbSfImITzSfaJr
-         3yU9uZzxajr3rSeHZG2994TEJFQsIJoEa/CmgExini2IuJmUmHU+Meft3kiNHgACtm3Z
-         zUJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754886192; x=1755490992;
-        h=mime-version:message-id:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=UCSBCXnMQmaIVAH+e3b7TVmR3mlo8rlRXRLYG8Vjwv0=;
-        b=J/hsiyQUNwQwLG0Y0E/gy4pnXzbBeo6Jp6I1jU/MAYmIF1o1/zeZBbJUXiGbFOiP9d
-         6ceD0boGoTH8bDPhIAT8HbSVbvHRJNWzXwx+5nn13VNJa071afq2zjtREGq+0qmVcFtW
-         2th7NustKnakYAux19wVzCi0C0VO5vM7h6ATNzn5kNSa4AYBsZ2RYg9n/Ui+1D+rul6J
-         5BCqXmDfdB+mi4Yvjt/NLz2dUN4ehK5n5lNEjGk2wPeLIkSxdqVRJ7dbzz417qReYoU0
-         sH8qtALTl+3QYTZx3qpmh61CKvSRGV+L1Q1DN++pp2pkVsDpLVN8Ks9hGm+HDaLCYvBA
-         P0iw==
-X-Gm-Message-State: AOJu0Yzln/Ja66bztASD78vx1c6KGntlqctQ38sEag9dXZmQ9dgXK9/2
-	wO9Ig+eLaxC92cQBSzw39x2F12iNKDL3lB4WteOYq2KIlaPshdykwyhHCKUWEVT5ow==
-X-Gm-Gg: ASbGncsI2xxdmbFieZF0stRWWBy2yzsb9K9vYbqW5Ipe+bmdqMwDYXXa6CmrZI6nkQR
-	rx4u1vA/RP4PLoj801O71xWAZX+SkLR30+sy8ATu6XciHMtildaAoUB8ZOoivhklxX9j2R1i76H
-	ijtibToPB3KGdW6a8qseMfGV5BSiEkVBKWWJdfU7F8srTEPS1MhKmn56yEqsPX1Y5S37p4X1fP5
-	HE4K3drmfZ7KWZleWTE9VVJk2NKgpmVn8DqhT2JE+FBsy7Uqk6DrSP4Iz24zT/fWbCueZNimHsl
-	Z5EbTztozjAVnwm2UTwEIjRjPaJYLTvQiATKYQzPS/XsqVsM8v6mfSSh8M6MMtD3KOSQhskw8GN
-	l5vzdF17QelKL4xTLY8htsb2NkYVZawN6/mbcaI3qVvc0BmL0ThcxRuJXQwXF0PSZ15Hbdq9Zc+
-	vvPzaOGx2jYrboYdCO
-X-Google-Smtp-Source: AGHT+IEPFfcbgvOfxJdst9AfZvSBtoZS/zbmaiucrFo4yynA5He38FqIVteTcaFq8sU9C/fFf6t6iw==
-X-Received: by 2002:a17:902:d507:b0:240:2bd3:861 with SMTP id d9443c01a7336-242d2bc657amr3889325ad.10.1754886191100;
-        Sun, 10 Aug 2025 21:23:11 -0700 (PDT)
-Received: from [2a00:79e0:2eb0:8:bf4b:17b7:3044:fe58] ([2a00:79e0:2eb0:8:bf4b:17b7:3044:fe58])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241e899b6casm258903005ad.127.2025.08.10.21.23.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Aug 2025 21:23:10 -0700 (PDT)
-Date: Sun, 10 Aug 2025 21:23:09 -0700 (PDT)
-From: David Rientjes <rientjes@google.com>
-To: Alexander Graf <graf@amazon.com>, 
-    Anthony Yznaga <anthony.yznaga@oracle.com>, 
-    Dave Hansen <dave.hansen@intel.com>, David Hildenbrand <david@redhat.com>, 
-    David Matlack <dmatlack@google.com>, 
-    Frank van der Linden <fvdl@google.com>, James Gowans <jgowans@amazon.com>, 
-    Jason Gunthorpe <jgg@nvidia.com>, Jork Loeser <jork.loeser@microsoft.com>, 
-    Junaid Shahid <junaids@google.com>, Mike Rapoport <rppt@kernel.org>, 
-    Pankaj Gupta <pankaj.gupta.linux@gmail.com>, 
-    Pasha Tatashin <tatashin@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
-    Praveen Kumar <kpraveen.lkml@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
-    Vishal Annapurve <vannapurve@google.com>, 
-    "Woodhouse, David" <dwmw@amazon.co.uk>
-cc: linux-mm@kvack.org, kexec@lists.infradead.org
-Subject: [Hypervisor Live Update] Notes from July 28, 2025
-Message-ID: <05f47f4f-524e-0925-9e23-bfa7286d455c@google.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=m15gzroEbAXR3x36rb1zzxajxa7shxO60kZkG+X08iU=;
+	b=ofp+b2tppX+u5/iT0hBS1KEFGn5etEkf9N936l0nPG4aiqfb1X7BjvFWDqMQeo+bDdD+5Q
+	g+sOQJ47gB1zT7iggJ7ZYHVicFTmFyF6iPUBl/nr/CIpuJknpAXhwdNHd2xcOPC3mB1DRy
+	sSzuhGhEP9N3ZOTZSB+ORbM9qw8XmSU=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C1630152B;
+	Sun, 10 Aug 2025 21:30:37 -0700 (PDT)
+Received: from [10.164.146.16] (J09HK2D2RT.blr.arm.com [10.164.146.16])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 695A93F738;
+	Sun, 10 Aug 2025 21:30:42 -0700 (PDT)
+Message-ID: <b33b6dfe-8270-4cee-bd66-1940f86b6e09@arm.com>
+Date: Mon, 11 Aug 2025 10:00:39 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Stat-Signature: i4o9obrepiwmabcekz91yh6j8aym8ahu
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: remove unnecessary pointer variables
+To: Xichao Zhao <zhao.xichao@vivo.com>, ryabinin.a.a@gmail.com,
+ akpm@linux-foundation.org
+Cc: glider@google.com, andreyknvl@gmail.com, dvyukov@google.com,
+ vincenzo.frascino@arm.com, kasan-dev@googlegroups.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20250811034257.154862-1-zhao.xichao@vivo.com>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <20250811034257.154862-1-zhao.xichao@vivo.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 16FC5C0005
+X-Stat-Signature: autsk5bqsogodbq6xuwgf5733gfmz5s6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0197140008
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1754886192-474736
-X-HE-Meta: U2FsdGVkX19+8fToaTiIE9vGxfHUm+d6prZveW8dD+WILP2nR1hGf4UexsZb+4SszwndwzhC/ORQiAGMpnqarXHRtRhETY0OlXMcVyAQA9Cxyjxiv4WtKnFuJPRSUtTiMHBOgGlxiQuw0jm2cmUs4pkb/X3PLdRr2mWMoc4Kg7uoV3PlA34FAzwTVxs6FYntfGvL7GCNkcNUw19r8ebbqoHGmRl/aRlM/ERO2JKRb+xqynR+zx9jxQMiqnyOnjDUaRGBUyri/ryCXsGdLIrT84Mj2ky88X2p7SUMgsNfy3PuMCKPmiv1FAilREJccxClvKUooohreC96Yu0byQ/XW+2BC2xV9IiWmsPztLeJoH5eiKNk3pn3km/rG3HvG41wOa+uHx3s8n/hwukORHJBDk4iYdm5riMUoB4+fGxNm5NAoypjjW+kKtOSgNxi5IJSJX69EOt+M1K9V4d6f1G3XOaJvxyg6oH6d+NIibmz33/69ZlGNEcDbZPS/0S4tyYvjvqWO+EBMxXaesQjA9XiMBcMh3kO5d2b1OnTKCCfh9QHejopgTWgHxCZulpb3tmmWWV+cYTFRtIACfVyUuDhdLke4A4zT/dG1yyks6fxBtA2FI1m7hp0Ze8V9o840xaRF+DpOToJMPqxmYoQ0FzBC/khfSlooNYONXe3ohe89OejPao/FXVhKtrUlLpTnVxGX2UsUwEAQEXGFX+ZT8pfizbRL6AUl1lQU3UMYrLwjWh1JxW+wlRW7Gjy/3cWLZou4iznEsf3VvCIbqSNnJ+PXrwrYRts+4uKyEhQead1K5qUQ+wso5qZSi34UW5iWnQGImit2uNdzZvCaxe/xRTZSg4PXSTmfMrX9NKvgf9S7cqH6CIXHmvx0wu0e2nYtsxevzlY91pXI1gTvngKEVIsQVz1cfixBrlcXMe9+6GruDMqeV7gZ7oXCgTMMqM7eja45lJOpU15Lqs7C0B05pr
- XN1qgTCz
- zstxt26E0l3P7QK6KYWn/ee+69pl/9pj6328CHiK2ULxeogZOhYvWKzx5ziBQehtqa9xUuRtc0AkLJoGGHxkTf3TXp58gBke11iZH/iBDzD3ej3uDeF+z+NPVlDk7Dct/iiugxGmeUiUzx/ctkgevQ/1fKUur6tT2U5O7hN3g8uGAyEwUvBzUJIfZL2GM/w1EfPmiOIu6VOMdtIoFCN+xFAp9FLufiuc4qVraIFgHV9tEFV0UhL5CN0kEn4MIs9xL+rjPtbv6li0Ae1aC+S75FRLsj1xRr9IZul7b1s9C6KE9csQAsqB4Cm7esL6+1FYHyDiD4+3dTC6yXROjvP1s+2TbMgZnIHG0coCoxhKHAnnWtG2eaNh/VwPmwbRfQjBihQhIA5VH0ekjcZnAoi2fXypW6e5w+8PU4QZFhTELHWRE5qv2BXboKmVYfoVgp1rb+py6UEVPXXaQq6o=
+X-HE-Tag: 1754886646-419113
+X-HE-Meta: U2FsdGVkX1887XZCb4pp6OkRSbZZKd28Q4eVKR2E76N3sBiGSTd0XHwLKFaSyW6P/rAlYzY+MIUNJ9afhl3KEsotuBAtm6HA042kAiY/kWiL2Iev833acBkjMBUlck5u8c3S4PGdzfo+Qly7V86c5BpwfN2JyNukGC2Kb8OPv745j0pNWo31UVrKjcJDqx/L/53E74pHKVk5BHSJobgFO2xvCMqVfsLtzLSlqXcRIxjmiCmX+C+dMkt3rgh0HGh1pwCB+JZwDGdoAod0a7HQ0kIhWekXGhqoagrSvyeoSznb+ZGANnhnASaKeFCtzkCRfF4/+Qd5/s3aAKmXMo2UFXDHL7ct82LDThoz9OakjSIY8qskSWKYHFdHJ4hNsiDluexkzc8zoOYHYkOhrAk94D+/rIqYZuTMBRYV331uvLa2lZg052HLq4VWEmPcRo39Bfd1PD3/k3C9+7FGdLJPMSAmcyV/Uh4nBkdNVJNqRFiqlygEUjmfbkUBYqS2uZ22nQtycJ4NrGnAhwxx/Uv6R94ITlz2M8W3pqP3Zjsw7wwiAP4TSrenEmh12A2pYs/lSJqvOAV6P3y4Uf1O3gvovfmVkS0lx1Xgy194Is7Bl02AjgtVZcatMRURAQjbr25Ar1X6Yl9EnggBzJ6ZtjRCW4qznbpzdxGxRXLo6zfeWgsFuiwhtqoGyBFISZ+ARyo8r6Rug+GEcuHgUnc9fePUfeE8m0tIKxdXlQIfafTkPg1t71nU9MIYF7xV7PHmnyhQMD4ij+ooOa4idh5DSjCyorNBHbuHn3oceNtnacB/FN29zuCU3tMSeN94aX6aCp76gWsE5hAv88rBNiflWIVZnvsVf0QBd6UZ1ZrfiZUJ3c18i9ybDrwrief+wq6QP4WchIcPJqL41MhLW8q7iY4Nnx121/rqdUB5UajIDMpeobsQ4kAgGwuJNKzSqbbAFxykPLbEPxA4p2YntwxX8T1
+ qMPQlgdZ
+ XYV/y/wprAwqSQUXCkdcSaIHUm9pqtSsxUhwS2tCxSnOgUivVK3thwxordDHnmcZqT2gVP1FFLsmQ7J9FfFwvoFVsdufxd4lZ9b/YxuhSDd2NVr2qODZUvShBT6DxUe8Ws7hRSpNHKhN/FjB+e3j9C/29rK88DBtnzWl+zLgDmGgu8WQi/BiEQ8xjs8zFghvhDiCyb+JfmiV5iD34fUQGrgAN5BOtRSgKoiSOeCxXB8KL1CEO6q/dmemIC4g+2jUFmpK/mkKJ71Bx1ZfFUPrQRi51JzpjPU6FHqAOyr8wxTe3ydaTVi0zoTzzHwA2f7eIEQgUYbS+tohm0Jk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,155 +85,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi everybody,
+On 11/08/25 9:12 AM, Xichao Zhao wrote:
+> Simplify the code to enhance readability and maintain a consistent
+> coding style.
+> 
+> Signed-off-by: Xichao Zhao <zhao.xichao@vivo.com>
+> ---
+>  mm/kasan/init.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/mm/kasan/init.c b/mm/kasan/init.c
+> index ced6b29fcf76..e5810134813c 100644
+> --- a/mm/kasan/init.c
+> +++ b/mm/kasan/init.c
+> @@ -266,11 +266,9 @@ int __ref kasan_populate_early_shadow(const void *shadow_start,
+>  		}
+>  
+>  		if (pgd_none(*pgd)) {
+> -			p4d_t *p;
+>  
+>  			if (slab_is_available()) {
+> -				p = p4d_alloc(&init_mm, pgd, addr);
+> -				if (!p)
+> +				if (!p4d_alloc(&init_mm, pgd, addr))
+>  					return -ENOMEM;
+>  			} else {
+>  				pgd_populate(&init_mm, pgd,
 
-Here are the notes from the last Hypervisor Live Update call that happened 
-on Monday, July 14.  Thanks to everybody who was involved!
+Agreed that p4d_t pointer here is just redundant.
 
-These notes are intended to bring people up to speed who could not attend 
-the call as well as keep the conversation going in between meetings.
-
------>o-----
-Pasha Tatashin discussed LUO v2 and what parts could be staged in the MM
-tree.  Akpm suggested updating once the 6.17 merge window is complete and
-then rebase and send v3 which should be around the next time we meet.
-There will continue to be feedback addressed upstream in the interim.
-
-Pasha noted that there were still filesystem discussions happening, so
-that may change on future iterations.  Jason asked if there would be
-objections to the series upstream; Mike Rapoport did not believe there
-would be blockers that would prevent merge.
-
-Mike noted that systemd folks were not overly happy with the new UABI but
-that they can live with it.  The nature of the feedback was not
-necessarily about the ioctls, but rather the systemd preference to have
-everything be hierarchical.  Mike noted that upstream feedback preferred
-VFS be mountable because of a preference for user namespaces, but there
-was not a use case beyond init namespaces for now.  The feedback from the
-group was that we should define the security model first before requiring
-a filesystem.
-
-I asked if this was a one-way door, if we could eventually go back and
-support filesystem in the future; Mike suggested that we would need to
-continue to support char devices in that case.  Pasha agreed that we could
-do an extension in the future if needed.
-
-Pasha asked if we should enforce a single open of /dev/liveupdate.  Jason
-thought this was appropriate due to the clean up semantics.  Pratyush
-noted that if we support multiple opens then the agent can hand out the
-opened fd's to the requesters and if they crash the fd goes away as well.
-Jason said we should do this with an ioctl to give you a new fd with a
-session label.  Jason was concerned about the lack of the ability to
-preserve the access control for a filesystem across kexec.
-
-I confirmed with the group in the call that there was no objections to
-proceeding as discussed for LUO v3.  Pasha noted the only planned changes
-would be to enforce a single open and then use the ioctl to get the
-session.  Jason was going to provide minor feedback upstream.
-
------>o-----
-I pivoted to discussing the agent, affectionately referred to as
-LiveupdateD.  As the LUO design was not yet finalized, there was no
-decisions formally made on the LiveupdateD design.  Pasha suggested that
-LUO v3 and LiveupdateD development could proceed in parallel.
-
-We discussed where both LiveupdateD and libluo git repositories should
-live.  There was a general feeling that this should be decoupled from the
-kernel tree.  Pratyush was going to create a repository both for GitHub as
-well as kernel.org.
-
------>o-----
-Frank van der Linden then discussed his concept for a physical memory pool
-allocator.  Frank presented this as an allocator for large contiguous
-stretches of memory, such as HugeTLB and guest memory, including for
-partial mappings like PFNMAP required for Confidential Computing use
-cases in any size that we want.  If we have a 1GB physical range of
-memory associated with guest_memfd, for example, it's fine to map a couple
-megabytes of it; if you have a 1GB folio, however, you either map the
-entire folio or nothing at all (or break folio).
-
-Jason said that if you are happy with PFNMAP, you can map part of the
-folio; you only need to break up the folio itself if you are going to put
-the folio into the VMA as an actual folio.
-
-Vishal Annapurve said that the way we are handling 1GB support today with
-guest_memfd hands out physical memory backing shared ranges to the core MM
-so that things like gup can use it normally.  This requires breaking the
-folio.  Jason noted, as he mentioned previously, that you can keep the 1GB
-folio and use pfnmaps everywhere else and ignore the folio.
-
-Frank noted that our interim solution of using many devdax for preserving
-memory across kexec is more convenient with an allocator underneath it to
-avoid needing to specify tons of memmap= options on the kernel command
-line.  Similar to hugetlb_cma=, this would specify external memory such as
-extmem=0:1G,2:4G.  Only the bitmap allocator is used for creating raw CMA
-areas that are physical memory only (this memory is removed from
-memblock).  Jason suggested that there may be pushback upstream for
-additional allocators; Frank suggested that if this forms the basis for
-other allocators then this may be a different story.
-
-Vishal asked if we should mandate PFNMAP mappings only for guest_memfd.
-Jason said that if our only need for guest_memfd is to create a vma to
-speed it into KVM, then use PFNMAP is reasonable, which disables ODIRECT
-and RDMA, etc.  That may be appropriate for Confidential Computing, but
-qemu certainly relies on it today.  So while it may not be possible to get
-rid of the folios in a broad sense, it could be possible to propose.
-
-Frank noted there is a conversion layer that allocates the PFN range and
-does minimal hotplug as necessary, converts to HugeTLB pages, and adds to
-the pool.  Additionally, there is a device interface that can be used for
-testing.
-
-The pool and device interfaces work, as well as KHO on top of this.  I
-asked about the minimal chunk sizes and alignment, Frank said this has the
-same alignment requirements as CMA today.
-
-I asked about early RFC timelines and use of the biweekly Linux MM
-Alignment Session.  Frank said an RFC about a month from now would likely
-be feasible and we should continue to discuss Jason's point about the
-concurrent use of folios.
-
-Jason suggested that we need an answer to what problem this is solving and
-if it's only to use PFNMAP memory for guest_memfd then this may be a lot
-of complexity when there are cheaper alternatives.
-
------>o-----
-We transitioned to discussing PCI device preservation.  Chris Li had sent
-out the patch series the night before that can get the list of live update
-devices and their respective dependencies.  For example, if you need to
-preserve the VF and then you preserve the PF as well.  Additionally, if
-you preserve the PCI device then the parent bridge also needs to be
-preserved; this dependency goes all the way up to the root bridge.
-
-Jason questioned how it will keep track of what devices are bound, that
-makes the driver name part of the ABI which isn't great.  He imagined that
-if the device is marked as preserved for KHO then it would sit in limbo
-until somebody claims it.  Chris said that the kernel cannot detect when
-we're finished probing the device.  Jason suggested using an ioctl into
-the LUO file descriptor so this becomes the responsibility of userspace.
-
------>o-----
-Next meeting will be on Monday, August 11 at 8am PDT (UTC-7), everybody is
-welcome: https://meet.google.com/rjn-dmzu-hgq
-
-Topics for the next meeting:
-
- - follow-up on sticky preservations with KHO, any additional insight
-   provided for MSHV use cases
- - update on LUO v3 and akpm's request to rebase on top of 6.17-rc1 and
-   send v3
- - discuss enforcing single open in LUO and also support for using the
-   ioctl to get an fd with a session label
- - design discussion for luod, the agent previously referred to as
-   LiveupdateD
- - update on physical pool allocator wrt folio support and the ability to
-   pfnmap from within the range of memory
- - update on PCI preservation, registration, and initialization, and the
-   RFC patch series posted previously
- - later: testing methodology to allow downstream consumers to qualify
-   that live update works from one version to another
- - later: reducing blackout window during live update
-
-Please let me know if you'd like to propose additional topics for
-discussion, thank you!
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
 
