@@ -2,80 +2,80 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6AABBC87FD2
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 15:05:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A1496C87FD2
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 15:09:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF7C38E006C; Mon, 11 Aug 2025 11:05:47 -0400 (EDT)
+	id 463738E006D; Mon, 11 Aug 2025 11:09:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCFDC8E0060; Mon, 11 Aug 2025 11:05:47 -0400 (EDT)
+	id 43A778E0060; Mon, 11 Aug 2025 11:09:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0D898E006C; Mon, 11 Aug 2025 11:05:47 -0400 (EDT)
+	id 377BA8E006D; Mon, 11 Aug 2025 11:09:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BECCC8E0060
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 11:05:47 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5DBE681844
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 15:05:47 +0000 (UTC)
-X-FDA: 83764801134.25.355E897
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 25E1C8E0060
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 11:09:05 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CF78C1DB09C
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 15:09:04 +0000 (UTC)
+X-FDA: 83764809408.08.B2904D5
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A6C0F40007
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 15:05:44 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=eDoBwKKF;
-	spf=pass (imf01.hostedemail.com: domain of andriy.shevchenko@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7E307100009
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 15:09:02 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=OSkIOWZQ;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf14.hostedemail.com: domain of andriy.shevchenko@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754924942; a=rsa-sha256;
+	cv=none;
+	b=FxpqehGRpUCMlFQGUlLy8AXtV6JRHCOTrGAxTVjskyXyhiSLOPeHeV5VbvEzC8ZnOuMami
+	bdfREupmOUDErKbF+L+pzYqaFXcr/GZEMr52pKh9PCHjtCxLr9NmNyHPW//6GPffl8g7KN
+	u2O6zTZ1wamGABmHax97YOblE7sUj6s=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=OSkIOWZQ;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf14.hostedemail.com: domain of andriy.shevchenko@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754924744;
+	s=arc-20220608; t=1754924942;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p7RT789ogYAfSgTZ92jkJgJ+3LiLaXGaBKY0/GRWZZY=;
-	b=iDAf5HUKubSl+vigZvkeixwN0zDbSM/SZ+V9uJWxb7iKQX0uhKkmzqozacDUJZUYZInV9j
-	pAmhy2XnbYaCoE6d16M82HlSRji/7MqzcnhOmPZGsKP8oAgdEsS3grE+o/GeCYkhVSOdC5
-	Y/kFf0dwGoyhxTJoI08r1DBBIRdEmGI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754924744; a=rsa-sha256;
-	cv=none;
-	b=P/vH/OVrykxTsnk1ynOnkw45HkGdPh8OkeUG1PxT5kTpakFm4L5lblbOJGxKh1zYHqtVRK
-	t+Lj52YLR72xVfNCDE/cbzd7PbSsQPXp2DmlAVkpbbvvW8JLCG0NVnuRGBhfCjaSxCQE0W
-	POdifL02HGF/PIwkiYRgEF5K5TvTV/Q=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=eDoBwKKF;
-	spf=pass (imf01.hostedemail.com: domain of andriy.shevchenko@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	bh=z5BfcxOGfskLNbpbMbwX4KjsPVWAUvhOCnh1KC1IjLE=;
+	b=vYWA7bToe0iSbGXcy/SQFQZ5Ji2DdkPx9Vzk+HZb8522e5iudFujaRRVmBwOp6cmj56O6L
+	2sN5Nj3gC+kT9XMIYyz1kq2KoOcARq+jYPC7euouNq3JzmmPK7kFUUoE/NTcVeQ7W3aMcn
+	xAl0woxE25yDbCD2M0jacrFofaPs5CQ=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754924744; x=1786460744;
+  t=1754924942; x=1786460942;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=i/ALEUiI1jcKPez1nkMbsZV3bmmUIaCULP31iZ/ovAw=;
-  b=eDoBwKKFTOUnjUhPoxEG7MQKe0xagBusWNZY1RVcsffuhRVRsWANru5E
-   N/LypkBnwCODWzQ7uIumVwB3oIQviYxjLZhOef6i0YmP4siCDOsRXIXMJ
-   gIfZaS8ZzG7XQj50nc2/jGzi+bLgaLeqwvArTU1fxwmd4ytN48Y8me9Hl
-   xYTMbE65VKZi88cMLuOyLnk2YuUG0+j1zri3IIVXfI1b3ruy1Xg693Um1
-   1RxYacXyVOaiM3ZrJTt9u5KOfenF21N8+h+8O5paAtoqGO6kiDllMPMHz
-   tEs0QpJk9ujC0BJLfZKKGpGdjl4BVlX3/4DVA0df89VrnY1LmA5+qARGx
+  bh=Fos2Bc+psd2wDnxAA9C+5WvzOAyECbjI1HOkUcLQeFQ=;
+  b=OSkIOWZQdF4WtXR4yJZiaP3h23HctK9rnOKF1o7Qb3VJCkjDNp/sVvlh
+   0/5dws5yWSHVGIlTmDvk9g+G0tIVp0+7DW8vhnG1euLCaeveL/HavAhA5
+   rAWmFjC/varyuoQ+1WIuxEw2pZKeeQZXWOKVjkULo5DoNDAgjEJyjLcwW
+   1f56TEmT8wZ1OGAhBYt2i4sfmimZDpjKGT+KqDXv3Wn2rICJZyJj8XOJq
+   UMKkIWh3SzlN3plekBzSoBNO9L3BgnG+s0jr4Xc6F/ElYXZXbHEfPltiW
+   bykYBad6lQosEIFYLL0+hazpPvwJcBqzsVVVn3Z3evaFfs0qezrr0hLuI
    w==;
-X-CSE-ConnectionGUID: xFJA0My/SruA+8PBNTB9OQ==
-X-CSE-MsgGUID: Cx/RhIqCSKSgscvTY1tgdA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11518"; a="56208643"
+X-CSE-ConnectionGUID: kn4RblLMSwmhcqFA//JYBA==
+X-CSE-MsgGUID: jgcNLGY1Rsa+gh0afWk/iA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11518"; a="56209119"
 X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; 
-   d="scan'208";a="56208643"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2025 08:05:43 -0700
-X-CSE-ConnectionGUID: nOIz8zmnS3q0/SNtukrWfQ==
-X-CSE-MsgGUID: jQdLgscnT9ud1YMXf+61aw==
+   d="scan'208";a="56209119"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2025 08:09:01 -0700
+X-CSE-ConnectionGUID: 6HXLT3G1QeCd5htSdOz7vw==
+X-CSE-MsgGUID: viOw19WfRZm7kbZL2ZA/7A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; 
-   d="scan'208";a="165571264"
+   d="scan'208";a="165831059"
 Received: from black.igk.intel.com ([10.91.253.5])
-  by orviesa009.jf.intel.com with ESMTP; 11 Aug 2025 08:05:37 -0700
+  by fmviesa006.fm.intel.com with ESMTP; 11 Aug 2025 08:08:54 -0700
 Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id CAC0494; Mon, 11 Aug 2025 17:05:34 +0200 (CEST)
-Date: Mon, 11 Aug 2025 17:05:34 +0200
+	id D6F1B94; Mon, 11 Aug 2025 17:08:52 +0200 (CEST)
+Date: Mon, 11 Aug 2025 17:08:52 +0200
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
 To: Bhupesh <bhupesh@igalia.com>
 Cc: akpm@linux-foundation.org, kernel-dev@igalia.com,
@@ -92,24 +92,24 @@ Cc: akpm@linux-foundation.org, kernel-dev@igalia.com,
 	mgorman@suse.de, vschneid@redhat.com,
 	linux-trace-kernel@vger.kernel.org, kees@kernel.org,
 	torvalds@linux-foundation.org
-Subject: Re: [PATCH v7 3/4] treewide: Replace 'get_task_comm()' with
- 'strscpy_pad()'
-Message-ID: <aJoGvv5TEfl1liSm@black.igk.intel.com>
+Subject: Re: [PATCH v7 4/4] treewide: Switch memcpy() users of 'task->comm'
+ to a more safer implementation
+Message-ID: <aJoHhDIL6T0Zo-nB@black.igk.intel.com>
 References: <20250811064609.918593-1-bhupesh@igalia.com>
- <20250811064609.918593-4-bhupesh@igalia.com>
+ <20250811064609.918593-5-bhupesh@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250811064609.918593-4-bhupesh@igalia.com>
+In-Reply-To: <20250811064609.918593-5-bhupesh@igalia.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Rspamd-Queue-Id: A6C0F40007
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 7E307100009
+X-Stat-Signature: pef1oquemw9t1s4hbjxr1ouq8donc6ws
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: mpexxehrnaf3ra9nsz691q6edz94o7wz
-X-HE-Tag: 1754924744-596685
-X-HE-Meta: U2FsdGVkX18wAbdgIa0AeIHxBN8nZ4RsC/KaMUVH0hU5ih4mF56ZXm9mmFv2zdbc1QgORjkTUWmFVaGUM6y7cJiAyiNNIQPTmrB2HkidtJztqLUUR6JfxSgShvPsqdE27Q7+ogz1V8m9+/W6mbxZ+2iB1yenxFMPxvbc2uZNy1le2iJshAdgl3+26p62WZk3ehQwXXXGijJsEanIE2LZkadcAFx3Bgd1QqqwY1PZhE74YbpyCxZYAYtOZ/A1vGCAePTulToyl8H6M/xVq8g/KddQAV94JGVQGP4nR3QJc1fSMqXwNmWEBYjMWEuIn6LVKAswFEFxwGCMvxiKZSI1NwpHch9cN/V6Za0qEOcUaJzD4SPde4izXk4VUKj3V5leZS58N5xdN84bBD1cYuNRnQYwyddgcLZ2lgoAAWowDOjHWFp6oKuAgzlcM+D5U8C4YFd63pm/LagVAFoFmNreRQQhdo4DL6htGVIrV8xUbnOK770CJKVJ7WhcXHbTVs9J2vKPwELbH9orFhiWNZ8XRMLuluTGLPs0GpYkUb9M0OclLbJwmbunJoEMn3Q4Pt/NG7XwfbKS7XXizzLLVHxdAh1Pu3ZpeZGYj7ws7eqKWNhqZY3FRWKvZHanN7z8kdBD29LC+omXNSJhM9XgFJmnbcrnQgbQlSKV4M4gFcmC1frRiLpNtgZMkmCNvi4cEDBjuH6KDZ8jFHugt8XUQ/9eFi5v6/JEtVlfJ/HHGeGsJu6U29WImLykDvJY14z7K2eyxrgAme2czlz/fDPpU1ygIbVGFga/ljhnjZCBy6+rWVt2nLkl8V4J2fSwp//RAfXaRnbtUybIeTmT6ZvSQUODSsH1EF7Q7fsytPQJWrPtiSn7KYA7h3NhX8kU/Z7Z42Xtbyv/Gfv2sCRUAiA5y4ay2zBqQShvjaTqpjpHjhmYT//TL5elGJE+HZYu+qoPoN3B3hHAvfEPf/nUVZN/kOw
- 3DDi9PT9
- MdsWJeDoyuLmYBhEs1DuROEu5IQTEKJwaYuOMKEvgOJB0d/bCJSujmuy0wOwk85LvlliXZWyasg3pRUm7iFMUZ2GNz733UBZCJduAf7Wzqv/E4DI7S0PscT8c5ywLTi4WfVBfbe8OpKH80Pw1WaYyuUEfFxz1Np65eerX/SxUqScEzl5z2KGhrY9hFuBtJDVb8eXREGk/ruYV3Cmp/YVcKXleYPva+fVSjURNfQNg86gGv20EZzGZB7nnHmmqo+7xcpd6WgZNxelR5pMfeVY8B8jjLpdAuHhhAHY6U0f5JgfJxuu+lG/GvWfTCYRT8EL+32+q+v9Gl1WMrkjjW7gPJa033r6kEavFXktEbkzzDDgXS2gDDt4iqctcFX2c3pVb6A+6E39JGCD6HkLRJSUhi5jgyTANor5p+3ABGQKWRp2HbyRJg+ZKXlK0tyfG4nlR42FwDRvr6LbGRlHNlQmM5WCWsA==
+X-HE-Tag: 1754924942-911860
+X-HE-Meta: U2FsdGVkX1/5kVu4ix/EN6jJVt/3L5tu/H+ZW3//wugHQ8GbFTIo4JKC+DCePqYr84wuqekNfZPswvKdNZ6qMwfAw69aqGlywNKRXY0XXmxAuNoozdn1uQ3N1dYpS/9DPhHT8fuvZZbmRmGBUglta9A763jYkAZHG1sZTlO2JZU9RMSv+dg3g4I+E2TJ2lnajRDWbkysqEipvw7oRdV8xsZOBWNN3xOgqr95tVKyf0JsEsFw3bOnfdoYu1dugfrq9kVOqN1mHNMy5OPPG1K35PjH79kN3MLn0b5fnpMNRVgWK3cWezhv88KliIqi00xDYXsvMi6Db4Yf5P+lQHK/Wv1gx5kTCo9hUWsBoQymegGnW8JOr0uNV0BpI62osHAL8nHSWsur14fVxconYUYfaZzaTouh3SvUW+oZqDpG4uqv9ZcO5LQQP/0DldELL2gVyfVPY3Uo1y3WnOUu3RjZEbMd+/QyeKndoAei1qDJuy43MrS/wckbxYVr6qM+r+I62lRVwizShmfnyUqcC2jRhl8Q6OaYsIK0y1A/xaKa5gK+jOeoRN9eHG5N3AIHl3DFR2kYPfgzu+DInfMlkQ9NVcfn6GVJIpwsYQPjvbY5fCp/nmrKYzjsyFPKAz/USYGFjfSVN5Fr+cgOlarQaMaizGslazuvhzGtiAFk8u2+xP4aGEb4s3t30yD18oqiLS3mtVNPccSA9Bg4Ax7POmwxJ7bXKJGnL5tj8M+35xepPUYwQ9HsdmzDMsJXAoZYo1oHTdxxQNJWzQPNshccHi/6gMOk70ehzDLFHgQdTRdLF7LAoU5NlfFQqKdwtVv+OUSNRQzLvnGwdGWcCe6hN74DCdd6kIJdLNQAyUjAPj1LqFAPTgMfD2ae+2NggVw0CveP5fcoB0/svXFJtWKrN2Clc3GY9dN4qf0qrX69cRZcxmYDBCVHfR9PBHFZBt0zwX3mUUvxrluOeKRsV/VeDYF
+ f5CNHu1A
+ QUiyTdXbCekr924bSdO1ztp1zovFibS7C4bOx/vr60Drww3lhorLDFu2YP77yNF26rPvOinDNweD1+GdgxhFCclU10jSDOINKMGeCWrWlqR6CsZRXuoOiJKGeOR5u7JAfCh4Wvz9i02UfuJrgCPgf6TuUmK71rgHi/EfFypRQqY62Mu2or1HDzSHl2mgAmAFJhGHg6daHcLUuhdIdcHdsbDdXO01Si2BGkLvuEDfxREhdgYmIbj0VkQYX2EgGPw+mVMAWKp/r9ACOpM79F6TOxnws1rCCpRuiw2GAXYq96M/gkkrq8q9f4vziE/Kn64tPbEPptcjrVQKt/uPwKxGrD+o/sqawH4XiK/tqBQSIRIfnVjPDYQlldViBiiNj7VodXlZd+/OdRIhCLbzdWpJKQfAg2ME4u5skEfM+77auLTjghT8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,26 +118,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 11, 2025 at 12:16:08PM +0530, Bhupesh wrote:
-> As Linus mentioned in [1], we should get rid of 'get_task_comm()'
-> entirely and replace it with 'strscpy_pad()' implementation.
+On Mon, Aug 11, 2025 at 12:16:09PM +0530, Bhupesh wrote:
+> As Linus mentioned in [1], currently we have several memcpy() use-cases
+> which use 'current->comm' to copy the task name over to local copies.
+> For an example:
 > 
-> 'strscpy_pad()' will already make sure comm is NUL-terminated, so
-> we won't need the explicit final byte termination done in
-> 'get_task_comm()'.
+>  ...
+>  char comm[TASK_COMM_LEN];
+>  memcpy(comm, current->comm, TASK_COMM_LEN);
+>  ...
 > 
-> The relevant 'get_task_comm()' users were identified using the
-> following search pattern:
->  $ git grep 'get_task_comm*'
+> These should be rather calling a wrappper like "get_task_array()",
+> which is implemented as:
+> 
+>    static __always_inline void
+>        __cstr_array_copy(char *dst,
+>             const char *src, __kernel_size_t size)
+>    {
+>         memcpy(dst, src, size);
+>         dst[size] = 0;
+>    }
+> 
+>    #define get_task_array(dst,src) \
+>       __cstr_array_copy(dst, src, __must_be_array(dst))
+> 
+> The relevant 'memcpy()' users were identified using the following search
+> pattern:
+>  $ git grep 'memcpy.*->comm\>'
 
 > [1]. https://lore.kernel.org/all/CAHk-=wi5c=_-FBGo_88CowJd_F-Gi6Ud9d=TALm65ReN7YjrMw@mail.gmail.com/
 > 
 > Signed-off-by: Bhupesh <bhupesh@igalia.com>
 
-Make that a Link tag?
-
-  Link: https://lore.kernel.org/all/CAHk-=wi5c=_-FBGo_88CowJd_F-Gi6Ud9d=TALm65ReN7YjrMw@mail.gmail.com/ #1
-  Signed-off-by: Bhupesh <bhupesh@igalia.com>
+Same suggestion, make it a Link tag.
 
 -- 
 With Best Regards,
