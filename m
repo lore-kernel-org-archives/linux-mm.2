@@ -2,93 +2,152 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CCDD9C87FD2
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 06:34:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 49303C87FDA
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 06:44:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 35EB46B00BF; Mon, 11 Aug 2025 02:34:05 -0400 (EDT)
+	id B16736B0101; Mon, 11 Aug 2025 02:44:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30F376B0100; Mon, 11 Aug 2025 02:34:05 -0400 (EDT)
+	id AEDAE6B0102; Mon, 11 Aug 2025 02:44:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D6966B00BF; Mon, 11 Aug 2025 02:34:05 -0400 (EDT)
+	id A033C6B0103; Mon, 11 Aug 2025 02:44:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 09C7F6B00B9
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 02:34:05 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B704B82A4B
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 06:34:04 +0000 (UTC)
-X-FDA: 83763511608.10.BC6F658
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 121C420003
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 06:34:02 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf03.hostedemail.com: domain of 32o6ZaAkbAKkbhiTJUUNaJYYRM.PXXPUNdbNaLXWcNWc.LXV@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.72 as permitted sender) smtp.mailfrom=32o6ZaAkbAKkbhiTJUUNaJYYRM.PXXPUNdbNaLXWcNWc.LXV@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8EFA96B0101
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 02:44:07 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 05B061A06D7
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 06:44:07 +0000 (UTC)
+X-FDA: 83763536934.28.3A140A7
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 44CD6140003
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 06:44:04 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=b6N9SLQ1;
+	spf=pass (imf09.hostedemail.com: domain of pratyush.brahma@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=pratyush.brahma@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754894043;
+	s=arc-20220608; t=1754894644;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=lueyKpG3qSnRqyQBRa/f+eyP2haOh7ZzxMzQPgpt8JE=;
-	b=yV3Yu9dQyLj2mVTKd90dMvxjyVpL2T39lyHrvM4gebLe6xOBiWN+3UdwbzN8pcixMul1T3
-	5uzqKnCZ/raedB6ZJv38F5bVS/nnOkSX1WdSMhXAAUP7yyq4djpbRVKAntvQELKwcAx44l
-	tFmV5m4YQ0pfnPbo+DP4LyhVlZMjEMw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754894043; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=bFBd420UAE7CxBgVRf9/TsqxiqblPzn7tE6jkz4N9SE=;
+	b=UCtvNORla0qcYdtrJA/0EXiYFjBwE9AFeJpzpU+wB+fIGwAvc97QVttTVxwHr43GqK1zqJ
+	XPOqK0miXuooPLatDPLTJczz39QGgRimGmEdnzQgE/h5jl/disVLN5E+iVdu1uiKrOd2V6
+	JhZfw5/fe4+AtklTLQ3SLHY7O+fyBlM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754894644; a=rsa-sha256;
 	cv=none;
-	b=q8Q9eEwMe9LmZzV6TqWxyb82HO/MaJ0ZUDnLuMIW0vQsXmatv1xYqVbwZQyV6mvRB81QcR
-	o7YUUN9dSu4FL9EVe/9IoPx5xw6kkFkasn93AW/jRhCe8rKXO1JBYplgkFuylqQS1+qouC
-	fyohCuZ8yz0FstuJllnd4It6j6h5g9g=
+	b=6quk48GtRK5XcZ4G3Q2RvBE+8oGcvi2rPtaTA83UA+Kb8rW8NwEswrE3/kS6oQ/d/tbYa5
+	0Z134+1qXkDp4hCOtHSKsgbRgUtvd0NHQkFWO6S9P5LRrnj3EV2bbQzYhqM3D6pRM+VCpT
+	oHRi4zGdhQ/c8yE65ORzt8w8HwQDpic=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf03.hostedemail.com: domain of 32o6ZaAkbAKkbhiTJUUNaJYYRM.PXXPUNdbNaLXWcNWc.LXV@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.72 as permitted sender) smtp.mailfrom=32o6ZaAkbAKkbhiTJUUNaJYYRM.PXXPUNdbNaLXWcNWc.LXV@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-88170a3df7aso365067039f.0
-        for <linux-mm@kvack.org>; Sun, 10 Aug 2025 23:34:02 -0700 (PDT)
+	imf09.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=b6N9SLQ1;
+	spf=pass (imf09.hostedemail.com: domain of pratyush.brahma@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=pratyush.brahma@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57ALoHsa005177
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 06:44:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=bFBd420UAE7CxBgVRf9/Ts
+	qxiqblPzn7tE6jkz4N9SE=; b=b6N9SLQ1NW9erumHBiUHIT0XxytfKNaiotwZ3C
+	Nx1niZraa3hNo5hryrX9qoQvHJEmhZm364fThroFjGE+12QxyJ7BSUg+GtJv7AXA
+	XqsNivuQd/zW8pPia4UOZ8VgJcgyeBe7KfV+StxQO3S1qqtRdVMorGgI9n6WchX1
+	T5fJb/PCR9MyWhocrl6LOe9sjo0ck7haaenPYVBvSvwefLqSwn+PYlOpb56sAhtj
+	9Dlu9WMtMuOyXu4UYD2p/BWXX/Y4iIMV3FySZPtACXP14sJb1F1NuFT5KtQzwu2J
+	36SilO+c+wE0o4JqjQNLCR21IcpVrPmJ7wsrVivtMTIsytNg==
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48dygmba01-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 06:44:02 +0000 (GMT)
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-b38d8ee46a5so3973227a12.1
+        for <linux-mm@kvack.org>; Sun, 10 Aug 2025 23:44:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754894042; x=1755498842;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lueyKpG3qSnRqyQBRa/f+eyP2haOh7ZzxMzQPgpt8JE=;
-        b=sf844RiSJUufRYiiRiOxU47WEXFOX64csQP7ccnARdeO8+pBpuMLVgDvVineU+ikfQ
-         SyLdhaiSJ4SgAuio4jrtM00gtuwSX+tiQywxmsUqMEkhPSVRiuLaK+kE4YA2CsVhOtEP
-         hG5vMmFW062uDL553ZrvXRmotLob/ZgKVvJL/5iSiYd78eWfEs4lEylrXrw7to1zWLxP
-         a5Dgz8rHwcy2Pq+Hk4GFeuGa9UQDbGNnwYpYb1AfnJ/3R5He5FnFrTAHx5IyCzZDyCFy
-         XwLcte8NInWFUi7bi1Dp8qG9WpkOW6ZMGYAbaRNeA3f/nZsh2ufBYno07+chZeKIVr5E
-         OnkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUdYtkZQS8VdebBclP6ywsqmHEGC5a6wQTvc6ypB2YDWBR8xdVhUOp5b0ITSV5zl4lJ6vlmKis9gA==@kvack.org
-X-Gm-Message-State: AOJu0YzYVWK4ptNqlj87DjMlvM7jl63sbDBmI3FskENCVADSITdiRpxX
-	QMIUlvMYwC5/2mxkUZxf7sCVJdAKZJHG7JtGWcU7HO/QWa8K+UaxQhkHl6O2J0+RpgDHYDPLNwn
-	oNHdERqv5QRgzfc783a0rrLYgqd4l35hytMHPwECyz+6uIgGSVDGU/BT8V30=
-X-Google-Smtp-Source: AGHT+IG3xy8jagJ9vH7W92qmqcjKaaAKPwz3mDsXTxdcBqcE+W9gl4eLh9ctjRc3CmOcEA+jq9wFtYrUeLy/CFCY7oT9Zpvtl5wL
+        d=1e100.net; s=20230601; t=1754894642; x=1755499442;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bFBd420UAE7CxBgVRf9/TsqxiqblPzn7tE6jkz4N9SE=;
+        b=w0jJXv2EWEb9ptOUbgK2wa2aczoJK8PL92xbMhh4+TV0pYB9AYy9rQOgmdI+cDGQun
+         Ti+VjyzGmFqMoAvLEVKJdHmrr1z+OT+d0tKs1dbdujn2SiV/vWXSEvyN5/84KG1jitSK
+         uqHGppVAg3jC9Plwh4L5d7HePgwxkLpARL9jN7xQl9E0srl4geaWWeJSmsuNpD03aG+5
+         qN0vom+IVraMLbxOaKFBp+7AL9ljo+t5K3iiiq+TqfWy+g60wZjm2hrVJcQysWyKgG8U
+         hRFn8WeZYMccSIQBToSeP0KS9gSP4ncKMP9yJNQTAGVJHaUWW3z0W0gMqRvqttvMldx2
+         62qQ==
+X-Gm-Message-State: AOJu0Yz9aXsZzx7SQPwSU+mzgewh77kLHLuB7k4wYB/tGl/GKLhTKBB9
+	heovma013tLeST28v2iLxrSpXtHbrDoEZMekehZWkB1XD+346DGk6uwy3sKDv5Y3Y8wGc/PUqqg
+	9ndNlwjsptAiumXJcxPtY17UHcEOl5Na7+3BKQMkIewTPMUvP8ulD1Q==
+X-Gm-Gg: ASbGnct8BeVPvCCMGa/2Nf2ZockBhLPYhhqDeLNoz11NjYqAZz+9I4vkkaJEGunFN6d
+	fj6ArUi8GivraAkiRhi3NcNBMyhy3rEEGU/lQLyTM6v3ZEAh7qGxhyHoQ+HwmC+mPaXJzS40mv2
+	0W45OiPE8GqwJDaGp6hqAWJLE7tlz3jqSco8QImgp/0U2yYe5OTDTEftcB9ntaxNU2bgU71rWx9
+	sddJQdy40eyBA2ceKOBfVci3I43vT5oyxUB3aRf7GJFekDY0+s/S9+6P4iJBL2RuvnC4bRJXpTz
+	HdpDI9tjpOChw0RrqJIUOoxjkz2HADAiCKc+c3kOF0I=
+X-Received: by 2002:a17:903:3c30:b0:240:86fa:a058 with SMTP id d9443c01a7336-242b060dd8amr256923745ad.7.1754894641927;
+        Sun, 10 Aug 2025 23:44:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE6lctQcOCf7in+SnIAmNq5lt8hSwjdCO8aLBQuwt02LQOpDXfrzrlYBrmu9dI8CIjvROvR7A==
+X-Received: by 2002:a17:903:3c30:b0:240:86fa:a058 with SMTP id d9443c01a7336-242b060dd8amr256923415ad.7.1754894641405;
+        Sun, 10 Aug 2025 23:44:01 -0700 (PDT)
+Received: from hu-pbrahma-hyd.qualcomm.com ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241e89769fasm262632215ad.107.2025.08.10.23.43.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 10 Aug 2025 23:44:00 -0700 (PDT)
+From: pratyush.brahma@oss.qualcomm.com
+X-Google-Original-From: Pratyush
+Date: Mon, 11 Aug 2025 12:13:54 +0530
+Subject: [PATCH v2] mm/numa_memblks: Use pr_debug instead of
+ printk(KERN_DEBUG)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:2d82:b0:883:e4c9:93bc with SMTP id
- ca18e2360f4ac-883f1259016mr1921419739f.9.1754894042175; Sun, 10 Aug 2025
- 23:34:02 -0700 (PDT)
-Date: Sun, 10 Aug 2025 23:34:02 -0700
-In-Reply-To: <d9b1c0c8-cd60-49fe-84aa-814b0191d3b7@lucifer.local>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68998eda.050a0220.51d73.0099.GAE@google.com>
-Subject: Re: [syzbot] [mm?] WARNING in try_to_migrate_one (3)
-From: syzbot <syzbot+63859a31071a369082b1@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, david@redhat.com, harry.yoo@oracle.com, 
-	liam.howlett@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	lorenzo.stoakes@oracle.com, riel@surriel.com, syzkaller-bugs@googlegroups.com, 
-	vbabka@suse.cz
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 121C420003
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250811-numa-dbg-v2-1-7842aa2d4c41@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIACmRmWgC/22MwQ7CIBAFf6XZszSwWoKe/A/TA4W1JZFSwRJNw
+ 7+LPXt5ybxMZoNE0VGCS7NBpOySC3MFPDRgJj2PxJytDMix44orNq9eMzuMTKJWA/Izmk5C1Zd
+ Id/feU7e+8uTSK8TPXs7i9/6JZMEEQ2utICOPJ62vIaX2ueqHCd63daAvpXwBO8EE3KcAAAA=
+X-Change-ID: 20250808-numa-dbg-62a8b2092c56
+To: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>,
+        Joshua Hahn <joshua.hahnjy@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1754894638; l=1411;
+ i=pratyush.brahma@oss.qualcomm.com; s=20250808; h=from:subject:message-id;
+ bh=eXcNlthP7dcrojBLukgQ670kaZ2NUSxXkL5fjwqYTes=;
+ b=AgrMEJScKwRgsp0tCJx0v1RMIG9QI8In2fp6iIwqQua7TPixOyY0KmdiW1txqhyoCJCfXi5Ut
+ AmelaLjEqu8BEmgO0nsVDXf0y23iqo7B0bZGJk3Tk0E4xHLliOgS99c
+X-Developer-Key: i=pratyush.brahma@oss.qualcomm.com; a=ed25519;
+ pk=ZeXF1N8hxU6j3G/ajMI+du/TVXMZQaXDwnJyznB69ms=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA5MDAzNSBTYWx0ZWRfXxvX6WRdQe+fA
+ +QfkjIkWY+wmSSpGBhu/t8qaSkDkf6rz6zTHJi10jp8qWg00j1ZCKDOUHuy1xg1JmZayjMJhW6b
+ oaWkTPmHMvXjDQ2PaPIAA+x2qWojbFUgn/ZjvqsWbkaMlRfe+h8qf0E45LsHMcsw3KWrgaoqbfS
+ NSgKYlAIZm8Lyl6aUzPM9EznmwRbp8CtUtYCZ/QLH8KfICTAebmqK99Pjz39TXnpoPva4i8Jdqd
+ ddeEP1Dw8ZJhU5PF8o1tnbaaYFz5MqRvSao6DcHOLCdZjvH6Ajxr2t2WHUGVkSTHpT8L7emDWQf
+ P/2jINrjvSQklHk8RXalt8zY5DLJPHQew5Rqzf5k1Krtsiytgpf8SlzwNeiS4lTMBYcGIhaH9Nl
+ Trthj0d+
+X-Authority-Analysis: v=2.4 cv=FvMF/3rq c=1 sm=1 tr=0 ts=68999132 cx=c_pps
+ a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=pGLkceISAAAA:8 a=IjtafaaC1MEc7PSuPL8A:9 a=QEXdDO2ut3YA:10
+ a=_Vgx9l1VpLgwpw_dHYaR:22
+X-Proofpoint-GUID: f_GnNi1SsPJ9ieFvHGcC232Q_fk1ENr2
+X-Proofpoint-ORIG-GUID: f_GnNi1SsPJ9ieFvHGcC232Q_fk1ENr2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-10_06,2025-08-06_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 bulkscore=0 suspectscore=0 phishscore=0
+ clxscore=1015 impostorscore=0 spamscore=0 adultscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508090035
+X-Rspamd-Queue-Id: 44CD6140003
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Stat-Signature: hwpskrbaopa9as3faozfyqyu53p4juwf
-X-HE-Tag: 1754894042-20066
-X-HE-Meta: U2FsdGVkX18tDdJGzj8nz3MuKUkK1NUBKMGd1LgcLjNnWCghQCdpEsW4CbLdPMi3tK5JPjZCqdj3cqlGSECo0EMR/kQ+qsF3Hh9dVg2ZR/YF33Hafs9W53QicOvTpv74uLycg45evb1EwIH6jYe4jfuRWp1nmCiv+1LBzOzjSF7ZzltFImvWLROyxQk4nXs4eNDmhJSGkF6/GNgoWyHa8jCerXpi2ufBiWqbBoMqC+2HgwukA4OdEuI9crZZkds3ZkWICMh9baW2hhC0jY28W4apQqfgUNI3/TKE7CgNm5UQoqTh8yX/nimbhDnABKLJh7Tx9gOa9ExiIDWhYvay12p1JPBvJ4owDTdwgbtxSmygWolNuO8ooj76s2JYxENn8O1HpUwFAX3f5t6d5K/rTq3uAVBs4m70SEad702R5hMFy2+znXDz92Z49HdGD9YtN2lK84+mcUOTMN2SOBB7N5hCkYY0Cfu4/tA4H80/X/w1zdRqqkFEH920LFc9HTfpyfQ9TejCrOwHjExXbH+AkwNaKv7gsn/YikOuTsvcon2oQZllzUITVqYUYqd6HoxYMocz+Fk3fXW4WEjpZiFNkCijwuiKik7Oli6t59H1ooikhFRQkLDnShlXSlkd5dnrjP3Yt2KE/l66hMmrRDixlVPAnmDm0L7P+mpovkOL9/7Xd11cFB3IstbtiHzQmhkrEUY3/bSOdijBfwmT9/e0d62+WMRphk1QV/ahrox/5C8ueplDluHTnMa2eK0/H+A/+EFgRyDzfi0Er5MQZFYueLlLLTfUwaX6Y9AIszuWrwXf0yi26qeqDLpVZc23kOECI9Vb0U+mFwpHjc+1quzETLJadqc6qxVifj2Cs6argEhfu35+CC81fmROP0zAC2gDjfLD7zNfLtFwHegBXXztZ5vPUOUk7lKebRhC8mRNzXhHjZKa4CpJR2bTBD60Bi4cIL5Iw99AtiAxBJLxlVS
- uwcx9GZC
- jRWuql+vHPd9/9WuGJ13HNxSGEsBiacYhlBgHR6t9Omi7DKjJUUKQ9C1V8bxE2kQgX+8N+sVpLWwvgV5bjYh0WPvYLsSsrL7qgCG7WWm2/jv42o4O+2lNtf5zz7zEHZ0pzKqDEivRjw2QUqjLzfSR4+TeVlBDAVLB0IdQLgl2j9Z6HykuULxDnsv2UnjqkbKGZXSiaFi7Jqw0Xdct7a3XjUVCqwPvVMFH0ftte7ClqDbHXa3Cm1bb1BccVv20DFrIdPbW9R9Z+6tKwOPZKClEUcyVAxhkBfRUGTNAQKqYkOv/AoOyz83cqyRn08elz4OXFZ09ghYRpPTKVPVzcPpmskQ+WqAu6TysM0i9fgcLXv2gLeXvkCqht4lFMrk06KFEeuOHEm7kWU9ekTAiLQj7rd/KkAU9OIijYE73tJ0LAqZZ0tEkt2M2rBJ9DFB38DSe4FCT9biRRDXcMJw0e5ALXetSaQaGkD1kINtRb4QNALB7VYbFXgWFOep5KlOiH+MqDHTtX2WtRI4KPqxpy4kvwmbFG9Ku8xtblrrG8OYs4/5fGeJfmLjn2dR2vr3pDGAsViW1BfXV/5FXpd/zvQsj3K+lk7Y8UjxY03DPaQbMN0BOfAnIYw+I7GYyjXDqF6klXbUms3VGHU1+AXDHo7SnQl613qdH+2bB5fss+R814iS6AqXDAQnAMpTFYIx68UMoUj+PsxnjUETeZObG5L1lza3c2BYpbKVHdmy2Dw1o6XAsgnky5VBLh80i8w2ZBDv9Kse0jXTPCcWdvIt0tXoN/oXZ5du0V+ubl7p5QJHG20f4ZMF2XiIK0a8j/yQkVFHHtXVXB95eVXSQ/vodomk7ZAWk6Wj0lzDAN/mtydVeZSSg/Vs9L5WWyVVNJn9bEJSeYgx0E2KUj4lL6R1PSpvmD+VqtW6lGGyvI22BT8RNYL+qecTYob0VKG2maWxE11/RsrHm2l6+VDzx2HQ1v+/TXo08zuvz
- I32VzHlX
+X-Stat-Signature: ucyteurxf1w15k3zcyct9st8y6bi9kcz
+X-HE-Tag: 1754894644-298142
+X-HE-Meta: U2FsdGVkX19kJUM3JS1mW1WWyL714f7riAHLYrYt3hK/pX4dKzmjoFElP0eiWVb/JYRYrYgtfhmUoDSr9OvjdbMl+D8eeeNLbX0OyqRAR6uBpr7KCaZY4pHdrnxmQI4Ghzv0v612NKYS5qd7iQUEG9FCxYzfqYHtiY20i4ojJCBzTy0wh4jyxf3jhcLF1CGu+RLZtMJwozeEYUDLuSouZ/U3A4ekeeQ3a+/ehWVNlPTjhN3D7s3Lo3Mi6lC5A2dEz9uS8hvvm8jceA9zlRPhudqip6f/SekyFwAvcmOUGAagTXKwLU1UeWXLUWdzEQl/Y45jOneQksUPgeMIasTuGljtz24SdUx3Wdydb3jIFO+hm7YSG4xHa/qEPaSAp18gQ/aIF8rvPvRoSxE/dW0rCKMHEkR0YuqQZdShWab4mB3+Rfq1PUQJ+7v/b/L2wNYHfkw1wu/XzjoR1V+Fy9Ipd/HfhTMJPs1yqpfH5jTnrJ/SSCho2NRZA3a49bidFjbzZFvWxULbe1KiMWwexgEK7aruDGqCHlpgNjXYLYsDNKqmYTSGrIuAukJWD03H+rg8bzCLheE293LN2xe6EXeEiYVRktRVLuMgFHq8TPQs7SAGEPWTHD5tA398iUsWZ3KAbXr4quLCOE67E/nr+Vd7dQekHOhHxDC8MUoeXqhqJcyFXoMTycObVzV2meNUz32HNmjryg8XLMoCRdagxw43RTg+RA4qRYGT5mQYWgKSMp9Lr9wXhuUMZ6+LlIC04BEkn05dkkvPGR+JGJRWcZV6Eo2KZ7bT3UJ74JWod8VPuNkD5lRqRrFbYzWXYKyu0uo3COOzIb55AAxYbofguaiPgUCGGiPeXtBqcOzw1DC06XIaM++B/BpBmQjCoR1HIepq/qf3f8HVkEzdq4QgmJN1dlJN6SZLv7WhCdLjkbDHti5xhKzyOMdNVJEVygRD6YZl/1ZoY+TSS/LteglpFLv
+ qbfilJ07
+ 2+3NLTVIZRXNbzT4ZpIrnM/UIjwDjoCHteTd8dFTDQks3IK/AJgVZqYnO0w6Jy895Y6QcDj4u1mrv4yhp4M8ZCnXiY87Sun3vMFFa43iZLx30pQ3/x/aQBRoIAWECe5AqCVdoZIfggRdnQLSEE6dLRebynN1qwSr/j/9ehgxyqnaNVdFvr609nJFszwTFuK89GCmSaccu42kEixCyipovL8I+RUBsSGbHtmmaAcgsCXOM/a8H9zSTfA4cdRpI7R0che6XRW8YpkS+ZlhLD2CTSlbrMkTzudvasuvxJNgTp2n8MJpSKwPD8h4umG72IDLxZknFmTpeJ7i+cZS3qOF8TYc9HwoWwaMrfsOTmRyhxdVa4/YxlTbjQx2vnYXew1oVGRg3JKcki3BPpokZYgore4weDWm2EoiwjLLfNGcjn54r2zPs0zRA4droBh6D1mSjxe85G2ssI1M6PuY047hjcJkJvkOfhvQTrlvyYjJmDMqPNlVIHc7EIh7eHU6YU5NlM0ISjBKsOI40JN39A0yjsZg+zTLxTLB02GPNAvgZGeEk2SWmSrbPml2K3gZ+kSiQTGdOy9IkS13F6DW7OLeZrdbR9mVnfPtqTV0mW7fpqoDc8huSykwmYnHNQDnf+ngsGXtg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,22 +156,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+From: Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+Replace the direct usage of printk(KERN_DEBUG ...) with pr_debug(...) to
+align with the consistent `pr_*` API usage within the file.
 
-Reported-by: syzbot+63859a31071a369082b1@syzkaller.appspotmail.com
-Tested-by: syzbot+63859a31071a369082b1@syzkaller.appspotmail.com
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Signed-off-by: Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
+---
+Changes in v2:
+- Removed printk header as suggested by Joshua.
+- Link to v1: https://lore.kernel.org/r/20250808-numa-dbg-v1-1-2ddd1ec634aa@oss.qualcomm.com
+---
+ mm/numa_memblks.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Tested on:
+diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
+index 541a99c4071a67e5b0ef66f4136dee268a880003..ed6fcfca057ab4c9a8aa26cd1929551b4ded4a5b 100644
+--- a/mm/numa_memblks.c
++++ b/mm/numa_memblks.c
+@@ -2,7 +2,6 @@
+ 
+ #include <linux/array_size.h>
+ #include <linux/sort.h>
+-#include <linux/printk.h>
+ #include <linux/memblock.h>
+ #include <linux/numa.h>
+ #include <linux/numa_memblks.h>
+@@ -76,7 +75,7 @@ static int __init numa_alloc_distance(void)
+ 		for (j = 0; j < cnt; j++)
+ 			numa_distance[i * cnt + j] = i == j ?
+ 				LOCAL_DISTANCE : REMOTE_DISTANCE;
+-	printk(KERN_DEBUG "NUMA: Initialized distance table, cnt=%d\n", cnt);
++	pr_debug("NUMA: Initialized distance table, cnt=%d\n", cnt);
+ 
+ 	return 0;
+ }
 
-commit:         f1f00681 mm/userfaultfd: fix kmap_local LIFO ordering ..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-hotfixes-unstable
-console output: https://syzkaller.appspot.com/x/log.txt?x=11990af0580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=75e522434dc68cb9
-dashboard link: https://syzkaller.appspot.com/bug?extid=63859a31071a369082b1
-compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+---
+base-commit: 479058002c32b77acac43e883b92174e22c4be2d
+change-id: 20250808-numa-dbg-62a8b2092c56
 
-Note: no patches were applied.
-Note: testing is done by a robot and is best-effort only.
+Best regards,
+-- 
+Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
+
 
