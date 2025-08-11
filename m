@@ -2,90 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 94347CA0EC4
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 17:31:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8BC99CA0EC4
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 17:31:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 77BB78E0081; Mon, 11 Aug 2025 13:31:37 -0400 (EDT)
+	id 0ED228E0082; Mon, 11 Aug 2025 13:31:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72AFD8E0060; Mon, 11 Aug 2025 13:31:37 -0400 (EDT)
+	id 09DDF8E0060; Mon, 11 Aug 2025 13:31:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61A368E0081; Mon, 11 Aug 2025 13:31:37 -0400 (EDT)
+	id E7F318E0082; Mon, 11 Aug 2025 13:31:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 454248E0060
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 13:31:37 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C5A111DBAD6
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D1D018E0060
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 13:31:38 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8629281E09
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 17:31:38 +0000 (UTC)
+X-FDA: 83765168676.05.FB83967
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	by imf14.hostedemail.com (Postfix) with ESMTP id B27CB100010
 	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 17:31:36 +0000 (UTC)
-X-FDA: 83765168592.23.F728F8A
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 00D56C0005
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 17:31:34 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="Zbso/SY+";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf28.hostedemail.com: domain of 39SiaaAYKCPomwpk0wiqqing.eqonkpwz-oomxcem.qti@flex--kuniyu.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=39SiaaAYKCPomwpk0wiqqing.eqonkpwz-oomxcem.qti@flex--kuniyu.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754933495; a=rsa-sha256;
-	cv=none;
-	b=Z4rzaW0I9/qZmYM0jZuCLHHNAOlwBDre4SWbcfwF39O6TvoGOBwiuQMAclTbHAKpjtfKuh
-	LwuO1qfoWMTmvwnFaF6Uu0CjZOfnef4SHuBuWU9zxGnfFIJbOMWIBnFlvH+b4iHaXGY3XP
-	pDzAWio0XFIbMcIaUl3Q78p4uxj2uw8=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="Zbso/SY+";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf28.hostedemail.com: domain of 39SiaaAYKCPomwpk0wiqqing.eqonkpwz-oomxcem.qti@flex--kuniyu.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=39SiaaAYKCPomwpk0wiqqing.eqonkpwz-oomxcem.qti@flex--kuniyu.bounces.google.com
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=J2KD5Fae;
+	spf=pass (imf14.hostedemail.com: domain of 39yiaaAYKCPwoyrm2yksskpi.gsqpmry1-qqozego.svk@flex--kuniyu.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=39yiaaAYKCPwoyrm2yksskpi.gsqpmry1-qqozego.svk@flex--kuniyu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754933495;
+	s=arc-20220608; t=1754933496;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IJUMgP2fCvnJmK1Iv88gPtdmkhT/9+UsLcGRktrUImI=;
-	b=YfD+oQ24+eUWRy1tY2YlmquNIdpqvcFoBjQukmYmjESrF+yFawjHilMQrIAq65FDvSUVqN
-	cPvCh8s48i9jpOUMg8uyaoIlqOpawYARPIwKblsR/yakVW9YaHX++tpiFIgdFG6zBocEQO
-	ze9Of629widVleJhVmzBvw46gPj36Rc=
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-31f3b65ce07so8116429a91.1
-        for <linux-mm@kvack.org>; Mon, 11 Aug 2025 10:31:34 -0700 (PDT)
+	bh=nbWyNjhRffdizOWiIb7bDk0DH91Nu7zFnwGTY/wxrLs=;
+	b=ZXgsGMYcaFt+0SiEzAhn+75C+Hx8nzq2FqP5cT68LyVx/kh3J276C/+8ey+PCV4lQhPdHm
+	CNXkQj+GC3ajbw67zkwqRL2HKtOuYqha2pw7kQwTf5vfklkonFFg9dyTfPsai94vMLe9Fe
+	Tric41/PPzWbCFkgeWfgVDKdyxwq5a4=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=J2KD5Fae;
+	spf=pass (imf14.hostedemail.com: domain of 39yiaaAYKCPwoyrm2yksskpi.gsqpmry1-qqozego.svk@flex--kuniyu.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=39yiaaAYKCPwoyrm2yksskpi.gsqpmry1-qqozego.svk@flex--kuniyu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754933496; a=rsa-sha256;
+	cv=none;
+	b=V1lzRpLnxDohfIN/2Da9kxvE+poQH2JR5qjBpXluoGbHRbVd0UpRzqpbYO0jQBfXSzOwnV
+	W6EBBM0/e8z73ZNFBf4hCCFKWhLPuGXJm3V7T4h4HJzO7SRdYIwrpHpCDDHf6Nfn8H3M2A
+	f5GyH1qCH/WzyvatvTx/XmzbY5rCqm4=
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-76bcfe2a8a4so4700980b3a.0
+        for <linux-mm@kvack.org>; Mon, 11 Aug 2025 10:31:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754933494; x=1755538294; darn=kvack.org;
+        d=google.com; s=20230601; t=1754933495; x=1755538295; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=IJUMgP2fCvnJmK1Iv88gPtdmkhT/9+UsLcGRktrUImI=;
-        b=Zbso/SY+S8iPtb8bQ12d3z2LttiQrLEqa3K60cFoT1JEHlYm7BGw2M0Gei3xOp7i4U
-         hZ+/WrlM4C2AEemvZzatDkjrq2Q042D45xff6ygKoUpdzzsDozdNx5p9eXLQsZbgvWNg
-         C9y1HH3WYPBu2Qabg/Wl5BoWj5JeQAPYptqhm45aJLZE6MOKOJpp8uR7/ZrIDiP3F3hd
-         5GwIyxkBVWqtDsrM464FdHkykx1r/puBfY03kFkgHRAR7TTZlyi/JScYlIDEXWGs/teF
-         2xNsjlf+tCErq45haeyDKjTniQ8Oo/d6WnUQOEWieDFaX0hc+6KNB7fjSiJkoK1aec46
-         0yNw==
+        bh=nbWyNjhRffdizOWiIb7bDk0DH91Nu7zFnwGTY/wxrLs=;
+        b=J2KD5FaecPc7pC4dJx2XC9skTCCPN/rBYYQ1ES9r3GHQ33uMDzCcDtHaom4k0enTIw
+         IOxDpxYgO9Dq9+1kCa1wiURpoP14YI/0AoKGa5+dbK0H4pvxYoxtOxnZpssJ+82FD33X
+         ZJUh/jUO6WAVNPCO/pgG5FtAWZoTabmRHzh9cKUyYDYPO1Qwa7FyjouyfThuZfYwlI+u
+         0YRSvCkc6Z4/mLLsg+FXcJ9E3lpihenVVuuwt5afLvQS2xPo4YDWVP0ZPevOQIlL7b1Z
+         uXReKC3yemphptGPJbwJvy32yNwIbnVLRc6DJuMDRn0GG/VyY+nqIvJLS4e+sKzOmQlr
+         KZHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754933494; x=1755538294;
+        d=1e100.net; s=20230601; t=1754933495; x=1755538295;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IJUMgP2fCvnJmK1Iv88gPtdmkhT/9+UsLcGRktrUImI=;
-        b=nY5AKTextIfSEL7+bFVU05Q3aQqK4Jw+fH4Z3IAXdziBiSgoizBGQoe+Ao9wZbNBp9
-         TtuO6dhCgWSBkncjyY3b/FFL2OdPkyxLC+3AyWqnJJ9Usy7ctqUDRC0co9Gn0WSJjZkn
-         W6t1lTJzMN6aJUWj8wlCF2OSvA/9PnM8oCmwQMbVxsUCQvDCFa28jdVYgPQ857y+AP0H
-         p2igr2B+vFsxvaxvagkWlc0lHDUhRf7rTiRgG0QOjUdVQTOnEjGUe9tDfPreYBW2GHDx
-         7I/yyG8+6zeG1fC8l2htIanLZK4lkgRpx1162DY6UuX1VrigBDBhswaRuUkyvYGvq5jv
-         /DDg==
-X-Forwarded-Encrypted: i=1; AJvYcCXlwrO8w6JtRmYn3aBJ1/6aGShKFBi/8BOKFKStS6iJXzihnl7dH0qsXiWNv/RUqYONkN2JZ6BFvQ==@kvack.org
-X-Gm-Message-State: AOJu0YzhWQPTCakyjJX5xYjx1ATWQ/1kJzbOO20lEVkqejtHeU2BzEHB
-	YpndNs8Fc7NrAw392M7oulAr2C3dEEFtFAiuHin0Hb+MOwwo6Ls6eTeTXXFJ3PSw+QbF2vKqirj
-	mSd2XAQ==
-X-Google-Smtp-Source: AGHT+IGLJHxtKJ3Pk5R4dgQvk7gs39J/mY7N5xl2jz8WX6Gc8LUYFyja4buobT+GhatPyGHT1yaWPuvm76w=
-X-Received: from pjbsn13.prod.google.com ([2002:a17:90b:2e8d:b0:30a:31eb:ec8e])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2251:b0:31f:1a3e:fe31
- with SMTP id 98e67ed59e1d1-321c0a11aa9mr615779a91.11.1754933493761; Mon, 11
- Aug 2025 10:31:33 -0700 (PDT)
-Date: Mon, 11 Aug 2025 17:30:30 +0000
+        bh=nbWyNjhRffdizOWiIb7bDk0DH91Nu7zFnwGTY/wxrLs=;
+        b=aIdfBXPTfzmJP9t0peDn5MzplpwuvB8B9mMqq2QC6lQUndq6KBx376+v6jvLctf/Ce
+         is6zjJW5B4lkEyb+Fpu1GYzO8OtezlssVRtjIN2kB/nJV7Kz9Zrr7/FEnIPuUyFdTRz/
+         fLJWNHqGSfy+5PnIGOVRBdb0f0QFdQjSvH6XQy7fBnGhCg0Rp/P/fUjK9lW7DpFgMF4I
+         6W3iacDi6gHJOzylyE+9idWWH0S0X9FlqlrfLnIf7IkArLaJu1wF+zK73shgaNQf/tTF
+         Oi9pUkH9KdWwL0GAZ9QzfS0GXDuKjoe4FN5N522LCrF5gD4gnuvoVeRjAWCwekZcdPWa
+         xmFg==
+X-Forwarded-Encrypted: i=1; AJvYcCUu05WWFbOvIbCOvSr/RyDi5ySDcETbOom4ENAMJlPIOUTID8LTtyievEwCqZx1fFdE5CO/zkovEA==@kvack.org
+X-Gm-Message-State: AOJu0YzlFz6zZo7M7UdzZyT6PMdwFfK/WU8VziZV9JYeLmvxMK+TXsPo
+	krekFQzxIFIDFbAJrKgGfwjUzwPA7fw3b6Ax32hIyspyL3+Qg5MpQ/28fOc4nr+BmHlCF7HpwWX
+	6HBXrjg==
+X-Google-Smtp-Source: AGHT+IHxJ97+AwE076KxPYX/sWcCDY1XqeMHaZ3AGAq4oCcRt8YytBHiFg6jXlxoMu/lw9gst4WNB9FALdI=
+X-Received: from pfblh2.prod.google.com ([2002:a05:6a00:7102:b0:76b:8c3c:6179])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:b46:b0:76b:f01c:ff08
+ with SMTP id d2e1a72fcca58-76e0de2de8emr552627b3a.2.1754933495361; Mon, 11
+ Aug 2025 10:31:35 -0700 (PDT)
+Date: Mon, 11 Aug 2025 17:30:31 +0000
 In-Reply-To: <20250811173116.2829786-1-kuniyu@google.com>
 Mime-Version: 1.0
 References: <20250811173116.2829786-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.51.0.rc0.155.g4a0f42376b-goog
-Message-ID: <20250811173116.2829786-3-kuniyu@google.com>
-Subject: [PATCH v2 net-next 02/12] mptcp: Use tcp_under_memory_pressure() in mptcp_epollin_ready().
+Message-ID: <20250811173116.2829786-4-kuniyu@google.com>
+Subject: [PATCH v2 net-next 03/12] tcp: Simplify error path in inet_csk_accept().
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
 	Jakub Kicinski <kuba@kernel.org>, Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
@@ -99,14 +99,14 @@ Cc: Simon Horman <horms@kernel.org>, Geliang Tang <geliang@kernel.org>,
 	Kuniyuki Iwashima <kuniyu@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
 	mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam03
+X-Stat-Signature: chwdz9zrngazjffk3ypbrffswad4dcdk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 00D56C0005
-X-Stat-Signature: pm4xy8h85yknxawzfptoii5k5i96ifmb
-X-HE-Tag: 1754933494-222429
-X-HE-Meta: U2FsdGVkX18ZLH3t8DC9LjWZcsmIirNni4TiM+Le9r/vNY9yuA0HMjzhhmMHpZIV/FI0XlTtewQ91pGU0OJVUBSJp9UBmDIq/LpngofiR1YjKgK6FlXB3kYhDnI3w/vPTM19GoP8F4PpfduOnZwYIUrlinxXza/XPzwv29gKlISa+OhjAN+Rz6FkkLl9uTzkmiMpuk/oLKQqQQIBn5tzs6QXp5UF2g+jXcKfA5hDSRexNWCc3911hXfqIUBG8THtiUqtgVrJ+xFG5Z4iU8tICrIhrqnyv0HxDMJ1DaBEP8kvNhptB6egejxy3KDHFt9nwpNbpwNBzrvXq9i0JzCl5jn534TDtdM+tTmCyiiW2lvtjIjOIsv0NYxbda0DfhrVlQmtHkgr1GfFbNca6WnsujKX4gCEwPodx+p6ZiirGYvdQBczUQVIUNV2oA8oJ6Xt+nCFoGYTtF5WYeoC6OQP6PqdLTE7S5jsqIuPq9BfEYSjYMQljFQ8jGfttQdJC6L0o5AytwF3/LTC7Nd1KM+L/RNIwEHDo3kryHA5+frRwk07zCLd8wHZbL3IbDzXGXP2K0fSK60azgDfA/PDshIAbRvxSqQihmXkeuqVQnhHnsqzeGJFnRMSX1UAIIwVeVyw6A9tA8gxcyD6Puyp7kEXbmaqbkGjSpSAiazaQL+kYjV3ASLi+npGeU3KP7NgqmAcl79HHsMhNaCsdOkPxdBbP7Q2FmkMrbqd4of0ypHW2oCLkT3anY2EB6AlUMf1mYZ2mP/65JfkXRnHn3NNMDmxSr87a+v4HhNjkJzLqwm2ip026T847Q+AxfslbXxsGl6rdG94sAfxcVkbPMVfI9ghrLq/0f/vOWK3qMZ3DR+E2dLTbaR6jxELTFMQVer5fusrud5LQ9Cl8ckBhtPstGHXkbsisIMDK/RXXyxgkOgKtPqjSvFMNoVlqpavG4WAm5wRs6LHifFronKoVkNgBVn
- aNqUk2K4
- QyWaxD8vpsvWuTHppExNMf1Q3W6zQK2pH6ZdlEKJ+Su4h5NekkLG3xSmMNJNubCUJSxIMJsOPCdpm7eZQWYGPHYE4qtIcodEBuag8jI61DO5yP7RqB7pMnhzy1IHDvQp/fJJHCBNP43r/TknHOJhYXL5hXI8z6P3G23zQSEWys32OMDoeQmv/tpW1O/Vg8mk+/fBXG2NAOapWL0XCkVY1ZDhP/0mVeuwdlhbS9Tms2JHUpaAKoZ2TeTvyZxTFpVv2I2mqVXv+ZYgh6t/86KsQ+DDGeoEF6AkjY+ibLXspr+rxZFeBhXgK2bIrMkmL6UvsGZ969COKcATJqBNn7UMl79B5cng/Z30BrlmKlyOUJpE5QeY3jkHHj5f1pLlGGuLMTv1kUoi0BOvBeQKIXeZt9QHuFbhdOoHkHl3i7oX0LhpSkXg//gXTK2l5FDgYgwELIs2Ootp4cmt+O0dTqHLJAEmuZ+m89RuzFMpvGmiWgbGyVLxKGuDjD+L/LWDPZosUZnIPL5TghaIarsPhhYODpXhXqgzNgULgG0DiThvWlEr8n3VYKyBuSJk80DETqoV18WE0/DRgJBgserNcuZc+fg084Q==
+X-Rspamd-Queue-Id: B27CB100010
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1754933496-973696
+X-HE-Meta: U2FsdGVkX1/XJcIT/b2uacTAd943JKIKh7oAMzQU7iAQFA6Ku6ZktPqAlRvO5XjT5JEwJPcEVBRKYSpfeHEtDOEbUSDp9LXvYb4W3hfLV7Sn62AGWPROXQx0Wv2hqGQ+nopYwRqYOf9ngxZ1Yc13EswAthqrUK5RyIGJ1aRJn3oRZJ3Ip3ut4CvxLRB4by/mKGhHtj5q9t+5ALgUaVI8rgS4JEsNwHaHSm5QUbsl6Q3cuNPmiPGu+rJecC1GW8NSU5E2ZVrTnEH/tEicPr7Bns4RoBwFV/covdv9TdyxEJKFna5FXqSzL8XkUpteRFHHp9T1C7Tv912WYsiUPL1CYoYPmsJiukVVEitioCzVddv1D3DvYE3rs6G97LyLi1yiOibXts9uJGKMbjw/SBpzKhYvwDptta/uurEVjHew3YIGVDd+BEwd1J4brlJMBmo2sKKL8Sc+Et6D7XF9066gg9oQ1FAlP4rpspfGV18ZolFWAAJyB87f95QMt8ud8h3B7VmtQ/ups5AZGTRLdq85xzo9pMJK5AgYRh0AbQuhVQ0R/xCTFORuS6M8BEkmE3boPxy3n08GYUoFuVXUV39e3AknYtuy0i4asntSWTlKO0DRAUO94akCxCIlYFK2vIe4vG3pO1+uFuYMejbAvpKqdDmyH4bBTo153dZVtMkOUpg8bgttWXYZz6lO32wkEJm/aQylZECkBhIfRoVLKK9fyMA0mTgDkFdp6Yx4dgtWm9jeIL/xWEgZPq14mUCMPVguAE0v+gZ4EyihrcC1u2yoQtVJijC4l8BTvI1kCMx3D7gAMjEJEqkf3YlBYbJsXpDzbeEjoHmr/5+PhXIDMivt+wmyfV94yJ+ugOuImXGDt++N8HzJhrS99nTiDZL7JQBdo5duCWw2L2ykTEAXnOLWBzexQESCHwtDOfCUK4U+2rTIZjQXdmPuuL8uS8pgqZhNgl8USeqQC+i6Mv8AmFE
+ 3qFrITMM
+ JiCvisMb6jh1p/1Gx+N1VqMJ3nsp/V2usA6iXM5aOy6vhJ0W+TwFNrL6EZr2ExjDgo6Ak8OdYcVXP9qtHY5CPZzmA3H/Zaom9BvLJUbGtmThGdRFHwnoyGklzzWpihL9yVP4V+cy0LU9tF0jL8hrH0zETOQLuWvt3qh2g+pQxtqbrop8BqrJ1ubBKQQscz+O7J81SXB+fD8Oyn2v0nafBCJzxBe0RTEULbWDUhNcyxMbKa3ImmcMhJLTCVRYBP413XlVG49RK9EZ9HzQmhudMiSQaDox5CF8g3fNtu3bISylYRUtNoMRrrxQJ/B1Ra/D8M4tR/pqUG5fvABgtRnwM/fEjkMeRNpi/wxykTa4rNMtTq6JheLpBfbzZLLV0WOMHavyB1k7m2qe6i5V6cVqpcs0on/w6afpdrwKsRYFbLDeDxJlFAr7bYML1AnGn/ggFDrEKkT7UllvlR90CxtZySSYPI3cphiOvzZkkOSco+tpBixU9MD7F5wAsJZ9H9O86O8wAi9QKNifftkOEMNXsi32AFKszOgzaBetU40L6cDnR1DtCxqSROx5kjB1Hu15ECS9By9iVPhL4sdQ/tUhVyphUGw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,34 +115,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Some conditions used in mptcp_epollin_ready() are the same as
-tcp_under_memory_pressure().
+When an error occurs in inet_csk_accept(), what we should do is
+only call release_sock() and set the errno to arg->err.
 
-We will modify tcp_under_memory_pressure() in the later patch.
+But the path jumps to another label, which introduces unnecessary
+initialisation and tests for newsk.
 
-Let's use tcp_under_memory_pressure() instead.
+Let's simplify the error path and remove the redundant NULL
+checks for newsk.
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 Reviewed-by: Eric Dumazet <edumazet@google.com>
 ---
- net/mptcp/protocol.h | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/ipv4/inet_connection_sock.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index b15d7fab5c4b..a1787a1344ac 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -788,9 +788,7 @@ static inline bool mptcp_epollin_ready(const struct sock *sk)
- 	 * as it can always coalesce them
- 	 */
- 	return (data_avail >= sk->sk_rcvlowat) ||
--	       (mem_cgroup_sockets_enabled && sk->sk_memcg &&
--		mem_cgroup_under_socket_pressure(sk->sk_memcg)) ||
--	       READ_ONCE(tcp_memory_pressure);
-+		tcp_under_memory_pressure(sk);
- }
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index 1e2df51427fe..724bd9ed6cd4 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -706,9 +706,9 @@ struct sock *inet_csk_accept(struct sock *sk, struct proto_accept_arg *arg)
+ 		spin_unlock_bh(&queue->fastopenq.lock);
+ 	}
  
- int mptcp_set_rcvlowat(struct sock *sk, int val);
+-out:
+ 	release_sock(sk);
+-	if (newsk && mem_cgroup_sockets_enabled) {
++
++	if (mem_cgroup_sockets_enabled) {
+ 		gfp_t gfp = GFP_KERNEL | __GFP_NOFAIL;
+ 		int amt = 0;
+ 
+@@ -732,18 +732,17 @@ struct sock *inet_csk_accept(struct sock *sk, struct proto_accept_arg *arg)
+ 
+ 		release_sock(newsk);
+ 	}
++
+ 	if (req)
+ 		reqsk_put(req);
+ 
+-	if (newsk)
+-		inet_init_csk_locks(newsk);
+-
++	inet_init_csk_locks(newsk);
+ 	return newsk;
++
+ out_err:
+-	newsk = NULL;
+-	req = NULL;
++	release_sock(sk);
+ 	arg->err = error;
+-	goto out;
++	return NULL;
+ }
+ EXPORT_SYMBOL(inet_csk_accept);
+ 
 -- 
 2.51.0.rc0.155.g4a0f42376b-goog
 
