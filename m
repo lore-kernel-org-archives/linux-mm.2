@@ -2,96 +2,213 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B4157CA0EC4
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 20:43:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C6ADECA0EC4
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 20:46:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 691F38E00A0; Mon, 11 Aug 2025 16:43:05 -0400 (EDT)
+	id 8468F8E00A1; Mon, 11 Aug 2025 16:46:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 669BF8E0091; Mon, 11 Aug 2025 16:43:05 -0400 (EDT)
+	id 81F018E0091; Mon, 11 Aug 2025 16:46:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A6E28E00A0; Mon, 11 Aug 2025 16:43:05 -0400 (EDT)
+	id 6E6318E00A1; Mon, 11 Aug 2025 16:46:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 49F958E0091
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 16:43:05 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C97E7811FC
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 20:43:04 +0000 (UTC)
-X-FDA: 83765651088.17.D15E508
-Received: from prime.voidband.net (prime.voidband.net [199.247.17.104])
-	by imf14.hostedemail.com (Postfix) with ESMTP id D4CFA100007
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 20:43:02 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=natalenko.name header.s=dkim-20170712 header.b=sicsFSqE;
-	spf=pass (imf14.hostedemail.com: domain of oleksandr@natalenko.name designates 199.247.17.104 as permitted sender) smtp.mailfrom=oleksandr@natalenko.name;
-	dmarc=pass (policy=reject) header.from=natalenko.name
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754944983;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A88F8E0091
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 16:46:23 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D5C07C030F
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 20:46:22 +0000 (UTC)
+X-FDA: 83765659404.01.31C29EB
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 9719C40007
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 20:46:18 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=XPFgwNhA;
+	spf=pass (imf07.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754945179;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=epr51fyacq8S8wo/Irurh0cQPovilFvLcdw3EwV5RAo=;
-	b=Uv24WCxETKd0m/FpmrXhRuPpO4+ypW/Cqk/SupI1TnGmfnZYViuhA6btabJUziVKw2g6gp
-	gqMV0ro1v3AJqcxOplvxeWpt6XcZ7KgVoQr1LT9vXUYs2v9m5mIcG6dHFDBBEyCcszl6ox
-	yHKlOzpevT7skLMguAqDPtfkTNjQ+Mo=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=natalenko.name header.s=dkim-20170712 header.b=sicsFSqE;
-	spf=pass (imf14.hostedemail.com: domain of oleksandr@natalenko.name designates 199.247.17.104 as permitted sender) smtp.mailfrom=oleksandr@natalenko.name;
-	dmarc=pass (policy=reject) header.from=natalenko.name
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754944983; a=rsa-sha256;
-	cv=none;
-	b=g19lht3zUocKW7ovjLMxxZJX7fBj0x+XQ1pRTA63YzikL3w3N9jHBAd73h1wK7YFy1H0OO
-	2WRIaolQkiVPiSBoma/F9z5KC+xHK0Zj0Vi5+ngrVpW4wT55EYE9Ta6sa6A33umuXtoPDQ
-	q34h4EJqMgPa/i7DKd3ljBV9jinoPRA=
-Received: from spock.localnet (unknown [212.20.115.26])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by prime.voidband.net (Postfix) with ESMTPSA id 1258B635B040;
-	Mon, 11 Aug 2025 22:43:00 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
-	s=dkim-20170712; t=1754944980;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=epr51fyacq8S8wo/Irurh0cQPovilFvLcdw3EwV5RAo=;
-	b=sicsFSqEBfPjKKKc8vl3Ha5STHfVdeVdOjrq7qOnr3T1QQmkNB3n1e8eBsbt1c1WlO1ytq
-	oyyJ2Z8WtrTwW3um9OuESyXSx9ja8YqKgXsCsCUTdi5kljoOXE/Lh/o9pYAq1dylWPpQ7y
-	G9Lt76MLVXpCJ0r5qPDI1J7gS/dx0pA=
-From: Oleksandr Natalenko <oleksandr@natalenko.name>
-To: David Rientjes <rientjes@google.com>
-Cc: linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
- Jens Axboe <axboe@kernel.dk>, Damien Le Moal <dlemoal@kernel.org>,
- John Garry <john.g.garry@oracle.com>, Christoph Hellwig <hch@lst.de>,
- "Martin K. Petersen" <martin.petersen@oracle.com>, linux-mm@kvack.org,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Shakeel Butt <shakeel.butt@linux.dev>, Qi Zheng <zhengqi.arch@bytedance.com>,
- Michal Hocko <mhocko@kernel.org>, David Hildenbrand <david@redhat.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Subject:
- Re: [REGRESSION][BISECTED] Unexpected OOM instead of reclaiming inactive file
- pages
-Date: Mon, 11 Aug 2025 22:42:46 +0200
-Message-ID: <15056829.uLZWGnKmhe@natalenko.name>
-In-Reply-To: <199fb020-19ee-89d1-6373-7cc7f5babab8@google.com>
-References:
- <5905724.LvFx2qVVIh@natalenko.name>
- <199fb020-19ee-89d1-6373-7cc7f5babab8@google.com>
+	bh=FjkkufaODhFr/PysJ9E6Xzp23Kds2DaHmT8QORzvDT4=;
+	b=g7gGP7qcJaSOtPlW75LImxqfGGKRcEycLW+M8Ci6EW3zBJuwmL66ie9QbXlfXNHCND7Ba5
+	pKhyc0KA/HKJ4rvxXgwt+21du8cHXdKldjnzlbVlCMUfqzN2blDSbFqQF83EyKeH7kos7H
+	XxtEV+vOP7wJosp9O6e8wAb5CrCfZls=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754945179; a=rsa-sha256;
+	cv=fail;
+	b=lxKDvDXf6wL+QewiI4GwLl6czwyWx74/cfHDN96wuuGhAJ/9FoX6LOMadtgilBTyixr/Zb
+	1EzuiMkhRhlxuIgnfJ8zpcQV1QaooKYFQP+sL89QawSmulJf4UOFslKMsmWp5/Lu9lfmGB
+	RT/KlR9YtSipmmmBW1YbBzJhQBXEVfw=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=XPFgwNhA;
+	spf=pass (imf07.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754945178; x=1786481178;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=X8Nm2VjvkfUb8ZsPb8AmvfRHGBwnT/V0mAN2jO0AQ6s=;
+  b=XPFgwNhAD6+ueMXk7VnuTGxT/XppefDR9e+Rld3bgoUkBws8nQs4WQ4G
+   XI1/pBszytqMUhM97wTiS68cM5MhUS18zNZj7hajQAFmKTs18DXzU5C7n
+   r6vULEpKzh3Fre7PR0ukzoqe/8c8Ep36ZLNwmLb165EXQlIxIlLTQXx7f
+   hkMAwllB6Yox3vF+uLwCByUE8Bo9qXHza4N7UVn+RuH24Ohegxi13OgxN
+   ZcvnEkPERqIKwHzSIlCobFvRib1tNo0Xul94F3gmkNgZ9Czlkr2dm0ClV
+   AaY16DTNOWPHoMNsCPuectirA8CsH4Uj/if0kW4psS3oXyfFLa4PcHm66
+   g==;
+X-CSE-ConnectionGUID: vWezDm4oQ4qRgBXGzlfe3A==
+X-CSE-MsgGUID: zPoeaK3+R0elrwgdCXUI3A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11518"; a="57164117"
+X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
+   d="scan'208";a="57164117"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2025 13:46:17 -0700
+X-CSE-ConnectionGUID: 9aoY/XYsRTCD0T4kbjLDMA==
+X-CSE-MsgGUID: kKY3mQs3R32E0quErdLFWg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
+   d="scan'208";a="170150040"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2025 13:46:17 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Mon, 11 Aug 2025 13:46:16 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26 via Frontend Transport; Mon, 11 Aug 2025 13:46:16 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (40.107.236.85)
+ by edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Mon, 11 Aug 2025 13:46:16 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=B9RwZrZinmyz7hCPOLN7n2ODR8Ptxj4VQZDLTuy0W/wyyhUKxDIutVwF/dbfRL9J9FeT5WHkC7i4YN87iAuaoSJTz3398BieNLPN8XLM7ucuOJnN3RYmpW/SpY2EL+2s4mZ3Zgweg02nr1jDFD4JTf//phydQLX1q48ubSmZYUpkrCXyjCzz77E6N3UUHIOgQKDzs4c9yQB3Q9BkeYM7raw4Hu7bNTL8wCQtOEvZjNrdBfvbneaDwJRHDg6iYJE4AXioguC6kKtCakyvQlcyYuMc81GcfXGd2o0v2o8fbjdC0hJl0MQiwSU04SGZhM9zc1hrY7w6MtWQFdD+O442XQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AkvODX0/fGRp//S1mK9tdj0PGyZOATXwxMvXFvpTtIo=;
+ b=navfDPOhobR3jxZ3y7cOmfgqJmc2za0Cs11aaWnzMzuihYGyF3QhzX8lmA4tG+cb97L40n/Xv8Bz4WGcfv1/gFJh1+fkB5HurnKrRL8lr1ofc8OXf3nMfF2/vBggxNGZiTCrDvmWZG7gDGfMzFydEbsEk2VmUO4Wt831e+2G/MzkGmEzjWIvLksZSHZC6S/fVbu+x6zNibvF+hyyKSZN/xy5VAcD9W/v7WSIwnejEEaE+Hw8OjlVY50CI2tS+kFkCabZXSieGWlHxVesI5QL8Sw64unWeQWLeqlqF9Hm18EAWhl5/iBbJDpvC9pJEr1VZOsjtoG52YVyaqPTSh1Ztw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by SA0PR11MB4704.namprd11.prod.outlook.com (2603:10b6:806:9b::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.21; Mon, 11 Aug
+ 2025 20:46:14 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332%4]) with mapi id 15.20.9009.018; Mon, 11 Aug 2025
+ 20:46:13 +0000
+Date: Mon, 11 Aug 2025 13:46:10 -0700
+From: Matthew Brost <matthew.brost@intel.com>
+To: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+CC: <intel-xe@lists.freedesktop.org>, Christian =?iso-8859-1?Q?K=F6nig?=
+	<christian.koenig@amd.com>, <dri-devel@lists.freedesktop.org>, "Jason
+ Gunthorpe" <jgg@ziepe.ca>, Andrew Morton <akpm@linux-foundation.org>, "Simona
+ Vetter" <simona.vetter@ffwll.ch>, Dave Airlie <airlied@gmail.com>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH 6/6] drm/xe: Implement two pass MMU notifiers for SVM
+Message-ID: <aJpWkig5z8tbeQDo@lstrano-desk.jf.intel.com>
+References: <20250809135137.259427-1-thomas.hellstrom@linux.intel.com>
+ <20250809135137.259427-7-thomas.hellstrom@linux.intel.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250809135137.259427-7-thomas.hellstrom@linux.intel.com>
+X-ClientProxiedBy: BY5PR17CA0059.namprd17.prod.outlook.com
+ (2603:10b6:a03:167::36) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart4238270.e9J7NaK4W3";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
-X-Stat-Signature: rsbi5cnbscpm6sot5xyxjhi9s78pysgd
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|SA0PR11MB4704:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7436973d-89a5-49f7-b689-08ddd9181c55
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?RBB2UWfA2Ubf+Ra9uZb4pW7o+z4aIZRpAER/tORnDPHYMY6aJNzPx1RPkV?=
+ =?iso-8859-1?Q?iSEJJhH/ptXyKqnFbEz5pqXH+j/mTNVMukGcEELk9IMCsCGinOJOIEeIQa?=
+ =?iso-8859-1?Q?MigHbm4h+96II0FbEecKASAkg5ToYRAGWya1Y4DZB6ELCxcJontep1SFYH?=
+ =?iso-8859-1?Q?x4xbJD7ukZqKMShncdBxcSGrS8fn0reVw0lsD902f5mW3zj3RnbGagYg/u?=
+ =?iso-8859-1?Q?YHHKKbNgzij33ulmKG52R+laGf8LUouqOH0nJrRRwiH/i9uHLJPFd9t48d?=
+ =?iso-8859-1?Q?wgQgiq1oQf/jFMzTkuLywv6rLky5kiS4xelaRcOaFyjQVAgR2NPQfb5oem?=
+ =?iso-8859-1?Q?Pltd86RRgMbYGrWwn5POZfXPUI7MGtLJTraChXRmzr0KRManGSRORFIukO?=
+ =?iso-8859-1?Q?ACANC+tFwFVscasqzItyiXsZh66gsnajzK2dxc78JMGVoTwCQ0PT2sUKl+?=
+ =?iso-8859-1?Q?FfG8fvOUEE7ZhZQ5wCd452QeiwEWfrw/6f5/bozV+EDQh10O3R7WOp/54T?=
+ =?iso-8859-1?Q?F8jO2XwTSDNHj0KfRR478H74L1lzm2h+iZp88BsgWVSiqmoMTrUGxG647i?=
+ =?iso-8859-1?Q?FR3WXLeMWRHnlsG/pVwhbcjEZBDFiN3GmrvjamNqqyfiGpDx6siCEfCSJ/?=
+ =?iso-8859-1?Q?6X1hbcUdSHgIq5VKX0KCUd7rUAlV2BHJK0zVypfMKIu5Y+DW/gZXyo6PiY?=
+ =?iso-8859-1?Q?c4gEy4dJoP8Ndy4Go6QSMB/iX0Bxa6A4RVo24WVXPBVTt8R0mjswjH7TRt?=
+ =?iso-8859-1?Q?DoFK3EPVEddq3xsFYep9GQ/QwjR2BfoI0eDVd8YYcLZkPYTZ7kXKgTUOFy?=
+ =?iso-8859-1?Q?K0IbxFg6cT8nU9YOWhzjrdtPMQBEsQRT5E/0zaFArNdjdOYZXS0k1LZ5Z8?=
+ =?iso-8859-1?Q?4FUuvJGxWNLP6cpPHz/iMxQAL2K01yQ/1julND4b+e4L3iFuyBNaR0bVQ+?=
+ =?iso-8859-1?Q?mp5W8p4Au+u+35J/0Ah/QXGn/eFJAUPQkYBLk5G/WtC9eDbBefJuxyAsbK?=
+ =?iso-8859-1?Q?Nip6ckQ4t2ApPQOVeW5VcwlvqDFcaHBZI/NNKzPqZnuXL5SX29dtPfwGFE?=
+ =?iso-8859-1?Q?TGodeJfecr1AMW0p1DNNdYBbT/wBAte6jq+K2NIr2gpjzCAOlXXTG6ysgM?=
+ =?iso-8859-1?Q?QHwE8WDPFOKIowj03Zq6/6DHtRMZOlM1dhpv43zwP1K0bxwjIbojIGYHaR?=
+ =?iso-8859-1?Q?y5/a6THAVPDGkeTekaP3YW1zBK6A9LtkoSQtvFYYaTL9UmNHEi24V78arV?=
+ =?iso-8859-1?Q?/4XgEDjekVvWpBpRAGXYnBPNaF1AvLkNNrKmnuouaswQdPGc3HzuaUjxa9?=
+ =?iso-8859-1?Q?e9Bza6IfO+jAsPuqBXyqFIlmgBb/r/bqlmefJzenbtv425H7hPLvLnTb5M?=
+ =?iso-8859-1?Q?8OqW8GRepKVLay1ncfTh0m8ejA1FZ+ZVfqnMnUg2tpFtkXXiQwYAZYTDqF?=
+ =?iso-8859-1?Q?NEVC7yV5boM6U4qRWBOGDcQ2wcoAAsNlJTGpdaXS54eGEL4nHe4zG5as3w?=
+ =?iso-8859-1?Q?8=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?gM66sH8FaqWm58qQ2Oe5el46KASYbeBjQkjSxpivcqN1elo6wfn3wLi+aa?=
+ =?iso-8859-1?Q?O3vaCb67lITctbD626FF0e4jnkHlXtYBfzF+N0oYatuMK8bJrI34f7a6XX?=
+ =?iso-8859-1?Q?/N6Jo7zoRKDDcVMjgCDBy5RYl1AtZKqfPtuWhkESF4leRaoz0/6TAqJMQc?=
+ =?iso-8859-1?Q?etbAJ269838qFhsAiMey+3kuPxHaRPpBucObWZ6kpNDIUgjGAo3UACva9U?=
+ =?iso-8859-1?Q?33Ck4H8tjDEs/jh0mL8lmoYzNi+oucJdg5EzS9PDaR3ClysV3HBNIjCJn9?=
+ =?iso-8859-1?Q?SlYDXemq9zwrY/4ZP/RbJg77mw1Jsw/d9plIBwDp9Vlodj9Juyx0lklcKb?=
+ =?iso-8859-1?Q?LjJE2b+Bd/TykWcKtnj6IPacioYcNXCoQZwN55FdpB5PHEuMOgJuVr8cpe?=
+ =?iso-8859-1?Q?I+gO6/CvOUSYc6pfr62+zdS5ASRrO9p1XfOd6XUA4sNLWEYHhnp5/Y9iUo?=
+ =?iso-8859-1?Q?qz2w6Jd+CtJwPfPDJprtjpIilUrmW4rTnECMomXgE6nNoNF0TA2f0BJ6Cm?=
+ =?iso-8859-1?Q?kjHGVpUodaVTOSUSOsu/QWFU5Jg35JYX2SrFWzcEiL2TinwHZ0BSA52zpc?=
+ =?iso-8859-1?Q?oU3rBzv/0x2bTpCeKQ/pH1dnSlHn4eTNL4Jw5WBbiIxZ96B4/FEk5pWFEB?=
+ =?iso-8859-1?Q?tmRtA1NAC2uDMHFIo/pVkNmqJF87iuHUjHLInAOoNVG8fQzlECATL448f9?=
+ =?iso-8859-1?Q?cLWF6OiK9M3UwbXYmSdzLxlRYvHlTmTMlU4MTLhy1bY95q0Qh5RI4VoT9/?=
+ =?iso-8859-1?Q?Vl9Ez6/ezPJwcx6N99eY3Kxww9K0JrjEKVuOxK3Wj/yJLzWV/NqKyHZmI6?=
+ =?iso-8859-1?Q?8EzGCNJQ7ir4/uc3zxJxw6Dv9KMX3/o2ZhuhrPInl+asTtraV6hRgrbhhv?=
+ =?iso-8859-1?Q?lAvBKAINC21y4rg3jA0qXu0/5Q4e9CWAloz6nwzDhj4pbZ4ERMfrjIujDn?=
+ =?iso-8859-1?Q?CAY7mk/YUKV9+QSmKbdvAYF+yohzwBePD/g6ZRvMdZNLvbP9c4XJQ3PWIG?=
+ =?iso-8859-1?Q?/6Qucg/2g6A7NYTxeYSyUKMHprtKQFtEmmylqryFkulf+pUuXYcI/EFbYX?=
+ =?iso-8859-1?Q?ni5dF6v6ZIGoRxLdygKSVFUthClFa2aPDpMgK6z+DAhqX2O7wJPUwW5ShX?=
+ =?iso-8859-1?Q?/mTwfJToneSc+VXQvm3aJ8Qb1tyk9VAQKTxIJPgWDN1AEzfk4IYAFPMejG?=
+ =?iso-8859-1?Q?tqmQ7VkjbUiLr51QqAneaZkcLTHmD0hhXYQpmBRKS4e/8R6NaMwizA1KMT?=
+ =?iso-8859-1?Q?DCtRReScP2byxcao/aNaHntKYFrSSCRzgOWS2Cf7LFMrTuOSKWujUrHUfb?=
+ =?iso-8859-1?Q?bAKEqsk5gFN+RsQaeGTAvfsI37cQe48BLmk9ykf7aJjX6gIwdU/1WQpzwM?=
+ =?iso-8859-1?Q?tdm6HUjGW2HB+ovq2q1ElBxiSAv02VbCrv0gZSHl0mhpzg9Yt0QwwbA1e0?=
+ =?iso-8859-1?Q?vsIohb3K5a2dRnA6ebUrsjDoPlDIgoe7OWeqbTThUbIvquPNkeqB7TgCQL?=
+ =?iso-8859-1?Q?WET5UPbDwIY96X1oR2WmElcp33djA9UxuwS/XnBziigyX+ulI2l8Go29xR?=
+ =?iso-8859-1?Q?DLlVrfpB9z0qlPmyWPE9Ksn6YjTbyZUWDiV6/XY2hsAtcYy5ekuU8VOWT8?=
+ =?iso-8859-1?Q?qAlr4eopzwL72ZPQ4yMYADNZlxbFcn2qBNncJr/rzTKepARv62iKPmCA?=
+ =?iso-8859-1?Q?=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7436973d-89a5-49f7-b689-08ddd9181c55
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2025 20:46:13.5941
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oevlwj2R+B3FFAnvYLTCZ8CJXQtXHaIZprKVe5KPESxyvrae7RoO5ERi7AtW88meG8KuM/0BoKaZdwLExzLoRg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4704
+X-OriginatorOrg: intel.com
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D4CFA100007
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1754944982-558571
-X-HE-Meta: U2FsdGVkX18pbXilVn50MOCq8RenwwSr1ep5bH1O+rXxDkGe4raQ8e+2umc5Cp9CtbMrYHI3GpYijhRzAezoWi/y4g5zB5oW+wedVuWXkWpitYKcW25lABxB0GCrIYPHZeBnS05e41FT31uU4b6/2BN5iyXbgpiWgp06TT/yUq3TTgzTetZjP2Y8TOHnuCBs2I4wZAMfOQNWoAKEpwlXB8H9ApcuB1fTU53bA/u15Dt/0fTKvR5Kewc8CBa/gJKFElh4f2GhPNkksJ2ZKH2txDzFiNA9/E0clFtZLqTy+rtxgQYQ1pSwz1+s0RbgAim4FTEqu9yV1lVflfwQgTX1iXTcRtZl9LT/b3Kvf2HzgVPgE7jqcHocQ/QB8oJU2n9PZsGHUG3AimdvfOedcMemNvi5yu6rizf3M/l8/2IBhMH1ebiCuuKekuXsG2kC6foRLKvWWfhDJ/8YNMM1Mc94Ny/pmWdKY+Uz/bPSkzLUDYX/V2StBI8NB/Y5O+juIA6ovRYd3PRHfiva8roI8m00borpw5JMZHW8rZVZ93gbBGkCqUuJIIdnPZZsgy1VB+Zqp2kItXUjR/DuHW7tgbalxGJdj37vM5hHX/Y4FBbzLedUMvFTxpAcU0BevVuNAcELO2F3v548AE2WJakXKMpOZQjgdC5C7j1/mw/lThdK46O6MSLE3djNWvPJYeces0tSjek2GsaDMhJpWNiDiCa7d+hZ7+03WG9MwLnnN44daoF1LmF5VcRuxqilIPOgNTUVd3TvD5CxvSok8ZnvIU8mRQTJH8Gh74yycZL8wo1qiZZTzIH7xxr0/GqHGPezq0wEeevzGGTT+9zxMLgJ7XbhhO1xZ9LKmNy2rUqNXe/MYyDyVOtHqXD2+Mc9+q7BKRVZRBfm0I8xmF9wylJnGljQEij0K6u+Tg2cn9XLjFeFN2aoWC9rxneHyVTysLMEmMBWEZCAhRhkO1GGJZ7hxqp
- reaxHga2
- zoHsxdI1SYc+3VZkNmONObWAbLDKGa8aMstcbSABlhJvANG2d4bC0LdHxHbppBhKMqp0UlTn4MhtjEtpcwsvA8FdMyNVFF16vWjFvYOHz5ElJy0nwuhRGivfP39sa8AmNXQcwkHU2PLUFxewPQGhQ8hEZePJqmYrz5Fm0pYpeN+2qJpkah5AQMsSfeoXDhx5Ys3veQEdl7RTr3GjvxfguN/AIg7fpBU3IwAZZ20EkHtgYfV7LdLuTT6zKajLPbyl/ywVA9gy8poKNFU+7gALE3L61Jb0WTgHKqINE7t/OvdxEiMZ0bCH1ZX+jAzBMg9baMGDbXuQnZKypoegT0bUO1QdJjqWLmaY+FSsTmsPPKX5wYZ0Zw5rsxQEba3oi0enGgZMvJ2h/jqvPUsvNlUHQPMVCwyiLsp5IoJ37PeV1Go55grlfGp3MKfiMrY751/psmqcSOdDIbP6RCX7245+UirXV/A==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9719C40007
+X-Stat-Signature: 9tsoi563n4yr9au3oy6j9saqq41pduia
+X-HE-Tag: 1754945178-857544
+X-HE-Meta: U2FsdGVkX1+LK3aOEyUgkToUpsveaz5/dU6y2F+UzCFAH2ERdGeTKspl45wKLlmZajxrV75VXXFq7v1CgWUqR1tww7uZtKIXPqKFinJjiKOP7GyB1yzsujJCDwneMIouk7Dfa4+kpZggFwsdJcWsfIA8e0Jle/r3CKBbX2Bykj6avQUcUVEQpPK5AZOpud4BhRq1IoJD2TD4GvmuXHEHCWHpKfbLC6wRX5xG4z/Vfv6gXeOrCb/fiNNZ8ooOBcBgqhNnYfLIlMxZ8GpV8GBJpIR/qwO74Q1XJ1Kp+f8HcJ7Sitr0fygcqKvwV1f0cLVAvBkmPWnpLDKxdqrJJI/Sb1Sw4n/qCcVtcxCSCiKeyvftPiZNnzGgsvQUMw3pdQSzEYzMNVMUo9v8xdLMTX+idIISd1ftA8EYMofHAnO2mapBta55t4r1qvvBRwFXv2Vdj0xTY6I4/laGU3Sg6HqNdM1AgtTYZnsWoM8E2xfS9KVjE/gIxiEioCshBOppnuzM5IK16mKkUXrkN7zqoNRz8vexfFLiMwhp3fmQXK7SyqPPs53ynSq/3MP3xo6oF60E2q2BwqrLxooNcGfzywXpETfxFaxUUcWoCJLzZrzzVLFKy9ZTPc/CzZqyNT9YaMf8puyo3eSx0DdVt/TpD1xQutuDjxX9IRFBDyIgwvi4sPRMVHLPzBQ8Cs/hSUncyYbeCD0tF/Rj48Cvn0OHtzPnGf8XDDmEB+tc5CWV1eM05GgzVsQDJpDTfwibSaZZxuNcXtqb7SuVQ6cCNqOZWjsbfjmPHQrpNvoyd06utu3KZrpBjCoWlM4oC4SrIteuTbCmEJnjsNlQiExuTYyaMA9AotKkcC0wiVwFt4Ke/XqrTObF2s7/n2Y1gBG8M+Xf0yFNxTcbCPJaGZXj3iiv7jCKVTa7r8AeIGAJ/ScyK4+ntjIRjQP/oM0D/OMj7IhXd43uo3KApycqc8Y1LfXlbr9
+ xeqMKjm3
+ HFHxLlR1QU08rOSMkT+l/1zWWy5HMBc9TyGt2CDxlSjFPxV6pPutWm49P4lvX/GKrRNoqmbldT9eQkRoK9PrrdJ3XZhW6Uxl4bGzIHysenLGNDvdvlV++2dAe+P2iBwq7JmoPswFbzCZTgqGNUVG+GFe9bMoA0NR40mGbFygmCgxib2ZafRwUG6295MLqLnKuuX3cE3PPoZueO+4IXcG3IqOI9OqR8dtFwO62Wyxkv7e4uS/Wa8xMe4gtOHSJ4KrKupe+3I04C25UOBzG7pREeUJcVi5BPdB5zf4LYvWw3+7MX8j71+OtfOjGE3hGYFORYex4tcoU5D78hn+EVtGvA96R6EpElaqVuqJ3kgphC/Fu3Aj4x9I+vFlndLhXBSaoBjaxjAc3ATdfj15Q5ZtzYgP+pvbgmU4qYul4Sb68cmZncnLfEt59UYbH35fWGNZ/VmzO9dD5GQn1BWgBxWezOJCbi2BvIW+BhPlfRsnk8Ua/JDZ+UxFW/XfeO8M8DXTnVOqXGM0E9kSo1WTkcirhpsgumaKGkT20CBb4lx44ANd5/Q5JYFAjozVlmD80dw5DLF3t+5EXOLaHvX3EBNN1jefEkGS89MEkKB8SOU+o6oHPVPDwD1iF+yWMWw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,141 +217,159 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---nextPart4238270.e9J7NaK4W3
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
-From: Oleksandr Natalenko <oleksandr@natalenko.name>
-To: David Rientjes <rientjes@google.com>
-Date: Mon, 11 Aug 2025 22:42:46 +0200
-Message-ID: <15056829.uLZWGnKmhe@natalenko.name>
-In-Reply-To: <199fb020-19ee-89d1-6373-7cc7f5babab8@google.com>
-MIME-Version: 1.0
+On Sat, Aug 09, 2025 at 03:51:37PM +0200, Thomas Hellström wrote:
+> From: Matthew Brost <matthew.brost@intel.com>
+> 
+> Implement two-pass MMU notifiers for SVM, enabling multiple VMs or
+> devices with GPU mappings to pipeline costly TLB invalidations by
+> issuing them in the first pass and waiting for completion in the second.
+> 
+> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+> ---
+>  drivers/gpu/drm/drm_gpusvm.c |  2 +-
+>  drivers/gpu/drm/xe/xe_svm.c  | 74 ++++++++++++++++++++++++++++++------
+>  2 files changed, 63 insertions(+), 13 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/drm_gpusvm.c b/drivers/gpu/drm/drm_gpusvm.c
+> index 92dc7d2bd6cf..f153df1bc862 100644
+> --- a/drivers/gpu/drm/drm_gpusvm.c
+> +++ b/drivers/gpu/drm/drm_gpusvm.c
+> @@ -413,7 +413,7 @@ drm_gpusvm_notifier_invalidate_twopass(struct mmu_interval_notifier *mni,
+>   * drm_gpusvm_notifier_ops - MMU interval notifier operations for GPU SVM
+>   */
+>  static const struct mmu_interval_notifier_ops drm_gpusvm_notifier_ops = {
+> -	.invalidate_twopass = drm_gpusvm_notifier_invalidate_twopass,
+> +	.invalidate_multipass = drm_gpusvm_notifier_invalidate_twopass,
 
-Hello.
+This should be in patch #2.
 
-On pond=C4=9Bl=C3=AD 11. srpna 2025 18:06:16, st=C5=99edoevropsk=C3=BD letn=
-=C3=AD =C4=8Das David Rientjes wrote:
-> On Mon, 11 Aug 2025, Oleksandr Natalenko wrote:
->=20
-> > Hello Damien.
-> >=20
-> > I'm fairly confident that the following commit
-> >=20
-> > 459779d04ae8d block: Improve read ahead size for rotational devices
-> >=20
-> > caused a regression in my test bench.
-> >=20
-> > I'm running v6.17-rc1 in a small QEMU VM with virtio-scsi disk. It has =
-got 1 GiB of RAM, so I can saturate it easily causing reclaiming mechanism =
-to kick in.
-> >=20
-> > If MGLRU is enabled:
-> >=20
-> > $ echo 1000 | sudo tee /sys/kernel/mm/lru_gen/min_ttl_ms
-> >=20
-> > then, once page cache builds up, an OOM happens without reclaiming inac=
-tive file pages: [1]. Note that inactive_file:506952kB, I'd expect these to=
- be reclaimed instead, like how it happens with v6.16.
-> >=20
-> > If MGLRU is disabled:
-> >=20
-> > $ echo 0 | sudo tee /sys/kernel/mm/lru_gen/min_ttl_ms
-> >=20
-> > then OOM doesn't occur, and things seem to work as usual.
-> >=20
-> > If MGLRU is enabled, and 459779d04ae8d is reverted on top of v6.17-rc1,=
- the OOM doesn't happen either.
-> >=20
-> > Could you please check this?
-> >=20
->=20
-> This looks to be an MGLRU policy decision rather than a readahead=20
-> regression, correct?
->=20
-> Mem-Info:
-> active_anon:388 inactive_anon:5382 isolated_anon:0
->  active_file:9638 inactive_file:126738 isolated_file:0
->=20
-> Setting min_ttl_ms to 1000 is preserving the working set and triggering=20
-> the oom kill is the only alternative to free memory in that configuration=
-=2E =20
-> The oom kill is being triggered by kswapd for this purpose.
->=20
-> So additional readahead would certainly increase that working set.  This=
-=20
-> looks working as intended.
+Matt
 
-OK, this makes sense indeed, thanks for the explanation. But is inactive_fi=
-le explosion expected and justified?
-
-Without revert:
-
-$ echo 3 | sudo tee /proc/sys/vm/drop_caches; free -m; sudo journalctl -kb =
->/dev/null; free -m
-3
-               total        used        free      shared  buff/cache   avai=
-lable
-Mem:             690         179         536           3          57       =
-  510
-Swap:           1379          12        1367
-/* OOM happens here */
-               total        used        free      shared  buff/cache   avai=
-lable
-Mem:             690         177          52           3         561       =
-  513
-Swap:           1379          17        1362=20
-
-With revert:
-
-$ echo 3 | sudo tee /proc/sys/vm/drop_caches; free -m; sudo journalctl -kb =
->/dev/null; free -m
-3
-               total        used        free      shared  buff/cache   avai=
-lable
-Mem:             690         214         498           4          64       =
-  476
-Swap:           1379           0        1379
-/* no OOM */
-               total        used        free      shared  buff/cache   avai=
-lable
-Mem:             690         209         462           4         119       =
-  481
-Swap:           1379           0        1379
-
-The journal folder size is:
-
-$ sudo du -hs /var/log/journal
-575M    /var/log/journal
-
-It looks like this readahead change causes far more data to be read than ac=
-tually needed?
-
-=2D-=20
-Oleksandr Natalenko, MSE
---nextPart4238270.e9J7NaK4W3
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEZUOOw5ESFLHZZtOKil/iNcg8M0sFAmiaVcYACgkQil/iNcg8
-M0uaQBAAnLctV0WUNBWBHFrDA2boniapX5Hn2yObdFClyFNDhrC3AUPTQVyeBI7t
-N9m52BCep1W3GuXSP8o/WdxR+6Mh/99J+kad5/gNczVI/XoOxdd6hWv9FNJAtuRQ
-RD3sl0SMHM+vS04837GgBw6bVZvRpHVSWpVZIs/ujiY2RSp4XQDPQEgB96wvGCbc
-rcLTeTdSZCQM2E3B6mw/EpAWg6+YzdZ3Cv4Xy5T7wk6rH3G+EiQA7536nlT9syF4
-/M3+6e5A8I2WbKgV+cvaQYGSujAoXQXnHT/9S8n2XdvQ1rD9oX6PSyuxhOykaUV+
-PldAX9jezn0fgswsooTR3ILUwzubDVGnDDQPW+w7TMritHG6ErJD0AS/DbQvoxVu
-iEsL4wCThFm8N1HEH9IFGmGD3kHx6NAif2zmj61KjJ3Y6vQOHvcpxgHqdfuajKM8
-iA4VvucrvOPlkowmW7cnxxZuZapJBLQSDcRCoU8vngfBC7OdX32EUZthAPw0vvei
-rSw6NyUeJ/fLRPDsRa1RPp5YYEqksTDaqhL0vjFOPEE1c0asC1QOfljqU7wpG5Vh
-bwZDfOtidoVpqXe0pjFUIkigoTPrsOj1boUFOvmg5DTjtWkqYEfmig7JK914PnaM
-PU/2zXHaegKLg1EirXuaC/k2i/LO6WZFwJ9ub9K5YZlVV68LQew=
-=Mz8p
------END PGP SIGNATURE-----
-
---nextPart4238270.e9J7NaK4W3--
-
-
-
+>  };
+>  
+>  /**
+> diff --git a/drivers/gpu/drm/xe/xe_svm.c b/drivers/gpu/drm/xe/xe_svm.c
+> index 82a598c8d56e..5728394806ca 100644
+> --- a/drivers/gpu/drm/xe/xe_svm.c
+> +++ b/drivers/gpu/drm/xe/xe_svm.c
+> @@ -144,15 +144,8 @@ xe_svm_range_notifier_event_begin(struct xe_vm *vm, struct drm_gpusvm_range *r,
+>  	 * invalidations spanning multiple ranges.
+>  	 */
+>  	for_each_tile(tile, xe, id)
+> -		if (xe_pt_zap_ptes_range(tile, vm, range)) {
+> +		if (xe_pt_zap_ptes_range(tile, vm, range))
+>  			tile_mask |= BIT(id);
+> -			/*
+> -			 * WRITE_ONCE pairs with READ_ONCE in
+> -			 * xe_vm_has_valid_gpu_mapping()
+> -			 */
+> -			WRITE_ONCE(range->tile_invalidated,
+> -				   range->tile_invalidated | BIT(id));
+> -		}
+>  
+>  	return tile_mask;
+>  }
+> @@ -161,16 +154,60 @@ static void
+>  xe_svm_range_notifier_event_end(struct xe_vm *vm, struct drm_gpusvm_range *r,
+>  				const struct mmu_notifier_range *mmu_range)
+>  {
+> +	struct xe_svm_range *range = to_xe_range(r);
+>  	struct drm_gpusvm_ctx ctx = { .in_notifier = true, };
+>  
+>  	xe_svm_assert_in_notifier(vm);
+>  
+> +	/*
+> +	 * WRITE_ONCE pairs with READ_ONCE in xe_vm_has_valid_gpu_mapping()
+> +	 */
+> +	WRITE_ONCE(range->tile_invalidated, range->tile_present);
+> +
+>  	drm_gpusvm_range_unmap_pages(&vm->svm.gpusvm, r, &ctx);
+>  	if (!xe_vm_is_closed(vm) && mmu_range->event == MMU_NOTIFY_UNMAP)
+>  		xe_svm_garbage_collector_add_range(vm, to_xe_range(r),
+>  						   mmu_range);
+>  }
+>  
+> +struct xe_svm_invalidate_pass {
+> +	struct drm_gpusvm *gpusvm;
+> +	struct drm_gpusvm_notifier *notifier;
+> +#define XE_SVM_INVALIDATE_FENCE_COUNT	\
+> +	(XE_MAX_TILES_PER_DEVICE * XE_MAX_GT_PER_TILE)
+> +	struct xe_gt_tlb_invalidation_fence fences[XE_SVM_INVALIDATE_FENCE_COUNT];
+> +	struct mmu_interval_notifier_pass p;
+> +};
+> +
+> +static struct mmu_interval_notifier_pass *
+> +xe_svm_invalidate_second(struct mmu_interval_notifier_pass *p,
+> +			 const struct mmu_notifier_range *mmu_range,
+> +			 unsigned long cur_seq)
+> +{
+> +	struct xe_svm_invalidate_pass *pass = container_of(p, typeof(*pass), p);
+> +	struct drm_gpusvm *gpusvm = pass->gpusvm;
+> +	struct drm_gpusvm_notifier *notifier = pass->notifier;
+> +	struct drm_gpusvm_range *r = NULL;
+> +	struct xe_vm *vm = gpusvm_to_vm(gpusvm);
+> +	u64 adj_start = mmu_range->start, adj_end = mmu_range->end;
+> +	int id;
+> +
+> +	/* Adjust invalidation to notifier boundaries */
+> +	adj_start = max(drm_gpusvm_notifier_start(notifier), adj_start);
+> +	adj_end = min(drm_gpusvm_notifier_end(notifier), adj_end);
+> +
+> +	for (id = 0; id < XE_SVM_INVALIDATE_FENCE_COUNT; ++id)
+> +		xe_gt_tlb_invalidation_fence_wait(&pass->fences[id]);
+> +
+> +	drm_gpusvm_in_notifier_lock(gpusvm);
+> +	drm_gpusvm_for_each_range(r, notifier, adj_start, adj_end)
+> +		xe_svm_range_notifier_event_end(vm, r, mmu_range);
+> +	drm_gpusvm_in_notifier_unlock(gpusvm);
+> +
+> +	kfree(pass);
+> +	return NULL;
+> +}
+> +
+>  static void xe_svm_invalidate_twopass(struct drm_gpusvm *gpusvm,
+>  				      struct drm_gpusvm_notifier *notifier,
+>  				      const struct mmu_notifier_range *mmu_range,
+> @@ -179,6 +216,8 @@ static void xe_svm_invalidate_twopass(struct drm_gpusvm *gpusvm,
+>  	struct xe_vm *vm = gpusvm_to_vm(gpusvm);
+>  	struct xe_device *xe = vm->xe;
+>  	struct drm_gpusvm_range *r, *first;
+> +	struct xe_svm_invalidate_pass *pass = NULL;
+> +	struct xe_gt_tlb_invalidation_fence *fences = NULL;
+>  	u64 adj_start = mmu_range->start, adj_end = mmu_range->end;
+>  	u8 tile_mask = 0;
+>  	long err;
+> @@ -226,14 +265,25 @@ static void xe_svm_invalidate_twopass(struct drm_gpusvm *gpusvm,
+>  
+>  	xe_device_wmb(xe);
+>  
+> -	err = xe_vm_range_tilemask_tlb_invalidation(vm, NULL, adj_start,
+> +	pass = kzalloc(sizeof(*pass), GFP_NOWAIT);
+> +	if (pass) {
+> +		pass->gpusvm = gpusvm;
+> +		pass->notifier = notifier;
+> +		pass->p.pass = xe_svm_invalidate_second;
+> +		fences = pass->fences;
+> +		*p = &pass->p;
+> +	}
+> +
+> +	err = xe_vm_range_tilemask_tlb_invalidation(vm, fences, adj_start,
+>  						    adj_end, tile_mask);
+>  	WARN_ON_ONCE(err);
+>  
+>  range_notifier_event_end:
+> -	r = first;
+> -	drm_gpusvm_for_each_range(r, notifier, adj_start, adj_end)
+> -		xe_svm_range_notifier_event_end(vm, r, mmu_range);
+> +	if (!pass) {
+> +		r = first;
+> +		drm_gpusvm_for_each_range(r, notifier, adj_start, adj_end)
+> +			xe_svm_range_notifier_event_end(vm, r, mmu_range);
+> +	}
+>  }
+>  
+>  static int __xe_svm_garbage_collector(struct xe_vm *vm,
+> -- 
+> 2.50.1
+> 
 
