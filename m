@@ -2,126 +2,108 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DACA3CA0ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 17:21:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A0FE9CA0ED1
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 17:31:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 653378E007E; Mon, 11 Aug 2025 13:21:41 -0400 (EDT)
+	id 4453E8E007F; Mon, 11 Aug 2025 13:31:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 603AE8E0060; Mon, 11 Aug 2025 13:21:41 -0400 (EDT)
+	id 41D638E0060; Mon, 11 Aug 2025 13:31:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F2238E007E; Mon, 11 Aug 2025 13:21:41 -0400 (EDT)
+	id 333548E007F; Mon, 11 Aug 2025 13:31:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 410E28E0060
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 13:21:41 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E9BF8C0273
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 17:21:40 +0000 (UTC)
-X-FDA: 83765143560.23.BE2B34D
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id DA45B2000F
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 17:21:38 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VhdPcKep;
-	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 1ED708E0060
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 13:31:34 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BC8AE57E2B
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 17:31:33 +0000 (UTC)
+X-FDA: 83765168466.22.DF4683F
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 01EAA18000E
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 17:31:31 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Rtg+weeW;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf24.hostedemail.com: domain of 38iiaaAYKCPcjtmhxtfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--kuniyu.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=38iiaaAYKCPcjtmhxtfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--kuniyu.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754932898;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1754933492;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HeE8CaQ2K5i+oPH7GVC2aPBcfIXmZD81doSr56qB3l4=;
-	b=66YaUcX9a74mNvCw4lY01dRy4jUu0PRw/nMHWcTqNiyrPgg+gHHnZePbRzVRhVgOh0oXGO
-	PK0XPGyLYdq2iPf//UsXFmqsicT+gdyB1a2JtjSp8kHSslCK9j1dI1Zmqt+jKdR1QvZ6+j
-	v/Dzm9pl8ARhAC9BUhxdVFr5FCpqDP8=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VhdPcKep;
-	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754932898; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ZTb4ZYMYPpk1ACseddHrcz3FiaeJvW+qXE8HO8bxlXA=;
+	b=2ubDz/KxvsVqfXTgaDLGo5V2OpfL3VKERnUISrljAkvvxozmpUVtTyzmdIWydxraE4EvIp
+	iBTI0+tG7ocHOGUGIj4ty/hIe5hWXZZZTm7RnB9EYyIWAikgQstuv0/aH5wmTE7VKO6USM
+	ffwJMe46DUuPCyo2nlmz0VXeMIcW7wg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754933492; a=rsa-sha256;
 	cv=none;
-	b=me837gfYt9yUdzSQ8+G98r4Z3gB+sfMogxMsClyVcEOmxL9q6Eg60cNUk2mlsKfMX9u/K6
-	LRf6qRySQ9bWaQ+vMD+EfXjyaiawSOvzE8LcecxhzE56Lm9Hp5eKF9ROMPQpZYKvIKgHEO
-	6PaJv9z3+HlGFc7h6OCOsm+Av2XxPWs=
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-24099fade34so33042375ad.0
-        for <linux-mm@kvack.org>; Mon, 11 Aug 2025 10:21:38 -0700 (PDT)
+	b=BYES9WWkeHbwTA9mfFIEth6UbsRmWMih/TLWqOCP0qcW0ofxyNUOSS55OZOilicOTOHvLP
+	5+3jmcbnkoz1fj5uHqAw8Q/TAmoNESSRbOZChVLS7emSCVEzZFS2Yzryngx7x5+Q9bITVR
+	3wreu9rYEpH8iVpAUUD6ToUeL8/nJRA=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Rtg+weeW;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf24.hostedemail.com: domain of 38iiaaAYKCPcjtmhxtfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--kuniyu.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=38iiaaAYKCPcjtmhxtfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--kuniyu.bounces.google.com
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b38d8ee46a5so4448034a12.1
+        for <linux-mm@kvack.org>; Mon, 11 Aug 2025 10:31:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754932897; x=1755537697; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:reply-to:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+        d=google.com; s=20230601; t=1754933491; x=1755538291; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=HeE8CaQ2K5i+oPH7GVC2aPBcfIXmZD81doSr56qB3l4=;
-        b=VhdPcKepBsv+ah9WUdDRK/3ffeVCep2rQGExOoLOgYdBaqV5EIC1tHl+CxaF5/GFKY
-         u9jp5VVQoK1DPccQpdwPJCot99gQ+w34aJxOhTuJVh6nEMXpYRqL8kG3EQomMJwvxHKh
-         LIe+z9BYIk2I62Ix0Drm15cwtQbothJ/5bE424KFdc2uxFpft3P+82JufzE1U3XKkorl
-         ENcI6bRPMNFoyYuV9XIvlFFoT/1kF2e/MQuItvsEuXWKikgeTHpitiimt/ZaYNIjFh/N
-         sxKlRgMXZz7y3lN/Lf/qywpCoaI6i/JQhVYT6pzOI/Nz5oLhC7E9zUmp/knPOYIMLrFF
-         +SJg==
+        bh=ZTb4ZYMYPpk1ACseddHrcz3FiaeJvW+qXE8HO8bxlXA=;
+        b=Rtg+weeWUp1o1vcAWcjnY4a3LVT7L8DAbgP/6Ol5r9ZiZCNkLGTimAJrWs0EM2TSBv
+         JzNRqwB9fasCo95E3AeSQ7IIfcmlkdTB5xYSvZyx0OdB9I7J0b1DkXfOtFILRN3qWnCe
+         GE2UHr9iCAhh2UY0qVMo8KWmmKM7qiVThNk5gG5skSC7/kQKAzMG8c6otHC3ERLpp+C2
+         ZtdeTPxpU0zdy7ALU8HrSRvG7KTLqiApJwrm93PbVlHbUyAUQrnhHd8zhIEyTVvNAtcK
+         kxjomlzOvkqlEIpQQjkS6C6HA/rDShs0wAYm/MbgImPoDLB8sK1R88VAa76n9zPeoAUZ
+         RMYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754932897; x=1755537697;
-        h=content-transfer-encoding:mime-version:reply-to:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-message-state
+        d=1e100.net; s=20230601; t=1754933491; x=1755538291;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=HeE8CaQ2K5i+oPH7GVC2aPBcfIXmZD81doSr56qB3l4=;
-        b=W1Xnait9XOfILye8onre9zCF6RUNgR8CvJX8xS/sv+aEoeBnAW7ZwMk5SyCo63G4DK
-         ASCwYfzuzK1It77nntHeyO3ziHimW97q9kO52CqBv3hgyC6Ip381z/NseaysJQVDx6MI
-         BzzlkirY3eIHrAzn6k7ENeUSZzvB5BnynItp5CoKzuEZbGyW6P4F9/ewd4QSKs9KMo2v
-         nYYwdESF9KLyd2/LbdfA9k3E0zIz+XeiCr9hxAMC2ZqxnCPUQ6MbAD5pjX8Ws6SYb8Tj
-         0mIXnw76PZwSNC33zRPJlQGFUSgzq3mL1xPYNJN7kkIty1eM2XM/H+QONNVOJD4bQdSc
-         MR1w==
-X-Gm-Message-State: AOJu0YyMbMLHys3HotyVpOhzy16BZkVI5oCwdGBvVLWjRtgyI8j1aP8D
-	UTZ3NFWhSwxXH/Ej+RqOiClCfLr98KurzJrelu75F8BZZewntajodtsyJGOpzbqNwfs=
-X-Gm-Gg: ASbGnctlpndvAz5a8Q/z/eNNkw4+neqpJeMjQjjKElE7XOt2pYcSmOxEoe9M2nnwXHI
-	S9wwFLh2BidC5hArW7pUDUKXvAX1uGHuRwkwrxPe58jQmRQgN5Ejn8g0OYy8pdJZxGUuSUV1c1s
-	U/VBB5TRP9qSY3mbcOgBIX4rQ3y0P1B3dK34Usz+RxKTVhTjLUNYIedD4JADaNLT+Nmw5F/fRTQ
-	+6BVZF3ubm4+lqqJcmLJQgGWXVJkSx9kVPZaJor4uXrE8XOq+Thh1+sSYpVwahIGn2BeQVy1rN2
-	JkuR6B83muTteS2IBt1YpcXudp+nPM/aojI48uqU5KbcvLhFwT6WWIjHh0UkAx2twcQXiPzLyEw
-	hBCqsvL/VBwcllraSPtoK7vHLKx6RGQ0uecxiVg==
-X-Google-Smtp-Source: AGHT+IHTmczJxTiTIxYVNE4NIKjMSM7gIpUc+S8TfKU2hM8+fGSlcbq5rCYS33AqUl07gxT9R6woCA==
-X-Received: by 2002:a17:902:dad1:b0:240:9f9:46a0 with SMTP id d9443c01a7336-242fc340439mr4695835ad.38.1754932897189;
-        Mon, 11 Aug 2025 10:21:37 -0700 (PDT)
-Received: from KASONG-MC4 ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241e89769fasm276685055ad.107.2025.08.11.10.21.31
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 11 Aug 2025 10:21:36 -0700 (PDT)
-From: Kairui Song <ryncsn@gmail.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Matthew Wilcox <willy@infradead.org>,
-	Hugh Dickins <hughd@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Chris Li <chrisl@kernel.org>,
-	Barry Song <baohua@kernel.org>,
-	Baoquan He <bhe@redhat.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	linux-kernel@vger.kernel.org,
-	Kairui Song <kasong@tencent.com>
-Subject: [PATCH 2/2] mm/mincore: use a helper for checking the swap cache
-Date: Tue, 12 Aug 2025 01:20:18 +0800
-Message-ID: <20250811172018.48901-3-ryncsn@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250811172018.48901-1-ryncsn@gmail.com>
-References: <20250811172018.48901-1-ryncsn@gmail.com>
-Reply-To: Kairui Song <kasong@tencent.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DA45B2000F
-X-Rspamd-Server: rspam04
+        bh=ZTb4ZYMYPpk1ACseddHrcz3FiaeJvW+qXE8HO8bxlXA=;
+        b=Ibrn72/umSG2NdMHiG1oNf+DmHwmj/2J05TcT12tXJJLQgHUbz6nXz9R/NGIOlTVeC
+         4H6ygQpGu/RWOb+H84FkIsGc03Q6TbJROjn24C37GABSD6RTv1mjFJcXoXd+t34qFlrt
+         dI/2/0TLlSrv/Admp+KRBLK2tT2zVYKU6NhKQJlSJ2OYE2TOmQ9rZA0M5fJB6Fvjb27e
+         Cj9L2eEJ7YCpf3hpzKfbW7LoPqtnk1C1xwvKP5I3V3ub9zZJuL3GJKVTCACMKw4TguWs
+         TfsQcVNO1H5iDDqyR6yyE8IPmF0VuLZ1xYOYY9GjzIu7rw2UCU4v9lIQfuaqj5REE91w
+         LqIw==
+X-Forwarded-Encrypted: i=1; AJvYcCUXPhFj2SLbqf//SFaiz5+IfVPw6UC7A2Jeqx/f911vANnh8D/wjyqEGYkozWVOYSeaJ+agyzO5Ig==@kvack.org
+X-Gm-Message-State: AOJu0Ywz4s0VrSHpwG7HiZskZMrrWo/mIy7k3w5nK91vvuZ2MQfbni3R
+	+ECo0o2ATb5JF8Cu/eVuStySydzr7CkeXXXDM5SgmclZ6JuPeoAlQAiNsfYKI5qT3OQGVC74Pjg
+	iiwvTxQ==
+X-Google-Smtp-Source: AGHT+IGKr6oqVCjBFIQc4hDZq54MhrQz3SYGcbPyQOfRTd5efyFcfkryP7IWXH22Nn+DBiaaLRdr8LG3oKg=
+X-Received: from pfll28.prod.google.com ([2002:a05:6a00:159c:b0:740:5196:b63a])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:401f:b0:238:351a:f960
+ with SMTP id adf61e73a8af0-2409a4ab650mr442290637.23.1754933490717; Mon, 11
+ Aug 2025 10:31:30 -0700 (PDT)
+Date: Mon, 11 Aug 2025 17:30:28 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.rc0.155.g4a0f42376b-goog
+Message-ID: <20250811173116.2829786-1-kuniyu@google.com>
+Subject: [PATCH v2 net-next 00/12] net-memcg: Decouple controlled memcg from sk->sk_prot->memory_allocated.
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, Matthieu Baerts <matttbe@kernel.org>, 
+	Mat Martineau <martineau@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	"=?UTF-8?q?Michal=20Koutn=C3=BD?=" <mkoutny@suse.com>, Tejun Heo <tj@kernel.org>
+Cc: Simon Horman <horms@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Mina Almasry <almasrymina@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 01EAA18000E
+X-Stat-Signature: p8wihgctp61m6mwjhkd9epyk7aogd3za
 X-Rspam-User: 
-X-Stat-Signature: 1ok1dmha1dtaqaw76uitsc5omusqp67j
-X-HE-Tag: 1754932898-776559
-X-HE-Meta: U2FsdGVkX1+UZMYlEsegN8Fr2GAFyoVNrJ3sANgnOF+j2snkRazTm5Mk/5YoE+iFA3yHRgBZz9zb+PEt7QivzRYZRUx/HaRzAyUO2F1zY/Z++0ssPXe2kRxE334kIofYgYt6Ao5+Kiy1sSAgqy7SRsH4yrahG8zxsNa/FrN7h405LfxKIBW95Cqv1QM9IE38SGf1jIBMSv/ogRyosihenJ5FUYDH7W/9ikr7JwKLbVDKPwrlbhwJGgVRFjf5Sgnn7IarmySrX9mZlME2FXVadBdTSTfZMWoTPKjagQNaAdQrmtYWBfJLE3Yrpfo0y8dugFSPonfWAqr7hBdcZrmye8JixXmLW6EmRubpZPIoa8ZPppi5WUBJt8bhuiVPYPFMYwC+YWz3QjMagsfHe1af8ILCzznly+LBJFips0R27csg+XxdPQ5MHyZjX97stMTQbUT9X7eWkp9SkYjiXmrVdMq9WscG2qfXRrZytrsb9/XAeschvONQUHf/362Q8ASvPBSreNJXSY4Kfa3Rn+8VCInNjPWBS5dXgkxzNVpNdVNC9bZ6TiyNJlmvm6tQhnv+8liVm/o1RTavdK8AhsUDZFwXYeXNE026gcGQfpgNfP3586zarJihSQljY+lbvMjX8V/MTk2CSQ2FOFZy8adHA1f09nlGhKUQD4DNUPt1WkbyXOEoH3aN+JvBQ7D8TmZ5nMYVpISkBR1hwgsy/WzCOWIgs/3/GtL/qxXwEFAdl8aVjt6fg77N2WmY6gRQpPlfRZaHCoS1vBougD3AKbOb8hFYpDUA4fJrxSsfr5n/2G9UZWPsQsb6qaQwpl+SNLnzQyEeHNlCypdDE2UKxlxnAvj6GvMNN7wQ9m3Q8OsuQrLHiqP68vubl5jOgDJNQWAi5tl5B9Iv4jIHXapc/rYV4Sa44N8wAWoSKx2EwIo3184J32vJIj+mARa7nQBVOh/rC8NOdIIQZuDLGAXWyVc
- s13qECve
- 1GSCdBlk8iPOLt47oB4J2to0zztEHqF6KQROgd/lDbD9ReUL1sTESmLw0YvL6Lzk5xbrtnPyDC4yqCaAya5hX9Kq6o8Ngp5GliD/DVwZCZOZpIayhw9ds0a3JyDXRQVr+5itwjqGO8pjUEGlgSm/EJwCl1FX7SIE2xQZqXCrg5XIcA467RaQJryNGPSliCQiJYG0jI2ZEkdjeQlCia9KU2QhojVeHQBmbv3MaNtpgbAlzPntjOnwWT6i6csIyopZqhxJNsmhA6FptcPr2Hpsj+/CBYYgMHHoc44BXGVFu+9cb0MsEZbz53BAdlsicSRl91873u36k6dcIzFN23oYHves489sCjpP78xFg9t1NB9fFMEoSBittKtVL1gfdX4EPPWThyB8r9ku59BCiPjedhwGD7AvHRc4y56CAr0FQn/wcIt4RXmwlhItjwj8hQVhGLIPE1XPbd2+9RH5Cb+XVxN1gEGbL2HVqARZWwTtGbNH70QfIico0aaIQiZGIzq4R9IxBqaqu2M3gJW8yEFfL1iz+ea2P9+G33862ALqKgkeLN0e9ck1lMLuOHS6p5EgMx/5jinAahle9Ib3Bj8uP8AnFx48P05XYOgUe
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1754933491-870280
+X-HE-Meta: U2FsdGVkX197FdLTbjpgoGQVophLaJO1YUsSkos/cI/6zHt8qrTU1pgoP5BN69ecJN9eJ1+awpe3SpD31KHnOU+Tby9up1yVsa09bHrlg2OUSVVPnezFQGWIi9uuouuwS1byRhqBnBwk7earoRCCQmlDm5AekaoWr6jCUiiSUDahjd/1sF1ujcSTjI/617CjNHJB2pLgMN8zl/PJGpsxweAWi5YYPvoOGzaPK6B/NMqU7tRiLtYPVgcjoelw3HMq1q+NdrAM8ZUcyXUIhlh+dzwEicAT/eGiGAkVPkoK8OQxUpECZxXhaOSuNwf3oKF1I/qSeKxIFqrMs7QV05p6CvsLmpAAtFbWj1hgjeTWm9EvHBAdvb56FwBKEt4WodiVC0gOc+uLpy44JcpT3K+4Eqwj92VcCO6WdIVoopDMxrXhvNxCReLZAas3kqzbZlEbpxKzr7Uacr78BwVycps4pOH65r/qmVk+TS3n0U69ovmoFFqoG5zKsRip1YEs7kVg1BHqTkex4F3XxSvDAh2chTLZNIwxl/pLFknMw7EdEhZZc315TFhRP/t0BvUssOTbaV5Jd+28tZUjfjv3EuHcrcT2iZQJsLM3jB/0nzSJXnZMHjDpnv05HuDWPcy1FRbq2tLtMvue4Aq/zsmzamsgd1clRQp+szXNmCWvauu8OZEbwa0DNziL1fYt3icCzOTRuDFfjVjbMya+dSvpd0w119Y/sYdGF/q0DbIlgiF9o/cdRcmRA+qDteJB/A9J3DX06NT5W7kS8UYg1yK3MklTgTM5sj8i8jEGmNs9fPFa/l9gtGQ5qn9FjfUQhDT0TtC2jrMbY2qgAHm1HG1oKWx9pIycXdjFGe/1lQT6OE/mNBB/6ztGU8xaq5Waa1zUhhymO9+U3iIGZz4Gyc3NljNV/n+mUrJb7jTNFIwbcZ2Vxj7YR6r6K/BoU8Dd5ReUxJgek3UMy40zgZxhZS+rGvC
+ FZMSl23i
+ 3RZNfnBzPBKxpIRJameLFPS1t7Tuuue5w+SOEQsWy6vg0w7KVWRroCnq7r+d/V1g64incT/SuIZbXUdBm+ZhQq8y/xMXbDq0DX4PBRywHJxGXolKqg5B786WeIDjJ3gJgMup17dVgLWaPLrzsczjJOpeBbr66lCiEqSQFyspyX+Xp5dIScWU0vZw6X4UwYPSH4vahLH9UqccmyO5IIKllrRBZ6RkGlICgAn6V/xvTRtEgtdCqet1vsK6M1FA6xRkzTNain5YyGKFd5rbEu/6k2XoFqTYrV47vvtj/7SFOYCS5Eiz5fS/Cb/HjBilhtwg2mjfoMkSOFPzHAfhBvdwLz+SMJ3LYSIcWnA0hZQqYKhdVl0wnXoc8S3rLikkdLKBVIdiXui8MLHf6D1hQxinSfwMdnr7W+cRfqiARTO5xZhnKl/Yr+LyDzbpn0rfLSwXbN349y4D1VN23NysPtb/7o5hgDqvFKh9w7PPyewc7A5tHvh2R5nwJ1ZG8I5DUhS/uSX5a5D/zL9A6/BfWtP9LoVlasQNnN1RlKYMuFYcyAD7CobpQZO9hQ40AKo65ZDainxfQTSn2G5P5S7sHkdkgSRyAEfO+GWjUYwfYpwHHLmdZVkQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,159 +112,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kairui Song <kasong@tencent.com>
+Some protocols (e.g., TCP, UDP) have their own memory accounting for
+socket buffers and charge memory to global per-protocol counters such
+as /proc/net/ipv4/tcp_mem.
 
-Introduce a mincore_swap helper for checking swap entries. Move all
-swap related logic and sanity debug check into it, and separate them
-from page cache checking.
+When running under a non-root cgroup, this memory is also charged to
+the memcg as sock in memory.stat.
 
-The performance is better after this commit. mincore_page is never
-called on a swap cache space now, so the logic can be simpler.
-The sanity check also covers more potential cases now, previously
-the WARN_ON only catches potentially corrupted page table, now if
-shmem contains a swap entry with !CONFIG_SWAP, a WARN will be triggered.
-This changes the mincore value when the WARN is triggered, but this
-shouldn't matter. The WARN_ON means the data is already corrupted
-or something is very wrong, so it really should not happen.
+Sockets of such protocols are still subject to the global limits,
+thus affected by a noisy neighbour outside cgroup.
 
-Before this series:
-mincore on a swaped out 16G anon mmap range:
-Took 488220 us
-mincore on 16G shmem mmap range:
-Took 530272 us.
+This makes it difficult to accurately estimate and configure appropriate
+global limits.
 
-After this commit:
-mincore on a swaped out 16G anon mmap range:
-Took 446763 us
-mincore on 16G shmem mmap range:
-Took 460496 us.
+If all workloads were guaranteed to be controlled under memcg, the issue
+can be worked around by setting tcp_mem[0~2] to UINT_MAX.
 
-About ~10% faster.
+However, this assumption does not always hold, and processes that belong
+to the root cgroup or opt out of memcg can consume memory up to the global
+limit, which is problematic.
 
-Signed-off-by: Kairui Song <kasong@tencent.com>
----
- mm/mincore.c | 90 ++++++++++++++++++++++++++++------------------------
- 1 file changed, 49 insertions(+), 41 deletions(-)
+This series decouples memcg from the global memory accounting if its
+memory.max is not "max".  This simplifies the memcg configuration while
+keeping the global limits within a reasonable range, which is only 10% of
+the physical memory by default.
 
-diff --git a/mm/mincore.c b/mm/mincore.c
-index 20fd0967d3cb..2f3e1816a30d 100644
---- a/mm/mincore.c
-+++ b/mm/mincore.c
-@@ -47,6 +47,48 @@ static int mincore_hugetlb(pte_t *pte, unsigned long hmask, unsigned long addr,
- 	return 0;
- }
- 
-+static unsigned char mincore_swap(swp_entry_t entry, bool shmem)
-+{
-+	struct swap_info_struct *si;
-+	struct folio *folio = NULL;
-+	unsigned char present = 0;
-+
-+	if (!IS_ENABLED(CONFIG_SWAP)) {
-+		WARN_ON(1);
-+		return 0;
-+	}
-+
-+	/*
-+	 * Shmem mapping may contain swapin error entries, which are
-+	 * absent. Page table may contain migration or hwpoison
-+	 * entries which are always uptodate.
-+	 */
-+	if (non_swap_entry(entry))
-+		return !shmem;
-+
-+	/*
-+	 * Shmem mapping lookup is lockless, so we need to grab the swap
-+	 * device. mincore page table walk locks the PTL, and the swap
-+	 * device is stable, avoid touching the si for better performance.
-+	 */
-+	if (shmem) {
-+		si = get_swap_device(entry);
-+		if (!si)
-+			return 0;
-+	}
-+	folio = filemap_get_entry(swap_address_space(entry),
-+				  swap_cache_index(entry));
-+	if (shmem)
-+		put_swap_device(si);
-+	/* The swap cache space contains either folio, shadow or NULL */
-+	if (folio && !xa_is_value(folio)) {
-+		present = folio_test_uptodate(folio);
-+		folio_put(folio);
-+	}
-+
-+	return present;
-+}
-+
- /*
-  * Later we can get more picky about what "in core" means precisely.
-  * For now, simply check to see if the page is in the page cache,
-@@ -64,33 +106,15 @@ static unsigned char mincore_page(struct address_space *mapping, pgoff_t index)
- 	 * any other file mapping (ie. marked !present and faulted in with
- 	 * tmpfs's .fault). So swapped out tmpfs mappings are tested here.
- 	 */
--	if (IS_ENABLED(CONFIG_SWAP) && shmem_mapping(mapping)) {
--		folio = filemap_get_entry(mapping, index);
--		/*
--		 * shmem/tmpfs may return swap: account for swapcache
--		 * page too.
--		 */
-+	folio = filemap_get_entry(mapping, index);
-+	if (folio) {
- 		if (xa_is_value(folio)) {
--			struct swap_info_struct *si;
--			swp_entry_t swp = radix_to_swp_entry(folio);
--			/* There might be swapin error entries in shmem mapping. */
--			if (non_swap_entry(swp))
--				return 0;
--			/* Prevent swap device to being swapoff under us */
--			si = get_swap_device(swp);
--			if (si) {
--				folio = filemap_get_folio(swap_address_space(swp),
--							  swap_cache_index(swp));
--				put_swap_device(si);
--			} else {
-+			if (shmem_mapping(mapping))
-+				return mincore_swap(radix_to_swp_entry(folio),
-+						    true);
-+			else
- 				return 0;
--			}
- 		}
--	} else {
--		folio = filemap_get_folio(mapping, index);
--	}
--
--	if (!IS_ERR_OR_NULL(folio)) {
- 		present = folio_test_uptodate(folio);
- 		folio_put(folio);
- 	}
-@@ -168,23 +192,7 @@ static int mincore_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
- 			for (i = 0; i < step; i++)
- 				vec[i] = 1;
- 		} else { /* pte is a swap entry */
--			swp_entry_t entry = pte_to_swp_entry(pte);
--
--			if (non_swap_entry(entry)) {
--				/*
--				 * migration or hwpoison entries are always
--				 * uptodate
--				 */
--				*vec = 1;
--			} else {
--#ifdef CONFIG_SWAP
--				*vec = mincore_page(swap_address_space(entry),
--						    swap_cache_index(entry));
--#else
--				WARN_ON(1);
--				*vec = 1;
--#endif
--			}
-+			*vec = mincore_swap(pte_to_swp_entry(pte), false);
- 		}
- 		vec += step;
- 	}
+Overview of the series:
+
+  patch 1 is a bug fix for MPTCP
+  patch 2 ~ 9 move sk->sk_memcg accesses to a single place
+  patch 10 moves sk_memcg under CONFIG_MEMCG
+  patch 11 stores a flag in the lowest bit of sk->sk_memcg
+  patch 12 decouples memcg from sk_prot->memory_allocated based on the flag
+
+
+Changes:
+  v2:
+    * Remove per-memcg knob
+    * Patch 11
+      * Set flag on sk_memcg based on memory.max
+    * Patch 12
+      * Add sk_should_enter_memory_pressure() and cover
+        tcp_enter_memory_pressure() calls
+      * Update examples in changelog
+
+  v1: https://lore.kernel.org/netdev/20250721203624.3807041-1-kuniyu@google.com/
+
+
+Kuniyuki Iwashima (12):
+  mptcp: Fix up subflow's memcg when CONFIG_SOCK_CGROUP_DATA=n.
+  mptcp: Use tcp_under_memory_pressure() in mptcp_epollin_ready().
+  tcp: Simplify error path in inet_csk_accept().
+  net: Call trace_sock_exceed_buf_limit() for memcg failure with
+    SK_MEM_RECV.
+  net: Clean up __sk_mem_raise_allocated().
+  net-memcg: Introduce mem_cgroup_from_sk().
+  net-memcg: Introduce mem_cgroup_sk_enabled().
+  net-memcg: Pass struct sock to mem_cgroup_sk_(un)?charge().
+  net-memcg: Pass struct sock to mem_cgroup_sk_under_memory_pressure().
+  net: Define sk_memcg under CONFIG_MEMCG.
+  net-memcg: Store MEMCG_SOCK_ISOLATED in sk->sk_memcg.
+  net-memcg: Decouple controlled memcg from global protocol memory
+    accounting.
+
+ include/linux/memcontrol.h      | 45 +++++++++-------
+ include/net/proto_memory.h      | 15 ++++--
+ include/net/sock.h              | 67 +++++++++++++++++++++++
+ include/net/tcp.h               | 10 ++--
+ mm/memcontrol.c                 | 48 +++++++++++++----
+ net/core/sock.c                 | 94 +++++++++++++++++++++------------
+ net/ipv4/inet_connection_sock.c | 35 +++++++-----
+ net/ipv4/tcp.c                  |  3 +-
+ net/ipv4/tcp_output.c           | 13 +++--
+ net/mptcp/protocol.c            |  4 +-
+ net/mptcp/protocol.h            |  4 +-
+ net/mptcp/subflow.c             | 11 ++--
+ net/tls/tls_device.c            |  3 +-
+ 13 files changed, 253 insertions(+), 99 deletions(-)
+
 -- 
-2.50.1
+2.51.0.rc0.155.g4a0f42376b-goog
 
 
