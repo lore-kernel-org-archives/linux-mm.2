@@ -2,243 +2,118 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B5BA8C87FD2
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 13:09:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5759EC87FD2
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 13:10:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4449C6B00F5; Mon, 11 Aug 2025 09:09:05 -0400 (EDT)
+	id EF5DD8E0051; Mon, 11 Aug 2025 09:10:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F5436B00F6; Mon, 11 Aug 2025 09:09:05 -0400 (EDT)
+	id EA7238E0045; Mon, 11 Aug 2025 09:10:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 295E46B00F8; Mon, 11 Aug 2025 09:09:05 -0400 (EDT)
+	id D6FA68E0051; Mon, 11 Aug 2025 09:10:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 155996B00F5
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:09:05 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C3618140197
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 13:09:04 +0000 (UTC)
-X-FDA: 83764507008.11.6475B79
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4630B140009
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 13:09:01 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Qdof0B0U;
-	dkim=fail ("body hash did not verify") header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=hf7YgCc1;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf23.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754917741;
+	by kanga.kvack.org (Postfix) with ESMTP id C50B58E0045
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:10:39 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 95DF6C0110
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 13:10:39 +0000 (UTC)
+X-FDA: 83764510998.24.B1BCCD3
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 285DB40015
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 13:10:36 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=hnP6+3qq;
+	spf=pass (imf27.hostedemail.com: domain of tamird@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=tamird@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754917837;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CoyeuGHRJhsJ1Vse0Tqok+SkXFDvMG6bnSXWtzPFAmI=;
-	b=WtRsNQDKg4j5qgPD1aBmEIR8BTya/WMpvImZ9kj/+ZL5KlTN3/kUAxR8/nDMCBr3oLmQ6B
-	Onag0oFncm0U6pDbf2KJroKn7Ii38Yd2pc3nJw+7FMwrutLoc6MOL28iUqUWFUvBD22Kih
-	DsoUeHDYPo9MaCNIx8uxPvRHQLWJ8Dg=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754917741; a=rsa-sha256;
-	cv=fail;
-	b=qcShqX0CNXkQnWrUXYijIRYCeptSgFsQsmWYFjUIRu03FWKEietQfUUFCqX5wzNoriOILw
-	NmlIEKdOb45/obD0NzKfP7TVDEWbtpauUnGgtKaUDdxMSwQoLYlVdLAxEOsJl5xvZ5NjbA
-	x3Jdw87w1q09Tnzn1XhHNuye58fd3eg=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Qdof0B0U;
-	dkim=fail ("body hash did not verify") header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=hf7YgCc1;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf23.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57B5uAdg023535;
-	Mon, 11 Aug 2025 13:08:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=CoyeuGHRJhsJ1Vse0Tqok+SkXFDvMG6bnSXWtzPFAmI=; b=
-	Qdof0B0UIdonHC3cviAISUu3XMLOJchb5pNkatnDKkYHjtciZ1m2kp20HbcNWS1Z
-	J/zDkcE7c3MoBczj65vE6a87YkLI0MRqxlJ9Eja41GfZmFqXxNDFfxgzB0rvlvA1
-	BYGsDnAXQFMUrh+v+/dRmVP1uIAeJNxJ+1kNTBl0899hj1wftIYob8IPeorvnvfd
-	7zJ2C877BkKz7LrKTAxwkpGagttDUmI5ReojHVhs/mIEn9H6uwpFz4zZ5ul8uIjG
-	SAdohJ6TI5Yr8r1nSpnr1bIUYUUId/r7eFN5CeP0AqqVLogk67k9bbA1DvMfeYwo
-	wL/cw8yWA1spHsomUstA1w==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48dxvwte26-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 11 Aug 2025 13:08:45 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57BD57Xi009928;
-	Mon, 11 Aug 2025 13:08:43 GMT
-Received: from cy7pr03cu001.outbound.protection.outlook.com (mail-westcentralusazon11012035.outbound.protection.outlook.com [40.93.200.35])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 48dvsew3jn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 11 Aug 2025 13:08:43 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lBhLDYm/gT1wyDm+fN5uHgPdeB6uMqnXerdKDzBGzP+UoRhcrD/uyT5tfyr/maX7IwrEmonb8dhmxTpLWSjScM6lEOjB/c8POs23gTg6n7s3LAociJEY5eNlYpyOyE1qj8DojP2V0ds24NXL938kHxJdW1296gcmdE5J5XyJFVf7+LLo4kc02pH+H+oqh5LfX8KxxMoF5KZzQ7QVROr7TuqiSJF9nlNGDFnICZO7jxfWyoeyFAcntlscpB+5BfsN4xJHIpUC3ARYiZVl9u6o8ZovVbtaaw6daoe0Cg1MRUbQZ8fxh71pm6VecS9v0bx0ZbEqJ6SSZaVhFX8aTy4wIQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wjbrUYucjdtZmcr6zu03w+nRyLou0g1OMpVWfZcUTL4=;
- b=nhwKyaIfY8KQYFPEPLTOA6yydOa4CQ7lX/16hWvdHXvD3cF/bagTM1Euz9NbxtXHp32m+01enCKjqghJmUTf+8zaMxxiaYwA1djgxypeoYAx1a8CCbieoizUqcgwdUJ8nNG8iMUTokwEzUvnlimp9HK0LYkVuSxEOuabc8D3xgyxrCwYIH31SDAHrvIsy0luYP7O2gl83lU8cWNNjey+r2cswsL4FeAcZIExX64DpDaY2yB0YA2ISmOk5MVIfnC3IoXiYcwm3//69cUQsuZvXfmw/AToZwFq5CM/OwaTjyvnplkDVb6LG1mAKAizLqT7hpKASqv23gYpRssBaW9jag==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=6wjRZSeJyNW+5ttKbH2ZBkdz8rcwxf8fIlvPdNpBzzA=;
+	b=BzlFDq7c6DzsQ7MvtuKOp3t7D8VzI52vzh0sUZ5oO94lHA2Ah7vh2r1jKacEI5JBKDNIS/
+	b9RY8DBNvOaD6+pdTW754R3zKU27ogksmVkFnNfMoZcoksVJ6aUnYP2Uz+l6zpU43FIJdV
+	OLxkvkKp/GpjL811yHt1k8LDEo4egYI=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=hnP6+3qq;
+	spf=pass (imf27.hostedemail.com: domain of tamird@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=tamird@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754917837; a=rsa-sha256;
+	cv=none;
+	b=3TKJyQcevsWiFuwak/CORBN3hDY633HRfCj5GHBvrnUSACIGgj2/oDiNf4asVJlz+WoQUd
+	RznhSq8nmlThJuXF9JyintiqRyYL6kZyAoAJAPWID6T+qKpPJWBe1pPwWtVNhMIEQjHrOH
+	ChU3jgRnFl8la9TogkgcR568ZlKlJuo=
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-32ca160b4bcso36762231fa.3
+        for <linux-mm@kvack.org>; Mon, 11 Aug 2025 06:10:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wjbrUYucjdtZmcr6zu03w+nRyLou0g1OMpVWfZcUTL4=;
- b=hf7YgCc1X0WJWBMjAD9qg0thUR1EYA7123BrrgiNVagORpF5Vqfh6+dALH+3XJ7Ku6jC66BoPL5VJIq4K9RnlmXxWF2FRkgPVIOokHHtqg9h+WxxYt9shmejkb7EOp4gn/jjVm7YdAunQYVlN/i3g5VKga8jrB7RlngtWA/zZ9w=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by CH0PR10MB7533.namprd10.prod.outlook.com (2603:10b6:610:183::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.22; Mon, 11 Aug
- 2025 13:08:38 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9009.018; Mon, 11 Aug 2025
- 13:08:38 +0000
-Date: Mon, 11 Aug 2025 14:08:35 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Charan Teja Kalla <quic_charante@quicinc.com>, akpm@linux-foundation.org,
-        shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com,
-        bhe@redhat.com, baohua@kernel.org, chrisl@kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH] mm: swap: check for xa_zero_entry() on vma in swapoff
- path
-Message-ID: <904f85d0-acd6-4f47-ab45-fbf18b80f1c6@lucifer.local>
-References: <20250808092156.1918973-1-quic_charante@quicinc.com>
- <dedf7436-9afa-47f6-b676-88f2dd8b638b@redhat.com>
- <f008107a-2741-476d-9e32-ae9fc0f81838@redhat.com>
- <29e080fd-5f9a-4760-876a-a6ccef33129f@quicinc.com>
- <fec5ad61-7caf-4076-ba81-7b454ec7018d@lucifer.local>
- <9178bf98-2ea7-4ad8-ad43-cdcc02ab863d@redhat.com>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9178bf98-2ea7-4ad8-ad43-cdcc02ab863d@redhat.com>
-X-ClientProxiedBy: MM0P280CA0100.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:190:9::18) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+        d=gmail.com; s=20230601; t=1754917835; x=1755522635; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6wjRZSeJyNW+5ttKbH2ZBkdz8rcwxf8fIlvPdNpBzzA=;
+        b=hnP6+3qqJiVmqj3GqGPS4ilGFnzDlSA5F6Y9V8ITfTUs9teEba3nLs5G/KDoRkNWfc
+         hQ0+b8BgZbgXn/cXQhvLPpGtiT+QSGHai6ljURUu7qObR7CtrgCSlzadBxmncdKkFB03
+         aefQUSEazFtf875f3MUjmnQcAxYoTB7gxzw/5mpZreGMe7YSieWipNEFrww/vl4HRslv
+         zgtcjaRMzSuFiMB7+yE8TRdBhqe1VuEQhDqhspruMQRUt46SA+6U4pX0Q4BkObZ/T9Aq
+         5ku0SSd24+H51hTH2aTDKmjx7z6Yw+/PYezO5Nu9XexrqtV1yjkkIqZlZw0KfkySmC7Z
+         fQwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754917835; x=1755522635;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6wjRZSeJyNW+5ttKbH2ZBkdz8rcwxf8fIlvPdNpBzzA=;
+        b=srk3qDMeuNSOFSHpY+2QC94eP3xwrNorAW13DVgAC3Uhmj7D7KHZydj+GPeIQWzzvy
+         WFzGM/IlBrlq0OeHzSuazqyr7iYAPTraRowq0wAQnlJcu8vfTgA5jnpwsmooFTgm9iFg
+         1wNq+vLXHlc9u6DknwSCwIEY79TYNKcI5A6JlY5/eLnNNCEEZANk9H5oxa6IJhdp5ORl
+         p1VTFznGFaGzWnjRBcAGDuu0nwIBas39A/8FrhzOnA9510cpppxrICtwiemydHBdlMIO
+         XlSnIOCaW1b95yxDP9wU0LH+SuLamxZvyhA8XAEghjpe1o4ocTT0mse45POJqYFZxy1o
+         OwiA==
+X-Forwarded-Encrypted: i=1; AJvYcCVD9D6w4o8fkYi6Go/CMJcfVcentBoDw//oAvZC8ED835u3K3MIG0tygXFsUSlgDCiROTFJJGNaVw==@kvack.org
+X-Gm-Message-State: AOJu0YwaJGQlMyoFCpsA/YbyJx3ZcKeyyZm+f9gic6eE1cHHkFgcpgdK
+	aD8xOQmRVgHVAQWDK+SjAyKTUIzxsQeHlxmMUP73FKTpXbcbSEnxGNu4XFO8tFGyUnQxR+nlGb4
+	NEQyerCzVwbUjAda/wW0oJF/jiMe2xNY=
+X-Gm-Gg: ASbGnctxuBRkij9rHbbJfkbjDd9zkbnqSQeJ12SLbieczXwbZVc8fRX5YZq96o6Wf/z
+	8FJWZ2sAlz/TmECe6YKg0GPWmoz6SViYD4Nldy8uEzUiwl/sX4PLn9zHrRnuFHsjVMraCAxLGa3
+	64vg3T5qjnW9+FZfPe5XR4RISIubm9w9Ae8O2Eniazlzyem4IWkUBMJH2p4jcDmDJ1QUA0TvLfW
+	gv3kuY4
+X-Google-Smtp-Source: AGHT+IFhwguXrETFSYk+GfysPq0bG0/CaAaeZ+uytQzxymu/tLCMjbyfNZAPxhd33JJ1OuI89/lKq6V8bKcMzG4UQ/Y=
+X-Received: by 2002:a2e:b8d6:0:b0:330:d981:1755 with SMTP id
+ 38308e7fff4ca-333a210d629mr32639241fa.6.1754917834576; Mon, 11 Aug 2025
+ 06:10:34 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CH0PR10MB7533:EE_
-X-MS-Office365-Filtering-Correlation-Id: c4d0f01f-f9c4-4713-50e8-08ddd8d83003
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?iso-8859-1?Q?8dCWRWcj+NpvXca8QxZnfwm3UHnmVmC4X6B1BZ6sRqV3g4jZ4d10eT7rEr?=
- =?iso-8859-1?Q?AkiSXwsBwA6P/FSGhe55wSA9hT727HXFiInpDLbe0vH3DQ+80nfVjp2SXH?=
- =?iso-8859-1?Q?mnvaAwnTrZijrVpJ7Z8AS6KuRb9Amlj1Edvh3Mxq2AYC1hLzTaohB7+n5W?=
- =?iso-8859-1?Q?FMZE1kHC+/fJQQKiLFGfkYjUT/JfxufpLf1x0ieCaQFqkqY7O6GDNKKjX+?=
- =?iso-8859-1?Q?1eg5G/YXZ57m3PWuO+Z1CkYjjjTW0mzCqrLJ9Ld0uxb4WmklTp+X4cZZ+U?=
- =?iso-8859-1?Q?cqQ+xY8yNAjcC9i1juoLQZK0/r5pN+hDr4vbIiEYAiHemFexrsjDKPr5fn?=
- =?iso-8859-1?Q?9FWdpsNV7b0EDasSE23jXmmoPe3yKNXbxcTGH0hNY+JrTo93p/xIOImCuI?=
- =?iso-8859-1?Q?eu0jXqh9rzy1YNpLLMwNk/cKAWEGx7sqWHLb71/6ORWRhtf0nokiU5qYag?=
- =?iso-8859-1?Q?IWCr62oxsKRx1SLENtVIXZCF6GHefUxqdPUbouqQ8ipeuGjgYQNpYgBq6P?=
- =?iso-8859-1?Q?zIek9qzP8WWMqhL6Lx7g8skxBZ+OGD7EIuChvrJ4fjAGFTFPSpnVfha6Oh?=
- =?iso-8859-1?Q?AvHI5czf8t8nwXTz5QtnURfzuqmzxuqh9Ba9Ccnw0szZwCwhfwmi0monqU?=
- =?iso-8859-1?Q?YRlSF6w/Bhc7/fp6ae+ERYv/Gi2uC4Ox8SYUo8H/WGSPCuEMDYQpsD6VXT?=
- =?iso-8859-1?Q?cRJY5pzAhtxMzvIhOhCu+aB3599ZPZ+UqFpCscQJIOHyR/Emvc/S5FdBeP?=
- =?iso-8859-1?Q?xycCKG8vU0HqlwqI0DveEbuPtB6BsY2NIJE3xg2KWC9WknBjkGoUhviTUu?=
- =?iso-8859-1?Q?NNcRmoBQZgDo5D3LKM32MdRA07GAjBVKPO6NT6leqd+7cP9L6JbK9m17N+?=
- =?iso-8859-1?Q?FT0vH8Yz61ydHbVfatcWPZI1VJLx/2gkz8wVuM8yFaTOQkZA08VXbOkj9h?=
- =?iso-8859-1?Q?LplkRezdzb3LtFTRuW3FKSZwj2Sqe443hixnw7+0plSJtV94ps6GhEZ5Wt?=
- =?iso-8859-1?Q?x8KATxUW7n2ouRP2BGtolxi/aBtSsAyFiDJjfbQ/rBYP2695krXiLFui04?=
- =?iso-8859-1?Q?jc2OI4t8Xxa1LBnBnpjyX+9luVxfaPsejo4AX5+b4W7B5bFO6pqN4t3/My?=
- =?iso-8859-1?Q?0IJzSYiQh4StuoSM8VO7+Ct8Xd0fIJpUxsweF+i1Bzcfspgp5XhRu4ZIMF?=
- =?iso-8859-1?Q?zmaml+nSy+Gp9yeWVzk4N165m/ugQpH7SINnqsk25Zo80etmbZ7VHu5btw?=
- =?iso-8859-1?Q?UmDeKe72b+k1KRcuk94A1nXmdsBKVhqU/WzQ6UyQRDDeA9AdqHvhhJtQbz?=
- =?iso-8859-1?Q?TfQU5QxaPKDq15nB3K5TjIjrfgPRV2Ql3aGe3b9+NfkFAfotliwUjXOr02?=
- =?iso-8859-1?Q?6P1H+nDsujj7MO8IMQBMTghIN7eMBdKgwCLF2lLcB1+8TrnHPX2jJfF4+J?=
- =?iso-8859-1?Q?JWALNOFew45bkSmSm20JXJ8BnNgDFFBeyBdD3WhrDCX/Tgk34yn9hqWSMm?=
- =?iso-8859-1?Q?E=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?/QFmQScUEY1P9LClaHfaXwTgiUldZzNGrEjwaVDXkIM1MY3WNavrl6I86Q?=
- =?iso-8859-1?Q?7rpdAKLw4gpGWnJH4rL3dcC6wzjG81yoCYFM/fMJRkjFhxPf1SHZOpqIUp?=
- =?iso-8859-1?Q?kDowg4R9vQzAWxlGHYddzgtLvwXQLgMU1cYaqXxNNRV3AiOTBN77m8ftfA?=
- =?iso-8859-1?Q?Tk8MMXYoZDymGqsWuVkF9KWXdTcct8VMVLIma7B4V7durqMokJqNiqKSCk?=
- =?iso-8859-1?Q?z0fhLB6c4IDHv6NA5B0DxFSO6l/Xrs/zaydRk1pAJ7fo27DB2Ym5HYoan6?=
- =?iso-8859-1?Q?iAriUGmWH2L6mu9B+e4V8/UpgARL/I9Z5n+m8CAC1UnyBRHhMnoMn0sMWQ?=
- =?iso-8859-1?Q?D+OMlF/tBkMmL9GgyB5g2egD6Vg8+ATDI2F2x0/08bXU+BvLpemcL03dgo?=
- =?iso-8859-1?Q?bWlaZq0ioVU5GvIlmNNMVV8m+g4m67fSTH5AAHj1xQfM93dKujDmlgXwet?=
- =?iso-8859-1?Q?oX4Cy3ipI1WpFGM23vVTbCMyoQ+YwBYPM4yARsRHKOst/cnRwHRuOphMtH?=
- =?iso-8859-1?Q?Hrr9r0u+M0fJJnyUNUz9M7mYlUebnv39yfIdi2uC40zsA4tYubut80al7o?=
- =?iso-8859-1?Q?PfSEvac8cxvVM7iq3zGUBOz0SEuC61PkMOgusbdDvHde0ReOGqs0pb0E4P?=
- =?iso-8859-1?Q?9n1jdc0LRSMeQBpTRAo/4Wd01G4IaKgklow2MfG3WxmSPg4PrrcgunCnHc?=
- =?iso-8859-1?Q?eDhGDmm9cavrISlAwZk8Iy/eIB3H8gzJgc4Ns32PvOg1OoIYXGetm9R1ln?=
- =?iso-8859-1?Q?SAxeL/IMpJfyZeRBODLTQZUO2U1aZW7g5d3ExunWnJx0lRN3Rki0n8RgNF?=
- =?iso-8859-1?Q?Rl7PZecT4l2HA9JCtzZkHaMlqdS16IOCGZHO7tN8q92elcmdlOHlbIvisA?=
- =?iso-8859-1?Q?ApaIsDSLC+d4LQUv5OuvTHke1izHBnsy0eKKHWYbr+cAEIzvf2GogRfsxn?=
- =?iso-8859-1?Q?gvUq4P/ZMjtgSlJwyFyGXf09GL0VLCDmV/riFGYqV2HunHoZgR2U7geHZW?=
- =?iso-8859-1?Q?JLt7dBDX+a05I+alcBOyy6qgerQYHAAnC5taTtaNiRrlNDSL81ADoLW+sA?=
- =?iso-8859-1?Q?xcGFUBgBCY9o0N3jXquLJkLk18WbsEi849VpvZuI5bfLEX9dII+4O2j4Kz?=
- =?iso-8859-1?Q?uTnifoDRChyF6ixDWxlqCfBkPWjPSNupL0sgrKg8M4t84IpVD7bxnfMkqG?=
- =?iso-8859-1?Q?KgS3PKNM/geLIUx2uQ7ioXo4MgZIRAxIYIgYxgXKOXgJS1ANA9uPsJsncd?=
- =?iso-8859-1?Q?zbnEqpc9cco9/rsRJC4bkXLXqjbDzuHvOYEveuAfC0Qa+1mkMN+FgY58Mz?=
- =?iso-8859-1?Q?o8q1SQJ1F65fY9R3GnnfuK1HgbSf5314mV5TKHvzgcCBd63Jgh1OLeHs/t?=
- =?iso-8859-1?Q?QeiyIdwGUTQcfKl2VBVo96DGQ2QyhPluCtcUx3FBoFY1/EkEjSmLSO/JY6?=
- =?iso-8859-1?Q?5OwkU9cLTC1VSthk5emXagzujC5otjVjxVLRaw8wQtg1uhXXndJ20S7eUu?=
- =?iso-8859-1?Q?ul9QW9v9eEfgTCdGgAuYzS+Owmi+25gCyo91phQNNSeG3F1PVgEoyN0fKh?=
- =?iso-8859-1?Q?Ku/xLGx/QwKt5iMVLD9lHFlqI0Fbuy0lv4QWbMOpm/p4BEtZ8vS0ChlLQ+?=
- =?iso-8859-1?Q?8HJcRdVTs3cHR7srQbN2SRyMMHmNKlOQvqif4Qj1NfZ/1pqSj+9C7ITw?=
- =?iso-8859-1?Q?=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	73/nSopYYpy7vHrjHr3cCQ9Wz7/YCIXTOkSkEPtEzoesICRJCtEJ4CJf0bBEwcjmwZepSuP2MfSC7UDXYbIbgLL2N8oGmkUODHKLHmaotbIEM5uCOOniyu8fqX9juHPAHSbOriWCW1S/P+GERszSyvx7Bn1QL8KKdoK/BB1bXC9zEmAp4MWStZsDhPyWiKgiGSivSu80lfLjdKNhb9GBhf1QxcubCMNDT7zp/V4Ns9h/rqILbneeBHtRiOFUJ3XqSYGcsxfIj3T0sMKnQjVBuseqJVl5NPEepnDOJ+F5HvvMGk3/NiMjhGPVxM0rkJv41uPxG1mR8HqHlE2gobssgLxeHrZSVt5cGPhssku2VP1eHKVVtUYTTnunR+2zZR71FRAKKQAdZr5pICekc5LCB7yqVIpd7pQwNAw6uokPjFnk/13Ul5TqCvRLS3bayyvMo2x0AITuu9pMn0Xhdy4xYAim9AbSzK0fAybVKLAjCOrlWsHH/nzeBWSdqPj/Rgc6lGkQR1J4GB3edWr23oHqmL7Ns/JRCOl92pf/0+MewAkdmzHbokCIKmqtk7xKUOXU0thX0Ojc446KIw+ExptVd1l9wy7yr1zlme4Dp+3PTtA=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c4d0f01f-f9c4-4713-50e8-08ddd8d83003
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2025 13:08:38.7219
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5xZ32b5D1rbzKenKUuOt2wgo+fdnLIwH6zrxrvKNsgIdT64EDO7wnkzXHchqFEOgQ9ffP+JO2Ep3cDpd/4gH3cWhQE9Nkm63MDcCtEwb2v8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB7533
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-11_02,2025-08-11_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 bulkscore=0
- adultscore=0 mlxscore=0 phishscore=0 spamscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2507300000 definitions=main-2508110084
-X-Proofpoint-GUID: 5u2s2uoFD9B5JoWIPbs3kImn1Dwhzpr9
-X-Proofpoint-ORIG-GUID: 5u2s2uoFD9B5JoWIPbs3kImn1Dwhzpr9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODExMDA4NCBTYWx0ZWRfX+PMekxKL5L/w
- awnAYSO8askEwiYKZXsSVkaQ2Sylup26CHlBEUb/C1H621lmEef23di+07i0krMoRXPhbFTPO+x
- tRG147rPLidelr3Wqk7CtogowcOahX5Xnfv+580ifORyfVNVRPR7HAqsN08H9rkGCNcs0njUlNC
- enk3eUVN9lMEjgDG9EJfwSsO1exHEBPiaXMYIiCVn+cLLHNpWC72i24wspFy45IxfCIj7QCdSiC
- dck2tF7jqhzCzR/La/H5Izen/48GSl/Nnw5WQRQ0yF8I7qCuXBZ7zc0+rTn9vbzSqfvDog0C/Qw
- 5bgDtGRH9Ei4PX3p4seCA/GhJGhl0VIRmtaBxCvbbNteIdVE5xIAVQqQ8wV/lmJHgqxWdEmStus
- /Rl3ecU2G4Xou7sSvCn2mkip/o+akyUgWGmloCKMngPy2C51l/8bM7FrEouEYxNK1VFtXQJv
-X-Authority-Analysis: v=2.4 cv=dpnbC0g4 c=1 sm=1 tr=0 ts=6899eb5d b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10
- a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=VwQbUJbxAAAA:8 a=968KyxNXAAAA:8
- a=2QBAzQDmyTSnUfVGkxwA:9 a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10 cc=ntf
- awl=host:12069
-X-Rspamd-Queue-Id: 4630B140009
-X-Stat-Signature: b6oeqhz1p4nkfsc8q6z13tf4pquj73ff
+References: <20250713-xarray-insert-reserve-v2-0-b939645808a2@gmail.com>
+ <20250713-xarray-insert-reserve-v2-3-b939645808a2@gmail.com> <aJnojv8AWj2isnit@arm.com>
+In-Reply-To: <aJnojv8AWj2isnit@arm.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Mon, 11 Aug 2025 09:09:56 -0400
+X-Gm-Features: Ac12FXxsjq3gMeUfH06sJFBwF4JoZUe97Vj4GSS1AIW6BuPCHKoW2IveFFO1_ac
+Message-ID: <CAJ-ks9=BU2jfT-MPzxDcXrZj7uQkKbVm6WhzGiJsM_628b2kmg@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] rust: xarray: add `insert` and `reserve`
+To: Beata Michalska <beata.michalska@arm.com>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Janne Grunau <j@jannau.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1754917741-492215
-X-HE-Meta: U2FsdGVkX1+eTUWYVhebmnlrvXJqLIrEe+LR29x3vZ75wvs2wM2MenFzRDSQ4D0BPvlG1csJmOD0rjB6VICdJT6QGPNq3/r4PDKzSH6DCGJBgI63uMHukNpGakXLI7sofsUXiU9fEhPvsYASN7IHnlVLOXetHu0PaeSCq4wpEvAB1HgbxCGPnuTcyavWvfpfYaij35w0toAt9BknAgVwPpQKYZGroWhpKdg1UhtyswKNAFe6eeZwtL5YwcxPiD5vkgCQ//aOEN6YLckdMpqmzBx71t/vC0x6e+MXtUdMJxFvUNlLzlRe8n31f5vTHL3wgfUkm3GlVTE0WIQrzfiuQGaRTafaVN3cMb6W0hXQ1LGjv6MeKW0QDsejeTy5AzJprYIUiO0+ACJFTD4kIUl9a/4Ayo99pP3WWra0oYFx08O71/a95Lg+gmCQsYua8Dix25AdiwyttpMwsC/sDTKw2C2+tB3epqTF0I1KxgJgbyVj+wprbkHjM6Jy7wvyC0baekDMkIsPIY4FqLjLE4ZY9US37OgvoBZJi8PUoaSzo8xsgXmFheRKqy8+rtAbuNJoDAdIrmIuIcDwf1Xc8WiyK7005HPoQZO2P8nOLM0Go3Ev3BVtPCCalTzA1Cq/Rf6ZBbiqmDj+CIntvrSbz+IqvawOlOSnUdzKvgOv2uokQ1GZLxum25uNQW/gwXRaRbsatpfqGqd5kelUaNMWRt9F44Lm6XHGiaNThOOguRzLY2c1pDT7q4/otQZBDCRrc+uKHhTQP5dx9V4MCclMM8LhsNHcQ59eM1tbD56gIPieilpYhhy5yGIUm7S0MtrAUhq2ksb8buVXIHhZHoQyVh9nL8VfG9n+CD+nNqShOUewgJ+czFpj8m1cOtDughnzvPlvIjA1nZ7RabiY2RR4VtYliTzki1GDQowWVzxxJbcD2BOEI0C93hekB87RPc2H91kx/oCiS1udptzOxa2/sr5
- 2IUl62kn
- VDqJrtKOMBWbm4B+C9wcCcuqNgmHFdnTWaUzw4bm05MFCuhY+UlGvhDvvetvkAW/Wnb8LcLM8um7aVUUyi8PUz82DsQ8WkiC8UikiHmO1JH3k6awrKmE6z5YHkfiYhY0iJW76iVRX94Jnazuj1EptHdcoUtQ7W/z+ETcSTC36VCPPe4Dnbxs7JjFLJBoutvAh/uFXUzQblRhSiNFilMMNVQqmvtOjy1K8SASLfx4YbYCYjLzOOapCSS7eEgpnMSCafIXcNDqMgVKPFPYApWyULlpMcAT8XpgFD7b8g07qacc74bhLiJIAyEVJdqY1QBLbYH4Y2u1+nQhaVn1apnwdxPdOJPrFq8NSTZzjxeiAHyjFMAUPNcjF+gO64EOcefa3ek8bHpjN5//wQ+SvRJymT/hulCd+j4UXx4xyKxOR3D+l9rlE7d99TKbk6aUubtRd7n0gg8eoqNpC2jxX2M7EhOH/IVBtTk7XaZV1eUBBGJFeZHgJesS+p37hYjHqcMlXjPHvIuRESeBJxCnmNUdlWDp9iaXwNJwxeLb5aPkio+72Vr/T6w4gXbtfvH9IwRz3phTf9ZybYijceIK4q7xTasnmCIasV1rS4CkSNHDX/EdNgVCKXr0uf4c1/9SjmdWGs7Ofl37z2M/JVunymGnEOKsomP/+tUagwQp4YtFwIuJw/q8APZprCCjVx0gA/ScmJiPesI/5N7le2ndVvfHzs3vtjr1R5Wt//zEH6nGYaYXtG4pXAbM5Ij0ce7LwVThF8GbXR4QU0QuIz5S4HT9s7vRXph4mipi+CecRb4OfvXYzeEK1MpFvxrUng/Xs3cErW7GLW02awbOP4vOTXLYpLUhOcx2njto1AK1T8yzIj5SMLulQO0irZW0b8csXRf7kZ3NgmP7JmVFmQaBcaZ0HgST+U8T9T3B0v9ePnwXPFVfKelUK81DmFFjmOnYREuyS2izFsRryXts2c1qUmVuxQKxtqZ4m
- OALqDLmc
- kNPnGdtwaVs=
+X-Rspamd-Queue-Id: 285DB40015
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 87oscau4y39en1193f53qo3ucohejijs
+X-HE-Tag: 1754917836-141872
+X-HE-Meta: U2FsdGVkX1+POyZ+mk8Tzyn7Wytk8zc4xoO169WBW7HL9tb5chY1S7mDYHmiuYZT00fPlPiX1CfYouflLzvpcpIx4y0MeXBCScxehheyW0bSjMAQeiCNqyYZ0VA+oWv77zJyaqBFotGea0JqEjiYQEH6khP7k3aspI4Zza3/LVdZcoNjLTikUVjXf7e9yGtotgRfRj+cpnOjFUzLDfT6CIlGgiHVhvqpXbfnH9mNHXGWVwOjKfk7w8YeGQIbRhjRldMnnVr9M6/g5dYxxwvLNYEeZhprVkFMV/qdH4SReS97eztCT3i95dsl/4OqPAgiSAjCVIy36ozxE7KCD9ZLfk1DAOC5L9FKeI89aQ6vxJDE8BPypNF+8Axwby6QKGH8FRPlPctDR4PrfBrU1cumFu+gizNh1auJr5ob12oK05cyUvvO6iv5YS+0pTERPWaxSpYKHcRZFw2f+3rRzyeTPlWsMomzYKBcaGWOESPwdG9KYKidGOGmZgzbUW6BzmRd6aU9SOZ43Hhj3UyYOG3i/esPWwZQ7liJeSAYd3tZ7NnO2rbEjim+Q2+Kc2Nho/Aypn12zj6n6JTT4gLlBZ0i83UEhy7aPogSPsGYexT+KINSt3Xp26pbHGQzbJf4dfS8L1YBzHk98FrsW+EQTji/FAICBi4pSiCojx1zs3Z9hrkabdKxpJ9qVPFHox1iUjp0Jia9ZZx95FiUqlnoscdGulFbdfPXD0Tk53TX1cpdnofTqCokWVIOokeHN1/DYvrriUI4c1QiQDF03fWVqgI/SsX+18D9QKr6JNDiYtI5+EezwIsQ5l9tZ9H8M2IEqFMSehaYAVONRJHg9wT9UcxnHJ4BNhT3YnY+PnwhGANI9I0PBjCAxE1wsb5cqKiPsI/JPKUe0nQOg6lzjL3HabI2w/Zqdb+J3SwSwj/WSSMOxyvHGe+9B690fvjEHZlu4luaTeXt8N2rgWM0Zh8X4w1
+ P+AbMK26
+ 7xexO9M+VEtPOX9qJ8TO0Sm7OsavAzSTzaI4BcrFJjwP4glaVdC/Q/6APwbfYT+WMFKphpjBE5ucdXW9KRBDWTox1WHUBC54O0pXXvOEZuly1mfM9fQM88bB38GWNgDWKgjiJNt8ApnSZwWOIeTWRLIj6T/IALMiVoMx1Yk27o0GTsuxTrX/yL4YKbequ+DR3VF3z4aa2KVw7e/4ysqwCkohW5hQZgPAOpJDuRY9+iV/8FtWYJpkq1X2yrBhOPJ0q0qdk/GNQ7kvP+kK9NbDHyHuEvmLlVgPrNt9YAdOiY0LAeqrzS6iKCE5Ywp/mLkfknzVjf/NO83JMrZI6wT5i/QLEk3/gB/jFoaanfSQ3X7oy8N5FMtOmZvlIvn2SgzmM49cfVe0Y7p03A2a4iDHQFqI6qOwTnRPS00pE8IZm/7+64b92xrk4tbHYgElFnKvajtdy6IUS8ntP1pljjh2gluMMlRsrK9VhB6oSYxLlHfFne4ua8s16ZoLTCH/TjSoD4lw1iNx9LWCaFX2bm7VDOMUInsLdTjCsBxneI6Hb5+hPqWYadBGvY/5GkTF3Bu7TyYzvnTg7sqv0iIVxWMnXbRqwQ7YA7KtAOG4G
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -247,79 +122,787 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 11, 2025 at 03:03:36PM +0200, David Hildenbrand wrote:
-> On 11.08.25 14:14, Lorenzo Stoakes wrote:
-> > On Mon, Aug 11, 2025 at 03:13:14PM +0530, Charan Teja Kalla wrote:
-> > > Thanks David, for the reply!!
-> > > On 8/8/2025 5:34 PM, David Hildenbrand wrote:
-> > > > >          if (mpnt) {
-> > > > >              mas_set_range(&vmi.mas, mpnt->vm_start, mpnt->vm_end - 1);
-> > > > >              mas_store(&vmi.mas, XA_ZERO_ENTRY);
-> > > > >              /* Avoid OOM iterating a broken tree */
-> > > > >              set_bit(MMF_OOM_SKIP, &mm->flags);
-> > > > >          }
-> > > > >          /*
-> > > > >           * The mm_struct is going to exit, but the locks will be dropped
-> > > > >           * first.  Set the mm_struct as unstable is advisable as it is
-> > > > >           * not fully initialised.
-> > > > >           */
-> > > > >          set_bit(MMF_UNSTABLE, &mm->flags);
-> > > > >      }
-> > > > >
-> > > > > Shouldn't we just remove anything from the tree here that was not copied
-> > > > > immediately?
-> > > >
-> > > > Another fix would be to just check MMF_UNSTABLE in unuse_mm(). But
-> > > > having these MMF_UNSTABLE checks all over the place feels a bit like
-> > > > whack-a-mole.
-> > > >
-> > > Seems MMF_UNSTABLE is the expectation per the commit,
-> > > 64c37e134b12("kernel: be more careful about dup_mmap() failures and
-> > > uprobe registering"). Excerpt(s) from the commit message:
-> >
-> > This really is whack-a-mole yeah.
-> >
-> > >
-> > > This patch sets the MMF_OOM_SKIP to avoid the iteration of the vmas on
-> > > the oom side (even though this is extremely unlikely to be selected as
-> > > an oom victim in the race window), and __sets MMF_UNSTABLE to avoid
-> > > other potential users from using a partially initialised mm_struct.
-> > >
-> >
-> > But... maybe this is better for the _hotfix_ version as a nicer way of
-> > doing this.
+On Mon, Aug 11, 2025 at 8:57=E2=80=AFAM Beata Michalska <beata.michalska@ar=
+m.com> wrote:
 >
-> I would prefer using MMF_UNSTABLE as a hotfix.
+> Hi Tamir,
+>
+> Apologies for such a late drop.
 
-Yeah, I think MMF_UNSTABLE is probably the way go, this is what I was trying to
-say :P
+Hi Beata, no worries, thanks for your review.
 
 >
+> On Sun, Jul 13, 2025 at 08:05:49AM -0400, Tamir Duberstein wrote:
+> > Add `Guard::{insert,reserve}` and `Guard::{insert,reserve}_limit`, whic=
+h
+> > are akin to `__xa_{alloc,insert}` in C.
 > >
-> > > When registering vmas for uprobe, skip the vmas in an mm that is marked
-> > > unstable.  Modifying a vma in an unstable mm may cause issues if the mm
-> > > isn't fully initialised.__
-> > >
-> > > > Is there anything preventing us from just leaving a proper tree that
-> > > > reflects reality in place before we drop the write lock?
-> > >
-> > > When you mean proper tree, is this about the your previous question? --
-> > > Shouldn't we just remove anything from the tree here that was not copied
-> > > immediately?
+> > Note that unlike `xa_reserve` which only ensures that memory is
+> > allocated, the semantics of `Reservation` are stricter and require
+> > precise management of the reservation. Indices which have been reserved
+> > can still be overwritten with `Guard::store`, which allows for C-like
+> > semantics if desired.
 > >
-> > Commit d24062914837 (" fork: use __mt_dup() to duplicate maple tree in
-> > dup_mmap()") did this for efficiency, so it'd be a regression to do this.
+> > `__xa_cmpxchg_raw` is exported to facilitate the semantics described
+> > above.
+> >
+> > Tested-by: Janne Grunau <j@jannau.net>
+> > Reviewed-by: Janne Grunau <j@jannau.net>
+> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> > ---
+> >  include/linux/xarray.h |   2 +
+> >  lib/xarray.c           |  28 ++-
+> >  rust/helpers/xarray.c  |   5 +
+> >  rust/kernel/xarray.rs  | 494 +++++++++++++++++++++++++++++++++++++++++=
+++++++--
+> >  4 files changed, 512 insertions(+), 17 deletions(-)
+> >
+> > diff --git a/include/linux/xarray.h b/include/linux/xarray.h
+> > index be850174e802..64f2a5e06ceb 100644
+> > --- a/include/linux/xarray.h
+> > +++ b/include/linux/xarray.h
+> > @@ -563,6 +563,8 @@ void *__xa_erase(struct xarray *, unsigned long ind=
+ex);
+> >  void *__xa_store(struct xarray *, unsigned long index, void *entry, gf=
+p_t);
+> >  void *__xa_cmpxchg(struct xarray *, unsigned long index, void *old,
+> >               void *entry, gfp_t);
+> > +void *__xa_cmpxchg_raw(struct xarray *, unsigned long index, void *old=
+,
+> > +             void *entry, gfp_t);
+> >  int __must_check __xa_insert(struct xarray *, unsigned long index,
+> >               void *entry, gfp_t);
+> >  int __must_check __xa_alloc(struct xarray *, u32 *id, void *entry,
+> > diff --git a/lib/xarray.c b/lib/xarray.c
+> > index 76dde3a1cacf..58202b6fbb59 100644
+> > --- a/lib/xarray.c
+> > +++ b/lib/xarray.c
+> > @@ -1738,9 +1738,6 @@ void *xa_store(struct xarray *xa, unsigned long i=
+ndex, void *entry, gfp_t gfp)
+> >  }
+> >  EXPORT_SYMBOL(xa_store);
+> >
+> > -static inline void *__xa_cmpxchg_raw(struct xarray *xa, unsigned long =
+index,
+> > -                     void *old, void *entry, gfp_t gfp);
+> > -
+> >  /**
+> >   * __xa_cmpxchg() - Conditionally replace an entry in the XArray.
+> >   * @xa: XArray.
+> > @@ -1767,7 +1764,29 @@ void *__xa_cmpxchg(struct xarray *xa, unsigned l=
+ong index,
+> >  }
+> >  EXPORT_SYMBOL(__xa_cmpxchg);
+> >
+> > -static inline void *__xa_cmpxchg_raw(struct xarray *xa, unsigned long =
+index,
+> > +/**
+> > + * __xa_cmpxchg_raw() - Conditionally replace an entry in the XArray.
+> > + * @xa: XArray.
+> > + * @index: Index into array.
+> > + * @old: Old value to test against.
+> > + * @entry: New value to place in array.
+> > + * @gfp: Memory allocation flags.
+> > + *
+> > + * You must already be holding the xa_lock when calling this function.
+> > + * It will drop the lock if needed to allocate memory, and then reacqu=
+ire
+> > + * it afterwards.
+> > + *
+> > + * If the entry at @index is the same as @old, replace it with @entry.
+> > + * If the return value is equal to @old, then the exchange was success=
+ful.
+> > + *
+> > + * This function is the same as __xa_cmpxchg() except that it does not=
+ coerce
+> > + * XA_ZERO_ENTRY to NULL on egress.
+> > + *
+> > + * Context: Any context.  Expects xa_lock to be held on entry.  May
+> > + * release and reacquire xa_lock if @gfp flags permit.
+> > + * Return: The old value at this index or xa_err() if an error happene=
+d.
+> > + */
+> > +void *__xa_cmpxchg_raw(struct xarray *xa, unsigned long index,
+> >                       void *old, void *entry, gfp_t gfp)
+> >  {
+> >       XA_STATE(xas, xa, index);
+> > @@ -1787,6 +1806,7 @@ static inline void *__xa_cmpxchg_raw(struct xarra=
+y *xa, unsigned long index,
+> >
+> >       return xas_result(&xas, curr);
+> >  }
+> > +EXPORT_SYMBOL(__xa_cmpxchg_raw);
+> >
+> >  /**
+> >   * __xa_insert() - Store this entry in the XArray if no entry is prese=
+nt.
+> > diff --git a/rust/helpers/xarray.c b/rust/helpers/xarray.c
+> > index 60b299f11451..b6c078e6a343 100644
+> > --- a/rust/helpers/xarray.c
+> > +++ b/rust/helpers/xarray.c
+> > @@ -2,6 +2,11 @@
+> >
+> >  #include <linux/xarray.h>
+> >
+> > +void *rust_helper_xa_zero_entry(void)
+> > +{
+> > +     return XA_ZERO_ENTRY;
+> > +}
+> > +
+> >  int rust_helper_xa_err(void *entry)
+> >  {
+> >       return xa_err(entry);
+> > diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
+> > index 101f61c0362d..a43414bb4d7e 100644
+> > --- a/rust/kernel/xarray.rs
+> > +++ b/rust/kernel/xarray.rs
+> > @@ -9,7 +9,12 @@
+> >      prelude::*,
+> >      types::{ForeignOwnable, NotThreadSafe, Opaque},
+> >  };
+> > -use core::{iter, marker::PhantomData, mem, ptr::NonNull};
+> > +use core::{
+> > +    fmt, iter,
+> > +    marker::PhantomData,
+> > +    mem, ops,
+> > +    ptr::{null_mut, NonNull},
+> > +};
+> >
+> >  /// An array which efficiently maps sparse integer indices to owned ob=
+jects.
+> >  ///
+> > @@ -25,29 +30,81 @@
+> >  ///
+> >  /// ```rust
+> >  /// # use kernel::alloc::KBox;
+> > -/// # use kernel::xarray::XArray;
+> > +/// # use kernel::xarray::{StoreError, XArray};
+> >  /// # use pin_init::stack_pin_init;
+> >  ///
+> >  /// stack_pin_init!(let xa =3D XArray::new(Default::default()));
+> >  ///
+> >  /// let dead =3D KBox::new(0xdead, GFP_KERNEL)?;
+> >  /// let beef =3D KBox::new(0xbeef, GFP_KERNEL)?;
+> > +/// let leet =3D KBox::new(0x1337, GFP_KERNEL)?;
+> > +///
+> > +/// let mut guard =3D xa.lock();
+> > +///
+> > +/// let index =3D guard.insert_limit(.., dead, GFP_KERNEL)?;
+> > +///
+> > +/// assert_eq!(guard.get(index), Some(&0xdead));
+> > +///
+> > +/// let beef =3D {
+> > +///     let ret =3D guard.insert(index, beef, GFP_KERNEL);
+> > +///     assert!(ret.is_err());
+> > +///     let StoreError { value, error } =3D ret.unwrap_err();
+> > +///     assert_eq!(error, EBUSY);
+> > +///     value
+> > +/// };
+> > +///
+> > +/// let reservation =3D guard.reserve_limit(.., GFP_KERNEL);
+> > +/// assert!(reservation.is_ok());
+> > +/// let reservation1 =3D reservation.unwrap();
+> > +/// let reservation =3D guard.reserve_limit(.., GFP_KERNEL);
+> > +/// assert!(reservation.is_ok());
+> > +/// let reservation2 =3D reservation.unwrap();
+> > +///
+> > +/// assert_eq!(reservation1.index(), index + 1);
+> > +/// assert_eq!(reservation2.index(), index + 2);
+> > +///
+> > +/// let dead =3D {
+> > +///     let ret =3D guard.remove(index);
+> > +///     assert!(ret.is_some());
+> > +///     ret.unwrap()
+> > +/// };
+> > +/// assert_eq!(*dead, 0xdead);
+> > +///
+> > +/// drop(guard); // Reservations can outlive the guard.
+> > +///
+> > +/// let () =3D reservation1.fill(dead)?;
+> > +///
+> > +/// let index =3D reservation2.index();
+> >  ///
+> >  /// let mut guard =3D xa.lock();
+> >  ///
+> > -/// assert_eq!(guard.get(0), None);
+> > +/// let beef =3D {
+> > +///     let ret =3D guard.insert(index, beef, GFP_KERNEL);
+> > +///     assert!(ret.is_err());
+> > +///     let StoreError { value, error } =3D ret.unwrap_err();
+> > +///     assert_eq!(error, EBUSY);
+> > +///     value
+> > +/// };
+> >  ///
+> > -/// assert_eq!(guard.store(0, dead, GFP_KERNEL)?.as_deref(), None);
+> > -/// assert_eq!(guard.get(0).copied(), Some(0xdead));
+> > +/// // `store` ignores reservations.
+> > +/// {
+> > +///    let ret =3D guard.store(index, beef, GFP_KERNEL);
+> > +///    assert!(ret.is_ok());
+> > +///    assert_eq!(ret.unwrap().as_deref(), None);
+> > +/// }
+> >  ///
+> > -/// *guard.get_mut(0).unwrap() =3D 0xffff;
+> > -/// assert_eq!(guard.get(0).copied(), Some(0xffff));
+> > +/// assert_eq!(guard.get(index), Some(&0xbeef));
+> >  ///
+> > -/// assert_eq!(guard.store(0, beef, GFP_KERNEL)?.as_deref().copied(), =
+Some(0xffff));
+> > -/// assert_eq!(guard.get(0).copied(), Some(0xbeef));
+> > +/// // We trampled the reservation above, so filling should fail.
+> > +/// let leet =3D {
+> > +///    let ret =3D reservation2.fill_locked(&mut guard, leet);
+> > +///    assert!(ret.is_err());
+> > +///    let StoreError { value, error } =3D ret.unwrap_err();
+> > +///    assert_eq!(error, EBUSY);
+> > +///    value
+> > +/// };
+> >  ///
+> > -/// guard.remove(0);
+> > -/// assert_eq!(guard.get(0), None);
+> > +/// assert_eq!(guard.get(index), Some(&0xbeef));
+> >  ///
+> >  /// # Ok::<(), Error>(())
+> >  /// ```
+> > @@ -126,6 +183,19 @@ fn iter(&self) -> impl Iterator<Item =3D NonNull<T=
+::PointedTo>> + '_ {
+> >          .map_while(|ptr| NonNull::new(ptr.cast()))
+> >      }
+> >
+> > +    fn with_guard<F, U>(&self, guard: Option<&mut Guard<'_, T>>, f: F)=
+ -> U
+> > +    where
+> > +        F: FnOnce(&mut Guard<'_, T>) -> U,
+> > +    {
+> > +        match guard {
+> > +            None =3D> f(&mut self.lock()),
+> > +            Some(guard) =3D> {
+> > +                assert_eq!(guard.xa.xa.get(), self.xa.get());
+> > +                f(guard)
+> > +            }
+> > +        }
+> > +    }
+> > +
+> >      /// Attempts to lock the [`XArray`] for exclusive access.
+> >      pub fn try_lock(&self) -> Option<Guard<'_, T>> {
+> >          // SAFETY: `self.xa` is always valid by the type invariant.
+> > @@ -172,6 +242,7 @@ fn drop(&mut self) {
+> >  /// The error returned by [`store`](Guard::store).
+> >  ///
+> >  /// Contains the underlying error and the value that was not stored.
+> > +#[derive(Debug)]
+> >  pub struct StoreError<T> {
+> >      /// The error that occurred.
+> >      pub error: Error,
+> > @@ -185,6 +256,11 @@ fn from(value: StoreError<T>) -> Self {
+> >      }
+> >  }
+> >
+> > +fn to_usize(i: u32) -> usize {
+> > +    i.try_into()
+> > +        .unwrap_or_else(|_| build_error!("cannot convert u32 to usize"=
+))
+> > +}
+> > +
+> >  impl<'a, T: ForeignOwnable> Guard<'a, T> {
+> >      fn load<F, U>(&self, index: usize, f: F) -> Option<U>
+> >      where
+> > @@ -219,7 +295,7 @@ pub fn remove(&mut self, index: usize) -> Option<T>=
+ {
+> >          // - The caller holds the lock.
+> >          let ptr =3D unsafe { bindings::__xa_erase(self.xa.xa.get(), in=
+dex) }.cast();
+> >          // SAFETY:
+> > -        // - `ptr` is either NULL or came from `T::into_foreign`.
+> > +        // - `ptr` is either `NULL` or came from `T::into_foreign`.
+> >          // - `&mut self` guarantees that the lifetimes of [`T::Borrowe=
+d`] and [`T::BorrowedMut`]
+> >          // borrowed from `self` have ended.
+> >          unsafe { T::try_from_foreign(ptr) }
+> > @@ -267,13 +343,272 @@ pub fn store(
+> >              })
+> >          } else {
+> >              let old =3D old.cast();
+> > -            // SAFETY: `ptr` is either NULL or came from `T::into_fore=
+ign`.
+> > +            // SAFETY: `ptr` is either `NULL` or came from `T::into_fo=
+reign`.
+> >              //
+> >              // NB: `XA_ZERO_ENTRY` is never returned by functions belo=
+nging to the Normal XArray
+> >              // API; such entries present as `NULL`.
+> >              Ok(unsafe { T::try_from_foreign(old) })
+> >          }
+> >      }
+> > +
+> > +    /// Stores an element at the given index if no entry is present.
+> > +    ///
+> > +    /// May drop the lock if needed to allocate memory, and then reacq=
+uire it afterwards.
+> > +    ///
+> > +    /// On failure, returns the element which was attempted to be stor=
+ed.
+> > +    pub fn insert(
+> > +        &mut self,
+> > +        index: usize,
+> > +        value: T,
+> > +        gfp: alloc::Flags,
+> > +    ) -> Result<(), StoreError<T>> {
+> > +        build_assert!(
+> > +            mem::align_of::<T::PointedTo>() >=3D 4,
+> > +            "pointers stored in XArray must be 4-byte aligned"
+> > +        );
+> > +        let ptr =3D value.into_foreign();
+> > +        // SAFETY: `self.xa` is always valid by the type invariant.
+> > +        //
+> > +        // INVARIANT: `ptr` came from `T::into_foreign`.
+> > +        match unsafe { bindings::__xa_insert(self.xa.xa.get(), index, =
+ptr.cast(), gfp.as_raw()) } {
+> > +            0 =3D> Ok(()),
+> > +            errno =3D> {
+> > +                // SAFETY: `ptr` came from `T::into_foreign` and `__xa=
+_insert` does not take
+> > +                // ownership of the value on error.
+> > +                let value =3D unsafe { T::from_foreign(ptr) };
+> > +                Err(StoreError {
+> > +                    value,
+> > +                    error: Error::from_errno(errno),
+> > +                })
+> > +            }
+> > +        }
+> > +    }
+> > +
+> > +    /// Stores an element somewhere in the given range of indices.
+> > +    ///
+> > +    /// On success, takes ownership of `ptr`.
+> > +    ///
+> > +    /// On failure, ownership returns to the caller.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// `ptr` must be `NULL` or have come from a previous call to `T::=
+into_foreign`.
+> > +    unsafe fn alloc(
+> > +        &mut self,
+> > +        limit: impl ops::RangeBounds<u32>,
+> > +        ptr: *mut T::PointedTo,
+> > +        gfp: alloc::Flags,
+> > +    ) -> Result<usize> {
+> > +        // NB: `xa_limit::{max,min}` are inclusive.
+> > +        let limit =3D bindings::xa_limit {
+> > +            max: match limit.end_bound() {
+> > +                ops::Bound::Included(&end) =3D> end,
+> > +                ops::Bound::Excluded(&end) =3D> end - 1,
+> > +                ops::Bound::Unbounded =3D> u32::MAX,
+> > +            },
+> > +            min: match limit.start_bound() {
+> > +                ops::Bound::Included(&start) =3D> start,
+> > +                ops::Bound::Excluded(&start) =3D> start + 1,
+> > +                ops::Bound::Unbounded =3D> 0,
+> > +            },
+> > +        };
+> > +
+> > +        let mut index =3D u32::MAX;
+> > +
+> > +        // SAFETY:
+> > +        // - `self.xa` is always valid by the type invariant.
+> > +        // - `self.xa` was initialized with `XA_FLAGS_ALLOC` or `XA_FL=
+AGS_ALLOC1`.
+> > +        //
+> > +        // INVARIANT: `ptr` is either `NULL` or came from `T::into_for=
+eign`.
+> > +        match unsafe {
+> > +            bindings::__xa_alloc(
+> > +                self.xa.xa.get(),
+> > +                &mut index,
+> > +                ptr.cast(),
+> > +                limit,
+> > +                gfp.as_raw(),
+> > +            )
+> > +        } {
+> > +            0 =3D> Ok(to_usize(index)),
+> > +            errno =3D> Err(Error::from_errno(errno)),
+> > +        }
+> > +    }
+> > +
+> > +    /// Allocates an entry somewhere in the array.
+> > +    ///
+> > +    /// On success, returns the index at which the entry was stored.
+> > +    ///
+> > +    /// On failure, returns the entry which was attempted to be stored=
+.
+> > +    pub fn insert_limit(
+> > +        &mut self,
+> > +        limit: impl ops::RangeBounds<u32>,
+> > +        value: T,
+> > +        gfp: alloc::Flags,
+> > +    ) -> Result<usize, StoreError<T>> {
+> > +        build_assert!(
+> > +            mem::align_of::<T::PointedTo>() >=3D 4,
+> > +            "pointers stored in XArray must be 4-byte aligned"
+> > +        );
+> > +        let ptr =3D value.into_foreign();
+> > +        // SAFETY: `ptr` came from `T::into_foreign`.
+> > +        unsafe { self.alloc(limit, ptr, gfp) }.map_err(|error| {
+> > +            // SAFETY: `ptr` came from `T::into_foreign` and `self.all=
+oc` does not take ownership of
+> > +            // the value on error.
+> > +            let value =3D unsafe { T::from_foreign(ptr) };
+> > +            StoreError { value, error }
+> > +        })
+> > +    }
+> > +
+> > +    /// Reserves an entry in the array.
+> > +    pub fn reserve(&mut self, index: usize, gfp: alloc::Flags) -> Resu=
+lt<Reservation<'a, T>> {
+> > +        // NB: `__xa_insert` internally coerces `NULL` to `XA_ZERO_ENT=
+RY` on ingress.
+> > +        let ptr =3D null_mut();
+> > +        // SAFETY: `self.xa` is always valid by the type invariant.
+> > +        //
+> > +        // INVARIANT: `ptr` is `NULL`.
+> > +        match unsafe { bindings::__xa_insert(self.xa.xa.get(), index, =
+ptr, gfp.as_raw()) } {
+> > +            0 =3D> Ok(Reservation { xa: self.xa, index }),
+> > +            errno =3D> Err(Error::from_errno(errno)),
+> > +        }
+> > +    }
+> > +
+> > +    /// Reserves an entry somewhere in the array.
+> > +    pub fn reserve_limit(
+> > +        &mut self,
+> > +        limit: impl ops::RangeBounds<u32>,
+> > +        gfp: alloc::Flags,
+> > +    ) -> Result<Reservation<'a, T>> {
+> > +        // NB: `__xa_alloc` internally coerces `NULL` to `XA_ZERO_ENTR=
+Y` on ingress.
+> > +        let ptr =3D null_mut();
+> > +        // SAFETY: `ptr` is `NULL`.
+> > +        unsafe { self.alloc(limit, ptr, gfp) }.map(|index| Reservation=
+ { xa: self.xa, index })
+> > +    }
+> > +}
+> > +
+> > +/// A reserved slot in an array.
+> > +///
+> > +/// The slot is released when the reservation goes out of scope.
+> > +///
+> > +/// Note that the array lock *must not* be held when the reservation i=
+s filled or dropped as this
+> > +/// will lead to deadlock. [`Reservation::fill_locked`] and [`Reservat=
+ion::release_locked`] can be
+> > +/// used in context where the array lock is held.
+> > +#[must_use =3D "the reservation is released immediately when the reser=
+vation is unused"]
+> > +pub struct Reservation<'a, T: ForeignOwnable> {
+> > +    xa: &'a XArray<T>,
+> > +    index: usize,
+> > +}
+> > +
+> > +impl<T: ForeignOwnable> fmt::Debug for Reservation<'_, T> {
+> > +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+> > +        f.debug_struct("Reservation")
+> > +            .field("index", &self.index())
+> > +            .finish()
+> > +    }
+> > +}
+> > +
+> > +impl<T: ForeignOwnable> Reservation<'_, T> {
+> > +    /// Returns the index of the reservation.
+> > +    pub fn index(&self) -> usize {
+> > +        self.index
+> > +    }
+> > +
+> > +    /// Replaces the reserved entry with the given entry.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// `ptr` must be `NULL` or have come from a previous call to `T::=
+into_foreign`.
+> > +    unsafe fn replace(guard: &mut Guard<'_, T>, index: usize, ptr: *mu=
+t T::PointedTo) -> Result {
+> > +        // SAFETY: `xa_zero_entry` wraps `XA_ZERO_ENTRY` which is alwa=
+ys safe to use.
+> > +        let old =3D unsafe { bindings::xa_zero_entry() };
+> > +
+> > +        // NB: `__xa_cmpxchg_raw` is used over `__xa_cmpxchg` because =
+the latter coerces
+> > +        // `XA_ZERO_ENTRY` to `NULL` on egress, which would prevent us=
+ from determining whether a
+> > +        // replacement was made.
+> > +        //
+> > +        // SAFETY: `self.xa` is always valid by the type invariant.
+> > +        //
+> > +        // INVARIANT: `ptr` is either `NULL` or came from `T::into_for=
+eign` and `old` is
+> > +        // `XA_ZERO_ENTRY`.
+> > +        let ret =3D
+> > +            unsafe { bindings::__xa_cmpxchg_raw(guard.xa.xa.get(), ind=
+ex, old, ptr.cast(), 0) };
+> > +
+> > +        // SAFETY: `__xa_cmpxchg_raw` returns the old entry at this in=
+dex on success or `xa_err` if
+> > +        // an error happened.
+> > +        match unsafe { bindings::xa_err(ret) } {
+> > +            0 =3D> {
+> > +                if ret =3D=3D old {
+> > +                    Ok(())
+> > +                } else {
+> > +                    Err(EBUSY)
+> > +                }
+> > +            }
+> > +            errno =3D> Err(Error::from_errno(errno)),
+> > +        }
+> > +    }
+> > +
+> > +    fn fill_inner(&self, guard: Option<&mut Guard<'_, T>>, value: T) -=
+> Result<(), StoreError<T>> {
+> > +        let Self { xa, index } =3D self;
+> > +        let index =3D *index;
+> > +
+> > +        let ptr =3D value.into_foreign();
+> > +        xa.with_guard(guard, |guard| {
+> > +            // SAFETY: `ptr` came from `T::into_foreign`.
+> > +            unsafe { Self::replace(guard, index, ptr) }
+> > +        })
+> > +        .map_err(|error| {
+> > +            // SAFETY: `ptr` came from `T::into_foreign` and `Self::re=
+place` does not take ownership
+> > +            // of the value on error.
+> > +            let value =3D unsafe { T::from_foreign(ptr) };
+> > +            StoreError { value, error }
+> > +        })
+> > +    }
+> > +
+> > +    /// Fills the reservation.
+> > +    pub fn fill(self, value: T) -> Result<(), StoreError<T>> {
+> > +        let result =3D self.fill_inner(None, value);
+> > +        mem::forget(self);
+> > +        result
+> > +    }
+> > +
+> > +    /// Fills the reservation without acquiring the array lock.
+> > +    ///
+> > +    /// # Panics
+> > +    ///
+> > +    /// Panics if the passed guard locks a different array.
+> > +    pub fn fill_locked(self, guard: &mut Guard<'_, T>, value: T) -> Re=
+sult<(), StoreError<T>> {
+> > +        let result =3D self.fill_inner(Some(guard), value);
+> > +        mem::forget(self);
+> > +        result
+> > +    }
+> > +
+> > +    fn release_inner(&self, guard: Option<&mut Guard<'_, T>>) -> Resul=
+t {
+> > +        let Self { xa, index } =3D self;
+> > +        let index =3D *index;
+> > +
+> > +        xa.with_guard(guard, |guard| {
+> > +            let ptr =3D null_mut();
+> > +            // SAFETY: `ptr` is `NULL`.
+> > +            unsafe { Self::replace(guard, index, ptr) }
+> > +        })
+> > +    }
+> > +
+> > +    /// Releases the reservation without acquiring the array lock.
+> > +    ///
+> > +    /// # Panics
+> > +    ///
+> > +    /// Panics if the passed guard locks a different array.
+> > +    pub fn release_locked(self, guard: &mut Guard<'_, T>) -> Result {
+> > +        let result =3D self.release_inner(Some(guard));
+> > +        mem::forget(self);
+> > +        result
+> > +    }
+> > +}
+> > +
+> > +impl<T: ForeignOwnable> Drop for Reservation<'_, T> {
+> > +    fn drop(&mut self) {
+> > +        // NB: Errors here are possible since `Guard::store` does not =
+honor reservations.
+> > +        let _: Result =3D self.release_inner(None);
+> This seems bit risky as one can drop the reservation while still holding =
+the
+> lock?
+
+Yes, that's true. The only way to avoid it would be to make the
+reservation borrowed from the guard, but that would exclude usage
+patterns where the caller wants to reserve and fulfill in different
+critical sections.
+
+Do you have a specific suggestion?
+
+> > +    }
+> >  }
+> >
+> >  // SAFETY: `XArray<T>` has no shared mutable state so it is `Send` iff=
+ `T` is `Send`.
+> > @@ -282,3 +617,136 @@ unsafe impl<T: ForeignOwnable + Send> Send for XA=
+rray<T> {}
+> >  // SAFETY: `XArray<T>` serialises the interior mutability it provides =
+so it is `Sync` iff `T` is
+> >  // `Send`.
+> >  unsafe impl<T: ForeignOwnable + Send> Sync for XArray<T> {}
+> > +
+> > +#[macros::kunit_tests(rust_xarray_kunit)]
+> > +mod tests {
+> > +    use super::*;
+> > +    use pin_init::stack_pin_init;
+> > +
+> > +    fn new_kbox<T>(value: T) -> Result<KBox<T>> {
+> > +        KBox::new(value, GFP_KERNEL).map_err(Into::into)
+> I believe this should be GFP_ATOMIC as it is being called while holding t=
+he xa
+> lock.
+
+I'm not sure what you mean - this function can be called in any
+context, and besides: it is test-only code.
+
 >
-> We're talking about the case where fork *fails*. That cannot possibly be
-> relevant for performance, can it? :)
+> Otherwise:
+>
+> Tested-By: Beata Michalska <beata.michalska@arm.com>
 
-I think it optimises the overall operation, but as a product of that, has to
-handle this edge case, and that necessitated this rather horrble stuff.
+Thanks!
+Tamir
 
-Obviously we don't need to optimise a 'we are about to die' case :)
-
-See https://lore.kernel.org/linux-mm/20231016032226.59199-1-zhangpeng.00@bytedance.com/
-for details.
-
-Cheers, Lorenzo
+>
+> ---
+> BR
+> Beata
+> > +    }
+> > +
+> > +    #[test]
+> > +    fn test_alloc_kind_alloc() -> Result {
+> > +        test_alloc_kind(AllocKind::Alloc, 0)
+> > +    }
+> > +
+> > +    #[test]
+> > +    fn test_alloc_kind_alloc1() -> Result {
+> > +        test_alloc_kind(AllocKind::Alloc1, 1)
+> > +    }
+> > +
+> > +    fn test_alloc_kind(kind: AllocKind, expected_index: usize) -> Resu=
+lt {
+> > +        stack_pin_init!(let xa =3D XArray::new(kind));
+> > +        let mut guard =3D xa.lock();
+> > +
+> > +        let reservation =3D guard.reserve_limit(.., GFP_KERNEL)?;
+> > +        assert_eq!(reservation.index(), expected_index);
+> > +        reservation.release_locked(&mut guard)?;
+> > +
+> > +        let insertion =3D guard.insert_limit(.., new_kbox(0x1337)?, GF=
+P_KERNEL);
+> > +        assert!(insertion.is_ok());
+> > +        let insertion_index =3D insertion.unwrap();
+> > +        assert_eq!(insertion_index, expected_index);
+> > +
+> > +        Ok(())
+> > +    }
+> > +
+> > +    #[test]
+> > +    fn test_insert_and_reserve_interaction() -> Result {
+> > +        const IDX: usize =3D 0x1337;
+> > +
+> > +        fn insert<T: ForeignOwnable>(
+> > +            guard: &mut Guard<'_, T>,
+> > +            value: T,
+> > +        ) -> Result<(), StoreError<T>> {
+> > +            guard.insert(IDX, value, GFP_KERNEL)
+> > +        }
+> > +
+> > +        fn reserve<'a, T: ForeignOwnable>(guard: &mut Guard<'a, T>) ->=
+ Result<Reservation<'a, T>> {
+> > +            guard.reserve(IDX, GFP_KERNEL)
+> > +        }
+> > +
+> > +        #[track_caller]
+> > +        fn check_not_vacant<'a>(guard: &mut Guard<'a, KBox<usize>>) ->=
+ Result {
+> > +            // Insertion fails.
+> > +            {
+> > +                let beef =3D new_kbox(0xbeef)?;
+> > +                let ret =3D insert(guard, beef);
+> > +                assert!(ret.is_err());
+> > +                let StoreError { error, value } =3D ret.unwrap_err();
+> > +                assert_eq!(error, EBUSY);
+> > +                assert_eq!(*value, 0xbeef);
+> > +            }
+> > +
+> > +            // Reservation fails.
+> > +            {
+> > +                let ret =3D reserve(guard);
+> > +                assert!(ret.is_err());
+> > +                assert_eq!(ret.unwrap_err(), EBUSY);
+> > +            }
+> > +
+> > +            Ok(())
+> > +        }
+> > +
+> > +        stack_pin_init!(let xa =3D XArray::new(Default::default()));
+> > +        let mut guard =3D xa.lock();
+> > +
+> > +        // Vacant.
+> > +        assert_eq!(guard.get(IDX), None);
+> > +
+> > +        // Reservation succeeds.
+> > +        let reservation =3D {
+> > +            let ret =3D reserve(&mut guard);
+> > +            assert!(ret.is_ok());
+> > +            ret.unwrap()
+> > +        };
+> > +
+> > +        // Reserved presents as vacant.
+> > +        assert_eq!(guard.get(IDX), None);
+> > +
+> > +        check_not_vacant(&mut guard)?;
+> > +
+> > +        // Release reservation.
+> > +        {
+> > +            let ret =3D reservation.release_locked(&mut guard);
+> > +            assert!(ret.is_ok());
+> > +            let () =3D ret.unwrap();
+> > +        }
+> > +
+> > +        // Vacant again.
+> > +        assert_eq!(guard.get(IDX), None);
+> > +
+> > +        // Insert succeeds.
+> > +        {
+> > +            let dead =3D new_kbox(0xdead)?;
+> > +            let ret =3D insert(&mut guard, dead);
+> > +            assert!(ret.is_ok());
+> > +            let () =3D ret.unwrap();
+> > +        }
+> > +
+> > +        check_not_vacant(&mut guard)?;
+> > +
+> > +        // Remove.
+> > +        assert_eq!(guard.remove(IDX).as_deref(), Some(&0xdead));
+> > +
+> > +        // Reserve and fill.
+> > +        {
+> > +            let beef =3D new_kbox(0xbeef)?;
+> > +            let ret =3D reserve(&mut guard);
+> > +            assert!(ret.is_ok());
+> > +            let reservation =3D ret.unwrap();
+> > +            let ret =3D reservation.fill_locked(&mut guard, beef);
+> > +            assert!(ret.is_ok());
+> > +            let () =3D ret.unwrap();
+> > +        };
+> > +
+> > +        check_not_vacant(&mut guard)?;
+> > +
+> > +        // Remove.
+> > +        assert_eq!(guard.remove(IDX).as_deref(), Some(&0xbeef));
+> > +
+> > +        Ok(())
+> > +    }
+> > +}
+> >
+> > --
+> > 2.50.1
+> >
+> >
 
