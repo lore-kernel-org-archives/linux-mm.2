@@ -2,66 +2,66 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E649ACA0EC0
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 08:11:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3478EC87FD2
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 08:13:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 745E26B011E; Mon, 11 Aug 2025 04:11:14 -0400 (EDT)
+	id C7AF58E000F; Mon, 11 Aug 2025 04:13:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F6486B0120; Mon, 11 Aug 2025 04:11:14 -0400 (EDT)
+	id C52CB8E000A; Mon, 11 Aug 2025 04:13:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E5726B011F; Mon, 11 Aug 2025 04:11:14 -0400 (EDT)
+	id B684B8E000F; Mon, 11 Aug 2025 04:13:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 465C66B011C
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 04:11:14 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E74B382B8C
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 08:11:13 +0000 (UTC)
-X-FDA: 83763756426.08.733952F
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 3F6D81C0003
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 08:11:12 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=n2nv20t+;
-	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A332C8E000A
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 04:13:38 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5257816073E
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 08:13:38 +0000 (UTC)
+X-FDA: 83763762516.10.CF1F01B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id DD09A1A000E
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 08:13:36 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NabTfTob;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754900016; a=rsa-sha256;
+	cv=none;
+	b=2v4A7by+LKaVOkigmX6YxcwIi7eoHM9iR3isL1iWf7Pxu4cq2eKUQ4EATPgGJL6D+kmCm4
+	p6i9CP94qyMVWe8i3cJrWSWUJHvk7/sO5Zb/zD+yUyWnQCdJNG30KH10nA166LNX5V0yT9
+	LsVojRrePzh5QV5uEQmHW+AizZ2D914=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NabTfTob;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754899872;
+	s=arc-20220608; t=1754900016;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ikirbhZh3RT0runx5vWzABxjEiE566Wspw/E/T7F2Pk=;
-	b=nNwy2+KMfL0hF7FDbCqzSX5Hvu/0nJia+bEBp/8KX1ck9dSWK2OzfomKgcHkaWNed0LHXj
-	eU9aFdP4zyYqZjV9IXrEUn9Tva2J92blh2axdUwBydME7C/p3+ciNck1Wkb5d8usVrIqgn
-	uHhLglgbsCCBXdEDgfvycT7EmKlzUko=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=n2nv20t+;
-	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754899872; a=rsa-sha256;
-	cv=none;
-	b=VeGG1WAMpNt2Blp5Xt9QcSFvFvLDJt3yFXLmwiog7r23PHt1zkSYKOsU/C5bGrHPZjusP1
-	GTxx/fSQ4uaCEny02Ta4zP+HCIFZnb/A6v6dV4Nw4LKBNsfh8eimWRlMvKW2R+FVAQPmXC
-	bZHs6kKdNmeHCcNwH47sQ2cYYs8TtY8=
+	bh=f3sDw793CPWAS611HTtLYr5SWDtvHzlJoLtJhvY+jFs=;
+	b=hVOi5vqJ1+ivag5t648XJG93D88s0XhPjY3F4Wv3E+lXRThVVSyhr1G7T+La4l0+MP8F1N
+	lS/9GM+hR66X4ycXKRoCojDi1LtN3wLH3FUzBcrsx2rXeKXEDykB1Ts7sA50lkSgJOpPaQ
+	xh7RX4LHDukiWVUxG5sMddDjEGH0mhA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id D2CD45C5E02;
-	Mon, 11 Aug 2025 08:11:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3FBC4CEED;
-	Mon, 11 Aug 2025 08:10:58 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1ADCA601D1;
+	Mon, 11 Aug 2025 08:13:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3FDBC4CEED;
+	Mon, 11 Aug 2025 08:13:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754899870;
-	bh=P9xSC/pyU0TKP/viaDQllfkMkaKCa/vz5pDoZrB8kPg=;
+	s=k20201202; t=1754900015;
+	bh=nzI5taL8qhPmC3JnPTSLMBB3YPH8YS1XTL1Z0gmrNgU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=n2nv20t+OZ1SVWjStca14ZouasTHG019rln89ZLHpJCT5fVGXCjBcGNlJzzhnNGnd
-	 RP77+2hVojJn3LH+sHswmFc35a5N5G07w+BcQBrDSBs1QW5bUe/dQsj5qzclZXne4M
-	 gtByfM5ep5DKuNJXxhk/cfKhYb59v1t7gIjaTB3QnEqLbH5ZPGZrzM9r00LQdq+/Os
-	 KnSMBGKo5n2ITzDIWtPy6m9ZMghMsI0pJgZHNfLexUzN64C41ZStFX1xVLkPpf45oA
-	 UTug/hqzeCWy1SsGLeLOAqvFBVtfUIHJuTfxqqugzkwcs9lr1AcmXQWykziyo1DHTp
-	 Q8SAgfcijMLLA==
-Date: Mon, 11 Aug 2025 11:10:55 +0300
+	b=NabTfTobkl+gvZ2itLU2X50GU6eoZs66ZpRb6DppIdkRXLv5WbfpPJ4R16/nmKpEA
+	 wN0varhSZT4szpiXSnj6Pe9XvVhQ+y3c7GWi+NLr4ESBeGsKZ+2QEW4cpYCF0DlJj3
+	 7E2/ts0/YGOPebJqAiJO2K+8J6j9jCUX8CYdQubGEiZK3vHB22W5mLeBwVWSzeTK3/
+	 nhtzFZB1dYXwpdRrsAi78p2t1j1q02yAx97a5yKJtBpohccnSWNi8VR94dGiMYDpGx
+	 oNMC+kjTxp2UM5E0+Z2CZG9s/QV595hCmSg3XhmNVJsD6lGY56P68wwmzf57fEIuQ/
+	 es2yfYSsruz4g==
+Date: Mon, 11 Aug 2025 11:13:19 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: Harry Yoo <harry.yoo@oracle.com>
 Cc: Dennis Zhou <dennis@kernel.org>,
@@ -96,23 +96,23 @@ Cc: Dennis Zhou <dennis@kernel.org>,
 	Alistair Popple <apopple@nvidia.com>,
 	Joao Martins <joao.m.martins@oracle.com>,
 	linux-arch@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH V4 mm-hotfixes 2/3] mm: introduce and use
- {pgd,p4d}_populate_kernel()
-Message-ID: <aJmlj3bG6qb60Me0@kernel.org>
+Subject: Re: [PATCH V4 mm-hotfixes 3/3] x86/mm/64: define
+ ARCH_PAGE_TABLE_SYNC_MASK and arch_sync_kernel_mappings()
+Message-ID: <aJmmH40sV0Ig8YFr@kernel.org>
 References: <20250811053420.10721-1-harry.yoo@oracle.com>
- <20250811053420.10721-3-harry.yoo@oracle.com>
+ <20250811053420.10721-4-harry.yoo@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250811053420.10721-3-harry.yoo@oracle.com>
-X-Stat-Signature: 6he5symi6x96w1886kj36qqungjzamo1
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3F6D81C0003
+In-Reply-To: <20250811053420.10721-4-harry.yoo@oracle.com>
+X-Rspamd-Queue-Id: DD09A1A000E
+X-Stat-Signature: p7wi9rqrsjjd6xk6esnoj6rk5c45x344
 X-Rspam-User: 
-X-HE-Tag: 1754899872-556273
-X-HE-Meta: U2FsdGVkX190fObG8MnbknzZzaGHni3u4aPd7kaLsp+dRxZz/PfyjPytWxzfpwnW9zEnsdDugDV0ctuFA3s/CRpH0a2gkJn1htn3gASZc3vPgv+NZ32EhANSJV9y4FL7kgwjNO1vPNHCyjbl8/8fbNjIw1Z66GjuBUP3vUgihWNjxwobL+9WR51mL4j8aRWBjm7JcW4Me3AmNESsvLi2l50Dlow80wg0S25kZ82YHcWhIPkRMVk1nxAhcLj5DpnazIGl0vbtAOpsY4lwADdxXN9BHtwAC6JL7rkFNgkcu+MwyOI2j99wkeVwFuMvsfwseOJ/kMcGSsVVrL/xey20lyHpX08b2dupEz7UpVj+o/pp6fu85VXReV0CdWxwgm3ZdXsve+PRGoTy9bDoJ6YBENcCgP0Kg2qmjzHb01Ct0W7y1YXR1Zd7y36QQtW/uhx9fo+z9mz3YsyB8BDZiMtuPewqiEqHDHdpEildV00oIftpEHfeSx6QvMPRwsji7xwsklF6tkg+PNooeCnUbuSU5eotsw0SB8UL4DdSE3I0ns9uVdMiogj5cfC5sSkEc6Qn4+m+G29vkK6DjpTJGDB3pixRxxOfsguzQxrC3iQ2aEhIUcEb6NsQPCvJut1tMTpABfZHioBuyabWz8cwa7MrgUpiD72PaRjBt7OQONTAeCNGuOBwmflaUNETLXay0g08iQ4oRTt+OSUaBpyYx/cesPK4vGb3fBkTv548R32pD7OY50bPK0mFaGvM+VCb1mf6P9FlrFGH8AXThvAjL9AdQakONoqRUU5/jkUE/s3Uh34+tW6gEs1yIlhLuArRyeooArklr85KyQB+XffBL1E5LC0hXg/0dfWx4LSnXbyoglYr7YOBZL4umRaCwZqSaHDm5+bGuTOsnQsUqefojLyoQCi6t+g7WqeU/hoFejwu+odQcwn3HjtpASXgb8F4OduhE5lMBMTrJMPGrtICoGT
- 9Qe59bRt
- lqaoRCX7WJTSppTzORJRmbnDsUORQOC7aQtl28ie01yIrUQGYtAFO2KQv3YnsOWF692cg3VtWWk1sMAsAhc8VzBoN0wQjQFBZsIwOd6kt9b2pWhcqNcDaED7u/8rH5qq98GNrtmEPmFowQFHh81XMseiaO6/Lm7v8Ci7ua8vXWm8s8MsU31MNPPk7QdLCTyil/mHBnn32W6GG5ihYjjyA8Iv/sJ2/lwwRvE325UpBWyrnBrIqZbtX7J/b68WdHkJbzTQ0LVCiFglU0FY5B2fVirXt/S077Vi62SVuGSWe/1G3BxSiMowirwNQu6meJ6t1OZS8HA7SNFBdhkzBdr9qeMMZaSXqc2dTaxPCzulxKDY9wgS8fLP+2+g9Lt0eQFgfhZhTOY+A61TqXxMO1K3doE7NfqoG/uSnGB37XLPb+kI4olhWnxKm08hAd4a5JX6WMSfaNP2IfMmb96NsPb6S/d59eHwXXZpDT20r
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1754900016-917528
+X-HE-Meta: U2FsdGVkX19YxHfNHY1WZ4wht7otc/WqbKToN76v7SLsgO2cnGfD24NA5mJZjTb5f2Ao1mFQRfNnfGwgr81nO+kFjPCXVp5IVbg+g3vEGxrbCYE41zUyb1tKmWK+HD1QXkFlF5dMFU+neLQrzI8ZiZexWVJxkMvk+ykT9+6nUVqoQrSnqG1g+/6CdJGuK1pbL8hh7H55xir2EimuCwkyc5ltDn+PmtADB/K5yA4ixYWVbdXMlp6CrQSHW4hRfg3kmOFr6WrGbh08LsRTMQMYSssT5pSShb3HKMFyFx5GzSDDs180Vxm/uqicWKjYueLSx9duphBoQzeqOexcnOBsR6WuamZjrTytTLdTR2eJq7GxYfIv1MZhHLYjNS5hEzAhkv08Q5mQUYlRyqEoqesbhUEjnFBVAvm5acV+GizDmshVA0ChT20YTwwlBNxXytOmf9KC2Hy289B/ZsTbUhGyJJdEMieVmjIJrLx5NepXSY4bGEt3hKco92PckacGv6ckQBIGEr9al5PVuCAugsGeH7HOp+f5+wNf0DRygnbm8hmXaRdXKPJSrhyiiVXQT/jCkYB8qav09kdjaEYGpYLqe3/bXHxoDEXfdPDZTeICP8DoYx4eK6mbvJih5k8J3EyYetoNn1E+78BkvlNfQ9ZOw4dYKHjqKwRxYkz1Q/qb/SHMDqBwRGpwRApOyfIhMZfMIteeKe5ajdnnVZUP44JKZ93rXqqL0igNz3uQOGOmUZyoq9kv3wVH/p2cmyU4lnEx35eqBNHC6ydhTNd1FKTmLZgitOnLEyTfQa4b9bFGDJJJ4kQrwHsFXcENAjWa5N5yYMzynDdBhFnDzA8uedfg4alZKCWAIbwxuzRSQNBG05r69Sv1xlro/tPZ+Cg8e2mI4NvHnEzMizV3limjEs/PhJ1GWRIYIeP9s1fEdjyflvpZqywHdzErMIPdfbSr0SLiyNOw2KcRAHi1Lkbv/A7
+ Zoqt7wca
+ nA74bnuanaLb3YDhNR+owOpy1uUTf5SEOyk8aEYYczVgIjbu09BvMFTuyxiXaUssj6fLToZI+onu/Leg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,225 +121,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 11, 2025 at 02:34:19PM +0900, Harry Yoo wrote:
-> Introduce and use {pgd,p4d}_populate_kernel() in core MM code when
-> populating PGD and P4D entries for the kernel address space.
-> These helpers ensure proper synchronization of page tables when
-> updating the kernel portion of top-level page tables.
+On Mon, Aug 11, 2025 at 02:34:20PM +0900, Harry Yoo wrote:
+> Define ARCH_PAGE_TABLE_SYNC_MASK and arch_sync_kernel_mappings() to ensure
+> page tables are properly synchronized when calling p*d_populate_kernel().
+> It is inteneded to synchronize page tables via pgd_pouplate_kernel() when
+> 5-level paging is in use and via p4d_pouplate_kernel() when 4-level paging
+> is used.
 > 
-> Until now, the kernel has relied on each architecture to handle
-> synchronization of top-level page tables in an ad-hoc manner.
-> For example, see commit 9b861528a801 ("x86-64, mem: Update all PGDs for
-> direct mapping and vmemmap mapping changes").
+> This fixes intermittent boot failures on systems using 4-level paging
+> and a large amount of persistent memory:
 > 
-> However, this approach has proven fragile for following reasons:
+>   BUG: unable to handle page fault for address: ffffe70000000034
+>   #PF: supervisor write access in kernel mode
+>   #PF: error_code(0x0002) - not-present page
+>   PGD 0 P4D 0
+>   Oops: 0002 [#1] SMP NOPTI
+>   RIP: 0010:__init_single_page+0x9/0x6d
+>   Call Trace:
+>    <TASK>
+>    __init_zone_device_page+0x17/0x5d
+>    memmap_init_zone_device+0x154/0x1bb
+>    pagemap_range+0x2e0/0x40f
+>    memremap_pages+0x10b/0x2f0
+>    devm_memremap_pages+0x1e/0x60
+>    dev_dax_probe+0xce/0x2ec [device_dax]
+>    dax_bus_probe+0x6d/0xc9
+>    [... snip ...]
+>    </TASK>
 > 
->   1) It is easy to forget to perform the necessary page table
->      synchronization when introducing new changes.
->      For instance, commit 4917f55b4ef9 ("mm/sparse-vmemmap: improve memory
->      savings for compound devmaps") overlooked the need to synchronize
->      page tables for the vmemmap area.
+> It also fixes a crash in vmemmap_set_pmd() caused by accessing vmemmap
+> before sync_global_pgds() [1]:
 > 
->   2) It is also easy to overlook that the vmemmap and direct mapping areas
->      must not be accessed before explicit page table synchronization.
->      For example, commit 8d400913c231 ("x86/vmemmap: handle unpopulated
->      sub-pmd ranges")) caused crashes by accessing the vmemmap area
->      before calling sync_global_pgds().
-> 
-> To address this, as suggested by Dave Hansen, introduce _kernel() variants
-> of the page table population helpers, which invoke architecture-specific
-> hooks to properly synchronize page tables. These are introduced in a new
-> header file, include/linux/pgalloc.h, so they can be called from common code.
-> 
-> They reuse existing infrastructure for vmalloc and ioremap.
-> Synchronization requirements are determined by ARCH_PAGE_TABLE_SYNC_MASK,
-> and the actual synchronization is performed by arch_sync_kernel_mappings().
-> 
-> This change currently targets only x86_64, so only PGD and P4D level
-> helpers are introduced. In theory, PUD and PMD level helpers can be added
-> later if needed by other architectures.
-> 
-> Currently this is a no-op, since no architecture sets
-> PGTBL_{PGD,P4D}_MODIFIED in ARCH_PAGE_TABLE_SYNC_MASK.
+>   BUG: unable to handle page fault for address: ffffeb3ff1200000
+>   #PF: supervisor write access in kernel mode
+>   #PF: error_code(0x0002) - not-present page
+>   PGD 0 P4D 0
+>   Oops: Oops: 0002 [#1] PREEMPT SMP NOPTI
+>   Tainted: [W]=WARN
+>   RIP: 0010:vmemmap_set_pmd+0xff/0x230
+>    <TASK>
+>    vmemmap_populate_hugepages+0x176/0x180
+>    vmemmap_populate+0x34/0x80
+>    __populate_section_memmap+0x41/0x90
+>    sparse_add_section+0x121/0x3e0
+>    __add_pages+0xba/0x150
+>    add_pages+0x1d/0x70
+>    memremap_pages+0x3dc/0x810
+>    devm_memremap_pages+0x1c/0x60
+>    xe_devm_add+0x8b/0x100 [xe]
+>    xe_tile_init_noalloc+0x6a/0x70 [xe]
+>    xe_device_probe+0x48c/0x740 [xe]
+>    [... snip ...]
 > 
 > Cc: <stable@vger.kernel.org>
 > Fixes: 8d400913c231 ("x86/vmemmap: handle unpopulated sub-pmd ranges")
+> Closes: https://lore.kernel.org/linux-mm/20250311114420.240341-1-gwan-gyeong.mun@intel.com [1]
 > Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
 > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
 
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 > ---
->  include/linux/pgalloc.h | 24 ++++++++++++++++++++++++
->  include/linux/pgtable.h |  4 ++--
->  mm/kasan/init.c         | 12 ++++++------
->  mm/percpu.c             |  6 +++---
->  mm/sparse-vmemmap.c     |  6 +++---
->  5 files changed, 38 insertions(+), 14 deletions(-)
->  create mode 100644 include/linux/pgalloc.h
+>  arch/x86/include/asm/pgtable_64_types.h | 3 +++
+>  arch/x86/mm/init_64.c                   | 5 +++++
+>  2 files changed, 8 insertions(+)
 > 
-> diff --git a/include/linux/pgalloc.h b/include/linux/pgalloc.h
-> new file mode 100644
-> index 000000000000..290ab864320f
-> --- /dev/null
-> +++ b/include/linux/pgalloc.h
-> @@ -0,0 +1,24 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _LINUX_PGALLOC_H
-> +#define _LINUX_PGALLOC_H
-> +
-> +#include <linux/pgtable.h>
-> +#include <asm/pgalloc.h>
-> +
-> +static inline void pgd_populate_kernel(unsigned long addr, pgd_t *pgd,
-> +				       p4d_t *p4d)
-> +{
-> +	pgd_populate(&init_mm, pgd, p4d);
-> +	if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_PGD_MODIFIED)
-> +		arch_sync_kernel_mappings(addr, addr);
-> +}
-> +
-> +static inline void p4d_populate_kernel(unsigned long addr, p4d_t *p4d,
-> +				       pud_t *pud)
-> +{
-> +	p4d_populate(&init_mm, p4d, pud);
-> +	if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_P4D_MODIFIED)
-> +		arch_sync_kernel_mappings(addr, addr);
-> +}
-> +
-> +#endif /* _LINUX_PGALLOC_H */
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index ba699df6ef69..0cf5c6c3e483 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -1469,8 +1469,8 @@ static inline void modify_prot_commit_ptes(struct vm_area_struct *vma, unsigned
+> diff --git a/arch/x86/include/asm/pgtable_64_types.h b/arch/x86/include/asm/pgtable_64_types.h
+> index 4604f924d8b8..7eb61ef6a185 100644
+> --- a/arch/x86/include/asm/pgtable_64_types.h
+> +++ b/arch/x86/include/asm/pgtable_64_types.h
+> @@ -36,6 +36,9 @@ static inline bool pgtable_l5_enabled(void)
+>  #define pgtable_l5_enabled() cpu_feature_enabled(X86_FEATURE_LA57)
+>  #endif /* USE_EARLY_PGTABLE_L5 */
 >  
+> +#define ARCH_PAGE_TABLE_SYNC_MASK \
+> +	(pgtable_l5_enabled() ? PGTBL_PGD_MODIFIED : PGTBL_P4D_MODIFIED)
+> +
+>  extern unsigned int pgdir_shift;
+>  extern unsigned int ptrs_per_p4d;
+>  
+> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+> index 76e33bd7c556..a78b498c0dc3 100644
+> --- a/arch/x86/mm/init_64.c
+> +++ b/arch/x86/mm/init_64.c
+> @@ -223,6 +223,11 @@ static void sync_global_pgds(unsigned long start, unsigned long end)
+>  		sync_global_pgds_l4(start, end);
+>  }
+>  
+> +void arch_sync_kernel_mappings(unsigned long start, unsigned long end)
+> +{
+> +	sync_global_pgds(start, end);
+> +}
+> +
 >  /*
->   * Architectures can set this mask to a combination of PGTBL_P?D_MODIFIED values
-> - * and let generic vmalloc and ioremap code know when arch_sync_kernel_mappings()
-> - * needs to be called.
-> + * and let generic vmalloc, ioremap and page table update code know when
-> + * arch_sync_kernel_mappings() needs to be called.
->   */
->  #ifndef ARCH_PAGE_TABLE_SYNC_MASK
->  #define ARCH_PAGE_TABLE_SYNC_MASK 0
-> diff --git a/mm/kasan/init.c b/mm/kasan/init.c
-> index ced6b29fcf76..8fce3370c84e 100644
-> --- a/mm/kasan/init.c
-> +++ b/mm/kasan/init.c
-> @@ -13,9 +13,9 @@
->  #include <linux/mm.h>
->  #include <linux/pfn.h>
->  #include <linux/slab.h>
-> +#include <linux/pgalloc.h>
->  
->  #include <asm/page.h>
-> -#include <asm/pgalloc.h>
->  
->  #include "kasan.h"
->  
-> @@ -191,7 +191,7 @@ static int __ref zero_p4d_populate(pgd_t *pgd, unsigned long addr,
->  			pud_t *pud;
->  			pmd_t *pmd;
->  
-> -			p4d_populate(&init_mm, p4d,
-> +			p4d_populate_kernel(addr, p4d,
->  					lm_alias(kasan_early_shadow_pud));
->  			pud = pud_offset(p4d, addr);
->  			pud_populate(&init_mm, pud,
-> @@ -212,7 +212,7 @@ static int __ref zero_p4d_populate(pgd_t *pgd, unsigned long addr,
->  			} else {
->  				p = early_alloc(PAGE_SIZE, NUMA_NO_NODE);
->  				pud_init(p);
-> -				p4d_populate(&init_mm, p4d, p);
-> +				p4d_populate_kernel(addr, p4d, p);
->  			}
->  		}
->  		zero_pud_populate(p4d, addr, next);
-> @@ -251,10 +251,10 @@ int __ref kasan_populate_early_shadow(const void *shadow_start,
->  			 * puds,pmds, so pgd_populate(), pud_populate()
->  			 * is noops.
->  			 */
-> -			pgd_populate(&init_mm, pgd,
-> +			pgd_populate_kernel(addr, pgd,
->  					lm_alias(kasan_early_shadow_p4d));
->  			p4d = p4d_offset(pgd, addr);
-> -			p4d_populate(&init_mm, p4d,
-> +			p4d_populate_kernel(addr, p4d,
->  					lm_alias(kasan_early_shadow_pud));
->  			pud = pud_offset(p4d, addr);
->  			pud_populate(&init_mm, pud,
-> @@ -273,7 +273,7 @@ int __ref kasan_populate_early_shadow(const void *shadow_start,
->  				if (!p)
->  					return -ENOMEM;
->  			} else {
-> -				pgd_populate(&init_mm, pgd,
-> +				pgd_populate_kernel(addr, pgd,
->  					early_alloc(PAGE_SIZE, NUMA_NO_NODE));
->  			}
->  		}
-> diff --git a/mm/percpu.c b/mm/percpu.c
-> index d9cbaee92b60..a56f35dcc417 100644
-> --- a/mm/percpu.c
-> +++ b/mm/percpu.c
-> @@ -3108,7 +3108,7 @@ int __init pcpu_embed_first_chunk(size_t reserved_size, size_t dyn_size,
->  #endif /* BUILD_EMBED_FIRST_CHUNK */
->  
->  #ifdef BUILD_PAGE_FIRST_CHUNK
-> -#include <asm/pgalloc.h>
-> +#include <linux/pgalloc.h>
->  
->  #ifndef P4D_TABLE_SIZE
->  #define P4D_TABLE_SIZE PAGE_SIZE
-> @@ -3134,13 +3134,13 @@ void __init __weak pcpu_populate_pte(unsigned long addr)
->  
->  	if (pgd_none(*pgd)) {
->  		p4d = memblock_alloc_or_panic(P4D_TABLE_SIZE, P4D_TABLE_SIZE);
-> -		pgd_populate(&init_mm, pgd, p4d);
-> +		pgd_populate_kernel(addr, pgd, p4d);
->  	}
->  
->  	p4d = p4d_offset(pgd, addr);
->  	if (p4d_none(*p4d)) {
->  		pud = memblock_alloc_or_panic(PUD_TABLE_SIZE, PUD_TABLE_SIZE);
-> -		p4d_populate(&init_mm, p4d, pud);
-> +		p4d_populate_kernel(addr, p4d, pud);
->  	}
->  
->  	pud = pud_offset(p4d, addr);
-> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> index 41aa0493eb03..dbd8daccade2 100644
-> --- a/mm/sparse-vmemmap.c
-> +++ b/mm/sparse-vmemmap.c
-> @@ -27,9 +27,9 @@
->  #include <linux/spinlock.h>
->  #include <linux/vmalloc.h>
->  #include <linux/sched.h>
-> +#include <linux/pgalloc.h>
->  
->  #include <asm/dma.h>
-> -#include <asm/pgalloc.h>
->  #include <asm/tlbflush.h>
->  
->  #include "hugetlb_vmemmap.h"
-> @@ -229,7 +229,7 @@ p4d_t * __meminit vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node)
->  		if (!p)
->  			return NULL;
->  		pud_init(p);
-> -		p4d_populate(&init_mm, p4d, p);
-> +		p4d_populate_kernel(addr, p4d, p);
->  	}
->  	return p4d;
->  }
-> @@ -241,7 +241,7 @@ pgd_t * __meminit vmemmap_pgd_populate(unsigned long addr, int node)
->  		void *p = vmemmap_alloc_block_zero(PAGE_SIZE, node);
->  		if (!p)
->  			return NULL;
-> -		pgd_populate(&init_mm, pgd, p);
-> +		pgd_populate_kernel(addr, pgd, p);
->  	}
->  	return pgd;
->  }
+>   * NOTE: This function is marked __ref because it calls __init function
+>   * (alloc_bootmem_pages). It's safe to do it ONLY when after_bootmem == 0.
 > -- 
 > 2.43.0
 > 
