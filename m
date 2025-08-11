@@ -2,109 +2,124 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 93694C87FD2
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 09:54:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 87C18CA0EC0
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 09:54:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12B368E002E; Mon, 11 Aug 2025 05:54:17 -0400 (EDT)
+	id 23EA38E002F; Mon, 11 Aug 2025 05:54:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DC558E000A; Mon, 11 Aug 2025 05:54:17 -0400 (EDT)
+	id 1EF068E000A; Mon, 11 Aug 2025 05:54:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0CE28E002E; Mon, 11 Aug 2025 05:54:16 -0400 (EDT)
+	id 0B7328E002F; Mon, 11 Aug 2025 05:54:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D936D8E000A
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 05:54:16 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 70AA582C62
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:54:16 +0000 (UTC)
-X-FDA: 83764016112.23.60365F9
-Received: from m.syntacore.com (m.syntacore.com [178.249.69.228])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E6630140009
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:54:13 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=syntacore.com header.s=m header.b=II4M1Au5;
-	spf=pass (imf26.hostedemail.com: domain of svetlana.parfenova@syntacore.com designates 178.249.69.228 as permitted sender) smtp.mailfrom=svetlana.parfenova@syntacore.com;
-	dmarc=pass (policy=none) header.from=syntacore.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EC1188E000A
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 05:54:52 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9BC68C072F
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:54:52 +0000 (UTC)
+X-FDA: 83764017624.01.23609EA
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D5E61180004
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:54:41 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=temperror (imf16.hostedemail.com: error in processing during lookup of zhangzihuan@kylinos.cn: DNS error) smtp.mailfrom=zhangzihuan@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754906054;
+	s=arc-20220608; t=1754906087;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yni3jeui56qGM7gspd6IrxvigH7pPMoqhQ6Dvk9afrY=;
-	b=QqEIxrGk3H/H7dPXbbRHrFsTj4JNXiGR+UeIS21d1wFJNUXDLJYwooeMkQjaXi4nJyaAGM
-	+Ow64R2hNT1cZswFSNYeZW3/9al0Lxgsnqut7YskCvsz9j0fZ16Lxevcv5CiXTqrv28WwH
-	RXomMCZs8H+qC4Id2GXvUVoA3C5Pgp4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754906054; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q6d4mCwhqCUjW1C03cCUKBw5cNwfV9qVOoJh5u245K0=;
+	b=kKenRxZmC1PcM/qikHOjFn3CducowOe18XzZZ/GaMcHPaWcX/L3SdNwaBJCfH57dlWUg5i
+	saVZTCdSNsXe8KaVmCdH1Smuv0kw1WI4fNYdO52r0s5uTJHz4f2pseBOl028S3h8QAka4j
+	Ut2pCbDRwQ6hhYRXpdhe9oAa/BQ+zJo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754906087; a=rsa-sha256;
 	cv=none;
-	b=f79R4kZmQpkmWVjteqxVZ7tCsDzPXVNem7xbi0v106zuz+6BBZvQa4SD50x3d/mL5DTej+
-	OWxb6QPrdejEQnXsQnBV6diGCmj5AAgdFE4MIXVL4yS7UwVVljTj+cXlyQJ46RMONMY9Qn
-	HWKHGASg7PYwvW6W/hI42S6zvztOuiU=
+	b=AMDkvXsRG+8kEm6Z3/Pxi+rITl8jjlUL8kdJ5sMaGxKQ1ecSjrjnxX13xxeQIR88WAsV0T
+	gvtxg/8spMU1Vw82M4dNZPYEc6fGfbzFDJC2+XHKEhlUq6xmaaCzTZQKNbpIQS0wyz4qiB
+	X/hLEmkgNgieHN3Ae0qMR6Rv+2que4w=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=syntacore.com header.s=m header.b=II4M1Au5;
-	spf=pass (imf26.hostedemail.com: domain of svetlana.parfenova@syntacore.com designates 178.249.69.228 as permitted sender) smtp.mailfrom=svetlana.parfenova@syntacore.com;
-	dmarc=pass (policy=none) header.from=syntacore.com
-Received: from MRN-SC-KSMG-01.corp.syntacore.com (localhost [127.0.0.1])
-	by m.syntacore.com (Postfix) with ESMTP id 55E9B1A0002;
-	Mon, 11 Aug 2025 09:54:12 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 m.syntacore.com 55E9B1A0002
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com; s=m;
-	t=1754906052; bh=yni3jeui56qGM7gspd6IrxvigH7pPMoqhQ6Dvk9afrY=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=II4M1Au5GdLYynSnkzM0etPYEfbzel+cAmL5VNpBSPhKia3TEM4hdjcbl50Icmb1u
-	 c1B6I1/sG69NHrP4EcJD9VOQUCTSFLrXy2c1fIwfRLkBHwTK0wt80VCe3L+2wbVLNU
-	 FhAJDzP0DJlSytaVeDs3sRgeMm6NAPNEOiHXCAfbI+AzX/Mf0nEXSrHjIcUJXbIIz5
-	 K14W+d+wJPFWkkaTZyw7ywofojaWv/E58Qz8KMSCEdMlIjQD/c0a68dpTskxJIlO7u
-	 8+J1hh4uH1AxkRTK0x8Gmsv0qcnGwSNGd2oyP4hE0mMafYr7a05tTCExLpP+DvrvDe
-	 Ud3oI+bWPrfdg==
-Received: from S-SC-EXCH-01.corp.syntacore.com (exchange.syntacore.com [10.76.202.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by m.syntacore.com (Postfix) with ESMTPS;
-	Mon, 11 Aug 2025 09:54:10 +0000 (UTC)
-Received: from localhost (10.199.23.86) by S-SC-EXCH-01.corp.syntacore.com
- (10.76.202.20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 11 Aug
- 2025 12:53:14 +0300
-From: Svetlana Parfenova <svetlana.parfenova@syntacore.com>
-To: <linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-CC: <viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <jack@suse.cz>,
-	<kees@kernel.org>, <akpm@linux-foundation.org>, <david@redhat.com>,
-	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
-	<svetlana.parfenova@syntacore.com>
-Subject: [RFC RESEND v2] binfmt_elf: preserve original ELF e_flags for core dumps
-Date: Mon, 11 Aug 2025 15:53:28 +0600
-Message-ID: <20250811095328.256869-1-svetlana.parfenova@syntacore.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250806161814.607668-1-svetlana.parfenova@syntacore.com>
-References: <20250806161814.607668-1-svetlana.parfenova@syntacore.com>
+	imf16.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=temperror (imf16.hostedemail.com: error in processing during lookup of zhangzihuan@kylinos.cn: DNS error) smtp.mailfrom=zhangzihuan@kylinos.cn
+X-UUID: 2b9da468769911f0b29709d653e92f7d-20250811
+X-CID-CACHE: Type:Local,Time:202508111725+08,HitQuantity:2
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:acc68978-f090-491f-984d-775e43d21c34,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:d6456464c6e6748e41fc8f4c855f847f,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
+	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 2b9da468769911f0b29709d653e92f7d-20250811
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1249145062; Mon, 11 Aug 2025 17:54:28 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id 9F9D3E009021;
+	Mon, 11 Aug 2025 17:54:27 +0800 (CST)
+X-ns-mid: postfix-6899BDD3-5075201002
+Received: from [172.25.120.24] (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 81F3EE008FED;
+	Mon, 11 Aug 2025 17:54:24 +0800 (CST)
+Message-ID: <4ceb0e8c-d164-4323-add0-a0770ec2afc6@kylinos.cn>
+Date: Mon, 11 Aug 2025 17:54:23 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.199.23.86]
-X-ClientProxiedBy: S-SC-EXCH-01.corp.syntacore.com (10.76.202.20) To
- S-SC-EXCH-01.corp.syntacore.com (10.76.202.20)
-X-KSMG-AntiPhishing: not scanned, disabled by settings
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/08/11 08:26:00 #27653044
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 5
-X-Rspamd-Queue-Id: E6630140009
-X-Stat-Signature: rxk9edjbwnbu81up3t6c9aa795ahhci6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v1 5/9] freezer: set default freeze priority for
+ PF_SUSPEND_TASK processes
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, David Hildenbrand <david@redhat.com>,
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+ len brown <len.brown@intel.com>, pavel machek <pavel@kernel.org>,
+ Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Nico Pache <npache@redhat.com>,
+ xu xin <xu.xin16@zte.com.cn>, wangfushuai <wangfushuai@baidu.com>,
+ Andrii Nakryiko <andrii@kernel.org>, Christian Brauner <brauner@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Jeff Layton <jlayton@kernel.org>,
+ Al Viro <viro@zeniv.linux.org.uk>, Adrian Ratiu
+ <adrian.ratiu@collabora.com>, linux-pm@vger.kernel.org, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250807121418.139765-1-zhangzihuan@kylinos.cn>
+ <20250807121418.139765-6-zhangzihuan@kylinos.cn>
+ <20250808143943.GB21685@redhat.com>
+ <0754e3e3-9c47-47d5-81d9-4574e5b413bc@kylinos.cn>
+ <20250811093216.GB11928@redhat.com>
+ <428beb0d-2484-4816-86c3-01e91bd7715a@kylinos.cn>
+ <20250811094651.GD11928@redhat.com>
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+In-Reply-To: <20250811094651.GD11928@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: D5E61180004
+X-Stat-Signature: xue4b6casw198717wuow3hdustasjdze
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1754906053-114868
-X-HE-Meta: U2FsdGVkX18nJ6/dRCMIAafSBd4ROpYeuoPFurJMjeOWe/M8Ow/97SgXFw8vTJWFNBJ+6gmFCNNHxVjew0Xj92Dxp7yoEgmZldQhecZq26aqurFCR98x9DPfmtV6uyBLRSrBmiYUAnt3rmB5lAl0J6BSna2q86df6xDT5IO5VTIXRksKt4xgtBacrqSDtBJ7ZWmo+1W/mLllMNE9zEG+7aP03c1ZDANsK5SPijpVOtHG1L4DcS0iGWxD8G/xLqPCjTj7UlQUovl5xjT34OjfRx7nzbp87PxosI6W6ozh9pR5o0lGkte6lPouyOhXVcpl+Egr4RiBBaWpw4AKdeYH9X+5hqzjkasJ37ewkX9KBV7P6kzcDJED2/X6bTGcH0HW8qHb4wsfAuV3g2NH0a8C88bdcLtnniHNUcSv20Xyp6iqy1UFnU/N/0Gsnk9VPy3rBM4LvggvoMdKaDquJNO/rp/bi6MRm3b1eRzSsYVQQ4z6Kgvj/bWN8kW/pZnwgY9YGdJwLHfhg4NpHEwONZveX+otgM6K/8hKG+qyB4ks+EABrLmV2aZDWYOvDCSQ4PBTZdLaLiIl0f4NTk1UikRZJYmCvxEcSyW0p9bBbNjzHpGpxROt6YAFG5UPIuqc7+B4ANEC3yIqYw6cRg/Wn9pzgLLL9EGyCZvKulwImfooNB8jPc9fECpugA3mjpt3/VS9i4MHsno0pglWptTf/Z0v93chRhqjYd5DseVnj95Ybwkr3OWpWOabxk4sUvkJiT3UyXXBnPrZATOwwcUA/k4c9qgyhMPZdGhZ6TjaZmdfHawqFmmCQsHuTcazPb7k/4PeqCYATemknfHKnlvMRGidQ9p9ZaLhBXarIV+E8lx2tUYcq/8uHCp0Vm7YHTh0vtyFKH8rDBAk1YYbSXIEvgi+K1BAI2R9gplA5ITxsE0t+VoGwT19/wmKQQAmXoPCTKt7WW8AkgPgxk5G01/tnza
- L2solj5H
- hmPXTMFSa/2WkqP+7IymzCtK8xUlTOCgcXF5HuwxBubLTLpOmkJRIfDjb/qiXUWFXIH3jkfcdHi/CIVRwHOBD+r3zAVdi7UuPJZwPU0S2Ty3J+u2Vw71ucutKm76WlUIfTe4ysrINbHnyXZ7oo5fCxCpcZEfUBfK01DKRVimypXuj0Gj2PzBDs86gSrO9UPTsQ7l6oPWXT5aWxLNcWVuhKETE1t9M5QW59X3FFLKEwADGb+5fDAS0MEQRMtoY16n1xORZnsYHFY3KF0gVrsVJSjkCcaNxqd/bhUzUMOjmRP/yPHtDfHmVih8W4Rz6VNym7VLdRovOPMI49eNGy9O5lQJV69Lr3uOHvz2RLEwazDvuE8KmMNFi4/bAZ3HslDejs9pODkoVU+dJwGEUKsN2bzY1202ybU1MnczQhxn40juX7oHvwtQmvAzRBIFvMMV514A2jqC8FPlznmNs/FCkU1++mc2aTVCvxd4kTuoj5qKHVoyEGDMM722wTpl2kchctMGt/t7vktzjzro=
+X-HE-Tag: 1754906081-341852
+X-HE-Meta: U2FsdGVkX18epQ8bp+tnsBz+1AgJcseIq1iYr1uRHFuUJS6t+9m/fmPe0bChD685jc9vnd9uHwdVGj07D7GhFQRtSFSrBLqeUd2Jda/+JDnU6valogfBZHGb+o6e9X2rU4w0CT8S/oIA0iG+H/WB74nEq4dPFyO8N66gP1CWScsK6M0OdSfhan9iIHlQ84LTQ/ULw2Z3Km4gKodV2AWE3ZIrypMCQfqppuBs4amNp4vg47vittbczPqO0BZxe5Vgp3t7SBFqdjRYH8l2l7nBcTHVL52WsJivZppnkPSJzLKATcqPmaKN3WirZGoa/QkID0OvOOEEghOTtGxe9eF7SLYMZaDwcUL6Togo9jHtsWb/of0WSpgQq/EwXXe1Jpi1k7MJwcbFtZj14QX7ZpPPkV22dB6TpwmrdwtaeLj6aqaZSUvFEwgXH6C3cPeMD55ciOREUUVSj531+Dzpg0iPFj94ZI0i+QAV3IqCh/Q0Hxajv1oNNZmaRuH5nf0INMbqbaQFHj7o9mFXXFxeEeeWflZxt/CPOhgBON4oTrar7TP9OtNHBe9PHDCZ+EbiZTp1mXntu1FyA8CNQF40IeBIwj5sxjIKeLzZ48JA5RjiWA9LjpURsifj4L0bDWTAJiei3XVHlahHaWknP8K9PcKu0//LQ4jhpnlrfVB5KIToCcvXzL6kMkgYiT9OBNuaMDHzO9hHQrvZ3Sf1PbsULGM2pKCYzNgLYtZTTX4eFl/WJl3OtvcD5f42SCMPWj55YEGG8gyBI7s/eahlwc9A+0PIQoElN6wlUl5GpK2cDA54MAa+EbIM4b1ybYWRM4I67V//UYv9iLuZOIQ4oj194YWJ5Vjm92oyExSkMT1ZQORAvPq4oaY8R2j3g8OMR70WjFiJ8jVXz6MoNy+jc4jFgsuRzU8cu0v8j7i1MvPVowcPQY1dgdKKy2oYeT4IRZchakq5KLqdk7V9v5zO5wOogzB
+ bm2rUqyd
+ DV67raFZtYEc/d/L6y3O+YLw811ok3CX3Gb6dbm5baXqz2Z+RwYXX7HV295SaNQnKKHMtj3vr3/F1WlZ7xAb8MD3ftmIwWMmVyFgt0Z4MFHiL2wDMrvyIuvsD2jlTBl1FmbWMI5ocZYFFPiRf3N0Povj8/Xh3fydEKI1jVP+5bvAuGUvW7ErvTPfr52KQzjaNFfyqVHGJO9bbrcty8v5p9SZ0dVptTjL8UZE2xfFH/XN25mNQKOi8rV0cMN9vXzbCzbNTD+THDTzOX72WnXrrSX8vSNsOeyRqJkkeoJrouT98Q+RiL+QoGaZS76Yf9TyGs3OnPFkCg1LupPoEaWq20/LqFubYA2aP2itr9zhqND1evH7PkFqNq5+f9rXgEreqmEqQnMRD9F4y62Y=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,133 +128,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Some architectures, such as RISC-V, use the ELF e_flags field to encode
-ABI-specific information (e.g., ISA extensions, fpu support). Debuggers
-like GDB rely on these flags in core dumps to correctly interpret
-optional register sets. If the flags are missing or incorrect, GDB may
-warn and ignore valid data, for example:
 
-    warning: Unexpected size of section '.reg2/213' in core file.
-
-This can prevent access to fpu or other architecture-specific registers
-even when they were dumped.
-
-Save the e_flags field during ELF binary loading (in load_elf_binary())
-into the mm_struct, and later retrieve it during core dump generation
-(in fill_note_info()). A new macro ELF_CORE_USE_PROCESS_EFLAGS allows
-architectures to enable this behavior - currently just RISC-V.
-
-Signed-off-by: Svetlana Parfenova <svetlana.parfenova@syntacore.com>
----
-Changes in v2:
- - Remove usage of Kconfig option.
- - Add an architecture-optional macro to set process e_flags. Enabled
-   by defining ELF_CORE_USE_PROCESS_EFLAGS. Defaults to no-op if not
-   used.
-
- arch/riscv/include/asm/elf.h |  1 +
- fs/binfmt_elf.c              | 34 ++++++++++++++++++++++++++++------
- include/linux/mm_types.h     |  3 +++
- 3 files changed, 32 insertions(+), 6 deletions(-)
-
-diff --git a/arch/riscv/include/asm/elf.h b/arch/riscv/include/asm/elf.h
-index c7aea7886d22..5d9f0ac851ee 100644
---- a/arch/riscv/include/asm/elf.h
-+++ b/arch/riscv/include/asm/elf.h
-@@ -20,6 +20,7 @@
-  * These are used to set parameters in the core dumps.
-  */
- #define ELF_ARCH	EM_RISCV
-+#define ELF_CORE_USE_PROCESS_EFLAGS
- 
- #ifndef ELF_CLASS
- #ifdef CONFIG_64BIT
-diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-index caeddccaa1fe..e52b1e077218 100644
---- a/fs/binfmt_elf.c
-+++ b/fs/binfmt_elf.c
-@@ -66,6 +66,14 @@
- #define elf_check_fdpic(ex) false
- #endif
- 
-+#ifdef ELF_CORE_USE_PROCESS_EFLAGS
-+#define elf_coredump_get_process_eflags(dump_task, e_flags) \
-+	(*(e_flags) = (dump_task)->mm->saved_e_flags)
-+#else
-+#define elf_coredump_get_process_eflags(dump_task, e_flags) \
-+	do { (void)(dump_task); (void)(e_flags); } while (0)
-+#endif
-+
- static int load_elf_binary(struct linux_binprm *bprm);
- 
- /*
-@@ -1290,6 +1298,9 @@ static int load_elf_binary(struct linux_binprm *bprm)
- 	mm->end_data = end_data;
- 	mm->start_stack = bprm->p;
- 
-+	/* stash e_flags for use in core dumps */
-+	mm->saved_e_flags = elf_ex->e_flags;
-+
- 	/**
- 	 * DOC: "brk" handling
- 	 *
-@@ -1804,6 +1815,8 @@ static int fill_note_info(struct elfhdr *elf, int phdrs,
- 	struct elf_thread_core_info *t;
- 	struct elf_prpsinfo *psinfo;
- 	struct core_thread *ct;
-+	u16 machine;
-+	u32 flags;
- 
- 	psinfo = kmalloc(sizeof(*psinfo), GFP_KERNEL);
- 	if (!psinfo)
-@@ -1831,17 +1844,26 @@ static int fill_note_info(struct elfhdr *elf, int phdrs,
- 		return 0;
- 	}
- 
--	/*
--	 * Initialize the ELF file header.
--	 */
--	fill_elf_header(elf, phdrs,
--			view->e_machine, view->e_flags);
-+	machine = view->e_machine;
-+	flags = view->e_flags;
- #else
- 	view = NULL;
- 	info->thread_notes = 2;
--	fill_elf_header(elf, phdrs, ELF_ARCH, ELF_CORE_EFLAGS);
-+	machine = ELF_ARCH;
-+	flags = ELF_CORE_EFLAGS;
- #endif
- 
-+	/*
-+	 * Override ELF e_flags with value taken from process,
-+	 * if arch wants to.
-+	 */
-+	elf_coredump_get_process_eflags(dump_task, &flags);
-+
-+	/*
-+	 * Initialize the ELF file header.
-+	 */
-+	fill_elf_header(elf, phdrs, machine, flags);
-+
- 	/*
- 	 * Allocate a structure for each thread.
- 	 */
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index d6b91e8a66d6..e46f554f8d91 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1098,6 +1098,9 @@ struct mm_struct {
- 
- 		unsigned long saved_auxv[AT_VECTOR_SIZE]; /* for /proc/PID/auxv */
- 
-+		/* the ABI-related flags from the ELF header. Used for core dump */
-+		unsigned long saved_e_flags;
-+
- 		struct percpu_counter rss_stat[NR_MM_COUNTERS];
- 
- 		struct linux_binfmt *binfmt;
--- 
-2.50.1
-
+=E5=9C=A8 2025/8/11 17:46, Oleg Nesterov =E5=86=99=E9=81=93:
+> On 08/11, Zihuan Zhang wrote:
+>> =E5=9C=A8 2025/8/11 17:32, Oleg Nesterov =E5=86=99=E9=81=93:
+>>> On 08/11, Zihuan Zhang wrote:
+>>>> =E5=9C=A8 2025/8/8 22:39, Oleg Nesterov =E5=86=99=E9=81=93:
+>>>>> On 08/07, Zihuan Zhang wrote:
+>>>>>> --- a/kernel/power/process.c
+>>>>>> +++ b/kernel/power/process.c
+>>>>>> @@ -147,6 +147,7 @@ int freeze_processes(void)
+>>>>>>
+>>>>>>   	pm_wakeup_clear(0);
+>>>>>>   	pm_freezing =3D true;
+>>>>>> +	freeze_set_default_priority(current, FREEZE_PRIORITY_NEVER);
+>>>>> But why?
+>>>>>
+>>>>> Again, freeze_task() will return false anyway, this process is
+>>>>> PF_SUSPEND_TASK.
+>>>> I=C2=A0 think there is resaon put it here. For example, systemd-slee=
+p is a
+>>>> user-space process that executes the suspend flow.
+>>>>
+>>>>  =C2=A0If we don=E2=80=99t set its freeze priority explicitly, our c=
+urrent code may end up
+>>>> with this user process being the last one that cannot freeze.
+>>> How so? sorry I don't follow.
+>> The problem is in this part:
+>>
+>> +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (user_only && !(p->flags=
+ & PF_KTHREAD) && round <
+>> p->freeze_priority)
+>> +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 continue;
+>>
+>> PF_SUSPEND_TASK is a user process, so it meets the =E2=80=9Cneeds free=
+zing=E2=80=9D
+>> condition and todo gets incremented.
+>              ^^^^^^^^^^^^^^^^^^^^^^^^^
+>
+> No.
+> 	if (p =3D=3D current || !freeze_task(p))
+> 		continue;
+>
+> 	todo++;
+>
+> Again, again, freeze_task(p) returns false.
+>
+>> But it actually doesn=E2=80=99t need to freeze,
+>> so resulting in an infinite loop
+> I don't think so.
+>
+> Oleg.
+Sorry, you=E2=80=99re right =E2=80=94 it=E2=80=99s indeed unnecessary. In=
+ an earlier version, I=20
+incremented the counter before the continue, but I later removed that=20
+and forgot about it.
 
