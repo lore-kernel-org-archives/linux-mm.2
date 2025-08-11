@@ -2,120 +2,197 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 34F42CA0EC4
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 18:03:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 17F1BCA0ED3
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 18:13:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B454D8E008F; Mon, 11 Aug 2025 14:03:41 -0400 (EDT)
+	id 5DE2D8E0090; Mon, 11 Aug 2025 14:13:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B1D4C8E0045; Mon, 11 Aug 2025 14:03:41 -0400 (EDT)
+	id 5B59F8E0045; Mon, 11 Aug 2025 14:13:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9BDF78E008F; Mon, 11 Aug 2025 14:03:41 -0400 (EDT)
+	id 4A44B8E0090; Mon, 11 Aug 2025 14:13:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 86F9A8E0045
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 14:03:41 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 202921402B5
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 18:03:41 +0000 (UTC)
-X-FDA: 83765249442.09.A4F2EC1
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 0FC6E18000D
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 18:03:38 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=d9Rf7Z1n;
-	spf=pass (imf24.hostedemail.com: domain of tamird@gmail.com designates 209.85.208.182 as permitted sender) smtp.mailfrom=tamird@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754935419;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 34BF38E0045
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 14:13:33 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E1A0F136E12
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 18:13:32 +0000 (UTC)
+X-FDA: 83765274264.25.814F4B8
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2049.outbound.protection.outlook.com [40.107.236.49])
+	by imf27.hostedemail.com (Postfix) with ESMTP id AA2564000F;
+	Mon, 11 Aug 2025 18:13:29 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=AGmRNIvl;
+	spf=pass (imf27.hostedemail.com: domain of ziy@nvidia.com designates 40.107.236.49 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754936010;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d///4wuoQangGNst6fYpzsgtPxISb9SbCVVJE+l8aHU=;
-	b=zVDKt3F8/nRaArkk/0u4lEur1twe1p62uKQYaEDXRs8ijoYDlilurOmY2w2NPMMUvPfIUZ
-	y1mmD7YWsq6d+YOoyiqp02YMWFjpbXZfdPclrXuGBhYe8bM+1/lgmUSBnyXap2pVU2HIHl
-	hNFkjkW+j9HKdG664BLrKjfBYNc2lQ4=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=d9Rf7Z1n;
-	spf=pass (imf24.hostedemail.com: domain of tamird@gmail.com designates 209.85.208.182 as permitted sender) smtp.mailfrom=tamird@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754935419; a=rsa-sha256;
-	cv=none;
-	b=XJ0W4tzyTn4RJDIw32BSSlUe4Kv9T9sc8tv99spDXzfrEykdbL7WaHiNpJEvZGRtcMkbE1
-	NRRd5+ccJstThIg5jhr7Xd/PlE9wPT5lT5THB+PR255CDHy8koGhQ7msnXgRbtYKQW62eE
-	sAXheHVpSczg7ieWjow5+aURjHFFebc=
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-3324e2e6f54so52010111fa.1
-        for <linux-mm@kvack.org>; Mon, 11 Aug 2025 11:03:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754935417; x=1755540217; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d///4wuoQangGNst6fYpzsgtPxISb9SbCVVJE+l8aHU=;
-        b=d9Rf7Z1nR9mECcemGJwTZ+51C/zCWfykZH4zljj7iI+NecifftHzDRunk6r6O+Zo0y
-         p2Eosxm0UqdHxyHPXrloOeWD/Id9v7UADgJfAHnzbBE5L6YVKoxe/TD2CsDcuTqHPEHb
-         7mnaTaJqNs/rjRpS8N8J7FbCjnfwO+yIPYmol9tkfCPPtfe3uBljqpU1uyxxVqHZW1ZO
-         uuZxhTMaXM7/QM0NJ1OvfD6SVD7Sx9Ed/MaJ/IvY9B8gC1g1g8kwyID/qKkc+aijbWPB
-         P2/UaAOM0ZSj7qpXW6CLDGH6onstnN9XGrfKtURHl4VYqWhbL5zLK8UeeR+wTu3QoCqv
-         y1UA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754935417; x=1755540217;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=d///4wuoQangGNst6fYpzsgtPxISb9SbCVVJE+l8aHU=;
-        b=TpISeWyB7gtDllTexa0zttxCwqVkDRiGznHDbVqA/OYqF+wz4z8b19a8KDCThTZtI8
-         Yg0xUUAeG+zZy077cjmv0uvQlQie6oFmTMAaythCv7tfrt+0Owx8HzA/6tMogc9n1c/+
-         nkJJzgeScNvWMNZq8s6A05jaNHgRvfhxgwbhGIBy6NJS+t/i3dsuW2kcQ3y/d7+De4PE
-         BC6auOeZ3CDZuvuD5VHXVDvudi+yj0vOw09rTQaKHJK++3BUkODLwl9Q8BtAYdBgFywt
-         e/KJ1nUah6BnruihuuX7+GhmYjzP+THWEtf7BM75aTBUXUhvA5nHjukq5pkUuhwUwWfR
-         qImg==
-X-Forwarded-Encrypted: i=1; AJvYcCUzMbZeMEaBKuxKMAfD3nrVJMbQLEQf++eAc2alzyWhNS5sB0n30w4aPVoH8wCVyTmExVRMvsv4DQ==@kvack.org
-X-Gm-Message-State: AOJu0YxG6BOAcZ6Wy//Uv3RsK0At0E3oO1flXcE138EI1Fgc9k4uCXja
-	HWhpJ4s6YRbHG1rlgYJv5hbd35c8zJdAnihwwoTD0xPn+IEiwyF0xi1IYyFGYuXFBwh9lzflr6T
-	6UhY1yPTuri2TwYs90JtmZvwSu12ex94=
-X-Gm-Gg: ASbGncuHD/SLlD1SRHF2FqweAdmKjPLlP8av0q//QX3sFJ3EZVClzzumskfCY66WANL
-	nvQkPB8so4hNHHYyLHs1Pw1KrwmnBbjifG9dNM+PS6GcSgv8IrKMVulbOICwmKOME/gX8eGhJmx
-	MOTIsUl+TylOzy+wbb6cC55N/UllEjwCG9r6Cqi6xcGlBcOUuRIZOcUctPuhWJRrto0VND+e9r0
-	L3o6tNv
-X-Google-Smtp-Source: AGHT+IEBGMWFwPBvVKkHkPwEpE2wMzzGocdD5JdNJj56rt+2ZuB0UWbX44hvIpNbmg6xFrgD/0gijWRDGE/YtO1Eu00=
-X-Received: by 2002:a05:651c:19a0:b0:332:13d4:6f6e with SMTP id
- 38308e7fff4ca-333d7ad9f94mr1663741fa.2.1754935416777; Mon, 11 Aug 2025
- 11:03:36 -0700 (PDT)
+	bh=sGV22iA4648kX+1SLXqRIJp9tvQz6hauCgYznHiUf3A=;
+	b=6VCxhlFtYSQtNjvGLS+iEsYYhxGrGtxouE7PNX+UofqCB2tYYThS0I3EkD2yPtgJRYHoRW
+	gkiMiD1hRfqLJkSFHFlkS7q/XCEr6fwjeH5wqT05e2xzIxGgO1X+R54VzubiPYvEtKwm1z
+	oTFqSHeNXNrSOn3tDT/hXQjvdSOa0zs=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754936010; a=rsa-sha256;
+	cv=pass;
+	b=z7XBdEH0qIXxyeAKtmM8XqbG1Jwj/84rnx6LwLRYFfT/QUzwtEeXbVbXDU5L73JhnpbPE+
+	uBl9E+/KesYf6ZdTXL42qk16vGm6Pfe3pi0Sqfem11I61CC5oRf+tCrENvvVruvB7SmnmS
+	NxFScHvaD9BbF/98sKPwXQ/T2XVBE6w=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=AGmRNIvl;
+	spf=pass (imf27.hostedemail.com: domain of ziy@nvidia.com designates 40.107.236.49 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kqCibHb7WfynOrKG6L3+S3QJW86vrFs4Jj3opxomgcUmpdUUl859ZQVnRQKHINNxLwosbznqrSKvMCCG2BRPvTrWUQaBhVYFhFRKOw+Xx/smhrYLedcIjfx85rgJPNMns6LpD7Ay6sGsJvmVO0/IGwcNw12WyDkXPotRkXMZgyu573BheoFzCNhXLj9KYR2D+tDLbrxrgITlYltKs5szC+ovr0Z7+G5F//O7mRseshcUC1E196JxHOQ/fh6J0gcR5z2/1Ukb9BENnW7gUnqmoPBot6l4zH+aYYe5l//My3lKe02UT80KuUX/KbxZok1dMXvTOqd6kp0naUc2GJT19Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sGV22iA4648kX+1SLXqRIJp9tvQz6hauCgYznHiUf3A=;
+ b=mKjS7iRqf9RtZ7IN1IIw08y9jGiU9MhTc24bWHVEXjHug6s52va32X5DsKRr0bNPCTt7L7ncwltrliOXqyYW1dHR+1goFnyOD51EWbIoYSXGJqQ2h0OA8uC852s5EeBzdLB9XRosqulnL3s7NHTKcssbcUD3saDL8NB14lPyABjKLlCJvzl1UCpLP4z6PqW4hXgQLafrudWhuKKkIXpglM0nrWoHjelXxYLrG4oahMpCTisSQ+fuJ1CGWD3CbN8jfuZ6Mx/hmnwejxhIeZHJgkv47twoGtHeQ2r/V27G8i0bk7JP188uz6ZT08X1WtwsnoC799JeOIMuLwRTcT/h7Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sGV22iA4648kX+1SLXqRIJp9tvQz6hauCgYznHiUf3A=;
+ b=AGmRNIvle1xNuzTW+OowrKLrpxVus2WO6EddvsBkKGE6ZGkNcZCWgNVPRKstgy/kKXOzoIildUPW3H346rPL/CzNywsQqEepi6n0S4lYjqd2i+5Sriho9skpFkYm1tmWmZcZjisgCro66daFSArrrkJfRiBXkdqqgHEaGbMR7l+3yl+T4czwAB6R9cMOju5jQ7OE1l+nvwJcOE3cWLEXDmMngGsYkYV2Nyet4aFV05JiqbZXp6Go3fmL03Z7EWsWx4ia0dBvhZzwaTPUY545QScGGfBvrR/jQgkJoz9FzChJqKew02EkIG3jeZqa2oTgoAMYa6QqAC6QsuPkszWCfw==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ CH3PR12MB7739.namprd12.prod.outlook.com (2603:10b6:610:151::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.22; Mon, 11 Aug
+ 2025 18:13:26 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%6]) with mapi id 15.20.9009.017; Mon, 11 Aug 2025
+ 18:13:26 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, virtualization@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, linux-aio@kvack.org,
+ linux-btrfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Benjamin LaHaise <bcrl@kvack.org>, Chris Mason <clm@fb.com>,
+ Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Dave Kleikamp <shaggy@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Minchan Kim <minchan@kernel.org>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: Re: [PATCH v1 1/2] mm/migrate: remove MIGRATEPAGE_UNMAP
+Date: Mon, 11 Aug 2025 14:13:21 -0400
+X-Mailer: MailMate (2.0r6272)
+Message-ID: <B4A54756-87EC-4795-855C-3F80114456FF@nvidia.com>
+In-Reply-To: <20250811143949.1117439-2-david@redhat.com>
+References: <20250811143949.1117439-1-david@redhat.com>
+ <20250811143949.1117439-2-david@redhat.com>
+Content-Type: text/plain
+X-ClientProxiedBy: MN2PR04CA0001.namprd04.prod.outlook.com
+ (2603:10b6:208:d4::14) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-References: <20250713-xarray-insert-reserve-v2-0-b939645808a2@gmail.com>
- <20250713-xarray-insert-reserve-v2-3-b939645808a2@gmail.com>
- <aJnojv8AWj2isnit@arm.com> <CAJ-ks9=BU2jfT-MPzxDcXrZj7uQkKbVm6WhzGiJsM_628b2kmg@mail.gmail.com>
- <aJn_dtWDcoscYpgV@arm.com>
-In-Reply-To: <aJn_dtWDcoscYpgV@arm.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Mon, 11 Aug 2025 14:02:59 -0400
-X-Gm-Features: Ac12FXwh33fn1ZAGbWU8KHUjxEVF-ovI5P2-O31Ri2jQBQmGUO28sNFAyHxqAe4
-Message-ID: <CAJ-ks9kECSobk0NX6SXn1US7My028POc=nLmw0AHZGiRUstP2g@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] rust: xarray: add `insert` and `reserve`
-To: Beata Michalska <beata.michalska@arm.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Janne Grunau <j@jannau.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|CH3PR12MB7739:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8197a7b4-0230-4ff8-9333-08ddd902c42d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?GlB/C9QUMNoi5RlZS4KAhVuYCrDyzlwNMMpuKf5R2+GrizrTmWwV6wmufBSv?=
+ =?us-ascii?Q?eYeXizzWXFYP/6fa/pHQSyj3gxjBukLSrROUM9Daag4D/LHXcKZAy2ZJKj0l?=
+ =?us-ascii?Q?Jy/IwAgy0wlzXFcH4A3hJqGiVCcMkYvN/JL40a6QFa1J1NuBNc/j4nT109v+?=
+ =?us-ascii?Q?KMTBv3DI0T2ty/Uw21EbRRGi4njeCeblvR9FLhxMfn5TwJ2b/CfKQJKf5q3E?=
+ =?us-ascii?Q?ofJ5XWd+W6Lke70i9QfWREvQkYViNRmqhCMYAMpu19+je7wI64JgC767IbY+?=
+ =?us-ascii?Q?glNou6LoJTY8rNFvw89m91g1Ro5fmOO7dYT7kv4OARGYboWf05YDv0AmIveG?=
+ =?us-ascii?Q?VGtxEEKz+8+Jpiphn4YkS6tU3WXxr87PT7AAzCtwnnkgaCwIC2um5gTHiFKZ?=
+ =?us-ascii?Q?Ke2niPQQhIKmzdHU1VrJwFKZVuxNAP/JCQB0sHIMjKXoFZyo4C0a69SndSD6?=
+ =?us-ascii?Q?yvcjB1wiqh5YrZR8W3xaoLKJ0Q1aMz467pU5BQoRL1NkPqS6538rxZlgyjl/?=
+ =?us-ascii?Q?rFow/Ep1CrBtU/KXR53ureRVgkubq5GS+L3RP2L5eG0noZwzxufZjygKAayp?=
+ =?us-ascii?Q?A0HtpGi+aZ21pa3cJvAGggO0Y2z2yHYAG3jn45BOrr0cNJND9aO3+P0Yf/T+?=
+ =?us-ascii?Q?2LoeGinA42qccikW74AzScXb5YLA74zbtwmA2NyizjG0zfiS7qf7vVQqow9e?=
+ =?us-ascii?Q?x2boKigGQFgAT7/mvHHispzZ/tvRbU0o+16HO3xqnCkMpWSL9UTVfMDxAe9f?=
+ =?us-ascii?Q?BzfTioMDJN7RfI1NrUyYIqOU/a/JGyQkanFvtifB0K4UPkw5DG0CkzO9mQMj?=
+ =?us-ascii?Q?ZnqDj8dKtOqd7icl90T5Lfk1jo4W3lKP5H2hJhEjyplcuvsuQjr99/J4MrTi?=
+ =?us-ascii?Q?n9GZ2VOvZPkrWzVe/9F1yLToLA0vAy9HuFY6szg6B9uw0i0Zu0hT6qJC0zoi?=
+ =?us-ascii?Q?ZxQ2sqRoyms7vBr9a2iP7y2oMnSMFUhuaBQ5GsReRyCeTLi99nGT38447DWA?=
+ =?us-ascii?Q?TR8mgd3n9JV1FMXyVVKWYyQziyPsGa+bs8ganaEayXFy9p+1YOcpfk1yaWp/?=
+ =?us-ascii?Q?3dPuEg/mKlt8NLbB8Upa2TGGVpMjrTEEib1EvwoEPNbVHesz8229kwWRgMT7?=
+ =?us-ascii?Q?ibPcAmnjIvQiTlYDkHkfNSi57rAE9GYMczcZOEKCwv6D1ZyP4NyDaW5PqHZn?=
+ =?us-ascii?Q?iaiVxuIB9oZpdrNp/RGKfXFlG/MdZZCyMczOT/3mV8J1rshYCHrFk8QGtU9M?=
+ =?us-ascii?Q?POEX1iUcnkjGT2kEerseHmiW7Hk5Z4kQHfXfO/2OnW2gDS5AGcCPQCcGgHW7?=
+ =?us-ascii?Q?rQwl+Hln7F9188vLLym+7Gh0fHKX8m/y9NG4WpP+drsOuGJ8wDd+iaxccKw6?=
+ =?us-ascii?Q?DgpUmkg+2g2dkygaSD3FoSpKSiNC6o4Gh0iOMOK9EYsFO7hVTg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?xIXEu2/iE51CsYDVEPUWzoXUh6wZlcKDn9UW/O5fkTqvwXJdguDCKVokARjF?=
+ =?us-ascii?Q?VsxzWD3KhxNRzraZESPM3h2RoxQlzkpB3a0uR3rP1jjxl7OCt9zDLUSUsTVr?=
+ =?us-ascii?Q?gTlFeaMYz5VpTa274rHhPloDcKQqThNgFDhmnhMY1vn+b+zxGYGWtKxYHpxG?=
+ =?us-ascii?Q?jpGl6o0h8Xj72QvrMdTLqDwoLPgHgj9iwyl2bGlPqKe/D3EhG7omTt7fRNtI?=
+ =?us-ascii?Q?RzX3LJ1z6g6twB8K48zoMLKr9ipFb04slwAgU01/1vovBbTvN7aksZVL1jkR?=
+ =?us-ascii?Q?pc6kE4gsGXn+r3joU6iz7GKfLKyeuPWN6SObX4FVlw4QFx76T+bS1jX4+yph?=
+ =?us-ascii?Q?12ZoZhO9OiwIoV+QbWM07JmZG3V3LSu5iJC2Rr0SfsjKeE5J3IgHb0UmP/Oz?=
+ =?us-ascii?Q?WI8wycYK4kcWSm+EWzuryFLATaHPOkvYD3OnU+kCExXKHSdlArI1lq71R6Qx?=
+ =?us-ascii?Q?tRNASA/7DuJpqBV23P9DaByjB0hKTjmp1DU0HHpXUWgNikN1ehlnnJEqPP/R?=
+ =?us-ascii?Q?QMPUP5q5U57nkOkNPTfsLLWpaJvNeL1NGRg19ZT6EwY3xKU6VTc9WEv5nxdY?=
+ =?us-ascii?Q?n1+T8zbWL02EcyO3Wa/oiOvDnlTzMARVC+l1B5sQzolCVjQdvT3pRY5hxe8s?=
+ =?us-ascii?Q?KHR6CvbfMsHSn4JqB+3GOkRUTGuQY8nxP68MaHyvVB1NDCRmeaiYnTRau8O6?=
+ =?us-ascii?Q?MfL888oT8SQ9fKuRIPmIatNmn7hyrwkV7Yl4+NNfCci757D6UoRo1Omp8RAa?=
+ =?us-ascii?Q?cTNQBwiMLHBXM416fEY4pQ3sk5LCAgoT6KtSU19Cn6n69tALZHPEBaOT+bXE?=
+ =?us-ascii?Q?Tiw9hJQpCHU2CiTey1R1VN9cgISiWlBK++AHKmKeMp4j45hPCkLqQniTiyRQ?=
+ =?us-ascii?Q?td1MBEAYPdr03+rkiqkWd/MdMXearxdD4AY2Y1sIDRxOZ/feVCb0ppFZhCIN?=
+ =?us-ascii?Q?N8gq0ZKuLo5kvBvrNzQp4UEUPIjEekPzfWG7z33nu2LPgNMXSyl4xypUupAu?=
+ =?us-ascii?Q?bZ7GUD15kbWH94rP3vqQz/c78hwSxaSgJ3i4qlToWg5nSNvzPub51YK03Vsu?=
+ =?us-ascii?Q?txe2uYEGLEklNUyVKttSKmzSqAF/WWuc54Wv0dNziUC6AM5lTxw26L2SYqxR?=
+ =?us-ascii?Q?Vb/8gsudZrWLfCmZvCI9w02Slg5ZuUl5gX12kJIFtnNgtCafOoVPZWelcW1e?=
+ =?us-ascii?Q?DCay5RvUT4XCCdfe1A0ExFiZQeGXIGOX1SUpleLsHsvs0+npq0MKHnR9mOR2?=
+ =?us-ascii?Q?xHW74eDjiS5lZC4+xnSdg7nbT2EptxhRmyA8LHjHWGE3t1CQM7FYnzDfs5Gp?=
+ =?us-ascii?Q?nj+qCkkzc458DMWn+MwYT3i2m+OCTXFtySlNLtlmPmVP3tTZOZMc67zqA4YF?=
+ =?us-ascii?Q?+g9HkQEv3E0jnOuaELihkmUwhvzUCawOHJzHMkbVqAYDf0jkfxnFyIGGGnp6?=
+ =?us-ascii?Q?LOpVk9W5/07uQ6BgFziCumIWCf/zv+M+wCeH0PZASRNKlc3FmVMOPNQ/64Vf?=
+ =?us-ascii?Q?t+crWITAGvc0W5lEnHXdc4pNhfEZcwAVGqSctF6vrO8qPaDPfYnVH4fOu7JK?=
+ =?us-ascii?Q?iVAmKGEN87VF7Xa7vE2GChZ4b3PBLXEyOXMw6TP9?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8197a7b4-0230-4ff8-9333-08ddd902c42d
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2025 18:13:26.3436
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: A3mJLBJ94ddefQBmjiKbvY7QVlGcoxAjEbRIWBZLMSDXcDvVKrUUcq0hlpZifjCS
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7739
+X-Rspamd-Queue-Id: AA2564000F
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0FC6E18000D
-X-Rspamd-Server: rspam06
-X-Stat-Signature: dtord316b8uqyg6a7orz4oc95wi398yi
-X-HE-Tag: 1754935418-776568
-X-HE-Meta: U2FsdGVkX18u5Acv05mfMcGx4nrU7sv7fkeJu+HQ8pZeSVVrPOUZqzWOe+dgQosj/kOhACFtSK9OaAHFzKxV1xQRefT39czDyg17MfVCqrBqYJ9wqffYGcvZqrZ5i5b94a+vf6sgr/cf3jpfHxEGNacarFVnsZVd/3STqYxnqQlFglsgyALM0IToOF/hT/ZwXiKu1jMrNJran6LU1GVFnMXFOEIcGk3Xj33yZfriEzBfpTjJq1RrrGSswhAPQ3EGMr1w6VL6Gt2SLCTGr5nPTaYyrJ+KuQe3OribIAPEBX/rRomU7Nf7ZkBEBb1FvjH00MddZYEiG9z81ZvFgGJMwRI9IPgtSEhqxhKqH2j3gBU3cJVShk1xkRi2lPJ8bHkQB+qclDun5ZQ7Gr76pCngX1n3zXw4B1AVDkcW1UNsKIUAF1HpzRPXGPw27VrMkos9MGX029qXOztju5mEg34soiXGIdSrfVVWYA5vkJu5KAzjOX5UXqwQmbwKBj3Otfg5EXmQvJiT21UmgLBD82LEh8kmss0QpsnAaDhKtyhxEytVC8xMefU+Tx6i2b/y0/xU5FkCLBR26rxMdwndXq2vCIApE+LxXemiC23k4sfbNLvpvl7yaqVbUYSM3iMoHHl4BpGUUdqmNGZAmRw8s7B9z90R8jL1vxyWEkR2xNxRK5NJCYzPFssRBakyCvkliVQOlie7+Q8zt4Y9bd4Hg8oetEVrm+sGU6AbgKSihWL9cxSjM79w38I+4pLX+AE/JmZ0quH1DKpNyrnci7JdD2n7DYouuMXVwJNDpdJHuREwDJ3ww2NuYk+RttntNd31ftCjQbSzT3AZ/LMrslszxr3OCwRLG+VyttIGe68rWqt+EBnTCzDnxIelHDUs0Z/U0I8F66vTday1m2SI4B1x0/AdmQz3mI86LucL08iAZnRfsUCAl3DO7pIeRr8z21nJH9FvfL3dA0DcB/VqTFKJ0kI
- VcKWZ6F+
- zgn6swYS1SkSWDjjwc8gx0N3BDqkOCIIq/D/E0E183UICyaHLSnbPyyhXrbTR+hwQKAtbnQdL9qpa8uU49HhDTuM1ZcokN18rZAkyhYB8mdqjwLjFzDspSZxdQcbc+c76jJ4n3goZIn+UT5YlUFxgAs5zC6dFaPBpYcjJrYRFjuu22XISBnf57SPHx3stHRXFWGG5s0Rx0CeLaZCOicqp2tVdqWIKvKUyy5d3uP3DOERRwH3zu9RWkoBSijqUFIU3JLz2930OZiU9+sAaQuZTixNf23swt2pFgl6684HRWXSkMq4+bTVMpGr18Td1HlTdIz0tHGrQ/HcQ2n3rrbk9DVx8oXhcanBAQ9AyCNCZ4wYuv2VJi9by5KSRi+d3blJP7KvMipbd4w6e3BKq2GrndWOFJZIZ7U5VWGctnD09CGp6UWUSh2BRSM6cRH/RJoIrlF5vcII/XPW30ztmxYqaeaKwcyJUeLcPcoFFj7735awAsDA=
+X-Rspamd-Server: rspam09
+X-Stat-Signature: qifpkcskfsrw1dk4e8a7bbdgx1qm7g8x
+X-HE-Tag: 1754936009-859189
+X-HE-Meta: U2FsdGVkX1/GZ03T5CGuJFf23AMUceXjWFw2io7x0ckFQfiMKKwF7vII0e5tmNFjyhEcVNiuFyQUiyfRreMjFbu8rm5JXgz9MTOtC2FKXaSK3APD5F8+0GDx2HD6JEa1KeGJkyIReclMf+ZRt2GI80qtkzHC0Z33B/D8Qilzg+y2eqLesO4UMYEz4OUkrHGbgjk7dt2RKcxfZKpJ1QAcRLXkewNFkb7/jBTfTBWQRFX3sK5GAIMrUud6F2SkOy1f3rMyen1swwu+2m+UeJckztr5tjV0GIWFU6j7fY8R1CrLwbkI8qS+sjwlbE/onY4LUWdUuDOpAvibB6CE0QUD2D5hgCf8GEg8pTFpnHO6M7WSRiImhoVzvAGgX56mvmcEroXIt8IyuEOszzkeZllTFGcasftiIgJCczGsW40lLvNmPPvSsl+bbf8Oc4TjpL23ip07J9BCUF8XyejApi2SlJuUQDDLzra7ukFsPgQ9SX+Tupdj5DrlFx6PMpTDeb5MM4Y4/AL+VWNBeOystgZ0UygPMWTctPxEhjbaYut3V9vX1v8tH6giXeZ6hm9r7ABK+HGBY+zBpWdxKmYqK/wEsgCywibEFMUviPXCviDhstGi9e5Q9C4bdfM/VdZJdwUBp9OP4IpHSR9dFQnDdazJWTkZG+MQsMeV/pTq9xjbk/58elLyLYsKGX3jLFigx/ivRwqYs4Yy+nFSqg6WcaZiSYGAkFUHtDOyq+6CPlhApxzEK/DfSCkEWnneEHVHrX6ZRl00/42uTtikyMH22otxY8L+DAMxWXenYUQZePT+h9OeelsefN9D83srEXVyQuHdU+1oHdjK+je5ylSUuPkkP9EciDPesAl3T4tEL687B1aVyredBidlHGxhiyNejg+bHtraZBpl/t5dDfGpuDkJZfVC4nN8NMcd4cmqJPMG/WPqHziUec75LH8wxV/oTQD3EnTBrIhbdk9JLr1rl+t
+ SMEYxyqA
+ 2ADjoWUmoLWbUaVEH07CLti7sYfnEgBumsJ8Ka/MVoIms3D1BTCVBVMnuZutTe6tt2JqsAm10eMv0J30jXPssmZsVH5JzboXOzTk0aOxrVx708S5JFwPV9nwnWAE5YlycV5O12d8i4NkNuafWZhvu1JeSSFN/4OX2srlXg1luLKgak4xeyeVZJcM8S3Kkuq/cQP+dUQf7NChU/BMf3r+fyvnZuEhvF/z4vPogIRJlh00Gzfw7EcK8ktBlsjdeDE5YfPkxJjQ/qJ3qX0PjqnEsBL/4e/Xu5ln5coKcp2wXLAa4XkW2MK8FmjErUxmd0l9CBTqtR0+N8rfAuBvd3/AS22+PfjrTQTCF5zFxokR9paimsFwUfX6/Sdb+QoUyZDeKYA0HmKPa7Jhm5rb77KE3G8Rh9bNGbVxlqqUofDeZA4z+j7nbe3+CB+mfQtHUszGcwuhmK1HmEjrXbgoaubcW3BoZ0bM+/9ByDmQbHmmcG4fl8TCQgNB2BGCxuBcR5kys/mt6tWx8uKKjMBDmTfvsyjI01vEnqYO+GN9WpQ7pOTp6m8BKTW5V5kde5eeZQDnCoTt2eHsaGYDJ4bQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,253 +201,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 11, 2025 at 10:35=E2=80=AFAM Beata Michalska
-<beata.michalska@arm.com> wrote:
+On 11 Aug 2025, at 10:39, David Hildenbrand wrote:
+
+> migrate_folio_unmap() is the only user of MIGRATEPAGE_UNMAP. We want to
+> remove MIGRATEPAGE_* completely.
 >
-> On Mon, Aug 11, 2025 at 09:09:56AM -0400, Tamir Duberstein wrote:
-> > On Mon, Aug 11, 2025 at 8:57=E2=80=AFAM Beata Michalska <beata.michalsk=
-a@arm.com> wrote:
-> > >
-> > > Hi Tamir,
-> > >
-> > > Apologies for such a late drop.
-> >
-> > Hi Beata, no worries, thanks for your review.
-> >
-> > >
-> > > On Sun, Jul 13, 2025 at 08:05:49AM -0400, Tamir Duberstein wrote:
-> [snip] ...
-> > > > +/// A reserved slot in an array.
-> > > > +///
-> > > > +/// The slot is released when the reservation goes out of scope.
-> > > > +///
-> > > > +/// Note that the array lock *must not* be held when the reservati=
-on is filled or dropped as this
-> > > > +/// will lead to deadlock. [`Reservation::fill_locked`] and [`Rese=
-rvation::release_locked`] can be
-> > > > +/// used in context where the array lock is held.
-> > > > +#[must_use =3D "the reservation is released immediately when the r=
-eservation is unused"]
-> > > > +pub struct Reservation<'a, T: ForeignOwnable> {
-> > > > +    xa: &'a XArray<T>,
-> > > > +    index: usize,
-> > > > +}
-> > > > +
-> [snip] ...
-> > > > +
-> > > > +impl<T: ForeignOwnable> Drop for Reservation<'_, T> {
-> > > > +    fn drop(&mut self) {
-> > > > +        // NB: Errors here are possible since `Guard::store` does =
-not honor reservations.
-> > > > +        let _: Result =3D self.release_inner(None);
-> > > This seems bit risky as one can drop the reservation while still hold=
-ing the
-> > > lock?
-> >
-> > Yes, that's true. The only way to avoid it would be to make the
-> > reservation borrowed from the guard, but that would exclude usage
-> > patterns where the caller wants to reserve and fulfill in different
-> > critical sections.
-> >
-> > Do you have a specific suggestion?
-> I guess we could try with locked vs unlocked `Reservation' types, which w=
-ould
-> have different Drop implementations, and providing a way to convert locke=
-d into
-> unlocked. Just thinking out loud, so no, nothing specific here.
-> At very least we could add 'rust_helper_spin_assert_is_held() ?'
-
-I don't see how having two types of reservations would help.
-
-Can you help me understand how you'd use `rust_helper_spin_assert_is_held` =
-here?
-
-> >
-> > > > +    }
-> > > >  }
-> > > >
-> > > >  // SAFETY: `XArray<T>` has no shared mutable state so it is `Send`=
- iff `T` is `Send`.
-> > > > @@ -282,3 +617,136 @@ unsafe impl<T: ForeignOwnable + Send> Send fo=
-r XArray<T> {}
-> > > >  // SAFETY: `XArray<T>` serialises the interior mutability it provi=
-des so it is `Sync` iff `T` is
-> > > >  // `Send`.
-> > > >  unsafe impl<T: ForeignOwnable + Send> Sync for XArray<T> {}
-> > > > +
-> > > > +#[macros::kunit_tests(rust_xarray_kunit)]
-> > > > +mod tests {
-> > > > +    use super::*;
-> > > > +    use pin_init::stack_pin_init;
-> > > > +
-> > > > +    fn new_kbox<T>(value: T) -> Result<KBox<T>> {
-> > > > +        KBox::new(value, GFP_KERNEL).map_err(Into::into)
-> > > I believe this should be GFP_ATOMIC as it is being called while holdi=
-ng the xa
-> > > lock.
-> >
-> > I'm not sure what you mean - this function can be called in any
-> > context, and besides: it is test-only code.
-> Actually it cannot: allocations using GFP_KERNEL can sleep so should not =
-be
-> called from atomic context, which is what is happening in the test cases.
-
-I see. There are no threads involved in these tests, so I think it is
-just fine to sleep with this particular lock held. Can you help me
-understand why this is incorrect?
-
+> It's rather weird to have a generic MIGRATEPAGE_UNMAP, documented to be
+> returned from address-space callbacks, when it's only used for an
+> internal helper.
 >
+> Let's start by having only a single "success" return value for
+> migrate_folio_unmap() -- 0 -- by moving the "folio was already freed"
+> check into the single caller.
+>
+> There is a remaining comment for PG_isolated, which we renamed to
+> PG_movable_ops_isolated recently and forgot to update.
+>
+> While we might still run into that case with zsmalloc, it's something we
+> want to get rid of soon. So let's just focus that optimization on real
+> folios only for now by excluding movable_ops pages. Note that concurrent
+> freeing can happen at any time and this "already freed" check is not
+> relevant for correctness.
+>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 > ---
-> BR
-> Beata
-> >
-> > >
-> > > Otherwise:
-> > >
-> > > Tested-By: Beata Michalska <beata.michalska@arm.com>
-> >
-> > Thanks!
-> > Tamir
-> >
-> > >
-> > > ---
-> > > BR
-> > > Beata
-> > > > +    }
-> > > > +
-> > > > +    #[test]
-> > > > +    fn test_alloc_kind_alloc() -> Result {
-> > > > +        test_alloc_kind(AllocKind::Alloc, 0)
-> > > > +    }
-> > > > +
-> > > > +    #[test]
-> > > > +    fn test_alloc_kind_alloc1() -> Result {
-> > > > +        test_alloc_kind(AllocKind::Alloc1, 1)
-> > > > +    }
-> > > > +
-> > > > +    fn test_alloc_kind(kind: AllocKind, expected_index: usize) -> =
-Result {
-> > > > +        stack_pin_init!(let xa =3D XArray::new(kind));
-> > > > +        let mut guard =3D xa.lock();
-> > > > +
-> > > > +        let reservation =3D guard.reserve_limit(.., GFP_KERNEL)?;
-> > > > +        assert_eq!(reservation.index(), expected_index);
-> > > > +        reservation.release_locked(&mut guard)?;
-> > > > +
-> > > > +        let insertion =3D guard.insert_limit(.., new_kbox(0x1337)?=
-, GFP_KERNEL);
-> > > > +        assert!(insertion.is_ok());
-> > > > +        let insertion_index =3D insertion.unwrap();
-> > > > +        assert_eq!(insertion_index, expected_index);
-> > > > +
-> > > > +        Ok(())
-> > > > +    }
-> > > > +
-> > > > +    #[test]
-> > > > +    fn test_insert_and_reserve_interaction() -> Result {
-> > > > +        const IDX: usize =3D 0x1337;
-> > > > +
-> > > > +        fn insert<T: ForeignOwnable>(
-> > > > +            guard: &mut Guard<'_, T>,
-> > > > +            value: T,
-> > > > +        ) -> Result<(), StoreError<T>> {
-> > > > +            guard.insert(IDX, value, GFP_KERNEL)
-> > > > +        }
-> > > > +
-> > > > +        fn reserve<'a, T: ForeignOwnable>(guard: &mut Guard<'a, T>=
-) -> Result<Reservation<'a, T>> {
-> > > > +            guard.reserve(IDX, GFP_KERNEL)
-> > > > +        }
-> > > > +
-> > > > +        #[track_caller]
-> > > > +        fn check_not_vacant<'a>(guard: &mut Guard<'a, KBox<usize>>=
-) -> Result {
-> > > > +            // Insertion fails.
-> > > > +            {
-> > > > +                let beef =3D new_kbox(0xbeef)?;
-> > > > +                let ret =3D insert(guard, beef);
-> > > > +                assert!(ret.is_err());
-> > > > +                let StoreError { error, value } =3D ret.unwrap_err=
-();
-> > > > +                assert_eq!(error, EBUSY);
-> > > > +                assert_eq!(*value, 0xbeef);
-> > > > +            }
-> > > > +
-> > > > +            // Reservation fails.
-> > > > +            {
-> > > > +                let ret =3D reserve(guard);
-> > > > +                assert!(ret.is_err());
-> > > > +                assert_eq!(ret.unwrap_err(), EBUSY);
-> > > > +            }
-> > > > +
-> > > > +            Ok(())
-> > > > +        }
-> > > > +
-> > > > +        stack_pin_init!(let xa =3D XArray::new(Default::default())=
-);
-> > > > +        let mut guard =3D xa.lock();
-> > > > +
-> > > > +        // Vacant.
-> > > > +        assert_eq!(guard.get(IDX), None);
-> > > > +
-> > > > +        // Reservation succeeds.
-> > > > +        let reservation =3D {
-> > > > +            let ret =3D reserve(&mut guard);
-> > > > +            assert!(ret.is_ok());
-> > > > +            ret.unwrap()
-> > > > +        };
-> > > > +
-> > > > +        // Reserved presents as vacant.
-> > > > +        assert_eq!(guard.get(IDX), None);
-> > > > +
-> > > > +        check_not_vacant(&mut guard)?;
-> > > > +
-> > > > +        // Release reservation.
-> > > > +        {
-> > > > +            let ret =3D reservation.release_locked(&mut guard);
-> > > > +            assert!(ret.is_ok());
-> > > > +            let () =3D ret.unwrap();
-> > > > +        }
-> > > > +
-> > > > +        // Vacant again.
-> > > > +        assert_eq!(guard.get(IDX), None);
-> > > > +
-> > > > +        // Insert succeeds.
-> > > > +        {
-> > > > +            let dead =3D new_kbox(0xdead)?;
-> > > > +            let ret =3D insert(&mut guard, dead);
-> > > > +            assert!(ret.is_ok());
-> > > > +            let () =3D ret.unwrap();
-> > > > +        }
-> > > > +
-> > > > +        check_not_vacant(&mut guard)?;
-> > > > +
-> > > > +        // Remove.
-> > > > +        assert_eq!(guard.remove(IDX).as_deref(), Some(&0xdead));
-> > > > +
-> > > > +        // Reserve and fill.
-> > > > +        {
-> > > > +            let beef =3D new_kbox(0xbeef)?;
-> > > > +            let ret =3D reserve(&mut guard);
-> > > > +            assert!(ret.is_ok());
-> > > > +            let reservation =3D ret.unwrap();
-> > > > +            let ret =3D reservation.fill_locked(&mut guard, beef);
-> > > > +            assert!(ret.is_ok());
-> > > > +            let () =3D ret.unwrap();
-> > > > +        };
-> > > > +
-> > > > +        check_not_vacant(&mut guard)?;
-> > > > +
-> > > > +        // Remove.
-> > > > +        assert_eq!(guard.remove(IDX).as_deref(), Some(&0xbeef));
-> > > > +
-> > > > +        Ok(())
-> > > > +    }
-> > > > +}
-> > > >
-> > > > --
-> > > > 2.50.1
-> > > >
-> > > >
-> >
+>  include/linux/migrate.h |  1 -
+>  mm/migrate.c            | 40 ++++++++++++++++++++--------------------
+>  2 files changed, 20 insertions(+), 21 deletions(-)
+>
+LGTM. Reviewed-by: Zi Yan <ziy@nvidia.com>
+
+Best Regards,
+Yan, Zi
 
