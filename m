@@ -2,112 +2,119 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 13718CA0EC0
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 08:42:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CDB32C87FD2
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 08:52:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A98F38E0018; Mon, 11 Aug 2025 04:42:18 -0400 (EDT)
+	id 7070F8E0019; Mon, 11 Aug 2025 04:52:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A707F8E000A; Mon, 11 Aug 2025 04:42:18 -0400 (EDT)
+	id 6DF048E000A; Mon, 11 Aug 2025 04:52:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 986438E0018; Mon, 11 Aug 2025 04:42:18 -0400 (EDT)
+	id 5F4BF8E0019; Mon, 11 Aug 2025 04:52:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 88E548E000A
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 04:42:18 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4F85A137C5E
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 08:42:18 +0000 (UTC)
-X-FDA: 83763834756.10.FFE0869
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 8408440005
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 08:42:16 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=rGm1QFmz;
-	dmarc=pass (policy=quarantine) header.from=pankajraghav.com;
-	spf=pass (imf01.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.151 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FBA48E000A
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 04:52:43 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D6A781DBAE6
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 08:52:42 +0000 (UTC)
+X-FDA: 83763860964.06.6055822
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 588FAC0008
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 08:52:41 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fKswWXSD;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754902361; a=rsa-sha256;
+	cv=none;
+	b=EiW5KniPIGKysVLy/e24Lkevq14P4RMS9VajVLKHp0+lVolrKpR9gE0tHqdTr9rWezlebZ
+	Rl62yFGuhvxdrhUBRzKnQC44UE7cXeOJpfJFo0pAxgzfbR02tLgTNPxNU8tTAzdvSeWGmA
+	ewX9MWsVz94QDMI+ZX/4wJlQHZ5LuO8=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fKswWXSD;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754901736;
+	s=arc-20220608; t=1754902361;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hl5pR6KEXqqmRKm0XQhFRqtMBlaQMUsVvgjCapFINjk=;
-	b=bD9HUK41LqE9SmQPnFGC7C5IV38SPNF46PNV2g7lLTXpjABBZUiDjIQR7UJBWb6sJjzTlC
-	nYq/mBEjr42LI/Ln3TglxCrO+LiyPuAwDmgp7rAmOwRdziEypPw9a5uGXsT4KKdNVuWeIa
-	OUis8bPOXab/SWFHGrUWrLTwSyNhnio=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754901736; a=rsa-sha256;
-	cv=none;
-	b=sBro5je6ZQ8sBiqdPq9TR1cGRpta6Gj8C6ZJuHATblmPsWBeLydek6lg7SC4mcLvEyz3pk
-	y+2SwIivdstJgDn7HBBFRj+vvx9g/8qxfDfxo3X0KyIVtgSeBHYH9N8YELx2Nk3t3CogWz
-	cg1Xuuzqte9AHDc0pJ8cT5CbopiAOvA=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=rGm1QFmz;
-	dmarc=pass (policy=quarantine) header.from=pankajraghav.com;
-	spf=pass (imf01.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.151 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4c0p6F0pJfz9stX;
-	Mon, 11 Aug 2025 10:42:13 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pankajraghav.com;
-	s=MBO0001; t=1754901733;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hl5pR6KEXqqmRKm0XQhFRqtMBlaQMUsVvgjCapFINjk=;
-	b=rGm1QFmz51ShKNaeGL34QTmDDcDaTUPtXgDxX299EO84u8rhHXjtzpqUs8/3HQwAYYSULU
-	qCRkrj9m7aIpWSquYSC0fDON72jTE4y6bFSEn7q/yw9Phr6z7w7v0lnAp2SooRC+qsgjiz
-	fqgsO49XTmXAqE8lKgJN7lIY28fMc5kUT68++lKECB1z06gUhZevCMd4lnDW05FrPtaYyC
-	VTk9gpio0Sl47tLZspolgNhZNKeNrk/8xSpMarUOjh7i48wT8+CZTjsMGvdC1WlwvfMU1V
-	fA/uU/YJPVXL+tBbfJRi0yC54rqyc+ICu+I/tHg7P25mCPm6g73/CZl6OtkxIw==
-From: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>
-To: Suren Baghdasaryan <surenb@google.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Zi Yan <ziy@nvidia.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Michal Hocko <mhocko@suse.com>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	bh=Oe2VKxHHBnv9GjgWLsKN6Ezb3lZiI1aA5YJ7TN1WMOM=;
+	b=18DvHkVHgcauUBnnrors5t7rQBdUW2BdwEsUBCW3RVC6xRTk4Klsmrbr9iZ7FiyU1GtGaG
+	2Y6lswr/jKAg5JQsre9wWUa9Y8nYsTH36SZ23puMl0cpKq0uv8x8FFKut8iK9MBOtjmddC
+	eakB7hFYTJHkIrRbjXce+N5cn0eVOsE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7F54861133;
+	Mon, 11 Aug 2025 08:52:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B104C4CEED;
+	Mon, 11 Aug 2025 08:52:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754902360;
+	bh=3W7y2DSI+b+/NU/9fMvMcZ7Git3/YhU7rwsTKEuKhak=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fKswWXSDs8HligSv6I7X8TlRBaJTUYhj/n7fHdG1oe59j5so4v1z+qlk8ZCDJb4ud
+	 NCWPA/ImWhMlfbMQ9eRX2/DISkTjV7vnmjihTP9atKiP0wPf4RsGvcszZ5od76OhgO
+	 Scx4BYZWgcbI8ikoVLb5QZsRdd9nz6qRZXO/99WPYxnwgrNgvJMQOb56vJhUE3hCs3
+	 xKaUqK1Ys+FCYEQ9k7jCV9uY1waWLHTRugMVYYKFfeMjbpoJn2j0ARIeWnBEPqDZVS
+	 gXNPey55jmq0CWrZEL3jHhweH3xtUr+QegSdaQZe1gk4lyTS/L1JrEQdHlXOpG/Umn
+	 mQHBS+oPTamRw==
+Date: Mon, 11 Aug 2025 11:52:23 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Dennis Zhou <dennis@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>, x86@kernel.org,
+	Borislav Petkov <bp@alien8.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andy Lutomirski <luto@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
-	Nico Pache <npache@redhat.com>,
-	Dev Jain <dev.jain@arm.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	willy@infradead.org,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	"Darrick J . Wong" <djwong@kernel.org>,
-	mcgrof@kernel.org,
-	gost.dev@samsung.com,
-	kernel@pankajraghav.com,
-	hch@lst.de,
-	Pankaj Raghav <p.raghav@samsung.com>
-Subject: [PATCH v3 5/5] block: use largest_zero_folio in __blkdev_issue_zero_pages()
-Date: Mon, 11 Aug 2025 10:41:13 +0200
-Message-ID: <20250811084113.647267-6-kernel@pankajraghav.com>
-In-Reply-To: <20250811084113.647267-1-kernel@pankajraghav.com>
-References: <20250811084113.647267-1-kernel@pankajraghav.com>
+	Ingo Molnar <mingo@redhat.com>, Tejun Heo <tj@kernel.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Hildenbrand <david@redhat.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, kasan-dev@googlegroups.com,
+	Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Alexander Potapenko <glider@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Huth <thuth@redhat.com>, John Hubbard <jhubbard@nvidia.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org,
+	"Kirill A. Shutemov" <kas@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>, Jane Chu <jane.chu@oracle.com>,
+	Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+	Joerg Roedel <joro@8bytes.org>,
+	Alistair Popple <apopple@nvidia.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	linux-arch@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH V4 mm-hotfixes 1/3] mm: move page table sync declarations
+ to linux/pgtable.h
+Message-ID: <aJmvR5mRJ2htKoss@kernel.org>
+References: <20250811053420.10721-1-harry.yoo@oracle.com>
+ <20250811053420.10721-2-harry.yoo@oracle.com>
+ <aJmkX3JBhH3F0PEC@kernel.org>
+ <aJmrpaeKKeNCV3G_@hyeyoo>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8408440005
-X-Stat-Signature: wczrqpqt7unr4dk5f6ws7m9q393nqkm4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aJmrpaeKKeNCV3G_@hyeyoo>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 588FAC0008
+X-Stat-Signature: 9e86gtw7zywcbsjnaxoxtxy9zc6waci1
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1754901736-629405
-X-HE-Meta: U2FsdGVkX184s4SsnBx63v155/BnL5mXOsROm2ne7qjHBzjBNdXaInCupI+TxckDC2cAoHibzb+Ncl6sTbUvjhtzo/odjiuzYtH1czsh5W/356aEzGXUBuAyD4TeIC1OK4Qn97K6ZpcltX6ssK4eFuBu+i9GMCHG5+2mfhawZ7UN/5jF2uCoPmaQ4XOPPDAcbg6oRztEvtYm5jw9/UQ9Q5sm13faSSL174jkpACvjdZ7bs+CyaoLSvKBDGlSSL3ysyLUfJNOgsJBnmm2CrvFCogjnZomC0hodSlAnQLfVAhsisWyZY/wHXtQBBJmmhIvO9BuSidR5uJN4jPlCieKHSd2vfVXZ9NCOpD/j6aBt0ucjZgkg6eYFze6kfEZ9bqZHuCDVzVi08acwAYQrM5j4EZ+cLmfrXIOa9MVphSk5ViHykGOnMAwcWx1GL+h1wQeSUayTpr+Y7Wtld7TCnK3mVsnbWeqLM6rO+2TgZDCMU6CYt1ZN85Tmw15pj4xhiu5Wy0n8t8uj8Ts7U91AZNnkHgxJF8az7AXjfUhF9TDzOohgQYAhfZ4C2PQR2LwWPjNnCfWWz2yd57U/WG81ffyhjN1i9bpgYeR+mHMu+rb51sh7zw79d2wWhFb5qmuG7Cs+egYb6rBq4dbjEvzrD4rRLbrqgoVQFl6myOjAoXfYaGA/msKlCd56ggg1tU+sNDTrIH8GFG2f473Y6k5YdJY7856GIfvpVQCDoyZuox1U0a+xXRWR9RkORS587k8x1KiaAA2nMZRoKs0dDLD3zBUxSld+fHQDQKGVaRzuEw5DIrQ+NtDvrDa4AMdsfPZyDzwU4BDpXLDQIIqvMFp5F1xX0b0OT7BpR5q4OXdCTj+to6jxVYbAfPJU4OLtba1HPlQql7ZwBwEFc76e7fjEYYF6JfmxqGAPfYIpV+R6ghbCT+ucR5J/aW0Z9oPan/T39qNUigOQ0LCDnQ16r44CMO
- k+22hPot
- bVVi0ViEqRskvpDKbgUM8i4okz7i5DC1wKklD8OyYHcnZANpMr5y8gt8ZIbWCqGfpG2mG8MxxtT5QojSPHxlX+L/iW2m3yaxKyeWWwnlmUnJTMvq7J1GsC+7/t0eozZP3l1JeR3jMxwchX9qmf4Y+7u4HBARda4rCZSfi0R3VP+0kvlHlFwxXHb+svA+TLhz3ptcO5NYEW9+NLN9F54dVoxxFfvTR28eqvXqypaQ288cx+HpMS1NBbOLhYG/nb/WGP8+gn/9hTEijecP/APmhQK0kkwaWWYecwVxoiOSwM/t/Ny28S/IJxIMbxYaT7Gc7CgvzHJ9lv9PLj3jBSLqPP9aQ/AuSPB9V3YRrFfp8R4Q9I3ZWKgCDGpM91twGxg0nhkCTjOz0vmsV54vedURXn4XBfQYBkEPmDXAtM+dfdl5nGMpvQOitfP5rxdmUAxck60IFNBk6Ogq3xdE=
+X-HE-Tag: 1754902361-364848
+X-HE-Meta: U2FsdGVkX1/0Qrs+V2HgNWfuyDJ0Fu68Ghb9YLf+D0fEo3rLTuX1fCDoUzCDOD8Buyoh56f11YNrBDHDfcKIqPr43rvCDjMEmiNpAq8Fme90EgRioSl8zqoA6P/1GTgxBzjF9fDgaX4T5Lo2aI4qE5cGMlyahLIvN5Pe18LkMgQ0NcdZIocTTIr0bk1ziWS+7oiFzoMtC5vs3Ak1w3Eh0S04vSkweLefK6zd9ZzdEB/8/56eye2juC2nvG0dW6MNMVNqg2guh/a8F38Jc8ht9cQYCvLPSIbVM9LID3+tYNDL3wEryooLZlMeC6425SBAN10SNww+lNTq+du4QVKn4vUJHRqLnLfjXaRnOjANhLRsagQzQkbxVaXacPAbn8khXOfpSFUkjXKpxptIps9RMI8eImnstw9Lv4gWBWEHa0326GCEQOdGYK/zpbJvuHEHQLbSeElI5napti39NBh1C0e/O5c5arRETtGJprzqdkthMVKyHramXbvaEH1b5nTWdhkoZhQdcy8WvYRan9VWbUOzrHvc736p3DdlPCEu0tyCIFQfRAcWn+PoAAsXxwW0QxoO+mJKD5B7rXADzH04EEAdM9qbpY8jpT7wecunbs8LBTXWajaHkM6E7fCM96AtIofnq2T1miNgbSk85tm82QtaWHXhLmqfphYbMqc4y2ajSRm2dIlxkkcFiVzYDiscmq52hzgpUe1Z8XZjn7ZZXMdIaU3wn3e7rrwpxlhCoBaxQbpztyY0/yakh55Ixr6PSDqvMafjERruF7zPyZRCYGDn9/Ps7cXhh5VNk/ojI7mWw+HAC1AdiEgRLD8eyG6hSK2kwKjghbGOpkOTdBU7yc5wf4ZxetLP6JsaYd8oVY5BHZ4p9/J41f9LxJJU9bLFuwYta+Ze/JkenXVu2Vno6puRn9yoxp32pVj6xGuWyVFJ5NSbkjvOYM/u47Q1sgiOAEW+0o43HaszEEXnlao
+ Rim1Dj5h
+ dz9mGMRYKEp+Pp809WceV+Wn7SSan41cdUQnE+MeFFuc70d3IS7+aWG0klgXieulBD3DSP27nmXWvv2fwo6JHs4dX4eaftEIBsn+0nZaYNmb9WjvystPY4nw3aq2RqPzyIYP8Y2lsIRS36ROzEmjEx7hZNapNMc6ZaJoTwjqu2F8BCbINYN3/f1aO8MNHYcuX7XJr+8CPHXs0YN3aZFgFpH2Yt5p09baU3CKcBvqzaUf+PTrnTJ1x0Ke7STGtxK+C4X1KetXkcDUWcPwIJeZ0VXjuqY/TwqrHP1xsc+zn/4fDA9SwKVOjzUGiHJsr16yJcyKYDSBJ9NLL7MfqEQrb4Fi07+DE6MRBzTYXQwwe2TQ6xE59vr3J1kSTmAh9sUr0qdS5EQA7A1bZAKcBWXprdpgWbA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,58 +123,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Pankaj Raghav <p.raghav@samsung.com>
+On Mon, Aug 11, 2025 at 05:36:53PM +0900, Harry Yoo wrote:
+> On Mon, Aug 11, 2025 at 11:05:51AM +0300, Mike Rapoport wrote:
+> > On Mon, Aug 11, 2025 at 02:34:18PM +0900, Harry Yoo wrote:
+> > > Move ARCH_PAGE_TABLE_SYNC_MASK and arch_sync_kernel_mappings() to
+> > > linux/pgtable.h so that they can be used outside of vmalloc and ioremap.
+> > > 
+> > > Cc: <stable@vger.kernel.org>
+> > > Fixes: 8d400913c231 ("x86/vmemmap: handle unpopulated sub-pmd ranges")
+> > > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> > > ---
+> > >  include/linux/pgtable.h | 16 ++++++++++++++++
+> > >  include/linux/vmalloc.h | 16 ----------------
+> > >  2 files changed, 16 insertions(+), 16 deletions(-)
+> > > 
+> > > diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> > > index 4c035637eeb7..ba699df6ef69 100644
+> > > --- a/include/linux/pgtable.h
+> > > +++ b/include/linux/pgtable.h
+> > > @@ -1467,6 +1467,22 @@ static inline void modify_prot_commit_ptes(struct vm_area_struct *vma, unsigned
+> > >  }
+> > >  #endif
+> > >  
+> > > +/*
+> > > + * Architectures can set this mask to a combination of PGTBL_P?D_MODIFIED values
+> > > + * and let generic vmalloc and ioremap code know when arch_sync_kernel_mappings()
+> > 
+> > If ARCH_PAGE_TABLE_SYNC_MASK can be used outside vmalloc(), the comment
+> > needs an update, maybe
+> > 
+> > ... and let the generic code that modifies kernel page tables
+> 
+> Right, and patch 2 updates the comment as it uses it outside vmalloc():
+> 
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index ba699df6ef69..0cf5c6c3e483 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -1469,8 +1469,8 @@ static inline void modify_prot_commit_ptes(struct vm_area_struct *vma, unsigned
+> 
+>  /*
+>   * Architectures can set this mask to a combination of PGTBL_P?D_MODIFIED values
+> - * and let generic vmalloc and ioremap code know when arch_sync_kernel_mappings()
+> - * needs to be called.
+> + * and let generic vmalloc, ioremap and page table update code know when
+> + * arch_sync_kernel_mappings() needs to be called.
+>   */
+>  #ifndef ARCH_PAGE_TABLE_SYNC_MASK
+>  #define ARCH_PAGE_TABLE_SYNC_MASK 0
+> 
+> Or if you think "page table update code" is unclear, please let me know.
 
-Use largest_zero_folio() in __blkdev_issue_zero_pages().
-On systems with CONFIG_PERSISTENT_HUGE_ZERO_FOLIO enabled, we will end up
-sending larger bvecs instead of multiple small ones.
-
-Noticed a 4% increase in performance on a commercial NVMe SSD which does
-not support OP_WRITE_ZEROES. The device's MDTS was 128K. The performance
-gains might be bigger if the device supports bigger MDTS.
-
-Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Signed-off-by: Pankaj Raghav <p.raghav@samsung.com>
----
- block/blk-lib.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
-
-diff --git a/block/blk-lib.c b/block/blk-lib.c
-index 4c9f20a689f7..3030a772d3aa 100644
---- a/block/blk-lib.c
-+++ b/block/blk-lib.c
-@@ -196,6 +196,8 @@ static void __blkdev_issue_zero_pages(struct block_device *bdev,
- 		sector_t sector, sector_t nr_sects, gfp_t gfp_mask,
- 		struct bio **biop, unsigned int flags)
- {
-+	struct folio *zero_folio = largest_zero_folio();
-+
- 	while (nr_sects) {
- 		unsigned int nr_vecs = __blkdev_sectors_to_bio_pages(nr_sects);
- 		struct bio *bio;
-@@ -208,15 +210,14 @@ static void __blkdev_issue_zero_pages(struct block_device *bdev,
- 			break;
+It's fine :)
  
- 		do {
--			unsigned int len, added;
-+			unsigned int len;
- 
--			len = min_t(sector_t,
--				PAGE_SIZE, nr_sects << SECTOR_SHIFT);
--			added = bio_add_page(bio, ZERO_PAGE(0), len, 0);
--			if (added < len)
-+			len = min_t(sector_t, folio_size(zero_folio),
-+				    nr_sects << SECTOR_SHIFT);
-+			if (!bio_add_folio(bio, zero_folio, len, 0))
- 				break;
--			nr_sects -= added >> SECTOR_SHIFT;
--			sector += added >> SECTOR_SHIFT;
-+			nr_sects -= len >> SECTOR_SHIFT;
-+			sector += len >> SECTOR_SHIFT;
- 		} while (nr_sects);
- 
- 		*biop = bio_chain_and_submit(*biop, bio);
+> > Other than that
+> > 
+> > Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> 
+> Thanks a lot for all the reviews, Mike!
+> 
+> -- 
+> Cheers,
+> Harry / Hyeonggon
+
 -- 
-2.49.0
-
+Sincerely yours,
+Mike.
 
