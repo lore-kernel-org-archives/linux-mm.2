@@ -2,93 +2,159 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E1D1C87FDB
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 14:35:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B424DC87FD2
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 14:40:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F4388E005E; Mon, 11 Aug 2025 10:35:03 -0400 (EDT)
+	id 1FF616B00C1; Mon, 11 Aug 2025 10:40:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1CB9E8E0045; Mon, 11 Aug 2025 10:35:03 -0400 (EDT)
+	id 1B7F06B00C0; Mon, 11 Aug 2025 10:40:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1098C8E005E; Mon, 11 Aug 2025 10:35:03 -0400 (EDT)
+	id 09EE86B00C2; Mon, 11 Aug 2025 10:40:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F05AB8E0045
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 10:35:02 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C05971DAD27
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 14:35:02 +0000 (UTC)
-X-FDA: 83764723644.07.355027A
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id A829740013
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 14:35:00 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf11.hostedemail.com: domain of beata.michalska@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=beata.michalska@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754922901; a=rsa-sha256;
-	cv=none;
-	b=P1hViihNjHLJ+iZbsN1N71FhB1I1nFhZlIMCO61q7+D0Gebkcv7bzrP2csmk0D6GFCLXKf
-	SFMLV19FyHAZfVstvKfDUvZDr5v1VO9xnSvITU5psyrdBMCtFNqZKKgYHtq0OY2cfZVk7s
-	JI7eG1QNRAopq8LWagCHuTvPTtG4XiA=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf11.hostedemail.com: domain of beata.michalska@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=beata.michalska@arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EEE516B00C0
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 10:39:59 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B32CAB6FDB
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 14:39:59 +0000 (UTC)
+X-FDA: 83764736118.29.BE9D791
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 9B49C140004
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 14:39:57 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GfYqS626;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf09.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754922901;
+	s=arc-20220608; t=1754923197;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=y8yQGpGfxuflpSRic+ndq33kEZWVTin02G3FKBnZ6Nw=;
-	b=ZfAEekpNNizROMUtuvTAbOkBjFjl3b+TU1gKQzoMaqsoWI9CvJ8CRNPh2svV8UDbsbqtW7
-	cuzdF1/VIJe+lPyscdaYgwaWDEVTeOduMtxKH+3l1Z3EBL7OyGj8IIHfpJPUXAIc+jqXal
-	3wJnIRcChWm4s3Sx7y99k5Sfsm+XTT8=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2BBC52641;
-	Mon, 11 Aug 2025 07:34:51 -0700 (PDT)
-Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 602813F738;
-	Mon, 11 Aug 2025 07:34:53 -0700 (PDT)
-Date: Mon, 11 Aug 2025 16:34:30 +0200
-From: Beata Michalska <beata.michalska@arm.com>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=3jBX4j3yDpmQs2pQdcmkFlIUwpnim2gbOcYS+XAZawI=;
+	b=N6G33s4xBp4JRVfyE0v0xudoGZ+YPNnCOtBUx792MZQFunlrhKpgANMGpkAZ+yspTa738o
+	4/EujbpZ8vP3MFAT0xrOIjsHrOo6tYm9TtvmnYSlAC7uPa9GefUY5eh2sHwNexYm28T/Li
+	5gxN8oYGt0cgWMnvYzdl/LH9kubO+mE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754923197; a=rsa-sha256;
+	cv=none;
+	b=QPz8LVgg4YiOYStp3z1sebL1nW8KgdFwL8Dny3RYe/EXyWkV0NQxPfWOWPhf8SQg7RFK8l
+	+vxttci8tW/YEpfcKXSFb5o6PkPYwXw2/+gUadrgsGwwAdQEiOs2Of8U4/eZ8Y+gSBmOYl
+	xRaJpwnpGoXjYdsNo97uZbd62Itg5OY=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GfYqS626;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf09.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1754923196;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=3jBX4j3yDpmQs2pQdcmkFlIUwpnim2gbOcYS+XAZawI=;
+	b=GfYqS6268jRQH45tW4XATsCbsK+hfjFweQ6gRRCgAYqIQ6Vf3H4UkkDuP/xqjS0+G5j8nN
+	PvnA3xgzrivWD04Y2ctM3UMZCvIUm6bPZ9gsjrQjse4NmaROJPn49hRgh/zKqec6nlODxE
+	G2Vv3E8LKZi2DkodD2MGVZBgYu+B39o=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-153-SuPKeP-LPh-BAP9npqkffQ-1; Mon, 11 Aug 2025 10:39:53 -0400
+X-MC-Unique: SuPKeP-LPh-BAP9npqkffQ-1
+X-Mimecast-MFC-AGG-ID: SuPKeP-LPh-BAP9npqkffQ_1754923192
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-459e6c564fdso18413835e9.0
+        for <linux-mm@kvack.org>; Mon, 11 Aug 2025 07:39:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754923192; x=1755527992;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3jBX4j3yDpmQs2pQdcmkFlIUwpnim2gbOcYS+XAZawI=;
+        b=djvZFQ0piDsPF+vZRh9gXtGKxNAL19YfAbLwMZZManROpej9X/BAbJZaO5AKCeMaOh
+         yTIoekHDj5dohzD+LpzXpHiF14OeRKh1zNNvGVsewi68BfrE3xR860wp5qK/JFHcV6KG
+         XEspdVQUrb4LTfBcm8zxjiZV2M1jETlyc3k0O4JQ6TAJyOFk2Kw2za35IdvRnkP8Or01
+         cnuB9D4xSps/gfrfvBMR3Anw+B5qoQ3TsmT3qhgpktUmH5bnrPwvqYcwNESizZh7B7rb
+         LKKMlUDkmITTSW1tWb+ztG4mIToAkn+acNkRj/jrxRsZfG45UJdjsl693/+jfvA822N0
+         wGQQ==
+X-Gm-Message-State: AOJu0Yw6ClUQ2MDaAc4SZxGj0wWrRW1kTQa2zIEkm8xTtwW1wszOy5wD
+	HdVYFbcF7oW56ztooP94NbYLOMeFkCYg6BfXc6QjrO6RzdQi1BGJ5Itnc5Z0r4LkU4XlEfFy8y0
+	12grUWuu0UBlVyVgv0u+31cY30czT6hwc5xUcZRRqtJd/zlAvRlep
+X-Gm-Gg: ASbGncvjpxeVdtdoIwViacMHosw1rcWqvvcO+W3V3lDyY9MSrKnKMTIfsln8OndXPve
+	8uNG17/PiHXQnQ68KLdaVZJpzQwjNgrMHtFb+hIcI06POCOaLSEGQRshN3V3lNXjbsUAwn2O08L
+	7S5NH31YaoQ7sMrtQYBkcGw4AVffNtqtAdGNZctvWv/rRuEFbXZ7aAO+gjHfGDZzFE2YQQZoq4v
+	+IDwUrr/VvdalRhVDje09LyJnbMSaso85XYVzzL8BtcOlHLutq8sqjmF4FwqS+o4PV/EaTfAUGt
+	UH5vbZxV5lhZ8dHEDj0y0RpaEzuRqsBFqqb5GFW8lwCWmQmdFfD2OT3INMkgQn+awIjxnUKO8IT
+	GJUmUJlStAGSzpWBRsaLKubmL
+X-Received: by 2002:a05:600c:1c18:b0:459:443e:b180 with SMTP id 5b1f17b1804b1-459f4f3e153mr122955235e9.8.1754923192310;
+        Mon, 11 Aug 2025 07:39:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG+bcYyrzEHtg5O8YCja39RJfZF3lc/0BwBvrhjiRJgNhfaMkviNPqO5gGtgSpeCPJqwbl5CQ==
+X-Received: by 2002:a05:600c:1c18:b0:459:443e:b180 with SMTP id 5b1f17b1804b1-459f4f3e153mr122954665e9.8.1754923191851;
+        Mon, 11 Aug 2025 07:39:51 -0700 (PDT)
+Received: from localhost (p200300d82f06a600a397de1d2f8bb66f.dip0.t-ipconnect.de. [2003:d8:2f06:a600:a397:de1d:2f8b:b66f])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-459e0a24bf1sm280478765e9.1.2025.08.11.07.39.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Aug 2025 07:39:51 -0700 (PDT)
+From: David Hildenbrand <david@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org,
+	virtualization@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-aio@kvack.org,
+	linux-btrfs@vger.kernel.org,
+	jfs-discussion@lists.sourceforge.net,
+	David Hildenbrand <david@redhat.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Janne Grunau <j@jannau.net>
-Subject: Re: [PATCH v2 3/3] rust: xarray: add `insert` and `reserve`
-Message-ID: <aJn_dtWDcoscYpgV@arm.com>
-References: <20250713-xarray-insert-reserve-v2-0-b939645808a2@gmail.com>
- <20250713-xarray-insert-reserve-v2-3-b939645808a2@gmail.com>
- <aJnojv8AWj2isnit@arm.com>
- <CAJ-ks9=BU2jfT-MPzxDcXrZj7uQkKbVm6WhzGiJsM_628b2kmg@mail.gmail.com>
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Benjamin LaHaise <bcrl@kvack.org>,
+	Chris Mason <clm@fb.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Dave Kleikamp <shaggy@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: [PATCH v1 0/2] mm: remove MIGRATEPAGE_*
+Date: Mon, 11 Aug 2025 16:39:46 +0200
+Message-ID: <20250811143949.1117439-1-david@redhat.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: RkPvkhhDsIHrfCEIQzg9uwcOKa1nLjCt-91Q4HlrHyM_1754923192
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJ-ks9=BU2jfT-MPzxDcXrZj7uQkKbVm6WhzGiJsM_628b2kmg@mail.gmail.com>
-X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 9B49C140004
+X-Stat-Signature: 79irr7msyx5x4u9mmy98fqix9789xiyy
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A829740013
-X-Stat-Signature: sgj6rdbun8rcobfbwtsdsxu58b84ipd9
-X-HE-Tag: 1754922900-350474
-X-HE-Meta: U2FsdGVkX19mu1EmOIzlrKhrZe1gMIH35aCN0lOfbabRk/oAS1VkDNbdXYXKWzlsdtarfHOuougEhoJFKmOmsPI1SwBZrXZYk5iFX3p3T4AXCHYbavE9+E31ixSb6nDS6kG8o3dP2DlNMCz7SWd/asABNJPtiquInx6khqPteOBbEiOIBm/RDFnoYBGNgVl+8Zuntm7wPDJ89X5j999IGeRag13le8K+uubngYzpvZXEY7X3gHuZo/342v2XiBEPQyokzNZ3qYEjTVpBpOGo5yJJpaimUv4O48dwW0G/VWc0H84Rn2PcvpC8cR7SrHKsOA369T/A27tbEef4anlURFAZ5FHMGkHA8NHYqDBlLixCHUxsChckGdEfBwZdKBd2iZUoMrL9K6RjTULbeYnF0DfKe5wCgDkKrJ2cDYOr8Wl71QZ9oaWSu4h6busGnCPu8d0Oj8JjoSRKi+WDz84EIiIV1nj6TnSXQXJE63mxhIxRiUNt97YxT1oYmhxUFwv1RtqUIkkmLfbZAFSMg7fuSzuKWBL0/w3AF5TA+VIm9fPXapetgFvmkTCIEJzxaHRt2TvulagYFpyCAH8b/zoQa7uuIH0s8AClpewtSDKYngt6RNvqxgxQRVN/nAaUF128AolmMBBfVq7/8zRhEgfMNqlF99I5C1Str789ctETcd1AdkXKC8MzTYn3R37rmqIpARSjr5CLqq5Q85rwP9jhnzze3+LAg9iFQvWvxoqzp89MLAAQianb+W/6+LBsOPzEUDrziugCObvbTda+wDOBcm1ChWKqdXxZ8qcY5p6rdHr504xMSZZcx4ARMNGrWCnHKb0bXlFKeD1nI6qUwoTtJqjYa4U4Cewfei5b442uDqPsOPAivJSnsvw6A1CoaImhCaOux8oLB8ms9weZWaTF5AH0N1b4hLPRIijEdoeB7SyIOz70+JCTjcj49vkub9/056Bd7uDC0qzuZDZD61O
- MGJijsUr
- ZsqhF3Q+yoRE+PbA31Oo0BM4FU1+1VGVZjXq4TyoGzIUsoOt9ID0yBCW/YAWlJJnv6gUReSswEL3glVHESNErT3ZXRtn9ZECnPvG7vzGREYDgIsDJhwykO+PvDvYHLOWusVgWCbMBd9QKZZ4G/lflUQ2mwLg2GDNWg1VUnmqWmlpjIpbA/2LPm1GGoJgLxFvHnB3mIl6a4JN6OQVGobh9NAvCE1+8Q+FlgXg2wEdqNQU7Sk4638vEuAagixliXi4i47Uo/KZ/xoxYVWocGJTK9ZHPSJ96pvYAQztBwgwS5ttn/qM=
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1754923197-622222
+X-HE-Meta: U2FsdGVkX1/tLBuxsEFS5X+4mpptElOY+95ZR6vU0Uny44n/qqRSQPWLD4HZAWQhGGqXDSQEbRGS2Y/6yViEyNJLe8fxxoPcaamwg0Io9Ou+ribKUy+8LCkPRj1XYbGr3BoKO9bUoQJqIICdu7kHJ4/6wu3yMAaZudxJSeL0PH4L22A/Rqeoqez8xHoCkfpAJr7Zm3yN5odaiS6PL4hQe5d8FTzLgQdOzM2SOTVoVaE4A6ndj/NkR2dTumIKNTDqyS+GgWsfMuirASRXUAIwAcnn/aRd/Qxj5WCNt4mJs0mSnlICB62ROCdF/8oBnXpteakvEKE5W3XBIhuxJXN0UVlkftS/p/Yu2vhpOpMJGs37cL0rpPX6Gqgnf0gNszCRyUgvJYtderTfXy1idFuTcLyCRYw1Z9p7R3NMdyR6JfBGt2YIofp5/V1+JwVrK47W+UR7yI7tF5vm0TgbuVHsByW9XN2g9pkZt60bSLP9O5RRw9HS8yrViBIXEhM3DPSRKNE90nZHPW+26OmQCgWfKkg2lcAh6cg20xZCW0ncotxUcFMHa/ppLq2KF2xBDGZYxQGuk94Z45+KJVzL40aA2q8BAWTcDVXm8ESpHrH8GeRCH15CvzvDNxq3r07VxtYLn6e9lb/2epMebcz07uCUZO04kMJsKFaMBCn4aUSYtypyxQDt+XgMbdX79iugZJg2NDy3NWXi5CB25xDBOMY6pJ/ckj/n3w0Marsc5hbKDiV+N6wlK/lxjuck4BMp9iJL8H7/szBQO6UOzf2BExuSqHyYeuZMxRf+aBPCVvz4ec8LcfbBbGu2hooKhj7RshOXBK6tHzgmGvOE+P2DCOBwK+jmoKkj42IeyZ1EKvR2s90/WG7Tc0nHqqrQsoPsVvvGiVkFBUUbEzb1Y3xPmY5ryHvfHX6rXWNveFn4uZfs07bz3/Sjv7aXVwihmrDK4fPMv4TWfVpa1Lm4QF8vIrh
+ lj3Z4WSA
+ E/Ow4cM70UUnP3KeAzR4jDFN3aKOub7/ubsyNsU85SPFfENr8JWyqzMhfedyrb+69kExJvQ74trK1rCTtNRReqW+FPLgvc//lB9Volw7LyDDNIHxCpBoPMHZ63WdsK3YuOE/Xq7UJSBSBfRXST57A7r6bMq0tnRdSPdTeDQ4EKFjZzJc0cf7jEL7P3J5/t3OMU/tqTBNkDcWSLTMTxOTksywwhTdPUdeueorFHeVgbG96iwoQYuqqeWC2Ckj3r2nJ9GJxQGKLeWC88IevU6wjsWfWOVJsJqRPKyF7GBKUmNow0gOgtv8KsqQapYpMkIBfzXrLgeuvZNFrcynGkS/sYhekBILfE045T53rHga3N0dOiHFS2FjHM+WbQVn91FHNCkJ+CzrCKZtQ3RQKq2nRXZsG02Q6vqJuC8RQURtlZ5RB4M1ukvRsKuxpXo5nXTXvCd1GH2sBJHmgE8q98lsQ4taTPmQMW5OQCorig3+U06zCngN87ocbNOE3ZMV2pw7a3bXM2vvLzKnkeBTbiHftAUujKNJl9HB3k7mXDMsWCSaLZGGjyiN9Bka8y4XvKi9UBJD4ygt5o0+NDVUIDZq1SxP/LFyy1YY8UujD022kzPQWQOh3rvd1HZulHFoxWZJeK0mul06mgm7bVEODM4KraYMZfcDM+tBLk2wjDCHEWlh1vDKnkPQi2pL9FG846K8KLqaLd4LQ9tNl4D4Q/v6o6qOaPjj0TilJnNSZf93mSh2Hh9WAIT5IXS1l4JNa0HYqvHqFQnw6Mve0EqO9ZCSk2XT3GdFmy3OCoOXkqhBd9KISDRu2DWlId/XIEtk14OiBMf7BHjnE3OkpK5V5eDrZzMyKXv0ojDqE3RwPoiDjXfqWN7tRDdA4f3+hz9V09BbpdwKEoMHT/7oNOj8YCT0/sU4tml4Brh+i+U3ZUrBKC4RV32683RnJFecm7IiyBN/7Cozg/ds02ONvoxdQ3lbXP+T1iSHI
+ f1Fok6en
+ r3zhoQQkBtOVuOrOEUCP+MJfu6eoQygIuQFHEVERGTrAcJIw3HsGSMifewuzaDODI4lrknPfq+tqpNK7Ksx5RT6Jaafb5567SA7i+PSAmWonhs6uy4zXD9N6QYbp7hmajkiIX/W3SS6npXrc/KMMM2qK+s6ifLuHZwcYRxRDHazm5ozeaxqFoCaa4bOusSdOepMReQu9TDizJ6VVb+p5mQhP8yPnBGJU36YMGS1btZBH1a2haGcy3LEi8iJVJNvILEiHwbFm5EPhEgaBWzhfbsoWrpY3JsNAvlTvRPBhvIUNB4b749rBY1qdF3X4U9wH7tzGeIvab4FZI+JK4LMtsExxGFBiZKmReqDikUdjyWhXcsv3WZyJJ+TcwGpEWnGFOZilP3Giv5e0mNd7KcVkDY7pSKUT3WlU0aIiNX0xgc4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,220 +163,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 11, 2025 at 09:09:56AM -0400, Tamir Duberstein wrote:
-> On Mon, Aug 11, 2025 at 8:57 AM Beata Michalska <beata.michalska@arm.com> wrote:
-> >
-> > Hi Tamir,
-> >
-> > Apologies for such a late drop.
-> 
-> Hi Beata, no worries, thanks for your review.
-> 
-> >
-> > On Sun, Jul 13, 2025 at 08:05:49AM -0400, Tamir Duberstein wrote:
-[snip] ...
-> > > +/// A reserved slot in an array.
-> > > +///
-> > > +/// The slot is released when the reservation goes out of scope.
-> > > +///
-> > > +/// Note that the array lock *must not* be held when the reservation is filled or dropped as this
-> > > +/// will lead to deadlock. [`Reservation::fill_locked`] and [`Reservation::release_locked`] can be
-> > > +/// used in context where the array lock is held.
-> > > +#[must_use = "the reservation is released immediately when the reservation is unused"]
-> > > +pub struct Reservation<'a, T: ForeignOwnable> {
-> > > +    xa: &'a XArray<T>,
-> > > +    index: usize,
-> > > +}
-> > > +
-[snip] ...
-> > > +
-> > > +impl<T: ForeignOwnable> Drop for Reservation<'_, T> {
-> > > +    fn drop(&mut self) {
-> > > +        // NB: Errors here are possible since `Guard::store` does not honor reservations.
-> > > +        let _: Result = self.release_inner(None);
-> > This seems bit risky as one can drop the reservation while still holding the
-> > lock?
-> 
-> Yes, that's true. The only way to avoid it would be to make the
-> reservation borrowed from the guard, but that would exclude usage
-> patterns where the caller wants to reserve and fulfill in different
-> critical sections.
-> 
-> Do you have a specific suggestion?
-I guess we could try with locked vs unlocked `Reservation' types, which would
-have different Drop implementations, and providing a way to convert locked into
-unlocked. Just thinking out loud, so no, nothing specific here.
-At very least we could add 'rust_helper_spin_assert_is_held() ?'
->
-> > > +    }
-> > >  }
-> > >
-> > >  // SAFETY: `XArray<T>` has no shared mutable state so it is `Send` iff `T` is `Send`.
-> > > @@ -282,3 +617,136 @@ unsafe impl<T: ForeignOwnable + Send> Send for XArray<T> {}
-> > >  // SAFETY: `XArray<T>` serialises the interior mutability it provides so it is `Sync` iff `T` is
-> > >  // `Send`.
-> > >  unsafe impl<T: ForeignOwnable + Send> Sync for XArray<T> {}
-> > > +
-> > > +#[macros::kunit_tests(rust_xarray_kunit)]
-> > > +mod tests {
-> > > +    use super::*;
-> > > +    use pin_init::stack_pin_init;
-> > > +
-> > > +    fn new_kbox<T>(value: T) -> Result<KBox<T>> {
-> > > +        KBox::new(value, GFP_KERNEL).map_err(Into::into)
-> > I believe this should be GFP_ATOMIC as it is being called while holding the xa
-> > lock.
-> 
-> I'm not sure what you mean - this function can be called in any
-> context, and besides: it is test-only code.
-Actually it cannot: allocations using GFP_KERNEL can sleep so should not be
-called from atomic context, which is what is happening in the test cases.
+This is against mm/mm-new.
 
----
-BR
-Beata
-> 
-> >
-> > Otherwise:
-> >
-> > Tested-By: Beata Michalska <beata.michalska@arm.com>
-> 
-> Thanks!
-> Tamir
-> 
-> >
-> > ---
-> > BR
-> > Beata
-> > > +    }
-> > > +
-> > > +    #[test]
-> > > +    fn test_alloc_kind_alloc() -> Result {
-> > > +        test_alloc_kind(AllocKind::Alloc, 0)
-> > > +    }
-> > > +
-> > > +    #[test]
-> > > +    fn test_alloc_kind_alloc1() -> Result {
-> > > +        test_alloc_kind(AllocKind::Alloc1, 1)
-> > > +    }
-> > > +
-> > > +    fn test_alloc_kind(kind: AllocKind, expected_index: usize) -> Result {
-> > > +        stack_pin_init!(let xa = XArray::new(kind));
-> > > +        let mut guard = xa.lock();
-> > > +
-> > > +        let reservation = guard.reserve_limit(.., GFP_KERNEL)?;
-> > > +        assert_eq!(reservation.index(), expected_index);
-> > > +        reservation.release_locked(&mut guard)?;
-> > > +
-> > > +        let insertion = guard.insert_limit(.., new_kbox(0x1337)?, GFP_KERNEL);
-> > > +        assert!(insertion.is_ok());
-> > > +        let insertion_index = insertion.unwrap();
-> > > +        assert_eq!(insertion_index, expected_index);
-> > > +
-> > > +        Ok(())
-> > > +    }
-> > > +
-> > > +    #[test]
-> > > +    fn test_insert_and_reserve_interaction() -> Result {
-> > > +        const IDX: usize = 0x1337;
-> > > +
-> > > +        fn insert<T: ForeignOwnable>(
-> > > +            guard: &mut Guard<'_, T>,
-> > > +            value: T,
-> > > +        ) -> Result<(), StoreError<T>> {
-> > > +            guard.insert(IDX, value, GFP_KERNEL)
-> > > +        }
-> > > +
-> > > +        fn reserve<'a, T: ForeignOwnable>(guard: &mut Guard<'a, T>) -> Result<Reservation<'a, T>> {
-> > > +            guard.reserve(IDX, GFP_KERNEL)
-> > > +        }
-> > > +
-> > > +        #[track_caller]
-> > > +        fn check_not_vacant<'a>(guard: &mut Guard<'a, KBox<usize>>) -> Result {
-> > > +            // Insertion fails.
-> > > +            {
-> > > +                let beef = new_kbox(0xbeef)?;
-> > > +                let ret = insert(guard, beef);
-> > > +                assert!(ret.is_err());
-> > > +                let StoreError { error, value } = ret.unwrap_err();
-> > > +                assert_eq!(error, EBUSY);
-> > > +                assert_eq!(*value, 0xbeef);
-> > > +            }
-> > > +
-> > > +            // Reservation fails.
-> > > +            {
-> > > +                let ret = reserve(guard);
-> > > +                assert!(ret.is_err());
-> > > +                assert_eq!(ret.unwrap_err(), EBUSY);
-> > > +            }
-> > > +
-> > > +            Ok(())
-> > > +        }
-> > > +
-> > > +        stack_pin_init!(let xa = XArray::new(Default::default()));
-> > > +        let mut guard = xa.lock();
-> > > +
-> > > +        // Vacant.
-> > > +        assert_eq!(guard.get(IDX), None);
-> > > +
-> > > +        // Reservation succeeds.
-> > > +        let reservation = {
-> > > +            let ret = reserve(&mut guard);
-> > > +            assert!(ret.is_ok());
-> > > +            ret.unwrap()
-> > > +        };
-> > > +
-> > > +        // Reserved presents as vacant.
-> > > +        assert_eq!(guard.get(IDX), None);
-> > > +
-> > > +        check_not_vacant(&mut guard)?;
-> > > +
-> > > +        // Release reservation.
-> > > +        {
-> > > +            let ret = reservation.release_locked(&mut guard);
-> > > +            assert!(ret.is_ok());
-> > > +            let () = ret.unwrap();
-> > > +        }
-> > > +
-> > > +        // Vacant again.
-> > > +        assert_eq!(guard.get(IDX), None);
-> > > +
-> > > +        // Insert succeeds.
-> > > +        {
-> > > +            let dead = new_kbox(0xdead)?;
-> > > +            let ret = insert(&mut guard, dead);
-> > > +            assert!(ret.is_ok());
-> > > +            let () = ret.unwrap();
-> > > +        }
-> > > +
-> > > +        check_not_vacant(&mut guard)?;
-> > > +
-> > > +        // Remove.
-> > > +        assert_eq!(guard.remove(IDX).as_deref(), Some(&0xdead));
-> > > +
-> > > +        // Reserve and fill.
-> > > +        {
-> > > +            let beef = new_kbox(0xbeef)?;
-> > > +            let ret = reserve(&mut guard);
-> > > +            assert!(ret.is_ok());
-> > > +            let reservation = ret.unwrap();
-> > > +            let ret = reservation.fill_locked(&mut guard, beef);
-> > > +            assert!(ret.is_ok());
-> > > +            let () = ret.unwrap();
-> > > +        };
-> > > +
-> > > +        check_not_vacant(&mut guard)?;
-> > > +
-> > > +        // Remove.
-> > > +        assert_eq!(guard.remove(IDX).as_deref(), Some(&0xbeef));
-> > > +
-> > > +        Ok(())
-> > > +    }
-> > > +}
-> > >
-> > > --
-> > > 2.50.1
-> > >
-> > >
-> 
+This series gets rid of MIGRATEPAGE_UNMAP, to then convert the remaining
+MIGRATEPAGE_SUCCESS usage to simply use 0 instead.
+
+Not sure if it makes sense to split the second patch up, a treewide
+cleanup felt more reasonable for this simple change in an area where
+I don't expect a lot of churn.
+
+Briefly tested with virtio-mem in a VM, making sure that basic
+page migration keeps working.
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Jerrin Shaji George <jerrin.shaji-george@broadcom.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>
+Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Cc: "Eugenio Pérez" <eperezma@redhat.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Benjamin LaHaise <bcrl@kvack.org>
+Cc: Chris Mason <clm@fb.com>
+Cc: Josef Bacik <josef@toxicpanda.com>
+Cc: David Sterba <dsterba@suse.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Dave Kleikamp <shaggy@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: Ying Huang <ying.huang@linux.alibaba.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+
+David Hildenbrand (2):
+  mm/migrate: remove MIGRATEPAGE_UNMAP
+  treewide: remove MIGRATEPAGE_SUCCESS
+
+ arch/powerpc/platforms/pseries/cmm.c |  2 +-
+ drivers/misc/vmw_balloon.c           |  4 +-
+ drivers/virtio/virtio_balloon.c      |  2 +-
+ fs/aio.c                             |  2 +-
+ fs/btrfs/inode.c                     |  4 +-
+ fs/hugetlbfs/inode.c                 |  4 +-
+ fs/jfs/jfs_metapage.c                |  8 +--
+ include/linux/migrate.h              | 11 +---
+ mm/migrate.c                         | 80 ++++++++++++++--------------
+ mm/migrate_device.c                  |  2 +-
+ mm/zsmalloc.c                        |  4 +-
+ 11 files changed, 56 insertions(+), 67 deletions(-)
+
+
+base-commit: 53c448023185717d0ed56b5546dc2be405da92ff
+-- 
+2.50.1
+
 
