@@ -2,66 +2,66 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C89BC87FD2
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 06:46:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8CE47C87FD2
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 06:46:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 130AA6B0106; Mon, 11 Aug 2025 02:46:41 -0400 (EDT)
+	id 970B16B0108; Mon, 11 Aug 2025 02:46:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E1B96B0107; Mon, 11 Aug 2025 02:46:41 -0400 (EDT)
+	id 8839B6B0109; Mon, 11 Aug 2025 02:46:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01E176B0108; Mon, 11 Aug 2025 02:46:40 -0400 (EDT)
+	id 799466B010A; Mon, 11 Aug 2025 02:46:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EA02B6B0106
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 02:46:40 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AFBC8137A01
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 06:46:40 +0000 (UTC)
-X-FDA: 83763543360.18.76233ED
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 685E96B0108
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 02:46:44 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2D1C7819E7
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 06:46:44 +0000 (UTC)
+X-FDA: 83763543528.28.912CC43
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 382A640007
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 06:46:38 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=bqHVpoX0;
-	dmarc=pass (policy=none) header.from=igalia.com;
-	spf=pass (imf12.hostedemail.com: domain of bhupesh@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=bhupesh@igalia.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754894799; a=rsa-sha256;
-	cv=none;
-	b=MKpyxnW9NATQQocZ3Y10ih8zgwO2Tt3FoamY+nEhz2SToyfNiRfL8qA5Co+cMw7WSPd1ru
-	oqoy5dykzfwfU0YtB2BhIHHIctT1qlccDOXXQD13HMF33SYeU2jwjaISjNGAQpAKbkMHXU
-	ByoEIvqljOZj/6QikS3MAlfhP3ssgyg=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=bqHVpoX0;
-	dmarc=pass (policy=none) header.from=igalia.com;
-	spf=pass (imf12.hostedemail.com: domain of bhupesh@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=bhupesh@igalia.com
+	by imf24.hostedemail.com (Postfix) with ESMTP id 86475180006
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 06:46:42 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=ptqdBLk0;
+	spf=pass (imf24.hostedemail.com: domain of bhupesh@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=bhupesh@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754894799;
+	s=arc-20220608; t=1754894802;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JhBQCfWXGs3G3r8TkEW6sohCj/RBFaQuR4TU8IFeeZQ=;
-	b=qJCRqRQqfGsQF+uPLJx9MBOkXRigy15LWDI0vAE5SRmOcd2YxzJmzSB0ssO/zQVgdTlOf0
-	VEmS2jqHkd8Fcw5IrlPjlp+hohrOEX19u1MijO1PM079b0S6QTSvjCmTMlezWcDM6VXe7N
-	5+NCOKqS5U71bRVkm2CrOmKQsWo7LKY=
+	bh=AkOlSlHnGVT1KRBhwKqmf727gWs6TB6cX2vkRjDeLAc=;
+	b=t+5aT8Mjw3YicUchb7M2P+XUgOSpNKOlhqhwrDcqlj8l4gOL/Clwcuoz7a22h7AjbaRS9E
+	lU+Bxl7xYaCQw9Jh5BOybt4d1EelYuJnuvRyKZ3JJPUfQu0gYevge0Fn+E8InFKrPeBvD/
+	LactUDSYuzP+A211tMaSz62gN/hFF1s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754894802; a=rsa-sha256;
+	cv=none;
+	b=J2iRWv/yo2F6jGqnKu/jdY/RC1I27e615038E/eA2XOS+srpp5Y3GbmUuw4BiEZza1jT2T
+	vsP/vvCD84V1lymb4TlIBhxgCgUQtYt9QtO6kSiZC+Yw2VKxYGFQRPcWFHb4fLcoFP/7h7
+	JVi4TE2IzanDy3+zn7bPBRsfYAw7WlE=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=ptqdBLk0;
+	spf=pass (imf24.hostedemail.com: domain of bhupesh@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=bhupesh@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
 	s=20170329; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=JhBQCfWXGs3G3r8TkEW6sohCj/RBFaQuR4TU8IFeeZQ=; b=bqHVpoX0CFjJdA0XjxgpcmPI/C
-	WFMGInmi83uYPtBm65B72Q0msNgMnA6+J77c+yKJ3q3VHndYyVdOpBaLbp3dTyXZzH1KcZTnyNjV7
-	y72ADIofsMLkA2kVjjVijOamXmdZuz4xIKDGym2GS9nu9esYZRUSySNSselGRlHpJ1KXAJOY6DB66
-	me/84O7axpghwjoiDzQ6z2YXD+S+93OiQe+d9yPk8DpOo+kUS6gfArjoQehlAA1OYNK2XMu0xy59y
-	Le7SmcIUt7AQie1E4fvhyPR0pUOpP3al3GIm+ZMPyLjLGRYltuFcN9PBCf+/tyJg7X2P+hsYS4Uaf
-	aXdF12Tg==;
+	bh=AkOlSlHnGVT1KRBhwKqmf727gWs6TB6cX2vkRjDeLAc=; b=ptqdBLk0JKXdgsD1MQ7pDWNbTJ
+	Yx6u6119QunQo0/L3znvKKPWvfMTw2okCRnwrEiRIRokDj1xoz/hYlOpd6xAEXBuoefl8ebPAJWfM
+	a8W4kh0bCi0vufydf+xHW33x3Q/dIONhTo01K5Mh3sDrHL18fF1d6WTvbZ/IWAENhbHLW7EY+r0Cg
+	GhV4G6bw1PCYjifGJuvX/EesWsCX6t4y+2t9SWGNtas36iC45P42cXDjqAlINGwf/eDK2ygbczQdR
+	aj3YnkYVkBcFXcsTFgwnJxeQCrFVIvvVxF2F6+Fa9hUOmoxA1WuzkDINqs1aLpAX/ewJv9rhHknHu
+	FwX5swJQ==;
 Received: from [223.233.69.163] (helo=localhost.localdomain)
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1ulMIg-00Cdun-Jd; Mon, 11 Aug 2025 08:46:31 +0200
+	id 1ulMIn-00Cdun-Li; Mon, 11 Aug 2025 08:46:38 +0200
 From: Bhupesh <bhupesh@igalia.com>
 To: akpm@linux-foundation.org
 Cc: bhupesh@igalia.com,
@@ -97,22 +97,22 @@ Cc: bhupesh@igalia.com,
 	linux-trace-kernel@vger.kernel.org,
 	kees@kernel.org,
 	torvalds@linux-foundation.org
-Subject: [PATCH v7 1/4] exec: Remove obsolete comments
-Date: Mon, 11 Aug 2025 12:16:06 +0530
-Message-Id: <20250811064609.918593-2-bhupesh@igalia.com>
+Subject: [PATCH v7 2/4] include: Set tsk->comm length to 64 bytes
+Date: Mon, 11 Aug 2025 12:16:07 +0530
+Message-Id: <20250811064609.918593-3-bhupesh@igalia.com>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20250811064609.918593-1-bhupesh@igalia.com>
 References: <20250811064609.918593-1-bhupesh@igalia.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 382A640007
-X-Stat-Signature: 9p9eucadx8sy9e8e3sn35uijeszx83sq
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 86475180006
+X-Stat-Signature: rps9ki33fkqqtmn8cpkda7dss1m6hbxw
 X-Rspam-User: 
-X-HE-Tag: 1754894798-137500
-X-HE-Meta: U2FsdGVkX19pu+zq6LTrejQEv7Sp1gbH1BtITMFvPCxc+qMTC7i1EWKNDJHGyAb4kC21s6jWC3lFjs/JD+ULKF7Efm9wU9ir/hQrbBAIlQUf3Emxyaiud9Y1VIYKzkB/xuZ/cu+w4It1SQEjNbxUyIZ2FgZBkcdjZ1NVI5850JUAN8OXSWM6khHWx9iNySZdbm2yvC62m3w66/qg4zxcASYnzDF4LYkzggZfW3Lw3+cd4Kyj8J5h/J/mAJE5pw5tsuJC2omKt8GBMfMzl/BD8E50oeebxUtRlXruGR4qKRPVoJ5yS2YDnFNZY3H0sOmC+7MstKDF7RoEg17bk5Mqjt/pqUhqYBj92D/uGOqwfMsN7Du82jty87TWjTMUGSzoPAXHEfnu4h0OL+8SFo3UZoJS3R+BrsyPv1D4IpITJhFpa73vau8G78g74S06ERlvlc4WPqB4cVRSyIA4IWPJ5GnKlnz1uH3P/G8R9iZSnYx8533S4IHA72LV8R1lJcPHCx74DUT101+vNGjAWF/wGd59mam8EPVcFPJTCMPPXoBa60LqpS20AfzNiWmNuIEvrgEUqV8whLFuHCKnclRNNpzEU9vJqckis8hQ6Ro6a55X2w4yPlM9x0iXPblwCVD3Bgb/1CyVOE87mzKmxYiQz2tF2VDXfE3o3JrdkgoM94dA+VI3ad8AHXN2gInlVdpe5OIE5hbRwn2JtVVTqYYpBXU7n7sw0HYKmGky1typuuPjcLurknqBI3cFsUNjs0LwDMmmqYX9vkMyaT7OIXj+pEoaMYRtjYZYj7WlGqn6u2pvvo3Gx0JN6O1LcxxEDQO4p+QMGUdvw6gqGzffDYaJMub7Iv3XYpTkfQvredP7gEZHBEoYFz0WnHl52Y43M45utoXaVBvYZJ7Q0FeS3M6v3pqVontQZiRkWUqrt0uBkwUtJhn5Ce+Ym022ahg7+ESXPpowBoH6KcTpFzjw4F6
- GJ7SBH8X
- gsy/MVJPGSZjUrpQYTZIJKzA7CuWZm9iBvqtW
+X-HE-Tag: 1754894802-988357
+X-HE-Meta: U2FsdGVkX1+8c87K2A3dsed4GNyZkDNyRcQHmnlUdBGmu2O8RcNDG75BuMdNuqwCxexaExL+DGnWj6U8F3ngimxubDakt2mq3YXIYCjzGOR+EkqXrf7BMki6TblSUJJGfrVbRlIdIQgxiUUANrVmviOnrNf+6mEcffjboNhI4/WjoTpNy4Ff6YfqxDOA5Y8esk+FSf6Vgl7LMsxjyEuBqvaJ5T8+1/rjQH7cOeDtdmtsAFQf8C0p0vUUjuUuhEdP5lJ+G/XSzHYLPyJxvjE59u0MVcP/+GQFjIs+Vj4R3Ud5GgtZoSEMsfan8bDlOF/QBlC4cQgzA96OPdpHTAAe2ez0CmZAmL5r8fffRPWpqIj91zOfS1IgWWETX60/sRKfuba5O2lET2cfTuVo5aYjsqa+zKarRmlPJcs1qP4kvMYbhM8udvFCQe5fABRuGN7KHw1Fdnl0CqsF8ZvRpUU8+ZlTuaXCvndrCIzPQ41ToktTS9wuI/0HNsVu0pzP+YWMUTIPCvvo8P8PIw72MDZLihpAM+CpuAnx4mLPCQ3Dgf/cKqpgZN3JoASL6E8i+uAwgEZgZ+eqAdlMwndLC4CUO9LxU5CiOP3zoHqdukCJMt9jZFzChRxaouBIk8+fXT6WleuIyHphPx+15ymM2XUa95nUpj8y+N/vltudNjKlIPfLXvn7jsHyh1BKMRBZppHI6Y1kgKHVGO9Kgw9IyTMtEcm1rgFpiKkMElszXfbt++uLtYj6D8Fug1dSLnfAVwerDy0eCi/smgOpeAw5eRgyxqnQJEG2pujDes+c6xoTtA6X9xIek+UIgt4evBi5dpJTt+npN/jEQcVowivej+RScMw/oFTx7s9CZjU/lb5CUzUxBkxedK/79QN+UPML4Niv4nOeP9v2ZrbMiwNQ66ZAmF1QpvpEhvrOATV1LNKX3WVzsn0uwTKTdCbBZvIlPvUJykfH7RqkEItyPimJivI
+ vbmYQK3g
+ oL6VDBStUP5GQDOhd9XKckyRK8GzVVIZCWGf7rKlUM4rVTzw/nUi8PvTrntG1wjiCpoySerp137SyTcb2HUvE1xv47+1PCYlOKPAijwdEmydC/xp8Y7xVVRjXIhhcsdcal92UiqE/5f0SWWAzjAaNGLK0wVd1izr4VaEtWfwcTH1Ai43FrPTLC8b5bcd2zcr2x12jJvhtsMMIha6UYlcKW5dkV8YMcPIIX0/6izL0U1TmlUiwDZ0Zx2DXh4FjAUJExNwI6BPf0ZbQuRgwIZiBn7do+Jdvl1su6lMeW73jfriWcn0BR6f3EFgxWVra3NaH5U5Lk4hL+xBRrYUB0wgAfJYCxAsVZP40CIK7NQwGlxcwv/1xcP/wjbYkRsBjjlOpwssl
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,49 +121,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Patch 3a3f61ce5e0b ("exec: Make sure task->comm is always NUL-terminated"),
-replaced 'strscpy_pad()' with 'memcpy()' implementations inside
-'__set_task_comm()'.
+Historically due to the 16-byte length of TASK_COMM_LEN, the
+users of 'tsk->comm' are restricted to use a fixed-size target
+buffer also of TASK_COMM_LEN for 'memcpy()' like use-cases.
 
-However a few left-over comments are still there, which mention
-the usage of 'strscpy_pad()' inside '__set_task_comm()'.
+To fix the same, we now use a 64-byte TASK_COMM_EXT_LEN and
+set the comm element inside 'task_struct' to the same length:
+       struct task_struct {
+	       .....
+               char    comm[TASK_COMM_EXT_LEN];
+	       .....
+       };
 
-Remove those obsolete comments.
+       where TASK_COMM_EXT_LEN is 64-bytes.
 
-While at it, also remove an obsolete comment regarding 'task_lock()'
-usage while handing 'task->comm'.
+Note, that the existing users have not been modified to migrate to
+'TASK_COMM_EXT_LEN', in case they have hard-coded expectations of
+dealing with only a 'TASK_COMM_LEN' long 'tsk->comm'.
 
 Signed-off-by: Bhupesh <bhupesh@igalia.com>
-Reviewed-by: Kees Cook <kees@kernel.org>
 ---
- include/linux/sched.h | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ include/linux/sched.h | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 2b272382673d..35f1ef06eb6c 100644
+index 35f1ef06eb6c..87e9dfaf61ac 100644
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -1159,10 +1159,8 @@ struct task_struct {
- 	 *
- 	 * - normally initialized begin_new_exec()
- 	 * - set it with set_task_comm()
--	 *   - strscpy_pad() to ensure it is always NUL-terminated and
-+	 *   - logic inside set_task_comm() will ensure it is always NUL-terminated and
- 	 *     zero-padded
--	 *   - task_lock() to ensure the operation is atomic and the name is
--	 *     fully updated.
- 	 */
- 	char				comm[TASK_COMM_LEN];
+@@ -318,6 +318,7 @@ struct user_event_mm;
+  */
+ enum {
+ 	TASK_COMM_LEN = 16,
++	TASK_COMM_EXT_LEN = 64,
+ };
  
-@@ -1972,7 +1970,7 @@ extern void __set_task_comm(struct task_struct *tsk, const char *from, bool exec
-  *   User space can randomly change their names anyway, so locking for readers
-  *   doesn't make sense. For writers, locking is probably necessary, as a race
-  *   condition could lead to long-term mixed results.
-- *   The strscpy_pad() in __set_task_comm() can ensure that the task comm is
-+ *   The logic inside __set_task_comm() should ensure that the task comm is
-  *   always NUL-terminated and zero-padded. Therefore the race condition between
-  *   reader and writer is not an issue.
-  *
+ extern void sched_tick(void);
+@@ -1162,7 +1163,7 @@ struct task_struct {
+ 	 *   - logic inside set_task_comm() will ensure it is always NUL-terminated and
+ 	 *     zero-padded
+ 	 */
+-	char				comm[TASK_COMM_LEN];
++	char				comm[TASK_COMM_EXT_LEN];
+ 
+ 	struct nameidata		*nameidata;
+ 
+@@ -1961,7 +1962,7 @@ extern void kick_process(struct task_struct *tsk);
+ 
+ extern void __set_task_comm(struct task_struct *tsk, const char *from, bool exec);
+ #define set_task_comm(tsk, from) ({			\
+-	BUILD_BUG_ON(sizeof(from) != TASK_COMM_LEN);	\
++	BUILD_BUG_ON(sizeof(from) < TASK_COMM_LEN);	\
+ 	__set_task_comm(tsk, from, false);		\
+ })
+ 
 -- 
 2.38.1
 
