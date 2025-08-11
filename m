@@ -2,102 +2,83 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E4303C87FDA
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 05:39:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1AF6DC87FD2
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 05:58:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88C2E6B00FC; Mon, 11 Aug 2025 01:39:08 -0400 (EDT)
+	id 9ECDE8E000B; Mon, 11 Aug 2025 01:58:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83CA46B00FD; Mon, 11 Aug 2025 01:39:08 -0400 (EDT)
+	id 976998E000A; Mon, 11 Aug 2025 01:58:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 704746B00FE; Mon, 11 Aug 2025 01:39:08 -0400 (EDT)
+	id 88C248E000B; Mon, 11 Aug 2025 01:58:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C9D36B00FC
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 01:39:08 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0E04D116B99
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 05:39:08 +0000 (UTC)
-X-FDA: 83763373176.10.E6D7994
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by imf30.hostedemail.com (Postfix) with ESMTP id E12128000B
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 05:39:05 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=none;
-	spf=pass (imf30.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B0668E000A
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 01:58:13 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0B12F1606A4
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 05:58:13 +0000 (UTC)
+X-FDA: 83763421266.22.E84C77B
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 534171C0003
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 05:58:08 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KFYgXbQF;
+	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754890746;
+	s=arc-20220608; t=1754891890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1+62RvIlGZfmQnxVgcVSsABjdaj8FSJ42aUXvVPiGuY=;
-	b=fRo2NLAXoou/GZ504Cyj7KLToBrYt91ZmQl3gX/Q8u8N7/c7JucWkSDtPDnC0y+LoRty4f
-	uAqQFTbfUIqCprNu+TcnA8TeG3i4NFTtxAW3Dgr7/aPaKNgE9IqjgnI1Jjo+fbhXEsPJpD
-	9zQjyjfc8DCs7icRpNCDETo9aD5E6Qg=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=none;
-	spf=pass (imf30.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754890746; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0C3hCm+JNiGuI6HbOQmG4qjQ3sCeDoELSpNLPNRDQso=;
+	b=tXcOF5Wa9qsN55QCpDPQ4GSL00ZoPSHne55e1qCfrKqan3LndMDPOk4OrGgCoGZLHoeiQ3
+	bg8WXSdnJaaBZ6TxVq0N1zjvO+MsRiNCBzz9O6Fizgy02v9kw3fL+p80Q9+alR5yKhveWg
+	kw6f5xIq4sx5RQAl3KBc/lZNy7c6E6o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754891890; a=rsa-sha256;
 	cv=none;
-	b=EHTMFL7xXnZl6QNCeooSjbGPThVlLXM54k2a8JY2UMtQVd8z5PGgX37ZwmFseqpd9ak8/5
-	pwjZDAkmkDyRQTrKj6BWTOfZ66fy26CMcFRPw80iAgkCGnwO/eqTQ9QPWSi6H6zVFBvSXg
-	KQoC9kYjMWOuf8eJE8S1HTU07pzVybs=
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4c0k2w2kRcz9sSL;
-	Mon, 11 Aug 2025 07:39:04 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 3Mxf0H61E1tl; Mon, 11 Aug 2025 07:39:04 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4c0k2w1bMnz9sSK;
-	Mon, 11 Aug 2025 07:39:04 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 199008B764;
-	Mon, 11 Aug 2025 07:39:04 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id bIxmuQ19phXS; Mon, 11 Aug 2025 07:39:03 +0200 (CEST)
-Received: from [10.25.207.160] (unknown [10.25.207.160])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id BAC418B763;
-	Mon, 11 Aug 2025 07:39:03 +0200 (CEST)
-Message-ID: <b8345cfe-0bde-44cd-b9b7-9a946ff8fc36@csgroup.eu>
-Date: Mon, 11 Aug 2025 07:39:03 +0200
+	b=eHzOn9ou91cJgyTjlmPv2bLyztHCUOoHnsevdhEdD1FUuv4Qq2tiADqfZnIoZMr1IstoCv
+	r6uZy6oAVnDsA0PJW5DQqhtv5PtTsYpUUva6CoaWAaiL3rk5OXo/k58m/+LBSLaFWfK4nJ
+	v4oRBXrEyuPTJi5mkyYg+D08fz20ShQ=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KFYgXbQF;
+	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1754891885; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=0C3hCm+JNiGuI6HbOQmG4qjQ3sCeDoELSpNLPNRDQso=;
+	b=KFYgXbQFN+CmrQLCixOSsU2pmM7/4PuRadxtfqIeMeMWB4riIFsuw/6I+fXN/FpAbvylvLspSC8DkRWa0Wvwp6q0VP6I0Qmou27joiug6WHGjlsjjgxm3U+65W/SwORIuw7CoPVJHzVRtwpC9FdQwB0HC/vzfV5Dlfw8Cv4Q0/M=
+Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WlP-qS3_1754891883 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 11 Aug 2025 13:58:04 +0800
+Message-ID: <791ef594-a2e4-4d21-bb9a-970ad32c252f@linux.alibaba.com>
+Date: Mon, 11 Aug 2025 13:58:03 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/2] kasan: call kasan_init_generic in kasan_init
-To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>, ryabinin.a.a@gmail.com,
- bhe@redhat.com, hca@linux.ibm.com, andreyknvl@gmail.com,
- akpm@linux-foundation.org, zhangqing@loongson.cn, chenhuacai@loongson.cn,
- davidgow@google.com, glider@google.com, dvyukov@google.com,
- alexghiti@rivosinc.com
-Cc: alex@ghiti.fr, agordeev@linux.ibm.com, vincenzo.frascino@arm.com,
- elver@google.com, kasan-dev@googlegroups.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-um@lists.infradead.org, linux-mm@kvack.org
-References: <20250810125746.1105476-1-snovitoll@gmail.com>
- <20250810125746.1105476-3-snovitoll@gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <20250810125746.1105476-3-snovitoll@gmail.com>
+Subject: Re: [Patch v2] selftests/mm: do check_huge_anon() with a number been
+ passed in
+To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ Donet Tom <donettom@linux.ibm.com>, David Hildenbrand <david@redhat.com>,
+ Dev Jain <dev.jain@arm.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Zi Yan <ziy@nvidia.com>
+References: <20250809194209.30484-1-richard.weiyang@gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20250809194209.30484-1-richard.weiyang@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 534171C0003
+X-Stat-Signature: csimk1s9gtpgmam8ksys98antxf8kigh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E12128000B
-X-Rspamd-Server: rspam06
-X-Stat-Signature: p98r8e9pefmh6ud4joe7kxmbrboa3kq9
-X-HE-Tag: 1754890745-826239
-X-HE-Meta: U2FsdGVkX19KkJ9c0L8PzMa33eNxRUa+SP6CdYjcb/TJyEfewaK8zag6tZpq22kMsLuoTrAhHCnvFdws3fDRSv+nJjn0lpcfSjoAB/wH0bhxybLMS1pOuuIaN+swh8j2DAZp2c0nDwQF3UGQXw3l5rDu9s3SkjfR9w4L7vQyEA1X48BfUkVvUqq6Wfa8ZUUXEmzNuI6vUTAtnyCnNlhhlbZ96rMVtdFUbqyWDK7K9jdGtazulz1PXFBmMLnchFhrk7D2kqjiet0QuLt7IUF5AzAli0OOOCI8UZYmW9VqcszwjYOcedLU47s5RnZHz6LKTBHs6Xtbqv4KFNxIhPOLftXHLJp9/3tS1EvhRVbSdJinQWiYDxCydYh5mlyg6vNAJL7XD5W+J8MfUKdBMl7k2002Ip3P4q4SR03wKBSs6DlnFBIz5esWIQr4fGUYLyo0Bw9jfIDQeQBHFxRCSIQDYYipB8DNgzhYWag1WtooFW9/AEcNuRLJbwGEyKXpSBtzs0oXGz1/JSYGBrEB8G8IYEWjCFAAHMr+1DTBBrMRMvqTBlwD8rwIJHpB6rZWhtDYjOSXYaVWutMu5lGBK5oQ/Ncpf4l7jVxFW1K3SWxqnFSOB8G1Vaf7uTfXeffKRCCD8vHaDjwjMwgt7/dhm0CJKaHqHmLHRc0caoSfQA+u1rRl1sVPVehnilsAWISIZL49DkhDsa9V7WafzEqqBFU6BgV0iVo8V5Wxs3xzw/gBPBwCEfIxlBKjO/2xzOqBZgcVIGXwmBCfERAbGfY+kHHPioV+lrn1YtM1McD0aBgA8JGPqT0rTXGMvPXbzbjLYLeZSVO4/Vw/IyqKQzzMbGp0PsEy/keGaGtnYN3/L7dakLop8vdjbnjsCJ/VTenzQr9rg2e6710cdr1NVjE5UUj8HUNz7HM2KAA1m5iwnoF+lHVr4OcuBkMuieMd5F+NH1eaG34Bms1/E5n5uX69TeU
- JDbhFLW2
- MoLae8xfrHbD4FiC+BhOudycI5SLg6Ou2kxV7ZR/Bb//kx8KQyR7h8JeLGgshqe/hpdzHA1G7LfYoHJukdDhTsN48C/frbc4d2qJ1zGA1pgGwDUTR7HJChgjuQdLv+hAhoiYqXtncupZJH+UkTsQcxbz2DdP7S490G639dLfbP3ZRGOBlqntO1ZR+MBcDqvD56yeYtpvuz1lQV5IZj8ZDnyqH3U+U+d8XuaZbJWhsfLtQo9zVK2soP0yXvdjd+VQQ0r7iOpkixyzeyl/zZ3+Oa5rwGrLPNu/tl2M6Ux58YqnlS5q/Fr8ZGoVgzJi3ncX1SGyOE0Ga2BtC4LEuezL71A1Z+odux+4mZDhmC3AsSPycr0ceHVnJwYixq3l95Z1xBRhp0hWzy+IA+4WvpDE1V4S3H10/UCOj7qUnZipJ0lSx6dCSSaJX2F7Bdsn9v3qwHbLBg4COzAGWIKzOAF5VSFDDPJUx/W25uqJYdEfb9JsXwfij2x3O/6Kqeg==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1754891888-753683
+X-HE-Meta: U2FsdGVkX1/8FUCr5ujyeCXSyXX/suU4Jq9Av5JMji18/dQDU9/JnJlVKL4GhJkJXG0T+j/H6p/47cKlQAQwL7iC/Ri6qBqUTYiyGsjGEMxxoVph/NVF6TioPPWxnJ8QhOZgzGENr9L8UboTcaud7GJyThNpAggMh2JX3pi0JIHzlsNsuOH6LdeqDL/2aRVuMoDQQatriFufKQNmIW71gePilXXWy6EoMg4wjTpkMwY90Me/xdmq/81F8y+KdJxDTdZgdezIXCF78L5OwMXkwluJjPDI9H9/8AQJPZfLPq+6PsE3xwnqSKFk/Kqf3IDyAevaQNqN6FqL/CTNrbHPs7MDrFtOBKlbEXfJOv1xU+IolEd4TTMhWetSasqS1+kjE6F1+N4d6Py6LxzcsebYPUNMKJ/kBLhLtJyBJxP0U6nRyyKIlrr++NwcrAdXMGTEImeBdeS8PU9EzyhoSuPd+PRupveGqlAbP6e4aXKCOflg75C+Her3ZJHMTxH1TrWmXt3nbYeirZG4MoH5VusXARajttUAv7FegsBNfvEuT7J5sjlwywnzGjuVMHqaVaai4uRy9+qls4At4jk14WKT8xt3ywyyx6nDC5Ay4FHjELXky6MDj0Sz5ePs7WTy7yzSsKsMLvGWCwsy3qZMMfc+9MT17Q9m5KboULPsgDPtI567MMVneDrwl84CgBgfmyN8LeKo2vLy/7+9jgxmh+DeFm5POzu7ojCt523DzmZsQquUV3ddrnXSO9WV/zsIvoSWsdN0LV7Qa+CqeHbP8pqcNwyMtKRHHRb7gzLfyFzbwvpRKvczpG3ShfrpgHclzsYHa/TJw9yEh7ll5RiSkFhD5m8WpVv9ZL/Rj7LHIWzxyxCvIFc1D+HIPoSZoFUzSUp641I3mii+Ce28t2reFpQpQJ6XDxpSiVE5hvQwKr+zoi6kmmQkYtgxJdkqo9J7hGy2ZC7ZES8qtxrIjronfzX
+ yAH5onqh
+ gSRC0ufdDFOlQpju5aEYOA5TrzlDf1CymsWFOOa+yK2mpvUAxykTF/fMcjAzEF8RPnk6gM97ZcxiBb62NDN3drMOMsRySz76/wApHOuynJ4AmdmgZP0rKvIgOIS7qD9ar4zDvMyLkntCiL2cuLF768S3wuJPJ+Mm0Vc9QbBkS1OJJVIfn8WmKhG2EUF9Kktw92CYrFEAuvhDhFXQiKPuZi3J4JqMYzz6viSLqpPA3U+rM2UO8UjeYaT1e2QSNGZ6siXwdFtlAGgz3fRoZFADkb13hOoEBjJo2SmyPe2JXYqomeLJ57sN7RavjfrvK15wevqaNXU3f+cR3fAWZi5dGN0o7edtqa+YyETvl0ReTDvC9Ick3gFV57z4GBkThkmkiA81OtTqn6b2gWc/lU6tks4HW+nTFTgZ15rrtgq3hNDPn3y5fJvT/qsxJDHkC4i3nAi1qNsm9SNtQTwBv6Paz5jd/SQazDa1SCva/bNrFSjsN+FTXyEzg0Vzw0s7Heqm+horBsFBuwdGjAtL244NAnWyrhxu7mvEf2m6fp+t3QOZ4VRT8+gk6ebYX+peYA6idOdLc40c41uQDe2JVEnBH4qeJ7g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,118 +89,62 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-Le 10/08/2025 à 14:57, Sabyrzhan Tasbolatov a écrit :
-> Call kasan_init_generic() which handles Generic KASAN initialization.
-> For architectures that do not select ARCH_DEFER_KASAN,
-> this will be a no-op for the runtime flag but will
-> print the initialization banner.
+On 2025/8/10 03:42, Wei Yang wrote:
+> Currently it hard codes the number of hugepage to check for
+> check_huge_anon(), but it would be more reasonable to do the check based
+> on a number passed in.
 > 
-> For SW_TAGS and HW_TAGS modes, their respective init functions will
-> handle the flag enabling, if they are enabled/implemented.
+> Pass in the hugepage number and do the check based on it.
 > 
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217049
-> Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-> Tested-by: Alexandre Ghiti <alexghiti@rivosinc.com> # riscv
-> Acked-by: Alexander Gordeev <agordeev@linux.ibm.com> # s390
-
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: Donet Tom <donettom@linux.ibm.com>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Dev Jain <dev.jain@arm.com>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> 
 > ---
-> Changes in v6:
-> - Call kasan_init_generic() in arch/riscv _after_ local_flush_tlb_all()
+> v2:
+>    * use mm-new
+>    * add back nr_hpages which is removed by an early commit
+>    * adjust the change log a little
+>    * drop RB and resend
 > ---
->   arch/arm/mm/kasan_init.c    | 2 +-
->   arch/arm64/mm/kasan_init.c  | 4 +---
->   arch/riscv/mm/kasan_init.c  | 1 +
->   arch/s390/kernel/early.c    | 3 ++-
->   arch/x86/mm/kasan_init_64.c | 2 +-
->   arch/xtensa/mm/kasan_init.c | 2 +-
->   6 files changed, 7 insertions(+), 7 deletions(-)
+
+LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+
+>   tools/testing/selftests/mm/split_huge_page_test.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/arch/arm/mm/kasan_init.c b/arch/arm/mm/kasan_init.c
-> index 111d4f703136..c6625e808bf8 100644
-> --- a/arch/arm/mm/kasan_init.c
-> +++ b/arch/arm/mm/kasan_init.c
-> @@ -300,6 +300,6 @@ void __init kasan_init(void)
->   	local_flush_tlb_all();
->   
->   	memset(kasan_early_shadow_page, 0, PAGE_SIZE);
-> -	pr_info("Kernel address sanitizer initialized\n");
->   	init_task.kasan_depth = 0;
-> +	kasan_init_generic();
+> diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+> index 5ab488fab1cd..63ac82f0b9e0 100644
+> --- a/tools/testing/selftests/mm/split_huge_page_test.c
+> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
+> @@ -105,12 +105,12 @@ static char *allocate_zero_filled_hugepage(size_t len)
+>   	return result;
 >   }
-> diff --git a/arch/arm64/mm/kasan_init.c b/arch/arm64/mm/kasan_init.c
-> index d541ce45daeb..abeb81bf6ebd 100644
-> --- a/arch/arm64/mm/kasan_init.c
-> +++ b/arch/arm64/mm/kasan_init.c
-> @@ -399,14 +399,12 @@ void __init kasan_init(void)
+>   
+> -static void verify_rss_anon_split_huge_page_all_zeroes(char *one_page, size_t len)
+> +static void verify_rss_anon_split_huge_page_all_zeroes(char *one_page, int nr_hpages, size_t len)
 >   {
->   	kasan_init_shadow();
->   	kasan_init_depth();
-> -#if defined(CONFIG_KASAN_GENERIC)
-> +	kasan_init_generic();
->   	/*
->   	 * Generic KASAN is now fully initialized.
->   	 * Software and Hardware Tag-Based modes still require
->   	 * kasan_init_sw_tags() and kasan_init_hw_tags() correspondingly.
->   	 */
-> -	pr_info("KernelAddressSanitizer initialized (generic)\n");
-> -#endif
->   }
+>   	unsigned long rss_anon_before, rss_anon_after;
+>   	size_t i;
 >   
->   #endif /* CONFIG_KASAN_GENERIC || CONFIG_KASAN_SW_TAGS */
-> diff --git a/arch/riscv/mm/kasan_init.c b/arch/riscv/mm/kasan_init.c
-> index 41c635d6aca4..c4a2a9e5586e 100644
-> --- a/arch/riscv/mm/kasan_init.c
-> +++ b/arch/riscv/mm/kasan_init.c
-> @@ -533,4 +533,5 @@ void __init kasan_init(void)
+> -	if (!check_huge_anon(one_page, 4, pmd_pagesize))
+> +	if (!check_huge_anon(one_page, nr_hpages, pmd_pagesize))
+>   		ksft_exit_fail_msg("No THP is allocated\n");
 >   
->   	csr_write(CSR_SATP, PFN_DOWN(__pa(swapper_pg_dir)) | satp_mode);
->   	local_flush_tlb_all();
-> +	kasan_init_generic();
->   }
-> diff --git a/arch/s390/kernel/early.c b/arch/s390/kernel/early.c
-> index 9adfbdd377dc..544e5403dd91 100644
-> --- a/arch/s390/kernel/early.c
-> +++ b/arch/s390/kernel/early.c
-> @@ -21,6 +21,7 @@
->   #include <linux/kernel.h>
->   #include <asm/asm-extable.h>
->   #include <linux/memblock.h>
-> +#include <linux/kasan.h>
->   #include <asm/access-regs.h>
->   #include <asm/asm-offsets.h>
->   #include <asm/machine.h>
-> @@ -65,7 +66,7 @@ static void __init kasan_early_init(void)
->   {
->   #ifdef CONFIG_KASAN
->   	init_task.kasan_depth = 0;
-> -	pr_info("KernelAddressSanitizer initialized\n");
-> +	kasan_init_generic();
->   #endif
->   }
+>   	rss_anon_before = rss_anon();
+> @@ -141,7 +141,7 @@ void split_pmd_zero_pages(void)
+>   	size_t len = nr_hpages * pmd_pagesize;
 >   
-> diff --git a/arch/x86/mm/kasan_init_64.c b/arch/x86/mm/kasan_init_64.c
-> index 0539efd0d216..998b6010d6d3 100644
-> --- a/arch/x86/mm/kasan_init_64.c
-> +++ b/arch/x86/mm/kasan_init_64.c
-> @@ -451,5 +451,5 @@ void __init kasan_init(void)
->   	__flush_tlb_all();
->   
->   	init_task.kasan_depth = 0;
-> -	pr_info("KernelAddressSanitizer initialized\n");
-> +	kasan_init_generic();
->   }
-> diff --git a/arch/xtensa/mm/kasan_init.c b/arch/xtensa/mm/kasan_init.c
-> index f39c4d83173a..0524b9ed5e63 100644
-> --- a/arch/xtensa/mm/kasan_init.c
-> +++ b/arch/xtensa/mm/kasan_init.c
-> @@ -94,5 +94,5 @@ void __init kasan_init(void)
->   
->   	/* At this point kasan is fully initialized. Enable error messages. */
->   	current->kasan_depth = 0;
-> -	pr_info("KernelAddressSanitizer initialized\n");
-> +	kasan_init_generic();
+>   	one_page = allocate_zero_filled_hugepage(len);
+> -	verify_rss_anon_split_huge_page_all_zeroes(one_page, len);
+> +	verify_rss_anon_split_huge_page_all_zeroes(one_page, nr_hpages, len);
+>   	ksft_test_result_pass("Split zero filled huge pages successful\n");
+>   	free(one_page);
 >   }
 
 
