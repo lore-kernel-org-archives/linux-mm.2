@@ -2,251 +2,113 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E81AC87FDB
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 11:22:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B655EC87FD2
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 11:26:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E2BE6B0115; Mon, 11 Aug 2025 07:22:12 -0400 (EDT)
+	id 5A7B28E000A; Mon, 11 Aug 2025 07:26:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BB786B0116; Mon, 11 Aug 2025 07:22:12 -0400 (EDT)
+	id 57F3C6B0148; Mon, 11 Aug 2025 07:26:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC4C76B0117; Mon, 11 Aug 2025 07:22:11 -0400 (EDT)
+	id 46E198E000A; Mon, 11 Aug 2025 07:26:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D82576B0115
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 07:22:11 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A8626B5C96
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 11:22:11 +0000 (UTC)
-X-FDA: 83764237662.25.078FB47
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 533C1140004
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 11:22:08 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=FHiRvJof;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=QroKQu6T;
-	spf=pass (imf23.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754911328;
+	by kanga.kvack.org (Postfix) with ESMTP id 33B376B0147
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 07:26:30 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DD67E134705
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 11:26:29 +0000 (UTC)
+X-FDA: 83764248498.01.4F8E793
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	by imf13.hostedemail.com (Postfix) with ESMTP id A38A220002
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 11:26:27 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=YjJGXcdx;
+	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754911587;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TwKcLrd9oHZ7Q3EFT1TCVNnN+SWChnHgOAzOlGjBCjk=;
-	b=pHrkm1w3SYorWuAkcpWS56YoXQxLQwv2700zQCqmFJ4km5ayeoaH7qkqENO7X3cNahqDgc
-	ANkoHzeumfOfyAiSvqnXZXDMk2HDjAhDd7xbgDy0vgY4uNgZMRZSzdoiu6hpVR58Dfw1xu
-	Z/s4VDwDc+WosHn12QYPVoUFWnU14Ho=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=FHiRvJof;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=QroKQu6T;
-	spf=pass (imf23.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754911328; a=rsa-sha256;
-	cv=pass;
-	b=Rb0Lm1WpycQJxjPOQgQ4Og8GKMRdNyogTyaCDDa7jO+/HwG/6ZgXUTkLMcuTFlRI9e6asH
-	C7/ZuLsQ8ecK+LJ2vQgoOPpatLrTaFrR5wINMruXJ861zzlWrqhJ6aV5/dcmarz/Z9EIdu
-	QnlqG8PE3WyMree1sxM+tmtF3+D/srg=
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57B5uMTo015126;
-	Mon, 11 Aug 2025 11:21:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=TwKcLrd9oHZ7Q3EFT1
-	TCVNnN+SWChnHgOAzOlGjBCjk=; b=FHiRvJofB0cIRJmCHf27lVK3a/e0+STCJn
-	lmHVaIra0Iru2aAspyKHaOSxJJvcmuB6IMC7SwqsGqHQcYGvG4RkwJyp1vjWmfQh
-	UbXaBGumb1D7xzYrz8DEh/Q5g5qHgTbHkRiYoi8Ky7G3B1b7B2hlXA2wJaNcEyYC
-	SkLIAD/qVmHsyLDgyCVwCKgkn1OLuvcBNep6c1ITGRgLspUiTtI/EtQCXxJejW5y
-	xd4y1Zwz73JJsui/GHoghW8pDurPW1IciGM1DfqdRX3l2MGTmMtzgZ3AjnwcVdC3
-	X3rZl0Y9mWzGDpGLcvpY0gaPd/e7/hL7mcsgtEkL9rMiRYfYs+FA==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48dw44t93h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 11 Aug 2025 11:21:45 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57BAEPFE038842;
-	Mon, 11 Aug 2025 11:21:44 GMT
-Received: from nam02-sn1-obe.outbound.protection.outlook.com (mail-sn1nam02on2071.outbound.protection.outlook.com [40.107.96.71])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 48dvsf1m7d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 11 Aug 2025 11:21:44 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nGmI6sfjDv6bBHaqtcyAhnh5cNDXG089Svsna8Lh4OB7LdXuGAfLQScMRMkIW1N9Wgab0lQWW5zU1pXsYbkzFG+2s61QFhtnelop/y/vAwMtJelK03zbUGLZuXzCWXnx7TQZCtMLcK/g1AD3MlqFMKd828wFaqG/tBWIKauNjyTSweS5axIjJSrQv4GSBEYeRXnMuJLJnKFBUONHaT9Y2RyWz72VHmJu+smlRddIUpWcp/EpP02I8mE+XgPfBH662gYg9FN8cNCY2CmtVkQbTdXKCOEwWonx22agjlJT4+GT0wxSc1fsM2G7kP0hwGafSHWjLr7wCd1Qgfea+mVQSQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TwKcLrd9oHZ7Q3EFT1TCVNnN+SWChnHgOAzOlGjBCjk=;
- b=v+DJ2TgOZkrIl/mUM4eiTrpVNaphT9H0kAb3zYBt7loOMF0Keh4cRYaSh4FUtwXBrqLVtF/JmR0DEcWZEtKsr1/pQ/KzOfz72kC0v9G4MXZ1F7f0FrBhP/lKTy0y4wLMRyxAiuirQWmbstq4oFxzpdrftF75uPt2qzWBW0zsKDUxCcbHZ7PpAJkslxVfRy6/fI7QygcQFXYyraXzzXnVZi/2djmILmfhlppUFvrJPiwAPWLIoppRXClOZw45orWSsRICb52A2JylrWTBCGYjxVOIbAMf8jhI4NdmRfWerJzAR3ucnB2KGiK5R6nECaEFJAZvesJ0rzvh8f60bSLKhw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TwKcLrd9oHZ7Q3EFT1TCVNnN+SWChnHgOAzOlGjBCjk=;
- b=QroKQu6Tlepz30CAhPFgOwFa/4n6zZy0CNj3OUw/KtQzk/25cFA4PgK4tzEsW4wHrUM4zKKjh4sJnYJrJz56sUF1dp+YV8tIxWQgJ7cNRUfcIk6zdrKJCZY2BiyuNO3i/GVTLofeBYCVNSfHXSsJLF66nIL8vx5seqXvbLOaey8=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by DS4PPF6ABE13187.namprd10.prod.outlook.com (2603:10b6:f:fc00::d24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.21; Mon, 11 Aug
- 2025 11:21:41 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9009.018; Mon, 11 Aug 2025
- 11:21:41 +0000
-Date: Mon, 11 Aug 2025 12:21:37 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Dennis Zhou <dennis@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>, x86@kernel.org,
-        Borislav Petkov <bp@alien8.de>, Peter Zijlstra <peterz@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Tejun Heo <tj@kernel.org>, Uladzislau Rezki <urezki@gmail.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Christoph Lameter <cl@gentwo.org>,
-        David Hildenbrand <david@redhat.com>,
-        Andrey Konovalov <andreyknvl@gmail.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, kasan-dev@googlegroups.com,
-        Mike Rapoport <rppt@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-        linux-kernel@vger.kernel.org, Dmitry Vyukov <dvyukov@google.com>,
-        Alexander Potapenko <glider@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Suren Baghdasaryan <surenb@google.com>, Thomas Huth <thuth@redhat.com>,
-        John Hubbard <jhubbard@nvidia.com>, Michal Hocko <mhocko@suse.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org,
-        "Kirill A. Shutemov" <kas@kernel.org>,
-        Oscar Salvador <osalvador@suse.de>, Jane Chu <jane.chu@oracle.com>,
-        Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
-        "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
-        Joerg Roedel <joro@8bytes.org>, Alistair Popple <apopple@nvidia.com>,
-        Joao Martins <joao.m.martins@oracle.com>, linux-arch@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH V4 mm-hotfixes 1/3] mm: move page table sync declarations
- to linux/pgtable.h
-Message-ID: <b399b898-9b18-4d4b-8a9e-d9f79ffa524c@lucifer.local>
-References: <20250811053420.10721-1-harry.yoo@oracle.com>
- <20250811053420.10721-2-harry.yoo@oracle.com>
+	bh=yTZSSpN7MrXYlk6igjn6y71QsOK6zh9HIQLRCJcrfIs=;
+	b=jruErK9g3v0nJ1Jmy4xbU2EZQsHcXKxqNN/tbhDCTjiem+74+JF3TntdYX3rXXBPkuhB0R
+	9UDWxJTEUqeJSSVO52Rs0tk3RMSfaIbKnw9L08PvrbAYg0s4WGYvL+X2RnZ9d2UTOQ5gQu
+	0FjVwlMxNwlpGDXOLhbD+c1FFXJ74OU=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=YjJGXcdx;
+	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754911587; a=rsa-sha256;
+	cv=none;
+	b=PBA3RS2Mygu7D5pfHfIlmJdSImiycWOXAvQFA+0gLiRpwvpKSBsqM4uzCt2a/hcfJNN/CF
+	HuHg5WFp7THQYGnyREk4pfwQvH8ZDnh3FPxgl1DvoM8pABOpKUEm75azSCU5Hh0glcXN8Q
+	TnGfkFs2s8uijGIeMGWCOtNMze5LqMc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754911587; x=1786447587;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=TDDUh3YZA77tPJQoxh3MNl7VnFCf8Gr5sBYtPCwEosw=;
+  b=YjJGXcdxL5zQSExJWrtTsNozjS9Hogm3eiXSygXbJXpDjSJ/fgoQJ4o5
+   e9mKCucVL5JySP+dwMcgcwV52LRLNbToxlYIy3/tP+vB25U7yIatDxaqx
+   E2NUyMVigt/xJ/PZ3W08bHPWj9DHcNPjkmCfDDixmFl4CXf5RZKap7hAe
+   Ip1oSA1zAHjjFdF4hhFZxI4yhtm3+ozwIBH9KGTUxT0/x2GNeoIVJOXJ7
+   VjKhm5zF6YxzNxfAfzeOrEfwTHDLrKBJMi0KmeyEFqlsKAvFMiAb+Ucjx
+   d9VEF0N10HPl2gQ75iLHw/sWw1a7nHuK4U1ZiQjlA4gUVag2gn8SYX5mr
+   g==;
+X-CSE-ConnectionGUID: VCVXGydIS/ywH4OSIneQTA==
+X-CSE-MsgGUID: WSYp2kDATjCEXkumOikMuw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11518"; a="56367445"
+X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; 
+   d="scan'208";a="56367445"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2025 04:26:26 -0700
+X-CSE-ConnectionGUID: XMSe7Xf8Rv6ifGt2ii8ehQ==
+X-CSE-MsgGUID: GliJBp2qTrqFhVTD6cagFA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; 
+   d="scan'208";a="166251272"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by fmviesa009.fm.intel.com with ESMTP; 11 Aug 2025 04:26:19 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ulQfQ-0005oq-2S;
+	Mon, 11 Aug 2025 11:26:16 +0000
+Date: Mon, 11 Aug 2025 19:25:40 +0800
+From: kernel test robot <lkp@intel.com>
+To: Bhupesh <bhupesh@igalia.com>, akpm@linux-foundation.org
+Cc: oe-kbuild-all@lists.linux.dev, bhupesh@igalia.com,
+	kernel-dev@igalia.com, linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org, linux-perf-users@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	oliver.sang@intel.com, lkp@intel.com, laoar.shao@gmail.com,
+	pmladek@suse.com, rostedt@goodmis.org,
+	mathieu.desnoyers@efficios.com, arnaldo.melo@gmail.com,
+	alexei.starovoitov@gmail.com, andrii.nakryiko@gmail.com,
+	mirq-linux@rere.qmqm.pl, peterz@infradead.org, willy@infradead.org,
+	david@redhat.com, viro@zeniv.linux.org.uk, keescook@chromium.org,
+	ebiederm@xmission.com, brauner@kernel.org, jack@suse.cz,
+	mingo@redhat.com, juri.lelli@redhat.com, bsegall@google.com,
+	mgorman@suse.de
+Subject: Re: [PATCH v7 3/4] treewide: Replace 'get_task_comm()' with
+ 'strscpy_pad()'
+Message-ID: <202508111835.JFL8DgKY-lkp@intel.com>
+References: <20250811064609.918593-4-bhupesh@igalia.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250811053420.10721-2-harry.yoo@oracle.com>
-X-ClientProxiedBy: MM0P280CA0096.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:190:9::31) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|DS4PPF6ABE13187:EE_
-X-MS-Office365-Filtering-Correlation-Id: 35a9a6db-7ed9-4f4d-b52e-08ddd8c93eef
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?HNpaduCmemuESYWp8Iu79Zloh2+1Azekmu1xnE7dCcFuewK2mCK/CmZoYhnJ?=
- =?us-ascii?Q?plKqNw1mOcddEgSezGcp7E7dQnXf4mBjzNkTgZ7cOlJEltF+NK6suBoIrZnN?=
- =?us-ascii?Q?vS8zH2H+YXr8N3CFXI3dkp2DaVx8jmVdhmJky7VuK8dKMF2awu6UdvUK2U/n?=
- =?us-ascii?Q?9K4YJopiTSeW8IS9iozQpKx1BK8+IbQzOXaTUYIdIRFJDZ7qlHtWaHCiPZR8?=
- =?us-ascii?Q?N3fjXQCVH4MdkxkUyLuaAMikdqA7YN7l2QRRZ7OkJv2WGlLhtNGNXv4TB06B?=
- =?us-ascii?Q?LxXCmFXgWK9c3/p7jBOf5KxK4dCldXDbJP1pVd/4rQ6ewZFvtWLHplRaFpM2?=
- =?us-ascii?Q?e6iMXHd83S/ywnHWG1w8CcZk3u2i6BFU0z5+QzAlnXq+OfvWS8uZ8z+oROQ0?=
- =?us-ascii?Q?iLf7M5TPwdhbE7PjZ/34AnqO/TNkLuaMO6eVkh06F4FWZVV2zZY9pkQNNBZ9?=
- =?us-ascii?Q?ItIBWU/jvq/IIWAb630HwiZhmdhvrMeFKJmPf0SktXSZWzkjOLcn8m+a279T?=
- =?us-ascii?Q?vnWCdnleonjY0yjat4PRegpG8699K1leEcpabQaozvK1CWbEbiokdACgupB7?=
- =?us-ascii?Q?XYyRNP9OxQl/4U70NuWUx0Aeb6zSM3pNSsZZMQ3NLRDUadOTkYWJnGN45Qi9?=
- =?us-ascii?Q?lsBkeF8fa9ezw9QRCmgRJvuRBCHlsX1sU6mZE8OWSnhl6sI0OgWQfuArOY4d?=
- =?us-ascii?Q?aLtXwH4XGBV+gpDJ3g3m7tGh+A+ZJYfwxHjwJA53nZg17MylTPnITLIIsb77?=
- =?us-ascii?Q?w7ZcFAyrUHjikGl1xVKGPQ7Ems6LZ6tPbuuZpyXNpaDRXyfJCrxH1FwffQpg?=
- =?us-ascii?Q?jl/wWHcCZq1oGAetH79AvjWtazPNXBJ6p4SzeLxNxt9ic0BlBrwS/VJFGTod?=
- =?us-ascii?Q?+9pluUZaAIgusT/xv92NVy9olhenOw7JuAgogJc9rQT4QLHX5Q8ctOND6bmK?=
- =?us-ascii?Q?E5O+aPzf+OyMQaJ60w4RLcqBPQaept7rgBRcACV48FiZCHvJH+b55fRkd4/P?=
- =?us-ascii?Q?fmvFa20ytE/kSDf1h9LgkT84JgO5ZWErvi344t5cmwTtnkRF2/u43tON1n1u?=
- =?us-ascii?Q?k7W/+7hR2zwYSvQtj92da7ENLDWgw6RIeoAuQ52nKP0kayeB+rQ3a2Envu5H?=
- =?us-ascii?Q?iEf2+No8lCCynf8NtKFBJvqrzVpi76vJZbq6IT8InT/jCPn34RRq/qe3eVOz?=
- =?us-ascii?Q?XJG5/r+V63AGaW+WS/tvy+B3z64M37JhiDlf7FeQBAGCRAF7Gt82IUrzhZGT?=
- =?us-ascii?Q?PMVyGmpESZhDNhF+zGpxtQ4zgkok7+tUcp5dP+aeNfs//syVdAKoyQ+zUyxt?=
- =?us-ascii?Q?h+RDl2/soIvzy/oZtIderjH749LD14fZO/6sapfdiP8AFYLxpm7mhKdr280E?=
- =?us-ascii?Q?3RUygYHl71Q4Qc+zP2JsRguvlUkt+ttWdmE5ErH6N/dqP6JufkHGr2xsuVXd?=
- =?us-ascii?Q?L7G1Fc6A9MQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?d+QtPOcVHolPPoavoC6o+nZ2H/r3zeCU30F3LRJm5wXN4hFtdh1T57IGDw2b?=
- =?us-ascii?Q?Z818nBsVfmEQDWIM4XBan1sbnpOzRm54QYmbgvtu6QMw4vBg8qWQIwYNIJF0?=
- =?us-ascii?Q?xurp4clN8gOMmCTpXTgwYqj0+g3Uhf3LPbIVw/xB9GEFqtXzIsAF3/0uWQqU?=
- =?us-ascii?Q?IOIf8yeXbKz7YNLKKtfO3UF6X6iDHQEvdaczT2buXzLJMRBFYutffG76gZhT?=
- =?us-ascii?Q?/8T617ftC0+LzE4UYnFKcMt8eq0YQZeQ/p+4EVFkEvcv+BZGIObK6Emq74JV?=
- =?us-ascii?Q?dSWUsTAPw8S9drgG1KOhtMQu9lkRR7Z/YiQWSZiatUPII8PYpGdTA4z4aqXP?=
- =?us-ascii?Q?UMbtPsy3TSZaL0WJk0TMAYInFsZzN8ppVhWkR65cDUxf6EzDkLpiIio5TeYV?=
- =?us-ascii?Q?TVwKwdHApsrNpkKez/rNsABepwmKYJsyaDZZpWxEmBtx2W8clyGgo4888GXI?=
- =?us-ascii?Q?lMPh87AALNf89FfHsm5xtdeyjn1xAKmdciJSokjSA5OWIHOeLgjXpSfiPVls?=
- =?us-ascii?Q?yXH6r//lxeGJRAoD391wpvAUL5emWcWzmx5WQS/Jdv72P0/Yw4A1VSfa+CPn?=
- =?us-ascii?Q?00EcwuvMuVUft8/E5veZVv0E5tO7J0219D9sfA6Y8l2thxl0ZBbseMVgYvhX?=
- =?us-ascii?Q?H5iBkUmVt6QcrvhLIY+yhGzO42yq0iYX7//ODcVgu45fPTjZNWOj4r8L5yTi?=
- =?us-ascii?Q?nSX7HQCRUHLTkI8Gwibfi6pGfDHhCnPxCSLKAswkt43Frm1oxl59bdcmh4xm?=
- =?us-ascii?Q?hZOGbgt3/LLjXzQgJQvn/lfBsC8QJFzwQjMKovO16RzAmbS6EvWaPE4ka+1H?=
- =?us-ascii?Q?v1n6eCWo7NDEtUIm0StPI+lYy/a7VioqPxrTjMztYwBzxKfpiXp00+DqKvBK?=
- =?us-ascii?Q?AGxb053i2l5LuSDbMtPw8G0f15lRdlPs2RYTLPP7ADvaWCV1vMWYkoenf4e9?=
- =?us-ascii?Q?iy7O2Ywhv6vZJ2mseiA4g28N3fzh9tYUo3zYUAUnd8Hkjc2Pu/SJS9Fh/Tuv?=
- =?us-ascii?Q?+mhyfX8uJfk5IQHnJQfCbMoQDgaL5IbxcaZRJU5DG4FUsEU/8vygvQtpztQc?=
- =?us-ascii?Q?vf7o+MrCDOuxaHPsFv0Gc8UrDXyxzum+/WfVoClRlbaHb47/x+DX7uEy0iIG?=
- =?us-ascii?Q?3eUfS3UH7m3fdOoL/o1JfkDNyRDw3nlCePSbjaBIck9romUEi7OxD6+a/kPT?=
- =?us-ascii?Q?NZ16FQ3sitRZIPPvHMcpUlcQnCIaV8f561CkRnt5A2dWtLcYqEd4yKzQpu/A?=
- =?us-ascii?Q?36ZWAUFkgOWqvXx0fUHo3Ay+OkfLEKT6FbfLwqqAFvqvFPWXrrKNMFhqdgI9?=
- =?us-ascii?Q?9RYnKAbvmvCyvv1gUlWjxHUo9s+gvflKbU+Xy5ouCaM0iI7wfmiNaRkTsMGo?=
- =?us-ascii?Q?jMy2nbrq2Dz5iyB8Patht++N12NPJQYeUKWzN8NGivfdCe//szSkIbDfUo9E?=
- =?us-ascii?Q?q5w52z9EKrfBQKZJKJy97QtkTT39+RD0qQpznWu7PHou6IGJPz87IWo3UZq4?=
- =?us-ascii?Q?igg0+/zrDaxwjtGEBtlTPU5o3jHWv9znVc/mC4yzA3QRlXGvnU9jwOu6WJOY?=
- =?us-ascii?Q?VJyrlYALuF+yfSZGbM8qHZTKXCCK9ewVwDxXp/2LvEvxECrjI6+nINGLP9fR?=
- =?us-ascii?Q?bw=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	Ktw3a0MwhWm5CJAHCeEhj1/5jlEB7mgn7eTZsL1kGDkPqpRATGkvJCrxBdRpspGbYRpG639/rhziwywGMi2HvUeWMsDr3g5cD7gLDaBOWD/bco0k7acImQWkDqpeGhW/jX+BBIlj9hjUb+BEIRb1zSPgBwS6PHQN4cWxAxLO7C1zcHd+hKLTZ4icSxvi3EkBxBuouE6Y/VD+myn9qpdf4fSV8mW/893r+9wST8xrUcqaAN6oSVn/x+LPyRh5F4cF8dok7VkP48OKxrVH20neL4VMDpIXMERAz+Wfz4ELL0fOOpA2358v2BD9sUjupaeeF/XJgd328QbZ7rvV/YKv2WmmQWZl2v1kIumubKqWEVfoF8/l5ItHDoxumy7D2F7g25xYL1WTuf3XlZUZH/U40nhnumAzTSyN+bOvNV9pbTY/sA8nrRMAPnPco0+KR1TdOKELLygi2VIJAf1xt8S+U1SZE8KuS43Oz9ynLL7/d4vOS89Bs1l7jfYWfd0m35hKj+HrvLq4WmnyEB5xtqcLLaF3mXNZJEYiyqBurC6yIftw2Sf9b9NiTO55tiTBccRHeOQV+rFnGJtT5JqL1ufFlG/TH3XboA+SYTC3tghrvVI=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 35a9a6db-7ed9-4f4d-b52e-08ddd8c93eef
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2025 11:21:41.4121
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2k1wkYC6sk4eN04wXRBQMZzDrQ8HaiU+tfnZCbyBgKjdXp6HJzjTudBBvEzCvVmtWOl/NnAN5kQhWAyXIVk9uTKFvZ1VWhXJpn006S2NgrU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF6ABE13187
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-11_02,2025-08-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0 phishscore=0
- spamscore=0 suspectscore=0 mlxlogscore=999 adultscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2507300000
- definitions=main-2508110075
-X-Proofpoint-ORIG-GUID: ZR8xNFlYMDsaTdAXXbrD41ZoNJNwO4HT
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODExMDA3NSBTYWx0ZWRfXygwxCP/WjTsk
- VxZXq1WXw90WWQzsZPMBxeFy0XIbgdNCdw8oVcOiiK+o1h2IzR5eaJxU2oaxLCIrtPvTGF3D9yO
- ij0tDp4BsiAfp0lhvscVDBmlreYz3ZdQWiCkMSwM68jUwscI1yrmWC1vMlwkXQawFfR1NqlHHR8
- zV8UzWCyEbIcRPdhKwtQXU36o3EboRj9vHMt8ZcjZ5yP69Uza9iW/fTzs5NpsM2c7PxxMtrN0sh
- FN1cGQGfVYPXqrhlHTXvzuRePdjOSdoNsbg0VrJEddVO8dF55JOrHn2rrkejSfQUceF1tft9U/o
- aPXr34TKzhRpvDsrkKXxr6Lh/l4zjIQXWqRqSYosNUt5y+ELGvAZDlYkiUpZ3BbsLgeJ7Kjr4K2
- QfUA3tkrZ9kIUlyKvkiJ7JMDrR9MGLLjsk2JmdssJI0rV4Uh4NGXFCfYkx796mx9aedfRk/V
-X-Authority-Analysis: v=2.4 cv=X9FSKHTe c=1 sm=1 tr=0 ts=6899d249 b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
- a=NsIIGTxukypT_2S8kAwA:9 a=CjuIK1q_8ugA:10 cc=ntf awl=host:12070
-X-Proofpoint-GUID: ZR8xNFlYMDsaTdAXXbrD41ZoNJNwO4HT
-X-Stat-Signature: giqwtncjzeyg7g1e7smxdayq9azwmr5o
+In-Reply-To: <20250811064609.918593-4-bhupesh@igalia.com>
+X-Rspamd-Queue-Id: A38A220002
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 533C1140004
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1754911328-841939
-X-HE-Meta: U2FsdGVkX1+OURMOobpO0mEfZuRhb3tZUAoyZnX78NLr/NJlFTzqsr+rTl22klJDYd0ZStMqy4oCyyFKepGxQCtGnM5T4jpA1xI3Wp3oz2wW/v+I/uvq0JgKTxlcG5wmiJohw4iF0nMxGu58b5G3hGUDCd9Sx3nJ1yAKmRNgUdyZgN75+u78+W+4QwPhChOI2Omv3OEWmqDKeAG8aUh7IHLcKKtmOrBTtuUgwB31LgL4V5SmjKA8jZFyVDnOBruZ3hQQQfQ0qpwBNmnlzLaT5tShTHFM7L1Bru4yTaZwom/Irtsk1UtBLx5sXz2wAm70ySPL86g25kQNRRsWZhp2FIlTi302+QeTfgP4e9yrUqaT6DyvU44TjW7v7/xVpzFPqWUHj3w34EG3CvTRyqZkMrofgObmrfDjUOX9weue+t3H3ED6nFdC6d4ThStL7x7HwWEEOCbnbCi6BLnreG5stV5VAiR5NE8rCmONrB7dZcWCMZ++AAgVP8uyCrApImVLrsJo7hfSb/gZsXjROclOjY5CLtxvlZhpE26w68S0isJxpvSeVtzFLqPD8Ukai3ww2KLOA9aVeLy4JAnZ6fJZXl+Edbvqyb/EoD5OaRX2WgblO/5An7V9w4I0eBg17Ya/Qb7r6WlcTfhWP0o4+/0YltJrTV3qvX0M+LiTk3fQWH42efWrQ+kZoe9rpyCa4WbPDfX7YEzEFnaShihnwxgnnm9V0WxDh4Axz0Qiep7izUaNQQkTn9mvlk9lK5QKoHtLK1MIVaZHicdOJfR4555NyCjy8vRJrfHrAvd7yLoiXukyn9OfpN+4j7pdgseKFEsYVACAkGvrd9vCgGVz8fv0dt/DZdY43l44+rL5svQ6KRBotybq1F4juIWUE770N28dAPiFDpz1TnwTZqOz3oGAwAbhF7vMh0YLWi31E2U5Z2PmhLVK5jgzuvLhIKeN+uinYKAvG89r+FJXQx0+T+a
- 4d7wDVL3
- 9XShEtIp2XO7x/5ownQHlxdTTA3Ibzi4uDoPWtcbC2hDoVWQvuZI2s+hKtP9Jgd72+bFCM/AN3SMgiI9F99RocgBNRbBEHT237Ya64dok+6MCGC+BlHd2ujIhdnya7bkCesUZxeji4EChle0NfMmRomN8NHR4xPJa3vIK1gRF5wgJbtYiKJjbgrchvBZQJ63Z0VTpDU3Ku4qB6leWHxsyg3cp4Pwjwhw7REoZiqF5laoFdKyhFVUA9yavPPMPKk9LNCkDmIQV1wxWGFogHVT7onhHmycQHqViTG/QFraeDPyhSM/AvNvjSYANFfOmQnbaaLy123XElp87OgTSYCAHkODDyimuWrvGghtWXGhoby1DVo/K3DKal3YHOR+h1T620hl9RDQDLAC21Vvp5viX+dnBrWnEW3Pjhf3Ouqy1hWxhnMhis/hCiCScsbyxRWamje10HdYUfNSwZypMpjt1Ivw/KiDHNs2/NwMJRBVm96eQ/ZVyYMSm81h7tIb+i1BsSVoqdvWwuFiNz7Xk9N9hz9FQFz/RJGPkM/zIRMRePtAcoX3ZO+HFxewmW1/WRvnWnHcvwGyEprcNncy5R4Eb3Gw3bIgGnvKiTDIENXF0+mQdbVKoj0xxuOqmwlmrNHMhbOw/cLTeKS6FPaRF/irdhJQfjBxnof3WrUHQlPdvDz3YviWek05ZLAsvHS3wIpRhV6w/oP6Y8NA1rgM4PwDz48DGGcpTEjolA0uEhnrytvC8oZdoW6sbEQTfYbW/ZzdraRSzXwrK4U4rbnlnkB70A/IN/4dBJPU/u3BW4An/sBRIcsQBhFlE0qx60zEOBJ9Bvh3+UQD7/Wsf3UWpz82CqswVjVu/LOMDQm+7q7ouJUcuaU4=
+X-Stat-Signature: mu5xad6icutcwns9bfe9sab9u3p6qu8q
+X-HE-Tag: 1754911587-161230
+X-HE-Meta: U2FsdGVkX19KKTo7HPJf/J7KLBoqX6/F0l+O2VZ98gfoXOACMi7d+4QPTGAWXnRoyue5r1MQqCXhg32tkpXOuNBtaOAK7bDWy6AqUdqLXWVuy0VE0AUe87JiulZoIlCSpwRzipkrI7ck9m3QSbfPRqX6AqMqV7lXRww6sds3mJog2dRjNtW/XV+5Y5qs8QCRrQINI2yGX35V0z48nrXL2EF8J+iT7mlnae40aV7A8HqueOZ398BXrlUtYfMxRMxdQYj4RX3l7zcT5CxV2P9PxM2USk40qOW4OU6VrnI8HspidiQ2WUZKD0ke6ypX2F79ttcfITUw5IjnJ+ucPS90QBI5S+4kqhETeHDUgh88XtOTYi39e2qKcC2AJCaF5/WYz8f09ByobxmtEViSDe0RelrQVPc09EWdLdz09pOWTnwpK33V8sW1S4kCOIVpDTsBPuvCe2VJGSP2IM96v7y0uoTLOBHQJgxjNbpv35wJtiPKpS/XlKcM3WHMqEWxLwbJaKV1g6mRAp9NcqbjQSKeTjORCmBN1orwqq/sjBLsgaWuaL5+sx9W3KzFdOuancxpF/AxlyT8jcBMIz4GSrr8lJ8m0mPqvli8+oVH2jrgRGJqDKnr/rhCG13bEQwUSRRNYnbiNq3sEWzS6MZkOTQpbFKbUyTuM7kNygGQaC92ONhmfLkRw+RKruS9sGQXB0NHCg4K/yOk1chvJztsQUtYL1+mUN8FKM3t2bF+YIGP3F8YRml/VJ/xluOIbpJuN0aPmndrM1vUxB6ZwhOmoVovGLa2wa2TQj5JI1LX1oGjkagpluQR/VPahgY7up+nBZ4UhjQeYNHPytJNpEU0YlJL8fvkD1wyCxs/9zNr3yn6/V/sqCxmHaSeK5BppdXAK6A0gLb8eL8tZVleH3UCgU5ioNeDbiv7IzSjGIFSyRCEqEMVChpjbG0yxJGaBe9nJVmDGyW2f94dsPh2Tdsmb6k
+ yRhqDhPd
+ WfYumr906IfhPdEhAYTbUE/bBWpSvAHjppoT95FJ5y0dRN1emKWdv7tfP2RcLn3MacPTiojnUhb9BvTf8ydPjj08d9eSOgmxTP3CVWvsHfqmhbb9XS+uS4dc9qS6klW2MAF3ggHsfNnHB12oeHMTyTtZ9gr2g3U8f6kqVM+7FzJhJmXxUWB85Iy07lMytPwqIziyjxzACMCOLMPlFzC6wV4txVO/AGoE4Wzeu9bpYsgwr790tJ/LKfJxJjx7jH/NYBxc5ok67JdUu1sklC6Bro+hi8AVDgI7O/xDYxZ6GlvtqVvxeFEV1PldqZb8CnPkafLxjp6QTyEAZd6D8r5MhznxqNqXNWKb/DFnaQFXXXRtkeGQ21HRzsFu6MnL5TRy0WMkLF3qjrGhvnpRAjOF+yh8eqxUWZruxbMvUrB+e5eom7gjRpgv45qW5GpZOqeHF3BPw5Y7taQuj20vJQNhsGHBHzTOzpE5ZMGyT0PH3eAK+BPk5uk2ijPBQd6o1Huab3KGjGtAuOqNlb/O8J+3VxmKkFw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -255,80 +117,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 11, 2025 at 02:34:18PM +0900, Harry Yoo wrote:
-> Move ARCH_PAGE_TABLE_SYNC_MASK and arch_sync_kernel_mappings() to
-> linux/pgtable.h so that they can be used outside of vmalloc and ioremap.
->
-> Cc: <stable@vger.kernel.org>
-> Fixes: 8d400913c231 ("x86/vmemmap: handle unpopulated sub-pmd ranges")
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+Hi Bhupesh,
 
-LGTM, obviously assuming you address Mike's comments about... comments :)
+kernel test robot noticed the following build errors:
 
-So:
+[auto build test ERROR on next-20250808]
+[cannot apply to trace/for-next tip/sched/core brauner-vfs/vfs.all linus/master v6.17-rc1 v6.16 v6.16-rc7 v6.17-rc1]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+url:    https://github.com/intel-lab-lkp/linux/commits/Bhupesh/exec-Remove-obsolete-comments/20250811-144920
+base:   next-20250808
+patch link:    https://lore.kernel.org/r/20250811064609.918593-4-bhupesh%40igalia.com
+patch subject: [PATCH v7 3/4] treewide: Replace 'get_task_comm()' with 'strscpy_pad()'
+config: sh-randconfig-002-20250811 (https://download.01.org/0day-ci/archive/20250811/202508111835.JFL8DgKY-lkp@intel.com/config)
+compiler: sh4-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250811/202508111835.JFL8DgKY-lkp@intel.com/reproduce)
 
-> ---
->  include/linux/pgtable.h | 16 ++++++++++++++++
->  include/linux/vmalloc.h | 16 ----------------
->  2 files changed, 16 insertions(+), 16 deletions(-)
->
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index 4c035637eeb7..ba699df6ef69 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -1467,6 +1467,22 @@ static inline void modify_prot_commit_ptes(struct vm_area_struct *vma, unsigned
->  }
->  #endif
->
-> +/*
-> + * Architectures can set this mask to a combination of PGTBL_P?D_MODIFIED values
-> + * and let generic vmalloc and ioremap code know when arch_sync_kernel_mappings()
-> + * needs to be called.
-> + */
-> +#ifndef ARCH_PAGE_TABLE_SYNC_MASK
-> +#define ARCH_PAGE_TABLE_SYNC_MASK 0
-> +#endif
-> +
-> +/*
-> + * There is no default implementation for arch_sync_kernel_mappings(). It is
-> + * relied upon the compiler to optimize calls out if ARCH_PAGE_TABLE_SYNC_MASK
-> + * is 0.
-> + */
-> +void arch_sync_kernel_mappings(unsigned long start, unsigned long end);
-> +
->  #endif /* CONFIG_MMU */
->
->  /*
-> diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
-> index fdc9aeb74a44..2759dac6be44 100644
-> --- a/include/linux/vmalloc.h
-> +++ b/include/linux/vmalloc.h
-> @@ -219,22 +219,6 @@ extern int remap_vmalloc_range(struct vm_area_struct *vma, void *addr,
->  int vmap_pages_range(unsigned long addr, unsigned long end, pgprot_t prot,
->  		     struct page **pages, unsigned int page_shift);
->
-> -/*
-> - * Architectures can set this mask to a combination of PGTBL_P?D_MODIFIED values
-> - * and let generic vmalloc and ioremap code know when arch_sync_kernel_mappings()
-> - * needs to be called.
-> - */
-> -#ifndef ARCH_PAGE_TABLE_SYNC_MASK
-> -#define ARCH_PAGE_TABLE_SYNC_MASK 0
-> -#endif
-> -
-> -/*
-> - * There is no default implementation for arch_sync_kernel_mappings(). It is
-> - * relied upon the compiler to optimize calls out if ARCH_PAGE_TABLE_SYNC_MASK
-> - * is 0.
-> - */
-> -void arch_sync_kernel_mappings(unsigned long start, unsigned long end);
-> -
->  /*
->   *	Lowlevel-APIs (not for driver use!)
->   */
-> --
-> 2.43.0
->
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508111835.JFL8DgKY-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from include/linux/bitmap.h:13,
+                    from include/linux/cpumask.h:12,
+                    from include/linux/smp.h:13,
+                    from include/linux/lockdep.h:14,
+                    from include/linux/spinlock.h:63,
+                    from include/linux/mmzone.h:8,
+                    from include/linux/gfp.h:7,
+                    from include/linux/umh.h:4,
+                    from include/linux/kmod.h:9,
+                    from include/linux/module.h:18,
+                    from net/netfilter/nf_tables_api.c:8:
+   net/netfilter/nf_tables_api.c: In function 'nf_tables_fill_gen_info':
+>> include/linux/string.h:116:50: error: passing argument 3 of 'nla_put_string' makes pointer from integer without a cast [-Wint-conversion]
+     116 | #define sized_strscpy_pad(dest, src, count)     ({                      \
+         |                                                 ~^~~~~~~~~~~~~~~~~~~~~~~~
+         |                                                  |
+         |                                                  ssize_t {aka int}
+     117 |         char *__dst = (dest);                                           \
+         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     118 |         const char *__src = (src);                                      \
+         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     119 |         const size_t __count = (count);                                 \
+         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     120 |         ssize_t __wrote;                                                \
+         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     121 |                                                                         \
+         |                                                                         ~
+     122 |         __wrote = sized_strscpy(__dst, __src, __count);                 \
+         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     123 |         if (__wrote >= 0 && __wrote < __count)                          \
+         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     124 |                 memset(__dst + __wrote + 1, 0, __count - __wrote - 1);  \
+         |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     125 |         __wrote;                                                        \
+         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     126 | })
+         | ~~                                                
+   include/linux/string.h:86:9: note: in expansion of macro 'sized_strscpy_pad'
+      86 |         sized_strscpy_pad(dst, src, sizeof(dst) + __must_be_array(dst) +        \
+         |         ^~~~~~~~~~~~~~~~~
+   include/linux/args.h:25:24: note: in expansion of macro '__strscpy_pad0'
+      25 | #define __CONCAT(a, b) a ## b
+         |                        ^
+   include/linux/args.h:26:27: note: in expansion of macro '__CONCAT'
+      26 | #define CONCATENATE(a, b) __CONCAT(a, b)
+         |                           ^~~~~~~~
+   include/linux/string.h:149:9: note: in expansion of macro 'CONCATENATE'
+     149 |         CONCATENATE(__strscpy_pad, COUNT_ARGS(__VA_ARGS__))(dst, src, __VA_ARGS__)
+         |         ^~~~~~~~~~~
+   net/netfilter/nf_tables_api.c:9661:53: note: in expansion of macro 'strscpy_pad'
+    9661 |             nla_put_string(skb, NFTA_GEN_PROC_NAME, strscpy_pad(buf, current->comm)))
+         |                                                     ^~~~~~~~~~~
+   In file included from include/linux/netfilter/nfnetlink.h:7,
+                    from net/netfilter/nf_tables_api.c:17:
+   include/net/netlink.h:1655:46: note: expected 'const char *' but argument is of type 'ssize_t' {aka 'int'}
+    1655 |                                  const char *str)
+         |                                  ~~~~~~~~~~~~^~~
+
+
+vim +/nla_put_string +116 include/linux/string.h
+
+e6584c3964f2ff Kees Cook        2023-09-20   74  
+e6584c3964f2ff Kees Cook        2023-09-20   75  /*
+e6584c3964f2ff Kees Cook        2023-09-20   76   * The 2 argument style can only be used when dst is an array with a
+e6584c3964f2ff Kees Cook        2023-09-20   77   * known size.
+e6584c3964f2ff Kees Cook        2023-09-20   78   */
+e6584c3964f2ff Kees Cook        2023-09-20   79  #define __strscpy0(dst, src, ...)	\
+559048d156ff33 Kees Cook        2024-08-05   80  	sized_strscpy(dst, src, sizeof(dst) + __must_be_array(dst) +	\
+559048d156ff33 Kees Cook        2024-08-05   81  				__must_be_cstr(dst) + __must_be_cstr(src))
+559048d156ff33 Kees Cook        2024-08-05   82  #define __strscpy1(dst, src, size)	\
+559048d156ff33 Kees Cook        2024-08-05   83  	sized_strscpy(dst, src, size + __must_be_cstr(dst) + __must_be_cstr(src))
+e6584c3964f2ff Kees Cook        2023-09-20   84  
+8366d124ec937c Kees Cook        2024-02-02   85  #define __strscpy_pad0(dst, src, ...)	\
+559048d156ff33 Kees Cook        2024-08-05   86  	sized_strscpy_pad(dst, src, sizeof(dst) + __must_be_array(dst) +	\
+559048d156ff33 Kees Cook        2024-08-05   87  				    __must_be_cstr(dst) + __must_be_cstr(src))
+559048d156ff33 Kees Cook        2024-08-05   88  #define __strscpy_pad1(dst, src, size)	\
+559048d156ff33 Kees Cook        2024-08-05   89  	sized_strscpy_pad(dst, src, size + __must_be_cstr(dst) + __must_be_cstr(src))
+458a3bf82df4fe Tobin C. Harding 2019-04-05   90  
+e6584c3964f2ff Kees Cook        2023-09-20   91  /**
+e6584c3964f2ff Kees Cook        2023-09-20   92   * strscpy - Copy a C-string into a sized buffer
+e6584c3964f2ff Kees Cook        2023-09-20   93   * @dst: Where to copy the string to
+e6584c3964f2ff Kees Cook        2023-09-20   94   * @src: Where to copy the string from
+e6584c3964f2ff Kees Cook        2023-09-20   95   * @...: Size of destination buffer (optional)
+e6584c3964f2ff Kees Cook        2023-09-20   96   *
+e6584c3964f2ff Kees Cook        2023-09-20   97   * Copy the source string @src, or as much of it as fits, into the
+e6584c3964f2ff Kees Cook        2023-09-20   98   * destination @dst buffer. The behavior is undefined if the string
+e6584c3964f2ff Kees Cook        2023-09-20   99   * buffers overlap. The destination @dst buffer is always NUL terminated,
+e6584c3964f2ff Kees Cook        2023-09-20  100   * unless it's zero-sized.
+e6584c3964f2ff Kees Cook        2023-09-20  101   *
+e6584c3964f2ff Kees Cook        2023-09-20  102   * The size argument @... is only required when @dst is not an array, or
+e6584c3964f2ff Kees Cook        2023-09-20  103   * when the copy needs to be smaller than sizeof(@dst).
+e6584c3964f2ff Kees Cook        2023-09-20  104   *
+e6584c3964f2ff Kees Cook        2023-09-20  105   * Preferred to strncpy() since it always returns a valid string, and
+e6584c3964f2ff Kees Cook        2023-09-20  106   * doesn't unnecessarily force the tail of the destination buffer to be
+e6584c3964f2ff Kees Cook        2023-09-20  107   * zero padded. If padding is desired please use strscpy_pad().
+e6584c3964f2ff Kees Cook        2023-09-20  108   *
+e6584c3964f2ff Kees Cook        2023-09-20  109   * Returns the number of characters copied in @dst (not including the
+e6584c3964f2ff Kees Cook        2023-09-20  110   * trailing %NUL) or -E2BIG if @size is 0 or the copy from @src was
+e6584c3964f2ff Kees Cook        2023-09-20  111   * truncated.
+e6584c3964f2ff Kees Cook        2023-09-20  112   */
+e6584c3964f2ff Kees Cook        2023-09-20  113  #define strscpy(dst, src, ...)	\
+e6584c3964f2ff Kees Cook        2023-09-20  114  	CONCATENATE(__strscpy, COUNT_ARGS(__VA_ARGS__))(dst, src, __VA_ARGS__)
+458a3bf82df4fe Tobin C. Harding 2019-04-05  115  
+8366d124ec937c Kees Cook        2024-02-02 @116  #define sized_strscpy_pad(dest, src, count)	({			\
+8366d124ec937c Kees Cook        2024-02-02  117  	char *__dst = (dest);						\
+8366d124ec937c Kees Cook        2024-02-02  118  	const char *__src = (src);					\
+8366d124ec937c Kees Cook        2024-02-02  119  	const size_t __count = (count);					\
+8366d124ec937c Kees Cook        2024-02-02  120  	ssize_t __wrote;						\
+8366d124ec937c Kees Cook        2024-02-02  121  									\
+8366d124ec937c Kees Cook        2024-02-02  122  	__wrote = sized_strscpy(__dst, __src, __count);			\
+8366d124ec937c Kees Cook        2024-02-02  123  	if (__wrote >= 0 && __wrote < __count)				\
+8366d124ec937c Kees Cook        2024-02-02  124  		memset(__dst + __wrote + 1, 0, __count - __wrote - 1);	\
+8366d124ec937c Kees Cook        2024-02-02  125  	__wrote;							\
+8366d124ec937c Kees Cook        2024-02-02  126  })
+8366d124ec937c Kees Cook        2024-02-02  127  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
