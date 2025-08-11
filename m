@@ -2,117 +2,114 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EC57CC87FDA
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 06:46:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9FCF7C87FDA
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 06:53:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F9D56B010D; Mon, 11 Aug 2025 02:46:59 -0400 (EDT)
+	id 4259C8E000C; Mon, 11 Aug 2025 02:53:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D1486B010E; Mon, 11 Aug 2025 02:46:59 -0400 (EDT)
+	id 3FCF08E000A; Mon, 11 Aug 2025 02:53:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E7616B010F; Mon, 11 Aug 2025 02:46:59 -0400 (EDT)
+	id 2EC158E000C; Mon, 11 Aug 2025 02:53:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F2546B010D
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 02:46:59 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id ED9BEC0608
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 06:46:58 +0000 (UTC)
-X-FDA: 83763544116.30.D152188
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 0E7B7140009
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 06:46:56 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b="r1W/3gWT";
-	spf=pass (imf26.hostedemail.com: domain of bhupesh@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=bhupesh@igalia.com;
-	dmarc=pass (policy=none) header.from=igalia.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1AA9A8E000A
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 02:53:06 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9E7C5C061C
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 06:53:05 +0000 (UTC)
+X-FDA: 83763559530.27.ECEE0AE
+Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
+	by imf07.hostedemail.com (Postfix) with ESMTP id BA6214000A
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 06:53:03 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CtGwCEY8;
+	spf=pass (imf07.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.221.172 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754894817;
+	s=arc-20220608; t=1754895183;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YI8nSK3pDhA4y88O+/crLV9isyigf3E4ksFRw5WalPw=;
-	b=79vqEQHtQFGDLgIDjS6kGl8Qkom2sgP2klYmJvYeq7U9eEreOuZgJMPnjlKARvzDbpkhA+
-	JAkeBlOcuyKhl0MhkKidOs6TaSIsxNHAYnRLW0Wz5+2ElVbGG8J+g6TgDyBBtsja/JHlC5
-	BQTlxG8kNrQiSxH2nlMFFXfq1A0E9jI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754894817; a=rsa-sha256;
+	bh=/fVsUY08ipVRtRLpv10uWhZA7wsDSRqCmbwogA870dE=;
+	b=emjX35jVI8d/bNgp72Uohd7HWbHD0dWH1qzYKdlT1CO0SM4ISaATlDA/O+PqOHcrkXdC5a
+	0EQr15RMBu7NFc/73XzCp55WpRLei2KC7c7gctnmYXadClP+QOuGJ1+IEMHvLvMhZwLOnx
+	whKxIVqaFzum3ywQEXnJ6cYs4OtLYMo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754895183; a=rsa-sha256;
 	cv=none;
-	b=19tgTxTPPQZtfnLcHi3LHYljLrCezOygMNWt7QAxlTMRTxWZ/S4ywLsdT6w0Emz0ghLfHW
-	hpU562zxcBHfIGlM2m8CrzCUqLl2j62pYk37mjSqmPDus+N1zIj/Xii8vouZFnXjmvOKtN
-	REKfcWJu3aG72FbGz9d+iV7KZcBL1wk=
+	b=cSQeTbG7we98E/ZFFpH5VZnwMskoYfg6VkIa36D3md3jEQ0/pYZVpQXClmIeP2V00DQUX5
+	dSH39gxgnpyS/4hXLPYXbEvaevSYCUbG/oMZvpszKUFO6hl+GRHHLV06+6Xjs6CIXMEaKJ
+	FcDJhLoGRzjKD1pwu97FjZ7o4xs017s=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b="r1W/3gWT";
-	spf=pass (imf26.hostedemail.com: domain of bhupesh@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=bhupesh@igalia.com;
-	dmarc=pass (policy=none) header.from=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=YI8nSK3pDhA4y88O+/crLV9isyigf3E4ksFRw5WalPw=; b=r1W/3gWTqyRMMsqIbXnpvu1YTY
-	mNvmj0N2p3h4VAZzTA+RZ19LCE03vksvNVDVp5zcLVVn+H4oB4BZiVliZg/XFrvWv3a+iPSamfQDd
-	RX8xUNIrQeyl4Dwm2A8QLn37dej56rc9LlXJdRuKsafh4EoZOIhuspusfQc8DCHKBLd8KrmTrbUON
-	Ja9kjwDxGbcRpOxvYBYnyuz/yfzfNQn/Y8BomNw7/nekO1khxzIWn+1CZJ+3bHc0F4oDbKQGCPoZT
-	ihzvyiyvGsYPRcgpzrj7nyGrUBXcEzAim0ahM8F8xDEgyr59H0ZloFDe9p3QgbHeNqopYh+RF1uNP
-	3q/3e8qg==;
-Received: from [223.233.69.163] (helo=localhost.localdomain)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1ulMJ1-00Cdun-TF; Mon, 11 Aug 2025 08:46:52 +0200
-From: Bhupesh <bhupesh@igalia.com>
-To: akpm@linux-foundation.org
-Cc: bhupesh@igalia.com,
-	kernel-dev@igalia.com,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-perf-users@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	oliver.sang@intel.com,
-	lkp@intel.com,
-	laoar.shao@gmail.com,
-	pmladek@suse.com,
-	rostedt@goodmis.org,
-	mathieu.desnoyers@efficios.com,
-	arnaldo.melo@gmail.com,
-	alexei.starovoitov@gmail.com,
-	andrii.nakryiko@gmail.com,
-	mirq-linux@rere.qmqm.pl,
-	peterz@infradead.org,
-	willy@infradead.org,
-	david@redhat.com,
-	viro@zeniv.linux.org.uk,
-	keescook@chromium.org,
-	ebiederm@xmission.com,
-	brauner@kernel.org,
-	jack@suse.cz,
-	mingo@redhat.com,
-	juri.lelli@redhat.com,
-	bsegall@google.com,
-	mgorman@suse.de,
-	vschneid@redhat.com,
-	linux-trace-kernel@vger.kernel.org,
-	kees@kernel.org,
-	torvalds@linux-foundation.org
-Subject: [PATCH v7 4/4] treewide: Switch memcpy() users of 'task->comm' to a more safer implementation
-Date: Mon, 11 Aug 2025 12:16:09 +0530
-Message-Id: <20250811064609.918593-5-bhupesh@igalia.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20250811064609.918593-1-bhupesh@igalia.com>
-References: <20250811064609.918593-1-bhupesh@igalia.com>
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CtGwCEY8;
+	spf=pass (imf07.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.221.172 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-5396c1d72dbso3182764e0c.2
+        for <linux-mm@kvack.org>; Sun, 10 Aug 2025 23:53:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754895183; x=1755499983; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/fVsUY08ipVRtRLpv10uWhZA7wsDSRqCmbwogA870dE=;
+        b=CtGwCEY8b3n9dUnZYQMHBRUEwD7vxju0tyAGpqxa1aGzfddvoFNmd/0pdWjfRK3osE
+         SMju6yvzaMntW/rrLwjg5Bpddd3jOcLRgUgOZiQWcckmxwVoB9nXXoHur17owrBJHrZT
+         HoGR8uBlWAi3nleebwxQ09wcmhxfxqZ8x/GEMSDF1oAh0Ghs0VQpIKtuIR5vXOVfLeD9
+         JFJEQqMoc7qdUY4GTwrkmcn47/LWv7hROFxUFV89zDQzJxF3O5/7xjmHaCIYvHo/EWEl
+         xgN/dqQ9c85dknrHKUvIgtwQb3cvw+6Dw7PuSyU0dfA8vjho1bnehMrsbp2eDVp+jxgs
+         KXag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754895183; x=1755499983;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/fVsUY08ipVRtRLpv10uWhZA7wsDSRqCmbwogA870dE=;
+        b=uhpCu6XbJG5S7P/Qtko0lP3qWO6qySEq5Zq+6wzSg2tkWrh77eRfvODVbCoGJRMA7A
+         NyLZR+6psNKBnBXu5YUlqLhGD+9fXhdulYoxi4156w5tF8c/an/OvpLuSIIJxB5taIkS
+         4E/J8V048PJf+ixGArGBvnbIKXsAsuPKToLmonW/Aob7af1Cx06Ti6i/X/xQhLpI023W
+         DOP92u6GTcErDZ7z77AyGNH3SVZQnCVtK2pHcQQ3yJoAuS/0dur+/cbutT0q10vnCOh+
+         VALvwvib82uyyPwOm0ZukkuRa4At6R+wxH2GGrT9ARXa7BvZHUhP+lF2Zbu/9dMzi0QU
+         1P2w==
+X-Forwarded-Encrypted: i=1; AJvYcCViBuLwA9dtb92wM1i9ximSX5W6/rYHUJw4QjSjA47JuhRTu8dxEnVswJDvxr8IAw+OnK1CMAu6Aw==@kvack.org
+X-Gm-Message-State: AOJu0YzPEzm7IbumdTH25Z8MhQ7yUQKWhOaquffezLrX5DcyPBbN3v7/
+	DvoAITQBH68WIW1Soiox+qWcIMb6hBpQZK6LqukpqISuAj43N1pB8dUHUnwz5OhE9DAOgdRz+Km
+	cdh4NuUdvDiYR7xWSXtdTwl/wkWOf5+s=
+X-Gm-Gg: ASbGnctDpmK53KsarrLoBaCjHTy73Mazlh6pFv/6WrMc0SeCdozA2uZOXlC4EeGdre8
+	4wkErusZHbA58GZ4sm5eSka/X1Wl5oVx4cyqQ7TffYKKPQcvft2SgUa56xhL29LUM7aKbo+IaCs
+	8cAVNbvTVrBlhWlM68HPuAI8iqDCW4vs9YZz1x8fRzOPje87LfLy25o1Bc3FbqRtNELvCmWhPU9
+	Cq2iso=
+X-Google-Smtp-Source: AGHT+IGGDVcXKzHiETBGgnAZpGCC0gWUGYjDWg/fG11MB7bORpn/RJDutDW1kYazG5raVFO+qTH8hQX/k+xxbhGLSxg=
+X-Received: by 2002:a05:6102:c91:b0:4ec:c548:ee2a with SMTP id
+ ada2fe7eead31-5060f8b41b7mr4400160137.17.1754895182668; Sun, 10 Aug 2025
+ 23:53:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250807185819.199865-1-lorenzo.stoakes@oracle.com>
+ <CAGsJ_4zuEcgg7U0yCMu6ayKqRPACtvuzUsC9vUxBk2PgMzaf_Q@mail.gmail.com> <47ce3db2-38ad-4a6b-917a-c6300fc39543@lucifer.local>
+In-Reply-To: <47ce3db2-38ad-4a6b-917a-c6300fc39543@lucifer.local>
+From: Barry Song <21cnbao@gmail.com>
+Date: Mon, 11 Aug 2025 14:52:51 +0800
+X-Gm-Features: Ac12FXzg7m8LhV-73jU_CYSdeBumfCC_Ufk6bjZHFOVKRLYHVyElDAX-Y3qBP2Q
+Message-ID: <CAGsJ_4w_c3AY1Nw7EhYH3rf0jjqgZ6AYLdr3xuonF9SNgWckDg@mail.gmail.com>
+Subject: Re: [PATCH HOTFIX 6.17] mm/mremap: avoid expensive folio lookup on
+ mremap folio pte batch
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Dev Jain <dev.jain@arm.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	David Hildenbrand <david@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0E7B7140009
-X-Stat-Signature: 6norbxgu6qfqu5mjfud8mirq5tixw8e6
+X-Rspamd-Queue-Id: BA6214000A
+X-Stat-Signature: 6mbusgmirun6kohsa4o4ti1tcu17w77p
 X-Rspam-User: 
-X-HE-Tag: 1754894816-25003
-X-HE-Meta: U2FsdGVkX199tYEmCL0vmsbzvfgxcexNvbmCsLMetqjwmoq+TqgDv3OuKaWignFXP7x2TFuXcfhSGKKRB7hh7NzdGOpypIgCB83kvpzqCl5hgoRqwnEHsd6xe/dpvJWYjEur5YLzsjVavb4MMsfsaOKdOFFDk6J+ymMBW3ANIFS0YfqWzfKl9Gl5JdBQ4jd0CZBLrSdHw5/ruG9HXDJeYbrtKFHVaTGew8R8zUeuZdd17U8UUoougCrYKuTlJqV2BUN9B9acPR1FznXlTooLfmGE5AGz9yTo3OhwWbixTgVPKui+vdsVn0uvrzl5PbeMyZLGhNS2Xkeahv6GN5SdBdBLBi6vAM+O9EinbUi/nYV3sy+ylezuKI//XgAUGXzybvdT38r2DHB9kzGWAZ5McvLKRpawJ4vo/qwNqr5uonDK7nUK73pmW46b4R0JNUaEbdsUa7gHLbOpxutXDiqvIlpVUnQZwKa3MedtesoMZ2QlaC2JGX45fEiBTn0vMx8MOhMjPYbTgbLWDuK/78rv08xwJyJQIjZEAMIz8GTNuxb5tX6SnGiC+hcwb7rKBowvWKgepeM7jbGfY9c92iO8BOgOokcxMAs8XhS3+2uUEUce1bWZkzyntRW3yofsH7w1xn4kz07FsBbRU0r6Pg1Kqvc+bmSwDwjT906n5N2vMEUAqTn5N/lL0a43kAA3jwr3ISgxwbztWWlz2qCFM+B+ycWVVfU2VAMmc5pWSIj71cpFiV3kiKIBDANkOxxCSG/vcsXui8TSFGdKxXBrBIJctiiV1Df2G21QsPh59TTlmhW/NSzzsxvyCpUJlXR8ejlkGT+b2bbfEKFG9j7CXpRPnFcf4EZlX+fKsMSyAxx3y9K+ZuhwjNlxkthC8Pr4Wqt0co+d1ZutqLHNnrBSEVAPs8ueN4fUjzTookKBmWKGj5nWTolVxe7W1BGaYDcZXFrIV+cORfpqPOGlL2yhfjl
- I7gax3Ji
- 076+xkHbAPJ7EE4lNWsr3CAD6We5oPA/mQBZa8dr+/aCFtL0sYjsyRQL5oB2N+Nk4ERzd3PILgzCI8vulOV+EqH4C7e3UzIpWRCeE5NyA0YqpafVcwkRYB1XS7iNkyAiO8y98cWAnT1h2YNmWzxa1WWEfAX5IV23nCGuMb5cRlW5vuIvEyJusiHfty7VmmUE/voxZLpNsjbjRmS+YSdgwkRHVtsW+qDlGEqD5wngpIpE1ia9LQ+D70G4caDJTFloYC+nKH0ijKLqxeESxBiqg/0iKojnVuRmJZwRuU4haIDhR3W9retGaDVggJ3pY90+7Gb7NbZkcnv6aw2bP7q6YKWdAkLE8cz8zGMzgeDSfRmy3EKP7JZgH+N9bzNCU9XfgLCqj2abb27Swkn5HhDSM0qxLUPGKO5OzyLWYW7O2ZV0om1U=
+X-HE-Tag: 1754895183-937356
+X-HE-Meta: U2FsdGVkX19iWSGJLERgq9neJHGHER0jp88nBfZcOl7sIvKqwkUnmUXUsNW5kB/xl6XZ9R308j47zsDjkF3eXkJCyRcMfiWTMkxsrgXX4MzuL4+kRoAOtLJXgFE2SQQuv0t8NCHUBP72QXST552ra8xpCzhOqGzMTUT+8tqd+aez/S6FlQX50Y9rbfhZ9+xzC5Z1+jtKl61qNvKeiNWqgEzvG9NJ5tuyz8fHRF21BX3iCYyKJLv9nOUGEGQCJGDcvdD1YMieR5sKH+413HxbnZlMc9DSmLzNPPFtcDAXuefLZE0TuLfCpuohqidFqrLhni7P8X37gcvNqjVIuL/+6k+i1RHGGjj9TzjUHsMuonzGGFWS1WbFkkVDQON01aGs4HfziHr7MfL7ICOXJ7+vlBplrNVIZOuIOPEc6viD5R7BtMnbCX9GQ2BXac3HwqNyTWi/MmBWsX0sqXh03llM8gNBWKmBSTPe5R97lRjCRpK/x842+A3TGfonIolKUvJqnKlNjgml8IRZwU6dJtG9TiPYNmO9jIYG0AUzJC8gAiXaABgRLPMIg2FiDqeJ46XpP6JZCgdnSzhnWYjGQ6ao716tiHHL6bzb6RFYwMtJVqD/8fOEHWIUtikj6eOjkERP6c9pbbp2MegAL49VPy840/fVt6GmtDOryE9KNWcbIb9g8GWAKWO655SgxbtPlafTeRnc1r+pDp8c/yfV5MKROCWrTF7dcieEbY7zIig+0UrApQTT9XMjX3g4Hn3hE9HU/gIC/SOlNsv+HydsJDn3DKAsLu/eFBCClBss9l1la8v2Tj3e1S4jl/gS1Qfj/UGQLVkrPDB4UgkJi/B61QM2y8O5nylDj9P9bJCRz7yMe9EVVrDem//bS35ZZ3cnYivC4KMo7huMAZqOmGQAeewL9GbvNhznF9NVL6PZ+ZFIcOVLbttk5ABiIY3l3I8bV+Xf1LrVBTSuZ1HHLdL5lzJ
+ s/Gbo/MN
+ yaNRw2KgUbzVkgOrDYePTRC5dBsbnh0tLcIy9rhpkbDCvoBKmzobUKDjWXYl/REWUPFVv9GcAT3kWeEevWA3PtZFZ8kL2lK2KhJdGNuHrvqGW034U8FfURcVds9MlhJZfpp0kQiejA+uBO969HrUJp1YENqCQ6F0PEvM6I5up3QCP1HJmEjakVSsK3NeT4KqXzB7J4Vb7zqMkbuAATSWK7LV3JCvRNGHaBF9Khm0GvGWIf1vPsvx5aPFzM1eVUtb9MkKFUcY0Z+mlTueUP0PJOjk8Ihq9uI8V8VWDMRZC8YMZz+TfLxZCOfMrDocVy97dbR6CQdWcI1mFIO76kht6ZWmLYwKv3TdiN4guzyw2cUjOAXnR+6ef/fhfHs1KfBNIgUAl
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,330 +118,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-As Linus mentioned in [1], currently we have several memcpy() use-cases
-which use 'current->comm' to copy the task name over to local copies.
-For an example:
+On Mon, Aug 11, 2025 at 12:57=E2=80=AFPM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+> On Mon, Aug 11, 2025 at 10:40:50AM +0800, Barry Song wrote:
+> > On Fri, Aug 8, 2025 at 2:59=E2=80=AFAM Lorenzo Stoakes
+> > > The expectation by those discussing this from the start was that
+> > > vm_normal_folio() (invoked by mremap_folio_pte_batch()) would likely =
+be the
+> > > culprit due to having to retrieve memory from the vmemmap (which mrem=
+ap()
+> > > page table moves does not otherwise do, meaning this is inevitably co=
+ld
+> > > memory).
+> >
+> > If vm_normal_folio() is so expensive, does that mean it negates the
+> > benefits that commit f822a9a81a31 (=E2=80=9Cmm: optimize mremap() by PT=
+E
+> > batching=E2=80=9D) was originally intended to achieve through PTE batch=
+ing?
+>
+> Not for arm64 apparently. And the hint check introduces here should avoid
+> regressions even there when small folios are in place.
 
- ...
- char comm[TASK_COMM_LEN];
- memcpy(comm, current->comm, TASK_COMM_LEN);
- ...
+I still don=E2=80=99t understand why this is fine on arm64. We do have fast=
+er
+folio_pte_batch(), get_and_clear_ptes(), and set_ptes() with contpte, but
+are those benefits really enough to outweigh the disadvantage of
+vm_normal_folio(), given those PTEs are likely in the same cacheline?
 
-These should be rather calling a wrappper like "get_task_array()",
-which is implemented as:
+Unless the previous contpte_try_unfold() was very costly and removing it yi=
+elded
+a significant improvement, it=E2=80=99s difficult to see how the benefits w=
+ould outweigh
+the drawbacks of vm_normal_folio(). Does this imply that there was already =
+a
+regression in mremap() caused by contpte_try_unfold() before?
+And that Dev=E2=80=99s patch is essentially a fix for this regression on ar=
+m64?
 
-   static __always_inline void
-       __cstr_array_copy(char *dst,
-            const char *src, __kernel_size_t size)
-   {
-        memcpy(dst, src, size);
-        dst[size] = 0;
-   }
+Sorry, maybe I=E2=80=99m talking too much, but I=E2=80=99m curious about th=
+e whole story:-)
 
-   #define get_task_array(dst,src) \
-      __cstr_array_copy(dst, src, __must_be_array(dst))
+>
+> In similar series to these in other areas, it appears we need the folio
+> anyway so there is no additional overhead to deal with, in mremap() you'd
+> otherwise just be looking at page tables which makes so this egregious
+> here.
+>
 
-The relevant 'memcpy()' users were identified using the following search
-pattern:
- $ git grep 'memcpy.*->comm\>'
-
-[1]. https://lore.kernel.org/all/CAHk-=wi5c=_-FBGo_88CowJd_F-Gi6Ud9d=TALm65ReN7YjrMw@mail.gmail.com/
-
-Signed-off-by: Bhupesh <bhupesh@igalia.com>
----
- include/linux/coredump.h                      |  2 +-
- include/linux/sched.h                         | 32 +++++++++++++++++++
- include/linux/tracepoint.h                    |  4 +--
- include/trace/events/block.h                  | 10 +++---
- include/trace/events/oom.h                    |  2 +-
- include/trace/events/osnoise.h                |  2 +-
- include/trace/events/sched.h                  | 13 ++++----
- include/trace/events/signal.h                 |  2 +-
- include/trace/events/task.h                   |  4 +--
- tools/bpf/bpftool/pids.c                      |  6 ++--
- .../bpf/test_kmods/bpf_testmod-events.h       |  2 +-
- 11 files changed, 54 insertions(+), 25 deletions(-)
-
-diff --git a/include/linux/coredump.h b/include/linux/coredump.h
-index 68861da4cf7c..bcee0afc5eaf 100644
---- a/include/linux/coredump.h
-+++ b/include/linux/coredump.h
-@@ -54,7 +54,7 @@ extern void vfs_coredump(const kernel_siginfo_t *siginfo);
- 	do {	\
- 		char comm[TASK_COMM_LEN];	\
- 		/* This will always be NUL terminated. */ \
--		memcpy(comm, current->comm, sizeof(comm)); \
-+		get_task_array(comm, current->comm); \
- 		printk_ratelimited(Level "coredump: %d(%*pE): " Format "\n",	\
- 			task_tgid_vnr(current), (int)strlen(comm), comm, ##__VA_ARGS__);	\
- 	} while (0)	\
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 97ea2ac2a97a..6602ec132297 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1960,12 +1960,44 @@ extern void wake_up_new_task(struct task_struct *tsk);
- 
- extern void kick_process(struct task_struct *tsk);
- 
-+/*
-+ * - Why not use task_lock()?
-+ *   User space can randomly change their names anyway, so locking for readers
-+ *   doesn't make sense. For writers, locking is probably necessary, as a race
-+ *   condition could lead to long-term mixed results.
-+ *   The logic inside __set_task_comm() should ensure that the task comm is
-+ *   always NUL-terminated and zero-padded. Therefore the race condition between
-+ *   reader and writer is not an issue.
-+ */
-+
- extern void __set_task_comm(struct task_struct *tsk, const char *from, bool exec);
- #define set_task_comm(tsk, from) ({			\
- 	BUILD_BUG_ON(sizeof(from) < TASK_COMM_LEN);	\
- 	__set_task_comm(tsk, from, false);		\
- })
- 
-+/*
-+ * 'get_task_array' can be 'data-racy' in the destination and
-+ * should not be used for cases where a 'stable NUL at the end'
-+ * is needed. Its better to use strscpy and friends for such
-+ * use-cases.
-+ *
-+ * It is suited mainly for a 'just copy comm to a constant-sized
-+ * array' case - especially in performance sensitive use-cases,
-+ * like tracing.
-+ */
-+
-+static __always_inline void
-+	__cstr_array_copy(char *dst, const char *src,
-+			  __kernel_size_t size)
-+{
-+	memcpy(dst, src, size);
-+	dst[size] = 0;
-+}
-+
-+#define get_task_array(dst, src) \
-+	__cstr_array_copy(dst, src, __must_be_array(dst))
-+
- static __always_inline void scheduler_ipi(void)
- {
- 	/*
-diff --git a/include/linux/tracepoint.h b/include/linux/tracepoint.h
-index 826ce3f8e1f8..40e04cb660ce 100644
---- a/include/linux/tracepoint.h
-+++ b/include/linux/tracepoint.h
-@@ -570,10 +570,10 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
-  *	*
-  *
-  *	TP_fast_assign(
-- *		memcpy(__entry->next_comm, next->comm, TASK_COMM_LEN);
-+ *		get_task_array(__entry->next_comm, next->comm);
-  *		__entry->prev_pid	= prev->pid;
-  *		__entry->prev_prio	= prev->prio;
-- *		memcpy(__entry->prev_comm, prev->comm, TASK_COMM_LEN);
-+ *		get_task_array(__entry->prev_comm, prev->comm);
-  *		__entry->next_pid	= next->pid;
-  *		__entry->next_prio	= next->prio;
-  *	),
-diff --git a/include/trace/events/block.h b/include/trace/events/block.h
-index 6aa79e2d799c..de1fe35333fc 100644
---- a/include/trace/events/block.h
-+++ b/include/trace/events/block.h
-@@ -213,7 +213,7 @@ DECLARE_EVENT_CLASS(block_rq,
- 
- 		blk_fill_rwbs(__entry->rwbs, rq->cmd_flags);
- 		__get_str(cmd)[0] = '\0';
--		memcpy(__entry->comm, current->comm, TASK_COMM_LEN);
-+		get_task_array(__entry->comm, current->comm);
- 	),
- 
- 	TP_printk("%d,%d %s %u (%s) %llu + %u %s,%u,%u [%s]",
-@@ -351,7 +351,7 @@ DECLARE_EVENT_CLASS(block_bio,
- 		__entry->sector		= bio->bi_iter.bi_sector;
- 		__entry->nr_sector	= bio_sectors(bio);
- 		blk_fill_rwbs(__entry->rwbs, bio->bi_opf);
--		memcpy(__entry->comm, current->comm, TASK_COMM_LEN);
-+		get_task_array(__entry->comm, current->comm);
- 	),
- 
- 	TP_printk("%d,%d %s %llu + %u [%s]",
-@@ -434,7 +434,7 @@ TRACE_EVENT(block_plug,
- 	),
- 
- 	TP_fast_assign(
--		memcpy(__entry->comm, current->comm, TASK_COMM_LEN);
-+		get_task_array(__entry->comm, current->comm);
- 	),
- 
- 	TP_printk("[%s]", __entry->comm)
-@@ -453,7 +453,7 @@ DECLARE_EVENT_CLASS(block_unplug,
- 
- 	TP_fast_assign(
- 		__entry->nr_rq = depth;
--		memcpy(__entry->comm, current->comm, TASK_COMM_LEN);
-+		get_task_array(__entry->comm, current->comm);
- 	),
- 
- 	TP_printk("[%s] %d", __entry->comm, __entry->nr_rq)
-@@ -504,7 +504,7 @@ TRACE_EVENT(block_split,
- 		__entry->sector		= bio->bi_iter.bi_sector;
- 		__entry->new_sector	= new_sector;
- 		blk_fill_rwbs(__entry->rwbs, bio->bi_opf);
--		memcpy(__entry->comm, current->comm, TASK_COMM_LEN);
-+		get_task_array(__entry->comm, current->comm);
- 	),
- 
- 	TP_printk("%d,%d %s %llu / %llu [%s]",
-diff --git a/include/trace/events/oom.h b/include/trace/events/oom.h
-index 9f0a5d1482c4..31e5b7295188 100644
---- a/include/trace/events/oom.h
-+++ b/include/trace/events/oom.h
-@@ -23,7 +23,7 @@ TRACE_EVENT(oom_score_adj_update,
- 
- 	TP_fast_assign(
- 		__entry->pid = task->pid;
--		memcpy(__entry->comm, task->comm, TASK_COMM_LEN);
-+		get_task_array(__entry->comm, task->comm);
- 		__entry->oom_score_adj = task->signal->oom_score_adj;
- 	),
- 
-diff --git a/include/trace/events/osnoise.h b/include/trace/events/osnoise.h
-index 3f4273623801..f67f8b5eca75 100644
---- a/include/trace/events/osnoise.h
-+++ b/include/trace/events/osnoise.h
-@@ -116,7 +116,7 @@ TRACE_EVENT(thread_noise,
- 	),
- 
- 	TP_fast_assign(
--		memcpy(__entry->comm, t->comm, TASK_COMM_LEN);
-+		get_task_array(__entry->comm, t->comm);
- 		__entry->pid = t->pid;
- 		__entry->start = start;
- 		__entry->duration = duration;
-diff --git a/include/trace/events/sched.h b/include/trace/events/sched.h
-index 7b2645b50e78..66fe808f2654 100644
---- a/include/trace/events/sched.h
-+++ b/include/trace/events/sched.h
-@@ -152,7 +152,7 @@ DECLARE_EVENT_CLASS(sched_wakeup_template,
- 	),
- 
- 	TP_fast_assign(
--		memcpy(__entry->comm, p->comm, TASK_COMM_LEN);
-+		get_task_array(__entry->comm, p->comm);
- 		__entry->pid		= p->pid;
- 		__entry->prio		= p->prio; /* XXX SCHED_DEADLINE */
- 		__entry->target_cpu	= task_cpu(p);
-@@ -237,11 +237,11 @@ TRACE_EVENT(sched_switch,
- 	),
- 
- 	TP_fast_assign(
--		memcpy(__entry->prev_comm, prev->comm, TASK_COMM_LEN);
-+		get_task_array(__entry->prev_comm, prev->comm);
- 		__entry->prev_pid	= prev->pid;
- 		__entry->prev_prio	= prev->prio;
- 		__entry->prev_state	= __trace_sched_switch_state(preempt, prev_state, prev);
--		memcpy(__entry->next_comm, next->comm, TASK_COMM_LEN);
-+		get_task_array(__entry->next_comm, next->comm);
- 		__entry->next_pid	= next->pid;
- 		__entry->next_prio	= next->prio;
- 		/* XXX SCHED_DEADLINE */
-@@ -346,7 +346,7 @@ TRACE_EVENT(sched_process_exit,
- 	),
- 
- 	TP_fast_assign(
--		memcpy(__entry->comm, p->comm, TASK_COMM_LEN);
-+		get_task_array(__entry->comm, p->comm);
- 		__entry->pid		= p->pid;
- 		__entry->prio		= p->prio; /* XXX SCHED_DEADLINE */
- 		__entry->group_dead	= group_dead;
-@@ -787,14 +787,13 @@ TRACE_EVENT(sched_skip_cpuset_numa,
- 	),
- 
- 	TP_fast_assign(
--		memcpy(__entry->comm, tsk->comm, TASK_COMM_LEN);
-+		get_task_array(__entry->comm, tsk->comm);
- 		__entry->pid		 = task_pid_nr(tsk);
- 		__entry->tgid		 = task_tgid_nr(tsk);
- 		__entry->ngid		 = task_numa_group_id(tsk);
- 		BUILD_BUG_ON(sizeof(nodemask_t) != \
- 			     BITS_TO_LONGS(MAX_NUMNODES) * sizeof(long));
--		memcpy(__entry->mem_allowed, mem_allowed_ptr->bits,
--		       sizeof(__entry->mem_allowed));
-+		get_task_array(__entry->mem_allowed, mem_allowed_ptr->bits);
- 	),
- 
- 	TP_printk("comm=%s pid=%d tgid=%d ngid=%d mem_nodes_allowed=%*pbl",
-diff --git a/include/trace/events/signal.h b/include/trace/events/signal.h
-index 1db7e4b07c01..0681dc5ab1de 100644
---- a/include/trace/events/signal.h
-+++ b/include/trace/events/signal.h
-@@ -67,7 +67,7 @@ TRACE_EVENT(signal_generate,
- 	TP_fast_assign(
- 		__entry->sig	= sig;
- 		TP_STORE_SIGINFO(__entry, info);
--		memcpy(__entry->comm, task->comm, TASK_COMM_LEN);
-+		get_task_array(__entry->comm, task->comm);
- 		__entry->pid	= task->pid;
- 		__entry->group	= group;
- 		__entry->result	= result;
-diff --git a/include/trace/events/task.h b/include/trace/events/task.h
-index af535b053033..9553946943a6 100644
---- a/include/trace/events/task.h
-+++ b/include/trace/events/task.h
-@@ -21,7 +21,7 @@ TRACE_EVENT(task_newtask,
- 
- 	TP_fast_assign(
- 		__entry->pid = task->pid;
--		memcpy(__entry->comm, task->comm, TASK_COMM_LEN);
-+		get_task_array(__entry->comm, task->comm);
- 		__entry->clone_flags = clone_flags;
- 		__entry->oom_score_adj = task->signal->oom_score_adj;
- 	),
-@@ -44,7 +44,7 @@ TRACE_EVENT(task_rename,
- 	),
- 
- 	TP_fast_assign(
--		memcpy(entry->oldcomm, task->comm, TASK_COMM_LEN);
-+		get_task_array(entry->oldcomm, task->comm);
- 		strscpy(entry->newcomm, comm, TASK_COMM_LEN);
- 		__entry->oom_score_adj = task->signal->oom_score_adj;
- 	),
-diff --git a/tools/bpf/bpftool/pids.c b/tools/bpf/bpftool/pids.c
-index 23f488cf1740..a5d339cb8ca3 100644
---- a/tools/bpf/bpftool/pids.c
-+++ b/tools/bpf/bpftool/pids.c
-@@ -53,8 +53,7 @@ static void add_ref(struct hashmap *map, struct pid_iter_entry *e)
- 		refs->refs = tmp;
- 		ref = &refs->refs[refs->ref_cnt];
- 		ref->pid = e->pid;
--		memcpy(ref->comm, e->comm, sizeof(ref->comm));
--		ref->comm[sizeof(ref->comm) - 1] = '\0';
-+		get_task_array(ref->comm, e->comm);
- 		refs->ref_cnt++;
- 
- 		return;
-@@ -77,8 +76,7 @@ static void add_ref(struct hashmap *map, struct pid_iter_entry *e)
- 	}
- 	ref = &refs->refs[0];
- 	ref->pid = e->pid;
--	memcpy(ref->comm, e->comm, sizeof(ref->comm));
--	ref->comm[sizeof(ref->comm) - 1] = '\0';
-+	get_task_array(ref->comm, e->comm);
- 	refs->ref_cnt = 1;
- 	refs->has_bpf_cookie = e->has_bpf_cookie;
- 	refs->bpf_cookie = e->bpf_cookie;
-diff --git a/tools/testing/selftests/bpf/test_kmods/bpf_testmod-events.h b/tools/testing/selftests/bpf/test_kmods/bpf_testmod-events.h
-index aeef86b3da74..81880748550f 100644
---- a/tools/testing/selftests/bpf/test_kmods/bpf_testmod-events.h
-+++ b/tools/testing/selftests/bpf/test_kmods/bpf_testmod-events.h
-@@ -20,7 +20,7 @@ TRACE_EVENT(bpf_testmod_test_read,
- 	),
- 	TP_fast_assign(
- 		__entry->pid = task->pid;
--		memcpy(__entry->comm, task->comm, TASK_COMM_LEN);
-+		get_task_array(__entry->comm, task->comm);
- 		__entry->off = ctx->off;
- 		__entry->len = ctx->len;
- 	),
--- 
-2.38.1
-
+Thanks
+Barry
 
