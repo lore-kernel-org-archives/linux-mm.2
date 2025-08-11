@@ -2,111 +2,119 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A6CAC87FD2
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 13:38:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 931E3C87FD2
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 13:43:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DCC58E0057; Mon, 11 Aug 2025 09:38:48 -0400 (EDT)
+	id 1CF5F8E0058; Mon, 11 Aug 2025 09:43:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B4508E0045; Mon, 11 Aug 2025 09:38:48 -0400 (EDT)
+	id 1A7458E0045; Mon, 11 Aug 2025 09:43:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F33978E0057; Mon, 11 Aug 2025 09:38:47 -0400 (EDT)
+	id 0BD568E0058; Mon, 11 Aug 2025 09:43:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E1B8D8E0045
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:38:47 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 868F1569FF
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 13:38:47 +0000 (UTC)
-X-FDA: 83764581894.06.C16BC6D
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9B9F94000B
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 13:38:45 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=J4guHVzq;
-	spf=pass (imf04.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EFA568E0045
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 09:43:07 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 83AEA1401FE
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 13:43:07 +0000 (UTC)
+X-FDA: 83764592814.24.00B82EF
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 9541F1C0005
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 13:43:05 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lu9MisXG;
+	spf=pass (imf21.hostedemail.com: domain of tamird@gmail.com designates 209.85.208.174 as permitted sender) smtp.mailfrom=tamird@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754919525;
+	s=arc-20220608; t=1754919785;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TBCgH1jXbD8cQk7vL0lpvlc3a5C92LMaThlyJ1yPJn8=;
-	b=fSIlvmtm92FqnrYOjX/CRDA6euyUXk3Dz3zqlh6jD8idiDXgiTg+ZVRZnehFaIv8/tCweM
-	tvIzZeHp9oLXas8Vrqq6pnnm27YIWYG+6RdkbpZLWTua9T5bEfTKCRJ4Hp22kUPl8pCTP4
-	6f48EAAWZnGB9oj4N0pY4+Sj3dyU2Yk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754919525; a=rsa-sha256;
-	cv=none;
-	b=Y8CgqV38L0wHedFrn4uOy3AyCttU/MeGk3Hq0eT6ejKPaWV8t4Y5GmTMSBc39czy3jlB/+
-	Nl6SNjR5chkfdzWNpPE/xpHu1pj6QLSujiA4rJb8AS+Ddvm/iM0C8ipZCDf3/lR/cUwO/2
-	5jPCVvIQ0D89m1BvsH0gDRYNzDbWR84=
+	bh=e2uF7vPpkuTtX/qbaQwoJviWpFHx9vCm0V6L9tSQgUI=;
+	b=2EqH0B19p4fJW2/WkR5ZdyeBFO9Ilc15DX5kiSVSKIPqxWgUNNRqUposjRb9srjB2M4TBh
+	rVM1mUq2iySd+4o3L3mWqH92q9PmLB01M8xptp/vjv/HqzkvoHx/1GKbXz0FG8MUhEvKez
+	yYXYZoBlJPzvsqXZtSNNSYlYvIt1Lh8=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=J4guHVzq;
-	spf=pass (imf04.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lu9MisXG;
+	spf=pass (imf21.hostedemail.com: domain of tamird@gmail.com designates 209.85.208.174 as permitted sender) smtp.mailfrom=tamird@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3b7910123a0so4043627f8f.1
-        for <linux-mm@kvack.org>; Mon, 11 Aug 2025 06:38:45 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754919785; a=rsa-sha256;
+	cv=none;
+	b=cXAlFFqYVV95fnMsiR4C2+Q0F/MYPY50I2/ymlBA0Sxg1ghR/C3UrbsD1BbIh00/dkrDno
+	wImPVST3tBe9qy29j33SjV9XavxpMkTG+PuSAlM3UI8Mh5/0WseaoFqT5V8DEA4yEXbzwi
+	vAOSEfFo+662ZnPVH4kWcs5NwDMFTgU=
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-3322e4ac195so33352161fa.0
+        for <linux-mm@kvack.org>; Mon, 11 Aug 2025 06:43:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754919524; x=1755524324; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1754919784; x=1755524584; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TBCgH1jXbD8cQk7vL0lpvlc3a5C92LMaThlyJ1yPJn8=;
-        b=J4guHVzqBShG5/4jlKGi8VEp4Kgnnp4MjvNpRhS6/u9YZf5149NMSLv9hJid6IC4/U
-         EBKlAR8on72LZ0F1E6zANsCxfmE4hdcIlOIJNSiClufLfsiyiyXCu/x4JKMyfLU/rKgs
-         lkQ1asALYTruW5boyT2b35UeI6jLUBixVeJif2YB1VxThWA/YWX5bP1tUdqdKJeyO51+
-         WuLHO+hHTFo/Wft9iBqOCoBIFsgBc817aLr16gWk6rmzT58iYwiQ3sOQ9u8SelMuWPeE
-         FLzSE9mg4how+Txd3qjXTQPHz+oERZ7RU+aFFeTeHIkt3jH2CDM/BV3rfdFbybqG9ajx
-         CFXQ==
+        bh=e2uF7vPpkuTtX/qbaQwoJviWpFHx9vCm0V6L9tSQgUI=;
+        b=lu9MisXG0hK8BQ8IxQusnpaYk+eyOedf5qHhye161c1VnOz5wBL/EhdTzD8Ury+F0w
+         e31Q2ogeUQvyLWTrUAT+//iKIHqbLUJg8p5In4vADtBDtbK6IYiTMJFbE6ogZcl1DKkN
+         Ai6/x8hSRyFMnvrQabtwJZQDMSo8tXYuia3U7aoCKOI68HM8U0D9qMM8RC5QoqshbvR2
+         6ZQkSh5nJNtqKLyBJhmIUXO78mUYpyALlFJcFoxw2ynUTdO60K0yx1azTvwbYnTDiaQF
+         uzQlMWqBzetGUt6hzs1Irb+ztx9h0Qf8FE5bWKUJPFLV6RhIWRqJYNgoQAfSdzQLjWSZ
+         /zkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754919524; x=1755524324;
+        d=1e100.net; s=20230601; t=1754919784; x=1755524584;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TBCgH1jXbD8cQk7vL0lpvlc3a5C92LMaThlyJ1yPJn8=;
-        b=R7vLTQt/1nXJvXQJ/JNmKucR5tIj5zpfm8FrGYj4oMGiQFaIWP4pGlxlj0f0CFDr8E
-         WUubxOixHtlHd54xBdfX/QDox37i8DrgeCWOhiupfK1avTAArZcI79yh4Qo51x2atB9z
-         9y9X1oSLp4lkhKfKMQ08pNzr4LzUcrJRi+3Z5iKjKvJlT3GAsnILosLB9tLGHPPPNAlI
-         toPWBV5lzU8j78cCB9cgxirGxPOmHjGzJandnrBCi8ojHgVt9JAoUwUEDImCHa4LvVRD
-         ZVfg+wze3W97NWY1ZrMdnUwSdwhAbfZmO2lOcHy0WI2INKNWIp3zBT+TJsJhTs9Ybkmg
-         sdPw==
-X-Forwarded-Encrypted: i=1; AJvYcCX16/KoYEuBH+bRlna7UWPm7RFhSXypthf2j7KrUWYYTI02tMi8+drwaiYiAY/5ZdjdLBGRLwOa7w==@kvack.org
-X-Gm-Message-State: AOJu0YyDYpnAsbQVE6CSZ+o7GlFqPymaoT2fOJgsdqPmHqJhbVRGUSgI
-	19ptTHNLF/qDBXGLN8J4SZ5ss97n8/MB4YAS5JSHnmFxC3AEJ9dvMl26EhxsZH0dJ+iMAonYjej
-	OyXonvnjprLgG3B58mtRBBjCZNiMR7RU=
-X-Gm-Gg: ASbGnctYIFilOZl7ifLxeQzTtzx3aE85vClYEghzHFJfVrFea1u9db3QpHOn3QueHBW
-	hWwzOMH8shDIXAYGV0V33VtxbTAVlOFdVDzgAFvk9EBGwvhNUJGHXkpvVdRkEJMAzw50zqkBPi5
-	/gxtkUWmIHMhLEkrSxitxQ05lkoXarM/Cd1LgBzrUXSIU8Mi4b6wJQ9/DjAJjm+JDFS3Xyb+e3F
-	Eb+OIQV4tCV7CIg
-X-Google-Smtp-Source: AGHT+IGxUMxKS3K7mls/h9vXG26wkyVH1sxQQWEW7+ny6/XvX40fc1DRmX5UXk1P2ba82JVPojlxTCApE8OfHIL95wg=
-X-Received: by 2002:a5d:5889:0:b0:3b7:90f3:cd8a with SMTP id
- ffacd0b85a97d-3b900b83c9bmr10624691f8f.49.1754919523921; Mon, 11 Aug 2025
- 06:38:43 -0700 (PDT)
+        bh=e2uF7vPpkuTtX/qbaQwoJviWpFHx9vCm0V6L9tSQgUI=;
+        b=j9KYxfmxkuTsMnQd1Fh6CGXr7M0OAGyNl/KKvJSKVy8O5d4IVTOQFkr84UoHDrIWjw
+         gXBnn2oMGBEdTFATa7a64Z8VjT4jWNIyLjXk8EHjF2qlu2QAiZkipIUx/qLi3sOnXm31
+         GzK7iaipAffZHHltJF4hPglzppBzetx254htEwVlxiZcqavY5rwE1lmx85E4et0KnSnH
+         K4ATgStfu2bh5Dr9kJwP+tceZOFktGNN0SVb1lLg5fKBokT/aNkVJc7MsZJC7i0Hbwlr
+         aUU0ftR4Sf+G9yKMS+RO7Qy34pj+UM4l/yZW5GTy6L4RV4A1BhZCAp2MfYHRL13Ta8Xi
+         /3+g==
+X-Forwarded-Encrypted: i=1; AJvYcCX+CMfucPRP2LO0k/+VLF+qUQHgKaA6HABomZ77+3a+flGAIauvRoDrMtdcggAauzKS65RplN63aQ==@kvack.org
+X-Gm-Message-State: AOJu0YwF9HY73U0v9TGZ+bEw9DKiQGs2RaMERxHGgAkeUzg5mmR3J1mH
+	QbnZJWYeWk5UeZQOX9jFqSC98bvhFF/OS86kIgFI48ggB5rQZRfiXa1A7KUnNUyePAGJxTJrRC5
+	XqYJ9l9TJzfr67mnHjOH9qtmGjzdoBNM=
+X-Gm-Gg: ASbGncs6OL8I7gbc/Uxc/kvJaVnvicP14R6wIChISojHKcQejye5jbaO+OoD+rMI3gZ
+	Vxd8FtadT0k4beJgZzCoExRuvP2jxeWfvPziLuStblPa5nTyQip2PnL3qCwv9Sl6FHuc3IHHhhe
+	FiUqYMKL44Np/Rx//xQySSmE3v2HHkso1ZL5NHHt26oysL87Cjwdn0ocyu7lKRzXH/TMhJ4ow2f
+	8lOyvoQeWwyHNAdnGc=
+X-Google-Smtp-Source: AGHT+IEol4/14g1RdFTVWvKKfnfbHDYflaB3EmyktN+uy3kEuQJOPffANVEaEm6xSj3auWaeo5zGZxx39z1GzBXm49o=
+X-Received: by 2002:a05:651c:222a:b0:331:ed39:6a2 with SMTP id
+ 38308e7fff4ca-333a2107c71mr28463591fa.6.1754919783604; Mon, 11 Aug 2025
+ 06:43:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250811034257.154862-1-zhao.xichao@vivo.com>
-In-Reply-To: <20250811034257.154862-1-zhao.xichao@vivo.com>
-From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Mon, 11 Aug 2025 15:38:30 +0200
-X-Gm-Features: Ac12FXx7kQl8MpZMBlEL69UNklwxkty7tb561BkfRgxFfLERdIDidFrWBBBiqgk
-Message-ID: <CA+fCnZf8XVydjMNRfR3JDeE=3i_0p+w0gTP8ep43LVU8k2Tsxw@mail.gmail.com>
-Subject: Re: [PATCH] mm: remove unnecessary pointer variables
-To: Xichao Zhao <zhao.xichao@vivo.com>
-Cc: ryabinin.a.a@gmail.com, akpm@linux-foundation.org, glider@google.com, 
-	dvyukov@google.com, vincenzo.frascino@arm.com, kasan-dev@googlegroups.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20250713-xarray-insert-reserve-v2-0-b939645808a2@gmail.com>
+ <iPv7ly-33WYOq_9Fait3DBD6dQCAn1WCRGwXjlPgNBmuj5yejzu0D6-qfg3VYyJfwu9uS4rJOu9o3L2ebudROw==@protonmail.internalid>
+ <20250713-xarray-insert-reserve-v2-3-b939645808a2@gmail.com> <87o6smf0no.fsf@t14s.mail-host-address-is-not-set>
+In-Reply-To: <87o6smf0no.fsf@t14s.mail-host-address-is-not-set>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Mon, 11 Aug 2025 09:42:26 -0400
+X-Gm-Features: Ac12FXwkTewa4VnDdAm-sjbFCbNz-t0XSzJ_IMvpOUXuMOMHXyVuYMlS2C03l70
+Message-ID: <CAJ-ks9kTacXO_PbcH8c-60Ae88vJ_w6_pbmXLzOpzTKgRjiXPw@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] rust: xarray: add `insert` and `reserve`
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Janne Grunau <j@jannau.net>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 9B9F94000B
-X-Stat-Signature: 4rshpzefo5qb1iyhyoqk19tuskuz967y
+X-Stat-Signature: 1tbke7ddbfh6m4s875atcy1bz7fqkns8
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1754919525-564469
-X-HE-Meta: U2FsdGVkX19fb7ABaio+cDrHoiU2V6QlI2Tzfom1FsbHid7KHZ8Cu83irCeX6kcN2AHhzVMZhymRbE0/KAU86ac2toC4iJ4Zd6p2bKKQwTR1ZxxEdln4Gwuqxcg2gocmET6VMLyHDJq0lVbtCtp7k89viEBM7ebhK98Gvls9D9hxxe67jKrW1O451Kk9euCpaJcnB232lckQN+VfjXj3nLCteCGrA4zRs5OtytvCoX4WIs3XS+ctnQ+mbWb4QuV9fVXzgUjYgFmlvr1P4aHAJSZXCuLnrH5L8OMLYwWAHpNZXerChZW7Mypg3cfUV+typkbHi0q0saMhZLQ0dkCAMzByk0rkqPnTPzNFfnefdfx+UJdqxjMlU2IxUuniXFF3TxVikxpFGkexueDnnrYS8n5BvAMHFz9osAyCFWDg5sxHn2qnqSE2EvdrLEkJB/Pj7/XlNXdlCRdQxL2WoeA/ge/ZJA/2ANcSln3yTCiGGMw+mFdE4Cxf+USglNyn0Zo54oQm0SuivGTClqto05JLgRMK/W3OZiCq97Y5fT9beT+Avi8yd9qKmLPVwwxH1hFZqc+WjGr3d3wLy8lmxKM4SkfSMz5adwS9eDnFmbomTfnHSyXCcDYpb6XkfcQMXpU5O9Rk+hfitWJaEWjqyOQrf+rkSt1V4BPieyQB2IQoMAFYgRFx68f/PKj5Rc9wcHp0/489zBkdCnVuBZQ7D03ugZkatgmET/SXKEOFG0vKWiOFZ9ldjXJniJwUQkdR37mcsPreRfcbeiAJJIJD+lNHeG4rEqgVjpL6eC/yNCzfmtpoj2Po6Aq0hus/xB+VhDJAy+I5voPDoTLA/+BdSGFhoxZgqstsbQgfYMRpZ7YlvT7RlGMQhxkluJExsiAx0zFQ+97UBIX5rp1zimRnnEzp5vBHjDxFCdWHZ2ngUio0R0BLHBveYQK3n/iLeb6Lknaef+7rjPr9jZLY2gSV+z4
- xVHzx+Dm
- YUSdiu2VjAon0vzcOPAe7Ym07hcBcluVpsbA6whOEiOcQpVjA9ew2ed+4mYpLTzX6tTiT6ChCjjptJ4oFbzELP3bYRGQ1lKWkXCBMGV1W36lsT1lCuEtNuIlsE7WCr6uPyXmk4F4OYyT+FU+7QicBQi8gfcQTof3kLtJKEw3yAS6Cr/oioAbrYHOQHS9xfzQBy1k/A3X8tCFkWzHY6xp+oWU/tUtDXWeqdAQ/qdow+qMLCIGej7vgskt8m5/e60WsDB9O//hX/G1BFUw6Nv17ALdnj5CE/duJ42CwobkcCMqfgyZgn7KTbDUHRidc0kNgrQalrmsAXg0f55UaKFF1itoGrjFmD0AdPVbyx4dFVcerCl/aUfqej4j7WHyWqWJ2RTnT/Fy9GlyQzFpPK/MfpBrF23UDF+MgMNDtcgQ9PNCEe8kQlpVYgMxK/epgHEBbBmgtQvdGVd2pnlRis5EIUgjWwP7qrjIYwc0W8wDothRb5gHN64FpkSqCgUz4/C4zNhCG
+X-Rspamd-Queue-Id: 9541F1C0005
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1754919785-995773
+X-HE-Meta: U2FsdGVkX1+ekC9396oj+y6LIgWLth/Bp27RnXS6M65c05VEP6Ty0qGxB5CXG4KNFSSG8eg8c1MHU6f63xrHro0QFgUZnBNVLrCvCLxukkh1fgGu3ePD9lq2rf3kr/awEl8QcDWbTMEBx0Zn9SfhnvB6k88hCSQmzfHiJ8DupIWjrSgOtQmoSfOdIZ7VRtj2/Q404kEfa7OuxPSII2svbKPmkaWHrhI9Ml9Hg1YlxpZx8S811HoTo/sIfP+nW3A6vI281XsIVGe04HfVZjfqC+DCluCmcQ+lJVX4mKEPJIqpbqmnpYII28zhqAZQ1Sojyhzod9c9x8jLuaHr3uKvk3hOdNJD9R4DNlxbHvZ5vSgoRahGEioXzqmK0mADslXh4HTMrw59JU/HoPV63K5vv7Lmj/WlgIqos/VRfXgsIsBVR8HNc4e36oGT6KOfbzGRt1h56a2pvwitkssejRO2e+6kHva+DDxevNGE4favNM2limTrxqJFej6Nn/aLZW7Dg2M9//WIJvgrW7V8BWoA2ysiDnwg7+E8HKnpzECFBV8/n/4jGYBNIBkC9RCz1CHEO6rDvKp6OuV275bL7XJNZCSbNo5PIq4MgTqtEs+gQ/WGuqSw4UinjMVK5YDwOxKHu3mlUFCjF77Hg+ePO7uK/qEZCLSqP8+hW7r9sWq+kcaiC0MkZoxMasNzYBem2ybd4ixlwOuGNAEChd1P3wcwZobV0Rs/Gv7YH1vdhkiu/lEfRVtrp109aHa9Dp55KN4I/g/ewdYZE0cjXDyCDAZ2sejN2/JPjUOz0ZhG6UYxsEHsTHdDE3oiw59rs5ztiwOG2Er0U3DNFiZ9V0j2aoNiFgAMqzbt+6PLuC8Ao5AU7hc6RwCdUcgoEps0o6AP9D6CRdcNbeTfxtttnSfumQQan2qcDpYv3UKymdZ58dIkT+w9xl4J5jSkJzqkIk4f2aacvwQfu6g6tSd+vUuawCb
+ 9GCpTCQ+
+ RmYZsdAg5aEIR0ZPMjauHbgbdopF9rpYkjZltGTVRFxEo1pqnxZeC/BASybvmkwhHVksa+g1u+7Vp3eDFx9eB+n4A9psDZJdnZxhGUSTAd+Ga+H98JM91wtLzQ4se0tllLfxm+6fii3RE5QiyY/C5jRNQ+tbqTIb0Pq2K5Ltlx9qoe036pOKI7CVgPJrKFUda9ZzJTuT9SQYWcGD5fyqG084nhTMiVBj6Q1AydK6dmzS12AOAJ1gILEpWjCHVE4fuaVJ6Nu8DRnLNkOgIe/HIrjfi3ej7EONclnYZAJsjc1p63qqbHfeRJ//V3jPWTJJkIY1M80dGn1mCwTZ9h8ni0fGQv9duvtafyQsSbsqInOzIbiaOk8su+9CRvGXyKkily5nf7kuzu9S2u7GTnMUx3UmhayTIJckR9AB8VXqMqEB52YGfuL449rWH6nh7Z0KCg1bOWiXt7q36Nd34Bx+RCZ9nZFd46F/KHyTVTX0rQztOnyeufuHfGL9pVvN4uDTzNBZxvLLdnWmlolyzC+HMkghbQA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,38 +123,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 11, 2025 at 5:43=E2=80=AFAM Xichao Zhao <zhao.xichao@vivo.com> =
-wrote:
+On Mon, Aug 11, 2025 at 9:29=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel=
+.org> wrote:
 >
-> Simplify the code to enhance readability and maintain a consistent
-> coding style.
+> "Tamir Duberstein" <tamird@gmail.com> writes:
 >
-> Signed-off-by: Xichao Zhao <zhao.xichao@vivo.com>
-> ---
->  mm/kasan/init.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+> > Add `Guard::{insert,reserve}` and `Guard::{insert,reserve}_limit`, whic=
+h
+> > are akin to `__xa_{alloc,insert}` in C.
+> >
+> > Note that unlike `xa_reserve` which only ensures that memory is
+> > allocated, the semantics of `Reservation` are stricter and require
+> > precise management of the reservation. Indices which have been reserved
+> > can still be overwritten with `Guard::store`, which allows for C-like
+> > semantics if desired.
+> >
+> > `__xa_cmpxchg_raw` is exported to facilitate the semantics described
+> > above.
+> >
+> > Tested-by: Janne Grunau <j@jannau.net>
+> > Reviewed-by: Janne Grunau <j@jannau.net>
+> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 >
-> diff --git a/mm/kasan/init.c b/mm/kasan/init.c
-> index ced6b29fcf76..e5810134813c 100644
-> --- a/mm/kasan/init.c
-> +++ b/mm/kasan/init.c
-> @@ -266,11 +266,9 @@ int __ref kasan_populate_early_shadow(const void *sh=
-adow_start,
->                 }
+> <cut>
 >
->                 if (pgd_none(*pgd)) {
-> -                       p4d_t *p;
+> > +    /// Stores an element somewhere in the given range of indices.
+> > +    ///
+> > +    /// On success, takes ownership of `ptr`.
+> > +    ///
+> > +    /// On failure, ownership returns to the caller.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// `ptr` must be `NULL` or have come from a previous call to `T::=
+into_foreign`.
+> > +    unsafe fn alloc(
 >
->                         if (slab_is_available()) {
-> -                               p =3D p4d_alloc(&init_mm, pgd, addr);
-> -                               if (!p)
-> +                               if (!p4d_alloc(&init_mm, pgd, addr))
->                                         return -ENOMEM;
->                         } else {
->                                 pgd_populate(&init_mm, pgd,
-> --
-> 2.34.1
 >
+> The naming of this method in C is confusing. Could we call it
+> insert_limit_raw on the Rust side?
 
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+I think I prefer to hew close to the C naming. Is there prior art
+where Rust names deviate from C names?
+
+> Even though this is private, I think we should also document that the
+> effect of inserting NULL is to reserve the entry.
+
+=F0=9F=91=8D
+
+> > +        &mut self,
+> > +        limit: impl ops::RangeBounds<u32>,
+> > +        ptr: *mut T::PointedTo,
+> > +        gfp: alloc::Flags,
+> > +    ) -> Result<usize> {
+> > +        // NB: `xa_limit::{max,min}` are inclusive.
+> > +        let limit =3D bindings::xa_limit {
+> > +            max: match limit.end_bound() {
+> > +                ops::Bound::Included(&end) =3D> end,
+> > +                ops::Bound::Excluded(&end) =3D> end - 1,
+> > +                ops::Bound::Unbounded =3D> u32::MAX,
+> > +            },
+> > +            min: match limit.start_bound() {
+> > +                ops::Bound::Included(&start) =3D> start,
+> > +                ops::Bound::Excluded(&start) =3D> start + 1,
+> > +                ops::Bound::Unbounded =3D> 0,
+> > +            },
+> > +        };
+> > +
+> > +        let mut index =3D u32::MAX;
+> > +
+> > +        // SAFETY:
+> > +        // - `self.xa` is always valid by the type invariant.
+> > +        // - `self.xa` was initialized with `XA_FLAGS_ALLOC` or `XA_FL=
+AGS_ALLOC1`.
+> > +        //
+> > +        // INVARIANT: `ptr` is either `NULL` or came from `T::into_for=
+eign`.
+> > +        match unsafe {
+> > +            bindings::__xa_alloc(
+> > +                self.xa.xa.get(),
+> > +                &mut index,
+> > +                ptr.cast(),
+> > +                limit,
+> > +                gfp.as_raw(),
+> > +            )
+> > +        } {
+> > +            0 =3D> Ok(to_usize(index)),
+> > +            errno =3D> Err(Error::from_errno(errno)),
+> > +        }
+> > +    }
+> > +
+> > +    /// Allocates an entry somewhere in the array.
+>
+> Should we rephrase this to match `alloc`?
+>
+>   Stores an entry somewhere in the given range of indices.
+
+=F0=9F=91=8D
+
+> <cut>
+>
+> > +impl<T: ForeignOwnable> Reservation<'_, T> {
+> > +    /// Returns the index of the reservation.
+> > +    pub fn index(&self) -> usize {
+> > +        self.index
+> > +    }
+> > +
+> > +    /// Replaces the reserved entry with the given entry.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// `ptr` must be `NULL` or have come from a previous call to `T::=
+into_foreign`.
+>
+> We should document the effect of replacing with NULL.
+
+=F0=9F=91=8D
+
+> Best regards,
+> Andreas Hindborg
+>
+>
 
