@@ -2,204 +2,116 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 14E76CA0EC4
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 18:20:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6ABA1CA0ED1
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 18:25:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D3FF8E0094; Mon, 11 Aug 2025 14:20:23 -0400 (EDT)
+	id 0EF998E0095; Mon, 11 Aug 2025 14:25:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8847A8E0093; Mon, 11 Aug 2025 14:20:23 -0400 (EDT)
+	id 0C7858E0093; Mon, 11 Aug 2025 14:25:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 725148E0094; Mon, 11 Aug 2025 14:20:23 -0400 (EDT)
+	id EF8788E0095; Mon, 11 Aug 2025 14:25:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 593858E0093
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 14:20:23 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 269CE5802F
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 18:20:23 +0000 (UTC)
-X-FDA: 83765291526.29.5DFAFA4
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2072.outbound.protection.outlook.com [40.107.244.72])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 3B5A0140005
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 18:20:19 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DC90C8E0093
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 14:25:12 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8DD5CC0278
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 18:25:12 +0000 (UTC)
+X-FDA: 83765303664.22.11C446A
+Received: from mail-pf1-f195.google.com (mail-pf1-f195.google.com [209.85.210.195])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C5E9E140002
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 18:25:10 +0000 (UTC)
 Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=c6L2vNcg;
-	spf=pass (imf23.hostedemail.com: domain of ziy@nvidia.com designates 40.107.244.72 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754936420;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DaX9HgB2;
+	spf=pass (imf23.hostedemail.com: domain of wjl.linux@gmail.com designates 209.85.210.195 as permitted sender) smtp.mailfrom=wjl.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754936710;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pSv7Gt7bxe5lVNUVlmcPEywWk4j/K2cXpyicqjsF3PY=;
-	b=cIuS1T+7t1oIE16Iy9Ff8HwPvXioZb+mW8/1/4v4I1g5cOoTzHYfttAAOq6aRQ8451yTb/
-	gcMqn4/q86tVzGc95tIqR4Jkw/08gNgsr7btS30mceMFAPbrHUbBz6W27hJaIKJtcB2SuV
-	5SI8ynSIiYV2FhuSFih45pRSlHzpCoI=
-ARC-Authentication-Results: i=2;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=GFiR90ByEmrbZSIU4oPPtikQuOT0OadaiRvQ1pEaI/0=;
+	b=gXZb+A4qpGvSPci/3H0MmjTtxLpqfZjo3vNurvTDbz4WJJMZAJoibbBqD620Eaw/sU3ads
+	oIQvE58ee7pUCYXCOBjd6uygP1KnPcXHquI5AwFEFcMqovfL0XnNap2zC10SyKJKnl2yiT
+	FI5NoKr23sE0SfFK+raM0COZ0mKa9wo=
+ARC-Authentication-Results: i=1;
 	imf23.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=c6L2vNcg;
-	spf=pass (imf23.hostedemail.com: domain of ziy@nvidia.com designates 40.107.244.72 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754936420; a=rsa-sha256;
-	cv=pass;
-	b=5wXPfSEHIjX4TtoV/j/ZRcnSROQ9miNIhRAYyMmcLJ6+7YYCHFHsO3jTmfbouGO2bG7Eoz
-	DxbsUGq/tLjoGZcTUi7wvMyVUUThSVm6oUrvfZ3E3vV+Wt6qyjrczeKSkDzuLFOFBJlb3v
-	S88JBhXTGhqxG7F7P/Psp92Zs3fSHMI=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=V8mAby9WDVYbGQeyRHDGbSwz9W3A3e6zNjmSzGG41t04eaIA6XYXr64mvYs9WAE0vFC0uqzORrD7hJ970lRfXXVeZUoChhbQDXV9dsX8LE+s8ynI8e1fWzP9N490a8DrcO5WYwOcmpT5EiaOSVqnpej/OWTan1nPTNy/CyT3lsHhhPmOMru+5jWqlWcfgEE9eQNoBGplHWBZG5eRzaP+LBfXzmeEJkLHD+K3O1LfSLh2nY3mFv3zGnmqRh+jxI/HkHSvzkmpIM8CTveWhnMg4Q6Tj16BlO87qRtRM77viQgDDnGP0fmcWOlwZQVs7va/QJtEqVU0iK5sTuZTh5CflQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pSv7Gt7bxe5lVNUVlmcPEywWk4j/K2cXpyicqjsF3PY=;
- b=xnBGAYE5F1bc6sSnFzWVPKq3n2KYFm7SgmS0fJgyiDk1TdVp9jdNFBbKqxG+HqBkRgQ/A0EYJXuAr/xTUSYJ8bcltS+9XFd167h0N/0VyQk/fKFz6t49KkeDrFQJ6XjfIq46Llh2aSCyC//Jq38muKaBf03xLW4gwt9HwMxjCqwT+qtFwshpVeqWbWQLUSyEL+YE2bx2NMtB3uHJLLnhpih/880tkDPZjXtf+OVllmxsUMz+GePnTxVW6UxwlQx+iVzodOdTtcjyoK8647eEUcv4UWl0JhxOInanXw1PLuXX0j9bzzIz/SjpvUdDm9XR7cEiZKfNR1Ansf6BAYH2SQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pSv7Gt7bxe5lVNUVlmcPEywWk4j/K2cXpyicqjsF3PY=;
- b=c6L2vNcgqF2XWacylHDyB8VIwoPIyXbomnuVY8NMj5Tbr60e2z+aPwE7a5q9W46xBV2Wyvrwor8nXyBXqBoeYVmoVi4OzK2gSZ8p4SLueOLtuMzoW1U/AqOOE/qRU9fPOKLBNjxaGfWf7YIPC1knwU8+r1YFd2O1fY2hME3ZzTOcOMHY6kl57uoDOhM15wcHpzvVB3FXFwML4EU97NX0+nLSvJNIz+/N5vfhh3r9++4tvF187g/kCLRVhE5SjJ89FSMI8tHWldE/gCevBhDuZqFS9w9bBDSRgiN+GWM6sgHa/PL3jI/isQScRWEJ/4YDTryTy8LmVyakhZea0hgsZQ==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- CH3PR12MB7643.namprd12.prod.outlook.com (2603:10b6:610:152::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.20; Mon, 11 Aug
- 2025 18:20:14 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%6]) with mapi id 15.20.9009.017; Mon, 11 Aug 2025
- 18:20:14 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Donet Tom <donettom@linux.ibm.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, wang lian <lianux.mm@gmail.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- David Hildenbrand <david@redhat.com>, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] selftests/mm: check after-split folio orders in
- split_huge_page_test.
-Date: Mon, 11 Aug 2025 14:20:11 -0400
-X-Mailer: MailMate (2.0r6272)
-Message-ID: <C15363CE-F4DB-4747-B51C-A8B5673DEBFF@nvidia.com>
-In-Reply-To: <d90d8aa9-0e19-4098-ad3c-1c8069167538@linux.ibm.com>
-References: <20250808190144.797076-1-ziy@nvidia.com>
- <20250808190144.797076-4-ziy@nvidia.com>
- <d90d8aa9-0e19-4098-ad3c-1c8069167538@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BN9PR03CA0784.namprd03.prod.outlook.com
- (2603:10b6:408:13f::9) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DaX9HgB2;
+	spf=pass (imf23.hostedemail.com: domain of wjl.linux@gmail.com designates 209.85.210.195 as permitted sender) smtp.mailfrom=wjl.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754936710; a=rsa-sha256;
+	cv=none;
+	b=IkvGA1P2lNtxTjrjNGQ0zeTVIH/2N+5rpbBztd+OaRzwrHU4nMmbENgh4eCmtkiUFWnA50
+	SeboiMc1YERqICHjcRuNehBAkKN8xEoE9LKRzxPT+BB4xKin6i+8If5QM9VCKOZmyonXFO
+	QFC5jKR+ybpfpu79wgDRkyUEjwh1IFc=
+Received: by mail-pf1-f195.google.com with SMTP id d2e1a72fcca58-76bc5e68e26so4348200b3a.0
+        for <linux-mm@kvack.org>; Mon, 11 Aug 2025 11:25:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754936709; x=1755541509; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GFiR90ByEmrbZSIU4oPPtikQuOT0OadaiRvQ1pEaI/0=;
+        b=DaX9HgB2+rJY2N4wPK81kW08rz11WgDn81gXi/IBtRS4c/+pOvahO1yaG3QyzfiXbL
+         I0TIctfaky3TPE+B6jLzh5WWT+EKTARi/cbe/zca25aImVUB5ZMh2jGHdI5HSWdB+IHt
+         NDP9M6J1JahFB/o8SZGFWQOlOTYlMbg5HusWoTNMLeQd3/QdxbP0abazR/5CpxFJhLaS
+         DML+cUTQTwwKA+VHv0BUtaje3fX+hBXVK/eftw6JdwxsE0qu5mPXAfDwE/32DXZj0K8T
+         oQKQ1HxOUotz48nWNK7lMmgLaro4iWEUUAbVnlqSrk8KCVP+wo919WZVcVtBA3cqH4+N
+         byvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754936709; x=1755541509;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GFiR90ByEmrbZSIU4oPPtikQuOT0OadaiRvQ1pEaI/0=;
+        b=hUymE91bn4iZa4XLUNfSPBx2z97psblOeg5egopziEZUX1dW00Ek4FMtUYUDWplFKe
+         xoyQeXIBKHybtD/EItoM5NbJKYa6i4Uv9RsBiB6q/l33f80kS/oXQjmfoF/9YUnjg4d5
+         BR0vZ8Y6CqawQvWFXzS/XvCvv7NFTX4zhqnK9KHhti5D790d8YHT84JcMhhBknPJF6WV
+         AsWSIsO0Ql9CTsTNMe+Fnh06+tkBJTVKaM7OwlpJ6ie1Vb5yBcBdvE0+zjILS+13J1TM
+         tc4P0DqYJeZPO3z8H+lo1F/bk6zEgMoAOjBIaTLiS3BDinH3SHYsQzeuc/Au5061C5ng
+         b45g==
+X-Forwarded-Encrypted: i=1; AJvYcCVCno6n4fj1jkWnXB3ti4527XV9NFyBJOilITHVmJgigdcG1lub5yG07aaHlZF8qInQw69DNRap+A==@kvack.org
+X-Gm-Message-State: AOJu0YxjLAqgNk/OMXQSi+8070o9VVvArIYAD9Gnya5NjHKs9qNpwOmy
+	ssll82jFTwAgEnPFMU4IN+/qkZs81LDFFTRG5BBcslMaBKGTAJ27Zd8e2VvDXjzdiR55hQ==
+X-Gm-Gg: ASbGncuNLQZam+NxtypaF/Zh64B3z/EYSFZX+N6zcKIja7rGidQhosYoz44gTNGJn3s
+	Vnns4zuTYHPSJpPfku0+Obfgem9mWcOhsb7bw76sDFmSSrn+n58n0RM7v3o11HN9HR8YY3XCzZB
+	ijzmy4Ki7usosmze95bz1hLaFyIu9x0rmzGIEyN8Jiq4ci50gW6S8kH54W6dBTg/FVGohIdRFDB
+	eCQVRj8CHilT9u7mPu3RU0kEUZkhYU+BvDwLRm42+qqK24WWfEHHrPgnPZfkmkRnlifVUm3QGwC
+	/OIy+lTfWJe6C9AKTmRO96bvWbZcRbnbkaQ8faLHR5bPsoAQQUXhhkIshDqmczdTMFr2PVnmnTj
+	BG/57acMkA5e8i/wQzA0rUdoGaBXPVHji
+X-Google-Smtp-Source: AGHT+IGXJ6A+jBw2s9ZXQYHpLI2Ze6FA2tDiIc8Rtctqegz0VHdY8uYfOogfh0O8oZki2NTtbzW9CA==
+X-Received: by 2002:a05:6a00:1388:b0:74c:3547:7f0c with SMTP id d2e1a72fcca58-76e0de2ddf8mr950598b3a.3.1754936709451;
+        Mon, 11 Aug 2025 11:25:09 -0700 (PDT)
+Received: from archlinux ([2406:da18:c0d:d265:8107:1fcd:5d57:ff7])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76c020a4a1dsm20101039b3a.13.2025.08.11.11.25.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Aug 2025 11:25:08 -0700 (PDT)
+From: Jialin Wang <wjl.linux@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@redhat.com>,
+	Michal Hocko <mhocko@kernel.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Jialin Wang <wjl.linux@gmail.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH RESEND] mm/vmscan: remove redundant folio_test_swapbacked()
+Date: Tue, 12 Aug 2025 02:25:00 +0800
+Message-ID: <20250811182500.42670-1-wjl.linux@gmail.com>
+X-Mailer: git-send-email 2.50.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|CH3PR12MB7643:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2ba7183d-618c-4071-e70c-08ddd903b76a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VXBOdnhnYTN2YjI0a00rQVd1cUtlaS91QlFjamVxQ20yZzFzVzhqYVJpb1lo?=
- =?utf-8?B?NTdhMThVVzBCVkd1QXJ5dUpFaFU5UFlacytkRjcwdFo3ZU5NSXhVcmxQajg1?=
- =?utf-8?B?NjJ5NklITmlGbjN3c1Ztd1JnK1ZoT2pPeEtJeVV1MlJhbmdHdzFxNnpVcjFl?=
- =?utf-8?B?U3dXUlU0QXlWZlpPRVMxUW45Q2JXTzN0Q2hNV1NSb0FKVXhTSTl3M1pYdVl4?=
- =?utf-8?B?Y0F6TUl3eS9WZ2Z2aUNpaDR4S1o5K0tkYU16ZHlvUXUwU3FSdXhlZlJVV1pi?=
- =?utf-8?B?Umxsd3BUY05HWjlOckJoVy9jUWx6clFETWt6NFltY2dQNFJLbUN1cExNWE5L?=
- =?utf-8?B?RzdMYVFRSlZMS3dhT25xMlMyb252VEh6ejZmR0xxT1N1SEM2Zkp2aUZwa3dy?=
- =?utf-8?B?aWdtbTFpTCtSaTFmc2pjU3hENUtTUW9NSlBJd3pTVkhsQlhhaWdiTTZ0R1lX?=
- =?utf-8?B?ZzMzMnFJeDIxUGZiYXVMS2E0c2xncEFGY1dmQlpoaUxUYklvMkVpdXJRb2ZL?=
- =?utf-8?B?c3A1NE1RVDgrRm9FY1FyQkMrVU0wMGRlbWVjU1pkY3hZZDlvVWJVcVNPd2Jl?=
- =?utf-8?B?dGIzRFpLVVJJYkt5a1dNK0RkdFRxMkhGRkR5bEx6TjVvNS9VVlBzZ0lGSG0w?=
- =?utf-8?B?L09DZ3ZzZnNnL1VBQlZiTkpteU1mMFphMWtOd2t3K0IrTXgzbjhOMTY3V1ln?=
- =?utf-8?B?S3g1K0EvU2cza2QrV0pqQ0FwWC83RVp6ckpsb3IvYzl4bmF5K3lCNmUzY0kv?=
- =?utf-8?B?RSs5K2J4cnR4emVoYVVrazluSktDMkQvMTZqY1piQm9rRndib3l5R2IvVWtv?=
- =?utf-8?B?OU9aYmR0RXNWVk1tM3hrUHpCYnZrTFZIRm55VThPSVd4SS9IMG96OGxjd1ho?=
- =?utf-8?B?c1ZJdTFpNWFiSVRGeEViOGdJSjA0U0NTZldGdHNDTGZzZ0pLNUorZkFCajBF?=
- =?utf-8?B?U0tSVVlRcXduNURMMGZ0bmR6TVFXMnQ0ZUpNVjRPK1d6dGNEcFJIaDRacGpy?=
- =?utf-8?B?SlZRS0p1cFU5QURkeWlML0x0R1VTUVZ0alJpOVFkTWo0QmVnUU9iZ1lnTzZa?=
- =?utf-8?B?RWFiY1pheHl3amg0dUJIbVpPQTBoZmhDWTFYTFFWdEo5cEs1UkxGNHczclhT?=
- =?utf-8?B?VXpMMzRuODZwL01jWDRhMGpXcU9ZOFhqWEZUUVdJZGg3VGJCSGlwWFVMTGJn?=
- =?utf-8?B?UDdKZXpSZ0x5ZDBYUUNvRG96dlF0TEo5amxvUkNqbTJ3TlZIb1FGejF6UURF?=
- =?utf-8?B?ZnlxSTQ3YmlxeHNqaURHYjZUYmtEczB6UitNaDIyMUVZWUFOcnM5SU9vK1Bz?=
- =?utf-8?B?eE5VdlBORC9sbXNIdGk2cys2N0NHRzJRNG90M05xL1N6Nk11clZqbGZYSUFC?=
- =?utf-8?B?Q0JHVXVPV0lkeFg3bkVqa2xmNkRpbUxmNWtRck5Za2FlazFuY2wySnNiZDI3?=
- =?utf-8?B?aFQyd1pQRGhkMWtUMCtDNUd5MVVYcFNJYWdrVHdmOTE2dkk4bEFQTFhpRmQv?=
- =?utf-8?B?MVJ0YkVaUjJKZGszUkNZemZrTytwQVRMVTE3Skxobml6YzcwdDRIV3E5V0dI?=
- =?utf-8?B?TGpCVHc3ODBFc29Ucnl3OEZHK0pyb3UxV1lCQ1cveEx5TkhjMVprTDhxY0Jz?=
- =?utf-8?B?WUd0dTI4NjVXZW54SHJNUllpbHpVNnRJcExmUGZKckFUOWNUbkRCS05QdkIx?=
- =?utf-8?B?NzVHWTlEdFJrZzJiNzhWYTR3aWE5S3JoVzFMelZKTnlydU5KUlZQVkQvQW9n?=
- =?utf-8?B?VnVkUitwY0FBTDB6ckVWNVljaE5sYUd1bm9WUGU0dWpCOHN6NG1TTDVhT1Rq?=
- =?utf-8?B?eUxONjg4RURnbmNpV1N3cDNweUpXYXBsT29yQ05GTGR4alNwZUlxalptR1dZ?=
- =?utf-8?B?Z253dlc2NUw0d2puYjNDRmxsdUJVYmtpSGl2elRwMDM0YzlVYm05Z2Z0YUo0?=
- =?utf-8?Q?AQw2aQUXo4A=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OVNkcERkaS9waFIyYVpJZjRQVzM4NDJnZWMvTitLcjg1VTQwOU45TEVMaTh5?=
- =?utf-8?B?b3dUVUU2elk1NHNHazQrUndMb0c1UnJLb1cwbXF2ZFY2UkdMNGJNb2ZOU01I?=
- =?utf-8?B?RnFRekZZT0xzQkF5WXFiOHp5MWlvc1h3a1FkMVVXTXhCR05RbWwvcVg3TDlY?=
- =?utf-8?B?NkNtY0FZQmNoWjRua2wrdURnQUJnRFVxK2RISldrbFU4bWNBcVNvajlrK0Rv?=
- =?utf-8?B?TUhZSDNIRHhGVDJ0dFF3TVBBSyt2clBDWWp2Y2N6QUhiS25rK1JoZFMyTVA0?=
- =?utf-8?B?eTd1TFBPRmlFaHVNcXp6VFBNWE5pUGhuM0t6YTh1bTlXMGFURUt3Y3FVcHlm?=
- =?utf-8?B?Z3F4VEJHWjhIUXBIQ0JkNzBnUW8xQzFPMFYvWml5RFI1eitWSnZVd1hzdDBJ?=
- =?utf-8?B?bExXN2pJRWVMSXhJVjRoQzNUYml3SmpOTFlINFQ5T0pUV1E3T3lRVEdxQWhD?=
- =?utf-8?B?UzlxTm1RNGZiU0orclNjM29ZZEpDb0h6TnEzeHhYQ3NVVi91b2lNdUtRSmcw?=
- =?utf-8?B?K3ZIbDQ1YlZaZyt2VUlqT1FCbDdaRHlldHdValc5a3lHdUsrMmRMNWlnMXho?=
- =?utf-8?B?ODFocitoS2p0T0h4Z1pqSEU0bnUvQk9NOUJEdGdxbHlmQkZ1SDVNL3VLMkQy?=
- =?utf-8?B?QTg5dmhvSXNKbFlpYy8wZVVrQWhRVDVQN3AyaFJJVmZGKzlCcjVCaEZRZzhX?=
- =?utf-8?B?eE8yRmg0MmVUSDd1ZFc3ZjFGSVFtd0h0SVpWbUtTUjNicTJEYm1GSm9ZSTFY?=
- =?utf-8?B?RVhOT0JXRFZBazlZVVNubzQvN0dUNGxNc3FpdklOYVJEWGdIa2xiajZET211?=
- =?utf-8?B?eC9vMW9mS0paQ0dwMnc1K1AwSEM4bk4zVnI4amJHWGVIemVxaENEOE0xbzBK?=
- =?utf-8?B?dDR0ZkIrcG5lSERZRi8rbWtVcC9ZWDJPWlA0SzdvdkdYR0pGRkgrMC9jbm9o?=
- =?utf-8?B?bjB2TWxnNzNORFg0aWdUTFRjYmxWdVJ1MGcwdXZjODlCd0FWQ0pCc1R6cXVF?=
- =?utf-8?B?RFptV0JJckk0aXpHQlNHclVJcnIxSXNIZTlRdzMwbHI4Z2V5VmdiVy8vVXAy?=
- =?utf-8?B?aUhHbm52YnFHYmgxREdjR3lvd3dBdUY4Uml5dW42ZnoxTDM5ZnJwb3J0c2lM?=
- =?utf-8?B?OStGWGU0Q0JVenlyZVU5N2hPdHVtTFNKbU9HWUp1dWFNTTNheUI0SDkwOVBu?=
- =?utf-8?B?Z1BtRDRNOVprSlZSRDFFbHlUWmZ1dkJ2NDA5UUxoczBTVE9VNWhwUUNneC9R?=
- =?utf-8?B?WVBUeThwTWpxNmRlS3o4SjIzSWZxc2hFSWpkM1VLTlZka01JL1JobUE2Zjhz?=
- =?utf-8?B?RnRXRkdMaVM3MnpsdzhlejIwM2Yrb2R2eWpEVWE3dUZmdXU3NW9vQ0NuMGJz?=
- =?utf-8?B?WENaY3I4Nk1EamtrYlNtL2NrZkQva2ZmOVBNSHVrLzBTOHVCRVI0c1YySWpj?=
- =?utf-8?B?a3ZubkpGL3JBd0ZhSmYrRW0wVXA0c1B4Nk1GN2dmK2swa2hYOFRtcmN6Sy94?=
- =?utf-8?B?NmdzSWJqMkg0bGNjb25Hck1sVktYSG5EVDlZOUM3a2pyQitIWWl2ZUdWZXBu?=
- =?utf-8?B?T1gxeWQzbFRvamQ3TXRCS0krYlJPTXNiNkF4dk9aZ25VeXN2Q0ErejZ2WWlM?=
- =?utf-8?B?bGpueUlGZHEvd1RwSzRBaWRYSmJYQkIwN0hmVW9vRm5aV3czbE02RG1PVW5w?=
- =?utf-8?B?RThlWVIxM0xyb2xCN28vSVpidnFlVU9BV0tDNHFMOENHUHp1anBXVml3cldV?=
- =?utf-8?B?N2g5VzBrZEpwTmtpUHg3SHhxUS9tUFNCNzhuaE4vQnBlZDhhdEVocEtuYU1F?=
- =?utf-8?B?MFhnYjYzemhkWDhWS1p5Ylhkc3lBY1lXaDB5V1pHbEoxMFlYN0MraUZmNUN2?=
- =?utf-8?B?NitRamNicEFsYWtiNXBTTmkzZUlFYVRWSjA0bEF3V1NvVGN4QmdCK3ZxblNW?=
- =?utf-8?B?Y2tOOVQ4akpldk9WNHEyUThTbjIzY0lXaEZsRmdWdkVJK0s4S1Nic1QwSGNB?=
- =?utf-8?B?MTBuemdTZ1F5d3NGVUVNaXRqVC9DR1VQNlpSbGJRQzBYcytybnZseC9aZ2l5?=
- =?utf-8?B?NkVoOERSVnc1clZmdkFVK0R1NEdIVStVOG9ST2VzMUttd3pHTDZ2Y0ZnYnVR?=
- =?utf-8?Q?sNOvhYbnvrpgmL9hFiqqEjhRw?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2ba7183d-618c-4071-e70c-08ddd903b76a
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2025 18:20:14.3158
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: x/i16VUMJmwfemO3yhY1h07cHDje9KLWRSJ2hVwFcD1TCosafQS5jOQz8h5ePbC/
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7643
-X-Rspamd-Queue-Id: 3B5A0140005
-X-Rspamd-Server: rspam04
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 77hqdmm6ddgki8p1738jr8cifexxess8
 X-Rspam-User: 
-X-Stat-Signature: o5cq6cektownd35e6ekca5hmmei8ff4s
-X-HE-Tag: 1754936419-763580
-X-HE-Meta: U2FsdGVkX18z+VnwqtFvLfinozyWZxTPZbYSXcA81O16XQ5vEvpOxY28UO796DWoWGDIWu0PF94SRFkvXRvR+Owb4qzK1ZrMuv53qyhEr+xUYiVkLf5tQhKcqXJb74RpUJV2gXPMDU32QbRnO+WMepH1dAxM/akPzfJkfyuujq3NftMYwNqJ74EpSg9J4JyBMezq/quJaS3ANDdI6IN0ZHDbNwpk/EYYaY0Bzi2Q6Zum15MORIpnHGzlBrReKKDL6WXtZetJFRsjFhnwYi9J5B8DfEaw3XcVC9PZFMAYBN9eOFXDc3jV2dhditv+vdY8PD3PRuxj0ySyCwHHUGNGIxcgCUwCYuYh5grC/SM21JDafmfoT2wCjtG0NgWNEGRhzzWYVhRKIjMsd7B4KYr75BTf51SirhR6JNVvljKZMM+GKAnGPrC/FVcdbsifQkPkNoVub5JG53U1nwhy8+SRio+CDXH3LEz7A6OkHlrAmO5niBxD+UQrGuXyPxUQidG0boKKsD8wa51MF/FlbJKrdRIae84l9wPwHy+PzP3RcDOt97XeJxNurp88OEnpa9iTBfYsahcwnAxPX0ax7fyeGJSeixjxxa2CMBxImQcH6pQRjjUEF0IAdtIs6j2/7wpeb1Zppcsa+Uw0UEV9r1kouXjBcfRRGhL7+y24HroxHoq9KVQPsKCYX6f6HvLhebxge30FdaZgRe0zUjUI2Qg1tY5YNh1NOcUmpZ34Vf0NHwXRigiFH0az9QpeFFJd/m1yQxJrchk1lze7LjZ1zwSzLeF95oqbnQWaqCKp+7ccfvLKSs43wa4eIWxWXEYHk+dOpKm6Lbt0ls/oZFMqTiewoiTmfOT3f186KUg+k+zsgc0ojypb6QcZbi6yv1W2ox9MZG5Dmlg6LYgYmcQVibRMuL6nR1GTDy7KLc1zCPErWNLxM7Y1i/pmay9QRehpmjkIPfJnWX2L76/lAI1X0S8
- uDG2X81L
- uAOjSWKJzNOHyhBHpVZ73me5WLjBfuWdJInsCgFeYDPeDNg69whMtmlNelRkzDt0Zj0vr6XDhdr+2eJ3tXTlos2CRbaGlyvIX7gg1eRwuTE2WRhWsLTPEWuw1Wi78PWMuikJFtjdcAG403z+9uqwEvWLYStgbrfnAzgayfiv70jTkUi8dIAbwOl9OcISwVZVZGIGc117fyHBUVDWQHjLF9CzDgmDafakIN+BDUp1zLEOTJXvjgl3+BD/MrT9WxzV4ZGZxMZfcjrEaCP5AhK4xKQmA48VhpO7iP7V2b5SplpExWWjYDWkhqNMCY2BpZVMq2klI5mF7VPfFzU7dpwboxbrZeccTJy3wgZL6MKJ5GJmgy3tGhk2iSGI/uVHs4khZEbcpXAMZR6lbpF+GFQckCTPYMZIkgZpO6alM197lAcyQvA9vyhEt/+YSuSpNzSIsqsZ+dHMGqHTIdjlbkwqr0V9VpHzzlE1SAUGqvcdxKbA/0wpub/y6XnK9/Ob1sm22dvzX9qnYbdwcGSDy9lUiKkO9aDjC6EPcOcx9C4PDidjyMwYr2001E1IBtx/VEL0gxeYNT9zhXWUPkA/UY7bccs7TVifd/zRyYYu4LDXIpCjtUgo=
+X-Rspamd-Queue-Id: C5E9E140002
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1754936710-703510
+X-HE-Meta: U2FsdGVkX18VL5nSjUL2bzD/bgKMen827JSP26sJKaAQzZPD/d8CSFRfre2w0lPZup30sRcn0PVwynE+0FISXlEsSEQ9SWf6RYiY23OubykUrNXauV7hDTnzYMDX6aMOnY6FlX1JBAPhgFu6n0iuE5dVltD2MAEVMRLDED2zFAJtUC6zLnhxNiwqhsrLe4XJWQNRt2NNilBOkmVKwbA+K0von8pn0oBYp2c3N/ap54KMNlUOOCbbYGULx3Y+Z0MKEygXGayVCC58EGnTHwNie/Yz583AWq+IJNq/HOOOoKLHbjtL3t46IsnlJoGPDOXwHx/Q4Y8V8WVFkuG7UVWLXeYdGgc+WILpNDev42aiU0jB9MNNS4f2uwXpY8HzAg33XuooM8QQ6st53J0MMA4jgRWy+jNs6dNtS+j4dsaGgT/axHHWokBTz1K1j9TE4nJXY39mUIrq5yn8SEA+RsXj96X/ZZiju3/erlkanuWXYSf3R5G3bc0IDF03K2zer9asZr8DZviwBRmOwloLOYADvJLDvsVp1m23ex25VAm9eFhW4UdLhZaERv17m8U07CvO6zeuVFqZYWaGQUkVSDtjWGhDpTt9mlg5f8+CuFr+dBIjpaTU2iObum+npHn15b60EQkk8CyMgby3Az3ZLFXazLC84uvT2f0MRFRI0ESqYj+bH/q8E931tnfi0MCcKKhhGdCD55xHXY1niB+VclNqnYUUonxfYM64+D6nSYBjsdelCUC1Q+1uFOD3EuTvCwYtY3SKXRUB/LAYPn9jc7fel+LlJtWx2RwPiajglVqv8p/Z8k7aulKkx8qphGjVQ+7DXv6QY6kUKqG7VnG+T3xNuLQWXwzXfDneB2NeUosgO1uXK6G61bKiQzAKSJds4LdrpHGYS0V0Ss7Kh7yQH+7m4tdjkJSUGfIV3qhUBpEPAhXaTNuAT9XamhjEFoJTvnLGq3TCF568IT5JcVPi9CN
+ QSyomykK
+ Ordb9MxOQOrpnBlopxo9czVszY3q1Iz24bGZyTfnOYPPnQyERXJc2HF0IpncBMvAhsM5ssyK40YWr6wX1E4bJ0Rp+yzxpDYOEM7sLZBi4Ip2vEs0g7IHVenq0OOBJPbspL8HdodKclQKa9FLG/z+deFySgnURvVlaybDhKL2G352LS3jnutHdCnJWv2J4oJW0tiTt/c7s+G7XakT7nXnlsfPM4NnRtEL2q4dJTLQ2xh94YtIuM4ic2ZUZES/+7QC8ORAXqCr46TtJ8N7NUXnzmYDP+djuFsMtIRV91COF3I/nd0hQ2ajb6AojYH2jYnirQJSotmyG+JYXcO8D7M3FLTrtcWK1vZiAfyVMnR6OiJvniLDqM2m/0aaZoVDBkwY6sDX1YyNOrTgOZ1u6F3utpQo07qyA+8Em6PJapmb4WsDKIA2yefu/2A/2GiHnRL+NlT67To3ZjMCEotyiULc3a+FHrjygDrEFlV5qd6rOAou84QXyzDI4ME2WKmtnuunIMsc6dBgfT1gliCIgqTrqRT0k0KLidDzcIGjbxSgTUDIZqDzwIUjsOBgO/X5Hzpjbf/6qv3+Me6p+TWlg2SidEIbSDu/n/hAEBFZclsbZxKpxFcCoWdunaqp3ulfKd9i06At+64rycuXOKoMxAeGRC2EC48YPs8+qq84LVrXAZn+WSUXkWsMuZtzmEg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -208,236 +120,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10 Aug 2025, at 12:53, Donet Tom wrote:
+When !folio_is_file_lru(folio) is false, it implies that
+!folio_test_swapbacked(folio) must be true. Therefore, the additional
+check for !folio_test_swapbacked(folio) is redundant and can be safely
+removed.
 
-> On 8/9/25 12:31 AM, Zi Yan wrote:
->> Instead of just checking the existence of PMD folios before and after fo=
-lio
->> split tests, use check_folio_orders() to check after-split folio orders.
->>
->> The following tests are not changed:
->> 1. split_pte_mapped_thp: the test already uses kpageflags to check;
->> 2. split_file_backed_thp: no vaddr available.
->>
->> Signed-off-by: Zi Yan <ziy@nvidia.com>
->> ---
->>   .../selftests/mm/split_huge_page_test.c       | 98 ++++++++++++++-----
->>   1 file changed, 72 insertions(+), 26 deletions(-)
->>
->> diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/t=
-esting/selftests/mm/split_huge_page_test.c
->> index 5ab488fab1cd..161108717f1c 100644
->> --- a/tools/testing/selftests/mm/split_huge_page_test.c
->> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
->> @@ -25,6 +25,10 @@
->>   uint64_t pagesize;
->>   unsigned int pageshift;
->>   uint64_t pmd_pagesize;
->> +unsigned int pmd_order;
->> +unsigned int max_order;
->> +
->> +#define NR_ORDERS (max_order + 1)
->>    #define SPLIT_DEBUGFS "/sys/kernel/debug/split_huge_pages"
->>   #define SMAP_PATH "/proc/self/smaps"
->> @@ -36,6 +40,11 @@ uint64_t pmd_pagesize;
->>    #define GET_ORDER(nr_pages)    (31 - __builtin_clz(nr_pages))
->>  +const char *pagemap_proc =3D "/proc/self/pagemap";
->> +const char *kpageflags_proc =3D "/proc/kpageflags";
->> +int pagemap_fd;
->> +int kpageflags_fd;
->> +
->>   int is_backed_by_thp(char *vaddr, int pagemap_file, int kpageflags_fil=
-e)
->>   {
->>   	uint64_t paddr;
->> @@ -151,6 +160,11 @@ void split_pmd_thp_to_order(int order)
->>   	char *one_page;
->>   	size_t len =3D 4 * pmd_pagesize;
->>   	size_t i;
->> +	int *orders;
->> +
->> +	orders =3D (int *)malloc(sizeof(int) * NR_ORDERS);
->> +	if (!orders)
->> +		ksft_exit_fail_msg("Fail to allocate memory: %s\n", strerror(errno));
->>    	one_page =3D memalign(pmd_pagesize, len);
->>   	if (!one_page)
->> @@ -172,12 +186,20 @@ void split_pmd_thp_to_order(int order)
->>   		if (one_page[i] !=3D (char)i)
->>   			ksft_exit_fail_msg("%ld byte corrupted\n", i);
->>  +	memset(orders, 0, sizeof(int) * NR_ORDERS);
->> +	/* set expected orders */
->> +	orders[order] =3D 4 << (pmd_order - order);
->> +
->> +	if (check_folio_orders(one_page, len, pagemap_fd, kpageflags_fd,
->> +			       orders, NR_ORDERS))
->> +		ksft_exit_fail_msg("Unexpected THP split\n");
->>    	if (!check_huge_anon(one_page, 0, pmd_pagesize))
->>   		ksft_exit_fail_msg("Still AnonHugePages not split\n");
->>    	ksft_test_result_pass("Split huge pages to order %d successful\n", o=
-rder);
->>   	free(one_page);
->> +	free(orders);
->>   }
->>    void split_pte_mapped_thp(void)
->> @@ -186,22 +208,6 @@ void split_pte_mapped_thp(void)
->>   	size_t len =3D 4 * pmd_pagesize;
->>   	uint64_t thp_size;
->>   	size_t i;
->> -	const char *pagemap_template =3D "/proc/%d/pagemap";
->> -	const char *kpageflags_proc =3D "/proc/kpageflags";
->> -	char pagemap_proc[255];
->> -	int pagemap_fd;
->> -	int kpageflags_fd;
->> -
->> -	if (snprintf(pagemap_proc, 255, pagemap_template, getpid()) < 0)
->> -		ksft_exit_fail_msg("get pagemap proc error: %s\n", strerror(errno));
->> -
->> -	pagemap_fd =3D open(pagemap_proc, O_RDONLY);
->> -	if (pagemap_fd =3D=3D -1)
->> -		ksft_exit_fail_msg("read pagemap: %s\n", strerror(errno));
->> -
->> -	kpageflags_fd =3D open(kpageflags_proc, O_RDONLY);
->> -	if (kpageflags_fd =3D=3D -1)
->> -		ksft_exit_fail_msg("read kpageflags: %s\n", strerror(errno));
->>    	one_page =3D mmap((void *)(1UL << 30), len, PROT_READ | PROT_WRITE,
->>   			MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
->> @@ -259,8 +265,6 @@ void split_pte_mapped_thp(void)
->>    	ksft_test_result_pass("Split PTE-mapped huge pages successful\n");
->>   	munmap(one_page, len);
->> -	close(pagemap_fd);
->> -	close(kpageflags_fd);
->>   }
->>    void split_file_backed_thp(int order)
->> @@ -463,10 +467,16 @@ void split_thp_in_pagecache_to_order_at(size_t fd_=
-size, const char *fs_loc,
->>   		int order, int offset)
->>   {
->>   	int fd;
->> +	char *split_addr;
->>   	char *addr;
->>   	size_t i;
->>   	char testfile[INPUT_MAX];
->>   	int err =3D 0;
->> +	int *orders;
->> +
->> +	orders =3D (int *)malloc(sizeof(int) * NR_ORDERS);
->> +	if (!orders)
->> +		ksft_exit_fail_msg("Fail to allocate memory: %s\n", strerror(errno));
->>    	err =3D snprintf(testfile, INPUT_MAX, "%s/test", fs_loc);
->>  @@ -474,16 +484,32 @@ void split_thp_in_pagecache_to_order_at(size_t fd=
-_size, const char *fs_loc,
->>   		ksft_exit_fail_msg("cannot generate right test file name\n");
->>    	err =3D create_pagecache_thp_and_fd(testfile, fd_size, &fd, &addr);
->> -	if (err)
->> +	if (err) {
->> +		free(orders);
->>   		return;
->> +	}
->>   	err =3D 0;
->>  -	if (offset =3D=3D -1)
->> -		write_debugfs(PID_FMT, getpid(), (uint64_t)addr,
->> -			      (uint64_t)addr + fd_size, order);
->> -	else
->> -		write_debugfs(PID_FMT_OFFSET, getpid(), (uint64_t)addr,
->> -			      (uint64_t)addr + fd_size, order, offset);
->> +	memset(orders, 0, sizeof(int) * NR_ORDERS);
->> +	if (offset =3D=3D -1) {
->> +		for (split_addr =3D addr; split_addr < addr + fd_size; split_addr +=
-=3D pmd_pagesize)
->> +			write_debugfs(PID_FMT, getpid(), (uint64_t)split_addr,
->> +				      (uint64_t)split_addr + pagesize, order);
->> +
->> +		/* set expected orders */
->> +		orders[order] =3D fd_size / (pagesize << order);
->> +	} else {
->> +		int times =3D fd_size / pmd_pagesize;
->> +
->> +		for (split_addr =3D addr; split_addr < addr + fd_size; split_addr +=
-=3D pmd_pagesize)
->> +			write_debugfs(PID_FMT_OFFSET, getpid(), (uint64_t)split_addr,
->> +				      (uint64_t)split_addr + pagesize, order, offset);
->> +
->> +		/* set expected orders */
->> +		for (i =3D order + 1; i < pmd_order; i++)
->> +			orders[i] =3D times;
->> +		orders[order] =3D 2 * times;
->> +	}
->>    	for (i =3D 0; i < fd_size; i++)
->>   		if (*(addr + i) !=3D (char)i) {
->> @@ -492,6 +518,14 @@ void split_thp_in_pagecache_to_order_at(size_t fd_s=
-ize, const char *fs_loc,
->>   			goto out;
->>   		}
->>  +	if (check_folio_orders(addr, fd_size, pagemap_fd, kpageflags_fd, orde=
-rs,
->> +			       NR_ORDERS)) {
->> +		ksft_print_msg("Unexpected THP split\n");
->> +		err =3D 1;
->> +		goto out;
->> +	}
->> +
->> +
->>   	if (!check_huge_file(addr, 0, pmd_pagesize)) {
->>   		ksft_print_msg("Still FilePmdMapped not split\n");
->>   		err =3D EXIT_FAILURE;
->> @@ -499,6 +533,7 @@ void split_thp_in_pagecache_to_order_at(size_t fd_si=
-ze, const char *fs_loc,
->>   	}
->>    out:
->> +	free(orders);
->>   	munmap(addr, fd_size);
->>   	close(fd);
->>   	unlink(testfile);
->> @@ -522,7 +557,6 @@ int main(int argc, char **argv)
->>   	const char *fs_loc;
->>   	bool created_tmp;
->>   	int offset;
->> -	unsigned int max_order;
->>   	unsigned int nr_pages;
->>   	unsigned int tests;
->>  @@ -539,6 +573,7 @@ int main(int argc, char **argv)
->>   	pagesize =3D getpagesize();
->>   	pageshift =3D ffs(pagesize) - 1;
->>   	pmd_pagesize =3D read_pmd_pagesize();
->> +	pmd_order =3D GET_ORDER(pmd_pagesize / pagesize);
->
->
-> I think max_order is also same as pmd_order
->
-> =C2=A0 nr_pages =3D pmd_pagesize / pagesize;
-> =C2=A0 max_order =3D GET_ORDER(nr_pages);
->
-> Can we use one?
+This cleanup simplifies the code without changing any functionality.
 
-Sure. Will rename max_order to pmd_order. Thanks.
+Signed-off-by: Jialin Wang <wjl.linux@gmail.com>
+---
+ mm/vmscan.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
->
->>   	if (!pmd_pagesize)
->>   		ksft_exit_fail_msg("Reading PMD pagesize failed\n");
->>  @@ -547,6 +582,14 @@ int main(int argc, char **argv)
->>   	tests =3D 2 + (max_order - 1) + (2 * max_order) + (max_order - 1) * 4=
- + 2;
->>   	ksft_set_plan(tests);
->>  +	pagemap_fd =3D open(pagemap_proc, O_RDONLY);
->> +	if (pagemap_fd =3D=3D -1)
->> +		ksft_exit_fail_msg("read pagemap: %s\n", strerror(errno));
->> +
->> +	kpageflags_fd =3D open(kpageflags_proc, O_RDONLY);
->> +	if (kpageflags_fd =3D=3D -1)
->> +		ksft_exit_fail_msg("read kpageflags: %s\n", strerror(errno));
->> +
->>   	fd_size =3D 2 * pmd_pagesize;
->>    	split_pmd_zero_pages();
->> @@ -571,6 +614,9 @@ int main(int argc, char **argv)
->>   			split_thp_in_pagecache_to_order_at(fd_size, fs_loc, i, offset);
->>   	cleanup_thp_fs(fs_loc, created_tmp);
->>  +	close(pagemap_fd);
->> +	close(kpageflags_fd);
->> +
->>   	ksft_finished();
->>    	return 0;
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 7de11524a936..9d4745ad5e23 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -985,8 +985,7 @@ static void folio_check_dirty_writeback(struct folio *folio,
+ 	 * They could be mistakenly treated as file lru. So further anon
+ 	 * test is needed.
+ 	 */
+-	if (!folio_is_file_lru(folio) ||
+-	    (folio_test_anon(folio) && !folio_test_swapbacked(folio))) {
++	if (!folio_is_file_lru(folio) || folio_test_anon(folio)) {
+ 		*dirty = false;
+ 		*writeback = false;
+ 		return;
+-- 
+2.50.0
 
-
-Best Regards,
-Yan, Zi
 
