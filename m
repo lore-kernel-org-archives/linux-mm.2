@@ -2,114 +2,117 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9FCF7C87FDA
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 06:53:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D3A6AC87FD2
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 06:59:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4259C8E000C; Mon, 11 Aug 2025 02:53:06 -0400 (EDT)
+	id 740816B00D8; Mon, 11 Aug 2025 02:59:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FCF08E000A; Mon, 11 Aug 2025 02:53:06 -0400 (EDT)
+	id 718216B00DA; Mon, 11 Aug 2025 02:59:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EC158E000C; Mon, 11 Aug 2025 02:53:06 -0400 (EDT)
+	id 6068D6B00DC; Mon, 11 Aug 2025 02:59:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AA9A8E000A
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 02:53:06 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9E7C5C061C
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 06:53:05 +0000 (UTC)
-X-FDA: 83763559530.27.ECEE0AE
-Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
-	by imf07.hostedemail.com (Postfix) with ESMTP id BA6214000A
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 06:53:03 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CtGwCEY8;
-	spf=pass (imf07.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.221.172 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FE736B00D8
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 02:59:14 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BAD4D11715C
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 06:59:13 +0000 (UTC)
+X-FDA: 83763574986.22.28D3F86
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 17D0BA0005
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 06:59:11 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=b10u5cTj;
+	spf=pass (imf15.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754895183;
+	s=arc-20220608; t=1754895552;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/fVsUY08ipVRtRLpv10uWhZA7wsDSRqCmbwogA870dE=;
-	b=emjX35jVI8d/bNgp72Uohd7HWbHD0dWH1qzYKdlT1CO0SM4ISaATlDA/O+PqOHcrkXdC5a
-	0EQr15RMBu7NFc/73XzCp55WpRLei2KC7c7gctnmYXadClP+QOuGJ1+IEMHvLvMhZwLOnx
-	whKxIVqaFzum3ywQEXnJ6cYs4OtLYMo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754895183; a=rsa-sha256;
-	cv=none;
-	b=cSQeTbG7we98E/ZFFpH5VZnwMskoYfg6VkIa36D3md3jEQ0/pYZVpQXClmIeP2V00DQUX5
-	dSH39gxgnpyS/4hXLPYXbEvaevSYCUbG/oMZvpszKUFO6hl+GRHHLV06+6Xjs6CIXMEaKJ
-	FcDJhLoGRzjKD1pwu97FjZ7o4xs017s=
+	bh=TuOu3OMLWRZy/GrYfsj1vU+FzwQIbj3WgU0WMDegCto=;
+	b=YqV23MPjHe1BnlbwteWkJt3b0pgqSfy4OwQj6/rirXZk/UjgeOZDb/GJfbmIYJwr7EaVQx
+	KQXLuICTsXgyKkkCZW98xVMfi4iGvGvpBHds5gaIxp3IOgZe1vSk6zTpmomzLP/k3hHpoS
+	Oz1PQpujWbYP4flcDpcYn3wRHUdAfzM=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CtGwCEY8;
-	spf=pass (imf07.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.221.172 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=b10u5cTj;
+	spf=pass (imf15.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-5396c1d72dbso3182764e0c.2
-        for <linux-mm@kvack.org>; Sun, 10 Aug 2025 23:53:03 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754895552; a=rsa-sha256;
+	cv=none;
+	b=xM8HA+NkWs3Qc8wdRNXB0eK9h48nt90hTADfDNItY9Lp4vzcHjVYUeAE1ZBHfJZoUE0l/k
+	w7LvtNhH1APdKc6oJ6YrsbJUwud5cofZD5j2UloRlbr8/zagAWSQcpU76D9835RuSBkuA7
+	V61BIRTmdxxCH7V23LZYTPAzdlkoNHI=
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-70a57a8ffc3so38208527b3.0
+        for <linux-mm@kvack.org>; Sun, 10 Aug 2025 23:59:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754895183; x=1755499983; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1754895551; x=1755500351; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/fVsUY08ipVRtRLpv10uWhZA7wsDSRqCmbwogA870dE=;
-        b=CtGwCEY8b3n9dUnZYQMHBRUEwD7vxju0tyAGpqxa1aGzfddvoFNmd/0pdWjfRK3osE
-         SMju6yvzaMntW/rrLwjg5Bpddd3jOcLRgUgOZiQWcckmxwVoB9nXXoHur17owrBJHrZT
-         HoGR8uBlWAi3nleebwxQ09wcmhxfxqZ8x/GEMSDF1oAh0Ghs0VQpIKtuIR5vXOVfLeD9
-         JFJEQqMoc7qdUY4GTwrkmcn47/LWv7hROFxUFV89zDQzJxF3O5/7xjmHaCIYvHo/EWEl
-         xgN/dqQ9c85dknrHKUvIgtwQb3cvw+6Dw7PuSyU0dfA8vjho1bnehMrsbp2eDVp+jxgs
-         KXag==
+        bh=TuOu3OMLWRZy/GrYfsj1vU+FzwQIbj3WgU0WMDegCto=;
+        b=b10u5cTjduazs3FhpDuE2uT3Bx+pdQ30PUHT7xIjHgWBjRb2D4zlYGXba1SyuUX+I9
+         PU8yQpZE6kxXMiR4g2iduBfN46oTj48/uNgX4NikyGkvEXYxFb5TesjszhdrdBZwtlfa
+         yYgz8Oc/IG06fTCDo1y05cHllmlDsrBiKZXwhrDjv0lBkPQiWlBzh2udLO1OuvBpNdmK
+         8Gc2s/67slAZU70qOW2996/0UUerWr/oPNQ6s3uOpMwXuXyUkBFfceyflzbcxL+akOVM
+         rfdGF+joe0lChGTW5ZTBLVHhaOrmvF70hl2jIdnUoajpNNBIvdCHUUNg8lOap1lHItLa
+         PxLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754895183; x=1755499983;
+        d=1e100.net; s=20230601; t=1754895551; x=1755500351;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/fVsUY08ipVRtRLpv10uWhZA7wsDSRqCmbwogA870dE=;
-        b=uhpCu6XbJG5S7P/Qtko0lP3qWO6qySEq5Zq+6wzSg2tkWrh77eRfvODVbCoGJRMA7A
-         NyLZR+6psNKBnBXu5YUlqLhGD+9fXhdulYoxi4156w5tF8c/an/OvpLuSIIJxB5taIkS
-         4E/J8V048PJf+ixGArGBvnbIKXsAsuPKToLmonW/Aob7af1Cx06Ti6i/X/xQhLpI023W
-         DOP92u6GTcErDZ7z77AyGNH3SVZQnCVtK2pHcQQ3yJoAuS/0dur+/cbutT0q10vnCOh+
-         VALvwvib82uyyPwOm0ZukkuRa4At6R+wxH2GGrT9ARXa7BvZHUhP+lF2Zbu/9dMzi0QU
-         1P2w==
-X-Forwarded-Encrypted: i=1; AJvYcCViBuLwA9dtb92wM1i9ximSX5W6/rYHUJw4QjSjA47JuhRTu8dxEnVswJDvxr8IAw+OnK1CMAu6Aw==@kvack.org
-X-Gm-Message-State: AOJu0YzPEzm7IbumdTH25Z8MhQ7yUQKWhOaquffezLrX5DcyPBbN3v7/
-	DvoAITQBH68WIW1Soiox+qWcIMb6hBpQZK6LqukpqISuAj43N1pB8dUHUnwz5OhE9DAOgdRz+Km
-	cdh4NuUdvDiYR7xWSXtdTwl/wkWOf5+s=
-X-Gm-Gg: ASbGnctDpmK53KsarrLoBaCjHTy73Mazlh6pFv/6WrMc0SeCdozA2uZOXlC4EeGdre8
-	4wkErusZHbA58GZ4sm5eSka/X1Wl5oVx4cyqQ7TffYKKPQcvft2SgUa56xhL29LUM7aKbo+IaCs
-	8cAVNbvTVrBlhWlM68HPuAI8iqDCW4vs9YZz1x8fRzOPje87LfLy25o1Bc3FbqRtNELvCmWhPU9
-	Cq2iso=
-X-Google-Smtp-Source: AGHT+IGGDVcXKzHiETBGgnAZpGCC0gWUGYjDWg/fG11MB7bORpn/RJDutDW1kYazG5raVFO+qTH8hQX/k+xxbhGLSxg=
-X-Received: by 2002:a05:6102:c91:b0:4ec:c548:ee2a with SMTP id
- ada2fe7eead31-5060f8b41b7mr4400160137.17.1754895182668; Sun, 10 Aug 2025
- 23:53:02 -0700 (PDT)
+        bh=TuOu3OMLWRZy/GrYfsj1vU+FzwQIbj3WgU0WMDegCto=;
+        b=D+q/6EYlgLlNc327LUHSWop1mh54hwkOtlVqBAkQdy9TsmVrUw4YGA9WSECHTUwDxG
+         LgegCTZajOdbtfKN+RE3sHN1psk0kAU/Jtr4AaG+cJuZ91I7BVt/b0WraVjcbFb7IxK+
+         0Zu16AdzE6pJdhnTdsk217VSPdgVJ7MFKWbBYvli70uqY5CQH86YnNgj1oRPjtJ4BQwI
+         RLLRCy5skVEz9Xt3KMQ3hfTEvfmF+SHan1WClm4ly3rk0nR1414LDl4Vk5BS4kj8EWd9
+         Js1NwpnBA+g/grWzy4ZXMyOfrGSsvrTExUwThC5l5tkUUK74chTTWPrT/+5m4clz3pjX
+         gV7g==
+X-Forwarded-Encrypted: i=1; AJvYcCWH5jzOMtjq+oTYzxMLz9uMNZCHOnk9LQ0Yua3AIdc5JFTYLYJ+7Fue6eHql2cdYjf1WIzTfroh+w==@kvack.org
+X-Gm-Message-State: AOJu0YwaPU1RPzU8kSwbG0y9NJFFWe01Z0HFdJYqoRPEUYSrZvoO3VU8
+	H9pcNeiyd/nS7A4BbuExsJGtD/jBt6X4acvsdmyPH29YEkoagQHp15VEkURejGzMzvA9ACkm3ZG
+	G/1VBfRHHl8Ha3//fYMomWvzaC+dUh+E=
+X-Gm-Gg: ASbGnctZm225aa3Beg+g/Vcv2ywPXprTDNVJhm8rtK7N0iDVgfGzWDdMrMX4gXQdVbe
+	m7gnH71OwLJN3cMgQlMDnnRimxwfgoXzBW6Xr7e+kpMLNftRtrTYFwpS2W99FnKeL8o/TIgwiGK
+	5eUVELkem1yZtASbBErUqJTCS5cfVZPQ3NNoflZ2Bzd7g8Vat3p3VnFhdxdQQOEaM0f4HXS0N5m
+	Z1znAY=
+X-Google-Smtp-Source: AGHT+IEbcYjT+506lJ1E8j322xg7JOfAMpd/UJ9FVya57rTPDfeGc0w3hklgL2ebknAB2dJaYt27gaIWwQkN8hNl6h4=
+X-Received: by 2002:a05:690c:868a:10b0:71b:fa04:d16e with SMTP id
+ 00721157ae682-71bfa04dc14mr94083937b3.16.1754895551013; Sun, 10 Aug 2025
+ 23:59:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250807185819.199865-1-lorenzo.stoakes@oracle.com>
- <CAGsJ_4zuEcgg7U0yCMu6ayKqRPACtvuzUsC9vUxBk2PgMzaf_Q@mail.gmail.com> <47ce3db2-38ad-4a6b-917a-c6300fc39543@lucifer.local>
-In-Reply-To: <47ce3db2-38ad-4a6b-917a-c6300fc39543@lucifer.local>
+References: <20250808190144.797076-1-ziy@nvidia.com> <20250808190144.797076-2-ziy@nvidia.com>
+In-Reply-To: <20250808190144.797076-2-ziy@nvidia.com>
 From: Barry Song <21cnbao@gmail.com>
-Date: Mon, 11 Aug 2025 14:52:51 +0800
-X-Gm-Features: Ac12FXzg7m8LhV-73jU_CYSdeBumfCC_Ufk6bjZHFOVKRLYHVyElDAX-Y3qBP2Q
-Message-ID: <CAGsJ_4w_c3AY1Nw7EhYH3rf0jjqgZ6AYLdr3xuonF9SNgWckDg@mail.gmail.com>
-Subject: Re: [PATCH HOTFIX 6.17] mm/mremap: avoid expensive folio lookup on
- mremap folio pte batch
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Dev Jain <dev.jain@arm.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	David Hildenbrand <david@redhat.com>
+Date: Mon, 11 Aug 2025 14:58:58 +0800
+X-Gm-Features: Ac12FXxoqfvnZ6zVcvsM3WYdQubEnyeJWwkI1SyNlh9YvtyzjV1u_HW36tSML5E
+Message-ID: <CAGsJ_4y23gxB+P8=WkBe+oU9j+1YDZmBUTdE2=aw40O78DA7Yg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] mm/huge_memory: add new_order and offset to
+ split_huge_pages*() pr_debug.
+To: Zi Yan <ziy@nvidia.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, wang lian <lianux.mm@gmail.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@redhat.com>, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BA6214000A
-X-Stat-Signature: 6mbusgmirun6kohsa4o4ti1tcu17w77p
 X-Rspam-User: 
-X-HE-Tag: 1754895183-937356
-X-HE-Meta: U2FsdGVkX19iWSGJLERgq9neJHGHER0jp88nBfZcOl7sIvKqwkUnmUXUsNW5kB/xl6XZ9R308j47zsDjkF3eXkJCyRcMfiWTMkxsrgXX4MzuL4+kRoAOtLJXgFE2SQQuv0t8NCHUBP72QXST552ra8xpCzhOqGzMTUT+8tqd+aez/S6FlQX50Y9rbfhZ9+xzC5Z1+jtKl61qNvKeiNWqgEzvG9NJ5tuyz8fHRF21BX3iCYyKJLv9nOUGEGQCJGDcvdD1YMieR5sKH+413HxbnZlMc9DSmLzNPPFtcDAXuefLZE0TuLfCpuohqidFqrLhni7P8X37gcvNqjVIuL/+6k+i1RHGGjj9TzjUHsMuonzGGFWS1WbFkkVDQON01aGs4HfziHr7MfL7ICOXJ7+vlBplrNVIZOuIOPEc6viD5R7BtMnbCX9GQ2BXac3HwqNyTWi/MmBWsX0sqXh03llM8gNBWKmBSTPe5R97lRjCRpK/x842+A3TGfonIolKUvJqnKlNjgml8IRZwU6dJtG9TiPYNmO9jIYG0AUzJC8gAiXaABgRLPMIg2FiDqeJ46XpP6JZCgdnSzhnWYjGQ6ao716tiHHL6bzb6RFYwMtJVqD/8fOEHWIUtikj6eOjkERP6c9pbbp2MegAL49VPy840/fVt6GmtDOryE9KNWcbIb9g8GWAKWO655SgxbtPlafTeRnc1r+pDp8c/yfV5MKROCWrTF7dcieEbY7zIig+0UrApQTT9XMjX3g4Hn3hE9HU/gIC/SOlNsv+HydsJDn3DKAsLu/eFBCClBss9l1la8v2Tj3e1S4jl/gS1Qfj/UGQLVkrPDB4UgkJi/B61QM2y8O5nylDj9P9bJCRz7yMe9EVVrDem//bS35ZZ3cnYivC4KMo7huMAZqOmGQAeewL9GbvNhznF9NVL6PZ+ZFIcOVLbttk5ABiIY3l3I8bV+Xf1LrVBTSuZ1HHLdL5lzJ
- s/Gbo/MN
- yaNRw2KgUbzVkgOrDYePTRC5dBsbnh0tLcIy9rhpkbDCvoBKmzobUKDjWXYl/REWUPFVv9GcAT3kWeEevWA3PtZFZ8kL2lK2KhJdGNuHrvqGW034U8FfURcVds9MlhJZfpp0kQiejA+uBO969HrUJp1YENqCQ6F0PEvM6I5up3QCP1HJmEjakVSsK3NeT4KqXzB7J4Vb7zqMkbuAATSWK7LV3JCvRNGHaBF9Khm0GvGWIf1vPsvx5aPFzM1eVUtb9MkKFUcY0Z+mlTueUP0PJOjk8Ihq9uI8V8VWDMRZC8YMZz+TfLxZCOfMrDocVy97dbR6CQdWcI1mFIO76kht6ZWmLYwKv3TdiN4guzyw2cUjOAXnR+6ef/fhfHs1KfBNIgUAl
+X-Rspamd-Queue-Id: 17D0BA0005
+X-Rspamd-Server: rspam06
+X-Stat-Signature: ppjb7f4efq6rc3useczydbj7ihhsd5gb
+X-HE-Tag: 1754895551-171443
+X-HE-Meta: U2FsdGVkX18KaKYjvjMHNbZQvfNrRDqEy46af8n4FUjP2HA7UI8l1KHXTdn09i5LafAuKeiCBLoKk4M4Sp3vZrUednu+16M3OmQ/CTPtgMGzPYiut4bQG+5enrNPrev73GcaAC3LZRIbirPjDoDdyzKcz+gR+20WHZkkTXHsMxgW8z+04dbLO9+bmFfxdvK5vfqFx0s9hVWSihS7BBt1rmwjZx9nPTxKC3Zia4KwHl6vtlNx0KEi5pbrNWpYSHsi4x5gZdpNq/zXxTWmXgjZJqGh2dpinGznG11squTU5q/Qaxd/cQOYdVqOQOgTr9goIj4mig/dAsbzNL3RCDDtTMRaMDG5td6OjGs6yWqGruyEQBYx1YIQsF19cQIoZjXCu1Jf01gIQmoVEfMXRh65sDrkUq2oB01mVNm7cmQg4VEftksgWLtPpZ+YAYYcebqUhh20fVP1t0yqw9tpmFN9wTMj5KBhEtH59zM7TQ+BsZHsLOVq2Z6YvWS8/SCCsvASNfk1Beh0HyD74Ou4Z5Xw1dExxEaWlrL0RaiLkxREpLI2StzBzl9GU6/e58X/XH1b2bhnHtVA3Lw+XL6OBbs+IA9xoL8TExx5/vde2/S5CVaHoiiXCqDZDi1NIIDZk0scA7JC4Iw+cPnrDzMGWEXZFRhcHCUIWRgGtmxNMuV7pB8slyRWZMDZ2vlEaRq59my99VX/HjSYz+A3oc32s+jgqlnG2uiy0tXwi4d0C1jIM7M1RGFzXLl3g/8qEQ160uZ2TtM6h5Rn95FZdYlZt8ELLtJRn8JtAovmPcpaiS0PTamvp/thL5amopKn+OWMdw7vGUUPEVj/xE+Odl7kCj6cI5Z/VT2+Ocp4p9FTrHWwQFkELjThCo29eRfQitT8i3TlsK0swdnQQE5MQlMeuKvazaKTJDdtytgej0+IV3CAfDdhPl3/8dPEj2zTiCO4xtZYX5If1ApNX+FA3S3xZrP
+ QbB8M8is
+ ME1fvijwNIn1MOPuRwTs4Noqwx3NX+cnOZxXE0u0xefwxiiMZFbCUJw3SaeTW8Wj/llLGVH1Kx0ous0fvE+2eEnzVAoORD2LOxg9DAsCGIHzPauqHk2b0NACliF0u99PqbXv1sPt+4cc07hU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,53 +121,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 11, 2025 at 12:57=E2=80=AFPM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
+On Sat, Aug 9, 2025 at 3:02=E2=80=AFAM Zi Yan <ziy@nvidia.com> wrote:
 >
-> On Mon, Aug 11, 2025 at 10:40:50AM +0800, Barry Song wrote:
-> > On Fri, Aug 8, 2025 at 2:59=E2=80=AFAM Lorenzo Stoakes
-> > > The expectation by those discussing this from the start was that
-> > > vm_normal_folio() (invoked by mremap_folio_pte_batch()) would likely =
-be the
-> > > culprit due to having to retrieve memory from the vmemmap (which mrem=
-ap()
-> > > page table moves does not otherwise do, meaning this is inevitably co=
-ld
-> > > memory).
-> >
-> > If vm_normal_folio() is so expensive, does that mean it negates the
-> > benefits that commit f822a9a81a31 (=E2=80=9Cmm: optimize mremap() by PT=
-E
-> > batching=E2=80=9D) was originally intended to achieve through PTE batch=
-ing?
+> They are useful information for debugging split huge page tests.
 >
-> Not for arm64 apparently. And the hint check introduces here should avoid
-> regressions even there when small folios are in place.
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
 
-I still don=E2=80=99t understand why this is fine on arm64. We do have fast=
-er
-folio_pte_batch(), get_and_clear_ptes(), and set_ptes() with contpte, but
-are those benefits really enough to outweigh the disadvantage of
-vm_normal_folio(), given those PTEs are likely in the same cacheline?
+LGTM.
+Reviewed-by: Barry Song <baohua@kernel.org>
 
-Unless the previous contpte_try_unfold() was very costly and removing it yi=
-elded
-a significant improvement, it=E2=80=99s difficult to see how the benefits w=
-ould outweigh
-the drawbacks of vm_normal_folio(). Does this imply that there was already =
-a
-regression in mremap() caused by contpte_try_unfold() before?
-And that Dev=E2=80=99s patch is essentially a fix for this regression on ar=
-m64?
-
-Sorry, maybe I=E2=80=99m talking too much, but I=E2=80=99m curious about th=
-e whole story:-)
-
+> ---
+>  mm/huge_memory.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 >
-> In similar series to these in other areas, it appears we need the folio
-> anyway so there is no additional overhead to deal with, in mremap() you'd
-> otherwise just be looking at page tables which makes so this egregious
-> here.
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 2b4ea5a2ce7d..ebf875928bac 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -4327,8 +4327,8 @@ static int split_huge_pages_pid(int pid, unsigned l=
+ong vaddr_start,
+>                 goto out;
+>         }
+>
+> -       pr_debug("Split huge pages in pid: %d, vaddr: [0x%lx - 0x%lx]\n",
+> -                pid, vaddr_start, vaddr_end);
+> +       pr_debug("Split huge pages in pid: %d, vaddr: [0x%lx - 0x%lx], ne=
+w_order: %u, in_folio_offset: %ld\n",
+> +                pid, vaddr_start, vaddr_end, new_order, in_folio_offset)=
+;
+>
+>         mmap_read_lock(mm);
+>         /*
+> @@ -4438,8 +4438,8 @@ static int split_huge_pages_in_file(const char *fil=
+e_path, pgoff_t off_start,
+>         if (IS_ERR(candidate))
+>                 goto out;
+>
+> -       pr_debug("split file-backed THPs in file: %s, page offset: [0x%lx=
+ - 0x%lx]\n",
+> -                file_path, off_start, off_end);
+> +       pr_debug("split file-backed THPs in file: %s, page offset: [0x%lx=
+ - 0x%lx], new_order: %u, in_folio_offset: %ld\n",
+> +                file_path, off_start, off_end, new_order, in_folio_offse=
+t);
+>
+>         mapping =3D candidate->f_mapping;
+>         min_order =3D mapping_min_folio_order(mapping);
+> --
+> 2.47.2
 >
 
 Thanks
