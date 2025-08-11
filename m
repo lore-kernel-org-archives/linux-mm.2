@@ -2,184 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 29F52CA0ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 15:39:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9FEE6CA0ECD
+	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 15:48:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9AF698E0074; Mon, 11 Aug 2025 11:39:40 -0400 (EDT)
+	id 381288E0075; Mon, 11 Aug 2025 11:48:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95FF88E0060; Mon, 11 Aug 2025 11:39:40 -0400 (EDT)
+	id 358CF8E0060; Mon, 11 Aug 2025 11:48:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 800818E0074; Mon, 11 Aug 2025 11:39:40 -0400 (EDT)
+	id 26EAB8E0075; Mon, 11 Aug 2025 11:48:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B6F88E0060
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 11:39:40 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EF853B7A0B
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 15:39:39 +0000 (UTC)
-X-FDA: 83764886478.05.A4DC649
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 63A2518000C
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 15:39:37 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Wcn2x6b/";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf16.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754926777; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 12DA38E0060
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 11:48:29 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7DAF0C01FB
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 15:48:28 +0000 (UTC)
+X-FDA: 83764908696.12.8809F49
+Received: from prime.voidband.net (prime.voidband.net [199.247.17.104])
+	by imf30.hostedemail.com (Postfix) with ESMTP id B75F780009
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 15:48:26 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=natalenko.name header.s=dkim-20170712 header.b=wL+LGZSW;
+	dmarc=pass (policy=reject) header.from=natalenko.name;
+	spf=pass (imf30.hostedemail.com: domain of oleksandr@natalenko.name designates 199.247.17.104 as permitted sender) smtp.mailfrom=oleksandr@natalenko.name
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754927307; a=rsa-sha256;
 	cv=none;
-	b=b/6HywWhugxunwKbhr7WmuQIDjC7Y9i2boq2NhBA44RRgUcGr8w+LibLCrEWqwcm/e74q0
-	nrNHnxm+80+AUF4Vm4QFTRUam0EHwBvL4twFmK4b7ml0AoVVtYY8sxMFNo3Fisu50yYVub
-	0WRQSQBu1kH53EYWSyZBMXPVth8ptMU=
+	b=ugIjD/7xeOxk/Zv8MwHA7pQm36tlFtwJW/mF9NoWhuFQ4xGiWCn+7efIsHw9OaBKFHeCSo
+	ETXygYNCzihb3FTnclczhO4M5saPA4bsVDGH2lT9bBFKMSSr03zufnQ5Qv+Ui40xiFrglB
+	3JqKA4DvmhzySlCxUtr9v9m9HxPWXGs=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Wcn2x6b/";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf16.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	imf30.hostedemail.com;
+	dkim=pass header.d=natalenko.name header.s=dkim-20170712 header.b=wL+LGZSW;
+	dmarc=pass (policy=reject) header.from=natalenko.name;
+	spf=pass (imf30.hostedemail.com: domain of oleksandr@natalenko.name designates 199.247.17.104 as permitted sender) smtp.mailfrom=oleksandr@natalenko.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754926777;
+	s=arc-20220608; t=1754927307;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GyWr1QpZuxF9B4FyrzRej7noS4J8x1+3Oa8vyw2kJ7w=;
-	b=Rj2OPYF42gbi6sVwYs7hN8YfQKE/cGqAU9xbezwaUpy/4eHslGozo7rSf/5hbcco2Zj+ZZ
-	swzRX8FVdvbJ+vlUKStnRJyYiZ0LAsT2aQeXgyYm6S+xt8qMWQJWSW5nCewCKmL7OFiDnT
-	GW2/Uwh8wWCyMoVKKSRtOndOyv8A2fw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754926776;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=1L9wHhKVuXZQmzSOEtmhCm41l8tFu1qnDWrexhilFd8=;
+	b=WbbrC9F1wkICvS4qUtzKKWakXOmyffP67Y5THxjqhuMdfEvEzbkh5U/+9ndJ3AJ+GtW2tf
+	ZQaYY+CqahjpFHnd1VGQn1SW1SazCdtMfNcBX5hs3AnH9/W+8CVLtxOZe43QhRAEEDpma4
+	3GRlM/IbGgpspzSKKgWQeYMulHco5+A=
+Received: from spock.localnet (unknown [212.20.115.26])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by prime.voidband.net (Postfix) with ESMTPSA id 986B3635B040;
+	Mon, 11 Aug 2025 17:48:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
+	s=dkim-20170712; t=1754927302;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=GyWr1QpZuxF9B4FyrzRej7noS4J8x1+3Oa8vyw2kJ7w=;
-	b=Wcn2x6b/76pDQSi941HidVUE/P1bNTRRR593e7kvJWnE7tu2uEMlNwYzCnwF9fyiJyFSNU
-	Ah0cBqDcIwlOfWagca+5eP3o0+nEhCZFRhwmNI80hZlUJMfPglbVpYeuCrXvawCb50sHen
-	108t6CuHHMqsDfTbbqWNoMBAuTdWviM=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-606-vK3XaSbLMRykAVxXd48Ipw-1; Mon, 11 Aug 2025 11:39:35 -0400
-X-MC-Unique: vK3XaSbLMRykAVxXd48Ipw-1
-X-Mimecast-MFC-AGG-ID: vK3XaSbLMRykAVxXd48Ipw_1754926774
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-458bf93f729so23696525e9.0
-        for <linux-mm@kvack.org>; Mon, 11 Aug 2025 08:39:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754926774; x=1755531574;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GyWr1QpZuxF9B4FyrzRej7noS4J8x1+3Oa8vyw2kJ7w=;
-        b=Y9XC1dDNZFdjQkhx+ybfq3vdlRBAn/f/6ct9IATfNeZojgbN4RKbQMtlC0K4qYYKGH
-         +tf1NPye5nAClXVqmoH3wn+YsSd0aTV2pkB3pWCZIInfyQyGusKc96AYvxuX3e4lPyNV
-         e1azdsv8YUnVpZr43ZZIMOwJhuLZsD4B7XZZYljAbYjaXAhUOUx8hCrjQDEdW/Azs3Sf
-         LbT9NxkMiNUj500UWpbwTnjWq7FXGA31D2Y7w5+CieRAFohUDUrdMUuE+TedtNezqNgo
-         iJp3wQ679ajaXxj6aptiwMdT5oidtUIGrsaRRrjeFQ5RdneOfPrGcKiIZeAySZnbF48x
-         LZJw==
-X-Forwarded-Encrypted: i=1; AJvYcCVLu/HpXpQMPyVfq84hF0JDIjb5iLCgDBLaLDkS/8hFkbqwxbSwhsvtRBYD53aYVmpUM9iGF5GuFQ==@kvack.org
-X-Gm-Message-State: AOJu0YzcC3vMcAfawaGoSpA7eZmMROh9RQWE+GeczYDbdK5Zw+IfYsVH
-	kWDCDWD7qdhSy0Yo/nKchMxcVCXvf7go25kg4VAZLC5+imi6qdL+mw/eUmP+pCK8BcfvVC9TtjW
-	0NJad4/VrnaQ5T7w6NkrHtehE7JKFbwdKq0c7/5J3Z87PrL9sXmiY
-X-Gm-Gg: ASbGncshV156NVsTwznY5lzYLjY76qVpK0rI379UjBGKHb4btF6ykk2z/T7EOByv1qM
-	nJU/eixHc3bsuRnha0WPYFKaResDheZitYfYufgaGbFbQiXgKoS0DFrsagMmufFWmM11m8EHlAu
-	PcwQU48Yf1Dew7IzoyBIpjkrayh9yeyjh2I9giNJxpo1ydIsVgBiD0raXXiPWpXPj91G/22H202
-	0R2bxFVgLgUpk6/IqTFToI6DZxbqLrvoCSHmnIvJqYnaD+hMmqfnJvaQRjxraCXLOpmn6jWYUhp
-	0xSTFlOjgP4vB600VIsJxh9DffEj1+Q/F8q55UvCYPxoDwj8uWu/clc96EzXNDPn9WRC7bDCW9C
-	+QJhTjG2Qx8og8CEO2tGM5Ctj1/+zZb92Ummf1inOTYklZOWJLLqjMjiuyvpmyAU7mtY=
-X-Received: by 2002:a05:600c:c494:b0:459:db5a:b097 with SMTP id 5b1f17b1804b1-45a10c0126fmr1610685e9.16.1754926774347;
-        Mon, 11 Aug 2025 08:39:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHlf+7BcvARxFRQk8Q5EGLD08HwQZfsUf/AwyhotSUn7XHRyNjGYRhhAvp4S2PkxpNDcQl2fQ==
-X-Received: by 2002:a05:600c:c494:b0:459:db5a:b097 with SMTP id 5b1f17b1804b1-45a10c0126fmr1610205e9.16.1754926773715;
-        Mon, 11 Aug 2025 08:39:33 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f06:a600:a397:de1d:2f8b:b66f? (p200300d82f06a600a397de1d2f8bb66f.dip0.t-ipconnect.de. [2003:d8:2f06:a600:a397:de1d:2f8b:b66f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458b4f9e952sm399513135e9.9.2025.08.11.08.39.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Aug 2025 08:39:33 -0700 (PDT)
-Message-ID: <2e8df53b-d953-43fb-9c69-7d7d60e95c9a@redhat.com>
-Date: Mon, 11 Aug 2025 17:39:32 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: swap: check for xa_zero_entry() on vma in swapoff
- path
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=1L9wHhKVuXZQmzSOEtmhCm41l8tFu1qnDWrexhilFd8=;
+	b=wL+LGZSWocUdhgr4uDnJkqv/zrJDjGwZO0DZ5R+3skpojeX9/PCnPdJb8dmZRkEGkhxQwm
+	fZlDnWEpL9uNRlPOF54P6RoNCeCYp1wG2BTGWGuhhQwXcg4qbGAtqFYW7khRm9CzynxQm9
+	KkqaxakLAtnJyncaLQ2jBvjGKFju27U=
+From: Oleksandr Natalenko <oleksandr@natalenko.name>
+To: linux-kernel@vger.kernel.org
+Cc: linux-block@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+ Damien Le Moal <dlemoal@kernel.org>, John Garry <john.g.garry@oracle.com>,
+ Christoph Hellwig <hch@lst.de>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>, linux-mm@kvack.org,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Charan Teja Kalla <quic_charante@quicinc.com>, akpm@linux-foundation.org,
- shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com,
- bhe@redhat.com, baohua@kernel.org, chrisl@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>
-References: <20250808092156.1918973-1-quic_charante@quicinc.com>
- <dedf7436-9afa-47f6-b676-88f2dd8b638b@redhat.com>
- <f008107a-2741-476d-9e32-ae9fc0f81838@redhat.com>
- <29e080fd-5f9a-4760-876a-a6ccef33129f@quicinc.com>
- <fec5ad61-7caf-4076-ba81-7b454ec7018d@lucifer.local>
- <9178bf98-2ea7-4ad8-ad43-cdcc02ab863d@redhat.com>
- <904f85d0-acd6-4f47-ab45-fbf18b80f1c6@lucifer.local>
- <7e7bfd05-434c-40b7-98ec-8ce352a8147d@redhat.com>
- <fd35dd5d-95cc-4c37-bf72-52a27fe822ac@lucifer.local>
- <efe3aogdw5wxsn46xyy2rrqui7oghyi7elam7aiv3c6o6hsfbx@ee6dayztcy2x>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- g3eXuA==
-Organization: Red Hat
-In-Reply-To: <efe3aogdw5wxsn46xyy2rrqui7oghyi7elam7aiv3c6o6hsfbx@ee6dayztcy2x>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Y-H_v_uKjPWFe7S9k7XFzFTt4rRddT8ALXu6abNUnP8_1754926774
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 63A2518000C
-X-Stat-Signature: gsy9fuznxmegxq4stq6eenge6gignbgp
+ Shakeel Butt <shakeel.butt@linux.dev>, Qi Zheng <zhengqi.arch@bytedance.com>,
+ Michal Hocko <mhocko@kernel.org>, David Hildenbrand <david@redhat.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Subject:
+ [REGRESSION][BISECTED] Unexpected OOM instead of reclaiming inactive file
+ pages
+Date: Mon, 11 Aug 2025 17:48:08 +0200
+Message-ID: <5905724.LvFx2qVVIh@natalenko.name>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="nextPart3613097.ElGaqSPkdT";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1754926777-444535
-X-HE-Meta: U2FsdGVkX18czdOptRIBXoit+r15dWX4D+c+Vk5MHmXWa/KHVraic3yf3TqtvWWZAQEQ7VkvIqF+UhJJyU39yu1u2YauvlvkA2bjYJCrIgHGXsjEfcHbXjQosYX4tBedA6nJpRN6NJ9M4dT4bBrsWQMxwgOt+XQm0QgokqGYbhp2QCuazW4B4po7BOZyZQWAmST3OL2EgvVf+dzXU4oNreZ39yPvT0XW9ible9hTKCaPNDPqS7Bj8RmD/S5Xh2uI4VDIRlsbL84u9RL8B7fgwHn3P5ZsIxx3rHFvQmlvDHHqx5hP3C9X/oNW6u5vubAqkfyNKL96Th0ifyN5mjOT6sS2Iv+t+5W6I+do6NV+i+/bZIEGoMyMdfFksBJCP0nk7bRqcX+FH2XQzKk9V9RQGePxfzdLKHj+hZD9pos0V9Er0QRtoOWyI/C0j35mHW6X99kWahNxbanDnNmYWSpb9S6iQrrLcmF5Oe7diQF/N+5eWx7mJ50y3ho03/jvSg6Wc3ejkCRPAfMaB2n32kMblE5bLmC1zcdLr5dlcrbkSTZLs8vZOuiCIk1CVF/qPjF8x0+9mIvaJHTmlGYuaTsZRUw+PNbLXieUp/D0m9TSsMYidFiey7HUwIw6N5vgyItViNN9RFA7Rcvkp8Kgj0hovOfYRe1o5YKl7pr6vopbJ04dhowBR9p52RcG/T0jpAPgnbaum6SqDi5zaZe1xDtg1uHOFgA2I/t5H3QQgR1Hi6pXoalLUOT9POzPABgmxiQfC12fBELXf6RYYRtmJOe9DCSQHd7lOlV3ND9GFKbe6WPegxtZWbKfqox87LgaaT+45uH4Xnp2YrbtY1tbnWn5Elv2b9LlQ/Dkov2jl+4TI7xrLpxn/TGJycVr6veK86LOPDRLmg1s9gJZ8oLu7eV14esNnl2VScksAsydAp1SnRWip5zB6efS1GZ9dox4W0zGRZb/GKowsACFOnwSrvw
- QjXPUCLr
- M2E7hi2C2FoxjUq270xOIs1UNSb2Y3v3GLBlzbkKq704IwcCxnaY5AYcjmQHtjVb0AQ9k5CiGFh18/sb3QJtiEGaV7plqzWJl8ir5GCKQkVR1Y/ohUNVRnY2H08p/QKDyLWPCUxTXQE3Pzagd9Lby/ZCcx90pSJ2phW4k7X7B3ueAviYJasnN21sNY8S7h95L1FpK2xr4zCQMOv+Y8KNRmMt1D8ES3H+D6w3sehl0kkKxbF6mjUM9WWKo+eU6/G11tRacAAD6nimXdaMUzO7Yd9wwQwH03uv7Ep6VwcZcviMOk02hGBIr3pNUtLkxhl6EICFEfxRgGMAolyitFDLhQsoVgsGJF1aMjt8+0m87qVhOnvD9+PptG8zPfi00sjsRZpY0iCUUHxwtxhly2e0ozz+R2VrD6iL0oWxzfLLRhIOjv3pnW1e8efUjqOjNLRCXb3GiNcFKdRtnEKLv/G14uJ2XfZYcojYS2ylWQsAXqFN/Pc347eVLzzrhlPoqGaQ/TAPKe+AEwDjTbjR4pFFXgaTsD3UZdEJ7N1xVLLFWkhMFNCGkVroLTPx2t3p9OoqCtatlATHdhGe37E5/9gktKBodL3cPcFoiFygLOt0ms6DD8B9EXi5qmOk0kCqjaDZ2IeQV
+X-Rspamd-Queue-Id: B75F780009
+X-Stat-Signature: 9eejp7t9dnww8knkhgm3prdewgpb8ug5
+X-HE-Tag: 1754927306-918492
+X-HE-Meta: U2FsdGVkX1/VKCUZVpM6Ve98f1UXml/QkOPDqkIJt22ipq3jBEWHNSvqT8jvjP5m+vqeVDHnFeiZiLvDEZjA7+fSwo4LEF/KDJzdtZGKywe/cGCMe/V5BA0orwSO1NHKOB93YfNH7VyV8q1jImuaUDLndOHIL1Ge+ldMe2x/5AuOAIBc3iOergkn2rWsBzw6v6DJ6R9R8Edtm07r9fz2LwQnK/DZxRB2eA32bdP3YSdigUd64/JCV5dPszWO646HUjWl3f+2l5wXP6cYQBZzQn+52+c63lw+/3ymKS2xikKJUUYffKoRcjBuvAcqz7yxazSHqTsQHFLo2eiVrodo7PnF4uzEGqRH8f9if3Akc9sW7Vv6nx4ECxiRdfjIh5axZ/5jtvViZjmZU6rocI2B8IpyAdDLDaLYyfLLCeMFUq3IntR3VQ6s/JMeIBywBp/KiKZdPEJn3OCHvtQ1k+bdR8koTbTNmWR97a/wCTvGKLOFryUwv/qRMpU54LVciDiBvTkNW3fYZ0xJXWwqVOr0GiylX8nR4vpa0BpmJnQAMFLFcTmiED75NJ8woiyCEFpFBfyeyfXLgnspDzlxo5nwIAd2tAG5nJUI4xkdR4iA/MDd7ItnLjqQy5QKFZ3RUw0DrnCqs5tLLeLkWJRiFj9C5kU4E48t14xaIe3aZlgoyHypBw6jRQHXy8FETvV4JNioHJ9/GB5yBmcg3tkaXnGtNhCnLeMEKk3FZCzoLT+87ZvGu+gKBLe0FzYhw1tL9tBY4S6Ie+O3yPpfAXELoY5CsIS47uM3o7posYPEpvvr/a1BOIs3bxkB4V7V8THSt3YxdEk3pMCMJJGZA4zoB4mG0i3C+8VwMxRNr53Z85VQ6tUMsaGgzC3Qfc8jBnRgNeM46pVEMHsQLo5jUcEHiG/2+FWmjp6w3HnSgq18pQN4zu9oW5BghiLeFFYYyKVB6jD8Gg1TJJYxDCYGvrehxaU
+ FTFttGcF
+ 8EGq4fW51xB8p7tviDQx6LWAWQ0PQlSZ6zwhXOklvN7OA8xKsoytovJxnUwSmC3K9n8gzX7Io0t6OWsu9bBZ/ZypN++u/m7IAyJNV3kOO/4ve3vSgVE63L/u+yJJX6tRf1goQkGPtSvyMJi+emumJ3gA4rmDpnuRqZ1vzMTiYENEmRMV2YdziGPGnMboKByO/do4btPVh/FOyoD3UL6GuKrcsgUWqS7RVVaAor0dnX4DzKVwTT6U833TpGn9ih6sdZQnK97gmXy+pXWJ4t9depDUmLopyitM4gHdDo+9n2ibQGRDco+9GT8u7MoVf2E8MYilOELe6CDQtkslicjMrdOEOWXvAU6bdmiG0DJ+YKpRBGnN5ikTx+CkswdLjKugkmdQ/BuWFMCGz69BdBP7nFfZOnRkLzORpu7knaC5MhJiZ4mAB9IvtzPT0kMcLF135sodIbTFTu12LFQkZtB/YXM7mWSXT/Sy9fBWPiousZCvf+UaJIAICAJfqZYU2DeFgAJAIHveRd0M3G7pqEvXeTv5caw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,89 +94,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->>
->> I think it may actually be difficult to do on some level or there was some
->> reason we couldn't, but I may be mistaken.
-> 
+--nextPart3613097.ElGaqSPkdT
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Oleksandr Natalenko <oleksandr@natalenko.name>
+To: linux-kernel@vger.kernel.org
+Date: Mon, 11 Aug 2025 17:48:08 +0200
+Message-ID: <5905724.LvFx2qVVIh@natalenko.name>
+MIME-Version: 1.0
 
-Thanks for the information!
+Hello Damien.
 
-> Down the rabbit hole we go..
-> 
-> The cloning of the tree happens by copying the tree in DFS and
-> replacing the old nodes with new nodes.  The tree leaves end up being
-> copied, which contains all the vmas (unless DONT_COPY is set, so
-> basically always all of them..).  When the tree is copied, we have a
-> duplicate of the tree with pointers to all the vmas in the old process.
-> 
-> The way the tree fails is that we've been unable to finish cloning it,
-> usually for out of memory reasons.  So, this means we have a tree with
-> new and exciting vmas that have never been used and old but still active
-> vmas in oldmm.
-> 
-> The failure point is then marked with an XA_ZERO_ENTRY, which will
-> succeed in storing as it's a direct replacement in the tree so no
-> allocations necessary.  Thus this is safe even in -ENOMEM scenarios.
-> 
-> Clearing out the stale data means we may actually need to allocate to
-> remove vmas from the new tree, because we use allocated memory in the
-> maple tree - we'll need to rebalance, new parents, etc, etc.
-> 
-> So, to remove the stale data - we may actually have to allocate memory.
+I'm fairly confident that the following commit
 
-Ah, that sucks. And I assume we cannot preallocate early, because we 
-might actually require multiple alloc+free cycles.
+459779d04ae8d block: Improve read ahead size for rotational devices
 
-> 
-> But we're most likely out of memory.. and we don't want to get the
-> shrinker involved in a broken task teardown, especially since it has
-> already been run and failed to help..
-> 
-> We could replace all the old vmas with XA_ZERO_ENTRY, but that doesn't
-> really fix this issue either.
+caused a regression in my test bench.
 
-No.
+I'm running v6.17-rc1 in a small QEMU VM with virtio-scsi disk. It has got 1 GiB of RAM, so I can saturate it easily causing reclaiming mechanism to kick in.
 
-> 
-> I could make a function that frees all new vmas and destroys the tree
-> specifically for this failure state?
+If MGLRU is enabled:
 
-I think the problem is that some page tables were already copied, so we 
-would have to zap them as well.
+$ echo 1000 | sudo tee /sys/kernel/mm/lru_gen/min_ttl_ms
 
-Maybe just factoring stuff from the exit_mmap() function could be one 
-way to do it.
+then, once page cache builds up, an OOM happens without reclaiming inactive file pages: [1]. Note that inactive_file:506952kB, I'd expect these to be reclaimed instead, like how it happens with v6.16.
 
-> 
-> I'm almost certain this will lead to another whack-a-mole situation, but
-> those _should_ already be checked or written to work when there are zero
-> vmas in an mm (going by experience of what the scheduler does with an
-> empty tree).  Syzbot finds these scenarios sometimes via signals or
-> other corner cases that can happen..
+If MGLRU is disabled:
 
-Yes, I rememebr fixing one instance of "0 VMAs". Most code paths just 
-don't apply if a process was never actually ran I guess.
+$ echo 0 | sudo tee /sys/kernel/mm/lru_gen/min_ttl_ms
 
-> 
-> Then again, I also thought the unstable mm should be checked where
-> necessary to avoid assumptions on the mm state..?
-> 
-> This is funny because we already have a (probably) benign race with oom
-> here.  This code may already visit the mm after __oom_reap_task_mm() and
-> the mm disappearing, but since the anon vmas should be removed,
-> unuse_mm() will skip them.
-> 
-> Although, I'm not sure what happens when
-> mmu_notifier_invalidate_range_start_nonblock() fails AND unuse_mm() is
-> called on the mm after.  Maybe checking the unstable mm is necessary
-> here anyways?
+then OOM doesn't occur, and things seem to work as usual.
 
-Can we have MMU notifiers active while the process never even ran and we 
-are only halfway through duplicating VMAs?
+If MGLRU is enabled, and 459779d04ae8d is reverted on top of v6.17-rc1, the OOM doesn't happen either.
+
+Could you please check this?
+
+Thank you.
 
 -- 
-Cheers,
+Oleksandr Natalenko, MSE
 
-David / dhildenb
+[1]: https://paste.voidband.net/TG5OiZ29.log
+--nextPart3613097.ElGaqSPkdT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEZUOOw5ESFLHZZtOKil/iNcg8M0sFAmiaELgACgkQil/iNcg8
+M0vbWRAA1sWIe8mVt6d0YmxKVEnYTYmMS1xatrN0wE+v1F22bp2RIiILZ5N1jlYM
+s7mU4zQPn+K3KGeskURO7fI+Pkxqhas8UeN4p2GXkDGxSW3/N+eglmgbn0ICCE1w
+I+fsBRbF7u5AI1xwUrDl4QDs+3YwW+v5RQbwFTwQYLu1oz9cARZD4tn4P80x7RIl
+ct/TtcUvkHWjs0JEKXxfCqDQfEe36dD5TD2hFk5Fo1tIrSQfMojmoJ+gMXPCtXsh
+tfPuXFeenpcySoLvu6PS5AayzqPCle4t2WOuVigE5KMhPkpNG22Of7PM4FbueRQa
+O4QECIWlzQNs0n5VVrCNlAWC5dCtzGHvV/HI2tOmEGIUjdpU39JmibrQa9OsK3TA
+lqMgmD8rgMT4r7TLgM0f4F48q5enU8nfSiuL3PVxeEWDJUlz2cCyb9cFp8u6ybI8
+NI9n/1l+G8rV24E4eWuB7+vWMdpcio+/C1xxB0KZS8tdSdB1vQJqFhv4o0TqJshS
+PurH9SL9ZoRz9s+JequLlnz5vZCULAHMD8pwcZ9KbjhuohA5BePtDt26IoH+0KoM
+ph1zjJobDbwNCLvGi+xXorBKXjytESPDJEyBfQK77T5HeEGiFgzF5OG+Nt/9V085
+ReA9mxcKPcpe1VXz4Hl3LHaPBUkg6ATQ9r0m+FTF6WIowpomIG0=
+=guvX
+-----END PGP SIGNATURE-----
+
+--nextPart3613097.ElGaqSPkdT--
+
+
 
 
