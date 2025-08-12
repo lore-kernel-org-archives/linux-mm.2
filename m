@@ -2,187 +2,138 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 487B6C87FCB
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 09:58:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E7410CA0EC4
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 11:07:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D42FD8E010E; Tue, 12 Aug 2025 05:58:07 -0400 (EDT)
+	id 2023F8E010F; Tue, 12 Aug 2025 07:07:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1AAB8E00E5; Tue, 12 Aug 2025 05:58:07 -0400 (EDT)
+	id 1AC268E00E5; Tue, 12 Aug 2025 07:07:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C090B8E010E; Tue, 12 Aug 2025 05:58:07 -0400 (EDT)
+	id 09B028E010F; Tue, 12 Aug 2025 07:07:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AE25F8E00E5
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:58:07 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3675CC0217
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 09:58:07 +0000 (UTC)
-X-FDA: 83767654614.22.4434CD7
-Received: from TYPPR03CU001.outbound.protection.outlook.com (mail-japaneastazon11012006.outbound.protection.outlook.com [52.101.126.6])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 07D6280004
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 09:58:03 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=vivo.com header.s=selector2 header.b=KGYlETj8;
-	dmarc=pass (policy=quarantine) header.from=vivo.com;
-	spf=pass (imf30.hostedemail.com: domain of rongqianfeng@vivo.com designates 52.101.126.6 as permitted sender) smtp.mailfrom=rongqianfeng@vivo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754992684; a=rsa-sha256;
-	cv=pass;
-	b=TLcqB9NE+uQKeUbgiFYh4imJCEXN8cEoHwntWjbE2TL26HlwL/NJkVp/vO2dfWDXXxXL6P
-	p4zkgB9yOgguDZ0ZfsBTyob+K/WSnnEKsvFPtM82uz0x3gx3eD0mX+oTWcfHpjMdfMuMuU
-	DfngetbBjiRMSljD7uLdw92wS5RFWHc=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=vivo.com header.s=selector2 header.b=KGYlETj8;
-	dmarc=pass (policy=quarantine) header.from=vivo.com;
-	spf=pass (imf30.hostedemail.com: domain of rongqianfeng@vivo.com designates 52.101.126.6 as permitted sender) smtp.mailfrom=rongqianfeng@vivo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754992684;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E99528E00E5
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 07:07:50 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 769C2C0260
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 11:07:50 +0000 (UTC)
+X-FDA: 83767830300.17.E17203B
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 87E07140009
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 11:07:48 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=k0odTsD8;
+	spf=pass (imf09.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754996868;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=QnxlrR0z4XAd5tFOWo8lCoD3mKz7FF3gc+Zx8eVwGfE=;
-	b=pmAsVyBMLKp0TXRU6nKpJt77HJBw0BEUCjTinYvhALfn2RYsq7QANl8BfpqFe8nEjUHkpQ
-	14JRNnyfUfgJGW/h87yEUggFKWenarmWJUjH0s6wgeraUqQ7YiYMxDYLA4GYTzkT/0ZaH6
-	CDfx9tN+VhZEj0cEtEQ6zwfOywboH+4=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=grala9j6k9i/v9BB7gK4M5P55rAMf/D7/1yDVKvDO9TsQllWHHcBLE10xaUrn7Gfh6yqGsPOcyWoAHxtPRQgyZI06RfIke6SNkscZ4I1+GrpReGxXeZDfpbmkzSGqiGsAJ09TJssLziKssDHOO9IoHowG53YT1PQHmBqac0tA+HRMuHLB8wE5zhq89LKn25O8Su1mgt/w/ApoHEYhs+36PnB1XUFm7wdsqWbgtFEYisuA/oWnfLEVND1d8h/uXvZG47BnDZi2ctPqPqkRo5TW8tqpd4/wQVkYLUNR5GvXryyO5KuDg+Fz75YgffXmeEscBCXLlwIc3+fyLYQjUWi+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QnxlrR0z4XAd5tFOWo8lCoD3mKz7FF3gc+Zx8eVwGfE=;
- b=nvkPNrMLFfYXEpACDOMY/gKoBucC3PckqAKabhRvcPnhXFy1Z2pnQ2xHCJD24C1qkpebQSZXWUVud4EUGvMTd4H5qge46tv5VEyGuw7vJ98DpOx1u76Bwd1NDNK5WftbmAvKGXgjU0BdTdbUbYqvkZ2bnW0coLInyRzbpObWJBb0UK0Avy3AnzJ89F5G/P8HTykmJa8AvEYQHAjocYaEDbeEbim9Zr3589UFeGWO24EuXsiwjbU4L2th7yiUoxQ8ZcygzOgBuqCRo1MjrbWn2UfOHDzO0a1xXUHBiyk4s1F9fauJiVz/eT6yOd9PWmteQgAE19iyTh5dxaqx31ektw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QnxlrR0z4XAd5tFOWo8lCoD3mKz7FF3gc+Zx8eVwGfE=;
- b=KGYlETj87AfmvqrPxdq7Om3JWCpCu7a4rarOB6uc2lxaF0vaMjVEohWzQmbCpvKkLO/Sy4BwXxFscJPRZAd63xm0p0/3SBuFLHxRb1X1CUXpdGho+fhFRzbCBDckW04Jl2hw0FLn+g/R8aQyEzjRji80rceidqLHFR781t93LR5YHSAhu5Gyb0I3pT2y2NKcCCCKpF1bNPkRJTEPCxuoGeSP2UPfOWGJKguIgJ/YxmTkMuLzyki24bc7QQp02SZuzs14rT9jCqtR3eWtE8TPTIcwL6OTzaCMNIMViMlxjVMW0ja2FGwdPF3Gl8UY5egWqu0RtkdoOwm6OUUiYV+m3w==
-Received: from SI2PR06MB5140.apcprd06.prod.outlook.com (2603:1096:4:1af::9) by
- TYZPR06MB5370.apcprd06.prod.outlook.com (2603:1096:400:1f1::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.20; Tue, 12 Aug
- 2025 09:57:58 +0000
-Received: from SI2PR06MB5140.apcprd06.prod.outlook.com
- ([fe80::468a:88be:bec:666]) by SI2PR06MB5140.apcprd06.prod.outlook.com
- ([fe80::468a:88be:bec:666%4]) with mapi id 15.20.9009.018; Tue, 12 Aug 2025
- 09:57:57 +0000
-From: Qianfeng Rong <rongqianfeng@vivo.com>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Will Deacon <will@kernel.org>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Nick Piggin <npiggin@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Rik van Riel <riel@surriel.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-arch@vger.kernel.org
-Cc: Qianfeng Rong <rongqianfeng@vivo.com>
-Subject: [PATCH] mm: remove redundant __GFP_NOWARN
-Date: Tue, 12 Aug 2025 17:57:46 +0800
-Message-Id: <20250812095747.121135-1-rongqianfeng@vivo.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2P153CA0011.APCP153.PROD.OUTLOOK.COM (2603:1096::21) To
- SI2PR06MB5140.apcprd06.prod.outlook.com (2603:1096:4:1af::9)
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mM1oIijYsTieBVXwDdbk88e2RvtyWnf8BqoF2nILFwk=;
+	b=LEqH9pzJxLUpvLIxz0S5K+V0FPbf0kzRrd+ZBWw8YRTduT5Uymap54VYSXmnKMer+2dgTY
+	D+eBFf1vcDkB3NPDa6qbm3CdsGziGIQAL2mJZU0gEifn3yIE8b0vMCw9wQOkszKK2SRy8P
+	piiAW6iNdRFP7TNk59shj2iNS/nyKL4=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=k0odTsD8;
+	spf=pass (imf09.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754996868; a=rsa-sha256;
+	cv=none;
+	b=05I4/4iuVkQF9FFKeDPFDRebppLRkcyBPEeYIEplEpPCyyJwti/bx/5cMRRqAxWs6P+LYK
+	NA7G1CcyywFE230ADJAi7ENT37pPOMDkdj8tvz40L6pQ1L+owx7W9oou5ZzTczP4VmdfsR
+	ZTW0BneIHcY75/KAI5QdX987p0g5gXs=
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-242fe140b7cso1111135ad.0
+        for <linux-mm@kvack.org>; Tue, 12 Aug 2025 04:07:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754996867; x=1755601667; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mM1oIijYsTieBVXwDdbk88e2RvtyWnf8BqoF2nILFwk=;
+        b=k0odTsD8UQs1lG1j5Rx/tXtSQphl+TfpOM5HCMVPSAXJjrILlEGZ+KnVNReDoD6ksG
+         n6WdSx1GSVeT0scAIenx3J6/nl08sXUWIdxJBEGixIdbGN4v1wySIBwUHp76XYfR7sXt
+         ToZBY8w7mCbMmKggc+ff6YFuMtKiGCMYDlFIqOLtgdJaxU4l7gXqLTOCMfHgejCSyT6v
+         O25aukr8vBf0ZrraKZKkBevxoL+YYaiFj76B7YZHj6Q6Zvs9ZMfExbthUx+cTIRc66WP
+         uD8Qbbsbf94N7HjE13j4CDyM4LRw9gXeJay42BaBnYs5QNgWqcbni+u+UKZMmySCTyL7
+         Rkqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754996867; x=1755601667;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mM1oIijYsTieBVXwDdbk88e2RvtyWnf8BqoF2nILFwk=;
+        b=OoqOGNHi2HNBQ4YC0ohOm/g1autHEB28b9rWwShrdVR0ckLhiBJ7iA4fPg2fYX9rdO
+         93kejmaupeMGRkd1prUyTOO5rpaWDvx94bhmeU+is74zyqe0rXjuHqr+wyETkpglaM93
+         M/zIhxoTZJkDhH0zQF30GNoG9A3FIlh3eTp2onBRNNt7kX2/XNq+60yBpvt+fu9omoD0
+         yBkmAkLJZX9C6NlC8BG2dWDQwbu8BGXZVSa8TXDQfGfNjGe5kxWGiNoDcEYBNwKbJIHQ
+         z6MmDuTmUAUvEhTxhsS5Dra/XnxkyoDh0c7w38GRfyPVxjHuMSBs4scSOIls4VmHNo5s
+         JrFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX9ZGuersVunwMr3LcQ3iOCetoGe06xZjcmQ60MwxF7Iw8V57gmxwpmm5Kh+AGGHyXYdPlnca3mlg==@kvack.org
+X-Gm-Message-State: AOJu0Yz8hC+C5djwJZoCt9IKrttEUogPDuFkI4QABG7/sTClJi+mUiRN
+	fV33IND8YnmUNaN/cOVESSOAM0La/IoK/ms7fU/6VRs8HN30MebAR71wg82/cXm+Mk02UZf3+R7
+	zPme2Z5OHifI9CeLQiEYLll7eiCMfWuQ=
+X-Gm-Gg: ASbGnct03AKpXFsGtBuqBiLGI78RJkzXQ8qFl/Tcv51Ct5nzIZ6RbVanQpZJZ88bRJS
+	pUWyty4dbbbbOF0cQjjocJdORrsATD3Uj3edMSZZ6gNccVGHEzJqwXJRpk034pNmI/CqkLzNLPY
+	oxkVeOH40nr2mDJcGfkeW0rfgvFxNrl1vQArFvfTUIyYm2KDFjVwuUMxabUASn1OrBntSCv10Ga
+	oF/RQCgCuNEH2F1wiI=
+X-Google-Smtp-Source: AGHT+IGLTgav5Ly0pJQ7DxONlyuqSGpB75/R07ZLvB4KvAdVZt2KEevtP/u+Z9PPdrxzblYTwfgzUXYmCR2PQbfj+a0=
+X-Received: by 2002:a17:903:1a70:b0:240:5c13:979a with SMTP id
+ d9443c01a7336-24306da5537mr4831165ad.9.1754996867136; Tue, 12 Aug 2025
+ 04:07:47 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SI2PR06MB5140:EE_|TYZPR06MB5370:EE_
-X-MS-Office365-Filtering-Correlation-Id: 65a7b570-2dbf-47fb-dcb5-08ddd986b6ea
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|52116014|376014|7416014|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?VkR8Xd1vSgVjwtr8sRRoS6ZHVEjTZxSQCiqg4XkngReb3IwPFzRU4wrpvB7B?=
- =?us-ascii?Q?K/pbTC24bNUDdA2aglO9aDTsXr0cuZkxu1Zs0LKZ5/bvegXrcpqCtDMvnDvh?=
- =?us-ascii?Q?8ojC9PR9/96mNM8QEAjclkWAzCv7MCtFcLdbQNDzo9oijsO4MdTzHiIKWTuf?=
- =?us-ascii?Q?tYPBSNYs4YuwULg61rYwkpbBj+qSicSDUxwsGehLpI0jVGl3NSa3JS26vgop?=
- =?us-ascii?Q?eJm3JGwL7pxicdTeX5kuWie9nkiCh6sP4mG2mLMy5m7h/zO38Cd6ql2xF2/U?=
- =?us-ascii?Q?Quxf4Fa1TuBPmMXeExStmdYqVb0XNGbdIMiKrZvqWwl03GFrAJUv84erbz+9?=
- =?us-ascii?Q?D5Ah2QAYo7xQXkzz0BQ4xn81KjoDs36f1rFd9LD14J9tZ7BWt90UJ1TVqvWz?=
- =?us-ascii?Q?Mbni28M65C15o9X4hEPwwrVMIvBMj6glgYLH9FjL2Vupr9wN4tbWUpehdpgs?=
- =?us-ascii?Q?q4wceAfCGa9kIhPidLpsvFIwKMV8jgVTdaGRBpmQixkWSEBQHktTfwY9JRAr?=
- =?us-ascii?Q?J73VEmvh5jK32JT7jrTB6WeX1Pdj5M377nOyPen2vd4gISxq63tlRmqRU7A6?=
- =?us-ascii?Q?QHqIG9bvvc7mikhiVXvh5QjI36iYGIDq4LMOEFueyw5H+FGUGzj4jP77sGTj?=
- =?us-ascii?Q?KL6RtKV20cOfw+r3MOhgPAZn1dynydGqXcqvK4CXoNw5ggfXttKWp4GVjwOv?=
- =?us-ascii?Q?hqa5HDdOarZIOsUZb3L4Mq9P6teE2mjNOEEnGEWyjCcbd8T1vnjOQzBQzlED?=
- =?us-ascii?Q?e0wt64A39yyk1BRuzxfwwfoSW33FaS+hxsFYJO5w7tHV8bLdblmX8bVKHgG7?=
- =?us-ascii?Q?kz0/DHvGq1yi46HcjwAtWe1fVEIB85laREBCeObieFyLqAq6HkT/j18rqHbv?=
- =?us-ascii?Q?Z5cDMgdLPdajc2H5tB/PsAOc+Y9U8BDOPxtZQw/v0h6jxZsWW1Sld9cpyFAH?=
- =?us-ascii?Q?aeZLlebQjGcyVipJImVBikCqE5FqypvmOuwT7KpXsJ74IKmMuJMfYxJEpgx/?=
- =?us-ascii?Q?uCfFs4tzQbr7Y76AXZr/Ru4EQhQVhO+PHX5JtaG2cviod+FYxzN4co/CciV7?=
- =?us-ascii?Q?bcOPtNlhulqXZ7YIRf+BH8ZcSR2IEkEvwpCVZkzLI+ctW5OePZbutZklzwZ7?=
- =?us-ascii?Q?VK1/QqLQHTpxP5Zy/onCERwzucZrulDSV57XPB7mgG5NwP9zBsX0GmjCoywn?=
- =?us-ascii?Q?S11Jerv98yBddrD+uFqx6F4sr24ZyeCOJrmGR916brSBaAM+r6jvAisxB58I?=
- =?us-ascii?Q?jxnzNT9+IwPQm20uQJrZQYW6y6ZTL6Qr/qQeX1k3LAvktMWs+1lekLguOQ/+?=
- =?us-ascii?Q?9p2P0VrSWNkWKu9XVST5465ecB5aaP93ENvMQhxIA/+taOki1FRwlm4iFRqD?=
- =?us-ascii?Q?bveaoay1Q93KOFsM0BHCn6YVHc29Qfts6AbDvCDDC7LKLc5shU1HqoCBY9SD?=
- =?us-ascii?Q?XdXGTF/PV/oiDS0Limd+sjPke5t7pIuuVNDDmTt2OKC94K2sfoZ4UrLBOdTh?=
- =?us-ascii?Q?EAGLKvYEO1z+whE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SI2PR06MB5140.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(376014)(7416014)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?uKP7SqqLYFJs1aDgkly+qD+zUdQhTqccAlGKCMe5c5OXG4NQdCc+D4bJJFyL?=
- =?us-ascii?Q?xatcW6WIKYIKw4AWsLP97VDskem0mf2ApVd4k31H1bAsfxI65LcBpqevAOps?=
- =?us-ascii?Q?MsLT7Rit1Qglk7skQ3lO0jwsSOXgjYOaBKJGyvPUOTiQ/nAQvwGUIyJxuWv9?=
- =?us-ascii?Q?6ef+NgNfVcLa7n8yOxYQteOyocAocU3i/79CAd3iyehC/wI7XfpkqYDY46UB?=
- =?us-ascii?Q?mCHX1SbiBxc2DkP4NrNQNrJQnr0SXBh27D5iW2+xydGEr2H/sBvghZJFHouv?=
- =?us-ascii?Q?5loIjzTnUT0W0fkeh0xwL2TvmEqEHZCSUrDfws9VSNu9fSmYNxkl4KicRaP0?=
- =?us-ascii?Q?boOCZpb4j5aVSf4s3wQ7gYFoXFWRLCl1D6bzpdDggwHGkGzfxqbYlEZtTvHp?=
- =?us-ascii?Q?oU7k8Der9xa9agMTu88EOiTJrFoexXxTfmKVKpsBbGSCKJ+QMgxRjbXku+0b?=
- =?us-ascii?Q?txWm4RzeN1MJELgE2kjWqZxvFPD39iHx5x4XDfqdODOz/61c5c/UzHSETsJ4?=
- =?us-ascii?Q?dj0ZYjww3Up/svOa1QSuyB+3XBoIexiO+4PMDM3VSeXM5lOqua6ZS+yTrn3Y?=
- =?us-ascii?Q?oXMJ1i84S5uAgv8XwYWsuFJO1nXB+yWhN4cP+PrZG5saP+mPdIyu1hBn/UMf?=
- =?us-ascii?Q?aOsArta6/Wif1Q1ogMWqbMm7618o2b+NQPVQi/n4vWhm/FZN1au9JZweqYk9?=
- =?us-ascii?Q?gz+y6ehdHBmOo99EzvgrdME2VKle0TId29P5BATm6dz6mHksACWPRrBtZTXY?=
- =?us-ascii?Q?a0ldKQYUXHMwv3/hsZ01ww6pHJ80c5Jg8QyhXflUb0UgMOW0rwa6H1Y9M7kV?=
- =?us-ascii?Q?cI/Xea9w471sdTMud3kV//HGwzsjQi87tEgxF8x+vP+T+w2DgHKyhCU71/mh?=
- =?us-ascii?Q?FgQ9ysexdmB4YLGFCZKhvifrFUwom3NYPlG9QJ3Y4lbHbRtqZmpHkI+loZBB?=
- =?us-ascii?Q?HzfO9bWTuK6HqFJZhL59GF3gHP6uNkZeYDTjnag+zUuHK5wsObbgOjnjr+EW?=
- =?us-ascii?Q?Wim3+BPYTPQyAmXo+h5h0i6OIJrOw8TV7K50CBBCAYALzwPQSr/4+MugKzDb?=
- =?us-ascii?Q?SLxmkPEWyxwD4iMmm2K3uwIO83XMonYvx15HvfAZqK6Rn+2z8051isdcknc2?=
- =?us-ascii?Q?QJH0+Lci7N1PtmD9vQ+Qcf/m7//kY5PhFp5tDgToRp8O7CQwMMBXv79UJlyA?=
- =?us-ascii?Q?gnvE7qlire8pxc0os14WjqNgEqs3/OEOvNWQR7AMETa+bVEphzfiD8nP3tbp?=
- =?us-ascii?Q?jnY4iJX5/piP3NaFHUCjO2rwpP+uZLeGRo0P9qRynC8oTAbLVl3kGLX5Imp7?=
- =?us-ascii?Q?E1IoqrBsT5mLzU8dE0FDwoHGHGPLIBHa+1I5572lDa0hviOO5u6K1DcvJO5v?=
- =?us-ascii?Q?4YDreRrtrLvwzxbTDvj4wwoZVY90EV6C/m3v4JLL1ge+RBjWRd8BAqqULmJn?=
- =?us-ascii?Q?YJU02k+9gLHEzTektgwHL3kGxVUxWOrocEvf6apC0G7dwTz/E5Ei8SmuxrFY?=
- =?us-ascii?Q?ujxJEgu9o1QIHxyMbdyl8fuWoOOjwMTH5eBISivPn3fA74zCPCG4MmvNtMo8?=
- =?us-ascii?Q?dvEKTo/ZAEA/k/Opn0IIgl6gsst+MawOR+V/WFQZ?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 65a7b570-2dbf-47fb-dcb5-08ddd986b6ea
-X-MS-Exchange-CrossTenant-AuthSource: SI2PR06MB5140.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2025 09:57:57.5644
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zucIVttpSTuGaGsNd8prVfhNFDOVSRdCPy1yRj1Q7zmqe7k+ZSsU2/yeMPfAIMpZ0wAvOO4vPuZWJFcAeztI0Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR06MB5370
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 07D6280004
-X-Stat-Signature: ffu8i5z4f1cbkt54pajqu4jyf86duuzj
+References: <20250812-vdso-absolute-reloc-v4-0-61a8b615e5ec@linutronix.de>
+In-Reply-To: <20250812-vdso-absolute-reloc-v4-0-61a8b615e5ec@linutronix.de>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 12 Aug 2025 13:07:34 +0200
+X-Gm-Features: Ac12FXz75fv-5GwEH7lTNJ0yhooMj6nwQ9IaaKPBS7pSI2ZcZDdB8Ex-5Z7LxRg
+Message-ID: <CANiq72nV62c8cVBzke73OH-sfLdgerDBGrLKTmT83+OQtK6PjA@mail.gmail.com>
+Subject: Re: [PATCH v4 00/24] vdso: Reject absolute relocations during build
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <kees@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>, 
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	Russell King <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Huacai Chen <chenhuacai@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev, linux-mm@kvack.org, linux-um@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
+	loongarch@lists.linux.dev, linux-s390@vger.kernel.org, 
+	linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, Jan Stancek <jstancek@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@redhat.com>, Alexandre Ghiti <alexghiti@rivosinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 87E07140009
 X-Rspam-User: 
-X-HE-Tag: 1754992683-831977
-X-HE-Meta: U2FsdGVkX1/R/HGWv3qTrldMY9eo45woE1cXOoMa5+BBeC6rgUTrg3EAnyXY74NwxV31ZXRd8o3ulRG3Sa3fVlDiFU7EgyrnxZSgk0JbVM9Xj02BqQ3dCfvuvvXFnpclHUpIRpKLBQYku6mHT9N8AhzVtErvu+SeTZ3KqYS6h7J1TQstU15HRsSiQhAxcwq3mKc049UecaTpVt6Y1gSOrTQKVbpXqDc9VZVpv+HhHqMDYs78WCN+/Kkk++V3H1gX26CqlI6ylG3LREWq+3TogbRQOVSxGoT8abxe1vo7HF+gdB8BQcC2T5ReQhpTCx/BcYgXeKOCrBEWa9hUejYXjg2MB58oEC6LNjcKWxWMbhnvaXY4Vs7vHnEzlfUaHqd43XTB1Y+p8admIoBxmPVAT9iXoZcUxgGF/yyPImL1LmvhNCCD2rpDg/ZjLLcbwOyA6M1IWEIK7ixEKMSW3YJ134srvvgbxOzfNUJ5ahVAC+UcIhlllIvo+BZMQBKqG+HETsFnyeL09wy/zIL9hVe0b4w4/kV4HY0xWyOspWpwq2NsP7/HUBYI6m4xjWWZ1ZxWlPv2N/0nz4Sw4/K1AhtxUVQDyGzUdcKh0WOxNFG5OZiKwzwPJWuNRrm9R5+IvPqQb0M5AauF+xUc3Bm/cTpjLfyJ182nXBrfogLakb77n669AXAr7IJqaIOEzqPtOnBKyGlbCvJmbyzX5CkSpt5dOOInHpY2wYtf5//zc83n5iVNrMJz4/zc5DIIze2BqAhnnQsRAdvhWREkYzdI+nD61hbN0ctU0H5DXPdOdAyoBvI3PGCCobDYot+m3SiR1NxqD/XMhufLIKVMR4uVNZTZ91J1w65TLvNVWz4JhJUnrc7egX/Hz2LqynmN/gfWirHjNhTUfqfCCEyFOdjwGpMqD2BSvjDaONFJ4SAKxbw43KqipcaNlWCUK473hJV8erhHND8LN/c5SLTa9RiTDUU
- FIeyuAIF
- RrtsmNMVyghfhxC9eoAUIXXX5jOawYdYjGDPzdwtiPj+BLnZfgUEsfSgM+QNd0Bt24nk+AIITjoEsgSl7/ZghZQwLOy3Tn5SKwTVxwKXyb+VLCTU8grvdf25ISHbLtpqwBuETb1wIaj8QejEPCyloZg5FXX5Ior7wHtGcyhYncb/ksgUhgKVwkXUb+KJjlqxZmY+Y0FPVbxWr1YMz0Hz6GHxOLi8o4dVlAV9+cPjbASbUBGTtk6fZJAlc4EgshZ31ynk9h01pzAj+W0fzOmInnbqXjfje1JOt+e3RgURJeCvpb4P53IDTvPiQ+VWWWdPX1rhKL2/1gwtmdqpKdePbV4c6fv222mNGWXjagk7h1JwikWGDajWYYIavBPlzRvzzKV5EODY44Bg9s49GOcawfOxH8QnD56pNd/sJRpSiZFd/6hUcJTVOmgd3QO1mCZqSGOHQjDfJ+TgyR5XxgnleIBViV6HjhgqO2kc1h+7FTiLZ4svGhfWrfX3A8DXERFWfXCttMMlH9lni9UxGkMav95+Hw1vxu+xstimMT5cp0zD5ifteqS6AXGRaaxdNkIUN76aRxoxZ5cQMHw7Esfjq013jIR+VEoNo5VwmbZmChts+MqjUowE5TR7+lJsgA+315GDa
+X-Stat-Signature: oprdxs8mugw8f8iwgnqwic56nyxqjix4
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1754996868-634652
+X-HE-Meta: U2FsdGVkX1/wVmbBIufSKuroND8IpfDZHK5pMosntBiT7duztS74dsEyYASOwOHJRqY+R5xh7Wu6/dtA0z0fdvVRvu4pVp9WefpGoLxu3pd+IYMIiZktTaahNdjbwV29fAzfTcd2M/drFrlKHl34+MwRHbHnAWIHJmAoLfyQCT1wdfsHoxGFCQNRnBehmrY+hy6VOf5nxI4bnnuXB6pDW0W7UkLLAUbxL63fw9gHYJEvJP/2/jfX+60FSwSIE3ipAmBpHjz4EHUSYbrc0qxjpx1y5dzuQ/2EQhx5rdJX2BJ0icYcsO09Uk74aE5U6Hzq1135JbIMJr22n3Vjc9ZNpzNFLIFIhev9g0TiSLCEs9WEihg0krF6FUzqqwLwE+cHTTwSFC3YdkdzaZnWRD8JAleueXNGXeD8BRh2eG4AfM2mNO73zII0z16oVfjoNg1zd3poZ0k0zgmya888xUpCizN42VfXhtIBUgWhtL8wU6YfO3O5Od+qleBvtHtDVYxVw4wVdaEy0P1wK0xLlBOC86CFmtNRm+0BM2fZCWh3Z7sx7bn4JZGFc3gTdtiYbz5rYCLecdOHYcepFPJ+Uq341tpzDa7IRa1M6mYQmUkMPiJDg0QLHuW05jmb3+t9JWIJHSyaSgmf9lPEJWMSXpqBxinOlIoW2wKis8Z7BTsBqRaeKNvHNpRhWUXIerPw2yvVrmgF6Qd5bPeaTllsKyfzLvTXuobNxCP7A6kLtBPxnMlJkd1KJFxVYwAw3np5Y/HxFUycDTZ/kfNh2ZcFzyj8w6He7m2LEI0/7vxHRfdP9JrNl620r48GK5css2EDCQkpPm+dXDOIaBrvYKhCPiLZt0EAOrVV139rgX4FZymb0aPSq7+YJnM5FPv57d9q7TgHvRCt1mZNraW2fytXlBeXbhRtAWMaLaqWlCDK76FjUD7mW2/3CyNmI99mBQyDszNq7ZFM9CJdQje4GHuyNDX
+ mYT8mh0B
+ cp/saqTejKmx0hVJ6NIcJuEJomWaJj/LgRsp9K3/rDPKhUoqj7pRJAJF6TSXt58mRrDcm7tNCROFeoPinyswM31e71COV4PsXHdie2EJ0EXZAh+DgnyU+8RmS8Kz1bh3jsuYyFnclRpFrcTsmOzhO23C9CBNt+7+mI+FPemnXmKThaMcHIlOi3rekCzefwgp19vRzyV8KJ/m7jQ9k2Q8P2qjJ+6ZqRYZOlOaliGPRuvRnAY7JMQybUhduKDCnr9MTB2rh0UNOB5oIpKMwxgAzOazhfoW0yQNbK1I++FU4mBqENGYoR+JCyfLqH0HnvAYuvjDat9rM/dzVx/NtpgHBMtxi5qwfV/tpuRaWK5qKSaLxeff4gaeP9icWU9kwnAvdgJHaF6uUlZfrF3YsQoDSloz+berP7uTWpH6m/VBUl7zOYqAXph9AqwwRbZaIIozsQlSXEXDnUszlaTIBbKtloaEQs++JsctHMUtldowoLUNxhOQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -191,85 +142,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 16f5dfbc851b ("gfp: include __GFP_NOWARN in GFP_NOWAIT") made
-GFP_NOWAIT implicitly include __GFP_NOWARN.
+On Tue, Aug 12, 2025 at 7:44=E2=80=AFAM Thomas Wei=C3=9Fschuh
+<thomas.weissschuh@linutronix.de> wrote:
+>
+> Kbuild and Rust folks: This contains custom definitions of hostprog
+> bindgen and rust library commands.
+> These are currently only defined inside the subsystem directory.
+> Let me know if they should go into scripts/Makefile.host.
 
-Therefore, explicit __GFP_NOWARN combined with GFP_NOWAIT (e.g.,
-`GFP_NOWAIT | __GFP_NOWARN`) is now redundant.  Let's clean up these
-redundant flags across subsystems.
+Glad to see more Rust host progs :)
 
-No functional changes.
+Keeping them local may be a bit easier initially to land, I guess
+(e.g. no docs), and then we can generalize when needed later.
 
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
----
- mm/filemap.c    | 2 +-
- mm/mmu_gather.c | 4 ++--
- mm/rmap.c       | 2 +-
- mm/vmalloc.c    | 2 +-
- 4 files changed, 5 insertions(+), 5 deletions(-)
+By the way, for consistency with elsewhere, probably we want
+`HOSTRUSTLIB` -> `HOSTRUSTC L`. Though I am thinking to remove the `L`
+anyway since eventually a lot of code will be "lib".
 
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 4e5c9544fee4..c21e98657e0b 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -1961,7 +1961,7 @@ struct folio *__filemap_get_folio(struct address_space *mapping, pgoff_t index,
- 			gfp &= ~__GFP_FS;
- 		if (fgp_flags & FGP_NOWAIT) {
- 			gfp &= ~GFP_KERNEL;
--			gfp |= GFP_NOWAIT | __GFP_NOWARN;
-+			gfp |= GFP_NOWAIT;
- 		}
- 		if (WARN_ON_ONCE(!(fgp_flags & (FGP_LOCK | FGP_FOR_MMAP))))
- 			fgp_flags |= FGP_LOCK;
-diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
-index b49cc6385f1f..374aa6f021c6 100644
---- a/mm/mmu_gather.c
-+++ b/mm/mmu_gather.c
-@@ -32,7 +32,7 @@ static bool tlb_next_batch(struct mmu_gather *tlb)
- 	if (tlb->batch_count == MAX_GATHER_BATCH_COUNT)
- 		return false;
- 
--	batch = (void *)__get_free_page(GFP_NOWAIT | __GFP_NOWARN);
-+	batch = (void *)__get_free_page(GFP_NOWAIT);
- 	if (!batch)
- 		return false;
- 
-@@ -364,7 +364,7 @@ void tlb_remove_table(struct mmu_gather *tlb, void *table)
- 	struct mmu_table_batch **batch = &tlb->batch;
- 
- 	if (*batch == NULL) {
--		*batch = (struct mmu_table_batch *)__get_free_page(GFP_NOWAIT | __GFP_NOWARN);
-+		*batch = (struct mmu_table_batch *)__get_free_page(GFP_NOWAIT);
- 		if (*batch == NULL) {
- 			tlb_table_invalidate(tlb);
- 			tlb_remove_table_one(table);
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 568198e9efc2..7baa7385e1ce 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -285,7 +285,7 @@ int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *src)
- 	list_for_each_entry_reverse(pavc, &src->anon_vma_chain, same_vma) {
- 		struct anon_vma *anon_vma;
- 
--		avc = anon_vma_chain_alloc(GFP_NOWAIT | __GFP_NOWARN);
-+		avc = anon_vma_chain_alloc(GFP_NOWAIT);
- 		if (unlikely(!avc)) {
- 			unlock_anon_vma_root(root);
- 			root = NULL;
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 6dbcdceecae1..90c3de1a0417 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -5177,7 +5177,7 @@ static void vmap_init_nodes(void)
- 	int n = clamp_t(unsigned int, num_possible_cpus(), 1, 128);
- 
- 	if (n > 1) {
--		vn = kmalloc_array(n, sizeof(*vn), GFP_NOWAIT | __GFP_NOWARN);
-+		vn = kmalloc_array(n, sizeof(*vn), GFP_NOWAIT);
- 		if (vn) {
- 			/* Node partition is 16 pages. */
- 			vmap_zone_size = (1 << 4) * PAGE_SIZE;
--- 
-2.34.1
-
+Cheers,
+Miguel
 
