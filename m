@@ -2,84 +2,117 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D2614C87FCB
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 08:06:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E1CCCA0EC4
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 08:07:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C8B8900005; Tue, 12 Aug 2025 04:06:59 -0400 (EDT)
+	id E9227900006; Tue, 12 Aug 2025 04:07:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67907900003; Tue, 12 Aug 2025 04:06:59 -0400 (EDT)
+	id E42CA900003; Tue, 12 Aug 2025 04:07:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56848900005; Tue, 12 Aug 2025 04:06:59 -0400 (EDT)
+	id D0BF2900006; Tue, 12 Aug 2025 04:07:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 41816900003
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 04:06:59 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F2F6516020E
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 08:06:58 +0000 (UTC)
-X-FDA: 83767374516.14.A9786E2
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 65AE41C000B
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 08:06:57 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=fHn8xZcb
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B7F68900003
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 04:07:39 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 667C08180B
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 08:07:39 +0000 (UTC)
+X-FDA: 83767376238.10.CB7B05F
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 23E2B4000D
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 08:07:35 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	spf=pass (imf17.hostedemail.com: domain of zhangzihuan@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangzihuan@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754986017;
+	s=arc-20220608; t=1754986057;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MVuBea6VpC1PMtmAq9faKJNX7R/TAo4v/B6y33Q4vAU=;
-	b=kb21vv+Dvh90f/NRhWw93L4lT1M6mOs9GLH0v3zNCkFvn7XC55ySMFMphhv8sKrATEZqxG
-	hbGqnGPx+WjKTfHrljltyjv3ErxZWiTVY9bDOj4qjpLwo/CsjUfsCl4y44obuCk6cWbTiB
-	TmCphoQy8/e6v7Q02wO5yL7YoNtwuy4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754986017; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hk1TpDCUau58C8if57SKpL9uq1N98Qnw4SmcRQ6xc18=;
+	b=eP+WbvW1EUw3dwTB4RF+5Cj0ePTNk29HulOM8SaWKBZSmCYB95ZMsb4KVFBrl64SZjs6zN
+	AmzayOSFUCB9M6Hxxajl0gfqiF2l30Uocsl8AljT6B0hIg/TzwRCCLGGzpoK/HtFFNonxH
+	QYJejKC9HBp9QIP7yeN0UwLsE4x9mS0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754986057; a=rsa-sha256;
 	cv=none;
-	b=ldfEMw9EHKohXhv60u3APIvmSW4U0PLQb+gGUpSEBY+Qs7W+V6heqev7rFuLzmZ2sQhfO0
-	rBpiBa6YoJCCCEDESUBNH6HydErDFLlaInNWXFdjQ+yH1Kc063N1T8rX3K0+xa1510Jj3h
-	kpfojWsevfhu4YLCjxFoV5EZQd8I/C0=
+	b=0Jc1fnFvr/b8l0PfnSPtPkPt/n/1XmszvK5uFWDLqQGekuEt2czt9LC7gauOsozdt5qh/R
+	NG3cBIFFuTYF9gzPiiJD23koYFQnq3Q0gvL5tthzCIPuviU9+p0dipPRmX/Zr4EeHc1Q9U
+	Y1uG98yXXxXKIjVUE0u7mNDGvFX2bWg=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=fHn8xZcb;
-	spf=none (imf21.hostedemail.com: domain of BATV+01f4a5ca6254e61d0c65+8024+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+01f4a5ca6254e61d0c65+8024+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=MVuBea6VpC1PMtmAq9faKJNX7R/TAo4v/B6y33Q4vAU=; b=fHn8xZcbSHg1Xl1P1bPlqfUGPi
-	T0pvdLqx44yA2a7vGi0h5Em2B7BUIkKu2hjLQ6I8OM/0PqL9MfTryXHeSfOKfLz3GgdxHfa9ccZSO
-	zG9Rcg1mbqWSLo4u+FSb6IdQ/M+ylTJtFcyqRrJvi387wZ/mUo3C7wQRynA2JKKzrVrAI7f7SP2GT
-	H0YV32SIOPttO08YKAElC9m4EpgPxK/8M/izBJFPvk+WFfYGeD9SEb9owdB9PzEbGwi7wrUmzNdQt
-	CZLdPEbVcIC0Dr11iLvweIa/x5fgY/IIfiqMOq9TfuzozcXLmJccUPByet9E/vW33lTk5L0rldj3a
-	nCyki3eg==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ulk24-0000000ACPJ-2P45;
-	Tue, 12 Aug 2025 08:06:56 +0000
-Date: Tue, 12 Aug 2025 01:06:56 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: linux-mm@kvack.org, brauner@kernel.org, willy@infradead.org,
-	jack@suse.cz, hch@infradead.org, djwong@kernel.org,
-	linux-fsdevel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [RFC PATCH v1 07/10] mm: add no_stats_accounting bitfield to wbc
-Message-ID: <aJr2IMd7uqhLJ9qb@infradead.org>
-References: <20250801002131.255068-1-joannelkoong@gmail.com>
- <20250801002131.255068-8-joannelkoong@gmail.com>
+	imf17.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of zhangzihuan@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangzihuan@kylinos.cn
+X-UUID: 64813e56775311f0b29709d653e92f7d-20250812
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:24076325-4bf9-4abf-b7fe-95fc83e76d02,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:4ac8a97a339f6c8d3cea5f3b62b86d7b,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
+	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 64813e56775311f0b29709d653e92f7d-20250812
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1538524574; Tue, 12 Aug 2025 16:07:30 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id E888CE008FA3;
+	Tue, 12 Aug 2025 16:07:27 +0800 (CST)
+X-ns-mid: postfix-689AF63F-547715471
+Received: from [172.25.120.24] (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id D062EE008FA2;
+	Tue, 12 Aug 2025 16:07:11 +0800 (CST)
+Message-ID: <9dca7c98-84e5-4d16-af76-93f2b0470243@kylinos.cn>
+Date: Tue, 12 Aug 2025 16:07:11 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250801002131.255068-8-joannelkoong@gmail.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Queue-Id: 65AE41C000B
-X-Stat-Signature: 1p9ptbht3cqenyfjkw8h1mcsmefjd86h
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v1 6/9] freezer: Set default freeze priority for
+ zombie tasks
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, David Hildenbrand <david@redhat.com>,
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+ len brown <len.brown@intel.com>, pavel machek <pavel@kernel.org>,
+ Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Nico Pache <npache@redhat.com>,
+ xu xin <xu.xin16@zte.com.cn>, wangfushuai <wangfushuai@baidu.com>,
+ Andrii Nakryiko <andrii@kernel.org>, Christian Brauner <brauner@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Jeff Layton <jlayton@kernel.org>,
+ Al Viro <viro@zeniv.linux.org.uk>, Adrian Ratiu
+ <adrian.ratiu@collabora.com>, linux-pm@vger.kernel.org, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250807121418.139765-1-zhangzihuan@kylinos.cn>
+ <20250807121418.139765-7-zhangzihuan@kylinos.cn>
+ <20250808142948.GA21685@redhat.com>
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+In-Reply-To: <20250808142948.GA21685@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: wak8h1nnbgh3s5t1qiu1oh5mx9zn4my3
+X-Rspamd-Queue-Id: 23E2B4000D
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1754986017-461672
-X-HE-Meta: U2FsdGVkX19T5TpAKOPQ2+XbeVSxtYob+KoqpI66XpW+zfU8vFvfZ2hcs7s4PSn8hQTJDMNEmhgXq/atnjzjXneLHa1rU9z6t4LS3jkN8ZNy01chol1nRDAacNBM6gZCfFead4dBWIhqWFuZNTMke5NFZ16Vg3IxypgAGy6SJhCYL57m45TQbrGIlIjMahdP843eGbuiA5ygHC5pEqRXy9HwqYxpiTNGyP81Noc3Y96I9p5XsniU1DqTK4SlMM6DaoV2x6exr8WtdboNS2d2TL1GQvWveFWIPkZteNNJh2E4RJZc5Gv8ZuRiprlkqjyew9sfz8rMKXW64wiJNUhIjglIuRFNwQMCL0WfF+Typ9Hk29t3fxvWcpnqAfu72NQtbWZFUmWOiDQWCl1/M6Uybc7iWu7LtdamLFFst/RR8SOze4IiHn9Ykk+pfG+bcQJmzhW83TtGskTBMFKlt+MGxbbFcVKHHLsPO6v7lmW2X7AXRruiN4ROLX1D47bBT1p4oXNt0QHPFO2ghyZrKvAcA5npyWsnt9CLNLoIULkK8qtSTJnbnZbJCX1qUoNKIfSM3D6DUvOgnBTwOLFCGY4U75pwdCQYKyp7ir+CWZ4eFpTDe2r004JSeNwCgKpgn75Z1MRUYoXK9vV/9AyKpLGMgjBZwDPDsEGpUOB4OdLQmdGeNH/aneIVHyqbhSRbnWW5LQHlM8IQcbZGS7eKkDF3uP7nZ4NgZfgxDfQWuHH8rdJ23Vodw0OAKawe7v0CkRMhAqq5I2mIgFx9onXziGUZDZViCOXOcye2382zwtj+X2iZnJDq3mDbWyTdAy6qnkqndwk2CfZ4zoIzWT2D6q8E0eXZzQCm8tKBEoWwfGTBh8rki0ji0rn2QUtvAWq/tkFhjDwea0aQA02vNUMEPlYkxjR0Wx/fB2FD4wY9358Rqc+NYTEGIQGik2dgC3gBOeeKxod9zBhGFqPDsodpq+L
- DGKFJhJv
- 8x/NOjIDOl0AjV0MhT59A/4lZmdrEqEnISW55dpgQWIrpkspk2CpCpkOnniac0aZjQMqw47RoeXfd/kMMyFiQBnd+0s+9LEL/4mV+O5ReX7pIFt2+MoWcf1cXtrEsYfi9Xd5bNGYfiu1Pf5WpWZLLT2fDT6Px95c373R9jlRB01TEh/QXMb+fOuTgp56vdaC9re5GZXRSlCg0nwrSgsE01IQ6DM2VIYhboNv8Ig+TTeyhU+h3qHfSavjNSZG/VQBvfwdW9a1/llp79uVhP6O9pDshx2TvLp+rDpPHuAc4LqLJx+ODZb9Y7JkeWwsVWtq4/IgNsFkwhFvKpir39B9Kp3buzdEImkrlNCvXBpMYGl+RIvIQqoiMHHn4EIQT/qUkQmy//xmvaGcOPOMzZ+xLrYvM14xSB8AFczHElh2dNlKV70lN3ezJlWJC1qDdepWOiw8Um4GbvwjvrXb8q9YS8enDWb+PE6idslxc
+X-HE-Tag: 1754986055-307140
+X-HE-Meta: U2FsdGVkX18a6binhterxIXp2Rc3uHMGKhr9c0iCTiH65bvq5JcxYsutwhMsT7fvlM09oz3Jk1KXV+aKeUL/mL0ZY2DhaGSasn2bJ9xndxgBNw1OzZyu3L7JuToqu+vJKY4XV1des5m8J6H5djgwVNUKcWRrE5FTbQ6QcpSQUhDFZlHOZM5LkawOH+T5a2CLAFXi4F7KDTeIbuCwZunJjuYy77MeVz2UrbkOQj2wU6eZqnvDTBL3rxzEz7wPmohjCma98ZWpr5SWsXT4JwZdUf1pTHt1dqttTl0hkwKd84JrL1DUiTw58opBh9rwWETsey2eMUogAvR6HhO42jUyHaRaiS4vzArp5XfJ9OlDkh9mun0SiOS73yIibLdOrQyFO4PXwYblDiJvJqU81ETNtc3lTObgvfvDzOxC/E5KiZKNkzU2ITmEyk2GcxfmTWBardEVXBIL2HlMTUOHVLgx8uHq6T5tx/ekSJtKGh+zfBgvlIBgr5PnatrFOX2FMi/zOyyb53p68nT7ae3eqpoFoA8iNdWkYQdFQi4K21SeHcabBkuwPUlf7Yfad1KP1a7asY2AhbLpyNYEfSS2MVJxwG660gm7i3SGHhbKz65pbWbXwMS7wQSYHtkW0n3WsvY1nMfejGwhTcNOJwaQ9DOFk+mvRJYhYGonUJmo9vFth+en8oX59mtofGlZB+4yt1Se6Y9D81Qz4rdEuLq04Lmou83lidHKf26ZyHJ8kQpcPHkbYrM0bvuvuPDgLY9mQRsUTAImK5BOshHj/GsXmQdsUtNh3dHYMJ9xG7glxZhfgsNsH2JM2z+QEM0EolJ/Rss9wwNtSE1YSMRZAT5hv3v6i+8TZkRphQMXxWjnMTRoRu3l7CqfZSH34YpMQvSvJMgzTgR11cJ4wV8aOh08IIHD/m7geaT7A2hze8MwMujnDyWHqCPft+BH9z7b1iBW14BShIKr/luNURf07njlt45
+ D5YlY5dA
+ ZKNCrDWnmSWofq+3UoP/UQvGk36xK5sAxWL3PCveBR5AALtcSoQ8GD65yRIRiZZICbgEj93sloIzbvf0oSO9sBmlOu3kuT7xaOkHuSxglfIRz11PpM18YAM0VWZZamamd/DEn92JXIhIAko4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,11 +121,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 31, 2025 at 05:21:28PM -0700, Joanne Koong wrote:
-> Add a no_stats_accounting bitfield to wbc that callers can set. Hook
-> this up to __folio_clear_dirty_for_io() when preparing writeback.
 
-Please explain the use case for this a bit more in the commit log,
-and maybe also the comments.
+=E5=9C=A8 2025/8/8 22:29, Oleg Nesterov =E5=86=99=E9=81=93:
+> On 08/07, Zihuan Zhang wrote:
+>> @@ -6980,6 +6981,7 @@ void __noreturn do_task_dead(void)
+>>   	current->flags |=3D PF_NOFREEZE;
+>>
+>>   	__schedule(SM_NONE);
+>> +	freeze_set_default_priority(current, FREEZE_PRIORITY_NEVER);
+>>   	BUG();
+> But this change has no effect?
+>
+> Firstly, this last __schedule() should not return, note the BUG() we ha=
+ve.
+>
+> Secondly, this zombie is already PF_NOFREEZE, freeze_task() will return
+> false anyway.
 
+Thanks for pointing that out.
+Indeed, I=E2=80=99ve noticed that in the current position the code has no=
+ effect.
+If we move this code to a more appropriate place, it should improve both=20
+safety and usefulness compared to the previous implementation.
+
+> Oleg.
+>
 
