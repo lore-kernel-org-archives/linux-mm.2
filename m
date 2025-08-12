@@ -2,58 +2,58 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DE4EBCA0EC4
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 07:23:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E898C87FCB
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 07:23:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 63FB28E00ED; Tue, 12 Aug 2025 03:23:23 -0400 (EDT)
+	id B6F3D8E00EE; Tue, 12 Aug 2025 03:23:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EF9F8E00E4; Tue, 12 Aug 2025 03:23:23 -0400 (EDT)
+	id B47298E00E4; Tue, 12 Aug 2025 03:23:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DF088E00ED; Tue, 12 Aug 2025 03:23:23 -0400 (EDT)
+	id A83E68E00EE; Tue, 12 Aug 2025 03:23:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FB8F8E00E4
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 97ADC8E00E4
 	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 03:23:23 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E23751A01D5
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BD8F31DAA14
 	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 07:23:22 +0000 (UTC)
-X-FDA: 83767264644.15.10FBB2C
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 9E1CE1A0006
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 07:23:20 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=LOji5XU5;
-	spf=pass (imf19.hostedemail.com: domain of chizhiling@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=chizhiling@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+X-FDA: 83767264644.27.99D81BA
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 4112D40009
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 07:23:19 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=LIB6XCvE;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf12.hostedemail.com: domain of chizhiling@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=chizhiling@163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754983401; a=rsa-sha256;
+	cv=none;
+	b=EVuEy+bdbHLXO19v6wDL9H2ITkewHPeiNbJC213C4ndeAx2uaxTUFncw2xoaOYpUSG/c61
+	3fKRcOWlce6MORtpXt9FFMIgvddsjy9400N0qOBGAYHIzdrJi3d7BzomJ3tf6wF97Gpk7u
+	reij62AZVgUQwGLAy/+0IO59xjEy5uI=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=LIB6XCvE;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf12.hostedemail.com: domain of chizhiling@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=chizhiling@163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1754983401;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=JjlLxLRI6fLwtv2iE/50RkS+dk+jF7EbPdI+ydJz3ow=;
-	b=QpXbkojl6rbmQDFNH9WDCGcmdyFpNEawXh/nwAUo6D7dzh2biEVVfXDRdTnPfu1L/7pAyt
-	4j0+m3tc08AgvTAdfiQbjFLH17ooGTCxgr6fRZB5ZYYnU/QCzR53gGKaqH67Vto43vnZ9R
-	qDmHo+0fSaikXmgo8O8UcpxM4SMHAQ0=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=LOji5XU5;
-	spf=pass (imf19.hostedemail.com: domain of chizhiling@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=chizhiling@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754983401; a=rsa-sha256;
-	cv=none;
-	b=3dp+ViPSiVFv5gpxVrdYGlzuNreXAjvJqP81IExqhr/BxCZfVV3hpDU3FIXbLdzkd22fSH
-	0LGMGFt87zPqJlQO1XEpTJVbkgxO6L9HSCJlIlXV6pHvUOsjp712SP1aaAgEZAWUjPWUZq
-	yHmKtBSOPa3x+WZQFzPLtscZSm6Bmh4=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=aka2tvGvdvr+T6MVzxzapn/JbQtAeasW67ww2wlOOMM=;
+	b=wICW1ETS2rsdZGuoZHzo8FwTiAqOFqqiU1fPr8LpTO0/gppQo7bSTTM53UhuyWxG+GvUTM
+	e8qU1xZwJ03SjPaf2J0AVlVROezyxD1v/Mjwht7D6tJr7fWl6jG7yCXpOfgli3S+tsZhMg
+	nz7Rg1nT+/9IvYMYTIOxICDPFmK1bJw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Jj
-	lLxLRI6fLwtv2iE/50RkS+dk+jF7EbPdI+ydJz3ow=; b=LOji5XU5lpsMoVqWbl
-	tnY5dHtpSWHADwj/Dsif2UfS217Fus03rsVeg9km1bHa+99SrNMJROmiJbKr+ctN
-	WVaSd/4rEsz6ucQ2Bh9TiTFg4qRl9+VgjdItSwZR7DQXV7LHnjGTaBSrp4P+awB2
-	qxjWZlLGLiFG29DKS5+ZxXkUU=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=ak
+	a2tvGvdvr+T6MVzxzapn/JbQtAeasW67ww2wlOOMM=; b=LIB6XCvE+rue3Zqmhd
+	HLSen+jg4n/Gj4dfQKF+GL493C3pwhNKeIjzxEW8mJaPkpK3wdKBJWIXAERnSZ+u
+	JvPu/I0k79YoL8rDjEgBLMPAV8HjH3oUJO8Zzt0z9VNxGCY7IFcp0MWKmHL+Fjc2
+	x211Tm5yM4WSk0zny5MKNZiTU=
 Received: from czl-ubuntu-pc.. (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wC3RSPN65pon26ABQ--.34118S2;
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wC3RSPN65pon26ABQ--.34118S3;
 	Tue, 12 Aug 2025 15:22:54 +0800 (CST)
 From: Chi Zhiling <chizhiling@163.com>
 To: linux-fsdevel@vger.kernel.org,
@@ -68,27 +68,29 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
 	Sungjong Seo <sj1557.seo@samsung.com>,
 	Yuezhang Mo <yuezhang.mo@sony.com>,
 	Chi Zhiling <chizhiling@kylinos.cn>
-Subject: [PATCH 1/3] mpage: terminate read-ahead on read error
-Date: Tue, 12 Aug 2025 15:22:23 +0800
-Message-ID: <20250812072225.181798-1-chizhiling@163.com>
+Subject: [PATCH 2/3] mpage: clean up do_mpage_readpage()
+Date: Tue, 12 Aug 2025 15:22:24 +0800
+Message-ID: <20250812072225.181798-2-chizhiling@163.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250812072225.181798-1-chizhiling@163.com>
+References: <20250812072225.181798-1-chizhiling@163.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wC3RSPN65pon26ABQ--.34118S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7CF4rCFWUWry3tr18Wr4DArb_yoW8Gr1fpF
-	y0kFyvkFsrJrWfXayxJFsrAryfK39Fga15JF95J347Arn8JrsIkr9xKa4UZay2yrZ5X3ZY
-	vw10vFy2qa1UuFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jUnYwUUUUU=
+X-CM-TRANSID:_____wC3RSPN65pon26ABQ--.34118S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAry3try5ZrWxtFykZF45Awb_yoW5CFy3p3
+	9IyFnxurn7G34Sva47Jrn8Zr1SgwnxGFWUZFyfAa4fW34Utw1fu3Z7X3Z8ZFWUtF9rZFn8
+	XF4Fqry8JF1DWrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UCeHkUUUUU=
 X-Originating-IP: [116.128.244.169]
-X-CM-SenderInfo: hfkl6xxlol0wi6rwjhhfrp/xtbBawKnnWia6QNKpwAAsm
-X-Rspamd-Queue-Id: 9E1CE1A0006
-X-Rspamd-Server: rspam04
+X-CM-SenderInfo: hfkl6xxlol0wi6rwjhhfrp/xtbBawKnnWia6QNKpwABsn
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: 99w83t4wi4ehhdnye9i1h6gu339qy7dz
-X-HE-Tag: 1754983400-449139
-X-HE-Meta: U2FsdGVkX1/3DqiZKbNpVzw/Z3pwMDf0Bs/cObOx2xdO/nDRujrKy9B9wnQ9bDRIyJClr2kKt/i1o/vj8SKksOMu7Q2p+rKKboXj+MeuXGcyAG7jOlBLaN9Z2cJ14Vn8KoK3mznQ+hmSzrYSQRVGXVNncVs+bKH4B91DP+jOFMeYi0NBkrS+tibb259uCx35mHulmEXVRbT0gP0Ef1/vuDsr6UNJM07qGW/HW/7CmDMu6TBg4UELsG0lrnwkUCGs1smEXfLKS9I7gmY8yhMnZP6fLL3hvcY8IS2ueMtHFmeM1sTD74eNROUdQ/fIwacs+FSzrCew6oeCTFppCF4pTMvQxry1Wc8gqYO4xiPVsk3Yl0YbPlbUvX5ar3Ch1iEw0ChUEPoqNiWNIJSEhWxLZT65VrOYKZNMamHAd1ShzzgH/eF2y3AeyeoXrDHT2/cX7QANvE3xxjqpQ003Kxrf++dl/5BxUsQ8enLLW3wOPuoat3DqoWTo/PJTGS/nrst7TH675g0KDDw8LqQ25yKqbW0oRTpt+Vw8QiTi19hGh5nznyOwzQ5dejj+oLzYnXitQyS8nwhQ6E+4L2CCSxfvguo+BUdRzPG66e/5SxEKdsedcTq5/LE8io0/wRQubeLCmJxkdW243Lm50m/NijG7uT0AijHwOt/eLbuXn1mbYwEuqRCInKm8p1Byuxu22OKzZDWSU1Jo4h5pQe3AmM8VJctAdfQ3UsAVudIixP7pgwZFh0O++1801ApkiDYO4B9PFB72FzbTh94JBVe/upEupQWGWvqc+sAGqTDm6y1cfQxrG9/3YXyFgba6iaQoHCnqceQusPodgu4k/HBgC3NKDgUw4/HIABabgQhg3aPrQF06L6vUz74yj+RMLwzoLnK2zjY1DOhs2q2t0eh/VDSf5VHCJ/2Te++DruSh9OpZeVCFezbbKR5fBIL/CuGxPCu8cbX6/LHSCsPHGFg5eIy
- V57OY7LG
- ok67wc++hnqoIJfTqEvw7iVS8sS2UqXiIgCO5VReJdHiWl9bZ0sbXX8r4e9tDcFgLvJf8VHsZ+QHTlVvidgOu2Yx0ME1s4GDOmJGZgGjxU2LXAIAuDwQJrS2ZHjfDdJs6dellEc+yjj8XDmN45vsLFdVI/bmzzneAERwhA+ySuFa2VcQ3DJmxP5g91MVI7gGW563PMUtepyDs1hpNQIr7khemCFjGeBOgN/KM1aImRDCyoHcY+jgXv5kMjJHlJ7EZDDWs53glZMV+ae/hO9bLtfWr1e8freEtkXspQYUHxObo6Yemo5q9SpZk1A==
+X-Rspamd-Queue-Id: 4112D40009
+X-Stat-Signature: fo7syogt81jtm46tzx15fujcsqeppzbd
+X-HE-Tag: 1754983399-921823
+X-HE-Meta: U2FsdGVkX18Rcw52FzBPZMRzzt3yLiWbF4ffUkzLIh6pGV2okSxZv635hpaCHxoq458UAhevg9wJoOItGEGv9+4d5MfuwLGn8KZ0ECascwdn1B2weeG1hSsqpXCdo8jZlQhkFNYG/o1jOubCLHnItPWZ1XTB9Rfot+WAXDYK2/KGgcmvMnhnxxYxJMe1M9WYegt1UcG/ofF4taG4ICcaod59KYLwLJS2keT7rmluDrkuHJEnrCfqZeLgaF83NhFaJfqLvzC2aBInDf0UFPfZNeaN8e1/mvuCzWUjFbebqOP1d0lgwvGB0WjgivvnUZORf9bNq95SW4J2qG97qsNOJk2U2B8LCHFuIqZOIKYQJw1vMFhzs7EL0Yfe1XDNYSAhJ4TGg0XcP7svb63OOQYcmQ1SOwm+3geXDOwklzH91tybbxnE1T+niLMVsz9UMebVt1tdD39XOHnT5ZH2PkU4Xf9xVbrvJ8iY/42rku3PeauRRlseMdA7MSvsR8fSEViIOc6i7wWx0RH5ERfTD1wxzfChZ8fkwS7GKVzZd1tgXgi1qfpSdBnMDY50WVU+Nh3N6kL3t+XTD0bKUL1VycElI+G+1yVJY7l0o7eBnCxa3+57x5GmoC+wSK+nX7VEAYbyZAMOfLs6qElAtU9jjxXFYiiMKfd5VBj+Vypf9nXjjYjWZCHAaVO7U7Lfr3pg97qV1DGCk6ZgPEw9QHJf21qT3voZtEDEa4EF0lPs/Iy8sDxxd2OrsCNoRE4GqARCsd41JSXLq5arUcsltVOgkJMIPU+kHzGZFNGKIjdlkjnHqfLHzRiDkiMGzH6uqPaaTIsQMPp+oqs97bSh1iPZr1ZnqDbSp/Luqyxk3WlR/lcediAk3q5zKa8OZbbKpEG+FvflqfY5ceZ2zH/jALUm53yTEDyxMQ/DAOIL78Fpeg62FkowcZYAhYj5G9W9MyCIQFtugP7JmuXn6Q3rhe4q0jN
+ zy5d9fDp
+ ZVhqnqX0Utfmb46YNJRuTQEwOuojwXVSNuoTz622kqllFTRIZmSLD4WCXE2zDm6aegOSC1gRi0n08OWDUtg9EGowb8FQGOIjW2IRiv6b+z8iF/vIDSWaLY20vZAiEyo17kcHAWvOMHqrvdL+Ece1SO+XrxWKOLY9kJi0L3O2RjYjz6EkiUUMK64MAGeAT9PZOCQdCyl+DLEqR5IDK9joQP/B8OxD6xTY6dvHjyRIbVkX01s0M+m/HnTdqOGiZIwVJh6ngxY0qEBWCE+JGWLF1RuzS730LqfOWL+FTV+sIYPgAots7rc6MUQ3nTIDXvVnEdEyu9N/IXVvp1hP0pKziI+jfAzqeM/uHsvS8jaoGL7pGhiKTyoozMhwVbmYs7pkiCaXI8uKA58e9KTtkW/FN+v+a5YAYk8tFaMLYUqzkIMBAahU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,39 +101,99 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Chi Zhiling <chizhiling@kylinos.cn>
 
-For exFAT filesystems with 4MB read_ahead_size, removing the storage device
-during read operations can delay EIO error reporting by several minutes.
-This occurs because the read-ahead implementation in mpage doesn't handle
-errors.
-
-Another reason for the delay is that the filesystem requires metadata to
-issue file read request. When the storage device is removed, the metadata
-buffers are invalidated, causing mpage to repeatedly attempt to fetch
-metadata during each get_block call.
-
-The original purpose of this patch is terminate read ahead when we fail
-to get metadata, to make the patch more generic, implement it by checking
-folio status, instead of checking the return of get_block().
+Replace two loop iterations with direct calculations.
+The variable nblocks now represents the number of avalid blocks we can
+obtain from map_bh. no functional change.
 
 Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
 ---
- fs/mpage.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/mpage.c | 42 +++++++++++++++++-------------------------
+ 1 file changed, 17 insertions(+), 25 deletions(-)
 
 diff --git a/fs/mpage.c b/fs/mpage.c
-index c5fd821fd30e..b6510b8dfa2b 100644
+index b6510b8dfa2b..a81a71de8f59 100644
 --- a/fs/mpage.c
 +++ b/fs/mpage.c
-@@ -369,6 +369,9 @@ void mpage_readahead(struct readahead_control *rac, get_block_t get_block)
- 		args.folio = folio;
- 		args.nr_pages = readahead_count(rac);
- 		args.bio = do_mpage_readpage(&args);
-+		if (!folio_test_locked(folio) &&
-+		    !folio_test_uptodate(folio))
-+			break;
+@@ -158,7 +158,6 @@ static struct bio *do_mpage_readpage(struct mpage_readpage_args *args)
+ 	struct buffer_head *map_bh = &args->map_bh;
+ 	sector_t block_in_file;
+ 	sector_t last_block;
+-	sector_t last_block_in_file;
+ 	sector_t first_block;
+ 	unsigned page_block;
+ 	unsigned first_hole = blocks_per_folio;
+@@ -180,9 +179,8 @@ static struct bio *do_mpage_readpage(struct mpage_readpage_args *args)
+ 
+ 	block_in_file = folio_pos(folio) >> blkbits;
+ 	last_block = block_in_file + ((args->nr_pages * PAGE_SIZE) >> blkbits);
+-	last_block_in_file = (i_size_read(inode) + blocksize - 1) >> blkbits;
+-	if (last_block > last_block_in_file)
+-		last_block = last_block_in_file;
++	last_block = min_t(sector_t, last_block,
++			   (i_size_read(inode) + blocksize - 1) >> blkbits);
+ 	page_block = 0;
+ 
+ 	/*
+@@ -193,19 +191,15 @@ static struct bio *do_mpage_readpage(struct mpage_readpage_args *args)
+ 			block_in_file > args->first_logical_block &&
+ 			block_in_file < (args->first_logical_block + nblocks)) {
+ 		unsigned map_offset = block_in_file - args->first_logical_block;
+-		unsigned last = nblocks - map_offset;
+ 
+ 		first_block = map_bh->b_blocknr + map_offset;
+-		for (relative_block = 0; ; relative_block++) {
+-			if (relative_block == last) {
+-				clear_buffer_mapped(map_bh);
+-				break;
+-			}
+-			if (page_block == blocks_per_folio)
+-				break;
+-			page_block++;
+-			block_in_file++;
+-		}
++		nblocks -= map_offset;
++		if (nblocks > blocks_per_folio - page_block)
++			nblocks = blocks_per_folio - page_block;
++		else
++			clear_buffer_mapped(map_bh);
++		page_block += nblocks;
++		block_in_file += nblocks;
+ 		bdev = map_bh->b_bdev;
  	}
- 	if (args.bio)
- 		mpage_bio_submit_read(args.bio);
+ 
+@@ -243,7 +237,7 @@ static struct bio *do_mpage_readpage(struct mpage_readpage_args *args)
+ 			map_buffer_to_folio(folio, map_bh, page_block);
+ 			goto confused;
+ 		}
+-	
++
+ 		if (first_hole != blocks_per_folio)
+ 			goto confused;		/* hole -> non-hole */
+ 
+@@ -252,16 +246,14 @@ static struct bio *do_mpage_readpage(struct mpage_readpage_args *args)
+ 			first_block = map_bh->b_blocknr;
+ 		else if (first_block + page_block != map_bh->b_blocknr)
+ 			goto confused;
++
+ 		nblocks = map_bh->b_size >> blkbits;
+-		for (relative_block = 0; ; relative_block++) {
+-			if (relative_block == nblocks) {
+-				clear_buffer_mapped(map_bh);
+-				break;
+-			} else if (page_block == blocks_per_folio)
+-				break;
+-			page_block++;
+-			block_in_file++;
+-		}
++		if (nblocks > blocks_per_folio - page_block)
++			nblocks = blocks_per_folio - page_block;
++		else
++			clear_buffer_mapped(map_bh);
++		page_block += nblocks;
++		block_in_file += nblocks;
+ 		bdev = map_bh->b_bdev;
+ 	}
+ 
 -- 
 2.43.0
 
