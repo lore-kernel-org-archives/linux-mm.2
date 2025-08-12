@@ -2,130 +2,122 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 63E5AC87FCB
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 14:44:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 70FDACA0EC4
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 14:47:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3EDB8E014B; Tue, 12 Aug 2025 10:44:33 -0400 (EDT)
+	id 03CF38E014C; Tue, 12 Aug 2025 10:47:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E166D8E00B0; Tue, 12 Aug 2025 10:44:33 -0400 (EDT)
+	id F31078E00B0; Tue, 12 Aug 2025 10:47:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D05658E014B; Tue, 12 Aug 2025 10:44:33 -0400 (EDT)
+	id DF7D58E014C; Tue, 12 Aug 2025 10:47:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BE0708E00B0
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 10:44:33 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 40BF8116A37
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 14:44:33 +0000 (UTC)
-X-FDA: 83768376426.02.1AF1DD5
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C1607180005
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 14:44:30 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=f3RaPM4D;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf06.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755009871; a=rsa-sha256;
-	cv=none;
-	b=Tdx/Olp4a9v8bUY+59ykuTr/83V7hcWxilPDIp5QC+S0QXgOFkgtFicE5qG4U2Qj0HLg/g
-	IFwE/mtiShpW2N64AntJQmwTlxPUPyZnbnBo25J0VoaAI1OlS+lvJJAijwDXc1YI3VS9TX
-	/esYzsOMNA/ZpnUAwXLD11UijQAB3Pc=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=f3RaPM4D;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf06.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C964A8E00B0
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 10:47:58 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4AF3C580F6
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 14:47:58 +0000 (UTC)
+X-FDA: 83768385036.22.1E83A85
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 3C1581A0003
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 14:47:55 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ZYA1qGP+;
+	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755009871;
+	s=arc-20220608; t=1755010076;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZLLcNx5rUVjSB6a5QhKP843kVJWKb0b8D2KnjHFIuZE=;
-	b=1Bc7Oy0XLG8yNIsKq7aSju/YgSeP27A0ICFanKAIXsZq+dW3GRY3k1yFLjaG7xKjl4DUU8
-	dUfvey/isUayv+FHt6PYwSQ1bL1+PQ+hEgL52qcJyWEea7Wro2BDXvhpUenQZ9zbr1tUdQ
-	7ATlXLXR8yaa3YOsy5axvW48taXqf0Q=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755009870;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZLLcNx5rUVjSB6a5QhKP843kVJWKb0b8D2KnjHFIuZE=;
-	b=f3RaPM4DZc13mbj06ZPP4TAFCaDyEmggec0ER4q/QUHFOHUfgt1uk3mxcXXitTX52VcRi6
-	8IQBAQFk3w+PheDFm0bpaOHTIdHVUhXN7+Qh6TAg/7qCe5g5ibu5vvOahYRy2gXFF0oXie
-	W63YhI2f2nxZOxdxERAYE7cjnsatb1E=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-288-w2iK3NA3OWiK62VHmzVHeA-1; Tue, 12 Aug 2025 10:44:28 -0400
-X-MC-Unique: w2iK3NA3OWiK62VHmzVHeA-1
-X-Mimecast-MFC-AGG-ID: w2iK3NA3OWiK62VHmzVHeA_1755009868
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-7e82b8ea647so1164769085a.0
-        for <linux-mm@kvack.org>; Tue, 12 Aug 2025 07:44:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755009868; x=1755614668;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZLLcNx5rUVjSB6a5QhKP843kVJWKb0b8D2KnjHFIuZE=;
-        b=ofONTgXskRAzmEKtlkqqzRdxLK3uDShBEwH837FnkR2JxaN06gH6hmrPuI+uwa6C2n
-         /ABd+dVowxyNNalGZy+6358Ea44EkSKaR4Yx+4RQ1Bi8NKVYy79/3Rljg6kGMX9mfyuk
-         v/G64RgrFrmaRCMTnErK21QfnSPPNaElwfAqvODf7WnPzWbwV79aNDf+6gcV4kaA+Q2s
-         Hc5Fqg6Dv7f20O3rYUfIuUlh0JN4f1XOnYAJ9u0vY8NJniOZDkI6EaLLL3xHeUHydb4k
-         wmQdhVqxasvvzCEE6hQx+DMySk2QyugFQSjBiSluqULtWydyDZKA/tuTTRiu4Rlt20RX
-         HuLg==
-X-Forwarded-Encrypted: i=1; AJvYcCVm4KdaoUccf7GHSOYkSjoqy2pnb6NgvJApDIO6W5YByhHgAxQW65go7K6bPHLSdkraDciVbkFxCA==@kvack.org
-X-Gm-Message-State: AOJu0YxQyStWzQHg4hY18ydk6Td/R3Zc+tJKNx6QiIEpHgjcuwKWsyG/
-	m5boFYck40/oWT0lZQ8E+anKaDNrIx4TsHyKhO4+W94aJolljKuM46HQ2ylHknR62wzNGP9y2bf
-	EUfaOurruqZesf3LHiIF7U2zNx5Hc/vHvH0gbWVJiwpiVrluj7IMq
-X-Gm-Gg: ASbGncvCQmAmBsND8yJ7dCCmA5mfRGt3EeQyVD4/AYEWkxK0QN9Bni3GfcHEXjtHFOk
-	NLX2cCpb9w6vsezPLYL0ONsBVvaPLT0wBu78oRoZ4ZBscn7b7JX/BKNUQCn28ipaKXzu1FKOUKA
-	G8XnNgNryJVNNkbDywcXcnJNR9sZRBr9P0gTJH7mQaltQ+5POgqItWt9dwZy2lsid35AhkTKj4Z
-	L2+WYNsywY5Rq0eBYctd07WN/SF0xWW5dWUtX7NNyENSB1kRC8NY46dLp4RMez97oUqq5vBUkC+
-	l5RXV7eaR3Xgj2tcs0Z1Rw+KTg7dB5X0
-X-Received: by 2002:a05:622a:447:b0:4b0:7327:1bed with SMTP id d75a77b69052e-4b0ec98cb3cmr36006271cf.1.1755009868107;
-        Tue, 12 Aug 2025 07:44:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEW+Q4suIFY7HXceW95xp4YuQL9IQHdbxyoR0crEXcoT6UOm7JtlKpI2ViaCfT/cx+pZ6nmiw==
-X-Received: by 2002:a05:622a:447:b0:4b0:7327:1bed with SMTP id d75a77b69052e-4b0ec98cb3cmr36005911cf.1.1755009867642;
-        Tue, 12 Aug 2025 07:44:27 -0700 (PDT)
-Received: from x1.local ([174.89.135.171])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b085586307sm105898441cf.56.2025.08.12.07.44.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Aug 2025 07:44:26 -0700 (PDT)
-Date: Tue, 12 Aug 2025 10:44:14 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Barry Song <21cnbao@gmail.com>
-Cc: Lokesh Gidra <lokeshgidra@google.com>, akpm@linux-foundation.org,
-	aarcange@redhat.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, ngeoffray@google.com,
-	Suren Baghdasaryan <surenb@google.com>,
-	Kalesh Singh <kaleshsingh@google.com>,
-	Barry Song <v-songbaohua@oppo.com>,
-	David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v4] userfaultfd: opportunistic TLB-flush batching for
- present pages in MOVE
-Message-ID: <aJtTPkenKeFuFFNQ@x1.local>
-References: <20250810062912.1096815-1-lokeshgidra@google.com>
- <CAGsJ_4wbXkfaAn+79g20SfE-0Ak4QACVP+Mw2vAvMnxBCcLAsQ@mail.gmail.com>
+	bh=bN9kLeVi1SxHZXvJwZEFMc91i89pErPB4eHyLodwBM4=;
+	b=ip7suJdM6k4c4DsB1K16+Ub7SOWlP+9MTye1iH68WTow/Cn1ScYMtHjXdkrLZ137y6kXZ8
+	xbNd/w6R98BCL8ecvODvvKTecNyEEEOLc32UF4kFZ/JbouJF0Y4HPZ5F9v1tXMPlVU8gds
+	zQAC/uTvSKxW3m873fV2uRr8ZyLfAwo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755010076; a=rsa-sha256;
+	cv=none;
+	b=GgCTux/Z6csbC/nYymvmtIrrLvt2sQyotQg3QYZsdnDGr19+m3Ee2THeq4aCjCXm81KreU
+	gLnd6VFFWTsm6wcHWd9YE6Pswgtg585tqJJg14b3kjrcO4RvMKbH9sA2ZQ/4dybA7fYbgy
+	9R7JzUl3PwlDGEZJ8vPhrg3l38lM/aw=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ZYA1qGP+;
+	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755010075; x=1786546075;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=+CPu5U+JXff4AfpVYRE/lxH7V7HwFVeYgEko8LGWaqQ=;
+  b=ZYA1qGP+K3zLwp6q8hKI+LtNuKZDgvCjEfICYHrAXgrsJ/2SCpGISqiG
+   VcTXTStcc0r6U9XX3eEJEqst4HtbIObDTqQDrCgZBpF4zzht1dkp8/UKX
+   rUfIwaI+H8/cPM8wY0xLgG2ghznB5VyIxGT4yAn2EjVDSrcFJpjPYNp3n
+   V5ZIznSfMmySbHntlqVBh41245Wzd1ceaumQoa+e8BURf2HNrj84Nr34M
+   jqPdV+G4+s7nSPua5mSrxn+imhvH1silPBoJ8lx6dP2HvnfeJ618MPiGk
+   uszkPFhOvb/jP3hnAxjUWKjBQqUhSLW+dcHmGnvx2NaXno+8t8OE3AxGB
+   A==;
+X-CSE-ConnectionGUID: 8PIXcbJJQMm+x5HwBaprZw==
+X-CSE-MsgGUID: yzvabgG3QPO1TKSebpH8yA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="56496946"
+X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
+   d="scan'208";a="56496946"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 07:47:54 -0700
+X-CSE-ConnectionGUID: MnD2gOO3SUuU0T0NQMJEdQ==
+X-CSE-MsgGUID: SIaAoEFUTkOryu6ulAH6KA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
+   d="scan'208";a="165849626"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by orviesa009.jf.intel.com with ESMTP; 12 Aug 2025 07:47:47 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ulqHw-0006u3-0B;
+	Tue, 12 Aug 2025 14:47:44 +0000
+Date: Tue, 12 Aug 2025 22:47:38 +0800
+From: kernel test robot <lkp@intel.com>
+To: Balbir Singh <balbirs@nvidia.com>, dri-devel@lists.freedesktop.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Balbir Singh <balbirs@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Ralph Campbell <rcampbell@nvidia.com>,
+	Mika =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Francois Dugast <francois.dugast@intel.com>
+Subject: Re: [v3 02/11] mm/thp: zone_device awareness in THP handling code
+Message-ID: <202508122212.qjsfr5Wf-lkp@intel.com>
+References: <20250812024036.690064-3-balbirs@nvidia.com>
 MIME-Version: 1.0
-In-Reply-To: <CAGsJ_4wbXkfaAn+79g20SfE-0Ak4QACVP+Mw2vAvMnxBCcLAsQ@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: zFQ13SYlVL1S1SS2rFMaNM6ZrA1HZZWC2oSdLJbRmi4_1755009868
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: qz46gxjzxbrdb7tqjtbe7tzd4bt8ddgh
+In-Reply-To: <20250812024036.690064-3-balbirs@nvidia.com>
+X-Rspamd-Queue-Id: 3C1581A0003
+X-Stat-Signature: 497he76bxsfk95fy54pfg9fxojomqedq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C1607180005
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1755009870-383729
-X-HE-Meta: U2FsdGVkX18O1WpT5uZhrs3qhDwEtzh32P7h1Qvx6SrwL3h9YWcoD6UAmUOgUdvauj40NWwSgK62H2kcJg8MLmhLCK8G5+OiSSBqMaEeNpsLE+9gFXXYDuBzg6p+0tKmGBHPKBTtzak1buvIPFVfUOnJb2ZzZnkYJ3bSnJ8rTjFFcaZ+2FLaLgzEe+6IJ95Np5PTWIV46vm1nuapS4XCtfCnBPJH7t7FfdIRupP/BI7m2Ifneb8SHMwtlrvoIOBO3BqwP/aP5SGGb75E0ypPxDDt+JE84syJbjQ8BhD7QKk1WXS9QkcLaGHAlEOUBfDhRy4qaWVbo9syL6ycXQPXu+46HyxUEfSi2+USQ0Bf4cGoMZa8wGHnL6uZYjZSvSy0Vi0ALaWJkp7BafPs46sf9wrtAe3m7nrNc0FeCIAmymJAfkTqDT5Q6ZsiLb2lGQ2Kn9aCCkf7AOuTonhyU8MxjZeyKv3nYQFZiFK1UIA8F2v0TMGEwljAyVaZbt1EmHHx5BWjbsDLmaR5yvuL5fGyHDUXxkdNx2jVKyYd3I20iHcVtt0mAylfHFD6p4LQCfWRzBj+CueADHy8wL09QH3+JWRk4gXE8Q5ZTo15fD2KnP7j0jwbe3FhWjckFUbdvO0HrAme3oYSgYoC1ogejFqGwgWtCUl1e8XQR17mFhboaD5m023MCPmNul9AtTCcCzyNXAhKqv3ooNVDwuFHaX/80q7dBitdzGsZJPyoJIDN6qx77G2o+QVKmL//8Wp9M62GVB6fvNIbQFukZhsvk0y2JpVw1GCXXwfofG0DiMfPh3QGmZ21KxM+BYIvXTid9W0feRATjzWo+55E1h5Q+fArR9aBWtu5WtWxH9UfWKTNu/gKuNBqT4+VSYUc2BteN3jT9/werBjhkCpFa5Vbf0cVb2HAQ/k9BdQes3qQZ7yV6cCZCV8aUDF3wGkfq67isvbJOeGzzzFfF6i3FXWlzJE
- 5jqUKqg9
- 6qhEUkmwEhcvn9qb6edzuNt7q/lZrPWIsM89kv1g5IpkiqTWDEz1UnS9uSN2p2tjYynR/NaSBO+qkqyvBhpXPfk73BLA16q8Z/ngXBmn3omK2c118oItbb+gHlEWECtSIZv5lGRqv1qKv4gBw2ZTwsRamOsqp3Wzaxu8QWPkOVwlxrlBLZnu5WiWdeg+X5GjR2MVuhDI5Ui3k+moAP59e0qWZQFtRz/1UErPCPgDXX72AwmjE5cVytWk+aCURR4Huiq+ahUNV+tuXIQHMNXDA5Uj1dU2dwpTepMK4lt0ilNqR04TA5m+RuQZqfKw+aKvGedOv57v7486MKWCLuXU34fB1HCsqTU4Au0nXkBCaxEilC11/lv9I7T7qtTKpgussP3DdBgX5mDZqjB64rzwhO12n9XgabD+C6G7sJFMToN9Os+YoKOfd949mtgE43K2Mg1SEQPgBREIjjCs2dWqkR1XPA/+FjOyRBdvjcbjC6t6THM640CkEbMIwZDC4GBECTwQy1mPDLAZMBNQ=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1755010075-894930
+X-HE-Meta: U2FsdGVkX1/q34aFjIxhylf9nHfKsBwhJruYLiENsU23pKCArN7YyuJBwKBrHOxvtSFufRKFaPud2uReDIeHfqBSLm35zgUGgH88av/rMyhDauBW/caDLZRp33EOemoe1IkZ1rwn4MCgt7pINFsFB4um/JsjXNDNvMD8KlFxN0eiyT4k+jh2HfkgpO/jbeHOpw6vHkwHkbqFwXloGrYpd26LxjE2SmZl8NMKo5LOKQGHTOo6vKbWazzOgEN83GLxcigi2FZId5v3EnKU/8+Dy6f0dJQhevaS0iKSbN7sdSEW8Iu9dK8PDBiGsZO2/1fFAct4U8jzQDDPOUCDgJVigJB3avg2+gGxKETYFD1QA+mDZsclKqa3RyBRQT+qL8juRFAXUZd6FB4gV4BOHv6bYe5CGTpTLRNwJa7xbUx4oECV2UDrtIPIy7NRZ+rWuZlLYtRT0nn1eH3w6DhrqX0Yz1FUgasIA2dAjAte1Irv7FRDSR6TnewVmVl2wpenTIc3i4l1QAhzv0zjxpy/nix2aM9q5sVpS3hkm55upl7iNRd27Yo5b+9fJMqE9N9adwUaztSLaJIWkdzzpKO/udZTvvUgXegzm6kQOEqw+Z7q9BkFoN3G3c8uam2B+dtzKNcOKO8UiP9WNh89W2zyYPNIOi6UcXM8xIeqNAp1xx6eFtAtcV7Uh2eHanTSs1jTMGL3DM+0ZFQmQaTtbXznsJTvaAB/5Uwa6SBVu9BdSfM3e9OCxd4WWpCDXZy39BgBqoj49j3EgTRK/xplgyqWLTLvfz0ML0YcHuFS4Ar04oJkuy79MzDWf4Ogfbw1cX6r1hzUsI9LtJeZ9kPIPUb+GLIeWfP+ycR3zcpPtoD4pew3WR+vhw1aB8zTOq2iV0xPruGZoM7pRnCEWWA6dOln4yorODACY6008CZDMA4Jg9oxF7jjqHBhaBxiRO12L5+equ2Cdv0aw7pGuDNjDndWE/c
+ N2Kluzvu
+ uiqZ7cq8DwdsqU9IFYX9QKzgrcdZQ7EfN538BDKTYPN5AgZx2odKyRNLeMaXQ0LAene2rQl9ezgY7PCeWP1LrLWgGCh2RCFRMAryP2FSeYYbph6qZP46rQlXR8jvtuZ1cERwMyN9cjxmnGznAFFOdbwq4ot4r+3tsyJADHUTeaqNQzTzENnd0XU0Dfw+6bd60VuxNoqBKxzWZ3NncMyvDR8OZ89PLDzYtmMxeRbO+dPmZraMDW914SXGQ9VbNvM3pIBhh4vKFNUCXn9rCuHkG2+kYc9XOsFcsuJe9Ai/GtlfOQG1u2kpjsGrxoCpWJNDJYvJMV8ROzbudL4sN2mKjA2/hcbebj4wFk9voG6xHIX79mB/8IPgHQFX3bouECR5mXWSRb5WhMa+FLNYBPHAb6e9m+TgM/7xymCv/G9ZIXa5m09pG9fu71ccFYoZ3MkC2nPM9zGnihMg/mJunovDjG6wQHw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,159 +126,324 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 11, 2025 at 11:55:36AM +0800, Barry Song wrote:
-> Hi Lokesh,
-> 
-> 
-> On Sun, Aug 10, 2025 at 2:29 PM Lokesh Gidra <lokeshgidra@google.com> wrote:
-> >
-> > MOVE ioctl's runtime is dominated by TLB-flush cost, which is required
-> > for moving present pages. Mitigate this cost by opportunistically
-> > batching present contiguous pages for TLB flushing.
-> >
-> > Without batching, in our testing on an arm64 Android device with UFFD GC,
-> > which uses MOVE ioctl for compaction, we observed that out of the total
-> > time spent in move_pages_pte(), over 40% is in ptep_clear_flush(), and
-> > ~20% in vm_normal_folio().
-> >
-> > With batching, the proportion of vm_normal_folio() increases to over
-> > 70% of move_pages_pte() without any changes to vm_normal_folio().
-> > Furthermore, time spent within move_pages_pte() is only ~20%, which
-> > includes TLB-flush overhead.
-> >
-> > Cc: Suren Baghdasaryan <surenb@google.com>
-> > Cc: Kalesh Singh <kaleshsingh@google.com>
-> > Cc: Barry Song <v-songbaohua@oppo.com>
-> > Cc: David Hildenbrand <david@redhat.com>
-> > Cc: Peter Xu <peterx@redhat.com>
-> > Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
-> > ---
-> > Changes since v3 [1]
-> > - Fix unintialized 'step_size' warning, per Dan Carpenter
-> > - Removed pmd_none() from check_ptes_for_batched_move(), per Peter Xu
-> > - Removed flush_cache_range() in zero-page case, per Peter Xu
-> > - Added comment to explain why folio reference for batched pages is not
-> >   required, per Peter Xu
-> > - Use MIN() in calculation of largest extent that can be batched under
-> >   the same src and dst PTLs, per Peter Xu
-> > - Release first folio's reference in move_present_ptes(), per Peter Xu
-> >
-> > Changes since v2 [2]
-> > - Addressed VM_WARN_ON failure, per Lorenzo Stoakes
-> > - Added check to ensure all batched pages share the same anon_vma
-> >
-> > Changes since v1 [3]
-> > - Removed flush_tlb_batched_pending(), per Barry Song
-> > - Unified single and multi page case, per Barry Song
-> >
-> > [1] https://lore.kernel.org/all/20250807103902.2242717-1-lokeshgidra@google.com/
-> > [2] https://lore.kernel.org/all/20250805121410.1658418-1-lokeshgidra@google.com/
-> > [3] https://lore.kernel.org/all/20250731104726.103071-1-lokeshgidra@google.com/
-> >
-> >  mm/userfaultfd.c | 178 +++++++++++++++++++++++++++++++++--------------
-> >  1 file changed, 127 insertions(+), 51 deletions(-)
-> >
-> > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> > index cbed91b09640..39d81d2972db 100644
-> > --- a/mm/userfaultfd.c
-> > +++ b/mm/userfaultfd.c
-> > @@ -1026,18 +1026,64 @@ static inline bool is_pte_pages_stable(pte_t *dst_pte, pte_t *src_pte,
-> >                pmd_same(dst_pmdval, pmdp_get_lockless(dst_pmd));
-> >  }
-> >
-> > -static int move_present_pte(struct mm_struct *mm,
-> > -                           struct vm_area_struct *dst_vma,
-> > -                           struct vm_area_struct *src_vma,
-> > -                           unsigned long dst_addr, unsigned long src_addr,
-> > -                           pte_t *dst_pte, pte_t *src_pte,
-> > -                           pte_t orig_dst_pte, pte_t orig_src_pte,
-> > -                           pmd_t *dst_pmd, pmd_t dst_pmdval,
-> > -                           spinlock_t *dst_ptl, spinlock_t *src_ptl,
-> > -                           struct folio *src_folio)
-> > +/*
-> > + * Checks if the two ptes and the corresponding folio are eligible for batched
-> > + * move. If so, then returns pointer to the locked folio. Otherwise, returns NULL.
-> > + *
-> > + * NOTE: folio's reference is not required as the whole operation is within
-> > + * PTL's critical section.
-> > + */
-> > +static struct folio *check_ptes_for_batched_move(struct vm_area_struct *src_vma,
-> > +                                                unsigned long src_addr,
-> > +                                                pte_t *src_pte, pte_t *dst_pte,
-> > +                                                struct anon_vma *src_anon_vma)
-> > +{
-> > +       pte_t orig_dst_pte, orig_src_pte;
-> > +       struct folio *folio;
-> > +
-> > +       orig_dst_pte = ptep_get(dst_pte);
-> > +       if (!pte_none(orig_dst_pte))
-> > +               return NULL;
-> > +
-> > +       orig_src_pte = ptep_get(src_pte);
-> > +       if (!pte_present(orig_src_pte) || is_zero_pfn(pte_pfn(orig_src_pte)))
-> > +               return NULL;
-> > +
-> > +       folio = vm_normal_folio(src_vma, src_addr, orig_src_pte);
-> > +       if (!folio || !folio_trylock(folio))
-> > +               return NULL;
-> > +       if (!PageAnonExclusive(&folio->page) || folio_test_large(folio) ||
-> > +           folio_anon_vma(folio) != src_anon_vma) {
-> > +               folio_unlock(folio);
-> > +               return NULL;
-> > +       }
-> > +       return folio;
-> > +}
-> > +
-> 
-> I’m still quite confused by the code. Before move_present_ptes(), we’ve
-> already performed all the checks—pte_same(), vm_normal_folio(),
-> folio_trylock(), folio_test_large(), folio_get_anon_vma(),
-> and anon_vma_lock_write()—at least for the first PTE. Now we’re
-> duplicating them again for all PTEs. Does this mean we’re doing those
-> operations for the first PTE twice? It feels like the old non-batch check
-> code should be removed?
+Hi Balbir,
 
-This function should only start to work on the 2nd (or more) continuous
-ptes to move within the same pgtable lock held.  We'll still need the
-original path because that was sleepable, this one isn't, and it's only
-best-effort fast path only. E.g. if trylock() fails above, it would
-fallback to the slow path.
+kernel test robot noticed the following build warnings:
 
-> 
-> > +static long move_present_ptes(struct mm_struct *mm,
-> > +                             struct vm_area_struct *dst_vma,
-> > +                             struct vm_area_struct *src_vma,
-> > +                             unsigned long dst_addr, unsigned long src_addr,
-> > +                             pte_t *dst_pte, pte_t *src_pte,
-> > +                             pte_t orig_dst_pte, pte_t orig_src_pte,
-> > +                             pmd_t *dst_pmd, pmd_t dst_pmdval,
-> > +                             spinlock_t *dst_ptl, spinlock_t *src_ptl,
-> > +                             struct folio **first_src_folio, unsigned long len,
-> > +                             struct anon_vma *src_anon_vma)
-> >  {
-> >         int err = 0;
-> > +       struct folio *src_folio = *first_src_folio;
-> > +       unsigned long src_start = src_addr;
-> > +       unsigned long addr_end;
-> > +
-> > +       if (len > PAGE_SIZE) {
-> > +               addr_end = (dst_addr + PMD_SIZE) & PMD_MASK;
-> > +               len = MIN(addr_end - dst_addr, len);
-> >
-> > +               addr_end = (src_addr + PMD_SIZE) & PMD_MASK;
-> > +               len = MIN(addr_end - src_addr, len);
-> > +       }
-> 
-> We already have a pmd_addr_end() helper—can we reuse it?
+[auto build test WARNING on akpm-mm/mm-everything]
 
-I agree with Barry; I wante to say this version didn't use ALIGN() that I
-suggested but pmd_addr_end() looks better.
+url:    https://github.com/intel-lab-lkp/linux/commits/Balbir-Singh/mm-zone_device-support-large-zone-device-private-folios/20250812-105145
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20250812024036.690064-3-balbirs%40nvidia.com
+patch subject: [v3 02/11] mm/thp: zone_device awareness in THP handling code
+config: x86_64-randconfig-001-20250812 (https://download.01.org/0day-ci/archive/20250812/202508122212.qjsfr5Wf-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250812/202508122212.qjsfr5Wf-lkp@intel.com/reproduce)
 
-Other than that this version looks good to me (plus the higher level
-performance results updated to the commit message, per requested in v3),
-thanks Lokesh.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508122212.qjsfr5Wf-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> mm/migrate_device.c:154:19: warning: variable 'new_folio' set but not used [-Wunused-but-set-variable]
+     154 |                                 struct folio *new_folio;
+         |                                               ^
+   1 warning generated.
+
+
+vim +/new_folio +154 mm/migrate_device.c
+
+    56	
+    57	static int migrate_vma_collect_pmd(pmd_t *pmdp,
+    58					   unsigned long start,
+    59					   unsigned long end,
+    60					   struct mm_walk *walk)
+    61	{
+    62		struct migrate_vma *migrate = walk->private;
+    63		struct folio *fault_folio = migrate->fault_page ?
+    64			page_folio(migrate->fault_page) : NULL;
+    65		struct vm_area_struct *vma = walk->vma;
+    66		struct mm_struct *mm = vma->vm_mm;
+    67		unsigned long addr = start, unmapped = 0;
+    68		spinlock_t *ptl;
+    69		pte_t *ptep;
+    70	
+    71	again:
+    72		if (pmd_none(*pmdp))
+    73			return migrate_vma_collect_hole(start, end, -1, walk);
+    74	
+    75		if (pmd_trans_huge(*pmdp)) {
+    76			struct folio *folio;
+    77	
+    78			ptl = pmd_lock(mm, pmdp);
+    79			if (unlikely(!pmd_trans_huge(*pmdp))) {
+    80				spin_unlock(ptl);
+    81				goto again;
+    82			}
+    83	
+    84			folio = pmd_folio(*pmdp);
+    85			if (is_huge_zero_folio(folio)) {
+    86				spin_unlock(ptl);
+    87				split_huge_pmd(vma, pmdp, addr);
+    88			} else {
+    89				int ret;
+    90	
+    91				folio_get(folio);
+    92				spin_unlock(ptl);
+    93				/* FIXME: we don't expect THP for fault_folio */
+    94				if (WARN_ON_ONCE(fault_folio == folio))
+    95					return migrate_vma_collect_skip(start, end,
+    96									walk);
+    97				if (unlikely(!folio_trylock(folio)))
+    98					return migrate_vma_collect_skip(start, end,
+    99									walk);
+   100				ret = split_folio(folio);
+   101				if (fault_folio != folio)
+   102					folio_unlock(folio);
+   103				folio_put(folio);
+   104				if (ret)
+   105					return migrate_vma_collect_skip(start, end,
+   106									walk);
+   107			}
+   108		}
+   109	
+   110		ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
+   111		if (!ptep)
+   112			goto again;
+   113		arch_enter_lazy_mmu_mode();
+   114	
+   115		for (; addr < end; addr += PAGE_SIZE, ptep++) {
+   116			struct dev_pagemap *pgmap;
+   117			unsigned long mpfn = 0, pfn;
+   118			struct folio *folio;
+   119			struct page *page;
+   120			swp_entry_t entry;
+   121			pte_t pte;
+   122	
+   123			pte = ptep_get(ptep);
+   124	
+   125			if (pte_none(pte)) {
+   126				if (vma_is_anonymous(vma)) {
+   127					mpfn = MIGRATE_PFN_MIGRATE;
+   128					migrate->cpages++;
+   129				}
+   130				goto next;
+   131			}
+   132	
+   133			if (!pte_present(pte)) {
+   134				/*
+   135				 * Only care about unaddressable device page special
+   136				 * page table entry. Other special swap entries are not
+   137				 * migratable, and we ignore regular swapped page.
+   138				 */
+   139				struct folio *folio;
+   140	
+   141				entry = pte_to_swp_entry(pte);
+   142				if (!is_device_private_entry(entry))
+   143					goto next;
+   144	
+   145				page = pfn_swap_entry_to_page(entry);
+   146				pgmap = page_pgmap(page);
+   147				if (!(migrate->flags &
+   148					MIGRATE_VMA_SELECT_DEVICE_PRIVATE) ||
+   149				    pgmap->owner != migrate->pgmap_owner)
+   150					goto next;
+   151	
+   152				folio = page_folio(page);
+   153				if (folio_test_large(folio)) {
+ > 154					struct folio *new_folio;
+   155					struct folio *new_fault_folio = NULL;
+   156	
+   157					/*
+   158					 * The reason for finding pmd present with a
+   159					 * device private pte and a large folio for the
+   160					 * pte is partial unmaps. Split the folio now
+   161					 * for the migration to be handled correctly
+   162					 */
+   163					pte_unmap_unlock(ptep, ptl);
+   164	
+   165					folio_get(folio);
+   166					if (folio != fault_folio)
+   167						folio_lock(folio);
+   168					if (split_folio(folio)) {
+   169						if (folio != fault_folio)
+   170							folio_unlock(folio);
+   171						ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
+   172						goto next;
+   173					}
+   174	
+   175					new_folio = page_folio(page);
+   176					if (fault_folio)
+   177						new_fault_folio = page_folio(migrate->fault_page);
+   178	
+   179					/*
+   180					 * Ensure the lock is held on the correct
+   181					 * folio after the split
+   182					 */
+   183					if (!new_fault_folio) {
+   184						folio_unlock(folio);
+   185						folio_put(folio);
+   186					} else if (folio != new_fault_folio) {
+   187						folio_get(new_fault_folio);
+   188						folio_lock(new_fault_folio);
+   189						folio_unlock(folio);
+   190						folio_put(folio);
+   191					}
+   192	
+   193					addr = start;
+   194					goto again;
+   195				}
+   196	
+   197				mpfn = migrate_pfn(page_to_pfn(page)) |
+   198						MIGRATE_PFN_MIGRATE;
+   199				if (is_writable_device_private_entry(entry))
+   200					mpfn |= MIGRATE_PFN_WRITE;
+   201			} else {
+   202				pfn = pte_pfn(pte);
+   203				if (is_zero_pfn(pfn) &&
+   204				    (migrate->flags & MIGRATE_VMA_SELECT_SYSTEM)) {
+   205					mpfn = MIGRATE_PFN_MIGRATE;
+   206					migrate->cpages++;
+   207					goto next;
+   208				}
+   209				page = vm_normal_page(migrate->vma, addr, pte);
+   210				if (page && !is_zone_device_page(page) &&
+   211				    !(migrate->flags & MIGRATE_VMA_SELECT_SYSTEM)) {
+   212					goto next;
+   213				} else if (page && is_device_coherent_page(page)) {
+   214					pgmap = page_pgmap(page);
+   215	
+   216					if (!(migrate->flags &
+   217						MIGRATE_VMA_SELECT_DEVICE_COHERENT) ||
+   218						pgmap->owner != migrate->pgmap_owner)
+   219						goto next;
+   220				}
+   221				mpfn = migrate_pfn(pfn) | MIGRATE_PFN_MIGRATE;
+   222				mpfn |= pte_write(pte) ? MIGRATE_PFN_WRITE : 0;
+   223			}
+   224	
+   225			/* FIXME support THP */
+   226			if (!page || !page->mapping || PageTransCompound(page)) {
+   227				mpfn = 0;
+   228				goto next;
+   229			}
+   230	
+   231			/*
+   232			 * By getting a reference on the folio we pin it and that blocks
+   233			 * any kind of migration. Side effect is that it "freezes" the
+   234			 * pte.
+   235			 *
+   236			 * We drop this reference after isolating the folio from the lru
+   237			 * for non device folio (device folio are not on the lru and thus
+   238			 * can't be dropped from it).
+   239			 */
+   240			folio = page_folio(page);
+   241			folio_get(folio);
+   242	
+   243			/*
+   244			 * We rely on folio_trylock() to avoid deadlock between
+   245			 * concurrent migrations where each is waiting on the others
+   246			 * folio lock. If we can't immediately lock the folio we fail this
+   247			 * migration as it is only best effort anyway.
+   248			 *
+   249			 * If we can lock the folio it's safe to set up a migration entry
+   250			 * now. In the common case where the folio is mapped once in a
+   251			 * single process setting up the migration entry now is an
+   252			 * optimisation to avoid walking the rmap later with
+   253			 * try_to_migrate().
+   254			 */
+   255			if (fault_folio == folio || folio_trylock(folio)) {
+   256				bool anon_exclusive;
+   257				pte_t swp_pte;
+   258	
+   259				flush_cache_page(vma, addr, pte_pfn(pte));
+   260				anon_exclusive = folio_test_anon(folio) &&
+   261						  PageAnonExclusive(page);
+   262				if (anon_exclusive) {
+   263					pte = ptep_clear_flush(vma, addr, ptep);
+   264	
+   265					if (folio_try_share_anon_rmap_pte(folio, page)) {
+   266						set_pte_at(mm, addr, ptep, pte);
+   267						if (fault_folio != folio)
+   268							folio_unlock(folio);
+   269						folio_put(folio);
+   270						mpfn = 0;
+   271						goto next;
+   272					}
+   273				} else {
+   274					pte = ptep_get_and_clear(mm, addr, ptep);
+   275				}
+   276	
+   277				migrate->cpages++;
+   278	
+   279				/* Set the dirty flag on the folio now the pte is gone. */
+   280				if (pte_dirty(pte))
+   281					folio_mark_dirty(folio);
+   282	
+   283				/* Setup special migration page table entry */
+   284				if (mpfn & MIGRATE_PFN_WRITE)
+   285					entry = make_writable_migration_entry(
+   286								page_to_pfn(page));
+   287				else if (anon_exclusive)
+   288					entry = make_readable_exclusive_migration_entry(
+   289								page_to_pfn(page));
+   290				else
+   291					entry = make_readable_migration_entry(
+   292								page_to_pfn(page));
+   293				if (pte_present(pte)) {
+   294					if (pte_young(pte))
+   295						entry = make_migration_entry_young(entry);
+   296					if (pte_dirty(pte))
+   297						entry = make_migration_entry_dirty(entry);
+   298				}
+   299				swp_pte = swp_entry_to_pte(entry);
+   300				if (pte_present(pte)) {
+   301					if (pte_soft_dirty(pte))
+   302						swp_pte = pte_swp_mksoft_dirty(swp_pte);
+   303					if (pte_uffd_wp(pte))
+   304						swp_pte = pte_swp_mkuffd_wp(swp_pte);
+   305				} else {
+   306					if (pte_swp_soft_dirty(pte))
+   307						swp_pte = pte_swp_mksoft_dirty(swp_pte);
+   308					if (pte_swp_uffd_wp(pte))
+   309						swp_pte = pte_swp_mkuffd_wp(swp_pte);
+   310				}
+   311				set_pte_at(mm, addr, ptep, swp_pte);
+   312	
+   313				/*
+   314				 * This is like regular unmap: we remove the rmap and
+   315				 * drop the folio refcount. The folio won't be freed, as
+   316				 * we took a reference just above.
+   317				 */
+   318				folio_remove_rmap_pte(folio, page, vma);
+   319				folio_put(folio);
+   320	
+   321				if (pte_present(pte))
+   322					unmapped++;
+   323			} else {
+   324				folio_put(folio);
+   325				mpfn = 0;
+   326			}
+   327	
+   328	next:
+   329			migrate->dst[migrate->npages] = 0;
+   330			migrate->src[migrate->npages++] = mpfn;
+   331		}
+   332	
+   333		/* Only flush the TLB if we actually modified any entries */
+   334		if (unmapped)
+   335			flush_tlb_range(walk->vma, start, end);
+   336	
+   337		arch_leave_lazy_mmu_mode();
+   338		pte_unmap_unlock(ptep - 1, ptl);
+   339	
+   340		return 0;
+   341	}
+   342	
 
 -- 
-Peter Xu
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
