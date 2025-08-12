@@ -2,121 +2,117 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7DD12CA0EDB
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 18:37:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3CB6BCA0EDB
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 18:39:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F02E8E0187; Tue, 12 Aug 2025 14:37:31 -0400 (EDT)
+	id CF21D8E0188; Tue, 12 Aug 2025 14:39:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C84C8E0151; Tue, 12 Aug 2025 14:37:31 -0400 (EDT)
+	id CCB0F8E0151; Tue, 12 Aug 2025 14:39:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0DF928E0187; Tue, 12 Aug 2025 14:37:31 -0400 (EDT)
+	id BB8C38E0188; Tue, 12 Aug 2025 14:39:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EEC6E8E0151
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 14:37:30 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7A2D280C41
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 18:37:30 +0000 (UTC)
-X-FDA: 83768963460.01.3173125
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 968311C0011
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 18:37:28 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=fu-berlin.de header.s=fub01 header.b=YWfd335d;
-	dmarc=pass (policy=none) header.from=fu-berlin.de;
-	spf=pass (imf21.hostedemail.com: domain of glaubitz@zedat.fu-berlin.de designates 130.133.4.66 as permitted sender) smtp.mailfrom=glaubitz@zedat.fu-berlin.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755023848; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A5E708E0151
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 14:39:44 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 54023135A93
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 18:39:44 +0000 (UTC)
+X-FDA: 83768969088.14.1E01DA2
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 116D74000E
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 18:39:41 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755023982; a=rsa-sha256;
 	cv=none;
-	b=pRBrHL0IqAZza8P7HBZj+386VdJJWJt6erWE/yl+Lz4iSy0WT3yU4F8vqZJQr35RHJpPlt
-	4UfvXCDK1u0XEl6kIfO7P2mEBD3rPCDiI7nv3HfyoMlnGhI2JDX3DhZgOh7lsqWmkqCc7g
-	/OROL/9dCB2opPUa6pS9XSP2Fcoezks=
+	b=13Lot4Me7hUB3JhJQ05KLH/EF3UT/y58GiY0zJOlD8EFWB8nmW1OkLntCSxlXzpgBAnNsL
+	tfP8oV8MX0kK978kDG9yKk0XV8FjD6j6bNSjLyO9dA4rymJf2BFR2hE4ta5Av6t4clnWsV
+	SNt5eBJCRCfw/njfdJvzWZJ/sXjeMjc=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=fu-berlin.de header.s=fub01 header.b=YWfd335d;
-	dmarc=pass (policy=none) header.from=fu-berlin.de;
-	spf=pass (imf21.hostedemail.com: domain of glaubitz@zedat.fu-berlin.de designates 130.133.4.66 as permitted sender) smtp.mailfrom=glaubitz@zedat.fu-berlin.de
+	imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755023848;
+	s=arc-20220608; t=1755023982;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tCXf5eAPOEB1mU7Sfj6ozuynE635YDXwwF3ucaUJytk=;
-	b=oJt/tCtY5gdM4JF2tNkk007T8lDMIEljLZ0Y9EiJC/luQCN8g4gyteu3V1HUe0deES/N41
-	/qavij/SXJTt4k4vzRo1fxxrx+ysR/DIQR8OGmtIps/P0bPVJlyGoA0hj3Lwl1iZlV2N3L
-	WPB8vF1kFchZV5Jxprb79Qu9trvI0DY=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
-	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=tCXf5eAPOEB1mU7Sfj6ozuynE635YDXwwF3ucaUJytk=; t=1755023848;
-	x=1755628648; b=YWfd335dUoLUY9pwnVKfHEJDLHz76iDOEVEOM5Dmd8fmauyigWh5FlAFEqxiy
-	RI+nGIkZoF5wGfpkov686zReVB+NBRTCzhQBoxaanQ5asg8R7g8DFJuX5ShLMkp6ornjb479aiwAi
-	4OC4X+qrCR32PZrKcf2Spo5QxbL/92WpFO+aJEhw2fu8Zbb5uIkCZzXrOyfudua7plSPJJ2GPVYRw
-	Ic1Tn4MedWWhWa0YYVOGeeuFQ7jvHic3d/G5Ug0k5t/kBA+FSeCVnbZb0vrIrWNAE/BhXu4ZzHByf
-	Cz9jJvIqddEY1Cgp1S1kNk6V9d9Qd6MUKSypHn0BaQG+03Uneg==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.98)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1ults4-00000001ygC-2Asi; Tue, 12 Aug 2025 20:37:16 +0200
-Received: from p57bd96d0.dip0.t-ipconnect.de ([87.189.150.208] helo=[192.168.178.61])
-          by inpost2.zedat.fu-berlin.de (Exim 4.98)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1ults4-00000003t27-0yiV; Tue, 12 Aug 2025 20:37:16 +0200
-Message-ID: <49b112b80b211ae05b5f3c36a55f67041783f51e.camel@physik.fu-berlin.de>
-Subject: Re: [PATCH v5 18/23] bpf: Use vmalloc special flag
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "peterz@infradead.org"
-	 <peterz@infradead.org>, "mingo@redhat.com" <mingo@redhat.com>, 
- "luto@kernel.org"
-	 <luto@kernel.org>, "bp@alien8.de" <bp@alien8.de>
-Cc: "sam@gentoo.org" <sam@gentoo.org>, "andreas@gaisler.com"	
- <andreas@gaisler.com>, "nadav.amit@gmail.com" <nadav.amit@gmail.com>, 
- "dave.hansen@linux.intel.com"	 <dave.hansen@linux.intel.com>,
- "anthony.yznaga@oracle.com"	 <anthony.yznaga@oracle.com>,
- "akpm@linux-foundation.org"	 <akpm@linux-foundation.org>,
- "linux-kernel@vger.kernel.org"	 <linux-kernel@vger.kernel.org>,
- "will.deacon@arm.com" <will.deacon@arm.com>,  "linux_dti@icloud.com"	
- <linux_dti@icloud.com>, "deneen.t.dock@intel.com"
- <deneen.t.dock@intel.com>,  "linux-mm@kvack.org"	 <linux-mm@kvack.org>,
- "tglx@linutronix.de" <tglx@linutronix.de>, 
- "linux-security-module@vger.kernel.org"	
- <linux-security-module@vger.kernel.org>, "sparclinux@vger.kernel.org"	
- <sparclinux@vger.kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, 
- "linux-integrity@vger.kernel.org"	 <linux-integrity@vger.kernel.org>,
- "daniel@iogearbox.net" <daniel@iogearbox.net>, 
- "kernel-hardening@lists.openwall.com"	
- <kernel-hardening@lists.openwall.com>, "ast@kernel.org" <ast@kernel.org>, 
- "x86@kernel.org"	 <x86@kernel.org>, "kristen@linux.intel.com"
- <kristen@linux.intel.com>
-Date: Tue, 12 Aug 2025 20:37:15 +0200
-In-Reply-To: <1738e24239cc0c001245fdd4bd3811175c573ce2.camel@intel.com>
-References: <20190426001143.4983-1-namit@vmware.com>
-		 <20190426001143.4983-19-namit@vmware.com>
-		 <14437e403ed8fceacafe0a89521d3b731211156e.camel@physik.fu-berlin.de>
-	 <1738e24239cc0c001245fdd4bd3811175c573ce2.camel@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 
+	 in-reply-to:in-reply-to:references:references;
+	bh=CtG2kVxK8k1NQdvyEki9JRqyDdfWlHhua5AM1GdDq2k=;
+	b=c4Uak+RGpjl2HAJgTezrCN1qY997xk3YqduoeYZ7QHHcphb3c7fNNh7WLEB9ig5B6CuWEB
+	MLtTqi7oH9VwHZYnYnAM4gwLmFskDUhx4dje2K6kaVIdL3rPX3d/SlwWKNm2DmePTjia2T
+	kvJwVWsYfvsGmv1eBCVtdqFr6jQvXwk=
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4c1gK71N21z9sSN;
+	Tue, 12 Aug 2025 20:39:39 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id W34agYFEkjYq; Tue, 12 Aug 2025 20:39:39 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4c1gK707Z2z9sSL;
+	Tue, 12 Aug 2025 20:39:39 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id D45368B764;
+	Tue, 12 Aug 2025 20:39:38 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id KCsZS5tQGZ3E; Tue, 12 Aug 2025 20:39:38 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 03CD88B763;
+	Tue, 12 Aug 2025 20:39:36 +0200 (CEST)
+Message-ID: <1cc6f739-3891-4cc7-84ac-676fef62c445@csgroup.eu>
+Date: Tue, 12 Aug 2025 20:39:36 +0200
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.150.208
-X-ZEDAT-Hint: PO
-X-Stat-Signature: adwwnan1biwxm4zbnehn7anmpb5i3ehd
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 06/11] powerpc/ptdump: rename "struct pgtable_level" to
+ "struct ptdump_pglevel"
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ David Hildenbrand <david@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ xen-devel@lists.xenproject.org, linux-fsdevel@vger.kernel.org,
+ nvdimm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Juergen Gross <jgross@suse.com>, Stefano Stabellini
+ <sstabellini@kernel.org>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+ Dan Williams <dan.j.williams@intel.com>, Matthew Wilcox
+ <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ Hugh Dickins <hughd@google.com>, Oscar Salvador <osalvador@suse.de>,
+ Lance Yang <lance.yang@linux.dev>
+References: <20250811112631.759341-1-david@redhat.com>
+ <20250811112631.759341-7-david@redhat.com>
+ <dac9e243-33ce-4203-a598-2877cf908cad@lucifer.local>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <dac9e243-33ce-4203-a598-2877cf908cad@lucifer.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 116D74000E
+X-Stat-Signature: qp1bj74bfpukzkt9jhftt9depwbkxw7a
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 968311C0011
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1755023848-615162
-X-HE-Meta: U2FsdGVkX182mkcdCGMc1hq58bgUvvYVvkcvKuzt0q4MKGbdeNKJ1bNlJwNxQG8zoZ+kgRYqClk0UdSzLQBrhZO1N+pF7Zbr3NGh+YrKryB9ne3/s4stRrnfMV/owSauqcg9x+L6w3ouNDHlXey089qCqVw2DD87PR7ijY7/g8B/uHgDswhDI4c4Vrb1Hsb01ZIG8K09nNn2F3Q1Af2Qmp6HLw79DoOMLQNZmiBirk9aP4xSfDFLSZjIImRuCQA/HDtkZ4E3Jy6lLdJCD9H7Wu+F1bqllB6FD6URhT5rKT12oNKFXxOguiab9lKbgt5ufBzMdXGy32oHRYyXWrg0fcUcYW0AdaMkqrFPwjEX2bnuWa2MyymyKTJ2434kYp6CQMrwQXxpuAjQ81/2mIQX09P0z4A/8U+LuVp/6Rr8aykxiERGQVA1J2Umg7jPvDjpnCWmyemkyKGm9/I+tiH41i4/F/XItNXgvWdPty6Scg8dC9a5p2hl3U9kvdfOsJoOmndqXR0Pzbad4XwgcteAvkkd6XVOXewCECI+4OjVb0qrEFzQ7tupq+Dnoq3czJ4tFsayuAFdKWaXIYX43dEL1KcRFyq0VMZh/zgdb1jKaImbNTes4J++atLU1b3HF1pP1d/4VgbRqYBoi87JO3iyA9RmkHdh0OoJu1zCO+iq71+xrXtM8IAdaHiH29d+JYpykros+SnhoY7MqPFYYrustG7qFJbeJLQbBbOBlufQi4D1Kb7yRHRgxGbW4UIIedLUSydbmt9YcJHVwoWxbWjqN2/9VbCexHOiewoR/W5gN2ar7+IaawDu8/mxRX8BD+FgR2cE99LW83c97kl1+0GkS1NBBi8L2elnAR4tMELpr4MNJw3r0cne0m2eLNmKOXeEMkQZGepkHl/h7SpnYTNfd+G083D7/viOKrfYJ5il7jA11FiT5nKl0qw8nPra2PEg0I0zicHTKF/E1Qra0zG
- ehYcEgH8
- qenyOoR/kgAXzMGAzx5VHAsgHV9TiA5bCDMtfTXzwDHO4aaTdK+RodYqxbNj5gyd2hObEJyt4DWhFO/+C4HskmkNPjhCXdmkFjA8HJ7XIySepfCXZlnf/XNs7YBfxHxJocqni624YBbok8V8kMGVn9VN4cq/opGbxI3QJnTWlYOGMaVm68ypYuc9OuHBUt45nZGXauAvFWdGHOHzzNJFAUBJzoLtTfh4ih0H5wQxgxhUQ2FdlIXc3F+nXcnN7Jt6K+4eOR8cx/MBGiLMugeVcObb4m3w9anhN61Gi
+X-HE-Tag: 1755023981-236377
+X-HE-Meta: U2FsdGVkX1/7CqJItE7lR2fFGZmb4iX1cDHMKBsjRPucPPfWszeGuofiXRSowmiiIS8gcQWcy11SlOoE6wY1OBS5Veq5/ZTq1+bCUskhrEZ84tbLWl2TjJ4I+2gnmjEx55Yx9rIbv6pjrMzY8/xnwfEXxp08j5JzZJzHPmDVOhe1dhgZW4nQXViisiMpNa2vy8ds/+RF8EV4Eep3uXORdPpJo6DE+yEN8W8IsIeuAdF+NkSlCf0zNEKy9d8KQtFw2cT3azIXn3jcMJnn+mwCX2OH9dq9nVehw7zt1zBGjMGDVRIEmHWLUt3sB7DF1N1oQBWJTa4IKhg04PRlvz8yYHdSDs9TltLF6HjM2a2myxrJu6eb7ZVtGfDXNm0hTXA+DYq1h5X9VfhMTxXY3+9HIHpm+eBdM7edn1gyP7inim4CgZluyYlZ8Yo6t4BUSCuNodV+bA16PNwHSk2LR9YA7Dis4SvNJx1Jh4rax4MtiVLIAONFA7VcTl0Es4r1CF7zuMkLP5RyFfpuldc8tarNJidD9uUi3brtfX0SgE8efYLSwpCYjNZvbRxJvbYWbSR9wrzZy14FHJ89Z3GZy1bOdhWCHGVuA2pN0xccZKAuPvNmLn6XzjPKCtcCygyaOhn2rhg8+bfFmIk7BGZog8IUkDOTX5Veq6zUkPccJX/Ej/YK+/2Xy1V24vnJ4Ax5hI0GCbeGghbQG8oh5BdXBZ96dfh7jj6QCgDZFTwTBoDNainPpgrNDW4XEIW5wvvF3PT1uedP5LHdI26LZILLCD2MUYoyZrmXKt9yVju10zCCvDaow54CLTFyiPCxR8NNELh3LbIbxG37yqa/ls76tvE+LdLCHBJ97lj+69JihF9XHmeS2yA/zG6VAwclj8neu7dIRjF5jD5I5NMzjkSxUJz3YMEY9AWDeRMcenLlt7c1dL0X9kl65M1KBzvMgJWUf1q8PrtiI78rvMBhJAvhTPb
+ koQwr4xR
+ /DTWMz94QFBWhjAJ+vPpjspt9YiUAlRKuPQGWHiPc/i9ZgHA2j1kH0WjUWZn8VTVU+QfbX+VZPBaWZUVGsetyMroIaPTDXM4MF33DR1169mHZBzzZ8UhjWGqhcAywUltu3DDX6qH4/vgQvsZNpO15JH720wt/d1Io0Xyp7BVrxH1nN2foVwGPrbZ+K5UGjznmmqo6M2xCRElkw2JpWcgTZs1Wu+m9arHJVRW8dFaSvqWPE9ys5kcwBKLah1QzIlQGXuzUIrXW9HVA+v7385MhKlaLHg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,96 +121,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+Hi Lorenzo,
 
-On Tue, 2025-08-12 at 18:03 +0000, Edgecombe, Rick P wrote:
-> On Tue, 2025-08-12 at 18:43 +0200, John Paul Adrian Glaubitz wrote:
-> > I suspect that the main issue is to be found in the following patch whi=
-ch introduced VM_FLUSH_RESET_PERMS
-> > which may not work as expected on sun4u SPARC systems:
->=20
-> I think the problem we found with VM_FLUSH_RESET_PERMS was that the sparc=
-64
-> kernel TLB flush implementation was broken. Since VM_FLUSH_RESET_PERMS ca=
-used
-> kernel TLB flushes to happen sooner, it just showed up sooner. [0]=20
->=20
-> This other issue seems to be about userspace memory. So I wonder if these=
- are
-> two separate issues? Bisecting to the original VM_FLUSH_RESET_PERMS would=
- have
-> had the known sparc kernel range TLB flush issue. So to bisect the other =
-issue
-> you might need to apply this [1].
+Le 12/08/2025 à 20:23, Lorenzo Stoakes a écrit :
+> On Mon, Aug 11, 2025 at 01:26:26PM +0200, David Hildenbrand wrote:
+>> We want to make use of "pgtable_level" for an enum in core-mm. Other
+>> architectures seem to call "struct pgtable_level" either:
+>> * "struct pg_level" when not exposed in a header (riscv, arm)
+>> * "struct ptdump_pg_level" when expose in a header (arm64)
+>>
+>> So let's follow what arm64 does.
+>>
+>> Signed-off-by: David Hildenbrand <david@redhat.com>
+> 
+> This LGTM, but I'm super confused what these are for, they don't seem to be
+> used anywhere? Maybe I'm missing some macro madness, but it seems like dead
+> code anyway?
 
-That could be true. I knew about the patch in [1] but I didn't think of app=
-lying it.
+pg_level[] are used several times in arch/powerpc/mm/ptdump/ptdump.c, 
+for instance here:
 
-FWIW, the crashes we're seeing on recent kernel versions look like this:
+static void note_page_update_state(struct pg_state *st, unsigned long 
+addr, int level, u64 val)
+{
+	u64 flag = level >= 0 ? val & pg_level[level].mask : 0;
+	u64 pa = val & PTE_RPN_MASK;
 
-[   40.992851]               \|/ ____ \|/
-[   40.992851]               "@'/ .. \`@"
-[   40.992851]               /_| \__/ |_\
-[   40.992851]                  \__U_/
-[   41.186220] (udev-worker)(88): Kernel illegal instruction [#1]
-[   41.262910] CPU: 0 UID: 0 PID: 88 Comm: (udev-worker) Tainted: G        =
-W          6.12.0+ #25
-[   41.376151] Tainted: [W]=3DWARN
-[   41.415025] TSTATE: 0000004411001607 TPC: 00000000101c21c0 TNPC: 0000000=
-0101c21c4 Y: 00000000    Tainted: G        W        =20
-[   41.563717] TPC: <ehci_init_driver+0x0/0x160 [ehci_hcd]>
-[   41.633584] g0: 00000000012005b8 g1: 00000000100a1800 g2: 00000000102060=
-00 g3: 00000000101de000
-[   41.747962] g4: fff000000a5af380 g5: 0000000000000000 g6: fff000000aac80=
-00 g7: 0000000000000e7b
-[   41.862338] o0: 0000000010060118 o1: 000000001020a000 o2: fff000000aa30c=
-e0 o3: 0000000000000e7a
-[   41.976728] o4: 00000000ff000000 o5: 00ff000000000000 sp: fff000000aacb0=
-91 ret_pc: 00000000101de028
-[   42.095768] RPC: <ehci_pci_init+0x28/0x2000 [ehci_pci]>
-[   42.164394] l0: 0000000000000000 l1: 0000000100043fff l2: ffffffffff8000=
-00 l3: 0000000000800000
-[   42.278768] l4: fff00000001c8008 l5: 0000000000000000 l6: 00000000013358=
-e0 l7: 0000000001002800
-[   42.393143] i0: ffffffffffffffed i1: 00000000004db8d8 i2: 00000000000000=
-00 i3: fff000000aa304e0
-[   42.507517] i4: 0000000001127250 i5: 0000000010060000 i6: fff000000aacb1=
-41 i7: 0000000000427d90
-[   42.621893] I7: <do_one_initcall+0x30/0x200>
-[   42.677931] Call Trace:
-[   42.709953] [<0000000000427d90>] do_one_initcall+0x30/0x200
-[   42.783158] [<00000000004db908>] do_init_module+0x48/0x240
-[   42.855214] [<00000000004dd82c>] load_module+0x19cc/0x1f20
-[   42.927270] [<00000000004ddf8c>] init_module_from_file+0x6c/0xa0
-[   43.006189] [<00000000004de1e4>] sys_finit_module+0x1c4/0x2c0
-[   43.081677] [<0000000000406174>] linux_sparc_syscall+0x34/0x44
-[   43.158307] Disabling lock debugging due to kernel taint
-[   43.228077] Caller[0000000000427d90]: do_one_initcall+0x30/0x200
-[   43.306995] Caller[00000000004db908]: do_init_module+0x48/0x240
-[   43.384772] Caller[00000000004dd82c]: load_module+0x19cc/0x1f20
-[   43.462544] Caller[00000000004ddf8c]: init_module_from_file+0x6c/0xa0
-[   43.547184] Caller[00000000004de1e4]: sys_finit_module+0x1c4/0x2c0
-[   43.628389] Caller[0000000000406174]: linux_sparc_syscall+0x34/0x44
-[   43.710741] Caller[fff000010480e2fc]: 0xfff000010480e2fc
-[   43.780508] Instruction DUMP:
-[   43.780511]  00000000=20
-[   43.819394]  00000000=20
-[   43.850273]  00000000=20
-[   43.881153] <00000000>
-[   43.912036]  00000000=20
-[   43.942917]  00000000=20
-[   43.973797]  00000000=20
-[   44.004678]  00000000=20
-[   44.035561]  00000000=20
-[   44.066443]
+	st->level = level;
+	st->current_flags = flag;
+	st->start_address = addr;
+	st->start_pa = pa;
 
-Do you have any suggestion what to bisect?
+	while (addr >= st->marker[1].start_address) {
+		st->marker++;
+		pt_dump_seq_printf(st->seq, "---[ %s ]---\n", st->marker->name);
+	}
+}
 
-Adrian
+> 
+> Anyway:
+> 
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> 
+>> ---
+>>   arch/powerpc/mm/ptdump/8xx.c      | 2 +-
+>>   arch/powerpc/mm/ptdump/book3s64.c | 2 +-
+>>   arch/powerpc/mm/ptdump/ptdump.h   | 4 ++--
+>>   arch/powerpc/mm/ptdump/shared.c   | 2 +-
+>>   4 files changed, 5 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/arch/powerpc/mm/ptdump/8xx.c b/arch/powerpc/mm/ptdump/8xx.c
+>> index b5c79b11ea3c2..4ca9cf7a90c9e 100644
+>> --- a/arch/powerpc/mm/ptdump/8xx.c
+>> +++ b/arch/powerpc/mm/ptdump/8xx.c
+>> @@ -69,7 +69,7 @@ static const struct flag_info flag_array[] = {
+>>   	}
+>>   };
+>>
+>> -struct pgtable_level pg_level[5] = {
+>> +struct ptdump_pg_level pg_level[5] = {
+>>   	{ /* pgd */
+>>   		.flag	= flag_array,
+>>   		.num	= ARRAY_SIZE(flag_array),
+>> diff --git a/arch/powerpc/mm/ptdump/book3s64.c b/arch/powerpc/mm/ptdump/book3s64.c
+>> index 5ad92d9dc5d10..6b2da9241d4c4 100644
+>> --- a/arch/powerpc/mm/ptdump/book3s64.c
+>> +++ b/arch/powerpc/mm/ptdump/book3s64.c
+>> @@ -102,7 +102,7 @@ static const struct flag_info flag_array[] = {
+>>   	}
+>>   };
+>>
+>> -struct pgtable_level pg_level[5] = {
+>> +struct ptdump_pg_level pg_level[5] = {
+>>   	{ /* pgd */
+>>   		.flag	= flag_array,
+>>   		.num	= ARRAY_SIZE(flag_array),
+>> diff --git a/arch/powerpc/mm/ptdump/ptdump.h b/arch/powerpc/mm/ptdump/ptdump.h
+>> index 154efae96ae09..4232aa4b57eae 100644
+>> --- a/arch/powerpc/mm/ptdump/ptdump.h
+>> +++ b/arch/powerpc/mm/ptdump/ptdump.h
+>> @@ -11,12 +11,12 @@ struct flag_info {
+>>   	int		shift;
+>>   };
+>>
+>> -struct pgtable_level {
+>> +struct ptdump_pg_level {
+>>   	const struct flag_info *flag;
+>>   	size_t num;
+>>   	u64 mask;
+>>   };
+>>
+>> -extern struct pgtable_level pg_level[5];
+>> +extern struct ptdump_pg_level pg_level[5];
+>>
+>>   void pt_dump_size(struct seq_file *m, unsigned long delta);
+>> diff --git a/arch/powerpc/mm/ptdump/shared.c b/arch/powerpc/mm/ptdump/shared.c
+>> index 39c30c62b7ea7..58998960eb9a4 100644
+>> --- a/arch/powerpc/mm/ptdump/shared.c
+>> +++ b/arch/powerpc/mm/ptdump/shared.c
+>> @@ -67,7 +67,7 @@ static const struct flag_info flag_array[] = {
+>>   	}
+>>   };
+>>
+>> -struct pgtable_level pg_level[5] = {
+>> +struct ptdump_pg_level pg_level[5] = {
+>>   	{ /* pgd */
+>>   		.flag	= flag_array,
+>>   		.num	= ARRAY_SIZE(flag_array),
+>> --
+>> 2.50.1
+>>
 
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
