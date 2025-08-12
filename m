@@ -2,88 +2,101 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 97486CA0EC4
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 04:40:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 22D4FC87FCB
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 04:47:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBC208E00C1; Tue, 12 Aug 2025 00:40:58 -0400 (EDT)
+	id B980A8E00C2; Tue, 12 Aug 2025 00:47:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6D418E00BE; Tue, 12 Aug 2025 00:40:58 -0400 (EDT)
+	id B6FC18E00BE; Tue, 12 Aug 2025 00:47:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D830E8E00C1; Tue, 12 Aug 2025 00:40:58 -0400 (EDT)
+	id AADEC8E00C2; Tue, 12 Aug 2025 00:47:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C7A118E00BE
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 00:40:58 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1225113469B
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 04:40:58 +0000 (UTC)
-X-FDA: 83766855396.13.2FE72DC
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 87044140005
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 04:40:56 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=VP10vn1P;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CA5B8E00BE
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 00:47:58 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4C7FC1401AF
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 04:47:58 +0000 (UTC)
+X-FDA: 83766873036.27.0BD7695
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 4A9A5140007
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 04:47:56 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WAjUgLl7;
+	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754973656;
+	s=arc-20220608; t=1754974076;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xuWqXu1j5ERMTUbZlDSMGgpz+9UO3OVHMD/JTziTBFA=;
-	b=SJT918G9iptvV6lIcxPSjqlBItYhOrhtL1Hn94iRDvdAX13Bh4huEp5w0nlsevgfads+UP
-	SsXWQ47ENcq1NDo5XuqCsf6/WxFa+M05oBcVlNYW996o0n01hjJSx8o12NgBIDRdjUoVWN
-	c2hXU/9U3re7/SfMODjDhxE1KWJT1Uw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754973656; a=rsa-sha256;
-	cv=none;
-	b=cjOVWC5oZ3o7fB0qHVM4SdSaIrLNXadAWqfnk2cILTj4ydU9Qh/rN7DTeUPf/Gz9Uchv8u
-	UEfBdriBxeFVCt7dQQQLEdqPWFy0IbAZfr71hIWiLpKKFyY6+SogQ0m/vJSRolWYaaC9Si
-	JF/3DqCDR8CcaDGV7Gcmap/YSCC4vtY=
+	bh=SB5XV2LLtmQC6ufwp1mnBrTeEc9IkYMUbPyADdPmVGg=;
+	b=f+Qz6Vs8/WM9QZ5Ax2nNP+e76S2AnNEfJJT2Qlxh8L1XYSoSYAN2MqQQQygrBq4SD3OJa1
+	Bn+pYXpzcYPcLHjfQHk+R+Oqn5cf1wT3Qch21YRduIwBpzLu9HE1gGw8oZogb1kyN+XYTS
+	dgRh8jJuc7zvRZf+7Bqqv3dQKQ51/6M=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=VP10vn1P;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WAjUgLl7;
+	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754974076; a=rsa-sha256;
+	cv=none;
+	b=6anyW51IVFjblZWHNqGLWHDdGdzWqm4w5P+3zBoQCZVAwjXGpCgadOW8lcgMy0DfVWhj2m
+	ehHEvWyZhFp/8NglPxxEcF2swR9XZEbme3iN84HnkgkakFu4VO2YObizxZCPXORTR4mzJs
+	x+Z75w2EktXg/oXDtvJj2IMfbspQxd4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 335D65C614F;
-	Tue, 12 Aug 2025 04:40:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80C63C4CEF0;
-	Tue, 12 Aug 2025 04:40:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1754973654;
-	bh=SgaMmRStB2UhLZxqv6pMOrDE29SweSzVbjPPDpPgtmU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=VP10vn1P+011ti+EqhXQwSG+r/eDBHvTGGQb2lyZrJ45ld3lf3nd4OKR/XGiAXZ/6
-	 IlokcWfYSlDDqH4BC3sxL9fzWy7b50tGSGfjf3oN1aMOiD809wR5h3wDZXIeOWb70a
-	 GDomZFuifwsQdEbCxMskLCTV5OpzCEEmO424GgdY=
-Date: Mon, 11 Aug 2025 21:40:53 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: David Hildenbrand <david@redhat.com>
-Cc: Qingshuang Fu <fffsqian@163.com>, hannes@cmpxchg.org, mhocko@kernel.org,
- zhengqi.arch@bytedance.com, lorenzo.stoakes@oracle.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Qingshuang Fu <fuqingshuang@kylinos.cn>,
- Yuanchu Xie <yuanchu@google.com>, Axel Rasmussen <axelrasmussen@google.com>
-Subject: Re: [PATCH] Fix the data type inconsistency issue of min (tier,
- MAX_CR_TIERS-1) in read_ctrl_pos
-Message-Id: <20250811214053.857168fd35e70e73dee1583d@linux-foundation.org>
-In-Reply-To: <91d72c49-22df-43ed-aeeb-0b93a9da3bfa@redhat.com>
-References: <20250808072106.153449-1-fffsqian@163.com>
-	<91d72c49-22df-43ed-aeeb-0b93a9da3bfa@redhat.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 87044140005
+	by sea.source.kernel.org (Postfix) with ESMTP id C47F744430
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 04:47:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AEBEC4CEFA
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 04:47:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754974074;
+	bh=e71VLinW5AHv7lSC1tatFxzPb+7mAbNIGLPHcCoOSRs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=WAjUgLl77l6UVu9qna6Od4sYchXOqUtAYBcuYWQwiwbXKo3DhfUpRb92kQEqiYcuD
+	 YY4OrO6ZeBliqXBZEJG6+RHiSnfpjCMZud9nBxDPXHQZcImNV2N/DldksKt7t8FJIK
+	 kUIOsg58WWqAT1ZowGbQGO6iMqgAmf46gCkrOQ67nt15zFqOMQfQCmWGR+Jcqi3kRm
+	 NbP+x8Bj9/oDFLn5z1x3taOLny6FcDNPGSwsv7BsB10lF+h0Hn2eae1NvwoCQn+NHA
+	 o4D4LKEndN1trhAfpvnO0u/wheFfc0t8c8/DoRajMXyCgVnmqy0zcXd7MTSzk3rLJi
+	 DlJOV0PqjR7fg==
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-459fc675d11so26865e9.1
+        for <linux-mm@kvack.org>; Mon, 11 Aug 2025 21:47:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWiArpsqiL2xi3xEe/N+/xTDOv+nAPr4svZ2E3ehVYsnSUBcslDK4SJ+eIUUC9UJWOds69oJK8f9g==@kvack.org
+X-Gm-Message-State: AOJu0Yytf0PJdykLa49kjreR7PMRY6iuvWczaxykl9un3O23puDl6lO+
+	dzyDydhAJ6dtbZ6EWroBGUaUhyv5iTBD66GYhgm8T4sqa+Q48mSLh+DU+AbXR0O5j07vvNcfRr+
+	oFIz/4L7pwgTFjdiI5GIMElEba5SSdlnTIOKMqx7Q
+X-Google-Smtp-Source: AGHT+IEAg5lSfpnioeUcNmQFoqWcyMdIUA/hvVXeGeh9JlSvvvtwinlKM5J0m7oJtm0oDSjJvQjzzxVT0Ys7wchxjIQ=
+X-Received: by 2002:a05:600d:c:b0:453:672b:5b64 with SMTP id
+ 5b1f17b1804b1-45a11111c89mr975835e9.2.1754974072980; Mon, 11 Aug 2025
+ 21:47:52 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250808-swap-scan-list-v2-1-d50e4758ecee@kernel.org>
+ <CAMgjq7DnniGUdpQQA0YF+LuMuL9+FCLQJP2Q04G_Hsd1sztv9A@mail.gmail.com> <20250811212423.5667183e69c373c1daf95ecc@linux-foundation.org>
+In-Reply-To: <20250811212423.5667183e69c373c1daf95ecc@linux-foundation.org>
+From: Chris Li <chrisl@kernel.org>
+Date: Mon, 11 Aug 2025 21:47:41 -0700
+X-Gmail-Original-Message-ID: <CAF8kJuP=WfkPSSNs-7RS=1D+3LkKrMU=84o9mhOb6wTPSRNUqQ@mail.gmail.com>
+X-Gm-Features: Ac12FXz-iPlIRTVDzJuGwI4wMh3CWqgXJdkWTIuII9-oAMu2X-IrrPPRX7qtJD4
+Message-ID: <CAF8kJuP=WfkPSSNs-7RS=1D+3LkKrMU=84o9mhOb6wTPSRNUqQ@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/swapfile.c: introduce function alloc_swap_scan_list()
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Kairui Song <ryncsn@gmail.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	"Huang, Ying" <ying.huang@linux.alibaba.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: oxsbxsoqc1hprwfcojxxxja79b67zzd8
-X-HE-Tag: 1754973656-276598
-X-HE-Meta: U2FsdGVkX19XClbWOC1kK6lBmuU1qM0sI3DwQGhF6eu1RNu19QK/LbbLprom5wD5IkvuffVLIqr6P5hruu+WyZMmK3DIuSO0OvwX/b9w1CJvvIGLUwJ/N0IwXAsQW4ArN/O1WcY+aY1HjoxHW+3U8c0u0w6/MxhdYLSsnEXgCVt3H7lNH9rxQOZWnYTNQjJCWDUUwiZgzWzIvf0FlTgm42ctDxnyzwvbOkUsqKZ8j6dgQOFSX+jUW6YFCWyJxzF20hdtoPUY39Ef0tF3mXJgtAxfqTLGk+Gjln4GIYkV1y61axKpqWXUI4z1RsBE4j71EOE956+vmYXT/DSUTSkkN7SCesLsQHiHsz19QGmGQPplofE2MVACtwygKoMMdby8qwpo5p3bgRS1NSiDyYGzKXRzOW0aRPmgDGVEy2JKerQRXNZKkEc9cJRza2YEwnoQA+/0F+DpGvLUndDZlDshisDH99Xj/7SLWv+QadJFAiJn3k/EOTJl2hEvNiRj7/kQv1gvS4j6aP9eeum8xmrCjheP49uApWZCnFzBsrUVKHOqoru1tcjkE51fGMMXZfVMrAm1IXaQWqQs93PGNB/lR7Eey5PWbFYLFWXTHT2r4GSivpkXtkTEoeaVA4uQ9K0ABBYWwgZ3VZg5cDoT9BwDFhPksR+hIY3zwK1qvDpu3ndzEwRi6rHNr9r417Mpv89Sri96Xur6Y1M7BwWkVAZIzzuzowXwrvBpI50gmEqYW5U6WuPAhbIvu8fPj2wvag3vpGlGMdp2f1j8sokBT6ouXmbIPP8UvPxBDzUWNNqj5uqxwNdMo+YPxOWP0Iwvhsx4HDWrniwnLa7AClBDi3tx1uVz2FY1qcUTdUmQi7w5WW9DH6CCzjq0Cpwlpt/BffCE6RWGtv9vRip0qPMUvwK1Y3toNIc1bxV6fgLTdRitImWaRCMZZv4zr3CKtjMJrkIyw3O9I3N14RkRN0C0ZDD
- 4t9wIqT5
- gC8+F
+X-Rspamd-Queue-Id: 4A9A5140007
+X-Rspamd-Server: rspam06
+X-Stat-Signature: ea6r7umbis91z53knscdqas8fqdwtssh
+X-HE-Tag: 1754974076-95585
+X-HE-Meta: U2FsdGVkX1/3/VUPVwGBYpcCiuDz/69LqzdYaUzcNiTq22uhNs1xxbZHxFYx5cnLPmHyka3VEE1nD4/lGSn6OrG50hAalafweBfmR+p9ccQpHk7dnMmhz4ZdwmEX9YtBW+/n1BcOLMrGJcCiIfeEWdhD5fWEuVTRDAXnExjiBJUbxQrdO9CzT055NYQOWEltNkdRXNqKDJ7f3VLiN97OMgvEplfbQiGegMINvnB8xU9aZtPGKZxhKzqJ5Pi/SvYTq0GNnf5RZbU4yBFdE7myBF5ecz0Mba7fMlUMp+PpfhHdMZrsy6pL/xIp/nJGW2yVi1OFhBzOAZ2y9HMoQ5CLgV79u6+veGp3EbCNMzD9/CW2e2bk1Z+Pv6R4WEg6KDUqX/rY6K9lBh2mUncfrJkcMiLfR0P8XP4YBydO1TqOPyiswg8wpE6UNV29+i+KAior0VBL0n24DUpyk1Apt4UJXxBmTrqEZ7uPQIYYHsD0h99pqEUjRHTLxJWfVSXOZh+VNKMynX6AEpLg93O74oacL/k19gOPs9jLxd582CkIb4LGL7vGFT0iAYlJBQPTAqhwIJcURpxMNVYy3IPej6f9Bks/ER+qMnrfeBDbndm/eoW8wuv+cIK+0S1anA/QMmRyV1a1f6tl4dF2HkbV4M3/wVuN5ogOrhJU+uwUtnIjs/Iek4UOCiD3yn5zfia+BsFnpvxvbtvm4SNJCc/qMLbE0FLRAF+hqGPyK4Dn8GIFy3yFiRjc66SBN9cTXpqs7Nj7i4h8/+dEZVxCYs/4/KJ8mgiIu6JrRWiqtsQXwYeiGeH8j9Rx5G+WPQTPfo4N9VQ40ChByub8/k13pBDc6X9zksYtUTUGS3RKFlYsbQD3wzyi8YoUEo0PElNZkNvcNi+dRtNe4LxG2FSzT+w/pU7amVpxSYFIy7C0aUJY+6KDNv81uNhc5DIQSgeN/V4DDc9BSqTuw8cI+u5WpO81Ixu
+ cM/Tfbay
+ pkrmfpZh3jl1vvVhZ/4FbuPMXEtB5+VDYsaYtOtu1FqSa9+/n8eFnw0P6TyJeZMA8gDYJ1mj4rI3MeC+qWf6O6lHRVIG3sNPi+3oKA1fGlF6oSdHlASYt5yFmIne8z/beksm/wABraKdsbB8oiMUhWSurNc0EQgZlQ066GeoWCSM5kDWTBUeGH311i+MYZOxl3P/6lCNGlg1zpGA5besMRazlVw7+DguN3zLQlCyz6N0aLTKFNJjQq3uRq2Iag0BCv1um1K7T9J3Dp4MZ91pcEGt257FczU6lcP3ftLmpg4xPT0sbn9i3kG0+LY7rqEEr76S65Squ4dfrxq1JLohXNyRMYoFkCfF1q16XGNGW46t3l3ICSbNCPAF3VHVmc/JgjU4QpvIsG4npLJHZPZVFP5YsUKU/EkPoJaNgOH02LfIf79/chWdMsv/fYcUJ4ehtV4u5G18o0S2MY1M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,38 +105,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 8 Aug 2025 09:35:19 +0200 David Hildenbrand <david@redhat.com> wrote:
+On Mon, Aug 11, 2025 at 9:24=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Sat, 9 Aug 2025 03:51:48 +0800 Kairui Song <ryncsn@gmail.com> wrote:
+>
+> > On Fri, Aug 8, 2025 at 3:48=E2=80=AFPM Chris Li <chrisl@kernel.org> wro=
+te:
+> > >
+> > > This the alloc_swap_scan_list() will scan the whole list or the first
+> > > cluster.
+> >
+> > Hi Chris,
+> >
+> > This sentence reads strange to me, but English is not my native
+> > language so I'm not very sure about it.
 
-> > 
-> > Due to the fact that the tier data type in min (tier, MAX_CR_TIERS -1)
-> > is int,but MAX_CR_TIERS is an unsigned type, directly using
-> > the min function for comparison will result in an error:
-> > from mm/vmscan.c:15:
-> > mm/vmscan.c: In function ‘read_ctrl_pos’:
-> > ./include/linux/build_bug.h:78:41: error: static assertion failed:
-> > "min(tier, 4U - 1) signedness error, fix types or
-> > consider umin() before min_t()"
-> > And MAX_CR_TIERS is a macro definition defined as 4U,
-> > so min_t can be used to convert it to int type before
-> > performing the minimum value operation.
-> > 
-> 
-> Please use empty lines to make the description easier to read. Also, I 
-> think you can simplify this heavily.
-> 
-> We should add
-> 
-> Fixes: 37a260870f2c ("mm/mglru: rework type selection")
+Ack. My bad.
 
-I'm not liking read_ctrl_pos() much.
+>
+> Yes, I rewrote this to
+>
+>
+> : alloc_swap_scan_list() will scan the whole list or the first cluster.
+> :
+> : This reduces the repeat patterns of isolating a cluster then scanning t=
+hat
+> : cluster.  As a result, cluster_alloc_swap_entry() is shorter and
+> : shallower.
+> :
+> : No functional change.
+>
+> Which is hopefully accurate.
+>
+>
+> LLMs do an awesome job of doing this, although one should carefully
+> review the output.  Here's gemini.google.com:
+>
+> : alloc_swap_scan_list() now scans either the entire list or just the
+> : first cluster.  This change eliminates the repetitive pattern of
+> : isolating and then scanning a cluster.  As a result, the function
+> : cluster_alloc_swap_entry() is now shorter and less complex.  There are
+> : no functional changes to the code's behavior.
+>
+Thanks I will do a V3 and use something like that. I spot some other
+minor cleanup required. Might just add it to the clean up series.
 
-Local variable `i' has the rottenest possible name.  In this case it is
-a "tier", so let's call it that.  And its type should be unsigned.
-
-But an incoming arg has that name.  Probably inappropriately.  I'm
-suspecting that something like base_tier or start_tier would be more
-descriptive.  Hard to tell, because read_ctrl_pos() forgot to get
-documented.  And this arg should have unsigned type also.
-
-(cc mglru maintainers, who have yet to reveal themselves in MAINTAINERS)
+Chris
 
