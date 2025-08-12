@@ -2,117 +2,127 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E1CCCA0EC4
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 08:07:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F8FAC87FCB
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 08:12:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E9227900006; Tue, 12 Aug 2025 04:07:39 -0400 (EDT)
+	id D3E038E00F1; Tue, 12 Aug 2025 04:12:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E42CA900003; Tue, 12 Aug 2025 04:07:39 -0400 (EDT)
+	id D15CE8E00E4; Tue, 12 Aug 2025 04:12:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0BF2900006; Tue, 12 Aug 2025 04:07:39 -0400 (EDT)
+	id C2B2E8E00F1; Tue, 12 Aug 2025 04:12:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B7F68900003
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 04:07:39 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 667C08180B
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 08:07:39 +0000 (UTC)
-X-FDA: 83767376238.10.CB7B05F
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 23E2B4000D
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 08:07:35 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	spf=pass (imf17.hostedemail.com: domain of zhangzihuan@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangzihuan@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AFB178E00E4
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 04:12:51 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 62E6016020F
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 08:12:51 +0000 (UTC)
+X-FDA: 83767389342.16.ADA5343
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 608451C0005
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 08:12:49 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=rivosinc.com header.s=google header.b="WLFqyLP/";
+	spf=pass (imf20.hostedemail.com: domain of alexghiti@rivosinc.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=alexghiti@rivosinc.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754986057;
+	s=arc-20220608; t=1754986369;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hk1TpDCUau58C8if57SKpL9uq1N98Qnw4SmcRQ6xc18=;
-	b=eP+WbvW1EUw3dwTB4RF+5Cj0ePTNk29HulOM8SaWKBZSmCYB95ZMsb4KVFBrl64SZjs6zN
-	AmzayOSFUCB9M6Hxxajl0gfqiF2l30Uocsl8AljT6B0hIg/TzwRCCLGGzpoK/HtFFNonxH
-	QYJejKC9HBp9QIP7yeN0UwLsE4x9mS0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754986057; a=rsa-sha256;
-	cv=none;
-	b=0Jc1fnFvr/b8l0PfnSPtPkPt/n/1XmszvK5uFWDLqQGekuEt2czt9LC7gauOsozdt5qh/R
-	NG3cBIFFuTYF9gzPiiJD23koYFQnq3Q0gvL5tthzCIPuviU9+p0dipPRmX/Zr4EeHc1Q9U
-	Y1uG98yXXxXKIjVUE0u7mNDGvFX2bWg=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=yw0gy+knuGeGzY6jivnMfN7pV1rj29Xt61Zw/czzFhY=;
+	b=3QH+ZRLIMDOGP0msEuWIp2/eKzwMlXnbcFDFjzBYy1S2hT4eRuau5/5CMP1lKEaijztzrO
+	SdWxgDZtIbC30OsNI1lIYdMju6fzSco/+rOJ5U4Zo40ObXFd4P5czwrT2Yi5Su5B0ZXhwr
+	UDA2gdntVMlUexOYKMDBG/DnJYhjRB4=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of zhangzihuan@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangzihuan@kylinos.cn
-X-UUID: 64813e56775311f0b29709d653e92f7d-20250812
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:24076325-4bf9-4abf-b7fe-95fc83e76d02,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:4ac8a97a339f6c8d3cea5f3b62b86d7b,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
-	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
-	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 64813e56775311f0b29709d653e92f7d-20250812
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <zhangzihuan@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 1538524574; Tue, 12 Aug 2025 16:07:30 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id E888CE008FA3;
-	Tue, 12 Aug 2025 16:07:27 +0800 (CST)
-X-ns-mid: postfix-689AF63F-547715471
-Received: from [172.25.120.24] (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id D062EE008FA2;
-	Tue, 12 Aug 2025 16:07:11 +0800 (CST)
-Message-ID: <9dca7c98-84e5-4d16-af76-93f2b0470243@kylinos.cn>
-Date: Tue, 12 Aug 2025 16:07:11 +0800
+	imf20.hostedemail.com;
+	dkim=pass header.d=rivosinc.com header.s=google header.b="WLFqyLP/";
+	spf=pass (imf20.hostedemail.com: domain of alexghiti@rivosinc.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=alexghiti@rivosinc.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754986369; a=rsa-sha256;
+	cv=none;
+	b=6JLvtJCrjkI2yQxK/x5bYJDTbvFjp6BAgZ47nr16IpvKT7U3/bl6ppR7dMnq1vZXm3rZFQ
+	R0w3KJBAmCIZ9TnIc/huqQAJnlOcYg0xfQWYGxOBpQXAuiavLR0Y5WyZ6QB/XwsMB7qhoH
+	EfG9vXY+MQvVVNPoYq5KfUpAYAryMMw=
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-76be8e4b59aso4421300b3a.1
+        for <linux-mm@kvack.org>; Tue, 12 Aug 2025 01:12:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc.com; s=google; t=1754986368; x=1755591168; darn=kvack.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yw0gy+knuGeGzY6jivnMfN7pV1rj29Xt61Zw/czzFhY=;
+        b=WLFqyLP/gq6E8qjSuM5ccHT0Cu1nvPlyYiEwCIte9IyY1lFFKRfqkHqOrlGyeUIEh0
+         XoVX+kc9dLzAVZD1tLKpO8Dq1FqE6UZOBu2VQoocPuWJNV5A3Ijy0nAz/Fndb9UlC6OI
+         ot7KvBI15zuhZ//twIuIkCzoqB0UOeHH95dhTrIIOqyXRSO6bqnQmDXzUgAnqkHVG/vi
+         GI6MfEF48GmFmc2JSHrxGRIco2sx0wOzt0o3DPVHKxaNt3WFq8YSAji4YZ+RyQSE/CDb
+         0w6fYXZlq3oesxM7vL5YLQU6z5V/xY7aYsobNXlcjZwLHh37Fp9elr8ebs7ZGIubenaq
+         6CeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754986368; x=1755591168;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yw0gy+knuGeGzY6jivnMfN7pV1rj29Xt61Zw/czzFhY=;
+        b=qvy3za+CgEOwEF8K+gcVY93kuev7wDuSZdM46vRszOP6BgDeyCLvUGJvXOYMu0TS+5
+         EAa07YpAsiGk1Vcct7Hb2J86k9/WnHpLmewcmTowhR/I95TRaiQdhDFnMvqcMm8MfL2u
+         S26eroxhqsmki/0OQYfvDv+lmqnCdRY3uMz1krgfTCsm+PBR69dwRSBRV1MxJMwbqxBX
+         11ysv8/rkofRU9D8WTpUe3IcwiWQYrh4kPtddWYS3U/xirYRz1fb3CIrqy8G8gnE7Ea1
+         F5C8y03JyDhAIhHP+K5zmaiwRHgyIHeNoE8o+nzrjD9ClZk2d57pQhr5RVrP6HPzEQ3a
+         vUvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXQJ1ZSnyTlz/ft23P4GQCnONYOOybp8ptfdLTe1wUbWv7r7HyY329mnrcsqt6+O+43Qb0A230g/w==@kvack.org
+X-Gm-Message-State: AOJu0Ywd/ovIA/b1R7KeF3HpJkAi2905wm9L7vfFHvN7uz7IZa+in/TB
+	99191DTj4eOoyILfNjYlIIWFjBWCJISRT8eAvkEu7iM9Gbg51CgwIhYdE2wm2Zo6V3sCgdz3vV7
+	/4GVJ+L0=
+X-Gm-Gg: ASbGncuPLhmkIo25wGwlCDd+FBSNVMQ1wtptf1KgY3u7ucxCIkVTOXTdI7J1V42/VeV
+	9VuDt9oe6QjnymX1uLSqR54Y4oZJrYaLi4X8NtrRCRMDGbjREvpMlmGhauUyqnyMaRLYmA4LKwj
+	OnV4F/mIWQ+ullaRVLtd/8o6TKlAN/1EIkbAU49Yn0n+l17cD5P+5YxLdJimEhbMYcRSMEMVBII
+	Di16Uz+EdHlpgNKZzgw3DMm337IuHkgCGuApbtmWVUZd9my1m0j0nk9tJIPZ8eAGlwiMkntfPqZ
+	NB8SIwf6KSmYoLKkvoBbRyhfU2iDYGbfXjUBCEISDvzUUf3WGsjtV9KcOLVQv7ph8kGk3LPztxX
+	xypTatBPSqJIG6hs0w28Ytdxhl7mxFxiXBL8Z40EazriygLRKIolrvczKntOQNTixylsAwA==
+X-Google-Smtp-Source: AGHT+IGv0knKdRcpuo+yhVFvI7xkp6TkQ4XGBRBCTHxnRsgbNXwPcNcWPjfrvDLzGLuhSytlCrPZuQ==
+X-Received: by 2002:a17:903:247:b0:240:3c0e:e8c3 with SMTP id d9443c01a7336-242c228e6femr208574645ad.51.1754986368009;
+        Tue, 12 Aug 2025 01:12:48 -0700 (PDT)
+Received: from alexghiti.eu.rivosinc.com (alexghiti.eu.rivosinc.com. [141.95.202.232])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241d1f0e83esm291171955ad.49.2025.08.12.01.12.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Aug 2025 01:12:47 -0700 (PDT)
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
+Date: Tue, 12 Aug 2025 08:12:11 +0000
+Subject: [PATCH] selftests/damon: fix damon selftests by installing
+ _common.sh
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 6/9] freezer: Set default freeze priority for
- zombie tasks
-To: Oleg Nesterov <oleg@redhat.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, David Hildenbrand <david@redhat.com>,
- Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
- Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
- len brown <len.brown@intel.com>, pavel machek <pavel@kernel.org>,
- Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Nico Pache <npache@redhat.com>,
- xu xin <xu.xin16@zte.com.cn>, wangfushuai <wangfushuai@baidu.com>,
- Andrii Nakryiko <andrii@kernel.org>, Christian Brauner <brauner@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Jeff Layton <jlayton@kernel.org>,
- Al Viro <viro@zeniv.linux.org.uk>, Adrian Ratiu
- <adrian.ratiu@collabora.com>, linux-pm@vger.kernel.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250807121418.139765-1-zhangzihuan@kylinos.cn>
- <20250807121418.139765-7-zhangzihuan@kylinos.cn>
- <20250808142948.GA21685@redhat.com>
-From: Zihuan Zhang <zhangzihuan@kylinos.cn>
-In-Reply-To: <20250808142948.GA21685@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: wak8h1nnbgh3s5t1qiu1oh5mx9zn4my3
-X-Rspamd-Queue-Id: 23E2B4000D
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250812-alex-fixes_manual-v1-1-c4e99b1f80e4@rivosinc.com>
+X-B4-Tracking: v=1; b=H4sIAFr3mmgC/x3L4QpAMBSG4VvR+W3FlsitSDrZN04x2iK13Lvl5
+ 9PbmygiCCL1RaKAW6IcPqMuC5pX9guU2GzSlW6qrtaKNzzKyYM47ewv3hTDGri2sbYzlL8z4O9
+ 5G8b3/QDygZf4YwAAAA==
+X-Change-ID: 20250812-alex-fixes_manual-aed3ef75dd83
+To: SeongJae Park <sj@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, Enze Li <lienze@kylinos.cn>
+Cc: damon@lists.linux.dev, linux-mm@kvack.org, 
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Alexandre Ghiti <alexghiti@rivosinc.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1133;
+ i=alexghiti@rivosinc.com; h=from:subject:message-id;
+ bh=CygRsQzHeViey1sMjJDwpFXY4aVKiZK+tOw7A+FX4l8=;
+ b=owGbwMvMwCGWYr9pz6TW912Mp9WSGDJmfS9tPHdv2e/gSPnDbX98/P6y8smEhomFZkvN8NSNf
+ JzmepKxo5SFQYyDQVZMkUXBPKGrxf5s/ew/l97DzGFlAhnCwMUpABMx2c7IcKJKMfDZyu7SW6eu
+ i6sb2R6bxmCePlXJaktytu0G9uKKlYwM129NC3i4x4knS9vwc62dnPXFhi07dT7cYTz3Q6epca8
+ aIwA=
+X-Developer-Key: i=alexghiti@rivosinc.com; a=openpgp;
+ fpr=DC049C97114ED82152FE79A783E4BA75438E93E3
+X-Rspamd-Queue-Id: 608451C0005
 X-Rspam-User: 
-X-HE-Tag: 1754986055-307140
-X-HE-Meta: U2FsdGVkX18a6binhterxIXp2Rc3uHMGKhr9c0iCTiH65bvq5JcxYsutwhMsT7fvlM09oz3Jk1KXV+aKeUL/mL0ZY2DhaGSasn2bJ9xndxgBNw1OzZyu3L7JuToqu+vJKY4XV1des5m8J6H5djgwVNUKcWRrE5FTbQ6QcpSQUhDFZlHOZM5LkawOH+T5a2CLAFXi4F7KDTeIbuCwZunJjuYy77MeVz2UrbkOQj2wU6eZqnvDTBL3rxzEz7wPmohjCma98ZWpr5SWsXT4JwZdUf1pTHt1dqttTl0hkwKd84JrL1DUiTw58opBh9rwWETsey2eMUogAvR6HhO42jUyHaRaiS4vzArp5XfJ9OlDkh9mun0SiOS73yIibLdOrQyFO4PXwYblDiJvJqU81ETNtc3lTObgvfvDzOxC/E5KiZKNkzU2ITmEyk2GcxfmTWBardEVXBIL2HlMTUOHVLgx8uHq6T5tx/ekSJtKGh+zfBgvlIBgr5PnatrFOX2FMi/zOyyb53p68nT7ae3eqpoFoA8iNdWkYQdFQi4K21SeHcabBkuwPUlf7Yfad1KP1a7asY2AhbLpyNYEfSS2MVJxwG660gm7i3SGHhbKz65pbWbXwMS7wQSYHtkW0n3WsvY1nMfejGwhTcNOJwaQ9DOFk+mvRJYhYGonUJmo9vFth+en8oX59mtofGlZB+4yt1Se6Y9D81Qz4rdEuLq04Lmou83lidHKf26ZyHJ8kQpcPHkbYrM0bvuvuPDgLY9mQRsUTAImK5BOshHj/GsXmQdsUtNh3dHYMJ9xG7glxZhfgsNsH2JM2z+QEM0EolJ/Rss9wwNtSE1YSMRZAT5hv3v6i+8TZkRphQMXxWjnMTRoRu3l7CqfZSH34YpMQvSvJMgzTgR11cJ4wV8aOh08IIHD/m7geaT7A2hze8MwMujnDyWHqCPft+BH9z7b1iBW14BShIKr/luNURf07njlt45
- D5YlY5dA
- ZKNCrDWnmSWofq+3UoP/UQvGk36xK5sAxWL3PCveBR5AALtcSoQ8GD65yRIRiZZICbgEj93sloIzbvf0oSO9sBmlOu3kuT7xaOkHuSxglfIRz11PpM18YAM0VWZZamamd/DEn92JXIhIAko4=
+X-Stat-Signature: yqi331fbk4dnq7y9u1o71pekect4g8ob
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1754986369-904250
+X-HE-Meta: U2FsdGVkX1/SZwvz7Eaxw3U/Yb5KhVZJ/PGepMvNG0hClRZcECZDmJs/Uc2lzA/koTjsko0S1EDfCI3Icb76E7F0D3yZyUBCJOycali7Blq89uDCIW+EVcGePcGDwS0jM77tBK24mnTALmjWowAWSViy9ROnFEwz2g/A/Hd3LnrRo/AN9sMeg5s0gddVfoaBhTINos5Oq6nfpk2C7CmpOdPxXQspmYs7teSUpqcuRdFqR8TARlSLW7VI7vgudcBvqeJL2iOKsgIbQrdXy1waz1tdSmecudVdBqGpCi1A+ehB/lalIJ4N+b4wBdteosGaGqafVlrtrRQkYMzWHo3crVq2ZtFhRQAWJ2qQSdsENRI16noScKs2Fpn2FYPdTnnuMAMxbqf19YDxa5g6/iva4tYKEzGAGp2krybIvOVSFYWo4buNWZHTfHJ4wrJY1XDmfbWgORVn1W/QN+eeQFpR6CH4Fq036gw0oLasr7AqbxOyCZQDRJSzKu4wBbWwzE1Rp5swBtEwI+xotZjv/stjOvWs6DUPjOOwGm8siTUg1CGNpeJ5vhSmSU40qYaxW8zrd3rZIxqPyGxG3kfjx3i40NtdwPBaDWHb1jpksBI+C9b42cAMFoKsaC6gkl0Y3JDsYOF9fTa+D/nzarPMnAF7ZTziVQfLs5PNUcf4Djit6XqUdm+NbXWmBXdgHP1iYlDcYNjZpldu58Fbk3/6tCf7jwu0hY1Ek5+5wC3br+VVLJ3+uJfgY7xIpMePX0Tj68D+ftTYilcydtkA+b+1ZLLvUra0vFsET6JQ8aWDEJuVRNflfa4a3uZmVvkUneWNUZz1mUjVrIA8Rg6Mw2K4WieFc4YxpFEpAvJYYKiBK0+sKMEV8/a1QzM4cpCvZLRZbmLRDs53Uqd7hVr5Z3dRSqu7j2sASgMYVcLoOAzCLNJ9zsytbp0VcYKoeacVhebJKTUUhmfr4W9IMMbwkXrqJl1
+ kpBSOh6D
+ LKjtZALy2doqzsYV+Yry99I/08983YePmyOA3TroFUB58qB1roDk+m5bIcyw6vm1LDEDqXEP2CUnP5QsM5N18fSoW+mZr/WVqsubp7GAegIISYX+GefG/ey04rGoZjkFtTIOYaaoz/ldmGit3YYItkx1GQ6G2U3lSFXR2PbSFrJcwNvi3qEkxQS6MQ0EpEmRZ45a8igxDs2ENP4CYARlW9qX1wD5OhyMBWeHiNs2LRL8yCIy+ZD6cu4C382xb+2iA6JzFQ3oecOb2P43YICpvbIZpD1+BS9/iBhPRPdvpR2vjKbQb1AcE1S3fNgr6vW9BIE5tmvOvkeH9VDpr4nUvrdFItGTiiFMtG9OAkL0yaCHOFvFShPa5kTUdrA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,29 +131,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+_common.sh was recently introduced but is not installed and then
+triggers an error when trying to run the damon selftests:
 
-=E5=9C=A8 2025/8/8 22:29, Oleg Nesterov =E5=86=99=E9=81=93:
-> On 08/07, Zihuan Zhang wrote:
->> @@ -6980,6 +6981,7 @@ void __noreturn do_task_dead(void)
->>   	current->flags |=3D PF_NOFREEZE;
->>
->>   	__schedule(SM_NONE);
->> +	freeze_set_default_priority(current, FREEZE_PRIORITY_NEVER);
->>   	BUG();
-> But this change has no effect?
->
-> Firstly, this last __schedule() should not return, note the BUG() we ha=
-ve.
->
-> Secondly, this zombie is already PF_NOFREEZE, freeze_task() will return
-> false anyway.
+selftests: damon: sysfs.sh
+./sysfs.sh: line 4: _common.sh: No such file or directory
 
-Thanks for pointing that out.
-Indeed, I=E2=80=99ve noticed that in the current position the code has no=
- effect.
-If we move this code to a more appropriate place, it should improve both=20
-safety and usefulness compared to the previous implementation.
+Install this file to avoid this error.
 
-> Oleg.
->
+Fixes: 511914506d19 ("selftests/damon: introduce _common.sh to host shared function")
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+---
+ tools/testing/selftests/damon/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/tools/testing/selftests/damon/Makefile b/tools/testing/selftests/damon/Makefile
+index 5b230deb19e8ee6cee56eb8f18c35e12f331e8b7..ddc69e8bde2905ff1c461a08f2ad008e6b28ac87 100644
+--- a/tools/testing/selftests/damon/Makefile
++++ b/tools/testing/selftests/damon/Makefile
+@@ -4,6 +4,7 @@
+ TEST_GEN_FILES += access_memory access_memory_even
+ 
+ TEST_FILES = _damon_sysfs.py
++TEST_FILES += _common.sh
+ 
+ # functionality tests
+ TEST_PROGS += sysfs.sh
+
+---
+base-commit: 2754d549af31f8f029f02d02cd8e574676229b3d
+change-id: 20250812-alex-fixes_manual-aed3ef75dd83
+
+Best regards,
+-- 
+Alexandre Ghiti <alexghiti@rivosinc.com>
+
 
