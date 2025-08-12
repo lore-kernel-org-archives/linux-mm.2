@@ -2,112 +2,235 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A231CCA0EC4
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 16:43:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 30DC7CA0EC4
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 16:47:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EEC68E0170; Tue, 12 Aug 2025 12:43:59 -0400 (EDT)
+	id A92E58E0171; Tue, 12 Aug 2025 12:47:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C4998E0168; Tue, 12 Aug 2025 12:43:59 -0400 (EDT)
+	id 9F96E8E0168; Tue, 12 Aug 2025 12:47:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 202618E0170; Tue, 12 Aug 2025 12:43:59 -0400 (EDT)
+	id 84BC58E0171; Tue, 12 Aug 2025 12:47:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C64C8E0168
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 12:43:59 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CAB9BC0107
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 16:43:58 +0000 (UTC)
-X-FDA: 83768677356.18.1EE9D1E
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5A422C0006
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 16:43:56 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=fu-berlin.de header.s=fub01 header.b=EBJPmKp4;
-	spf=pass (imf22.hostedemail.com: domain of glaubitz@zedat.fu-berlin.de designates 130.133.4.66 as permitted sender) smtp.mailfrom=glaubitz@zedat.fu-berlin.de;
-	dmarc=pass (policy=none) header.from=fu-berlin.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755017037;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 687638E0168
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 12:47:19 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 158951352D5
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 16:47:19 +0000 (UTC)
+X-FDA: 83768685798.03.85138A9
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 91B04140008
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 16:47:15 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=a34V+CiP;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=zKIeVKh9;
+	spf=pass (imf23.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755017235;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F9dW/4iPMQ9pYAHKxgNEzdnUjAU00Blu1hvGt1FirHY=;
-	b=MJ26QgiSLuaW0rjtNKdf62bLIRijFpIsO2YnLinpv+VI/Od0DIPX0woAzmCrnlKUD1h/SK
-	Mhkf7+gQ27XAbLSsaZqqRrRW+edNDRcK1Snqc2cGGc9Dp79EsAuw9U+P/pc3Xw3mVWSTp0
-	JCkKZA1HIx0NWvlv5rPLaapgjsTL1YI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755017037; a=rsa-sha256;
-	cv=none;
-	b=24nM4rY7LNEVMFUyzvbcuCQY42CYWtJDbDqhTaMOBoVIeodntzbHtp43tweAY3o8bqFkIB
-	uL3GTkcPigtPzUDKe+GL2gdTJnXFQalOJRlRVgS6kM8Pz6uY0x1VOhgqa5lcMQvOSUAXLq
-	Tnxl/EDXNX7A95uyzHKiPd+jErR1dJg=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=fu-berlin.de header.s=fub01 header.b=EBJPmKp4;
-	spf=pass (imf22.hostedemail.com: domain of glaubitz@zedat.fu-berlin.de designates 130.133.4.66 as permitted sender) smtp.mailfrom=glaubitz@zedat.fu-berlin.de;
-	dmarc=pass (policy=none) header.from=fu-berlin.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
-	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=F9dW/4iPMQ9pYAHKxgNEzdnUjAU00Blu1hvGt1FirHY=; t=1755017036;
-	x=1755621836; b=EBJPmKp4GtwTPesb9H1Ls2hbs+adeYQsNoSbYajVDiL/g6kNas/ycEc97C8kn
-	detQxT3+t3DBvj+2AKjd8M0ARoU1D8//q48/RdFrOXg+JqKXGM70EX7oLD1EFH/19IVO0DnFkAycI
-	VEuF/yma1M0vT94nlv4eSTVvUQkLrUkuz8TYeRIH4TdLfB/X/gxipKDmM4a46MheQfJk/jVmdk38M
-	Q5eV15JpCo8eIoB1RYiV4nt3/dgG3jbos9AX8kH2zx2fmhBMkVE5HmygmgPUC+WBiR599MZ96XCyB
-	91LOkGNsdg8f8/UHJSup2ckKDj8bvqpRpoJoBlZnIULPey/PQw==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.98)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1uls61-00000001TuI-1fQO; Tue, 12 Aug 2025 18:43:33 +0200
-Received: from p57bd96d0.dip0.t-ipconnect.de ([87.189.150.208] helo=[192.168.178.61])
-          by inpost2.zedat.fu-berlin.de (Exim 4.98)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1uls61-00000003X5B-0Jat; Tue, 12 Aug 2025 18:43:33 +0200
-Message-ID: <14437e403ed8fceacafe0a89521d3b731211156e.camel@physik.fu-berlin.de>
-Subject: Re: [PATCH v5 18/23] bpf: Use vmalloc special flag
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Nadav Amit <namit@vmware.com>, Peter Zijlstra <peterz@infradead.org>, 
- Borislav Petkov	 <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Ingo
- Molnar <mingo@redhat.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, hpa@zytor.com, Thomas
- Gleixner	 <tglx@linutronix.de>, Nadav Amit <nadav.amit@gmail.com>, Dave
- Hansen	 <dave.hansen@linux.intel.com>, linux_dti@icloud.com, 
-	linux-integrity@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	akpm@linux-foundation.org, kernel-hardening@lists.openwall.com, 
-	linux-mm@kvack.org, will.deacon@arm.com, ard.biesheuvel@linaro.org, 
-	kristen@linux.intel.com, deneen.t.dock@intel.com, Rick Edgecombe	
- <rick.p.edgecombe@intel.com>, Daniel Borkmann <daniel@iogearbox.net>,
- Alexei Starovoitov <ast@kernel.org>, sparclinux
- <sparclinux@vger.kernel.org>, Sam James <sam@gentoo.org>,  Andreas Larsson
- <andreas@gaisler.com>, Anthony Yznaga <anthony.yznaga@oracle.com>
-Date: Tue, 12 Aug 2025 18:43:31 +0200
-In-Reply-To: <20190426001143.4983-19-namit@vmware.com>
-References: <20190426001143.4983-1-namit@vmware.com>
-	 <20190426001143.4983-19-namit@vmware.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 
+	bh=vIXQiXoFMRtV3Oe+QYOqM8wgM10/v7H6YDzqdUZ3ORo=;
+	b=HMdzNfsR8w6LRz8gy8dt1e2dLxTVMeEKcECXPautWj34ht7tbmbp+hVqwhWB0XUkeV2RR/
+	hQ94z6SVHn2pV59pxgY2xN1unZNHHkNOPW+zMtGWNNdYLUegBHopTPyTKU2el7slIDQ876
+	ppeBd1BJRqIJrQ/uy74BZ69tV3WLljc=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=a34V+CiP;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=zKIeVKh9;
+	spf=pass (imf23.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755017235; a=rsa-sha256;
+	cv=pass;
+	b=Y+pO+ouBHQTKHU3uwMawTHD523x74DJCcvVRbT6nIJi5APqC8gKNnryrrMbWVxj+of46K3
+	zm6EhMw/2T2dW1qozdo1q0TN8miri8LOjpdmJ7sLunhH80s5dB9VIb8Z8e/XtmEhI7XdZj
+	noauXSRge/1Zof3HpIP5p6SYdpNKqt4=
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57CDC7Fd006416;
+	Tue, 12 Aug 2025 16:47:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=vIXQiXoFMRtV3Oe+QY
+	OqM8wgM10/v7H6YDzqdUZ3ORo=; b=a34V+CiP1eqInxHujNJv56fu0/3czE/YnV
+	xa6WzOwEZ7LEbePnNF+BeU4+2uA8RXIESyVEAdexbJVHEhr48XxZeJCSHgDIAb5h
+	PDDYSzRKJFG4uANxwkBM79rCwtRRYmYRmdG0QoiPhPdFhP8fNk/w4+vy5lrzftsM
+	lLSe3lRF1yXxVxKjhm9caCq/jVmodoHCFB0j5ZDci0WLK1YzKAexIaz6fx+scv1t
+	sGoZ6+/1x2s8jo9EH19vvCFO/LlKazc9BMe0/lM6tNohhQZBtH2X8UxP8Zu+TlcU
+	zB2lyKlowVyKuWgJ+NPq7OruDdvlM1NHMT0D27Z+SzldIyowrbXw==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48dx7dn2as-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 12 Aug 2025 16:46:59 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57CGeRPn038545;
+	Tue, 12 Aug 2025 16:46:58 GMT
+Received: from nam04-mw2-obe.outbound.protection.outlook.com (mail-mw2nam04on2047.outbound.protection.outlook.com [40.107.101.47])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 48dvsgrqkj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 12 Aug 2025 16:46:58 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QZ/c2FVhi6NS0MvoyIO6g68h8ONTHymnmnNxjLkQBVgu2P0Q/8N4iRy7Q0nZbntTHzkU9C8fVOWIlFn2xtn6uLNFqENFqlP7cvP37kyiaLE45tLezKYLixHUOW52iNFQtAGumBoaPKLTOdluhfa6GjKEFdQbhggXoapwwjMRDdfvNpGPqE8vW0g3BGyOjxlNgl8ddbQtfdE+QEZ0QB4S2zlRgHwdPcuV+YQKKe7Ub7cDVOyULNits43uS6RaFy7Uopo8rwX8ih0oSd1Ya976NUjEARxFj5oTmxRZ3vh8hASRB3bt9fTGr5kGYp8wHftoWogu5STbbZ2zQYgcKo/3uQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vIXQiXoFMRtV3Oe+QYOqM8wgM10/v7H6YDzqdUZ3ORo=;
+ b=KFjjXHL9X6FDr9A1Z/o58OJnSNHEYKUq3k5I6AvLol/d3xJr9HuUC6t2WaxQd0zOdnnfs6wyngOdu6+WoSv7eUSZWbxBIYaW9eVZXIyKCoRcxnrrOsJXl+1vh3RtAppAkS5TUU5uWkEwBA7LuhaFBm8Zqi2YP4TGr/2vJCY7u+9fz1IEZoRPgtd6U2Osulo4GHYJv/OR63DuBS63Xux0RnBFy/ySt9m5+IWaaXbZyN76KMGSJU4an9cbKWx0sbDS1ZBfl2bPqVaJKp/gvgcXk/qPOheOFTifEBS8EOxbXKIrjQdQqY/MGuiOsXHfsfdGGFNz7kl6rXdvEFkPVinpUA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vIXQiXoFMRtV3Oe+QYOqM8wgM10/v7H6YDzqdUZ3ORo=;
+ b=zKIeVKh9x8mAdYYMlz4F6HEGcqtjU8wmkyIHcZQCm3gX1fOfN9VctpfVRbfEMAOSuFSGouMEB9pbCgLyD4p8D412wk3d87toHIwfOoFlniwsUvCJ8WlikR1CtScZNyFVvLQrhw75XcUbu7rEORZFxc//C8BpotYFshjzXokW0+Q=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by IA1PR10MB7263.namprd10.prod.outlook.com (2603:10b6:208:3f5::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.21; Tue, 12 Aug
+ 2025 16:46:54 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9031.012; Tue, 12 Aug 2025
+ 16:46:54 +0000
+Date: Tue, 12 Aug 2025 17:46:47 +0100
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Qianfeng Rong <rongqianfeng@vivo.com>
+Cc: SeongJae Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Will Deacon <will@kernel.org>,
+        "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+        Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+        David Hildenbrand <david@redhat.com>, Rik van Riel <riel@surriel.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>,
+        Uladzislau Rezki <urezki@gmail.com>, damon@lists.linux.dev,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org
+Subject: Re: [PATCH v2] mm: remove redundant __GFP_NOWARN
+Message-ID: <b5ca3ef2-bd36-4cb5-a733-a5d4f1fb32fa@lucifer.local>
+References: <20250812135225.274316-1-rongqianfeng@vivo.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250812135225.274316-1-rongqianfeng@vivo.com>
+X-ClientProxiedBy: GVX0EPF0001A050.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:158:401::49f) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.150.208
-X-ZEDAT-Hint: PO
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5A422C0006
-X-Stat-Signature: kse4c1ywhjtzz3tnxyzjt1uiiukqx8f3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|IA1PR10MB7263:EE_
+X-MS-Office365-Filtering-Correlation-Id: 510f753b-93c9-4267-5616-08ddd9bfd818
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?HmAQ4N5jY+P8h/io9wxyY5BPyaCXY8p7MlN9otEO2Pe7YfV2/hysCCcaHE+i?=
+ =?us-ascii?Q?YdE8zQp78SQxVTIT/4lN1v/a82jBM1K6Ubk2g5d6Y70K7kRRQBiPeLWz/oKk?=
+ =?us-ascii?Q?tkSpGveN2batUUbUsFzAgbO/u6UigwwX2EFUHVu4x6x6ZiPdtvGpVWe2XjNf?=
+ =?us-ascii?Q?cXpA1SbUo7hIOvcQ2S2XtiRYWKhieWtG6tr56A5vBC4hiQh8Qx/QVLeIfuFj?=
+ =?us-ascii?Q?AK8hPFjKiaFcD9sz6glh2OAD9mCTM3vp097HdaUh4kwrPwEgzHzzmka6MOEE?=
+ =?us-ascii?Q?NMMdMBIKI8KiEOjancqz7mI6TBNLZMy4VyDLqtgD4Njkh3mo2kaVKEqFhAbH?=
+ =?us-ascii?Q?dw1/E04AssIcFGWBJlEMgEn0Ls/7Ce8HO/yzm2zirur+Y2wHC2FRspiVqZIm?=
+ =?us-ascii?Q?kVhi5e646c/nk2GYkt+qmueZU5k4yjUHqOLS3mQ0jq6Q/UydJs2nc7dVqwPk?=
+ =?us-ascii?Q?PDUG+6zLTmMELW5+6mJwzj7kKmNK/iMkcN8ll4F1lcWAvVABJFImqZDWRFLu?=
+ =?us-ascii?Q?HLxPeJm1GF3OZNsUMOUVG2YrWxH0BriH4DdO627Sd8/wa/SbJJ1lJRyICaYa?=
+ =?us-ascii?Q?UmKZHNnfmmXWRjeIfvDYrPnQLTSvk6sJtYrLEOLoQTkKmUemliHdLJyeOgo0?=
+ =?us-ascii?Q?36GTLgjabkdk5hCl1OKYHdQnhGQ+EMSPqUtZYeoGxTPPRtg3C3WStabmexUh?=
+ =?us-ascii?Q?f1L6splzhyt9TR8OIUgHXeTbm1NIJTwY/DoJnmPVkVHJVlG1tYQXvWERJ+7e?=
+ =?us-ascii?Q?AWap+G6+t7v2r9u5qew+g++a0Y43OwP0lFXwNCFHZpwyS9cBv7roDzm3+1NP?=
+ =?us-ascii?Q?J6XnYCJ4AGx2Fru4sBR9QsSfKWfcpWdqHubB5WNVyxp0SondxkHuuhc1uiKu?=
+ =?us-ascii?Q?jtfzewpvRmQiEPR0Fwj2Jmp7haNNoC61I35pFGM6xOhzxqb/OUASmxGSKtB0?=
+ =?us-ascii?Q?PAvaqp78w3PmSQ87bZks1pFL4jX69M2pyT3JddftK1HJIa0Y7FiHlk4azktN?=
+ =?us-ascii?Q?A0Q3mHbd9p9kCpPafKe2IfDL2ob2wJMZPCxYJGrUp2rrpejftdpuagE0Yl2F?=
+ =?us-ascii?Q?9H73hLLeNTDJF5Nf9gNsxjxpH4XPH2n7AuGZdOSMMOkS6YMPb5JINZhVelPL?=
+ =?us-ascii?Q?nL3nCoVBncuIGV7f/SIOzI/v9U7X4X3qKY90Xij3L639Ml9IekSn6e3TWF4z?=
+ =?us-ascii?Q?3X+gGsZthFHW+tQT78QQL3xV8QoMCysZekjJ/RNA0AHMLbEfsPPI3tZNwt7k?=
+ =?us-ascii?Q?PZ48OQtAK1HfASTZ+lyAv7syoV9iO5ThUhWVF19+q9dhR/C7JdEmJ0GtuJEB?=
+ =?us-ascii?Q?4ruNlyOxGksBkeMpXGfCOc7lQfU+CAwdLZS/2gmDIj47JW1XDZWtzjCwQyWS?=
+ =?us-ascii?Q?lLJRQVed0+/q1AN0ut7EWfFNU2Uri6BvHpfCPCC9sLT+oTgTN6LHxSxJaUJj?=
+ =?us-ascii?Q?91F+n3rCbiE=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?6NZmxdRcIdfv9G//vfefjuVYAe85mzHBtOrLB/I+QcwZNrWDtOnnjEnEQsci?=
+ =?us-ascii?Q?zE5o5JkPrsqTnk+GjEbnFjoVx3+6/rD9+O3kVP5a5x9ZJ9I1J+/shlxb0/gh?=
+ =?us-ascii?Q?+wKHoSrCEJ9bXSRuaTPv6ISht4siOfa5V+Qk6oeG1Pwy1Gx63sMz/fGkmKvA?=
+ =?us-ascii?Q?KBjpp1+NPqaIX4oJYrQxNeQoU+Z9zFr0KkZ1Zchn3cgfi7spocBxZdtTyJaS?=
+ =?us-ascii?Q?gSjxllu7NNepiR7kYID6O2B1UyUSpgp0Ef955jpIaQRGLZR6wgFpIkICtnBs?=
+ =?us-ascii?Q?A3E7T5/Oc6eGXd1kktW2uDKl981uhBZh/AxxEeNbrUR4SWjBY2JiBy9YC4Zc?=
+ =?us-ascii?Q?XKG46wd+LHqpmFNzE5WprJTT53thed8hINO6LBjf9/QwT5HhvQn9988mTFi4?=
+ =?us-ascii?Q?JLvzqPpF3pt4mblAdnnckB38uCFZ/Xecjo5KQtyQe5E5Nxe1qrYgP+0sCMmI?=
+ =?us-ascii?Q?4/C0EDN+o+9hUn4g9cuiUBp+H+7jFJtvDLxWuJ52+eNgXbQBlrU3kecYWL8l?=
+ =?us-ascii?Q?XXsfSREds/7c5BjZ3kPz/m2afAEbDtQ/xIgqnQMvt10OZiOyqtdRsGFjPmhr?=
+ =?us-ascii?Q?PD/WEy1SCifM0UmNwkNhzr55NA+yrWRZY5okYJelUf8wjJ/EmMEVYcTI/s+E?=
+ =?us-ascii?Q?uTIncE/YFP6OC/c0FDzg/spKhLTZMAIHMe1Rn1ThRdJUCZwmr7OPPuaSwW3a?=
+ =?us-ascii?Q?0Mu6xTsMXjqAc78k5N2avvn5n7Ty2JV7n8+qBCGFbX7is2HJqI9lLfN39c8Q?=
+ =?us-ascii?Q?45+0e/+yaoVzQqy6XNprWvzTRsjkiRC7oWqRcVj0PlGZRAo2a7V2IZiXedYJ?=
+ =?us-ascii?Q?Ol/pKAEIGy5p+raIXs+AycZ9SCDIeJTNVwrL2aMiNT3UcwqfnC0EMaYVRQ2P?=
+ =?us-ascii?Q?UwOjYv3sH3CLt1BlDfMyESL8RKtusLgd0XrjUYfMTbUm9OUe8zq5SCJf4l1C?=
+ =?us-ascii?Q?PQanAvvZbnPsE4yAHAc7MSLztUi2rPzVANjVZ5Hz1FJhaj9nySq2KIkurrxC?=
+ =?us-ascii?Q?AGFTK0pt+eHn7/ZO0IxqSnsMFMEgmtuckx1OrW5mPQ7dF1OJnNOpSCKb2fhA?=
+ =?us-ascii?Q?nTARaizyxqni8cE2OALiKdtOE3y24vfWvh22bVpwZzYCsuzzjUmDSQL98wSp?=
+ =?us-ascii?Q?Uk+krXpF33gCZEcdek/7vpRdwf0U5MQ3Krh2uuskOeRbFG/l1eR1iBxtAbPY?=
+ =?us-ascii?Q?bPHw3eC46WjsSp7h0KFZ9RKDytfCT+aO6C70H85mCL0nmBGB+7OrXhbFrjle?=
+ =?us-ascii?Q?Quw1YROvck9beYQhGZQN6lvxBnA6p913BSwYFKHBzIgGZgPPVTA6k3Z148zE?=
+ =?us-ascii?Q?BhTocePl8kmCAIurC3ejxrpOL5uKAxZBGzoxIY+oau9xtuiP6rGKc+R5KUyk?=
+ =?us-ascii?Q?bllEjs5yy4d32wiuJH3kBI1HN4Ta0MRuPCjA2d0oR3z8+/8Yr8IW1JaRPZNW?=
+ =?us-ascii?Q?3dS1browpPH0S4tLdVI3Jwl/o5hkMHrgE039gnongcmnodLLKs2N0nokL0C3?=
+ =?us-ascii?Q?3xq/SQmCljczNXuAUmwJnNVaUlh2jrJuKetLKAq0KntOGwohJN95/65KABzI?=
+ =?us-ascii?Q?MPCha44W7l/ZcaElWlOUWcul2XSP5bBEeXr/w+B0NhI40XVWm7UiSqZv0l08?=
+ =?us-ascii?Q?Vg=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	JugHzX8uyYrAYI0m7HHuKMRV/88qmnPFwtZyQGwepeM6/Ivj7zl4pxPESzG21pu2DIgzKI+7qtd0W9LkjMGB91IefNUbzkCu7dT70dXzBYOYcpEAXnUqU/wJQoFOy1rHpTJYt0fPx28PJq7e/ewi+mXJL7hGxoSbej0lGs92dIRupSy6TR2Xw2xDGotfcz5dXIWgEeVMmy8lt2h4Ebn5KDu8WOsCEHLpG2vj91FeuolNz94h/qNvqXk0qEaO9L0lp1qrc43zGIEcU/ijLJcQCmLJmSH3uu0bCg7kREU18S8R/xdlncGDdvN825zUiDlDXDGPfjRVmAM1u0q2uBFRcgF1UTwVNMkmwkaOaNQnWLwWDmvfIMZLnmZEhKXBcY1nAW4W7HRXKoT+qy2J9/3XNmNw+K60qJWiI3rVYa9UOjC6lTsH0lq/4NkJcYdN45sR4g1147YGeUgC5dx9KvT9wuB5vcBNNioAoBqhMUikAY2zOLYVUospU9GCnMRpqTW+ibnFS+EgrxCddnutQOJrVn7vfkOzikxK/FSMcuPsoqV+IIpbpIpuIIrev98fwxxjJmFnPVmFG4gMxpYj+MZ7FgJkupAEIM5BuFqGUw3wcwQ=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 510f753b-93c9-4267-5616-08ddd9bfd818
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2025 16:46:54.4701
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: gD2DEk8XTTtiusabXFQUKsTVHJNUTDcwQHVvxwl/e+2ZsdIdb0inoxOA2kfjLVXwzZ4AXg2zdgKcAHEkEPzPEpj1lFsi8RzeBHeroMwqCfg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB7263
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-12_07,2025-08-11_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0 phishscore=0
+ spamscore=0 suspectscore=0 mlxlogscore=999 adultscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2507300000
+ definitions=main-2508120160
+X-Proofpoint-ORIG-GUID: z37HJrp7zfjoNhHUKZazI9QKuPLD2pHa
+X-Authority-Analysis: v=2.4 cv=WecMa1hX c=1 sm=1 tr=0 ts=689b7003 b=1 cx=c_pps
+ a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=yPCof4ZbAAAA:8 a=1WtWmnkvAAAA:8
+ a=FxGaXRssHhVewV9F5S8A:9 a=CjuIK1q_8ugA:10 cc=ntf awl=host:12070
+X-Proofpoint-GUID: z37HJrp7zfjoNhHUKZazI9QKuPLD2pHa
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDE2MSBTYWx0ZWRfX1/eRUIGAU0JD
+ 66pRtpXt3pZRDlx46YuQSzx40WNfDUuq3OTLKK1sfHbkR9kFhk2h4o3iHp8LAD7oZFxAK55tptA
+ EoHq0PCMnqmpb7ClbKeXXzXmtY+1gO9dmvF7XljHBSsr2NFl+44Nz5BgzbraMbiEnvHLtrenpug
+ OyMoorF5NssuKC2hte3dmzJIy40CpIknP/Th+z1OL6mZ1skbXtpF/g5v39P8SK/olN4OWEFhzVI
+ 1K8aXykz5pzlVgo18qJDqy5cEhQ6QYnRWt0vIpk1f27DKtQu5AEWDn3Me3c7a5JgAQfAZcBnXmB
+ FtROmoFeivR7ZhCk/uhzlpVk3Io5AzAIdY+N7PzUEuzTYTSl6YpWkwu4k2ttAAydFFquU86aBV3
+ vNwDz3S1bHQiS/T5fFscpcblYFSzmmV3ll50bbyvdA4tRUQ9+o7pkZV+OLh8E5GgLBXaljJs
+X-Rspamd-Queue-Id: 91B04140008
 X-Rspam-User: 
-X-HE-Tag: 1755017036-781930
-X-HE-Meta: U2FsdGVkX1+HId81oW1lyZq5UzM9cuX53uODfnacGvKIHDZUBIsbIuhTBdBL06GJhtDjloN4NppiLLRg077ul49CduqTU6Tx3vebnSmYpJdM7ytveB41gBGJ0GHvy4buq3sa4npOTpDBv6K1tD4wDCqKcCxZUT0mnFxxxMPQnS8Z4lqr3NJAoeFUM58mnht40eU70K0UfvvdLYYig9Y7v2LMGqBpKvE7rfzlgxzYCsrW4hm2wGxgIOhc2cnbJm883j75mtDQOd8oTdmLQeDdC3fYp2OVBaTI6bsA7lz6xdu+vti8Ic9Dfna3sVBdbUBjR25yIX3gFeSABGdN1LX+fbCE8i6IIaxKTTOjpDf5nwZarhlyMZfbDazhuL03BG4DwMXDvskAv2f0ZSrQn0zfEuC3ExVJki5SiUFOlJvLEe+6xUi1jnVf2qIFF2a7MRFuZ6vNAAkdgAq4zSv3v4SMTvukb8gOgtzp2lLgGxUUqBccU0pKCfyZyygMDPRIzyGSaT9Mq0N5yZkvAD5dOtzFnHg61tY89QuWaInvEJE+oBl7sJROLlKtjHpZkWQ3tt0Zf56krGWaPH072pDBWQU0RbTGE/V/ro90Acu+bTW8E/yEYJB2QAYyR3UAiHAG0ETY7OYCjnTzMEb27ibxCXJyXI6Pe7jJ1kIJCAczuoI7kwb4mrbnN+34oKM6tcAj44hBljotHUmB3h6dm0S07ZH86zRkIoT3CRGwo64ISZMx7+dDJlsR5E+ovjVss2l8cDqrGQ9XO9WF4szdqySek5wGAE1XHbjoBgkcaE+GN8l/TeRx/BJ7jX2xj1h6WGAN8NgGFmicbiFL+1+5e2uJGZk/xh91o89CZMvFCwYs1TiyRijWfVcPPkqadtY1W9XZQAOv9J+C/pghKr5dRT9roAle4WJadIh/Y5XL22TS0Je/fRSFpItk5SkJj6uQ40SrZfIKulvy5ns/HVsL2W7rRxD
- 1NO4Xwz5
- rLU8UEGhB6uJ3rrKyceto0AuU71JU/t6plciC084SdgMKIbA5CWDAqVSDQcH50YdxxwF32LEUuIkEx5CwEyCGcusbBrIIZUUhstpYa2lWOGLvhM+UrgxjBXLpKH8ZJSUTOe1gHDtMPRePTVXijVY4S4c7Cuq8Bs3/EGkienEZghLDmPLYcBHyRc8uGMCcSzXEpnHdBgjGFeQy9Yqvh7kSdZIa6ePc3iE3coZDGcQsfSsTkNIxovpQZIsNxaDwIK8luPPaytJcoatRd89Si0KmYvGLc/ahzYk7/bpJk1LmDEEHakY+3ddyQxPPQ8BlJb8qN8Lo+hvDJlz73qcfHqkftsbOomNxDE4SY4c33wyI9zthwVWSWW+1Shv/6M7COYy0COn10tQChLuDipCNHioqUwJW3SyH99STxhSAelq8iQdPkXRapY7bupyXIbIwMqmPvP837HZTy3kXEtqhcpjYmqlJeqGa/GvOxcSptJB3KBnIALgaC/jv3jy0bTCC4y3o9tSE4KGCXw1jdgaUeEuKjxTZ9mmWODAmO0dO7KI8YDUMz0zUerCuT198p9y3C2NPjRhjLXd7kneLJYasxFZMZcjfZVgL1cRVR59+Q7MVL7GEMQcpD8aSJewXkCzv4PPLaTS9MNmd3OCEDlW7Sb5i+x3XrnLZnmCHpep4+1id8DjTVJ0mzJPYH19aUvYLYEiW1KNrj3P6Y7y7nO/t2Z4IL5tnVOTpF7NPMoZ/1SZw0kGOoQL6behspuGVzlgCh11EcGz3p1tboWp9qMT+FYx7OCvmDaBmlevXh2/MssSBT1av9rxW5mFlS+f/arSKg+mFNB/VBLKP/tuXK45urKzvDgD3zMuMOV/qqz/fIrGLf62zIpWCYafAJfQuvicTOPk+EdhYXs8BHCW7uZdDSQ7bb/aZwY8ONxFuS0c1luvPEBQN2wiRZdz3QRDPONklfuuBCNf5w76lnLDxrVTJpodk7+5OmKOG
- 8Reup6Tz
- UHmsPAmh4ry71n6fIDt2+UT7/fO1K4f9pYperU6zAJVHx8kpiOTXRmJZ6sMegPjuoEjWleY/9WQ8Rr0VA5fSKL8uTqy+R/yrl5H73DEoRM5e7S6eISHCbcmAJ4Ztv0xYBYOqx7ClB17I078lvcaswIwJ+fMRtSGqnvV7SwiqNqe90M2RrJz689uQPMimQ/AOLMy/M1p9GA2jRUCicPqpBpeGv23x/g2ASac/OG6bg3RihJ7D7zqkByXoU1LN+nvxEacprdRJtDyI1vBJTjUkwNvutkwff482wgcjnFNBxLw=
+X-Stat-Signature: 6ife6aqjjbn761h1xt5prgo38ahtno1p
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1755017235-310102
+X-HE-Meta: U2FsdGVkX1+e48G2bJvI1zM7EFLs/cFIsYrrsPlA+zZb7n1yuj24Sg5pN6irGNc+prPYamwjwwJRamqst2zFyzSktnqZObpbJ6MG4c8X17LAsAwoefm7M0n2Sit0XP1tKQekGBD/GCy0kRSYgN1B3j1SPRxJVpZ/sK4Girf+D4XPuIWSS/7Mse7k/Fqa47i67LLyrEfHpMgR/bo2NFmZ5aeTe6B64d1+FZk33Ky0UpkKqtIHnbmHYWmyAOG5Au8QUBY23ZbLwdALkS+4x+dmVXSAnxwr+I7No+uYTUi/WDM0lzLHDA9eakPYVoY3qkp7UXsloq2ZG5iqtLfc6wwwxzKcQSmMOVvq6objy6vqNvl4Dace/4+GT78PDEYwylQx3cJYkXAuJm93COaVh/JenSktfrY4SUjo7tfN02kceNnMwp62M+SVO/Q79efWpG4INh2Vr4UWY5dnaH2PSyJEcYmhJQwCHBr4bzbJX//MrRLoXkkx7nzY1/RY7RrKp0IknubOH/jPtc24N5EnV26ZELnhw72Q7JsB2PlXUzKj8dHx15Kgv6meCIVJAs5udsUxlgPUcsgiwTE9HFFkBZZPv+pjpAfNG8d8ecUjidClB85kx2Tmqn3narfNADZQAB3vGA6GvswyaEU+BX/h6sO6SQY4IvlbWexoxFyiaa4SIeEUP/V37zHemiNP7HHEY7sUhnfYiB9iCk1+KxU77OeYRLklIX5ZuqcuJ7FnT/GOYwSDmdt2VkR3uHI28Cs/rKQdzHxOrz02/wJC/ybdKCCb7TUblI7H+xq0fqc+Khr4xQmRhIWjxNbpKxZqUcp3OHK/o2YYRLEGqdx3dwfDcMKe0+6VkIXu7l0+54EivNlQ1k0yBBg2McjSiXwaU+8QAM5hVT0KEaJTfZQulImxsN8swuQVF0HmNrRY4zrrSNX3SAtIiEKlDnlJfyN27ZOh/2W7p4HmkMOchFo0A4U8Aj5
+ HzLjGtHw
+ LSaKr/PvnEzfyoJqwnqJnmKfN9T1Sa+LDvbztENf7njbG0azV0iIfJqiTrDbIX7bdS0KaJSlP04YHPLL5TaaYaieZ4tCcOwj/tLtq1F4kw3f89ZoLkBCdy/TjXFdkWo5iRJiBTLUV+9dd7rBw8xu4bpmCyvtj1T8oKONxZkkZGfyTr4SkX03t0sHBhMLHAizzJQ/ddwT1JeBdaxP+pDCpe3QaoCN+CuCI+DCSqA1l5i1Ope7OhxsFEc0vSpZhQRHg0/kBQ7wcuSTHPgXuyePPq8fzPNKFToWh9//A4vBp6V0QRtZx9zKm3TWQf9h/9FsaY4jUuTmpZThzZVTjeGz4O/49VwAYmBsvG2KN+SsiPSrcUEtHlXLABMWDFFJrtqa8ASxSmU02zqZ8QAzysaNs/BOuYICyZAH7vV390lFy4F3zl9oh0mLu78PfPijvLtgXS/Z5ppNbySEXIswTZ2YJgnL4zw7AI5JGrWHvATAl29WIuVy4zSmcRnTKbcM+C/hbgZMV18Cghk4T6Z5mNM94FD2F1gH7MxVkp7tVh++jZQsKkrBb4sBA1fITfUVqykqT171lQ3E4IvnXO4krKSg01mmBK4uNCncn+mDpqc1eCUdyF8zimV9B02LmKuKE8r+nKa/muAc0jpiG+08B7v8OCVDLPrrA09pvhY/KbOvhh5a6qU/Hy98xEQwFCw9TP850cyCBAE9C7OT8TKY6Fh2l6AXU+jS6yoYMp12zLJfeJPLvyDl7lZvO9zDU7wARVV8St3g1g8HaZI9r3eMXLZyHKFB1yBoTy53CIsQA52UgPByorUN4IlsxnhirP6ymwPrq24rEa1OqNa8KwK/aCvFGzxA3cg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,379 +239,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Tue, Aug 12, 2025 at 09:52:25PM +0800, Qianfeng Rong wrote:
+> Commit 16f5dfbc851b ("gfp: include __GFP_NOWARN in GFP_NOWAIT") made
+> GFP_NOWAIT implicitly include __GFP_NOWARN.
+>
+> Therefore, explicit __GFP_NOWARN combined with GFP_NOWAIT (e.g.,
+> `GFP_NOWAIT | __GFP_NOWARN`) is now redundant.  Let's clean up these
+> redundant flags across subsystems.
+>
+> No functional changes.
+>
+> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+> Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
 
-On Thu, 2019-04-25 at 17:11 -0700, Nadav Amit wrote:
-> From: Rick Edgecombe <rick.p.edgecombe@intel.com>
->=20
-> Use new flag VM_FLUSH_RESET_PERMS for handling freeing of special
-> permissioned memory in vmalloc and remove places where memory was set RW
-> before freeing which is no longer needed. Don't track if the memory is RO
-> anymore because it is now tracked in vmalloc.
->=20
-> Cc: Daniel Borkmann <daniel@iogearbox.net>
-> Cc: Alexei Starovoitov <ast@kernel.org>
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+LGTM, I wonder if there are other such redundancies in the kernel?
+
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+
 > ---
->  include/linux/filter.h | 17 +++--------------
->  kernel/bpf/core.c      |  1 -
->  2 files changed, 3 insertions(+), 15 deletions(-)
->=20
-> diff --git a/include/linux/filter.h b/include/linux/filter.h
-> index 14ec3bdad9a9..7d3abde3f183 100644
-> --- a/include/linux/filter.h
-> +++ b/include/linux/filter.h
-> @@ -20,6 +20,7 @@
->  #include <linux/set_memory.h>
->  #include <linux/kallsyms.h>
->  #include <linux/if_vlan.h>
-> +#include <linux/vmalloc.h>
-> =20
->  #include <net/sch_generic.h>
-> =20
-> @@ -503,7 +504,6 @@ struct bpf_prog {
->  	u16			pages;		/* Number of allocated pages */
->  	u16			jited:1,	/* Is our filter JIT'ed? */
->  				jit_requested:1,/* archs need to JIT the prog */
-> -				undo_set_mem:1,	/* Passed set_memory_ro() checkpoint */
->  				gpl_compatible:1, /* Is filter GPL compatible? */
->  				cb_access:1,	/* Is control block accessed? */
->  				dst_needed:1,	/* Do we need dst entry? */
-> @@ -733,27 +733,17 @@ bpf_ctx_narrow_access_ok(u32 off, u32 size, u32 siz=
-e_default)
-> =20
->  static inline void bpf_prog_lock_ro(struct bpf_prog *fp)
->  {
-> -	fp->undo_set_mem =3D 1;
-> +	set_vm_flush_reset_perms(fp);
->  	set_memory_ro((unsigned long)fp, fp->pages);
->  }
-> =20
-> -static inline void bpf_prog_unlock_ro(struct bpf_prog *fp)
-> -{
-> -	if (fp->undo_set_mem)
-> -		set_memory_rw((unsigned long)fp, fp->pages);
-> -}
-> -
->  static inline void bpf_jit_binary_lock_ro(struct bpf_binary_header *hdr)
->  {
-> +	set_vm_flush_reset_perms(hdr);
->  	set_memory_ro((unsigned long)hdr, hdr->pages);
->  	set_memory_x((unsigned long)hdr, hdr->pages);
->  }
-> =20
-> -static inline void bpf_jit_binary_unlock_ro(struct bpf_binary_header *hd=
-r)
-> -{
-> -	set_memory_rw((unsigned long)hdr, hdr->pages);
-> -}
-> -
->  static inline struct bpf_binary_header *
->  bpf_jit_binary_hdr(const struct bpf_prog *fp)
->  {
-> @@ -789,7 +779,6 @@ void __bpf_prog_free(struct bpf_prog *fp);
-> =20
->  static inline void bpf_prog_unlock_free(struct bpf_prog *fp)
->  {
-> -	bpf_prog_unlock_ro(fp);
->  	__bpf_prog_free(fp);
->  }
-> =20
-> diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-> index ff09d32a8a1b..c605397c79f0 100644
-> --- a/kernel/bpf/core.c
-> +++ b/kernel/bpf/core.c
-> @@ -848,7 +848,6 @@ void __weak bpf_jit_free(struct bpf_prog *fp)
->  	if (fp->jited) {
->  		struct bpf_binary_header *hdr =3D bpf_jit_binary_hdr(fp);
-> =20
-> -		bpf_jit_binary_unlock_ro(hdr);
->  		bpf_jit_binary_free(hdr);
-> =20
->  		WARN_ON_ONCE(!bpf_prog_kallsyms_verify_off(fp));
-> --=20
-> 2.17.1
->=20
->=20
-> From mboxrd@z Thu Jan  1 00:00:00 1970
-> From: Nadav Amit <namit@vmware.com>
-> Subject: [PATCH v5 18/23] bpf: Use vmalloc special flag
-> Date: Thu, 25 Apr 2019 17:11:38 -0700
-> Message-ID: <20190426001143.4983-19-namit@vmware.com>
-> In-Reply-To: <20190426001143.4983-1-namit@vmware.com>
-> References: <20190426001143.4983-1-namit@vmware.com>
-> MIME-Version: 1.0
-> Content-Type: text/plain
-> To: Peter Zijlstra <peterz@infradead.org>, Borislav Petkov <bp@alien8.de>=
-, Andy Lutomirski <luto@kernel.org>, Ingo Molnar <mingo@redhat.com>
-> Cc: linux-kernel@vger.kernel.org, x86@kernel.org, hpa@zytor.com, Thomas G=
-leixner <tglx@linutronix.de>, Nadav Amit <nadav.amit@gmail.com>, Dave Hanse=
-n <dave.hansen@linux.intel.com>, linux_dti@icloud.com, linux-integrity@vger=
-.kernel.org, linux-security-module@vger.kernel.org, akpm@linux-foundation.o=
-rg, kernel-hardening@lists.openwall.com, linux-mm@kvack.org, will.deacon@ar=
-m.com, ard.biesheuvel@linaro.org, kristen@linux.intel.com, deneen.t.dock@in=
-tel.com, Rick Edgecombe <rick.p.edgecombe@intel.com>, Daniel Borkmann <dani=
-el@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>
-> List-ID: <kernel-hardening.lists.openwall.com>
->=20
-> From: Rick Edgecombe <rick.p.edgecombe@intel.com>
->=20
-> Use new flag VM_FLUSH_RESET_PERMS for handling freeing of special
-> permissioned memory in vmalloc and remove places where memory was set RW
-> before freeing which is no longer needed. Don't track if the memory is RO
-> anymore because it is now tracked in vmalloc.
->=20
-> Cc: Daniel Borkmann <daniel@iogearbox.net>
-> Cc: Alexei Starovoitov <ast@kernel.org>
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> v1->v2:
+> - Added a modification to remove redundant __GFP_NOWARN in
+>   mm/damon/ops-common.c
 > ---
->  include/linux/filter.h | 17 +++--------------
->  kernel/bpf/core.c      |  1 -
->  2 files changed, 3 insertions(+), 15 deletions(-)
->=20
-> diff --git a/include/linux/filter.h b/include/linux/filter.h
-> index 14ec3bdad9a9..7d3abde3f183 100644
-> --- a/include/linux/filter.h
-> +++ b/include/linux/filter.h
-> @@ -20,6 +20,7 @@
->  #include <linux/set_memory.h>
->  #include <linux/kallsyms.h>
->  #include <linux/if_vlan.h>
-> +#include <linux/vmalloc.h>
-> =20
->  #include <net/sch_generic.h>
-> =20
-> @@ -503,7 +504,6 @@ struct bpf_prog {
->  	u16			pages;		/* Number of allocated pages */
->  	u16			jited:1,	/* Is our filter JIT'ed? */
->  				jit_requested:1,/* archs need to JIT the prog */
-> -				undo_set_mem:1,	/* Passed set_memory_ro() checkpoint */
->  				gpl_compatible:1, /* Is filter GPL compatible? */
->  				cb_access:1,	/* Is control block accessed? */
->  				dst_needed:1,	/* Do we need dst entry? */
-> @@ -733,27 +733,17 @@ bpf_ctx_narrow_access_ok(u32 off, u32 size, u32 siz=
-e_default)
-> =20
->  static inline void bpf_prog_lock_ro(struct bpf_prog *fp)
->  {
-> -	fp->undo_set_mem =3D 1;
-> +	set_vm_flush_reset_perms(fp);
->  	set_memory_ro((unsigned long)fp, fp->pages);
->  }
-> =20
-> -static inline void bpf_prog_unlock_ro(struct bpf_prog *fp)
-> -{
-> -	if (fp->undo_set_mem)
-> -		set_memory_rw((unsigned long)fp, fp->pages);
-> -}
-> -
->  static inline void bpf_jit_binary_lock_ro(struct bpf_binary_header *hdr)
->  {
-> +	set_vm_flush_reset_perms(hdr);
->  	set_memory_ro((unsigned long)hdr, hdr->pages);
->  	set_memory_x((unsigned long)hdr, hdr->pages);
->  }
-> =20
-> -static inline void bpf_jit_binary_unlock_ro(struct bpf_binary_header *hd=
-r)
-> -{
-> -	set_memory_rw((unsigned long)hdr, hdr->pages);
-> -}
-> -
->  static inline struct bpf_binary_header *
->  bpf_jit_binary_hdr(const struct bpf_prog *fp)
->  {
-> @@ -789,7 +779,6 @@ void __bpf_prog_free(struct bpf_prog *fp);
-> =20
->  static inline void bpf_prog_unlock_free(struct bpf_prog *fp)
->  {
-> -	bpf_prog_unlock_ro(fp);
->  	__bpf_prog_free(fp);
->  }
-> =20
-> diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-> index ff09d32a8a1b..c605397c79f0 100644
-> --- a/kernel/bpf/core.c
-> +++ b/kernel/bpf/core.c
-> @@ -848,7 +848,6 @@ void __weak bpf_jit_free(struct bpf_prog *fp)
->  	if (fp->jited) {
->  		struct bpf_binary_header *hdr =3D bpf_jit_binary_hdr(fp);
-> =20
-> -		bpf_jit_binary_unlock_ro(hdr);
->  		bpf_jit_binary_free(hdr);
-> =20
->  		WARN_ON_ONCE(!bpf_prog_kallsyms_verify_off(fp));
-
-There are issues with the TLB management on sparc64 (primarily sun4u) that =
-were introduced
-by this patch. A typical backtrace after a crash looks like this:
-
-[  122.085803] Unable to handle kernel NULL pointer dereference
-[  122.160227] tsk->{mm,active_mm}->context =3D 000000000000009d
-[  122.233502] tsk->{mm,active_mm}->pgd =3D fff0000231d14000
-[  122.302118]               \|/ ____ \|/
-[  122.302118]               "@'/ .. \`@"
-[  122.302118]               /_| \__/ |_\
-[  122.302118]                  \__U_/
-[  122.495420] systemd(1): Oops [#1]
-[  122.538874] CPU: 0 PID: 1 Comm: systemd Not tainted 5.2.0-3-sparc64 #1 D=
-ebian 5.2.17-1
-[  122.642957] TSTATE: 0000004411001601 TPC: 000000000061cd94 TNPC: 0000000=
-00061cd98 Y: 00000000    Not tainted
-[  122.772207] TPC: <vfs_getattr_nosec+0x34/0xc0>
-[  122.830529] g0: 0000000000000000 g1: 00000000000007ff g2: 00000000000000=
-00 g3: 00000000000007df
-[  122.944902] g4: fff00002381771c0 g5: 0000000000000003 g6: fff00002381780=
-00 g7: 0000000000000000
-[  123.059275] o0: fff000023817be18 o1: 0000000000000000 o2: 00000000000000=
-00 o3: fff000023817be18
-[  123.173658] o4: 0000000000000000 o5: 0000000000000000 sp: fff000023817b3=
-41 ret_pc: 000000000061cd7c
-[  123.292611] RPC: <vfs_getattr_nosec+0x1c/0xc0>
-[  123.350933] l0: 0000010000204010 l1: fff0000101600e28 l2: e4e45b5b8ae446=
-28 l3: 0000000000000000
-[  123.465311] l4: 0000000000000000 l5: 0000000000000000 l6: 00000000000000=
-00 l7: fff0000100bff140
-[  123.579692] i0: fff000023817bd50 i1: fff000023817be18 i2: 00000000000000=
-01 i3: 0000000000000900
-[  123.694060] i4: 0000000000000000 i5: fff00002320c1210 i6: fff000023817b3=
-f1 i7: 000000000061ce48
-[  123.808439] I7: <vfs_getattr+0x28/0x40>
-[  123.858759] Call Trace:
-[  123.890785]  [000000000061ce48] vfs_getattr+0x28/0x40
-[  123.957123]  [000000000061cf64] vfs_statx+0x84/0xc0
-[  124.021173]  [000000000061d918] sys_statx+0x38/0x60
-[  124.085226]  [0000000000406154] linux_sparc_syscall+0x34/0x44
-[  124.160708] Disabling lock debugging due to kernel taint
-[  124.230481] Caller[000000000061ce48]: vfs_getattr+0x28/0x40
-[  124.303680] Caller[000000000061cf64]: vfs_statx+0x84/0xc0
-[  124.374593] Caller[000000000061d918]: sys_statx+0x38/0x60
-[  124.445503] Caller[0000000000406154]: linux_sparc_syscall+0x34/0x44
-[  124.527857] Caller[fff00001013fde40]: 0xfff00001013fde40
-[  124.597621] Instruction DUMP:
-[  124.597623]  c2264000=20
-[  124.636505]  861027df=20
-[  124.667386]  c45f6028=20
-[  124.698267] <c458a050>
-[  124.729148]  8408a401=20
-[  124.760031]  83789403=20
-[  124.790910]  c2264000=20
-[  124.821801]  c207600c=20
-[  124.852675]  80886800=20
-[  124.883556]=20
-[  124.954015] Kernel panic - not syncing: Attempted to kill init! exitcode=
-=3D0x00000009
-[  125.054721] Press Stop-A (L1-A) from sun keyboard or send break
-[  125.054721] twice on console to return to the boot prom
-[  125.201103] ---[ end Kernel panic - not syncing: Attempted to kill init!=
- exitcode=3D0x00000009 ]---
-
-I suspect that the main issue is to be found in the following patch which i=
-ntroduced VM_FLUSH_RESET_PERMS
-which may not work as expected on sun4u SPARC systems:
-
-commit 868b104d7379e28013e9d48bdd2db25e0bdcf751
-Author: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Date:   Thu Apr 25 17:11:36 2019 -0700
-
-    mm/vmalloc: Add flag for freeing of special permsissions
-  =20
-    Add a new flag VM_FLUSH_RESET_PERMS, for enabling vfree operations to
-    immediately clear executable TLB entries before freeing pages, and hand=
-le
-    resetting permissions on the directmap. This flag is useful for any kin=
-d
-    of memory with elevated permissions, or where there can be related
-    permissions changes on the directmap. Today this is RO+X and RO memory.
-  =20
-    Although this enables directly vfreeing non-writeable memory now,
-    non-writable memory cannot be freed in an interrupt because the allocat=
-ion
-    itself is used as a node on deferred free list. So when RO memory needs=
- to
-    be freed in an interrupt the code doing the vfree needs to have its own
-    work queue, as was the case before the deferred vfree list was added to
-    vmalloc.
-  =20
-    For architectures with set_direct_map_ implementations this whole opera=
-tion
-    can be done with one TLB flush when centralized like this. For others w=
-ith
-    directmap permissions, currently only arm64, a backup method using
-    set_memory functions is used to reset the directmap. When arm64 adds
-    set_direct_map_ functions, this backup can be removed.
-  =20
-    When the TLB is flushed to both remove TLB entries for the vmalloc rang=
-e
-    mapping and the direct map permissions, the lazy purge operation could =
-be
-    done to try to save a TLB flush later. However today vm_unmap_aliases
-    could flush a TLB range that does not include the directmap. So a helpe=
-r
-    is added with extra parameters that can allow both the vmalloc address =
-and
-    the direct mapping to be flushed during this operation. The behavior of=
- the
-    normal vm_unmap_aliases function is unchanged.
-  =20
-    Suggested-by: Dave Hansen <dave.hansen@intel.com>
-    Suggested-by: Andy Lutomirski <luto@kernel.org>
-    Suggested-by: Will Deacon <will.deacon@arm.com>
-    Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-    Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-    Cc: <akpm@linux-foundation.org>
-    Cc: <ard.biesheuvel@linaro.org>
-    Cc: <deneen.t.dock@intel.com>
-    Cc: <kernel-hardening@lists.openwall.com>
-    Cc: <kristen@linux.intel.com>
-    Cc: <linux_dti@icloud.com>
-    Cc: Borislav Petkov <bp@alien8.de>
-    Cc: H. Peter Anvin <hpa@zytor.com>
-    Cc: Linus Torvalds <torvalds@linux-foundation.org>
-    Cc: Nadav Amit <nadav.amit@gmail.com>
-    Cc: Rik van Riel <riel@surriel.com>
-    Cc: Thomas Gleixner <tglx@linutronix.de>
-    Link: https://lkml.kernel.org/r/20190426001143.4983-17-namit@vmware.com
-    Signed-off-by: Ingo Molnar <mingo@kernel.org>
-
-The crash will always happen when support for transparent huge pages is ena=
-bled (CONFIG_TRANSPARENT_HUGEPAGE=3Dy
-and CONFIG_TRANSPARENT_HUGEPAGE_ALWAYS=3Dy) and in particular on sun4u mach=
-ines (but not so much the more modern
-sun4v machines although I cannot rule out that the crashes sometimes happen=
-ing on these machines is related
-to this bug).
-
-With THP enabled, the crash can be delayed by either reverting d563d678aa0b=
- or, for example, by this crude hack:
-
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 6dbcdceecae1..128118593b48 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -2948,8 +2948,8 @@ static void _vm_unmap_aliases(unsigned long start, un=
-signed long end, int flush)
-        }
-        free_purged_blocks(&purge_list);
-=20
--       if (!__purge_vmap_area_lazy(start, end, false) && flush)
--               flush_tlb_kernel_range(start, end);
-+       //      if (!__purge_vmap_area_lazy(start, end, false) && flush)
-+       //      flush_tlb_kernel_range(start, end);
-        mutex_unlock(&vmap_purge_lock);
- }
-
-Please see also the discussion in [1].
-
-Thanks,
-Adrian
-
-> [1] https://lore.kernel.org/all/35f5ec4eda8a7dbeeb7df9ec0be5c0b062c509f7.=
-camel@physik.fu-berlin.de/
-
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+>  mm/damon/ops-common.c | 2 +-
+>  mm/filemap.c          | 2 +-
+>  mm/mmu_gather.c       | 4 ++--
+>  mm/rmap.c             | 2 +-
+>  mm/vmalloc.c          | 2 +-
+>  5 files changed, 6 insertions(+), 6 deletions(-)
+>
+> diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+> index 99321ff5cb92..b43595730f08 100644
+> --- a/mm/damon/ops-common.c
+> +++ b/mm/damon/ops-common.c
+> @@ -303,7 +303,7 @@ static unsigned int __damon_migrate_folio_list(
+>  		 * instead of migrated.
+>  		 */
+>  		.gfp_mask = (GFP_HIGHUSER_MOVABLE & ~__GFP_RECLAIM) |
+> -			__GFP_NOWARN | __GFP_NOMEMALLOC | GFP_NOWAIT,
+> +			__GFP_NOMEMALLOC | GFP_NOWAIT,
+>  		.nid = target_nid,
+>  	};
+>
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 4e5c9544fee4..c21e98657e0b 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -1961,7 +1961,7 @@ struct folio *__filemap_get_folio(struct address_space *mapping, pgoff_t index,
+>  			gfp &= ~__GFP_FS;
+>  		if (fgp_flags & FGP_NOWAIT) {
+>  			gfp &= ~GFP_KERNEL;
+> -			gfp |= GFP_NOWAIT | __GFP_NOWARN;
+> +			gfp |= GFP_NOWAIT;
+>  		}
+>  		if (WARN_ON_ONCE(!(fgp_flags & (FGP_LOCK | FGP_FOR_MMAP))))
+>  			fgp_flags |= FGP_LOCK;
+> diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
+> index b49cc6385f1f..374aa6f021c6 100644
+> --- a/mm/mmu_gather.c
+> +++ b/mm/mmu_gather.c
+> @@ -32,7 +32,7 @@ static bool tlb_next_batch(struct mmu_gather *tlb)
+>  	if (tlb->batch_count == MAX_GATHER_BATCH_COUNT)
+>  		return false;
+>
+> -	batch = (void *)__get_free_page(GFP_NOWAIT | __GFP_NOWARN);
+> +	batch = (void *)__get_free_page(GFP_NOWAIT);
+>  	if (!batch)
+>  		return false;
+>
+> @@ -364,7 +364,7 @@ void tlb_remove_table(struct mmu_gather *tlb, void *table)
+>  	struct mmu_table_batch **batch = &tlb->batch;
+>
+>  	if (*batch == NULL) {
+> -		*batch = (struct mmu_table_batch *)__get_free_page(GFP_NOWAIT | __GFP_NOWARN);
+> +		*batch = (struct mmu_table_batch *)__get_free_page(GFP_NOWAIT);
+>  		if (*batch == NULL) {
+>  			tlb_table_invalidate(tlb);
+>  			tlb_remove_table_one(table);
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index 568198e9efc2..7baa7385e1ce 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -285,7 +285,7 @@ int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *src)
+>  	list_for_each_entry_reverse(pavc, &src->anon_vma_chain, same_vma) {
+>  		struct anon_vma *anon_vma;
+>
+> -		avc = anon_vma_chain_alloc(GFP_NOWAIT | __GFP_NOWARN);
+> +		avc = anon_vma_chain_alloc(GFP_NOWAIT);
+>  		if (unlikely(!avc)) {
+>  			unlock_anon_vma_root(root);
+>  			root = NULL;
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 6dbcdceecae1..90c3de1a0417 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -5177,7 +5177,7 @@ static void vmap_init_nodes(void)
+>  	int n = clamp_t(unsigned int, num_possible_cpus(), 1, 128);
+>
+>  	if (n > 1) {
+> -		vn = kmalloc_array(n, sizeof(*vn), GFP_NOWAIT | __GFP_NOWARN);
+> +		vn = kmalloc_array(n, sizeof(*vn), GFP_NOWAIT);
+>  		if (vn) {
+>  			/* Node partition is 16 pages. */
+>  			vmap_zone_size = (1 << 4) * PAGE_SIZE;
+> --
+> 2.34.1
+>
 
