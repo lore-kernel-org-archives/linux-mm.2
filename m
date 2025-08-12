@@ -2,201 +2,179 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 705A6CA0EC4
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 13:23:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EB6F8CA0EC4
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 13:26:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10C5C8E0128; Tue, 12 Aug 2025 09:23:07 -0400 (EDT)
+	id 7034E8E0129; Tue, 12 Aug 2025 09:26:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DEE48E00E5; Tue, 12 Aug 2025 09:23:07 -0400 (EDT)
+	id 6DAA28E00E5; Tue, 12 Aug 2025 09:26:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0F988E0128; Tue, 12 Aug 2025 09:23:06 -0400 (EDT)
+	id 5C9198E0129; Tue, 12 Aug 2025 09:26:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DF5868E00E5
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 09:23:06 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 46B0A8E00E5
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 09:26:51 -0400 (EDT)
 Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7C527160331
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:23:06 +0000 (UTC)
-X-FDA: 83768171172.27.6C1E788
-Received: from SEYPR02CU001.outbound.protection.outlook.com (mail-koreacentralazon11013033.outbound.protection.outlook.com [40.107.44.33])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E4338A0011
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:23:02 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=vivo.com header.s=selector2 header.b=Xq5vXzOT;
-	dmarc=pass (policy=quarantine) header.from=vivo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf15.hostedemail.com: domain of rongqianfeng@vivo.com designates 40.107.44.33 as permitted sender) smtp.mailfrom=rongqianfeng@vivo.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755004983; a=rsa-sha256;
-	cv=pass;
-	b=fp1UiYVWW4qw/32ZpO4jMiZJJwSf9B0zNqfdz1TITIB69ITiK0Kws6PAjaHD0zNJeWjhYm
-	Ug29fQsojX/HlxeNoeAmsB+Zzhd+ccy6jGCAE/2LQdr0ZL33bI28iSfG04EWWOlajtbz8L
-	Mdu5By20iG0dn4/AkDMcf50UTENtPJs=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=vivo.com header.s=selector2 header.b=Xq5vXzOT;
-	dmarc=pass (policy=quarantine) header.from=vivo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf15.hostedemail.com: domain of rongqianfeng@vivo.com designates 40.107.44.33 as permitted sender) smtp.mailfrom=rongqianfeng@vivo.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755004983;
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 19D741602FC
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:26:51 +0000 (UTC)
+X-FDA: 83768180622.27.BCC53C5
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 46803A0002
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:26:48 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="QjPMH/oc";
+	spf=pass (imf25.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755005209;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vqmHXe9pVein9z7nd/rEZ8jJ+KJnZwt+Y9ZPbcBERFE=;
-	b=49b99a+z29k8sVCaNByiK5ahAl6yoDeVRXWNcbwCNYl6UX3AHPxy4UlCGgqQ+IjqVB8DRE
-	CgsA32f0WqXXPnH00Hn6x4vB4w7rVw01cMlTc6huhu+q0POWs+f5B5Lh1zzC1YMuMCcpKD
-	7isZyYlqwq7/IM4sjYXU979Yy2po7mk=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=utcIynnM4c563z7poikWu58ZRDVRl+2wZpmz3dKBLx9evAotly706C6acb1hg7YOP/4mAnELXHBew5zSB4QyJYAPPTYDGTq3oJkAyJWagSy37po59xN5wyYYnb+sOiZ+rJsSWuRlct/N3T7RtEfnHK1zqBheao5N+NMSukMoBoDCfCbUhOfgQMbpTaQx+Du/0e/wZ0tYATvattFkvQDE1m7l8OxM/80LKbLnOHJtXHN+o0lcy8zmxDU5Yrdto9CG//Md8tGdH68Wh/utF+8B7YuafyA9svdjWAXDDKY5wWIG7KM3KUm/anTV7C12Juekj5Qcyk2GIkJHmLpuDJBAyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vqmHXe9pVein9z7nd/rEZ8jJ+KJnZwt+Y9ZPbcBERFE=;
- b=tmATwDqcg4N53zlcbF1XUA2yrI6dDWl2cHdK1nmv1QzgGhL5KZIoU3WUQTMqSaFN86N+qM5ulJ5l/c53wF4v8wskhcZ7VmuCuduVvbQH49M9hOlpnqLp8oZmNSOA5E99Ov11A3+69YUqae738xPIvxMvmu1E9KpYZD2BUq6YKDoALqrvcuT1FWtHHOEmy8LLWwsWRCAFknG9QpMqgpH9wHzNuX5VbHkyOT/+N4ZzIxjdNwzpjNglkowvOzpUdknxPwU8GLYy2LbXYvItx9Xf3G5/Fp6oyLHUpv8nzMzc6xnQgWKn6LmF2f/TOCErsSGTpdKKK8zAo4hAz0fMBLv2gA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vqmHXe9pVein9z7nd/rEZ8jJ+KJnZwt+Y9ZPbcBERFE=;
- b=Xq5vXzOTIR1ZGTQ9eMkC8o44MEx5562pEzwpxRViPEDvaQVqByopUQMp2BwHRBu/lwgiRpr/oDLEcR7aILQzoFailNe5/kl+/BMfbtLUrPtDM7sceKIalHmei2UFLo7gargnLdbVankopEe1GI95RqMXGz+icZlORS/WPVZmh1iFUF/E6IPsMAqwvPmb+JIXHUOvyEHLgNEgSbuZR2A3UKHGOygCcek5/wByIXkjWBlxfF4egbeC5MdVS5cUaHNqUprMvQMzfaDidu1neGiZ7Zien/uJxkiJqj4EshCSE7tNpZF2hG6d+NpuONiYVsyWb2uTB8Td9PZ0vyouy5xrLw==
-Received: from SI2PR06MB5140.apcprd06.prod.outlook.com (2603:1096:4:1af::9) by
- KUZPR06MB8073.apcprd06.prod.outlook.com (2603:1096:d10:43::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9009.22; Tue, 12 Aug 2025 13:22:58 +0000
-Received: from SI2PR06MB5140.apcprd06.prod.outlook.com
- ([fe80::468a:88be:bec:666]) by SI2PR06MB5140.apcprd06.prod.outlook.com
- ([fe80::468a:88be:bec:666%4]) with mapi id 15.20.9009.018; Tue, 12 Aug 2025
- 13:22:58 +0000
-Message-ID: <0e01b83c-17f7-40b7-a9ba-3118b281a72d@vivo.com>
-Date: Tue, 12 Aug 2025 21:22:51 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: remove redundant __GFP_NOWARN
-Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
- <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Rik van Riel
- <riel@surriel.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Uladzislau Rezki <urezki@gmail.com>,
- linux-fsdevel@vger.kernel.org, sj@kernel.org, damon@lists.linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
-References: <20250812095747.121135-1-rongqianfeng@vivo.com>
- <aJs9dPMdY_W5uZdc@hyeyoo>
-From: Qianfeng Rong <rongqianfeng@vivo.com>
-In-Reply-To: <aJs9dPMdY_W5uZdc@hyeyoo>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: TY2PR01CA0021.jpnprd01.prod.outlook.com
- (2603:1096:404:a::33) To SI2PR06MB5140.apcprd06.prod.outlook.com
- (2603:1096:4:1af::9)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=2lO1JVCFxL3U/ib6c/wvRKRlvNz5jZEUGFdS/ayOyBI=;
+	b=zUG+I7oFx1L20xuyflLY9SIFizv7EHmZiJqsIzK+sgBoSkl1QC8M3WtyWu4IlawVgGCjyB
+	AZ0cuMOw5YtBaHgw3hmnhJRSZrSM/SfjiL0FtGjAXX+IDQe+IydNTEcJmcpXfA8GnPYhrL
+	m6L6csTwc0Cy3nE8YXNRz6/xYSQShMI=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="QjPMH/oc";
+	spf=pass (imf25.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755005209; a=rsa-sha256;
+	cv=none;
+	b=QTnf3b5ya8qCbN9S32vZQ/o+jinZFZMpog5zPBh2mCpa1A9lwhZgKeY02u6SgmhwWnlNsW
+	nUhfrlmOG3MAgh3dEbZH5DH1PgVxe3e9ADLGWeB1UF32KrM3973cCjBj/Gb6s5l2/AkVBl
+	TVHdPc+M/FCBSgum5dd9M3eekt+5AHg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755005209; x=1786541209;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=3vjNsBiRH4qTtxkXlQjP9ZJdLJ+PMfRGcHXqnMgrRUE=;
+  b=QjPMH/ocYsoQHGGe1FSnCo42J8PAuLvgUvM62xMhbiAXst9758mEKpEp
+   2XLVpLH23rgeQ3+gHah5naA8vN3QkMmmJMdujMKkRYhxBwr6fCXw3hVso
+   0FRXV9OE+4lG3qp/tGLvvjx9yEPbACB3ESKJ6fdxW09Q/WSJ5kriGbSz7
+   dqWIntavRZiU5SaiOHySt19Tifa9hkCaomGoMVKHYk8SLE8a2eI9U3tYE
+   1EjS1YZB8eZjcwK8DRiZwws6c10F+YXa2AoQ1/yVfp1DS65P1Nq8Q6uZA
+   MVuy2blzOHjyawwGwtIvh9pn1VMyt+P7zcx2XOwMOqklNXEECy9jdC3tg
+   A==;
+X-CSE-ConnectionGUID: 2FxgArvYT1WYv0wCvnS0Kg==
+X-CSE-MsgGUID: HL9ZRw9LR826lCmXCpfVvw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="60903130"
+X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
+   d="scan'208";a="60903130"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 06:24:59 -0700
+X-CSE-ConnectionGUID: kayhpomIS0akEcqtG//q8Q==
+X-CSE-MsgGUID: VWXG4HKqROyugDxAls9HoQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
+   d="scan'208";a="165831255"
+Received: from vpanait-mobl.ger.corp.intel.com (HELO wieczorr-mobl1.intel.com) ([10.245.245.54])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 06:24:35 -0700
+From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+To: nathan@kernel.org,
+	arnd@arndb.de,
+	broonie@kernel.org,
+	Liam.Howlett@oracle.com,
+	urezki@gmail.com,
+	will@kernel.org,
+	kaleshsingh@google.com,
+	rppt@kernel.org,
+	leitao@debian.org,
+	coxu@redhat.com,
+	surenb@google.com,
+	akpm@linux-foundation.org,
+	luto@kernel.org,
+	jpoimboe@kernel.org,
+	changyuanl@google.com,
+	hpa@zytor.com,
+	dvyukov@google.com,
+	kas@kernel.org,
+	corbet@lwn.net,
+	vincenzo.frascino@arm.com,
+	smostafa@google.com,
+	nick.desaulniers+lkml@gmail.com,
+	morbo@google.com,
+	andreyknvl@gmail.com,
+	alexander.shishkin@linux.intel.com,
+	thiago.bauermann@linaro.org,
+	catalin.marinas@arm.com,
+	ryabinin.a.a@gmail.com,
+	jan.kiszka@siemens.com,
+	jbohac@suse.cz,
+	dan.j.williams@intel.com,
+	joel.granados@kernel.org,
+	baohua@kernel.org,
+	kevin.brodsky@arm.com,
+	nicolas.schier@linux.dev,
+	pcc@google.com,
+	andriy.shevchenko@linux.intel.com,
+	wei.liu@kernel.org,
+	bp@alien8.de,
+	ada.coupriediaz@arm.com,
+	xin@zytor.com,
+	pankaj.gupta@amd.com,
+	vbabka@suse.cz,
+	glider@google.com,
+	jgross@suse.com,
+	kees@kernel.org,
+	jhubbard@nvidia.com,
+	joey.gouly@arm.com,
+	ardb@kernel.org,
+	thuth@redhat.com,
+	pasha.tatashin@soleen.com,
+	kristina.martsenko@arm.com,
+	bigeasy@linutronix.de,
+	maciej.wieczor-retman@intel.com,
+	lorenzo.stoakes@oracle.com,
+	jason.andryuk@amd.com,
+	david@redhat.com,
+	graf@amazon.com,
+	wangkefeng.wang@huawei.com,
+	ziy@nvidia.com,
+	mark.rutland@arm.com,
+	dave.hansen@linux.intel.com,
+	samuel.holland@sifive.com,
+	kbingham@kernel.org,
+	trintaeoitogc@gmail.com,
+	scott@os.amperecomputing.com,
+	justinstitt@google.com,
+	kuan-ying.lee@canonical.com,
+	maz@kernel.org,
+	tglx@linutronix.de,
+	samitolvanen@google.com,
+	mhocko@suse.com,
+	nunodasneves@linux.microsoft.com,
+	brgerst@gmail.com,
+	willy@infradead.org,
+	ubizjak@gmail.com,
+	peterz@infradead.org,
+	mingo@redhat.com,
+	sohil.mehta@intel.com
+Cc: linux-mm@kvack.org,
+	linux-kbuild@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	x86@kernel.org,
+	llvm@lists.linux.dev,
+	kasan-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 00/18] kasan: x86: arm64: KASAN tag-based mode for x86
+Date: Tue, 12 Aug 2025 15:23:36 +0200
+Message-ID: <cover.1755004923.git.maciej.wieczor-retman@intel.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SI2PR06MB5140:EE_|KUZPR06MB8073:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7ad5eb5b-0dc4-4690-f3dc-08ddd9a35a88
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?M0JiTEtvMldnM0N2enlIemEzUjRPaVc3eWRiSkM0Qk0xdW5NZXU5SHVkbUZw?=
- =?utf-8?B?d25RQmVOQ1FNQVhRSXF0V0VCamdqczlkUnN6bk5EczZsZXJyTG03RklmN2lF?=
- =?utf-8?B?L3R6R1ZxaGZyWU5jcFJsdzFRSGV5T21vbVY1RkhXWkZCREJRdjdxYjZOV21J?=
- =?utf-8?B?bE9kTDNpcDFPWmFpN1BROExyOTcybFFJNnNmOHRRM0FGT0x5S3VpZDU1TTBJ?=
- =?utf-8?B?TzBGZ2M3aytIR2hWNzkvRWVVbjdXUXhnMm04bjVUNXVRUzJ2bm9CdTMyT2Vo?=
- =?utf-8?B?SVlOeTVGZUxEUmgyaDc1ME9USXhQL1g3VFh0ZE5Sa01GZlg5eCtuaDh5K1pT?=
- =?utf-8?B?NW5UNkFLTjNpQ2Q1ZVRWMm4xb3pwZUIvY2hHWDE3TWVLNGE2ajdRZ1pPR3Ft?=
- =?utf-8?B?OGFKNnJlQi9LalNIWTJnNUhFcStUS3RvcjlhQ0NDTzhidFJZRE5JcXhqWjZz?=
- =?utf-8?B?dElRS284NUpEVkN1V1NoWC9zL0pNSkkxTU83TmNxWkRBRmRIQmFXU2RXUm84?=
- =?utf-8?B?RW1mcDhhYXhTSHh2YnlSS090UktYSHdvS0k2d1NFNkpMWnhxMEczWHpRbXBC?=
- =?utf-8?B?eTZ3elRaSUhlUSt2SG9wS2VTUEQ5SC84cTJyWW9hL0NTY0hLeFZ1Mk82ZVdY?=
- =?utf-8?B?aDRGaXFoVm5SUVF4cEJ6dVM0QmdhSVZQalNKczRnYnYyVkZGSlNPR0h0amx1?=
- =?utf-8?B?NUU2NnFWL1J6WmptaHhEKzloY3FUTkxNVlpkejhLTzdydmFvRTJXR2lrMExR?=
- =?utf-8?B?UWU4aE5qeGFrTnM2cS9ZYjArR3pZTTFRV0czYmhNVEdDMVYwOVZCcmh5MnZq?=
- =?utf-8?B?cEprRkN6RjR2UmluUm9SNEREcGI5cE1lTWpiQ01IS2R4WFFnOVF0L2tTUlRG?=
- =?utf-8?B?MVhYSkY4WG5Td1JnSEtWYzVPTll0UW9kVWRscnFJR2Q3bUhZcVZjNytSSzVq?=
- =?utf-8?B?clNaK1JJaUZ5SGMvN2QydkQvL0xVTkpaWUIwQXJ0OTFYazdrb0duMHBBY3FJ?=
- =?utf-8?B?R2luWlJnMzdrRVRyNCtlTjlja0IxRUd1YkZvSTBmQVFDd1JpY2FNVzIxbG0v?=
- =?utf-8?B?OWwwMkhSNjFURHVzVWE0aXRVVlc5cDJmOVdnMXR2U2loN2JrWUkvVUxwVjlR?=
- =?utf-8?B?MFNXQ3drQjZoWUpuQkg4ODBsNUs3eGxaTjMzRGhPaWFXdloxZHhIcHFHVGlZ?=
- =?utf-8?B?ZlFkWExHOTk4b1NWY3ZZcHVOWVgyVEFudDNGNGZHb084UzIxNzBYSUM0QTZa?=
- =?utf-8?B?N3l1SWRjZXlSQVl3aXVvSHBCS3NCeVhya0FOZ0tFYVo3d2ZOcDRyNEZYQXZw?=
- =?utf-8?B?b3RXL1ZiMjluMTJFNDNaOEhwOXFEQUJxU3Rid3ZIdTZvY0NNZk9TU2RyVTJj?=
- =?utf-8?B?Y2I0SGFVV3ZmNXFmU0FROEdQY3I3ZWtxKy9SN0E4dnVORklpVHdtcmh0L0U3?=
- =?utf-8?B?Zk1WWjg3dGs5UlRoNlJGbCtma2s5eWR4anp0dWRQZnJ2NUJ1cXlvdHdISkht?=
- =?utf-8?B?bk1jK0ZMaysxcnBoVnpnTzZOZVQ3VUFMWnB2Um5ESGd0NDB5N3p6OGJVMUNj?=
- =?utf-8?B?Q05LUHRtK3RQZ2JJTmxOSkxpcjJCVFpxdm5NRm9Qd0VUMk9UMDM2cmlBYWtT?=
- =?utf-8?B?dWxMOFdMUm4rYlJ6MGZ6ZUFSY1gwcnFKOVVSWnVMSndCOEhyUUZhRXJkWE9q?=
- =?utf-8?B?d3BPYVZpZ0ZSRDFBUitJRUpSRlZPT2s2bE01dXZxTFVDSlBXMHIxM1ZLdDF3?=
- =?utf-8?B?N3IwR2ZpL2g2eUJka2tETndiUWF5OGVZaU9LUDdJcndFVEF4QXRFYXZqWDBs?=
- =?utf-8?B?R0Rib05ZRVFSUkVvK0ltOEJFaThTRU10eGpoVGFoNmg5em1rM2s1a3B5aUU3?=
- =?utf-8?B?TS9IS3pwcEdZUHFiNUFGVnRJclZyRWNlQkJQY0ZrbU1JdWEza215Q0VyVTB3?=
- =?utf-8?Q?JrR/JvmurG0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SI2PR06MB5140.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?b054UnI5Qm9YYmIwOVl2emhtY3BUNHkrR2w5eU5yWldUV3lSS0hyeWdqa2dt?=
- =?utf-8?B?czFjY1BsUnc1RGVvcm1Od2pjKzlPUkJidzF5a3dMZmZxc29ic3hldnpCeEd2?=
- =?utf-8?B?VXRwT0kvczhaS3h5V2RlU1pDOTkyQnlPUnVDejFLOTd4Q1M2cUNGZWN4L2tP?=
- =?utf-8?B?bGwrRTMxK3BkWG0wNE9JOXFjdGRCNUo5V200b2lEcVd3b1lWWG8reTBVRzBi?=
- =?utf-8?B?Z0VReTdta0hYdjliazhYRFVhMk4wUWZERzdmbDN4a0ZtOXl2OGc1N0lGVDA4?=
- =?utf-8?B?TWpVK0pjNisrQVRnNEhMNEc5V25vM1ZSOHpQNDQ5cEg5RDA4aFlpN3huckI3?=
- =?utf-8?B?MEdmME1ESVRHTERxR3Z6Sys1VTk4MXluRnFVZXh2ZEx4enIwcm5MR2ZCdWNQ?=
- =?utf-8?B?dkFqVGdBcTMreUIxN1NCVWtBR0YxbjRHc1FMN1ZZb1ZteVJoVjYxRHRDWi9z?=
- =?utf-8?B?VGQzRGxTemJwUTlIdkdjSXM3Zk9FQ3VMU2hlT2RjTFpGbC9OclpxQ09wN2x6?=
- =?utf-8?B?S2ZSWjIwWVczbzZJaG4waFJESWY0Ty9xYjFjeDhMbUZuMCtaNGFZZFpTZUlT?=
- =?utf-8?B?OGcxK3J6VlBPQU1KSHI1cG1QZ0kvaGgySEdhbVh6Q1RlY01CRDFaWjZURzkx?=
- =?utf-8?B?VE5LZCtlVEYwQ3pBVytzQURKck9IRnBrT2lYeTBDZ2RHRXF1dWU4SjFUSW84?=
- =?utf-8?B?dGd3REZ4NXlYQ1VVQ1FKdW5rN0FwakVEYmFQUDVibXhOUldNNzFSd1BBL0h5?=
- =?utf-8?B?UUw1SE1QeUMrZ2NTbnFKNStEOUllMkdSZmFrNHlNQk55NGUyMnp2a2EyZ2h2?=
- =?utf-8?B?UlF0NVZLVmxFa1prbjArcEFKTFU2czN6NkRwTW5GdWM0NFZDQncrVzlNWi8r?=
- =?utf-8?B?SEJGWEtMbGdrWFBhbzdDRm5DT3RjWk5NOXpmZjlpb0JpVytPamRpL28vYnRZ?=
- =?utf-8?B?dTAvaVVYMEZSUlpRdnhLWW5yQ3lUdXhPYTE5NkFXUzVQTlVPU2RKeDFCVTN3?=
- =?utf-8?B?UmkzcFJnVUQ4QkhZNHJnSUNLTWQwQVRiS3BLcWpodDRkQ2YwUmRPaTRZTDdU?=
- =?utf-8?B?M0hDb0dVbU96RC9vY08reUZydlBMUzd5Z3oyelpkMGdrNVkwdDRPZ2N2dHFx?=
- =?utf-8?B?M0tYRkUvSm9FaU5GTE40WU5aVWRSaVhTQ1A4cEZoZXVxUXVDbTBTUzY3Z1hW?=
- =?utf-8?B?OGl2VHpGUVpLMHlEajlCazV5dlhieFoxV0QrRmM1SFVadUVnZ0d0dzJ6eHh1?=
- =?utf-8?B?YitaM0p1d1ZCYzVyUHVpNHBCNXJXZ3VEdHk2RTRQRXZoY01qVGlielI1bVpH?=
- =?utf-8?B?ZkRxWnNxZS9yR2dKczJON05XSCtJRkVja1Y4R25vdTl3bjBUODR5bXRQeXRP?=
- =?utf-8?B?dWhZMk9VaEhCcTNjUWRhSXp0SUd3Z2FNU0kwVzlDcUh5b1d3STRGOW1MU0dJ?=
- =?utf-8?B?L0c1ckxjYWE0bTZMZSt5YUluQVZaMHBFOXpUV000OXk4bjBuT1h0K2xyYlJr?=
- =?utf-8?B?azNHcVo3MmowL3V5OW1LL0pzbktqUGNMb3dFWEZmMktQdGp5b29FTFpQeVRK?=
- =?utf-8?B?WlNqL0ZsMzlZaGdVRWw2SHJoZFBQbklRQ3A3TStqOXJlV1ljRDhJZTdOcFF5?=
- =?utf-8?B?K2o2dzlMQVYwa1pIb3JKbDlkdk1WYktyRFArbWtzemlkV2JjNDEvclhVU2dp?=
- =?utf-8?B?elRXcjNkd0xRRjlkMDczbGxiZjB5Z3ZxTWNhS1Y3Vjk3cXN5YTFKNnVLL2Jq?=
- =?utf-8?B?Sk5ZY1NZWjdzMDliMjRiQnk4N2JRUzE4dTJ1ekdTR1Znc2laWEpsUlF3YjJj?=
- =?utf-8?B?UytvbWNVUWRseTEycDEwamxZMzFsY2lsdTlTT0oyS3RFcHN6Q0JsNXVTbjEy?=
- =?utf-8?B?d0x0M1h6dWZkbTdranpvekJSc0J5bU9IZ0NVdWV4N0VzOWlVMU41THY2eGRO?=
- =?utf-8?B?d2dHeFNyaHp2ei8wYWlxa0t1TS9kK0xUdFpUN2tNaWtNOFNRTmhWbDFFcGEv?=
- =?utf-8?B?Ri9sM2FqVVp6dGdmdTZON2dVTDBjMjVhZVdnK2szWnMwNytGQkVWYkE2ZmU2?=
- =?utf-8?B?cE94Q01iU1pWWkJiWWFxTzI2SGJnMTVMVFQ2TEIyNmlEUHNQQ1hubmdsVEt6?=
- =?utf-8?Q?+FyYSwgBXVoiLU2la6QKIVcNs?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ad5eb5b-0dc4-4690-f3dc-08ddd9a35a88
-X-MS-Exchange-CrossTenant-AuthSource: SI2PR06MB5140.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2025 13:22:57.9925
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: p1zG1HZyl4fnc+tShvulmvUXhg7VR4gV7Q9xxvueazmEWbZkGnsdFL3Sbrogm0zMpPqi9iudihWdCrp/20R5yw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: KUZPR06MB8073
-X-Rspamd-Server: rspam03
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: py38ehek1enrr4apbacodi5zycc5kixe
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E4338A0011
-X-Stat-Signature: dq16hnfsjywmnby638tjqbp7az8n5ips
-X-HE-Tag: 1755004982-105557
-X-HE-Meta: U2FsdGVkX18hENEW5nyx/QI5dcp9r4b4Wzl7iIiX7NIc8HFP+w0WGe2VafCIoJbv13PaCKttIRVUz0qHUjxzPt3AoggMe8NMOyJq2WDQWvm5hR9sWv+qOIPrteOx+zDnLb1MhkfeNF0TkM3cWcdgkK5pRuTcKKirXRdMIJqG3xY99TCbgEVWrP07WDXK2r5LLPwZgsFspmdoSlXQfseqNtAw2Kq33QC30da+7bltQ1LYC61bQUn91JhnN+puY8nd6qm/zWozJV7RwgrKOcXJYmt31aVuhJDuJGDdZYBp2nNGNfXXJ2MNQQgtQUAiLWbECIbBOyGbLKQlesIOQ9Avwn/wyohfnhNSXWMoMNGrF26mkmjEtPtKVtmtQw49CZDKYqGhIKcQS/5i2X0M/t1q7/jLTa0g90Za2lfPIyJ8/4wvGx0OQIVEvB/P2s5pPvDYjC0SZcQoh4pEX2k3IX3qBSE/6ZR7EVvMKyv3Vn4Xn4tYmAxb1ab5kSMkj708qv3ywzFtk3E0Jk4Ve1bo2JJgKImEzDnI55Tz3vqA6QaY+ZdPhOD71q3M03o2ZjWBoKzUTueM9QAQcRB99nhMiiAiWrTXlTqUOWW1Az1frn37/WPhVftcSFm26EZ8fj3Lgmvvch3r2npyWmmQ+i8g+MA43YUdMWtzkTmc5AckiCbqrr9V7VHkdZhikMBTf68nG6WONJ4hA+1RcE2uuusvT9c7IpwBEah7XBN3VolOjVE3Sof4fbJrH7t8N2NJD/oy/3t13gPpRIJ0uMJy2IkEZMJNySjpgQuR4LmzkBg/+xlx3OXURE364QYtBCYL6NPaIlMfAWGRuNA4Lnr/hJgfzDn2qiDv5fiGv6az9cao1GP7JppGGIppN/4yr2oSKZ1gOsCxAScI0Lam5RvTz6vv8+yYjbdDuSy7ev83r3WSHyOUkXYKKrmBwzdRO+GAZkn8KtRRCNzIIo8oO6xbIv07ZwS
- SEPyrIT3
- kzRjFSXlty03hn3bsb3WVXwIEjUD7gyzsLh9RLVt3cVpKE8HljLxfQozRPbU2kxg9oEBqlSJ8LrranF/k9EhevvhjZCNZ3fIDIxVEBXyplFQyf3Bu40FULon7XSf9xWWCaJzY4Vx76SSfloqolfE1/f+MHDMaONwuLRTldjyfdQnWCd38XlH87vKiwMYqMpEuYfnF8TXBLZ+yT5NBQsDyC1/AcUWVmNGVJkENHaWdWuSU5GPb8MbLXQ+Jiu9WM4zLFKPg6iDRdJokFt7O7BeUzIYPpnbe9LzbobS/tmWrAZAVbEFyYhWpvRArVhUxM+8+h2xoyny5Q09jhkvdmhZEmnwqoQlhVOwlmTc5RmGtZSqpKildGl9Oa2IVbvCRj5x2kL/4lavdqp8nNu5U0/fS3GG2cqBuKlrTmF3GtFpuR5mrI/uJaMZLgsl7fdXllBaEtF4tUrg1ZPuwp7BvYXhPxmxDexQhD7G7GCBdE4uJrInEZqVPLY/dHPM1t/PxnWzbw1FnGFRb7XTf2kb4DSsCU2nUNvcIGwMYT11LLX0mtRVlpcfsu1Wtj3K6xMB7V7mEen0PLrxy/IcVKp5+DEvFOGnWc9fR34V110FkTZzdXCVIxqWYok07UyX/RIdi0g59Tx/XLOgGYsH2GSjn6NazvChH4YWdUGhkZWz+I2fBnSpzRuSgXx6ri89KrXF++jzfQtRt8PnFYZ02egyiUPwYm5dnxSQfAtsqwzl9Px3dZUl4hhEyXfFY9CnREBpOf3jKFxCloV4aM35AtYsH4LZ/rrV9/A==
+X-Rspamd-Queue-Id: 46803A0002
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755005208-471977
+X-HE-Meta: U2FsdGVkX1+XPS69R2jigA+LOrLWv8lJtczc+ESjeLF5FPFKf/TFzZNjWcMOyjHCkuO0Jt0At+Thzgivh6eSZeMiL9MVshD9edu+sY6S5e52nm/qEwTjxliUCp39K1RR8xairjvtfvyoEBMrxywHRCwvMqTw4VvRrvTJ+u8TKzuAE2lpiVEHrJQgnUskpvQu86z3BpZPfFGb3RDA4zdrg8ErKlSLA2cuTGMr5W1qoGvJMbD5kXV/7GPuZ32IZlA3ekE2SVedn86XOHheMheMcyVYAOj15MSf4hxk0BuVi2hhgLRcKppDXvKd2vzeo/Nb7FlaokRmCNCPiSTGoLhc9oT64ZGld+NohxcpBwHHosF90+FDFLa9zA8Y/8cFt1mYP0PALzELSmK02ZB1JpK7cLZNEfLCoPWRgo+oJC+8GU4E0qSjrmC2B5G3mUmXbCBjgE3DXIZaG42RK5q3krD8CW9OTsJiz8dhR9QVZLiDWVnpxvymkCh8jFdhzphcWANCT75fiESlJ2gWTbvxm7M4OcLeHz5Kc2qninlKeYg8/OiK4NcxQXJRmszR59d/t4/DarENypUr5MZK45ilvq9etc8Mqr7+HC+kgWGdA8BzKdEoqCWiicFQjOxVzlSMhWVJP7zF96z5QaRhK/wvtiGhuxxeGvz+eBorxz5gB++981FBO/2VgwZkcIj1uf62vF3tevbxoEaVGadwqyydW5lqnHIXfb6y/PEOHFBhYaBu/v35b3i1xDv3bZzZ6sTpXGslj0wQM/zWZ/kHQGDczZPhkkqA9+X7V76X/6/n4Ydv27saJpIuQ0PkJ0B+jGxAgIkX7HTgmJBdrfCuLdry2iVOzSvCXrw0Grfch1gIpasucNwcYuH1sv4Lb0NQJeQZsvV3H4xWeP1xKd/vwK8bqZ4dLsD2BMdSszVJPe67BU3HDdvITVuOSqlJv6R9hCQW6FkOQr+mlcTN9YDVZsSLnyv
+ eax7Erci
+ +CJa/pjmoyca/qonaSmlkJSBNsYCRPPDseAjWObkXizJP6BkJoXSVfEZYRnZoqt6Nl6OFQU+Cyhq7yvNBM0H+YUvFMn0CQXeg2w6nDd7OlwlIwcoL+a4Wv8s4LItMDg1RbKLysEE5rXoVCBeg7J8dPkBA7oD7fvsxQDe5mQhrFsWy4Ba7s3q0WDE7/QbfYdCxESyaiQy25GwmD/Fcp7Xjm2G4Hvg8RjMQdq3e5J5nIRxgF59QptFsbLXk4Rbf/fL3XZ1MuqqtnT/+9jKvqW15WaZRlgOGG0IhpQfY+YhqTkrExxw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -205,46 +183,236 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+======= Introduction
+The patchset aims to add a KASAN tag-based mode for the x86 architecture
+with the help of the new CPU feature called Linear Address Masking
+(LAM). Main improvement introduced by the series is 2x lower memory
+usage compared to KASAN's generic mode, the only currently available
+mode on x86. The tag based mode may also find errors that the generic
+mode couldn't because of differences in how these modes operate.
 
-在 2025/8/12 21:11, Harry Yoo 写道:
-> [You don't often get email from harry.yoo@oracle.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
->
-> On Tue, Aug 12, 2025 at 05:57:46PM +0800, Qianfeng Rong wrote:
->> Commit 16f5dfbc851b ("gfp: include __GFP_NOWARN in GFP_NOWAIT") made
->> GFP_NOWAIT implicitly include __GFP_NOWARN.
->>
->> Therefore, explicit __GFP_NOWARN combined with GFP_NOWAIT (e.g.,
->> `GFP_NOWAIT | __GFP_NOWARN`) is now redundant.  Let's clean up these
->> redundant flags across subsystems.
->>
->> No functional changes.
->>
->> Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
->> ---
-> Maybe
->
-> .gfp_mask = (GFP_HIGHUSER_MOVABLE & ~__GFP_RECLAIM) |
->                          __GFP_NOWARN | __GFP_NOMEMALLOC | GFP_NOWAIT,
->
-> in mm/damon/paddr.c also can be cleaned up to
->
-> .gfp_mask = (GFP_HIGHUSER_MOVABLE & ~__GFP_RECLAIM) |
->                          | __GFP_NOMEMALLOC | GFP_NOWAIT,
->
-> ?
-Thanks for the reminder.  I did miss one modification spot.  After checking,
-I found this code section was moved to mm/damon/ops-common.c.  I'll submit
-v2 immediately.
+======= How does KASAN' tag-based mode work?
+When enabled, memory accesses and allocations are augmented by the
+compiler during kernel compilation. Instrumentation functions are added
+to each memory allocation and each pointer dereference.
 
-Best regards,
-Qianfeng
->
-> With or without that:
->
-> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
->
-> --
-> Cheers,
-> Harry / Hyeonggon
->
+The allocation related functions generate a random tag and save it in
+two places: in shadow memory that maps to the allocated memory, and in
+the top bits of the pointer that points to the allocated memory. Storing
+the tag in the top of the pointer is possible because of Top-Byte Ignore
+(TBI) on arm64 architecture and LAM on x86.
+
+The access related functions are performing a comparison between the tag
+stored in the pointer and the one stored in shadow memory. If the tags
+don't match an out of bounds error must have occurred and so an error
+report is generated.
+
+The general idea for the tag-based mode is very well explained in the
+series with the original implementation [1].
+
+[1] https://lore.kernel.org/all/cover.1544099024.git.andreyknvl@google.com/
+
+======= Differences summary compared to the arm64 tag-based mode
+- Tag width:
+	- Tag width influences the chance of a tag mismatch due to two
+	  tags from different allocations having the same value. The
+	  bigger the possible range of tag values the lower the chance
+	  of that happening.
+	- Shortening the tag width from 8 bits to 4, while it can help
+	  with memory usage, it also increases the chance of not
+	  reporting an error. 4 bit tags have a ~7% chance of a tag
+	  mismatch.
+
+- Address masking mechanism
+	- TBI in arm64 allows for storing metadata in the top 8 bits of
+	  the virtual address.
+	- LAM in x86 allows storing tags in bits [62:57] of the pointer.
+	  To maximize memory savings the tag width is reduced to bits
+	  [60:57].
+
+- Inline mode mismatch reporting
+	- Arm64 inserts a BRK instruction to pass metadata about a tag
+	  mismatch to the KASAN report.
+	- On x86 the INT3 instruction is used for the same purpose.
+
+======= Testing
+Checked all the kunits for both software tags and generic KASAN after
+making changes.
+
+In generic mode the results were:
+
+kasan: pass:59 fail:0 skip:13 total:72
+Totals: pass:59 fail:0 skip:13 total:72
+ok 1 kasan
+
+and for software tags:
+
+kasan: pass:63 fail:0 skip:9 total:72
+Totals: pass:63 fail:0 skip:9 total:72
+ok 1 kasan
+
+======= Benchmarks [1]
+All tests were ran on a Sierra Forest server platform. The only
+differences between the tests were kernel options:
+	- CONFIG_KASAN
+	- CONFIG_KASAN_GENERIC
+	- CONFIG_KASAN_SW_TAGS
+	- CONFIG_KASAN_INLINE [1]
+	- CONFIG_KASAN_OUTLINE
+
+Boot time (until login prompt):
+* 02:55 for clean kernel
+* 05:42 / 06:32 for generic KASAN (inline/outline)
+* 05:58 for tag-based KASAN (outline) [2]
+
+Total memory usage (512GB present on the system - MemAvailable just
+after boot):
+* 12.56 GB for clean kernel
+* 81.74 GB for generic KASAN
+* 44.39 GB for tag-based KASAN
+
+Kernel size:
+* 14 MB for clean kernel
+* 24.7 MB / 19.5 MB for generic KASAN (inline/outline)
+* 27.1 MB / 18.1 MB for tag-based KASAN (inline/outline)
+
+Compilation time comparison (10 cores):
+* 7:27 for clean kernel
+* 8:21/7:44 for generic KASAN (inline/outline)
+* 8:20/7:41 for tag-based KASAN (inline/outline)
+
+[1] Currently inline mode doesn't work on x86 due to things missing in
+the compiler. I have written a patch for clang that seems to fix the
+inline mode and I was able to boot and check that all patches regarding
+the inline mode work as expected. My hope is to post the patch to LLVM
+once this series is completed, and then make inline mode available in
+the kernel config.
+
+[2] While I was able to boot the inline tag-based kernel with my
+compiler changes in a simulated environment, due to toolchain
+difficulties I couldn't get it to boot on the machine I had access to.
+Also boot time results from the simulation seem too good to be true, and
+they're much too worse for the generic case to be believable. Therefore
+I'm posting only results from the physical server platform.
+
+======= Compilation
+Clang was used to compile the series (make LLVM=1) since gcc doesn't
+seem to have support for KASAN tag-based compiler instrumentation on
+x86.
+
+======= Dependencies
+The base branch for the series is the mainline kernel, tag 6.17-rc1.
+
+======= Enabling LAM for testing
+Since LASS is needed for LAM and it can't be compiled without it I
+applied the LASS series [1] first, then applied my patches.
+
+[1] https://lore.kernel.org/all/20250707080317.3791624-1-kirill.shutemov@linux.intel.com/
+
+Changes v4:
+- Revert x86 kasan_mem_to_shadow() scheme to the same on used in generic
+  KASAN. Keep the arithmetic shift idea for the KASAN in general since
+  it makes more sense for arm64 and in risc-v.
+- Fix inline mode but leave it unavailable until a complementary
+  compiler patch can be merged.
+- Apply Dave Hansen's comments on series formatting, patch style and
+  code simplifications.
+
+Changes v3:
+- Remove the runtime_const patch and setup a unified offset for both 5
+  and 4 paging levels.
+- Add a fix for inline mode on x86 tag-based KASAN. Add a handler for
+  int3 that is generated on inline tag mismatches.
+- Fix scripts/gdb/linux/kasan.py so the new signed mem_to_shadow() is
+  reflected there.
+- Fix Documentation/arch/arm64/kasan-offsets.sh to take new offsets into
+  account.
+- Made changes to the kasan_non_canonical_hook() according to upstream
+  discussion.
+- Remove patches 2 and 3 since they related to risc-v and this series
+  adds only x86 related things.
+- Reorder __tag_*() functions so they're before arch_kasan_*(). Remove
+  CONFIG_KASAN condition from __tag_set().
+
+Changes v2:
+- Split the series into one adding KASAN tag-based mode (this one) and
+  another one that adds the dense mode to KASAN (will post later).
+- Removed exporting kasan_poison() and used a wrapper instead in
+  kasan_init_64.c
+- Prepended series with 4 patches from the risc-v series and applied
+  review comments to the first patch as the rest already are reviewed.
+
+Maciej Wieczor-Retman (16):
+  kasan: Fix inline mode for x86 tag-based mode
+  x86: Add arch specific kasan functions
+  kasan: arm64: x86: Make special tags arch specific
+  x86: Reset tag for virtual to physical address conversions
+  mm: x86: Untag addresses in EXECMEM_ROX related pointer arithmetic
+  x86: Physical address comparisons in fill_p*d/pte
+  x86: KASAN raw shadow memory PTE init
+  x86: LAM compatible non-canonical definition
+  x86: LAM initialization
+  x86: Minimal SLAB alignment
+  kasan: arm64: x86: Handle int3 for inline KASAN reports
+  kasan: x86: Apply multishot to the inline report handler
+  kasan: x86: Logical bit shift for kasan_mem_to_shadow
+  mm: Unpoison pcpu chunks with base address tag
+  mm: Unpoison vms[area] addresses with a common tag
+  x86: Make software tag-based kasan available
+
+Samuel Holland (2):
+  kasan: sw_tags: Use arithmetic shift for shadow computation
+  kasan: sw_tags: Support tag widths less than 8 bits
+
+ Documentation/arch/arm64/kasan-offsets.sh |  8 ++-
+ Documentation/arch/x86/x86_64/mm.rst      |  6 +-
+ MAINTAINERS                               |  4 +-
+ arch/arm64/Kconfig                        | 10 ++--
+ arch/arm64/include/asm/kasan-tags.h       |  9 +++
+ arch/arm64/include/asm/kasan.h            |  6 +-
+ arch/arm64/include/asm/memory.h           | 14 ++++-
+ arch/arm64/include/asm/uaccess.h          |  1 +
+ arch/arm64/kernel/traps.c                 | 17 +-----
+ arch/arm64/mm/kasan_init.c                |  7 ++-
+ arch/x86/Kconfig                          |  4 +-
+ arch/x86/boot/compressed/misc.h           |  1 +
+ arch/x86/include/asm/cache.h              |  4 ++
+ arch/x86/include/asm/kasan-tags.h         |  9 +++
+ arch/x86/include/asm/kasan.h              | 71 ++++++++++++++++++++++-
+ arch/x86/include/asm/page.h               | 24 +++++++-
+ arch/x86/include/asm/page_64.h            |  2 +-
+ arch/x86/kernel/alternative.c             |  4 +-
+ arch/x86/kernel/head_64.S                 |  3 +
+ arch/x86/kernel/setup.c                   |  2 +
+ arch/x86/kernel/traps.c                   |  4 ++
+ arch/x86/mm/Makefile                      |  2 +
+ arch/x86/mm/init.c                        |  3 +
+ arch/x86/mm/init_64.c                     | 11 ++--
+ arch/x86/mm/kasan_init_64.c               | 19 +++++-
+ arch/x86/mm/kasan_inline.c                | 26 +++++++++
+ arch/x86/mm/pat/set_memory.c              |  1 +
+ arch/x86/mm/physaddr.c                    |  1 +
+ include/linux/kasan-tags.h                | 21 +++++--
+ include/linux/kasan.h                     | 51 +++++++++++++++-
+ include/linux/mm.h                        |  6 +-
+ include/linux/mmzone.h                    |  1 -
+ include/linux/page-flags-layout.h         |  9 +--
+ lib/Kconfig.kasan                         |  3 +-
+ mm/execmem.c                              |  4 +-
+ mm/kasan/hw_tags.c                        | 11 ++++
+ mm/kasan/report.c                         | 45 ++++++++++++--
+ mm/kasan/shadow.c                         | 18 ++++++
+ mm/vmalloc.c                              |  8 +--
+ scripts/Makefile.kasan                    |  3 +
+ scripts/gdb/linux/kasan.py                |  5 +-
+ scripts/gdb/linux/mm.py                   |  5 +-
+ 42 files changed, 381 insertions(+), 82 deletions(-)
+ mode change 100644 => 100755 Documentation/arch/arm64/kasan-offsets.sh
+ create mode 100644 arch/arm64/include/asm/kasan-tags.h
+ create mode 100644 arch/x86/include/asm/kasan-tags.h
+ create mode 100644 arch/x86/mm/kasan_inline.c
+
+-- 
+2.50.1
+
 
