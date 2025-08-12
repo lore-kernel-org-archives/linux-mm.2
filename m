@@ -2,103 +2,301 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C5D0CA0EE1
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 17:31:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E0495C87FCB
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 17:32:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B47238E017D; Tue, 12 Aug 2025 13:31:14 -0400 (EDT)
+	id 68E248E017E; Tue, 12 Aug 2025 13:32:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B1E278E0168; Tue, 12 Aug 2025 13:31:14 -0400 (EDT)
+	id 63ECD8E0168; Tue, 12 Aug 2025 13:32:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5B1F8E017D; Tue, 12 Aug 2025 13:31:14 -0400 (EDT)
+	id 4DF038E017E; Tue, 12 Aug 2025 13:32:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 93B398E0168
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:31:14 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 41863134705
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 17:31:14 +0000 (UTC)
-X-FDA: 83768796468.08.A025AA8
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 40BD1A0008
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 17:31:11 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=vnd4xMPr;
-	spf=pass (imf25.hostedemail.com: domain of 3XnqbaAgKCA0wnpxzn0ot11tyr.p1zyv07A-zzx8npx.14t@flex--jackmanb.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3XnqbaAgKCA0wnpxzn0ot11tyr.p1zyv07A-zzx8npx.14t@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755019872;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3BA5D8E0168
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:32:30 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C30BC80C41
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 17:32:29 +0000 (UTC)
+X-FDA: 83768799618.27.6EBCF83
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 674C3100009
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 17:32:26 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=VgCwdkwj;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=QCF46kmu;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf05.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755019946;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=lO6uMK6KqC6CFZuyBdorrbdUmeFcwW7b40ufzsbZ7fI=;
-	b=frbYbFMxLWZFXA5//DBpuopbXpMFLhKVUQpgnx8MQsOmfRLgsepY2TNkjkf5gZkrZEz7TY
-	12pmTtEKe/Tuyp9FQVS2vZDqpX8OsBUfdpxNJQwRIeDyw/bvwTXyZZ/fLDfxc/E7yIF0cE
-	PNC60inySnam7k5ecyAGOKQ07Wz3rKk=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=vnd4xMPr;
-	spf=pass (imf25.hostedemail.com: domain of 3XnqbaAgKCA0wnpxzn0ot11tyr.p1zyv07A-zzx8npx.14t@flex--jackmanb.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3XnqbaAgKCA0wnpxzn0ot11tyr.p1zyv07A-zzx8npx.14t@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755019872; a=rsa-sha256;
-	cv=none;
-	b=l/2s4+/TEk0Y416VZ4ZWFofGn08gT8EBY5Zp1Nfpy1vfyNnOizHYqTb+EnqC5IoXFB2N0K
-	KUcsy+/Q1klRlx/41XvUIkV6kmkUIcFIY+rOJizDKcbF/3aRX1iiK56lGzPKnPr8UiEfON
-	MQyrKHB5Nc5bi0HnVoAPrN/G8+miZOo=
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-61812f3dcadso2548762a12.2
-        for <linux-mm@kvack.org>; Tue, 12 Aug 2025 10:31:11 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/o1ZEJJAxxggij6O/qUVlPcji9vQ4O8hW8fTrRBWpgs=;
+	b=BubVfIYp+/jok6Og3CfAIWIGnuC8aTvpfPeFLjL8I2l9nKjJhYc9mFzkPuSrkYyWTMKhVy
+	Q+/kBo1dYxLrAGwrwnbW7xYg5nFDaT2zrue/n12L46TBrLOrYIgVft+7mZwMmgnc3QUVl5
+	bwpT4iGotRRWonBdLyh6/OXZtGuR9KU=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=VgCwdkwj;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=QCF46kmu;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf05.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755019946; a=rsa-sha256;
+	cv=pass;
+	b=oV5Wle89CbDX35oF3ykamMSKWVmUBScgYS0bg1MFfo34UqsmdaZkbuJCkfAoWveRm7gDzd
+	exRitiYVuVfnvWb7f856HQ9ra/b/zi5mrYM/QMYdZ4qIEiZ8sJq1DYu+oBtq+G050tR8s1
+	1IyEhmJmRDilqLp6tf3wlYWaAE8JmaQ=
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57CDC0IZ021868;
+	Tue, 12 Aug 2025 17:32:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=/o1ZEJJAxxggij6O/q
+	UVlPcji9vQ4O8hW8fTrRBWpgs=; b=VgCwdkwj1vVs5N1haNLUAyG2Yi3fLqhyo1
+	anpw7WAqrxSs5fOydkGBH8HsQRs8/y28zQM+a+9meGedXx3321KVCASolULVVnuJ
+	xk76x9zxmQyXKowu+MJicCv4HUhPIzjj6Cj2BdJiG5Nr7yY0vW5mJFIncSvOZ5ET
+	tPh9N149BmBnuqaAbU9FElUp4e71cuibtXE7lnivqagIRfMRAd3yxcRzTdV57cWi
+	xIh3951+PU5VY3W28hpRKlNJt4y7Z1SzItGxAmGNTTsYkl/WaC/Fgb4KjzKgZWYf
+	dM+mFHOj161OPH2+O9gLobAJ4fdaPe9RcWJTKyImVF206Un+4rbQ==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48dvx4d8sg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 12 Aug 2025 17:32:02 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57CGV8pS038595;
+	Tue, 12 Aug 2025 17:32:01 GMT
+Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11on2044.outbound.protection.outlook.com [40.107.223.44])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 48dvsgtg1y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 12 Aug 2025 17:32:01 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WiGy7CzhYBKb/UExUTnSeaxhkkMXdN78rJiHHJlk27nx0fEHUl1SjOu/KhaqBI9iQu1NClrVeDkYQr2IwbPe+yyqKQ8erfjh7n95UgcH+U6UJiCgjJQxmtUyKZJNvrkKWVKZ+w3UbNhabV0zPMJ4tXALlR4NCxvm5X0cn3vq8pXpEVnCd/uF40lnBqQC/ZUDXr82g0TeO3FFVvl6ZRgCx8+9PvGD9O+jAvoShh+zy1j+APMUjETBCmVlttlWgtY5XQrrThpMDCY7yhJia1L+8FosvXZekqKGLPitPFpvNqcvRpPpr5z0+2hAkdW48+6gyWlYHfkUnVFDQA7wB5LEvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/o1ZEJJAxxggij6O/qUVlPcji9vQ4O8hW8fTrRBWpgs=;
+ b=LYgXh5d8J4rSU1CcJAT1kvKxX73dGMs7CMpkbUApGClSLuLR6Nb8vVFn2u+Eu4k10xzfP1uS2gr89ukA/zfgz+bK+a0LhlDaiCUizchmwRL+n8+PndbK8d0gMoTZ8emwPULGSmklV6CX8iproO5MQgvMUrfYHfIolIyuyZu6AgrUJW/epqpezTsvxxaRQxzOXvCRbkjM1cWzU5423/54TdS1ZE6gTIW77B4ddcP0Ns+n+xQvxbT6yNVbub079D5JIi5A2bQR1KXJqS8uJzBxFKH1pXtvYiwe0sa+Aawbwh95k54liFw2fGEcVoVzoT8rwamP/aPMsttuO1JwChaSuA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755019870; x=1755624670; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=lO6uMK6KqC6CFZuyBdorrbdUmeFcwW7b40ufzsbZ7fI=;
-        b=vnd4xMPrysJgTYSOmTu92lJVgTB6Rw7a/o6phzfv844i+la0p5dGksb60DbwKPvrDr
-         i8cqcJlreJ2VxPwD4Ongu3Cvn6GddSRwRM/aBRJw8oYY/MuBXEdaN/TxJhz9pUdqoPEp
-         3PpIOYSabwUHHTmt0aygTxVLanRNUXfZqktQSxFVF6cG/84iXm9jTd/+u8Ic8SnK3SlM
-         Ig3YJJBvLRMRS+ITvZVxGZqL/W/FSYRHgzoNQ3Jw9Xp0Z92QnBoDZjaInIBOA5yzjd98
-         2AONThqXp7hdNN+tNw8x5wgGH5QjEDg8gGy8CKK1ygCMZ6F0AceILrn1zNj/MV9M2UCM
-         yW0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755019870; x=1755624670;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lO6uMK6KqC6CFZuyBdorrbdUmeFcwW7b40ufzsbZ7fI=;
-        b=gZF3a49lCyL7hEIytdKII2rKH9dzBduNqRNab92rMc2f4Zc/RKIsYsxxvdKF83YFrY
-         u4FbtgE8KeX9iWDm9uR+9GmRbec73/5lbPH6aFdRW/UJS92vXymsTFi8anBq5cEAjlSo
-         yFi/0kGuQnVOs7XLb9PmKrUoEp7+SKimEhKxYOTnZD4r1mpxyQOUxZJyoS3UetRI5bZ5
-         Q24z5T63odwoM2eSt05HuTigtzCaZtHgjwfZnSznq7tScM4XYSzfOc0JPodw1xfbWRCG
-         XCiJG6EzWDj1Osy951j3Dn0YVx0LvCcIaVJFmAjF84C+DjxKAVLnmQo66HaSBbuJ96XB
-         rYpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWv+TlmUo9MGCDLwQWXSMz7GCchP6Kd7mQ9lwF3FJbBdQgPFvNw0k2Os6+txbIQEWKfEkZc+KA6Bw==@kvack.org
-X-Gm-Message-State: AOJu0Yx8QEgx+CClwcYG/7D1I5J5fC7rUJVVbLDcaPWG4fkl3uhMp5MG
-	v60QzM7bJmDSAi+uq2yPQHCb6rNUbMHQzZaqMCz5Pcpo1pgbQ/KnJFL/oFU0puXQQTr1rtzlZEU
-	wWdasYeB8Qhxvgw==
-X-Google-Smtp-Source: AGHT+IHuOuZawFVGmekchOLH7kWCMsK75iTZ+VH3GUhVjBoKVF3OEwrT4z3YtZPGKaHMJNDsnXxZGvmX+COMAQ==
-X-Received: from edbev17.prod.google.com ([2002:a05:6402:5411:b0:615:4d05:f4be])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:40d6:b0:617:5be3:bba9 with SMTP id 4fb4d7f45d1cf-6186784e879mr581207a12.22.1755019870260;
- Tue, 12 Aug 2025 10:31:10 -0700 (PDT)
-Date: Tue, 12 Aug 2025 17:31:09 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.50.1
-Message-ID: <20250812173109.295750-1-jackmanb@google.com>
-Subject: [Discuss] First steps for ASI (ASI is fast again)
-From: Brendan Jackman <jackmanb@google.com>
-To: jackmanb@google.com, peterz@infradead.org, bp@alien8.de, 
-	dave.hansen@linux.intel.com, mingo@redhat.com, tglx@linutronix.de
-Cc: akpm@linux-foundation.org, david@redhat.com, derkling@google.com, 
-	junaids@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	reijiw@google.com, rientjes@google.com, rppt@kernel.org, vbabka@suse.cz, 
-	x86@kernel.org, yosry.ahmed@linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 6k6139x48m5f6i75qdfe51c8rojg9ubd
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/o1ZEJJAxxggij6O/qUVlPcji9vQ4O8hW8fTrRBWpgs=;
+ b=QCF46kmuNrNc2VIRmTv76yuPsjfDFDXYW4NMV+OgcWoBrQKVpPRkA6taONRytJfH9aEPwrKjNHO5NjRwqthkWesykiQRtuAWBK8u7XIaZsnG4BVvXG7glTmTe5y6MoDY4nbfPTK3chr5cmSDz89hWJUfn8l7QSCBvqgvm8TnBn0=
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
+ by CO1PR10MB4515.namprd10.prod.outlook.com (2603:10b6:303:9b::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.14; Tue, 12 Aug
+ 2025 17:31:57 +0000
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::75a8:21cc:f343:f68c]) by PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::75a8:21cc:f343:f68c%5]) with mapi id 15.20.9031.012; Tue, 12 Aug 2025
+ 17:31:57 +0000
+Date: Tue, 12 Aug 2025 13:31:50 -0400
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Andreas Larsson <andreas@gaisler.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>, "H . Peter Anvin" <hpa@zytor.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+        Kees Cook <kees@kernel.org>, David Hildenbrand <david@redhat.com>,
+        Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+        Xu Xin <xu.xin16@zte.com.cn>,
+        Chengming Zhou <chengming.zhou@linux.dev>,
+        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        David Rientjes <rientjes@google.com>,
+        Shakeel Butt <shakeel.butt@linux.dev>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Oleg Nesterov <oleg@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+        Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+        Peter Xu <peterx@redhat.com>, Jann Horn <jannh@google.com>,
+        Pedro Falcato <pfalcato@suse.de>, Matthew Wilcox <willy@infradead.org>,
+        Mateusz Guzik <mjguzik@gmail.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org
+Subject: Re: [PATCH 08/10] mm: update fork mm->flags initialisation to use
+ bitmap
+Message-ID: <zvoxt7bjp2niffmnxjki7tcfspvwb4mcxkw5ab5huwnnsh3hev@qbwtyxdg53uf>
+Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	"David S . Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	"H . Peter Anvin" <hpa@zytor.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>, 
+	David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
+	Adrian Hunter <adrian.hunter@intel.com>, Kan Liang <kan.liang@linux.intel.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Matthew Wilcox <willy@infradead.org>, 
+	Mateusz Guzik <mjguzik@gmail.com>, linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org
+References: <cover.1755012943.git.lorenzo.stoakes@oracle.com>
+ <9fb8954a7a0f0184f012a8e66f8565bcbab014ba.1755012943.git.lorenzo.stoakes@oracle.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9fb8954a7a0f0184f012a8e66f8565bcbab014ba.1755012943.git.lorenzo.stoakes@oracle.com>
+User-Agent: NeoMutt/20250510
+X-ClientProxiedBy: YT1P288CA0014.CANP288.PROD.OUTLOOK.COM (2603:10b6:b01::27)
+ To PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|CO1PR10MB4515:EE_
+X-MS-Office365-Filtering-Correlation-Id: 766c668c-668a-47b8-07a0-08ddd9c62328
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?5QktSXi1Y7FB0KlWZlDb5mbX7IOl8X7cVBcXYkyV5fIUX+fAXEjlJoce6S9J?=
+ =?us-ascii?Q?JRWYRjWq7GHlxPt+qX7+qXInOyHKOGgrhA1KNAXcsh7rytoq+75Z52kKdbNg?=
+ =?us-ascii?Q?pun+9Cm7vsQ7+o4EwZUK/eKMY+rUiTRvkGrHSb+ISzcpsXmZiWmQAN6rRO+M?=
+ =?us-ascii?Q?BL49GxPTB+WukZGIFYeaBu+wnRmzr9aPEp7ISYyuz8RmK1SXvjuRfmkS2SOx?=
+ =?us-ascii?Q?+/z2GvEqKNm7IrafxDu3+9PTXpp6PrDlQ5SRBLGtvAg/KT8NqLcHM0Ic/Kbq?=
+ =?us-ascii?Q?fEOjD7B3jB2mC6tN6kItslZ+y79BQp+WPdkZNA/0JiqEM0LbClbFGLqKYrSI?=
+ =?us-ascii?Q?OivoVOVyRIEop9gLJtojuBwHpwoVtq6wtLotjEq/P1/jgzER2m9rYCsK/1YP?=
+ =?us-ascii?Q?il2QnKEpIcxSE4p+v90ibHsckrM/sr806jrw7WY+iiyKdtzpXVjF3lPIzgE6?=
+ =?us-ascii?Q?6zJmTddCrYY7AoY6r18ZUPfzK8MEk+MUZXthmLCMvFaLZ+gCX09+spVX99XI?=
+ =?us-ascii?Q?U5t6fFYW3i6qFUMkvNhJrRR1XQVuuM8J87xjH+SBzGe6eKeyCCxdWc25cYMF?=
+ =?us-ascii?Q?DAJS0Z2b+hlMRd/eC32TOfrwWpBFtAiFXe0sKe1LNpWpUKA8Q9pgtZXmaZ0A?=
+ =?us-ascii?Q?zESEmw+9QkKPph2ZcF4i6tMDcGah6Zm1lh13zg3+Bvn/yFJo+yWrfrxssG+5?=
+ =?us-ascii?Q?GxiYfpO6PGbAo0p/uQRYfEp2ru5SWHtkCHRz8oRWav8Qzl9RplDr4avJ2xPA?=
+ =?us-ascii?Q?wk4/qY4EHGLDvLkYAUIVTYN8mW6oXXOXJf2AhD9+RAc/MYUlXWs7HnjuaryL?=
+ =?us-ascii?Q?LWUwf+eAb94UdNMnQK7NOhqC6HdVx2pbP17OtHiXcgI4JX2biisLYtK5udS2?=
+ =?us-ascii?Q?gjcf+tGjNSyR5hlmrW/qYC/ypndyeyLbMwdjm/5IFjjXjNJMyw5AhACt5it5?=
+ =?us-ascii?Q?frpiIoSPwHu6PPpZQJa4ZesRAMr094lES6OxjZ8O8OLAGddv57EMVcvWjcLl?=
+ =?us-ascii?Q?bUax1PjVP6uh/y3INISas0cUtFcd7yRcsc7/XEylj6ZliVvwPFsdLPQykJf1?=
+ =?us-ascii?Q?OZrGMTtS0PkS6X4zVLQ9ypTJya4FZGNXBg4be9Kq63Hi2A2myhtBt+zzGav5?=
+ =?us-ascii?Q?n08hmBneM5j1ThWIOK/KfaPYDL0McRhf1haxHDupA1wajNliqK37kyDxqGU1?=
+ =?us-ascii?Q?elvn6VFYH1rfqBtjsSt2Um/GkISiimycZjsGeAa7lMfDzostGap9x1xyLEl+?=
+ =?us-ascii?Q?42FJ9vyGedeIMS3xigdTf+3wm52HaUZPRFlyy4QRFPYmvzZj6yKvQSOWam1r?=
+ =?us-ascii?Q?ecfQQs8sPQgiUnrmeAOWYldbiHoswXuLED/s0rGfOS4PUqHtOUxLloORcVi+?=
+ =?us-ascii?Q?AhFNYmVSIOVPQUZS5gSlPmG5lNw6cQgR1KPLr2kccM+GgyjxB6+1yrdkeOkv?=
+ =?us-ascii?Q?eBn7EEvq5LI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?B+LEUnWR5DDzX4MjapnPirKH+YXO4xpoDUyW43MSW8IGJxdQgj2wiLOygwGO?=
+ =?us-ascii?Q?MFq187sfdwaz6lYcRD2MBC+B2+z8Vv2Oo0Vmz6KCBccbczTUlyu1MMWLfXRs?=
+ =?us-ascii?Q?YEPhnxxeAM5OcsRfH5WSqCcBCWGji0jEjNtqFLAoPghM/iYETwaR45Nob2pm?=
+ =?us-ascii?Q?Tadu4dEjGF39R2bWPrqvL6z40VlD5oHjEGoyChWllKAP3CxmXzV4o19Bnbyq?=
+ =?us-ascii?Q?T8jvEqDlzpM9x9rq/wPp4w1UMr720xIT+c/AwpnCw6FsF1mokPwoyV7lPAPZ?=
+ =?us-ascii?Q?byVkZqjjm365v6okDRto+v0BIjEigDHEI/XhOu/dOM0WgHLdikN7ZRDzLp21?=
+ =?us-ascii?Q?J5JAePDfqj645kHKnRSctu4EB94A0rDBOOG7A/tFP8a3mswak1ZP1XwnqJfi?=
+ =?us-ascii?Q?/zQlmcoCWqctSjkeGgZf+aRDpurYHif9471LMSZZwNRBCh7AaIuXAscOLUKg?=
+ =?us-ascii?Q?qk6O+H/3XECmMXLiG4CG2Ynmo0pGm5EmUQWAgLB4ofeChEwspz0dJT9u48Qc?=
+ =?us-ascii?Q?9iMdWwyyi7Fa9W+GhcFm3fSSU4wOgnoyptbEqEj2EbmfUs+H0D3AWcnc98Ui?=
+ =?us-ascii?Q?4S+4hLjdi/rIcZEtNhdqNMiEBvJweXNn5Tnc5iyKOPJbXJrjb/Ft9M0Lll6h?=
+ =?us-ascii?Q?R10ay5R2PjPD4dpUACIYN7SSxZGjo0OLmjJANqo2rQrVG90UUxVyBoDc92sz?=
+ =?us-ascii?Q?melzH/4Uken/RKTiKqF+6Yyj0G2W5X+AdST4L53wFmRQQSS/2rGV6Jux7MlT?=
+ =?us-ascii?Q?HRkuGe2pX3qKIzxgEO4QFhZvFEtGJ68YPzbD6jxoeT7b1Ymt2QOyAfGldDE4?=
+ =?us-ascii?Q?xDJ8DTyg5nr/MBtaKnfrLf7VpqR6FyNcen6vp5Kd/NyrtA0kIZbsQXbeDwAs?=
+ =?us-ascii?Q?UvPj9Y5WAcIR69cbifeDoKA5b+Qa1nA5PMcimfSuKzFGme7HvQtMatAeGwU4?=
+ =?us-ascii?Q?82gqxxctWMqqHlDfXWWpw/xPYanxZCKOqAx7cxWRGERWfkyABbdZa4h9VAGw?=
+ =?us-ascii?Q?LzcDfTHzjpPCNj7mf7x6pmBGGrroK4gGdYtjyZpxxBFl7grAWgcqAgNL9O7d?=
+ =?us-ascii?Q?cIE06KYOjS2D6eINpMqBD6fC5zt9rl9pfnSFVNELz11STEWsHuEm1ehDXZfh?=
+ =?us-ascii?Q?FDGuAZ6+Vzhu+klKanxtTMQCmcsSS5c8Sd7oMtA7fHg4ik3Qk43x46fO7Sju?=
+ =?us-ascii?Q?O90qEmwJ7ECTC2zOZeE5yopL0h4y2xBY5p36FepCci/93+z+s+W8yPCFHLXC?=
+ =?us-ascii?Q?4CzNlPsTBRtpprL9XBqQQXFhVLoc4vgglV7yeUnoon6hNrfTaDMDkB0NgDab?=
+ =?us-ascii?Q?cWoyblpYfiNDi1Cjrbl9deqw6HIe3HBLz3yueQtLrQ7oI3za21X6/C/8AioW?=
+ =?us-ascii?Q?TaGVnGfq8KUdlqQFwxIxvG566sQV2u4JuN3NVEbkUkFrdqhlvx0K4Y8SqhLv?=
+ =?us-ascii?Q?hlgh3C565oxJ8Jk4aDWqNUDcrZAg5CsQ1avVNh1CqJBWnXzndiZ4esbhE1eA?=
+ =?us-ascii?Q?sG7/l/W0tObDI7Afs0VLF3IN0pabH8pQ/+onw3881zN4xiqxPKnK3fD4oC5S?=
+ =?us-ascii?Q?+yEmO4LIVLObm+aTk4Dqxfss7HorYvX14/kpyRUi?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	P9wL+VTWlLbzXE5R8Pr1pdqpY27WnOzsvnMfo/TegfboRUjUDK55gi636j7g6EUtMfll+jHlPClu4XK6qBvvFt2esJaWKnbWQbSAAsNI6DWrvoS7q48r8pT5WMlcpJAoo9w+cxWn5Q/doFpyzR4C2AH+dohYu8a1wZaf3ufrjjCNT9S4J7DGusT1ksrJEZ2D3KtTk2ux8ZSTkFCAhzXP/ENYCZg9PIguklGuJ/4qMIEPDQfbXxLSlQRlKLHNMP4AjN4PqV7WQkXAwUsZwv7f9rgvGnNJwMyyp/ysr6ZIwKyG1oSZsit0fecdoZW4gemkYwSjo0uL4vK3DzUF0fkX4VeoeSD/av5i0j5M3U/1v5QhydfqOkZIEEn2OSAOzioY3XeXA+KjsfiEPIs0sux3oNdmxs1mIu2llT1bxaLGV9ux9Uu0wBaSjyzKKxwH8Ghi0npmlnuE2+3tfeenQnRgv7yZeZ/KcrXgq8IFjroj3cJQjeg+1VNWob8Gh7gglz7hDZPsZLR3Q4OmDzG0Boqi72DUZITGYwYqWgTAzGrZQOQSt30qsD6tWvL44I2RNgtZwLgEvkCHKsFNuxO3TL/jQWkHNFLt/P1RnsoZBONqh1g=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 766c668c-668a-47b8-07a0-08ddd9c62328
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2025 17:31:57.4748
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6MSpBD+TKYCmd0D3tW+ITGcuvSVz73rI3u7kBTsTkpA/6ihX7fhvQgye8IQUVcxj3YhjR0iJnP8tSm9UblIGgQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR10MB4515
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-12_07,2025-08-11_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0 phishscore=0
+ spamscore=0 suspectscore=0 mlxlogscore=999 adultscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2507300000
+ definitions=main-2508120168
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDE2OCBTYWx0ZWRfX12d+MYH9tJns
+ lh79++aROC9uaNKNaADaNsGw4RWqsxV81qVjJj/EcN2VQja35e6c2k1hwiGhwlIxKNUNioazjoJ
+ MvMFF41M8wfXZI5N+gkG9mzA0v5kddmpG0jPaxwMhpX3ZKrRJV7n9+w4bD+iWqmifydr1ei+xo9
+ BdlMdI/pLz74QpF3Kk+bP7bBp3soGQ2sjYQgrjemBspa4v954KL7ksBOUyNaNIYvVuf+oUHr4NN
+ EVgE/G5syg8+nZdpq3um5gbL7Hed8zVlMhELyK1pnHyMXYqrR5zxGaPT/b3xnb7Sh7AEffuoA5x
+ R6eSw0QzhchjErYADBIg8caaBlp52oSIRiuZSiDUwIO1zhI3mvvckvFKgvp64wkoL4KE4gkCRGG
+ 8ibnZQLg4XUF8COpQ/SpLSnZV9NsOeVPOfr/LER8J84vBJihCu0srnP7SZzZoCGqdwTEBdqB
+X-Authority-Analysis: v=2.4 cv=eIsTjGp1 c=1 sm=1 tr=0 ts=689b7a92 b=1 cx=c_pps
+ a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=yPCof4ZbAAAA:8 a=_DyhGWQx9tc7Uwkf4PgA:9
+ a=CjuIK1q_8ugA:10 cc=ntf awl=host:12070
+X-Proofpoint-GUID: p74kbEvLkDAqxs7ukZNS2soP4_8CkPl8
+X-Proofpoint-ORIG-GUID: p74kbEvLkDAqxs7ukZNS2soP4_8CkPl8
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 674C3100009
+X-Stat-Signature: pkyknzri7yh6uyawmggcr567iaih8ycn
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 40BD1A0008
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755019871-204808
-X-HE-Meta: U2FsdGVkX1991HsrdVXlFdJq3gStL8slpRLMHL7JJ5EKolrOR9cbTBLxVWd1EobHq9L7FeIRn1g8XDtjujaB6nHDMrjORGUXplQHskoYmTA1D4sjQ5MMuLVMq/O1iG7AR1YU9v76JxRzm13O1fODhrbHMl3DA9dcc2BXcUQst8stuSnwi8xBk0QU0DPPxqHxO10PNXYl7TI8eFV3U/nK2NUz2RCxWn77iAMCVOlEiJjofbt5L5VA2C070XyConjIcCuwtm/HFrOnE2nb1Wjt0mwRTtw/lXOV8NYrkdu/3TwZbzK8oNVd9hazGHe/ObQmdlXLw6veSo2x3AIRt+cYWefhUYH2NRnir2ewVs5/MwPaYDpwc42lhIqJYo12NiFPeteNCOuBWx0HuyWd0aFRSxt1vKd6Hg0inCSwmnH3F0e59HRfY4RC3V+uYie0mpb3ivZqMQfdD2pvacN/cluKN7FecU+j/Lgvd3uVqUg6mZH7dzLCVuVdDUb+FTBrmJGCuavpP/9lf7C7NFPXdBR2vv1Y/zgs+1ljg5qQwprIWSUGyXRH3GjLxWr+5+0/PVI4uN6DM6VDnn1zf+x0ny65uOin/Ib4BkhQVmtKAybrG5/powpuCMaoLWfE5CDo4oMS8HJ6qxaWww1+J/rP7advfwado6yXOmWg6WAzTiwY6aNPTsIylemscEkygmQfuFspFp/f9sEsJ3PUv7u3mvDJhSXFJeOJUU1TOvvE+y7y8cx5WcLW43hZebGWOvXZ3rlmSDakJFOz5JTkD4iTnLuubGOsoVacUPGGpzGYgVKExFj+KcKVkPPL1xk/9qt0frQDm3XfA/TfY7hG+CnR0JZBWzGeJ9BJHm/KxwIUZS0hDv4keZaijzqSS0bmO8VH7KUO1L4pKUSbmcdBSzprQch6y3r03ol73b6EuWwgqIdvj49OCnF29pbWSTcNGrBCKPnlUDtbXggP1u+s3Q9AC9u
- Xs+Uko/t
- LdEA6eSNa00aOsooAg2NBTfGmwhROPhmj8Aw2blaibfEjgtiD8Q5deI64HmMwYx+DOcqlKzim8SjLg+ktqxCrSHp19pV3kfUUqwpyVH5CbkuRdgG5/t/ofdPTC2Un1FcIKkXMZAcP5jXXvlFmbtNZgGComrQI9BpAOi1bt+CuEWlmr/h8OSN4WY3dV5t76IlwqI1lm7edpnPQTJayYWe1o852yrljrtId2fEEMQYWwaT9CPepa3eC26zcktYGHd7zf2KCySHqLUftQLmXVsg6RnrXfb1RW17lp9E/5ztwBKT4pqLr0zti/iVk3x/WHmalrdCVW3VAGT0mA7fQJuTYhsJnNmu0r98A+GUfG10YW5N7Ff+583S/eJtSIfdrTVghQ7rzTKoiYMNixZq74gttHix05o6KGzb6Uz5kp3a6Zc3tmFjtsPn/wlFilipoAcoe1OWey7PLgexjc3tUO6DKOdqa13Bm31G5tkEBx+DSVfBWzH8XoeUK8GLwS7ROFv76ZhYfgVERierC9boa4mY4HGzZ3K154RG6jtfsLPzzxnFxfdZFrcWG8Z1PXVTf+tWnFuz6pscl+Z7jUvtIzGkQq9G/tg4cODLZTDv0
+X-HE-Tag: 1755019946-872383
+X-HE-Meta: U2FsdGVkX1/mYqZFgBq/Jw7xq74hMyJ/HfihPkYuOuHnZi7meMyrbovFW/3ptKxbHehxOa/fnHNJ8U7b4M6jjNtWj50NWyndiLNZMgiZy7l0R5v8mZkCol49DXqbFIh43R0xVPax+fg6BI2HLC9KSxdz7DUpZLWtItDNoe5EO5eWUeuAY/alilYiaL6Yq7L+nSa9O5hySvtZAUgtPclb4sc6Tt2Ape+u/VCkGQ8vy5cSYSqPWCA8qFgGDrFBcDprJiMV8fAj6G5a+lTSwfKXZKK8H8hkbh2bAKi6gQwbuZ5omVtOGmsr7T7IYvPF5NqjRHFu2ZkgQXNF9z0IcmpA4WcBlWlGfAyH26R7fJ/6VWQOymMxiy9qI/zDdlzqxrqybwQi22Cu5O5Kr7pBSrp2mUPh+oSVMj/iKio1UIYvuVTTwUX+Tgp15Sb0Xlv6SDDRIcrhRefqt4qerGu/+K7IQmtq73hsiEol6ep9PoZkenJyXu+sxkhJ3qhALI+C8uUZ0ycJthiRbW1j+7jKnPKhzFZo/R1nCqy6P8qafvXGSaRsU/j59Fladkj2rppfjtxVjlh7H2x0P/TKhciUKU8L78QVceBxlOeMm/3nHMjlJDScF8eCSLCvp20mJ2DrWfVG5HZbYTT3K0bQCKZVCId26P/YBkRlq8YBKmySt9j/f/un7e9Sbqc7+xjnFD1y78iYp8PY2PmSYIjVjSJxNjiBVk0YKRaJqVJSScQKR93U2hhfBdujESktdo6r55m7UcFzN+YfsiFs8IoD7zFWit59G7WWHAGRLjfeF73GfW8Z6PHAAk6hCgcYW2CwCVta/GNpYr9SmAhgTD4EexFjHDSRacu88y0+xkF9aJrL0eD6znHLLIFOYTJx8Ft8BbYOWJBjt5heX5lQkGa8nEcLIZQkiTrQngJI5yXC2fjE94kDUHJ89hD25qffnU5qRUUYqVmrs1is5aBVx4yD4seO2yw
+ oObVuUUd
+ XHasMyJwEVCCajlO3kwkT+5ms4n58nssS1SA6co72In6rXZZbuT8M3sP2thapTPot1TosjbREeDnSOhA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,169 +305,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-.:: Intro
+* Lorenzo Stoakes <lorenzo.stoakes@oracle.com> [250812 11:47]:
+> We now need to account for flag initialisation on fork. We retain the
+> existing logic as much as we can, but dub the existing flag mask legacy.
+> 
+> These flags are therefore required to fit in the first 32-bits of the flags
+> field.
+> 
+> However, further flag propagation upon fork can be implemented in mm_init()
+> on a per-flag basis.
+> 
+> We ensure we clear the entire bitmap prior to setting it, and use
+> __mm_flags_get_word() and __mm_flags_set_word() to manipulate these legacy
+> fields efficiently.
+> 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-Following up to the plan I posted at [0], I've now prepared an up-to-date ASI
-branch that demonstrates a technique for solving the page cache performance
-devastation I described in [1]. The branch is at [5].
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 
-The goal of this prototype is to increase confidence that ASI is viable as a
-broad solution for CPU vulnerabilities. (If the community still has to develop
-and maintain new mitigations for every individual vuln, because ASI only works
-for certain use-cases, then ASI isn't super attractive given its complexity
-burden).
-
-The biggest gap for establishing that confidence was that Google's deployment
-still only uses ASI for KVM workloads, not bare-metal processes. And indeed the
-page cache turned out to be a massive issue that Google just hasn't run up
-against yet internally.
-
-.:: The "ephmap"
-
-I won't re-hash the details of the problem here (see [1]) but in short: file
-pages aren't mapped into the physmap as seen from ASI's restricted address space.
-This causes a major overhead when e.g. read()ing files. The solution we've
-always envisaged (and which I very hastily tried to describe at LSF/MM/BPF this
-year) was to simply stop read() etc from touching the physmap.
-
-This is achieved in this prototype by a mechanism that I've called the "ephmap".
-The ephmap is a special region of the kernel address space that is local to the
-mm (much like the "proclocal" idea from 2019 [2]). Users of the ephmap API can
-allocate a subregion of this, and provide pages that get mapped into their
-subregion. These subregions are CPU-local. This means that it's cheap to tear
-these mappings down, so they can be removed immediately after use (eph =
-"ephemeral"), eliminating the need for complex/costly tracking data structures.
-
-(You might notice the ephmap is extremely similar to kmap_local_page() - see the
-commit that introduces it ("x86: mm: Introduce the ephmap") for discussion).
-
-The ephmap can then be used for accessing file pages. It's also a generic
-mechanism for accessing sensitive data, for example it could be used for
-zeroing sensitive pages, or if necessary for copy-on-write of user pages.
-
-.:: State of the branch
-
-The branch contains:
-
-- A rebased version of my "ASI integration for the page allocator" RFC [3]. (Up
-  to "mm/page_alloc: Add support for ASI-unmapping pages")
-- The rest of ASI's basic functionality (up to "mm: asi: Stop ignoring asi=on
-  cmdline flag")
-- Some test and observability conveniences (up to "mm: asi: Add a tracepoint for
-  ASI page faults")
-- A prototype of the new performance improvements (the remainder of the
-  branch).
-
-There's a gradient of quality where the earlier patches are closer to "complete"
-and the later ones are increasingly messy and hacky. Comments and commit message
-describe lots of the hacky elements but the most important things are:
-
-1. The logic to take advantage of the ephmap is stuck directly into mm/shmem.c.
-   This is just a shortcut to make its behaviour obvious. Since tmpfs is the
-   most extreme case of the read/write slowdown this should give us some idea of
-   the performance improvements but it obviously hides a lot of important
-   complexity wrt how this would be integrated "for real".
-
-2. The ephmap implementation is extremely stupid. It only works for the simple
-   shmem usecase. I don't think this is really important though, whatever we end
-   up with needs to be very simple, and it's not even clear that we actually
-   want a whole new subsystem anyway. (e.g. maybe it's better to just adapt
-   kmap_local_page() itself).
-
-3. For software correctness, the ephmap only needs to be TLB-flushed on the
-   local CPU. But for CPU vulnerability mitigation, flushes are needed on other
-   CPUs too. I believe these flushes should only be needed very infrequently.
-   "Add ephmap TLB flushes for mitigating CPU vulns" is an illustrative idea of
-   how these flushes could be implemented, but it's a bit of a simplistic
-   implementation. The commit message has some more details.
-
-.:: Performance
-
-This data was gathered using the scripts at [4]. This is running on a Sapphire
-Rapids machine, but with setcpuid=retbleed. This introduces an IBPB in
-asi_exit(), which dramatically amplifies the performance impact of ASI. We don't
-know of any vulns that would necessitate this IBPB, so this is basically a weird
-selectively-paranoid configuration of ASI. It doesn't really make sense from a
-security perspective. A few years from now (once the security researchers have
-had their fun) we'll know what's _really_ needed on this CPU, it's very unlikely
-that it turns out to be exactly an IBPB like this, but it's reasonably likely to
-be something with a vaguely similar performance overhead.
-
-Native FIO randread IOPS on tmpfs (this is where the 70% perf degradation was):
-+---------+---------+-----------+---------+-----------+---------------+
-| variant | samples |      mean |     min |       max | delta mean    |
-+---------+---------+-----------+---------+-----------+---------------+
-| asi-off |      10 | 1,003,102 | 981,813 | 1,036,142 |               |
-| asi-on  |      10 |   871,928 | 848,362 |   885,622 | -13.1%        |
-+---------+---------+-----------+---------+-----------+---------------+
-
-Native kernel compilation time:
-+---------+---------+--------+--------+--------+-------------+
-| variant | samples |   mean |    min |    max | delta mean  |
-+---------+---------+--------+--------+--------+-------------+
-| asi-off |       3 | 34.84s | 34.42s | 35.31s |             |
-| asi-on  |       3 | 37.50s | 37.39s | 37.58s | 7.6%        |
-+---------+---------+--------+--------+--------+-------------+
-
-Kernel compilation in a guest VM:
-+---------+---------+--------+--------+--------+-------------+
-| variant | samples |   mean |    min |    max | delta mean  |
-+---------+---------+--------+--------+--------+-------------+
-| asi-off |       3 | 52.73s | 52.41s | 53.15s |             |
-| asi-on  |       3 | 55.80s | 55.51s | 56.06s | 5.8%        |
-+---------+---------+--------+--------+--------+-------------+
-
-Despite my title these numbers are kinda disappointing to be honest, it's not
-where I wanted to be by now, but it's still an order-of-magnitude better than
-where we were for native FIO a few months ago. I believe almost all of this
-remaining slowdown is due to unnecessary ASI exits, the key areas being:
-
-- On every context_switch(). Google's internal implementation has fixed this (we
-  only really need it when switching mms).
-
-- Whenever zeroing sensitive pages from the allocator. This could potentially be
-  solved with the ephmap but requires a bit of care to avoid opening CPU attack
-  windows.
-
-- In copy-on-write for user pages. The ephmap could also help here but the
-  current implementation doesn't support it (it only allows one allocation at a
-  time per context).
-
-.:: Next steps
-
-Here's where I'd like to go next:
-
-1. Discuss here and get feedback from x86 folks. Dave H said we need "line of
-   sight" to a version of ASI that's viable for sandboxing native workloads. I
-   don't consider a 13% slowdown "viable" as-is, but I do think this shows we're
-   out of the "but what about the page cache" black hole. It seems provably
-   solvable now.
-
-2. Once we have some x86 maintainers saying "yep, it looks like this can work
-   and it's something we want", I can start turning my page_alloc RFC [3] into a
-   proper patchset (or maybe multiple if I can find a way to break things down
-   further).
-
-Note what I'm NOT proposing is to carry on working on this branch until ASI is
-as fast as I am claiming it eventually will be. I would like to avoid doing that
-since I believe the biggest unknowns on that path are now solved, and it would
-be more useful to start getting down to nuts and bolts, i.e. reviewing real,
-PATCH-quality code and merging precursor stuff. I think this will lead to more
-useful discussions about the overall design, since so far all my postings have
-been so long and rarefied that it's been hard to really get a good conversation
-going.
-
-.:: Conclusion
-
-So, x86 folks: Does this feel like "line of sight" to you? If not, what would
-that look like, what experiments should I run?
-
----
-
-[0] https://lore.kernel.org/lkml/DAJ0LUX8F2IW.Q95PTFBNMFOI@google.com/
-[1] https://lore.kernel.org/linux-mm/20250129144320.2675822-1-jackmanb@google.com/
-[2] https://lore.kernel.org/linux-mm/20190612170834.14855-1-mhillenb@amazon.de/
-[3] https://lore.kernel.org/lkml/20250313-asi-page-alloc-v1-0-04972e046cea@google.com/
-[4] https://github.com/bjackman/nixos-flake/commit/be42ba326f8a0854deb1d37143b5c70bf301c9db
-[5] https://github.com/bjackman/linux/tree/asi/6.16
+> ---
+>  include/linux/mm_types.h | 13 ++++++++++---
+>  kernel/fork.c            |  7 +++++--
+>  2 files changed, 15 insertions(+), 5 deletions(-)
+> 
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 38b3fa927997..25577ab39094 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -1820,16 +1820,23 @@ enum {
+>  #define MMF_TOPDOWN		31	/* mm searches top down by default */
+>  #define MMF_TOPDOWN_MASK	_BITUL(MMF_TOPDOWN)
+>  
+> -#define MMF_INIT_MASK		(MMF_DUMPABLE_MASK | MMF_DUMP_FILTER_MASK |\
+> +#define MMF_INIT_LEGACY_MASK	(MMF_DUMPABLE_MASK | MMF_DUMP_FILTER_MASK |\
+>  				 MMF_DISABLE_THP_MASK | MMF_HAS_MDWE_MASK |\
+>  				 MMF_VM_MERGE_ANY_MASK | MMF_TOPDOWN_MASK)
+>  
+> -static inline unsigned long mmf_init_flags(unsigned long flags)
+> +/* Legacy flags must fit within 32 bits. */
+> +static_assert((u64)MMF_INIT_LEGACY_MASK <= (u64)UINT_MAX);
+> +
+> +/*
+> + * Initialise legacy flags according to masks, propagating selected flags on
+> + * fork. Further flag manipulation can be performed by the caller.
+> + */
+> +static inline unsigned long mmf_init_legacy_flags(unsigned long flags)
+>  {
+>  	if (flags & (1UL << MMF_HAS_MDWE_NO_INHERIT))
+>  		flags &= ~((1UL << MMF_HAS_MDWE) |
+>  			   (1UL << MMF_HAS_MDWE_NO_INHERIT));
+> -	return flags & MMF_INIT_MASK;
+> +	return flags & MMF_INIT_LEGACY_MASK;
+>  }
+>  
+>  #endif /* _LINUX_MM_TYPES_H */
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index c4ada32598bd..b311caec6419 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -1056,11 +1056,14 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
+>  	mm_init_uprobes_state(mm);
+>  	hugetlb_count_init(mm);
+>  
+> +	mm_flags_clear_all(mm);
+>  	if (current->mm) {
+> -		mm->flags = mmf_init_flags(current->mm->flags);
+> +		unsigned long flags = __mm_flags_get_word(current->mm);
+> +
+> +		__mm_flags_set_word(mm, mmf_init_legacy_flags(flags));
+>  		mm->def_flags = current->mm->def_flags & VM_INIT_DEF_MASK;
+>  	} else {
+> -		mm->flags = default_dump_filter;
+> +		__mm_flags_set_word(mm, default_dump_filter);
+>  		mm->def_flags = 0;
+>  	}
+>  
+> -- 
+> 2.50.1
+> 
 
