@@ -2,104 +2,181 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0D997CA0EC4
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 13:27:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 76CDECA0EC4
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 13:27:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A11CE8E0130; Tue, 12 Aug 2025 09:27:18 -0400 (EDT)
+	id AFD9E8E0131; Tue, 12 Aug 2025 09:27:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C3328E00E5; Tue, 12 Aug 2025 09:27:18 -0400 (EDT)
+	id 9EAB78E00E5; Tue, 12 Aug 2025 09:27:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B0FE8E0130; Tue, 12 Aug 2025 09:27:18 -0400 (EDT)
+	id 7EDB68E0131; Tue, 12 Aug 2025 09:27:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7BC878E00E5
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 09:27:18 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 52B39160324
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:27:18 +0000 (UTC)
-X-FDA: 83768181756.13.C98D77B
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 4E288A000D
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:27:16 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TDS8zN6I;
-	spf=pass (imf25.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 646808E00E5
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 09:27:20 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DAAF582204
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:27:19 +0000 (UTC)
+X-FDA: 83768181798.04.01B6FEC
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B804A4000F
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:27:17 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Fo0Vm+Cg;
+	spf=pass (imf27.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755005236;
+	s=arc-20220608; t=1755005238;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5ek84SNcPpQCmMHvcqQa3TlILZVgRFvPfl/s5BFwLTA=;
-	b=su1aatZIT3AncYJQQc2rYJgQfg7rwSURyItmudbDYyEQQI3ATOYbSyVITTsU5aVwZcEjlW
-	Wzd4LbrpxbY65ZgxIznyq8rLLB4FxKB/6P7icxlRlTmAsiX+lHD/1uDpi0TZ9jaO8D/JgB
-	Gl7xz5+b8nD1TSNX0vuPCWgx2a04QK0=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TDS8zN6I;
-	spf=pass (imf25.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755005236; a=rsa-sha256;
+	bh=6K2KDerpzPX7U8bmSLlP0LUJqVmYwFaKvvwSlmusGeg=;
+	b=dXn2fcwHd81TGgU1aLvS9bXufGdq1LDvVd8wzQ4/sExHzcA6EcdEJZXec/mKvC+xlQEZZ/
+	c0KxAqU+dgzUo3Y/HcAepGItC/aSqlpLC8tO0mDsLa6TCW9v8dya3Qyl8iQ7bAuG/Lp+93
+	HXDhCa2xiFprDY/48rL4aVKcG65bakA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755005238; a=rsa-sha256;
 	cv=none;
-	b=ZMQI1XcVt97S9PC//wyiDfZImibTbF3ENSS/9WyQqf6mKeyDMtDX2U1wXurOp+26ybED+S
-	inwFmBogWyO59ySCIP3K486s+fah7fVIDaqmXjeJ8Lfk/7kbjBxnRwEl6d80CSSp8coFHM
-	4GKpAkpjd2BFL7tjXwoU0pmO9umeHFA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755005235;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5ek84SNcPpQCmMHvcqQa3TlILZVgRFvPfl/s5BFwLTA=;
-	b=TDS8zN6ILtDcti5ieUFOGNCGBIn98LI75i0ViiYG7oS/puQgk5l2EGCOkwhPqFp2EPR2Nc
-	k2J6KD3uY83xZiecnFl+YUCFf+jPLkbT2yEgPcV2L9p/krcuunH/DX8E3oA85P0YOFedq/
-	x1senS6YmJO5RYx1V2HahvNpDFez6tA=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-610-l3ZgW3CKOGqqNd4zvWIV_g-1; Tue,
- 12 Aug 2025 09:27:12 -0400
-X-MC-Unique: l3ZgW3CKOGqqNd4zvWIV_g-1
-X-Mimecast-MFC-AGG-ID: l3ZgW3CKOGqqNd4zvWIV_g_1755005229
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C128018002C8;
-	Tue, 12 Aug 2025 13:27:08 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.156])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9513530001A1;
-	Tue, 12 Aug 2025 13:27:07 +0000 (UTC)
-Date: Tue, 12 Aug 2025 21:27:02 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: SeongJae Park <sj@kernel.org>, linux-mm@kvack.org,
-	ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
-	dvyukov@google.com, vincenzo.frascino@arm.com,
-	akpm@linux-foundation.org, kasan-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org
-Subject: Re: [PATCH 4/4] mm/kasan: make kasan=on|off take effect for all
- three modes
-Message-ID: <aJtBJgC82CpUkwTi@MiWiFi-R3L-srv>
-References: <20250805062333.121553-5-bhe@redhat.com>
- <20250806052231.619715-1-sj@kernel.org>
- <9ca2790c-1214-47a0-abdc-212ee3ea5e18@lucifer.local>
- <aJX20/iccc/LL42B@MiWiFi-R3L-srv>
- <b5d313ef-de35-44d3-bcbc-853d94368c87@lucifer.local>
+	b=NZS8An8ywA3TZMMxV/i8FxbtNqWkIws0P17OQFtOIhM2J9aGALEhoJqSx/CDRpvWB3Ja1+
+	8Cd0WO2Zid9ciu7dubbXHarO+ridzK1K171ugU3IJulBGvO6MTHc4G1jHc9UMm9Gn8tHqq
+	vUgH5UgomxPBpZj1gkXJkroh3lco77Q=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Fo0Vm+Cg;
+	spf=pass (imf27.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755005238; x=1786541238;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=a8brDXoNQXGsX0O3+U1wqzz6qH0YVwQ2IYUmoUvYEIA=;
+  b=Fo0Vm+Cgv2xRxiSOTgYYPQfWq5G2niXASlxfNuFP0Jk35f8B13CnHJVp
+   chtRalOYmYbcJ3wPD+hEDoeuH8fOAYZ/D5EKQz3ufU1S3nySYIUN3kaf8
+   5xFdY09ItYwfqyMLGciDkX9cVwuvtK4B9+ZtGyN9DgEdE1QHOxck1cGxU
+   mh0h67u2/6vzqVo8zwnW4hYyA8zTCBTencL+9sH15nZwjxqgzu2XNOy44
+   F7WDDQCS+eKjGx4eAQOPpHu7M27ZgkbJ88KPVvqdHYAiCOr+8ikXa5O4O
+   at+TXbkjYm48sC/4S60SP5GB80Kcr4cT+4BGnzJQPENljXTdtGgovVu+1
+   w==;
+X-CSE-ConnectionGUID: z7f8rZE5Q8i5+eGF9s5Umg==
+X-CSE-MsgGUID: 54b1tfVFQBiLE4mCtiWXSg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="60903478"
+X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
+   d="scan'208";a="60903478"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 06:27:17 -0700
+X-CSE-ConnectionGUID: wC4pRigPTk65sPn+FhCwlg==
+X-CSE-MsgGUID: 65CUt4VoQ8Opy1+rKR26tg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
+   d="scan'208";a="165831425"
+Received: from vpanait-mobl.ger.corp.intel.com (HELO wieczorr-mobl1.intel.com) ([10.245.245.54])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 06:26:55 -0700
+From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+To: nathan@kernel.org,
+	arnd@arndb.de,
+	broonie@kernel.org,
+	Liam.Howlett@oracle.com,
+	urezki@gmail.com,
+	will@kernel.org,
+	kaleshsingh@google.com,
+	rppt@kernel.org,
+	leitao@debian.org,
+	coxu@redhat.com,
+	surenb@google.com,
+	akpm@linux-foundation.org,
+	luto@kernel.org,
+	jpoimboe@kernel.org,
+	changyuanl@google.com,
+	hpa@zytor.com,
+	dvyukov@google.com,
+	kas@kernel.org,
+	corbet@lwn.net,
+	vincenzo.frascino@arm.com,
+	smostafa@google.com,
+	nick.desaulniers+lkml@gmail.com,
+	morbo@google.com,
+	andreyknvl@gmail.com,
+	alexander.shishkin@linux.intel.com,
+	thiago.bauermann@linaro.org,
+	catalin.marinas@arm.com,
+	ryabinin.a.a@gmail.com,
+	jan.kiszka@siemens.com,
+	jbohac@suse.cz,
+	dan.j.williams@intel.com,
+	joel.granados@kernel.org,
+	baohua@kernel.org,
+	kevin.brodsky@arm.com,
+	nicolas.schier@linux.dev,
+	pcc@google.com,
+	andriy.shevchenko@linux.intel.com,
+	wei.liu@kernel.org,
+	bp@alien8.de,
+	ada.coupriediaz@arm.com,
+	xin@zytor.com,
+	pankaj.gupta@amd.com,
+	vbabka@suse.cz,
+	glider@google.com,
+	jgross@suse.com,
+	kees@kernel.org,
+	jhubbard@nvidia.com,
+	joey.gouly@arm.com,
+	ardb@kernel.org,
+	thuth@redhat.com,
+	pasha.tatashin@soleen.com,
+	kristina.martsenko@arm.com,
+	bigeasy@linutronix.de,
+	maciej.wieczor-retman@intel.com,
+	lorenzo.stoakes@oracle.com,
+	jason.andryuk@amd.com,
+	david@redhat.com,
+	graf@amazon.com,
+	wangkefeng.wang@huawei.com,
+	ziy@nvidia.com,
+	mark.rutland@arm.com,
+	dave.hansen@linux.intel.com,
+	samuel.holland@sifive.com,
+	kbingham@kernel.org,
+	trintaeoitogc@gmail.com,
+	scott@os.amperecomputing.com,
+	justinstitt@google.com,
+	kuan-ying.lee@canonical.com,
+	maz@kernel.org,
+	tglx@linutronix.de,
+	samitolvanen@google.com,
+	mhocko@suse.com,
+	nunodasneves@linux.microsoft.com,
+	brgerst@gmail.com,
+	willy@infradead.org,
+	ubizjak@gmail.com,
+	peterz@infradead.org,
+	mingo@redhat.com,
+	sohil.mehta@intel.com
+Cc: linux-mm@kvack.org,
+	linux-kbuild@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	x86@kernel.org,
+	llvm@lists.linux.dev,
+	kasan-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 06/18] x86: Reset tag for virtual to physical address conversions
+Date: Tue, 12 Aug 2025 15:23:42 +0200
+Message-ID: <01e62233dcc39aeb8d640eb3ee794f5da533f2a3.1755004923.git.maciej.wieczor-retman@intel.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <cover.1755004923.git.maciej.wieczor-retman@intel.com>
+References: <cover.1755004923.git.maciej.wieczor-retman@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b5d313ef-de35-44d3-bcbc-853d94368c87@lucifer.local>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Rspamd-Queue-Id: 4E288A000D
-X-Rspamd-Server: rspam04
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 36xpi7a666ocrzu4rpm9mxsihrdhboht
-X-HE-Tag: 1755005236-392916
-X-HE-Meta: U2FsdGVkX1+A1APCFMXSjIFuAsStYdNuuAQXOhwG3EsScX7J/ISNHqSlk5rcHciyHweNDNWi6pa/wdjdAEvcL3b1U1hN3OPzy7kizRATBY8j63WPQZtBaHVCZFtWgE3KR7JIdoPKkLU9SjmptKI2jFhkrFqkGcr8DmBjDGuzosw8oTZw5q6k8Ad3crwEw3qtGWjLUfm47PqivRTkb1pE71T4O2KtSyPfdTN7uCKw6o69BXgkwh6aWseKk7zRW817tGyIPbpKBtXIeSuOK3P16NCCoLlIZIDZwAAPLG9ABsdplen3c+3TiHu7Usha6Mjs2EXouF4W30edGvScWxIdIX1pTGcALyQp16Vx9HI/8+oo/LLtNXClwnj7Mi3QbZ5P2/ts4cFkl84PNgeB96k5jJCgqLSh0qy4MBFIwwD2YaUffTRljRu26HY0DXFtlaU+h1kr0Rj+N7dNGN6fj1q5WbuuDD1W5pQsEZZW/fL+Az3zy2oCnNobGnaQQofyN+0E3PqYCSOLECXEx3Z3T/NCQNXWZLEq2/vvEfH9rk+ZIsWDOAAbvQovL7rm6J+R60hhs9wJ1fOBc2ykDP/upg8OEwXw3zCfIMph6gy/lrm14hrU238v60uzFrZsIvTxDR3H48Gjl6v8adsd62nxz9YsQIWKm0Kcol4Te4d4HGC78eCpvnUDUZNJyaBzHTpJqfQ2HpI5+MajIGr+K6FZJ/7HVfoCEtGyrbHTIEqPyHSDpe9wPagBlTno8jzc14SmgE8+JyNI7AUE6V8OMyhHF5n0YLu6xz9UCptT1iisqv0KlKT5qfvNptdLbwl28YsNjpF7997d+K1TQz4BSl6cANmzrQCMfodjGLG5RZxPWtnrNHn57kQlvThiB/koj4ZU9GE+Mx/3XBd/uPU0Kse0LTSFa/c1Ki4igMkmYBjWi6QwbkR9IFb/JV6yoGd+CzUAGD6ATHYCXbA3vKhaj2Y2iyA
- CpvD+A8V
- zZilqgjGcFnC63T+24pu155nLGZqrcFjp3fj0q07EP3719Py3L7sYfbIxGMgOz+hkf8bh2KAXh1TcRBz91kZvbZwU6EVkAaDU/h6xAx4SoPUGH5w/Psrn3AjI2zGIBUeM4PzRDMD8H217uILwMn0/pfj8bWL70jnqZM39QOxEHZ6LxEI0G1lPRqzINcn9Yuq1vaYZZaTzytOMhGVf3MJP0P6ZlAl1hhrcDu7QuP+rDjX/ljeu4w753uWLEECGdNA96CN8DCE1qrB/OjZC+9lmuo80ySl9nlaa2vRZUxjIIbv/pPlfgV2PTHoLiTdgF9emrOB+e9gWeu/cSvnkOnZPB7O2Zfe06Dxz+MFAgW17U1JhXKKoviRtIdazao7bJoBrj7PMl7utrg3YLPHCW92v6NSjR0R5Z9Kg3yk5tmE9cZtSP+1A0IC6hemFoRGw62wq6BG6cXkMauL9U1Kq4K7IJ/CaTPvCstmx2Gi7
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B804A4000F
+X-Stat-Signature: 4kw69b1kqsauxdjiegii3dcwmoaz63ex
+X-HE-Tag: 1755005237-729448
+X-HE-Meta: U2FsdGVkX19eEyy0Lyb1USNwg9aep8dvtqdOZZRkLtZMUhz6k3l0tzR+qNTAd4hynxcJsfeg6kMzh188R270ZTV1oMc+pPhzCOZW+jM2AjTjb9778thEJWg7Oqow5veI6U95Xk3m3r5aTQZetse4lNVVhdxQP5/3NxvZBpTWyngXMQaqroH7AHJEX41fmMNyUdOU6xk8miO0b8gbKMfzreGewpfzwNVB4pPKijszD0cHDLt4Od3YKKsXE8R5pU21Vr5wXh1EgZ2LoFPnoL8TBKKEgzQ7vJmo/4UxK4QUhbyadHVN3MOT4bVhUl9Nh7EmTur6ZYC2d1RH/Xxu7ybJT093O6BTjMmFSRHo3FlWPjoqCSjoeLnuIcE+fje3HwB3bdbSW5J8Vm2P7KCuWYt5iilQ3PbiI1RzRnxogLYciHhg4X/2KOGv/UIsYOMIVB8PaPI+Ywr+TNEO6WeXIowr8TNKmkRdp8iS6QH5BULtLXmgcsxXi0jlv61odDm/GM4zB1dE4cD7HCFZQYk9iKUzsePgiSKjMrUz4mb5q6mYQM5igUgSPFOSD4Lcb7+WI85P56wBFnYaqcOu28WOxNqYF4el8uE9MQwUTz+mMv8ClaCcGuGJXuhNjIwVcntc/DycGhuefMFskN+ppVMbCuzr5fMg5jBENIvVJfGpWg6GGANM+iEsExopPn8lpYwUteW86KgsN5MrEnwklx39BzY7WekSHC/Ym2ukiIEAkJ+NzEb091kc1u066GjdOcHonQvOaw23ktfNZxIym9gSqNHOamr8Scu5XJp48gvWTsOlGjdz6TlbBQD4eeiL6kax0p7qOu0KKh5Vs+FWAykG5vuuwyBZoWKhaKBu1gLzmkdxmugUB3gCzSCKFq4vr5VgH1RULvf+5RwmZI8cf7/zUoShdr0VTEFeyn4z42Ellxp2AOwT3+EgaKg839FdXjy+kAzNF84IpMxp95vk44nzbyg
+ 2/+x5l2Z
+ if1LquX6/IbBHMOsnjpEII9a/ujR5nRDSQ9gVbkb9WwgcI8ej47ApTv0CBIyBFGuJ4Y3Rg5nmc8sbg072Xj0GTVGeL2fEJcAUAxqP97jigCkZDS7MSKvJSGI9qZwfRyYIRoFKKFGLpmZGlrbMys3+YsUpBAM3qtyXvPCN6V90ne7BV1ZvgrEXDFZwjFum64+FdH3oFQBmy2yseDlvlxaotpGkiWcEvdUjeAU448BgxQvMp874VvhRXynQkV2ZDJdtOTFu
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,67 +185,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08/08/25 at 02:24pm, Lorenzo Stoakes wrote:
-> On Fri, Aug 08, 2025 at 09:08:35PM +0800, Baoquan He wrote:
-> > On 08/06/25 at 05:26pm, Lorenzo Stoakes wrote:
-......
-> > > > diff --git a/include/linux/kasan-enabled.h b/include/linux/kasan-enabled.h
-> > > > index b5857e15ef14..a53d112b1020 100644
-> > > > --- a/include/linux/kasan-enabled.h
-> > > > +++ b/include/linux/kasan-enabled.h
-> > > > @@ -8,11 +8,22 @@ extern bool kasan_arg_disabled;
-> > > >
-> > > >  DECLARE_STATIC_KEY_FALSE(kasan_flag_enabled);
-> > > >
-> > > > +#ifdef CONFIG_KASAN
-> > > > +
-> > >
-> > > Shouldn't we put this above the static key declaration?
-> > >
-> > > Feels like the whole header should be included really.
-> >
-> > You are right, kasan_flag_enabled should be included in CONFIG_KASAN
-> > ifdeffery scope.
-> 
-> Firstly I _LOVE_ the term 'ifdeffery scope'. Fantastic :)
+Any place where pointer arithmetic is used to convert a virtual address
+into a physical one can raise errors if the virtual address is tagged.
 
-Learned from upstream people with expertise on both english and kernel, :-)
+Reset the pointer's tag by sign extending the tag bits in macros that do
+pointer arithmetic in address conversions. There will be no change in
+compiled code with KASAN disabled since the compiler will optimize the
+__tag_reset() out.
 
-> 
-> >
-> > Since CONFIG_KASAN_HW_TAGS depends on CONFIG_KASAN, we may not need
-> > include below CONFIG_KASAN_HW_TAGS ifdeffery into CONFIG_KASAN ifdeffery
-> > scope. Not sure if this is incorrect.
-> 
-> Well I don't think CONFIG_KASAN_HW_TAGS is necessarily implied right? So these
-> should remain I think, just nested in CONFIG_KASAN, should be fine.
+Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+---
+Changelog v4:
+- Simplify page_to_virt() by removing pointless casts.
+- Remove change in __is_canonical_address() because it's taken care of
+  in a later patch due to a LAM compatible definition of canonical.
 
-After investigation, I keep the CONFIG_KASAN_HW_TAGS ifdeffery scope out
-of CONFIG_KASAN scope. Otherwise, I need define the dummy
-kasan_hw_tags_enabled() function twice. I am personally not fan of the
-style. While if that is preferred in kernel, I can change it.
+ arch/x86/include/asm/page.h    | 14 +++++++++++---
+ arch/x86/include/asm/page_64.h |  2 +-
+ arch/x86/mm/physaddr.c         |  1 +
+ 3 files changed, 13 insertions(+), 4 deletions(-)
 
-#ifdef CONFIG_KASAN
-
-#ifdef CONFIG_KASAN_HW_TAGS
-......
-#ifdef CONFIG_KASAN_HW_TAGS
-static inline bool kasan_hw_tags_enabled(void)
-{
-        return kasan_enabled();
-}
-#else /* CONFIG_KASAN_HW_TAGS */
-static inline bool kasan_hw_tags_enabled(void)
-{
-        return false;
-}
-#endif /* CONFIG_KASAN_HW_TAGS */
-.....
-#else /* CONFIG_KASAN */
-static inline bool kasan_hw_tags_enabled(void)
-{
-        return false;
-}
-#endif
+diff --git a/arch/x86/include/asm/page.h b/arch/x86/include/asm/page.h
+index 9265f2fca99a..15c95e96fd15 100644
+--- a/arch/x86/include/asm/page.h
++++ b/arch/x86/include/asm/page.h
+@@ -7,6 +7,7 @@
+ #ifdef __KERNEL__
+ 
+ #include <asm/page_types.h>
++#include <asm/kasan.h>
+ 
+ #ifdef CONFIG_X86_64
+ #include <asm/page_64.h>
+@@ -41,7 +42,7 @@ static inline void copy_user_page(void *to, void *from, unsigned long vaddr,
+ #define __pa(x)		__phys_addr((unsigned long)(x))
+ #endif
+ 
+-#define __pa_nodebug(x)	__phys_addr_nodebug((unsigned long)(x))
++#define __pa_nodebug(x)	__phys_addr_nodebug((unsigned long)(__tag_reset(x)))
+ /* __pa_symbol should be used for C visible symbols.
+    This seems to be the official gcc blessed way to do such arithmetic. */
+ /*
+@@ -65,9 +66,16 @@ static inline void copy_user_page(void *to, void *from, unsigned long vaddr,
+  * virt_to_page(kaddr) returns a valid pointer if and only if
+  * virt_addr_valid(kaddr) returns true.
+  */
+-#define virt_to_page(kaddr)	pfn_to_page(__pa(kaddr) >> PAGE_SHIFT)
++
++#ifdef CONFIG_KASAN_SW_TAGS
++#define page_to_virt(x) ({							\
++	void *__addr = __va(page_to_pfn((struct page *)x) << PAGE_SHIFT);	\
++	__tag_set(__addr, page_kasan_tag(x));					\
++})
++#endif
++#define virt_to_page(kaddr)	pfn_to_page(__pa((void *)__tag_reset(kaddr)) >> PAGE_SHIFT)
+ extern bool __virt_addr_valid(unsigned long kaddr);
+-#define virt_addr_valid(kaddr)	__virt_addr_valid((unsigned long) (kaddr))
++#define virt_addr_valid(kaddr)	__virt_addr_valid((unsigned long)(__tag_reset(kaddr)))
+ 
+ static __always_inline void *pfn_to_kaddr(unsigned long pfn)
+ {
+diff --git a/arch/x86/include/asm/page_64.h b/arch/x86/include/asm/page_64.h
+index 015d23f3e01f..de68ac40dba2 100644
+--- a/arch/x86/include/asm/page_64.h
++++ b/arch/x86/include/asm/page_64.h
+@@ -33,7 +33,7 @@ static __always_inline unsigned long __phys_addr_nodebug(unsigned long x)
+ extern unsigned long __phys_addr(unsigned long);
+ extern unsigned long __phys_addr_symbol(unsigned long);
+ #else
+-#define __phys_addr(x)		__phys_addr_nodebug(x)
++#define __phys_addr(x)		__phys_addr_nodebug(__tag_reset(x))
+ #define __phys_addr_symbol(x) \
+ 	((unsigned long)(x) - __START_KERNEL_map + phys_base)
+ #endif
+diff --git a/arch/x86/mm/physaddr.c b/arch/x86/mm/physaddr.c
+index fc3f3d3e2ef2..7f2b11308245 100644
+--- a/arch/x86/mm/physaddr.c
++++ b/arch/x86/mm/physaddr.c
+@@ -14,6 +14,7 @@
+ #ifdef CONFIG_DEBUG_VIRTUAL
+ unsigned long __phys_addr(unsigned long x)
+ {
++	x = __tag_reset(x);
+ 	unsigned long y = x - __START_KERNEL_map;
+ 
+ 	/* use the carry flag to determine if x was < __START_KERNEL_map */
+-- 
+2.50.1
 
 
