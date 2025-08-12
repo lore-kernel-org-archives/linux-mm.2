@@ -2,53 +2,53 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 167F8C87FCB
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 05:45:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 34A74CA0EC4
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 05:45:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D03A98E00D7; Tue, 12 Aug 2025 01:44:52 -0400 (EDT)
+	id 142CA8E00D8; Tue, 12 Aug 2025 01:44:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8CC18E00BE; Tue, 12 Aug 2025 01:44:52 -0400 (EDT)
+	id 0CEB58E00BE; Tue, 12 Aug 2025 01:44:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2D518E00D7; Tue, 12 Aug 2025 01:44:52 -0400 (EDT)
+	id EAF728E00D8; Tue, 12 Aug 2025 01:44:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 95D658E00BE
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 01:44:52 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6ADB5B6CA4
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:44:52 +0000 (UTC)
-X-FDA: 83767016424.02.FE5FB72
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D00A18E00BE
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 01:44:53 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9BD831401BC
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:44:53 +0000 (UTC)
+X-FDA: 83767016466.16.BD25E0E
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 812FC80008
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:44:50 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=bex0uDqI;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=sTzojLz1;
+	by imf03.hostedemail.com (Postfix) with ESMTP id BA5E120007
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:44:51 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=4R7GK1Ns;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=k3fJ6hiV;
 	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf02.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754977490; a=rsa-sha256;
+	spf=pass (imf03.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754977492; a=rsa-sha256;
 	cv=none;
-	b=0CvifPmY0iruUBmq0AbBbydvG2TAgcHVDWQD9o1YsdXAUNVHGvlidO/F5RjfR4XDINGpOJ
-	wX/u5mmF8JDtVfvLsoslGDnf5O3oqxpxi/pGud9uTxdJGzYWhP4StpQiXJUI1iuWZ3JiLH
-	SzrcQqkY1lOri/O5LE6OTfGWTeVSg6o=
+	b=MbWtwKmhzgMOd7xe0BxDI2deQc7SxQpV1BaHJQ9hNPb9bAwLPAUXiTxC3FVcidU9ftldVU
+	paAcVmyvD2/RT3Pc+gx/mcWT+BfkmPo374/B/Ot1pHD6uBmp4MwqaYQ388OwT19LLyLzFw
+	ilOhsl4042s3uIm46cG72dQklUOlg2Q=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=bex0uDqI;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=sTzojLz1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=4R7GK1Ns;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=k3fJ6hiV;
 	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf02.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
+	spf=pass (imf03.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754977490;
+	s=arc-20220608; t=1754977492;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tKATP4n6UsYsKAR5HymmCjK/vOsSvbOqbAEjaPPKais=;
-	b=EdnC201rX6Bt37HDFmV8Pi4J3ynVo+EtLHx2x70rAlV2Ox1HqhZ7wjt6fpt0QLx85XjHQy
-	XculPZQltEeSqFuHdLgPQBx6d6WMQhMIa+76YuCthpHjNZ/DPyuFcWCLRpC/OlEeC0Rt5e
-	sGk0FsugsmuA5cdlquKjcoj9swmgIBo=
+	bh=yt/Xm1UMfOhB+4hjRHAkXu2RVWCfW0hAXkjRskrMp90=;
+	b=Pub6jw9WyJkfJp/9iaEo+5A94nsB5eWdF9AoCm0BcNQVZIzWD9wmb9fa7W+wbEdq9AwhA9
+	+AF5zwRbRRgjjjXQxFEGTCBhGepR8o6NO5j3FmhzAcUUUqrQtK8nHWHGU8esQYaeVhNWCc
+	beCdxsEbB6Fx9YtCesK188C3vkjlXLI=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1754977479;
@@ -56,28 +56,27 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tKATP4n6UsYsKAR5HymmCjK/vOsSvbOqbAEjaPPKais=;
-	b=bex0uDqIIRryXaAvloStzvTEg31Q/TslhPGGgsXrYUJQEuDPVSuExWDJoQ+QwFi7lf0yAO
-	URQMEz948bdEqfzWNykOMmx0N0qCkowwyqQ/XW+cqX/t8XUfB3+thiAImpgwWl735nhTDn
-	MbXfvG9BhcCGaVw0dqDJx0TWqkzSw7fSuY/OCQ2k788QYQQXlSx3+N/IAcdMnXX7UbQ5NP
-	O71dXBXttz5NHvIyavgFoT4UKupvoxlm2Oj7aHwgXryEeW/GW1V3CPKqxcXs/yk7d2I4ko
-	Y2pHKtHhDLJcybmOM+Tx+MB/82qgi/3jBA6CJHxpAXP6N5KKv8bnwkxc3G1m1Q==
+	bh=yt/Xm1UMfOhB+4hjRHAkXu2RVWCfW0hAXkjRskrMp90=;
+	b=4R7GK1Ns/hWx6TZIMnggUIdGxwNwFjzJWNFPxFs848dnDyWhFTvY+RMOmyP5Kp+tWOTxnw
+	FMlWKazRs5aP80wuH+qVWYytZv2LPeT/htFzHm3zzQzRpZoSuglfAWCyLaRWo1xXJK3mze
+	/EDXe9OX84IGqHKBu9Lj8PeaIAKiz3QONIRgJL07IsxQop3aVJVwOfvc4DfnQsvz9hR/K9
+	FJWfI4Bec2VKnqy05LcEGQbq/VuFg76FAL/nGbNsK+Zp7Tb5Sn4jo6tXggcHjI+ruiVkZe
+	efTuVKXLYnIxrPThzovEFcWF7aLKC9SRppWxAoQoH2kdV9cj8m1DRyvh4j321Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1754977479;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tKATP4n6UsYsKAR5HymmCjK/vOsSvbOqbAEjaPPKais=;
-	b=sTzojLz1t1ocNTNz0HXeQczJ+INJVdOcOb3Rd0Buek8cjuenSqzq6kFPLpRAnPaQ1RQoA4
-	MvLiIPaAJKXQzDAA==
-Date: Tue, 12 Aug 2025 07:44:30 +0200
-Subject: [PATCH v4 17/24] riscv: vdso: Deduplicate CFLAGS_REMOVE_*
- variables
+	bh=yt/Xm1UMfOhB+4hjRHAkXu2RVWCfW0hAXkjRskrMp90=;
+	b=k3fJ6hiVMh2JFiv+1qKUzRxGonhn1sC95oifI2QM636AD1C5COlMeHHYVWR9m5qnrDzCl0
+	WQQ3zD4hOmEYiUCA==
+Date: Tue, 12 Aug 2025 07:44:31 +0200
+Subject: [PATCH v4 18/24] riscv: vdso: Disable LTO for the vDSO
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250812-vdso-absolute-reloc-v4-17-61a8b615e5ec@linutronix.de>
+Message-Id: <20250812-vdso-absolute-reloc-v4-18-61a8b615e5ec@linutronix.de>
 References: <20250812-vdso-absolute-reloc-v4-0-61a8b615e5ec@linutronix.de>
 In-Reply-To: <20250812-vdso-absolute-reloc-v4-0-61a8b615e5ec@linutronix.de>
 To: Paul Walmsley <paul.walmsley@sifive.com>, 
@@ -119,21 +118,21 @@ Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
  Arnaldo Carvalho de Melo <acme@redhat.com>, 
  Alexandre Ghiti <alexghiti@rivosinc.com>, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1754977469; l=1337;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1754977469; l=1406;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=n7rZyBbT5pbmt5M5GrSidThNFcSgij4efiSpxxemwhg=;
- b=0JIHJbt9zi6gUHgjcuSIwo+4izQMegBN32Ik6FgPfMJGJcayTSsoHfu7UHm/d6C4nSaS3Btnn
- B/WNe5Tn1umCM3sBScvC+evhAbZ739AK6c1oCCk0CX0mwimaIdz7FBr
+ bh=SOEunbiKKKTnOWrF+pK81yxcp7tmWh1LCgMbmBwYcqE=;
+ b=1Yj/TLz9zqgfdJG4tPNUhVnU/LPFKndOYqYO2YKY3GvxdtS2InB9rllJGVyVAVRovcYvZjFXM
+ 1mmMqVL3+dfBRWzstw5hka5H6IK1HeBJJp4KVZMkpgRQSb3KON+DLoI
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
-X-Rspamd-Server: rspam03
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: BA5E120007
+X-Stat-Signature: wqpepnu4d58rtxbpc61nm95xux7d8j9n
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 812FC80008
-X-Stat-Signature: hqft1x3gkpmwypygwoxrchpmmqcwsm11
-X-HE-Tag: 1754977490-458361
-X-HE-Meta: U2FsdGVkX18C5pQUjHzT+c3+RCdBEz43U7TzG9aFEFENIcdcWkXwp4nHxkb7w64983umzuTI9mAIKbN6I5tqvaTPr+uz3r07X2t5KODiD0ifXIZ2cHtsyz/Sz1OI/tPPVPdph22sqQZ+GobSqCuPgF0J6NzN/2VId4nCoYUgGmdrqxlz7ruxg4R2+kW1mDXhdaGWe2TKfcZcnzQPEtdvng24HY04N3wkY9h3yiYnZfdoW5J9YHLQjkJQOZ9CwROdnHI4RDQ0JdnYqo5FJcsqUoXsaEnaBJLb5MbxrxaDjNCOJf6eaHp6IqxGG+VH0e8Mk2WBSaZKpqjWOOy/XX0N3Hi3BzkhvaydUyOuowGj4IZOwLf+0abD2g365bOYkMD/CaCzOEN39hZ3HAC6WAWqFKLsc/Sch2nrAwEDLu4c+CNCzEKsWH1frVY3xyrXxsug82AFwkvaOsgpC9j/1r0kLq1ylKmLtIlde+skh1TNVz5d8PaS7illsqDczDEGaWvSmUWaV3r8VHQ/Ef4aGcFcVCG20OIXvBg6c0D1ynbjrJ4+jFjTPpSUbNasRiSSZn0q2/z9zAMsWfnhr7ACYYESgvrF1yJLd6zlCwDTG0mAhJrJgK/HoccSqLm2ISurF9my9kKQ+xdPK2V+GHy1thBMRlEeaNYfGJzO4mhPzh4idn9pr52vCEZCBubRwUnUbhWsEXLnnjdNHRJ9MZOh3ztjoe2k0HSMTA9EgsIbwj6nSYDg+whogV0R5RB/d0sylXGAAWpy3MAm4cPzqG58njjyB3RLQSe7T/uxwrsARQXQnvCnINGPA58h1zXQ19M2WRKu2z9MY8TfxAJNpivPvAl+PYCHDILXzBIlHSVrPVDdVVcf0vO7/+qC4QXD6Td8Mdwn9LRfHQJTWnx3SfvWPR5wwkmvFXumsz8b3zG44G4lxMBFSLv8Hf7WJUVza+86mGuPwdbA7HrQaa9b39Qf8bw
- ezmgO/ZF
- BqzpSPjG1uD07zQk5pMwhZybrrVonqtjyyUzo0C/cwiNAfHnzs+nkOozGklQp/jBoDpnpC5MAglDno9ehCqC/W5jld7S1ayPg5ha56TpEAw+l2I8WxgrD1SnyVZvDqBFcNu8SKmupCqa3hfVuqIptzZG70QaQ90R5EEtrR5XS5xu8rYP3KucR3F/1afWQCKqWO9pfS0CMxeQqGc1lW+alUz/J/bLT0REL6bWqfHTfmkxQn8sErgMh8gp4PK3bj1Zui4x1oJhD5maNqPdSTb8sXaiNylwespRdtSrM858k25Vh3ukR5qBsjrRtrwWyTMIsqP9XJ3qU/tmieVL1U2wiIDc+4iBGgMS1Ec3hV5131wSt9cpJyr4MoGd6sTfJWFfIwVrSKlQzGrTskPKBsdlkiflfTQsLiPPXG/gb/VpvywsiySl/sD18Iuup2rfHozFveifqA/PpL6z/+4mNMAvxlbtRfyt4VUrUHCFIClmhwED9bpOFSnpjGSk4c1eqnERlkzruByXmRF4fncAMnaLZThrC55hdQEevxP/Abhzk4J3BRBlKc7WxxoiLGoJF+yaYbjqnV2RAhP8WFA7YkKRVLB9AsR1LkJhdhDvH/yxloQyBCYzta0fr90/Cn1GHFq+1sHloQLGQJfi39l3TQa4XpNP+SckZJH7oJySZ
+X-HE-Tag: 1754977491-7325
+X-HE-Meta: U2FsdGVkX19Tu9ANNyhO7yrWOwzpAflefN7eIqH/fggH8EXFjpoLZ/8oDrgOHpYPQBKkQsroVhj5tXLCJZkSz4zl5ZLvJ/esaQYVuN6U61OII4+28t7SdotHmJwpunNPWRCgrLzMs3l3nYohPMiVbcNjMBMQA8lRF91/l3vwMHN45gRaLDoF86yFhqrat1xALcC/51mA87TFJ6u+V3Hl66ePio80AOcKXOsy+ApdMEtLY/kLErWyErqZtR1brG9esUKj5A9m17XKS7a7d6q1BZ59470TrTwGa2QVjo1KK+NsQMXMX1nSXThst25mmINyQMGBGftxxvTqzghfyPnB6duh6/uUkfK3os10YtJGkT/Vhfy6TozaQYoUoPixeR7UZGUjR7gIdQpO2mc0M4N4AzegB/Ievj4sz+7KbWlLgukp8zIQLQaw+Gw1SAUAChjIDmunePL0q88fZ+aPz86o8kGizDhmm7wafZxvfg43zQoLrvz/alcoUHCMb/faltxenvoga4J1wBOQnsGKqwqjYqTcmxKdBi0Qvd8R/FpDPY82t07lcWcv336on8EoNjKFdWxls1olXR+l3c1pHICEvLh+lhsPxVc87/JnNLeUsgpt2SG4VCjxjl/iLn/UapUgrsDSogUMzUlgbf2ncbMsRcafv5z8jAf1tNm6h+WBN+AwbWkuUIMhPtC10SAzEjj/D+Qo63Lc15E2vcIX0MJVHUQ/ZQ74qwOk2qlQYUSyCH9QHZCiMFdY3U9lEVRpL45VE76caZWT8p8WlpYzff7LF0HiI55595ZSq0J913Gj+G5UYNNbxpvh7WsxGGsmQRiqNlbvGcDj50V2YLCvdSUucg/LIL7XKPu+Cvty1Iet30TzrcRGgUTyJ1qGxEGkDsxrJY+o6YgqcPaerHYPEQKxI8P7/NiCrWHildcH9+pAKWyje0uV/ZjtMaT17wZeKE3LU4xPbEdBq0jLYgkZhXI
+ RDr1wpCF
+ HkEYwqXvVfZJ8/+4bYAoVBNkJQSRmH7OJwR5P3c7M20j06c/1sg8whJoALHC3HRt9G5teBre11uXPL3oTucqBhvbx+1EbrGgqXfsXVNDzjMJBdvruf/FSL7c/n1Hsmo95HlwZSPgqiWGus9lKU3fC1SfyOh3Wm7fEYLGnLnaBaDOM3t73bROe3qH9mY1jiw3Bp6DiwJ4xMvwsixs1eRndX4JeDEZzsZrij9V8zNV5brV/heXXJWOUA/QbmCfbNt6X4S3fJZQEOI8NQ3hqmPRSGnsjXH2OOl2B5IEDxYLs1msQMkYQmkNduaLEZjh59gno9QMFLeStKvz3ckd8begmKaqyUt/zQ0nbodv5Kve2x5ww8VkLZczjpoTAypj+9sftWCRD1B/nYDkkAezt5SYH4HrvgIJdq/oxoTiBpU0IyXWq9PdPQLt+nRCH3jl9+nI1j8Dr9YmyWaOakuH7ewBRH1NqAJ0krZbaaJVbotcuQ4ycqM59LMxnOJs/Xh14gR4ifFdKXSxcAMDacrQmdemiw9edbALFbJaAhK0Eok7/HCD6jR+gLCHdXSkyuQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,36 +141,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-All vDSO objects need the same treatment.
-To make changes to both the list of objects and the list of removed flags
-easier, introduce a helper variable.
+All the other architectures supporting LTO (x86, arm64, loongarch) do not
+use it for the vDSO.
+
+Its is problematic for some upcoming compile-time validation of the
+generated object code.
+The LTO object files do not contain the necessary relocation information
+and -flto-fat-objects is not compatible with clang < 16.
+
+For consistency and to enable the mentioned compile-time checks,
+disable LTO for the vDSO.
+The vDSO heavily uses __always_inline anyways.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Reviewed-by: Nathan Chancellor <nathan@kernel.org>
 Tested-by: Jan Stancek <jstancek@redhat.com>
 ---
- arch/riscv/kernel/vdso/Makefile | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/riscv/kernel/vdso/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/riscv/kernel/vdso/Makefile b/arch/riscv/kernel/vdso/Makefile
-index 9ebb5e590f93a3228c451dca58e6d5cfbbc03ff7..c19c3c76f7c9f6b2f7523a59269de3b683656323 100644
+index c19c3c76f7c9f6b2f7523a59269de3b683656323..9f1bf5bae9bd473e43d9fd3022e9e1a185128b73 100644
 --- a/arch/riscv/kernel/vdso/Makefile
 +++ b/arch/riscv/kernel/vdso/Makefile
-@@ -49,9 +49,10 @@ CPPFLAGS_vdso.lds += -DHAS_VGETTIMEOFDAY
+@@ -49,7 +49,7 @@ CPPFLAGS_vdso.lds += -DHAS_VGETTIMEOFDAY
  endif
  
  # Disable -pg to prevent insert call site
--CFLAGS_REMOVE_vgettimeofday.o = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
--CFLAGS_REMOVE_getrandom.o = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
--CFLAGS_REMOVE_hwprobe.o = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
-+CFLAGS_REMOVE_VDSO = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
-+CFLAGS_REMOVE_vgettimeofday.o = $(CFLAGS_REMOVE_VDSO)
-+CFLAGS_REMOVE_getrandom.o = $(CFLAGS_REMOVE_VDSO)
-+CFLAGS_REMOVE_hwprobe.o = $(CFLAGS_REMOVE_VDSO)
- 
- # Force dependency
- $(obj)/vdso.o: $(obj)/vdso.so
+-CFLAGS_REMOVE_VDSO = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
++CFLAGS_REMOVE_VDSO = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS) $(CC_FLAGS_LTO)
+ CFLAGS_REMOVE_vgettimeofday.o = $(CFLAGS_REMOVE_VDSO)
+ CFLAGS_REMOVE_getrandom.o = $(CFLAGS_REMOVE_VDSO)
+ CFLAGS_REMOVE_hwprobe.o = $(CFLAGS_REMOVE_VDSO)
 
 -- 
 2.50.1
