@@ -2,141 +2,159 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EA617C87FCB
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 08:24:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 52B4BC87FCB
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 08:27:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A46A8E00E4; Tue, 12 Aug 2025 04:24:43 -0400 (EDT)
+	id C9B858E00F6; Tue, 12 Aug 2025 04:27:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84E7F8E00F5; Tue, 12 Aug 2025 04:24:43 -0400 (EDT)
+	id C4B738E00F5; Tue, 12 Aug 2025 04:27:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F5F08E00E4; Tue, 12 Aug 2025 04:24:43 -0400 (EDT)
+	id B12F38E00F6; Tue, 12 Aug 2025 04:27:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 46C108E00E4
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 04:24:43 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E2F85577E8
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 08:24:42 +0000 (UTC)
-X-FDA: 83767419204.16.7769878
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A2FB6C000D
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 08:24:40 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=KtkdDJnE;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf28.hostedemail.com: domain of tabba@google.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=tabba@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754987080; a=rsa-sha256;
-	cv=none;
-	b=hiho6r0X7NFc61UINvKsAxKAeSByDyx/jFt4I4PodVdSE2y4XfYXm5uTzrbPMMKum7q2ZQ
-	WfS+5UfigN+gzuPpzmBSsYhoUE1VCb+9+g+fXR59rG4WYvYmuP4abui5UVjIeQUVAcGdPs
-	kg0KnS/PZrpqrDz1kXrw4VlXEd30VJk=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=KtkdDJnE;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf28.hostedemail.com: domain of tabba@google.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=tabba@google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 968568E00F5
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 04:27:12 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3D66E115291
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 08:27:12 +0000 (UTC)
+X-FDA: 83767425504.02.B7D1F72
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 01AD8A0004
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 08:27:09 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=sNxqkKRw
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754987080;
+	s=arc-20220608; t=1754987230;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bneKlVsaWJ9LwBazq6i/ZM98csppJP4SCJnqnbu7S2c=;
-	b=s1nEKhRLxanp2/n3FQfPN3ZDUYCkjVUWi4XNpZ3nf4IPEYo8mbIa+VRjkrYm8Qzih5jM9l
-	80bX5Dwgk52z56Hyk1pZLZrJ3jmGQPWrbG2xn1fSgfbbGZwKnAEZKYWI//qDXAIub+FD3l
-	5gd8XkCCwjPnpaMO/LsXJuuPA7eCjo8=
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-459fbc92e69so51215e9.0
-        for <linux-mm@kvack.org>; Tue, 12 Aug 2025 01:24:40 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=LSqLNFw5ZoJT+eJ+R/4RbrBYWHEJxUchO4svyAYAyHQ=;
+	b=6rJe5imRpF1/EqHuu+S4XCJLlf1qLtj02QMeeec0xo4aPVBBhL0J1Hdxeol2aBYnk04nm7
+	NpSsLPb+mnKDn+OHR+MVZX5MmZXqEe+gRQxsoRRiItCEvVh/av/g9ZX1/AbdU42S3fE5T5
+	qjlKYg6kH3dZRwqhV9xcZJvccTpMQPI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754987230; a=rsa-sha256;
+	cv=none;
+	b=c+izei8J+v1rxCVbewHsilOuCN94irwDXe8EiAbLr+NS1h5rZ2nOvN55xSlRxoCbyFVlTp
+	WPNjnAySI4c6JeaLySEseJUpWOGsyPa2omKDfR0/c3PeMgW5GuBzi0puUPr8upVOYQm8JB
+	0myjrc+ZnoVCbi+pcFcCAILtnIOATec=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=sNxqkKRw;
+	dmarc=none;
+	spf=none (imf25.hostedemail.com: domain of brgl@bgdev.pl has no SPF policy when checking 209.85.221.47) smtp.mailfrom=brgl@bgdev.pl
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3b8de193b60so2932697f8f.0
+        for <linux-mm@kvack.org>; Tue, 12 Aug 2025 01:27:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754987079; x=1755591879; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bneKlVsaWJ9LwBazq6i/ZM98csppJP4SCJnqnbu7S2c=;
-        b=KtkdDJnERuG/fZqx0yurS+zFQ2lBIOERvjvzKAvnIBSx07W2MPXEMZV+PHfWCQFNs0
-         FoTVa6xZ5ppf7nZEW5Pm4nxyugdLU5GzDNiIK0vxnb8rh7cw0mYkiiPhFm/26DUfgsmm
-         pQNTo4WxDRM9gnIvBt5Yq3r3biJKuXTVvuPGgdUsLOhHl8PMkOddsrawJj3iXt8dEIaF
-         NiORBrnrMhYSOCx8T/xta9GhpAqrt4Gti81scvAp0Oyez8/1L6HBCl5gSNXbD/oqPJlj
-         wVbKwIQUIiQr7xrzeXk6zLCsZ16+vLcEL0DECnMJpLumRJ8AEYr+P54Fq7QZ5YNykSXO
-         cTpA==
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1754987228; x=1755592028; darn=kvack.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LSqLNFw5ZoJT+eJ+R/4RbrBYWHEJxUchO4svyAYAyHQ=;
+        b=sNxqkKRwztZSbNP2UnvSaDByNmsEzGDvf/iq10Y61xNdPzP1uoZcoScBfcaDObN1wZ
+         x6Mp64u1q7YZmgXgwZzuQpR961Q/TQQQNmq7q+RSuTo8CU0SXxJH4GkjaSCSjS2Knljf
+         AdgNcqJK93By7Xf2apPDqUiHsWTTHuwdYYm46IEx1hUbn2qiS6NLMAVcpZAptvyA7XRi
+         DcMolSWTfMo1o3Sz1/FKQAqqZA1W5ipJ5ZS+h+1B8gpSbj7Dm195yLUoAq/3biZnAMI6
+         D6sUp/bJMZEbr6iduwZswyv5MxXL17dihXieuTQJZpMOPQ2dMne7k/BngT88JokK8Zu4
+         AoOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754987079; x=1755591879;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bneKlVsaWJ9LwBazq6i/ZM98csppJP4SCJnqnbu7S2c=;
-        b=OYd6mCBerLh+En/60I9iGzkyPoDZDBQDt0Q1zcQWmjbXZBrYiYG3pPuouTp5d+diGa
-         f/2l2LiId6dcuu7lB0gds757OX6WjVDko6HVNTkRcHW3U1nhdrzuDfcRsPqXDHKqAYXZ
-         afvmgZTb6ZyiN0xj0hV9nt807elsF8SImZ11ionrB7QBYyRmNOT12Mcf7Dl/mYotr3XJ
-         /zhUCeyEA3F+jqTRgR123UhbNB1k8Uc1gDyzn0zNrJtIDUzoDCCAs01ciJb/+I8K1YXI
-         rZRAomB9PPbINEfK7V/G1BUSrpDbddJldNzcP49v3qHsFrxXrhkYWiL4YGEA4mhLOBGo
-         FkUg==
-X-Forwarded-Encrypted: i=1; AJvYcCUJijz2qLU9Cy0zBcjdAFYn1kqwHRQe+K6x185WGCNBVXOG3E10Sc3bilEsIHJWFefOrLhJKTkAQg==@kvack.org
-X-Gm-Message-State: AOJu0Ywv4Rh7vlkrm4Z90kYN5DXDgV3A4DTdVeB8sB9THf0J6ZGk1e7v
-	/dSpWtTMorNXDIsHbwC02qvhh5XLeXwNvO4sIQM1JkMPPx6woLWwho+eWC8Tf2yV7r9A9XL/3kk
-	jFmg/sLu0a+Q47NYsT9M3EDyywrUdu5I2g+N/Xvbf
-X-Gm-Gg: ASbGncvuo3PlMgJ6Sdjr5rqetBV/doHwI3sacJJmju2nJffI9l7YKpDcQ/zCe5qptNH
-	ZEwB5xPgDur7y+Uaq99EpjD56mu30NA+Soz4N4WBVn9FYcdeiO85QshAgjMeHmwFt2or/xh3RIN
-	7EuXzUx0FiIyVf2t5eRC9uT6Xva8QTxezv8lB/jjqbHR3eIZQlR2CSW+zP1CWe2gYmr4ORYgi+X
-	sFjp/tCnIjXN19lTVzbjPKDR8eY507OjBmi
-X-Google-Smtp-Source: AGHT+IG/qyfF019YZUtxf0yP7+Ftaes5KMmyohuSN7pp/hczy5CVky7X7Edkb3DmCvgfjP8sJWg7D7zcGL13KnCyMKE=
-X-Received: by 2002:a05:600c:899:b0:458:b4ae:41a0 with SMTP id
- 5b1f17b1804b1-45a118d4771mr584345e9.5.1754987078235; Tue, 12 Aug 2025
- 01:24:38 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1754987228; x=1755592028;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LSqLNFw5ZoJT+eJ+R/4RbrBYWHEJxUchO4svyAYAyHQ=;
+        b=iWNI/Rq6wMENzWlAYD/DBhMKjJOtXP16LCnC5Ci/h/kPx08BQMkQBG1MeW98wLu+Mp
+         yWUUTrzR3yb9Gqa2K/0ZtIMKoOlQwFYoiOIfRA2DPSQb8R17jjAcHoxPAcH4taV5I4E1
+         dNZNbXG7kYU8PvzZHCG5UTmQt1c0EnHsEI3gO8dtzA24c+VoBLQArS9zaCUSRxiC8rCp
+         FKMopb/GHSc/FGLJ6cuhAoj2mHCjfMOI8zonfwiPPbN6g8D7oNi/SEk3UOYdQ8IlMM+n
+         Iz1KiFySzBPGMBZ8BFR4Ug/fFa7WJ8CzosOP5NxN5iPgpkUufRJfedxofKkAIh50awKz
+         U46w==
+X-Forwarded-Encrypted: i=1; AJvYcCXnZGmGjP+Hkv4Af0mv7OjYKhdCiWYXFsfqvghPCpHrHF+sIOtVJvPeXUBLHRkXj1y+fisq6KvXZQ==@kvack.org
+X-Gm-Message-State: AOJu0YwG8ZCx5BnpTvDg0YgCrF3BBHj3pCZO8DvYqvAQhzHjEIctKJ/A
+	ikXq9IFrkPpCgBqwJkaTd56V6Jn+zzHk6ZB4G+hbpEZ77eRgn3q7IB9iB/7b7JRrLHM=
+X-Gm-Gg: ASbGncsleeMLoNpWPRQvSPvGXAys6HkfTx5JVh+Cs5adrPXOYAk4aMQ7ksVOdl/6u1L
+	H2wgaWJxlSO0PBVv+oLhXzsl+ZKCIog3TavnRkAzhYYcgPkatFAQ/St8YSUiLDgiNfNxBdenufT
+	1+TZhQJUULg55Os8KBqz4KNKGhj34qb82xZ+QVOwoLQXgHxsRhBSWCuRr1M82oiyyloJS5xXEtd
+	U0TkzinMB8lswIBbTsXMJjX76xtS9WKAowgRYjIpXYfQfn29QHKZBYnvpnulsRyzjGRfBQE1SKW
+	JHfe2HO0rO95ZiU1RgbADNSu4QKANWIluMBZednLaAeEa7IhUfoobmu3uL1OkjXEdJdqYILiJI1
+	pF7tuH6W1abv5xDA=
+X-Google-Smtp-Source: AGHT+IGt1Qdhl1SeHXbcRrXyromUYjuvLPhngmkyHILzZlpKPBo/s3ygqlYuwwSu6svvDg9bM89tcA==
+X-Received: by 2002:a05:6000:400b:b0:3a4:ee3f:8e1e with SMTP id ffacd0b85a97d-3b911031495mr2033996f8f.39.1754987228110;
+        Tue, 12 Aug 2025 01:27:08 -0700 (PDT)
+Received: from [127.0.1.1] ([2a01:cb1d:dc:7e00:16c8:50:27fe:4d94])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c3b9386sm43549423f8f.18.2025.08.12.01.27.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Aug 2025 01:27:07 -0700 (PDT)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: [PATCH v4 00/15] pinctrl: introduce the concept of a GPIO pin
+ function category
+Date: Tue, 12 Aug 2025 10:26:59 +0200
+Message-Id: <20250812-pinctrl-gpio-pinfuncs-v4-0-bb3906c55e64@linaro.org>
 MIME-Version: 1.0
-References: <20250529054227.hh2f4jmyqf6igd3i@amd.com> <diqz1prqvted.fsf@ackerleytng-ctop.c.googlers.com>
- <20250702232517.k2nqwggxfpfp3yym@amd.com> <CAGtprH-=f1FBOS=xWciBU6KQJ9LJQ5uZoms83aSRBDsC3=tpZA@mail.gmail.com>
- <20250703041210.uc4ygp4clqw2h6yd@amd.com>
-In-Reply-To: <20250703041210.uc4ygp4clqw2h6yd@amd.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Tue, 12 Aug 2025 09:23:52 +0100
-X-Gm-Features: Ac12FXxVRNQ9gNwKyAuJ3h4ftK0vQMzMuNHgVqkbKXa4WFdUTM-o4on2lZ1GtQM
-Message-ID: <CA+EHjTxZO-1nvDhxM7oBdpgrVq2NcgKrGvrCoiPqX4NPWGvt4w@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 02/51] KVM: guest_memfd: Introduce and use
- shareability to guard faulting
-To: Michael Roth <michael.roth@amd.com>
-Cc: Vishal Annapurve <vannapurve@google.com>, Ackerley Tng <ackerleytng@google.com>, kvm@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
-	linux-fsdevel@vger.kernel.org, aik@amd.com, ajones@ventanamicro.com, 
-	akpm@linux-foundation.org, amoorthy@google.com, anthony.yznaga@oracle.com, 
-	anup@brainfault.org, aou@eecs.berkeley.edu, bfoster@redhat.com, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, catalin.marinas@arm.com, 
-	chao.p.peng@intel.com, chenhuacai@kernel.org, dave.hansen@intel.com, 
-	david@redhat.com, dmatlack@google.com, dwmw@amazon.co.uk, 
-	erdemaktas@google.com, fan.du@intel.com, fvdl@google.com, graf@amazon.com, 
-	haibo1.xu@intel.com, hch@infradead.org, hughd@google.com, ira.weiny@intel.com, 
-	isaku.yamahata@intel.com, jack@suse.cz, james.morse@arm.com, 
-	jarkko@kernel.org, jgg@ziepe.ca, jgowans@amazon.com, jhubbard@nvidia.com, 
-	jroedel@suse.de, jthoughton@google.com, jun.miao@intel.com, 
-	kai.huang@intel.com, keirf@google.com, kent.overstreet@linux.dev, 
-	kirill.shutemov@intel.com, liam.merwick@oracle.com, 
-	maciej.wieczor-retman@intel.com, mail@maciej.szmigiero.name, maz@kernel.org, 
-	mic@digikod.net, mpe@ellerman.id.au, muchun.song@linux.dev, nikunj@amd.com, 
-	nsaenz@amazon.es, oliver.upton@linux.dev, palmer@dabbelt.com, 
-	pankaj.gupta@amd.com, paul.walmsley@sifive.com, pbonzini@redhat.com, 
-	pdurrant@amazon.co.uk, peterx@redhat.com, pgonda@google.com, pvorel@suse.cz, 
-	qperret@google.com, quic_cvanscha@quicinc.com, quic_eberman@quicinc.com, 
-	quic_mnalajal@quicinc.com, quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, 
-	quic_svaddagi@quicinc.com, quic_tsoni@quicinc.com, richard.weiyang@gmail.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, roypat@amazon.co.uk, 
-	rppt@kernel.org, seanjc@google.com, shuah@kernel.org, steven.price@arm.com, 
-	steven.sistare@oracle.com, suzuki.poulose@arm.com, thomas.lendacky@amd.com, 
-	usama.arif@bytedance.com, vbabka@suse.cz, viro@zeniv.linux.org.uk, 
-	vkuznets@redhat.com, wei.w.wang@intel.com, will@kernel.org, 
-	willy@infradead.org, xiaoyao.li@intel.com, yan.y.zhao@intel.com, 
-	yilun.xu@intel.com, yuzenghui@huawei.com, zhiquan1.li@intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A2FB6C000D
-X-Stat-Signature: y1r16mtt56u3pc6hcxxmdnir7cmxmihm
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANP6mmgC/3XNTQqDMBCG4atI1k3Jn9Z01XuULmISdUASSWxoE
+ e/eKBQsxeX7wTwzo2gD2IiuxYyCTRDBuxziVCDdK9dZDCY3YoSV5EIoHsHpKQy4G8Gv0T6djtj
+ YmjVGKqUFR/l2DLaF1+beH7l7iJMP7+1Nouv6FdmBmCgm2JqsklaKqja3AZwK/uxDh1YysT0jj
+ xiWmaaivKRCamLkH8N3DBNHDM+MaoVpJCfMWPHDLMvyAQqoo11JAQAA
+X-Change-ID: 20250701-pinctrl-gpio-pinfuncs-de82bd9aac43
+To: Linus Walleij <linus.walleij@linaro.org>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Alexey Klimov <alexey.klimov@linaro.org>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
+ Andy Shevchenko <andy@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@redhat.com>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+ Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ NXP S32 Linux Team <s32@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Tony Lindgren <tony@atomide.com>, 
+ Haojian Zhuang <haojian.zhuang@linaro.org>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>
+Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+ linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
+ linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
+ linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10405;
+ i=bartosz.golaszewski@linaro.org; h=from:subject:message-id;
+ bh=UDQSxGWEdaNlEt2M7Mav0VdZbGU+CXX3IOWp5CNXy64=;
+ b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBomvrWB2qIjviAYzOzF9rGQxbtFl0bfNv3xt3BN
+ hJcX75YR9WJAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCaJr61gAKCRARpy6gFHHX
+ cnenD/9QVkiYWaN45se9mVCv1Kmd7fcDNhqOnqO5k+01l7TQAlPMrQt3gTyvoe7CiEK5dDfa5ng
+ aIbDkSuHtaZBpDsgc/BXeJMoESoAl36UvqOBfrX/zRL+EXlA4pE843GNpasFYss8kGdRGKbtO4U
+ gcJKcstwSwRux/gfffXVtbEZO+jh7/3gggLSCCZHX0R6kJJWHhzou5kJ0h6bek677sBClWVmoY8
+ eysYG00x5CQE0RPIPIM+4S2fQfWfxzhhRWIEq/YuuvJ4CuJ3LFO28NteYEEc4Y765gqgO5aQ/Go
+ cn/UlbQCcl5oTQDS++2t1KbaW3KN/GDVlTpprFJQPsNzI1LyfcnlvtpUkvJeqZgN6oh3GCf55Ss
+ gI0pMQB3Mudri5qmQ/yBPMY9RoPMVyuVEEfItLwmQVPnFBCFaUtksAM7oU6HqbEoLI4QwIN9XsE
+ CFIHwvjFLRP9nqeDtNCtAUwKro0rLOkIkDmnsCkXIIZnZfimLTmSyBrLTY/elmWUlxfkqfAEYKV
+ +z4qBQkVA4AJg6liF53vwd12SvKxjZQ8h93srCOICJ9uz3tOlOm/ZNpgXBuy0xTOpxbL9hJk2t0
+ RGNzvJ1D4MnTaRwEHz9bw+spw3G0XBBakwDrnhB7sOPsN9dUclNtSpGJxeVXc4cqeavZgYMr3mj
+ g7yTIfabzK5/L/w==
+X-Developer-Key: i=bartosz.golaszewski@linaro.org; a=openpgp;
+ fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
+X-Stat-Signature: qyk9aam5o5rrtptq9oiy57bown8bdu57
+X-Rspamd-Queue-Id: 01AD8A0004
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1754987080-332070
-X-HE-Meta: U2FsdGVkX1/QAnUz0+86awhmfbOAoNSWfUfqWO30siuulHeWcrQ2aEeN6ns0D/hIEENhoWnSW6sC/k6wsMYJWDtYzbgFAHIGpTW1Xkqqf5j9PUsaIL3NqEK69dL8ix9Vm9/ECKSfYaEWJ4Yxc9LbdN1xLlIG9ONqaWscoXut614R2smfTUtNY5hffVos7joNrUkybPCjrjW3OT5UiUmtuWF0QuhUZmlIvLi1o1KU1lB8jOutBM2u6oe+1GiBouUTHw03TSSeSk1dhyJSrnNoxw02EzGp8Q/pzBZF3jns32ZCpYncWdpBVJjvCGdhL/NwBNQtetSaptuBLVbdcVlPqnqXgEBmIH/laKrvfX1ZZGbwsOjdu8qlBpmf7L1L3c9CTtcHVvRUHNs9FZydI3By5LG0A20YfXiyPC4riTJYC3jB067vGXp5FJnL+9cQ0CaGd90WK3nYQB6rnlCepORR5/4vNwFmkLtpRvnL08m2hOxSKmu9F3j09Z7laHoc9k6rLDZjJYezYPjF4LiiS+kUnKs8aDRSeNl8QqDK0I3OHUEMLIe8uFg/VGdTMfx+lw2gph920txtab0plo9pLD8nZD4kSmQL4F2aghdSnskolf5hQGLLGTRF9/yR3Vizffdqlpr2Rw8dsxKUjllne+CVlcBGnb/kszpdV6Wx5g9K6i95OmddMFcX0GWAM/wdgtIxSpPMIRuVlIVBm3W7ZCf+x0jIB746bjLqkKuueSJZ50TUsAjFGIYmTKxDKmdXw6sJjkRnz1PyqvnhPrl2NMJS/hypNSDHODRNhpMR+OTOy02STz5rOOSiUB1VTEjMCg96CFgS/X00OQdR6BYRvHHJ6hVzNPH6aiWbVJGj1r1ZTs9HcN2BAsrjS5Lts9xzR3S/d2yyzOVpf+5YRhvHKLnK8IVFnJtebiBltXfbK5Ufm/CerP5f15IuMnuBDdmamMfENl1LuMjLJLe56rydnSu
- LNjLzMGl
- dwiYZPkuTAk8ndYtFy0J5L6NiuL6oYBWBi2E3z42qsT0P94MLTt+AhFHAwUIPznUj2Nphzlz/8sir0kg/SK96qsW4SHlbO9QGfxqrf9s0K6uGpDwKREVseMpU21VwevUr8eLWEwC+g/YK8r6k27j4t1Jzk6fsEI5MdK2BS20lhr2PXUnYV+PHCOlDsc1hFwrFamqwyeovOXdCG06U+ezxyW2UR7mtOuDT1471PKx4y123ReKU3UboO82td3mVtgdVisQMe02MzHr5c9KZjEY4wXjmImuu3AWUMY9pSzSfNwKf7aJ55AjttkBnvn1G+9g4QCfvnghShgaITawJIu22dj2R5aJqn8loRkFh1WtC3JWIIg61Gew7dwUKbH03oFIs5LPI9H+34mjHj8RgN+dNNWjTFg==
+X-HE-Tag: 1754987229-375451
+X-HE-Meta: U2FsdGVkX191HkyL4jO/dfpb1lcjv3nbSFyrzqbo5ZWErLNlfSCRzL9xpAZRyO4rvVVC/15oXO6HXJKbut1eEzqemunTphJfbsiIYbPaqgDtoXDbAEc2YcQ5+7kkvRzwUcS0ppYwD4YjvlhE6/kUKZGySCyn7brs6YHxUn81lLPQ570aNViXazhW8W8hSEzUBfK46x1ZFtJXKLsgyY12H3Mj73qLgqHbWcjRJr3ztH/xys9xL8r7x4DQkLurG7tKRv0hoo+zAHcYSDVEQQ8orOehPUt000Uv0u4odsodDb7LaJKOJYIh16nVpJK/ObcX0f2xgFMeRRLnrhBnQkBSe4YSIJXi8DOlubgU+ipCpNtACt8xFCwsbyv14BYYF7F2XsLOP7D50tqI6/yik9AjCwdnLADgWwk7BOkMt6v5wZCkfxpZ9Y5fT93LYlrR2cHb298hT+ofJdWZPNV3CzK05nJ6A9WWIExg6IioWoE/Qhj3dvhv6Z7MobTiNu26L4vz7yPJE1KvDC3BXSPeMz9mSyv97CV14wdgY0Zg+NSMOPaS7TglBm+bHUfTIcKd7UK5O3RsQHljLfxIRwd7cHCu43WJEWGzOtjicrc6mqMotIAf7WDAqffJRzskgOYtHnwMA/VHVS6jbB0HiqCrJvQqsk4oMNFEM08WdvUAFkx4qXrhhStn55MkRUgCbLwpdBFW/wyufTka/cUZdQ/FQvztnA27ZO3rlJYrgJ+ZF+0Ai8M8cEdOwoSdGJ49gpYgpdTU37tUHEc1J++ffndo9xTJMiQm/tjwzRaExxP/bl0KIjAYUj7EHnI1pOBhKXEuZNMZ4Bt0v7XxqM2ozTnr0zKJ3MUBgwCqFLAI0T93cVzuxwj3uA1QFS3dp8Y15cZfJ6GsN5ju/uKDRD/vxCbW/YwPtvnbl+R2YilUqyY89f9UxUnCUuc1Y4FEHjproSsHQdHLdJzq0oW3WlVixUlk/Ux
+ PTNYiJA7
+ uT7IUgSulII/OQ7lBnBeQf/jMrYFvdNECPfbhXgB6ilj2AXIb+BlHbZkiC2lSZckkHs69V/z2QrDValuD3RuaGoKU6e2aAay/AYnHBvCMkCYKy5LyxtZ9xQ+rsSV0ton8nhSyvdBTwROXKVWkn0gWd1YPhXUH5MoCW1EYJz/m9SX75QnEhhwjc1qShrn9yeKykKYAfVyu7kqDXP70LCXeOZNRSrnt1l9ViZhn2Jp/PtfH7WW5HZg4gGh0HqfALluDs26wnGlN2F0dirrRJ1yOB6ATa8hWRFW3P37SVM5tqj2AppOg7C/g2bBs1IQycRevlDzCabA4QxbRFtIQWhPwet/owK92Lx/u7Dlhcw1habLtv9gndp+zIiBa7Tjnmp015bmIZvRMBRZXe2D1x/XK/4Qrjsnr2gopUXSdyhjWu3QW1tJ3i3DEWPHaA2uq1PjSSx+J0mk1n6vMn8nIFM5H85/QxKIUiIxU82Bpgr5VH8MXySK6k6Kw+udOZu5WkKODvSAG/Xh7lKyeXQZy2mcXsxqA2g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,736 +163,195 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+NOTE: This is obviously targetting v6.18.
 
-On Thu, 3 Jul 2025 at 05:12, Michael Roth <michael.roth@amd.com> wrote:
->
-> On Wed, Jul 02, 2025 at 05:46:23PM -0700, Vishal Annapurve wrote:
-> > On Wed, Jul 2, 2025 at 4:25=E2=80=AFPM Michael Roth <michael.roth@amd.c=
-om> wrote:
-> > >
-> > > On Wed, Jun 11, 2025 at 02:51:38PM -0700, Ackerley Tng wrote:
-> > > > Michael Roth <michael.roth@amd.com> writes:
-> > > >
-> > > > > On Wed, May 14, 2025 at 04:41:41PM -0700, Ackerley Tng wrote:
-> > > > >> Track guest_memfd memory's shareability status within the inode =
-as
-> > > > >> opposed to the file, since it is property of the guest_memfd's m=
-emory
-> > > > >> contents.
-> > > > >>
-> > > > >> Shareability is a property of the memory and is indexed using th=
-e
-> > > > >> page's index in the inode. Because shareability is the memory's
-> > > > >> property, it is stored within guest_memfd instead of within KVM,=
- like
-> > > > >> in kvm->mem_attr_array.
-> > > > >>
-> > > > >> KVM_MEMORY_ATTRIBUTE_PRIVATE in kvm->mem_attr_array must still b=
-e
-> > > > >> retained to allow VMs to only use guest_memfd for private memory=
- and
-> > > > >> some other memory for shared memory.
-> > > > >>
-> > > > >> Not all use cases require guest_memfd() to be shared with the ho=
-st
-> > > > >> when first created. Add a new flag, GUEST_MEMFD_FLAG_INIT_PRIVAT=
-E,
-> > > > >> which when set on KVM_CREATE_GUEST_MEMFD, initializes the memory=
- as
-> > > > >> private to the guest, and therefore not mappable by the
-> > > > >> host. Otherwise, memory is shared until explicitly converted to
-> > > > >> private.
-> > > > >>
-> > > > >> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> > > > >> Co-developed-by: Vishal Annapurve <vannapurve@google.com>
-> > > > >> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-> > > > >> Co-developed-by: Fuad Tabba <tabba@google.com>
-> > > > >> Signed-off-by: Fuad Tabba <tabba@google.com>
-> > > > >> Change-Id: If03609cbab3ad1564685c85bdba6dcbb6b240c0f
-> > > > >> ---
-> > > > >>  Documentation/virt/kvm/api.rst |   5 ++
-> > > > >>  include/uapi/linux/kvm.h       |   2 +
-> > > > >>  virt/kvm/guest_memfd.c         | 124 ++++++++++++++++++++++++++=
-++++++-
-> > > > >>  3 files changed, 129 insertions(+), 2 deletions(-)
-> > > > >>
-> > > > >> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt=
-/kvm/api.rst
-> > > > >> index 86f74ce7f12a..f609337ae1c2 100644
-> > > > >> --- a/Documentation/virt/kvm/api.rst
-> > > > >> +++ b/Documentation/virt/kvm/api.rst
-> > > > >> @@ -6408,6 +6408,11 @@ belonging to the slot via its userspace_a=
-ddr.
-> > > > >>  The use of GUEST_MEMFD_FLAG_SUPPORT_SHARED will not be allowed =
-for CoCo VMs.
-> > > > >>  This is validated when the guest_memfd instance is bound to the=
- VM.
-> > > > >>
-> > > > >> +If the capability KVM_CAP_GMEM_CONVERSIONS is supported, then t=
-he 'flags' field
-> > > > >> +supports GUEST_MEMFD_FLAG_INIT_PRIVATE.  Setting GUEST_MEMFD_FL=
-AG_INIT_PRIVATE
-> > > > >> +will initialize the memory for the guest_memfd as guest-only an=
-d not faultable
-> > > > >> +by the host.
-> > > > >> +
-> > > > >
-> > > > > KVM_CAP_GMEM_CONVERSION doesn't get introduced until later, so it=
- seems
-> > > > > like this flag should be deferred until that patch is in place. I=
-s it
-> > > > > really needed at that point though? Userspace would be able to se=
-t the
-> > > > > initial state via KVM_GMEM_CONVERT_SHARED/PRIVATE ioctls.
-> > > > >
-> > > >
-> > > > I can move this change to the later patch. Thanks! Will fix in the =
-next
-> > > > revision.
-> > > >
-> > > > > The mtree contents seems to get stored in the same manner in eith=
-er case so
-> > > > > performance-wise only the overhead of a few userspace<->kernel sw=
-itches
-> > > > > would be saved. Are there any other reasons?
-> > > > >
-> > > > > Otherwise, maybe just settle on SHARED as a documented default (s=
-ince at
-> > > > > least non-CoCo VMs would be able to reliably benefit) and let
-> > > > > CoCo/GUEST_MEMFD_FLAG_SUPPORT_SHARED VMs set PRIVATE at whatever
-> > > > > granularity makes sense for the architecture/guest configuration.
-> > > > >
-> > > >
-> > > > Because shared pages are split once any memory is allocated, having=
- a
-> > > > way to INIT_PRIVATE could avoid the split and then merge on
-> > > > conversion. I feel that is enough value to have this config flag, w=
-hat
-> > > > do you think?
-> > > >
-> > > > I guess we could also have userspace be careful not to do any alloc=
-ation
-> > > > before converting.
->
-> (Re-visiting this with the assumption that we *don't* intend to use mmap(=
-) to
-> populate memory (in which case you can pretty much ignore my previous
-> response))
->
-> I'm still not sure where the INIT_PRIVATE flag comes into play. For SNP,
-> userspace already defaults to marking everything private pretty close to
-> guest_memfd creation time, so the potential for allocations to occur
-> in-between seems small, but worth confirming.
->
-> But I know in the past there was a desire to ensure TDX/SNP could
-> support pre-allocating guest_memfd memory (and even pre-faulting via
-> KVM_PRE_FAULT_MEMORY), but I think that could still work right? The
-> fallocate() handling could still avoid the split if the whole hugepage
-> is private, though there is a bit more potential for that fallocate()
-> to happen before userspace does the "manually" shared->private
-> conversion. I'll double-check on that aspect, but otherwise, is there
-> still any other need for it?
+NOTER: This series is a bit all over the place and looks like it should
+be split into at least two separate ones but I figured sending it in its
+entirety better shows the whole picture - namely the fact that the
+pinfunction handling rework is there to allow using the generic pinux
+functions in qualcomm drivers without ballooning up runtime memory
+usage.
 
-It's not just about performance. I think that the need is more a
-matter of having a consistent API with the hypervisors guest_memfd is
-going to support. Memory in guest_memfd is shared by default, but in
-pKVM for example, it's private by default. Therefore, it would be good
-to have a way to ensure that all guest_memfd allocations can be made
-private from the get-go.
+NOTEST: I tested several Qualcomm platforms but I have no means of
+testing Mediatek and others. Tested-by tags are appreciated.
 
-Cheers,
-/fuad
+Problem: when pinctrl core binds pins to a consumer device and the
+pinmux ops of the underlying driver are marked as strict, the pin in
+question can no longer be requested as a GPIO using the GPIO descriptor
+API. It will result in the following error:
 
-> > >
-> > > I assume we do want to support things like preallocating guest memory=
- so
-> > > not sure this approach is feasible to avoid splits.
-> > >
-> > > But I feel like we might be working around a deeper issue here, which=
- is
-> > > that we are pre-emptively splitting anything that *could* be mapped i=
-nto
-> > > userspace (i.e. allocated+shared/mixed), rather than splitting when
-> > > necessary.
-> > >
-> > > I know that was the plan laid out in the guest_memfd calls, but I've =
-run
-> > > into a couple instances that have me thinking we should revisit this.
-> > >
-> > > 1) Some of the recent guest_memfd seems to be gravitating towards hav=
-ing
-> > >    userspace populate/initialize guest memory payload prior to boot v=
-ia
-> > >    mmap()'ing the shared guest_memfd pages so things work the same as
-> > >    they would for initialized normal VM memory payload (rather than
-> > >    relying on back-channels in the kernel to user data into guest_mem=
-fd
-> > >    pages).
-> > >
-> > >    When you do this though, for an SNP guest at least, that memory
-> > >    acceptance is done in chunks of 4MB (with accept_memory=3Dlazy), a=
-nd
-> > >    because that will put each 1GB page into an allocated+mixed state,
-> >
-> > I would like your help in understanding why we need to start
-> > guest_memfd ranges as shared for SNP guests. guest_memfd ranges being
-> > private simply should mean that certain ranges are not faultable by
-> > the userspace.
->
-> It's seeming like I probably misremembered, but I thought there was a
-> discussion on guest_memfd call a month (or so?) ago about whether to
-> continue to use backchannels to populate guest_memfd pages prior to
-> launch. It was in the context of whether to keep using kvm_gmem_populate(=
-)
-> for populating guest_memfd pages by copying them in from separate
-> userspace buffer vs. simply populating them directly from userspace.
-> I thought we were leaning on the latter since it was simpler all-around,
-> which is great for SNP since that is already how it populates memory: by
-> writing to it from userspace, which kvm_gmem_populate() then copies into
-> guest_memfd pages. With shared gmem support, we just skip the latter now
-> in the kernel rather needing changes to how userspace handles things in
-> that regard. But maybe that was just wishful thinking :)
->
-> But you raise some very compelling points on why this might not be a
-> good idea even if that was how that discussion went.
->
-> >
-> > Will following work?
-> > 1) Userspace starts all guest_memfd ranges as private.
-> > 2) During early guest boot it starts issuing PSC requests for
-> > converting memory from shared to private
-> >     -> KVM forwards this request to userspace
-> >     -> Userspace checks that the pages are already private and simply
-> > does nothing.
-> > 3) Pvalidate from guest on that memory will result in guest_memfd
-> > offset query which will cause the RMP table entries to actually get
-> > populated.
->
-> That would work, but there will need to be changes on userspace to deal
-> with how SNP populates memory pre-boot just like normal VMs do. We will
-> instead need to copy that data into separate buffers, and pass those in
-> as the buffer hva instead of the shared hva corresponding to that GPA.
->
-> But that seems reasonable if it avoids so many other problems.
->
-> >
-> > >    we end up splitting every 1GB to 4K and the guest can't even
-> > >    accept/PVALIDATE it 2MB at that point even if userspace doesn't to=
-uch
-> > >    anything in the range. As some point the guest will convert/accept
-> > >    the entire range, at which point we could merge, but for SNP we'd
-> > >    need guest cooperation to actually use a higher-granularity in sta=
-ge2
-> > >    page tables at that point since RMP entries are effectively all sp=
-lit
-> > >    to 4K.
-> > >
-> > >    I understand the intent is to default to private where this wouldn=
-'t
-> > >    be an issue, and we could punt to userspace to deal with it, but i=
-t
-> > >    feels like an artificial restriction to place on userspace. And if=
- we
-> > >    do want to allow/expect guest_memfd contents to be initialized pre=
--boot
-> > >    just like normal memory, then userspace would need to jump through
-> > >    some hoops:
-> > >
-> > >    - if defaulting to private: add hooks to convert each range that's=
- being
-> > >      modified to a shared state prior to writing to it
-> >
-> > Why is that a problem?
->
-> These were only problems if we went the above-mentioned way of
-> populating memory pre-boot via mmap() instead of other backchannels. If
-> we don't do that, then both these things cease to be problems. Sounds goo=
-ds
-> to me. :)
->
-> >
-> > >    - if defaulting to shared: initialize memory in-place, then covert
-> > >      everything else to private to avoid unecessarily splitting folio=
-s
-> > >      at run-time
-> > >
-> > >    It feels like implementations details are bleeding out into the AP=
-I
-> > >    to some degree here (e.g. we'd probably at least need to document
-> > >    this so users know how to take proper advantage of hugepage suppor=
-t).
-> >
-> > Does it make sense to keep the default behavior as INIT_PRIVATE for
-> > SNP VMs always even without using hugepages?
->
-> Yes!
->
-> Though, revisiting discussion around INIT_PRIVATE (without the baggage
-> of potentially relying on mmap() to populate memory), I'm still not sure =
-why
-> it's needed. I responded in the context of Ackerley's initial reply
-> above.
->
-> >
-> > >
-> > > 2) There are some use-cases for HugeTLB + CoCo that have come to my
-> > >    attention recently that put a lot of weight on still being able to
-> > >    maximize mapping/hugepage size when accessing shared mem from user=
-space,
-> > >    e.g. for certain DPDK workloads that accessed shared guest buffers
-> > >    from host userspace. We don't really have a story for this, and I
-> > >    wouldn't expect us to at this stage, but I think it ties into #1 s=
-o
-> > >    might be worth considering in that context.
-> >
-> > Major problem I see here is that if anything in the kernel does a GUP
-> > on shared memory ranges (which is very likely to happen), it would be
-> > difficult to get them to let go of the whole hugepage before it can be
-> > split safely.
-> >
-> > Another problem is guest_memfd today doesn't support management of
-> > large user space page table mappings, this can turnout to be
-> > significant work to do referring to hugetlb pagetable management
-> > logic.
->
-> Yah that was more line-of-sight that might be possible by going this
-> route, but the refcount'ing issue above is a showstopper as always. I'd
-> somehow convinced myself that supporting fine-grained splitting somehow
-> worked around it, but you still have no idea what page you need to avoid
-> converting and fancy splitting doesn't get you past that. More wishful
-> thinking. =3D\
->
-> Thanks,
->
-> Mike
->
-> >
-> > >
-> > > I'm still fine with the current approach as a starting point, but I'm
-> > > wondering if improving both #1/#2 might not be so bad and maybe even
-> > > give us some more flexibility (for instance, Sean had mentioned leavi=
-ng
-> > > open the option of tracking more than just shareability/mappability, =
-and
-> > > if there is split/merge logic associated with those transitions then
-> > > re-scanning each of these attributes for a 1G range seems like it cou=
-ld
-> > > benefit from some sort of intermediate data structure to help determi=
-ne
-> > > things like what mapping granularity is available for guest/userspace
-> > > for a particular range.
-> > >
-> > > One approach I was thinking of was that we introduce a data structure
-> > > similar to KVM's memslot->arch.lpage_info() where we store informatio=
-n
-> > > about what 1G/2M ranges are shared/private/mixed, and then instead of
-> > > splitting ahead of time we just record that state into this data
-> > > structure (using the same write lock as with the
-> > > shareability/mappability state), and then at *fault* time we split th=
-e
-> > > folio if our lpage_info-like data structure says the range is mixed.
-> > >
-> > > Then, if guest converts a 2M/4M range to private while lazilly-accept=
-ing
-> > > (for instance), we can still keep the folio intact as 1GB, but mark
-> > > the 1G range in the lpage_info-like data structure as mixed so that w=
-e
-> > > still inform KVM/etc. they need to map it as 2MB or lower in stage2
-> > > page tables. In that case, even at guest fault-time, we can leave the
-> > > folio unsplit until userspace tries to touch it (though in most cases
-> > > it never will and we can keep most of the guest's 1G intact for the
-> > > duration of its lifetime).
-> > >
-> > > On the userspace side, another nice thing there is if we see 1G is in=
- a
-> > > mixed state, but 2M is all-shared, then we can still leave the folio =
-as 2M,
-> > > and I think the refcount'ing logic would still work for the most part=
-,
-> > > which makes #2 a bit easier to implement as well.
-> > >
-> > > And of course, we wouldn't need the INIT_PRIVATE then since we are on=
-ly
-> > > splitting when necessary.
-> > >
-> > > But I guess this all comes down to how much extra pain there is in
-> > > tracking a 1G folio that's been split into a mixed of 2MB/4K regions,
-> > > but I think we'd get a lot more mileage out of getting that working a=
-nd
-> > > just completely stripping out all of the merging logic for initial
-> > > implementation (other than at cleanup time), so maybe complexity-wise
-> > > it balances out a bit?
-> > >
-> > > Thanks,
-> > >
-> > > Mike
-> > >
-> > > >
-> > > > >>  See KVM_SET_USER_MEMORY_REGION2 for additional details.
-> > > > >>
-> > > > >>  4.143 KVM_PRE_FAULT_MEMORY
-> > > > >> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> > > > >> index 4cc824a3a7c9..d7df312479aa 100644
-> > > > >> --- a/include/uapi/linux/kvm.h
-> > > > >> +++ b/include/uapi/linux/kvm.h
-> > > > >> @@ -1567,7 +1567,9 @@ struct kvm_memory_attributes {
-> > > > >>  #define KVM_MEMORY_ATTRIBUTE_PRIVATE           (1ULL << 3)
-> > > > >>
-> > > > >>  #define KVM_CREATE_GUEST_MEMFD    _IOWR(KVMIO,  0xd4, struct kv=
-m_create_guest_memfd)
-> > > > >> +
-> > > > >>  #define GUEST_MEMFD_FLAG_SUPPORT_SHARED   (1UL << 0)
-> > > > >> +#define GUEST_MEMFD_FLAG_INIT_PRIVATE     (1UL << 1)
-> > > > >>
-> > > > >>  struct kvm_create_guest_memfd {
-> > > > >>    __u64 size;
-> > > > >> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> > > > >> index 239d0f13dcc1..590932499eba 100644
-> > > > >> --- a/virt/kvm/guest_memfd.c
-> > > > >> +++ b/virt/kvm/guest_memfd.c
-> > > > >> @@ -4,6 +4,7 @@
-> > > > >>  #include <linux/falloc.h>
-> > > > >>  #include <linux/fs.h>
-> > > > >>  #include <linux/kvm_host.h>
-> > > > >> +#include <linux/maple_tree.h>
-> > > > >>  #include <linux/pseudo_fs.h>
-> > > > >>  #include <linux/pagemap.h>
-> > > > >>
-> > > > >> @@ -17,6 +18,24 @@ struct kvm_gmem {
-> > > > >>    struct list_head entry;
-> > > > >>  };
-> > > > >>
-> > > > >> +struct kvm_gmem_inode_private {
-> > > > >> +#ifdef CONFIG_KVM_GMEM_SHARED_MEM
-> > > > >> +  struct maple_tree shareability;
-> > > > >> +#endif
-> > > > >> +};
-> > > > >> +
-> > > > >> +enum shareability {
-> > > > >> +  SHAREABILITY_GUEST =3D 1, /* Only the guest can map (fault) f=
-olios in this range. */
-> > > > >> +  SHAREABILITY_ALL =3D 2,   /* Both guest and host can fault fo=
-lios in this range. */
-> > > > >> +};
-> > > > >> +
-> > > > >> +static struct folio *kvm_gmem_get_folio(struct inode *inode, pg=
-off_t index);
-> > > > >> +
-> > > > >> +static struct kvm_gmem_inode_private *kvm_gmem_private(struct i=
-node *inode)
-> > > > >> +{
-> > > > >> +  return inode->i_mapping->i_private_data;
-> > > > >> +}
-> > > > >> +
-> > > > >>  /**
-> > > > >>   * folio_file_pfn - like folio_file_page, but return a pfn.
-> > > > >>   * @folio: The folio which contains this index.
-> > > > >> @@ -29,6 +48,58 @@ static inline kvm_pfn_t folio_file_pfn(struct=
- folio *folio, pgoff_t index)
-> > > > >>    return folio_pfn(folio) + (index & (folio_nr_pages(folio) - 1=
-));
-> > > > >>  }
-> > > > >>
-> > > > >> +#ifdef CONFIG_KVM_GMEM_SHARED_MEM
-> > > > >> +
-> > > > >> +static int kvm_gmem_shareability_setup(struct kvm_gmem_inode_pr=
-ivate *private,
-> > > > >> +                                loff_t size, u64 flags)
-> > > > >> +{
-> > > > >> +  enum shareability m;
-> > > > >> +  pgoff_t last;
-> > > > >> +
-> > > > >> +  last =3D (size >> PAGE_SHIFT) - 1;
-> > > > >> +  m =3D flags & GUEST_MEMFD_FLAG_INIT_PRIVATE ? SHAREABILITY_GU=
-EST :
-> > > > >> +                                              SHAREABILITY_ALL;
-> > > > >> +  return mtree_store_range(&private->shareability, 0, last, xa_=
-mk_value(m),
-> > > > >> +                           GFP_KERNEL);
-> > > > >
-> > > > > One really nice thing about using a maple tree is that it should =
-get rid
-> > > > > of a fairly significant startup delay for SNP/TDX when the entire=
- xarray gets
-> > > > > initialized with private attribute entries via KVM_SET_MEMORY_ATT=
-RIBUTES
-> > > > > (which is the current QEMU default behavior).
-> > > > >
-> > > > > I'd originally advocated for sticking with the xarray implementat=
-ion Fuad was
-> > > > > using until we'd determined we really need it for HugeTLB support=
-, but I'm
-> > > > > sort of thinking it's already justified just based on the above.
-> > > > >
-> > > > > Maybe it would make sense for KVM memory attributes too?
-> > > > >
-> > > > >> +}
-> > > > >> +
-> > > > >> +static enum shareability kvm_gmem_shareability_get(struct inode=
- *inode,
-> > > > >> +                                           pgoff_t index)
-> > > > >> +{
-> > > > >> +  struct maple_tree *mt;
-> > > > >> +  void *entry;
-> > > > >> +
-> > > > >> +  mt =3D &kvm_gmem_private(inode)->shareability;
-> > > > >> +  entry =3D mtree_load(mt, index);
-> > > > >> +  WARN(!entry,
-> > > > >> +       "Shareability should always be defined for all indices i=
-n inode.");
-> > > > >> +
-> > > > >> +  return xa_to_value(entry);
-> > > > >> +}
-> > > > >> +
-> > > > >> +static struct folio *kvm_gmem_get_shared_folio(struct inode *in=
-ode, pgoff_t index)
-> > > > >> +{
-> > > > >> +  if (kvm_gmem_shareability_get(inode, index) !=3D SHAREABILITY=
-_ALL)
-> > > > >> +          return ERR_PTR(-EACCES);
-> > > > >> +
-> > > > >> +  return kvm_gmem_get_folio(inode, index);
-> > > > >> +}
-> > > > >> +
-> > > > >> +#else
-> > > > >> +
-> > > > >> +static int kvm_gmem_shareability_setup(struct maple_tree *mt, l=
-off_t size, u64 flags)
-> > > > >> +{
-> > > > >> +  return 0;
-> > > > >> +}
-> > > > >> +
-> > > > >> +static inline struct folio *kvm_gmem_get_shared_folio(struct in=
-ode *inode, pgoff_t index)
-> > > > >> +{
-> > > > >> +  WARN_ONCE("Unexpected call to get shared folio.")
-> > > > >> +  return NULL;
-> > > > >> +}
-> > > > >> +
-> > > > >> +#endif /* CONFIG_KVM_GMEM_SHARED_MEM */
-> > > > >> +
-> > > > >>  static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm=
-_memory_slot *slot,
-> > > > >>                                pgoff_t index, struct folio *foli=
-o)
-> > > > >>  {
-> > > > >> @@ -333,7 +404,7 @@ static vm_fault_t kvm_gmem_fault_shared(stru=
-ct vm_fault *vmf)
-> > > > >>
-> > > > >>    filemap_invalidate_lock_shared(inode->i_mapping);
-> > > > >>
-> > > > >> -  folio =3D kvm_gmem_get_folio(inode, vmf->pgoff);
-> > > > >> +  folio =3D kvm_gmem_get_shared_folio(inode, vmf->pgoff);
-> > > > >>    if (IS_ERR(folio)) {
-> > > > >>            int err =3D PTR_ERR(folio);
-> > > > >>
-> > > > >> @@ -420,8 +491,33 @@ static struct file_operations kvm_gmem_fops=
- =3D {
-> > > > >>    .fallocate      =3D kvm_gmem_fallocate,
-> > > > >>  };
-> > > > >>
-> > > > >> +static void kvm_gmem_free_inode(struct inode *inode)
-> > > > >> +{
-> > > > >> +  struct kvm_gmem_inode_private *private =3D kvm_gmem_private(i=
-node);
-> > > > >> +
-> > > > >> +  kfree(private);
-> > > > >> +
-> > > > >> +  free_inode_nonrcu(inode);
-> > > > >> +}
-> > > > >> +
-> > > > >> +static void kvm_gmem_destroy_inode(struct inode *inode)
-> > > > >> +{
-> > > > >> +  struct kvm_gmem_inode_private *private =3D kvm_gmem_private(i=
-node);
-> > > > >> +
-> > > > >> +#ifdef CONFIG_KVM_GMEM_SHARED_MEM
-> > > > >> +  /*
-> > > > >> +   * mtree_destroy() can't be used within rcu callback, hence c=
-an't be
-> > > > >> +   * done in ->free_inode().
-> > > > >> +   */
-> > > > >> +  if (private)
-> > > > >> +          mtree_destroy(&private->shareability);
-> > > > >> +#endif
-> > > > >> +}
-> > > > >> +
-> > > > >>  static const struct super_operations kvm_gmem_super_operations =
-=3D {
-> > > > >>    .statfs         =3D simple_statfs,
-> > > > >> +  .destroy_inode  =3D kvm_gmem_destroy_inode,
-> > > > >> +  .free_inode     =3D kvm_gmem_free_inode,
-> > > > >>  };
-> > > > >>
-> > > > >>  static int kvm_gmem_init_fs_context(struct fs_context *fc)
-> > > > >> @@ -549,12 +645,26 @@ static const struct inode_operations kvm_g=
-mem_iops =3D {
-> > > > >>  static struct inode *kvm_gmem_inode_make_secure_inode(const cha=
-r *name,
-> > > > >>                                                  loff_t size, u6=
-4 flags)
-> > > > >>  {
-> > > > >> +  struct kvm_gmem_inode_private *private;
-> > > > >>    struct inode *inode;
-> > > > >> +  int err;
-> > > > >>
-> > > > >>    inode =3D alloc_anon_secure_inode(kvm_gmem_mnt->mnt_sb, name)=
-;
-> > > > >>    if (IS_ERR(inode))
-> > > > >>            return inode;
-> > > > >>
-> > > > >> +  err =3D -ENOMEM;
-> > > > >> +  private =3D kzalloc(sizeof(*private), GFP_KERNEL);
-> > > > >> +  if (!private)
-> > > > >> +          goto out;
-> > > > >> +
-> > > > >> +  mt_init(&private->shareability);
-> > > > >> +  inode->i_mapping->i_private_data =3D private;
-> > > > >> +
-> > > > >> +  err =3D kvm_gmem_shareability_setup(private, size, flags);
-> > > > >> +  if (err)
-> > > > >> +          goto out;
-> > > > >> +
-> > > > >>    inode->i_private =3D (void *)(unsigned long)flags;
-> > > > >>    inode->i_op =3D &kvm_gmem_iops;
-> > > > >>    inode->i_mapping->a_ops =3D &kvm_gmem_aops;
-> > > > >> @@ -566,6 +676,11 @@ static struct inode *kvm_gmem_inode_make_se=
-cure_inode(const char *name,
-> > > > >>    WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
-> > > > >>
-> > > > >>    return inode;
-> > > > >> +
-> > > > >> +out:
-> > > > >> +  iput(inode);
-> > > > >> +
-> > > > >> +  return ERR_PTR(err);
-> > > > >>  }
-> > > > >>
-> > > > >>  static struct file *kvm_gmem_inode_create_getfile(void *priv, l=
-off_t size,
-> > > > >> @@ -654,6 +769,9 @@ int kvm_gmem_create(struct kvm *kvm, struct =
-kvm_create_guest_memfd *args)
-> > > > >>    if (kvm_arch_vm_supports_gmem_shared_mem(kvm))
-> > > > >>            valid_flags |=3D GUEST_MEMFD_FLAG_SUPPORT_SHARED;
-> > > > >>
-> > > > >> +  if (flags & GUEST_MEMFD_FLAG_SUPPORT_SHARED)
-> > > > >> +          valid_flags |=3D GUEST_MEMFD_FLAG_INIT_PRIVATE;
-> > > > >> +
-> > > > >>    if (flags & ~valid_flags)
-> > > > >>            return -EINVAL;
-> > > > >>
-> > > > >> @@ -842,6 +960,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct=
- kvm_memory_slot *slot,
-> > > > >>    if (!file)
-> > > > >>            return -EFAULT;
-> > > > >>
-> > > > >> +  filemap_invalidate_lock_shared(file_inode(file)->i_mapping);
-> > > > >> +
-> > > > >
-> > > > > I like the idea of using a write-lock/read-lock to protect write/=
-read access
-> > > > > to shareability state (though maybe not necessarily re-using file=
-map's
-> > > > > invalidate lock), it's simple and still allows concurrent faultin=
-g in of gmem
-> > > > > pages. One issue on the SNP side (which also came up in one of th=
-e gmem calls)
-> > > > > is if we introduce support for tracking preparedness as discussed=
- (e.g. via a
-> > > > > new SHAREABILITY_GUEST_PREPARED state) the
-> > > > > SHAREABILITY_GUEST->SHAREABILITY_GUEST_PREPARED transition would =
-occur at
-> > > > > fault-time, and so would need to take the write-lock and no longe=
-r allow for
-> > > > > concurrent fault-handling.
-> > > > >
-> > > > > I was originally planning on introducing a new rw_semaphore with =
-similar
-> > > > > semantics to the rw_lock that Fuad previously had in his restrict=
-ed mmap
-> > > > > series[1] (and simiar semantics to filemap invalidate lock here).=
- The main
-> > > > > difference, to handle setting SHAREABILITY_GUEST_PREPARED within =
-fault paths,
-> > > > > was that in the case of a folio being present for an index, the f=
-olio lock would
-> > > > > also need to be held in order to update the shareability state. B=
-ecause
-> > > > > of that, fault paths (which will always either have or allocate f=
-olio
-> > > > > basically) can rely on the folio lock to guard shareability state=
- in a more
-> > > > > granular way and so can avoid a global write lock.
-> > > > >
-> > > > > They would still need to hold the read lock to access the tree ho=
-wever.
-> > > > > Or more specifically, any paths that could allocate a folio need =
-to take
-> > > > > a read lock so there isn't a TOCTOU situation where shareability =
-is
-> > > > > being updated for an index for which a folio hasn't been allocate=
-d, but
-> > > > > then just afterward the folio gets faulted in/allocated while the
-> > > > > shareability state is already being updated which the understand =
-that
-> > > > > there was no folio around that needed locking.
-> > > > >
-> > > > > I had a branch with in-place conversion support for SNP[2] that a=
-dded this
-> > > > > lock reworking on top of Fuad's series along with preparation tra=
-cking,
-> > > > > but I'm now planning to rebase that on top of the patches from th=
-is
-> > > > > series that Sean mentioned[3] earlier:
-> > > > >
-> > > > >   KVM: guest_memfd: Add CAP KVM_CAP_GMEM_CONVERSION
-> > > > >   KVM: Query guest_memfd for private/shared status
-> > > > >   KVM: guest_memfd: Skip LRU for guest_memfd folios
-> > > > >   KVM: guest_memfd: Introduce KVM_GMEM_CONVERT_SHARED/PRIVATE ioc=
-tls
-> > > > >   KVM: guest_memfd: Introduce and use shareability to guard fault=
-ing
-> > > > >   KVM: guest_memfd: Make guest mem use guest mem inodes instead o=
-f anonymous inodes
-> > > > >
-> > > > > but figured I'd mention it here in case there are other things to=
- consider on
-> > > > > the locking front.
-> > > > >
-> > > > > Definitely agree with Sean though that it would be nice to start =
-identifying a
-> > > > > common base of patches for the in-place conversion enablement for=
- SNP, TDX, and
-> > > > > pKVM so the APIs/interfaces for hugepages can be handled separate=
-ly.
-> > > > >
-> > > > > -Mike
-> > > > >
-> > > > > [1] https://lore.kernel.org/kvm/20250328153133.3504118-1-tabba@go=
-ogle.com/
-> > > > > [2] https://github.com/mdroth/linux/commits/mmap-swprot-v10-snp0-=
-wip2/
-> > > > > [3] https://lore.kernel.org/kvm/aC86OsU2HSFZkJP6@google.com/
-> > > > >
-> > > > >>    folio =3D __kvm_gmem_get_pfn(file, slot, index, pfn, &is_prep=
-ared, max_order);
-> > > > >>    if (IS_ERR(folio)) {
-> > > > >>            r =3D PTR_ERR(folio);
-> > > > >> @@ -857,8 +977,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct=
- kvm_memory_slot *slot,
-> > > > >>            *page =3D folio_file_page(folio, index);
-> > > > >>    else
-> > > > >>            folio_put(folio);
-> > > > >> -
-> > > > >>  out:
-> > > > >> +  filemap_invalidate_unlock_shared(file_inode(file)->i_mapping)=
-;
-> > > > >>    fput(file);
-> > > > >>    return r;
-> > > > >>  }
-> > > > >> --
-> > > > >> 2.49.0.1045.g170613ef41-goog
-> > > > >>
-> > > >
+[    5.095688] sc8280xp-tlmm f100000.pinctrl: pin GPIO_25 already requested by regulator-edp-3p3; cannot claim for f100000.pinctrl:570
+[    5.107822] sc8280xp-tlmm f100000.pinctrl: error -EINVAL: pin-25 (f100000.pinctrl:570)
+
+This typically makes sense except when the pins are muxed to a function
+that actually says "GPIO". Of course, the function name is just a string
+so it has no meaning to the pinctrl subsystem.
+
+We have many Qualcomm SoCs (and I can imagine it's a common pattern in
+other platforms as well) where we mux a pin to "gpio" function using the
+`pinctrl-X` property in order to configure bias or drive-strength and
+then access it using the gpiod API. This makes it impossible to mark the
+pin controller module as "strict".
+
+This series proposes to introduce a concept of a sub-category of
+pinfunctions: GPIO functions where the above is not true and the pin
+muxed as a GPIO can still be accessed via the GPIO consumer API even for
+strict pinmuxers.
+
+To that end: we first clean up the drivers that use struct function_desc
+and make them use the smaller struct pinfunction instead - which is the
+correct structure for drivers to describe their pin functions with. We
+also rework pinmux core to not duplicate memory used to store the
+pinfunctions unless they're allocated dynamically.
+
+First: provide the kmemdup_const() helper which only duplicates memory
+if it's not in the .rodata section. Then rework all pinctrl drivers that
+instantiate objects of type struct function_desc as they should only be
+created by pinmux core. Next constify the return value of the accessor
+used to expose these structures to users and finally convert the
+pinfunction object within struct function_desc to a pointer and use
+kmemdup_const() to assign it. With this done proceed to add
+infrastructure for the GPIO pin function category and use it in Qualcomm
+drivers. At the very end: make the Qualcomm pinmuxer strict.
+
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+---
+Changes in v4:
+- Update the GPIO pin function definitions to include the new qcom
+  driver (milos)
+- Provide devm_kmemdup_const() instead of a non-managed kmemdup_const()
+  as a way to avoid casting out the 'const' modifier when passing the
+  const pointer to devm_add_action_or_reset()
+- Use devm_krealloc_array() where applicable instead of devm_krealloc()
+- Fix typos
+- Fix kerneldocs
+- Improve commit messages
+- Small tweaks as pointed out by Andy
+- Rebased on top of v6.17-rc1
+- Link to v3: https://lore.kernel.org/r/20250724-pinctrl-gpio-pinfuncs-v3-0-af4db9302de4@linaro.org
+
+Changes in v3:
+- Add more patches in front: convert pinctrl drivers to stop defining
+  their own struct function_desc objects and make pinmux core not
+  duplicate .rodata memory in which struct pinfunction objects are
+  stored.
+- Add a patch constifying pinmux_generic_get_function().
+- Drop patches that were applied upstream.
+- Link to v2: https://lore.kernel.org/r/20250709-pinctrl-gpio-pinfuncs-v2-0-b6135149c0d9@linaro.org
+
+Changes in v2:
+- Extend the series with providing pinmux_generic_add_pinfunction(),
+  using it in several drivers and converting pinctrl-msm to using
+  generic pinmux helpers
+- Add a generic function_is_gpio() callback for pinmux_ops
+- Convert all qualcomm drivers to using the new GPIO pin category so
+  that we can actually enable the strict flag
+- Link to v1: https://lore.kernel.org/r/20250702-pinctrl-gpio-pinfuncs-v1-0-ed2bd0f9468d@linaro.org
+
+---
+Bartosz Golaszewski (15):
+      devres: provide devm_kmemdup_const()
+      pinctrl: ingenic: use struct pinfunction instead of struct function_desc
+      pinctrl: airoha: replace struct function_desc with struct pinfunction
+      pinctrl: mediatek: mt7988: use PINCTRL_PIN_FUNCTION()
+      pinctrl: mediatek: moore: replace struct function_desc with struct pinfunction
+      pinctrl: imx: don't access the pin function radix tree directly
+      pinctrl: keembay: release allocated memory in detach path
+      pinctrl: keembay: use a dedicated structure for the pinfunction description
+      pinctrl: constify pinmux_generic_get_function()
+      pinctrl: make struct pinfunction a pointer in struct function_desc
+      pinctrl: qcom: use generic pin function helpers
+      pinctrl: allow to mark pin functions as requestable GPIOs
+      pinctrl: qcom: add infrastructure for marking pin functions as GPIOs
+      pinctrl: qcom: mark the `gpio` and `egpio` pins function as non-strict functions
+      pinctrl: qcom: make the pinmuxing strict
+
+ drivers/base/devres.c                            | 21 +++++++++
+ drivers/pinctrl/freescale/pinctrl-imx.c          | 42 ++++++-----------
+ drivers/pinctrl/mediatek/pinctrl-airoha.c        | 18 ++++----
+ drivers/pinctrl/mediatek/pinctrl-moore.c         | 10 ++--
+ drivers/pinctrl/mediatek/pinctrl-moore.h         |  7 +--
+ drivers/pinctrl/mediatek/pinctrl-mt7622.c        |  2 +-
+ drivers/pinctrl/mediatek/pinctrl-mt7623.c        |  2 +-
+ drivers/pinctrl/mediatek/pinctrl-mt7629.c        |  2 +-
+ drivers/pinctrl/mediatek/pinctrl-mt7981.c        |  2 +-
+ drivers/pinctrl/mediatek/pinctrl-mt7986.c        |  2 +-
+ drivers/pinctrl/mediatek/pinctrl-mt7988.c        | 44 +++++++-----------
+ drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.h |  2 +-
+ drivers/pinctrl/pinctrl-equilibrium.c            |  2 +-
+ drivers/pinctrl/pinctrl-ingenic.c                | 49 +++++++++-----------
+ drivers/pinctrl/pinctrl-keembay.c                | 26 +++++++----
+ drivers/pinctrl/pinctrl-single.c                 |  4 +-
+ drivers/pinctrl/pinmux.c                         | 59 ++++++++++++++++++++----
+ drivers/pinctrl/pinmux.h                         |  9 ++--
+ drivers/pinctrl/qcom/pinctrl-ipq5018.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-ipq5332.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-ipq5424.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-ipq6018.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-ipq8074.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-ipq9574.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-mdm9607.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-mdm9615.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-milos.c             |  2 +-
+ drivers/pinctrl/qcom/pinctrl-msm.c               | 45 ++++++------------
+ drivers/pinctrl/qcom/pinctrl-msm.h               |  5 ++
+ drivers/pinctrl/qcom/pinctrl-msm8226.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-msm8660.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-msm8909.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-msm8916.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-msm8917.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-msm8953.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-msm8960.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-msm8976.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-msm8994.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-msm8996.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-msm8998.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-msm8x74.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-qcm2290.c           |  4 +-
+ drivers/pinctrl/qcom/pinctrl-qcs404.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-qcs615.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-qcs8300.c           |  4 +-
+ drivers/pinctrl/qcom/pinctrl-qdu1000.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sa8775p.c           |  4 +-
+ drivers/pinctrl/qcom/pinctrl-sar2130p.c          |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sc7180.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sc7280.c            |  4 +-
+ drivers/pinctrl/qcom/pinctrl-sc8180x.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sc8280xp.c          |  4 +-
+ drivers/pinctrl/qcom/pinctrl-sdm660.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sdm670.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sdm845.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sdx55.c             |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sdx65.c             |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sdx75.c             |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sm4450.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sm6115.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sm6125.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sm6350.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sm6375.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sm7150.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sm8150.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sm8250.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sm8350.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sm8450.c            |  4 +-
+ drivers/pinctrl/qcom/pinctrl-sm8550.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sm8650.c            |  4 +-
+ drivers/pinctrl/qcom/pinctrl-sm8750.c            |  4 +-
+ drivers/pinctrl/qcom/pinctrl-x1e80100.c          |  2 +-
+ drivers/pinctrl/renesas/pinctrl-rza1.c           |  2 +-
+ drivers/pinctrl/renesas/pinctrl-rza2.c           |  2 +-
+ drivers/pinctrl/renesas/pinctrl-rzg2l.c          |  2 +-
+ drivers/pinctrl/renesas/pinctrl-rzv2m.c          |  2 +-
+ include/linux/device/devres.h                    |  2 +
+ include/linux/pinctrl/pinctrl.h                  | 14 ++++++
+ include/linux/pinctrl/pinmux.h                   |  2 +
+ 79 files changed, 274 insertions(+), 225 deletions(-)
+---
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+change-id: 20250701-pinctrl-gpio-pinfuncs-de82bd9aac43
+
+Best regards,
+-- 
+Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+
 
