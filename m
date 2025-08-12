@@ -2,114 +2,115 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B4061CA0EC4
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 20:50:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 90C70CA0EDB
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 20:57:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20BE3900024; Tue, 12 Aug 2025 16:50:29 -0400 (EDT)
+	id 132388E0193; Tue, 12 Aug 2025 16:57:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E35A8E0151; Tue, 12 Aug 2025 16:50:29 -0400 (EDT)
+	id 0E2D38E0151; Tue, 12 Aug 2025 16:57:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D2AA900024; Tue, 12 Aug 2025 16:50:29 -0400 (EDT)
+	id F139A8E0193; Tue, 12 Aug 2025 16:57:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EF7518E0151
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 16:50:28 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AB024160113
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 20:50:28 +0000 (UTC)
-X-FDA: 83769298536.20.272F3F5
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 2A8F1180009
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 20:50:25 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="KRl/iJEE";
-	spf=pass (imf24.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DDEBA8E0151
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 16:57:32 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id ACDBD1364EF
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 20:57:32 +0000 (UTC)
+X-FDA: 83769316344.14.9D39F74
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 27414100003
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 20:57:29 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="QrgpPL/q";
+	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755031826;
+	s=arc-20220608; t=1755032250;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i7YvdQwB8rttbhsO1577uV1RViiXcc8diXFNbqrfJYg=;
-	b=GnSGX2t2wZJoag6w+S0dRQZdTTiiCRUDpEVt/l0qqkEJjOK2suTtmIDbLFToq7qDD+sJkK
-	VJ3151qbwUYyQ/E4+g01FAydIJXvWecV/BPRCcp2VJzPLpEhxc4BJO0mmFfod5ukxxPHQ8
-	7Ns3QGhdVfkCOxLHFAz478qUEmWlt50=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755031826; a=rsa-sha256;
-	cv=none;
-	b=dARFOibpBXR0zSoEldARDKQ4Na1SIGg7x8Z96mKHTWBRf5YcU4qkSYvpcbjwRhNa2P71g1
-	CHdG06KTWXp7T6OElnzGHs9Fu8rI5m4ZDznkoLzO00EO3wnv2W4I3yWVjNSwbbp8j0tydJ
-	nfz+hQ7YErajCiZ5DzZSk+CBob8OIHw=
+	bh=0MdgtvTf0GppffJVf7+x8IwG9neJu2jI9si12zBjn6Y=;
+	b=2N8eY2RTxNCAcU6SkVy25977zyUogrH8q1JAkjFAGsuGTbJm9vr+Z41dncEv80k6shxIZ8
+	IkEap9HlJhlgg7s+9ELPOsks6lpzsezfpSRFksud+QBxxm/+s7fhbrGN5Bd4FMYgGeTELB
+	DBBcmypQzAorCC4G0xgXIRwlcAXkXbY=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="KRl/iJEE";
-	spf=pass (imf24.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="QrgpPL/q";
+	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755032250; a=rsa-sha256;
+	cv=none;
+	b=Pus1WuOWx6KlMP1Ubo6FZdwu+q3zHsjovyWIXVyIbX1/i/CLFejMF/AvL847eXlClkZtqw
+	N7+WvO7pfHaL0VoexnCb+VAILk2eRC7DfgcLdh1kaWkXpieNempWcbsqh0lfOW0eyZ1+R9
+	D3ECUjIuzhQvGAChNtaDxSWrS65Ejqs=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755031825;
+	s=mimecast20190719; t=1755032249;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=i7YvdQwB8rttbhsO1577uV1RViiXcc8diXFNbqrfJYg=;
-	b=KRl/iJEEiqwz+B+lRRT1HPFp9XNmDt2aM9zex7hJU+W28TGCHkXXyD1TGe6lVJw6hPXI7U
-	FHNKXmJX7zcaiUj/G96Bk5xWrzhjAUohszDdL6QltRVGsrJgSGslEWrKR4QP6Cedt8SQYj
-	D8qwYysvnAa6i5MWpGqYuIQLkMXOm4U=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=0MdgtvTf0GppffJVf7+x8IwG9neJu2jI9si12zBjn6Y=;
+	b=QrgpPL/qrvsuB4GaiK8HAJITRaODm0P72aZEcF2XC+/ZfuvfWOLBz8cULNJLQsGxpmLIwT
+	APU4gtxS+S3qfgOK7VXbGa5bL26Q61+HobIo1U26FoZ9N4DxkIetYvvN3nOnW48Zl1go3Q
+	lWYewYRzltIUClJVO+Ztl1NmWspnHng=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-398-S9BvD2IePgKQlx-ndTi65w-1; Tue, 12 Aug 2025 16:50:24 -0400
-X-MC-Unique: S9BvD2IePgKQlx-ndTi65w-1
-X-Mimecast-MFC-AGG-ID: S9BvD2IePgKQlx-ndTi65w_1755031823
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3b7886bfc16so3735649f8f.1
-        for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:50:23 -0700 (PDT)
+ us-mta-657-NInAMoM0M8GyadZ_ICXwww-1; Tue, 12 Aug 2025 16:57:28 -0400
+X-MC-Unique: NInAMoM0M8GyadZ_ICXwww-1
+X-Mimecast-MFC-AGG-ID: NInAMoM0M8GyadZ_ICXwww_1755032247
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45526e19f43so19842235e9.3
+        for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:57:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755031823; x=1755636623;
+        d=1e100.net; s=20230601; t=1755032247; x=1755637047;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
+         :content-language:references:cc:to:from:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=i7YvdQwB8rttbhsO1577uV1RViiXcc8diXFNbqrfJYg=;
-        b=v0bf9E27WGq09wnp+igFOaJ3GllMgyNxp7B5r7LR55pdabapQWWCevCrtWQ0HgfHK6
-         7YAlHUD2kw1z+t7ssnoLm5b6CTOQYswWhkSHcr/zO0PuzngCgHgm9ExJ1lJ8jBSvYU4Y
-         4XPxjUC6897Ixx4ex7Y6HTnXJ55mUbP5JtI2pZ063/oQyF22jar2/grDhqwZuY9MivMr
-         VmsOnh8IhxxBKb9XUhSYSvH88wWGT4RbG7lAIEPUTlP+2cK6ve+wuVOJXyjMTawxmJW+
-         ncR1A3SIS8G6V4ZU9WLPvxv++DT7za6P3NBuDDz2sj/WUFJOnzjvtGz9znA94uFtI25X
-         SIwg==
-X-Forwarded-Encrypted: i=1; AJvYcCXft/US5vhRkxUlNsV/jNgLgT3ydlAbv86QXiAb+CXLoJv77kPIPyP7AvH7sP7b0pg3oE7+hX3lPA==@kvack.org
-X-Gm-Message-State: AOJu0Yx3/phDLqvu4E72GUtWanKVJifWzF1VF1D/LtwK1RC6ctw4cEp/
-	L2P7WdJW1z+zu9sFXnRTrQ4MC357dd+YbQyk4Hp+ycjWpuI2JYGHgsNnXr1+zKVqDcMXXRezNK9
-	5ImgonctZE0sZ9WjJqxJ8Ngy6eG5OBi09w54Kvon3i5RAqvULqdKG
-X-Gm-Gg: ASbGncszzeviMtUWe4DeIRJowZa1meBfDFvaaCwf+9yXgTsUkDN/CYR2xIFwHj80CKk
-	ev7t3o352AR2h9PtIpZBVrBLupJjMtzwCPLaj3LCgFFcdSLoddxquuoMHmGawWD7abArwDxb806
-	yrVoz08Gi4+LCA0AgTzLmG5YmAxaX3XQiVExlMaxVhmfb8pTUlrWwU+ajJY5sxYxABXY9E6xB/N
-	ux9U5Xzol+PiAaAuWBq1R9XlHE/rbiMjrSxmQa/s9Rr9OGJ5qAO8KEQjCNlSxjVBSs5Odpm2neC
-	cHK/6lb+7Sp4Re3nKKj99tRR9OAs1Efh4wNYBGTUN1C4mLml6Q2Qnvtt4ejhSVGUphHmEuTnItS
-	xIspU8jPDTbokFhllH+km6WG/1Y9kX0tEnjGaxP9TBCVy7ToiBHTGrZ14mUB2pSst19s=
-X-Received: by 2002:a5d:5d86:0:b0:3b9:13e4:9693 with SMTP id ffacd0b85a97d-3b917edd49amr261525f8f.52.1755031822692;
-        Tue, 12 Aug 2025 13:50:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHSNykJv7Lvbr5f90XjicFITMJaQbu0/2nFACy0ZV5jZlmNVRbBlprfnnGCdefBalsMmuBo+w==
-X-Received: by 2002:a5d:5d86:0:b0:3b9:13e4:9693 with SMTP id ffacd0b85a97d-3b917edd49amr261518f8f.52.1755031822271;
-        Tue, 12 Aug 2025 13:50:22 -0700 (PDT)
+        bh=0MdgtvTf0GppffJVf7+x8IwG9neJu2jI9si12zBjn6Y=;
+        b=hXnIU25tvft+XOKiFNMYOLcjIl6FBRwqEGR3f+T7iS83YNGVKL6BCEII1FZocwqytU
+         6v9ZAO86X1fiBTlAfj4r4hkuN22cQ63VJSitjjZKspYSTWLgpryIO9d7GXfxL4XSEATP
+         4OtAKd6Uf0uAZZ96pTE2N8snmTFFgtMMIUfE5X+amFb1cr6lbUdknYAMNxjPQeyydl7u
+         EMiWo46JG5q6n5mt0CMcl3hJHRIg5NS23d9mTcA1LdbAiaTOH4G9WUJBYYEDXpY8h0/c
+         b6I4fNyfG+dLBT5gufyW0Ajo6S54L+lkwraN75CKbi/DY+Vh0EqT02yjwtf/kxWq3F8u
+         FEsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWV/otmCtyTBBmkaIHO1mJvBlEN5iHEkE0fHfJF8+kkMy/l+m9cGIvH5rycbboeYOHn1twXorMFWw==@kvack.org
+X-Gm-Message-State: AOJu0Yyu5hvxND2Nr7dPzYZkvUXPV+PH7M4PNVwVWWwoCNHUUeJ3gFm7
+	b5mFnhtI1FFL6izPIX1Fd94AJHJJPqdJYhv5/2Yg30nSGRHKTO9D2U5rY6rCgpvy5CM9if57Gzu
+	QswuUim+/HrIAh7AD39D6e6pxwNvhHaCFw7YVQ7wmp7ah1VAX+mY4
+X-Gm-Gg: ASbGncvZLpD+3ZeGVpl6K5Tr5J07YsfpH/hJOOYfNF2XLH368Ewd/sehPNnxMMSp3Gd
+	v2nh732+evalWe6TbBoTMHAMVpcKnbkKPdzYgoeluUyawkBACyyhSdZerpAcS0AceDnBMWIzOWc
+	JOjWEK/Jx37ISmsv18ZHK7Je8VxwhjwPwFg54CziIN3KQyllwJ30p8qEvMlmgdrj0GqgA5q2h+4
+	9iyUEiqkuIMatEZI53XPMLwqg1xjAuQw9i/4PXyfu6Cx75ctyL1XALrr3ImPtLgYDuy/hXUPuxY
+	8YDdIuEVX66GjEREqF/V5fsbMjSTRv2DsNtwxz9wteoUPBIilbrfWq/LfrEpu/ZAh6fR13OUfQC
+	Dq4K3RhurXZXlZHxVJXgxDXm25dDdU44yOODrXm3jV3bfWmtnE1jiwabjmR2i1q9crRc=
+X-Received: by 2002:a05:600c:1c92:b0:43d:9d5:474d with SMTP id 5b1f17b1804b1-45a165051e5mr5065365e9.0.1755032246876;
+        Tue, 12 Aug 2025 13:57:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGFswYwIbgttuhXqb8QMDI1keoza2GfmCEcOaefby30ent32meTCCjqsOciMD6knuT2QlVpEA==
+X-Received: by 2002:a05:600c:1c92:b0:43d:9d5:474d with SMTP id 5b1f17b1804b1-45a165051e5mr5065245e9.0.1755032246477;
+        Tue, 12 Aug 2025 13:57:26 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f30:cb00:c425:8b4b:d9ad:eee0? (p200300d82f30cb00c4258b4bd9adeee0.dip0.t-ipconnect.de. [2003:d8:2f30:cb00:c425:8b4b:d9ad:eee0])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c3b9eddsm45439761f8f.22.2025.08.12.13.50.21
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a16de5f27sm1701335e9.13.2025.08.12.13.57.19
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Aug 2025 13:50:21 -0700 (PDT)
-Message-ID: <0c96fa0e-6f7e-4cca-8d57-f3e3786d44fa@redhat.com>
-Date: Tue, 12 Aug 2025 22:50:20 +0200
+        Tue, 12 Aug 2025 13:57:19 -0700 (PDT)
+Message-ID: <522f31cc-f250-4883-8832-0d26ebf5210b@redhat.com>
+Date: Tue, 12 Aug 2025 22:57:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [akpm-mm:mm-new 101/118] arch/powerpc/mm/ptdump/shared.c:70:1:
  error: use of 'pgtable_level' with tag type that does not match previous
  declaration
+From: David Hildenbrand <david@redhat.com>
 To: kernel test robot <lkp@intel.com>
 Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
  Andrew Morton <akpm@linux-foundation.org>,
  Linux Memory Management List <linux-mm@kvack.org>
 References: <202508130304.5FJqRz2c-lkp@intel.com>
-From: David Hildenbrand <david@redhat.com>
+ <0c96fa0e-6f7e-4cca-8d57-f3e3786d44fa@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -155,21 +156,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  WBe5lqcozu9LpNDH/brVSzHCSb7vjNGvvSVESDuoiHK8gNlf0v+epy5WYd7CGAgODPvDShGN
  g3eXuA==
 Organization: Red Hat
-In-Reply-To: <202508130304.5FJqRz2c-lkp@intel.com>
+In-Reply-To: <0c96fa0e-6f7e-4cca-8d57-f3e3786d44fa@redhat.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 3opEVOq8j9-ZSqFiNnQtSfCV9OrE3E7O4xl2gHOGm0A_1755031823
+X-Mimecast-MFC-PROC-ID: djhSsi5lygkkmTdLt-3_ZCxhRR_UZwDpZXCwgI2l14s_1755032247
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2A8F1180009
-X-Stat-Signature: ym5xmf5wn8adntfh6u88fj3ka45qomra
+X-Stat-Signature: wtcbm9k4bw19dace7hkxdhsqu8bqj58h
 X-Rspam-User: 
-X-HE-Tag: 1755031825-37831
-X-HE-Meta: U2FsdGVkX1/5ey7rqwWfz47QTrpUWKaqM61BEC4YH79vJQzLTWQMT0Zp6/42OCQZoveVuC/4Pfca5ei3OC9c7oPzgbCnDGo+1vbOXL2Oo7QiW4BAJrYyBvYH3Zzj4/iWRSFAB40nIsNtrhQquRvGDw/ovpPAqGpZUoxGVy2lYOrZoxnQumZrc8C21n7S9G27xxj77+yPjOwvaz0FUfvqCqA+MU7nyvFuEDxv/49CGA1Ig7ou1A2GHZP3lUuVf4Aa8Vzn7d5AuaVfJ1dmjYI1LZHXp71wjPK0OqkPvN5dwUPQNzugN6dsrWI4D/BGETIGlpNCPD6Ofxa5AtbCF6SaTykH+UZRpLF46vP6d5z2COEixtqFqw2kgBMn8VrEx7hOD/k1Apl2uh9maCAUxxGPi3PuyJ3KE2ZSqMbe94itcLvCjB5qOmRsR4xwEfgbOEE+72l+Gdyy2+54tm6b+hl4RXWUe3r8P1wUT8yAryscwvBeRLuasMXIh/lL9K0QD6dqv2AnAlUloiVORervJQ+E8VKHs41cYqc18qQp6b/VQpfQuZBeWz4DGiaoHkDNgFaAQ5spSWvPT+usapYMLkiFQzQSb6Z0c5SSzGqyrrV7WmCnJx8HH6Of+znuocmHPBRpOtgG0b5jDRv8qowK2ue7ebL5Awc6YLg+G+iXwF6PYVWUv1NWwW0xNrQdsRB0xrD0E7fc+BHywwiIW2EQUqLdVFHSwUrZpPDAEZ26Gzu3Uu+Fg2mRAk0OmwQa/CzxS8YevpsMEONWkQUPF+hd/jty7wRgc8bSedkgxReblH3oJOsvuScj96OUzstg3kB4PqrtlxN0Zl3ryiPAIhy+WChpM1Gn5xrFrvflQld//Nbhu9dNc5lKDMpx/qmWthrkbKs+HZAb5k8VOeJqJDY9RCmSpgPQpdV0aWzswOuncqpkUma2+r/ZuHbav+iLX0xCI8kINTwn7ZfoaLz9+91WO0G
- gmMF7T7W
- qYezSmxUseXHI8VEY7HJulF3QWUKG2JNFXaA4vtNkGhIbBbx7qhxSleMQlT9t1Zhhw19l8T0F6ECb0YFPXW9ONZ42W0LjZWuLfxQubCsQJDUCmddntdVoRQgfFBHYBhPKQXCfdl0R2fh/MXmbZfP2QoXpdkxwKb0/St1SH+AStS93CdVlN1Q03QtjTxuayZ8WxT05VrLvd4URfRD9Y/vWrcXd4DrAHDWMw3XS+pEg3gMlZSEmTJAbMbk8v1x8LMV/+5bqnjze/q7h4XZE6MugE+Yl7V7fZ44jd/LGNA3ipTbX3uG5E8l/BzZcUKPwzGTzjbyjuzTrD3syMUdvpxuZEFDnsgndll6ObtrwjI5ESONNrTLQiEpTezCsOaaOtYBSm1fWHIIonFyPY1m59CdKtwU+cycH+SihUOYolqQFseOgk/rQ22XKSna2IAbAvV25BkDGZPTKgQ6fahaCZ0DUn1w51eQTOZSnPk2kMTX0YBv3RCbHjAnpvFpAr+yTKH3KUjVQL/o1WH8zp4BKzD3sbFt0iznGDD+O09RO4teVrR4pe+j2QcT8ZzN9fQdh+p2ZcumaRPH8eFkkf0S5x8l4JZnliCcFb8qiqcImazidaPeEMgRPwF/okMZUncCyItu7tBxo
+X-Rspamd-Queue-Id: 27414100003
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755032249-565674
+X-HE-Meta: U2FsdGVkX19lorx3+PFug7k+T7Y1CIM5oUbwKGqobgVQl3nTmKJiE8mmrPIukkRWLkhoAYVmJHN8Wxpo/puEsA0BTO1SfoOEl+sR/dDEEdLxd1P/+PZJqvKaXsX2Ri8EtCU7qVjHTagKAxdqSuCXUVkGTZghK0lUylelnN0/2wpcYiGAjFCHcPj4EJ6y4zdy+0g0CsOEQFMEhFYALXyxBRXS4pUhFCXnQKYkDi3X7XqYTxtkmgDXUInM499O7wkMp4Yp40vAXi3hexnqqvuCi4vKOGMp5o/lcn5Ph+uZgBKUAiiZwnqSS5nQcUxNY2bwvQfq5aWNo1Y2D0VZ9YeY/jGGOeATDQ6l80wucJStM+o07z9065cT0fpQ6LLeIPguNOENBOi/zdlv4/ma/6Kus6TM8SZVadajouMB1oIE3QdwkWBiysKPuaPgS5c2nEFnCQ9+wKOFqiQbHYS5V6LCYxLie2Mw07CeqzZq8SLFvRvihUopWUayTBjkcagZjBm8psnAON5phNgqlIsMX7m8pci4VeDr+gA1yhx08TuyBo7QvgQrk9nyRKDLTAGRKRL8CNpNmdkVHx5FsXlK0Q2g3iwxdLLlEAaLWHkRr4sehkthnbA7+CfV0FqYzEGs+WgGKBjaeUUusxgiUkDEaAh7mIhsxeuL7YRiX0RqY0CWLOOiGR+KgCvCurI3nriBgHoUZoSjHZokwlydZwCy4B7C64rH4SiTbjovWfVeGhVO6jNCxpXTlGLlEDLbpZitXWjOmDoATpK8IPEtyDxOlDPc3SQ7iGKNLqkJq0M8v6krB8XEG6rLvf8tr0/MA0c0EmsqEJU4xr7438FKyHQjU8DaRIzA6/4reGfEtOGbiSKWEc27f+M7oRGHjVTcY8KFvjAp36/PVb6/dqW52HWPWe2Yzr09gYWwfI36YZG323Hnu2pFqODGPxZzIysNUXUdtx1BGt7GGVjOe/lQSbTX0ia
+ CSLUfB6N
+ J0YfCEnfB/AWMc2XBknFKqfUKY+Gl3782aI7Py8YJg5TjPuiDECL4x6duwS00/m5JSVqi6e8aMNH/MCsmDAemOFJAgdNUIr2szVt/EseRaxRllYezZjItowPKCIbGeQ2oAagxVbvHaMH+kEedb72IknhSANqGfcGcshUtByGqNo4cYxlW/42PqC34MDG9grhtqGg7TeYfsf8r494p+HE4ZbsuFd42wnNSx7Ka+6c34w1gSbH4yv7ZiRg+d2mTtmNbAnGZ8Dg1be6sa3P53zmYpLLyDgjN9VE23dYAsoB7aT3t+Lz/qOR1t/lTTjiScUHzuy7US3iAVrGz9UAAq+bjUFiEMq7+puEZGJTxp3WdCL7yKODgUq/uw8UX/1w/oPitIeZMbf5QhR2YsAXWR/tG9UE3I3Ke5+VpQIOIPH+bJuof3I+jb1QZmNX7GcI9tARQ6UnnL5DKHJfxW/SBBSqnO6qgUrKHvq/S67N0v7vNCebk3G/DzLekWf9+duSPNCIZYsSAA0BNWfOUHjdNCGpBgEz2/eDyzO3JlEnStPhs+sANIs1VU1ML2ujUdmVrBemXo2PqD/4fEAgu/YlXxOR4NLi81TcjM/eoqzYZEOLbZ1evx7mSCsXupgmp9w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -178,48 +179,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12.08.25 21:18, kernel test robot wrote:
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-> head:   33ad02f876604ac2990e510480b0ab3a03cf892e
-> commit: 627bf62489a6d9a45f6d6f83edd0cb6c0ee610c0 [101/118] mm/rmap: convert "enum rmap_level" to "enum pgtable_level"
-> config: powerpc-randconfig-001-20250812 (https://download.01.org/0day-ci/archive/20250813/202508130304.5FJqRz2c-lkp@intel.com/config)
-> compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250813/202508130304.5FJqRz2c-lkp@intel.com/reproduce)
+On 12.08.25 22:50, David Hildenbrand wrote:
+> On 12.08.25 21:18, kernel test robot wrote:
+>> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+>> head:   33ad02f876604ac2990e510480b0ab3a03cf892e
+>> commit: 627bf62489a6d9a45f6d6f83edd0cb6c0ee610c0 [101/118] mm/rmap: convert "enum rmap_level" to "enum pgtable_level"
+>> config: powerpc-randconfig-001-20250812 (https://download.01.org/0day-ci/archive/20250813/202508130304.5FJqRz2c-lkp@intel.com/config)
+>> compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
+>> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250813/202508130304.5FJqRz2c-lkp@intel.com/reproduce)
+>>
+>> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+>> the same patch/commit), kindly add following tags
+>> | Reported-by: kernel test robot <lkp@intel.com>
+>> | Closes: https://lore.kernel.org/oe-kbuild-all/202508130304.5FJqRz2c-lkp@intel.com/
+>>
+>> All errors (new ones prefixed by >>):
+>>
+>>      In file included from arch/powerpc/mm/ptdump/shared.c:10:
+>>      arch/powerpc/mm/ptdump/ptdump.h:14:1: error: use of 'pgtable_level' with tag type that does not match previous declaration
+>>         14 | struct pgtable_level {
+>>            | ^
+>>      include/linux/pgtable.h:1961:6: note: previous use is here
+>>       1961 | enum pgtable_level {
+>>            |      ^
+>>      In file included from arch/powerpc/mm/ptdump/shared.c:10:
+>>      arch/powerpc/mm/ptdump/ptdump.h:20:8: error: use of 'pgtable_level' with tag type that does not match previous declaration
+>>         20 | extern struct pgtable_level pg_level[5];
+>>            |        ^
+>>      include/linux/pgtable.h:1961:6: note: previous use is here
+>>       1961 | enum pgtable_level {
+>>            |      ^
+>>>> arch/powerpc/mm/ptdump/shared.c:70:1: error: use of 'pgtable_level' with tag type that does not match previous declaration
+>>         70 | struct pgtable_level pg_level[5] = {
+>>            | ^
+>>      include/linux/pgtable.h:1961:6: note: previous use is here
+>>       1961 | enum pgtable_level {
+>>            |      ^
+>>      3 errors generated.
 > 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202508130304.5FJqRz2c-lkp@intel.com/
+> Huh, I cross compiled this on a bunch of ppc configs, but maybe not emough.
 > 
-> All errors (new ones prefixed by >>):
+> No, on the branch I submitted that did not exist.
 > 
->     In file included from arch/powerpc/mm/ptdump/shared.c:10:
->     arch/powerpc/mm/ptdump/ptdump.h:14:1: error: use of 'pgtable_level' with tag type that does not match previous declaration
->        14 | struct pgtable_level {
->           | ^
->     include/linux/pgtable.h:1961:6: note: previous use is here
->      1961 | enum pgtable_level {
->           |      ^
->     In file included from arch/powerpc/mm/ptdump/shared.c:10:
->     arch/powerpc/mm/ptdump/ptdump.h:20:8: error: use of 'pgtable_level' with tag type that does not match previous declaration
->        20 | extern struct pgtable_level pg_level[5];
->           |        ^
->     include/linux/pgtable.h:1961:6: note: previous use is here
->      1961 | enum pgtable_level {
->           |      ^
->>> arch/powerpc/mm/ptdump/shared.c:70:1: error: use of 'pgtable_level' with tag type that does not match previous declaration
->        70 | struct pgtable_level pg_level[5] = {
->           | ^
->     include/linux/pgtable.h:1961:6: note: previous use is here
->      1961 | enum pgtable_level {
->           |      ^
->     3 errors generated.
+> Probably due to the rebase.
 
-Huh, I cross compiled this on a bunch of ppc configs, but maybe not emough.
+Ehm, no, Andrew, could it be that you accidentally dropped the ppc patch 
+from mm-new. I can spot all but that patch in there:
 
-No, on the branch I submitted that did not exist.
-
-Probably due to the rebase.
+https://lkml.kernel.org/r/20250811112631.759341-7-david@redhat.com
 
 -- 
 Cheers,
