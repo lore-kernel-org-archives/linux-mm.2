@@ -2,31 +2,42 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 45C94C87FCB
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 05:44:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 157A6CA0EC4
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 05:44:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7B168E00C8; Tue, 12 Aug 2025 01:44:35 -0400 (EDT)
+	id E41CC8E00C9; Tue, 12 Aug 2025 01:44:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ADDFF8E00BE; Tue, 12 Aug 2025 01:44:35 -0400 (EDT)
+	id DEC968E00BE; Tue, 12 Aug 2025 01:44:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 908F28E00C9; Tue, 12 Aug 2025 01:44:35 -0400 (EDT)
+	id CB2AD8E00CA; Tue, 12 Aug 2025 01:44:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 72F028E00BE
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B83718E00C9
 	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 01:44:35 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C768E56A64
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:44:34 +0000 (UTC)
-X-FDA: 83767015668.15.8B74476
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7836B81361
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:44:35 +0000 (UTC)
+X-FDA: 83767015710.30.8AE95CB
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf12.hostedemail.com (Postfix) with ESMTP id DB10440005
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:44:32 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=wFb0RLzj;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b="qsESN/r8";
-	spf=pass (imf12.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+	by imf18.hostedemail.com (Postfix) with ESMTP id 949251C0008
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:44:33 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=OzPn4l9b;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=pafKDyE9;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf18.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754977473; a=rsa-sha256;
+	cv=none;
+	b=uhCk4VxhmWij2zZYgV4UPKJtZJOIJWwIiyqsJkx35St4llpNZwGQVKbSrsicI3OK3djZhH
+	ji5L8DwiLc8j06g7GGPnye558jWpaMhjRM0VBnubKZRflb2T1ngpbKauwZSil+svoMhVMg
+	7M95snY/GoUcnL9/XlfucEvb7PjudzE=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=OzPn4l9b;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=pafKDyE9;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf18.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1754977473;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -34,21 +45,10 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1fbs+jreI++pzzR3zWEjWTxnX9u6RnqE0RQf6GOU1NY=;
-	b=qEF4NGVVAH/j6xs7RAGrs5igpAwO8eMOH2v/9vkKeV/gWeOGtQQ+6GCRgBBoVtKTx31axF
-	tX4X8k9qty9EM8u7YWHBV3H/0gYA71EsTRx96R4oBf7nY24repfNG1JepXreMHx0ijfmo+
-	KjIC6DOZRPtEoE4/3cQVgfqAjIORJW0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754977473; a=rsa-sha256;
-	cv=none;
-	b=WFMgBWTnw4DdrHTMXyigyVQ7N12CGs3a00kcWzmR2WAcASynZ353pytl2KzooLlxqk0oEr
-	f1HvBNfWTpgaWhRdGTLkxmMrfl+98xzStFwxPfpKeEW+TuiKPM36+3+nQECHMFQHnFi9Qa
-	97wKqtWS95mSjzJcC+Szr5DZ3EJ2alM=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=wFb0RLzj;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b="qsESN/r8";
-	spf=pass (imf12.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+	bh=3NxCSEvj2PqT9z+zh43cxWZPZy/pc7lSYDl/HSYdpX0=;
+	b=xEQL+o5TmJ8z5obkUa8dRgT1UtW94FotiG+spIaOu9CeNgqRHuBo6DMjOSaLHDCAOfKlXm
+	Dn0TqmDu+B5own5uqgm+Jq5LdEs3UY/WV5Zu83aN8QQMMIe6F6s1FEriQO1hzXLwqTUMjN
+	wLb4N8io2Zt3ygdJKUGuR6HzwalRiZU=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1754977471;
@@ -56,28 +56,27 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1fbs+jreI++pzzR3zWEjWTxnX9u6RnqE0RQf6GOU1NY=;
-	b=wFb0RLzjRR+m6XuM7TOWlo2yvCJnPhA+25xIrhYVyQU7vW3qK3ogLB5/FoNBtbGXFhaQKY
-	pr4aI4RliMtnnHAuihu1YwOpPa1YAFE6NNdNYTDGqtqXIgkvCGwOYClR54N7bodbqmR8ib
-	3FR59W6tTyZySeu5nec68ShzfSWdVtepYdrHKuUMyY5PDvLGMSfolpeOUlC1s249oPH+6P
-	/nNoPZTWkgEcLEgiFvoUsib1/knAtoR53VJtqoUm2UIq7TEvFyRcp1/WlztCfeuCCPyn1R
-	c9ok2s6GcRDtHFeAJPnrNr3pTIJwl25pnQginm0asRgcm/Y3wFJdfZ+h1y1MIA==
+	bh=3NxCSEvj2PqT9z+zh43cxWZPZy/pc7lSYDl/HSYdpX0=;
+	b=OzPn4l9bPnlKixJ4UTB4AhAiLkjej71xwPtqSacSd+DsXZttorULyXy0fBr+6XMEYsbpyX
+	pktj9XCWQ8ee9sbQ7TYV8xKn9kXKt4m2MmDnVX9oK64iccISEQVpCVAjKsf5kfo2Y4wKUi
+	D/gtoJVpdPcUWflVbX6Hs6iChwze2AWD5Nd6p9SmoIAq7Qmyf8+MGJgz+NTXtkznsfMX+o
+	j3OCtHeIk3g8dw8i98Qx5qdXUibd3WkJPpTCzYYDMYJG02MGifnkCYLytDJNMiDCMFGFIu
+	8/+eeYubofn5+rAsSCT5GEPgNyX67Wj5B38v0AvV+ZRmEt8rhZK2/TA3OnjrCQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1754977471;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1fbs+jreI++pzzR3zWEjWTxnX9u6RnqE0RQf6GOU1NY=;
-	b=qsESN/r84WX54Bw78PaDXL3DZH9tinqCzw/9z447eYrhrk5rauDW2NqzQLxz4cWxfapa1Y
-	nlSHAbkBNOdd0fAw==
-Date: Tue, 12 Aug 2025 07:44:15 +0200
-Subject: [PATCH v4 02/24] x86/elf, um/x86/elf: Move relocation constants to
- UAPI
+	bh=3NxCSEvj2PqT9z+zh43cxWZPZy/pc7lSYDl/HSYdpX0=;
+	b=pafKDyE9bffqSWjpfAcol5Guig2fgcH1bW+oS2Qi1sEvJ6rykUviC/BNs2xCa8jswWQoAY
+	SQ7jPA+bZKqPUaBg==
+Date: Tue, 12 Aug 2025 07:44:16 +0200
+Subject: [PATCH v4 03/24] ARM: elf: Move relocation constants to UAPI
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250812-vdso-absolute-reloc-v4-2-61a8b615e5ec@linutronix.de>
+Message-Id: <20250812-vdso-absolute-reloc-v4-3-61a8b615e5ec@linutronix.de>
 References: <20250812-vdso-absolute-reloc-v4-0-61a8b615e5ec@linutronix.de>
 In-Reply-To: <20250812-vdso-absolute-reloc-v4-0-61a8b615e5ec@linutronix.de>
 To: Paul Walmsley <paul.walmsley@sifive.com>, 
@@ -119,21 +118,21 @@ Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
  Arnaldo Carvalho de Melo <acme@redhat.com>, 
  Alexandre Ghiti <alexghiti@rivosinc.com>, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1754977469; l=6035;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1754977469; l=3153;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=1uMAsIGnLSAarJHPAhyn1ZCQ7+laGQoWKQA2Xxq0mGY=;
- b=LSso+CtnXCvSqq7w3arcGFjj/9JO1wvGscYCVoeDZOhj/IpFN3GTrmCLD7/dVw71XSDOqEtKb
- ryK7StfnfXPByrB7+MMfsCwMUX3kib3KkE19P5uuPZjIm2SN2cxtCaS
+ bh=jOcL1seJLYtGvYImS8V7KrNCGiyauUm9m0luaNV+25o=;
+ b=2ZpJfDEg6FCwuTFwU3Nv++0bd6D+4hY16G/VIAHUE+ed4/E2i08I8MElZpFB/ZPj/iol+ibfT
+ +7b+Uoz0sN9CIxjr9xcNzEwxHV7UcmSg7w4o2Gs4g4sQ4acRe/ztk9b
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
-X-Rspamd-Queue-Id: DB10440005
-X-Stat-Signature: mmdrre8ki3p76sepjn1i3px78b1n6q5u
+X-Stat-Signature: wkgpqnx3ms4t8wbnkgwfadys47ztsfeb
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1754977472-293834
-X-HE-Meta: U2FsdGVkX1/5tnmiXp/Pntu7q4nAAGkjLgUvqVFUHSAgeAH6C2QlAeM6Eiq03gZ7uM1vZgPwOyLMeTKfDZBMmByItdylCeAvoxCKAzY78VRwT9XVp90Ofj9BDHP7JPAmYXjxBVOE9AqaPl1F8QG1urXLFj5JgXJ6nmAvUfBMTpCT4aPO+620K0V2CW4SWlnM16mprSG+XE+2Agm9OZ3KHDGtTz21Xfug8bvFhSqJFfHND14Y/lqg03il/DHqQY4IgvwJlR1S8DnBD15ILGF6M6Fhs6/kL5fpUWGoXdo6IMTiF+XnTObVnfsv6yUHxEIpH5OtPivVhtqq+5M5QEG7/bRXFZROHOVSywtU3UrTXQchOBuubVFdn1kKREsmPKMfT4afIOho2aws8jRhPprkdJsoB/l26l1b6CUNC926ySUchmBEqW13y+zhr6p2J9PN/2ck1Uc2cnOiamHOb6kIUboUc41GWYtopkT0uPAoGdmJqKW0ejVAZTbcz6NssxkdCQOlS9LxSQeLHWiAMTdEIOffF6MVXNd+desNFjZcJduUTrQzC/eZaOecP7hwLEzz6sn63Mxo4VhUid2wu173iSmh7IXsddsIoYIoa6SKiYjgeJO7fiAGy5bRc6CjgTT7iSdjvMxWWk52+iUK9NaZ3lvfiI+3OeDcBTvqLNcaDft+zwm1Pg6O55gUXvsD9RuQoAcmNGWAwkAFNrADEiWEfH1AQEm+f8pqc3NwvJJsUWXa9AcjQAI3nZNo/1TgwlMS7zFm5ANQQN7FdGWZyqNIc1SU/ZyWErMZLJviyFjHrzvsW5tglKdTaG7u1aZ10sfk+tF+37gqePStzrCWzaG1SnH9xnRrRVD6lIYwdBu/jTKfHawDuzpKBPwbTftY4xRd9HuT0xdGbxaYruNB/kyrb1al8A50y6aLoJrWEp9og+OdG1B3ks1kKSPUfz5r7+B23NymvXGRpWQXZZQ2T6Z
- tgZSdd6A
- 9+dstAzHvi8CT2lRIXr6PiwSXvxB8MU/jDrfwWL5OHe+BzUVeXbjkP4Bu2fcOBb9jKdMP2j52smGZxXbs+KtKBUTc5gKL69y2e+WbRkZbNC04EkgfOIH/v1cTRsvhnAj9X30oS5htGuiDYbNIfPL/Q3bvtz4jGpAIBSxxwAvFHHGMgMeIIwHcmxwODXedX/v3cK+/aWEkcPDxGxBjD2RCHmbtrbqDZ9CJLK6Mjh5Wv75RiRZYvYyNzqLpQB0+uRPXhfj/61FYwb+JwEiOo1KVQBMOSs4OoDJqSgmutusefmqFHGpApsS5GSU7r5YEc2yTMUVfBASClyr7zU8k1BJSf8seYLeAScXP76DKK0Rwb2OyNot3jTgO/nIO/qY6vI8qrzG0KtFtjGFBrbFOKB5+JVvgP0JKk3cIL+vmuuUTvsbZ4Qr/TOCrzspKDYhDJ9p8L3VOJCUn25G8kSP3ofjPqarExiQjoFUH7rp/guBhQyp2LO6oOtKGJjIPci180JotuHG7
+X-Rspamd-Queue-Id: 949251C0008
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1754977473-434695
+X-HE-Meta: U2FsdGVkX19g+2oNBeCmkw61jR4uPxf1L5WPhk5u+NbL6TDLgSQQ9mC/JZeZGuJKTU8eaWgUA9UZm+OZzRJ4jMaFeG0ufyFfED8ZzeyuhZwXk+pMIHos3CSopOoKtIY1DG3g/LW3H4sBf3pksrT6my+CqZwTvwrmUPttNzF5STmR27nHQbIy3uEfK9VAIIdzcLSUBKvLylFAufd6GmcKzu8pFUVTqZMxTEGq9jfusd3aisD8cLJfFKd3JhvGlOUGjP8DZ4JmaHD7Zw6sUrzfM3MFv6F3uDpvhEmebaopWLMMc8Gyz7xOQ9drr0bxeo18cwBsmiq2Q3JBAKXaOL+/9AT4errsSqrOzXpwJ/pC4LSRsWUaWGfatLSbSep4gKyUyej7h4Y/DUAv2ZuP2n7XMLjiNNUjmkzQRxO1qJLmllkmt1zB70RLU60te1a0OBr0SSnYRbiaUjbl/jzyPS2Jdl5xo7aX8bluVNtLc2kLbhaFWEnnkm54sNo95HW5Hh3niQXyO/vDyMFvZelfbjol17gERug8j088BMLMosekQ5MotKA4BFm4oJ0CTelWxdZgoS0BMu1HfwM5ax1hxSFW8NalZH5XncAS5bLfIG+u7YihpqjG2aJqOxwV7gS2ZIPlRtP+m80n3gfgYxm/awCS/93iu4MaGgzcg1hOza2CjY+BJivWi6vq51JS8Q7dj6naRXJnPY/k9l44V91jVaeHcRiDDqrTsUp0M8BfRdpfre4fsqiJkKTggOlyBh7jGNaLcy1VS7PvDL6D4K0eaZbJQT6+kzO7QKBKFGZfRzHMhTtz/NeoR/RFXW5TsT49Fbksz+GDlshFCAEJLc1pbHa3hRBD8CH46zvZyKvE0aIlpyQ41SidShKJN//re29bJFVV/6aiOySVIXV1M0UE/vML3IZ+jA/BSiuqa7dnaXxBwKZYrHvCm/OaxsJG9nyJK07dGawCKdaZ+J+gvcQNOWG
+ Hj78VrKd
+ RWqTQeF4T5DZ5FAWNaSVqen72WcScsFhHxC7JvgQSHJ9pak9KA+aePbUoi1sJ9KsuJRMKHvlVzSTQidCMCAl5bhGLhEoW/yWlm9qbteBa+L6DFntH2ALYWrvxFWSbxlAXlyD439UCAVAw10LLfmb+gwLXQe3BjugMCqSeTYs7kJBPkGQb8MGbkWJrKt9vxPr+w4TwFp+47UigdLnhVbZF6afMUaVSwThRlGdMRcEkQ7ReRq9idlRBO5O974wX1krW542Atv644PaZr8paiC2yJXu6G6e4prechMNPQrFpCHBZychB9I31Qk7cjHn4unawsYM9AWYrjwL57/3AkJ7Amcp2wJLMmvZQNy/aR+lXJB11+ivsa8mnWOWTb7rv6skLJ69qgyW9jmz8QBpgORa8BH2Kfgh7ouhJizRKaI3u7Mrpo6GyE9Ahnb4cS/YHrSNxTBLUqmXYnk9KcOKOf/mQobfOTRZ+m0d045Qt5vG4KKEsrHgxljLA0fyRrAPyboGfKnpL
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,157 +146,94 @@ process ELF files during kernel cross-compilation.
 
 Move them from the kernel-private architecture-specific header to the UAPI.
 
+One arm64 header is also changed as it duplicates an arm definition.
+
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 ---
- arch/x86/include/asm/elf.h | 34 ----------------------------------
- arch/x86/um/asm/elf.h      | 33 ---------------------------------
- include/uapi/linux/elf-r.h | 34 ++++++++++++++++++++++++++++++++++
- 3 files changed, 34 insertions(+), 67 deletions(-)
+ arch/arm/include/asm/elf.h   | 24 ------------------------
+ arch/arm64/include/asm/elf.h |  1 -
+ include/uapi/linux/elf-r.h   | 25 +++++++++++++++++++++++++
+ 3 files changed, 25 insertions(+), 25 deletions(-)
 
-diff --git a/arch/x86/include/asm/elf.h b/arch/x86/include/asm/elf.h
-index 6c8fdc96be7e8bd33919d9b56ae8a8a68f4b0c3f..a2538561a84b8dae0479c43238f6f297fe88924b 100644
---- a/arch/x86/include/asm/elf.h
-+++ b/arch/x86/include/asm/elf.h
-@@ -22,19 +22,6 @@ typedef struct user_i387_struct elf_fpregset_t;
+diff --git a/arch/arm/include/asm/elf.h b/arch/arm/include/asm/elf.h
+index 9f21e170320fc57f1dc21a33d637bcfd3d1d3917..ec2d416baa9f7ef4b860c4a18b2e2bf2f05e4a9d 100644
+--- a/arch/arm/include/asm/elf.h
++++ b/arch/arm/include/asm/elf.h
+@@ -47,30 +47,6 @@ typedef struct user_fp elf_fpregset_t;
+ #define EF_ARM_HASENTRY		0x00000002	/* All */
+ #define EF_ARM_RELEXEC		0x00000001	/* All */
  
- #ifdef __i386__
- 
--#define R_386_NONE	0
--#define R_386_32	1
--#define R_386_PC32	2
--#define R_386_GOT32	3
--#define R_386_PLT32	4
--#define R_386_COPY	5
--#define R_386_GLOB_DAT	6
--#define R_386_JMP_SLOT	7
--#define R_386_RELATIVE	8
--#define R_386_GOTOFF	9
--#define R_386_GOTPC	10
--#define R_386_NUM	11
+-#define R_ARM_NONE		0
+-#define R_ARM_PC24		1
+-#define R_ARM_ABS32		2
+-#define R_ARM_REL32		3
+-#define R_ARM_CALL		28
+-#define R_ARM_JUMP24		29
+-#define R_ARM_TARGET1		38
+-#define R_ARM_V4BX		40
+-#define R_ARM_PREL31		42
+-#define R_ARM_MOVW_ABS_NC	43
+-#define R_ARM_MOVT_ABS		44
+-#define R_ARM_MOVW_PREL_NC	45
+-#define R_ARM_MOVT_PREL		46
+-#define R_ARM_ALU_PC_G0_NC	57
+-#define R_ARM_ALU_PC_G1_NC	59
+-#define R_ARM_LDR_PC_G2		63
+-
+-#define R_ARM_THM_CALL		10
+-#define R_ARM_THM_JUMP24	30
+-#define R_ARM_THM_MOVW_ABS_NC	47
+-#define R_ARM_THM_MOVT_ABS	48
+-#define R_ARM_THM_MOVW_PREL_NC	49
+-#define R_ARM_THM_MOVT_PREL	50
 -
  /*
   * These are used to set parameters in the core dumps.
   */
-@@ -44,27 +31,6 @@ typedef struct user_i387_struct elf_fpregset_t;
- 
- #else
- 
--/* x86-64 relocation types */
--#define R_X86_64_NONE		0	/* No reloc */
--#define R_X86_64_64		1	/* Direct 64 bit  */
--#define R_X86_64_PC32		2	/* PC relative 32 bit signed */
--#define R_X86_64_GOT32		3	/* 32 bit GOT entry */
--#define R_X86_64_PLT32		4	/* 32 bit PLT address */
--#define R_X86_64_COPY		5	/* Copy symbol at runtime */
--#define R_X86_64_GLOB_DAT	6	/* Create GOT entry */
--#define R_X86_64_JUMP_SLOT	7	/* Create PLT entry */
--#define R_X86_64_RELATIVE	8	/* Adjust by program base */
--#define R_X86_64_GOTPCREL	9	/* 32 bit signed pc relative offset to GOT */
--#define R_X86_64_GOTPCRELX	41
--#define R_X86_64_REX_GOTPCRELX	42
--#define R_X86_64_32		10	/* Direct 32 bit zero extended */
--#define R_X86_64_32S		11	/* Direct 32 bit sign extended */
--#define R_X86_64_16		12	/* Direct 16 bit zero extended */
--#define R_X86_64_PC16		13	/* 16 bit sign extended pc relative */
--#define R_X86_64_8		14	/* Direct 8 bit sign extended  */
--#define R_X86_64_PC8		15	/* 8 bit sign extended pc relative */
--#define R_X86_64_PC64		24	/* Place relative 64-bit signed */
--
- /*
-  * These are used to set parameters in the core dumps.
+diff --git a/arch/arm64/include/asm/elf.h b/arch/arm64/include/asm/elf.h
+index 3f93f4eef9530a7b5bc966bf4a16d83093a016ee..8efcfe7efe0c70c59b9b81f93ac9c1442bc7656a 100644
+--- a/arch/arm64/include/asm/elf.h
++++ b/arch/arm64/include/asm/elf.h
+@@ -18,7 +18,6 @@
   */
-diff --git a/arch/x86/um/asm/elf.h b/arch/x86/um/asm/elf.h
-index 62ed5d68a9788ffbf9dd0b4ebbe2caad4ac7a7c6..2e79193f396cda854ab4f17af2cd5b15c1e078cd 100644
---- a/arch/x86/um/asm/elf.h
-+++ b/arch/x86/um/asm/elf.h
-@@ -12,19 +12,6 @@
  
- #ifdef CONFIG_X86_32
+ /* Miscellaneous. */
+-#define R_ARM_NONE			0
+ #define R_AARCH64_NONE			256
  
--#define R_386_NONE	0
--#define R_386_32	1
--#define R_386_PC32	2
--#define R_386_GOT32	3
--#define R_386_PLT32	4
--#define R_386_COPY	5
--#define R_386_GLOB_DAT	6
--#define R_386_JMP_SLOT	7
--#define R_386_RELATIVE	8
--#define R_386_GOTOFF	9
--#define R_386_GOTPC	10
--#define R_386_NUM	11
--
- /*
-  * This is used to ensure we don't load something for the wrong architecture.
-  */
-@@ -100,26 +87,6 @@ do {								\
- 
- #else
- 
--/* x86-64 relocation types, taken from asm-x86_64/elf.h */
--#define R_X86_64_NONE		0	/* No reloc */
--#define R_X86_64_64		1	/* Direct 64 bit  */
--#define R_X86_64_PC32		2	/* PC relative 32 bit signed */
--#define R_X86_64_GOT32		3	/* 32 bit GOT entry */
--#define R_X86_64_PLT32		4	/* 32 bit PLT address */
--#define R_X86_64_COPY		5	/* Copy symbol at runtime */
--#define R_X86_64_GLOB_DAT	6	/* Create GOT entry */
--#define R_X86_64_JUMP_SLOT	7	/* Create PLT entry */
--#define R_X86_64_RELATIVE	8	/* Adjust by program base */
--#define R_X86_64_GOTPCREL	9	/* 32 bit signed pc relative
--					   offset to GOT */
--#define R_X86_64_32		10	/* Direct 32 bit zero extended */
--#define R_X86_64_32S		11	/* Direct 32 bit sign extended */
--#define R_X86_64_16		12	/* Direct 16 bit zero extended */
--#define R_X86_64_PC16		13	/* 16 bit sign extended pc relative */
--#define R_X86_64_8		14	/* Direct 8 bit sign extended  */
--#define R_X86_64_PC8		15	/* 8 bit sign extended pc relative */
--#define R_X86_64_PC64		24	/* Place relative 64-bit signed */
--
- /*
-  * This is used to ensure we don't load something for the wrong architecture.
-  */
+ /* Data. */
 diff --git a/include/uapi/linux/elf-r.h b/include/uapi/linux/elf-r.h
-index 2c382c8a4807f394a3ccabf39a81e9e9b6f7ea45..45a160ecf40570f3ac916344be363d7e74908ea6 100644
+index 45a160ecf40570f3ac916344be363d7e74908ea6..001884641e7703146f91e2dd96fb5a2bbfc7a324 100644
 --- a/include/uapi/linux/elf-r.h
 +++ b/include/uapi/linux/elf-r.h
-@@ -2,4 +2,38 @@
- #ifndef _UAPI_LINUX_ELF_R_H
- #define _UAPI_LINUX_ELF_R_H
+@@ -36,4 +36,29 @@
+ #define R_X86_64_PC8		15	/* 8 bit sign extended pc relative */
+ #define R_X86_64_PC64		24	/* Place relative 64-bit signed */
  
-+/* i386 relocation types */
-+#define R_386_NONE	0
-+#define R_386_32	1
-+#define R_386_PC32	2
-+#define R_386_GOT32	3
-+#define R_386_PLT32	4
-+#define R_386_COPY	5
-+#define R_386_GLOB_DAT	6
-+#define R_386_JMP_SLOT	7
-+#define R_386_RELATIVE	8
-+#define R_386_GOTOFF	9
-+#define R_386_GOTPC	10
-+#define R_386_NUM	11
++/* arm relocation types */
++#define R_ARM_NONE		0
++#define R_ARM_PC24		1
++#define R_ARM_ABS32		2
++#define R_ARM_REL32		3
++#define R_ARM_CALL		28
++#define R_ARM_JUMP24		29
++#define R_ARM_TARGET1		38
++#define R_ARM_V4BX		40
++#define R_ARM_PREL31		42
++#define R_ARM_MOVW_ABS_NC	43
++#define R_ARM_MOVT_ABS		44
++#define R_ARM_MOVW_PREL_NC	45
++#define R_ARM_MOVT_PREL		46
++#define R_ARM_ALU_PC_G0_NC	57
++#define R_ARM_ALU_PC_G1_NC	59
++#define R_ARM_LDR_PC_G2		63
 +
-+/* x86-64 relocation types */
-+#define R_X86_64_NONE		0	/* No reloc */
-+#define R_X86_64_64		1	/* Direct 64 bit  */
-+#define R_X86_64_PC32		2	/* PC relative 32 bit signed */
-+#define R_X86_64_GOT32		3	/* 32 bit GOT entry */
-+#define R_X86_64_PLT32		4	/* 32 bit PLT address */
-+#define R_X86_64_COPY		5	/* Copy symbol at runtime */
-+#define R_X86_64_GLOB_DAT	6	/* Create GOT entry */
-+#define R_X86_64_JUMP_SLOT	7	/* Create PLT entry */
-+#define R_X86_64_RELATIVE	8	/* Adjust by program base */
-+#define R_X86_64_GOTPCREL	9	/* 32 bit signed pc relative
-+					   offset to GOT */
-+#define R_X86_64_32		10	/* Direct 32 bit zero extended */
-+#define R_X86_64_32S		11	/* Direct 32 bit sign extended */
-+#define R_X86_64_16		12	/* Direct 16 bit zero extended */
-+#define R_X86_64_PC16		13	/* 16 bit sign extended pc relative */
-+#define R_X86_64_8		14	/* Direct 8 bit sign extended  */
-+#define R_X86_64_PC8		15	/* 8 bit sign extended pc relative */
-+#define R_X86_64_PC64		24	/* Place relative 64-bit signed */
++#define R_ARM_THM_CALL		10
++#define R_ARM_THM_JUMP24	30
++#define R_ARM_THM_MOVW_ABS_NC	47
++#define R_ARM_THM_MOVT_ABS	48
++#define R_ARM_THM_MOVW_PREL_NC	49
++#define R_ARM_THM_MOVT_PREL	50
 +
  #endif /* _UAPI_LINUX_ELF_R_H */
 
