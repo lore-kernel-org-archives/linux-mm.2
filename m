@@ -2,77 +2,77 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 46E7AC87FCB
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 13:31:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A2309CA0EC4
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 13:31:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCA0E8E013C; Tue, 12 Aug 2025 09:31:12 -0400 (EDT)
+	id 4754D8E013D; Tue, 12 Aug 2025 09:31:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFE478E00E5; Tue, 12 Aug 2025 09:31:12 -0400 (EDT)
+	id 44CEE8E00E5; Tue, 12 Aug 2025 09:31:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC6878E013C; Tue, 12 Aug 2025 09:31:12 -0400 (EDT)
+	id 33CAF8E013D; Tue, 12 Aug 2025 09:31:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A7A898E00E5
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 09:31:12 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 71F43140341
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:31:12 +0000 (UTC)
-X-FDA: 83768191584.21.EC792E6
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2585E8E00E5
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 09:31:35 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B76A411351C
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:31:34 +0000 (UTC)
+X-FDA: 83768192508.28.D785F3A
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 3613C40014
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:31:10 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=nK1AKjUy;
-	spf=pass (imf04.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 7F178180006
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:31:32 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=N3t2UaKe;
+	spf=pass (imf16.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755005470;
+	s=arc-20220608; t=1755005492;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L+edTXQcTXvLIKifsLnkJA7/3GYnbD7057WahxLr9Lg=;
-	b=JEK8cha5L9wsjKcwhKm3Og0eBnrw18/r3rB4RixT9ONp17fCuOMiPDRkKRn0TrnG9Xp+Ws
-	e+gDj5V/V/yo9IFSoDeFyYlCLsdiJ5zjjBTQYJLYoFB1MPLK/S4lgUgGCS40/xaN1hhonb
-	E53WkjHadKpGhI4YFAWlNaIP1HwTjjA=
+	bh=UaXh7Xddpcfv0yQ5STl7x2etaL4f9n7dStroyuuwHaY=;
+	b=ZYs8+0xWO3cifW2mVc/76F9CetWWvgXnSfhpvhBcxly9z//0TJDZQvzPVpJRSUKsU5VuDN
+	fhwEgSTrhlAZuKmx43zRmNUyx27D9Z8rfpNlOVWsLKihis0+0aMLU7poXQG+0ZLuMTY36M
+	Bft6G/0x4Yj57eBvw0S+YpXhN1LlNV4=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=nK1AKjUy;
-	spf=pass (imf04.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
+	imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=N3t2UaKe;
+	spf=pass (imf16.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755005470; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755005492; a=rsa-sha256;
 	cv=none;
-	b=QNKntK3CdkInw++Do8oq2yHuhunsazJ0iEjO1ae+iVi4RxAIfxuNizMNX/emxagK9PC3zi
-	ViC4Z1NpjbuYBaz0ucG/sKRK0TH9UaVvlVhvMUqxjSDq9Rp2IzyDpTpFaJHAOgKHMtgAFt
-	KSpzlR+aqC6SWZXfBh9lab7qcivD1t0=
+	b=SmplFmNzmMGXXtXdfLhMYxsrfi73iIB+Kytpd1zwkr4luykSEKMSZEsqdaC9sGFF0RbPyI
+	RF3Ro4f2+nve3DAOKedy11OJLmIFCALnCx2/W+4zCYAhMR+HKUfv+MFmCWCAYm49jtSokq
+	DAgYSeqFMsQuBk4+bie8p7L1RuaOe7M=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755005471; x=1786541471;
+  t=1755005493; x=1786541493;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=HiW8X4qWeN2pPHljIwWnxU5OYoff7Zyp0Lg8pvxu5HY=;
-  b=nK1AKjUyYi6WBs7cyayjbCZ7OIorcJSzLL6S1ci5T8FzBrnF7xh79jXJ
-   1IiSSJNPbF7Xof3Isw2io2lp2X7VXTNVv+Ds030CkLFRCiANrmCHHCPWx
-   DWA03yyKYlxit6K/ygY32/tXW9/76q23gZJl5ZUxVOMfBXICO2FplHgmn
-   H181oH5mtZ1AH2tTTYxHGNlzFlC3BTQA1Haug5XQeBdF/bZAmdnblob0W
-   06NxLlSHCgs5QJxKTFuhDU+YeNRtae+zoJ59fLkXMmxvkhsBf4SUZ5COH
-   7pyk6/hWw0lq1h5d9tP5fdY4QifOdPeFBhDIHMtDeFVqR3fZUdhkqUkjh
-   g==;
-X-CSE-ConnectionGUID: hYBqly2tSS6GLkaEuUCUag==
-X-CSE-MsgGUID: hpSrlFLMTtycIEOLtmbBPw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="60904083"
+  bh=okYAGWwGwYjZD7NZd1rejvGMvVZcH4Qcm5xKkCEr0jA=;
+  b=N3t2UaKeggDZWfhQEF/4UjZ8KJF2ueIh0xb15qjiRYSXbYcUB9GmqftN
+   KV2mkph8gXJ2cGCLiX/18eJc0v48uQmF5P7YO4vfqZo/CFzNRxAvTSTiN
+   LB8bv9RRafDVPUSqdy6ZzlUugRcidjNZ37fgNnmOws9K3FD1UlZTQotZE
+   yL1v28RXm1B8QE5/6Y+s7Y0DG2OwdS82XhpdtdPOqGZGHDnpsNCSxY43X
+   BLEDZ2gia5cIU1kQrnDF40PcgKmZS8jDITTI2yvgm/7GlnHZBO4xJgZwN
+   4lEkkuRLdYOk9FIdwVe73vJ6MG6TgzbpJWUws2xfgOl9u413Enslblv7+
+   Q==;
+X-CSE-ConnectionGUID: QGtnInCMTeSyHYoPvSavUw==
+X-CSE-MsgGUID: mmD+YjvpQHW63wUqCSu0gg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="60904151"
 X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
-   d="scan'208";a="60904083"
+   d="scan'208";a="60904151"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 06:31:09 -0700
-X-CSE-ConnectionGUID: 310Nw93RRXy9OmSdy8cVzA==
-X-CSE-MsgGUID: xzKkOVDzSASmChbZfONGbQ==
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 06:31:32 -0700
+X-CSE-ConnectionGUID: +neUmvM8S5Otg3Vc0KnEog==
+X-CSE-MsgGUID: oyi06oYNTk2MyPzECSScWQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
-   d="scan'208";a="165832087"
+   d="scan'208";a="165832138"
 Received: from vpanait-mobl.ger.corp.intel.com (HELO wieczorr-mobl1.intel.com) ([10.245.245.54])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 06:30:43 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 06:31:09 -0700
 From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 To: nathan@kernel.org,
 	arnd@arndb.de,
@@ -161,22 +161,22 @@ Cc: linux-mm@kvack.org,
 	kasan-dev@googlegroups.com,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 16/18] mm: Unpoison pcpu chunks with base address tag
-Date: Tue, 12 Aug 2025 15:23:52 +0200
-Message-ID: <f3519195a98428998160d272997a3d2ed6c53c6a.1755004923.git.maciej.wieczor-retman@intel.com>
+Subject: [PATCH v4 17/18] mm: Unpoison vms[area] addresses with a common tag
+Date: Tue, 12 Aug 2025 15:23:53 +0200
+Message-ID: <fd65b0ec35f52c6bc714ff333241b828ff74604d.1755004923.git.maciej.wieczor-retman@intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1755004923.git.maciej.wieczor-retman@intel.com>
 References: <cover.1755004923.git.maciej.wieczor-retman@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 7F178180006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3613C40014
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 7tgc3wd3mtb45nz6uy73yfourfyqop3h
-X-HE-Tag: 1755005470-693288
-X-HE-Meta: U2FsdGVkX1+vp+9kxOiw8gaKMeiao7OTxJgo0K8rhHd31KgZ7KKYX6CqS1ylPV8X8X5otVj9QorGLhTJa1ZFzDo7bOopYaTpe+zcREMSyFPalG1Q40Lp2MQjjqlrnq1EFAgz1q6VBGY8uYMhJ6zSJ3Ob0Pu98WwEG7vTW96SXBz5Ewu7S58ifXTyXmAgLHLjGXLVq2BMaPfO0ae6fdT6pjY2l9mMylNFVd4qkHy5qn/xyO3TGn20K/dQyHqTSSvkwgEH+QokBmvZGrbgalvykqf8Uyd8hzPjSdLBoSl3vyczL8xTKwZmHHR+EjHckWjRIpgKojQCVS9M4Ny5U4SFhabhJu9m5Le+xYPjCzGj9jvMcik/BQ+GlVzrcI4MTdHz6BwkK7MuaMP3ZKiKar/JybV/7GjgB5qHibBUPgEdal3YuiZODvdoF+yBpMypnRnReL7iHvbem8m99gyVnbrZBwmxrKZkleoJOnsj2fXK906WK9+8VyrpgZnu6F+Mb90zbTrL70KwBnyLQu8HUUp+zWMzCBoN30jypl9+pwPOKoIMzQGJqoj1IbzmNG+zaup1MI9X+EFROfWfBxeSnXLcH8PDNhH0f6p447pWdCDKzUsz+p/DgtAcMQh9sTebLU/7h9eDsEh+8nCjmb7/mLG/OwDkmbchm4w1POobWSof/fBmtk3iR1nKxXph839IgS2f/gIeI/1DyhnYLKgNJTl3y4bacfMuDUIrcxM8MdkXB3IPMSomoFkOfSaejafEa3+nyuwX+WTs+V0ysckN9uff+q2waStrlSLXoTNSWWNAFXDZjbYdOBN/h/Ikamputm9ixhTt9sz13vH4kdYQNJAqFdAC87W/OOpN6TKcpNazfh8DnqjEyEY1/9vtfs+UynfW3njHNzzA1ogYz9Nu3hK6ms0ZD15UzCcaNvlFQ8wP2OGkhQmXpbvWwmqlxcGr0pnKyhxmqU28F2776r1ZZIM
- vfdZ1yen
- QUpYxtlWaeP9U969ftXIs18HQNmjahX12EuI0vrFcbHTtdDLPUew03Q1leJ12C4FGdqjVOKPiK7Dlpz9akhfK65xg1W7M514qW/P1LoZFd7RlfrBNQwbgc5oSr5IyPq35Y/X1VhGZB+FZYcswXUsU2575g00OguwdEjqs3RNu4gT8iCYavJqGDnc0DVfsUxaTnaBqzSUEq6rV3ZEn1z8UxtZ0CKERPwQK+OJBlZasFU8Rz+wFVsLdJuHmDt8kAUQbYUw+Hy5kJ+rA1uaiEegHoNDSPz6J71dUWLX0cROwN92VXeowDd5vKlEJ+BkiHGXZavzo
+X-Stat-Signature: kznb7z3dmssma1r3dsk1miii88mbsfzy
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1755005492-177342
+X-HE-Meta: U2FsdGVkX18KTJ9rD5wQ1ZCvpv+zTbzsnYejiH78GIERflgqWbU1jW+qYcYCrZd1UpnfwRSlaer9kttpbhkJW6etM7n/5/MeQZffyu0U966nmkkkfHHOvpixxC0ufmOstpnwl97STifnfxBNS+IhXYyFZYQh4andZgQcZXvGSWaRXU8PfRJ5CfkF/eCfoBb2woCG0jIx2V+zjbEB2UA8XMKsDPmDbLrUfhrFcxW7HfktyMXdAH3wujL6eGKXODb6PDFrddIiKCjcYS/XxzWHHXs6KvUqCifJymYn/8ZtJZamLHeK3IFXt6VVr5kCTmRMO1+4BJp7IVQKZ2tOdbfElGbrRIyLVFcdKMX8J23SgChwUsTcgtsBMZsLD+7VG3xhQJ7pfA67t+seSRuogllzwbhsUrM49oI4E1m1yTc83Trpw8b2+W8chRufXRkcJkDzFK7vM5F7wQ4MfeUEYzQzIYdXXjbfAIbr30rpZGIRJM8IQ6Li5gKbk8gQDYUD779gMbvQSXB1SMm/knStbiQjYdOrAWzX1R9Y4r9jmQL7fN1zIubi+0YZFm0UMG+KuWpcFtsAeXyPqDYGd6RS/BvXoJjut5tmgZrLQT5fSpXtqV9LIn038bERa8CDQw1tv9mFDdpKJgja2SLQMNSugvOjAC+kIX2VHkEgsMO3UE+7DNhGnBgMdjr5uKFb8VVPFEihYDqj0VAMDe4VKUDuByVe2PJ2t7SAHnnMs5kebdhfLR28zYFtQLBqhEEbe7YNms07tEMeKk9Xd/+TFglFB2hD6Mva0lL9OXC1mGEsOSVa/qxV4To301otvx0ZaTUKjmN+R1dAohl6djgQefSdeMpwr2GHq+/6F+5/UWWSZjwB1xcBZoDxAQG0p4o+uL9ou9Vrjh1eLyyIUEYmIkrv8xfCy+opP2zIxV179mKJb/t3WiMQT8a1aKhNZaaCqYlRQzPsRtdpecEw0v3drDQ3eWI
+ YzmlO4EO
+ 2ntFJH0z/731k2dlLilXZc8YlAyfXjJGSWTf7EQkqUUam8/OwDJSfPEGv0b9ymoTfJJIhcCtu7SFIGvmq60JOxUNIMhHr5WWcuUgMICdI8MisQqvd9YEOS/WL1hITu3dCn2RkaDdpY86Y6Iq6RHwoH0yVuwzw0z7SouMIYkgfotH1uLdlJnbVXgTpQMEYy7nFDMR4NbbSotXwkK+6dUWPe/LV9Zz0ubSP45XtoZUP14DH/OAuUd7CAk3kw5CwAq5qSZU5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -197,113 +197,46 @@ KASAN mode. It can be explained in the following points:
 	5. Thus, the subsequent chunks need to have their tag set to
 	   match that of the first chunk.
 
-Refactor code by moving it into a helper in preparation for the actual
-fix.
+Unpoison all vms[]->addr memory and pointers with the same tag to
+resolve the mismatch.
 
 Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 ---
 Changelog v4:
-- Redo the patch message numbered list.
-- Do the refactoring in this patch and move additions to the next new
-  one.
+- Move tagging the vms[]->addr to this new patch and leave refactoring
+  there.
+- Comment the fix to provide some context.
 
-Changelog v3:
-- Remove last version of this patch that just resets the tag on
-  base_addr and add this patch that unpoisons all areas with the same
-  tag instead.
+ mm/kasan/shadow.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
- include/linux/kasan.h | 10 ++++++++++
- mm/kasan/hw_tags.c    | 11 +++++++++++
- mm/kasan/shadow.c     | 10 ++++++++++
- mm/vmalloc.c          |  4 +---
- 4 files changed, 32 insertions(+), 3 deletions(-)
-
-diff --git a/include/linux/kasan.h b/include/linux/kasan.h
-index 7a2527794549..3ec432d7df9a 100644
---- a/include/linux/kasan.h
-+++ b/include/linux/kasan.h
-@@ -613,6 +613,13 @@ static __always_inline void kasan_poison_vmalloc(const void *start,
- 		__kasan_poison_vmalloc(start, size);
- }
- 
-+void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms);
-+static __always_inline void kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
-+{
-+	if (kasan_enabled())
-+		__kasan_unpoison_vmap_areas(vms, nr_vms);
-+}
-+
- #else /* CONFIG_KASAN_VMALLOC */
- 
- static inline void kasan_populate_early_vm_area_shadow(void *start,
-@@ -637,6 +644,9 @@ static inline void *kasan_unpoison_vmalloc(const void *start,
- static inline void kasan_poison_vmalloc(const void *start, unsigned long size)
- { }
- 
-+static inline void kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
-+{ }
-+
- #endif /* CONFIG_KASAN_VMALLOC */
- 
- #if (defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)) && \
-diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
-index 9a6927394b54..1f569df313c3 100644
---- a/mm/kasan/hw_tags.c
-+++ b/mm/kasan/hw_tags.c
-@@ -382,6 +382,17 @@ void __kasan_poison_vmalloc(const void *start, unsigned long size)
- 	 */
- }
- 
-+void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
-+{
-+	int area;
-+
-+	for (area = 0 ; area < nr_vms ; area++) {
-+		vms[area]->addr = __kasan_unpoison_vmalloc(
-+			vms[area]->addr, vms[area]->size,
-+			KASAN_VMALLOC_PROT_NORMAL);
-+	}
-+}
-+
- #endif
- 
- void kasan_enable_hw_tags(void)
 diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
-index d2c70cd2afb1..b41f74d68916 100644
+index b41f74d68916..ee2488371784 100644
 --- a/mm/kasan/shadow.c
 +++ b/mm/kasan/shadow.c
-@@ -646,6 +646,16 @@ void __kasan_poison_vmalloc(const void *start, unsigned long size)
+@@ -646,13 +646,21 @@ void __kasan_poison_vmalloc(const void *start, unsigned long size)
  	kasan_poison(start, size, KASAN_VMALLOC_INVALID, false);
  }
  
-+void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
-+{
-+	int area;
-+
-+	for (area = 0 ; area < nr_vms ; area++) {
-+		kasan_poison(vms[area]->addr, vms[area]->size,
-+			     arch_kasan_get_tag(vms[area]->addr), false);
-+	}
-+}
-+
- #else /* CONFIG_KASAN_VMALLOC */
++/*
++ * A tag mismatch happens when calculating per-cpu chunk addresses, because
++ * they all inherit the tag from vms[0]->addr, even when nr_vms is bigger
++ * than 1. This is a problem because all the vms[]->addr come from separate
++ * allocations and have different tags so while the calculated address is
++ * correct the tag isn't.
++ */
+ void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
+ {
+ 	int area;
  
- int kasan_alloc_module_shadow(void *addr, size_t size, gfp_t gfp_mask)
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 83d666e4837a..72eecc8b087a 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -4847,9 +4847,7 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
- 	 * With hardware tag-based KASAN, marking is skipped for
- 	 * non-VM_ALLOC mappings, see __kasan_unpoison_vmalloc().
- 	 */
--	for (area = 0; area < nr_vms; area++)
--		vms[area]->addr = kasan_unpoison_vmalloc(vms[area]->addr,
--				vms[area]->size, KASAN_VMALLOC_PROT_NORMAL);
-+	kasan_unpoison_vmap_areas(vms, nr_vms);
+ 	for (area = 0 ; area < nr_vms ; area++) {
+ 		kasan_poison(vms[area]->addr, vms[area]->size,
+-			     arch_kasan_get_tag(vms[area]->addr), false);
++			     arch_kasan_get_tag(vms[0]->addr), false);
++		arch_kasan_set_tag(vms[area]->addr, arch_kasan_get_tag(vms[0]->addr));
+ 	}
+ }
  
- 	kfree(vas);
- 	return vms;
 -- 
 2.50.1
 
