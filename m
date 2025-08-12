@@ -2,112 +2,254 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C3529CA0EC4
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 18:53:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A299CA0EC4
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 18:55:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 60B1F8E018C; Tue, 12 Aug 2025 14:53:05 -0400 (EDT)
+	id C52508E018D; Tue, 12 Aug 2025 14:55:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BBDB8E0151; Tue, 12 Aug 2025 14:53:05 -0400 (EDT)
+	id C2A078E0151; Tue, 12 Aug 2025 14:55:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4AA698E018C; Tue, 12 Aug 2025 14:53:05 -0400 (EDT)
+	id AF1378E018D; Tue, 12 Aug 2025 14:55:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 37C2C8E0151
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 14:53:05 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 07ACA1154CD
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 18:53:05 +0000 (UTC)
-X-FDA: 83769002730.19.D439F87
-Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 1BDBD18000B
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 18:53:02 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DLAu6zU3;
-	spf=pass (imf16.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.176 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755024783;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E7288E0151
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 14:55:32 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 53D7B1D62FE
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 18:55:32 +0000 (UTC)
+X-FDA: 83769008904.04.22D39A9
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C995AC0005
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 18:55:28 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="kZvhc13/";
+	dkim=fail ("body hash did not verify") header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=aPm3POkb;
+	spf=pass (imf28.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755024929; a=rsa-sha256;
+	cv=fail;
+	b=hMYpWOX5Ao2soUVkPvlP22iJzAgXzd9yd5s50jB0BjcBhWWf5YVofh1C7aY3NDazh5+ktZ
+	qOP2Xa/CI0Adi5c7ASFoD7BPU7fwuUCsa71abpGQ226STJRLU3HKsM8s69yW/4uA5nF9P5
+	m4+hHIGwnMO4MlOcyyeN8Eqh2SuuDmM=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="kZvhc13/";
+	dkim=fail ("body hash did not verify") header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=aPm3POkb;
+	spf=pass (imf28.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755024929;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=84nI/MGeGp9rr+2mbYdPCJy5541yv4hPY1ah4+PSWJc=;
-	b=j0sEudHEv+YG/pH9M6Hw7DnbiclPqHIJr24qTXKHgyAFw/JP933cIecBKp5YHxoLJ5VL/A
-	z2SOrB6u8rc+DmqcxztpcQ1ZlBMmym4lW4KgyHLSrfDRzir6vlEDWe+ACqsT2QR0OV0hq5
-	ZbN3W3Y9YoOijTbjnl8cqMIEXcrIBYQ=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DLAu6zU3;
-	spf=pass (imf16.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.176 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755024783; a=rsa-sha256;
-	cv=none;
-	b=vNkQnVpfpCHz+5hBLyan51Wpk5pee3OReJkQBd5C3yhXIOUdgPfju/OSUVjjizS9HneMna
-	9C9C5I+fgCcX2Talk4Z0DrQZ+y8JNbH/xPJ8Jn9Tgn8l6Pzvk3jiC1pCClY/xWyzbIiYUA
-	Fh8MeheTybYQBqTkdp/a7Bvj4lPo5Es=
-Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-3e5328231e6so17077065ab.0
-        for <linux-mm@kvack.org>; Tue, 12 Aug 2025 11:53:02 -0700 (PDT)
+	bh=9o3m+hDy0jvSeDexqUnfcW6wRIyfFj/0HFoaSWjr8UI=;
+	b=fVcGoZdS3J62Msw46xVK5J/ql8ecdtAz5LE/rdOTR3DBj6fZQl7rBQ8ayrkOB6LX05gUSG
+	ei/SRILOgBYVBTgTrmKbqwX9YD7Cu6xa7RQfngMZPfnM2DEUKn1qTE9zsR4RRgylRxPFBV
+	+p+iJGmlN+4VbYGzdeHxr/+BLqB+YjQ=
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57CDC2om007903;
+	Tue, 12 Aug 2025 18:55:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=9o3m+hDy0jvSeDexqUnfcW6wRIyfFj/0HFoaSWjr8UI=; b=
+	kZvhc13/LiAwfmo3Ki2Zx5RG3EV8vREsUritDTL5NTf1RjAPlBrAYjGN4NL4Ns6H
+	NG8T/IA/5ktGm5vvRn4FooGjQJ/lwIygG1z7i2NyjoAac8KUa4y74Do/N6h9GCZm
+	nJgWSPNhdUqIGYRL2n6TLHfZbJch1zU4xOlAWLlh9xllnWMMMHId9Lre8w1HzovI
+	qNn1msDySxhSAujHth/4C8hOP3eAYYqEGuV12fvrYFGOAxd0xXuq0H0JTBaeojS1
+	My6UR1F82RuWLl82zkDYoZExN2OyLeHrGTtR04hQepuqlbKBLv+kY+LfeP0p/wmH
+	0UYc1RsdFy6rQdU8hfCvjQ==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48dxvwwar8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 12 Aug 2025 18:55:05 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57CITnFQ030176;
+	Tue, 12 Aug 2025 18:55:04 GMT
+Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12on2059.outbound.protection.outlook.com [40.107.244.59])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48dvsac76a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 12 Aug 2025 18:55:04 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FD8VMbbenjEOIvYKnCNt3dodOeacLN8NgeUv1JWedgSpc95HAuevkRlutm2BE/o7X+Cxj/D0Z9ERPu7bVJxVcc7Nzigy8neyqJIgK+lNyN459zm05eO1Wj735UrnhQ10oaDLzgVt58vHQUveTx+HBgEWBH1BKKXwo07NCPnozY8/LmNVWpPoyi4Icoxy5mWeLnqD9WYX5tag34zK8WKArl2JiiBCbAl8YPTWjxXQmd8aS1MU+EKrGLEnTQl3nWTjUhknQ3Kk1JIaZtUzb/IW2mM9lcL99mL17+BPiwjs9veq0QWpLZwz7QP1A8+Ho9iLEu73ZsuoIofY52JMfdcJlQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0+gJFQiZ+E5RnyBSVn0fN31nmEjigwLfNZqWfQFLN9g=;
+ b=Cnz5TtWdRgZGDrgJe/CEK9neIqTZhT9xn9r+Lug8WMq97FvWSwsL/vtqyWohvlO4xALPw5p/ojIeLkCjyY3nKo8lx6otd7RonO4WVPNZEO8msr+Njlp8Rv03KC6Yu7ihwb+Z0cBdKkKFNaaDzzBY9SGBSRevPTKn/x27UC1YkZX99U7eqYCBxJ+Iu1DAqGTx5DLfkM7A+6xLdwX/seTthVhwzDKQnARpE4KgJh1WquHh2sf+6c3vGFvTtmM88hNCTa6+r5VqaO88dqTxBi0rSmePjLx2zL/pg2im2+idV3YFMnjpiCbkWL1O6pIA4QGr0bx1DmdDtpHLK1e8tdnyug==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755024782; x=1755629582; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=84nI/MGeGp9rr+2mbYdPCJy5541yv4hPY1ah4+PSWJc=;
-        b=DLAu6zU3bulxW5DMHa6JdZ0Dd4me5mHk35SsuCBOzZ14pxeRGRB+j/xFUdOmNzAqhu
-         xaNnuPoBwfxM028EtYg2qHtn2qo54mYAw23tv3JM1POgGm73hoA9W3g+qFLVwf4ZWD3h
-         H6kucc3STj6v5jLAroc2eFYgiFdPUtVTZ8ut/V2EbpjHWaM203T2EFoZ1CKhp/QhyTyY
-         pkJU9fDVHBcRddApYbhAi8bjQd+Dlz/iuEcms0nle/Dc6ctzdsKUAPgCUROOjauY4dCM
-         ZFIiru68QQZb3/L8HFgCU9lKo536u8F8GGEq5iLrKbGsnLiOD1RlU3UZ6kAxHSn5vGck
-         CXdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755024782; x=1755629582;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=84nI/MGeGp9rr+2mbYdPCJy5541yv4hPY1ah4+PSWJc=;
-        b=IPlvRtRFPX8R53LcsfhgOP5SiZJaaM1r6EX38mrnMYxbc4Ec1nyNYF/OGs6uTqhr5H
-         hNBs8lexOTqQdJvInf9tHCr9sJJpxcrUV22bIYVMOmT9JeLx3/kEYjozAqAjUORpSwQp
-         bX4FUMpqa3T0kzsj735tUuSQ1XKRl3J3nVA2QkTIfOkJOrJHUZOaa3SiQTFj2hUozj55
-         RpxfIBgAW0LUiDuk/H7dnSrR+T3I06LOob/SjTf2qxvaoa2BAKUqZR3rY0u9DUPPeClV
-         RhLIU2yPKw84jUbAr49Kk5DI5MTgns3bYa1shmJbE62V9K68IIE+jAfjpkKFL2VxOTP7
-         cNnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXtTOo7uH7jVB7oxOFXqAb+ZhygHiI83VsYThyCJGFY8F+RR0kXeuc7W/H8mx+leldNghuqWwMh9A==@kvack.org
-X-Gm-Message-State: AOJu0YyKCuH7CDDkHDTgWEmpuYaSzj6QAcDpcPoiutXeMjQ2tiA9GVDo
-	I6wGonGMkYRN6bSwM/R02tcwt/Ru3PqQtMUMQT0BPMzAZOprjVDiFR0IK5KJKDt9WdJghDqVu1+
-	+P8Z+Pi902lmP7RQob7iZxM9Zk9QUuGY=
-X-Gm-Gg: ASbGncvO34TgPo0QhcEUiHjMsi5WmarMqDmt5sxLTY3Phf9rEbBXQ8yvKPmfW4i/drm
-	JaUgNp5zTdS1AOCxSE0JnjTd14D+Ggn2ipRLG++WIS7CIR5XaM1sJ6OhklDDACqBd5bg2qdU6hT
-	j1GG5whO4eVehCU26gZxhJ+EBsNvU1ZYabzlTWTu0Ab5ugreAWRUPV7c+RTUfcjvZgADTkZQPcW
-	Kfh
-X-Google-Smtp-Source: AGHT+IFZq2uXSn511PC7hnm8fMyDqEVmE5Td+oKPsz7r9QNsLauOAV/Zk5wOUF7yJGrCUsoR4hWfj6h4w+Tfk868jgc=
-X-Received: by 2002:a05:6e02:19cb:b0:3e5:4b2e:3b02 with SMTP id
- e9e14a558f8ab-3e567260ed3mr3484605ab.0.1755024781709; Tue, 12 Aug 2025
- 11:53:01 -0700 (PDT)
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0+gJFQiZ+E5RnyBSVn0fN31nmEjigwLfNZqWfQFLN9g=;
+ b=aPm3POkbg6sq+wIRgx1p3xwePpKyGFmsh6abPpRYWiZgIzufJ1Yg/aXXPC4r6d3hHjHtZK5U0o9gT3b0E8D1m8HoMBXdaMh5u/U94M/zCN41GXzeJwnS34xuPZ5vp4jsS1ZToXzd6q2hi+nW3vNepKNYwhQX28n4RpcS6pe0728=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by MN2PR10MB4176.namprd10.prod.outlook.com (2603:10b6:208:1da::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.15; Tue, 12 Aug
+ 2025 18:55:01 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9031.012; Tue, 12 Aug 2025
+ 18:55:01 +0000
+Date: Tue, 12 Aug 2025 19:54:58 +0100
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, xen-devel@lists.xenproject.org,
+        linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev,
+        linuxppc-dev@lists.ozlabs.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>, Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+        Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+        Hugh Dickins <hughd@google.com>, Oscar Salvador <osalvador@suse.de>,
+        Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH v3 06/11] powerpc/ptdump: rename "struct pgtable_level"
+ to "struct ptdump_pglevel"
+Message-ID: <e97675f8-ba69-464e-982c-8a8bdfbb2547@lucifer.local>
+References: <20250811112631.759341-1-david@redhat.com>
+ <20250811112631.759341-7-david@redhat.com>
+ <dac9e243-33ce-4203-a598-2877cf908cad@lucifer.local>
+ <1cc6f739-3891-4cc7-84ac-676fef62c445@csgroup.eu>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1cc6f739-3891-4cc7-84ac-676fef62c445@csgroup.eu>
+X-ClientProxiedBy: GVZP280CA0057.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:150:271::11) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
 MIME-Version: 1.0
-References: <20250812170046.56468-1-sj@kernel.org>
-In-Reply-To: <20250812170046.56468-1-sj@kernel.org>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Tue, 12 Aug 2025 11:52:50 -0700
-X-Gm-Features: Ac12FXwIsLOyoa1vNGfMPpXo700C4eZd_F_UHAymOv6ARngqzldGZx6Jx_qfgUQ
-Message-ID: <CAKEwX=O2ZgRycpOiLAWNdyaEY_UE=8X-unJCaMmMvL-4DGZreQ@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/zswap: store <PAGE_SIZE compression failed page as-is
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	David Hildenbrand <david@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Takero Funaki <flintglass@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 9pqqsktk5jmoboywd1a6k99adkqpaoog
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|MN2PR10MB4176:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5db15002-cd01-44cb-2479-08ddd9d1bdc3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?iso-8859-1?Q?pK/F8d04J4pXDpnnzFKY3g6RtVFsTagmFg6sjag5QFRWAQtGCNl7XhX/Ao?=
+ =?iso-8859-1?Q?AeXyfQvVasbXyy1lCIIw2vxIG9WxTmh1xqrVxq3LF1sOjPCZBFeXrM5oQF?=
+ =?iso-8859-1?Q?XYyorhDFCncaU4/a+aDlj2Hd6U2XRWlgYNHChFtKg41rDR6GFHmPPXAPXH?=
+ =?iso-8859-1?Q?WqRCtSuLmUfXcHL7yyfhrcB9qoolaWjcte3whOwGe8ymuiUpRsrwU4msMo?=
+ =?iso-8859-1?Q?cboX5cP5IJD0XVctI/J5fYoUxFi45A/XUkwlM/RVKM0/kGqBq7lQQWpXbT?=
+ =?iso-8859-1?Q?0WkGE65V4siXxe57e7dCk2ike7MGtrbz/oN7vUnVxofXJE09Rwv6pK9bZR?=
+ =?iso-8859-1?Q?gR4s9IGJLtfbY6DR9jTxnR2wGO15SwlMBcj95hf7mpih9DG86uLc5zK/70?=
+ =?iso-8859-1?Q?Gei00F86yx6Oi5vb2mn4rEZm/Z8uxmZAt/l1Mf2WmV/5k9P0rYhjdVk+N3?=
+ =?iso-8859-1?Q?XKlkSrNccMqNfPZlab+t3udFr+QuYOpixAe50hyxktIQDdCFljySga+gZj?=
+ =?iso-8859-1?Q?2uDxdIWsUugHatAHtgBTA3KVfXfInEK4PRI8eoVoe0Rx+1RI2HLaS69ZNV?=
+ =?iso-8859-1?Q?ocsR92Ygp1LjmVRNJW8Pq8T8bxsPGYwbtPWzRQU/e1XtT6b/qkEF5KimyK?=
+ =?iso-8859-1?Q?74QEuxyyugfcdEoq8gxm7BMPqNmGtBRSdxXObXm3bCaPjOXsMT0fvyOZgT?=
+ =?iso-8859-1?Q?QmmhyuC+VGfShipcmTfJXH3W7U2kxtthqEwdBnASEbpYNGkUC6yVTXiNF1?=
+ =?iso-8859-1?Q?j7gLHxqdqIol1NxsPkPefsX+PaApZnnvdUYbFIzwMCmDms5ohsEVj6UJch?=
+ =?iso-8859-1?Q?9IkxxLSjsgB1Mqw4DQC6+iVpVFf5WSUk0tn8QCIIEv/zKKvjblFAq7EqEy?=
+ =?iso-8859-1?Q?Tl0pfrpJ80ddMhszThG8mg6vDgKRAzEbO2L4s1kK7imuL0/JLfXf0eDum6?=
+ =?iso-8859-1?Q?gVf4P6GSHUS9REvubd6PCReZNKrj4KQNGBzxUNuCSEHzGerha3WiUY1PEI?=
+ =?iso-8859-1?Q?MbDzLH4/kqCVnViEZoY0WISGvRJqQRA610G78hMZSkljgMB71BHqiAQyXt?=
+ =?iso-8859-1?Q?Yqovp9tciOktou0pFo5ezKXkQyAlJStYF/Z+RBACe4RM+lFZ2eURInRrZ8?=
+ =?iso-8859-1?Q?yAF+KAKsE94tmKwraggtEHGS2rom2JsMxeJWXm67QiHWrsS9zxuW9s/U3Q?=
+ =?iso-8859-1?Q?BAZ6/cTCB5zpryfRjMTXYxKs23+HUafNNftoP2GUbUDw3Bg4F0byFFANQD?=
+ =?iso-8859-1?Q?zDUZktktPm1RYQLaNNURwk3Kkho03gclCk+haKwi88I8xhp/bf+3rDPrcM?=
+ =?iso-8859-1?Q?bFJXx/+RdYpQJJDyrpmCbJRjguJGqmAYK2CFFyOBBDHsBWyzALw0c9PjP7?=
+ =?iso-8859-1?Q?EdHCsYsjUiK6O3/p5A95AeebxymQxSTJKfNFUcbdTblQc1RaXvUM8eQ+OY?=
+ =?iso-8859-1?Q?7RIqGq29obmzz5O9ykLS/Ozrol94pNjhO4ZkKg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?5ri0WIV4MVYcthf2b/aH56YkU61zs4uXplbtqAk2X2bo0mDr/xxYvciwBA?=
+ =?iso-8859-1?Q?K88N0MFUTtU59VTkR/Fm1Sw8Tpl502JonKCa3V4QIxfyjani+r1tRvSqP1?=
+ =?iso-8859-1?Q?jPiPZVoWS/hFnm2Oi//1FC2VkiEC6PUOgcxJOECk9xvMziGX5TsdaQitZu?=
+ =?iso-8859-1?Q?vnq6QrFyKZhCk511fGrEbWyhD8Q5RUdJ08DfC0+RPVBalmDATATCrW4t/t?=
+ =?iso-8859-1?Q?72zqPB3SoljM+5grI9a8mmsuJcLDPdq1WfmQET/4egzpwrczHrsyszySBu?=
+ =?iso-8859-1?Q?x/EvZwI/sVjspUTS2UI6g9f5QD5Ne2GwpF4cmF7yfFeFCxeGgRouhrCudO?=
+ =?iso-8859-1?Q?Ev45kTbDYnYvlfNaKAXjz53Xajir6Md6BbipsHWNn4nxdCh6Y3nTEuQFkk?=
+ =?iso-8859-1?Q?PnE9ArjalvnpKwqxcTg0iWKz0v3T+tionxDhrFdgju+9rWG0OhWZJApc5L?=
+ =?iso-8859-1?Q?hHOu2museWR73tVIHtZo/727ClFTuFd22W/Bth8OkdjYGxeCtyKNOE8AEG?=
+ =?iso-8859-1?Q?co8JYwaJR6lRDIYB7HC3bBsPO3OCyCqUn/mgF97Pi79B5p/tWPSwPpiVs5?=
+ =?iso-8859-1?Q?NqpCy0Pi4pZQGxDIXptDw6ITdY7qgXb1FNAf+zO7LVA+gEE4uJyiRhivkC?=
+ =?iso-8859-1?Q?awpBv7B0itAT6VPp1ONZIntOAOKiztUjeicKMbvaVu2JSKzm0v+ba/nmif?=
+ =?iso-8859-1?Q?DStGAbrDiCgNHUw+eYLR6OdBdH/dltpuBqO3kTHzUXpr2xx7osDkh2WM7Z?=
+ =?iso-8859-1?Q?pCziaeoULFvSjus6gpzmi9+yDijhkRe8brjbCgpghv/oMEJF+/bOvzJSbr?=
+ =?iso-8859-1?Q?K1cjMET/QKwYj9nbyWEr8iO6qALPzLk4H1R6CsRs4J5mNRgVP48vQuMqMY?=
+ =?iso-8859-1?Q?WIPWORO/H7kxws2yVs4Hr6YKP/s9AIrsgSRsA82FzWlDBM/MkSo7vb//jb?=
+ =?iso-8859-1?Q?/qNzj18aqZ4CfgP1tChcJRyv8Y3EgVA2QJGt3NGqtAM6yS1Orkcpket8Vc?=
+ =?iso-8859-1?Q?c6NFfJoTKV9FIgRiAMquRl4y657xoy7b3dVSoCg7WI6wPYON2d5pPwzzzu?=
+ =?iso-8859-1?Q?EUeeF03Q4KEh17oqVbuUJjBjVxoh9L35F2fPQWzzlvGf4/8kFT+9yx957D?=
+ =?iso-8859-1?Q?E7PixK59tP7shrvUQVd3Bat2cP9ro+xEBmTy0c01KcCX1UAHIMH4f559FC?=
+ =?iso-8859-1?Q?Guo0wyRObkuLwYO250Bhfk7y/agwMuF3wJTuQqH8AWHqAu5D29ij4tkasG?=
+ =?iso-8859-1?Q?nzEoIF0iqmsUV3VQVuh0xQGyT3U9z0TGMDe726Z+cf18WM5Xk4MVLwOwTl?=
+ =?iso-8859-1?Q?Ya02muE8q1wrzZERNtvNCuqiVLA/dR3R/455Z4/oqzTdnQXioeA+2EHF4H?=
+ =?iso-8859-1?Q?stvY9GfZocDwu/kGmU4d5h/v2bpPxiQqE5xmX0wqhtd6S4o+OC/WMQfnOp?=
+ =?iso-8859-1?Q?bjGlIOkd9UdtPuu2uD9DBUrwwPA+PIPzAyyr3vdVwD9Tfe5bICP8+/FlWP?=
+ =?iso-8859-1?Q?K6DXVwdSy937tj6rlT+T6iGqJSje+ME7c5oC7u7l8G41FwrE2WkhG5ppr2?=
+ =?iso-8859-1?Q?pSY/YxYY+eAdJzxDiuo46fKtYnvp1OgHjM4ox+8uXPGbV+pL5xnlLw9hZc?=
+ =?iso-8859-1?Q?yxiydrIcLNWBBGNuV7wH5/dhpflLOGNnpk26aAlKTLWk5Y8TcAUbTEMg?=
+ =?iso-8859-1?Q?=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	YkOp6p7oMQHjGxG26Mj7aJJ5JTKFW8/2i08RgX0+Nyql8ugJKUFXOaM7gHDHSLVgyykkVf4vKX7cmq+YPQ/47xvPwXa6IWME7W0pI7G/jp0NVzfKLVfh+nUJSHf1URBXHS64NiAodKtmN6g9uhyDs3ggV84iV3gJjtgb7q7J6SRnEVv52FsLPxqOos0Be3kyWxeML82jYWCCKRFlkOYKj/Al55xEAnM5fa4J1gDYZSJHtYHnUkN6aaFNaJQpFjgGwuY03BUXz07W+OGCaVqrn8iUedOgNkz2B2F9nZXXt7+tfs9jDsmC56+CFg6WXNlJrFwLdNyi7tqqc+HLVwBrgd81jnnIOjJGFd3f5cPRvhyCigeVp5WkxpPiumkOX4UgNSF6XGB/otB68wZIkyaNEQQzCZX3KZIS+GhepMZEBC2HwtfbTv12LwE84fqmgaTtqCrqEwBZL8KMeo94v4YYO1Icj+jcOKBHAZbuZVgWW6iceICBCYdpOUBwTHlFkl3EOh/jSnVrtW51O9Q1K6QEijsgSpTzGijyW89k4LVYYr7TUFCfyEz/oBeg3caRG1Tbmg9xASplGFflriWTCiI7/W7Y2HVO8fsXNhBKrhfk4v8=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5db15002-cd01-44cb-2479-08ddd9d1bdc3
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2025 18:55:01.2215
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wCMTOVh0DzMg0apyLK4qYpTXueijZOe8mWb0S9OeFFQhbFZmWm9GL5tdkBpVybDomoCbhl1BPYrhLO3mazzgYjRVEbW9+4T3es3n4sNbFaM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR10MB4176
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-12_07,2025-08-11_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 phishscore=0
+ adultscore=0 mlxscore=0 bulkscore=0 spamscore=0 mlxlogscore=999
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2507300000 definitions=main-2508120182
+X-Proofpoint-GUID: jtbapDGhe7kBe2UIJYykSJmOg6RqggDR
+X-Proofpoint-ORIG-GUID: jtbapDGhe7kBe2UIJYykSJmOg6RqggDR
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDE4MSBTYWx0ZWRfXzFpIVB0Xlasv
+ r2194optkhSnGj5dNEbtuw0a/BzsM6yLsdkIDxBVgB0E8MwP0VUQCzty6xALZSWkjSa4SII+DwT
+ 014edRTSUPfCWwrcDZ54wd6LZRVVTo0yau9KpPB4n+floRtcAi8BoybSQnvvWLchODK0GSbLb/k
+ S9l7JaJ++8DfJhuCOx051oNTxmQZNZFPAEOC4HaaDIce3j7EWBOVp9mT6VyV98UqDx/6htJOP1b
+ PGRNfGayOXVg7+CcTW6xaed3+vHFMEPXufULEx3diVZYCcPZypOuZFibYRHKejcVPfVrpuxU/3z
+ jDUl6sS4pa3sSEwUE0y2vdC16MHUezFkeXfT3T6VhXvbwAFcwTwA9Jo+2kkY55wBCvc9Nl1wRpw
+ Q17bHsU49D3Q/4PRrNyksuwKOOu9OT9ApXUSLVtCu74bknFB+ixpdy585wAeSBSJplcD3adH
+X-Authority-Analysis: v=2.4 cv=dpnbC0g4 c=1 sm=1 tr=0 ts=689b8e09 cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10
+ a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=20KFwNOVAAAA:8 a=3WaMMtSQ3YATO-fFicEA:9
+ a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C995AC0005
+X-Stat-Signature: 6osb8oewuh7kstnecemnisb73kc6ffss
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1BDBD18000B
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755024782-289023
-X-HE-Meta: U2FsdGVkX1+EFUAbOyaDmfcXr3ulS0OTQiPe9y/C6Qx7CBXUyV97CQHFigi2aeldD9c5wuF8nDXzczJKxHH4g81HUHNEkq3cqRmU/n4mL9TmNpByCSl3VtQAkkBjll68V89/CiHS7IperYppMYISbwHSY0BpvBdNIPsNbSjyzPP4RKLt8SHxxcMWUMtzFhjkzEdmiQElbudCKsezwURKh8KG/CuomDmR+mlRhsBUccGuqTsjfYDm5UzF9BFaMWwaIIjGMylfPu+vRpHctE+3AGBnD+nxbNYzABTCE4QdDIzoFdeKbYCICNtEYpexeN7w30Ffncf0RfFxssbEkKyxmhzGr2nc9g9RjVk1JBuHDvgzX6FvJdIPtUNTAc5pqkFhDqamci0KumFv5Hvi2DdxrjPbXjYpKXjAlvdejYmjiq8ztfFEe8d4HdPoih+u28YECShC34duKxx30ZtfI5LQuDl37b6tcYn+8tWeJVKCEwPXwzfFXPGssMm3nUY8/t+OiIUX4qoAVJnG0ICzTfl6hYD5BZHTYmY2XRqwgmiUqavZIvet722cQSP04EImoikODHTbdBK/OU0kT9wT9v9fxwpcuhco+KDdpAzW1NBqgH3v81HAlOWI+ixbQ0WXCWJioaIhZjJmem3fmnn94lLKedijVYku5h1HzwZZPEt7fOT5I8areW11DLWPyt9aI68qvMLGS08FISfbuIO1YtCHnK7htpiTO426/d72gMAcYNX1cl7maptgBNAVGbx1Ev1gZ3QyYc1D+z9usHoqqGhMS7uhfVtAHYZrmWogP9iH00hzH4S9f/OqmhfR97JJvBK9QTHCarc8T2amHzWiUHbE82oexNmWJJ7KrIPXwcNy8dY+PGVp5dDTkmzv2ijivYx5tI02szafsTSazWJ9TC7EOmlcUAZ/VUn2K7XfCj7teSyEtUAI3OGJ5B3PuiOl6pctkfLro/+GAcNi2X8dxzd
- xZ3RxssV
- gp+qXYzTg03cWYwKqvkV49zFba5q4a1SHfEiudek5dQigi2af0r4kwJhklensqKPfPdBIakXNWqRxoO+TCG1JzBTbsmDN9JZhPW2bhXn+iAzf/asPSBRmsEc7QVA8vHjsZUiXw4MLt3gmYvwSIEF7I4++1uHNK8bFFEUU7KyiYxG0ibMLNW5cM1pjYQgC9RSL8GzEWmU8rp4e5luSGUqXFHQn5/20L4Y/DJhSa/1D6Nei89Xdr9Gsu5ZQsAP75SCfoFBo9hEUC1++M5OuZuzhdN1kp/tO0g9VK7wswSxnaN6tvkFt32xUvY3F0PnI1lOkqC6eD04zWxg6atz3O4NjseFBIQ6hA8MVFvX79wq66x4NxDyRdnlsHzVWLBSZhFZjxSUVwPAxZiDHgtT2KBIn7wtaba7vvfFHVgXPkFU25mx5Qa/yGPWQLHzR7JCNvb1x6R0L
+X-HE-Tag: 1755024928-93949
+X-HE-Meta: U2FsdGVkX1/4zaBN+SA04flpAWKpz8yURhQPBYDsIVyKF1nCEDsoQvPhMUKKlzdbgHmLnPf2cmxTjcDTcZknAw1KtfCIz+VghZnWgn0a6KLUpxiBJh5XyQppKglPgLd1t8g88Qrs3mt6cTXXZmfVPG7LhBZiVnXWuZq2zqmraLi/G8vDK5s0asyGpOjwfob667UU6Qc1JGgxNDjaaQADGZRevcZbKnM5Vcu1M1It6EBZ73BxxRy42EUWUFsLwBTRiUDJpv+jGFq9SxTN007zn/Gl+u7ooDP8ZPh86zCNASEhtGpc6cFC4YeEQMpiGzZ7zBuFGJK2ejftBlxpaL0bg3KBpRNmzWBiGFT+2NRBgmfdwBUyuRpQIlhZfgm/rST6HPQtqaM5P8E09vMxiwlnmuQz+2Mvr/vgvK46vKWtlPzSIaT1heKdRLbs3Pc5EnGT1NHS07wnncT/un6gdF32/rQbPhrva0l5OJvnO1Coqp4rjGRg58vEbWuhxqdzNl35jg2iLaT7hRmXyGa/19YSD+UIn12v5iDpn3OAy7h7shk/CvuqlK107qiEQahW4ZCk4SUzIazznYaDqsBI4a5pF0QcjfmKsBiPRZ6nzhkbOdfhZRL/reEY7eOMFH5ZDUKOCJuHwzM7VYkObuXMzY1u9cKRwprAkWA4p3wq9sWERi4XtVIYt3kNjYQDX5RTUFAc2Vc5NggsHYutw7qJ4j6p7lQ1Bykx/N/J8BbeNWB0H/9v6zjA1S8Zuw+x2DRfYOd+wY97kogJXFYQ9vMr/Wp9whU8faT/LrS4A3Hf16Nh7d+5H7bop6Jrvx8uwAH2fpjL1aW3ekTd9nWWR80D3Xuk5/7P0McE0agldeyv5A8VPYhefnTwhsejgHird3mSnb4icmVqyzB6NcQfTREtjyq00qKPNdJ1F5FRG2qhWQP0kYE6xGa+wWmdpoyzQXujYMhqxuN5pnYoKrb3OQmRJjf
+ 00O8N0ZZ
+ KnmhUfgdYeLXdhDdBh82Qjovvj954lNuikUaNYLo/p4Q9H9dkEIixe96MVHuy6LwcUlKnv0Ugm54tGuqaD4oof9tStF1rjw0Z7rRYr6KdJ6Z//mq517ZnYQSY/ji9seBRaFypX6g/npRWzCszTGfYHkcbzuMkUojwfyDE8D1nFlqT/+bKFulg+w142DmdjT7FiWUDrhS5ecaWXoTvqgayBrJT8AQevdxTcMqhxQhvV4lzt4nEOFSxf52yV8440NijLHp2oYynV/hYg02BLKv5nG89QIeBnPRy/tZICkV6GezUX25NQ7c74GVy3E/fpnCz6KSDeZx2IX43gb5jEfERSc4VtZm5hpziiuhFa3nboz5VwobFKDnrvnu8OPw1mfJ7BDeR3gxuMZdPHyLxvHcVyDE7X7VwgZq9ptZm++/MfH934eCLBJ8Zy47hU5iDy62PmP0E0KpjjLAgDKKBAn2SFIiQ3JbPFtYYSRrmaPtv6Ela6GLkt2rLXTSAdsEYgEOcdZm263AA9AhR/45Ptl7XNUUhHmaICePO+Wfol1gDsv7QIdZ6asggj/MPdyWZ/X7gNfnH6bXN6bkpqZM5pmm/kUEr/S2hV1BdWMxtD8R/Vz2hhNiL87IO1YKzda0NlUGJ7vKHBvLt7KU9jPVpUNWMynACXYPd7fjPDuH4knTeE9K103N4c7iSFkhMt/vHL3t5QX2I0sTjYrHrgEwvKvLs6mM6allQ2stiKn18+3x5EM8lFgRgyCyspA6jqTc6B1kZXWXAkIyLl9OeHnJWjBAUm2XurTbhHn9CKqIdAsamCV9oJaN1zk/dtBl6NZId/HySSuZTyK3ppEubKgRfz1Yi+N3R0GnEJuXQnAnkG0SYK7T1D7Owo5QEYpksdkLvek1P5ZY23t4zifoxPkJih2ENKsTCkgeC9rFFv8pk3AS5onc5ay0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,189 +258,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 12, 2025 at 10:00=E2=80=AFAM SeongJae Park <sj@kernel.org> wrot=
-e:
+On Tue, Aug 12, 2025 at 08:39:36PM +0200, Christophe Leroy wrote:
+> Hi Lorenzo,
 >
-> When zswap writeback is enabled and it fails compressing a given page,
-> the page is swapped out to the backing swap device.  This behavior
-> breaks the zswap's writeback LRU order, and hence users can experience
-> unexpected latency spikes.  If the page is compressed without failure,
-> but results in a size of PAGE_SIZE, the LRU order is kept, but the
-> decompression overhead for loading the page back on the later access is
-> unnecessary.
+> Le 12/08/2025 à 20:23, Lorenzo Stoakes a écrit :
+> > On Mon, Aug 11, 2025 at 01:26:26PM +0200, David Hildenbrand wrote:
+> > > We want to make use of "pgtable_level" for an enum in core-mm. Other
+> > > architectures seem to call "struct pgtable_level" either:
+> > > * "struct pg_level" when not exposed in a header (riscv, arm)
+> > > * "struct ptdump_pg_level" when expose in a header (arm64)
+> > >
+> > > So let's follow what arm64 does.
+> > >
+> > > Signed-off-by: David Hildenbrand <david@redhat.com>
+> >
+> > This LGTM, but I'm super confused what these are for, they don't seem to be
+> > used anywhere? Maybe I'm missing some macro madness, but it seems like dead
+> > code anyway?
 >
-> Keep the LRU order and optimize unnecessary decompression overheads in
-> those cases, by storing the original content as-is in zpool.  The length
-> field of zswap_entry will be set appropriately, as PAGE_SIZE,  Hence
-> whether it is saved as-is or not (whether decompression is unnecessary)
-> is identified by 'zswap_entry->length =3D=3D PAGE_SIZE'.
+> pg_level[] are used several times in arch/powerpc/mm/ptdump/ptdump.c, for
+> instance here:
 >
-> Because the uncompressed data is saved in zpool, same to the compressed
-> ones, this introduces no change in terms of memory management including
-> movability and migratability of involved pages.
+> static void note_page_update_state(struct pg_state *st, unsigned long addr,
+> int level, u64 val)
+> {
+> 	u64 flag = level >= 0 ? val & pg_level[level].mask : 0;
+> 	u64 pa = val & PTE_RPN_MASK;
 >
-> This change is also not increasing per zswap entry metadata overhead.
-> But as the number of incompressible pages increases, total zswap
-> metadata overhead is proportionally increased.  The overhead should not
-> be problematic in usual cases, since the zswap metadata for single zswap
-> entry is much smaller than PAGE_SIZE, and in common zswap use cases
-> there should be a sufficient amount of compressible pages.  Also it can
-> be mitigated by the zswap writeback.
+> 	st->level = level;
+> 	st->current_flags = flag;
+> 	st->start_address = addr;
+> 	st->start_pa = pa;
 >
-> When the writeback is disabled, the additional overhead could be
-> problematic.  For the case, keep the current behavior that just returns
-> the failure and let swap_writeout() put the page back to the active LRU
-> list in the case.
+> 	while (addr >= st->marker[1].start_address) {
+> 		st->marker++;
+> 		pt_dump_seq_printf(st->seq, "---[ %s ]---\n", st->marker->name);
+> 	}
+> }
 >
-> Knowing how many compression failures happened will be useful for future
-> investigations.  investigations.  Add a new debugfs file, compress_fail,
-> for the purpose.
->
-> Tests
-> -----
->
-> I tested this patch using a simple self-written microbenchmark that is
-> available at GitHub[1].  You can reproduce the test I did by executing
-> run_tests.sh of the repo on your system.  Note that the repo's
-> documentation is not good as of this writing, so you may need to read
-> and use the code.
->
-> The basic test scenario is simple.  Run a test program making artificial
-> accesses to memory having artificial content under memory.high-set
-> memory limit and measure how many accesses were made in given time.
->
-> The test program repeatedly and randomly access three anonymous memory
-> regions.  The regions are all 500 MiB size, and accessed in the same
-> probability.  Two of those are filled up with a simple content that can
-> easily be compressed, while the remaining one is filled up with a
-> content that read from /dev/urandom, which is easy to fail at
-> compressing to <PAGE_SIZE size.  The program runs for two minutes and
-> prints out the number of accesses made every five seconds.
->
-> The test script runs the program under below seven configurations.
->
-> - 0: memory.high is set to 2 GiB, zswap is disabled.
-> - 1-1: memory.high is set to 1350 MiB, zswap is disabled.
-> - 1-2: On 1-1, zswap is enabled without this patch.
-> - 1-3: On 1-2, this patch is applied.
->
-> For all zswap enabled cases, zswap shrinker is enabled.
->
-> Configuration '0' is for showing the original memory performance.
-> Configurations 1-1, 1-2 and 1-3 are for showing the performance of swap,
-> zswap, and this patch under a level of memory pressure (~10% of working
-> set).
->
-> Because the per-5 seconds performance is not very reliable, I measured
-> the average of that for the last one minute period of the test program
-> run.  I also measured a few vmstat counters including zswpin, zswpout,
-> zswpwb, pswpin and pswpout during the test runs.
->
-> The measurement results are as below.  To save space, I show performance
-> numbers that are normalized to that of the configuration '0' (no memory
-> pressure), only.  The averaged accesses per 5 seconds of configuration
-> '0' was 36493417.75.
->
->     config            0       1-1     1-2      1-3
->     perf_normalized   1.0000  0.0057  0.0235   0.0367
->     perf_stdev_ratio  0.0582  0.0652  0.0167   0.0346
->     zswpin            0       0       3548424  1999335
->     zswpout           0       0       3588817  2361689
->     zswpwb            0       0       10214    340270
->     pswpin            0       485806  772038   340967
->     pswpout           0       649543  144773   340270
->
-> 'perf_normalized' is the performance metric, normalized to that of
-> configuration '0' (no pressure).  'perf_stdev_ratio' is the standard
-> deviation of the averaged data points, as a ratio to the averaged metric
-> value.  For example, configuration '0' performance was showing 5.8%
-> stdev.  Configurations 1-1 and 1-3 were having about 6.5% and 6.1%
-> stdev.  Also the results were highly variable between multiple runs.  So
-> this result is not very stable but just showing ball park figures.
-> Please keep this in your mind when reading these results.
->
-> Under about 10% of working set memory pressure, the performance was
-> dropped to about 0.57% of no-pressure one, when the normal swap is used
-> (1-1).  Note that ~10% working set pressure is already extreme, at least
-> on this test setup.  No one would desire system setups that can degrade
-> performance to 0.57% of the best case.
->
-> By turning zswap on (1-2), the performance was improved about 4x,
-> resulting in about 2.35% of no-pressure one.  Because of the
-> incompressible pages in the third memory region, a significant amount of
-> (non-zswap) swap I/O operations were made, though.
->
-> By applying this patch (1-3), about 56% performance improvement was
-> made, resulting in about 3.67% of no-pressure one.  Reduced pswpin of
-> 1-3 compared to 1-2 let us see where this improvement came from.
->
-> Related Works
-> -------------
->
-> This is not an entirely new attempt.  Nhat Pham and Takero Funaki tried
-> very similar approaches in October 2023[2] and April 2024[3],
-> respectively.  The two approaches didn't get merged mainly due to the
-> metadata overhead concern.  I described why I think that shouldn't be a
-> problem for this change, which is automatically disabled when writeback
-> is disabled, at the beginning of this changelog.
->
-> This patch is not particularly different from those, and actually built
-> upon those.  I wrote this from scratch again, though.  Hence adding
-> Suggested-by tags for them.  Actually Nhat first suggested this to me
-> offlist.
->
-> Historically, writeback disabling was introduced partially as a way to
-> solve the LRU order issue.  Yosry pointed out[4] this is still
-> suboptimal when the incompressible pages are cold, since the
-> incompressible pages will continuously be tried to be zswapped out, and
-> burn CPU cycles for compression attempts that will anyway fail.  One
-> imaginable solution for the problem is reusing the swapped-out page and
-> its struct page to store in the zswap pool.  But that's out of the scope
-> of this patch.
->
-> [1] https://github.com/sjp38/eval_zswap/blob/master/run.sh
-> [2] https://lore.kernel.org/20231017003519.1426574-3-nphamcs@gmail.com
-> [3] https://lore.kernel.org/20240706022523.1104080-6-flintglass@gmail.com
-> [4] https://lore.kernel.org/CAJD7tkZXS-UJVAFfvxJ0nNgTzWBiqepPYA4hEozi01_q=
-ktkitg@mail.gmail.com
->
-> Suggested-by: Nhat Pham <nphamcs@gmail.com>
-> Suggested-by: Takero Funaki <flintglass@gmail.com>
-> Signed-off-by: SeongJae Park <sj@kernel.org>
-> ---
-> Changes from v1
-> (https://lore.kernel.org/20250807181616.1895-1-sj@kernel.org)
-> - Optimize out memcpy() per incompressible page saving, using
->   k[un]map_local().
-> - Add a debugfs file for counting compression failures.
-> - Use a clear form of a ternary operation.
-> - Add the history of writeback disabling with a link.
-> - Wordsmith comments.
->
-> Changes from RFC v2
-> (https://lore.kernel.org/20250805002954.1496-1-sj@kernel.org)
-> - Fix race conditions at decompressed pages identification.
-> - Remove the parameter and make saving as-is the default behavior.
-> - Open-code main changes.
-> - Clarify there is no memory management changes on the cover letter.
-> - Remove 20% pressure case from test results, since it is arguably too
->   extreme and only adds confusion.
-> - Drop RFC tag.
->
-> Changes from RFC v1
-> (https://lore.kernel.org/20250730234059.4603-1-sj@kernel.org)
-> - Consider PAGE_SIZE compression successes as failures.
-> - Use zpool for storing incompressible pages.
-> - Test with zswap shrinker enabled.
-> - Wordsmith changelog and comments.
-> - Add documentation of save_incompressible_pages parameter.
->
->  mm/zswap.c | 36 ++++++++++++++++++++++++++++++++++--
->  1 file changed, 34 insertions(+), 2 deletions(-)
 
-I'll let Johannes chime in as well, but LGTM.
+Ahhhh ok so you're _always_ happening to reference a field in the global value,
+thereby not referencing the _type_ anywhere but referencing fields of the
+global.
 
-Acked-by: Nhat Pham <nphamcs@gmail.com>
-
-Thanks!
+Thanks, that clears that up! :)
 
