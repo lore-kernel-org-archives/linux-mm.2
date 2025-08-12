@@ -2,253 +2,109 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 97003CA0EC4
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 16:36:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C2C74C87FCB
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 16:42:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B6AD8E016E; Tue, 12 Aug 2025 12:36:56 -0400 (EDT)
+	id 66B018E016F; Tue, 12 Aug 2025 12:42:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28E7F8E0168; Tue, 12 Aug 2025 12:36:56 -0400 (EDT)
+	id 61C028E0168; Tue, 12 Aug 2025 12:42:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 155FA8E016E; Tue, 12 Aug 2025 12:36:56 -0400 (EDT)
+	id 5321D8E016F; Tue, 12 Aug 2025 12:42:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 051928E0168
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 12:36:56 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A9E81C03C0
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 16:36:55 +0000 (UTC)
-X-FDA: 83768659590.08.4A07DA4
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 69A7B8000E
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 16:36:52 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="AJ/VppHl";
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=QyN7WfkP;
-	spf=pass (imf30.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755016612;
+	by kanga.kvack.org (Postfix) with ESMTP id 3F3F68E0168
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 12:42:07 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E03AB1A006F
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 16:42:06 +0000 (UTC)
+X-FDA: 83768672652.09.E5DA6D2
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 37F1440006
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 16:42:05 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eoOo8v+2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of djwong@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=djwong@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755016925; a=rsa-sha256;
+	cv=none;
+	b=Fl4AbsR1m0doqqt3mdREPb3DL+kYN/rl3vlVF9/X5BBksVGaa/AglS7KH5M2pUiuB6FC64
+	MxZM22gMGrnEoF7AFHytPInLQ6IS4nPbxW4j+0ZcGaRBB9CVNqmumS2UqNSqFZg/+LS2ru
+	zxcL/Kr66ioJxVjfPb2oOk8IyykYCr0=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eoOo8v+2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of djwong@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=djwong@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755016925;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=49zvGBJMxE2ccpjw3+7u2huZLYolCe1JiIqXQoAkJAw=;
-	b=S2QNsJ+5yiyGRQ17Jy0LzpwPSqaWhGB2FeUWF7xhgN8Kc0CSonShg+tMLJYv7R7RfJocrs
-	ur9WLxiD0MPrcgo5PfAjogDRFN2Xlb8cAyOaR1KfmNnspakb5hnZUcvlCJ6GhSGnnPP65T
-	xCNmBaLKnydIrQQ7Dxvh9FJmJzMH8Ww=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="AJ/VppHl";
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=QyN7WfkP;
-	spf=pass (imf30.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755016612; a=rsa-sha256;
-	cv=pass;
-	b=Lg3Exz3ka9yb6Zxg/Y3OVzMroGEGXwdapDfaygqdue46nyD39ej+nn1367Po7CH86JS3f+
-	mOU36/JawrRfD3Ir0epezNU+RYo8O7W812RATxud7bsJgenP/ipdzzFfQdm7Pzqik4bF8o
-	GyKRQn/PHDX83iQp//5p5v0qCek8sjA=
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57CDBxBO007852;
-	Tue, 12 Aug 2025 16:36:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=49zvGBJMxE2ccpjw3+
-	7u2huZLYolCe1JiIqXQoAkJAw=; b=AJ/VppHlJu0oXOhGmv0+rf5/m72Loh4lds
-	o9YWFNjBRtxi9UM2pjikJTfCh9xopyQ77QhAKBit5f0y3bdwqDElYgwFnWvxsT5V
-	Egov6ZkagoEZPycGInzVS48ilGC9y+X67iJaCJFNND2Mcqazexj+U03AhIu+VrgS
-	gXdD6vDvK2ysxPxDusOUlqNtoGjJRZtodhrraPMebLuO+2mB0mQakOuOuQJ2HW15
-	FQ+DlBrWkL7CqDOkQlUYoTStTLyFYo82xX91/u1knZ7uVg3LAiUnLdqGKp3S8Air
-	N+kfGQgjFhDs6+V4AW2928cw2F1Q6OR0pXb3vGcC1Y2ghQx03trg==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48dxvww1mb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 12 Aug 2025 16:36:28 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57CGOkuw030234;
-	Tue, 12 Aug 2025 16:36:27 GMT
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10on2067.outbound.protection.outlook.com [40.107.93.67])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48dvsa721r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 12 Aug 2025 16:36:27 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=d23s5cCUsWeYe9mZR1P8FAUlxZSn+5Ilk6q+dKjyFDwlD8p+i8o0Li/3314TRN6qv2bxiFX2p7TcP0g3QDYYug9gfynrU9grV9Pg1ztKJOaAdEqVb+hKMzr1QCTHKCFuUDfnqhn+q1QumJKjasUs26yYb/zxoPTreoMistNcK89nFrJjuybfL9spcYpKuy/hyCPFLld0VeRh4brqlwcMAX9JySXavD1lFDa1tA5BbtOXte5S1iOFDkjSBZHVHWpn5cN+VXGmOAYlxfXp/GgRDh4cLH5YgQhJygOQu53DQBWznCTKSpMuSVTAtHsBvqakXqeomFQfN32fSRsenbkKMA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=49zvGBJMxE2ccpjw3+7u2huZLYolCe1JiIqXQoAkJAw=;
- b=oCV5qpQnsZN5+0i4FDSJzy0EMyLyQ0rxxLMp5E9TOruwWQKFAyC3YIETmClZOyoynqC1JjB1dM8/1fR+GBf0Sqiv2GiGQq9zWOpZ8rpIUThNfd7kW68HfzBNpvaB7kW13El+GUW4FTa82ddoP6WYSe59SF90XRdCyaMnT4zf09qOc/Ib7VQmFN+llOyJ57xgTc3vLnOHnw4LEyYlkaYOLVVY3Da8KUT+8SLlHYpiPN6v3+E9lYk2amsi2ErhiAXZvyNAY0YoFZCHtyfXXljDlcs7pVUoH8uNyA1JzSsiYGv0BHuAJ3TuVyQTBMdi+faTn77qPv34qOWvl7WmdBvpyg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=49zvGBJMxE2ccpjw3+7u2huZLYolCe1JiIqXQoAkJAw=;
- b=QyN7WfkPtDnnWk0emU4a3PhP11v5TQaFiY1iG4vCUrV5+O9vj798oev1mFqsKNC5LDUMWQNHAyleRFKFDaX/Eqw+VHpfuJcJ/sB/NjkcCQB+66oTKgpy8Y1LhLjaZMInUem3F0BBIcxal+zRDwTxav+lAS+KFJH0UAoqm1jWUFs=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by SJ0PR10MB4478.namprd10.prod.outlook.com (2603:10b6:a03:2d4::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.13; Tue, 12 Aug
- 2025 16:36:23 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9031.012; Tue, 12 Aug 2025
- 16:36:23 +0000
-Date: Tue, 12 Aug 2025 17:36:20 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Dennis Zhou <dennis@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>, x86@kernel.org,
-        Borislav Petkov <bp@alien8.de>, Peter Zijlstra <peterz@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Tejun Heo <tj@kernel.org>, Uladzislau Rezki <urezki@gmail.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Christoph Lameter <cl@gentwo.org>,
-        David Hildenbrand <david@redhat.com>,
-        Andrey Konovalov <andreyknvl@gmail.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, kasan-dev@googlegroups.com,
-        Mike Rapoport <rppt@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-        linux-kernel@vger.kernel.org, Dmitry Vyukov <dvyukov@google.com>,
-        Alexander Potapenko <glider@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Suren Baghdasaryan <surenb@google.com>, Thomas Huth <thuth@redhat.com>,
-        John Hubbard <jhubbard@nvidia.com>, Michal Hocko <mhocko@suse.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org,
-        "Kirill A. Shutemov" <kas@kernel.org>,
-        Oscar Salvador <osalvador@suse.de>, Jane Chu <jane.chu@oracle.com>,
-        Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
-        "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
-        Joerg Roedel <joro@8bytes.org>, Alistair Popple <apopple@nvidia.com>,
-        Joao Martins <joao.m.martins@oracle.com>, linux-arch@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH V4 mm-hotfixes 3/3] x86/mm/64: define
- ARCH_PAGE_TABLE_SYNC_MASK and arch_sync_kernel_mappings()
-Message-ID: <ca172db4-be84-4f82-9bf7-c65de8d997d2@lucifer.local>
-References: <20250811053420.10721-1-harry.yoo@oracle.com>
- <20250811053420.10721-4-harry.yoo@oracle.com>
- <9b57f325-2dc7-48a4-b2f0-d7daa2192925@lucifer.local>
- <aJsCVtgfIVxT6Z93@hyeyoo>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aJsCVtgfIVxT6Z93@hyeyoo>
-X-ClientProxiedBy: GVX0EPF00014AF6.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:158:401::31a) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+	bh=+yNqF4KJX3rTYEJYl1d6YnlYJZVCO8+YgWZ0BO5D77c=;
+	b=ylEWmkYtrkobGbPdt+glWGxwbfwYQhFOlSic29OPbXVSYv1bvH0gLXis33aTa5oRQDLGhW
+	1/qeZITZKz20eAJSNyVI7UkT7j1agLYHvPU/B6kv6yWloi7aEAMk01H1Svi/pkaidJpaJ9
+	L+uICdfohPiWc1R20aQ0Xf90HM6OU9k=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 5D433A57704;
+	Tue, 12 Aug 2025 16:42:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E06C4CEF1;
+	Tue, 12 Aug 2025 16:42:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755016924;
+	bh=mzeTskEbEv7YIcxRJY9FVg7Fco/f7MknV0O2iutifog=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eoOo8v+2E5wziv0D9SyjwLUhVX9f/4Wk2PTv8EK4MlEestFfQO3LBc4TmGcKQ4u7y
+	 IG/cewrpW0IsVu0zN1kgHt+2MoHRWn6tMYHWO2p/Ph/vXZiJloPht485aC8Uza/5Zn
+	 Vn0I8/KJ1eag5J7bSv1VKSSbnqE0CI1k/DMuRVI/PFrh7hzlOIp7iG8DEVtP1nuyWu
+	 z7/ifw1Nmr2Z+IYEyrWSrE49d+jaXhBpIDi8DQASdQjH5yqaAKIppfMjCvqdYdWdVg
+	 SXa637LGgC2dU30zJCYBT29+11KNamk50/X2eBl+zNdRrBHCbTrVPBynXm88KJ/BRD
+	 nUSP1YBQ4NEBQ==
+Date: Tue, 12 Aug 2025 09:42:03 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>,
+	linux-fsdevel@vger.kernel.org, linux-mm <linux-mm@kvack.org>,
+	linux-xfs@vger.kernel.org, open list <linux-kernel@vger.kernel.org>,
+	lkft-triage@lists.linaro.org,
+	Linux Regressions <regressions@lists.linux.dev>,
+	Miklos Szeredi <miklos@szeredi.hu>, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <liam.howlett@oracle.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Anders Roxell <anders.roxell@linaro.org>,
+	Ben Copeland <benjamin.copeland@linaro.org>
+Subject: Re: next-20250721 arm64 16K and 64K page size WARNING fs fuse file.c
+ at fuse_iomap_writeback_range
+Message-ID: <20250812164203.GG7942@frogsfrogsfrogs>
+References: <20250728171425.GR2672029@frogsfrogsfrogs>
+ <CAJnrk1bBesBijYRD1Wf_01OSBykJ0VzwFZKZFev0wPn9wYc98Q@mail.gmail.com>
+ <20250728191117.GE2672070@frogsfrogsfrogs>
+ <CAJnrk1bTgTcb4aUWqczXEH+7+SWQAdppxYbSAPNCVY6xXb-=hQ@mail.gmail.com>
+ <20250729202151.GD2672049@frogsfrogsfrogs>
+ <CAJnrk1ZXN40WEwKXn7ycy2topGTvxFh_UfsM_vwhM+0CtTsJKQ@mail.gmail.com>
+ <20250729234018.GW2672029@frogsfrogsfrogs>
+ <CAJnrk1b691Z3=_V0dU2Vb2qbiQd+0JUMj1ABDMip6vzzGZAf3w@mail.gmail.com>
+ <20250731175528.GM2672070@frogsfrogsfrogs>
+ <CAJnrk1bqpDbRaszZJR3B7Cjr5AcXNrw8nd-JjBqKvGkgmDxSbg@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|SJ0PR10MB4478:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0ff93a77-456f-4c08-91f4-08ddd9be5fc7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?QvHGG09qtHMsgWEdl1uCwtieaFHx46Cd7Kt6AhwtJpoZ2n20/Z4fwwC3GUpj?=
- =?us-ascii?Q?VA64gqf/lTZc18hhADhishG0UxiIUwKzDgSurH3Szck0pHSqGsS4pUZJOinV?=
- =?us-ascii?Q?NCD9UeRFzTuwP6evDLPyFvRqDcKi1zhPwbclRS8+D/R6e5EIxc823Bi7Y6p+?=
- =?us-ascii?Q?epJZ59cnNci6IyXhLbxCRZ/CaG/xL0CE7SgegIpdzAzgU/rU5NjnnZXeO//B?=
- =?us-ascii?Q?iFlnzffB8R1ig3LaEv5APKETxz86riC15DOY8tnXOpKfDzuY8VYDmMbyr2lL?=
- =?us-ascii?Q?7SnDSux/LvwH7kNo4jBQH2gHOHiLeCxU2GxD7nr/VjX1wQbSdHtCwPD6RLmp?=
- =?us-ascii?Q?ehlP1w6sL7IffqmgR7RR/ZSHbwupS/9M8V1wbljQCDuI40oi8nz+gNMwmv21?=
- =?us-ascii?Q?jlb4qyRBLMxLeG2gg1mdRDkQplwe8+RIo9F5VqhfhDKEGJ7M3sngx0BfvsPz?=
- =?us-ascii?Q?T0+urLcXW1GmtzDvhAu1u5mKtOu5yJ0JgxnGRsb+yuC9KrawL8GcZZt1NnZ6?=
- =?us-ascii?Q?HTSGK1mYUSuKghm5ZJt5VtLbEnErMoDolbmVeQqerYkFJ8S4nPe0nRSGqviK?=
- =?us-ascii?Q?kTViX/c58bgZIis+w/uJnYK0n1u4hA6xFicoY4poKmjrqXHe0PVaa3RpIFto?=
- =?us-ascii?Q?wY0NXNCohe+WNjGRIJJihFEviiGhHHNnW5FcXsed6Ezu/J3eCXvney8PuYA1?=
- =?us-ascii?Q?MtGG+LLhYRvn5EzwX9lZKCFQ2jh2PaEhQudh9T//4eBpPAqygYdNOFh1zUlY?=
- =?us-ascii?Q?PSXVYGMaQLUTt3fNMW5p91lUkOIsU1gmeh2cVN3nT65fX1nPMS5LNiOGff7S?=
- =?us-ascii?Q?zbzsO/zw9JPWPmDJyz8le2nQrN6DeD9ws7qCczMuR7Lxh2P1x3kUgHgdenXu?=
- =?us-ascii?Q?/NduFAiYsPMzpA1w8/edcUDhK6HhszBA0OdEnnQ9wRMD0KzY/1eMgxTumjf2?=
- =?us-ascii?Q?ImaBM8QHfSENVTyfQkDoX4YR7iQ2pgdqHXUGTyMsvReBgg2n0N5Z1ofNxuHu?=
- =?us-ascii?Q?eS69fkpJ1OKbZZz914BYo+WCiUnsLbBQxyQ9bWfZqGYRUUJdizHWUSUCbCfw?=
- =?us-ascii?Q?0ciNQfVM1VDaW4D96ElLh7/EnecQFgZo/JfiS0znCJzWzTo5sfzY9Emc1lMa?=
- =?us-ascii?Q?q/37qcjcW/ty6k7+1+gmsEgSVNiUq97XzqMNf99TS0+yLLhKGFF6GkhdT3X/?=
- =?us-ascii?Q?8/FPOw32g6FnoJpfWz7KP2rKcPjcEWg2wlvSPhCMDpfgVKiQgkFN7mzOXRMx?=
- =?us-ascii?Q?+z44BRjZ0PthcqGoOh8N5PSwtZAtrQxJgsMFTg2RI8s69HFLmx+UjmmHAmjA?=
- =?us-ascii?Q?XFcm8oPfHZCv/TAkAPXTwTk5ZtcfOg0Kcnm2gehVHmgYd7d2FUctKDyZ/JUI?=
- =?us-ascii?Q?x1fg3TAnkp9weiYIPJFien8pgF9c8BaTQ+FrUdwc5BeFGYpNq61+W5YXix/q?=
- =?us-ascii?Q?YuzMuvjmmjs=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+LkMo/VeDFGo/SnjsMz9fX9qH8ge+zEnX1y2Wqyn8HQGBPtHnLkMjMi16aQl?=
- =?us-ascii?Q?cpEDdcUJ+7V6InANPBJkDd/Gs0N9DmwDJwoFeYgf4e6vUNlaKa506pKsC7B7?=
- =?us-ascii?Q?zWJJyp2bdcEHg9bcQqpO6pLNjZn6VuMtNjCyzZhEQqm67IvJgjdJTLc/FF86?=
- =?us-ascii?Q?Y4YdzXlCNTFFw5LtSI13iqDjrOCd7EJFih5bz2JgCna4QG8rmFiatHtVvUCW?=
- =?us-ascii?Q?fvj6D0Iheco8NyoH+wpzsGuIhyLKbuSma3OuooCZlv2OSjCTJ6ZxTGbkVIZb?=
- =?us-ascii?Q?neZ8xG7p1ITXFENY4hygiWMsd3Ib5vmeZMv0OUD2/vWaHBMB3AGLDMX5wBCB?=
- =?us-ascii?Q?IiLb9qsnhIyvA9sP1VeubhuvMVohGcJ+AFJfOjkueB/YTB6JCZ6uC9qpIIlG?=
- =?us-ascii?Q?ljN+52pXgevbU/Vr/r/ikbBiJjhv0IxsRHVrXZwKQ+nVykMlktfLC1hM/uqp?=
- =?us-ascii?Q?DQfWHwUuXVuMpyIZoMrJPG0rer/iRvJQVQ+Vs4ObMyBHoA3YY4CuidqFGRfY?=
- =?us-ascii?Q?C6ecofz9jsq7R6+6KFmxH8nGPhyNzS2Rc9Y4z0liRYwRidTPWYuStbwdCz/d?=
- =?us-ascii?Q?YpYsehdTqsoPJGHRyc6Z2GCJyHbsXYgQi74j7KsEkjR5PxRe0mflfzqchBTC?=
- =?us-ascii?Q?i74Gq40c0jQSnqIBhBeKpVMoS0EM6F0agcAOPek30PZ2g6NuV1s0SpzEFfeR?=
- =?us-ascii?Q?J4TE7DBuO0HuWvdUibce6OlOvjvOLbAk7VCiKxt8Uttx2Ykcn9JVPucxgU31?=
- =?us-ascii?Q?5x2Eoodx1e3uPwOXO7ErAzh0JxCkm1nc6H7cR0XgOlDK72F/X+qUGDck6V/m?=
- =?us-ascii?Q?+OBGCzp6u6/Fp5M234KSu3RPpA0K07NPEIQvFtn2MNxORL7i62DQRB+wvRvi?=
- =?us-ascii?Q?fimFRtRJ29uMhqcWcS0OodwMfxAoEI68EL9uhGLRF+LAqw69HxQuPcOc0+tZ?=
- =?us-ascii?Q?dnHHmh4acf7FymEu/Gf5odDe6NpSUkD9GjTTBQ5f/wzgze08Rdi+uETQaPPQ?=
- =?us-ascii?Q?Ych7J3OwfFbb4BRjnAW01M/Pg/GUUUKeTf2cvG9h9Dn3JLXz8C4xhkOeqGHs?=
- =?us-ascii?Q?twB7l19JdnRKGDsk5fG4XExjDkgUTR3MYkD/uFnClNN6onZgFp092UgzZIIh?=
- =?us-ascii?Q?Eju39eGvqY3UwB2kGVrmb3O6HK/O6qJhFa5ovLOF/f/e10l2aqBKoX8KFHks?=
- =?us-ascii?Q?Zcj/AfuGui72c2ihMEs6T7jMadE64//BS8sGth6TclJTlyZriRzH1Sk1WC8M?=
- =?us-ascii?Q?09Jm6bNcyuTtn9KhugC76msTosTqhWYIdGvdIe9cl3yktywesIVY4TE5dHOZ?=
- =?us-ascii?Q?1wjQsSQVKYSvYPhpYa3SQlfWo/ZJKgjKCB0+uMvQSWqp353bElpC4j+jFbAA?=
- =?us-ascii?Q?s6FPe2/A+SGCI3pO5ThJZUkbV7Zv+Yb8e1SLmn4azg8OW7GW3XnKf0WpnN+c?=
- =?us-ascii?Q?YPE9jiXIjovFfuGVoMrNPz1vxmOCaLAI3fqutv5ugU0x6pLGS3d+9UxkyCbn?=
- =?us-ascii?Q?zLpWQfbsKX6CJTwo/cZEDQmS13lnlolG3ek8LrIvli4B3W3Ho6ufgQUFKrd+?=
- =?us-ascii?Q?BB6RWRc9tnVXC5PHVMhd4ow3IDsNy3fET+LftdyOG579z85mbAfkBLgqVlW5?=
- =?us-ascii?Q?9w=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	SpkempXuKtg4MXfV/aejgJxqd+XSu5xee+2sNS/fkmoX1Dqf3wXy8cwp+oUcpU08Z+IVZUBLmLaL+CC//LaA9iUMTgEyMS9kEf3P5AX2pT1gikxFPHpUljoKP7tkFfvvm0Fm/Xb6xTpVk3KJ6s2UTpip9gGNR5Vnj3vxymlw8vULu5VX8RvX9Q/MzBki8oBECF7hm49JxHerqeUICrNQuKGlYDCHJRr/YlIMBcqVlAAaM4VA7YUlAHC3GXn7+8czY69YQjti0ICGBXab/sNAhOXqV6119s0+7eWA3wC8INCbwsoV5vBFvDLoK/8aqkivKygxIQ8ns6jNwzxzumFasIBt1m0sRFDW0ZP94p6y8KgeyrM9kZ34m2NhD5jQLosLLnJsi0q2uTkwKHlB6qFWYeueH3VEX6hk5Mwh4azElfiESH8ndwWKefM7patHq/zkQTpS97uBzqSM2P5G7y4PRluqdkM3dKbMKMlpIcVLUMPKp6X7V6v+2Vj4sIQz6e0c0KPo9wSDHHKbJZbqizEUc9XU7J/E7h4nlCKoLGQs7X667KPHldt93GNxexIooXOY/iBa9ZYS1/syNhtUECpvs2tSjWvnIBsVQCPdyKn9w44=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0ff93a77-456f-4c08-91f4-08ddd9be5fc7
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2025 16:36:23.1298
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0gVIeFBb9PKlG45HY7zvtxAwJiruirnZY5LLibronvXOkj27ERF+HxFCySdaf5iSe5aAWwN+yCm338qUo1FmYF3XQ8jlWZo4LBrPBOgUV7Q=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB4478
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-12_07,2025-08-11_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 phishscore=0
- adultscore=0 mlxscore=0 bulkscore=0 spamscore=0 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2507300000 definitions=main-2508120158
-X-Proofpoint-GUID: OMeiyPJLkJSOMUmF9KpSdehG6BN32xQx
-X-Proofpoint-ORIG-GUID: OMeiyPJLkJSOMUmF9KpSdehG6BN32xQx
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDE1OSBTYWx0ZWRfX7k0T1uWEEAbe
- NhOeHcfhYjNZPmiWbW8qwUidZaqXCNhNCbmrwh02VOOAdx4V0KCr483fh9v/Cclbv+435PfkPqt
- 5XLRHGJeWWWEZMs+L5MYgw8VxcPPx1/Tx0pnVC3nJVqngvMPw9+BYkKD4IB0L43xyjESU7pSrx8
- AyQAS9+H1r9fBnX8EKoPB3vWC5Osq9+9mDs205oGhkkbqmg8G9r52RF92z6jNV/UmT+HQvaUviy
- OLBvTJn67FtZIhDkC6MhtZOMbzOKG6oACpJTv7Jfv/DUw4TYD5Fw2BdIvrM1fuKvmVoZrd0X/yc
- xa86diGKhPkKDuXkRKNWBdhtczVAfHWcp5QQd/eveAdvdTPay4UGFmyIhASm/BNd/eS5C4sjwIl
- yZJlSMIP3xTagZyrsFsRu/pmjjRhgiXazlBpuyz8X1FXg0R9vm4lGYVdHULlVP+faMSvN8tT
-X-Authority-Analysis: v=2.4 cv=dpnbC0g4 c=1 sm=1 tr=0 ts=689b6d8c cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8
- a=yPCof4ZbAAAA:8 a=WGoLGLEUZeYSAlKTZ5wA:9 a=CjuIK1q_8ugA:10
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJnrk1bqpDbRaszZJR3B7Cjr5AcXNrw8nd-JjBqKvGkgmDxSbg@mail.gmail.com>
+X-Rspamd-Queue-Id: 37F1440006
+X-Stat-Signature: mr9nnz55zf4x89383kg3u87bgq6hnzqp
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 69A7B8000E
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ic91scty8oct97nfcaojpdun3yderqst
-X-HE-Tag: 1755016612-287613
-X-HE-Meta: U2FsdGVkX1906Jog/2VtWF7UX3Oq8RWcsxAXL3Z5g0bynDQjeLG5XJ4zcX9gBvjcVAmTO8b1uO4aOkM/WM38dzaJXs5XzjwQQ8tnndvIo9IjsY5PCvziG8wpecL5ztV9uDqGhxpSVXBQFg5Un3MkoxYkb2M3CUzivjFdPBNLvpcgydmA7qchCDfmIv8z4N78cI6qgryagalZvon9UDnvVJ4r/zvQlQxQXXBjHFdBcQgUwwvLM2RjT4yb7j7DMiXdlKJ5IVWH31MK9mp1PiVrWp4aLRNjRhKnRXmpt7/wDvk+F/GEGpRSqvvGY+5wLTC5uW2v3Pq3q6++Dt4SsYF19xCwmRPKtyAmw5I6ztbv3hqowFZiE6Kw/oK1JrUYxbKVxdiHIHoxDiZP6VLN68pVILa3ifXC4zW/+FSQQUWxTs93AzCTjZaSzUph1FAEwzmOgVj10Hbh7azlBgc/+r5a49lSpIcrLLXjJpUGDoSgsRZuPWectNhuSSXgDl9DUIY8+WFAH4h3VkcJFgUfcKRDaPF0/znUq1/VHVEzpOq/n/KFXmGwZ28ybr5d7BVjfOoylOsoxF+WuPYwwFd4IMeHT1u60dHtQWrptmgFKnA+V1P5dS+ku0EwDDOEyfks54YkOqawTOMBS1PrBynQsaRTuZqkrt0nR1RtGw0tQgocCKHrXshSVdWv2IXgzpfvWm7DEDLnflmMq4LqsuUSESd0eWDPiaobOwCt+yig6E2sBuk5PzJRz9J+EvY/DA+UbK4fl30Pje3AYol+3zXp1Y6jvKTgEspLSlrpj8jyR566MjCRk77rrhwv60q+PtqtsniC1lCpa5jBg4QtJ+1aKavejlmJKwqgPHUjnVimxcz+/ykmvUdM1n8YG7WhCFs9bhAj+nE336sH3MObg450nxKlzTmGHC04S+O86qGEVcf46oyBrSp4JeSvYwfd+gUnarQAse4+tb1aUwcvhcVx378
- zzP1xvqE
- hbveUNf9YZyG+qAda7tQ5gQpRjG1kUrs5+n/lghodt5tDHe/T58XpSJ/LB/xPigHJsa9AeOHc/p9+/Ng1JoI66JUBgtsKbsD+lWVzjfXRcUV324c0JYSB8oteZU0706LFx54xIVO9mkWFnPpmsS8zS39ZXx06fh0fIg04
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1755016925-787890
+X-HE-Meta: U2FsdGVkX19L9MTFM3FhJLddBmV1CrCmzTYlmMMMqBKZSa1r38RSfd7QK78eDe+Im1DL9q9uao6RWZyM9h9L7Kre2yPcxT3s2fAivmZ1QGoITNviHFR+G30KOre9pD1Wui2R9rgiKOMoLvyCqr9ruxwOO7x2RzwPNlBUk+GJE7C0p78gn7zYh/Kwe48vv4h/RJVhaQziRrBbbyfmhYUXfJBabwjAsq4q4nCEa09vJ1CXYifE307Gd0UrJen3tG11qJku3SqByEkN67wq2EoRY57zQoQ06z7TIaIucR2ILfSdpiGxj/XOn6mksuwo0cVqmvUkVKX0GwJ6KHvs8BuBP1+F9mXHWAKYBK9XYcV2ot9f4BZPvs2cCiilYZtcCnj/zIgIoyfT51/jA9aqNxPNSJNR1cnkkUJM3ve+nyVbjt/VZi1xZpojJuXM9XPRaiyrcmo57tku6qfyofGLAndse5iYKY4a7XqBvtxhPH3h6bfokbFWdZnmOMRpkC4EGj8v0WCr+SbZoV+TTgOCQjFXN8C1rnfhjjMIqGleuTryuT9YMEcPAAlJy/nSFvemWP3bLLt6KmvTlMDpqiMVFqDw5Ld9Sl1+peyEctTLUZy5acTIC/0BkpqRv3dHKSsiB2jnIgNN1ABtt4SN3Q4VUdtabo9J8F86w6qDaIrOAwRmn5KY+ZRGNgyBjTjYf0+5+McigsmkKRiOn4RaV4YTPF1y1QzSBzskVkPhQ6LjGRBGI6lPgB0tQsubGfRKyyo96rKoG5yR+uDU+PaMXON1zN/qk0TABav4OrbMJ7wXMcg/agnTDP2fH6U81Hv+YgXuvAzM6PLAqBkBlUbfyq8hUxRPmeTro5hGS6FVnonOLX+9mDPZJTqAEi34LyxFw6uYY5BHW+MtEdNWwKMMjk11eyc9TgxIe3n7bVIpx1MTg2VRSTSGofKzeZg+vqFEYjuFf2i7jYiA/Wbtqg7LC1JDpTd
+ AZAxqXuK
+ SbIbjSoABtcP6uJ0JD0oO9X22VCFU5GQbef41RgWRs9C5bL6+ukqrQQZ734hvLdXS4hkXqJiVBXsg16BLFyb1TbXMnief7dcoKQATcv3iB4BfFRjGLPOEIR5i/Du48B0Kdu9T67ki6LTzHPyIvegTsD7TUyxZ9vMiE7mKhZkbjM79mOgZ09GlBmYt6k4yDGVY44GVL+YkZZeGijab9ccbOI8g6eP6pmopkWGV9o8IQF1kGaMs9J4xarlACbfWe1rOdnVhlremCc/MgaXwOpnPpc1sosWsMp/15fE+56iJIucQJQehHLT5WN9Bj1vSpGp1myGwArAt8jmQYYd8Cq8nnDisJK6nUYSyBbJc8lTAHxh7sB2/EukLfMfM5Vk4GPz0DKz3o9oY4Xsf2SZ2vS4VMgn6EC7bVc6WLOiC+bt2F72380jzoxI4SUsYmlaCxwQbz7JFx4QKYIsDkg0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -257,155 +113,449 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 12, 2025 at 05:59:02PM +0900, Harry Yoo wrote:
-> On Mon, Aug 11, 2025 at 12:46:32PM +0100, Lorenzo Stoakes wrote:
-> > On Mon, Aug 11, 2025 at 02:34:20PM +0900, Harry Yoo wrote:
-> > > Define ARCH_PAGE_TABLE_SYNC_MASK and arch_sync_kernel_mappings() to ensure
-> > > page tables are properly synchronized when calling p*d_populate_kernel().
-> > > It is inteneded to synchronize page tables via pgd_pouplate_kernel() when
-> > > 5-level paging is in use and via p4d_pouplate_kernel() when 4-level paging
-> > > is used.
-> > >
+On Thu, Jul 31, 2025 at 01:48:15PM -0700, Joanne Koong wrote:
+> On Thu, Jul 31, 2025 at 10:55 AM Darrick J. Wong <djwong@kernel.org> wrote:
 > >
-> > I think it's worth mentioning here that pgd_populate() is a no-op in 4-level
-> > systems, so the sychronisation must occur at the P4D level, just to make this
-> > clear.
->
-> Yeah, that's indeed confusing and agree that it's worth mentioning.
-> Will do. The new one:
->
-> Define ARCH_PAGE_TABLE_SYNC_MASK and arch_sync_kernel_mappings() to
-> ensure page tables are properly synchronized when calling
-> p*d_populate_kernel().
->
-> For 5-level paging, synchronization is performed via pgd_populate_kernel().
-> In 4-level paging, pgd_populate() is a no-op, so synchronization is instead
-> performed at the P4D level via p4d_populate_kernel().
-
-That's great thanks!
-
->
-> > > This fixes intermittent boot failures on systems using 4-level paging
-> > > and a large amount of persistent memory:
+> > On Wed, Jul 30, 2025 at 03:54:15PM -0700, Joanne Koong wrote:
+> > > On Tue, Jul 29, 2025 at 4:40 PM Darrick J. Wong <djwong@kernel.org> wrote:
+> > > >
+> > > > On Tue, Jul 29, 2025 at 04:23:02PM -0700, Joanne Koong wrote:
+> > > > > On Tue, Jul 29, 2025 at 1:21 PM Darrick J. Wong <djwong@kernel.org> wrote:
+> > > > > >
+> > > > > > On Mon, Jul 28, 2025 at 02:28:31PM -0700, Joanne Koong wrote:
+> > > > > > > On Mon, Jul 28, 2025 at 12:11 PM Darrick J. Wong <djwong@kernel.org> wrote:
+> > > > > > > >
+> > > > > > > > On Mon, Jul 28, 2025 at 10:44:01AM -0700, Joanne Koong wrote:
+> > > > > > > > > On Mon, Jul 28, 2025 at 10:14 AM Darrick J. Wong <djwong@kernel.org> wrote:
+> > > > > > > > > >
+> > > > > > > > > > On Fri, Jul 25, 2025 at 06:16:15PM -0700, Joanne Koong wrote:
+> > > > > > > > > > > On Thu, Jul 24, 2025 at 12:14 PM Joanne Koong <joannelkoong@gmail.com> wrote:
+> > > > > > > > > > > >
+> > > > > > > > > > > > On Wed, Jul 23, 2025 at 3:37 PM Joanne Koong <joannelkoong@gmail.com> wrote:
+> > > > > > > > > > > > >
+> > > > > > > > > > > > > On Wed, Jul 23, 2025 at 2:20 PM Darrick J. Wong <djwong@kernel.org> wrote:
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > > > On Wed, Jul 23, 2025 at 11:42:42AM -0700, Joanne Koong wrote:
+> > > > > > > > > > > > > > > On Wed, Jul 23, 2025 at 7:46 AM Darrick J. Wong <djwong@kernel.org> wrote:
+> > > > > > > > > > > > > > > >
+> > > > > > > > > > > > > > > > [cc Joanne]
+> > > > > > > > > > > > > > > >
+> > > > > > > > > > > > > > > > On Wed, Jul 23, 2025 at 05:14:28PM +0530, Naresh Kamboju wrote:
+> > > > > > > > > > > > > > > > > Test regression: next-20250721 arm64 16K and 64K page size WARNING fs
+> > > > > > > > > > > > > > > > > fuse file.c at fuse_iomap_writeback_range
+> > > > > > > > > > > > > > > > >
+> > > > > > > > > > > > > > > > > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> > > > > > > > > > > > > > > > >
+> > > > > > > > > > > > > > > > > ## Test log
+> > > > > > > > > > > > > > > > > ------------[ cut here ]------------
+> > > > > > > > > > > > > > > > > [  343.828105] WARNING: fs/fuse/file.c:2146 at
+> > > > > > > > > > > > > > > > > fuse_iomap_writeback_range+0x478/0x558 [fuse], CPU#0: msync04/4190
+> > > > > > > > > > > > > > > >
+> > > > > > > > > > > > > > > >         WARN_ON_ONCE(len & (PAGE_SIZE - 1));
+> > > > > > > > > > > > > > > >
+> > > > > > > > > > > > > > > > /me speculates that this might be triggered by an attempt to write back
+> > > > > > > > > > > > > > > > some 4k fsblock within a 16/64k base page?
+> > > > > > > > > > > > > > > >
+> > > > > > > > > > > > > > >
+> > > > > > > > > > > > > > > I think this can happen on 4k base pages as well actually. On the
+> > > > > > > > > > > > > > > iomap side, the length passed is always block-aligned and in fuse, we
+> > > > > > > > > > > > > > > set blkbits to be PAGE_SHIFT so theoretically block-aligned is always
+> > > > > > > > > > > > > > > page-aligned, but I missed that if it's a "fuseblk" filesystem, that
+> > > > > > > > > > > > > > > isn't true and the blocksize is initialized to a default size of 512
+> > > > > > > > > > > > > > > or whatever block size is passed in when it's mounted.
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > > > <nod> I think you're correct.
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > > > > I'll send out a patch to remove this line. It doesn't make any
+> > > > > > > > > > > > > > > difference for fuse_iomap_writeback_range() logic whether len is
+> > > > > > > > > > > > > > > page-aligned or not; I had added it as a sanity-check against sketchy
+> > > > > > > > > > > > > > > ranges.
+> > > > > > > > > > > > > > >
+> > > > > > > > > > > > > > > Also, I just noticed that apparently the blocksize can change
+> > > > > > > > > > > > > > > dynamically for an inode in fuse through getattr replies from the
+> > > > > > > > > > > > > > > server (see fuse_change_attributes_common()). This is a problem since
+> > > > > > > > > > > > > > > the iomap uses inode->i_blkbits for reading/writing to the bitmap. I
+> > > > > > > > > > > > > > > think we will have to cache the inode blkbits in the iomap_folio_state
+> > > > > > > > > > > > > > > struct unfortunately :( I'll think about this some more and send out a
+> > > > > > > > > > > > > > > patch for this.
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > > > From my understanding of the iomap code, it's possible to do that if you
+> > > > > > > > > > > > > > flush and unmap the entire pagecache (whilst holding i_rwsem and
+> > > > > > > > > > > > > > mmap_invalidate_lock) before you change i_blkbits.  Nobody *does* this
+> > > > > > > > > > > > > > so I have no idea if it actually works, however.  Note that even I don't
+> > > > > > > > > > > > > > implement the flush and unmap bit; I just scream loudly and do nothing:
+> > > > > > > > > > > > >
+> > > > > > > > > > > > > lol! i wish I could scream loudly and do nothing too for my case.
+> > > > > > > > > > > > >
+> > > > > > > > > > > > > AFAICT, I think I just need to flush and unmap that file and can leave
+> > > > > > > > > > > > > the rest of the files/folios in the pagecache as is? But then if the
+> > > > > > > > > > > > > file has active refcounts on it or has been pinned into memory, can I
+> > > > > > > > > > > > > still unmap and remove it from the page cache? I see the
+> > > > > > > > > > > > > invalidate_inode_pages2() function but my understanding is that the
+> > > > > > > > > > > > > page still stays in the cache if it has has active references, and if
+> > > > > > > > > > > > > the page gets mmaped and there's a page fault on it, it'll end up
+> > > > > > > > > > > > > using the preexisting old page in the page cache.
+> > > > > > > > > > > >
+> > > > > > > > > > > > Never mind, I was mistaken about this. Johannes confirmed that even if
+> > > > > > > > > > > > there's active refcounts on the folio, it'll still get removed from
+> > > > > > > > > > > > the page cache after unmapping and the page cache reference will get
+> > > > > > > > > > > > dropped.
+> > > > > > > > > > > >
+> > > > > > > > > > > > I think I can just do what you suggested and call
+> > > > > > > > > > > > filemap_invalidate_inode() in fuse_change_attributes_common() then if
+> > > > > > > > > > > > the inode blksize gets changed. Thanks for the suggestion!
+> > > > > > > > > > > >
+> > > > > > > > > > >
+> > > > > > > > > > > Thinking about this some more, I don't think this works after all
+> > > > > > > > > > > because the writeback + page cache removal and inode blkbits update
+> > > > > > > > > > > needs to be atomic, else after we write back and remove the pages from
+> > > > > > > > > > > the page cache, a write could be issued right before we update the
+> > > > > > > > > > > inode blkbits. I don't think we can hold the inode lock the whole time
+> > > > > > > > > > > for it either since writeback could be intensive. (also btw, I
+> > > > > > > > > > > realized in hindsight that invalidate_inode_pages2_range() would have
+> > > > > > > > > > > been the better function to call instead of
+> > > > > > > > > > > filemap_invalidate_inode()).
+> > > > > > > > > > >
+> > > > > > > > > > > > >
+> > > > > > > > > > > > > I don't think I really need to have it removed from the page cache so
+> > > > > > > > > > > > > much as just have the ifs state for all the folios in the file freed
+> > > > > > > > > > > > > (after flushing the file) so that it can start over with a new ifs.
+> > > > > > > > > > > > > Ideally we could just flush the file, then iterate through all the
+> > > > > > > > > > > > > folios in the mapping in order of ascending index, and kfree their
+> > > > > > > > > > > > > ->private, but I'm not seeing how we can prevent the case of new
+> > > > > > > > > > > > > writes / a new ifs getting allocated for folios at previous indexes
+> > > > > > > > > > > > > while we're trying to do the iteration/kfreeing.
+> > > > > > > > > > > > >
+> > > > > > > > > > >
+> > > > > > > > > > > Going back to this idea, I think this can work. I realized we don't
+> > > > > > > > > > > need to flush the file, it's enough to free the ifs, then update the
+> > > > > > > > > > > inode->i_blkbits, then reallocate the ifs (which will now use the
+> > > > > > > > > > > updated blkbits size), and if we hold the inode lock throughout, that
+> > > > > > > > > > > prevents any concurrent writes.
+> > > > > > > > > > > Something like:
+> > > > > > > > > > >      inode_lock(inode);
+> > > > > > > > > > >      XA_STATE(xas, &mapping->i_pages, 0);
+> > > > > > > > > > >      xa_lock_irq(&mapping->i_pages);
+> > > > > > > > > > >      xas_for_each_marked(&xas, folio, ULONG_MAX, PAGECACHE_TAG_DIRTY) {
+> > > > > > > > > > >           folio_lock(folio);
+> > > > > > > > > > >           if (folio_test_dirty(folio)) {
+> > > > > > > > > > >                   folio_wait_writeback(folio);
+> > > > > > > > > > >                   kfree(folio->private);
+> > > > > > > > > > >           }
+> > > > > > > >
+> > > > > > > > Heh, I didn't even see this chunk, distracted as I am today. :/
+> > > > > > > >
+> > > > > > > > So this doesn't actually /initiate/ writeback, it just waits
+> > > > > > > > (potentially for a long time) for someone else to come along and do it.
+> > > > > > > > That might not be what you want since the blocksize change will appear
+> > > > > > > > to stall while nothing else is going on in the system.
+> > > > > > >
+> > > > > > > I thought if the folio isn't under writeback then
+> > > > > > > folio_wait_writeback() just returns immediately as a no-op.
+> > > > > > > I don't think we need/want to initiate writeback, I think we only need
+> > > > > > > to ensure that if it is already under writeback, that writeback
+> > > > > > > finishes while it uses the old i_blksize so nothing gets corrupted. As
+> > > > > > > I understand it (but maybe I'm misjudging this), holding the inode
+> > > > > > > lock and then initiating writeback is too much given that writeback
+> > > > > > > can take a long time (eg if the fuse server writes the data over some
+> > > > > > > network).
+> > > > > > >
+> > > > > > > >
+> > > > > > > > Also, unless you're going to put this in buffered-io.c, it's not
+> > > > > > > > desirable for a piece of code to free something it didn't allocate.
+> > > > > > > > IOWs, I don't think it's a good idea for *fuse* to go messing with a
+> > > > > > > > folio->private that iomap set.
+> > > > > > >
+> > > > > > > Okay, good point. I agree. I was hoping to have this not bleed into
+> > > > > > > the iomap library but maybe there's no getting around that in a good
+> > > > > > > way.
+> > > > > >
+> > > > > > <shrug> Any other filesystem that has mutable file block size is going
+> > > > > > to need something to enact a change.
+> > > > > >
+> > > > > > > >
+> > > > > > > > > > >           folio_unlock(folio);
+> > > > > > > > > > >      }
+> > > > > > > > > > >     inode->i_blkbits = new_blkbits_size;
+> > > > > > > > > >
+> > > > > > > > > > The trouble is, you also have to resize the iomap_folio_state objects
+> > > > > > > > > > attached to each folio if you change i_blkbits...
+> > > > > > > > >
+> > > > > > > > > I think the iomap_folio_state objects automatically get resized here,
+> > > > > > > > > no? We first kfree the folio->private which kfrees the entire ifs,
+> > > > > > > >
+> > > > > > > > Err, right, it does free the ifs and recreate it later if necessary.
+> > > > > > > >
+> > > > > > > > > then we change inode->i_blkbits to the new size, then when we call
+> > > > > > > > > folio_mark_dirty(), it'll create the new ifs which creates a new folio
+> > > > > > > > > state object using the new/updated i_blkbits size
+> > > > > > > > >
+> > > > > > > > > >
+> > > > > > > > > > >     xas_set(&xas, 0);
+> > > > > > > > > > >     xas_for_each_marked(&xas, folio, ULONG_MAX, PAGECACHE_TAG_DIRTY) {
+> > > > > > > > > > >           folio_lock(folio);
+> > > > > > > > > > >           if (folio_test_dirty(folio) && !folio_test_writeback(folio))
+> > > > > > > > > > >                  folio_mark_dirty(folio);
+> > > > > > > > > >
+> > > > > > > > > > ...because iomap_dirty_folio doesn't know how to reallocate the folio
+> > > > > > > > > > state object in response to i_blkbits having changed.
+> > > > > > > >
+> > > > > > > > Also, what about clean folios that have an ifs?  You'd still need to
+> > > > > > > > handle the ifs's attached to those.
+> > > > > > >
+> > > > > > > Ah you're right, there could be clean folios there too that have an
+> > > > > > > ifs. I think in the above logic, if we iterate through all
+> > > > > > > mapping->i_pages (not just PAGECACHE_TAG_DIRTY marked ones) and move
+> > > > > > > the kfree to after the "if (folio_test_dirty(folio))" block, then it
+> > > > > > > addresses that case. eg something like this:
+> > > > > > >
+> > > > > > >      inode_lock(inode);
+> > > > > > >      XA_STATE(xas, &mapping->i_pages, 0);
+> > > > > > >      xa_lock_irq(&mapping->i_pages);
+> > > > > > >      xas_for_each(&xas, folio, ULONG_MAX) {
+> > > > > > >           folio_lock(folio);
+> > > > > > >           if (folio_test_dirty(folio))
+> > > > > > >                   folio_wait_writeback(folio);
+> > > > > > >           kfree(folio->private);
+> > > > > > >           folio_unlock(folio);
+> > > > > > >      }
+> > > > > > >     inode->i_blkbits = new_blkbits;
+> > > > > > >     xas_set(&xas, 0);
+> > > > > > >     xas_for_each_marked(&xas, folio, ULONG_MAX, PAGECACHE_TAG_DIRTY) {
+> > > > > > >           folio_lock(folio);
+> > > > > > >           if (folio_test_dirty(folio) && !folio_test_writeback(folio))
+> > > > > > >                  folio_mark_dirty(folio);
+> > > > > > >           folio_unlock(folio);
+> > > > > > >     }
+> > > > > > >     xa_unlock_irq(&mapping->i_pages);
+> > > > > > >     inode_unlock(inode);
+> > > > > > >
+> > > > > > >
+> > > > > > > >
+> > > > > > > > So I guess if you wanted iomap to handle a blocksize change, you could
+> > > > > > > > do something like:
+> > > > > > > >
+> > > > > > > > iomap_change_file_blocksize(inode, new_blkbits) {
+> > > > > > > >         inode_lock()
+> > > > > > > >         filemap_invalidate_lock()
+> > > > > > > >
+> > > > > > > >         inode_dio_wait()
+> > > > > > > >         filemap_write_and_wait()
+> > > > > > > >         if (new_blkbits > mapping_min_folio_order()) {
+> > > > > > > >                 truncate_pagecache()
+> > > > > > > >                 inode->i_blkbits = new_blkbits;
+> > > > > > > >         } else {
+> > > > > > > >                 inode->i_blkbits = new_blkbits;
+> > > > > > > >                 xas_for_each(...) {
+> > > > > > > >                         <create new ifs>
+> > > > > > > >                         <translate uptodate/dirty state to new ifs>
+> > > > > > > >                         <swap ifs>
+> > > > > > > >                         <free old ifs>
+> > > > > > > >                 }
+> > > > > > > >         }
+> > > > > > > >
+> > > > > > > >         filemap_invalidate_unlock()
+> > > > > > > >         inode_unlock()
+> > > > > > > > }
+> > > > > > >
+> > > > > > > Do you prefer this logic to the one above that walks through
+> > > > > > > &mapping->i_pages? If so, then I'll go with this way.
+> > > > > >
+> > > > > > Yes.  iomap should not be tightly bound to the pagecache's xarray; I
+> > > > > > don't even really like the xas_for_each that I suggested above.
+> > > > >
+> > > > > Okay, sounds good.
+> > > > >
+> > > > > >
+> > > > > > > The part I'm unsure about is that this logic seems more disruptive (eg
+> > > > > > > initiating writeback while holding the inode lock and doing work for
+> > > > > > > unmapping/page cache removal) than the other approach, but I guess
+> > > > > > > this is also rare enough that it doesn't matter much.
+> > > > > >
+> > > > > > I hope it's rare enough that doing truncate_pagecache unconditionally
+> > > > > > won't be seen as a huge burden.
+> > > > > >
+> > > > > > iomap_change_file_blocksize(inode, new_blkbits) {
+> > > > > >         inode_dio_wait()
+> > > > > >         filemap_write_and_wait()
+> > > > > >         truncate_pagecache()
+> > > > > >
+> > > > > >         inode->i_blkbits = new_blkbits;
+> > > > > > }
+> > > > > >
+> > > > > > fuse_file_change_blocksize(inode, new_blkbits) {
+> > > > > >         inode_lock()
+> > > > > >         filemap_invalidate_lock()
+> > > > > >
+> > > > > >         iomap_change_file_blocksize(inode, new_blkbits);
+> > > > > >
+> > > > > >         filemap_invalidate_unlock()
+> > > > > >         inode_unlock()
+> > > > > > }
+> > > > > >
+> > > > > > Though my question remains -- is there a fuse filesystem that changes
+> > > > > > the blocksize at runtime such that we can test this??
+> > > > >
+> > > > > There's not one currently but I was planning to hack up the libfuse
+> > > > > passthrough_hp server to test the change.
+> > > >
+> > > > Heh, ok.
+> > > >
+> > > > I guess I could also hack up fuse2fs to change its own blocksize
+> > > > randomly to see how many programs that pisses off. :)
+> > > >
+> > > > (Not right now though, gotta prepare for fossy tomorrow...)
+> > > >
 > > >
-> > >   BUG: unable to handle page fault for address: ffffe70000000034
-> > >   #PF: supervisor write access in kernel mode
-> > >   #PF: error_code(0x0002) - not-present page
-> > >   PGD 0 P4D 0
-> > >   Oops: 0002 [#1] SMP NOPTI
-> > >   RIP: 0010:__init_single_page+0x9/0x6d
-> > >   Call Trace:
-> > >    <TASK>
-> > >    __init_zone_device_page+0x17/0x5d
-> > >    memmap_init_zone_device+0x154/0x1bb
-> > >    pagemap_range+0x2e0/0x40f
-> > >    memremap_pages+0x10b/0x2f0
-> > >    devm_memremap_pages+0x1e/0x60
-> > >    dev_dax_probe+0xce/0x2ec [device_dax]
-> > >    dax_bus_probe+0x6d/0xc9
-> > >    [... snip ...]
-> > >    </TASK>
+> > > What I've been using as a helpful sanity-check so far has been running
+> > > fstests generic/750 after adding this line to libfuse:
 > > >
-> > > It also fixes a crash in vmemmap_set_pmd() caused by accessing vmemmap
-> > > before sync_global_pgds() [1]:
+> > > +++ b/lib/fuse_lowlevel.c
+> > > @@ -547,6 +547,8 @@ int fuse_reply_attr(fuse_req_t req, const struct stat *attr,
+> > >         arg.attr_valid_nsec = calc_timeout_nsec(attr_timeout);
+> > >         convert_stat(attr, &arg.attr);
+> > > +       arg.attr.blksize = 4096;
+> > >         return send_reply_ok(req, &arg, size);
 > > >
-> > >   BUG: unable to handle page fault for address: ffffeb3ff1200000
-> > >   #PF: supervisor write access in kernel mode
-> > >   #PF: error_code(0x0002) - not-present page
-> > >   PGD 0 P4D 0
-> > >   Oops: Oops: 0002 [#1] PREEMPT SMP NOPTI
-> > >   Tainted: [W]=WARN
-> > >   RIP: 0010:vmemmap_set_pmd+0xff/0x230
-> > >    <TASK>
-> > >    vmemmap_populate_hugepages+0x176/0x180
-> > >    vmemmap_populate+0x34/0x80
-> > >    __populate_section_memmap+0x41/0x90
-> > >    sparse_add_section+0x121/0x3e0
-> > >    __add_pages+0xba/0x150
-> > >    add_pages+0x1d/0x70
-> > >    memremap_pages+0x3dc/0x810
-> > >    devm_memremap_pages+0x1c/0x60
-> > >    xe_devm_add+0x8b/0x100 [xe]
-> > >    xe_tile_init_noalloc+0x6a/0x70 [xe]
-> > >    xe_device_probe+0x48c/0x740 [xe]
-> > >    [... snip ...]
+> > > and modifying the kernel side logic in fuse_change_attributes_common()
+> > > to unconditionally execute the page cache removal logic if
+> > > attr->blksize != 0.
 > > >
-> > > Cc: <stable@vger.kernel.org>
-> > > Fixes: 8d400913c231 ("x86/vmemmap: handle unpopulated sub-pmd ranges")
-> > > Closes: https://lore.kernel.org/linux-mm/20250311114420.240341-1-gwan-gyeong.mun@intel.com [1]
-> > > Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-> > > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> > >
+> > > While running this however, I discovered another problem :/ we can't
+> > > grab the inode lock here in the fuse path because the vfs layer that
+> > > calls into this logic may already be holding the inode lock (eg the
+> > > stack traces I was seeing included path_openat()  ->
+> > > inode_permission() -> fuse_permission() which then fetches the
+> > > blksize, and the vfs rename path), while there are other call paths
+> > > that may not be holding the lock already.
 > >
-> > Other than nitty comments, this looks good to me, so:
-> >
-> > Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->
-> Thanks!
->
-> > > ---
-> > >  arch/x86/include/asm/pgtable_64_types.h | 3 +++
-> > >  arch/x86/mm/init_64.c                   | 5 +++++
-> > >  2 files changed, 8 insertions(+)
-> > >
-> > > diff --git a/arch/x86/include/asm/pgtable_64_types.h b/arch/x86/include/asm/pgtable_64_types.h
-> > > index 4604f924d8b8..7eb61ef6a185 100644
-> > > --- a/arch/x86/include/asm/pgtable_64_types.h
-> > > +++ b/arch/x86/include/asm/pgtable_64_types.h
-> > > @@ -36,6 +36,9 @@ static inline bool pgtable_l5_enabled(void)
-> > >  #define pgtable_l5_enabled() cpu_feature_enabled(X86_FEATURE_LA57)
-> > >  #endif /* USE_EARLY_PGTABLE_L5 */
-> > >
-> > > +#define ARCH_PAGE_TABLE_SYNC_MASK \
-> > > +	(pgtable_l5_enabled() ? PGTBL_PGD_MODIFIED : PGTBL_P4D_MODIFIED)
-> > > +
-> > >  extern unsigned int pgdir_shift;
-> > >  extern unsigned int ptrs_per_p4d;
-> > >
-> > > diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-> > > index 76e33bd7c556..a78b498c0dc3 100644
-> > > --- a/arch/x86/mm/init_64.c
-> > > +++ b/arch/x86/mm/init_64.c
-> > > @@ -223,6 +223,11 @@ static void sync_global_pgds(unsigned long start, unsigned long end)
-> > >  		sync_global_pgds_l4(start, end);
-> > >  }
-> > >
-> >
-> > Worth a comment to say 'if 4-level, then we synchronise at P4D level by
-> > convention, however the same sync_global_pgds() applies'?
->
-> Maybe:
->
-> /*
->  * Make kernel mappings visible in all page tables in the system.
->  * This is necessary except when the init task populates kernel mappings
->  * during the boot process. In that case, all processes originating from
->  * the init task copies the kernel mappings, so there is no issue.
->  * Otherwise, missing synchronization could lead to kernel crashes due
->  * to missing page table entries for certain kernel mappings.
->  *
->  * Synchronization is performed at the top level, which is the PGD in
->  * 5-level paging systems. But in 4-level paging systems, however,
->  * pgd_populate() is a no-op, so synchronization is done at P4D level instead.
->  * sync_global_pgds() handles this difference between paging levels.
->  */
->
+> > Oh nooooo heisenlocking.  Which paths do not hold i_rwsem?
+> 
+> A path I was seeing that doesn't hold the inode lock was
+> 
+> [ 19.738097] Call Trace:
+> [ 19.738468] inode_permission+0xea/0x190
+> [ 19.738790] may_open+0x6e/0x150
+> [ 19.739053] path_openat+0x4cf/0x1120
+> [ 19.739341] ? generic_fillattr+0x49/0x130
+> [ 19.739711] do_filp_open+0xc1/0x170
+> [ 19.740064] ? kmem_cache_alloc_noprof+0x11b/0x380
+> [ 19.740458] ? __check_object_size+0x22a/0x2c0
+> [ 19.740834] ? alloc_fd+0xea/0x1b0
+> [ 19.741125] do_sys_openat2+0x71/0xd0
+> [ 19.741435] __x64_sys_openat+0x56/0xa0
+> [ 19.741754] do_syscall_64+0x50/0x1c0
+> [ 19.742068] entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> 
+> and a path that does hold the inode lock:
+> 
+> [   42.176858]  inode_permission+0xea/0x190
+> [   42.177372]  path_openat+0xd34/0x1120
+> [   42.177838]  do_filp_open+0xc1/0x170
+> [   42.178381]  ? kmem_cache_alloc_noprof+0x11b/0x380
+> [   42.178970]  ? __check_object_size+0x22a/0x2c0
+> [   42.179525]  ? alloc_fd+0xea/0x1b0
+> [   42.179955]  do_sys_openat2+0x71/0xd0
+> [   42.180417]  __x64_sys_creat+0x4c/0x70
+> [   42.180868]  do_syscall_64+0x50/0x1c0
 
-That's great also, thanks!
+Heh, yep, exactly where I feared it would be. :(
 
-> --
-> Cheers,
-> Harry / Hyeonggon
->
-> > > +void arch_sync_kernel_mappings(unsigned long start, unsigned long end)
-> > > +{
-> > > +	sync_global_pgds(start, end);
-> > > +}
-> > > +
-> > >  /*
-> > >   * NOTE: This function is marked __ref because it calls __init function
-> > >   * (alloc_bootmem_pages). It's safe to do it ONLY when after_bootmem == 0.
-> > > --
-> > > 2.43.0
+> 
+> >
+> > > I don't really see a good solution here. The simplest one imo would be
+> > > to cache "u8 blkbits" in the iomap_folio_state struct - are you okay
+> > > with that or do you think there's a better solution here?
+> >
+> > 1. Don't support changing the blocksize, complain loudly if anyone does,
+> > and only then implement it.  Writeback cache is a fairly new feature so
+> > the impact should be low, right? ;)
+> >
+> > [there is no 2 :D]
+> 
+> I think technically the writeback cache was added in 2014 but I don't
+> think anyone changes the blocksize so I'm happy to go with this
+> approach if you/Miklos think it's fine :D I'll send out a patch for
+> this then. Thanks for all the discussion on this!
+
+<nod> I'll go look at that thread.
+
+(still recovering after fossy...)
+
+--D
+
+> >
+> > --D
+> >
 > > >
->
+> > > Thanks,
+> > > Joanne
+> > >
+> > > > --D
+> > > >
+> > > > > >
+> > > > > > --D
+> > > > > >
+> > > > > > > Thanks,
+> > > > > > > Joanne
+> > > > > > >
+> > > > > > > >
+> > > > > > > > --D
+> > > > > > > >
+> > > > > > > > > > --D
+> > > > > > > > > >
+> > > > > > > > > > >           folio_unlock(folio);
+> > > > > > > > > > >     }
+> > > > > > > > > > >     xa_unlock_irq(&mapping->i_pages);
+> > > > > > > > > > >     inode_unlock(inode);
+> > > > > > > > > > >
+> > > > > > > > > > >
+> > > > > > > > > > > I think this is the only approach that doesn't require changes to iomap.
+> > > > > > > > > > >
+> > > > > > > > > > > I'm going to think about this some more next week and will try to send
+> > > > > > > > > > > out a patch for this then.
+> > > > > > > > > > >
+> > > > > > > > > > >
+> > > > > > > > > > > Thanks,
+> > > > > > > > > > > Joanne
+> > > > > > > > > > >
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > > > void fuse_iomap_set_i_blkbits(struct inode *inode, u8 new_blkbits)
+> > > > > > > > > > > > > > {
+> > > > > > > > > > > > > >         trace_fuse_iomap_set_i_blkbits(inode, new_blkbits);
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > > >         if (inode->i_blkbits == new_blkbits)
+> > > > > > > > > > > > > >                 return;
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > > >         if (!S_ISREG(inode->i_mode))
+> > > > > > > > > > > > > >                 goto set_it;
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > > >         /*
+> > > > > > > > > > > > > >          * iomap attaches per-block state to each folio, so we cannot allow
+> > > > > > > > > > > > > >          * the file block size to change if there's anything in the page cache.
+> > > > > > > > > > > > > >          * In theory, fuse servers should never be doing this.
+> > > > > > > > > > > > > >          */
+> > > > > > > > > > > > > >         if (inode->i_mapping->nrpages > 0) {
+> > > > > > > > > > > > > >                 WARN_ON(inode->i_blkbits != new_blkbits &&
+> > > > > > > > > > > > > >                         inode->i_mapping->nrpages > 0);
+> > > > > > > > > > > > > >                 return;
+> > > > > > > > > > > > > >         }
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > > > set_it:
+> > > > > > > > > > > > > >         inode->i_blkbits = new_blkbits;
+> > > > > > > > > > > > > > }
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > > > https://git.kernel.org/pub/scm/linux/kernel/git/djwong/xfs-linux.git/commit/?h=fuse-iomap-attrs&id=da9b25d994c1140aae2f5ebf10e54d0872f5c884
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > > > --D
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > > > >
+> > > > > > > > > > > > > > > Thanks,
+> > > > > > > > > > > > > > > Joanne
+> > > > > > > > > > > > > > >
+> > > > > > > > > > >
+> > > > > > >
+> > > > >
+> 
 
