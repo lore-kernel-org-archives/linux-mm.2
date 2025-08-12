@@ -2,124 +2,120 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7CB29CA0EC4
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 17:55:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 84FE2C87FCB
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 17:58:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 206498E0183; Tue, 12 Aug 2025 13:55:19 -0400 (EDT)
+	id 1799690000F; Tue, 12 Aug 2025 13:58:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DD7B8E0151; Tue, 12 Aug 2025 13:55:19 -0400 (EDT)
+	id 14A128E0151; Tue, 12 Aug 2025 13:58:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11AA28E0183; Tue, 12 Aug 2025 13:55:19 -0400 (EDT)
+	id 0871790000F; Tue, 12 Aug 2025 13:58:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 027CF8E0151
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:55:19 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D23AF1D837C
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 17:55:18 +0000 (UTC)
-X-FDA: 83768857116.13.1F2AF31
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf17.hostedemail.com (Postfix) with ESMTP id EA3004000D
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 17:55:16 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EF93D8E0151
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:58:53 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6310E14014A
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 17:58:53 +0000 (UTC)
+X-FDA: 83768866146.08.CEA2CCE
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 54BDC4000D
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 17:58:51 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ji9pNo2I;
-	spf=pass (imf17.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cVaDFvjS;
+	spf=pass (imf17.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755021317;
+	s=arc-20220608; t=1755021531;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ymZGpmngRJ7fOyPoIYIbr864BuGgQbxABMyIAp/lv7M=;
-	b=MbwdKgOYJbOz4dx9A5YHYT8Vb3E3caWQ4vc6sb8eOMzIeWyh3oh1t8QLFFETZq6OoXxPDq
-	vKEF/0Cdw4RqiKifNRv+0soV2nLasmbQrXUu2tv1vlCkKPY7Fj0A8YSCasoVezxOtWJvE6
-	YSp7deuy0QkUEz9dz0GkdTwvi/JR2fs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755021317; a=rsa-sha256;
-	cv=none;
-	b=G/nW+dDm8BcsJzHXy30Kvai1il7dNDJQi6xlHSvEkSd1vsvgtlDoVLW07JEn3goW94K2ou
-	s7CAzyg4rr8nEf2bxpbK8nSc2aeVxtbB2OV31/hkfxfvS9J2VdVfikBZMgbZEmmhvdHPuf
-	KO5W02y1Pvi/fSDPc2xhdZ+fLq7oC3o=
+	bh=qFgqOdxV1F9ejz004iGryJ3qWW5B6GXnUjljpVgqkLk=;
+	b=j4MwZcig0sO5bEmZQwxMTga5B/gLynt5rKERvnFXLEsZSzVw+HQn1OaF6513M+JqaHfGdw
+	pkVyRm8AuvrXBuaimv1hTPjxlKURQVRK1VT80Tt+/fhaS/CN8sJbpdJC40c0htVEENrC8P
+	QiVRX+uxdErF7cBvl4cZ4zQfvQ4Rp94=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ji9pNo2I;
-	spf=pass (imf17.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cVaDFvjS;
+	spf=pass (imf17.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2430439c05aso7712355ad.2
-        for <linux-mm@kvack.org>; Tue, 12 Aug 2025 10:55:16 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755021531; a=rsa-sha256;
+	cv=none;
+	b=0ERPC8JxGB2dlTJUc3lpxtfBU9UebMqPoMcNq0jqF60E8OvtiZnwOq/nMANScp4tp1ngRP
+	Uvef/bRjtJcfvi/TNGX4LCCPFtuBZg5IZ3w56HfdLv6VRCNXnHmn7CAJof5L43ZWfFGbLe
+	jn7TdvGtPyW9/O/Z4GmH9kw+6gjXDAE=
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-459d40d16bdso37406435e9.0
+        for <linux-mm@kvack.org>; Tue, 12 Aug 2025 10:58:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755021316; x=1755626116; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ymZGpmngRJ7fOyPoIYIbr864BuGgQbxABMyIAp/lv7M=;
-        b=ji9pNo2IgaIj2C8cvHoYHrbWpgyP5j2fIJsmORgqKgS0KF29WnpQTZUR5RcKjyJ0Vc
-         VxhgyDikm2tFmrUBkhdzNLxT6111EWsGQi653VRtA3Fpqq2QxNsT22Xz1EoFfwjsmLqv
-         fGvgTwK6KxgT0PRIabo2yLi+z03pxqGumK3bvrEF2ssVMk/uNh4osjT5eDQp5HWD+YQG
-         zP2x2ggvV6IK0YdQN3RsdUsFikKj/gO956QO+XRgmsNhAaRq686DO3K21x3NYaR4+o2o
-         LRvnKtYOyYcO7HeBWeZAztptwgxJ9cTXp91Y9ojA+6Be1V7bLn3efUgsX3HBqySBXKXm
-         q1OQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755021316; x=1755626116;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1755021530; x=1755626330; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ymZGpmngRJ7fOyPoIYIbr864BuGgQbxABMyIAp/lv7M=;
-        b=WbTvx/q/oVzmn4+HEHLfqP6SCeWvyn3YKMq9E1UONvx5Uqod4Io2Os24B9XPE4YXgj
-         eKWUYfE0v9lo2tzMa7UHdSxeIGrbpqFEgT079v6OxwTeRRY0KmG8dLR5SR+jwxybnIDK
-         jsvSaXA7ohVpWxcdzZ28TKtpHevTWDGR6FiiDCOfovnp1S9gSgHdxK1vlHlP8zU758/Q
-         GzWzxHbS31Nb39xrXColKanKJhmYWVIp8hgfGdCJr8BFUY5Wb1pgfTMSjSGBW0D6SUK/
-         ycnYyfa3zjFlT0/743JUiyZEkAt2r4G9o/OfhiU0A/4y+EmCbV5cvvFaeCktIVHmu/gk
-         gzfA==
-X-Forwarded-Encrypted: i=1; AJvYcCVo955eXAa3r1/F2j/kp7NRYOLHQJ2qkj7BXy1B6FWrJos+ftE7PoQrC/dDQD6SJgkLADONhHr8jw==@kvack.org
-X-Gm-Message-State: AOJu0YxnZ9RKK2spdUB0pbcGSE5AlqFQj13TTlaWYUNVnpb+0jHr8C8a
-	x8Y3/BiqE85TjGiFPWogyhagixmA0kkKhq+sv3b2mSj66vDokh6qGS9L
-X-Gm-Gg: ASbGncs3/FdE1j5//rY7zEG+QQbin0APyudRmoq31LYfOZA4G57WSGiLyAXe5cOfN6a
-	juXDVxvU1Cpy7UvvpGpZolFYev0/KTuVd25450L+LkQXFvoUDCqSYpklY0pBB+VYq+dHBlfhep+
-	Sr/ZI2TIMLROMaXzWQ6TLTw5D5raFvrHYa6ntscxq1ORNKjCwnMaBqpPU2BdIUyi32EOp3zbzNm
-	LFpRU7epNZdbNEvoZcrBWpuroIXerVUyYoCGwgrozbOrMM7Gw7YPbvmYNqgybG2zmJxsn0RSbM6
-	gUg3nnNdv6oDDzAXghNM/37Oa7H5+OQVzeusF+iyp6kUNa8S+7nd+BcayNSzuOEnbnHAeRzHYIM
-	j+GyOz6GIyZvsCBgIAbT6DzVTKNboiEE2Mk+liC0dgVQCvhK7vOuRk4oIjMLpTsYt
-X-Google-Smtp-Source: AGHT+IE18aIbwR3kUmI00of6zx1vDAbhjJri7AMTb1JJykSzC0p6KytmOlYDyZhwco9kF97wduWaUA==
-X-Received: by 2002:a17:903:2a8d:b0:243:8f:6db5 with SMTP id d9443c01a7336-2430d0a260amr1715145ad.6.1755021315592;
-        Tue, 12 Aug 2025 10:55:15 -0700 (PDT)
-Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2422ba1e09csm279039935ad.16.2025.08.12.10.55.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Aug 2025 10:55:15 -0700 (PDT)
-Date: Tue, 12 Aug 2025 10:55:11 -0700
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Qianfeng Rong <rongqianfeng@vivo.com>, SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Will Deacon <will@kernel.org>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Nick Piggin <npiggin@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	David Hildenbrand <david@redhat.com>,
-	Rik van Riel <riel@surriel.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>,
-	Uladzislau Rezki <urezki@gmail.com>, damon@lists.linux.dev,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org
-Subject: Re: [PATCH v2] mm: remove redundant __GFP_NOWARN
-Message-ID: <aJt__zOHjGcaghNf@fedora>
-References: <20250812135225.274316-1-rongqianfeng@vivo.com>
- <b5ca3ef2-bd36-4cb5-a733-a5d4f1fb32fa@lucifer.local>
+        bh=qFgqOdxV1F9ejz004iGryJ3qWW5B6GXnUjljpVgqkLk=;
+        b=cVaDFvjS2ZJuxuPW6L4mL7tBAtce6RgYpB0qMAgaX4xJDr9ZVsOWBf5L3SljzFeb9R
+         2PK4zKI22A7JG4mBYUv0mJ95Jd/U6w8Gy+QkNWst9uMF/rWQiMydGJv6vVzWrZHga/N9
+         3M+1UUUjZmhbb9GogYgB9dbGjVxEoCHXJPz5XuO29ExKad14nNlKgJ0WHoAdf1kIE++I
+         Ykwa1kjScAjfP4PJVNanLj+8NgdKJ8I+UrTlSiP0p5kSpFKA/PGzICONeIuLdA4WNWhM
+         LrZNwtpNDdTnhHhJEiIF2/KqGkbcXgGX/XgyZrqewfO8UXAkyNHaOv+xd8/CRgHjHkKp
+         Cakw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755021530; x=1755626330;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qFgqOdxV1F9ejz004iGryJ3qWW5B6GXnUjljpVgqkLk=;
+        b=NaSkd8tEbkAY2toNCCmH1ykbdvFG+uoxUNHvkW6/Zi27wn7KaG7rUFJqDn9mvPKKuU
+         IljwHHWiP/MjxGvci6FaybpTPgu8txhTg5knC3T1SApT5dRdNTWxJnv2Cd/IfwJyVKL3
+         r4Jq/a9qAKLuVICDNaTki9qPyB9Q4D+aXcKNcRtFQLF16L8sEM6Q3Fs5mNlRhl2HBPmS
+         24bkY9E+DleQSuDdZx0VoBJ7AxUz48YPHCqpnuO5weE4Ctg0Nvwtd1WcnigOtQVJ23Bl
+         NbNQXhg8ZVhgYtKRpBCi+mvC57vwecP+KS7U9D1L246cvth46ZW1Z5coFEIyG5+m1PGo
+         HJjg==
+X-Forwarded-Encrypted: i=1; AJvYcCWVzVp2iia9u7YTEQo6BbNp92OWIXXEG5z6TgZy6HEyMnnJsuGWDEifpenfg/d0QjVLztnlsY2ljQ==@kvack.org
+X-Gm-Message-State: AOJu0YxoHSAJJ4Fel2135s0GRaQh5jl2N5ZH02rqXHr0uVm+GE3OBMNl
+	VFHesy1VRnCUUGZergCuQ04i+hXb1kArZGQCINT4Smqfz1WU80eAwUkbqFuAUm7+cTzEuDaTKnI
+	qBMu5HgQ3B1CBph/thN4dbapRr6qviPI=
+X-Gm-Gg: ASbGnct4d6xZXN72L9t24WVK1nvCfLqwuvqI0WLXvG7+UN9nBaJFN6nWc9pKehbgT0D
+	Y3yiVZVhNaXIKJYrptc88ZlWy0XFSAf2E93dHS10bs9LcdjJVPGueOQDF/6XAWrWrfWkYSXatNV
+	ZrRZLRaU3ieiR9lv2K9GlegUfBpxsmY8kOaDfy0ggxRPQodsLivvLIeb9rzJeDwZHUpBLk5K9WV
+	ueh3hLXfw==
+X-Google-Smtp-Source: AGHT+IGCSqi+u7zPAKJbXiVle6HBw4vaddTrUBJW1UYwaHGnh/4m0lYlidEl1hsmzcOBFaEBgHl1CB3LcKFa24raxFg=
+X-Received: by 2002:a05:600c:1c01:b0:458:bbed:a827 with SMTP id
+ 5b1f17b1804b1-45a165b7b15mr660355e9.1.1755021529570; Tue, 12 Aug 2025
+ 10:58:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b5ca3ef2-bd36-4cb5-a733-a5d4f1fb32fa@lucifer.local>
+References: <20250811173626.1878783-1-yeoreum.yun@arm.com> <20250811173626.1878783-3-yeoreum.yun@arm.com>
+ <CA+fCnZeSV4fDBQr-WPFA66OYxN8zOQ2g1RQMDW3Ok8FaE7=NXQ@mail.gmail.com> <aJtyR3hCW5fG+niV@e129823.arm.com>
+In-Reply-To: <aJtyR3hCW5fG+niV@e129823.arm.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Date: Tue, 12 Aug 2025 19:58:37 +0200
+X-Gm-Features: Ac12FXy555KMqM9sRgAgjXOVEGNZdNcePtQ9D4aII7b1VUPGHKMWOpB_9plVIlw
+Message-ID: <CA+fCnZeznLqoLsUOgB1a1TNpR9PxjZKrrVBhotpMh0KVwvzj_Q@mail.gmail.com>
+Subject: Re: [PATCH 2/2] kasan: apply store-only mode in kasan kunit testcases
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: ryabinin.a.a@gmail.com, glider@google.com, dvyukov@google.com, 
+	vincenzo.frascino@arm.com, corbet@lwn.net, catalin.marinas@arm.com, 
+	will@kernel.org, akpm@linux-foundation.org, scott@os.amperecomputing.com, 
+	jhubbard@nvidia.com, pankaj.gupta@amd.com, leitao@debian.org, 
+	kaleshsingh@google.com, maz@kernel.org, broonie@kernel.org, 
+	oliver.upton@linux.dev, james.morse@arm.com, ardb@kernel.org, 
+	hardevsinh.palaniya@siliconsignals.io, david@redhat.com, 
+	yang@os.amperecomputing.com, kasan-dev@googlegroups.com, 
+	workflows@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 54BDC4000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: EA3004000D
-X-Stat-Signature: hpigm6fbmhqk8m9gwyxjciiy65pjn8km
-X-HE-Tag: 1755021316-925420
-X-HE-Meta: U2FsdGVkX1/q38QNc2rbEJ7le/aaG1R81yG9nsDz39zgcEDH0hdpHhHE17jDOIjvlZ1vaR1ZcyvV+dkweK7g3Kbyy75tL8ENrTAdwpoOyCImAQv3R8CWAyX5uwzWT2e1l7ZBwVwkZ7gGqAHApsQ399y2PLGHx/ZnNnio5D/aGDboTJY7I0cgOy8P4tkwdpTYcRUGa8rnHNPNGKImVYziAF7RWjEWpcSa803T8zPEtcRzc9duepekw03k3D1cEL8sYpT6mzlGsY1n2n5B0qtiAR5ykY2PVW3BEuF7Tseu7t+hSAtDwDmWyd0e+6ubUqW441xWnnhNFTHSLZFUR6jBmfBVVjQQDCNvQ+J/U3KQ5qZKyj08vOcxffnTvrc3+kHvuiQte9Hks5E0Ls45XiyWm4e4xIlIZX3ygPxhWqDkfDCCn3L2nV2NKYE208wUpC3pv3IlLc0/hBuQKvd6enwzHNNl4/rj69LABkA/0M/6jd2abImOrP9f2XzGXZt+gEIm/uZFMjrHQhVMJ1YDqHZMVAV0w7S2Vc+M8ByrlLdk0QTcDCTJahHso9QUKknoicHr3ubYXDuPdooLk3xvQ4USRf/dC+pIvxh14g/VktG5ovPaPesIJ+NCzbycPvhwoyc6ZI5lfsX3THqT1wxP6mgNz83k5wWHtZjXzTB6GJLyxtgn49wzYd5adeVSQeD3WVivNfNOvenFDyE1i7XMyuqumz6swy47tSkqwg4wTei9rgwuwdAID1lPu1/I1ANUvt3nGERYJqFB0/YOinfrxStfZLYqoN7EsKBRCPkeVW7XCiLc0J6dwP4eg3DiQoLrrl64ZfZXsHSM942xS6XOme/bx4KFlrw7y1qxm+gyty3/fuVtPyfj+BoM0Ctzv7egYCrfFfD5+2JXZa5ve1dBGzBw1SmdfjMDTPx7kGVt5g0+JjvESh1r82F4vW12OgU6B8LwQ0dBG3VQSorMjCE5zb9
- 4QMMGMJU
- bNwtAf72KwaY0+Yob7calmELFnF+vjxKiCfBi3yF0JdkS3zEMt4kefBhOB6A6BOfRycgOfFrjVfHYrgA2FjxT95eFvic0Y4DO9zAeJVWW5vGn+EjwbdF5DSacdQfWSWmS7z98L1x6F0TVMjMJrDL9lDbBcHGNwUIb5SCJgrvjY0HaPPH38OSbd/hjTjhsw0NOuAN4JnYUtWOkZyWQilHEw3vSNtCKjFotDSwxu8M3Fa9LYmvBrLglwJEwHKeMGFfVrRDsaZS6YAr2ngl2xhD7q7rQ8gtKPc7Q0lV9+JlswYSuiAR0TBegHiwhkQZJnhjlcrOLMM4THMv3gYGeF07TERG3ktzc8v8RD9pynaPp5rwXmcgPtoboQH4qCm9Ea7C0KU6PF30+sILnedLkR+NG4i/JMYX0VpCqrShNeZHkDCnqlQa1V7mTGFlXACk/rRvcN8iszHpiJ+HMGgFVCGDU5j3VSL8+nDFcUVzPBDBUeLN2g/0yBVeqEyOyqO8ML2gimNGOe+CpUoPwB0DusUkakC9qsaKcRxy0rGuP1/4yCcEw/qgkR7k/i/FBUw==
+X-Stat-Signature: qb1cwkw46muggowtuz5dmgkgpydpgnaw
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1755021531-219040
+X-HE-Meta: U2FsdGVkX19r66NN5oCKqETbqyV2PCmpQvhiAqLAKXt36UrUxy9W2Zz6iOVmRyRmnPa6whd1BR3zRFdx0sE5pCCA44PUMgCfTIIrKCeas+RB6/XjI2TnGYppviWicQOFJk5CoFNFyI0BLlIgcwEvqSkCnMtn57xHX5qPtsocuS23x78lLRSEbp5CmXLQg1tprqdVoeXnqp04OHK6jJmnZ2EGBufnqgnV9ks5K+lmhtudgkwzzA6EXawfQZD9yHG766facuzUGBqyM2jWRpjMhvgNou2bXusBrNVS+WG8Dnw9vecKlF6qJSVotwjXAy9AEhQjJlmb13OTPLRH1UL/SRcBSvbEhXQ+Q9VPKF4UOHsjuqBTXKZC+SDcX1p83BykKASqivOgcNmtiMQwxCS2P2nA84yv6dICpnAjgjjxikYomvnyOI5vsjo8yfaf7Q0+9trPm35CJIAOFSAx8VFcbTcRQ/AKAtwPwuko6cwSgC0E21U+2IcuCMkmJEvL1cQX8FWN7OAYiqk7C3GC1uwcq8A+v4MBkHj3zn4InESNhcZvKv9GY1nUHMroIb03YEBZV03U4IYo9GIg1vVN4Qk7I2VuaC0Lo/jmI+HykABWTIi3Whj94uFtaEa81LyuaNZStRd76Paat5L3/Z6LDnv8haxU01H95YcJ/11ubQIFc/vab0WSjKXlNFGDMitWqhRJd6Dth5kozNFNmR+Hp0nrHQWaSLI30yFT0aSy/n/oJYIgtJyetoQScxCcr2v06NjbQ2RcBdTh8lKr3BO7npiwUQn2NqLzG/6yi9XLPK+9jfFapS7aBuKfOXiBF6MZzzMZiGlsKE73vHt5vCvRSO2kCzEVE166F4Pj4/57gT1DyEhfhWboZDHnNCx6fQPdmnk9MJxnq5nksE71o5iA+sgLEpp/M/RnkFpXcNkPkSkqQ/W73WYJXut1qX+XvXWYPdZOQT0sK9AdDwN114ijOFG
+ 9hcM6GKp
+ 5e8elpeodcrQA6lTpKwwDkIbunzweeO9Dgb12bvr9bzHKBHius1MtOJ0jJQlTN7+rSKmEwrYSWCDh0yCsGp+3eEjRw1RkaU0fY/ntI+1SFX4s1G6ws1X6s/4bHENjepbxjtG1WafezgJUqxJFRIa6hlyEihGwvmC/CVvcVn50t+aB7pDip1t/mL8qrQO6GLE5nZA7es1SJh445cM4Sc6Ra5EjxiSDLLTLxOdH09mtle9AlQWiiaQYZW9nQwaFBY6Uh+RSmY27gZiPRTUpT8NVd5kj3v7dZjG6XXw03nEQ45/eojWYn6q8GKIboBMlgXPDV9OFiSqM3g9LjIOrghrqJiwLsp6iYkt4wriTR4HLANFRtvYX2C3X5CY6cjmpFDRHoFwhEWUrWXWyl9WFsr/7rLCoyPfuO2qZ+NZN4RMxegonTYoSXagAe2DND14DMKUrvbExa3QuywCFiHKf6GHdb0CdcYB/334GG5DYSbwhv1fokDFipiwLIuTHGGhIaEmIxfce
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,26 +124,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 12, 2025 at 05:46:47PM +0100, Lorenzo Stoakes wrote:
-> On Tue, Aug 12, 2025 at 09:52:25PM +0800, Qianfeng Rong wrote:
-> > Commit 16f5dfbc851b ("gfp: include __GFP_NOWARN in GFP_NOWAIT") made
-> > GFP_NOWAIT implicitly include __GFP_NOWARN.
-> >
-> > Therefore, explicit __GFP_NOWARN combined with GFP_NOWAIT (e.g.,
-> > `GFP_NOWAIT | __GFP_NOWARN`) is now redundant.  Let's clean up these
-> > redundant flags across subsystems.
-> >
-> > No functional changes.
-> >
-> > Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-> > Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-> 
-> LGTM, I wonder if there are other such redundancies in the kernel?
+On Tue, Aug 12, 2025 at 6:57=E2=80=AFPM Yeoreum Yun <yeoreum.yun@arm.com> w=
+rote:
+>
+> > Right now, KASAN tests are crafted to avoid/self-contain harmful
+> > memory corruptions that they do (e.g. make sure that OOB write
+> > accesses land in in-object kmalloc training space, etc.). If you turn
+> > read accesses in tests into write accesses, memory corruptions caused
+> > by the earlier tests will crash the kernel or the latter tests.
+>
+> That's why I run the store-only test when this mode is "sync"
+> In case of "async/asymm" as you mention since it reports "after",
+> there will be memory corruption.
+>
+> But in case of sync, when the MTE fault happens, it doesn't
+> write to memory so, I think it's fine.
 
-Looks like theres a lot left for this specific case. At least 48 show up
-that are spread out across subsystems when running 'git grep
-"GFP_NOWAIT.*GFP_NOWARN"'.
-
-I think they should be cleaned up in sets per-subsystem to minimize
-merge conflicts, as suggested in the commit mentioned above (16f5dfbc851b).
+Does it not? I thought MTE gets disabled and we return from the fault
+handler and let the write instruction execute. But my memory on this
+is foggy. And I don't have a setup right now to test.
 
