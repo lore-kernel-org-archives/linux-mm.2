@@ -2,124 +2,302 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4823AC87FCB
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 17:27:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 83EAFCA0EC4
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 17:27:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD51A8E017A; Tue, 12 Aug 2025 13:26:59 -0400 (EDT)
+	id 2638E8E017B; Tue, 12 Aug 2025 13:27:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DABF68E0168; Tue, 12 Aug 2025 13:26:59 -0400 (EDT)
+	id 23B4D8E0168; Tue, 12 Aug 2025 13:27:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC2088E017A; Tue, 12 Aug 2025 13:26:59 -0400 (EDT)
+	id 08DFD8E017B; Tue, 12 Aug 2025 13:27:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BC8808E0168
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:26:59 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 62A1F14012D
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 17:26:59 +0000 (UTC)
-X-FDA: 83768785758.02.1E9E879
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 97F7A1A0003
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 17:26:57 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qdZLy0K7;
-	spf=pass (imf19.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755019617;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E74DA8E0168
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:27:16 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8C6AA55AF8
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 17:27:16 +0000 (UTC)
+X-FDA: 83768786472.30.E6FC593
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf01.hostedemail.com (Postfix) with ESMTP id F0D8640010
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 17:27:12 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="Bjq9iJz/";
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=XB6Rd4FC;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf01.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755019633; a=rsa-sha256;
+	cv=pass;
+	b=pYPVdECt92jx7DUkJMPwqzLYHF9N592SuMvReOXxVEqUBs6xt+ep0sKr0990qc2oAYgxn6
+	LhTc+idnISFi4jHHVQ/kn8gjDaLlCBhQlZQEAwshp4HJC5mIILeLMlEN9ozDMoiY0I9ubL
+	1Y4BmxIFtmOAQzdDV87aezqGltMg+J4=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="Bjq9iJz/";
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=XB6Rd4FC;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf01.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755019633;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ud7dUqIlwNV3774AhutRUNv0cVWIcO2M8Y99MaJZGus=;
-	b=kARPDLfLLbyjx6uZYZccORpLt+wUA10rJhfXpQLd64zcvX6Zujsqt20faagcDasouWi/u+
-	/ZCPR/yJSUGrHK4yMqL564ldBg+mCYLUpzBfAcSjyR8Q0bpt3+BFDIeu8rZj4upNb2s+j2
-	M4Qj+5F+MxU7D5yBxxUDv416qg65108=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qdZLy0K7;
-	spf=pass (imf19.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755019617; a=rsa-sha256;
-	cv=none;
-	b=T6NlK5r5hdNsHxAjS5sfgpaGtnhV6XuMkk2XYCrlTw8SFCjAMcxLtfKCTia9EpgHgL1z4+
-	RFksDjKOMxa8hKje4k8hJuymVAlGmGV+NGZ9MKMDjGXf3964KxMfKtICXrx5VMfE/N2p20
-	wggFwf0MYIQOK/wAbxdjzRy9GF2IblM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 18EA445DCF;
-	Tue, 12 Aug 2025 17:26:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8DC8C4CEF0;
-	Tue, 12 Aug 2025 17:26:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755019616;
-	bh=3+G+Hlu9Vk9eunN31fxV4PS7eTzvIgYXetLB/9sOOwA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qdZLy0K7i9vgcXSgUICwY8FOv2kcDgtA95nkdB2az+5P3mnY8PMt/gm0fLGWNV4ew
-	 qKiFiCEYJZkW2NiH4WRaoN+ycjrlv8uHKfRoU257dRGblX4r1Wpf6WbhUh9+sq1wxj
-	 vVoznPuVwXl/j41iNsQZope6uGa7jCLppaF/p1kNnTImRZgBUNcseM8/VXbrQmKSdu
-	 aPn6BkWuUpVJ9IMabBUEZwBzFPx4fwHOFGQkf/AS/VLGlMKxcSCwAy6pR/NVRUU+CP
-	 JW6GPzZ02Exi3LfxSiFmgiiGjRtiUB3vrbv7q2BBJVGVVmxorC/wDPRhJhStqZKCiJ
-	 pLTgF/Sx1YNyQ==
-Date: Tue, 12 Aug 2025 10:26:55 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: Michal Hocko <mhocko@suse.com>, Theodore Ts'o <tytso@mit.edu>,
-	Jan Kara <jack@suse.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, Ingo Molnar <mingo@redhat.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	len brown <len.brown@intel.com>, pavel machek <pavel@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Nico Pache <npache@redhat.com>, xu xin <xu.xin16@zte.com.cn>,
-	wangfushuai <wangfushuai@baidu.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Jeff Layton <jlayton@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
-	Adrian Ratiu <adrian.ratiu@collabora.com>, linux-pm@vger.kernel.org,
-	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-ext4@vger.kernel.org
-Subject: Re: [RFC PATCH v1 0/9] freezer: Introduce freeze priority model to
- address process dependency issues
-Message-ID: <20250812172655.GF7938@frogsfrogsfrogs>
-References: <20250807121418.139765-1-zhangzihuan@kylinos.cn>
- <aJSpTpB9_jijiO6m@tiehlicka>
- <4c46250f-eb0f-4e12-8951-89431c195b46@kylinos.cn>
- <aJWglTo1xpXXEqEM@tiehlicka>
- <ba9c23c4-cd95-4dba-9359-61565195d7be@kylinos.cn>
- <aJW8NLPxGOOkyCfB@tiehlicka>
- <09df0911-9421-40af-8296-de1383be1c58@kylinos.cn>
- <aJnM32xKq0FOWBzw@tiehlicka>
- <d86a9883-9d2e-4bb2-a93d-0d95b4a60e5f@kylinos.cn>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+	bh=Y8GhmpN6luQwTgzYZRjH9SxVaCA3hXDv8/p1ggptNbA=;
+	b=4SIEvyifS/gAJGO2UM6UbsrVHRLmAW+Qm3CbGYhEl2e0hjW9QyDOmIhg7jB18hpos8dlNv
+	wdpNDFaubKvdgOHam2a+RBWw1ZvuZaIIOjszMkWQX0Ey3JI3tIYs3Ez4NTemfxhjZKFdXb
+	2PREpn1g6zC350x8v8mnZ1E6DU19yok=
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57CDC6vw006392;
+	Tue, 12 Aug 2025 17:26:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=Y8GhmpN6luQwTgzYZR
+	jH9SxVaCA3hXDv8/p1ggptNbA=; b=Bjq9iJz/TmIpY54t1oHNOQ7ahcCOVU1jMF
+	5bhV5ZpXr7yNikyeIZ9ImmjbL2uespGXiIU0PugYhD2YXw2K+u8oIxQx5QpVOdSl
+	g33Q/1M6/Qxhzkhs2cdBG0Vg6YEXSOJQdslfXajxp0rPmfhCeqAcaZr6HC/CbNb+
+	SlhEcs+8mmJ7xiiAJP7RWSLIASRqubN5ziu/xuM7Twy11OHVheClw5b+U++37ZKN
+	AzL228V3y0Fplsp/Z9CUVA+5afZGZAkyV5gM3X8ozx9xvV1jIrDg2hlb/7354qh6
+	6iMBp7GFc7+dIJlfs3FvnSKKapzoCAl4cxh2Goz4fabTisVVZlJQ==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48dx7dn4wg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 12 Aug 2025 17:26:48 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57CHAjtC017414;
+	Tue, 12 Aug 2025 17:26:47 GMT
+Received: from nam04-bn8-obe.outbound.protection.outlook.com (mail-bn8nam04on2042.outbound.protection.outlook.com [40.107.100.42])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48dvsa8xu9-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 12 Aug 2025 17:26:47 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=S2Ea4k0SvukEU3H2EJGaFFsyqRJ75UjF7t4hSRgyBe1lpNEFTzoH6Wr3kpE9xGEEJL50mRFXXE1tfjaP0uYq62mFLTokAic5YNDhIytOe3VVjUdxXw7KzPAtJSkG2QGKUC0Q3ThvYDl249hPXPLwf1f9VkHenHQFHnMGngCsV01W/dLTC2BGtZXCDdv/ojnczMe68ihcOc/CAfVzjZVbX3H2EO+ordEzgDhPxMSTOIvO6pYROUf624hDz2oBl7ckgzIzderAWhd6YCFNhLeiEqCi195TlmIiY3BD5uTjd/u0Vbp/BzIE6xRevjiiYokYXPx8tnexEkA20L4hKtErFw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Y8GhmpN6luQwTgzYZRjH9SxVaCA3hXDv8/p1ggptNbA=;
+ b=XFuZJfD+Za6IWtxiQrbVK78DN2T3e8jo/FQx+u8HxOhpcGDsLp7ED+0PxenzJYSajC3MYzJkIgo7He8bNhIF8pQ1NElTRAFo/pqETnMS2XFJxsZVYaSKhF41Z+JuTNUYDJlGl2r+Os+T+q6eoVjw4tdVktWmNMHQbbL0BMdcNdXaKMujdLaO+BpTVHbADWvV0fHr9ZSZdeeT5YVQWYERlP4Nzzpv0RKL5uDCJVQvPBDSlPm6rgmYnr9g1xuulvoQp0FDbL231BhIJdvpd+01AGQyo6ppbW2pzEvIEstlX330cubQdgCo9UJHQfx2dQxxs73S1JBqJXoFoeV+Y7Asaw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Y8GhmpN6luQwTgzYZRjH9SxVaCA3hXDv8/p1ggptNbA=;
+ b=XB6Rd4FCH+u0/tIr6y22EUfsQUNOZAoUVFOznRVNZUnxfUY2dS3n3ttffbooF6wDAa04dfNhcdH2JG2zbqPHlzHV2BtKkg1qwDd2FmXMgq35cezs/cWuB5a2pU5j9KTYygvL5GYzLRTkcuHfa70j9t77fK0N8CeeT6fzZrVQC8M=
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
+ by PH8PR10MB6314.namprd10.prod.outlook.com (2603:10b6:510:1cd::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.14; Tue, 12 Aug
+ 2025 17:26:44 +0000
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::75a8:21cc:f343:f68c]) by PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::75a8:21cc:f343:f68c%5]) with mapi id 15.20.9031.012; Tue, 12 Aug 2025
+ 17:26:43 +0000
+Date: Tue, 12 Aug 2025 13:26:35 -0400
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Andreas Larsson <andreas@gaisler.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>, "H . Peter Anvin" <hpa@zytor.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+        Kees Cook <kees@kernel.org>, David Hildenbrand <david@redhat.com>,
+        Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+        Xu Xin <xu.xin16@zte.com.cn>,
+        Chengming Zhou <chengming.zhou@linux.dev>,
+        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        David Rientjes <rientjes@google.com>,
+        Shakeel Butt <shakeel.butt@linux.dev>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Oleg Nesterov <oleg@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+        Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+        Peter Xu <peterx@redhat.com>, Jann Horn <jannh@google.com>,
+        Pedro Falcato <pfalcato@suse.de>, Matthew Wilcox <willy@infradead.org>,
+        Mateusz Guzik <mjguzik@gmail.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org
+Subject: Re: [PATCH 06/10] mm: update coredump logic to correctly use bitmap
+ mm flags
+Message-ID: <7wjaerxsmtdsdzy5vfrzts7un2cuwo3nbf7khxzaetypu6tdkr@thz4i7e5shrz>
+Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	"David S . Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	"H . Peter Anvin" <hpa@zytor.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>, 
+	David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
+	Adrian Hunter <adrian.hunter@intel.com>, Kan Liang <kan.liang@linux.intel.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Matthew Wilcox <willy@infradead.org>, 
+	Mateusz Guzik <mjguzik@gmail.com>, linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org
+References: <cover.1755012943.git.lorenzo.stoakes@oracle.com>
+ <2a5075f7e3c5b367d988178c79a3063d12ee53a9.1755012943.git.lorenzo.stoakes@oracle.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d86a9883-9d2e-4bb2-a93d-0d95b4a60e5f@kylinos.cn>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 97F7A1A0003
-X-Stat-Signature: nbwuhtabnz89puqanytjpeouc1s6zeor
+In-Reply-To: <2a5075f7e3c5b367d988178c79a3063d12ee53a9.1755012943.git.lorenzo.stoakes@oracle.com>
+User-Agent: NeoMutt/20250510
+X-ClientProxiedBy: YTBP288CA0019.CANP288.PROD.OUTLOOK.COM
+ (2603:10b6:b01:14::32) To PH0PR10MB5777.namprd10.prod.outlook.com
+ (2603:10b6:510:128::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|PH8PR10MB6314:EE_
+X-MS-Office365-Filtering-Correlation-Id: c294d2b5-5ebe-4749-50a1-08ddd9c56832
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?mG0zp+/TWeFX8daBxQR6wU7nNcs3ORoimlc3G0fo6xJAyDLFWApTyOmZC248?=
+ =?us-ascii?Q?fK2VAsW6+MmZ0HgU8T5ufPM0ypfczI58G4JI11akW0UmEpMiTkn3RoAexKw/?=
+ =?us-ascii?Q?sB5Nns/qy2/eu3FK9aL0OA02bQL9S/8pY8xw6OhY84gbA2q9PN4EqXZqvrhe?=
+ =?us-ascii?Q?vmRdiiZVEBqdOnrAslsCTp21faj+jZ62obetkzKckdcrOJ0vOVJO6dw3ysA2?=
+ =?us-ascii?Q?Ka6AO1+L9w+Vt1CMQYK3v/OGIrwm+qatenhsBbS/HFx2FXAxwsRugBVm37yy?=
+ =?us-ascii?Q?ggnU+QwOXfjn0No8zh6KtoNZCCBZ65gqDsniW8K9XthWEGmqRffa1Q5XKD7K?=
+ =?us-ascii?Q?H/V+ywzvNnhh52IW1kA26GGvDDYeSNChulG24lGHJkxIMo+66Tqda0OqCp9X?=
+ =?us-ascii?Q?hNw/SluRXiJDmqINjnoB/OIQSLx6RPqbFFS4WW3xQv4+3pqVpJ3EtZ6XzGaV?=
+ =?us-ascii?Q?5QREgeUAxUKGrfLsqPtEQEFH9ICXvETGYxJGJfsLNBdQxBVWHAvbgTNLHs6O?=
+ =?us-ascii?Q?0ezN7ZCS0OSM/q/YHLeUw7M8K7hXL2MROeUHQbW9nmqg7nGo1Ue6CAF0s0qd?=
+ =?us-ascii?Q?ZoNcgpweOBya32XfSJV2A0baSuxBV7SLIIkY9hZAg6AVH1JYtussKT+GlV0B?=
+ =?us-ascii?Q?zv+Bw2hMtIKoDeuc//jp7/iJmkKgPGal7bkuMjpHkxG7wR2fOP/ZYlp2oegD?=
+ =?us-ascii?Q?eIswoTN4HQaaBRiQuU0vLbcH7J1jQh1gMnpvor7jKQZrmYh2HSgB5JnnOUJA?=
+ =?us-ascii?Q?PuNffe7qCkWlWUAGaLxPyfi+Z+wukhTqXO8ka9K+2QEKLmPv+zZcBhp6Cdxp?=
+ =?us-ascii?Q?RkSNZyHcZubMzOkqACWY+hz2uYEGZztNGnDQOojDyWGq1gyooUSFOhTpVZKE?=
+ =?us-ascii?Q?BfnUrMoRDK8ZIJsAVL5zo06fFTb4TJwZDkAHtder/PWdGdy3B2GyFCklCtUx?=
+ =?us-ascii?Q?x2XZHqS7J6HA9zMN5GcuVlnmq9UvoLLiYmGpn/Lop1X0NvfF+/w9tAv5VJMB?=
+ =?us-ascii?Q?tjWXV6uRefgUFoEdkvBo8zqhl2PkhPD1+sp/QjpPDrCXgwfEyXMmpvK2kZZb?=
+ =?us-ascii?Q?D157gDYHSIhfw6sghnG+/8cm6pzD9w9pzpOoDDdzACbVZb6wf/ay8mOkPJjW?=
+ =?us-ascii?Q?GhswBU3gN01keB8cOPzo58KHzqFYz9bkKg0dnn5K3R8ay4BiURloBpjhNwJi?=
+ =?us-ascii?Q?thbPKy13wIag4D5VIraEvbUV6PVexQ+i3/uHk//oEtYoxf+8xx4SIqhk6TR+?=
+ =?us-ascii?Q?cX0gX6bolQ4L6JiW9w3JAQE2D0rW8oLE8VecjGdGGAKbAOVvXUURCnwmQK3k?=
+ =?us-ascii?Q?8Nx3Sezlvl/skvcIX39vRsm+at3a9ukvHHJi6lKTXJ93MJ7OITmo8NG826M/?=
+ =?us-ascii?Q?ULqKicrpDLy5Xnlp8DlpzOdJjlF9JJrTWniOSWK5qyplYBXBLKSWsIB3/lHY?=
+ =?us-ascii?Q?JWuVjhfVjpE=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?22xYH4gc7w7i8PSpY5yIXZKKRE4LqeeZp2rxxVpIzxGMOVYabBSq9o+Aj6HF?=
+ =?us-ascii?Q?HBokb7X+xyQgKhQ/Q3OekSOojbi/W4yAVAgc7TbebvJ4Y2a13LewU9q2SQ6+?=
+ =?us-ascii?Q?6MZtuh8dcWfBCiRh1RaL0M4k2LCNw6ivaFtzafxrfi7ZvKqgZfeZA1sJDXJW?=
+ =?us-ascii?Q?76OE5my046JeQgCA21Fv7vKz/SF22gK+FGkqOcrYKs9lPR/vn+KIsGVRsnyP?=
+ =?us-ascii?Q?YHupwnX+VON7mNC1k22QxpL0BvmHSyzP6JCPn3l6tsjL2zB7ngIaMr3QlODW?=
+ =?us-ascii?Q?Q2FApUn4oH87IdZsKkO4gzyJvXugD9aqkQKOwryszNLfpVxyPI25HUEJvx3g?=
+ =?us-ascii?Q?A9UU7qe3w7j7sN8YBdHlEs3O5O4um1CdPg7sNjWxEflwKFd8dt9rdjzLI4eU?=
+ =?us-ascii?Q?QSdkaAIuhfvTkTkz7qmSRO+Cdm9E8+Sc0b+xq4yrStYpgK9HNuPIdZQesyGA?=
+ =?us-ascii?Q?W9uJgxuT7X3LeKUqYE7RZKBvetwTKXKPPio5eJHtn5H5xawPTaymyJ4dIAAr?=
+ =?us-ascii?Q?wWVQxGDkVqkNWsDDRU0FUWpthtH7/PtlqEAcNb7sQ6zAcACN5BehxmJzqpHw?=
+ =?us-ascii?Q?aYbuRRVUMSt7zGjpRjot7qigzMjmhGzVp0LJdcGtYLB+VrE+whbStsXCmMUL?=
+ =?us-ascii?Q?PnBI36b47jGdFnQ+tiaCh/SzBOYfam9r/fZMtcDyqmcZP23LCKztEvoK02Eb?=
+ =?us-ascii?Q?X0a+IcLaI5BCCKlty3VEZ2Bsgove48JflXFnLMD5J3T7uIOteNOQq8jFfSd9?=
+ =?us-ascii?Q?YpA7LpBUSwX9KHn2DLdjxjbDl9r6Fid8RzYqg4RbseASfks+kyWIJI7558d8?=
+ =?us-ascii?Q?9+7TcNm7kNNVSxmpuPma37zA/lovHOYu6Yh/2i3EPuitPPm4++NeoPNK+s7L?=
+ =?us-ascii?Q?leH0EQMysykRUG5BCeSA8vFYFcEcI7oI7dAz9HNaZGcTU4lOWsixRYpD6PG8?=
+ =?us-ascii?Q?xXvHJPa0OEeZxjBZlx8teH5bxZOn9vBUbw/oxac7gyZRSu4v65s6zvmySuFi?=
+ =?us-ascii?Q?r4/uaZ2pkBGgIYDu30XirhkLd4Kc21pV638AFJk02fEfgjjvsadTJh7BCa+C?=
+ =?us-ascii?Q?sb0k8r3XZaxeqgyBItUYFC4VB/lZdZsUcu3afEeEYpb4V/TPtTrADgR1ceaG?=
+ =?us-ascii?Q?4qem/8yKfWM9iKvBd+IZGEetxYcCqB/EV0GSjETTHUqvywOgG9SbK+z2Rm4l?=
+ =?us-ascii?Q?WYLC4Nu5v2kHMlt/AX8DKuwd2uhut9wuNmv+mHUTFDJKCasJi7P903Gu9D90?=
+ =?us-ascii?Q?tYrei8SbXcgqvddaplbRBGp95fmDvUppHECLstsKWSUzE69cBGcwC0v2aKMG?=
+ =?us-ascii?Q?J1GIhq7lWbKu0LFWmttesXAf3yPJ5122MKzOw6DQbZXiMbcVXQC3aAZ2Zgpw?=
+ =?us-ascii?Q?nJw3FMJQ0hhwbPqAORXsRuRr1ETzEILOcQG540PB84FzheyC/MLdnFrFftrV?=
+ =?us-ascii?Q?9IKd46kRPXD+4p6ZfCYuvnA9LaPFdfzU7RsnROl38mQs3cdmXq3L5to5Yjkr?=
+ =?us-ascii?Q?iEKn1dkwl3EaebNCl5mt5Z7TVki/Y1duliY5xWQBmgb7pbWMvfwMVdWa54mg?=
+ =?us-ascii?Q?mlpADX6CLo9CEUBYigUXcH94dkEKbi0+s1POo1KY?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	a2Bh4W6U5QxuTBHDUjN04mRVW+knFj3UmCivB6iKm+4sIYdEeoKCqM4YGRFlVHznwsFzic+hIFu2L4g/uOoDYDNU6WhaTyzN5LNuw68Wab7USXp01YfqC8RPYomNoQRw6vav8gxm/Aq7InlGB0/301VvsD4s07/9cYTIt34XUichv42JNXMJAluf9e4Fe9481Q1Wvzc0JJ3Yx3GK6wJIGIhAZmomOgyMySYfxAKl4jRX50k9AaUGbsUqGqfx+0nrblizTDZM1+caSH0p21aAoZIgJF05ah43wQ+Ge15kvEpKa4/+/xJTEoZTFw6rLux/KjYorUHMtdUQY2VMbhfDEolvlP/UHeB+P3K+KZhlpU42/RBnY0tZYZnmu7CR9y7ICzZhiFNWdpMuHpjh0Pv83DtzAaM6DpISgM2L19ZV4FatfbUqTsHtj/OpiaJ3LNsDOkSPqrydFW2mZLjf173DhqUjz9hth4PQucRl9iGSyXcZvryEpbynW9MgHsB5jPtaxki22CDtxgBDHQsjSQD2KQxVQW+2a8mwcuzymBcUqp2uCrpvq1jFkyP7jAjqz1u9AfgA+HkCeS/oEiaAk5jn0rmgJFkb2UmglRuKsi2fG5U=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c294d2b5-5ebe-4749-50a1-08ddd9c56832
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2025 17:26:43.8512
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ezJqd/f0WLwCv+yFb4pcbz5S+Qf5RRzlXERAiDAKt9ZwdG2cGSuPnFIITHMd7eWLsnxozqnT2SPiSHoVu3+xuQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR10MB6314
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-12_07,2025-08-11_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 bulkscore=0
+ phishscore=0 suspectscore=0 mlxlogscore=999 adultscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2507300000
+ definitions=main-2508120167
+X-Proofpoint-ORIG-GUID: bp_CJlTaYtY9X6GTcsD6dm4teaIeh77F
+X-Authority-Analysis: v=2.4 cv=WecMa1hX c=1 sm=1 tr=0 ts=689b7958 b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=yPCof4ZbAAAA:8 a=lSnMXvXUbzvyXhDl-4AA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: bp_CJlTaYtY9X6GTcsD6dm4teaIeh77F
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDE2NyBTYWx0ZWRfX7bU/gAes5BBL
+ zRaaGKfNZP0ueeJGeMz6Y2lLrEn3XunCexws03BNaf9uD6xdZybKR9esrzYH+M7G4nwRK1Qk82j
+ N1bk4FD1IAOC7Zd2cYvrOsTtDSdre0MbwinGf5WmBJWqNX+LFCtrkpFfRwwOFfQCb3GevUPKWjD
+ xUbUMpyBd89SRB18536C0KD/NAHuPqG7dxAIvObc3QsyntLRILMpcJQQIqPrELVVQL1b6GoKz4L
+ HsM2x4XfHPSCSVzhVJVJf0eywvnGVSrw+e6ACYRjyIru2t55d22acWnAN6wa4riBINkaSBrhtjZ
+ wcaE8hf2SSM3q2cy5vT7Pm2AzwI29YqQv5RSYIKjVF9XTAX768eVXPZw9Z/095W2edjtlSxWPtS
+ 7vhSClcZ7X+DR+3oN81p+ZK8343U4oEDTUdG2/JVSf80zYMub0PN/b3BSAbn6VCHLaASBcvA
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1755019617-998084
-X-HE-Meta: U2FsdGVkX18CEfHJT4wkZaz2+k8C2KQ9ZMrclVArpoqBn2tJyrAoXyc0swoAazPNGYtDq/VImzYXXl74kXxV+I7tTthZKxsDituIIGfhXoaiMbrGnmGlV8mZMzRcx+T66M9axCpL6/DdIiFNJC8iuSDN6bbwIN62PRBlyd7A1OMGUt+enVRYJBVgRvchkQqO8hfy5iCguh7WeObNCTt81LrTtUKCh4fpAI8NZCJoM62qPW9IPeRDtF/O4PxQTW1CHMfqz4HMydn2/78wZSRioC5ijNz+3xtpx9Oyo1qkDUnKnsfIqmx1WZS3MG8ZBJVyhjg9gVodm6Aewsr3UUHG3xnIUWhxb5Q4F6EzkkTVdHLOvsfmbu2NBDsiSNB7/Ytb4VqV2vVgnjvAw3KOVmwB5oUTaOk5aMscEGvBVTMJ0OE6sATNO4jtGmiZnl56/CnMfqjz1Z0HPZluJSEqKw5RypVd6JLIuLV4EtNH1s7vcqFNRpL0Vmie3FQETvBu7I0g0E2qy83HekMYW6v/fSMttsclYWhVIu8UurPBxSjexRWfs8NeMbCzhhvuOmmHweClRRu/bqBbz8OBoUmi7HCAC3NH1NLgk8IaVogAf2b6CQrHzyMCXqh5f4Taryh5xb3ODA8nsKq8PmHUwOhyU6v6jgXhwQl3EevUxjwgqRtiUghcL1E4Eb1BY+38GCAK1V2YSp9sKfeXSLEmAXn+04Dxx3a7ZczdYMyDiGoJBEkx7MHyUoBp8O3J3R41T2Ya1/gY/uUZCCb0/BBkd6L5iBNrYrO/LkW8qlPT7AsHzmyTwuZQRr6hgVBs0qtI28eURp8i57cZ4SQ44nhsFyiwMeXAwwn70UzR1NBXMm3f+x8tHr6Vt0SWPOeyQVoQmLUd1Id2Zu+TBDJjHW5ib8rEu3N7+Z0nZBjdiQ2CjYXttQH19zwlE2JpjltOjrih4/OpDHYCdZDqBkfzTFeqQ0RFfET
- KTsdqLu0
- mfZMqeSVuRPgOTCmMR1Mx4XBxZ2hjcLHgsAOOCivYi+GkT15bT5M5m1HbB9jSuWzLK4l1YVIJmmTKt0mHMP2krYKms9UhwmESBm2BMB6Lg1ZZmV3wSurvXX3iUhZPMWlK99I1BkIcPMlovj89VNsJVaz6CwRf8eD25okbfzzvufiGcBQ6/fwG7aTwSr2gmW9Zy2OkZ/O11casU23kiuX5us/hd8ESwNaiUvkvh8vFwhQYZzfwWy6/5AeycSwOYy/IGeutXu7l1A5Eln2toftTHUB0rA==
+X-Rspamd-Queue-Id: F0D8640010
+X-Stat-Signature: weoptpk9szirj81z5ghfm9tpomjdo9bh
+X-HE-Tag: 1755019632-224914
+X-HE-Meta: U2FsdGVkX1/3rvpnsyNstn5qx8fsfKS87RxqZYLjmyQV+Kw0PY9mgEcY0jS6B+GJRjn1gNo7OCyTSmZNzhBahbAs2CIgmutli180/UMmWrTjsAvYXtW6BTRbEZGhe9nEsdnADBEKIOI0r3tpkJVZY0OEo2hfMnQXkW01jVvDxxdl6ByGayMLib58ibo0kl5PA0hHRnB341GvLRCn0/m/yEqZhJya9POP37dBqYfMRyt/D7sM932ra6KgHKh9O7wDqoF/LxWjYtwJTU9+tvKUrVtuw0n+iCrGco5qVBqyo0a18UQ4/ouxrJXQANpkN2Kb32sCdlS2w6n+kOusCUt0fiPWxuP7H55IW9398dtXJAHYsxAXpUdzzu+YJwT1FWvEvHvcgm1K/0GSaWIxs06QbS6xGDt1TZcosT9iohWeraKTT2iYgP7cLZh15aQeeUPdHfVzDX00c/US5N21FFbI9upTANxueuWNh7EIQ/YbroVlS+Vcl7+JzlWmcLdzdbRxnLc7sjtITui+dHCDap1bAgIIIApxXkFpun0+IjU4GF4KF8wc/RpKuNbGdXoTETw05+T1k2BDfvr7WGnHbETjio+vym09DpVAeJhIcExoS18S7H+rShnFeiy61al4JalCYr0jujncVsYguNfheSyJwKVa6Gpxo2K2hJlG6NHR4roDPuN5DZA0n2bXrs0dps6bLZic0SuPPPGFy7XmM6MLDrdeTTm98SySnwEQnQSJcM4O1FmlpFITFdNqEZPMgt12E8tL1AJH4SJ0/cJq/ekSfgELTptRgAs+IotH25Ag1MEeCa/cNWDmiZIr+y5J3CWFI48KduPgSaHdBBcD6Km/5upHDZb+DTricKLTAdJqn8FjgLS1k9tKQp5gQ56QazXKr7pWr8OWkSIQ0IpsVavlSxWVBsM/UoGgb+QTKBbb5nsoTthEJO7FaCTvPV9ivN6vQFHxPn4150KRDuG7Oql
+ NFgysXPR
+ wC6ib5RI1PnzR231mP/rBkpeb3RAS8v+RPlIMrjL0fOsU24h2OcYfIc8mNS82f9wH8or0ygCM8r2oLTGkjj/gnZ2XFbadsUbop4sZRqonGuvGkKuXqjwmkUjPCJamearrmuDDNW1MAnkiuh40HhN2CCDcANkJXp71ujc8d7Fffc2TR4T/2g7HZUU/vUIde939BUBY7oRI7sYOUNJLJXSXwYZJCW/3waq0jcOvYwmtJc14Qtj4MIcXRVoqf8yZzC5qyf8dQ1eb1OGtxuPSlrRiFOG737S24A5stz52rZR8DHRf6IhkWNZJsbDE0H5Lub0bk4xqkuMrViGLbkgStrEBeIqHsxDYxkBvBAQqMvvCqCZvrXHrKhCeaQrRwx145geQoJ/BhiS1AfoRtQpChIkkI4PZHzZcFpNVoarWTzhunUkI2N6ODe3D0gdLoEDwwAiWTlYXZKk7LeNeFDTn50A2jHzxNZvqSdVIBA75iedcErFtSXWoJBr/Uo1sfX9qZACc/18hexG+jZ4sJAU8WVRzz4zHVLszF1DlNTk70JDwCdBDUm0oXfIkBJ9PzrvbPHM74P4WiQpRHCjEU9gHglnGzpBsT6a5ugnll9Wx5nn6H3U4HDTiK2fKjuit4V1Tjpq0XmFlExj5nFHwAwvkpCOnkToO8r9oJiA+Zmx/vVX5hpqrjpSNNBR+H+55FzlPasA+tQNwHD3nCutPr24HFnScSygouCujjEXQmOCSOgTIf/1Uj98yfBmDW840s4aD961gbGeBOJ8Tmy1+GnU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,168 +306,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 12, 2025 at 01:57:49PM +0800, Zihuan Zhang wrote:
-> Hi all,
+* Lorenzo Stoakes <lorenzo.stoakes@oracle.com> [250812 11:47]:
+> The coredump logic is slightly different from other users in that it both
+> stores mm flags and additionally sets and gets using masks.
 > 
-> We encountered an issue where the number of freeze retries increased due to
-> processes stuck in D state. The logs point to jbd2-related activity.
+> Since the MMF_DUMPABLE_* flags must remain as they are for uABI reasons,
+> and of course these are within the first 32-bits of the flags, it is
+> reasonable to provide access to these in the same fashion so this logic can
+> all still keep working as it has been.
 > 
-> log1:
+> Therefore, introduce coredump-specific helpers __mm_flags_get_dumpable()
+> and __mm_flags_set_mask_dumpable() for this purpose, and update all core
+> dump users of mm flags to use these.
 > 
-> 6616.650482] task:ThreadPoolForeg state:D stack:0     pid:262026
-> tgid:4065  ppid:2490   task_flags:0x400040 flags:0x00004004
-> [ 6616.650485] Call Trace:
-> [ 6616.650486]  <TASK>
-> [ 6616.650489]  __schedule+0x532/0xea0
-> [ 6616.650494]  schedule+0x27/0x80
-> [ 6616.650496]  jbd2_log_wait_commit+0xa6/0x120
-> [ 6616.650499]  ? __pfx_autoremove_wake_function+0x10/0x10
-> [ 6616.650502]  ext4_sync_file+0x1ba/0x380
-> [ 6616.650505]  do_fsync+0x3b/0x80
-> 
-> log2:
-> 
-> [  631.206315] jdb2_log_wait_log_commit  completed (elapsed 0.002 seconds)
-> [  631.215325] jdb2_log_wait_log_commit  completed (elapsed 0.001 seconds)
-> [  631.240704] jdb2_log_wait_log_commit  completed (elapsed 0.386 seconds)
-> [  631.262167] Filesystems sync: 0.424 seconds
-> [  631.262821] Freezing user space processes
-> [  631.263839] freeze round: 1, task to freeze: 852
-> [  631.265128] freeze round: 2, task to freeze: 2
-> [  631.267039] freeze round: 3, task to freeze: 2
-> [  631.271176] freeze round: 4, task to freeze: 2
-> [  631.279160] freeze round: 5, task to freeze: 2
-> [  631.287152] freeze round: 6, task to freeze: 2
-> [  631.295346] freeze round: 7, task to freeze: 2
-> [  631.301747] freeze round: 8, task to freeze: 2
-> [  631.309346] freeze round: 9, task to freeze: 2
-> [  631.317353] freeze round: 10, task to freeze: 2
-> [  631.325348] freeze round: 11, task to freeze: 2
-> [  631.333353] freeze round: 12, task to freeze: 2
-> [  631.341358] freeze round: 13, task to freeze: 2
-> [  631.349357] freeze round: 14, task to freeze: 2
-> [  631.357363] freeze round: 15, task to freeze: 2
-> [  631.365361] freeze round: 16, task to freeze: 2
-> [  631.373379] freeze round: 17, task to freeze: 2
-> [  631.381366] freeze round: 18, task to freeze: 2
-> [  631.389365] freeze round: 19, task to freeze: 2
-> [  631.397371] freeze round: 20, task to freeze: 2
-> [  631.405373] freeze round: 21, task to freeze: 2
-> [  631.413373] freeze round: 22, task to freeze: 2
-> [  631.421392] freeze round: 23, task to freeze: 1
-> [  631.429948] freeze round: 24, task to freeze: 1
-> [  631.438295] freeze round: 25, task to freeze: 1
-> [  631.444546] jdb2_log_wait_log_commit  completed (elapsed 0.249 seconds)
-> [  631.446387] freeze round: 26, task to freeze: 0
-> [  631.446390] Freezing user space processes completed (elapsed 0.183
-> seconds)
-> [  631.446392] OOM killer disabled.
-> [  631.446393] Freezing remaining freezable tasks
-> [  631.446656] freeze round: 1, task to freeze: 4
-> [  631.447976] freeze round: 2, task to freeze: 0
-> [  631.447978] Freezing remaining freezable tasks completed (elapsed 0.001
-> seconds)
-> [  631.447980] PM: suspend debug: Waiting for 1 second(s).
-> [  632.450858] OOM killer enabled.
-> [  632.450859] Restarting tasks: Starting
-> [  632.453140] Restarting tasks: Done
-> [  632.453173] random: crng reseeded on system resumption
-> [  632.453370] PM: suspend exit
-> [  632.462799] jdb2_log_wait_log_commit  completed (elapsed 0.000 seconds)
-> [  632.466114] jdb2_log_wait_log_commit  completed (elapsed 0.001 seconds)
-> 
-> This is the reason:
-> 
-> [  631.444546] jdb2_log_wait_log_commit  completed (elapsed 0.249 seconds)
-> 
-> 
-> During freezing, user processes executing jbd2_log_wait_commit enter D state
-> because this function calls wait_event and can take tens of milliseconds to
-> complete. This long execution time, coupled with possible competition with
-> the freezer, causes repeated freeze retries.
-> 
-> While we understand that jbd2 is a freezable kernel thread, we would like to
-> know if there is a way to freeze it earlier or freeze some critical
-> processes proactively to reduce this contention.
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-Freeze the filesystem before you start freezing kthreads?  That should
-quiesce the jbd2 workers and pause anyone trying to write to the fs.
-Maybe the missing piece here is the device model not knowing how to call
-bdev_freeze prior to a suspend?
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 
-That said, I think that doesn't 100% work for XFS because it has
-kworkers for metadata buffer read completions, and freezes don't affect
-read operations...
-
-(just my clueless 2c)
-
---D
-
-> Thanks for your input and suggestions.
+> ---
+>  fs/coredump.c                  |  4 +++-
+>  fs/exec.c                      |  2 +-
+>  fs/pidfs.c                     |  7 +++++--
+>  fs/proc/base.c                 |  8 +++++---
+>  include/linux/sched/coredump.h | 21 ++++++++++++++++++++-
+>  5 files changed, 34 insertions(+), 8 deletions(-)
 > 
-> 在 2025/8/11 18:58, Michal Hocko 写道:
-> > On Mon 11-08-25 17:13:43, Zihuan Zhang wrote:
-> > > 在 2025/8/8 16:58, Michal Hocko 写道:
-> > [...]
-> > > > Also the interface seems to be really coarse grained and it can easily
-> > > > turn out insufficient for other usecases while it is not entirely clear
-> > > > to me how this could be extended for those.
-> > >   We recognize that the current interface is relatively coarse-grained and
-> > > may not be sufficient for all scenarios. The present implementation is a
-> > > basic version.
-> > > 
-> > > Our plan is to introduce a classification-based mechanism that assigns
-> > > different freeze priorities according to process categories. For example,
-> > > filesystem and graphics-related processes will be given higher default
-> > > freeze priority, as they are critical in the freezing workflow. This
-> > > classification approach helps target important processes more precisely.
-> > > 
-> > > However, this requires further testing and refinement before full
-> > > deployment. We believe this incremental, category-based design will make the
-> > > mechanism more effective and adaptable over time while keeping it
-> > > manageable.
-> > Unless there is a clear path for a more extendable interface then
-> > introducing this one is a no-go. We do not want to grow different ways
-> > to establish freezing policies.
-> > 
-> > But much more fundamentally. So far I haven't really seen any argument
-> > why different priorities help with the underlying problem other than the
-> > timing might be slightly different if you change the order of freezing.
-> > This to me sounds like the proposed scheme mostly works around the
-> > problem you are seeing and as such is not a really good candidate to be
-> > merged as a long term solution. Not to mention with a user API that
-> > needs to be maintained for ever.
-> > 
-> > So NAK from me on the interface.
-> > 
-> Thanks for the feedback. I understand your concern that changing the freezer
-> priority order looks like working around the symptom rather than solving the
-> root cause.
-> 
-> Since the last discussion, we have analyzed the D-state processes further
-> and identified that the long wait time is caused by jbd2_log_wait_commit.
-> This wait happens because user tasks call into this function during
-> fsync/fdatasync and it can take tens of milliseconds to complete. When this
-> coincides with the freezer operation, the tasks are stuck in D state and
-> retried multiple times, increasing the total freeze time.
-> 
-> Although we know that jbd2 is a freezable kernel thread, we are exploring
-> whether freezing it earlier — or freezing certain key processes first —
-> could reduce this contention and improve freeze completion time.
-> 
-> 
-> > > > I believe it would be more useful to find sources of those freezer
-> > > > blockers and try to address those. Making more blocked tasks
-> > > > __set_task_frozen compatible sounds like a general improvement in
-> > > > itself.
-> > > we have already identified some causes of D-state tasks, many of which are
-> > > related to the filesystem. On some systems, certain processes frequently
-> > > execute ext4_sync_file, and under contention this can lead to D-state tasks.
-> > Please work with maintainers of those subsystems to find proper
-> > solutions.
-> 
-> We’ve pulled in the jbd2 maintainer to get feedback on whether changing the
-> freeze ordering for jbd2 is safe or if there’s a better approach to avoid
-> the repeated retries caused by this wait.
+> diff --git a/fs/coredump.c b/fs/coredump.c
+> index fedbead956ed..e5d9d6276990 100644
+> --- a/fs/coredump.c
+> +++ b/fs/coredump.c
+> @@ -1103,8 +1103,10 @@ void vfs_coredump(const kernel_siginfo_t *siginfo)
+>  		 * We must use the same mm->flags while dumping core to avoid
+>  		 * inconsistency of bit flags, since this flag is not protected
+>  		 * by any locks.
+> +		 *
+> +		 * Note that we only care about MMF_DUMP* flags.
+>  		 */
+> -		.mm_flags = mm->flags,
+> +		.mm_flags = __mm_flags_get_dumpable(mm),
+>  		.vma_meta = NULL,
+>  		.cpu = raw_smp_processor_id(),
+>  	};
+> diff --git a/fs/exec.c b/fs/exec.c
+> index 2a1e5e4042a1..dbac0e84cc3e 100644
+> --- a/fs/exec.c
+> +++ b/fs/exec.c
+> @@ -1999,7 +1999,7 @@ void set_dumpable(struct mm_struct *mm, int value)
+>  	if (WARN_ON((unsigned)value > SUID_DUMP_ROOT))
+>  		return;
+>  
+> -	set_mask_bits(&mm->flags, MMF_DUMPABLE_MASK, value);
+> +	__mm_flags_set_mask_dumpable(mm, value);
+>  }
+>  
+>  SYSCALL_DEFINE3(execve,
+> diff --git a/fs/pidfs.c b/fs/pidfs.c
+> index edc35522d75c..5148b7646b7f 100644
+> --- a/fs/pidfs.c
+> +++ b/fs/pidfs.c
+> @@ -357,8 +357,11 @@ static long pidfd_info(struct file *file, unsigned int cmd, unsigned long arg)
+>  
+>  	if ((kinfo.mask & PIDFD_INFO_COREDUMP) && !(kinfo.coredump_mask)) {
+>  		task_lock(task);
+> -		if (task->mm)
+> -			kinfo.coredump_mask = pidfs_coredump_mask(task->mm->flags);
+> +		if (task->mm) {
+> +			unsigned long flags = __mm_flags_get_dumpable(task->mm);
+> +
+> +			kinfo.coredump_mask = pidfs_coredump_mask(flags);
+> +		}
+>  		task_unlock(task);
+>  	}
+>  
+> diff --git a/fs/proc/base.c b/fs/proc/base.c
+> index 62d35631ba8c..f0c093c58aaf 100644
+> --- a/fs/proc/base.c
+> +++ b/fs/proc/base.c
+> @@ -2962,8 +2962,10 @@ static ssize_t proc_coredump_filter_read(struct file *file, char __user *buf,
+>  	ret = 0;
+>  	mm = get_task_mm(task);
+>  	if (mm) {
+> +		unsigned long flags = __mm_flags_get_dumpable(mm);
+> +
+>  		len = snprintf(buffer, sizeof(buffer), "%08lx\n",
+> -			       ((mm->flags & MMF_DUMP_FILTER_MASK) >>
+> +			       ((flags & MMF_DUMP_FILTER_MASK) >>
+>  				MMF_DUMP_FILTER_SHIFT));
+>  		mmput(mm);
+>  		ret = simple_read_from_buffer(buf, count, ppos, buffer, len);
+> @@ -3002,9 +3004,9 @@ static ssize_t proc_coredump_filter_write(struct file *file,
+>  
+>  	for (i = 0, mask = 1; i < MMF_DUMP_FILTER_BITS; i++, mask <<= 1) {
+>  		if (val & mask)
+> -			set_bit(i + MMF_DUMP_FILTER_SHIFT, &mm->flags);
+> +			mm_flags_set(i + MMF_DUMP_FILTER_SHIFT, mm);
+>  		else
+> -			clear_bit(i + MMF_DUMP_FILTER_SHIFT, &mm->flags);
+> +			mm_flags_clear(i + MMF_DUMP_FILTER_SHIFT, mm);
+>  	}
+>  
+>  	mmput(mm);
+> diff --git a/include/linux/sched/coredump.h b/include/linux/sched/coredump.h
+> index 6eb65ceed213..19ecfcceb27a 100644
+> --- a/include/linux/sched/coredump.h
+> +++ b/include/linux/sched/coredump.h
+> @@ -2,12 +2,29 @@
+>  #ifndef _LINUX_SCHED_COREDUMP_H
+>  #define _LINUX_SCHED_COREDUMP_H
+>  
+> +#include <linux/compiler_types.h>
+>  #include <linux/mm_types.h>
+>  
+>  #define SUID_DUMP_DISABLE	0	/* No setuid dumping */
+>  #define SUID_DUMP_USER		1	/* Dump as user of process */
+>  #define SUID_DUMP_ROOT		2	/* Dump as root */
+>  
+> +static inline unsigned long __mm_flags_get_dumpable(struct mm_struct *mm)
+> +{
+> +	/*
+> +	 * By convention, dumpable bits are contained in first 32 bits of the
+> +	 * bitmap, so we can simply access this first unsigned long directly.
+> +	 */
+> +	return __mm_flags_get_word(mm);
+> +}
+> +
+> +static inline void __mm_flags_set_mask_dumpable(struct mm_struct *mm, int value)
+> +{
+> +	unsigned long *bitmap = ACCESS_PRIVATE(&mm->_flags, __mm_flags);
+> +
+> +	set_mask_bits(bitmap, MMF_DUMPABLE_MASK, value);
+> +}
+> +
+>  extern void set_dumpable(struct mm_struct *mm, int value);
+>  /*
+>   * This returns the actual value of the suid_dumpable flag. For things
+> @@ -22,7 +39,9 @@ static inline int __get_dumpable(unsigned long mm_flags)
+>  
+>  static inline int get_dumpable(struct mm_struct *mm)
+>  {
+> -	return __get_dumpable(mm->flags);
+> +	unsigned long flags = __mm_flags_get_dumpable(mm);
+> +
+> +	return __get_dumpable(flags);
+>  }
+>  
+>  #endif /* _LINUX_SCHED_COREDUMP_H */
+> -- 
+> 2.50.1
 > 
 
