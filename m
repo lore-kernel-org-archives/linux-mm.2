@@ -2,125 +2,181 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 85600CA0EC4
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 13:29:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B4CCCA0EC4
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 13:29:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 24EDF8E0137; Tue, 12 Aug 2025 09:29:22 -0400 (EDT)
+	id F1FB38E0138; Tue, 12 Aug 2025 09:29:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 224F68E00E5; Tue, 12 Aug 2025 09:29:22 -0400 (EDT)
+	id EF71A8E00E5; Tue, 12 Aug 2025 09:29:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 114988E0137; Tue, 12 Aug 2025 09:29:22 -0400 (EDT)
+	id DE6688E0138; Tue, 12 Aug 2025 09:29:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F092F8E00E5
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 09:29:21 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B5122160319
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:29:21 +0000 (UTC)
-X-FDA: 83768186922.21.9DE4954
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E81031C0003
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:29:19 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="CkyeBcR/";
-	spf=pass (imf21.hostedemail.com: domain of baptiste.lepers@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=baptiste.lepers@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id CE0778E00E5
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 09:29:37 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9A060160326
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:29:37 +0000 (UTC)
+X-FDA: 83768187594.11.0DF2184
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 25B80140012
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:29:34 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=csjrIqPo;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf09.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755005375; a=rsa-sha256;
+	cv=none;
+	b=cfOEA0/RGXFXKw051TKljthP6vOuJorJRMcx7z/ennQqB9OJTKaSOIeuprWaRdjEZRDBY5
+	t0GoMrESDW65w1AoUceLKJXhduwZArkMWf8Aepmlq9zCZJlX7kmiLPE3NrLbZiP2w989WJ
+	BzLtFbANOW2wiX3p0Uyr3WmOnnhsCBk=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=csjrIqPo;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf09.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755005360;
+	s=arc-20220608; t=1755005375;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=1sFms8DfYlZzU9dKa8CQCWgZb50bkFnu2RQfAfYZeVs=;
-	b=UbkZbCbTeT81vbaHr4SwdGnVOGIv05IV+DFY+42Qc3zdfQ+elFqHPg13llFl/fFx+g2OKA
-	hw1fECyD62qz70S1c+2lWS1X1msllH8SaTp3XUf3+6WPYTyV0j4La5nJM8k0fXN30fiR3h
-	kH7o36JJ1JOMat+9TvJrUhPyrYQzOlU=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="CkyeBcR/";
-	spf=pass (imf21.hostedemail.com: domain of baptiste.lepers@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=baptiste.lepers@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755005360; a=rsa-sha256;
-	cv=none;
-	b=AwHHURnsMr2ITU1Vv/5Mos7lV6MtuzG0DquJDhxwSgAcvHNalCLQmWv+EIm8epoKbdnzSJ
-	CiTmLL7opxFEdim/ZrKfd7MhfRTHXWF0gH1OoPkXqbk/QRqrFyE6bZLzbKM6b5vFNxc2hj
-	qSwmv0KTReYN64C4H9TK7nZVauFb7jk=
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3b7848df30cso3660365f8f.0
-        for <linux-mm@kvack.org>; Tue, 12 Aug 2025 06:29:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755005358; x=1755610158; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1sFms8DfYlZzU9dKa8CQCWgZb50bkFnu2RQfAfYZeVs=;
-        b=CkyeBcR/LEjmy/B9K6GvUV0o4wWchm9l3+ypk/69nGoiiK7F0RvET28IHhUKKZY9+9
-         UDW8tc2oaRxhKswSNgcQ/X6/1twfidjgpBQtMiJsXlS6JhV/gcIeQLZ3sz3iUWbaFXet
-         MJU3Jz1/F+MJE+etYR/fMJqqay4W6zhHK4kLfmUsHUyntPyPBG7q9UoKB/CMw8sXBuzU
-         MkcTZ9MkhoRlkKV0NJNX6Hxdv90F3mYx25AQ1KAf2im2j2/vrgfvwJPKl884D157oohR
-         L6ar7+S2Ny7KdCKEIBPn5rPNVOw12d9rhf9FmkOGDNu34ldpa2rJ4HpMIBfaWGoM6tKB
-         OVwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755005358; x=1755610158;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1sFms8DfYlZzU9dKa8CQCWgZb50bkFnu2RQfAfYZeVs=;
-        b=I8c8hBJ1z/4BogQVZht27WStlddD2KFSspuAM+Uj4ZBwitQUpk2xrsRDkkxmPowCgr
-         kMyXgtbV87mWZs/lEH7l21/FQ3jvs0ZmLz6mIl3suYSXFqkYEWsSOJbPi1el9JHi/DO6
-         DHc9sA2lOYk2H4bybTWN4ZqsQnWyOAnTX+iSII+yoTswpUcmYs5tV7V2He5TNducBBGu
-         l3X2ZCuxgYh818YmU6a4+3d6Qw/ugLbDfxd93izH6AcyhWOn+CphnRNvVXxYBr0RjGTJ
-         qjQ77FNSlIe8VkzCCC8YspXO1HDYwoKCW3J0dDq3XwDOckG1wMwz6Gto57D14wyfgS+G
-         GCIg==
-X-Forwarded-Encrypted: i=1; AJvYcCUQh6n07zfUkkfmxhqyu8ItAPWsD5JBaxR0Bayw1SO2CZ23+/S2SzOv0V3maaJs6IPcWAiQU6iiSQ==@kvack.org
-X-Gm-Message-State: AOJu0Yzl4VYgQwUhz0CdHsfWbJyhqTJt2tsiuOn7V/4RvPHgesvVly+M
-	iTbqGM0DQxMKwcWwS5uSH1Cs2HWGBx5UdZPGf/Dyogc+mlb2GfVZZMCf
-X-Gm-Gg: ASbGncsdW5sVbS9NRPWrGoBs7Nwogz1u69J9zJ9CiElrTS3c/U90q85Im2I48rSW3+j
-	rMYzrVTzOX4y/YkwRKMGSPEyf2PFkHRAC7elG5mq09yDaH8+bWteUbrIImtgk/1JlNOanNVYmMP
-	omHG2WZg8rtV8DVymKXCOigNB/VFUaMZp+q67GrRoOV7TwXXG3E9p/3Ej/MY6XFSftdtHGGlgm9
-	DOPTDg+uPtckS3TAvVlB2vT65WcvleDk/XJh3daQmNWJ/yF6kCEY52OFO+h+ew72xYT1JGpQ1X6
-	yRFvkVz0FDHdiUmI8LngwaXYR0fSD+7+fD2ESdrnW+7CJG03bPu1fwlzWLnV0WXo+1J5Q+fHH+6
-	i/0vcUarQzl2wwBmf1BHNAxWfpcMiWHXyYZA7+CtI+gbD
-X-Google-Smtp-Source: AGHT+IGYEv1UKXbeigwHa2TP8gKJ65pVI0sFh0NThS1xGWQn0fvli/9NFZm7AX5K1g9q3yR/X2RpyQ==
-X-Received: by 2002:a05:6000:250d:b0:3a5:8934:4959 with SMTP id ffacd0b85a97d-3b9111f4b67mr2712178f8f.27.1755005358067;
-        Tue, 12 Aug 2025 06:29:18 -0700 (PDT)
-Received: from blepers-Latitude-5420.. ([213.55.220.53])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458b8aab8c0sm433003905e9.19.2025.08.12.06.29.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Aug 2025 06:29:17 -0700 (PDT)
-From: Baptiste Lepers <baptiste.lepers@gmail.com>
-To: 
-Cc: Baptiste Lepers <baptiste.lepers@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org,
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Ex520mDAAluSLXFdiYJ04d7IrdUaRDN9zWUBH2TlPCk=;
+	b=mbIDVfqB0Vcpm/e9Ty3v8PJfeBI6AsGwcMOpZakq9zO6SZUwnkwHZfouQz/AYTZ7QqNGFV
+	TFfnIphIv415nC5RuoprLW4WHbQCc7sYV0hpNf644gmWR1PPNwUavu9AmQ+T4Kt/r3yLmW
+	Lb/tbc9voGcGacV6ejl1MixBucWW/nA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755005376; x=1786541376;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=9AhOaWTatNb4QMfmox2H6CEYyqT3KnhFIot1r52xKmg=;
+  b=csjrIqPo8dfVBjDEeTlqaU0PVolKQSv8MIdD7AEpSajp/YHExFBsrbAM
+   cf40p/IljIGlggU+mvstA3fM1QRE1uRuDfbzI/2zIBDu1/fpqBi7oiSm0
+   iKI/pibQcbDAts1cnvcI9cloUJHdgqLRQ0y+tTHyd3YncwsU/alnN0CwA
+   8G8zErZF5EFRlJkew4PtB9FAcS3lJFWHGOR3v9fo/1+vZUukUThLA9LD4
+   85V76QacQwmopiq4AUW882yCYmIrX48Yf3rsQZ0E6tCPW4aR4oXRZkISs
+   DJ1hnVV6mwtph18WldiQu0ILcRvHr2FlBQOm5mqacsXPYVmeEXL8pPTCM
+   Q==;
+X-CSE-ConnectionGUID: 2EJwRwjNSGSVIjzB6OUWEg==
+X-CSE-MsgGUID: 6WlZVx4FROSG1SEozpg1oA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="60903816"
+X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
+   d="scan'208";a="60903816"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 06:29:34 -0700
+X-CSE-ConnectionGUID: t6kjFU4oRZiLZmMpMij85g==
+X-CSE-MsgGUID: TDLcIyj9Qy+UaemOVoZKVg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
+   d="scan'208";a="165831582"
+Received: from vpanait-mobl.ger.corp.intel.com (HELO wieczorr-mobl1.intel.com) ([10.245.245.54])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 06:29:12 -0700
+From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+To: nathan@kernel.org,
+	arnd@arndb.de,
+	broonie@kernel.org,
+	Liam.Howlett@oracle.com,
+	urezki@gmail.com,
+	will@kernel.org,
+	kaleshsingh@google.com,
+	rppt@kernel.org,
+	leitao@debian.org,
+	coxu@redhat.com,
+	surenb@google.com,
+	akpm@linux-foundation.org,
+	luto@kernel.org,
+	jpoimboe@kernel.org,
+	changyuanl@google.com,
+	hpa@zytor.com,
+	dvyukov@google.com,
+	kas@kernel.org,
+	corbet@lwn.net,
+	vincenzo.frascino@arm.com,
+	smostafa@google.com,
+	nick.desaulniers+lkml@gmail.com,
+	morbo@google.com,
+	andreyknvl@gmail.com,
+	alexander.shishkin@linux.intel.com,
+	thiago.bauermann@linaro.org,
+	catalin.marinas@arm.com,
+	ryabinin.a.a@gmail.com,
+	jan.kiszka@siemens.com,
+	jbohac@suse.cz,
+	dan.j.williams@intel.com,
+	joel.granados@kernel.org,
+	baohua@kernel.org,
+	kevin.brodsky@arm.com,
+	nicolas.schier@linux.dev,
+	pcc@google.com,
+	andriy.shevchenko@linux.intel.com,
+	wei.liu@kernel.org,
+	bp@alien8.de,
+	ada.coupriediaz@arm.com,
+	xin@zytor.com,
+	pankaj.gupta@amd.com,
+	vbabka@suse.cz,
+	glider@google.com,
+	jgross@suse.com,
+	kees@kernel.org,
+	jhubbard@nvidia.com,
+	joey.gouly@arm.com,
+	ardb@kernel.org,
+	thuth@redhat.com,
+	pasha.tatashin@soleen.com,
+	kristina.martsenko@arm.com,
+	bigeasy@linutronix.de,
+	maciej.wieczor-retman@intel.com,
+	lorenzo.stoakes@oracle.com,
+	jason.andryuk@amd.com,
+	david@redhat.com,
+	graf@amazon.com,
+	wangkefeng.wang@huawei.com,
+	ziy@nvidia.com,
+	mark.rutland@arm.com,
+	dave.hansen@linux.intel.com,
+	samuel.holland@sifive.com,
+	kbingham@kernel.org,
+	trintaeoitogc@gmail.com,
+	scott@os.amperecomputing.com,
+	justinstitt@google.com,
+	kuan-ying.lee@canonical.com,
+	maz@kernel.org,
+	tglx@linutronix.de,
+	samitolvanen@google.com,
+	mhocko@suse.com,
+	nunodasneves@linux.microsoft.com,
+	brgerst@gmail.com,
+	willy@infradead.org,
+	ubizjak@gmail.com,
+	peterz@infradead.org,
+	mingo@redhat.com,
+	sohil.mehta@intel.com
+Cc: linux-mm@kvack.org,
+	linux-kbuild@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	x86@kernel.org,
+	llvm@lists.linux.dev,
+	kasan-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] rust: mm: Mark VmaNew as transparent
-Date: Tue, 12 Aug 2025 15:26:56 +0200
-Message-ID: <20250812132712.61007-1-baptiste.lepers@gmail.com>
-X-Mailer: git-send-email 2.43.0
+Subject: [PATCH v4 12/18] x86: Minimal SLAB alignment
+Date: Tue, 12 Aug 2025 15:23:48 +0200
+Message-ID: <a765e38bdeae15193215bb8fd713df9350048edc.1755004923.git.maciej.wieczor-retman@intel.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <cover.1755004923.git.maciej.wieczor-retman@intel.com>
+References: <cover.1755004923.git.maciej.wieczor-retman@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: bdatn9gztiyorg361t1dtyb8x9ecfpea
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E81031C0003
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755005359-917001
-X-HE-Meta: U2FsdGVkX19AQ/nxZDJSIXwolHd2ALjCdYTNsxdXyIVe9A/tj/Vqh/QYMlkEI9hPIsTKsuRSN/hVhSu2d0hkxpzoLz61NUZj4EQLAXcU3hwux9gJHHCPbgHvXCI1nZBZ/QvnEtrQjLRWxR0C8mZisvY4t2QWSkru3tbTjYOp1m117A5c4Rt0rG40uz4rfhPdEuHxNqr/5Y9WZoqU9F+JeZQvQMIT1Pnpz3dat+wUT7p1gpjkQVVdW9oUnG/ovxJY/a5ZENqNXTqXo9Ck+LJ6KOgxayOaTTdILthl71q994VNPBKUaNgspbhkGxRPCpHyqslFYAv/ON4/ofJnlfSGBTwOM4ZRQhLS99K06ekgQ9sHgwLQ5VU3ZDEZ8Gwt1FyMkQFpXYAProZze0+KGtfbqQO+rdNMKFhdt02LF6fKbgFJARnGV4RrCbt9HWqmPQhVBPBAeNNpdxFUin8fel0qO+bJ74VYicnEpJkgB9lnTgqI2HPo2Ff9dZa33oYhPt1HGzjasjdHdYKj8Q6wueRRw8HPRW66uYx0ne/glRlF1F+zFMRzxtAtJgQJKOBbSsH4moAC1jQzhdQmcIusRcPftx+wqzwbxezlP/LA+FG7hgfpJe8MqL/IdBfReqmdSeLJRPBh5fk48R+nwKcNEaQM+lCEIvlazG28kjThRjpKTQSU+mVAvtP6d6CmowZc5J8PpS0y9odkOy4u5szruWDaF1AZnuID1nBn2yqG2jWYsWRpUBNXOB41b7I/qZJRBBeYA5MeVJ0hc678GkcTKxRM7JgMnwgS5SIExWKz4J9jd0KPtiLaIsEZo89CJmxYwirzgZoeNX3KrWo526jaW1QGxRX47l+y8VXg9f/yxoP6/10Tr5E/sG/Iw+J2ZyTiCDvVheBRrs8JKkF8/Fsc20yfM2JKrAf8nfIt+IhX8BZPY7WukbrBKO/sB8D3wn+t38sLd2ik25sBbpwhk2FEQRV
- 1dOzlozT
- qhy8Aju7QScRdY4lak0HPoucbnw21hqdcIobsIAgL1wBuGBmLwUGduHc6vlkwvPaZBCmH1UPoaaPZVRv0thS4UfLhz+IuVU7LdgWTce+flvuM4cB5RZ8Y/B1LAp90BNAUXJO26sHpq8JEKxRKmlH5zMvuA14kHL8DfWex1thwA8HoKuk7BL4H8XrZ7bIm15C8EVxMXX76wrC46QRcsE5YPLZv2TAgcv4toRGFevGtNz+PL3xAxruw0kNg6D3kMFMtglStq1ropS/PmuVtyi1h2TgeVcKUCtgZmz7c27mcKMeerHayo+1YxrIQYhwLNoC6yrL84iVceUjzwFL0vEMYVkYdGx9gjF1n0ajCfSEc3awdOecvkIg022OcItH00yieK9zoBU/pPgrU+9IJOuv9YTVNNYPwogbY2BiY/aXwYH5V7+H08C2OTfpIZ8+FtwXY4IqyH7zUr3ia+KqMY6iOFiFqpQ6XmWWghcppjIDTCUW3qGv4k0aT+XAwP6dsFXFVLlvBrYLvlJnpcLQfloZsaM3AQxYbgkj8rCEL00CbThKQJRA=
+X-Rspamd-Queue-Id: 25B80140012
+X-Stat-Signature: tkcuz4mqq6ddh13bchp1rz4cijd3yxdk
+X-HE-Tag: 1755005374-849732
+X-HE-Meta: U2FsdGVkX18gRnVfZgklHyR4BnebULM8ZCIf6ywcE0n/y7UUKb8ciD62DEA0nmRRyvGbwzCpr18r2E5pNrte/wDPaaegN7XLeCM45wdYmc+NmJ/nvA7J81dI55Dwo4HQLRLwgcwvCrjDVVGhFG7oNPIAgVH7g1aqvWjyxwKgj4wFE2NeHOUM04TLjEMkZL+8LfYJTodcvWAXVsm7LR8btPWudFxNqCRvhkGOIeATKaRvVYMZG0ULbWwWSDDCGrlv3Q4zJ5HkQwYeMA58aEBuJTbLv44DBh4CKYTS3Gadr1AQYhZwmqbQKOyrLRNAxncKrf9tfe5Re53oRojR64NFUcwYP37jv+559WbVV21CVxAgfkgj5IR5U9GXxXQnRSNw1FqAblDJiMBjCE5kbORt5Ymyz4Q5dtsWOrInF0BXuLjrfafIJmloOjy6pCXitNiowE3Pqw71rQ8Vu65bSX4FpnS/ymh9AT62ZUkCDYAcoHzmjuP813m141CnYvHuTGtThrDVY2Uc2SJYekTbf0CZiHyvakbX16jv9aFu5Y62lNF0Iq3/3IZxj1ZzHGQH1Ymoglv3JRqQKcFZutj9SEGZ+5Eq5SvYUtQvLXeZ6pTX1m/ANfSrCLeGet7BvHCRbMdaBHV5DcSTi7dV47ctzskybhoRHLYjF7/G1x2y5obHEYdvInSzG0r3JG46K0OdggfuEQQGgSLVmei17Hosb2Mt7PMD6CmbQzQjcJ5nsIrjWolkNcY1Z+wOjEb2v1vnbP2DngWcum6d0xeuFnbV5Mi5o3TNu/RRTPZ+UkQH/Huz5QuYTDYAw7ZbjoYBNcmb+HlvIcrlfHNMIYaltXiwOuUInLtw+PbhzlleDaOURUk3787uZ6RpD2rK26ufgyQodLS3boq+ncLB28SeQYhAV4oWXDB1qzl00bBNN7y2g0u8spstGE8+ZgZ17k8n6IIbZIKUlHqT5BEK6ugGBqhASco
+ ps+7Px+H
+ giclPyQpZthEYkSWvrxcaA3oi46DjDDVIFNWByxPuqGIyxOQQj9LHjIh9UCWwy4W8yuyQaHDnXwPTLIur2TX4TbeAnvst7Yznuj2XKV4PteEuiJkmfE/azZ8Fwz+9DbbuRm0+nDepe3UHE2cr0MsGjpBp2RooE5GIeoyOy8s6JC3tMv75s7ExqSu2/FHmxH4Th9hPYB5aJlyY8RwgjoTksbHSAviNHpgvdCju3Ohim7ZMqPWfoWWDUBsX3sP3zZ8HA2S6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,30 +185,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Unsafe code in VmaNew's methods assumes that the type has the same
-layout as the inner `bindings::vm_area_struct`. This is not guaranteed by
-the default struct representation in Rust, but requires specifying the
-`transparent` representation.
+8 byte minimal SLAB alignment interferes with KASAN's granularity of 16
+bytes. It causes a lot of out-of-bounds errors for unaligned 8 byte
+allocations.
 
-Fixes: dcb81aeab406e ("mm: rust: add VmaNew for f_ops->mmap()")
-Signed-off-by: Baptiste Lepers <baptiste.lepers@gmail.com>
+Compared to a kernel with KASAN disabled, the memory footprint increases
+because all kmalloc-8 allocations now are realized as kmalloc-16, which
+has twice the object size. But more meaningfully, when compared to a
+kernel with generic KASAN enabled, there is no difference. Because of
+redzones in generic KASAN, kmalloc-8' and kmalloc-16' object size is the
+same (48 bytes). So changing the minimal SLAB alignment of the tag-based
+mode doesn't have any negative impact when compared to the other
+software KASAN mode.
+
+Adjust x86 minimal SLAB alignment to match KASAN granularity size.
+
+Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 ---
- rust/kernel/mm/virt.rs | 1 +
- 1 file changed, 1 insertion(+)
+Changelog v4:
+- Extend the patch message with some more context and impact
+  information.
 
-diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
-index 6086ca981b06..a1bfa4e19293 100644
---- a/rust/kernel/mm/virt.rs
-+++ b/rust/kernel/mm/virt.rs
-@@ -209,6 +209,7 @@ pub fn vm_insert_page(&self, address: usize, page: &Page) -> Result {
- ///
- /// For the duration of 'a, the referenced vma must be undergoing initialization in an
- /// `f_ops->mmap()` hook.
-+#[repr(transparent)]
- pub struct VmaNew {
-     vma: VmaRef,
- }
+Changelog v3:
+- Fix typo in patch message 4 -> 16.
+- Change define location to arch/x86/include/asm/cache.c.
+
+ arch/x86/include/asm/cache.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/x86/include/asm/cache.h b/arch/x86/include/asm/cache.h
+index 69404eae9983..3232583b5487 100644
+--- a/arch/x86/include/asm/cache.h
++++ b/arch/x86/include/asm/cache.h
+@@ -21,4 +21,8 @@
+ #endif
+ #endif
+ 
++#ifdef CONFIG_KASAN_SW_TAGS
++#define ARCH_SLAB_MINALIGN (1ULL << KASAN_SHADOW_SCALE_SHIFT)
++#endif
++
+ #endif /* _ASM_X86_CACHE_H */
 -- 
-2.43.0
+2.50.1
 
 
