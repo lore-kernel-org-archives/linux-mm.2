@@ -2,77 +2,77 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E7D2BCA0EC4
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 13:30:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 46E7AC87FCB
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 13:31:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 892898E013B; Tue, 12 Aug 2025 09:30:56 -0400 (EDT)
+	id DCA0E8E013C; Tue, 12 Aug 2025 09:31:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86A3A8E00E5; Tue, 12 Aug 2025 09:30:56 -0400 (EDT)
+	id CFE478E00E5; Tue, 12 Aug 2025 09:31:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7594A8E013B; Tue, 12 Aug 2025 09:30:56 -0400 (EDT)
+	id BC6878E013C; Tue, 12 Aug 2025 09:31:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 666B78E00E5
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 09:30:56 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 43FD01A0142
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:30:56 +0000 (UTC)
-X-FDA: 83768190912.18.B89C59F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A7A898E00E5
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 09:31:12 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 71F43140341
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:31:12 +0000 (UTC)
+X-FDA: 83768191584.21.EC792E6
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0E8CB180002
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:30:53 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ZstZAxny;
-	spf=pass (imf06.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 3613C40014
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:31:10 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=nK1AKjUy;
+	spf=pass (imf04.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755005454;
+	s=arc-20220608; t=1755005470;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9pMJ3Vo5IMuP6mFoJhewFUZLR0jAiqJe8Z9tK6dwhQE=;
-	b=o6ZMlJXDBmwxl1zWISPjmbNNh04ufFOQxzw3J0kYBdw6GtKzqKHH7RBVyyyE+zMlTI9itF
-	WJdljs16rqYlD+Y/eAALWPjuS2Xy3b0CqeZBOxzFx9jbbhc79H/mtUzKzq0Zjzlm/mZUNG
-	AvQMqoob5rjMEzEGWUvkieC+8pE35z4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755005454; a=rsa-sha256;
-	cv=none;
-	b=Pty1mD0vXE1ju1pyDFNJ/KpjPxUDvKY0Qo/c5IEcbOAgj3QGxUez+sblWOVFKsrYc0Zvk9
-	JotN/WKjZslsSZ8vRlECOWrPcDUAZfCqGTe79bPOrBGRwisCCp+VITpwEqFpVGkoG3cqVM
-	byD1//hffV7v4DVLIYmnfCxtLK+IPxM=
+	bh=L+edTXQcTXvLIKifsLnkJA7/3GYnbD7057WahxLr9Lg=;
+	b=JEK8cha5L9wsjKcwhKm3Og0eBnrw18/r3rB4RixT9ONp17fCuOMiPDRkKRn0TrnG9Xp+Ws
+	e+gDj5V/V/yo9IFSoDeFyYlCLsdiJ5zjjBTQYJLYoFB1MPLK/S4lgUgGCS40/xaN1hhonb
+	E53WkjHadKpGhI4YFAWlNaIP1HwTjjA=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ZstZAxny;
-	spf=pass (imf06.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
+	imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=nK1AKjUy;
+	spf=pass (imf04.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755005470; a=rsa-sha256;
+	cv=none;
+	b=QNKntK3CdkInw++Do8oq2yHuhunsazJ0iEjO1ae+iVi4RxAIfxuNizMNX/emxagK9PC3zi
+	ViC4Z1NpjbuYBaz0ucG/sKRK0TH9UaVvlVhvMUqxjSDq9Rp2IzyDpTpFaJHAOgKHMtgAFt
+	KSpzlR+aqC6SWZXfBh9lab7qcivD1t0=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755005455; x=1786541455;
+  t=1755005471; x=1786541471;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=bLAP3Uvsa+ddGeiTQivKwBmzgkLDslUubgZ6G8l99Io=;
-  b=ZstZAxnyt2RuClToH22k+oTfiSCevYv5jAJ06/naZc2cz6wmZT4IlClu
-   wW1+UkDsKDwU/9anXHv9eYQkTxKycm8357XZ/4++FqtuKHy/jI1MAd92v
-   h/TNjIsM0VIXFS5XTy+EXB4i+YcWYd5j+chSi0f85q+FbGqjiEGf28jGt
-   bbk8zv+EFG3TZN1ERsCFKhQP0Navjn9+MaJK7BFKumYFlv4Jd8GmmSFXw
-   34O6EwstDkoXwEVOwJkK6PAJw3HwcB8OzQWU00p8Y3qcs2DFdrpGxTJOw
-   5x3tCJh230jqk+xWMTkZATVjCjGI5WpJpW1IPjsyEQl1Ck12f00uplIvR
-   Q==;
-X-CSE-ConnectionGUID: RfziFgBMTaCs6Z+WVBaBtA==
-X-CSE-MsgGUID: KxHkfWxgR1GndH6cKnlnTQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="60904013"
+  bh=HiW8X4qWeN2pPHljIwWnxU5OYoff7Zyp0Lg8pvxu5HY=;
+  b=nK1AKjUyYi6WBs7cyayjbCZ7OIorcJSzLL6S1ci5T8FzBrnF7xh79jXJ
+   1IiSSJNPbF7Xof3Isw2io2lp2X7VXTNVv+Ds030CkLFRCiANrmCHHCPWx
+   DWA03yyKYlxit6K/ygY32/tXW9/76q23gZJl5ZUxVOMfBXICO2FplHgmn
+   H181oH5mtZ1AH2tTTYxHGNlzFlC3BTQA1Haug5XQeBdF/bZAmdnblob0W
+   06NxLlSHCgs5QJxKTFuhDU+YeNRtae+zoJ59fLkXMmxvkhsBf4SUZ5COH
+   7pyk6/hWw0lq1h5d9tP5fdY4QifOdPeFBhDIHMtDeFVqR3fZUdhkqUkjh
+   g==;
+X-CSE-ConnectionGUID: hYBqly2tSS6GLkaEuUCUag==
+X-CSE-MsgGUID: hpSrlFLMTtycIEOLtmbBPw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="60904083"
 X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
-   d="scan'208";a="60904013"
+   d="scan'208";a="60904083"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 06:30:53 -0700
-X-CSE-ConnectionGUID: Qs0HalWXTxanbhip8kE5PA==
-X-CSE-MsgGUID: lUt/yXQuTg+taKHifBrAyQ==
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 06:31:09 -0700
+X-CSE-ConnectionGUID: 310Nw93RRXy9OmSdy8cVzA==
+X-CSE-MsgGUID: xzKkOVDzSASmChbZfONGbQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
-   d="scan'208";a="165832023"
+   d="scan'208";a="165832087"
 Received: from vpanait-mobl.ger.corp.intel.com (HELO wieczorr-mobl1.intel.com) ([10.245.245.54])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 06:30:21 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 06:30:43 -0700
 From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 To: nathan@kernel.org,
 	arnd@arndb.de,
@@ -161,22 +161,22 @@ Cc: linux-mm@kvack.org,
 	kasan-dev@googlegroups.com,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 15/18] kasan: x86: Logical bit shift for kasan_mem_to_shadow
-Date: Tue, 12 Aug 2025 15:23:51 +0200
-Message-ID: <a1a7d761bad9ead5596edb2dbe62cab26c24602a.1755004923.git.maciej.wieczor-retman@intel.com>
+Subject: [PATCH v4 16/18] mm: Unpoison pcpu chunks with base address tag
+Date: Tue, 12 Aug 2025 15:23:52 +0200
+Message-ID: <f3519195a98428998160d272997a3d2ed6c53c6a.1755004923.git.maciej.wieczor-retman@intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1755004923.git.maciej.wieczor-retman@intel.com>
 References: <cover.1755004923.git.maciej.wieczor-retman@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0E8CB180002
-X-Stat-Signature: wfrtozwnjom1tniosenweyoyp63jawgg
 X-Rspam-User: 
-X-HE-Tag: 1755005453-470753
-X-HE-Meta: U2FsdGVkX1+AM995wba0YWFZm+4GTdh0EB51alWZTzBvb/xoOEgemK4/F15fvzE8d8wugGlfJGNbuvkZFT0MkEx0KB66L8ZH/VCaqGRbBWxAqaANUU7RPzpwygtU+BU0OXzg8AC8WQDOo9QEeu/DVPD/0ZQ+tQIkJ3Sudou/AMDq8PcIK65tm7NZEeqxt4UtiBR0vkLTL97wmb/A+5IQqaJ7GzybekvKjjj6I/ikfayhNYWxZuT15a5xjNG3xrs9P1zX6IOcYUODvMgHVY6YQUFHh8HUjBi6pvpYrgR7e2QLLWhVnfpbc6pUb6ZRgjcz/olwJ6/cCngZcPMI7Wt3+mHwPPlD7S+hrwC2nSIPyEF6or6hNd1f2k4Gp1mN1/BptgfU+ORxxF78Hhgz9UiKL7PoI3HbTmtP8dYGW1AfksUdRxqRnIW9f9+5yKzQAEV3eP5XdOVRcw+7cju2kAM++FqZ/uZNTlUkbSl3WkLXLUKUE4mOadsDWVEi+nD8R6qKlBk3x8RxVRNhxZuXZ78ebOJKnEB1pNp+T2Uk8/tJBerRxyY2Zlsd7dCJ/sT2WYh46keQywZHjfIr34VBNA8E2IvdNwIvE48RHRtaBiTITdOpqiK/bDEL5/S3aj1TytlBR8+LARXL6Hu2u49dFa1Z1l9nn9dmltywdMJyqy4djB48rkdyi9eoWTHC/W/NOWxRytehv4jh8qrD083bkHK/l+mI+5Vb8a4oTNgdbVUl/0ko5PlOiR8Kcns878Iati9Frg5X7uSp1judRvVjyiFYaazlvO2BgOvugPnZkhgUjMKGPBhdc3fl8clmM9ShpHz7UfanPj6uW7CHv+zv8X+zmgDj67gdSu+GxeOy4z4iaTJtPHG3yiJklbOTvNMa64xxbCvBCxeEhnDj7V6nPJWnvXcDvWWZ92hhuarUAuKMO/eaQuq3KmEE75vM0yKZggUWVYOvnejxQWNrtdw7BxV
- PWaF1PLA
- fRwxoB6fSyfjOx31rEf7UdPm+LyQvMf0EPn95P7nhOe2DBb0PFMwjVcegt2267dVO6C4ZcC4eXpTNy7M+DuZwjKSpBGjVZ/BXr/Z6Uxe2IdPIPRxSD0+U0uNPYFceMLErvpc4yaMhfcL116neRS4imxo0XsSK9YK3XkuJ2um+F2ba03S1hC0iNeT58y5nG1Q/DjWK4ZsXWHYh+pk2TMk5XoAGbF+HDT4zqgUzuYQS777fmEshUzVDvRWoCaiFSUNIft4Eeh2j2Mfc9TF+TWgAnVZJ602E+F+z+DQt4LAqKcc1yyo=
+X-Rspamd-Queue-Id: 3613C40014
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 7tgc3wd3mtb45nz6uy73yfourfyqop3h
+X-HE-Tag: 1755005470-693288
+X-HE-Meta: U2FsdGVkX1+vp+9kxOiw8gaKMeiao7OTxJgo0K8rhHd31KgZ7KKYX6CqS1ylPV8X8X5otVj9QorGLhTJa1ZFzDo7bOopYaTpe+zcREMSyFPalG1Q40Lp2MQjjqlrnq1EFAgz1q6VBGY8uYMhJ6zSJ3Ob0Pu98WwEG7vTW96SXBz5Ewu7S58ifXTyXmAgLHLjGXLVq2BMaPfO0ae6fdT6pjY2l9mMylNFVd4qkHy5qn/xyO3TGn20K/dQyHqTSSvkwgEH+QokBmvZGrbgalvykqf8Uyd8hzPjSdLBoSl3vyczL8xTKwZmHHR+EjHckWjRIpgKojQCVS9M4Ny5U4SFhabhJu9m5Le+xYPjCzGj9jvMcik/BQ+GlVzrcI4MTdHz6BwkK7MuaMP3ZKiKar/JybV/7GjgB5qHibBUPgEdal3YuiZODvdoF+yBpMypnRnReL7iHvbem8m99gyVnbrZBwmxrKZkleoJOnsj2fXK906WK9+8VyrpgZnu6F+Mb90zbTrL70KwBnyLQu8HUUp+zWMzCBoN30jypl9+pwPOKoIMzQGJqoj1IbzmNG+zaup1MI9X+EFROfWfBxeSnXLcH8PDNhH0f6p447pWdCDKzUsz+p/DgtAcMQh9sTebLU/7h9eDsEh+8nCjmb7/mLG/OwDkmbchm4w1POobWSof/fBmtk3iR1nKxXph839IgS2f/gIeI/1DyhnYLKgNJTl3y4bacfMuDUIrcxM8MdkXB3IPMSomoFkOfSaejafEa3+nyuwX+WTs+V0ysckN9uff+q2waStrlSLXoTNSWWNAFXDZjbYdOBN/h/Ikamputm9ixhTt9sz13vH4kdYQNJAqFdAC87W/OOpN6TKcpNazfh8DnqjEyEY1/9vtfs+UynfW3njHNzzA1ogYz9Nu3hK6ms0ZD15UzCcaNvlFQ8wP2OGkhQmXpbvWwmqlxcGr0pnKyhxmqU28F2776r1ZZIM
+ vfdZ1yen
+ QUpYxtlWaeP9U969ftXIs18HQNmjahX12EuI0vrFcbHTtdDLPUew03Q1leJ12C4FGdqjVOKPiK7Dlpz9akhfK65xg1W7M514qW/P1LoZFd7RlfrBNQwbgc5oSr5IyPq35Y/X1VhGZB+FZYcswXUsU2575g00OguwdEjqs3RNu4gT8iCYavJqGDnc0DVfsUxaTnaBqzSUEq6rV3ZEn1z8UxtZ0CKERPwQK+OJBlZasFU8Rz+wFVsLdJuHmDt8kAUQbYUw+Hy5kJ+rA1uaiEegHoNDSPz6J71dUWLX0cROwN92VXeowDd5vKlEJ+BkiHGXZavzo
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -185,74 +185,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-While generally tag-based KASAN adopts an arithemitc bit shift to
-convert a memory address to a shadow memory address, it doesn't work for
-all cases on x86. Testing different shadow memory offsets proved that
-either 4 or 5 level paging didn't work correctly or inline mode ran into
-issues. Thus the best working scheme is the logical bit shift and
-non-canonical shadow offset that x86 uses for generic KASAN, of course
-adjusted for the increased granularity from 8 to 16 bytes.
+The problem presented here is related to NUMA systems and tag-based
+KASAN mode. It can be explained in the following points:
 
-Add an arch specific implementation of kasan_mem_to_shadow() that uses
-the logical bit shift.
+	1. There can be more than one virtual memory chunk.
+	2. Chunk's base address has a tag.
+	3. The base address points at the first chunk and thus inherits
+	   the tag of the first chunk.
+	4. The subsequent chunks will be accessed with the tag from the
+	   first chunk.
+	5. Thus, the subsequent chunks need to have their tag set to
+	   match that of the first chunk.
 
-The non-canonical hook tries to calculate whether an address came from
-kasan_mem_to_shadow(). First it checks whether this address fits into
-the legal set of values possible to output from the mem to shadow
-function.
-
-Tie both generic and tag-based x86 KASAN modes to the address range
-check associated with generic KASAN.
+Refactor code by moving it into a helper in preparation for the actual
+fix.
 
 Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 ---
 Changelog v4:
-- Add this patch to the series.
+- Redo the patch message numbered list.
+- Do the refactoring in this patch and move additions to the next new
+  one.
 
- arch/x86/include/asm/kasan.h | 8 ++++++++
- mm/kasan/report.c            | 5 +++--
- 2 files changed, 11 insertions(+), 2 deletions(-)
+Changelog v3:
+- Remove last version of this patch that just resets the tag on
+  base_addr and add this patch that unpoisons all areas with the same
+  tag instead.
 
-diff --git a/arch/x86/include/asm/kasan.h b/arch/x86/include/asm/kasan.h
-index 5bf38bb836e1..f3e34a9754d2 100644
---- a/arch/x86/include/asm/kasan.h
-+++ b/arch/x86/include/asm/kasan.h
-@@ -53,6 +53,14 @@
+ include/linux/kasan.h | 10 ++++++++++
+ mm/kasan/hw_tags.c    | 11 +++++++++++
+ mm/kasan/shadow.c     | 10 ++++++++++
+ mm/vmalloc.c          |  4 +---
+ 4 files changed, 32 insertions(+), 3 deletions(-)
+
+diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+index 7a2527794549..3ec432d7df9a 100644
+--- a/include/linux/kasan.h
++++ b/include/linux/kasan.h
+@@ -613,6 +613,13 @@ static __always_inline void kasan_poison_vmalloc(const void *start,
+ 		__kasan_poison_vmalloc(start, size);
+ }
  
- #ifdef CONFIG_KASAN_SW_TAGS
- 
-+static inline void *__kasan_mem_to_shadow(const void *addr)
++void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms);
++static __always_inline void kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
 +{
-+	return (void *)((unsigned long)addr >> KASAN_SHADOW_SCALE_SHIFT)
-+		+ KASAN_SHADOW_OFFSET;
++	if (kasan_enabled())
++		__kasan_unpoison_vmap_areas(vms, nr_vms);
 +}
 +
-+#define kasan_mem_to_shadow(addr)	__kasan_mem_to_shadow(addr)
-+
- #define __tag_shifted(tag)		FIELD_PREP(GENMASK_ULL(60, 57), tag)
- #define __tag_reset(addr)		(sign_extend64((u64)(addr), 56))
- #define __tag_get(addr)			((u8)FIELD_GET(GENMASK_ULL(60, 57), (u64)addr))
-diff --git a/mm/kasan/report.c b/mm/kasan/report.c
-index cfa2da0e2985..11c8b3ddb4cc 100644
---- a/mm/kasan/report.c
-+++ b/mm/kasan/report.c
-@@ -648,13 +648,14 @@ void kasan_non_canonical_hook(unsigned long addr)
- 	const char *bug_type;
+ #else /* CONFIG_KASAN_VMALLOC */
  
- 	/*
--	 * For Generic KASAN, kasan_mem_to_shadow() uses the logical right shift
-+	 * For Generic KASAN and Software Tag-Based mode on the x86
-+	 * architecture, kasan_mem_to_shadow() uses the logical right shift
- 	 * and never overflows with the chosen KASAN_SHADOW_OFFSET values (on
- 	 * both x86 and arm64). Thus, the possible shadow addresses (even for
- 	 * bogus pointers) belong to a single contiguous region that is the
- 	 * result of kasan_mem_to_shadow() applied to the whole address space.
+ static inline void kasan_populate_early_vm_area_shadow(void *start,
+@@ -637,6 +644,9 @@ static inline void *kasan_unpoison_vmalloc(const void *start,
+ static inline void kasan_poison_vmalloc(const void *start, unsigned long size)
+ { }
+ 
++static inline void kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
++{ }
++
+ #endif /* CONFIG_KASAN_VMALLOC */
+ 
+ #if (defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)) && \
+diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
+index 9a6927394b54..1f569df313c3 100644
+--- a/mm/kasan/hw_tags.c
++++ b/mm/kasan/hw_tags.c
+@@ -382,6 +382,17 @@ void __kasan_poison_vmalloc(const void *start, unsigned long size)
  	 */
--	if (IS_ENABLED(CONFIG_KASAN_GENERIC)) {
-+	if (IS_ENABLED(CONFIG_KASAN_GENERIC) || IS_ENABLED(CONFIG_X86_64)) {
- 		if (addr < (u64)kasan_mem_to_shadow((void *)(0UL)) ||
- 		    addr > (u64)kasan_mem_to_shadow((void *)(~0UL)))
- 			return;
+ }
+ 
++void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
++{
++	int area;
++
++	for (area = 0 ; area < nr_vms ; area++) {
++		vms[area]->addr = __kasan_unpoison_vmalloc(
++			vms[area]->addr, vms[area]->size,
++			KASAN_VMALLOC_PROT_NORMAL);
++	}
++}
++
+ #endif
+ 
+ void kasan_enable_hw_tags(void)
+diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+index d2c70cd2afb1..b41f74d68916 100644
+--- a/mm/kasan/shadow.c
++++ b/mm/kasan/shadow.c
+@@ -646,6 +646,16 @@ void __kasan_poison_vmalloc(const void *start, unsigned long size)
+ 	kasan_poison(start, size, KASAN_VMALLOC_INVALID, false);
+ }
+ 
++void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
++{
++	int area;
++
++	for (area = 0 ; area < nr_vms ; area++) {
++		kasan_poison(vms[area]->addr, vms[area]->size,
++			     arch_kasan_get_tag(vms[area]->addr), false);
++	}
++}
++
+ #else /* CONFIG_KASAN_VMALLOC */
+ 
+ int kasan_alloc_module_shadow(void *addr, size_t size, gfp_t gfp_mask)
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 83d666e4837a..72eecc8b087a 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -4847,9 +4847,7 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
+ 	 * With hardware tag-based KASAN, marking is skipped for
+ 	 * non-VM_ALLOC mappings, see __kasan_unpoison_vmalloc().
+ 	 */
+-	for (area = 0; area < nr_vms; area++)
+-		vms[area]->addr = kasan_unpoison_vmalloc(vms[area]->addr,
+-				vms[area]->size, KASAN_VMALLOC_PROT_NORMAL);
++	kasan_unpoison_vmap_areas(vms, nr_vms);
+ 
+ 	kfree(vas);
+ 	return vms;
 -- 
 2.50.1
 
