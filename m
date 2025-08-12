@@ -2,100 +2,240 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A9B3CA0EC4
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 05:58:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8BACAC87FCB
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 06:18:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE9798E00E1; Tue, 12 Aug 2025 01:58:41 -0400 (EDT)
+	id 0570A8E00E2; Tue, 12 Aug 2025 02:18:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B99DD8E00BE; Tue, 12 Aug 2025 01:58:41 -0400 (EDT)
+	id 007638E00BE; Tue, 12 Aug 2025 02:18:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A613F8E00E1; Tue, 12 Aug 2025 01:58:41 -0400 (EDT)
+	id D9C568E00E2; Tue, 12 Aug 2025 02:18:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E8498E00BE
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 01:58:41 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 429CC1A0194
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:58:41 +0000 (UTC)
-X-FDA: 83767051242.27.0068C88
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 303B41C0005
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:58:38 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rHPm74vQ;
-	spf=pass (imf20.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754978319;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C55B48E00BE
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 02:18:54 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 73B95C01C0
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 06:18:54 +0000 (UTC)
+X-FDA: 83767102188.28.588870D
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 51AB240002
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 06:18:50 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=DE3N+3ZG;
+	spf=pass (imf07.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754979531;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zjLRO9jlztFg7Xlmb6d+mGgiFh1eSfbawN7/i0rsBCU=;
-	b=YjZJ4/5vo8w8vd16UMT4DVZTXdYRkkeKIVeKRJxHZ3skcFT5SXovTzR0mIhx2pJreNgYMo
-	X4OJXWP9UJIpHoGxEhJ3TdiSI0JJn3ywINlL8H06cMyvgc+HP+70pAGZDj+uF/C75U2vpX
-	a6RySAiVPL04qU2y8xtJpWr8PYRIa9E=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rHPm74vQ;
-	spf=pass (imf20.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754978319; a=rsa-sha256;
-	cv=none;
-	b=m6Pkz98g1rtKtnjZmN8n4qCrgN3TsSHwb/7so88h79FZCpQ9K2ciV/p0sl7ojqB53ogr3H
-	F120zVX6N6/tTOTQYolVQbS2/hzJu8ZB7nSbG/L4h2uBV3mS3Bs4nPI7GDZg50uvqpdSBd
-	LlmHvio6fm3XWz/+cj80RDEz/cgsDho=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BF24445FAB
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:58:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99160C4CEF8
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:58:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754978317;
-	bh=5/IY6DIk3onVp/qtCNMehb2TxY8eCwzuw7RtOQJuQas=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=rHPm74vQQP6+4xv5GKUq+Yid8PFLFpE16C1OzihWakyVIsdQph7mlcJiR6GcoBqk5
-	 unkTOREJE5OJ5z+/G1XWSShuFgX3q4eSev7xu/AlnyW0rHpLpo6/3Du5yF1VzkQiyO
-	 ZAdPPWGmBjaK3PrO6WnQT1Dueluf7HzeY02QuiWxZ7mTs7gnbZpkQeCKN2orsFbQYb
-	 gXdcro4Z22fkTxbrO6JUxG8Jqr914Zl9oq4abyyNE/AERslF/WO8JgBifScTD01rj7
-	 6qtDt1AW2bwByXJJ6/78BHVJgWPkvpQMgJjpeTkQy5n32U52/cvA74At3FQTT3Z+5G
-	 d+NuoioC1oU8Q==
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-71c06bb7470so27268027b3.3
-        for <linux-mm@kvack.org>; Mon, 11 Aug 2025 22:58:37 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV/Uwu5HUFbivduCn1R8ShbatWxfqP+QkdxzJqsgcqpaqt2FbUgvxOn+imVCe5Th2F3oKphxUd/UA==@kvack.org
-X-Gm-Message-State: AOJu0YyxQuOQ5o1J57kAD+QUZTOyMJWMziGgqSwtsvEGMm5Rh3B9b9SL
-	HYa4EThTS3SqrmY3wCCq2GTZD4WBy6yqpEauLhNBtAnREx8gEt7PN0cIr5/1JdFaF+6x0ElFES3
-	3T15Vxk3smkox7mADZKviigDrFNOMjCFBUyK7xTuyHw==
-X-Google-Smtp-Source: AGHT+IHxPmqLpRi7tVGLNW6BM10nSnUTAR4Hfu96ndWi0UBHb9Z6BoUVpa9fxWCcvwq63GZGNjOqRrIM8H10gWjMOgE=
-X-Received: by 2002:a05:690c:4d08:b0:71c:1754:26a7 with SMTP id
- 00721157ae682-71c42a7b6fdmr27964767b3.32.1754978316845; Mon, 11 Aug 2025
- 22:58:36 -0700 (PDT)
+	bh=dEAR/Fc1G+FN3qYNvablhu/Z445AwkULthuCQznI8oQ=;
+	b=RfdxuD3+T3/W0NK3YOScx7jQztG6vjjPl0Vsl7eAGun8T0zUfQjOJZqX9Fr/+NqSluo66O
+	DQjpKY9zf+STmXb08ANt16YNGsmug4nO94NyLrICSPkWrD9rIsl+ym7nFlX5h6FUIKpGfb
+	5NFczpn6Vl6a2AuPxY4aADbXVXpozHk=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754979531; a=rsa-sha256;
+	cv=fail;
+	b=YKGzUC/Q2b08DQKAkizqd3d2MVFOlMPs0OrLf6VcwSNMQzsPcTKb0dZFM4FRi0LkAgovjf
+	/JBYqOBjMNqW3PTU2L1rhXWtCKspkG23UPuFnfhGAKaUhVKXSgztn5VM5z7ELuEJWKs1tN
+	J0+TOdMI7fT4EHHB+pUWBy7tP3NBItc=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=DE3N+3ZG;
+	spf=pass (imf07.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754979530; x=1786515530;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=6vQ+Afk0ElLNabOyAhLd3xno5sb0zF1ZHSChP4tgumE=;
+  b=DE3N+3ZGUeKCfqua4KmBpawWMt2yBioySShCy/kypMytZeV9JC+1xzNG
+   hLuTtLKsYWpkFmPzBamIBnWVPITjR+PEVB9KEQx+vVAEK5Nxy/T/Njgp4
+   I54uC95ezE66Vcs8X3gJXGDn88pYzMiVxLyP6SX6jrDzz5qRs8UB0fclj
+   +ml4sCBrK37nbEOusRxwAcaKlQjDZWxi0eNX6btmBnIiHw3XsSf2ne14O
+   d5LEON9NmDgXAnEUKj0NJUNHjf9752q+GreyeCIQ/UPEF9Hxmr7sPXTyv
+   y6cxAZja0VOlpWmFIhjX9kJt7qXoigK+ZqcUj86pM7+QlmjVIhjLlGAyO
+   w==;
+X-CSE-ConnectionGUID: /d44HHk/Su2SgQ6XiGAfSQ==
+X-CSE-MsgGUID: 58OaMz3aQWe2A+q2tVlXHw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11518"; a="68618530"
+X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
+   d="scan'208";a="68618530"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2025 23:18:45 -0700
+X-CSE-ConnectionGUID: Z7wFvNX3RW+kretjh7BCRg==
+X-CSE-MsgGUID: 1WUiRDlFTQmRNARwOkOI6A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
+   d="scan'208";a="170314218"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2025 23:18:45 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Mon, 11 Aug 2025 23:18:44 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26 via Frontend Transport; Mon, 11 Aug 2025 23:18:44 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (40.107.92.69) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 11 Aug 2025 23:18:44 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uoQ6mBVpZL3pH8klfvsHQGS410X30M9LnsdWbtNgIAoQ5aQHb8cm4VRdO9WrdNLiD/Ibat9yG+nbPK4ItnGsv8Mvj6x6J1rHGc6dw7yrHsemFWwXBRhQGHm41uBsUGAh24ZrJb/ngAJR7P7rM3GgLuj8NLPGXWsD3VaQRzm7KB9m634mmD89ldW5pHl51u6UNVPPmveqNoU2+VKjwRjAKucMtLTBI4CMtFv5PSoj1GwBk5L2lvUXCX826HbcodHKaDr8OUQsj0AV6xBQSCyP00uYCKQh3xfvoXTE+RzZfz0zPZUeXrSRSNfGYmsjw/Oop6U8GSpONj6qpBU8UjwKYQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dEAR/Fc1G+FN3qYNvablhu/Z445AwkULthuCQznI8oQ=;
+ b=RAZCP9rVwHKGByJ7G+JT5wv6JDSq/VHLoBZ2oALvSmtbUMWZEiKRcAr1Sj2ICs8AyFc7E3iTibV8A/XUaF4QbfRGwgqUVn40PwamD9D5vHHDuSKrT7XWEnDKfSl9ZUqeIcmgziImeviSczfB+1OOCbXvN5L4PKDx1DMeuzM8vN2M6pm+5VrlM8C0c9Q/JezJYJkvsJ7II7Ag8xjWChxyF/XlpSkhOnbhQIOrP+sJD/a23LV+VZpMHUi1B5uzOJi6dMTft023qLdAUr8YUy9dA4k8O6JbfIya0GE7fNokBGC4D35oIa8tIQ6U9D1VK71IpMdpFqoN4ZqOs+zM6o8mvg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by CY8PR11MB6844.namprd11.prod.outlook.com (2603:10b6:930:5f::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.13; Tue, 12 Aug
+ 2025 06:18:41 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332%4]) with mapi id 15.20.9009.018; Tue, 12 Aug 2025
+ 06:18:41 +0000
+Date: Mon, 11 Aug 2025 23:18:38 -0700
+From: Matthew Brost <matthew.brost@intel.com>
+To: Mika =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>
+CC: Balbir Singh <balbirs@nvidia.com>, <dri-devel@lists.freedesktop.org>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, Andrew Morton
+	<akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, Zi Yan
+	<ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
+	<rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
+	<gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, "Alistair
+ Popple" <apopple@nvidia.com>, Oscar Salvador <osalvador@suse.de>, "Lorenzo
+ Stoakes" <lorenzo.stoakes@oracle.com>, Baolin Wang
+	<baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain
+	<dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lyude Paul
+	<lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>, David Airlie
+	<airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Ralph Campbell
+	<rcampbell@nvidia.com>, Francois Dugast <francois.dugast@intel.com>
+Subject: Re: [v3 03/11] mm/migrate_device: THP migration of zone device pages
+Message-ID: <aJrcvpx5tiSKD88x@lstrano-desk.jf.intel.com>
+References: <20250812024036.690064-1-balbirs@nvidia.com>
+ <20250812024036.690064-4-balbirs@nvidia.com>
+ <81ca37d5-b1ff-46de-8dcc-b222af350c77@redhat.com>
+ <aJrW/JUBhdlL2Kur@lstrano-desk.jf.intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aJrW/JUBhdlL2Kur@lstrano-desk.jf.intel.com>
+X-ClientProxiedBy: SJ0PR03CA0115.namprd03.prod.outlook.com
+ (2603:10b6:a03:333::30) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
 MIME-Version: 1.0
-References: <20250808-swap-scan-list-v2-1-d50e4758ecee@kernel.org> <CAMgjq7DnniGUdpQQA0YF+LuMuL9+FCLQJP2Q04G_Hsd1sztv9A@mail.gmail.com>
-In-Reply-To: <CAMgjq7DnniGUdpQQA0YF+LuMuL9+FCLQJP2Q04G_Hsd1sztv9A@mail.gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Mon, 11 Aug 2025 22:58:25 -0700
-X-Gmail-Original-Message-ID: <CACePvbV65tjGnWr_zFs5ZHoAX2x=As=rMrwJKCho6c5-Dw7qaA@mail.gmail.com>
-X-Gm-Features: Ac12FXxqc0syoLGdo5ljlvqqxbaJSAIDobIKRfOTmrg0MugEHBH3FWYc6Za-Hmk
-Message-ID: <CACePvbV65tjGnWr_zFs5ZHoAX2x=As=rMrwJKCho6c5-Dw7qaA@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/swapfile.c: introduce function alloc_swap_scan_list()
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	"Huang, Ying" <ying.huang@linux.alibaba.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: fr1eay3hqthna6qhehhskeg61ymdnyfu
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|CY8PR11MB6844:EE_
+X-MS-Office365-Filtering-Correlation-Id: 32a16db5-baeb-4798-12ff-08ddd9681535
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7416014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?RVI2UGFEVW82NC8vTnd6VVBmdERkUVB0NnpwOHpMbmwrSUhXcExNTHIweTds?=
+ =?utf-8?B?Y3VLUmhNMmNrcldkMUdJNFM1eGxXWFd5LzNUVmluWlhuQWpDaUtYV2ROaU9y?=
+ =?utf-8?B?bm5waGNhRDZ1a01pdDZSMlFMS3ovZ1lLSmsrL2hYOGFrNnRNWjhvTDhST2hD?=
+ =?utf-8?B?RFNBZFBMMXZSVVE2OThDdk4zT2ZyaDhEdENUdzJFMFduU3hQYnYwSDZPNEpr?=
+ =?utf-8?B?THU4bTBGTkFBRTFZY202MmR6a1dRR05BOXl3M3VvR0xpVE1renBwaUI5endQ?=
+ =?utf-8?B?WTRCcFJEVDQzYTBiaEFTM0NVR1BBWUMxVlhuTE5jOThwYUtlU1grUk5tZDhO?=
+ =?utf-8?B?TnJwNGFKK3oyak90YUhjR1RpUjRoSFlQYmNvM1cwZm1PQzI0T3ZwVlZEMnB0?=
+ =?utf-8?B?Qjh6Wk9wUkozZlF0ajEySUlMdjZtMEk0eTNVMkwzdXpud201NDExajBIMGhF?=
+ =?utf-8?B?c1VnK1p4d2laM2c4TmpoR08zOUlSUFVkRXJjOGRJUW1uYW1weVl5c1g1TmVM?=
+ =?utf-8?B?b3A1elpIMEJLajR3OWphbmxONTZaU0gzaU1oNlFIb3lrcnhrUThDS0RSNVl5?=
+ =?utf-8?B?ZWNQSGtIUyswMzlxU0QwSlVKTmJ3SGZ3aVZuRGhYeGlmckM2RUp5YzNTSzFt?=
+ =?utf-8?B?c2dCbWtOakdPSmVzb2J6bWtUV3pDMzFDNmhtMkNnbjdyT0pKYmFlRUpYamFL?=
+ =?utf-8?B?a2pzejEvakNScnFpc2VRQk1Sem4yV2dWR1FQZXN1OFRQck1ldThVdWxjKzdU?=
+ =?utf-8?B?T2xML1hJNncrcWh0RXE4WjM0NXlPTXc5ODBtRWlHdWQxVEhKSWJMV2IvWjQr?=
+ =?utf-8?B?N1ZjQjltZlAzSE1jblgxUGNuamJVZmZnWm4yL3NTMWxnd0NEMU00bzRlbHdk?=
+ =?utf-8?B?bEtlUmtPcStZd3lER0UwYnJ2bWlDZ1RNZEZGSmxFNmNpUmRaSmwzWTEwMS9Y?=
+ =?utf-8?B?ZFRqWW5aT3dBdGJWOG4wTGZWRmNiTjRqYi9kV2RMb04yeU9qS1g0RTRBK1Vi?=
+ =?utf-8?B?aTNpTnQ5NTVBekl4Q1ZEdHJyYURXYytWb25MNHhPME81SGpBc0NUMGZtVkVV?=
+ =?utf-8?B?OVJ5NnJMa0pnVlVmWjZya0grL3BCQlNQZmRkRXBqeWRFaTdXSGFZbEllRFor?=
+ =?utf-8?B?aGpPdDZ4aWljeXBmY0NLYzErTEV0enozNlEvL0pBUTk0MVpYOWdSRXl2MXhQ?=
+ =?utf-8?B?Q3VacVlNRWtQaWRNVGZWSHM0ekp2SWx0UTJZZ2gvQXBLZ1Uybk9pRERZaERM?=
+ =?utf-8?B?T0V3UmlmNzZCUGphcHdpNkFzSi9sbG9HNmhBZHBkbEo3Tlg5Y0F6d3gzNlhF?=
+ =?utf-8?B?aWZvemttZGNUS0Z2MVdYbEFCY2lGVFJYUzVDcEVteTdDMytIbGkvZ1MvR1Ji?=
+ =?utf-8?B?STJXbmpVSElwVUhCUnB2dEtzcXVwSklOd3hjVmtnS0pEUnlKU0ovTlZlc0ky?=
+ =?utf-8?B?RmdyVEhQK3ZkdHpRUnV6b1J5WVpUcGlibHd6elJlc0s0c3JGTVRWWkxjNlFE?=
+ =?utf-8?B?SzlHUXlmWXEzWnRqdHhBdXBoSTBld2VtYlh1ams4b2F2aUl6QWY0R1ZEWWtP?=
+ =?utf-8?B?NytHOEpWRHBQcDBONmxLbnFmd1p0ZmFBQkFITUhZT3U1TW5SdkN2VzhsV0M3?=
+ =?utf-8?B?WFNPcnNiM0lYQzdMa3cvd0ljbzRSVTlQY3BuZ1RUSHRRekhOampnanRBQ3ho?=
+ =?utf-8?B?ZjE4SGFlWmpXY1JQWHM5Y1ljSVI3ZjlnandvbklPUTUzNWUwTERIOE1TbHJj?=
+ =?utf-8?B?VC9uKzFxaWN0cGlmTWtkVlJ4M1h2WDJuVlpGUzkvN0FvSXlsQlQ0MjNCMysz?=
+ =?utf-8?B?dE50S04rSGoxTnNLOUFxd0hCOWtCTHk5YldUWmRlWXJGNG0yeVg2OVBPeHRx?=
+ =?utf-8?B?cnJDZG9DeHoydWI3MWl1bWV2elJtN0wxbTBONVNkZGFYa3c9PQ==?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Nnd2NWVycDhlc2NZZklrUU5DaXkwNEs3MTJMOENxM1pDTXNGN1RVZzVtbi9p?=
+ =?utf-8?B?RjdnTDMySTRZUGFxMzZiRHNWVXk5VDNJZTlOL0JFbFhVc29tZTN5K3RpdVAw?=
+ =?utf-8?B?ZzlDa2F4ZlV6OE12cFpKM1EzcXVRKzYyUWxUemFHVW92R1FvMndEdEV5WDds?=
+ =?utf-8?B?TWd6ZTFJYSt6M1BpRTJSTUxnTzlMV280cStPSDYzMzBReDNmWTg4RGt2V2Ra?=
+ =?utf-8?B?UFFMMnhWaktNbXd4cXNsSGZrZi9taVFVOFpzUXFHQThlN01EcTcvc1ZjVytE?=
+ =?utf-8?B?L3VraVN2bm83WDN2cUFzcHVLNXpBRFBWMytPTml5QmRvYk92VUNZQWNMcVVh?=
+ =?utf-8?B?OFMyR3liZDgvY0swWmpyZ1lPUExZNngzMm83eTVaVjcrOEtkYkxvSGFkYnZF?=
+ =?utf-8?B?enlCb05WWk1QU0RnenQwSGhqVWhqRGFZK1BzaVBQTlBUbk9UeUVibHZqRlB0?=
+ =?utf-8?B?VVBBWk5MYXpBT2NVZ1oveis3cFB3TnRqOWVsUmx0OTBzY0VnL1dVQllDUVlh?=
+ =?utf-8?B?WThMZDdVbWJZS2tFc3c2MVRGejlhM0Jmek9TOFE2eSs2bThOR3hoT0NKNXVM?=
+ =?utf-8?B?VERkOWlMNUgxemFweDhqRkFxaVdXL3YyZFhZVzJwdnNqaXk5ZCswekFtQlUw?=
+ =?utf-8?B?SkRiU25nb202ajdKNlhsNFpjN2tscnZQdlhYOEVXbTIrWko2Q0ZNZzNWbjdl?=
+ =?utf-8?B?MFIrUlRnaXlBVjdRNFU5bUtKbmNZVWJjdXBNaGFKV1B4UDkySmYxa1QyWUtS?=
+ =?utf-8?B?QUU3RU9rcmhiR01jdWpaTHdMYjhHRmk3TG5ibC9xTXlJbXM4OGFHZHNOVGts?=
+ =?utf-8?B?UXRlenU4cmp4Mmg1Wm1Ba05qSW5YZk80K0hNelVHN25kaEh4YUVGWDM0STRt?=
+ =?utf-8?B?T1k4eVlKVGw3aC83Q2xkRFh1UUlJcDZrUzZNaGhobGZGMExRTHZ6akhzeTR5?=
+ =?utf-8?B?RURNWFFXQ0RKMC9qYmlVaTJNK0ZzZkR3akJ2K0dDUWZxWEVLQk5CSVNXMzBj?=
+ =?utf-8?B?emJVK2lOK3Jldld4VkV6Mm5yYmRIdXhzck5pMUlrbVNkU0pXUTZpeFpJTllS?=
+ =?utf-8?B?WW1EdHVYME13QnhySldkMnFuQVprenBJbHh1NlVMb3pEbHduVUwyeW1DcFE3?=
+ =?utf-8?B?Mys2WkZOMXNIU3hPTFVUVzFpT2crN3c1N3JBNStPejRBekZBVmFzaWI2UGhn?=
+ =?utf-8?B?WEREVnZOUk5QeDVkSU9jeTJqRTc3QVcxUXFBZkJXVC9Ud1ExekhqSU5EbnRW?=
+ =?utf-8?B?bFBYbnpGNyswTXgyOGdKa1JOdS9ydU0xdytLazgvOUl1OW5RYzk1eldKNVVj?=
+ =?utf-8?B?VWJZcFBEK213UC9wbWJudUkxVnFudlRwK0hhVEdzSG1jYmJGOE1PcTRLakRi?=
+ =?utf-8?B?SisvQUFrbmsreHl5cHlOK3p4TG1ObGVoUk9mMkdScjFXZ3BBSTMxV29UNVBj?=
+ =?utf-8?B?RnJWZHVVU1VyQXFmYy94VWVlbXNncTcySGc1anlqK2RMcmk0c3M4cTE4NUc0?=
+ =?utf-8?B?ajNNMlBRbC9IMWpIUml6S0tPMzdKbXB1d1plN0JESGMrWnExc3FWbW0wd1JO?=
+ =?utf-8?B?Qm45YnVSUjRMcEhaQkYrYzhjSlRscm5iY1JjVVJhWEg3YU1BdjNmYUV2M0Z3?=
+ =?utf-8?B?MXc1K3g1WTRicTNQTFYrWkwyOXU3VlNuZmdadjVwU25DblRPTGNJU1JtVzNk?=
+ =?utf-8?B?WXowNGs5UElMUUlxb1IycUtIa1VkNVFYRVhQa21pY2dkY012NkN0WGg5SUNH?=
+ =?utf-8?B?aU1MQjFlSFVBMFdHdytjYzF2cmprNUVmTDhCM0dEejJneDQ4ZjVscVpRWndu?=
+ =?utf-8?B?bW9TMWJzTVhjQmt4d0M5bWZlSHRrdHI0azArL2pMMXA4aFY1My9GV0tMcit2?=
+ =?utf-8?B?eFJzbURZMkNqUkxqOFB1MXZ0YnlOcGhnZEJmVEdJUVNyckgrMnE1cG9ueEpT?=
+ =?utf-8?B?YWt2NlVkNlNlenNqdFVieDNCODg2QWgyQ0Y0Z3dkaUdBSm94MDF0MTdQaVg1?=
+ =?utf-8?B?a0lKMnpOVGtzeVFWNzllQlY5V3haWnlyQzQ1WVhsRGJjcGozWkFxNmtHNXlM?=
+ =?utf-8?B?RGdDRThnY3VOMVRJeDNRTGlXbkdCc2w5T25GRDIyNmMrMEk2YWdzTE9hbUlm?=
+ =?utf-8?B?V1pHdUM1ck8wRGZIWWdRRWQrbDB3M2t1NHo5Y0ZleE1lWTVndzFOYWdZZ2xL?=
+ =?utf-8?B?anc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 32a16db5-baeb-4798-12ff-08ddd9681535
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2025 06:18:41.4782
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: aO274BzJUOISzkQRjDStdbexKaNF15DT3/+VEHVOiaMx8Fi7iVKfFw1XSZkdaZavG4Rr3oTyfTg6DfuoTG0gNQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB6844
+X-OriginatorOrg: intel.com
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 303B41C0005
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1754978318-125223
-X-HE-Meta: U2FsdGVkX19NzQV0p1Gbiv7j8H4vl0UEyhvI8vvxbz/9fKlrq4yEvPIVUibKkwe1NbgCyajQ8H6ZG+QZwEVcjZEiEv0PFXHMKXOw9zSx4PkMvCy2e8/noUZ0oYe6/ybaiEXDJh+i9IBceMa8yTueZSrQEXtocnDIu5ogXFWG/l8ecIDsg2/LO9zbdYOmL0EYloDxNGtHAgPnUOlYby0OYwzbsM1aNCRjAWpYsEDehNVvQXnNXXiRq5WgLlh3W6b77hIOTC9DYsjYTq3CnKoeqvCG85LRsg4+locvKc7IEdkC5WhTQZ3Jq/OHT7Tg3MCPHDlgw6uHvWa+GqzIArHfLCSzYKIO0UnkbIx99Azs0H2l2bBitF8apy4XXMNPxUvzggrGsn52VfYZyCjTngt6RZJvtmm4MyKSVBARNSiJSY7rLIvKQJsJJB83wS4Att3Wr1kr5VZT0of+evsJANeuAyNnupl1q5sm0JYnFUexh6Sk3e97jpKyAnamoVI187NAK6IdahbTQwe4EvjbiVzp551Mztko2sYuAJrA8DnhOuUspzNmf9bmm3Y3d/9Hwb3q3c+p09eezf11uy8K06fO8FTRlIKCI5apDzkoK5YpP1OPPrtutrDoT10nPdUvrKraFFjf8kowPO9AbHvTh3TnE96nr7hBJnYB/jUnbKvVzcUZkG+6ttMsHOsw//pyLhO3uomvQAipt15+JGLJeiWZRq7vFMPEJyaTT/XH1L3wcG1/ibLIVFNX5CXbhqjJKAWmXIeov0k0klJ3CAsLt9BKUybkWcMeS3kHbL5eFXEhdBViiLeBluzdiCpRZlzZClrL2OfYDL4F3UZs7BnMHbPq7lUnfqDkZS+eRVw6IMts1tsrxgdZS6nmjEfq2OXSl4Bv20LLHHkkV1hdk5c8luIxt03o8Ec27na8HhmivqNVcIFRVcgYf/bVldFTfqVvHqAn+GTgOHqmkrU/t8hxlWA
- 580s6YWO
- xrsWOK9Lxk3V+lAbqfN50SEeeAkvQaaH6ITrkHblDeTWmGV7xrtKv4IjrFlmn1X93JLE+oJGPN+IB4TGUud3bH5PvmpBb/Uz45Jb/WQMQTZL0ANIP/8qR515eZyLu4i3sUfy3zDGH7msZ20R3ixVRR/lr+Fhw3bcp6bkOiZgHFciu5lRw03uGNgntIQnWKwgAk0nu/YBuGIyeKf0jt5rQXcvxsEDg93NdpUyCEk3A+h3xWsKY31MRZRisZdFH7FGhjkZZtVoLZx6kk0JIzOH15PWpNpqxACgmRMG45fZpUsAqnif4eqAqkxFLzaTUDXCV9ypLDmEFPPq8fpFlwceBWTPN9av1mRA300n0GNqy9JJRByQz/Kb6vdXVJA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 51AB240002
+X-Stat-Signature: q4n1qmj7fhogyaou5q3qky9c8mrrgsj5
+X-HE-Tag: 1754979530-373691
+X-HE-Meta: U2FsdGVkX1+vWuoMe7xYlij0Yi2+goyaFWoWaF0DZxVy6ZQuCq3Zft/zczvcl2G4xmLQHZTB9NAod8UXvUzm9nZSqGaDiHYBuHFnpxUvnP7d+hAYiKGPxc0MgIpuhCCTapsXcuUmVfW+cLOAy9M5b+hwpNaUiPv6grkhtMJP5OwfBfLloJRfGAGi4oehRXz3N+QIsHNh4/AzhjeozU4GqD0tXbdrkAwTI7IsnhUF16S7baXluLo+6wPSPLhxVC1CSzwFCvVRO9NKxyoUL2IhsVJCtDD4k/vvRP4ftWBGSZfwrHEcdzkNnvY1CgwjhSe54okCZUBwc+Al+cFRCZqBFuFs+6OM0H1urZTGPtcJuDWewzIPgxWdp3cK529C+HbvDUT/+7rn73BaDYB9hvlAna9EuB0KaHgK7NB1rMDy1wXQWMqd9bUEGDFH3ct9/JS0FNU+g/K0bGmYTkbR3MnnSzyLnCqXXwNwxzswc39H9txpsNhGD44cJZ/K7bi/7aGael92oR25Ofq1t6HumNQTXa8UOAMM88aylMeTgXzCPQVmVPEV6BPMyymG4WI95lz8/FBqP+Trk//ILHzl9VS/SwKvyd7nJSjvz7YOlT61rdHqpPYyrPnxoGA+iuZcIW50uLhWDOgdtTmd0G3sMMAcONCIlUxx6HbNZYVE82C65Rlb89DOOmC6x7gAkKUINv7vr556bSCNk8MIevxJK/IPKI5rJu3oTqfhTDXdOJYEztLVlhDjD4WZ/P1HV6BHPuS5k4FLlLlzuU6DstMyAFKG+mJKCdih8Q7BN3K5mX6jdyuqkof8OiTtgOpQqsYil1cMKh8xBAjtFD2iMh5WoQnbemqMft3GOHcB0JcUlgrlaARjgyVrup4+ozzktVIYNo+E7YYVtuYNaHFFcfKTpog3zU1GWmPYsQejSoFbu+SwQkLrCnrM/C4fctkLFaDk9bu2NbKji0cmlki9EVByy2O
+ 6HDAihLp
+ 6Kbt+Uqw1gJ68ojhODi6aia2M4+9tXLTI5tjOmnE6L17422P3YpsLx++5+VdHyiKtzW2UC/3UYr+HVhqXTh0SLrTuTWEfBH7x0/jb4kjukUlsmSNcj+Qir2fG/gzfKvIErLawgVVRxZu/pc9Xe0/GvkMLU3JdjlDA8Ypzmp8dq4dGjpFPFMHq5kY2NhnxaJxFwlmllMvTjbNWTPZcWX/No22WQePVfN/m2mUFAzNKDA9FyZlcjCaC/Hu1iKBHK2e8VUqFk7oxemhVMi71UG0Xomu2eLtz7EAY6Q7wnvlAtj3ZHcCjjVQk9ECMVZeZ4DbuLlIrUS+AnJ8nIXAzmKDXiG7p3l2iXKGrQjsqJR2C4HnVunjVgTCH6YvBgNy1N4G1OFx1oRQt78xOeMLN/mAo/9fbC+jkQCon6xi3eoh7dRRWIlBqRi8oR7+bykvHHMh06T8noMkCfHaT/gTPPt4f7Xpxnp1IOvbyP0t/6A2mqQy/iYOyaNmw5HK0wfa9glxVLlL62oXLPR91StlpTrzA2bUPwE3tfOSWDhWPh0b/BVcbPXqAMxt9XNR0Ir/uXAx2FD+l1zJ1K5HixiG7gZQYYpaWWwSPJsT24qaZ/K8ysugvppvTKnrYgvTR2pGAxvF/7GvLurNYPBfq6JrYxQtREX3OHgHwmwwTwUkX43rXFouP93hh3ZuGoiS8QiT2uPilBsnwLtGrxszFuLDuOroRqERx1yO5oQ5liJFySecDQAzq+CGJZ+kAKqBQ3HqJC8M1RxLwQX9pTjFzwZUPgjJ+h+BxGXUietKOw5jkTGsDBHbF7RMP5L6jpZi3+Kv3rKVRqFC5v8rvjnuZmwABxs2MuTfU7uHfNWPGxQiG9nFk3ZEtY87KTxWCPxzWKm7ZY5bV7V0E1ct6cmXnYaDKZOn281J3eYEsceqcHpAWUJEDMEVuAAjuNDQMXjewdqlpXRma2DSoFUuN2OHjHvC/1gDq1aH+yy6P
+ TCG/tbwa
+ 2yUxDuJ/W7/UclD1FsSHu4rV5aSY1kDofYa3Lq/hct75NWGuo0OD3i/0fUaNz9RlwRQx+2tBH9dB4ax9oosh7cCqZ4xRrEDXz4AZZ2GjjPodt5Ky/mpbEDA3HuPvPCU82XmwqUotAcQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,167 +244,373 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 8, 2025 at 12:52=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
-e:
->
-> On Fri, Aug 8, 2025 at 3:48=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote=
-:
-> >
-> > This the alloc_swap_scan_list() will scan the whole list or the first
-> > cluster.
->
-> Hi Chris,
->
-> This sentence reads strange to me, but English is not my native
-> language so I'm not very sure about it.
+On Mon, Aug 11, 2025 at 10:54:04PM -0700, Matthew Brost wrote:
+> On Tue, Aug 12, 2025 at 08:35:49AM +0300, Mika Penttilä wrote:
+> > Hi,
+> > 
+> > On 8/12/25 05:40, Balbir Singh wrote:
+> > 
+> > > MIGRATE_VMA_SELECT_COMPOUND will be used to select THP pages during
+> > > migrate_vma_setup() and MIGRATE_PFN_COMPOUND will make migrating
+> > > device pages as compound pages during device pfn migration.
+> > >
+> > > migrate_device code paths go through the collect, setup
+> > > and finalize phases of migration.
+> > >
+> > > The entries in src and dst arrays passed to these functions still
+> > > remain at a PAGE_SIZE granularity. When a compound page is passed,
+> > > the first entry has the PFN along with MIGRATE_PFN_COMPOUND
+> > > and other flags set (MIGRATE_PFN_MIGRATE, MIGRATE_PFN_VALID), the
+> > > remaining entries (HPAGE_PMD_NR - 1) are filled with 0's. This
+> > > representation allows for the compound page to be split into smaller
+> > > page sizes.
+> > >
+> > > migrate_vma_collect_hole(), migrate_vma_collect_pmd() are now THP
+> > > page aware. Two new helper functions migrate_vma_collect_huge_pmd()
+> > > and migrate_vma_insert_huge_pmd_page() have been added.
+> > >
+> > > migrate_vma_collect_huge_pmd() can collect THP pages, but if for
+> > > some reason this fails, there is fallback support to split the folio
+> > > and migrate it.
+> > >
+> > > migrate_vma_insert_huge_pmd_page() closely follows the logic of
+> > > migrate_vma_insert_page()
+> > >
+> > > Support for splitting pages as needed for migration will follow in
+> > > later patches in this series.
+> > >
+> > > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > > Cc: David Hildenbrand <david@redhat.com>
+> > > Cc: Zi Yan <ziy@nvidia.com>
+> > > Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+> > > Cc: Rakie Kim <rakie.kim@sk.com>
+> > > Cc: Byungchul Park <byungchul@sk.com>
+> > > Cc: Gregory Price <gourry@gourry.net>
+> > > Cc: Ying Huang <ying.huang@linux.alibaba.com>
+> > > Cc: Alistair Popple <apopple@nvidia.com>
+> > > Cc: Oscar Salvador <osalvador@suse.de>
+> > > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > > Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> > > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> > > Cc: Nico Pache <npache@redhat.com>
+> > > Cc: Ryan Roberts <ryan.roberts@arm.com>
+> > > Cc: Dev Jain <dev.jain@arm.com>
+> > > Cc: Barry Song <baohua@kernel.org>
+> > > Cc: Lyude Paul <lyude@redhat.com>
+> > > Cc: Danilo Krummrich <dakr@kernel.org>
+> > > Cc: David Airlie <airlied@gmail.com>
+> > > Cc: Simona Vetter <simona@ffwll.ch>
+> > > Cc: Ralph Campbell <rcampbell@nvidia.com>
+> > > Cc: Mika Penttilä <mpenttil@redhat.com>
+> > > Cc: Matthew Brost <matthew.brost@intel.com>
+> > > Cc: Francois Dugast <francois.dugast@intel.com>
+> > >
+> > > Signed-off-by: Balbir Singh <balbirs@nvidia.com>
+> > > ---
+> > >  include/linux/migrate.h |   2 +
+> > >  mm/migrate_device.c     | 457 ++++++++++++++++++++++++++++++++++------
+> > >  2 files changed, 396 insertions(+), 63 deletions(-)
+> > >
+> > > diff --git a/include/linux/migrate.h b/include/linux/migrate.h
+> > > index acadd41e0b5c..d9cef0819f91 100644
+> > > --- a/include/linux/migrate.h
+> > > +++ b/include/linux/migrate.h
+> > > @@ -129,6 +129,7 @@ static inline int migrate_misplaced_folio(struct folio *folio, int node)
+> > >  #define MIGRATE_PFN_VALID	(1UL << 0)
+> > >  #define MIGRATE_PFN_MIGRATE	(1UL << 1)
+> > >  #define MIGRATE_PFN_WRITE	(1UL << 3)
+> > > +#define MIGRATE_PFN_COMPOUND	(1UL << 4)
+> > >  #define MIGRATE_PFN_SHIFT	6
+> > >  
+> > >  static inline struct page *migrate_pfn_to_page(unsigned long mpfn)
+> > > @@ -147,6 +148,7 @@ enum migrate_vma_direction {
+> > >  	MIGRATE_VMA_SELECT_SYSTEM = 1 << 0,
+> > >  	MIGRATE_VMA_SELECT_DEVICE_PRIVATE = 1 << 1,
+> > >  	MIGRATE_VMA_SELECT_DEVICE_COHERENT = 1 << 2,
+> > > +	MIGRATE_VMA_SELECT_COMPOUND = 1 << 3,
+> > >  };
+> > >  
+> > >  struct migrate_vma {
+> > > diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+> > > index 0ed337f94fcd..6621bba62710 100644
+> > > --- a/mm/migrate_device.c
+> > > +++ b/mm/migrate_device.c
+> > > @@ -14,6 +14,7 @@
+> > >  #include <linux/pagewalk.h>
+> > >  #include <linux/rmap.h>
+> > >  #include <linux/swapops.h>
+> > > +#include <asm/pgalloc.h>
+> > >  #include <asm/tlbflush.h>
+> > >  #include "internal.h"
+> > >  
+> > > @@ -44,6 +45,23 @@ static int migrate_vma_collect_hole(unsigned long start,
+> > >  	if (!vma_is_anonymous(walk->vma))
+> > >  		return migrate_vma_collect_skip(start, end, walk);
+> > >  
+> > > +	if (thp_migration_supported() &&
+> > > +		(migrate->flags & MIGRATE_VMA_SELECT_COMPOUND) &&
+> > > +		(IS_ALIGNED(start, HPAGE_PMD_SIZE) &&
+> > > +		 IS_ALIGNED(end, HPAGE_PMD_SIZE))) {
+> > > +		migrate->src[migrate->npages] = MIGRATE_PFN_MIGRATE |
+> > > +						MIGRATE_PFN_COMPOUND;
+> > > +		migrate->dst[migrate->npages] = 0;
+> > > +		migrate->npages++;
+> > > +		migrate->cpages++;
+> > > +
+> > > +		/*
+> > > +		 * Collect the remaining entries as holes, in case we
+> > > +		 * need to split later
+> > > +		 */
+> > > +		return migrate_vma_collect_skip(start + PAGE_SIZE, end, walk);
+> > > +	}
+> > > +
+> > >  	for (addr = start; addr < end; addr += PAGE_SIZE) {
+> > >  		migrate->src[migrate->npages] = MIGRATE_PFN_MIGRATE;
+> > >  		migrate->dst[migrate->npages] = 0;
+> > > @@ -54,57 +72,151 @@ static int migrate_vma_collect_hole(unsigned long start,
+> > >  	return 0;
+> > >  }
+> > >  
+> > > -static int migrate_vma_collect_pmd(pmd_t *pmdp,
+> > > -				   unsigned long start,
+> > > -				   unsigned long end,
+> > > -				   struct mm_walk *walk)
+> > > +/**
+> > > + * migrate_vma_collect_huge_pmd - collect THP pages without splitting the
+> > > + * folio for device private pages.
+> > > + * @pmdp: pointer to pmd entry
+> > > + * @start: start address of the range for migration
+> > > + * @end: end address of the range for migration
+> > > + * @walk: mm_walk callback structure
+> > > + *
+> > > + * Collect the huge pmd entry at @pmdp for migration and set the
+> > > + * MIGRATE_PFN_COMPOUND flag in the migrate src entry to indicate that
+> > > + * migration will occur at HPAGE_PMD granularity
+> > > + */
+> > > +static int migrate_vma_collect_huge_pmd(pmd_t *pmdp, unsigned long start,
+> > > +					unsigned long end, struct mm_walk *walk,
+> > > +					struct folio *fault_folio)
+> > >  {
+> > > +	struct mm_struct *mm = walk->mm;
+> > > +	struct folio *folio;
+> > >  	struct migrate_vma *migrate = walk->private;
+> > > -	struct folio *fault_folio = migrate->fault_page ?
+> > > -		page_folio(migrate->fault_page) : NULL;
+> > > -	struct vm_area_struct *vma = walk->vma;
+> > > -	struct mm_struct *mm = vma->vm_mm;
+> > > -	unsigned long addr = start, unmapped = 0;
+> > >  	spinlock_t *ptl;
+> > > -	pte_t *ptep;
+> > > +	swp_entry_t entry;
+> > > +	int ret;
+> > > +	unsigned long write = 0;
+> > >  
+> > > -again:
+> > > -	if (pmd_none(*pmdp))
+> > > +	ptl = pmd_lock(mm, pmdp);
+> > > +	if (pmd_none(*pmdp)) {
+> > > +		spin_unlock(ptl);
+> > >  		return migrate_vma_collect_hole(start, end, -1, walk);
+> > > +	}
+> > >  
+> > >  	if (pmd_trans_huge(*pmdp)) {
+> > > -		struct folio *folio;
+> > > -
+> > > -		ptl = pmd_lock(mm, pmdp);
+> > > -		if (unlikely(!pmd_trans_huge(*pmdp))) {
+> > > +		if (!(migrate->flags & MIGRATE_VMA_SELECT_SYSTEM)) {
+> > >  			spin_unlock(ptl);
+> > > -			goto again;
+> > > +			return migrate_vma_collect_skip(start, end, walk);
+> > >  		}
+> > >  
+> > >  		folio = pmd_folio(*pmdp);
+> > >  		if (is_huge_zero_folio(folio)) {
+> > >  			spin_unlock(ptl);
+> > > -			split_huge_pmd(vma, pmdp, addr);
+> > > -		} else {
+> > > -			int ret;
+> > > +			return migrate_vma_collect_hole(start, end, -1, walk);
+> > > +		}
+> > > +		if (pmd_write(*pmdp))
+> > > +			write = MIGRATE_PFN_WRITE;
+> > > +	} else if (!pmd_present(*pmdp)) {
+> > > +		entry = pmd_to_swp_entry(*pmdp);
+> > > +		folio = pfn_swap_entry_folio(entry);
+> > > +
+> > > +		if (!is_device_private_entry(entry) ||
+> > > +			!(migrate->flags & MIGRATE_VMA_SELECT_DEVICE_PRIVATE) ||
+> > > +			(folio->pgmap->owner != migrate->pgmap_owner)) {
+> > > +			spin_unlock(ptl);
+> > > +			return migrate_vma_collect_skip(start, end, walk);
+> > > +		}
+> > >  
+> > > -			folio_get(folio);
+> > > +		if (is_migration_entry(entry)) {
+> > > +			migration_entry_wait_on_locked(entry, ptl);
+> > >  			spin_unlock(ptl);
+> > > -			/* FIXME: we don't expect THP for fault_folio */
+> > > -			if (WARN_ON_ONCE(fault_folio == folio))
+> > > -				return migrate_vma_collect_skip(start, end,
+> > > -								walk);
+> > > -			if (unlikely(!folio_trylock(folio)))
+> > > -				return migrate_vma_collect_skip(start, end,
+> > > -								walk);
+> > > -			ret = split_folio(folio);
+> > > -			if (fault_folio != folio)
+> > > -				folio_unlock(folio);
+> > > -			folio_put(folio);
+> > > -			if (ret)
+> > > -				return migrate_vma_collect_skip(start, end,
+> > > -								walk);
+> > > +			return -EAGAIN;
+> > >  		}
+> > > +
+> > > +		if (is_writable_device_private_entry(entry))
+> > > +			write = MIGRATE_PFN_WRITE;
+> > > +	} else {
+> > > +		spin_unlock(ptl);
+> > > +		return -EAGAIN;
+> > > +	}
+> > > +
+> > > +	folio_get(folio);
+> > > +	if (folio != fault_folio && unlikely(!folio_trylock(folio))) {
+> > > +		spin_unlock(ptl);
+> > > +		folio_put(folio);
+> > > +		return migrate_vma_collect_skip(start, end, walk);
+> > > +	}
+> > > +
+> > > +	if (thp_migration_supported() &&
+> > > +		(migrate->flags & MIGRATE_VMA_SELECT_COMPOUND) &&
+> > > +		(IS_ALIGNED(start, HPAGE_PMD_SIZE) &&
+> > > +		 IS_ALIGNED(end, HPAGE_PMD_SIZE))) {
+> > > +
+> > > +		struct page_vma_mapped_walk pvmw = {
+> > > +			.ptl = ptl,
+> > > +			.address = start,
+> > > +			.pmd = pmdp,
+> > > +			.vma = walk->vma,
+> > > +		};
+> > > +
+> > > +		unsigned long pfn = page_to_pfn(folio_page(folio, 0));
+> > > +
+> > > +		migrate->src[migrate->npages] = migrate_pfn(pfn) | write
+> > > +						| MIGRATE_PFN_MIGRATE
+> > > +						| MIGRATE_PFN_COMPOUND;
+> > > +		migrate->dst[migrate->npages++] = 0;
+> > > +		migrate->cpages++;
+> > > +		ret = set_pmd_migration_entry(&pvmw, folio_page(folio, 0));
+> > > +		if (ret) {
+> > > +			migrate->npages--;
+> > > +			migrate->cpages--;
+> > > +			migrate->src[migrate->npages] = 0;
+> > > +			migrate->dst[migrate->npages] = 0;
+> > > +			goto fallback;
+> > > +		}
+> > > +		migrate_vma_collect_skip(start + PAGE_SIZE, end, walk);
+> > > +		spin_unlock(ptl);
+> > > +		return 0;
+> > > +	}
+> > > +
+> > > +fallback:
+> > > +	spin_unlock(ptl);
+> > > +	if (!folio_test_large(folio))
+> > > +		goto done;
+> > > +	ret = split_folio(folio);
+> > > +	if (fault_folio != folio)
+> > > +		folio_unlock(folio);
+> > > +	folio_put(folio);
+> > > +	if (ret)
+> > > +		return migrate_vma_collect_skip(start, end, walk);
+> > > +	if (pmd_none(pmdp_get_lockless(pmdp)))
+> > > +		return migrate_vma_collect_hole(start, end, -1, walk);
+> > > +
+> > > +done:
+> > > +	return -ENOENT;
+> > > +}
+> > > +
+> > > +static int migrate_vma_collect_pmd(pmd_t *pmdp,
+> > > +				   unsigned long start,
+> > > +				   unsigned long end,
+> > > +				   struct mm_walk *walk)
+> > > +{
+> > > +	struct migrate_vma *migrate = walk->private;
+> > > +	struct vm_area_struct *vma = walk->vma;
+> > > +	struct mm_struct *mm = vma->vm_mm;
+> > > +	unsigned long addr = start, unmapped = 0;
+> > > +	spinlock_t *ptl;
+> > > +	struct folio *fault_folio = migrate->fault_page ?
+> > > +		page_folio(migrate->fault_page) : NULL;
+> > > +	pte_t *ptep;
+> > > +
+> > > +again:
+> > > +	if (pmd_trans_huge(*pmdp) || !pmd_present(*pmdp)) {
+> > > +		int ret = migrate_vma_collect_huge_pmd(pmdp, start, end, walk, fault_folio);
+> > > +
+> > > +		if (ret == -EAGAIN)
+> > > +			goto again;
+> > > +		if (ret == 0)
+> > > +			return 0;
+> > >  	}
+> > >  
+> > >  	ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
+> > > @@ -222,8 +334,7 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
+> > >  			mpfn |= pte_write(pte) ? MIGRATE_PFN_WRITE : 0;
+> > >  		}
+> > >  
+> > > -		/* FIXME support THP */
+> > > -		if (!page || !page->mapping || PageTransCompound(page)) {
+> > > +		if (!page || !page->mapping) {
+> > >  			mpfn = 0;
+> > >  			goto next;
+> > >  		}
+> > > @@ -394,14 +505,6 @@ static bool migrate_vma_check_page(struct page *page, struct page *fault_page)
+> > >  	 */
+> > >  	int extra = 1 + (page == fault_page);
+> > >  
+> > > -	/*
+> > > -	 * FIXME support THP (transparent huge page), it is bit more complex to
+> > > -	 * check them than regular pages, because they can be mapped with a pmd
+> > > -	 * or with a pte (split pte mapping).
+> > > -	 */
+> > > -	if (folio_test_large(folio))
+> > > -		return false;
+> > > -
+> > 
+> > You cannot remove this check unless support normal mTHP folios migrate to device, 
+> > which I think this series doesn't do, but maybe should?
 
-Ack, my bad, let me rephrase it.
->
-> >
-> > This reduces the repeat patterns of isolating a cluster then scanning
-> > that cluster. As a result, cluster_alloc_swap_entry() is shorter and sh=
-allower.
-> >
-> > No functional change.
-> >
-> > Signed-off-by: Chris Li <chrisl@kernel.org>
-> > ---
-> > This patch goes on top of Kairui's swap improve cluster scan series:
-> > https://lore.kernel.org/linux-mm/20250806161748.76651-1-ryncsn@gmail.co=
-m/
-> > ---
-> > Changes in v2:
-> > - Adjust change base on Andrew's feedback on int type and break out of
-> >   loop.
-> > - Link to v1: https://lore.kernel.org/r/20250806-swap-scan-list-v1-1-a5=
-fe2d9340a2@kernel.org
-> > ---
-> >  mm/swapfile.c | 86 ++++++++++++++++++++++++++++++++-------------------=
---------
-> >  1 file changed, 47 insertions(+), 39 deletions(-)
-> >
-> > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> > index 4a0cf4fb348d..f26678d68874 100644
-> > --- a/mm/swapfile.c
-> > +++ b/mm/swapfile.c
-> > @@ -820,6 +820,29 @@ static unsigned int alloc_swap_scan_cluster(struct=
- swap_info_struct *si,
-> >         return found;
-> >  }
-> >
-> > +static unsigned int alloc_swap_scan_list(struct swap_info_struct *si,
-> > +                                        struct list_head *list,
-> > +                                        unsigned int order,
-> > +                                        unsigned char usage,
-> > +                                        bool scan_all)
-> > +{
-> > +       unsigned int found =3D SWAP_ENTRY_INVALID;
-> > +
-> > +       do {
-> > +               struct swap_cluster_info *ci =3D isolate_lock_cluster(s=
-i, list);
-> > +               unsigned long offset;
-> > +
-> > +               if (!ci)
-> > +                       break;
-> > +               offset =3D cluster_offset(si, ci);
-> > +               found =3D alloc_swap_scan_cluster(si, ci, offset, order=
-, usage);
-> > +               if (found)
-> > +                       break;
-> > +       } while (scan_all);
-> > +
-> > +       return found;
-> > +}
-> > +
-> >  static void swap_reclaim_full_clusters(struct swap_info_struct *si, bo=
-ol force)
-> >  {
-> >         long to_scan =3D 1;
-> > @@ -913,32 +936,24 @@ static unsigned long cluster_alloc_swap_entry(str=
-uct swap_info_struct *si, int o
-> >          * to spread out the writes.
-> >          */
-> >         if (si->flags & SWP_PAGE_DISCARD) {
-> > -               ci =3D isolate_lock_cluster(si, &si->free_clusters);
-> > -               if (ci) {
-> > -                       found =3D alloc_swap_scan_cluster(si, ci, clust=
-er_offset(si, ci),
-> > -                                                       order, usage);
-> > -                       if (found)
-> > -                               goto done;
-> > -               }
-> > +               found =3D alloc_swap_scan_list(si, &si->free_clusters, =
-order, usage,
-> > +                                            false);
-> > +               if (found)
-> > +                       goto done;
-> >         }
-> >
-> >         if (order < PMD_ORDER) {
-> > -               while ((ci =3D isolate_lock_cluster(si, &si->nonfull_cl=
-usters[order]))) {
-> > -                       found =3D alloc_swap_scan_cluster(si, ci, clust=
-er_offset(si, ci),
-> > -                                                       order, usage);
-> > -                       if (found)
-> > -                               goto done;
-> > -               }
-> > +               found =3D alloc_swap_scan_list(si, &si->nonfull_cluster=
-s[order],
-> > +                                            order, usage, 0);
->
-> All other alloc_swap_scan_list calls use `false`/`true` but this one
-> uses `0` for `scan_all`.
-> And it should be `true`, right?
+I also agree that, eventually, what I detail below (collecting mTHP or
+THPs in PTEs) should be supported without a split, albeit enabled by a
+different migrate_vma_direction flag than introduced in this series.
 
-Yes, good catch. Will send out a V3.
+Reasoning for a differnet flag: Handling of mTHP/THP at the upper layers
+(drivers) will have to adjusted if the THP doesn't align to a PMD.
+Fairly mirror but upper layer should maintain control if they want
+non-aligned mTHP/THP to PMDs collected.
 
->
-> > +               if (found)
-> > +                       goto done;
-> >         }
-> >
-> >         if (!(si->flags & SWP_PAGE_DISCARD)) {
-> > -               ci =3D isolate_lock_cluster(si, &si->free_clusters);
-> > -               if (ci) {
-> > -                       found =3D alloc_swap_scan_cluster(si, ci, clust=
-er_offset(si, ci),
-> > -                                                       order, usage);
-> > -                       if (found)
-> > -                               goto done;
-> > -               }
-> > +               found =3D alloc_swap_scan_list(si, &si->free_clusters, =
-order, usage,
-> > +                                            false);
-> > +               if (found)
-> > +                       goto done;
-> >         }
-> >
-> >         /* Try reclaim full clusters if free and nonfull lists are drai=
-ned */
-> > @@ -952,13 +967,10 @@ static unsigned long cluster_alloc_swap_entry(str=
-uct swap_info_struct *si, int o
-> >                  * failure is not critical. Scanning one cluster still
-> >                  * keeps the list rotated and reclaimed (for HAS_CACHE)=
-.
-> >                  */
-> > -               ci =3D isolate_lock_cluster(si, &si->frag_clusters[orde=
-r]);
-> > -               if (ci) {
-> > -                       found =3D alloc_swap_scan_cluster(si, ci, clust=
-er_offset(si, ci),
-> > -                                                       order, usage);
-> > -                       if (found)
-> > -                               goto done;
-> > -               }
-> > +               found =3D alloc_swap_scan_list(si, &si->frag_clusters[o=
-rder], order,
-> > +                                            usage, true);
->
-> And it should be `false` here.
+I also just noticed an interface problem — migrate_vma does not define
+flags as migrate_vma_direction, but I digress.
 
-Ack.
+Matt
 
-Chris
+> > 
+> 
+> Currently, mTHP should be split upon collection, right? The only way a
+> THP should be collected is if it directly maps to a PMD. If a THP or
+> mTHP is found in PTEs (i.e., in migrate_vma_collect_pmd outside of
+> migrate_vma_collect_huge_pmd), it should be split there. I sent this
+> logic to Balbir privately, but it appears to have been omitted.
+> 
+> I’m quite sure this missing split is actually an upstream bug, but it
+> has been suppressed by PMDs being split upon device fault. I have a test
+> that performs a ton of complete mremap—nonsense no one would normally
+> do, but which should work—that exposed this. I can rebase on this series
+> and see if the bug appears, or try the same nonsense without the device
+> faulting first and splitting the pages, to trigger the bug.
+> 
+> Matt
+> 
+> > --Mika
+> > 
 
