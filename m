@@ -2,77 +2,77 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 78C97CA0EC4
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 12:51:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 961F9CA0EC4
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 12:51:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15E598E011E; Tue, 12 Aug 2025 08:51:18 -0400 (EDT)
+	id 30C6F8E011F; Tue, 12 Aug 2025 08:51:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10F328E00E5; Tue, 12 Aug 2025 08:51:18 -0400 (EDT)
+	id 2BCF98E00E5; Tue, 12 Aug 2025 08:51:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F40038E011E; Tue, 12 Aug 2025 08:51:17 -0400 (EDT)
+	id 185868E011F; Tue, 12 Aug 2025 08:51:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DF6ED8E00E5
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 08:51:17 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B7D34C02D4
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 12:51:17 +0000 (UTC)
-X-FDA: 83768090994.19.197788D
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf07.hostedemail.com (Postfix) with ESMTP id EBFA84000B
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 12:51:15 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="G/XiVgYV";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf07.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755003076; a=rsa-sha256;
-	cv=none;
-	b=plPVSu4KuNN0eWGIYfVjEijl8tyBIwSyyqTs37iNVRODc6+PAWRv3y/J+UC2JwlWbt/tpG
-	z73eJTF+8kyjk4plbDLfqg2M3NwMyhAaHRnfIbbJ3SY8EVrJugoY9bKiCvEL3lHQhKf+Bh
-	U0pgVi+bXEyRWHUFWt7su8ECJPSCaJU=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="G/XiVgYV";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf07.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 04D688E00E5
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 08:51:23 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C38661A0306
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 12:51:22 +0000 (UTC)
+X-FDA: 83768091204.16.0BCBBF4
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf19.hostedemail.com (Postfix) with ESMTP id F10931A0006
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 12:51:20 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Kwm+UoJc;
+	spf=pass (imf19.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755003076;
+	s=arc-20220608; t=1755003081;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qdpdSshaazL7siJRM8NVIrvzcaBedwi1OmyrckGBBVw=;
-	b=bsK5MRR7ZwkxkMCZ48fM1BRFaMmgFop+jbkj8CGYkFH2fAHKrePh3Gr+f2IfPClDjactJI
-	EiEZIDn1uTLcMJS8pghj1St+hdC3ARMhURox8mmHJFeZtO2v9NaxXd5jGWn0gPCdEpJfc0
-	feq4z3ikcYh20bkVclTPLamP4zjWIgM=
+	bh=UNvwjh3bkLYd7LcWTIY96phbAPIdD7DxmW/f2AxTNdM=;
+	b=vnO3ySLB1Tuhc0lqzu+rygPR6v+l0rpzfblXiwV6HiokCNwfc22WP682+WdhuxonPMEhMw
+	VOO5OJmuGJZPS0Q6JcEgczyLfq0l/5WyXfnXIb+Dw0kJlgG3/gUZogOZtbOHEdAvOk/a7n
+	+QPkNPw+g07ZfLhL7yeqFfhedGIaq7I=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Kwm+UoJc;
+	spf=pass (imf19.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755003081; a=rsa-sha256;
+	cv=none;
+	b=fM5pNeUl9mAn+H454rFNk4dZ/Zr4MVTZ3s8voD5xoj56cHfouNVHcsp/y3/fOasvNfP64w
+	+UsVSnIO7ENr2dqlnS8o+cDK3WFraxp1/844h6ohi9de7fcA6LO1+N7nJxuGt3w9Vpf3Iq
+	ghleMUTMKnZz7ooKdx1vFURq8c4VYHI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755003075;
+	s=mimecast20190719; t=1755003080;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qdpdSshaazL7siJRM8NVIrvzcaBedwi1OmyrckGBBVw=;
-	b=G/XiVgYVwkKt2fQurxiF+q3Ja0ZDj6f1sasy9HHZbbpNDyNgO8QafsCXMf7GYMx3Ct+94y
-	hqrn01WGXrKBhmhBGeS8t6YniOAzVk+zj6L4EkDxOCUCqvWfAYgsBM4NnMZPBeFpdQ0AW1
-	syYyNMPBMooevTFCp8bu3Wf7X1Eb2Dk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+	bh=UNvwjh3bkLYd7LcWTIY96phbAPIdD7DxmW/f2AxTNdM=;
+	b=Kwm+UoJcvmM9myIAtNUf7wi/n39N/hhapSb1NEygAlIw3Ep8DwuQit1rrDXKIjESkKXS16
+	1eu0DW83uDjc2otHVu3epAuOpZMN3fmklTBnBNrTIxhAKQ5INAOwt4nIttJJ5UOdAXjctM
+	qHGGFVVjeGOSmH3bgs+RCb9lyER3+tw=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-656-3Xj9WACAOs-CFxfowhebOQ-1; Tue,
- 12 Aug 2025 08:51:09 -0400
-X-MC-Unique: 3Xj9WACAOs-CFxfowhebOQ-1
-X-Mimecast-MFC-AGG-ID: 3Xj9WACAOs-CFxfowhebOQ_1755003068
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-515-BarAkwZZPNi3t3OI2JjPPg-1; Tue,
+ 12 Aug 2025 08:51:17 -0400
+X-MC-Unique: BarAkwZZPNi3t3OI2JjPPg-1
+X-Mimecast-MFC-AGG-ID: BarAkwZZPNi3t3OI2JjPPg_1755003075
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CEB4C180045C;
-	Tue, 12 Aug 2025 12:51:07 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0A2E81800352;
+	Tue, 12 Aug 2025 12:51:15 +0000 (UTC)
 Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.112.156])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 441D6300146B;
-	Tue, 12 Aug 2025 12:51:00 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8EAE530001A1;
+	Tue, 12 Aug 2025 12:51:08 +0000 (UTC)
 From: Baoquan He <bhe@redhat.com>
 To: linux-mm@kvack.org
 Cc: ryabinin.a.a@gmail.com,
@@ -89,23 +89,23 @@ Cc: ryabinin.a.a@gmail.com,
 	elver@google.com,
 	snovitoll@gmail.com,
 	Baoquan He <bhe@redhat.com>
-Subject: [PATCH v2 10/12] arch/xtensa: don't initialize kasan if it's disabled
-Date: Tue, 12 Aug 2025 20:49:39 +0800
-Message-ID: <20250812124941.69508-11-bhe@redhat.com>
+Subject: [PATCH v2 11/12] arch/um: don't initialize kasan if it's disabled
+Date: Tue, 12 Aug 2025 20:49:40 +0800
+Message-ID: <20250812124941.69508-12-bhe@redhat.com>
 In-Reply-To: <20250812124941.69508-1-bhe@redhat.com>
 References: <20250812124941.69508-1-bhe@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: F10931A0006
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EBFA84000B
-X-Stat-Signature: ykqbpxuxn17gm5sbrxdtxjxfemxdw4io
-X-HE-Tag: 1755003075-814604
-X-HE-Meta: U2FsdGVkX1/HmxaAPQXOJ5kLjWIvrC/DgP71wXHZR9bt7SFD37INtjThV2WCxCmtz+XGF/iFPQXysL8Fdg4WWaikmmhd8vkBQCZMQvrh2ze8ltRmlAqGlCTo0WiMlIk72AxWtjlcNG0NppjsYRewt7n3JwwO7JaZogoMelkWLJiXIf4xxThbJX50RBfR1+qsiqCgd00flTHwG8R0Mcg3cdwMXuThyCAi4hfxfgKKQKcMaS5zYg2xRavrlGF/IxX70/2kDzqjhjRaUs20X2q2758o/MqUwrHdr6mvK+hstI+lr68iPTK96riSZdrtiXfCVOMhA3ii1FtfjOk3P4w0uiLDeZWl5fCO/+m8LyRvjA2Zul117LCqM9YpjzlK+PTBRplYyh9xCnrNEYVjSk90fFpPtU3S3csNjPnu+m5a3CLmKqHU7/m1uroNXJpY9kc7YAfSudZuYCQaz+7UtUXQlFiJQdvz5Vq7L4tc8YSmt8lsisxzrcj0hewVaoYiQb0vE90A/L9+LZg/0wk9PP9OLEBQP1dI1aZAiVYo3tnMs8/YvIf775uTsHrwgX2+DqurhIRNZmwtxDsxnkayoWHGTY/PUSQyqaTQGz0+ugYitVu/Gih/2uHXIeeKE+qQdOvKcazup6wef/aOzpw4hcdHaLFlz0lAPmfv0i3GHZzN2iOrrZr36oX554uToioFZV/UAQnq4bQeDfYlEilSXLTVTxG5wkN1NswQK1dlpAhPZI4OOhB40FMtyLkuS0ZDr0Hxsv5g1WSet9ZgttphKCeb++9Et0HTXvPo3HNQZQZ/FO5Xksz9Nm54Mb6/I12gsB0ZOrGjKo+CQjf4+v+WGpjeZMWAbhtU5+MilrqUA0Lg45cKs/Fx4u4XDGtwm76YxLix7ikVHihd17Wob/rM8uSJGEnk72WKwNhYl2MZOaxvYxGhvcw1yClKwp/occZvcK79zpaPN32Za2pQc4iwDDF
- H0dAnIgX
- h1H4uiDX5o2KFu8OHJSRq4p4NiHllb84D5flN7bCixAQDiLf6qo6TlduNOyB5ApQY6OezhtlyiW/mD+hxoAIu57Nu0+OrAC3niZJ+8XIHeXxtm/p5VV7Sg/jGCtQUx0h76asZg/uoDj3Ppsem9h/Z3x7Im1nCZJ2AdULz51ILbQrTQNk4BwI8pZ497Jf4+TuYAnHE6zpvsJ3QFjGSCsG+/0WTG/MuM5RVSEHl3Sw0O+FV1k20LRrghAtpTZDKP1ze4DrVB2VK/EXQwgzs207AQ7WMEFy+GdDrf+X+FHslSIOiPQKTwtjh3QbNXHJZy/EmF+/agssmx01mzUeJhJGTyFmRJnwcbXFYoSUnwJR3Ybt7cdcU4BC4IFY0HAlg9W2ZuxxlqflIFQEIa6tYsx5n0Bj/oQ==
+X-Stat-Signature: ojtb9nn8ztm66jgacaaq43iu4hkbhsaj
+X-HE-Tag: 1755003080-66647
+X-HE-Meta: U2FsdGVkX197L6IJGVyD8Wl9kAiCOg5RNiwqdqDq7McLz2IVkaJD/oPVntQtdA2FsdSlp6G7Snxs+m+oVmuV81Ece3vESvRU+gd98CAumoknKN1CcYCimFmMRvEP+G/LfFVf7BnW9ZRLw5Z6mAfj4TnojtVWUH/xPoUZa2o8BjkBrZth4NWgLj0chPvn0lKjQnMP1vg3fc7lk/UkV7pneoUbMX+IZgDRiuixoxT4eCx80eHX2VFsoYqCJJNrkxCneA0dGzeSFK/hWTg1/4kqVpvDI3EVbJgOXKbzcgxiMFvnbaKp8l/cuLTqaay6mZVRkz0Lx+6Wut99cfQSMghKQHM/OjRJTPl8njJFYBW8MFUq2C02eL6HnsmQg9EbOUirEDdlbifBkv8/DDatyAW4s9ukfeAt4nxpjwnZkWW4Z4Ip06kZS5MYPAFlTMCEh5FkYzF7UQ2NIzk+T8JYK52MgQkmxeaX7ixWXyPvWNBav4U4aEBStB1MHCYOu3dYNr+CzaoPyfHGXgi1BwWccElEpGzD4Z9W1XqqzH8GLleg+1DUj5JpchdfGyEiB3XyMzq8CNSPAGc+vic5sLqr7l7RqtFQBUeWkh1vb6xt9D906fMgFSyvqXkYclRxP/1Wl89fJ+KPVtYInmTXTHHqK+r6YfilNVnLP1vp/wbfJmk/x6zsOZDo0XKcYzGmUQPydJDdY/IoUsql+/SI69k/eYxv1Ed9LFKazQ97/mVui0drJjxkCHEpdeLpAL9JMcQ9Yp7uq/hf9eJS439Nf9egpaJwTOJ6kQyOXZZFLWG7UhxBGGzUpFUwnUjMS6XPtzZQkiNofxY3JhwRwJOeFG2vDcguvFCLZ++UBEna+0kJF0VIHgydwWcZpMBaaM7lBt098WqXB8Rg6KJ9KgFYdaNMRWXQYrZrLwW+Bhkv1UbjL2k2BDXBQYMViml/FYypKsTGxa9/87Tek8u8Dcmmm/eYoiO
+ clhE1Zdl
+ NBDF3+GV0JYaW763LugKmzsG/u1Ee5WsK868XUtouxfRkvRxOmfJJBTnhPHAJ4T0rsvdQCbnHVt5JnCXv72QTbFFw5kkXgo4iEozF/jUYDFghf7Pi/HWs5VjXhsaO2I9YoNBle4fOO84MlGheouOhh0JOYR29toojh+xObgSqMO6l02WT+2BPva1nb01TGay3I+DjA9KyFouGtOFsDF4ACxIam3goUsRDwVy0E5YYKcDHXqaUt6gEiSYIelnd0vv0MqsACV3pVm2ioQ43XtLNbj8WulaJ1y+JAOs6L4BX7nn4tBVjsslG11f2eOi/gB7rxSa7OLlhb0aaQ3ImMF5S7tulSuOBFW+cg8IU94o7QiclXcu986K+XqEaiUGsE4jrZO36hhytmvxW9L6Jy517hpKbZA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,55 +115,39 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 And also add code to enable kasan_flag_enabled, this is for later
-usage.
-
-Here call jump_label_init() early in setup_arch() so that later
-kasan_init() can enable static key kasan_flag_enabled. Put
-jump_label_init() beofre parse_early_param() as other architectures
-do.
+usage. Since kasan_init() is called before main(), enabling
+kasan_flag_enabled is done in arch_mm_preinit() which is after
+jump_label_init() invocation.
 
 Signed-off-by: Baoquan He <bhe@redhat.com>
 ---
- arch/xtensa/kernel/setup.c  | 1 +
- arch/xtensa/mm/kasan_init.c | 6 ++++++
- 2 files changed, 7 insertions(+)
+ arch/um/kernel/mem.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/xtensa/kernel/setup.c b/arch/xtensa/kernel/setup.c
-index f72e280363be..aabeb23f41fa 100644
---- a/arch/xtensa/kernel/setup.c
-+++ b/arch/xtensa/kernel/setup.c
-@@ -352,6 +352,7 @@ void __init setup_arch(char **cmdline_p)
- 	mem_reserve(__pa(_SecondaryResetVector_text_start),
- 		    __pa(_SecondaryResetVector_text_end));
- #endif
-+	jump_label_init();
- 	parse_early_param();
- 	bootmem_init();
- 	kasan_init();
-diff --git a/arch/xtensa/mm/kasan_init.c b/arch/xtensa/mm/kasan_init.c
-index f39c4d83173a..4a7b77f47225 100644
---- a/arch/xtensa/mm/kasan_init.c
-+++ b/arch/xtensa/mm/kasan_init.c
-@@ -70,6 +70,9 @@ void __init kasan_init(void)
+diff --git a/arch/um/kernel/mem.c b/arch/um/kernel/mem.c
+index 76bec7de81b5..392a23d4ef96 100644
+--- a/arch/um/kernel/mem.c
++++ b/arch/um/kernel/mem.c
+@@ -26,6 +26,9 @@
+ int kasan_um_is_ready;
+ void kasan_init(void)
  {
- 	int i;
- 
++
 +	if (kasan_arg_disabled)
 +		return;
-+
- 	BUILD_BUG_ON(KASAN_SHADOW_OFFSET != KASAN_SHADOW_START -
- 		     (KASAN_START_VADDR >> KASAN_SHADOW_SCALE_SHIFT));
- 	BUILD_BUG_ON(VMALLOC_START < KASAN_START_VADDR);
-@@ -92,6 +95,9 @@ void __init kasan_init(void)
- 	local_flush_tlb_all();
- 	memset(kasan_early_shadow_page, 0, PAGE_SIZE);
+ 	/*
+ 	 * kasan_map_memory will map all of the required address space and
+ 	 * the host machine will allocate physical memory as necessary.
+@@ -58,6 +61,9 @@ static unsigned long brk_end;
  
-+	/* KASAN is now initialized, enable it. */
+ void __init arch_mm_preinit(void)
+ {
++	/* Safe to call after jump_label_init(). Enables KASAN. */
 +	static_branch_enable(&kasan_flag_enabled);
 +
- 	/* At this point kasan is fully initialized. Enable error messages. */
- 	current->kasan_depth = 0;
- 	pr_info("KernelAddressSanitizer initialized\n");
+ 	/* clear the zero-page */
+ 	memset(empty_zero_page, 0, PAGE_SIZE);
+ 
 -- 
 2.41.0
 
