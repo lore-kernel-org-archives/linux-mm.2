@@ -2,253 +2,150 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EEE6ACA0EDB
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 19:44:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BEA8ACA0EDB
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 20:13:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6CB868E0191; Tue, 12 Aug 2025 15:44:08 -0400 (EDT)
+	id 1B7418E0192; Tue, 12 Aug 2025 16:13:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A2EA8E0151; Tue, 12 Aug 2025 15:44:08 -0400 (EDT)
+	id 190E58E0151; Tue, 12 Aug 2025 16:13:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56AFD8E0191; Tue, 12 Aug 2025 15:44:08 -0400 (EDT)
+	id 0A4FA8E0192; Tue, 12 Aug 2025 16:13:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 449D58E0151
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 15:44:08 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C67301A01AD
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 19:44:07 +0000 (UTC)
-X-FDA: 83769131334.11.9BBE2AE
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 609D340004
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 19:44:04 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=TN3+SW4B;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=n7MDek2f;
-	spf=pass (imf27.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755027844;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EACB68E0151
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 16:13:32 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7F3731A01AF
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 20:13:32 +0000 (UTC)
+X-FDA: 83769205464.12.A87F450
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf13.hostedemail.com (Postfix) with ESMTP id BE4AF20003
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 20:13:30 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gZk5s4qd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755029610; a=rsa-sha256;
+	cv=none;
+	b=UbU1KPdeBl72Cfi9vLQ6iKzPOZO7qG5flZFB938GfvOOw7mU+acjwGuxqASq7mmOKFHPtL
+	Rg+TrOJ3JnQtnKfJ6oVMugW4RzCesoG3VKZzVr4DRyRFbw9bAf3vz+bQ/nvgUJWp6sKifG
+	DcRETkhvISC3ZCe/7/9UoyQq55knsuY=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gZk5s4qd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755029610;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vC+cNKwnfXlOhdhIjEMvIyRCr6cTAm/bihqOKbqMuIo=;
-	b=8ARwW9oUanJ+tW/sDlL7nYCrYK2rTUS41grgHD01Y76LUrNx4KPPXveib2KthAD2krNIke
-	E8DO4NH3PEs0V5HxAerAJvt0CHxURbpUCbZ9jhW0khbFM4fKnrVEcATpS2GGZtFvvVLx3g
-	S3auACkzNlGhlWH41nSnkndQc4FQ8Qg=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=TN3+SW4B;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=n7MDek2f;
-	spf=pass (imf27.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755027844; a=rsa-sha256;
-	cv=pass;
-	b=AaBdfQza1PETcQamg36bSpnTTGIkQ4mGP1URl0qYnUJaScTFYxNj/Mnw/GwINtuWVwjRMP
-	YoZ3Fb5qD+KOLIbRgRo1BVZts3RcbgQtfrQt/PT62bVqf1bJaW2vaokYjq/TbyCDsVx7Ui
-	cYoPE5gX73vOWGLOMV5+KJf2+y7rswI=
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57CJC37i003305;
-	Tue, 12 Aug 2025 19:43:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=vC+cNKwnfXlOhdhIjE
-	MvIyRCr6cTAm/bihqOKbqMuIo=; b=TN3+SW4BbKjqmcEx+x2cL2h5nmURGOTrp2
-	bnsbrjSzXhFLICP0A/pojRNQUCcORCHAIYTtTeZ1hi9Q4uD6tLlQ0sQBfOCzl+Rc
-	YJtuAhtY7dXwmdUUl6cUVDJd41rhS7Dz+lF1eAqUbl3PIA00336wbIG+HIyqxBqN
-	n+BS8GnlbRV7mvDyothnVI6Y+5qRTuvNHQq0Dz63dy7H3MROvEyGujdxUHp5xCqr
-	GEGXv1UFrd0V0wvEHVMQBm/pVhAPQ21mkMr3ZTpsqL9r/ILs9idfAlOFpEO59bcb
-	5Nm/9UtgH71WM+grd000y4M845/2TMBQT1YjWHcW7WNph5MZQpfQ==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48dxcf5m02-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 12 Aug 2025 19:43:37 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57CIi4SK009833;
-	Tue, 12 Aug 2025 19:43:36 GMT
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10on2071.outbound.protection.outlook.com [40.107.93.71])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 48dvsgqm85-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 12 Aug 2025 19:43:36 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AIiWHiEXy+ezadNwVaOtTHWGeoaqcNIl7oPLvIdubZpvW82atG4xMaYn5wCDinOISGhLu2w7BSMAfRWylDAj8B8h9/4F1bSmP9QwIJmL3d6Odo9XkKHj3IwHHaA7m1GqV3i81Ass4Y5pH4jNP0KJjhl1d0xV6THbFBhMdtLZXmjPeF6RG49wEhg19BXypRFp1BC3Aa5J8D/5LpKgmt4iYvJ/kmHLeqiyEyuHiVLmPt/E6RmBd7mH9U29bEsFG+cRizPohqwkQMDCMeF/KsOKtjlKo6N4LIwsmWiBbA8PFyscuLl9Ce9iTUMf/Lp+0/8n7wdRYrHgSqiX30+K3ya5UA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vC+cNKwnfXlOhdhIjEMvIyRCr6cTAm/bihqOKbqMuIo=;
- b=P10RuFwObVTrDJ+EMpXZUZk3iboBqnI+78gHVZKEIOKofzOQ+WKOt5LWezbucT8Cv+ZF775uVwmOCYrijTZKNThmj2KWIfUs5oWlbDgtR+92ctOfS2D7Ubu6jRFVIu/gFcJkyqB+1Cd+qZ7ZoA7xOmxywajuCn5u7GJ6zcrqrld00b9Y4zWgLMsjWVE1CBh2QMsRx4lLTcXb+0bJJ2LzbTxe0b9KICwmTaHZ9ZeOPMj+iAGoS45wIa0XUoRLNIsupoCzMaFiu45GWiKPaWxtCpM7WEvAybN2nv5B/bk76m9GXoOSxwRdALGEbjM69M5iN8kGv2IbdqjLJca8/HDfWQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vC+cNKwnfXlOhdhIjEMvIyRCr6cTAm/bihqOKbqMuIo=;
- b=n7MDek2fj75eBjwJwew+1m3M454Dbmqn0unjuVTMYhv7v+Tfz5UVvcnodTDXkLd13piDVl4HcEW/7mypDV0m7/1CY5mYE+GkR84GkSP8/iFLi/f3T0Mx6ZzHQGzcywGwtkJfvH3NQfT/FWZ1ItYlthjcQsog6JlNuEKTy2QDup0=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by CY8PR10MB7124.namprd10.prod.outlook.com (2603:10b6:930:75::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.21; Tue, 12 Aug
- 2025 19:43:31 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9031.012; Tue, 12 Aug 2025
- 19:43:31 +0000
-Date: Tue, 12 Aug 2025 20:43:20 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        xen-devel@lists.xenproject.org, linux-fsdevel@vger.kernel.org,
-        nvdimm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-        Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
-        Hugh Dickins <hughd@google.com>, Oscar Salvador <osalvador@suse.de>,
-        Lance Yang <lance.yang@linux.dev>,
-        David Vrabel <david.vrabel@citrix.com>,
-        Wei Yang <richard.weiyang@gmail.com>
-Subject: Re: [PATCH v3 11/11] mm: rename vm_ops->find_special_page() to
- vm_ops->find_normal_page()
-Message-ID: <77ed5b25-1a82-44b5-be67-698b9674547f@lucifer.local>
-References: <20250811112631.759341-1-david@redhat.com>
- <20250811112631.759341-12-david@redhat.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250811112631.759341-12-david@redhat.com>
-X-ClientProxiedBy: GVZP280CA0076.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:150:274::13) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+	bh=yp7X0r++DmuQ8lJAATuCSuGbLBdI9PUcD+fxof48LXQ=;
+	b=YMlwDyxdt1Hw9oK+fJbnZ5cHRZLnSGejV0HAxH0YMehb451D2mlju3XwodyFtNXijMXgpI
+	JzSqC5gj7Z7R/eGYhYLkRXW683UUKYz1bIqVdnFvugUDk4+QVWMpjtI0fomyYfSsa5kARd
+	khs7A+kVJMvCUp4whfMGy70p5w1YUpY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 9B7515C5B72;
+	Tue, 12 Aug 2025 20:13:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD26C4CEF0;
+	Tue, 12 Aug 2025 20:13:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755029609;
+	bh=67thnts7t0DLgkZq/Ii6wBw0jrSFJtM5mUMWCYrbVS8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=gZk5s4qdbM6pcT8YroWmQOKRLwIIFGieYYi0v9aoNi2ICJDuc3wg8bhKf+s6pvQNd
+	 c+i3MR/y/FAagcjMfROfPVLTOsoG3YlP79F/PpCEZGyFDsyuBtQtypuh96jit6toX0
+	 v+aQUOZ71f1sVS4LLJKLKq+8hdeGPjE2mpVgs/FuY2KZSzhX/6T7dzeh6CvpLmMDoF
+	 weuTiAVwv1mVOxNZA1KKoDpEA1hk0wwazemaioBJiDYkvkx74pTiTr9+YupNxQLK8F
+	 rz5RHVzbW4bBYKxh5nyMODvXXmIYvJS3DB65gwqyMSJvM3wUZw/6uqpQTB/gIvOiXG
+	 Gs3FPiwr7oo7A==
+From: SeongJae Park <sj@kernel.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Kees Cook <kees@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	David Rientjes <rientjes@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Matthew Wilcox <willy@infradead.org>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	linux-s390@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org
+Subject: Re: [PATCH 00/10] mm: make mm->flags a bitmap and 64-bit on all arches
+Date: Tue, 12 Aug 2025 13:13:26 -0700
+Message-Id: <20250812201326.60843-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <cover.1755012943.git.lorenzo.stoakes@oracle.com>
+References: 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CY8PR10MB7124:EE_
-X-MS-Office365-Filtering-Correlation-Id: b66055d1-a62d-4c30-62b2-08ddd9d8848f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?4tCqJY6FFLzhEZFyPG/ICtr7ogd1l6C2aubIJn2uRYW8rplCUza5wzcSclaY?=
- =?us-ascii?Q?sdwNQ33mX2SlxF++ome3YUeNLUo0FO4zp1A+1tMGEBuOBnCyluadofAW+POC?=
- =?us-ascii?Q?o6SKy1p9Q4L6j9t59nlWVXubZSB3LgaXQt+dRPrdI8+LAzaVqYs3LNycy3yg?=
- =?us-ascii?Q?e8ut/Aod8pFCWWiKC0QFrgb0uBtKCz/hgczvlcYMumy69Be2uxVwb3GWircj?=
- =?us-ascii?Q?IUWjD5kKWSQXTAzEoaGVLKB9+Nt1gzFcwdB8tJa+UucL8e2OA4jm4b2YX9Jw?=
- =?us-ascii?Q?5UZ/SdlNzfDql3iQZjJhh6oQuEsCKioe34Zr9bo9PF7mRY2GOPVCBE9+naTF?=
- =?us-ascii?Q?FiGGcNXbDXaf/hS6SpRgn9uC03q5seWr0puW9hthiAodCkKospl6F4H/x4sa?=
- =?us-ascii?Q?DjOvOuJoQB8G22jaBnSUOIp2WE4all1PYU82eVuaSNppDUhrRRkaNyxchMF9?=
- =?us-ascii?Q?s3evuKr781d1nErOnA0qESdlFZcryiIr1APB5pxAcDzr2kDKEDmO8fg7f0tY?=
- =?us-ascii?Q?XEHPv/Ej/IDwhHvf0gS1uzDOqDoVZJnvZfak9f7q/YFpgfskETUiijlGjbmk?=
- =?us-ascii?Q?4wI1fmya/d898tNy4LusRmBWhHqmFUUE88rcNnG1b6nhr3cNl16iw/JIqs/i?=
- =?us-ascii?Q?AktvmMA44BnKlYeQ7/Jsb6MPQFLcqCAXokoMln4Bw4fXf8ERosgtAx2MLuGW?=
- =?us-ascii?Q?BvYEyjY8qz3V5B0x9WJEPxTySBzhfWnjfffhKcw74AxQ8BRHyMJpyT+cL+S3?=
- =?us-ascii?Q?dqHhFhoF/FfjravB461BvQIjoJPJL7QJVLykmV9ILGjq5MuEeKNg0VPh8TZf?=
- =?us-ascii?Q?US81ITPG8Zmf0fjTQnxdeTUd6R9ZIYAEaimgMSfwNpW70+3scWdH+dQtS3nR?=
- =?us-ascii?Q?p/5wopNTy7XzaBlhcfk/18ndUdpBQLc3CWAm6pNOTBP/vXZIfCXLGbvWjN5p?=
- =?us-ascii?Q?Tz71FJkyus568vLiuLx14513EwzDJ8oWStljb8irFC+DYXMJuPYBpmrDOsrw?=
- =?us-ascii?Q?gbYfIZkP1ghM9naIkrXYxpcskZDYKUyuY4gJbUdZXS3j4m3i/zwuPOWDcNB8?=
- =?us-ascii?Q?XGlDTZJlgZlSd2FVKRYk0biKjeCijyA5peJYet62VQkYsCGHX1mPj91s0DjK?=
- =?us-ascii?Q?O/VQRMnYBOKZOEjHiPrQ/LdOnESLnnieHF6pMr+30QFgCT68DNGRCMHrm/QY?=
- =?us-ascii?Q?i2BYSxAeZRJgF2/hjPwks8oz0bvqr71jRX9Dyr+HENAC/x2PTtlmEF+roKcI?=
- =?us-ascii?Q?mXtfW50/kOlFjmUGLk8jVeuX8hTbhEH+2IbVS/Z0fXGcZ/5wXsyCKaUxNubJ?=
- =?us-ascii?Q?4WYWTOGXNyWaze5Q1SmeF6wz73T2vRQuVw/ntHu+A1L/NqR8iEUeKdbbMAYS?=
- =?us-ascii?Q?GY4fd5KBkKRiTn25Bw/k7YONMx8xVV4iIn3u/xegW7SukS6vYtRgfWm0RvNx?=
- =?us-ascii?Q?aBZ8mu1EJ0k=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?xyQUVEQ9sPKWyZ6FncEJccIzDxX6TN7k0HYxdSaPn6TsUVp0g5MIkbbxDS0X?=
- =?us-ascii?Q?mI7lrTjTqilrSNohCYeN2CV8l81Om2SsIePF80JThloKGadVIrhAHxNgZKhi?=
- =?us-ascii?Q?ryRfHTmInCK19IhQ5TmHl/NJvtD61XFw4VWLyZKp6Tc5O9YdONmFXqTEY5bB?=
- =?us-ascii?Q?CDZSGc4aQ7Gu5aIKDLSwt58z1j96Fqc+5xBwicIjfZWM3SboqeiRGP9bNGVl?=
- =?us-ascii?Q?yt7xoKLiyOMl8aNklNB9dXLjKlKMIEnt5ZAiwN+exJEUzgDfSJV4PRIsPpnD?=
- =?us-ascii?Q?tB+1R9LNUbnZJQBZES0aiaaBWgmAYn61B7w0zm3g/yiRPTOFtJwP0gXJjDEv?=
- =?us-ascii?Q?xUEKi7oB74IAO9gHibmZzOtO7HqePXqlAgvlxpH0u8am1kemR/Q7CDCbXV8e?=
- =?us-ascii?Q?dbhbexUD/yzVHWamWAWqqi2JGO6shOpCeDvHtHE1l1VlbbzfJFfl5JqLPuYd?=
- =?us-ascii?Q?WjDWR4EbPATjRHR8cadjZ91OcPNe46ZXmZsyWmToTzVbzj0EE4xCr6+9Y2bt?=
- =?us-ascii?Q?tYLGipukc217YM9uxIIH4X03aezBb3baGfdOXxylDv84j4CO8GpwHPxYXINv?=
- =?us-ascii?Q?sKGMgKEFVZY4BsONg8oSQTdjPFdrredWxBiTc1zY2MCHuPTs1yG3VA9YKLp+?=
- =?us-ascii?Q?vAtByJVQYxyIXCXUdRrEaon8q/87eqD/hZoSnnrHlF5/HfdwYyXXNGZo4rdB?=
- =?us-ascii?Q?nKu9OlNE+pPRQx3Emd3V3E5Lvui6A5IeTx6XZiEtn3OliKZPqx+EsGFGk2PS?=
- =?us-ascii?Q?IBwInbGI1hHEsC41V+W2PON/kWSOq4xt3xr6ZLVGOvaynm3/fR9XEfH8TSeF?=
- =?us-ascii?Q?kiVzs20crazU2nGz038+wfvXs41lRrFqHkdZHljjrhjTAo5I14zJ4xwPuySp?=
- =?us-ascii?Q?hFZ3yp6Ly7zNCL/44xgqaA017pnxAuPCOZq7+Qk4ZaKNe34gYEoB4GiG5l4d?=
- =?us-ascii?Q?ofRSK3sgA8lB7aRBGR0rvAghXGIOLHB6LjznUEAlh6q3ZSNgRodnlw2sZX1S?=
- =?us-ascii?Q?HbQ0s5ZZ8g4Mx3dZv4u1ant33watBrYL75fRjhgMPWyryGAEfjG20L7ImLQU?=
- =?us-ascii?Q?d+uzCBfkrmyJLsVq66NrW/cjlmOoSyzHIt/lwMcA/mNGx/pEKkWJFM9zNeaF?=
- =?us-ascii?Q?mTzYB4P3L+bAHK2dhPSiwWVUtSTlhFiOS2fVdqeLU77MvOQcbFtudjQjXkSh?=
- =?us-ascii?Q?mKGpDBADRibTg2foWXF/01Pgk436k1yBajsvJ8x6SRICUsuBSdg1h0HPa1T5?=
- =?us-ascii?Q?QLvzceVVplve456janNZmN/2HnyoNBBpWqDs65dEoWv4ovZFsHI/eV5ZJZNb?=
- =?us-ascii?Q?B08IGNZ+RkYcuZJ3HihfdnXshpzl6sSerZj2jYJPLxVMz5HBQ0Bz/KsvNcqJ?=
- =?us-ascii?Q?1fVmYHeqBWttWWy9BtFoaD/bWvW2Z09osz6dh24hXgGCKe38yaYWbRJgsnUT?=
- =?us-ascii?Q?dDQ/KEi2j93Jvi+ZB7JZVjgg+GuGReOKu8MmAvZbHDtY10JOlaomTsnJX+04?=
- =?us-ascii?Q?ZDODJkMqqmj92C+Oan1BSbSXcFeEgDR/ZyWO8MlgfCCsReGzq92GifeXE0cL?=
- =?us-ascii?Q?4qEZmhxNYMI8lEeI5+WQ2LSGV6iZshJKNGzaAONUsfwPs7jIyrrwdm1ACS/5?=
- =?us-ascii?Q?mA=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	1RvRVFfXGFrdbIdYDBTQoaOtT8VB+UHrwGC0mE21+epfiG+wPsx67vL2awT0dvudVwaWzGHi/kTk2lsk5Qty2zKibsWr7QCgEQhrH8NIDcMVxjf4efp+DQ4euC0AVLXmaLGwNWRFkfYx92T6tjAL0t4dioVVlyn3qwfWAdY9PSeV/WS6U+ob0sJ79qYvj+aVA1S3boRkK356l3c26swpi/FhJZbnIaZjoKSG/PChcQt8p60NjYHrWiCsbvbUWul/B0sek1N2R+EG5kMRwZJSfEumJZQbzg7ceZjzA3519AOs0uWNctQfy8hlXv5TieKR48WkbNhkkZGs4clvXwJkGeZVD98MfcfIaTLjbNBggG6l7Wg46cpGj3B6//PKiulaQ9QIWtgdf8iQT64KQ87i4ia73WPbFfZtmAxVfZWD4Oo6SVQigIvL9dhqEMIxPRVlS7U4jb+c7IG6ri/Mc2ylPMZmLbF3398p22+Os1q+ZkObeVk7ZXTCbKtUVtrDZd8stMcM5l+FTrwtJR10fO9CRKG5+alNWJh46NCtyA1+RwIjQt5SCYLBKqvgrQCgcJpycIiKl/jMtp4zbdF0adcRkVR8jIUZmcJKjI8XMPoAjco=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b66055d1-a62d-4c30-62b2-08ddd9d8848f
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2025 19:43:31.7871
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5U0LzY1neFDn6pp9C/BetH8YyXoLcyPlYbTvPPTG69ZXhwJZfxKsSEOI3XClVEDN749Okupo0r8rbkp6nVo49FTmzxS8vItrS2j7AEcHXq4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR10MB7124
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-12_07,2025-08-11_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 bulkscore=0
- adultscore=0 mlxscore=0 phishscore=0 spamscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2507300000 definitions=main-2508120189
-X-Proofpoint-GUID: 60Z0vjkLGIrZPgb25nhZCfbC_uANQV65
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDE4OSBTYWx0ZWRfX9WlsKwndrOAm
- 5l4Aj/wJRUaE9VWyZo+uCPG0zDBzCroKxdGlFKBckzhWcvAd310GCMAj+gOpO3Fk3rvh/nw4yBY
- h5Ux72xLxv36amyUX5LeZbDQacJfuZwDEA+W9jSNOa0JyzXi3dqhdGfwF/Ej7gGrcTFq1QT34tg
- QPgIn04W7ixeCYcEkSnk3tQ10+roAn1EBf9pmZJEkxnImlutrk97Riggqc2vts6PhWTNA4pyP8P
- 9G/MLFp6Eu0IPxHDT44pUfkGwQnoImG5vJnpSSMPbKE9hcxxPDaSh68isBP4K5YraXKcMDJbdop
- VlYPN9Zb3P5QnIM/3sOoSLRKIhe55Gaf4GR6bL5xq7V8CdGI20m0tXoNWIdYJUqsy2SZq1pz6WH
- CjXOAFLyZpokNv+CLzHhySrAMkF44ashln+KR9y33YpqtcYBztHX6hO2pin3BDg10LUDzonF
-X-Authority-Analysis: v=2.4 cv=W8M4VQWk c=1 sm=1 tr=0 ts=689b9969 b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=tHz9FfFoAAAA:8 a=yPCof4ZbAAAA:8
- a=pGLkceISAAAA:8 a=20KFwNOVAAAA:8 a=oG9WTLIYOA6OTJ5yO9QA:9 a=CjuIK1q_8ugA:10
- cc=ntf awl=host:12069
-X-Proofpoint-ORIG-GUID: 60Z0vjkLGIrZPgb25nhZCfbC_uANQV65
-X-Stat-Signature: izw9pdo3q9gizmowdyi1tktc8ns3h3iz
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 609D340004
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755027844-148289
-X-HE-Meta: U2FsdGVkX1/KYcNZihv2yXYxi1MfUQ6jK0IeUWRYyK7g+UGTyOlNSvpp36pj1CilGC8DmZ06e58sDee1+EWX6sDcoLmWIbyY00DpedWCVjbPcFCS0Ce12vRkHMPPs8kiRLYwWW463LoIWCc/fEIKmz2TTsrs85Y8BQChOCFjg+UShysrzMP0N63pgNRk+y4FAl3x0OCbHF6mt/LtaWDqOJThCoIaQeItvPw7kwTKcLEClrluh3i476xP7J8jtyOJfS0XPwgIXw0bORayuAHFNbuGKciqKy07rOo8Gxwuv0gGlhmkxDyY7xD9PNGzNizKmr+JHJpX9Zs9IDkwlfNTgSQpFDIv11rQVe1auKfWQCW5PTG7YKlRhfZf27CH6Q0dphzAwTWwTjt5/CFRxUvJEnssoBl87zR8QH26IcGK3mPPEslxwswwLIC9KJZ7TmPArM04NhXTMGWKIcwIqUGBaVSR4+FuxW8vf0u7x1tCQhCIXxUoGy7eddE7Y6h2Xfoq0lYTfHfiXcowCAwZblbWoJie0lEYV7UgsWSiOEI/fQjtY6/+dpEZJA2DDHMv5xAOHtjQwiNwsFfuSXbmKM/Y1b23ZmFH8XzTOzaV1vG8a0/ohoNztqzCe0Cz98PqRbxWjIIYDR8RYPdDXXHwt8E7bn3HJL4T8Ey6L7wL7ZDn5bsNh5EJ97wdRVUbWWVWWkhN7A4/Szlg+YLjkupWrFFWpOPD+8wNxv9xpei/IRGPTyfxFjeqXRugUZHM4mS4gSzPC8pfDJQ5gVf85H5Tofz+lFEGZp8h+mdX0RKvAYDwXRCukWYi1hKspl4d6kKRx1XyrW1F2YIVPgrAkhoGcui/JS0b8ZZ9EPv2ldq7DaK65dX4LgEGjxlOOPtVuxhrZOZAf64b+xt8WppwUlfRVpS4DrJDMxXFGXLB6vDG6eV0WOM5UACjt2jwDrLri35Ku8KaL4H8enX/BEuzPTzXaAX
- CI6Wqvgw
- dluIqO1SvIqsqqQstw8w+9BM9Fe+AmzrEKyA42777CDkIRnQS+PHZfMCmntCC5F1TGMgitGbdftUrhvLng1EEqDjZl/LSeDmV1OiXp2ca181Blu3OWIfRYwHlfdvuBbC61EI2M++2JXbGThi+Rj8fMymAERNtSWmIGhxjxRum4ckaLnjVHIPNv1x3A+mceqyoygTj9rFpITQxh8CoqmMtgl6BZeAp/rcTfqlXaJBLkWS5Dq5g8h+Ay0U2nPPU3g3A15N0zZXGAsB1jC2pBr6122soFwog6FRZgE2CSea9YhkuUnmD8MI32JDGbqYQirF0QXy5rgfdrcnB4n7aV1LBmQfIEWS1BNCdI2oGFv2n3LAgyGRZvz/XHDvb3CI3ESp97Z3j4jBv1wjfsOMMhmmaLPKghjUQ5F4PQ8qSX3Fo6sQZmX2FsJt31EgO5o/N3nvRvB6+vKBKP5asm3IplIZDVR48VsiCGfRBJgU+JlmD2+LjnPiFXC8ZEwFc1nSBn3BNPlnvV2rg34DbvQNf0/yZQ1RJ1D/KzZU1xSz0h7Id47pqop/KbeYBtTAEE97ObyhXKu4pgXHasc8XP3DKxDgICZdKlLFPyoyj5ZLyxsZUweF06/sbH7gDKJS75FkT1L8ARsQjW/N/OVKJmjXBMpsch4UUeIdZ038ktoVItFjICzWUvf0x+nUTyt0R96+uPw+j6VKVJKMhvuT/ZfVjIbVJwCGR9UFwzQRw7kFUb38yFhjxwzrsReincGw44MRfNFGCpC+v0NbpiRBmJkKGgYmEKdCe2ORR2fuB6QdeLOjCt4mRQCMo2Pmsn0c8vBD50G3oBx0PwlffV68cC2ZxIpBN7XyfRBJQWKeKjHQ297GOC1ahxYe6R5s4jClxaIKHA7niIvrEmP8SzXpBuTgOF34BkrIhkIWPCQ7ceQnhzT96t8yPHRA=
+X-Rspamd-Queue-Id: BE4AF20003
+X-Stat-Signature: 3emej8uh6tr7udemy55dfgkxgce54xff
+X-HE-Tag: 1755029610-2172
+X-HE-Meta: U2FsdGVkX1/Rrd6bo4frsVXFJSxQupqbiGGLWiWjRV1e6IScZ2r9Jju6+5I5oh8Dq+MxIpeMRW0OD2HNczhosn2E9H4+BaaMuI7tGbJv/+ZxNnumU3fT4AcB8i8N8siuOB0o4+5yTMSGxo3PpGhjBAUyPJ0PA8z1lTxuAa3ax+XPDGWkrvCR8YkUnZ6Mt8hTPJ7ZOKFWU4ybgDpY9sdLjQHvvfAdMd/SeecVYUTX7rhHysEYPrtIPiqYOYDPeFVMaU0igyiBBMaDrDwW43fYhlV+SAe4siKvfomnZxtAxMgNLqPgh0adI7ATKhKUZRDzk8Nq0ZAaOXHq1UxsoAchaTKRrozPlW1QPhg+qo197divw72qn1QlPcLiL9jvfFlZVmloy3vsb32uJZQ9g4+j4yZZwgy/mHRjq0cOgmyogbelVXOcyX7p0THm/bD1KAMN5UM1OiT0oooGoiec++RQ40UzHTsgu5vLSeSueV9EhIew3/iswzhKJyBdXMdcYfme7lovnBD8jXeJ3aYynyX/eMSVBxY2nW2OJpJKe1OwtIz13GU9NJtLNLgQCKzOLFtD3AVU1pz36buhya0WYC1D6ptBEEahJidnrfE3n5jXyP8tiliVflp0/pYqRtaov6zXvhf1ekfzywtk/kHj39bSbFyCaRXsy07AgAGjw42h7DLZCCR8fYoUL12mcmDRp5QGUxolk9gKFcfGooCkkBn/ABiOIWLuippceiNsnQZtpx5JBrTzRJlAUtT6ue7xAx5Kwfde1sBNB3ta4Vo3or08vdwwF6P5Ozi8VYND9aF8Sv917PNV6PCVvg7Q9DhsVZmGhwpwefRA81EUOSgeKRsP+n7xDb5z7D/71kq3/hqiFrlqOWPt6f7RKcb3IeRFL7Cu/PVgXnRPHToo68g7qvX9GrmsP2FBYsrUwG64YewzmT3piM5cXH2h2k+ky27P43y02qcQAyvgOOsgwVZ/THG
+ J+udKwEr
+ EXTnF99AA9PM1qaoHYJrZFsILGbiUh4rk8TUhFJmTW87DJ3VePXmQzCNQvPAx3AEYqDIiGGtYeI9kMTOzOdMm6hv4+ePvtoD6BimPKR2unmUliR9rw3FfdVmF+7GUMFC2qVdlcY1uP60h+xh0lEPEqab2UHInRAi1wm27nEKctPrX6eNMljm/MkofJWqNBhD0yn9fwtsbhAC2pfAYhU3mkzYnraPZUFRKiS8EvM2pxJlCIXlKhlOwBpaQwz9LW/4K9A+eZV3xV9sS246xogXM2zavFQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -257,184 +154,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 11, 2025 at 01:26:31PM +0200, David Hildenbrand wrote:
-> ... and hide it behind a kconfig option. There is really no need for
-> any !xen code to perform this check.
->
-> The naming is a bit off: we want to find the "normal" page when a PTE
-> was marked "special". So it's really not "finding a special" page.
->
-> Improve the documentation, and add a comment in the code where XEN ends
-> up performing the pte_mkspecial() through a hypercall. More details can
-> be found in commit 923b2919e2c3 ("xen/gntdev: mark userspace PTEs as
-> special on x86 PV guests").
->
-> Cc: David Vrabel <david.vrabel@citrix.com>
-> Reviewed-by: Oscar Salvador <osalvador@suse.de>
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+On Tue, 12 Aug 2025 16:44:09 +0100 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
 
-Oh I already reviewed it. But anyway, may as well say - THANKS fof this
-it's great again :)
+> We are currently in the bizarre situation where we are constrained on the
+> number of flags we can set in an mm_struct based on whether this is a
+> 32-bit or 64-bit kernel.
+> 
+> This is because mm->flags is an unsigned long field, which is 32-bits on a
+> 32-bit system and 64-bits on a 64-bit system.
+> 
+> In order to keep things functional across both architectures, we do not
+> permit mm flag bits to be set above flag 31 (i.e. the 32nd bit).
+> 
+> This is a silly situation, especially given how profligate we are in
+> storing metadata in mm_struct, so let's convert mm->flags into a bitmap and
+> allow ourselves as many bits as we like.
 
-> ---
->  drivers/xen/Kconfig              |  1 +
->  drivers/xen/gntdev.c             |  5 +++--
->  include/linux/mm.h               | 18 +++++++++++++-----
->  mm/Kconfig                       |  2 ++
->  mm/memory.c                      | 12 ++++++++++--
->  tools/testing/vma/vma_internal.h | 18 +++++++++++++-----
->  6 files changed, 42 insertions(+), 14 deletions(-)
->
-> diff --git a/drivers/xen/Kconfig b/drivers/xen/Kconfig
-> index 24f485827e039..f9a35ed266ecf 100644
-> --- a/drivers/xen/Kconfig
-> +++ b/drivers/xen/Kconfig
-> @@ -138,6 +138,7 @@ config XEN_GNTDEV
->  	depends on XEN
->  	default m
->  	select MMU_NOTIFIER
-> +	select FIND_NORMAL_PAGE
->  	help
->  	  Allows userspace processes to use grants.
->
-> diff --git a/drivers/xen/gntdev.c b/drivers/xen/gntdev.c
-> index 1f21607656182..26f13b37c78e6 100644
-> --- a/drivers/xen/gntdev.c
-> +++ b/drivers/xen/gntdev.c
-> @@ -321,6 +321,7 @@ static int find_grant_ptes(pte_t *pte, unsigned long addr, void *data)
->  	BUG_ON(pgnr >= map->count);
->  	pte_maddr = arbitrary_virt_to_machine(pte).maddr;
->
-> +	/* Note: this will perform a pte_mkspecial() through the hypercall. */
->  	gnttab_set_map_op(&map->map_ops[pgnr], pte_maddr, flags,
->  			  map->grants[pgnr].ref,
->  			  map->grants[pgnr].domid);
-> @@ -528,7 +529,7 @@ static void gntdev_vma_close(struct vm_area_struct *vma)
->  	gntdev_put_map(priv, map);
->  }
->
-> -static struct page *gntdev_vma_find_special_page(struct vm_area_struct *vma,
-> +static struct page *gntdev_vma_find_normal_page(struct vm_area_struct *vma,
->  						 unsigned long addr)
->  {
->  	struct gntdev_grant_map *map = vma->vm_private_data;
-> @@ -539,7 +540,7 @@ static struct page *gntdev_vma_find_special_page(struct vm_area_struct *vma,
->  static const struct vm_operations_struct gntdev_vmops = {
->  	.open = gntdev_vma_open,
->  	.close = gntdev_vma_close,
-> -	.find_special_page = gntdev_vma_find_special_page,
-> +	.find_normal_page = gntdev_vma_find_normal_page,
->  };
->
->  /* ------------------------------------------------------------------ */
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 8ca7d2fa71343..3868ca1a25f9c 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -657,13 +657,21 @@ struct vm_operations_struct {
->  	struct mempolicy *(*get_policy)(struct vm_area_struct *vma,
->  					unsigned long addr, pgoff_t *ilx);
->  #endif
-> +#ifdef CONFIG_FIND_NORMAL_PAGE
->  	/*
-> -	 * Called by vm_normal_page() for special PTEs to find the
-> -	 * page for @addr.  This is useful if the default behavior
-> -	 * (using pte_page()) would not find the correct page.
-> +	 * Called by vm_normal_page() for special PTEs in @vma at @addr. This
-> +	 * allows for returning a "normal" page from vm_normal_page() even
-> +	 * though the PTE indicates that the "struct page" either does not exist
-> +	 * or should not be touched: "special".
-> +	 *
-> +	 * Do not add new users: this really only works when a "normal" page
-> +	 * was mapped, but then the PTE got changed to something weird (+
-> +	 * marked special) that would not make pte_pfn() identify the originally
-> +	 * inserted page.
->  	 */
-> -	struct page *(*find_special_page)(struct vm_area_struct *vma,
-> -					  unsigned long addr);
-> +	struct page *(*find_normal_page)(struct vm_area_struct *vma,
-> +					 unsigned long addr);
-> +#endif /* CONFIG_FIND_NORMAL_PAGE */
->  };
->
->  #ifdef CONFIG_NUMA_BALANCING
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index e443fe8cd6cf2..59a04d0b2e272 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -1381,6 +1381,8 @@ config PT_RECLAIM
->
->  	  Note: now only empty user PTE page table pages will be reclaimed.
->
-> +config FIND_NORMAL_PAGE
-> +	def_bool n
->
->  source "mm/damon/Kconfig"
->
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 6f806bf3cc994..002c28795d8b7 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -639,6 +639,12 @@ static void print_bad_page_map(struct vm_area_struct *vma,
->   * trivial. Secondly, an architecture may not have a spare page table
->   * entry bit, which requires a more complicated scheme, described below.
->   *
-> + * With CONFIG_FIND_NORMAL_PAGE, we might have the "special" bit set on
-> + * page table entries that actually map "normal" pages: however, that page
-> + * cannot be looked up through the PFN stored in the page table entry, but
-> + * instead will be looked up through vm_ops->find_normal_page(). So far, this
-> + * only applies to PTEs.
-> + *
->   * A raw VM_PFNMAP mapping (ie. one that is not COWed) is always considered a
->   * special mapping (even if there are underlying and valid "struct pages").
->   * COWed pages of a VM_PFNMAP are always normal.
-> @@ -679,8 +685,10 @@ static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
->  {
->  	if (IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL)) {
->  		if (unlikely(special)) {
-> -			if (vma->vm_ops && vma->vm_ops->find_special_page)
-> -				return vma->vm_ops->find_special_page(vma, addr);
-> +#ifdef CONFIG_FIND_NORMAL_PAGE
-> +			if (vma->vm_ops && vma->vm_ops->find_normal_page)
-> +				return vma->vm_ops->find_normal_page(vma, addr);
-> +#endif /* CONFIG_FIND_NORMAL_PAGE */
->  			if (vma->vm_flags & (VM_PFNMAP | VM_MIXEDMAP))
->  				return NULL;
->  			if (is_zero_pfn(pfn) || is_huge_zero_pfn(pfn))
-> diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_internal.h
-> index 3639aa8dd2b06..cb1c2a8afe265 100644
-> --- a/tools/testing/vma/vma_internal.h
-> +++ b/tools/testing/vma/vma_internal.h
-> @@ -467,13 +467,21 @@ struct vm_operations_struct {
->  	struct mempolicy *(*get_policy)(struct vm_area_struct *vma,
->  					unsigned long addr, pgoff_t *ilx);
->  #endif
-> +#ifdef CONFIG_FIND_NORMAL_PAGE
->  	/*
-> -	 * Called by vm_normal_page() for special PTEs to find the
-> -	 * page for @addr.  This is useful if the default behavior
-> -	 * (using pte_page()) would not find the correct page.
-> +	 * Called by vm_normal_page() for special PTEs in @vma at @addr. This
-> +	 * allows for returning a "normal" page from vm_normal_page() even
-> +	 * though the PTE indicates that the "struct page" either does not exist
-> +	 * or should not be touched: "special".
-> +	 *
-> +	 * Do not add new users: this really only works when a "normal" page
-> +	 * was mapped, but then the PTE got changed to something weird (+
-> +	 * marked special) that would not make pte_pfn() identify the originally
-> +	 * inserted page.
->  	 */
-> -	struct page *(*find_special_page)(struct vm_area_struct *vma,
-> -					  unsigned long addr);
-> +	struct page *(*find_normal_page)(struct vm_area_struct *vma,
-> +					 unsigned long addr);
-> +#endif /* CONFIG_FIND_NORMAL_PAGE */
->  };
->
->  struct vm_unmapped_area_info {
-> --
-> 2.50.1
->
+I like this conversion.
+
+[...]
+> 
+> In order to execute this change, we introduce a new opaque type -
+> mm_flags_t - which wraps a bitmap.
+
+I have no strong opinion here, but I think coding-style.rst[1] has one?  To
+quote,
+
+    Please don't use things like ``vps_t``.
+    It's a **mistake** to use typedef for structures and pointers. 
+
+checkpatch.pl also complains similarly.
+
+Again, I have no strong opinion, but I think adding a clarification about why
+we use typedef despite of the documented recommendation here might be nice?
+
+[...]
+> For mm->flags initialisation on fork, we adjust the logic to ensure all
+> bits are cleared correctly, and then adjust the existing intialisation
+
+Nit.  s/intialisation/initialisation/ ?
+
+[...]
+
+[1] https://docs.kernel.org/process/coding-style.html#typedefs
+
+
+Thanks,
+SJ
 
