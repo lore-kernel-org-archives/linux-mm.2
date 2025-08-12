@@ -2,96 +2,97 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8FE24CA0EC4
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 07:37:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C92FFCA0EC4
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 07:46:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC3548E00EF; Tue, 12 Aug 2025 03:37:43 -0400 (EDT)
+	id 4C5B08E00F0; Tue, 12 Aug 2025 03:46:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9B7B8E00E4; Tue, 12 Aug 2025 03:37:43 -0400 (EDT)
+	id 476D38E00E4; Tue, 12 Aug 2025 03:46:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB1788E00EF; Tue, 12 Aug 2025 03:37:43 -0400 (EDT)
+	id 38C958E00F0; Tue, 12 Aug 2025 03:46:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CA76E8E00E4
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 03:37:43 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6623616020E
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 07:37:43 +0000 (UTC)
-X-FDA: 83767300806.04.A2B3654
-Received: from prime.voidband.net (prime.voidband.net [199.247.17.104])
-	by imf24.hostedemail.com (Postfix) with ESMTP id CD61C18000D
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 07:37:41 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=natalenko.name header.s=dkim-20170712 header.b=R2AMMGg3;
-	spf=pass (imf24.hostedemail.com: domain of oleksandr@natalenko.name designates 199.247.17.104 as permitted sender) smtp.mailfrom=oleksandr@natalenko.name;
-	dmarc=pass (policy=reject) header.from=natalenko.name
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 25AA58E00E4
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 03:46:48 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 33DC1160224
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 07:46:46 +0000 (UTC)
+X-FDA: 83767323612.26.26CE1B5
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 60F091C000B
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 07:46:44 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of 3Y_GaaAkbAPww23oeppivettmh.ksskpiywivgsrxirx.gsq@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.71 as permitted sender) smtp.mailfrom=3Y_GaaAkbAPww23oeppivettmh.ksskpiywivgsrxirx.gsq@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754984262;
+	s=arc-20220608; t=1754984804;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ko8fbK5GyQxFcouQBC+uaA5wBDCuoavWYQ2EzMwpjWI=;
-	b=GQuOVr+Pe8KaNbfS8AZYewGwLrJvfuFet0cdTQ5sErPHle4+XNmaIihOMQ0Z8XSdbhNKfa
-	8sckRbS89uHYDzj0ZE3VNfgdZg4Lx1Sjm3Hmli4SPhEh0X2qK44jtVtmN1mU88OO4Z34/D
-	bo3T564+0zpHW1yjXVQiQ9a2wHi/gJw=
+	 in-reply-to:in-reply-to:references;
+	bh=Umk1YoadKdpa6fyzaimwqq35auuAfEV1rwGDtpJveWA=;
+	b=vu+XA8+fI6MQalztor8JxmRR2ZC/erMRI+I1R/X0PMXkmVmuJ19fQvz6x4dUtTtCGUazuk
+	eEV7CPQ/d5aY8G1TfN3+YWaRP4y5h7i7OJrAQ7d6uTXP601nVpJoLWbmn+34DuW5KOyqyP
+	BG2zu3B+WaewPSLioryWfSfkHaGDBkM=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=natalenko.name header.s=dkim-20170712 header.b=R2AMMGg3;
-	spf=pass (imf24.hostedemail.com: domain of oleksandr@natalenko.name designates 199.247.17.104 as permitted sender) smtp.mailfrom=oleksandr@natalenko.name;
-	dmarc=pass (policy=reject) header.from=natalenko.name
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754984262; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of 3Y_GaaAkbAPww23oeppivettmh.ksskpiywivgsrxirx.gsq@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.71 as permitted sender) smtp.mailfrom=3Y_GaaAkbAPww23oeppivettmh.ksskpiywivgsrxirx.gsq@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754984804; a=rsa-sha256;
 	cv=none;
-	b=aFzKipOsNI1+VM3zDq+R6HIo6hyrKpF7CQyFg6oVrK6dsP65CBRviZ1ov+NQ6Jcl3vx3Rt
-	rhyLks3mwHq2VDJ1IN4/nBuE3mGXh0IDqRyNjB4yiWr3CyS1gUx9S9jqmLavUF8X41miDZ
-	bsl5S6u8tIMFjFpRG3QRR8RvID5zT8M=
-Received: from spock.localnet (unknown [212.20.115.26])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by prime.voidband.net (Postfix) with ESMTPSA id 89CA1635B040;
-	Tue, 12 Aug 2025 09:37:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
-	s=dkim-20170712; t=1754984254;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ko8fbK5GyQxFcouQBC+uaA5wBDCuoavWYQ2EzMwpjWI=;
-	b=R2AMMGg3UcI+D1Q0kO3yhjRvyygTC1w++Aaq90YxKJqFZseG8At7rRfbGdaSW+zLfWooYT
-	tJKBdsrKFfPWu+xWmebP5lZPTbF89Ein4L0rHp6/4CcTq97EWKMpcB5DpT6hZaO7HLbolf
-	oMhtdV2QQXFYdZIbIqWZmydi3U/+cRE=
-From: Oleksandr Natalenko <oleksandr@natalenko.name>
-To: David Rientjes <rientjes@google.com>, Damien Le Moal <dlemoal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
- Jens Axboe <axboe@kernel.dk>, John Garry <john.g.garry@oracle.com>,
- Christoph Hellwig <hch@lst.de>,
- "Martin K. Petersen" <martin.petersen@oracle.com>, linux-mm@kvack.org,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Shakeel Butt <shakeel.butt@linux.dev>, Qi Zheng <zhengqi.arch@bytedance.com>,
- Michal Hocko <mhocko@kernel.org>, David Hildenbrand <david@redhat.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Subject:
- Re: [REGRESSION][BISECTED] Unexpected OOM instead of reclaiming inactive file
- pages
-Date: Tue, 12 Aug 2025 09:37:22 +0200
-Message-ID: <3553647.iZASKD2KPV@natalenko.name>
-In-Reply-To: <33b6c9a3-3165-4ce8-9667-afdbaff2c3ae@kernel.org>
-References:
- <5905724.LvFx2qVVIh@natalenko.name> <15056829.uLZWGnKmhe@natalenko.name>
- <33b6c9a3-3165-4ce8-9667-afdbaff2c3ae@kernel.org>
+	b=BgpfWHbIpoL2S638YYtclYjcSCadUWeuTPkSLtr/VHtN6lebrtlrCot17V0P35nngMqqWn
+	TL1cjAXGvX1ih3Ay3qxOENGUBuf0bsh8MISBsQG1BF8Uu8MspypuoF92MQl9R72Q8i8wjK
+	NFzjeYLeHje1fjjnnt65Xw/x9DVfCLg=
+Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-881878af906so1022876539f.0
+        for <linux-mm@kvack.org>; Tue, 12 Aug 2025 00:46:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754984803; x=1755589603;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Umk1YoadKdpa6fyzaimwqq35auuAfEV1rwGDtpJveWA=;
+        b=AQTOoDL/gQpQb2qpQ3Dh4TeFGgqG4CXmMRMuhqeU5vQZgE5FuVl/mGAGYZ4BIzXx3n
+         /Sk84c7YmzaX8BS5aj8WLVnWDwUAqnvIH8zEnQIEgezz8/Y4gO9zkSnHb0ULnx8N3idM
+         gAxw1WemLnowjEQoP9tU9vIT+zUNf8sP/sPKukPgUlll2W/8kPGTjcTHbu5XcplFnp1w
+         cQnf7xqgI1KhXcvPOJWEyTw86RnCqbWyFy08cS2fKnjwygDoCsAaT+TBOpheunGQe68u
+         KDAVHU9LjeyVeSXgKjEeekQKNFpAdwOjAT5KBsFVtq9h9wMqsX7ETD4akp23X/bNW7O3
+         e6gg==
+X-Forwarded-Encrypted: i=1; AJvYcCW2gSIIGbby2oyRDVaV/Mw/WSx4K5LHZkiRVEmW4o4cR1tCD8WVefnVDoNJPtuLKIxUa/gUrIXBgg==@kvack.org
+X-Gm-Message-State: AOJu0Yz99ZP9aoZo2ZNXpvcFaUd+DccTqdn6+Yg+zpiYZ/XyU4WZWXBf
+	OwXgXdUwz/YWXFwol8vcZSVomcv6XIQ2hha0LjpHTU6WsSh7ejzKal9nd6eZeHC7e3BGbw6uMrV
+	LyTZRtIu2AQIw3r5bLADbaJZCLbB/pqkyhIcu/LTO188gObKIuAZMPsAeNVQ=
+X-Google-Smtp-Source: AGHT+IGMO5NHQ7t/8SdMDmkMxxHOO+f+f98qggqnhfBOuHrFo4tBxoy7lI5+nUzI68F7dY4bFrEZVQmeL1OqGTmyoq+dADo+nkMr
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart3246356.PYKUYFuaPT";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
-X-Rspamd-Queue-Id: CD61C18000D
+X-Received: by 2002:a05:6602:7187:b0:881:9412:c917 with SMTP id
+ ca18e2360f4ac-8841bcc009bmr501638939f.0.1754984803514; Tue, 12 Aug 2025
+ 00:46:43 -0700 (PDT)
+Date: Tue, 12 Aug 2025 00:46:43 -0700
+In-Reply-To: <20250811173116.2829786-1-kuniyu@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <689af163.050a0220.7f033.0112.GAE@google.com>
+Subject: [syzbot ci] Re: net-memcg: Decouple controlled memcg from sk->sk_prot->memory_allocated.
+From: syzbot ci <syzbot+cic0c8bc3087cfc855@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, almasrymina@google.com, cgroups@vger.kernel.org, 
+	davem@davemloft.net, edumazet@google.com, geliang@kernel.org, 
+	hannes@cmpxchg.org, horms@kernel.org, kuba@kernel.org, kuni1840@gmail.com, 
+	kuniyu@google.com, linux-mm@kvack.org, martineau@kernel.org, 
+	matttbe@kernel.org, mhocko@kernel.org, mkoutny@suse.com, 
+	mptcp@lists.linux.dev, muchun.song@linux.dev, ncardwell@google.com, 
+	netdev@vger.kernel.org, pabeni@redhat.com, roman.gushchin@linux.dev, 
+	shakeel.butt@linux.dev, tj@kernel.org, willemb@google.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 60F091C000B
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: 8on3db17yqz8dmc4tyo8gdfdxxdar3ir
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1754984261-598420
-X-HE-Meta: U2FsdGVkX1/m0VtVdAMUYetRZhShWPqxHXjXYdbRuNfVV47Mo2WxBkH193jdsoRsKiuMOfT8t3DBl39JBvdPzHtssFP2D1eoBVjPxjppyKEvm15LeQ9r7vyKCILfDzrNNfW0qql3NtpT8Tprs4OPzRX/laCUQCBmNGQe4/+C6wTRCyrKcUlN8HSKxxY31LnA3KIz7LzI7yN7g9QJbe/ZrFG/Ro94ndGwnEckYbjW4ajcQt0skAp1NgNYJyAum1MemiKnjHl0v4xUK7Y63Eeke/xU1MLA0kOA/YPdPfBvhqFAYL/fwWWJWdl3cckvgDVOTfGi5Aet+GTD+PXnXIVnQ2uc+FLZVkLFLsUqDavjqgrW1CjNaeeqYSVDZHX9DU2NN+Nxul5GmQdDXEtMtVtEU/wNS6wQ1dBIbz0T0hlfMghSH/25i5ZxwBX8yNe/bgumNMqttuC7k54RSZr2Bni8c06C3vCXcZAmUFDsRsV8IctzWYX1nmv4h/g/wLdQ2WtjQekSJDbzYImfkFlEX0gapq9KLztVnYqLjOUs2MlI/tesmy4r1i+Bj8dKZO49naJl/IjdrIlXeMPcw3w4k5/OzMHdbTmjzd/8gY+sdYGzFtTTcQoeCGf/6cXjutokn2/zLXrbjl/mbHLQIyyaGe3b1VH85WLSIkekxObBVw7E8dZgPiFv59xl679U1gPzqnuxvt+jvswDoEwttMUdiAaoZOvICq9jw7nFLbryAVDqiP5dTC2/Uu4mX+cmOXlDvwfLrjekgK70eVsgOgjYKIxyTtlAbnkWw19d6WLhE7kFZL5zH4htb6eW+e5bq3XC1VqnKiQ7dsUB7Zgb1L9+xzQGoSMvXKmbCNLk9UOTeVWr7AUyIiWwhkpChXYSYoLNJwYhPXFUhZ9D1kBG/sOSUjA84kGVWcZmZZFttFqLnNgrFIk2DpCfoQw65DyIwxJGIFzgw4M918TV+l0WkmG48AA
- r6g9bRD6
- nY9yaIGHK55F69gi03gJ5KYCTBwMQtmz/IlY6Xoeun8axbKHLY8wYsmAxXQ==
+X-Stat-Signature: 99qthzqhcrp3c9ujubb8khjzjrdg8eaq
+X-HE-Tag: 1754984804-650947
+X-HE-Meta: U2FsdGVkX19H2X/sy+ULbi4sDZWkLjMWNxbcfH95FzEwAs6PR5jUrTiRR7gzMgQaKhf/NtDftI7leJsqSVzBHQWJ7Ux3YGlpMG3u4+0u77n1ZGmk0kAg2rAQD1sWixS7WUyTFzXpyaUE8/IUT5SHx5i9itXW9i7lOd5lLZ6mGxg+YhuwPpOAHMvrIjtlLdoOU6CGbdSDuDPl9MYKqAPlT1hT/dQwSuquvmpCXfo2mQTGL0mLGlAPrjPIuis0fmfQBHING6FX+o9dtl7AE92hKGUblJZslq/Cx2fsQK3efC+BN/mrrlYEgYD4HcHAnyg0RpnocLNQKdc+9hfNlqYW2EvujxE7Ebc48WOhEnhJj8ofyUo1RJktYVoEBhfv0dK2RXrVP+dgTFEaUkaylpqFV0PL0FL4RkmEoXUuGOjlRQwmJN0CaugFnd7alvSBHh6Z6W2BFEG5mk9iChwOuqFtm9MmieUvsT2pnvxZRp2zd8gqkrDV6Md1Rf68MvsggonhA/ZLblrK2ttZPNOK6CQogVSk39p0qYHFkcp7tFg/+G21s54gqZr3vnxtwyY7s1OZIemp+0JhzUOZxIJzxA+MSk7hMtZ3t3BUzTSUVIFmQJtJMSVCMvGvqR+jPkE1/swKm9FFGPmNSxlZiPZnhEPNpb+Js+Jb6UHOii484DNocRUC8HIF6wzcP2sKN60wUBdT8f3PwRJ8V0iWpq7vSNrMYsbHKGZI9YzyVYMuqGsUtEC4X6crikYs8vSY1bAxQBB6m2pzvmrxuVrJ71xf+SjkhltitNOWZX9DNhuZFEKsp2/KZr9cemVvsyht6RCYJWJswl+nbuyHw8Y8neOkyhjMnYbICeqlEg6SLRP5D0y2DXdQPmZq/vl5Fxl1h6h3JmTEAk3aZfzHURYZhGM7A66F9cU0rJsG4lU+lgw1IGFb4BBj9Y6k04twUYP2mQlfNywJkCKOqBAk6jkXUde7uNf
+ dBkHgbLo
+ N+ltUsJujcb846u1rMCp+GHNfQG0OtXp4OHIbOK/X8z1/6z/kscQv2Wa0iyXCJbwzRM56gWJg8JyoHVeO8MD/KVArPuwixZLWfJoU6vNTPGkGXF0ONYDx5SX71/ze7znv21OJW0aJu1y5Kd4czivvol6sJBKwMC66Bg+ctaqLAY8hXqP/21HZ3KAtoc3F5RkBFa0eoMJY+Eg3hKIdKmZm58F8rDmNTx+KNvkMP9j8vCRMZzkRKXKnm36nP9DO899XFcyP5jV2Ei8EKId5cxVVgfds2F5ZSerGCRGQHCPguC3nv6Jo8/RaLqU25QROYLVHDZH0qVK391pUunajFIL7U7uDorHDN/y2Jirjev1ticdubegBXVBQpk80V7YqkT4tYUbhZjvAE3bedraYTQ9xYOhMHalTlgkkkSE/wvLkPD2T9y+9ccQK1lZHYs5E0wlN9bHdoNiPXP+OF6oXT1ioE/Fy9uswijNIen1UiJEQVQbxXY+vD7dZLYGPG6LVTpIN7HVISfGGanpP9lucUB5XIirxpA6a8pIzsJHqeKlSbTaxLmNvXQalzV6czgHAKJD3Zm6Co0klinl1gyC57Xrv52J3PA8gppWX3J/Nxo5oWE3ZSnPPCrqjIDA80TRdAqrK3H9I6C6Xrvnxm/R/kR9MROTbxi3/99GLDgi/Zi+3iXXiFgfqXjGNN4iA4CFwSIEqK5k8FL4hlkF+JAB4bJdj0Zjzzu81iqlcxK/U1+aFOg9jxmWHiBvP7qwh5vJGxvwz6AFXCirKF8tNVt23VAnJrn9CErbCceMNZIRKRcwwpg3BLyQ/U7O8z2zHVf4GDd9UQE1zUkt76ukP1IDZTlycRecsxmspOwX/ScPlTayRKYhlZbJUaRjcwpT9AfoiJhOZ1MLgEPHUH7LR04Q/h1x+8YMpc2j6Z0skxtBqpc8aDL7vrVY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,193 +101,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---nextPart3246356.PYKUYFuaPT
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
-From: Oleksandr Natalenko <oleksandr@natalenko.name>
-Date: Tue, 12 Aug 2025 09:37:22 +0200
-Message-ID: <3553647.iZASKD2KPV@natalenko.name>
-In-Reply-To: <33b6c9a3-3165-4ce8-9667-afdbaff2c3ae@kernel.org>
-MIME-Version: 1.0
+syzbot ci has tested the following series
 
-Hello.
+[v2] net-memcg: Decouple controlled memcg from sk->sk_prot->memory_allocated.
+https://lore.kernel.org/all/20250811173116.2829786-1-kuniyu@google.com
+* [PATCH v2 net-next 01/12] mptcp: Fix up subflow's memcg when CONFIG_SOCK_CGROUP_DATA=n.
+* [PATCH v2 net-next 02/12] mptcp: Use tcp_under_memory_pressure() in mptcp_epollin_ready().
+* [PATCH v2 net-next 03/12] tcp: Simplify error path in inet_csk_accept().
+* [PATCH v2 net-next 04/12] net: Call trace_sock_exceed_buf_limit() for memcg failure with SK_MEM_RECV.
+* [PATCH v2 net-next 05/12] net: Clean up __sk_mem_raise_allocated().
+* [PATCH v2 net-next 06/12] net-memcg: Introduce mem_cgroup_from_sk().
+* [PATCH v2 net-next 07/12] net-memcg: Introduce mem_cgroup_sk_enabled().
+* [PATCH v2 net-next 08/12] net-memcg: Pass struct sock to mem_cgroup_sk_(un)?charge().
+* [PATCH v2 net-next 09/12] net-memcg: Pass struct sock to mem_cgroup_sk_under_memory_pressure().
+* [PATCH v2 net-next 10/12] net: Define sk_memcg under CONFIG_MEMCG.
+* [PATCH v2 net-next 11/12] net-memcg: Store MEMCG_SOCK_ISOLATED in sk->sk_memcg.
+* [PATCH v2 net-next 12/12] net-memcg: Decouple controlled memcg from global protocol memory accounting.
 
-On =C3=BAter=C3=BD 12. srpna 2025 2:45:02, st=C5=99edoevropsk=C3=BD letn=C3=
-=AD =C4=8Das Damien Le Moal wrote:
-> On 8/12/25 5:42 AM, Oleksandr Natalenko wrote:
-> > On pond=C4=9Bl=C3=AD 11. srpna 2025 18:06:16, st=C5=99edoevropsk=C3=BD =
-letn=C3=AD =C4=8Das David Rientjes wrote:
-> >> On Mon, 11 Aug 2025, Oleksandr Natalenko wrote:
-> >>> I'm fairly confident that the following commit
-> >>>
-> >>> 459779d04ae8d block: Improve read ahead size for rotational devices
-> >>>
-> >>> caused a regression in my test bench.
-> >>>
-> >>> I'm running v6.17-rc1 in a small QEMU VM with virtio-scsi disk. It ha=
-s got 1 GiB of RAM, so I can saturate it easily causing reclaiming mechanis=
-m to kick in.
-> >>>
-> >>> If MGLRU is enabled:
-> >>>
-> >>> $ echo 1000 | sudo tee /sys/kernel/mm/lru_gen/min_ttl_ms
-> >>>
-> >>> then, once page cache builds up, an OOM happens without reclaiming in=
-active file pages: [1]. Note that inactive_file:506952kB, I'd expect these =
-to be reclaimed instead, like how it happens with v6.16.
-> >>>
-> >>> If MGLRU is disabled:
-> >>>
-> >>> $ echo 0 | sudo tee /sys/kernel/mm/lru_gen/min_ttl_ms
-> >>>
-> >>> then OOM doesn't occur, and things seem to work as usual.
-> >>>
-> >>> If MGLRU is enabled, and 459779d04ae8d is reverted on top of v6.17-rc=
-1, the OOM doesn't happen either.
-> >>>
-> >>> Could you please check this?
-> >>>
-> >>
-> >> This looks to be an MGLRU policy decision rather than a readahead=20
-> >> regression, correct?
-> >>
-> >> Mem-Info:
-> >> active_anon:388 inactive_anon:5382 isolated_anon:0
-> >>  active_file:9638 inactive_file:126738 isolated_file:0
-> >>
-> >> Setting min_ttl_ms to 1000 is preserving the working set and triggerin=
-g=20
-> >> the oom kill is the only alternative to free memory in that configurat=
-ion. =20
-> >> The oom kill is being triggered by kswapd for this purpose.
-> >>
-> >> So additional readahead would certainly increase that working set.  Th=
-is=20
-> >> looks working as intended.
-> >=20
-> > OK, this makes sense indeed, thanks for the explanation. But is inactiv=
-e_file explosion expected and justified?
-> >=20
-> > Without revert:
-> >=20
-> > $ echo 3 | sudo tee /proc/sys/vm/drop_caches; free -m; sudo journalctl =
-=2Dkb >/dev/null; free -m
-> > 3
-> >                total        used        free      shared  buff/cache   =
-available
-> > Mem:             690         179         536           3          57   =
-      510
-> > Swap:           1379          12        1367
-> > /* OOM happens here */
-> >                total        used        free      shared  buff/cache   =
-available
-> > Mem:             690         177          52           3         561   =
-      513
-> > Swap:           1379          17        1362=20
-> >=20
-> > With revert:
-> >=20
-> > $ echo 3 | sudo tee /proc/sys/vm/drop_caches; free -m; sudo journalctl =
-=2Dkb >/dev/null; free -m
-> > 3
-> >                total        used        free      shared  buff/cache   =
-available
-> > Mem:             690         214         498           4          64   =
-      476
-> > Swap:           1379           0        1379
-> > /* no OOM */
-> >                total        used        free      shared  buff/cache   =
-available
-> > Mem:             690         209         462           4         119   =
-      481
-> > Swap:           1379           0        1379
-> >=20
-> > The journal folder size is:
-> >=20
-> > $ sudo du -hs /var/log/journal
-> > 575M    /var/log/journal
-> >=20
-> > It looks like this readahead change causes far more data to be read tha=
-n actually needed?
->=20
-> For your drive as seen by the VM, what is the value of
-> /sys/block/sdX/queue/optimal_io_size ?
->=20
-> I guess it is "0", as I see on my VM.
+and found the following issue:
+kernel build error
 
-Yes, it's 0.
+Full report is available here:
+https://ci.syzbot.org/series/6fc666d9-cfec-413c-a98c-75c91ad6c07d
 
-> So before 459779d04ae8d, the block device read_ahead_kb was 128KB only, a=
-nd
-> 459779d04ae8d switched it to be 2 times the max_sectors_kb, so 8MB. This =
-change
-> significantly improves file buffered read performance on HDDs, and HDDs o=
-nly.
+***
 
-Right, max_sectors_kb is 4096.
+kernel build error
 
-> This means that your VM device is probably being reported as a rotational=
- one
-> (/sys/block/sdX/queue/rotational is 1), which is normal if you attached an
-> actual HDD. If you are using a qcow2 image for that disk, then having
-> rotational=3D=3D1 is questionable...
+tree:      net-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net-next.git
+base:      37816488247ddddbc3de113c78c83572274b1e2e
+arch:      amd64
+compiler:  Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+config:    https://ci.syzbot.org/builds/a5d5d856-2809-4eee-87ca-2cd1630214ae/config
 
-Yes, it's reported as rotational by default.
+net/tls/tls_device.c:374:8: error: call to undeclared function 'sk_should_enter_memory_pressure'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
 
-I've just set -device scsi-hd,drive=3Dhd1,rotation_rate=3D1 so that guest w=
-ill see the drive as non-rotational from now on, which brings old behaviour=
- back.
+***
 
-> The other issue is the device driver for the device reporting 0 for the o=
-ptimal
-> IO size, which normally happens only for SATA drives. I see the same with
-> virtio-scsi, which is also questionable given that the maximum IO size wi=
-th it
-> is fairly limited. So virtio-scsi may need some tweaking.
->=20
-> The other thing to question, I think, is setting read_ahead_kb using the
-> optimal_io_size limit (io_opt), which can be *very large*. For most SCSI
-> devices, it is 16MB, so you will see a read_ahead_kb of 32 MB. But for SC=
-SI
-> devices, optimal_io_size indicates a *maximum* IO size beyond which perfo=
-rmance
-> may degrade. So using any value lower than this, but still reasonably lar=
-ge,
-> would be better in general I think. Note that lim->io_opt for RAID arrays
-> actually indicates the stripe size, so generally a lot smaller than the
-> component drives io_opt. And this use changes the meaning of that queue l=
-imit,
-> which makes things even more confusing and finding an adequate default ha=
-rder.
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+Tested-by: syzbot@syzkaller.appspotmail.com
 
-Thank you for the explanation.
-
-=2D-=20
-Oleksandr Natalenko, MSE
---nextPart3246356.PYKUYFuaPT
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEZUOOw5ESFLHZZtOKil/iNcg8M0sFAmia7zIACgkQil/iNcg8
-M0tTChAAwRcANFL3mXoAdtvq28I6ZKLSmHdY2tZhwVBttLRFWCXreDnNiYJV/+GH
-gIW7xVzpfYxVZ2jXjA+pNfEng7WrXYFQKrwXKdaexfUDS0/NS0uq8ICh9uCLb+Bp
-00F4E8IOL/DkrzC/AfxuXYgDo9LsCIi0+8sPWkMAuYLCxCWL52cal3yVxCq6wtlY
-JgxHcpxfC/zu6avLp0CrsPVxIYG2i5QV4F/9orZHUhIlitcjbvscsInu7KulDME5
-DT2gm+bEKxIHCLxCzNMqGm4b1fd5OF0nFaNypnOUhy30qvLawTTqmxd/UUoHpW6p
-BgViyIsGv4XukLKKJOKu3/A02rzT055QixDTXybSGDLowBD7Ia9tTV1+V4JrEuw9
-M/+V1zqwqIoyhsIIiu6LaKANaMATCFVrd4wSN8TkXyMh/yZzHjYuJDkrKrVjQzbv
-QO9qbhJ/CEyhU2bNIiAp/eITvI5Dr+S9Yj3uChZ0uJ0SYyYSF/YHq8fA8MsNwGBV
-gu4OIzi815wN5k+WBxhq22DFPuoDBxFmnmw/mJCXln8UG0VRdJbFvKzj5mJsj7ZZ
-VC1jpqT80ASM+2Cp7++uPK6rjOKr5wIYu1mxOYfyqCl3bXCd3CPQ3gHtZHi5EORn
-XYG2Mf/twoUjnFOIMhMz5jL438qvyA2aOyvZziDrai+fWB5VvF0=
-=58kA
------END PGP SIGNATURE-----
-
---nextPart3246356.PYKUYFuaPT--
-
-
-
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
