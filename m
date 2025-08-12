@@ -2,88 +2,83 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D9D7AC87FCB
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 08:31:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 59ABCCA0EC4
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 08:35:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C6378E0106; Tue, 12 Aug 2025 04:31:16 -0400 (EDT)
+	id CD4468E00F5; Tue, 12 Aug 2025 04:35:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 578558E00F5; Tue, 12 Aug 2025 04:31:16 -0400 (EDT)
+	id C86468E00E5; Tue, 12 Aug 2025 04:35:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4659D8E0106; Tue, 12 Aug 2025 04:31:16 -0400 (EDT)
+	id B9B8D8E00F5; Tue, 12 Aug 2025 04:35:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3193E8E00F5
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 04:31:16 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EE8BE819FC
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 08:31:15 +0000 (UTC)
-X-FDA: 83767435710.01.1848121
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 9CBE11C000F
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 08:31:12 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ioBOVq4e;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
-	spf=none (imf18.hostedemail.com: domain of BATV+01f4a5ca6254e61d0c65+8024+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+01f4a5ca6254e61d0c65+8024+infradead.org+hch@bombadil.srs.infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754987474; a=rsa-sha256;
-	cv=none;
-	b=c7LY+Xpok2IGRBoc7lvXCZGCZ4ehgRYHRJExOsihl/d+gqyyevHAFINXW0Io3JCogX24hm
-	6inrrSfApjfmPX3O91rPtuFR/YFC/KTJpkFb5FGnF/W+ZhmwAcbTJMhT3dwPH2/AOhGTiY
-	AcYDYhmGwRPeQbAk3AnppfOKpSag3W8=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ioBOVq4e;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
-	spf=none (imf18.hostedemail.com: domain of BATV+01f4a5ca6254e61d0c65+8024+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+01f4a5ca6254e61d0c65+8024+infradead.org+hch@bombadil.srs.infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A729A8E00E5
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 04:35:26 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5308A115CE5
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 08:35:26 +0000 (UTC)
+X-FDA: 83767446252.22.CAF998C
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 3ED1CC0005
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 08:35:22 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=F6OJybHf;
+	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754987474;
+	s=arc-20220608; t=1754987724;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=s7uIM6IQ2GnRJMINnamZt+nOZI6yL1Vh1Qs9yCS83nE=;
-	b=YqD0lUMpLW2PFBxXp1+NInlfHWIfKLUxXWqPvzR55ciTxVgxSA2wuvM6nD7Jj7sTnnavpP
-	MhCq99pploklQPi7ALAuMlbzcv98EQRxy+byrjY0QtIl9d/e4Yzs8URPB0IRJPELsvVuBS
-	HmN9Z4cqny7185RJFw0wpjEjuVxsgpA=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=s7uIM6IQ2GnRJMINnamZt+nOZI6yL1Vh1Qs9yCS83nE=; b=ioBOVq4en/GVng08rmZuW1h3lg
-	RZxJG/RDqoA9T+fOm+5PJFmOO/RE8IswpvBt5dYYYxAPc3KWWl6EKPI1KFaq8VZgObrSTPDMlhkGt
-	6vHxsGr3k6vUZTlfaX35ZuTL00P522XjVVZJA3+MwqD+ilxtspWlCSRXD08SL7/CnmdEBREGRMa4h
-	/F9blN+B0Pvac8vqzlJ+LRHGfpX0j4BDY9mqnBEqu9lWPL/gtFpPkyNHhF9vRBXGg0PoOxvyKkd4M
-	jc+K241ZeUHYf70IaSEojbBCeKsZOeH+bJjKAWt/hLFDl9Uz73/wPgeAD2tuXCjKgi5ZCnMxzse9c
-	2FM0bPew==;
-Received: from 2a02-8389-2341-5b80-d601-7564-c2e0-491c.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:d601:7564:c2e0:491c] helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ulkPU-0000000AFKh-1tta;
-	Tue, 12 Aug 2025 08:31:09 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: vbabka@suse.cz,
-	akpm@linux-foundation.org
-Cc: cl@gentwo.org,
-	rientjes@google.com,
-	roman.gushchin@linux.dev,
-	harry.yoo@oracle.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mempool: rename struct mempool_s to struct mempool
-Date: Tue, 12 Aug 2025 10:30:08 +0200
-Message-ID: <20250812083105.371295-1-hch@lst.de>
-X-Mailer: git-send-email 2.47.2
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=E5UCujp6LpemgWNTAHmJG6DMzWeh3JLe/fdx68Wjim8=;
+	b=z237KToMMnOh9UxgKV42UuEpuMeaAO+wA4evhNoto8bTjyFVfQieZ0pCRg3PjDGn1aDMpO
+	0FzC9bHGkFp1EAwtwfP9ieZX4DJAV6/s9TtJ87xDryh2lx8Vz/nqOVIARMKbqI8/yPQY+m
+	Cj1TeYj79TELrzIPEsBsRh0P3Ao3iww=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=F6OJybHf;
+	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754987724; a=rsa-sha256;
+	cv=none;
+	b=CemUkEEoLLv1x39rGQbHi1vTTATZl9qsiKkNIdZbSh+388NGsv2uRQDclEqOAIXAoDgIUJ
+	OvtuuiMedOn2bX+5KDEUb9dPSxQlVTaabOkNBfJWvTa5ebzeJjwVLzyCrIqpaPFtZz6io8
+	Q/cM9hVdSJGGr+zvNK66HuN5nYcKDoo=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1754987720; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=E5UCujp6LpemgWNTAHmJG6DMzWeh3JLe/fdx68Wjim8=;
+	b=F6OJybHfXA0QWIjrArVGPDcecWotkaKMKkvCaue5XzBv+CVJXcFTXYmoddx5CDOs4vMO5O2Mv/VTGQAf6ksy04V0ut03CCC2yXQiznkVsDSuJjQFqjpT9C5cCzZdbjQREDEcgUg2byw/ck9L96reXcIzVU0kIM/dmPk6v/JdbtA=
+Received: from 30.74.144.111(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WlaOJEW_1754987715 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 12 Aug 2025 16:35:15 +0800
+Message-ID: <e6898dca-d6c6-465c-a373-8298858839ab@linux.alibaba.com>
+Date: Tue, 12 Aug 2025 16:35:14 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Stat-Signature: jzpktfbtz515redf71x9y4b8kbo9hwsx
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] mm: shmem: fix the strategy for the tmpfs 'huge='
+ options
+To: akpm@linux-foundation.org, hughd@google.com
+Cc: willy@infradead.org, david@redhat.com, lorenzo.stoakes@oracle.com,
+ ziy@nvidia.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <701271092af74c2d969b195321c2c22e15e3c694.1753863013.git.baolin.wang@linux.alibaba.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <701271092af74c2d969b195321c2c22e15e3c694.1753863013.git.baolin.wang@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9CBE11C000F
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1754987472-567902
-X-HE-Meta: U2FsdGVkX1+FikVmmdzUjuNWpuva5s1qGjcZrk7n3TG/LGXgFRAMS9L9/yudTOOsrdS0u5CNe6O46wfJib/tRfOMlM7YQvojLDCWyWsqhABnOVKXHn7UKBLRsbJ8QA0Q3ynwdhwhhpriH6bLNI8J7HUio4HLbB5huQNE1Ee2A9fW+8rqvWQhKm5kYw5JDj4WsGjzup6q17kzjAfipksR46waGhl7xVmHP2YhOmEcBro/VYWqKR7FMm63ecYH1O6ykHjfxhw6lmipD6/k92j1l0MnwQDYqmW+1NGkoC8cZK1q8a37DAY08iQ74gtUtKsCF8WV/k8q/saoQJxuHHh++ahdHUktbmqKksyVOaeDqOQivjJ5K1W3u7DJux+bP+U5ZZlgeVYNjKcUQRGbdqgRnIB23/RuXqeFaoIk5eI79GZGRLvep3R9nV2bAtE3lv+uTHHTOETC/awUjf/Q08QDosxY+jx9PUhNbs7pxhkoDH/XxtHW27xaL/4iIX6/vMKcRmiGCfY+4/EB3FAt4X//aKOUdBD/+T8a/hBtMofOR9LlMn95vcMpFy8hb8wg6srZ+V9qbcS+/8ixN5MvUWHiTu0eqLpRlOBT9RaZ7wCatxBc8jOtd2EblNcqHtlsCjhBKU2TCPEpW1900cPYGA+qjY2L0/mPhH/soI+PtJm6zGhGNXO/tdzAiOo6TqEIFYIJT126PVs3Wx3QVSQj0mLZfRRbKThAUqeVRYRKZEu4gFIgy3Oyw+lpzKADcMAYuSp5t6VfeceJlASdX/yJVxxbeSn2D5GKw1co9wnswymYWVF64kFr/f0qTPpb/dI3BaC/Y2ODdUOxOL8m8pQI42dtdq4u4y9wS47JI+HUlRKd8tdvVW7VY+CU7U2u5v84bO4cwKsHvf3qugRFtjIjndgh/287AhzT5WqJG/7oUrH2MB3fcq2RK85w0PUuEkkjxNcS9ElEBUxnSiQevqTuZRd
- V4lrmfmd
- JF7IEwbCjQmcM4eVmAZyslZydJZIeS2NHnArLf6zFM5j6XWgPs8+nV84Qq+NDamAOGklQncOMlZzpihMJbUtzXDL3D1qUyzX6TCijGtpsRo2FLE2hqXKH3ZrweibQ4hvEHRsEsw91hzwY6k2jP2M6D90FPXF1aTesObnfWthNmRtiphK6a2D5Y3gxcZaMX8fkr/hYVR8zHd6oGttvv7XFRglJJfFhYg8LwkbjmKJVuyEPjtj72PdNX+H/VA7N7pLYUKMroq3ImBSTdeWbeUeYhe8PyTBtSD8E1qWkRX6J5g7GePb7PTmPACtK3Zs3DtV3c5l9pCcJzmCMStuo4KpovgPECX6GI73mKgW70XFeoyMJeYWeKjupRQjbs9Li4ngCq0w4vcIqmSnHT6ipm2U58vKV5g4YaULsvBHqTXi9wGGlz7PKthcSItnyeVHR3hrB3CB6XilDFrgYGcvljgccigkYR1aHsIXMFArgGClKH0bBXt/b8IJnThuDdPMiwJCpSo9kUNFJtA9rDFsqJpIngpjNxEFJJ1d+x8ZoSnAWSTIEukC+Js+EUb71vZxjnQgQGowKxFvy30LnhGUkPG0YOjqFqOUfmxzZcawP6irr2YvjD6iexsJDIHMcfU8ncl2JIeQI
+X-Rspamd-Queue-Id: 3ED1CC0005
+X-Rspamd-Server: rspam06
+X-Stat-Signature: of7sp7tt4qnoaomafq7wu7xiefgmt645
+X-HE-Tag: 1754987722-612377
+X-HE-Meta: U2FsdGVkX19YiPTQeyLdrQAkCdnS8/pxDTa8scdcEXdH+ULub/TmUmqWkSZAAD9wR2kufgL3HP4cOfyXBJgfa4L8Ff/LZECBTXPevjysl2+xkkIA4TUR7ueMyX1nx9lFGiVzODsyk9plqL69q7+Yz5auxmERIDn4XH7ptTZvQXOTUHNrH0qfhqzuMXrQuLpaxugmNsv1GBT3uj4bkk3XWJSwNTy9q6PZMJhJp8vq1SfI4LVDcoJWkmw2uen6aobDThdRFB7a6RcRXESCLTjl5wpP8d0R/bP7koLpEmCWPJKh/7goSf+O5HiC3IAURGdftTbQNGSv6Re7WXlclcCJ0ZLUHsXQgno2bmpMU/dhZk/rmXJVvidJH0Xh8fYcZWUOf+m38dq2i+UCpxrieoPkgGO0KcnWoaz1ujU9aHTY2QNlUT3yOoYEC2fVumo8l+ImYimNVlfAdLCNjlTFjP80MOKEFejC2c22y63mvrpxU41pIeiuBaiNk4X4PAhjHvGvaXq75iDx6fRPKh/kBowuUUMy875THgfuL4F7gCEVfsOG7RPetvl/vpCycx6NY+HZvqlLgwC9WuP6E+slyZHbuEhW7OF6Z9cP61l8CEi6e1xqivlkgY4MapEB7cSA91DKrizDiTyo1hYJ6y5v68vFL/jGL6ATBDb7C2LeVgY7VE+KkKzwez6YNiOv2yZLV7PNl53+ytrpp3ZGN/dgkbrKDCFXHfmtYCbrrl/eJJOgwpV/lUJhEmgiO1iRwWu3k9qwFPOosbfMI9UQc/A/igk63sMQ6GkhlTjD7dh0ivuM5dluCpkmAaWlqyU8lfq1d84oNdPtlGGrlDmVSAzXP0b6/dUxPlaQN68e1kRlso/t4q+jMbh8YFBTg5zUnNAXOU4dcdCqPISmd+RY7lQs5ZWts4YjfgJ2HC8A7p++QJd00zxgvs/63by+9Uzw0rhCRSBMiU3OnV8Uzxsa8pYUEdJ
+ AvzblJ+j
+ DQJOQDcq+qZlBpZcYCBHivMR5m1pHpLBrbxRvPzekHmeXmgpLj70OeBFNQ6kOZdv4v58FNVkBDHpbT9c1jziIL0nUR4iUlrIRH5s7U9BqW1A84JXxpTs3KLKGn8cGTOttTWxvytToZrdTUiN+enWiSChbDmAYsvR50XwBe3IVGuWOZ56tjKgXjFlfuPtRSTjE2oM/j4Al1z5QuGIFHTHw+nmjdr6eUEekuU/qZKps6dXkjs7KR6hvfx6UjFRohz0RKP3miwvZiSEaQBu2R9+dKICHu39pXEV/3pMOwXBUGWg72W/utnAuA1c1WsdtJJ79E0pc/uLt3NEz6bI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,58 +87,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Drop the pointless _s prefix and align to the usual struct naming to
-prepare for actually using the struct instead of the typedef so that
-random headers don't need to include mempool.h for just having a
-pointer to the mempool.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- include/linux/blkdev.h  | 2 +-
- include/linux/mempool.h | 2 +-
- include/linux/netfs.h   | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 95886b404b16..c3f3ec5bb864 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -199,7 +199,7 @@ struct gendisk {
- 	unsigned int		zone_wplugs_hash_bits;
- 	atomic_t		nr_zone_wplugs;
- 	spinlock_t		zone_wplugs_lock;
--	struct mempool_s	*zone_wplugs_pool;
-+	struct mempool		*zone_wplugs_pool;
- 	struct hlist_head	*zone_wplugs_hash;
- 	struct workqueue_struct *zone_wplugs_wq;
- #endif /* CONFIG_BLK_DEV_ZONED */
-diff --git a/include/linux/mempool.h b/include/linux/mempool.h
-index 7b151441341b..34941a4b9026 100644
---- a/include/linux/mempool.h
-+++ b/include/linux/mempool.h
-@@ -15,7 +15,7 @@ struct kmem_cache;
- typedef void * (mempool_alloc_t)(gfp_t gfp_mask, void *pool_data);
- typedef void (mempool_free_t)(void *element, void *pool_data);
- 
--typedef struct mempool_s {
-+typedef struct mempool {
- 	spinlock_t lock;
- 	int min_nr;		/* nr of elements at *elements */
- 	int curr_nr;		/* Current nr of elements at *elements */
-diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index 185bd8196503..270ed0822efa 100644
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -21,7 +21,7 @@
- #include <linux/rolling_buffer.h>
- 
- enum netfs_sreq_ref_trace;
--typedef struct mempool_s mempool_t;
-+typedef struct mempool mempool_t;
- struct folio_queue;
- 
- /**
--- 
-2.47.2
+On 2025/7/30 16:14, Baolin Wang wrote:
+> After commit acd7ccb284b8 ("mm: shmem: add large folio support for tmpfs"),
+> we have extended tmpfs to allow any sized large folios, rather than just
+> PMD-sized large folios.
+> 
+> The strategy discussed previously was:
+> 
+> "
+> Considering that tmpfs already has the 'huge=' option to control the
+> PMD-sized large folios allocation, we can extend the 'huge=' option to
+> allow any sized large folios.  The semantics of the 'huge=' mount option
+> are:
+> 
+>      huge=never: no any sized large folios
+>      huge=always: any sized large folios
+>      huge=within_size: like 'always' but respect the i_size
+>      huge=advise: like 'always' if requested with madvise()
+> 
+> Note: for tmpfs mmap() faults, due to the lack of a write size hint, still
+> allocate the PMD-sized huge folios if huge=always/within_size/advise is
+> set.
+> 
+> Moreover, the 'deny' and 'force' testing options controlled by
+> '/sys/kernel/mm/transparent_hugepage/shmem_enabled', still retain the same
+> semantics.  The 'deny' can disable any sized large folios for tmpfs, while
+> the 'force' can enable PMD sized large folios for tmpfs.
+> "
+> 
+> This means that when tmpfs is mounted with 'huge=always' or 'huge=within_size',
+> tmpfs will allow getting a highest order hint based on the size of write() and
+> fallocate() paths. It will then try each allowable large order, rather than
+> continually attempting to allocate PMD-sized large folios as before.
+> 
+> However, this might break some user scenarios for those who want to use
+> PMD-sized large folios, such as the i915 driver which did not supply a write
+> size hint when allocating shmem [1].
+> 
+> Moreover, Hugh also complained that this will cause a regression in userspace
+> with 'huge=always' or 'huge=within_size'.
+> 
+> So, let's revisit the strategy for tmpfs large page allocation. A simple fix
+> would be to always try PMD-sized large folios first, and if that fails, fall
+> back to smaller large folios. However, this approach differs from the strategy
+> for large folio allocation used by other file systems. Is this acceptable?
+> 
+> [1] https://lore.kernel.org/lkml/0d734549d5ed073c80b11601da3abdd5223e1889.1753689802.git.baolin.wang@linux.alibaba.com/
+> Fixes: acd7ccb284b8 ("mm: shmem: add large folio support for tmpfs")
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> ---
+> Note: this is just an RFC patch. I would like to hear others' opinions or
+> see if there is a better way to address Hugh's concern.
+> ---
 
+Hi Hugh,
+
+If we use this approach to fix the PMD large folio regression, should we 
+also change tmpfs mmap() to allow allocating any sized large folios, but 
+always try to allocate PMD-sized large folios first? What do you think? 
+Thanks.
 
