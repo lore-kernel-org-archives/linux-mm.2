@@ -2,92 +2,95 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 04EF5C87FCB
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 07:11:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D12EC87FCB
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 07:23:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 560438E00EA; Tue, 12 Aug 2025 03:11:03 -0400 (EDT)
+	id 072628E00EC; Tue, 12 Aug 2025 03:23:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5107B8E00E4; Tue, 12 Aug 2025 03:11:03 -0400 (EDT)
+	id 049F98E00E4; Tue, 12 Aug 2025 03:23:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FF758E00EA; Tue, 12 Aug 2025 03:11:03 -0400 (EDT)
+	id E7B828E00EC; Tue, 12 Aug 2025 03:23:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 18C6D8E00E4
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 03:11:03 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D3ACF160202
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 07:11:02 +0000 (UTC)
-X-FDA: 83767233564.11.B1B761C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id F1BAF120015
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 07:11:00 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B1F9CQbC;
-	spf=pass (imf29.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D9F6B8E00E4
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 03:23:16 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 92CED160200
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 07:23:16 +0000 (UTC)
+X-FDA: 83767264392.03.715685B
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 99F6310000A
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 07:23:13 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=HLScVlfq;
+	spf=pass (imf14.hostedemail.com: domain of chizhiling@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=chizhiling@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754982661;
+	s=arc-20220608; t=1754983394;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PQEhq3aQgQMuPCAliNiWwfXto5x3fpk0NM1RGKSP5+c=;
-	b=FQPC5dWkpcRHvi3+XAHlY08B42Qk2MRh3PCaP0sb8eNJ7OrGFc18JNfzNc5G7jj+baIlcW
-	7vzlucDK6iYMIERWf2qB/M/cm4JoboNE2ciPO3qyZZ+90L0PuSV+xo0v5CO8AQsCZWStRD
-	zpbLAvVfW4HQoy7dMTiDRKF4dUKI98o=
+	bh=3WU889qCdNQb92vh6TByBQLFAnLxusGdo1gurJ2fGSg=;
+	b=k3YtQSFloSgS08XVJ6kdYtkYw+pUPHhx5eaqzLaEI4uz4648VhFMp2fftqHtBY1T8ujG/w
+	YO6kqLEW9l5++6SjlZZlkGQNlaWpDdiRMmN4qRIOtSu3LdbCxsyjehRq4CoEt9ag/Ws9cL
+	5Ea35MrQE06Z0wpsybeO/O44BN8DyLU=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B1F9CQbC;
-	spf=pass (imf29.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754982661; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=HLScVlfq;
+	spf=pass (imf14.hostedemail.com: domain of chizhiling@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=chizhiling@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754983394; a=rsa-sha256;
 	cv=none;
-	b=h8fAVdRoCkaX5nGDMbULcvK48RJ0kI0FA9HuNrBnGHPC6hFS6VdvzmhMPqUNZv7Mg+vLqP
-	Adep1DAEs9pEpO29jbP5tz9vTcTZ5u2tnTXmbDiz5drQYx5fVeuZYs9tb07vaoBWMxYftY
-	7264IXSqkHM8lNo2qFRzXepM99bnEsM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9257F4430D;
-	Tue, 12 Aug 2025 07:10:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F009C4CEF1;
-	Tue, 12 Aug 2025 07:10:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754982659;
-	bh=RS8ZN6qEMRelHHf535daIqnnsWW0kEy9YMRdf1YF2MA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=B1F9CQbCHkCn4lgH11d1sPnMtbwfOGvwAeb8STBmGAEOHN9jQk/cx3veSoweGRUKu
-	 Yu4hTUW3pCVUFSUA4gvugi/5BQ0lKjKmbGEOd4mLjudgwFGme0N4RjLYjbLuwo0SUs
-	 8zLRYBDigLRNWSMVhQJ13HKLu/e/jkO+Ikba3l1AD0DXuCL7wmWbDFuCDAluqPExbh
-	 dyws2ecYH9ucj2kApdv5b71we6VM8Ig5PGo3ZXlYGVERsrxi+t/ySzNgMnJiql1kNx
-	 9Y0k4p1la+tCuYoVOMaBhUDUup6ShXrnztAkhuU+jsOlfpu1TJGKeDhVhTUDmJ1M62
-	 YvpRi/7FybdCA==
-From: Chris Li <chrisl@kernel.org>
-Date: Tue, 12 Aug 2025 00:10:58 -0700
-Subject: [PATCH v3 1/2] mm/swapfile.c: introduce function
- alloc_swap_scan_list()
+	b=iG9k0BquXsOos6PvXg3511k0WBw6cNKrRkJ3TNTnarvmnQimV9zSRzshkcviDwpDossk4J
+	zlwENCIkYbZkK3K0/sb7Lx2KlQesiIVdZQeIRTvUpr8hpPOiSxs1zgqtK95mL+/+Wg0Mfc
+	eh9JSvbg/wr1Jb07V06uBAh/MU54i80=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=3W
+	U889qCdNQb92vh6TByBQLFAnLxusGdo1gurJ2fGSg=; b=HLScVlfqHDX6yGgsZo
+	wkJeK4EeYiH8pVlG2vviLmwzL+9vOxp0QnQcwufcI9oJhZubfjCHA6G47HpH/crv
+	juy2XRZmtUKkBvYvGbT/uOdfoK4fr49LbcN7cTbBOVAAJxXDwgf8Y8fn3bRAx/wW
+	6M4EosojQo6dsOju7ntgx0+Bc=
+Received: from czl-ubuntu-pc.. (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wC3RSPN65pon26ABQ--.34118S4;
+	Tue, 12 Aug 2025 15:22:55 +0800 (CST)
+From: Chi Zhiling <chizhiling@163.com>
+To: linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Yuezhang Mo <yuezhang.mo@sony.com>,
+	Chi Zhiling <chizhiling@kylinos.cn>
+Subject: [PATCH 3/3] mpage: convert do_mpage_readpage() to return int type
+Date: Tue, 12 Aug 2025 15:22:25 +0800
+Message-ID: <20250812072225.181798-3-chizhiling@163.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250812072225.181798-1-chizhiling@163.com>
+References: <20250812072225.181798-1-chizhiling@163.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250812-swap-scan-list-v3-1-6d73504d267b@kernel.org>
-References: <20250812-swap-scan-list-v3-0-6d73504d267b@kernel.org>
-In-Reply-To: <20250812-swap-scan-list-v3-0-6d73504d267b@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, 
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
- Barry Song <baohua@kernel.org>, 
- "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Chris Li <chrisl@kernel.org>
-X-Mailer: b4 0.13.0
-X-Rspamd-Queue-Id: F1BAF120015
-X-Rspamd-Server: rspam04
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wC3RSPN65pon26ABQ--.34118S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tF17ArykWr43Ww1DuFy3urg_yoW8AFW8pF
+	W8Ca4kuF43J3yagFyxJrs5Zr1S93ySgFWUAFW8J343Z3ZxJrsYkasrXas8ZF4xtr1rCa1k
+	Xr4Iqry7Za1DWFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jwF4iUUUUU=
+X-Originating-IP: [116.128.244.169]
+X-CM-SenderInfo: hfkl6xxlol0wi6rwjhhfrp/xtbBawKnnWia6QNKpwACsk
+X-Rspamd-Queue-Id: 99F6310000A
 X-Rspam-User: 
-X-Stat-Signature: 6i6acknr9j8rqt74s1sewuuu6fxi8zt7
-X-HE-Tag: 1754982660-716326
-X-HE-Meta: U2FsdGVkX1/umFc+eK+7nXeUvE49QPdcWyLOJJmpd3tyesswIqPZ8zNc3yBf/rtN4vOgHpkFn2I7oMyaRDTuonYA6kSiZDc+gdKXxx9HLLtXnmtuj+2viAr2SaR96CDUCrfVE/Pug05gBiIZ5cwyP+Voj0a4YJsvUrq57tW8RwDPfAj6ciW66W5sjc6CFBkafqZGsR/M9rHwpl8t6wzEyfKJMXn+xevRmUbWN+IXRAx5Y2jmMPFJz3xUeb/M9Uw0/uiJVsM9CU9sJD6GtuyohLDcYrE703qZqSWimyaSPvPnffI3QF76WkEjd/7dS2VtEe6ABabdupKo8XIG2qk9p8NNmsygd+RrOmfSnU4ffb5wWSSPrrx6sr3xkAblOuKUmVBN9bJUNmZQFBf8+vdkTAM8c9QOzlyVk1FiE3kombC478eXCawByODSQPPtm394vF5U/17KSUDkDY8FkUL61fHRPjMe2T7uhhGOWCQbg+J30/kEYzvB1ZbAZLttx67FGMo+dplHGXztPt3Kt8IHBMiVWrhMHX3rA1R5iq7yL3ZFUjLv8gcEXsOHtwc5HiFx6nsxr3Gg+63GF5u7/HbIAbHyuV24E925gy+0b5T9320ovAPFNm7ub4XT8JMbYda5GOmmfJVcnc1BW8LthrLOHRpX0yHvWoqyyhwAu8JbdokZH44IGNMCdGMFIgVmoQyqvPbQ09KBRuXFJWJQK5hE4R9DAZrJwIG9+ofG+pdPLSfoQGvqu17Oqu8EbQ7rj44luMvOfPk7VYnkeV6qcAnqm/4bB7Ui9R6y66R2MCFgnGfdONZY1Pr7fd37D+H6ubdK69vfiqWMrXzHcjfrJiw3RPs6oPb8A4XOvE0cfwdnI793X4ls48McQaI/Th0Iwm3lMW2B6uy6QqHaucSMDnuQUrFk+Z9i8vr0sgD6cxWAuIOpGKqKaOsz7OEQ9dGEZEd0NDjoG+HIXz/o4mnqLp3
- oUklhsvW
- GGZrQxddiiDXHTFK+LNJSuhYA4fhVe6NgLtwGgQfvJFu3mfSIxBcJl29n7pZNDuC3aLpzEdtsWUoU87SQ6vn3WgK6OZrvm+syE5jnzWgfsypeQI9E1tDQYZUcVtXilH10ZjSICQSveXcB0b7jGWMCDYxJtOUepLzEjXQCVbaRo6hHPfdffJVTOnxeLhlIRLig5Z2qapifH56I607viIpb07sCMkVkwQJ8UoSEO+IbpnabCzPLWlZVsdUHsN3iU0kD48F/9bYln0ayucx6HwVERJzPI0+BoVmk/2hVGgMysDDfVZM=
+X-Stat-Signature: ko5efyck7uhht4rzyrajjf9i7ca7bzet
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1754983393-342873
+X-HE-Meta: U2FsdGVkX1+FwS8iFuwwWeNF7yM78mpsntgF3Gl3I0kIwcWH+TBg2Um8fBWtbhBtiJtA4IdKS7I3qtqB5m/WV7MrdpqMIdze1QYY1/enNu0BsjO0vvbuRlBZPiefdQyPI8SXmCY7Xa81X4/EgZ9rvWOC421BvoqMQqEWCRYer1b4n4FJoQkNiFruJaldwfDC2ivW0vYn9X5Pf5A62c0IERHpkuPjq3mJYKMEcZkkdrzwclVxnQAgraxLFLkvafhsXWNmL2cMpWUaGctXIz6WznVVTtywFmmDGZfjvtqHsKG3mGs2Jmi02XCGvix9YZO1Et0AkwgaJqGu+l+EamuImovq/mCG7a5liTOOIiUcUYUXwiFiEabV0LryWoKAc4EX1pGn0XopzqB3N6VM32uet7Wb9Af1YfFmPUQ9E6nj9/NX8q+es+THYIS1QRcrQiPU6VZuAW8okVahDVd4VL7Myh51HxBZcroygIPe1GuhkSCjfOX34xyv4Q/euI1lbhA2yGW9+A4aMFtXNDp+2HwFuCA6A5anCPJE/ZbTd4/K9sgCBlVnWokccJmZgAppupMr0rHTM9J6gx9y2IMwNShJ0AyaprpoFczFHcSbYeo7ouEAD1Sr9yABCW/2SaHBb2NKMYD2/7Qp9YYlyPtrSWBrRamT81MceRa2V669T5h1dqJK37eT+fuXtfpZmd6u3seeH/x9ImSFNvEfJPNYX1xh+gPsdxHpPRUF5l26gT7l0xP0QZoCEQ1gTE9bwVVygxkJaP/sDBGL+37Oo7NrWRlAid+mA3FkM4Fi0OYOe83Y9ZB6hZf2Rt+VTAssNHZQv0JYRokVVsMrMcGfZkli+B5H93BYj2HhCWXWdGpFSLGmVQyLEh5n2ir9oK2khDZ+3/C57nP2hgF4fQjohM3/ocIJc/8jz7wkbmDzrGPhbzNDrkw/Y4IBkqCW+DQ54OKn1fCHL8fK+ssgU0EYjSahcYn
+ Vm8Pmt9A
+ DWtfdYDPEGUU/uoyGjx+2U17n+rH5atW7i/RkswnYCVJ1zvjjbcEg67aDOMjieNPBKXf7Rfw+ax1PIa/32HF5LMfipkrKwBpAmqGyE1hX68dIv2gbOIj00HWOJk4iFQ/YWdMstiWxH3/ni+PHg3Yv6pfiZ3/wggIJS5FXkPlDJiXUUywKacN4Kd2YpB4VddlQufux9lSTj0yO4yjtEymTnelneVUyQQHWHfXcJpIsm4/DPfyCkNOuCDupeFPGRC0ZNNdbT+d9e8F/ESpo5dunR9IZSe8hGTz4HfR2zQUY/BRQKwazltGi0m8HmiOAp2hMYqy/Frc27qlnpMD089mbphwtVCtqmk6s43Ojn49MktizXoAf24u1bNVeGNLiw9xphqtdEiaHPwERRuj1R+z/nQsnwf09FcWsXmjzLAYppvJfbdI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,144 +99,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-alloc_swap_scan_list() will scan the whole list or the first cluster.
+From: Chi Zhiling <chizhiling@kylinos.cn>
 
-This reduces the repeat patterns of isolating a cluster then scanning that
-cluster. As a result, cluster_alloc_swap_entry() is shorter and shallower.
+The return value of do_mpage_readpage() is arg->bio, which is already set
+in the arg structure. Returning it again is redundant.
 
-No functional change.
+This patch changes the return type to int and always returns 0 since
+the caller does not care about the return value.
 
-Signed-off-by: Chris Li <chrisl@kernel.org>
+Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
 ---
- mm/swapfile.c | 86 ++++++++++++++++++++++++++++++++---------------------------
- 1 file changed, 47 insertions(+), 39 deletions(-)
+ fs/mpage.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 4a0cf4fb348d..a7ffabbe65ef 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -820,6 +820,29 @@ static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
- 	return found;
- }
- 
-+static unsigned int alloc_swap_scan_list(struct swap_info_struct *si,
-+					 struct list_head *list,
-+					 unsigned int order,
-+					 unsigned char usage,
-+					 bool scan_all)
-+{
-+	unsigned int found = SWAP_ENTRY_INVALID;
-+
-+	do {
-+		struct swap_cluster_info *ci = isolate_lock_cluster(si, list);
-+		unsigned long offset;
-+
-+		if (!ci)
-+			break;
-+		offset = cluster_offset(si, ci);
-+		found = alloc_swap_scan_cluster(si, ci, offset, order, usage);
-+		if (found)
-+			break;
-+	} while (scan_all);
-+
-+	return found;
-+}
-+
- static void swap_reclaim_full_clusters(struct swap_info_struct *si, bool force)
+diff --git a/fs/mpage.c b/fs/mpage.c
+index a81a71de8f59..718c2c448947 100644
+--- a/fs/mpage.c
++++ b/fs/mpage.c
+@@ -148,7 +148,7 @@ struct mpage_readpage_args {
+  * represent the validity of its disk mapping and to decide when to do the next
+  * get_block() call.
+  */
+-static struct bio *do_mpage_readpage(struct mpage_readpage_args *args)
++static int do_mpage_readpage(struct mpage_readpage_args *args)
  {
- 	long to_scan = 1;
-@@ -913,32 +936,24 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si, int o
- 	 * to spread out the writes.
- 	 */
- 	if (si->flags & SWP_PAGE_DISCARD) {
--		ci = isolate_lock_cluster(si, &si->free_clusters);
--		if (ci) {
--			found = alloc_swap_scan_cluster(si, ci, cluster_offset(si, ci),
--							order, usage);
--			if (found)
--				goto done;
--		}
-+		found = alloc_swap_scan_list(si, &si->free_clusters, order, usage,
-+					     false);
-+		if (found)
-+			goto done;
- 	}
+ 	struct folio *folio = args->folio;
+ 	struct inode *inode = folio->mapping->host;
+@@ -297,7 +297,7 @@ static struct bio *do_mpage_readpage(struct mpage_readpage_args *args)
+ 	else
+ 		args->last_block_in_bio = first_block + blocks_per_folio - 1;
+ out:
+-	return args->bio;
++	return 0;
  
- 	if (order < PMD_ORDER) {
--		while ((ci = isolate_lock_cluster(si, &si->nonfull_clusters[order]))) {
--			found = alloc_swap_scan_cluster(si, ci, cluster_offset(si, ci),
--							order, usage);
--			if (found)
--				goto done;
--		}
-+		found = alloc_swap_scan_list(si, &si->nonfull_clusters[order],
-+					     order, usage, true);
-+		if (found)
-+			goto done;
- 	}
+ confused:
+ 	if (args->bio)
+@@ -360,7 +360,7 @@ void mpage_readahead(struct readahead_control *rac, get_block_t get_block)
+ 		prefetchw(&folio->flags);
+ 		args.folio = folio;
+ 		args.nr_pages = readahead_count(rac);
+-		args.bio = do_mpage_readpage(&args);
++		do_mpage_readpage(&args);
+ 		if (!folio_test_locked(folio) &&
+ 		    !folio_test_uptodate(folio))
+ 			break;
+@@ -381,7 +381,7 @@ int mpage_read_folio(struct folio *folio, get_block_t get_block)
+ 		.get_block = get_block,
+ 	};
  
- 	if (!(si->flags & SWP_PAGE_DISCARD)) {
--		ci = isolate_lock_cluster(si, &si->free_clusters);
--		if (ci) {
--			found = alloc_swap_scan_cluster(si, ci, cluster_offset(si, ci),
--							order, usage);
--			if (found)
--				goto done;
--		}
-+		found = alloc_swap_scan_list(si, &si->free_clusters, order, usage,
-+					     false);
-+		if (found)
-+			goto done;
- 	}
- 
- 	/* Try reclaim full clusters if free and nonfull lists are drained */
-@@ -952,13 +967,10 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si, int o
- 		 * failure is not critical. Scanning one cluster still
- 		 * keeps the list rotated and reclaimed (for HAS_CACHE).
- 		 */
--		ci = isolate_lock_cluster(si, &si->frag_clusters[order]);
--		if (ci) {
--			found = alloc_swap_scan_cluster(si, ci, cluster_offset(si, ci),
--							order, usage);
--			if (found)
--				goto done;
--		}
-+		found = alloc_swap_scan_list(si, &si->frag_clusters[order], order,
-+					     usage, false);
-+		if (found)
-+			goto done;
- 	}
- 
- 	/*
-@@ -977,19 +989,15 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si, int o
- 		 * Clusters here have at least one usable slots and can't fail order 0
- 		 * allocation, but reclaim may drop si->lock and race with another user.
- 		 */
--		while ((ci = isolate_lock_cluster(si, &si->frag_clusters[o]))) {
--			found = alloc_swap_scan_cluster(si, ci, cluster_offset(si, ci),
--							0, usage);
--			if (found)
--				goto done;
--		}
-+		found = alloc_swap_scan_list(si, &si->frag_clusters[o],
-+					     0, usage, true);
-+		if (found)
-+			goto done;
- 
--		while ((ci = isolate_lock_cluster(si, &si->nonfull_clusters[o]))) {
--			found = alloc_swap_scan_cluster(si, ci, cluster_offset(si, ci),
--							0, usage);
--			if (found)
--				goto done;
--		}
-+		found = alloc_swap_scan_list(si, &si->nonfull_clusters[o],
-+					     0, usage, true);
-+		if (found)
-+			goto done;
- 	}
- done:
- 	if (!(si->flags & SWP_SOLIDSTATE))
-
+-	args.bio = do_mpage_readpage(&args);
++	do_mpage_readpage(&args);
+ 	if (args.bio)
+ 		mpage_bio_submit_read(args.bio);
+ 	return 0;
 -- 
 2.43.0
 
