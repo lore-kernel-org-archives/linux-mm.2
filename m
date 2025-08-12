@@ -2,53 +2,53 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8AF8BC87FCB
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 05:45:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 10C1BCA0EDC
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 05:45:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 75D1A8E00CD; Tue, 12 Aug 2025 01:44:39 -0400 (EDT)
+	id 9325D8E00CE; Tue, 12 Aug 2025 01:44:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E6328E00BE; Tue, 12 Aug 2025 01:44:39 -0400 (EDT)
+	id 893CF8E00BE; Tue, 12 Aug 2025 01:44:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53A178E00CD; Tue, 12 Aug 2025 01:44:39 -0400 (EDT)
+	id 699638E00CE; Tue, 12 Aug 2025 01:44:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E21C8E00BE
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 01:44:39 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D9D7A1401AE
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:44:38 +0000 (UTC)
-X-FDA: 83767015836.16.FB7EBAA
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DE178E00BE
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 01:44:40 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D2D751601AE
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:44:39 +0000 (UTC)
+X-FDA: 83767015878.19.9ED4D71
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E7BA840008
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:44:36 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=ag9FAR4S;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=u1ensITg;
-	spf=pass (imf12.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+	by imf14.hostedemail.com (Postfix) with ESMTP id E73D3100003
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:44:37 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=N76UFPTS;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=18Rnb2Fa;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf14.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754977478; a=rsa-sha256;
+	cv=none;
+	b=4pMwOE++0Q2CZVH3TqbjwRLtiQTQITbh0vErW1SHu64VjnjKoOb8Ug3lnhIVn/oPQOqgyA
+	fOPWuhojcP4HHMsFBwB2OPyxU8UcQKAEsr29CgWWtOZ7A4P+jWaiaAFmJ/KbdQ8XRj2M3W
+	IjKjyOwy7bMMRZDqJqpeqfNFt8EN3g8=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=N76UFPTS;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=18Rnb2Fa;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf14.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754977477;
+	s=arc-20220608; t=1754977478;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fu8g+Fl052E34f4ajc7aTfb2t7+sWP8BOva3sbFf3lI=;
-	b=4WkNOGbn2F6C+4fDcbY7rd6EM44vPbS1EKXaTTOnG4VnNGBxKLQG7WwB3/rqwH9dEpqjbI
-	XUaHNneNVNkIbiq80KG9r/Tpm+DVLg8EB2sMc18QZLuRX6rAL8V7cOGj5TiePs7AX8I7gF
-	FaqpQ73VX87LiAGc5H+GdlpM7M5SGf4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754977477; a=rsa-sha256;
-	cv=none;
-	b=Z1fadQoMZolJ5ovmrgxveNCBEicqAITbYzOOsdTaXu9JTDMLPp+wnjdmpXH68HaV3U/Xrh
-	1AubiH+A/guhu4itrSabIhVTJWFvCQNxap5mJLo1I4hrgY5Jf3pr0NfivbQ0om8wzig16g
-	vRdtQDMUReYuWTnOk02QF9zf0oiRxYc=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=ag9FAR4S;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=u1ensITg;
-	spf=pass (imf12.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+	bh=fkg1bPVAb9WA2YqUFAts2+yGpStqlshJeZB7QeNp+t0=;
+	b=Rzudekfm1d8/DJk1ok5Wgkq2nYZkaCjTGrhff4l68wbfd+8EXqu0GN3klEiGaAbi/MkTz0
+	R4HgDpOSnKQuxs/qd7gpQQSUalV9TcPKUBXr/EUed8LDUF30hvniCV2/jEi4rHHZJdpdrL
+	zTjU48Mo7acreWX8uI6RF9+qWtix5Vo=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1754977474;
@@ -56,27 +56,27 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Fu8g+Fl052E34f4ajc7aTfb2t7+sWP8BOva3sbFf3lI=;
-	b=ag9FAR4SoucTPGK9KbbFPSxHt3EGXWPDHgV/1vttnN8ZMg/XUycb91t+tFbpufLilWVZJc
-	iv7mLDRjfB/vUT6zU4juqwzTsGL37zfulfZnVoEffSqPyWLXRWe6mZoYNxwxgi2JsgZeOj
-	vaTIFKA8ZLwhTPnCXn8AcYRo2vbX4t0UfG3o8JCPvRgDywKfdUm4EIBExPwiXhJe6WRElC
-	XH/kqQovrfbFLDCwvKDA3Wr4Qs/rzupFlRIuuOsCstYKLVhwrpBvxiT2E23d3igcm2Nzad
-	+z+dNwP5ZwaDpNvYg/bP+/pZl5Qc6dW3Y1/iAuiY+hy3M+SDK4mp9VECVhhnng==
+	bh=fkg1bPVAb9WA2YqUFAts2+yGpStqlshJeZB7QeNp+t0=;
+	b=N76UFPTSvjeThA+4ICVorwdUz2s8ZBTjWR1raKncft+NQNhdlTNKoYd6wj0gT7cAbxv+He
+	FE7MayaFHexzfgm/Yp4DlG4xj8TGfoHh0f8ywSrKQBqbK70ZNqO2hJY/5LH1ONpB3bm2fF
+	0RquDx8QPyluO8dm4N27LQvRzbpNUVAtokTT44cYVgOjoonynV4tWBUNOFnpdvvFqN2vW/
+	cqHS920uozuGIMKpo1JUVKZ5SsYaTxDg1jQTiuwXOBtzYIPbH1FXazmej1r4ZIDSLymeUq
+	O47nmhPS1f34gThVDATO+qsLapdNHP6DdCleb9DwV6ETY1axDsp3NPlAl9AxjQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1754977474;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Fu8g+Fl052E34f4ajc7aTfb2t7+sWP8BOva3sbFf3lI=;
-	b=u1ensITgZsRSuAKcfQs1pdhqsC2IlINyzHYx57P8Q57sYhYZ5ukMwC9TLF12sumTqJCETa
-	fnc0xR546UaaGWDA==
-Date: Tue, 12 Aug 2025 07:44:20 +0200
-Subject: [PATCH v4 07/24] LoongArch: Move relocation constants to UAPI
+	bh=fkg1bPVAb9WA2YqUFAts2+yGpStqlshJeZB7QeNp+t0=;
+	b=18Rnb2Fa+Sna+OwAhxFHp1cCA1vZWkRQkwkLDjGUq0Tg+U4CD7QY2hBzVgJKWM7gbtKJjk
+	cBVlnZSy7GDhr0CA==
+Date: Tue, 12 Aug 2025 07:44:21 +0200
+Subject: [PATCH v4 08/24] s390/elf: Move relocation constants to UAPI
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250812-vdso-absolute-reloc-v4-7-61a8b615e5ec@linutronix.de>
+Message-Id: <20250812-vdso-absolute-reloc-v4-8-61a8b615e5ec@linutronix.de>
 References: <20250812-vdso-absolute-reloc-v4-0-61a8b615e5ec@linutronix.de>
 In-Reply-To: <20250812-vdso-absolute-reloc-v4-0-61a8b615e5ec@linutronix.de>
 To: Paul Walmsley <paul.walmsley@sifive.com>, 
@@ -118,21 +118,21 @@ Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
  Arnaldo Carvalho de Melo <acme@redhat.com>, 
  Alexandre Ghiti <alexghiti@rivosinc.com>, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1754977469; l=8191;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1754977469; l=11159;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=ZVAGLGCFxsrer4ZyNLb2NhW6qORCMiIw2HqWP+N4aV4=;
- b=VNc1TNZKDL/LVFRVz5BOq//QDqCWfYoW6xL5masgZ6JYWblQeOQ1NV9Vtszx6Gx5w6k8t92RO
- XtANlYV7IFzCsW7AORv1Q1VBm7p4qIgmE7oOIsux5VBBNXD24DMBz6d
+ bh=vUmNFj6Lm6Qg8tI2kdLRPgt0Gi9m6tozlyRLJNyUZq8=;
+ b=pjGOrRJ9QoAus+4BjG0iWI41Q7/LrybAda/1wC+pkd8eYTKMRXxTKKhRZpHAiMjn189aOQNGy
+ s7yJj9MfgiZCn06a6qoiiSXi1l/3A/ZP0WoMSjzIIXyDJb+vGTsWrpB
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E7BA840008
-X-Stat-Signature: pkcrrg47ext4nsu9wgommbsi57zh5k4i
-X-HE-Tag: 1754977476-433808
-X-HE-Meta: U2FsdGVkX1/4miJ92c1sGpUIuhRP+eMJGg36kDzu/fIURBJR4vFGROoX+hOSn8WOgswZmqXrZL8WdKb48axOACQ2S366AeD34SZVXIDdPerHcF/fNXpBo7ZR1yseG3mWrKnEW8M6W1FB5132p1Qt+fH484DbUSaPp544wO16b3KG1lXRnw+T6tzxF60EKwi1Mi/OU5nedAEC/c9kJedfIOocKqEci6o9oLv4Ghy+7pNiUohWMEGdx51vrUubkB61eR6FZWYkOyf+UBZLbm+S8DrXvYlmhUFovPlEMDegGO40/riCd+jRzYKjL80loVkC0fMqA/k2jIItYpcVUw5KbBwN5pXnYgWzHdJEyDyq71nX3nLH2DVJZJ1Czh3VgvqGmtvFb1XTBZsHC5Z4NQDnINMi0GikYGFWGUnWy7enRdyXhPfQfvcndDr4gL5yGT4ExbbCfFNBJFBeCQ8ObNbUFqN0KkGG5OjGPe99ls00d2gdYSG6g80+cCh82agNiNnCEBv7qdb04ZkXzy6ljsh89T53Y1w4UfvSKXypHkGrsGxsH5VwURxrQZaQrtb9yaxO2Ze/0mjyKY0TZC6z2ixoRiHn9ciKiM4+I9Ei/8KMKzrqTSZwdFJYNwtZg8z5RIvGFjXg4MvfdkN1ZCucNo/n2VlLPyHsXIou89O3YAh1u2pPobH8T4RaRl0tPUN6brq3vSyaQpo4x9YgfFEDLdDl51aXPMtK7frACUuHTSgAMkLr7sfY3IBJKRKJ+BIizAj/urJsrLxtIgj0rEilrorwwTzaJ/tSoQITFyVcJdOcO29tgr7HsTMKuWLgtTrTQTYlJIHwPuaidm0WMusnGC9620ZEmYnGlOUwRGRtrksEFAbVSHr31cwG22S7urR7c/tq4d22Br8Wgx595tVRK01FaSzCrWS0l3JkZ0Qy05TLeOxQhRVpJAu+TpIJWssr0BWQD+iG8L/ZbxcKO7RJOps
- rnLCHMpm
- +3Ce6O0M5rCOzRC5R5IShad/7BQJHrJxMpveRhfZuuAa+jj5InD804ds04utM9gPTKCOr0T2DvFn5TE6H9caZoAjoWYaODbzhYdE3N10Accgo0DVqpDLWRKf/dJ8u7yiM0ai6COfGvZaGrDZoe/kifdnxc6B1zjTX/HnOmJPHTrkEiUxFc2O3U2kJinyvfOwwLRBGCMZLEL9j+UboSYBlf8bkbrUuYufbV8k32+O+djVZ817nEvQfMfj2lmz6J6pxUKT97apTJh2x2kYo1taIRVMDs0qjC6jQzoMYgVGhHp4WPDOXdsLAvcF7l/k92Y3xTHOtZ4Hexb94uJ1SOMMDaUI2YaZCStuerCR0SaxfZmJLreYA6YZ424LI4NQGvsjGv/Nm79SVlTJbk88kqI1qPYtBHKXw4Pt8M2fxxkuS8cei9skYXdynGke8eJjVTAUF7kRv+DbU1p55fgD4lk0OiBD+udH/seFMDoGrd/ZkZbvuEnql4cGslEgbutdo/bnKE/4U
+X-Rspamd-Queue-Id: E73D3100003
+X-Stat-Signature: ghpbqnnmzcno6yu8biq35xtyn99qdipz
+X-HE-Tag: 1754977477-81009
+X-HE-Meta: U2FsdGVkX1+VOlG6n+YovcjNIJbv5pMkinrwPRijvfLIuAWPM9dsGYSMeepBdi46u2RBjHQDWHjdpdvInyuduC69uZhg9rpypr5Sn4gS9qMn7U4ISLb7En0g5rng7yj9J8kVP9dVtC3fXvDXO3uHz7muoHBbAB1B5cE/s/7o8hkAQTXHZ8GRVwS1i/riZ68Gx4gDP3h3U9vvId4rd39qEyxTgIZioHdIt1fTxYAxb0V5oaOOxhP/ufHuyhHiq542v11uwRJZZxnO9TxDdC9UHncofFMAn+qJvO5DaKswPp+twnaLC6QW1aJ2va4mIYUtiMZGQcfKQB7GS1Fwi9Kd7lcI3DKs9CY/EoWJNxb5vjHtG77U6/NSh9PX5yVEi/pyPN5XZ/dEn1OMdO4biJtI4wYJDG+tutgQi6FTUJsjX/XYUPDUxnsf/swMR0QpnQ7oRazyj9ZZx6BJFCCUVfUkLkXeBmxjOEEs8RUmNRMqwWMnm7eGmoQa4u1dRNv3siUtGQfg43G2p4OlSFl5395LRiP1aYAcuzgjsA0P5xrBM0Me6t927/AP/LWT1g5Y/RduTl13HTmRFvmZLy6BEzM8UXbc+afNBwcnxwmaOARDAYl+rL9gtsJUW2Tz+nBMxu1RhWLOy93iQgSt+9fR4p7dDkJEYyl06jp5aM8A8rhPJSBxTE/QcLiBAWWAPTh7pVaxjvosdKxEFJaOPikYurFcckhwgavPxvImCOJAtA21C/QL1WakMAvZftYd6vmYn/z/oOtmHdKbuj7HtGjbeR3jhbdEJFb72VcxRfr0lkxl6fGh0eyiyNm7Z4B3ivtZ4+Z5orBTgNElull9TRUmCF6raj7xQR8ZbF5x/CC4WJ5qjeXhnqCidBW0envxBfwsWci2vGscZ9LMgEkckdjhh+6K3CDJ9Isa/Q0o2WWcm5HmjBDw0zCSO4ORTFKR5FWxyhM5xHu2JNCoYteDI5l6P8J
+ ug/+ddJi
+ m91LLz9w2AeEtLSWvGMYYTFQ9jB3sm15m0nXYif5aVOs2baBH/NAp9aiAouW0CmjJFIAhEjcgdUtWGN3gpXUlCXx97qDdyXV9UcLK45e9gwumemuYLTE5uGFNjzrBCQ7NBrd84OtqJ3PRYNKR8sPRrCfv/4SM3GiHE13BrgAOs62R8VZlNkMD6Sl7nfRIQl2vgPSdyWBv6fT61Bfm7LHL1Ec9yzfnxcVVwAfp6YrSh52KTOCm4YeT1MyeTKpMYCTnHeMj5POKHw5vEUimHysdEeCG4+9kRqtS1LK3yptzjDNSnoMWtGbYw1Ri7qvKJuAdUzMekN7RGok7ROFxnatAWENmo7e8XbvJ3yZXVaM2JpADMEa64XB6whUXHNRdMoooUjYrs24hOaVZeAsWrTzqBo7mB2+ducHjA4PrJNM5wSekgc8jUGgdNggMw5YwfZ505DCYzcII4AWv9l2pfhBdnKeqMwFRkJdwXozvxyj72Bg6HJ1xIaXJmTx095ahj2BFV5aD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,228 +148,194 @@ Move them from the kernel-private architecture-specific header to the UAPI.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 ---
- arch/loongarch/include/asm/elf.h | 100 ---------------------------------------
- include/uapi/linux/elf-r.h       | 100 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 100 insertions(+), 100 deletions(-)
+ arch/s390/include/asm/elf.h | 83 ---------------------------------------------
+ include/uapi/linux/elf-r.h  | 83 +++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 83 insertions(+), 83 deletions(-)
 
-diff --git a/arch/loongarch/include/asm/elf.h b/arch/loongarch/include/asm/elf.h
-index f16bd42456e4ccf3ad6c8917165176b8ef5d8f05..5e4bcba21da2fe1b95045821156764a8f2c61fca 100644
---- a/arch/loongarch/include/asm/elf.h
-+++ b/arch/loongarch/include/asm/elf.h
-@@ -21,106 +21,6 @@
- #define EF_LOONGARCH_ABI_ILP32_SINGLE_FLOAT	0x6
- #define EF_LOONGARCH_ABI_ILP32_DOUBLE_FLOAT	0x7
+diff --git a/arch/s390/include/asm/elf.h b/arch/s390/include/asm/elf.h
+index a03df312081ef93f95ab70ccb5a5d2bdf88d84ec..ce5306178ceaaa17afdaa1fbe4896d0125d1ab09 100644
+--- a/arch/s390/include/asm/elf.h
++++ b/arch/s390/include/asm/elf.h
+@@ -8,89 +8,6 @@
+ #ifndef __ASMS390_ELF_H
+ #define __ASMS390_ELF_H
  
--/* LoongArch relocation types used by the dynamic linker */
--#define R_LARCH_NONE				0
--#define R_LARCH_32				1
--#define R_LARCH_64				2
--#define R_LARCH_RELATIVE			3
--#define R_LARCH_COPY				4
--#define R_LARCH_JUMP_SLOT			5
--#define R_LARCH_TLS_DTPMOD32			6
--#define R_LARCH_TLS_DTPMOD64			7
--#define R_LARCH_TLS_DTPREL32			8
--#define R_LARCH_TLS_DTPREL64			9
--#define R_LARCH_TLS_TPREL32			10
--#define R_LARCH_TLS_TPREL64			11
--#define R_LARCH_IRELATIVE			12
--#define R_LARCH_MARK_LA				20
--#define R_LARCH_MARK_PCREL			21
--#define R_LARCH_SOP_PUSH_PCREL			22
--#define R_LARCH_SOP_PUSH_ABSOLUTE		23
--#define R_LARCH_SOP_PUSH_DUP			24
--#define R_LARCH_SOP_PUSH_GPREL			25
--#define R_LARCH_SOP_PUSH_TLS_TPREL		26
--#define R_LARCH_SOP_PUSH_TLS_GOT		27
--#define R_LARCH_SOP_PUSH_TLS_GD			28
--#define R_LARCH_SOP_PUSH_PLT_PCREL		29
--#define R_LARCH_SOP_ASSERT			30
--#define R_LARCH_SOP_NOT				31
--#define R_LARCH_SOP_SUB				32
--#define R_LARCH_SOP_SL				33
--#define R_LARCH_SOP_SR				34
--#define R_LARCH_SOP_ADD				35
--#define R_LARCH_SOP_AND				36
--#define R_LARCH_SOP_IF_ELSE			37
--#define R_LARCH_SOP_POP_32_S_10_5		38
--#define R_LARCH_SOP_POP_32_U_10_12		39
--#define R_LARCH_SOP_POP_32_S_10_12		40
--#define R_LARCH_SOP_POP_32_S_10_16		41
--#define R_LARCH_SOP_POP_32_S_10_16_S2		42
--#define R_LARCH_SOP_POP_32_S_5_20		43
--#define R_LARCH_SOP_POP_32_S_0_5_10_16_S2	44
--#define R_LARCH_SOP_POP_32_S_0_10_10_16_S2	45
--#define R_LARCH_SOP_POP_32_U			46
--#define R_LARCH_ADD8				47
--#define R_LARCH_ADD16				48
--#define R_LARCH_ADD24				49
--#define R_LARCH_ADD32				50
--#define R_LARCH_ADD64				51
--#define R_LARCH_SUB8				52
--#define R_LARCH_SUB16				53
--#define R_LARCH_SUB24				54
--#define R_LARCH_SUB32				55
--#define R_LARCH_SUB64				56
--#define R_LARCH_GNU_VTINHERIT			57
--#define R_LARCH_GNU_VTENTRY			58
--#define R_LARCH_B16				64
--#define R_LARCH_B21				65
--#define R_LARCH_B26				66
--#define R_LARCH_ABS_HI20			67
--#define R_LARCH_ABS_LO12			68
--#define R_LARCH_ABS64_LO20			69
--#define R_LARCH_ABS64_HI12			70
--#define R_LARCH_PCALA_HI20			71
--#define R_LARCH_PCALA_LO12			72
--#define R_LARCH_PCALA64_LO20			73
--#define R_LARCH_PCALA64_HI12			74
--#define R_LARCH_GOT_PC_HI20			75
--#define R_LARCH_GOT_PC_LO12			76
--#define R_LARCH_GOT64_PC_LO20			77
--#define R_LARCH_GOT64_PC_HI12			78
--#define R_LARCH_GOT_HI20			79
--#define R_LARCH_GOT_LO12			80
--#define R_LARCH_GOT64_LO20			81
--#define R_LARCH_GOT64_HI12			82
--#define R_LARCH_TLS_LE_HI20			83
--#define R_LARCH_TLS_LE_LO12			84
--#define R_LARCH_TLS_LE64_LO20			85
--#define R_LARCH_TLS_LE64_HI12			86
--#define R_LARCH_TLS_IE_PC_HI20			87
--#define R_LARCH_TLS_IE_PC_LO12			88
--#define R_LARCH_TLS_IE64_PC_LO20		89
--#define R_LARCH_TLS_IE64_PC_HI12		90
--#define R_LARCH_TLS_IE_HI20			91
--#define R_LARCH_TLS_IE_LO12			92
--#define R_LARCH_TLS_IE64_LO20			93
--#define R_LARCH_TLS_IE64_HI12			94
--#define R_LARCH_TLS_LD_PC_HI20			95
--#define R_LARCH_TLS_LD_HI20			96
--#define R_LARCH_TLS_GD_PC_HI20			97
--#define R_LARCH_TLS_GD_HI20			98
--#define R_LARCH_32_PCREL			99
--#define R_LARCH_RELAX				100
--#define R_LARCH_DELETE				101
--#define R_LARCH_ALIGN				102
--#define R_LARCH_PCREL20_S2			103
--#define R_LARCH_CFA				104
--#define R_LARCH_ADD6				105
--#define R_LARCH_SUB6				106
--#define R_LARCH_ADD_ULEB128			107
--#define R_LARCH_SUB_ULEB128			108
--#define R_LARCH_64_PCREL			109
+-/* s390 relocations defined by the ABIs */
+-#define R_390_NONE		0	/* No reloc.  */
+-#define R_390_8			1	/* Direct 8 bit.  */
+-#define R_390_12		2	/* Direct 12 bit.  */
+-#define R_390_16		3	/* Direct 16 bit.  */
+-#define R_390_32		4	/* Direct 32 bit.  */
+-#define R_390_PC32		5	/* PC relative 32 bit.	*/
+-#define R_390_GOT12		6	/* 12 bit GOT offset.  */
+-#define R_390_GOT32		7	/* 32 bit GOT offset.  */
+-#define R_390_PLT32		8	/* 32 bit PC relative PLT address.  */
+-#define R_390_COPY		9	/* Copy symbol at runtime.  */
+-#define R_390_GLOB_DAT		10	/* Create GOT entry.  */
+-#define R_390_JMP_SLOT		11	/* Create PLT entry.  */
+-#define R_390_RELATIVE		12	/* Adjust by program base.  */
+-#define R_390_GOTOFF32		13	/* 32 bit offset to GOT.	 */
+-#define R_390_GOTPC		14	/* 32 bit PC rel. offset to GOT.  */
+-#define R_390_GOT16		15	/* 16 bit GOT offset.  */
+-#define R_390_PC16		16	/* PC relative 16 bit.	*/
+-#define R_390_PC16DBL		17	/* PC relative 16 bit shifted by 1.  */
+-#define R_390_PLT16DBL		18	/* 16 bit PC rel. PLT shifted by 1.  */
+-#define R_390_PC32DBL		19	/* PC relative 32 bit shifted by 1.  */
+-#define R_390_PLT32DBL		20	/* 32 bit PC rel. PLT shifted by 1.  */
+-#define R_390_GOTPCDBL		21	/* 32 bit PC rel. GOT shifted by 1.  */
+-#define R_390_64		22	/* Direct 64 bit.  */
+-#define R_390_PC64		23	/* PC relative 64 bit.	*/
+-#define R_390_GOT64		24	/* 64 bit GOT offset.  */
+-#define R_390_PLT64		25	/* 64 bit PC relative PLT address.  */
+-#define R_390_GOTENT		26	/* 32 bit PC rel. to GOT entry >> 1. */
+-#define R_390_GOTOFF16		27	/* 16 bit offset to GOT. */
+-#define R_390_GOTOFF64		28	/* 64 bit offset to GOT. */
+-#define R_390_GOTPLT12		29	/* 12 bit offset to jump slot.	*/
+-#define R_390_GOTPLT16		30	/* 16 bit offset to jump slot.	*/
+-#define R_390_GOTPLT32		31	/* 32 bit offset to jump slot.	*/
+-#define R_390_GOTPLT64		32	/* 64 bit offset to jump slot.	*/
+-#define R_390_GOTPLTENT		33	/* 32 bit rel. offset to jump slot.  */
+-#define R_390_PLTOFF16		34	/* 16 bit offset from GOT to PLT. */
+-#define R_390_PLTOFF32		35	/* 32 bit offset from GOT to PLT. */
+-#define R_390_PLTOFF64		36	/* 16 bit offset from GOT to PLT. */
+-#define R_390_TLS_LOAD		37	/* Tag for load insn in TLS code. */
+-#define R_390_TLS_GDCALL	38	/* Tag for function call in general
+-                                           dynamic TLS code.  */
+-#define R_390_TLS_LDCALL	39	/* Tag for function call in local
+-                                           dynamic TLS code.  */
+-#define R_390_TLS_GD32		40	/* Direct 32 bit for general dynamic
+-                                           thread local data.  */
+-#define R_390_TLS_GD64		41	/* Direct 64 bit for general dynamic
+-                                           thread local data.  */
+-#define R_390_TLS_GOTIE12	42	/* 12 bit GOT offset for static TLS
+-                                           block offset.  */
+-#define R_390_TLS_GOTIE32	43	/* 32 bit GOT offset for static TLS
+-                                           block offset.  */
+-#define R_390_TLS_GOTIE64	44	/* 64 bit GOT offset for static TLS
+-                                           block offset.  */
+-#define R_390_TLS_LDM32		45	/* Direct 32 bit for local dynamic
+-                                           thread local data in LD code.  */
+-#define R_390_TLS_LDM64		46	/* Direct 64 bit for local dynamic
+-                                           thread local data in LD code.  */
+-#define R_390_TLS_IE32		47	/* 32 bit address of GOT entry for
+-                                           negated static TLS block offset.  */
+-#define R_390_TLS_IE64		48	/* 64 bit address of GOT entry for
+-                                           negated static TLS block offset.  */
+-#define R_390_TLS_IEENT		49	/* 32 bit rel. offset to GOT entry for
+-                                           negated static TLS block offset.  */
+-#define R_390_TLS_LE32		50	/* 32 bit negated offset relative to
+-                                           static TLS block.  */
+-#define R_390_TLS_LE64		51	/* 64 bit negated offset relative to
+-                                           static TLS block.  */
+-#define R_390_TLS_LDO32		52	/* 32 bit offset relative to TLS
+-                                           block.  */
+-#define R_390_TLS_LDO64		53	/* 64 bit offset relative to TLS
+-                                           block.  */
+-#define R_390_TLS_DTPMOD	54	/* ID of module containing symbol.  */
+-#define R_390_TLS_DTPOFF	55	/* Offset in TLS block.  */
+-#define R_390_TLS_TPOFF		56	/* Negate offset in static TLS
+-                                           block.  */
+-#define R_390_20		57	/* Direct 20 bit.  */
+-#define R_390_GOT20		58	/* 20 bit GOT offset.  */
+-#define R_390_GOTPLT20		59	/* 20 bit offset to jump slot.  */
+-#define R_390_TLS_GOTIE20	60	/* 20 bit GOT offset for static TLS
+-					   block offset.  */
+-/* Keep this the last entry.  */
+-#define R_390_NUM	61
 -
- #ifndef ELF_ARCH
- 
- /* ELF register definitions */
+ /*
+  * HWCAP flags - for AT_HWCAP
+  *
 diff --git a/include/uapi/linux/elf-r.h b/include/uapi/linux/elf-r.h
-index 02e420c255df67f8f7e4bc3165f808b9935f5b1c..576d974db6e31f8a9cd995f7428c85bd41102415 100644
+index 576d974db6e31f8a9cd995f7428c85bd41102415..c1309a63a7dc4495f22e3d8b51d3f97ab5809190 100644
 --- a/include/uapi/linux/elf-r.h
 +++ b/include/uapi/linux/elf-r.h
-@@ -380,4 +380,104 @@
- #define R_RISCV_SET_ULEB128	60
- #define R_RISCV_SUB_ULEB128	61
+@@ -480,4 +480,87 @@
+ #define R_LARCH_SUB_ULEB128			108
+ #define R_LARCH_64_PCREL			109
  
-+/* LoongArch relocation types used by the dynamic linker */
-+#define R_LARCH_NONE				0
-+#define R_LARCH_32				1
-+#define R_LARCH_64				2
-+#define R_LARCH_RELATIVE			3
-+#define R_LARCH_COPY				4
-+#define R_LARCH_JUMP_SLOT			5
-+#define R_LARCH_TLS_DTPMOD32			6
-+#define R_LARCH_TLS_DTPMOD64			7
-+#define R_LARCH_TLS_DTPREL32			8
-+#define R_LARCH_TLS_DTPREL64			9
-+#define R_LARCH_TLS_TPREL32			10
-+#define R_LARCH_TLS_TPREL64			11
-+#define R_LARCH_IRELATIVE			12
-+#define R_LARCH_MARK_LA				20
-+#define R_LARCH_MARK_PCREL			21
-+#define R_LARCH_SOP_PUSH_PCREL			22
-+#define R_LARCH_SOP_PUSH_ABSOLUTE		23
-+#define R_LARCH_SOP_PUSH_DUP			24
-+#define R_LARCH_SOP_PUSH_GPREL			25
-+#define R_LARCH_SOP_PUSH_TLS_TPREL		26
-+#define R_LARCH_SOP_PUSH_TLS_GOT		27
-+#define R_LARCH_SOP_PUSH_TLS_GD			28
-+#define R_LARCH_SOP_PUSH_PLT_PCREL		29
-+#define R_LARCH_SOP_ASSERT			30
-+#define R_LARCH_SOP_NOT				31
-+#define R_LARCH_SOP_SUB				32
-+#define R_LARCH_SOP_SL				33
-+#define R_LARCH_SOP_SR				34
-+#define R_LARCH_SOP_ADD				35
-+#define R_LARCH_SOP_AND				36
-+#define R_LARCH_SOP_IF_ELSE			37
-+#define R_LARCH_SOP_POP_32_S_10_5		38
-+#define R_LARCH_SOP_POP_32_U_10_12		39
-+#define R_LARCH_SOP_POP_32_S_10_12		40
-+#define R_LARCH_SOP_POP_32_S_10_16		41
-+#define R_LARCH_SOP_POP_32_S_10_16_S2		42
-+#define R_LARCH_SOP_POP_32_S_5_20		43
-+#define R_LARCH_SOP_POP_32_S_0_5_10_16_S2	44
-+#define R_LARCH_SOP_POP_32_S_0_10_10_16_S2	45
-+#define R_LARCH_SOP_POP_32_U			46
-+#define R_LARCH_ADD8				47
-+#define R_LARCH_ADD16				48
-+#define R_LARCH_ADD24				49
-+#define R_LARCH_ADD32				50
-+#define R_LARCH_ADD64				51
-+#define R_LARCH_SUB8				52
-+#define R_LARCH_SUB16				53
-+#define R_LARCH_SUB24				54
-+#define R_LARCH_SUB32				55
-+#define R_LARCH_SUB64				56
-+#define R_LARCH_GNU_VTINHERIT			57
-+#define R_LARCH_GNU_VTENTRY			58
-+#define R_LARCH_B16				64
-+#define R_LARCH_B21				65
-+#define R_LARCH_B26				66
-+#define R_LARCH_ABS_HI20			67
-+#define R_LARCH_ABS_LO12			68
-+#define R_LARCH_ABS64_LO20			69
-+#define R_LARCH_ABS64_HI12			70
-+#define R_LARCH_PCALA_HI20			71
-+#define R_LARCH_PCALA_LO12			72
-+#define R_LARCH_PCALA64_LO20			73
-+#define R_LARCH_PCALA64_HI12			74
-+#define R_LARCH_GOT_PC_HI20			75
-+#define R_LARCH_GOT_PC_LO12			76
-+#define R_LARCH_GOT64_PC_LO20			77
-+#define R_LARCH_GOT64_PC_HI12			78
-+#define R_LARCH_GOT_HI20			79
-+#define R_LARCH_GOT_LO12			80
-+#define R_LARCH_GOT64_LO20			81
-+#define R_LARCH_GOT64_HI12			82
-+#define R_LARCH_TLS_LE_HI20			83
-+#define R_LARCH_TLS_LE_LO12			84
-+#define R_LARCH_TLS_LE64_LO20			85
-+#define R_LARCH_TLS_LE64_HI12			86
-+#define R_LARCH_TLS_IE_PC_HI20			87
-+#define R_LARCH_TLS_IE_PC_LO12			88
-+#define R_LARCH_TLS_IE64_PC_LO20		89
-+#define R_LARCH_TLS_IE64_PC_HI12		90
-+#define R_LARCH_TLS_IE_HI20			91
-+#define R_LARCH_TLS_IE_LO12			92
-+#define R_LARCH_TLS_IE64_LO20			93
-+#define R_LARCH_TLS_IE64_HI12			94
-+#define R_LARCH_TLS_LD_PC_HI20			95
-+#define R_LARCH_TLS_LD_HI20			96
-+#define R_LARCH_TLS_GD_PC_HI20			97
-+#define R_LARCH_TLS_GD_HI20			98
-+#define R_LARCH_32_PCREL			99
-+#define R_LARCH_RELAX				100
-+#define R_LARCH_DELETE				101
-+#define R_LARCH_ALIGN				102
-+#define R_LARCH_PCREL20_S2			103
-+#define R_LARCH_CFA				104
-+#define R_LARCH_ADD6				105
-+#define R_LARCH_SUB6				106
-+#define R_LARCH_ADD_ULEB128			107
-+#define R_LARCH_SUB_ULEB128			108
-+#define R_LARCH_64_PCREL			109
++/* s390 relocations defined by the ABIs */
++#define R_390_NONE		0	/* No reloc.  */
++#define R_390_8			1	/* Direct 8 bit.  */
++#define R_390_12		2	/* Direct 12 bit.  */
++#define R_390_16		3	/* Direct 16 bit.  */
++#define R_390_32		4	/* Direct 32 bit.  */
++#define R_390_PC32		5	/* PC relative 32 bit.	*/
++#define R_390_GOT12		6	/* 12 bit GOT offset.  */
++#define R_390_GOT32		7	/* 32 bit GOT offset.  */
++#define R_390_PLT32		8	/* 32 bit PC relative PLT address.  */
++#define R_390_COPY		9	/* Copy symbol at runtime.  */
++#define R_390_GLOB_DAT		10	/* Create GOT entry.  */
++#define R_390_JMP_SLOT		11	/* Create PLT entry.  */
++#define R_390_RELATIVE		12	/* Adjust by program base.  */
++#define R_390_GOTOFF32		13	/* 32 bit offset to GOT.	 */
++#define R_390_GOTPC		14	/* 32 bit PC rel. offset to GOT.  */
++#define R_390_GOT16		15	/* 16 bit GOT offset.  */
++#define R_390_PC16		16	/* PC relative 16 bit.	*/
++#define R_390_PC16DBL		17	/* PC relative 16 bit shifted by 1.  */
++#define R_390_PLT16DBL		18	/* 16 bit PC rel. PLT shifted by 1.  */
++#define R_390_PC32DBL		19	/* PC relative 32 bit shifted by 1.  */
++#define R_390_PLT32DBL		20	/* 32 bit PC rel. PLT shifted by 1.  */
++#define R_390_GOTPCDBL		21	/* 32 bit PC rel. GOT shifted by 1.  */
++#define R_390_64		22	/* Direct 64 bit.  */
++#define R_390_PC64		23	/* PC relative 64 bit.	*/
++#define R_390_GOT64		24	/* 64 bit GOT offset.  */
++#define R_390_PLT64		25	/* 64 bit PC relative PLT address.  */
++#define R_390_GOTENT		26	/* 32 bit PC rel. to GOT entry >> 1. */
++#define R_390_GOTOFF16		27	/* 16 bit offset to GOT. */
++#define R_390_GOTOFF64		28	/* 64 bit offset to GOT. */
++#define R_390_GOTPLT12		29	/* 12 bit offset to jump slot.	*/
++#define R_390_GOTPLT16		30	/* 16 bit offset to jump slot.	*/
++#define R_390_GOTPLT32		31	/* 32 bit offset to jump slot.	*/
++#define R_390_GOTPLT64		32	/* 64 bit offset to jump slot.	*/
++#define R_390_GOTPLTENT		33	/* 32 bit rel. offset to jump slot.  */
++#define R_390_PLTOFF16		34	/* 16 bit offset from GOT to PLT. */
++#define R_390_PLTOFF32		35	/* 32 bit offset from GOT to PLT. */
++#define R_390_PLTOFF64		36	/* 16 bit offset from GOT to PLT. */
++#define R_390_TLS_LOAD		37	/* Tag for load insn in TLS code. */
++#define R_390_TLS_GDCALL	38	/* Tag for function call in general
++                                           dynamic TLS code.  */
++#define R_390_TLS_LDCALL	39	/* Tag for function call in local
++                                           dynamic TLS code.  */
++#define R_390_TLS_GD32		40	/* Direct 32 bit for general dynamic
++                                           thread local data.  */
++#define R_390_TLS_GD64		41	/* Direct 64 bit for general dynamic
++                                           thread local data.  */
++#define R_390_TLS_GOTIE12	42	/* 12 bit GOT offset for static TLS
++                                           block offset.  */
++#define R_390_TLS_GOTIE32	43	/* 32 bit GOT offset for static TLS
++                                           block offset.  */
++#define R_390_TLS_GOTIE64	44	/* 64 bit GOT offset for static TLS
++                                           block offset.  */
++#define R_390_TLS_LDM32		45	/* Direct 32 bit for local dynamic
++                                           thread local data in LD code.  */
++#define R_390_TLS_LDM64		46	/* Direct 64 bit for local dynamic
++                                           thread local data in LD code.  */
++#define R_390_TLS_IE32		47	/* 32 bit address of GOT entry for
++                                           negated static TLS block offset.  */
++#define R_390_TLS_IE64		48	/* 64 bit address of GOT entry for
++                                           negated static TLS block offset.  */
++#define R_390_TLS_IEENT		49	/* 32 bit rel. offset to GOT entry for
++                                           negated static TLS block offset.  */
++#define R_390_TLS_LE32		50	/* 32 bit negated offset relative to
++                                           static TLS block.  */
++#define R_390_TLS_LE64		51	/* 64 bit negated offset relative to
++                                           static TLS block.  */
++#define R_390_TLS_LDO32		52	/* 32 bit offset relative to TLS
++                                           block.  */
++#define R_390_TLS_LDO64		53	/* 64 bit offset relative to TLS
++                                           block.  */
++#define R_390_TLS_DTPMOD	54	/* ID of module containing symbol.  */
++#define R_390_TLS_DTPOFF	55	/* Offset in TLS block.  */
++#define R_390_TLS_TPOFF		56	/* Negate offset in static TLS
++                                           block.  */
++#define R_390_20		57	/* Direct 20 bit.  */
++#define R_390_GOT20		58	/* 20 bit GOT offset.  */
++#define R_390_GOTPLT20		59	/* 20 bit offset to jump slot.  */
++#define R_390_TLS_GOTIE20	60	/* 20 bit GOT offset for static TLS
++					   block offset.  */
++/* Keep this the last entry.  */
++#define R_390_NUM	61
 +
  #endif /* _UAPI_LINUX_ELF_R_H */
 
