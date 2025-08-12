@@ -2,77 +2,77 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B98CCA0EC4
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 02:42:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B4C65CA0ED1
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 02:43:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17D9B8E00B6; Mon, 11 Aug 2025 22:42:55 -0400 (EDT)
+	id 21BB08E00B7; Mon, 11 Aug 2025 22:43:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12E418E0045; Mon, 11 Aug 2025 22:42:55 -0400 (EDT)
+	id 1CC328E0045; Mon, 11 Aug 2025 22:43:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEA1D8E00B6; Mon, 11 Aug 2025 22:42:54 -0400 (EDT)
+	id 06D058E00B7; Mon, 11 Aug 2025 22:43:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D507D8E0045
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 22:42:54 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AE7E81A017A
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 02:42:54 +0000 (UTC)
-X-FDA: 83766557868.08.8962003
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2070.outbound.protection.outlook.com [40.107.95.70])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1F22820004
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 02:42:51 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Eitg4MIl;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E7FAF8E0045
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 22:43:42 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C2B5F1D249A
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 02:43:42 +0000 (UTC)
+X-FDA: 83766559884.01.19F3F04
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2078.outbound.protection.outlook.com [40.107.236.78])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 12FC41A0004
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 02:43:39 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=JUzpHgsG;
 	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf03.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.95.70 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf19.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.236.78 as permitted sender) smtp.mailfrom=balbirs@nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754966620; a=rsa-sha256;
+	cv=pass;
+	b=PGX2gqjpC35gkzChp0RNiaiz/71NYioPA5zyjDF2Fuu4+9W/DjL2a4MigxZ8HStg17l5+K
+	XT+YuVNHPpo4uvAAVCGylZa5ftGE+4zuNpKrjxQvW4DTaUF51ejUL908q7ZKKU7AybKUjE
+	R2k1Tm5lMcDuGDQKL4j5CH7KQKM9DSU=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=JUzpHgsG;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf19.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.236.78 as permitted sender) smtp.mailfrom=balbirs@nvidia.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754966572;
+	s=arc-20220608; t=1754966620;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E2VJ5kH+tLdZwlATFAo1+hNpAmKX0dnctUob4DpO984=;
-	b=LyUTG4eX92WiXe1KrDLvvSW7gTGHjLwm3Nf8UEkgP6QFc1cNaNJcZ9IqJ4b9o0vSrpW1ic
-	iYqVyxn9cPv00ssHTzuq/1Bwez3+GROiOW8TQKSNdwUrKET15/Cl7Rkw68PEoIrAkSVIpG
-	mqZ2IHVIj2i147NQEpCGcj7EvW2oPfc=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754966572; a=rsa-sha256;
-	cv=pass;
-	b=gRqH48AsUtP2DTCFuvuRStpCCfA4oMpPmHmDAubOXQ5o8Qt/3OUOUwu8umVjdfW2V2EBKl
-	39QE7J727qYH51FMHKE+tv+4sIIaUGLojHxd2E6c7xGnPTSnfgClsb5G56J09PM3tjG9ny
-	MhsPR5+Qifdl9FzjDDimBog+tdWK5aQ=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Eitg4MIl;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf03.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.95.70 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	bh=yY9WdugDnPOocmfuNJVlqZJtZk2WbFvx/um3nx8BpdM=;
+	b=VnefJdWvGq3BgHtr5bD4TgNWqfPbY4R0BTflbQq+QHqPncatzH2mt9qy822GZGSZZEp1HM
+	s+HzLyIFHVwHrU7bCr7fFYPJsxzC+S5VLO8QvRbWphITtS32otHo/57lzSDu3zpXTwI68a
+	YP8DLj1ncAFW9jzcGJqH/N8UHo6z64I=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FvVVPFxR0pYwQgIRUQMh46L6Lxu3mFeJIGKvGAgtp4BV0gj8wonCNiT8EmavdtQHeLPzChjg7UUt1FidLM3U+4PWUOva46eIgiEzupbxUrB53zr8G5MbYD1LUv7h5APIonhMPTL9AirgLEwBQa1yfHxYAMi5L6iTxHhipXNGY1Tctlf4aMNNrYBYgdTvAaBDzUW1ZkZpmNCZ5/gYa7mAxu29hhvPgAA6hfFEcvGkJuVdIp4nC9rwPafknAa0ozZ8vRCZlBCoba81rekRQSSW5x0936Pm9IGTNSLLI3vWsU1uwmuWXm3QYoI+GDzaD6zr30HsQTWyUX+GEPhjEaRo6w==
+ b=y+QyMEOz+NDM+IXSjzQ7gpkPrcWbuMvl1U4U2r/a5yIVgbxlA7IRI5PmRP2+IzEhYV6FLtSyNnOqv7rtkJgVbUbw7OQBVZSoIuVF+L0d4qSZErFXms5GPiLK7u6GI8YgP3C1NfJK1bLZWtSlg0WZB9BwCJCu+W+Lm5WnpTma0OTchZDinRHbwW7onnhxsnTL08hpyLNE6veOCguc0/86oKR1M2pFo/WqmY3NEWRY6GDurtYV/nCQtpoNoWIGT+bpAexDzpPhT+NfCInu9gxxAdTbqAkx84E0jPOi/g2lrgt03vpXQtbC88RmnvZOQgGH53ceGFAyo7iCNNdzQaWqsQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=E2VJ5kH+tLdZwlATFAo1+hNpAmKX0dnctUob4DpO984=;
- b=NoeMukxo3cBL2JdaKlorCmfiKpwiZ2DFm5V6hZO1ehndu+LTHsaZyng3rWozot+OoaKCBjXLS8mvkoqLKZlVGp8KPZTYBPAFWczSM1HZ6nBjJ+exR0uw82rDW73+kcO2rKZwFXWkyJG6yelSJzwnc+sSjxvbhAeRolzMxRGG8wDvOYgOE+mZ+aXAMeaWMs59ZMPu59FC22lcDxHJi56ilGFkBmYwydfAARgLsXmZCXV5rXnprTihzIE1S6l8+hky5BKxtL58EoyTubm8GWPlJH+KxWjR7PQEkcMpBcRPtFlCOzGloxo9xawsnVv2wEH4EvYaFsalj29l3WvYHudPiw==
+ bh=yY9WdugDnPOocmfuNJVlqZJtZk2WbFvx/um3nx8BpdM=;
+ b=s1pOkoIR7/vmmBMI6sVP91IJMP5m/Tw+0oFxfK3c0KMRbnAWlqotgtj2kxeq09kQ5eHW8B5dU5Db8Hiv15zUmlzA1NuNqeYHXR+U6721dYnvlLuIsKFr6UbykmWrohcoc3GgYPnGnXw6AgSG+JTnPyCuRJkmq1KxeNVpy7bh3yp4bCfGsIt8wqfGSEjNy+HJ9zwwEmUTaKmx3VGBzUa2dcv5csNBc1y1AnaEuCFFecyv6usRxghlLfOkp2h6/nnUHhSKBK5uHglKR5qbugigbgCYU10HWSaOLBCJGIzlOnSIR7CPeRjLgQTbzfJFmPaf+rhxat85qc+q4pNhkCHHTA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=E2VJ5kH+tLdZwlATFAo1+hNpAmKX0dnctUob4DpO984=;
- b=Eitg4MIl4tiXvYc2SI4ekNABh65JB1U8z1RYePuFj2QS6SiU0RHYELw/7ZAFXzslWvHeMTaH0ufJrh9IgMm8iZ6gXdFpV5VLfxCVcDCg4Qn+5AeD5wiG1ZyY/3rW8oO3BaAOJhDnachAhjbWUhXCDaaAFvms5tao/D22Yv2E7WzORQSHfbyACjve65zUwlbtVkuCOob6zVc/BRJ9gUjk6WFAlfrDi+hKSWqB5cZp7ICdl9hHexCnk6PTlZ6IikaHaEmNrarImTK5wY5IBn3YB/7qoKKV4F7McaQ9f7LS+FFyZfDI9tRri43RgHZn/ofc48VCG84rm58st7AxeBOUlw==
+ bh=yY9WdugDnPOocmfuNJVlqZJtZk2WbFvx/um3nx8BpdM=;
+ b=JUzpHgsGBOmGVGkw+TFOtKcDCm2rFz08oa2Y4uAUdhlDDwiAnQ2WPqa16pUXyu90S5f1HKSP/OTALA6MV94sQr3B1RHY8JdI3S0imgslKg5LA8/FRZVl4b2g1xVcxNU5+hrNwTvzTjV/UYo21zrwcMFVwEORLDvDHQEmcoLHbvCOPi5Z793n+X5mkFcvhgIKVs6snmMG6+pxIj+lqYGt3iA8eeMV1qwHuGot96PsXRWyXQ8pQEx9HRdmqLNZv/YlrI+/QCSI2mX0udaY7FHfPZ9vGXLMb9s4Fj65nZJ5jvCvO3AWj/3Qi2n+O5bLulO5gMCtSM+1a0LCRW3/0GyrnA==
 Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
- by MN0PR12MB6317.namprd12.prod.outlook.com (2603:10b6:208:3c2::12) with
+ by CY8PR12MB7172.namprd12.prod.outlook.com (2603:10b6:930:5b::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.13; Tue, 12 Aug
- 2025 02:41:21 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.18; Tue, 12 Aug
+ 2025 02:40:55 +0000
 Received: from PH8PR12MB7277.namprd12.prod.outlook.com
  ([fe80::3a4:70ea:ff05:1251]) by PH8PR12MB7277.namprd12.prod.outlook.com
  ([fe80::3a4:70ea:ff05:1251%5]) with mapi id 15.20.9009.018; Tue, 12 Aug 2025
- 02:41:21 +0000
+ 02:40:55 +0000
 From: Balbir Singh <balbirs@nvidia.com>
 To: dri-devel@lists.freedesktop.org,
 	linux-mm@kvack.org,
@@ -103,117 +103,119 @@ Cc: Balbir Singh <balbirs@nvidia.com>,
 	=?UTF-8?q?Mika=20Penttil=C3=A4?= <mpenttil@redhat.com>,
 	Matthew Brost <matthew.brost@intel.com>,
 	Francois Dugast <francois.dugast@intel.com>
-Subject: [v3 11/11] selftests/mm/hmm-tests: new throughput tests including THP
-Date: Tue, 12 Aug 2025 12:40:36 +1000
-Message-ID: <20250812024036.690064-12-balbirs@nvidia.com>
+Subject: [v3 04/11] mm/memory/fault: add support for zone device THP fault handling
+Date: Tue, 12 Aug 2025 12:40:29 +1000
+Message-ID: <20250812024036.690064-5-balbirs@nvidia.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812024036.690064-1-balbirs@nvidia.com>
 References: <20250812024036.690064-1-balbirs@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SY5P300CA0024.AUSP300.PROD.OUTLOOK.COM
- (2603:10c6:10:1ff::14) To PH8PR12MB7277.namprd12.prod.outlook.com
+X-ClientProxiedBy: SY0PR01CA0011.ausprd01.prod.outlook.com
+ (2603:10c6:10:1bb::8) To PH8PR12MB7277.namprd12.prod.outlook.com
  (2603:10b6:510:223::13)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|MN0PR12MB6317:EE_
-X-MS-Office365-Filtering-Correlation-Id: 792e822d-75e2-4134-616d-08ddd949b893
+X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|CY8PR12MB7172:EE_
+X-MS-Office365-Filtering-Correlation-Id: cdc0e0a6-0b58-419c-acda-08ddd949a91c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?OHVjczFKTkFtbUNZUzVOUVJlZEZHUG9idDZSblNZU1RWNFlmTmF2T2FIaDJ4?=
- =?utf-8?B?ME5PeSsvSjVQTGUrWEJrNkJkMm4vOGsvNWFlQktTdlFYMXdob0ZkRXNiZnNX?=
- =?utf-8?B?bEpvT0dxZlFQUnQ1czdiZXFXUHlWSlRwdDg2NEI0eTZWbHZzWkd2cXVjY3dX?=
- =?utf-8?B?WjZjRnM1VXpIRjBOMGxMWXVUTmoyWWluRk91SkhVRXNqaVBVNnYrdTBuNlJh?=
- =?utf-8?B?b0Y4M0dTWkVYM1l3Rkhvc2IyVDE4cml0ak8yLzJIcThiaUc2N01zU0hwZnNE?=
- =?utf-8?B?eUtXQzdPaFNYTjZpa01QVzY2ZFlmdkJwNlh3S3lXYng2Sk1IVElNamlMTDVn?=
- =?utf-8?B?c0hETlk1aU56REUrOEY4N0dHMUQraEJHUnQwODg2MFY0ZjkzVytpSDhWU3FO?=
- =?utf-8?B?cjRXUWRpWVhhS3p1SVhOQkVuS3BTakZVaWZUWk9EZDQ0eEs1M1NsTXR6aHE3?=
- =?utf-8?B?Y2IzK250TnFuaDU2dFo5a0dhdk82cXNWcWYzdkZHdjdhbkJnbGMyemUwbmpK?=
- =?utf-8?B?Z3lzNGVQdHVEQk01Y2hUUzd0ZTFMZzBRamNwaDlydTdtdVFhQUVlbFlUcmdX?=
- =?utf-8?B?WUEyazRyUllhS3Q3elI1cDNkcmNjbTlSbXA5bCtBRW1tdnl5cXRrMWErNVRE?=
- =?utf-8?B?VHgrN1lIOXJxd1pJSElaRGF0Qyt4dXJrMU9XbWp2YmpyZm9DSlJFYWdLSS9L?=
- =?utf-8?B?NDJSTitjWUkya2hLMFdTRzEzdWllVGlZZ3FYeUUzeXdUa2RibFJCNGd0VDhR?=
- =?utf-8?B?ZTFFOW5OSmFieFBrbmRaV2pXTVpoR3hoNHhscUl4Y3ZUVy9hRklmN0xQRDVQ?=
- =?utf-8?B?TFhUZ04xWVRjUmc0VlZnN2RSNVpURElIdUxTTlhGVnA3Nm1jZUZrSmkvMlB2?=
- =?utf-8?B?dmhremZTa3VHemw5b1ZwemFtV2xKU0VUdWt6d09zSnRtRWFxcE5zai9rUGsr?=
- =?utf-8?B?SlZ1RXJ5T0d4WmI4TnIxU2xkM280TWdENVZueHFEb3JISGpGN3hTQmNSZm5l?=
- =?utf-8?B?Q1JiUDJMSkNMMDg0c1JmZVhzS1hKWkgwdE9DdDJZQnMwRW43d0tHVGQ3OGE5?=
- =?utf-8?B?TmRZYTNCa2pVSmRtOTBYeWEwSm9lVjdoTjR3ZjVNeHB6bE0zVjV4TDYzME1N?=
- =?utf-8?B?VkhESXJBZ1czUHYzRGZIaitNUTRzbVdTUVJIRXhNb3JWMm4xMW5nT3hqcWJJ?=
- =?utf-8?B?YUFiOWwxUURjdGNsZEhKZmpNdmhSUVBVRUVtUzRWUG1HNFJUeHJjZnlqYnI0?=
- =?utf-8?B?WlJlOG5MenVsRzl1S2xnMCtneEczcS9oaWUwQzJNSk4rWVFjRFcxaFA0a0xl?=
- =?utf-8?B?VldpeDRNdGlVWHNjN0RQUjZpYTdmRkZ5Mlptai9iMFBZdFZjZVd0QmsxelpB?=
- =?utf-8?B?NnN2MmhIaTI1Uk9VbUhHZDRSUHNJV29GeEFadkp6T2hMK2Rnd3ZHR3ZyN2Vk?=
- =?utf-8?B?ZEYyQ3IvNlBEY1ppUWxvQnN1NFRrNU1MMFFzZDR1Y0pZUldTYTVVbGlVZ09Q?=
- =?utf-8?B?VVJ6U3NKdTZmeDE2RDMvcnhkRTEwRVE1Y0dmYzNXWDh4ZlRYZmZJQUJTS0Jw?=
- =?utf-8?B?OU5PS21wR2gxdFFlOE5uWmVpbzQ0WW8vNUVVRzBUSUNPNUN5cG0vNHVwaEtZ?=
- =?utf-8?B?YzVPUHBnSzkxZFVUZ1ZQc3dxcTh1ajR6b0tuSnpJQnc0VkFBYStHajhkU0JM?=
- =?utf-8?B?dzRMeE01RCt3WldCTjJIWFVVNCtKL1lTYVV2ZFFFWW1mWFhtYjlJS0RDUVJT?=
- =?utf-8?B?U3JWT0JQMmxnemR6M3NBNHdCZFVJUEJNOEVyYjcvc25sN0FQb2o5NC9SM0w1?=
- =?utf-8?B?ejlBaVdBd1ZJL01qdVduZGlUbTg4RWtKQ3VIUDBjOUUxb0kwWDd5dHZNcm9X?=
- =?utf-8?B?NkVDS3ZLeDh1L3dBTUVpQnFOL284SFBlNWlEcWg5VXBwajZuLzVmSVA5SEEz?=
- =?utf-8?Q?x+cSTy1AtpE=3D?=
+	=?utf-8?B?cmZGQTdwYUxTdXFpUHdhbUpBT1RNNTBhdU9ldWNjNDZBK0NrNjcrQi92QWRn?=
+ =?utf-8?B?MWlVMnc3aFVObWpnSzZPVm5VUENER3BTYU96OU4rMEIrMlEybGtwQlBsczBC?=
+ =?utf-8?B?QWlYa0RUK0tQVnVJbFBJdmVwRDQ1b0tRS2JrRXIrKzdUc29KSGFiTTM2R3E4?=
+ =?utf-8?B?aGNyM0VyU0lMLzFsalROLzJuVjdIdm10cDQvb2lSZXFEaDhKcDhieWdKZ1hR?=
+ =?utf-8?B?bzUxeHZaSnBmcVg1bHc3eS9icEhzRm0zeVA3UkZFRTl1ODJQVDM3LzlUOC9D?=
+ =?utf-8?B?MEZMakV3bmxQZEJHSlZHYXBXSWFjYW01OGIvQWljYUVqOUlnREh5K3owdk8x?=
+ =?utf-8?B?R2FMT0xYalc4c1VrVkdxeXpqNTVPTDBMZEJOSW9yMzNjNDl1blA0Ung5YjJB?=
+ =?utf-8?B?WnVQZ0JOSzgzS0tDbXZmQ2RqbTh0ZVJZbEYwbGVyTnZFNkdlZzB5WkVtVUhV?=
+ =?utf-8?B?T2NEalVoak1DMmhoSGJPSkM5UktkRzk0VXlKeWg2OGNNNU1zczNvRURKaG42?=
+ =?utf-8?B?eVV2bWthVDYwYWtlOWQrVGxRKzV6N21FS3lIOXdFSXkzTmIxVjRzNEJ5Y1dR?=
+ =?utf-8?B?ekl3MGxWU0lWYi9vZTlLbzJHTlVhTXhMMVkrMTlCMXhWdVNEeEpOMnI4ZGU3?=
+ =?utf-8?B?KzUwdG9GU3Z1Q01lZTM5U1dSUlE3QUZPNzh4V3BXTlZqMERrNDdseVJxYmRS?=
+ =?utf-8?B?NENIdGFEWnVOTGxIMVg2ZWZvV0xtQ1RlVHJIZWhUOWNQczNJZEhWU2NkMFRx?=
+ =?utf-8?B?SlMrQ1RmQUdSaXFIaHhpbG5lSHdKUlVhbkE5Rnp2SU5DN2hwUzJYRU95cDBK?=
+ =?utf-8?B?NEJLNmc5QTdLbVhTVG1COG5MaW96Lzd6MEdld1lOdVc3dWN5WGQ4cUxhc2Fm?=
+ =?utf-8?B?dDNidWFCdXYzaHFDazg2VWxrRFZaQXl6MTlNeTZaUkxtYURrVmJCKzlSM2Y2?=
+ =?utf-8?B?TENKbmRMK3RBMitZMGIzak11YTVmdm1NVzJBQ2JtMGhpajBiMlMxWjY1Mm93?=
+ =?utf-8?B?em12SjRvd1hJVW1MMjJtT1hLVFpSbkdsSDdGU1BFUFR6R0xCNWNaTCt6VWpw?=
+ =?utf-8?B?dGc4NFVjZjRERWJZby9pZVdFMGJ5emE3T0haUFlWOVlwdnMrRjR6L1h1eW5q?=
+ =?utf-8?B?N2xIRFlpOEMxTnNOUDg3b0p4Y3Q5eFpOYWVkRUxTaExtK1R0cG1NeGp5YXZI?=
+ =?utf-8?B?dkEvRFhQL1NINWowbHh1aUQwMzJrWFMyLzJzQ3lWRHYrVUErb0pwZU5na3dh?=
+ =?utf-8?B?VVZuSlczdnNQNTQ5czJkL2VMWnhyTkJDeVNwNFNkeWRxSExFRFBGbnN4SGFT?=
+ =?utf-8?B?VlBkYXQwT3oxYVdLdW0wNE9pTHYxcHl2RXZaOUNtdnE1azM2TmMzaEJvOG9R?=
+ =?utf-8?B?VDRVcE9YNWYyRVZLa21ITmVjZjQ0Qm9mL0lpeEJFZFhrd1RRaVJJRHphRWxa?=
+ =?utf-8?B?SEpjcy9PZ2xVU2xwN0V6NURuOTdPZVJrTVVFQXNiWnJHS2kydHBZRE9TY2RP?=
+ =?utf-8?B?WlU5VmxoWEt6M3ZEZXRlZXM5S0I0Vm5TL1VXZ2diZERaNWdZbUhvb0tra00r?=
+ =?utf-8?B?V2wwQWg2bGZyZTdJVVQyaHBlTmkveGtGWnNQcmtwZmtOQjZObHh1YUQ3ckxl?=
+ =?utf-8?B?eXRzdWJ0RXJSbkVsMUVNMkdQRkFjWXE3c2dSQS9ac3NhV3FWZ21ybDBxKzND?=
+ =?utf-8?B?NG9HUlgwZVhNU1Fkbmo5cVp3VE5XZjlCYjlEMEsxaW9rSEdaWnpoNGd2NUdw?=
+ =?utf-8?B?b1hRazlvTVhCUUs0Z1FMQ1I4Q2NCYWtuYkZrUjBqZS94NFRrUWp1c3l5UHZO?=
+ =?utf-8?B?a2ZOMm1vMVgrWWxyWFdFbmNGWDEvR3Q1QktJWStzdHlBd1JlbjMxeWlUSjVI?=
+ =?utf-8?B?dml6QlpPTEwwMWJ2WXU0VFB3ZVNURW5sUzZ1cUp6Z1MwZDh2VUVMTG1Mc3VF?=
+ =?utf-8?Q?rREEO7aJR7Y=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eTdMcll6L1l2cHBndlQzTGNjUDJST0tiVEVidmxlTjZaNFhYRUFWN3JOWlI0?=
- =?utf-8?B?SDFWT1hKOUxqYUhJVGEzbTRmTDgrZVdsdE9qdkVpUU1Oa2JFb0tmQ1duQjl4?=
- =?utf-8?B?aU85WXUxS0VVYVF1QzdpcFJ1TWQ4ck90LzcvM0xpdUpYNG1CRXlTeFRYSVhX?=
- =?utf-8?B?QzI3MUVTYVlVd1RTcmhWNHRzM0VxMjNTejNBL3JuMzZ4cVh4OE5CWXZzN0Jz?=
- =?utf-8?B?Y1R2QU5xQnBvSUJhNkszczg5YnN2ZTdvN2k3VnMvMkVtYkt4cjZNemIzU3Fh?=
- =?utf-8?B?MmdPM3U1Qm1wSzZZSm9HcWgzWEY5cEZobTRsTVpQSnR4VmNqZjkvbG5vOG0v?=
- =?utf-8?B?Z3RPNURvaDFFdUcyTmRCVHdLdnl3Z0hwZW9hN3pHNHdjcThhMzkxSytFRks4?=
- =?utf-8?B?K0RaeXBzaStGVjlTT2g4TjI5Z3g5WHl4dmFBeStoSzkrTjZnbnpWT1hQWENh?=
- =?utf-8?B?c1dSQ1N4dVROL0lEWWcvbWhkY3IzejRnemw2alYzakt2emc0ZWtvYlEwSUp5?=
- =?utf-8?B?TmZjQ0ptUWQ1UzNTWVJQR25xbFowQ2VIYThXV1BFQTVra0tHNy9JUkdPU3hQ?=
- =?utf-8?B?MlNYS082NC94Uk9qZUxnL2VwQmpmZXpTdWljMnpGZVZXdlRHTnRKRFZpV2hX?=
- =?utf-8?B?NldqcDBja3FsbDZHNGU1NE1xZVNPeGtKam43Sk0vOGo1WW4zc3pxd20wTnB3?=
- =?utf-8?B?MngreUFUWUwvTU00V01PbEZYb0dsUHN4U1lNT0xnOGJwRDhhblJWL2I1a3la?=
- =?utf-8?B?VHRrcXYwSkhFUll5TUFKSkcwUDV1MHJTYlI4Um1DL3MrZDg3K2NERWNTVmUr?=
- =?utf-8?B?eGxIcTc3RSs5b3U3U1VoRy81dzcxa21XZ0ZPSTZSMUtFZVM5THZRSXZOUWRk?=
- =?utf-8?B?aEw3d2Y5SG41amZwUGFDZ0hTU0EvVjR2NWdNYlNBa1U0ck1ZRWVHRW5PSGd3?=
- =?utf-8?B?VHJWVnlIc0w5WWdDcC9GNFJJWWF4b2ltOGttRXBvK0twVm1yMXAwb3FzcDdl?=
- =?utf-8?B?Z3AyR2JwSVRSd0hNeEN0em8va0FsbUJSWmRDdUhDSmR2TERjRWVEdlRyMHdF?=
- =?utf-8?B?QlIzbXlyMVJXUUdqOFo5YlZBVHdVUXdaUTRXbTZIY2dBTkRTU09Zbm5MNWpl?=
- =?utf-8?B?UG5zRlFnV1hsTUtmUlVXWGl2ZGNYa2twWEpBV3BpSWxjVzZYSUV1cFg0UXFN?=
- =?utf-8?B?Q3R6aStGNy9VdWJDMVN4N2F4V1lwbFhvZVZ1MzJQalF0RlQwTWdkcWF2QlFT?=
- =?utf-8?B?d0xYVS9pNVdQaWZ5L2ZOd0U0dXdabkZNbi9xTWtBbDdpNzExWUpMbWlEN1dz?=
- =?utf-8?B?eFl1MVQ0clJwRm1aMis4QUdPeE1hWFZQdTdnNzJ3ZXB0NmhBNzZybVRYTlAz?=
- =?utf-8?B?T0ZBNnNZbURscW8wMk5RN2ttdG1xczZhQ3RFOVJhSlhJajR5dU8ybkRBRXla?=
- =?utf-8?B?QWdjNWw1b3lmZmMzL0ZDMkswZGFDZWE3ZkhaQ1hlWnYybEZXREdLU2pNcUtN?=
- =?utf-8?B?KytPRDdZanFFTytDTkkyT3QrdmFzdFpOOEhLaVdFV1IwNGRhNnJvN0o4TkYv?=
- =?utf-8?B?dWdSdTdsb2M5OGtkMGZQQldoZlZSV2pOOXR3dDlqUTRUdlltdWwrVDBLb0NF?=
- =?utf-8?B?SEFjcUNSRGR2UC9IYjZmTnk0R2Y3a2NPQ3E3akZ5MGw5alk1M1JuVm1oYXhB?=
- =?utf-8?B?elUrMFcyK3drdklSMkpaZkwyOFk4WkVuTGhXK0ZjbkluNWg0OGNmY2JHM0Rs?=
- =?utf-8?B?YW9MVjlqWjdERkFtZE1vQjN0NVJYVVRTQWxDT3ZPOU5hNm5FbFNpTUtDRnd0?=
- =?utf-8?B?NnRJdVV6dUorNnorWEk3V3c1WHUwVzAxNml1aXgvT3BWaHYyU0lmelQyWFVG?=
- =?utf-8?B?MDNuUTJWOVJudUw2elVSajVCdnpDRGZ1b0tZRmpkQzRKRE95SERSd3VhM0NC?=
- =?utf-8?B?S0tKNHlJYXY3QTJOK2wzTEdLRVhoZGVMRGIwYldkcEx2eGVLTGtVM2UvemI2?=
- =?utf-8?B?QWgwU09TUkJad3YvRlFiMTZ2cy9rYVlsem1OWmt3MStFbzJjN2IyVWM5RjQ1?=
- =?utf-8?B?blBPdFNhZmVxOUQwOHZqVTc5NzdyUTZkd2V4Si9Nb1NrclIxSTh5R1ZBNUpI?=
- =?utf-8?Q?KyAYgdeJ055zO0HA5Z97e4o0L?=
+	=?utf-8?B?VGJCUTJvSmUvTWwxMkZ6UDNsQkc4ZFdkZjc3ZHFzWXBFWWJKNE4rcWFNNlF1?=
+ =?utf-8?B?WWppemE0NUhHemtIaFdvWFQrTDk5ajBUYURtWEY3TTdpWm1tUEl0T3RqTFRX?=
+ =?utf-8?B?V1VLS2NlNXFxb0kyL2NFcWhOa3hjOThLbnRKTzIrMVZmMVB0WEJkUjBDR2FW?=
+ =?utf-8?B?Q2NWVFgvOGFuM3R0VHo1WWRyOVcveUdoa0xRQ29pdVJJUDJ1dnRWWXpMRElW?=
+ =?utf-8?B?c0l3R09lV1QrbDMwT09Pc0xGMTdKa1JGSnEyRy8yamNmSUNLdUxDVWkyV1Ar?=
+ =?utf-8?B?aER0SlFwT3RkaEpkendWREJxOEtWVmREY0hWUmFZaW5NUFZXa2FGMkwvVm11?=
+ =?utf-8?B?U0dQdktiU2xlYXptc3NIVkd1bWNBelNwNm9scm9Xc0wvT3VWalQ5dC9uWkNW?=
+ =?utf-8?B?c2lTT0cyWmNxbElJS0hySWZ3WlVuQVdCVVNEVUhmdGVIM3YzcTNPMWZrL1d2?=
+ =?utf-8?B?UENOa3ZsN0dTN1J1dHl6d3ltVGdTQVhKNlQzbjhJaENnb2diRlZocnZUSjB0?=
+ =?utf-8?B?SktBbzdRWUQzWmVRd3k0U1l1SUs2R3pTQlc4MzVRSHc3MXRHSFhIUkRGZith?=
+ =?utf-8?B?MTdYWjF3bWhtZTVLUjhxZUMvYWEwcEZCMVlCVnh1VlliKzVSL2RlcG5uSVdl?=
+ =?utf-8?B?VDJaTHovME8vNFpaQldCMHpOdXBUbGxCWnZSWVMzaXFDR0s2cUxpYkZ5bDk1?=
+ =?utf-8?B?ZDJKUDd5eVlRS0JlQVA3UVlleFpBbERSekNqRVRaMlEwbzF0Mkcvemk2clZS?=
+ =?utf-8?B?Y0ZFQTVuSStWaUlyWjFzbG55VlY5WHNURlZwL2hRUWxHblZacDVBOXdhMFov?=
+ =?utf-8?B?UmtYVC96M0hBcU9JYkRqOVdWYU0vSGJDYVBKZUlhTVFLeFRwTm5Da21TYkFm?=
+ =?utf-8?B?WkZjY1NXbkUyb0JIaldXRklpcVg2V2tTeFdBdkMybVNCU3N2bFhEUE5iQkNl?=
+ =?utf-8?B?emJSbFgzYjR1YXJlZVJuZGxFdlpWaURPYnpoYUt1eWhrQk83WGkrYUpKOVZE?=
+ =?utf-8?B?dnNxazdaNmM3TzNRc2FZRmVYNVBPNmd5eEo1cmpwd3BLSXRGUmp0ZjJJdW1M?=
+ =?utf-8?B?K01sdnQrYkE1WnRBMzBvZTdnL3hsLzFZakhCYkt3eDdaeHgzaE1qMFVoVUhT?=
+ =?utf-8?B?OHlDN2pQOXkwUWVnYVFBMGE5U3BBM1RTMHV3SXJKM2NKM2hvSWpXNm03b0RT?=
+ =?utf-8?B?dTZiN3U2ckRYWktreEE3cUZ2bFhBRmoweXI3MnY3Z2E0cHZjRytDdmRwOWFQ?=
+ =?utf-8?B?aFQ3Sno2TzhrZ01ZbldWZE5VZ3BWb1p0cW4vRFgzWnJabGZiYmhqOTNvazJV?=
+ =?utf-8?B?SHdFYjR2RnZZTEllWUQvYzVCdWZ2VUxuWkEybjlSSHFlT0hFZXEyTVhiTFVZ?=
+ =?utf-8?B?L0RmM09zYnArU2hDaER2T1hpRi8vTkNDblY5bHdhaVFJcUw4UUpqaVdyZWVG?=
+ =?utf-8?B?NGFpcjQ2T1doZ3Zwc3l0T0o1aDRaLzZNZFRiWkRKbzZjakNHbXdzaVN1SnJ5?=
+ =?utf-8?B?cWtPa3JMLzZVdjVBVHc0N3N6a0ZYYWsybVZXS29XTnkwRDhLNlFyZzBoOHB3?=
+ =?utf-8?B?Nm8rV1ZGTm80MldPOXhINnVwbklKdEFwN0ZrOHNmU25vdmkvcFR0RkJsZjRo?=
+ =?utf-8?B?MThzN3ZoSGduWnBUL2UrVm1NZFRydVlUSU9qL0UrS3NiZ3ZaUjAwais1RWww?=
+ =?utf-8?B?NFQ4YXRrUHRmK0Nmd3hzUHMyekNmZW9PbkoxNGxJRjBrZEdvRUZ6WEVLNFJS?=
+ =?utf-8?B?VlNaRnpMUWoycGdnZlltc0JwVVpJZzNnT0krKy9zZE8weVZaRWVIUVg2MFhm?=
+ =?utf-8?B?UTk5WnQwNmc5S3laT0s5RjFsSis4Y2ZyeEErZ0ZMeEQyQTBUeFd0Ky93TnVh?=
+ =?utf-8?B?Q1pidzBxUWxPMG1HR25jNjM5MVJCMGF1clFVR3ZiY1F1WjlQZnVPYldBVXlJ?=
+ =?utf-8?B?TVB4UE1EMi9idUJMR0lwQkwxUzF1VWcxdTMrVTFmSjZvamxTMzFSWWFTM0ZP?=
+ =?utf-8?B?Y0xkZ1JwUmVnQTJpeTNDSU5ZV2dBQnFIejhDektCY0lNYW0wdElHYUdjTXV4?=
+ =?utf-8?B?WmFSQWFmbm92U0l4RzZnVXVVTXlPUEJiZnZNQjRDbkJ4K1ZOQnB0WHo5Y1Av?=
+ =?utf-8?Q?4mpeISP6dLY3lQOVY6UkfDpxQ?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 792e822d-75e2-4134-616d-08ddd949b893
+X-MS-Exchange-CrossTenant-Network-Message-Id: cdc0e0a6-0b58-419c-acda-08ddd949a91c
 X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2025 02:41:21.2144
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2025 02:40:55.2206
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MY57gPrWH4Gx+gD/bEZ5RNCrhxunz8VYU+sqlyfJTvtIsusvhIYMPGcMqHqgiAd54xTV6CMhzASTTHmhMvT7nw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6317
-X-Stat-Signature: pzxpx6qe7jyasyi9ngrmur3r8h9ftiwe
-X-Rspamd-Queue-Id: 1F22820004
-X-Rspamd-Server: rspam10
+X-MS-Exchange-CrossTenant-UserPrincipalName: T5mHGOJCJ17ELfXVbWFVRM+tUK0RBJ2Y0Dxj90N7JRjhDr1DnbxtVrDr/1eZBz34/6jF3PxMffdOXE/IRYH7eQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7172
+X-Stat-Signature: watbjb5cck8jcwarkqy8rughh44d4ikd
 X-Rspam-User: 
-X-HE-Tag: 1754966571-640588
-X-HE-Meta: U2FsdGVkX1+bemXwZr1AF2qL55OyxPDF1zO1GBQ19wf5b0+WxBBrBwZUeaiHtzr/jaqiLRI/jUzwD3u75BavFPGWnTYFJrkLEgekiJLyYqOlbHsWskb80PW1af6ieanhX+LHFVFraw+P9nLWzzH9Z/JJsfv9jd48XTuGrqeVxofn2AHLULLFCXK7SB2ax2HBWvEUceS8iWGJCOpNhJchP4E2dhKopnq7KvZfD40hOTpqMZk+p+Aw+/5Avquq0DN+WxpTPcfhiR6unxaDBlFKC1Ai+kDy+XEeAR79YL6dJs3M9SyGt2oAyGhU+Xn/WtrIulIsbbnv4kch8mcTXyOQy66unKZhfyLS1W12CMSeLiCpqDsU9M04tTLvodVGeIzUIoOibcEZZT5KBDHCo9MVsCcbK4i0vE869aazma0gK9Clow7oRFOtX7HcidE0Vwo+ZYArMzuNxoXgXAMakU1XtokKh/JOclxqEMOt0KPjLBPAq767VQeM6aKZANafy5TtSMXN9JyMRHtSu/ObJIFKLJoPnow9QIP+HrXSG+v7cB1DPR+enbAD4xNgCrEQRZJpbW0a7L1mF8qpAGlDCz9m4exWCMULW7Q1NwuAH7shJdhBQxpbp0qoLYHmq8d9A8rleZY9Rl2t8p0eVaqwaYD/eRwnx1RI+o4YxwRToum/NyCgx9ps5ZM4rqKOxFitTdfIGxCLEkopPkg0yeOng2zajHZGPHEw8xJtaaTxhQHb2hVKhzYRGoOrCSeGEvJcvlickhFEhW4oXdFmuN1wfxda4KFdPyr6jxDRZ0AhCRes8BzHA95vPt3+SbjBmYN7CieXJdQq6mrAqTE63iZIQcjQW9I2Muj+JYNWC4qf/nrG1UAITkuowBz9Dda8uKyBfNSIRFj6Arz7Mv+3ycOkZawbWn3c/4w4fXPVCK6YO368X2e5/eHZ93lfmt8nnLsrV4isLnpd4TiSTx62DI5yQyD
- kJtXO2WH
- jj8PAMIfFGcr7U2NsQPSJ/KKBVsY28gfDI4KJ+0vGJazIeDT1nWPeFESM18SZ0gxo92//WIeIGKMM81aRngcWWrApNkGu/jpQ0TOFYhPU/Y+lFvpFJ2qTIFR7ExUbLKRkIJAj
+X-Rspamd-Queue-Id: 12FC41A0004
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1754966619-660214
+X-HE-Meta: U2FsdGVkX185QDi5GB3jzEk5CMV19+5vbpf6z7ew0jNF/h0+JmiNGu12PlP9sJlOmLOnmTEGBIk0em4wEVXSM4AzOOSfQedoeMIykbOjVO21ginaEWmvt3Ypt2YGIwutFRCoU/P6xn6OD5Kdt2D39iaKZzqK1XwoYWoYUQJf4TDW+6mwjJGMMQQNy3MBZTatKUm56u3eLTGwb0s28SqzSO3xZFdMJsWM0iCx/SUER4cvxaQBXlEXsU6PYlrs1UBEf3zAS3KeFpliIC0Jjw/Zg0M+EOczR3tlD3NTSS5i3h475B8HPFlCW57ZTvL2GC1ArAJGLFetLGYarjQOLZQYhU9AhibNiD6qtfyJYdCL3Z6PIvL6Dq+0QswMh+Eg63r7ST6qD/6hGW37DsbRRZDp87aaXdqT4UpbqpdRQoO+lB8N1T41ZfQ+PuHhcAeD/dU4rdz0v+rIOgwagAJ4CuSzaEQ6cL05ZxXcubCSXyn4dOF/soG09GOppjXFuLf/aWIJ5lVSdebvoYMlX61/2LMLUHL58qve+wIZdnCqeyTYBS/0cmEOrRCFIosria1IJqmfcQs1npYyHn6Mz6qhGBlLC/hstPbmdHYFry8mp35Pa1h+gBc/8lMhJowcPZY8HLW40MwRwAhFcyt70E2egVKejnLf+CRU2+HTK9eDOs6UuoUtLgvWMuj5lT/jXLDk73vEy7lNyjdMb2n5UBvTljOqtGrQnXKWj1GqNnFHUBgBedsx+pgqM+x1aN+ty9iqVnNoi3z9+gNvtBsaN9VTmgCPsQ4bvDuPLaWtwZjYAegi9cYkgNdugsSgsBEg1XIU2m5gHVu0Nb/eQ27gca3yfJ1Y6zFTM2WrCzv4uVOGQWXvKgNOLjZZW1PHLXdew3PECP+HIvWI4ebnSLeajZo68lsewqKaosv111/nd57yY82EYy4B5vmgsAaF3NKZCdklaJBgKQBJGLADIFCQZECj6dk
+ 2fUfoKnR
+ 7XBue1Vo2E1YnQo4CaCwDmhhyO/+5AzIT4yrKQ+P2JdI6GFmOMhzB0FkdmYfv7k+hPb0wiUtH+vl2+enFXpggUdYhfS8gT4573U83p44VF/FowxgSX0qvOROhYPUajRxv3Cspv4vlMuiZRnV8mVuLNY9Y068abyOTC+ViF6q9UqzcyJlS6mHkrHzN3hOdrwmiefvcIsdXglHajBUcLcSn9bq3X6Ec5mzWku/62eSaw01g5usmuKLUCkQ4IhJkh0d8tSyWkL83ZTJ14MMQ5VtIUIH980daKSEh6eJSOEXdCyAMonXDD8gHFf4eT/kz9LKhURHgd5DVuQcIgZfHC8T2T/N8XsjEycXi/RJyLSY0tYUhr9X5WG5FvFonDy7uu7Ba+zLv2wtwVgStDRN3TebLM1V8x6bujjYh121dbhdq/tYvv8Y+K5qINhAMp3UcnzRBaMaN0ic7C6fACap15/4eEtcTQkaX4iekpvCPoth3cAYS06h5Ltz2CCSyhpuh0WKHjFjYkTx+97y2wI3OEyHErym+PiwY5J9zb5LeEmdiRZ6S+hEmOzGGnFqoIX33xZ762bH52QiMdTjMHjGTBPkR2wpTEi7enKZZOZfexb1niQnN0G4CzrD2clbPRr6Plx6DIn0b1X7IMbq5LhZ9nHJyNTKtb7k/bBtsAvIMTv/4CPimVYos+mX+rMBQUN7fhykJksRRAZVNjf3cz6mw0t9TLqz+Jo2q2X8ifkggkY2jkr/t2Grfm+AgRY2nQDkHaQZoDoru4nCIVrSexu+ZPXdJ66av67vtHGIOB87bE9+LxLJsHAxL61kgHBWBGI3Z3O0rU64JfQeZKiOMZ1Lj6PyYRbyrsQ/rxJLe8p9uIuNsGRW87IFIU8+kR5vmmyyUgcp9CgHbmcoho9+gQzjynGc7lww/cjq/YJJOnw6SKyM7d/zR0HduYpx26nKRqB6Sygwht9pqHbOVojkAGrWtnfmgp25FYi9T
+ KDpyv9jg
+ tnauk0G97QIl0smxQibiyWy3T3g5CExWkoIh56kOvo9NQjKrHbfcnG23szSvJInVjb2LjeY3hd1t9inCnpGI9jHk1ggy320lKs9MPFQeSEpHnruF1/2x6IGdX0Ifa/Z/MpNmq32HTRU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -222,8 +224,9 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add new benchmark style support to test transfer bandwidth for
-zone device memory operations.
+When the CPU touches a zone device THP entry, the data needs to
+be migrated back to the CPU, call migrate_to_ram() on these pages
+via do_huge_pmd_device_private() fault handling helper.
 
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@redhat.com>
@@ -253,230 +256,100 @@ Cc: Francois Dugast <francois.dugast@intel.com>
 
 Signed-off-by: Balbir Singh <balbirs@nvidia.com>
 ---
- tools/testing/selftests/mm/hmm-tests.c | 197 ++++++++++++++++++++++++-
- 1 file changed, 196 insertions(+), 1 deletion(-)
+ include/linux/huge_mm.h |  7 +++++++
+ mm/huge_memory.c        | 36 ++++++++++++++++++++++++++++++++++++
+ mm/memory.c             |  6 ++++--
+ 3 files changed, 47 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
-index da3322a1282c..1325de70f44f 100644
---- a/tools/testing/selftests/mm/hmm-tests.c
-+++ b/tools/testing/selftests/mm/hmm-tests.c
-@@ -25,6 +25,7 @@
- #include <sys/stat.h>
- #include <sys/mman.h>
- #include <sys/ioctl.h>
-+#include <sys/time.h>
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index 7748489fde1b..a4880fe98e46 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -474,6 +474,8 @@ static inline bool folio_test_pmd_mappable(struct folio *folio)
  
+ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf);
  
- /*
-@@ -207,8 +208,10 @@ static void hmm_buffer_free(struct hmm_buffer *buffer)
- 	if (buffer == NULL)
- 		return;
++vm_fault_t do_huge_pmd_device_private(struct vm_fault *vmf);
++
+ extern struct folio *huge_zero_folio;
+ extern unsigned long huge_zero_pfn;
  
--	if (buffer->ptr)
-+	if (buffer->ptr) {
- 		munmap(buffer->ptr, buffer->size);
-+		buffer->ptr = NULL;
-+	}
- 	free(buffer->mirror);
- 	free(buffer);
+@@ -632,6 +634,11 @@ static inline vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf)
+ 	return 0;
  }
-@@ -2466,4 +2469,196 @@ TEST_F(hmm, migrate_anon_huge_zero_err)
- 	buffer->ptr = old_ptr;
- 	hmm_buffer_free(buffer);
- }
-+
-+struct benchmark_results {
-+	double sys_to_dev_time;
-+	double dev_to_sys_time;
-+	double throughput_s2d;
-+	double throughput_d2s;
-+};
-+
-+static double get_time_ms(void)
+ 
++static inline vm_fault_t do_huge_pmd_device_private(struct vm_fault *vmf)
 +{
-+	struct timeval tv;
-+
-+	gettimeofday(&tv, NULL);
-+	return (tv.tv_sec * 1000.0) + (tv.tv_usec / 1000.0);
-+}
-+
-+static inline struct hmm_buffer *hmm_buffer_alloc(unsigned long size)
-+{
-+	struct hmm_buffer *buffer;
-+
-+	buffer = malloc(sizeof(*buffer));
-+
-+	buffer->fd = -1;
-+	buffer->size = size;
-+	buffer->mirror = malloc(size);
-+	memset(buffer->mirror, 0xFF, size);
-+	return buffer;
-+}
-+
-+static void print_benchmark_results(const char *test_name, size_t buffer_size,
-+				     struct benchmark_results *thp,
-+				     struct benchmark_results *regular)
-+{
-+	double s2d_improvement = ((regular->sys_to_dev_time - thp->sys_to_dev_time) /
-+				 regular->sys_to_dev_time) * 100.0;
-+	double d2s_improvement = ((regular->dev_to_sys_time - thp->dev_to_sys_time) /
-+				 regular->dev_to_sys_time) * 100.0;
-+	double throughput_s2d_improvement = ((thp->throughput_s2d - regular->throughput_s2d) /
-+					    regular->throughput_s2d) * 100.0;
-+	double throughput_d2s_improvement = ((thp->throughput_d2s - regular->throughput_d2s) /
-+					    regular->throughput_d2s) * 100.0;
-+
-+	printf("\n=== %s (%.1f MB) ===\n", test_name, buffer_size / (1024.0 * 1024.0));
-+	printf("                     | With THP        | Without THP     | Improvement\n");
-+	printf("---------------------------------------------------------------------\n");
-+	printf("Sys->Dev Migration   | %.3f ms        | %.3f ms        | %.1f%%\n",
-+	       thp->sys_to_dev_time, regular->sys_to_dev_time, s2d_improvement);
-+	printf("Dev->Sys Migration   | %.3f ms        | %.3f ms        | %.1f%%\n",
-+	       thp->dev_to_sys_time, regular->dev_to_sys_time, d2s_improvement);
-+	printf("S->D Throughput      | %.2f GB/s      | %.2f GB/s      | %.1f%%\n",
-+	       thp->throughput_s2d, regular->throughput_s2d, throughput_s2d_improvement);
-+	printf("D->S Throughput      | %.2f GB/s      | %.2f GB/s      | %.1f%%\n",
-+	       thp->throughput_d2s, regular->throughput_d2s, throughput_d2s_improvement);
-+}
-+
-+/*
-+ * Run a single migration benchmark
-+ * fd: file descriptor for hmm device
-+ * use_thp: whether to use THP
-+ * buffer_size: size of buffer to allocate
-+ * iterations: number of iterations
-+ * results: where to store results
-+ */
-+static inline int run_migration_benchmark(int fd, int use_thp, size_t buffer_size,
-+					   int iterations, struct benchmark_results *results)
-+{
-+	struct hmm_buffer *buffer;
-+	unsigned long npages = buffer_size / sysconf(_SC_PAGESIZE);
-+	double start, end;
-+	double s2d_total = 0, d2s_total = 0;
-+	int ret, i;
-+	int *ptr;
-+
-+	buffer = hmm_buffer_alloc(buffer_size);
-+
-+	/* Map memory */
-+	buffer->ptr = mmap(NULL, buffer_size, PROT_READ | PROT_WRITE,
-+			  MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+
-+	if (!buffer->ptr)
-+		return -1;
-+
-+	/* Apply THP hint if requested */
-+	if (use_thp)
-+		ret = madvise(buffer->ptr, buffer_size, MADV_HUGEPAGE);
-+	else
-+		ret = madvise(buffer->ptr, buffer_size, MADV_NOHUGEPAGE);
-+
-+	if (ret)
-+		return ret;
-+
-+	/* Initialize memory to make sure pages are allocated */
-+	ptr = (int *)buffer->ptr;
-+	for (i = 0; i < buffer_size / sizeof(int); i++)
-+		ptr[i] = i & 0xFF;
-+
-+	/* Warmup iteration */
-+	ret = hmm_migrate_sys_to_dev(fd, buffer, npages);
-+	if (ret)
-+		return ret;
-+
-+	ret = hmm_migrate_dev_to_sys(fd, buffer, npages);
-+	if (ret)
-+		return ret;
-+
-+	/* Benchmark iterations */
-+	for (i = 0; i < iterations; i++) {
-+		/* System to device migration */
-+		start = get_time_ms();
-+
-+		ret = hmm_migrate_sys_to_dev(fd, buffer, npages);
-+		if (ret)
-+			return ret;
-+
-+		end = get_time_ms();
-+		s2d_total += (end - start);
-+
-+		/* Device to system migration */
-+		start = get_time_ms();
-+
-+		ret = hmm_migrate_dev_to_sys(fd, buffer, npages);
-+		if (ret)
-+			return ret;
-+
-+		end = get_time_ms();
-+		d2s_total += (end - start);
-+	}
-+
-+	/* Calculate average times and throughput */
-+	results->sys_to_dev_time = s2d_total / iterations;
-+	results->dev_to_sys_time = d2s_total / iterations;
-+	results->throughput_s2d = (buffer_size / (1024.0 * 1024.0 * 1024.0)) /
-+				 (results->sys_to_dev_time / 1000.0);
-+	results->throughput_d2s = (buffer_size / (1024.0 * 1024.0 * 1024.0)) /
-+				 (results->dev_to_sys_time / 1000.0);
-+
-+	/* Cleanup */
-+	hmm_buffer_free(buffer);
 +	return 0;
 +}
 +
-+/*
-+ * Benchmark THP migration with different buffer sizes
-+ */
-+TEST_F_TIMEOUT(hmm, benchmark_thp_migration, 120)
+ static inline bool is_huge_zero_folio(const struct folio *folio)
+ {
+ 	return false;
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 2495e3fdbfae..8888140e57a3 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1267,6 +1267,42 @@ static vm_fault_t __do_huge_pmd_anonymous_page(struct vm_fault *vmf)
+ 
+ }
+ 
++vm_fault_t do_huge_pmd_device_private(struct vm_fault *vmf)
 +{
-+	struct benchmark_results thp_results, regular_results;
-+	size_t thp_size = 2 * 1024 * 1024; /* 2MB - typical THP size */
-+	int iterations = 5;
++	struct vm_area_struct *vma = vmf->vma;
++	vm_fault_t ret = 0;
++	spinlock_t *ptl;
++	swp_entry_t swp_entry;
++	struct page *page;
 +
-+	printf("\nHMM THP Migration Benchmark\n");
-+	printf("---------------------------\n");
-+	printf("System page size: %ld bytes\n", sysconf(_SC_PAGESIZE));
-+
-+	/* Test different buffer sizes */
-+	size_t test_sizes[] = {
-+		thp_size / 4,      /* 512KB - smaller than THP */
-+		thp_size / 2,      /* 1MB - half THP */
-+		thp_size,          /* 2MB - single THP */
-+		thp_size * 2,      /* 4MB - two THPs */
-+		thp_size * 4,      /* 8MB - four THPs */
-+		thp_size * 8,       /* 16MB - eight THPs */
-+		thp_size * 128,       /* 256MB - one twenty eight THPs */
-+	};
-+
-+	static const char *const test_names[] = {
-+		"Small Buffer (512KB)",
-+		"Half THP Size (1MB)",
-+		"Single THP Size (2MB)",
-+		"Two THP Size (4MB)",
-+		"Four THP Size (8MB)",
-+		"Eight THP Size (16MB)",
-+		"One twenty eight THP Size (256MB)"
-+	};
-+
-+	int num_tests = ARRAY_SIZE(test_sizes);
-+
-+	/* Run all tests */
-+	for (int i = 0; i < num_tests; i++) {
-+		/* Test with THP */
-+		ASSERT_EQ(run_migration_benchmark(self->fd, 1, test_sizes[i],
-+					iterations, &thp_results), 0);
-+
-+		/* Test without THP */
-+		ASSERT_EQ(run_migration_benchmark(self->fd, 0, test_sizes[i],
-+					iterations, &regular_results), 0);
-+
-+		/* Print results */
-+		print_benchmark_results(test_names[i], test_sizes[i],
-+					&thp_results, &regular_results);
++	if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
++		vma_end_read(vma);
++		return VM_FAULT_RETRY;
 +	}
++
++	ptl = pmd_lock(vma->vm_mm, vmf->pmd);
++	if (unlikely(!pmd_same(*vmf->pmd, vmf->orig_pmd))) {
++		spin_unlock(ptl);
++		return 0;
++	}
++
++	swp_entry = pmd_to_swp_entry(vmf->orig_pmd);
++	page = pfn_swap_entry_to_page(swp_entry);
++	vmf->page = page;
++	vmf->pte = NULL;
++	if (trylock_page(vmf->page)) {
++		get_page(page);
++		spin_unlock(ptl);
++		ret = page_pgmap(page)->ops->migrate_to_ram(vmf);
++		unlock_page(vmf->page);
++		put_page(page);
++	} else {
++		spin_unlock(ptl);
++	}
++
++	return ret;
 +}
- TEST_HARNESS_MAIN
++
+ /*
+  * always: directly stall for all thp allocations
+  * defer: wake kswapd and fail if not immediately available
+diff --git a/mm/memory.c b/mm/memory.c
+index 92fd18a5d8d1..6c87f043eea1 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -6152,8 +6152,10 @@ static vm_fault_t __handle_mm_fault(struct vm_area_struct *vma,
+ 		vmf.orig_pmd = pmdp_get_lockless(vmf.pmd);
+ 
+ 		if (unlikely(is_swap_pmd(vmf.orig_pmd))) {
+-			VM_BUG_ON(thp_migration_supported() &&
+-					  !is_pmd_migration_entry(vmf.orig_pmd));
++			if (is_device_private_entry(
++					pmd_to_swp_entry(vmf.orig_pmd)))
++				return do_huge_pmd_device_private(&vmf);
++
+ 			if (is_pmd_migration_entry(vmf.orig_pmd))
+ 				pmd_migration_entry_wait(mm, vmf.pmd);
+ 			return 0;
 -- 
 2.50.1
 
