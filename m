@@ -2,112 +2,106 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AEFF9CA0EC4
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 12:32:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 99FA3CA0EC4
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 12:50:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37F0E8E0112; Tue, 12 Aug 2025 08:32:57 -0400 (EDT)
+	id 1A97B8E0113; Tue, 12 Aug 2025 08:50:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32FAD8E00E5; Tue, 12 Aug 2025 08:32:57 -0400 (EDT)
+	id 15A688E00E5; Tue, 12 Aug 2025 08:50:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 246EE8E0112; Tue, 12 Aug 2025 08:32:57 -0400 (EDT)
+	id 049238E0113; Tue, 12 Aug 2025 08:50:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 11DDC8E00E5
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 08:32:57 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 88217140305
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 12:32:56 +0000 (UTC)
-X-FDA: 83768044752.16.156AB25
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B090B120010
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 12:32:54 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="E/+qEWGs";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.160.52 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E36B38E00E5
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 08:50:03 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 94960135C3F
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 12:50:03 +0000 (UTC)
+X-FDA: 83768087886.02.BBA1FD6
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf08.hostedemail.com (Postfix) with ESMTP id ADFE716000D
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 12:50:01 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EJDx4oT9;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf08.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755003001; a=rsa-sha256;
+	cv=none;
+	b=KAZm4x6nn01AEUkRMEQnuHXn6zfKEz0YLwijlWJDGAHR4XABGgGLkw2/gF9AtIreItMp+Q
+	Y5tPnA4wY2vi9nuvEDaHHjj8VInyGKFGtX4bpBue3uRipjZUPGRJOvmQfnNDLcbEdiSgv/
+	UsGBdq71pcQPKh9LQFWTC/FvwG0ZbaU=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EJDx4oT9;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf08.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755001974;
+	s=arc-20220608; t=1755003001;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YJbVEsQJVCjelejxZubJqTtynOwasKvIUa9eAU0KJJo=;
-	b=NU1VYhQWk434pBNWocW4gXLu8vXWdi4pH6eTmLiGrjaX74JiPW7eJlMYWOmn015NnicQKh
-	QRTw6tndTQf3x/fAj0LoqRwo7mnEgCdou7enDThHEp4qo2Yh3/4vIJ45wop6fpdV8qnzsE
-	02L67YaZrovRzJO1G/3i1NtkN9pV9Sw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755001974; a=rsa-sha256;
-	cv=none;
-	b=zPt8Zun81o8Jvh3Nd1KDE99QacDpMVa4eVgivsPIuuGVNsn6mkkUUDvn0O/9F5WL4B00b4
-	p/R6gd3xEan1UFNSeYsiOm831AHEblGRQ5z68uB8lUVomkWdTstcd9o3jvd+p8Jz941eQQ
-	GLNIpyrSjzySdEOvD4nxeDzOWmH8kq8=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="E/+qEWGs";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.160.52 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-30b6c230808so1361350fac.3
-        for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:32:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755001973; x=1755606773; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YJbVEsQJVCjelejxZubJqTtynOwasKvIUa9eAU0KJJo=;
-        b=E/+qEWGsyV1BPBWHDze+Cdi2DphPLz+8PjZHiVo37HkFSBqd9zoJWf5Wsq0PD2E+nD
-         w8/SFAIrS2SYCvnTziVe85/nmTWpy3K3RPSC8qhyzymN1a0toiGl5IwEt5T6+g1cWb1Z
-         zPpvbMlXNy6Km8VdPzzsS1hNXI35S9NPHSr8rJ1A2bec7vSplXuIg4Fvr6t5VM21oUle
-         zn7q6zi57Xmgll4Pqy8JqPJSVSP5DJE4NPUajHeEOGhN1CR8sHdDQVYQQM3E7peSRqjE
-         OIFD5kIjFdWESkFLHgTvi8nLSVtC9e3yO+P+6vWVML0jHbLM+0tEVhrIw2yETsKgHq43
-         ULXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755001973; x=1755606773;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YJbVEsQJVCjelejxZubJqTtynOwasKvIUa9eAU0KJJo=;
-        b=MY3uu88/c6bfyWARwd2+X0yLIUtMjOvShQfYgBSLlPVIIREHII3cOP1ll1LFY5Y2+B
-         Yin/UrObMUgao0TFsPI9JhZNc8f5xE1CEb9uBTLwWO+woxPUB8ftqMMgz9zTNBg74Yae
-         Dtv/VoEIULSFEXnaqnJMBBv1QLdQ89OhfuZo+2pJ2hjmO7P7eZ8St9eYag5MRdfNpqiQ
-         Heq+ZxY0Lvo0l6U3opVA782WmQCMVnFr4rzqfG0F0UdbTWuam32KArmbwwmE19iRY9F7
-         gfJnVnPrMcUpWxUyMFJw4VNOa0ZW2pw1qWbB1GCCx6SJave87Ns+qS/CcP4fhSxRd7Ow
-         3Atg==
-X-Forwarded-Encrypted: i=1; AJvYcCVigskh9Pw5IVM+LeBBJpqMtk7E0pDUkMDyTQfvhdZpgUARtsK+aXHsGaK7eG3YXq1x4DwtJwNKWw==@kvack.org
-X-Gm-Message-State: AOJu0YxuVlpzQMIleVxWCaNR5RWK89FHZmA37DUljIk9Jn9RmCrxejsn
-	8OrGL6OGy5BeFYqt7TiAwbcnixCVblBcmTaoTJxjUiM3ywe5zhC65B4alLOftn1x5YOshvlyW+6
-	LkHulpl0aAoigIIxcaNasJswpBk/9msQ=
-X-Gm-Gg: ASbGncuRySAD0WGkiJPkNThRnrZHMbKkKYHrwPXwf/W/PHOya8mED+KFsK4TYL2F4xV
-	7Av0aYxAjLK2kq957TlulgOEL49jgiyLggCHymYDxs0r6mgcaJSVCGcS/xvr6x0RvvvhyU904fF
-	qFLGsPiD82obY0r7chQmsc+W8RlaDS8u985WnY2sRO+RSM5viDRMPMODTw5CHnXwchM+3AwW/7R
-	uvA
-X-Google-Smtp-Source: AGHT+IFLY+ky7e3BroIIydWjoY0aabZimRGPv+KZv2ff2sfoqaC+0xQ4C7oeRILPEIRw/Fmk+/4AWjzm7pUMRn5Tgvs=
-X-Received: by 2002:a05:6870:169b:b0:30b:9750:3085 with SMTP id
- 586e51a60fabf-30c94ed0290mr2350864fac.10.1755001973402; Tue, 12 Aug 2025
- 05:32:53 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=3ZE38hmpc99A2k7OXVLbkRVM4tCEFDqNHUDB9CwwXLA=;
+	b=phWeEGlISzA/av/sBcwS4bZmels2JDQhocTkeORDAcGvDxd5w+8RMcKjcdQxrEjIGlRa1L
+	dFr21rWfatptyTN8Fdc+GS6h/qBS+EI2rYlz04nqu5mcLJ/GLQFsxbaaNRnZ9QpVHyD97z
+	wBdYV9+qDWdCzUkQ9Z8rSnwD/5CfvjQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755003001;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=3ZE38hmpc99A2k7OXVLbkRVM4tCEFDqNHUDB9CwwXLA=;
+	b=EJDx4oT9M4eTfPu95YmyX4ELP3DiDC8v+hMlHzCTseOT/D8pk6KUf2jI8O5oBVDR9FQcH6
+	5lTLes9idYdj1lU8G+irHUvNepJJ3RLTePu1GIgob4JGHHWA1BOthDiTrM++IP0lrpo5Ip
+	534ToHaoG5FZ6QBLdDqRhWX0nZZJy+U=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-659-o8yLrza-Pk6ODkq5WeTjFQ-1; Tue,
+ 12 Aug 2025 08:49:55 -0400
+X-MC-Unique: o8yLrza-Pk6ODkq5WeTjFQ-1
+X-Mimecast-MFC-AGG-ID: o8yLrza-Pk6ODkq5WeTjFQ_1755002993
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C3BB119560AF;
+	Tue, 12 Aug 2025 12:49:51 +0000 (UTC)
+Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.112.156])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CCF6730001A1;
+	Tue, 12 Aug 2025 12:49:44 +0000 (UTC)
+From: Baoquan He <bhe@redhat.com>
+To: linux-mm@kvack.org
+Cc: ryabinin.a.a@gmail.com,
+	glider@google.com,
+	andreyknvl@gmail.com,
+	dvyukov@google.com,
+	vincenzo.frascino@arm.com,
+	akpm@linux-foundation.org,
+	kasan-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org,
+	sj@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	elver@google.com,
+	snovitoll@gmail.com,
+	Baoquan He <bhe@redhat.com>
+Subject: [PATCH v2 00/12] mm/kasan: make kasan=on|off work for all three modes
+Date: Tue, 12 Aug 2025 20:49:29 +0800
+Message-ID: <20250812124941.69508-1-bhe@redhat.com>
 MIME-Version: 1.0
-References: <20250812-alex-fixes_manual-v1-1-c4e99b1f80e4@rivosinc.com>
-In-Reply-To: <20250812-alex-fixes_manual-v1-1-c4e99b1f80e4@rivosinc.com>
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-Date: Tue, 12 Aug 2025 21:32:41 +0900
-X-Gm-Features: Ac12FXzk5--95ren1VR6OqqAUzs5yqbnOkCJYlLg7DPyV4KuIMBIBIZHxZk8QM4
-Message-ID: <CABFDxMGPS6LE=A25VjXEpfKuzVfgxfgu=_uhkWXc3D+xuq-B6w@mail.gmail.com>
-Subject: Re: [PATCH] selftests/damon: fix damon selftests by installing _common.sh
-To: Alexandre Ghiti <alexghiti@rivosinc.com>
-Cc: SeongJae Park <sj@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Enze Li <lienze@kylinos.cn>, damon@lists.linux.dev, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: qsztaanr983bss17ted7bem61sa9yibx
-X-Rspamd-Queue-Id: B090B120010
-X-Rspamd-Server: rspam10
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Rspamd-Queue-Id: ADFE716000D
+X-Stat-Signature: e9kbi5ioqnjei6hdndjhp4yg6dxauw1e
 X-Rspam-User: 
-X-HE-Tag: 1755001974-865238
-X-HE-Meta: U2FsdGVkX1+sxRV5D13P+xP+yLRGpyKiu6H8JSmqDnTzVoNS9hvh0z9ud38lI0ux/NGCeyHPd0DcEG0RWUbNVaX92KfaV666IVZ1qH4MEvHmt0wW4zx1TcSwrixso288onYnlPsZvebajBMVVPN83AUa49JDksnytjW+RrnZNhKERjrewND3puJYqxzOYaqIMSojxsi/NUQGakAGfhtETivC4o6MqJqtaI3ycykr/QWy/8Ns2qnBXeJ7kE7jRGsUup+cKsMm0MyxuDaitYiYUJHK103rGK6YXC/REDeBv5W1IlHqEXkakWtv7n5OX0rh+CXL6W1gzU0vF0hn9G6Q3oTVz0kMoHsbNzmMP04cMTHSxsDZ/wloofZe9lcNGw3JWNZKe0ipqpZLPhmbiL73tcKJHTap3Rb6KZ8ryPtEQVtNgPojQXSv7k1/qo2sYc1cRLyfjV6SQH8cdpv49wQ7jph+sXmJ9mKiMkjVpp6iPBzERasRUJDRc+SuaPTeAci1+xEGIc344G5Bo+HdR0WLm5QSi/Mh29gN5HTm1Z0omgrvcmBJr6eiURiv5fIeDTOy+KYhTmsrrfqFEFJGQtLL5M24Fx7gmqED8pigps0XAp5+EcgF+5OB3bRBRDXSk7ahoSyMbdqI/ETOnUXC8YwUnNG5Ut1+kOT+eL0f7crZhHkfmNyOMEVj4BSi+WV5dfxIXzK3MDj0CZ2j5/yKtYH3FWOZZB48LTOsn/ckrNqhUEx13bH7FTivCgYVdq8lswLZuv0JS0nGFgzNxk0Ey8ZeEMl04VpbfHElTB5SfcBFBHt+6xBrSFLGn91hVlHCAQgw/q9Zh/Ct4BReBRucusqyGQf3bbm/Tq+VgT1cuSek6Phbcxn57sHKfRza8HFMWKCKkLCW892cQOnvt/fTlH2hp/ONWypSqzbp78Gikcw0ZvcgjYHeMXq5HJMGWMdAVrvzlv5Nu0PjPKoBLWb7oRY
- zuoy3Jd6
- 98oJFFOKpgDS0a2qTAyCPX66Gi+6gw8Tq9mAvUqNWAr0ayBVUs9Qr/V3kWrYIgvsPxuo1q7Vx1KPW9NmcUAjIMJ5NtuAPudOwWDBwuZhw0szegcElF4wLqBmKOObVrc3wpH0wn8nvD1xS7OwtXuL3ixtItpJ8UOXn33ON37Zb8LiFwY3K/BwZPcqcSTmY+zL2dFV5CFQKPe2Aa2rLayizDVuEKCzypECk60vASyrUpNkltaUGP3FomowwIIpBtPUqFQvMn6ms3+2+lixDUHZxdopSovCldbGmRRorwLX8wQTpDuz2VDoKdSH4xaR5ZFVEAYZigHf3fhMeHcLC8rPGyZZ/A2DzkOhMU6TEOjeGGg3GpUOVtqNYGXeZi4qZPIJkAVGTEiqQRSwcUKfNuPb4KxSm/ieNXd1kHobR0ebWOFPf5RdAnRcv8l4GI8bwlTna/lXZsCzKTyEybK55QR8TrlBJvvoizTMbPJgmM8D1evzbGoKTWcyA2jYrSQ==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1755003001-781188
+X-HE-Meta: U2FsdGVkX19/WJ8+c7pfr5K0XxH9LUl61ugYWBnaUYygB+ExwIDC7GRKekCl92WJDSGIAi/JIdgTYwGkX2eoDGN8Bhs3W5xnfACZ2zCZeJtJzaBomLd5x/0KAnYwnDNbS2iBKWZKUq2+dnUxFs85foOzKF4jd9ruXNrkJpYIc1NKWuVVEsiOb5nxHN1z9jN5aEt4uSGlmx+3lMEnBBX5UGf9v23QodgfCAZu+NEc4BFE7vZmSXXjIx8d+02lhT2LtRvZJ58kvdxlidQwOwF0IPU4WtlnJN69kmCY3yWsULqUFGL+dLqx/ozCwQyvKo3fsbApMQ5UXJ0IfXJZhejeV0Y7OvuZpVZe8WoclL6XxHVgm9cbeJcir66bkDKabWRsNsQALD9udVUxyiY0bUpks/Ie2jiN3BHTA7iVtw8ahWDjOo0vo6Tz97UmLBNbtB5hsEABTeUyXeQtuZOQXl1uBk9szLo8SFlG0b690hVU/u/9Tb4V7ywmUr+bszkZ3xFb8GADVjaVvW1zOZ12aCRPmJd0GAF8xiuc0zcInO0bj79/bVo9JAd6utI2MHy4dDhE8fS1eM0G2cV+7kaot/hixsWtY3sGmsGYuYj8prOMW+BG+ssaclW/5wzb/fwerYB9ucR2HwHKMXSCu+fYPhneYmLXwoGUfyufTCxSunTBBl282srN8c+OxpbK/64JxmLFhwWGz5uPlij5SIlYSlgh5YpD+HUaJcuRkAE7sgqcYwc9lrl5v92l7mmaHAZ6+DXaX+EjqrNxihGGvqbxt9UKusaWU4vyqXDRQ1FaFFxaPVttL6npctnHy/xg28vlBPp4a6nbcfnTcpJyo9Ou12tJJq5v86lylwP0EjL0V6lOr5J1TX3D2duDcCkbfeOPnyBbdG9jR9lZsOhNZ6RKlEG0QbVqo5mqN0xrmbat58oTtBwyAdswUhNbkjST+ki3T7UoXBR4unwSflPxOk44QcL
+ rfGqwGp4
+ rVAAQQuWu4rHY9p12axrlNRrIhZ8v2y4f6VyuQ6S3yhDntg54/WQtw5qkqmdM1DyRWcGndLw1vEEqYZ1VyD9O1X08mZjnUh9xp9JpcPwJogSEC5+DF2SsntqBkkgp2JO/e8SYVTJS7jJqb9iJ1pdYktPNNeeWTwCTIKL13VkimzT9bc8UktxiOqvH6Nm6kN4GRxPxEYdsYhOchdsFQzqLmcLMaevgaKEWhee+B/6BnO4Q05q20X3FVWoNLbYiTTXxbmqfoLqvoJ0E3/p4tszTmqesHfMOSLJ6D/H2QBjS4gmkngPXaSIpJFzZJHzv/0JasLPOwSBGFSughjL2yPKZF0uuMH3JzaGotzLiM06L0fp3OYb/GhBtLSb8M+WgswM0zgpT
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,63 +110,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello, Alexandre
+Currently only hw_tags mode of kasan can be enabled or disabled with
+kernel parameter kasan=on|off for built kernel. For kasan generic and
+sw_tags mode, there's no way to disable them once kernel is built.
+This is not convenient sometime, e.g in system kdump is configured.
+When the 1st kernel has KASAN enabled and crash triggered to switch to
+kdump kernel, the generic or sw_tags mode will cost much extra memory
+for kasan shadow while in fact it's meaningless to have kasan in kdump
+kernel.
 
-On Tue, Aug 12, 2025 at 5:13=E2=80=AFPM Alexandre Ghiti <alexghiti@rivosinc=
-.com> wrote:
->
-> _common.sh was recently introduced but is not installed and then
-> triggers an error when trying to run the damon selftests:
->
-> selftests: damon: sysfs.sh
-> ./sysfs.sh: line 4: _common.sh: No such file or directory
->
-> Install this file to avoid this error.
+So this patchset moves the kasan=on|off out of hw_tags scope and into
+common code to make it visible in generic and sw_tags mode too. Then we
+can add kasan=off in kdump kernel to reduce the unneeded meomry cost for
+kasan.
 
-I tried to reproduce those error with my vm environment but I failed;
-with my workaround test method, it doesn't exist.
-If you're okay, could you please tell me line by line how you execute
-tests in what environment?
-I'm also struggling with the test environment, as well.
+Changelog:
+====
+v1->v2:
+- Add __ro_after_init for __ro_after_init, and remove redundant blank
+  lines in mm/kasan/common.c. Thanks to Marco.
+- Fix a code bug in <linux/kasan-enabled.h> when CONFIG_KASAN is unset,
+  this is found out by SeongJae and Lorenzo, and also reported by LKP
+  report, thanks to them.
+- Add a missing kasan_enabled() checking in kasan_report(). This will
+  cause below KASAN report info even though kasan=off is set:
+     ==================================================================
+     BUG: KASAN: stack-out-of-bounds in tick_program_event+0x130/0x150
+     Read of size 4 at addr ffff00005f747778 by task swapper/0/1
+     
+     CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.16.0+ #8 PREEMPT(voluntary) 
+     Hardware name: GIGABYTE R272-P30-JG/MP32-AR0-JG, BIOS F31n (SCP: 2.10.20220810) 09/30/2022
+     Call trace:
+      show_stack+0x30/0x90 (C)
+      dump_stack_lvl+0x7c/0xa0
+      print_address_description.constprop.0+0x90/0x310
+      print_report+0x104/0x1f0
+      kasan_report+0xc8/0x110
+      __asan_report_load4_noabort+0x20/0x30
+      tick_program_event+0x130/0x150
+      ......snip...
+     ==================================================================
 
-> Fixes: 511914506d19 ("selftests/damon: introduce _common.sh to host share=
-d function")
-> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-> ---
->  tools/testing/selftests/damon/Makefile | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/tools/testing/selftests/damon/Makefile b/tools/testing/selft=
-ests/damon/Makefile
-> index 5b230deb19e8ee6cee56eb8f18c35e12f331e8b7..ddc69e8bde2905ff1c461a08f=
-2ad008e6b28ac87 100644
-> --- a/tools/testing/selftests/damon/Makefile
-> +++ b/tools/testing/selftests/damon/Makefile
-> @@ -4,6 +4,7 @@
->  TEST_GEN_FILES +=3D access_memory access_memory_even
->
->  TEST_FILES =3D _damon_sysfs.py
-> +TEST_FILES +=3D _common.sh
->
->  # functionality tests
->  TEST_PROGS +=3D sysfs.sh
->
-> ---
-> base-commit: 2754d549af31f8f029f02d02cd8e574676229b3d
+- Add jump_label_init() calling before kasan_init() in setup_arch() in these
+  architectures: xtensa, arm. Because they currenly rely on
+  jump_label_init() in main() which is a little late. Then the early static
+  key kasan_flag_enabled in kasan_init() won't work.
 
-Does this commit exist in `mm-new` or `damon-next`?  I failed to setup
-the same base-commit environment.
+- In UML architecture, change to enable kasan_flag_enabled in arch_mm_preinit()
+  because kasan_init() is enabled before main(), there's no chance to operate
+  on static key in kasan_init().
 
-> change-id: 20250812-alex-fixes_manual-aed3ef75dd83
->
-> Best regards,
-> --
-> Alexandre Ghiti <alexghiti@rivosinc.com>
->
->
+Test:
+=====
+In v1, I took test on x86_64 for generic mode, and on arm64 for
+generic, sw_tags and hw_tags mode. All of them works well.
 
-Thank you for great work!
+In v2, I only tested on arm64 for generic, sw_tags and hw_tags mode, it
+works. For powerpc, I got a BOOK3S/64 machine, while it says
+'KASAN not enabled as it requires radix' and KASAN is disabled. Will
+look for other POWER machine to test this.
+====
 
-Best Regards.
-Sang-Heon Jeon
+Baoquan He (12):
+  mm/kasan: add conditional checks in functions to return directly if
+    kasan is disabled
+  mm/kasan: move kasan= code to common place
+  mm/kasan/sw_tags: don't initialize kasan if it's disabled
+  arch/arm: don't initialize kasan if it's disabled
+  arch/arm64: don't initialize kasan if it's disabled
+  arch/loongarch: don't initialize kasan if it's disabled
+  arch/powerpc: don't initialize kasan if it's disabled
+  arch/riscv: don't initialize kasan if it's disabled
+  arch/x86: don't initialize kasan if it's disabled
+  arch/xtensa: don't initialize kasan if it's disabled
+  arch/um: don't initialize kasan if it's disabled
+  mm/kasan: make kasan=on|off take effect for all three modes
+
+ arch/arm/kernel/setup.c                |  6 +++++
+ arch/arm/mm/kasan_init.c               |  6 +++++
+ arch/arm64/mm/kasan_init.c             |  7 ++++++
+ arch/loongarch/mm/kasan_init.c         |  5 ++++
+ arch/powerpc/mm/kasan/init_32.c        |  8 +++++-
+ arch/powerpc/mm/kasan/init_book3e_64.c |  6 +++++
+ arch/powerpc/mm/kasan/init_book3s_64.c |  6 +++++
+ arch/riscv/mm/kasan_init.c             |  6 +++++
+ arch/um/kernel/mem.c                   |  6 +++++
+ arch/x86/mm/kasan_init_64.c            |  6 +++++
+ arch/xtensa/kernel/setup.c             |  1 +
+ arch/xtensa/mm/kasan_init.c            |  6 +++++
+ include/linux/kasan-enabled.h          | 18 ++++++-------
+ mm/kasan/common.c                      | 25 ++++++++++++++++++
+ mm/kasan/generic.c                     | 20 +++++++++++++--
+ mm/kasan/hw_tags.c                     | 35 ++------------------------
+ mm/kasan/init.c                        |  6 +++++
+ mm/kasan/quarantine.c                  |  3 +++
+ mm/kasan/report.c                      |  4 ++-
+ mm/kasan/shadow.c                      | 23 ++++++++++++++++-
+ mm/kasan/sw_tags.c                     |  9 +++++++
+ 21 files changed, 165 insertions(+), 47 deletions(-)
+
+-- 
+2.41.0
+
 
