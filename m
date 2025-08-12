@@ -2,95 +2,124 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A794CCA0EDC
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 17:52:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7CB29CA0EC4
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 17:55:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BFB78E0182; Tue, 12 Aug 2025 13:52:43 -0400 (EDT)
+	id 206498E0183; Tue, 12 Aug 2025 13:55:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 497228E0151; Tue, 12 Aug 2025 13:52:43 -0400 (EDT)
+	id 1DD7B8E0151; Tue, 12 Aug 2025 13:55:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3AE1A8E0182; Tue, 12 Aug 2025 13:52:43 -0400 (EDT)
+	id 11AA28E0183; Tue, 12 Aug 2025 13:55:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F02A8E0151
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:52:43 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 95319160136
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 17:52:42 +0000 (UTC)
-X-FDA: 83768850564.28.8790936
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0977B40005
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 17:52:40 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EDf+4lx4;
-	spf=pass (imf12.hostedemail.com: domain of dakr@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 027CF8E0151
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:55:19 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D23AF1D837C
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 17:55:18 +0000 (UTC)
+X-FDA: 83768857116.13.1F2AF31
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf17.hostedemail.com (Postfix) with ESMTP id EA3004000D
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 17:55:16 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ji9pNo2I;
+	spf=pass (imf17.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755021161;
+	s=arc-20220608; t=1755021317;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q7SudrwCrvOox5fMeyIms+neVxZMLrX1XSpSWopJ+zk=;
-	b=GiLqKneTaJpDweh4B6qnuUgpDwB/SBPNxuIL5fnc0MkxmP5qrcyMPIJdGzAOk7PCZG/fUo
-	XVJTqOkIRG3eSx0NMnCoNNWX+9EPdw1te4+mqRo/9yqgxQJYfGU+HiTSxSGe6Y8KGhUCs9
-	2vQ5cMTVeOtOYdtcOs9GDrAKzD1hF/E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755021161; a=rsa-sha256;
+	bh=ymZGpmngRJ7fOyPoIYIbr864BuGgQbxABMyIAp/lv7M=;
+	b=MbwdKgOYJbOz4dx9A5YHYT8Vb3E3caWQ4vc6sb8eOMzIeWyh3oh1t8QLFFETZq6OoXxPDq
+	vKEF/0Cdw4RqiKifNRv+0soV2nLasmbQrXUu2tv1vlCkKPY7Fj0A8YSCasoVezxOtWJvE6
+	YSp7deuy0QkUEz9dz0GkdTwvi/JR2fs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755021317; a=rsa-sha256;
 	cv=none;
-	b=s/7P8jswwc4dMc651SaalFlVtWmjqs6lCA2q6faI0bBriiZlHKCsPum0NoSfz6eLcb3qGr
-	VrZQB/J39XB+Hyx2B2/ShP0jeptJ4l2gaLi71ZgUTbC5iO7nbftL95NVLCW9a2DB8zaORO
-	A/NAnTu5WDzGNrK5bwXsyzK/w/PLv7w=
+	b=G/nW+dDm8BcsJzHXy30Kvai1il7dNDJQi6xlHSvEkSd1vsvgtlDoVLW07JEn3goW94K2ou
+	s7CAzyg4rr8nEf2bxpbK8nSc2aeVxtbB2OV31/hkfxfvS9J2VdVfikBZMgbZEmmhvdHPuf
+	KO5W02y1Pvi/fSDPc2xhdZ+fLq7oC3o=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EDf+4lx4;
-	spf=pass (imf12.hostedemail.com: domain of dakr@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 48AEEA57822;
-	Tue, 12 Aug 2025 17:52:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D48EFC4CEF6;
-	Tue, 12 Aug 2025 17:52:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755021159;
-	bh=HrWt7KsFmQFhR+gbni5exLfgmFjQs3b24up4/s6MmUg=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=EDf+4lx4IuM9rw8qi4wI1aL1fFeQH/N1+zaWTH51ERi8hnA7G07qo26tb3konaG7C
-	 sMqCLR2++PPj/UJzbowqN3eJHrxckicnDUjnrPXqS426jZIuJuQqTnQwV7+9TTKNpE
-	 ryRfutW6sZyjUFRqYcRpiY5mugzhPWIbv2HC0Ivbe/4zPfeFBzg/BxKlcDHdK9+Slp
-	 aXAMyKg+rbnfEmYb8gKgzuIHKc/kha6hu4YVSfA6suInHQO2SDLrrzMRDsnYmIb+u7
-	 Rt1ask5T+OWQCX0BGHsZr+mkNLbQV54y60NM2DEWzXbKR4NJl1weaKKPE8+JQy5wAq
-	 iMpJ232uW+npg==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 12 Aug 2025 19:52:35 +0200
-Message-Id: <DC0N2SBVHIS7.2P91EJSTIT1FM@kernel.org>
-Cc: "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, "Andrew Morton" <akpm@linux-foundation.org>,
- "Matthew Wilcox" <willy@infradead.org>, "Tamir Duberstein"
- <tamird@gmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, <linux-mm@kvack.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 1/2] rust: alloc: specify the minimum alignment of
- each allocator
-References: <20250811-align-min-allocator-v2-0-3386cc94f4fc@google.com>
- <20250811-align-min-allocator-v2-1-3386cc94f4fc@google.com>
-In-Reply-To: <20250811-align-min-allocator-v2-1-3386cc94f4fc@google.com>
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ji9pNo2I;
+	spf=pass (imf17.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2430439c05aso7712355ad.2
+        for <linux-mm@kvack.org>; Tue, 12 Aug 2025 10:55:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755021316; x=1755626116; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ymZGpmngRJ7fOyPoIYIbr864BuGgQbxABMyIAp/lv7M=;
+        b=ji9pNo2IgaIj2C8cvHoYHrbWpgyP5j2fIJsmORgqKgS0KF29WnpQTZUR5RcKjyJ0Vc
+         VxhgyDikm2tFmrUBkhdzNLxT6111EWsGQi653VRtA3Fpqq2QxNsT22Xz1EoFfwjsmLqv
+         fGvgTwK6KxgT0PRIabo2yLi+z03pxqGumK3bvrEF2ssVMk/uNh4osjT5eDQp5HWD+YQG
+         zP2x2ggvV6IK0YdQN3RsdUsFikKj/gO956QO+XRgmsNhAaRq686DO3K21x3NYaR4+o2o
+         LRvnKtYOyYcO7HeBWeZAztptwgxJ9cTXp91Y9ojA+6Be1V7bLn3efUgsX3HBqySBXKXm
+         q1OQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755021316; x=1755626116;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ymZGpmngRJ7fOyPoIYIbr864BuGgQbxABMyIAp/lv7M=;
+        b=WbTvx/q/oVzmn4+HEHLfqP6SCeWvyn3YKMq9E1UONvx5Uqod4Io2Os24B9XPE4YXgj
+         eKWUYfE0v9lo2tzMa7UHdSxeIGrbpqFEgT079v6OxwTeRRY0KmG8dLR5SR+jwxybnIDK
+         jsvSaXA7ohVpWxcdzZ28TKtpHevTWDGR6FiiDCOfovnp1S9gSgHdxK1vlHlP8zU758/Q
+         GzWzxHbS31Nb39xrXColKanKJhmYWVIp8hgfGdCJr8BFUY5Wb1pgfTMSjSGBW0D6SUK/
+         ycnYyfa3zjFlT0/743JUiyZEkAt2r4G9o/OfhiU0A/4y+EmCbV5cvvFaeCktIVHmu/gk
+         gzfA==
+X-Forwarded-Encrypted: i=1; AJvYcCVo955eXAa3r1/F2j/kp7NRYOLHQJ2qkj7BXy1B6FWrJos+ftE7PoQrC/dDQD6SJgkLADONhHr8jw==@kvack.org
+X-Gm-Message-State: AOJu0YxnZ9RKK2spdUB0pbcGSE5AlqFQj13TTlaWYUNVnpb+0jHr8C8a
+	x8Y3/BiqE85TjGiFPWogyhagixmA0kkKhq+sv3b2mSj66vDokh6qGS9L
+X-Gm-Gg: ASbGncs3/FdE1j5//rY7zEG+QQbin0APyudRmoq31LYfOZA4G57WSGiLyAXe5cOfN6a
+	juXDVxvU1Cpy7UvvpGpZolFYev0/KTuVd25450L+LkQXFvoUDCqSYpklY0pBB+VYq+dHBlfhep+
+	Sr/ZI2TIMLROMaXzWQ6TLTw5D5raFvrHYa6ntscxq1ORNKjCwnMaBqpPU2BdIUyi32EOp3zbzNm
+	LFpRU7epNZdbNEvoZcrBWpuroIXerVUyYoCGwgrozbOrMM7Gw7YPbvmYNqgybG2zmJxsn0RSbM6
+	gUg3nnNdv6oDDzAXghNM/37Oa7H5+OQVzeusF+iyp6kUNa8S+7nd+BcayNSzuOEnbnHAeRzHYIM
+	j+GyOz6GIyZvsCBgIAbT6DzVTKNboiEE2Mk+liC0dgVQCvhK7vOuRk4oIjMLpTsYt
+X-Google-Smtp-Source: AGHT+IE18aIbwR3kUmI00of6zx1vDAbhjJri7AMTb1JJykSzC0p6KytmOlYDyZhwco9kF97wduWaUA==
+X-Received: by 2002:a17:903:2a8d:b0:243:8f:6db5 with SMTP id d9443c01a7336-2430d0a260amr1715145ad.6.1755021315592;
+        Tue, 12 Aug 2025 10:55:15 -0700 (PDT)
+Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2422ba1e09csm279039935ad.16.2025.08.12.10.55.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Aug 2025 10:55:15 -0700 (PDT)
+Date: Tue, 12 Aug 2025 10:55:11 -0700
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Qianfeng Rong <rongqianfeng@vivo.com>, SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Will Deacon <will@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Nick Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	David Hildenbrand <david@redhat.com>,
+	Rik van Riel <riel@surriel.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>,
+	Uladzislau Rezki <urezki@gmail.com>, damon@lists.linux.dev,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org
+Subject: Re: [PATCH v2] mm: remove redundant __GFP_NOWARN
+Message-ID: <aJt__zOHjGcaghNf@fedora>
+References: <20250812135225.274316-1-rongqianfeng@vivo.com>
+ <b5ca3ef2-bd36-4cb5-a733-a5d4f1fb32fa@lucifer.local>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b5ca3ef2-bd36-4cb5-a733-a5d4f1fb32fa@lucifer.local>
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0977B40005
-X-Stat-Signature: 7u9zmokp3g93zda78i94qkuta5wftyd9
-X-HE-Tag: 1755021160-577738
-X-HE-Meta: U2FsdGVkX18X8GBzl44Xlw+DXRUCroMGEeVnOTNg+LMoBSRnulVxerw9M0geOcBbAMpznpI8oYi9nfIuy4J+vOpiNKpO4lY7e8UwFg89c8r4EWaCnc5/H7N5mrY40xJPUssITCNIjwBHi6XmjYl4XAytzJ29nlh9aT2PmI5f8l3UE4jm31XBlWGwvtxMnfnfdXyAa+1MvbHXFIsKWg379cPKyHzLcnqnQ3uiHXPEhW90oU+j/TIdiK89pxmHTmVn1C5PeYcOY14kp4uo5aJnHJH42x+vGZT0OoCw/AZmUI/cKtISBJN1SSHGZpKojpY0DFB90YO6YuPumlu4obqjvVMUONYJoqrxog/88zeBbO5EN9C/Das99QDOk/LGyoGGsc6+1ZiOEI9pmQ9LSl6qEZ1ZhwsxgcsCdvWbgKEgPOweIm2Nkh64aqFEkuoDIUwGGJIVJFJ6/eX35K4A8u3gxR0BVATP17IzW7N4MRl2GfSYL/LWbfcXrBrueVz5Q/bn2qs2Fv5QcmydHzVYv0pPJDf8Sn9hCg4TyQzmSos8/gl4AIJkFpF9BDWXcYE4MM4xFk4GYl6LRIvfuAfc5AmU9yCtrz18DYxFqYKyNOtpnu3OhwOGn743BFYR3XPd+1Q+fN5ddAKryiFpzXWjfhbg8RqG3djpQFWJRrf5BW4DpsMQLr8mKMSiWchCQLmCP45h5nPmY+kU/Gm7nz40y4UC7W6ICR/sNNgQWMe0GNAZaWPjvDyrZ4UVp2L1YLvUBcPqTvlb7qiYc11IUD62zb8H6zgnvyXJCuTvP8cf3HubTOrN6yYbV/wljsXxGRCWvMLBoNhUUTnV/aYOXezJMewCmNr5hAUZgxj+Zff332EEfiw2Rpu1SWg72UINx/DyQtR1wEx4raR17barehNA1XdSUFjxC2K7Gfm1QTETfwpuh2HtHbVe2WEneUjLHhIT1/lU7njEbAxgCvhtS7EWezn
- zXY9WWqJ
- ycvhV3luyw1WV4OG3yXoslbgGTHIfMXF5jlQQ2iy8OJSKkBGN2EJL61kc9YU3u7qu9GnGKp2GDzqfIKBw4qfoPQTFyAfru2BTFp+9sjwzo91d19BVcVp1jZG+MMR2V5/RopVPPE6x/xI4GNVvvlTa8j6fn/W2PUrCUJbfW4DL8o7J+KFn7h/cAgKWVdK3Swz/lWXmCpuooqL38ikPZevLtQTYhbjI1d64UP1RqpETzjji4JiRBvC+N4DCVr0VFkdp3d4wH8rp+51bRu6vDgPWsM0ErfqBCZsWv7yw7aKrqiT80b5wiko6ZlzlcIMNKMT7WCOwFrEza2jX917eQS/Edizxn+gZNbEA37kN
+X-Rspamd-Queue-Id: EA3004000D
+X-Stat-Signature: hpigm6fbmhqk8m9gwyxjciiy65pjn8km
+X-HE-Tag: 1755021316-925420
+X-HE-Meta: U2FsdGVkX1/q38QNc2rbEJ7le/aaG1R81yG9nsDz39zgcEDH0hdpHhHE17jDOIjvlZ1vaR1ZcyvV+dkweK7g3Kbyy75tL8ENrTAdwpoOyCImAQv3R8CWAyX5uwzWT2e1l7ZBwVwkZ7gGqAHApsQ399y2PLGHx/ZnNnio5D/aGDboTJY7I0cgOy8P4tkwdpTYcRUGa8rnHNPNGKImVYziAF7RWjEWpcSa803T8zPEtcRzc9duepekw03k3D1cEL8sYpT6mzlGsY1n2n5B0qtiAR5ykY2PVW3BEuF7Tseu7t+hSAtDwDmWyd0e+6ubUqW441xWnnhNFTHSLZFUR6jBmfBVVjQQDCNvQ+J/U3KQ5qZKyj08vOcxffnTvrc3+kHvuiQte9Hks5E0Ls45XiyWm4e4xIlIZX3ygPxhWqDkfDCCn3L2nV2NKYE208wUpC3pv3IlLc0/hBuQKvd6enwzHNNl4/rj69LABkA/0M/6jd2abImOrP9f2XzGXZt+gEIm/uZFMjrHQhVMJ1YDqHZMVAV0w7S2Vc+M8ByrlLdk0QTcDCTJahHso9QUKknoicHr3ubYXDuPdooLk3xvQ4USRf/dC+pIvxh14g/VktG5ovPaPesIJ+NCzbycPvhwoyc6ZI5lfsX3THqT1wxP6mgNz83k5wWHtZjXzTB6GJLyxtgn49wzYd5adeVSQeD3WVivNfNOvenFDyE1i7XMyuqumz6swy47tSkqwg4wTei9rgwuwdAID1lPu1/I1ANUvt3nGERYJqFB0/YOinfrxStfZLYqoN7EsKBRCPkeVW7XCiLc0J6dwP4eg3DiQoLrrl64ZfZXsHSM942xS6XOme/bx4KFlrw7y1qxm+gyty3/fuVtPyfj+BoM0Ctzv7egYCrfFfD5+2JXZa5ve1dBGzBw1SmdfjMDTPx7kGVt5g0+JjvESh1r82F4vW12OgU6B8LwQ0dBG3VQSorMjCE5zb9
+ 4QMMGMJU
+ bNwtAf72KwaY0+Yob7calmELFnF+vjxKiCfBi3yF0JdkS3zEMt4kefBhOB6A6BOfRycgOfFrjVfHYrgA2FjxT95eFvic0Y4DO9zAeJVWW5vGn+EjwbdF5DSacdQfWSWmS7z98L1x6F0TVMjMJrDL9lDbBcHGNwUIb5SCJgrvjY0HaPPH38OSbd/hjTjhsw0NOuAN4JnYUtWOkZyWQilHEw3vSNtCKjFotDSwxu8M3Fa9LYmvBrLglwJEwHKeMGFfVrRDsaZS6YAr2ngl2xhD7q7rQ8gtKPc7Q0lV9+JlswYSuiAR0TBegHiwhkQZJnhjlcrOLMM4THMv3gYGeF07TERG3ktzc8v8RD9pynaPp5rwXmcgPtoboQH4qCm9Ea7C0KU6PF30+sILnedLkR+NG4i/JMYX0VpCqrShNeZHkDCnqlQa1V7mTGFlXACk/rRvcN8iszHpiJ+HMGgFVCGDU5j3VSL8+nDFcUVzPBDBUeLN2g/0yBVeqEyOyqO8ML2gimNGOe+CpUoPwB0DusUkakC9qsaKcRxy0rGuP1/4yCcEw/qgkR7k/i/FBUw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,52 +128,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon Aug 11, 2025 at 2:31 PM CEST, Alice Ryhl wrote:
-> diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator=
-.rs
-> index aa2dfa9dca4c309e5a9eafc7da6a8a9bd7b54b11..25fc9f9ae3b4e471a08d77130=
-b374bd1397f7384 100644
-> --- a/rust/kernel/alloc/allocator.rs
-> +++ b/rust/kernel/alloc/allocator.rs
-> @@ -17,6 +17,8 @@
->  use crate::bindings;
->  use crate::pr_warn;
-> =20
-> +const ARCH_KMALLOC_MINALIGN: usize =3D bindings::ARCH_KMALLOC_MINALIGN a=
-s usize;
+On Tue, Aug 12, 2025 at 05:46:47PM +0100, Lorenzo Stoakes wrote:
+> On Tue, Aug 12, 2025 at 09:52:25PM +0800, Qianfeng Rong wrote:
+> > Commit 16f5dfbc851b ("gfp: include __GFP_NOWARN in GFP_NOWAIT") made
+> > GFP_NOWAIT implicitly include __GFP_NOWARN.
+> >
+> > Therefore, explicit __GFP_NOWARN combined with GFP_NOWAIT (e.g.,
+> > `GFP_NOWAIT | __GFP_NOWARN`) is now redundant.  Let's clean up these
+> > redundant flags across subsystems.
+> >
+> > No functional changes.
+> >
+> > Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+> > Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+> 
+> LGTM, I wonder if there are other such redundancies in the kernel?
 
-I think this needs the following diff:
+Looks like theres a lot left for this specific case. At least 48 show up
+that are spread out across subsystems when running 'git grep
+"GFP_NOWAIT.*GFP_NOWARN"'.
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helpe=
-r.h
-index 84d60635e8a9..4ad9add117ea 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -84,6 +84,7 @@
-
- /* `bindgen` gets confused at certain things. */
- const size_t RUST_CONST_HELPER_ARCH_SLAB_MINALIGN =3D ARCH_SLAB_MINALIGN;
-+const size_t RUST_CONST_HELPER_ARCH_KMALLOC_MINALIGN =3D ARCH_KMALLOC_MINA=
-LIGN;
- const size_t RUST_CONST_HELPER_PAGE_SIZE =3D PAGE_SIZE;
- const gfp_t RUST_CONST_HELPER_GFP_ATOMIC =3D GFP_ATOMIC;
- const gfp_t RUST_CONST_HELPER_GFP_KERNEL =3D GFP_KERNEL;
-diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.r=
-s
-index 25fc9f9ae3b4..5003907f0240 100644
---- a/rust/kernel/alloc/allocator.rs
-+++ b/rust/kernel/alloc/allocator.rs
-@@ -17,7 +17,7 @@
- use crate::bindings;
- use crate::pr_warn;
-
--const ARCH_KMALLOC_MINALIGN: usize =3D bindings::ARCH_KMALLOC_MINALIGN as =
-usize;
-+const ARCH_KMALLOC_MINALIGN: usize =3D bindings::ARCH_KMALLOC_MINALIGN;
-
- /// The contiguous kernel allocator.
- ///
-
-
-No need to resend I can fix it up when applying the patch.
+I think they should be cleaned up in sets per-subsystem to minimize
+merge conflicts, as suggested in the commit mentioned above (16f5dfbc851b).
 
