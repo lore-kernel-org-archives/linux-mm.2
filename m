@@ -2,157 +2,88 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D9CD6C87FCB
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 08:28:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D9D7AC87FCB
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 08:31:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A79AA8E0105; Tue, 12 Aug 2025 04:27:38 -0400 (EDT)
+	id 5C6378E0106; Tue, 12 Aug 2025 04:31:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A03928E00F5; Tue, 12 Aug 2025 04:27:38 -0400 (EDT)
+	id 578558E00F5; Tue, 12 Aug 2025 04:31:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8088C8E0105; Tue, 12 Aug 2025 04:27:38 -0400 (EDT)
+	id 4659D8E0106; Tue, 12 Aug 2025 04:31:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 62EC08E00F5
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 04:27:38 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 91506160237
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 08:27:37 +0000 (UTC)
-X-FDA: 83767426554.20.C8A52D0
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 815FBC000A
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 08:27:35 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b="FrYMRVD/"
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754987255; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3193E8E00F5
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 04:31:16 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EE8BE819FC
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 08:31:15 +0000 (UTC)
+X-FDA: 83767435710.01.1848121
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9CBE11C000F
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 08:31:12 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ioBOVq4e;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
+	spf=none (imf18.hostedemail.com: domain of BATV+01f4a5ca6254e61d0c65+8024+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+01f4a5ca6254e61d0c65+8024+infradead.org+hch@bombadil.srs.infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754987474; a=rsa-sha256;
 	cv=none;
-	b=RrUpZ5X7oi9EHpw5rym/n6pH7EXt9R/Vcp22MsVCikGobweCGisdP2VTFNisbxPrmxMwwq
-	4BtJVPbdtjUUaXKrUzMLulOTcnVD3qRwCwdkkzGlljIZ5SaBeggesMvZMUd9tgUP6bwKZE
-	q6ghPzpb9P4uBnJgodvdzyMIS1lcKsY=
+	b=c7LY+Xpok2IGRBoc7lvXCZGCZ4ehgRYHRJExOsihl/d+gqyyevHAFINXW0Io3JCogX24hm
+	6inrrSfApjfmPX3O91rPtuFR/YFC/KTJpkFb5FGnF/W+ZhmwAcbTJMhT3dwPH2/AOhGTiY
+	AcYDYhmGwRPeQbAk3AnppfOKpSag3W8=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b="FrYMRVD/";
-	dmarc=none;
-	spf=none (imf10.hostedemail.com: domain of brgl@bgdev.pl has no SPF policy when checking 209.85.128.43) smtp.mailfrom=brgl@bgdev.pl
+	imf18.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ioBOVq4e;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
+	spf=none (imf18.hostedemail.com: domain of BATV+01f4a5ca6254e61d0c65+8024+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+01f4a5ca6254e61d0c65+8024+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754987255;
+	s=arc-20220608; t=1754987474;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jAO2WeXDFkbtwkjKyd1xrqU98u0EGyjojmTyXcAuE7w=;
-	b=PX0NKfi64MVQgu1t32X+8SQVHkd3ywzA4Ot7Rh6ApxNsMksWyhkF7rZ2wtDTlX5VtGvRTq
-	ym4RjyBcVlgKcKuTJIZk3dueQpG0QfqpxLxsk+0ojxD4a2vj6ZLVHw2cubCNroQ4lhAM6k
-	wYb7V6Q9Xi3g5gDkV+MdMfyROF8z7CU=
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-459e39ee7ccso50746075e9.2
-        for <linux-mm@kvack.org>; Tue, 12 Aug 2025 01:27:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1754987254; x=1755592054; darn=kvack.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jAO2WeXDFkbtwkjKyd1xrqU98u0EGyjojmTyXcAuE7w=;
-        b=FrYMRVD/ZkPNnHrVO3emmV6hn+54Mk9UuMpWxie9nPdES9FS0YvToV+E26lIT5xtro
-         kvWpPvUe5YyzS417tigsj/G6sGMYrNAO6gNrjTxQ9HCk+Ur3MYMn1ctprT5r88Ng9/b7
-         R+lMJO8Stl7DgRmv/BZNVcOA783N762LuYqjCVnQSrja8uwfb0/9S512AVA2KE4phlTl
-         W/rLZ/qWtWzQHVXhLLd05JUcIaPL6iub2N1IrHa6SpDEcOpoYAu9753/zyyuQQKCuQdX
-         935H/k8bbZDs+ZNh+okv0W4l42lrmnecrAHGy6v6l4dTbf1KZIWX3nac0FjJWYQbpJUQ
-         7dlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754987254; x=1755592054;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jAO2WeXDFkbtwkjKyd1xrqU98u0EGyjojmTyXcAuE7w=;
-        b=Bz0/hjSM4F3fBluwylyNQuX+FpL20Bdc3m1dON5PARvQHPt/aV6BpwyvpXVQpTPS62
-         y+nAWmFyPs+K22NFae45e55DiZ+ae5Ms0zJgWOl64AZj1kd+LRH+c/xGCozG4l7kQVwE
-         3fH5gk2vl82Ue+5S47eDsmiEFVqmYuWPGI6k9LEuqglWXDBm1doVjosZx4o5hGMlWWYl
-         UvloXWLJ5p40z5z6BlmHNH3Gcq1ndL29b4YtS6rdlhthlj+SsKPAc61L2QfjJAakmqB+
-         hSF0nSr9d/MDoj0ZX7Mr4KK2/B+DN1H7qaCUP7q2zudnv08X94nB5jbaKgo2JVv6g0FV
-         v4Vg==
-X-Forwarded-Encrypted: i=1; AJvYcCWKDGjUhYxfoRsoOIK5BVygi7z1HhgFVuMHv8eZzgqtoB7QqHm4SD/yPpUTOXsG9MHrJBbrp6ff5A==@kvack.org
-X-Gm-Message-State: AOJu0YyuuKy/dIpnTUreKnJVaLQLryuHdp4Np3rg3Sz+Ulr8DrsNASSd
-	/9GcfXcqK9AkzMYrTml8M7zAUjYjA79waeEnYPJ55NBOoFOqyhg2Wh/pxCHFIqTWI50=
-X-Gm-Gg: ASbGnctEWtAalmpq46xjwSI4rLdbGLaOwKt7YZ9GCDDWFSnpuGjOMJ/IHB0FohEqGak
-	KXCwxME1pxJEB7BEknkjeFY3huXifLAJ+7YcoQXFLCQQQCZcZm19kUL4C2eHo/mGWd8vwtwjkZn
-	I2Ht1MjyhK+HxORnSnh92gldNcs5xUA8KAZ8e9jWCnYjlRWNECoH3epzEoTdq7Fi46qntwBnv8i
-	bmsyOaR/WiTHouKN/iqULZJIZn6ZeikGk8kuKCt1I2BhSc6s1jEKRZUwh+6M7/whMqo7s3Ja8wU
-	oGS/4KCKTkLAdn7py2OWra9EDzH3E/cFQF1kHNqWCAMSqpRAdM3KcERpyt4UfGNm49q9Uc+PqkC
-	Guok5yQhasnUFIqs=
-X-Google-Smtp-Source: AGHT+IEIkGK210eX4oaAWTvIndQdBKgODaVv89WdHuLZ5yZCYfAUy5DwGLKFKR8W9EpKo9YtXUOSDA==
-X-Received: by 2002:a05:6000:2501:b0:3b7:7904:58e1 with SMTP id ffacd0b85a97d-3b910fd9b5bmr1926776f8f.18.1754987253948;
-        Tue, 12 Aug 2025 01:27:33 -0700 (PDT)
-Received: from [127.0.1.1] ([2a01:cb1d:dc:7e00:16c8:50:27fe:4d94])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c3b9386sm43549423f8f.18.2025.08.12.01.27.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Aug 2025 01:27:33 -0700 (PDT)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Tue, 12 Aug 2025 10:27:14 +0200
-Subject: [PATCH v4 15/15] pinctrl: qcom: make the pinmuxing strict
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=s7uIM6IQ2GnRJMINnamZt+nOZI6yL1Vh1Qs9yCS83nE=;
+	b=YqD0lUMpLW2PFBxXp1+NInlfHWIfKLUxXWqPvzR55ciTxVgxSA2wuvM6nD7Jj7sTnnavpP
+	MhCq99pploklQPi7ALAuMlbzcv98EQRxy+byrjY0QtIl9d/e4Yzs8URPB0IRJPELsvVuBS
+	HmN9Z4cqny7185RJFw0wpjEjuVxsgpA=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=s7uIM6IQ2GnRJMINnamZt+nOZI6yL1Vh1Qs9yCS83nE=; b=ioBOVq4en/GVng08rmZuW1h3lg
+	RZxJG/RDqoA9T+fOm+5PJFmOO/RE8IswpvBt5dYYYxAPc3KWWl6EKPI1KFaq8VZgObrSTPDMlhkGt
+	6vHxsGr3k6vUZTlfaX35ZuTL00P522XjVVZJA3+MwqD+ilxtspWlCSRXD08SL7/CnmdEBREGRMa4h
+	/F9blN+B0Pvac8vqzlJ+LRHGfpX0j4BDY9mqnBEqu9lWPL/gtFpPkyNHhF9vRBXGg0PoOxvyKkd4M
+	jc+K241ZeUHYf70IaSEojbBCeKsZOeH+bJjKAWt/hLFDl9Uz73/wPgeAD2tuXCjKgi5ZCnMxzse9c
+	2FM0bPew==;
+Received: from 2a02-8389-2341-5b80-d601-7564-c2e0-491c.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:d601:7564:c2e0:491c] helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1ulkPU-0000000AFKh-1tta;
+	Tue, 12 Aug 2025 08:31:09 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: vbabka@suse.cz,
+	akpm@linux-foundation.org
+Cc: cl@gentwo.org,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
+	harry.yoo@oracle.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mempool: rename struct mempool_s to struct mempool
+Date: Tue, 12 Aug 2025 10:30:08 +0200
+Message-ID: <20250812083105.371295-1-hch@lst.de>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250812-pinctrl-gpio-pinfuncs-v4-15-bb3906c55e64@linaro.org>
-References: <20250812-pinctrl-gpio-pinfuncs-v4-0-bb3906c55e64@linaro.org>
-In-Reply-To: <20250812-pinctrl-gpio-pinfuncs-v4-0-bb3906c55e64@linaro.org>
-To: Linus Walleij <linus.walleij@linaro.org>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, 
- Alexey Klimov <alexey.klimov@linaro.org>, 
- Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
- Andy Shevchenko <andy@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@redhat.com>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
- Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- NXP S32 Linux Team <s32@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Tony Lindgren <tony@atomide.com>, 
- Haojian Zhuang <haojian.zhuang@linaro.org>, 
- Geert Uytterhoeven <geert+renesas@glider.be>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>
-Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
- linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
- linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
- linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1142;
- i=bartosz.golaszewski@linaro.org; h=from:subject:message-id;
- bh=M6AAfE1ZYIqFZsBoDZ4O1bJllvK/6bMXFJ6Zryc+i/E=;
- b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBomvrZaBmeISpiHCVh1NKR4JJvKfvoR7+4TGM34
- qACMSZiq0aJAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCaJr62QAKCRARpy6gFHHX
- ci+8EACxohGvZiGTBr0Y9QxyJzsEN0JDEuMPPP2/XSq+kOTHcKkmHErEtvBcohO7KLJzJuDM92q
- Iw3+IzM052WTxd4daM2zpMgweo/2dwzZfR5YEUer3WEroEGm+Bj1fVPmMiit7p1Urk63XsoIjrL
- iIqOXmtlteGyRTKCzz3k/xmfTyEyU7VBHczMECuT5uEu155Bu8nJCumD+wzbe8mmIlfgHaOMDUI
- EhNzoSXVeYCY0FHD/wqktUBCPUxVj3EGM965wJpVDJiroVIyzBPsjcH9gW4ZMI3gsrpLkKSn7/b
- B1DQKX5Md99KuFnktDMJfMeRA9VTUveqdFKrzKWO4O1PCOiNZYTlwh/00gXu8zMpM4AK1/xeHy6
- xv2CMDqxOQQE9pNYsgFWdMK5+GZYlQTAYrjZncSo6RYTzLN9weKlo0cKuhBe3wUVAZQntaTYy8i
- k/Zxwl8sT/axdwTsi8ewRtM0DJYHR7QWCXofS6dAiEDIgSKdzkZJ4mIec2cmwKInyd1Ja38qeyo
- BaUmY5FfX7ADJQDEVQD8b/C/oeUP+bk/MkxTefH5hvrw5RZW6Rm5jF7NwkotqyJwbEKJFZVea+T
- cJiJ5bAYHdIENT0OWfDZvACcGaK8OCdLW3UJoLXH1IZbWn2imkJ1JInadg5ZknF41i/olNLfmrS
- vdUH6mCryqoAAIg==
-X-Developer-Key: i=bartosz.golaszewski@linaro.org; a=openpgp;
- fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
-X-Stat-Signature: jrg6w68c43wdj1kr363zaki6h1raqeb3
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Stat-Signature: jzpktfbtz515redf71x9y4b8kbo9hwsx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 815FBC000A
+X-Rspamd-Queue-Id: 9CBE11C000F
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1754987255-261679
-X-HE-Meta: U2FsdGVkX19v8aj5iue8t0YqxLYMCw4eGGkI/XHYWSs6ml7U4lKU4trjdALdMRkZZ/7Rp1nODqM+af9ImbSV3jnHpkk6bwgF5z1jqAU/wWdAO0vIUXSGRXXYA+Sw7lfuEJd/A1UtznZmnJkfT6uswhc8IvAdFIGNICqOWhS5n/VcgVOxyWjfBqlXcoR8zjV6q9Pk8u1E7+txL1R8oDNsBjTxalQkt+7gtETmHCLaIqi21w3AdiWET9xsgXiZs9PHe2eHCuu+0iZ/Hi9V3/9FUlobez68hhuvRPSNSD49n22Si9bD0hdTkhS7dwa0lRc2pXN8drh454634NKF2EWFXxGt6HRDfnT3SqOm9FYZS85Ob3ZQ8cbl8IvipjcSHgyx0fHPwxCPsgPh4ZN3sd9dGlys0SNyCCuCHeCJH0Ib2GR8Uhl3VrnkpWovteOYKH48Qx3OahBpKcgO7usc9TrX0Ji43CdsNc+hjRVCSYp8y+Hyg33HSc8MZdIxbOsgVy/5tOnfUufbg07TXFDiPmavGJW1RdkFSUIhSHHoXeqwlbajFZ+Gaast6ShwqxJ/K1wz4JFFeaBWhqfE6VELQa0gptbMCJnYaK69Uqo1i/Qm3hj3fh68eZR1wlvTIUjv9bxsFqDRA+6BAuSYXPhM6Wx1V3TCFTjVxGau1J75w4AZzpIHEIPGpY2Sp+z0Ow5rxNGvafK4DhMzj+MAUYuniEPpKlGNnGhC4qE+LyyosRfyPcElJnx1ozwZsJETnNE1CpWAcFPS6pqVmkBrxha8fuyRYllo38MfeJ5g4mtd9bUYJUPLX92I7UUPrLP7XJddGZha0Z2hjETDQY7yQElQvFgJFyfiOODqCsXCkCcs8Bk1gWHtVSxMhXpOxHVg9ffOSlZsXpk9p+SxZNLT/pwfi3VuqAjQEjHyxSGulYcVxu338cSjtoMy6EcOP/VncucHpVDEjFdKBEQWNFn/pfOWDrx
- n0oUj8aX
- 8XjkBqtyWAj0kS5HAg2d6ZDnVxGtJDQvSyrDT4JDu0QB7iTgeHuV7mxnxrK+8yLjdUkgs2m8510IDfeTGugV2ENvzAtd3n7x7FcWHe64aTkMqryf/WNGUSDEoRHsmd7bcqPENCgjd1BeNs4T0X9LKBm/fCCls4NqUHtukuOuXetkQJQ5BVlAeioTdfGROPphG9djQ0CE2mfHcdWzos8tNDk+HR0qC7zpkSlZi6mzKOwAJLmlcNGR2UCS0AjaAXjbhgMIfBmSlZlRZvpHpL6qVo5b8vk1uAu42uj9KcH0aHc0hVIV49qKGehFLLkx7tEo+/3teGA2xigADiiyLoxayMwP+18i48Z1bWzVNJrL313UvCDisL83gBDIevZCjVwkPjz3X2rBIRCJEmq5I44dJHAC+hvnh2CbNUhxGjG68JKMua5qFrF4t0fhCNZd+ToiWhpFGD6oioLzO0VGzcLlYmIoPgQ3FCO+ThZ54NVvXyxiYChpCY51S7R5hiuY0uNmyLlMEFVHwOZKgkIMmcaFe6k5NTg==
+X-HE-Tag: 1754987472-567902
+X-HE-Meta: U2FsdGVkX1+FikVmmdzUjuNWpuva5s1qGjcZrk7n3TG/LGXgFRAMS9L9/yudTOOsrdS0u5CNe6O46wfJib/tRfOMlM7YQvojLDCWyWsqhABnOVKXHn7UKBLRsbJ8QA0Q3ynwdhwhhpriH6bLNI8J7HUio4HLbB5huQNE1Ee2A9fW+8rqvWQhKm5kYw5JDj4WsGjzup6q17kzjAfipksR46waGhl7xVmHP2YhOmEcBro/VYWqKR7FMm63ecYH1O6ykHjfxhw6lmipD6/k92j1l0MnwQDYqmW+1NGkoC8cZK1q8a37DAY08iQ74gtUtKsCF8WV/k8q/saoQJxuHHh++ahdHUktbmqKksyVOaeDqOQivjJ5K1W3u7DJux+bP+U5ZZlgeVYNjKcUQRGbdqgRnIB23/RuXqeFaoIk5eI79GZGRLvep3R9nV2bAtE3lv+uTHHTOETC/awUjf/Q08QDosxY+jx9PUhNbs7pxhkoDH/XxtHW27xaL/4iIX6/vMKcRmiGCfY+4/EB3FAt4X//aKOUdBD/+T8a/hBtMofOR9LlMn95vcMpFy8hb8wg6srZ+V9qbcS+/8ixN5MvUWHiTu0eqLpRlOBT9RaZ7wCatxBc8jOtd2EblNcqHtlsCjhBKU2TCPEpW1900cPYGA+qjY2L0/mPhH/soI+PtJm6zGhGNXO/tdzAiOo6TqEIFYIJT126PVs3Wx3QVSQj0mLZfRRbKThAUqeVRYRKZEu4gFIgy3Oyw+lpzKADcMAYuSp5t6VfeceJlASdX/yJVxxbeSn2D5GKw1co9wnswymYWVF64kFr/f0qTPpb/dI3BaC/Y2ODdUOxOL8m8pQI42dtdq4u4y9wS47JI+HUlRKd8tdvVW7VY+CU7U2u5v84bO4cwKsHvf3qugRFtjIjndgh/287AhzT5WqJG/7oUrH2MB3fcq2RK85w0PUuEkkjxNcS9ElEBUxnSiQevqTuZRd
+ V4lrmfmd
+ JF7IEwbCjQmcM4eVmAZyslZydJZIeS2NHnArLf6zFM5j6XWgPs8+nV84Qq+NDamAOGklQncOMlZzpihMJbUtzXDL3D1qUyzX6TCijGtpsRo2FLE2hqXKH3ZrweibQ4hvEHRsEsw91hzwY6k2jP2M6D90FPXF1aTesObnfWthNmRtiphK6a2D5Y3gxcZaMX8fkr/hYVR8zHd6oGttvv7XFRglJJfFhYg8LwkbjmKJVuyEPjtj72PdNX+H/VA7N7pLYUKMroq3ImBSTdeWbeUeYhe8PyTBtSD8E1qWkRX6J5g7GePb7PTmPACtK3Zs3DtV3c5l9pCcJzmCMStuo4KpovgPECX6GI73mKgW70XFeoyMJeYWeKjupRQjbs9Li4ngCq0w4vcIqmSnHT6ipm2U58vKV5g4YaULsvBHqTXi9wGGlz7PKthcSItnyeVHR3hrB3CB6XilDFrgYGcvljgccigkYR1aHsIXMFArgGClKH0bBXt/b8IJnThuDdPMiwJCpSo9kUNFJtA9rDFsqJpIngpjNxEFJJ1d+x8ZoSnAWSTIEukC+Js+EUb71vZxjnQgQGowKxFvy30LnhGUkPG0YOjqFqOUfmxzZcawP6irr2YvjD6iexsJDIHMcfU8ncl2JIeQI
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -161,34 +92,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Drop the pointless _s prefix and align to the usual struct naming to
+prepare for actually using the struct instead of the typedef so that
+random headers don't need to include mempool.h for just having a
+pointer to the mempool.
 
-The strict flag in struct pinmux_ops disallows the usage of the same pin
-as a GPIO and for another function. Without it, a rouge user-space
-process with enough privileges (or even a buggy driver) can request a
-used pin as GPIO and drive it, potentially confusing devices or even
-crashing the system. Set it globally for all pinctrl-msm users.
-
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/pinctrl/qcom/pinctrl-msm.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/blkdev.h  | 2 +-
+ include/linux/mempool.h | 2 +-
+ include/linux/netfs.h   | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-msm.c b/drivers/pinctrl/qcom/pinctrl-msm.c
-index a5f69464827119dfe2a7781b558094b283fca215..1751d838ce95d6138c824b90098f74891dec7656 100644
---- a/drivers/pinctrl/qcom/pinctrl-msm.c
-+++ b/drivers/pinctrl/qcom/pinctrl-msm.c
-@@ -268,6 +268,7 @@ static const struct pinmux_ops msm_pinmux_ops = {
- 	.function_is_gpio	= pinmux_generic_function_is_gpio,
- 	.gpio_request_enable	= msm_pinmux_request_gpio,
- 	.set_mux		= msm_pinmux_set_mux,
-+	.strict			= true,
- };
+diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+index 95886b404b16..c3f3ec5bb864 100644
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -199,7 +199,7 @@ struct gendisk {
+ 	unsigned int		zone_wplugs_hash_bits;
+ 	atomic_t		nr_zone_wplugs;
+ 	spinlock_t		zone_wplugs_lock;
+-	struct mempool_s	*zone_wplugs_pool;
++	struct mempool		*zone_wplugs_pool;
+ 	struct hlist_head	*zone_wplugs_hash;
+ 	struct workqueue_struct *zone_wplugs_wq;
+ #endif /* CONFIG_BLK_DEV_ZONED */
+diff --git a/include/linux/mempool.h b/include/linux/mempool.h
+index 7b151441341b..34941a4b9026 100644
+--- a/include/linux/mempool.h
++++ b/include/linux/mempool.h
+@@ -15,7 +15,7 @@ struct kmem_cache;
+ typedef void * (mempool_alloc_t)(gfp_t gfp_mask, void *pool_data);
+ typedef void (mempool_free_t)(void *element, void *pool_data);
  
- static int msm_config_reg(struct msm_pinctrl *pctrl,
-
+-typedef struct mempool_s {
++typedef struct mempool {
+ 	spinlock_t lock;
+ 	int min_nr;		/* nr of elements at *elements */
+ 	int curr_nr;		/* Current nr of elements at *elements */
+diff --git a/include/linux/netfs.h b/include/linux/netfs.h
+index 185bd8196503..270ed0822efa 100644
+--- a/include/linux/netfs.h
++++ b/include/linux/netfs.h
+@@ -21,7 +21,7 @@
+ #include <linux/rolling_buffer.h>
+ 
+ enum netfs_sreq_ref_trace;
+-typedef struct mempool_s mempool_t;
++typedef struct mempool mempool_t;
+ struct folio_queue;
+ 
+ /**
 -- 
-2.48.1
+2.47.2
 
 
