@@ -2,95 +2,96 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E898C87FCB
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 07:23:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8FE24CA0EC4
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 07:37:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6F3D8E00EE; Tue, 12 Aug 2025 03:23:23 -0400 (EDT)
+	id EC3548E00EF; Tue, 12 Aug 2025 03:37:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B47298E00E4; Tue, 12 Aug 2025 03:23:23 -0400 (EDT)
+	id E9B7B8E00E4; Tue, 12 Aug 2025 03:37:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A83E68E00EE; Tue, 12 Aug 2025 03:23:23 -0400 (EDT)
+	id DB1788E00EF; Tue, 12 Aug 2025 03:37:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 97ADC8E00E4
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 03:23:23 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BD8F31DAA14
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 07:23:22 +0000 (UTC)
-X-FDA: 83767264644.27.99D81BA
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 4112D40009
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 07:23:19 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=LIB6XCvE;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf12.hostedemail.com: domain of chizhiling@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=chizhiling@163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754983401; a=rsa-sha256;
-	cv=none;
-	b=EVuEy+bdbHLXO19v6wDL9H2ITkewHPeiNbJC213C4ndeAx2uaxTUFncw2xoaOYpUSG/c61
-	3fKRcOWlce6MORtpXt9FFMIgvddsjy9400N0qOBGAYHIzdrJi3d7BzomJ3tf6wF97Gpk7u
-	reij62AZVgUQwGLAy/+0IO59xjEy5uI=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=LIB6XCvE;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf12.hostedemail.com: domain of chizhiling@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=chizhiling@163.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CA76E8E00E4
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 03:37:43 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6623616020E
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 07:37:43 +0000 (UTC)
+X-FDA: 83767300806.04.A2B3654
+Received: from prime.voidband.net (prime.voidband.net [199.247.17.104])
+	by imf24.hostedemail.com (Postfix) with ESMTP id CD61C18000D
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 07:37:41 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=natalenko.name header.s=dkim-20170712 header.b=R2AMMGg3;
+	spf=pass (imf24.hostedemail.com: domain of oleksandr@natalenko.name designates 199.247.17.104 as permitted sender) smtp.mailfrom=oleksandr@natalenko.name;
+	dmarc=pass (policy=reject) header.from=natalenko.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754983401;
+	s=arc-20220608; t=1754984262;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aka2tvGvdvr+T6MVzxzapn/JbQtAeasW67ww2wlOOMM=;
-	b=wICW1ETS2rsdZGuoZHzo8FwTiAqOFqqiU1fPr8LpTO0/gppQo7bSTTM53UhuyWxG+GvUTM
-	e8qU1xZwJ03SjPaf2J0AVlVROezyxD1v/Mjwht7D6tJr7fWl6jG7yCXpOfgli3S+tsZhMg
-	nz7Rg1nT+/9IvYMYTIOxICDPFmK1bJw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=ak
-	a2tvGvdvr+T6MVzxzapn/JbQtAeasW67ww2wlOOMM=; b=LIB6XCvE+rue3Zqmhd
-	HLSen+jg4n/Gj4dfQKF+GL493C3pwhNKeIjzxEW8mJaPkpK3wdKBJWIXAERnSZ+u
-	JvPu/I0k79YoL8rDjEgBLMPAV8HjH3oUJO8Zzt0z9VNxGCY7IFcp0MWKmHL+Fjc2
-	x211Tm5yM4WSk0zny5MKNZiTU=
-Received: from czl-ubuntu-pc.. (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wC3RSPN65pon26ABQ--.34118S3;
-	Tue, 12 Aug 2025 15:22:54 +0800 (CST)
-From: Chi Zhiling <chizhiling@163.com>
-To: linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Yuezhang Mo <yuezhang.mo@sony.com>,
-	Chi Zhiling <chizhiling@kylinos.cn>
-Subject: [PATCH 2/3] mpage: clean up do_mpage_readpage()
-Date: Tue, 12 Aug 2025 15:22:24 +0800
-Message-ID: <20250812072225.181798-2-chizhiling@163.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250812072225.181798-1-chizhiling@163.com>
-References: <20250812072225.181798-1-chizhiling@163.com>
+	bh=Ko8fbK5GyQxFcouQBC+uaA5wBDCuoavWYQ2EzMwpjWI=;
+	b=GQuOVr+Pe8KaNbfS8AZYewGwLrJvfuFet0cdTQ5sErPHle4+XNmaIihOMQ0Z8XSdbhNKfa
+	8sckRbS89uHYDzj0ZE3VNfgdZg4Lx1Sjm3Hmli4SPhEh0X2qK44jtVtmN1mU88OO4Z34/D
+	bo3T564+0zpHW1yjXVQiQ9a2wHi/gJw=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=natalenko.name header.s=dkim-20170712 header.b=R2AMMGg3;
+	spf=pass (imf24.hostedemail.com: domain of oleksandr@natalenko.name designates 199.247.17.104 as permitted sender) smtp.mailfrom=oleksandr@natalenko.name;
+	dmarc=pass (policy=reject) header.from=natalenko.name
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754984262; a=rsa-sha256;
+	cv=none;
+	b=aFzKipOsNI1+VM3zDq+R6HIo6hyrKpF7CQyFg6oVrK6dsP65CBRviZ1ov+NQ6Jcl3vx3Rt
+	rhyLks3mwHq2VDJ1IN4/nBuE3mGXh0IDqRyNjB4yiWr3CyS1gUx9S9jqmLavUF8X41miDZ
+	bsl5S6u8tIMFjFpRG3QRR8RvID5zT8M=
+Received: from spock.localnet (unknown [212.20.115.26])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by prime.voidband.net (Postfix) with ESMTPSA id 89CA1635B040;
+	Tue, 12 Aug 2025 09:37:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
+	s=dkim-20170712; t=1754984254;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ko8fbK5GyQxFcouQBC+uaA5wBDCuoavWYQ2EzMwpjWI=;
+	b=R2AMMGg3UcI+D1Q0kO3yhjRvyygTC1w++Aaq90YxKJqFZseG8At7rRfbGdaSW+zLfWooYT
+	tJKBdsrKFfPWu+xWmebP5lZPTbF89Ein4L0rHp6/4CcTq97EWKMpcB5DpT6hZaO7HLbolf
+	oMhtdV2QQXFYdZIbIqWZmydi3U/+cRE=
+From: Oleksandr Natalenko <oleksandr@natalenko.name>
+To: David Rientjes <rientjes@google.com>, Damien Le Moal <dlemoal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+ Jens Axboe <axboe@kernel.dk>, John Garry <john.g.garry@oracle.com>,
+ Christoph Hellwig <hch@lst.de>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>, linux-mm@kvack.org,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Qi Zheng <zhengqi.arch@bytedance.com>,
+ Michal Hocko <mhocko@kernel.org>, David Hildenbrand <david@redhat.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Subject:
+ Re: [REGRESSION][BISECTED] Unexpected OOM instead of reclaiming inactive file
+ pages
+Date: Tue, 12 Aug 2025 09:37:22 +0200
+Message-ID: <3553647.iZASKD2KPV@natalenko.name>
+In-Reply-To: <33b6c9a3-3165-4ce8-9667-afdbaff2c3ae@kernel.org>
+References:
+ <5905724.LvFx2qVVIh@natalenko.name> <15056829.uLZWGnKmhe@natalenko.name>
+ <33b6c9a3-3165-4ce8-9667-afdbaff2c3ae@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wC3RSPN65pon26ABQ--.34118S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWxAry3try5ZrWxtFykZF45Awb_yoW5CFy3p3
-	9IyFnxurn7G34Sva47Jrn8Zr1SgwnxGFWUZFyfAa4fW34Utw1fu3Z7X3Z8ZFWUtF9rZFn8
-	XF4Fqry8JF1DWrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UCeHkUUUUU=
-X-Originating-IP: [116.128.244.169]
-X-CM-SenderInfo: hfkl6xxlol0wi6rwjhhfrp/xtbBawKnnWia6QNKpwABsn
-X-Rspamd-Server: rspam03
+Content-Type: multipart/signed; boundary="nextPart3246356.PYKUYFuaPT";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
+X-Rspamd-Queue-Id: CD61C18000D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4112D40009
-X-Stat-Signature: fo7syogt81jtm46tzx15fujcsqeppzbd
-X-HE-Tag: 1754983399-921823
-X-HE-Meta: U2FsdGVkX18Rcw52FzBPZMRzzt3yLiWbF4ffUkzLIh6pGV2okSxZv635hpaCHxoq458UAhevg9wJoOItGEGv9+4d5MfuwLGn8KZ0ECascwdn1B2weeG1hSsqpXCdo8jZlQhkFNYG/o1jOubCLHnItPWZ1XTB9Rfot+WAXDYK2/KGgcmvMnhnxxYxJMe1M9WYegt1UcG/ofF4taG4ICcaod59KYLwLJS2keT7rmluDrkuHJEnrCfqZeLgaF83NhFaJfqLvzC2aBInDf0UFPfZNeaN8e1/mvuCzWUjFbebqOP1d0lgwvGB0WjgivvnUZORf9bNq95SW4J2qG97qsNOJk2U2B8LCHFuIqZOIKYQJw1vMFhzs7EL0Yfe1XDNYSAhJ4TGg0XcP7svb63OOQYcmQ1SOwm+3geXDOwklzH91tybbxnE1T+niLMVsz9UMebVt1tdD39XOHnT5ZH2PkU4Xf9xVbrvJ8iY/42rku3PeauRRlseMdA7MSvsR8fSEViIOc6i7wWx0RH5ERfTD1wxzfChZ8fkwS7GKVzZd1tgXgi1qfpSdBnMDY50WVU+Nh3N6kL3t+XTD0bKUL1VycElI+G+1yVJY7l0o7eBnCxa3+57x5GmoC+wSK+nX7VEAYbyZAMOfLs6qElAtU9jjxXFYiiMKfd5VBj+Vypf9nXjjYjWZCHAaVO7U7Lfr3pg97qV1DGCk6ZgPEw9QHJf21qT3voZtEDEa4EF0lPs/Iy8sDxxd2OrsCNoRE4GqARCsd41JSXLq5arUcsltVOgkJMIPU+kHzGZFNGKIjdlkjnHqfLHzRiDkiMGzH6uqPaaTIsQMPp+oqs97bSh1iPZr1ZnqDbSp/Luqyxk3WlR/lcediAk3q5zKa8OZbbKpEG+FvflqfY5ceZ2zH/jALUm53yTEDyxMQ/DAOIL78Fpeg62FkowcZYAhYj5G9W9MyCIQFtugP7JmuXn6Q3rhe4q0jN
- zy5d9fDp
- ZVhqnqX0Utfmb46YNJRuTQEwOuojwXVSNuoTz622kqllFTRIZmSLD4WCXE2zDm6aegOSC1gRi0n08OWDUtg9EGowb8FQGOIjW2IRiv6b+z8iF/vIDSWaLY20vZAiEyo17kcHAWvOMHqrvdL+Ece1SO+XrxWKOLY9kJi0L3O2RjYjz6EkiUUMK64MAGeAT9PZOCQdCyl+DLEqR5IDK9joQP/B8OxD6xTY6dvHjyRIbVkX01s0M+m/HnTdqOGiZIwVJh6ngxY0qEBWCE+JGWLF1RuzS730LqfOWL+FTV+sIYPgAots7rc6MUQ3nTIDXvVnEdEyu9N/IXVvp1hP0pKziI+jfAzqeM/uHsvS8jaoGL7pGhiKTyoozMhwVbmYs7pkiCaXI8uKA58e9KTtkW/FN+v+a5YAYk8tFaMLYUqzkIMBAahU=
+X-Stat-Signature: 8on3db17yqz8dmc4tyo8gdfdxxdar3ir
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1754984261-598420
+X-HE-Meta: U2FsdGVkX1/m0VtVdAMUYetRZhShWPqxHXjXYdbRuNfVV47Mo2WxBkH193jdsoRsKiuMOfT8t3DBl39JBvdPzHtssFP2D1eoBVjPxjppyKEvm15LeQ9r7vyKCILfDzrNNfW0qql3NtpT8Tprs4OPzRX/laCUQCBmNGQe4/+C6wTRCyrKcUlN8HSKxxY31LnA3KIz7LzI7yN7g9QJbe/ZrFG/Ro94ndGwnEckYbjW4ajcQt0skAp1NgNYJyAum1MemiKnjHl0v4xUK7Y63Eeke/xU1MLA0kOA/YPdPfBvhqFAYL/fwWWJWdl3cckvgDVOTfGi5Aet+GTD+PXnXIVnQ2uc+FLZVkLFLsUqDavjqgrW1CjNaeeqYSVDZHX9DU2NN+Nxul5GmQdDXEtMtVtEU/wNS6wQ1dBIbz0T0hlfMghSH/25i5ZxwBX8yNe/bgumNMqttuC7k54RSZr2Bni8c06C3vCXcZAmUFDsRsV8IctzWYX1nmv4h/g/wLdQ2WtjQekSJDbzYImfkFlEX0gapq9KLztVnYqLjOUs2MlI/tesmy4r1i+Bj8dKZO49naJl/IjdrIlXeMPcw3w4k5/OzMHdbTmjzd/8gY+sdYGzFtTTcQoeCGf/6cXjutokn2/zLXrbjl/mbHLQIyyaGe3b1VH85WLSIkekxObBVw7E8dZgPiFv59xl679U1gPzqnuxvt+jvswDoEwttMUdiAaoZOvICq9jw7nFLbryAVDqiP5dTC2/Uu4mX+cmOXlDvwfLrjekgK70eVsgOgjYKIxyTtlAbnkWw19d6WLhE7kFZL5zH4htb6eW+e5bq3XC1VqnKiQ7dsUB7Zgb1L9+xzQGoSMvXKmbCNLk9UOTeVWr7AUyIiWwhkpChXYSYoLNJwYhPXFUhZ9D1kBG/sOSUjA84kGVWcZmZZFttFqLnNgrFIk2DpCfoQw65DyIwxJGIFzgw4M918TV+l0WkmG48AA
+ r6g9bRD6
+ nY9yaIGHK55F69gi03gJ5KYCTBwMQtmz/IlY6Xoeun8axbKHLY8wYsmAxXQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,102 +100,193 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Chi Zhiling <chizhiling@kylinos.cn>
+--nextPart3246356.PYKUYFuaPT
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Oleksandr Natalenko <oleksandr@natalenko.name>
+Date: Tue, 12 Aug 2025 09:37:22 +0200
+Message-ID: <3553647.iZASKD2KPV@natalenko.name>
+In-Reply-To: <33b6c9a3-3165-4ce8-9667-afdbaff2c3ae@kernel.org>
+MIME-Version: 1.0
 
-Replace two loop iterations with direct calculations.
-The variable nblocks now represents the number of avalid blocks we can
-obtain from map_bh. no functional change.
+Hello.
 
-Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
----
- fs/mpage.c | 42 +++++++++++++++++-------------------------
- 1 file changed, 17 insertions(+), 25 deletions(-)
+On =C3=BAter=C3=BD 12. srpna 2025 2:45:02, st=C5=99edoevropsk=C3=BD letn=C3=
+=AD =C4=8Das Damien Le Moal wrote:
+> On 8/12/25 5:42 AM, Oleksandr Natalenko wrote:
+> > On pond=C4=9Bl=C3=AD 11. srpna 2025 18:06:16, st=C5=99edoevropsk=C3=BD =
+letn=C3=AD =C4=8Das David Rientjes wrote:
+> >> On Mon, 11 Aug 2025, Oleksandr Natalenko wrote:
+> >>> I'm fairly confident that the following commit
+> >>>
+> >>> 459779d04ae8d block: Improve read ahead size for rotational devices
+> >>>
+> >>> caused a regression in my test bench.
+> >>>
+> >>> I'm running v6.17-rc1 in a small QEMU VM with virtio-scsi disk. It ha=
+s got 1 GiB of RAM, so I can saturate it easily causing reclaiming mechanis=
+m to kick in.
+> >>>
+> >>> If MGLRU is enabled:
+> >>>
+> >>> $ echo 1000 | sudo tee /sys/kernel/mm/lru_gen/min_ttl_ms
+> >>>
+> >>> then, once page cache builds up, an OOM happens without reclaiming in=
+active file pages: [1]. Note that inactive_file:506952kB, I'd expect these =
+to be reclaimed instead, like how it happens with v6.16.
+> >>>
+> >>> If MGLRU is disabled:
+> >>>
+> >>> $ echo 0 | sudo tee /sys/kernel/mm/lru_gen/min_ttl_ms
+> >>>
+> >>> then OOM doesn't occur, and things seem to work as usual.
+> >>>
+> >>> If MGLRU is enabled, and 459779d04ae8d is reverted on top of v6.17-rc=
+1, the OOM doesn't happen either.
+> >>>
+> >>> Could you please check this?
+> >>>
+> >>
+> >> This looks to be an MGLRU policy decision rather than a readahead=20
+> >> regression, correct?
+> >>
+> >> Mem-Info:
+> >> active_anon:388 inactive_anon:5382 isolated_anon:0
+> >>  active_file:9638 inactive_file:126738 isolated_file:0
+> >>
+> >> Setting min_ttl_ms to 1000 is preserving the working set and triggerin=
+g=20
+> >> the oom kill is the only alternative to free memory in that configurat=
+ion. =20
+> >> The oom kill is being triggered by kswapd for this purpose.
+> >>
+> >> So additional readahead would certainly increase that working set.  Th=
+is=20
+> >> looks working as intended.
+> >=20
+> > OK, this makes sense indeed, thanks for the explanation. But is inactiv=
+e_file explosion expected and justified?
+> >=20
+> > Without revert:
+> >=20
+> > $ echo 3 | sudo tee /proc/sys/vm/drop_caches; free -m; sudo journalctl =
+=2Dkb >/dev/null; free -m
+> > 3
+> >                total        used        free      shared  buff/cache   =
+available
+> > Mem:             690         179         536           3          57   =
+      510
+> > Swap:           1379          12        1367
+> > /* OOM happens here */
+> >                total        used        free      shared  buff/cache   =
+available
+> > Mem:             690         177          52           3         561   =
+      513
+> > Swap:           1379          17        1362=20
+> >=20
+> > With revert:
+> >=20
+> > $ echo 3 | sudo tee /proc/sys/vm/drop_caches; free -m; sudo journalctl =
+=2Dkb >/dev/null; free -m
+> > 3
+> >                total        used        free      shared  buff/cache   =
+available
+> > Mem:             690         214         498           4          64   =
+      476
+> > Swap:           1379           0        1379
+> > /* no OOM */
+> >                total        used        free      shared  buff/cache   =
+available
+> > Mem:             690         209         462           4         119   =
+      481
+> > Swap:           1379           0        1379
+> >=20
+> > The journal folder size is:
+> >=20
+> > $ sudo du -hs /var/log/journal
+> > 575M    /var/log/journal
+> >=20
+> > It looks like this readahead change causes far more data to be read tha=
+n actually needed?
+>=20
+> For your drive as seen by the VM, what is the value of
+> /sys/block/sdX/queue/optimal_io_size ?
+>=20
+> I guess it is "0", as I see on my VM.
 
-diff --git a/fs/mpage.c b/fs/mpage.c
-index b6510b8dfa2b..a81a71de8f59 100644
---- a/fs/mpage.c
-+++ b/fs/mpage.c
-@@ -158,7 +158,6 @@ static struct bio *do_mpage_readpage(struct mpage_readpage_args *args)
- 	struct buffer_head *map_bh = &args->map_bh;
- 	sector_t block_in_file;
- 	sector_t last_block;
--	sector_t last_block_in_file;
- 	sector_t first_block;
- 	unsigned page_block;
- 	unsigned first_hole = blocks_per_folio;
-@@ -180,9 +179,8 @@ static struct bio *do_mpage_readpage(struct mpage_readpage_args *args)
- 
- 	block_in_file = folio_pos(folio) >> blkbits;
- 	last_block = block_in_file + ((args->nr_pages * PAGE_SIZE) >> blkbits);
--	last_block_in_file = (i_size_read(inode) + blocksize - 1) >> blkbits;
--	if (last_block > last_block_in_file)
--		last_block = last_block_in_file;
-+	last_block = min_t(sector_t, last_block,
-+			   (i_size_read(inode) + blocksize - 1) >> blkbits);
- 	page_block = 0;
- 
- 	/*
-@@ -193,19 +191,15 @@ static struct bio *do_mpage_readpage(struct mpage_readpage_args *args)
- 			block_in_file > args->first_logical_block &&
- 			block_in_file < (args->first_logical_block + nblocks)) {
- 		unsigned map_offset = block_in_file - args->first_logical_block;
--		unsigned last = nblocks - map_offset;
- 
- 		first_block = map_bh->b_blocknr + map_offset;
--		for (relative_block = 0; ; relative_block++) {
--			if (relative_block == last) {
--				clear_buffer_mapped(map_bh);
--				break;
--			}
--			if (page_block == blocks_per_folio)
--				break;
--			page_block++;
--			block_in_file++;
--		}
-+		nblocks -= map_offset;
-+		if (nblocks > blocks_per_folio - page_block)
-+			nblocks = blocks_per_folio - page_block;
-+		else
-+			clear_buffer_mapped(map_bh);
-+		page_block += nblocks;
-+		block_in_file += nblocks;
- 		bdev = map_bh->b_bdev;
- 	}
- 
-@@ -243,7 +237,7 @@ static struct bio *do_mpage_readpage(struct mpage_readpage_args *args)
- 			map_buffer_to_folio(folio, map_bh, page_block);
- 			goto confused;
- 		}
--	
-+
- 		if (first_hole != blocks_per_folio)
- 			goto confused;		/* hole -> non-hole */
- 
-@@ -252,16 +246,14 @@ static struct bio *do_mpage_readpage(struct mpage_readpage_args *args)
- 			first_block = map_bh->b_blocknr;
- 		else if (first_block + page_block != map_bh->b_blocknr)
- 			goto confused;
-+
- 		nblocks = map_bh->b_size >> blkbits;
--		for (relative_block = 0; ; relative_block++) {
--			if (relative_block == nblocks) {
--				clear_buffer_mapped(map_bh);
--				break;
--			} else if (page_block == blocks_per_folio)
--				break;
--			page_block++;
--			block_in_file++;
--		}
-+		if (nblocks > blocks_per_folio - page_block)
-+			nblocks = blocks_per_folio - page_block;
-+		else
-+			clear_buffer_mapped(map_bh);
-+		page_block += nblocks;
-+		block_in_file += nblocks;
- 		bdev = map_bh->b_bdev;
- 	}
- 
--- 
-2.43.0
+Yes, it's 0.
+
+> So before 459779d04ae8d, the block device read_ahead_kb was 128KB only, a=
+nd
+> 459779d04ae8d switched it to be 2 times the max_sectors_kb, so 8MB. This =
+change
+> significantly improves file buffered read performance on HDDs, and HDDs o=
+nly.
+
+Right, max_sectors_kb is 4096.
+
+> This means that your VM device is probably being reported as a rotational=
+ one
+> (/sys/block/sdX/queue/rotational is 1), which is normal if you attached an
+> actual HDD. If you are using a qcow2 image for that disk, then having
+> rotational=3D=3D1 is questionable...
+
+Yes, it's reported as rotational by default.
+
+I've just set -device scsi-hd,drive=3Dhd1,rotation_rate=3D1 so that guest w=
+ill see the drive as non-rotational from now on, which brings old behaviour=
+ back.
+
+> The other issue is the device driver for the device reporting 0 for the o=
+ptimal
+> IO size, which normally happens only for SATA drives. I see the same with
+> virtio-scsi, which is also questionable given that the maximum IO size wi=
+th it
+> is fairly limited. So virtio-scsi may need some tweaking.
+>=20
+> The other thing to question, I think, is setting read_ahead_kb using the
+> optimal_io_size limit (io_opt), which can be *very large*. For most SCSI
+> devices, it is 16MB, so you will see a read_ahead_kb of 32 MB. But for SC=
+SI
+> devices, optimal_io_size indicates a *maximum* IO size beyond which perfo=
+rmance
+> may degrade. So using any value lower than this, but still reasonably lar=
+ge,
+> would be better in general I think. Note that lim->io_opt for RAID arrays
+> actually indicates the stripe size, so generally a lot smaller than the
+> component drives io_opt. And this use changes the meaning of that queue l=
+imit,
+> which makes things even more confusing and finding an adequate default ha=
+rder.
+
+Thank you for the explanation.
+
+=2D-=20
+Oleksandr Natalenko, MSE
+--nextPart3246356.PYKUYFuaPT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEZUOOw5ESFLHZZtOKil/iNcg8M0sFAmia7zIACgkQil/iNcg8
+M0tTChAAwRcANFL3mXoAdtvq28I6ZKLSmHdY2tZhwVBttLRFWCXreDnNiYJV/+GH
+gIW7xVzpfYxVZ2jXjA+pNfEng7WrXYFQKrwXKdaexfUDS0/NS0uq8ICh9uCLb+Bp
+00F4E8IOL/DkrzC/AfxuXYgDo9LsCIi0+8sPWkMAuYLCxCWL52cal3yVxCq6wtlY
+JgxHcpxfC/zu6avLp0CrsPVxIYG2i5QV4F/9orZHUhIlitcjbvscsInu7KulDME5
+DT2gm+bEKxIHCLxCzNMqGm4b1fd5OF0nFaNypnOUhy30qvLawTTqmxd/UUoHpW6p
+BgViyIsGv4XukLKKJOKu3/A02rzT055QixDTXybSGDLowBD7Ia9tTV1+V4JrEuw9
+M/+V1zqwqIoyhsIIiu6LaKANaMATCFVrd4wSN8TkXyMh/yZzHjYuJDkrKrVjQzbv
+QO9qbhJ/CEyhU2bNIiAp/eITvI5Dr+S9Yj3uChZ0uJ0SYyYSF/YHq8fA8MsNwGBV
+gu4OIzi815wN5k+WBxhq22DFPuoDBxFmnmw/mJCXln8UG0VRdJbFvKzj5mJsj7ZZ
+VC1jpqT80ASM+2Cp7++uPK6rjOKr5wIYu1mxOYfyqCl3bXCd3CPQ3gHtZHi5EORn
+XYG2Mf/twoUjnFOIMhMz5jL438qvyA2aOyvZziDrai+fWB5VvF0=
+=58kA
+-----END PGP SIGNATURE-----
+
+--nextPart3246356.PYKUYFuaPT--
+
+
 
 
