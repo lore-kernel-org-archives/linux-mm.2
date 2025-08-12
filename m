@@ -2,123 +2,100 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D5275CA0EC4
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 05:58:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A9B3CA0EC4
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 05:58:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DF7F8E00E0; Tue, 12 Aug 2025 01:58:12 -0400 (EDT)
+	id BE9798E00E1; Tue, 12 Aug 2025 01:58:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68FA78E00BE; Tue, 12 Aug 2025 01:58:12 -0400 (EDT)
+	id B99DD8E00BE; Tue, 12 Aug 2025 01:58:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5589E8E00E0; Tue, 12 Aug 2025 01:58:12 -0400 (EDT)
+	id A613F8E00E1; Tue, 12 Aug 2025 01:58:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E8388E00BE
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 01:58:12 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A974D1601C6
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:58:11 +0000 (UTC)
-X-FDA: 83767049982.24.01DA5EC
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 71FBA180006
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:58:08 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	spf=pass (imf24.hostedemail.com: domain of zhangzihuan@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangzihuan@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E8498E00BE
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 01:58:41 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 429CC1A0194
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:58:41 +0000 (UTC)
+X-FDA: 83767051242.27.0068C88
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 303B41C0005
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:58:38 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rHPm74vQ;
+	spf=pass (imf20.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754978289;
+	s=arc-20220608; t=1754978319;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1LjS4KWlNpQyQUEE6izmdYdDn2MipVYYgpRXfrO5T5k=;
-	b=FrkLp/sBDvE6qH1l8F3Rt+gdLr5mfl6HVbJmPY5c3oZeD61IcEHpQXg1Ff9NCpummZAsWd
-	T8WgL5+qDRLXvKe9QMsth6rsr9tdnru8zam65rOsROWLrvMvqzU+4G56JLuwLrpq+XrKE7
-	X/Sgm1S2lz56rFAgc4FYtruDvcHidD4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754978289; a=rsa-sha256;
-	cv=none;
-	b=xhUts1UAKqHGTpIguVejvlqaRUNUs3MTwbRNbP1ZUgxZJXW6vLWHB3dPOEcZmD0sLMLfc/
-	GXAq2rf93qPvLhwbdqwZ5vo2xhPkHWWHwCxiY9wOOaURdlhs788fmzo4m4Ah3daBur5Z/c
-	S6NLMTukiBMDmS6n7GaT3nboCTR42Go=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=zjLRO9jlztFg7Xlmb6d+mGgiFh1eSfbawN7/i0rsBCU=;
+	b=YjZJ4/5vo8w8vd16UMT4DVZTXdYRkkeKIVeKRJxHZ3skcFT5SXovTzR0mIhx2pJreNgYMo
+	X4OJXWP9UJIpHoGxEhJ3TdiSI0JJn3ywINlL8H06cMyvgc+HP+70pAGZDj+uF/C75U2vpX
+	a6RySAiVPL04qU2y8xtJpWr8PYRIa9E=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of zhangzihuan@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangzihuan@kylinos.cn
-X-UUID: 4c5b128c774111f0b29709d653e92f7d-20250812
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:438044e9-dee8-467f-ba90-68936615dac9,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:a708c60e7cf78976e1210166e7a6b49d,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
-	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
-	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 4c5b128c774111f0b29709d653e92f7d-20250812
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <zhangzihuan@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 259772601; Tue, 12 Aug 2025 13:57:58 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id 33322E008FA3;
-	Tue, 12 Aug 2025 13:57:58 +0800 (CST)
-X-ns-mid: postfix-689AD7E6-4259899
-Received: from [172.25.120.24] (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id D6EF0E008FA2;
-	Tue, 12 Aug 2025 13:57:49 +0800 (CST)
-Message-ID: <d86a9883-9d2e-4bb2-a93d-0d95b4a60e5f@kylinos.cn>
-Date: Tue, 12 Aug 2025 13:57:49 +0800
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rHPm74vQ;
+	spf=pass (imf20.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754978319; a=rsa-sha256;
+	cv=none;
+	b=m6Pkz98g1rtKtnjZmN8n4qCrgN3TsSHwb/7so88h79FZCpQ9K2ciV/p0sl7ojqB53ogr3H
+	F120zVX6N6/tTOTQYolVQbS2/hzJu8ZB7nSbG/L4h2uBV3mS3Bs4nPI7GDZg50uvqpdSBd
+	LlmHvio6fm3XWz/+cj80RDEz/cgsDho=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id BF24445FAB
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:58:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99160C4CEF8
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:58:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754978317;
+	bh=5/IY6DIk3onVp/qtCNMehb2TxY8eCwzuw7RtOQJuQas=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=rHPm74vQQP6+4xv5GKUq+Yid8PFLFpE16C1OzihWakyVIsdQph7mlcJiR6GcoBqk5
+	 unkTOREJE5OJ5z+/G1XWSShuFgX3q4eSev7xu/AlnyW0rHpLpo6/3Du5yF1VzkQiyO
+	 ZAdPPWGmBjaK3PrO6WnQT1Dueluf7HzeY02QuiWxZ7mTs7gnbZpkQeCKN2orsFbQYb
+	 gXdcro4Z22fkTxbrO6JUxG8Jqr914Zl9oq4abyyNE/AERslF/WO8JgBifScTD01rj7
+	 6qtDt1AW2bwByXJJ6/78BHVJgWPkvpQMgJjpeTkQy5n32U52/cvA74At3FQTT3Z+5G
+	 d+NuoioC1oU8Q==
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-71c06bb7470so27268027b3.3
+        for <linux-mm@kvack.org>; Mon, 11 Aug 2025 22:58:37 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV/Uwu5HUFbivduCn1R8ShbatWxfqP+QkdxzJqsgcqpaqt2FbUgvxOn+imVCe5Th2F3oKphxUd/UA==@kvack.org
+X-Gm-Message-State: AOJu0YyxQuOQ5o1J57kAD+QUZTOyMJWMziGgqSwtsvEGMm5Rh3B9b9SL
+	HYa4EThTS3SqrmY3wCCq2GTZD4WBy6yqpEauLhNBtAnREx8gEt7PN0cIr5/1JdFaF+6x0ElFES3
+	3T15Vxk3smkox7mADZKviigDrFNOMjCFBUyK7xTuyHw==
+X-Google-Smtp-Source: AGHT+IHxPmqLpRi7tVGLNW6BM10nSnUTAR4Hfu96ndWi0UBHb9Z6BoUVpa9fxWCcvwq63GZGNjOqRrIM8H10gWjMOgE=
+X-Received: by 2002:a05:690c:4d08:b0:71c:1754:26a7 with SMTP id
+ 00721157ae682-71c42a7b6fdmr27964767b3.32.1754978316845; Mon, 11 Aug 2025
+ 22:58:36 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 0/9] freezer: Introduce freeze priority model to
- address process dependency issues
-To: Michal Hocko <mhocko@suse.com>, Theodore Ts'o <tytso@mit.edu>,
- Jan Kara <jack@suse.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>,
- David Hildenbrand <david@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
- Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
- len brown <len.brown@intel.com>, pavel machek <pavel@kernel.org>,
- Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Nico Pache <npache@redhat.com>,
- xu xin <xu.xin16@zte.com.cn>, wangfushuai <wangfushuai@baidu.com>,
- Andrii Nakryiko <andrii@kernel.org>, Christian Brauner <brauner@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Jeff Layton <jlayton@kernel.org>,
- Al Viro <viro@zeniv.linux.org.uk>, Adrian Ratiu
- <adrian.ratiu@collabora.com>, linux-pm@vger.kernel.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org
-References: <20250807121418.139765-1-zhangzihuan@kylinos.cn>
- <aJSpTpB9_jijiO6m@tiehlicka>
- <4c46250f-eb0f-4e12-8951-89431c195b46@kylinos.cn>
- <aJWglTo1xpXXEqEM@tiehlicka>
- <ba9c23c4-cd95-4dba-9359-61565195d7be@kylinos.cn>
- <aJW8NLPxGOOkyCfB@tiehlicka>
- <09df0911-9421-40af-8296-de1383be1c58@kylinos.cn>
- <aJnM32xKq0FOWBzw@tiehlicka>
-From: Zihuan Zhang <zhangzihuan@kylinos.cn>
-In-Reply-To: <aJnM32xKq0FOWBzw@tiehlicka>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+References: <20250808-swap-scan-list-v2-1-d50e4758ecee@kernel.org> <CAMgjq7DnniGUdpQQA0YF+LuMuL9+FCLQJP2Q04G_Hsd1sztv9A@mail.gmail.com>
+In-Reply-To: <CAMgjq7DnniGUdpQQA0YF+LuMuL9+FCLQJP2Q04G_Hsd1sztv9A@mail.gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Mon, 11 Aug 2025 22:58:25 -0700
+X-Gmail-Original-Message-ID: <CACePvbV65tjGnWr_zFs5ZHoAX2x=As=rMrwJKCho6c5-Dw7qaA@mail.gmail.com>
+X-Gm-Features: Ac12FXxqc0syoLGdo5ljlvqqxbaJSAIDobIKRfOTmrg0MugEHBH3FWYc6Za-Hmk
+Message-ID: <CACePvbV65tjGnWr_zFs5ZHoAX2x=As=rMrwJKCho6c5-Dw7qaA@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/swapfile.c: introduce function alloc_swap_scan_list()
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	"Huang, Ying" <ying.huang@linux.alibaba.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 71FBA180006
-X-Stat-Signature: indbyrzbymiks4ymqnad5q7fufo1ifm9
+X-Stat-Signature: fr1eay3hqthna6qhehhskeg61ymdnyfu
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1754978288-346348
-X-HE-Meta: U2FsdGVkX18ctMzFF1Ybl3WIA+g79NVNfYwvqlL+Zkn/7ksVfPoM+QSbcQogDGYgZA1Rr89BtlLsWvqehFUZ2+EuoLq0iAApZTN3jB7grLW9kH5RuHvK5OVl9uFUS2tdQ4brhh805AqvaYb9qZQ5QTSM5NY+19CPsa6b7em6yMfMW/dUwXmTOd9JGpuN5TSudVe4A/pCcyY/uW5FK9S44wM9JTWDbhKStEsPR3nO+xGlVAsmr2AghQjsDlx8WFwK3whUqMtULb02A1nHwDXtLdbRe4DoenASclxVQcp/okWDYEWJ3L6Y1z4glbiwWMeWKE+cVxKN9zQJgpWr3jPdjEZGOj1gJuZ3NeFHMEoi1tsvfbMKTfTMkZ7hNPCK8yuIw7tP4gvTPPEG/OzrlCikZEhRfSVThRcsKw+aHMaCrl6F7aDB1b1igSwLe3Ou3lS76oRNp8QMfGUlNCIik8W9Ogs2pJY5HN6wnQRABKv/lDRUOJM0clewrJ4CW2ZwYcUpCdOI3gTNlt2IioR3rBAakbKdIxp+FlIylmztpBSftQVh6CN03eCLnz/rBrATVWbrrf9TX7Xz3GGRbdOnFxufHNavrLScbwxtLbUeo7HNLEo8eUn6fx20RonbYM6HBKUGmx9G2E/dGArM0ysIiuA8t05YCdu/2i7dK/bUwWu8Zlw1b7CrhxTGsNs51ay17XP4Axpg0OXOgap2HiZ+pQINwN8GldTGFI5AIPBz+xsRpdVDAYKWYNe8JOFpLIaWFNrz5XXujSpoJ0RedEw1TjVzSBIEZdb9LCgDkCtWa0rP9ovflLHwoUwTprGv14GVdrYVi8Or+VY2TT8AjpbzTlnO8KuEsDiebIkl1/BkQOaQP7q6iIGKeffODMNgOsx3MgMtBq4m1c8fFdf+PiBMEKimmFK9H2WGhAHcJ9G1ONPZdlotzUYV/TLtqQymApwX+9iZzxYVpd0JAGVHlpNYL9v
- 0HXBLoDt
- gb9x2v3R6MhD5g9GcW/sfBiS/qC+viVG+yQyncFiT3hdSK5gnZAZ9aU7OKvRz5Y0hNKtBvxdhpyTnq0N1HVva8LVEC3myyujM+zp9
+X-Rspamd-Queue-Id: 303B41C0005
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1754978318-125223
+X-HE-Meta: U2FsdGVkX19NzQV0p1Gbiv7j8H4vl0UEyhvI8vvxbz/9fKlrq4yEvPIVUibKkwe1NbgCyajQ8H6ZG+QZwEVcjZEiEv0PFXHMKXOw9zSx4PkMvCy2e8/noUZ0oYe6/ybaiEXDJh+i9IBceMa8yTueZSrQEXtocnDIu5ogXFWG/l8ecIDsg2/LO9zbdYOmL0EYloDxNGtHAgPnUOlYby0OYwzbsM1aNCRjAWpYsEDehNVvQXnNXXiRq5WgLlh3W6b77hIOTC9DYsjYTq3CnKoeqvCG85LRsg4+locvKc7IEdkC5WhTQZ3Jq/OHT7Tg3MCPHDlgw6uHvWa+GqzIArHfLCSzYKIO0UnkbIx99Azs0H2l2bBitF8apy4XXMNPxUvzggrGsn52VfYZyCjTngt6RZJvtmm4MyKSVBARNSiJSY7rLIvKQJsJJB83wS4Att3Wr1kr5VZT0of+evsJANeuAyNnupl1q5sm0JYnFUexh6Sk3e97jpKyAnamoVI187NAK6IdahbTQwe4EvjbiVzp551Mztko2sYuAJrA8DnhOuUspzNmf9bmm3Y3d/9Hwb3q3c+p09eezf11uy8K06fO8FTRlIKCI5apDzkoK5YpP1OPPrtutrDoT10nPdUvrKraFFjf8kowPO9AbHvTh3TnE96nr7hBJnYB/jUnbKvVzcUZkG+6ttMsHOsw//pyLhO3uomvQAipt15+JGLJeiWZRq7vFMPEJyaTT/XH1L3wcG1/ibLIVFNX5CXbhqjJKAWmXIeov0k0klJ3CAsLt9BKUybkWcMeS3kHbL5eFXEhdBViiLeBluzdiCpRZlzZClrL2OfYDL4F3UZs7BnMHbPq7lUnfqDkZS+eRVw6IMts1tsrxgdZS6nmjEfq2OXSl4Bv20LLHHkkV1hdk5c8luIxt03o8Ec27na8HhmivqNVcIFRVcgYf/bVldFTfqVvHqAn+GTgOHqmkrU/t8hxlWA
+ 580s6YWO
+ xrsWOK9Lxk3V+lAbqfN50SEeeAkvQaaH6ITrkHblDeTWmGV7xrtKv4IjrFlmn1X93JLE+oJGPN+IB4TGUud3bH5PvmpBb/Uz45Jb/WQMQTZL0ANIP/8qR515eZyLu4i3sUfy3zDGH7msZ20R3ixVRR/lr+Fhw3bcp6bkOiZgHFciu5lRw03uGNgntIQnWKwgAk0nu/YBuGIyeKf0jt5rQXcvxsEDg93NdpUyCEk3A+h3xWsKY31MRZRisZdFH7FGhjkZZtVoLZx6kk0JIzOH15PWpNpqxACgmRMG45fZpUsAqnif4eqAqkxFLzaTUDXCV9ypLDmEFPPq8fpFlwceBWTPN9av1mRA300n0GNqy9JJRByQz/Kb6vdXVJA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,180 +104,167 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all,
-
-We encountered an issue where the number of freeze retries increased due=20
-to processes stuck in D state. The logs point to jbd2-related activity.
-
-log1:
-
-6616.650482] task:ThreadPoolForeg state:D stack:0=C2=A0 =C2=A0 =C2=A0pid:=
-262026
-tgid:4065=C2=A0 ppid:2490=C2=A0 =C2=A0task_flags:0x400040 flags:0x0000400=
-4
-[ 6616.650485] Call Trace:
-[ 6616.650486]=C2=A0 <TASK>
-[ 6616.650489]=C2=A0 __schedule+0x532/0xea0
-[ 6616.650494]=C2=A0 schedule+0x27/0x80
-[ 6616.650496]=C2=A0 jbd2_log_wait_commit+0xa6/0x120
-[ 6616.650499]=C2=A0 ? __pfx_autoremove_wake_function+0x10/0x10
-[ 6616.650502]=C2=A0 ext4_sync_file+0x1ba/0x380
-[ 6616.650505]=C2=A0 do_fsync+0x3b/0x80
-
-log2:
-
-[=C2=A0 631.206315] jdb2_log_wait_log_commit=C2=A0 completed (elapsed 0.0=
-02 seconds)
-[=C2=A0 631.215325] jdb2_log_wait_log_commit=C2=A0 completed (elapsed 0.0=
-01 seconds)
-[=C2=A0 631.240704] jdb2_log_wait_log_commit=C2=A0 completed (elapsed 0.3=
-86 seconds)
-[=C2=A0 631.262167] Filesystems sync: 0.424 seconds
-[=C2=A0 631.262821] Freezing user space processes
-[=C2=A0 631.263839] freeze round: 1, task to freeze: 852
-[=C2=A0 631.265128] freeze round: 2, task to freeze: 2
-[=C2=A0 631.267039] freeze round: 3, task to freeze: 2
-[=C2=A0 631.271176] freeze round: 4, task to freeze: 2
-[=C2=A0 631.279160] freeze round: 5, task to freeze: 2
-[=C2=A0 631.287152] freeze round: 6, task to freeze: 2
-[=C2=A0 631.295346] freeze round: 7, task to freeze: 2
-[=C2=A0 631.301747] freeze round: 8, task to freeze: 2
-[=C2=A0 631.309346] freeze round: 9, task to freeze: 2
-[=C2=A0 631.317353] freeze round: 10, task to freeze: 2
-[=C2=A0 631.325348] freeze round: 11, task to freeze: 2
-[=C2=A0 631.333353] freeze round: 12, task to freeze: 2
-[=C2=A0 631.341358] freeze round: 13, task to freeze: 2
-[=C2=A0 631.349357] freeze round: 14, task to freeze: 2
-[=C2=A0 631.357363] freeze round: 15, task to freeze: 2
-[=C2=A0 631.365361] freeze round: 16, task to freeze: 2
-[=C2=A0 631.373379] freeze round: 17, task to freeze: 2
-[=C2=A0 631.381366] freeze round: 18, task to freeze: 2
-[=C2=A0 631.389365] freeze round: 19, task to freeze: 2
-[=C2=A0 631.397371] freeze round: 20, task to freeze: 2
-[=C2=A0 631.405373] freeze round: 21, task to freeze: 2
-[=C2=A0 631.413373] freeze round: 22, task to freeze: 2
-[=C2=A0 631.421392] freeze round: 23, task to freeze: 1
-[=C2=A0 631.429948] freeze round: 24, task to freeze: 1
-[=C2=A0 631.438295] freeze round: 25, task to freeze: 1
-[=C2=A0 631.444546] jdb2_log_wait_log_commit=C2=A0 completed (elapsed 0.2=
-49 seconds)
-[=C2=A0 631.446387] freeze round: 26, task to freeze: 0
-[=C2=A0 631.446390] Freezing user space processes completed (elapsed 0.18=
-3=20
-seconds)
-[=C2=A0 631.446392] OOM killer disabled.
-[=C2=A0 631.446393] Freezing remaining freezable tasks
-[=C2=A0 631.446656] freeze round: 1, task to freeze: 4
-[=C2=A0 631.447976] freeze round: 2, task to freeze: 0
-[=C2=A0 631.447978] Freezing remaining freezable tasks completed (elapsed=
-=20
-0.001 seconds)
-[=C2=A0 631.447980] PM: suspend debug: Waiting for 1 second(s).
-[=C2=A0 632.450858] OOM killer enabled.
-[=C2=A0 632.450859] Restarting tasks: Starting
-[=C2=A0 632.453140] Restarting tasks: Done
-[=C2=A0 632.453173] random: crng reseeded on system resumption
-[=C2=A0 632.453370] PM: suspend exit
-[=C2=A0 632.462799] jdb2_log_wait_log_commit=C2=A0 completed (elapsed 0.0=
-00 seconds)
-[=C2=A0 632.466114] jdb2_log_wait_log_commit=C2=A0 completed (elapsed 0.0=
-01 seconds)
-
-This is the reason:
-
-[=C2=A0 631.444546] jdb2_log_wait_log_commit=C2=A0 completed (elapsed 0.2=
-49 seconds)
-
-
-During freezing, user processes executing jbd2_log_wait_commit enter D=20
-state because this function calls wait_event and can take tens of=20
-milliseconds to complete. This long execution time, coupled with=20
-possible competition with the freezer, causes repeated freeze retries.
-
-While we understand that jbd2 is a freezable kernel thread, we would=20
-like to know if there is a way to freeze it earlier or freeze some=20
-critical processes proactively to reduce this contention.
-
-Thanks for your input and suggestions.
-
-=E5=9C=A8 2025/8/11 18:58, Michal Hocko =E5=86=99=E9=81=93:
-> On Mon 11-08-25 17:13:43, Zihuan Zhang wrote:
->> =E5=9C=A8 2025/8/8 16:58, Michal Hocko =E5=86=99=E9=81=93:
-> [...]
->>> Also the interface seems to be really coarse grained and it can easil=
-y
->>> turn out insufficient for other usecases while it is not entirely cle=
-ar
->>> to me how this could be extended for those.
->>  =C2=A0We recognize that the current interface is relatively coarse-gr=
-ained and
->> may not be sufficient for all scenarios. The present implementation is=
- a
->> basic version.
->>
->> Our plan is to introduce a classification-based mechanism that assigns
->> different freeze priorities according to process categories. For examp=
-le,
->> filesystem and graphics-related processes will be given higher default
->> freeze priority, as they are critical in the freezing workflow. This
->> classification approach helps target important processes more precisel=
-y.
->>
->> However, this requires further testing and refinement before full
->> deployment. We believe this incremental, category-based design will ma=
-ke the
->> mechanism more effective and adaptable over time while keeping it
->> manageable.
-> Unless there is a clear path for a more extendable interface then
-> introducing this one is a no-go. We do not want to grow different ways
-> to establish freezing policies.
+On Fri, Aug 8, 2025 at 12:52=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
+e:
 >
-> But much more fundamentally. So far I haven't really seen any argument
-> why different priorities help with the underlying problem other than th=
-e
-> timing might be slightly different if you change the order of freezing.
-> This to me sounds like the proposed scheme mostly works around the
-> problem you are seeing and as such is not a really good candidate to be
-> merged as a long term solution. Not to mention with a user API that
-> needs to be maintained for ever.
+> On Fri, Aug 8, 2025 at 3:48=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote=
+:
+> >
+> > This the alloc_swap_scan_list() will scan the whole list or the first
+> > cluster.
 >
-> So NAK from me on the interface.
+> Hi Chris,
 >
-Thanks for the feedback. I understand your concern that changing the=20
-freezer priority order looks like working around the symptom rather than=20
-solving the root cause.
+> This sentence reads strange to me, but English is not my native
+> language so I'm not very sure about it.
 
-Since the last discussion, we have analyzed the D-state processes=20
-further and identified that the long wait time is caused by=20
-jbd2_log_wait_commit. This wait happens because user tasks call into=20
-this function during fsync/fdatasync and it can take tens of=20
-milliseconds to complete. When this coincides with the freezer=20
-operation, the tasks are stuck in D state and retried multiple times,=20
-increasing the total freeze time.
+Ack, my bad, let me rephrase it.
+>
+> >
+> > This reduces the repeat patterns of isolating a cluster then scanning
+> > that cluster. As a result, cluster_alloc_swap_entry() is shorter and sh=
+allower.
+> >
+> > No functional change.
+> >
+> > Signed-off-by: Chris Li <chrisl@kernel.org>
+> > ---
+> > This patch goes on top of Kairui's swap improve cluster scan series:
+> > https://lore.kernel.org/linux-mm/20250806161748.76651-1-ryncsn@gmail.co=
+m/
+> > ---
+> > Changes in v2:
+> > - Adjust change base on Andrew's feedback on int type and break out of
+> >   loop.
+> > - Link to v1: https://lore.kernel.org/r/20250806-swap-scan-list-v1-1-a5=
+fe2d9340a2@kernel.org
+> > ---
+> >  mm/swapfile.c | 86 ++++++++++++++++++++++++++++++++-------------------=
+--------
+> >  1 file changed, 47 insertions(+), 39 deletions(-)
+> >
+> > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > index 4a0cf4fb348d..f26678d68874 100644
+> > --- a/mm/swapfile.c
+> > +++ b/mm/swapfile.c
+> > @@ -820,6 +820,29 @@ static unsigned int alloc_swap_scan_cluster(struct=
+ swap_info_struct *si,
+> >         return found;
+> >  }
+> >
+> > +static unsigned int alloc_swap_scan_list(struct swap_info_struct *si,
+> > +                                        struct list_head *list,
+> > +                                        unsigned int order,
+> > +                                        unsigned char usage,
+> > +                                        bool scan_all)
+> > +{
+> > +       unsigned int found =3D SWAP_ENTRY_INVALID;
+> > +
+> > +       do {
+> > +               struct swap_cluster_info *ci =3D isolate_lock_cluster(s=
+i, list);
+> > +               unsigned long offset;
+> > +
+> > +               if (!ci)
+> > +                       break;
+> > +               offset =3D cluster_offset(si, ci);
+> > +               found =3D alloc_swap_scan_cluster(si, ci, offset, order=
+, usage);
+> > +               if (found)
+> > +                       break;
+> > +       } while (scan_all);
+> > +
+> > +       return found;
+> > +}
+> > +
+> >  static void swap_reclaim_full_clusters(struct swap_info_struct *si, bo=
+ol force)
+> >  {
+> >         long to_scan =3D 1;
+> > @@ -913,32 +936,24 @@ static unsigned long cluster_alloc_swap_entry(str=
+uct swap_info_struct *si, int o
+> >          * to spread out the writes.
+> >          */
+> >         if (si->flags & SWP_PAGE_DISCARD) {
+> > -               ci =3D isolate_lock_cluster(si, &si->free_clusters);
+> > -               if (ci) {
+> > -                       found =3D alloc_swap_scan_cluster(si, ci, clust=
+er_offset(si, ci),
+> > -                                                       order, usage);
+> > -                       if (found)
+> > -                               goto done;
+> > -               }
+> > +               found =3D alloc_swap_scan_list(si, &si->free_clusters, =
+order, usage,
+> > +                                            false);
+> > +               if (found)
+> > +                       goto done;
+> >         }
+> >
+> >         if (order < PMD_ORDER) {
+> > -               while ((ci =3D isolate_lock_cluster(si, &si->nonfull_cl=
+usters[order]))) {
+> > -                       found =3D alloc_swap_scan_cluster(si, ci, clust=
+er_offset(si, ci),
+> > -                                                       order, usage);
+> > -                       if (found)
+> > -                               goto done;
+> > -               }
+> > +               found =3D alloc_swap_scan_list(si, &si->nonfull_cluster=
+s[order],
+> > +                                            order, usage, 0);
+>
+> All other alloc_swap_scan_list calls use `false`/`true` but this one
+> uses `0` for `scan_all`.
+> And it should be `true`, right?
 
-Although we know that jbd2 is a freezable kernel thread, we are=20
-exploring whether freezing it earlier =E2=80=94 or freezing certain key=20
-processes first =E2=80=94 could reduce this contention and improve freeze=
-=20
-completion time.
+Yes, good catch. Will send out a V3.
 
+>
+> > +               if (found)
+> > +                       goto done;
+> >         }
+> >
+> >         if (!(si->flags & SWP_PAGE_DISCARD)) {
+> > -               ci =3D isolate_lock_cluster(si, &si->free_clusters);
+> > -               if (ci) {
+> > -                       found =3D alloc_swap_scan_cluster(si, ci, clust=
+er_offset(si, ci),
+> > -                                                       order, usage);
+> > -                       if (found)
+> > -                               goto done;
+> > -               }
+> > +               found =3D alloc_swap_scan_list(si, &si->free_clusters, =
+order, usage,
+> > +                                            false);
+> > +               if (found)
+> > +                       goto done;
+> >         }
+> >
+> >         /* Try reclaim full clusters if free and nonfull lists are drai=
+ned */
+> > @@ -952,13 +967,10 @@ static unsigned long cluster_alloc_swap_entry(str=
+uct swap_info_struct *si, int o
+> >                  * failure is not critical. Scanning one cluster still
+> >                  * keeps the list rotated and reclaimed (for HAS_CACHE)=
+.
+> >                  */
+> > -               ci =3D isolate_lock_cluster(si, &si->frag_clusters[orde=
+r]);
+> > -               if (ci) {
+> > -                       found =3D alloc_swap_scan_cluster(si, ci, clust=
+er_offset(si, ci),
+> > -                                                       order, usage);
+> > -                       if (found)
+> > -                               goto done;
+> > -               }
+> > +               found =3D alloc_swap_scan_list(si, &si->frag_clusters[o=
+rder], order,
+> > +                                            usage, true);
+>
+> And it should be `false` here.
 
->>> I believe it would be more useful to find sources of those freezer
->>> blockers and try to address those. Making more blocked tasks
->>> __set_task_frozen compatible sounds like a general improvement in
->>> itself.
->> we have already identified some causes of D-state tasks, many of which=
- are
->> related to the filesystem. On some systems, certain processes frequent=
-ly
->> execute ext4_sync_file, and under contention this can lead to D-state =
-tasks.
-> Please work with maintainers of those subsystems to find proper
-> solutions.
+Ack.
 
-We=E2=80=99ve pulled in the jbd2 maintainer to get feedback on whether ch=
-anging=20
-the freeze ordering for jbd2 is safe or if there=E2=80=99s a better appro=
-ach to=20
-avoid the repeated retries caused by this wait.
+Chris
 
