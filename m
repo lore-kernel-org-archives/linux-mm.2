@@ -2,119 +2,99 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 58830CA0ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 11 Aug 2025 23:15:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DCDDECA0ED1
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 00:47:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DDA178E00A6; Mon, 11 Aug 2025 19:15:16 -0400 (EDT)
+	id 0EE6D8E00A7; Mon, 11 Aug 2025 20:47:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB1F28E0045; Mon, 11 Aug 2025 19:15:16 -0400 (EDT)
+	id 0C66A8E0045; Mon, 11 Aug 2025 20:47:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC7C68E00A6; Mon, 11 Aug 2025 19:15:16 -0400 (EDT)
+	id 0036E8E00A7; Mon, 11 Aug 2025 20:47:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B793A8E0045
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 19:15:16 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 25021135323
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 23:15:16 +0000 (UTC)
-X-FDA: 83766034632.24.5527C27
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 49A14180007
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 23:15:14 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="GcP2N/BT";
-	spf=pass (imf16.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E3B558E0045
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 20:47:49 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 832C9562A6
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 00:47:49 +0000 (UTC)
+X-FDA: 83766267858.16.4C2EC2A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id D6753100006
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 00:47:47 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uRIxrjnA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754954114;
+	s=arc-20220608; t=1754959667;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+WTkp5HBq7+cYLzP9grKqIkwbrTAXkZVfrq7VgOeO6Y=;
-	b=nCGN8KZpoDAT6GMPTXqZIQRnf84KTWnxPKVMDyAdaYxglndcwNIfBQfwH07SLkFIxRTiJk
-	Somg+KUs5fMfN54EVwq4UUUAQHkCZmvcAd6YOgKDipOzdhq3+lByTMzUHS3QLzhM3H426k
-	s+GuKAXNnCIEyqcFjZiFxgXFM1HeWTQ=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="GcP2N/BT";
-	spf=pass (imf16.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754954114; a=rsa-sha256;
+	bh=BDCTmWqkQjWZEj20LtieZUDpWVtK8WiKRsnpVGkHzFQ=;
+	b=2OFRb7a8gU5daty5F1OkQ4VHCcHTQzMkGU6sDJPlfYWUQWRgVFMR/zAHCr/NTL9YUeerpD
+	HwEpRS+CbuNTfnxNNaZUuxS+oGcom5TrASh3ynWyEfrGpOqfo+MKPGbstOTLCtxB0dR/oM
+	vkDMGdL+s13ApwA82scEygRtW4B5QqI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754959667; a=rsa-sha256;
 	cv=none;
-	b=lpseVOslr0SctzdUM1htFxJupk5lfU+XndgzU9C+gqTUmoHqWfp0iCnd3C8RBCY7K/SyvU
-	kkcsNj/4FuNRKjGIuQ3K3V1JjszcaqIBFGqBQWdx3Fynvj+aWeY7hpkGy27CpBf8xkPYd2
-	erPf8wLBT7EPWFJHKlURFUQbLfeR6cE=
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-76b77a97a04so4408557b3a.1
-        for <linux-mm@kvack.org>; Mon, 11 Aug 2025 16:15:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754954113; x=1755558913; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+WTkp5HBq7+cYLzP9grKqIkwbrTAXkZVfrq7VgOeO6Y=;
-        b=GcP2N/BT+/S0EoMtV2wEUMvJ3iZM4ehZqZmvqd/sTeS2uLvEO6CqlqNhshsrL2UqcX
-         yDV9g700j3y9pT4W/JPQflZ/ozMZNav5OZKZou+bkSVRcUdDuatcVLhx78Nh71QUufNj
-         9f2QUdutCHTOLcZ/VzkcBe0VsHCItbnX5YW3zu1ZN2v9ynkdFFRoUE5Yeee9/o8hzCjU
-         ZoI4IWHdGEVimbkkiZ0gAPHxZM7zWtDqqsg57QA5I7AYUQ80cNUXMeInbhKCVKh6oQC/
-         PLRQ73B1qlB9qJr6f3BJ2YInW4Qw67beVGtIA/igGLheGu+uze0kF77P1J/tmGJemuUJ
-         EG4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754954113; x=1755558913;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+WTkp5HBq7+cYLzP9grKqIkwbrTAXkZVfrq7VgOeO6Y=;
-        b=SLo2K423uOMT2xRILa+XHjhEi/4q6hAcIJOcT2tEgFTciV3Ts9RUeG16vN8mBQ6g0N
-         2pNPpva/8xsIfw7GZNqPpW6H8GttN+muq7YlyB7JLWq4rQ2itJ7Tg5kR14ZXDLlIslhw
-         DFv/oDliiOWJRdjwbjnhYpvMcZrZfA4Iyr6Dc4JLpYG5h30K0bjiC8LUS15ihh+8hTZS
-         /NyCykWJxxCL97p1CDAyqKFFG0AXQDt6ewX3bzbeJnO+0hGYFe6TFMpa0TiR1ImkhKFB
-         GjDYiuW/WCa+2uy6iLF0D0+hlp0Hvtzp8Wn8DjP6+a/LvoF800T8jd/6pHi/HqcyoDy9
-         Zxlw==
-X-Forwarded-Encrypted: i=1; AJvYcCX0OH7hyNXjJO1DaP1c51VuzOQjaH7eE2gl3kXBNc4jBi7kuxW6NZ+AG/Sb72aHAd6ppRGhMTnSEw==@kvack.org
-X-Gm-Message-State: AOJu0YxRy0fiRVJS4th3kqXEuyl9plVv9qpdxA5pdF5l27GXLkyuJuPk
-	OOD/XbWuL1GSVUxr6wiH0GX4kaLagZfmiUdUMbnePRvg6WJURdzWyLWKdPQCWkkZDy7nu67n7W2
-	sL2KLdlCL8BTRGjrHRh49n1TBqXC4XDc=
-X-Gm-Gg: ASbGncuALMlyJ7t6wSF3oJNznHPgf49ijVyDJyJK37PcXFR1LTd1hv96Plx2n+U56+g
-	SFUMwWyRgKyeRC5n22GppFougXa2sxdTR88/ha8QAdMm9q2xGstaPPduObEbMwFA5gU0JIFm5E2
-	/jvpxGqirRMxI8IIr4mwf3/oz+4K8aij0cQ0qq1vnc5vU+LFbcmD+PW66e4BPOXNoH95qrfuT0m
-	Jge/+7vdGrH4YxtzSvEchs=
-X-Google-Smtp-Source: AGHT+IHr1K/yJjlq6Ye1Sy8M8F+wQq/Rw7tGlOYrfGgCsGUOTDbj0Iu2trznQNcP3D2ebbnUU2V5lVrfGLyj6GAmXLg=
-X-Received: by 2002:a05:6a20:3944:b0:23f:fbb1:c21b with SMTP id
- adf61e73a8af0-24055046d01mr24530175637.17.1754954113102; Mon, 11 Aug 2025
- 16:15:13 -0700 (PDT)
+	b=QF1ttoZ8gh77ZH64kmjgVOiusSaStR2T7YcVHv3QdLpb2Zqfsc9j3VDJLRUHYW8wIOOyyj
+	Cxkyz1IPqaceuAWxHQi9tbuglvkEJD1hO8hQGyAhfrxtCz4oDyCnWfsiAsuPG7vDcm7KT2
+	wLTcRP1rWX/eEAiXwW2G2IODY3U3VvA=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uRIxrjnA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 00C0161160;
+	Tue, 12 Aug 2025 00:47:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A91C5C4CEED;
+	Tue, 12 Aug 2025 00:47:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754959666;
+	bh=MiSIs1rnDHHU/+k/Z0JgED1xlZ7cCjxh1VZ0AZ2BDT8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=uRIxrjnA3BXLDmoa/+xkrvzFkUSvGstXPnHQMBeyCTbbsPm2yOho/HshYUtjiT3nh
+	 Rp7qhKMW/N4SboRZxJQy8pMaZJihOn+k8pl0p8hoiBVTRYL/fFzcU1DE1lR0R78FxE
+	 8d7FNucqi/vstujZJP2tHn182Wf51rcykaLMck3vrB4kawhydoj/AVOcIIgooT6C3O
+	 80mAEoNAW2Lp0j2ka+qYHnITX0w217G6MAlKyUthaqkkNOdD7F32YjK5GyJl5l8hlW
+	 fcaBRyBfPRlulaFal+WGHFr1iRueER3xzFnbu4rLx+3Xmx/o7BgPaDjb6XdZ8Dbqcb
+	 bllYFPQvP4vkg==
+Message-ID: <33b6c9a3-3165-4ce8-9667-afdbaff2c3ae@kernel.org>
+Date: Tue, 12 Aug 2025 09:45:02 +0900
 MIME-Version: 1.0
-References: <20250808152850.2580887-1-surenb@google.com> <20250808152850.2580887-4-surenb@google.com>
-In-Reply-To: <20250808152850.2580887-4-surenb@google.com>
-From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Mon, 11 Aug 2025 16:14:58 -0700
-X-Gm-Features: Ac12FXwQt_eww5uvpy4ERMVpxcDuQGrIx4kEQc7H4eeLVmpPLimhRUNjaij0L4k
-Message-ID: <CAEf4BzaRgFid5WDsNGOzE=ysc6jPcSAmB0MwRHYdtSbm-vLrWQ@mail.gmail.com>
-Subject: Re: [PATCH v4 3/3] fs/proc/task_mmu: execute PROCMAP_QUERY ioctl
- under per-vma locks
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, Liam.Howlett@oracle.com, 
-	lorenzo.stoakes@oracle.com, david@redhat.com, vbabka@suse.cz, 
-	peterx@redhat.com, jannh@google.com, hannes@cmpxchg.org, mhocko@kernel.org, 
-	paulmck@kernel.org, shuah@kernel.org, adobriyan@gmail.com, brauner@kernel.org, 
-	josef@toxicpanda.com, yebin10@huawei.com, linux@weissschuh.net, 
-	willy@infradead.org, osalvador@suse.de, andrii@kernel.org, 
-	ryan.roberts@arm.com, christophe.leroy@csgroup.eu, tjmercier@google.com, 
-	kaleshsingh@google.com, aha310510@gmail.com, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, SeongJae Park <sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION][BISECTED] Unexpected OOM instead of reclaiming
+ inactive file pages
+To: Oleksandr Natalenko <oleksandr@natalenko.name>,
+ David Rientjes <rientjes@google.com>
+Cc: linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+ Jens Axboe <axboe@kernel.dk>, John Garry <john.g.garry@oracle.com>,
+ Christoph Hellwig <hch@lst.de>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>, linux-mm@kvack.org,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Qi Zheng
+ <zhengqi.arch@bytedance.com>, Michal Hocko <mhocko@kernel.org>,
+ David Hildenbrand <david@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <5905724.LvFx2qVVIh@natalenko.name>
+ <199fb020-19ee-89d1-6373-7cc7f5babab8@google.com>
+ <15056829.uLZWGnKmhe@natalenko.name>
+From: Damien Le Moal <dlemoal@kernel.org>
+Content-Language: en-US
+Organization: Western Digital Research
+In-Reply-To: <15056829.uLZWGnKmhe@natalenko.name>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: o7csx6u7wizsj8jpx8uunzofpjcgysq9
+X-Rspamd-Queue-Id: D6753100006
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 49A14180007
-X-Rspamd-Server: rspam06
-X-Stat-Signature: sy17yqtooohdj9j97afqwjopu9r58kse
-X-HE-Tag: 1754954114-43059
-X-HE-Meta: U2FsdGVkX1/GiX7Jnos9GvQ3lPaswG/P3lielTZlflpwhR9I5XW3YVIw+vc97PRJZQuoIDw+G6ml3lsI6NSdzhVCPLegLXHiXiqqQqPiqlMRHPTNJ3CDeGrr7jFZqIUCEvhTpvCt2nre2WfKatXHLPMpx/AasVWpjbUvdKPnikbZCkRiTcKmtwPDTfsc3dSSAkUoiwtxPEC2stlj6MCtAgkBTMZuGBtbD5wi3Icm2+wbWL+XznRceCNx5YJlx1pwVeg5DuH/OvoaQtMGZbn5FsaKnYxjA3LIu6cZEy1d4546euE0yHeSeI/D5ttN8z736t4tFnTn4BuzKDyQ2rpwjumZR0ZWiZ6+LpOZpoN0nZa4mM30NMgG6SdAL2Mpky+yvpPNwupfDsEDFvBx3wB+GKHYHeXUSrG5jnLV3lN3zY0FAPlaZcl4NJ7PdhNxLXCgI5QIqlJdEteMBY6bXeIwK4iac64g6dAfMTxXizCJuj21slgyr5J/2KbBjKptUFcgPJJV6TH2uTMkaDoBmPxcmIM1eprSvJYr8zEFxa8SRSQzgR2duRcDjqyZaXs+qgMH+mwjFf+9caDOr/ZPZCtbEPF0tL+jw44NMwDy6bCrqLJE3nGKgAyfrfRCpD2Dg2G0Cjgipz3xm3hXitSHi5DRNz4glkFgxGDWGZJWbYt4zSS4IaolyvbxMmyb1pzva0EdYwuaENAoY6XrxW9fP8rsSJ2nbwolibWXzU4Bl4u/JPUr7Y5jYwcWPjGb9SLXBAFq6npeYeytx6/2fUZs7XOrYXlYVriDS9P4ZCM7VC+9iOjtd/Z7JrBs6tAzhTcSg4Ku9yq+FRL3FTSbvLCizh6mvs/SyM47f48vS+n6JCl3wNHaaSXIDA4s+WDqFTEsAKA7dfSxRpf1qZuuVtMmLninq3ETHU/NCWelyW3PvKOFqtimUFJ44OAxS70zI8lNY61Kx7KGX2tvwBJDUJwFLiT
- RWSvaGod
- vK6CcC/ZFXpxBeUXETxDJ0qQ49leRBQLr2MkssXsL+0jFssQHpd8YAjwQ9V/xjxEBkrtCTNtS5b5T49Pa1ZCmFV+moF7Sd0ClPIzJXr0BLXV6S1yWmiL9BCl8kF1LlQw5lekxUiW4XojCmViBq4t9iwfkyes3unqTtJWidpZCwBemMgd6vROdMOqFHigvQD3vbRMPBbGD9JAZvXW6IkJsECZFhcdcka+NkMqpzAQ387v7P1KESWNMP/Yf0eJiAKYBoBaOTPEMH688vCMnOuxoRAVDovqClVQV2TSYmbNPF5OLHlqwduK46vcCl57INy//gIdNnVD7bIkddyRcSCpWwWB6UUPzE6hv9MTjvI5O6wRZa9YKpJudaTztNl9omGRCvxm3Jp6J5p+F9WIx+89Rb5J+SKPttVnTIuT9i3lKh3PzSh4/K9i9VDA0slRIvoaWb3mrd9FaikEzeJKbK9mcI/X4ouBiJXUil0Ap3QIxUWSHPiw=
+X-HE-Tag: 1754959667-564585
+X-HE-Meta: U2FsdGVkX1/lCpAx7l1p/YfdO0/xgwzGh+u5xxls8YNpwDA58GJe+1kEXGVH2TzzFRVskENgh7gM5oj95sbq9zAb/qnqj/WHaCrOHwxh5nTeMpd7LqoszSbf+C2kHQKjONdO6k9yEknWlFAMbzOcNqv3UoLFWqVlpynvY43KCJiGnv03atFEzRTyl9xYX8LQgEkrblOjdm+xMYSlP4raK2xFkxAtQQC6c9KQec9nsVb+A5SIbzb0ubaPtehkSQGzKJHU12SRPQ/H20NT1zj95tmBgCb4W5xA04Go1ZMmXs+a2dFadoDWxw5a3uizKc/cBntihnMpOe6Q2ua3cDQ2OvVGB9ZySL2XBx2eYQpZXA64N59vVtgYo6emO1RVNruE4iRTGmS0kcf1wWW3siAVgj4E17YRYX8stRDqLUGmrUXryTwBuxOOwKYMG8/Y8lt55vnfij7eXvU0eVnHY1YAwfNIUbE3J4SHhoMf60jlfU3CdbqDr6omOHket9DWMSod6uo6wqum6CH3DeSWQSLZTdTtxIHm59pIWAcW7LMiz5NPK63rDcaPsgPI2IWCs+3oObSxNrYyO9eZI8ZVJkFvL4kliOCpmUIk2Cmw74ltqkQ4E37eFPgB7c8eVEa+x44ajtLm4JYLMxUwiQxxxhBBpgCsGWWgUxjPKNrWPCfGYwbNaxzXII2FX//RqQoWhXpygHotJGwmiw+CwyWtBkz0X+NTNhbPU4B59XXiKP6W/dSV3Z58SOxPOYTSoFl0yAGykxPLdvSB2QlSkegUj6QU4QjcrUXPpCBhtqeVr4h1Mz8XEOKHZX3F8uKViGZ7b0fCtjwvQiPtLHUeWWfEbN3eXZF8DuzTs97y34Eu8JNnMqFESKbDlYC+XlNAB9uReoJI9SdDNM9qKGbsqhYhnCTrGjVCNt++68lwYigTaOIHeo860a+n7zf1a5CO1ALm8JPAyJtjVKv94OFJEFTfqI3
+ vWQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,30 +103,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 8, 2025 at 8:29=E2=80=AFAM Suren Baghdasaryan <surenb@google.co=
-m> wrote:
->
-> Utilize per-vma locks to stabilize vma after lookup without taking
-> mmap_lock during PROCMAP_QUERY ioctl execution. If vma lock is
-> contended, we fall back to mmap_lock but take it only momentarily
-> to lock the vma and release the mmap_lock. In a very unlikely case
-> of vm_refcnt overflow, this fall back path will fail and ioctl is
-> done under mmap_lock protection.
->
-> This change is designed to reduce mmap_lock contention and prevent
-> PROCMAP_QUERY ioctl calls from blocking address space updates.
->
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> Acked-by: SeongJae Park <sj@kernel.org>
-> ---
->  fs/proc/task_mmu.c | 103 +++++++++++++++++++++++++++++++++++++--------
->  1 file changed, 85 insertions(+), 18 deletions(-)
->
+On 8/12/25 5:42 AM, Oleksandr Natalenko wrote:
+> Hello.
+> 
+> On pondělí 11. srpna 2025 18:06:16, středoevropský letní čas David Rientjes wrote:
+>> On Mon, 11 Aug 2025, Oleksandr Natalenko wrote:
+>>
+>>> Hello Damien.
+>>>
+>>> I'm fairly confident that the following commit
+>>>
+>>> 459779d04ae8d block: Improve read ahead size for rotational devices
+>>>
+>>> caused a regression in my test bench.
+>>>
+>>> I'm running v6.17-rc1 in a small QEMU VM with virtio-scsi disk. It has got 1 GiB of RAM, so I can saturate it easily causing reclaiming mechanism to kick in.
+>>>
+>>> If MGLRU is enabled:
+>>>
+>>> $ echo 1000 | sudo tee /sys/kernel/mm/lru_gen/min_ttl_ms
+>>>
+>>> then, once page cache builds up, an OOM happens without reclaiming inactive file pages: [1]. Note that inactive_file:506952kB, I'd expect these to be reclaimed instead, like how it happens with v6.16.
+>>>
+>>> If MGLRU is disabled:
+>>>
+>>> $ echo 0 | sudo tee /sys/kernel/mm/lru_gen/min_ttl_ms
+>>>
+>>> then OOM doesn't occur, and things seem to work as usual.
+>>>
+>>> If MGLRU is enabled, and 459779d04ae8d is reverted on top of v6.17-rc1, the OOM doesn't happen either.
+>>>
+>>> Could you please check this?
+>>>
+>>
+>> This looks to be an MGLRU policy decision rather than a readahead 
+>> regression, correct?
+>>
+>> Mem-Info:
+>> active_anon:388 inactive_anon:5382 isolated_anon:0
+>>  active_file:9638 inactive_file:126738 isolated_file:0
+>>
+>> Setting min_ttl_ms to 1000 is preserving the working set and triggering 
+>> the oom kill is the only alternative to free memory in that configuration.  
+>> The oom kill is being triggered by kswapd for this purpose.
+>>
+>> So additional readahead would certainly increase that working set.  This 
+>> looks working as intended.
+> 
+> OK, this makes sense indeed, thanks for the explanation. But is inactive_file explosion expected and justified?
+> 
+> Without revert:
+> 
+> $ echo 3 | sudo tee /proc/sys/vm/drop_caches; free -m; sudo journalctl -kb >/dev/null; free -m
+> 3
+>                total        used        free      shared  buff/cache   available
+> Mem:             690         179         536           3          57         510
+> Swap:           1379          12        1367
+> /* OOM happens here */
+>                total        used        free      shared  buff/cache   available
+> Mem:             690         177          52           3         561         513
+> Swap:           1379          17        1362 
+> 
+> With revert:
+> 
+> $ echo 3 | sudo tee /proc/sys/vm/drop_caches; free -m; sudo journalctl -kb >/dev/null; free -m
+> 3
+>                total        used        free      shared  buff/cache   available
+> Mem:             690         214         498           4          64         476
+> Swap:           1379           0        1379
+> /* no OOM */
+>                total        used        free      shared  buff/cache   available
+> Mem:             690         209         462           4         119         481
+> Swap:           1379           0        1379
+> 
+> The journal folder size is:
+> 
+> $ sudo du -hs /var/log/journal
+> 575M    /var/log/journal
+> 
+> It looks like this readahead change causes far more data to be read than actually needed?
 
-LGTM
+For your drive as seen by the VM, what is the value of
+/sys/block/sdX/queue/optimal_io_size ?
 
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
+I guess it is "0", as I see on my VM.
+So before 459779d04ae8d, the block device read_ahead_kb was 128KB only, and
+459779d04ae8d switched it to be 2 times the max_sectors_kb, so 8MB. This change
+significantly improves file buffered read performance on HDDs, and HDDs only.
 
+This means that your VM device is probably being reported as a rotational one
+(/sys/block/sdX/queue/rotational is 1), which is normal if you attached an
+actual HDD. If you are using a qcow2 image for that disk, then having
+rotational==1 is questionable...
 
-[...]
+The other issue is the device driver for the device reporting 0 for the optimal
+IO size, which normally happens only for SATA drives. I see the same with
+virtio-scsi, which is also questionable given that the maximum IO size with it
+is fairly limited. So virtio-scsi may need some tweaking.
+
+The other thing to question, I think, is setting read_ahead_kb using the
+optimal_io_size limit (io_opt), which can be *very large*. For most SCSI
+devices, it is 16MB, so you will see a read_ahead_kb of 32 MB. But for SCSI
+devices, optimal_io_size indicates a *maximum* IO size beyond which performance
+may degrade. So using any value lower than this, but still reasonably large,
+would be better in general I think. Note that lim->io_opt for RAID arrays
+actually indicates the stripe size, so generally a lot smaller than the
+component drives io_opt. And this use changes the meaning of that queue limit,
+which makes things even more confusing and finding an adequate default harder.
+
+-- 
+Damien Le Moal
+Western Digital Research
 
