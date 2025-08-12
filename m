@@ -2,250 +2,100 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 862D0CA0EDB
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 19:07:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 53AF6CA0EDC
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 19:19:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12901900022; Tue, 12 Aug 2025 15:07:17 -0400 (EDT)
+	id E0E3D900023; Tue, 12 Aug 2025 15:19:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FA548E0151; Tue, 12 Aug 2025 15:07:17 -0400 (EDT)
+	id DE6048E0151; Tue, 12 Aug 2025 15:19:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EDDB9900022; Tue, 12 Aug 2025 15:07:16 -0400 (EDT)
+	id D2325900023; Tue, 12 Aug 2025 15:19:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DAC958E0151
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 15:07:16 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 60294160186
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 19:07:16 +0000 (UTC)
-X-FDA: 83769038472.09.13038CD
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf09.hostedemail.com (Postfix) with ESMTP id CA252140009
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 19:07:12 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C2D598E0151
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 15:19:29 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 90AA1B6910
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 19:19:29 +0000 (UTC)
+X-FDA: 83769069258.04.BE8F600
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 92200140007
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 19:19:26 +0000 (UTC)
 Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=D00U2Q+Y;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=MM8hyw+g;
-	spf=pass (imf09.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755025633;
+	dkim=pass header.d=intel.com header.s=Intel header.b=KLrKe92X;
+	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755026367;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M4Ufarry8myM4TKgabCN8p1VgTaBLW410dFYmTYHM/k=;
-	b=SHfRs05jLFFO2TMdTadX9drvc6IIJ0E1oBymm7j/ud+elkq7rg2T0ybCrluwTlxtjZAKwl
-	zs60yg7YSGj/PkKAdx6+DXdaI3K0lbHW13cf3q/R/cg1RpM/JlVbkxIBKwboC1h2S4pRSc
-	sSEFeVq9cT02zVkJ/19K0O6EXDlSRbg=
-ARC-Authentication-Results: i=2;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=7tmZm/Gzul0Eqa7tJ99LUw4Fw8ETTapvSPmBB9EBHnA=;
+	b=VpoZgl7fFO2WmCXIYz1+qTFSf8ngmAFk4gd5da+Rrtfudb+lYMxx6lFqsuo6hPQxM/jIyV
+	Hrmjn9Qh478zXCh6frKtVsprHIi3qX7JB/xOJlUjHUoNWBEJvFPNqGa5NRe6H8/7BmE82S
+	qbA8fWAkgsMngnTk2GJnE80g64pNvgU=
+ARC-Authentication-Results: i=1;
 	imf09.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=D00U2Q+Y;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=MM8hyw+g;
-	spf=pass (imf09.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755025633; a=rsa-sha256;
-	cv=pass;
-	b=tVUlKAKYyv0fBPMEfOfWD5bxBggqfm9FJ97v8kzagCRIDxrOqKLqhCEetjyOrOl187Sxbr
-	Sf2Po63qa+OoVxTnxgqCsJduuQsPaI5lDTsukG7hdQlwZncpRTwEt7urh2zRwftlAGqZwt
-	oo8hbnXvVQdMe4rpVzxjGvMIn7Ctl9g=
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57CJ2a3H020745;
-	Tue, 12 Aug 2025 19:06:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=M4Ufarry8myM4TKgab
-	CN8p1VgTaBLW410dFYmTYHM/k=; b=D00U2Q+YCooqIXfN4znqux5GCjfTkNI0TK
-	dG0rG9iJxPfMoESfxiOBMnSLTqwCaf3BnTbp8e/Wo7hLilCJ+UkvMp//pYQkw1Yh
-	6mS5ephifDign5IyzVBiKClFbbUCj0N1085cVConZ3lpbampRBcbFR68j3HT2Oob
-	abVknATkNXmAeTNGdBB/R2kWgWBaECCjM2ph4enChvtMaoqzh1lsV0pcmLN19Hn3
-	ay309ByiykQ+kiHvb2sFgJKYr3TBgozy9zHGqsjryBcZMLchLPhTMWDZaJjXMAp9
-	Oj8O1EyIsF7/00HBNcjZ7u31saLQPFFOSzgrrhFqHn2O/3pbcmNw==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48dxcf5gq9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 12 Aug 2025 19:06:48 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57CInspO030150;
-	Tue, 12 Aug 2025 19:06:47 GMT
-Received: from nam04-bn8-obe.outbound.protection.outlook.com (mail-bn8nam04on2059.outbound.protection.outlook.com [40.107.100.59])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48dvsacsxm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 12 Aug 2025 19:06:47 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=l+5VowJriljlYj4FB7JsH/V0KHqnz9ab4k4XQKGqoMcI66vimkZ+OI+m+HqibQvo4OvfjG7wS/DgEqJwl82bPIRcPDXjjd41m7S6KnzvSmxfYIb1TxSmjsh4x5+bMfsNAojyTzXo1oDM+mWI4u92MLq4nAj/lF2or9v7+qTu01PAwoPEPFCdKkwLJjKVAYPPDgB0EV88fSOF7CzpFa7yL1FYlajd+hvYcHIRfjkVzvXsKHddsrsm8w5OOwnY7ftrOm61xL4CQbHDzj91BocMxbDMamEH3BuKmNvOITqKVtkwvRVdUy9Ur/kBZyyADa0WGiMV98HleVLjkDjIBQvQGQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=M4Ufarry8myM4TKgabCN8p1VgTaBLW410dFYmTYHM/k=;
- b=mBFeJTi/lSwFmCIPw2p2/23SFzRQUTzXlulwBIB2rwyX2equEEdiTLd0z9IQBh/YMCHePv5Ul0nx++2l79ete4R3YNzuDZxsDdht7lkOoZ5TILWy89I5ghIBymNBDYJT4gDUTw21mzRxVDNeLb+3emUbDEbLlOBb/H6+VLT11MWmqaA5HioOQx3TsU8CKf/R9PA1lTQ4sCfOijC/UmI50yoHzzqvI0qUgjUwL0+HImSBAbnf52j+sQ+uQAAY1jAIwk7i5ZQ9TBEEbWiH39+L5o8CPeB1sT/pGy+hlc5zExmVS0XoAeL2Y2KzIncdt3DkEJIcF/69U8p11l6SCflNjQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=M4Ufarry8myM4TKgabCN8p1VgTaBLW410dFYmTYHM/k=;
- b=MM8hyw+g4G3inm4zYXkr1ibrneCd0iwQF5JNHiVrF6SwhkZbCEA1lF5q5IICTe2y/y80sHPFWxgaiy/P77AIT6rVcGmFAhbUDRwmD19GjCDLyZouPPpIrNM0pi9h6EIUlUlQZPMnF47wsvebSPpbo7+19WjfUQ8RMcK6cGsxPlw=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by SA2PR10MB4681.namprd10.prod.outlook.com (2603:10b6:806:fb::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.22; Tue, 12 Aug
- 2025 19:06:44 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9031.012; Tue, 12 Aug 2025
- 19:06:44 +0000
-Date: Tue, 12 Aug 2025 20:06:34 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+	dkim=pass header.d=intel.com header.s=Intel header.b=KLrKe92X;
+	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755026367; a=rsa-sha256;
+	cv=none;
+	b=qoDGEjGRKgM16vm+qgOhPSvlb5VQBIdikvXH7YXnotZRnz+5ffRbrXwkrfTDAwb3ohNHzZ
+	LlVHGV1wGguYcepMM9F1GScfrKF4s0s+bd7hTdcU96guZMteE41us2lysIrCWgUnbLOKAa
+	O0cf1BoDWL8t6AL8p2OmVATy69xSzf4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755026366; x=1786562366;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=AI4AXv8xWUmSxBoBjpDgRZHIow4jmjUto7XtO84gmZI=;
+  b=KLrKe92XM3+y2Pg3qJStQmcQ0qtOFggGIpRT7u8NTFRGEHnTysqPhepU
+   s6asNoE/PKFmzV6Auzru66KyYj/Xu81T+CxIxj392PKZIZPeesVnCJ7TU
+   Nq2he1PzmVOBJ7TudSUfOQvD1EZWSkzPVimFKHx9sTxe2QtI+Vmid5Xwi
+   Z6EmbIxcmvmogNSIySC0MS/ikoOWQGYP5CaYX9W1K8J0Z/wcjgcGUAaP/
+   Ph31vXWOsW2uOPN2fzdUCYo/6eMuy/7bPXga739/LuXsCMFrryOG7yb4a
+   uOxKWwC7hUzW8nwP1rQKoICsOffzyYvLBJIxcexrPJflPvVXPJYtM2x3a
+   w==;
+X-CSE-ConnectionGUID: IOiKrFaEQMWBLxYloMIrZA==
+X-CSE-MsgGUID: DGXdusdmTbWfIuJx37+kow==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="56522156"
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
+   d="scan'208";a="56522156"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 12:19:25 -0700
+X-CSE-ConnectionGUID: RiX52RMhSFSOjoBGYQ+MwA==
+X-CSE-MsgGUID: LOLf/Ur7SZidYyNAp85e2g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
+   d="scan'208";a="170408956"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by fmviesa003.fm.intel.com with ESMTP; 12 Aug 2025 12:19:23 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uluWn-00090k-1M;
+	Tue, 12 Aug 2025 19:19:21 +0000
+Date: Wed, 13 Aug 2025 03:18:33 +0800
+From: kernel test robot <lkp@intel.com>
 To: David Hildenbrand <david@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        xen-devel@lists.xenproject.org, linux-fsdevel@vger.kernel.org,
-        nvdimm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-        Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
-        Hugh Dickins <hughd@google.com>, Oscar Salvador <osalvador@suse.de>,
-        Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH v3 09/11] mm/memory: factor out common code from
- vm_normal_page_*()
-Message-ID: <59c0c6b2-7112-4afd-8ea7-9e8bfaf86394@lucifer.local>
-References: <20250811112631.759341-1-david@redhat.com>
- <20250811112631.759341-10-david@redhat.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: [akpm-mm:mm-new 101/118] arch/powerpc/mm/ptdump/shared.c:70:1:
+ error: use of 'pgtable_level' with tag type that does not match previous
+ declaration
+Message-ID: <202508130304.5FJqRz2c-lkp@intel.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250811112631.759341-10-david@redhat.com>
-X-ClientProxiedBy: GV3PEPF00007A90.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:158:401::60d) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|SA2PR10MB4681:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8c919d05-3cd4-460e-360c-08ddd9d360e3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?/gEH2ffgQ7KVDeT0Ww9Ry5wY/38KqtLoBYvGbGREull9Kj9vUECxKYBfIe/5?=
- =?us-ascii?Q?GJ+EXDEaXkWibgdSh5QKPLG3fiqGL/m8fJksNHQK/hkea6zN5Zdxq8ihonby?=
- =?us-ascii?Q?tAIiWpR4uqMsgAyuTL0W0Cf+qZpXfzaRtqRZhR9Kiz/WfFW3NwRBZ4K2pJsO?=
- =?us-ascii?Q?j9UzP7Lq2iFo5P9qPg3tcRbH9zi+D+AlODFgQb++Mh1A8wNDXZ9Oqduc37g0?=
- =?us-ascii?Q?G8g+Idj6hBvuDgkqQih60P3EQAezW6E4DZxQFcTyJzyRwDjblYAtEIb098kH?=
- =?us-ascii?Q?Gm1J4B/lEuPkTdES6FwAZxuEV5cYlDujDeqPw2LgIb6s3rlxBQljqNJ7f+ZT?=
- =?us-ascii?Q?6yeR0a5Opa1r137FaB7hPb0a2X4yzKG2R4J3lX26HZj/suCjMphhpxSn1xCR?=
- =?us-ascii?Q?shpPDC6JeVTV0zI5oMIXLaoqlkFI4U30KWpaYpSZt8iCRvUr45orAEZ7EbuT?=
- =?us-ascii?Q?S7JgqzbDbw/mVR14hwQ2+C7ffS/6mcoeyClzHuC4gaPS69dlDpUtX1udQQrU?=
- =?us-ascii?Q?b+z8tsD7qo1yPlL+Bv5pnQp16+6utxL4XFC8pPM5+D/P1IpePoy2TLNraALi?=
- =?us-ascii?Q?PEYXPlrqZNXdaWQwyviqGMoCERbjeThK4MX6rRaCtRTZC25se6VO0yOcwpy+?=
- =?us-ascii?Q?c/T3a+q1wuADk0QZrNeiDzuEJAIgxKzXEQZti5T4RnaZ8jXLYN/NVovnP9vY?=
- =?us-ascii?Q?8yyfZCF0KInqlCD9T6IrexUQRRrf6pBJGuaUoaIDMTkr3W9MEGQxksKwhL5I?=
- =?us-ascii?Q?qmzVA2K+q1kH4DpnWeaAGVSwDlEZLVU5hKnBQlwWAWgmzPk55y8KNmfNSBRQ?=
- =?us-ascii?Q?Fcu/AemWsT4Nev0M439SgrO+ICHAuUXhKOU0zbXYZtJdwwbVGg6im1f3ts0M?=
- =?us-ascii?Q?r6qbnMX+fZoXr0G4MtwmvVEPDHba8fhIjClqgzHzCk4bTeHmowLwapR6tYlo?=
- =?us-ascii?Q?etMxDdALPoOYEL/9BTPCnRrSDmdh2sAalSXnI8JztNttOs+LETu8pUahnzyH?=
- =?us-ascii?Q?5Gxkoh6I5fN7kS9kVwnz6V6LfCM6hTRbpxfK6L9gF9ggme1dwxvHjqnMucuk?=
- =?us-ascii?Q?06BPSHdrIZktNsu6SlBEJCkDeE0U5LEDbIdr2aWLh4nvlDD8qTlB1tkoZcRp?=
- =?us-ascii?Q?y5x91FLljHAZp6WCMWGliIpsx2c3esvX6EWeRvqmfQ5mhefnW4mzPKOur7eJ?=
- =?us-ascii?Q?ZhWerLQpFYYeJNWWc2NHGun3+tHxut4973HJucxWPVsmr9zB1Z97fQ1IhqiG?=
- =?us-ascii?Q?RciEZRNc8mFjr/MYJPEcn2M4HIUqEpI5lZRrFeI/+5OA3veUFHNJJUy9/BfE?=
- =?us-ascii?Q?i7uoKVbT3g6rgO6m609xf81QLvGcnzjEhajoyiCELcLKeLFIg4f3DUZOchXu?=
- =?us-ascii?Q?hIP6IRyRXT0SgTC9kzLAZeHqJCAKWRpZL/1B8AnK+hihBFTbcLwAy66CTKS2?=
- =?us-ascii?Q?Iy/I1Zrsh6U=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?YzXWqCv6QBLa8860ukoxvUb6P3H6KYKm1Ha6mxaQPSpc4TTpQDOYHJ1wpduN?=
- =?us-ascii?Q?PyZlBgIWweZg+8QXwaxVNohaaLLrqJFgPCqNpGXoUY5+UWom9lUIpPHW1gxD?=
- =?us-ascii?Q?lO3BNKv/AGtgZUH/XUtPGa3ZlpAKSfqOoRBXapxc6pfeZ5pHsXo/U1TZdBZD?=
- =?us-ascii?Q?FunUFW5L2+rPx6zinDbHULQgVQ/ZDgbZNVw24WOi/kWTkpIvHLHk53QJUKy7?=
- =?us-ascii?Q?n3auPwcSzt5WhPwm+n61lJdEqO5Py/M9wXJFd0LXIegWy5ExM6PTKP/xdJeX?=
- =?us-ascii?Q?HZNTkFXeUv75P1m5K1Hwlw7rk2JCtCA5+Kv/ZxNjdeC/dMG1u5XIPB4dl0BU?=
- =?us-ascii?Q?H/y190hFZzWsg1W7hI4KNBD4p/DiLrsHbJ+0L2qeezKo4hByT1inEVwJw9kS?=
- =?us-ascii?Q?EX5H/yRQO96r+n9R2N89LPXfzJwIZmEMRDvIcgkAro/AjOK+XI1ASqEGR2uT?=
- =?us-ascii?Q?db5TIDUdxLP1D4BwHPLJ68m1JL91I/aUcNSmQvj+8DWzVzxPvJL+QVBY0rrY?=
- =?us-ascii?Q?hNwtLZyLfwA8xo5nmpwkuEGGkOOTS8gAZsdiYM6RGK7I8FGf9aQh/mTvETQx?=
- =?us-ascii?Q?2qSBnWkTazN5aMTjlgNPaKpAHx094JJDa4FNmibPNIAvy53tNqqTKVPbb5ZJ?=
- =?us-ascii?Q?U68gX4WZEp7auCR0y/eH8mX8Z4I+rnQrl5JNgPpXfjn4UpSzV24+xxM12pEN?=
- =?us-ascii?Q?1Lm64CRzE+6dfV4O68YYCME32veBDk5BGgTw/JavrX/UhhMbyucK1zsK4cMa?=
- =?us-ascii?Q?ovBp8kVYNWx9ffBupnRV7sNtpVMPzsxfwehk80A8l51vNGFUIpbpeOHpH2+R?=
- =?us-ascii?Q?CTHvyCW0+cRnfKUmvt8rN4WrBxY/yfTd9AX49hntZZGGyQ+UQ11030qlxMya?=
- =?us-ascii?Q?KUMSuywcqRm+LEI9qWSzna1Lahun2QEoZMrHqVjgyIxuzjlud/6HptODjI6H?=
- =?us-ascii?Q?H+nfjgRexd6hDHHvWqJqnJVAvRCj1RQmQl3GlmRyuDklsQycL8jMn3wWw617?=
- =?us-ascii?Q?aD+OSxOwhqw3G6akCaKmjiK2SjX6nb626UYqFJ1H3caFJkWYpVZkyYPYN6EW?=
- =?us-ascii?Q?VPCFeAR1bgUqWuwz359JL9FyXzVzzWmhH5v7Q3AJp5q3QlngxtWu1cV1fSH4?=
- =?us-ascii?Q?j3LNAkKiYgMvoZKvhv4iCfnZlqHAK3aUvouULxOrclTdEiUZC8aq3FoOlDgi?=
- =?us-ascii?Q?S9KLq4Rzu5sqSfMC51yYEDD6jKEuEC10sQdI/CoM+ZjeCt0lnsPQgL+Ytm7Z?=
- =?us-ascii?Q?3SEQrf90yArNVZsqUO5zyt0P3XnHPvGgcRxusb/1lTbfhdHmKnIegY9tm+Tx?=
- =?us-ascii?Q?+HxhX5Jm9MS0l/tSn6mU2pFhsKaJwjkbKIdowKud8DVCLjWIjVkK++puqAQi?=
- =?us-ascii?Q?ByXJZlavdipoBKVdg6uHm4W0L963jh/cWe1+waWsKpZS60gETdCWYYRs9Zdg?=
- =?us-ascii?Q?50R9K7CKnWiAO72vqTYrSsfPYYBFFJxtOQySuQX5Az+EbuSPti67v6d1QH6G?=
- =?us-ascii?Q?vkfAsaHxK3TBWWoc5MEOvH26QJCvGCkA3ydZnq4FUeKNk1tRIlSZOa0Ews5G?=
- =?us-ascii?Q?QsoxdGTaK6HQJfpJO/Ya/rPWAho0ZCO5h8z5yoCExzC9B7q6WRYZcEW9/qyj?=
- =?us-ascii?Q?2A=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	63sPOl5EBe5qbMZPEyJrdojSP3AmJj31qnkrF5YsAMi//gmcOXal1nx1TeCcosQFpMvnKLjw2FqsfVyFlZPxUUu3DP+f0B19Jg5xuiiDK1Zl0FBqxPBwtClo18RpP24niX7aBZcLMJl/NQVhwzBKhB4pDXlJUGyoGHfltZFApIn/wrado0B3unekJg4d1YbujYwAhJOZZ4U0lFvaPLq4dUpsNJFgEykPxZY9k2hh/yGQTvB2WGeiGLF5rMg61/gbTJIigZyV6vgsF9NzxWDlpakBAUtLPuunHmrdEd7UlUWWrCUm3BcBGYnVCEAjh9tEaaT3/iVip7Ri/KHPadti6B+J4yvNh3K1T9KOzWdDgz92bA4iZCkRef41Q96HFt1nVzVui1pwpsidbLVbN3TvzALO7GLxijw1hraj/bfHJPMXN8HeO/xVM3/30aD8JTOXdH5SnvC35IhnpTL+LRQjJlkgzxdSPeSQeRHM55vDzMdFiFvFvwXVhbVK6Ox3fqUbUnYK+TdQaTTFzUJdnLv7eSujzvESeWFORZzRGHFpWOjm5fNy0PcOYSCCPQtg6Te4vEyetFmlkzDBhpKcDoz3UxTwSKZE0haJXkRVzDQwAIg=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8c919d05-3cd4-460e-360c-08ddd9d360e3
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2025 19:06:44.5598
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KkKOAQkjSWRxYT3qvmvmxIv9rZ4sbZiDENakQowW7Wj1kkDjOszqXDpMDcgp0Am4OZrOiVjLiyO+Uu8INCMyXIm5HQ8owZCPdFDW2L/iEKs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR10MB4681
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-12_07,2025-08-11_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0
- malwarescore=0 spamscore=0 bulkscore=0 mlxlogscore=999 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2507300000 definitions=main-2508120183
-X-Proofpoint-GUID: jPp0BwB2hQxTjukL4RWt9koOnapmYEpi
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDE4NCBTYWx0ZWRfX7pA3YifGHnPI
- cHPFcj5ZQPAb2Z6fnKJdSEdI27Q9fOAhIyJ4fplJYBIqdPGsWeNw66JCzf4rx5qCHdSjNgl41kd
- 3xYYNx5sDyBLRqp3WgZlBfvLQni8D3GRllY1SpWKxBPK0X1PDgWj8wVlU6uv3l9lZwCCk+umYYc
- cV9GhpLldVo+G4CdOjruFAYbThhcf1HEK7qvGApjdPH4tJZaqL/Oe9ibp0lRXUvRBfXc5fu1FDk
- IKp+oMNJZK46p/bqqi1dOf3YQTc26Tl3/CZOCD5M1JMWgleWyjaR7UEJ0qmvgFkAVDK4fvlWRVa
- Dj81C0pTJgD7z24XCfnZB0lPKuY39G0EHIekbLPo7gg7fSGquNCSFlUA5phn7mjeb9PM87v1rl+
- /5y3T85pDk5DXeEQ2nvAlqfGigSNaj9h4C0vVbXGFhHsEmsKYAY8w7Cap6KaOTm2drlBD8Pb
-X-Authority-Analysis: v=2.4 cv=W8M4VQWk c=1 sm=1 tr=0 ts=689b90c8 cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=20KFwNOVAAAA:8 a=yPCof4ZbAAAA:8
- a=so3LeFcWHr71qdPntTEA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: jPp0BwB2hQxTjukL4RWt9koOnapmYEpi
-X-Rspamd-Queue-Id: CA252140009
-X-Rspamd-Server: rspam04
+X-Stat-Signature: mi35brgo7tsch17ndwzb4kthinq46oo6
 X-Rspam-User: 
-X-Stat-Signature: x5ps6d8nkh9youp5xm7nm3z6e3edr8xr
-X-HE-Tag: 1755025632-526130
-X-HE-Meta: U2FsdGVkX1/YHn5mjLzBHobFJuoi1ZSHzgtluQ7zTLnk03brgO2vYK+T+J369FfRhUFiUfDu9YDvp2nizIbW4oU+jynP0fa4oo2wWGjtCxvEcUDQjlDW3/tQwDbJpg1rk2C8dU1Z5C17MIqYhY70cwdbDPIAUGI4dTp7qe9oY+RR0ujBzF47zzJaS7opc0F8qQ9zEaPfAYVDOp8tiBLRRmRLaJYXBHhjMgJGH/KhPIBLXC5Jfz7u5U4PyjvtyLit3dtADObEio6saAtb4Zg53/3mK1eF0qy/UnHHI/xzNz03IbxoFuTrC1pyHY5wDuvEUV46VezRB0fQHJE6DJY6OL4pr0naR6pKjXILVrFf6W0EtZNb8Z3wUSvTQq9IcHLNRIiCIPyRXLz5DbD4yLXBtlbp/N110usIdj+f3LCuXTdl5/mrEMI5qaPcnW7b/hM5JZpekY5+mPgHQPEgzbUju67X8YnUj5RDWZAGK8Dy38tKm9HfV55wdob6/OHxtG9w2aHxInjD1lZFoOfiSYjZ9C4JdO/4AL/mcoaW0vORqU2WCuhN545Hax2ua8flpDZvJ4OsLitW/WYTnnRvnAigXOK8yU/XBZtkaJhRYRcto75OX8XXFAXW0X9DSN2XNzXKo8VsW31vTe12KavhOeYWjkpSmi4Ga6vE+MsOYPg9Aqnq3PUuUjmdQ56h+7RAHgjRVfVS5gvPguRnngxsoGdrxdeAE07D7ymnqhhTKqSMFwBHHc47gKh/xWOdekZAJLqpLoO9n5a99LgCRcvwsKpJAuXBT8gfDORT5c9rTdxJ+SYEKRuIcuh3C8RyoyORvhpnjjHQ0bVbHuX6gT7dbUQKOkDY15H6sVDFFTBeKOmFA0/cZhvnJqs7K4Vsz9VkD6kMrdT/Ych0qrZxHj/eianKgye2uLE9S8mGSUToHTt0yhsmqp23L+tLAREIeQydDChfjB2DOtwcv4LlVCPdJ+5
- S4+WrtSL
- +UEH90QWVbz24swLGsWj4Zt4YfgVrnqmqUQAZ/XYQXXcuYUmr+hpabLhKlhzK5rBzgu2i4h+v4VL79TQzVO8+XdJH3p22Ew41OzPUQx2REjJS7t+9mjJkk3geZ0+iVklEmtg59CctlIv+31ldqeFjU9HkleFr5texpX883q/KImZ8TSDvr1kPDlPmPxiAyZqrp2AaauNBMixAtQigAYphgCBr0tiOkoire2U6vAYTR650Qaf3NVdswwtmS0UbxCt7yCJJVnLNquoGTIJV3k4DycMbrhNj4j2ZYEQCx9ziRokRwjeyZ4hm7GjX5m7zOiMaTzE7GWGod4G6l+gs9kvAANA/Hs8iGKmYQ05+2WyRAxPW8pAtOIjUY57GYrZZgkYfuex9no6P1myuyzN1DwVxy3fF5Tc6mKTGgkKhOndCyh7T4iavZ/HN791SqwZiQx4h2U8em+BwcSppoCRutkixKVL826zUnVVdDgYy3ZnxTx95yx7IvDXL1RaqFrb/5dPwhlrHq5Uf6pVU5Tyy9/VaASK/pT2qaV9ksTOBrdr3xILytjf2IaGWrrsufdio2fyDYeIXwdc/Rt/ci88rmlzfOotP7CTd+qceCmTxYWJ9dZwuQLTb4tUqosXc41O43EVcwX0cbGP7eK5FGDlwvav80d4EtqLOSIpF8TCE2CGaEd0p4LXI/lZ2YFSVUvgMSREazAYxrBiS1mEnF/4UlNKrKjocFbmMPtVzHRaBSKRoVdIggSNtD8PuptlVvEgp7j/h+nkqWAxrhrvizmWVZ7xXjhaXBw==
+X-Rspamd-Queue-Id: 92200140007
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755026366-366847
+X-HE-Meta: U2FsdGVkX1/RwrycIyp+VF3qh7eoYIeZS/he+wFEPo2bZocfJ+bTBUTB7xdux/4xZ1NPp2qgQ5NaJ0Fto/fIduibTY4kA6c3zV3W8XryqJSES2awfQiu8x2U2uWbaNZgzeZ2g9PrysPNcNWzw6p/+OtdWjtuYZLH5cjYCcfJc2MHA1j/LtcvwsPRW+TY+tumsdeAa7Fn/h8u3fJvlxdgoBC8MB5MT3NPUI4Wc53nbl3ROMwlg4OUV8AphVNwsED9/IiDryjaqGbujqFFe1F34kVwTiflL4Eqo6ktdfCK+WIvUzxOTOVrLGrALq0ILRdH89QGixzMF/4XHY8W+StwvIaX2fhBwfMOio2niAApB39fsYwmG0+3gGx1e+RwJsOMMcareZRJGaPnqDRH319XBdbT/+bqTEYJSM5OKY4xCkQyu0+Q1f5lYZBzEKYAM6cYsupRXz4V0JJQsMFPc9ml49sX8wa/SEQK3UahtXI+pEQg0O35BQpZoF4XB7AcFXTc2fI6NmQd8ZgMooBmJsfqehDZC32Lv1flm6A13UTLrYt5zG+Vpba12pDNW6lrlen+cY8lKjxFm71Q0LiI51BOzb4NyVec3ow87KaFelOj7ka0S9+IW4+SLNFwTasz3VAsUXxeMwd2vaISFkZyxmp6ydB5v+myQ1bWdH5mpAZV7phOt3XqyAgnKaA14vM688D2j0Y6lYVcQUoMCt42xPMpXUMJD3mZbybH0ZrTRm1pbPupM74YVXL25syLpaRaUrduleI4uNByvBpi3wRf4mOxr8q/Q/YECjOdvsNG5pnSmmqqRsCPpING7XZsu1YB9Vk55zWmYgpUuW8I1g7rzrfHJrkVKM8oBgBCjeXbLfJgmC7mRVumAjm8Jc1WtmQud/0rPEg312w8hNhaKs5i8BCoM9R27dk1t3tfXZ8KHJAE30wsjJ1FMMkPLTyuFK+6EbOaXXehYNjfbfhVHTsYS5b
+ HNXkeyT6
+ 8g0iu6Y8HGNzHQUeHpQ8y1c+iZ3BaMyBVTwMM3AHhBhTHT1T942eDEFjsT+yn7qD+IqcN3cAV1lau1nttiZVHoza6hChKOH8UwicJe5Ae7QekJV8wu57r8hyH215NZ/9IeN4XeWfuIG8Dswto7nl8V9oJF58TtG5XgzVBliMZfMf640k9qSTZ0MPbHX4wWKnHUwDTNzXZfXRKKnQPqJ/2kdvVB1vSHY8Az+tIWrfrwjrTlLp7ljYxz4U/BNAPy5QnSZUUUClmstxC93u3QvhnBs0JQckq17cMaGilJPWyNc6NVvE5epNAjAFjB9iKFvqr1E0IALpJQ+LHGUyfjP3DzN2UTLfuRfZxSDMZWPTeBt7gEe7LXoGJ4aEScA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -254,309 +104,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 11, 2025 at 01:26:29PM +0200, David Hildenbrand wrote:
-> Let's reduce the code duplication and factor out the non-pte/pmd related
-> magic into __vm_normal_page().
->
-> To keep it simpler, check the pfn against both zero folios, which
-> shouldn't really make a difference.
->
-> It's a good question if we can even hit the !CONFIG_ARCH_HAS_PTE_SPECIAL
-> scenario in the PMD case in practice: but doesn't really matter, as
-> it's now all unified in vm_normal_page_pfn().
->
-> Add kerneldoc for all involved functions.
->
-> Note that, as a side product, we now:
-> * Support the find_special_page special thingy also for PMD
-> * Don't check for is_huge_zero_pfn() anymore if we have
->   CONFIG_ARCH_HAS_PTE_SPECIAL and the PMD is not special. The
->   VM_WARN_ON_ONCE would catch any abuse
->
-> No functional change intended.
->
-> Reviewed-by: Oscar Salvador <osalvador@suse.de>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   33ad02f876604ac2990e510480b0ab3a03cf892e
+commit: 627bf62489a6d9a45f6d6f83edd0cb6c0ee610c0 [101/118] mm/rmap: convert "enum rmap_level" to "enum pgtable_level"
+config: powerpc-randconfig-001-20250812 (https://download.01.org/0day-ci/archive/20250813/202508130304.5FJqRz2c-lkp@intel.com/config)
+compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250813/202508130304.5FJqRz2c-lkp@intel.com/reproduce)
 
-Fantastic cleanup, thanks for refactoring with levels, this looks great!
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508130304.5FJqRz2c-lkp@intel.com/
 
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+All errors (new ones prefixed by >>):
 
-> ---
->  mm/memory.c | 186 ++++++++++++++++++++++++++++++----------------------
->  1 file changed, 109 insertions(+), 77 deletions(-)
->
-> diff --git a/mm/memory.c b/mm/memory.c
-> index dc0107354d37b..78af3f243cee7 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -614,8 +614,14 @@ static void print_bad_page_map(struct vm_area_struct *vma,
->  #define print_bad_pte(vma, addr, pte, page) \
->  	print_bad_page_map(vma, addr, pte_val(pte), page, PGTABLE_LEVEL_PTE)
->
-> -/*
-> - * vm_normal_page -- This function gets the "struct page" associated with a pte.
-> +/**
-> + * __vm_normal_page() - Get the "struct page" associated with a page table entry.
-> + * @vma: The VMA mapping the page table entry.
-> + * @addr: The address where the page table entry is mapped.
-> + * @pfn: The PFN stored in the page table entry.
-> + * @special: Whether the page table entry is marked "special".
-> + * @level: The page table level for error reporting purposes only.
-> + * @entry: The page table entry value for error reporting purposes only.
->   *
->   * "Special" mappings do not wish to be associated with a "struct page" (either
->   * it doesn't exist, or it exists but they don't want to touch it). In this
-> @@ -628,10 +634,10 @@ static void print_bad_page_map(struct vm_area_struct *vma,
->   * Selected page table walkers (such as GUP) can still identify mappings of the
->   * shared zero folios and work with the underlying "struct page".
->   *
-> - * There are 2 broad cases. Firstly, an architecture may define a pte_special()
-> - * pte bit, in which case this function is trivial. Secondly, an architecture
-> - * may not have a spare pte bit, which requires a more complicated scheme,
-> - * described below.
-> + * There are 2 broad cases. Firstly, an architecture may define a "special"
-> + * page table entry bit, such as pte_special(), in which case this function is
-> + * trivial. Secondly, an architecture may not have a spare page table
-> + * entry bit, which requires a more complicated scheme, described below.
+   In file included from arch/powerpc/mm/ptdump/shared.c:10:
+   arch/powerpc/mm/ptdump/ptdump.h:14:1: error: use of 'pgtable_level' with tag type that does not match previous declaration
+      14 | struct pgtable_level {
+         | ^
+   include/linux/pgtable.h:1961:6: note: previous use is here
+    1961 | enum pgtable_level {
+         |      ^
+   In file included from arch/powerpc/mm/ptdump/shared.c:10:
+   arch/powerpc/mm/ptdump/ptdump.h:20:8: error: use of 'pgtable_level' with tag type that does not match previous declaration
+      20 | extern struct pgtable_level pg_level[5];
+         |        ^
+   include/linux/pgtable.h:1961:6: note: previous use is here
+    1961 | enum pgtable_level {
+         |      ^
+>> arch/powerpc/mm/ptdump/shared.c:70:1: error: use of 'pgtable_level' with tag type that does not match previous declaration
+      70 | struct pgtable_level pg_level[5] = {
+         | ^
+   include/linux/pgtable.h:1961:6: note: previous use is here
+    1961 | enum pgtable_level {
+         |      ^
+   3 errors generated.
 
-OK cool, nice to have this here in one place!
 
->   *
->   * A raw VM_PFNMAP mapping (ie. one that is not COWed) is always considered a
->   * special mapping (even if there are underlying and valid "struct pages").
-> @@ -664,63 +670,94 @@ static void print_bad_page_map(struct vm_area_struct *vma,
->   * don't have to follow the strict linearity rule of PFNMAP mappings in
->   * order to support COWable mappings.
->   *
-> + * Return: Returns the "struct page" if this is a "normal" mapping. Returns
-> + *	   NULL if this is a "special" mapping.
->   */
-> -struct page *vm_normal_page(struct vm_area_struct *vma, unsigned long addr,
-> -			    pte_t pte)
-> +static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
-> +		unsigned long addr, unsigned long pfn, bool special,
-> +		unsigned long long entry, enum pgtable_level level)
->  {
-> -	unsigned long pfn = pte_pfn(pte);
-> -
->  	if (IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL)) {
-> -		if (likely(!pte_special(pte)))
-> -			goto check_pfn;
-> -		if (vma->vm_ops && vma->vm_ops->find_special_page)
-> -			return vma->vm_ops->find_special_page(vma, addr);
-> -		if (vma->vm_flags & (VM_PFNMAP | VM_MIXEDMAP))
-> -			return NULL;
-> -		if (is_zero_pfn(pfn))
-> -			return NULL;
-> -
-> -		print_bad_pte(vma, addr, pte, NULL);
-> -		return NULL;
-> -	}
-> -
-> -	/* !CONFIG_ARCH_HAS_PTE_SPECIAL case follows: */
-> -
-> -	if (unlikely(vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP))) {
-> -		if (vma->vm_flags & VM_MIXEDMAP) {
-> -			if (!pfn_valid(pfn))
-> +		if (unlikely(special)) {
-> +			if (vma->vm_ops && vma->vm_ops->find_special_page)
-> +				return vma->vm_ops->find_special_page(vma, addr);
-> +			if (vma->vm_flags & (VM_PFNMAP | VM_MIXEDMAP))
->  				return NULL;
-> -			if (is_zero_pfn(pfn))
-> -				return NULL;
-> -			goto out;
-> -		} else {
-> -			unsigned long off;
-> -			off = (addr - vma->vm_start) >> PAGE_SHIFT;
-> -			if (pfn == vma->vm_pgoff + off)
-> -				return NULL;
-> -			if (!is_cow_mapping(vma->vm_flags))
-> +			if (is_zero_pfn(pfn) || is_huge_zero_pfn(pfn))
+vim +/pgtable_level +70 arch/powerpc/mm/ptdump/shared.c
 
-Yeah this works fine.
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09   9  
+e66c3209c7fd17 arch/powerpc/mm/ptdump/shared.c                Christophe Leroy 2019-02-18 @10  #include "ptdump.h"
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  11  
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  12  static const struct flag_info flag_array[] = {
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  13  	{
+ceaba662c06598 arch/powerpc/mm/ptdump/shared.c                Christophe Leroy 2023-09-25  14  		.mask	= _PAGE_READ,
+dd8de84b57b02b arch/powerpc/mm/ptdump/shared.c                Christophe Leroy 2022-06-28  15  		.val	= 0,
+ceaba662c06598 arch/powerpc/mm/ptdump/shared.c                Christophe Leroy 2023-09-25  16  		.set	= " ",
+ceaba662c06598 arch/powerpc/mm/ptdump/shared.c                Christophe Leroy 2023-09-25  17  		.clear	= "r",
+ceaba662c06598 arch/powerpc/mm/ptdump/shared.c                Christophe Leroy 2023-09-25  18  	}, {
+ceaba662c06598 arch/powerpc/mm/ptdump/shared.c                Christophe Leroy 2023-09-25  19  		.mask	= _PAGE_WRITE,
+ceaba662c06598 arch/powerpc/mm/ptdump/shared.c                Christophe Leroy 2023-09-25  20  		.val	= 0,
+ceaba662c06598 arch/powerpc/mm/ptdump/shared.c                Christophe Leroy 2023-09-25  21  		.set	= " ",
+ceaba662c06598 arch/powerpc/mm/ptdump/shared.c                Christophe Leroy 2023-09-25  22  		.clear	= "w",
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  23  	}, {
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  24  		.mask	= _PAGE_EXEC,
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  25  		.val	= _PAGE_EXEC,
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  26  		.set	= " X ",
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  27  		.clear	= "   ",
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  28  	}, {
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  29  		.mask	= _PAGE_PRESENT,
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  30  		.val	= _PAGE_PRESENT,
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  31  		.set	= "present",
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  32  		.clear	= "       ",
+3af4786eb429b2 arch/powerpc/mm/ptdump/shared.c                Christophe Leroy 2020-05-19  33  	}, {
+3af4786eb429b2 arch/powerpc/mm/ptdump/shared.c                Christophe Leroy 2020-05-19  34  		.mask	= _PAGE_COHERENT,
+3af4786eb429b2 arch/powerpc/mm/ptdump/shared.c                Christophe Leroy 2020-05-19  35  		.val	= _PAGE_COHERENT,
+3af4786eb429b2 arch/powerpc/mm/ptdump/shared.c                Christophe Leroy 2020-05-19  36  		.set	= "coherent",
+3af4786eb429b2 arch/powerpc/mm/ptdump/shared.c                Christophe Leroy 2020-05-19  37  		.clear	= "        ",
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  38  	}, {
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  39  		.mask	= _PAGE_GUARDED,
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  40  		.val	= _PAGE_GUARDED,
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  41  		.set	= "guarded",
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  42  		.clear	= "       ",
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  43  	}, {
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  44  		.mask	= _PAGE_DIRTY,
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  45  		.val	= _PAGE_DIRTY,
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  46  		.set	= "dirty",
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  47  		.clear	= "     ",
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  48  	}, {
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  49  		.mask	= _PAGE_ACCESSED,
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  50  		.val	= _PAGE_ACCESSED,
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  51  		.set	= "accessed",
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  52  		.clear	= "        ",
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  53  	}, {
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  54  		.mask	= _PAGE_WRITETHRU,
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  55  		.val	= _PAGE_WRITETHRU,
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  56  		.set	= "write through",
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  57  		.clear	= "             ",
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  58  	}, {
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  59  		.mask	= _PAGE_NO_CACHE,
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  60  		.val	= _PAGE_NO_CACHE,
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  61  		.set	= "no cache",
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  62  		.clear	= "        ",
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  63  	}, {
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  64  		.mask	= _PAGE_SPECIAL,
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  65  		.val	= _PAGE_SPECIAL,
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  66  		.set	= "special",
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  67  	}
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  68  };
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09  69  
+97026b5a5ac265 arch/powerpc/mm/dump_linuxpagetables-generic.c Christophe Leroy 2018-10-09 @70  struct pgtable_level pg_level[5] = {
 
->  				return NULL;
-> +
-> +			print_bad_page_map(vma, addr, entry, NULL, level);
+:::::: The code at line 70 was first introduced by commit
+:::::: 97026b5a5ac26541b3d294146f5c941491a9e609 powerpc/mm: Split dump_pagelinuxtables flag_array table
 
-OK nice this is where the the print_bad_page_map() with level comes in handy.
+:::::: TO: Christophe Leroy <christophe.leroy@c-s.fr>
+:::::: CC: Michael Ellerman <mpe@ellerman.id.au>
 
-> +			return NULL;
->  		}
-> -	}
-> +		/*
-> +		 * With CONFIG_ARCH_HAS_PTE_SPECIAL, any special page table
-> +		 * mappings (incl. shared zero folios) are marked accordingly.
-> +		 */
-> +	} else {
-> +		if (unlikely(vma->vm_flags & (VM_PFNMAP | VM_MIXEDMAP))) {
-> +			if (vma->vm_flags & VM_MIXEDMAP) {
-> +				/* If it has a "struct page", it's "normal". */
-> +				if (!pfn_valid(pfn))
-> +					return NULL;
-> +			} else {
-> +				unsigned long off = (addr - vma->vm_start) >> PAGE_SHIFT;
->
-> -	if (is_zero_pfn(pfn))
-> -		return NULL;
-> +				/* Only CoW'ed anon folios are "normal". */
-> +				if (pfn == vma->vm_pgoff + off)
-> +					return NULL;
-> +				if (!is_cow_mapping(vma->vm_flags))
-> +					return NULL;
-> +			}
-> +		}
-> +
-> +		if (is_zero_pfn(pfn) || is_huge_zero_pfn(pfn))
-
-Yeah this is fine too! This is all working out rather neatly! :)
-
-> +			return NULL;
-> +	}
->
-> -check_pfn:
->  	if (unlikely(pfn > highest_memmap_pfn)) {
-> -		print_bad_pte(vma, addr, pte, NULL);
-> +		/* Corrupted page table entry. */
-> +		print_bad_page_map(vma, addr, entry, NULL, level);
->  		return NULL;
->  	}
-> -
->  	/*
->  	 * NOTE! We still have PageReserved() pages in the page tables.
-> -	 * eg. VDSO mappings can cause them to exist.
-> +	 * For example, VDSO mappings can cause them to exist.
->  	 */
-> -out:
-> -	VM_WARN_ON_ONCE(is_zero_pfn(pfn));
-> +	VM_WARN_ON_ONCE(is_zero_pfn(pfn) || is_huge_zero_pfn(pfn));
-
-And ACK on this as well.
-
->  	return pfn_to_page(pfn);
->  }
->
-> +/**
-> + * vm_normal_page() - Get the "struct page" associated with a PTE
-> + * @vma: The VMA mapping the @pte.
-> + * @addr: The address where the @pte is mapped.
-> + * @pte: The PTE.
-> + *
-> + * Get the "struct page" associated with a PTE. See __vm_normal_page()
-> + * for details on "normal" and "special" mappings.
-
-Lovely.
-
-> + *
-> + * Return: Returns the "struct page" if this is a "normal" mapping. Returns
-> + *	   NULL if this is a "special" mapping.
-> + */
-> +struct page *vm_normal_page(struct vm_area_struct *vma, unsigned long addr,
-> +			    pte_t pte)
-> +{
-> +	return __vm_normal_page(vma, addr, pte_pfn(pte), pte_special(pte),
-> +				pte_val(pte), PGTABLE_LEVEL_PTE);
-
-Nice and neat!
-
-> +}
-> +
-> +/**
-> + * vm_normal_folio() - Get the "struct folio" associated with a PTE
-> + * @vma: The VMA mapping the @pte.
-> + * @addr: The address where the @pte is mapped.
-> + * @pte: The PTE.
-> + *
-> + * Get the "struct folio" associated with a PTE. See __vm_normal_page()
-> + * for details on "normal" and "special" mappings.
-> + *
-> + * Return: Returns the "struct folio" if this is a "normal" mapping. Returns
-> + *	   NULL if this is a "special" mapping.
-> + */
-
-Great, thanks for adding this! I especially like '*special*' :P
-
->  struct folio *vm_normal_folio(struct vm_area_struct *vma, unsigned long addr,
->  			    pte_t pte)
->  {
-> @@ -732,42 +769,37 @@ struct folio *vm_normal_folio(struct vm_area_struct *vma, unsigned long addr,
->  }
->
->  #ifdef CONFIG_PGTABLE_HAS_HUGE_LEAVES
-> +/**
-> + * vm_normal_page_pmd() - Get the "struct page" associated with a PMD
-> + * @vma: The VMA mapping the @pmd.
-> + * @addr: The address where the @pmd is mapped.
-> + * @pmd: The PMD.
-> + *
-> + * Get the "struct page" associated with a PTE. See __vm_normal_page()
-> + * for details on "normal" and "special" mappings.
-> + *
-> + * Return: Returns the "struct page" if this is a "normal" mapping. Returns
-> + *	   NULL if this is a "special" mapping.
-> + */
->  struct page *vm_normal_page_pmd(struct vm_area_struct *vma, unsigned long addr,
->  				pmd_t pmd)
->  {
-> -	unsigned long pfn = pmd_pfn(pmd);
-> -
-> -	if (unlikely(pmd_special(pmd)))
-> -		return NULL;
-> -
-> -	if (unlikely(vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP))) {
-> -		if (vma->vm_flags & VM_MIXEDMAP) {
-> -			if (!pfn_valid(pfn))
-> -				return NULL;
-> -			goto out;
-> -		} else {
-> -			unsigned long off;
-> -			off = (addr - vma->vm_start) >> PAGE_SHIFT;
-> -			if (pfn == vma->vm_pgoff + off)
-> -				return NULL;
-> -			if (!is_cow_mapping(vma->vm_flags))
-> -				return NULL;
-> -		}
-> -	}
-> -
-> -	if (is_huge_zero_pfn(pfn))
-> -		return NULL;
-> -	if (unlikely(pfn > highest_memmap_pfn))
-> -		return NULL;
-> -
-> -	/*
-> -	 * NOTE! We still have PageReserved() pages in the page tables.
-> -	 * eg. VDSO mappings can cause them to exist.
-> -	 */
-> -out:
-> -	return pfn_to_page(pfn);
-> +	return __vm_normal_page(vma, addr, pmd_pfn(pmd), pmd_special(pmd),
-> +				pmd_val(pmd), PGTABLE_LEVEL_PMD);
-
-So much red... so much delight! :) this is great!
-
->  }
->
-> +/**
-> + * vm_normal_folio_pmd() - Get the "struct folio" associated with a PMD
-> + * @vma: The VMA mapping the @pmd.
-> + * @addr: The address where the @pmd is mapped.
-> + * @pmd: The PMD.
-> + *
-> + * Get the "struct folio" associated with a PTE. See __vm_normal_page()
-> + * for details on "normal" and "special" mappings.
-> + *
-> + * Return: Returns the "struct folio" if this is a "normal" mapping. Returns
-> + *	   NULL if this is a "special" mapping.
-> + */
-
-This is great also!
-
->  struct folio *vm_normal_folio_pmd(struct vm_area_struct *vma,
->  				  unsigned long addr, pmd_t pmd)
->  {
-> --
-> 2.50.1
->
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
