@@ -2,120 +2,108 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 84FE2C87FCB
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 17:58:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D8219C87FCB
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 17:58:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1799690000F; Tue, 12 Aug 2025 13:58:54 -0400 (EDT)
+	id 7DAA5900010; Tue, 12 Aug 2025 13:58:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14A128E0151; Tue, 12 Aug 2025 13:58:54 -0400 (EDT)
+	id 7B3CF8E0151; Tue, 12 Aug 2025 13:58:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0871790000F; Tue, 12 Aug 2025 13:58:54 -0400 (EDT)
+	id 6CC58900010; Tue, 12 Aug 2025 13:58:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EF93D8E0151
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:58:53 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6310E14014A
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 17:58:53 +0000 (UTC)
-X-FDA: 83768866146.08.CEA2CCE
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 54BDC4000D
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 17:58:51 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cVaDFvjS;
-	spf=pass (imf17.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A54A8E0151
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:58:58 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0E0EA80140
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 17:58:58 +0000 (UTC)
+X-FDA: 83768866356.07.AE787A7
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 5698BA0008
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 17:58:56 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=gwyTGNwZ;
+	spf=pass (imf25.hostedemail.com: domain of 33oCbaAYKCJkDNGBRN9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--kuniyu.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=33oCbaAYKCJkDNGBRN9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--kuniyu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755021531;
+	s=arc-20220608; t=1755021536;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qFgqOdxV1F9ejz004iGryJ3qWW5B6GXnUjljpVgqkLk=;
-	b=j4MwZcig0sO5bEmZQwxMTga5B/gLynt5rKERvnFXLEsZSzVw+HQn1OaF6513M+JqaHfGdw
-	pkVyRm8AuvrXBuaimv1hTPjxlKURQVRK1VT80Tt+/fhaS/CN8sJbpdJC40c0htVEENrC8P
-	QiVRX+uxdErF7cBvl4cZ4zQfvQ4Rp94=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=r2V1v9VHmhBBpIoyn/8bp16McXh5rwC69+hYhu5VhtU=;
+	b=vl6l05n2vc0ixbYWQgtrAI9RtOkuWHnwggZuY1yAW7VceB0Llzhn3IqvhAbbA24UCVrr3T
+	4Ua0EUomabFRd3YkpbQ5KA3BTd+Md/RQXeoFUCsGACct/AHwkqMzvMgBrh3jssxMei/0ZL
+	4xFEYN5dyaQuFo2dKRWqLrzzObvpQKU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cVaDFvjS;
-	spf=pass (imf17.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755021531; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=gwyTGNwZ;
+	spf=pass (imf25.hostedemail.com: domain of 33oCbaAYKCJkDNGBRN9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--kuniyu.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=33oCbaAYKCJkDNGBRN9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--kuniyu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755021536; a=rsa-sha256;
 	cv=none;
-	b=0ERPC8JxGB2dlTJUc3lpxtfBU9UebMqPoMcNq0jqF60E8OvtiZnwOq/nMANScp4tp1ngRP
-	Uvef/bRjtJcfvi/TNGX4LCCPFtuBZg5IZ3w56HfdLv6VRCNXnHmn7CAJof5L43ZWfFGbLe
-	jn7TdvGtPyW9/O/Z4GmH9kw+6gjXDAE=
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-459d40d16bdso37406435e9.0
-        for <linux-mm@kvack.org>; Tue, 12 Aug 2025 10:58:50 -0700 (PDT)
+	b=xzAmSXJU5dBINK5aJp9WjqcQ6y8ON0nex27eiR8NH5gFJ/RGtV00EpT197zH4tMOv6rTKK
+	872eHewkSFlHp5AS9rDYIicId4pXnpPLFBgL5MEJwzbISFSKGpWwcYn1K5FLUz9wFLvRLm
+	18jijtV0B2U4CUVVhFWQ8Icps/BtA8E=
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-76bf3e05024so5388061b3a.2
+        for <linux-mm@kvack.org>; Tue, 12 Aug 2025 10:58:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755021530; x=1755626330; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qFgqOdxV1F9ejz004iGryJ3qWW5B6GXnUjljpVgqkLk=;
-        b=cVaDFvjS2ZJuxuPW6L4mL7tBAtce6RgYpB0qMAgaX4xJDr9ZVsOWBf5L3SljzFeb9R
-         2PK4zKI22A7JG4mBYUv0mJ95Jd/U6w8Gy+QkNWst9uMF/rWQiMydGJv6vVzWrZHga/N9
-         3M+1UUUjZmhbb9GogYgB9dbGjVxEoCHXJPz5XuO29ExKad14nNlKgJ0WHoAdf1kIE++I
-         Ykwa1kjScAjfP4PJVNanLj+8NgdKJ8I+UrTlSiP0p5kSpFKA/PGzICONeIuLdA4WNWhM
-         LrZNwtpNDdTnhHhJEiIF2/KqGkbcXgGX/XgyZrqewfO8UXAkyNHaOv+xd8/CRgHjHkKp
-         Cakw==
+        d=google.com; s=20230601; t=1755021535; x=1755626335; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=r2V1v9VHmhBBpIoyn/8bp16McXh5rwC69+hYhu5VhtU=;
+        b=gwyTGNwZHTYjr4BdzbJu7oYhIxBZ+8YHXy6H3ksNOSCvjfWh794I9OLB/Bj6ZCBMjA
+         Mj7RZ6ofOTLUTnWjisQpph7Rt48uj/KBkkDocHuR5rkbfCQ3PQkLs6uXM3InNTcS+8zN
+         zh9BAoWPRN2YGp965riQGmt7G8ullPztDqHwjJUp4z0AJ9LH03G3UjeYwYQbCAbF+y/N
+         tBs8ws/x13T71gNZP+MoHNbuq0y+hiEAIuMkEIPOh+CsOdrbJVV3ZYWD4KBRejjP9DBi
+         QNcq7ybfKAie+8Q3j/zTqSwjOZ0x0mnQ4OR0Zr0SO1dVVRTDaxpEP3Bkq1HwoXgR5Mvt
+         jxUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755021530; x=1755626330;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qFgqOdxV1F9ejz004iGryJ3qWW5B6GXnUjljpVgqkLk=;
-        b=NaSkd8tEbkAY2toNCCmH1ykbdvFG+uoxUNHvkW6/Zi27wn7KaG7rUFJqDn9mvPKKuU
-         IljwHHWiP/MjxGvci6FaybpTPgu8txhTg5knC3T1SApT5dRdNTWxJnv2Cd/IfwJyVKL3
-         r4Jq/a9qAKLuVICDNaTki9qPyB9Q4D+aXcKNcRtFQLF16L8sEM6Q3Fs5mNlRhl2HBPmS
-         24bkY9E+DleQSuDdZx0VoBJ7AxUz48YPHCqpnuO5weE4Ctg0Nvwtd1WcnigOtQVJ23Bl
-         NbNQXhg8ZVhgYtKRpBCi+mvC57vwecP+KS7U9D1L246cvth46ZW1Z5coFEIyG5+m1PGo
-         HJjg==
-X-Forwarded-Encrypted: i=1; AJvYcCWVzVp2iia9u7YTEQo6BbNp92OWIXXEG5z6TgZy6HEyMnnJsuGWDEifpenfg/d0QjVLztnlsY2ljQ==@kvack.org
-X-Gm-Message-State: AOJu0YxoHSAJJ4Fel2135s0GRaQh5jl2N5ZH02rqXHr0uVm+GE3OBMNl
-	VFHesy1VRnCUUGZergCuQ04i+hXb1kArZGQCINT4Smqfz1WU80eAwUkbqFuAUm7+cTzEuDaTKnI
-	qBMu5HgQ3B1CBph/thN4dbapRr6qviPI=
-X-Gm-Gg: ASbGnct4d6xZXN72L9t24WVK1nvCfLqwuvqI0WLXvG7+UN9nBaJFN6nWc9pKehbgT0D
-	Y3yiVZVhNaXIKJYrptc88ZlWy0XFSAf2E93dHS10bs9LcdjJVPGueOQDF/6XAWrWrfWkYSXatNV
-	ZrRZLRaU3ieiR9lv2K9GlegUfBpxsmY8kOaDfy0ggxRPQodsLivvLIeb9rzJeDwZHUpBLk5K9WV
-	ueh3hLXfw==
-X-Google-Smtp-Source: AGHT+IGCSqi+u7zPAKJbXiVle6HBw4vaddTrUBJW1UYwaHGnh/4m0lYlidEl1hsmzcOBFaEBgHl1CB3LcKFa24raxFg=
-X-Received: by 2002:a05:600c:1c01:b0:458:bbed:a827 with SMTP id
- 5b1f17b1804b1-45a165b7b15mr660355e9.1.1755021529570; Tue, 12 Aug 2025
- 10:58:49 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250811173626.1878783-1-yeoreum.yun@arm.com> <20250811173626.1878783-3-yeoreum.yun@arm.com>
- <CA+fCnZeSV4fDBQr-WPFA66OYxN8zOQ2g1RQMDW3Ok8FaE7=NXQ@mail.gmail.com> <aJtyR3hCW5fG+niV@e129823.arm.com>
-In-Reply-To: <aJtyR3hCW5fG+niV@e129823.arm.com>
-From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Tue, 12 Aug 2025 19:58:37 +0200
-X-Gm-Features: Ac12FXy555KMqM9sRgAgjXOVEGNZdNcePtQ9D4aII7b1VUPGHKMWOpB_9plVIlw
-Message-ID: <CA+fCnZeznLqoLsUOgB1a1TNpR9PxjZKrrVBhotpMh0KVwvzj_Q@mail.gmail.com>
-Subject: Re: [PATCH 2/2] kasan: apply store-only mode in kasan kunit testcases
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: ryabinin.a.a@gmail.com, glider@google.com, dvyukov@google.com, 
-	vincenzo.frascino@arm.com, corbet@lwn.net, catalin.marinas@arm.com, 
-	will@kernel.org, akpm@linux-foundation.org, scott@os.amperecomputing.com, 
-	jhubbard@nvidia.com, pankaj.gupta@amd.com, leitao@debian.org, 
-	kaleshsingh@google.com, maz@kernel.org, broonie@kernel.org, 
-	oliver.upton@linux.dev, james.morse@arm.com, ardb@kernel.org, 
-	hardevsinh.palaniya@siliconsignals.io, david@redhat.com, 
-	yang@os.amperecomputing.com, kasan-dev@googlegroups.com, 
-	workflows@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mm@kvack.org
+        d=1e100.net; s=20230601; t=1755021535; x=1755626335;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=r2V1v9VHmhBBpIoyn/8bp16McXh5rwC69+hYhu5VhtU=;
+        b=a+gi5paKfqOK2B5kE0q+cUp9RiG3RmEWbnh50LV4nn3xz6TYlyF7anMzxeRQ/Tpjwm
+         ZD0ncYkkB7du1glzt8GDX2iRfMURX2h+YujA7UBTQEQnsrWTS0jez9i8+pBAP8o475Hv
+         d1NNcccDkdfCbiKrhbmJU2rn1ItTAbOwAwKMy/wL7Y7o4xwRdbv9IKmcqJ5Eq5C4DQ2k
+         RFyCDnX5TVbd2fee7jBC0M5A4t25Na69uZ35oX2XR4Lk3Mxf3Rq08ey+adDdH+SYx8SD
+         m6gkcpKuuSWiwcd+HChwBnhyRG9n+HnAq+cGGmSAZiZwrTT5P1cZXT1aJ+tyHFWOCn/L
+         yJFA==
+X-Forwarded-Encrypted: i=1; AJvYcCXxp3rG7pn8vF5F7+C+OwWHnqoCTmxUAM0bE3u7cSuzYjZHsdBAXp+rJy3J9C9nY8bGmnVosqsGsw==@kvack.org
+X-Gm-Message-State: AOJu0YzyyQiD6YktOgWPB8P7uhcPda4W+XonDAiO89R3fH/hzdoT3Zik
+	lzIEIq1fYTA+IvNAzEVCcIa2OKHVbq+jjwnfvcnCHZcPCBtTmc/O9laixER8GbSHYnLmavfJTOm
+	4j6VBaw==
+X-Google-Smtp-Source: AGHT+IHpI2A58X7fiHu4X8DLCY/YyPjXlJ8KtqdQYuS0Jk77Gj/N6hjXCZ5aN91Gfz65dY+Oy92efigaL18=
+X-Received: from pfbde4.prod.google.com ([2002:a05:6a00:4684:b0:740:5196:b63a])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:939d:b0:240:1119:d70c
+ with SMTP id adf61e73a8af0-240a8bb39dcmr219488637.44.1755021534987; Tue, 12
+ Aug 2025 10:58:54 -0700 (PDT)
+Date: Tue, 12 Aug 2025 17:58:18 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.rc0.205.g4a044479a3-goog
+Message-ID: <20250812175848.512446-1-kuniyu@google.com>
+Subject: [PATCH v3 net-next 00/12] net-memcg: Decouple controlled memcg from sk->sk_prot->memory_allocated.
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, Matthieu Baerts <matttbe@kernel.org>, 
+	Mat Martineau <martineau@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	"=?UTF-8?q?Michal=20Koutn=C3=BD?=" <mkoutny@suse.com>, Tejun Heo <tj@kernel.org>
+Cc: Simon Horman <horms@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Mina Almasry <almasrymina@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 54BDC4000D
+X-Stat-Signature: zr1imwopo17aakknydhau637ayrsohy9
 X-Rspam-User: 
-X-Stat-Signature: qb1cwkw46muggowtuz5dmgkgpydpgnaw
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1755021531-219040
-X-HE-Meta: U2FsdGVkX19r66NN5oCKqETbqyV2PCmpQvhiAqLAKXt36UrUxy9W2Zz6iOVmRyRmnPa6whd1BR3zRFdx0sE5pCCA44PUMgCfTIIrKCeas+RB6/XjI2TnGYppviWicQOFJk5CoFNFyI0BLlIgcwEvqSkCnMtn57xHX5qPtsocuS23x78lLRSEbp5CmXLQg1tprqdVoeXnqp04OHK6jJmnZ2EGBufnqgnV9ks5K+lmhtudgkwzzA6EXawfQZD9yHG766facuzUGBqyM2jWRpjMhvgNou2bXusBrNVS+WG8Dnw9vecKlF6qJSVotwjXAy9AEhQjJlmb13OTPLRH1UL/SRcBSvbEhXQ+Q9VPKF4UOHsjuqBTXKZC+SDcX1p83BykKASqivOgcNmtiMQwxCS2P2nA84yv6dICpnAjgjjxikYomvnyOI5vsjo8yfaf7Q0+9trPm35CJIAOFSAx8VFcbTcRQ/AKAtwPwuko6cwSgC0E21U+2IcuCMkmJEvL1cQX8FWN7OAYiqk7C3GC1uwcq8A+v4MBkHj3zn4InESNhcZvKv9GY1nUHMroIb03YEBZV03U4IYo9GIg1vVN4Qk7I2VuaC0Lo/jmI+HykABWTIi3Whj94uFtaEa81LyuaNZStRd76Paat5L3/Z6LDnv8haxU01H95YcJ/11ubQIFc/vab0WSjKXlNFGDMitWqhRJd6Dth5kozNFNmR+Hp0nrHQWaSLI30yFT0aSy/n/oJYIgtJyetoQScxCcr2v06NjbQ2RcBdTh8lKr3BO7npiwUQn2NqLzG/6yi9XLPK+9jfFapS7aBuKfOXiBF6MZzzMZiGlsKE73vHt5vCvRSO2kCzEVE166F4Pj4/57gT1DyEhfhWboZDHnNCx6fQPdmnk9MJxnq5nksE71o5iA+sgLEpp/M/RnkFpXcNkPkSkqQ/W73WYJXut1qX+XvXWYPdZOQT0sK9AdDwN114ijOFG
- 9hcM6GKp
- 5e8elpeodcrQA6lTpKwwDkIbunzweeO9Dgb12bvr9bzHKBHius1MtOJ0jJQlTN7+rSKmEwrYSWCDh0yCsGp+3eEjRw1RkaU0fY/ntI+1SFX4s1G6ws1X6s/4bHENjepbxjtG1WafezgJUqxJFRIa6hlyEihGwvmC/CVvcVn50t+aB7pDip1t/mL8qrQO6GLE5nZA7es1SJh445cM4Sc6Ra5EjxiSDLLTLxOdH09mtle9AlQWiiaQYZW9nQwaFBY6Uh+RSmY27gZiPRTUpT8NVd5kj3v7dZjG6XXw03nEQ45/eojWYn6q8GKIboBMlgXPDV9OFiSqM3g9LjIOrghrqJiwLsp6iYkt4wriTR4HLANFRtvYX2C3X5CY6cjmpFDRHoFwhEWUrWXWyl9WFsr/7rLCoyPfuO2qZ+NZN4RMxegonTYoSXagAe2DND14DMKUrvbExa3QuywCFiHKf6GHdb0CdcYB/334GG5DYSbwhv1fokDFipiwLIuTHGGhIaEmIxfce
+X-Rspamd-Queue-Id: 5698BA0008
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755021536-561701
+X-HE-Meta: U2FsdGVkX1/h6dAKdlvqW4Y9TsVHTI2G0AwODgC+PmWQWET41MJ2jhMN11Rzkj4EXCgaYPGTcXHHIxwo/RJBs8cUexzEKhz8a79dwKFYB6HIMbh0MKLAOzU3GUu+Onx9gajHvefPXclq38o8+ZSQOjGimeIR7dMvpleyGYKELIHu/YAqgmOYXZhv85BA1tTsWyLVAutNvwM8+QqX9EPJ+Y/Dua3vBYXx+1KAkMmtkZGgnYKhvzbFiQBQTEdzYpnh1OsIv0sxKGw2fHUH/xkSm4RFymFtVBvI/Z9RBw+ogJpDh5q9RQCxnX16+hGTOnLOHZN5yGOHZ+GsvitUaDx0//1DW1WBNS5u8BXYkcvj0kwz72YZJlvzlEQH/uoKtaEMiMBuKX5LipcJnMf9sO0BtYPS5fauqMWYYw/uR85Dsf1r1JJEWIcq1Lc1a2IE/RM75hgnV7XCicDKLau4sMNmKmVXDfBmRsS+R9SjFiJysA2Zq9F6W6VS8XSCTjSuzsgy3GS/yfEjRMAyrYL8+Sa7vVpOZoHPKAeXaEVW/fzEeiHoSlUI/SXJfeXH09Hpka4WploEB32KzBoGeoqTZJ8enTMN3jvWicOaTTUA2B6yTTCcbvovoEnRl7SFolWuw49N/YtaYhh5coNivImkidQPrxNdq7j503LME75opWOkDSjSSicDsRVtodTGRGLLXdoclY+Bq/grZSzg7LCmIWks4ZMY5gXqu2lKDuDmqcLummf9LsQgth42ZyYGlFC7r4bIFPzmd7jRo49FjWBeQKGiVHlrYixXYyFFP/+0KuWmrXiK+iI0hQEPAqsNIJOUqkvk+/8Twqyk4dezXct19cacM2gIPIPXQMx9PD/1Lg2CmvbwTst0Q/ihNPWfJmWost8wdaLVC6nQxll+O5K2QNy2XngvpntmCYf8tD+T/5lkEqSBK39dUlNOB8zbO08WLb1wO99RMpgQeH4lVDB9X89
+ oytl1pw6
+ 3SyI1hGG7Jc3uDJhRIazJ9hWNUnSvefI+4dWPlvuGPjqP2BirfeDe8Dld1n1sWlk0sg8SqMHHJY0xT6Z7HtgCUsdQBHsP2FTmkOobIgU8gRPRBVq2dI8iPZSK9U2XS7U8ILrdnFpKkTlSRDC0xoCBpGk2MLtR6URaJMKKipXSgVYdcG9p6N9FIqeftD8sKQXBzSQJv/AjUOY7rbd1ygS1UpSY/507hicm3VSE4bYDdoAtsB/C00wDglhQmOpyIl1EfBcFaKoAn0zy/HpLkNS7scIi4MSJdDF7VD406mOhNoMVqWU1iqXgBA64IK3kCmu50D/zQSXG+CRKrq58PN5f50r896lJ9qLLGGkec4ymJgjfBfh2I+R7D2Ov3cRapB/zNjdoiLzzBNhwyxkQsJVwI426ZWNWKL0zgA11y2Kn1ot6tGrZyEaljvD7hAVmDm6qvVhwKJsodERhKLc6kNqb9xrFFxRXZV0an9wHIrQEX5OwSxKSvVLX+SFboxY1Dr87KpbKqrzcI4dpwD7vykSPT0/yn8POijosUjI+crRQ/PsXPxSNExi5vegCUNIzP+WULdm09PqJAz81l9ayVu35dYe/3RgbgDbCK5RHrodo0IEcoBM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,23 +112,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 12, 2025 at 6:57=E2=80=AFPM Yeoreum Yun <yeoreum.yun@arm.com> w=
-rote:
->
-> > Right now, KASAN tests are crafted to avoid/self-contain harmful
-> > memory corruptions that they do (e.g. make sure that OOB write
-> > accesses land in in-object kmalloc training space, etc.). If you turn
-> > read accesses in tests into write accesses, memory corruptions caused
-> > by the earlier tests will crash the kernel or the latter tests.
->
-> That's why I run the store-only test when this mode is "sync"
-> In case of "async/asymm" as you mention since it reports "after",
-> there will be memory corruption.
->
-> But in case of sync, when the MTE fault happens, it doesn't
-> write to memory so, I think it's fine.
+Some protocols (e.g., TCP, UDP) have their own memory accounting for
+socket buffers and charge memory to global per-protocol counters such
+as /proc/net/ipv4/tcp_mem.
 
-Does it not? I thought MTE gets disabled and we return from the fault
-handler and let the write instruction execute. But my memory on this
-is foggy. And I don't have a setup right now to test.
+When running under a non-root cgroup, this memory is also charged to
+the memcg as sock in memory.stat.
+
+Sockets of such protocols are still subject to the global limits,
+thus affected by a noisy neighbour outside cgroup.
+
+This makes it difficult to accurately estimate and configure appropriate
+global limits.
+
+If all workloads were guaranteed to be controlled under memcg, the issue
+can be worked around by setting tcp_mem[0~2] to UINT_MAX.
+
+However, this assumption does not always hold, and processes that belong
+to the root cgroup or opt out of memcg can consume memory up to the global
+limit, which is problematic.
+
+This series decouples memcg from the global memory accounting if its
+memory.max is not "max".  This simplifies the memcg configuration while
+keeping the global limits within a reasonable range, which is only 10% of
+the physical memory by default.
+
+Overview of the series:
+
+  patch 1 is a bug fix for MPTCP
+  patch 2 ~ 9 move sk->sk_memcg accesses to a single place
+  patch 10 moves sk_memcg under CONFIG_MEMCG
+  patch 11 stores a flag in the lowest bit of sk->sk_memcg
+  patch 12 decouples memcg from sk_prot->memory_allocated based on the flag
+
+
+Changes:
+  v3:
+    * Patch 12
+      * Fix build failrue for kTLS (include <net/proto_memory.h>)
+
+  v2: https://lore.kernel.org/netdev/20250811173116.2829786-1-kuniyu@google.com/
+    * Remove per-memcg knob
+    * Patch 11
+      * Set flag on sk_memcg based on memory.max
+    * Patch 12
+      * Add sk_should_enter_memory_pressure() and cover
+        tcp_enter_memory_pressure() calls
+      * Update examples in changelog
+
+  v1: https://lore.kernel.org/netdev/20250721203624.3807041-1-kuniyu@google.com/
+
+
+Kuniyuki Iwashima (12):
+  mptcp: Fix up subflow's memcg when CONFIG_SOCK_CGROUP_DATA=n.
+  mptcp: Use tcp_under_memory_pressure() in mptcp_epollin_ready().
+  tcp: Simplify error path in inet_csk_accept().
+  net: Call trace_sock_exceed_buf_limit() for memcg failure with
+    SK_MEM_RECV.
+  net: Clean up __sk_mem_raise_allocated().
+  net-memcg: Introduce mem_cgroup_from_sk().
+  net-memcg: Introduce mem_cgroup_sk_enabled().
+  net-memcg: Pass struct sock to mem_cgroup_sk_(un)?charge().
+  net-memcg: Pass struct sock to mem_cgroup_sk_under_memory_pressure().
+  net: Define sk_memcg under CONFIG_MEMCG.
+  net-memcg: Store MEMCG_SOCK_ISOLATED in sk->sk_memcg.
+  net-memcg: Decouple controlled memcg from global protocol memory
+    accounting.
+
+ include/linux/memcontrol.h      | 45 +++++++++-------
+ include/net/proto_memory.h      | 15 ++++--
+ include/net/sock.h              | 67 +++++++++++++++++++++++
+ include/net/tcp.h               | 10 ++--
+ mm/memcontrol.c                 | 48 +++++++++++++----
+ net/core/sock.c                 | 94 +++++++++++++++++++++------------
+ net/ipv4/inet_connection_sock.c | 35 +++++++-----
+ net/ipv4/tcp.c                  |  3 +-
+ net/ipv4/tcp_output.c           | 13 +++--
+ net/mptcp/protocol.c            |  4 +-
+ net/mptcp/protocol.h            |  4 +-
+ net/mptcp/subflow.c             | 11 ++--
+ net/tls/tls_device.c            |  4 +-
+ 13 files changed, 254 insertions(+), 99 deletions(-)
+
+-- 
+2.51.0.rc0.205.g4a044479a3-goog
+
 
