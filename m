@@ -2,250 +2,121 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 45319CA0EDB
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 18:33:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7DD12CA0EDB
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 18:37:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B36FA8E0186; Tue, 12 Aug 2025 14:33:52 -0400 (EDT)
+	id 1F02E8E0187; Tue, 12 Aug 2025 14:37:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE7578E0151; Tue, 12 Aug 2025 14:33:52 -0400 (EDT)
+	id 1C84C8E0151; Tue, 12 Aug 2025 14:37:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 961208E0186; Tue, 12 Aug 2025 14:33:52 -0400 (EDT)
+	id 0DF928E0187; Tue, 12 Aug 2025 14:37:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DFDA8E0151
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 14:33:52 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 72BC4C015E
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 18:33:51 +0000 (UTC)
-X-FDA: 83768954262.09.13B4086
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 35548140005
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 18:33:48 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=p4xoVN6K;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=KTCLpyiN;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf23.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755023628;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EEC6E8E0151
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 14:37:30 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7A2D280C41
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 18:37:30 +0000 (UTC)
+X-FDA: 83768963460.01.3173125
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 968311C0011
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 18:37:28 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=fu-berlin.de header.s=fub01 header.b=YWfd335d;
+	dmarc=pass (policy=none) header.from=fu-berlin.de;
+	spf=pass (imf21.hostedemail.com: domain of glaubitz@zedat.fu-berlin.de designates 130.133.4.66 as permitted sender) smtp.mailfrom=glaubitz@zedat.fu-berlin.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755023848; a=rsa-sha256;
+	cv=none;
+	b=pRBrHL0IqAZza8P7HBZj+386VdJJWJt6erWE/yl+Lz4iSy0WT3yU4F8vqZJQr35RHJpPlt
+	4UfvXCDK1u0XEl6kIfO7P2mEBD3rPCDiI7nv3HfyoMlnGhI2JDX3DhZgOh7lsqWmkqCc7g
+	/OROL/9dCB2opPUa6pS9XSP2Fcoezks=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=fu-berlin.de header.s=fub01 header.b=YWfd335d;
+	dmarc=pass (policy=none) header.from=fu-berlin.de;
+	spf=pass (imf21.hostedemail.com: domain of glaubitz@zedat.fu-berlin.de designates 130.133.4.66 as permitted sender) smtp.mailfrom=glaubitz@zedat.fu-berlin.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755023848;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3gcxJ7Z2tmSqKNFv/gEt4p907iBlTJJXkhGa7WvVgV4=;
-	b=jMV8++aSSp3bAs63KewNlmI+x1jsB/Cu0XBCM328WMLHWpEd0lIpD2F0MkEC8vj/6If/tK
-	w5MKAKNa+ivn7Xt1TZtwzfvLD1FRwMF94FDvDJmEkI7n6m+Ro68D5r1SlCmZSQqkS2Du+8
-	0xIc+owRA2242I1d+NTTY27+h4LkCFw=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755023628; a=rsa-sha256;
-	cv=pass;
-	b=mU6JdMQa5jfsL9LL0IV5AeKDd9F5bUcfWJXCEKoizICteopKxpHLoN4v/KsGI0Q9E0hDQx
-	vg/BxO8laBkbexy/ANIy9iN5dSYPlj/2lMg8LiuVkBg2ymipBMu8tUBmZSwuxsZW0Bms8h
-	SG3h2D0P6JQwq3FVb4hkTj3VVea63fw=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=p4xoVN6K;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=KTCLpyiN;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf23.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57CDCJ3a003986;
-	Tue, 12 Aug 2025 18:33:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=3gcxJ7Z2tmSqKNFv/g
-	Et4p907iBlTJJXkhGa7WvVgV4=; b=p4xoVN6K6mC8xOQSoivqfVeMkrCBGTxFnp
-	iyiqEQxUKEsIQrMcL4UUXrK2zv6CzPr9OPj7pswN+FA4tavw1+8p2jWkZlrfsfTT
-	6anRHXMP3+b39rz6HGQ03l8F/GEoZn6PTOk9h6yx0FYKKRO/RYcaaPIY5Zp+2rLO
-	G9ZL9ZznIVFVkpDS0uCc614IyqUjw9P9POlhVM9ZuflP8yi7nxQuFkqw4PvUgZAy
-	aJ/Omn8AMwg1zILpTlES5xFncybIMFYnSzy3Sg2Xa2ydpVQRz204u6sDa1K65UGM
-	kgcUOeWXon+z005lZaAf0WdV39UJsC7axSiH8s9mCrFgiLAmzP8w==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48dvrfwc1f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 12 Aug 2025 18:33:21 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57CI0BnY038739;
-	Tue, 12 Aug 2025 18:33:21 GMT
-Received: from sn4pr2101cu001.outbound.protection.outlook.com (mail-southcentralusazon11012064.outbound.protection.outlook.com [40.93.195.64])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 48dvsgvs5v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 12 Aug 2025 18:33:20 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PwAjE0ZJlYTVzV+9sMVoBizwXREjyMPbeEr9KbmwUx0FpugyfoanpkNMebsrwUOwh2yzKhX3qcTHpT+RWVe98MTdFoBS1GmsIXOWPC/6sMBM3atIursLo4sYkJIHzwjFUgbAjXnwfSIRjC3iiiPbXVDukY+jKiib07e4ilsmNFkUILNlXhyR7i/ZuE7hQ28AT8QQ8o5+qWHq7/UzTfMSqajh/a7q4Lx/2Urs+/+NdJNj8FROulKf933SL6/5P2PU6L40r4P48sOiHYuB/RRVDjTnQEj3J/0Pv9bTiVsbqhLfFpNlbrJn9LviumUtB3yk5xSFlCWaSS4hNCJJxwzhkg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3gcxJ7Z2tmSqKNFv/gEt4p907iBlTJJXkhGa7WvVgV4=;
- b=wDAcNScA5KNJR7CFi1T7O37PtlRsZXCpHrLzVaLGMEyCiIZ36UD0HHhksbALHrHCKbeUtuZP9HQj1REaQmjUV7TG572B8y7w4EqR2MfVtY7xcmHL3EI/Xcpceu5xM83fy9xR92sfWTywMX9qUm71ZaMMDEqC668w9EHzVD5yrTLMIXVxBljotlhkC1lc2YuqaTQfLvqmD5yEKlc5FABqz9W+jvJB9Ral50NQ+N3MySCHHAaAvTjj/+9oHHRdk4NAiTcrOfcn6hyjUpDU6z/vZWbwKPNu+35EPFvnZvDCvtqxcJocHeKXYJZzFyJLlokOKv0IceLm3avxlVDnL742zA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3gcxJ7Z2tmSqKNFv/gEt4p907iBlTJJXkhGa7WvVgV4=;
- b=KTCLpyiNcxrldgzmLKjPnmmi/2vQHkxEXq/9gw+qPTQklJjuDI8VQ0kniJHnyiOf6E9c4UTJp18BHPLXyRPPIwAMosNrx5pjD8xW1O9hkvxymrHHtUTKxjSkDyKc9vMbjl4vR5kVaQZPaoI4wVuFuHqe7au0agWIX1bFMuqh9mA=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by CH0PR10MB7463.namprd10.prod.outlook.com (2603:10b6:610:181::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.22; Tue, 12 Aug
- 2025 18:33:17 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9031.012; Tue, 12 Aug 2025
- 18:33:17 +0000
-Date: Tue, 12 Aug 2025 19:33:06 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        xen-devel@lists.xenproject.org, linux-fsdevel@vger.kernel.org,
-        nvdimm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-        Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
-        Hugh Dickins <hughd@google.com>, Oscar Salvador <osalvador@suse.de>,
-        Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH v3 07/11] mm/rmap: convert "enum rmap_level" to "enum
- pgtable_level"
-Message-ID: <591fb720-0826-498b-9370-20500242855e@lucifer.local>
-References: <20250811112631.759341-1-david@redhat.com>
- <20250811112631.759341-8-david@redhat.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250811112631.759341-8-david@redhat.com>
-X-ClientProxiedBy: GV2PEPF0000452A.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:158:401::34f) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+	bh=tCXf5eAPOEB1mU7Sfj6ozuynE635YDXwwF3ucaUJytk=;
+	b=oJt/tCtY5gdM4JF2tNkk007T8lDMIEljLZ0Y9EiJC/luQCN8g4gyteu3V1HUe0deES/N41
+	/qavij/SXJTt4k4vzRo1fxxrx+ysR/DIQR8OGmtIps/P0bPVJlyGoA0hj3Lwl1iZlV2N3L
+	WPB8vF1kFchZV5Jxprb79Qu9trvI0DY=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
+	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=tCXf5eAPOEB1mU7Sfj6ozuynE635YDXwwF3ucaUJytk=; t=1755023848;
+	x=1755628648; b=YWfd335dUoLUY9pwnVKfHEJDLHz76iDOEVEOM5Dmd8fmauyigWh5FlAFEqxiy
+	RI+nGIkZoF5wGfpkov686zReVB+NBRTCzhQBoxaanQ5asg8R7g8DFJuX5ShLMkp6ornjb479aiwAi
+	4OC4X+qrCR32PZrKcf2Spo5QxbL/92WpFO+aJEhw2fu8Zbb5uIkCZzXrOyfudua7plSPJJ2GPVYRw
+	Ic1Tn4MedWWhWa0YYVOGeeuFQ7jvHic3d/G5Ug0k5t/kBA+FSeCVnbZb0vrIrWNAE/BhXu4ZzHByf
+	Cz9jJvIqddEY1Cgp1S1kNk6V9d9Qd6MUKSypHn0BaQG+03Uneg==;
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.98)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1ults4-00000001ygC-2Asi; Tue, 12 Aug 2025 20:37:16 +0200
+Received: from p57bd96d0.dip0.t-ipconnect.de ([87.189.150.208] helo=[192.168.178.61])
+          by inpost2.zedat.fu-berlin.de (Exim 4.98)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1ults4-00000003t27-0yiV; Tue, 12 Aug 2025 20:37:16 +0200
+Message-ID: <49b112b80b211ae05b5f3c36a55f67041783f51e.camel@physik.fu-berlin.de>
+Subject: Re: [PATCH v5 18/23] bpf: Use vmalloc special flag
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "peterz@infradead.org"
+	 <peterz@infradead.org>, "mingo@redhat.com" <mingo@redhat.com>, 
+ "luto@kernel.org"
+	 <luto@kernel.org>, "bp@alien8.de" <bp@alien8.de>
+Cc: "sam@gentoo.org" <sam@gentoo.org>, "andreas@gaisler.com"	
+ <andreas@gaisler.com>, "nadav.amit@gmail.com" <nadav.amit@gmail.com>, 
+ "dave.hansen@linux.intel.com"	 <dave.hansen@linux.intel.com>,
+ "anthony.yznaga@oracle.com"	 <anthony.yznaga@oracle.com>,
+ "akpm@linux-foundation.org"	 <akpm@linux-foundation.org>,
+ "linux-kernel@vger.kernel.org"	 <linux-kernel@vger.kernel.org>,
+ "will.deacon@arm.com" <will.deacon@arm.com>,  "linux_dti@icloud.com"	
+ <linux_dti@icloud.com>, "deneen.t.dock@intel.com"
+ <deneen.t.dock@intel.com>,  "linux-mm@kvack.org"	 <linux-mm@kvack.org>,
+ "tglx@linutronix.de" <tglx@linutronix.de>, 
+ "linux-security-module@vger.kernel.org"	
+ <linux-security-module@vger.kernel.org>, "sparclinux@vger.kernel.org"	
+ <sparclinux@vger.kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, 
+ "linux-integrity@vger.kernel.org"	 <linux-integrity@vger.kernel.org>,
+ "daniel@iogearbox.net" <daniel@iogearbox.net>, 
+ "kernel-hardening@lists.openwall.com"	
+ <kernel-hardening@lists.openwall.com>, "ast@kernel.org" <ast@kernel.org>, 
+ "x86@kernel.org"	 <x86@kernel.org>, "kristen@linux.intel.com"
+ <kristen@linux.intel.com>
+Date: Tue, 12 Aug 2025 20:37:15 +0200
+In-Reply-To: <1738e24239cc0c001245fdd4bd3811175c573ce2.camel@intel.com>
+References: <20190426001143.4983-1-namit@vmware.com>
+		 <20190426001143.4983-19-namit@vmware.com>
+		 <14437e403ed8fceacafe0a89521d3b731211156e.camel@physik.fu-berlin.de>
+	 <1738e24239cc0c001245fdd4bd3811175c573ce2.camel@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CH0PR10MB7463:EE_
-X-MS-Office365-Filtering-Correlation-Id: b4253f5d-5d68-4b72-fc5f-08ddd9ceb493
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|7416014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?8zFfm+BiblF4pNY+2SbK9xHMqJXP3e3i9JUcAPGXj777BiUiEz/pNg2cZAdz?=
- =?us-ascii?Q?ZYRA8bR1jklpwBItaZLgW0qGH7GxrIRqExjq07l5xp55jzZqzJSnKAqq05kn?=
- =?us-ascii?Q?GTtw1v9hs7XGsGiPUxCG+z/l25H7Pg2nzOOcOxiVfiH3/NgDZS1unNG4Bb2l?=
- =?us-ascii?Q?CBnANTISc5PtzJKiF2nM3tN0I15TciAjQwOGV8AO+7p8p8xQxsx/2bW5Bnr4?=
- =?us-ascii?Q?26doiHuExoxlLtis8AsH4XD9VftBohvmC3p+5YdP4ehjzTTi4YMJb/7+Hdz9?=
- =?us-ascii?Q?UVWyTBgWeKYgUehR1lLxGVQaYz5nNRWXbY5tY5PkAjsic22fEOVYQdHeHnBl?=
- =?us-ascii?Q?jMsGCAJpdjXonXfkTZ6SI4kXGcHw8BxCVMIsAq45QwZaceOGeO/8VuRhVWMT?=
- =?us-ascii?Q?Rqk5PgkMuzrPCj7H0rBYtvcv0BzusxXOH8EP2yRR5gbzfmii53ZU1KkRBr4N?=
- =?us-ascii?Q?02JlGBybsXRb7/jNj2elF7IzuMGMGhALoyTdR4lwty84tDF6X3Xd8zohdqqF?=
- =?us-ascii?Q?c/7kVvH4UkptDSZNwrmwzxZeeKEG4OclV72hkHk5c0u88qYk8tW2w5rtSBST?=
- =?us-ascii?Q?tfatAxTrUR6hpZF+Aj//Lr5BY/1sYXAXwqtWRPvJYvAa1HbbhBVbfMvsdoh/?=
- =?us-ascii?Q?DVBgaSKVFOCBtret4wYfRidiGFVTHEJMEQt5ihFgsB7LS3LJmYBJVKZMMesa?=
- =?us-ascii?Q?XKfhlYduQ+mkfz5WpcpXYZHEPO46gJHLmrim7QV0e1VnPL/tV82Eh15k0qxN?=
- =?us-ascii?Q?7rfUjqjlheTPX9Unc3Ft4JPHyBdtlRHVC15zJNSMWW8LS/8b/N4ps4fBVP03?=
- =?us-ascii?Q?fE7oOBz74qu/vVOJ0ymzfvDCJ6zlDYeh2EBe6onS6tsiH07+0CfI+QV9wISC?=
- =?us-ascii?Q?iFg3vaS6BuDUXpYqToqY6vswi10Rml2810M30Bobs7voWQ+w9+mfs+uNwl0t?=
- =?us-ascii?Q?Pxc1CoRk72wobN/9nB0Eq7zJIM+PlbLXuoEmirWyG2LKxtXWWOJEOK62A3fe?=
- =?us-ascii?Q?q/AANQRUV1SjNV4PrH7aMNfVy7RGpPeDeWJJfzHixp0ND/VVjSGKMBk/vkbE?=
- =?us-ascii?Q?dDXRzHMgNoEKyofMB7fmJ1k05XsX/2Lioc1ae6BK+fatNQUqcxnB8jc5+4FS?=
- =?us-ascii?Q?fEvMRjVpEjg8NPSLCl0mv7RN2seDaM966yQrFmxxos6wYVh0Lc/B+fBKLF4T?=
- =?us-ascii?Q?1zVLwfdCPuwgOiBZYDBEi3hfoBnzvy7/MeJeeUjkT09xxtAjo4Twl9pp5Gs8?=
- =?us-ascii?Q?vBj37q1oK+Am05Z3Yn1Uoxq3tXKeyAPgzGCcmjFaLZ+5M7CZtl0rfYU15eRy?=
- =?us-ascii?Q?xRoc7eEPxjJzSXoOR8V9REDXUWcjgMBSY8n/NDvM1N/raOVXlGQTb+tN5dB8?=
- =?us-ascii?Q?y4MAymgAt258htdNvOJjSXJnoNugILKYAGAWDRBOHaSWIislhHG7GPmYvNHu?=
- =?us-ascii?Q?MTYbpqA/MnU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?aLyQtl7fIqddYKZCIZzWW3zFSbDkYpkJoXP/k738Gc8LH9w4zUAQ+I4kFdTY?=
- =?us-ascii?Q?CuZw/AsbigPGLrXthXaEIiDjS2t2/bjw2vpRTKS5V7zSAyyP1F/CEd321N5S?=
- =?us-ascii?Q?o8ZcMdgZA66ZScYbcW3Cj1F6DrBA9MFReeRLEx411a40vJVPjTX+bRUYVVai?=
- =?us-ascii?Q?kzhRV7RjEOf1J0R/qZy1kfJ3NNvEjwDzRApQGsFMd8NzJXZFRnXHgMpZRXL0?=
- =?us-ascii?Q?uGyz4qgsSEcd7hCgHgEo0eNfFA1aQLfawqxeIcbcNHUiI0wPHycNFJ3yQ900?=
- =?us-ascii?Q?zUI6+rQ9BnqymGpqlAV8d2ZertEaqdyPziGIchHUD8ak30OkHCgtxqUQbZj6?=
- =?us-ascii?Q?1hHfP1DkzX3WK37kFf3VfL12pYOZ+eKQ6WKnR7u9jG/iRwa7Ak/7rfRRSaPZ?=
- =?us-ascii?Q?FJXTc1n/YbQk9Q1qje66EsGE9sZGpQNGNVYJvR+F0jOnyuHyzr1M6ciaUdBv?=
- =?us-ascii?Q?9lt1l5nolAnz5FG/03MLmMF7wUtlztDeGZa9guEZBUjdxPXkp7xMLvscjcI0?=
- =?us-ascii?Q?eYZ4QTUEfbLhv1b6Dkq9NrDEqRsNbToTReZtp/WuHndBCdZJCD5J7/zHTA0g?=
- =?us-ascii?Q?VDuLt2sUfOXtqYU/qE2cBGw8knrawxo9s8VGXHwEZwyLwyC+NfWMtgnuhX4U?=
- =?us-ascii?Q?pLIxka6F4Y18Emw4QUJRQRG7rX3XoKkQw4dcxDOnzHB4+hdNoaDW5DnhwVAf?=
- =?us-ascii?Q?zglmLtXFXtwRfchJ1gkIASz8JY1voN2e6uT3OvCvQtEflxeRjNx+AkluzsAC?=
- =?us-ascii?Q?dyZLmo8Wc7pK6LL39vpxq3K5jiPpC05V7nW8AKT6DuXHxOY0qmIQgzMzq/Ez?=
- =?us-ascii?Q?ZWkdcczmV6YK10donCuk+F3hj1wxFvJE0vyeDTv+X4BL6NVIRrXJRazDpCq8?=
- =?us-ascii?Q?Jdk5mFFM08qj3aVXhRW3Bp09ixR5cn+UZyNoz1BM9EmA8VUSIZEwrdcLelM5?=
- =?us-ascii?Q?qLaZzfpla/kuRksR8DuyxGd7kBLEBjSHJKzYT0qlx3FQyq3cMtZIuJIUJ+tp?=
- =?us-ascii?Q?mZADD8VTtz6A587Q/icmT5U6uagEJac6dTmhOUfcGDKNNhqnYPYQDtjCplML?=
- =?us-ascii?Q?LUh5x0aGN1f47LGp1gBV1SSMz/0zZ8pzisz+i6NKPsBDSBWUD4j4A68+FNkS?=
- =?us-ascii?Q?CPQlQ1RfYtQ5sPywU8LrOA/fHEQCS/vJBCfZadw9cVmA7LATmJcFVlFiYn78?=
- =?us-ascii?Q?IglMA0aszXjB1xd5xIdyyT3ckoy1tLzzkGZ2UDRCn8+kr1W6b+ZiO6BDOP2N?=
- =?us-ascii?Q?Dv0PqsG77bDgidNOf6kvghA0HY7Ez0ike5RocnSOjFyhEZFrUTn+4NF4sHgX?=
- =?us-ascii?Q?6gb6XaLrygKeWJPsbCNUkD3dKL/ZpnrGusqOis/05EQSiHh72W2Lt03yxijS?=
- =?us-ascii?Q?o36f6CneMJGkCV9FnBzMhUV0VDw96lLk7uUgecOHIodS8YHbLXD5AzvetbyV?=
- =?us-ascii?Q?onVkA+rGQWyLiK++BN9fkNepjkER/DPgmFgXnIldx//v+zki7QPjNY26Ozw1?=
- =?us-ascii?Q?bFH+Ia/j0jGeun3hCrdXPHbQYdboBbMdX3y767gGqRaInxdS0yHA35xQuDek?=
- =?us-ascii?Q?mdRE+rsy3DsfP3LSVJsIRNUMozme4KFCrG4tqTngLnK8kMio6TOM5Lzo1km4?=
- =?us-ascii?Q?PA=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	Mg39jv9qhTetBFQNR3ePtwEP4fh7jq1w1qwwXZh6oy1Oxq62ztzAZQCcc/0PZFJ+keEXGvPWmeDKE0YHsmNI2MVAsXxDM3sJ1seTFLEBEBR1SbhsQMZCeNJVEtyMDprA/30i2GwkdRX0/alTBjIOpDvLFQQ06OrPsLlZVrnh0Er/2WSZvPRaVQ2FERZ8lQws2+uM3JygWO/Xln88RQFEzGEjSTlL500wS70g722RHfLEQDgy8yU5OtlNfHLs4M8eOLMOfBSLK4G5k0KHOXlCwdXacZTolWgZ+L0+n8chJLJDLCtynN4ju6b8ps1iVvOw1ZaAMeSKjnvEgAUbzlqKhyhVF+Tk7srGJQdBkQxKIIqGKK37ICEpQNAcX89b/R+gdiRkQC1qPoVzlsQZQB7Tqrirzd0zSGVCqVTe9mWTKtyEsl2WsyS2x04O93LsMrFaz1RscFo5UPQoGS6kRCIZGKjm/UILT4Qqy2S5I0ic4wsCibbiRjV1VtR1ZB3BE0dR8Gc1hF8wLYPpIKVClStu5qLOBiIZ7t7PjbniLGLjusOhgR/aL0I9kr6k2oKdN8qqEWEJ4jFrEFuPlZgXRVLpZHR5YLv0jJ+owJFlP3BPlb4=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b4253f5d-5d68-4b72-fc5f-08ddd9ceb493
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2025 18:33:17.4450
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: r6KY0I9LS+EtKksmUqWqQJz7Y75oLqVIHgjeeTF1czFy7bVhJ+r7ON/LV9Q1/ql7Fw2EUW5+L9kLsqARVzPPkbIa8SrIAUt7GHdVJRNJvkM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB7463
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-12_07,2025-08-11_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0 phishscore=0
- spamscore=0 suspectscore=0 mlxlogscore=999 adultscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2507300000
- definitions=main-2508120178
-X-Authority-Analysis: v=2.4 cv=B/S50PtM c=1 sm=1 tr=0 ts=689b88f1 b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=20KFwNOVAAAA:8 a=yPCof4ZbAAAA:8
- a=0PFBOgZE1WxlEsiV2qEA:9 a=CjuIK1q_8ugA:10 cc=ntf awl=host:12070
-X-Proofpoint-ORIG-GUID: bgZcvZi0vonzO1P5AjdHkMXTK-4mkVi5
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDE3NyBTYWx0ZWRfX+bOWrtwkpaUz
- 6Wrr+OBL5oeqDorpNJyQZm4IWDPRX5SFr199Z2Kb5R/P19vxXvtQCCBmo+xlYqqIHciouUR/tpZ
- fMf8ASbt9apjM3crYAFoK34+c3emO0ALt52lSnUOUuvpGplFojg82wASZuXcwwvtxD0HBGiSYTj
- pQ3kvN2CsraGBRyJIT40urk/4bCurgepWlOIxvbjTWsGmzgHgotY8ICY3micLK2acBwZktJoOoy
- IG9U6s7IyPJKz5Tir+nBmUUMtdJMntd7cvMd0bO00EIQ5ZqSzu3Njy9rtS9c6MIOv/5WYxHtd9t
- HtTFR+z9eMEyb40iN1KWCFL8KmeAHjJ1V1hJgIuHnk/u7nqwFf6C95c/98uSGwlQ6jvaKj9+Y9Q
- PpaNG1Ce0wpLqBTeZBnucvO8Ph+ce0WK6ImuCt3d18z5Mm5Zajk2pViTrl+l6OZnDzgpNdnW
-X-Proofpoint-GUID: bgZcvZi0vonzO1P5AjdHkMXTK-4mkVi5
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 35548140005
-X-Stat-Signature: smeyunz8n8x43fit984nhb1fydk4phta
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.150.208
+X-ZEDAT-Hint: PO
+X-Stat-Signature: adwwnan1biwxm4zbnehn7anmpb5i3ehd
 X-Rspam-User: 
-X-HE-Tag: 1755023627-100635
-X-HE-Meta: U2FsdGVkX19UfKaSQdWNLFGlhy9zE4Nw3PwSTqQ2P0umTsrxcITaHLEztL5Or1RbUZqQ3v3YkKJzRYtcNsTWTdTUWZ6GkqdtpD4zCmLKvoILtmCMqs2WfyXgBcfVJwrayal1Fe51zYkpUpAi05upBQlMM83pt136FEgSieKspAi62ghfZUIJ6Hvy4QVgMvGh302/RwmXR+t+N9ToHvPW15BXBDY3wBLD/94i3yuPXNnCkthj8Vua6I+UKYvHclb7AEKvM0DIyIz5Qi3HNzI2CNdVq8Tl9VdpdZGtqgwo7CdKrPxHo9SXiJiv+5x2F/igZuLZU53M9SJ5EJcUyD9W0TqVlGjOhQgeeBFtBQtXhMJlmCEVKHiWTxoA3hbPN4wb4gd2NUvk8bfe93owvagPwMQQqT4xMC9SLwK/C3YHKslauYTf/TURuk2zq7P3V9SPT24j4YV8UWpnuvEueHH8Nhoie3u0YNLPB2l2zxfcstHhljcf8S2hQOIgod9SgsmqttnSfWM37k8oiTb3Q2kfjzP52Qta5+aJe/wMul9IPVecgXWljFwiDrGHMPAUKfFD/N1A+oY27QPFZiHqFTh82ogLFZE9rDbmtb9ZZ4ErUpCy3iyqGrr80ALbsyqWwR2p5lpxvG203tfIIRKu+TdTTegD1/TCok5vaGrwVkBST4nBaDU+riCjmV5LoKF5DTLeghezLxPkh2/TCsqyDmLVuZb2qN2B9K3XBvIIsXTsBmB76Nqtw021n064SfZ7j8HiAVaaswXTibcM9+Pu32kL2gvW0PRUCBWc/+GUmrXzlr3jg60VM8zOoPvrmSFNYJYYs97go0l0jQxMI95NULPns+6ItJsql4q5/ZWxNuVPVkPAsNVnj1BEY1hFYibhC9JL/UyQkEMcyNl1pianTGiGz3mPIVKKKogjd0Er2Palb+0eNOSlJ1MqsIIVmaObDKtOVL3UbzU1p1nWnkLa7cD
- 1TcjOuMC
- NJSiK4leCBSWOrMjfB909aEOzqysRoyHu3LbJZ3Fp832JxAUMu5iOvI/DU3UeiPvgEtmEH6qSDiEqqU2/n47RpC64hMt9OLEZwSJvbUKK+SqPg4Df8dF/7b+9bA==
+X-Rspamd-Queue-Id: 968311C0011
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1755023848-615162
+X-HE-Meta: U2FsdGVkX182mkcdCGMc1hq58bgUvvYVvkcvKuzt0q4MKGbdeNKJ1bNlJwNxQG8zoZ+kgRYqClk0UdSzLQBrhZO1N+pF7Zbr3NGh+YrKryB9ne3/s4stRrnfMV/owSauqcg9x+L6w3ouNDHlXey089qCqVw2DD87PR7ijY7/g8B/uHgDswhDI4c4Vrb1Hsb01ZIG8K09nNn2F3Q1Af2Qmp6HLw79DoOMLQNZmiBirk9aP4xSfDFLSZjIImRuCQA/HDtkZ4E3Jy6lLdJCD9H7Wu+F1bqllB6FD6URhT5rKT12oNKFXxOguiab9lKbgt5ufBzMdXGy32oHRYyXWrg0fcUcYW0AdaMkqrFPwjEX2bnuWa2MyymyKTJ2434kYp6CQMrwQXxpuAjQ81/2mIQX09P0z4A/8U+LuVp/6Rr8aykxiERGQVA1J2Umg7jPvDjpnCWmyemkyKGm9/I+tiH41i4/F/XItNXgvWdPty6Scg8dC9a5p2hl3U9kvdfOsJoOmndqXR0Pzbad4XwgcteAvkkd6XVOXewCECI+4OjVb0qrEFzQ7tupq+Dnoq3czJ4tFsayuAFdKWaXIYX43dEL1KcRFyq0VMZh/zgdb1jKaImbNTes4J++atLU1b3HF1pP1d/4VgbRqYBoi87JO3iyA9RmkHdh0OoJu1zCO+iq71+xrXtM8IAdaHiH29d+JYpykros+SnhoY7MqPFYYrustG7qFJbeJLQbBbOBlufQi4D1Kb7yRHRgxGbW4UIIedLUSydbmt9YcJHVwoWxbWjqN2/9VbCexHOiewoR/W5gN2ar7+IaawDu8/mxRX8BD+FgR2cE99LW83c97kl1+0GkS1NBBi8L2elnAR4tMELpr4MNJw3r0cne0m2eLNmKOXeEMkQZGepkHl/h7SpnYTNfd+G083D7/viOKrfYJ5il7jA11FiT5nKl0qw8nPra2PEg0I0zicHTKF/E1Qra0zG
+ ehYcEgH8
+ qenyOoR/kgAXzMGAzx5VHAsgHV9TiA5bCDMtfTXzwDHO4aaTdK+RodYqxbNj5gyd2hObEJyt4DWhFO/+C4HskmkNPjhCXdmkFjA8HJ7XIySepfCXZlnf/XNs7YBfxHxJocqni624YBbok8V8kMGVn9VN4cq/opGbxI3QJnTWlYOGMaVm68ypYuc9OuHBUt45nZGXauAvFWdGHOHzzNJFAUBJzoLtTfh4ih0H5wQxgxhUQ2FdlIXc3F+nXcnN7Jt6K+4eOR8cx/MBGiLMugeVcObb4m3w9anhN61Gi
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -254,471 +125,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 11, 2025 at 01:26:27PM +0200, David Hildenbrand wrote:
-> Let's factor it out, and convert all checks for unsupported levels to
-> BUILD_BUG(). The code is written in a way such that force-inlining will
-> optimize out the levels.
->
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+Hi,
 
-Nice cleanup! This LGTM, so:
+On Tue, 2025-08-12 at 18:03 +0000, Edgecombe, Rick P wrote:
+> On Tue, 2025-08-12 at 18:43 +0200, John Paul Adrian Glaubitz wrote:
+> > I suspect that the main issue is to be found in the following patch whi=
+ch introduced VM_FLUSH_RESET_PERMS
+> > which may not work as expected on sun4u SPARC systems:
+>=20
+> I think the problem we found with VM_FLUSH_RESET_PERMS was that the sparc=
+64
+> kernel TLB flush implementation was broken. Since VM_FLUSH_RESET_PERMS ca=
+used
+> kernel TLB flushes to happen sooner, it just showed up sooner. [0]=20
+>=20
+> This other issue seems to be about userspace memory. So I wonder if these=
+ are
+> two separate issues? Bisecting to the original VM_FLUSH_RESET_PERMS would=
+ have
+> had the known sparc kernel range TLB flush issue. So to bisect the other =
+issue
+> you might need to apply this [1].
 
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+That could be true. I knew about the patch in [1] but I didn't think of app=
+lying it.
 
-> ---
->  include/linux/pgtable.h |  8 ++++++
->  include/linux/rmap.h    | 60 +++++++++++++++++++----------------------
->  mm/rmap.c               | 56 +++++++++++++++++++++-----------------
->  3 files changed, 66 insertions(+), 58 deletions(-)
->
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index 4c035637eeb77..bff5c4241bf2e 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -1958,6 +1958,14 @@ static inline bool arch_has_pfn_modify_check(void)
->  /* Page-Table Modification Mask */
->  typedef unsigned int pgtbl_mod_mask;
->
-> +enum pgtable_level {
-> +	PGTABLE_LEVEL_PTE = 0,
-> +	PGTABLE_LEVEL_PMD,
-> +	PGTABLE_LEVEL_PUD,
-> +	PGTABLE_LEVEL_P4D,
-> +	PGTABLE_LEVEL_PGD,
-> +};
-> +
->  #endif /* !__ASSEMBLY__ */
->
->  #if !defined(MAX_POSSIBLE_PHYSMEM_BITS) && !defined(CONFIG_64BIT)
-> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
-> index 6cd020eea37a2..9d40d127bdb78 100644
-> --- a/include/linux/rmap.h
-> +++ b/include/linux/rmap.h
-> @@ -394,18 +394,8 @@ typedef int __bitwise rmap_t;
->  /* The anonymous (sub)page is exclusive to a single process. */
->  #define RMAP_EXCLUSIVE		((__force rmap_t)BIT(0))
->
-> -/*
-> - * Internally, we're using an enum to specify the granularity. We make the
-> - * compiler emit specialized code for each granularity.
-> - */
-> -enum rmap_level {
-> -	RMAP_LEVEL_PTE = 0,
-> -	RMAP_LEVEL_PMD,
-> -	RMAP_LEVEL_PUD,
-> -};
-> -
->  static inline void __folio_rmap_sanity_checks(const struct folio *folio,
-> -		const struct page *page, int nr_pages, enum rmap_level level)
-> +		const struct page *page, int nr_pages, enum pgtable_level level)
->  {
->  	/* hugetlb folios are handled separately. */
->  	VM_WARN_ON_FOLIO(folio_test_hugetlb(folio), folio);
-> @@ -427,18 +417,18 @@ static inline void __folio_rmap_sanity_checks(const struct folio *folio,
->  	VM_WARN_ON_FOLIO(page_folio(page + nr_pages - 1) != folio, folio);
->
->  	switch (level) {
-> -	case RMAP_LEVEL_PTE:
-> +	case PGTABLE_LEVEL_PTE:
->  		break;
-> -	case RMAP_LEVEL_PMD:
-> +	case PGTABLE_LEVEL_PMD:
->  		/*
->  		 * We don't support folios larger than a single PMD yet. So
-> -		 * when RMAP_LEVEL_PMD is set, we assume that we are creating
-> +		 * when PGTABLE_LEVEL_PMD is set, we assume that we are creating
->  		 * a single "entire" mapping of the folio.
->  		 */
->  		VM_WARN_ON_FOLIO(folio_nr_pages(folio) != HPAGE_PMD_NR, folio);
->  		VM_WARN_ON_FOLIO(nr_pages != HPAGE_PMD_NR, folio);
->  		break;
-> -	case RMAP_LEVEL_PUD:
-> +	case PGTABLE_LEVEL_PUD:
->  		/*
->  		 * Assume that we are creating a single "entire" mapping of the
->  		 * folio.
-> @@ -447,7 +437,7 @@ static inline void __folio_rmap_sanity_checks(const struct folio *folio,
->  		VM_WARN_ON_FOLIO(nr_pages != HPAGE_PUD_NR, folio);
->  		break;
->  	default:
-> -		VM_WARN_ON_ONCE(true);
-> +		BUILD_BUG();
->  	}
->
->  	/*
-> @@ -567,14 +557,14 @@ static inline void hugetlb_remove_rmap(struct folio *folio)
->
->  static __always_inline void __folio_dup_file_rmap(struct folio *folio,
->  		struct page *page, int nr_pages, struct vm_area_struct *dst_vma,
-> -		enum rmap_level level)
-> +		enum pgtable_level level)
->  {
->  	const int orig_nr_pages = nr_pages;
->
->  	__folio_rmap_sanity_checks(folio, page, nr_pages, level);
->
->  	switch (level) {
-> -	case RMAP_LEVEL_PTE:
-> +	case PGTABLE_LEVEL_PTE:
->  		if (!folio_test_large(folio)) {
->  			atomic_inc(&folio->_mapcount);
->  			break;
-> @@ -587,11 +577,13 @@ static __always_inline void __folio_dup_file_rmap(struct folio *folio,
->  		}
->  		folio_add_large_mapcount(folio, orig_nr_pages, dst_vma);
->  		break;
-> -	case RMAP_LEVEL_PMD:
-> -	case RMAP_LEVEL_PUD:
-> +	case PGTABLE_LEVEL_PMD:
-> +	case PGTABLE_LEVEL_PUD:
->  		atomic_inc(&folio->_entire_mapcount);
->  		folio_inc_large_mapcount(folio, dst_vma);
->  		break;
-> +	default:
-> +		BUILD_BUG();
->  	}
->  }
->
-> @@ -609,13 +601,13 @@ static __always_inline void __folio_dup_file_rmap(struct folio *folio,
->  static inline void folio_dup_file_rmap_ptes(struct folio *folio,
->  		struct page *page, int nr_pages, struct vm_area_struct *dst_vma)
->  {
-> -	__folio_dup_file_rmap(folio, page, nr_pages, dst_vma, RMAP_LEVEL_PTE);
-> +	__folio_dup_file_rmap(folio, page, nr_pages, dst_vma, PGTABLE_LEVEL_PTE);
->  }
->
->  static __always_inline void folio_dup_file_rmap_pte(struct folio *folio,
->  		struct page *page, struct vm_area_struct *dst_vma)
->  {
-> -	__folio_dup_file_rmap(folio, page, 1, dst_vma, RMAP_LEVEL_PTE);
-> +	__folio_dup_file_rmap(folio, page, 1, dst_vma, PGTABLE_LEVEL_PTE);
->  }
->
->  /**
-> @@ -632,7 +624,7 @@ static inline void folio_dup_file_rmap_pmd(struct folio *folio,
->  		struct page *page, struct vm_area_struct *dst_vma)
->  {
->  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> -	__folio_dup_file_rmap(folio, page, HPAGE_PMD_NR, dst_vma, RMAP_LEVEL_PTE);
-> +	__folio_dup_file_rmap(folio, page, HPAGE_PMD_NR, dst_vma, PGTABLE_LEVEL_PTE);
->  #else
->  	WARN_ON_ONCE(true);
->  #endif
-> @@ -640,7 +632,7 @@ static inline void folio_dup_file_rmap_pmd(struct folio *folio,
->
->  static __always_inline int __folio_try_dup_anon_rmap(struct folio *folio,
->  		struct page *page, int nr_pages, struct vm_area_struct *dst_vma,
-> -		struct vm_area_struct *src_vma, enum rmap_level level)
-> +		struct vm_area_struct *src_vma, enum pgtable_level level)
->  {
->  	const int orig_nr_pages = nr_pages;
->  	bool maybe_pinned;
-> @@ -665,7 +657,7 @@ static __always_inline int __folio_try_dup_anon_rmap(struct folio *folio,
->  	 * copying if the folio maybe pinned.
->  	 */
->  	switch (level) {
-> -	case RMAP_LEVEL_PTE:
-> +	case PGTABLE_LEVEL_PTE:
->  		if (unlikely(maybe_pinned)) {
->  			for (i = 0; i < nr_pages; i++)
->  				if (PageAnonExclusive(page + i))
-> @@ -687,8 +679,8 @@ static __always_inline int __folio_try_dup_anon_rmap(struct folio *folio,
->  		} while (page++, --nr_pages > 0);
->  		folio_add_large_mapcount(folio, orig_nr_pages, dst_vma);
->  		break;
-> -	case RMAP_LEVEL_PMD:
-> -	case RMAP_LEVEL_PUD:
-> +	case PGTABLE_LEVEL_PMD:
-> +	case PGTABLE_LEVEL_PUD:
->  		if (PageAnonExclusive(page)) {
->  			if (unlikely(maybe_pinned))
->  				return -EBUSY;
-> @@ -697,6 +689,8 @@ static __always_inline int __folio_try_dup_anon_rmap(struct folio *folio,
->  		atomic_inc(&folio->_entire_mapcount);
->  		folio_inc_large_mapcount(folio, dst_vma);
->  		break;
-> +	default:
-> +		BUILD_BUG();
->  	}
->  	return 0;
->  }
-> @@ -730,7 +724,7 @@ static inline int folio_try_dup_anon_rmap_ptes(struct folio *folio,
->  		struct vm_area_struct *src_vma)
->  {
->  	return __folio_try_dup_anon_rmap(folio, page, nr_pages, dst_vma,
-> -					 src_vma, RMAP_LEVEL_PTE);
-> +					 src_vma, PGTABLE_LEVEL_PTE);
->  }
->
->  static __always_inline int folio_try_dup_anon_rmap_pte(struct folio *folio,
-> @@ -738,7 +732,7 @@ static __always_inline int folio_try_dup_anon_rmap_pte(struct folio *folio,
->  		struct vm_area_struct *src_vma)
->  {
->  	return __folio_try_dup_anon_rmap(folio, page, 1, dst_vma, src_vma,
-> -					 RMAP_LEVEL_PTE);
-> +					 PGTABLE_LEVEL_PTE);
->  }
->
->  /**
-> @@ -770,7 +764,7 @@ static inline int folio_try_dup_anon_rmap_pmd(struct folio *folio,
->  {
->  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->  	return __folio_try_dup_anon_rmap(folio, page, HPAGE_PMD_NR, dst_vma,
-> -					 src_vma, RMAP_LEVEL_PMD);
-> +					 src_vma, PGTABLE_LEVEL_PMD);
->  #else
->  	WARN_ON_ONCE(true);
->  	return -EBUSY;
-> @@ -778,7 +772,7 @@ static inline int folio_try_dup_anon_rmap_pmd(struct folio *folio,
->  }
->
->  static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
-> -		struct page *page, int nr_pages, enum rmap_level level)
-> +		struct page *page, int nr_pages, enum pgtable_level level)
->  {
->  	VM_WARN_ON_FOLIO(!folio_test_anon(folio), folio);
->  	VM_WARN_ON_FOLIO(!PageAnonExclusive(page), folio);
-> @@ -873,7 +867,7 @@ static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
->  static inline int folio_try_share_anon_rmap_pte(struct folio *folio,
->  		struct page *page)
->  {
-> -	return __folio_try_share_anon_rmap(folio, page, 1, RMAP_LEVEL_PTE);
-> +	return __folio_try_share_anon_rmap(folio, page, 1, PGTABLE_LEVEL_PTE);
->  }
->
->  /**
-> @@ -904,7 +898,7 @@ static inline int folio_try_share_anon_rmap_pmd(struct folio *folio,
->  {
->  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->  	return __folio_try_share_anon_rmap(folio, page, HPAGE_PMD_NR,
-> -					   RMAP_LEVEL_PMD);
-> +					   PGTABLE_LEVEL_PMD);
->  #else
->  	WARN_ON_ONCE(true);
->  	return -EBUSY;
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 84a8d8b02ef77..0e9c4041f8687 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -1265,7 +1265,7 @@ static void __folio_mod_stat(struct folio *folio, int nr, int nr_pmdmapped)
->
->  static __always_inline void __folio_add_rmap(struct folio *folio,
->  		struct page *page, int nr_pages, struct vm_area_struct *vma,
-> -		enum rmap_level level)
-> +		enum pgtable_level level)
->  {
->  	atomic_t *mapped = &folio->_nr_pages_mapped;
->  	const int orig_nr_pages = nr_pages;
-> @@ -1274,7 +1274,7 @@ static __always_inline void __folio_add_rmap(struct folio *folio,
->  	__folio_rmap_sanity_checks(folio, page, nr_pages, level);
->
->  	switch (level) {
-> -	case RMAP_LEVEL_PTE:
-> +	case PGTABLE_LEVEL_PTE:
->  		if (!folio_test_large(folio)) {
->  			nr = atomic_inc_and_test(&folio->_mapcount);
->  			break;
-> @@ -1300,11 +1300,11 @@ static __always_inline void __folio_add_rmap(struct folio *folio,
->
->  		folio_add_large_mapcount(folio, orig_nr_pages, vma);
->  		break;
-> -	case RMAP_LEVEL_PMD:
-> -	case RMAP_LEVEL_PUD:
-> +	case PGTABLE_LEVEL_PMD:
-> +	case PGTABLE_LEVEL_PUD:
->  		first = atomic_inc_and_test(&folio->_entire_mapcount);
->  		if (IS_ENABLED(CONFIG_NO_PAGE_MAPCOUNT)) {
-> -			if (level == RMAP_LEVEL_PMD && first)
-> +			if (level == PGTABLE_LEVEL_PMD && first)
->  				nr_pmdmapped = folio_large_nr_pages(folio);
->  			nr = folio_inc_return_large_mapcount(folio, vma);
->  			if (nr == 1)
-> @@ -1323,7 +1323,7 @@ static __always_inline void __folio_add_rmap(struct folio *folio,
->  				 * We only track PMD mappings of PMD-sized
->  				 * folios separately.
->  				 */
-> -				if (level == RMAP_LEVEL_PMD)
-> +				if (level == PGTABLE_LEVEL_PMD)
->  					nr_pmdmapped = nr_pages;
->  				nr = nr_pages - (nr & FOLIO_PAGES_MAPPED);
->  				/* Raced ahead of a remove and another add? */
-> @@ -1336,6 +1336,8 @@ static __always_inline void __folio_add_rmap(struct folio *folio,
->  		}
->  		folio_inc_large_mapcount(folio, vma);
->  		break;
-> +	default:
-> +		BUILD_BUG();
->  	}
->  	__folio_mod_stat(folio, nr, nr_pmdmapped);
->  }
-> @@ -1427,7 +1429,7 @@ static void __page_check_anon_rmap(const struct folio *folio,
->
->  static __always_inline void __folio_add_anon_rmap(struct folio *folio,
->  		struct page *page, int nr_pages, struct vm_area_struct *vma,
-> -		unsigned long address, rmap_t flags, enum rmap_level level)
-> +		unsigned long address, rmap_t flags, enum pgtable_level level)
->  {
->  	int i;
->
-> @@ -1440,20 +1442,22 @@ static __always_inline void __folio_add_anon_rmap(struct folio *folio,
->
->  	if (flags & RMAP_EXCLUSIVE) {
->  		switch (level) {
-> -		case RMAP_LEVEL_PTE:
-> +		case PGTABLE_LEVEL_PTE:
->  			for (i = 0; i < nr_pages; i++)
->  				SetPageAnonExclusive(page + i);
->  			break;
-> -		case RMAP_LEVEL_PMD:
-> +		case PGTABLE_LEVEL_PMD:
->  			SetPageAnonExclusive(page);
->  			break;
-> -		case RMAP_LEVEL_PUD:
-> +		case PGTABLE_LEVEL_PUD:
->  			/*
->  			 * Keep the compiler happy, we don't support anonymous
->  			 * PUD mappings.
->  			 */
->  			WARN_ON_ONCE(1);
->  			break;
-> +		default:
-> +			BUILD_BUG();
->  		}
->  	}
->
-> @@ -1507,7 +1511,7 @@ void folio_add_anon_rmap_ptes(struct folio *folio, struct page *page,
->  		rmap_t flags)
->  {
->  	__folio_add_anon_rmap(folio, page, nr_pages, vma, address, flags,
-> -			      RMAP_LEVEL_PTE);
-> +			      PGTABLE_LEVEL_PTE);
->  }
->
->  /**
-> @@ -1528,7 +1532,7 @@ void folio_add_anon_rmap_pmd(struct folio *folio, struct page *page,
->  {
->  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->  	__folio_add_anon_rmap(folio, page, HPAGE_PMD_NR, vma, address, flags,
-> -			      RMAP_LEVEL_PMD);
-> +			      PGTABLE_LEVEL_PMD);
->  #else
->  	WARN_ON_ONCE(true);
->  #endif
-> @@ -1609,7 +1613,7 @@ void folio_add_new_anon_rmap(struct folio *folio, struct vm_area_struct *vma,
->
->  static __always_inline void __folio_add_file_rmap(struct folio *folio,
->  		struct page *page, int nr_pages, struct vm_area_struct *vma,
-> -		enum rmap_level level)
-> +		enum pgtable_level level)
->  {
->  	VM_WARN_ON_FOLIO(folio_test_anon(folio), folio);
->
-> @@ -1634,7 +1638,7 @@ static __always_inline void __folio_add_file_rmap(struct folio *folio,
->  void folio_add_file_rmap_ptes(struct folio *folio, struct page *page,
->  		int nr_pages, struct vm_area_struct *vma)
->  {
-> -	__folio_add_file_rmap(folio, page, nr_pages, vma, RMAP_LEVEL_PTE);
-> +	__folio_add_file_rmap(folio, page, nr_pages, vma, PGTABLE_LEVEL_PTE);
->  }
->
->  /**
-> @@ -1651,7 +1655,7 @@ void folio_add_file_rmap_pmd(struct folio *folio, struct page *page,
->  		struct vm_area_struct *vma)
->  {
->  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> -	__folio_add_file_rmap(folio, page, HPAGE_PMD_NR, vma, RMAP_LEVEL_PMD);
-> +	__folio_add_file_rmap(folio, page, HPAGE_PMD_NR, vma, PGTABLE_LEVEL_PMD);
->  #else
->  	WARN_ON_ONCE(true);
->  #endif
-> @@ -1672,7 +1676,7 @@ void folio_add_file_rmap_pud(struct folio *folio, struct page *page,
->  {
->  #if defined(CONFIG_TRANSPARENT_HUGEPAGE) && \
->  	defined(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
-> -	__folio_add_file_rmap(folio, page, HPAGE_PUD_NR, vma, RMAP_LEVEL_PUD);
-> +	__folio_add_file_rmap(folio, page, HPAGE_PUD_NR, vma, PGTABLE_LEVEL_PUD);
->  #else
->  	WARN_ON_ONCE(true);
->  #endif
-> @@ -1680,7 +1684,7 @@ void folio_add_file_rmap_pud(struct folio *folio, struct page *page,
->
->  static __always_inline void __folio_remove_rmap(struct folio *folio,
->  		struct page *page, int nr_pages, struct vm_area_struct *vma,
-> -		enum rmap_level level)
-> +		enum pgtable_level level)
->  {
->  	atomic_t *mapped = &folio->_nr_pages_mapped;
->  	int last = 0, nr = 0, nr_pmdmapped = 0;
-> @@ -1689,7 +1693,7 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
->  	__folio_rmap_sanity_checks(folio, page, nr_pages, level);
->
->  	switch (level) {
-> -	case RMAP_LEVEL_PTE:
-> +	case PGTABLE_LEVEL_PTE:
->  		if (!folio_test_large(folio)) {
->  			nr = atomic_add_negative(-1, &folio->_mapcount);
->  			break;
-> @@ -1719,11 +1723,11 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
->
->  		partially_mapped = nr && atomic_read(mapped);
->  		break;
-> -	case RMAP_LEVEL_PMD:
-> -	case RMAP_LEVEL_PUD:
-> +	case PGTABLE_LEVEL_PMD:
-> +	case PGTABLE_LEVEL_PUD:
->  		if (IS_ENABLED(CONFIG_NO_PAGE_MAPCOUNT)) {
->  			last = atomic_add_negative(-1, &folio->_entire_mapcount);
-> -			if (level == RMAP_LEVEL_PMD && last)
-> +			if (level == PGTABLE_LEVEL_PMD && last)
->  				nr_pmdmapped = folio_large_nr_pages(folio);
->  			nr = folio_dec_return_large_mapcount(folio, vma);
->  			if (!nr) {
-> @@ -1743,7 +1747,7 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
->  			nr = atomic_sub_return_relaxed(ENTIRELY_MAPPED, mapped);
->  			if (likely(nr < ENTIRELY_MAPPED)) {
->  				nr_pages = folio_large_nr_pages(folio);
-> -				if (level == RMAP_LEVEL_PMD)
-> +				if (level == PGTABLE_LEVEL_PMD)
->  					nr_pmdmapped = nr_pages;
->  				nr = nr_pages - (nr & FOLIO_PAGES_MAPPED);
->  				/* Raced ahead of another remove and an add? */
-> @@ -1757,6 +1761,8 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
->
->  		partially_mapped = nr && nr < nr_pmdmapped;
->  		break;
-> +	default:
-> +		BUILD_BUG();
->  	}
->
->  	/*
-> @@ -1796,7 +1802,7 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
->  void folio_remove_rmap_ptes(struct folio *folio, struct page *page,
->  		int nr_pages, struct vm_area_struct *vma)
->  {
-> -	__folio_remove_rmap(folio, page, nr_pages, vma, RMAP_LEVEL_PTE);
-> +	__folio_remove_rmap(folio, page, nr_pages, vma, PGTABLE_LEVEL_PTE);
->  }
->
->  /**
-> @@ -1813,7 +1819,7 @@ void folio_remove_rmap_pmd(struct folio *folio, struct page *page,
->  		struct vm_area_struct *vma)
->  {
->  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> -	__folio_remove_rmap(folio, page, HPAGE_PMD_NR, vma, RMAP_LEVEL_PMD);
-> +	__folio_remove_rmap(folio, page, HPAGE_PMD_NR, vma, PGTABLE_LEVEL_PMD);
->  #else
->  	WARN_ON_ONCE(true);
->  #endif
-> @@ -1834,7 +1840,7 @@ void folio_remove_rmap_pud(struct folio *folio, struct page *page,
->  {
->  #if defined(CONFIG_TRANSPARENT_HUGEPAGE) && \
->  	defined(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
-> -	__folio_remove_rmap(folio, page, HPAGE_PUD_NR, vma, RMAP_LEVEL_PUD);
-> +	__folio_remove_rmap(folio, page, HPAGE_PUD_NR, vma, PGTABLE_LEVEL_PUD);
->  #else
->  	WARN_ON_ONCE(true);
->  #endif
-> --
-> 2.50.1
->
+FWIW, the crashes we're seeing on recent kernel versions look like this:
+
+[   40.992851]               \|/ ____ \|/
+[   40.992851]               "@'/ .. \`@"
+[   40.992851]               /_| \__/ |_\
+[   40.992851]                  \__U_/
+[   41.186220] (udev-worker)(88): Kernel illegal instruction [#1]
+[   41.262910] CPU: 0 UID: 0 PID: 88 Comm: (udev-worker) Tainted: G        =
+W          6.12.0+ #25
+[   41.376151] Tainted: [W]=3DWARN
+[   41.415025] TSTATE: 0000004411001607 TPC: 00000000101c21c0 TNPC: 0000000=
+0101c21c4 Y: 00000000    Tainted: G        W        =20
+[   41.563717] TPC: <ehci_init_driver+0x0/0x160 [ehci_hcd]>
+[   41.633584] g0: 00000000012005b8 g1: 00000000100a1800 g2: 00000000102060=
+00 g3: 00000000101de000
+[   41.747962] g4: fff000000a5af380 g5: 0000000000000000 g6: fff000000aac80=
+00 g7: 0000000000000e7b
+[   41.862338] o0: 0000000010060118 o1: 000000001020a000 o2: fff000000aa30c=
+e0 o3: 0000000000000e7a
+[   41.976728] o4: 00000000ff000000 o5: 00ff000000000000 sp: fff000000aacb0=
+91 ret_pc: 00000000101de028
+[   42.095768] RPC: <ehci_pci_init+0x28/0x2000 [ehci_pci]>
+[   42.164394] l0: 0000000000000000 l1: 0000000100043fff l2: ffffffffff8000=
+00 l3: 0000000000800000
+[   42.278768] l4: fff00000001c8008 l5: 0000000000000000 l6: 00000000013358=
+e0 l7: 0000000001002800
+[   42.393143] i0: ffffffffffffffed i1: 00000000004db8d8 i2: 00000000000000=
+00 i3: fff000000aa304e0
+[   42.507517] i4: 0000000001127250 i5: 0000000010060000 i6: fff000000aacb1=
+41 i7: 0000000000427d90
+[   42.621893] I7: <do_one_initcall+0x30/0x200>
+[   42.677931] Call Trace:
+[   42.709953] [<0000000000427d90>] do_one_initcall+0x30/0x200
+[   42.783158] [<00000000004db908>] do_init_module+0x48/0x240
+[   42.855214] [<00000000004dd82c>] load_module+0x19cc/0x1f20
+[   42.927270] [<00000000004ddf8c>] init_module_from_file+0x6c/0xa0
+[   43.006189] [<00000000004de1e4>] sys_finit_module+0x1c4/0x2c0
+[   43.081677] [<0000000000406174>] linux_sparc_syscall+0x34/0x44
+[   43.158307] Disabling lock debugging due to kernel taint
+[   43.228077] Caller[0000000000427d90]: do_one_initcall+0x30/0x200
+[   43.306995] Caller[00000000004db908]: do_init_module+0x48/0x240
+[   43.384772] Caller[00000000004dd82c]: load_module+0x19cc/0x1f20
+[   43.462544] Caller[00000000004ddf8c]: init_module_from_file+0x6c/0xa0
+[   43.547184] Caller[00000000004de1e4]: sys_finit_module+0x1c4/0x2c0
+[   43.628389] Caller[0000000000406174]: linux_sparc_syscall+0x34/0x44
+[   43.710741] Caller[fff000010480e2fc]: 0xfff000010480e2fc
+[   43.780508] Instruction DUMP:
+[   43.780511]  00000000=20
+[   43.819394]  00000000=20
+[   43.850273]  00000000=20
+[   43.881153] <00000000>
+[   43.912036]  00000000=20
+[   43.942917]  00000000=20
+[   43.973797]  00000000=20
+[   44.004678]  00000000=20
+[   44.035561]  00000000=20
+[   44.066443]
+
+Do you have any suggestion what to bisect?
+
+Adrian
+
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
