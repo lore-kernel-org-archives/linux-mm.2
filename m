@@ -2,89 +2,87 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8FB5CCA0EC4
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 22:03:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2AEB3CA0EC4
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 22:17:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1EE6E8E0197; Tue, 12 Aug 2025 18:03:36 -0400 (EDT)
+	id BD27C8E0198; Tue, 12 Aug 2025 18:17:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 177FB8E0196; Tue, 12 Aug 2025 18:03:36 -0400 (EDT)
+	id B83268E0196; Tue, 12 Aug 2025 18:17:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03F2E8E0197; Tue, 12 Aug 2025 18:03:35 -0400 (EDT)
+	id A98A68E0198; Tue, 12 Aug 2025 18:17:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DFE118E0196
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 18:03:35 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 72291115AF0
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 22:03:35 +0000 (UTC)
-X-FDA: 83769482790.01.C4B1100
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B05F080013
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 22:03:33 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=lsQi2ZUe;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 98CF78E0196
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 18:17:48 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 138171401AE
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 22:17:48 +0000 (UTC)
+X-FDA: 83769518616.19.1D62F8F
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 5F92F1C000A
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 22:17:46 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=VZPhh9am;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755036213;
+	s=arc-20220608; t=1755037066;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EWdqftYk3EaWeCO1FjUtaqKykBdBlqKmEG93jk+LFUY=;
-	b=c82S+GSqHihpFSJec85om4Rds2lEMY/7AImfkoiFEEOFBGLPR7F7O3RNQZABcLL3a3/4sB
-	edzTIFdH6EA+8V5V7ciOCOUbHpZwgk+n8uPZtA8SJHsu1/7+4tWaksol2Ia6t3vlV9cddq
-	AMfagyRMjJdqrcpMOkapypv8fCHNXJU=
+	bh=P5IWbpJwkegh37kivkIDabXoZKQHmlDu9jNN//8eXvQ=;
+	b=ELuYB2WB/+fz0SOrk8frKDIq+bGwJpZSyXy8tZxqkTRk5kiB/WJnfGmEC8pX9OFeNMrgKd
+	99m0H4KCbrEv9InYoC6XmMIOEYHtGEWeSzqyN8HGM7TeBAVYMVt1SRVYEsM8wrshY5G01G
+	76lrdJR8+t+b++LB2EP+yWMTW+CA50A=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=lsQi2ZUe;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755036213; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=VZPhh9am;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755037066; a=rsa-sha256;
 	cv=none;
-	b=Sq7gBfPEZLYyOCLoPpcK8TcG2ECweahKXJELHYZ+OUsjKuTyYAk6v/YL4NRhHt2c+QIg8V
-	Mz42gx7Y3SFDiZ9LOyXEyLCYVY7fdY0tA0yC0F13YyEldNAGTY54Jz9L1oNSwYZoS1Xtq8
-	S81s7aaJ+nUkDUbzjFMJsZ2pHwp4+gQ=
+	b=bW3ope4Rh0aUzu1axB5TBCRPA7PUgjto+OdmEvXpqnhIroHh33NW5Ai9ootcsMVELsA3ef
+	qkH06QVUnHemVnWW0LC8areJMnz9FjUkShnV/4FfedKvuIDxsYwhe5eQklC5nqyn2UBLJY
+	pgpD/EhD6yHEJ1Xp4QdTf/aVcb/ep2Q=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5BC8A4413C;
-	Tue, 12 Aug 2025 22:03:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 136E6C4CEF0;
-	Tue, 12 Aug 2025 22:03:32 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 2AA675C69E6;
+	Tue, 12 Aug 2025 22:17:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38371C4CEF0;
+	Tue, 12 Aug 2025 22:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1755036212;
-	bh=exvvZP2rP+R5jI+G7rsqT5N9VfuXc9aPekZm6d12tNY=;
+	s=korg; t=1755037064;
+	bh=miipKiTqF7JpECaUEluYI41x3HMUaCIGaCjb5/2xIkk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lsQi2ZUegaHNI4h3O3XuHaqI2JTiMeCPKyOIncLGwlszYvrcTn363rIxyKcGmPW+8
-	 zTD2ur8XXDWwW8ZSJoK0s9GSaKciMzayx8DWNBa2Ed3tpWlaCTWvVzc/gHT/FNAfVM
-	 9ZhgKdef8c0piqe25zuYDgg0sRyGLrkP0DW4Tc1k=
-Date: Tue, 12 Aug 2025 15:03:31 -0700
+	b=VZPhh9amNgD6bU+DfrwnuclBnrQ/9RE3gflGp5IJCrnEth70N5IVPntS17Hhn6Kj9
+	 j2fTn1iK+41SHXmIYhXgI9vs985Cl3cOMjSk3n+z8wk/nYjDNifiGJLC+H2OnL9lmc
+	 nNW5TFGEtCbnJtyRn4QjdVzPyT0y1+wvZadAEzRA=
+Date: Tue, 12 Aug 2025 15:17:43 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: David Hildenbrand <david@redhat.com>
-Cc: kernel test robot <lkp@intel.com>, llvm@lists.linux.dev,
- oe-kbuild-all@lists.linux.dev, Linux Memory Management List
- <linux-mm@kvack.org>
-Subject: Re: [akpm-mm:mm-new 101/118] arch/powerpc/mm/ptdump/shared.c:70:1:
- error: use of 'pgtable_level' with tag type that does not match previous
- declaration
-Message-Id: <20250812150331.cfe4090372c3864aa768fa7f@linux-foundation.org>
-In-Reply-To: <522f31cc-f250-4883-8832-0d26ebf5210b@redhat.com>
-References: <202508130304.5FJqRz2c-lkp@intel.com>
-	<0c96fa0e-6f7e-4cca-8d57-f3e3786d44fa@redhat.com>
-	<522f31cc-f250-4883-8832-0d26ebf5210b@redhat.com>
+To: SeongJae Park <sj@kernel.org>
+Cc: Sang-Heon Jeon <ekffu200098@gmail.com>, honggyu.kim@sk.com,
+ damon@lists.linux.dev, linux-mm@kvack.org, Alexandre Ghiti
+ <alexghiti@rivosinc.com>
+Subject: Re: [PATCH] selftests/damon: fix selftests by installing drgn
+ related script
+Message-Id: <20250812151743.570bde54f31007cf986a2f52@linux-foundation.org>
+In-Reply-To: <20250812175939.57506-1-sj@kernel.org>
+References: <20250812140046.660486-1-ekffu200098@gmail.com>
+	<20250812175939.57506-1-sj@kernel.org>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B05F080013
-X-Stat-Signature: xrmie4wokdyfda4nzeoe3zyierfbaoxx
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 5F92F1C000A
+X-Stat-Signature: edas5uy4srijgx1ibjhoj53t8ddgfctx
 X-Rspam-User: 
-X-HE-Tag: 1755036213-146547
-X-HE-Meta: U2FsdGVkX1+2enlsNxPklpcpxwvXOLjKoXECEmY2HvH8PXPq1Iip1p7VHHF3+KIkD62x2Cr1E/HgOY5zmiNZwO4zbgSacyOE0up4//n6X6Wq6PW4Kb4RS+T8UEdZpFvmh69wVnnU5R0YwdWeuFuMvTS1CUjmSKtqP4xdctaUn5sBi7Fu2pMjhG8hblBOpTKV4FhGwD09qAzFBrnx6nBOs4LODFjBvls9ZgWynUOtMZ8/CqOUJFp0I/VVmOgHO/YGBl+GgqOfmFCRpnXim5le+7L0T1k3niyZZicNj4zdmrlogKNTBeCXGyC6H7kaY+AnHBZJqsgVocdMMXdswMp0JTG//GCKCupMYoDPaQvdaCsk3uMgodzIjwlBX4X/1nZR/fW+6ZfDjS6PfOQn6RXDajnf/k89WhoOzPqTpuK8VKeVVGasHU+5QWHOxtqmN0Cfk512cAby3QHWm1WeL/74Hvg8ey5lAlaoL0WHb6uSP93TmNxcKFSOM7h0oxzmTcJ424OIJJ2/qbr3hLVHqTxRwGMNmZI1h2kqxCbTs4qwq9rWBy+4k6GZ4KVqGct/66othHIKT5BNqWvQsCf2RMmBrEqDSy5ReI4n3Q3+dZ55p/BQcno+0pOz/M1t2L9zU+X81FfKKKGtftAE07Uy4KyV2AqLnH73dsIHv+OZQz3apjAa1sPckSjcj064W/6l1XvDfNJeZfu9WDeLLwChjfzD5S3lGVHOR91C5uJ9u9FY/fRcsZQFGJUG7X2mNeddoo4Lvv1EIYEdUkkPSqAQACJ+QX+wMrbLyMqgeAUVwSU46jALlIPfcwGopujYHNmomBpyH/rqABce8xACR8gyzj6Cd/z8dXo+3Hn9Yoz8R5c5CW1DEo2bA/YZMqWqKX7+c601bPBpPfhI3HId32lmFmVoQ5X0SV4ecVk/Rx+dvuWkwCAXNXdQG7/9c2RMSSMmfvT9QLqzAOAB2/AFiU2ZHKH
- Ypy0Cmxb
- xDY6oX72PRMEvTrFUmlvAGO/TyNXZjG7e4bg76e5efsxNRi7rvOrompxv8n85ZHXkPFeUyBiGa6F7LQEGk9hBq6E4ZosK3oQZjh5JkOZhYvRJ7qQqKmXlCFitarnmNxx56iqf/vvB5uoHayq5umD03KPvn4nXxAgIqEJsmgFZVzMexQkCJ25lpJ04DWggtrxfxDNNm+mVIJEsdG+Y1KErZgbwHchITvi0/bsNBTAT78+Vi8D+nDXAZ5ik2+rtt9P2Y9n66r8LvaD6VykJ1rgrbRo1XRmaQjgdkgJUJDWlyWuLAEaz5fuQ0XOr/KlmBkzkmMdoT6VS/rlYLeRFac1qtrUBxLCsz5pTLuX0RGDrX36/OJn4fLJ+i4H54w==
+X-HE-Tag: 1755037066-44428
+X-HE-Meta: U2FsdGVkX1+Ea/gVaN23UsbWPcZeVLDZwSozYWXboD8qFzlD/YGV4aMxCN3CPCZaNZyGQaOlpz72ndnd60zZCYoNrEooKHgvHRqJ7D1bqgrnd6uzO3bLYYMnJDp4j++h38vF5gn7O5I+WzvowrvZA6HXB1eTJ+1yQ2E+R1njcTpXeA51MHHR5j7UymXfyjDjP/hHW6ztloKBUffl6eQ71wjl/YMrL09R1It21rIG8ekXwqb6xgIfweCQ1dKzGsChY2dXchn+LOeUbgi/XmrcxJ202yxeBD2KvnQ57BQH6Q4I+gy5QDTVgFqGXxOoZ9PwcnYe/ZPT4gtup+vFRAniMz07xJQudj8UpqivVkmLu4vdLVeS61AMpNgzFMXRg6t5UPsW/y4QOVOGCG7JbRPK3gtNTg/zajhTGhCXR0blwg5+jk5c+nhulRShGKXA3w8llLMVN90qEpxyxysC85HngtW8D8bhVC8JmerZeqsfAi8GfkSt0qDw7OYaurrNnpezA91QO9aH/4cHQYQvu3+sw0U6eRhzVjycY2cD1+kIoKC4TgL6o7RcBTHvd9bIYYjfYB82xVD6v9NGRxkQlxzymvJcAsRGFSwVxZPnlkCSAahwrboaMVPj0krGCIgTfww8bSbUexHOiSE/WP7bgL4ulMLX4h/4j2/1joa4HzrStrCo33vuddwJjQRvMunGr3+92kD6MV+/FcZvRqNtn2uhkVOmP9E2JxpKgnxMiIvt/fq6X72xeos3COro5k6bYEi9Bzv9T0UtFfayUFQjEpZXH2Fwbyy7NZbOewpJPX55eHoUkLTtj+KgT+oMWxhLHVnLlY0gPvo45ZUcyPZ4Nb5s76o4tzzAoPd+qY5d0YYEMeYo2h20DWeOmGLvEV3E0rC+XF2CHRETN9DjyBaRZPw/FlSUDF3KL+UtzBDXNSctcyENztBJvgzICRSXB/NlZEE8VWhpghUUvabdzXQ5JBc
+ QukzLBnz
+ 3IfyOHJEZXI3ZnoynlFPtrVGOP5ECCXHEX5d9Sri84p+2cxvY7pNuDYmCDK3XGh9PkitEb4iLY0FiEk/uHuf9jNRVGux/Uu/Y170HTG34UtdZNbzJ7BlriYsXiDUmdzF8+VqEL7M1e52CxEXHpiLIvuNVwwGzhxPohBadgf1oy3PCnlA+GrX7z6UWgPnEC16LAEAtTOH6TTwu9mk0gpnYmYsCCpRD1xZ45m/eMp858b9lNZ9oAt+aY8lx0oco9tN9QkCwJ0hzkxfWvyqRqykgMMYSoQnPqNZsUOHG+iB2PJdCS0BFfe72TkRnV/7XApK0uOTA2Da11t/ezT8T3SKfKf7nWkU6osV6+VYo
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,20 +91,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 12 Aug 2025 22:57:18 +0200 David Hildenbrand <david@redhat.com> wrote:
+On Tue, 12 Aug 2025 10:59:39 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-> >>      3 errors generated.
-> > 
-> > Huh, I cross compiled this on a bunch of ppc configs, but maybe not emough.
-> > 
-> > No, on the branch I submitted that did not exist.
-> > 
-> > Probably due to the rebase.
+> On Tue, 12 Aug 2025 23:00:46 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
 > 
-> Ehm, no, Andrew, could it be that you accidentally dropped the ppc patch 
-> from mm-new. I can spot all but that patch in there:
+> > drgn_dump_damon_status is not installed while kselftest setup.
+> > It can breaks other tests which depend on drgn_dump_damon_status.
+> > Install drgn_dump_damon_status files to fix broken test.
 > 
-> https://lkml.kernel.org/r/20250811112631.759341-7-david@redhat.com
+> This patch conflicts with the similar one from Alexandre Ghiti.  Could you
+> please rebase yours on top of Alexandre's one (and mention the dependency on
+> the comment section under '---' line), unless Andrew resolves the conflict on
+> his own?
+> 
+> > 
+> > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> > Cc: Alexandre Ghiti <alexghiti@rivosinc.com>
+> 
+> Reviewed-by: SeongJae Park <sj@kernel.org>
 
-yup, I totally missed that one, sorry.  Added now.
+I'll add
+
+Fixes: f3e8e1e51362 ("selftests/damon: add drgn script for extracting damon status")
 
