@@ -2,301 +2,124 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E7704C87FCB
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 17:25:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4823AC87FCB
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 17:27:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 741658E0179; Tue, 12 Aug 2025 13:25:28 -0400 (EDT)
+	id DD51A8E017A; Tue, 12 Aug 2025 13:26:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F2488E0168; Tue, 12 Aug 2025 13:25:28 -0400 (EDT)
+	id DABF68E0168; Tue, 12 Aug 2025 13:26:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 545088E0179; Tue, 12 Aug 2025 13:25:28 -0400 (EDT)
+	id CC2088E017A; Tue, 12 Aug 2025 13:26:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 40ED78E0168
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:25:28 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B232E80D2E
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 17:25:26 +0000 (UTC)
-X-FDA: 83768781852.19.6D87FF5
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 08D70C0011
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 17:25:22 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=GCYb1Ohw;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=XM0r9QuL;
-	spf=pass (imf22.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755019523;
+	by kanga.kvack.org (Postfix) with ESMTP id BC8808E0168
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:26:59 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 62A1F14012D
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 17:26:59 +0000 (UTC)
+X-FDA: 83768785758.02.1E9E879
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 97F7A1A0003
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 17:26:57 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qdZLy0K7;
+	spf=pass (imf19.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755019617;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lIPbGxUBOEImxVCZhZOQHsc6Rp3lMg/SywUmYbTisDM=;
-	b=DFywmPZ7A3ANSDdkRMl0wOGlNwfIsjJVEZduseHM2n4EX08HNp0VzmnIhs1rS1mFNYxMIV
-	iNvYg/X80sf4sRV4Oaj1yrWBprvTWBIJObPhvFoCKfDHl9XRm/c7hOjzIUVtEeKRxGq/Uq
-	l/cdRZSdZfGGM5tC30qrx2Aazj6Yf/0=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755019523; a=rsa-sha256;
-	cv=pass;
-	b=AVKHOq3012LLfSJA4XWb0L0q0uJCnEO5NDqhxQBANYnqvkSebVdPM9COac0dKlh7jQuz0h
-	aM9zLZZWbf5gKp0fUObR9nvB2tNawyomodCo401GY7SJOsyGPIOiyGCSpYklc5i6h9QHOg
-	OOH/si/o+o5bJ8dQH/GxLzy4zJbkvEU=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=GCYb1Ohw;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=XM0r9QuL;
-	spf=pass (imf22.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57CDC6vn006392;
-	Tue, 12 Aug 2025 17:24:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=lIPbGxUBOEImxVCZhZ
-	OQHsc6Rp3lMg/SywUmYbTisDM=; b=GCYb1OhwVK7W9HhZAEtkth3jPy+WWTpEtU
-	/ntREWf475nQrGr1BFIzofAN04ZbtbKEtoXXRAFaTJS7DS9ffz5lfoMICwi6RL+2
-	VGABz9lvcRFGQB8WcNRqHHckknLeE5KceqiugYI3gr+B3u7nWWX1N5Hj5xgLekq+
-	4Sb9yMzwBgLmAlJwkkS9eHFhei7lex+25amreVPnl+NSvckWITNDliPX0Ufq096x
-	f77LCD6aXyMpMe6ScDFxh1GNSVQnkwHEjUH3Ik1ajZofTxKLsrMNn490QK9SCSOu
-	EAamq+PO29tHohDu+maRN6ghAndW7uxr38uIz0K/X8REvIdb9Edw==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48dx7dn4t1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 12 Aug 2025 17:24:57 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57CGB0o6030163;
-	Tue, 12 Aug 2025 17:24:56 GMT
-Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12on2072.outbound.protection.outlook.com [40.107.237.72])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48dvsa8xc1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 12 Aug 2025 17:24:56 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=keOjakNPO+c2SyjtuQLZSThTsh0b+a2HFtPm1bHfmiOKfRw9TE+OP5vca/HM26p6ZXhxio7tzOI49v/BvzFSEpPONlz+ynjJKOdpM8IZWlWe6xU8KBdRBXb+0GmB08FV91Jg+3osH6YQeuonXigr5emhRLLiGePiVXKKPSKXe5WS47Z2lPoPnCV30c2QVtYyVIUvvX3J5EujTuuI3JmiPXsymO+IyRYzWJDp6nHue9Tu0fHyuJFBrjahjH8mW+guPDOIuDKe40jEmOZA4JTtnrBdTSl8jIDwzJ7DpfDw01QOEgEbWQ6OHE62PWIF6PAJwSJwxw+TqyL2FoAr92R+7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lIPbGxUBOEImxVCZhZOQHsc6Rp3lMg/SywUmYbTisDM=;
- b=bxhPaxLdqwE/CKt4YADaOGJ6ObJ3yK9OIZBbrFBXWRriIXtFCtZKtWN3U3+pzRBeiVOlpVJeG3uyuxkGinm/o8BnM4w5RXwpkaAXp//E/ldOIBgyIcI6TaVXn5TSG5VM16H1d0y/Ty5T0pRAjWzyc4tooKF+WzzTlU8r9VydzhwSQ0zu7dV8uWqx52KVQTsUErlv4tUhJBdmPYfcC0XFbwZt7J6aFG6a1/g+iow48VQH+7bPV316DLuNTqrBfijJP9urcbrX2D5vuz4W3bT4pTRlmDQTiHN8EbDDK1PPMMU+cm7iRAgjLNmo9X4u7ikC7cGLdoAERlPgCufpBtWgwQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lIPbGxUBOEImxVCZhZOQHsc6Rp3lMg/SywUmYbTisDM=;
- b=XM0r9QuL5iIAg1P/G/nxRwGISbBF1vHKMP/TCEfUohWyRG/77F+WZ/bXTdzf6Jc3jjn3atIz9js05vyR56iv7+122tyM/4DEEuTtqP0v9T2sjsO+PXMcAbsurNUqFWgV44HC+TfYqIuuY323L9C3C1ut41F0womjXh4kmeWgfeM=
-Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
- by CH2PR10MB4327.namprd10.prod.outlook.com (2603:10b6:610:7b::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.24; Tue, 12 Aug
- 2025 17:24:53 +0000
-Received: from PH0PR10MB5777.namprd10.prod.outlook.com
- ([fe80::75a8:21cc:f343:f68c]) by PH0PR10MB5777.namprd10.prod.outlook.com
- ([fe80::75a8:21cc:f343:f68c%5]) with mapi id 15.20.9031.012; Tue, 12 Aug 2025
- 17:24:53 +0000
-Date: Tue, 12 Aug 2025 13:24:42 -0400
-From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Andreas Larsson <andreas@gaisler.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>, "H . Peter Anvin" <hpa@zytor.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-        Kees Cook <kees@kernel.org>, David Hildenbrand <david@redhat.com>,
-        Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-        Xu Xin <xu.xin16@zte.com.cn>,
-        Chengming Zhou <chengming.zhou@linux.dev>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        David Rientjes <rientjes@google.com>,
-        Shakeel Butt <shakeel.butt@linux.dev>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Oleg Nesterov <oleg@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
-        Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-        Peter Xu <peterx@redhat.com>, Jann Horn <jannh@google.com>,
-        Pedro Falcato <pfalcato@suse.de>, Matthew Wilcox <willy@infradead.org>,
-        Mateusz Guzik <mjguzik@gmail.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org
-Subject: Re: [PATCH 05/10] mm: convert uprobes to mm_flags_*() accessors
-Message-ID: <yoxxpbxsyyzelu5gyf5zkjgxusecbutujydn4lw2ubvphtlu4z@lxvv4xfde42g>
-Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	"David S . Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	"H . Peter Anvin" <hpa@zytor.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>, 
-	David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
-	Adrian Hunter <adrian.hunter@intel.com>, Kan Liang <kan.liang@linux.intel.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Matthew Wilcox <willy@infradead.org>, 
-	Mateusz Guzik <mjguzik@gmail.com>, linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org
-References: <cover.1755012943.git.lorenzo.stoakes@oracle.com>
- <1d4fe5963904cc0c707da1f53fbfe6471d3eff10.1755012943.git.lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1d4fe5963904cc0c707da1f53fbfe6471d3eff10.1755012943.git.lorenzo.stoakes@oracle.com>
-User-Agent: NeoMutt/20250510
-X-ClientProxiedBy: MW4PR03CA0304.namprd03.prod.outlook.com
- (2603:10b6:303:dd::9) To PH0PR10MB5777.namprd10.prod.outlook.com
- (2603:10b6:510:128::16)
+	bh=ud7dUqIlwNV3774AhutRUNv0cVWIcO2M8Y99MaJZGus=;
+	b=kARPDLfLLbyjx6uZYZccORpLt+wUA10rJhfXpQLd64zcvX6Zujsqt20faagcDasouWi/u+
+	/ZCPR/yJSUGrHK4yMqL564ldBg+mCYLUpzBfAcSjyR8Q0bpt3+BFDIeu8rZj4upNb2s+j2
+	M4Qj+5F+MxU7D5yBxxUDv416qg65108=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qdZLy0K7;
+	spf=pass (imf19.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755019617; a=rsa-sha256;
+	cv=none;
+	b=T6NlK5r5hdNsHxAjS5sfgpaGtnhV6XuMkk2XYCrlTw8SFCjAMcxLtfKCTia9EpgHgL1z4+
+	RFksDjKOMxa8hKje4k8hJuymVAlGmGV+NGZ9MKMDjGXf3964KxMfKtICXrx5VMfE/N2p20
+	wggFwf0MYIQOK/wAbxdjzRy9GF2IblM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 18EA445DCF;
+	Tue, 12 Aug 2025 17:26:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8DC8C4CEF0;
+	Tue, 12 Aug 2025 17:26:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755019616;
+	bh=3+G+Hlu9Vk9eunN31fxV4PS7eTzvIgYXetLB/9sOOwA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qdZLy0K7i9vgcXSgUICwY8FOv2kcDgtA95nkdB2az+5P3mnY8PMt/gm0fLGWNV4ew
+	 qKiFiCEYJZkW2NiH4WRaoN+ycjrlv8uHKfRoU257dRGblX4r1Wpf6WbhUh9+sq1wxj
+	 vVoznPuVwXl/j41iNsQZope6uGa7jCLppaF/p1kNnTImRZgBUNcseM8/VXbrQmKSdu
+	 aPn6BkWuUpVJ9IMabBUEZwBzFPx4fwHOFGQkf/AS/VLGlMKxcSCwAy6pR/NVRUU+CP
+	 JW6GPzZ02Exi3LfxSiFmgiiGjRtiUB3vrbv7q2BBJVGVVmxorC/wDPRhJhStqZKCiJ
+	 pLTgF/Sx1YNyQ==
+Date: Tue, 12 Aug 2025 10:26:55 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Cc: Michal Hocko <mhocko@suse.com>, Theodore Ts'o <tytso@mit.edu>,
+	Jan Kara <jack@suse.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, Ingo Molnar <mingo@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	len brown <len.brown@intel.com>, pavel machek <pavel@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Nico Pache <npache@redhat.com>, xu xin <xu.xin16@zte.com.cn>,
+	wangfushuai <wangfushuai@baidu.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Jeff Layton <jlayton@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+	Adrian Ratiu <adrian.ratiu@collabora.com>, linux-pm@vger.kernel.org,
+	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-ext4@vger.kernel.org
+Subject: Re: [RFC PATCH v1 0/9] freezer: Introduce freeze priority model to
+ address process dependency issues
+Message-ID: <20250812172655.GF7938@frogsfrogsfrogs>
+References: <20250807121418.139765-1-zhangzihuan@kylinos.cn>
+ <aJSpTpB9_jijiO6m@tiehlicka>
+ <4c46250f-eb0f-4e12-8951-89431c195b46@kylinos.cn>
+ <aJWglTo1xpXXEqEM@tiehlicka>
+ <ba9c23c4-cd95-4dba-9359-61565195d7be@kylinos.cn>
+ <aJW8NLPxGOOkyCfB@tiehlicka>
+ <09df0911-9421-40af-8296-de1383be1c58@kylinos.cn>
+ <aJnM32xKq0FOWBzw@tiehlicka>
+ <d86a9883-9d2e-4bb2-a93d-0d95b4a60e5f@kylinos.cn>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|CH2PR10MB4327:EE_
-X-MS-Office365-Filtering-Correlation-Id: 77604366-2d37-40d1-7ee7-08ddd9c52614
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?dcDdbHyIIAsSnGzm/h+eJjuR75LCS38xUe9D7g4CYcLR2nUnajb5W//fzob7?=
- =?us-ascii?Q?xAB6EZXkAKjaskIUrpA54tmOvwYVaK5izwbG+gvAcys0WQtPg2h52yWMwqkR?=
- =?us-ascii?Q?3t4yQsDM0NMkDFnSRkxcKFcm0ta2ZCLr8WV1kBCCm8DV3KNV37a+cxWegadf?=
- =?us-ascii?Q?Kd4fRPFRLZyTD73D6RwUn6P5uYadF2AIw+Uy+fcEtH/uTtD13kpQYW2BNp9M?=
- =?us-ascii?Q?U8611/He+AvBpVsof+JOBERBzYWLmmUY/ERjb3HJOff8A5oTGJgiEdTx8ALi?=
- =?us-ascii?Q?kmuwIQHxviP5r/KHKXMr9sdnCNFBkQqw78WnJtTHvNmtwJ8MG+ztG2wKYzkx?=
- =?us-ascii?Q?IxYY7YXZ7IZrpkiSpYSCc6/cvSzSORnK22NrFtNbASHY8c9lZRmo0lHoTNkL?=
- =?us-ascii?Q?H7MuoNGmwINRbRaolwb8wbfu8M57VlhPoSG3pVrqNypDlqc57Epm4Vjmfe0F?=
- =?us-ascii?Q?vHJUklpm+Vbedw1qkHx9qyVRNBxecifnWm5ladJugDxx3k50RVaIgHuUfb2Q?=
- =?us-ascii?Q?1faeZj20B0Tzszwatc63Oi1+AZDKCeTHFsQ6zU5y1ZKfq4QCIJHHpW1X523h?=
- =?us-ascii?Q?3WHYSSlnpILJPmfRqqwSAiZlPCyyKeTVW3wsDK1FreW/EHXJAvNTdMFQr1IB?=
- =?us-ascii?Q?TLfp4kDrW2iLHPRUvNmKEQ6O6muP92JwIzvg9U98DErHMTLICrz+aVjJu6V7?=
- =?us-ascii?Q?kKhLQ2smlP68PWzLu0UzOQb6EX+gGqKrj7RcM/QXCTMzGne+P2v/fHuSTPeX?=
- =?us-ascii?Q?vPPduBYovw0Ro1Bf0hyw5qsaakDJuauVFMAGMLEQ6g+QAFik/6gYPwKSmPaG?=
- =?us-ascii?Q?zR5OC8oHrLK/XTSF+nxkl5kE5g5cv6y/Ycj2OPm8g56G+5Gt5WPjhPpupgEo?=
- =?us-ascii?Q?tKgdOEeutitW/ungLILLSFfR6aGHUhz9uNIPX3Hfg3krxXfX/r5gjBYBtqNi?=
- =?us-ascii?Q?a+UnAp2PwlqDuvR+kj3nLZ1pBxvDueipi4UielZKVsd/OTZKLYGBGsDlTPeV?=
- =?us-ascii?Q?0ABUr7eIXhFasJShqEHvsMOYavHhgyQ7/Kq0jTDc6OArOC1hXnpMsDG5wlw2?=
- =?us-ascii?Q?uR3qPzxUD4RMzZLQXBvuXM8UV9V4JvL0LYnJGKqJld3CUxcycy7hWzDA2Zlg?=
- =?us-ascii?Q?j8pecOUIExv2YtArv2jGh8usPfTVercJH+J0+drj1FtFrs5hG6fc0LyDZJ2L?=
- =?us-ascii?Q?L4FUXpNQOopdmdwTQzChIvU/4VUx9XiklDbA5kwBNHN9Rkmsu0+uX1AMyDyb?=
- =?us-ascii?Q?bou36lcTNcyLjjxBIzvOvKFVcgFsxWbW44AZl7T7DL1vOe2/rb2UPhnrp45Y?=
- =?us-ascii?Q?pdC0NX75wl3cC1n5dtPM0jwDUPf1l2pUknU8wvpnN/yPQW2QEbXweKQsP1e9?=
- =?us-ascii?Q?ky9C4ru49Y/x+N6CtF2GZYXDxu1jkHmsZDY+/oDL80kCc52io/qSyobRiTbf?=
- =?us-ascii?Q?k38AjNuH6zI=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?lHL8gGH7S6jZT1XBjhJTcHLN9Cw1w5v5sYvrS1t4sz1NlX3I5Nw9eBVdNujT?=
- =?us-ascii?Q?U1rzU6hPYhoMhV/SFFo17k/yqWugf0N5pWYolHLLLDxp1nr8VUr43fv3yI/H?=
- =?us-ascii?Q?WTjmDVXOl6ETH/l0SsUKixUcs65pVg39Xk8aWj82N5jYcqZqTItX0UcqEbvJ?=
- =?us-ascii?Q?Fm1sYCE+ygDRqtOoQNHgBEQQAen3adSyf8txubL9YKkpPij+2CN18/FmN1fl?=
- =?us-ascii?Q?rT4Od4CQYnrMA2/uYTtB2cFjLA5H0uhK4y+mvJp7oWTHCsjK0EUp7/qwVN7j?=
- =?us-ascii?Q?D8KoeRN2MuvoE3c+v4ZTW76YLSux1VWPUfH98RnJBcHI4krQQLhmn911fyNn?=
- =?us-ascii?Q?sTEYwPWgAfuklojssKHzqUqLkV/JeP21LB2DhmyTO8p3OUOXiiCNHLBDsMbB?=
- =?us-ascii?Q?WsDa1YVJZOLQFE8hYOsTsqgN+Gm5Wt7bLN7er1qvAITTYoxHcUzNmuknsjEc?=
- =?us-ascii?Q?Li6pHPBRFtN34PjKvMFjWVcKtX3JsE9mfU6x6BX4o9aPrxSjvfIQ3JAucgHo?=
- =?us-ascii?Q?XwziV9yr74T7OASSWYFHg+l2CsmQIachry7M7m5Q4CBe7PcJookQtm4Ow1Zi?=
- =?us-ascii?Q?0SfNCbVtoGgrXLQI9IWLSw0M/OPZH7h13rd/EDmiDW8Eg3ZLmJobkevDHKCJ?=
- =?us-ascii?Q?tSUkY5ekYc4EJ6QwMyOGwA8fAKjCVFCwY66UuN61XOhhfaDMGDijNXkMVgv/?=
- =?us-ascii?Q?BVdizGzcTSNC+piaCnkzC8LGP0OkV/bqEtBLHX0oHOTwITQ0dfTGcFCsdsqU?=
- =?us-ascii?Q?ZrzQDL9zhYy5IuINzaYXiBsEC0/aop/+jriRX7k+uezRQbfKjsbgt/iXVl+F?=
- =?us-ascii?Q?oULn8OtcLsdaotSvUKE7h4xpZaBpdw3+F3HfHag28rE0slYml3Y9AR93ixRV?=
- =?us-ascii?Q?brjZLDMml08wqA76jZuZZSufMhiwu6vneRQURUdjp6pr0YzClLP+FUychOXD?=
- =?us-ascii?Q?BLMlI9FbO7uBGf7ijQRvYD2wKDNIKPlxZ5aCfs9RJyWmp5eEk88zLtccLOb5?=
- =?us-ascii?Q?8nWgQ1s1R3/XG2EMUjMLeyYuIgM30gls/d5ZNKS+3XwC4k1zsjWi4+HuBC6j?=
- =?us-ascii?Q?5x44B5sHRAPxTaQWT1w+zUNxa5r9tLyQrqb0mt3Hs6Fmz2jMYUhnkDTgJcqv?=
- =?us-ascii?Q?yCvhl62KVgOwet7kIY/Kby6YpxPfw0zEPwTS2qWKh3iehoxetZY33IBgA1xm?=
- =?us-ascii?Q?JaOLzJsMaasZ/PE+jUi1V4/ljNHGXGQoRMcKOQekA67A9AYpw08OEG6Rrux9?=
- =?us-ascii?Q?Gmu3qJtmnkx+05MyExz4/G5BqbJ/9HrusnOyw8dhx4PNIC/tHKoCt7EfuE1W?=
- =?us-ascii?Q?aUcTsLG+Y6MV7vDqCFPebl4QKdlyJwKwohYKJF2Hom+TReFsqhK0UM+xQdGe?=
- =?us-ascii?Q?fKdHVGEPEBMgDKEKOyLEZtjRGew66RWI1wZuzMBoW4pAQrYQqcLFES9VUxiL?=
- =?us-ascii?Q?eIusoJcCECI1lDSrZGpp1KBIt/JkmM6XRZZ1c90BRM0K3NrI0edmNGXXycIw?=
- =?us-ascii?Q?Nf6Mx9N2o7DIa59EbVB5gzGdcLUbMi6mL2+Nn4ltuFqDbr39boiyfBlfhPvG?=
- =?us-ascii?Q?gq1n1vkrN5k/NoM/E5ypQY0ZScloBzWegPjy6lHH?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	CEs/ScZaPxQFEeMAtfBSdNPD/hrlv4ChivtC6MMk+mYGzVa00rbswyj+SoJLLFC+TRCOgiNpXdSmfgIvRPODAaNz2hf+yY101PcC9y5O1rcua2qZSBG0qvzk0CqEaxCTJmcmzRPb8edubLzBUbGSc+kerlc/PhhaDEZuv559fBFqeganKmrsecICAr7pwn/4HykaZQ7/a/kRzsOxfcafSU1T8lX6DP7r5UJ5hOWdizpJuGOkTEDuMJbTNpdqNmYDg892RF296fPrTu7FHcou1xncAMTkdaNJv+ENDx5QP17OXPZpyYvHYJlnrhpWOFmHdSWbg6UZzOLMkEDV24kAXYPsPYa5MqNfrV//iRcvZjV6OXi8W0OZ0X/npniqRlKJ1ZuLoXd6WPowsrRAlKCsK1itn7UYRkwHaxtFJn4bMUwQkK2A4LFBemAH4IQIgRaAdBsrIDhJTcBdm/Ujtt6cVvstEicBMwixE5jk94i/D0WBh5Fdb6FtU+YME2m+eOQNoCm5fYWgcdTTvGJT1xLNFdtbjz4gc2OlOujKcTgQFKnPRFj4QFtlCtnZcL9J6laxcaMUeoiz8F0y6nRtCNTczq/6Q3f+t7Yj+XUVLTU0aR4=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 77604366-2d37-40d1-7ee7-08ddd9c52614
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2025 17:24:52.9432
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AWF+I9UY14XXI1RHXCSvJ0FAWtu3Wz9ueI0kP3aal3/mb5+Z5WEqcLKdytA3fZjP0RXBHTlKQVupjlb/sp/HAw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR10MB4327
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-12_07,2025-08-11_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 phishscore=0
- adultscore=0 mlxscore=0 bulkscore=0 spamscore=0 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2507300000 definitions=main-2508120167
-X-Proofpoint-ORIG-GUID: JWcqFFaZvtXg5wKXKd2YGnmFVGgAxk4Y
-X-Authority-Analysis: v=2.4 cv=WecMa1hX c=1 sm=1 tr=0 ts=689b78e9 cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=yPCof4ZbAAAA:8 a=cl4-EDHQmaQnC0XNiMEA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: JWcqFFaZvtXg5wKXKd2YGnmFVGgAxk4Y
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDE2NiBTYWx0ZWRfX2TPDWMwehnMX
- bKrMnc4uNMjk46JYwQF8BOqruwOi0Bxc3N1GL9sTEAkPQ0akPCl4TfPY+HBA8eGg/V4sSdseXgk
- STyFXl0PT0jeSK3Z27uAeGaSaEDGUFrSmbyBl28z+qGGBmiE1wF0fD/HyjCwCd2/HrdaRmvHhDk
- mEeil4f/8OUilcaYPK9804TbI0NWONlaTvEOEat9wZJJWFeKyaWRyRYFXVNoIfXjuxihnDQOBfe
- ToUgyokZ3fv8uGnAgmc37MYilDeTyrzABNsh0gpw6qT6FuCdjjnMS7p8LSgRd6It7OBy0CdBROQ
- H4yUvdJ/9awXCDLAtinaJjJ3d48w+22vfo3OcWMWj0dYI30TuteIF+sLOEkAC26ye2m01JyZlJ6
- weOu+obaCusa0Xl8B9yfHSFxinDDEVgUcXGnhyKzRO8ngjCEY/lAjompPPM2cGnxswU/fZ26
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d86a9883-9d2e-4bb2-a93d-0d95b4a60e5f@kylinos.cn>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 97F7A1A0003
+X-Stat-Signature: nbwuhtabnz89puqanytjpeouc1s6zeor
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 08D70C0011
-X-Stat-Signature: b66p6ym4tapw4qnpp3sd38p5988irxkm
-X-HE-Tag: 1755019522-22335
-X-HE-Meta: U2FsdGVkX1+BoSvUi1vwFUbogIDNSOWU8uMOdP6sA2/q9QIVrd6HBw5C3PV1d7WI8pzwGweWARwhm7CzFq/krhfG3MMprrS4kFL98GrTqO19hYY6bU8O6fjSAOKbN74AKPaK4KZs8Px9VFnnwNiKkXUm2DSc6EVc5hnavcbiHZjAPgneY/L4eM4T7vdcRFBNMCLnXGY7MTgca6XKJZc+0t8/WDbVabV0EnzcwOfVBh55nxbAbgq1z9UNdUNDPENscHnTOQLCesJLc2zQq9YcvPLd395EKNlitbYTjq2tp9skVVFdmay0VzsbkfFWa0OK7HUGovD1tgKyeVnBmqsIWAZ6rjxwSuJeLPdtzlNuJ3eOMnqbCNku0LC/w7/vB+pXIeikMr/lw6gZODOfz1kpKaqGHge6H1Tx19SEHtwVgxysBYhon1RFKzVmqbFag8BHLZHljujTS7YA9AP/Dj66yoIx98clUS60eroUzz4BGpysLOtShi/WxY5zfPTjY8lRlm0VJIQSaVkXG8AHgrLMdtC4CLlXpHabyfsZV7rW500DMtS77S+LhvByKIz4t69tr98R3gB9U3bVPFe79jbzqAOz299x1azMehBb9Vn6EWmACpcUgIjiW5fshEQEARtgieRA1uRhm/I3z/HV0nyeCPhLONwWaoPsb+9jHgE+Ngi2k32sCORGSsS6uzhxvhevcpMtfmodN6J0UGV/avB/Kt3oRg+pkLZ9L1lUuvvZ8q5XWvLIXEocOpmC06642Q0SQlLlM0uNY/cBieq21Xmmv32KY1zTYeKFs+Rwngnm5Hu6/WqLvNjjnoZuChY3E0Ukaolykl3jrFI73VncGPi0OVIGaEJo7RkacrfVvPy+60pGYT9APZdSk6BkyiH5jA29MViZD2KFA4agQhoQ1HlOwMuF625VXHeLRKA4/mRqja3NxRvA/ezIj6kDnkMlCTsl5GHN83LXQC0tevuAn9X
- Jfa2WZdc
- 8e1oPul1sHQKRZ4ukuTpDajBKrdWUVVnAQPQVjOW+xbsKeoaHJTQznMHvMOK5OsrHqT6Mv00cxHUcUEDwUoTUYglTV1/ez5FUq1Pz+bsY0Rxr5efweSqlqUjzxZDg+LdXamL2MfzO4tEUxFMALvIEmyPTqVtR2NR+VzDDRgxJQzYBhNcZHlWelgY0BLZKGGt5EtYTvZ3ZnQBYbuvHjHxYJtN7e5tiiGp6JZE9lnHq7Bv7eZoPt7/dfB43iBtfkdNJa92AxyaCV8GN5ivBd0RHYVr0zvic4OmggZU1uaQdg5Kgzx6aSSH8zJNZ/E/EjBLDYk33j6OYqUeTcv+GdZcTpcMGeRKwtTlp5ZXQPzGudoxBLygyemCNfPyLI7Lmwzucgr6awV7Inn5NqTlYKa7dQmmF+iEXMa3H/nj0NYdKn50mNcfEjFOwCBIvxNVnmN32u/LxXaoukMjTteXOEDD11seS2uxhu8CmFcUcXNsWfaD55c0DFYeT38Kl3YrD2RzkWgQth42kefJClXo5GSroFpvvtqs15QFdGjx/rc196k+oymMfjWuwZBa5CZMTx4ZzYZLnt3Ch4BBTvzGA3FpnxWItqwY5x/fDtqNhjMwSQ19L0t4ly3yrAEu+0hU6YKbxV8VF1q78FPHAXbCWSoPGGjCLibX0V+5DG7AzaE53WXpOMd04It4wk5pb3EF7MyecDZRwY5KPec9N4wLj5q7UTIZa9BApTy6WVMUlnSKZvsJv2zYEKejkJ1znCqq3dN8nISUVFfHE8SrRbEa50agMCt09wnaS1Ie/bskp
+X-HE-Tag: 1755019617-998084
+X-HE-Meta: U2FsdGVkX18CEfHJT4wkZaz2+k8C2KQ9ZMrclVArpoqBn2tJyrAoXyc0swoAazPNGYtDq/VImzYXXl74kXxV+I7tTthZKxsDituIIGfhXoaiMbrGnmGlV8mZMzRcx+T66M9axCpL6/DdIiFNJC8iuSDN6bbwIN62PRBlyd7A1OMGUt+enVRYJBVgRvchkQqO8hfy5iCguh7WeObNCTt81LrTtUKCh4fpAI8NZCJoM62qPW9IPeRDtF/O4PxQTW1CHMfqz4HMydn2/78wZSRioC5ijNz+3xtpx9Oyo1qkDUnKnsfIqmx1WZS3MG8ZBJVyhjg9gVodm6Aewsr3UUHG3xnIUWhxb5Q4F6EzkkTVdHLOvsfmbu2NBDsiSNB7/Ytb4VqV2vVgnjvAw3KOVmwB5oUTaOk5aMscEGvBVTMJ0OE6sATNO4jtGmiZnl56/CnMfqjz1Z0HPZluJSEqKw5RypVd6JLIuLV4EtNH1s7vcqFNRpL0Vmie3FQETvBu7I0g0E2qy83HekMYW6v/fSMttsclYWhVIu8UurPBxSjexRWfs8NeMbCzhhvuOmmHweClRRu/bqBbz8OBoUmi7HCAC3NH1NLgk8IaVogAf2b6CQrHzyMCXqh5f4Taryh5xb3ODA8nsKq8PmHUwOhyU6v6jgXhwQl3EevUxjwgqRtiUghcL1E4Eb1BY+38GCAK1V2YSp9sKfeXSLEmAXn+04Dxx3a7ZczdYMyDiGoJBEkx7MHyUoBp8O3J3R41T2Ya1/gY/uUZCCb0/BBkd6L5iBNrYrO/LkW8qlPT7AsHzmyTwuZQRr6hgVBs0qtI28eURp8i57cZ4SQ44nhsFyiwMeXAwwn70UzR1NBXMm3f+x8tHr6Vt0SWPOeyQVoQmLUd1Id2Zu+TBDJjHW5ib8rEu3N7+Z0nZBjdiQ2CjYXttQH19zwlE2JpjltOjrih4/OpDHYCdZDqBkfzTFeqQ0RFfET
+ KTsdqLu0
+ mfZMqeSVuRPgOTCmMR1Mx4XBxZ2hjcLHgsAOOCivYi+GkT15bT5M5m1HbB9jSuWzLK4l1YVIJmmTKt0mHMP2krYKms9UhwmESBm2BMB6Lg1ZZmV3wSurvXX3iUhZPMWlK99I1BkIcPMlovj89VNsJVaz6CwRf8eD25okbfzzvufiGcBQ6/fwG7aTwSr2gmW9Zy2OkZ/O11casU23kiuX5us/hd8ESwNaiUvkvh8vFwhQYZzfwWy6/5AeycSwOYy/IGeutXu7l1A5Eln2toftTHUB0rA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -305,130 +128,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-* Lorenzo Stoakes <lorenzo.stoakes@oracle.com> [250812 11:47]:
-> As part of the effort to move to mm->flags becoming a bitmap field, convert
-> existing users to making use of the mm_flags_*() accessors which will, when
-> the conversion is complete, be the only means of accessing mm_struct flags.
+On Tue, Aug 12, 2025 at 01:57:49PM +0800, Zihuan Zhang wrote:
+> Hi all,
 > 
-> No functional change intended.
+> We encountered an issue where the number of freeze retries increased due to
+> processes stuck in D state. The logs point to jbd2-related activity.
 > 
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> log1:
+> 
+> 6616.650482] task:ThreadPoolForeg state:D stack:0     pid:262026
+> tgid:4065  ppid:2490   task_flags:0x400040 flags:0x00004004
+> [ 6616.650485] Call Trace:
+> [ 6616.650486]  <TASK>
+> [ 6616.650489]  __schedule+0x532/0xea0
+> [ 6616.650494]  schedule+0x27/0x80
+> [ 6616.650496]  jbd2_log_wait_commit+0xa6/0x120
+> [ 6616.650499]  ? __pfx_autoremove_wake_function+0x10/0x10
+> [ 6616.650502]  ext4_sync_file+0x1ba/0x380
+> [ 6616.650505]  do_fsync+0x3b/0x80
+> 
+> log2:
+> 
+> [  631.206315] jdb2_log_wait_log_commit  completed (elapsed 0.002 seconds)
+> [  631.215325] jdb2_log_wait_log_commit  completed (elapsed 0.001 seconds)
+> [  631.240704] jdb2_log_wait_log_commit  completed (elapsed 0.386 seconds)
+> [  631.262167] Filesystems sync: 0.424 seconds
+> [  631.262821] Freezing user space processes
+> [  631.263839] freeze round: 1, task to freeze: 852
+> [  631.265128] freeze round: 2, task to freeze: 2
+> [  631.267039] freeze round: 3, task to freeze: 2
+> [  631.271176] freeze round: 4, task to freeze: 2
+> [  631.279160] freeze round: 5, task to freeze: 2
+> [  631.287152] freeze round: 6, task to freeze: 2
+> [  631.295346] freeze round: 7, task to freeze: 2
+> [  631.301747] freeze round: 8, task to freeze: 2
+> [  631.309346] freeze round: 9, task to freeze: 2
+> [  631.317353] freeze round: 10, task to freeze: 2
+> [  631.325348] freeze round: 11, task to freeze: 2
+> [  631.333353] freeze round: 12, task to freeze: 2
+> [  631.341358] freeze round: 13, task to freeze: 2
+> [  631.349357] freeze round: 14, task to freeze: 2
+> [  631.357363] freeze round: 15, task to freeze: 2
+> [  631.365361] freeze round: 16, task to freeze: 2
+> [  631.373379] freeze round: 17, task to freeze: 2
+> [  631.381366] freeze round: 18, task to freeze: 2
+> [  631.389365] freeze round: 19, task to freeze: 2
+> [  631.397371] freeze round: 20, task to freeze: 2
+> [  631.405373] freeze round: 21, task to freeze: 2
+> [  631.413373] freeze round: 22, task to freeze: 2
+> [  631.421392] freeze round: 23, task to freeze: 1
+> [  631.429948] freeze round: 24, task to freeze: 1
+> [  631.438295] freeze round: 25, task to freeze: 1
+> [  631.444546] jdb2_log_wait_log_commit  completed (elapsed 0.249 seconds)
+> [  631.446387] freeze round: 26, task to freeze: 0
+> [  631.446390] Freezing user space processes completed (elapsed 0.183
+> seconds)
+> [  631.446392] OOM killer disabled.
+> [  631.446393] Freezing remaining freezable tasks
+> [  631.446656] freeze round: 1, task to freeze: 4
+> [  631.447976] freeze round: 2, task to freeze: 0
+> [  631.447978] Freezing remaining freezable tasks completed (elapsed 0.001
+> seconds)
+> [  631.447980] PM: suspend debug: Waiting for 1 second(s).
+> [  632.450858] OOM killer enabled.
+> [  632.450859] Restarting tasks: Starting
+> [  632.453140] Restarting tasks: Done
+> [  632.453173] random: crng reseeded on system resumption
+> [  632.453370] PM: suspend exit
+> [  632.462799] jdb2_log_wait_log_commit  completed (elapsed 0.000 seconds)
+> [  632.466114] jdb2_log_wait_log_commit  completed (elapsed 0.001 seconds)
+> 
+> This is the reason:
+> 
+> [  631.444546] jdb2_log_wait_log_commit  completed (elapsed 0.249 seconds)
+> 
+> 
+> During freezing, user processes executing jbd2_log_wait_commit enter D state
+> because this function calls wait_event and can take tens of milliseconds to
+> complete. This long execution time, coupled with possible competition with
+> the freezer, causes repeated freeze retries.
+> 
+> While we understand that jbd2 is a freezable kernel thread, we would like to
+> know if there is a way to freeze it earlier or freeze some critical
+> processes proactively to reduce this contention.
 
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Freeze the filesystem before you start freezing kthreads?  That should
+quiesce the jbd2 workers and pause anyone trying to write to the fs.
+Maybe the missing piece here is the device model not knowing how to call
+bdev_freeze prior to a suspend?
 
-> ---
->  kernel/events/uprobes.c | 32 ++++++++++++++++----------------
->  1 file changed, 16 insertions(+), 16 deletions(-)
+That said, I think that doesn't 100% work for XFS because it has
+kworkers for metadata buffer read completions, and freezes don't affect
+read operations...
+
+(just my clueless 2c)
+
+--D
+
+> Thanks for your input and suggestions.
 > 
-> diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-> index 7ca1940607bd..31a12b60055f 100644
-> --- a/kernel/events/uprobes.c
-> +++ b/kernel/events/uprobes.c
-> @@ -1153,15 +1153,15 @@ static int install_breakpoint(struct uprobe *uprobe, struct vm_area_struct *vma,
->  	 * set MMF_HAS_UPROBES in advance for uprobe_pre_sstep_notifier(),
->  	 * the task can hit this breakpoint right after __replace_page().
->  	 */
-> -	first_uprobe = !test_bit(MMF_HAS_UPROBES, &mm->flags);
-> +	first_uprobe = !mm_flags_test(MMF_HAS_UPROBES, mm);
->  	if (first_uprobe)
-> -		set_bit(MMF_HAS_UPROBES, &mm->flags);
-> +		mm_flags_set(MMF_HAS_UPROBES, mm);
->  
->  	ret = set_swbp(&uprobe->arch, vma, vaddr);
->  	if (!ret)
-> -		clear_bit(MMF_RECALC_UPROBES, &mm->flags);
-> +		mm_flags_clear(MMF_RECALC_UPROBES, mm);
->  	else if (first_uprobe)
-> -		clear_bit(MMF_HAS_UPROBES, &mm->flags);
-> +		mm_flags_clear(MMF_HAS_UPROBES, mm);
->  
->  	return ret;
->  }
-> @@ -1171,7 +1171,7 @@ static int remove_breakpoint(struct uprobe *uprobe, struct vm_area_struct *vma,
->  {
->  	struct mm_struct *mm = vma->vm_mm;
->  
-> -	set_bit(MMF_RECALC_UPROBES, &mm->flags);
-> +	mm_flags_set(MMF_RECALC_UPROBES, mm);
->  	return set_orig_insn(&uprobe->arch, vma, vaddr);
->  }
->  
-> @@ -1303,7 +1303,7 @@ register_for_each_vma(struct uprobe *uprobe, struct uprobe_consumer *new)
->  			/* consult only the "caller", new consumer. */
->  			if (consumer_filter(new, mm))
->  				err = install_breakpoint(uprobe, vma, info->vaddr);
-> -		} else if (test_bit(MMF_HAS_UPROBES, &mm->flags)) {
-> +		} else if (mm_flags_test(MMF_HAS_UPROBES, mm)) {
->  			if (!filter_chain(uprobe, mm))
->  				err |= remove_breakpoint(uprobe, vma, info->vaddr);
->  		}
-> @@ -1595,7 +1595,7 @@ int uprobe_mmap(struct vm_area_struct *vma)
->  
->  	if (vma->vm_file &&
->  	    (vma->vm_flags & (VM_WRITE|VM_SHARED)) == VM_WRITE &&
-> -	    test_bit(MMF_HAS_UPROBES, &vma->vm_mm->flags))
-> +	    mm_flags_test(MMF_HAS_UPROBES, vma->vm_mm))
->  		delayed_ref_ctr_inc(vma);
->  
->  	if (!valid_vma(vma, true))
-> @@ -1655,12 +1655,12 @@ void uprobe_munmap(struct vm_area_struct *vma, unsigned long start, unsigned lon
->  	if (!atomic_read(&vma->vm_mm->mm_users)) /* called by mmput() ? */
->  		return;
->  
-> -	if (!test_bit(MMF_HAS_UPROBES, &vma->vm_mm->flags) ||
-> -	     test_bit(MMF_RECALC_UPROBES, &vma->vm_mm->flags))
-> +	if (!mm_flags_test(MMF_HAS_UPROBES, vma->vm_mm) ||
-> +	     mm_flags_test(MMF_RECALC_UPROBES, vma->vm_mm))
->  		return;
->  
->  	if (vma_has_uprobes(vma, start, end))
-> -		set_bit(MMF_RECALC_UPROBES, &vma->vm_mm->flags);
-> +		mm_flags_set(MMF_RECALC_UPROBES, vma->vm_mm);
->  }
->  
->  static vm_fault_t xol_fault(const struct vm_special_mapping *sm,
-> @@ -1823,10 +1823,10 @@ void uprobe_end_dup_mmap(void)
->  
->  void uprobe_dup_mmap(struct mm_struct *oldmm, struct mm_struct *newmm)
->  {
-> -	if (test_bit(MMF_HAS_UPROBES, &oldmm->flags)) {
-> -		set_bit(MMF_HAS_UPROBES, &newmm->flags);
-> +	if (mm_flags_test(MMF_HAS_UPROBES, oldmm)) {
-> +		mm_flags_set(MMF_HAS_UPROBES, newmm);
->  		/* unconditionally, dup_mmap() skips VM_DONTCOPY vmas */
-> -		set_bit(MMF_RECALC_UPROBES, &newmm->flags);
-> +		mm_flags_set(MMF_RECALC_UPROBES, newmm);
->  	}
->  }
->  
-> @@ -2370,7 +2370,7 @@ static void mmf_recalc_uprobes(struct mm_struct *mm)
->  			return;
->  	}
->  
-> -	clear_bit(MMF_HAS_UPROBES, &mm->flags);
-> +	mm_flags_clear(MMF_HAS_UPROBES, mm);
->  }
->  
->  static int is_trap_at_addr(struct mm_struct *mm, unsigned long vaddr)
-> @@ -2468,7 +2468,7 @@ static struct uprobe *find_active_uprobe_rcu(unsigned long bp_vaddr, int *is_swb
->  		*is_swbp = -EFAULT;
->  	}
->  
-> -	if (!uprobe && test_and_clear_bit(MMF_RECALC_UPROBES, &mm->flags))
-> +	if (!uprobe && mm_flags_test_and_clear(MMF_RECALC_UPROBES, mm))
->  		mmf_recalc_uprobes(mm);
->  	mmap_read_unlock(mm);
->  
-> @@ -2818,7 +2818,7 @@ int uprobe_pre_sstep_notifier(struct pt_regs *regs)
->  	if (!current->mm)
->  		return 0;
->  
-> -	if (!test_bit(MMF_HAS_UPROBES, &current->mm->flags) &&
-> +	if (!mm_flags_test(MMF_HAS_UPROBES, current->mm) &&
->  	    (!current->utask || !current->utask->return_instances))
->  		return 0;
->  
-> -- 
-> 2.50.1
+> 在 2025/8/11 18:58, Michal Hocko 写道:
+> > On Mon 11-08-25 17:13:43, Zihuan Zhang wrote:
+> > > 在 2025/8/8 16:58, Michal Hocko 写道:
+> > [...]
+> > > > Also the interface seems to be really coarse grained and it can easily
+> > > > turn out insufficient for other usecases while it is not entirely clear
+> > > > to me how this could be extended for those.
+> > >   We recognize that the current interface is relatively coarse-grained and
+> > > may not be sufficient for all scenarios. The present implementation is a
+> > > basic version.
+> > > 
+> > > Our plan is to introduce a classification-based mechanism that assigns
+> > > different freeze priorities according to process categories. For example,
+> > > filesystem and graphics-related processes will be given higher default
+> > > freeze priority, as they are critical in the freezing workflow. This
+> > > classification approach helps target important processes more precisely.
+> > > 
+> > > However, this requires further testing and refinement before full
+> > > deployment. We believe this incremental, category-based design will make the
+> > > mechanism more effective and adaptable over time while keeping it
+> > > manageable.
+> > Unless there is a clear path for a more extendable interface then
+> > introducing this one is a no-go. We do not want to grow different ways
+> > to establish freezing policies.
+> > 
+> > But much more fundamentally. So far I haven't really seen any argument
+> > why different priorities help with the underlying problem other than the
+> > timing might be slightly different if you change the order of freezing.
+> > This to me sounds like the proposed scheme mostly works around the
+> > problem you are seeing and as such is not a really good candidate to be
+> > merged as a long term solution. Not to mention with a user API that
+> > needs to be maintained for ever.
+> > 
+> > So NAK from me on the interface.
+> > 
+> Thanks for the feedback. I understand your concern that changing the freezer
+> priority order looks like working around the symptom rather than solving the
+> root cause.
+> 
+> Since the last discussion, we have analyzed the D-state processes further
+> and identified that the long wait time is caused by jbd2_log_wait_commit.
+> This wait happens because user tasks call into this function during
+> fsync/fdatasync and it can take tens of milliseconds to complete. When this
+> coincides with the freezer operation, the tasks are stuck in D state and
+> retried multiple times, increasing the total freeze time.
+> 
+> Although we know that jbd2 is a freezable kernel thread, we are exploring
+> whether freezing it earlier — or freezing certain key processes first —
+> could reduce this contention and improve freeze completion time.
+> 
+> 
+> > > > I believe it would be more useful to find sources of those freezer
+> > > > blockers and try to address those. Making more blocked tasks
+> > > > __set_task_frozen compatible sounds like a general improvement in
+> > > > itself.
+> > > we have already identified some causes of D-state tasks, many of which are
+> > > related to the filesystem. On some systems, certain processes frequently
+> > > execute ext4_sync_file, and under contention this can lead to D-state tasks.
+> > Please work with maintainers of those subsystems to find proper
+> > solutions.
+> 
+> We’ve pulled in the jbd2 maintainer to get feedback on whether changing the
+> freeze ordering for jbd2 is safe or if there’s a better approach to avoid
+> the repeated retries caused by this wait.
 > 
 
