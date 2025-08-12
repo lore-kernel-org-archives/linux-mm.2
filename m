@@ -2,87 +2,119 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2AEB3CA0EC4
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 22:17:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 68CE8CA0EC4
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 22:52:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD27C8E0198; Tue, 12 Aug 2025 18:17:48 -0400 (EDT)
+	id AE8A48E0199; Tue, 12 Aug 2025 18:52:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B83268E0196; Tue, 12 Aug 2025 18:17:48 -0400 (EDT)
+	id AC1B28E0196; Tue, 12 Aug 2025 18:52:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A98A68E0198; Tue, 12 Aug 2025 18:17:48 -0400 (EDT)
+	id 9FDCE8E0199; Tue, 12 Aug 2025 18:52:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 98CF78E0196
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 18:17:48 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 138171401AE
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 22:17:48 +0000 (UTC)
-X-FDA: 83769518616.19.1D62F8F
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 5F92F1C000A
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 22:17:46 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=VZPhh9am;
-	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 918B68E0196
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 18:52:36 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 41E801DA0DF
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 22:52:36 +0000 (UTC)
+X-FDA: 83769606312.09.632DA15
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 9B1A0100009
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 22:52:34 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=a+VJflJa;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755037066;
+	s=arc-20220608; t=1755039154;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P5IWbpJwkegh37kivkIDabXoZKQHmlDu9jNN//8eXvQ=;
-	b=ELuYB2WB/+fz0SOrk8frKDIq+bGwJpZSyXy8tZxqkTRk5kiB/WJnfGmEC8pX9OFeNMrgKd
-	99m0H4KCbrEv9InYoC6XmMIOEYHtGEWeSzqyN8HGM7TeBAVYMVt1SRVYEsM8wrshY5G01G
-	76lrdJR8+t+b++LB2EP+yWMTW+CA50A=
+	bh=7JkpdNoByUPSDeXAHBz0N3W7oELZquDkJvgXY/J62Us=;
+	b=8HwdBiJvgKfrfDBxI0II+S7YUQ/lcI8Z3SUy8mD63iebHJepQBw0mrKqSVTvatrHNpaCim
+	crtBYFl2tHxN+vjZAiKwKLh7VTGPi3QOVNZ/awsnoHf256H9PVzbKGJjKqEwdrQGFyHQI2
+	ua11lweamrPj+QQAZyY2O8RoAxBAjLc=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=VZPhh9am;
-	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=a+VJflJa;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755037066; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755039154; a=rsa-sha256;
 	cv=none;
-	b=bW3ope4Rh0aUzu1axB5TBCRPA7PUgjto+OdmEvXpqnhIroHh33NW5Ai9ootcsMVELsA3ef
-	qkH06QVUnHemVnWW0LC8areJMnz9FjUkShnV/4FfedKvuIDxsYwhe5eQklC5nqyn2UBLJY
-	pgpD/EhD6yHEJ1Xp4QdTf/aVcb/ep2Q=
+	b=2TdFP+kbu57dC7FgLBR7i21NMW/mCjMiHFniuI/pvWORPhVuxknsGB677KEUxukRSAgFDu
+	YkhNkVYhw1jCrxDicsOzzIcgAPkiK7wxjB7RtgTVX/M1RDQXVW1nAyR+aCjnP3yOP1gc8K
+	6AG6xXIZBPZ+U9hpd6NvWGsLoUs2HXY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 2AA675C69E6;
-	Tue, 12 Aug 2025 22:17:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38371C4CEF0;
-	Tue, 12 Aug 2025 22:17:44 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 879DEA56E69;
+	Tue, 12 Aug 2025 22:52:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B46C4CEF0;
+	Tue, 12 Aug 2025 22:52:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1755037064;
-	bh=miipKiTqF7JpECaUEluYI41x3HMUaCIGaCjb5/2xIkk=;
+	s=korg; t=1755039153;
+	bh=4QcopLUUVGIVRRCSZ4jv8Sl09V42iH0FB+VA3/a1kZI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=VZPhh9amNgD6bU+DfrwnuclBnrQ/9RE3gflGp5IJCrnEth70N5IVPntS17Hhn6Kj9
-	 j2fTn1iK+41SHXmIYhXgI9vs985Cl3cOMjSk3n+z8wk/nYjDNifiGJLC+H2OnL9lmc
-	 nNW5TFGEtCbnJtyRn4QjdVzPyT0y1+wvZadAEzRA=
-Date: Tue, 12 Aug 2025 15:17:43 -0700
+	b=a+VJflJavF7yIMQioCGtFvNcvBDFfTx45hCKkTusYA2BdnqZ4kWT38UBmlbg+oIZ8
+	 J7h9f7rapCJ5U4FK5B6scoDK/gC4UcmFx7+jCF9mS1b8IzhQgiAFmp5Exg01cPkPBS
+	 9/DB97qAo9nryrBGFF/USiAc3gsuzO/6GNmoq6vM=
+Date: Tue, 12 Aug 2025 15:52:30 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Sang-Heon Jeon <ekffu200098@gmail.com>, honggyu.kim@sk.com,
- damon@lists.linux.dev, linux-mm@kvack.org, Alexandre Ghiti
- <alexghiti@rivosinc.com>
-Subject: Re: [PATCH] selftests/damon: fix selftests by installing drgn
- related script
-Message-Id: <20250812151743.570bde54f31007cf986a2f52@linux-foundation.org>
-In-Reply-To: <20250812175939.57506-1-sj@kernel.org>
-References: <20250812140046.660486-1-ekffu200098@gmail.com>
-	<20250812175939.57506-1-sj@kernel.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer
+ <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Vasily
+ Gorbik <gor@linux.ibm.com>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
+ "David S . Miller" <davem@davemloft.net>, Andreas Larsson
+ <andreas@gaisler.com>, Dave Hansen <dave.hansen@linux.intel.com>, Andy
+ Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Thomas
+ Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav
+ Petkov <bp@alien8.de>, "H . Peter Anvin" <hpa@zytor.com>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara
+ <jack@suse.cz>, Kees Cook <kees@kernel.org>, David Hildenbrand
+ <david@redhat.com>, Zi Yan <ziy@nvidia.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
+ <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+ <baohua@kernel.org>, Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou
+ <chengming.zhou@linux.dev>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, David Rientjes <rientjes@google.com>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa
+ <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, Adrian Hunter
+ <adrian.hunter@intel.com>, Kan Liang <kan.liang@linux.intel.com>, Masami
+ Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, Juri
+ Lelli <juri.lelli@redhat.com>, Vincent Guittot
+ <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel
+ Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Jason
+ Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu
+ <peterx@redhat.com>, Jann Horn <jannh@google.com>, Pedro Falcato
+ <pfalcato@suse.de>, Matthew Wilcox <willy@infradead.org>, Mateusz Guzik
+ <mjguzik@gmail.com>, linux-s390@vger.kernel.org,
+ linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org
+Subject: Re: [PATCH 02/10] mm: convert core mm to mm_flags_*() accessors
+Message-Id: <20250812155230.f955c6470db223bb371ac683@linux-foundation.org>
+In-Reply-To: <1eb2266f4408798a55bda00cb04545a3203aa572.1755012943.git.lorenzo.stoakes@oracle.com>
+References: <cover.1755012943.git.lorenzo.stoakes@oracle.com>
+	<1eb2266f4408798a55bda00cb04545a3203aa572.1755012943.git.lorenzo.stoakes@oracle.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5F92F1C000A
-X-Stat-Signature: edas5uy4srijgx1ibjhoj53t8ddgfctx
+X-Rspamd-Queue-Id: 9B1A0100009
+X-Stat-Signature: 8qidsakkrn9gsjy5ecmqmz91gzb1d63a
 X-Rspam-User: 
-X-HE-Tag: 1755037066-44428
-X-HE-Meta: U2FsdGVkX1+Ea/gVaN23UsbWPcZeVLDZwSozYWXboD8qFzlD/YGV4aMxCN3CPCZaNZyGQaOlpz72ndnd60zZCYoNrEooKHgvHRqJ7D1bqgrnd6uzO3bLYYMnJDp4j++h38vF5gn7O5I+WzvowrvZA6HXB1eTJ+1yQ2E+R1njcTpXeA51MHHR5j7UymXfyjDjP/hHW6ztloKBUffl6eQ71wjl/YMrL09R1It21rIG8ekXwqb6xgIfweCQ1dKzGsChY2dXchn+LOeUbgi/XmrcxJ202yxeBD2KvnQ57BQH6Q4I+gy5QDTVgFqGXxOoZ9PwcnYe/ZPT4gtup+vFRAniMz07xJQudj8UpqivVkmLu4vdLVeS61AMpNgzFMXRg6t5UPsW/y4QOVOGCG7JbRPK3gtNTg/zajhTGhCXR0blwg5+jk5c+nhulRShGKXA3w8llLMVN90qEpxyxysC85HngtW8D8bhVC8JmerZeqsfAi8GfkSt0qDw7OYaurrNnpezA91QO9aH/4cHQYQvu3+sw0U6eRhzVjycY2cD1+kIoKC4TgL6o7RcBTHvd9bIYYjfYB82xVD6v9NGRxkQlxzymvJcAsRGFSwVxZPnlkCSAahwrboaMVPj0krGCIgTfww8bSbUexHOiSE/WP7bgL4ulMLX4h/4j2/1joa4HzrStrCo33vuddwJjQRvMunGr3+92kD6MV+/FcZvRqNtn2uhkVOmP9E2JxpKgnxMiIvt/fq6X72xeos3COro5k6bYEi9Bzv9T0UtFfayUFQjEpZXH2Fwbyy7NZbOewpJPX55eHoUkLTtj+KgT+oMWxhLHVnLlY0gPvo45ZUcyPZ4Nb5s76o4tzzAoPd+qY5d0YYEMeYo2h20DWeOmGLvEV3E0rC+XF2CHRETN9DjyBaRZPw/FlSUDF3KL+UtzBDXNSctcyENztBJvgzICRSXB/NlZEE8VWhpghUUvabdzXQ5JBc
- QukzLBnz
- 3IfyOHJEZXI3ZnoynlFPtrVGOP5ECCXHEX5d9Sri84p+2cxvY7pNuDYmCDK3XGh9PkitEb4iLY0FiEk/uHuf9jNRVGux/Uu/Y170HTG34UtdZNbzJ7BlriYsXiDUmdzF8+VqEL7M1e52CxEXHpiLIvuNVwwGzhxPohBadgf1oy3PCnlA+GrX7z6UWgPnEC16LAEAtTOH6TTwu9mk0gpnYmYsCCpRD1xZ45m/eMp858b9lNZ9oAt+aY8lx0oco9tN9QkCwJ0hzkxfWvyqRqykgMMYSoQnPqNZsUOHG+iB2PJdCS0BFfe72TkRnV/7XApK0uOTA2Da11t/ezT8T3SKfKf7nWkU6osV6+VYo
+X-HE-Tag: 1755039154-411269
+X-HE-Meta: U2FsdGVkX19E8cLFmChjDpbV9aTP247LkWN3ZwO37WCOh4Gfc2ix7hWwGNebXX5FHXvYOOUjB3AtcRYbNrOUNavzQxqqBwWOBCZHmL1jWb8JFSbTKBwXotPCHhEyd1bWKgFSDnvhEskqqPD8RbdBQTS0T0yMgqoeDvhFmkBXx9lAw/m0NrLADPPDElTTXdy3dAYtx/o+Xa2moTJF5btOSPGk2N82NJr1CZzHE9AxI3zf0Jg1QQBSVJvLaB3yCDyz5hee5K8xwLepFsodN83LX65Obx9Nc78y3rzzSscU3Qa/Ng68HH20MnbogxvAPdZRFxE2iquwsb2K+2DeyZRFLlSF1K06990VTeg407Qtqe1RijsQYwYi2RPxDp8U0MFS134vjp/zShsd5hArBoub+Baapvst2DFhxNy9AYEuFebPfU6NU3zfIWQ6J1aIuGmdkHCwwpRH8RxLhv/GuTX9hcZsp1NMVkODKR6PKjWLbNWBNUjMmLDXS75Pueng36RVkNV7Yd9yihzYQWEafMneoM+xuMqSUzrGlEGXcxv8MKZFS6wb2/AVkDT/saeEKbLV1GTxkKoQTSqIxixeCmmZlzHR5UUWfVEZUma4at40rB9WWndtvp0qwbMLQJXKuhpLQbsSVKOPMPsYZiJNykrVQ9ABMhDVVo2Jd10CsqILAPFdu2oYgG7aeFV0xaHza97iVKQLlNdYAbdKXqIeMC42LCpfBBnH1fRGhWWXlKsketG8YMCIyV2wDnAB9BHK/RChaBjxvKmISVTfFwhz/YPe6Bdp007V4c/p/0xUfZKdUm53EXbffMejL2wkYoXsygJzuhrMqvndlE27IDk2ozKp9RsTKesKcj96Rli6GYjqAAQa1ZbEvB3RMYzegSS2bw4JDGvzKnT6imTo8kkYdHEJXDvnm2p7k2cbqQE6nt5a4CdTbGeUh9uEFFEK1hpxmeNln/MtZ6Tjg8wPmFCMiql
+ BATQRPPx
+ KbgV4bABUXIiGRcXAvQnXe+q+bmFa5/4pYBdBcZrtSCLOXWz6sSgRkmyO1lh0d07jqlDpkZYSRpImEs2r2VE/7KJf4Q8ykFK+pXyzDMz44W6xximeoj+zFt7tNRZFafJ6PQDgCOf4bBf+TUfSVcrjLi3UIFFN6bUaOBN+I30WzOIXICOLeHEyCGrD3wRg4E/oGQxaboQEEtqosML4B2kQo/gIAh13lITGBrrt/i/5snsmZfdT0kUFhE070zVK93RvwT4E/hjoIUdM2ErBJ3+cvjYYI+hWXkFnN8yeBH1Dvv4SHZYB4LGBAZBQbXQ7KzuH3o6y
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,26 +123,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 12 Aug 2025 10:59:39 -0700 SeongJae Park <sj@kernel.org> wrote:
+On Tue, 12 Aug 2025 16:44:11 +0100 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
 
-> On Tue, 12 Aug 2025 23:00:46 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
+> As part of the effort to move to mm->flags becoming a bitmap field, convert
+> existing users to making use of the mm_flags_*() accessors which will, when
+> the conversion is complete, be the only means of accessing mm_struct flags.
 > 
-> > drgn_dump_damon_status is not installed while kselftest setup.
-> > It can breaks other tests which depend on drgn_dump_damon_status.
-> > Install drgn_dump_damon_status files to fix broken test.
+> This will result in the debug output being that of a bitmap output, which
+> will result in a minor change here, but since this is for debug only, this
+> should have no bearing.
 > 
-> This patch conflicts with the similar one from Alexandre Ghiti.  Could you
-> please rebase yours on top of Alexandre's one (and mention the dependency on
-> the comment section under '---' line), unless Andrew resolves the conflict on
-> his own?
-> 
-> > 
-> > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-> > Cc: Alexandre Ghiti <alexghiti@rivosinc.com>
-> 
-> Reviewed-by: SeongJae Park <sj@kernel.org>
+> Otherwise, no functional changes intended.
 
-I'll add
+Code is obviously buggy - you cannot possibly have tested it.
 
-Fixes: f3e8e1e51362 ("selftests/damon: add drgn script for extracting damon status")
+--- a/mm/khugepaged.c~mm-convert-core-mm-to-mm_flags_-accessors-fix
++++ a/mm/khugepaged.c
+@@ -1459,7 +1459,7 @@ static void collect_mm_slot(struct khuge
+ 		/*
+ 		 * Not strictly needed because the mm exited already.
+ 		 *
+-		 * mm_clear(mm, MMF_VM_HUGEPAGE);
++		 * mm_flags_clear(MMF_VM_HUGEPAGE, mm);
+ 		 */
+ 
+ 		/* khugepaged_mm_lock actually not necessary for the below */
+
+there, fixed.
+
+I applied the series to mm-new, thanks.  Emails were suppressed out of
+kindness.
+
 
