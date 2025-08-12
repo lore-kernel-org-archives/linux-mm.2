@@ -2,99 +2,104 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DCDDECA0ED1
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 00:47:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3D451CA0EC4
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 01:30:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0EE6D8E00A7; Mon, 11 Aug 2025 20:47:50 -0400 (EDT)
+	id 91C158E00A8; Mon, 11 Aug 2025 21:30:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C66A8E0045; Mon, 11 Aug 2025 20:47:50 -0400 (EDT)
+	id 89F548E0045; Mon, 11 Aug 2025 21:30:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0036E8E00A7; Mon, 11 Aug 2025 20:47:49 -0400 (EDT)
+	id 6CB208E00AA; Mon, 11 Aug 2025 21:30:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E3B558E0045
-	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 20:47:49 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 832C9562A6
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 00:47:49 +0000 (UTC)
-X-FDA: 83766267858.16.4C2EC2A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id D6753100006
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 00:47:47 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uRIxrjnA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4EB058E00A8
+	for <linux-mm@kvack.org>; Mon, 11 Aug 2025 21:30:19 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A8661562CC
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 01:30:18 +0000 (UTC)
+X-FDA: 83766374916.11.4BB753A
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 2382E180009;
+	Tue, 12 Aug 2025 01:30:13 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JMbfwpsR;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf24.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754962216; a=rsa-sha256;
+	cv=none;
+	b=XZI7n8DVjLbgOEKGm0Cs2GTgp8Wl+lDIHMD04oYfZ8NJt9X5aJWZJdyILLJqdr50FWzmS6
+	nhwksaaJgvasWL9UDKnqS3VA7J9Y75RpOtrDgus+oKgoZiSXk89DBmUDJeEKi3uF0CRdWo
+	TkStAl80MaqnHv/yljZQfeqgmxUOJo8=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JMbfwpsR;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf24.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754959667;
+	s=arc-20220608; t=1754962216;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BDCTmWqkQjWZEj20LtieZUDpWVtK8WiKRsnpVGkHzFQ=;
-	b=2OFRb7a8gU5daty5F1OkQ4VHCcHTQzMkGU6sDJPlfYWUQWRgVFMR/zAHCr/NTL9YUeerpD
-	HwEpRS+CbuNTfnxNNaZUuxS+oGcom5TrASh3ynWyEfrGpOqfo+MKPGbstOTLCtxB0dR/oM
-	vkDMGdL+s13ApwA82scEygRtW4B5QqI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754959667; a=rsa-sha256;
-	cv=none;
-	b=QF1ttoZ8gh77ZH64kmjgVOiusSaStR2T7YcVHv3QdLpb2Zqfsc9j3VDJLRUHYW8wIOOyyj
-	Cxkyz1IPqaceuAWxHQi9tbuglvkEJD1hO8hQGyAhfrxtCz4oDyCnWfsiAsuPG7vDcm7KT2
-	wLTcRP1rWX/eEAiXwW2G2IODY3U3VvA=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uRIxrjnA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 00C0161160;
-	Tue, 12 Aug 2025 00:47:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A91C5C4CEED;
-	Tue, 12 Aug 2025 00:47:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754959666;
-	bh=MiSIs1rnDHHU/+k/Z0JgED1xlZ7cCjxh1VZ0AZ2BDT8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uRIxrjnA3BXLDmoa/+xkrvzFkUSvGstXPnHQMBeyCTbbsPm2yOho/HshYUtjiT3nh
-	 Rp7qhKMW/N4SboRZxJQy8pMaZJihOn+k8pl0p8hoiBVTRYL/fFzcU1DE1lR0R78FxE
-	 8d7FNucqi/vstujZJP2tHn182Wf51rcykaLMck3vrB4kawhydoj/AVOcIIgooT6C3O
-	 80mAEoNAW2Lp0j2ka+qYHnITX0w217G6MAlKyUthaqkkNOdD7F32YjK5GyJl5l8hlW
-	 fcaBRyBfPRlulaFal+WGHFr1iRueER3xzFnbu4rLx+3Xmx/o7BgPaDjb6XdZ8Dbqcb
-	 bllYFPQvP4vkg==
-Message-ID: <33b6c9a3-3165-4ce8-9667-afdbaff2c3ae@kernel.org>
-Date: Tue, 12 Aug 2025 09:45:02 +0900
+	bh=djZxdkbYS5ABjJh5vZ+OSyzqxKEA12clHOn12k1eFBw=;
+	b=SJKuVO02NoQXZUtGdBM92TTLB2/95ZPV75VOkLQNJsu0QLgXAexMhWx3PEUQA2qETPNfgZ
+	kIEMwHsm9fWFQCtDiNdQ6ea9wljHy/W64HlV3B/LzyX/ecMqY80WMnEjQhAdi8G9mYWGEZ
+	tvpiekhjJr/nemEHv9Xbcz+paIVU4OQ=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1754962210; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=djZxdkbYS5ABjJh5vZ+OSyzqxKEA12clHOn12k1eFBw=;
+	b=JMbfwpsRNCi9vQ8K0CdPK0zFsmtjl1OT5ze7/nvcC9uy1+BBNgnJzrXzYo/jsMsVasDPYYjhUbEL4r0yaX89uL9z80p/b5ORZUZIyBKo2n7zC/7pwar7Es6i3EZ6u8anU7cbm5tcI49YJa+A9LIyWz09nPLOifv3+UzTQQDKM9s=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WlYvemQ_1754962181 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 12 Aug 2025 09:30:08 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
+  linuxppc-dev@lists.ozlabs.org,  virtualization@lists.linux.dev,
+  linux-fsdevel@vger.kernel.org,  linux-aio@kvack.org,
+  linux-btrfs@vger.kernel.org,  jfs-discussion@lists.sourceforge.net,
+  Andrew Morton <akpm@linux-foundation.org>,  Madhavan Srinivasan
+ <maddy@linux.ibm.com>,  Michael Ellerman <mpe@ellerman.id.au>,  Nicholas
+ Piggin <npiggin@gmail.com>,  Christophe Leroy
+ <christophe.leroy@csgroup.eu>,  Jerrin Shaji George
+ <jerrin.shaji-george@broadcom.com>,  Arnd Bergmann <arnd@arndb.de>,  Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>,  "Michael S. Tsirkin"
+ <mst@redhat.com>,  Jason Wang <jasowang@redhat.com>,  Xuan Zhuo
+ <xuanzhuo@linux.alibaba.com>,  Eugenio =?utf-8?Q?P=C3=A9rez?=
+ <eperezma@redhat.com>,
+  Alexander Viro <viro@zeniv.linux.org.uk>,  Christian Brauner
+ <brauner@kernel.org>,  Jan Kara <jack@suse.cz>,  Benjamin LaHaise
+ <bcrl@kvack.org>,  Chris Mason <clm@fb.com>,  Josef Bacik
+ <josef@toxicpanda.com>,  David Sterba <dsterba@suse.com>,  Muchun Song
+ <muchun.song@linux.dev>,  Oscar Salvador <osalvador@suse.de>,  Dave
+ Kleikamp <shaggy@kernel.org>,  Zi Yan <ziy@nvidia.com>,  Matthew Brost
+ <matthew.brost@intel.com>,  Joshua Hahn <joshua.hahnjy@gmail.com>,  Rakie
+ Kim <rakie.kim@sk.com>,  Byungchul Park <byungchul@sk.com>,  Gregory Price
+ <gourry@gourry.net>,  Alistair Popple <apopple@nvidia.com>,  Minchan Kim
+ <minchan@kernel.org>,  Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: Re: [PATCH v1 0/2] mm: remove MIGRATEPAGE_*
+In-Reply-To: <20250811143949.1117439-1-david@redhat.com> (David Hildenbrand's
+	message of "Mon, 11 Aug 2025 16:39:46 +0200")
+References: <20250811143949.1117439-1-david@redhat.com>
+Date: Tue, 12 Aug 2025 09:29:40 +0800
+Message-ID: <87bjolgwe3.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION][BISECTED] Unexpected OOM instead of reclaiming
- inactive file pages
-To: Oleksandr Natalenko <oleksandr@natalenko.name>,
- David Rientjes <rientjes@google.com>
-Cc: linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
- Jens Axboe <axboe@kernel.dk>, John Garry <john.g.garry@oracle.com>,
- Christoph Hellwig <hch@lst.de>,
- "Martin K. Petersen" <martin.petersen@oracle.com>, linux-mm@kvack.org,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Shakeel Butt <shakeel.butt@linux.dev>, Qi Zheng
- <zhengqi.arch@bytedance.com>, Michal Hocko <mhocko@kernel.org>,
- David Hildenbrand <david@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Andrew Morton <akpm@linux-foundation.org>
-References: <5905724.LvFx2qVVIh@natalenko.name>
- <199fb020-19ee-89d1-6373-7cc7f5babab8@google.com>
- <15056829.uLZWGnKmhe@natalenko.name>
-From: Damien Le Moal <dlemoal@kernel.org>
-Content-Language: en-US
-Organization: Western Digital Research
-In-Reply-To: <15056829.uLZWGnKmhe@natalenko.name>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: o7csx6u7wizsj8jpx8uunzofpjcgysq9
-X-Rspamd-Queue-Id: D6753100006
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1754959667-564585
-X-HE-Meta: U2FsdGVkX1/lCpAx7l1p/YfdO0/xgwzGh+u5xxls8YNpwDA58GJe+1kEXGVH2TzzFRVskENgh7gM5oj95sbq9zAb/qnqj/WHaCrOHwxh5nTeMpd7LqoszSbf+C2kHQKjONdO6k9yEknWlFAMbzOcNqv3UoLFWqVlpynvY43KCJiGnv03atFEzRTyl9xYX8LQgEkrblOjdm+xMYSlP4raK2xFkxAtQQC6c9KQec9nsVb+A5SIbzb0ubaPtehkSQGzKJHU12SRPQ/H20NT1zj95tmBgCb4W5xA04Go1ZMmXs+a2dFadoDWxw5a3uizKc/cBntihnMpOe6Q2ua3cDQ2OvVGB9ZySL2XBx2eYQpZXA64N59vVtgYo6emO1RVNruE4iRTGmS0kcf1wWW3siAVgj4E17YRYX8stRDqLUGmrUXryTwBuxOOwKYMG8/Y8lt55vnfij7eXvU0eVnHY1YAwfNIUbE3J4SHhoMf60jlfU3CdbqDr6omOHket9DWMSod6uo6wqum6CH3DeSWQSLZTdTtxIHm59pIWAcW7LMiz5NPK63rDcaPsgPI2IWCs+3oObSxNrYyO9eZI8ZVJkFvL4kliOCpmUIk2Cmw74ltqkQ4E37eFPgB7c8eVEa+x44ajtLm4JYLMxUwiQxxxhBBpgCsGWWgUxjPKNrWPCfGYwbNaxzXII2FX//RqQoWhXpygHotJGwmiw+CwyWtBkz0X+NTNhbPU4B59XXiKP6W/dSV3Z58SOxPOYTSoFl0yAGykxPLdvSB2QlSkegUj6QU4QjcrUXPpCBhtqeVr4h1Mz8XEOKHZX3F8uKViGZ7b0fCtjwvQiPtLHUeWWfEbN3eXZF8DuzTs97y34Eu8JNnMqFESKbDlYC+XlNAB9uReoJI9SdDNM9qKGbsqhYhnCTrGjVCNt++68lwYigTaOIHeo860a+n7zf1a5CO1ALm8JPAyJtjVKv94OFJEFTfqI3
- vWQ==
+X-Rspamd-Queue-Id: 2382E180009
+X-Stat-Signature: w97imuaennohb48a3i3in13t1f3ia676
+X-HE-Tag: 1754962213-616428
+X-HE-Meta: U2FsdGVkX1+rvhHEl4AdXkxkm/L0pqGTSvXVOrStddP1JLdoCg23eh3Bj+j8i4/w+RRbSn6wwVGYvvnn8FVRdjTT3kJgIVLNT/LnXIMxh7JDFnRYYS5WsC7vgVadMlj1suh47aDRl5hsCGU6O9nGJ/HRJkfGA/y0YcT10NZU6lZ/VC1MF1qff44lnUn2lw7wB9HMsggZXqE7XJp1vxx0FcOZh5HgseSR0IKSkVAezxk04w4Lni13fa6QYW2QVDQxGOC8PIrkJMAbpSpMD72x330GJUJmrQ1tgSnQksAsNJtxmE3WHirMDCaP+fEqBd85w+KPMY6wGtsf8zOKW05kcjetzPaoOUqC7Uvv3kgIdU9aaBXLceggWYzCdA/9rGHOrpF0u4O5QtiurgHDwM3UC/M0cxhWJKT41zF8m5Bd9GaZ97ZOE32+hsHf9d90roN9oVd2ScsY4z40a6W0vsgvgYRnBujnR3hh2EfA5HkWWUnBhlExXnVEK2T2FsCdLm9Tj5c880SGxHjNRPBVvPFpCisPX3gpwHuyLZ2I10r5M3aVyG9ZP4AMNFMU0rZFVoiyZDye4+w8KzHYcU/237owOgeCZ/63AI0GnVyIEu/XgZh0KB51VArzs2pAeZy4kgvk58yDOgeDddP7tOhZH09ZkoWPxyDHJpHJ5EmjUS23YCLVycLUmbBj/G4AlQgkL17ZA/hKdg7x+zeoQzFqdAJqfs2cyRamA833RrMHfDGViy/fX9jISP51VHlp/ECZpPCs83UiCzP7os50Y1ndq2TgMGpSeQ4nqdtx5HrIGTUU4Mlk9L+9J4oBoFybUiUmz9MEQrlI9tGlA1KTOuYDx+8fNRSSMArJ9PoUzQ96exwYQHfmBH9wwW0vbK5bm/dFb6FgV7nM67j0xdb7x/iNqffhNkqdVY2PCHm6xEynK2qptD047A43Bo6G8LClx/emwBBioZQOtHGyb+MS5rJWbBY
+ oC7ggtqX
+ tYaNBPvx4zQEVDq26De0zu+jlmBWHF5Q4yBeYABdzWJh11PkktH9Zs4WcmTw6m+n5YZ0N2Un+FuE/O8wiK7ld2vOuhlbF5bJa4HCbwl80D5ho0T27Shpvb9ZJqg51YvWLww5jpXHIET/XTqH0kv6TfHfRT2GMn9gO3DQrhIQOSyF4x9n5Hv496gSXkV0S8DnwA6Ihqzjc9uZIv590XK0rZ2drA5uq8cFSR442Ott/NVbc0WbOsc4/Ugnx4XyOpIi3uIy9DSxRz/M6MIIPTkjSNjQVW3Rb095dT7HNeMngfLrUYi9UqxvsE9EpfRNIk0MdLJhSRP5KfVOtBE4Xtxxz1++txMOsE4OKRnP+FNmkdnBJr7I8c0RYFLnpR1f4WonAb69PzOcn6LJO3w0aA5hHMs7qFKF19L2mD5iADXAwMAkAfLaUfMh3X0+2w/ItFTP6PrMYWPViVih3Mwq9UjdQjaSFTaxColOo0xVWoAtqmhm4QQ/Pt4BEcuth5jAqV+MQhINbtRlaT4HE9usFoYHNH5JxwZuGOzPIrP1IwI0qR35OfP9oe5OmYMh07TyuRMw1zipcrZdKXrzgMdZ37tA6JFPUbBW4jYIwpq8dPCUjtSb64LRVos34skAVk0fHYwrgKcncC8Qgfk8l2LpzpXgwjVheUfxE26y5wSbttTPyo1bwkJy7J+qnnQd0q939evL4eTZSycBB2W6v9E5Eu2TzbS9Yile2a9TDGEORqG9NRbc1CxY9KsOWAMe12buPwimmnQrSvvMXDyqN0oEPiT+MzjzntykhI5J3puyprgkkZCZI8N1bZTbaTpcoVPBQ7ID3UhZTQAXttXlk8B1AX95VPgSd89Xr6DaBkR82aufa3n5dxwbl/WkZvfhnvw4QJLwm9M4J5E0dd0fKq7ZB1HoUOR6Slf7bjPQ6WBKI/DqhngM+eIZdIeASE1xMDtfJmfy0zDr5cnP+2YRMPHSkPS4LjiNyKIPw
+ q3X+fz2M
+ kofSPuiC9EOA7p/OE9fs8p/90dy1akkC8sOVve6K2tan4pGOX2VXwbs5ANhHay7M/lNXqX3inTxmMGf19SoLjZhKy++UfklirBn1mRPUsRl2dFzQ0s6eAk2lvtVJsOsUb3Nnru72Lp0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,115 +108,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/12/25 5:42 AM, Oleksandr Natalenko wrote:
-> Hello.
-> 
-> On pondělí 11. srpna 2025 18:06:16, středoevropský letní čas David Rientjes wrote:
->> On Mon, 11 Aug 2025, Oleksandr Natalenko wrote:
->>
->>> Hello Damien.
->>>
->>> I'm fairly confident that the following commit
->>>
->>> 459779d04ae8d block: Improve read ahead size for rotational devices
->>>
->>> caused a regression in my test bench.
->>>
->>> I'm running v6.17-rc1 in a small QEMU VM with virtio-scsi disk. It has got 1 GiB of RAM, so I can saturate it easily causing reclaiming mechanism to kick in.
->>>
->>> If MGLRU is enabled:
->>>
->>> $ echo 1000 | sudo tee /sys/kernel/mm/lru_gen/min_ttl_ms
->>>
->>> then, once page cache builds up, an OOM happens without reclaiming inactive file pages: [1]. Note that inactive_file:506952kB, I'd expect these to be reclaimed instead, like how it happens with v6.16.
->>>
->>> If MGLRU is disabled:
->>>
->>> $ echo 0 | sudo tee /sys/kernel/mm/lru_gen/min_ttl_ms
->>>
->>> then OOM doesn't occur, and things seem to work as usual.
->>>
->>> If MGLRU is enabled, and 459779d04ae8d is reverted on top of v6.17-rc1, the OOM doesn't happen either.
->>>
->>> Could you please check this?
->>>
->>
->> This looks to be an MGLRU policy decision rather than a readahead 
->> regression, correct?
->>
->> Mem-Info:
->> active_anon:388 inactive_anon:5382 isolated_anon:0
->>  active_file:9638 inactive_file:126738 isolated_file:0
->>
->> Setting min_ttl_ms to 1000 is preserving the working set and triggering 
->> the oom kill is the only alternative to free memory in that configuration.  
->> The oom kill is being triggered by kswapd for this purpose.
->>
->> So additional readahead would certainly increase that working set.  This 
->> looks working as intended.
-> 
-> OK, this makes sense indeed, thanks for the explanation. But is inactive_file explosion expected and justified?
-> 
-> Without revert:
-> 
-> $ echo 3 | sudo tee /proc/sys/vm/drop_caches; free -m; sudo journalctl -kb >/dev/null; free -m
-> 3
->                total        used        free      shared  buff/cache   available
-> Mem:             690         179         536           3          57         510
-> Swap:           1379          12        1367
-> /* OOM happens here */
->                total        used        free      shared  buff/cache   available
-> Mem:             690         177          52           3         561         513
-> Swap:           1379          17        1362 
-> 
-> With revert:
-> 
-> $ echo 3 | sudo tee /proc/sys/vm/drop_caches; free -m; sudo journalctl -kb >/dev/null; free -m
-> 3
->                total        used        free      shared  buff/cache   available
-> Mem:             690         214         498           4          64         476
-> Swap:           1379           0        1379
-> /* no OOM */
->                total        used        free      shared  buff/cache   available
-> Mem:             690         209         462           4         119         481
-> Swap:           1379           0        1379
-> 
-> The journal folder size is:
-> 
-> $ sudo du -hs /var/log/journal
-> 575M    /var/log/journal
-> 
-> It looks like this readahead change causes far more data to be read than actually needed?
+Hi, David,
 
-For your drive as seen by the VM, what is the value of
-/sys/block/sdX/queue/optimal_io_size ?
+David Hildenbrand <david@redhat.com> writes:
 
-I guess it is "0", as I see on my VM.
-So before 459779d04ae8d, the block device read_ahead_kb was 128KB only, and
-459779d04ae8d switched it to be 2 times the max_sectors_kb, so 8MB. This change
-significantly improves file buffered read performance on HDDs, and HDDs only.
+> This is against mm/mm-new.
+>
+> This series gets rid of MIGRATEPAGE_UNMAP, to then convert the remaining
+> MIGRATEPAGE_SUCCESS usage to simply use 0 instead.
+>
+> Not sure if it makes sense to split the second patch up, a treewide
+> cleanup felt more reasonable for this simple change in an area where
+> I don't expect a lot of churn.
+>
+> Briefly tested with virtio-mem in a VM, making sure that basic
+> page migration keeps working.
+>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Jerrin Shaji George <jerrin.shaji-george@broadcom.com>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: "Michael S. Tsirkin" <mst@redhat.com>
+> Cc: Jason Wang <jasowang@redhat.com>
+> Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+> Cc: "Eugenio P=C3=A9rez" <eperezma@redhat.com>
+> Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+> Cc: Christian Brauner <brauner@kernel.org>
+> Cc: Jan Kara <jack@suse.cz>
+> Cc: Benjamin LaHaise <bcrl@kvack.org>
+> Cc: Chris Mason <clm@fb.com>
+> Cc: Josef Bacik <josef@toxicpanda.com>
+> Cc: David Sterba <dsterba@suse.com>
+> Cc: Muchun Song <muchun.song@linux.dev>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Dave Kleikamp <shaggy@kernel.org>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+> Cc: Rakie Kim <rakie.kim@sk.com>
+> Cc: Byungchul Park <byungchul@sk.com>
+> Cc: Gregory Price <gourry@gourry.net>
+> Cc: Ying Huang <ying.huang@linux.alibaba.com>
+> Cc: Alistair Popple <apopple@nvidia.com>
+> Cc: Minchan Kim <minchan@kernel.org>
+> Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+>
+> David Hildenbrand (2):
+>   mm/migrate: remove MIGRATEPAGE_UNMAP
+>   treewide: remove MIGRATEPAGE_SUCCESS
 
-This means that your VM device is probably being reported as a rotational one
-(/sys/block/sdX/queue/rotational is 1), which is normal if you attached an
-actual HDD. If you are using a qcow2 image for that disk, then having
-rotational==1 is questionable...
+LGTM.  Feel free to add my
 
-The other issue is the device driver for the device reporting 0 for the optimal
-IO size, which normally happens only for SATA drives. I see the same with
-virtio-scsi, which is also questionable given that the maximum IO size with it
-is fairly limited. So virtio-scsi may need some tweaking.
+Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
 
-The other thing to question, I think, is setting read_ahead_kb using the
-optimal_io_size limit (io_opt), which can be *very large*. For most SCSI
-devices, it is 16MB, so you will see a read_ahead_kb of 32 MB. But for SCSI
-devices, optimal_io_size indicates a *maximum* IO size beyond which performance
-may degrade. So using any value lower than this, but still reasonably large,
-would be better in general I think. Note that lim->io_opt for RAID arrays
-actually indicates the stripe size, so generally a lot smaller than the
-component drives io_opt. And this use changes the meaning of that queue limit,
-which makes things even more confusing and finding an adequate default harder.
+for the whole series in the future versions.
 
--- 
-Damien Le Moal
-Western Digital Research
+>  arch/powerpc/platforms/pseries/cmm.c |  2 +-
+>  drivers/misc/vmw_balloon.c           |  4 +-
+>  drivers/virtio/virtio_balloon.c      |  2 +-
+>  fs/aio.c                             |  2 +-
+>  fs/btrfs/inode.c                     |  4 +-
+>  fs/hugetlbfs/inode.c                 |  4 +-
+>  fs/jfs/jfs_metapage.c                |  8 +--
+>  include/linux/migrate.h              | 11 +---
+>  mm/migrate.c                         | 80 ++++++++++++++--------------
+>  mm/migrate_device.c                  |  2 +-
+>  mm/zsmalloc.c                        |  4 +-
+>  11 files changed, 56 insertions(+), 67 deletions(-)
+>
+>
+> base-commit: 53c448023185717d0ed56b5546dc2be405da92ff
+
+---
+Best Regards,
+Huang, Ying
 
