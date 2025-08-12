@@ -2,91 +2,253 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2326FC87FCB
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 09:41:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A1A4ECA0EC4
+	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 09:54:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A35008E010C; Tue, 12 Aug 2025 05:41:19 -0400 (EDT)
+	id 3EC2E8E010D; Tue, 12 Aug 2025 05:54:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0CE68E00E5; Tue, 12 Aug 2025 05:41:19 -0400 (EDT)
+	id 39CEA8E00E5; Tue, 12 Aug 2025 05:54:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 949BC8E010C; Tue, 12 Aug 2025 05:41:19 -0400 (EDT)
+	id 216008E010D; Tue, 12 Aug 2025 05:54:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 867C78E00E5
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:41:19 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2683F1A0218
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 09:41:19 +0000 (UTC)
-X-FDA: 83767612278.09.B03964C
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 31580100006
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 09:41:16 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B55B8E00E5
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 05:54:40 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 71250577EF
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 09:54:39 +0000 (UTC)
+X-FDA: 83767645878.08.0C64FBF
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 42637100007
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 09:54:36 +0000 (UTC)
 Authentication-Results: imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754991677; a=rsa-sha256;
-	cv=none;
-	b=hNhY/cVWm6koshj1Cwe/K5MsBoPJMhyboW1shb1uWH9XkxNrZEYqlY0ght/DCFd2b4pggs
-	KrFbOlVxsn4Q5tqCFYiORTI3/8Mz1vNTjzEUMZ5zz/oyr+oOZWJldSUUBC6DBl4hgAImEf
-	uTvJU9yXgsrl3vDst6jmtJOglFk7N6E=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754991677;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=fU1K2o9K;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Sx3PlI4X;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf14.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754992476;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0ZRHhJcxfKwjTa6kIvJ4bWkENtLvMKAbCz3O01opgEw=;
-	b=PsJchxXsZHN4EDWzVAqW6KbO5gmhDEm2CoEFTzSLrVp0CgMs4bapoox0BI8gTHF+8PX8Wm
-	1r+r4D8phdoRezrlksBfygAKNBvN2FQAk9/AT+F/9rw85A2PQdi6ktku7GirmOa+T7ozkr
-	4oqG4sQpZuCHYKt+ydMQVIMuuJcX7Gc=
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id B8E6B68AA6; Tue, 12 Aug 2025 11:41:07 +0200 (CEST)
-Date: Tue, 12 Aug 2025 11:41:07 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Christoph Hellwig <hch@lst.de>, Shuah Khan <shuah@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>, Willy Tarreau <w@1wt.eu>,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Kees Cook <kees@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
-	linux-doc@vger.kernel.org, workflows@vger.kernel.org,
-	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v5 00/15] kunit: Introduce UAPI testing framework
-Message-ID: <20250812094107.GA27450@lst.de>
-References: <20250717-kunit-kselftests-v5-0-442b711cde2e@linutronix.de> <20250717132259.GA25835@lst.de> <20250718073743-d4a1f713-f81b-4e89-b3f8-7eed838798e6@linutronix.de> <20250721070958.GA29367@lst.de> <20250721100913-0c6d93d8-79d6-482b-9db4-7b0c06b604fa@linutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=L26V0d/sZNb++Teh0H1uU7SXswzzF7qQwdArp0v4v1o=;
+	b=SceMUlj7AwfNCtaS1mUL8Ob4gN0nXykC7cPIbTkYIfKER08VHZ25HbCv7oE4W7Hh4ppRjX
+	FoESpK8uQBZxYEN4Qr/2XDtyREca131/iwsEOSFIiIbP00m5J6jNz+XS+jxX/H7OSdd0nf
+	9Z/ZElykvAFsSZ4ohkmZADZcpzTjjrw=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754992476; a=rsa-sha256;
+	cv=pass;
+	b=kQlg79JDhx94nO6jrNqnB65rJmLar/eMxhEWAiNrpWNaRN5+vFax+/HRGixTOyOZ+TOMlL
+	LkQbjkOULVQ7nzoJn+INcvCsdB0ePFVbDBaJGaA0xO5fo/xLoiE1CSKMulpaSx5GcN8FlV
+	nWkD/t7E+Wl9lIH1twq19DR2edCMGE0=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=fU1K2o9K;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Sx3PlI4X;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf14.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57C7blj2006657;
+	Tue, 12 Aug 2025 09:54:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=L26V0d/sZNb++Teh0H
+	1uU7SXswzzF7qQwdArp0v4v1o=; b=fU1K2o9KWPXpcuhj6LAKOvThGQWbwqAUbL
+	bBXRRlnDGu1nUwGeEaBso2cbBdcdDKmoAMHhWGsfhch5kYT0DutkaVidc+Cyr3D5
+	TZWXa8/Zfnbtz+AoSA8JYcykwYvbL1BJ9mbUq7TdcqtJQWHYXLX0P3bwMUqx3f1R
+	Td2dRySxnjxT9sedRZwPafYWYZf2SVGuuIuxl2qeGxiyhqc7QybcF8798PkQMc6Z
+	1O0Yg5UcyKGvX02ZVyi9j9bakkpgD5G8oAYmi+yzpbNY546c7rS2po3Bgesxe2ve
+	+1t3XCrgW/PY6VqxB740mSNzlbmLWs0lTxce2KsWwNC9ZY5a1GsA==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48dwxv4afv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 12 Aug 2025 09:54:07 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57C8rUWL030191;
+	Tue, 12 Aug 2025 09:54:06 GMT
+Received: from nam04-dm6-obe.outbound.protection.outlook.com (mail-dm6nam04on2072.outbound.protection.outlook.com [40.107.102.72])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48dvs9rna1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 12 Aug 2025 09:54:06 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=me9T+u+lQhxwLBl/eKZrzAqntkRHDpKTOedZ4jjjZD5cOFljC3dfcg+QLZaB0zdeLFo+C6JcFa41u0MXGELRdeeNbwAk8NMFQtA79tRcNJfLSe6IHPZh9fe/Xt8lS8iP7clLa8sTvH1kAzVNMM8FWJ7FybIiWw5uKz57p5OooGf17/y/82Zm70BD2vVrsIaeLkLPAMXLmlaxW8cPt3oqq+HFUa92Lui5MQt1onXV+i2iGb66ogceaNBWi3NjWuTi1DdKyaPrwAj3rpUqpUao+9FmOTAZY3N+u+uorAYrlXEyFZP3X0Cwst/uEZidMaHJIej8ycFKsvUGK9W4U/1t/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=L26V0d/sZNb++Teh0H1uU7SXswzzF7qQwdArp0v4v1o=;
+ b=Ykr+yBDNWSEnF0dz4RD7AEiyjE5yLtwC5D/Y7ZVTrVxu0KUJTf6nypHBJ6b0fojr3RDTKIhnJtuyOo5gVtIYmkVICnfKvTwTYz+pf4KgkEzSvjnQX0CxpYvw2nIE/FjZl9M2ybCfZL58w4MYo3Ty89mCZvSN5Wd30gSuLr97oooKAu8X20WIbh3G8J3C/4aYoALRdQwnW3UjjbcPp919944dGoXt+vMEma2Cy87Z2QQN26UeiA8RRG89TlvqW9Pxq3wFlit2u/aQabSRnehz3hTiU5gWMcX4JwpIb6grR6BzfxSGsWlYQlBPVXv+Re4QmyUfpeb0LeHhB/m1FXOZ1g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=L26V0d/sZNb++Teh0H1uU7SXswzzF7qQwdArp0v4v1o=;
+ b=Sx3PlI4XjYmDZZYvJnb+83n5wbYGBtbZtnpSUBjAZDyxsvoTWBSoB4anVIyT+5QW4nng2Dvp/Nxth9Xd+Gpm+SO9oy8Wi9ZZemgyi3Uzrj4Zdp3D3LEg2BBA+yrOLOHOEqYRRwJDr4ZJaq48lBpUxfQwI21IGelDYvCAJccezsc=
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
+ by DS4PPF6D651AD93.namprd10.prod.outlook.com (2603:10b6:f:fc00::d27) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.13; Tue, 12 Aug
+ 2025 09:54:03 +0000
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::f238:6143:104c:da23]) by CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::f238:6143:104c:da23%7]) with mapi id 15.20.9009.021; Tue, 12 Aug 2025
+ 09:54:03 +0000
+Date: Tue, 12 Aug 2025 18:53:49 +0900
+From: Harry Yoo <harry.yoo@oracle.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Dennis Zhou <dennis@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>, x86@kernel.org,
+        Borislav Petkov <bp@alien8.de>, Peter Zijlstra <peterz@infradead.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Tejun Heo <tj@kernel.org>, Uladzislau Rezki <urezki@gmail.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Christoph Lameter <cl@gentwo.org>,
+        David Hildenbrand <david@redhat.com>,
+        Andrey Konovalov <andreyknvl@gmail.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, kasan-dev@googlegroups.com,
+        Mike Rapoport <rppt@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+        linux-kernel@vger.kernel.org, Dmitry Vyukov <dvyukov@google.com>,
+        Alexander Potapenko <glider@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Suren Baghdasaryan <surenb@google.com>, Thomas Huth <thuth@redhat.com>,
+        John Hubbard <jhubbard@nvidia.com>, Michal Hocko <mhocko@suse.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org,
+        "Kirill A. Shutemov" <kas@kernel.org>,
+        Oscar Salvador <osalvador@suse.de>, Jane Chu <jane.chu@oracle.com>,
+        Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
+        "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+        Joerg Roedel <joro@8bytes.org>, Alistair Popple <apopple@nvidia.com>,
+        Joao Martins <joao.m.martins@oracle.com>, linux-arch@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH V4 mm-hotfixes 2/3] mm: introduce and use
+ {pgd,p4d}_populate_kernel()
+Message-ID: <aJsPLRDhan9KvPmW@hyeyoo>
+References: <20250811053420.10721-1-harry.yoo@oracle.com>
+ <20250811053420.10721-3-harry.yoo@oracle.com>
+ <8c8c6895-53fa-4762-98a4-886a53903341@lucifer.local>
+ <aJneGJSJcltEIT41@hyeyoo>
+ <c3ec3012-4ba0-4b7b-bf0a-88f39ef029d8@lucifer.local>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250721100913-0c6d93d8-79d6-482b-9db4-7b0c06b604fa@linutronix.de>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 31580100006
-X-Stat-Signature: dukqifg9e4t5wdakohy796qauwhxheda
+In-Reply-To: <c3ec3012-4ba0-4b7b-bf0a-88f39ef029d8@lucifer.local>
+X-ClientProxiedBy: SL2P216CA0149.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:35::9) To CH3PR10MB7329.namprd10.prod.outlook.com
+ (2603:10b6:610:12c::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|DS4PPF6D651AD93:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0d769e98-78fb-4486-ba56-08ddd9862b0e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?EB1DuavtX56t0QsPUCDuiOZtsV6aoZ29A/tWabOj20Jp082bkqLtj7DPuNxN?=
+ =?us-ascii?Q?FX7Ye70QZyt0FNgu8lHNpZNpStipPtbpe8gfmAMJFo4m2LlhCzmKWm5vLs2c?=
+ =?us-ascii?Q?mzqqenYkQj+99J7YvclcxHVgjy10GqFqJwq0v8U3PC+b7mWMqYBa/xemDS7y?=
+ =?us-ascii?Q?Wv+8Hx+a2iEv08MARiHJettJHg3UDxdx5aFlJMt6BHaKXjyyala7+OriXy6x?=
+ =?us-ascii?Q?t2tx33eQRYvRMEvJmTQzVN3DNxiqQPN9rYULwGSxDQ6FD3rbvwCQDN2YUIhy?=
+ =?us-ascii?Q?3cjrYMlkHdOViRuQBbt9TPPxDE6B3K+p2Lzz9Xy2dd2i7oNaTHwJUhmCbcX4?=
+ =?us-ascii?Q?KYaA4hHdNfA2//d7VAgoT7vUkvypQrTEvU4vEdQa3E3/DQw+oAB4zdv2sYOP?=
+ =?us-ascii?Q?gOziQILv8BoIBlqCQS3rRlG6/jmG0LiXiP3eXnxUnH++4P9QCEWR7ccQNq2/?=
+ =?us-ascii?Q?qNh10PnA2NjTwd1rwHh0ESRNRhYVX7x4AB7I61g0jnq4Au4J8i+4p6GWTyDa?=
+ =?us-ascii?Q?nDUGN9AzB2F1T5OqLuF2M7YH4PB0/Jd9mZpjN1SGvYqIKWMF+alkwzoHGTYS?=
+ =?us-ascii?Q?YtPrI7nl0sLwqZpEzf7UmN8KoVxUP9osCUcFhlR29uhX8DFrnqVV2fYK0M3j?=
+ =?us-ascii?Q?7NpQ18QEBfZhl6OMLdVMF/RsyQuKX/2fhfY3c41CaVInmpnjFGs4gUbObKGr?=
+ =?us-ascii?Q?WXgmXjPB2W+gUoVK9SsMMg15dmyikTx/ydj4G1dMKbTbv9JUvOjq6E4yWnWt?=
+ =?us-ascii?Q?bB01Vnn1fqdtUKoHAetEee6pw0uaD00dj36Myrwhfnsiy8Am4MiGFJhfWSay?=
+ =?us-ascii?Q?VIQOsfWCGAgYrZvo32T1bKIlqH3T1q+hS2DWqEIhUJ76+NjE0YRUW4RQluOf?=
+ =?us-ascii?Q?NTdszp113VNHoYLYHLiR0Q/IsO/2f1OujxMhDuyY6olUmsBSBGK8beoXXvUu?=
+ =?us-ascii?Q?WzA2b8YykiKQwuKpSu7PJj31r4u7FbaTtBtZOjl74uB7d8oLHqByo/K11ZRZ?=
+ =?us-ascii?Q?nNzbbiT5tKw5F4/Cz5TKfxMFuU9qEuRf8LAq4v6Gkfl0VyE0U48+Qpf4Oku9?=
+ =?us-ascii?Q?Ra1nYmYl855sizHOQK3RPKp1zrghPJQw64cHet16lb98+eV0fEFD+U+0YDXW?=
+ =?us-ascii?Q?t2GWeaAF/f2hK0DbpBtjMKizMQYJhczJpaW0Mm2tA3+xdAKE9sF5ImeaWaoN?=
+ =?us-ascii?Q?Y1wY7kUeGb2l0wsQ8bhCFpn2Vz3WN8cmeO4iVFcjXL9/i6QkAWPQcHsAUj9S?=
+ =?us-ascii?Q?7n5AUiQ24InnTHNIzSpjLExpSgOcYP9gEX4RLlxcRZ22z0Zp6cDDcBL+safp?=
+ =?us-ascii?Q?ls7dUTd0sKLYiMU/snQQ1ZsBZDad1pnKpVfpGAs7j0hcCxFsE44nEP/73d1D?=
+ =?us-ascii?Q?10m35c2+q1nqN7GKoEJkptsK+2ESGaIrMcDoErFOitQCFY+P9PhmWiRdgk0J?=
+ =?us-ascii?Q?zVtn5s8DvZc=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?zuwwsIlzm91kXSx7vWU7IDoa+PV878egqJRBeDBunQSnZKsVJtleslqFwpDA?=
+ =?us-ascii?Q?TjF1XrWqRBkdW0bUZKa/R2MA9shzAVA++tKvm7PXrRtFNqZRmbP7d1KSKAZD?=
+ =?us-ascii?Q?lJy1WYrzlOfAkpkPsR8wT/hts47bDiAe/wnrLaEB7+QuFfO7KyAWerKDizSG?=
+ =?us-ascii?Q?ntSuwX6KTXRCmp0vGhdUvnM9dkbxMG+vIV9eH4PBsrOWskltfU2Pm1rXtyz2?=
+ =?us-ascii?Q?LpB9ZZu/ibgBecfSZnJZyFFXoYBLOh/JPJ5Jdk2krO+/l4mXxcUM5+kDfbUx?=
+ =?us-ascii?Q?0UQlKBsPNVyxqwVT4O2P+x2Y9KERvuLNmInX2mn1x+/JW9+YPYgnZ/s0+hW1?=
+ =?us-ascii?Q?/BGsG8bHBzaTGP2/OYZOXuMM2opG4CC+VqTffu0jYopIK/3uoG9PH5ObySAn?=
+ =?us-ascii?Q?MiFZ0MSTM7OtP+8xbyyXsEclovCltttcUb84bfp+iqJE8lTKxy8bbcBKOQIj?=
+ =?us-ascii?Q?npKFAKzpC5rRf5991RWQKIN7E/UzvQwH8doggj8/nNbhCnqeCxqbM0bupy8w?=
+ =?us-ascii?Q?p3A7tJyLt5CqoplxuY+9XZx+bZJxLw0wGG81oQTJUuOAedMG03UnAQLy5m8d?=
+ =?us-ascii?Q?Yo7Mvl9qF1FQxAkbfG8EPJkaEiiMnknRx68weaPYpVmhKp3jfb7/4n95KS8D?=
+ =?us-ascii?Q?8ceRwKXuORtNobTgJH/0F1yYj/Iq+5Ksm5aDgNf4caZ0E9fVvhPPI/jfGDB9?=
+ =?us-ascii?Q?PgTTrbJdg2jHENJncQLBCRmdjL/zTWTmaAnAJGOmrFle1AeZy2uXVxifvDjF?=
+ =?us-ascii?Q?GtsbCGRV/M4Ulj1CImnl61OpsIkhqJ5GYodAgzP/kab4s5CNs58VxUYSLKlK?=
+ =?us-ascii?Q?cEY/+/vhiaTda0usVVLXF8S1QVzLbVLSnevgHJAv6sTZmccdpbaXSAjG7TFr?=
+ =?us-ascii?Q?1GkR/v+ofkDSIg/co/Oujc0AeipfTXPPjpTTVulpShkdcbOgLk9qVlWQaedm?=
+ =?us-ascii?Q?tJQ7DY6LFEnjUCNm4WwrehBSmgWAkGkpjIfb5nuRVVvV9LANiuFxOV23e8Tz?=
+ =?us-ascii?Q?JFm9+l7pXvhUlujU4jyjYYAwk4P+CW93IxXBuBo8xx0LPmnFQ38OTAKfar+m?=
+ =?us-ascii?Q?dYlOu8b+j3qzQfHUUKXSQljA6BigygkflcTI1uGi3VPLEUEzNNHOpn9ynS8+?=
+ =?us-ascii?Q?3RVjlXLHZcys6Zr4U8mt0MOqd4iB1xwKBdKWSpbdqSVVHYyXkpwkoPzlgEId?=
+ =?us-ascii?Q?69X32vVkSjS32car0yHt9+vj0TFDZ/PwlOWKgQ1xdrbXerif2r5s7BslgtvX?=
+ =?us-ascii?Q?H92wYgLTP6/s5IcRRxcv9lUiC2DkcgOkcXyPbSb5WlYj/KDxKdQWBtwnaqMC?=
+ =?us-ascii?Q?gXaP04vtWE1xwlxBbgHefKZSp1xg0jBbvDUDV9tDGT/oxQbOHAGjMjK0kxUN?=
+ =?us-ascii?Q?dQo1BZy5B27ZWC3vpf9FicvxnoQ2+aAPC5F/uRtvQKqPmkC/pva+SpZKBQ1s?=
+ =?us-ascii?Q?9ptBQu+yvLbfXeRzd1D7l51HI0cP9RJb9kOLpvi6O+9h4r4+cRYZropWZhb4?=
+ =?us-ascii?Q?17CTU92HBSh3lTDnI0XU1br+zeZcdbTniLc7YkdOGXwmel/hprrLX1WKDXAO?=
+ =?us-ascii?Q?Nsc4Hzfs9DQeH5h2/RCF5M8MpG0o9N4bhMMFikHb?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	Su87cfW/Xe/W7W/RqwhfkSyghFerZdGh8NsIoVy0eOteTZQ8jFZK/euQ5oMflQDttYFQ7hdlQnZyGR3XD/iNn0oWkKFa9Ll45QnHgwPefNybtR9yPZtjegCNHU09sjZ+p5CMTx4QsrH6S4KjbEmAoRqSGjFOd665W21fIuQ5bV1JHPpkDqYlFGMftYlfyqFFdOhBh0RFibM86TgbpNWD+lwl4Fge/Y4Hx3fcGmTsi0qM5uqsEH3LQ8dt/8Vs+u3EU5W4lQIM+54Mt8W68EWHZi1gQrWvdcl7TOpMwmbQ9O6ca4kfM1h1A0/sMoYWUnKTMzQXwXUnbzNZ47wlNCo/ugFVy+paDFdwhsqYIzCnYwsBRJ49IUQerp3P8jt1N+Yyw66MbxSGWVsupT+YyuAAeg0pt46aEkjOeAgY0gfLff4N9xOTpRNUtkAeRNfRfAOCFI/DBiJXVA60dfIQ3+WQgNn3qT+1ixEamsVgyszWg7JUyaDo+WmkHw0zli8Y3WgcRmZNJ8pJa5FWwGjAXX+7bmy4zAabbalrp7HxjVXmft+pVSjOaRGpW51H959Fgba8B/PLvBfII3rzcGqc+gqVkoDBo9A3YWtf0QUXm8hLPV8=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0d769e98-78fb-4486-ba56-08ddd9862b0e
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2025 09:54:02.9641
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4wo1kWv9NbZ3ObJnvTHm4mIwF3HSwG7g99OR3BV+h5jfi8EiKzzNgToj+vVh3mdmKogbphjq+U1+jE7OSnSthA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF6D651AD93
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-12_04,2025-08-11_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 phishscore=0
+ adultscore=0 mlxscore=0 bulkscore=0 spamscore=0 mlxlogscore=999
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2507300000 definitions=main-2508120094
+X-Proofpoint-GUID: LxESXiUBpnGUxuugotJgOF_aTPD2J5KC
+X-Proofpoint-ORIG-GUID: LxESXiUBpnGUxuugotJgOF_aTPD2J5KC
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDA5NCBTYWx0ZWRfX5hhnxsWWEQOy
+ JYNnw/EzEzFvKmTlM3iQ/0yR+7C3UYe5m21iu/JAj919T2MRt5P84NeFwkQB3821rN3OhfeCgpS
+ losi74xH0EKxNN96F5JEUPelK6ekkquTeb+v4TiFc3r7GmXOZMstLoC014n1nl6orD1JWr2qb3z
+ cCYr3m2GYXQgbIVRFuY7A7r1nJZVyRDiV57pPHy1eI4x9MfJRJFBrDQCMZ8yBcG4dlV0FMxKIG7
+ h8aN+nw8MSlnU+qb8pkjP1ulplmf9/2xVQQv3AD9Y16YLinXTZiEgQi6RMwGHMG+o8WpK6n/B1x
+ RRXu1cHjFJ2soMKbf+H7oHernYr+31Vz8rvvXpBdfOeDE/LPMHGnizlRTsxjolF4ZuKos5MEPBV
+ R3jOEN+p27XONjoRjN5qKxQOd/GFh4tGuj5j0xmse/CFFfDQnnCH7kNXcoqbr8q8n3zLbwfH
+X-Authority-Analysis: v=2.4 cv=KJZaDEFo c=1 sm=1 tr=0 ts=689b0f3f cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8
+ a=yPCof4ZbAAAA:8 a=xvrkwoS1mEYJalSrI2oA:9 a=CjuIK1q_8ugA:10
+X-Stat-Signature: irekofhu31cktq9qd9azp88p34j5pgtj
+X-Rspamd-Queue-Id: 42637100007
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1754991676-109379
-X-HE-Meta: U2FsdGVkX1+MsRrfFKMAjTtaTT2Hg+5+9pPbX48L3NXp7n2UAN88UXGe5DafumexgDDZHhLpv8iSOKBsMxP69679bu9sM1X2REuD7KlcLJkSrnM6f3UD+pdZWlHgBUPl5hAff+EcEe0kqzL5u+tGg3q/PZss6xR5r57MhscFktTBY+RRWaOlJa1rWRfDX3YEb4m7dRtIDNHnYLK9cARkKPcasNkCQN0QUeqcZhhTazMNphbfbsCx/2oOmvpVwDTDGwAU4pWTB0HqyIXUq4pXBj6vx4U7Q8xmQVAgPKcI7XY8P5qhyYpxRgyOL32XXsOIXAnRZwUVTvN0FMvtlOaK9ZuiKjLRva1qesh+vssD9kO/KXjsk40Oni9rCu/bCAKatt08VoX3k+e9S9BexmM23eASo6Bg+0KxRFTv2Btr8gS0aop1rscJnOue2oc7OwNILp9AB4DV3sFoVhboqZLI5brpHCp9LEM14D5RmjO8wFlUG9QFn97xqd8wHWa/3hRvW5F8jGKF6Yl8U/gAbCanKNhf0szBLtd3ubBHxgtH8sMCTAzfloPDaMKZQ5aBXrg6+Yeq0cRG/PIAoA/cpEuyvXm1bMkjEIELwYeBaC9ZfMq7sg84HOY9jP7Qf1peGtW9XkTgA16HLaj/KiSeRfuFkdBLEUMiNQWTWDb2cP2OZo7p0o9u63RYS8LCqB0tbQW7sau7F/Jbe+lQdH2TKPSjioDbTmLEs/8N1IZcJZiB45144/rsWWpmbiHStm8ssWMN5peZMMsLMZdpK8GWhlgvbT8p0OPFlCIGQHQUaLlYssfbXcnh/KiRTBQiU2nH5+M/9opmjChJ7s6uUoF4xAvto/QmS88JuQ0fPKeIYt8IiJjXhRtlTx/hgsV0hShR1JTljOeexTe97Y9Vo5I4f7OlLkBr6ERD49F7h/Frmdz1H70dGcRljPOzCW6YOT8Qf4Xt2cfUi1T4k/nHed4zh8Y
- OSbiJ0he
- Km2LBiS4k4bangrh9jww3s1isxils//bUYNRQMwsaqHxHfYXP28dAlrg1tL2VaE5LC4fUT1/eknVw+5EUoH3FO0HJ6LOrQVYADSINoSEmS9poLlApJQrgN/hXnw==
+X-HE-Tag: 1754992476-323549
+X-HE-Meta: U2FsdGVkX19Pnhy+UDi//qESXrnhGwL4q89djB4xdUzaX4WdYZAEPfA1vwydcmdRMYwNNh8coaYm1h3G2ZEe+IA4J1b5O7Gh0AbkuBFYginPKEAWhr6NVbNtLPzGy9TFU3cuUoC6dNU+5eQ6IJNtXmH7HN1+AKOD4bjRfnk4cuD6/rMWNTlR/uU0QE9PcPbGkE3+jVt2ytrNpIwx5JOhy1vQUoM4Bj4dkgj4eVndhaYv+4DDLiuf/FrLVLKMoLF38XIu61o5naPozQ8tMRGrBAv6wvAVrHowilL4usD+rs/U2tlePf78d77qBkuINFSyoihAA4VHAFc1gU+LAGauWrxF30g5Yq9uqPW/LxjRp/0qYpRs7agaf1YB0bSVcZYGdJTvNTdek5Xp2T3U0esU5vIhvCFqI8pGk4mTiK/AHPBawQApoyRZ8k/ShAEDOuxNoY6iUrfGoULTwFSY0kQuEgYwKyyVIb3bFwIDfAykGA5lXj+rzb2+2kMduKseT9GLyGJRdOwuLfpx0AWOwh356uxL22wjkxr+c6mMOMzYmvRGpGpDQJLYbCt8XzDw7+HRIj5vonpr4ZzrOrd3XlBwasDgkrnnH27nK34M3oPexkFOJAaqJ7UBt7FI9nmei1SY5JeW774lE37QOznOeaBTmo2bvsjLrbM81uLXvxHdu82WQ8qIGaRA/WInOKWrMboMwrL3CqKKGs4pHYLQxeQiWpT0Nyh2tYoedbKxZjvH1BT1amoQaTP2WCSPJGLEqoXSQAw9x9RXGOMZVYzjCZqTq+PuuWFR7i0mg/pVFkZkNiFlgmBW/xjg+bCmmP33pBcC3IvIHm1mR9aZfiQrWMjfJRG1FV8BTvxoR+Rjp5mE9BejD6jbDNoBaxuM6rU6dgfEFRcFqfw2uEjlEcbTSvSsQpurRTtGLO7vXSlbtA7EFC7f16ewFLnLfPBIz1/1/PS5DAXYdLjrl/oS/h85Kew
+ h8r2/bK+
+ 49st9t/yBeeCAcsmEuaBMvOMQlbMChVrPlUVKWIo27JliuXzg9fG4xKxZGI4ZcPSLtt7w4L8WiqaQvbrZBTXU6kheyN4BqVmz+SFtGSMrLNkTzbSETvwOX7sHz0+47Eo3qNlFsazML6zlyEQtzFw+ObDfWu76FBhGnJxw6PCLxj5YzOBUkscKKc0JX/GIj3cy6/snw2wzs/8gypo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,104 +257,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 04, 2025 at 05:01:35PM +0200, Thomas Weißschuh wrote:
-> > That's great.  Let's reuse it without having to drive running userspace
-> > programs from kernel code.
+On Mon, Aug 11, 2025 at 01:18:12PM +0100, Lorenzo Stoakes wrote:
+> On Mon, Aug 11, 2025 at 09:12:08PM +0900, Harry Yoo wrote:
+> > On Mon, Aug 11, 2025 at 12:38:37PM +0100, Lorenzo Stoakes wrote:
+> > > On Mon, Aug 11, 2025 at 02:34:19PM +0900, Harry Yoo wrote:
+> > > > Introduce and use {pgd,p4d}_populate_kernel() in core MM code when
+> > > > populating PGD and P4D entries for the kernel address space.
+> > > > These helpers ensure proper synchronization of page tables when
+> > > > updating the kernel portion of top-level page tables.
+> > > >
+> > > > Until now, the kernel has relied on each architecture to handle
+> > > > synchronization of top-level page tables in an ad-hoc manner.
+> > > > For example, see commit 9b861528a801 ("x86-64, mem: Update all PGDs for
+> > > > direct mapping and vmemmap mapping changes").
+> > > >
+> > > > However, this approach has proven fragile for following reasons:
+> > > >
+> > > >   1) It is easy to forget to perform the necessary page table
+> > > >      synchronization when introducing new changes.
+> > > >      For instance, commit 4917f55b4ef9 ("mm/sparse-vmemmap: improve memory
+> > > >      savings for compound devmaps") overlooked the need to synchronize
+> > > >      page tables for the vmemmap area.
+> > > >
+> > > >   2) It is also easy to overlook that the vmemmap and direct mapping areas
+> > > >      must not be accessed before explicit page table synchronization.
+> > > >      For example, commit 8d400913c231 ("x86/vmemmap: handle unpopulated
+> > > >      sub-pmd ranges")) caused crashes by accessing the vmemmap area
+> > > >      before calling sync_global_pgds().
+> > > >
+> > > > To address this, as suggested by Dave Hansen, introduce _kernel() variants
+> > > > of the page table population helpers, which invoke architecture-specific
+> > > > hooks to properly synchronize page tables. These are introduced in a new
+> > > > header file, include/linux/pgalloc.h, so they can be called from common code.
+> > > >
+> > > > They reuse existing infrastructure for vmalloc and ioremap.
+> > > > Synchronization requirements are determined by ARCH_PAGE_TABLE_SYNC_MASK,
+> > > > and the actual synchronization is performed by arch_sync_kernel_mappings().
+> > > >
+> > > > This change currently targets only x86_64, so only PGD and P4D level
+> >
+> > Hi Lorenzo, thanks for looking at this!
+> >
+> > > Well, arm defines ARCH_PAGE_TABLE_SYNC_MASK in arch/arm/include/asm/page.h. But
+> > > it aliases this to PGTBL_PMD_MODIFIED so will remain unaffected :)
+> >
+> > Oh, here I just intended to explain why I didn't implement
+> > {pud,pmd}_populate_kernel().
 > 
-> Running in the kernel is the point behind KUnit.
+> I'd add that arm handles PGTBL_PMD_MODIFIED and therefore remains unaffected
+> just to be super clear.
 
-When using kunit as is to unit test kernel functionality - obviously.
+Will do:
 
-When running it to integration test the syscall boundary - not at all.
+This change currently targets only x86_64, so only PGD and P4D level
+helpers are introduced. Currently, these helpers are no-ops since no
+architecture sets PGTBL_{PGD,P4D}_MODIFIED in ARCH_PAGE_TABLE_SYNC_MASK.
 
-> It could be done by putting
-> all the userspace test into a initramfs and run them on boot from there.
-> But that has other drawbacks:
-> * The tests can't be run on an existing system.
-> * All tests need to be loaded into memory together, and not on demand.
-> * The tests can not be rerun.
+In theory, PUD and PMD level helpers can be added later if needed by
+other architectures. For now, 32-bit architectures (x86-32 and arm)
+only handle PGTBL_PMD_MODIFIED, so p*d_populate_kernel() will never
+affect them unless we introduce a PMD level helper.
 
-None of that is true.  While running syscall level tests from an
-initramfs could be a nice feature for an automatd kernel CI system,
-nothin in this tests should require running from an initramfs.
-
-> This was a response to one specific statement. Could you be a bit more specific
-> in your critique? I am not sure what exactly you mean in some cases, making it
-> hard to respond properly. For example "bloat", it is bloaty
-> * source code,
-> * object code for users enabling the new kconfig options,
-> * object code for other users *not* enabling the new kconfig options?
-
-You are adding kernel code both at the source and object level to run
-userspace tests.  That is very clearly bloat.  Even more so as it adds
-functionality and exports that don't fit in with what the kernel already
-does for actual kernel functionality.
-
-> > > It is not and most probably won't ever be. The maintainers of each testcase
-> > > will decide which libc to use. Like it is in tools/testing/selftests/ today.
-> > > Some use glibc, some nolibc and some can do both.
-> > 
-> > So why do you want to use it here?  And how is is related to the rest
-> > of the series?
+> > > > helpers are introduced. In theory, PUD and PMD level helpers can be added
+> > > > later if needed by other architectures.
+> > > >
+> > > > Currently this is a no-op, since no architecture sets
+> > > > PGTBL_{PGD,P4D}_MODIFIED in ARCH_PAGE_TABLE_SYNC_MASK.
+> > > >
+> > > > Cc: <stable@vger.kernel.org>
+> > > > Fixes: 8d400913c231 ("x86/vmemmap: handle unpopulated sub-pmd ranges")
+> > > > Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+> > > > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
 > 
-> To make it easier to test a wide range of architectures by not requiring a
-> libc from the toolchain. It also avoids relying on a bunch of out-of-tree
-> code (glibc) as part of the test. And there are existing kselftests which
-> use it over glibc for their own reasons.
+> Given that I missed you fixed the vmalloc.h thing, this LGTM so:
 > 
-> But using nolibc in test code is not necessary and nobody is forced to do so.
-> 
-> (Maybe a disclaimer that I'm one of the nolibc maintainers is in order)
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-Well, why do you even mix it up with this unrelated series then?
+Thanks!
 
-> To run kselftests we need the following things:
-> a) A toolchain which can build userspace executables.
-
-You'll need that for any userspace program, no matter what test
-harness.
-
-> b) Quite a bit of supporting userland, at least glibc, coreutils and bash.
-
-Well, a libc you will need anyway.  Maybe nolibc is good enough for
-some tests, but as you already stated not for very many.  The others
-are just an artifcat of how you run tests.
-
-> c) A rootfs assembled out of these.
-> d) An efficient way to incrementally rebuild the test executables and rootfs.
-> e) A way to put that rootfs into the system under test.
-
-You don't need a rootfs.
-
-> And for all of this there should be good in-tree tooling.
-
-Absolutely.
-
-> Moving to a pure userspace solution would preclude the usage of KUnit as far as
-> I can see.
-
-You've still failed why using kunit is the goal and not just something
-that made your life easier archieving your goal.
-
-> > Yes, kselftests suck as most people will agree. But the answer is not
-> > to add a lot of kernel bloat to treat userspace integration tests
-> > like kernel units tests.
-> 
-> I fail to understand how this test code is worse than the existing KUnit test
-> code. This is not meant to test complex scenarios, but single system calls or
-> specific UAPIs, which may depend on architecture features. For example timers,
-> signals, vDSO, mm etc.
-
-So now having another half-assed test framework is a good thing?
-
-> > How about you just fix kselftests, preferably
-> > by reusing well known and teststed userland code?
-> 
-> Is "well known and tested userland code" referring to glibc or testing
-> frameworks? As mentioned above, glibc can be used just fine and the frameworks
-> I know about are lacking.
-
-Basically any kind of testing framework that has broad use.  It's not
-like there aren't userland unit test frameworks if you really want to
-use that.
+-- 
+Cheers,
+Harry / Hyeonggon
 
