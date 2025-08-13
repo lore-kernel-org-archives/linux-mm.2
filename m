@@ -2,93 +2,120 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C0665CA0EE0
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 08:00:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6EC97CA0EE0
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 08:02:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1AEC2900043; Wed, 13 Aug 2025 04:00:27 -0400 (EDT)
+	id F20DB8E01C9; Wed, 13 Aug 2025 04:02:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 186468E01B6; Wed, 13 Aug 2025 04:00:27 -0400 (EDT)
+	id EF8D48E01B6; Wed, 13 Aug 2025 04:02:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C516900043; Wed, 13 Aug 2025 04:00:27 -0400 (EDT)
+	id E35C48E01C9; Wed, 13 Aug 2025 04:02:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EFC688E01B6
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 04:00:26 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A21D0B7FAB
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 08:00:26 +0000 (UTC)
-X-FDA: 83770986852.04.A824DFC
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 96633140002
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 08:00:24 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf23.hostedemail.com: domain of beata.michalska@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=beata.michalska@arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D50638E01B6
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 04:02:39 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 61C931DBBA0
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 08:02:39 +0000 (UTC)
+X-FDA: 83770992438.06.D126ACA
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 84D5D10000B
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 08:02:37 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=PpOkLAod;
+	spf=pass (imf05.hostedemail.com: domain of colin.i.king@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=colin.i.king@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755072025;
+	s=arc-20220608; t=1755072157;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TiItsnm1C8RdqDiVWIodTcy2C+DJkk1SN2rAIFN93kY=;
-	b=OStGYC1ic4yoaZJw8GRA3cqnDr4xl6YI/7ft2i0SrmxccSJV/IGL8p5n8TX4Ol/I1XR7NM
-	y7bAJh4PReeev2tLnh43w9a+u0Y+jVWtTCWt5F93tnkVYRP5Cj8Z2Xaeu6PdR7p/WF7Mio
-	nwRNlr12WQoS9cgoHO6rPCcXP2Ms5j8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755072025; a=rsa-sha256;
-	cv=none;
-	b=oOZ0FM1xk2q/9slb8ZYyn18v0o7eEngSjRIpyPDztkIrCgxpXnocIR6z50E/8swluWKeFw
-	jTX4GNR+8d5p6Q8lcYwksjeqr8NQrHkeNN84lU533K04K0LnuA5JpVCnkhTjOzChIT45qg
-	q+JExvBSaaDcPXr1L2ojriQRjGyUTvE=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=XVe0idgYx1J+jUFo1Pbaqi+aQhg27OfKm5O0YenTYzE=;
+	b=fvMJuQaNx6MkodjXqO4CpU5LNONesl8gR28PQpuEoUSDtsiQTWh985a8I6gNafxr96E0ig
+	rVYNdFXsXfS47pkZM6YbAFYEq4ev8V84yiAU+gGug5O3ZiwH/AQcvnBy0f7SsLUFcT5u3l
+	zN15kGUyauHUPAHtHT++8+OsvbtzMZ0=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf23.hostedemail.com: domain of beata.michalska@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=beata.michalska@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5470C113E;
-	Wed, 13 Aug 2025 01:00:15 -0700 (PDT)
-Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7AFE63F5A1;
-	Wed, 13 Aug 2025 01:00:19 -0700 (PDT)
-Date: Wed, 13 Aug 2025 10:00:04 +0200
-From: Beata Michalska <beata.michalska@arm.com>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Janne Grunau <j@jannau.net>
-Subject: Re: [PATCH v2 3/3] rust: xarray: add `insert` and `reserve`
-Message-ID: <aJxGBHbcCdHjTo-B@arm.com>
-References: <20250713-xarray-insert-reserve-v2-0-b939645808a2@gmail.com>
- <20250713-xarray-insert-reserve-v2-3-b939645808a2@gmail.com>
- <aJnojv8AWj2isnit@arm.com>
- <CAJ-ks9=BU2jfT-MPzxDcXrZj7uQkKbVm6WhzGiJsM_628b2kmg@mail.gmail.com>
- <aJn_dtWDcoscYpgV@arm.com>
- <CAJ-ks9kECSobk0NX6SXn1US7My028POc=nLmw0AHZGiRUstP2g@mail.gmail.com>
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=PpOkLAod;
+	spf=pass (imf05.hostedemail.com: domain of colin.i.king@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=colin.i.king@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755072157; a=rsa-sha256;
+	cv=none;
+	b=4sEU3xDyGnyWyFmUSi3Tte/6geSVNRMrAtHlYCg9+o9Msi2QBrgEnUO6GlsgkyW1Fl++5z
+	R9o94lytqgI+8dczt/SOSANaF67S54yYU6r3Jt81u4TcL6MuKo6lmGYLDlDeRVNg0zEIDG
+	SXomZr260RahwdioI2BjByUpBHVthW8=
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3b78294a233so5168780f8f.3
+        for <linux-mm@kvack.org>; Wed, 13 Aug 2025 01:02:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755072156; x=1755676956; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XVe0idgYx1J+jUFo1Pbaqi+aQhg27OfKm5O0YenTYzE=;
+        b=PpOkLAodoXT14vetIZleHB8FscIrQjnTxmqJLbAaoUj2yKl26szY3wd5WL18yE3qyf
+         p6i5F82bfJAO5mgKCKpv5WBuStZARhzreebmbKEry1FzMgZF1ED9osxnL2uzq3wwyTax
+         R2RxtoJS5942E7t6RZA381KzMbZQHIvljE7uK6SA6pGiNbOYnyf080WQl+gNDqDMIJQO
+         pgtEYfQ5rtZeOOrdedO90RfTMUbFpWFliC8wBLw/WOOtqzQKq6sYaevUqP9UcKjqLKVQ
+         K6OmZq6p+/yHfmeW2tUleWq6/vB+sHA7p/9Nscr98onnmzVwM39JaArUZKdR93s48OBf
+         S2oA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755072156; x=1755676956;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XVe0idgYx1J+jUFo1Pbaqi+aQhg27OfKm5O0YenTYzE=;
+        b=nHUc29r1h5Ra/DIkrB682cH9QA1zSq2+UTwcEpVOX4p0C64F5HqdXNbo+RQ07NGx/5
+         r69TKHA1ySh/ZbG/VO7v5DoWxO3lLS3Qik/ENqJst/ZUo8ffyra3X0OtC9KrJPERkNRW
+         mHhkWFCk+GBK6dWoFelPTVFHnkRo1PDugDrCYULvDLQZeK0Ojnm/CL+NmcDFEahSQpZn
+         Bt3GGEFaUh3H0RORPVgzlquLESxXBzkSpnek6uHPnTqfOXDrT1LsN4aWpjlYQa6QWRIw
+         Be1PiCmD2pq4o+lwcoGT0K+/7g5rNrdyAewFMnYtnRvzqOGHPoZ/EiHns9rvUAL/Udal
+         7Gtw==
+X-Forwarded-Encrypted: i=1; AJvYcCV2olwS9kzy0+krSHCEkeHqkfuSuw4xvfSHWUc66go2+AHuuRW6/VJMAAY3q0cEvJvXZOp5MUo+oQ==@kvack.org
+X-Gm-Message-State: AOJu0YwusYcGuLkTcxVA1774k3zGzHRP2UE2H4gxp4uoakt4fWBk7LHG
+	u9QCqVGYRzEbN8mwUQ0DbiwWLNvuGp4tovpplbCS9pJMJPvPBys57eUx
+X-Gm-Gg: ASbGncvwfyc96DRcUoWtxMNbl+ZNy2FSVeHbMhsV91Z5Yz0mEIGs/I/uEClmjUxWV7p
+	x8KYk/zo9SDseR6pBj6mILHdjOwCwgxBKJqO5RwEGsTa4UYWvr4BIcJz4A8+AOHPeL/1eoDQ8gB
+	3a1uowTTBUc5Ti6C3vKN09fE1YZ7YEtV22fMb+9ZsvOaONZrCMKm6r/9uyxavoQ+qAsVj7RZWKd
+	IIKtyxWbsJt43+w8l/Ydf/j43fwNof74dOMWbZoagmuOSjxKtaaO+hQV99ORdlInXb2PZHfxNpU
+	y8idQKUksgPllpVf+CKsbNVJhNEZoy/6Jrm5YyGiiaI/menLUV95i+3qjS++DIivQdaoucLIsvk
+	2mGQYk06taEz09BarEZhy
+X-Google-Smtp-Source: AGHT+IF2JGABNVx7BZux6MpyAVD1R1nKdKMygCmpURXyXIjOojtcxVvm42vK3OiP0B8MvRjzDo8c+g==
+X-Received: by 2002:a05:6000:240c:b0:3b7:8af8:b91d with SMTP id ffacd0b85a97d-3b917eae69emr1631360f8f.35.1755072155716;
+        Wed, 13 Aug 2025 01:02:35 -0700 (PDT)
+Received: from localhost ([87.254.0.133])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45a16de760fsm18991555e9.17.2025.08.13.01.02.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Aug 2025 01:02:35 -0700 (PDT)
+From: Colin Ian King <colin.i.king@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH][next] selftests/mm: Fix spelling mistake "mrmeap" -> "mremap"
+Date: Wed, 13 Aug 2025 09:01:56 +0100
+Message-ID: <20250813080156.1977375-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJ-ks9kECSobk0NX6SXn1US7My028POc=nLmw0AHZGiRUstP2g@mail.gmail.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 96633140002
-X-Stat-Signature: wypx9p3779gnmon33xpx9wth9zx4suoh
+X-Rspamd-Queue-Id: 84D5D10000B
 X-Rspam-User: 
-X-HE-Tag: 1755072024-819493
-X-HE-Meta: U2FsdGVkX19EPtGven7s18gQcgy68vHqc0qgXmQbgyBeuqscZNSmJoWTSln5rVNWV6ErY/SINW5tIuTzSGfPaqXsxPWA53uDaj+0o/edNppcZ4dJ5evNDkxTNvUTNR+yMNgn3txQEuMzlOptPf08ooNAUjbIthXfnNQOfGQlcYC+7B3oQKKm5Vxg3uEKzGPRAq4KBjdaxO1dAMVVZN8MF57jT3aT9vsHtXfMPS6bsuVAj9u5WBMeE6t9ZKuP4hGNfpafLHhrWVcWeezcup7hnjRc9iOsRciTYDbEyoVUlZf1aqVxS17WtqIHNa1uzUo9j+xLr5SMTUsM0XmQ8dt7yylA64oM+3i5k/DoI+SbdSUb+JdJ4Gph0YLAR3QUNlTUQ7VLOB6VgHJVI5CK/xtsP37jLx4UDwEFB3X23H+8v8q/XrY1vMQFna561wFJjPc5dLmGirLjIduRd14aZiPURRGIw8i/y0EWg9JtU9AMUqXdgkhXqXJMm5E+IUhOCAGp/wDsOdly5kM66JRK6/echtljIVA9rT/ZUw8MPqt1XPBtMKrpzd9HN9WtS7z+ih3w5WcW/FmjSE3Ar2TszYpRlevuIiVkABtxn1heIitshoE+u+SQRp51nkXrjXmfc3PQgksi1c3bGANqmOFHQpKbIx/gn8mX0/MhmnVYnCXtOvuzxekhFFijMItafIWVgd8vFWIGp6mYoVeKjDATcFr3HO3DGTw4/jklOZiHM2Og4oO14Q7a1vZAIZdzYUktxWbdANNBVK3CyTDO/ZIzf/EukqVdVDWiRy7DfgJ+AwUU92csiiYd+k3qPdYpkh/dOt0D9os/dCStA/G4hPpeLFucA5RdP9ozZgtQloFwMRyXLkGbCjUegELT8zQMT2xPcwxesRvIN2tHIXKtmu0/7KSWxdklmg+GJ1y1
+X-Stat-Signature: y4tsem4aig1j5w83za5m1st995u9gcir
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1755072157-893649
+X-HE-Meta: U2FsdGVkX19VIVOSFHWgjTMWnsyu9QDZeCATNpt8VBq4TixcVHzDxFfT77NosT8nRoIsEqNjHqu+x5Fd/9ClBSxVB8DJKNstsU20h+GUDUmZyAwLee5ZGTNl0VxpIfcikNlm5wKTz0v69nuHIsdvE9YZ9y6E+Hsyxmg1/mYE155ux4LTr1eigQLfUHUjP3KCBM63D2j3dT3855Cxjvb6cLsEfpRtTKELrVAC/2idu0fgZ447f+J33vieTCCf65CxNACmFGY0Hn+zJJ3PcDmOjFF6vOQqrLzSovcOWB/ncBgq0MTSgpbkXRJCpiA8hZKYtW9dYoAS6T52ArS7ocNFrOTJD9ZyrytvM9Y+1F+vDjSkx4wBprlQZ93zdnvZ4/Wsi5gAsV9aVplo/N1X53UVH9s08l9GD2zoF8V44b4BkXezXi0z+t3H7LnEx8EvoHqnUbLwFw/maujvEK6lLoCq5edAIuGWK+EvnscfuW/bFG80QqtQJzON/bAP0HSX5DCbdOVhUGVuu6MmkpfdwcT3eGCVUBO3pNdqxMa/Qc14eIXoaGtxLImwGFuczWo0JLkX2H7NAP+hxvvSsXl9nw5Bk5CQr+He7MmW1bsVThkOlcmjj+b348WKWQacHGvlCw+BUND0mAVurk8PBNMO0tiMeJgoJfAKlb+FmgMfmLYbofDqPVgeWMzjQWB/aJ36vZs5YKhyygbEo3H/G/53sfVqUQ0mTUY7w2C6jeZ+kzFfkIHbLLCKhW7mJ2d7cKxPKqTGsetWS2WpqjDbvl0wDfZD9sy9WmXAchfkSphXN6751n20zSEG2rIkLSytFfbqzS1fJ8K0BQJP3b9fSQ5fRH/uT80LNPPwbqk2u6AIMnGpA8EPBLX+B5KElEJBoqwH+R15Asvnkzze3swUl8fqN3kVKV/uUXNQa5ulKzaHn1BGIRXCoxE+G4ZxM+Bq8eDzEr710JdaGIhBITsGrqqvzTL
+ 7Aygli3p
+ kzUU6CxXizXKVeUyOdv0YHlOn6IKfOPWcEXXNHDKGV1mrdOaQWSiAdqaCaFNLz/0BbQFxmATbvadHyXmCdb6qAJ91kOpp3Ppwb6/+En5qzJy2EGw44NHP5pHnPMIzzuVZ8gCcjApcvbDuIIM1ZymXOKmrZM0MqqZdJl5D5SKgqJQxqRq5gNvZ4A1NazwXRp7PHX2Qc61V50T1RSBHlS1SpoDHWXyev3+CSGDb984+ZdPprIUhH+zbjuy1Voiknym1XfUsbyAqLsN57q964zr2DEUT7iUfZPXLQF27ASjx+7DvWPg8U4cEtwCQ/RAiGE7v4aPIFFXKTFxL+lyUMQDxeESt5Y63rulk0XS6R9j+Ysi0iSak30tMOkwXECLqAdEnKwsdmeAJx14e2ajsHlKOJQ2DpnmnkRXip4kY8WGQ1nezCYrnO9pWufCLXG5MTtFP7vL2zo/cCCjkbwbnruy7XfCkr1ufulemorqUjf4KcdStyof8oodaZxcUjrbuodKg5vDWGAio+UtSma2Wk1dzb7yIYdeWjXdsNGjCLQOQEV8BGk0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,272 +124,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 11, 2025 at 02:02:59PM -0400, Tamir Duberstein wrote:
-> On Mon, Aug 11, 2025 at 10:35 AM Beata Michalska
-> <beata.michalska@arm.com> wrote:
-> >
-> > On Mon, Aug 11, 2025 at 09:09:56AM -0400, Tamir Duberstein wrote:
-> > > On Mon, Aug 11, 2025 at 8:57 AM Beata Michalska <beata.michalska@arm.com> wrote:
-> > > >
-> > > > Hi Tamir,
-> > > >
-> > > > Apologies for such a late drop.
-> > >
-> > > Hi Beata, no worries, thanks for your review.
-> > >
-> > > >
-> > > > On Sun, Jul 13, 2025 at 08:05:49AM -0400, Tamir Duberstein wrote:
-> > [snip] ...
-> > > > > +/// A reserved slot in an array.
-> > > > > +///
-> > > > > +/// The slot is released when the reservation goes out of scope.
-> > > > > +///
-> > > > > +/// Note that the array lock *must not* be held when the reservation is filled or dropped as this
-> > > > > +/// will lead to deadlock. [`Reservation::fill_locked`] and [`Reservation::release_locked`] can be
-> > > > > +/// used in context where the array lock is held.
-> > > > > +#[must_use = "the reservation is released immediately when the reservation is unused"]
-> > > > > +pub struct Reservation<'a, T: ForeignOwnable> {
-> > > > > +    xa: &'a XArray<T>,
-> > > > > +    index: usize,
-> > > > > +}
-> > > > > +
-> > [snip] ...
-> > > > > +
-> > > > > +impl<T: ForeignOwnable> Drop for Reservation<'_, T> {
-> > > > > +    fn drop(&mut self) {
-> > > > > +        // NB: Errors here are possible since `Guard::store` does not honor reservations.
-> > > > > +        let _: Result = self.release_inner(None);
-> > > > This seems bit risky as one can drop the reservation while still holding the
-> > > > lock?
-> > >
-> > > Yes, that's true. The only way to avoid it would be to make the
-> > > reservation borrowed from the guard, but that would exclude usage
-> > > patterns where the caller wants to reserve and fulfill in different
-> > > critical sections.
-> > >
-> > > Do you have a specific suggestion?
-> > I guess we could try with locked vs unlocked `Reservation' types, which would
-> > have different Drop implementations, and providing a way to convert locked into
-> > unlocked. Just thinking out loud, so no, nothing specific here.
-> > At very least we could add 'rust_helper_spin_assert_is_held() ?'
-> 
-> I don't see how having two types of reservations would help.
-> 
-> Can you help me understand how you'd use `rust_helper_spin_assert_is_held` here?
+There are spelling mistakes in perror message. Fix these.
 
-Probably smth like:
-
---- a/rust/kernel/xarray.rs
-+++ b/rust/kernel/xarray.rs
-@@ -188,7 +188,12 @@ fn with_guard<F, U>(&self, guard: Option<&mut Guard<'_, T>>, f: F) -> U
-         F: FnOnce(&mut Guard<'_, T>) -> U,
-     {
-         match guard {
--            None => f(&mut self.lock()),
-+            None => {
-+                unsafe {
-+                    bindings::spin_assert_not_held(&(*self.xa.get()).xa_lock as *const _ as *mut _);
-+                }
-+                f(&mut self.lock())
-+            }
-             Some(guard) => {
-                 assert_eq!(guard.xa.xa.get(), self.xa.get());
-                 f(guard)
-
-but that requires adding the helper for 'lockdep_assert_not_held'.
-That said, it is already too late as we will hit deadlock anyway.
-I would have to ponder on that one a bit more to come up with smth more sensible.
-> 
-> > >
-> > > > > +    }
-> > > > >  }
-> > > > >
-> > > > >  // SAFETY: `XArray<T>` has no shared mutable state so it is `Send` iff `T` is `Send`.
-> > > > > @@ -282,3 +617,136 @@ unsafe impl<T: ForeignOwnable + Send> Send for XArray<T> {}
-> > > > >  // SAFETY: `XArray<T>` serialises the interior mutability it provides so it is `Sync` iff `T` is
-> > > > >  // `Send`.
-> > > > >  unsafe impl<T: ForeignOwnable + Send> Sync for XArray<T> {}
-> > > > > +
-> > > > > +#[macros::kunit_tests(rust_xarray_kunit)]
-> > > > > +mod tests {
-> > > > > +    use super::*;
-> > > > > +    use pin_init::stack_pin_init;
-> > > > > +
-> > > > > +    fn new_kbox<T>(value: T) -> Result<KBox<T>> {
-> > > > > +        KBox::new(value, GFP_KERNEL).map_err(Into::into)
-> > > > I believe this should be GFP_ATOMIC as it is being called while holding the xa
-> > > > lock.
-> > >
-> > > I'm not sure what you mean - this function can be called in any
-> > > context, and besides: it is test-only code.
-> > Actually it cannot: allocations using GFP_KERNEL can sleep so should not be
-> > called from atomic context, which is what is happening in the test cases.
-> 
-> I see. There are no threads involved in these tests, so I think it is
-> just fine to sleep with this particular lock held. Can you help me
-> understand why this is incorrect?
-Well, you won't probably see any issues with your tests, but that just seems
-like a bad practice to start with.
-Within the test, this is being called while in atomic context, and this simply
-violates the rule of not sleeping while holding a spinlock.
-The sleep might be triggered by memory reclaim which might kick in when using
-'GFP_KERNEL' flag. Which is why non-sleeping allocation should be used through
-'GFP_ATOMIC' or 'GFP_NOWAIT'. So it's either changing the flag or moving the
-allocation outside of the atomic section.
-
-
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 ---
-I will be off for next week so apologies in any delays in replying.
+ tools/testing/selftests/mm/mremap_test.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-BR
-Beata
-> 
-> >
-> > ---
-> > BR
-> > Beata
-> > >
-> > > >
-> > > > Otherwise:
-> > > >
-> > > > Tested-By: Beata Michalska <beata.michalska@arm.com>
-> > >
-> > > Thanks!
-> > > Tamir
-> > >
-> > > >
-> > > > ---
-> > > > BR
-> > > > Beata
-> > > > > +    }
-> > > > > +
-> > > > > +    #[test]
-> > > > > +    fn test_alloc_kind_alloc() -> Result {
-> > > > > +        test_alloc_kind(AllocKind::Alloc, 0)
-> > > > > +    }
-> > > > > +
-> > > > > +    #[test]
-> > > > > +    fn test_alloc_kind_alloc1() -> Result {
-> > > > > +        test_alloc_kind(AllocKind::Alloc1, 1)
-> > > > > +    }
-> > > > > +
-> > > > > +    fn test_alloc_kind(kind: AllocKind, expected_index: usize) -> Result {
-> > > > > +        stack_pin_init!(let xa = XArray::new(kind));
-> > > > > +        let mut guard = xa.lock();
-> > > > > +
-> > > > > +        let reservation = guard.reserve_limit(.., GFP_KERNEL)?;
-> > > > > +        assert_eq!(reservation.index(), expected_index);
-> > > > > +        reservation.release_locked(&mut guard)?;
-> > > > > +
-> > > > > +        let insertion = guard.insert_limit(.., new_kbox(0x1337)?, GFP_KERNEL);
-> > > > > +        assert!(insertion.is_ok());
-> > > > > +        let insertion_index = insertion.unwrap();
-> > > > > +        assert_eq!(insertion_index, expected_index);
-> > > > > +
-> > > > > +        Ok(())
-> > > > > +    }
-> > > > > +
-> > > > > +    #[test]
-> > > > > +    fn test_insert_and_reserve_interaction() -> Result {
-> > > > > +        const IDX: usize = 0x1337;
-> > > > > +
-> > > > > +        fn insert<T: ForeignOwnable>(
-> > > > > +            guard: &mut Guard<'_, T>,
-> > > > > +            value: T,
-> > > > > +        ) -> Result<(), StoreError<T>> {
-> > > > > +            guard.insert(IDX, value, GFP_KERNEL)
-> > > > > +        }
-> > > > > +
-> > > > > +        fn reserve<'a, T: ForeignOwnable>(guard: &mut Guard<'a, T>) -> Result<Reservation<'a, T>> {
-> > > > > +            guard.reserve(IDX, GFP_KERNEL)
-> > > > > +        }
-> > > > > +
-> > > > > +        #[track_caller]
-> > > > > +        fn check_not_vacant<'a>(guard: &mut Guard<'a, KBox<usize>>) -> Result {
-> > > > > +            // Insertion fails.
-> > > > > +            {
-> > > > > +                let beef = new_kbox(0xbeef)?;
-> > > > > +                let ret = insert(guard, beef);
-> > > > > +                assert!(ret.is_err());
-> > > > > +                let StoreError { error, value } = ret.unwrap_err();
-> > > > > +                assert_eq!(error, EBUSY);
-> > > > > +                assert_eq!(*value, 0xbeef);
-> > > > > +            }
-> > > > > +
-> > > > > +            // Reservation fails.
-> > > > > +            {
-> > > > > +                let ret = reserve(guard);
-> > > > > +                assert!(ret.is_err());
-> > > > > +                assert_eq!(ret.unwrap_err(), EBUSY);
-> > > > > +            }
-> > > > > +
-> > > > > +            Ok(())
-> > > > > +        }
-> > > > > +
-> > > > > +        stack_pin_init!(let xa = XArray::new(Default::default()));
-> > > > > +        let mut guard = xa.lock();
-> > > > > +
-> > > > > +        // Vacant.
-> > > > > +        assert_eq!(guard.get(IDX), None);
-> > > > > +
-> > > > > +        // Reservation succeeds.
-> > > > > +        let reservation = {
-> > > > > +            let ret = reserve(&mut guard);
-> > > > > +            assert!(ret.is_ok());
-> > > > > +            ret.unwrap()
-> > > > > +        };
-> > > > > +
-> > > > > +        // Reserved presents as vacant.
-> > > > > +        assert_eq!(guard.get(IDX), None);
-> > > > > +
-> > > > > +        check_not_vacant(&mut guard)?;
-> > > > > +
-> > > > > +        // Release reservation.
-> > > > > +        {
-> > > > > +            let ret = reservation.release_locked(&mut guard);
-> > > > > +            assert!(ret.is_ok());
-> > > > > +            let () = ret.unwrap();
-> > > > > +        }
-> > > > > +
-> > > > > +        // Vacant again.
-> > > > > +        assert_eq!(guard.get(IDX), None);
-> > > > > +
-> > > > > +        // Insert succeeds.
-> > > > > +        {
-> > > > > +            let dead = new_kbox(0xdead)?;
-> > > > > +            let ret = insert(&mut guard, dead);
-> > > > > +            assert!(ret.is_ok());
-> > > > > +            let () = ret.unwrap();
-> > > > > +        }
-> > > > > +
-> > > > > +        check_not_vacant(&mut guard)?;
-> > > > > +
-> > > > > +        // Remove.
-> > > > > +        assert_eq!(guard.remove(IDX).as_deref(), Some(&0xdead));
-> > > > > +
-> > > > > +        // Reserve and fill.
-> > > > > +        {
-> > > > > +            let beef = new_kbox(0xbeef)?;
-> > > > > +            let ret = reserve(&mut guard);
-> > > > > +            assert!(ret.is_ok());
-> > > > > +            let reservation = ret.unwrap();
-> > > > > +            let ret = reservation.fill_locked(&mut guard, beef);
-> > > > > +            assert!(ret.is_ok());
-> > > > > +            let () = ret.unwrap();
-> > > > > +        };
-> > > > > +
-> > > > > +        check_not_vacant(&mut guard)?;
-> > > > > +
-> > > > > +        // Remove.
-> > > > > +        assert_eq!(guard.remove(IDX).as_deref(), Some(&0xbeef));
-> > > > > +
-> > > > > +        Ok(())
-> > > > > +    }
-> > > > > +}
-> > > > >
-> > > > > --
-> > > > > 2.50.1
-> > > > >
-> > > > >
-> > >
+diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
+index 5bd52a951cbd..e289bb1112db 100644
+--- a/tools/testing/selftests/mm/mremap_test.c
++++ b/tools/testing/selftests/mm/mremap_test.c
+@@ -846,7 +846,7 @@ static void mremap_move_multi_invalid_vmas(FILE *maps_fp,
+ 	}
+ 	if (err != EFAULT) {
+ 		errno = err;
+-		perror("mrmeap() unexpected error");
++		perror("mremap() unexpected error");
+ 		success = false;
+ 		goto out_unmap;
+ 	}
+@@ -899,7 +899,7 @@ static void mremap_move_multi_invalid_vmas(FILE *maps_fp,
+ 	}
+ 	if (err != EFAULT) {
+ 		errno = err;
+-		perror("mrmeap() unexpected error");
++		perror("remapp() unexpected error");
+ 		success = false;
+ 		goto out_unmap;
+ 	}
+@@ -948,7 +948,7 @@ static void mremap_move_multi_invalid_vmas(FILE *maps_fp,
+ 	}
+ 	if (err != EFAULT) {
+ 		errno = err;
+-		perror("mrmeap() unexpected error");
++		perror("remapp() unexpected error");
+ 		success = false;
+ 		goto out_unmap;
+ 	}
+-- 
+2.50.1
+
 
