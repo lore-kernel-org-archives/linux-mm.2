@@ -2,93 +2,131 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C192FCA0EC4
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 01:50:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AD7DECA0EC4
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 01:52:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 635A690002B; Tue, 12 Aug 2025 21:50:33 -0400 (EDT)
+	id 48E078E0196; Tue, 12 Aug 2025 21:52:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60D088E0196; Tue, 12 Aug 2025 21:50:33 -0400 (EDT)
+	id 465718E019E; Tue, 12 Aug 2025 21:52:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 552BB90002B; Tue, 12 Aug 2025 21:50:33 -0400 (EDT)
+	id 37B018E0196; Tue, 12 Aug 2025 21:52:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 456418E0196
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 21:50:33 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id ED0B61DB185
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 01:50:32 +0000 (UTC)
-X-FDA: 83770054704.17.3F1F1DB
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 2F0308000A
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 01:50:30 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SF1rT0tA;
-	spf=pass (imf30.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 279AA8E019F
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 21:52:59 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BA5CE114F40
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 01:52:58 +0000 (UTC)
+X-FDA: 83770060836.23.9326CC9
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7163E80008;
+	Wed, 13 Aug 2025 01:52:51 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	spf=pass (imf02.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755049831;
+	s=arc-20220608; t=1755049976;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y8eBs0fHI7CmVwCx02H3JMhe4sR4fjcsdxnZfKRbvCM=;
-	b=xZ/4quSsx39jeLi1ot+JWFIpAW/Jcb0w6ERTQBQxoX+YtIhXtwdPgH9vn0hUP9bJhDsmwM
-	oJDNDOIM+jdXOTew8PeuVCIBE6cKB0TMSV+09GkvOd8F0quC+zeH1Co6rRk2vsDLB58SmG
-	hmVFxb2SxRh4Bl3owCUW3uWiVEFUtWw=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SF1rT0tA;
-	spf=pass (imf30.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755049831; a=rsa-sha256;
-	cv=none;
-	b=eN/jDQghGc5EJlMxNG7F/13Jegskr7mEn20/Sa9tmyG9qvD4+vOCOAtNGHGdpusnPTKTh9
-	/+wBJ5ljZz78WnvSm7XxK2R4hYmJ8luaGQYavCLvtbXcrIY1eFPsrRMEmKT+2iZMDjcL5s
-	EZGUOYiHErgbZAy8npYAG4cmiuaVGrY=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755049829;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=y8eBs0fHI7CmVwCx02H3JMhe4sR4fjcsdxnZfKRbvCM=;
-	b=SF1rT0tAM6JS0llX/Cu01eukUONtWr3JXh1MlsvRryqzvc/FfamrPE9KmmQ2GbColMhSuS
-	I6wp83nQACLp8cJcVKIMxJwC+2qdTTe51goUYp7nNXjPFs+XhEkthpfgWEnL+wQgornrFK
-	3hGMiQHpJklYImJ1u1HTtG4dUoIDHEc=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>,  Eric Dumazet
- <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Neal Cardwell
- <ncardwell@google.com>,  Paolo Abeni <pabeni@redhat.com>,  Willem de
- Bruijn <willemb@google.com>,  Matthieu Baerts <matttbe@kernel.org>,  Mat
- Martineau <martineau@kernel.org>,  Johannes Weiner <hannes@cmpxchg.org>,
-  Michal Hocko <mhocko@kernel.org>,  Shakeel Butt <shakeel.butt@linux.dev>,
-  Andrew Morton <akpm@linux-foundation.org>,  =?utf-8?Q?Michal_Koutn=C3=BD?=
- <mkoutny@suse.com>,  Tejun Heo <tj@kernel.org>,  Simon Horman
- <horms@kernel.org>,  Geliang Tang <geliang@kernel.org>,  Muchun Song
- <muchun.song@linux.dev>,  Mina Almasry <almasrymina@google.com>,  Kuniyuki
- Iwashima <kuni1840@gmail.com>,  netdev@vger.kernel.org,
-  mptcp@lists.linux.dev,  cgroups@vger.kernel.org,  linux-mm@kvack.org
-Subject: Re: [PATCH v3 net-next 09/12] net-memcg: Pass struct sock to
- mem_cgroup_sk_under_memory_pressure().
-In-Reply-To: <20250812175848.512446-10-kuniyu@google.com> (Kuniyuki Iwashima's
-	message of "Tue, 12 Aug 2025 17:58:27 +0000")
-References: <20250812175848.512446-1-kuniyu@google.com>
-	<20250812175848.512446-10-kuniyu@google.com>
-Date: Tue, 12 Aug 2025 18:49:50 -0700
-Message-ID: <87jz38q9c1.fsf@linux.dev>
+	bh=YcsutHOUWyK60hhYoAY0U9VqHDWR7i6ThQc7dfya0Wo=;
+	b=VZFxx4JeiWMT6cBCaVP939mHcSzVuKgDLP5wxErCNvdDtsBSz6eD/mdXlbS34uYCFjJaGg
+	qMuiEMFkuBEkVaJIRQZz70QTY33irU6B4Q3BirHufIzL85bNDjCo43F1cr0hE35WTJM0wi
+	jRmSWULHm6UV6eafETG0uHHunGERkSc=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=none;
+	spf=pass (imf02.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755049976; a=rsa-sha256;
+	cv=none;
+	b=Ca+kkUbRmgqto4nWwq6BLEdPHJ+a+EepBN4GVK1Dm3K7xwG5Kzj74R/dqWJX/7Z4WjDHDT
+	83JTaMwQJw6AKI9WyhjMKNRFbigNjcPZJJaXepTPIxHeQVl7X4FvRD1NuizQyz1afOE0Si
+	2N4kZ1fPVuD7hBENhEwPS3YrmmWHBtM=
+X-AuditID: a67dfc5b-c45ff70000001609-d4-689beb3dbd50
+Date: Wed, 13 Aug 2025 10:32:40 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org, virtualization@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org, linux-aio@kvack.org,
+	linux-btrfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Benjamin LaHaise <bcrl@kvack.org>, Chris Mason <clm@fb.com>,
+	Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Dave Kleikamp <shaggy@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	kernel_team@skhynix.com
+Subject: Re: [PATCH v1 2/2] treewide: remove MIGRATEPAGE_SUCCESS
+Message-ID: <20250813013240.GA78125@system.software.com>
+References: <20250811143949.1117439-1-david@redhat.com>
+ <20250811143949.1117439-3-david@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: nq5qbzk37815ebhpwf1zbereb5c5x85k
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250811143949.1117439-3-david@redhat.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0iTYRTHed67q8XrMnpshLAIS+liKJwu2uVLT9+KCsTIWvrWRpvGNNOo
+	WEpWRmojL21qqXgrw5yWravXLLppiS7yghkuW2kZVs5LuUXUtx//8z8/zocj0IoSdoGgjYmX
+	DDFqnYqTMbLPs4uWhTotmpV9dSrIq6rk4I59B0yZHvGQNl3LgLNpFEG3ycGDKSOXh7EqFw1t
+	P09SMJBfwcN4TysPKcVVHFhyUigoffWNgsKnnTS0fz1FwWR/ELTeLODhYnYyglcD5Tzcu/+E
+	gdd38jjorfzFwsSPaRYKbCYWvqcroXRshIdaYyMHv1wfWSi19TMw/sHOwLNsA9ytLuLgbfdP
+	Gl5OtbLQUlfBQmcywLVKDVhaevkN/mTCZULE3PecIxZjO0PG3rygSNGQkSEXUoZ5YjP38ORc
+	6mueFN8booj16lmOWEdNPHmcO8EQW/9qUmjMoklmUT0iD/Mr+a3KCNm6aEmnTZAMK8L2yjTD
+	NQPUoabjiVODdZQRPd+ZhgQBi8F41LktDXl5sPyijXYzIy7Gnz62e5gT/bHdPu5hH3EJtqbe
+	mGGZQIuOWfjc6RLGPZgrbsA2h5lyO+Ui4KxOnTtWiBKu+vGAd7Nc9MZPLr331GkxANunhzx1
+	WlTismnBHXvNbN7vSGfdPE9chOtvtVJ/Tnsm4Jx3IX/YFzeU25lMJJr/s5r/s5r/Wa8g+ipS
+	aGMS9GqtLni5JilGm7g8KlZvRTPPU3p8ctdtNNq2vRGJAlLNlretsWgUrDohLknfiLBAq3zk
+	+btnInm0OumoZIjdYzisk+IakVJgVPPlq74fiVaIB9Tx0kFJOiQZ/k4pwWuBEQWFDXdGuHY7
+	NpPH4AjapvTzDz+/MLSwfrDM3mDJnDj/LVxv8X6Rh4/ymwK7rlfX+gbrdc1NqJC0h/j6bdxi
+	/bR6MnRpxbG1EZHsvmsLt0bqhpx7S7o6/EMyAvZ/8WsucJ4JDK0fGdy4vmxOTUt0blS4K3ax
+	X3PsZbO5IPXDiZwwFROnUQcF0IY49W+ou5JiOAMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTcRyG+Z/7VsOTGR2VSBddFMqMgl95SehDJ4OIKLuA5NBDW84Zm3kp
+	pNnIUMt0eN3S0lCzBpaltsqSjWWjzLy0JmUhSksNpYuZ85YTIr89vO/7fHsZ3Duf9GMUqhRB
+	rZIppZSYEB8I022OGDXKt+aVesH1BhMFj52HYVb/gobcuYcEjFp/IPiod9Ggv1ZGw0SDG4e3
+	f7IwGKyop2Gqv50G3a0GCoylOgxqu39iUPXKgUPX90sYzAyEQntTJQ3WCjsJRSUXEXQP3qbh
+	aaudgJ7H1yn4ZJonYXpyjoRKs56E3/n+UDsxTsNDrYWCefcICbXmAQKmvjoJeF2iBovDRcKT
+	+9UUfPj4B4fO2XYSbC31JDguAtw1ycFo+0RHBfHTbj3iDZ87KN6o7SL4ib43GF89rCX4Qt0Y
+	zZsN/TSfl91D87eeDmN8450cim/8oaf5l2XTBG8e2MlXaYtxvqC6DfHPK0z0wTUnxOEJglKR
+	KqhDIuPE8rEHg9gZa2b67JcWTIs6juQiEcOx27nbRWbcwwS7nvs20rXIFLuRczqnFtmH3cQ1
+	Zt9bYDGDs65lXN7lGsJTrGSjOLPLgOUihpGwwBU7lJ7YmxW4hslntIcl7ArOXj60OMfZYM45
+	N7w4x1l/rm6O8cSiBbO1N5/08Cp2HdfW3I4VIIlhiW1YYhv+2zcRfgf5KFSpSTKFcscWTaI8
+	Q6VI3xKfnNSIFl5SmzlT+Aj96tlrQSyDpMslb3cZ5d6kLFWTkWRBHINLfSQVsQuRJEGWcU5Q
+	J59Un1UKGgvyZwjpakn0USHOmz0lSxESBeGMoP7XYozIT4uKb1S+mw5qjo/EbLa+FEnQ2qbX
+	x/ev2+2MpXyrAsNWnfcj7HVXen33RBfaIkx5aCjmSExda+dp9zjrTk02DG7b9t6KbejvEEd0
+	GiK3v2kOTCspovrUpnfH8hMOrfyVpvILCSgLd5hLL1wdKA+3UfvuhooCak7m1HtpsrhDuviN
+	UkIjl4UG42qN7C9NYmcCIQMAAA==
+X-CFilter-Loop: Reflected
+X-Rspamd-Queue-Id: 7163E80008
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2F0308000A
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1755049830-224362
-X-HE-Meta: U2FsdGVkX18NVgm7uN0bhexUzt+FU8wHKvMsJGq7hogNaNiPzZ2+bFVE7JXFLUUF/vW0rKXlf2eEW/WBT7l5j0W915a9eDMaEdJoGz4WUUjsm+FAVMTmOy857eU589f/pZ6Ixh+YxMME4GOCmxw6X3qpa5ZJcsqi9/Q9XKgVypLrCGARGzYBs4AksfSYC7iCfXURiZH8Q9NN9zP7GwGTh9Y6lZZUpBO+IxOpSP2BASrRhfvEG7gkAKX0hPMDv5R10D6/TStULmrsIn5RDA5eJjq0zuEK69iOm5TfFZ8Ip8LfqYunBmqdjddvPxtZwSQtYO4Zi0pwbmXzujSMWoMCBvIGcTMu2HevosRCW+XPCeVXRACFNEZgDixAo8XM4i6MfEdE04HJVgNQS4ITZKstRGZyHVyXatwd9eCxgM1d5x3SgSj/PWNJfQNR2m7ASGKWCcLhFlF6tkQSfAQ/mBdSMdkBmEselZ4aII3CFuKkv26uwyljszwdKZ2XkrLKIG/2Jj+W8sb2gfSEpZO7NDX0bo1dvhEqfgAqkWEOPe/yUieR0mb1dpmcfI0xA7yGGp+mgxnb99KPR+P/uWEfsdfLFulCxvZWEIfqLqnd/SxWSXVqf8y5oHH9ifVUyHr8BSGsarLcOl0H+TrRGwyHYw45FKXMrZfAzAK4136UsN0OXfO4MyyK5+tGm3ri0GNg8qP7ypmLZKEkoJOnpIPm2ypu9BwYRvSQv1NQI7K8RvqR3DSHxgUF0xBOoKeF0IcX8bYcp8q+fhByleEqTusuys33KN9E4KGG4n5KL/Vqn/MAos7YvljLyjZKB09g9qCRTewHNtFcWRdXlqx+Q0gTkleswBuA5jyhtDRxDJD2ux7NiTsljGJ+A+2UF+L5q/RGu2TIO5Ca80FK3egv1uXfMuTha6TOMQDtbwmy7IGfZEf4DSHLgmC7onROlyprBeJ2VICK00c/C4vlaLJTDxV4zIl
- 74bNSIiU
- ocNe275gB4PnHxMf4wZ/vsWa7dE2+yX1UPgdQTl54EnjIJdboO8WmPJyR0SCBG2jCCuBFlMLWb169kttVPjN557ct6MWZBx+s54SOLnelTJGHnJn3C+dtfKKHjX9r6RQkSv/qWmS2Utrt7Z7ji6PbfmcpDYMJl0n8QKJ6Ll800s99ZX7P7xRJJ1sxRC9icD3THS+Suq3Vmvy2TP73Ixn4DMXKQ/VAsHEb7VBo8rkt2oWmehVeDCOW0KD4TZUx/MAWQyOHNAnQraf8cqc=
+X-Stat-Signature: 9obn71yt557o7nrqrwf1uxuyocd83kqz
+X-HE-Tag: 1755049971-684634
+X-HE-Meta: U2FsdGVkX1/sYqAIgP64Gpe1M1GjT3NzvDn7w/zyEpNkzC8fya3ocBhNBkjkaHyah7Igi4UrQJOdLOYTTYigIfhWsAhWzqlzrHyeqA6Z9v0rQiFSwL9uciYR1vvYLeiyCL2etNKOMKXx6V/IzIDjKVMm3WLRlAN09YdkEanLYiFINS6KiixNZLoO4EhChCTPSRTchRvgRdmzgO52uzgdmRtGTtVJCt0FWMLCwR46vY9T3ijNb10H7g2Jj79HirxYXbVLTOx3d6978CjkV0sKOJ/aaOzRg9U1SssItBd7NyvyW/RM89E1eW5UDmRdaPLNhoHuER10rXTMFf6tO5sptqQ2/UWyD8WWi7MB1+bwiZqg+tpfu0G4l/Gpr2VGiascjAdoUos0YFNRJCVF8ervLEPztCExIDMGxTybWCjHR4OLUeyIC1PxrdyaAFkzqvmB87n99r8z8iqqYoTXvpQOuBAR0Hyq4o1CSFIWhq8p6sIa+GMjgCB327WN8eGv/F18G/w3TB3sJAwqC562CKU8iGRibmX+fFSYgP7QuQNynr/Aojq/dvDZA8E0cZQz/iHxi5PZ8qYNvJyDKBIf3ttxOOyJmWyw9GOgHALyzncUs2bXSOCx4xWXdQaIzKeeYO3e2pUfgDCCpiUsoiTvUsvcasv8uGlgcQYhznwIxd316hx366cfusbMHdbEtWy0QeFiNgeCSKSB3KcBBYBhb1eTCCXXBzG4Oq+H83fd6B2u9pBXqon3MWbIwMYo9IMx3LAojsXCPVDfgPJXVed7oFjR8jwKhzSHWtsLtKxYdqBTlh5GSA9P8lGP0tyP118pkUQBcZ9oDl5dCta+/TN2gWWasNkyArytuRwjkVtbiedRRaviN9bvymXjzTxsy1W/MzhjiQ/7y/rgF4ge+6RyvEYLidTeWCmOzH3ZA3TUkRyD81kcwyi7bGjubC7NkBLAFpMbsKgM25AKptnoXd+2y7y
+ rrrUxai7
+ IoZy1yYIkv44VrKj9/3mS75S+k0nkU3DATynBKRuUZmL2QV8MXKpPwCXn2mar5eQ4RigY6HL7iA531cQ6bBPs4ceuj7B6YlHV56AeLm0Fls6rmv0rWu4mVwP0aF3zxQQvQOyypSwWGlgkr9S68c2EPG1RCnMfNFaoK/P6TUs3eRqot3FbxtI65ymHkBIfDdXVfo75AH834pMm9T0q3X4CCkZyr0tP/F5xVt+mU902cUojqA4y3uNaC/i4oXMEmFCV2dwNIvKiAypdQsIHX0GHmSubnuTNp3KPcRnCAjquFOxpoVFQ5uOfQL63aw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,19 +135,413 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Kuniyuki Iwashima <kuniyu@google.com> writes:
+On Mon, Aug 11, 2025 at 04:39:48PM +0200, David Hildenbrand wrote:
+> At this point MIGRATEPAGE_SUCCESS is misnamed for all folio users,
+> and now that we remove MIGRATEPAGE_UNMAP, it's really the only "success"
+> return value that the code uses and expects.
+> 
+> Let's just get rid of MIGRATEPAGE_SUCCESS completely and just use "0"
+> for success.
+> 
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>  arch/powerpc/platforms/pseries/cmm.c |  2 +-
+>  drivers/misc/vmw_balloon.c           |  4 +--
+>  drivers/virtio/virtio_balloon.c      |  2 +-
+>  fs/aio.c                             |  2 +-
+>  fs/btrfs/inode.c                     |  4 +--
+>  fs/hugetlbfs/inode.c                 |  4 +--
+>  fs/jfs/jfs_metapage.c                |  8 +++---
+>  include/linux/migrate.h              | 10 +------
+>  mm/migrate.c                         | 40 +++++++++++++---------------
+>  mm/migrate_device.c                  |  2 +-
+>  mm/zsmalloc.c                        |  4 +--
+>  11 files changed, 36 insertions(+), 46 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platforms/pseries/cmm.c
+> index 5e0a718d1be7b..0823fa2da1516 100644
+> --- a/arch/powerpc/platforms/pseries/cmm.c
+> +++ b/arch/powerpc/platforms/pseries/cmm.c
+> @@ -545,7 +545,7 @@ static int cmm_migratepage(struct balloon_dev_info *b_dev_info,
+>         /* balloon page list reference */
+>         put_page(page);
+> 
+> -       return MIGRATEPAGE_SUCCESS;
+> +       return 0;
 
-> We will store a flag in the lowest bit of sk->sk_memcg.
->
-> Then, we cannot pass the raw pointer to mem_cgroup_under_socket_pressure().
->
-> Let's pass struct sock to it and rename the function to match other
-> functions starting with mem_cgroup_sk_.
->
-> Note that the helper is moved to sock.h to use mem_cgroup_from_sk().
->
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> Reviewed-by: Eric Dumazet <edumazet@google.com>
+Yeah.  The unnecessary thing has been kept.  Looks better to me.
 
-Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
+Reviewed-by: Byungchul Park <byungchul@sk.com>
+
+	Byungchul
+
+>  static void cmm_balloon_compaction_init(void)
+> diff --git a/drivers/misc/vmw_balloon.c b/drivers/misc/vmw_balloon.c
+> index 6653fc53c951c..6df51ee8db621 100644
+> --- a/drivers/misc/vmw_balloon.c
+> +++ b/drivers/misc/vmw_balloon.c
+> @@ -1806,7 +1806,7 @@ static int vmballoon_migratepage(struct balloon_dev_info *b_dev_info,
+>                  * the list after acquiring the lock.
+>                  */
+>                 get_page(newpage);
+> -               ret = MIGRATEPAGE_SUCCESS;
+> +               ret = 0;
+>         }
+> 
+>         /* Update the balloon list under the @pages_lock */
+> @@ -1817,7 +1817,7 @@ static int vmballoon_migratepage(struct balloon_dev_info *b_dev_info,
+>          * If we succeed just insert it to the list and update the statistics
+>          * under the lock.
+>          */
+> -       if (ret == MIGRATEPAGE_SUCCESS) {
+> +       if (!ret) {
+>                 balloon_page_insert(&b->b_dev_info, newpage);
+>                 __count_vm_event(BALLOON_MIGRATE);
+>         }
+> diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
+> index e299e18346a30..eae65136cdfb5 100644
+> --- a/drivers/virtio/virtio_balloon.c
+> +++ b/drivers/virtio/virtio_balloon.c
+> @@ -875,7 +875,7 @@ static int virtballoon_migratepage(struct balloon_dev_info *vb_dev_info,
+>         balloon_page_finalize(page);
+>         put_page(page); /* balloon reference */
+> 
+> -       return MIGRATEPAGE_SUCCESS;
+> +       return 0;
+>  }
+>  #endif /* CONFIG_BALLOON_COMPACTION */
+> 
+> diff --git a/fs/aio.c b/fs/aio.c
+> index 7fc7b6221312c..059e03cfa088c 100644
+> --- a/fs/aio.c
+> +++ b/fs/aio.c
+> @@ -445,7 +445,7 @@ static int aio_migrate_folio(struct address_space *mapping, struct folio *dst,
+>         folio_get(dst);
+> 
+>         rc = folio_migrate_mapping(mapping, dst, src, 1);
+> -       if (rc != MIGRATEPAGE_SUCCESS) {
+> +       if (rc) {
+>                 folio_put(dst);
+>                 goto out_unlock;
+>         }
+> diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+> index b77dd22b8cdbe..1d64fee6f59e6 100644
+> --- a/fs/btrfs/inode.c
+> +++ b/fs/btrfs/inode.c
+> @@ -7411,7 +7411,7 @@ static int btrfs_migrate_folio(struct address_space *mapping,
+>  {
+>         int ret = filemap_migrate_folio(mapping, dst, src, mode);
+> 
+> -       if (ret != MIGRATEPAGE_SUCCESS)
+> +       if (ret)
+>                 return ret;
+> 
+>         if (folio_test_ordered(src)) {
+> @@ -7419,7 +7419,7 @@ static int btrfs_migrate_folio(struct address_space *mapping,
+>                 folio_set_ordered(dst);
+>         }
+> 
+> -       return MIGRATEPAGE_SUCCESS;
+> +       return 0;
+>  }
+>  #else
+>  #define btrfs_migrate_folio NULL
+> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+> index 09d4baef29cf9..34d496a2b7de6 100644
+> --- a/fs/hugetlbfs/inode.c
+> +++ b/fs/hugetlbfs/inode.c
+> @@ -1052,7 +1052,7 @@ static int hugetlbfs_migrate_folio(struct address_space *mapping,
+>         int rc;
+> 
+>         rc = migrate_huge_page_move_mapping(mapping, dst, src);
+> -       if (rc != MIGRATEPAGE_SUCCESS)
+> +       if (rc)
+>                 return rc;
+> 
+>         if (hugetlb_folio_subpool(src)) {
+> @@ -1063,7 +1063,7 @@ static int hugetlbfs_migrate_folio(struct address_space *mapping,
+> 
+>         folio_migrate_flags(dst, src);
+> 
+> -       return MIGRATEPAGE_SUCCESS;
+> +       return 0;
+>  }
+>  #else
+>  #define hugetlbfs_migrate_folio NULL
+> diff --git a/fs/jfs/jfs_metapage.c b/fs/jfs/jfs_metapage.c
+> index b98cf3bb6c1fe..871cf4fb36366 100644
+> --- a/fs/jfs/jfs_metapage.c
+> +++ b/fs/jfs/jfs_metapage.c
+> @@ -169,7 +169,7 @@ static int __metapage_migrate_folio(struct address_space *mapping,
+>         }
+> 
+>         rc = filemap_migrate_folio(mapping, dst, src, mode);
+> -       if (rc != MIGRATEPAGE_SUCCESS)
+> +       if (rc)
+>                 return rc;
+> 
+>         for (i = 0; i < MPS_PER_PAGE; i++) {
+> @@ -199,7 +199,7 @@ static int __metapage_migrate_folio(struct address_space *mapping,
+>                 }
+>         }
+> 
+> -       return MIGRATEPAGE_SUCCESS;
+> +       return 0;
+>  }
+>  #endif /* CONFIG_MIGRATION */
+> 
+> @@ -242,7 +242,7 @@ static int __metapage_migrate_folio(struct address_space *mapping,
+>                 return -EAGAIN;
+> 
+>         rc = filemap_migrate_folio(mapping, dst, src, mode);
+> -       if (rc != MIGRATEPAGE_SUCCESS)
+> +       if (rc)
+>                 return rc;
+> 
+>         if (unlikely(insert_metapage(dst, mp)))
+> @@ -253,7 +253,7 @@ static int __metapage_migrate_folio(struct address_space *mapping,
+>         mp->folio = dst;
+>         remove_metapage(src, mp);
+> 
+> -       return MIGRATEPAGE_SUCCESS;
+> +       return 0;
+>  }
+>  #endif /* CONFIG_MIGRATION */
+> 
+> diff --git a/include/linux/migrate.h b/include/linux/migrate.h
+> index 40f2b5a37efbb..02f11704fb686 100644
+> --- a/include/linux/migrate.h
+> +++ b/include/linux/migrate.h
+> @@ -12,13 +12,6 @@ typedef void free_folio_t(struct folio *folio, unsigned long private);
+> 
+>  struct migration_target_control;
+> 
+> -/*
+> - * Return values from addresss_space_operations.migratepage():
+> - * - negative errno on page migration failure;
+> - * - zero on page migration success;
+> - */
+> -#define MIGRATEPAGE_SUCCESS            0
+> -
+>  /**
+>   * struct movable_operations - Driver page migration
+>   * @isolate_page:
+> @@ -34,8 +27,7 @@ struct migration_target_control;
+>   * @src page.  The driver should copy the contents of the
+>   * @src page to the @dst page and set up the fields of @dst page.
+>   * Both pages are locked.
+> - * If page migration is successful, the driver should
+> - * return MIGRATEPAGE_SUCCESS.
+> + * If page migration is successful, the driver should return 0.
+>   * If the driver cannot migrate the page at the moment, it can return
+>   * -EAGAIN.  The VM interprets this as a temporary migration failure and
+>   * will retry it later.  Any other error value is a permanent migration
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index e9dacf1028dc7..2db4974178e6a 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -209,18 +209,17 @@ static void putback_movable_ops_page(struct page *page)
+>   * src and dst are also released by migration core. These pages will not be
+>   * folios in the future, so that must be reworked.
+>   *
+> - * Returns MIGRATEPAGE_SUCCESS on success, otherwise a negative error
+> - * code.
+> + * Returns 0 on success, otherwise a negative error code.
+>   */
+>  static int migrate_movable_ops_page(struct page *dst, struct page *src,
+>                 enum migrate_mode mode)
+>  {
+> -       int rc = MIGRATEPAGE_SUCCESS;
+> +       int rc;
+> 
+>         VM_WARN_ON_ONCE_PAGE(!page_has_movable_ops(src), src);
+>         VM_WARN_ON_ONCE_PAGE(!PageMovableOpsIsolated(src), src);
+>         rc = page_movable_ops(src)->migrate_page(dst, src, mode);
+> -       if (rc == MIGRATEPAGE_SUCCESS)
+> +       if (!rc)
+>                 ClearPageMovableOpsIsolated(src);
+>         return rc;
+>  }
+> @@ -565,7 +564,7 @@ static int __folio_migrate_mapping(struct address_space *mapping,
+>                 if (folio_test_swapbacked(folio))
+>                         __folio_set_swapbacked(newfolio);
+> 
+> -               return MIGRATEPAGE_SUCCESS;
+> +               return 0;
+>         }
+> 
+>         oldzone = folio_zone(folio);
+> @@ -666,7 +665,7 @@ static int __folio_migrate_mapping(struct address_space *mapping,
+>         }
+>         local_irq_enable();
+> 
+> -       return MIGRATEPAGE_SUCCESS;
+> +       return 0;
+>  }
+> 
+>  int folio_migrate_mapping(struct address_space *mapping,
+> @@ -715,7 +714,7 @@ int migrate_huge_page_move_mapping(struct address_space *mapping,
+> 
+>         xas_unlock_irq(&xas);
+> 
+> -       return MIGRATEPAGE_SUCCESS;
+> +       return 0;
+>  }
+> 
+>  /*
+> @@ -831,14 +830,14 @@ static int __migrate_folio(struct address_space *mapping, struct folio *dst,
+>                 return rc;
+> 
+>         rc = __folio_migrate_mapping(mapping, dst, src, expected_count);
+> -       if (rc != MIGRATEPAGE_SUCCESS)
+> +       if (rc)
+>                 return rc;
+> 
+>         if (src_private)
+>                 folio_attach_private(dst, folio_detach_private(src));
+> 
+>         folio_migrate_flags(dst, src);
+> -       return MIGRATEPAGE_SUCCESS;
+> +       return 0;
+>  }
+> 
+>  /**
+> @@ -945,7 +944,7 @@ static int __buffer_migrate_folio(struct address_space *mapping,
+>         }
+> 
+>         rc = filemap_migrate_folio(mapping, dst, src, mode);
+> -       if (rc != MIGRATEPAGE_SUCCESS)
+> +       if (rc)
+>                 goto unlock_buffers;
+> 
+>         bh = head;
+> @@ -1049,7 +1048,7 @@ static int fallback_migrate_folio(struct address_space *mapping,
+>   *
+>   * Return value:
+>   *   < 0 - error code
+> - *  MIGRATEPAGE_SUCCESS - success
+> + *     0 - success
+>   */
+>  static int move_to_new_folio(struct folio *dst, struct folio *src,
+>                                 enum migrate_mode mode)
+> @@ -1077,7 +1076,7 @@ static int move_to_new_folio(struct folio *dst, struct folio *src,
+>         else
+>                 rc = fallback_migrate_folio(mapping, dst, src, mode);
+> 
+> -       if (rc == MIGRATEPAGE_SUCCESS) {
+> +       if (!rc) {
+>                 /*
+>                  * For pagecache folios, src->mapping must be cleared before src
+>                  * is freed. Anonymous folios must stay anonymous until freed.
+> @@ -1427,7 +1426,7 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+>         if (folio_ref_count(src) == 1) {
+>                 /* page was freed from under us. So we are done. */
+>                 folio_putback_hugetlb(src);
+> -               return MIGRATEPAGE_SUCCESS;
+> +               return 0;
+>         }
+> 
+>         dst = get_new_folio(src, private);
+> @@ -1490,8 +1489,7 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+>                 rc = move_to_new_folio(dst, src, mode);
+> 
+>         if (page_was_mapped)
+> -               remove_migration_ptes(src,
+> -                       rc == MIGRATEPAGE_SUCCESS ? dst : src, 0);
+> +               remove_migration_ptes(src, !rc ? dst : src, 0);
+> 
+>  unlock_put_anon:
+>         folio_unlock(dst);
+> @@ -1500,7 +1498,7 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+>         if (anon_vma)
+>                 put_anon_vma(anon_vma);
+> 
+> -       if (rc == MIGRATEPAGE_SUCCESS) {
+> +       if (!rc) {
+>                 move_hugetlb_state(src, dst, reason);
+>                 put_new_folio = NULL;
+>         }
+> @@ -1508,7 +1506,7 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+>  out_unlock:
+>         folio_unlock(src);
+>  out:
+> -       if (rc == MIGRATEPAGE_SUCCESS)
+> +       if (!rc)
+>                 folio_putback_hugetlb(src);
+>         else if (rc != -EAGAIN)
+>                 list_move_tail(&src->lru, ret);
+> @@ -1618,7 +1616,7 @@ static int migrate_hugetlbs(struct list_head *from, new_folio_t get_new_folio,
+>                                                       reason, ret_folios);
+>                         /*
+>                          * The rules are:
+> -                        *      Success: hugetlb folio will be put back
+> +                        *      0: hugetlb folio will be put back
+>                          *      -EAGAIN: stay on the from list
+>                          *      -ENOMEM: stay on the from list
+>                          *      Other errno: put on ret_folios list
+> @@ -1635,7 +1633,7 @@ static int migrate_hugetlbs(struct list_head *from, new_folio_t get_new_folio,
+>                                 retry++;
+>                                 nr_retry_pages += nr_pages;
+>                                 break;
+> -                       case MIGRATEPAGE_SUCCESS:
+> +                       case 0:
+>                                 stats->nr_succeeded += nr_pages;
+>                                 break;
+>                         default:
+> @@ -1689,7 +1687,7 @@ static void migrate_folios_move(struct list_head *src_folios,
+>                                 reason, ret_folios);
+>                 /*
+>                  * The rules are:
+> -                *      Success: folio will be freed
+> +                *      0: folio will be freed
+>                  *      -EAGAIN: stay on the unmap_folios list
+>                  *      Other errno: put on ret_folios list
+>                  */
+> @@ -1699,7 +1697,7 @@ static void migrate_folios_move(struct list_head *src_folios,
+>                         *thp_retry += is_thp;
+>                         *nr_retry_pages += nr_pages;
+>                         break;
+> -               case MIGRATEPAGE_SUCCESS:
+> +               case 0:
+>                         stats->nr_succeeded += nr_pages;
+>                         stats->nr_thp_succeeded += is_thp;
+>                         break;
+> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+> index e05e14d6eacdb..abd9f6850db65 100644
+> --- a/mm/migrate_device.c
+> +++ b/mm/migrate_device.c
+> @@ -778,7 +778,7 @@ static void __migrate_device_pages(unsigned long *src_pfns,
+>                 if (migrate && migrate->fault_page == page)
+>                         extra_cnt = 1;
+>                 r = folio_migrate_mapping(mapping, newfolio, folio, extra_cnt);
+> -               if (r != MIGRATEPAGE_SUCCESS)
+> +               if (r)
+>                         src_pfns[i] &= ~MIGRATE_PFN_MIGRATE;
+>                 else
+>                         folio_migrate_flags(newfolio, folio);
+> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+> index 2c5e56a653544..84eb91d47a226 100644
+> --- a/mm/zsmalloc.c
+> +++ b/mm/zsmalloc.c
+> @@ -1746,7 +1746,7 @@ static int zs_page_migrate(struct page *newpage, struct page *page,
+>          * instead.
+>          */
+>         if (!zpdesc->zspage)
+> -               return MIGRATEPAGE_SUCCESS;
+> +               return 0;
+> 
+>         /* The page is locked, so this pointer must remain valid */
+>         zspage = get_zspage(zpdesc);
+> @@ -1813,7 +1813,7 @@ static int zs_page_migrate(struct page *newpage, struct page *page,
+>         reset_zpdesc(zpdesc);
+>         zpdesc_put(zpdesc);
+> 
+> -       return MIGRATEPAGE_SUCCESS;
+> +       return 0;
+>  }
+> 
+>  static void zs_page_putback(struct page *page)
+> --
+> 2.50.1
+> 
 
