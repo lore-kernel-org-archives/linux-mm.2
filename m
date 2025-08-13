@@ -2,85 +2,144 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A15F9CA0EE0
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 08:41:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 68212C87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 08:54:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F29F90004C; Wed, 13 Aug 2025 04:41:08 -0400 (EDT)
+	id E337E90004D; Wed, 13 Aug 2025 04:54:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A293900044; Wed, 13 Aug 2025 04:41:08 -0400 (EDT)
+	id DE457900044; Wed, 13 Aug 2025 04:54:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B88B90004C; Wed, 13 Aug 2025 04:41:08 -0400 (EDT)
+	id CF99E90004D; Wed, 13 Aug 2025 04:54:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 02CC4900044
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 04:41:08 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A9A871A023D
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 08:41:07 +0000 (UTC)
-X-FDA: 83771089374.04.0531183
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	by imf30.hostedemail.com (Postfix) with ESMTP id EE37580009
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 08:41:04 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf30.hostedemail.com: domain of gubowen5@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=gubowen5@huawei.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B7922900044
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 04:54:32 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 50D0D116DF4
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 08:54:32 +0000 (UTC)
+X-FDA: 83771123184.14.9B6CFEB
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 87C461C0005
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 08:54:30 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=herhqNMS;
+	spf=pass (imf20.hostedemail.com: domain of matttbe@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=matttbe@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755075270; a=rsa-sha256;
+	cv=none;
+	b=JR9CIUW2QQNFvIwLqRegNGD4sODDLhOTgsafM5hKat+7RjuX7S/qrz95o2+4j8xFUoVQ/4
+	G9aDzoiVn+693eAGVSCXppfxJych2r3iOdWfjzfyI2MSwzR2e50Gr/z/Qya1KOhUeQDlJ9
+	PwR62JEQbJfj2DAv9YSweKMy+x34BbE=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=herhqNMS;
+	spf=pass (imf20.hostedemail.com: domain of matttbe@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=matttbe@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755074466;
+	s=arc-20220608; t=1755075270;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=6ocy/RLBGZEzcx5S0CvmO23ykbLj2YT5mpiXPg9Bya0=;
-	b=eBZiL1Xth/T3NC0W+ReNm0F/Y90+KE+Vj2UhgyQeBaTeCBFOJrKZXYMkP7lkiL+p5IcH0w
-	WpjZ4aZ7k0BHx6AGCQm1CF8zb88VEu4B7E4yHCrFzPNjJryiyXa7GWeSCVUQbLfXSgly5J
-	HMYuBbPNq2mJOBrY3glZQXn+lnH5ZmA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755074466; a=rsa-sha256;
-	cv=none;
-	b=2ACt/fRIcoZxVluojaxgwH/3pep85fr1bdOZ3DDpKLzM8Mxun+4raUbAqCRY4EZ4qOeuef
-	BIdcqXiS+tBPRZhrTM71pd2zJQjebg4xfCifpb7GQpUtS/LFD2ED/r4xpUHWHWlrAKUakg
-	SB+uiA8Z50k6JPCLsowSsberoYpLSYA=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf30.hostedemail.com: domain of gubowen5@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=gubowen5@huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4c21w00zyfz13N4r;
-	Wed, 13 Aug 2025 16:37:36 +0800 (CST)
-Received: from kwepemh100007.china.huawei.com (unknown [7.202.181.92])
-	by mail.maildlp.com (Postfix) with ESMTPS id 468B9180B51;
-	Wed, 13 Aug 2025 16:41:00 +0800 (CST)
-Received: from huawei.com (10.67.174.33) by kwepemh100007.china.huawei.com
- (7.202.181.92) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 13 Aug
- 2025 16:40:59 +0800
-From: Gu Bowen <gubowen5@huawei.com>
-To: Catalin Marinas <catalin.marinas@arm.com>, Andrew Morton
-	<akpm@linux-foundation.org>
-CC: <stable@vger.kernel.org>, <linux-mm@kvack.org>, Waiman Long
-	<llong@redhat.com>, Breno Leitao <leitao@debian.org>, John Ogness
-	<john.ogness@linutronix.de>, Lu Jialin <lujialin4@huawei.com>, Gu Bowen
-	<gubowen5@huawei.com>
-Subject: [PATCH v3] mm: Fix possible deadlock in console_trylock_spinning
-Date: Wed, 13 Aug 2025 16:53:10 +0800
-Message-ID: <20250813085310.2260586-1-gubowen5@huawei.com>
-X-Mailer: git-send-email 2.25.1
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bYa9mUb5uxj6WPrcxCuv1pDwScipXB1/jOiT/1i4T44=;
+	b=amtB3PBnYDYtnhXZzxKtIOhdUNrCDHHEa2nN/EdCukASaO1WhVOCwPGNW/JZ1bv7SZN++h
+	VuH4RyLV2MFaSVY7Ze7AjITvGAJOOZYhls5DaUBYGoSzJtlC1KP2G8AoyTDTwcZ3VSon7V
+	KDVAwNjTs71/V3+vwdQQ29uHKiM9bxQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 970A7A57B59;
+	Wed, 13 Aug 2025 08:54:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244F6C4CEEB;
+	Wed, 13 Aug 2025 08:54:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755075269;
+	bh=SPEB5tXelaltjOYbgqCSrRrEOItBWpxIPqLytrMKnXI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=herhqNMSZD2u105m3vJP0R5NGzYg8f4wgoRgW1wtPscJKKIJ8iB4LCJ7YZVRkLPll
+	 aCCq99Y1WcMsFRfF/bEfd1fSFHveJwvnInSPrmYXF2cRC2hyInkxWN8eQxpBsmUJ5V
+	 YYqJztfk0ZrC5Nj6PYyK0wR/z1CMA+zjyQ2L+rgakOM+7mxQpupCHI862M8uAUf95o
+	 1nJMo9GRs6ivwlUcrBQSLXyiTO5gay4Ee2JPzyWsMsJY8m4R/U9q84az1GLtzRIh0K
+	 dVVBFh4NXq5IGdfu4xeKewoyKhGtZBzp+MrA515ppiDaVha4AKPsNTEq2kPm4+UDir
+	 r3hGyQdMGXGhw==
+Message-ID: <603e3360-1f8f-41bd-94fd-a4a94e4a2c34@kernel.org>
+Date: Wed, 13 Aug 2025 10:54:19 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.67.174.33]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemh100007.china.huawei.com (7.202.181.92)
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v3 net-next 01/12] mptcp: Fix up subflow's memcg when
+ CONFIG_SOCK_CGROUP_DATA=n.
+Content-Language: en-GB, fr-BE
+To: Kuniyuki Iwashima <kuniyu@google.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Neal Cardwell <ncardwell@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>,
+ Mat Martineau <martineau@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
+ <mkoutny@suse.com>, Tejun Heo <tj@kernel.org>
+Cc: Simon Horman <horms@kernel.org>, Geliang Tang <geliang@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Mina Almasry <almasrymina@google.com>,
+ Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org,
+ mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
+References: <20250812175848.512446-1-kuniyu@google.com>
+ <20250812175848.512446-2-kuniyu@google.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20250812175848.512446-2-kuniyu@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 87C461C0005
+X-Stat-Signature: 1c5xtqwfkyb4kezhjftd4mo3djptho6s
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: EE37580009
-X-Stat-Signature: qphro8f7gthab81jecrfxu5cqmtngdh5
-X-HE-Tag: 1755074464-559092
-X-HE-Meta: U2FsdGVkX18Su1lL/vDg/1NmvqACMdLMBS/eMdiEsDcKUNuroPPiEU5oTFWYsWa12d9hieA2t1PXE7TlmJ75GVb5u+jDbAIbj7NeTxyYxJuiDWQ+pvA0hqDQncDemWEKckLOHBpgKZ4OcvTpgBfdlqjhkZRolWCHpHhQqjR49mZSwIMe/VPfDYgv1UGBQKuVk1oRMsLCyAanPBqKIQJrr/syodkR5hVaLBH60ErQ7V1Xq3o/C1qCpIFeuNyRaTzBqShHkai1Ta8h2Q3Q6wjlkmPezuyNZ/EHG/yY1Kjxc513LS25vhGr31K+A7gk3jjeXliue6OxzT1A93RuYuYAZevafEYVpFlndP18xXZv8Pyj4Z39X374muWbLp9jgG+r1CD1Wl1dSLuQivQfzGbYTFhGVRYGsh/Ow1iZ+K9RKy7K22oq+s7hHBM6AgFfSFHPyKVEfJvKEHpWFEJDFgvZPQB8PhaHMdiY/sR7FhULv17QAO3zf/mmqT7BOmMYabwaY9J81G5vyUWxXregCxuns9bUUwkuRQvkrMwtvdhlI7mX0VEDPTeJ3b9B2QIVsG2ALQnCN1aaT/vZj9DyNjqB0m5IW7PpHnaTdEHfsg24IReBrMpLCBNdreQ9/01KWKp6niQGN7iLiE+vaJNlYBMfo+DzwuWHCp0ytpsEY9hSdZcDgBHvAxSTLH4MPi0KRHspqk/IGDZ23FUfF0R5fH3SzXdBzq5q+e+gdyqB0H+H7NM3RPG3/I+Izs+3GQcSQCNiB+TzzVZ0WFKbE+iRTF/I54MnY5rk5dYmSRvTWqVkg2uzVSuQPfLHyAEx+dnTv4w9SN+UTtcWe79/wofzTw495QFYz6nmzqoCYlYS9JV1XzhfWlEGCbcoKmb6tT6CAXsPH6gkDLzmSmJ9DbRSsSaOPBMeibGgKwuBCvD2Z2IVOKKBaeq8rgQcQiPGBMn453Z2cYf4ukfcOa3BjAPCkr2
- QdEEKK1f
- P1BQpmRFa0Zo9BhWGb6wbUfwfkZJlUJ+XQTI6dua8ffMRda9Eqq0IhBWjf/tjIoV3jt/k2uHazj+mGYx/wruF/8IO5kKJlRACXEs7siVbXOA7aCckrhsHzrK1e0ur0UnRCo1t9b2QAtDpb1Y3Lqs3RBs5eMGSSQgUo0/M93426AR/n/T6kro+GDvNomAzhyFWTkkAUO0VuWQM2QZl6dyLv+DW4CkeRnipxkeucO66HIvF2X/UywEdiOO2uHtb8XRRrrIJFB33lP/6Z2Rtkfa4HqcpAWbCXATNmP+wctTbQEKzcctXM1pMNyi//ZHL5GBDSc6zA8rnDOd1qhxcY7umnP8SkQ==
+X-HE-Tag: 1755075270-969237
+X-HE-Meta: U2FsdGVkX1+lVgCtIg4YfhnkbTzjwz1byYYqja/BkNs+0xLSwV1aVCXabLLaZTDlKYMe/aqri/TCHUy6pfvH667KVF6RmOc7AFh0RY/vh1gfZvYdoMxV+PLq2Zr2CkpYYPy6WnnYQ4iGIk52fPzuCQba/RZUD4ZrP7Uc4upEUGE5STPyeb0zDhDUZX7IWL0bDSLEKquwJasa2KiKtY6d9VYYLPKG3kZ3Q4lmuoj1P8vZUJnCFNQcY/S+mQlYUFQMYuJOlWptmPEH/ETvmqNf8+d47x/kMOQK7ockHo9gMkOwJ2Kd15SMudOPGzK86KxonFYXgrbX/56ihGX4lm2TCZmdQxCuGAuOZwjG25NmUB0Xg/evchbk6guuBdcHMdOusiN8IKYhGDycNDjaMDmAn2uUWSTzcLGxcl3HDRsOobXFnUV4nlnMMM4k0Nomc8IYmmJnP/3ennrpbDNbUCF94kxYQFPm7L8EJwTxOv18Zs9bJU72uxUKUJ8z5+voS22oxOiVW5QDMc2aF8+A0439hVFLw/CmPbpbw0DIHIIyN/67MSYuKday/TWfd2ZL0WvENhmeDgQU+r/J2mJFE8GdxKFDuMj0JvJNucNP9EroIsIfDgyjhtSfC8deJx/Jj1f8y7fB39Fpa3l95J81ATRtMGwZ2frktZSRr1+JBJ042kJOf6aTcMbmS4wZg5xWLhc+erEIJfd7QOXgmbLOfHCUOpVf/U4Zwb7SFr2yXxuq2jgV43WtmLhSVvMKZdyupZXFD+wPMj0KdqzNhhFj5izchynnQHy8ot9Ns9lMPuVmUOy51/5GREEXSP0AmV2wPw9nY1aUhuXWo4YW0WyI8yvh8bqesXiaRAFmy0QmPA9Mnxm+pvKFSKRVLaQbh+C3PKu/YRG/SyqxQlOJUJRWL8+x/iBlbFSJXV/g6G0unETaM9sn9RS1JdgVT+J0uFhFaxbQYqNHOo2Tn8bfrjNAdrf
+ pR+R2W/b
+ 2blhcoNGA7rq/mAPrvS2RotSjy5cBX3kAMvIX8eJkp44hed5baWZK+jE3G9TbwpQl9Zbxj/VTUjy/lz5VzpIXEho4SxPQmgcBHdx9SveriHXLab2G5FGc1OHDH07+cJA++xblN/e6HiQlk+Y50oF9eYvofNCkn17p5qHN9TyxvEHFr+E35b9Zr+3OvdQWfOSI7pUVl5BziHgZTl9B6Z/F6gx5Z0atCiOMZUv0XO7Bsf8tIrtLJYSGmPahNJXUglFadUXX6qZMy0YTWvHZbNbF0uCrTnwijlok04QBcsBbLccYOHdygHXEgKaL7PeQPjfT45VjUXWi/gk/3CXrI7m7ijFDpcXvDDmnjL+xZsTu3458GrY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,82 +148,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Our syztester report the lockdep WARNING [1]. kmemleak_scan_thread()
-invokes scan_block() which may invoke a nomal printk() to print warning
-message. This can cause a deadlock in the scenario reported below:
+Hi Kuniyuki,
 
-       CPU0                    CPU1
-       ----                    ----
-  lock(kmemleak_lock);
-                               lock(&port->lock);
-                               lock(kmemleak_lock);
-  lock(console_owner);
+On 12/08/2025 19:58, Kuniyuki Iwashima wrote:
+> When sk_alloc() allocates a socket, mem_cgroup_sk_alloc() sets
+> sk->sk_memcg based on the current task.
+> 
+> MPTCP subflow socket creation is triggered from userspace or
+> an in-kernel worker.
+> 
+> In the latter case, sk->sk_memcg is not what we want.  So, we fix
+> it up from the parent socket's sk->sk_memcg in mptcp_attach_cgroup().
+> 
+> Although the code is placed under #ifdef CONFIG_MEMCG, it is buried
+> under #ifdef CONFIG_SOCK_CGROUP_DATA.
+> 
+> The two configs are orthogonal.  If CONFIG_MEMCG is enabled without
+> CONFIG_SOCK_CGROUP_DATA, the subflow's memory usage is not charged
+> correctly.
+> 
+> Let's move the code out of the wrong ifdef guard.
+> 
+> Note that sk->sk_memcg is freed in sk_prot_free() and the parent
+> sk holds the refcnt of memcg->css here, so we don't need to use
+> css_tryget().
 
-To solve this problem, switch to printk_safe mode before printing warning
-message, this will redirect all printk()-s to a special per-CPU buffer,
-which will be flushed later from a safe context (irq work), and this
-deadlock problem can be avoided. The proper API to use should be
-printk_deferred_enter()/printk_deferred_exit() if we want to deferred the
-printing [2].
+Thank you for the patch!
 
-This patch also fixes other similar case that need to use the printk
-deferring [3].
+Acked-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[1]
-https://lore.kernel.org/all/20250730094914.566582-1-gubowen5@huawei.com/
-[2]
-https://lore.kernel.org/all/5ca375cd-4a20-4807-b897-68b289626550@redhat.com/
-[3]
-https://lore.kernel.org/all/aJCir5Wh362XzLSx@arm.com/
-====================
-
-Cc: stable@vger.kernel.org # 5.10
-Signed-off-by: Gu Bowen <gubowen5@huawei.com>
----
- mm/kmemleak.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/mm/kmemleak.c b/mm/kmemleak.c
-index 4801751cb6b6..b9cb321c1cf3 100644
---- a/mm/kmemleak.c
-+++ b/mm/kmemleak.c
-@@ -390,9 +390,15 @@ static struct kmemleak_object *lookup_object(unsigned long ptr, int alias)
- 		else if (object->pointer == ptr || alias)
- 			return object;
- 		else {
-+			/*
-+			 * Printk deferring due to the kmemleak_lock held.
-+			 * This is done to avoid deadlock.
-+			 */
-+			printk_deferred_enter();
- 			kmemleak_warn("Found object by alias at 0x%08lx\n",
- 				      ptr);
- 			dump_object_info(object);
-+			printk_deferred_exit();
- 			break;
- 		}
- 	}
-@@ -632,6 +638,11 @@ static struct kmemleak_object *create_object(unsigned long ptr, size_t size,
- 		else if (parent->pointer + parent->size <= ptr)
- 			link = &parent->rb_node.rb_right;
- 		else {
-+			/*
-+			 * Printk deferring due to the kmemleak_lock held.
-+			 * This is done to avoid deadlock.
-+			 */
-+			printk_deferred_enter();
- 			kmemleak_stop("Cannot insert 0x%lx into the object search tree (overlaps existing)\n",
- 				      ptr);
- 			/*
-@@ -639,6 +650,7 @@ static struct kmemleak_object *create_object(unsigned long ptr, size_t size,
- 			 * be freed while the kmemleak_lock is held.
- 			 */
- 			dump_object_info(parent);
-+			printk_deferred_exit();
- 			kmem_cache_free(object_cache, object);
- 			object = NULL;
- 			goto out;
+Cheers,
+Matt
 -- 
-2.25.1
+Sponsored by the NGI0 Core fund.
 
 
