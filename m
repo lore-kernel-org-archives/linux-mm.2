@@ -2,135 +2,120 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BA7FCA0EE0
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 20:21:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7ED54C87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 20:48:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB58E9000D1; Wed, 13 Aug 2025 16:21:51 -0400 (EDT)
+	id AB9A59000D2; Wed, 13 Aug 2025 16:48:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8D0C900088; Wed, 13 Aug 2025 16:21:51 -0400 (EDT)
+	id A90CF900088; Wed, 13 Aug 2025 16:48:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7BF09000D1; Wed, 13 Aug 2025 16:21:51 -0400 (EDT)
+	id 9CDBB9000D2; Wed, 13 Aug 2025 16:48:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 944D7900088
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 16:21:51 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4F21A140365
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 20:21:51 +0000 (UTC)
-X-FDA: 83772855222.23.B087BC6
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 18B5D18000E
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 20:21:48 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=TQsDu4Fu;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf24.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.174 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CA13900088
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 16:48:52 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E25D0C04CB
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 20:48:51 +0000 (UTC)
+X-FDA: 83772923262.16.38F4C08
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	by imf10.hostedemail.com (Postfix) with ESMTP id BD369C0012
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 20:48:49 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=RpgxAg2L;
+	spf=pass (imf10.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.169 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755118130; a=rsa-sha256;
+	cv=none;
+	b=jsr0YNVbgm9Mx9y+pQ/QrWmbAXLGAy7HwUL+EHyEXh2x1o4gaJZ+2PivWdbIoGznrygLkO
+	FKrulNwMbNzAvfckdxVPJTmms5R4CJ/LaZxy7Ei+jUaUwY2qxSFmgcJ4mgjpjphv5HtC8d
+	vQNKoIBJwX5zBzpykQWwi1hlAt9Mizs=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=RpgxAg2L;
+	spf=pass (imf10.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.169 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755116509;
+	s=arc-20220608; t=1755118130;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H30kUHUoAp0mgFKEUbjujIS0Xnkk94c0v9Jq8jaPeYc=;
-	b=nbLJWI+jFZx8m8FK6Y+WM6ia5yzChW0RRCBezyHaExC5RqAc21sB3/ACW49nPWHk2iVx/M
-	Iv7smYleAIh61RFts5WOM5GdKv+zUONhclnjD+yPWeutgdqN4GB3VzXoyBmgydG+AZoS5t
-	phKcvX6ki+QHr/bCQpAm2ezJFLoOolA=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=TQsDu4Fu;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf24.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.174 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755116509; a=rsa-sha256;
-	cv=none;
-	b=vcGeFisYuzXbTfy/9CFL6yFOYRj9v2oNq3GHzMmQarV9PQVeJBGZEwrgYQ4JTJkd7zmWIP
-	KlMBuP+6fQVATO8lgvlITtfqgy1o8bCV/GQu3ycVEh+Zjx2lt2rR7YP6GIb/SC75cVCgUX
-	XdK06r4KWyjqX5ISyK2hcHa8KOSSmKo=
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-7e870636870so23362585a.2
-        for <linux-mm@kvack.org>; Wed, 13 Aug 2025 13:21:48 -0700 (PDT)
+	bh=8QU7WwnnYzgxeH9QchqHrK0qbqQ+iKF1S/uY4NskNUc=;
+	b=3CYW4AwQXlF73vIzPcIRXXd1eeTJAZAAr9WS5jN+982P+uMLNm8V3t+GMmpN1faI5XQ4+3
+	lGskrfm1Dm3bgFPNnSnMat95L41Sy2R48aGAchigGp06PuhOSL0iLHx59ZlLjgLOsCx6Ut
+	kzHFg+gPy2D+zkj8J0KQVSueUX2iRbw=
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7e86faa158fso39766285a.1
+        for <linux-mm@kvack.org>; Wed, 13 Aug 2025 13:48:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1755116508; x=1755721308; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=H30kUHUoAp0mgFKEUbjujIS0Xnkk94c0v9Jq8jaPeYc=;
-        b=TQsDu4FuOgj8w9klUOL+n0dBtJuZ10bsD2ApE0X6laujznwpsVcet4ok5mMevHTknT
-         JST8lmLDCZjQcQt7B9+DCuWANucVQ8zBmzV1ICxyEHgfLjJYyW5zgZpgIgD7k4aOYOgZ
-         BYLRmQePOHl7BvYGxPvwmekJCUpAt5si6ZzqtcCoynIdWKktqdj5qsy1s53buscVASTX
-         cR+a8xHiO10rZ0fajlqr/Ul0bEb2wRhILEEvc+BGxlj2zgMmJ8KTXIY4n12AI9qeBM9X
-         D3XzZxMcOW9wzpjke3LJumbTik/Tyi06DtgmsubwW0daoPLN9aD4H9S0NGKSLTeWnRnA
-         gcdA==
+        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1755118128; x=1755722928; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8QU7WwnnYzgxeH9QchqHrK0qbqQ+iKF1S/uY4NskNUc=;
+        b=RpgxAg2L19wnvy74ylG4tW5pX0Pxny5fRtrj+Vxe6/SLEcL74ZO/F35YvHgwjBdwOP
+         TtyR5SCfsVKw4wFAJ7R+6F4NIkX8R119NhiKUGj9YGyNRaq8dGinRO8YMXUYcFvIoLtx
+         lxorBMFXxSRE+tQ/XoB6hcg1Y+IcZOC9hVv5QYzj/J9GyrRnrv3IoauGKXz6/ACatjpB
+         fcHLD2RTzPq5HeJIk93JVudjccMwLTa3CNyqGVw8vYiG6dw9ck/EbsGrsBHWIrnGkzaz
+         gC7gFs9hAfsm2VO8OwdcLrNPq7esLLLPdx1lsr3zMK3M4RIsXw/fzjmo2rl9bbaKCKNt
+         uk7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755116508; x=1755721308;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=H30kUHUoAp0mgFKEUbjujIS0Xnkk94c0v9Jq8jaPeYc=;
-        b=uQ8YwMsC6PrIw1EW/hqLiDMZO70s2AXys3jJx6VYaLuM8WLlkvemWRdQgCo4cpFtEL
-         MIq++B209EnsQE6mmwqThR7RxvZ8iGyH/sN34iq62eofdOGGFNAqNgwKBw1IoO30x+fG
-         WFZF0f+RTCWBb9ahE/5shwd1JzGEZjrg3CtAU+5D/Sf+y+ZJ6wts3dEzsCAeiJQyenSq
-         +KYdKelmIdUsWTjFDg3ss6zBKjSzi+629YqLiEiGl/uYnGmX1DCS0z31aREwf7r2SLhO
-         ClaBKXzQTbdevTB0qnVZlqhbcwG8JrRtApIeI8oqUVd5q8++Tx9Q4DjIuIwwiWv9dJCv
-         Kbzw==
-X-Forwarded-Encrypted: i=1; AJvYcCXMULTe88Pg3FSgYagY1qiRZ5EzmytRwEvJPFW3hJtWuFSv3jcAo5LiHk39fK5Tq7m8AuaVqE9jVg==@kvack.org
-X-Gm-Message-State: AOJu0YxAsJ3H0u6RvEi5FXKpgIG/H51rPpHFF7qPacjk4M/rlV+f8hrr
-	DkYdMUqyQZICMbovh/3Lhryy0ufqrlRhqaBVKKbFe5xv5M0W14hI2DPBfGK+Mm55JfY=
-X-Gm-Gg: ASbGnct/WwANDGmzgwlYTO8P1CKeKQatw1lQR5fv43E8SMMgOXmkrI8VrI6M9d1nvEQ
-	3HXOiHss4IRBxN1DPTM9t2NEwZzZqkOEtzxPq0zjCGS23xV2JTbDTS4jNsCNShZkr/u75voNE4t
-	RfHhsYMb4reiFzkWXlwPQL8+JCDMJkGhIJhKCS9LwZrjkrCTHjpx0T/I111TbtXAdGu7A8iyn2k
-	an4paOyAtrDG9XT7jZYLP532mKTU8+ODlj0qm2bAs1wjO5WAEKg8Ifqw0bZyTYrXj2XG+fSUqf9
-	tm/OInJyJk3MbxMecU+Wum+q9SLlS9U1RpY7ueSp6ResE+/tQRmkB50uhkruEIZVHtnhvB8o/rp
-	DSqFul7JwSMozaHEvJZ9GGw==
-X-Google-Smtp-Source: AGHT+IHL4RX8mGUQFHn3xTKxG6noHoTer9v5afSRdyTGpU+E2ho9o1DxodPcyvf3+YYPPRrSEMF5JQ==
-X-Received: by 2002:a05:620a:3bd2:b0:7e3:28f3:8a5 with SMTP id af79cd13be357-7e87045d632mr87942885a.28.1755116507799;
-        Wed, 13 Aug 2025 13:21:47 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1755118128; x=1755722928;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8QU7WwnnYzgxeH9QchqHrK0qbqQ+iKF1S/uY4NskNUc=;
+        b=ltDbvOgFyACjTynvU5eNzuqnY5b+6XHuk3slY5/Rj5pFh4H16eBhalGg7MIYkTeQ1g
+         YAVzRVuNQ80wIKxVNgeFt0HaK2cMQcoNJkFVsyQY7E0NBPZX1rCEFi3KeFYQ6YAn5jV0
+         UI3PU13GRhzUfRQt2NpNuWdzzV+bhmNMR+k48YkfxBs+B+fj4lbwP+bxuhPmVfHZJjE/
+         qIA1L1dteJDe2hB0rfCxRCsaQBzxLGZtvNIHSl7ifa+9P3ujpLRmYjV4Y6r990Biu6uf
+         Z1spuGph8trF8Npwl7D919uHNJxnNqVKIPBwGa7SWCgBzDs517Nr5yMD2ZzpqIubBNpA
+         xLzg==
+X-Forwarded-Encrypted: i=1; AJvYcCXPEBC0ZpoV/fD5IW5EjGkoEbouLyGvNf5aQCvpl4RL/O6irLhLOQK6j1thPt3JtOe2eyqGPGul0A==@kvack.org
+X-Gm-Message-State: AOJu0YwfJ8eKzqktp2bt3SEJOgGbmQL4v//sTWODyxUJr3GfaDWOydkK
+	rEHtTbgMVK2Xt+bJ/qrXC8aHq96gp8D/fAZTivnwFA6NvuU2dJUdwApJi4/oc+ldGFk0qgD1+ts
+	pnO9E
+X-Gm-Gg: ASbGncvyIR1eK0X6QJK/9olKhkz3FT+hqVVbPhsYj3Kn8Yl7ZrbCNK0+E0nfDibf1b2
+	qXWC1wT+zU8g7VjsGwQPg/wLpP2EMkWM48frpcZzvq2mXZqfLodoeuo43Q5zIOpIsHh7gXi0Bnl
+	m68LtWYHLtbMCpOA60SNJuRi+tIkA47jL7ZIm6f1E416Yrzl7PeQjT+4ydLz3UkkW9pHm3Rcd6K
+	MR2GIYnqqy6+DgMsG+Fh8v5U6p379CWP/QjaBrCH31nxGYHc+6QtBdjWgTSl7+JJ9bCaRsNcs50
+	cXsg6ew9vUvZXeZCybR8u7+3/zYbVWQz68el2Xe0M5RTKCR3nrB13fAVElihM2UoydLi0IW9Eii
+	3WuduHTccE0sePoULAHztPuKFpTsljwxM
+X-Google-Smtp-Source: AGHT+IHz7GMMnYpZ4wiU0jk2n1e+DTQ8iUPbC7vlSKZF1R1r+EM0QvuCypZHUr0KQmfRxyjkSfm0bA==
+X-Received: by 2002:a05:620a:a81c:b0:7e7:f2a2:251 with SMTP id af79cd13be357-7e8719ba2e8mr12990885a.27.1755118128568;
+        Wed, 13 Aug 2025 13:48:48 -0700 (PDT)
 Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
-        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-7e8079cfcc9sm1486333285a.29.2025.08.13.13.21.46
+        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-7e85d4f5ff4sm372396285a.3.2025.08.13.13.48.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Aug 2025 13:21:46 -0700 (PDT)
-Date: Wed, 13 Aug 2025 16:21:42 -0400
+        Wed, 13 Aug 2025 13:48:47 -0700 (PDT)
+Date: Wed, 13 Aug 2025 16:48:44 -0400
 From: Johannes Weiner <hannes@cmpxchg.org>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Chris Li <chrisl@kernel.org>, SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Tejun Heo <tj@kernel.org>, Simon Horman <horms@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Mina Almasry <almasrymina@google.com>,
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org,
-	mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 net-next 12/12] net-memcg: Decouple controlled memcg
- from global protocol memory accounting.
-Message-ID: <20250813202142.GB115258@cmpxchg.org>
-References: <20250812175848.512446-1-kuniyu@google.com>
- <20250812175848.512446-13-kuniyu@google.com>
- <20250813130009.GA114408@cmpxchg.org>
- <CAAVpQUB-xnx_29Hw-_Z4EbtJKkJT1_BCfXcQM7OpCO09goF+ew@mail.gmail.com>
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	David Hildenbrand <david@redhat.com>, Nhat Pham <nphamcs@gmail.com>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, Takero Funaki <flintglass@gmail.com>,
+	Hugh Dickins <hughd@google.com>
+Subject: Re: [PATCH v2] mm/zswap: store <PAGE_SIZE compression failed page
+ as-is
+Message-ID: <20250813204844.GC115258@cmpxchg.org>
+References: <20250812170046.56468-1-sj@kernel.org>
+ <CAF8kJuN1BH0rqC6czj9govNOugd_5K9ijYcxbWYpEpUdQKn0-A@mail.gmail.com>
+ <uo6vtumoy4txklyqy4njitf5ex4eanudncicbbzknmuowopd7v@jm4ao4qapiza>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAVpQUB-xnx_29Hw-_Z4EbtJKkJT1_BCfXcQM7OpCO09goF+ew@mail.gmail.com>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 18B5D18000E
-X-Stat-Signature: yzbh8mw8juyq8zb8u6emkk9d49iup41t
+In-Reply-To: <uo6vtumoy4txklyqy4njitf5ex4eanudncicbbzknmuowopd7v@jm4ao4qapiza>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: BD369C0012
+X-Stat-Signature: 7g4ssfbssjfzjscgzxiz1mk6o93kk19k
 X-Rspam-User: 
-X-HE-Tag: 1755116508-940318
-X-HE-Meta: U2FsdGVkX18nm6evqJakCHQ8KuerSTR8vbnKx2j1RdcSKiBlN8OhDPJDw6ti/Mu71HGQYZEVXUlKbngWnFYC8Na8MDFnweyQLDPLSX7VHHjD3DqLfdHmjYH6c1o8YNLfGM58xFqebHHpgM3smqgnXkuWgBH3ZhSVPEK0F54cJc9RLHpqj4+0wAZPm603A3rDcGGK0TJRycSUFFXoGL3CsZslXCbbl7HcvPXPVOqDVhemkl2sRkbIt3C5p22xrsvxjtMFM4XeydBcOpzpPVYG2/LPmGmpFcGHMqbaPR9mD4+eWvwBB2aSdChOmeqLSEOBFSCDPmucbaP/WyNai60dWr60s4LN2Dn/1BctsAToGjIFcyDgVNidS7tUWXB1qxpge0C+8bsD3u49MMaYR8NInTNcjskKReqsomn5Z9Jl1G46pCUS0VGGMB+1WeHBpfvQEPPkIj/ea9YIWy5wtL0BC5QxTM+V7N+/Zh7xZjWC3pFjpHNfEijd4uuOweoBi6eAZ//A0svt4wlX33WGlbhWJB/bgnm72fuEVeMTZjshHjWUUV6Prbjolqw8SIgEdobE+qA/QoNX4y9dbMBEAJdVT6O++/Fwaat2G1kn4Dkt1ZSNv8pJZdvYXYXPysYCTvm6k837Z3s9wrDHksnjaj1BUIKTCnQ+CotxJcK0iRclMfji7x1zRU/D8XYQAIUqAcfEfXpm+Z8jeULtq2DMuL1R+tdC06mBON6l12htxAmVY3T4aIWQeDA/+O5Q90k8WN809LLmU0ijXgJGCVAF6Fash7lM/o/xdNftjyzRuUTqqbOELP2v83lW4JZrVOBnU1qxpKLYIUcdBGjVi/6gEWDtgX923c9CgeY0OeeD8OD/l27NAcjBW+LMO0CmW1GZJD9zkYst4C4yBpToI9yBUffKf6Por4wy4Ju1uuRbwz4mFqfwrJ6aDnGtz7HjL05+C2N1eYHvgXYEZneFp6LzU7I
- WfUpJr7Q
- wT1VwqTCAV5EvA5N193YHWeKAv36a7zHQbFxSlCd2HQ86XxgwSIYFrWzOp1IQaFIohXYxP+YvLfKw+ntKDhjpoKpLsDdMU0kfC7WTPl74qNCIs5BVwmrPU9w7VAMKf0m44e2Fot8pyhuZA1WbeSG242EG/55gx8WEw8AtmJG44hpPjIbsZIeuPGogOQrCu/FFn+YqiH0P86lC+KU8BDtbAafcLr8+8wvwtno7NZ0FWepRPAajiyF668m9GYY13Mz5BBMERwyGgH2l6WRsEaHCQ3OczR0aoSS3fJiYplDN8mXEgjj8hBGcljHnK2D3R7QLKk+txu3WZYQmN/5zWLqjiBBlzZ6aTjZzKps86KuLzGWih3+gssqNvFtCFm+ZqaSjOyP7tWy7W+Th1t3JPOTe9ELqHAzYddo7ITNH6Wl5nMSv2NRXOvdDJo/GM7WKogTy7jBhO/EO9rxOp3o5Uf3DmOiYXXVuX24BAcX/ubGyYYQeD/wfuoyEvIMasPizdS+pituDAeNGSUpfgWE4DkSKx6TVmaf0KDVJFCTbgXLHqgoWIQA=
+X-HE-Tag: 1755118129-60678
+X-HE-Meta: U2FsdGVkX1+MwL2odwjZZBx02JM9n68q47v8onRvxmAboLD7Vg9dddvDKSFgICkZCtJ/8x3wdBAZ5gdCAtisHpYd6v192B1S1JgGtFNp2YPBl3j9lne0Q8JLHZMGfNfS+9g1PNM0kv3TqT+1gNxC5IRAP+gtex8mU+C7NX+lfQv9ou1N6yclp4yHOmEP62U8tAaAvgfEBWkpN30CJLYjOck0aq+Ync9v9acp63eNKX1cDIod8B1Z140Z/fdzqr2orEz4HQzEgGKXC2Rrc+JHtBHhdMwNDoDNAnE+umpq5DpnVwkLROPWrZQu95DmXRKqQyIQmMAsML3ETS4AoG5GrzWtT/uovX/b7Eg2trswl9tsIP8GiCpwHjKQl2VWEEhG2IkQVgj3yHtWbTkNMa+WORGy3Fhk1B6ETRKUqcYc0E5rYxkq9eKSFgRsBThaLUoqlVRtDO9SzpUu0W5Fjcd5yZbWNXMXWyebYkpeWjWqt/md3Zju09nJPrZIph59yk2Bk4dKf/gCSaxU5pTOxM/5XuQIvFHMq+HnjjdNj7UiczIk2Qc3aMIgah6COTlvsgjvMVJ4GH4SjmQYi91VrU7Om4zyTyVLojLFxmdniRYdK1lJaL1FVGSS5Dr0p+2mwb4rwUnASqY4Vur8SyWp6JZLiOzhWctG0FUp/n2efkJJl3cG8aum4821CdQ4vndTeXDCEmOz8+ojf9/wvOlY7WN+71Mjx8zQHHIm2Tog5Mo4V3paHWCoy+iU+sDVuoI9rnh2jtV4syq5orkwdG0biT1aRHcUseY1GHdOQNYwejK6JxYl3/QGcAF7zggg8q2V/i/zmqkLGANFHBkP+zuXjaBXXuL16+FJsn527dpS1pd1DTeklQwyIIxRKUhdi585fR4CtqrTwd5AG14zV0eOI+ns4JPeIodRaNKwCiORthh7KJi9VqHiFcONOawYgRBoahIN/VbqVRbQvwkvDcBGr/R
+ eieB8/L7
+ leIaUTxDSrI86fTSV5yNzUtY5gcB6KloI9QFGoDdfYtg6Auc8KAsWqWrQOe1ZoEkJ4O7/xlyk8cfR11zWAMrGl0CD3PpzPXWP6FD5QRNJw6w275iV4NqaN59XrCBaMgfdAGr/Bv3Z8DOpH44tbJSs7ytYI2XvLhMv5vIg94H7JSjeM5ram1nE9q4zisHPc/D0Nqiv1RoVqdBML22RDEzYm1RwDHILQCee12oi1F5IG5HfJRFjFuFYeiyVhRwGec5wociz0YHesuVLDXoAn9g6zl44gWMDEHKjKqpbnWlpRx9TGe5snrJTqFWgcKwU9pNmTbbQy0pCaDVGOPDZ2D4LpslOEpscrVVu6P8+P9r3DUpE2Q+d44bRQ+LoBNkwZkY57pBGD08YbplaAJ2v8HTDorLVcmCdiqohOboWcchLNR+0kVWXqK30+IKPve5Oy5ooo+ALtQjcW+N6S3StGd04UnqY0cKmeiDDb/urWkxIFiVt3pbsLayw1I3yygT4zCpk8H3rJacF4EtNW2/gEtJI4vNqwqK7Oc087mW6m8MIkg5+VHI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,43 +124,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 13, 2025 at 11:43:15AM -0700, Kuniyuki Iwashima wrote:
-> On Wed, Aug 13, 2025 at 6:00 AM Johannes Weiner <hannes@cmpxchg.org> wrote:
-> This change stop double-charging by opting out of _the
-> networking layer one_ because it interferes with memcg
-> and complicates configuration of memory.max and the
-> global networking limit.
-
-No, we do want the global limits as a backstop - even if every single
-cgroup in the system has its own memory limit.
-
-Sure, from a fairness POV, we want socket buffers accounted towards
-the containers' memory footprint and subject to their limits.
-
-But that doesn't imply that we can let the cgroup limit be the only
-thing curbing an explosion in socket buffers.
-
-This isn't about fairness, but about host stability.
-
-The MM can easily get rid of file cache and heap pages, but it has
-limited to no control over the socket buffer lifetime. If you split a
-1TB host into 8 containers limited to ~128G, that doesn't mean you
-want to allow up to 1TB of memory in socket buffers. That could make
-low memory situations unrecoverable.
-
-> > Maybe their socket buffers is the only thing that happens
-> > to matter to *you*, but this is in no way a generic, universal,
-> > upstreamable solution. Knob or auto-detection is not the issue.
-> >
-> > Nacked-by: Johannes Weiner <hannes@cmpxchg.org>
+On Wed, Aug 13, 2025 at 12:42:32PM -0700, Shakeel Butt wrote:
+> On Wed, Aug 13, 2025 at 10:07:18AM -0700, Chris Li wrote:
+> > 
+> > If you store uncompressed data in the zpool, zpool has metadata
+> > overhead, e.g. allocating the entry->handle for uncompressed pages.
+> > If the page is not compressed, another idea is just skip the zpool,
+> > store it as a page in the zswap entry as page. We can make a union of
+> > entry->handle and entry->incompressble_page. If entry->length ==
+> > PAGE_SIZE, use entry->incompressable_page as a page.
 > 
-> Please let me know if this nack still applies with the
-> explanation above.
+> The main problem being solved here is to avoid the scenario where the
+> incompressible pages are being rotated in LRUs and zswapped multiple
+> times and wasting CPU on compressing incompressible pages. SJ's approach
+> solves the issue but with some memory overhead (zswap entry). With your
+> suggestion and to solve the mentioned issue, we will need to change some
+> core parts of reclaim (__remove_mapping()), LRU handling (swap cache
+> pages not in LRUs) and refault (putting such pages back in LRU and
+> should it handle read and write faults differently). So, the cons of
+> that approach is more complex code.
 
-Yes, for one I think it's an unacceptable behavioral change of the
-sysctl semantics.
+What Chris is proposing would also fix that, even for configurations
+without writeback. So I'm not opposed to it.
 
-But my wider point is that I think you're trying to fix something that
-is a direct result of a flawed approach to containerization, and it
-would make much more sense to address that instead.
+However, for deployments where writeback *is* enabled, this code is an
+improvement over the status quo. And it's not in conflict with a
+broader fix for !writeback setups, so it's not an either-or scenario.
+
+Specifically for the writeback case, the metadata overhead is not much
+of a concern: we can just write back more zswap tail to make up for
+it; the more important thing is that we can now do so in LRU order.
+
+The premise being that writing an additional cold page from zswap to
+disk to make room for a slightly inefficiently stored warm page is
+better than rejecting and sending the *warm* page to disk instead.
+
+So I agree with you Chris. But also think that's follow-up work for
+somebody who cares about the !writeback case.
 
