@@ -2,63 +2,63 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3D256CA0EE0
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 14:48:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8CCC8C87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 14:49:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56F37900099; Wed, 13 Aug 2025 10:48:56 -0400 (EDT)
+	id 2B26890009A; Wed, 13 Aug 2025 10:49:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5205A900088; Wed, 13 Aug 2025 10:48:56 -0400 (EDT)
+	id 26306900088; Wed, 13 Aug 2025 10:49:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40F65900099; Wed, 13 Aug 2025 10:48:56 -0400 (EDT)
+	id 0DC7890009A; Wed, 13 Aug 2025 10:49:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 28B1C900088
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 10:48:56 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C21D282B13
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 14:48:55 +0000 (UTC)
-X-FDA: 83772016230.17.7EAF160
+	by kanga.kvack.org (Postfix) with ESMTP id EC82F900088
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 10:49:36 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9312D1A03F1
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 14:49:36 +0000 (UTC)
+X-FDA: 83772017952.26.E622A8A
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 9BC5E180014
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 14:48:53 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
+	by imf23.hostedemail.com (Postfix) with ESMTP id AD1EB140004
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 14:49:34 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf24.hostedemail.com: domain of ada.coupriediaz@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ada.coupriediaz@arm.com
+	spf=pass (imf23.hostedemail.com: domain of ada.coupriediaz@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ada.coupriediaz@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755096534;
+	s=arc-20220608; t=1755096574;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=F7gob46kb//JpRUK0TYl19jc1ebhca+bwFhqnvAij00=;
-	b=soclNzimyzl2mBiRbIvgyXjNHewDrN2VaYOTUKr79nmAqbt1y+lmRPdlBo3MtyT47EfaiP
-	TQ1zTuHBQl52qzouc4d+LJhDKb9L7MTBGr0Ve7ENR4yBh8I9RvCgK1zp/WZK9KbeM5BeWU
-	/AOVxG4p007zByXwgTiTd32bd9zbHzM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755096534; a=rsa-sha256;
-	cv=none;
-	b=DaR4qNMT0suVCbvACLqYcN1d9nuPeanaGVV3NQh+UWTHfZaw7EENhSyij8P0IbhvanPugd
-	xlYtYY/LDR7MgI/qA5Ldc7eklYegcm33PXU2t6ZlRzvSVd7C+kEbqYYNSOUYysOFMNyLrO
-	RDiI50Qydb6IGhuJbzJIr5spbXp4YmY=
+	bh=0tb+++lwvt7o4dnuA540qtPzkugVZMdbKd++k8Qh7w8=;
+	b=VeNu7cgTjcyamVpcb7LR1pJngC4rlAa68TvJO/lColxGA/zuppWiFhFjLP6zHIev3MICN4
+	5moMDML8/5JfsxbUIRjXKHJAOgP5VxHhSlVkCEdrUzVp83UKu1eNpP4fVtFmQ0GuAPaXIw
+	C0sDeBaS7oL9BggemSchuLajW/gSRnI=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
+	imf23.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf24.hostedemail.com: domain of ada.coupriediaz@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ada.coupriediaz@arm.com
+	spf=pass (imf23.hostedemail.com: domain of ada.coupriediaz@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ada.coupriediaz@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755096574; a=rsa-sha256;
+	cv=none;
+	b=ir9XrMrH0JeZpqd61O1LfZZcn7+tAt4ggsaZX6N7H10ZWrGKo0s0/J5qZS2abagA5zzHgv
+	saVuMM8ZyL/Wn1t5yzUVgh+CyWuoXkfzqrCOu0PmZqAZguZh4/wc7MqnWlxJ9fM5eMqNXn
+	2z+YcIBj+3OoNhtf67yBccWGldQkQUw=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4402312FC;
-	Wed, 13 Aug 2025 07:48:44 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A16EF14BF;
+	Wed, 13 Aug 2025 07:49:25 -0700 (PDT)
 Received: from [10.57.1.244] (unknown [10.57.1.244])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8166E3F5A1;
-	Wed, 13 Aug 2025 07:48:34 -0700 (PDT)
-Message-ID: <cae90aa0-9fa6-4066-bbc0-ba391f908fb2@arm.com>
-Date: Wed, 13 Aug 2025 15:48:32 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4CB263F5A1;
+	Wed, 13 Aug 2025 07:49:17 -0700 (PDT)
+Message-ID: <31bac00f-7903-46f7-a5a0-1e8f5fd8b9ab@arm.com>
+Date: Wed, 13 Aug 2025 15:49:15 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 02/18] kasan: sw_tags: Support tag widths less than 8
- bits
+Subject: Re: [PATCH v4 13/18] kasan: arm64: x86: Handle int3 for inline KASAN
+ reports
 To: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 Cc: nathan@kernel.org, arnd@arndb.de, broonie@kernel.org,
  Liam.Howlett@oracle.com, urezki@gmail.com, will@kernel.org,
@@ -91,21 +91,21 @@ Cc: nathan@kernel.org, arnd@arndb.de, broonie@kernel.org,
  kasan-dev@googlegroups.com, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org, Ada Couprie Diaz <ada.coupriediaz@arm.com>
 References: <cover.1755004923.git.maciej.wieczor-retman@intel.com>
- <780347f3897ea97e90968de028c9dd02f466204e.1755004923.git.maciej.wieczor-retman@intel.com>
+ <9030d5a35eb5a3831319881cb8cb040aad65b7b6.1755004923.git.maciej.wieczor-retman@intel.com>
 From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
 Content-Language: en-US
 Organization: Arm Ltd.
-In-Reply-To: <780347f3897ea97e90968de028c9dd02f466204e.1755004923.git.maciej.wieczor-retman@intel.com>
+In-Reply-To: <9030d5a35eb5a3831319881cb8cb040aad65b7b6.1755004923.git.maciej.wieczor-retman@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9BC5E180014
-X-Stat-Signature: 36rpyo996iqwgf45f88u6xb1z4mhto59
+X-Rspamd-Queue-Id: AD1EB140004
 X-Rspam-User: 
-X-HE-Tag: 1755096533-44824
-X-HE-Meta: U2FsdGVkX1/S4pE+VWZLX84QvQ93QhHIyT39QjEc2KS9Z5jhrIwCt227uJ97LMmMS/JLtwJarkZ5mzoiUumjANBqLq6cloD7wGNbV5E1jVlGFl/Ukuagpv5NgE9iOLs5zcI+DiQpopjnL9K+Mgdy9Fk1zPFTS+GeT8nJ/06nerSE4fQVI9glG6+Z76/9FfZNHii2CB08uzvvd4y7ibUkItDysDhrj3BwKv0sGan0fR0vsk5QOcFmV4E8CPxXKyYB6YqvIV7l/f0epDWj0HUEl46wjmGuPTOFpIApiHpJAm2EFoe7riXWiPoY4AMI0GMn4BmsKRo/IN/SWGnwZWzbKNM3phaPmQ6rJxwt/2ekY7rjC0Ar/0gTMxXMqzh7hQ1y44QvF53NcXawbptm01pdNLBSTXWqSxXMNoDgKVWqiT9Cl0Egiu77pWlv7576LU0N6rGZ1RWXH8h2cxXbcaGWe6GYrcnTi/XVUuLUYwOhLSCloTHN8eUdaCXqXoYG3AYwn70vBdTzf4f0O1O64a21w2xWl38Vz+JxDFgFqG9qV8DzwyqjS5ljrgYCS156rQZMyKcbzGXo7lYUK3/MMrk0GI9tiBw5NbV1E0WMBRcH2Um+ikPb+sgu+wMbHBZhREIPOuOtL4NaoTO0lQLU/4vG0Lu7AM5p/M6coDU0CTOig1SdCWdt45i1MdB+8mSjau+x0dcfRb8k+HhcMsh4PDA4cwDFs0JWcL/qjX3HWCU6/oPJzfzVzXj5Fanc8okhfYkm6d32JYJ8rXvinV/7lLHe3tMIxu8yxgN91nEKS2faZKAekWLaZKU7L4uTRq4UDqgek92MUEzIyfTSJIcbjSJndr3j4e6Ezgxe17HdbSzSSc4SyFrelZwK6zuo9lF7SPVkitwimKtEA1tuish7L+ihyiotkYZRwoAEB66Qz/LR6N7D579Rn4nCXtE0C5nTVru8aQuuELXQM1fHpFHJVua
- opwPg/0G
- N3b0KWc6xJ7mE/UXDgJY/XkHbK05L1fuMxJ9xrIc4Vhe05t7hqIQWAMzg9QKt0pu3zKNXcmFvlUt0d3vxCiKTnIo6YgDO0XUPVAFUkwQLehMVv7rRCcYvLWQViI4dP9SoxzGT8iLdkfVPZwSe/WFUXXF+EBRcuZjeXxiJF4IAOIrqcguKMf6RFD6ly9f24KlXVGultLCQL1lUIuj+aupavadI+78ZOIkBkDOYwY6JLHfGBc2/2mAcc24xHHgJ0ypX7NTs/0d3BJF+Ae73t5qIfyNvzwuG5ODDaFEleaSaw5JlS1oo1C4+nJufibDVHKhIxqxA1DrFMHghpsMqYt9tsFJkZchW4wRYw0xWyEHT/e3Y7BPena6q6LWWiQJNIONXKC7qqSmhT8R3lvwGdB0wJC1SEQ==
+X-Stat-Signature: zz8r17kwgenwniesbpczb5qn5kpncgfo
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1755096574-252028
+X-HE-Meta: U2FsdGVkX1/1otMJcawDt3HZjBxFvw0EcN3Nv/LkvWlYYchQh688tLErw1cq25A/1uQyQKB1sl/5pkxa97P5pJzNrz2htMYPEXR6MnXGNixVPQslzIHg1dtq3Gp0DV/MrIUdcKS21evkAzx89OJ5cBhbvtE5eQIsu9md0gbUp9PpsR2IHOi5mn6ct2LAYFT/N4RlApB7sUBy457EQecdTt+BvYciKe6r4l7tmstzfPU6zX2jjY+hpK6jzUZ9E6LEEXzJqTtOTWFdy9ePvk/IyfrGD5tWa6RizBiCtp3UefKTqgwa5Rme602HY6Tpwf8bd0DQEytM9qOFORwpBed3s1dkE7SxM4QRKk3lXDFkELxXDNK5blZrdsmA7+/tyn5nVLcYUsAI1LgljZ35tQF9YKGCdBItS8Fk3864fy0tp+DQNjquYLZcJTmQ40w0MZPMDk+tAAg0CV3yl5lb0rs5FsSUzu/xr3Y/E74YviqqHa6abUzzFjL66PWr1AnitcnLCCcwzbpuZrjg2zXkKkD7XEDxc/iKnm4tYn6Qjxl4kZMNqko3JCsxNU7gbHQh8eNDlwGvsP+ipqHyIDtnDpFRSXSFCpC008pYxtwzWiYUxqVFik0xEVqQTYD7/H2hn96GTt4oPdWCuZHu2BoN4BMQehc32qaBd7wsitz69/TaZHI+T5L56ADEmHcwFmr20aatK/qXkxYoK9NyV1wYuwjrLiXYA2UWyqe0kYnlWwFNbGHZHSrz7o1neSJNmsAD5hzQWV15kR1XNZZVJ0i8zKd+W3+psb1WzBMGgUXvlAex3BWiL7cnkM4wDTlAKMwkEG7bq0F+652NhakCxSeZck//vAC8VM4uw7biZmwwYhzB28UV16jQCA8VuJp6Fame7EuHGJiSBHd522LNfSGW13DffaHDhwyaofldgrqZykoRlcJkWADtlmdFHYCn22A83X4v9GNA9s186N2sYYFI+HQ
+ BjB1XPkZ
+ IE+nbpyckp/o59wg1quI5tuKLIAQ9BaDZA8qyDuHjXJRzUaiqUh83X9sLnkDBQkOFxLgdUfc6sMEvlU8ruQ3hB+ZDFlu2OeCC2V6+TG7ELzRt4kC7+qNSXd81US8zwByc5SPtC8/z/CcllM1NKOlXCpzLYYnYflH5RPr5nRToTWZ3zuBC52czjo47x1PXxwHqqUWVJGBiaDf91JcHxpxfDTgNenefCt360q9pOQH7kfNBN8OFMO/tqQ3GfJg/ry/7JIdBy/42kxHeWvottyW++4QJYg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,78 +117,44 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 Hi,
 
 On 12/08/2025 14:23, Maciej Wieczor-Retman wrote:
-> From: Samuel Holland <samuel.holland@sifive.com>
+> [...]
 >
-> Allow architectures to override KASAN_TAG_KERNEL in asm/kasan.h. This
-> is needed on RISC-V, which supports 57-bit virtual addresses and 7-bit
-> pointer tags. For consistency, move the arm64 MTE definition of
-> KASAN_TAG_MIN to asm/kasan.h, since it is also architecture-dependent;
-> RISC-V's equivalent extension is expected to support 7-bit hardware
-> memory tags.
+> Make part of that hook - which decides whether to die or recover from a
+> tag mismatch - arch independent to avoid duplicating a long comment on
+> both x86 and arm64 architectures.
 >
-> Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
-> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
 > Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 > ---
->   arch/arm64/include/asm/kasan.h   |  6 ++++--
->   arch/arm64/include/asm/uaccess.h |  1 +
->   include/linux/kasan-tags.h       | 13 ++++++++-----
->   3 files changed, 13 insertions(+), 7 deletions(-)
->
-> diff --git a/arch/arm64/include/asm/kasan.h b/arch/arm64/include/asm/kasan.h
-> index e1b57c13f8a4..4ab419df8b93 100644
-> --- a/arch/arm64/include/asm/kasan.h
-> +++ b/arch/arm64/include/asm/kasan.h
-> @@ -6,8 +6,10 @@
+> [...]
+> diff --git a/arch/arm64/kernel/traps.c b/arch/arm64/kernel/traps.c
+> index f528b6041f6a..b9bdabc14ad1 100644
+> --- a/arch/arm64/kernel/traps.c
+> +++ b/arch/arm64/kernel/traps.c
+> @@ -1068,22 +1068,7 @@ int kasan_brk_handler(struct pt_regs *regs, unsigned long esr)
 >   
->   #include <linux/linkage.h>
->   #include <asm/memory.h>
-> -#include <asm/mte-kasan.h>
-> -#include <asm/pgtable-types.h>
-> +
-> +#ifdef CONFIG_KASAN_HW_TAGS
-> +#define KASAN_TAG_MIN			0xF0 /* minimum value for random tags */
-> +#endif
-Building CONFIG_KASAN_HW_TAGS with -Werror on arm64 fails here
-due to a warning about KASAN_TAG_MIN being redefined.
+>   	kasan_report(addr, size, write, pc);
+>   
+> -	/*
+> -	 * The instrumentation allows to control whether we can proceed after
+> -	 * a crash was detected. This is done by passing the -recover flag to
+> -	 * the compiler. Disabling recovery allows to generate more compact
+> -	 * code.
+> -	 *
+> -	 * Unfortunately disabling recovery doesn't work for the kernel right
+> -	 * now. KASAN reporting is disabled in some contexts (for example when
+> -	 * the allocator accesses slab object metadata; this is controlled by
+> -	 * current->kasan_depth). All these accesses are detected by the tool,
+> -	 * even though the reports for them are not printed.
+> -	 *
+> -	 * This is something that might be fixed at some point in the future.
+> -	 */
+> -	if (!recover)
+> -		die("Oops - KASAN", regs, esr);
+> +	kasan_inline_recover(recover, "Oops - KASAN", regs, esr);
+It seems that `die` is missing as the last argument, otherwise
+CONFIG_KASAN_SW_TAGS will not build on arm64.
+With the fix, it builds fully without further issues.
 
-On my side the error got triggered when compiling
-arch/arm64/kernel/asm-offsets.c due to the ordering of some includes :
-from <asm/processor.h>, <linux/kasan-tags.h> ends up being included
-(by <asm/cpufeatures.h> including <asm/sysreg.h>) before <asm/kasan.h>.
-(Build trace at the end for reference)
-
-Adding `#undef KASAN_TAG_MIN` before redefining the arch version
-allows building CONFIG_KASAN_HW_TAGS on arm64 without
-further issues, but I don't know if this is most appropriate fix.Thanks, 
-Ada ---
-
-   CC      arch/arm64/kernel/asm-offsets.s
-In file included from ./arch/arm64/include/asm/processor.h:42,
-                  from ./include/asm-generic/qrwlock.h:18,
-                  from ./arch/arm64/include/generated/asm/qrwlock.h:1,
-                  from ./arch/arm64/include/asm/spinlock.h:9,
-                  from ./include/linux/spinlock.h:95,
-                  from ./include/linux/mmzone.h:8,
-                  from ./include/linux/gfp.h:7,
-                  from ./include/linux/slab.h:16,
-                  from ./include/linux/resource_ext.h:11,
-                  from ./include/linux/acpi.h:13,
-                  from ./include/acpi/apei.h:9,
-                  from ./include/acpi/ghes.h:5,
-                  from ./include/linux/arm_sdei.h:8,
-                  from ./arch/arm64/kernel/asm-offsets.c:10:
-./arch/arm64/include/asm/kasan.h:11: error: "KASAN_TAG_MIN" redefined [-Werror]
-    11 | #define KASAN_TAG_MIN                   0xF0 /* minimum value for random tags */
-       |
-In file included from ./arch/arm64/include/asm/sysreg.h:14,
-                  from ./arch/arm64/include/asm/cputype.h:250,
-                  from ./arch/arm64/include/asm/cache.h:43,
-                  from ./include/vdso/cache.h:5,
-                  from ./include/linux/cache.h:6,
-                  from ./include/linux/slab.h:15:
-./include/linux/kasan-tags.h:23: note: this is the location of the previous definition
-    23 | #define KASAN_TAG_MIN           0x00 /* minimum value for random tags */
-       |
-
+Thanks,
+Ada
 
