@@ -2,111 +2,236 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 30EE5CA0EE0
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 15:07:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B631FC87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 15:14:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C76759000A3; Wed, 13 Aug 2025 11:07:25 -0400 (EDT)
+	id 5CF5B9000A4; Wed, 13 Aug 2025 11:14:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4E8B900088; Wed, 13 Aug 2025 11:07:25 -0400 (EDT)
+	id 58062900088; Wed, 13 Aug 2025 11:14:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8C419000A3; Wed, 13 Aug 2025 11:07:25 -0400 (EDT)
+	id 421349000A4; Wed, 13 Aug 2025 11:14:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A7CE4900088
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 11:07:25 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 72210C03FF
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 15:07:25 +0000 (UTC)
-X-FDA: 83772062850.06.D9C91C9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 00F5A2000A
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 15:07:23 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YENt6LTm;
-	spf=pass (imf03.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755097644; a=rsa-sha256;
-	cv=none;
-	b=RatoNV7jMkuKJ9YL7PCDFQlkeeugz9uc7/0djZSyRgwniBJ4ZA05xk3v35VHFDNs/KhcWB
-	RpyjJfrbvJPPA/gvY2ulmaSfXQlN+0O2VOQFDMcqbcbdM3Iq6hSUN5p+5R79TGzb1o8uxs
-	7Sz75h+/HdxaJ8LJaAF9kzD24SSx43c=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YENt6LTm;
-	spf=pass (imf03.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755097644;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 25199900088
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 11:14:28 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D344A1603A6
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 15:14:26 +0000 (UTC)
+X-FDA: 83772080532.12.DB92E95
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5C94E120015
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 15:14:23 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=qH7GPBo3;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=f+Pkr2oC;
+	spf=pass (imf29.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755098063; a=rsa-sha256;
+	cv=pass;
+	b=DB1wq5VXpVZojky73dmi0UBNmfVqJFVlps0YYVdn3lUdRuBY9J1Z06JVg0Dqg36An2wTA9
+	e/oiOHi6gl6qjaaR1xLRPO8W4kNid1ZMSxe9AUCKRlaZxH3hidpXwrI9wvQnADVawufmsL
+	rVj4YoTFbm3m7DaV19XLHvBd43QH4eA=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=qH7GPBo3;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=f+Pkr2oC;
+	spf=pass (imf29.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755098063;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ySXGLynnR++p6RuXca+nTN6nGsk03DV3QSK1ER01nvY=;
-	b=dPM8ax2xpITeZsPXWvbIWETWMQBwLX1BAu7tveTybBkcsKL1BMFXSXuJSA0kmJIBCJN1Au
-	49EO5X3UrNRdHooP3o4aPcjrH3TFJ2iYXDCECMuvmHuI103LAYmex5ZjPNNjvt94OV61zV
-	njIOh26mQ6g0Svdm2mLefUdqleFqabc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2F0C06112D;
-	Wed, 13 Aug 2025 15:07:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B711C4CEF1;
-	Wed, 13 Aug 2025 15:07:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755097642;
-	bh=AgCFVr8B6NzxkSuzvPEJMB9AhjM0iYqJptnGya/8rdo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YENt6LTmzTF5MtD2CCE/V13VNj4PuphZirCcbsVboFbdWpo5pbDoM+O1RwGND9hHA
-	 WetmjCRKzL7pVzJCuB6ANhgpmI5NnCbOUKiA98JWJtIXOH8N50EVLmuQyuay6zm6ky
-	 Onvhe46hQosw9HCamdkdEFdjBFc8sAKkHOvcvhEwHpJ12ST8cc+74GQ77yCDPQN8yP
-	 6Wv7nBFsNIocmJw6FI3A2Sw+oIhMT6YNdwdLIq5MhleD6VLBx07CKPNCPkvEmssek+
-	 ZjeG2ZowZ0nIKyT2jMky93WoiZsWFLORbU579a0ityJsLq0oaeKqLOOi+Bq4oEc02a
-	 vNc66YhlSs8qQ==
-Date: Wed, 13 Aug 2025 18:07:18 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
-	kasan-dev@googlegroups.com, Keith Busch <kbusch@kernel.org>,
-	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v1 08/16] kmsan: convert kmsan_handle_dma to use physical
- addresses
-Message-ID: <20250813150718.GB310013@unreal>
-References: <cover.1754292567.git.leon@kernel.org>
- <5b40377b621e49ff4107fa10646c828ccc94e53e.1754292567.git.leon@kernel.org>
- <20250807122115.GH184255@nvidia.com>
-MIME-Version: 1.0
+	bh=KZyv7EtqsAQtR8OQEsjrIZIlCz+b+o6njQRv/Bc/DPE=;
+	b=yMB9CYY/SD2xdgF72AWlxwdZ+7MDZc2zoFYkXXmQ1wAB7OJXQdS8CaogARCCnZkTX+Zh5y
+	iQD5XWJ36UAQiPOSlDuqN6RykDDXscrxCnhCACOe5qhKgRiwIXK+37D4YMASyaSO9GALU3
+	1qnj478J7qH7ZPnPgqXzEPJda72dWVg=
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57DDNB1V013890;
+	Wed, 13 Aug 2025 15:14:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=KZyv7EtqsAQtR8OQEs
+	jrIZIlCz+b+o6njQRv/Bc/DPE=; b=qH7GPBo3F3SDxo6VQrFW8kxp807Jk9Cr6V
+	NhSpV27oIt+aMoxJHQ+YA31/BOV47g0h5ZjzYAxeJWzr1+5Z5GyK6I8rvM/dn3Lf
+	3Hu92dzdS0aykUl8580iS6iYkmkBDkkdj1CEnuUYS1dZjqVvh7Ria6kfHMNUowEM
+	8ZYIhMtfJK+l9EU0dhG3cBKSELpCYFHhXgvB5bTpRwDnhW80dY7bx7Vv+G85c2VT
+	GDN7Ibq41u50yJNL2U+l0uPSKIUY5uDJgP4ZpB9FkwwdmSTQiFfGmWHdb0/E7p3t
+	bZasuw8Q/MAsZCOByD7uAM+nBwBWeRMrnLUo/8hkbG53suWQYLFA==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48dvx4fu59-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 13 Aug 2025 15:14:06 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57DEYw0Q030131;
+	Wed, 13 Aug 2025 15:14:06 GMT
+Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10on2040.outbound.protection.outlook.com [40.107.92.40])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48dvsbhhtx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 13 Aug 2025 15:14:06 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Fl/9o4ER6NIknI8FcRGRGPO7SGL3C5bQmQO17kPyWY8irSSk5u2luD7E8JiFj4LgwovGsDrIN/hCy4bPU1ofQqcCjuOG/9eZWluqoeCE4Bm6gJY2ysVuzwQSFWCQCNioG9U1jW7t4pYdUwMG86QB6BH2uVgW1wpFXKmqgFVIB4lwbowfP12uVdCfXPFc1YByKaTrsOKrOg2e5w2/ARQon9fabMto9l0ktYwTztlMkLexTcFy0lczhyWkkV+37iseitmk+33WfIKbGXfldtPNFPW7ax5d9cQveLRDvmAEhSVpOCnZc/GR2Nuk5OdFOhpAboNBsFyMoJgshuu0yfF2bA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KZyv7EtqsAQtR8OQEsjrIZIlCz+b+o6njQRv/Bc/DPE=;
+ b=fQwaYxc0yGVG75to5oTilHBTgYKpvxmwvYynl+4bEQgLqig7IE9AYz3Y7U2nDTGgFT2cSLR9EKLQ5eLbd2WFQL+V7G9u4maXow6TPqUGcqWkpKCRYzVd7nE5v9ipa3ZOLvgCWjbc0i4g6pxTR/w/xo/i+brRx5MTAA9cugJb5CcIRmQFw0cU3PNHFSCidAkXL4Ckh5ms0E/1Rj2cvbVnoEz7ju5b/pFA9zSgGhD9YDVbzLmAa2kGxOCTBLhZrnSejmyFiznxYZe4Z7kW4lDeIF32/h11I0UJtmHMXwW7kezLJt+0rHb5PvN8Yz04qHhZ9rO24Odq30fLJ2udZJJ6iw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KZyv7EtqsAQtR8OQEsjrIZIlCz+b+o6njQRv/Bc/DPE=;
+ b=f+Pkr2oC7Ri8NoS88mtxYrvUoiz6uZxpiKIskGwbOlHtzXoFDl/nAlsKR4zh4o502doJ2mhP2aXCWZvAxfymPaROz70F79e9G3JL1YUqllxKhgGuxZvaA7cAP7mJZQJ13SkehiQmGnTsFUTmhBQWngHVojoFIKZZWB/seJB8V0g=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by SJ5PPFACCDEE1A8.namprd10.prod.outlook.com (2603:10b6:a0f:fc02::7c3) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.21; Wed, 13 Aug
+ 2025 15:14:02 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9031.012; Wed, 13 Aug 2025
+ 15:14:02 +0000
+Date: Wed, 13 Aug 2025 16:13:59 +0100
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Usama Arif <usamaarif642@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@redhat.com,
+        linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, corbet@lwn.net,
+        rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+        hannes@cmpxchg.org, baohua@kernel.org, shakeel.butt@linux.dev,
+        riel@surriel.com, ziy@nvidia.com, laoar.shao@gmail.com,
+        dev.jain@arm.com, baolin.wang@linux.alibaba.com, npache@redhat.com,
+        Liam.Howlett@oracle.com, ryan.roberts@arm.com, vbabka@suse.cz,
+        jannh@google.com, Arnd Bergmann <arnd@arndb.de>, sj@kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+        kernel-team@meta.com
+Subject: Re: [PATCH v4 7/7] selftests: prctl: introduce tests for disabling
+ THPs except for madvise
+Message-ID: <13220ee2-d767-4133-9ef8-780fa165bbeb@lucifer.local>
+References: <20250813135642.1986480-1-usamaarif642@gmail.com>
+ <20250813135642.1986480-8-usamaarif642@gmail.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250807122115.GH184255@nvidia.com>
+In-Reply-To: <20250813135642.1986480-8-usamaarif642@gmail.com>
+X-ClientProxiedBy: LNXP265CA0070.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:5d::34) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|SJ5PPFACCDEE1A8:EE_
+X-MS-Office365-Filtering-Correlation-Id: 22740533-312d-486b-62fa-08ddda7c094c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|1800799024|366016|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?L/apSk4C0zv6V1+N4ojn9UvF+Kc+tdkmnZGRA3fanPGK+k1bAZ8uKO6paBRJ?=
+ =?us-ascii?Q?Zn84J5KyctKoiPa5m/eJikCtRQtsDkc2SYQJRwa6hveKU60pk3eIjjlCscuM?=
+ =?us-ascii?Q?R9o31r8EU59WqR1GP+PRsfC+0SSh/CipFn4/un9kJ+W7Nenz7NHRgOQbE16e?=
+ =?us-ascii?Q?ny+6FS+e9ouzabrnQgst3RjYDz9X++wpfLJAgcoyq5lcYqs3Goz2gWICXT6Q?=
+ =?us-ascii?Q?vHU2SOxS7+IFmXCoqTyc0pcXEDXWp1UBwxRJTk2p735hvyETuafsGcq4HkFS?=
+ =?us-ascii?Q?L7hxXDooBPkgrqjTN4BE1WO04EdjwZ9v8cqeAGj06RcNnrwtTucBb/PQtmEA?=
+ =?us-ascii?Q?Xn5PnyaKDddWNFugoFYUYP1sEhTHgTgCjEqw4tL97ymCjDL/AxS6oIS/0Ys3?=
+ =?us-ascii?Q?2GIsWygDQZ1aqI4QK8AfWKxncmpCwEqvkSckiFd+BM5q5VfymiIYzZf/lalq?=
+ =?us-ascii?Q?DDE+GTYaTPEz2UbmKX3CBls5a6EKRkbZZpXBDPLkwHK7Klq8O+K47V3y/E9X?=
+ =?us-ascii?Q?xdoLRew/9nq37x2xBIx2K4O5QSlc7bDzlXioEd9HtdRNHnCm9l/3WF9T0SKW?=
+ =?us-ascii?Q?b0qfQI/kFnbQn7bWtFJKsQQbF+ey59VoTSdJci6fDPJmGhuR0YQlwVJJZqgu?=
+ =?us-ascii?Q?XZywo3kA21hfbcHMJlfiq7Yp0Zw4Q3idCbV9xK5rLPETtEKtdkXOgyeE0lax?=
+ =?us-ascii?Q?ZluM1a8V7tFCbNXyEmLDyhvb9OtnXHoBN0LW4G051kOhmUj3TnAZjhHYP9Sy?=
+ =?us-ascii?Q?+AA5An0+HeUOINHuEMKObztcmjX477Z4RskwGinDogv1UAO7TCUZfrLVi3qZ?=
+ =?us-ascii?Q?WpGqhJ8Rgk6o35ERodV4+5gpLioFZ0nb06kpAOC4aHAEi1gchUEOKkcckZvd?=
+ =?us-ascii?Q?/wytRerMT+G1X2CKiosoLTEZyZYCZ3+G7jdzbosLZ8GfJljXhR1U1VX471Ef?=
+ =?us-ascii?Q?TuP4vncOIbeC2i1XqxFbvWXElQi51ThNGK5cz8av9DhYXxySfokurAKxuSYe?=
+ =?us-ascii?Q?fGbG2gz6oxd8mSXQz07yEsHxbeCJ6Og1QbE1A3Ke+aAhFRUv0SMEixsEq9ZV?=
+ =?us-ascii?Q?eYDf0PUiu7ImeVrvhIrk1JL9Tcwvqhb7nAvKijY+Z+iq1VXJyz8Kv6tqtzU7?=
+ =?us-ascii?Q?nW8UfcAY2WYYWBWQldHqoF2OMcfqBkLkL2TaMNIaUyBXasBwT94Kvmk9f3XH?=
+ =?us-ascii?Q?7+tbS4ngoA6L1FsSkK1Ylx0kmjdZOA79TfXP8PSLHaiUMZ0Rn1nqRwbU5kpp?=
+ =?us-ascii?Q?xfMSN0MmhdRx7MV4khwxO/JIVjeMvueA2vbp5NfGkRD9l0V6Fb3lJd+l/T8x?=
+ =?us-ascii?Q?877sR1yQ0v019DRmYUa2IIacynsEBxApkDN6Q/9Hf08Gq9f9CXDg4QGtuRYX?=
+ =?us-ascii?Q?lWThJ/wcbrtPVWF34N7k/y/tp4cuqw16q8SYmf9DvUOGX/LNaWq+cqF74MBO?=
+ =?us-ascii?Q?4QDlCDo0k80=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(366016)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?fSEA9OwCEaftqrnrLzmhbU2WzJNB4HAG9ax2rQqGQXd3N+1OWC1XQZ/8xRgy?=
+ =?us-ascii?Q?bmnerzWuYv2Ldj6uQgKvoayiYRdoIWX0KTPbq1h9vf18I7b5riE6VLXXznFH?=
+ =?us-ascii?Q?nz7j/IvsXnQQ3BCyJ1/WBqXKyj34PPqehTqAPtpB2/MrAVBEWfO8UXZ6LxL0?=
+ =?us-ascii?Q?BqY/6snkNPrgBXthrI9RwpvDX+Gz2ljnEacf0zKdlEfe8oIFWbvvm9UdE4ky?=
+ =?us-ascii?Q?ZsoelPERcHfcSuAdW0a4DvI5mEkcif7NJXxhL3yETvwV0/d8rwBc10+jk4O8?=
+ =?us-ascii?Q?rrqdtar4+hAR/+UVnrUXOuDmNeZCDHxbJCM623ovRY1wI269E2hv0VNBPPMj?=
+ =?us-ascii?Q?NmzyE7sgjs8pHjJAeUTZF6u3zVL2xv1ojTSfIY7EMzcknpZz4q9bz0K8l7VI?=
+ =?us-ascii?Q?mVk2OSlOztMKviGtwaa73Z9Qfl6pSdXwip2Mo3Wu9Wsx/WbFXv9Ybqkc2VH3?=
+ =?us-ascii?Q?sCxHv34tLnmbTw/0jr0L2Hlj8MZJcnlSvbkusX04eZ9zcO+t9dQ7JJ2tqDUS?=
+ =?us-ascii?Q?JGyR4HFvB1CJuoCFIrnbbK6pdya+yYrg779Kuq1IhqopMmZWV6G10wje00+/?=
+ =?us-ascii?Q?7qpP8/WYkYAlfzv2DX/+8E/CLz7gtATXWJzvzJgflAV/Gcl1vOEfwkUnCYTR?=
+ =?us-ascii?Q?1eitocNUYtivVHxKPdWlfVk6Idrmaw8lmsak5oZugsConlRXf9SZou4PkkHb?=
+ =?us-ascii?Q?hQ0jDrr5cIDgvid+Otnh2fK3CNCIZ1oMeFFf851MxMUTZ7NisIy84foX6dzK?=
+ =?us-ascii?Q?zltFS5YEI6tPrXltG6s7+bqlrHiuZxLCNwg0FlUJHSwQZaY3fSDE1AB1aSgj?=
+ =?us-ascii?Q?DqmYF8lnq/pANMM1Bn4Zjvkgju4NQg7EKOsFzOew2EtF1Ut8lfUlaIu+IETd?=
+ =?us-ascii?Q?xAVtq2G6NpzPlv2E/27HP7f8WgP+nyLo+ZcdntSDv2bEGqqVB9407NLCuWRe?=
+ =?us-ascii?Q?kdSnrjfi1/iYFpSTJ8XRdrn9lSc87neQJojp2oBWmN8Sg1IPuv4rrXDjPL5N?=
+ =?us-ascii?Q?6PiQKF0RNxCmQrIjMCrssCWJp+veEZfYOnXYD8MX8i4qVx/2XALrCeL6VaF3?=
+ =?us-ascii?Q?U0wSifnRkfVt/UfzGQjLapXcEyGmcfEEfQXt2PNzXq/PA5iNWS4fQWBcsmEd?=
+ =?us-ascii?Q?Vrg50Eg49mwrRSZzVWzvQ5s8Q7jnrumEbQcy2Y3hxPMPF0E12njUb7x5HEUS?=
+ =?us-ascii?Q?MQ9y3cObijweNNJ3QNusNiIaSF4am9bQMTnK3WL4ARmvqDE4YpIRx2Geze9H?=
+ =?us-ascii?Q?k4vU2UVRLAO6T/oPAkihEOp1TdT3M5k5g9EbbTmIeEKBl/9aTeAotvA14GGr?=
+ =?us-ascii?Q?Fg7jpL1glEdwGX8wcaVk7raA8SrXqrPM8rJIqa8SxgVkRkuvv/XfNV3ji/eS?=
+ =?us-ascii?Q?H9pSvtHwuEJF/vPVmMePy499P5dDDfs1wounLzoN4tMDFwCXyTuZtJk4yQ1Y?=
+ =?us-ascii?Q?m+mSEarS/IR7kQbhzZTTXGk2bgV/hUerC0f6KGXNIBwiFySJ4lJeSznT5b0p?=
+ =?us-ascii?Q?t1OHF+RNxm9X1EJHaLbTgZytK6NNtGLnNtdOESoX7W1d2XnG7XmPAML0Ir9a?=
+ =?us-ascii?Q?mj1YaHAuHJF1yUz8yDMKaMbIf/RbxbqeIhj6pTj9J9qlG1rLO9sLB9r+0I2n?=
+ =?us-ascii?Q?2Q=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	EH34oiRiL2aukj6eEtv8guzkzU578PiCevPiefqypX+JNhSoJk1jvuPtpXtsDPcWx+LsrB0CGok8PjbLohb1krMiIDYwEGCRn9RwXhUmmSTn+W7UdmpBU/fkam9ZpcU02QrMSZ+7vCvkXgA0NOUfO1B9qz3Qz4WTiaN/Z+1H+q4HUG6/smm+uQjPgeH4AtbKljZyfqmUXEDlerZDD57cDMFm3VeiKkda2kWSyFxdz/Q470TXUpYaBx1hHX7OACqqChtVgDd9Ikxky/eB/IhCdgRlixlDw0YZhZThweoyhKpdp442DQGqDBH4v9TWe0cHyD8TMlOU6ppfObzwxiYVvZYy04yOiKE9GzrcTvVpdUklFPJF+n16kF2eyJmCOEzThtReIim/YAgXd/E1YGfKQGnyllU0hsK8A96XMk22aB/h1xEGVEqThdk+Kns0vtaRlMRIy/7Co1Cpdn+/fFO3TwHEUke4ZoEzc1FPkfy5MoHRSn11U0f3SjKxSZp4vCGRBLUuLgx+hq1bQsCksrA7MS6nUJr6p5vJoq2rbXvcwhG/d1GOYn4NDW4CRfEklaCP2CwJOoRV4SJgzRoORtdDDZBVBhFGSswRAcxCdiCE7EY=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 22740533-312d-486b-62fa-08ddda7c094c
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2025 15:14:02.4153
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lPaNUiqP/r1f+EIWwgbDfpTZTc3PXbzTn9aMCWviDfj2YiLtIHmUgiA9cp73YAz3RKL83j17BlQXHhYPgFRty1Tf7b+rRPYiT9opSvMwjgk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPFACCDEE1A8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-13_01,2025-08-11_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 phishscore=0
+ adultscore=0 mlxscore=0 bulkscore=0 spamscore=0 mlxlogscore=999
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2507300000 definitions=main-2508130143
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEzMDE0MyBTYWx0ZWRfXynK3kIMIpFlT
+ rO3ris2FHrAobm0QuTYFylqaPSmiRwbxVtmAM0TMc+XtMGiZo+/GIRl13WeHVSCX1oaahzwO4lR
+ yiiYaYkXNnceiRNWMBuHy5clt9kKY8vE0A97+IVTwOoyDtGSGLUZP+Smxf8fLA2M4V7esx14nkc
+ pLxs8oj7vb8egxNF+7KtWa1wKwZdf6x2AS4QyrmWIgP85HJ8LR4DPFCgdstM1W2sRI6FZXiYKW0
+ 7jbAq9cixMyvsJxH3dzpnOIqZpIy0DxgvxD27j7MjeUlHO2AebWqvtU2AUO8Iv/s9Z4o4Z4lb7r
+ M/S4s+stWSaUmmHHR6WJXOHwhhh/GtkpMdk61e7lPMv8w9ZiGMMmLyBWr6Ue33uUuQhiDUzZiJw
+ 6hI4YQvbo+tZ8r0ZehIpjkIW6I7bSHZ4Ggh10o3PcflrBmZMgsVrUTlgH0MHokhAcpo6sqOs
+X-Authority-Analysis: v=2.4 cv=eIsTjGp1 c=1 sm=1 tr=0 ts=689cabbe cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=pGLkceISAAAA:8 a=rvUyAA4L0pTB2ge5SVAA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: Whdn5w8Bp0WopvAD6xT0Is-ulqPJfET8
+X-Proofpoint-ORIG-GUID: Whdn5w8Bp0WopvAD6xT0Is-ulqPJfET8
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 00F5A2000A
-X-Stat-Signature: amwz1q6gjhimc7bxjr695wh1p3dr48mx
+X-Rspamd-Queue-Id: 5C94E120015
+X-Stat-Signature: 7nqo99d46yfr3pofp6ot5taf3w4ma6y4
 X-Rspam-User: 
-X-HE-Tag: 1755097643-819007
-X-HE-Meta: U2FsdGVkX18lFVjvVkL6FxGSZnaMr9wxH7h5ecLCSJQbNhKRhr6iMv+dxF2YgLhtFKHKNzhsp+P1Vothzus73tgOW/t3qkpSca+aW1IR68Pd/n2t/9owRVf5a9gDEUMkUSR5q1EvmHqqxZXfNfVDLyxju8Lf2vjzPvRtfrNMih4zMfCvY+HPWwXcV+NJrnG+rbKLsE5HO1FvBcPrpWw/V2uV7QZE5lgML5n7q7ebFEQnj4XGDZL06xW1/HXxdxeRDQYCRuOLKy67uLrMuls1bxxuIzdUvS9EkSlitKxB6PQHTWaQkWMHeGcJcfga4Bdrnfv4QXnrTqMRIRsJR9+vHT706qk2ceOBfeNUixOf4r6jE0lFNrqGmvOaEHRwI/zSU6PhZA6F4QfXb3ade9P/Y69ocfolZzqAljkgcWhQCm+sQATp9clZg9M5B1rLLCX8WBpMoKTGBf0+jesLkFxPXTfXkzWPVkWX9tXx42vqTJelndywPUOCsxieR7ca5k1smKdMonCmRro8F8bvo/2219E/F3/noxL91Qr15ikhUalCgqV6DwT1e/L3OOHVtV5QAo/P9XvnsVi/7PAZ1crhEzTusluEIu9fMV3ceXmUjp6UyeY/pyhZiM3C9h3+NsAXEoYj8V60ItWNvjykFgqhl8wf/1P1Gr4Abjs8UVGIcJkAS3lGBe9sBS9R7U38l6pkJZzTO0G8oblMxDberRz/j7OwzW6oVxHpQeluBe6kOCMlmJC8tyxv/oVZV16pFngQTsdVEemJU82wKNPMMN/hgcoai9whzIskoV93gOG/+TZeRC+sXFMcyJ+aaHfTgWOGSCwFw8Or7nMDketyJ0sSCbzJDrqKDrMHdSEUzEl+J1lbbtCKn2lZOvK7kpVnnPxoS6uuIfBJn81nDLGtzF6w4XvsMMJLR3qe2LRS9Y6kcTpbNjPPHvgcfQPWuPNMXDWI41V2pSgmLPFur2yKfY+
- RqzakjL0
- UKNDomfpSIY9l2BPxYS05h94pJQNi1MHh+QwJsGvjnZ0AiXAfDz6NiYI4euZDMlmdGS7LS5ze1OhAaTY=
+X-HE-Tag: 1755098063-660665
+X-HE-Meta: U2FsdGVkX1+ovXdmaG2BHRbdl+mUSsSRs8/glUKmaEpw1vSUUnXpxkerouH3vVeRpD1A1/fBu6SfmNXTSj8DM59QfRxi6ht2TrmgVaeJig4Lqc7eCcH8aSCaVnl/iYHq1d3JBU5qfZ5XCDgUzvTmWBhoNlxYFmywDUdVEi6P2c1MEAsy9sVTXHHoIFdOrfSTXcCgCVsIQBRvidb5YXWkVqKJZhpFcMi1rqAohiNOlL/A3tpi9dSg4/XEAuK1sKI8oThvuGEp4IWuRKmup3SokvjV2+yRIWmffGAM978jXuOFyJYzlO6tgZxgZu2KZ8t+nfYvJj1vVttVKc3uy0tE8BOXlGYeNEZifX6fAlaf+IxG0ae8v9q8nUJtszg2wHiM89mY49+cKjNDQyPkrgzjYfHj+hLqQbHduWmdmuCLXc0DlB+iY9YOFguQ7uK7Sh5tZEdm9NsvEHaDoeCmBcR6OZKwLftXJ+/31hvdAaUA8kwmNk+BP+4noqZrcypCvvrXbcGBrSCytQu+xQ1d6kYog9qCtQzo5lvmxC/PPqHTQnUkBfat+Sqss3DCEgY4e9WW/vytBLiLdZKi5+LnBlX6hoH1ptjciIBg7RvXURCLG4SGtbGVZm1aNArNv0VWB3Wdl4nc/VAR3b8BNbXKhu6QFMoVXXySLbs/zmXM+yYfjF+VkwWFhlB0UAHtdG8MRcNEhe0A2ui8w30bJQ7g1OHUzd7AaxnKEnOzYUigEIPEbUvpRTDZ6myhC9b7s8EjIsJFWQBTzMA6qqf1yv+Tt64sGrwqS7Ubz8IHFsVNCzjr0GSjqu7f/6Z8iS6TFvFBanq2mEXKC8HHwMdbKsN1WQ3gef4AJmQTMtwwovBPjTS9laOL8728lGma69nDit0UE+tnpveKmsaYKd8HUdE6N1KrRMFyp1kFEyCMbcHIzvWbKLP9w79KqVjfZmd3+nIh61FxPY8i56lZnMKT7504b2E
+ MYJJ/9QE
+ a+XinyueT4lH2iVwS3M3Vj6xbSWwPR7i3WF1oVj57nNQ13jM+3t/nbW0sGjrGkXHjG2NddM071R2EPT5WbwazeRRntukK2iI8yEAw68JaU4kG0JCBbrfP7h0B00nFvUU+PY0kMWmd7t43clVsVQ0YD0jEK3rz6HhOPYn6CM/TOAiDbnvwXo1PBZyvy3+f/NaKpb6flsIz7hj6MNOvbw7MK38aPFxTsQ1DPL1+ZKuekuLgxGPddARQakNaMCr9HsIvhLMh/VXGn+zTjb+N9VE9K2zF8a9Bgzw0JkaEmcKhu5MDWTyafTVJvZYkgB1x5SR7ZQwbq5xRnalS7bgAqB4uij8pH9XnSb3Y1VnA0OxobYXyEuWdCHkqOX5rPTBcmgaWmelOSPRxoZWMxXTmWIsvrfZocPzDf/V/mk16K9hkgsnSWGwVn1bLeI10kG7IE3AjA8kIUyVfjQV8yXFNTOtX+ukBWD3aocVpNjQ8pKByjrl+P8OFwug27IwTgvrUWwcXJMXNAqF67KeX7ify3oN8yxSbBuwroH+S+9L4koefiPVe8ee8VUJPogGElwj4VNt6IB+cpCTY8pZKcNwFBVVGgnMj4FGMlXsgSOFdqpHBvSbGU9mMcokbdlSLvHv7chmihXfn8KfgeBCuobHROKl9hlR/+uCzyz720LqXHxBnfnLsugv6HIYgKxVFh8k18/0KrvqXfhIHUsMujrxofWnOOb+7cLb30cOm4y/NALU6wwHfx+6BalYQetRXxmYi6Q00Dk8MJDyPEUMyNjUKy8Lqkve6/w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,67 +240,187 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 07, 2025 at 09:21:15AM -0300, Jason Gunthorpe wrote:
-> On Mon, Aug 04, 2025 at 03:42:42PM +0300, Leon Romanovsky wrote:
-> > From: Leon Romanovsky <leonro@nvidia.com>
-> > 
-> > Convert the KMSAN DMA handling function from page-based to physical
-> > address-based interface.
-> > 
-> > The refactoring renames kmsan_handle_dma() parameters from accepting
-> > (struct page *page, size_t offset, size_t size) to (phys_addr_t phys,
-> > size_t size). A PFN_VALID check is added to prevent KMSAN operations
-> > on non-page memory, preventing from non struct page backed address,
-> > 
-> > As part of this change, support for highmem addresses is implemented
-> > using kmap_local_page() to handle both lowmem and highmem regions
-> > properly. All callers throughout the codebase are updated to use the
-> > new phys_addr_t based interface.
-> 
-> Use the function Matthew pointed at kmap_local_pfn()
-> 
-> Maybe introduce the kmap_local_phys() he suggested too.
+On Wed, Aug 13, 2025 at 02:55:42PM +0100, Usama Arif wrote:
+> The test will set the global system THP setting to never, madvise
+> or always depending on the fixture variant and the 2M setting to
+> inherit before it starts (and reset to original at teardown).
+> The fixture setup will also test if PR_SET_THP_DISABLE prctl call can
+> be made with PR_THP_DISABLE_EXCEPT_ADVISED and skip if it fails.
+>
+> This tests if the process can:
+> - successfully get the policy to disable THPs expect for madvise.
+> - get hugepages only on MADV_HUGE and MADV_COLLAPSE if the global policy
+>   is madvise/always and only with MADV_COLLAPSE if the global policy is
+>   never.
+> - successfully reset the policy of the process.
+> - after reset, only get hugepages with:
+>   - MADV_COLLAPSE when policy is set to never.
+>   - MADV_HUGE and MADV_COLLAPSE when policy is set to madvise.
+>   - always when policy is set to "always".
+> - repeat the above tests in a forked process to make sure  the policy is
+>   carried across forks.
+>
+> Test results:
+> ./prctl_thp_disable
+> TAP version 13
+> 1..12
+> ok 1 prctl_thp_disable_completely.never.nofork
+> ok 2 prctl_thp_disable_completely.never.fork
+> ok 3 prctl_thp_disable_completely.madvise.nofork
+> ok 4 prctl_thp_disable_completely.madvise.fork
+> ok 5 prctl_thp_disable_completely.always.nofork
+> ok 6 prctl_thp_disable_completely.always.fork
+> ok 7 prctl_thp_disable_except_madvise.never.nofork
+> ok 8 prctl_thp_disable_except_madvise.never.fork
+> ok 9 prctl_thp_disable_except_madvise.madvise.nofork
+> ok 10 prctl_thp_disable_except_madvise.madvise.fork
+> ok 11 prctl_thp_disable_except_madvise.always.nofork
+> ok 12 prctl_thp_disable_except_madvise.always.fork
+>
+> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
 
-At this point it gives nothing.
+I don't see any tests asserting VM_NOHUGEPAGE behaviour could you expand
+this test to add that?
 
-> 
-> >  /* Helper function to handle DMA data transfers. */
-> > -void kmsan_handle_dma(struct page *page, size_t offset, size_t size,
-> > +void kmsan_handle_dma(phys_addr_t phys, size_t size,
-> >  		      enum dma_data_direction dir)
-> >  {
-> >  	u64 page_offset, to_go, addr;
-> > +	struct page *page;
-> > +	void *kaddr;
-> >  
-> > -	if (PageHighMem(page))
-> > +	if (!pfn_valid(PHYS_PFN(phys)))
-> >  		return;
-> 
-> Not needed, the caller must pass in a phys that is kmap
-> compatible. Maybe just leave a comment. FWIW today this is also not
-> checking for P2P or DEVICE non-kmap struct pages either, so it should
-> be fine without checks.
+Other than that this is looking good.
 
-It is not true as we will call to kmsan_handle_dma() unconditionally in
-dma_map_phys(). The reason to it is that kmsan_handle_dma() is guarded
-with debug kconfig options and cost of pfn_valid() can be accommodated
-in that case. It gives more clean DMA code.
+Thanks!
 
-   155 dma_addr_t dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
-   156                 enum dma_data_direction dir, unsigned long attrs)
-   157 {
-   <...>
-   187
-   188         kmsan_handle_dma(phys, size, dir);
-   189         trace_dma_map_phys(dev, phys, addr, size, dir, attrs);
-   190         debug_dma_map_phys(dev, phys, size, dir, addr, attrs);
-   191
-   192         return addr;
-   193 }
-   194 EXPORT_SYMBOL_GPL(dma_map_phys);
+> ---
+>  .../testing/selftests/mm/prctl_thp_disable.c  | 107 ++++++++++++++++++
+>  1 file changed, 107 insertions(+)
+>
+> diff --git a/tools/testing/selftests/mm/prctl_thp_disable.c b/tools/testing/selftests/mm/prctl_thp_disable.c
+> index 8845e9f414560..9bfed4598a1a6 100644
+> --- a/tools/testing/selftests/mm/prctl_thp_disable.c
+> +++ b/tools/testing/selftests/mm/prctl_thp_disable.c
+> @@ -16,6 +16,10 @@
+>  #include "thp_settings.h"
+>  #include "vm_util.h"
+>
+> +#ifndef PR_THP_DISABLE_EXCEPT_ADVISED
+> +#define PR_THP_DISABLE_EXCEPT_ADVISED (1 << 1)
+> +#endif
+> +
+>  enum thp_collapse_type {
+>  	THP_COLLAPSE_NONE,
+>  	THP_COLLAPSE_MADV_HUGEPAGE,	/* MADV_HUGEPAGE before access */
+> @@ -165,4 +169,107 @@ TEST_F(prctl_thp_disable_completely, fork)
+>  	ASSERT_EQ(ret, 0);
+>  }
+>
+> +static void prctl_thp_disable_except_madvise_test(struct __test_metadata *const _metadata,
+> +						  size_t pmdsize,
+> +						  enum thp_enabled thp_policy)
+> +{
+> +	ASSERT_EQ(prctl(PR_GET_THP_DISABLE, NULL, NULL, NULL, NULL), 3);
+> +
+> +	/* tests after prctl overrides global policy */
+> +	ASSERT_EQ(test_mmap_thp(THP_COLLAPSE_NONE, pmdsize), 0);
+> +
+> +	ASSERT_EQ(test_mmap_thp(THP_COLLAPSE_MADV_HUGEPAGE, pmdsize),
+> +		  thp_policy == THP_NEVER ? 0 : 1);
+> +
+> +	ASSERT_EQ(test_mmap_thp(THP_COLLAPSE_MADV_COLLAPSE, pmdsize), 1);
+> +
+> +	/* Reset to global policy */
+> +	ASSERT_EQ(prctl(PR_SET_THP_DISABLE, 0, NULL, NULL, NULL), 0);
+> +
+> +	/* tests after prctl is cleared, and only global policy is effective */
+> +	ASSERT_EQ(test_mmap_thp(THP_COLLAPSE_NONE, pmdsize),
+> +		  thp_policy == THP_ALWAYS ? 1 : 0);
+> +
+> +	ASSERT_EQ(test_mmap_thp(THP_COLLAPSE_MADV_HUGEPAGE, pmdsize),
+> +		  thp_policy == THP_NEVER ? 0 : 1);
+> +
+> +	ASSERT_EQ(test_mmap_thp(THP_COLLAPSE_MADV_COLLAPSE, pmdsize), 1);
+> +}
+> +
+> +FIXTURE(prctl_thp_disable_except_madvise)
+> +{
+> +	struct thp_settings settings;
+> +	size_t pmdsize;
+> +};
+> +
+> +FIXTURE_VARIANT(prctl_thp_disable_except_madvise)
+> +{
+> +	enum thp_enabled thp_policy;
+> +};
+> +
+> +FIXTURE_VARIANT_ADD(prctl_thp_disable_except_madvise, never)
+> +{
+> +	.thp_policy = THP_NEVER,
+> +};
+> +
+> +FIXTURE_VARIANT_ADD(prctl_thp_disable_except_madvise, madvise)
+> +{
+> +	.thp_policy = THP_MADVISE,
+> +};
+> +
+> +FIXTURE_VARIANT_ADD(prctl_thp_disable_except_madvise, always)
+> +{
+> +	.thp_policy = THP_ALWAYS,
+> +};
 
-So let's keep this patch as is.
+again the kselftest_harness stuff is really useful!
 
-Thanks
+> +
+> +FIXTURE_SETUP(prctl_thp_disable_except_madvise)
+> +{
+> +	if (!thp_available())
+> +		SKIP(return, "Transparent Hugepages not available\n");
+> +
+> +	self->pmdsize = read_pmd_pagesize();
+> +	if (!self->pmdsize)
+> +		SKIP(return, "Unable to read PMD size\n");
+> +
+> +	if (prctl(PR_SET_THP_DISABLE, 1, PR_THP_DISABLE_EXCEPT_ADVISED, NULL, NULL))
+> +		SKIP(return, "Unable to set PR_THP_DISABLE_EXCEPT_ADVISED\n");
+
+This should be a test fail I think, as the only ways this could fail are
+invalid flags, or failure to obtain an mmap write lock.
+
+> +
+> +	thp_save_settings();
+> +	thp_read_settings(&self->settings);
+> +	self->settings.thp_enabled = variant->thp_policy;
+> +	self->settings.hugepages[sz2ord(self->pmdsize, getpagesize())].enabled = THP_INHERIT;
+> +	thp_write_settings(&self->settings);
+> +}
+> +
+> +FIXTURE_TEARDOWN(prctl_thp_disable_except_madvise)
+> +{
+> +	thp_restore_settings();
+> +}
+> +
+> +TEST_F(prctl_thp_disable_except_madvise, nofork)
+> +{
+> +	prctl_thp_disable_except_madvise_test(_metadata, self->pmdsize, variant->thp_policy);
+> +}
+> +
+> +TEST_F(prctl_thp_disable_except_madvise, fork)
+> +{
+> +	int ret = 0;
+> +	pid_t pid;
+> +
+> +	/* Make sure prctl changes are carried across fork */
+> +	pid = fork();
+> +	ASSERT_GE(pid, 0);
+> +
+> +	if (!pid)
+> +		prctl_thp_disable_except_madvise_test(_metadata, self->pmdsize,
+> +						      variant->thp_policy);
+> +
+> +	wait(&ret);
+> +	if (WIFEXITED(ret))
+> +		ret = WEXITSTATUS(ret);
+> +	else
+> +		ret = -EINVAL;
+> +	ASSERT_EQ(ret, 0);
+> +}
+> +
+>  TEST_HARNESS_MAIN
+> --
+> 2.47.3
+>
 
