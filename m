@@ -2,110 +2,121 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E9CDACA0EC4
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 02:24:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C50FACA0EDC
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 02:25:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1518290002C; Tue, 12 Aug 2025 22:24:42 -0400 (EDT)
+	id 635A990002D; Tue, 12 Aug 2025 22:25:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 102968E019E; Tue, 12 Aug 2025 22:24:42 -0400 (EDT)
+	id 60C358E019E; Tue, 12 Aug 2025 22:25:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03F2590002C; Tue, 12 Aug 2025 22:24:41 -0400 (EDT)
+	id 5497290002D; Tue, 12 Aug 2025 22:25:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E97D08E019E
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 22:24:41 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 96BA81A021F
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 02:24:41 +0000 (UTC)
-X-FDA: 83770140762.25.AC6BEBB
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
-	by imf08.hostedemail.com (Postfix) with ESMTP id AAD48160011
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 02:24:39 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IM1paVWk;
-	spf=pass (imf08.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.160.49 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 459DB8E019E
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 22:25:06 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9E935160212
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 02:25:05 +0000 (UTC)
+X-FDA: 83770141770.09.931F3C7
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 30DA940008
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 02:25:02 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=KJFToEM0;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755051903; a=rsa-sha256;
+	cv=none;
+	b=5mo60OJIgGfd/4Nv/2oelSUaxrkyNWze7/fHwbrJ8rFJdKqgIyL6FhveSopEkpQWslp2Yk
+	B7DEkv8LBzTQMBUtFd4sfxKzCTy6EhQO2fcEsFsFdCLYgHwyvagFnlpVAxRCXey5XGKf+8
+	QhsoUHp2yLGICIsWTO5FcBtMsqpYBi0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=KJFToEM0;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755051879;
+	s=arc-20220608; t=1755051903;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+VUdHryMevSnkSUQXfqfkpLgibxm8gD25NgpI/OeKaw=;
-	b=yg25POdB0sDM10aO5+Pr8EFhYhifLsn14+fPQ02YJDszv6OBQxRFxktV5t+QmBbT7UqLHK
-	XX9YFNcoXyI2NrKSIWZPtnOnLKuThrr72cH/9B4xWYGv4OJpjQrNgqoVoA67Jk2p2AS69u
-	zlByxwQ7EArn9cY+D8TWkEp+SiForrs=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IM1paVWk;
-	spf=pass (imf08.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.160.49 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755051879; a=rsa-sha256;
-	cv=none;
-	b=x6JxFwALpwl+xvErZr0wCRyXSc35hoR+79YN5zWlB5PoXPywC1Zu5OE6UJi98WQFIZnfDj
-	yYm6TnEVRZX/Rkini/qJiIIvfjWNLi/zOJZUEYKcXEPrWxmGcnpJCPyjmqXhqf7dqZnUzP
-	vrB5ePsFaCOj817672GmmHlZr6sy1co=
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-30c27db3739so7098608fac.0
-        for <linux-mm@kvack.org>; Tue, 12 Aug 2025 19:24:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755051878; x=1755656678; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+VUdHryMevSnkSUQXfqfkpLgibxm8gD25NgpI/OeKaw=;
-        b=IM1paVWkYNRWtgxyP10QryyNk1bUtRWMDb4313Zz9yUmGEjPHXqIyewmSUDhBOhq5J
-         jkVT04uiv4ubNJdOh8xsWqDL5L378QbrTEB/s6OKfiagbTGcXNEcFYBeAJiq+UoWBiLG
-         wfWaF9H0CCxL4mEWAcUVqU8Mm73+0HB20pboM/QwbgxJMZgbbX5cVjGuINNNE9r8J8kK
-         Cb92N+BksGY0mm+y5b3gZcYdJPYUiWjvTv3iUqvDIJ631smn+Au3v8xlZG9wSDfXFBQ8
-         S9ELTnYr9pqxjHkqSxeK7teZ+sbY7cl3BadvllflmWCT19tecqAazY05aHZNPU2QTqL9
-         sEqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755051878; x=1755656678;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+VUdHryMevSnkSUQXfqfkpLgibxm8gD25NgpI/OeKaw=;
-        b=dbCjqv2TGl1j+/yzca56raa4qtEVBcoemazFpqnTZLFDHafNeZCX+sz6l/eMI65uyd
-         BIjJT1kuL0xdwQ3G+8mKX0At9Ou4FgWvuyHPBCKseNq2X4kHzaygMPYOH91OAbszd9L6
-         Y0UEU7bULEOjft3Cil4XO8L4pQMQVEiZVRwpxsj7V54QRfkQDsEY7TwkLkqdVZJaJMQV
-         j+hS9MdK3vB4JyoqsoVjAptC9yjvlJE7/VObRQwAejHrzpttnngX0Wq/Tm5FuErrlv5C
-         +KhTE+WGHmRPV+iLmOBkSp9GHizYmoq+2VvQWvd0N7SDd8EUuuIWFB9kmOc2vfTEniv0
-         zPhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUq9YfWgCCLsploI1DtNEPi7JBsZU1PtIyYiL8RXFQB2iDLtrs6jt1jGwZDNuWr+gijN5oF+BHvOg==@kvack.org
-X-Gm-Message-State: AOJu0YydxmV752v+T1L1NP5LaqzY0owu2DLXY67JXyQJM5RWpTyUp/61
-	fnq9RzcVrqdfWYsVykoSWpVvC7gocytr0ZfRmi5VeU9SWjO6hJ/pZPGEpy+lgwuuEQ5cgRl+9jQ
-	ujxuWvHyXdcETmNnCevMb/7QGBqEsdGs=
-X-Gm-Gg: ASbGncv/kJJuOzt112VyfWgw2BMWQ4o2f4n3r9JBuORFq9iSqjYy+ROdijrCYUmne0A
-	VZFTKf/O/Na2QpJYFe4KSX9+h70nwqszxf+MVdsKyLKhJO9TBi3SPSLiiw/jjxfnuok6ELcDsZy
-	APfZrd2k5Ejm5Zz5X1G3UXz3fCYwGxc/OrXxRjQwWhvc5yByqkdxr8BaQlDMuOss1gAp0vKOWed
-	uH2
-X-Google-Smtp-Source: AGHT+IGo0XTp+5w595RCq2CoK5dGZMCCP0MpxcQ8TZ4Nkp5UFiu/yt0+lGrUcMdti9MBUGKXosrQajwecyB8b8fBIsc=
-X-Received: by 2002:a05:6870:f691:b0:30b:dc26:41c4 with SMTP id
- 586e51a60fabf-30cb5d8294dmr771857fac.40.1755051878619; Tue, 12 Aug 2025
- 19:24:38 -0700 (PDT)
+	bh=JKbU9RXkwqDsNDWtehedXJy8w/i36YSqUEDNOcUclKI=;
+	b=T4HWJmZUiiiAnn1Rr7ZNi31Q/xRy/NiUgPMaCQXhtf4eqtY4ib9ohe9sZhj7YmFRvEioNf
+	bARm6PnkUHtSj6eBbeVb1V8bF0EFSX1MVPS/dW0nEQxyI7+QDW/A+tsvvaLa44rurt1PoZ
+	tHWC2HT/JVTGmwsKjMkCLGbnpYzYjmA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755051904; x=1786587904;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=TO08Bxdjs6CXgwQaNnTK3VsCDBnZs98H7CvXOF1PSiw=;
+  b=KJFToEM0U7I1BwWm42ygwn7SKlLXOfvAY4S1QIrLUw0/Zx28JQsSla8F
+   xCLaAJnDhEgVpv3BqPnMkhkSaBoYn1xNafe4n6AwGWf5A8V0U2E6Hz1ug
+   /XVxOSTAeijR1LW3fuBoNhZDsEz0+sZQGLKNAFbl1ySZrtrxTkfRi3e5Y
+   GT5cut4SDDvpvaJnTmZP1+Yn7dGDwRa5dxcwWq4OxLv9CZhFE3dawvt9e
+   y+4LtPGU3aRVrgvU07NRyQPGNnvTB0elQXYFVCEz7WUSrDdm55BizwX7k
+   MZYY3eDZ4jt6kRsRAA2oU5riDaEMixkaPknSdUa73ngjGaOBzSS6H6+tS
+   A==;
+X-CSE-ConnectionGUID: NCvH+stARKK8F1rILntFlw==
+X-CSE-MsgGUID: rH5OANEpTLSmCGoveeUjUg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="57416212"
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
+   d="scan'208";a="57416212"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 19:25:02 -0700
+X-CSE-ConnectionGUID: R7Jgn4tkRgOyjuOYDP9Yvw==
+X-CSE-MsgGUID: 3weZF238QHG4vGIuMOZAOw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
+   d="scan'208";a="165571477"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by orviesa010.jf.intel.com with ESMTP; 12 Aug 2025 19:24:55 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1um1Aa-0009T2-1I;
+	Wed, 13 Aug 2025 02:24:52 +0000
+Date: Wed, 13 Aug 2025 10:23:39 +0800
+From: kernel test robot <lkp@intel.com>
+To: Balbir Singh <balbirs@nvidia.com>, dri-devel@lists.freedesktop.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Balbir Singh <balbirs@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Ralph Campbell <rcampbell@nvidia.com>,
+	Mika =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Francois Dugast <francois.dugast@intel.com>
+Subject: Re: [v3 10/11] gpu/drm/nouveau: add THP migration support
+Message-ID: <202508130923.0VGA41Zv-lkp@intel.com>
+References: <20250812024036.690064-11-balbirs@nvidia.com>
 MIME-Version: 1.0
-References: <20250812140046.660486-1-ekffu200098@gmail.com> <20250812175939.57506-1-sj@kernel.org>
-In-Reply-To: <20250812175939.57506-1-sj@kernel.org>
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-Date: Wed, 13 Aug 2025 11:24:27 +0900
-X-Gm-Features: Ac12FXwjHQssL_GWAi9wQ4Imzh4-_JaTL63Mge2i3rUa0DLMiUFRVU7qx9boE0k
-Message-ID: <CABFDxMF=-Fb56zSnGVvqXRrDXh-3vFzQmhuLNDYEzFv4z-bsuQ@mail.gmail.com>
-Subject: Re: [PATCH] selftests/damon: fix selftests by installing drgn related script
-To: SeongJae Park <sj@kernel.org>
-Cc: honggyu.kim@sk.com, damon@lists.linux.dev, linux-mm@kvack.org, 
-	Alexandre Ghiti <alexghiti@rivosinc.com>, Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ob765w3p9iaq39b9owrig93pkhd3key3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250812024036.690064-11-balbirs@nvidia.com>
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AAD48160011
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755051879-413434
-X-HE-Meta: U2FsdGVkX18iLNDLJ0Q/74wT5IwbuBMSgfJFPWrTj6blfDoBW7RB7hDQD1HA+qWZlue1NDMgdOEiK0WHvyDowTBDwitT4LrsVvPv/vePNLm0CIEHt2xSoEfyRwMcziDrBMWeKZb9MlLVrJcMd/f6MzGMymn/onfpbB+L2oF91junM7jIz4IpFCX6dSeYO9vfuPohDwC93MeCcte2YQgSkU7WNqFmyGA8ca4jVNty6WK1glnzHhqr+tm1y0G6V9welGw+rYckwV7twf44COihMDz9eFMsaYc8Kkqwet0AJJ9TiLrQCZpvW/kgLWSRZZvUF27QCIifUDoUv37saGx7hI48Ah/yaRReLuPmsp6zw2d81Lb+xw/wr2v0aX/ZO9h4cefH013LeRStdBx4QgieiY+CF2ZRpO8Og2f8AJFhFt8Taiy+xaZ5JMTR/UpD2i3+NL2YGyTWQ0coLbYkp22J8jv9uJjWD7IQqzw41zqk0xcIOTLD3xAOLZ9btfS7PnjjkM1RljZCkMb8IPvYWdRbigpE30MbSU6cLwFQ7CujxpfgXY3VaOQP3+TUjM4AKxlZIKbw0MZ+tHy+Obk/9wc8i2pNhKOkVkqQWJU6A6z7s0AdFaDd629pBaqDUI/pVpaI/PKHvjK4v1RxDvnzDhha/KCiRWAlhiw5OSpRwievn4P9vC95BCwTG5ATCD5XGLihc9tOP4pT4r9fmSP9nMkM/fPJnBknJJ5YKpSNRbzlFW8eb6lWk5MlvUep4vVDWW0NfV3O6ktoibZMnpaAAItMozjSWCh1/OnGD58AB7Cbpbf4b5GkU3HqtGWOREhj3r5QM3XRDrpJl4Kz2vh9SOncpax1q6R8EXQ2xY+RFWISu2iF2/c9YYsewSuHM/IPOTYuQmtHhfudbHPq5sazeU8zE3vP4M5BDeHmBUQPPQm/6XJ62Nty2GiYW3Ullhp3uDb0F33sqnBTbvfn9iURBrj
- EjRjIW8X
- +qhKWOI1YlvxtaaBfIKM3dC0mDK1elL9/O+G3upwjBTd8GlSpoIGboA7vd48qts/Ig3VKrK63zLcDsxDL35jH40HGSNzOzzYrq6Shv1UgqFid7geF/bpM7QdKHydWr44Rc/bB+PIlCXAs6fvUCJKpOf6nUAjhdO4CUPhRmq1b/lxwMBfstWT1tg09PwZ5yupixWreib/ItKCQUIGJgo3O4goe1qrOx7pMy8bcooMu7afY3Ri5D9Z0vFEDBp8s2X4F4i2JiH149KpuS/sU4amexotw0iWLGJNh3T11r40n9J7Zpwa+iUMsmUE0JlGGs6iymmg3vbKrcn34fNGskYYb3Nn44G/38+wfpbINaqApp95QEF2JuUI2RcgFyuuy55N18LSM+ikuzOVphof4bOQzfkpLW9MAekVha5uQPK2KjbLenrFPRMG5EwyzvskMVnsoLtPopIIv4aZEtkPsDZpVHe6q7RR+xaEmV9ZmYKn5mmMrpPc=
+X-Rspamd-Queue-Id: 30DA940008
+X-Stat-Signature: sqteocgy6ouecb5bm9j73jzpwfxfktzk
+X-HE-Tag: 1755051902-663638
+X-HE-Meta: U2FsdGVkX1/AV2xb3V6gD1HVrcd7Ce5n4rKyOSk0gEbT3m1KDwkPSnLwI+9utUZZpG74COhkrxYxg4Bq/KWGHmUIexBwEPnmk+hnWHzqC0WZLhdEQBVNgv/ZYWKgmg4cujBRc1r9y7EIs9U7PjocQ5RsRemqUbqopoI8DilFTy3oHGhhr/dSzfyNZiUYMw1h2YHU9hCf166ips0ntBSIquOZSz1lhQe4ynoDRNneMLS3IWiwT3vb+2RgE4Jeqf2VfqKnMhaNqBjrSnKVAaqZ6F0AErdfbYkrqiM2wg7dBvdxg07j+MseLPC5KF7MhAOJMdUe7KxlN0eI7Vibm+tjLvRUxIDOmmR+7y2DkTk4GMzINHOE0fuCyI5c2GWHc9WviMnIb+HX4fN8x+2thGYne6UjPAKIAnhjYtx0QbwP3krEYAEZHzJaTlnH6dJJ/Pj8AEYDzB59CgLFDw0mqoEcfq/1RVz6nhuvWoh2q3HPSuWj7Ep9MF/JcANZUDedpDC6+CQNOGrsxfjL6Wi8aBL797XsucPQthlR6rLouI5NYOX8+8uxmUnJB15lGqtmFep3hl9tq+c9ruMsp4oTfSme6MvZUjWIGD7A6O0PlTAsqaro4cbvmPGrKJaXyHS9VeyFcs3fPdD3owdHdGttzNBr/v/IV0ASfYvPNMEx3OtQ2ZdkeSFxM1omuirL7cAkmebjig63nn6y+iuyVdUHRFvhwYEwN1VOt7t1kHFnPlxwNBOdkdgQiWvd5GcWS9S2V4KDm6lkmJDxRTgoOXLzlrE1lhF1GvSK8RBh6f0zb1siZx0lt1KwSISqLa3uAaUuaL9H443R0s1Ro2n3taAYaY4X3vVQb9Jx/qCiEd8sidH0raLK99e5AWOfYJhriHRda9OwdpJQ/Ew80/w21CyD7KZo3Caq+bkjQo97dpy5HB3TN4UN4PkOPWpiTfoduGOhkSmlu83oPZcoxT+JIBGz8B/
+ 3tvyNe80
+ J3ERhsF+UER1W8snP+LfcGtVztLIWs/bhY4XfOSlfCst0WNbk1q63zs14qg5IAA/vbC6i8Iw9jN4iVVSDnktjF2Y+IQIYK+D/u4RtJCnzowpcDueUw+Lh9SnrS5iNaVzzZ7Ki+Bykz5QdGGN2WdoGPfvhvPziOnTazJR0+QKq5LuIMFUtt5Nrf38Rvz3LwISakJqL32BopfH/kCCcHoc+ESiLBjBYV9x0ZxYBk7dfMX+gXcsJqoVyzNgApkUzLGHHLit8pbOQMYgPibym7RGZrASQUEQgAdylXkLQheemByaKMYCo2yHPNSQbVmFCTzhbQ5RaBYEFVVf5kVdGgREd5SlVvoJd4/AYPv1K/XrgandaDrDyKq+dcWZcSBab7fZPWenqkpWbTcHCou2zAwyfY1jjg0z8e3+IWJCysTA8BfB5LRQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,72 +125,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SeongJae
+Hi Balbir,
 
-On Wed, Aug 13, 2025 at 2:59=E2=80=AFAM SeongJae Park <sj@kernel.org> wrote=
-:
->
-> On Tue, 12 Aug 2025 23:00:46 +0900 Sang-Heon Jeon <ekffu200098@gmail.com>=
- wrote:
->
-> > drgn_dump_damon_status is not installed while kselftest setup.
-> > It can breaks other tests which depend on drgn_dump_damon_status.
-> > Install drgn_dump_damon_status files to fix broken test.
->
-> This patch conflicts with the similar one from Alexandre Ghiti.  Could yo=
-u
-> please rebase yours on top of Alexandre's one (and mention the dependency=
- on
-> the comment section under '---' line), unless Andrew resolves the conflic=
-t on
-> his own?
+kernel test robot noticed the following build errors:
 
-Oh, I didn't know that I can use the baseline with an unmerged patch.
-As your solution, I can avoid conflict (This time Andrew already did
-it) Thanks for letting me know. I'll keep that in my mind as well.
+[auto build test ERROR on akpm-mm/mm-everything]
 
-> >
-> > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-> > Cc: Alexandre Ghiti <alexghiti@rivosinc.com>
->
-> Reviewed-by: SeongJae Park <sj@kernel.org>
->
-> > ---
-> > While setup kselftest executable environment and test this patch [1],
-> > I found similiar issue. Honestly, I don't know exact solution for this
-> > situation. So I just make a new patch. Sorry if it is wrong direction,
-> > then please let me know how to do next.
-> >
-> > [1] https://lore.kernel.org/damon/20250812-alex-fixes_manual-v1-1-c4e99=
-b1f80e4@rivosinc.com/
->
-> For patches that you are not really confident about and hence not insisti=
-ng to
-> merge as-is, but wanna ask other's opinions first, you can ask questions =
-via
-> plain text mails, or post patches with RFC tag on the subject.
+url:    https://github.com/intel-lab-lkp/linux/commits/Balbir-Singh/mm-zone_device-support-large-zone-device-private-folios/20250812-105145
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20250812024036.690064-11-balbirs%40nvidia.com
+patch subject: [v3 10/11] gpu/drm/nouveau: add THP migration support
+config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20250813/202508130923.0VGA41Zv-lkp@intel.com/config)
+compiler: powerpc64-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250813/202508130923.0VGA41Zv-lkp@intel.com/reproduce)
 
-My meaning of "don't know exact solution" was about conflict patch
-(Now I read again, I think other people might be confused. That's you,
-sob) I will use the method mentioned above from now on. Anyway, thanks
-for reminding me about RFC.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508130923.0VGA41Zv-lkp@intel.com/
 
-> I think this is the right patch, though.
->
-> You could refer to the TEST_FILES part of documentation[1] and "Install
-> selftests" section on the document for more details.
+All errors (new ones prefixed by >>):
 
-Thank you for this comment too, and for your always kindness.
+   In file included from <command-line>:
+   drivers/gpu/drm/nouveau/nouveau_dmem.c: In function 'nouveau_dmem_migrate_vma':
+>> include/linux/compiler_types.h:572:45: error: call to '__compiletime_assert_706' declared with attribute error: max((1<<((16 + __pte_index_size)-16)), max) signedness error
+     572 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |                                             ^
+   include/linux/compiler_types.h:553:25: note: in definition of macro '__compiletime_assert'
+     553 |                         prefix ## suffix();                             \
+         |                         ^~~~~~
+   include/linux/compiler_types.h:572:9: note: in expansion of macro '_compiletime_assert'
+     572 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |         ^~~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
+      39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+         |                                     ^~~~~~~~~~~~~~~~~~
+   include/linux/minmax.h:93:9: note: in expansion of macro 'BUILD_BUG_ON_MSG'
+      93 |         BUILD_BUG_ON_MSG(!__types_ok(ux, uy),           \
+         |         ^~~~~~~~~~~~~~~~
+   include/linux/minmax.h:98:9: note: in expansion of macro '__careful_cmp_once'
+      98 |         __careful_cmp_once(op, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
+         |         ^~~~~~~~~~~~~~~~~~
+   include/linux/minmax.h:112:25: note: in expansion of macro '__careful_cmp'
+     112 | #define max(x, y)       __careful_cmp(max, x, y)
+         |                         ^~~~~~~~~~~~~
+   drivers/gpu/drm/nouveau/nouveau_dmem.c:811:23: note: in expansion of macro 'max'
+     811 |                 max = max(HPAGE_PMD_NR, max);
+         |                       ^~~
+--
+   In file included from <command-line>:
+   nouveau/nouveau_dmem.c: In function 'nouveau_dmem_migrate_vma':
+>> include/linux/compiler_types.h:572:45: error: call to '__compiletime_assert_706' declared with attribute error: max((1<<((16 + __pte_index_size)-16)), max) signedness error
+     572 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |                                             ^
+   include/linux/compiler_types.h:553:25: note: in definition of macro '__compiletime_assert'
+     553 |                         prefix ## suffix();                             \
+         |                         ^~~~~~
+   include/linux/compiler_types.h:572:9: note: in expansion of macro '_compiletime_assert'
+     572 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |         ^~~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
+      39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+         |                                     ^~~~~~~~~~~~~~~~~~
+   include/linux/minmax.h:93:9: note: in expansion of macro 'BUILD_BUG_ON_MSG'
+      93 |         BUILD_BUG_ON_MSG(!__types_ok(ux, uy),           \
+         |         ^~~~~~~~~~~~~~~~
+   include/linux/minmax.h:98:9: note: in expansion of macro '__careful_cmp_once'
+      98 |         __careful_cmp_once(op, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
+         |         ^~~~~~~~~~~~~~~~~~
+   include/linux/minmax.h:112:25: note: in expansion of macro '__careful_cmp'
+     112 | #define max(x, y)       __careful_cmp(max, x, y)
+         |                         ^~~~~~~~~~~~~
+   nouveau/nouveau_dmem.c:811:23: note: in expansion of macro 'max'
+     811 |                 max = max(HPAGE_PMD_NR, max);
+         |                       ^~~
 
-> [1] https://origin.kernel.org/doc/html/latest/dev-tools/kselftest.html#co=
-ntributing-new-tests-details
->
->
-> Thanks,
-> SJ
->
-> [...]
 
-Best Regards.
-Sang-Heon Jeon
+vim +/__compiletime_assert_706 +572 include/linux/compiler_types.h
+
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  558  
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  559  #define _compiletime_assert(condition, msg, prefix, suffix) \
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  560  	__compiletime_assert(condition, msg, prefix, suffix)
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  561  
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  562  /**
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  563   * compiletime_assert - break build and emit msg if condition is false
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  564   * @condition: a compile-time constant condition to check
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  565   * @msg:       a message to emit if condition is false
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  566   *
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  567   * In tradition of POSIX assert, this macro will break the build if the
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  568   * supplied condition is *false*, emitting the supplied error message if the
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  569   * compiler has support to do so.
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  570   */
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  571  #define compiletime_assert(condition, msg) \
+eb5c2d4b45e3d2 Will Deacon 2020-07-21 @572  	_compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  573  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
