@@ -2,72 +2,72 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 68212C87FCF
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 08:54:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 26CFBC87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 08:54:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E337E90004D; Wed, 13 Aug 2025 04:54:32 -0400 (EDT)
+	id BC2F190004E; Wed, 13 Aug 2025 04:54:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE457900044; Wed, 13 Aug 2025 04:54:32 -0400 (EDT)
+	id B9AA2900044; Wed, 13 Aug 2025 04:54:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF99E90004D; Wed, 13 Aug 2025 04:54:32 -0400 (EDT)
+	id AB08590004E; Wed, 13 Aug 2025 04:54:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B7922900044
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 04:54:32 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 50D0D116DF4
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 08:54:32 +0000 (UTC)
-X-FDA: 83771123184.14.9B6CFEB
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CA02900044
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 04:54:43 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 13087583E2
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 08:54:43 +0000 (UTC)
+X-FDA: 83771123646.13.8DFF88C
 Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 87C461C0005
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 08:54:30 +0000 (UTC)
+	by imf20.hostedemail.com (Postfix) with ESMTP id 68A391C0006
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 08:54:41 +0000 (UTC)
 Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=herhqNMS;
-	spf=pass (imf20.hostedemail.com: domain of matttbe@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=matttbe@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755075270; a=rsa-sha256;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gkB0DENA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of matttbe@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=matttbe@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755075281; a=rsa-sha256;
 	cv=none;
-	b=JR9CIUW2QQNFvIwLqRegNGD4sODDLhOTgsafM5hKat+7RjuX7S/qrz95o2+4j8xFUoVQ/4
-	G9aDzoiVn+693eAGVSCXppfxJych2r3iOdWfjzfyI2MSwzR2e50Gr/z/Qya1KOhUeQDlJ9
-	PwR62JEQbJfj2DAv9YSweKMy+x34BbE=
+	b=TfZdJ0t6JPbjphUisDb2Raw6q+1S57cbSux1xGslXmnNSEsofDtT33jCB58WQiTeCBaEJo
+	iyv9acJi4SE6arLFreAa2Ur22XjwTiWKzg8qkFAnfJHUR4VWFUd3lME4b/s9hgO9+Az6ZH
+	I9OQWQVExqKGSZNUYtKiJXH3gpWvOqs=
 ARC-Authentication-Results: i=1;
 	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=herhqNMS;
-	spf=pass (imf20.hostedemail.com: domain of matttbe@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=matttbe@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gkB0DENA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of matttbe@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=matttbe@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755075270;
+	s=arc-20220608; t=1755075281;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bYa9mUb5uxj6WPrcxCuv1pDwScipXB1/jOiT/1i4T44=;
-	b=amtB3PBnYDYtnhXZzxKtIOhdUNrCDHHEa2nN/EdCukASaO1WhVOCwPGNW/JZ1bv7SZN++h
-	VuH4RyLV2MFaSVY7Ze7AjITvGAJOOZYhls5DaUBYGoSzJtlC1KP2G8AoyTDTwcZ3VSon7V
-	KDVAwNjTs71/V3+vwdQQ29uHKiM9bxQ=
+	bh=OxSxs1bcucuULoGHrK8+9HS8dRUECZeQBRbiSylRYnU=;
+	b=wdcqcgdnZtXqbx+kvybD1BmnU57PeTz4Sk3gl8Rdub9YjCr3WF6oIY8mfzFV8YvlD528R1
+	zKHZ2yqtTEhZzu4mQF+r06fcr6gOkZb+e41WESlhp9IoIA4BqFW9H7dG6doJHNZaOGLtgN
+	pg2/UKU15U6HufG3XkzhTcalBi/MMRg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 970A7A57B59;
-	Wed, 13 Aug 2025 08:54:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244F6C4CEEB;
-	Wed, 13 Aug 2025 08:54:24 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id CDA54A57B59;
+	Wed, 13 Aug 2025 08:54:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C3DC4CEEB;
+	Wed, 13 Aug 2025 08:54:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755075269;
-	bh=SPEB5tXelaltjOYbgqCSrRrEOItBWpxIPqLytrMKnXI=;
+	s=k20201202; t=1755075280;
+	bh=SBXBWsF/p9NKoJCWyngak/HD9GTkihC0XAEtH+NHPaU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=herhqNMSZD2u105m3vJP0R5NGzYg8f4wgoRgW1wtPscJKKIJ8iB4LCJ7YZVRkLPll
-	 aCCq99Y1WcMsFRfF/bEfd1fSFHveJwvnInSPrmYXF2cRC2hyInkxWN8eQxpBsmUJ5V
-	 YYqJztfk0ZrC5Nj6PYyK0wR/z1CMA+zjyQ2L+rgakOM+7mxQpupCHI862M8uAUf95o
-	 1nJMo9GRs6ivwlUcrBQSLXyiTO5gay4Ee2JPzyWsMsJY8m4R/U9q84az1GLtzRIh0K
-	 dVVBFh4NXq5IGdfu4xeKewoyKhGtZBzp+MrA515ppiDaVha4AKPsNTEq2kPm4+UDir
-	 r3hGyQdMGXGhw==
-Message-ID: <603e3360-1f8f-41bd-94fd-a4a94e4a2c34@kernel.org>
-Date: Wed, 13 Aug 2025 10:54:19 +0200
+	b=gkB0DENAHiMv1bTV0uLkAOQtPelp8vcSXECcmJM1R8fLXEb+A/yNSIS0Lw5g/aNLq
+	 TScjivlOvmkh7LBv6vZuPf17tX/AEY+NwOf53y4mJZTF7N82ecPlFHRIFCkJoVpIqW
+	 Pd0PYJbXGIzPSwqVgib7ILcfUzFxfqcaEMmGH6qI1ymzYckc2KQbiebdU2wxUaOJIa
+	 r8EXvG/9cNxgcghFbKP5v8lD3OgY4KcRtXtg8dCIdQsUj/AJVQspscW02B6BvnvM1j
+	 GSsw2Gso6j90PUTrIAdD6q0ujq/FxP0XsJWpG/myCkLTddEzOzPRj8HST0bDnyoiNe
+	 KRZA8hDbrL9ZA==
+Message-ID: <3f267fa4-4266-40fa-a485-bd14012f4b61@kernel.org>
+Date: Wed, 13 Aug 2025 10:54:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH v3 net-next 01/12] mptcp: Fix up subflow's memcg when
- CONFIG_SOCK_CGROUP_DATA=n.
+Subject: Re: [PATCH v3 net-next 02/12] mptcp: Use tcp_under_memory_pressure()
+ in mptcp_epollin_ready().
 Content-Language: en-GB, fr-BE
 To: Kuniyuki Iwashima <kuniyu@google.com>,
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
@@ -83,7 +83,7 @@ Cc: Simon Horman <horms@kernel.org>, Geliang Tang <geliang@kernel.org>,
  Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org,
  mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
 References: <20250812175848.512446-1-kuniyu@google.com>
- <20250812175848.512446-2-kuniyu@google.com>
+ <20250812175848.512446-3-kuniyu@google.com>
 From: Matthieu Baerts <matttbe@kernel.org>
 Autocrypt: addr=matttbe@kernel.org; keydata=
  xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
@@ -129,17 +129,17 @@ Autocrypt: addr=matttbe@kernel.org; keydata=
  JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
  lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
 Organization: NGI0 Core
-In-Reply-To: <20250812175848.512446-2-kuniyu@google.com>
+In-Reply-To: <20250812175848.512446-3-kuniyu@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 87C461C0005
-X-Stat-Signature: 1c5xtqwfkyb4kezhjftd4mo3djptho6s
+X-Stat-Signature: x3whz15mxiissxe5rwen5xqdsty8tch4
 X-Rspam-User: 
-X-HE-Tag: 1755075270-969237
-X-HE-Meta: U2FsdGVkX1+lVgCtIg4YfhnkbTzjwz1byYYqja/BkNs+0xLSwV1aVCXabLLaZTDlKYMe/aqri/TCHUy6pfvH667KVF6RmOc7AFh0RY/vh1gfZvYdoMxV+PLq2Zr2CkpYYPy6WnnYQ4iGIk52fPzuCQba/RZUD4ZrP7Uc4upEUGE5STPyeb0zDhDUZX7IWL0bDSLEKquwJasa2KiKtY6d9VYYLPKG3kZ3Q4lmuoj1P8vZUJnCFNQcY/S+mQlYUFQMYuJOlWptmPEH/ETvmqNf8+d47x/kMOQK7ockHo9gMkOwJ2Kd15SMudOPGzK86KxonFYXgrbX/56ihGX4lm2TCZmdQxCuGAuOZwjG25NmUB0Xg/evchbk6guuBdcHMdOusiN8IKYhGDycNDjaMDmAn2uUWSTzcLGxcl3HDRsOobXFnUV4nlnMMM4k0Nomc8IYmmJnP/3ennrpbDNbUCF94kxYQFPm7L8EJwTxOv18Zs9bJU72uxUKUJ8z5+voS22oxOiVW5QDMc2aF8+A0439hVFLw/CmPbpbw0DIHIIyN/67MSYuKday/TWfd2ZL0WvENhmeDgQU+r/J2mJFE8GdxKFDuMj0JvJNucNP9EroIsIfDgyjhtSfC8deJx/Jj1f8y7fB39Fpa3l95J81ATRtMGwZ2frktZSRr1+JBJ042kJOf6aTcMbmS4wZg5xWLhc+erEIJfd7QOXgmbLOfHCUOpVf/U4Zwb7SFr2yXxuq2jgV43WtmLhSVvMKZdyupZXFD+wPMj0KdqzNhhFj5izchynnQHy8ot9Ns9lMPuVmUOy51/5GREEXSP0AmV2wPw9nY1aUhuXWo4YW0WyI8yvh8bqesXiaRAFmy0QmPA9Mnxm+pvKFSKRVLaQbh+C3PKu/YRG/SyqxQlOJUJRWL8+x/iBlbFSJXV/g6G0unETaM9sn9RS1JdgVT+J0uFhFaxbQYqNHOo2Tn8bfrjNAdrf
- pR+R2W/b
- 2blhcoNGA7rq/mAPrvS2RotSjy5cBX3kAMvIX8eJkp44hed5baWZK+jE3G9TbwpQl9Zbxj/VTUjy/lz5VzpIXEho4SxPQmgcBHdx9SveriHXLab2G5FGc1OHDH07+cJA++xblN/e6HiQlk+Y50oF9eYvofNCkn17p5qHN9TyxvEHFr+E35b9Zr+3OvdQWfOSI7pUVl5BziHgZTl9B6Z/F6gx5Z0atCiOMZUv0XO7Bsf8tIrtLJYSGmPahNJXUglFadUXX6qZMy0YTWvHZbNbF0uCrTnwijlok04QBcsBbLccYOHdygHXEgKaL7PeQPjfT45VjUXWi/gk/3CXrI7m7ijFDpcXvDDmnjL+xZsTu3458GrY=
+X-Rspamd-Queue-Id: 68A391C0006
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1755075281-584922
+X-HE-Meta: U2FsdGVkX19kmMIspxSWk/pgpCBf6AL2X8vmxMvWRKD7cJIeZjoQCROtC7hM4ZnO/5UmXug+HmV3542wIFS4Iw/jhdnMPj7TPzV/Ws0JTpypJRc23QHW6n2sSbaJOxEhaZbafjMuQz/UsRldaoxD5e5ugJcLanXMxaVSiGnjKRDHB79GaBzgAjHa1SHKHlLRgpvTonCMeLyaa1JDri7f5yhN7wKxmevgiA9uP2NTgN1wTcAJkWglVNuFcrzr2kkglI+fiiIszPa5VNgttIZLDa6V9DE633iKi2kp2RCv3foqLRLcR+dYEnjHtdxyYKVwyKHmxLWo3shpwDDGT4qY945jougrjbIFA1O+gvghMBNBArzTmVOd5Bm32RoCWrr/ZKhUPnqziBbW6znLIpbNYHIB+8IhIvtR0at59qQmrWW4r4qOTiyh620ymULVEfrLGqIGkCijgknwY3e/3PgzfAlRBIEUddgAWlxhkXkhHjGKET0tZxIeOP71DkRuAHMd1HT4dG+E+vOrO1lWLFkCWuriM/lemukOKBIMxeBa1FpCbrJd1kGVMXrYtaGHoPilGOoHYhQzrB2/VerLTALMzZDLNRAyUTo3aWwDHJVq3iG8QJf88cEJ5gViR9ByLkwPZK+uNovbzJ3EjBXDxbjU+IHINl6TXK67wELx3uh5NwtOMq9HDeRHjBE7kbYeJnaWjMFsyUhwwh2Ml3Pu0JsV/tpfEFl+Smi3mdc/1SC3WnNfpYNxhgBZgMnFnR3O5CmPkLhm7U1Q+5vQZSAcAwfn3Dv2idhBNMGh/VSkX6ba9wDcGFP2BiIi38wlodKmKmKwpUsYMayRX5kaxPmzsiuvqYL4fKPQmRwhokA1B75wMSNWei8KCtn+KsmRf3JQqtvg0fK548vQHFUKPo3QUArtlB1ap1vkq+Xu8CdfsNpn4ywl8bi2Nrdd7vJv5XuxaKCR/JjgXznvAfBP98YiGXj
+ OMZlyrmk
+ BtpDr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -151,31 +151,16 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 Hi Kuniyuki,
 
 On 12/08/2025 19:58, Kuniyuki Iwashima wrote:
-> When sk_alloc() allocates a socket, mem_cgroup_sk_alloc() sets
-> sk->sk_memcg based on the current task.
+> Some conditions used in mptcp_epollin_ready() are the same as
+> tcp_under_memory_pressure().
 > 
-> MPTCP subflow socket creation is triggered from userspace or
-> an in-kernel worker.
+> We will modify tcp_under_memory_pressure() in the later patch.
 > 
-> In the latter case, sk->sk_memcg is not what we want.  So, we fix
-> it up from the parent socket's sk->sk_memcg in mptcp_attach_cgroup().
-> 
-> Although the code is placed under #ifdef CONFIG_MEMCG, it is buried
-> under #ifdef CONFIG_SOCK_CGROUP_DATA.
-> 
-> The two configs are orthogonal.  If CONFIG_MEMCG is enabled without
-> CONFIG_SOCK_CGROUP_DATA, the subflow's memory usage is not charged
-> correctly.
-> 
-> Let's move the code out of the wrong ifdef guard.
-> 
-> Note that sk->sk_memcg is freed in sk_prot_free() and the parent
-> sk holds the refcnt of memcg->css here, so we don't need to use
-> css_tryget().
+> Let's use tcp_under_memory_pressure() instead.
 
-Thank you for the patch!
+Good idea, thanks!
 
-Acked-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
 Cheers,
 Matt
