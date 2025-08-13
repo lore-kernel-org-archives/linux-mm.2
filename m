@@ -2,100 +2,135 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5EBDBC87FCF
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 20:15:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BA7FCA0EE0
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 20:21:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8C829000D0; Wed, 13 Aug 2025 16:15:07 -0400 (EDT)
+	id BB58E9000D1; Wed, 13 Aug 2025 16:21:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6493900088; Wed, 13 Aug 2025 16:15:07 -0400 (EDT)
+	id B8D0C900088; Wed, 13 Aug 2025 16:21:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA0F19000D0; Wed, 13 Aug 2025 16:15:07 -0400 (EDT)
+	id A7BF09000D1; Wed, 13 Aug 2025 16:21:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C61CB900088
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 16:15:07 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7A2CBC04C2
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 20:15:07 +0000 (UTC)
-X-FDA: 83772838254.24.F9213BF
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8B7844000E
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 20:15:04 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=hBxyDbks;
-	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 944D7900088
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 16:21:51 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4F21A140365
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 20:21:51 +0000 (UTC)
+X-FDA: 83772855222.23.B087BC6
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 18B5D18000E
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 20:21:48 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=TQsDu4Fu;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf24.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.174 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755116105;
+	s=arc-20220608; t=1755116509;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=QKhywQcm6kbHPPBID67c8gBuwmqEekTSk6zpb+qFNac=;
-	b=VFa61tOxnUEY/TzJpIvXfobf4E/nY8PZMTz3rUn1tlIJGB3dPcRzWrDjEKWBpt4LIZzCOW
-	YYTgp7JICt18DEntttN0Tt9CM9kCwlDLRUH+SL6uz9aB7h7PQibjdMr8Yz+446NTXRRIXD
-	+kJV29yu6nUCqcpTlIOiFil/18fNoyw=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=H30kUHUoAp0mgFKEUbjujIS0Xnkk94c0v9Jq8jaPeYc=;
+	b=nbLJWI+jFZx8m8FK6Y+WM6ia5yzChW0RRCBezyHaExC5RqAc21sB3/ACW49nPWHk2iVx/M
+	Iv7smYleAIh61RFts5WOM5GdKv+zUONhclnjD+yPWeutgdqN4GB3VzXoyBmgydG+AZoS5t
+	phKcvX6ki+QHr/bCQpAm2ezJFLoOolA=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=hBxyDbks;
-	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755116105; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=TQsDu4Fu;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf24.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.174 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755116509; a=rsa-sha256;
 	cv=none;
-	b=LSMgYD+P+RWasq/vnwVhLJxDjLEpObfQZ9lvS5KBKyW8YO7m2Fmxe9WkyvLXbV7TXmZNhu
-	MYJ27f8JxIgNC+TRXbpW/iU/PIUXMyiSzgVIm6hVUxfQVygYhO7UQaDz0IUYAWwxl/RWpO
-	leFlZTPzNfI+YiLpfnfADlhlxo9SCzA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755116105; x=1786652105;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=LZrTawuyAxoCi3sunafl5DYLrYFuXSMQtkSuKXK3J0E=;
-  b=hBxyDbksPsXXhpXGAcHaKyda4HAF2Egq/DO8sVMzQ+LQIvSz0drUF5rk
-   iXuiMMHVwUIzgLlie9LdDkPmMfltcoYRTnm2uIW5d6BbyW3u0ADu2rGYf
-   mrF1dDZBLPQZS5gA2FpcKfRhSP42Ki9LQiBBQTucICOgVEL2Sb0cR0VeT
-   DQLPbI6C68kSps6BkoUN1deKRHe+lHARX8OtAO2CLS6gNsGhvjA7cHdXk
-   nl9AerFtPZPN17teeAcgByhGce6REvHJ3budHKIxrSTB+iWTRFZC1ly7C
-   nNjHGPLwhdJDUHOTfCUD4iwUXRoCQDxsA0AXJrZ+TUV6LKj0I1Xzw3FE9
-   w==;
-X-CSE-ConnectionGUID: FVLM+O9RS7q0uJv5pFqTDw==
-X-CSE-MsgGUID: 50gaRh9xQdiKIZtGk5xdmg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="61229375"
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
-   d="scan'208";a="61229375"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 13:15:03 -0700
-X-CSE-ConnectionGUID: aA/KHlyVSZyI1IVPOy/MkQ==
-X-CSE-MsgGUID: V5U8Y83UQmm423ODEWHPLg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
-   d="scan'208";a="197553698"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa002.jf.intel.com with ESMTP; 13 Aug 2025 13:15:01 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1umHsA-000AI4-1o;
-	Wed, 13 Aug 2025 20:14:58 +0000
-Date: Thu, 14 Aug 2025 04:14:00 +0800
-From: kernel test robot <lkp@intel.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: oe-kbuild-all@lists.linux.dev,
+	b=vcGeFisYuzXbTfy/9CFL6yFOYRj9v2oNq3GHzMmQarV9PQVeJBGZEwrgYQ4JTJkd7zmWIP
+	KlMBuP+6fQVATO8lgvlITtfqgy1o8bCV/GQu3ycVEh+Zjx2lt2rR7YP6GIb/SC75cVCgUX
+	XdK06r4KWyjqX5ISyK2hcHa8KOSSmKo=
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-7e870636870so23362585a.2
+        for <linux-mm@kvack.org>; Wed, 13 Aug 2025 13:21:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1755116508; x=1755721308; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=H30kUHUoAp0mgFKEUbjujIS0Xnkk94c0v9Jq8jaPeYc=;
+        b=TQsDu4FuOgj8w9klUOL+n0dBtJuZ10bsD2ApE0X6laujznwpsVcet4ok5mMevHTknT
+         JST8lmLDCZjQcQt7B9+DCuWANucVQ8zBmzV1ICxyEHgfLjJYyW5zgZpgIgD7k4aOYOgZ
+         BYLRmQePOHl7BvYGxPvwmekJCUpAt5si6ZzqtcCoynIdWKktqdj5qsy1s53buscVASTX
+         cR+a8xHiO10rZ0fajlqr/Ul0bEb2wRhILEEvc+BGxlj2zgMmJ8KTXIY4n12AI9qeBM9X
+         D3XzZxMcOW9wzpjke3LJumbTik/Tyi06DtgmsubwW0daoPLN9aD4H9S0NGKSLTeWnRnA
+         gcdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755116508; x=1755721308;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=H30kUHUoAp0mgFKEUbjujIS0Xnkk94c0v9Jq8jaPeYc=;
+        b=uQ8YwMsC6PrIw1EW/hqLiDMZO70s2AXys3jJx6VYaLuM8WLlkvemWRdQgCo4cpFtEL
+         MIq++B209EnsQE6mmwqThR7RxvZ8iGyH/sN34iq62eofdOGGFNAqNgwKBw1IoO30x+fG
+         WFZF0f+RTCWBb9ahE/5shwd1JzGEZjrg3CtAU+5D/Sf+y+ZJ6wts3dEzsCAeiJQyenSq
+         +KYdKelmIdUsWTjFDg3ss6zBKjSzi+629YqLiEiGl/uYnGmX1DCS0z31aREwf7r2SLhO
+         ClaBKXzQTbdevTB0qnVZlqhbcwG8JrRtApIeI8oqUVd5q8++Tx9Q4DjIuIwwiWv9dJCv
+         Kbzw==
+X-Forwarded-Encrypted: i=1; AJvYcCXMULTe88Pg3FSgYagY1qiRZ5EzmytRwEvJPFW3hJtWuFSv3jcAo5LiHk39fK5Tq7m8AuaVqE9jVg==@kvack.org
+X-Gm-Message-State: AOJu0YxAsJ3H0u6RvEi5FXKpgIG/H51rPpHFF7qPacjk4M/rlV+f8hrr
+	DkYdMUqyQZICMbovh/3Lhryy0ufqrlRhqaBVKKbFe5xv5M0W14hI2DPBfGK+Mm55JfY=
+X-Gm-Gg: ASbGnct/WwANDGmzgwlYTO8P1CKeKQatw1lQR5fv43E8SMMgOXmkrI8VrI6M9d1nvEQ
+	3HXOiHss4IRBxN1DPTM9t2NEwZzZqkOEtzxPq0zjCGS23xV2JTbDTS4jNsCNShZkr/u75voNE4t
+	RfHhsYMb4reiFzkWXlwPQL8+JCDMJkGhIJhKCS9LwZrjkrCTHjpx0T/I111TbtXAdGu7A8iyn2k
+	an4paOyAtrDG9XT7jZYLP532mKTU8+ODlj0qm2bAs1wjO5WAEKg8Ifqw0bZyTYrXj2XG+fSUqf9
+	tm/OInJyJk3MbxMecU+Wum+q9SLlS9U1RpY7ueSp6ResE+/tQRmkB50uhkruEIZVHtnhvB8o/rp
+	DSqFul7JwSMozaHEvJZ9GGw==
+X-Google-Smtp-Source: AGHT+IHL4RX8mGUQFHn3xTKxG6noHoTer9v5afSRdyTGpU+E2ho9o1DxodPcyvf3+YYPPRrSEMF5JQ==
+X-Received: by 2002:a05:620a:3bd2:b0:7e3:28f3:8a5 with SMTP id af79cd13be357-7e87045d632mr87942885a.28.1755116507799;
+        Wed, 13 Aug 2025 13:21:47 -0700 (PDT)
+Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
+        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-7e8079cfcc9sm1486333285a.29.2025.08.13.13.21.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Aug 2025 13:21:46 -0700 (PDT)
+Date: Wed, 13 Aug 2025 16:21:42 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>
-Subject: [akpm-mm:mm-new 127/137] include/linux/mm.h:752:21: sparse: sparse:
- incorrect type in argument 1 (different modifiers)
-Message-ID: <202508140415.9qC6aHiR-lkp@intel.com>
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Tejun Heo <tj@kernel.org>, Simon Horman <horms@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Mina Almasry <almasrymina@google.com>,
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org,
+	mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 net-next 12/12] net-memcg: Decouple controlled memcg
+ from global protocol memory accounting.
+Message-ID: <20250813202142.GB115258@cmpxchg.org>
+References: <20250812175848.512446-1-kuniyu@google.com>
+ <20250812175848.512446-13-kuniyu@google.com>
+ <20250813130009.GA114408@cmpxchg.org>
+ <CAAVpQUB-xnx_29Hw-_Z4EbtJKkJT1_BCfXcQM7OpCO09goF+ew@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Rspamd-Queue-Id: 8B7844000E
-X-Rspamd-Server: rspam04
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAVpQUB-xnx_29Hw-_Z4EbtJKkJT1_BCfXcQM7OpCO09goF+ew@mail.gmail.com>
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 18B5D18000E
+X-Stat-Signature: yzbh8mw8juyq8zb8u6emkk9d49iup41t
 X-Rspam-User: 
-X-Stat-Signature: dqij5ebbxry65ys8tft5gbu68gbcs44e
-X-HE-Tag: 1755116104-172816
-X-HE-Meta: U2FsdGVkX18cm241j2yJaUNbJAk5JfSTvQ37EESaGKuOpcH1Yitj+ouIuCSAaYT2+DBqMViDnCLOpzAdlFy95juCZxi2nlTSQy6tNqfpnUb0c2IfiBgo2FPBvZpVrFxT5KH/WCmRPCAdBze2B5I/kVrkLhmG0W7yEhEidwrBvU+ki7G+pY9B+Cu6WOcsakLhd+hBlEeed20fkFUqMMNFmW+r4W9VpQQKQRuwmXsy8YMftrsCi9tQXr/3HnXT4nBN8iCtGazr9mKooUyMRX5YVfjQFyACb0PME+7PDMtOqWr/FPtPFWNUO498wgcAmFiYy5t0MYRtUzKGd1jLCMiRLaWY2Ni6AOSFHa79i+bmls9HJIjZANP/wCjZT2E8xachXqfV33dvsrzECmBbL5Y38StcCKNsvk0AgebIEJzd5TSPNKdAFpKqRwV1qe0BcSrAtvbO1utCU89y1/zbhwsoMyJExO+bIfiiQLeJ6+lLaLbzRUTAmmfN6PsBuSkgrr4Dki8HG1Oxw7Kpl0uLrnFUbk14Pl2M2Uzpc3eTbG6Bu6q4yM8wutWsQK9R+KVo6AWwn3oPK6Ffa8zDri1/34QpJ5VxYSEr7B/USoxQkUmXbq2hecy82/ZEBMvSgrMh/FHLrYWj4DCCMhVeYHrk+QDoBQiroqv2ug/10fEeuaLmiy+3OhzEsVFpTV1MQNECMgJjDChVLUEk4APioM6ZqVvdP1o8giGJJMbuZuztqHSsWUL5Qx0C8plt0wSVo4UVySCQHNO3e4PRWynCJn+ABhNnfZ7eBKj/qxeDbCPA5OhOFaME4WiAjWFMHtf6iIuBIZcCaI3ojDee3rzDYJECziuRgBA/yeEFQqF6bH4mVf8YANzWyiwedfbc/XfWM0kzc+QwWCLAVRN6cDeckhuUra7GwGio0UXlWb24PZB7AA5Hpn6zkl4d9G2+Mn55mnk/OAnej6PkgrOfQnWnWy+v47/
- jjdJcaX3
- vPCRf9uUHAGP8xQO6LlNqfrYkJWf74aEGEWRMR1vG5Ht0Cju2DtOQEzvuSheV2jSvHpliFDl5OhjHRq/bI2iobuppYJ2xpHcEvpz+YjUFWzEaEXZOQfR2g8aDdnZBri36YJOvTGXocDObVLeYNLTcUYhbG2XayNrKFdtahfoWIT8Kiq4YN5sS6fVWJkfVPbO3zhTZ0tfbAtuFyw/6aTnUiR3mJ8LOLo05lzvuArAxEdxOYwa2vFrNTCB+OpyaewfQ4V+HljTUsqP2RD4/vRxANMgvmyVTGpb4RToVeNdK9VuYDtjLyiyJoEroPc5NghQPuuYmlRDMET38NSaJqPtCN/KV/mcLhtmG7g7/95DUZoduEgiQxOc9FUPgceoOg46GcBOIfnEtPc1X1b/dRrxEsTpRQx17qk09SyD9kghbeI5zRbSZdkzo016wLXRvSVqonPsu
+X-HE-Tag: 1755116508-940318
+X-HE-Meta: U2FsdGVkX18nm6evqJakCHQ8KuerSTR8vbnKx2j1RdcSKiBlN8OhDPJDw6ti/Mu71HGQYZEVXUlKbngWnFYC8Na8MDFnweyQLDPLSX7VHHjD3DqLfdHmjYH6c1o8YNLfGM58xFqebHHpgM3smqgnXkuWgBH3ZhSVPEK0F54cJc9RLHpqj4+0wAZPm603A3rDcGGK0TJRycSUFFXoGL3CsZslXCbbl7HcvPXPVOqDVhemkl2sRkbIt3C5p22xrsvxjtMFM4XeydBcOpzpPVYG2/LPmGmpFcGHMqbaPR9mD4+eWvwBB2aSdChOmeqLSEOBFSCDPmucbaP/WyNai60dWr60s4LN2Dn/1BctsAToGjIFcyDgVNidS7tUWXB1qxpge0C+8bsD3u49MMaYR8NInTNcjskKReqsomn5Z9Jl1G46pCUS0VGGMB+1WeHBpfvQEPPkIj/ea9YIWy5wtL0BC5QxTM+V7N+/Zh7xZjWC3pFjpHNfEijd4uuOweoBi6eAZ//A0svt4wlX33WGlbhWJB/bgnm72fuEVeMTZjshHjWUUV6Prbjolqw8SIgEdobE+qA/QoNX4y9dbMBEAJdVT6O++/Fwaat2G1kn4Dkt1ZSNv8pJZdvYXYXPysYCTvm6k837Z3s9wrDHksnjaj1BUIKTCnQ+CotxJcK0iRclMfji7x1zRU/D8XYQAIUqAcfEfXpm+Z8jeULtq2DMuL1R+tdC06mBON6l12htxAmVY3T4aIWQeDA/+O5Q90k8WN809LLmU0ijXgJGCVAF6Fash7lM/o/xdNftjyzRuUTqqbOELP2v83lW4JZrVOBnU1qxpKLYIUcdBGjVi/6gEWDtgX923c9CgeY0OeeD8OD/l27NAcjBW+LMO0CmW1GZJD9zkYst4C4yBpToI9yBUffKf6Por4wy4Ju1uuRbwz4mFqfwrJ6aDnGtz7HjL05+C2N1eYHvgXYEZneFp6LzU7I
+ WfUpJr7Q
+ wT1VwqTCAV5EvA5N193YHWeKAv36a7zHQbFxSlCd2HQ86XxgwSIYFrWzOp1IQaFIohXYxP+YvLfKw+ntKDhjpoKpLsDdMU0kfC7WTPl74qNCIs5BVwmrPU9w7VAMKf0m44e2Fot8pyhuZA1WbeSG242EG/55gx8WEw8AtmJG44hpPjIbsZIeuPGogOQrCu/FFn+YqiH0P86lC+KU8BDtbAafcLr8+8wvwtno7NZ0FWepRPAajiyF668m9GYY13Mz5BBMERwyGgH2l6WRsEaHCQ3OczR0aoSS3fJiYplDN8mXEgjj8hBGcljHnK2D3R7QLKk+txu3WZYQmN/5zWLqjiBBlzZ6aTjZzKps86KuLzGWih3+gssqNvFtCFm+ZqaSjOyP7tWy7W+Th1t3JPOTe9ELqHAzYddo7ITNH6Wl5nMSv2NRXOvdDJo/GM7WKogTy7jBhO/EO9rxOp3o5Uf3DmOiYXXVuX24BAcX/ubGyYYQeD/wfuoyEvIMasPizdS+pituDAeNGSUpfgWE4DkSKx6TVmaf0KDVJFCTbgXLHqgoWIQA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,110 +139,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-head:   694c8e78f486b09137ee3efadae044d01aba971b
-commit: ead30cde4eab3fd4d3b40cd0a303d0dd2388556c [127/137] mm: update fork mm->flags initialisation to use bitmap
-config: microblaze-randconfig-r131-20250813 (https://download.01.org/0day-ci/archive/20250814/202508140415.9qC6aHiR-lkp@intel.com/config)
-compiler: microblaze-linux-gcc (GCC) 12.5.0
-reproduce: (https://download.01.org/0day-ci/archive/20250814/202508140415.9qC6aHiR-lkp@intel.com/reproduce)
+On Wed, Aug 13, 2025 at 11:43:15AM -0700, Kuniyuki Iwashima wrote:
+> On Wed, Aug 13, 2025 at 6:00 AM Johannes Weiner <hannes@cmpxchg.org> wrote:
+> This change stop double-charging by opting out of _the
+> networking layer one_ because it interferes with memcg
+> and complicates configuration of memory.max and the
+> global networking limit.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508140415.9qC6aHiR-lkp@intel.com/
+No, we do want the global limits as a backstop - even if every single
+cgroup in the system has its own memory limit.
 
-sparse warnings: (new ones prefixed by >>)
-   kernel/fork.c:1607:38: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct refcount_struct [usertype] *r @@     got struct refcount_struct [noderef] __rcu * @@
-   kernel/fork.c:1607:38: sparse:     expected struct refcount_struct [usertype] *r
-   kernel/fork.c:1607:38: sparse:     got struct refcount_struct [noderef] __rcu *
-   kernel/fork.c:1616:31: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct spinlock [usertype] *lock @@     got struct spinlock [noderef] __rcu * @@
-   kernel/fork.c:1616:31: sparse:     expected struct spinlock [usertype] *lock
-   kernel/fork.c:1616:31: sparse:     got struct spinlock [noderef] __rcu *
-   kernel/fork.c:1617:36: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected void const * @@     got struct k_sigaction [noderef] __rcu * @@
-   kernel/fork.c:1617:36: sparse:     expected void const *
-   kernel/fork.c:1617:36: sparse:     got struct k_sigaction [noderef] __rcu *
-   kernel/fork.c:1618:33: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct spinlock [usertype] *lock @@     got struct spinlock [noderef] __rcu * @@
-   kernel/fork.c:1618:33: sparse:     expected struct spinlock [usertype] *lock
-   kernel/fork.c:1618:33: sparse:     got struct spinlock [noderef] __rcu *
-   kernel/fork.c:1997:31: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct spinlock [usertype] *lock @@     got struct spinlock [noderef] __rcu * @@
-   kernel/fork.c:1997:31: sparse:     expected struct spinlock [usertype] *lock
-   kernel/fork.c:1997:31: sparse:     got struct spinlock [noderef] __rcu *
-   kernel/fork.c:2001:33: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct spinlock [usertype] *lock @@     got struct spinlock [noderef] __rcu * @@
-   kernel/fork.c:2001:33: sparse:     expected struct spinlock [usertype] *lock
-   kernel/fork.c:2001:33: sparse:     got struct spinlock [noderef] __rcu *
-   kernel/fork.c:2335:32: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct task_struct [noderef] __rcu *real_parent @@     got struct task_struct *register [addressable] [toplevel] current @@
-   kernel/fork.c:2335:32: sparse:     expected struct task_struct [noderef] __rcu *real_parent
-   kernel/fork.c:2335:32: sparse:     got struct task_struct *register [addressable] [toplevel] current
-   kernel/fork.c:2344:27: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct spinlock [usertype] *lock @@     got struct spinlock [noderef] __rcu * @@
-   kernel/fork.c:2344:27: sparse:     expected struct spinlock [usertype] *lock
-   kernel/fork.c:2344:27: sparse:     got struct spinlock [noderef] __rcu *
-   kernel/fork.c:2393:54: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected struct list_head *head @@     got struct list_head [noderef] __rcu * @@
-   kernel/fork.c:2393:54: sparse:     expected struct list_head *head
-   kernel/fork.c:2393:54: sparse:     got struct list_head [noderef] __rcu *
-   kernel/fork.c:2413:29: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct spinlock [usertype] *lock @@     got struct spinlock [noderef] __rcu * @@
-   kernel/fork.c:2413:29: sparse:     expected struct spinlock [usertype] *lock
-   kernel/fork.c:2413:29: sparse:     got struct spinlock [noderef] __rcu *
-   kernel/fork.c:2435:29: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct spinlock [usertype] *lock @@     got struct spinlock [noderef] __rcu * @@
-   kernel/fork.c:2435:29: sparse:     expected struct spinlock [usertype] *lock
-   kernel/fork.c:2435:29: sparse:     got struct spinlock [noderef] __rcu *
-   kernel/fork.c:2463:28: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct sighand_struct *sighand @@     got struct sighand_struct [noderef] __rcu *sighand @@
-   kernel/fork.c:2463:28: sparse:     expected struct sighand_struct *sighand
-   kernel/fork.c:2463:28: sparse:     got struct sighand_struct [noderef] __rcu *sighand
-   kernel/fork.c:2494:31: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct spinlock [usertype] *lock @@     got struct spinlock [noderef] __rcu * @@
-   kernel/fork.c:2494:31: sparse:     expected struct spinlock [usertype] *lock
-   kernel/fork.c:2494:31: sparse:     got struct spinlock [noderef] __rcu *
-   kernel/fork.c:2496:33: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct spinlock [usertype] *lock @@     got struct spinlock [noderef] __rcu * @@
-   kernel/fork.c:2496:33: sparse:     expected struct spinlock [usertype] *lock
-   kernel/fork.c:2496:33: sparse:     got struct spinlock [noderef] __rcu *
-   kernel/fork.c:2939:24: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct task_struct *[assigned] parent @@     got struct task_struct [noderef] __rcu *real_parent @@
-   kernel/fork.c:2939:24: sparse:     expected struct task_struct *[assigned] parent
-   kernel/fork.c:2939:24: sparse:     got struct task_struct [noderef] __rcu *real_parent
-   kernel/fork.c:3022:43: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct refcount_struct const [usertype] *r @@     got struct refcount_struct [noderef] __rcu * @@
-   kernel/fork.c:3022:43: sparse:     expected struct refcount_struct const [usertype] *r
-   kernel/fork.c:3022:43: sparse:     got struct refcount_struct [noderef] __rcu *
-   kernel/fork.c: note: in included file (through include/linux/pagemap.h, include/linux/mempolicy.h):
->> include/linux/mm.h:752:21: sparse: sparse: incorrect type in argument 1 (different modifiers) @@     expected unsigned long *dst @@     got unsigned long [noderef] * @@
-   include/linux/mm.h:752:21: sparse:     expected unsigned long *dst
-   include/linux/mm.h:752:21: sparse:     got unsigned long [noderef] *
-   kernel/fork.c: note: in included file (through include/linux/mmzone.h, include/linux/gfp.h, include/linux/slab.h):
-   include/linux/mm_types.h:1239:33: sparse: sparse: incorrect type in initializer (different modifiers) @@     expected unsigned long *bitmap @@     got unsigned long [noderef] * @@
-   include/linux/mm_types.h:1239:33: sparse:     expected unsigned long *bitmap
-   include/linux/mm_types.h:1239:33: sparse:     got unsigned long [noderef] *
-   include/linux/mm_types.h:1248:33: sparse: sparse: incorrect type in initializer (different modifiers) @@     expected unsigned long *bitmap @@     got unsigned long [noderef] * @@
-   include/linux/mm_types.h:1248:33: sparse:     expected unsigned long *bitmap
-   include/linux/mm_types.h:1248:33: sparse:     got unsigned long [noderef] *
-   include/linux/mm_types.h:1248:33: sparse: sparse: incorrect type in initializer (different modifiers) @@     expected unsigned long *bitmap @@     got unsigned long [noderef] * @@
-   include/linux/mm_types.h:1248:33: sparse:     expected unsigned long *bitmap
-   include/linux/mm_types.h:1248:33: sparse:     got unsigned long [noderef] *
-   kernel/fork.c:1712:9: sparse: sparse: dereference of noderef expression
-   kernel/fork.c:1851:36: sparse: sparse: context imbalance in 'pidfd_prepare' - different lock contexts for basic block
-   kernel/fork.c:2047:22: sparse: sparse: dereference of noderef expression
-   kernel/fork.c: note: in included file (through include/uapi/asm-generic/bpf_perf_event.h, arch/microblaze/include/generated/uapi/asm/bpf_perf_event.h, ...):
-   include/linux/ptrace.h:210:45: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected struct task_struct *new_parent @@     got struct task_struct [noderef] __rcu *parent @@
-   include/linux/ptrace.h:210:45: sparse:     expected struct task_struct *new_parent
-   include/linux/ptrace.h:210:45: sparse:     got struct task_struct [noderef] __rcu *parent
-   include/linux/ptrace.h:210:62: sparse: sparse: incorrect type in argument 3 (different address spaces) @@     expected struct cred const *ptracer_cred @@     got struct cred const [noderef] __rcu *ptracer_cred @@
-   include/linux/ptrace.h:210:62: sparse:     expected struct cred const *ptracer_cred
-   include/linux/ptrace.h:210:62: sparse:     got struct cred const [noderef] __rcu *ptracer_cred
-   kernel/fork.c:2391:59: sparse: sparse: dereference of noderef expression
-   kernel/fork.c:2392:59: sparse: sparse: dereference of noderef expression
+Sure, from a fairness POV, we want socket buffers accounted towards
+the containers' memory footprint and subject to their limits.
 
-vim +752 include/linux/mm.h
+But that doesn't imply that we can let the cgroup limit be the only
+thing curbing an explosion in socket buffers.
 
-34e1a4ccaed274 Lorenzo Stoakes 2025-08-12  749  
-34e1a4ccaed274 Lorenzo Stoakes 2025-08-12  750  static inline void mm_flags_clear_all(struct mm_struct *mm)
-34e1a4ccaed274 Lorenzo Stoakes 2025-08-12  751  {
-34e1a4ccaed274 Lorenzo Stoakes 2025-08-12 @752  	bitmap_zero(ACCESS_PRIVATE(&mm->_flags, __mm_flags), NUM_MM_FLAG_BITS);
-34e1a4ccaed274 Lorenzo Stoakes 2025-08-12  753  }
-34e1a4ccaed274 Lorenzo Stoakes 2025-08-12  754  
+This isn't about fairness, but about host stability.
 
-:::::: The code at line 752 was first introduced by commit
-:::::: 34e1a4ccaed27416e7c6cd5ec43d9f3f41bf107b mm: add bitmap mm->flags field
+The MM can easily get rid of file cache and heap pages, but it has
+limited to no control over the socket buffer lifetime. If you split a
+1TB host into 8 containers limited to ~128G, that doesn't mean you
+want to allow up to 1TB of memory in socket buffers. That could make
+low memory situations unrecoverable.
 
-:::::: TO: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-:::::: CC: Andrew Morton <akpm@linux-foundation.org>
+> > Maybe their socket buffers is the only thing that happens
+> > to matter to *you*, but this is in no way a generic, universal,
+> > upstreamable solution. Knob or auto-detection is not the issue.
+> >
+> > Nacked-by: Johannes Weiner <hannes@cmpxchg.org>
+> 
+> Please let me know if this nack still applies with the
+> explanation above.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Yes, for one I think it's an unacceptable behavioral change of the
+sysctl semantics.
+
+But my wider point is that I think you're trying to fix something that
+is a direct result of a flawed approach to containerization, and it
+would make much more sense to address that instead.
 
