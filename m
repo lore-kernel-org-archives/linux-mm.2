@@ -2,110 +2,102 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8CCC8C87FCF
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 14:49:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 971F8C87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 14:52:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B26890009A; Wed, 13 Aug 2025 10:49:37 -0400 (EDT)
+	id 1CD5990009B; Wed, 13 Aug 2025 10:52:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26306900088; Wed, 13 Aug 2025 10:49:37 -0400 (EDT)
+	id 13157900088; Wed, 13 Aug 2025 10:52:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0DC7890009A; Wed, 13 Aug 2025 10:49:37 -0400 (EDT)
+	id F13F890009B; Wed, 13 Aug 2025 10:52:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id EC82F900088
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 10:49:36 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9312D1A03F1
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 14:49:36 +0000 (UTC)
-X-FDA: 83772017952.26.E622A8A
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id AD1EB140004
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 14:49:34 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of ada.coupriediaz@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ada.coupriediaz@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D6116900088
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 10:52:17 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 85970829D0
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 14:52:17 +0000 (UTC)
+X-FDA: 83772024714.09.FEA476B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 004D14000C
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 14:52:15 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HXSRoY4F;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of kuba@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kuba@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755096736; a=rsa-sha256;
+	cv=none;
+	b=DzdVTPyKU3EZ7Lo9eSkUaoAauyX+1SybuJLokAMd2GSnQqQr0S+OOWcPdFArwop2QZzn0H
+	ixsfGDRyIPdX4J5AohUhXqp8mlx2pmYwSPERs0LIHGhzwBkHIpnx0ttVBBHT69TSIaZKML
+	aC0Tz6sz4gs4Oka/6vr4HrvVEjW9P1s=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HXSRoY4F;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of kuba@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kuba@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755096574;
+	s=arc-20220608; t=1755096736;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0tb+++lwvt7o4dnuA540qtPzkugVZMdbKd++k8Qh7w8=;
-	b=VeNu7cgTjcyamVpcb7LR1pJngC4rlAa68TvJO/lColxGA/zuppWiFhFjLP6zHIev3MICN4
-	5moMDML8/5JfsxbUIRjXKHJAOgP5VxHhSlVkCEdrUzVp83UKu1eNpP4fVtFmQ0GuAPaXIw
-	C0sDeBaS7oL9BggemSchuLajW/gSRnI=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of ada.coupriediaz@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ada.coupriediaz@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755096574; a=rsa-sha256;
-	cv=none;
-	b=ir9XrMrH0JeZpqd61O1LfZZcn7+tAt4ggsaZX6N7H10ZWrGKo0s0/J5qZS2abagA5zzHgv
-	saVuMM8ZyL/Wn1t5yzUVgh+CyWuoXkfzqrCOu0PmZqAZguZh4/wc7MqnWlxJ9fM5eMqNXn
-	2z+YcIBj+3OoNhtf67yBccWGldQkQUw=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A16EF14BF;
-	Wed, 13 Aug 2025 07:49:25 -0700 (PDT)
-Received: from [10.57.1.244] (unknown [10.57.1.244])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4CB263F5A1;
-	Wed, 13 Aug 2025 07:49:17 -0700 (PDT)
-Message-ID: <31bac00f-7903-46f7-a5a0-1e8f5fd8b9ab@arm.com>
-Date: Wed, 13 Aug 2025 15:49:15 +0100
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6wpMcnJZf4dP4zTrQRxN2TvFNKFBXWRlxzAryJbb7m4=;
+	b=VF6JghARu6GB3vvvbmoh+ripB86qayNNJUjm0cI8fj2y9r3hh2fk3v1ne1VcOtvg/Amem/
+	T++LKivK0LjG0kXp/ErlFoMjjGm5F5ovfWkgVWWDfRKMcdOm5gK5fE0hMNiVRtxgg0Vw2+
+	A2WuSJVYKDsGO0kiWujuPyiZy5k2Vy4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0101B601F6;
+	Wed, 13 Aug 2025 14:52:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F4F7C4CEF1;
+	Wed, 13 Aug 2025 14:52:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755096734;
+	bh=yF8iCt4IcxBj81Mp1kvQhhC5dKj1tFO3WDbfBuoASjQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=HXSRoY4FX97/bGSoskS9rX3kbLNHbhMECHrpExOw3SjAhO+sutt0wNIt+hXguYqFz
+	 acOrnwIq662t2uH/Pkk+7zDE8qZpdbkHmHHAOfqQwBcKJJyCXYPBsuQso8zFZkC8wc
+	 erGdkydwLPI2kjby/RJhn2Ues8nq7SX9WGDBoI3FpERRf1p1vq/7Gg6L9vYkY8r3yv
+	 /UTzDE2v+NTni4xTqnaSIoDLmtE+MWUd4MJgORxpfzwpU05jPd/97lVDP2xRhtyicu
+	 kd6cGBBqNP8JClWYuCW6Zn6N1Kg15PCa2VQb8UCi/ux4QHe6NCO7XLvlVcwo0EiNp3
+	 Pe3CylL1s7ueg==
+Date: Wed, 13 Aug 2025 07:52:12 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Pavel Begunkov <asml.silence@gmail.com>
+Cc: Byungchul Park <byungchul@sk.com>, akpm@linux-foundation.org,
+ linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+ harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
+ davem@davemloft.net, hawk@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
+ mbloch@nvidia.com, andrew+netdev@lunn.ch, edumazet@google.com,
+ pabeni@redhat.com, david@redhat.com, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, horms@kernel.org, jackmanb@google.com,
+ hannes@cmpxchg.org, ziy@nvidia.com, ilias.apalodimas@linaro.org,
+ willy@infradead.org, brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
+ usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
+ almasrymina@google.com, toke@redhat.com, bpf@vger.kernel.org,
+ linux-rdma@vger.kernel.org, sfr@canb.auug.org.au, linux-mm@kvack.org,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH linux-next v3] mm, page_pool: introduce a new page type
+ for page pool in page type
+Message-ID: <20250813075212.051b5178@kernel.org>
+In-Reply-To: <6bbf6ca2-0c46-43b7-82d8-b990f01ae5dd@gmail.com>
+References: <20250729110210.48313-1-byungchul@sk.com>
+	<20250813060901.GA9086@system.software.com>
+	<6bbf6ca2-0c46-43b7-82d8-b990f01ae5dd@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 13/18] kasan: arm64: x86: Handle int3 for inline KASAN
- reports
-To: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Cc: nathan@kernel.org, arnd@arndb.de, broonie@kernel.org,
- Liam.Howlett@oracle.com, urezki@gmail.com, will@kernel.org,
- kaleshsingh@google.com, rppt@kernel.org, leitao@debian.org, coxu@redhat.com,
- surenb@google.com, akpm@linux-foundation.org, luto@kernel.org,
- jpoimboe@kernel.org, changyuanl@google.com, hpa@zytor.com,
- dvyukov@google.com, kas@kernel.org, corbet@lwn.net,
- vincenzo.frascino@arm.com, smostafa@google.com,
- nick.desaulniers+lkml@gmail.com, morbo@google.com, andreyknvl@gmail.com,
- alexander.shishkin@linux.intel.com, thiago.bauermann@linaro.org,
- catalin.marinas@arm.com, ryabinin.a.a@gmail.com, jan.kiszka@siemens.com,
- jbohac@suse.cz, dan.j.williams@intel.com, joel.granados@kernel.org,
- baohua@kernel.org, kevin.brodsky@arm.com, nicolas.schier@linux.dev,
- pcc@google.com, andriy.shevchenko@linux.intel.com, wei.liu@kernel.org,
- bp@alien8.de, xin@zytor.com, pankaj.gupta@amd.com, vbabka@suse.cz,
- glider@google.com, jgross@suse.com, kees@kernel.org, jhubbard@nvidia.com,
- joey.gouly@arm.com, ardb@kernel.org, thuth@redhat.com,
- pasha.tatashin@soleen.com, kristina.martsenko@arm.com,
- bigeasy@linutronix.de, lorenzo.stoakes@oracle.com, jason.andryuk@amd.com,
- david@redhat.com, graf@amazon.com, wangkefeng.wang@huawei.com,
- ziy@nvidia.com, mark.rutland@arm.com, dave.hansen@linux.intel.com,
- samuel.holland@sifive.com, kbingham@kernel.org, trintaeoitogc@gmail.com,
- scott@os.amperecomputing.com, justinstitt@google.com,
- kuan-ying.lee@canonical.com, maz@kernel.org, tglx@linutronix.de,
- samitolvanen@google.com, mhocko@suse.com, nunodasneves@linux.microsoft.com,
- brgerst@gmail.com, willy@infradead.org, ubizjak@gmail.com,
- peterz@infradead.org, mingo@redhat.com, sohil.mehta@intel.com,
- linux-mm@kvack.org, linux-kbuild@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, x86@kernel.org, llvm@lists.linux.dev,
- kasan-dev@googlegroups.com, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Ada Couprie Diaz <ada.coupriediaz@arm.com>
-References: <cover.1755004923.git.maciej.wieczor-retman@intel.com>
- <9030d5a35eb5a3831319881cb8cb040aad65b7b6.1755004923.git.maciej.wieczor-retman@intel.com>
-From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Content-Language: en-US
-Organization: Arm Ltd.
-In-Reply-To: <9030d5a35eb5a3831319881cb8cb040aad65b7b6.1755004923.git.maciej.wieczor-retman@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: AD1EB140004
+X-Stat-Signature: bncgwa44ekst5hf81pb8ygy5e6is9h3s
 X-Rspam-User: 
-X-Stat-Signature: zz8r17kwgenwniesbpczb5qn5kpncgfo
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1755096574-252028
-X-HE-Meta: U2FsdGVkX1/1otMJcawDt3HZjBxFvw0EcN3Nv/LkvWlYYchQh688tLErw1cq25A/1uQyQKB1sl/5pkxa97P5pJzNrz2htMYPEXR6MnXGNixVPQslzIHg1dtq3Gp0DV/MrIUdcKS21evkAzx89OJ5cBhbvtE5eQIsu9md0gbUp9PpsR2IHOi5mn6ct2LAYFT/N4RlApB7sUBy457EQecdTt+BvYciKe6r4l7tmstzfPU6zX2jjY+hpK6jzUZ9E6LEEXzJqTtOTWFdy9ePvk/IyfrGD5tWa6RizBiCtp3UefKTqgwa5Rme602HY6Tpwf8bd0DQEytM9qOFORwpBed3s1dkE7SxM4QRKk3lXDFkELxXDNK5blZrdsmA7+/tyn5nVLcYUsAI1LgljZ35tQF9YKGCdBItS8Fk3864fy0tp+DQNjquYLZcJTmQ40w0MZPMDk+tAAg0CV3yl5lb0rs5FsSUzu/xr3Y/E74YviqqHa6abUzzFjL66PWr1AnitcnLCCcwzbpuZrjg2zXkKkD7XEDxc/iKnm4tYn6Qjxl4kZMNqko3JCsxNU7gbHQh8eNDlwGvsP+ipqHyIDtnDpFRSXSFCpC008pYxtwzWiYUxqVFik0xEVqQTYD7/H2hn96GTt4oPdWCuZHu2BoN4BMQehc32qaBd7wsitz69/TaZHI+T5L56ADEmHcwFmr20aatK/qXkxYoK9NyV1wYuwjrLiXYA2UWyqe0kYnlWwFNbGHZHSrz7o1neSJNmsAD5hzQWV15kR1XNZZVJ0i8zKd+W3+psb1WzBMGgUXvlAex3BWiL7cnkM4wDTlAKMwkEG7bq0F+652NhakCxSeZck//vAC8VM4uw7biZmwwYhzB28UV16jQCA8VuJp6Fame7EuHGJiSBHd522LNfSGW13DffaHDhwyaofldgrqZykoRlcJkWADtlmdFHYCn22A83X4v9GNA9s186N2sYYFI+HQ
- BjB1XPkZ
- IE+nbpyckp/o59wg1quI5tuKLIAQ9BaDZA8qyDuHjXJRzUaiqUh83X9sLnkDBQkOFxLgdUfc6sMEvlU8ruQ3hB+ZDFlu2OeCC2V6+TG7ELzRt4kC7+qNSXd81US8zwByc5SPtC8/z/CcllM1NKOlXCpzLYYnYflH5RPr5nRToTWZ3zuBC52czjo47x1PXxwHqqUWVJGBiaDf91JcHxpxfDTgNenefCt360q9pOQH7kfNBN8OFMO/tqQ3GfJg/ry/7JIdBy/42kxHeWvottyW++4QJYg==
+X-Rspamd-Queue-Id: 004D14000C
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1755096735-641013
+X-HE-Meta: U2FsdGVkX1/F5bOtV5ymFloBLgmxxhzkjkzRiI8N5zo2tBvxzjs58mSDcaoBMiKOGvjZAvQqFaHQYz4iBYHNh7IeCASNqUa+7X/T7UvVkrlTuUzP5mVw/t42OM6koJoXM9v2BRaElkbSzbbl+jV9kGOBMvIp4/F5Dtqn05sL19GcXuA0HpVKLIVA7Ta4WXps+1rF+yAx8sKkaxkCE1I0Ys8STAUxV4xin8FXbgLdWQBOCFtfzo60HKx6REDUjnoUTnd9tr8iqte2MmNh0eEMku1HKtPGP6vKtttMU7uz8QJK4joOuaB7Sa1L6LlnhAMz2z15bcjLjrOnTlD8AQDp+AME1QUhbg7pEzLJorM2K+azy7dswP87tEi5FL8G/aHfsKwOk1VdCKm3zsBeAhuqh+bTHcZkM4MHA1lJRWLxAARvFAFg4GRE7TcmV/TYmWFqDhp69G/5y7Iz82Mp7VMdXHnrxJgEb+JSFCdIF79CNkF8vJ7c6uzB5gFhAbu/4h/YcEbJVE0nXTav8419mZdN06iYgyrwtoX68+yByhLwIGAtRQPnPDkvC3A8rcRhzcvOCON3Ng6TtEVKxJIjC0sFfxY84zGP++CFNDIxx0SbsKzNs4QsLHska57Q0dw0FKpYKdspn39VkwDKeDaCKE4FPKCCgAfb78chk0TTbpsjAs27SCngXY8FGThayk/cBKfuLalTLbg3CgBGTglM9/6DEB10gWiKZJI9ZXW9/stL/BIJiloyKg+Wl603bjpK4oTuSF/z6WdzFIKE83x7CL0tkJVAwruVprD+RCKrt5EpdgcF3of0qjtT2I9ujg0gPLTV++LacYvmDmx6/Dqq6lktLRgvXte/nhbK5Rwg3DrghpI0fbPKxI497hynywYC1AfSeFijW4wtcGd2UsSflouEq9glFUYf8ZwEoDkWyWuobIF3YsQbX15DpW6/5fsNCU9fKT3YORCPS5w0EqbKQc9
+ DsujXKYQ
+ J7ZZ6W/Wdg7h7+oON6JMggMOYXuVoHadpEpmWWe0P7ng/rHpirC1g8KRxuS1bKLBoAJ0lrDHryIYtsMkdpra38O7teoZZ2qnS95ZG8M4zIM2mEB26WgMSFjybGo8psjIQ1dHCKNP6AQ30dmk+xiMM0Zhvzi/EsPW3z73+J45M15hXpIYWc35lBm/SEj1WPF6Kr3BzD61n2vKhp5kB5kjjLbxj09YlydBeFlm69ELWFAsqi/4YzaDDNQKoJMDyoF8rvdUbHl7OdJQO7VbIB5pAecHCh2vHCGUTitHwb5Kd2Db9YdLoc6DfEP9XsbuJF9QlRpk2CF6VzVI34ptRGpvkHvVPMwOcCS6d43PTXDoTq+h42OHjvqJ33OvDNxWscQ4O30TEl2itYJVWuVHHtM8ctrmMt6qRBB1Be0K6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,47 +106,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Wed, 13 Aug 2025 12:18:56 +0100 Pavel Begunkov wrote:
+> It should go to net, there will be enough of conflicts otherwise.
+> mm maintainers, do you like it as a shared branch or can it just
+> go through the net tree?
 
-On 12/08/2025 14:23, Maciej Wieczor-Retman wrote:
-> [...]
->
-> Make part of that hook - which decides whether to die or recover from a
-> tag mismatch - arch independent to avoid duplicating a long comment on
-> both x86 and arm64 architectures.
->
-> Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-> ---
-> [...]
-> diff --git a/arch/arm64/kernel/traps.c b/arch/arm64/kernel/traps.c
-> index f528b6041f6a..b9bdabc14ad1 100644
-> --- a/arch/arm64/kernel/traps.c
-> +++ b/arch/arm64/kernel/traps.c
-> @@ -1068,22 +1068,7 @@ int kasan_brk_handler(struct pt_regs *regs, unsigned long esr)
->   
->   	kasan_report(addr, size, write, pc);
->   
-> -	/*
-> -	 * The instrumentation allows to control whether we can proceed after
-> -	 * a crash was detected. This is done by passing the -recover flag to
-> -	 * the compiler. Disabling recovery allows to generate more compact
-> -	 * code.
-> -	 *
-> -	 * Unfortunately disabling recovery doesn't work for the kernel right
-> -	 * now. KASAN reporting is disabled in some contexts (for example when
-> -	 * the allocator accesses slab object metadata; this is controlled by
-> -	 * current->kasan_depth). All these accesses are detected by the tool,
-> -	 * even though the reports for them are not printed.
-> -	 *
-> -	 * This is something that might be fixed at some point in the future.
-> -	 */
-> -	if (!recover)
-> -		die("Oops - KASAN", regs, esr);
-> +	kasan_inline_recover(recover, "Oops - KASAN", regs, esr);
-It seems that `die` is missing as the last argument, otherwise
-CONFIG_KASAN_SW_TAGS will not build on arm64.
-With the fix, it builds fully without further issues.
+Looks like this is 100% in mm, and the work is not urgent at all.
+So I'm happy for Andrew to take this, and dependent patches (if any)
+can come in the next cycle.
 
-Thanks,
-Ada
+> @@ -1379,9 +1376,11 @@ __always_inline bool free_pages_prepare(struct page *page,
+>   		mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
+>   		folio->mapping = NULL;
+>   	}
+> -	if (unlikely(page_has_type(page)))
+> +	if (unlikely(page_has_type(page))) {
+> +		WARN_ON_ONCE(PageNet_pp(page));
+
+I guess my ask to add a comment here got ignored?
+
+>   		/* Reset the page_type (which overlays _mapcount) */
+>   		page->page_type = UINT_MAX;
 
