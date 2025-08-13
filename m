@@ -2,218 +2,125 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1198FCA0EC4
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 05:37:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E0976C87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 05:49:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A58A9900034; Wed, 13 Aug 2025 01:37:50 -0400 (EDT)
+	id 62BBD8E01BD; Wed, 13 Aug 2025 01:49:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A09368E01B6; Wed, 13 Aug 2025 01:37:50 -0400 (EDT)
+	id 604B18E01B6; Wed, 13 Aug 2025 01:49:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A95C900034; Wed, 13 Aug 2025 01:37:50 -0400 (EDT)
+	id 51A0A8E01BD; Wed, 13 Aug 2025 01:49:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 73A308E01B6
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 01:37:50 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 26102B77AC
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 05:37:50 +0000 (UTC)
-X-FDA: 83770627500.30.0CA22A3
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2067.outbound.protection.outlook.com [40.107.243.67])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 489391A0006
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 05:37:47 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=DMVbovR1;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf19.hostedemail.com: domain of shivankg@amd.com designates 40.107.243.67 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755063467;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 42A898E01B6
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 01:49:04 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A90FF140218
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 05:49:03 +0000 (UTC)
+X-FDA: 83770655766.19.C5B49CF
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf18.hostedemail.com (Postfix) with ESMTP id DB9CD1C000A
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 05:48:59 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	spf=pass (imf18.hostedemail.com: domain of zhangzihuan@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangzihuan@kylinos.cn
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755064141;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5vOYTpsGTVOGFYNM15RJAIpz6gk9oUTejV+wka+g71Q=;
-	b=ycdqWPm3R82TILAB/YaSd8fNbC2OGkAJgMWwBXYVLlyRoTKrlvUFr6hKmYmrAfU3ZuPhO0
-	d0V6Ol93jlB0W4/x1EgcWEfjggSI47TycM1QPt5k9EUi31blZdrMTio5wNh3ZTbJtZIOSs
-	XawicnkkpZ+YBNfkclhzkcs4Le+cgpY=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755063467; a=rsa-sha256;
-	cv=pass;
-	b=Ti01UZUcbNqXhTTnW9Zwe3dZB6W0nhfQXTpAMIZcekQqX1fjBaPyS82PuXpINWNbGVZG2F
-	ikiSl6rcoqJ8ShS9Iv/KWUxfhrdWX0UwFVIbKgx3dMfW4MWYPCqNTJSdPC/yrjxTHQ7+gN
-	stI8gWg343G9MUwE8f3Elp9sgH+I5L0=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=DMVbovR1;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf19.hostedemail.com: domain of shivankg@amd.com designates 40.107.243.67 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sTJshPQrn2wKX4LnLsElKJGUBqg0vTqj6+wsOKxl9fG1YBRNkF+UD9RLLfLAeoz0sv4S2X1Rd0GK5vQsJtYQ9mq8nNJtUKEi9a2X9KllAmD4iftvlVBXDKQSZg5KJbs/286TLyDoJYlWhcPzQgWKwMHDoMPHwQ7KiuYlzy1OISM0aKX2IU1IW8SP/ypolGtow4NVYmQiajW65egZIKVmC0/1cg3n4iHqpv6rzMMDyyF4CnJ6TJqPgk1V5EV22Ww9PkiAERMkqZLWYZOPfibmw9kV5gsudeROZkXdCExkh6UQp3+hUy8MV7lCdsJ3M/96izEXet31dPFTBwpsw9xJ3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5vOYTpsGTVOGFYNM15RJAIpz6gk9oUTejV+wka+g71Q=;
- b=NHH9jqcTig3QO7e41OdaCDtjk8oVkv+mDrpGLBKDy+tjWj+c9SyHQqs29PWiDKe9UmZtHw4Ya2tRbRzMKjOWGYBIIvRhUrqvtAwNkbwLlhOsqKEVNpJGIAHA/FniWVRPYmns/VvR6ui7cRVJWEVXGbhvIfB7VwPG4fVgC3a9b/fRh+CNaOiW2hc2y3OttmV+ekuq424mYrVMeznT+eZQ/9hvMfWo2RIxts2UqA2ZWUMHN8MpFyOVfL9A/waSA7cIbj4s9+cBBPOuFjuWjbQFTo6NRZ3KSrZX6B915gVhgAj289KtEcXfOgMDomdSqiUKqoJQONWBZfOuZ02EaB4gXQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5vOYTpsGTVOGFYNM15RJAIpz6gk9oUTejV+wka+g71Q=;
- b=DMVbovR16GnkPA9CE4li6ZEr3Rgqv3PmMJLS3hIENiJveBGMwvv8MOGSdViJr0kL0jFeyo4RK3PFmeuTvEahDycLUeHAHjcUqgSMnYV4LsX5bslIWAKjhZsS5/E3CLMiUQ1p3rkLtD8SjowyKcpYlTKMDy/8iUZfHMpnUMnsLLY=
-Received: from IA0PPFDC28CEE69.namprd12.prod.outlook.com
- (2603:10b6:20f:fc04::be8) by PH0PR12MB7472.namprd12.prod.outlook.com
- (2603:10b6:510:1e9::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.15; Wed, 13 Aug
- 2025 05:37:44 +0000
-Received: from IA0PPFDC28CEE69.namprd12.prod.outlook.com
- ([fe80::7945:d828:51e7:6a0f]) by IA0PPFDC28CEE69.namprd12.prod.outlook.com
- ([fe80::7945:d828:51e7:6a0f%4]) with mapi id 15.20.8835.025; Wed, 13 Aug 2025
- 05:37:43 +0000
-Message-ID: <c558354c-0103-42b7-aa29-741147c9330e@amd.com>
-Date: Wed, 13 Aug 2025 11:07:25 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC V10 4/7] KVM: guest_memfd: Use guest mem inodes
- instead of anonymous inodes
-To: Ackerley Tng <ackerleytng@google.com>,
- David Hildenbrand <david@redhat.com>, seanjc@google.com, vbabka@suse.cz,
- willy@infradead.org, akpm@linux-foundation.org, shuah@kernel.org,
- pbonzini@redhat.com, brauner@kernel.org, viro@zeniv.linux.org.uk
-Cc: paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com, pvorel@suse.cz,
- bfoster@redhat.com, tabba@google.com, vannapurve@google.com,
- chao.gao@intel.com, bharata@amd.com, nikunj@amd.com, michael.day@amd.com,
- shdhiman@amd.com, yan.y.zhao@intel.com, Neeraj.Upadhyay@amd.com,
- thomas.lendacky@amd.com, michael.roth@amd.com, aik@amd.com, jgg@nvidia.com,
- kalyazin@amazon.com, peterx@redhat.com, jack@suse.cz, rppt@kernel.org,
- hch@infradead.org, cgzones@googlemail.com, ira.weiny@intel.com,
- rientjes@google.com, roypat@amazon.co.uk, ziy@nvidia.com,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, gourry@gourry.net, kent.overstreet@linux.dev,
- ying.huang@linux.alibaba.com, apopple@nvidia.com, chao.p.peng@intel.com,
- amit@infradead.org, ddutile@redhat.com, dan.j.williams@intel.com,
- ashish.kalra@amd.com, gshan@redhat.com, jgowans@amazon.com,
- pankaj.gupta@amd.com, papaluri@amd.com, yuzhao@google.com,
- suzuki.poulose@arm.com, quic_eberman@quicinc.com,
- aneeshkumar.kizhakeveetil@arm.com, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-security-module@vger.kernel.org, kvm@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-coco@lists.linux.dev
-References: <20250811090605.16057-2-shivankg@amd.com>
- <20250811090605.16057-10-shivankg@amd.com>
- <cee2e489-d3c9-46d4-8d34-37c637c7bbd8@redhat.com>
- <diqz8qjpzh6s.fsf@ackerleytng-ctop.c.googlers.com>
-Content-Language: en-US
-From: "Garg, Shivank" <shivankg@amd.com>
-In-Reply-To: <diqz8qjpzh6s.fsf@ackerleytng-ctop.c.googlers.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BMXPR01CA0083.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:b00:54::23) To IA0PPFDC28CEE69.namprd12.prod.outlook.com
- (2603:10b6:20f:fc04::be8)
+	 in-reply-to:in-reply-to:references:references;
+	bh=sp/2DxwarjNF30lY2ptWkoaiZI2yYME3mRN/j2MpIH4=;
+	b=E8wr2cGGLVQJ+NB8RlRBmnyw4weuBMHHDKALZ2yrJgMAP4krWYW6ml3llpAsRhKzfmA3AI
+	1lgVRlQHgfDpVe2JCObGIEQKAMTJLFdC3e8ezOwD9rLRzgp9+kycjYt/bslQ/X3QR89mm2
+	L0A13Iw7pCUk4rzp9ylSxr+WBLfOSK8=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of zhangzihuan@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangzihuan@kylinos.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755064141; a=rsa-sha256;
+	cv=none;
+	b=YgUuwUmz0A6qbl0531eRaTZPYWUzJCzZZ8LLSWHf0mm74nR8KGI+3qIfBpA8fjYp7aNYn0
+	iTXYlBb0XCIHvZ+T34h2keV4nBCVGUQld1cWsMBUtm/8ptqlippeF8VTmq+Pux1l9qYmRi
+	zOHDfRDxZH3MSUBup4GpbTvuW6G9xl0=
+X-UUID: 30a643cc780911f0b29709d653e92f7d-20250813
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:3daa047f-cd79-47a5-8fd7-224c239c4ce8,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:994f152d6c1a295ca93fe5963adb0ebd,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
+	-3,IP:nil,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA
+	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-UUID: 30a643cc780911f0b29709d653e92f7d-20250813
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 54274607; Wed, 13 Aug 2025 13:48:51 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id 0897CE008FA5;
+	Wed, 13 Aug 2025 13:48:51 +0800 (CST)
+X-ns-mid: postfix-689C2742-86747173
+Received: from [172.25.120.24] (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 4E0DFE008FA3;
+	Wed, 13 Aug 2025 13:48:38 +0800 (CST)
+Message-ID: <8c61ab95-9caa-4b57-adfd-31f941f0264d@kylinos.cn>
+Date: Wed, 13 Aug 2025 13:48:37 +0800
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PPFDC28CEE69:EE_|PH0PR12MB7472:EE_
-X-MS-Office365-Filtering-Correlation-Id: d715649e-ba7b-4287-3d09-08ddda2b86a5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?YWxKYlBrbDRMRlpVOWtqYTJ6TnNSYWYvT2hrVlVtTXVOMjFwUU9MMXV5QSsw?=
- =?utf-8?B?em94cGVWckk2ay82ZllqNlZXZUcxdk9oSDlxMlVDTXNPSXgvZzJidDlEaG8y?=
- =?utf-8?B?YTUxRjBqSXRLdUdlOWQ1OTM4cU9JUk5zMkFhQ2NNb1B6NkRIaisydElHM0pv?=
- =?utf-8?B?SjRJcHFOcitYNW52NWZxakl1M2xKeUVuY1ZxOThzNkN5bHB2bGJGa2xOY0xS?=
- =?utf-8?B?VWVWZkdaUGVsT05ZV1FIOHdBSzdDRHMvVG00OWVFVUVwYU9jbDAyZ1YwK3Uv?=
- =?utf-8?B?TkNtODBaWmV5MHdPZjBJUWF4RnBrUElGeHpQR2NnMmFSYTlaZkd2MTYxN2hY?=
- =?utf-8?B?QXZvQUJqR0UwSGdVdWorYUJ4L0F3TFdwWlpwNnBqZ1cyQkVFclA2aWp1TTZV?=
- =?utf-8?B?RFRnQ1k0OEpsemtPeG16SlhVd2pwNHJIOGNvMHpiV2duMXV3cDVTWnJ3MHFm?=
- =?utf-8?B?WExrdG94cnA5enZMM3lQbEhFY250S011WTlXMUJ3K083S2ZWMWR2bjN6NXNi?=
- =?utf-8?B?L3FTRndDRk1BdGIyU1N2QWovbXh0UGdKNWdJMUhUbi9hbmx5RWFqTlh6L0do?=
- =?utf-8?B?Rkt4bjV1cENvSmNBOUpOQldlMkw3Q3hrNE50d2pVTmVLTGlBWmRnYXlKRm42?=
- =?utf-8?B?bUhaVlArSUdIbUdNWmh4Z3BnaTc1QWJyRlRWN0hXUWpscmpYS0Yzd2lWeit0?=
- =?utf-8?B?MncxSkdJSUxFMzA3Z1BYd3lNVEN1Q2JEVzVHVm5uZ2IwQm40UmlWUnNPWExp?=
- =?utf-8?B?cW9EUVUyTUNDMkZIdTdMWVlxeGN6U3BUTnhFZ01zNmtITE9saVN5cFZ0NzY3?=
- =?utf-8?B?NlgrSi8yUFFLYjBxOXlMa3AxbS85YS9XYkFhSW5VeDRTVFIzbHY3Wm1NakEr?=
- =?utf-8?B?OVpETENqVFNwamhPZmw0THJZN2pnRUtGNHByaCtRNlBlY0tITHIzSWlDaGlF?=
- =?utf-8?B?TmVIWUl6WC9oalpvMWRjNjdueDZwYW5aSmpvMkV2dFRwckdhNVlLMjQ3aXFm?=
- =?utf-8?B?bzh2T1I4NVJKOXVFRWllQzUvZ1ZjSVorYjFNQU5HcElSd3U0MWJVczhMQ1JF?=
- =?utf-8?B?UHhrSkVoSmxWMHJ6TTNscjY1cGh4c1lVZlFJMHdFVEdOdTdMZFpvbW5wcjZI?=
- =?utf-8?B?VFVWQkZPaWVsVENrTEUxc3dJRVlKWUF0L2ZkaHNVTTZta0pITWZvOUVpeEMr?=
- =?utf-8?B?bkN2Z0w2YTVmQ0RFUHdjVXA5TWZjUzd6T3ZvbGxjQithL2NmcEpabmx1OEF0?=
- =?utf-8?B?RS84eDV2NFFhV0I2b25rRzBqYTBaVm5QUmp1UW9scytXb0ptdXZmaW1WQkF0?=
- =?utf-8?B?SVg0bUh6L0lzR3pwOU1lSXhGU0cyaGEzQzJ0VlZZOFRHYXhVYmJISGk4ZDVv?=
- =?utf-8?B?N2hvYVNvbituemthQS9abGU0QUJRcmluM1RYa0hqeEY3OWRFS1p5ZStsaGZJ?=
- =?utf-8?B?ZTJPYlFCN2kwWStTcXpOc2lIZ0FiYnZDekJnMzY1clhFL0I1L2xhUDhuaHA1?=
- =?utf-8?B?c3pQc1dOcWRMOUZZY1dpTDNzVmN5endJUVh0YU96OVRza1NuZWxHKzJncThT?=
- =?utf-8?B?eHdtc1cwd2tEOXZ3VWU2bUZDODdFTUc3RDdRbFppM1JsbFBOVnBWN1RjOFVY?=
- =?utf-8?B?ZDhhWHlVNDNtb0VzaThnOUpCK2czSW9DWHhCNGhlUjM5alUyRVBKZEkyclMz?=
- =?utf-8?B?UEE2eUkxY0hDdVd1bmx0TkVmSGIrZWRmUVhpN0E1N1hSUHVIbWNKeVVKYlYx?=
- =?utf-8?B?SzlSV2lydGZsTVJndDVuZ05Jc1JpTVY2Zm9JaFdEU2dFRjd2bEc4VG0rU3JW?=
- =?utf-8?B?VjdYM0lMaXNlOTFWRjVENzk3ZWdkNFB4WEIwMzdGcWxodnQzb05mZkpqV0xU?=
- =?utf-8?B?UVNBaVQrL0JmUG05WFg4OHpDUWhyZXRicS9neGhIb1NxRGF3TWxLRDhRVWhm?=
- =?utf-8?B?TUlBMGNVNWVyQksxcGtsRUtQNVVjOFNVcjBFeHQ5RmJ0YzRFYW5qL2V1Q3dB?=
- =?utf-8?B?ZjlCbjRBV0pRPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PPFDC28CEE69.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?d2ZKYlNiTnh5SE5FQ2ErTFBpZ21PQ1h4a082U0Z4UHRncW9MTFAzZDZMcjJk?=
- =?utf-8?B?L3d2YXdxc3dkWG8xZTFMUURLLzJQbGlmeGx2Tlp4b3hoOGRMamoxNWdUZEkx?=
- =?utf-8?B?OXdIM3Ewc1E4K0JXQ2k4aTV0VVV1dEFxNmlPUkVGOHVEM2RQMXY4Tk5TbnEx?=
- =?utf-8?B?aDRXOHRBOC83c3JJRnplUzVkUHVZVnh5b0RYejJQaCtrMXJaVUx6RDFFbzdL?=
- =?utf-8?B?azV0TTZHMFZKci9USzBNbXpBNUtTZGxEMHg3dTF0b1lmcXc2YitkaEZaRUdu?=
- =?utf-8?B?dmdIWklybXVIQnhyeEpLT2lsMTBoVkRqQlRQaW4yM2hId096ajhobS81ZFl4?=
- =?utf-8?B?OG02cS94ZDNzQkQxeUx0SGR3d2hOR2dkdU9LcXFmYzZIWlFTTFpaY3pDN3dC?=
- =?utf-8?B?cEliUE5ZSThpREwzdTM4Vm5DN3VjYVROSHdpWUNnL3Z5T3lNSGRNbjV4SzBm?=
- =?utf-8?B?clRFaGluMHJWekF0eCtUMnFRWVh4Q1ZmaWJWSWdJSU5vZDFxOW5TU1RzUi9p?=
- =?utf-8?B?cnRnL28yYVdCWERxV1JvQkp3NFZUaEhVVFRoRURDeE9IZGdDaWRzb3k0NUdU?=
- =?utf-8?B?V1JkQ1dJbGFqZ0c3bzB3bThCWmRMbVA0ZmI3SnJyTFZGaE1RN0tNajZUMGVz?=
- =?utf-8?B?VUdvZDJYYU91cndNT1lMbmYxbUJKYjlNMTlwTDhzeWRyT2JNekZKRnZnUGV6?=
- =?utf-8?B?S2dZcUJFd1RVUEhlc3hheGJiTUdRcWxkaW5iTEF2Zk5wT2toUTQzekdUWUJD?=
- =?utf-8?B?bndhSEtIMjk5QVF0WXpQRUZaZVEwTXRXNEZhdVY1UndJb0lvWlczQm1wVXNr?=
- =?utf-8?B?MEVuR0cvY2dFVHBaZjR0RDdTS3d2Y1pLQjkydFlrSmNHeWNsRkVVMlRrOFg3?=
- =?utf-8?B?Qkp1TkxBdW5jc3ZybGJKUjJVcU55amMrM2JUbUFzeitMbWpHazlEVGdaMmZI?=
- =?utf-8?B?SndxWnY2ZFQ4MHhPYm9SYXBBWVM0UDZYbEU5WXRML0oxUm96VDErOFJFT2tp?=
- =?utf-8?B?TXZubVJxT3FObWtVdmdpSURjZXNldDRxU3Q2T0MzSEpJQ0tyNCtSYVhoUFlY?=
- =?utf-8?B?SGN3L29Hd295RDBrTSt0OFhVdmpqaFVHWU5SWG5pOG82ZndoVHp3NEo0T1pW?=
- =?utf-8?B?Y1hYb1JBdXU5Z0dGb1NDakxCQmJMSzN1T1hNUXFNZDZ4dEt6b0daWmZrN3Zz?=
- =?utf-8?B?OEZUMklIUzBWb1F4d3E1b2FlTmtPam1CVy9BZ2tNVzZTWnJ5T1BiUU9vRnNw?=
- =?utf-8?B?RUM3RWdNRUxyb2Urb25hYUF2eWJaNXEzOUZMZkpQamJxQ2ZOdVNHaDRITUV3?=
- =?utf-8?B?a2ZDaGpJNTZTYzFXRjMyS1VDRzdzQVJTVmh1S2VNMXlBV1drTWtsem82c0U1?=
- =?utf-8?B?UmxoQURHcG8vdVhhc25RRnpWTnJVV1pRWFlwRlZVLzlUMG5pR2VPTjZmTmQw?=
- =?utf-8?B?d0NmQTBOQkliNXY5aFkxODNSeVZLdkwwSUorcmN5RnZaTjBMbUxpVGJOUUpD?=
- =?utf-8?B?RmFtMzR3bHVHQThJeU1LZlY2WUx2bnVCRDhjYStySDR6V1BhNjAwangxc1NT?=
- =?utf-8?B?TGNXZnlGUXBOM0xRWHhqOGtWVWs1dWppSkZrUXBzVXdXbmxWOTAxZnIycVgw?=
- =?utf-8?B?N2RZcWhpVTJSSzcwSWN6SnFBQTB4Z01RQThlS3BxcXUrTVBtcEhVKzZERS9P?=
- =?utf-8?B?b3RhY20wZWRkcFdjTjhyZkcvcGVNcnlneTh0dTBCaURaSnI3ZDBOYjBGMUVF?=
- =?utf-8?B?ZHlkSmE4MUZRcEx2aE5HeG1ETTBmcFBFc1M3WS9URDRYK2U1TGxwVDVQZjBT?=
- =?utf-8?B?QXNtMnFUT0tUb1Rvck02c0JPeEhJSE10emxSMThobHZpMXI0aVJFWXA0VlBR?=
- =?utf-8?B?RkdxQWxFdWNldW53QjA1dTExT201d0krdTJXM0FEWWM2RWVtM0lqWnl6Smtj?=
- =?utf-8?B?NmIvODI1MkcxMW1HeFhOUHlKL3BUSkx2ZHI0WXlUY0d0NVQ0OTVHZEZRWnhv?=
- =?utf-8?B?SnFCSmhKVmVVWHh5bitQSG53dFpTbnFVd3BGaEgzSW5hNyt3T2tTbVBmcWpP?=
- =?utf-8?B?QldUMitVTGovcDRrOG9QL09mdnBsYmNremRXdm5lWGJmSVZVdHdFSkFjWVNp?=
- =?utf-8?Q?h1d3zYtVxz1eX4NSLSQR/ZkHx?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d715649e-ba7b-4287-3d09-08ddda2b86a5
-X-MS-Exchange-CrossTenant-AuthSource: IA0PPFDC28CEE69.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2025 05:37:43.7967
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: N4n3ICy7rXpxkJhEmuRPj/0pyn4Mze0LCXHQfnMup07PqETVnFLXhi2cVAUvHs2X8q7gz+zH4Mok8BiE0J/NFA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7472
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 489391A0006
-X-Stat-Signature: 1opgohtu8syagwpzp8ztr6a48g91do78
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v1 0/9] freezer: Introduce freeze priority model to
+ address process dependency issues
+To: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>, Theodore Ts'o <tytso@mit.edu>,
+ Jan Kara <jack@suse.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+ Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+ len brown <len.brown@intel.com>, pavel machek <pavel@kernel.org>,
+ Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Nico Pache <npache@redhat.com>,
+ xu xin <xu.xin16@zte.com.cn>, wangfushuai <wangfushuai@baidu.com>,
+ Andrii Nakryiko <andrii@kernel.org>, Christian Brauner <brauner@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Jeff Layton <jlayton@kernel.org>,
+ Al Viro <viro@zeniv.linux.org.uk>, Adrian Ratiu
+ <adrian.ratiu@collabora.com>, linux-pm@vger.kernel.org, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org
+References: <20250807121418.139765-1-zhangzihuan@kylinos.cn>
+ <aJSpTpB9_jijiO6m@tiehlicka>
+ <4c46250f-eb0f-4e12-8951-89431c195b46@kylinos.cn>
+ <aJWglTo1xpXXEqEM@tiehlicka>
+ <ba9c23c4-cd95-4dba-9359-61565195d7be@kylinos.cn>
+ <aJW8NLPxGOOkyCfB@tiehlicka>
+ <09df0911-9421-40af-8296-de1383be1c58@kylinos.cn>
+ <aJnM32xKq0FOWBzw@tiehlicka>
+ <d86a9883-9d2e-4bb2-a93d-0d95b4a60e5f@kylinos.cn>
+ <20250812172655.GF7938@frogsfrogsfrogs>
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+In-Reply-To: <20250812172655.GF7938@frogsfrogsfrogs>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DB9CD1C000A
+X-Stat-Signature: nr533rb7pg7a51mf87d5zqttr8swneu1
 X-Rspam-User: 
-X-HE-Tag: 1755063467-994533
-X-HE-Meta: U2FsdGVkX1+hRBBGk9q8pGU/EuXjn29vuSR81mq9rmObp/PQUR6Ikf/EN+77dXkkZ0K5DEVATq1j5rei5kp9Vx4DiClQs5JuPD4BL7R5tdrkHXlu0fdjZvvTumZFP59gWM8b/cgNmYi5ew+QlevCooGckRucWeO91SFRfyQMB9A/by6IZvVQqm8vf2fUPzTYpDGwyw6zj060CcXFVAqzc+epfr+4D1vo0A6MlqlCXd/KW2NDx6+cZQgUF1vABzLll89SVvocZTnwKDO8+KFFp+yjAIs8OK532zwXM2AEoeZbz3hgdbgX+3609uID+m296exZ5eSzuckN9/yaaofgaV+5SkO9o2gTulxgQn0mPyO/1AIIlSpqcBKd2+GjdGlKxClhMCMyLq4KdH5B6IO4OvdlCsajd3wv/UUQ5z+frqCm6nABPIeuDfy7NBN9CWwIkRPKX4P5DeIitmeJHB9TmHp4o6pcQQOrktSgQqBdwmqiXlFyUxJ1q78P058F5gzVZKIK/0LZqDViicnH+iJG7xqeISiYngIeX4QDpWTWQQNGJtBgowiWt7AqF8YRRnPmSk4oClMpcZ0HJzn2GgGvM1rKoLdIyvnF63MPRIL0BRGHlceyKUzJWjsx1XtmogHu/irvAubcTpAfdo2O9nuuWJJGINuQ62JNzFUnN7Z8ztHk3u7X4cfbyScRlgGMrZhTIcwX6MGvZWP68oduLfCpPPz9xv7npNHTuWEztg0kZnfmAPSSdNk+QrMa8u6WAsoNLjLiL47QUFp3Cl9XABomwpBL8tLVIg5Nn77z1jRezcFLq68CVDoVdfVwGCKMPDfSaedaEDTmOMBpGMbBV/pw4ahbXxq/NbVNkl7/z7WHtp911bEbVPKbKdml2B9qFKKiTxuvMwMI7RSc+u43IPeGy9d2AtR9hlfbION9kf0YclngB151eAINn3LC1Lyt3gX6puIge7d7xshOVXO1KkY
- NlWeNluX
- eu2e2vyuBEgPb+GLfpz3fa/QNNAkxHvaJMFKwNZ/ZnUAjYdWdInpRSz5ZxWWiR2MXTcqFSv5OUTGdnSSRhOJhuR3ik3grZfkXTRpXZgb2LnkIR44zLd5BD2xZQrXi+75ewQV4JZaW4myPPDN2sydzgw+mz+H2+qybpKlTPw1/G4DHt3A0vEPNC078rRm6sSBFQvjQU4dD4Ji6RrJqU+DaYHOPH67ojvH3eilJk5zwdBPv7gAcIZmQuDp2B3YGi7dhiQN8hNduuqkFpt4fMid9/jM+IN912ud67Uy59gh5GOZjyfkbIjNmxPN6KqExEYJkToIum/IEqtUg3TeoB7sDTdNyhUrKak2hfnEyAt4mitz456vRWYFpWCG8WwbrzMlGMG0Wd8kKj1wgzSLbSd70Y0glMMTkroR9w50GJGSiyD4pT+uYqYk5YDBF5eAvAv0Z6hM1G+sqU2MUO9MlqCNvoNQl1NZNwp67yb0xD9Bn/4Z/vJzB+CNazkOR9v8vf7TPGPQkDUG290TwEw77Ifa13POLHmNHgMFRkA9riB8stZ6krLAICkUYY5Kp+qL0jw3UJ6Vy2VZpuOZ2tQWewsaVNoYRdV2CVP29yQddkGs2QDXSM76dvbjJSH2/Z0IufzZmkfn0X182XQArgl219yqKTM2iof5VsaUvLE5nWn8scA2Rx1l3r0BOC0u8GgYB102i+pZX27LVgywCDzPEv96di/q/MQ==
+X-HE-Tag: 1755064139-201013
+X-HE-Meta: U2FsdGVkX19J12OnPMN3qY7bh1lKrLCxxXEGsHfs4WDZzseSZY3YxbmIjAXp8L0bb3ABFMLrzwg2jkPL18A/kOuGkJqsmCUxdzapA8nnFpa+gVt2w/BrTvwnyGBTxnltjCORpdMUkmevG2+6zKBjSAS9TllIZfqVmpBGD8/MsG82xRYoWjdASFcQwN5AlCUMes6VB4vxnMk88kR2sYlvRhzm3XnIWPyMOdfuDwYwmjkQYes8kwrCTbKFVAc807BqPxZQLil4rn5mjXys7FtEz9KWiC01l6oacGW4XccT4sa+hrVZ53rRPEEO9G0QfvM8IiZ6ctXGxkspLJH1pHLyzgf8OZwPIkBdFGvInRfNnlaql1iCvbUwmn9ncI/UxgRPipOT8zOz0rUNefj+jqvpIf92OhVAeeHpNsSkEywJCcTvMQXjyYjbUoWGp4mh3qEon6y5qyKXCW4+V5Avm8+3gvgfvPZCdQW4Vk0O0PMzvZYUs3MZ9eyZx9TNJFzusJad9rALHRqldPt8KnJ3L7phwYSap2uVQd0T1ZE9c/m6g8zahvdAQZn3TQaLMTUq+B7tqRKeKIOyrs0wlkPD2c8hW3D7IleeJK3/jewwEXIgue/nFPBtQysBUugtuKrY/yHy1p5UvLk3nqbDI5I3R6vJLd5r2pq7naGzKy2FSWZDbz0G4Q5cpBbhKnNnpZak7nu5tG0ku8e/j0rbVix/bZbZ8sJRmDs8lcMO0WiGDQhxDunuWkg0kOk1FB9w7058pLWCy/tNp1Vz1cFB+Fmfmw9bY1h2FndtIR0TiWzOCabsd1jZAAVQAb/q0SdNXn28Jo7RnHhostwgXunrBojrV6nBV1y9nx4ZKFYgFUA8n0NV3YNbhnEXnxOYP5lT8zCz09MwpppOgHRQOC0erNvvos3zkcSmTXZvtZbELfSxyHf+J84rAn7eGPeKbC66FJQRhKfjZTArHALhUpIEf1J0Unu
+ UX0NlOOi
+ 9LN5JQbcU7kga33enqz06wWXMxW/puhDxJ10toPqFEm31K0JBR+499/SZkiwUhT1kgToJjFyPJZJRRCeUnUwa3Av56Ustbi3NrabVJ3yiYjmzXLYQbjFXNNJ//w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -222,252 +129,235 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi,
 
+=E5=9C=A8 2025/8/13 01:26, Darrick J. Wong =E5=86=99=E9=81=93:
+> On Tue, Aug 12, 2025 at 01:57:49PM +0800, Zihuan Zhang wrote:
+>> Hi all,
+>>
+>> We encountered an issue where the number of freeze retries increased d=
+ue to
+>> processes stuck in D state. The logs point to jbd2-related activity.
+>>
+>> log1:
+>>
+>> 6616.650482] task:ThreadPoolForeg state:D stack:0=C2=A0 =C2=A0 =C2=A0p=
+id:262026
+>> tgid:4065=C2=A0 ppid:2490=C2=A0 =C2=A0task_flags:0x400040 flags:0x0000=
+4004
+>> [ 6616.650485] Call Trace:
+>> [ 6616.650486]=C2=A0 <TASK>
+>> [ 6616.650489]=C2=A0 __schedule+0x532/0xea0
+>> [ 6616.650494]=C2=A0 schedule+0x27/0x80
+>> [ 6616.650496]=C2=A0 jbd2_log_wait_commit+0xa6/0x120
+>> [ 6616.650499]=C2=A0 ? __pfx_autoremove_wake_function+0x10/0x10
+>> [ 6616.650502]=C2=A0 ext4_sync_file+0x1ba/0x380
+>> [ 6616.650505]=C2=A0 do_fsync+0x3b/0x80
+>>
+>> log2:
+>>
+>> [=C2=A0 631.206315] jdb2_log_wait_log_commit=C2=A0 completed (elapsed =
+0.002 seconds)
+>> [=C2=A0 631.215325] jdb2_log_wait_log_commit=C2=A0 completed (elapsed =
+0.001 seconds)
+>> [=C2=A0 631.240704] jdb2_log_wait_log_commit=C2=A0 completed (elapsed =
+0.386 seconds)
+>> [=C2=A0 631.262167] Filesystems sync: 0.424 seconds
+>> [=C2=A0 631.262821] Freezing user space processes
+>> [=C2=A0 631.263839] freeze round: 1, task to freeze: 852
+>> [=C2=A0 631.265128] freeze round: 2, task to freeze: 2
+>> [=C2=A0 631.267039] freeze round: 3, task to freeze: 2
+>> [=C2=A0 631.271176] freeze round: 4, task to freeze: 2
+>> [=C2=A0 631.279160] freeze round: 5, task to freeze: 2
+>> [=C2=A0 631.287152] freeze round: 6, task to freeze: 2
+>> [=C2=A0 631.295346] freeze round: 7, task to freeze: 2
+>> [=C2=A0 631.301747] freeze round: 8, task to freeze: 2
+>> [=C2=A0 631.309346] freeze round: 9, task to freeze: 2
+>> [=C2=A0 631.317353] freeze round: 10, task to freeze: 2
+>> [=C2=A0 631.325348] freeze round: 11, task to freeze: 2
+>> [=C2=A0 631.333353] freeze round: 12, task to freeze: 2
+>> [=C2=A0 631.341358] freeze round: 13, task to freeze: 2
+>> [=C2=A0 631.349357] freeze round: 14, task to freeze: 2
+>> [=C2=A0 631.357363] freeze round: 15, task to freeze: 2
+>> [=C2=A0 631.365361] freeze round: 16, task to freeze: 2
+>> [=C2=A0 631.373379] freeze round: 17, task to freeze: 2
+>> [=C2=A0 631.381366] freeze round: 18, task to freeze: 2
+>> [=C2=A0 631.389365] freeze round: 19, task to freeze: 2
+>> [=C2=A0 631.397371] freeze round: 20, task to freeze: 2
+>> [=C2=A0 631.405373] freeze round: 21, task to freeze: 2
+>> [=C2=A0 631.413373] freeze round: 22, task to freeze: 2
+>> [=C2=A0 631.421392] freeze round: 23, task to freeze: 1
+>> [=C2=A0 631.429948] freeze round: 24, task to freeze: 1
+>> [=C2=A0 631.438295] freeze round: 25, task to freeze: 1
+>> [=C2=A0 631.444546] jdb2_log_wait_log_commit=C2=A0 completed (elapsed =
+0.249 seconds)
+>> [=C2=A0 631.446387] freeze round: 26, task to freeze: 0
+>> [=C2=A0 631.446390] Freezing user space processes completed (elapsed 0=
+.183
+>> seconds)
+>> [=C2=A0 631.446392] OOM killer disabled.
+>> [=C2=A0 631.446393] Freezing remaining freezable tasks
+>> [=C2=A0 631.446656] freeze round: 1, task to freeze: 4
+>> [=C2=A0 631.447976] freeze round: 2, task to freeze: 0
+>> [=C2=A0 631.447978] Freezing remaining freezable tasks completed (elap=
+sed 0.001
+>> seconds)
+>> [=C2=A0 631.447980] PM: suspend debug: Waiting for 1 second(s).
+>> [=C2=A0 632.450858] OOM killer enabled.
+>> [=C2=A0 632.450859] Restarting tasks: Starting
+>> [=C2=A0 632.453140] Restarting tasks: Done
+>> [=C2=A0 632.453173] random: crng reseeded on system resumption
+>> [=C2=A0 632.453370] PM: suspend exit
+>> [=C2=A0 632.462799] jdb2_log_wait_log_commit=C2=A0 completed (elapsed =
+0.000 seconds)
+>> [=C2=A0 632.466114] jdb2_log_wait_log_commit=C2=A0 completed (elapsed =
+0.001 seconds)
+>>
+>> This is the reason:
+>>
+>> [=C2=A0 631.444546] jdb2_log_wait_log_commit=C2=A0 completed (elapsed =
+0.249 seconds)
+>>
+>>
+>> During freezing, user processes executing jbd2_log_wait_commit enter D=
+ state
+>> because this function calls wait_event and can take tens of millisecon=
+ds to
+>> complete. This long execution time, coupled with possible competition =
+with
+>> the freezer, causes repeated freeze retries.
+>>
+>> While we understand that jbd2 is a freezable kernel thread, we would l=
+ike to
+>> know if there is a way to freeze it earlier or freeze some critical
+>> processes proactively to reduce this contention.
+> Freeze the filesystem before you start freezing kthreads?  That should
+> quiesce the jbd2 workers and pause anyone trying to write to the fs.
+Indeed, freezing the filesystem can work.
 
-On 8/12/2025 2:53 AM, Ackerley Tng wrote:
-> David Hildenbrand <david@redhat.com> writes:
-> 
->> On 11.08.25 11:06, Shivank Garg wrote:
->>> From: Ackerley Tng <ackerleytng@google.com>
+However, this approach is quite expensive: it increases the total=20
+suspend time by about 3 to 4 seconds. Because of this overhead, we are=20
+exploring alternative solutions with lower cost.
+
+We have tested it:
+
+https://lore.kernel.org/all/09df0911-9421-40af-8296-de1383be1c58@kylinos.=
+cn/=20
+
+> Maybe the missing piece here is the device model not knowing how to cal=
+l
+> bdev_freeze prior to a suspend?
+Currently, suspend flow seem to does not invoke bdev_freeze(). Do you=20
+have any plans or insights on improving or integrating this=20
+functionality more smoothly into the device model and suspend sequence?
+> That said, I think that doesn't 100% work for XFS because it has
+> kworkers for metadata buffer read completions, and freezes don't affect
+> read operations...
+
+Does read activity also cause processes to enter D (uninterruptible=20
+sleep) state?
+
+ From what I understand, it=E2=80=99s usually writes or synchronous opera=
+tions=20
+that do, but I=E2=80=99m curious if reads can also lead to D state under =
+certain=20
+conditions.
+
+> (just my clueless 2c)
+>
+> --D
+>
+>> Thanks for your input and suggestions.
+>>
+>> =E5=9C=A8 2025/8/11 18:58, Michal Hocko =E5=86=99=E9=81=93:
+>>> On Mon 11-08-25 17:13:43, Zihuan Zhang wrote:
+>>>> =E5=9C=A8 2025/8/8 16:58, Michal Hocko =E5=86=99=E9=81=93:
+>>> [...]
+>>>>> Also the interface seems to be really coarse grained and it can eas=
+ily
+>>>>> turn out insufficient for other usecases while it is not entirely c=
+lear
+>>>>> to me how this could be extended for those.
+>>>>   =C2=A0We recognize that the current interface is relatively coarse=
+-grained and
+>>>> may not be sufficient for all scenarios. The present implementation =
+is a
+>>>> basic version.
+>>>>
+>>>> Our plan is to introduce a classification-based mechanism that assig=
+ns
+>>>> different freeze priorities according to process categories. For exa=
+mple,
+>>>> filesystem and graphics-related processes will be given higher defau=
+lt
+>>>> freeze priority, as they are critical in the freezing workflow. This
+>>>> classification approach helps target important processes more precis=
+ely.
+>>>>
+>>>> However, this requires further testing and refinement before full
+>>>> deployment. We believe this incremental, category-based design will =
+make the
+>>>> mechanism more effective and adaptable over time while keeping it
+>>>> manageable.
+>>> Unless there is a clear path for a more extendable interface then
+>>> introducing this one is a no-go. We do not want to grow different way=
+s
+>>> to establish freezing policies.
 >>>
->>> [...snip...]
+>>> But much more fundamentally. So far I haven't really seen any argumen=
+t
+>>> why different priorities help with the underlying problem other than =
+the
+>>> timing might be slightly different if you change the order of freezin=
+g.
+>>> This to me sounds like the proposed scheme mostly works around the
+>>> problem you are seeing and as such is not a really good candidate to =
+be
+>>> merged as a long term solution. Not to mention with a user API that
+>>> needs to be maintained for ever.
 >>>
->>> +static struct file *kvm_gmem_inode_create_getfile(void *priv, loff_t size,
->>> +						  u64 flags)
->>> +{
->>> +	static const char *name = "[kvm-gmem]";
->>> +	struct inode *inode;
->>> +	struct file *file;
->>> +	int err;
->>> +
->>> +	err = -ENOENT;
+>>> So NAK from me on the interface.
+>>>
+>> Thanks for the feedback. I understand your concern that changing the f=
+reezer
+>> priority order looks like working around the symptom rather than solvi=
+ng the
+>> root cause.
 >>
->> Maybe add a comment here when the module reference will get
->> dropped. And maybe we should just switch to fops_get() + fops_put?
+>> Since the last discussion, we have analyzed the D-state processes furt=
+her
+>> and identified that the long wait time is caused by jbd2_log_wait_comm=
+it.
+>> This wait happens because user tasks call into this function during
+>> fsync/fdatasync and it can take tens of milliseconds to complete. When=
+ this
+>> coincides with the freezer operation, the tasks are stuck in D state a=
+nd
+>> retried multiple times, increasing the total freeze time.
 >>
->> /* __fput() will take care of fops_put(). */
->> if (!fops_get(&kvm_gmem_fops))
->> 	goto err;
->>
-> 
-> Sounds good! Please see attached patch. It's exactly what you suggested
-> except I renamed the goto target to err_fops_put:
-> 
->>> +
->>> +	inode = kvm_gmem_inode_make_secure_inode(name, size, flags);
->>> +	if (IS_ERR(inode)) {
->>> +		err = PTR_ERR(inode);
->>> +		goto err_put_module;
->>> +	}
->>> +
->>> +	file = alloc_file_pseudo(inode, kvm_gmem_mnt, name, O_RDWR,
->>> +				 &kvm_gmem_fops);
->>> +	if (IS_ERR(file)) {
->>> +		err = PTR_ERR(file);
->>> +		goto err_put_inode;
->>> +	}
->>> +
->>> +	file->f_flags |= O_LARGEFILE;
->>> +	file->private_data = priv;
->>> +
->>> +out:
->>> +	return file;
->>> +
->>> +err_put_inode:
->>> +	iput(inode);
->>> +err_put_module:
->>> +	module_put(kvm_gmem_fops.owner);
->>
->> fops_put(&kvm_gmem_fops);
->>
->> ?
+>> Although we know that jbd2 is a freezable kernel thread, we are explor=
+ing
+>> whether freezing it earlier =E2=80=94 or freezing certain key processe=
+s first =E2=80=94
+>> could reduce this contention and improve freeze completion time.
 >>
 >>
->> Acked-by: David Hildenbrand <david@redhat.com>
+>>>>> I believe it would be more useful to find sources of those freezer
+>>>>> blockers and try to address those. Making more blocked tasks
+>>>>> __set_task_frozen compatible sounds like a general improvement in
+>>>>> itself.
+>>>> we have already identified some causes of D-state tasks, many of whi=
+ch are
+>>>> related to the filesystem. On some systems, certain processes freque=
+ntly
+>>>> execute ext4_sync_file, and under contention this can lead to D-stat=
+e tasks.
+>>> Please work with maintainers of those subsystems to find proper
+>>> solutions.
+>> We=E2=80=99ve pulled in the jbd2 maintainer to get feedback on whether=
+ changing the
+>> freeze ordering for jbd2 is safe or if there=E2=80=99s a better approa=
+ch to avoid
+>> the repeated retries caused by this wait.
 >>
->> -- 
->> Cheers,
->>
->> David / dhildenb
-> 
-> From f2bd4499bce4db69bf34be75e009579db4329b7c Mon Sep 17 00:00:00 2001
-> From: Ackerley Tng <ackerleytng@google.com>
-> Date: Sun, 13 Jul 2025 17:43:35 +0000
-> Subject: [PATCH] KVM: guest_memfd: Use guest mem inodes instead of anonymous
->  inodes
-> 
-> guest_memfd's inode represents memory the guest_memfd is
-> providing. guest_memfd's file represents a struct kvm's view of that
-> memory.
-> 
-> Using a custom inode allows customization of the inode teardown
-> process via callbacks. For example, ->evict_inode() allows
-> customization of the truncation process on file close, and
-> ->destroy_inode() and ->free_inode() allow customization of the inode
-> freeing process.
-> 
-> Customizing the truncation process allows flexibility in management of
-> guest_memfd memory and customization of the inode freeing process
-> allows proper cleanup of memory metadata stored on the inode.
-> 
-> Memory metadata is more appropriately stored on the inode (as opposed
-> to the file), since the metadata is for the memory and is not unique
-> to a specific binding and struct kvm.
-> 
-> Co-developed-by: Fuad Tabba <tabba@google.com>
-> Signed-off-by: Fuad Tabba <tabba@google.com>
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
->  include/uapi/linux/magic.h |   1 +
->  virt/kvm/guest_memfd.c     | 129 ++++++++++++++++++++++++++++++-------
->  virt/kvm/kvm_main.c        |   7 +-
->  virt/kvm/kvm_mm.h          |   9 +--
->  4 files changed, 119 insertions(+), 27 deletions(-)
-> 
-> diff --git a/include/uapi/linux/magic.h b/include/uapi/linux/magic.h
-> index bb575f3ab45e5..638ca21b7a909 100644
-> --- a/include/uapi/linux/magic.h
-> +++ b/include/uapi/linux/magic.h
-> @@ -103,5 +103,6 @@
->  #define DEVMEM_MAGIC		0x454d444d	/* "DMEM" */
->  #define SECRETMEM_MAGIC		0x5345434d	/* "SECM" */
->  #define PID_FS_MAGIC		0x50494446	/* "PIDF" */
-> +#define GUEST_MEMFD_MAGIC	0x474d454d	/* "GMEM" */
-> 
->  #endif /* __LINUX_MAGIC_H__ */
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 08a6bc7d25b60..6c66a09740550 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -1,12 +1,16 @@
->  // SPDX-License-Identifier: GPL-2.0
-> +#include <linux/anon_inodes.h>
->  #include <linux/backing-dev.h>
->  #include <linux/falloc.h>
-> +#include <linux/fs.h>
->  #include <linux/kvm_host.h>
-> +#include <linux/pseudo_fs.h>
->  #include <linux/pagemap.h>
-> -#include <linux/anon_inodes.h>
-> 
->  #include "kvm_mm.h"
-> 
-> +static struct vfsmount *kvm_gmem_mnt;
-> +
->  struct kvm_gmem {
->  	struct kvm *kvm;
->  	struct xarray bindings;
-> @@ -385,9 +389,45 @@ static struct file_operations kvm_gmem_fops = {
->  	.fallocate	= kvm_gmem_fallocate,
->  };
-> 
-> -void kvm_gmem_init(struct module *module)
-> +static int kvm_gmem_init_fs_context(struct fs_context *fc)
-> +{
-> +	if (!init_pseudo(fc, GUEST_MEMFD_MAGIC))
-> +		return -ENOMEM;
-> +
-> +	fc->s_iflags |= SB_I_NOEXEC;
-> +	fc->s_iflags |= SB_I_NODEV;
-> +
-> +	return 0;
-> +}
-> +
-> +static struct file_system_type kvm_gmem_fs = {
-> +	.name		 = "guest_memfd",
-> +	.init_fs_context = kvm_gmem_init_fs_context,
-> +	.kill_sb	 = kill_anon_super,
-> +};
-> +
-> +static int kvm_gmem_init_mount(void)
-> +{
-> +	kvm_gmem_mnt = kern_mount(&kvm_gmem_fs);
-> +
-> +	if (IS_ERR(kvm_gmem_mnt))
-> +		return PTR_ERR(kvm_gmem_mnt);
-> +
-> +	kvm_gmem_mnt->mnt_flags |= MNT_NOEXEC;
-> +	return 0;
-> +}
-> +
-> +int kvm_gmem_init(struct module *module)
->  {
->  	kvm_gmem_fops.owner = module;
-> +
-> +	return kvm_gmem_init_mount();
-> +}
-> +
-> +void kvm_gmem_exit(void)
-> +{
-> +	kern_unmount(kvm_gmem_mnt);
-> +	kvm_gmem_mnt = NULL;
->  }
-> 
->  static int kvm_gmem_migrate_folio(struct address_space *mapping,
-> @@ -463,11 +503,72 @@ bool __weak kvm_arch_supports_gmem_mmap(struct kvm *kvm)
->  	return true;
->  }
-> 
-> +static struct inode *kvm_gmem_inode_make_secure_inode(const char *name,
-> +						      loff_t size, u64 flags)
-> +{
-> +	struct inode *inode;
-> +
-> +	inode = anon_inode_make_secure_inode(kvm_gmem_mnt->mnt_sb, name, NULL);
-> +	if (IS_ERR(inode))
-> +		return inode;
-> +
-> +	inode->i_private = (void *)(unsigned long)flags;
-> +	inode->i_op = &kvm_gmem_iops;
-> +	inode->i_mapping->a_ops = &kvm_gmem_aops;
-> +	inode->i_mode |= S_IFREG;
-> +	inode->i_size = size;
-> +	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
-> +	mapping_set_inaccessible(inode->i_mapping);
-> +	/* Unmovable mappings are supposed to be marked unevictable as well. */
-> +	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
-> +
-> +	return inode;
-> +}
-> +
-> +static struct file *kvm_gmem_inode_create_getfile(void *priv, loff_t size,
-> +						  u64 flags)
-> +{
-> +	static const char *name = "[kvm-gmem]";
-> +	struct inode *inode;
-> +	struct file *file;
-> +	int err;
-> +
-> +	err = -ENOENT;
-> +	/* __fput() will take care of fops_put(). */
-> +	if (!fops_get(&kvm_gmem_fops))
-> +		goto err;
-> +
-> +	inode = kvm_gmem_inode_make_secure_inode(name, size, flags);
-> +	if (IS_ERR(inode)) {
-> +		err = PTR_ERR(inode);
-> +		goto err_fops_put;
-> +	}
-> +
-> +	file = alloc_file_pseudo(inode, kvm_gmem_mnt, name, O_RDWR,
-> +				 &kvm_gmem_fops);
-> +	if (IS_ERR(file)) {
-> +		err = PTR_ERR(file);
-> +		goto err_put_inode;
-> +	}
-> +
-> +	file->f_flags |= O_LARGEFILE;
-> +	file->private_data = priv;
-> +
-> +out:
-> +	return file;
-> +
-> +err_put_inode:
-> +	iput(inode);
-> +err_fops_put:
-> +	fops_put(&kvm_gmem_fops);
-
-Thanks Ackerley.
-LGTM
 
