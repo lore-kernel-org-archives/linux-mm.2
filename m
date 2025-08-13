@@ -2,87 +2,107 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 52312CA0EE0
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 22:56:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F1D9C87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 23:04:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C053A9000E0; Wed, 13 Aug 2025 18:56:20 -0400 (EDT)
+	id 952619000E1; Wed, 13 Aug 2025 19:04:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BAF0A900088; Wed, 13 Aug 2025 18:56:20 -0400 (EDT)
+	id 901B9900088; Wed, 13 Aug 2025 19:04:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AEC259000E0; Wed, 13 Aug 2025 18:56:20 -0400 (EDT)
+	id 818609000E1; Wed, 13 Aug 2025 19:04:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9DC3B900088
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 18:56:20 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1C329591D7
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 22:56:20 +0000 (UTC)
-X-FDA: 83773244520.07.B8C967A
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7167F8000B
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 22:56:18 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FD78900088
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 19:04:24 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1984914034E
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 23:04:24 +0000 (UTC)
+X-FDA: 83773264848.05.76F9CC2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 5D3218000F
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 23:04:22 +0000 (UTC)
 Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=17ddbz9y;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gULORzCb;
+	spf=pass (imf30.hostedemail.com: domain of "SRS0=/t6I=2Z=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=/t6I=2Z=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755125778;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1755126262;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zQoR7PEQJVyEYYG/vPMhWSIovk2mbxMewXYcepnnHGQ=;
-	b=ZDmH3Zf7V5jaoH01PoGcyCSemq0EVZdHxH6gTbn8vYRZh4leDDhAueD3UBDL8GyIFCL/oM
-	VUhl+pd716FM9Omsm9lXxDeQ9IuCFTmuYk6SA6Cnk4t9boI7TJsoyzmEuExXfONH0QHPhN
-	v6Mk5FqMGoTwsDrlz1kOXT+vkflw5/Y=
+	bh=nRa+gBJ/oeD3McTOWaxYB6xLBV3+tBwG8IOqQRzKjCA=;
+	b=o4/9aSm7L75iS5O3e44VjS6ya0d7c4M3R9aAHRl0WtjzQ1KzObN0eyh6eIU8Uf/giyBQSg
+	1U9n82Rh2H+jjpbj6ppChcmAlhv9GSIBtuqAjISfFYFJ22g3KVO/BIeilo39kTPX90WbU8
+	argf4Uukez1Py54/kvg2lkDgznUbyzU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755126262; a=rsa-sha256;
+	cv=none;
+	b=Vc7kkV20R06DipbrvOt4hm/MzEWOaJ0n3EFHaxrIOLMrtvSc2l8W9j+3XnDyqIPl6kSX4x
+	L3TA0A7iC24ME5C28F8i1cmFx/GHvzL5RsBq96E8FIWjw0UY6FMxntPhvDSVw5JKq6Jf9G
+	crNRTqINdNxg7dcQXATety9OFU+tRhc=
 ARC-Authentication-Results: i=1;
 	imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=17ddbz9y;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755125778; a=rsa-sha256;
-	cv=none;
-	b=QRnC6fCwaEteQKeqe3dm6ZzwGf4XzkBsWdM90MDyqeFWZG3gPtO+1MPvRbEOXIIowJbnVO
-	y4qgmLc5LJ9LlAqYojMlDbyK4LoZV0mI/B28BMZCqMz9oTQEfl1FOQIxSgYDJYlfCwH0QI
-	jO68RSgv1l2ENqONYwLuaFGVLFpIZrQ=
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gULORzCb;
+	spf=pass (imf30.hostedemail.com: domain of "SRS0=/t6I=2Z=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=/t6I=2Z=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id AC0FAA57F7B;
-	Wed, 13 Aug 2025 22:56:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA8EC4CEEB;
-	Wed, 13 Aug 2025 22:56:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1755125777;
-	bh=d23EsXtELamPsXVJ4AIY1uWBmbAVOZMh52loO7Lxxis=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=17ddbz9y+pgU9Mv5Ai+T+ED66rlk3aQvwnrd9ondRRsX+nwL5+OUQz5KCMxADNpzo
-	 XoEzH0Wxz0Bz4/JQLfK9ZIdazh/gpylEDQI3B77MJVk6Lw6hiUEBwIzOJVWNMD2efA
-	 hL2yIjlNuIX4OkAC4ijVpQqkj3tSxzMHJcT1vRVw=
-Date: Wed, 13 Aug 2025 15:56:16 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Gu Bowen <gubowen5@huawei.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, <stable@vger.kernel.org>,
- <linux-mm@kvack.org>, Waiman Long <llong@redhat.com>, Breno Leitao
- <leitao@debian.org>, John Ogness <john.ogness@linutronix.de>, Lu Jialin
- <lujialin4@huawei.com>
-Subject: Re: [PATCH v3] mm: Fix possible deadlock in
- console_trylock_spinning
-Message-Id: <20250813155616.d7e5a832ce7cda7764942d10@linux-foundation.org>
-In-Reply-To: <20250813085310.2260586-1-gubowen5@huawei.com>
-References: <20250813085310.2260586-1-gubowen5@huawei.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7167F8000B
-X-Stat-Signature: xrx75x9wz3dbs5ofir7no85613hfyh5g
+	by tor.source.kernel.org (Postfix) with ESMTP id A1CC36020E;
+	Wed, 13 Aug 2025 23:04:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F5ADC4CEF5;
+	Wed, 13 Aug 2025 23:04:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755126261;
+	bh=3F+ogyrYcJ8PY1I57KN+xxu49Rm1DOvKC0zBkVlpS24=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=gULORzCbX4t52dAfG5DuKvm4YIIqfvOAx2w15GEnWcGA3zPp1j7Cf5X0DN1XTUtdv
+	 n74MCqWqzp5i6s8L31cAIYg53ELJQ/y78Ez/QPWAtAMqFKENy687JX6LZtwcI1YySK
+	 X/4AixLfnG9jFoOCWc1ggn2g0Agkl+XXXBRlStfpOCy03YBcMGgEJ8P4X0dasp2onI
+	 ySv+D7D4PiGjXg6hX02QoDFlpOVGN/82cxQhy2q1soLdwF2tgPFkX+o6RBjn5T4ADE
+	 HhxlAxjwmBcpTl+gyAlfkbcB5xyfUjjHWZvzun5VoZ0syqCiu4T32eftEcAdCVhLqA
+	 dt4p4tG6o1mzg==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id D4BCCCE0A48; Wed, 13 Aug 2025 16:04:19 -0700 (PDT)
+Date: Wed, 13 Aug 2025 16:04:19 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Dominique Martinet <asmadeus@codewreck.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>, llvm@lists.linux.dev,
+	oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Maximilian Bosch <maximilian@mbosch.me>,
+	Ryan Lahfa <ryan@lahfa.xyz>, Christian Theune <ct@flyingcircus.io>,
+	Arnout Engelen <arnout@bzzt.net>, linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] iov_iter: iterate_folioq: fix handling of offset >=
+ folio size
+Message-ID: <f389ac0d-de77-4443-9302-3d8895e39daf@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <20250811-iot_iter_folio-v1-1-d9c223adf93c@codewreck.org>
+ <202508120250.Eooq2ydr-lkp@intel.com>
+ <20250813051633.GA3895812@ax162>
+ <aJwj4dQ3b599qKHn@codewreck.org>
+ <aJyVfWKX2eSMsfrb@black.igk.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aJyVfWKX2eSMsfrb@black.igk.intel.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5D3218000F
+X-Stat-Signature: xwogcnyxyt5frcghjgoqdbfi7ah689h7
 X-Rspam-User: 
-X-HE-Tag: 1755125778-474144
-X-HE-Meta: U2FsdGVkX1++nWZXm3Hp21i7kTOPhmdPXTlYFAxY+OIJjVYh+agd69O3lQF/fQChZLp84/q8PPE5tH0HUU4HtruXYeA1BLoD3FWkVwJ6Viw3umnhuEeWroYZvXfsW2KLge6cmKNbTm4FQAB7GZ72S18eGThDW2GZyonzZKvZFziBIbCYYyA4ATkHUHbnZaHWE5TW5E6gAovVRpcvW4+RM5Ry2tDlzsZ8WHqToTm0TbBAzIZ7YfGcRR3UyGdtk2Yf3VlgOuVwd9lThGJemyGwfSMHGDO+6im39axjrhjSGevQFCI+1/BdiqPWeNJYdVwalWuONZiP7WGXlrBFvV9SX7GegD4Ifcu+pCJWpcf95Cy9oWTasCEnq7oGyrXBq0OihPQIc6N+Sdi67Dh9SCgaYvM5Q+hgaJ157+n0eBQGO+NNroHLlTm/bjzwCu0rikSeS8PtW++oX/NsijI5w5ciSj31tHbGmHut2g6zBE0qH22PbHTCG+hojnzhQEAz8Z4BftQZkJ1qG3jIpfli69fPTULAthY4citKK8WwgK1UMNuWE9UkLVVKW0FqmBauDgzhhln506dX8AHpDBEIpfRExf1NhSzWWdYTWeBVNEswMpy1hvnifjSolz4dvY4Deiq/ogbNkalOuwCCF/3bLatIzZad5DI6VanWEzrrB2mn/jydM1f9S8CYT5LgwaEUnxBFia2lRtBd3beQaKu24VLJxUEW1+mBA/sLuqOgHnfxK/6BrM0tgx9lex73CpubGidRrPh/6AwCjfyMU4lzS5NFhRrSACV9A2NRXCq81RwhKiELM0oJJ5gLWFsJh/treRDzIbAkpDmtmPjx3LWF/G6j6swQmOVRrZw9PvKUuOGK/FucPCiiiKt6AAFaX33tcIXA2wjzZUJ9C7Pw93d1gsKUtC7lzosgKuYUkSfslCX6Rf9NLAVTAIt/Bsgidgu83QTxoQM6InC5jy83NuTdEhp
- r4l/fOnQ
- Ld2YsVJwgOCwQBIkmgFlve0imEpROZ7CceOqlAP9CrffNyRaPJe/nEujaWf10n8QEzvBrP0Z+SRwUrZUS1WufXaUPeRV2udxEvUDVctc/U8YchZ/atx4HqyakWZza1bUq3aBCpHDXrTqXR5Nh30WcvpgTiHPpCltka+ASPAWwsMoW+xB3y9DUpOfp5DxnsMyAsgVQksVUqQp3LJbeGWfhkrFj23HZjQcbDLkLjyCLGKxczp+sYoLpr4lgB4Yi5Y6+5fBWxdgOaX1kFZPJXihBhUPXh459Pw/WAprdl02dvBsyD5ho7Y89idmHvUv89cOqUHbf
+X-HE-Tag: 1755126262-811920
+X-HE-Meta: U2FsdGVkX1/Zcf5TmRW2dy87ZX/qWbE4h7Y2/OLuZO4OFAfYS0M6ihhDPVMs71oEFsXWhFgyVPtZba5tjLcsVsi+cslE99/GAP0iWuHJq32KDLLvfmsh/l2qaxfy+/7oszlNqj40gKOheaXgQxVHieAiganSqKXzijsvtWgBcjCz3KrINad1YLkmoeaiqYxtumKACg/O17po3yD5OYzW5FfDKOo6BTz2vzC5tcj7KQwDZKvUO+G0Pp5qNhqouq0dlIlLdClVhPWiRS3c5gVPCUciud3esjuaA1UqCCfNsKHjq6fHia3lVcwXEkppFDSMVFLC737hOVyxSy2S5beyFhZ1ob3EpvSsTMchmx0HZ8R+3r+3Subj8EfbkwViaUJNIzW8isZ5MorqEFy4N9RuOkDF5Wd+BiYZzjQ+vNFaRolRFAJ0D8mL/x6wUe4Qaq2aaXG7YCzKfUy/evJLDXdKMlpUWNc12IaK0NYWEPCgJvTRBtsFXyGTSEiIA/BkRX2KVjeSHsDo4jrC9bAd9EKZrnFlPfTS8oIeF5ossWYm39RS/+u4AZRPC9agYCYmnkmylNM9NlmS2KD39B0JIu7Eo8eMJa6gKvpuMPF54c1MW0dbsGPjV3img8kKv8s5JgROQ4/d1hGBWSV4jDBWJUVfwHTF0h24sbAP0v4I9UAR5wa5szqpLeLp6G2Ugx+73/gl9ZONbjU50qzHUEMS5ti/2w2uYBZ75cz9A5eCos1E+08uCw+bwmwCxOqdNFhYEJtzeYc3bqCeJf6NDHIXhpRzGCHh6zwlnrkUXhu2t7xRvX91E8ej16MNIzDdGY+hC9BMcoE/pspB7qc29+UfPZ3o7IX36dPUlwxIw03XxejbEhbMcD3E9C/pPsPHfHB1JIh7pUM0SU092qojx3jG9ZzOnXeVT6kxtGv/zGY2spLQUhrYa37ef/rAMDOWZtnNXJwPkl5I5U9ZdBdP1v4CAff
+ w3UeT2OI
+ wjAyesQ3ROo7hn/lX9bOdp8b3VYMVUnbFSzJnVR9ZGvcAPlPxwZ04e9xz+770qEv9LMz8ef4ndZu3DnoSSx4E6MEPuk9NxDMsQSV6NhY4QELiuzAFEa2vOGIiKttqCQRIbuISLLAlsz/KADbI65lptL9HBtVnQP8ufs1bQL8WC/wadezIrdhlIfnRd7ugVCil87/KvUkQjGqjmoowzTIdttrAddXR6MuHpkJs9I8TDkIv1lhptArpky2bZgYtXpY2Y9IzU7VI8MO90v8Ar7vaJ+ZDDmcCM+3ou1WfZyd7haA03oWNoSvMrch3s0wDk4BOEst+QLPklsJKOCelhghds8TuiJo/sSrgTwhxyzh3TszfH1Z6V520PT7VFncEzj8nY2KGEwEqFuAeauwtHK8V1OY6yf1UkwWLhcf239wSfUnVkZRQO5VJBWLe/ICTfBgb9snf1exyyOFSBvglHB/dABHg94fOPXqvZefue2h6Uv01nqg+S+f0dWTSoJw6BM4LqmzOQGuBXeuUw32Yw45NG+104zreL/9hj6lJ4FR8cTztn/FBwnkuVMdL49rs+khAE08B6RPLlm5FJrfGIGJaXt/8QGpDFqMDJeowpo2E8b17sWNHeovVBusC011UHsxpV4b5vYrRCm1K4UBjJe7pRon2kxZT1x9qo0uR/NpqoTAys7glHS8f4VYM/rRs6foLOsvH5z/QVOL8eK8YHruU0Y/Ycr/HpF27/PVN4EdLczX10pwbuQGAsEwpIOAwm2fcBxluNGBS7qL0b/0tUpJ9BuMrQm/5h74e4LQZQB6uKKE/x7Iqs+kRIKQpgn/+gWVVg/2ceV6LF9ywEuT/vrXuEL0kYo6Iip1FDOtX6UyLbf63Kyv078vjQn0YMQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,40 +111,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 13 Aug 2025 16:53:10 +0800 Gu Bowen <gubowen5@huawei.com> wrote:
-
-> Our syztester report the lockdep WARNING [1]. kmemleak_scan_thread()
-> invokes scan_block() which may invoke a nomal printk() to print warning
-> message. This can cause a deadlock in the scenario reported below:
+On Wed, Aug 13, 2025 at 03:39:09PM +0200, Andy Shevchenko wrote:
+> On Wed, Aug 13, 2025 at 02:34:25PM +0900, Dominique Martinet wrote:
+> > Nathan Chancellor wrote on Tue, Aug 12, 2025 at 10:16:33PM -0700:
+> > > >    1 warning generated.
+> > > 
+> > > I see this in -next now, should remain be zero initialized or is there
+> > > some other fix that is needed?
+> > 
+> > A zero-initialization is fine, I sent a v2 with zero-initialization
+> > fixed yesterday:
+> > https://lkml.kernel.org/r/20250812-iot_iter_folio-v2-1-f99423309478@codewreck.org
+> > 
+> > (and I'll send a v3 with the goto replaced with a bigger if later today
+> > as per David's request)
+> > 
+> > I assume Andrew will pick it up eventually?
 > 
->        CPU0                    CPU1
->        ----                    ----
->   lock(kmemleak_lock);
->                                lock(&port->lock);
->                                lock(kmemleak_lock);
->   lock(console_owner);
-> 
-> To solve this problem, switch to printk_safe mode before printing warning
-> message, this will redirect all printk()-s to a special per-CPU buffer,
-> which will be flushed later from a safe context (irq work), and this
-> deadlock problem can be avoided. The proper API to use should be
-> printk_deferred_enter()/printk_deferred_exit() if we want to deferred the
-> printing [2].
-> 
-> This patch also fixes other similar case that need to use the printk
-> deferring [3].
-> 
-> ...
->
-> --- a/mm/kmemleak.c
-> +++ b/mm/kmemleak.c
+> I hope this to happen sooner as it broke my builds too (I always do now `make W=1`
+> and suggest all developers should follow).
 
-I'm not sure which kernel version this was against, but kmemleak.c has
-changed quite a lot.
+This build failure is showing up in my testing as well.
 
-Could we please see a patch against a latest kernel version?  Linus
-mainline will suit.
+In the service of preventing bisection issues, would it be possible to
+fold the fix into the original patch?
 
-Thanks.
-
+							Thanx, Paul
 
