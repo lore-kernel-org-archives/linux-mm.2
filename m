@@ -2,144 +2,115 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 26CFBC87FCF
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 08:54:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AAEEFC87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 09:03:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC2F190004E; Wed, 13 Aug 2025 04:54:43 -0400 (EDT)
+	id 4A9AC90004F; Wed, 13 Aug 2025 05:03:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9AA2900044; Wed, 13 Aug 2025 04:54:43 -0400 (EDT)
+	id 481B6900044; Wed, 13 Aug 2025 05:03:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB08590004E; Wed, 13 Aug 2025 04:54:43 -0400 (EDT)
+	id 3BEDF90004F; Wed, 13 Aug 2025 05:03:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CA02900044
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 04:54:43 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 13087583E2
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 08:54:43 +0000 (UTC)
-X-FDA: 83771123646.13.8DFF88C
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 68A391C0006
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 08:54:41 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gkB0DENA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of matttbe@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=matttbe@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755075281; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A6F1900044
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 05:03:17 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E137313781E
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 09:03:16 +0000 (UTC)
+X-FDA: 83771145192.20.419CEF4
+Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 07A5540011
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 09:03:14 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=XBJN9Qho;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.221.175 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755075795; a=rsa-sha256;
 	cv=none;
-	b=TfZdJ0t6JPbjphUisDb2Raw6q+1S57cbSux1xGslXmnNSEsofDtT33jCB58WQiTeCBaEJo
-	iyv9acJi4SE6arLFreAa2Ur22XjwTiWKzg8qkFAnfJHUR4VWFUd3lME4b/s9hgO9+Az6ZH
-	I9OQWQVExqKGSZNUYtKiJXH3gpWvOqs=
+	b=loQUlABbkxSlq/kuynCW3A8pH73Z7fufuJ7q7kMBoavKoHkar2iBgtQCjziyrEiKdGqcJp
+	aiPhMnnAPwNSVKPXcK7MBQQj+/OpQ/i13tJieUSbbRULmhTX7aUW982zY5vkIWGlDfT/V0
+	gbtC/ywzveuRk2iNLiVkzwJFjcb4SHI=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gkB0DENA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of matttbe@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=matttbe@kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=XBJN9Qho;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.221.175 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755075281;
+	s=arc-20220608; t=1755075795;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OxSxs1bcucuULoGHrK8+9HS8dRUECZeQBRbiSylRYnU=;
-	b=wdcqcgdnZtXqbx+kvybD1BmnU57PeTz4Sk3gl8Rdub9YjCr3WF6oIY8mfzFV8YvlD528R1
-	zKHZ2yqtTEhZzu4mQF+r06fcr6gOkZb+e41WESlhp9IoIA4BqFW9H7dG6doJHNZaOGLtgN
-	pg2/UKU15U6HufG3XkzhTcalBi/MMRg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id CDA54A57B59;
-	Wed, 13 Aug 2025 08:54:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C3DC4CEEB;
-	Wed, 13 Aug 2025 08:54:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755075280;
-	bh=SBXBWsF/p9NKoJCWyngak/HD9GTkihC0XAEtH+NHPaU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gkB0DENAHiMv1bTV0uLkAOQtPelp8vcSXECcmJM1R8fLXEb+A/yNSIS0Lw5g/aNLq
-	 TScjivlOvmkh7LBv6vZuPf17tX/AEY+NwOf53y4mJZTF7N82ecPlFHRIFCkJoVpIqW
-	 Pd0PYJbXGIzPSwqVgib7ILcfUzFxfqcaEMmGH6qI1ymzYckc2KQbiebdU2wxUaOJIa
-	 r8EXvG/9cNxgcghFbKP5v8lD3OgY4KcRtXtg8dCIdQsUj/AJVQspscW02B6BvnvM1j
-	 GSsw2Gso6j90PUTrIAdD6q0ujq/FxP0XsJWpG/myCkLTddEzOzPRj8HST0bDnyoiNe
-	 KRZA8hDbrL9ZA==
-Message-ID: <3f267fa4-4266-40fa-a485-bd14012f4b61@kernel.org>
-Date: Wed, 13 Aug 2025 10:54:33 +0200
+	bh=voNOIsNIDIOSY89DvHxjFqypSpnZL2H3uOxQi9alac4=;
+	b=fZM+lVz1BNkVOYUz4Y6BnqMH3Sj3Agj69G6E/VxHCVA4Xq2Rdl4WQMzL9/HI/snlfhejD7
+	GHWr2Oaj4qGUNKO0khH1oDVxH00e8kDMCntWZQZw8q2YJ0A06FaWZMOz966gloUEpvS3Iv
+	qCqs7p6co9GwwQTG4gUhIYQT1DeqrzI=
+Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-53945ba7f2aso4621036e0c.0
+        for <linux-mm@kvack.org>; Wed, 13 Aug 2025 02:03:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755075794; x=1755680594; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=voNOIsNIDIOSY89DvHxjFqypSpnZL2H3uOxQi9alac4=;
+        b=XBJN9Qho6pApL2mjXoBFam4PlBWWXDxYhDPTdPJNbsqIEb3kq7wkQ4zA+I3yPiTyec
+         eQpwOBwvRsC52Q+7/5Igm1SA2OuB0lOZ8//rNWx6+wMIa+xXBt+K9ZdJ2BDG++GP+S9b
+         5oMMS3o61od/xoMK27f/eh7hzFMJFeJHeI0GIkn395v7LGFKYu12fCYkNwJ+4LFY4Qgf
+         S51XAQnfJLpxA9QjIiI2uHDeDnzckpgHIQ1ByF6w8CdgoPsZ2jkeRvVACf1pgsJ3TjtM
+         rFUlJuY+eIeTPZTwturbAl9zGh/AJ5ieRM47mRcWOOppYLbkTPJSYXTiv0/xp2/m0B59
+         dt8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755075794; x=1755680594;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=voNOIsNIDIOSY89DvHxjFqypSpnZL2H3uOxQi9alac4=;
+        b=aPqePueeVP3elsjRioGd4QDwvT2ER2eIrnCNBwKqYLFr/mGy1XS9bRXzrMQT6u5/N3
+         z3zSHZTWK0+aXG6XCOQSJpcr6FFv4T1J7Kwa78crbhjcLXqMHPoBOWOCCY2Dd6+dVDrC
+         /ketiRgY2SF9QXSLRqEkedXuoV+h2zM0okoaS4tAFzqMg4vIxFFM3iGl7OwFzwcrn7HM
+         js1QumNrE5EaZ1PASrpOkiHMb8sGQEsoPe4c0RTRDP+vFPlO5b9tBOKFBRo6PWng1EbM
+         1kHzzFsHUVuufbHL9xiH5zrnP9cYyzztSPW8FPWw0Umt1ZiqBUnX4MLxi1gKCM7FY0Tj
+         xvKA==
+X-Forwarded-Encrypted: i=1; AJvYcCW2bHoHY9YiU8rShfqFOaPYxc22AFQDlbXqL1AeHnRWCpflMHORPmPyGv/J1yenTbgpcc2k7Wl0/Q==@kvack.org
+X-Gm-Message-State: AOJu0YzltWpfw99Ci3By9UFuKPPEPAkxmwZ76NDeaVtt4vmKsKRoQyjA
+	ncJsr4gXzGKlcSDcR8+gwW2IXj5VU1dEl9eoHt1Ohh5+Z6Bb864lQxBzzFmdOEN2q+iL2J85TGH
+	KumU0Pk3iziZHaPZiFZDNYrDkJkJR3YU=
+X-Gm-Gg: ASbGncu4GX7IAQEwzwtPG3JsvsK/B8AbFvmevVtoERmX7Fr28Nctx38xhP6w6uQLDOK
+	vhzUvvsdj5avN6xfLRhNMeTsPOgYx7oHKFig4FBNckBgCASZqnA66Ma8CkodaLs5S4eFTgVgX2Q
+	k0n4vON8nZerw5EwgvtXN7Gi+cYopYXWorIhmLcvqcNTPeXxws5/A8H70eXXGpLno8noPMB2DJU
+	fL+e0CJaGIsE/KuGA==
+X-Google-Smtp-Source: AGHT+IGuh9iHJ1JWc3gYcYGVmBmp0xY+JZbyoVk+K1ITPktWKiItf2ByWP4lQ9Mmtl//A68HDXzuauOSj81kR2pdG5o=
+X-Received: by 2002:a05:6122:2090:b0:539:4097:794a with SMTP id
+ 71dfb90a1353d-53b0b66e1dfmr619879e0c.12.1755075793795; Wed, 13 Aug 2025
+ 02:03:13 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH v3 net-next 02/12] mptcp: Use tcp_under_memory_pressure()
- in mptcp_epollin_ready().
-Content-Language: en-GB, fr-BE
-To: Kuniyuki Iwashima <kuniyu@google.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Neal Cardwell <ncardwell@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>,
- Mat Martineau <martineau@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
- <mkoutny@suse.com>, Tejun Heo <tj@kernel.org>
-Cc: Simon Horman <horms@kernel.org>, Geliang Tang <geliang@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, Mina Almasry <almasrymina@google.com>,
- Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org,
- mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
-References: <20250812175848.512446-1-kuniyu@google.com>
- <20250812175848.512446-3-kuniyu@google.com>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20250812175848.512446-3-kuniyu@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: x3whz15mxiissxe5rwen5xqdsty8tch4
+References: <20250810062912.1096815-1-lokeshgidra@google.com>
+ <CAGsJ_4wbXkfaAn+79g20SfE-0Ak4QACVP+Mw2vAvMnxBCcLAsQ@mail.gmail.com>
+ <aJtTPkenKeFuFFNQ@x1.local> <CA+EESO763JtY3jjmgGGbJjSQcnJJFNpDs2iPaUwjP44VpyyzdQ@mail.gmail.com>
+In-Reply-To: <CA+EESO763JtY3jjmgGGbJjSQcnJJFNpDs2iPaUwjP44VpyyzdQ@mail.gmail.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Wed, 13 Aug 2025 17:03:02 +0800
+X-Gm-Features: Ac12FXxub7pbHdwNO3uqCxu946h-k9RRK50QHzhG6uYyQAeU83e_ljmwtaOwEXY
+Message-ID: <CAGsJ_4y98H-8aK9r_5YrSPV=SCU=-rZf7YPMz32K0C8oFnUCNA@mail.gmail.com>
+Subject: Re: [PATCH v4] userfaultfd: opportunistic TLB-flush batching for
+ present pages in MOVE
+To: Lokesh Gidra <lokeshgidra@google.com>
+Cc: Peter Xu <peterx@redhat.com>, akpm@linux-foundation.org, aarcange@redhat.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, ngeoffray@google.com, 
+	Suren Baghdasaryan <surenb@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	Barry Song <v-songbaohua@oppo.com>, David Hildenbrand <david@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 75w55h1tkmat8533gzxpsexokej54xo6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 68A391C0006
+X-Rspamd-Queue-Id: 07A5540011
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1755075281-584922
-X-HE-Meta: U2FsdGVkX19kmMIspxSWk/pgpCBf6AL2X8vmxMvWRKD7cJIeZjoQCROtC7hM4ZnO/5UmXug+HmV3542wIFS4Iw/jhdnMPj7TPzV/Ws0JTpypJRc23QHW6n2sSbaJOxEhaZbafjMuQz/UsRldaoxD5e5ugJcLanXMxaVSiGnjKRDHB79GaBzgAjHa1SHKHlLRgpvTonCMeLyaa1JDri7f5yhN7wKxmevgiA9uP2NTgN1wTcAJkWglVNuFcrzr2kkglI+fiiIszPa5VNgttIZLDa6V9DE633iKi2kp2RCv3foqLRLcR+dYEnjHtdxyYKVwyKHmxLWo3shpwDDGT4qY945jougrjbIFA1O+gvghMBNBArzTmVOd5Bm32RoCWrr/ZKhUPnqziBbW6znLIpbNYHIB+8IhIvtR0at59qQmrWW4r4qOTiyh620ymULVEfrLGqIGkCijgknwY3e/3PgzfAlRBIEUddgAWlxhkXkhHjGKET0tZxIeOP71DkRuAHMd1HT4dG+E+vOrO1lWLFkCWuriM/lemukOKBIMxeBa1FpCbrJd1kGVMXrYtaGHoPilGOoHYhQzrB2/VerLTALMzZDLNRAyUTo3aWwDHJVq3iG8QJf88cEJ5gViR9ByLkwPZK+uNovbzJ3EjBXDxbjU+IHINl6TXK67wELx3uh5NwtOMq9HDeRHjBE7kbYeJnaWjMFsyUhwwh2Ml3Pu0JsV/tpfEFl+Smi3mdc/1SC3WnNfpYNxhgBZgMnFnR3O5CmPkLhm7U1Q+5vQZSAcAwfn3Dv2idhBNMGh/VSkX6ba9wDcGFP2BiIi38wlodKmKmKwpUsYMayRX5kaxPmzsiuvqYL4fKPQmRwhokA1B75wMSNWei8KCtn+KsmRf3JQqtvg0fK548vQHFUKPo3QUArtlB1ap1vkq+Xu8CdfsNpn4ywl8bi2Nrdd7vJv5XuxaKCR/JjgXznvAfBP98YiGXj
- OMZlyrmk
- BtpDr
+X-HE-Tag: 1755075794-645366
+X-HE-Meta: U2FsdGVkX1+PWaguDLW8ZnUGA2Q2WS8IwTafwkhlvsM25u/X3oyIkXOCA63viC0GwEM27iZ0KC9DACwhAh6L2QW2rJx4F7yO8kPQeS6YmB0iEA0jUgoIUxPGxPfJVNhuwiDbYb3p8iZCHoxWQbihIw6EAVvHXo40n+gjI3Hk0n7ZHYdoUXEw4F8X1tXTvE5PLYKfGpkd45OUph5yPavgqxcw/9CxcX/XnP+KVAEh6VnsegFBNGsaSdfplvZ4Hlon1gYVOyBVeQeeV+LNHU7xAqK/72mcmHnPX40uETvOdrKJeAgrM/+sQ+gFo9ZFJNoZJ8VXt3kaecav5IMS41LayEITuJn7yGYYvOy2adDSUJndhzcSMrCOiArzeJGHEpVj6SOwHq/JYyED5KLREXaXSjFJSSz/W1NxeeBuLFdSeOj4Qz/ZbEfwMspOmEQe5rlXYpgeWPOVPZv9Fwin9/Va2wTdHKWmH/3UCF34k0TLLaMIHTAkxlhz/QqlCeWbQXjjheiievmN6UAbitdjsoWba81SY7N59K2w9d0LDKsupIf1PPw6bcHXB8rOPVBVbx5Q5ulEq70AS0Nwmc7Ek+UNVqUVYYui6DLAhCtZMne+3jpPckcIzrxZNKtAh9Ag+QfrDVS31JZLq5JI7w76/b2T0X4jONhmfGXrfjofbbH7c9MyI+kTFl+M0PXAmOH9DuDLQVFIYtIXvk+OE6mnYh0f3Ruptag7n1QZwkbg3v/mURgAISiqLNij2Pa/faZtnC9QpJdWAyCTpcaGvBtwYMJURnpykvpdZsLGDDuNjoVO9m7/azXwNXZE44EhBEisIL25cxoGrOzdIfNPKX2GZcf9SScX6Br5SV5KlxH5Rq0Jx5w0d2YdSWKy3OD1/NbihV+lGvkvAeXfZxeVeTnnVJPgY14N9Yv6vhN2UBa205Wvu/FqW0xQj8V8oVPWD3cFRw0VhdY3UXSlaqpip8doR0V
+ QZsvgDOg
+ lxqU6Z7uYmUVFpx9K4VciFy+iCvkn2h8pFpwKkNU4GSxHgfC7/q0qAbHxn3pXPWTnujXLCXoePj5hQvaiQOoekwVaygbZ0cV9eWkfDlcYjEsB6nUhLol0RFhOsFWiZLxOQoMaey1maJljZSsqrczLfAhusxUqUCEWHvjJzgeByn2Bq/PvlRNpf4UR7G80BdNaKmLpARmkE//6FOkyoqVmCFqwfhoWwhnf4BrMXAdJXi+do2KP1bOP5IHxyyZmvtyY03JbfYq6vXhzpWuKXZvLDQwqJGCepUlGzZOvY1UoHo3kd/vs16yyDGUcb+IuWIBsV1VLFgT7ucdo07SRmgpP8UCLazE5hPXxXlF10FZD1Dcrh08qf4C7gX3p34cVidOz7nKd7g85zihVDMkTXF0Dro6zMQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,23 +119,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Kuniyuki,
+On Tue, Aug 12, 2025 at 11:44=E2=80=AFPM Lokesh Gidra <lokeshgidra@google.c=
+om> wrote:
+>
+> On Tue, Aug 12, 2025 at 7:44=E2=80=AFAM Peter Xu <peterx@redhat.com> wrot=
+e:
+> >
+> > On Mon, Aug 11, 2025 at 11:55:36AM +0800, Barry Song wrote:
+> > > Hi Lokesh,
+[...]
+> > > >
+> > > >  mm/userfaultfd.c | 178 +++++++++++++++++++++++++++++++++----------=
+----
+> > > >  1 file changed, 127 insertions(+), 51 deletions(-)
+> > > >
+> > > > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> > > > index cbed91b09640..39d81d2972db 100644
+> > > > --- a/mm/userfaultfd.c
+> > > > +++ b/mm/userfaultfd.c
+> > > > @@ -1026,18 +1026,64 @@ static inline bool is_pte_pages_stable(pte_=
+t *dst_pte, pte_t *src_pte,
+> > > >                pmd_same(dst_pmdval, pmdp_get_lockless(dst_pmd));
+> > > >  }
+> > > >
+> > > > -static int move_present_pte(struct mm_struct *mm,
+> > > > -                           struct vm_area_struct *dst_vma,
+> > > > -                           struct vm_area_struct *src_vma,
+> > > > -                           unsigned long dst_addr, unsigned long s=
+rc_addr,
+> > > > -                           pte_t *dst_pte, pte_t *src_pte,
+> > > > -                           pte_t orig_dst_pte, pte_t orig_src_pte,
+> > > > -                           pmd_t *dst_pmd, pmd_t dst_pmdval,
+> > > > -                           spinlock_t *dst_ptl, spinlock_t *src_pt=
+l,
+> > > > -                           struct folio *src_folio)
+> > > > +/*
+> > > > + * Checks if the two ptes and the corresponding folio are eligible=
+ for batched
+> > > > + * move. If so, then returns pointer to the locked folio. Otherwis=
+e, returns NULL.
+> > > > + *
+> > > > + * NOTE: folio's reference is not required as the whole operation =
+is within
+> > > > + * PTL's critical section.
+> > > > + */
+> > > > +static struct folio *check_ptes_for_batched_move(struct vm_area_st=
+ruct *src_vma,
+> > > > +                                                unsigned long src_=
+addr,
+> > > > +                                                pte_t *src_pte, pt=
+e_t *dst_pte,
+> > > > +                                                struct anon_vma *s=
+rc_anon_vma)
+> > > > +{
+> > > > +       pte_t orig_dst_pte, orig_src_pte;
+> > > > +       struct folio *folio;
+> > > > +
+> > > > +       orig_dst_pte =3D ptep_get(dst_pte);
+> > > > +       if (!pte_none(orig_dst_pte))
+> > > > +               return NULL;
+> > > > +
+> > > > +       orig_src_pte =3D ptep_get(src_pte);
+> > > > +       if (!pte_present(orig_src_pte) || is_zero_pfn(pte_pfn(orig_=
+src_pte)))
+> > > > +               return NULL;
+> > > > +
+> > > > +       folio =3D vm_normal_folio(src_vma, src_addr, orig_src_pte);
+> > > > +       if (!folio || !folio_trylock(folio))
+> > > > +               return NULL;
+> > > > +       if (!PageAnonExclusive(&folio->page) || folio_test_large(fo=
+lio) ||
+> > > > +           folio_anon_vma(folio) !=3D src_anon_vma) {
+> > > > +               folio_unlock(folio);
+> > > > +               return NULL;
+> > > > +       }
+> > > > +       return folio;
+> > > > +}
+> > > > +
+> > >
+> > > I=E2=80=99m still quite confused by the code. Before move_present_pte=
+s(), we=E2=80=99ve
+> > > already performed all the checks=E2=80=94pte_same(), vm_normal_folio(=
+),
+> > > folio_trylock(), folio_test_large(), folio_get_anon_vma(),
+> > > and anon_vma_lock_write()=E2=80=94at least for the first PTE. Now we=
+=E2=80=99re
+> > > duplicating them again for all PTEs. Does this mean we=E2=80=99re doi=
+ng those
+> > > operations for the first PTE twice? It feels like the old non-batch c=
+heck
+> > > code should be removed?
+> >
+> > This function should only start to work on the 2nd (or more) continuous
+> > ptes to move within the same pgtable lock held.  We'll still need the
+> > original path because that was sleepable, this one isn't, and it's only
+> > best-effort fast path only. E.g. if trylock() fails above, it would
+> > fallback to the slow path.
+> >
+> Thanks Peter. I was about to give exactly the same reasoning :)
 
-On 12/08/2025 19:58, Kuniyuki Iwashima wrote:
-> Some conditions used in mptcp_epollin_ready() are the same as
-> tcp_under_memory_pressure().
-> 
-> We will modify tcp_under_memory_pressure() in the later patch.
-> 
-> Let's use tcp_under_memory_pressure() instead.
+Apologies, I overlooked this part:
+                src_addr +=3D PAGE_SIZE;
+                if (src_addr =3D=3D addr_end)
+                        break;
+                dst_addr +=3D PAGE_SIZE;
+                dst_pte++;
+                src_pte++;
+                folio_unlock(src_folio);
+                src_folio =3D check_ptes_for_batched_move(src_vma,
+src_addr, src_pte,
+                                                        dst_pte, src_anon_v=
+ma);
 
-Good idea, thanks!
+I still find this a little tricky to follow =E2=80=94 couldn=E2=80=99t we j=
+ust handle it
+like the other batched cases:
 
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
+                        struct page_vma_mapped_walk *pvmw,
+                        enum ttu_flags flags, pte_t pte)
 
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
+We pass the first PTE and use a function to determine how many PTEs we
+can batch together. That way, we don=E2=80=99t need a special path for the =
+first
+PTE.
 
+I guess the challenge is that the first PTE needs to handle
+split_folio(), folio_trylock() with -EAGAIN, and
+anon_vma_trylock_write(), while the other PTEs don=E2=80=99t?
+
+If so, could we add a clear comment explaining that move_present_ptes()
+moves PTEs that share the same anon_vma as the first PTE, are not large
+folios, and can successfully take folio_trylock()?
+If this condition isn=E2=80=99t met, the batch stops.
+
+Thanks
+Barry
 
