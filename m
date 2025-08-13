@@ -2,65 +2,65 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5344ACA0EE0
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 17:08:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 852EECA0EE0
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 17:10:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DAAC39000B4; Wed, 13 Aug 2025 13:08:12 -0400 (EDT)
+	id 23DA79000B5; Wed, 13 Aug 2025 13:10:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5BC8900088; Wed, 13 Aug 2025 13:08:12 -0400 (EDT)
+	id 214DE900088; Wed, 13 Aug 2025 13:10:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C989D9000B4; Wed, 13 Aug 2025 13:08:12 -0400 (EDT)
+	id 152289000B5; Wed, 13 Aug 2025 13:10:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B6CFC900088
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 13:08:12 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 32FEE14042C
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 17:08:12 +0000 (UTC)
-X-FDA: 83772367224.11.F930D80
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 851F5C0011
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 17:08:10 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b3X3gxJN;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 04012900088
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 13:10:05 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AEB83C0463
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 17:10:04 +0000 (UTC)
+X-FDA: 83772371928.17.D80F9F1
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 1B667A0003
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 17:10:02 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BTlViCzK;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755104890;
+	s=arc-20220608; t=1755105003;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KajAc3xxRXbjVbO9JBFGociNxPz6AQVv4ipiRGJtOtk=;
-	b=OqPi4BKLz4MSmhjy8T9Q24CXvTTQEDsPbqOoFKxvB7tDpoKOM6ncN92ZjeN+7qyIs6xnct
-	k/DKu2Z80k25nQs8jTpEkiyPADluiV+sllXcdPziXaypJnwHuID3V9St28Q40XdU4KsZJg
-	d+9KnfiSAvEqF2LAQK4fX+lKjp2Nb4o=
+	bh=DPtrsXvcL18zFRU+ZDu0oZhqiEC4smJeRTSbjhOcFjU=;
+	b=H5V6Pn4C3LRORDjFJw1uNW6Ject9gkTnjTLoaPjqcVUJnltMBXLqDnn1YkRYr0foVYH6RH
+	ZXVd1y/EiyxkNuhXeiXlx4bDbI+b8AfWUtXPcDcJbDvqY5UsdZzh3ZgJ0JTEdjJJPd9GA3
+	iQYsrAD4YeH5/b+9GnBfRRUv6WruZR4=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b3X3gxJN;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BTlViCzK;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755104890; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755105003; a=rsa-sha256;
 	cv=none;
-	b=xS0LWlQLHtvniu2pFgpKUz4nKXzqLX7w+uM6DQL8aPqQxZf+jQKhHzZODOn3ATzN8l5lDy
-	hQznnPW3ZJeJTOpL6Hf11xphl94Oo7Vw0kytiWAh9lC3MrDjKjVswpBQDO+0nBdkll9e0X
-	6/vdVDNDNVFE6JpVUtqvsuUwgP9j/p8=
+	b=A2jAe7+NUwBBKjlTINPu5fc30vUZPHZvQwns+IiYm3smlwgQCnkXhxp+Cwa+Ls5AATt/rt
+	wk6NZw4tkv0WdSdKR9jdjGKtBBwSJaCfbadbA0s8s/omUH56qS43mMw7iwnjYoOt1Rah8o
+	tLVaOW6tMmjXPEHSCfRaEQmtCNdgUCE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4BE3D45A4B;
-	Wed, 13 Aug 2025 17:08:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 010EFC4CEEB;
-	Wed, 13 Aug 2025 17:08:09 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 7D035A57ED3;
+	Wed, 13 Aug 2025 17:10:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1832C4CEEB;
+	Wed, 13 Aug 2025 17:10:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755104889;
-	bh=0wMHb0ikQWLuZKUXgXzxLD9DLMSFgGq3hkc4J3eh53k=;
+	s=k20201202; t=1755105002;
+	bh=AIWgF14roG2s1lL3N6s+OU/JIDgn+6qzvLO1PUr65lE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b3X3gxJNG1yf8cWJ9B+2UL4wPC0Bh9O4ATYHfByAdIGQxRqHyoL8m2+CDxSFEoLNE
-	 WZ51s5OrrvEvCArbvDMfmla1rxY84nGex6V4iQADi8/2Qm5GurLkcA5a3WZ3haK2Ae
-	 szYA8tsootOEpcNGBI53NFt/7v5x14tCO/Umca4Mdh4fKw0kmQRC89lCeqnkM1C0yS
-	 K8nvF8OqJez2HBYoS0B1gAsNzhUqRL0hdbfTM1jLW1AVwVMH/84MMa4Kb3x9szQvVg
-	 V3tkZxAcXGNpw9yWT11s+6yjLIB2eOkaOF55Ixd+0fu6OD9NXHmgmN2Yidgd5kA2Cy
-	 CuvQ+Q531b0Yg==
+	b=BTlViCzKJ6oNXqiiP+yf5NnjgQaXzeC5n6P9xOPggqWpoRaHlwaDI1mvW60w31f7z
+	 Nk4wYDNWeQJqTf13oWXlarIYS4G7HXdpOctnUB5iWisAC9T5iXxijFqW5GDfRGiyln
+	 0aar22OgoB+SxaiV6DVGdHOrsuCSOKwnlhkkWCTlavbdrKC+1E7kS8qppE0a4h+kfL
+	 h396yxnoXzknUv6pnRL70DK2zY7o4hxelhQfm4s71BW2VoykC6HcM0DB7+QZ0KvKJH
+	 YWjrJ/xKIpVm2cugUJElax/DsAw1ksJ5mjDQdz+mXtGuc4c0PUVtl+M00Dzoj2+q7T
+	 qSWYD33zElEoA==
 From: SeongJae Park <sj@kernel.org>
 To: Quanmin Yan <yanquanmin1@huawei.com>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-mm@kvack.org,
 	wangkefeng.wang@huawei.com,
 	zuoze1@huawei.com
-Subject: Re: [RFC PATCH -next 14/16] mm/damon/core: convert sz to byte units when updating state
-Date: Wed, 13 Aug 2025 10:08:06 -0700
-Message-Id: <20250813170806.6251-1-sj@kernel.org>
+Subject: Re: [RFC PATCH -next 15/16] mm/damon: the byte statistics data type in damos_stat uses unsigned long long
+Date: Wed, 13 Aug 2025 10:10:00 -0700
+Message-Id: <20250813171000.6345-1-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250813050706.1564229-15-yanquanmin1@huawei.com>
+In-Reply-To: <20250813050706.1564229-16-yanquanmin1@huawei.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 851F5C0011
-X-Stat-Signature: q1ciowzjtgkj8zq5jrrb1pfehz6wk47o
+X-Rspamd-Queue-Id: 1B667A0003
 X-Rspam-User: 
-X-HE-Tag: 1755104890-500538
-X-HE-Meta: U2FsdGVkX19rZoRKW9YM8jn7P8q+44YYLqmU6+iA6g8zyoJ8oVktfbhwviiTMxTWbB1eE9Hk6HAaPoslDLiotYliuQLtybZ/HurNZhhhwvlK3rGuS8Rfk0098GZRH+7LI5IPY34I2h3bf3o8gSE/G/tCYqAnoaBYmliONI+4HQPipUz+bUF8eQqhvlvRSrkNvU0fhGIaHSaGh0GDUfOuDDM2v6WFHbB8REatEOwm3ef0kvHBdlU7XM0z6YdoSx7dfWghCDibnXJ32K0q59nnulnlIbgJNBkFIq/EGzkH9M5Z587L12/HTp9Jwiwh0qfcGFlQZzAxhht+0kxaS/69nLuWo8NloIIjQJAXdIyuI17il1z8bikTFfvKe3HQZJtcXymTPhqmWzVuS05iwssn0nRlvfXBWhaHQ/J8J5bjYxXUrjBZVFHm2J4v3RiWBwrKlxSLP7+09kMl/ug6wafTdUi6dYpsItjkmlcf0YldZ3CKFgFMtD7nRdLpKPALFSnjC5UvvkGwGfqE2duXojQMlHrreUy53Lewci0GFY5U9ODKLWa+RaxT0wfxL6XakLnf9l/ikAfa2KlEND3ypbVypQyrrU7MBwmr259TWRkqRLBAEmFxMz2BdBjrV6cV6Gk4GHNbsniea2sO6JxSN77aKpmk51qzB7RVkN5VU2YGxTDAzEgjpOJ/8CxKNfdzwqkVifn8INp0lqfNyomCZkAw/zgoS45Lo/XlR4E6jM6UB8VEc4ZO0hauoqcmxmzuJWcOF07X5x9RhAx/gDvKtYjtOUqKO0tjyYe9/aXadyCfWu8ov98LkIgc0y0KcgWCII0F9aVrpRd5+ALVfXNxfOCsh1HRnp6Q/SRGEJB4iGbi/2Od4tepo7R7397x+IkBhHcOOOwkb8sIa4L5AQz3MM5Zc7Bu5PPXfEtrzcr54cFainyMljgUO5ZMUQYU9/EJbzUytl2l11nG1S/K+rJpVqd
- AeANkr/5
- 8GEWcgwdJ0fe2RkJmX8t9YLnQkAlxS+zqC7I30kyqiTEg43QzWQJItZo8qL6PHOMezGxeHDhed2e2CwlnlNOuTyn8aeajlex9RLJHeBbCrMvWXh9ffvq/C/KMfP79cv+9Fzs9I7wVDtxfMqu1sUiD0Rjc/Bo7INYrdlloFWXGdZh4itvqM1wGWFvvfVFPJZXsepDFnF0uIVLSJbcBDQL0CN5DHzW9oNTRh6Yiwukr+FKmO0E=
+X-Stat-Signature: g161brknz9qx7yzpkxdwahm66bbe9uz8
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1755105002-145767
+X-HE-Meta: U2FsdGVkX1/VyIvkd8EBW7lXdYmqL1lBb5vkhiTmscf4WphTQcyTZ3A+rm2dqfbrjoHPFFBWrJFzsQhyNvU631QoLOMD35/b81evFkiwEQ7DPi3MNpLcgp//N8M/K7azkAmOcxUwmy923dy9I1MGj9G0ldFIowqRzQdbOxE/GkueeJlUMqL1t+bYtlUwslTTic3AsN2Q1MWv8KMX41qIUmzk965Omr20eu8zv/pFwLfeQiV2LsI8r4fKl4szLeL9wc15LRAr5R+RQ26kQk/kwZBm0bmnF9TrMG9WyY2WMjjZFlhN61v60y89Ob4Enw9hjPcV1GEKzwPSirj+3jJkfug62VB9YFQ8ypkjGoE5Ml+hoZC3oLmrfuZAS25gzRJcv08V4fqm3QpU9fiVwpAJjrhbqCVoEgk9qwRVQy/PCUE4XkoOzDkgFh7OVILhrjO6RbtUTIoI+wwiNBbMVH2UwboHxclZDsGEa3zb4GB0BH8s8XD1jBW7AqVJYcbPD5+x9X0aL2rKkPj54sfAJNI/OJ3wL4eWkamLyFfG04SbFjiZJlfDqGKuCvg9pyDKgNOn+REtABMfcIKbLlOrSysMk+Jo9p0DKmp1cF1tebwMumipPc7jn1XRS5EUP2h2YY8ONzLB0/H3QLWog+/ruw3JRkknxVUzltoToXZpc8z7PmEKreNG8/bMhlEcAOAGOe3WpKyl49pM1yy58e6l5WCDgWU1Ak/1F2bXeW5JdG+X1UwxIROsAPKBgD7NsACiHTr906oQJr7yNMu+TqO0G5eDhMJUSH4DIC5/4svP24gfp7ackhh9q3aQHSM7ctGdGFy0Gb4wkSSqDX74kwp+zxXAepHVW9CdWtRlV6P+DZ/LTx2E6wM/npWm5VPSK8Xv6PBAoicjiKTzFBPX/Gkm5bY1NEtmPoVEgIoV4Y4KzZT61t1WWpVZZzv4IeLmdLWw7rhHt5WTmv258B4Ia8nG+zs
+ 3tVPK6ph
+ Oe6XcGuky7tdgJ2eiPxMCVrAZpKtWcGI7GlmfhUwbieiIQxfde/A62p/CCdWMiMNayN3c2odU2uY/5cqvq/NGAy2XsFgQr5HZx45/SPYd6l9ZzJdIUrXmSfXWsOhpq6b1Qdltvbpk6nnd0Ceipg9xR3UP+YJDF8BwzatDdzjoYajFzYMpfk9BgotQhL4fhN6y0KMJu7Za2Qp+yjGdFgtJF1BsK9IL9lmBnLDFuLGiSzH3dYs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,47 +94,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 13 Aug 2025 13:07:04 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
+On Wed, 13 Aug 2025 13:07:05 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
 
-> After introducing ctx->addr_unit, the unit of sz might not
-> be in bytes. However, sz_applied is returned in bytes after
-> processing by paddr.
+> For 32-bit systems, damos_stat now uses unsigned long long for byte
+> statistics data to avoid integer overflow risks inherent in the
+> previous design.
 
-This is not an intended behavior, but a bug of my code.  Let's update patches
-3-6 of this series to return sz_applied as core-layer address unit, instead of
-bytes.
-
-> To maintain external consistency, sz
-> is converted to byte units when updating the state.
-
-Users could keep the consistency by multiplying the addr_unit, which they set
-themselves.
+I suggested using the core-layer address unit on stat, and ask users to
+multiply the addr_unit value to stat values if they want bytes value.  If we
+agree on it, I think this patch wouldn't really be required.
 
 > 
 > Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
 > ---
->  mm/damon/core.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+>  include/linux/damon.h     |  6 +++---
+>  mm/damon/modules-common.h |  4 ++--
+>  mm/damon/sysfs-schemes.c  | 12 ++++++------
+>  3 files changed, 11 insertions(+), 11 deletions(-)
 > 
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index b162aa1156fc..bc764f9dc5c5 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -1889,7 +1889,9 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
->  		r->age = 0;
+> diff --git a/include/linux/damon.h b/include/linux/damon.h
+> index aa045dcb5b5d..d85850cf06c5 100644
+> --- a/include/linux/damon.h
+> +++ b/include/linux/damon.h
+> @@ -333,10 +333,10 @@ struct damos_watermarks {
+>   */
+>  struct damos_stat {
+>  	unsigned long nr_tried;
+> -	unsigned long sz_tried;
+> +	unsigned long long sz_tried;
+>  	unsigned long nr_applied;
+> -	unsigned long sz_applied;
+> -	unsigned long sz_ops_filter_passed;
+> +	unsigned long long sz_applied;
+> +	unsigned long long sz_ops_filter_passed;
+>  	unsigned long qt_exceeds;
+>  };
 >  
->  update_stat:
-> -	damos_update_stat(s, sz, sz_applied, sz_ops_filter_passed);
-> +	damos_update_stat(s,
-> +			sz * (c->ops.id == DAMON_OPS_PADDR ? c->addr_unit : 1),
-> +			sz_applied, sz_ops_filter_passed);
+> diff --git a/mm/damon/modules-common.h b/mm/damon/modules-common.h
+> index c7048a449321..ae45d0eb960e 100644
+> --- a/mm/damon/modules-common.h
+> +++ b/mm/damon/modules-common.h
+> @@ -36,11 +36,11 @@
+>  #define DEFINE_DAMON_MODULES_DAMOS_STATS_PARAMS(stat, try_name,		\
+>  		succ_name, qt_exceed_name)				\
+>  	module_param_named(nr_##try_name, stat.nr_tried, ulong, 0400);	\
+> -	module_param_named(bytes_##try_name, stat.sz_tried, ulong,	\
+> +	module_param_named(bytes_##try_name, stat.sz_tried, ullong,	\
+>  			0400);						\
+>  	module_param_named(nr_##succ_name, stat.nr_applied, ulong,	\
+>  			0400);						\
+> -	module_param_named(bytes_##succ_name, stat.sz_applied, ulong,	\
+> +	module_param_named(bytes_##succ_name, stat.sz_applied, ullong,	\
+>  			0400);						\
+>  	module_param_named(nr_##qt_exceed_name, stat.qt_exceeds, ulong,	\
+>  			0400);
+> diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+> index 74056bcd6a2c..3c4882549a28 100644
+> --- a/mm/damon/sysfs-schemes.c
+> +++ b/mm/damon/sysfs-schemes.c
+> @@ -199,10 +199,10 @@ static const struct kobj_type damon_sysfs_scheme_regions_ktype = {
+>  struct damon_sysfs_stats {
+>  	struct kobject kobj;
+>  	unsigned long nr_tried;
+> -	unsigned long sz_tried;
+> +	unsigned long long sz_tried;
+>  	unsigned long nr_applied;
+> -	unsigned long sz_applied;
+> -	unsigned long sz_ops_filter_passed;
+> +	unsigned long long sz_applied;
+> +	unsigned long long sz_ops_filter_passed;
+>  	unsigned long qt_exceeds;
+>  };
+>  
+> @@ -226,7 +226,7 @@ static ssize_t sz_tried_show(struct kobject *kobj, struct kobj_attribute *attr,
+>  	struct damon_sysfs_stats *stats = container_of(kobj,
+>  			struct damon_sysfs_stats, kobj);
+>  
+> -	return sysfs_emit(buf, "%lu\n", stats->sz_tried);
+> +	return sysfs_emit(buf, "%llu\n", stats->sz_tried);
 >  }
 >  
->  static void damon_do_apply_schemes(struct damon_ctx *c,
+>  static ssize_t nr_applied_show(struct kobject *kobj,
+> @@ -244,7 +244,7 @@ static ssize_t sz_applied_show(struct kobject *kobj,
+>  	struct damon_sysfs_stats *stats = container_of(kobj,
+>  			struct damon_sysfs_stats, kobj);
+>  
+> -	return sysfs_emit(buf, "%lu\n", stats->sz_applied);
+> +	return sysfs_emit(buf, "%llu\n", stats->sz_applied);
+>  }
+>  
+>  static ssize_t sz_ops_filter_passed_show(struct kobject *kobj,
+> @@ -253,7 +253,7 @@ static ssize_t sz_ops_filter_passed_show(struct kobject *kobj,
+>  	struct damon_sysfs_stats *stats = container_of(kobj,
+>  			struct damon_sysfs_stats, kobj);
+>  
+> -	return sysfs_emit(buf, "%lu\n", stats->sz_ops_filter_passed);
+> +	return sysfs_emit(buf, "%llu\n", stats->sz_ops_filter_passed);
+>  }
+>  
+>  static ssize_t qt_exceeds_show(struct kobject *kobj,
 > -- 
 > 2.34.1
-
-
-Thanks,
-SJ
 
