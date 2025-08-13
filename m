@@ -2,76 +2,76 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E5CC8CA0EE0
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 12:43:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1F035CA0EE4
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 12:44:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 84A14900069; Wed, 13 Aug 2025 08:43:00 -0400 (EDT)
+	id B32EA90006A; Wed, 13 Aug 2025 08:44:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FA25900044; Wed, 13 Aug 2025 08:43:00 -0400 (EDT)
+	id B0AD2900044; Wed, 13 Aug 2025 08:44:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C26A900069; Wed, 13 Aug 2025 08:43:00 -0400 (EDT)
+	id A209690006A; Wed, 13 Aug 2025 08:44:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A578900044
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 08:43:00 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 22466C035F
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 12:43:00 +0000 (UTC)
-X-FDA: 83771698920.11.9D9B934
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F1B7900044
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 08:44:16 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 330095886E
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 12:44:16 +0000 (UTC)
+X-FDA: 83771702112.19.4A9DD51
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 84768180006
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 12:42:58 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=abcQxx+2;
-	spf=pass (imf06.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id A3008C000D
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 12:44:14 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gYls+iQY;
+	spf=pass (imf28.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755089054; a=rsa-sha256;
+	cv=none;
+	b=WWoozy14S5eKmb+h11dizlVRUKy4XP+M9hCUr5JguMHEUkg6L/hWNn1PA2YkrWg0f99qQE
+	ysbtHHL2IvjmkVlEsxQxZFzPlqqv2zB3YPXzDKOpdb4YfjmqdaOU8qjILg/ZDd4hFaKR4z
+	n/VWb7Z9vBBKduD5bTsJeHu8/AmAC4Y=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gYls+iQY;
+	spf=pass (imf28.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755088978;
+	s=arc-20220608; t=1755089054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dCF1ll+qwi8DwkSC++8jGcwtkVYst8WfAJdQUnzbEu0=;
-	b=1/8iHexkpplayVSi6uJrGEJEL6vlTmIAowB5APwRvrGuQ6ttRdk0DEH2BdKs5hfBUxP8dh
-	ItxFcfpsXudP9t/oVGzInueVizmm4M1D9tH4B/vKHznAczt+o6/RJUhXabjbgC2wIpK8qq
-	nwZt0R+/t2rlOEZHbuNYXqt6BFl9ZzA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755088978; a=rsa-sha256;
-	cv=none;
-	b=ORlBEjnQJYHaoP5GPRrLbR9vDxZQUfIiE7MBLTzjwZcEyyoszoJZhsBIwdCOTn/2tgJmXy
-	CjNPcFfyljgVkWNFtvRXIwsVBrJlN/tYEdo80oUgnSTmyneAfnipo6RMImnj8vfIfvOgWH
-	l+NCrjs++HDh51O2L3E/iUMTfobeWAw=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=abcQxx+2;
-	spf=pass (imf06.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=s25L18hi2O70MpXSnkBHqr0mgWoo8RG3piUOKoazP2k=;
+	b=X11egDidkznkC+jvDC17OVqtBfy8Kt4HvOOX4GMjubnoqmp3ZgmqJSOZJXaAyP1XEeXXQe
+	T1IvymXU06NE80Wn613Nzif/ttiyIGCyMoIyheoeKHma0vv3xpVV85eeIcCHSl/JgY1ewc
+	xKnd/iASLyJBbmmRIR7dwrxR77BhZlM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 96809601E1;
-	Wed, 13 Aug 2025 12:42:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44B89C4CEEB;
-	Wed, 13 Aug 2025 12:42:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EF038601E3;
+	Wed, 13 Aug 2025 12:44:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A6DC4CEEB;
+	Wed, 13 Aug 2025 12:44:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755088977;
-	bh=LDj2QuAauZIfATyz/j1HGW1zmOPF+xKh5rLzTFxXMTw=;
+	s=k20201202; t=1755089053;
+	bh=DDRdKzPeZcrqxhyOyBHNrCzLGb9zvR9HWqXptkScBTI=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=abcQxx+2rtJfHkVvpjEviY5OyOiZUaFIpnFBGZHCKkIxAIF1d61SW9piap09pmUm0
-	 186Dc2YxQSCoIRn+xcQHv+CoEnq/0krk+ci4a+VQSRrAkNeFrCwMdyTumguGilaKvk
-	 weRcPWRNVzDxYkl2M1qZ3jNA6bHY1yHD5w22GQL78BS5PP3UlJJbYaxmu6dH3dFFie
-	 Zhrn738C6i3hm6OUaurtWBNHHy0wlzf9wInTPabX2fwQblkyBUq0bf2nEzhdcJGPmu
-	 O9NpQhVkb76Vjp8vRuKGBejjHufDaD5xh2BiRDsXZ/pwilC6xh/BNfAjYrYxCmJXKY
-	 tSNtMwX7h5QJw==
+	b=gYls+iQY+eTb+KNGGeRqRwXWo8twVx/emg3S4y0UYygbM5zO9NqHkKOoMf8oqlqlP
+	 i5BoF7JCGyiO+dNBV43VNf06FoblMmDnfeIMsiezUIzZfEQos0MK5yNU6enaGQAXPc
+	 tCsL8SK1kvYsw8aimFXHiMMAwSGXX7LDT6+1+LkNShDaUxJ3nYokKDBO3d9YFW2t7o
+	 c9QlpPdguBGmx0nGMIzgIleVjk+S5361TxR74ppc2b/6EXawl7CJnZvFXZFEEbfHCx
+	 gh4FPANJ/YJ8GX/Ep0bKAQ87CTUUl2M23ZDqJXJIS3hCTlslAYG8KhB50nLC1O2H22
+	 coJJM4BNYO67w==
 From: Pratyush Yadav <pratyush@kernel.org>
-To: Vipin Sharma <vipinsh@google.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  pratyush@kernel.org,
-  jasonmiu@google.com,  graf@amazon.com,  changyuanl@google.com,
-  rppt@kernel.org,  dmatlack@google.com,  rientjes@google.com,
-  corbet@lwn.net,  rdunlap@infradead.org,  ilpo.jarvinen@linux.intel.com,
-  kanie@linux.alibaba.com,  ojeda@kernel.org,  aliceryhl@google.com,
-  masahiroy@kernel.org,  akpm@linux-foundation.org,  tj@kernel.org,
-  yoann.congal@smile.fr,  mmaurer@google.com,  roman.gushchin@linux.dev,
-  chenridong@huawei.com,  axboe@kernel.dk,  mark.rutland@arm.com,
-  jannh@google.com,  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: pratyush@kernel.org,  jasonmiu@google.com,  graf@amazon.com,
+  changyuanl@google.com,  rppt@kernel.org,  dmatlack@google.com,
+  rientjes@google.com,  corbet@lwn.net,  rdunlap@infradead.org,
+  ilpo.jarvinen@linux.intel.com,  kanie@linux.alibaba.com,
+  ojeda@kernel.org,  aliceryhl@google.com,  masahiroy@kernel.org,
+  akpm@linux-foundation.org,  tj@kernel.org,  yoann.congal@smile.fr,
+  mmaurer@google.com,  roman.gushchin@linux.dev,  chenridong@huawei.com,
+  axboe@kernel.dk,  mark.rutland@arm.com,  jannh@google.com,
+  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
   dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
   rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
   zhangguopeng@kylinos.cn,  linux@weissschuh.net,
@@ -88,26 +88,26 @@ Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  pratyush@kernel.org,
   stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
   linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
   saeedm@nvidia.com,  ajayachandra@nvidia.com,  jgg@nvidia.com,
-  parav@nvidia.com,  leonro@nvidia.com,  witu@nvidia.com
-Subject: Re: [PATCH v3 26/30] mm: shmem: use SHMEM_F_* flags instead of VM_*
- flags
-In-Reply-To: <20250811231107.GA2328988.vipinsh@google.com>
+  parav@nvidia.com,  leonro@nvidia.com,  witu@nvidia.com,
+  jrhilke@google.com
+Subject: Re: [PATCH v3 29/30] luo: allow preserving memfd
+In-Reply-To: <CA+CK2bAP-PWkYtZbw8ofhTgDaW3qoQkNob30wWSjidxEUTV4pg@mail.gmail.com>
 References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
-	<20250807014442.3829950-27-pasha.tatashin@soleen.com>
-	<20250811231107.GA2328988.vipinsh@google.com>
-Date: Wed, 13 Aug 2025 14:42:47 +0200
-Message-ID: <mafs0sehvwfy0.fsf@kernel.org>
+	<20250807014442.3829950-30-pasha.tatashin@soleen.com>
+	<CA+CK2bAP-PWkYtZbw8ofhTgDaW3qoQkNob30wWSjidxEUTV4pg@mail.gmail.com>
+Date: Wed, 13 Aug 2025 14:44:03 +0200
+Message-ID: <mafs0o6sjwfvw.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A3008C000D
+X-Stat-Signature: pe1aj4wwr5eg8at71w97c9coyj85a6z8
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 84768180006
-X-Stat-Signature: jjdpmc4a4iw6f3ken8iig6xbupayxue5
-X-HE-Tag: 1755088978-380344
-X-HE-Meta: U2FsdGVkX1+ftWN5DYa1dtE87DuWyuUO1wdTv79R8DOf/QPf2quq15d+wWdNVD+VLzmW81w+6QJH7gkBAnGLxvY1aSiTt8ew87I+W/6TjpIbwNI2TgkYRan+cYlzi8Izrqksv4WWDIWtck5SoN7Mq8bSF+4kS6MoxAE23xpcLY8SY5Zr/ncPWPCgTNcgD4i5Rs1pVN8UNi86Pk7+0rynyqeaGQZtFEqfHf4llK+Rls0MX/0G9XDrViSTeGRVKN6uTNu23OwXIVh5iN30zb/Qh+dO4QdcQcRkfw9H5UPYHNkq71AK4+kj6HLhkRZvhOaF9MYcKjpqShcwjyijNFw8BZ2JUcrlMCuuCH2tM9F9hnmONkak0KD9cYNbVB846Y0FZC1Lb4u0IMNZhj3PSuF1jxA2n+XoJq9bpx1qKccEM/3KfoWSEltrrr+XtywIjJOitPQ26niSlPuBizoJNSm/TCkfDGMQKj4SRuWFMqPKO0/CH3SxtSITzGm1k3+IjuPW8IKIzpE+VGvW/zLoZJtLtZdE7/qLlrCSJhdIxRKTk+IyvTgvI4W5s2RoQldpyE9BbCQQT9imKKHKXCo48iVuhjNAybAMzMUaxy3gAe5J4VjQRbOizUds5qTFY4eny7J/FV/x1fytWEHbUd9yYAeUynkGTlOeOFk2kGHhbrcwoHM/66xLaJkk9LvdlVtFqTXiSwV4lOKDLEOlsL/7+nbvok9/H4/o21o4jXPr3eO6/jfoRJEBRhgPD8C+3gtvg47/UVfTBfFr4RS6D17KM922CAGCYEk4o1groNszqhBloFhnO8gD/xo2207TSeT3bFjJkZjjXHdnwqpAfP77hIh4CifhRAwbr+SAMKsdyHXkS3ufu2WUs2wgzFHBOL5QjG39BUROfWgVR4xoYTUdc9yAp7dEQSwSrlpGGrhysUqKPNTy2JyxVYSnjOKsYDAETICZr7vYhITYanEfLgHxhfK
- nwYgni3V
- rE4ZR+ROAytvV4T+BqDSSLWQAqZjUOFaK/aa3YZ6CMmEf8gbBBw/i5SddK4jKFLYzCxijItbclX84Z7EGezreo3N18sMuz/XZxxR01ACJyE20XrbFfoyp3n/5xC5B9oTH5cDs1JwM5d0g+QnF5g4GCRAU9E/riiDJZNbdDfBYPjfo6wQLz6S5WglYEhKt2QIS1i1Xxh5oqRAgRVWXOUKKLlj/2JH5yc+JgpyQ79UCOQjKNvgwLplW6UITKYeGvL29Gvf1oZLZe8l/cnNdX21b3Oit8BeZRh27s6N4CbsxNzTtw1RPrJUjwtUj0Q==
+X-HE-Tag: 1755089054-726439
+X-HE-Meta: U2FsdGVkX19DXrNtUXoF6ZTyeQw5Bhk4XSzUp7Izhxqoh4Ltg/32e1FJ8Az5ByoOIb8RMqjVgdtE5Yu1nos8+XY3A0IhwnD/fWfTNqy28V2Rgz0+BeFLRHeaIDPIuD4FhT4VANY9AR9K4tNEAYiDnRQ+SZKggXCVP4a4dspIcF5urDTLjZOhu4evBjTaRmWYRzcbdo5xUUt/eeF5ECW5DKmlt2OTJh5cVpqUaqa8rVMaQldIRLdx2kD4Qp1GslMqPqiC5PMSMcxaTayoxBVmKPrIbFtTRS3i6Rl4LjLfO+V9rCI3Zz9pjsgsBeaV/4i1ehRMKa4/TpdDPgJaHsaBBrHcZmqWpRe1GVIC1rBZFiUjzXsVerJDUA98PzMkWoE93H8m37PyBxPzyOwpPt+uJOfgeuxXtUYdkiEGYC5cZtE1G7zTx6ej2lXPuwgRuVHmbnSuFSZzEf7nYqgVHlOhP3BX6LVJE/ZIYE1VqE4Lpck3TgJr7sL1jMIV3fU+OlYpQIUUUllw7GYu0m4R1tQX9hc9MUnSZI5G92UtnK4ell2YehG16aohra08hHDvy10RGA7RRQLssYNwGJOZAz32tQwm0FCdea3xh/+o4IMtvgdJmE/acFDltVnQdtbw9FRdMeVs0XXw9SukrQLzdWQ7XW6mAQf1kgm66CviB+dO2Ppd+gUke06KaOPEFy2jP0ILUoEdlSik6DWMnzSYdTyP2QaB6AJ7ilgYKsaOis6POy81lUbQC3xwdTO0W3j8ZLfryyKojMA7eWB1CikVFFEh4qAC3+zL5hnrJQZ/CI79FJnW1Mf673doTFsTrnrn//Z8SjpJG97/1SyJH9uBkbUz/dolL4+7eqATmsoexpg367XMn+Mgz53bs1kr9lj8+RFaLCldrnz94dTpbh+oCel+TV4F62LPdesOuqsK7nAXVvsfejufIj81/NOA121Rx4Hm3e/ACPOg5rUbq1PtLA9
+ voul6MgA
+ xSZIkn2FYkX1gDHXsbdCChv55Q8dJB5ho4Q369Ix9swI5J3js2RO2CtPgI9+sy3enO5wZ5cJFZDUGmWOCc0E8fbBsVDnTRP8xowZCkMfFkHGlSSS6ZnvEERBhT4QpxK4r/Vz6vzo6p+iYiuGbzC8GdsO/HAxFjS/fMyQgAEtBqnPfRIkqdyW6gLPrT7WmZoLVe5Eb+Y3Rsk0c/1loOvY1p37yycmSYua+/KN7Zupv7Izz34Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,68 +116,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 11 2025, Vipin Sharma wrote:
+On Fri, Aug 08 2025, Pasha Tatashin wrote:
 
-> On 2025-08-07 01:44:32, Pasha Tatashin wrote:
->> From: Pratyush Yadav <ptyadav@amazon.de>
->> @@ -3123,7 +3123,9 @@ static struct inode *__shmem_get_inode(struct mnt_idmap *idmap,
->>  	spin_lock_init(&info->lock);
->>  	atomic_set(&info->stop_eviction, 0);
->>  	info->seals = F_SEAL_SEAL;
->> -	info->flags = flags & VM_NORESERVE;
->> +	info->flags = 0;
+>> +static int memfd_luo_preserve_folios(struct memfd_luo_preserved_folio *pfolios,
+>> +                                    struct folio **folios,
+>> +                                    unsigned int nr_folios)
+>> +{
+>> +       unsigned int i;
 >
-> This is not needed as the 'info' is being set to 0 just above
-> spin_lock_init.
+> Should be 'long i'
 >
->> +	if (flags & VM_NORESERVE)
->> +		info->flags |= SHMEM_F_NORESERVE;
+> Otherwise in err_unpreserve we get into an infinite loop. Thank you
+> Josh Hilke for noticing this.
+
+Good catch! Will fix.
 >
-> As info->flags will be 0, this can be just direct assignment '='.
-
-I think it is a bit more readable this way.
-
-Anyway, I don't have a strong opinion, so if you insist, I'll change
-this.
-
->
->>  	info->i_crtime = inode_get_mtime(inode);
->>  	info->fsflags = (dir == NULL) ? 0 :
->>  		SHMEM_I(dir)->fsflags & SHMEM_FL_INHERITED;
->> @@ -5862,8 +5864,10 @@ static inline struct inode *shmem_get_inode(struct mnt_idmap *idmap,
->>  /* common code */
->>  
->>  static struct file *__shmem_file_setup(struct vfsmount *mnt, const char *name,
->> -			loff_t size, unsigned long flags, unsigned int i_flags)
->> +				       loff_t size, unsigned long vm_flags,
->> +				       unsigned int i_flags)
->
-> Nit: Might be just my editor, but this alignment seems off.
-
-Looks fine for me:
-https://gist.github.com/prati0100/a06229ca99cac5aae795fb962bb24ac5
-
-Checkpatch also doesn't complain. Can you double-check? And if it still
-looks off, can you describe what's wrong?
-
->
->>  {
->> +	unsigned long flags = (vm_flags & VM_NORESERVE) ? SHMEM_F_NORESERVE : 0;
->>  	struct inode *inode;
->>  	struct file *res;
->>  
->> @@ -5880,7 +5884,7 @@ static struct file *__shmem_file_setup(struct vfsmount *mnt, const char *name,
->>  		return ERR_PTR(-ENOMEM);
->>  
->>  	inode = shmem_get_inode(&nop_mnt_idmap, mnt->mnt_sb, NULL,
->> -				S_IFREG | S_IRWXUGO, 0, flags);
->> +				S_IFREG | S_IRWXUGO, 0, vm_flags);
->>  	if (IS_ERR(inode)) {
->>  		shmem_unacct_size(flags, size);
->>  		return ERR_CAST(inode);
->> -- 
->> 2.50.1.565.gc32cd1483b-goog
->> 
+>> +       int err;
+>> +
+>> +       for (i = 0; i < nr_folios; i++) {
+>> +               struct memfd_luo_preserved_folio *pfolio = &pfolios[i];
+>> +               struct folio *folio = folios[i];
+>> +               unsigned int flags = 0;
+>> +               unsigned long pfn;
+>> +
+>> +               err = kho_preserve_folio(folio);
+>> +               if (err)
+>> +                       goto err_unpreserve;
+>> +
+>> +               pfn = folio_pfn(folio);
+>> +               if (folio_test_dirty(folio))
+>> +                       flags |= PRESERVED_FLAG_DIRTY;
+>> +               if (folio_test_uptodate(folio))
+>> +                       flags |= PRESERVED_FLAG_UPTODATE;
+>> +
+>> +               pfolio->foliodesc = PRESERVED_FOLIO_MKDESC(pfn, flags);
+>> +               pfolio->index = folio->index;
+>> +       }
+>> +
+>> +       return 0;
+>> +
+>> +err_unpreserve:
+>> +       i--;
+>> +       for (; i >= 0; i--)
+>> +               WARN_ON_ONCE(kho_unpreserve_folio(folios[i]));
+>> +       return err;
+>> +}
+>> +
 
 -- 
 Regards,
