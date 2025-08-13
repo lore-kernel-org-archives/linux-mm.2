@@ -2,86 +2,86 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E6266CA0EC4
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 03:53:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AB640C87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 03:53:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5550B8E01AC; Tue, 12 Aug 2025 23:52:42 -0400 (EDT)
+	id 217558E01AE; Tue, 12 Aug 2025 23:52:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C46C8E01AE; Tue, 12 Aug 2025 23:52:42 -0400 (EDT)
+	id 1F1D28E01AD; Tue, 12 Aug 2025 23:52:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28B4C8E01AD; Tue, 12 Aug 2025 23:52:42 -0400 (EDT)
+	id 0B8AF8E01AE; Tue, 12 Aug 2025 23:52:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EE3FE8E01AC
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 23:52:41 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B78CF1A0237
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 03:52:41 +0000 (UTC)
-X-FDA: 83770362522.29.6AE1DA3
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5DF0A40007
+	by kanga.kvack.org (Postfix) with ESMTP id E0AAC8E01AD
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 23:52:42 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B7D6B1DB52B
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 03:52:42 +0000 (UTC)
+X-FDA: 83770362564.01.49D4D1F
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 56A07140009
 	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 03:52:39 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
+Authentication-Results: imf26.hostedemail.com;
 	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.189 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf26.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755057160;
+	s=arc-20220608; t=1755057161;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/N14Wv2Xz6Bd/pJRq7HG8hZChBxj9fG+V3OLKyykvPY=;
-	b=Q3zC3jUNO7BEA6AWc/nofNmndXr/rvQwXFN3a32H7kSv6nUb0nG7PuLJBV8bl5HmsQ5xec
-	AvndOnF+gIG4BljbdPUq3YnTJRx6arLW4YM7nBwbBe+UfnjghAZ042MDaLmnjzORNSAHMs
-	ZYknDA8KD/S623EgoPFSPtZaftifplc=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.189 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755057160; a=rsa-sha256;
+	bh=OBE1hvg1Cl34Iv4to1jswOCIl9QBO3y3HYi/ztK292M=;
+	b=YXDQZE19tRQ9XTAWrf4fRC7QSdJCfh0c7TlX9+55WKbkDWF6TDcG/E5cdcMZ4n6Q9EiZNw
+	Jhz1edrwV/ymxJR6McHyItMrui8DGTbYxcD4fpKtx8fhpm2dS5loVauvLEziwcr/8OKEj3
+	joPEr4XyhzGXsQQwYkXVJz1ugADtP3s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755057161; a=rsa-sha256;
 	cv=none;
-	b=ZQrUMiN6dPov/ZiSU5r8GgLCdnJqKtqt6wYtmqq+8MLp6OVaYOPbZMVOXK7tBfzZiAeLux
-	ug4A61NyLkB/u7BTOeTP/Onl8Wiu/pLdAxGmHdqv/IuSTTPknfdcq+aK3a861WHYd6Iyxb
-	r0bOB8XoWf1KJCfHKu0Ry2gJFXjSgZ4=
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4c1vV82RYxzdcD3;
-	Wed, 13 Aug 2025 11:48:16 +0800 (CST)
+	b=fcxWL5LQsq8NQJn5DTS+a+dI//SJCklSOQCBP+X9pbf9s+HcQZrR2tuGwCCEjHHFTtuWUq
+	+5I5kbN3mL5xXW+MKQ5cbr+joVBkea/4Yo094W4B2bDQe0QYLoQO1TFUtk5smveCdF6Zpz
+	HSCF28T+NQp2/fNcYg+Y35NL4MmfGns=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf26.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4c1vWv5tP6z1R902;
+	Wed, 13 Aug 2025 11:49:47 +0800 (CST)
 Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1B457180B62;
-	Wed, 13 Aug 2025 11:52:36 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id AB8D114027A;
+	Wed, 13 Aug 2025 11:52:37 +0800 (CST)
 Received: from huawei.com (10.175.113.32) by dggpemf200018.china.huawei.com
  (7.185.36.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 13 Aug
- 2025 11:52:35 +0800
+ 2025 11:52:36 +0800
 From: Quanmin Yan <yanquanmin1@huawei.com>
 To: <sj@kernel.org>
 CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
 	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
 	<yanquanmin1@huawei.com>, <wangkefeng.wang@huawei.com>, <zuoze1@huawei.com>
-Subject: [RFC PATCH -next 09/16] Docs/admin-guide/mm/damon/usage: document addr_unit file
-Date: Wed, 13 Aug 2025 13:06:59 +0800
-Message-ID: <20250813050706.1564229-10-yanquanmin1@huawei.com>
+Subject: [RFC PATCH -next 11/16] mm/damon: add addr_unit for DAMON_RECLAIM and LRU_SORT
+Date: Wed, 13 Aug 2025 13:07:01 +0800
+Message-ID: <20250813050706.1564229-12-yanquanmin1@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250813050706.1564229-1-yanquanmin1@huawei.com>
 References: <20250813050706.1564229-1-yanquanmin1@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Originating-IP: [10.175.113.32]
 X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
  dggpemf200018.china.huawei.com (7.185.36.31)
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5DF0A40007
-X-Rspamd-Server: rspam06
-X-Stat-Signature: a1ygbgh37k8fws1b5r3sz8j6mth4ucar
-X-HE-Tag: 1755057159-766582
-X-HE-Meta: U2FsdGVkX18OO9MF12jnI2cqGeb0SejqtAwdNmqOjFoNzeaJq3yIN6l5IikwmX0gU/m2dEWBd09i1cHcpEYqTjYKtVMmXTtkPRNnXEDoZzut2JpwPyTT5ahbDvmFPeEvXwMYi8I1e/gf4Cm//JRNQE3fHS+SQVdD7n9DFkUhHriXbjO0ylRS6UcOPCEgHacmBaiQGuwTJftsNW8ehY/Ssdk5kgIw8IOHAMJ+nUNrzZ5RNHjoePtbgwo/4tllsSdbECbeGC3SagkY7EWL45GOoJVL8tgHD9c1lJ4PnxsLjcUbPcw7CWwBzZWV3OCbbEWtlE62uw9Pxz8yxPCwCS2DSDkMg4ef8miUlADr9QYkBgNVQcZvX/C9hCTOqfT1Pz078Kr45pboRMhlWcv/LCB/MKPl7UMYITLbmixgjiHobbtuWsABn1uWknswBDk7i+xwUxtB/ZbxbNZAJIhCLAtoWLzddfD0AHTR+G0yOg/yBUzEmvXH99iidEJCBRSopx2oCbL0qJOH9YLeFUHziv2aR02dxMDva3dnN9pKZY92JpMRT1z7VD/8ldbANrJ644ynXx1WIc7P9GenJYKHDuiKACHYoB8Ai3m7ajDi1fg2wbZMzbpXQ2r3iaFOL8DgdIRJLjuuQCtnv1O5vd0htzX43V7sh3LmJtDN9lVliAumSAZK3mzzZ0w0XSONFTEyVSseK7zcqd0rPpHTBQuEqFiMUKvkVfDkbSSXvhOF/9dZRpg3uNhk1fZrWn8hIp3h8Ukqe1l855mDfPYIwZxZPXBnHG0gAiMfMzOTeoiwiPWsNb6pjnp/N+iQ+TN10PDo9eF0CJexqt/RUEgOicGq5dyDg7xLkWhN74CjTRLsk6KCBAn0/YeHXGKVH1+140iUl4659A9xxfi+vqd6UposmFDgrMl7ixJ+7ETZKeKVKeZQeBPyM81UQqaiEoLrSFMsfqrZPrMFVMnpwPpucotcH1c
- 1/yv2MU9
- yeUjFR7Ene+pcoiBgfIm9R+SzQ88nSaQ9MonIxvPVeAuhD/PZ3XhFejzrEaRDKlxI8silbrjDXIPm+g6wUVsX/xR+36ffj6BcFMO3WsfMf+pW5Wn2Br5k9VOe5IvG3QKDF4r3N3nQbiDlpbqa5qioBvF0W4vflYuUKn+F3+xyqLzyN6Vtz9YSUr3ZwRrDjCHHXGzlScSkLwfmL4Bg3CTPDpvvxAr0Nk1nnaRZYTnUzPyeXo6GGNf3+KuVWd1DlSvtekJmrac/upt3hDIVN8LMPrFWB+N0ctIJu96agDzdZkYYZPG34RueRI1GPg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 56A07140009
+X-Stat-Signature: g9iqtqsqy6ixsjohdtz7ws91e5dkarai
+X-HE-Tag: 1755057159-504027
+X-HE-Meta: U2FsdGVkX1/yoNNXW4UlJQFa6eJb7MoLPACRjV+lvqO95AyDEwrU1p5JDhyfS1CqpIWVziwrsEZZaIt+Ra9kxFbhvv7rpDXCMwkpAYdOA8IGuf6vpiW2CBUfAA0Pebt+3jLp7tNyYuxUFA/QxvxaKfpKjtOLl7GTkor75YgfmVike6S1gCnMufmeAkd//nXT/KzuelWUV2cXj5bPc9UwAL9yOS5yjUJlnqaBZxV7fMuA3GUFIfPGxt7oU6O1UfR6a/KOR/niDEQmKwhnNqQkpxiyonRxLDORPCTgFAXc88t9XM8knVl4mi04lunygzG7pEFrIRr/Bb8jG380D+YhfIMUZoYJvloNs07ETiPY2AKKQEcyBp17JQWjevphwCMd5b4JtIvFjKdQwYiMj3Yk9ZILHWyZ54LmhtmfKB9y9shwDzLJjUgOS0fuBzMdRYfBVCUua4DQPIBUFi/YSkG7yUCgLxDgFUJGoMwXOL1CQGBR77BXZV9EOw5AB9Rhe/rfzr70Xnm3gs/KYq5rbhW49RXqu4uWGEZvmolZ93gRMmh8U3l8Dg3TfCZ7S88j3HxDXfIb5CSYnnkN2gy6ZyDc0iu595M9582//fzOwk59STy1axqDqD3kqTTKki/k67FyVcjpZalURvAHll9/KCLf2m0GKsgI3IZckkqImVyZn7Ih9dKG70CmGqu6iSMGDYl6AYScNLtPiD5v8ZCz8UqU4Zna18Nxearw08mNl2Z3jmdgTgSjfdrrw0GgOVK5gtWlsOgLcvJDMXPyeDHvTaaBgFtiNMJ+wglMXLwxF5q4umifkNF7Oma5zrDShzOuTjXFA3H/DTwq/3edgHTpSBHg1Yfn6ps+W1SubKSrobcNyT1nqIl8HnpmLgwUFpdUivCm6VNLnbUMh3aiJF1GwPLipXZaxM+XVV9VooSUfj5TvsgQybWeBz5yEJE9n9WZlwZ6pdN7y1IZYyBDQD3Bqo0
+ wbPTSdVt
+ 7KpEjQoXV0PKZeECxjIHBn727DHHGwh00ZythCOLsxFvmNEraDujYe/YIn9XhPssPY7Up/P3DBaXGlSv9skTnMvDrO70yGjKEXqwkYy9UggPJ2fOBiSgiqmWsybQY3Q8x3xL7GICBUOCqLDEG4X/y2LTYlypFJoGWu3RcnVN0426sUtHDx74NHx6NlbYInzHBdklnsNxnkicgKP3k9eg0Y9DNRzTyxmZq+mdD/9mCAuCBZeE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,65 +90,221 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: SeongJae Park <sj@kernel.org>
+In module DAMON_RECLAIM and DAMON_LRU_SORT, the damon_ctx is
+independent of the core, necessitating dedicated addr_unit
+integration for these features.
+Additionally, if the input monitor_region_start and monitor_region_end
+are both 0 while addr_unit is set to a non-zero valuethe default
+system RAM range should be divided by addr_unit.
 
-Document addr_unit DAMON sysfs file on DAMON usage document.
-
-Signed-off-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
 ---
- Documentation/admin-guide/mm/damon/usage.rst | 11 +++++++----
- Documentation/mm/damon/design.rst            |  2 ++
- 2 files changed, 9 insertions(+), 4 deletions(-)
+ include/linux/damon.h     |  4 +++-
+ mm/damon/core.c           | 14 ++++++++++----
+ mm/damon/lru_sort.c       | 16 +++++++++++++---
+ mm/damon/modules-common.c |  5 ++++-
+ mm/damon/modules-common.h |  2 +-
+ mm/damon/reclaim.c        | 16 +++++++++++++---
+ mm/damon/stat.c           |  2 +-
+ 7 files changed, 45 insertions(+), 14 deletions(-)
 
-diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
-index ff3a2dda1f02..2cae60b6f3ca 100644
---- a/Documentation/admin-guide/mm/damon/usage.rst
-+++ b/Documentation/admin-guide/mm/damon/usage.rst
-@@ -61,7 +61,7 @@ comma (",").
-     │ :ref:`kdamonds <sysfs_kdamonds>`/nr_kdamonds
-     │ │ :ref:`0 <sysfs_kdamond>`/state,pid,refresh_ms
-     │ │ │ :ref:`contexts <sysfs_contexts>`/nr_contexts
--    │ │ │ │ :ref:`0 <sysfs_context>`/avail_operations,operations
-+    │ │ │ │ :ref:`0 <sysfs_context>`/avail_operations,operations,addr_unit
-     │ │ │ │ │ :ref:`monitoring_attrs <sysfs_monitoring_attrs>`/
-     │ │ │ │ │ │ intervals/sample_us,aggr_us,update_us
-     │ │ │ │ │ │ │ intervals_goal/access_bp,aggrs,min_sample_us,max_sample_us
-@@ -188,9 +188,9 @@ details).  At the moment, only one context per kdamond is supported, so only
- contexts/<N>/
- -------------
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index b85c6c669cd0..1b7b4cf1a3c5 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -942,7 +942,9 @@ int damon_call(struct damon_ctx *ctx, struct damon_call_control *control);
+ int damos_walk(struct damon_ctx *ctx, struct damos_walk_control *control);
  
--In each context directory, two files (``avail_operations`` and ``operations``)
--and three directories (``monitoring_attrs``, ``targets``, and ``schemes``)
--exist.
-+In each context directory, three files (``avail_operations``, ``operations``
-+and ``addr_unit``) and three directories (``monitoring_attrs``, ``targets``,
-+and ``schemes``) exist.
+ int damon_set_region_biggest_system_ram_default(struct damon_target *t,
+-				unsigned long *start, unsigned long *end);
++						unsigned long *start,
++						unsigned long *end,
++						unsigned long addr_unit);
  
- DAMON supports multiple types of :ref:`monitoring operations
- <damon_design_configurable_operations_set>`, including those for virtual address
-@@ -205,6 +205,9 @@ You can set and get what type of monitoring operations DAMON will use for the
- context by writing one of the keywords listed in ``avail_operations`` file and
- reading from the ``operations`` file.
+ #endif	/* CONFIG_DAMON */
  
-+``addr_unit`` file is for setting and getting the :ref:`address unit
-+<damon_design_addr_unit>` parameter of the operations set.
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 1a8d3009d606..803c30f64b94 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2714,6 +2714,7 @@ static bool damon_find_biggest_system_ram(unsigned long *start,
+  * @t:		The monitoring target to set the region.
+  * @start:	The pointer to the start address of the region.
+  * @end:	The pointer to the end address of the region.
++ * @addr_unit:	Scale factor for core to ops address conversion.
+  *
+  * This function sets the region of @t as requested by @start and @end.  If the
+  * values of @start and @end are zero, however, this function finds the biggest
+@@ -2724,16 +2725,21 @@ static bool damon_find_biggest_system_ram(unsigned long *start,
+  * Return: 0 on success, negative error code otherwise.
+  */
+ int damon_set_region_biggest_system_ram_default(struct damon_target *t,
+-			unsigned long *start, unsigned long *end)
++						unsigned long *start,
++						unsigned long *end,
++						unsigned long addr_unit)
+ {
+ 	struct damon_addr_range addr_range;
+ 
+ 	if (*start > *end)
+ 		return -EINVAL;
+ 
+-	if (!*start && !*end &&
+-		!damon_find_biggest_system_ram(start, end))
+-		return -EINVAL;
++	if (!*start && !*end) {
++		if (!damon_find_biggest_system_ram(start, end) || !addr_unit)
++			return -EINVAL;
++		*start /= addr_unit;
++		*end /= addr_unit;
++	}
+ 
+ 	addr_range.start = *start;
+ 	addr_range.end = *end;
+diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+index 151a9de5ad8b..8107d08c5e4b 100644
+--- a/mm/damon/lru_sort.c
++++ b/mm/damon/lru_sort.c
+@@ -111,6 +111,14 @@ module_param(monitor_region_start, ulong, 0600);
+ static unsigned long monitor_region_end __read_mostly;
+ module_param(monitor_region_end, ulong, 0600);
+ 
++/*
++ * Scale factor for DAMON_LRU_SORT to ops address conversion.
++ *
++ * This parameter is used to convert to the actual physical address.
++ */
++static unsigned long addr_unit __read_mostly = 1;
++module_param(addr_unit, ulong, 0600);
 +
- .. _sysfs_monitoring_attrs:
+ /*
+  * PID of the DAMON thread
+  *
+@@ -194,7 +202,8 @@ static int damon_lru_sort_apply_parameters(void)
+ 	unsigned int hot_thres, cold_thres;
+ 	int err;
  
- contexts/<N>/monitoring_attrs/
-diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-index cffa320ead88..fd183cd09ef2 100644
---- a/Documentation/mm/damon/design.rst
-+++ b/Documentation/mm/damon/design.rst
-@@ -135,6 +135,8 @@ the interference is the responsibility of sysadmins.  However, it solves the
- conflict with the reclaim logic using ``PG_idle`` and ``PG_young`` page flags,
- as Idle page tracking does.
+-	err = damon_modules_new_paddr_ctx_target(&param_ctx, &param_target);
++	err = damon_modules_new_paddr_ctx_target(&param_ctx, &param_target,
++			addr_unit);
+ 	if (err)
+ 		return err;
  
-+.. _damon_design_addr_unit:
+@@ -221,7 +230,8 @@ static int damon_lru_sort_apply_parameters(void)
+ 
+ 	err = damon_set_region_biggest_system_ram_default(param_target,
+ 					&monitor_region_start,
+-					&monitor_region_end);
++					&monitor_region_end,
++					addr_unit);
+ 	if (err)
+ 		goto out;
+ 	err = damon_commit_ctx(ctx, param_ctx);
+@@ -323,7 +333,7 @@ MODULE_PARM_DESC(enabled,
+ 
+ static int __init damon_lru_sort_init(void)
+ {
+-	int err = damon_modules_new_paddr_ctx_target(&ctx, &target);
++	int err = damon_modules_new_paddr_ctx_target(&ctx, &target, 1);
+ 
+ 	if (err)
+ 		goto out;
+diff --git a/mm/damon/modules-common.c b/mm/damon/modules-common.c
+index 86d58f8c4f63..613b7cc99368 100644
+--- a/mm/damon/modules-common.c
++++ b/mm/damon/modules-common.c
+@@ -13,9 +13,10 @@
+  * Allocate, set, and return a DAMON context for the physical address space.
+  * @ctxp:	Pointer to save the point to the newly created context
+  * @targetp:	Pointer to save the point to the newly created target
++ * @addr_unit:	Scale factor for modules to ops address conversion.
+  */
+ int damon_modules_new_paddr_ctx_target(struct damon_ctx **ctxp,
+-		struct damon_target **targetp)
++		struct damon_target **targetp, unsigned long addr_unit)
+ {
+ 	struct damon_ctx *ctx;
+ 	struct damon_target *target;
+@@ -24,6 +25,8 @@ int damon_modules_new_paddr_ctx_target(struct damon_ctx **ctxp,
+ 	if (!ctx)
+ 		return -ENOMEM;
+ 
++	ctx->addr_unit = addr_unit;
 +
- Address Unit
- ------------
+ 	if (damon_select_ops(ctx, DAMON_OPS_PADDR)) {
+ 		damon_destroy_ctx(ctx);
+ 		return -EINVAL;
+diff --git a/mm/damon/modules-common.h b/mm/damon/modules-common.h
+index f103ad556368..c7048a449321 100644
+--- a/mm/damon/modules-common.h
++++ b/mm/damon/modules-common.h
+@@ -46,4 +46,4 @@
+ 			0400);
  
+ int damon_modules_new_paddr_ctx_target(struct damon_ctx **ctxp,
+-		struct damon_target **targetp);
++		struct damon_target **targetp, unsigned long addr_unit);
+diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
+index 3c71b4596676..0e11b121d693 100644
+--- a/mm/damon/reclaim.c
++++ b/mm/damon/reclaim.c
+@@ -128,6 +128,14 @@ module_param(monitor_region_start, ulong, 0600);
+ static unsigned long monitor_region_end __read_mostly;
+ module_param(monitor_region_end, ulong, 0600);
+ 
++/*
++ * Scale factor for DAMON_RECLAIM to ops address conversion.
++ *
++ * This parameter is used to convert to the actual physical address.
++ */
++static unsigned long addr_unit __read_mostly = 1;
++module_param(addr_unit, ulong, 0600);
++
+ /*
+  * Skip anonymous pages reclamation.
+  *
+@@ -190,7 +198,8 @@ static int damon_reclaim_apply_parameters(void)
+ 	struct damos_filter *filter;
+ 	int err;
+ 
+-	err = damon_modules_new_paddr_ctx_target(&param_ctx, &param_target);
++	err = damon_modules_new_paddr_ctx_target(&param_ctx, &param_target,
++			addr_unit);
+ 	if (err)
+ 		return err;
+ 
+@@ -229,7 +238,8 @@ static int damon_reclaim_apply_parameters(void)
+ 
+ 	err = damon_set_region_biggest_system_ram_default(param_target,
+ 					&monitor_region_start,
+-					&monitor_region_end);
++					&monitor_region_end,
++					addr_unit);
+ 	if (err)
+ 		goto out;
+ 	err = damon_commit_ctx(ctx, param_ctx);
+@@ -327,7 +337,7 @@ MODULE_PARM_DESC(enabled,
+ 
+ static int __init damon_reclaim_init(void)
+ {
+-	int err = damon_modules_new_paddr_ctx_target(&ctx, &target);
++	int err = damon_modules_new_paddr_ctx_target(&ctx, &target, 1);
+ 
+ 	if (err)
+ 		goto out;
+diff --git a/mm/damon/stat.c b/mm/damon/stat.c
+index 87bcd8866d4b..ae7377e7409f 100644
+--- a/mm/damon/stat.c
++++ b/mm/damon/stat.c
+@@ -181,7 +181,7 @@ static struct damon_ctx *damon_stat_build_ctx(void)
+ 	if (!target)
+ 		goto free_out;
+ 	damon_add_target(ctx, target);
+-	if (damon_set_region_biggest_system_ram_default(target, &start, &end))
++	if (damon_set_region_biggest_system_ram_default(target, &start, &end, ctx->addr_unit))
+ 		goto free_out;
+ 	return ctx;
+ free_out:
 -- 
 2.34.1
 
