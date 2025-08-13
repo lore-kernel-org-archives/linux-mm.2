@@ -2,86 +2,86 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E4BCFCA0EE0
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 06:28:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D79C1C87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 06:28:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 837C090003F; Wed, 13 Aug 2025 02:28:01 -0400 (EDT)
+	id 76E8B900040; Wed, 13 Aug 2025 02:28:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E2298E01B6; Wed, 13 Aug 2025 02:28:01 -0400 (EDT)
+	id 71EC28E01B6; Wed, 13 Aug 2025 02:28:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D0C690003F; Wed, 13 Aug 2025 02:28:01 -0400 (EDT)
+	id 5E715900040; Wed, 13 Aug 2025 02:28:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 569FF8E01B6
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 02:28:01 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 21440B7E4D
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 06:28:01 +0000 (UTC)
-X-FDA: 83770753962.26.82DB11E
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf19.hostedemail.com (Postfix) with ESMTP id DF6AE1A0006
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 06:27:58 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=CID4lWrm;
-	spf=pass (imf19.hostedemail.com: domain of ajd@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ajd@linux.ibm.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 490C18E01B6
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 02:28:09 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0F76414027E
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 06:28:09 +0000 (UTC)
+X-FDA: 83770754298.21.509FC75
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf05.hostedemail.com (Postfix) with ESMTP id AE75910000B
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 06:28:06 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=eupqUGza;
+	spf=pass (imf05.hostedemail.com: domain of ajd@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ajd@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755066479;
+	s=arc-20220608; t=1755066486;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BsQJsGaxcqmvsVIG5QO45P6Jy0ZaCP+miqd9jeaLu1A=;
-	b=f451BLtBiy6Vt1RB0UheRA4ir/BiR0RsEbKBYjBtjv0iYsHwCOZMBOgZN0nzxJg8CDbkxL
-	ZTjBFPXEeVaxp6cNLPHQHSzSMKpRI1XkYNe4ItGkIpQuCfoQ23EtRAGonZ0wdf/oDE0keb
-	9uwwZDPOoydMY7jA54Y2OSF75mZ5C6w=
+	bh=eiXaxF/2FesV3QwgvKJIyZZY1xNNOwJjwTbuT5306No=;
+	b=Phxj2RE6PGJMCnw6WrIKEIy5i+VT44hVbtJiYwplHB67AeY3PTOeuMxvNrQIvatOydmPpp
+	7DYPWBP4w7iCIP9N1VuHJ3VMxrife1F/NmXin8zcDZNIINAFIpGog6hS3ogZ2rz0UNEl6J
+	VtRghOG8FfhK97nUjdX0tR7aMuiyzNM=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=CID4lWrm;
-	spf=pass (imf19.hostedemail.com: domain of ajd@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ajd@linux.ibm.com;
+	imf05.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=eupqUGza;
+	spf=pass (imf05.hostedemail.com: domain of ajd@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ajd@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755066479; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755066486; a=rsa-sha256;
 	cv=none;
-	b=WH5qc36MI1Ei42UUX03vuey60RhiwpuUkQ6czP/K7TK+pDTqFHAZ04/a04CYOOxnAEJlSL
-	YK6HdFf+ui9U2BclsPF+LtTh3V87lmvoJLvISguCPh2NpMF5kFHHiyQmmFE5eGYwXPS+8M
-	+9bd7iLer56RZAbmwxK3oAridUU15XQ=
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57CNQEj0008385;
-	Wed, 13 Aug 2025 06:27:54 GMT
+	b=vn6TiniozA+1rvXsrI/5h7QZZl5+DAdTapqC8VEIF5Hd7Re+xTg0o4ybMyS43yfCR/mgL7
+	TTMQIrbT+ETghU6BzrQLdK/6t1RXj2eyGzZM2xjQ8Y6h2KiIWKa9rCmkajcVVuJykeQsKw
+	mheJgaNur6b3VpbjPOM2JzyeFLUBwOU=
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57CNQDmt015942;
+	Wed, 13 Aug 2025 06:28:01 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=BsQJsGaxcqmvsVIG5
-	QO45P6Jy0ZaCP+miqd9jeaLu1A=; b=CID4lWrm0wGGcKXYczdkZ6A4WoNsFRUG2
-	P7ZoHlfkVjMcE514h7Z7Xu73WM8jMyH71BJ6IoUbQd6jwYnEO+So6NNTOsphvBPr
-	8XvBgb14JZ6rpy+3Zq/hLnmkAF2qzyGtfJGoHVlukPkmcg3HrSI43emfQV4W9dUv
-	e5NeznnQ5e54qunUAQCN6rdPEjWx/6rBl/KkeAsrB3ekeqDRQ13sdNcn1qExVlSq
-	UaZpwlEFMa60hkXpdT5GphW8kv5RCg5eUtWbLuqttz2Q7DBzH8sbQE+swrfWA6n+
-	OzaX/ZEt7NPpB4cDFtpkvKmLNe7NUApjPIUIzlyT5MMNR+gs6FPGA==
+	:mime-version:references:subject:to; s=pp1; bh=eiXaxF/2FesV3Qwgv
+	KJIyZZY1xNNOwJjwTbuT5306No=; b=eupqUGzaOe0LROPmZ8pBHXZ1fPIeEjKKY
+	vW5P/PnB8912HzOj1dGjiQC4Q7xtTlKhuerXQO7YQIiaOH/JbTpH2tR9amAbnoa8
+	6ALA5NK4kzTRygXfsH1BCNLab6+i0RU/pAGDYfH8mS3O+oWlO4MkbkVnH9Z4p4ZM
+	KhP48LlsZmLWQvQsKu3F0d1JGgJsP+aOUdQdauK79150p+pmj0vcIMG/yqiGDi/1
+	UlTLORRgo7Iw8l7Z7c3bbhjEwM1DlOo2AEHjlDNxLBKvrpQ5uHg6Nq0hEBRv92Ln
+	DzL5HX8zQQhGNFFVkKADiUW/zM8IVnvqT5WCucnMZEKXY67RCxueg==
 Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48duruavc6-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48dx14jvny-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 13 Aug 2025 06:27:54 +0000 (GMT)
+	Wed, 13 Aug 2025 06:28:01 +0000 (GMT)
 Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57D1gaat026377;
-	Wed, 13 Aug 2025 06:27:53 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48eh21659n-1
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57D2DcFW026275;
+	Wed, 13 Aug 2025 06:28:00 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48eh2165ab-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 13 Aug 2025 06:27:53 +0000
+	Wed, 13 Aug 2025 06:28:00 +0000
 Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57D6RqUD30999048
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57D6Rw8k30605842
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 13 Aug 2025 06:27:52 GMT
+	Wed, 13 Aug 2025 06:27:58 GMT
 Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E67315805B;
-	Wed, 13 Aug 2025 06:27:51 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 8874C5805F;
+	Wed, 13 Aug 2025 06:27:58 +0000 (GMT)
 Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D440E58067;
-	Wed, 13 Aug 2025 06:27:45 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id A779F58059;
+	Wed, 13 Aug 2025 06:27:52 +0000 (GMT)
 Received: from jarvis.ozlabs.ibm.com.com (unknown [9.36.10.70])
 	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 13 Aug 2025 06:27:45 +0000 (GMT)
+	Wed, 13 Aug 2025 06:27:52 +0000 (GMT)
 From: Andrew Donnellan <ajd@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org
 Cc: akpm@linux-foundation.org, x86@kernel.org, linux-riscv@lists.infradead.org,
@@ -90,44 +90,44 @@ Cc: akpm@linux-foundation.org, x86@kernel.org, linux-riscv@lists.infradead.org,
         nicholas@linux.ibm.com, christophe.leroy@csgroup.eu,
         Rohan McLure <rmclure@linux.ibm.com>,
         Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH v16 10/13] powerpc: mm: Add pud_pfn() stub
-Date: Wed, 13 Aug 2025 16:26:11 +1000
-Message-ID: <20250813062614.51759-11-ajd@linux.ibm.com>
+Subject: [PATCH v16 11/13] powerpc: mm: Implement *_user_accessible_page() for ptes
+Date: Wed, 13 Aug 2025 16:26:12 +1000
+Message-ID: <20250813062614.51759-12-ajd@linux.ibm.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250813062614.51759-1-ajd@linux.ibm.com>
 References: <20250813062614.51759-1-ajd@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 6p78tIu4d1GxeDYW0_yoMYEY7Uv1CVko
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDIyNCBTYWx0ZWRfX7SEwZJR9uMEo
- twnLAjMn1uDuQyNZFvA5mghsluXsrnnNXzdlUz6WtiuS1mzji4hMRYhDtFXzKdsF1+dii5tv0OK
- BXF3GJhRE4Y31srrKALkZx8xNOBm23JXu/foFaUhocmzOkUk8WWqGvVm77BftHaXkfhZ32Na2EN
- yNGLCWhCqEBpUzlnE3kSKahcHr+OemUixZd+rxh6kXeHWoIEKfLtMNfa7vMpjD5zkrgTYDKoJBa
- /G+mhmgKee31fJSwJtZqqRwu5G2dUHERaHLdGVfNOddfx64sKo8ruZRfrSDufbwcUmwYso2UXCF
- 5tAN90eLLoWhejCdoXT2qTEnPXyeG2HHqlMFJumDS3tekxkh1Jb/YEkrLSN0IgLCfZuQz8iC6+F
- mV3/I3lB
-X-Authority-Analysis: v=2.4 cv=QtNe3Uyd c=1 sm=1 tr=0 ts=689c306a cx=c_pps
+X-Proofpoint-ORIG-GUID: vwi9nY3EkfENzDbblq-1gKe2rkFchBw5
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDIyNCBTYWx0ZWRfX43G1C/hRaikI
+ C+ganIrle+xEXUSw66+k17xT19f5rdO2ycX73H2pCk7z78Q0MTK198EKCwGJkTFYPllgwdblZi4
+ Q/cy+RgfCiUbLpaUvMTb7etE7dXtvMH0B8gVJ4ufp/xkHSz1RyiBnG1VVOPeXlxS+Gux9SCOec9
+ OiM+vZPh98e5HIPAh8nn7b3QdFzoH+XAgVKwpA5M0iO3xKNBoU0ozoeCXIqZYcap3JAdV/0xxsi
+ rjPNkIg31q0trK//SegfMUbC0s6T4j5Gce7ht0CMSfpwmGa3xw8rdJLFBL8jY/ErhgryUeSUNe0
+ GktLbr5wfdXPgFCQ1AXoCTuWfJ70mwnjeIyt59aqlDVmI+ACqlXmoars9VPvEvjGSI6gYAmy9U2
+ VtbjNmy9
+X-Proofpoint-GUID: vwi9nY3EkfENzDbblq-1gKe2rkFchBw5
+X-Authority-Analysis: v=2.4 cv=fLg53Yae c=1 sm=1 tr=0 ts=689c3071 cx=c_pps
  a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=7ipKWUHlAAAA:8 a=qzKveJzcHEAUI94IIBQA:9
+ a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=7ipKWUHlAAAA:8 a=a65a1E2n8xkc5m_RgcEA:9
  a=gpc5p9EgBqZVLdJeV_V1:22
-X-Proofpoint-ORIG-GUID: 6p78tIu4d1GxeDYW0_yoMYEY7Uv1CVko
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-12_08,2025-08-11_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 priorityscore=1501 phishscore=0 clxscore=1015 malwarescore=0
- spamscore=0 suspectscore=0 impostorscore=0 bulkscore=0 classifier=typeunknown
+ adultscore=0 clxscore=1015 spamscore=0 priorityscore=1501 impostorscore=0
+ phishscore=0 malwarescore=0 bulkscore=0 suspectscore=0 classifier=typeunknown
  authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
  engine=8.19.0-2507300000 definitions=main-2508120224
-X-Stat-Signature: uu9q1guiioe8qakg4at6q4ikis5arfsg
+X-Stat-Signature: haym857hc14z7wkh4ixzt1bt3s1sij3q
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DF6AE1A0006
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755066478-748358
-X-HE-Meta: U2FsdGVkX1+50+zzZPBqA0V9BCcdxVoHWi91scVhBmPspKMNZlss9MRNYJ39IN+ziQ9LqFf7PcC6/ICAWKqucSln4j0+YCBw9YBBudmuUEzHzUWsV7rZSCeXdCvNWXn0z5MduS/ixYoCipzK/fAhV45rlvgovUa2TswBezpoLY+64zhNuIes+RuHU3orym2G0YpR2sfiE7Luvqkc20A13XelQXhBdmhDv1OMAzgGmzXYmlAraq2+kOOg4NhwfsJPtG7NWiLkJIjik62E2cZ40CmKY8Bsx6DoXgOJlUccToFcK5lqh/mPG6boDC4VoYgxViD5y4g+rQ7VZpSg0PxObsLLtTpBlozWzNJQspJnktdwE5KD6vg//0f0Kk91CEIqEOHT+0V9DrZFqD8BjbSshyZY1tq16PxeEJUREpi7kj0/k6MgXUulj/xVpCAEtI1pUAxao47Jravl42MqPCxeWc9GPHTogPdzYSu8277B+ELCdrenLj8VQwUrU13zszIEn+j7CQ0HKhVvdSahhQDW8UXm+S73uU5qHwF47cOOdJurDM5qNc+s16DPhMwEoOq5RpPTfPGbSvu+mE4ht7HLiartHIuLD2jxj+u2wdThpz7ynBFAbZYZiOkNjALApkabQJxK0agG4CrFTshT5jcTOvauQx5I4aBUW8t8W//ogrJDdgmYyJs+Q4cOifumx3yMN97EbBqw8FYOzPXnnc6vDkoYGwDXM/Y463XRIqnye3TpUZREewl8xWLYtPEOGSYfpF/GLvNTzPvc7fqumJjrN+j370fIakhucFpoNCzWndO+uIwJ0vkrYRRo8fEn7vnsru3uGvsyCAG7HqTky9HWXG9GU7pwTf750lZw00OFbrDtm0TNQfcybM0NPhcUOrygC7LJY9Ar/6o4yZDb7V+Vyb3Ewje9ZPi2UrHkIzXPC+PfGQd3OgB2Z1iTwOBWIr4oVJ5ZoqUgz6hltRYRNuE
- +o4XZ6HH
- XTJlZUSC7phYP+TMMDQ4tBh9unHyQ3atFUwF/7dBJvbnXQ5jmlf/cRld/OsPTLC9ExUxcITgP3CubVCKZEB19QxFOh/wudmEXb81lAFBGYqeGvXS9AgIZPzdlvwuapsS3pspFC1BLwEn6onMzR1j9Yl+FaQu84IXPfsM+nHVNHfyWVN/rECDpYg1f7mpYXWEym93FGJYi+H25wLcFzJhft8rXu7yLqBo9CVhm7hmvBK8DjerEcOjHny7dhTHqqUqiumu3svAD80cYvRO6PwIRGU2aYFHSBZT/iowcwuVjm67hR4ITf0KfH6sqMg==
+X-Rspamd-Queue-Id: AE75910000B
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755066486-420793
+X-HE-Meta: U2FsdGVkX1/hLS9LzHdEpNS6heUZFgfxTFh5IKIzGzdcZ7obI9T8iUvnt/5yh6tFhhW03PM+r4SxP/B7rYxCy6Qq+TZha44grsLI+wUKZIGRwgCNrPpSyimek2LpEtkLGStytcM81WfY8xZ+mhDz/WUeinhsA0yO3PVPIrhsVXn+/lxDgCPDdy23CbWmfCmcolY7w05AQag2yhYMXTzxxEBsE/W+4gif6pBTa8nfgYMpeYotIFBuDeTFiZnZUiTi6tyDhUWuFq0uNBU4niLhCYDepr89AbuZnhEBrBANZhJ/RAggxPz7cbwTuVlPWYwn1TdrCtH/X0sfta7IIrWqB9v1B03M2UMMWXBLsQ2WEHnnXBlQpZhLP9udWsNQSWHH95Y5UiF0taGT3+w6Juk0MXhhSiA7IdxR3ooz06D7IG9969spEBGS++mr35nBOAutazX1c4eOvUYq+1g94+TrdCjcEcLdHwdaPGa7N0yR7epBOiwPLhqz6GxldrjFJAorMBuOsqvtYxi7CfnuUjZqu9x0mA+xR2mkFIcOU7AjrWbalrN5JJ2+LhhTbCk4SLikxUjPJmRWjCUA6BK9k8x8JXBL3Aw8A4WflkTPG9SB9i1TLCf9NSkfhLASQA2ecwrcmNTwdQAc2s0BWRo5Th8UxotykSBHnelQpXKEA1m2qmwB0M8AE9GeMrSb3QsYnHZCTApgmTTxkee1nEdDjJqtYDz6CVbZTimDncs375wBEzoJoF9ZFcWHLzYMesJSfDOfz1lV/E8DzpDsgtvGVm4WLFDX+nC4VEQx2+vviTDQn8VdEmS0cpyL+Wg5qJU+5vW3LFcn6sQM5JA8S9hP4ajhQlc99RybBWl/CRgwB+e/ReyQzsqaU72mao1WiS4X5zBDCxh6aaw/RUQN5iR7VPfmJpe1ALba2noPHpajsAimqtzV551a7hti44O+e5gJwap+1Gr6Kh6/k6gTGrCcUAs
+ NRj+mZu/
+ rtDzDeLhZ5sx07ZX/rd7WhIXmj7bbN+r0ZS2W1sjVFAnzDShsX0YBN4jndXlJ67P1HabFw5lZXCSbXTwUF848A2ZxarUy0ZYJ8GKUxTHbMHL39bu+EgXpAD/yuWviVphtFsruJEf7LoXD1ANrYtmd/SIJszPFfE6vmVxV5CF6oIdSIws2xeCx0o6i7S0HDenpvRyxpY0Qd+XLi7Xv+gFJ428yQQB7LF8h+MwwwO/BN6r5to14+07k2oCPWq6ZnheA+r/MpuGQB+rZHery6bfO5rXRfvHQAb8noAOVqFQMBNEK2lQpHaNJqR/a4A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,35 +138,114 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Rohan McLure <rmclure@linux.ibm.com>
 
-The page table check feature requires that pud_pfn() be defined
-on each consuming architecture. Since only 64-bit, Book3S platforms
-allow for hugepages at this upper level, and since the calling code is
-gated by a call to pud_user_accessible_page(), which will return zero,
-include this stub as a BUILD_BUG().
+Page table checking depends on architectures providing an
+implementation of p{te,md,ud}_user_accessible_page. With
+refactorisations made on powerpc/mm, the pte_access_permitted() and
+similar methods verify whether a userland page is accessible with the
+required permissions.
 
+Since page table checking is the only user of
+p{te,md,ud}_user_accessible_page(), implement these for all platforms,
+using some of the same preliminary checks taken by pte_access_permitted()
+on that platform.
+
+Since commit 8e9bd41e4ce1 ("powerpc/nohash: Replace pte_user() by pte_read()")
+pte_user() is no longer required to be present on all platforms as it
+may be equivalent to or implied by pte_read(). Hence implementations of
+pte_user_accessible_page() are specialised.
+
+[ajd@linux.ibm.com: rebase and fix commit message]
 Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
 Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
 Acked-by: Madhavan Srinivasan <maddy@linux.ibm.com>
 ---
- arch/powerpc/include/asm/pgtable.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/powerpc/include/asm/book3s/32/pgtable.h |  5 +++++
+ arch/powerpc/include/asm/book3s/64/pgtable.h | 17 +++++++++++++++++
+ arch/powerpc/include/asm/nohash/pgtable.h    |  5 +++++
+ arch/powerpc/include/asm/pgtable.h           |  8 ++++++++
+ 4 files changed, 35 insertions(+)
 
+diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/include/asm/book3s/32/pgtable.h
+index 92d21c6faf1e..b225967f85ea 100644
+--- a/arch/powerpc/include/asm/book3s/32/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
+@@ -437,6 +437,11 @@ static inline bool pte_access_permitted(pte_t pte, bool write)
+ 	return true;
+ }
+ 
++static inline bool pte_user_accessible_page(pte_t pte, unsigned long addr)
++{
++	return pte_present(pte) && !is_kernel_addr(addr);
++}
++
+ /* Conversion functions: convert a page and protection to a page entry,
+  * and a page entry and page directory to the page they refer to.
+  *
+diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+index c19800365315..48f3a41317dd 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -539,6 +539,11 @@ static inline bool pte_access_permitted(pte_t pte, bool write)
+ 	return arch_pte_access_permitted(pte_val(pte), write, 0);
+ }
+ 
++static inline bool pte_user_accessible_page(pte_t pte, unsigned long addr)
++{
++	return pte_present(pte) && pte_user(pte);
++}
++
+ /*
+  * Conversion functions: convert a page and protection to a page entry,
+  * and a page entry and page directory to the page they refer to.
+@@ -1381,5 +1386,17 @@ static inline bool is_pte_rw_upgrade(unsigned long old_val, unsigned long new_va
+ 	return false;
+ }
+ 
++#define pmd_user_accessible_page pmd_user_accessible_page
++static inline bool pmd_user_accessible_page(pmd_t pmd, unsigned long addr)
++{
++	return pmd_leaf(pmd) && pte_user_accessible_page(pmd_pte(pmd), addr);
++}
++
++#define pud_user_accessible_page pud_user_accessible_page
++static inline bool pud_user_accessible_page(pud_t pud, unsigned long addr)
++{
++	return pud_leaf(pud) && pte_user_accessible_page(pud_pte(pud), addr);
++}
++
+ #endif /* __ASSEMBLY__ */
+ #endif /* _ASM_POWERPC_BOOK3S_64_PGTABLE_H_ */
+diff --git a/arch/powerpc/include/asm/nohash/pgtable.h b/arch/powerpc/include/asm/nohash/pgtable.h
+index 7d6b9e5b286e..a8bc4f24beb1 100644
+--- a/arch/powerpc/include/asm/nohash/pgtable.h
++++ b/arch/powerpc/include/asm/nohash/pgtable.h
+@@ -243,6 +243,11 @@ static inline bool pte_access_permitted(pte_t pte, bool write)
+ 	return true;
+ }
+ 
++static inline bool pte_user_accessible_page(pte_t pte, unsigned long addr)
++{
++	return pte_present(pte) && !is_kernel_addr(addr);
++}
++
+ /* Conversion functions: convert a page and protection to a page entry,
+  * and a page entry and page directory to the page they refer to.
+  *
 diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
-index 93d77ad5a92f..0f73a9ade0ed 100644
+index 0f73a9ade0ed..d0938e9c33fb 100644
 --- a/arch/powerpc/include/asm/pgtable.h
 +++ b/arch/powerpc/include/asm/pgtable.h
-@@ -214,6 +214,15 @@ static inline bool arch_supports_memmap_on_memory(unsigned long vmemmap_size)
+@@ -223,6 +223,14 @@ static inline int pud_pfn(pud_t pud)
+ }
+ #endif
  
- #endif /* CONFIG_PPC64 */
- 
-+#ifndef pud_pfn
-+#define pud_pfn pud_pfn
-+static inline int pud_pfn(pud_t pud)
-+{
-+	BUILD_BUG();
-+	return 0;
-+}
++#ifndef pmd_user_accessible_page
++#define pmd_user_accessible_page(pmd, addr)	false
++#endif
++
++#ifndef pud_user_accessible_page
++#define pud_user_accessible_page(pud, addr)	false
 +#endif
 +
  #endif /* __ASSEMBLY__ */
