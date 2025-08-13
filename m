@@ -2,241 +2,130 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DE597C87FCF
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 06:21:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 17164C87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 06:27:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 822F18E01C2; Wed, 13 Aug 2025 02:21:34 -0400 (EDT)
+	id A8045900033; Wed, 13 Aug 2025 02:27:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FA988E01B6; Wed, 13 Aug 2025 02:21:34 -0400 (EDT)
+	id A02C28E01B6; Wed, 13 Aug 2025 02:27:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C28A8E01C2; Wed, 13 Aug 2025 02:21:34 -0400 (EDT)
+	id 8F19B900033; Wed, 13 Aug 2025 02:27:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BDA28E01B6
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 02:21:34 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0635282750
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 06:21:34 +0000 (UTC)
-X-FDA: 83770737708.06.932B2F8
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013025.outbound.protection.outlook.com [52.101.83.25])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 264AF20007
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 06:21:29 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=El9ev+RK;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=El9ev+RK;
-	spf=pass (imf03.hostedemail.com: domain of YeoReum.Yun@arm.com designates 52.101.83.25 as permitted sender) smtp.mailfrom=YeoReum.Yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2")
-ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1755066090; a=rsa-sha256;
-	cv=pass;
-	b=7GjVq9LE+qSVmiTFcXAyOixSns59kpWO5kSTKbctcQYA1gx25Gy2bRDb3r8RzZ9cVZlWo2
-	frwXtubSHqEYp3oRH+cc7G+4J5zwxaM+t1KzkUl1rn+OtMYDjT/m5ydqfZTtCy6TbaNzzZ
-	DR+a+ObCB0AkspXtBc6Cf/yYN/tZybI=
-ARC-Authentication-Results: i=3;
-	imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=El9ev+RK;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=El9ev+RK;
-	spf=pass (imf03.hostedemail.com: domain of YeoReum.Yun@arm.com designates 52.101.83.25 as permitted sender) smtp.mailfrom=YeoReum.Yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2")
-ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755066090;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 78D598E01B6
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 02:27:03 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1FC67823E6
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 06:27:03 +0000 (UTC)
+X-FDA: 83770751526.27.97327A3
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf22.hostedemail.com (Postfix) with ESMTP id DFBDBC0006
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 06:27:00 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="qwQS/bPG";
+	spf=pass (imf22.hostedemail.com: domain of ajd@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ajd@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755066421;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7/btdfuEn5mpFbYu6SzHbvZ/cbE5Wfn1/Qs53yMSXro=;
-	b=5IKPfFpfpK8jwawhQJMBqvxv5gfTiwsnQdspPKqvW3q4wg11QWXHCthyVo5RNL+7iIGRut
-	ZzWbaml897GZcPdplcEakLg3vBkwC8aqbOQ29vgEfWoJC7LsRGEsu6TuKJM7PvCd0pzVed
-	8jzBGNE65nexThEI/mXuNLSRIz2/Vzc=
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=SKlVRrV8Q1YhHK2HRb4lW2eudRdp9qOkCJElokgubcUJi9rBqrmH5qEYIF0NGlGJnk47/vY9m7CU5CK0EQyIqUhyFvELZTAKGnXG2wywuCr2bWw01FSiYp0K3lLjiRB8L+eKdfawsXeb4+fvI7mWvOFhHuw1J+VGpDVavDKCod97+9MSVD8lDg8H8vn0MEx4Y4BphT5AgNV/xIX2d4LNRsFEcyU9d0zhti1d+XbmZuT/l53iTtvHanc7tLyc3boE4Jcjz9D3SAmWyjGGYTB/fxafWRw3PnjoXtYR3w7HotIDZti8SEciwpsU7TcvSTJP7zPDNVIpRbWXNLOUBtwMFw==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7/btdfuEn5mpFbYu6SzHbvZ/cbE5Wfn1/Qs53yMSXro=;
- b=Y+VXmoAV03qa3YGhla7YuTIt52nHbeirqF7rliPTM00QcWOEW70OGMAlpnIUe3U8NKyqGPSns2laTX31bEy4+Ki8JqrLv9OwWxL3o7ZdSsVkFdIurBmTgQ9xl5yFWNa4C5nE6TSYTa+eZFvZLgZ2IZiMVjKieIdhSMwPZRfJogVuiU4Roby06ImNstXshQ2FOAaAvRKTlkO0OU5mTCYbGPT9IJG5dsbEHeHDC//lzzsBXGcTTXD5gVfSCzFQgYzVjMWZ0Ub6IAQVYQIRKVXvAD07juZd4okEzapWmSsAe4Zx9rXAmZ4/ONVdDkxJ2SPv3r/As18DiLWzVRm69icF5g==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=gmail.com smtp.mailfrom=arm.com; dmarc=pass
- (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
- (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7/btdfuEn5mpFbYu6SzHbvZ/cbE5Wfn1/Qs53yMSXro=;
- b=El9ev+RKd3l55dMRQxtCY642DMmEp7FzLOGckhlM8dH97Sm4NTfUUP88eJAH6AtF0AFH3Q/kImuk5jHdVQo/FewgI2SEUPHHjfP2gGRENhYMxMhmMIPmpZYUuQ5pO66QPbH8R8ZUSl0rjkJCgAN5+VzKrsVPRdbiQMVseqGa4Oc=
-Received: from PA7P264CA0045.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:34b::7)
- by DB9PR08MB6649.eurprd08.prod.outlook.com (2603:10a6:10:26c::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.15; Wed, 13 Aug
- 2025 06:21:24 +0000
-Received: from AMS1EPF00000044.eurprd04.prod.outlook.com
- (2603:10a6:102:34b:cafe::63) by PA7P264CA0045.outlook.office365.com
- (2603:10a6:102:34b::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9031.15 via Frontend Transport; Wed,
- 13 Aug 2025 06:21:24 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- AMS1EPF00000044.mail.protection.outlook.com (10.167.16.41) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9031.11
- via Frontend Transport; Wed, 13 Aug 2025 06:21:24 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UKk8Q4PtHK52MKk5+pK4+Ycj2L9W4Q4Sb1xXTXljCh5D/dXkpTyZDOFgcdHKeF8HNHOfDHYTUiY1Buc8v74/zks9EALjX1Jky4pan6tqTk3PPDKE8UlEFUh0WTstFMyn91zDDuFKZgyQQzwa2M4+0tpBaI54zRajdiEtJTjONjZFr11aO0lsiFh25prg9rb1SI6rdbqa3tMFVAPxeWpQ98WXBqgI38Z8E+NcWYdo+PmM63bg4Eid8BBhT4zj2M3INs0mnXKtoLlF5nOFwluce708XiM8BQ+droBie+nGyvVnodr9zPa6Y29gD23aDogWD4xzRbROmo1MW9O3UaLRMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7/btdfuEn5mpFbYu6SzHbvZ/cbE5Wfn1/Qs53yMSXro=;
- b=lC2SnZSAtRyDBXKYlAhbAeLq4AjPgNoPRLkJvKflsGYCZQvmEvsR4tXrUTN5KT+WOHyXlVsfv0g4xSX3Vvs7FvU6L+qfN8Al1WQritrlqr6mDpcHdEGfbyR4ig4oqksl80yar0Xi8qn+nrKst2+ZwPlA82zIrO4IMd4L90rb1CczrRekPGr8oID4q8Ly4Ap4BaAzWJLoqcpxqMypJ98MNFCOfvhMamcx0MJei6G3x0emNd9eEhqm6/+dLpASvx2/9HoaPRC0ioMcJilRY/4nSX8eySXFcGZ/b8y8u6mB7o3Fnb0sajpH8Xgf87wRrS/donrVGytSwNxNopAm5OIXaQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7/btdfuEn5mpFbYu6SzHbvZ/cbE5Wfn1/Qs53yMSXro=;
- b=El9ev+RKd3l55dMRQxtCY642DMmEp7FzLOGckhlM8dH97Sm4NTfUUP88eJAH6AtF0AFH3Q/kImuk5jHdVQo/FewgI2SEUPHHjfP2gGRENhYMxMhmMIPmpZYUuQ5pO66QPbH8R8ZUSl0rjkJCgAN5+VzKrsVPRdbiQMVseqGa4Oc=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
- (2603:10a6:150:163::20) by AS2PR08MB10112.eurprd08.prod.outlook.com
- (2603:10a6:20b:64e::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.18; Wed, 13 Aug
- 2025 06:20:52 +0000
-Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
- ([fe80::d430:4ef9:b30b:c739]) by GV1PR08MB10521.eurprd08.prod.outlook.com
- ([fe80::d430:4ef9:b30b:c739%7]) with mapi id 15.20.9031.012; Wed, 13 Aug 2025
- 06:20:52 +0000
-Date: Wed, 13 Aug 2025 07:20:48 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: ryabinin.a.a@gmail.com, glider@google.com, dvyukov@google.com,
-	vincenzo.frascino@arm.com, corbet@lwn.net, catalin.marinas@arm.com,
-	will@kernel.org, akpm@linux-foundation.org,
-	scott@os.amperecomputing.com, jhubbard@nvidia.com,
-	pankaj.gupta@amd.com, leitao@debian.org, kaleshsingh@google.com,
-	maz@kernel.org, broonie@kernel.org, oliver.upton@linux.dev,
-	james.morse@arm.com, ardb@kernel.org,
-	hardevsinh.palaniya@siliconsignals.io, david@redhat.com,
-	yang@os.amperecomputing.com, kasan-dev@googlegroups.com,
-	workflows@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 2/2] kasan: apply store-only mode in kasan kunit testcases
-Message-ID: <aJwuwBL+Egh3Fivv@e129823.arm.com>
-References: <20250811173626.1878783-1-yeoreum.yun@arm.com>
- <20250811173626.1878783-3-yeoreum.yun@arm.com>
- <CA+fCnZeSV4fDBQr-WPFA66OYxN8zOQ2g1RQMDW3Ok8FaE7=NXQ@mail.gmail.com>
- <aJtyR3hCW5fG+niV@e129823.arm.com>
- <CA+fCnZeznLqoLsUOgB1a1TNpR9PxjZKrrVBhotpMh0KVwvzj_Q@mail.gmail.com>
- <aJuxuKBm9qfpVkBC@e129823.arm.com>
- <CA+fCnZdWOh3=KkM4AL1ZYfhyMhdSqgW97Rz+uxO88mMkqT6WTg@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+fCnZdWOh3=KkM4AL1ZYfhyMhdSqgW97Rz+uxO88mMkqT6WTg@mail.gmail.com>
-X-ClientProxiedBy: LO4P123CA0021.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:151::8) To GV1PR08MB10521.eurprd08.prod.outlook.com
- (2603:10a6:150:163::20)
+	bh=nrJVwyChoAP1347E6ULfn6WFMFSfSytfpEMcX/qwjy4=;
+	b=e/+BRD4eOFSvIrN1t+8/buMwQhCAC3wlCDFOKAEUArqdSejLbTbS0IvJWON30H6ucTmX8G
+	EMU6QvmOZ1pxSTEzDFdTksVNhVranGdnhhkdas+piwQ5goxJRr+EyhezYa9p4uH2PhNPRK
+	Szzd1dHrEAHSBywcf3b/EifyrSia8gc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755066421; a=rsa-sha256;
+	cv=none;
+	b=L02wZvwpVOTbYPFG90PdvVrcZ+FBixFObHciWx650BuvAaSjomIhuDWGI+72FAa63u90VS
+	SVzDHpuCB+1o4mDGQyjc5rgdeCa3RvdLpCw26p9i/cTWf3w7IgBozQYCzSvWqTlN6fUOiB
+	WbdCes8ar+8ApQz5/7bJf7VFZ3hpQsQ=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="qwQS/bPG";
+	spf=pass (imf22.hostedemail.com: domain of ajd@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ajd@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57CNQT4C009277;
+	Wed, 13 Aug 2025 06:26:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=nrJVwyChoAP1347E6
+	ULfn6WFMFSfSytfpEMcX/qwjy4=; b=qwQS/bPGxt7TGG39EWVe6T3aCIPfJ5VeI
+	FPy2KDnNEUsJ41iLxhD0CIZRTGqrb3dDwvTBRZZnYxyA2PmENa1wS4mrdQd03c11
+	5dzGqZ40DDpV2vDV5Q4DVjpPC3agYU8yF8ZS/I2Oso+iP/puU0h5lm7I9rtCI4aL
+	L8NrQ5HbTkQGFgGspW14V6ehaF/N/fZSw5oG1Etj5tQqUYboaUNBwf6Wftt1VH49
+	5BY/Q1KSeXS6HTuTanX/UWGJEHQbU3a5W2iYjWVsUIp6Mw1Is5XI6cmuDhPQPRln
+	lrMomYXGN83Y/fimPM+oMGqGix+f82Ft3+9NbfNUWa/oLxDGTK3jQ==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48duruav9t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 13 Aug 2025 06:26:55 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57D1c7UT026279;
+	Wed, 13 Aug 2025 06:26:54 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48eh21653b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 13 Aug 2025 06:26:54 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57D6QrkO9962414
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 13 Aug 2025 06:26:53 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6AE5D5805E;
+	Wed, 13 Aug 2025 06:26:53 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 66CB958059;
+	Wed, 13 Aug 2025 06:26:48 +0000 (GMT)
+Received: from jarvis.ozlabs.ibm.com.com (unknown [9.36.10.70])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 13 Aug 2025 06:26:48 +0000 (GMT)
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org
+Cc: akpm@linux-foundation.org, x86@kernel.org, linux-riscv@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        pasha.tatashin@soleen.com, sweettea-kernel@dorminy.me,
+        nicholas@linux.ibm.com, christophe.leroy@csgroup.eu
+Subject: [PATCH v16 01/13] arm64/mm: Add addr parameter to __set_ptes_anysz()
+Date: Wed, 13 Aug 2025 16:26:02 +1000
+Message-ID: <20250813062614.51759-2-ajd@linux.ibm.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250813062614.51759-1-ajd@linux.ibm.com>
+References: <20250813062614.51759-1-ajd@linux.ibm.com>
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	GV1PR08MB10521:EE_|AS2PR08MB10112:EE_|AMS1EPF00000044:EE_|DB9PR08MB6649:EE_
-X-MS-Office365-Filtering-Correlation-Id: 33435f38-c872-4616-8ade-08ddda31a0f3
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info-Original:
- =?us-ascii?Q?cHqVttO+CZ1szyQdgeC/7aymTGkkmfNXpnpuFQBT+BrnpjFGt8hzgcaVJt8U?=
- =?us-ascii?Q?znK+qiZjvKcZB2oNHji17LzkzJ3tZXTy6jtrJfu0Cs1dbq3AEWr9Llu45okS?=
- =?us-ascii?Q?ck7HSkrJ4RTkArl7g89Y3+q4gm06uALUEYH3pgtTsdR96UHdZgPPtto7iebf?=
- =?us-ascii?Q?OV5bXqB6wDLV7+5VSi5mOCF62bBRU2pOrVuXTSjUBep0xKlbm0rY+T9aQKWy?=
- =?us-ascii?Q?+EqEJ4NO2XdWbY/RYSX36AXyA/cMnFSww653br6kUxsgLVpMN8TJhbBI7aD3?=
- =?us-ascii?Q?oGjaTsQyF+Qb6cSV+n0jJ5UqbdCY3l/UlLFx+YxyXOJ9rAp6Zi36fidSIMdn?=
- =?us-ascii?Q?MRPP3Mar3vjT9TWHmFBiZMItTWemSVG7VtKj52RON8WATESDcUGnmd9Vgypf?=
- =?us-ascii?Q?gTpztbMYwuu+MyaGFm1tnPqZ0LvLQgLwWJUyilm+iiMBKp8K6ZFQO2Fgaqxg?=
- =?us-ascii?Q?u6JAW1yF1AQU0MxmTGKs2SMinguYd5WOeTLqYHxidP2CBTlQ5wgJp9l9mKL3?=
- =?us-ascii?Q?t2U8hKNlVqeAt7bwp3r5S6zTQaK2XFMnMvlKZxj5yV7nDeZhjrWBLKG08ItP?=
- =?us-ascii?Q?E1aDNEdU7tcmje2PF4CxizBV97s4Kv2hIlpMXalUZse6qXESA+wEeFSmLiDR?=
- =?us-ascii?Q?sa4WgxjW/zsWvqngm4XCPgTmUggau1ho5RThcbgAluRVPlDy8SgTt/Zt+rBF?=
- =?us-ascii?Q?H7HiHxHrJvMVw136uIE74ces8AOBCc/TObpvkoY4JYmvka9tqzza3SsAb4cv?=
- =?us-ascii?Q?WLGZbHtxSJD6k2thsjLLRjPx400SYueEELfxBHYphozrDNbUiTr9NyNxkTVz?=
- =?us-ascii?Q?mguBNR/oZwLMz8bhQFU9d3KTeW2/gChejuMW4yTZ1jGIqFiXSCGBWWahedTf?=
- =?us-ascii?Q?yMCX9fmVNMj/Qb8EHrx0WxbKhDPAHWmW8eEidMApAv+bFgDIAAswFGUM5gI3?=
- =?us-ascii?Q?rdOlUqp/04o3STxkmdvltS6OyNpuvTO6hkz1ySc0Ly1qMkyi+6BbFz3LKMcU?=
- =?us-ascii?Q?HBwpCsH5l1StFLCTk2UY+Lmgs9RKBnTuJOi1ZAbjNNmEZNiL/TinaClQ9h4f?=
- =?us-ascii?Q?RgyR2Z8uSTQ6kxXjMCji5cp3dcUAkKw0jLXN9qG+F6ISupl8+8xKqqeLqQAt?=
- =?us-ascii?Q?LL3yk2dOfhLyAgbW8adoU4wjmz/8NcszqAqhRYUQZsRU0JFlb9/ft2kVGaSk?=
- =?us-ascii?Q?TpFv7Y44sMuMSWGNuzLPMmv1Y43LzzocbMCs8JnPw1iU71S4auaWHNHA34w4?=
- =?us-ascii?Q?9RPiW2wgR8qWkwsvXJiYrljhx3au+OdQm8/oHY8wSLxP6FC7ihyBbn2GSl13?=
- =?us-ascii?Q?Uyms9lqNkHoF6ClApceamw71FrCe+XiV4A5H4KciAOY2P28TEX54yh5QkXis?=
- =?us-ascii?Q?FPJzB4kZXSSC4S8k+wi99METzBzaMdhMQgakMthuFcj55iPhegmJhqil0VZE?=
- =?us-ascii?Q?/viAwftX+4M=3D?=
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR08MB10521.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR08MB10112
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- AMS1EPF00000044.eurprd04.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	9ca05dfa-cff9-4297-03e4-08ddda318d8e
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|35042699022|82310400026|36860700013|7416014|376014|14060799003;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?qNJ4mFGlDFtDcTyD2NAySx61M0/dQ7oJcLsKRThIXlbIuvG3opJmXe4AkOSB?=
- =?us-ascii?Q?2jDArnMU9yazr5OdvCWGzBCwPIpXaLOsJXVT0WGwixf3U/Fk2o6HwAJbghtt?=
- =?us-ascii?Q?O2ZEgjM/SGnEJTZ/07qd+F+GemqCVC/zvuDyN4xsqJSHc0Va7bDg5OTBl47X?=
- =?us-ascii?Q?3hxlvi0BaNZCTL5aCMpQ3MChFR0dIc6P5I3H0i04fsTM4Z6hCOxd7MqgHkRb?=
- =?us-ascii?Q?f15Ei71zTTQpmB0E1ZKSJkerU9hYVA/uHTse7CnPrijBT83YJ/WhulATbcHy?=
- =?us-ascii?Q?SjQ2Xukf97srbhuL7wPzaG88+8sNlhCzIta/t32BeyiVGStM3V4hMhFg2bPy?=
- =?us-ascii?Q?tmcGc5nEzxt4hhyaD9I8ecBvBiVYvMQ/PTUUGaEJvH83oQLIi89OjAqeHi1c?=
- =?us-ascii?Q?5yoUkHw+6gqo6NhgbI7T9mDXMxRs1hFeFg0ZteNDBBsENTcAYlJKLLcv7zQu?=
- =?us-ascii?Q?w1aJwON+L+4OeKoUWaZODxEB6wYkrU1CIUZmE5JlOZmXl7dyIwpOLVOEW9GP?=
- =?us-ascii?Q?TVsxpDUYQ1mz/RwRy3//DNRASqf6wSOcoi/g7ZB2yqCeZm21shUnmM92+rCE?=
- =?us-ascii?Q?ixA+CM+Rj6OIZ+TmnMtxGv6KMnTtIKE6Eu7b9d2sk/s/g8YRMX6fMtH7nMjE?=
- =?us-ascii?Q?8mkFnK/RpF+YzRj2KR33B5pfNnsomHdf86p38qzaqw+Qgk3xUcmfXZqr6ApI?=
- =?us-ascii?Q?wPF/Sjwb5CMGbea5o2DQ4OZZ6v048lwq8Hu3AbSxVNGyINuGo0DSADx+05ib?=
- =?us-ascii?Q?N1FG+VIXxiwvPzOAUhYWEVIJZ9gTQCWEv2q1UkjR9Y4zpAlOvtDTCzwm0GOj?=
- =?us-ascii?Q?XDXrUMkjSfdyMvzs3BfRhsHxFcZLRXoiLIvY7YxB34kEGBZHFXlCTiSraNAl?=
- =?us-ascii?Q?/q0dHiZ1otGZcKtBN40Ogx/+NqkQIZrPAgWvBpCaem/hOMiDXDl4eD82HNvW?=
- =?us-ascii?Q?+HftCjet204G+0BkwTcT/4smdUFoZbNawafTXqnlyhToeX00bFEXk8FGhWeM?=
- =?us-ascii?Q?D4C7W5BtZ9sJTMb12DI4W04pS/KhJv47sXtsk78Hb2sxJfKBJaErNrsAyqap?=
- =?us-ascii?Q?qb8StcsAGXe2OV2i3SpXp1M0OJImsnlc1WFbiALgXq7ReSTdxbuMg8KTVMtI?=
- =?us-ascii?Q?mydyYfHfV+R/1KBskpr42XTwfOPHztd/9uxdzlRyJL/uKJv5v2TcEJOQPuRm?=
- =?us-ascii?Q?ksGdnz6WdJvlTIGqA1oHcWQotnMlBguXVOYBi54ZMFTBWmlzTfD6DG3kK/t5?=
- =?us-ascii?Q?RNELMPojm2xbZg8ptyH1CikUcUEnFY2DKlstGgVGd0SwdwJjvXMihlBhrcfs?=
- =?us-ascii?Q?UP/BAL74+cRIELcvo4NxdVugIlGvBBPXCOS4beh3vfsuFehpKJuAFR9DRJ1O?=
- =?us-ascii?Q?kNd7+dH3qTa6uKPvEyAt0mNc8B37Q5Nvk81cQqUIuNzbhx+yrabAIe1dCRsu?=
- =?us-ascii?Q?snOSQRwTL1HzFKkRLGQ8OJqDO+0X7CueWxnDAUhNDnWUXIh2jDyw2EEA8I9f?=
- =?us-ascii?Q?RSdSUGf8TmWqOXGsFN0us2aUlIZSu1jPf6nK?=
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(35042699022)(82310400026)(36860700013)(7416014)(376014)(14060799003);DIR:OUT;SFP:1101;
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2025 06:21:24.4135
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 33435f38-c872-4616-8ade-08ddda31a0f3
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AMS1EPF00000044.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR08MB6649
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 264AF20007
-X-Stat-Signature: jjjgoxcjca6junerc95346sh9d53o94h
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 1DmuEpzOEC91AhJGOz3CZKD6ylyDxymq
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDIyNCBTYWx0ZWRfX9mkUL6x9zxY2
+ 6Gh1cmtLtFG1OFrKTykCTN9l5yXY9y7nJIXtYKb7NVExjYcnhpFmoZGsazt/l5Qt/uBGDhkFhk+
+ yYO6Sihmqw4ta5TLtzOLE7kI8qK2nf+M6hZtDXHBTIcObTV00jRqz2KWwXLynRjhgGoKUE5OZaX
+ xQUX2Vt6+l85ynB36Tw59m2P/MMuXBITyhbsAl/T7mEY4YfR8vOAqLlVBQOFzOKM9c/sC8zbHzs
+ 1Ljcba4ASMebldPjFhu+IffpCtJMv1qW80BOoYC2H6VT3wg954WvoAArFf4rn+uyQB1bmNW+ZxX
+ Qo/l/sVagrf+MLN3EXBWYV9JCvkoP9V2iNk+OsdaQwPABsgOuvRFGR6i5lPuMCx2fqEBG4WkGmB
+ kIYiud5O
+X-Authority-Analysis: v=2.4 cv=QtNe3Uyd c=1 sm=1 tr=0 ts=689c302f cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=iO9NmEFvf90wNdx_zysA:9
+ a=0bXxn9q0MV6snEgNplNhOjQmxlI=:19
+X-Proofpoint-ORIG-GUID: 1DmuEpzOEC91AhJGOz3CZKD6ylyDxymq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-12_08,2025-08-11_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 priorityscore=1501 phishscore=0 clxscore=1015 malwarescore=0
+ spamscore=0 suspectscore=0 impostorscore=0 bulkscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508120224
 X-Rspam-User: 
-X-HE-Tag: 1755066089-845319
-X-HE-Meta: U2FsdGVkX18OiuJaZuBe2JEsiClEqiv/Wjp3Ia8bXxGliH4CTRfRmtAkIltIZm8uWx3bp32rLEP30P8eQUc0sbzIJ5LP939j8nEPIdAbTIqNT5ONjNxw0fZzQqlqihDoh7eTSadhRiKuwbMz5ra+RSCkVzi5lLzltMp9JKpVfT0mAbsu4+zp1cFrREsOCHTg2t5ObeHArqRxP5L2aMwOvOokLXfMozt3i1ZwC49soRWX1GwJ1y8gvhDXaJ/XfuMIozUeAfNCzKvtYOH3iQlUGV8XKLzrBIoDkAuVJzQlNFECODar6TiBIkwI9IfWo5TA9LcoJjrpBl66BLuzjoClyPxucMtgcQQu+dngTTPks/1NHIlARldIlv2klzcV+p1TYL7rJfMStrIsndURN45+MJGzlNXQfvKwc2cGCkmelwJJmkpmQ0EhL2eCf8FTn5SuIxbXqxCGIwGDZg8fCPRuAz6C0nhtC9mlfH3UavTOkk2vrmP/hCvVUzS896S64DtDJoJMK+b80DziEqrzZaF3OEcI+ol0pMyeq2Yuw2TpBckYoQxzvVVg3K1Kp6d42ul9Uj8EVtvyILnpjMtLCa3HSs1uX4hghzgc4MR1WXIqCgwUttYfBlBNcD4y3T6f+FwoudLDFP5vilBYDPvqujMrWUDiBwxdz8F4h+lTyJNp6gP/pLMHPk5h75/bqdOUNk4VXZkD5nCs2q0WkjVi1lFCSmdFjIEi8t21n3B38MMhF8lxrNVrz6LijLERX0MMM9evJ1S8A8zw8JY4ob3gwecIcrki4iVdQ8A6VBzz6sZraQ89MYwKaOK1FEJRXEhrcH8cTa5SqUMYwWt80PAr6FVbP5TzzWl4BYTwYlA9DIcULj5CpLPFXlIwxJmuhwm6CXlWfL5LAHyeQswRL1rSnealxxESdPSFyBvW6VFBCgp2OIRZTQ7tDAN5LcuykMks2znGl1L8ZiUjh1SPePNokuC
- DAm/mOJf
- navCdOwo8xUOEu4VFUngpE6MhO6EqF+NWxmyGO/fUNcZz3HbCYxpg2MYX3x/HyqJoi5TAtWPxkEaModHCaeK6kQ24RZc7ohtTMQlU9vvAO3nJ2xB4l9iCKMbbHt1fIicqMK4CD0m7gCBaaHa0FcdzF6y2pGKEdVmJ6slE3SAOKVnAOiiiPFUhFTb6g0SUNSlTiN0wDJP+sz6rf3Rl77DzLDZrcCNi8VbrLtpqcB7eHZmrzVpM2E6KMnDqHPa2JhpOrgfRb6isKqT781J22lqPEXu4Sj2mAAabuAxUXAugzWiauIwjZ06niEjj1YsjhSZbvLcxWClbOftuZbvPwcCam2hUH+tNKk7uNIaRgDxlymu0GZ5ni4ZSBe2XKmkUKDZ8Qmpn2MJvJawh9fSOMTnn3MvYdw2ytfMuaCmjBOD/JvQQnUVMCVH1LuIJ6EcsDslOGJbKtljCuy86obBuqdRsszHOqp6jWbVuMzc3GTdxeY5f4gsZlRLgzLrG6pkerzDfxBvf4Kt3RPnKu21AUINvpvE4ijDf1kO1TiPRa+BqxvbQnvi6y2njRvOCTqcobxlNerC3K9lhtpXYfpycc0cjbt4Q07XALsID553RE8hAXk2Xd2z5a4H7hIR7Aw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DFBDBC0006
+X-Stat-Signature: 93y4qoi6oato34mzycrjg3xewg9h93nw
+X-HE-Tag: 1755066420-738976
+X-HE-Meta: U2FsdGVkX1/v3mtf2vgdsXfHmIJTTjVgIqXVGmInS6PMPrcnug459jsX1CU/8lXpMvCG+pTIRGaRkjo+XOQDYMLfFbsqaOzzPJiozdkOlP6ehZleZbJ8KEhV74h8hkOl5t3pVK3CVbtq7t3fQBEaQwVjMGpdHhyg2c7DWd/ZciJ3LU9rtAuhSpfdsM09yachpxAvdSwS2OlgEgSbAI6UWZjf8hqn3FsPBHgwUnZskdbZt8iw932KcteulXssuxZraBl2BbSVBzIusBK6PHYRbUHXWip7OaLfPiUUaAiDauCLRWmTdm0u7tqDAsWSaEX04z3ubBMfRvQAYSqDRNDK6AlJOAl2BffQs1gucuI9vc8vcS9K7DLKTN0DHb6tzRnCmIqsxc+A5rTjVWkmHnufTOmyCEAkEq/i/gNneUdmmlEZyIPQizASDn6b9tK4zUL83jSFIBrkx/AQl2EW3xginTM3M/1TTbtJb/Fv9RBQA7nlln7iN/xtbZSOyLPKfTHTbnMVKlDKJMnjxd3Tiw5IAolCP8LxNVkcMH2SqE/UqL0ZX0svGj8u865c4lV8SsFZe0d14fad0DpDuQS/a8WJQMoB3RDXdySMySM6Aj52tMvVGH3RistJXVRlUWuRBVyRFdUi3BG+RUHu+MpUnYC34//7fEh3ixlS7FlRxqn/HKVq9dbjsmQfDICsK6A2+dQ1hQTeg59UIytEte5hok1AeyMF5iChxueM14cmvTfioZtBoRKQ7nbKKFXY8x1RDtFocasFwQjooUJCJyW0dFQjrPcGDpRFmp/CpNE/aTuqKW7fs2opQ47JjADCftZ2KfEKlkJZJ3thO39gHQ0wsKjv/QaUY29Wo9j1VByqOr6BKyZ54BkNUBL5Vj7H2Jug/CP+F6WbPrQVR1ZKr3rBLKo2lEqwwPfpLqcdDxrUYrbKP3/NZOPLhr36rl5VN0hr99/zSTWfBt95UAbaMuGdin8
+ lqwKyCbH
+ hOpybbSsO9StF33Lq6uxYA3+WmOfaDaF5hfmbUBDSD9ItXqE0Xx12VPA9QUhYs/gCKvNDkwtBCDR0jya5vYA1JmGwp7W1i8/5S7O+WIf2N/yYm1B1b1RNJfV20O26nLMiHQiDeP2Bu3u3YMJ44sgOJKKvUnX9XO0mwYR637znACHqOlh30ZDZNpOsESWbxcn/zZmne7xJMuabMPoZjUAGGxZ7QLjL36N+T263ParDybqrnRQPId6K2GJewALHu7c8jJawTf/dQ3dSHkiwZFFzQf+RH2+Frg1VX2xLjqgaGABKYT37Z9D/2dqFcbgPUdkOQI6psIO3aOByhcA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -245,32 +134,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrey,
+To provide support for page table check on powerpc, we need to reinstate the
+address parameter in several functions, including
+page_table_check_{ptes,pmds,puds}_set().
 
-> > > > But in case of sync, when the MTE fault happens, it doesn't
-> > > > write to memory so, I think it's fine.
-> > >
-> > > Does it not? I thought MTE gets disabled and we return from the fault
-> > > handler and let the write instruction execute. But my memory on this
-> > > is foggy. And I don't have a setup right now to test.
-> >
-> > Right. when fault is hit the MTE gets disabled.
-> > But in kasan_test_c.c -- See the KUNIT_EXPECT_KASAN_FAIL,
-> > It re-enables for next test by calling kasan_enable_hw_tags().
->
-> But before that, does the faulting instruction get executed? After MTE
-> gets disabled in the fault handler.
+In preparation for this, add the addr parameter to arm64's __set_ptes_anysz()
+and change its callsites accordingly.
 
-Right. in case of tag check fault, the preferred excecption return
-address is the instruction where TCF happen.
-I was lucky when running the test :\
+Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+---
+v15: new patch
+v16: rebase
+---
+ arch/arm64/include/asm/pgtable.h | 19 ++++++++-----------
+ arch/arm64/mm/hugetlbpage.c      | 10 +++++-----
+ 2 files changed, 13 insertions(+), 16 deletions(-)
 
-Okay then I'll remove the invalid write in test,
-But I want to keep the if/else on each case with the reason I said.
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index abd2dee416b3..ed644be48d87 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -698,8 +698,8 @@ static inline pgprot_t pud_pgprot(pud_t pud)
+ 	return __pgprot(pud_val(pfn_pud(pfn, __pgprot(0))) ^ pud_val(pud));
+ }
+ 
+-static inline void __set_ptes_anysz(struct mm_struct *mm, pte_t *ptep,
+-				    pte_t pte, unsigned int nr,
++static inline void __set_ptes_anysz(struct mm_struct *mm, unsigned long addr,
++				    pte_t *ptep, pte_t pte, unsigned int nr,
+ 				    unsigned long pgsize)
+ {
+ 	unsigned long stride = pgsize >> PAGE_SHIFT;
+@@ -734,26 +734,23 @@ static inline void __set_ptes_anysz(struct mm_struct *mm, pte_t *ptep,
+ 	__set_pte_complete(pte);
+ }
+ 
+-static inline void __set_ptes(struct mm_struct *mm,
+-			      unsigned long __always_unused addr,
++static inline void __set_ptes(struct mm_struct *mm, unsigned long addr,
+ 			      pte_t *ptep, pte_t pte, unsigned int nr)
+ {
+-	__set_ptes_anysz(mm, ptep, pte, nr, PAGE_SIZE);
++	__set_ptes_anysz(mm, addr, ptep, pte, nr, PAGE_SIZE);
+ }
+ 
+-static inline void __set_pmds(struct mm_struct *mm,
+-			      unsigned long __always_unused addr,
++static inline void __set_pmds(struct mm_struct *mm, unsigned long addr,
+ 			      pmd_t *pmdp, pmd_t pmd, unsigned int nr)
+ {
+-	__set_ptes_anysz(mm, (pte_t *)pmdp, pmd_pte(pmd), nr, PMD_SIZE);
++	__set_ptes_anysz(mm, addr, (pte_t *)pmdp, pmd_pte(pmd), nr, PMD_SIZE);
+ }
+ #define set_pmd_at(mm, addr, pmdp, pmd) __set_pmds(mm, addr, pmdp, pmd, 1)
+ 
+-static inline void __set_puds(struct mm_struct *mm,
+-			      unsigned long __always_unused addr,
++static inline void __set_puds(struct mm_struct *mm, unsigned long addr,
+ 			      pud_t *pudp, pud_t pud, unsigned int nr)
+ {
+-	__set_ptes_anysz(mm, (pte_t *)pudp, pud_pte(pud), nr, PUD_SIZE);
++	__set_ptes_anysz(mm, addr, (pte_t *)pudp, pud_pte(pud), nr, PUD_SIZE);
+ }
+ #define set_pud_at(mm, addr, pudp, pud) __set_puds(mm, addr, pudp, pud, 1)
+ 
+diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+index 1d90a7e75333..1003b5020752 100644
+--- a/arch/arm64/mm/hugetlbpage.c
++++ b/arch/arm64/mm/hugetlbpage.c
+@@ -225,8 +225,8 @@ void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+ 	ncontig = num_contig_ptes(sz, &pgsize);
+ 
+ 	if (!pte_present(pte)) {
+-		for (i = 0; i < ncontig; i++, ptep++)
+-			__set_ptes_anysz(mm, ptep, pte, 1, pgsize);
++		for (i = 0; i < ncontig; i++, ptep++, addr += pgsize)
++			__set_ptes_anysz(mm, addr, ptep, pte, 1, pgsize);
+ 		return;
+ 	}
+ 
+@@ -234,7 +234,7 @@ void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+ 	if (pte_cont(pte) && pte_valid(__ptep_get(ptep)))
+ 		clear_flush(mm, addr, ptep, pgsize, ncontig);
+ 
+-	__set_ptes_anysz(mm, ptep, pte, ncontig, pgsize);
++	__set_ptes_anysz(mm, addr, ptep, pte, ncontig, pgsize);
+ }
+ 
+ pte_t *huge_pte_alloc(struct mm_struct *mm, struct vm_area_struct *vma,
+@@ -449,7 +449,7 @@ int huge_ptep_set_access_flags(struct vm_area_struct *vma,
+ 	if (pte_young(orig_pte))
+ 		pte = pte_mkyoung(pte);
+ 
+-	__set_ptes_anysz(mm, ptep, pte, ncontig, pgsize);
++	__set_ptes_anysz(mm, addr, ptep, pte, ncontig, pgsize);
+ 	return 1;
+ }
+ 
+@@ -473,7 +473,7 @@ void huge_ptep_set_wrprotect(struct mm_struct *mm,
+ 	pte = get_clear_contig_flush(mm, addr, ptep, pgsize, ncontig);
+ 	pte = pte_wrprotect(pte);
+ 
+-	__set_ptes_anysz(mm, ptep, pte, ncontig, pgsize);
++	__set_ptes_anysz(mm, addr, ptep, pte, ncontig, pgsize);
+ }
+ 
+ pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+-- 
+2.50.1
 
-Thank you.
-
---
-Sincerely,
-Yeoreum Yun
 
