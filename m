@@ -2,69 +2,69 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9EFB1CA0EC4
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 03:52:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B198CCA0EC4
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 03:52:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8E878E019E; Tue, 12 Aug 2025 23:52:36 -0400 (EDT)
+	id 39E598E01A7; Tue, 12 Aug 2025 23:52:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEB7A8E01A6; Tue, 12 Aug 2025 23:52:36 -0400 (EDT)
+	id 34E9F8E01A4; Tue, 12 Aug 2025 23:52:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B17178E019E; Tue, 12 Aug 2025 23:52:36 -0400 (EDT)
+	id 28B8C8E01A6; Tue, 12 Aug 2025 23:52:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 94BD88E01A4
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 23:52:36 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0BD2E81EC4
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 152C28E01A4
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 23:52:37 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BD5AD136D18
 	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 03:52:36 +0000 (UTC)
-X-FDA: 83770362312.15.25D9E3B
+X-FDA: 83770362312.04.5FEFE70
 Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A85AB40008
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 03:52:33 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 848781C0004
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 03:52:34 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf12.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
+	spf=pass (imf18.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755057155; a=rsa-sha256;
+	cv=none;
+	b=YgSW6uvsKq5N9qu5OrRMDqJKhfjgHBhZTh88YbRTmKsA+4RuoxAHj44hUrE7ZTAmCpahQM
+	ux1MbNPOaJ9Uvubi9qpCrfeZ9SOH+ZnWwy4P8VSX0rj9UxAcfH6gtMcz2c5GlqfBNTQOPi
+	UMO8WeNM3qMgquD40exTtc+958YC2eU=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755057154;
+	s=arc-20220608; t=1755057155;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wYJjPR3H5s7b+u6ihT4QhpY3Y1a2vCryKerUG7/UeRA=;
-	b=Hn5pgaBXYW3AUzH42OPXSmmYDaiM+u4TV7WPEvPIBkAMqt0M/rrx7qhkRbmltuSFkT6GYD
-	TvAIpAs0FDuaEAaYg3LofgFZP9inNJRE4dbiGiXhrJFZj4DoW8Pr7YHNdy6ornqPYVrPiG
-	3LKlG89rOqmIeOP8VFv3fxp51zXSXBs=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf12.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755057154; a=rsa-sha256;
-	cv=none;
-	b=Cbo2nJe22rgH1O6pmufVL3uJwSfBTgli2qjD/Tftiv2LYmbjvJa8kAy5RZ7yDOnCqnpob5
-	oPPc0041c/9KbyH+PJCcAVYTqhBMT/nvDHqmSlnTLxw8A2nGL+5SHGHX+PYRnzTiFAod09
-	V1wN2zvbq9zNpK7DItn+3rQqEvZ4J4o=
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4c1vWl71b9z1R90b;
-	Wed, 13 Aug 2025 11:49:39 +0800 (CST)
+	bh=5KCBeY5U4rXUD5EakCO5iC6uJ/ikWcX35GHXuhwgZ50=;
+	b=DnVfZzWCcXg7k3Kq3Mi600RifiAy+wbvAtGzuzz+CVQQ6baYCXkK8QBc/9cBGglvsbalsF
+	Q/mHQqWDDU+0HgUGkwUlEHe9Sxel5qssGP3WQ4xXN9eqgYwqvCz85QieC1NQxvizuuqxc5
+	8XZ/wxQw/VVk4ELoqxKDVOC9rtn8soY=
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4c1vWn3kzRz1R90f;
+	Wed, 13 Aug 2025 11:49:41 +0800 (CST)
 Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
-	by mail.maildlp.com (Postfix) with ESMTPS id CC95D1A0188;
-	Wed, 13 Aug 2025 11:52:29 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 5EB98180044;
+	Wed, 13 Aug 2025 11:52:31 +0800 (CST)
 Received: from huawei.com (10.175.113.32) by dggpemf200018.china.huawei.com
  (7.185.36.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 13 Aug
- 2025 11:52:29 +0800
+ 2025 11:52:30 +0800
 From: Quanmin Yan <yanquanmin1@huawei.com>
 To: <sj@kernel.org>
 CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
 	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
 	<yanquanmin1@huawei.com>, <wangkefeng.wang@huawei.com>, <zuoze1@huawei.com>
-Subject: [RFC PATCH -next 01/16] mm/damon/core: add damon_ctx->addr_unit
-Date: Wed, 13 Aug 2025 13:06:51 +0800
-Message-ID: <20250813050706.1564229-2-yanquanmin1@huawei.com>
+Subject: [RFC PATCH -next 03/16] mm/damon/paddr: support addr_unit for DAMOS_PAGEOUT
+Date: Wed, 13 Aug 2025 13:06:53 +0800
+Message-ID: <20250813050706.1564229-4-yanquanmin1@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250813050706.1564229-1-yanquanmin1@huawei.com>
 References: <20250813050706.1564229-1-yanquanmin1@huawei.com>
@@ -74,14 +74,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.175.113.32]
 X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
  dggpemf200018.china.huawei.com (7.185.36.31)
-X-Stat-Signature: kmymkwspewo7wwoqx7onwguc7s6f7383
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 848781C0004
+X-Stat-Signature: 69eeum6hb375wt9yqc7pdnfkmqd9m9g5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A85AB40008
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755057153-395440
-X-HE-Meta: U2FsdGVkX184MeKkvee/zpNMTKtuTLit5/CyJmURjA0HAADNavjUMswH0lrUPeqLjrAgKod/AVEg5XR3iq5cjUhgKvATijdfueBGrg9IbhOEgMPTn3FA2G/4IMN1AUAPyvaHW+NVku84zzz5nPNN7QuxsE79QsuAcgWusDuvtvTndecyRdNfVCu1OBjJcPDY/t3Is1Xr6xPR+RJHo360UULgYly7SkoSj1XEGwW1kypSd8+oKTQwkoX6UPEv8mi4NB/US4f+UCmBvDMq0yJzrAMq+pXu1n3oY19Q38eV9PDj7pQFSIB9UMEl/ClDmM4CrWqNnVuR7NvkXHE3DkaltOTPnvXeAa5U9nNmXM9Y4B90bqF7hyB0TX9ccJTFiBbacLx6YPMy+3ZrSqgTPijnTBhqLQTW2LV/7Jya27xfkJVmlV88hZ37scyVnQWl4kGFjpqunUI7u4Xk13KnvtiVXZZTCdLrBAgB0zXlh2XheOR4iiZSI3K15wO5dIuzAa0WqTccwGSVUFPy+4GDi2DzLYOIUDozuFGaqEPlHtJxtyfVqCO2gsJbX/D8V2LS1ZpmPwlP4wLSVbsOPFxnhE3L9q/M6g00d4mOKiE1EBvpU7LpTep8hbOhdTVdL8NPuon1zR3Kyi6mZdi9ksbmBqtFddblASjHjkvZ1XsYBgrsbw8e4bkgT8fpIOyiKEIruZVSmqJy3OcWvqpj/xMtO2mVmE6ykWbGNmS1/CSz+UmyHSScFA6B029qwLk1CXf/mKyH8jBrVwZEeS34JXLgTcLM2osiaQywYtX/+M8dHUee9lEN+HW6rqOf69RZGn19avBncfPaHSKx9x57x8arZunzh+3vsCmFZlTHPzYgiK+TzRjRrm33aHHOSy7PXqIueNwL4kid4sPI+qh3rLwxt+q2C6oAYtYe9eC2HZOf+5OUKnuMiFE3s4hbnCcAVJPa60eZq9pb2921rrUXbjY4b+Z
- 6ll0xBUI
- VGpPr24UHH/AV4TpVmIP7mdKpz883gZByt4fgji34gc3G7VCYXRV3yHU6ekOgu2QRtwLxt1Dv0JL5/7vR9oeGHJkfvmsayaOIPxt7dRtrohHXza96vxNIu/phoBnjB1Fbk42/aOrs0pMyLTzjmoaAwqU+fw7RwB9FNY2jQkXxxy5fgy1eHq2PU27/G9/kqMfVqi1ZG3kDhmlz2VTe2Elxk9225Do5CVImHPiQSPHLcOSFgugfQhHGIcJHrg4J0Kmz0En0
+X-HE-Tag: 1755057154-440735
+X-HE-Meta: U2FsdGVkX19mCY22ADD2Y2zgssK+zo911DlQHPlfDmeMjwx6ghURcahqZ0u2pLQjEPMiJbF0pp9PCOEYreiUhWAKLuOyC33y3uNAveVZNl20Ts8k8A2iRh36EFq9LmyyUX6KK45ouQkcpmLS3jJ9Fkc5vOKkIwVx31Ia9rbqMtB07q9FsAEfYf6jDZrLnksaonBp9YyiI9w1OoHLzokFN1S29OXJOTPZ8+ZiEzyVzV+yX+hawR9poJcb1lAMCVi8AgSPy5YqDHcFAjimepWpCups3SbNAQKzc8UqIAmitgxNvnS4VuVlFmqKvd/y2nCWw7+E/n1brkVrVNVXnouNihC72w1DJLIgNjCrnE8bNGyvwykMohXtNFEyAeZEIKbZz4XMQxTuWz8EyH+awLs/oTuRtA8+inT0+5eNldKDPIEeQ9i66nwoW3dRb6JQ1InDzsvtVe0Z5/jN4zS1mu6U9E36DBIEsn/7xl40T9fWXHPtwp+T5XBbglK9g0l5mjbqBMhJjMURqdiJbAmzaZGCvA0/rQDgoCCBGkA1FpL7CW+Wh1S/x5CQ80BKr7yAdFpE4S/X7vU8SQJhxN/HEtVYV5fY92VaNLQa7bAXNjIcAReX+KX3Dj3l7TKlXtptBv4M4QxqjvSSHEHQmcNcgnsW6L7rf/OIY+R7xUW2CT/0OqgqVvASOv9fDXZdCF8guif2So7HJezGmvkatjIOYL0Mp5YUZPelMkp9IES6v+2LEG3ggeVWHOBEAuJuLqW7l8tPoJuLmwTr6wVUsJrmmNQith5lsMg1v5/CWumsqxi7fLWooRVSzOuNuQbEezIcqjfvokqUET+5TKR0zXoiYrpYH3G8bkQ2tQhHPChkRFOAUxwjRpgL7DCa87GqGoBxcmemIWJAyxNPrqQ11sOlxpw6mGX3wDBiGFQULOj1mF/8ro2lhoh4gAdi357GkmdavAcRAMYpaFFFm4oI0arTtbO
+ idcvyDpV
+ tiw4qrSVif9SNOWmLQ6Nx9xpqJWqa1i0EsWPBjzRCiJKixPCYIp6aSeJCp7Axty6C8poHP064+PDl2wVSjFjEYOjWbk7VZPxIp7NFnlSdXfJ2CGlSgVfHyZfyWPu5TihGaWuIfpqyIpFkG2HQMhFaNxLGQwN6e1PGTfheY9UjczVeyVFpBfA0oSn159yY+oNcBcZ3/c3MPG4jbbvf+hI5b4pnXZO3gexFiKH3Wgr76j0s7oDDsmyTZjEdJjtKg2lAeZS/XOvJZfROxVc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,70 +92,57 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: SeongJae Park <sj@kernel.org>
 
-In some cases, some of the real address that handled by the underlying
-operations set cannot be handled by DAMON since it uses only 'unsinged
-long' as the address type.  Using DAMON for physical address space
-monitoring of 32 bit ARM devices with large physical address extension
-(LPAE) is one example[1].
-
-Add a parameter name 'addr_unit' to core layer to help such cases.
-DAMON core API callers can set it as the scale factor that will be used
-by the operations set for translating the core layer's addresses to the
-real address by multiplying the parameter value to the core layer
-address.  Support of the parameter is up to each operations set layer.
-The support from the physical address space operations set (paddr) will
-be added with following commits.
-
-[1] https://lore.kernel.org/20250408075553.959388-1-zuoze1@huawei.com
+Add support of addr_unit for DAMOS_PAGEOUT action handling from the
+DAMOS operation implementation for the physical address space.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- include/linux/damon.h | 3 ++-
- mm/damon/core.c       | 3 +++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ mm/damon/paddr.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index f13664c62ddd..b85c6c669cd0 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -746,7 +746,7 @@ struct damon_attrs {
-  * Accesses to other fields must be protected by themselves.
-  *
-  * @ops:	Set of monitoring operations for given use cases.
-- *
-+ * @addr_unit:	Scale factor for core to ops address conversion.
-  * @adaptive_targets:	Head of monitoring targets (&damon_target) list.
-  * @schemes:		Head of schemes (&damos) list.
-  */
-@@ -788,6 +788,7 @@ struct damon_ctx {
- 	struct mutex kdamond_lock;
- 
- 	struct damon_operations ops;
-+	unsigned long addr_unit;
- 
- 	struct list_head adaptive_targets;
- 	struct list_head schemes;
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 52a48c9316bc..1a8d3009d606 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -544,6 +544,8 @@ struct damon_ctx *damon_new_ctx(void)
- 	ctx->attrs.min_nr_regions = 10;
- 	ctx->attrs.max_nr_regions = 1000;
- 
-+	ctx->addr_unit = 1;
-+
- 	INIT_LIST_HEAD(&ctx->adaptive_targets);
- 	INIT_LIST_HEAD(&ctx->schemes);
- 
-@@ -1213,6 +1215,7 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
- 	if (err)
- 		return err;
- 	dst->ops = src->ops;
-+	dst->addr_unit = src->addr_unit ? : 1;
- 
- 	return 0;
+diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
+index 345a0ae63b19..b548813a0472 100644
+--- a/mm/damon/paddr.c
++++ b/mm/damon/paddr.c
+@@ -135,10 +135,12 @@ static bool damon_pa_invalid_damos_folio(struct folio *folio, struct damos *s)
+ 	return false;
  }
+ 
+-static unsigned long damon_pa_pageout(struct damon_region *r, struct damos *s,
++static unsigned long damon_pa_pageout(struct damon_region *r,
++		unsigned long addr_unit, struct damos *s,
+ 		unsigned long *sz_filter_passed)
+ {
+-	unsigned long addr, applied;
++	phys_addr_t addr;
++	unsigned long applied;
+ 	LIST_HEAD(folio_list);
+ 	bool install_young_filter = true;
+ 	struct damos_filter *filter;
+@@ -159,8 +161,8 @@ static unsigned long damon_pa_pageout(struct damon_region *r, struct damos *s,
+ 		damos_add_filter(s, filter);
+ 	}
+ 
+-	addr = r->ar.start;
+-	while (addr < r->ar.end) {
++	addr = damon_pa_phys_addr(r->ar.start, addr_unit);
++	while (addr < damon_pa_phys_addr(r->ar.end, addr_unit)) {
+ 		folio = damon_get_folio(PHYS_PFN(addr));
+ 		if (damon_pa_invalid_damos_folio(folio, s)) {
+ 			addr += PAGE_SIZE;
+@@ -311,9 +313,11 @@ static unsigned long damon_pa_apply_scheme(struct damon_ctx *ctx,
+ 		struct damon_target *t, struct damon_region *r,
+ 		struct damos *scheme, unsigned long *sz_filter_passed)
+ {
++	unsigned long aunit = ctx->addr_unit;
++
+ 	switch (scheme->action) {
+ 	case DAMOS_PAGEOUT:
+-		return damon_pa_pageout(r, scheme, sz_filter_passed);
++		return damon_pa_pageout(r, aunit, scheme, sz_filter_passed);
+ 	case DAMOS_LRU_PRIO:
+ 		return damon_pa_mark_accessed(r, scheme, sz_filter_passed);
+ 	case DAMOS_LRU_DEPRIO:
 -- 
 2.34.1
 
