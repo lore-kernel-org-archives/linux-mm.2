@@ -2,111 +2,91 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ED679CA0EE0
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 15:37:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A4796C87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 15:42:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4EF899000A6; Wed, 13 Aug 2025 11:37:36 -0400 (EDT)
+	id 3E8249000A7; Wed, 13 Aug 2025 11:42:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C714900088; Wed, 13 Aug 2025 11:37:36 -0400 (EDT)
+	id 3986C900088; Wed, 13 Aug 2025 11:42:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 404329000A6; Wed, 13 Aug 2025 11:37:36 -0400 (EDT)
+	id 2AE7B9000A7; Wed, 13 Aug 2025 11:42:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F4B3900088
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 11:37:36 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9CD881A03F4
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 15:37:35 +0000 (UTC)
-X-FDA: 83772138870.22.5E6A7BD
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf14.hostedemail.com (Postfix) with ESMTP id D8399100013
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 15:37:33 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="kkqdIE/H";
-	spf=pass (imf14.hostedemail.com: domain of leon@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 13DAB900088
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 11:42:11 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D101B1DCE99
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 15:42:10 +0000 (UTC)
+X-FDA: 83772150420.29.A26DF9E
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 0EC5240014
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 15:42:08 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mm3RA4Cy;
+	spf=pass (imf04.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755099454;
+	s=arc-20220608; t=1755099729;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zm/dCvvK+iI7j714RjSP/vwEDHJVwvkiYDPPSLpMKNg=;
-	b=JFWzruRFtZWk52af1sg3wIzMfVV38r/1pl6pxXgT71p2xP1QrbotTAJDlKDoll3qDBJSyn
-	/LK0LGzpDliV3gEuF4wZ2QfauhVVeG3/OItcXcWeDs1gI6CPKYZ82Gm9LND7M4z3k6YIUv
-	UaxVsb7eKqg3946NwAwkLKd9Vll68dc=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=KLaKhiNKJnwLm2h8sKq2qt/e3iQDmklwhZl9VlMOe0Q=;
+	b=SCr3IdW3cCy0oiyofh+5tLzpcg52m/cFuqR48HC4s4jLAT3IYHue/mV9uKr496dP08Ubaj
+	u7KaksSZnS2wGfMfwQITFXT7LIWgjFN63MzfvCIERudB1BpDslBLQEdbZcDBTQx2n/7WQX
+	DoexvgeTer/WjTvKnFiDaGhoQnAPuWU=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="kkqdIE/H";
-	spf=pass (imf14.hostedemail.com: domain of leon@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mm3RA4Cy;
+	spf=pass (imf04.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755099454; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755099729; a=rsa-sha256;
 	cv=none;
-	b=J2eIoQI+Wuw3g1pvsiV2wNGF5uTmsPG6sqVrU50ZyksvWRnJsvn91vnGEalkmuZRrLzyOL
-	f1tf3TTCibmx7XsBZdy3PiiYAhSeslKS1DRkuXu/AMQrUSc8d3mw/u0vbt2R0hzH681vqU
-	v2fOoCqRtImGuK9daGfiZ6jC3Z8TDlo=
+	b=32B8x19Kp/zMUEsKb1Xkk1kOm1zEpxzWI9lixSRCYqyOG2OILp65ssrnvmSB6lDGX9YOpH
+	l9OfdI3+tCQkADN0IdAa5WOO2/PoopHzguVe4QhsGn4gygh9Itf9SsTNj1BUdNF5lUTdxJ
+	oz6E3E+vzBJ69x6hJDNvPO16Mk/MTG0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id B00E35C1360;
-	Wed, 13 Aug 2025 15:37:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A911EC4CEEB;
-	Wed, 13 Aug 2025 15:37:31 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 61085A57DE7;
+	Wed, 13 Aug 2025 15:42:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D34CC4CEEB;
+	Wed, 13 Aug 2025 15:42:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755099452;
-	bh=PQhq5rWxBSi6wo5Tnnh0V92zapg7M+UyVJSAH0kCd/o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kkqdIE/HRQ5cedE1zyuMfMRaAZJeqzpFBH0/fLyOJbOpD7Q9Y6fUKKVCUSYg6Iu9+
-	 +0lhPpaogX+zo7DE625PlBBN7tO+nQtx0LA2aKRv5GqYQcf/TD8I++3mIddUS1oGuS
-	 2Xu0FGRyeN7MRl5kxApDBRYf8dHZhW8fLMu9BCMo8fTZeDkfiJH03TaTo8MCeUS3wk
-	 Q3N2kSeVd08IYz9d3sNubS0p0XfPjY2fnOy5IU5HLL6nAdg88Wdvo9IzmX54CnrqWQ
-	 dCVsQbDhz8GqQ+nB2+l0260S3CZs7QJe8H773Ex1NmDTheYUl2t1VYx6TqiJOtited
-	 Jw1XTt4Q0BCbw==
-Date: Wed, 13 Aug 2025 18:37:28 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
-	kasan-dev@googlegroups.com, Keith Busch <kbusch@kernel.org>,
-	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v1 16/16] nvme-pci: unmap MMIO pages with appropriate
- interface
-Message-ID: <20250813153728.GC310013@unreal>
-References: <cover.1754292567.git.leon@kernel.org>
- <5b0131f82a3d14acaa85f0d1dd608d2913af84e2.1754292567.git.leon@kernel.org>
- <20250807134533.GM184255@nvidia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250807134533.GM184255@nvidia.com>
-X-Rspamd-Queue-Id: D8399100013
+	s=k20201202; t=1755099728;
+	bh=KoILjMIrf0f+axn90tPHLT7lB7OEvJPVViVyLgwUa9I=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=mm3RA4CyMDL3VYfRduA5zbpAYDZlAU63kivBJOaDKlbVMV0TYNHO/79OQVXJm3yi7
+	 c+tNZ3BcdM0yYMUxURFP1j9wW9hoY9adbX0Kfw6uSnEfT1PxAIum779R9lgTCkL2t2
+	 LrA0PReHLzygBTade+WMvs7y2A4yy9443u0qC2aOACHo8XZRgnbgHvl30Xx01MgjAV
+	 puAX8mnOzPeQ4q8ckgNSnzzIC4bLAY963vsyGFPLcR88jeOZMO95NDZoRINb89EL08
+	 8DQJdEGrSuj3JK8d3/VvW/xmsxsjmHuUl8ghWEBGrBBChueDixfyP6DrsRo3pjmvFo
+	 7A3KuwNdGTUTQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 044A139D0C33;
+	Wed, 13 Aug 2025 15:42:21 +0000 (UTC)
+Subject: Re: [GIT PULL] hotfixes for 6.17-rc2
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20250812205256.7782e2e483a8b12774e65dcd@linux-foundation.org>
+References: <20250812205256.7782e2e483a8b12774e65dcd@linux-foundation.org>
+X-PR-Tracked-List-Id: <linux-mm.kvack.org>
+X-PR-Tracked-Message-Id: <20250812205256.7782e2e483a8b12774e65dcd@linux-foundation.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2025-08-12-20-50
+X-PR-Tracked-Commit-Id: c0e1b774f68bdbea1618e356e30672c7f1e32509
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 91325f31afc1026de28665cf1a7b6e157fa4d39d
+Message-Id: <175509973969.3638460.11919114009221754348.pr-tracker-bot@kernel.org>
+Date: Wed, 13 Aug 2025 15:42:19 +0000
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org, mm-commits@vger.kernel.org, linux-kernel@vger.kernel.org
+X-Rspamd-Queue-Id: 0EC5240014
 X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: fuggffep8t5f1agn71ba78euyywixntq
-X-HE-Tag: 1755099453-798986
-X-HE-Meta: U2FsdGVkX19PaWQyILmwcRX38K5DtloNGqB5+OJ7Ftm/672BMr9dkQY2x6ZARRIJtK9oACYzG1A+lZw2nRrkt87JT8YxhU10m72k2cIPR/eSqznGfozL1pPpldWy5NwBdEVw9o3FoWTWSwYUeIuI+RfkQpqvDhAE5qwsIWe4B3dTecpbhlmjus5hOFEDp9K/bMF73Vt48JWA7IFVbUoHF4aOTuWV0/edDd+rwECiV8emQOGkC1ChK1XPYGsP8XE+tRL/b3kIlCgX2v7A3Hd7ob6zCmblK5YqVON4RsmYW5PByehMFNX+HFR9qYrUyr70TtjogZ0SVCSaAt2FBedraGrMqlcAR5K3xY1Sn22x2igGyX3kpGABNHshGXxmR/HMgZJr6wzReJaiEtloqZ52LSoCVolllLOcyVYiW9HA8Fc1YS/np6PpJ+DNv00Q1d6X6MAg39UIRZRgHcM20YkQtrNgq0BXVPJWjVJRtn4tQHex9FZIJKNJS3izrw/yarHwuvKjLTfqS8gDnwS6lx6fD/kIhvaEjwMozWF52Qp2JWJdyTWQAvHXEwy84asR2z1XiVwKkdIGaeludK95nDpEfjBu83oXZms++w3bVyeu+VIGHY3DMkRe72j/AUwL+jxtQEDbLEEIKrKOFQFbR7Cz/uTHroHr0rdxnybQ7O6v5/xPxUj8yFZF8rG7dAVNKlChCNmckNTZsjKN1XWULYHFNe96VhHwp/IrhJ0VJmUURSEVumxNES8YBRC0S+u5UNJUlVpQdJVhDjaY2TNbuePIGLhaJ+di/2nmNj4lSDqT5FxCRqnEhOV1DdHEIMS5MN5ebOk6jNtrDICjWR0wa6Mc+OEpDOQZgBKvEnPwdw+CiNGSGTqCtqfAf/DLeWaN0rnca0P8KYb7/5dBEHHFxUYuBvz8zot/5MTlrz6h3DoUEM0xqSJ7xBjOKtu0y2zRBTVKEY6KHNDYZSEobdbCrBo
- T7lhw8S6
- 8cMrtsjc6W/bWBjRxZeUwJKO2BN4QXYeAIl72zSoAPw8++cZTunbvarE5J86a+MievlqSLmtjmqSLJx4U7hFAbVeGU5wNQvPmyjUUl00s21eMj17s57W7UF9ZOdezZt3ms0gXtTmwHLbo8WMxP0OhqQZFmnVT8Pr7z2fpL13eiB0YVs9v1KJPbZH+AohShRDT+Rn+vixUjduKmm9HF7TBUT7zW1iQAHRvNx/Pk3H4rnH7YrLlP5AnhQruMbemB6HpxU96Q8k1+TlT7H5YxPz/dY7Mecd2ouBPi6DfyG3sU5IP632fyS63stoy2Rk3aRNj/4gp05YdxOA375m7Ve+oBohzY+3yrGeOioPW
+X-Stat-Signature: j9jq741qczdn9i859h5g63iaoiowqkir
+X-HE-Tag: 1755099728-763039
+X-HE-Meta: U2FsdGVkX1/rApfZ1tMjgGIbfVGl5+/CaWa7sWT03eGsaFBf4tbGpbnYX28M6v2cc095ZV3AYFcPXDgxhjLeBdXcrBE3fwZUDTUCtrADHiRmlfkWi6Z4wLKBI4ljGlHCkpweN4y0/xqw3qe3zDEvfTBI5g3aOQIEdRjQcxT38WNMQ9SYrMYEuf+OkGx1Yz6imds9vSVJZ8i7hPslwkh9jK2huqmqZG3yNiEY6seV25fpQDNrn15ct1lCbR2oaPxDTKEA4uC3AF5mBSujGrkzqIBD16ag6s1r0g8ldlQ8wzrRD25LOvDZW7cYrH/FM+wIB8zZCLqyNT1FF7JQSVJbD4HxUtzCP6snWmmm9H0SeY7Av+FyAtHouRdRM+dUtq5+8+T1LgU+HKEt9qzV8gBUn4vgCXATfZ/gsQ7uw9k5a+bZfH4x0PrgonlCWfwg+u2zoNiyToZMct2rBNNLos/+lSmjsbVu+KiLnZs9d/KIudmJFOZrUFjJzh/080imG2LSRYWIv6v/wsWEXK70uuLxGYy2o9DTszDm52JTFfFHbVJnkl6VbZF11udbhE18cPJtCvV+xK2tQFUK/SXikn/tCApEPV1JW9dIyrNn3mcf2OtXgjwrhIZ4u7poYqWFeSlYIDoSc3eJUFFn48aLXZXy1l4CsfVe0sEQH3Yb1CPikTsG2GwmYccDwSLvDBhdx0L6A3YQ1nrP4jSK/cJS/QpJ0wIBvcFNjNKnDwjpm0QSR0TSt2Uk/JiD6I3jpk+Wg4uC2EaihUYaxzb+pEwOZY4PeLKTEQTuJa7KmoF6IIfBJ4CqHqiPBwK9axmBwPG1lCWNdyOF3jJNlur0UFuUiuOOWBn/fVby0dnfiNjXXKPIMPMaB3JcR1NQzPkQEZPfn0B0X1Dk+sb6HBWnz0JRiltBk7Mpntl2bV8zZysjUpTHJhJtNPka38Jf4tK3tq5KkjKoZjPDNhZLbPd+slydIJf
+ 4ngVdeJ9
+ 6VxVgLVKohtmQgaYUanYDbp/xp8Z8qtAa1pcd448ozOpjjiFEZshh1uR/6sByA6dixNkb8pr6GOnrHRW6SF9N3XeB+p1PYKxIaA7OY2vv2IAy5iClmFTwjL6EHDusnJE4qM7rqSuikSVkvbxd8xjTixaiWv4/e26+ocToPay908FBZ7dUafm/n5Nk1WX9b3mtJBcGXub1ICqbqYwZTq6Fvpm+KVSwhsH9Sx048BwPUSzjNjWUxS0rEhItxW4UWYMLD7X81MPJkoOWpm6HxJ1WiWvD5BvjyyzGOK7ieQJvq9yGeRb56SevxhKeoZokaT9SAjhsRnYewH17SnVUB8SGzpsVZAV1Z1QU/fGJnWJMyi2J8FhxHtLxTuRJ0FYfm2QNlONSxTyfREC0INk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,28 +95,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 07, 2025 at 10:45:33AM -0300, Jason Gunthorpe wrote:
-> On Mon, Aug 04, 2025 at 03:42:50PM +0300, Leon Romanovsky wrote:
-> > From: Leon Romanovsky <leonro@nvidia.com>
-> > 
-> > Block layer maps MMIO memory through dma_map_phys() interface
-> > with help of DMA_ATTR_MMIO attribute. There is a need to unmap
-> > that memory with the appropriate unmap function.
-> 
-> Be specific, AFIACT the issue is that on dma_ops platforms the map
-> will call ops->map_resource for ATTR_MMIO so we must have the unmap
-> call ops->unmap_resournce
-> 
-> Maybe these patches should be swapped then, as adding ATTR_MMIO seems
-> like it created this issue?
+The pull request you sent on Tue, 12 Aug 2025 20:52:56 -0700:
 
-The best variant will be to squash previous patch "block-dma: properly
-take MMIO path", but I don't want to mix them as they for different
-kernel areas.
+> git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2025-08-12-20-50
 
-Thanks
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/91325f31afc1026de28665cf1a7b6e157fa4d39d
 
-> 
-> Jason
-> 
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
