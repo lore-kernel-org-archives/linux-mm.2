@@ -2,149 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AE1EDCA0EE0
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 16:24:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77253C87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 16:37:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BCCB9000AD; Wed, 13 Aug 2025 12:24:51 -0400 (EDT)
+	id 12F9C9000AE; Wed, 13 Aug 2025 12:37:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46D78900088; Wed, 13 Aug 2025 12:24:51 -0400 (EDT)
+	id 0E0B8900088; Wed, 13 Aug 2025 12:37:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30EFA9000AD; Wed, 13 Aug 2025 12:24:51 -0400 (EDT)
+	id 01D369000AE; Wed, 13 Aug 2025 12:37:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 18942900088
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 12:24:51 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 90ACE58DB3
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 16:24:50 +0000 (UTC)
-X-FDA: 83772257940.10.571DB3B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id CE9AF40006
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 16:24:48 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NowuzJLv;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DFC08900088
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 12:37:01 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 675F582A7B
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 16:37:01 +0000 (UTC)
+X-FDA: 83772288642.06.25613CC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id CFCA51A0002
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 16:36:59 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lqdQ51vO;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755102289;
+	s=arc-20220608; t=1755103019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ntpsda4EGycyiP3WgWJ5U2Zn4afzuVItLgDlY0baPT4=;
-	b=FxX7qTYht2d5+h8kG0wn+PfVZ9B7qwuW6VdYsWJ/FEt4aLgcm2+Xl+ePPenQc+NN/8abk7
-	fNiwMqQHOxSKbzyQPTRd7wEWUn2ic5QiWSZMF8nE5NujAVCsYfEitUHKRKdr3Di8YoHn9Z
-	b/LbKjp1AEnF6EsMKh72Pzbv26yLQrw=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NowuzJLv;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755102289; a=rsa-sha256;
+	bh=5YcOl3k0Mh8s8Kb1V3Q5LhHxFngXN6yc+Tslt93HoXw=;
+	b=EPWUzm+eMTw2ehVz5NddqewwJZzM0bZIpdaF1f+31cIHBxlAhZy5sKHBzuLakqpVgHREXl
+	W8Ehb6n6+znd2z/IsKnDYzhJ7tSnlC9jWx3TvTduQsNdzROwQw/vTTWKGIL2s+/Eotx+89
+	ctjWWP2jheVX4MOzFCKjF/k7ps8L1BM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755103019; a=rsa-sha256;
 	cv=none;
-	b=XkSe6phxS4Enu7dtsprEaePA/sCe8n/ATvBOCzHqiHa7Xd/DFM0CWcJehXjobTIVJopmTB
-	PWWkO32dwlQCO4GrxBz2Q6xxwpN4+Tg4vVdfTIxwBZIpj8AhntvkPIe/i9mXElvLlze6iQ
-	EXKk775G5Og5+ylNFlUqKufE3aXlclg=
+	b=SB4xo9l5sEgBurs33gB5Yg799+nNt1kjIRMSLv757fjLKb5wBWIT5hDwdxq3MgnnA+Aa8j
+	AJ8hCygy+ZjdjcyaFGYE+KhsJ10Askna5LWPoEI32gL5UpeLOlc6u2kw+Utu3suus+Ez2B
+	cXRrIWMCWe3DAGC7775v95RbBleAT0E=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lqdQ51vO;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 56FAA41A7E;
-	Wed, 13 Aug 2025 16:24:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09AF3C4CEEB;
-	Wed, 13 Aug 2025 16:24:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3A258601E5;
+	Wed, 13 Aug 2025 16:36:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC22C4CEEB;
+	Wed, 13 Aug 2025 16:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755102287;
-	bh=K1Qnz6FeiAMe891bHx38SnseQkGtn7jJpOFA1e7ci+8=;
+	s=k20201202; t=1755103018;
+	bh=cMS8Hw531No/ecCjZmNrRX5GaWy0pG4vbghgfaqFcvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NowuzJLvoDcytU2mnlkUjH9a3VkVMtm7ue/1JeEievbLShowGrZYKS4ljQgIc4Tvt
-	 3+vYZnNOWzD9UQ8pSH9fEmYwxPiiGspKJ3H0P32SvVzl8AqitUBhqFYwGCZ45kSKAJ
-	 87/gu7vuZjna5FtZYWWUpp9S1G/8o7Ty64t0lObmjPlPr2MXYLPDtH4Sc4eAU6xND8
-	 ThhzDQ4hSAh1VB48U+GqBbKfJNoQAGi7b1yhwF4mFVAalvl713Ll6uzzSrl8gdzvsB
-	 qxd/OanAUdPmrliRUlwzqp8QiFiC+SAvfzE7ZdQVKX6a28IsBlnq34Yk6UcqsLFVxB
-	 8m4KWJEM4NWXw==
+	b=lqdQ51vOVQzVtOZgfHpQ9GW6gLvBmeNIW82cKH9LWxO7iXj8+ReuaYfGOGrjpZCTg
+	 p8V+8kf6aScbY7iwMar78t19reg5mgxStHYELRXZRuQDW5pVGXNNMlYY7R4b/dyMyT
+	 X+TxHQUHAt1fNAdMi2wJXVfL/49DjyFHow/Z5T1UCl3jJLGO5FdZCdpIc6DZIaNJtv
+	 pdBnWr8E5vNW/xKKfj43cnzFFHiiCCV/KDvA/eYc5zCbFpbtJOaiKis51thpreIwj/
+	 ZWc3WnC7rONEDApukmvMDj/eCupGM3VnMKNkO6vit1NKZ6U+3dFkk/F0MK9/Q/SEam
+	 GS1HPl4c2TOUw==
 From: SeongJae Park <sj@kernel.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Quanmin Yan <yanquanmin1@huawei.com>
 Cc: SeongJae Park <sj@kernel.org>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Kees Cook <kees@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Xu Xin <xu.xin16@zte.com.cn>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	David Rientjes <rientjes@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Peter Xu <peterx@redhat.com>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Matthew Wilcox <willy@infradead.org>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	linux-s390@vger.kernel.org,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	sparclinux@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org
-Subject: Re: [PATCH 00/10] mm: make mm->flags a bitmap and 64-bit on all arches
-Date: Wed, 13 Aug 2025 09:24:45 -0700
-Message-Id: <20250813162445.5456-1-sj@kernel.org>
+	wangkefeng.wang@huawei.com,
+	zuoze1@huawei.com
+Subject: Re: [RFC PATCH -next 11/16] mm/damon: add addr_unit for DAMON_RECLAIM and LRU_SORT
+Date: Wed, 13 Aug 2025 09:36:56 -0700
+Message-Id: <20250813163656.5611-1-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <af5492d4-f8dc-4270-a4c6-73d76f098942@lucifer.local>
+In-Reply-To: <20250813050706.1564229-12-yanquanmin1@huawei.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CE9AF40006
-X-Stat-Signature: hm63e57oe4yyoudynmzu4zdpho89ortx
 X-Rspam-User: 
-X-HE-Tag: 1755102288-289612
-X-HE-Meta: U2FsdGVkX18N9PkRjU6ovaKkdaKhx1MHaf4iSgFD+H8T/2HZ476AMOE8oKtGba9dRKo2lRAk5+/i/go4t7V6k+hNOVXkvJW2AysoCPaZONKc9Ioi6VyqShwk2BMWorBlhsoBczowK8uxkkFjaItLq7Q30BXjkeEaocbZr7cN6m0I0awpkEFsiSCY+pQ96woNXmiExDexIKdHewgN50+x/31jgiVv/Nd+7qUZvyeNgC3R2aZ1q0kOUDL/feSK9gm9z4XxVzI0plIZMefP+4APsMebRUo4eKj95jaUXYs1BAKrsxlwoGd1IReE+Hpsy46wOoLyYNjdJkRhUjr2ilZ5GeT0YcfCjUis5SimypxdwQQ9Y0EeXe1hY9X3Q/amz2jb5DDLoUBdRbgrxr3KB1036sAem+wP0xY40ufReheVvX3OnjPpBdVnparJ/2x3PfBUu6CjZfgmSxHIBa0TNO0/l017/QPdx5y5ZEoMvpLNb5ZpgQEIshBvuH3G2pXPbHD+cVjzIEXul44aiBaXfTptflTso2fWGgU2slF1yFCnBVZlqf/8mFV6DJI5pklMcpbEhBrE9TC3OSXsaEXxmJbV0ITocQLItyVJQe0J25hGmOjcVnVo85Cwm5aRs2qzYZ+AGEPFvvXniMZhtovOvEV+neY+ZNHBDGhv6qG6U33IThgBheNZb9mQgo3i5E0tZBPH8idfUC1jt50f31/SKK/zeuYF1P+ImAmk9P/IRBDe+AbL+TBD3230OuRM0TG0cMrrsVwsAt5cVYAyIi7PxWMMaEwR6aPXpj1r/WrcKMkXBYmPtNwiRWhWjMzPU1y+n7Smg4fYg3AtIRKj3//eeW2t2C6pjFgmO+gU/cVlh2NNDV/srC2e4H46TI+d+C7Sq+U5qJd+i7dhfFsx3CnIFyaQwJgBHpyqwJExnoDKkUjEhQTssSUbkApZXYGPF6QrhFCOyz2jD3t+F/6OqzepRE2
- fXpZdqeY
- VoGxrlE9UkIux/nkZnNkM8506OD6fa5a0nArR0F9Xc6gFciPWzTyDbT5eLSgElsqgpA6Y541SnJYY2lHoNtDsvkRZtc2JlyTlYtrzzKFTdTI4Us8ZLHywRNiMa3e7qkF0H4ErFRmnrV5qcy57J/YAhtKBp8wkBjS2OABTlnDE3Hx56M+sHL1Ohmpxr2K1P9RggOIuuBuXAmOJFZ96AxoYFTWds/D0bVH4d3WiUajRzxKDtPQ=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CFCA51A0002
+X-Stat-Signature: ha1egad84839ao4eu5jg7j69ha68ozor
+X-HE-Tag: 1755103019-615054
+X-HE-Meta: U2FsdGVkX1/F3j4eLputCAmgnIB09Nol7Rcx/mEkjKHqrxK+XuyUgEwB3uqbCWLD/kS9k1fC3L1ZWvclFnZsT+B5e5OvhUgHBe72nU1ppzQtKBTM8nqlqu7EGdTMZlw9ZQhkqdGHmr1mEY/FdqD20k7FooIaY3U0MZewsOfa+VdhUfIk9oaGyqxbuRevKVIprsN/4wdkhfyGG7p/Y+27keHyhJOSIX7Yd6AwDtR1ZXMFwMVFdiC1Z08WbNsOvx/kUOvQxFj6k1dGeEb43liimUMOCMi7TIf1xJWC7mPFsHUJ7Wxz8d3aJKm2YuGob2w9N9sI2VFMsSDIhsos5qZldrSf1JvovQOQN2su4QHZuBRS2F3VKXaeSahmvlqHOcglN0rARgvaAdwUdNsJVNMDGyl13yOuEVxIZxxugRm15hTW9OiekH+Ac0m68CRI861r+xf1BT0UImeKNA3WdNdf4sjQGHD3bLM4e9i+FsjpEIlp8RD+hiZiWLIUxOAzYkXYPt+BvOa55i0uSW0c1YX52wcn/Wpe/YAxW7YXn21ou2e5N1YrRt5mF17hMDP4kxB5N52t7uQCYG4s0m9o439f7Atf0rYCa9aVglMcDFUUgixDrUdIKKo7un8b13w3bHtW8Oha5wKlk830kuLvaynMTsP1Q3Vcf0N4NIogZ/GMAQ+M5zR4sqNykIHeu3gXVPGyfB3AU8dYfhZq6ThPssyIaBmzL5LmAJfW86x5G15ej3GtAcCXek5E71NQvPK4qy2yu8hsbPCd8SgcO9Q82vhMwcakPA9coPoJCH9qmT40oeKRYlX/xDnH8otZt9aM/G1jRSU77NY0uliJaknwxhkpiMFc6qy6BPMWoY9zgsYEheGpOKuylqWOkItUJ4X5oWD3TOp1slkehHVLaqhQDGW+eiBGHlVl4CR9l8By94RSxaCwXiQftwdqV3rtI2FpGBRKbdn+OOdSxQY/7VIiKm6
+ R3kclbdQ
+ lM/pYxd64HfUF0Mvhx5TcJgSBJE8aiS1Agj8LmwV7I3TfVAFisoaAMRiHeZOvk/ZAyEYdEMMv61HQQla9ruiZLYrPXphdNIfVH7POn0eZDOfCshuVWLaJubAq0cXCqNqoKC3mcbqBYam6ZsooQE3IHMF0sYaRTEHeXlfGJOkGYOxC5u+W+snzYW/ibOtfypvw44gG0eXj4kWu48DkKuCsJ45ZEl2+o1dGNhI+w5L/IJs1yczzd+6+2nrgQ2bxi6oXLsIlVW7s8IkDFU36+6pJmFVFvcXWJuSoUj7oJsfbWbLj5KQVpJ2u1FFuVg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -153,48 +94,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 13 Aug 2025 05:18:31 +0100 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+On Wed, 13 Aug 2025 13:07:01 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
 
-> On Tue, Aug 12, 2025 at 01:13:26PM -0700, SeongJae Park wrote:
-> > On Tue, 12 Aug 2025 16:44:09 +0100 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
-[...]
-> > > In order to execute this change, we introduce a new opaque type -
-> > > mm_flags_t - which wraps a bitmap.
-> >
-> > I have no strong opinion here, but I think coding-style.rst[1] has one?  To
-> > quote,
-> >
-> >     Please don't use things like ``vps_t``.
-> >     It's a **mistake** to use typedef for structures and pointers.
-> 
-> You stopped reading the relevant section in [1] :) Keep going and you see:
-> 
-> 	Lots of people think that typedefs help readability. Not so. They
-> 	are useful only for: totally opaque objects (where the typedef is
-> 	actively used to hide what the object is).  Example: pte_t
-> 	etc. opaque objects that you can only access using the proper
-> 	accessor functions.
-> 
-> So this is what this is.
-> 
-> The point is that it's opaque, that is you aren't supposed to know about or
-> care about what's inside, you use the accessors.
-> 
-> This means we can extend the size of this thing as we like, and can enforce
-> atomicity through the accessors.
-> 
-> We further highlight the opaqueness through the use of the __private.
-> 
-> >
-> > checkpatch.pl also complains similarly.
-> >
-> > Again, I have no strong opinion, but I think adding a clarification about why
-> > we use typedef despite of the documented recommendation here might be nice?
-> 
-> I already gave one, I clearly indicate it's opaque.
+> In module DAMON_RECLAIM and DAMON_LRU_SORT, the damon_ctx is
+> independent of the core, necessitating dedicated addr_unit
+> integration for these features.
+> Additionally, if the input monitor_region_start and monitor_region_end
+> are both 0 while addr_unit is set to a non-zero valuethe default
+> system RAM range should be divided by addr_unit.
 
-You're completely right and I agree all the points.  Thank you for kindly
-enlightening me :)
+Do you plan to, and need to use DAMON_RECLAIM and DAMON_LRU_SORT on LPAE-ARM32
+environments?  Can't you use DAMON sysfs interface instead?  If need to use the
+modules, this change looks good to me in high level.  But if not, I'd like to
+skip this change, and wait until someone requests it.
+
+I'll review the code change in depth after the above question is answered.
 
 
 Thanks,
