@@ -2,132 +2,83 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0DA6DCA0EC4
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 03:39:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6881AC87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 03:52:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B76E8E01A3; Tue, 12 Aug 2025 23:39:04 -0400 (EDT)
+	id BB4C28E01A5; Tue, 12 Aug 2025 23:52:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48F8B8E019E; Tue, 12 Aug 2025 23:39:04 -0400 (EDT)
+	id B8D508E01A4; Tue, 12 Aug 2025 23:52:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A5338E01A3; Tue, 12 Aug 2025 23:39:04 -0400 (EDT)
+	id AA19F8E01A5; Tue, 12 Aug 2025 23:52:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A5BB8E019E
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 23:39:04 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B68FC1DA6DE
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 03:39:03 +0000 (UTC)
-X-FDA: 83770328166.23.A213892
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 0567D80004
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 03:39:01 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=j+jlg4wf;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755056342; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 943F48E019E
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 23:52:36 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E812E1DA7D0
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 03:52:35 +0000 (UTC)
+X-FDA: 83770362270.19.99474B7
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+	by imf06.hostedemail.com (Postfix) with ESMTP id A5B6F18000A
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 03:52:33 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf06.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755057154; a=rsa-sha256;
 	cv=none;
-	b=EODkJcYx2KmKirkSp9jWV8H5a+rGil4yax9vv/j+TgSYfUpsM9CNC5Z9kF+6mHec6ZA3Io
-	kZOMJyPWeXcRhcGhfp7xpjaMgB/Kn3JVbfZqKwnkBtQPJWZlxUk7IWvZhjZr877wQIinQR
-	yaNyldKNvcpoNp6//F70tGvgVA3b3j4=
+	b=XTPzbCN+p8MWLFJBZW4lC8/YhOxq0PcceELvgrb3SX9PhKx1c4FmCZQ2ePkwxFTYgGq9ZU
+	3EahFamJRO7qe4Ugg+ZzKKyoy/vAoJpbXwavZUczmdNuejtGE2tfUle1POzTNbBptHKPLP
+	jy8pAvoV/lCJ1rqGV59Mk9iwmvvzePo=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=j+jlg4wf;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+	imf06.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf06.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755056342;
+	s=arc-20220608; t=1755057154;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fCJ0ekjMXCLsQnoxZAx/o6xP0CM/0nYtYHB6pNmyNBg=;
-	b=a2sdbTHXPCxE7JxHbgthPRaZRKzOnUy/083CFlk0ZvwykNA5LqhEEnlrmK+JYC7tb63gHZ
-	OSj52WASYs5yk5ZWFyVUJJpwJp3XNmgTY39dvAa2RkRo6OJBH/XK0xT3BUedE7cOJmlfiJ
-	tjlCAPwLbtRm9wWmYAGAvwirfnpKPrs=
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-76bde897110so5172591b3a.3
-        for <linux-mm@kvack.org>; Tue, 12 Aug 2025 20:39:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755056341; x=1755661141; darn=kvack.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fCJ0ekjMXCLsQnoxZAx/o6xP0CM/0nYtYHB6pNmyNBg=;
-        b=j+jlg4wfNJVUJaFKx+Dajy+QflIPBTyy84aUmIqEvW33SPPNQJGvZGDaX2QIepAbAN
-         Osp16TS9z99D292KjL2FZqZBLN/pbFMbKJ9Jrv7xYNNSa31cgII/1GaphsMHxiw38mws
-         PF5xyZg4BePN90953r/c339IdPR7GNixwoKqykiDwcjJZ9vmgx4ieUCrmKzAvQS5cgla
-         W77msbwEAcLN2tnJF3W/K3O3TiAb70K6sA0a300+WvY5aMSY37rPc1iaQp70F0IJFrKV
-         oNbiF5lXVIEZz8FirjRyZm9Aj4TOvTHnoE3zDcfthW6zM0g/8IF7tzLBq9i97LFJtqJy
-         B2bA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755056341; x=1755661141;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fCJ0ekjMXCLsQnoxZAx/o6xP0CM/0nYtYHB6pNmyNBg=;
-        b=YBLmdpUucj1R5kExQsA7gLTMpDFYxy8xw0Q7iBCQCY8mOXXKoDlFFOLeOqfL7pPpGq
-         k5jpYSLbvHzB/sdn2PKSLob7NsvYCtUt3td9rV++ouEe/43RCREwvsFiNENscmHoFtQN
-         j1w6t9bjIq/BWzV3ncazlO4sdC2EpvT/GrkOSsQc+YKcoiF0nPx9k+NTJGWmJN1oAlLN
-         6QgPrbSImML3cISzrhL++8G58hFBiWYO/6KsoKhp2TPyLwYqfKRIX0qsQvWsyzfeRuLu
-         L2u5oJ4JhVELfmyuavsP7VVBXlhXdZn625p6rxqiSbhWUVBhTItfgFkxkWhXUwuC9Lxo
-         wQHw==
-X-Forwarded-Encrypted: i=1; AJvYcCWvMB76wafYm/PZm+SBQWZ6TSOgX9un/p8iFn26BpC3G0V4CmJkoKdA/52KtZa+vO080aRkOeOqeg==@kvack.org
-X-Gm-Message-State: AOJu0YzxXg34VHZMCimE2gAMkqM+KP63rPUILVMbh6V2qgHoS82msnpn
-	1QHsp9Z3GCR8yn4px7ncGPFPCUlxPMO8H05/h25jk4Dpcc9NUR3Zw6Nn
-X-Gm-Gg: ASbGncsBmVGHiZnuA/i7MblApaLlEwUJvrFfO1dCW4CoDtDMOZHmVh9YSKLOUNEO3fM
-	hDneu2qSyISo6D1B1B6mGygYr8I3aby5WXlZVNQe/cdUVKHdlrY+ZhuAzb2ab2a7DJId9i7cV8E
-	IPzMI/sXXbov56A8b2J4c1Z17Z9mE+SctzbpP9WI+0sXLkqsnQNeuZ/fS3Sa4Klf2T+LhtX1l5X
-	UNznmOE5S9Wi/9l+JZA5DtwPvBIFy+5i38oAu8RBDMB2PGJfRlyT21yeEPUtVTWQGhSntnxnWdq
-	lc7/zlXujqNLTfKHoA8oy7rYpEZqHHyQrqxNQBV6plDM8Z66nbkGhICqPu9ylq5MCqx2ViVdNUZ
-	EF2iP6OpUqMM=
-X-Google-Smtp-Source: AGHT+IEuhcHnMiqztTP7e90KUgTjM2DrehBTpSubQVMDvpMAdraKkDPvVOdfVi592vigrsuTLzx9aw==
-X-Received: by 2002:a05:6a20:7493:b0:231:6ba:881c with SMTP id adf61e73a8af0-240a8a5defamr2480043637.6.1755056340718;
-        Tue, 12 Aug 2025 20:39:00 -0700 (PDT)
-Received: from smtpclient.apple ([2402:1f00:8001:567::104])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76c3f85c720sm13483222b3a.27.2025.08.12.20.38.54
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 12 Aug 2025 20:39:00 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v3 2/4] selftests/mm: add check_folio_orders() helper.
-From: wang lian <lianux.mm@gmail.com>
-In-Reply-To: <20250812155512.926011-3-ziy@nvidia.com>
-Date: Wed, 13 Aug 2025 11:38:40 +0800
-Cc: Wei Yang <richard.weiyang@gmail.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- David Hildenbrand <david@redhat.com>,
- linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>,
- Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>,
- linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <DB5B4E8A-3CE9-4F15-A52F-BA75E9BDA4FF@gmail.com>
-References: <20250812155512.926011-1-ziy@nvidia.com>
- <20250812155512.926011-3-ziy@nvidia.com>
-To: Zi Yan <ziy@nvidia.com>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-Stat-Signature: 6etxgpt6eifs5u7ctsaduo1jayu1ebx7
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=sGsJn4+n/H6Bk++oEiX7n+wXtfeBQ37DkeuL/L5Anz4=;
+	b=j5URVbDOW3SlIXSHUwP1883D3a4t9GUBmNJsNy4tQFtmo29knutdDTGgT2DsUTkwjvzGof
+	RLMR3SOsbYebr2fRt4SqkHr31566b53dEN4wdqV5hTDAheWi8jdeZDy5YiQbEOXMIWL25t
+	3QFJugags6sZ9eDJoHWPayB+ABB9+0o=
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4c1vV13byRz2Cg6F;
+	Wed, 13 Aug 2025 11:48:09 +0800 (CST)
+Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
+	by mail.maildlp.com (Postfix) with ESMTPS id 071BA1A0188;
+	Wed, 13 Aug 2025 11:52:29 +0800 (CST)
+Received: from huawei.com (10.175.113.32) by dggpemf200018.china.huawei.com
+ (7.185.36.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 13 Aug
+ 2025 11:52:28 +0800
+From: Quanmin Yan <yanquanmin1@huawei.com>
+To: <sj@kernel.org>
+CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<yanquanmin1@huawei.com>, <wangkefeng.wang@huawei.com>, <zuoze1@huawei.com>
+Subject: [RFC PATCH -next 00/16] mm/damon: support ARM32 with LPAE
+Date: Wed, 13 Aug 2025 13:06:50 +0800
+Message-ID: <20250813050706.1564229-1-yanquanmin1@huawei.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.175.113.32]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ dggpemf200018.china.huawei.com (7.185.36.31)
+X-Stat-Signature: 9ix1jrqffzq81fd1ha3o9s1wk1y58cp5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0567D80004
+X-Rspamd-Queue-Id: A5B6F18000A
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1755056341-901706
-X-HE-Meta: U2FsdGVkX1/X4yWJtQih5gIXeRGAYs78YszNuLJ7GaC3k8Cb6QUXL3y8XH226FkGSZkFbxsEr3FnXEGK5wIydz/OczBy70NcojQPAw96w57Zj8ydbA0HXvcBOcTDC4dbfZ6s+99Jla9GTVDdYYJz2QyGN8r0qiSxcsk322sh18N8eBQozJK3fS18+pNZIDq2gjRtR5c3r84Hdv3iqrp8O6DDfBdY06ltfNisp6JBcAFrGiAapn47HypHz8M8T+nomOyoEvXX7j5QgJcLGEkuKE6sEzFyWMQmiJzZHa2VZXqTZizBX1gBVAXGAbNHPjz984ybZTYF7VLT6vfWKOFa/5vyid39l77zm8l47QWeZOzyJKT4DXBPHtSHxVK5nwXbYfWPchkpv4TMWo065wqBvicwOCDVTskVr2bR9b8pS6IifmYcKTLCsb0r3wW794av+y8IQBSkBBM80JelG2qEAJ9C/qYSytFTpVDuujzK0TE4oCtbnvUX6v5152mpDhfFC0oC0Rk9IQ6S1DmrwQZRDv//61qgsjHQmGSXeeJP54TYI6gWOctVuyq/jBBNyIt35l5MHc9Kb+KxrhYev+xaOw3D1mWSrM2kYrnzWv/L8vpB0LRBCurkAq9SC86BxY/YlfrojjXC5jWwSGFfqSwFftYfIHuk1+Q/r5BdwemsbpPjuk79m+j7iF7q4OTwiXhyfyBklIDQRSZgvX5PGfGULQfPXY4C8DchnZRmbzylRMQlcyyyASFB6apM3lUQNb/ptaKwQOzf840R8uIQhQyaTIAYMH2vt6ShoaFe7qPvOiF/OyRq5/GORhjvKTtS8k5MsN53P7OrviSWkCDogBms3pEXuRKtpSJNTjRMNlnkCu4t5+Je0+nhD7p4Pt4pCBziufWgQYoPkn1g/+ssmJDVa+79Ihv9TJO/r/LBW9O9pRMm5euBv1JH3BZEnpfNDCHgl0uAzOOHwbscKGszlOB
- mgVyEnjw
- zc1v/HWacTVs41UfEOzFbeLZQ8VoDNdYWRvmK3pumU17Eu4J3kr0Qaao3qz2obyb50mFr2sDKvISTLb7PEOzGaiNU287RRlSJRQHJfKar8Xw9FpqYopdQDiTzDTfwgF7JayINgM4b6e58yDeLwhm3JFI2zw8j9GhCrzDS3HcRUuJThALvFcCXEq9HJGEblF6e95V9
+X-HE-Tag: 1755057153-987091
+X-HE-Meta: U2FsdGVkX18n32FJwVvpdgsBKcvE3OBa+YkdWTI1Mfk4xXrMQ8suMaL3z25DB9N/yTltncHi77DtzT8F8xy3QAvSFsLQi+3X3KD+2CvI+RWh2qXzDoP8eV/KU/LzDMPcZ1jhpAj1u2yUUVVZKBPuhPwJpV1hvblp6nbWJCoNUIVtF+pi8cU2wiCKtjSbQqiDc9+e5i685I/6UfcEMpp+VYwdfhJktyugxUNd7CYk87AUKAdooVfvhu9V4Me8ceL6a7SYS6OePYoJ49Nd+lN8P5RAnQmzcNyJI9Wcipm+fIN7mJm1wmHK0RVHGizH0WqtWx3qq01sM0UVf4ximZebatKbcclA3jcKzRt5ZCwHN57KMiOwstaDUNglo0jxwncA2biMzFi8g6OxjGSNI0vW6oB9eG9OvEraa3ov9Cub5fAVz7jGRE5CtznZLbG1aY54Nc5vXvipD8mysG8KljcnQHpxC7Nxk884EZ6Kbc/vrXSCYwT6/eArJLcqCVoqY3d29LEZlvXBYWJA5mspKyKLZBxR2dOkm4IUKiWxZDgTQBWDNyiKSfRQQ/8mNL7geQqYNnwA0OWZz0QzwLh3r1PFg7RCi19vPE2T5GDW7hE+bcJC+/23fQKGcBi0sN/A7XqxfM7mjKtUeFNGnmai1+wkuzC2JrGUpQyWYW+Ip48aOlRcGogOqYtvsk8foAGKo00oCspQPnLXotR+qh+L+dARlq7W/G0RI1IsLCYz6VweSthcCN8lTfSon74RjrGjEfPEKGAG5ZYbNN274Cp9eMJFqZUsUh025NzYcEk3BPsmdcIKr8h9DLHWoAnVlopcPFIkgT2t1WIWF4pcmLqJkxRa/qvAQW0la2Y1azsCI1j2dFcZ7cz01PcbwReMqBNXcbv5DWC3MvsaxcpTSKdwpJxXF1BICDa5E8cSACzmXt9E/XqAL9pU/8uhzwcc90REqsjZxXYwBGH2+j6QU3HBxEs
+ t3i2/0eH
+ bS1+0RKcu6F2LZ9u/f84BF+WZxWE2oGQxfrKJ7f7MOsGTsOPhl5vdkD9D1lDwE6o7hPlJPH8k5dF46rB+7HJGs5vne3/oFGJ/itjcNfqWe4XCv9fK7lmXhTlVUaZgFRjavqfJRPD9ynamLA7Mayp3oBw+MdBYivXrdoVwoiIswxr6eOiUbAXkRqe6GD+Z7Uoc4Lb9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,300 +87,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Previously, DAMON's physical address space monitoring only supported
+memory ranges below 4GB on LPAE-enabled systems. This was due to
+the use of 'unsigned long' in 'struct damon_addr_range', which is
+32-bit on ARM32 even with LPAE enabled.
 
+Implements DAMON compatibility for ARM32 with LPAE enabled.
 
-> On Aug 12, 2025, at 23:55, Zi Yan <ziy@nvidia.com> wrote:
->=20
-> The helper gathers an folio order statistics of folios within a =
-virtual
-> address range and checks it against a given order list. It aims to =
-provide
-> a more precise folio order check instead of just checking the =
-existence of
-> PMD folios.
->=20
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
-> .../selftests/mm/split_huge_page_test.c       |   4 +-
-> tools/testing/selftests/mm/vm_util.c          | 173 ++++++++++++++++++
-> tools/testing/selftests/mm/vm_util.h          |   7 +
-> 3 files changed, 181 insertions(+), 3 deletions(-)
->=20
-> diff --git a/tools/testing/selftests/mm/split_huge_page_test.c =
-b/tools/testing/selftests/mm/split_huge_page_test.c
-> index 5d07b0b89226..63ac82f0b9e0 100644
-> --- a/tools/testing/selftests/mm/split_huge_page_test.c
-> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
-> @@ -34,8 +34,6 @@ uint64_t pmd_pagesize;
-> #define PID_FMT_OFFSET "%d,0x%lx,0x%lx,%d,%d"
-> #define PATH_FMT "%s,0x%lx,0x%lx,%d"
->=20
-> -#define PFN_MASK     ((1UL<<55)-1)
-> -#define KPF_THP      (1UL<<22)
-> #define GET_ORDER(nr_pages)    (31 - __builtin_clz(nr_pages))
->=20
-> int is_backed_by_thp(char *vaddr, int pagemap_file, int =
-kpageflags_file)
-> @@ -49,7 +47,7 @@ int is_backed_by_thp(char *vaddr, int pagemap_file, =
-int kpageflags_file)
->=20
-> 		if (kpageflags_file) {
-> 			pread(kpageflags_file, &page_flags, =
-sizeof(page_flags),
-> -				(paddr & PFN_MASK) * =
-sizeof(page_flags));
-> +				PAGEMAP_PFN(paddr) * =
-sizeof(page_flags));
->=20
-> 			return !!(page_flags & KPF_THP);
-> 		}
-> diff --git a/tools/testing/selftests/mm/vm_util.c =
-b/tools/testing/selftests/mm/vm_util.c
-> index 6a239aa413e2..4d952d1bc96d 100644
-> --- a/tools/testing/selftests/mm/vm_util.c
-> +++ b/tools/testing/selftests/mm/vm_util.c
-> @@ -338,6 +338,179 @@ int detect_hugetlb_page_sizes(size_t sizes[], =
-int max)
-> 	return count;
-> }
->=20
-> +static int get_pfn_flags(unsigned long pfn, int kpageflags_fd, =
-uint64_t *flags)
-> +{
-> +	size_t count;
-> +
-> +	count =3D pread(kpageflags_fd, flags, sizeof(*flags),
-> +		      pfn * sizeof(*flags));
-> +
-> +	if (count !=3D sizeof(*flags))
-> +		return -1;
-> +
-> +	return 0;
-> +}
-> +
-> +static int get_page_flags(char *vaddr, int pagemap_fd, int =
-kpageflags_fd,
-> +			  uint64_t *flags)
-> +{
-> +	unsigned long pfn;
-> +
-> +	pfn =3D pagemap_get_pfn(pagemap_fd, vaddr);
-> +	/*
-> +	 * Treat non-present page as a page without any flag, so that
-> +	 * gather_folio_orders() just record the current folio order.
-> +	 */
-> +	if (pfn =3D=3D -1UL) {
-> +		*flags =3D 0;
-> +		return 1;
-> +	}
-> +
-> +	if (get_pfn_flags(pfn, kpageflags_fd, flags))
-> +		return -1;
-> +
-> +	return 0;
-> +}
-> +
-> +/*
-> + * gather_folio_orders - scan through [vaddr_start, len) and record =
-folio orders
-> + * @vaddr_start: start vaddr
-> + * @len: range length
-> + * @pagemap_fd: file descriptor to /proc/<pid>/pagemap
-> + * @kpageflags_fd: file descriptor to /proc/kpageflags
-> + * @orders: output folio order array
-> + * @nr_orders: folio order array size
-> + *
-> + * gather_folio_orders() scan through [vaddr_start, len) and check =
-all folios
-> + * within the range and record their orders. All order-0 pages will =
-be recorded.
-> + * Non-present vaddr is skipped.
-> + *
-> + *
-> + * Return: 0 - no error, -1 - unhandled cases
-> + */
-> +static int gather_folio_orders(char *vaddr_start, size_t len,
-> +			       int pagemap_fd, int kpageflags_fd,
-> +			       int orders[], int nr_orders)
-> +{
-> +	uint64_t page_flags =3D 0;
-> +	int cur_order =3D -1;
-> +	char *vaddr;
-> +
-> +	if (!pagemap_fd || !kpageflags_fd)
-> +		return -1;
-> +	if (nr_orders <=3D 0)
-> +		return -1;
-> +
-> +	for (vaddr =3D vaddr_start; vaddr < vaddr_start + len;) {
-> +		char *next_folio_vaddr;
-> +		int status;
-> +
-> +		status =3D get_page_flags(vaddr, pagemap_fd, =
-kpageflags_fd,
-> +					&page_flags);
-> +		if (status < 0)
-> +			return -1;
-> +
-> +		/* skip non present vaddr */
-> +		if (status =3D=3D 1) {
-> +			vaddr +=3D psize();
-> +			continue;
-> +		}
-> +
-> +		/* all order-0 pages with possible false postive (non =
-folio) */
-> +		if (!(page_flags & (KPF_COMPOUND_HEAD | =
-KPF_COMPOUND_TAIL))) {
-> +			orders[0]++;
-> +			vaddr +=3D psize();
-> +			continue;
-> +		}
-> +
-> +		/* skip non thp compound pages */
-> +		if (!(page_flags & KPF_THP)) {
-> +			vaddr +=3D psize();
-> +			continue;
-> +		}
-> +
-> +		/* vpn points to part of a THP at this point */
-> +		if (page_flags & KPF_COMPOUND_HEAD)
-> +			cur_order =3D 1;
-> +		else {
-> +			/* not a head nor a tail in a THP? */
-> +			if (!(page_flags & KPF_COMPOUND_TAIL))
-> +				return -1;
-> +
-> +			vaddr +=3D psize();
-> +			continue;
-> +		}
-> +
-> +		next_folio_vaddr =3D vaddr + (1UL << (cur_order + =
-pshift()));
-> +
-> +		if (next_folio_vaddr >=3D vaddr_start + len)
-> +			break;
-> +
-> +		while ((status =3D get_page_flags(next_folio_vaddr, =
-pagemap_fd,
-> +						 kpageflags_fd,
-> +						 &page_flags)) >=3D 0) {
-> +			/*
-> +			 * non present vaddr, next compound head page, =
-or
-> +			 * order-0 page
-> +			 */
-> +			if (status =3D=3D 1 ||
-> +			    (page_flags & KPF_COMPOUND_HEAD) ||
-> +			    !(page_flags & (KPF_COMPOUND_HEAD | =
-KPF_COMPOUND_TAIL))) {
-> +				if (cur_order < nr_orders) {
-> +					orders[cur_order]++;
-> +					cur_order =3D -1;
-> +					vaddr =3D next_folio_vaddr;
-> +				}
-> +				break;
-> +			}
-> +
-> +			/* not a head nor a tail in a THP? */
-> +			if (!(page_flags & KPF_COMPOUND_TAIL))
-> +				return -1;
-> +
-> +			cur_order++;
-> +			next_folio_vaddr =3D vaddr + (1UL << (cur_order =
-+ pshift()));
-> +		}
-> +
-> +		if (status < 0)
-> +			return status;
-> +	}
-> +	if (cur_order > 0 && cur_order < nr_orders)
-> +		orders[cur_order]++;
-> +	return 0;
-> +}
-> +
-> +int check_folio_orders(char *vaddr_start, size_t len, int pagemap_fd,
-> +			int kpageflags_fd, int orders[], int nr_orders)
-> +{
-> +	int *vaddr_orders;
-> +	int status;
-> +	int i;
-> +
-> +	vaddr_orders =3D (int *)malloc(sizeof(int) * nr_orders);
-> +
-> +	if (!vaddr_orders)
-> +		ksft_exit_fail_msg("Cannot allocate memory for =
-vaddr_orders");
-> +
-> +	memset(vaddr_orders, 0, sizeof(int) * nr_orders);
-> +	status =3D gather_folio_orders(vaddr_start, len, pagemap_fd,
-> +				     kpageflags_fd, vaddr_orders, =
-nr_orders);
-> +	if (status)
-> +		goto out;
-> +
-> +	status =3D 0;
+Patches 01/16 through 10/16 are from the mailing list[1], add a new core
+layer parameter called 'addr_unit'. Operations set layer can translate a
+core layer address to the real address by multiplying the parameter value
+to the core layer address.
 
-Nit.
-It seems redundant.
-Would you consider removing it for a bit more conciseness?
-This doesn't block my approval, of course.
-Reviewed-by: wang lian <lianux.mm@gmail.com>
+Patches 11/16 through 14/16 extend and complement patches 01~10, addressing
+various issues introduced by the addr_unit implementation.
 
-> +	for (i =3D 0; i < nr_orders; i++)
-> +		if (vaddr_orders[i] !=3D orders[i]) {
-> +			ksft_print_msg("order %d: expected: %d got =
-%d\n", i,
-> +				       orders[i], vaddr_orders[i]);
-> +			status =3D -1;
-> +		}
-> +
-> +out:
-> +	free(vaddr_orders);
-> +	return status;
-> +}
-> +
-> /* If `ioctls' non-NULL, the allowed ioctls will be returned into the =
-var */
-> int uffd_register_with_ioctls(int uffd, void *addr, uint64_t len,
-> 			      bool miss, bool wp, bool minor, uint64_t =
-*ioctls)
-> diff --git a/tools/testing/selftests/mm/vm_util.h =
-b/tools/testing/selftests/mm/vm_util.h
-> index 1843ad48d32b..02e3f1e7065b 100644
-> --- a/tools/testing/selftests/mm/vm_util.h
-> +++ b/tools/testing/selftests/mm/vm_util.h
-> @@ -18,6 +18,11 @@
-> #define PM_SWAP                       BIT_ULL(62)
-> #define PM_PRESENT                    BIT_ULL(63)
->=20
-> +#define KPF_COMPOUND_HEAD             BIT_ULL(15)
-> +#define KPF_COMPOUND_TAIL             BIT_ULL(16)
-> +#define KPF_THP                       BIT_ULL(22)
-> +
-> +
-> /*
->  * Ignore the checkpatch warning, we must read from x but don't want =
-to do
->  * anything with it in order to trigger a read page fault. We =
-therefore must use
-> @@ -85,6 +90,8 @@ bool check_huge_shmem(void *addr, int nr_hpages, =
-uint64_t hpage_size);
-> int64_t allocate_transhuge(void *ptr, int pagemap_fd);
-> unsigned long default_huge_page_size(void);
-> int detect_hugetlb_page_sizes(size_t sizes[], int max);
-> +int check_folio_orders(char *vaddr_start, size_t len, int =
-pagemap_file,
-> +			int kpageflags_file, int orders[], int =
-nr_orders);
->=20
-> int uffd_register(int uffd, void *addr, uint64_t len,
-> 		  bool miss, bool wp, bool minor);
-> --=20
-> 2.47.2
->=20
+Patches 15/16 and 16/16 complete native DAMON support for 32-bit systems.
 
-Best regards,
-wang lian
+[1] https://lore.kernel.org/all/20250416042551.158131-1-sj@kernel.org/
+
+Quanmin Yan (6):
+  mm/damon: add addr_unit for DAMON_RECLAIM and LRU_SORT
+  mm/damon: add damon_ctx->min_region and damon_target->min_region
+  mm/damon/sysfs: ensure valid addr_unit setting in
+    damon_sysfs_apply_inputs()
+  mm/damon/core: convert sz to byte units when updating state
+  mm/damon: the byte statistics data type in damos_stat uses unsigned
+    long long
+  mm/damon/core: handle quota->esz overflow issues
+
+SeongJae Park (10):
+  mm/damon/core: add damon_ctx->addr_unit
+  mm/damon/paddr: support addr_unit for access monitoring
+  mm/damon/paddr: support addr_unit for DAMOS_PAGEOUT
+  mm/damon/paddr: support addr_unit for DAMOS_LRU_[DE]PRIO
+  mm/damon/paddr: support addr_unit for MIGRATE_{HOT,COLD}
+  mm/damon/paddr: support addr_unit for DAMOS_STAT
+  mm/damon/sysfs: implement addr_unit file under context dir
+  Docs/mm/damon/design: document 'address unit' parameter
+  Docs/admin-guide/mm/damon/usage: document addr_unit file
+  Docs/ABI/damon: document addr_unit file
+
+ .../ABI/testing/sysfs-kernel-mm-damon         |  7 ++
+ Documentation/admin-guide/mm/damon/usage.rst  | 11 ++-
+ Documentation/mm/damon/design.rst             | 16 +++-
+ include/linux/damon.h                         | 24 +++--
+ mm/damon/core.c                               | 80 +++++++++++-----
+ mm/damon/lru_sort.c                           | 16 +++-
+ mm/damon/modules-common.c                     |  5 +-
+ mm/damon/modules-common.h                     |  6 +-
+ mm/damon/paddr.c                              | 95 ++++++++++++-------
+ mm/damon/reclaim.c                            | 16 +++-
+ mm/damon/stat.c                               |  2 +-
+ mm/damon/sysfs-schemes.c                      | 12 +--
+ mm/damon/sysfs.c                              | 27 ++++++
+ 13 files changed, 226 insertions(+), 91 deletions(-)
+
+-- 
+2.34.1
 
 
