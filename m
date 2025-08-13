@@ -2,91 +2,105 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5A88FCA0EE0
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 13:45:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 21234C87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 13:46:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF2BA90007A; Wed, 13 Aug 2025 09:45:34 -0400 (EDT)
+	id B230290007B; Wed, 13 Aug 2025 09:46:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA35E900044; Wed, 13 Aug 2025 09:45:34 -0400 (EDT)
+	id AFAE4900044; Wed, 13 Aug 2025 09:46:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE07590007A; Wed, 13 Aug 2025 09:45:34 -0400 (EDT)
+	id A37C690007B; Wed, 13 Aug 2025 09:46:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CF634900044
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 09:45:34 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 89EA5160292
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 13:45:34 +0000 (UTC)
-X-FDA: 83771856588.20.CAEB69D
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf05.hostedemail.com (Postfix) with ESMTP id DC8CA100006
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 13:45:32 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lZX7OAEO;
-	spf=pass (imf05.hostedemail.com: domain of pratyush@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 93ADD900044
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 09:46:02 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3E1781A0275
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 13:46:02 +0000 (UTC)
+X-FDA: 83771857764.23.399B9CE
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by imf04.hostedemail.com (Postfix) with ESMTP id ADF3D40004
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 13:45:57 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=codewreck.org header.s=2 header.b=iVDqdWfO;
+	dmarc=pass (policy=none) header.from=codewreck.org;
+	spf=pass (imf04.hostedemail.com: domain of asmadeus@codewreck.org designates 62.210.214.84 as permitted sender) smtp.mailfrom=asmadeus@codewreck.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755092760; a=rsa-sha256;
+	cv=none;
+	b=BuB9QiGRcLytqv8Z7RSChAsWSTc1N/inhlf4vU0+wXoShEhmTR7M4H8p+9IZBd3CSYrLxf
+	aIe72WIb8IkoW4BiU4GwNnzrQyxyJVbR9sal/v8on2/wCzNXqMx9PiRCn7U/mQmGUjQPD1
+	KomCYmDihDTVOesf8lM6mrUHX4BNjnQ=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=codewreck.org header.s=2 header.b=iVDqdWfO;
+	dmarc=pass (policy=none) header.from=codewreck.org;
+	spf=pass (imf04.hostedemail.com: domain of asmadeus@codewreck.org designates 62.210.214.84 as permitted sender) smtp.mailfrom=asmadeus@codewreck.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755092732;
+	s=arc-20220608; t=1755092760;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EtnmbZJ2E4MnFZ5JyBATuJlPVIa5kF959pZ9xSlJ/bY=;
-	b=FHh8y6k6cuugX9uPRBbSsHGn5M0VeZoyhWmVBKDwVWJ3HeTO6+ziIByVcp2bGzKHkFqFh6
-	0BmhGls8rJwiZgaSUZdRqr26QdioYxBygizTATjlIhDUo6FLo8iWBxrGjGWaK9ryxGslNG
-	SDaYluFvSDTJjnscb41VwsCPmJ+/HbQ=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lZX7OAEO;
-	spf=pass (imf05.hostedemail.com: domain of pratyush@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755092732; a=rsa-sha256;
-	cv=none;
-	b=eHdvPZsy8/SRpa28gD/CzzRUZ7Ncckel6EeYgmylcmIbvP7ogBdxyAj9kAuPEOUPXXXJTZ
-	W7ILvIK+Ppr0E89Q6ORwNbUkC/PBUMFTca+mFSwyjVKmIg7uYfRn1EXPcp2HWccvZ89+UG
-	Tjy29OC4irQeC78Xu9LCjr/hnTa65kA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 41D1CA5760D;
-	Wed, 13 Aug 2025 13:45:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E37C4CEEB;
-	Wed, 13 Aug 2025 13:45:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755092731;
-	bh=D0xx7031UZevoMdpdp6ryj7WTHkAul4ivyREJrKlUK4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=lZX7OAEO4iV5S1+YXwOnpNeXysrLeSryC2YE5VkGmWFuQ1wIf+WHQIRsPfY64kEvv
-	 QzcQMAowqKlFIJSrHE1eEuBK6vW1P1AekwkoCcjrd4HOlzlC6jenE3ECVGpLYdDivk
-	 qyjpj02i46dkWEnCNEDjQSNs/9x6Jd21DB4k9HTMhz5nsiU0DfPOYMHteLZ1wJLASP
-	 qpUPUOOVkMdmZ1Z9ow7qaMytrTTWQK6SBmBQ51D/RRDYYx10iAwqrguOIiiU8j9v8N
-	 4iS480IBHW3v/cY6/gPBGGopu5lpSm9aIIhXlxXD27EoChcg/w8dp4NObDJYFg5pZk
-	 akcmTCNvjNGFA==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,  Alexander Graf
- <graf@amazon.com>,  Baoquan He <bhe@redhat.com>,  Changyuan Lyu
- <changyuanl@google.com>,  Pasha Tatashin <pasha.tatashin@soleen.com>,
-  Pratyush Yadav <pratyush@kernel.org>,  Shuah Khan <shuah@kernel.org>,
-  Thomas Weischuh <linux@weissschuh.net>,  kexec@lists.infradead.org,
-  linux-kernel@vger.kernel.org,  linux-kselftest@vger.kernel.org,
-  linux-mm@kvack.org
-Subject: Re: [PATCH 1/3] kho: allow scratch areas with zero size
-In-Reply-To: <20250811082510.4154080-2-rppt@kernel.org>
-References: <20250811082510.4154080-1-rppt@kernel.org>
-	<20250811082510.4154080-2-rppt@kernel.org>
-Date: Wed, 13 Aug 2025 15:45:29 +0200
-Message-ID: <mafs0349vwd1i.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=O7DIiSFTU0d+SOR8smmh+GVaLhshEu060AgzuYvrVMU=;
+	b=fs2slxG5/PZ7eNP8Dh9EMr72exYLpWRaPOPtX4vdCNvVhwamsXGkL6YOzMcs4dLibpCN8c
+	9HKhD/2AjO6k6JG3wYW3iBvlTdWyrdzNF6IDxncReNf3SeY+6QzyGIE9DIHiO4rki36UjY
+	+/wOo8iUFdwzFKcaJ3kpdJNqOaw/7+Q=
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 67C9814C2D3;
+	Wed, 13 Aug 2025 15:45:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1755092755;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=O7DIiSFTU0d+SOR8smmh+GVaLhshEu060AgzuYvrVMU=;
+	b=iVDqdWfOqfC7zGw5pMTbF0uOkQf840TCcqccC6MfX+jhl/kiESHTstDOEoMxRS/nUQ9Ds6
+	MEBHYWhy9RuQ9+cBA7nglc0sbtNAHjYVZFMvMLj68pFX5tUfEPka2mGiIJnWGOiM4o41Ev
+	RXYM4F8f9Vf8HclTLyjFnK9m7Xpd5+U3HFc6PF7bxgoB9V92C8LJVZzsDiEyLF6qf91di+
+	jAMaVx8cMTp864nf7WcPFtLDEap6afRs5PkVVA+IFVsk+0LOIdoAJW+vqTSf9bez9wh6Sq
+	RbmWS4DMcXMNdHulvj+iLRTjLlw3/C0a/tirBD8qwJsBJfG6dkgbK2ZK54YhbA==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 8a7ce430;
+	Wed, 13 Aug 2025 13:45:48 +0000 (UTC)
+Date: Wed, 13 Aug 2025 22:45:33 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Nathan Chancellor <nathan@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>, llvm@lists.linux.dev,
+	oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Maximilian Bosch <maximilian@mbosch.me>,
+	Ryan Lahfa <ryan@lahfa.xyz>, Christian Theune <ct@flyingcircus.io>,
+	Arnout Engelen <arnout@bzzt.net>, linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] iov_iter: iterate_folioq: fix handling of offset >=
+ folio size
+Message-ID: <aJyW_QNI8vIdr03O@codewreck.org>
+References: <20250811-iot_iter_folio-v1-1-d9c223adf93c@codewreck.org>
+ <202508120250.Eooq2ydr-lkp@intel.com>
+ <20250813051633.GA3895812@ax162>
+ <aJwj4dQ3b599qKHn@codewreck.org>
+ <aJyVfWKX2eSMsfrb@black.igk.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: DC8CA100006
-X-Stat-Signature: gjc6is3regnzfa6b7xucnuistwefssnx
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aJyVfWKX2eSMsfrb@black.igk.intel.com>
+X-Stat-Signature: cgp8mmk3rqckq1zkz7o71wkgpu4otyat
 X-Rspam-User: 
-X-HE-Tag: 1755092732-549397
-X-HE-Meta: U2FsdGVkX1/l+gWg7xjljCsa5r1gkaOrpivxr6eT99vyp+gblE8IMBu0fxXhzpWcRou5+SAhQSJ6ucqF4Repr85kjBfpt6ZBfwEUrJl5Wsb2dFrxgm7SkbWfBYHFeUmJsiDFiWxjj32c+s17h4SPtePy0HMVHGIA5zDxJjlyeLzdNkEDaAfXyqEO+x1SFE/Pthqh4eZaZ/isX1zJqS9CSOgV2pxTQ+dl8QXNLMrkmMKeFm6yUXirwpEK2HmwkHMs/VH0s+2PfywII+TOEx6wRwnW3tWSMyOt/+awDQvRQDXJ9c+2kaHKvI7swOWSXvStrLiZ+fydPi58Ms7eexu1sU/Or732i3qa00USZnV/MOYCLZ239pkiK4APwiCe0aLCG1wIfgLQkAxv6/QsUpGCGpHycftQ4IVbmPgz3ZrsY7wUmF4xp4DB3LLI3LmwK6og0jXgASwKdbvVdfTxtp2JKb/BiAJFmEwzvKtcbhbhSBtbYqA2dtb5M6Bjn/fthTOOl9AAAPUxo1GqiGPNR28kRWvmfNZSzbgMNrFimWjA+IC0m2hbJloDP5EWJc/cFuYy0jny9uuAmf+LPY/pflJ2yM1kjd5hTK/UaipzBW6scW0XVYOKw59GPi4kQUm6p1q5ms4/DBwTC31LeyCo6H8JijeSVNcNZpiGlBRZEzz8NaVa2d6oPFMxjaW7fV299oi4BGeGEHT0hqStAL5irFECreHkyPYTU2EjnjTninksSlvAntFSWj6X+3Cmyji966g4y2JlV+ZvgYD3hdiH3tMOI5JidjYqKwXWiPvr+WQVQeHfMp3VRduLY+UmnJIDZc1hV3lG2z3q7ciBA9cNnKDYXvjFYQk7swwxk5+BglwlsthDgW7qsDamq1iEQV1m3Dp/25vH6VFYYBTx6nc2RIqyXKh5MC/IPpf3MrhulcNaYcqN2+qMVXZ/B7vM6XsxllvhEIlH+ftPMB9FQv1ANAh
- 31kk6E5r
- DStCN8RLUxBUBUwgYs62zjgNBgA4Nokf7SSizT4D/Lu+wpNTaTMd0ItH6/RfZzphqN8NIAPREza5nApkzhtl1FdM+1MROOO6zyWgFZ5vVxQuscBiiRi7Syp/caMbzfcK9pl3Y51xWnf7zSDY+p6qIQ/Ex7gTpVwFtsH/u
+X-Rspamd-Queue-Id: ADF3D40004
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1755092757-148754
+X-HE-Meta: U2FsdGVkX1/N7sVfjDOSu4bRgojwgE5hniz0M9dkh0D5q3wxh+hbEtnvQ90z4eGmZtFtkAWOAJWxZsrqTeecCyEeV2cI6+HgHYGCaqgFIv4ED6Bf9dQhbH8WAsuY107SGBSDh1bSOX6fkC2hCWfzoM2mQJwL8xILzzhALd/IWZog7bEUpNSWO/lpU+ikarXXA+0Y4ypWezAGlcWfoNHEqcjO4z3eRVEttXMSS3xg8UAcYc1RAi/CcSwHuyyh5MfYIub+mThVzyslBJr0UUyXhPRSc8yFhSLMf9EklYOWj4cWGu4NK2Hk/kDStcrZjrYc2JNHRD3evjn/eZ3IoDVvSzjB3ONn3pvgbs2iQn6rUoIrxF+u41wdGCcgyH9bK5r6IAPP2MS8IQs+F/wGXxhW9uxZftBwDe58wothXf5JbqCXwLvEdAjh72ZzENxelCxlHcGsVtB/LgjpwCzihhERjt/T5qsPxytghENFbjsLa+t3BTOZVL1EMg86N9bG9Go7oyse95EAELgZursmvZgR/hTutjIDr1eiHJD8fQP4w/utmoWXU+H5DAyMA1sscvdQkMF9ypZTZpygexmld9xsb8onv3BXJROVMUB+5vdCEFv/Y8CyOSFABnKdpb2jA5o2uuq4IS9wYKrtrIb/luZGWOF8WA5w6z4mPp/AFAJYdVF/XIrQ9w8s2iRpyTuILYbAKhcA3lIFWvo538IaRlSFLPaD11iXLfm+ZFR2Sm4KedgVDecb5vf+rwVsWJMAlFW1vWLoDbeTGa5sIS87mR9boAKas5ite4InZWXcYkOkcdHwhQTAxpHQjtBLl8RiLQ2mvzeTDRvVChMUoeknsl3OP7BChcz6E8IffrcD/zn8xgc0bZWccSOz/oDwlWDGMhEEbQJJxzc83/7qXt83P3kIBVjvhrEW2cW7t4xD1KhOh8a4+evPQJ/jExtSP4yAfLssVOuEuaM7KRk7w7xjkj2
+ RyjbB7Vo
+ p0jRTP+YKaLorAQiQPTUwpU1QAK0VSAMMVYKMoDqzfOj/9J8tGdEFqFvAiPr64Fm1dd5ED5FTJnhzIEypXKVIO9mOh4C89db3JerJpW7rUMfbknrAwmGMLCGJHxOHJzCE5aGSdQuNMg4A68tthQ36TH67NswmQVAAA4beSxkZCEc4Lc7v6jYfH0OLHHziGt0u6f4g1vFW/hlW1hPYfhfyeWhk4W5gr33h2SIyXt9Bh7Ufz13HFESARXFy4HHTVhFSaT8NL2igrmfxnZxr6IlIV1/Sn7dlgTR9qavpRBbUIsOvLHV7bH6js+0LAA1m+NNN0wY3CsXaxTGYR9DngMD6ppYI40W+HDaDw7EvhuDdpzlaaCAaq0EbFCV0/yHCilwYTN+AG0h3NCWejO1Ay6NYcJp2kesFWVFrGdUVH1tWISQTvyc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,63 +109,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 11 2025, Mike Rapoport wrote:
+Andy Shevchenko wrote on Wed, Aug 13, 2025 at 03:39:09PM +0200:
+> > I assume Andrew will pick it up eventually?
+> 
+> I hope this to happen sooner as it broke my builds too (I always do now `make W=1`
+> and suggest all developers should follow).
 
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->
-> Parsing of kho_scratch parameter treats zero size as an invalid value,
-> although it should be fine for user to request zero sized scratch area
-> for some types if scratch memory, when for example there is no need to
-> create scratch area in the low memory.
+I actually test with W=1 too, but somehow this warning doesn't show up
+in my build, I'm not quite sure why :/
+(even if I try clang like the test robot... But there's plenty of
+other warnings all around everywhere else, so I agree this is all way
+too manual)
 
-Can the system boot with 0 per-node memory? If not, then perhaps we
-should only allow lowmem scratch to be zero?
-
->
-> Treat zero as a valid value for a scratch area size but reject
-> kho_scratch parameter that defines no scratch memory at all.
->
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  kernel/kexec_handover.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
->
-> diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
-> index e49743ae52c5..c6ac5a5e51cb 100644
-> --- a/kernel/kexec_handover.c
-> +++ b/kernel/kexec_handover.c
-> @@ -385,6 +385,7 @@ static int __init kho_parse_scratch_size(char *p)
->  {
->  	size_t len;
->  	unsigned long sizes[3];
-> +	size_t total_size = 0;
->  	int i;
->  
->  	if (!p)
-> @@ -421,11 +422,15 @@ static int __init kho_parse_scratch_size(char *p)
->  		}
->  
->  		sizes[i] = memparse(p, &endp);
-> -		if (!sizes[i] || endp == p)
-> +		if (endp == p)
->  			return -EINVAL;
->  		p = endp;
-> +		total_size += sizes[i];
->  	}
->  
-> +	if (!total_size)
-> +		return -EINVAL;
-> +
-
-Looks good. BTW, unrelated to this patch, but should we also check that
-p == '\0' here to make sure the whole argument was consumed?
-
-
->  	scratch_size_lowmem = sizes[0];
->  	scratch_size_global = sizes[1];
->  	scratch_size_pernode = sizes[2];
-
+Anyway, sorry about it...
 -- 
-Regards,
-Pratyush Yadav
+Dominique
 
