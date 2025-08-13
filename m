@@ -2,121 +2,200 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C50FACA0EDC
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 02:25:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3768ACA0EDC
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 02:26:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 635A990002D; Tue, 12 Aug 2025 22:25:06 -0400 (EDT)
+	id C52D290002E; Tue, 12 Aug 2025 22:26:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60C358E019E; Tue, 12 Aug 2025 22:25:06 -0400 (EDT)
+	id BDB0B8E019E; Tue, 12 Aug 2025 22:26:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5497290002D; Tue, 12 Aug 2025 22:25:06 -0400 (EDT)
+	id ACA2890002E; Tue, 12 Aug 2025 22:26:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 459DB8E019E
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 22:25:06 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9E935160212
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 02:25:05 +0000 (UTC)
-X-FDA: 83770141770.09.931F3C7
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 30DA940008
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 02:25:02 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=KJFToEM0;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755051903; a=rsa-sha256;
-	cv=none;
-	b=5mo60OJIgGfd/4Nv/2oelSUaxrkyNWze7/fHwbrJ8rFJdKqgIyL6FhveSopEkpQWslp2Yk
-	B7DEkv8LBzTQMBUtFd4sfxKzCTy6EhQO2fcEsFsFdCLYgHwyvagFnlpVAxRCXey5XGKf+8
-	QhsoUHp2yLGICIsWTO5FcBtMsqpYBi0=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=KJFToEM0;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755051903;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9DB188E019E
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 22:26:03 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 504E5135CDB
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 02:26:03 +0000 (UTC)
+X-FDA: 83770144206.11.4F5CA68
+Received: from TYPPR03CU001.outbound.protection.outlook.com (mail-japaneastazon11012062.outbound.protection.outlook.com [52.101.126.62])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 34B4314000D
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 02:25:58 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=vivo.com header.s=selector2 header.b=mcBoqign;
+	spf=pass (imf26.hostedemail.com: domain of rongqianfeng@vivo.com designates 52.101.126.62 as permitted sender) smtp.mailfrom=rongqianfeng@vivo.com;
+	dmarc=pass (policy=quarantine) header.from=vivo.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755051960;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JKbU9RXkwqDsNDWtehedXJy8w/i36YSqUEDNOcUclKI=;
-	b=T4HWJmZUiiiAnn1Rr7ZNi31Q/xRy/NiUgPMaCQXhtf4eqtY4ib9ohe9sZhj7YmFRvEioNf
-	bARm6PnkUHtSj6eBbeVb1V8bF0EFSX1MVPS/dW0nEQxyI7+QDW/A+tsvvaLa44rurt1PoZ
-	tHWC2HT/JVTGmwsKjMkCLGbnpYzYjmA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755051904; x=1786587904;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=TO08Bxdjs6CXgwQaNnTK3VsCDBnZs98H7CvXOF1PSiw=;
-  b=KJFToEM0U7I1BwWm42ygwn7SKlLXOfvAY4S1QIrLUw0/Zx28JQsSla8F
-   xCLaAJnDhEgVpv3BqPnMkhkSaBoYn1xNafe4n6AwGWf5A8V0U2E6Hz1ug
-   /XVxOSTAeijR1LW3fuBoNhZDsEz0+sZQGLKNAFbl1ySZrtrxTkfRi3e5Y
-   GT5cut4SDDvpvaJnTmZP1+Yn7dGDwRa5dxcwWq4OxLv9CZhFE3dawvt9e
-   y+4LtPGU3aRVrgvU07NRyQPGNnvTB0elQXYFVCEz7WUSrDdm55BizwX7k
-   MZYY3eDZ4jt6kRsRAA2oU5riDaEMixkaPknSdUa73ngjGaOBzSS6H6+tS
-   A==;
-X-CSE-ConnectionGUID: NCvH+stARKK8F1rILntFlw==
-X-CSE-MsgGUID: rH5OANEpTLSmCGoveeUjUg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="57416212"
-X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
-   d="scan'208";a="57416212"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 19:25:02 -0700
-X-CSE-ConnectionGUID: R7Jgn4tkRgOyjuOYDP9Yvw==
-X-CSE-MsgGUID: 3weZF238QHG4vGIuMOZAOw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
-   d="scan'208";a="165571477"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa010.jf.intel.com with ESMTP; 12 Aug 2025 19:24:55 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1um1Aa-0009T2-1I;
-	Wed, 13 Aug 2025 02:24:52 +0000
-Date: Wed, 13 Aug 2025 10:23:39 +0800
-From: kernel test robot <lkp@intel.com>
-To: Balbir Singh <balbirs@nvidia.com>, dri-devel@lists.freedesktop.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Balbir Singh <balbirs@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Ralph Campbell <rcampbell@nvidia.com>,
-	Mika =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Francois Dugast <francois.dugast@intel.com>
-Subject: Re: [v3 10/11] gpu/drm/nouveau: add THP migration support
-Message-ID: <202508130923.0VGA41Zv-lkp@intel.com>
-References: <20250812024036.690064-11-balbirs@nvidia.com>
+	bh=hL9iZBN8GkU0UTCDUv2nEZdr/lNCJVrWlKzmhiA3SeY=;
+	b=xCedPOtiOprzvMoT+GcAUF+/Jy/GO2bIL6lwf12O/lD94mW6/4Evn90u500CY574wehVLK
+	hgOT7BE6+afbnyl3Z8LQkjwMxaIkJ20S/5cIeyH+tFgZZ4REQx1JbgNGgtjtqJNgEB3inr
+	69pxfRhkrHwlPqB4sNCi+6xah4lajIc=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=vivo.com header.s=selector2 header.b=mcBoqign;
+	spf=pass (imf26.hostedemail.com: domain of rongqianfeng@vivo.com designates 52.101.126.62 as permitted sender) smtp.mailfrom=rongqianfeng@vivo.com;
+	dmarc=pass (policy=quarantine) header.from=vivo.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755051960; a=rsa-sha256;
+	cv=pass;
+	b=391DjOCM/u3Z70nRFIld1l1dfmOj8PH9UK6EEoKK2V6ugZvPZU+l73vus+jRjByu034kQi
+	4dw6Duz50dOKupG1fUOTfVYRQ2m/bboZDoFeOOdeDNKM5Q0CGh7VvB3le6LjS43w8sbcrT
+	ElMPqKaBbFQcNyKuIUZ8f/v7lbgPE8Q=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vhfFxXen0bzBHF5UER5C4Kek7s2izmwSlXMDKtHeBKf4CFfAkgHrlzhiii/sI8iIyRgsjadY5qrgBI6OrTldDbGmC8u8IkAZamRtk3VV7QVPhyTxPYEQOE+aCH/grMHI+QS5KWnu6elGI9WrHUGh73oXgmU9B8reuFbO5gvhIfo0MFi1H82euX9cBixCJYnJp970zV9Bt+SheqLlAZnAIqk3QxsH0FAELEbzkF7VfhIKfvSidzwFKLYshM++iLsICGWLwEKscQrc3xhqE4nff9VDiQgCuVs4bEyQtQ4J/2vl+5VcfO+cN4Xrl6G80sRvlzeDELZXKdifyf21Mx5UuA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hL9iZBN8GkU0UTCDUv2nEZdr/lNCJVrWlKzmhiA3SeY=;
+ b=suPKtsH1s6wIyPzQqmKOPAuR5wxu72AW8iIsouWMxrXoBG0XmwYD/I4GXrMGHsGWJzOqLGytf0z6K7N2FITB2CK+dJCZig7e0jL6J2KJkP4KpeG3+7u4elPD/Cta3P7/8K7vSiDj5I0CnA9bwA5tj1d4PKlGJhtL3DHAaNxJecsHqY0FBeQpUqQmKLRhrDhNOnhaSzLP+Nz2e/gpDIAKRzap5Sze5dYWYB4gpaErB201Bfjn6OoZncQSp0v+JshrWS16YhwryLc74ylV+51fYFcmknybirWZx4zMeFA4jV9hKpekNv1nFHbj6dzQPXPFbpfdjPnLldPEvfuuR+0Cdg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hL9iZBN8GkU0UTCDUv2nEZdr/lNCJVrWlKzmhiA3SeY=;
+ b=mcBoqignWCD2XOsiI8fyjFMJrfbBiOFpVRDqxSE6u/EBBLmdLJ/ppOqHAhISUOP3+wu8Mw4lIADPkdnZ6CGOQ5LKCQJOx5O7oPXmtQnOGaIO00YZYN+tzIBrqBFWYOrPyy1zrf7h13NNgaiwLzIwYeK+bajlnsBcSS/v+eYnXQqDOFLLha2W6aZbjxd3BG5WVkAPAK2lf+ZW8T3ZNd3r4mobjeJE5LIv5F8qsqZdP+5vQWprUkLyybHMtF/mW8kHozpold/EOIxDIy5SkdFS/tJzTHJDGGooTVquEwQfoaf7gRoDozkX3SY29twYOyMRuEa/gpW5WQhXEKDxk4iz1A==
+Received: from SI2PR06MB5140.apcprd06.prod.outlook.com (2603:1096:4:1af::9) by
+ TYSPR06MB6409.apcprd06.prod.outlook.com (2603:1096:400:411::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9009.22; Wed, 13 Aug 2025 02:25:52 +0000
+Received: from SI2PR06MB5140.apcprd06.prod.outlook.com
+ ([fe80::468a:88be:bec:666]) by SI2PR06MB5140.apcprd06.prod.outlook.com
+ ([fe80::468a:88be:bec:666%4]) with mapi id 15.20.9009.018; Wed, 13 Aug 2025
+ 02:25:52 +0000
+Message-ID: <784dd559-612d-4037-b315-d1b30253538a@vivo.com>
+Date: Wed, 13 Aug 2025 10:25:47 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm: remove redundant __GFP_NOWARN
+Content-Language: en-US
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: SeongJae Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+ David Hildenbrand <david@redhat.com>, Rik van Riel <riel@surriel.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>,
+ Uladzislau Rezki <urezki@gmail.com>, damon@lists.linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org
+References: <20250812135225.274316-1-rongqianfeng@vivo.com>
+ <b5ca3ef2-bd36-4cb5-a733-a5d4f1fb32fa@lucifer.local>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
+In-Reply-To: <b5ca3ef2-bd36-4cb5-a733-a5d4f1fb32fa@lucifer.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SG2P153CA0016.APCP153.PROD.OUTLOOK.COM (2603:1096::26) To
+ SI2PR06MB5140.apcprd06.prod.outlook.com (2603:1096:4:1af::9)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250812024036.690064-11-balbirs@nvidia.com>
-X-Rspamd-Server: rspam03
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SI2PR06MB5140:EE_|TYSPR06MB6409:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9ddd737c-05b8-4ba5-30c2-08ddda10b998
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WGJmWDN5T1F3c2N2cTREWEE5bUc3L2duL2dHSjloRUxYRlkyZjZPSkNqZmVx?=
+ =?utf-8?B?cmNUdFl6dlEvK0NHVmRMVWc3WlhjYXJaVngvcUI1Zm1kdFNwVkpCYzFSbmVQ?=
+ =?utf-8?B?eTRvVVE5RCtIOXY1d2lOQ245dVprSGM0MGRidndYcjNZaWF1allSN09oTk00?=
+ =?utf-8?B?RUU0eTFxaFMwV1NoMzlGWEVldkJLN3BVdkRXOXR2ckt6YWRjSTNPRzN4end4?=
+ =?utf-8?B?a0c5Ykx6elRUOGNZajVZWHBkSUJaQ0Z4aE9vcW5SbzVkWDhHTTVrQVg1bzBx?=
+ =?utf-8?B?anNKV2UrRHpVUGd3NC85alU2Um5OTzJ5aktyQ1BsVU8zQmVMSnJWQ2VjZWtn?=
+ =?utf-8?B?UjNBQ1lvbGxuczkwZTlpKzMxT3F4cXdtWUY5NjVTVmZUUm9naVpUMTZOSFNa?=
+ =?utf-8?B?a0xLeWtsS3UrQUw2VUxFNkd4SUVhR3JxOEdONE9BaDEvV3dhYXdXVmtFUVRU?=
+ =?utf-8?B?N0RCWWVDQWN6WldkYWsrM2V1Tk9XdVZNSlVpa21DQW12WlNXZW5uRnovdm5O?=
+ =?utf-8?B?WkxpeTJnS202TUZpdHZRa21ZVllMaVFNTWxXQ1VDeDY2VEtmV0w1cVRYNUxn?=
+ =?utf-8?B?RjNOQ1AzWEpDU21DSGlreWFoUnJXVGFCM0pUbFBscVNXM3AwUWhobUhmOUNm?=
+ =?utf-8?B?VE9ZWERkSVRocWNtWnNMczBVS2JSUUQ1WEN4QmR0ZG5yYnMxa2NkdmNRZFVE?=
+ =?utf-8?B?Qjl4Tm9wT3U5b044OGYwQUtrdUxYUDFFemlkT1FieHFVUVdQOXFzT1JISkVr?=
+ =?utf-8?B?dE5Zb2FJN1Z0NUVQVnc3aXdTVmJEUUo3eWVEWEovV2ltMTZmYmQxZzQ2RnRX?=
+ =?utf-8?B?SktuMFR5M2hBdmJXdWJkTm1SUUZOK0gzaG1OVUdyU0djNFJYOFdUZ2FNT3ZU?=
+ =?utf-8?B?Qnl1M0MzbkVCK1RVVnRBM2ZXR2lUOWQ1Wjg1SWl5WVNEV2VoL05qM09HalJQ?=
+ =?utf-8?B?cmxudjNyUVVqbVE0cDA5OUhRMW4xNkc5T3J2MzRDTHhhZmZHWDFHbXA1ZDgx?=
+ =?utf-8?B?QWVwa29uc3kvUFc2c0xtQ1gyREVoMlZ6dWZFVDUwM29acnhmamxPcjRwUHhs?=
+ =?utf-8?B?SVY5MG85WkN3RnpvSTZ0UkhRSTFjbUpRQVNldWxVRUZKR3orazVBY0NZbnNi?=
+ =?utf-8?B?VE1BRnAyYlB1aTNWMDNtbERkTkJUNlp3ZDl0Q1l3MUJ5TDF1aTlnSDM3c3RU?=
+ =?utf-8?B?cDRKTDloN0Y1UDBmZGhJZ2lRUUQzQ0ZyUktoL0ZLV1dEVnIvY2htVGNSRGZO?=
+ =?utf-8?B?Vk1XVDlsTHEvdVdveW1DeC82Z0JDTis5Y0EvRm5TV29zaHl0SkRiVTBBZld4?=
+ =?utf-8?B?Y20rWFF3eHhiYVZTVmRzK0NnWFJKY1hacU5XUHFRdkNBT0ZnU0NtbzIyYjda?=
+ =?utf-8?B?UDB5ZjhFUzRIY2xHSDlQMUVOK0VubzNaVXJxeUVZWHZ0c2hZeVlwMnhkWDNt?=
+ =?utf-8?B?MU1hM1NwTjRCVlJCWk9hd29DRFk4WTIyYWk5VllHR3hINXBibTE4VlBxRUlV?=
+ =?utf-8?B?NklXTElHcDFuVURHcDZlYjk2b2QxV244ZStmWGF3dzVBRmRqQVo0NHpHWlM4?=
+ =?utf-8?B?NVNudExMM0xnOE81TDg4a29leE0wSTFJWVUrTFlmSUE1ZGhJMGpxVmlJenpO?=
+ =?utf-8?B?STlNM0ViYTQ3aDdmelVmb0dlOUgySFV5eVVPanYwNzdHU01MQ2dCU1V6bDND?=
+ =?utf-8?B?aStqaWJTMVBjRnhEdFZ6dHdzajVub1lMNkQ0SlcvUWV3UGN5cFFsWWhiNS9u?=
+ =?utf-8?B?YzRIQzdYV05aS3JEWmkxYTZadE9YTm5MZkRTL21UMUs1Vjh4a3JQWmxqSzZo?=
+ =?utf-8?B?aUgxYnpUWkFCaTFWMTBkcHRQeVYrR2JXWERlWUVXaE5aUHdKT2hIaGdQaDNn?=
+ =?utf-8?B?R2JMV3VJdU40bFljbVovMWNQRXBnYVNlQzhpS043NkU2UDVVVEExekdyZnBE?=
+ =?utf-8?Q?WIuv4VEXmxQ=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SI2PR06MB5140.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bUhiaGpqeVVMeHZPUCtlcmtNaXhzM2xJSHFSUDBnVm5leUM0SDcwUFNyS1c2?=
+ =?utf-8?B?dmZMUUlsalpKQXg1dXR6Vkc0aFBSUkdkeklOZjRwMTZ0T1hHVmhMVHJ1dDQ2?=
+ =?utf-8?B?SU9qS0I2NktnWWROeEdGYTIwQnVmMy95NTJlY3RJcjh6bzM1YUtGTVE3d0Zs?=
+ =?utf-8?B?WHlJc0Q4c0U3SEsxRWxiOEVpM1J5a3hwejFHeExtZUw2WWJrb2lQM1NvaDM3?=
+ =?utf-8?B?czg1MEVNc2szNTFQR0NoWUI2VkdFQ0F4aGwzakY1VTFYdUZRcUd5elFJdDV2?=
+ =?utf-8?B?RzdxV0lEV3Nyek1pTnM0T0o1dmRNY2FNYnpTZm4xaGw2Nzdzdm1CbDJwanE3?=
+ =?utf-8?B?RkJDMC91d0srb3FlUm1kN2VDR1BITm1oalRLZU1FTm5RQmI0N2RCODRrWWUr?=
+ =?utf-8?B?dUxTc0doYU9IWGhEc1BUYUdieUp3UUJWMFFNZnNrcFAvSSs3Wno0R2xNd0R5?=
+ =?utf-8?B?ZzA4OS85eVFKZVZ0WEVJdWdaWEdWWElxK3VsMi9LVU05d3ZQS3ZZbjhrc1NM?=
+ =?utf-8?B?a0ovb0NtckV5cDBjR0hYWTVMUXZ3SjhqVHZveFA2OFZaL2RzS1lVT1NSNDd1?=
+ =?utf-8?B?c2ptN1pXdE8vL2l1U0FwRm4rMTVQVEY4OFlmcU9lWVV4RlpUTWlKQTB5S3U5?=
+ =?utf-8?B?WGNDQkVHM056UExFVHFycUp1cmsyUjdIKzBmM0FvMVVBZ2xCeStvNndHbmpr?=
+ =?utf-8?B?b1lqWjlKQ0NDSDl1TmNnd1pJUmkxTCtmZ1lLZTNpNmxIMkhUQk02aVFPTzc3?=
+ =?utf-8?B?d1REa2JPeitvREhtaFVyYklSdnlSSnprTkthekEwY0IrQTA1SThvTjdVeXNi?=
+ =?utf-8?B?QkRxdkt1U1dCeEcwb2w0OGdPN01ocWQycnU4c3Nmeko2UGliRjl6ZEhrRkNW?=
+ =?utf-8?B?cndsd3FqbTRsVkVpWFdXWDBQMFdWMCtleGdXaUVFM2JYM2hXRXRGemIrbGlV?=
+ =?utf-8?B?cWRUZFJxMlJrVmhHVTZTcEh4ZExlWGt0NzNTb2ZKV0h1WnFhVjF2aU5kbFAx?=
+ =?utf-8?B?YlI1a21qQjFVRlU1MWVNZjBlcTh2MThKS2kvMzJtL0lTcUlWdUx0ODBCL2Z3?=
+ =?utf-8?B?QW5PR3BJdTFGTm1Oa0FrUDdKdSthSGVNUDAwdGZhRWl0dDlWdDZZK25SekhD?=
+ =?utf-8?B?RlpTejd1NVlxdlV5czFJR01UTmRNZlpaZzFObGtLL296WHpqcGJFK0k3WmpP?=
+ =?utf-8?B?SnAwM1JiakhpQldpVzQzUWNMWE11MTJnd2RoQmJKU3VPbXRLR3dEL0ZxYXZ5?=
+ =?utf-8?B?bWd5UHFVTzU0dE9ZazJnSXlXTE9PY2w3U1A1STlzUGplQ3psWnpPSmJwdW8x?=
+ =?utf-8?B?VFNaOWlBM0ZpbkxyRXUrQzk0UEM0dXpSb2VrYnVwenRyVUowSzl5ZEgxb3BJ?=
+ =?utf-8?B?Q0szejVzYjJHTmZmVW1hOWVrc2pLaVB5QWhzdno1NE5waHB4SHFPS2hXVHkz?=
+ =?utf-8?B?SEtYeHE5d2VZRFU4cUR2cDI0YW9WMlZncElEejZPeHhTa2dnYWdvZlZwTnNF?=
+ =?utf-8?B?c3VXcFBEQVU0dVJUS2VtdENaRERxK3hvaGFKYzhqZ1N2ZG1YVHJBNFdaVGt2?=
+ =?utf-8?B?N0ZWNm1ibTM5d21MVjdOcVc5Z1JhTnZORjl2NExhYkhkbDM5cllrWGFZR0hJ?=
+ =?utf-8?B?L1JQbVdsc3cwWFBDRG9ZQnVyOURSNnZMM1Y3a0NGeURIOFdmYmxoc1FRY3ZV?=
+ =?utf-8?B?V3RqR0dXdGxqd3d3dDZMN2ljZDZlNFVKeWVReVE1enZ4QXpjejZDV3pwWWpO?=
+ =?utf-8?B?VlNrOGd2NWxKYWZocU9nUmIzS0UxUjU5VW5IUFlaWW1NOU9PcEcyTWswM29N?=
+ =?utf-8?B?akhNL3psbFNOT1J2ajB2WTFzWGxzbnVSN2xjSzdKa0FzQ1hkYlBUcnBVR1E0?=
+ =?utf-8?B?aCtSNHRZN3VQSUE0QWNUMTVvT1V3VDFlT0t2SVV4K0NhR21Zd1ZUSU9qZkc3?=
+ =?utf-8?B?SE1kZkcxZmJMaGVZYjU0OEx3WUxTaXB3UUUrZ1hBY2d0ZktCNDd2ZnlqR01k?=
+ =?utf-8?B?VTAzSmR0aGZpb0p0U0NKbFZ5c3BqWlRJQVg1VUJURitvdmJrUzY2cE9ETzdk?=
+ =?utf-8?B?N3VLZnFuSGpZN3lMQjFkTldpS3RCUkRnakxSdGlzUzgvK0lvV2RZL05pcWhs?=
+ =?utf-8?Q?jlq1i5MmERhR8Y2p+8yXGVvOV?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9ddd737c-05b8-4ba5-30c2-08ddda10b998
+X-MS-Exchange-CrossTenant-AuthSource: SI2PR06MB5140.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2025 02:25:52.6243
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sFcXLstFqaAzY0yErOeCqfHju4GJfFceycPShuNaOHwodkQAZdGIBRGPz+4MqPmY9xtonhDWHycGwW1NhOJJtg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYSPR06MB6409
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 30DA940008
-X-Stat-Signature: sqteocgy6ouecb5bm9j73jzpwfxfktzk
-X-HE-Tag: 1755051902-663638
-X-HE-Meta: U2FsdGVkX1/AV2xb3V6gD1HVrcd7Ce5n4rKyOSk0gEbT3m1KDwkPSnLwI+9utUZZpG74COhkrxYxg4Bq/KWGHmUIexBwEPnmk+hnWHzqC0WZLhdEQBVNgv/ZYWKgmg4cujBRc1r9y7EIs9U7PjocQ5RsRemqUbqopoI8DilFTy3oHGhhr/dSzfyNZiUYMw1h2YHU9hCf166ips0ntBSIquOZSz1lhQe4ynoDRNneMLS3IWiwT3vb+2RgE4Jeqf2VfqKnMhaNqBjrSnKVAaqZ6F0AErdfbYkrqiM2wg7dBvdxg07j+MseLPC5KF7MhAOJMdUe7KxlN0eI7Vibm+tjLvRUxIDOmmR+7y2DkTk4GMzINHOE0fuCyI5c2GWHc9WviMnIb+HX4fN8x+2thGYne6UjPAKIAnhjYtx0QbwP3krEYAEZHzJaTlnH6dJJ/Pj8AEYDzB59CgLFDw0mqoEcfq/1RVz6nhuvWoh2q3HPSuWj7Ep9MF/JcANZUDedpDC6+CQNOGrsxfjL6Wi8aBL797XsucPQthlR6rLouI5NYOX8+8uxmUnJB15lGqtmFep3hl9tq+c9ruMsp4oTfSme6MvZUjWIGD7A6O0PlTAsqaro4cbvmPGrKJaXyHS9VeyFcs3fPdD3owdHdGttzNBr/v/IV0ASfYvPNMEx3OtQ2ZdkeSFxM1omuirL7cAkmebjig63nn6y+iuyVdUHRFvhwYEwN1VOt7t1kHFnPlxwNBOdkdgQiWvd5GcWS9S2V4KDm6lkmJDxRTgoOXLzlrE1lhF1GvSK8RBh6f0zb1siZx0lt1KwSISqLa3uAaUuaL9H443R0s1Ro2n3taAYaY4X3vVQb9Jx/qCiEd8sidH0raLK99e5AWOfYJhriHRda9OwdpJQ/Ew80/w21CyD7KZo3Caq+bkjQo97dpy5HB3TN4UN4PkOPWpiTfoduGOhkSmlu83oPZcoxT+JIBGz8B/
- 3tvyNe80
- J3ERhsF+UER1W8snP+LfcGtVztLIWs/bhY4XfOSlfCst0WNbk1q63zs14qg5IAA/vbC6i8Iw9jN4iVVSDnktjF2Y+IQIYK+D/u4RtJCnzowpcDueUw+Lh9SnrS5iNaVzzZ7Ki+Bykz5QdGGN2WdoGPfvhvPziOnTazJR0+QKq5LuIMFUtt5Nrf38Rvz3LwISakJqL32BopfH/kCCcHoc+ESiLBjBYV9x0ZxYBk7dfMX+gXcsJqoVyzNgApkUzLGHHLit8pbOQMYgPibym7RGZrASQUEQgAdylXkLQheemByaKMYCo2yHPNSQbVmFCTzhbQ5RaBYEFVVf5kVdGgREd5SlVvoJd4/AYPv1K/XrgandaDrDyKq+dcWZcSBab7fZPWenqkpWbTcHCou2zAwyfY1jjg0z8e3+IWJCysTA8BfB5LRQ=
+X-Rspamd-Queue-Id: 34B4314000D
+X-Rspamd-Server: rspam06
+X-Stat-Signature: cmztk5r7q58e7urxbfcejms73bjo61xu
+X-HE-Tag: 1755051958-910584
+X-HE-Meta: U2FsdGVkX1/eL1hy2ztrj0OCed7nHFxATFScFw7iiLVAswMK3b8xFK0mC9urA/R6Jf1srAR2sxw9LgJBkLwUf4GLDyhuuGlVfJ6qgd0SLgZnIEiZ7is/DuB2NVBwJpUI9ywBco72LekyiZjPTM1P8kNRRldDAiTu6MFHODOMWJx+npValAgIHfAPoOuIG7COb/yzxkWkwUPdpHjO4XaVyhM2k7uOMtCwK/MoVTrEDg1b3ixOKNPCQxgKT0f4+azyk173liRIT5CcO9H2G7GyOdILu8C0xm5S3ELIIAT/gj3PVIRixmDnXVhNn6Z5phN6rJOWZna5VCnxEDzNeW4p9cgm6pwedpbZMuwcoB7YmKmyxPQQB9S8XkigUMLv50n0w+DXzPEM6HWAgqlwpv+KzFSkDvj/mk7SzSSinxiJiPLdtDVFsRZjUw6k9Bh8EzkKThbSwDMRopRpD8DQO6VLl5WKbSQOi6ZuL45kpFFQN3XKW7nzr+laLVo+k7P5rHWUHFmnPxp1e8PD+2mmNW3aUfq80kOjrKQMI5XvZ90FSGkE6PdOlnsfCHdHiy4Opk7HE1XXDI8SXQGDh+M1+GSV7DXZgFfzP2RTbHnHk5IY/JOhYk+uAy+BNycNUFxJIxrTHUMY0wBdH/IQ1cRPd1/lvbf7WWQUsMUODhtO4dSFhMd1B3YVxHUcXLb4XoKxSAyonEhIZOTJ85zGomRHavMctqIrNvIt36IfH7IW7XXS3azCh1Vm2AWU74z01Q2HK6DX5Zd/4EUAHBP2/f4k8ifx0DpywSlP/GSbwvMERdMXUakN6K701Qua5IBnbPS2D1IKc5OK772QSAJFbbIc0rMIQuXcFl5FS2ZbdftsQLWjejgdX9PWLyYISTOvV9XC/gghU82CenNzUrkNaf1l5PWKR6wFxmoQBPRpChFDXauhpQWW4U7JFNuLiJMEsyuhFaiP67+3SLcRwIWKkzE7Yko
+ Qk6T+qYX
+ oeD0ZokxbYYt5yf0fO1dWvLtKg6hqsbPswtPn0pgfAgrVEC1NpBS0jd3W9WkP9I4MXVbY4IM3C8wvHhlALRDn+IEvKU1N0ihohnURHSXOEoEqOvH/5xbN3lR1teL0CmeXgVF5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,102 +204,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Balbir,
 
-kernel test robot noticed the following build errors:
+在 2025/8/13 0:46, Lorenzo Stoakes 写道:
+> On Tue, Aug 12, 2025 at 09:52:25PM +0800, Qianfeng Rong wrote:
+>> Commit 16f5dfbc851b ("gfp: include __GFP_NOWARN in GFP_NOWAIT") made
+>> GFP_NOWAIT implicitly include __GFP_NOWARN.
+>>
+>> Therefore, explicit __GFP_NOWARN combined with GFP_NOWAIT (e.g.,
+>> `GFP_NOWAIT | __GFP_NOWARN`) is now redundant.  Let's clean up these
+>> redundant flags across subsystems.
+>>
+>> No functional changes.
+>>
+>> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+>> Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+> LGTM, I wonder if there are other such redundancies in the kernel?
+For similar redundancies in other subsystems, I submitted separate patches
+to minimize potential merge conflicts.
 
-[auto build test ERROR on akpm-mm/mm-everything]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Balbir-Singh/mm-zone_device-support-large-zone-device-private-folios/20250812-105145
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20250812024036.690064-11-balbirs%40nvidia.com
-patch subject: [v3 10/11] gpu/drm/nouveau: add THP migration support
-config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20250813/202508130923.0VGA41Zv-lkp@intel.com/config)
-compiler: powerpc64-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250813/202508130923.0VGA41Zv-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508130923.0VGA41Zv-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from <command-line>:
-   drivers/gpu/drm/nouveau/nouveau_dmem.c: In function 'nouveau_dmem_migrate_vma':
->> include/linux/compiler_types.h:572:45: error: call to '__compiletime_assert_706' declared with attribute error: max((1<<((16 + __pte_index_size)-16)), max) signedness error
-     572 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |                                             ^
-   include/linux/compiler_types.h:553:25: note: in definition of macro '__compiletime_assert'
-     553 |                         prefix ## suffix();                             \
-         |                         ^~~~~~
-   include/linux/compiler_types.h:572:9: note: in expansion of macro '_compiletime_assert'
-     572 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |         ^~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
-      39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-         |                                     ^~~~~~~~~~~~~~~~~~
-   include/linux/minmax.h:93:9: note: in expansion of macro 'BUILD_BUG_ON_MSG'
-      93 |         BUILD_BUG_ON_MSG(!__types_ok(ux, uy),           \
-         |         ^~~~~~~~~~~~~~~~
-   include/linux/minmax.h:98:9: note: in expansion of macro '__careful_cmp_once'
-      98 |         __careful_cmp_once(op, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
-         |         ^~~~~~~~~~~~~~~~~~
-   include/linux/minmax.h:112:25: note: in expansion of macro '__careful_cmp'
-     112 | #define max(x, y)       __careful_cmp(max, x, y)
-         |                         ^~~~~~~~~~~~~
-   drivers/gpu/drm/nouveau/nouveau_dmem.c:811:23: note: in expansion of macro 'max'
-     811 |                 max = max(HPAGE_PMD_NR, max);
-         |                       ^~~
---
-   In file included from <command-line>:
-   nouveau/nouveau_dmem.c: In function 'nouveau_dmem_migrate_vma':
->> include/linux/compiler_types.h:572:45: error: call to '__compiletime_assert_706' declared with attribute error: max((1<<((16 + __pte_index_size)-16)), max) signedness error
-     572 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |                                             ^
-   include/linux/compiler_types.h:553:25: note: in definition of macro '__compiletime_assert'
-     553 |                         prefix ## suffix();                             \
-         |                         ^~~~~~
-   include/linux/compiler_types.h:572:9: note: in expansion of macro '_compiletime_assert'
-     572 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |         ^~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
-      39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-         |                                     ^~~~~~~~~~~~~~~~~~
-   include/linux/minmax.h:93:9: note: in expansion of macro 'BUILD_BUG_ON_MSG'
-      93 |         BUILD_BUG_ON_MSG(!__types_ok(ux, uy),           \
-         |         ^~~~~~~~~~~~~~~~
-   include/linux/minmax.h:98:9: note: in expansion of macro '__careful_cmp_once'
-      98 |         __careful_cmp_once(op, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
-         |         ^~~~~~~~~~~~~~~~~~
-   include/linux/minmax.h:112:25: note: in expansion of macro '__careful_cmp'
-     112 | #define max(x, y)       __careful_cmp(max, x, y)
-         |                         ^~~~~~~~~~~~~
-   nouveau/nouveau_dmem.c:811:23: note: in expansion of macro 'max'
-     811 |                 max = max(HPAGE_PMD_NR, max);
-         |                       ^~~
-
-
-vim +/__compiletime_assert_706 +572 include/linux/compiler_types.h
-
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  558  
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  559  #define _compiletime_assert(condition, msg, prefix, suffix) \
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  560  	__compiletime_assert(condition, msg, prefix, suffix)
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  561  
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  562  /**
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  563   * compiletime_assert - break build and emit msg if condition is false
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  564   * @condition: a compile-time constant condition to check
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  565   * @msg:       a message to emit if condition is false
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  566   *
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  567   * In tradition of POSIX assert, this macro will break the build if the
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  568   * supplied condition is *false*, emitting the supplied error message if the
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  569   * compiler has support to do so.
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  570   */
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  571  #define compiletime_assert(condition, msg) \
-eb5c2d4b45e3d2 Will Deacon 2020-07-21 @572  	_compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  573  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Best regards,
+Qianfeng
+>
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>
+>
 
