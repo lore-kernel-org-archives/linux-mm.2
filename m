@@ -2,132 +2,138 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E358CA0EE0
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 06:28:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D972C87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 06:34:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39FC1900042; Wed, 13 Aug 2025 02:28:22 -0400 (EDT)
+	id 1D9FA8E01C3; Wed, 13 Aug 2025 02:34:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 34ECC8E01B6; Wed, 13 Aug 2025 02:28:22 -0400 (EDT)
+	id 18E7D8E01B6; Wed, 13 Aug 2025 02:34:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2175B900042; Wed, 13 Aug 2025 02:28:22 -0400 (EDT)
+	id 09E928E01C3; Wed, 13 Aug 2025 02:34:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B6488E01B6
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 02:28:22 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C41B9C02AA
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 06:28:21 +0000 (UTC)
-X-FDA: 83770754802.11.0995461
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 6C72CC0008
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 06:28:19 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=ssU3YHTv;
-	spf=pass (imf28.hostedemail.com: domain of ajd@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ajd@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EADD78E01B6
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 02:34:46 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A89231A029B
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 06:34:46 +0000 (UTC)
+X-FDA: 83770770972.27.AC56183
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C691DA0004
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 06:34:44 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=BdIAXwGo;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf25.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=vipinsh@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755066884; a=rsa-sha256;
+	cv=none;
+	b=Rt7bnFs1ytisWFiENryu5Pyc6TE9zTtqLQdgXvapbYG1ouYG1ldSMIH/Q7x6RWg6kx+nd7
+	06rbJQdidJZXy1BwPzV0V58sEMR1Jv1t06uzuycYGtkvmlJXpm/uLcTq5Yu0W02mf0u9P8
+	OziFEyGFX7qu1ZFXw5Z9xkg+T0S/Cvo=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=BdIAXwGo;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf25.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=vipinsh@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755066499;
+	s=arc-20220608; t=1755066884;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=44eqnuQxJFQlBxqy0By4fVwG48XTQCQD+YkQzck6kVg=;
-	b=I6TXGxK29CutTcq7zlhWJY6iYKDMFdCb4s1eYeiVupjLdT4k69IL50O/gZAzIcQkUbrsh2
-	ymMoQ7ov6t7BLKdZKuQszrjNXipW1R55QV8H0GmQNBbe9Y0+pz8D6I/RzgvuKECgMWYNSu
-	1tgxpTtFgZusp61AAGWMv/jUXrPUvCA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755066499; a=rsa-sha256;
-	cv=none;
-	b=NqbXaDruOh+ic8AMknLFxEsno5YEDn8wMYBAtUaDz9LmkVhj6A6LZ2MCUzJpkuctQYjEFi
-	/8OfpjjbIvOcw+kgrMyMZ+qAphQQTTC9GzbvvnUaoG9YfEw648VRKR0jYGNeJPdCyS9W5B
-	yJD1PjxiGXPOjDH+5rqVdWqcQqrIZrg=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=ssU3YHTv;
-	spf=pass (imf28.hostedemail.com: domain of ajd@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ajd@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57CNQPeX016645;
-	Wed, 13 Aug 2025 06:28:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=44eqnuQxJFQlBxqy0
-	By4fVwG48XTQCQD+YkQzck6kVg=; b=ssU3YHTvgnkn11Ea0cKl1OvR+aABePs34
-	MKYV2orZti4io8mpznzrPC1UaohXrwATiCwXDyQqp1vwL0IBYXmv35+icYv5ZfX1
-	z5KFDEfBOLQl5zLSysuaUUxuSEmN2CEknlsd0HWIOfPi8CGmpQ6j0MEME8Shg5t+
-	K4jF1Nx8Gg+rU9XeVt/bVAo72TBpYnTAh8tmCZ6F/fFTYh5MnWxaO92o8H3Q0Ucy
-	9WxCfFtOLILQ5WdQVu4IAQ3DoH/wxZBDlhtYsYDhzGPl/A+J8JdViskydfAadg2G
-	WM2sn4J+lenggbhRasJFhD3p4czwWEL0nIwW0BF160Eegbcby17ag==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48dx14jvpa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 13 Aug 2025 06:28:13 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57D4hUUs017617;
-	Wed, 13 Aug 2025 06:28:12 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 48ekc3np9r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 13 Aug 2025 06:28:12 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57D6SBbm11076722
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 13 Aug 2025 06:28:11 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 879995805E;
-	Wed, 13 Aug 2025 06:28:11 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1493D58059;
-	Wed, 13 Aug 2025 06:28:06 +0000 (GMT)
-Received: from jarvis.ozlabs.ibm.com.com (unknown [9.36.10.70])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 13 Aug 2025 06:28:05 +0000 (GMT)
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org
-Cc: akpm@linux-foundation.org, x86@kernel.org, linux-riscv@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        pasha.tatashin@soleen.com, sweettea-kernel@dorminy.me,
-        nicholas@linux.ibm.com, christophe.leroy@csgroup.eu,
-        Rohan McLure <rmclure@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH v16 13/13] powerpc: mm: Support page table check
-Date: Wed, 13 Aug 2025 16:26:14 +1000
-Message-ID: <20250813062614.51759-14-ajd@linux.ibm.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250813062614.51759-1-ajd@linux.ibm.com>
-References: <20250813062614.51759-1-ajd@linux.ibm.com>
+	bh=lBz0ZD/446lYgybbXFehAqqU9nULcqKZHue50p4Cg4E=;
+	b=Hd/gW/vx/Gn+qDiX2bDP6g3sLEKkru2MlmlBKz8Ly+koYYst5w7cF1AdM1/WYTj8ESss+M
+	l3aL7W4EK8AgTeLPnjU7vRA9E0lxJI3R0HcvP+uajtW1ut8ffo7ECMp+ZLKB62vrRfEHsp
+	s7+cLUwsGbg2OVblJFN/ZxlSMpsC8ws=
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-242d1e9c6b4so145255ad.0
+        for <linux-mm@kvack.org>; Tue, 12 Aug 2025 23:34:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755066883; x=1755671683; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lBz0ZD/446lYgybbXFehAqqU9nULcqKZHue50p4Cg4E=;
+        b=BdIAXwGo12IStR/UlKHQtq1k36O4PuK58RC8FD31wJxBu94UF0LPLKCMQw5tUAkGoa
+         QM7T1Fh6gRe5wQSdF2BbtNp/RVxMNA1w9NBii8wPBihQRxH3Jv8wozJmJjrPZqG0MKR6
+         ppNlLhGZ9npq1nL5YQX4IjUBEQj7DyyRwA2iADghe0ff05ikQ/cqzRfQASuYfftEx4LB
+         EJidlY7rdzcsYlKYNm9VQQnOYEL0+3nJEKQ5au3/K2KjfjVTolE2DlirlEI/geOFvBWR
+         PPkP9CK9LWU5udV4QVVhUngX8u4KVwzioQd8+NZsAz6zPsdvLrRVYhoWWR/HNwits7Y5
+         u7QQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755066883; x=1755671683;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lBz0ZD/446lYgybbXFehAqqU9nULcqKZHue50p4Cg4E=;
+        b=Ub46f9i6DrfS2eullAhL8+lpBqU0AJbQQS9AufIR8c7SV2oqaOrJDYAX3XRCc62RyD
+         vqCC87G+lncMuf5xrNff4MVe1le2v4AvGPkADH4yDsMIf0JUNDa62zmBVrfEGh8m9LVm
+         c5k9fp3qTE0LEZxVtKnkFPyRrntadh4HRdTVFKSFVVrYLRgZh8G2AloiH4LUCg9WJTNX
+         78/jOf7teWW0jbgQOq37LbTK0lZXn6cTDsgSpzOIz7hxGMjYmsqN5rirXi+fmkx62M0O
+         Se2SQ0lJRaVyWdOWfYGs9Z9/+ud579K80j/0lXywry+NCIOApUWTSqSkeRICumImJZmW
+         OIzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXDXoC5hGin8BKMi8/fZO8vASR1WcPkCP0Cww231SeEqDhIa8cs0pDf9xpXTW2WYbINKXXtUK6IfQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx7ewWETgYI5bNxaECX8xLE2IgqnS9xRr6yNbJhJXREXfYxXkDD
+	naLLJ/ouX9Sv1BG6mnouBU/wYSJ7qjontLVEqbgV80+p9kYVT3vMzGu2dS66c7Mdxw==
+X-Gm-Gg: ASbGnculIRvlksHw3u3hJD/dAV1THpw/+CRToSYY9nMHCUlYFOxxsGPrMD2sTuFR2QK
+	VYjT0Nt1115ZmAmkwzDPVncNEU3ATbiApvs59ZVsicnbQqEtK3OxW4Icw0uXPBICX9DtrCZu6R8
+	lMSMRAkG3c22QZbp0+hguc+oIb8BPDQfu75WTTMSBX3hT+CJw3RFxrx809VFOBCA8Kwq/Lg4JEw
+	x9SyrIUO2PC4FfH9QbhmLvrslvNycD8QKiH+jLfBh/U7VL5T4wQIcs9AncBaphWLk6Op/JC0IzH
+	vZQaIoRFBG7PSfqQHw6AVuyK9Da/dfpevygosv+0pswcFmAeplDEDAPPuwY/S6ycPKaOvNGR5gq
+	qSRbtGi1N7l8w4y+cTbnSIudLitF4wnwDKIcAJAN8jgEQTCH6KOHLcqEG6ykTaMgbSKk=
+X-Google-Smtp-Source: AGHT+IGFb0xX7B2Q6MyY6rFw3BXv1hxo5YhlKW11olCnEO5GfmzQ9WNDztxD1sYVpPXUsxAdW3d/ig==
+X-Received: by 2002:a17:902:e746:b0:240:6076:20cd with SMTP id d9443c01a7336-2430e55bb17mr2238135ad.15.1755066883155;
+        Tue, 12 Aug 2025 23:34:43 -0700 (PDT)
+Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24303d5e705sm30477375ad.14.2025.08.12.23.34.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Aug 2025 23:34:42 -0700 (PDT)
+Date: Tue, 12 Aug 2025 23:34:37 -0700
+From: Vipin Sharma <vipinsh@google.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
+	changyuanl@google.com, rppt@kernel.org, dmatlack@google.com,
+	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org,
+	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com,
+	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org,
+	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr,
+	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com,
+	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com,
+	vincent.guittot@linaro.org, hannes@cmpxchg.org,
+	dan.j.williams@intel.com, david@redhat.com,
+	joel.granados@kernel.org, rostedt@goodmis.org,
+	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn,
+	linux@weissschuh.net, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-mm@kvack.org,
+	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com,
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
+	aleksander.lobakin@intel.com, ira.weiny@intel.com,
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
+	brauner@kernel.org, linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
+	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
+	leonro@nvidia.com, witu@nvidia.com
+Subject: Re: [PATCH v3 29/30] luo: allow preserving memfd
+Message-ID: <20250813063407.GA3182745.vipinsh@google.com>
+References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
+ <20250807014442.3829950-30-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 0rT8rbzx7mDS-jeuQ-ND6EZgSiab9sxZ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDIyNCBTYWx0ZWRfXy6PCfLipkhCN
- oodTDQPaNJdNeEyRiDcWeQV8w8Lu6Rcvta4dCrNr9HfBjUbtktfTfi3zUYZbl0Ex2iTx2cHFqr0
- zTkYFPW1ZJsusnPUvHLoRzdKOMOezFfkztBwJQwG24o1t8+M0ilt/IM+7ERHtaH/NMI4tgTYt3V
- tT4B1lERrcVoY6jDIiT/lae/e6mfXeIQdPCySTPoxZfOD5XdLLUHBDjjAj1L7D6Py0eXNowjKMI
- hPiVdUwymbupkpC3eiUZC0r7WoBWVZ28WO2RpRpA7vKsaEaXImDOtho7c6jL5VfnksHyGCB+okz
- UCXgHWLxqDoy1QlexzbQBVa6CH6Rm9VgNjov4ijPraw7SGGKcxQGgcZIWhagwZgTFtR5FlHUN6m
- 0SXPM+CF
-X-Proofpoint-GUID: 0rT8rbzx7mDS-jeuQ-ND6EZgSiab9sxZ
-X-Authority-Analysis: v=2.4 cv=fLg53Yae c=1 sm=1 tr=0 ts=689c307d cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=1UX6Do5GAAAA:8 a=7ipKWUHlAAAA:8
- a=X4bsUGyFbWMdYzZSxZoA:9 a=Et2XPkok5AAZYJIKzHr1:22 a=gpc5p9EgBqZVLdJeV_V1:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-12_08,2025-08-11_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 clxscore=1015 spamscore=0 priorityscore=1501 impostorscore=0
- phishscore=0 malwarescore=0 bulkscore=0 suspectscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508120224
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6C72CC0008
-X-Stat-Signature: xua4d3f1thq8sye4h6fsp7d71t4oa688
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250807014442.3829950-30-pasha.tatashin@soleen.com>
+X-Stat-Signature: t68yjrdiup347k35pnq3hruty4fgzbeh
 X-Rspam-User: 
-X-HE-Tag: 1755066499-587541
-X-HE-Meta: U2FsdGVkX1+UxmH8IHKoA20Zdo7PeRggOVAGc0ZQywPsWKHxErBV37kBeKzon4k0gbCGqvkFS2LmwqY+60Q1mCEQ7QMkWG0qB2MpvaN0j1QDiA+gtdCVjBoTwozJewlWnQ/hG7Vsu37oalChhFJnPJa++6NOkKWzXdmL/lcyzsQyvIn27kNnGSykME9zHNWZJPkg69PnCuMwjN5Yw+5ChB0qyUuj1vBlNcTai85kilg1KNOX5Sxe+ctaNvOxkSZkW7xDZm8ztXuksZHS1tkIUyHU1dL87f6Cgol5ffojZcIGCxxVG8a/Jp0cswnsJt2X2pRYfFcuuJo4cDQ+38ODwDWLZZDKfcJ4IWgMPfXtLCG93FQ0G8lCRiWoo8IZUft1FkoiePS9UmneSqDhBh0W8W9x+d6pE+zUGmwFhbF7WcFnLdpIf+8RZszDVmjM4NuII3ZhGtYKmdi5a3Tj0ulNCh7iMC6xxeAA9KfaWeG3cMmiWCTHFGVW0g8NHm/kZKazAXTVKUN1Kb44xAnuc+dBM7LxuKLbsI3+VuLrAsX5roFjENrMWKVvTG2tJu4Hvw5qUafIsQMWf/qf5qMIFJ6IIpJjMtXaC7Jr4p1pqbtsA23ZPclw05kP6YgJit5B7glGOKrxz1yVu6YFW/L7+dAOs3n7ehnzIBfrzo1OQE29CKEikwMehIp2gNqO2j3bEzDfKOjNnIzR7IDI5SouCYVegv+02ca/JDFPFbjtTQYa8ECFkwzBKGkuNhwBR3lks6JYKHvHQrPDZZhNZeNLljqk2xetpLyRgoOAOplXR7kDBGs0sLqzWuJhbmjfqkQ29JmgkFZzH4wMnGpi3vVnKBMyz8MbKf3zRj7YFWTIDrJ17MMAJETLG/DOLFlyc19x+ub8aE2o9zb2X36hNF2FI+fEnsz1r4Zy6JAGOBue5HDbafI/0MoE9SkEmUGxVf+EkeHrljgv7WW65Zi8d/13AG1
- 2rT3QbPc
- Ptf3+27jLMICz8u2I6fOT+BXhAWS/3JUiTIzbzCIUKhs0Jwt0k88yU3K8RgZMRXurQxydzB5BdWdoA0KvfQMvKt2gGryYfSsyYtaJ3iHFWlMVySY7wA7HXxbYnsyXJPlZx32miwbP9omnmZczJtTmm/b6xE+xi2wm4Y2rDgJIsDBoY/jXUBEyiFay6jr4k8W4pGJWqGm1buwD+YNlMfLonrUhOlbW9IG3RBlitMyQcXpL9LGJZFtga6JxsPRBGPaK6KspqgfJQIdJ7bUG5JJRl0u13eva3D7Luce5/ezpC2BzRQm1f17mpIy2tKmcR/SGCddDK/U+wtJNB8HDRFZiKH+cswWR+Ba3WevTcraR1sxJsA+J6FpfK5PFfGFAhY2kYllTEp+2UVNpFUX4FYVhjhvuFkdhkS8UlAFp
+X-Rspamd-Queue-Id: C691DA0004
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1755066884-803407
+X-HE-Meta: U2FsdGVkX19HQ5FIAIe27TNOOylmIwIHd6kzqXstyYMlaOoAXyt584LH2kMPCY911dU2EEX/wNut1BrOjPl6s/VV9JSBsi24O2UIUj5V10+SSRSUIMBFe84DHCgT3gp6sZlSHsOw1ENUWF/8uVxfNmMy6RbnqLXYCaIAHNMTPgtTYizQd0pJiX0j+yWd5bMp3cAUaPCofOqAAUEkImhqTM4foaiUdlYOD0xjJvDUOwjeGCpj5lRZN1wvbuQj3Qm8nCO3ds4PS/r0loS8jBu6vulbVkmeUJeZsA3SprluVn89rGYzfNj/pK5pT0HXducFmUC2zs3G1QcEkPq7vvj1JXyuHaUKDLHcQGjTdwa/UabTFuDU3KH5fJxsuCtXK2C8wO78Eb0vWjRW9aNzukrkoFlUZ37rWAWAdl+3KFrhdQIotYLFrH2ZYSo7eTL8ksm0rujcJ5BnEJWEgJE95gYxC4g1qhHrbInnzrGXhN0i/VQj4P45Rg7l9TSweTaPC05dt8k6atUl4w34LkFNCAVBaJZNk/Zw4L2yi09PTHXarxskr/UXMLNPG+3MAeu7RUXbkHW5Vo4JvVK7NcAzFAN3XDGDdf7K9QWcxztZGTGEegInJLfOKuBqJu+MBTn8ENOxGV84PSr5wXBXNDGESOe25aCK3sMal9PpeClVKF2lco1+lWpUkkToVeOg+Xlh1gWmCtIuqVvErFmnbNR1FJY4eB3i3QAqmiDcY+wMZavQNgmnUXrZ+E4cIuggAxMumcAjRmv2qp4dFKm1XTTqTtR8Zc913v3ruqlLV4EiRUOau+HFbuy+N9gXIv3iTxApl6Z1P2U6b51yUmND1Lxnn77EfBqqIUGsa5S2tN9j3hcZ4sboRIZAu3yW+ZgWBU2R+jh6rW3NMPrnRhVMqqxsXtp8MwI7IEVeq/+FiQzQgUvJQ+RThsIkwOh4rCVZXkdeCo+yQenZpHnqjUxeshOjICa
+ FG2bXCaX
+ PnAOCTm5zPlFwVb1/j3e10LlhE/3+4VJYEBXfV87xwstobr5fXX3x3LWlB/W64xCjdBcFNbBeetUYnixf9Qvtk/6s0pDFAvUtE4qL5lxFJju0cruACUBxJpqL9/y+3acnrzTp39b4qT4gacOUt+pmULmKPcXti/ugpfcxJ5oW8Ap6B2oxdNrwquLHhun+9NanAxkS/ccXECcejQDmqo6fIXObm6q9XqXhsmISJ0lFvSlImryYHwZsGyxzle3HgwXHnTvvR73H5SyYDlzchXYe40Cau4P3Na+PlYBi849krTI3TRDyAtYKck/4jZjtptJAQlBjnKXrRHpT6QzM3/2oYoV5KU1wDadlThJ+AIAoeG8zZNciaFRTGo4LeRby/pZNqjO6hTA8zi9jnPCXGoU6T6kUVYXG1QkMhYzKmDRbNZ2gqxv4TpF1cO6AIQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,303 +142,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Rohan McLure <rmclure@linux.ibm.com>
+On 2025-08-07 01:44:35, Pasha Tatashin wrote:
+> From: Pratyush Yadav <ptyadav@amazon.de>
+> +static void memfd_luo_unpreserve_folios(const struct memfd_luo_preserved_folio *pfolios,
+> +					unsigned int nr_folios)
+> +{
+> +	unsigned int i;
+> +
+> +	for (i = 0; i < nr_folios; i++) {
+> +		const struct memfd_luo_preserved_folio *pfolio = &pfolios[i];
+> +		struct folio *folio;
+> +
+> +		if (!pfolio->foliodesc)
+> +			continue;
+> +
+> +		folio = pfn_folio(PRESERVED_FOLIO_PFN(pfolio->foliodesc));
+> +
+> +		kho_unpreserve_folio(folio);
 
-On creation and clearing of a page table mapping, instrument such calls
-by invoking page_table_check_pte_set and page_table_check_pte_clear
-respectively. These calls serve as a sanity check against illegal
-mappings.
+This one is missing WARN_ON_ONCE() similar to the one in
+memfd_luo_preserve_folios().
 
-Enable ARCH_SUPPORTS_PAGE_TABLE_CHECK for all platforms.
+> +		unpin_folio(folio);
+> +	}
+> +}
+> +
+> +static void *memfd_luo_create_fdt(unsigned long size)
+> +{
+> +	unsigned int order = get_order(size);
+> +	struct folio *fdt_folio;
+> +	int err = 0;
+> +	void *fdt;
+> +
+> +	if (order > MAX_PAGE_ORDER)
+> +		return NULL;
+> +
+> +	fdt_folio = folio_alloc(GFP_KERNEL, order);
 
-See also:
+__GFP_ZERO should also be used here. Otherwise this can lead to
+unintentional passing of old kernel memory.
 
-riscv support in commit 3fee229a8eb9 ("riscv/mm: enable
-ARCH_SUPPORTS_PAGE_TABLE_CHECK")
-arm64 in commit 42b2547137f5 ("arm64/mm: enable
-ARCH_SUPPORTS_PAGE_TABLE_CHECK")
-x86_64 in commit d283d422c6c4 ("x86: mm: add x86_64 support for page table
-check")
+> +static int memfd_luo_prepare(struct liveupdate_file_handler *handler,
+> +			     struct file *file, u64 *data)
+> +{
+> +	struct memfd_luo_preserved_folio *preserved_folios;
+> +	struct inode *inode = file_inode(file);
+> +	unsigned int max_folios, nr_folios = 0;
+> +	int err = 0, preserved_size;
+> +	struct folio **folios;
+> +	long size, nr_pinned;
+> +	pgoff_t offset;
+> +	void *fdt;
+> +	u64 pos;
+> +
+> +	if (WARN_ON_ONCE(!shmem_file(file)))
+> +		return -EINVAL;
 
-[ajd@linux.ibm.com: rebase]
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
-Acked-by: Madhavan Srinivasan <maddy@linux.ibm.com>
----
- arch/powerpc/Kconfig                         |  1 +
- arch/powerpc/include/asm/book3s/32/pgtable.h |  7 ++-
- arch/powerpc/include/asm/book3s/64/pgtable.h | 45 +++++++++++++++-----
- arch/powerpc/include/asm/nohash/pgtable.h    |  8 +++-
- arch/powerpc/mm/book3s64/hash_pgtable.c      |  4 ++
- arch/powerpc/mm/book3s64/pgtable.c           | 11 +++--
- arch/powerpc/mm/book3s64/radix_pgtable.c     |  3 ++
- arch/powerpc/mm/pgtable.c                    |  4 ++
- 8 files changed, 68 insertions(+), 15 deletions(-)
+This one is only check for shmem_file, whereas in
+memfd_luo_can_preserve() there is check for inode->i_nlink also. Is that
+not needed here?
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 93402a1d9c9f..09d192ee3f91 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -170,6 +170,7 @@ config PPC
- 	select ARCH_STACKWALK
- 	select ARCH_SUPPORTS_ATOMIC_RMW
- 	select ARCH_SUPPORTS_DEBUG_PAGEALLOC	if PPC_BOOK3S || PPC_8xx
-+	select ARCH_SUPPORTS_PAGE_TABLE_CHECK
- 	select ARCH_USE_BUILTIN_BSWAP
- 	select ARCH_USE_CMPXCHG_LOCKREF		if PPC64
- 	select ARCH_USE_MEMTEST
-diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/include/asm/book3s/32/pgtable.h
-index b225967f85ea..68864a71ca5f 100644
---- a/arch/powerpc/include/asm/book3s/32/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
-@@ -202,6 +202,7 @@ void unmap_kernel_page(unsigned long va);
- #ifndef __ASSEMBLY__
- #include <linux/sched.h>
- #include <linux/threads.h>
-+#include <linux/page_table_check.h>
- 
- /* Bits to mask out from a PGD to get to the PUD page */
- #define PGD_MASKED_BITS		0
-@@ -315,7 +316,11 @@ static inline int __ptep_test_and_clear_young(struct mm_struct *mm,
- static inline pte_t ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
- 				       pte_t *ptep)
- {
--	return __pte(pte_update(mm, addr, ptep, ~_PAGE_HASHPTE, 0, 0));
-+	pte_t old_pte = __pte(pte_update(mm, addr, ptep, ~_PAGE_HASHPTE, 0, 0));
-+
-+	page_table_check_pte_clear(mm, addr, old_pte);
-+
-+	return old_pte;
- }
- 
- #define __HAVE_ARCH_PTEP_SET_WRPROTECT
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index 48f3a41317dd..81c220bcbd26 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -144,6 +144,8 @@
- #define PAGE_KERNEL_ROX	__pgprot(_PAGE_BASE | _PAGE_KERNEL_ROX)
- 
- #ifndef __ASSEMBLY__
-+#include <linux/page_table_check.h>
-+
- /*
-  * page table defines
-  */
-@@ -416,8 +418,11 @@ static inline void huge_ptep_set_wrprotect(struct mm_struct *mm,
- static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
- 				       unsigned long addr, pte_t *ptep)
- {
--	unsigned long old = pte_update(mm, addr, ptep, ~0UL, 0, 0);
--	return __pte(old);
-+	pte_t old_pte = __pte(pte_update(mm, addr, ptep, ~0UL, 0, 0));
-+
-+	page_table_check_pte_clear(mm, addr, old_pte);
-+
-+	return old_pte;
- }
- 
- #define __HAVE_ARCH_PTEP_GET_AND_CLEAR_FULL
-@@ -426,11 +431,16 @@ static inline pte_t ptep_get_and_clear_full(struct mm_struct *mm,
- 					    pte_t *ptep, int full)
- {
- 	if (full && radix_enabled()) {
-+		pte_t old_pte;
-+
- 		/*
- 		 * We know that this is a full mm pte clear and
- 		 * hence can be sure there is no parallel set_pte.
- 		 */
--		return radix__ptep_get_and_clear_full(mm, addr, ptep, full);
-+		old_pte = radix__ptep_get_and_clear_full(mm, addr, ptep, full);
-+		page_table_check_pte_clear(mm, addr, old_pte);
-+
-+		return old_pte;
- 	}
- 	return ptep_get_and_clear(mm, addr, ptep);
- }
-@@ -1289,19 +1299,34 @@ extern int pudp_test_and_clear_young(struct vm_area_struct *vma,
- static inline pmd_t pmdp_huge_get_and_clear(struct mm_struct *mm,
- 					    unsigned long addr, pmd_t *pmdp)
- {
--	if (radix_enabled())
--		return radix__pmdp_huge_get_and_clear(mm, addr, pmdp);
--	return hash__pmdp_huge_get_and_clear(mm, addr, pmdp);
-+	pmd_t old_pmd;
-+
-+	if (radix_enabled()) {
-+		old_pmd = radix__pmdp_huge_get_and_clear(mm, addr, pmdp);
-+	} else {
-+		old_pmd = hash__pmdp_huge_get_and_clear(mm, addr, pmdp);
-+	}
-+
-+	page_table_check_pmd_clear(mm, addr, old_pmd);
-+
-+	return old_pmd;
- }
- 
- #define __HAVE_ARCH_PUDP_HUGE_GET_AND_CLEAR
- static inline pud_t pudp_huge_get_and_clear(struct mm_struct *mm,
- 					    unsigned long addr, pud_t *pudp)
- {
--	if (radix_enabled())
--		return radix__pudp_huge_get_and_clear(mm, addr, pudp);
--	BUG();
--	return *pudp;
-+	pud_t old_pud;
-+
-+	if (radix_enabled()) {
-+		old_pud = radix__pudp_huge_get_and_clear(mm, addr, pudp);
-+	} else {
-+		BUG();
-+	}
-+
-+	page_table_check_pud_clear(mm, addr, old_pud);
-+
-+	return old_pud;
- }
- 
- static inline pmd_t pmdp_collapse_flush(struct vm_area_struct *vma,
-diff --git a/arch/powerpc/include/asm/nohash/pgtable.h b/arch/powerpc/include/asm/nohash/pgtable.h
-index a8bc4f24beb1..3a6630dca615 100644
---- a/arch/powerpc/include/asm/nohash/pgtable.h
-+++ b/arch/powerpc/include/asm/nohash/pgtable.h
-@@ -29,6 +29,8 @@ static inline pte_basic_t pte_update(struct mm_struct *mm, unsigned long addr, p
- 
- #ifndef __ASSEMBLY__
- 
-+#include <linux/page_table_check.h>
-+
- extern int icache_44x_need_flush;
- 
- #ifndef pte_huge_size
-@@ -122,7 +124,11 @@ static inline void ptep_set_wrprotect(struct mm_struct *mm, unsigned long addr,
- static inline pte_t ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
- 				       pte_t *ptep)
- {
--	return __pte(pte_update(mm, addr, ptep, ~0UL, 0, 0));
-+	pte_t old_pte = __pte(pte_update(mm, addr, ptep, ~0UL, 0, 0));
-+
-+	page_table_check_pte_clear(mm, addr, old_pte);
-+
-+	return old_pte;
- }
- #define __HAVE_ARCH_PTEP_GET_AND_CLEAR
- 
-diff --git a/arch/powerpc/mm/book3s64/hash_pgtable.c b/arch/powerpc/mm/book3s64/hash_pgtable.c
-index 82d31177630b..ac2a24d15d2e 100644
---- a/arch/powerpc/mm/book3s64/hash_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/hash_pgtable.c
-@@ -8,6 +8,7 @@
- #include <linux/sched.h>
- #include <linux/mm_types.h>
- #include <linux/mm.h>
-+#include <linux/page_table_check.h>
- #include <linux/stop_machine.h>
- 
- #include <asm/sections.h>
-@@ -230,6 +231,9 @@ pmd_t hash__pmdp_collapse_flush(struct vm_area_struct *vma, unsigned long addres
- 
- 	pmd = *pmdp;
- 	pmd_clear(pmdp);
-+
-+	page_table_check_pmd_clear(vma->vm_mm, address, pmd);
-+
- 	/*
- 	 * Wait for all pending hash_page to finish. This is needed
- 	 * in case of subpage collapse. When we collapse normal pages
-diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-index ff0c5a1988f8..8be06a3cfcbc 100644
---- a/arch/powerpc/mm/book3s64/pgtable.c
-+++ b/arch/powerpc/mm/book3s64/pgtable.c
-@@ -10,6 +10,7 @@
- #include <linux/pkeys.h>
- #include <linux/debugfs.h>
- #include <linux/proc_fs.h>
-+#include <linux/page_table_check.h>
- 
- #include <asm/pgalloc.h>
- #include <asm/tlb.h>
-@@ -127,6 +128,7 @@ void set_pmd_at(struct mm_struct *mm, unsigned long addr,
- 	WARN_ON(!(pmd_leaf(pmd)));
- #endif
- 	trace_hugepage_set_pmd(addr, pmd_val(pmd));
-+	page_table_check_pmd_set(mm, addr, pmdp, pmd);
- 	return set_pte_at_unchecked(mm, addr, pmdp_ptep(pmdp), pmd_pte(pmd));
- }
- 
-@@ -144,6 +146,7 @@ void set_pud_at(struct mm_struct *mm, unsigned long addr,
- 	WARN_ON(!(pud_leaf(pud)));
- #endif
- 	trace_hugepage_set_pud(addr, pud_val(pud));
-+	page_table_check_pud_set(mm, addr, pudp, pud);
- 	return set_pte_at_unchecked(mm, addr, pudp_ptep(pudp), pud_pte(pud));
- }
- 
-@@ -179,12 +182,14 @@ void serialize_against_pte_lookup(struct mm_struct *mm)
- pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
- 		     pmd_t *pmdp)
- {
--	unsigned long old_pmd;
-+	pmd_t old_pmd;
- 
- 	VM_WARN_ON_ONCE(!pmd_present(*pmdp));
--	old_pmd = pmd_hugepage_update(vma->vm_mm, address, pmdp, _PAGE_PRESENT, _PAGE_INVALID);
-+	old_pmd = __pmd(pmd_hugepage_update(vma->vm_mm, address, pmdp, _PAGE_PRESENT, _PAGE_INVALID));
- 	flush_pmd_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
--	return __pmd(old_pmd);
-+	page_table_check_pmd_clear(vma->vm_mm, address, old_pmd);
-+
-+	return old_pmd;
- }
- 
- pud_t pudp_invalidate(struct vm_area_struct *vma, unsigned long address,
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 8c3b0f1750e4..00b178d41e04 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -14,6 +14,7 @@
- #include <linux/of.h>
- #include <linux/of_fdt.h>
- #include <linux/mm.h>
-+#include <linux/page_table_check.h>
- #include <linux/hugetlb.h>
- #include <linux/string_helpers.h>
- #include <linux/memory.h>
-@@ -1474,6 +1475,8 @@ pmd_t radix__pmdp_collapse_flush(struct vm_area_struct *vma, unsigned long addre
- 	pmd = *pmdp;
- 	pmd_clear(pmdp);
- 
-+	page_table_check_pmd_clear(vma->vm_mm, address, pmd);
-+
- 	radix__flush_tlb_collapsed_pmd(vma->vm_mm, address);
- 
- 	return pmd;
-diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-index bf90becb6cd6..42aa850693af 100644
---- a/arch/powerpc/mm/pgtable.c
-+++ b/arch/powerpc/mm/pgtable.c
-@@ -22,6 +22,7 @@
- #include <linux/mm.h>
- #include <linux/percpu.h>
- #include <linux/hardirq.h>
-+#include <linux/page_table_check.h>
- #include <linux/hugetlb.h>
- #include <asm/tlbflush.h>
- #include <asm/tlb.h>
-@@ -206,6 +207,9 @@ void set_ptes(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
- 	 * and not hw_valid ptes. Hence there is no translation cache flush
- 	 * involved that need to be batched.
- 	 */
-+
-+	page_table_check_ptes_set(mm, addr, ptep, pte, nr);
-+
- 	for (;;) {
- 
- 		/*
--- 
-2.50.1
+> +
+> +	inode_lock(inode);
+> +	shmem_i_mapping_freeze(inode, true);
+> +
+> +	size = i_size_read(inode);
+> +	if ((PAGE_ALIGN(size) / PAGE_SIZE) > UINT_MAX) {
+> +		err = -E2BIG;
+> +		goto err_unlock;
+> +	}
+> +
+> +	/*
+> +	 * Guess the number of folios based on inode size. Real number might end
+> +	 * up being smaller if there are higher order folios.
+> +	 */
+> +	max_folios = PAGE_ALIGN(size) / PAGE_SIZE;
+> +	folios = kvmalloc_array(max_folios, sizeof(*folios), GFP_KERNEL);
+
+__GFP_ZERO?
+
+> +static int memfd_luo_freeze(struct liveupdate_file_handler *handler,
+> +			    struct file *file, u64 *data)
+> +{
+> +	u64 pos = file->f_pos;
+> +	void *fdt;
+> +	int err;
+> +
+> +	if (WARN_ON_ONCE(!*data))
+> +		return -EINVAL;
+> +
+> +	fdt = phys_to_virt(*data);
+> +
+> +	/*
+> +	 * The pos or size might have changed since prepare. Everything else
+> +	 * stays the same.
+> +	 */
+> +	err = fdt_setprop(fdt, 0, "pos", &pos, sizeof(pos));
+> +	if (err)
+> +		return err;
+
+Comment is talking about pos and size but code is only updating pos. 
+
+> +static int memfd_luo_retrieve(struct liveupdate_file_handler *handler, u64 data,
+> +			      struct file **file_p)
+> +{
+> +	const struct memfd_luo_preserved_folio *pfolios;
+> +	int nr_pfolios, len, ret = 0, i = 0;
+> +	struct address_space *mapping;
+> +	struct folio *folio, *fdt_folio;
+> +	const u64 *pos, *size;
+> +	struct inode *inode;
+> +	struct file *file;
+> +	const void *fdt;
+> +
+> +	fdt_folio = memfd_luo_get_fdt(data);
+> +	if (!fdt_folio)
+> +		return -ENOENT;
+> +
+> +	fdt = page_to_virt(folio_page(fdt_folio, 0));
+> +
+> +	pfolios = fdt_getprop(fdt, 0, "folios", &len);
+> +	if (!pfolios || len % sizeof(*pfolios)) {
+> +		pr_err("invalid 'folios' property\n");
+
+Print should clearly state that error is because fields is not found or
+len is not multiple of sizeof(*pfolios).
 
 
