@@ -2,89 +2,97 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 48C82CA0EDC
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 02:46:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7AC30CA0EDC
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 03:04:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7E298E01A1; Tue, 12 Aug 2025 22:46:02 -0400 (EDT)
+	id A36FB8E01A2; Tue, 12 Aug 2025 23:04:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C559C8E019E; Tue, 12 Aug 2025 22:46:02 -0400 (EDT)
+	id A0F1C8E019E; Tue, 12 Aug 2025 23:04:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B92F68E01A1; Tue, 12 Aug 2025 22:46:02 -0400 (EDT)
+	id 94B9A8E01A2; Tue, 12 Aug 2025 23:04:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A93658E019E
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 22:46:02 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4F18F1401FE
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 02:46:02 +0000 (UTC)
-X-FDA: 83770194564.27.0F52F11
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B959040004
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 02:46:00 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HfXzH+Oj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 82DC98E019E
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 23:04:46 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F29F4C022B
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 03:04:45 +0000 (UTC)
+X-FDA: 83770241730.28.9EB1A5E
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf15.hostedemail.com (Postfix) with ESMTP id A6C15A000B
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 03:04:42 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	spf=pass (imf15.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755053160;
+	s=arc-20220608; t=1755054284;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fGlFjBlKx9kPDFy9HaIH+mfDgXmnqL6e3C2KpiTJUMs=;
-	b=2uwIiS1wm4iAxoOkagiEHJxVwY/CN8bVZjen7uCmRK2S0mHwL/UbEheBMuoafSlKApTsAC
-	nXL2oUwMsfhQTn3ux4coB1jczB9puOvESigJ0YHIBRgErsPilDpwSe/RshL5mjlOcwBowX
-	2X6jGMy0A6fzWL29agjeCBtQap9StvY=
+	 in-reply-to:in-reply-to:references:references;
+	bh=Z9u1EhT29l/fyxWfqnoLHJrSH5A8odeJNuLv5ms0nLw=;
+	b=Zfg4OZJ+rJsVsbv+q9V4QwfWYNyMiZZzMQeZHEUHtibly+24Az2jgtSqGDT9JbIZwkujYe
+	+TdWcfxHQCZ625rTuOidzRbfunb4kATrRQWkpP73VqiDqRJ1GV0CbuJN0fUVCJzkkcOwny
+	LPRK8W2HnzxzlC2E2yRZ1ihS8pPLgzA=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HfXzH+Oj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755053160; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=none;
+	spf=pass (imf15.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755054284; a=rsa-sha256;
 	cv=none;
-	b=mEJrgFWNCtLAZxEZLAyfceE5ugOYqwouj3My5Fp26+gF+fcir1ABonyFF4NeUj1HQjAWZ3
-	EqVOPaWhvB12ncLDH0T8COcA/WmyUBFbreKDOEJ1Fkzal+oUL/OOo+5VyjQ8V+5Wt92KsZ
-	p2595CFu1cQ0dhFkTa5xRg/k7aSUNQQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 40F5243D01;
-	Wed, 13 Aug 2025 02:45:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F12FCC4CEF0;
-	Wed, 13 Aug 2025 02:45:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755053159;
-	bh=p6dvtiP+ZDxCLTpTe4srs33mURr8kn+OBoMUmqddGrA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HfXzH+OjXKR2lFjnlWkQIBEwb3Kzig2Ax64rdsR7Cav5CppOwUSvmYHf3qs6OC4Dr
-	 778Tn26yLQbgj/pPVCxJHpUCI6hxvIcXMiQ9YeWPzQeZUaW6lPe9DfqhN3P7HzDYko
-	 L86i+ee5RrJzNWiA6dwgk2c5tR8SNxWILk9OjLT29H82JksxjP5unhDKywOIgFaTQT
-	 wsAave6mckLLIuarTFXCNhxMx3Z2gW0ud0YbuIbZNcUY7N5k4gU/uKjBwPt8ff4Vx9
-	 4g5+tfne+9OnEMbMbKyi585ZbSJhhzcV/1tIOBbUm259SBJm+YrS6Wph7djuXQ3R/q
-	 ybSJNJQ+jla7g==
-From: SeongJae Park <sj@kernel.org>
+	b=EMXD9WqpnwwcPWPzelIxaZEeEEm1wmj7SncWJxVcz8A1xO08qzoV42RMPhLZ0/tKJ8K/TZ
+	Etw9FtPjOf/9vMytGeExTD4jtfLqEvI9s59S2odxQHGpMnXFyiSxX/1+SjlWmiPZdSeomG
+	V6eQwAjWik3zLlUIlAiu024T1f2z1Ms=
+X-UUID: 3f547fcc77f211f0b29709d653e92f7d-20250813
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:61a2bf84-6726-42ca-bdc4-8c887ae87ba7,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:-9,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:1
+X-CID-INFO: VERSION:1.1.45,REQID:61a2bf84-6726-42ca-bdc4-8c887ae87ba7,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:-9,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:1
+X-CID-META: VersionHash:6493067,CLOUDID:354314cd71732fa740b5e7583b0f8b67,BulkI
+	D:250813110438OSDH4HH7,BulkQuantity:0,Recheck:0,SF:17|19|24|45|64|66|78|80
+	|81|82|83|102|841,TC:nil,Content:0|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,B
+	ulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR
+	:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI
+X-UUID: 3f547fcc77f211f0b29709d653e92f7d-20250813
+X-User: lienze@kylinos.cn
+Received: from kylin [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <lienze@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1277418137; Wed, 13 Aug 2025 11:04:37 +0800
+From: Enze Li <lienze@kylinos.cn>
 To: Sang-Heon Jeon <ekffu200098@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	honggyu.kim@sk.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH] selftests/damon: fix selftests by installing drgn related script
-Date: Tue, 12 Aug 2025 19:45:56 -0700
-Message-Id: <20250813024556.52376-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <CABFDxMF=-Fb56zSnGVvqXRrDXh-3vFzQmhuLNDYEzFv4z-bsuQ@mail.gmail.com>
-References: 
+Cc: Alexandre Ghiti <alexghiti@rivosinc.com>,  SeongJae Park
+ <sj@kernel.org>,  Shuah Khan <shuah@kernel.org>,  Andrew Morton
+ <akpm@linux-foundation.org>,  damon@lists.linux.dev,  linux-mm@kvack.org,
+  linux-kselftest@vger.kernel.org,  linux-kernel@vger.kernel.org
+Subject: Re: q[PATCH] selftests/damon: fix damon selftests by installing
+ _common.sh
+In-Reply-To: <CABFDxMEQYx7fdx4T7meUb01FoqJaHcW_2RoYnBwJ8GzmJTexzQ@mail.gmail.com>
+	(Sang-Heon Jeon's message of "Tue, 12 Aug 2025 22:27:00 +0900")
+References: <20250812-alex-fixes_manual-v1-1-c4e99b1f80e4@rivosinc.com>
+	<CABFDxMGPS6LE=A25VjXEpfKuzVfgxfgu=_uhkWXc3D+xuq-B6w@mail.gmail.com>
+	<CABFDxMEQYx7fdx4T7meUb01FoqJaHcW_2RoYnBwJ8GzmJTexzQ@mail.gmail.com>
+Date: Wed, 13 Aug 2025 11:04:33 +0800
+Message-ID: <87v7mrvs5a.fsf_-_@kylinos.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B959040004
-X-Stat-Signature: 9hkux8gc6suixuspmwkuaeawdz8b6uas
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: A6C15A000B
 X-Rspam-User: 
-X-HE-Tag: 1755053160-560737
-X-HE-Meta: U2FsdGVkX1/6QbPI1zepZdhqP+y01aubkquV/pX1g4TtNWTNVxkxCQUaMLBQN5BfmZMm8Le64q3JqVltFMbWxwCOaRhdMJoe71/Rz3brjKaGzjQLnFLBnn0eWqMYN2vzWmZAUDMbu/lt4qlntsE4+tMbWubU0zKpQG+Uh3s7sPZB7dALxS8EcUlvZE6+5/nSUj2tD/lF/xQlbeAWyHDivVJ6M7ZBv/BHKci0bAyfNOUO+1cIIPbD4C4FBs63tv5GdfJSJiF0ii79uwzlkT2YEhC7oce1x04s6H/j3Km1R8JyTvmqMzARn/HS64Nl0ZM3kZ6/r0Yvo2ycfPiHJ2VY1kEanoJYUnd1o9RdaDzPAwDUaxuvaSFefWjlyTIM0PwQnvYIY3eL6DFZrhoKE1cluHIKDXF4D07Dw9GGykORGitSorpwht/S3UKSv9L6UiXC86D6V6SNmQZ8oEeYfSHp5JddMfbLP5ShjCyuCwwFf1RkehbqBtB1mS6JCpBh0H3XoOgr9RlP3un/A0hBR13fgs5NpMVknbqNL6BNWj87c8tbsic/to/0Eo+Jri2nC/dlmQ3gUvCwGCfMka+Knp5fBpparm4sFfIHagvUUD5+t1olr34JbIP64wCalYj+gPNadoaqbE84zt5xmYMHVJJeEkOMT+zDK1hPncPxAxu4QBAEPBdpgAKC2PUArumQEKlS+Odz4h9LhwwzLttVJNONPYTqNkCwwjEFMEt79eW2OhG/k9rsw0x2Mp0ec72qqaZie9Q5/GOCG1RgSPnb1WeyXFWz3GpCgT8g816+AdbfmpzbjOR7a4HjtG0Absmi8Slm2yICPQcL/YScb4rMKkogO9WI+wWOiSeaHLdP3BQt85qdRR5OmLhprehaSkWcie0+JSF+kAKddJE=
+X-Stat-Signature: 8qgpuguzccm6z8rp6y1q7ysgk1gzeu3t
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1755054282-762778
+X-HE-Meta: U2FsdGVkX19nqI4khrqQbU75maf+hcy4NqvNd5jP/eVQT3dWtl8+RlJQPGsfVvIgacZU7+IPijzJn2ob9V17aEmAQgTv3k8aK6tNP7dt0i7INNbQhZTObVW+Y1agoJ7HY2h4JbZcMTmZ+QHmeXuzS75ehXpFW+2zdJNtTRxJS2nNHSzQghEqsb15xWCySd1JF+IuUwHYgx48dmiCBuymDCxJAAkatuVjNrHTsNdzhai2xUEzq3PDlXK2eje9TnSpWcKMiVrK+T9CPj3ltJY82rbCdwdhyr1yTZAMha/YEG3ZoFPBw50wbqcO2+dqUU5ID2jYdzPz0JAmtWEBC0zVc0ogtYqsi9Id/tqvv6eoxhiL0gJyK+adKDS+F8UukWPMWIX7eGUe/J+nQE3rf1YyLbXrSIqvc8KPF6unudR1xNi7hAMB2g3d2I6M3BGHFp7uOOKBRYZZShEMsx2JJEoXPBE3tUhhLOF6igM0uhcwhsfXGVBEhq1vep6Te4kNPv9v7PEnUCEZ/HHvjBX4PSIQjPmd88TVSHSYJpuFuEo1GlidtNgomf8U6qZwLAk3W1One/ZmQvCgKstiM81IcobRBuXUoO9yZSwzUfGBp09r05SQwgkOgtbRpFzVcNOO5qoOhxdrzC2FH7MykTr1iEuGQ5TNK+0jCIYxcl68vI9BDxfrF1+Arty6UxPL9xK6Ig89+r7jLLbeF7EBDxNf0FBgYdFqTvxORo0JhVoiAmn9w7J8G8s5l/qEaEQmvlZT69YXEYiR/zaoQGlnJRthOw3fr6NYW7j2S7+DGyJf87JlRZihWu23SeUIG1+Lp5IgC9vEVWvjPEU9b/H2j033SuDfRQFMAyg8fAm/udKbq/oOLHMQDUjsB3/GgKA/yInioKDl66mv5xLAd2rXf2rRHoFxTFrQVQ4ebQaYOq2jVZJAcQNtx0F4VoFYxtosSxQv7hYwgeCu7Pb0CHSmIwZY81V
+ zU5xCZwh
+ PkVFbZbXOdgq+goL9nCXzJxTIjmR+DBI7H0HrXGAp5Uo4bWYFL0/4L3gyey2Af232e8XBwMgS464zDsySU0pXEMYFPLkLfBaY6m6G7mlthb9fnYva18tHRAYP0nUW9dM863d5+3tUzmNcSvmYMtFvn3XaB7VSQzGI+qNDM5sKFnUkLCE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,46 +101,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 13 Aug 2025 11:24:27 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
+Hello Alexandre, Sang-Heon
 
-> Hi SeongJae
-> 
-> On Wed, Aug 13, 2025 at 2:59 AM SeongJae Park <sj@kernel.org> wrote:
-> >
-> > On Tue, 12 Aug 2025 23:00:46 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
-[...]
-> > > While setup kselftest executable environment and test this patch [1],
-> > > I found similiar issue. Honestly, I don't know exact solution for this
-> > > situation. So I just make a new patch. Sorry if it is wrong direction,
-> > > then please let me know how to do next.
-> > >
-> > > [1] https://lore.kernel.org/damon/20250812-alex-fixes_manual-v1-1-c4e99b1f80e4@rivosinc.com/
-> >
-> > For patches that you are not really confident about and hence not insisting to
-> > merge as-is, but wanna ask other's opinions first, you can ask questions via
-> > plain text mails, or post patches with RFC tag on the subject.
-> 
-> My meaning of "don't know exact solution" was about conflict patch
-> (Now I read again, I think other people might be confused.
+On Tue, Aug 12 2025 at 10:27:00 PM +0900, Sang-Heon Jeon wrote:
 
-Thank you for clarifying!
+> Hello, Alexandre
+>
+> On Tue, Aug 12, 2025 at 9:32=E2=80=AFPM Sang-Heon Jeon <ekffu200098@gmail=
+.com> wrote:
+>>
+>> Hello, Alexandre
+>>
+>> On Tue, Aug 12, 2025 at 5:13=E2=80=AFPM Alexandre Ghiti <alexghiti@rivos=
+inc.com> wrote:
+>> >
+>> > _common.sh was recently introduced but is not installed and then
+>> > triggers an error when trying to run the damon selftests:
+>> >
+>> > selftests: damon: sysfs.sh
+>> > ./sysfs.sh: line 4: _common.sh: No such file or directory
+>> >
+>> > Install this file to avoid this error.
 
-> That's you,
-> sob) I will use the method mentioned above from now on.
+Excellent catch!  This patch unlocks a testing method that was
+completely off my radar. :)
 
-In the case, another (and probably more common) approach would be sharing your
-finding of remaining bugs with the original patch author.  Probably sharing
-that as a reply-to-all to the patch would be good.  Then, the original author
-could revise and post the next version of the patch in a more complete form.
+>>
+>> I tried to reproduce those error with my vm environment but I failed;
+>> with my workaround test method, it doesn't exist.
+>> If you're okay, could you please tell me line by line how you execute
+>> tests in what environment?
+>> I'm also struggling with the test environment, as well.
+>
+> I succeeded to reproduce and also check that this patch removes those err=
+ors.
+>
 
-[...]
-> Thank you for this comment too, and for your always kindness.
+Thanks to Sang-Heon for helping reproduce this issue.  I reproduce this
+issue locally as well and I can confirm that this patch will fix it
+successfully.
 
-The pleasure is mine :)
+Here's my reproduction procedure:
 
+  # cd /root/linux/
+  # make -C tools/testing/selftests/ install INSTALL_PATH=3D/root/test-dir/
+  # cd /root/test-dir/
+  # ./run_kselftest.sh -c damon
 
-Thanks,
-SJ
+and I got the following error,
 
-[...]
+  TAP version 13
+  1..13
+  # timeout set to 45
+  # selftests: damon: sysfs.sh
+  # ./sysfs.sh: line 4: _common.sh: No such file or directory
+  # ./sysfs.sh: line 369: check_dependencies: command not found=20=20=20=20=
+=20
+  ok 1 selftests: damon: sysfs.sh
+
+with Alexandre's patch applied, I got this,
+
+  TAP version 13=20=20
+  1..13
+  # timeout set to 45
+  # selftests: damon: sysfs.sh
+  ok 1 selftests: damon: sysfs.sh
+
+The root cause was my misunderstanding of the TEST_FILES macro.  I've now
+refined the testing methodology - thanks all for the guidance.
+
+Tested-by: Enze Li <lienze@kylinos.cn>
+
+Best Regards,
+Enze
+
+>> > Fixes: 511914506d19 ("selftests/damon: introduce _common.sh to host sh=
+ared function")
+>> > Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+>> > ---
+>
+> Tested-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+>
+>> >  tools/testing/selftests/damon/Makefile | 1 +
+>> >  1 file changed, 1 insertion(+)
+>> >
+>> > diff --git a/tools/testing/selftests/damon/Makefile b/tools/testing/se=
+lftests/damon/Makefile
+>> > index 5b230deb19e8ee6cee56eb8f18c35e12f331e8b7..ddc69e8bde2905ff1c461a=
+08f2ad008e6b28ac87 100644
+>> > --- a/tools/testing/selftests/damon/Makefile
+>> > +++ b/tools/testing/selftests/damon/Makefile
+>> > @@ -4,6 +4,7 @@
+>> >  TEST_GEN_FILES +=3D access_memory access_memory_even
+>> >
+>> >  TEST_FILES =3D _damon_sysfs.py
+>> > +TEST_FILES +=3D _common.sh
+>> >
+>> >  # functionality tests
+>> >  TEST_PROGS +=3D sysfs.sh
+>> >
+>> > ---
+>> > base-commit: 2754d549af31f8f029f02d02cd8e574676229b3d
+>>
+>> Does this commit exist in `mm-new` or `damon-next`?  I failed to setup
+>> the same base-commit environment.
+>
+> However, I'm still not sure that this patch is in the correct
+> baseline. maybe it will not cause any problems with the merge
+> though... but I'm not sure. So I didn't add a reviewed-by tag.
+>
+>> > change-id: 20250812-alex-fixes_manual-aed3ef75dd83
+>> >
+>> > Best regards,
+>> > --
+>> > Alexandre Ghiti <alexghiti@rivosinc.com>
+>> >
+>> >
+>>
+>> Thank you for great work!
+>>
+>> Best Regards.
+>> Sang-Heon Jeon
+>
+> Best Regards.
+> Sang-Heon Jeon
 
