@@ -2,112 +2,88 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 54DCAC87FCF
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 14:58:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B4ADECA0EE0
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 14:58:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5DB59000A0; Wed, 13 Aug 2025 10:58:01 -0400 (EDT)
+	id 780859000A1; Wed, 13 Aug 2025 10:58:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0E26900088; Wed, 13 Aug 2025 10:58:01 -0400 (EDT)
+	id 73086900088; Wed, 13 Aug 2025 10:58:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD5DC9000A0; Wed, 13 Aug 2025 10:58:01 -0400 (EDT)
+	id 620169000A1; Wed, 13 Aug 2025 10:58:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B847B900088
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 10:58:01 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 65A421403BE
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 14:58:01 +0000 (UTC)
-X-FDA: 83772039162.13.3B88DAD
-Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 94854140006
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 14:57:59 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Vk6H1ef5;
-	spf=pass (imf26.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.176 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 49E7B900088
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 10:58:02 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 129411403BE
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 14:58:02 +0000 (UTC)
+X-FDA: 83772039204.21.9F3071A
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 73E1A20004
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 14:58:00 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=I3u5d4XV;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=BPoRvRPO;
+	spf=pass (imf03.hostedemail.com: domain of tglx@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=tglx@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755097079;
+	s=arc-20220608; t=1755097080;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C1C6C68HSvqMhSJKPvSTlY3JwFucLAkfJ49Gr2TvVhM=;
-	b=B0veCnSPGL585osDq7wK8uqeyASyJibAbO4Pr0CGER8nPYMXN/JBWnUHE5/7qwlpXbSJTz
-	8RJMOpXEc73iNPjiB+KL1AITxvMLLQucTuI2C8pCIbSeb+vJoybd5HGNK0cBTAXu+Mk+2p
-	/0iutSJpepuUJdp4RJdg1bCqSPS7BbQ=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=LK0fse9piQMDsNEawnHa17CJtTGb1+S7lgjGFKtF0tc=;
+	b=e55XvsKRGRv9Tya9RGyaBIMDkNp9hVJjdBHAqj7XgCjDCpJ0c+ZxzINGHIJG/Ie6HBtwSW
+	TTX48VaTr4NqfXJKY/JNBvH75I2uwiekN75Qj3ssL3Ynn1v6LQ0yvSMCsEzb+h+K05yy1Q
+	N6YHAV9QOyzRJdreYf/8KOxvaLwNq24=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Vk6H1ef5;
-	spf=pass (imf26.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.176 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755097079; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=I3u5d4XV;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=BPoRvRPO;
+	spf=pass (imf03.hostedemail.com: domain of tglx@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=tglx@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755097080; a=rsa-sha256;
 	cv=none;
-	b=hcS0Kc9rPGsr32D88OnQ3MOGpL/uNvMq2jgr1i4Xi4h6yV4zN7DZ+M2RlfmoSeutBXWKI+
-	GPzgdccp+hJYF2HNUTeHiiDXqTgIyaZzh/L70cypIBf1vh3saXZmZ7tCkMu/0S8COmOcVt
-	u1m5yGBKXL79MUjP9OXQb+efIJqY5Zg=
-Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-3e54f4ca0dfso28652695ab.3
-        for <linux-mm@kvack.org>; Wed, 13 Aug 2025 07:57:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755097078; x=1755701878; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=C1C6C68HSvqMhSJKPvSTlY3JwFucLAkfJ49Gr2TvVhM=;
-        b=Vk6H1ef59yPg7Rn7FUJfiYPK/wKDQLAD7/t7ZSiqBWkwoshjsiAB1lBQHz8F7tVUNK
-         hbnUIp3rp2lGtbQNq/TLL4L9HM6Rgb8dk/3XW+BdTrDci+luyjn9ESkORALr3MsQf/2s
-         5Wk/ddsjNtPN2ZUmQGYbnzNigWdAlIrG3anTkr8OGQEpsAR4+hS49DkXjcwgMfCGnvcw
-         iZGC76FPOq97/FmJOaNjJojqN3hhNdOxGQp9D4w9PvR1MMGH473D6VeNIhc4pSchTiYj
-         TWkr8ow+dVXyVsV2YrLCYCKyz+Pks1TJY0OWVs628yS/VBozhC9C0NXHLXrl326g1MoR
-         iVIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755097078; x=1755701878;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=C1C6C68HSvqMhSJKPvSTlY3JwFucLAkfJ49Gr2TvVhM=;
-        b=S86HQwl8aVVIXWK0xQ/eAAwMRhvL6P+lemD8xv/dsifkymDM4wUxDPuI/S6bQo+upD
-         s2s50HIQHc5oYoAmBZ+Nr+2tzZqD1zgvcbM3DYYrYuYsyaH5DlJeSebIpuVpUL+BUrTp
-         Au2XoOy/pXbEtAywlz5wmndr4rkfvgAOTQoEh+75NVdN411TUGbC2GRuhTcJxJf1xgph
-         /EPy5VsJlmndkyhEe+Deuiua6WsUe1K9cRhdD2xR1Mzh63wLXOhghsBAaonogm65JxO0
-         H+RFdqw9qAKxuRSjv0ALE2gthlWM4Mzo4Xso51na1TGo7h9uqdlmmDHgScQcqIg3PcR/
-         bLQA==
-X-Forwarded-Encrypted: i=1; AJvYcCVDX9njFXe/Ov9sCyavFDxFQ6SIT7TFiCe+e/FE9ubkpooXO1Oa4QFkKY9A1ZtvnDhjsfYDHoyXEA==@kvack.org
-X-Gm-Message-State: AOJu0YzEe0rM6lRgY7qN/1+BB0WMGZdnqjnHRTT+95d0YQRBOgsStB3W
-	1y0Hh865JqPY0sR1QNlljz5YtX0omkBoAWsQk6DTHgdIubeG7utgytCbPIpdHkdQLWOY3G02b4r
-	2JeQCQjWGRwJEKmW1hUdVtcn1pxFzxqk=
-X-Gm-Gg: ASbGncvi+XSrTq84uwxbgdJ0DpC6I1hH1+fXN5xgYVarFxepn+0ow0s6R5H5QFLyPvL
-	pfKNYmhBWSA+rl8v1Ok1OUqjyuGxl9sBqy4Fo9X7992l3WZur7MWfDvZp2ddRp3pDl0411f9ej1
-	TclFJhmFPJfEcIurPSbl+aEpeLCqFKEr76gke6jukdHi4HSdHQuzfXQB/uKsHbdL4CB5F2zew+q
-	Dg7
-X-Google-Smtp-Source: AGHT+IECvEcJAuqVNJem8cC/P9L8/n38xX1d+UqWESMmOlqWmSGR4aIX3qh8ME36Q5WCmNIge5FX7QjVdwbrPlUpz8k=
-X-Received: by 2002:a05:6e02:3e8e:b0:3e5:261c:bac0 with SMTP id
- e9e14a558f8ab-3e5674de9f9mr44704905ab.22.1755097078469; Wed, 13 Aug 2025
- 07:57:58 -0700 (PDT)
+	b=lOQnSSsFPxcc2YlP8RLM1J4AgSmd6LCMx8zu+vIerfTFv+sPmxEY9ypzohRgESyeOo/GoS
+	Vet5bU8Oz0FHRFzqhyC7aHZFMxAUMuD4SrB2fPDPXcizWEyF6rPLt4iL3QDT9huyCPReIG
+	KDDfmTkBwiru5P5w25mJzg0kTpymJ7k=
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1755097076;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=LK0fse9piQMDsNEawnHa17CJtTGb1+S7lgjGFKtF0tc=;
+	b=I3u5d4XVCbp9sJAiqzUxxnN8jogvVz330rmXlvPc4EIs9kOtcf3Mj8uSjIxg1fRTrbwecl
+	TMhr5g/y26FthJ72gtEwrU4u6dRhFhPmFvZEuofvCR2S34BZx0XaO71/N7GdY3Si7KdKQH
+	rRll7+2m0QLENvmItC7EZWe2cT/j1aiQ6gFxiMmD1YFmNrWvCltHacGpPwgXO0KxHf97IA
+	wynDG8BsBzIwHDNhNCP7ES+PQV4KCfRw73ymS0am7NjJRjrB20+Ua//P3TMmK8Xia9SQNY
+	/xlAJETgVH3RXlHC8LNh3uYz9R0F8OR6g5b5Bwckh4QWwwVqXxslL1lpiee33Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1755097076;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=LK0fse9piQMDsNEawnHa17CJtTGb1+S7lgjGFKtF0tc=;
+	b=BPoRvRPOD4TmXUa3bcE7pvCwZh4VhvmvEvaz/Zod57Zu5kVP4MdtmFgc2nUPCdQq1DcUDv
+	jEKTQlAF2z04ZwDw==
+To: linux-mm@kvack.org
+Cc: LKML <linux-kernel@vger.kernel.org>, Peter Zijlstra
+ <peterz@infradead.org>, Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko
+ <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, Shakeel
+ Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ cgroups@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH] memcg: Optimize exit to user space
+Date: Wed, 13 Aug 2025 16:57:55 +0200
+Message-ID: <87tt2b6zgs.ffs@tglx>
 MIME-Version: 1.0
-References: <20250812-swap-scan-list-v3-0-6d73504d267b@kernel.org> <20250812-swap-scan-list-v3-1-6d73504d267b@kernel.org>
-In-Reply-To: <20250812-swap-scan-list-v3-1-6d73504d267b@kernel.org>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Wed, 13 Aug 2025 07:57:47 -0700
-X-Gm-Features: Ac12FXxiCEZcTx71SB2-7N7mbjmYWUdvD_vXmcG4ydTw8c3TixlbKAnHTrnitkA
-Message-ID: <CAKEwX=NLG_MBvwqMuoLwRmD_EBSJoc1w=-u7mj62YpG9BAFbig@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] mm/swapfile.c: introduce function alloc_swap_scan_list()
-To: Chris Li <chrisl@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Kairui Song <kasong@tencent.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	"Huang, Ying" <ying.huang@linux.alibaba.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 5s3xon1xuxpq9h1xpwwmx8si5y5r9gm6
+Content-Type: text/plain
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 94854140006
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1755097079-821391
-X-HE-Meta: U2FsdGVkX1+HVBhD910WyG36+IXIDq+ap6nUEYsGXP8G6nTGJKdT5UPydeg01zLWiKKtTo1oKFVCM/qnWnX+C6oGbMn6s5QNvF44TSB4VBbQXUU7r/WjV7uKozH/Rbh8m4hJFguC5U9gil/dZOHDTRxLYO+MdY6U9EbpvcHh73AikQoZ0PGdo2tOVVYpxBRkMip+z/55tPkn4kbkyQq4nAoK5bzh91qSC3jD1iuy0AzU7pczFBy2w+WralzATRv7R9Em72diq5YkMT1Jwrgq4vmqET9OhFNEM62xjhhTZ9y7+XbjZEeW47/4LPfdRPW66raKFYsv3I8/YH94ij5x29PzkyZyePBdQNYjGV8Diwqs2l3xjudhx3pDd5/cLnKW5LPBjW2XC7iCyoekSCcG0ndf/WwvCmFU5niCYHc8eAY4e9lIsIn9UnA+PNv/C0vkXEqaBUztFdI6E2JKk6ztiOLlb+dMH5lZvE0ns4VYcptm+sef1hSERVayZWDPUH+a6c7A0y4e3Y1+CcbbqMRwwaVkOh1hULDGIb40ZIaW3J6NyWMb/zdsVbtIoxwICBNoSbgpBAWlqcT2as88FlZu0BBW8KFb6/YUuI36JUpX+TMxrzTePiSdwW5EuY5jurpgU48jw8xUalgKkKctQMWBgVYQVLdp5PqQ8mP0fohgyQlZgtz8zVkAQTB/16Ty4exvkmz4qkEh7TKk5VsmBpuweFcT754/a3w18QKA50Panw8MlIFSzAiTah9fRzShjgYK/1hzujc7eJBf4j6q8mChxE23+H0D+/aY7Tse2rTMTNbl0cayqkMiiJsRlUh3qe5r2L7Mjp3X4GMBkJMJq1hTa4JC4AaaV6C6mUG9Do5yoL3YBZe2ADmMUdkqiiVVqHY/JA49poP0bzkyt2nkFohon6U2bbpDMQ5Iu3lwdkdh+XXEu8FW+bEStA5j8bu+3udvNH+JLYS8+felHICr86C
- zFNtWhc2
- 58uCBLFaoSOc/jD2Xw0xTOH54LfzQAMtP/l7O4j1hqaIzMNxphx+lynY1WSxaoocikVKvF7fyZdZJe4AO1nHbe9aNlMqN0N5O31XnmkxFc5P1uKHUNZHX5ZH3BM9JSx9g6l60ZP0F4K7pscrxkpsYTj+UCj9kUy9srQqsfbbIZSqrJ1xn2rdL74TDeMBgBfrPLe4PviXH+DtDPr9vxXzTsjAZlsXTKH6NSCMJSFmxFOrzVRtKupn0wAHuT24Xqem3VkEOsm25f1qlctHI9YE3LgUFSy80hbr9HT1NSJpdmHdUTCpcMtJ9xiT1ct1D0AI+7ZOBMSTZdQshCUWLqBDKfcwZ/hH1YIhU/00YTn5WmJJpH8j0O9Yxi8tQZU49dcdDpg/exR0nuy9DVX0i2E5JJY6HE+e3CTYFMAUnS7h9cQRATjW3kLgqZTr6BqdOt+By1XxCLyUSU13ihi4=
+X-Rspamd-Queue-Id: 73E1A20004
+X-Rspamd-Server: rspam06
+X-Stat-Signature: hpm781uroqqg8uxnbw6e5zyjgxr6qjeu
+X-HE-Tag: 1755097080-658933
+X-HE-Meta: U2FsdGVkX1/gJrMULds/CI+9aAh5/R5x3T/1Ck/QgR6CuEewrTOJxoMkaz7VJxjsgwzqCV6o4vOBOrG/SYjeFYaO7rT6Lgvear/BcxBFAw7sMOTZWDZGDZQPUs6DeNAQ9PKOIYHtZttYNG/h1pxEfEMdJeqcgOacB+E3KN+eajVn+wMh61W6IdNZpLYmhCjs3TbFq/z3kaC6Sd8wds3KUV0xCK8K0FdI4SKcM9qRhU/nIYXy/tyD9NoI9147GxBFMN2RYHYQVUd4w7BNoC4aZpmDx3LMnIQSETCkewhdcQcciat2JSwpKdQHNRWptkqqakmVBTuf7hsVJtruISt/yvhBnE9F4n1XphbIULX1JvJTLVxjjh8lsxj/PYwnTG1gOvr6kEtd82PBxpaGoZ7qo0es4aaVCrMPgTfmZnlu2UOrvuugihixTTg1sz+joq2XlDL2IeCWIB59FkjGuxyHVBYmQdN0yjAvYOOAV21tM0qqksY5WcSy/PjVFhimyS/aO5Dz5J3XXP4EV910l4Cd6pLQR3UJSExsekohGz88x55lTIHKkPXoSjqy1MLy63LV70vDO0w52DD/vNV6dP+dB3XR7oVD5jqu7r0W4nsVeaGPd6PrCPR/hnonhRIEt1xOGkGLHN6vfeUxzJVT0QAJtFKQWHICIderIywLcHUqWmo7a+p3L64q/tp2hWaly9zu9P5RA+isdsSfnTDATjd2++V6lhfd4XcBLHCRWf8xDw54F0h3aZNdne34FGiFGjWeC+zCXAbNGWohComa4jt2fS4NZeAZniClODg37AstkrRwUoThoTXE0oeChra32tLp4XQeyyefAohBtpE5CR07mQlMdobOYaYjWMZUsvFhW36a9QOB1ARllVjJdouSb0M2NJ4Xv37Ng+JFo32rfCmUOyCLx+lwPyyyvh7aW9SyFw8xXWaQj691+qRtUPLG3XlYoMnlZM5tVJxGOUNe57V
+ D2megfzq
+ ynMsLUCe9ZByin+/3pWNHgs27Hk5mc+bfvFZQ5w8pqFrTo+kLNQgLEMVBlaFcEx2qsEDWWtCf4XfG2BoZEStvPDx77zbl07uYd81y0W7MB5AYOU1Nelv4LYkyXI/cqwFotrQUsL6WCzh6Ewh8ToV+VV1QrcJYhKYjQnTha+hHvYgp62dYUcq5DCfso2J1an8hhIAOFMW1XGK/taq615OhvNMtT5JQzxOB7acqidyD6moW+voAjxcjV+BEBiV9f2oc0RwsgdqK+TWvvEAbgXBKtwOlpMQOxXUBP9JM03/1g4DEdh+DnSPpT8UdL7/M3nPRE68aDnKDML989oDWGUAX0Lge9h7UTPelKFqpH+wyPWjFOOk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,21 +92,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 12, 2025 at 12:10=E2=80=AFAM Chris Li <chrisl@kernel.org> wrote=
-:
->
-> alloc_swap_scan_list() will scan the whole list or the first cluster.
->
-> This reduces the repeat patterns of isolating a cluster then scanning tha=
-t
-> cluster. As a result, cluster_alloc_swap_entry() is shorter and shallower=
-.
->
-> No functional change.
->
-> Signed-off-by: Chris Li <chrisl@kernel.org>
+memcg uses TIF_NOTIFY_RESUME to handle reclaiming on exit to user
+space. TIF_NOTIFY_RESUME is a multiplexing TIF bit, which is utilized by
+other entities as well.
 
-Code seems more readable now, IMO. Thanks, Chris!
+This results in a unconditional mem_cgroup_handle_over_high() call for
+every invocation of resume_user_mode_work(), which is a pointless
+exercise as most of the time there is no reclaim work to do.
 
-Acked-by: Nhat Pham <nphamcs@gmail.com>
+Especially since RSEQ is used by glibc, TIF_NOTIFY_RESUME is raised
+quite frequently and the empty calls show up in exit path profiling.
+
+Optimize this by doing a quick check of the reclaim condition before
+invoking it.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+---
+ include/linux/memcontrol.h |    8 +++++++-
+ mm/memcontrol.c            |    4 ++--
+ 2 files changed, 9 insertions(+), 3 deletions(-)
+
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -900,7 +900,13 @@ unsigned long mem_cgroup_get_zone_lru_si
+ 	return READ_ONCE(mz->lru_zone_size[zone_idx][lru]);
+ }
+ 
+-void mem_cgroup_handle_over_high(gfp_t gfp_mask);
++void __mem_cgroup_handle_over_high(gfp_t gfp_mask);
++
++static inline void mem_cgroup_handle_over_high(gfp_t gfp_mask)
++{
++	if (unlikely(current->memcg_nr_pages_over_high))
++		__mem_cgroup_handle_over_high(gfp_mask);
++}
+ 
+ unsigned long mem_cgroup_get_max(struct mem_cgroup *memcg);
+ 
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2203,7 +2203,7 @@ static unsigned long calculate_high_dela
+  * try_charge() (context permitting), as well as from the userland
+  * return path where reclaim is always able to block.
+  */
+-void mem_cgroup_handle_over_high(gfp_t gfp_mask)
++void __mem_cgroup_handle_over_high(gfp_t gfp_mask)
+ {
+ 	unsigned long penalty_jiffies;
+ 	unsigned long pflags;
+@@ -2486,7 +2486,7 @@ static int try_charge_memcg(struct mem_c
+ 	if (current->memcg_nr_pages_over_high > MEMCG_CHARGE_BATCH &&
+ 	    !(current->flags & PF_MEMALLOC) &&
+ 	    gfpflags_allow_blocking(gfp_mask))
+-		mem_cgroup_handle_over_high(gfp_mask);
++		__mem_cgroup_handle_over_high(gfp_mask);
+ 	return 0;
+ }
+ 
 
