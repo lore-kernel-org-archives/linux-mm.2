@@ -2,88 +2,87 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 839F4CA0EE0
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 22:40:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 52312CA0EE0
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 22:56:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E24FE9000DF; Wed, 13 Aug 2025 18:40:42 -0400 (EDT)
+	id C053A9000E0; Wed, 13 Aug 2025 18:56:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFCA6900088; Wed, 13 Aug 2025 18:40:42 -0400 (EDT)
+	id BAF0A900088; Wed, 13 Aug 2025 18:56:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D39979000DF; Wed, 13 Aug 2025 18:40:42 -0400 (EDT)
+	id AEC259000E0; Wed, 13 Aug 2025 18:56:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C26E1900088
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 18:40:42 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4C5071DD678
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 22:40:42 +0000 (UTC)
-X-FDA: 83773205124.17.B4AAED4
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 894D280004
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 22:40:40 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="aNSs16S/";
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755124840; a=rsa-sha256;
-	cv=none;
-	b=OfPRCYu1mXCeeYZ6KpyqhKI+ScfAIqXyf3fKBFxICUT1QiQOuK2ZSQ+3VIoFn/jd8KmEQE
-	KIJDSfLstfWf1hWbIOABf1ixbWKUTqhnnkyyHQzP0L/y2LLQS8GYAHOKLrW2n1UTb79ocZ
-	s734Fm/QycgjacJ+23bivUj2LgQtT4g=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="aNSs16S/";
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9DC3B900088
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 18:56:20 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1C329591D7
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 22:56:20 +0000 (UTC)
+X-FDA: 83773244520.07.B8C967A
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 7167F8000B
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 22:56:18 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=17ddbz9y;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755124840;
+	s=arc-20220608; t=1755125778;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fKriiSQBfGyXODY51tO3BnmQCNOEIjvbaBUfVg4f+Xk=;
-	b=Kjzl47B/tx5ZIiQT2+ghE87yOTcNOlG5bTfudEGemBMegY8IfvlQo+yR5bffWwLpQcQ31t
-	qhmCYzjAXwu4j+IFdX2essa1Q3Cm7rxf/B4DkKaWphZ1zkmsJARIiD/LqZhvR5Fu2P1Xm3
-	0utV+VdGkTHZV7dUPwJK9ctWqOUaatk=
+	bh=zQoR7PEQJVyEYYG/vPMhWSIovk2mbxMewXYcepnnHGQ=;
+	b=ZDmH3Zf7V5jaoH01PoGcyCSemq0EVZdHxH6gTbn8vYRZh4leDDhAueD3UBDL8GyIFCL/oM
+	VUhl+pd716FM9Omsm9lXxDeQ9IuCFTmuYk6SA6Cnk4t9boI7TJsoyzmEuExXfONH0QHPhN
+	v6Mk5FqMGoTwsDrlz1kOXT+vkflw5/Y=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=17ddbz9y;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755125778; a=rsa-sha256;
+	cv=none;
+	b=QRnC6fCwaEteQKeqe3dm6ZzwGf4XzkBsWdM90MDyqeFWZG3gPtO+1MPvRbEOXIIowJbnVO
+	y4qgmLc5LJ9LlAqYojMlDbyK4LoZV0mI/B28BMZCqMz9oTQEfl1FOQIxSgYDJYlfCwH0QI
+	jO68RSgv1l2ENqONYwLuaFGVLFpIZrQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 6438F5C59EA;
-	Wed, 13 Aug 2025 22:40:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4DF7C4CEEB;
-	Wed, 13 Aug 2025 22:40:38 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id AC0FAA57F7B;
+	Wed, 13 Aug 2025 22:56:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA8EC4CEEB;
+	Wed, 13 Aug 2025 22:56:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1755124839;
-	bh=x+6Vi/XRLXHhmtIpq36fM3fBUFAdRIirEj2tBLR6nGs=;
+	s=korg; t=1755125777;
+	bh=d23EsXtELamPsXVJ4AIY1uWBmbAVOZMh52loO7Lxxis=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aNSs16S/O+GCzgCR/lVHsGqvnwDXgr7mkEgWPZzafz9LroGq4Ybv5WtgZnEnPvvAN
-	 dxhZAZ4I55h/Ib8/IK/qHWr6vJL4iOCi2MD95zT5CvXkJkE+SNvYVqarZz5AsGSFzv
-	 6ueF83Kdm+VdpP+y1r0Mxid/L/h+/69IbhaaXgWc=
-Date: Wed, 13 Aug 2025 15:40:38 -0700
+	b=17ddbz9y+pgU9Mv5Ai+T+ED66rlk3aQvwnrd9ondRRsX+nwL5+OUQz5KCMxADNpzo
+	 XoEzH0Wxz0Bz4/JQLfK9ZIdazh/gpylEDQI3B77MJVk6Lw6hiUEBwIzOJVWNMD2efA
+	 hL2yIjlNuIX4OkAC4ijVpQqkj3tSxzMHJcT1vRVw=
+Date: Wed, 13 Aug 2025 15:56:16 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Thomas Gleixner <tglx@linutronix.de>, linux-mm@kvack.org, LKML
- <linux-kernel@vger.kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song
- <muchun.song@linux.dev>, cgroups@vger.kernel.org
-Subject: Re: [PATCH] memcg: Optimize exit to user space
-Message-Id: <20250813154038.dee67ecd858b7223d6b5cc6c@linux-foundation.org>
-In-Reply-To: <hzvjjgzf4cdvj56zeysosb7otkvplbbozzcpij2yeka4a4kakl@4l26obz3karf>
-References: <87tt2b6zgs.ffs@tglx>
-	<hzvjjgzf4cdvj56zeysosb7otkvplbbozzcpij2yeka4a4kakl@4l26obz3karf>
+To: Gu Bowen <gubowen5@huawei.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, <stable@vger.kernel.org>,
+ <linux-mm@kvack.org>, Waiman Long <llong@redhat.com>, Breno Leitao
+ <leitao@debian.org>, John Ogness <john.ogness@linutronix.de>, Lu Jialin
+ <lujialin4@huawei.com>
+Subject: Re: [PATCH v3] mm: Fix possible deadlock in
+ console_trylock_spinning
+Message-Id: <20250813155616.d7e5a832ce7cda7764942d10@linux-foundation.org>
+In-Reply-To: <20250813085310.2260586-1-gubowen5@huawei.com>
+References: <20250813085310.2260586-1-gubowen5@huawei.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 894D280004
-X-Stat-Signature: cg3hbsfnxuyo7y5jrgp7wjaqmsyn5pe8
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 7167F8000B
+X-Stat-Signature: xrx75x9wz3dbs5ofir7no85613hfyh5g
 X-Rspam-User: 
-X-HE-Tag: 1755124840-966112
-X-HE-Meta: U2FsdGVkX1/WX0e5n9MxTUMLaYYjWghx1Pg5lQuGBpDn+91QkZncLMA2jo2eT+SoZO/6ON24sqDzbQVSx00TDeaqbhKw0vIrpxWxjYY1Aj28K3M/lQ+h1tXAtOERG9j4XrgL80LW4MaGEyGRrah6pD9Jff+hnVKYtQDf2O3qnQaBGdzmB0fMc2tUOaPdHs8SlcGBfEl3KPKnnGLZoFSrb8KlW5JL3muilSOi7jxVJMlvfu81PewRGYxivX2jwlVE6DWb5WE4yGjQ5ItFo+1w6bKWXHhmUm+n2YXkgOPTbbXUvFQn94ox8EAMM0mXI4Wolu1VQXGQUG9gbNEaVNTAAEdPvqGrDWiwjR/Mig2IPonH8KvlwstFyaCmnXIsyCboo4bLfcIzan8zM2QksCCAK+E3AjURtfs+goVgi8GUbi6FEmgnynrlMg1xn3Pyo7sFtnEEtVA9xdKjN0LwMmL8X95VbM4OoLCtFBjB2vNi7V8myq9/uXuhl86Sozaj7a8IMIujnJnXkd9yxBg+WQH1tEi90jwMnoEogsWB3rLKGpMUjHwwegLpOED1Juvf47SCCeqEt6kDM+xQduLTvfnDtt8R2QavZIWz6gCNFdMLpFtaiWU8IdXcmO52jh4iMiWWy7aOymJd3TUV4iJJBS2HHtxfwrhJlRMTqlOeRiIt4nu5EAbV3vuebeEAQ7g7NimHEBcaGoTQ2g0eLLZYowuTOE3jsgtvTppywMYu3IYKP1hzlDCEUXYPQ7elgyGMnaaACkegmAVN28DFsmA22BEHLg1rhB+LslCSZW+eoUPnMoyAmOYfcrmKY4OzR07yKbDFZOTSEbfPfKmVom5ghAPSGPgkDcvmWb7XY+jIH1rQKo1IISwAfBOKhnjJZdn6VLIjpiMmCNXJz7cqN/eZBEbn29O1GIMYVpa/I2pb7cVRx9gNPe0Syuaa10qxJ/ZcK2DSYeArnM331JrLgz7pEYT
- m6FEDfG1
- 1kKoV0ZUNJfgpwer9LqZOjPkbPxuP8RDC4BndSKvW7Tdn+BrZ5aUV844JTgTHAJ9BrRV+3eq6oonsxU8isLHg+OhB4+/VcTWMRUn0uarE0w7MTkRkyTOgJY8caPrQmAY8nKjzLwXS1Kx1zs+JyNIy3mzxI0hDss07h3PAO6LmZWwsD3hJmcf5sX3f8m1otaNRxjYvXZWAQwNGH1nQQIru/T1cWr0tqjRswDiRnpI50PeA3PN7lPnE7LoV86YUwUidJyMaIeyD4jH/JNvpisAQEs1216BulDwH7KTGZnj3SxtkVuZ2UBV5RhHsv8zRY2GC7djBsTPftRcZsjm9jh3sLkKi1umH7NLcyIXy+hXgnqkvE5n9mkO2pKcgRWflanHTgU8qkv9OJu5mDJg=
+X-HE-Tag: 1755125778-474144
+X-HE-Meta: U2FsdGVkX1++nWZXm3Hp21i7kTOPhmdPXTlYFAxY+OIJjVYh+agd69O3lQF/fQChZLp84/q8PPE5tH0HUU4HtruXYeA1BLoD3FWkVwJ6Viw3umnhuEeWroYZvXfsW2KLge6cmKNbTm4FQAB7GZ72S18eGThDW2GZyonzZKvZFziBIbCYYyA4ATkHUHbnZaHWE5TW5E6gAovVRpcvW4+RM5Ry2tDlzsZ8WHqToTm0TbBAzIZ7YfGcRR3UyGdtk2Yf3VlgOuVwd9lThGJemyGwfSMHGDO+6im39axjrhjSGevQFCI+1/BdiqPWeNJYdVwalWuONZiP7WGXlrBFvV9SX7GegD4Ifcu+pCJWpcf95Cy9oWTasCEnq7oGyrXBq0OihPQIc6N+Sdi67Dh9SCgaYvM5Q+hgaJ157+n0eBQGO+NNroHLlTm/bjzwCu0rikSeS8PtW++oX/NsijI5w5ciSj31tHbGmHut2g6zBE0qH22PbHTCG+hojnzhQEAz8Z4BftQZkJ1qG3jIpfli69fPTULAthY4citKK8WwgK1UMNuWE9UkLVVKW0FqmBauDgzhhln506dX8AHpDBEIpfRExf1NhSzWWdYTWeBVNEswMpy1hvnifjSolz4dvY4Deiq/ogbNkalOuwCCF/3bLatIzZad5DI6VanWEzrrB2mn/jydM1f9S8CYT5LgwaEUnxBFia2lRtBd3beQaKu24VLJxUEW1+mBA/sLuqOgHnfxK/6BrM0tgx9lex73CpubGidRrPh/6AwCjfyMU4lzS5NFhRrSACV9A2NRXCq81RwhKiELM0oJJ5gLWFsJh/treRDzIbAkpDmtmPjx3LWF/G6j6swQmOVRrZw9PvKUuOGK/FucPCiiiKt6AAFaX33tcIXA2wjzZUJ9C7Pw93d1gsKUtC7lzosgKuYUkSfslCX6Rf9NLAVTAIt/Bsgidgu83QTxoQM6InC5jy83NuTdEhp
+ r4l/fOnQ
+ Ld2YsVJwgOCwQBIkmgFlve0imEpROZ7CceOqlAP9CrffNyRaPJe/nEujaWf10n8QEzvBrP0Z+SRwUrZUS1WufXaUPeRV2udxEvUDVctc/U8YchZ/atx4HqyakWZza1bUq3aBCpHDXrTqXR5Nh30WcvpgTiHPpCltka+ASPAWwsMoW+xB3y9DUpOfp5DxnsMyAsgVQksVUqQp3LJbeGWfhkrFj23HZjQcbDLkLjyCLGKxczp+sYoLpr4lgB4Yi5Y6+5fBWxdgOaX1kFZPJXihBhUPXh459Pw/WAprdl02dvBsyD5ho7Y89idmHvUv89cOqUHbf
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,59 +91,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 13 Aug 2025 10:19:03 -0700 Shakeel Butt <shakeel.butt@linux.dev> wrote:
+On Wed, 13 Aug 2025 16:53:10 +0800 Gu Bowen <gubowen5@huawei.com> wrote:
 
-> On Wed, Aug 13, 2025 at 04:57:55PM +0200, Thomas Gleixner wrote:
-> > memcg uses TIF_NOTIFY_RESUME to handle reclaiming on exit to user
-> > space. TIF_NOTIFY_RESUME is a multiplexing TIF bit, which is utilized by
-> > other entities as well.
-> > 
-> > This results in a unconditional mem_cgroup_handle_over_high() call for
-> > every invocation of resume_user_mode_work(), which is a pointless
-> > exercise as most of the time there is no reclaim work to do.
-> > 
-> > Especially since RSEQ is used by glibc, TIF_NOTIFY_RESUME is raised
-> > quite frequently and the empty calls show up in exit path profiling.
-> > 
-> > Optimize this by doing a quick check of the reclaim condition before
-> > invoking it.
-> > 
-> > Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> > Cc: Johannes Weiner <hannes@cmpxchg.org>
-> > Cc: Michal Hocko <mhocko@kernel.org>
-> > Cc: Roman Gushchin <roman.gushchin@linux.dev>
-> > Cc: Shakeel Butt <shakeel.butt@linux.dev>
-> > Cc: Muchun Song <muchun.song@linux.dev>
-> > Cc: Andrew Morton <akpm@linux-foundation.org>
+> Our syztester report the lockdep WARNING [1]. kmemleak_scan_thread()
+> invokes scan_block() which may invoke a nomal printk() to print warning
+> message. This can cause a deadlock in the scenario reported below:
 > 
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+>        CPU0                    CPU1
+>        ----                    ----
+>   lock(kmemleak_lock);
+>                                lock(&port->lock);
+>                                lock(kmemleak_lock);
+>   lock(console_owner);
 > 
-> Since this is seen in profiling data and it is simple enough, I think it
-> is worth backporting to stable trees as well.
+> To solve this problem, switch to printk_safe mode before printing warning
+> message, this will redirect all printk()-s to a special per-CPU buffer,
+> which will be flushed later from a safe context (irq work), and this
+> deadlock problem can be avoided. The proper API to use should be
+> printk_deferred_enter()/printk_deferred_exit() if we want to deferred the
+> printing [2].
+> 
+> This patch also fixes other similar case that need to use the printk
+> deferring [3].
+> 
+> ...
+>
+> --- a/mm/kmemleak.c
+> +++ b/mm/kmemleak.c
 
-People will probably do this, but it's a big break of -stable rules.
+I'm not sure which kernel version this was against, but kmemleak.c has
+changed quite a lot.
 
-If it is a regression fix (ie, has a Fixes:) and if it makes a big
-difference (ie, comes with impressive quantitative testing results)
-then maybe we could push it into -stable anyway...
+Could we please see a patch against a latest kernel version?  Linus
+mainline will suit.
 
-> In the followup cleanup, we can remove the (!nr_pages) check inside
-> __mem_cgroup_handle_over_high() as well.
-
-yup, how about we do that now
-
---- a/mm/memcontrol.c~memcg-optimize-exit-to-user-space-fix
-+++ a/mm/memcontrol.c
-@@ -2213,9 +2213,6 @@ void __mem_cgroup_handle_over_high(gfp_t
- 	struct mem_cgroup *memcg;
- 	bool in_retry = false;
- 
--	if (likely(!nr_pages))
--		return;
--
- 	memcg = get_mem_cgroup_from_mm(current->mm);
- 	current->memcg_nr_pages_over_high = 0;
- 
-_
+Thanks.
 
 
