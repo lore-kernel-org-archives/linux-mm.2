@@ -2,117 +2,213 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B60ACA0EE0
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 06:09:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3BC86C87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 06:11:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA0158E01BF; Wed, 13 Aug 2025 02:09:13 -0400 (EDT)
+	id CC6738E01C0; Wed, 13 Aug 2025 02:11:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A51238E01B6; Wed, 13 Aug 2025 02:09:13 -0400 (EDT)
+	id C9F7F8E01B6; Wed, 13 Aug 2025 02:11:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9686F8E01BF; Wed, 13 Aug 2025 02:09:13 -0400 (EDT)
+	id B181D8E01C0; Wed, 13 Aug 2025 02:11:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 822938E01B6
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 02:09:13 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 27B3D14026E
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 06:09:13 +0000 (UTC)
-X-FDA: 83770706586.22.FA7A24C
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 842414000A
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 06:09:10 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	spf=pass (imf12.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755065351; a=rsa-sha256;
-	cv=none;
-	b=BDHI9WOD7QE3rVts0PM9FaRROPRKYvs+YsYKcwRU62osUFFKFsUa7yUZyEZims0g2XWMEF
-	KBp0cliZqp50IZMTi5Nw5wYlxC/DjEcyqBl+vYMIEnDWaO2ong/7rbPisgJ+F0nkNJFE2z
-	VE9jJca1sFE6XVkhnf/Ml9kSBpoIyvI=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755065351;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A2D08E01B6
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 02:11:15 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3133B57B60
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 06:11:15 +0000 (UTC)
+X-FDA: 83770711710.01.66C1D13
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2062.outbound.protection.outlook.com [40.107.92.62])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 48D54180006
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 06:11:12 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=F+fsdRS2;
+	spf=pass (imf16.hostedemail.com: domain of shivankg@amd.com designates 40.107.92.62 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755065472; a=rsa-sha256;
+	cv=pass;
+	b=fo2AEtkvaM4/Ev5HF9sqzcQ3RXgoVKwOZIcMYmbzbARpYcDpug6dbaX5yqSz/6iqU2SZmq
+	/x/be5z5Op2layHFtZyPO9mPzd5d5qWJ0tDKpDcV6NzLR24qfHtO+J+sy+Z6Baylozncni
+	PJq0YHJMSsKP85aw2RE01GPPUu0s7Dk=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=F+fsdRS2;
+	spf=pass (imf16.hostedemail.com: domain of shivankg@amd.com designates 40.107.92.62 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755065472;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hY+K4iO2jFIDgvQlSmZGXAZAC7nQZfJxGWFuPRGplmA=;
-	b=7T5hdsk2X0Xol0uscVVJpxyiUqs1286jU9vZCE/HHDPbFToeb2/8pumwKFBuFW+D0WVkD+
-	YIow8VWMFRhh+RVPUH54j9MLDFGetH7XGdX+1f5xJ4ok8cLJFIE9BrHji7tFLTWSLaNuVe
-	wkeP2e4Ul5hDTXm9F+dW5wqboV+i3PU=
-X-AuditID: a67dfc5b-c45ff70000001609-ca-689c2c035287
-Date: Wed, 13 Aug 2025 15:09:01 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: akpm@linux-foundation.org, kuba@kernel.org
-Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
-	harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
-	davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
-	john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
-	leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
-	andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
-	david@redhat.com, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, horms@kernel.org,
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
-	ilias.apalodimas@linaro.org, willy@infradead.org,
-	brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
-	usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
-	almasrymina@google.com, toke@redhat.com, asml.silence@gmail.com,
-	bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
-	sfr@canb.auug.org.au, linux-mm@kvack.org, netdev@vger.kernel.org
-Subject: Re: [PATCH linux-next v3] mm, page_pool: introduce a new page type
- for page pool in page type
-Message-ID: <20250813060901.GA9086@system.software.com>
-References: <20250729110210.48313-1-byungchul@sk.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=thR8ZN+bbW+AlBpbBiu9twn1iVln+Yg134z7zQe25+I=;
+	b=XAk1V7Ty5GaO5p6FGUhcr8Mg/f/a1Ajp/sE8xHilzRhp3cqjvbXCECpOa0ydw2cMEIw2Y0
+	Xm9pt8pJro74/ZcNDKiPhPKtJN+/gorVHR3UbEn0eVa/fLSy8mFyE6W2E4bjW7aJG1Ccsg
+	Pj0R3b+nvsGmN/SpKh6PhZtXLCTiutk=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IKn+cKkvDuS1fzgGoHf5xhhXxoF4bXQ/sLiJcPBVqWqhBUSVFMsdcykM66PM18E/kuBBVtpkBmAnk8/sX0K7KBUwThZ1hn+2ThrqkUeFuCYZan4VlBLOD21/lTCsD5Z0GLvl/Sg2OYefzhOJsW/fUmaEuXenVXAd1vGM3rFUn+BisHNa9LLpSCQV1xvwqA5+Ufkaxd0YkOEoykuRzXCqLa3D8brFNnRcxkc+OD6KzCVblbxvPiy6zjyZbTRIqNmxDwgf3KLfmsGypAWKxja6YlXvIFjDpri+Qicj96pXzkPbaXWR+GvyW7VaA9VDM/X7gYeWcvDg/+WaE3DL+XNjrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=thR8ZN+bbW+AlBpbBiu9twn1iVln+Yg134z7zQe25+I=;
+ b=pvWRmdWgmBVrd6wPADsuI6mXY4M47t5FILFmkJcyI9r4LNYvv7g2AqvjOwj5b3v77VxUk1F3k/Fmrmc9UfolK5T5YBco2Yfy0zIN71BW5iZsn16ke25f93jBcu/yxdvPmCIHlSRm3+e4M9TlF7PMxbC0tRfb0GsK88NJjzXOzo3eWEpQGwSvtVFK5EznWYOwvwSF7nT1RGgIm5El4n4qNfYRlgKZt+/2ApqpR9nT5d/o4fIm+OhAfHUUoPAqH3BMgr/xwDSWaW+SWGGydIDmdJGXsOC46mreo1j1NA7PYhMa7badYZW4uGPXz7VVIUMP2hCaa6vhTJb/oDJ169ONyg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=thR8ZN+bbW+AlBpbBiu9twn1iVln+Yg134z7zQe25+I=;
+ b=F+fsdRS2GhpuqiAEKGrFI0YZq7zOKQmCiTOwhynBiwPevax5h36Xf5M5vxx36UjPnMgmD+XcLRdUc36DNSfpPHaD/jBUooq/81RNgPLXFncaTaFyk32ngOMlhzLaqTOJCGTruYVTJpkSw4HtxJ1q9KXDWFJFn9I8TD3UJhx04Yg=
+Received: from IA0PPFDC28CEE69.namprd12.prod.outlook.com
+ (2603:10b6:20f:fc04::be8) by DS4PR12MB9772.namprd12.prod.outlook.com
+ (2603:10b6:8:2a6::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.13; Wed, 13 Aug
+ 2025 06:11:09 +0000
+Received: from IA0PPFDC28CEE69.namprd12.prod.outlook.com
+ ([fe80::7945:d828:51e7:6a0f]) by IA0PPFDC28CEE69.namprd12.prod.outlook.com
+ ([fe80::7945:d828:51e7:6a0f%4]) with mapi id 15.20.8835.025; Wed, 13 Aug 2025
+ 06:11:09 +0000
+Message-ID: <e7f7703d-fe76-4ab2-bef4-8d4c54da03ad@amd.com>
+Date: Wed, 13 Aug 2025 11:40:50 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC V10 5/7] KVM: guest_memfd: Add slab-allocated inode
+ cache
+To: seanjc@google.com, david@redhat.com, vbabka@suse.cz, willy@infradead.org,
+ akpm@linux-foundation.org, shuah@kernel.org, pbonzini@redhat.com,
+ brauner@kernel.org, viro@zeniv.linux.org.uk
+Cc: ackerleytng@google.com, paul@paul-moore.com, jmorris@namei.org,
+ serge@hallyn.com, pvorel@suse.cz, bfoster@redhat.com, tabba@google.com,
+ vannapurve@google.com, chao.gao@intel.com, bharata@amd.com, nikunj@amd.com,
+ michael.day@amd.com, shdhiman@amd.com, yan.y.zhao@intel.com,
+ Neeraj.Upadhyay@amd.com, thomas.lendacky@amd.com, michael.roth@amd.com,
+ aik@amd.com, jgg@nvidia.com, kalyazin@amazon.com, peterx@redhat.com,
+ jack@suse.cz, rppt@kernel.org, hch@infradead.org, cgzones@googlemail.com,
+ ira.weiny@intel.com, rientjes@google.com, roypat@amazon.co.uk,
+ ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ kent.overstreet@linux.dev, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+ chao.p.peng@intel.com, amit@infradead.org, ddutile@redhat.com,
+ dan.j.williams@intel.com, ashish.kalra@amd.com, gshan@redhat.com,
+ jgowans@amazon.com, pankaj.gupta@amd.com, papaluri@amd.com,
+ yuzhao@google.com, suzuki.poulose@arm.com, quic_eberman@quicinc.com,
+ aneeshkumar.kizhakeveetil@arm.com, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-security-module@vger.kernel.org, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-coco@lists.linux.dev
+References: <20250811090605.16057-2-shivankg@amd.com>
+ <20250811090605.16057-11-shivankg@amd.com>
+Content-Language: en-US
+From: "Garg, Shivank" <shivankg@amd.com>
+In-Reply-To: <20250811090605.16057-11-shivankg@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN4P287CA0089.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:c01:268::14) To IA0PPFDC28CEE69.namprd12.prod.outlook.com
+ (2603:10b6:20f:fc04::be8)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250729110210.48313-1-byungchul@sk.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTYRjHec85O+e4Wr0tq7ciyHURrNa9Hu1idIFDEhRBH5KylYc21Flb
-	mUaXmUK18tLFyDltUpkuwZip0zLymhWUGcaxm7lSkGyVlnnD2jEiv/34P//nx/Ph4Wm1WzGN
-	NxgPiSajLlrDKhnll7G5C+j5dv2il8MBYC8qZOF2Xzzc+uBWgN1ZiuBH/xsOflfWI+ipfcTC
-	55puBNdze2mwP09m4GfRAA3t9R4Obru2QGteBwP3T5fR4ElrYCEleZCGyn4vB6fc+RTYiy0c
-	NJamKuDywE0ayiwfOHhZYWfhfeFvBXRUpzDw2FbAwLeMWhpaU9dBvWMy9D7tQlBbVEZB7/ls
-	FpozKygoqWzm4FKTg4WPya0Immo8DGQMnWEhKzEVwWCfT+lN/6GArLr33Lp5QqIksUJN11da
-	uFvQQgnSgyeUUG57xwkO12GhOD9IsEpNtOBynmUFV/dFTnj76j4rNFwdZITytmCh3N1DCSlJ
-	Xlb43v6a2eq/U7k6Uow2xImmhWv3KPU38u6gA5m7452FwRZ0L8yK/HiClxFnXhFrRfwIX0uf
-	LccMnkOe1X5nZGZxIJGkflpmf6wlXWlJI0zjAo4Mt42ReSLWk+Kcj5SsUeGV5GfJVDlW4+XE
-	mfKJlVmFJ5DHmZ+Yv6tBRBruHKnTeDq5NczLsR9eQeoaqpDMk/As8rD0ka+i9B32lif1jhb0
-	9+KppCpfYtIRto3S2kZpbf+1DkQ7kdpgjIvRGaKXafUJRkO8dl9sjAv5/inv+FC4G3U3bq9G
-	mEeasarGkCy9WqGLMyfEVCPC0xp/VfYuX6SK1CUcFU2xEabD0aK5Gk3nGc0U1ZLeI5FqvF93
-	SIwSxQOi6d+U4v2mWdCOyeGFgTkn17Tf00ScK/Zejor9Wrc30eD2tF7Ebelzs4w9Ueu95gvN
-	2s6kUE3VScWmxdaBYzkT9mpndJSZM5MWOENeXbmwtipm84ldOKSk03Aku+fZhiirZWlubNyi
-	iPHUvI1cxbYMP9O5MCnHs8oprZkZWte5+uo4VcCv7Q9ePDmoYcx63eIg2mTW/QGB7RhvSwMA
-	AA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sf0yMcRzHfZ/vc8/zdNz2SHho2E4WqbCJT2WVtfHIMn8xjLrpmbvVVbuj
-	FWNRI81VfoSuS5mkrqhdqrsU6q6rMFKLkx/9UG1oqS5NP1a6zPTfa+/P+/X+68NgZ61oJaOI
-	PimoomVRUkpMivf5J3lhT518c1mvGHSlJRQU/46HB11GEej0lQhGxz/SMFNrRWC3NFLwwzyC
-	4N7dMQy6N8kk/CqdwNBn7aGh2BAKnQX9JNRcqsLQk95EgSZ5EkPt+CANF4yFBOjKE2kw5zSL
-	oKUyTQQ3Ju5jqErsoqGtWkfBl5IZEfTXa0ho1haRMJRpwdCZFgTWvGUw9nIAgaW0ioCxKzkU
-	tGdVE1BR207D9dY8Cr4mdyJoNfeQkDmVQkH2+TQEk79nJwczRkWQ3fCFDvLkz9tsFG8e+In5
-	x0UfCN729AXBm7SfaT7PcIovL/TgU22tmDfoL1O8YeQazX96V0PxTbcnSd7U7cubjHaC1yQN
-	UvxwXwe5f+lh8Y4IIUoRJ6g2BYSL5fkFZSg261i8vsQ3ET3Zm4oYhmO3crkZbqnIiSHZddxr
-	yzDpYIp152y2cexgF9abG0hPmmPMFtHcdPdCBy9h5Vz5na+EY0bCbud+VaxwxM6sD6fX9FIO
-	lrCLueasXvKv6sHZpr/N1THryj2YZhyxE7uNa2iqQw5eyq7lnlc2EhlIop1na+fZ2v92HsJ6
-	5KKIjlPKFFE+3upIeUK0It77eIzSgGY/puDs1FUjGm3bXY9YBkkXSVr8suXOIlmcOkFZjzgG
-	S10kOUdnI0mELOG0oIoJU52KEtT1yJUhpcslIQeFcGf2hOykECkIsYLq35VgnFYmohulC+Rt
-	O5UDp63B/sv88PdMp6FHu/aQ+dMG0iIbD6SsAR1hocPPQozgd98tP9B+80hfb92J92VVIXbG
-	FHRuvc/CwIf+I1qRuvlQ/JlgblWwvSZLu7qtw8vSsjHmlnIiMmhNGcPeOmN29zHX5fq91aSZ
-	Xl3s31D9fs+BMEiRb5KSarlsiwdWqWV/AEGc1q0tAwAA
-X-CFilter-Loop: Reflected
-X-Stat-Signature: ckw9x4b1xnauwcg856chsbmoo13pcd84
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PPFDC28CEE69:EE_|DS4PR12MB9772:EE_
+X-MS-Office365-Filtering-Correlation-Id: a38571e7-2cfd-4e2f-d6d6-08ddda30321f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?cm41ZFVBakNrYVpPWnFzWlZRRUFrQTZZSmF1RFh3NWtvSmlwVzNmdlJUb3U0?=
+ =?utf-8?B?MGlhcTdQckYwN2ttYWNRNCtGckVYY1IxUm5qYVdMSmNOdlg2eVIyZm9tZmVr?=
+ =?utf-8?B?QlYwWDdTUkFKbnMrRm1WWC9tdDJrNURyYXhEMUJVdlNUd2N5amlaRjE2dFRC?=
+ =?utf-8?B?SHlCVHNWcEFVdGMxRmVtZWFWbEdlTTd1dzFLaG1XZnBhVGlLbmd0czgwNk1F?=
+ =?utf-8?B?NWdpQ3oybjFvVEdWV0pkdEFwT0xSa0NyZ0tadllzaFZyUFhkZFI5VHdDZHdy?=
+ =?utf-8?B?THZGcGJnSjFOY0duOWMxUkxDZ01tSTIvMnVIVTR4dmtaNVlBVjg3LzVKQVVH?=
+ =?utf-8?B?UTI0VEJkQTdmWE5CRVJETzRtOGlaVVBGbkNJVEh2cHhxWDdKOWhaM3FKbFpa?=
+ =?utf-8?B?bFRGU1pCb3lKZkZaRHJNL0E2SzdSM003d0owQjhsS0ZqbXNwV2xlNXBDaEds?=
+ =?utf-8?B?ajRNTm00by9TN3grY1ZmbGUvR1pDWmpmd1VTMHhEVUZGTG5JV25ObldLZWxS?=
+ =?utf-8?B?dGFHS2czNHdIbllhamFZcVg4NlJSZlRFWEVrTUhOcDdCV0dZMWpxUUR6Q2w4?=
+ =?utf-8?B?amU5aHJBUTJ1c3ZoY3pHM1JUWjhoQXAyaDR5NUNTRE1odVpBVVNKUHpPcHBU?=
+ =?utf-8?B?QlFrbWdzY3JYRkxXbXEyTy93SnRGYk5mSXVtSzhTT2tObDlZSlB1Y3FVRkFF?=
+ =?utf-8?B?WThkSVlsY2FIY2xUUzliQ2RVb2VQZVhQTUQ2UXkrSUd3dU9UQlpWMVFoYXFN?=
+ =?utf-8?B?N29yRDZPQUtnbVpJY1NzU0M0d0c0Tnh5UzAzSnpTWGU4dGQ3blFVaERyTUUw?=
+ =?utf-8?B?ajZDZWtrdURxc3lSN001dTc2S0xzcG16YWlsM3RmQnR0eU8vSTl0UGwzdVNQ?=
+ =?utf-8?B?OW56THhvNko2dVRDUEV5Ym9oamdvaDlvbkpzNE93OGRJNWhiWlJJKzU5c0tq?=
+ =?utf-8?B?NDlTVmFvRlNtVEZpQmNFeXNGRWVIbi9ndHRLcHdXNWhRaFMyM3NkZXVxeDFP?=
+ =?utf-8?B?SHBkbiszWFJGd3hqSkpWMEhiSEFXK2JNT3ZVZGpUVzZWVVJ6RHdrb2c1YVNr?=
+ =?utf-8?B?QkpYOE9LSVlBZS8zOU1TMFB5M1BPYk8yUDdkWTlKMnpIbEhNUXZrT3BpUnZH?=
+ =?utf-8?B?Rm9DV3dKd1RTV3dSQ0s1TTJaaHdFTjYyeUx3NDU5R2dIdS9lTDl0NU10WGJ3?=
+ =?utf-8?B?Q1VQOG0xYnl1ci85Y25GREF4bE1nTUtFMy9RczNpbVE5Um1RTXVBUFI4cnNn?=
+ =?utf-8?B?UG5objlRWlpUanh4UGNPOEtwYjBuMnVNN1hONVI1SWltTi9jVFlPbjZQMVBF?=
+ =?utf-8?B?MmtWSUl4Qzl1L3p3Ry9tOGYvaGpVdkhlcTlvSFVHT0U5UjM5ak9wWnJSYzVu?=
+ =?utf-8?B?b1NnZWYwd1Y0ck10N005bjJNNEl4aHlGZDdaRGJhdmg0dTNuNkZHOWRWN3Fq?=
+ =?utf-8?B?eWhMN2lIeFZnYlMxUENhRHppR1lGakNJM3c1Rm1vek44aVZIcGtYT3pZODdj?=
+ =?utf-8?B?ZHRhcUNIU1FmK2ZXMjM2MHp1ZVU1MFRMNFk3czFVWHpEZTE2K3BGbHh3SUEv?=
+ =?utf-8?B?NEhtenFldGx1enB0NGNqdS94OWhPOHFVSWlELzVEdFgzci85bjBLRlR4clBH?=
+ =?utf-8?B?aTBlRGdjTVIvdjNwT1N4QnhramtQdGtEN3E0eFFCdW1pSFZ0ZEVZYnBuaEpS?=
+ =?utf-8?B?bVBhZzhiaXM1WUUyRmtGQWw4SXBMVkhOQk5SNkhxZlJpa212c05HUDhIc0Jx?=
+ =?utf-8?B?VDdHOTZ3elRUT2dPcERBRmtpTzJ0UzhHMmlLd2daSXJ4aWNkREE0YWI1VTM3?=
+ =?utf-8?B?M3dJZ2RHM0FxNkt6M01Uc3RLNEkzeCtvTkhtOUo1aUl5RE9SK1dJeWlSakps?=
+ =?utf-8?B?dmJKMHpkSkxkSy9tb3pVUlg2NEI5aTVkcHl1bTM2UDdqOGMrT3gvQURBK3ZO?=
+ =?utf-8?Q?B6NVfuSgDrc=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PPFDC28CEE69.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?T3BWUjRZeHh1VXhhOHZYb1pRVVNDS1JIT3k0UHpBejdyT0loYnZUd29iRUoy?=
+ =?utf-8?B?c3NNT1FmK3FTYllGSzRQS2xtVzFHOCtDZW02eFRuUlF3dzZSd2dVRTk2SFJE?=
+ =?utf-8?B?MUtXbi9iTHJhdk5yOVFyZ2xyWUg4dEZrcHdDNU43WCtsTzU0bkRlT0tMSC9x?=
+ =?utf-8?B?eFVzMkdkZXZBc1ljZk9Jc2NiNVNRTkJuT01FUGt4d1BGVEQrZ2UvZUR6T2xN?=
+ =?utf-8?B?QVQ5c1Mzb1B6T1gwMDMzK2kxaDA0eHNSL1J6Y1Zaai9HOFhaWDBpelZReCtM?=
+ =?utf-8?B?MUd4QmdJejN0R0doK2JabDFmUXpiQ0Zsa3lobEIrUmZxMlJLNVJkb1U5Mm5i?=
+ =?utf-8?B?bkFSUkJiajJnREpvZC95T1BvZ1g4am9YVjl2UWpUazRwWm5TZTFxSFdQekNi?=
+ =?utf-8?B?OTJzSTFwUXNJRzZpY1JjbDNLQW43SEdrUXJiVmJwMTNQNWNDMzJCTDAyRUh4?=
+ =?utf-8?B?VnF4VkhCWFUzcitQMWMwZlE2MG1QTUt3RlFwVHF0cWNCMmVrQzZBYUJmdFJa?=
+ =?utf-8?B?bWVBc1MvYldaRHdnenBQbGpqeWhsSHN6eTE3c2VzL3dxMDZVRHZWU3QzZFFj?=
+ =?utf-8?B?RHZ3ZENVRWQxdFVkcWJFNitwRUd1aVp0RGoxNWlhNkxxaWhGbDlkRERlNWVn?=
+ =?utf-8?B?R1N1K0dmKzdXR0FCRkhrVTVnN0VrQWZ2RUJXQmVEUThud2dwcTNGbno1RWFN?=
+ =?utf-8?B?S2psQVM5clpRZ1lhNnVTNHJKNStWMUFsYlVnUitGcS9yT2RiMGN6clZTWlZj?=
+ =?utf-8?B?eUdqd01lNUh2WjZXTGw3WGV6Y2hMMGF2ZVBHNFA4Nk1ielpSM0hLUldKWWNC?=
+ =?utf-8?B?MjdQWWFSK0xNdDhoVFRUSWZjeExLcXhOSnhpdGdQWW0wYjlBNmZnZmJGOGlv?=
+ =?utf-8?B?VlJPS1h3QjZVN3N3ZlBjM3JuT2ptU3orVzlUcUp0VFoxZ1o5VjFFUFNlN0hI?=
+ =?utf-8?B?WDlTVlFCQVlUUzZkODJKNTQ4eDk4TXlsclNIZXRteGlzQUM0cWVmRmt3VGxh?=
+ =?utf-8?B?ZStRVDFISk01K0hqcFFHYnB6TlpTV3lxOVFacFd3QklRK3RYbG1wbTVLNVps?=
+ =?utf-8?B?TXgzRGdhUmJtdzZzMG9TZXROQTluRjFIcFVRMlNEV29ES29MQmRNZVllcUUz?=
+ =?utf-8?B?VFZXYkFhMmx0elU5c1pwWjh5OWM2bXRaZElya3p2L2FFNXpNR1Y2TUdPUVFU?=
+ =?utf-8?B?WW1Bc3Yvdmp3eFpKaWxTVnIvSlNBclY3M1ZTdXlzK3FzQ1laWXJRL3MzQUxC?=
+ =?utf-8?B?ZHUyRHRQRktVRW5aSWQ4clBaN3FBVllUNlFHaS91dEZvZkFtcUlMM0kvaWIz?=
+ =?utf-8?B?OW5lMkQ3TXdqSzBpVFY4cGIrWm1PUWlQYzhJOGszTUVuWkRBRVhRTnFoc0pJ?=
+ =?utf-8?B?bjhubnVlQkxidktPUFdzbWRRWng1M1RaaUZNb3VpcXl0TnJEUUpqZzEwWXRh?=
+ =?utf-8?B?dWVrY3BmZk9iMmphTlZRYXJZOCt4UHBwaVptN0swQzFvWkZ4TEttTkRwSUsx?=
+ =?utf-8?B?T29kdW5VcE81T3M2NGI1U0VkTVE0RkZ5QTRHNUdlNUhLVkc2cGdPTi9NTk5V?=
+ =?utf-8?B?MmRHNTEyTnZvdnFEb1hzS0VQeU5KUTRlNFFoM1Y4UGRXYi9Gd2p6Q1NlN3Ba?=
+ =?utf-8?B?S2ZDTDJNMDl6L3F4Q1hrQWlkSWJrT1V2blc2NkFJUGIwUWJMckpYZ0tKeWRt?=
+ =?utf-8?B?ODBpQTdzeTI5cmhFN05JMS9RTW14dHVqWEsxVFpvMXN3emo2dE1xekJLdFkz?=
+ =?utf-8?B?ellRSEo5eXhMNG4rbTVZSWZ1dm9oL3NDRUF5K1hEZDB1QmxaTkQ4bGdyVGpR?=
+ =?utf-8?B?dkkvNVlVZElLTFhoR0p3SmwxQ0dVL2xxZUVqZWVIYm1qS3QyQm8rMGhGR25T?=
+ =?utf-8?B?TGdncG1VMTlPQW9vNWh0QVNlZlFqOXdzVTVLTU5lZGMyUEJkTG9ETnhRZ3Vo?=
+ =?utf-8?B?Wmt4Q3VocWIzVlZXUHBIa3krRDRoTTRqalpoYVVGVGRXdk1jU3k1U016bkt2?=
+ =?utf-8?B?bVVGL1UrajBRQ3FUWlhGSWFKZy8xaTNQZTJmdWxITnNoOVhxQ3loaDZzV0t6?=
+ =?utf-8?B?aUNPVzFkM1BzSTBJVlZwWS9VQWZuWG9qWlJwNkNPVFhmWFRrdlZ6K3MxQklr?=
+ =?utf-8?Q?tq1dIlfYhR49ys69Oe+SV2f7V?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a38571e7-2cfd-4e2f-d6d6-08ddda30321f
+X-MS-Exchange-CrossTenant-AuthSource: IA0PPFDC28CEE69.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2025 06:11:09.2586
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7Arp0evJTqNY0N4uZ4YCvSfJuLOtizEuyr7rGCdV1IM6RFIGGun2k4yzsnaZWJDF5M2BBqxpYbMe9EAPsNvevQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9772
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 48D54180006
+X-Stat-Signature: m94eq5yz6q9cqx6kh4db9kwfrnk7c51f
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 842414000A
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1755065350-962805
-X-HE-Meta: U2FsdGVkX1+hzratlVgh+D3ZDwN0F7NniX50VYbuZ0nWs5HrgI57C41NKn5LoV/sB13JHiKd107jdzhfd2YAiTYl3oQhFWxE9TsywCvgx3qdH173a7Armj+O66UqhMB9C/b6y4gD9a/O4ny68y/qnv2dJnKBixl4X7RM4bT30SkUquF5sESDqklLpupvvl62w+7NyTyYG7zcnsW/199FX616HnPH75h7d6Ej73XN1kBtqQBmAq7/YPJTpVxL8cBL90rQaBjWJ/Jt77sA0yJeSNGf1NckxBtfiC/xwYsxubJhe91OLcIl/YLeYJ6mo6A0vvpGtrMeJOrDICASaXkHlsuIAjrGXQH1dyIJ9eR+zkzgShg4YnElWgDIe3g6iAo+pFfPX3GCRMIcGy1rwaW4LmPf0IlIrKHZSQE9ge7cxz4aEAsC9ljLgi+9ziUD+gL476KCzqIaJPtqwunyhvfvS13um+22+6mGKULRGO1aQShj40gFFxFAQd2e0gdupepSG6FLwBNIgnFJhaUqaeLoJCa7Q7VJu6xaALgroVOww5G2DTm1fcD4/tnb53AZQWgontsXfilYqC8PRlOwA1RSc593IgXVMIDrv7mzEeIWoDrlShwIiG3ELVihnRD/29dx1QPtn23usdBaUU9Ydkj+0S5UwNYzjtdfaPBlS6kSkoOcjqlpy1e6C5bu8stZC4qu6kDSFzOq0orxjsu2DK3/jE3TQ6fu3YfkYK1kycJWp52XL9jgzs1jXuskNIAmL6E6wMvPo0N2BSCIPm0vrqg0EmL9gikHGXUDq8FqUP5oqkecCazOKqhtTpr0W8GTcaC25RE7bgz9ktdJ3O2X7v3EBOryT4A02TpPV2xDJ6n3dnyU9aF5NO7i2jZ1fM4EMovVt8dK285AQFimcFtfADNVSIg9WaH0xigBJBqwGRLB8nHs5ysW4H4/qwjHmAbU0fynR82WmZgPhSPa4c8kOCp
- DpAHJExK
- 0RbEKaNJjhgnMyygCxeIfNBOJtaToXqHsGkDKwhQUU0KE9IvXRE/dq6439gCcxvS/d8MjC4M3ifgcnOMYHAi/xqvn4qSUy4z6J7jtXTLM2VNcxqcd9Rt1uFtEqr7akD2ew1Li8X/ygJ0DZ+uv0/9Nrq4KmgLJzxEi8c0XmH+pp6meJSJO6u/vb86qqw==
+X-HE-Tag: 1755065472-710351
+X-HE-Meta: U2FsdGVkX19GlRsE0xQS27EQIr9A5g7/qBYzmq2Fe8F9apaL7IKAFONR2stk0D+lSXNZZqkXP282dzfyqkUi0LnWLDl+h6hZu73CHBJPIUvQpqXIRgfaLWr+WrSTLvZszmlhUPvke0aT1D4zTXIE7UHHwXKp0A4y+lzZtF5nsonK44d1pvBHIvkJ1RBRmMuaRDgI9nV6Z+HYYFixAyTbe6GaHUAK593sT6VMpZGnzHkrqbhkBGZu8X4Y5Xi74trQh8/XEGHAcAz17zexVc4gGt1GJlsrK9gFgq9in7y8iotWdviEPez6xVuYP45eR+0/CuhfY9M0oj4HU08+xViQWXkE32Y+NJmvEtZz9M9trnkag/7vXQhGgcU3xFEubfE5jU74EmlVoSxuX2sN1/BSrJLn7+0nE6bpJ+W7rKiTFe6pjhX7WVBGJpfN/quhFMN2s1XPY/rM6t77AZQmd4YUEwZ9D7sVr46Ael4axlPDzf1+vc+D0e56/D7RHEC+etWtEClAnBHjJgTd9gvfrVU506WJg6+dOB953L2odfuF2igbl6p5kPhkxWS29uS/uLBFyV2C7YufBmcPGeeZR3RX2hY2OKshmdJuD27oAmj0ZVh0DzlmH7s7Uq0gBjZs91P4A0IU85CI0PP7TIE8XhEeJNr1qJBYtnVLhA6oGWnbOYfYwJ6Y5yZs41+zVowaA4MNKqFxVvTFF/1SQCbkfSJJ1dHenW//u9sgo6rfd4XIRzkLvJ2SbBTT+nnnYhMOh1vYJ9cxQXHNYJ83q+FgU8qmSNioTaUxRLR0MJtaaWSzOBenwQpUdwjJ6t1ugY1z9Sdol2m4MgbRgezSMft5aVbVqMx+sDoEjv+sfZHuG3uAm1DoyNjMwjvZYhbH4BKe4BhoiveOhy0kRwvitXg6+snXYeOm2o5xWULVxC9/8Jj0PfyrB8a9IAUisPhk2L1AU9QdRYev6wfp3yl9osHLcbf
+ oYm2hZff
+ 3h0KtAbQV6EbxcEtUG1LSb0z1h8w8q+KP8TFaHtx7OuBgUjFNn86xWD6VGkS2RHgBWIGz0913xKmH9ddpyheDcAaL7lm65hs6gXgA7wnyjQQoCmWy4OEqP6HIcxj5ys24IDj2Y0LlEWSlzPVosFCZd/e5cT+oeSaiLwipgDMD1YGz+NV3mtdiZ/kH84oBD7TNtkJzPHtY6B9jQIsAdJ+lmSjbUL+ciwja+1nUHSukYi2jVu7hAqppL73/QDfiGU6tTIJn5z8bohDqSD5H5whB6qgwwHujxT09hHHxEmGA9eJH327UY85Bd5vMqTTDuK8PBxfm3XWuvP1ifJ8n1km+/sMt23u+Zp35D6nAI1Xqkyxlwdwp5Lc9vFS9nW2oP5zVAysPwxhxFDW3nW5VC94D/5WqiMHQvxCssFBHeU+Tp5llwYql+m3viwH16kJ6zjNZSUFYIkA0x9LUyWoPR4FtvlLw7K7a0GXurHW7CU/5DOaDIUUtbaJOdULFi1kWqzxbBQjiCWNsMXSiYKkG+n8np9TKMIjR7RRhMSRhK9uhmQ6CfEpYwuEem0EOCZdf57NQmB7bD8C+obtBqWUw/gl4rebXsaLh63D+AsnyQfYuJZgqrL82759Lpw1pguIX2Noe91S+AaNlKjPVf8o=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,305 +217,207 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 29, 2025 at 08:02:10PM +0900, Byungchul Park wrote:
-> Changes from v2:
-> 	1. Rebase on linux-next as of Jul 29.
-> 	2. Skip 'niov->pp = NULL' when it's allocated using __GFP_ZERO.
-> 	3. Change trivial coding style. (feedbacked by Mina)
-> 	4. Add Co-developed-by, Acked-by, and Reviewed-by properly.
-> 	   Thanks to all.
-> 
-> Changes from v1:
-> 	1. Rebase on linux-next.
-> 	2. Initialize net_iov->pp = NULL when allocating net_iov in
-> 	   net_devmem_bind_dmabuf() and io_zcrx_create_area().
-> 	3. Use ->pp for net_iov to identify if it's pp rather than
-> 	   always consider net_iov as pp.
-> 	4. Add Suggested-by: David Hildenbrand <david@redhat.com>.
-> 
-> ---8<---
-> >From 88bcb9907a0cef65a9c0adf35e144f9eb67e0542 Mon Sep 17 00:00:00 2001
-> From: Byungchul Park <byungchul@sk.com>
-> Date: Tue, 29 Jul 2025 19:49:44 +0900
-> Subject: [PATCH linux-next v3] mm, page_pool: introduce a new page type for page pool in page type
-> 
-> ->pp_magic field in struct page is current used to identify if a page
-> belongs to a page pool.  However, ->pp_magic will be removed and page
-> type bit in struct page e.i. PGTY_netpp can be used for that purpose.
-> 
-> Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
-> and __ClearPageNetpp() instead, and remove the existing APIs accessing
-> ->pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
-> netmem_clear_pp_magic().
-> 
-> For net_iov, use ->pp to identify if it's pp, with making sure that ->pp
-> is NULL for non-pp net_iov.
-> 
-> This work was inspired by the following link:
-> 
-> [1] https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
-> 
-> While at it, move the sanity check for page pool to on free.
 
-Hi, Andrew and Jakub
 
-I will spin the next one with some modified, once the following patch,
-[1], gets merged.
-
-   [1] https://lore.kernel.org/all/a8643abedd208138d3d550db71631d5a2e4168d1.1754929026.git.asml.silence@gmail.com/
-
-This is about both mm and network.  I have no idea which tree should I
-aim at between mm tree and network tree?  I prefer the network tree tho.
-
-However, it's totally fine regardless of what it would be.  Suggestion?
-
-	Byungchul
-
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Co-developed-by: Pavel Begunkov <asml.silence@gmail.com>
-> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-> Signed-off-by: Byungchul Park <byungchul@sk.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Reviewed-by: Mina Almasry <almasrymina@google.com>
+On 8/11/2025 2:36 PM, Shivank Garg wrote:
+> Add dedicated inode structure (kvm_gmem_inode_info) and slab-allocated
+> inode cache for guest memory backing, similar to how shmem handles inodes.
+> 
+> This adds the necessary allocation/destruction functions and prepares
+> for upcoming guest_memfd NUMA policy support changes.
+> 
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
 > ---
->  .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |  2 +-
->  include/linux/mm.h                            | 27 +++----------------
->  include/linux/page-flags.h                    |  6 +++++
->  include/net/netmem.h                          |  2 +-
->  io_uring/zcrx.c                               |  4 +++
->  mm/page_alloc.c                               |  7 +++--
->  net/core/devmem.c                             |  1 +
->  net/core/netmem_priv.h                        | 23 +++++++---------
->  net/core/page_pool.c                          | 10 +++++--
->  9 files changed, 37 insertions(+), 45 deletions(-)
+>  virt/kvm/guest_memfd.c | 69 ++++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 67 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-> index 5d51600935a6..def274f5c1ca 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-> @@ -707,7 +707,7 @@ static void mlx5e_free_xdpsq_desc(struct mlx5e_xdpsq *sq,
->  				xdpi = mlx5e_xdpi_fifo_pop(xdpi_fifo);
->  				page = xdpi.page.page;
->  
-> -				/* No need to check page_pool_page_is_pp() as we
-> +				/* No need to check PageNetpp() as we
->  				 * know this is a page_pool page.
->  				 */
->  				page_pool_recycle_direct(pp_page_to_nmdesc(page)->pp,
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 0d4ee569aa6b..d01b296e7184 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -4171,10 +4171,9 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
->   * DMA mapping IDs for page_pool
->   *
->   * When DMA-mapping a page, page_pool allocates an ID (from an xarray) and
-> - * stashes it in the upper bits of page->pp_magic. We always want to be able to
-> - * unambiguously identify page pool pages (using page_pool_page_is_pp()). Non-PP
-> - * pages can have arbitrary kernel pointers stored in the same field as pp_magic
-> - * (since it overlaps with page->lru.next), so we must ensure that we cannot
-> + * stashes it in the upper bits of page->pp_magic. Non-PP pages can have
-> + * arbitrary kernel pointers stored in the same field as pp_magic (since
-> + * it overlaps with page->lru.next), so we must ensure that we cannot
->   * mistake a valid kernel pointer with any of the values we write into this
->   * field.
->   *
-> @@ -4205,26 +4204,6 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
->  #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT - 1, \
->  				  PP_DMA_INDEX_SHIFT)
->  
-> -/* Mask used for checking in page_pool_page_is_pp() below. page->pp_magic is
-> - * OR'ed with PP_SIGNATURE after the allocation in order to preserve bit 0 for
-> - * the head page of compound page and bit 1 for pfmemalloc page, as well as the
-> - * bits used for the DMA index. page_is_pfmemalloc() is checked in
-> - * __page_pool_put_page() to avoid recycling the pfmemalloc page.
-> - */
-> -#define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
-> -
-> -#ifdef CONFIG_PAGE_POOL
-> -static inline bool page_pool_page_is_pp(const struct page *page)
-> -{
-> -	return (page->pp_magic & PP_MAGIC_MASK) == PP_SIGNATURE;
-> -}
-> -#else
-> -static inline bool page_pool_page_is_pp(const struct page *page)
-> -{
-> -	return false;
-> -}
-> -#endif
-> -
->  #define PAGE_SNAPSHOT_FAITHFUL (1 << 0)
->  #define PAGE_SNAPSHOT_PG_BUDDY (1 << 1)
->  #define PAGE_SNAPSHOT_PG_IDLE  (1 << 2)
-> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> index 8d3fa3a91ce4..84247e39e9e7 100644
-> --- a/include/linux/page-flags.h
-> +++ b/include/linux/page-flags.h
-> @@ -933,6 +933,7 @@ enum pagetype {
->  	PGTY_zsmalloc		= 0xf6,
->  	PGTY_unaccepted		= 0xf7,
->  	PGTY_large_kmalloc	= 0xf8,
-> +	PGTY_netpp		= 0xf9,
->  
->  	PGTY_mapcount_underflow = 0xff
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 0e93323fc839..d9c23401e770 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -17,6 +17,15 @@ struct kvm_gmem {
+>  	struct list_head entry;
 >  };
-> @@ -1077,6 +1078,11 @@ PAGE_TYPE_OPS(Zsmalloc, zsmalloc, zsmalloc)
->  PAGE_TYPE_OPS(Unaccepted, unaccepted, unaccepted)
->  FOLIO_TYPE_OPS(large_kmalloc, large_kmalloc)
 >  
-> +/*
-> + * Marks page_pool allocated pages.
-> + */
-> +PAGE_TYPE_OPS(Netpp, netpp, netpp)
+> +struct kvm_gmem_inode_info {
+> +	struct inode vfs_inode;
+> +};
+> +
+> +static inline struct kvm_gmem_inode_info *KVM_GMEM_I(struct inode *inode)
+> +{
+> +	return container_of(inode, struct kvm_gmem_inode_info, vfs_inode);
+> +}
 > +
 >  /**
->   * PageHuge - Determine if the page belongs to hugetlbfs
->   * @page: The page to test.
-> diff --git a/include/net/netmem.h b/include/net/netmem.h
-> index f7dacc9e75fd..3667334e16e7 100644
-> --- a/include/net/netmem.h
-> +++ b/include/net/netmem.h
-> @@ -298,7 +298,7 @@ static inline struct net_iov *__netmem_clear_lsb(netmem_ref netmem)
->   */
->  #define pp_page_to_nmdesc(p)						\
->  ({									\
-> -	DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(p));		\
-> +	DEBUG_NET_WARN_ON_ONCE(!PageNetpp(p));				\
->  	__pp_page_to_nmdesc(p);						\
->  })
+>   * folio_file_pfn - like folio_file_page, but return a pfn.
+>   * @folio: The folio which contains this index.
+> @@ -389,13 +398,46 @@ static struct file_operations kvm_gmem_fops = {
+>  	.fallocate	= kvm_gmem_fallocate,
+>  };
 >  
-> diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-> index e5ff49f3425e..f771bb3e756d 100644
-> --- a/io_uring/zcrx.c
-> +++ b/io_uring/zcrx.c
-> @@ -444,6 +444,10 @@ static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
->  		area->freelist[i] = i;
->  		atomic_set(&area->user_refs[i], 0);
->  		niov->type = NET_IOV_IOURING;
+> +static struct kmem_cache *kvm_gmem_inode_cachep;
 > +
-> +		/* niov->pp is already initialized to NULL by
-> +		 * kvmalloc_array(__GFP_ZERO).
-> +		 */
->  	}
+> +static struct inode *kvm_gmem_alloc_inode(struct super_block *sb)
+> +{
+> +	struct kvm_gmem_inode_info *info;
+> +
+> +	info = alloc_inode_sb(sb, kvm_gmem_inode_cachep, GFP_KERNEL);
+> +	if (!info)
+> +		return NULL;
+> +
+> +	return &info->vfs_inode;
+> +}
+> +
+> +static void kvm_gmem_destroy_inode(struct inode *inode)
+> +{
+> +}
+> +
+> +static void kvm_gmem_free_inode(struct inode *inode)
+> +{
+> +	kmem_cache_free(kvm_gmem_inode_cachep, KVM_GMEM_I(inode));
+> +}
+> +
+> +static const struct super_operations kvm_gmem_super_operations = {
+> +	.statfs		= simple_statfs,
+> +	.alloc_inode	= kvm_gmem_alloc_inode,
+> +	.destroy_inode	= kvm_gmem_destroy_inode,
+> +	.free_inode	= kvm_gmem_free_inode,
+> +};
+> +
+>  static int kvm_gmem_init_fs_context(struct fs_context *fc)
+>  {
+> +	struct pseudo_fs_context *ctx;
+> +
+>  	if (!init_pseudo(fc, GUEST_MEMFD_MAGIC))
+>  		return -ENOMEM;
 >  
->  	area->free_count = nr_iovs;
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index d1d037f97c5f..2f6a55fab942 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -1042,7 +1042,6 @@ static inline bool page_expected_state(struct page *page,
->  #ifdef CONFIG_MEMCG
->  			page->memcg_data |
->  #endif
-> -			page_pool_page_is_pp(page) |
->  			(page->flags & check_flags)))
->  		return false;
+>  	fc->s_iflags |= SB_I_NOEXEC;
+>  	fc->s_iflags |= SB_I_NODEV;
+> +	ctx = fc->fs_private;
+> +	ctx->ops = &kvm_gmem_super_operations;
 >  
-> @@ -1069,8 +1068,6 @@ static const char *page_bad_reason(struct page *page, unsigned long flags)
->  	if (unlikely(page->memcg_data))
->  		bad_reason = "page still charged to cgroup";
->  #endif
-> -	if (unlikely(page_pool_page_is_pp(page)))
-> -		bad_reason = "page_pool leak";
->  	return bad_reason;
+>  	return 0;
+>  }
+> @@ -417,17 +459,40 @@ static int kvm_gmem_init_mount(void)
+>  	return 0;
 >  }
 >  
-> @@ -1379,9 +1376,11 @@ __always_inline bool free_pages_prepare(struct page *page,
->  		mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
->  		folio->mapping = NULL;
->  	}
-> -	if (unlikely(page_has_type(page)))
-> +	if (unlikely(page_has_type(page))) {
-> +		WARN_ON_ONCE(PageNetpp(page));
->  		/* Reset the page_type (which overlays _mapcount) */
->  		page->page_type = UINT_MAX;
+> +static void kvm_gmem_init_inode(void *foo)
+> +{
+> +	struct kvm_gmem_inode_info *info = foo;
+> +
+> +	inode_init_once(&info->vfs_inode);
+> +}
+> +
+>  int kvm_gmem_init(struct module *module)
+>  {
+> -	kvm_gmem_fops.owner = module;
+> +	int ret;
+> +	struct kmem_cache_args args = {
+> +		.align = 0,
+> +		.ctor = kvm_gmem_init_inode,
+> +	};
+>  
+> -	return kvm_gmem_init_mount();
+> +	kvm_gmem_fops.owner = module;
+> +	kvm_gmem_inode_cachep = kmem_cache_create("kvm_gmem_inode_cache",
+> +						  sizeof(struct kvm_gmem_inode_info),
+> +						  &args, SLAB_ACCOUNT);
+> +	if (!kvm_gmem_inode_cachep)
+> +		return -ENOMEM;
+> +	ret = kvm_gmem_init_mount();
+> +	if (ret) {
+> +		kmem_cache_destroy(kvm_gmem_inode_cachep);
+> +		return ret;
 > +	}
->  
->  	if (is_check_pages_enabled()) {
->  		if (free_page_is_bad(page))
-> diff --git a/net/core/devmem.c b/net/core/devmem.c
-> index b3a62ca0df65..40e7a4ec9009 100644
-> --- a/net/core/devmem.c
-> +++ b/net/core/devmem.c
-> @@ -285,6 +285,7 @@ net_devmem_bind_dmabuf(struct net_device *dev,
->  			niov = &owner->area.niovs[i];
->  			niov->type = NET_IOV_DMABUF;
->  			niov->owner = &owner->area;
-> +			niov->pp = NULL;
->  			page_pool_set_dma_addr_netmem(net_iov_to_netmem(niov),
->  						      net_devmem_get_dma_addr(niov));
->  			if (direction == DMA_TO_DEVICE)
-> diff --git a/net/core/netmem_priv.h b/net/core/netmem_priv.h
-> index cd95394399b4..4b90332d6c64 100644
-> --- a/net/core/netmem_priv.h
-> +++ b/net/core/netmem_priv.h
-> @@ -8,21 +8,18 @@ static inline unsigned long netmem_get_pp_magic(netmem_ref netmem)
->  	return __netmem_clear_lsb(netmem)->pp_magic & ~PP_DMA_INDEX_MASK;
+> +	return 0;
 >  }
 >  
-> -static inline void netmem_or_pp_magic(netmem_ref netmem, unsigned long pp_magic)
-> -{
-> -	__netmem_clear_lsb(netmem)->pp_magic |= pp_magic;
-> -}
-> -
-> -static inline void netmem_clear_pp_magic(netmem_ref netmem)
-> -{
-> -	WARN_ON_ONCE(__netmem_clear_lsb(netmem)->pp_magic & PP_DMA_INDEX_MASK);
-> -
-> -	__netmem_clear_lsb(netmem)->pp_magic = 0;
-> -}
-> -
->  static inline bool netmem_is_pp(netmem_ref netmem)
+>  void kvm_gmem_exit(void)
 >  {
-> -	return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
-> +	/* Use ->pp for net_iov to identify if it's pp, which requires
-> +	 * that non-pp net_iov should have ->pp NULL'd.
-> +	 */
-> +	if (netmem_is_net_iov(netmem))
-> +		return !!__netmem_clear_lsb(netmem)->pp;
-> +
-> +	/* For system memory, page type bit in struct page can be used
-> +	 * to identify if it's pp.
-> +	 */
-> +	return PageNetpp(__netmem_to_page(netmem));
+>  	kern_unmount(kvm_gmem_mnt);
+>  	kvm_gmem_mnt = NULL;
+> +	kmem_cache_destroy(kvm_gmem_inode_cachep);
 >  }
->  
->  static inline void netmem_set_pp(netmem_ref netmem, struct page_pool *pool)
-> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-> index 05e2e22a8f7c..37eeab76c41c 100644
-> --- a/net/core/page_pool.c
-> +++ b/net/core/page_pool.c
-> @@ -654,7 +654,6 @@ s32 page_pool_inflight(const struct page_pool *pool, bool strict)
->  void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
->  {
->  	netmem_set_pp(netmem, pool);
-> -	netmem_or_pp_magic(netmem, PP_SIGNATURE);
->  
->  	/* Ensuring all pages have been split into one fragment initially:
->  	 * page_pool_set_pp_info() is only called once for every page when it
-> @@ -665,12 +664,19 @@ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
->  	page_pool_fragment_netmem(netmem, 1);
->  	if (pool->has_init_callback)
->  		pool->slow.init_callback(netmem, pool->slow.init_arg);
-> +
-> +	/* If it's page-backed */
-> +	if (!netmem_is_net_iov(netmem))
-> +		__SetPageNetpp(__netmem_to_page(netmem));
->  }
->  
->  void page_pool_clear_pp_info(netmem_ref netmem)
->  {
-> -	netmem_clear_pp_magic(netmem);
->  	netmem_set_pp(netmem, NULL);
-> +
-> +	/* If it's page-backed */
-> +	if (!netmem_is_net_iov(netmem))
-> +		__ClearPageNetpp(__netmem_to_page(netmem));
->  }
->  
->  static __always_inline void __page_pool_release_netmem_dma(struct page_pool *pool,
-> 
-> base-commit: 54efec8782214652b331c50646013f8526570e8d
-> -- 
-> 2.17.1
+
+While testing my code, I discovered a bug that occurs when unloading the kvm_amd module
+after a guest_memfd-backed VM has run.
+
+dmesg logs:
+[  610.075763] =============================================================================
+[  610.083933] BUG kvm_gmem_inode_cache (Not tainted): Objects remaining on __kmem_cache_shutdown()
+[  610.092711] -----------------------------------------------------------------------------
+[  610.102368] Object 0x000000008ee52a58 @offset=19200
+[  610.107247] Slab 0x000000004b1b088c objects=51 used=1 fp=0x000000007c55fc00 flags=0x57ffffc0000240(workingset|head|node=1|zone=2|lastcpupid=0x1fffff)
+[  610.120733] Disabling lock debugging due to kernel taint
+[  610.120741] ------------[ cut here ]------------
+[  610.120742] WARNING: CPU: 7 PID: 7554 at mm/slub.c:1171 __kmem_cache_shutdown+0x264/0x370
+[  610.120751] Modules linked in: xt_set ip_set xt_addrtype xfrm_user xfrm_algo xt_CHECKSUM xt_MASQUERADE xt_conntrack ipt_REJECT nf_reject_ipv4 nft_compat nff_defrag_ipv4 nf_tables overlay bridge stp llc cfg80211 rfkill binfmt_misc ipmi_ssif amd_atl intel_rapl_msr wmi_bmof intel_rapl_common amd64_edac edac_mce_amdmem_helper drm_kms_helper i2c_piix4 ptdma i2c_smbus k10temp wmi acpi_power_meter ipmi_si acpi_ipmi ipmi_devintf ipmi_msghandler sg dm_multipath fuse drm dm_mo56 async_raid6_recov async_memcpy async_pq async_xor xor async_tx raid6_pq raid1 raid0 sd_mod kvm_amd(-) ahci libahci kvm nvme tg3 libata ccp irqbypass nvme_c
+[  610.120831] CPU: 7 UID: 0 PID: 7554 Comm: rmmod Kdump: loaded Tainted: G    B               6.16.0+ #10 PREEMPT(none)
+[  610.120835] Tainted: [B]=BAD_PAGE
+[  610.120836] Hardware name: Dell Inc. PowerEdge R6525/024PW1, BIOS 2.16.2 07/09/2024
+[  610.120838] RIP: 0010:__kmem_cache_shutdown+0x264/0x370
+[  610.120841] Code: 89 f1 4c 89 f6 4d 8b 46 20 48 c7 c7 08 08 ec 87 81 e2 ff 7f 00 00 e8 fb a7 d7 ff be 01 00 00 00 bf 05 00 00 00 e8 dc e9 cd ff <0f> 0b 48 fe ff ff
+[  610.120843] RSP: 0018:ffffcd6962963cb8 EFLAGS: 00010046
+[  610.120846] RAX: 0000000000000000 RBX: ffff89fde07d21c0 RCX: 0000000000000027
+[  610.120848] RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff89fcbe5dbe80
+[  610.120850] RBP: ffff89fde07d21c0 R08: 0000000000000000 R09: 0000000000000003
+[  610.120851] R10: ffffcd6962963b58 R11: ffffffff889db908 R12: ffff89fdcccd7f80
+[  610.120852] R13: ffff89fdcccd0000 R14: fffff96802333400 R15: ffff89fdd6ab6c00
+[  610.120854] FS:  00007f066eaab080(0000) GS:ffff89fd3516f000(0000) knlGS:0000000000000000
+[  610.120856] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  610.120857] CR2: 00007ffefd577828 CR3: 0000000220406004 CR4: 0000000000770ef0
+[  610.120859] PKRU: 55555554
+[  610.120860] Call Trace:
+[  610.120862]  <TASK>
+[  610.120866]  kmem_cache_destroy+0x3a/0x150
+[  610.120872]  kvm_exit+0x7b/0xa0 [kvm]
+[  610.120919]  svm_exit+0x5/0x10 [kvm_amd]
+[  610.120926]  __do_sys_delete_module.isra.0+0x18b/0x2e0
+[  610.120933]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  610.120937]  ? syscall_trace_enter+0xfa/0x1a0
+[  610.120941]  do_syscall_64+0x7b/0x2c0
+[  610.120947]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  610.120950]  ? __handle_mm_fault+0x2aa/0x670
+[  610.120954]  ? iterate_dir+0x11e/0x230
+[  610.120960]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  610.120963]  ? count_memcg_events+0xb2/0x160
+[  610.120967]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  610.120969]  ? handle_mm_fault+0xb2/0x2f0
+[  610.120972]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  610.120975]  ? do_user_addr_fault+0x16f/0x6f0
+[  610.120981]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  610.120984]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[  610.120986] RIP: 0033:0x7f066e12ac9b
+[  610.120989] Code: 73 01 c3 48 8b 0d 7d 81 0d 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 b0 00 00 00 0f 05 <48> 3d 01 89 01 48
+[  610.120990] RSP: 002b:00007ffc629f1878 EFLAGS: 00000206 ORIG_RAX: 00000000000000b0
+[  610.120993] RAX: ffffffffffffffda RBX: 00005630e80256f0 RCX: 00007f066e12ac9b
+[  610.120994] RDX: 0000000000000000 RSI: 0000000000000800 RDI: 00005630e8025758
+[  610.120996] RBP: 00007ffc629f18a0 R08: 1999999999999999 R09: 0000000000000000
+[  610.120997] R10: 00007f066e1b1fc0 R11: 0000000000000206 R12: 0000000000000000
+[  610.120999] R13: 00007ffc629f1af0 R14: 00005630e80256f0 R15: 0000000000000000
+[  610.121003]  </TASK>
+[  610.121004] ---[ end trace 0000000000000000 ]---
+[  610.121017] ------------[ cut here ]------------
+
+There is a race condition here:
+kern_unmount() -> mntput() -> cleanup_mnt() -> deactivate_super() -> deactivate_locked_super() -> fs->kill_sb() (guest_memfd kill_sb) -> generic_shutdown_super() -> evict_inodes() -> destroy_inode() -> call_rcu()
+
+I should be waiting for pending RCU callback to finish before calling the kmem_cache_destroy().
+
+To fix this, I added rcu_barrier() like dax_fs_exit() is doing.
+
+@@ -561,6 +566,7 @@ void kvm_gmem_exit(void)
+ {
+        kern_unmount(kvm_gmem_mnt);
+        kvm_gmem_mnt = NULL;
++       rcu_barrier();
+        kmem_cache_destroy(kvm_gmem_inode_cachep);
+ }
+
+
+I'll incorporate this fix into next version.
+
+Thanks,
+Shivank
 
