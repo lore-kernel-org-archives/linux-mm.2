@@ -2,92 +2,98 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1BAD9CA0EC4
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 05:08:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A1940C87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 05:16:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B26EF8E01B9; Wed, 13 Aug 2025 01:08:05 -0400 (EDT)
+	id 3E6D68E01BA; Wed, 13 Aug 2025 01:16:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD76C8E01B6; Wed, 13 Aug 2025 01:08:05 -0400 (EDT)
+	id 3BEC88E01B6; Wed, 13 Aug 2025 01:16:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EE868E01B9; Wed, 13 Aug 2025 01:08:05 -0400 (EDT)
+	id 2FBAD8E01BA; Wed, 13 Aug 2025 01:16:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B3C88E01B6
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 01:08:05 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 543421A0249
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 05:08:05 +0000 (UTC)
-X-FDA: 83770552530.04.52D1992
-Received: from mail-io1-f70.google.com (mail-io1-f70.google.com [209.85.166.70])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A06B840007
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 05:08:03 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of 3sh2caAkbAKkbhiTJUUNaJYYRM.PXXPUNdbNaLXWcNWc.LXV@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.70 as permitted sender) smtp.mailfrom=3sh2caAkbAKkbhiTJUUNaJYYRM.PXXPUNdbNaLXWcNWc.LXV@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755061683;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=5aRgnC8pdaqi1WtoctxrdtHCiSuRrurqcXKWjYUn/gQ=;
-	b=BLkYPdS9f4T5LT202AV0aRS2u6hiyKDAT2hGLnI06OKLXsRAtRFiX39upt+CGfI47o7Z04
-	l63qDA6MvbK5DDbVta73hjgOacuAhXt3J70DA7avdAUEeYw6WA8i1rG6O8r76IdLFY3p7z
-	uOBHRWzgCtTlzY4XiUICrOnUrP7lgRw=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of 3sh2caAkbAKkbhiTJUUNaJYYRM.PXXPUNdbNaLXWcNWc.LXV@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.70 as permitted sender) smtp.mailfrom=3sh2caAkbAKkbhiTJUUNaJYYRM.PXXPUNdbNaLXWcNWc.LXV@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755061683; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C5278E01B6
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 01:16:43 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C981F1A0266
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 05:16:42 +0000 (UTC)
+X-FDA: 83770574244.19.E2ACF40
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 2452D1C000C
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 05:16:41 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NJ8kdtSm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755062201; a=rsa-sha256;
 	cv=none;
-	b=ZhNHOW2+V1eNpL686TLChJxQNujBaUQTlp0gbLPL3Ke1pZy8W6uwtt4SN5el1Fel6M7CAG
-	BySRKqLAmG/5lJRHDxkeZjrNBNFsPZ7ii0echOtsjYL19uQBCpnFrQCqwebojx0ZZOONj6
-	imEHr7zLtm9Pzi1Za/Kc39xoIzTUu9k=
-Received: by mail-io1-f70.google.com with SMTP id ca18e2360f4ac-8818b1512c2so607144739f.2
-        for <linux-mm@kvack.org>; Tue, 12 Aug 2025 22:08:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755061683; x=1755666483;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5aRgnC8pdaqi1WtoctxrdtHCiSuRrurqcXKWjYUn/gQ=;
-        b=oB5t0CW6OA6Tf3qvTvK6NBGyVWd8PTwpILqe6BXbSVOUaH+L9hV6QzX48GSe+5dFoW
-         ZxIZTJBE0A6PmB6EDATXYEopKQqfOQHTAZlBlbLS/cYi3nAgKnFNzpYRGmkhwherTZUG
-         5WpIPCMkqIkVhInNb0lvplmVc01ARsKpbr5krWd3qsETGffldkbYWrCShwj4ZWKcR3TW
-         d6mxul6OEPwILRDSs8pfgmG/RQUiW3c40RUXKKXG3Sds8GUOR2G1ZMoxJ7T/PmLWBP8C
-         IVMQkCroZM/+EMZzdg64lL103UQqH/J3M0TP1f2ld2uRlLCLkJRGi9Dh6EOlGVcp8HeY
-         KVhA==
-X-Forwarded-Encrypted: i=1; AJvYcCWQTJBP4jMe4xharnXe2aI1jOpRc1NkSSU3C6t9rGkQs2Oz/UGdwGX5ErPzj/1iuRCJ4K/rUp47Dw==@kvack.org
-X-Gm-Message-State: AOJu0YzggSgSdswVD1cvazfpJtDK43nZLSIQNz+DHr0NUazR2wpiIbm5
-	RiYHh9C6xtBOpHwpUe88HBFJXyOwxm9d7zR2aUcWeTI2baVS9RqojTFQFm1yfqg8TIcU/frD4J4
-	HjacSQGwTCuTLVouEjfwtCBZSyk+6deu1i4UsG9CJCfHZNyH5M8Jfac8Agy0=
-X-Google-Smtp-Source: AGHT+IFdU16hTe+3rTRLdmhnvw9e/HlyKqPC9f3x1xVy47/8w1RwlLxU0GFUaP4N329O77Izh/5Qii96T9yfgP56raMbWWyjaUlr
+	b=f5hvN3ClJfSZ/qWM72mqlcHX/RUW1JBZoTa2hHonxPKQXzTr6iNxy3m7rxEe52uGckkk67
+	jNlgaq2BqciSkE/rHHdHdSNU4EdokwUgbZA/AMUeugYZaxYr8kv6F5eyBKdrmQMOdK4kM/
+	4zR8mLQQBsMQIXkcgj0YWMg2F26Kfag=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NJ8kdtSm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755062201;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qliO/ao3WFlCOOgotU45EFsgsw1nG4vz09qlzIJSLSI=;
+	b=TU4oFN29xSUbJSsGJkIjdAa8KvtJc9Vl7JPO342G6o2AdurQpwRL6VzkS53Q40uj3iphyb
+	hP/M+CnTq56dY2lflP5hidher1UcFPXuwNXKBspgYPBTqWkP0dnfSnn1edfzcTVeEyT9ud
+	BHzBgQQhYAPCpXlkPrYomKZ+66bc4U4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 30E48601CE;
+	Wed, 13 Aug 2025 05:16:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6485C4CEEB;
+	Wed, 13 Aug 2025 05:16:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755062199;
+	bh=QHGINcBtgZyN5lwSuC4ihOdgAfkWxrXCvNILJWMOBVA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NJ8kdtSmVYuDmZ9UTC9uyVZDWkHKpE44JmKlAUuCa7NZxop2ZK8q7CC++ZZVKGYqf
+	 2FtFO5vBHtDjYhIFJTJjQSsJRbxUaf0a5k9GCO/vI0kEc2Amu0RlAFK5LI+90qUwE8
+	 Wt/HmHsp350LKxT3V5edx5EIk5k5/dHroc1gWPsZBPQTy3e4Ep/IgKDgKWQmnFs0sw
+	 6cqFtidy2jtFeD3RQfgLFaCCGVcqzgmOXefeTkU64Ioo3+VbGhOKm4ArnHUoBv87xd
+	 3Pvm2U1X+nJMrmwtp/okmHBkuSQR3Yb1oCRfS+C3ip0SypefYd4i8fT0xp5j3V9lPt
+	 9tySUkpa34FBg==
+Date: Tue, 12 Aug 2025 22:16:33 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: kernel test robot <lkp@intel.com>
+Cc: Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>, llvm@lists.linux.dev,
+	oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Maximilian Bosch <maximilian@mbosch.me>,
+	Ryan Lahfa <ryan@lahfa.xyz>, Christian Theune <ct@flyingcircus.io>,
+	Arnout Engelen <arnout@bzzt.net>, linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	Dominique Martinet <asmadeus@codewreck.org>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] iov_iter: iterate_folioq: fix handling of offset >=
+ folio size
+Message-ID: <20250813051633.GA3895812@ax162>
+References: <20250811-iot_iter_folio-v1-1-d9c223adf93c@codewreck.org>
+ <202508120250.Eooq2ydr-lkp@intel.com>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:2c0e:b0:879:674e:2c73 with SMTP id
- ca18e2360f4ac-8842963a8f9mr303580839f.4.1755061682744; Tue, 12 Aug 2025
- 22:08:02 -0700 (PDT)
-Date: Tue, 12 Aug 2025 22:08:02 -0700
-In-Reply-To: <664ea661-081a-4040-96c4-26307ba020ed@lucifer.local>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <689c1db2.a70a0220.7865.0047.GAE@google.com>
-Subject: Re: [syzbot] [mm?] WARNING in move_page_tables
-From: syzbot <syzbot+4d9a13f0797c46a29e42@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, jannh@google.com, liam.howlett@oracle.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
-	pfalcato@suse.de, syzkaller-bugs@googlegroups.com, vbabka@suse.cz
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: A06B840007
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202508120250.Eooq2ydr-lkp@intel.com>
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: ug97pxotry9iwai5ftf9upy7tmu8q595
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1755061683-680093
-X-HE-Meta: U2FsdGVkX1/dTMFgejN+3Xn5oAI4UXekiU8QHf+DdFIzBjnkIOsTonmHzFb7c7Z/cBoasxYYml918iaGwA0fp0Osa26KT7e+AYqxeGqktg1+lfnbYQ4qL0ZO1te3xWxO66dhAjuaBWbzvs12v9VLzdY6QaGr4SnmQ0V4f+q3t2GCjUbqY+YY1ydsY9ky3JD2ZLO7w9QlezJq6aAKGpJdD826xDKjCUzKtjS334B+ubhWYXhQG+iY9LTu7UWdg0Ksw8bAJZ7q+eKUEcuAmKN2hR0TYFDeyqqmxqwMNO71lhowwlpJ8hu6xJflK1hrW1vvc/P3X1onjLyxZMtlBSzrYpY+9olsvFQ4897QuDC0JaKy9H9Waihefa2wughgZW81SBxE+cC/klIK/iRCGpPuD7Z5oIx/WjNBYFe2iMk2hCXHjy+0cEARVmWUWD/CbCtbW37kBfbcIENvlc8GPGVV3SSx3rtikSuUaJKbSWn3P/6EasY+m1WAjU6s5hfgrQIdbyWeTTdqctuSQ359OdMFM0e7Iw9kYLLsCKQ9b2ZMsqD6UN6abtTnLMmvVkKaFTtPfoPNh7hAdhwH+NPqt6UPqZTlQvs2KWyJqIlbvzFeOPcMYHWIxlK2SCqgLPcBzcTaa5sO5Gw05sGkhpI8FFh7Q1Wu7HPSfoBPi0SV/hG8L+ahc0SXL13VsdLe0ejg7z8yqvsTntIUK+wsh+R5WKapun2cW64jOaBQm8cXViaY/Qmy5zLWsQfoHL/Cu+laNIif4exYp+oQKgVNUb0SICuhGB+41pbPL8sgv8k4XTfB48h5XPs22sR9/EaahUJ76TmiEUKI1UbejWR2O+5KaYVOpbFu5i8Vk9mMhdErCDEMIBjh1TLxYBUzj/UciFJdOzTilAV6ijL+nDC+wYOggrOe5thrUZbbEorZE6EQ7GuXODFGcPrwEgKi0deM9fy3JjpZ++p+3F5ONYzntaYvhXo
- XCc5F90B
- 1Ce8y1Qgvxod9iDjzX3DtR63MxZoU42/PtNJcoyQd0cnW7j4LgzOZMwTH0H18kMF3EfDCdeBzxW0i7fA6xZICq0G++uqk9HZis52JjJ0mj+hoM4rGFp/4SlBfODeqBc+OgAVC8TzR3v6gWUczbyMMPLukyBd/wq2j3TY2qroty7gKgADE/Mfnm+O4V2kLtJ/80mqw73UQo25DQLGtu21SmMYFcRFHgtQqwG6+O3LOEzPB7cqACaqiax69dfWY/isjvgloBpFCZvYRCkzKRGo9z8H1ySoVr02uYx8XJtArrFDH+h1u67YhPOD+3auUIsxr33bZKvjUd3hEaCbU27MXN+LWl9foNIeh0BDF/jQ7gyQ1hdICQskbq8oiSvbPi3FB6/5dtjr8h+nuZx6YFlok+JOiiTSE2VWnnj10rZYgUXPPGMhLI7e7oxlnafKhV0CuOa6/gUgi7hPutoSc4RxL1iayMsudRrLJxbgKXlBZDiBAcL8+odoihkRh6cBKAYl28RpG/x5eRmUPvUGkXW3yvM29Vh49/z0aG0ePsPjBMil3pKYyeHMD7YZfDsS7eWGJYisUv42oBRDa09J9YJX9Cqc4fOoHwROaRGD2R0fYpEHUqf5l52unsj3y6d3kmvPaRcA3AT/psaxPDL4jy9BMpch0wmQvXjtyq7BfN0e61n0WD4PPPIGwrdR7aFOvXiPnZ5+j9MqaUEbHTxurKTtfNZbNSnhfCYlTVk2u/WGR2p5/17k5hT+q223Ghe42fueVomN8ML1YZS2K/uwv5l9X+WNEjWbBXreWxjXMTIG/n613CY+UqtZ2dSbGhUYjMPXzQbuoVoUQETq/CxqEs/sODMrnysPVLxr5Haasp0KvMA0xmphqBHZdVmOuZOihaxYcYVqVxB73czdOGeSVW2rZ8imYniaWww3JI+8f/l5gMK8RnvqrendD/qS1YBol+yAA2VAE2M+jrkFcwBjI6QRobhriUsXV
- rqqHtQ6x
+X-Rspamd-Queue-Id: 2452D1C000C
+X-Stat-Signature: 6i9o5ki51bhzq8c9duqq9n3oh84xxfnh
+X-HE-Tag: 1755062201-716088
+X-HE-Meta: U2FsdGVkX18omypekfPY+eCrSHyZKK2/05sAyWmcfUE445O7ry0OCeFZcCt4W7EKPzCqeDVUG4OXKlY9caPf2Ez8cpJOUshsL1FOMlgGcT5Si0F53YKcGBAhPOGa8pnNUr5cQ0DP+am/Z59HF49RPXjzxV20lXzL/wn/k1J45wihsA9QkZGheIutkn+VYhGJG0+chxvs9kwG0Y7MC7s/9byf05WYZ+Iyknt7obGdaMTu74EPZEAlXnJFdDUD0e6crILPFfXb7zunswHajW0kM51v564y+tSMcxgiOskyIpQf6o/iqogH73cCd9uk0xc7drhwX6IS/sStWvyH+rUqDQ55Q9/8Gu+VC0b/Qo6S8s3rtOHx1FTrKTn1E2Izlk1ZOzJfSCyedX1YHADKxBb0q4zev/XGzzm7zC1Wa47PNEluDTPm82UoL7b7VgKzzMrfT8QCv2jr9qTMF/xRtafbVb8rbr0aqDP8ooOHoK7R+kDzlV6bLMPaDWUW/qRjV8A5eoU/9v3m4fmSNPRMsLLbtiaYCKucechr/jVZ0tC10kd/kz0KKUIjnlsJHp6Fhk0RVl1PAgJFX2/bInu0zPFM56VPUeu6iqGGXogmOgaqCsMmf88E8FqZ0GfP7LRpu264Ce9J2o1d+5trOoF+vtKmWco9ZcroAcD+XjhmEwli65fJkHwZdKKSWhrkKfCAGV4SJ4hZ5B3C/cVKSzxJmAlGP+uUtKB7XMhW+nWH5C1wz9PmclikndoVJhkNnh4nD6SSZ2YnXOceklq0Whb25ZATQiUGicaNyZEdAa7uoZItLLdrh47A0BM3dXZ+UFKY77RnSLR2DrmVAI/z33e8zFqEv0oz1cUBxMkpq56iTg6YccNodb2thekp/9X31yXxRzkzJ6nC7rNEVZHsQv2u3lNI431M5OXlwzroofmDAmiRrAmm4DaocZb6TiIb8IeVFMg75cpH7jcB+IoY/IwK7Mv
+ SA3haRjn
+ kRi3XMolFd4cC8hR6UrPh3E5ZVFyXS+h+Vi71x8BbfZRXv8jHiwv5NvuK3+VcEjlg4PTAI6SW54FmP5LvbDWcV8qV1QHiRxhO4rZHrvUcV6nLJJ0w9mo4CLUOniSrdPll8eORkwX5VeSOTCkostTW3cMRWn8Vug3WacCDRwNIUxmojB4hykjgHyVvbP764bTkKAqaIIhTUa578553wR1+yLaGmoRT2h3RxbUZzcjGj9ypFZk4yl6FIOa/5ywl4q4G+u4NidQlwUtaR1LWspEdDdl9lJdKFRBBIVW8iIoo9aMDjD7261ydqgB1UtTom4frOgOVHY+B1KirJKFW6XGaPJei9qS0XAVHSn4BbnH1vyv1VjA/DLK8KRpf/wdbpA7J0XgNYh9fPqWJaLDLvX+6IDEXkKbAOhYZTJhN4MbNiV8Lpof/WZxKZjSfCKbiTW7Hfj6DUYGqqp3S9v1DOkZDMEWr4GgemzylxT3IgNAbqhKoj6lXgJBbt4U5LGwq46W2vNVwhS1DHScPp8aiupvSs5koFWVAmg/aJl2ANN8wpnx+khR9Jbsv0AzUUNsV0r7WpR1XK29NRG0fdbH+bYofBtAvpg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,22 +102,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Tue, Aug 12, 2025 at 02:55:55AM +0800, kernel test robot wrote:
+> Hi Dominique,
+> 
+> kernel test robot noticed the following build warnings:
+> 
+> [auto build test WARNING on 8f5ae30d69d7543eee0d70083daf4de8fe15d585]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Dominique-Martinet-via-B4-Relay/iov_iter-iterate_folioq-fix-handling-of-offset-folio-size/20250811-154319
+> base:   8f5ae30d69d7543eee0d70083daf4de8fe15d585
+> patch link:    https://lore.kernel.org/r/20250811-iot_iter_folio-v1-1-d9c223adf93c%40codewreck.org
+> patch subject: [PATCH 1/2] iov_iter: iterate_folioq: fix handling of offset >= folio size
+> config: i386-buildonly-randconfig-002-20250811 (https://download.01.org/0day-ci/archive/20250812/202508120250.Eooq2ydr-lkp@intel.com/config)
+> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250812/202508120250.Eooq2ydr-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202508120250.Eooq2ydr-lkp@intel.com/
+> 
+> All warnings (new ones prefixed by >>):
+> 
+>    In file included from lib/iov_iter.c:14:
+> >> include/linux/iov_iter.h:171:7: warning: variable 'remain' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
+>      171 |                 if (skip >= fsize)
+>          |                     ^~~~~~~~~~~~~
+>    include/linux/iov_iter.h:190:7: note: uninitialized use occurs here
+>      190 |                 if (remain)
+>          |                     ^~~~~~
+>    include/linux/iov_iter.h:171:3: note: remove the 'if' if its condition is always false
+>      171 |                 if (skip >= fsize)
+>          |                 ^~~~~~~~~~~~~~~~~~
+>      172 |                         goto next;
+>          |                         ~~~~~~~~~
+>    include/linux/iov_iter.h:163:22: note: initialize the variable 'remain' to silence this warning
+>      163 |                 size_t part, remain, consumed;
+>          |                                    ^
+>          |                                     = 0
+>    1 warning generated.
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+I see this in -next now, should remain be zero initialized or is there
+some other fix that is needed?
 
-Reported-by: syzbot+4d9a13f0797c46a29e42@syzkaller.appspotmail.com
-Tested-by: syzbot+4d9a13f0797c46a29e42@syzkaller.appspotmail.com
-
-Tested on:
-
-commit:         0db9b72d mm/userfaultfd: fix kmap_local LIFO ordering ..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-hotfixes-unstable
-console output: https://syzkaller.appspot.com/x/log.txt?x=128fb5a2580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=2323b2d6038203a5
-dashboard link: https://syzkaller.appspot.com/bug?extid=4d9a13f0797c46a29e42
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-
-Note: no patches were applied.
-Note: testing is done by a robot and is best-effort only.
+> vim +171 include/linux/iov_iter.h
+> 
+>    143	
+>    144	/*
+>    145	 * Handle ITER_FOLIOQ.
+>    146	 */
+>    147	static __always_inline
+>    148	size_t iterate_folioq(struct iov_iter *iter, size_t len, void *priv, void *priv2,
+>    149			      iov_step_f step)
+>    150	{
+>    151		const struct folio_queue *folioq = iter->folioq;
+>    152		unsigned int slot = iter->folioq_slot;
+>    153		size_t progress = 0, skip = iter->iov_offset;
+>    154	
+>    155		if (slot == folioq_nr_slots(folioq)) {
+>    156			/* The iterator may have been extended. */
+>    157			folioq = folioq->next;
+>    158			slot = 0;
+>    159		}
+>    160	
+>    161		do {
+>    162			struct folio *folio = folioq_folio(folioq, slot);
+>    163			size_t part, remain, consumed;
+>    164			size_t fsize;
+>    165			void *base;
+>    166	
+>    167			if (!folio)
+>    168				break;
+>    169	
+>    170			fsize = folioq_folio_size(folioq, slot);
+>  > 171			if (skip >= fsize)
+>    172				goto next;
+>    173			base = kmap_local_folio(folio, skip);
+>    174			part = umin(len, PAGE_SIZE - skip % PAGE_SIZE);
+>    175			remain = step(base, progress, part, priv, priv2);
+>    176			kunmap_local(base);
+>    177			consumed = part - remain;
+>    178			len -= consumed;
+>    179			progress += consumed;
+>    180			skip += consumed;
+>    181			if (skip >= fsize) {
+>    182	next:
+>    183				skip = 0;
+>    184				slot++;
+>    185				if (slot == folioq_nr_slots(folioq) && folioq->next) {
+>    186					folioq = folioq->next;
+>    187					slot = 0;
+>    188				}
+>    189			}
+>    190			if (remain)
+>    191				break;
+>    192		} while (len);
+>    193	
+>    194		iter->folioq_slot = slot;
+>    195		iter->folioq = folioq;
+>    196		iter->iov_offset = skip;
+>    197		iter->count -= progress;
+>    198		return progress;
+>    199	}
+>    200	
+> 
+> -- 
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
 
