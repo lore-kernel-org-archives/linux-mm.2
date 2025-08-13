@@ -2,101 +2,117 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2486BC87FCF
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 13:39:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B67C5C87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 13:39:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B136B900076; Wed, 13 Aug 2025 09:39:14 -0400 (EDT)
+	id 5208C900077; Wed, 13 Aug 2025 09:39:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9D60900044; Wed, 13 Aug 2025 09:39:14 -0400 (EDT)
+	id 4F7D5900044; Wed, 13 Aug 2025 09:39:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B2C3900076; Wed, 13 Aug 2025 09:39:14 -0400 (EDT)
+	id 3BF46900077; Wed, 13 Aug 2025 09:39:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8457D900044
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 09:39:14 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4930682ACC
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 13:39:14 +0000 (UTC)
-X-FDA: 83771840628.02.B56D51E
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A1357C0008
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 13:39:11 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=XVumdE7z;
-	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 214C1900044
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 09:39:18 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AE17DB8DDA
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 13:39:17 +0000 (UTC)
+X-FDA: 83771840754.07.C899798
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 6F7D3C0008
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 13:39:15 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="lMj9/Gvi";
+	spf=pass (imf10.hostedemail.com: domain of andriy.shevchenko@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755092352;
+	s=arc-20220608; t=1755092355;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=u6x3JsIhx0Qrae5V9qZe8mSeS1eQz4BcSBsyhSmJ+qg=;
-	b=wRUCIujzQI4M6XwmOEQm5qFmlqKgIslQ7WPcJlubMLfYASgrTB7AT4Xs6m0aSca/1sF2gr
-	vxL7oJ4ZDKAAZjvseZ2t1szGJKSEFyQnimQdLWQFkChXoapbqheslslXG9/0Y19fC93orZ
-	V0CRBbQLzXXT0WeVunQkvkL0xxfyZOk=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=s5CGf20IPkVI6PZVkQXkGOe4NEzonHLIoh9N5wURCls=;
+	b=g8q2CbNgPYAIKoWBtKSoskjAWC1xmUoU8UzpCHh22HiqqV7AkAkdsEyXoWUBRnq6Ao1l6Y
+	51Csm5FUvJ4aKVmFhQ5v7JTzP0qz2NWkPdq53zcgZIUfzA/vAJ/JYunV3dSbpVVBpclrnp
+	r54j0ePd+D/VPUDzYoa6OLJf4wKrKmA=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=XVumdE7z;
-	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="lMj9/Gvi";
+	spf=pass (imf10.hostedemail.com: domain of andriy.shevchenko@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755092352; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755092355; a=rsa-sha256;
 	cv=none;
-	b=0vIK4h7IOWhsvILv5g18vrOmK1EbW701x9QeAjFiYqjYSxG+j5hwjBtt3ttAsCeQw34m9X
-	MjfUIepo7/WmXDSu9fPNv77npzOn5POEG7I9SMH28odTZaMJfzkdcXXMtR2GK6V4jvPLVy
-	qB6rWgPHMJwGPbFRtMK0/nc8WKH9Zlw=
+	b=YL9HvLRZ27jWAQbcdpffi+ggE6y3cqpoKADqzGFPp4l2CbGOVZdZJUKBQmDDqhboXW+oCC
+	med/Z04kgKJcpTsJER/5MYu+7fKeVpjbf0CSxgu3C850tVVctQHj7hkw3Lvkn4/APydO6+
+	+x18fUiedWLeDDnHSXymKI4nSL9kY9Q=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755092352; x=1786628352;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=ey8eSMdRLAlmFC09vuKwkFOnHkFG0NstFyZA4ySXPNo=;
-  b=XVumdE7zOjB0sdSCDJuRdfJr/ieIutOvcMtLPGBod9IloTU4avE4wMi1
-   qorQBRoBxxmP9yo6O+RT0qJ/+TuDL1hjZdCL4cOvn/xE/HwwEuu7xIjz2
-   gJMY6s3u5E3zVt6SPp8Kpn1Wm2rx3be3cbUwTdmDG+JsAWAlgzKXFryu0
-   uAiJo5nOWav/b2/jg70pNw6jywhzvXV0bDH+XCzSznmhQ+zuXxN4H16MX
-   qTvK8LwnsuBEgDvxcu7SHPMBtOKz6do9XClNGbD/sx21kIqbsNFyXZ1Ln
-   mcDgEj8Ap3kHQ9r2BIh4xoXg5GEDA0S4qTL7b/CYAiAPeyL6HD+Pyn4x8
+  t=1755092356; x=1786628356;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MgEKOEyyAEorH8iuoL33yXvGl8kuoAn+H2uLs0OHw6M=;
+  b=lMj9/GviaHvUPpJz0AzpjbOH/tPvp2aeQ0FL73PSyodOfAsCYDHXg+wg
+   KBjEJI8xOPrKVaQ8dcTw39n13UtxfUVy1Ge1PQRXS9+RtRxqV1gixA8qe
+   5hK3/vGopQvtQp+VhB3Qz0wiScLpDHxq2ovX5dM34unDD8PxhSrziHP4E
+   obiwTlQ+TOi6tIyWWFHkyAbKaMeFxSoF6sVzudTo3QLnlPiunAh6wfTy5
+   X77QCI5GF0vodczCPBcI9x9ac20qW+cNopzTjeZk/0V5/hOICbkzZR3nK
+   MOnV1n7RPnQxLNHX7Yc7E2XKJ4SGvQKN8omjUe/J1toGMyJhFcLR3z0W+
    A==;
-X-CSE-ConnectionGUID: 48FBXiz+SnW1vsS82bg3gw==
-X-CSE-MsgGUID: BoVVaW/tTLGBTmjWi8Pqrw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="67659876"
+X-CSE-ConnectionGUID: ALDrlcBzS8KzL0oSylXRdw==
+X-CSE-MsgGUID: yf3zaMWCSFic0Tq9zEHJJQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="44964704"
 X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
-   d="scan'208";a="67659876"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 06:39:10 -0700
-X-CSE-ConnectionGUID: 6KWxgs+yQ02+qcBirhtOmg==
-X-CSE-MsgGUID: w3KQMHZORJOS1da0gFH+uw==
+   d="scan'208";a="44964704"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 06:39:14 -0700
+X-CSE-ConnectionGUID: N7uaji0FRw66mKcsookEbg==
+X-CSE-MsgGUID: sjsF9VtDR4iwOeSVE/y+eA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
-   d="scan'208";a="165660598"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa006.jf.intel.com with ESMTP; 13 Aug 2025 06:39:09 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1umBgK-0009wo-1d;
-	Wed, 13 Aug 2025 13:38:31 +0000
-Date: Wed, 13 Aug 2025 21:34:15 +0800
-From: kernel test robot <lkp@intel.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
+   d="scan'208";a="170683697"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by fmviesa005.fm.intel.com with ESMTP; 13 Aug 2025 06:39:10 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1003)
+	id 2E07F95; Wed, 13 Aug 2025 15:39:09 +0200 (CEST)
+Date: Wed, 13 Aug 2025 15:39:09 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Nathan Chancellor <nathan@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>, llvm@lists.linux.dev,
+	oe-kbuild-all@lists.linux.dev,
 	Linux Memory Management List <linux-mm@kvack.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>
-Subject: [akpm-mm:mm-new 123/137] arch/s390/mm/mmap.c:188:3: error: call to
- undeclared function 'mm_flag_set'; ISO C99 and later do not support implicit
- function declarations
-Message-ID: <202508132154.feFNDPyq-lkp@intel.com>
+	Maximilian Bosch <maximilian@mbosch.me>,
+	Ryan Lahfa <ryan@lahfa.xyz>, Christian Theune <ct@flyingcircus.io>,
+	Arnout Engelen <arnout@bzzt.net>, linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] iov_iter: iterate_folioq: fix handling of offset >=
+ folio size
+Message-ID: <aJyVfWKX2eSMsfrb@black.igk.intel.com>
+References: <20250811-iot_iter_folio-v1-1-d9c223adf93c@codewreck.org>
+ <202508120250.Eooq2ydr-lkp@intel.com>
+ <20250813051633.GA3895812@ax162>
+ <aJwj4dQ3b599qKHn@codewreck.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Queue-Id: A1357C0008
-X-Rspamd-Server: rspam04
+In-Reply-To: <aJwj4dQ3b599qKHn@codewreck.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 6F7D3C0008
+X-Stat-Signature: xttr8hzhu9z3bcntymu4zrpbjraiutre
 X-Rspam-User: 
-X-Stat-Signature: okwe3pwwtm7gs7n9ayfunjq7bi3y6qrz
-X-HE-Tag: 1755092351-448754
-X-HE-Meta: U2FsdGVkX1/eJV0Yf9IIU88V+MdoUu45dyn1U/zOsYyxwvzZzX+/0bH3sfQo/cJ6cXfPcBnrNu5yfUBbsapT6IFdjc+SRFQhJjJWUUbryNMCZJmUfJk5wuLPgeglWazb+G68lCxrPQhViaEyxL0EOM763dnehT4fBatZ3BfESRFZKCk9m5zIR/GYC+rWAM5k5luxkWLClHw7p+ZdXb6QSyg2hgHKlyh5CNg7G5EIKUkFsUgWNUN4L5Al/EDAKhiJYI7Ziq28phuQf6STH0sLLhosOa/lRnx2PLKfvsChP3gAgOC/Az5CiRfw3+x0Wx9H+4YDZwWnVRYQv5aERJj8jC0YUFgOGiZDKurANAxMZtMapupp/k42+AtoAGXbqXUi+ylem6UyjHNkJAfXKD5WVVrn85Sp0Q926P/XfUPkHbcpsQTL1gNPH1Bw0pFeMCoFOL17BHtX9ExL9bvDjPQD5WksxP5mprvBdppWj/2VclpCn2F8IUlTFNI+mTIiZHyhMdBWFlWj33QVWcYDvDzdkgZFbJrqEghpWuCpnWZ5DPMWaw3iro6mnyopHHeoXL4PP8pdksDG31dDUIyQvXHlFZ1tbadZ345P1xKylXIAGtlx6d6mD14fsIiWyEt8G9ruBMH6QXYgAJzNIyLgzrJl+KZJRD+IUZwJXb6pB+Du9Ph/7tI2MImyZAXZ1h3OA0/uGnlbh+mIPkEILK06wY3WBQVn1yoXDNLlLgGy3xI4NjugSZUtRp7Srq7hpOMk1IKbmIY3l370x8g28ey6dKvqGejr6fBhqGEkGbYMAK+TZ7MoaMpt/AWN8+0IG5mToWdp6e7ZMdVkiDr+21/QJmmnKQshZaLVCosW1WWz2YX2ehdCXQfBCRFD4EvcB/oI+P9rBBSjUS8m38OQo9BROLr6ZqF3HL1Z0ztXfcW9d3lEwCqnx/31za9B4mAnf7ydnzX1sG5L+FTA7/p1fB6ifIh
- 2pLU023P
- ieP8xUcibx06swvksYOFoa92uNfbp6S5qTBmxjpUaQARViSuD88rngsoItaaB0BmVdv8O3suWKOU+v8lZI9b+7ulKZ263dk4Z5i9dZvM7El5pCgr3X8UVWTfzWR5YsGJz0FrMq7skJuk58JFQ7oSt+5QnzYkMAWU6zWilrVcryzmtHJedK9eGR18v1j6FUUxoCMakRNWjSLniTIfZzI4RAUU5ku2P8atIuG73gPYAPbd3PfZQsRNmcgkTEyf5e9vJAvH5nwthajtM0b5MHN7FNulcqxVNChuKRzfPJLSSwHsfKvGS9nTg7lUA/IaWiq3hqMVbKN/ZglIHOEp64w5BxUPpF7sWKQP/nwbZ6gbcCi5ZSr83A4AjulImUYaaDK2a7XmgYcq8aoYRzhma6odaLrLkQW5oZPfW4u8LeqnHHO7Z7gTF5on9Wvv3dA==
+X-HE-Tag: 1755092355-828826
+X-HE-Meta: U2FsdGVkX1+/vuf2GoVNwKW9MH94FQC7TB1Vx++n2tpvCdm/ewAGxvgHZQQNlkItafNsDtSGk1bugI6diMtrjQ5gV3242ks7WiT4XsaaT4J4/9Ujd19+Bq1/dFTtcmLzHV0YjcqDwFTHFJlo5TRbXcpmf9m3YRdNjOCqSGbVQWP37YMRvoUJprUlUthzw5sCsvvUew3nHEu6ULih6zIBCDKTS3aGSurouK2KxYUVYLheVz5+oDchQMUQ9HJ7esbbVE2iI7SgGABKenzK+atONuAJGXGeTjiOLzXNWfjxJZbEVawomeFPWelDWIW78WPthf8Zi6CpakksOcBDUpcFnFRttiFt4oPkphd2LU32+6Jkrl620GfdqNWuVmhNrVyBNMnTS0KODHCi4Av29Um0Sw0bvfolY9wC8CERIqSzPNTB6UDd9AgjUN0kgW98redHipDYynyF5zcDZD8BBa9Brpgb4I7PZP/tCp5RUf0e2fX75956ByCmkb2sKm0SmqiJ2yFKzajl91ekm0Fjyg5fhym1rDloZNKPK3Ks7lMocgoQA/dX95btNr88C0bWx4XpR0bI3whXuJEvuqSsk42DvnMJnxUIzZqIA3OKcSnDFFz46KISXOT7fI0jZoWAk75GQkqqUme4LODaSaen/V3Ggmz/0dgq4OZgBfPHjXG70wfTcxBHFomirLZEjD45J02EVitD0lT8zi6sCUGXMM+ShK9lHSmgOAbMT23zamwsRtIVatHGN+IZE/hfhg9V/rESOoF6T8xACL6LSa5KGgaRLObclO/fbxBu7/zbiAazaZ2Kx1b0weJe6ei8ZHZdoWR47TdyJtw+G74YBKEWsana0WR7qYTXHQuD2YzHD476YISGo3UIzOE36FsdP945joUrGkheOoE22j9n0+qMFKe7DC1JgXV4WEwAoLMtlvCebG7TdrY5BcLU6H72JNbhZjbXs3xyKn/qb+OkMlqMpbS
+ eN8LmApZ
+ IGLtQuqAzfDTxKkhp0vHtAxfmjYS6alGnufO7IZOHZD9/Io/fK+nZhXGacd2ontwAxszrkctOTZNmCCjdyO/K55/Ox1Ze/gsU8yHXQ7AOtJB2CVA5u2S0yV1oI0XSBsjRFvd47L1gms4uOx5LYNEXdanOy/90X40umZ2YnJVBq3xRS48Flk8lmbO+aRgJfTTYLEkwcBauTbtAVSu9QVuIbGwJfxhqVNgNH3mqbwQkFNWrBMlc0EM9JQWix1kEdrvMJU5IBJbqal/sMyeBgLX4chw3pbPtt3TAsnUrDwu1LGSLh9HOKyQ1GLfkCic1g9IudcYPQDJOXmgm9wFZ5rpgr0i3dO2wlDaQOA2VqaEwvZtSA8mBLxLZDcWoX4xCSQcMFLc+Q5PlDhOTc3g4suuGvJgimT+IA0F+bGrNJ/PAEiLEMPuZC3PyjRq9bd9dtHAker0s5fPOAREidrBVEsbWpTdVB0kf0LVQiwX8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,63 +121,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lorenzo,
+On Wed, Aug 13, 2025 at 02:34:25PM +0900, Dominique Martinet wrote:
+> Nathan Chancellor wrote on Tue, Aug 12, 2025 at 10:16:33PM -0700:
+> > >    1 warning generated.
+> > 
+> > I see this in -next now, should remain be zero initialized or is there
+> > some other fix that is needed?
+> 
+> A zero-initialization is fine, I sent a v2 with zero-initialization
+> fixed yesterday:
+> https://lkml.kernel.org/r/20250812-iot_iter_folio-v2-1-f99423309478@codewreck.org
+> 
+> (and I'll send a v3 with the goto replaced with a bigger if later today
+> as per David's request)
+> 
+> I assume Andrew will pick it up eventually?
 
-FYI, the error/warning was bisected to this commit, please ignore it if it's irrelevant.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-head:   694c8e78f486b09137ee3efadae044d01aba971b
-commit: 70fd92efa9e96967353bb39665bac8f5276aaaae [123/137] mm: convert arch-specific code to mm_flags_*() accessors
-config: s390-allnoconfig (https://download.01.org/0day-ci/archive/20250813/202508132154.feFNDPyq-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 3769ce013be2879bf0b329c14a16f5cb766f26ce)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250813/202508132154.feFNDPyq-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508132154.feFNDPyq-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> arch/s390/mm/mmap.c:188:3: error: call to undeclared function 'mm_flag_set'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     188 |                 mm_flag_set(MMF_TOPDOWN, mm);
-         |                 ^
-   arch/s390/mm/mmap.c:188:3: note: did you mean 'mm_flags_set'?
-   include/linux/mm.h:740:20: note: 'mm_flags_set' declared here
-     740 | static inline void mm_flags_set(int flag, struct mm_struct *mm)
-         |                    ^
-   1 error generated.
-
-
-vim +/mm_flag_set +188 arch/s390/mm/mmap.c
-
-   167	
-   168	/*
-   169	 * This function, called very early during the creation of a new
-   170	 * process VM image, sets up which VM layout function to use:
-   171	 */
-   172	void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
-   173	{
-   174		unsigned long random_factor = 0UL;
-   175	
-   176		if (current->flags & PF_RANDOMIZE)
-   177			random_factor = arch_mmap_rnd();
-   178	
-   179		/*
-   180		 * Fall back to the standard layout if the personality
-   181		 * bit is set, or if the expected stack growth is unlimited:
-   182		 */
-   183		if (mmap_is_legacy(rlim_stack)) {
-   184			mm->mmap_base = mmap_base_legacy(random_factor);
-   185			mm_flags_clear(MMF_TOPDOWN, mm);
-   186		} else {
-   187			mm->mmap_base = mmap_base(random_factor, rlim_stack);
- > 188			mm_flag_set(MMF_TOPDOWN, mm);
-   189		}
-   190	}
-   191	
+I hope this to happen sooner as it broke my builds too (I always do now `make W=1`
+and suggest all developers should follow).
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+With Best Regards,
+Andy Shevchenko
+
+
 
