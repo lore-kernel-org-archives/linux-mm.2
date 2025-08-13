@@ -2,91 +2,92 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 42E05CA0EE0
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 13:57:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E7E19C87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 13:57:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C00BA900087; Wed, 13 Aug 2025 09:57:30 -0400 (EDT)
+	id 87E50900044; Wed, 13 Aug 2025 09:57:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB0F8900044; Wed, 13 Aug 2025 09:57:30 -0400 (EDT)
+	id 82EBC900088; Wed, 13 Aug 2025 09:57:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA05F900087; Wed, 13 Aug 2025 09:57:30 -0400 (EDT)
+	id 6FD2A900044; Wed, 13 Aug 2025 09:57:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 93ECF900044
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 09:57:30 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 505D51A0201
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 13:57:30 +0000 (UTC)
-X-FDA: 83771886660.09.BAB8E2D
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 9376CA000D
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 13:57:28 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=R4DH1lGS;
-	spf=pass (imf15.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.219.48 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 479BA900044
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 09:57:32 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 160A61402D3
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 13:57:32 +0000 (UTC)
+X-FDA: 83771886744.23.45FEB4A
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2B2C42000C
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 13:57:29 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iRPQMaka;
+	spf=pass (imf03.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755093448;
+	s=arc-20220608; t=1755093450;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=QzWUPox51DZi49hcWgUUk30VnYc4Bgc0iKM5O3Jcgw4=;
-	b=e4sFLJBJnI4QCo3rbYKEyH9E8BJ4cOMOYVc1OWQap/Ia+HgdFDuIk0QnCM1uR3ozuzDA5Q
-	g0iimeMntLJAq/P1g3LYSMIs4Lbaw9/XyN0mrUzzegPFl1BcbBTrqQMiKYBGnGzoRTc8Z1
-	n9WYbUiu46150Oe46mJ4LZu3+6r/Vyg=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=MFkut+jxkX2kCL0o1G+AwY8Knubz8aROAdKPd/K2Kek=;
+	b=wdZDbaXfklUGqT5L8JA51AJRxI2NOJNaVbt82g49IYPPThDeLhtXmG/Q9yj0iVRcrSzzXm
+	/SIl/NS0nXFaWm0WTKF/ADdTJEtrp9QHRH9gsbAQhSfGIoA9ctI7l4+ITxIu2GYnjvEft0
+	erFSzzTN5AZ/Hbs5gy0LUYxA+5ffXOg=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=R4DH1lGS;
-	spf=pass (imf15.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.219.48 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iRPQMaka;
+	spf=pass (imf03.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755093448; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755093450; a=rsa-sha256;
 	cv=none;
-	b=4oRkrpKTSxUl5Lhq3lkUacHGGJcLR6TrcpYXWCHZP9QgZTKC/CYbiWF+4tJR0+XiB1vPzF
-	ziViB56RdoMTMzQ8c/bTKIO79VRYHIu+RoJJZ87pHkwNc+RQgNFupYyl5X4gGDfj6j3hlo
-	vlCtURf5tFDq4VzIlIVFYt+hJzpa6kE=
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-70756dc2c00so84950496d6.1
-        for <linux-mm@kvack.org>; Wed, 13 Aug 2025 06:57:28 -0700 (PDT)
+	b=v6c/1C5jEBXwJb92OV5DqLmqag7lgAICZLb4dxf/kqo0esvtVB8RGUJsn4RkZcsK2mJCX+
+	VrhZ1nKD2klPjvTTbUHrM35pjpTE4ymmNC9La84iJHppfJxGSZsgHQ3kOOoktsTbPM/WaH
+	vpBVJZfPI+svgFK2uqvNcGj85sU6Bpw=
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4b078384dcfso38243411cf.0
+        for <linux-mm@kvack.org>; Wed, 13 Aug 2025 06:57:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755093448; x=1755698248; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QzWUPox51DZi49hcWgUUk30VnYc4Bgc0iKM5O3Jcgw4=;
-        b=R4DH1lGS0yrAwcXqo9z4wsMgdeiCzIGqo5evS4KLGBYKz6s4/hSQMcMt34P6eDnEvl
-         r9rNffKkpusVIjbYeMADl9UykPENktiS9I1ptfVsz5+Rfe02Yat3KqAUDRoAOEZ0m71P
-         cGLyjeuFtKCL8KMRsgWrZKnFp2j7LlHXUobUqCOGTWXEI96WE3GVaR5i+x3o+1QFBJ/p
-         x8hN1bWWw4thXhuLS13NOLgulovlfMc3cqnoNimmhGFE/Jymr3IudP7A4q3Ri7YydIId
-         aT3ADqqBJoAdRWNqA2z4S4qAvMfFKlfMcjfTjNvjaTAQX+eh11FFF9vunJw95dxBRM9S
-         w0kA==
+        d=gmail.com; s=20230601; t=1755093449; x=1755698249; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MFkut+jxkX2kCL0o1G+AwY8Knubz8aROAdKPd/K2Kek=;
+        b=iRPQMakadoxi+YKWW00D/ha2WsyG6GzFYsoHl5wLX58WaCniiRGJ77ZKQXrbMS7/ck
+         1e/1MBNc5qEGcRPnD2k4AMCJKNaLr8Ngx1Z2NUXRnMJtLFTcFWG7Brx2Hyb9wBmoltbz
+         POdwyMV9mqnjy6XiEf/hqsz/1kMhHO0q0b4jCB3lQgDY/JkRB+3nW66Bvvr/WWsqlg4t
+         eLLCg/glnXODTHgW9UBFmHcPl6D3Us5BPHNSTfpppVhMi9hJGZP8dyBWOWKyF/AsKiNz
+         rALTGLHcaR9CdVyf8k8Je6GAszyTJQ31Y0QrojtIwANF7xFNtMhRPdLBXtGp09Y64sjt
+         MvjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755093448; x=1755698248;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QzWUPox51DZi49hcWgUUk30VnYc4Bgc0iKM5O3Jcgw4=;
-        b=oLikBM7EpZk5Zaq/UMkcg60KmlqmPdfOrApmat9thi0p/jPlM2t12NBHHbOwzTG2Zt
-         7W/+yXrtFzFKcNYxpOgMhtroFhGJqHeN3BuxLKcatpanuUUZBLslMNHJDTmaDSwNdR3m
-         esZKAN+v5ZpI/kumy9nYB/AeXBJV4BTLRGUYXoZDLSeNTzuieaRenTI+b9JCUw6Dr3V9
-         p6SsRWoZNsSrZFrPfoi7fJ0AwlVsZ1w5nWanivSLBxIiZ/m4Nc/LaU+mnMXAUY/2AbD3
-         u+wEyJZO5Gku5yV2E/Kic0mSkNtG6qhuw0YmTAFFpm7kJfNuw4pN7iJtbBoscXkI/lqG
-         PNfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX4Di6+fKEjCZZ9XcLYdoFQBHMy+a89spgahnj1aXSfT583YEIRMaaEfCnU/IR6pQtnyoI0W34vgA==@kvack.org
-X-Gm-Message-State: AOJu0Yx6X4dbDrpouZsX4uc4Bqm0TA1aULVcslztUb4+HntyaswEtOLN
-	2ohq7QkQBWN6VTqMVLoH9pxD02ZG8e96ebWgpc9UBJ3zqFgi9EHKFRTb
-X-Gm-Gg: ASbGncspeOj/zOfNN5LB20ndq32dKK9+ltVAhnCQ/7X0YPwDut38PvM1BiWldq7Ocoy
-	TF4Hw2Y0gzyG8fgkmGFJs0FvwH2DYl4c/pVXDQ/JWNDRnaR/+bOIu3vesMlcwG/hmSfag8rSNZR
-	OpdrnT6deBwUddk09L2Qm+jzUnxCuFss0mEIekqqlH4pzomvHY0ML89Pl3BQWHAQGaEdEPaf5st
-	p0NO8tkzT84qvP7VRf/UveaZKSX0E4hp4U5vubvUZQaMUx0TbAvBw0zjP13puxgA2Wgl3D29c9x
-	CLru1yYQ1XTarqBpjtQh/8El1Lva1hmQTXrfxoMO9/inLR5kGiq/0ZwazNhe8jb7Lt9GTlI0hl9
-	RzV7KuoQGvanR9DD1vLTk
-X-Google-Smtp-Source: AGHT+IHMpLHS102o5V9MYRk9uIP4OvbzgHHel8QxmDYGPR2Zk/mAM8p6YLuZt9c630uTVwr2P7e9Ag==
-X-Received: by 2002:a05:6214:20c3:b0:707:5df5:c719 with SMTP id 6a1803df08f44-709e8815919mr41371566d6.17.1755093447561;
-        Wed, 13 Aug 2025 06:57:27 -0700 (PDT)
-Received: from localhost ([2a03:2880:20ff:70::])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7077ce44849sm195552726d6.84.2025.08.13.06.57.26
+        d=1e100.net; s=20230601; t=1755093449; x=1755698249;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MFkut+jxkX2kCL0o1G+AwY8Knubz8aROAdKPd/K2Kek=;
+        b=rIUfj3h49oraTq5E5xhhIhaWQ7LUt67g09pqmAwcJnS/w/y6Hmfy3nWbDoP/3KhGVR
+         FxlAzf/zihF8Yt1OLAzq89SUEy1QiGsNjaLw8l/i0uuQS9K9uycxLe7m1ASByj0r5nK7
+         3PWYmPw4qH/Ff4IDuob5ZhZp7ebV9FZRODgCWi90UREAIKLUzan1OxtYsr+kzjbT9qQi
+         nE6PeprH9aRV3D0oQ6MxP67ochnzVYntvaaj5RzWd5DMVrLWu0VshiXlDxFJVmHCgYuh
+         +9BQgC3HsTy/NFRqMgh70PRKETfmzW/7EdUOh09l+auWzOh78ET/PHIMWhqu7BUG7W75
+         ky9g==
+X-Forwarded-Encrypted: i=1; AJvYcCUXOwvxUiwUiW9PbPLrgMuX7awEH/5+Ym/K+0jbhgjJ09eGqLpuEL1gZBte/hjAavofwzA9TU7PSA==@kvack.org
+X-Gm-Message-State: AOJu0YzFsyizOGKo08P7w6eh62ywvfYSsSo8jkderJ0WOUJekFWhM9W9
+	hf+MQBWvHNhrzDCWeusfukPQRF+cSPfqLkVGRa/9MV/TK8YiCcYSOe5Z
+X-Gm-Gg: ASbGncsUsHtzZI/DGiX/xhgw+yCUI2slqnYvuaunapFs+rjTEWdAnJaad6JltpcnZnf
+	kgNrZ6aIVWB1yEs33mKdUAqMC2WqgIgCPqQGG/eMoNNFUzjKNPhNrHzzsopRjrpEMOJHTO7NaXh
+	KuCgd73u3gpfhZUWYUv7+1QuVqO6yf2ZOwk/vlaHE0Ek7+kpphuHO4Ch3ZmZQP9fRqFCsIiqLDH
+	w3klWXj3QtSKILLrgyjbzUBYjh3Xj2BzuCAQ/4bw/t8cuxbz5RBHaWyMfY9RFbA/rUGzDhLYm8B
+	QtkBjjJmT4JJXCQdL0ii8LQ4OqNvD8vIvNZu0JuJBqKDxYPZkSWavnVDd1JFECLS2XL/SKR8fHg
+	n+BoeQHXd1GHc0BOkPxFMr5sfXGQdboQ=
+X-Google-Smtp-Source: AGHT+IFpUulFAXexVGcZ3RSnDMGaetHyokWl7LRdgFy0lzYI/f7M0RHgQ7IVBpy0qRTidvun+fcyKg==
+X-Received: by 2002:ac8:690b:0:b0:4b0:69ff:eb71 with SMTP id d75a77b69052e-4b0fc68bc8cmr45578351cf.1.1755093448790;
+        Wed, 13 Aug 2025 06:57:28 -0700 (PDT)
+Received: from localhost ([2a03:2880:20ff:72::])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7077ce39fb3sm195578986d6.82.2025.08.13.06.57.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Aug 2025 06:57:27 -0700 (PDT)
+        Wed, 13 Aug 2025 06:57:28 -0700 (PDT)
 From: Usama Arif <usamaarif642@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	david@redhat.com,
@@ -116,20 +117,22 @@ Cc: linux-fsdevel@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	kernel-team@meta.com,
 	Usama Arif <usamaarif642@gmail.com>
-Subject: [PATCH v4 0/7] prctl: extend PR_SET_THP_DISABLE to only provide THPs when advised
-Date: Wed, 13 Aug 2025 14:55:35 +0100
-Message-ID: <20250813135642.1986480-1-usamaarif642@gmail.com>
+Subject: [PATCH v4 1/7] prctl: extend PR_SET_THP_DISABLE to optionally exclude VM_HUGEPAGE
+Date: Wed, 13 Aug 2025 14:55:36 +0100
+Message-ID: <20250813135642.1986480-2-usamaarif642@gmail.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250813135642.1986480-1-usamaarif642@gmail.com>
+References: <20250813135642.1986480-1-usamaarif642@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9376CA000D
-X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: b4uzihr8ze5f15a5no3ht7aagwnac5hp
-X-HE-Tag: 1755093448-553020
-X-HE-Meta: U2FsdGVkX1/TqKE4evt+28HPujhb4ak2N/0KKdLBfG0QsqJcXA1VcbYxEhy+6RgN3AHqfxPLiMVau+yeOMRsCHhV3xEt2Fw7hg42LQ5Q7hi9CBk6RNGqMb478ZEEqXEBJgD1R4uTUrfD3YtxtAq4HP72cHKgLG2GCGKQRJ4DXVW8gpKxFtGGRL+whbh7LcTsXwzx0jA9ASjLs6PNBNbdRoCzLUn+JvSmUTQSxAUmKXGuYzP/ERZy9ziCG1INekFfQA0C1ikPs4L24V572DFBfKTxvxQ+DqsKZbp0qGCSS3fNZiO2zqRu5dThFGGPJrnmBWQ1CmgSnWGFMkj8pRTzGUNeFalZEo2im5Ud3TdCrgp4u5r6uyMwjTuiTyzN1tQkNPfXdBlYbVYftRF608uyquA2B9tf0wwE9MEg/MGJqPxpK21Y6FjpAD4t5n7OQ8v976hch91xQZiVCa58PssuED29eBw4bTFqnmF9tbMtpwIvfa+nztgPlz6pPkoTaePaHkYwUVPfIH5600QUHXJ4rAwDM+z64vtKVoKnnkzAVvCDdTwY+ehtRi53tHmgO5lJ8+0UQTYTREq57rRTOsTDlHla3Bhc/xiqrzNlYcwJ8Mqh5tt1/Pxkv0oFbu5hf77c2AL20EfxtY30M/2Ih7Yq7YM1DrBt2c6PYoKBffOnCpO7D8WQjc+fBbLZH7LLFzGVALAA5lc0tcU7zlXn0QTEcdGOK/0DBWFc9xGq248H+19M0ixIqpbbhgsLHBUO2JCWSu1cxoNIiLJS00UQE+KaZGAdzqaWQuB/4qO2S/lQ96dHxwIou93Y55UR16Obm6mKBvfep7+xRZaWqXB9djzt1NT6sMf4btd/vm5bOdX7yAubBr6b2E5I2ZTlqtW9RpDWUriWy1XLsqkxSBBUvjWoiU67rxSHmBYq1dm9Etmo/Z792pyvSYu8Z3XQFnQIxq3WE1hJg0aTw57eYs66Fdd
- 2DtKpW/4
- 0KvzKBW/IEFtPswuZIm7lkDb1w8di9ismHgAcoXp7Ng03msCpTURGQ58FPxxhtEK+UelUTo9mc4OnFgjw4TjcIWG88Vlt/VphITrWpcweHFF0WFvdxyEPhT+2CyS69jbwsKbyAWzuHKvuIZk4vYWhA0cVuUf9HrLUpntpw0egCoa4l7unv5dlzCOYq0V51T2BqAJz493+JQOXnyCbUdyPkHETR8NsHgy9Nf4D2YjjrUMv0UC84YTfh4b6uDhdicn4e1JZnsVZf/LGIyB0v93opV66fU32pMMuTFGNkJW9I0HOgPHVbDXRkeENuvRXsXVXXW+x57e8CwsWQvH/Cn9MHegAU9IHu2l9PLJNr7Ka7VrnMTRILwkK0MbdTsveaKz9r3cb4GZXoqiwMPpR2Lj5jlMMOhUtRwEx7THmASf414v4uPVjB8VpJOCsZH613ei+spoFTMpZqHMUjtlvPzulfMpq2U6YRAKElvyznEDr0W2/yhlWy/E/kwCP6O+DbrFZnw/UIkLL5lfWNUnt0HCYiMmnf7CaOtut3nnOQITLjtYIga7oJ5YQ8WCcYjiRd/yq5OGjOGhbs8UStZ9Z2W+CrdkXwdU9bB0B2S4E
+X-Rspamd-Queue-Id: 2B2C42000C
+X-Rspamd-Server: rspam06
+X-Stat-Signature: w3nrg5xp11fr91tfsz7x4p8ar6nn5r9r
+X-HE-Tag: 1755093449-35416
+X-HE-Meta: U2FsdGVkX1/AMfmdemPtz8fm3CwEX7nMBQN/goovSVNguCscNVAj46L+4Qhun2yBR8jmnQAuk1G3SUZJtOu04C+DkflidiPvD9rmZ9QSrR0I5iUWfrkdtbDYjIN9Ku3OK4Hg5E9aiwqLL025ay61pYe7sHRNMbY9YLPF8NmNEtoUx167MYvJIGCEuWhnfThcGjacSImrTqFCR1DzhExWCdahOWs82U6BX3UesXBD9jJvJlmzCju9O5QCGcsB0TIlYhM4mvX9L3qw6qaDe8IYOA1SmZuLqfnSWkFgBcus8R8Lay/TDpDjvsIwr8yu1m9OkO9jUNzQ80/Sz4XFLyN3JaDcXxIF0h8w6Tk+EkceqVaiZxQmKeep4+z4iS022kiXN1FmhsCyzKohkXxQAr4hNlbZH5pa0/Ofp7Eqemf6M9NZgckfcxxJCSXGlhNOYuYKurPDxkjrhuWtYoDR1GFBm8WgRqBbKZwaz19hTf1PmFVrYP/8QbOxptcfCEGWejq3hH4dNncVOOQ46XGTx5H+yBk19PqnAxHYL7GbRK3X2CGgSgjFdvAzBRNXtLrTyFNdh75bD+wMdxzfxDDyw/FCiCwEMqivFQLAnkGw1g0RRM1jtLQgBImPsRM24j7d7mH9MAwuDNCA0WTnrCUu1wSNu3+JukFa5GAI9io9H/bCCRtnkWVcW7MLQ9EFZzm4gMNhdHcgV4QESI0rkIODevrFWQbo2xHCL9U490tYeZzMaoEBNzU0WZuyFrjoVZllnUwHhITxxf6lrd/5u9611GucwStT278pF0pG51wYKCR2AQf2b5HZ7Afe9v5urSTYCG5a4AvVeVmggItomWgMNK/JO+jlpecVT7CsITu5TgoQH8HDWuODu4Qv0QJDp3auFgPrTMzrw2bzAJxq5lKls08J1F0QaufXC7gHFSTzIhyHiftQvcJwY7odeJ9mztT/SmMAntVMTs7P1yLT3V9CH1u
+ KI1e7StP
+ EhkWMi2YjWkX/MrjJfdGxk2qQQNPUHBjz9XCUL6cyboL4aSH1n5OSK/w7o5nmQ3mAE9kveL7YG6WXI8PA6KEILuqtLRr91khw6JfTt4cPbXdJo/bESpC1dWs1TYvAwQrvVjT7QhMMTecBDtxT70RTKvDlVxEwmGHP6aKQl4Uvsl8ZN3mCMnNXAnLyJ+TUEMLA+TmldipEAwpEpyHet/XPCGVJ8pGxLdRjah2dWeniwZ9WwhYD1JsL5gaUpe+fYgy3epZ+oxF6RaXZ37M/LId0kyfO8HT4Us2IAZGbbx4+oZRJSYdpObtFYSySFw9iouebCucSmGYN6gFWtTGhLPmcpaDP3pcMmoBmSu5FuFxVqsppJ0lFLo4p1g5UrqZ1MrDt4p3dMAHBdDWfFDL7luB1rj8IfnCn6qa1rbquvXZAqhwu6SyJ+kzN2l9lsXl+1dPky8Xno89SMVgpoz2ImKoH8uHdkbCPvhfB4a/yCH9Vl3kvAC71es+YgmuJj6sEZlJMxk06ylzcvDNPxvluqYnr6otlucAQXJOtuMHB/awhUMfIAyM8zC7pP8sYgf2aaHBvXbX/kem6XkxRYD5EkyiIc/29RjIfniVtc9MBSAaY9PTyH7fIjam+HNl3FJS7cBAP8wTsZfG12HJmjMdq0oUFIfoKdTreczOLISDfRq9CtEqNNJo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,81 +141,355 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This will allow individual processes to opt-out of THP = "always"
-into THP = "madvise", without affecting other workloads on the system.
-This has been extensively discussed on the mailing list and has been
-summarized very well by David in the first patch which also includes
-the links to alternatives, please refer to the first patch commit message
-for the motivation for this series.
+From: David Hildenbrand <david@redhat.com>
 
-Patch 1 adds the PR_THP_DISABLE_EXCEPT_ADVISED flag to implement this, along
-with the MMF changes.
-Patch 2 is a cleanup patch for tva_flags that will allow the forced collapse
-case to be transmitted to vma_thp_disabled (which is done in patch 3).
-Patch 4 adds documentation for PR_SET_THP_DISABLE/PR_GET_THP_DISABLE.
-Patches 6-7 implement the selftests for PR_SET_THP_DISABLE for completely
-disabling THPs (old behaviour) and only enabling it at advise
-(PR_THP_DISABLE_EXCEPT_ADVISED).
+People want to make use of more THPs, for example, moving from
+the "never" system policy to "madvise", or from "madvise" to "always".
 
-The patches are tested on top of 694c8e78f486b09137ee3efadae044d01aba971b
-from mm-new.
+While this is great news for every THP desperately waiting to get
+allocated out there, apparently there are some workloads that require a
+bit of care during that transition: individual processes may need to
+opt-out from this behavior for various reasons, and this should be
+permitted without needing to make all other workloads on the system
+similarly opt-out.
 
-v3 -> v4: https://lore.kernel.org/all/20250804154317.1648084-1-usamaarif642@gmail.com/
-- rebase to latest mm-new (Aug 13), which includes the mm flag changes from Lonrenzo.
-- remove mention of MM flags from admin doc in transhuge.rst and other other
-  improvements to it (David and Lorenzo)
-- extract size2ord into vm_util.h (David)
-- check if the respective prctl can be set in the fixture setup instead of the fixture
-  itself (David)
+The following scenarios are imaginable:
 
-v2 -> v3: https://lore.kernel.org/all/20250731122825.2102184-1-usamaarif642@gmail.com/
-- Fix sign off and added ack for patch 1 (Lorenzo and Zi Yan)
-- Fix up commit message, comments and variable names in patch 2 and 3 (Lorenzo)
-- Added documentation for PR_SET_THP_DISABLE/PR_GET_THP_DISABLE (Lorenzo)
-- remove struct test_results and enum thp_policy for prctl tests (David)
+(1) Switch from "none" system policy to "madvise"/"always", but keep THPs
+    disabled for selected workloads.
 
-v1 -> v2: https://lore.kernel.org/all/20250725162258.1043176-1-usamaarif642@gmail.com/
-- Change thp_push_settings to thp_write_settings (David)
-- Add tests for all the system policies for the prctl call (David)
-- Small fixes and cleanups
+(2) Stay at "none" system policy, but enable THPs for selected
+    workloads, making only these workloads use the "madvise" or "always"
+    policy.
 
+(3) Switch from "madvise" system policy to "always", but keep the
+    "madvise" policy for selected workloads: allocate THPs only when
+    advised.
 
-David Hildenbrand (3):
-  prctl: extend PR_SET_THP_DISABLE to optionally exclude VM_HUGEPAGE
-  mm/huge_memory: convert "tva_flags" to "enum tva_type"
-  mm/huge_memory: respect MADV_COLLAPSE with
-    PR_THP_DISABLE_EXCEPT_ADVISED
+(4) Stay at "madvise" system policy, but enable THPs even when not advised
+    for selected workloads -- "always" policy.
 
-Usama Arif (4):
-  docs: transhuge: document process level THP controls
-  selftest/mm: Extract sz2ord function into vm_util.h
-  selftests: prctl: introduce tests for disabling THPs completely
-  selftests: prctl: introduce tests for disabling THPs except for
-    madvise
+Once can emulate (2) through (1), by setting the system policy to
+"madvise"/"always" while disabling THPs for all processes that don't want
+THPs. It requires configuring all workloads, but that is a user-space
+problem to sort out.
 
- Documentation/admin-guide/mm/transhuge.rst    |  37 +++
- Documentation/filesystems/proc.rst            |   5 +-
- fs/proc/array.c                               |   2 +-
- fs/proc/task_mmu.c                            |   4 +-
- include/linux/huge_mm.h                       |  60 ++--
- include/linux/mm_types.h                      |  14 +-
- include/uapi/linux/prctl.h                    |  10 +
- kernel/sys.c                                  |  59 +++-
- mm/huge_memory.c                              |  11 +-
- mm/khugepaged.c                               |  19 +-
- mm/memory.c                                   |  20 +-
- mm/shmem.c                                    |   2 +-
- tools/testing/selftests/mm/.gitignore         |   1 +
- tools/testing/selftests/mm/Makefile           |   1 +
- tools/testing/selftests/mm/cow.c              |  12 +-
- .../testing/selftests/mm/prctl_thp_disable.c  | 275 ++++++++++++++++++
- tools/testing/selftests/mm/thp_settings.c     |   9 +-
- tools/testing/selftests/mm/thp_settings.h     |   1 +
- tools/testing/selftests/mm/uffd-wp-mremap.c   |   9 +-
- tools/testing/selftests/mm/vm_util.h          |   5 +
- 20 files changed, 470 insertions(+), 86 deletions(-)
- create mode 100644 tools/testing/selftests/mm/prctl_thp_disable.c
+(4) can be emulated through (3) in a similar way.
 
+Back when (1) was relevant in the past, as people started enabling THPs,
+we added PR_SET_THP_DISABLE, so relevant workloads that were not ready
+yet (i.e., used by Redis) were able to just disable THPs completely. Redis
+still implements the option to use this interface to disable THPs
+completely.
+
+With PR_SET_THP_DISABLE, we added a way to force-disable THPs for a
+workload -- a process, including fork+exec'ed process hierarchy.
+That essentially made us support (1): simply disable THPs for all workloads
+that are not ready for THPs yet, while still enabling THPs system-wide.
+
+The quest for handling (3) and (4) started, but current approaches
+(completely new prctl, options to set other policies per process,
+alternatives to prctl -- mctrl, cgroup handling) don't look particularly
+promising. Likely, the future will use bpf or something similar to
+implement better policies, in particular to also make better decisions
+about THP sizes to use, but this will certainly take a while as that work
+just started.
+
+Long story short: a simple enable/disable is not really suitable for the
+future, so we're not willing to add completely new toggles.
+
+While we could emulate (3)+(4) through (1)+(2) by simply disabling THPs
+completely for these processes, this is a step backwards, because these
+processes can no longer allocate THPs in regions where THPs were
+explicitly advised: regions flagged as VM_HUGEPAGE. Apparently, that
+imposes a problem for relevant workloads, because "not THPs" is certainly
+worse than "THPs only when advised".
+
+Could we simply relax PR_SET_THP_DISABLE, to "disable THPs unless not
+explicitly advised by the app through MAD_HUGEPAGE"? *maybe*, but this
+would change the documented semantics quite a bit, and the versatility
+to use it for debugging purposes, so I am not 100% sure that is what we
+want -- although it would certainly be much easier.
+
+So instead, as an easy way forward for (3) and (4), add an option to
+make PR_SET_THP_DISABLE disable *less* THPs for a process.
+
+In essence, this patch:
+
+(A) Adds PR_THP_DISABLE_EXCEPT_ADVISED, to be used as a flag in arg3
+    of prctl(PR_SET_THP_DISABLE) when disabling THPs (arg2 != 0).
+
+    prctl(PR_SET_THP_DISABLE, 1, PR_THP_DISABLE_EXCEPT_ADVISED).
+
+(B) Makes prctl(PR_GET_THP_DISABLE) return 3 if
+    PR_THP_DISABLE_EXCEPT_ADVISED was set while disabling.
+
+    Previously, it would return 1 if THPs were disabled completely. Now
+    it returns the set flags as well: 3 if PR_THP_DISABLE_EXCEPT_ADVISED
+    was set.
+
+(C) Renames MMF_DISABLE_THP to MMF_DISABLE_THP_COMPLETELY, to express
+    the semantics clearly.
+
+    Fortunately, there are only two instances outside of prctl() code.
+
+(D) Adds MMF_DISABLE_THP_EXCEPT_ADVISED to express "no THP except for VMAs
+    with VM_HUGEPAGE" -- essentially "thp=madvise" behavior
+
+    Fortunately, we only have to extend vma_thp_disabled().
+
+(E) Indicates "THP_enabled: 0" in /proc/pid/status only if THPs are
+    disabled completely
+
+    Only indicating that THPs are disabled when they are really disabled
+    completely, not only partially.
+
+    For now, we don't add another interface to obtained whether THPs
+    are disabled partially (PR_THP_DISABLE_EXCEPT_ADVISED was set). If
+    ever required, we could add a new entry.
+
+The documented semantics in the man page for PR_SET_THP_DISABLE
+"is inherited by a child created via fork(2) and is preserved across
+execve(2)" is maintained. This behavior, for example, allows for
+disabling THPs for a workload through the launching process (e.g.,
+systemd where we fork() a helper process to then exec()).
+
+For now, MADV_COLLAPSE will *fail* in regions without VM_HUGEPAGE and
+VM_NOHUGEPAGE. As MADV_COLLAPSE is a clear advise that user space
+thinks a THP is a good idea, we'll enable that separately next
+(requiring a bit of cleanup first).
+
+There is currently not way to prevent that a process will not issue
+PR_SET_THP_DISABLE itself to re-enable THP. There are not really known
+users for re-enabling it, and it's against the purpose of the original
+interface. So if ever required, we could investigate just forbidding to
+re-enable them, or make this somehow configurable.
+
+Acked-by: Usama Arif <usamaarif642@gmail.com>
+Tested-by: Usama Arif <usamaarif642@gmail.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+---
+ Documentation/filesystems/proc.rst |  5 ++-
+ fs/proc/array.c                    |  2 +-
+ include/linux/huge_mm.h            | 20 +++++++---
+ include/linux/mm_types.h           | 14 +++----
+ include/uapi/linux/prctl.h         | 10 +++++
+ kernel/sys.c                       | 59 ++++++++++++++++++++++++------
+ mm/khugepaged.c                    |  2 +-
+ 7 files changed, 83 insertions(+), 29 deletions(-)
+
+diff --git a/Documentation/filesystems/proc.rst b/Documentation/filesystems/proc.rst
+index 2971551b72353..915a3e44bc120 100644
+--- a/Documentation/filesystems/proc.rst
++++ b/Documentation/filesystems/proc.rst
+@@ -291,8 +291,9 @@ It's slow but very precise.
+  HugetlbPages                size of hugetlb memory portions
+  CoreDumping                 process's memory is currently being dumped
+                              (killing the process may lead to a corrupted core)
+- THP_enabled		     process is allowed to use THP (returns 0 when
+-			     PR_SET_THP_DISABLE is set on the process
++ THP_enabled                 process is allowed to use THP (returns 0 when
++                             PR_SET_THP_DISABLE is set on the process to disable
++                             THP completely, not just partially)
+  Threads                     number of threads
+  SigQ                        number of signals queued/max. number for queue
+  SigPnd                      bitmap of pending signals for the thread
+diff --git a/fs/proc/array.c b/fs/proc/array.c
+index c286dc12325ed..d84b291dd1ed8 100644
+--- a/fs/proc/array.c
++++ b/fs/proc/array.c
+@@ -422,7 +422,7 @@ static inline void task_thp_status(struct seq_file *m, struct mm_struct *mm)
+ 	bool thp_enabled = IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE);
+ 
+ 	if (thp_enabled)
+-		thp_enabled = !mm_flags_test(MMF_DISABLE_THP, mm);
++		thp_enabled = !mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm);
+ 	seq_printf(m, "THP_enabled:\t%d\n", thp_enabled);
+ }
+ 
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index 84b7eebe0d685..22b8b067b295e 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -318,16 +318,26 @@ struct thpsize {
+ 	(transparent_hugepage_flags &					\
+ 	 (1<<TRANSPARENT_HUGEPAGE_USE_ZERO_PAGE_FLAG))
+ 
++/*
++ * Check whether THPs are explicitly disabled for this VMA, for example,
++ * through madvise or prctl.
++ */
+ static inline bool vma_thp_disabled(struct vm_area_struct *vma,
+ 		vm_flags_t vm_flags)
+ {
++	/* Are THPs disabled for this VMA? */
++	if (vm_flags & VM_NOHUGEPAGE)
++		return true;
++	/* Are THPs disabled for all VMAs in the whole process? */
++	if (mm_flags_test(MMF_DISABLE_THP_COMPLETELY, vma->vm_mm))
++		return true;
+ 	/*
+-	 * Explicitly disabled through madvise or prctl, or some
+-	 * architectures may disable THP for some mappings, for
+-	 * example, s390 kvm.
++	 * Are THPs disabled only for VMAs where we didn't get an explicit
++	 * advise to use them?
+ 	 */
+-	return (vm_flags & VM_NOHUGEPAGE) ||
+-	       mm_flags_test(MMF_DISABLE_THP, vma->vm_mm);
++	if (vm_flags & VM_HUGEPAGE)
++		return false;
++	return mm_flags_test(MMF_DISABLE_THP_EXCEPT_ADVISED, vma->vm_mm);
+ }
+ 
+ static inline bool thp_disabled_by_hw(void)
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 47d2e4598acd6..3b369dfbbedd6 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -1781,19 +1781,17 @@ enum {
+ #define MMF_VM_MERGEABLE	16	/* KSM may merge identical pages */
+ #define MMF_VM_HUGEPAGE		17	/* set when mm is available for khugepaged */
+ 
+-/*
+- * This one-shot flag is dropped due to necessity of changing exe once again
+- * on NFS restore
+- */
+-//#define MMF_EXE_FILE_CHANGED	18	/* see prctl_set_mm_exe_file() */
++#define MMF_HUGE_ZERO_FOLIO	18      /* mm has ever used the global huge zero folio */
+ 
+ #define MMF_HAS_UPROBES		19	/* has uprobes */
+ #define MMF_RECALC_UPROBES	20	/* MMF_HAS_UPROBES can be wrong */
+ #define MMF_OOM_SKIP		21	/* mm is of no interest for the OOM killer */
+ #define MMF_UNSTABLE		22	/* mm is unstable for copy_from_user */
+-#define MMF_HUGE_ZERO_FOLIO	23      /* mm has ever used the global huge zero folio */
+-#define MMF_DISABLE_THP		24	/* disable THP for all VMAs */
+-#define MMF_DISABLE_THP_MASK	_BITUL(MMF_DISABLE_THP)
++
++#define MMF_DISABLE_THP_EXCEPT_ADVISED	23	/* no THP except when advised (e.g., VM_HUGEPAGE) */
++#define MMF_DISABLE_THP_COMPLETELY	24	/* no THP for all VMAs */
++#define MMF_DISABLE_THP_MASK	(_BITUL(MMF_DISABLE_THP_COMPLETELY) | \
++				 _BITUL(MMF_DISABLE_THP_EXCEPT_ADVISED))
+ #define MMF_OOM_REAP_QUEUED	25	/* mm was queued for oom_reaper */
+ #define MMF_MULTIPROCESS	26	/* mm is shared between processes */
+ /*
+diff --git a/include/uapi/linux/prctl.h b/include/uapi/linux/prctl.h
+index ed3aed264aeb2..150b6deebfb1e 100644
+--- a/include/uapi/linux/prctl.h
++++ b/include/uapi/linux/prctl.h
+@@ -177,7 +177,17 @@ struct prctl_mm_map {
+ 
+ #define PR_GET_TID_ADDRESS	40
+ 
++/*
++ * Flags for PR_SET_THP_DISABLE are only applicable when disabling. Bit 0
++ * is reserved, so PR_GET_THP_DISABLE can return "1 | flags", to effectively
++ * return "1" when no flags were specified for PR_SET_THP_DISABLE.
++ */
+ #define PR_SET_THP_DISABLE	41
++/*
++ * Don't disable THPs when explicitly advised (e.g., MADV_HUGEPAGE /
++ * VM_HUGEPAGE).
++ */
++# define PR_THP_DISABLE_EXCEPT_ADVISED	(1 << 1)
+ #define PR_GET_THP_DISABLE	42
+ 
+ /*
+diff --git a/kernel/sys.c b/kernel/sys.c
+index 605f7fe9a1432..a46d9b75880b8 100644
+--- a/kernel/sys.c
++++ b/kernel/sys.c
+@@ -2452,6 +2452,51 @@ static int prctl_get_auxv(void __user *addr, unsigned long len)
+ 	return sizeof(mm->saved_auxv);
+ }
+ 
++static int prctl_get_thp_disable(unsigned long arg2, unsigned long arg3,
++				 unsigned long arg4, unsigned long arg5)
++{
++	struct mm_struct *mm = current->mm;
++
++	if (arg2 || arg3 || arg4 || arg5)
++		return -EINVAL;
++
++	/* If disabled, we return "1 | flags", otherwise 0. */
++	if (mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm))
++		return 1;
++	else if (mm_flags_test(MMF_DISABLE_THP_EXCEPT_ADVISED, mm))
++		return 1 | PR_THP_DISABLE_EXCEPT_ADVISED;
++	return 0;
++}
++
++static int prctl_set_thp_disable(bool thp_disable, unsigned long flags,
++				 unsigned long arg4, unsigned long arg5)
++{
++	struct mm_struct *mm = current->mm;
++
++	if (arg4 || arg5)
++		return -EINVAL;
++
++	/* Flags are only allowed when disabling. */
++	if ((!thp_disable && flags) || (flags & ~PR_THP_DISABLE_EXCEPT_ADVISED))
++		return -EINVAL;
++	if (mmap_write_lock_killable(current->mm))
++		return -EINTR;
++	if (thp_disable) {
++		if (flags & PR_THP_DISABLE_EXCEPT_ADVISED) {
++			mm_flags_clear(MMF_DISABLE_THP_COMPLETELY, mm);
++			mm_flags_set(MMF_DISABLE_THP_EXCEPT_ADVISED, mm);
++		} else {
++			mm_flags_set(MMF_DISABLE_THP_COMPLETELY, mm);
++			mm_flags_clear(MMF_DISABLE_THP_EXCEPT_ADVISED, mm);
++		}
++	} else {
++		mm_flags_clear(MMF_DISABLE_THP_COMPLETELY, mm);
++		mm_flags_clear(MMF_DISABLE_THP_EXCEPT_ADVISED, mm);
++	}
++	mmap_write_unlock(current->mm);
++	return 0;
++}
++
+ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
+ 		unsigned long, arg4, unsigned long, arg5)
+ {
+@@ -2625,20 +2670,10 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
+ 			return -EINVAL;
+ 		return task_no_new_privs(current) ? 1 : 0;
+ 	case PR_GET_THP_DISABLE:
+-		if (arg2 || arg3 || arg4 || arg5)
+-			return -EINVAL;
+-		error = !!mm_flags_test(MMF_DISABLE_THP, me->mm);
++		error = prctl_get_thp_disable(arg2, arg3, arg4, arg5);
+ 		break;
+ 	case PR_SET_THP_DISABLE:
+-		if (arg3 || arg4 || arg5)
+-			return -EINVAL;
+-		if (mmap_write_lock_killable(me->mm))
+-			return -EINTR;
+-		if (arg2)
+-			mm_flags_set(MMF_DISABLE_THP, me->mm);
+-		else
+-			mm_flags_clear(MMF_DISABLE_THP, me->mm);
+-		mmap_write_unlock(me->mm);
++		error = prctl_set_thp_disable(arg2, arg3, arg4, arg5);
+ 		break;
+ 	case PR_MPX_ENABLE_MANAGEMENT:
+ 	case PR_MPX_DISABLE_MANAGEMENT:
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 550eb00116c51..1a416b8659972 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -410,7 +410,7 @@ static inline int hpage_collapse_test_exit(struct mm_struct *mm)
+ static inline int hpage_collapse_test_exit_or_disable(struct mm_struct *mm)
+ {
+ 	return hpage_collapse_test_exit(mm) ||
+-		mm_flags_test(MMF_DISABLE_THP, mm);
++		mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm);
+ }
+ 
+ static bool hugepage_pmd_enabled(void)
 -- 
 2.47.3
 
