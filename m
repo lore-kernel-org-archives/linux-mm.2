@@ -2,125 +2,120 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5946FCA0EE0
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 08:14:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8202BC87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 08:14:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1990900045; Wed, 13 Aug 2025 04:14:16 -0400 (EDT)
+	id EF6908E01CA; Wed, 13 Aug 2025 04:14:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC87D900044; Wed, 13 Aug 2025 04:14:16 -0400 (EDT)
+	id E2EDA8E01B6; Wed, 13 Aug 2025 04:14:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6A37900045; Wed, 13 Aug 2025 04:14:16 -0400 (EDT)
+	id C539B8E01B6; Wed, 13 Aug 2025 04:14:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9244C8E01B6
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AA8B9900044
 	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 04:14:16 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6D7691402A2
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 08:07:12 +0000 (UTC)
-X-FDA: 83771003904.28.B9F964E
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 74E2A8000D
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 08:07:10 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Jvd4weYr;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 642F31402AB
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 08:14:16 +0000 (UTC)
+X-FDA: 83771021712.24.2C85B6D
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8D2B3C0008
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 08:14:14 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MS27p4Gf;
+	spf=pass (imf10.hostedemail.com: domain of colin.i.king@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=colin.i.king@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755072430;
+	s=arc-20220608; t=1755072854;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=maMRjoqJXCK/+GFkp6ApW3O21rIqKnM3FTWwDItdMGw=;
-	b=X+3mO/ZL3jZxRJTTSX1tori9b93cccg1niPenNeCgYWM2l2SOYWFyFEKx6byO/2JiHNdvh
-	iuONLMaz4bmYf3TMzQ9hopgA+8tDriVW9B5F/T05RbEuLmOPfq7v0NzWub7TIbDX2kafb9
-	+MrW1FsX/kVY4Q5FvJWikW7nTJUsdcQ=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Ygmsewkf5T2USbfV7/eaFtCh/3kTJRR7dvKlmbHq5Jc=;
+	b=i5GBDQuRGSj9mvDdgSQmYTuxcqshdiLixsfh31K0O0Owx9VAqT4reNU7MOMM+Zy9GrK9PF
+	7I7JPuZCWif5AFDiyi9oM4ghN3C3JNGlEq6MiSOwoBrdZ7j7ANbryhkRo8nZTYWLESH8qG
+	P+BgRNtLxgfbbTE6ZakSI2naN+meWhA=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Jvd4weYr;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755072430; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MS27p4Gf;
+	spf=pass (imf10.hostedemail.com: domain of colin.i.king@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=colin.i.king@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755072854; a=rsa-sha256;
 	cv=none;
-	b=x6SecC5JIUSajk3r+Wjl2OhgJHjMcewetJ6Y4ckFQLvbyA/g17JrKevXm46puYW2McnwXK
-	FXBnE+hfmBQ/kvRW1cDozhBFvLn+8qWjIh6FX/Ws4b4e5fCNOa57kfZeeS2YjxUWxihGQ1
-	y6ZeUJwU5VoAJOwSv/pL7BXRl29QnRs=
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3b78127c5d1so4099792f8f.3
-        for <linux-mm@kvack.org>; Wed, 13 Aug 2025 01:07:10 -0700 (PDT)
+	b=N/3oFH2rekvWz5dkPIQB6BZaqnZ6PUMddAAP7cuf+ZPwx6/w5+qr57DZ2FHHXsTDjHaIDk
+	ydHjwKpWaO2U05IFwmcHO5NWaYi8J46AUl6r2kzvdrxPOr+dmOsiD32vs33ThNjrSHoUw4
+	PAqhODabZi1Wrm95s0exljD3giR/lno=
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-45a15fd04d9so3959065e9.1
+        for <linux-mm@kvack.org>; Wed, 13 Aug 2025 01:14:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755072429; x=1755677229; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=maMRjoqJXCK/+GFkp6ApW3O21rIqKnM3FTWwDItdMGw=;
-        b=Jvd4weYrqMnZADcBPbW1I0cbaOTg4FLN8RglX/BB6oU3dOrmcDYdD/xwdIeZf3OCVw
-         e6r6Q6XZA9pzOWhdO88e39ZuVHNMWzVonclkFBYhJyEfkEA5kOpqAX82AMve72s/kbzq
-         LFblBIS6LuOeWCVYuqdTnlJcUtVP6ao9SlhHklx1sMNPYxxe37nCRX2ifXCjiqd0vZ7r
-         1ToCAealjXZv0xcQjduPGdifuzquhZF0E+0iHeoJVg/0JNQ1Nz5gm9uJuOLyXC7RbF9O
-         E41cQsf0FvTrDF83231M6PYkfaboEPqb3UHyjZzpOKoPdjt8BUB7AW7qfUnGL8jVRlIk
-         NuCw==
+        d=gmail.com; s=20230601; t=1755072853; x=1755677653; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ygmsewkf5T2USbfV7/eaFtCh/3kTJRR7dvKlmbHq5Jc=;
+        b=MS27p4GfgiyT46nU3dP6lKY/F2BKoIhZIUH9NkcXIHtKVvJO+y374GoSuqgtt+UghF
+         puBKdvF+aIu92BTSNRayMYeCsix52lJcgRFyZ6yGOckAeU/i5lDCELZqWMC3bpoeeHK9
+         U8n7eBfpox2okycGJm0vQyUY8WRe1BL6Qop9zUvBj6u3xCb9Z6WkaZYrx4Szs8i+LsBH
+         6IHDjIWyoho31jjPI+GBJ7M+z1qVMa//MS/t9tU5pUbrTCaNU805F1zLYzAubWQam0vG
+         tQYa6SshsxaYmYtDLeYRYDZ0Nzqhls7HH8LOqqHVmoRvK3HFefRWigm67agDkrCmXKCe
+         9Ytg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755072429; x=1755677229;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=maMRjoqJXCK/+GFkp6ApW3O21rIqKnM3FTWwDItdMGw=;
-        b=dbxno/5AsgsBDXgTsC2z5myygaPwDZYkaPvPgROmdKVGsvUNiqmU3TntxdTwyu/qCn
-         eKZU52iOMzg0DZMZWkVkApBgIvPlYChjArqnh0AXABDiU+cS7aX0Gow8R8AvxjYNGJq1
-         JhNQ+f2cvFOAbuDGl82FmCUioEY8DT/Hm8B89H/03RkIEK0J3bGrr9DGngo34Ok4I1Lj
-         xoZeybgPMdXanhXX727fSj21Eb30Xf7N3R5vXE9lXTu4Adve0y0ckltpohGdok13PCou
-         mOMhZ2zuW9YdZgonjITXyoR/QxjGJm83EhDsrYwluNFPMgOieb9dWmizqTJeSJUkgRTP
-         ISLA==
-X-Forwarded-Encrypted: i=1; AJvYcCVUwg8WGJlH637Wnq0UMzuAXzF2VL1Q8qQWa5aEygWKBuBldB1shy+7418+yqK7OGr2aoBy+7BloA==@kvack.org
-X-Gm-Message-State: AOJu0YwpHD7ikgZy9+Md3xASGRvurGq7ZSGVDrugYpOHk6rmPz5ndB94
-	Mj94heORw3VAfyp6qmyL/vkhzvRuevLCNn6XUaovO1NTbuipPpbVZKap
-X-Gm-Gg: ASbGnctJJrKMhuiIvDbHa5VHdmWQm18TYr5caGkRTr20k4vtTYv8wmIAn/J5i2bxKE+
-	gJLeovgYh1/Xjan/lQaGqb3wOmjYlfdF8oyBkWKhQQN+0/5GcgfyYwQNhf1Jiogj/m0f9hJN3+5
-	lBtApCIYGTDO9cMNZHQ6+VeIUXB7U6HN9t0uvZdqS9xmaYk4p1uU41EZh/mHiPzjTsFdHoF0US/
-	zyuJD5SQjWLpgvGQUSEwtsGlaWe+tjUiASj7+5lSthEspuXE8BDUrNhDXv4OK/SPsWns0TnX60J
-	eWrzFRIPpSoPMFXLtf6n2rIDajneJc9zcxvhpqAN+wFV3pyK1M+7UCIn+SK/q/5Cuy6Qm+VHI8z
-	99YR/YKwRqu8csoBZ4fgCDRsZzLk2SaTHGWheCmENlTSOeASelaxv6Qapf+xZTrNhsXIgfdeOs+
-	4pFNdEkNHUwWLVTP9ydpKP
-X-Google-Smtp-Source: AGHT+IG21U8BYsNzqLWav/ytlWcEyoyWQmL1EXaTaANw9uatg14wjY4T/4or/U27usDsLhFE+I8vug==
-X-Received: by 2002:a5d:584e:0:b0:3b7:dd87:d730 with SMTP id ffacd0b85a97d-3b917ed493bmr1488118f8f.52.1755072428736;
-        Wed, 13 Aug 2025 01:07:08 -0700 (PDT)
-Received: from ?IPV6:2a02:6b6f:e759:7e00:8b4:7c1f:c64:2a4? ([2a02:6b6f:e759:7e00:8b4:7c1f:c64:2a4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c48105csm47122956f8f.64.2025.08.13.01.07.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Aug 2025 01:07:07 -0700 (PDT)
-Message-ID: <d3d1b812-066a-4124-83ca-df96fa75e3b1@gmail.com>
-Date: Wed, 13 Aug 2025 09:07:06 +0100
+        d=1e100.net; s=20230601; t=1755072853; x=1755677653;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ygmsewkf5T2USbfV7/eaFtCh/3kTJRR7dvKlmbHq5Jc=;
+        b=QL/wa7VTaCbrPXY4ej3JY4e2rketdH7wM+aCrviuBbKA12felsby1GXBmXDBEuG21t
+         XvMO4rnPguqQW2l9N7g7Vy+gGBc4TDAQLqidYh9Qu9YMfpg1cs9tr2Q39fGcPZYxjlQL
+         DuGg+VclOQmZit4pW0IqnxHxB1KpfYIYAVCUXLAkdTcFU79Cf55m8wseHucqARrAynay
+         GvS8MbYBU/1gtmCaoDpRNLFd7layQGc9fyYV4bohJVtb2WsWXIykEw8MYYu4g4bps5yd
+         YNuBqxfxcMetgntcRjd9Iv1a1D4r6TrfVqzQMqtJK2OkBfMsYqfnN2Y9W5P9BKPt1+9h
+         22gg==
+X-Forwarded-Encrypted: i=1; AJvYcCXrdj87dyzIO0bMtPcIxbwKlnj4sxubY6suGGZB4fDIjJpB6lkxR6fIuvRF7hCXvlouKU1YBy8ezQ==@kvack.org
+X-Gm-Message-State: AOJu0YxiZ8YN+1IiYJOS1KdtU3xM8V6cIT811pYucH/cwi7d7p/eoRL7
+	/PELWc/nl6sht5RdcVUkDjRgO1QH/gXOP+/W3+I2kuU3HBSDWgjrL9nw
+X-Gm-Gg: ASbGncuuXKQbFub/+kcMC7qGSD7IN5VVmmNTtJZxTkBAkqU8o9pf5ts2YBbbUebZKSa
+	JRafXHP4ptRZ+vdlM8rWJ56VvPjgS4aGV6NGA3S9lVUmxWGC+FGI38DVMvCzrKu7KEraSnhMhW3
+	FyyZPEm+pyUFtL+LvwTFh117GPX/U8YqNK2/VN3btiPJEGbR+n3ygWdi0Om/Fsg7UUxtRSaeVWl
+	M2nXLg0PHzacwoOq3cQOazJ6+cAnndBiVWQtlrTTvfFfSTEqw6vrpv1iMtKS0uCO2aQMkiIZLAQ
+	QJULvlMfGZqe6F1gA3j5LBwqJaCcaDGFeYHNx35OHv5jhhCZv0/7EuvlnOvbrZWVbBXjDXpbny6
+	nX1opFkGDWwE6yPnRErbh
+X-Google-Smtp-Source: AGHT+IG3yh7PyjDQgWpA08nA+Rs57/Rf3ACPKR25hbtuA5dzYAhDSBEN6RkmUj4SepffsfVfC3aqlw==
+X-Received: by 2002:a05:600c:3b10:b0:456:1281:f8dd with SMTP id 5b1f17b1804b1-45a1704e410mr12559155e9.12.1755072852760;
+        Wed, 13 Aug 2025 01:14:12 -0700 (PDT)
+Received: from localhost ([87.254.0.133])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b79c3c4beasm45554467f8f.30.2025.08.13.01.14.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Aug 2025 01:14:12 -0700 (PDT)
+From: Colin Ian King <colin.i.king@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH][next] selftests/mm: Fix spelling mistake "mrmeap" -> "mremap"
+Date: Wed, 13 Aug 2025 09:13:33 +0100
+Message-ID: <20250813081333.1978096-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/6] prctl: extend PR_SET_THP_DISABLE to only provide
- THPs when advised
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@redhat.com,
- linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, corbet@lwn.net,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org,
- baohua@kernel.org, shakeel.butt@linux.dev, riel@surriel.com, ziy@nvidia.com,
- laoar.shao@gmail.com, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
- npache@redhat.com, Liam.Howlett@oracle.com, ryan.roberts@arm.com,
- vbabka@suse.cz, jannh@google.com, Arnd Bergmann <arnd@arndb.de>,
- sj@kernel.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- kernel-team@meta.com
-References: <20250804154317.1648084-1-usamaarif642@gmail.com>
- <0f8b7e64-d08b-44d6-8a1b-2b4b8d64cbe6@lucifer.local>
-Content-Language: en-US
-From: Usama Arif <usamaarif642@gmail.com>
-In-Reply-To: <0f8b7e64-d08b-44d6-8a1b-2b4b8d64cbe6@lucifer.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 74E2A8000D
-X-Stat-Signature: 6z43ne8c9ni1bxjtn49cmu9yjabra4bn
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 8D2B3C0008
+X-Stat-Signature: qyzqcnhme46gih8eo5xwo83pdy9rbycc
 X-Rspam-User: 
-X-HE-Tag: 1755072430-154848
-X-HE-Meta: U2FsdGVkX1/Ad1uooYx800ldad7/C62Ns9GLwy2NweC2o0q4CtBTtapexMg76Ws8FgCVDIhuhwWmgGRu7mDY/qOmh8jOmfLSwPh4BT76JE8Dr/kM+80EwWB440zj+ezFxe6iCntmFhDu2/YnHYJA4/QnCNbNVMfowJBpUIIYXNrjcBAbFeTdzuKhZtqy6C9EQYqgvLaxjcfLVqdun6DPHr2pSvH9lOf0GXoJ4Vz6zs3yEDr+kGfA3IhTVmRn7N43EDEPXeAfaKn6xDCN4z8xK7OuUUPZAeRd5VhBiRRmaWqi9TmYBmh/8w4+C3LZDYpXNDROZfZvgeLtYk3MaAlTtESXGjgHCLK/6XxLc9wcX+hovy4uKuXZaRMVkpsjVMjLzdg6DftadaCH1Zna2QmGB5wM/lltnNG+N5zVcyzeTHyJYhELSykt6rVsXpQkhaqYyUc69nlOVqbpNFb9tsMPah+DcczBtQwWiG4gEtIZUTZ0znJDutMErcIr3L2M9XKNlubpaVm406LbxmsAnLJJ4Zf/fm4tjQKQiiDA7vQDVvrVYZWd+DiE4FiA+SahlME64mOvRQeRXE+uu71AU6LHZC9K8L8Zpc1JgJK+G996LImo19lzg2mkGjHMdw3fFeEv/zUpnvza0z/ozlQ/CsmEQhqX94WgqEctA3pK5+mFPPA6tCO7iBGCD1Ci4+EcR/fceCE1l2Q1fW65edwe3WFgDCYSDLvF8eBoZmQto3cra43hu50NS9lNy/J+t0QEFV00J1oCGPGKTf39Cyjld9xvzEmrpKGKyTEMZzRD/U89x94rkP5wNTwWc87tC636R62sgpJE6DS+dHmPVAEFgeyTa5jnW58QsQGBZSGEGFijutli4B/ivxZHz+6MHVP8hbtAxiX/pC4UsIFG4e53ZCPaX4LFF4pA271urOpKRcp7VZ0Cuy8Ykq2amdzFm0MFbtVgE2faSTXFWyabB2X4yce
- HfibXEM0
- HvCsJDlfjbZjZMWgmQNpUeUxceodGo1MDUnF36Oo+UpjC2RrnlAqe8lLSli3pc79YHoQmEovWQsmaO6UN3vTlV2zXTuD/hjFhOjMeLzoVjRkXJ9O7Ig+KNSnD12iJPGuoDEYTbp7yUBcSnd9am0oaExaizjdmeyO9Seh1sTeUGhrf0a95m7N6KoD0yaqhyXliEk8wykNxVq9S9bQph4BJoy+hlEM3AujY+8Z2yLsK44Wt9JTuN1Cc4lX7xHLROW+YY5FbZG/cKW17c6XRS3YjpUgU16nh+Z/yBb4xOAUBjRAqdC2RrRU2dHNljks0ezGmGVwP9d5URype3Lr2t86kM98OEGTgpq/wrbmBmX0vB10a5WeNr6JFr6ORMNNJIUtbi5tTiYpXZszlmKHWdkUc/8B9mc5nHjnW2mVZ8TBnFqx65K9GrTbDQeKPjpKLq3XBcszZm61ThUivCDRR9IwlLIceWd9YNyY1u/Y5TDxz2EGYgpj96iE3U+8oKizXTIzeK5AAuJzprHhp5a68Pwp4QMq/bRq1/LM6yrmanMxcYB+McNsB1Zx5NkwCj41IEJX5n+vsob82uXSp+cygThptbql2gdfivPhqTdVW/rGIExpsjArJtiZT7tP/Hwaoxrmbn2XyxzYPUeajugBzWQYiBAnFIdvwxwNQDh5n
+X-HE-Tag: 1755072854-78040
+X-HE-Meta: U2FsdGVkX1/A7jLiEa9ZMAQ4RFSmUS1p7+OOHkCMmWe/9N+MYbwxOg4UFhEsqOs5wDgq+Yv0iRfv2KY35Twll1iblNAhxBAkTSaYdsxtu7RN15C+6zQUSk0dvo05y5svkme/QkaHKt8r1nNM1VjJF1Tp1HKwJv777S5uDfz3x8+SHzxNi4uIMvNyAohv5LqkdAtLBvd/A1Iu6G+aaMRDtneWv1WMyXNAT2MPLYat3cRMG0OLd+ZKxgRdSyF7UOmcEWJgOfvHvt8XtU+twc7AZnhqZgR1NVrFOvTi6KzLVC9Fjn8VYfNHQumeWvbUgaYybEaFXJymGVKpIc1uFvBAk04seGU5g5palUdAYLqIEkC2nX2d9t4LSlWPAsV/08967UYBiMWOznjFOvSYL8+EjiLNpRyg3Y/FrrtkLH7onYEGvHt2X3MbcukXqsfa1a7fjGgF8UGewEJVuWkmpPUXgoRJuLHbZRf32rQKYdBD0h6KGo8U72z4YpHv+UHMDk73T5Sv3+Frp2jmfkD6chvDCzl1JTiUyhHxv3hchXWLIPOE6JaOV9FiGFor8cs5LQJN7ncL5ufoIQZuWl+KMQqxzcpk1rmr/ADrqN1Xk4a2AaGTF2FnTR0gEwt9hoWhrMy5UGWAGEXlS1Z00NE0Ev/8nLwQF1LWFciMLWXWBcf9q3SnaUaOyQm+QljuWFpdsrUxZjg8AuSKZWeMT9WttZxPu8sjM5Wm85GIon38sggWgYiM17a9SWiAV4AYG3XHQeAykoEZlFp6s3/odEiAOTT555QyqVu9TL51s85rNocMSqlpfihZrbNC1Cu88BolK0NzA4NVWuVgwusF84ExpaPzZBMG2qqh0Scc7drhe7VLEw1kchGyjronElGoEcw7iGgaDiXbXNt99roZTLpmrSqbnPILU/xykisspAvtB75TeIiVEz47XT4cUoQ8NZk7mgEB17KdCfwxjTyvu2YpoRn
+ MNMQfw5t
+ Yei/k+wIAsxka4IeV/eUTSqed0+XaB12Py6eGI/9hJMUNjlE3OvUsnfqWH1oAvcpKJLWJYGktgH8gLJaE+xP+Vd51yyosGQEbGAZHHSDBaTi7Mdzz7H2TNXlYou5HcULOH59n6qOC2cMCOYV166odbuuXgW617qBr0Hwohk+6E4uH1SDP2DGxJSQVvWhBddpYWCmZ+PEvxwLkDwsxmSTxUkOuMsqAiBJ1Cv/rZcTFpy6ZZDQRvzk/EILT36NSgq7e5YOq+nmlBYZXFvurGObpsVhCVKgGN/mBOh1+aku8c0pmmO/1RXCPU43n3NOoE/MeCczOOfRKABfD+2Y+V1jbdCMjWmiyY65O/0YLH9r0O5pzTlNmPgroRcN+OrI1Zhfc8SeU67J3XgUECOzuyEz1PSidsRPJxi3tZMAwaXC+1gscK4ii6Ye1m4PwnFoOem5+JzNXL7xWMEF7UzGmwgbZh8ZqIwtAbsvVFr16/5/sDAKUYDdGkN73xP1t2sDHTYwohmI1dHM4Znq9hheSFeyziDizB/ek6FXY5AJlz8uHOclFKaI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,41 +124,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+There are spelling mistakes in perror message. Fix these.
 
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+V2: fix typo fixes, I need more coffee
+---
+ tools/testing/selftests/mm/mremap_test.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-On 13/08/2025 07:06, Lorenzo Stoakes wrote:
-> Usama - did we plan another respin here? I ask as not in mm-new.
-> 
-
-Yes, I have the changes ready since last week, was just waiting for a respin of
-the selftest cleanup series that David mentioned in [1], but I dont see it
-in the mailing list. I will just do the cleanup in my series and send it.
-
-
-> Also heads up, my mm flags series will break this one, so if you're
-> respinning, please make sure to use the mm flag helpers described in [0].
-
-Sounds good, Thanks for the heads up!
-
-I do see this in mm-new, so will just send the next revision today tested
-on latest mm-new.
-
-
-> 
-> It's really simple, you just do:
-> 
-> mm_flags_test(MMF_xxx, mm) instead of test_bit(MMF_xxx, &mm->flags)
-> mm_flags_set(MMF_xxx, mm) instead of set_bit(MMF_xxx, &mm->flags)
-> mm_flags_clear(MMF_xxx, mm) instead of clear_bit(MMF_xxx, &mm->flags)
-> 
-> So should be very quick to fixup.
-> 
-> Sorry about that, but should be super simple to sort out.
-> 
-> Cheers, Lorenzo
-> 
-> [0]: https://lore.kernel.org/linux-mm/cover.1755012943.git.lorenzo.stoakes@oracle.com/
-[1] https://lore.kernel.org/all/eec7e868-a61f-41ed-a8ef-7ff80548089f@redhat.com/
-
+diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
+index 5bd52a951cbd..e289bb1112db 100644
+--- a/tools/testing/selftests/mm/mremap_test.c
++++ b/tools/testing/selftests/mm/mremap_test.c
+@@ -846,7 +846,7 @@ static void mremap_move_multi_invalid_vmas(FILE *maps_fp,
+ 	}
+ 	if (err != EFAULT) {
+ 		errno = err;
+-		perror("mrmeap() unexpected error");
++		perror("mremap() unexpected error");
+ 		success = false;
+ 		goto out_unmap;
+ 	}
+@@ -899,7 +899,7 @@ static void mremap_move_multi_invalid_vmas(FILE *maps_fp,
+ 	}
+ 	if (err != EFAULT) {
+ 		errno = err;
+-		perror("mrmeap() unexpected error");
++		perror("mremap() unexpected error");
+ 		success = false;
+ 		goto out_unmap;
+ 	}
+@@ -948,7 +948,7 @@ static void mremap_move_multi_invalid_vmas(FILE *maps_fp,
+ 	}
+ 	if (err != EFAULT) {
+ 		errno = err;
+-		perror("mrmeap() unexpected error");
++		perror("mremap() unexpected error");
+ 		success = false;
+ 		goto out_unmap;
+ 	}
+-- 
+2.50.1
 
 
