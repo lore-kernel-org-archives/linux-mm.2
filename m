@@ -2,114 +2,130 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B02CEC87FCF
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 13:00:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 970F2C87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 13:00:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3DD9590006B; Wed, 13 Aug 2025 09:00:15 -0400 (EDT)
+	id 31A5190006C; Wed, 13 Aug 2025 09:00:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B5AC900044; Wed, 13 Aug 2025 09:00:15 -0400 (EDT)
+	id 2F23B900044; Wed, 13 Aug 2025 09:00:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F3C590006B; Wed, 13 Aug 2025 09:00:15 -0400 (EDT)
+	id 22F8390006C; Wed, 13 Aug 2025 09:00:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 20F45900044
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 09:00:15 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AE65582AF1
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 13:00:14 +0000 (UTC)
-X-FDA: 83771742348.23.C658F60
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0A68840010
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 13:00:12 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iHkAe35r;
-	spf=pass (imf07.hostedemail.com: domain of gregkh@linuxfoundation.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+	by kanga.kvack.org (Postfix) with ESMTP id 12DEA900044
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 09:00:20 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CBBFB587E5
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 13:00:19 +0000 (UTC)
+X-FDA: 83771742558.21.2A22642
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	by imf23.hostedemail.com (Postfix) with ESMTP id B31B114000C
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 13:00:17 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=Swi8GWOD;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf23.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.46 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755090013;
+	s=arc-20220608; t=1755090017;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kb5LqNVwswEcJTfvXXUiJi9olfna5MFQNwI1rYtwD6w=;
-	b=WxRaYAYvnAHK8Wrux/d9aoq/38sPS7VgheYJQQq1CUeypk9laP0CtjGkIqbhwKsBBwXEpp
-	Ls10oRW6ezEqI9CykS8l32bEjBa5zCISuV2dZHkC9SlZMs4aiU/68nuknXAhUxSKK9/Dhf
-	j6GnrzBUCtCgr1hh3BYN7JpEhF3W5Sk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755090013; a=rsa-sha256;
-	cv=none;
-	b=wWDonCZb1AV/aSsoFeHuLh30itRa6x+rWyB1cxBTwLaIbsbGJxUwUKkHC6yZ34QD4kynBi
-	lhzkvg3L+URr71imDaJxjEI6B6yFKODqyIiVuhcafXyb55Dcte24Wyh9AkzUxPTktDELYu
-	j1DaA2CtWK03Jgm33TeDahIpVBog4aQ=
+	bh=P/BrlZbr/T7l2ZRE6UEhDbhwVQUKfgdvzKuP95OrSQY=;
+	b=D7ItZX/HS+GqiKeByj2izVr7kVtkrGMmJvqMm4subr4RSnRPWi4p1SfG0vSTc6taVja6XE
+	GarUfBjSSKy3fMG71m4+ahi2cRT6g0RWaiC75nmHd7IECJ01y7fRWMOJ29oui7I1Kno3TJ
+	Y4Y40qMOSAzYVEZgi39NIH/BT+fj+Zs=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iHkAe35r;
-	spf=pass (imf07.hostedemail.com: domain of gregkh@linuxfoundation.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 4429FA57CB8;
-	Wed, 13 Aug 2025 13:00:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3948C4CEF6;
-	Wed, 13 Aug 2025 13:00:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755090011;
-	bh=aDg93MqIzbCDJ7vJIE6yLKnul53KhyAjtWb8ml+qZ20=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iHkAe35rDb59ZjrgQqqrFZCnTIqaXOuDdWp6zvt1tpP3B819KzeRSVCjHGSrTFpmC
-	 4JAbz1C5K5F1x62spsgdcFf5RN4faSIJHukqDu8llADLTXLJSvYAlzzjHIqySRpplu
-	 XIIYl4MaxFu+HwXSLY/4JcPE/MigMbNNLkHojeOA=
-Date: Wed, 13 Aug 2025 15:00:08 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>, Vipin Sharma <vipinsh@google.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>, jasonmiu@google.com,
-	graf@amazon.com, changyuanl@google.com, rppt@kernel.org,
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
-	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
-	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
-	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
-	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
-	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
-	dan.j.williams@intel.com, david@redhat.com,
-	joel.granados@kernel.org, rostedt@goodmis.org,
-	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn,
-	linux@weissschuh.net, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-mm@kvack.org, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
-	aleksander.lobakin@intel.com, ira.weiny@intel.com,
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
-	stuart.w.hayes@gmail.com, lennart@poettering.net,
-	brauner@kernel.org, linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
-	ajayachandra@nvidia.com, parav@nvidia.com, leonro@nvidia.com,
-	witu@nvidia.com
-Subject: Re: [PATCH v3 29/30] luo: allow preserving memfd
-Message-ID: <2025081334-rotten-visible-517a@gregkh>
-References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
- <20250807014442.3829950-30-pasha.tatashin@soleen.com>
- <20250813063407.GA3182745.vipinsh@google.com>
- <2025081310-custodian-ashamed-3104@gregkh>
- <mafs01ppfxwe8.fsf@kernel.org>
- <2025081351-tinsel-sprinkler-af77@gregkh>
- <20250813124140.GA699432@nvidia.com>
+	imf23.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=Swi8GWOD;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf23.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.46 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755090017; a=rsa-sha256;
+	cv=none;
+	b=j1v1xmLxuBh2uHyJNPq/GnwQUguad++K3Qs+mdYjvC+KXqnbzHn/Rvz2K+3FmrBWlo8fjd
+	MfsWzsg4ywyM+nyQanumxyFNSiMRe5U6ToL+tjbVx6yDIAz24a3BfnUDxFrnBZEyeec13c
+	cKlpmlExRWnvz5Mj22YEkO+mEgViBg0=
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-7073075c767so77772666d6.3
+        for <linux-mm@kvack.org>; Wed, 13 Aug 2025 06:00:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1755090017; x=1755694817; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=P/BrlZbr/T7l2ZRE6UEhDbhwVQUKfgdvzKuP95OrSQY=;
+        b=Swi8GWOD5rT2h40auyjq+S3NFpg6fhaywFvoapfInGw+7ly0M2rIRhpjdXPN5e1ktM
+         wXHiGXFchnj00w0v6zLpejW8bQ7igW1puIgTuDXBnay1CAHhqEqahzdgwt83dz6PTtIi
+         sjuptVtQQPBk7McTlmzfKGTc+0wRyrRKwxg/44OcTaqF8gq5kgBjCDFoRv3ZQ7tAVziY
+         Uk7HoBEpDiroq4BP3ZEw3T5RK0E2oIz/5/7J3AwQdvw/4oJxypyYMe3iXDwg0Pb3RiR9
+         OTOTcozdoHn5u0ArANT6YNT5MGhQfarKuK1DQfz+HAY3RFlgpNWd72d6VR7K6ln6vCyN
+         S60g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755090017; x=1755694817;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=P/BrlZbr/T7l2ZRE6UEhDbhwVQUKfgdvzKuP95OrSQY=;
+        b=eQuqn47R/QvtkRRAQMUuhRWm8YbFZ66+UMAbw5/ewMQoN+R0VeuElTT3kJ6M3uknIi
+         XuoI7psrodMCwSRmANu49BZid7txzLEMTpCEaHhi5ldYtbBq0LqQttaTHOQu7EdCYAi1
+         9VqL03u8rTEVWLWLtx/mlPYy2UDmD7Lz9vnjWeDCAXRAJuLY6YjVBH98Hink/xzpXaP+
+         7IFPYIkaUy0dHAsBWxQSC/U442yDtE1XvFyfqIWXC66pqxK3FicQBHcGY0szTB7oWHZL
+         qVgbc+bmzbjHnCG/lACXj4QKZiH9otVoI+64H2keLDM+17ovOcEpWxtHkJbKEk7LT4G5
+         ccwA==
+X-Forwarded-Encrypted: i=1; AJvYcCW5TKL+Fy9TWXjPde5+ZNabUdemCE1zGb/NMxJrfsFss1kI08MtPqDmjO+4gdmsQAU4XcD1w8ldmw==@kvack.org
+X-Gm-Message-State: AOJu0YzbRpZEC7xS507uDlVsZM/u4SCWmZ5wnm1JHenBbdFqjZIiBnwm
+	rIPYpDRF4/Ju/hYOdl1BrR/6TcB6mLBlOUHeaBLGccAuLsEnEEJZ6qFEoZPbKs2iR60=
+X-Gm-Gg: ASbGncu8WZvM5JhSTUb6yhQ8UPBUix/dDvhwBdMm1sgA4LCaT6p0uofsoKbwOeVhdGJ
+	QJ1jXqrcanbHT2/Pz4iXFM44p6exx3Q/OyeX3q+5ieioleLYNucmQW09mFl2vqT78TApvgING3m
+	GcU6KpxoEM5Iv+mG+G41PL/pM5tJx2HV/8aUlgsh3tz7EdDqoyZeAnzT72ZRePUirRWmkkB/Bot
+	T/V0dbpPxts/816n0QiNCw5WiEwq7ZLpFfqc2MgRQxMpWfey9BUArp8Y+YhOS6SxaYud65+0vMY
+	5TU/VRbJG+ACr6IYfZRIWalAArijLPcSFoc6ENURR/Bqw8lnPtiS/EOPhvOG6//6N9DLoukNxqX
+	ktvVYlizoIXrtPKwGvZM9yWBkUTqOJ5an
+X-Google-Smtp-Source: AGHT+IFgGWoMlnm/Y1OcmFOyyn2dsuqu/R1TVP5M10fhTPzIDW0MUbQN+HwN5hLswo+SbRfYuOk9QQ==
+X-Received: by 2002:a05:6214:27e5:b0:700:fe38:6bd8 with SMTP id 6a1803df08f44-709e8843a0cmr37405206d6.19.1755090015449;
+        Wed, 13 Aug 2025 06:00:15 -0700 (PDT)
+Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
+        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-70920e28dbbsm188318676d6.62.2025.08.13.06.00.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Aug 2025 06:00:14 -0700 (PDT)
+Date: Wed, 13 Aug 2025 09:00:09 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Tejun Heo <tj@kernel.org>, Simon Horman <horms@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Mina Almasry <almasrymina@google.com>,
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org,
+	mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 net-next 12/12] net-memcg: Decouple controlled memcg
+ from global protocol memory accounting.
+Message-ID: <20250813130009.GA114408@cmpxchg.org>
+References: <20250812175848.512446-1-kuniyu@google.com>
+ <20250812175848.512446-13-kuniyu@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250813124140.GA699432@nvidia.com>
+In-Reply-To: <20250812175848.512446-13-kuniyu@google.com>
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B31B114000C
+X-Stat-Signature: 1ukxag5dnefigmjbs3er7qckmdmjdr3q
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0A68840010
-X-Stat-Signature: 861f5ekpf97bots676b4kzgt8pzqsa65
-X-HE-Tag: 1755090012-218109
-X-HE-Meta: U2FsdGVkX19Rpsdg4qz6Zbfke00yBy9g/QppCqOaTDe0+vi49lzYFXUx2PMM7RBxR2RqxQw9kSumvoraIZw0QdWeep5yaSmPuho8S2UnDyi7/8Golvsxq8mrydVGdIiGs3wyQULwqVSZ/wXVIIXI7SmNjrxWcdhF0cFS/ayA6UZf/LkRd3WJx2Kakz+Oxq0gXJ+i7yHlrRk7sW0Lclk18FdqQPbtU3+WlL9yi03y6Gc1ey1wlxP5h42NPkbeH+k8gUzEa74CrEdv0YhMxxFh2GrbqpxX3hmu8YUtRyGytNea7hQs/EHOLsrfdbZ5/pPyA/1AGDzT33Sg+kevpjvjjZptlmb/mtzCHPmxDElX/U1NECwpyYSW9A2gSQXli5utzvILM1wQJLS2mM+IhKWUHjs7DkF3dvRipQySmVsMoQzPC6SReOacVG67YwnDWiu5lNiwRcacGAhn3n22D4wKtvKXF7/b9m5ZC37CL7q2pq/fk0IoQzoANiAL23K0cBL73BIDuxbkpJDzGl01FzDYU3IsNCoFMq+cag+p5l2MbaM96RPU/aX9p3CXAfRcLFdpIhOlrmYjr2q/G+NU7HeHf0hz9liZpMlLuNOFY+yUAigBGq4+GkOOvFJ1It2JZyHw9EvEhsP45pYQ5MFUwLAmICfiQc5NlwgnkVYxIa6hq2Auxgo4+AnQzIHQnOMDjTZ49XzAjJzFvv9eU6/2akOZNNY7pXJNHCtknLIaZCNda/abVmR/kfdL8gCwQST4P/73NNPSQc9IzRF3TGWcVR9y7b+9mFxB1WIthRnpB9BgmYVUaHdKBm5OQiYde/Ec8GlfNGYzr9dXPQ2WI4NkzGnog/VzqZM/Xnsy9Bjd2V5DctvIy+hAEUphuqW+OS721Tb1vtl3yKCWpvAtB87Fc96tSa7EfWWgtb3bp+29rvXYFfviNXYNa5Cka2oYwEhLvCenG76Ew5OAcqQQUzN86lg
- w72YZIlT
- Moz4FKWVV2O7orHi6nH+aS0PuBG+8elN1XZFh72LNemiNrxiIE88UX0zIpTEJ4hrdvvpwIAxcv2CsgZaGutm/2sLGuq/x++JRAnICpDYd2pKGzFf1QvQtKl9lL62lgInKL6FognQGDeWMc9jfLhJ5ds6fTmEhWUnx/p2lq9E7/rVbKho3BQVFH6ObpghgB0aoDiAwdTlkS0uzcCQMPnHLKCfidwZTE0vUzJo1aD6ScbBPZuhdzZNcEx2IZPGiC6Ta+jB9OK2V4cAr/Wjk/AbJn5p9pFzVd2N/IG216vFJMnlra1u7IZxfOEWL39opZlMNvl++njepucfV/6ziKti7tGPHjyherqGF39mUb/k8RkJXCeyDy/Dbfvbx52T4jyptb2DFPGWKF/jHfSDT34YlHm75STNkqd6nM08KwP4w5JlOasrg63TfQd33abBV5i25E2RrSYFVY1sTwRG3zGwQgclW/sfyPfag5IQqgWC1rUbvskBi7tKzhPxZJlLcCPq0ExnAYZg7Lwt909s=
+X-HE-Tag: 1755090017-837887
+X-HE-Meta: U2FsdGVkX18ahpcKLodHl7tLXhEwWlwZ7Lm/5eTPmXb3P1icHri68ukDvSQ55sI6zFsg/nAru8MaTxa+H+SCwy8s1qvb5DgxhMIxXhPATLBsEuwO3Fh9KR5Aw0XEQ1mYPJzQ1oUoPd60k97DaniG9qCQdm4CcCWTFh0+jtW5JgMaEPF4xx94wyd2+EopUKo6Wl03PTT19zE3r6jUzs6KoE9GnNcEW8q3SqGmVoCcx9Q3s5nTk1o+JipA3WlB2F5A5StNvgauAdvTl+qFVJJH36ppHEjeqXyYueLT/wd0qnvtT31UKFuf+rz293nisjBiMPRknI/TdtSgQoezei33lc3o1Hno4rgub9DqtN30yymUKBTuEXKpsHdr4kfpFIrhN4oFz5XqT5o3gcatZQqoQKzYIZUzllIIQFlz38ls82PC0nKM++LORTA/r0Ht6Rur8r7UNKVgTyHOFn4BMpDx3Z4ykprqq3P/gkYopNaFt8+34OoAxe49xjTwdTY1XKKFUNlRJEJe6gPLuLcLLSTJkpVdk35FVeq26P8bFtHF0DJQl60uPNEl8rtyVEdW6Y+a5S3Prpr4n8Rd67UBnJNVLbPUNT5V9DpCHjDEBqRfR8A2QBPsHvRlDcB+O1mR35o/D1lJA0JIrcOhSJqNMnLx4Jtpy8aoG4MVpSvD22WGfjrHHbqVTgIx1eXbmE/Bvg2wnWy3VWgFXbccXf4clojxxCm/6Wx4ir4fawGiWRVy2NLr+ZG1fxZZYVa01PrykG2OZiVfAl6IOrs2g5Ca0o1X9JhF0V0OOw+YOQiCUvr+x99H9/CRqBkdVXC9UZ/1GreaAWxgrFcSGDc+IWxlPFa+pPiJVtwqE/3atwYmYi8UiGmbTzzqe+gsJDbwSM5d3lP/hhljaA/hHh/stu/gXVbYx2EVzM7br8K4zy2UpRluA/1/pYnNxih4qKfvwyFmER+gaDgA+mkO4Q5JUv7mKPA
+ FHXbpMLF
+ iQV16dcNW+U/h+38rdbRYLj5rqzxhFxfnxH7VHZ/DeY/ELSBW3xYtRDokd3lLLrjuO8r+pqaUTJ453DzYq0tumbXQD545w4+iEBxIinBh0UlbFMjXGwUCNMbWB7M3Y7qdoi5f66BCJeMiFB1KIsj+jgyq6zUluZpnEFDEhPWKlQisXy/uwcZhj0iNmKNpv9e+VdVwTM0cl7cP8MPrBUcgnXulCBZG17BJ7D24+EksoakTYYuA70NGpFnZZFWC9Zi2a2qB/xV9ZQs3svLzsbhl7Nak/h3nMKzvVWpSiH+iZEBBjql0HX42y/4h6esTzQzpDwixUbffVzTVQSpU1vIghu9XdLC3GxmwDE8NSzBO947yNY+IvA4Ujf4v3gqa6FT6mBB+6k6XwLYBcw9VIEcIwo++uTUDO+xQUReecFXuZk9Tq/WhH9OkvAdSbZyxHHdnkJRoAP8js+6mKLypaaNpf52O+9EA59MM9uEhkxJzOSAiqrZOD26ze/XacNow64RKD0b05jG8DKlKPi158giR6dxWcFq2D14jWJpM80ilu254l80=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,75 +134,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 13, 2025 at 09:41:40AM -0300, Jason Gunthorpe wrote:
-> On Wed, Aug 13, 2025 at 02:14:23PM +0200, Greg KH wrote:
-> > On Wed, Aug 13, 2025 at 02:02:07PM +0200, Pratyush Yadav wrote:
-> > > On Wed, Aug 13 2025, Greg KH wrote:
-> > > 
-> > > > On Tue, Aug 12, 2025 at 11:34:37PM -0700, Vipin Sharma wrote:
-> > > >> On 2025-08-07 01:44:35, Pasha Tatashin wrote:
-> > > >> > From: Pratyush Yadav <ptyadav@amazon.de>
-> > > >> > +static void memfd_luo_unpreserve_folios(const struct memfd_luo_preserved_folio *pfolios,
-> > > >> > +					unsigned int nr_folios)
-> > > >> > +{
-> > > >> > +	unsigned int i;
-> > > >> > +
-> > > >> > +	for (i = 0; i < nr_folios; i++) {
-> > > >> > +		const struct memfd_luo_preserved_folio *pfolio = &pfolios[i];
-> > > >> > +		struct folio *folio;
-> > > >> > +
-> > > >> > +		if (!pfolio->foliodesc)
-> > > >> > +			continue;
-> > > >> > +
-> > > >> > +		folio = pfn_folio(PRESERVED_FOLIO_PFN(pfolio->foliodesc));
-> > > >> > +
-> > > >> > +		kho_unpreserve_folio(folio);
-> > > >> 
-> > > >> This one is missing WARN_ON_ONCE() similar to the one in
-> > > >> memfd_luo_preserve_folios().
-> > > >
-> > > > So you really want to cause a machine to reboot and get a CVE issued for
-> > > > this, if it could be triggered?  That's bold :)
-> > > >
-> > > > Please don't.  If that can happen, handle the issue and move on, don't
-> > > > crash boxes.
-> > > 
-> > > Why would a WARN() crash the machine? That is what BUG() does, not
-> > > WARN().
-> > 
-> > See 'panic_on_warn' which is enabled in a few billion Linux systems
-> > these days :(
+On Tue, Aug 12, 2025 at 05:58:30PM +0000, Kuniyuki Iwashima wrote:
+> If all workloads were guaranteed to be controlled under memcg, the issue
+> could be worked around by setting tcp_mem[0~2] to UINT_MAX.
 > 
-> This has been discussed so many times already:
-> 
-> https://lwn.net/Articles/969923/
-> 
-> When someone tried to formalize this "don't use WARN_ON" position 
-> in the coding-style.rst it was NAK'd:
-> 
-> https://lwn.net/ml/linux-kernel/10af93f8-83f2-48ce-9bc3-80fe4c60082c@redhat.com/
-> 
-> Based on Linus's opposition to the idea:
-> 
-> https://lore.kernel.org/all/CAHk-=wgF7K2gSSpy=m_=K3Nov4zaceUX9puQf1TjkTJLA2XC_g@mail.gmail.com/
-> 
-> Use the warn ons. Make sure they can't be triggered by userspace. Use
-> them to detect corruption/malfunction in the kernel.
-> 
-> In this case if kho_unpreserve_folio() fails in this call chain it
-> means some error unwind is wrongly happening out of sequence, and we
-> are now forced to leak memory. Unwind is not something that userspace
-> should be controlling, so of course we want a WARN_ON here.
+> In reality, this assumption does not always hold, and processes that
+> belong to the root cgroup or opt out of memcg can consume memory up to
+> the global limit, becoming a noisy neighbour.
 
-"should be" is the key here.  And it's not obvious from this patch if
-that's true or not, which is why I mentioned it.
+As per the last thread, this is not a supported usecase. Opting out of
+memcg coverage for individual cgroups is a self-inflicted problem and
+misconfiguration. There is *no* memory isolation *at all* on such
+containers. Maybe their socket buffers is the only thing that happens
+to matter to *you*, but this is in no way a generic, universal,
+upstreamable solution. Knob or auto-detection is not the issue.
 
-I will keep bringing this up, given the HUGE number of CVEs I keep
-assigning each week for when userspace hits WARN_ON() calls until that
-flow starts to die out either because we don't keep adding new calls, OR
-we finally fix them all.  Both would be good...
-
-thanks,
-
-greg k-h
+Nacked-by: Johannes Weiner <hannes@cmpxchg.org>
 
