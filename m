@@ -2,113 +2,93 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F878CA0EDC
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 01:49:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BC1CCA0EC4
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 01:49:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A079D900029; Tue, 12 Aug 2025 21:49:44 -0400 (EDT)
+	id 997BA90002A; Tue, 12 Aug 2025 21:49:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B57E8E0196; Tue, 12 Aug 2025 21:49:44 -0400 (EDT)
+	id 9400E8E0196; Tue, 12 Aug 2025 21:49:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CC2C900029; Tue, 12 Aug 2025 21:49:44 -0400 (EDT)
+	id 82F8090002A; Tue, 12 Aug 2025 21:49:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C18B8E0196
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 21:49:44 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 52193C01DC
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 01:49:44 +0000 (UTC)
-X-FDA: 83770052688.24.EC8CB39
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 7F2E212000A
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 01:49:42 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=myfdsOxI;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.161.53 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755049782; a=rsa-sha256;
-	cv=none;
-	b=bNC1iayRfv4LGF6UZrHaxoO7vqho8FnFnBxYBXmRvYa3KcktxlVBDugYO0DQWmK3L3DnDM
-	LlboYTQ2Zm6u/6YN+G3pcpyiKcv0Lin9vxEXbUewhR78vDO96ZUI98cV2z8pqYtEPB7q2u
-	wKAxlzhd9Uruxgz0vjJ1WSrPAyRUzDo=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=myfdsOxI;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.161.53 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 71FB68E0196
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 21:49:45 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4160116020D
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 01:49:45 +0000 (UTC)
+X-FDA: 83770052730.15.85AF35A
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7AE288000D
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 01:49:43 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dF5AdvKR;
+	spf=pass (imf02.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755049782;
+	s=arc-20220608; t=1755049783;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Aql2mwv9JTABH+xYsNRLchplJ9jbZwWvArEPle7Cru8=;
-	b=8KGFRX0ufqwl+5jxvB3BvOZTkKSiMn+LLe2/1X17rqsS2DoxLk4wfzw5oNaSj7q1G/SApl
-	ns1i1uqNiJCgm0BnQda/ESUeWkT+ThsGCR8YBV3Cinr8ucvQmpxLYfyQIZzdOuGNuYfg8t
-	gDW+ZYNDU28CQYBxHNUg+UK8g9QQG88=
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-61bc97d9c28so87989eaf.0
-        for <linux-mm@kvack.org>; Tue, 12 Aug 2025 18:49:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755049781; x=1755654581; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Aql2mwv9JTABH+xYsNRLchplJ9jbZwWvArEPle7Cru8=;
-        b=myfdsOxIeCq4jTl2MVUcXhpj+BCiw6Ldh0LmqwH2++w/oDZM47+6QdXsf/gYytY+0y
-         PdLI9I7+kf5qCxXg3rWir6KlrtvLd0rE8TAZve6BA7qMNu8CJu6ERWEt1gF3tWu9oZUu
-         Kq8YGCaHr9QiF/2hpHaeO/JB4EIB/m71dXPWBr5jUK55IsvHt5VQTZcJzobr4DkJA3Hf
-         YK1e9Og2RtKGnma5HCx4C2lqAa8sR6aaEu+/tPTZsrn4pUuouyAMz6W2tx4CZC+obm4D
-         ljRPt8Cg0as1ZFWBC8fhkvhui0E4UqKhCJWCYbIDupJJSLOrjjEfgiQw9WHs6BEm+1Qw
-         WOnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755049781; x=1755654581;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Aql2mwv9JTABH+xYsNRLchplJ9jbZwWvArEPle7Cru8=;
-        b=bdivZf41w+T6X0Qi15a7HWqwosmY82OpTgGDVFaru9RTGGCV+2Ny6FSJcs8g2tsdmo
-         Cx6IyNhrzO7ck4U7jWczFdow0UP5YgbnXYGL/Fzz9rFkVf9jY3rWRbPOg7K/QJlPS0LS
-         7AxWQvUZ8pP8x4NxUXsgubsVtKEdZG5mzEDk9Hgc3H0Ay3a7ELqOZ838/mZCTy+98Myd
-         BS3zm0aXcHMHj6laoaNuQNyo1ruRSyl67edLpZwYxkCvZ5GVc3yo9MtLu0YQswuStJ4a
-         ueElVRa8UoHrhxMH/S6tsOlrbRE+MnsJpECvuoRJPBaENZuUxX1GXmd8AFTdT4guZ0Ox
-         uvKA==
-X-Forwarded-Encrypted: i=1; AJvYcCX18zix5sT/5Hu+Qv+umvJo2DfoJ2+80ilUORLjE3oyNUyJLadkhd7MXp0tmmUymThBJwmbenqPmQ==@kvack.org
-X-Gm-Message-State: AOJu0YxwW2KJoa8ndRJoNyJMcz7pTVaaX2T3QZ/sjcCjLsX+P4gS9c4b
-	YzKyBXTMN4Wfi+mUSXjlmIgvJ89FegqJZ5pNR27e3qcBQt4xIVjUMR0yDmypayotUPufyyZ8Ds9
-	T2D3puPyXPthro2zClmB0rMi+T/fNITw=
-X-Gm-Gg: ASbGncsVM7zErSmRwaYVvYOYBXX4pnL55TWC93fPgaLxmBM+2K0biXEe7uYBW/FxXJT
-	T++72ZWWIctvpionlcye6Q8yWjNd+q8dWcVwx0Z3t4hETpoDkigBhjQprXjwUnvkLmuNhmn7twO
-	2DuSjVL5VQDahBrpzePy88UocbHMlLrE6zetw0j0G2jxeZ3a8JJH5d+EN+lWn8UYSAYLKOQjRvi
-	gGv
-X-Google-Smtp-Source: AGHT+IE1J0i1gE3lpjE8L3r6M3x9LWFRM4yO8xP7DHLQDKGQcNPsPKYKJZsVHZVkCkUSbZlkd0WOpEdDB5+y8llfm/M=
-X-Received: by 2002:a05:6870:80cf:b0:30b:6fa2:6974 with SMTP id
- 586e51a60fabf-30cb59e360cmr834687fac.3.1755049781191; Tue, 12 Aug 2025
- 18:49:41 -0700 (PDT)
+	bh=y8eBs0fHI7CmVwCx02H3JMhe4sR4fjcsdxnZfKRbvCM=;
+	b=5OC0kqEnMN0gq5tSP/9eXOeGQjGpk0tctTWvxdSPJt4h8+Zybf9zuwQTQAz2gS47yakYgr
+	QoG0MFA9IcnTwgTzviUOGArCi06Y5cIxQotYuWcKB/uE4EU5Kx8jkb6jS++iAKf3MucOEn
+	qTJCTaPcSxDBr9xjQrTEv8l9tqXKNXg=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dF5AdvKR;
+	spf=pass (imf02.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755049783; a=rsa-sha256;
+	cv=none;
+	b=rJ3fMH6+RZN6q6Ax0z07UOsNLrqbIwcPS0gQZBwRn1vp0YsgGifMhasFLApCsLdxbSZPmr
+	iDg1oikgvMbpv62Dh8TLwqGa+N/ciKjLoYihD4Iui9XWfzkgxYvpdGDXYhsLk+0iLZylPR
+	NjDpo0kFuSG5aBBs6UmzUZ0wuBonplM=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1755049780;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=y8eBs0fHI7CmVwCx02H3JMhe4sR4fjcsdxnZfKRbvCM=;
+	b=dF5AdvKR2ca/0Id6PcyQBrt5ubWxMZGHTzaPtosUH84mRPw/rz0ZtN0RXNgT+qna999apu
+	RBTv6rLYEKBdLApJ1ypjDqATumzw0aXP/UyfSY5X9mPvS8YQph8ScVbB7RyO0vyJbiQD2t
+	oCWzMrZeb/bNRLTfrs79xT2u9H5kJAs=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>,  Eric Dumazet
+ <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Neal Cardwell
+ <ncardwell@google.com>,  Paolo Abeni <pabeni@redhat.com>,  Willem de
+ Bruijn <willemb@google.com>,  Matthieu Baerts <matttbe@kernel.org>,  Mat
+ Martineau <martineau@kernel.org>,  Johannes Weiner <hannes@cmpxchg.org>,
+  Michal Hocko <mhocko@kernel.org>,  Shakeel Butt <shakeel.butt@linux.dev>,
+  Andrew Morton <akpm@linux-foundation.org>,  =?utf-8?Q?Michal_Koutn=C3=BD?=
+ <mkoutny@suse.com>,  Tejun Heo <tj@kernel.org>,  Simon Horman
+ <horms@kernel.org>,  Geliang Tang <geliang@kernel.org>,  Muchun Song
+ <muchun.song@linux.dev>,  Mina Almasry <almasrymina@google.com>,  Kuniyuki
+ Iwashima <kuni1840@gmail.com>,  netdev@vger.kernel.org,
+  mptcp@lists.linux.dev,  cgroups@vger.kernel.org,  linux-mm@kvack.org
+Subject: Re: [PATCH v3 net-next 09/12] net-memcg: Pass struct sock to
+ mem_cgroup_sk_under_memory_pressure().
+In-Reply-To: <20250812175848.512446-10-kuniyu@google.com> (Kuniyuki Iwashima's
+	message of "Tue, 12 Aug 2025 17:58:27 +0000")
+References: <20250812175848.512446-1-kuniyu@google.com>
+	<20250812175848.512446-10-kuniyu@google.com>
+Date: Tue, 12 Aug 2025 18:49:28 -0700
+Message-ID: <87ms84q9cn.fsf@linux.dev>
 MIME-Version: 1.0
-References: <CABFDxMEQYx7fdx4T7meUb01FoqJaHcW_2RoYnBwJ8GzmJTexzQ@mail.gmail.com>
- <20250812172001.57104-1-sj@kernel.org>
-In-Reply-To: <20250812172001.57104-1-sj@kernel.org>
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-Date: Wed, 13 Aug 2025 10:49:30 +0900
-X-Gm-Features: Ac12FXx-U5LfozvxZM7PlT1XRtOr9ed905rkP1AtucJXvK8shutEgO6eRp4XuMg
-Message-ID: <CABFDxMHjYDZDf6cObeKMSWmh2p-eYy_Nggzg9FK9HOXB-Pvpeg@mail.gmail.com>
-Subject: Re: [PATCH] selftests/damon: fix damon selftests by installing _common.sh
-To: SeongJae Park <sj@kernel.org>
-Cc: Alexandre Ghiti <alexghiti@rivosinc.com>, Shuah Khan <shuah@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Enze Li <lienze@kylinos.cn>, damon@lists.linux.dev, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: dgcjoxyanphpigz8r45r9hx4zsxndais
+Content-Type: text/plain
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: nq5qbzk37815ebhpwf1zbereb5c5x85k
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7F2E212000A
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1755049782-762525
-X-HE-Meta: U2FsdGVkX18yCuhHdMVY9fa08Hilo/mfBzCj9bU6GOTyqyjT7aXqS9ZODv0vqhcEbKjcbytRrN8KgoxNOI1vzpFReq3ttT9eH/V9NE5X57Mp41xQvgq/YIQySJNU+gNnXJpU0Osj1/evZkrod/Klfcse7YmB/wNi5YXdLlao/TcI6rwx+DmTnZVLdFaJalx0SGmrwmftyjj+XC4RWZZ+DQFL6/01QQkXNoCCh5pfZ8MaDNYr4eWJGjR9+qzz7TGe/H1rWzl2Np78WdoSYlx2fAzoahHkpniKs0yLj1htd6BncZ69Q1nRof1skp/zeFCOVlCI3GtaB6oPjxBgSYhV6YuicFUzdj0gCSKUlcjl1h4zfItuDdm5jiwz5NITxeDlLJdG6ABpHZGkk4tcMnGZXPwZv0EO+FG7jp7xnL5hYMUk8nzxTSzzp/8yjlLVr7YzcyjzzRFximXf0Dh9S5H6T48yvcGiVHHBczxzlFCdO9EU74HHZUzw4NA8lZpG+eYROqB23EagGoKF68pLiXEB+ZykgGxCnC8ynIvLFqqrcdCkFPDttQWjqGx+DEh4/++PP+fYCHu69tbgwgEtv6ixmec+aQrFKsksvKFnIPfkHHMUmxETZIRt34V8LWu19g3DG2gcEg1LX5I9qJMQbcbMGAMo6j114fhjqU7QHpwtb7xNqsSLEv70bcCRPNmcL8ovP02s2zDeYc5NCupjSCnBGn2JqN6uNiwnByD3rCIC3CjCIWoSD2rYHQ5mDrTMQ2nvBh9wzW1g6OUQelZaBa0Tzz8HjUPB8S1ItbHQ+E4z+/ulLOxGghPmemLaAvHpYwpPVz/OUsmeJg1SwqowRbla8xG3SiipyS+iqDK4G26PNZH51mSblXSzNmMRQ22Mcz6qUH7LTtAe/dmOk9xhs8xTrHXMH/tfzClpbzT1rYtFZBk+rWYMlgKQAdPxHYAdluZjXdcgElfbgFcL9e58P5X
- leylZM10
- NDtW55gne8Dz4FbaUqmroeCFzWw6fcsrNk7xOkWeDHOkHlx41E4Web6ySot4880nKHA6+TwVovNeki+3DRnYIsrxEte3Sx/E54L5/qOyfOuVcdk/A5oSnGuyZMd2t1PoedZHQfM2l3ZlCCFXsEuiBFxxdpzEVFeWkUqcOmc40qvtH722wg5ZJNs6O/SNSk/sYFGGySV3EIHDa5SFsky+xKtXXLg1STWKVjMIKj3LUaAFisX7YRtLfT57J2MsVU/0eOlaxDiLEFWwv4LyTPi6o9ZL+q1Yxtrqe93+a7UOmjtpXVNLw96DRaZzFKLH2ai23YRxo6nKtxxjBu5p9UeYe4qoL24yeAiCduT1QNchG/CkfAxhTOIJ0k7hxtjylhNeldbkLpck9uvwB9+F6qFu657DcBtBODRCMlKnW3X1p+0R5r5sPeYs/iDq0AkyigJnWNtM7bKxZ3mEtt28Yc4iNXJLQyYlWO3VprBBct9xKl5Ib/ETlUQfGAIhkSVzuuDx3hsFfhMbEl++4l61iq6HgUCTvYw==
+X-Rspamd-Queue-Id: 7AE288000D
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755049783-621556
+X-HE-Meta: U2FsdGVkX1/xAppXOyLtXtX5XZM4PCi/TmBOHWhBFSRvFWjbp4AbBpfghuPounhnzBWY8p4FlUgcYXBI/bHfXk06RvRcIauH7G3Od84m2DopVF+ta2lwCA9+T8w+SDrnwFccRur9zt6An3J3N7KriT3uOvhgEgFnCWcBhi7lAF08cA0LTxFigqpfzkxv4mcd3rUJ+wHt8hjw53wGUofDz5jd6nF7ZFF9tOeRIMvSshLvU5X971gV4iA9vl/nk09F5CRSjBix+8twiTx6YHer7mneTFO9ToRZI1TO78fnplhDLSURJ6co0fnTvHbR0VslE3TQfE8dXf6uku3Z01OgJE4pwTvYB6UQKOQXv4T149jYWKgYqzMrTAhz7M7jHjPNRQq6jC7DmesuakNgOD3Wykp58nLv3czBKFUllWtaGKsKIgeHdn59O7uqxzZTW7TArqZjNdB6hfJqc2SEFVh71+PpkyI8YxVfPE0tqqNh1JQzOUZFIsHSRw/oJ5+GrdS4IcZPUKHWS1UDVGGw93RQvsfe+e3abzlzs+c7FtjSr0pUopm4NGh9aRTMMk8olocCvsK07f+BoRyEY3IWvaj4WqdLtxw/bLwj5+HuX3SD9/Nj0NQ3aSO0hwMZoTB7WaeSOTCsLsRijOOLwUNQuSL5NrB0TtYDFdPTFHVx0ZFJp2MR5/PkdHM8AdGjNMXuDHqJSAzQJ+geA0pzZzvQw+6TYlzgDAYDgdSm0WgcQJs5jQbZGXXPP9h9TlPpXiI65GKpaTsgHa+nM9wUqjIHQ+rSTHBJ6y+mkiZYWO+ATl4RaaoLW13MtuVJfM18IT3mhzd7nqgVmbw7F6egtYqsfNbLdxabrz2i9MH/wizGmXDC4+fehd1tNgcZ4rsfBxVY9d3az+ckI4939A1yRi3RMdN/G8FmjkKja95unhT8NRM9/2FlgIvQSbCL4FUKJLlKp56+AgjniZ/MFrvfaYOflqD
+ OtSiQwf3
+ pjloSxyYGkkYKpgez/fUIHT5OTitV1L1wozD/Yjwa36J4NJYeeb76DaNYM1L83fmp8ne05PNzXIRurTRI/1jxrsM6mzMupKyGYdFAMpoUHsCiS26YzxXkQl16M/AKhlbeZ1vaKg+XJiSP3Rf9kzqm0A5/LlWbI8FvT6Fm2x8WnYgYVqLMIvZIgnzle1z9OHphbIUfJD9eZkNXvATOlK/e3v7MHnViNvLOKH/Jy9xYnvpZAhn7fLPszalFvg2Bec6sbL7O6WsoLgPv1iA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,80 +97,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 13, 2025 at 2:20=E2=80=AFAM SeongJae Park <sj@kernel.org> wrote=
-:
->
-> On Tue, 12 Aug 2025 22:27:00 +0900 Sang-Heon Jeon <ekffu200098@gmail.com>=
- wrote:
->
-> > Hello, Alexandre
-> >
-> > On Tue, Aug 12, 2025 at 9:32=E2=80=AFPM Sang-Heon Jeon <ekffu200098@gma=
-il.com> wrote:
-> > >
-> > > Hello, Alexandre
-> > >
-> > > On Tue, Aug 12, 2025 at 5:13=E2=80=AFPM Alexandre Ghiti <alexghiti@ri=
-vosinc.com> wrote:
-> > > >
-> > > > _common.sh was recently introduced but is not installed and then
-> > > > triggers an error when trying to run the damon selftests:
-> > > >
-> > > > selftests: damon: sysfs.sh
-> > > > ./sysfs.sh: line 4: _common.sh: No such file or directory
-> > > >
-> > > > Install this file to avoid this error.
-> > >
-> > > I tried to reproduce those error with my vm environment but I failed;
-> > > with my workaround test method, it doesn't exist.
-> > > If you're okay, could you please tell me line by line how you execute
-> > > tests in what environment?
-> > > I'm also struggling with the test environment, as well.
-> >
-> > I succeeded to reproduce and also check that this patch removes those e=
-rrors.
-> >
-> > > > Fixes: 511914506d19 ("selftests/damon: introduce _common.sh to host=
- shared function")
-> > > > Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-> > > > ---
-> >
-> > Tested-by: Sang-Heon Jeon <ekffu200098@gmail.com>
->
-> Thank you, Sang-Heon :)
->
-> [...]
-> > > > ---
-> > > > base-commit: 2754d549af31f8f029f02d02cd8e574676229b3d
-> > >
-> > > Does this commit exist in `mm-new` or `damon-next`?  I failed to setu=
-p
-> > > the same base-commit environment.
-> >
-> > However, I'm still not sure that this patch is in the correct
-> > baseline. maybe it will not cause any problems with the merge
-> > though... but I'm not sure. So I didn't add a reviewed-by tag.
->
-> I think unclear baseline of a patch shouldn't be a blocker of Reviewed-by=
- tags.
-> Since most DAMON patches are recommended to use mm-new[1], as long as the=
- patch
-> can cleanly applied on latest mm-new and you don't see anything wrong, I =
-think
-> you can assume it is based on mm-new.
->
-> [1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile=
-.html#scm-trees
+Kuniyuki Iwashima <kuniyu@google.com> writes:
 
-Thanks for the notice! I'll keep that in mind. And also thank you for
-always being kind.
-
+> We will store a flag in the lowest bit of sk->sk_memcg.
 >
-> Thanks,
-> SJ
+> Then, we cannot pass the raw pointer to mem_cgroup_under_socket_pressure().
 >
-> [...]
+> Let's pass struct sock to it and rename the function to match other
+> functions starting with mem_cgroup_sk_.
+>
+> Note that the helper is moved to sock.h to use mem_cgroup_from_sk().
+>
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> Reviewed-by: Eric Dumazet <edumazet@google.com>
 
-Best Regards.
-Sang-Heon Jeon
+Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
 
