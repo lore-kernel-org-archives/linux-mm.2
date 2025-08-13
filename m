@@ -2,106 +2,130 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5AE24C87FCF
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 11:14:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 096BBCA0EE0
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 11:17:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DEAE590005C; Wed, 13 Aug 2025 07:14:18 -0400 (EDT)
+	id 95E7490005D; Wed, 13 Aug 2025 07:17:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC2C6900044; Wed, 13 Aug 2025 07:14:18 -0400 (EDT)
+	id 8E86C900044; Wed, 13 Aug 2025 07:17:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFF8690005C; Wed, 13 Aug 2025 07:14:18 -0400 (EDT)
+	id 761E890005D; Wed, 13 Aug 2025 07:17:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C2619900044
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 07:14:18 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 68AA21602F9
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 11:14:18 +0000 (UTC)
-X-FDA: 83771475396.18.92204F4
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 8B34C1C0005
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 11:14:16 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UmPGhcVK;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf18.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 52662900044
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 07:17:43 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5001F137961
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 11:17:42 +0000 (UTC)
+X-FDA: 83771483964.30.E1CA1E1
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 48D7D1C000B
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 11:17:40 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=THlrefF+;
+	spf=pass (imf20.hostedemail.com: domain of asml.silence@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=asml.silence@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755083656;
+	s=arc-20220608; t=1755083860;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yNVE6wsMC8x7hacYqMkArJqlP3u73DUjInfZebo80YI=;
-	b=Saxj0H5ix5O/9WNBvWAexQWHWXhL+FjYGjczqJt729YWxbCXxsIqFTG3jwPRx2AJgxBoEJ
-	/KLwVwmBgWpkV5PZipM1TWnniF2VHXjpRzfA9BvEg1p1KxYnK2+BvRBtTbKWqDPXpBZWSV
-	7tZdhLdv+ccz9YARKzUemxEMNXHYsU4=
+	bh=ZlWkB4mdDNZC/cn5UpFz36ZU1sYh8iUkH7z054OQZUg=;
+	b=ShWjrLxzj8jq1eAdN4HtPTyp5TOpPdOzvxhNkPayYtiOfC/aIwlG6XNmdcJbhBaaLXs/W/
+	c/q87npJmv8vN9VWfV51dX5n5p+ZxwjW51kZHZpTbVRM/M1JNR01u8QqHlnQYbH7WvDHXo
+	mJ1/OTsXdJhEo2HOr7mVcaMElS5UYoQ=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UmPGhcVK;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf18.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755083656; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=THlrefF+;
+	spf=pass (imf20.hostedemail.com: domain of asml.silence@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=asml.silence@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755083860; a=rsa-sha256;
 	cv=none;
-	b=OQIm82dBfSqiOQAufHgIMPjccMGr16uIixSJ2K9SpZyRCctR2cEUVAkXLfDepc2ZRKU9OZ
-	r+rWFnUz8Z/ZVlY1b1imVi+s6pV8edKSwkS3FvePnm/Wek62JMkJd1rKGPrSskxbPwg6qu
-	TKGaw006tgnCzeCCTpi1tBKBE4l66YY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755083655;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yNVE6wsMC8x7hacYqMkArJqlP3u73DUjInfZebo80YI=;
-	b=UmPGhcVKvgK1DAw5pNYVgjxGAhMbn+e0jSLcNeU1lmJOgrOUWDFJ4eoP7/Fss9IRNawgd6
-	EgkEVGAdKKJw5Zuzhf4QEynxK4cQfRAtJhXZRrer3GjOqUPUfhAkGgIMxd8aXCw3QJi8xr
-	JChK2DS4bHNNLo2RAFoH7vbseQ9eftc=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-205-4Pp8IIsdO9WiKTWHKKqYIA-1; Wed,
- 13 Aug 2025 07:14:12 -0400
-X-MC-Unique: 4Pp8IIsdO9WiKTWHKKqYIA-1
-X-Mimecast-MFC-AGG-ID: 4Pp8IIsdO9WiKTWHKKqYIA_1755083650
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F1FC61800291;
-	Wed, 13 Aug 2025 11:14:09 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.177])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0043630001A1;
-	Wed, 13 Aug 2025 11:14:07 +0000 (UTC)
-Date: Wed, 13 Aug 2025 19:14:02 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: linux-mm@kvack.org, ryabinin.a.a@gmail.com, glider@google.com,
-	dvyukov@google.com, vincenzo.frascino@arm.com,
-	akpm@linux-foundation.org, kasan-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	sj@kernel.org, lorenzo.stoakes@oracle.com, elver@google.com,
-	snovitoll@gmail.com
-Subject: Re: [PATCH v2 00/12] mm/kasan: make kasan=on|off work for all three
- modes
-Message-ID: <aJxzehJYKez5Q1v2@MiWiFi-R3L-srv>
-References: <20250812124941.69508-1-bhe@redhat.com>
- <CA+fCnZcAa62uXqnUwxFmDYh1xPqKBOQqOT55kU8iY_pgQg2+NA@mail.gmail.com>
- <CA+fCnZdKy-AQr+L3w=gfaw9EnFvKd0Gz4LtAZciYDP_SiWrL2A@mail.gmail.com>
+	b=4J5i7mxpbjaE6xvyNvGkfbmoJIz+TSIUOeIp94fcsP5f1o+GMsmQhhnWjoDkf+Eg+mj8Cl
+	3YczXGlBL7r4hM0L3sKDUoZj4jALf2lkPYwzAPUQVKjtlQ/FLQNMsuiGJqkwm8TnniuM3F
+	MeG/Rbc2ogOlQ+SnRUBs/HuP+L9CxY8=
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3b78d13bf10so6591504f8f.1
+        for <linux-mm@kvack.org>; Wed, 13 Aug 2025 04:17:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755083859; x=1755688659; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZlWkB4mdDNZC/cn5UpFz36ZU1sYh8iUkH7z054OQZUg=;
+        b=THlrefF+2PWg5PIc7zVxDPBI5ToLTIRR5yGoQqZ55sOfeChbnLUglYSspGCWWkAwFI
+         to6KMvL8j4LZLxgFBfTH7lgAQPkRs6l6AAD3G+U4FlwuNDgRnpUeoRqfuvqwAO0hHdU6
+         ZUEZC/wO8+b2YKlfjRDhvR39GVc66qzrckW3ZJ+OeiuzZocDDVMcp9IksiN414KY4vLt
+         MF/6IMVsD1Z5bwNAaK80B6Dd4QjTFhwiyOwhC2cwTxNINIdHVCuWutfaOoQvuDJwS0/A
+         pVsF6pWvLrG3uZ8TBPoAw6r9F02k9Hutpu+vlNBZJ/bwbta69Swq9+Cmr03LGFytSi+q
+         3p8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755083859; x=1755688659;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZlWkB4mdDNZC/cn5UpFz36ZU1sYh8iUkH7z054OQZUg=;
+        b=iP6lNoXG0dUswXhk+rmSbiNw0mTa4LyKhrNALCpbnigHmnqdH4yjwfNJGdrpTvO5cr
+         QGVV5SlQEsOegq6miwdwkhGxYqaRrKSFEuLLHxpydbU4SeJPfqm7KUgZ0T94EwZVFwKi
+         4/PNycOaqmKR6WNSB7+fnqh1Z5dIoGHtVVIBRljCJ8qFxclVEbO4N3FJv6ACwqdU7xJd
+         SqXstpfEjhAUsGKSVgxEOlFmelwulE1egM40BjVS8eemRRvTp9G1oM1ldsa6BirmIiuN
+         YtUIsmjBJ4YMxMYss09Gn9qnRE+ZHiP8r6w+n0R/98SEQ07jqXnPORRVHKTCIyHR0CE4
+         5hMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWcArr0VKozPqgpnH2jDmyGgnun7baBnRQxC1olrEyx0cJ40hqpU74+z26HeWDdWAmU7msFS2FXvg==@kvack.org
+X-Gm-Message-State: AOJu0Yzduyxs4z5GfOP+JJXI3CSlgPvDGYY1lswLj+ejDWNYcPRnPzQ3
+	zFQ2dGIZvl2CeFV7AlzDkQ2N2kW7Lf4mLiPM/Ej5Zne9SEwWGnFZKlVS
+X-Gm-Gg: ASbGnct5N4WutrFOaUwRJOCcf1ZSNTuq1qeUkGKTtol8IH5cCppS+InAdgZoh2fPJa2
+	oDRV2PIufMd7YVh6vOCtcIk3djhDa9181P9Gg822+GefjG2aRXCQy97r5HmlqSmPraybPHblwOm
+	Cj96Dgd2hXGHJzxDOB2QHbQgoe6JPnQxm0UAo/Rx22WQOYmUlxGtNgLJH/F72uXUoY24+QT28M7
+	HHJV4qAkGJBFWQbMZ5sjzUquDTRqjezSQ6g/Rj0dqUs95DvuDgAFrblKICDOUQxx/ha/OPMnqgl
+	GiK8yBzq+uOVSjZG/sMjma6BvSoxf5JzbUn/zYFZDRYRfqTBqnd+rbtuRGnSG90/JFcDbIPhuI6
+	QhuKUq+tQALiBCoB36aB8Di5RpdgYIGTIz7E=
+X-Google-Smtp-Source: AGHT+IHIJckFdgjZWss16Tz9qU5LS3EozEf9NXM4Mc+MLVLT3sIzNz2MSxyepzxFt0CjL8IQUdHUsg==
+X-Received: by 2002:a05:6000:178e:b0:3a4:e68e:d33c with SMTP id ffacd0b85a97d-3b917ec3ecbmr2043703f8f.47.1755083858415;
+        Wed, 13 Aug 2025 04:17:38 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c096:325::26f? ([2620:10d:c092:600::1:aa85])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b90d147485sm9666355f8f.19.2025.08.13.04.17.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 Aug 2025 04:17:37 -0700 (PDT)
+Message-ID: <6bbf6ca2-0c46-43b7-82d8-b990f01ae5dd@gmail.com>
+Date: Wed, 13 Aug 2025 12:18:56 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+fCnZdKy-AQr+L3w=gfaw9EnFvKd0Gz4LtAZciYDP_SiWrL2A@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 8B34C1C0005
-X-Stat-Signature: 13unzpreoqprmmo5rh1kwwjau4kxa5yu
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH linux-next v3] mm, page_pool: introduce a new page type
+ for page pool in page type
+To: Byungchul Park <byungchul@sk.com>, akpm@linux-foundation.org,
+ kuba@kernel.org
+Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+ harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
+ davem@davemloft.net, hawk@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
+ mbloch@nvidia.com, andrew+netdev@lunn.ch, edumazet@google.com,
+ pabeni@redhat.com, david@redhat.com, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, horms@kernel.org, jackmanb@google.com, hannes@cmpxchg.org,
+ ziy@nvidia.com, ilias.apalodimas@linaro.org, willy@infradead.org,
+ brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
+ usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
+ almasrymina@google.com, toke@redhat.com, bpf@vger.kernel.org,
+ linux-rdma@vger.kernel.org, sfr@canb.auug.org.au, linux-mm@kvack.org,
+ netdev@vger.kernel.org
+References: <20250729110210.48313-1-byungchul@sk.com>
+ <20250813060901.GA9086@system.software.com>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <20250813060901.GA9086@system.software.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1755083656-857926
-X-HE-Meta: U2FsdGVkX1+EqnZc2FpdMKbwAXgvQdMXyGIqt9L8ebZjd3PNyn7NIqdxlAeIo5GCdJ2HXwvKvuJKVuWoKc3j/qTyX57Rwmk367ifsw/+ssCWv78MK9j1531adbIbaHGFaJgUf8p76NWaa51lCsxAXQugMTfgVmt+8jzcfsu/mRmtk2UZ6yEVEZ9FF3pLdsv3RY3ZGKu9244ROixa10RC0kTsxpSFDhVBlim9i7brVrRCWqr0hvFxhYRc+IdcAWWGstsvFjgsH4xxSXUheID41JUyhAm9pIt9+gzxuY19BcHF5b6672Z9YRqQyJR/YmI1K6RuNi5QiJdOnUjk0OCkoeuhHZ88T0+Ge2+AOF33OaFJdiYHVqwPAxi2jkL+FahL4L3JnCBnn3s2bsM9Crw6LYkmfDbRfFwREpY+XDq/SGSAWBHEocQ4HopsXpxdvMNuShPogb/ZwhmDN/AvStSjcEpKKDHVFNyuCJRzjNi+spbUiC6fNvH7VpnXMx/g025uYEb4d229ZaeWibPcO00RgVTYhCPVT1whXFVgHB09rDiMFYjG0wxRV/a1B58lKzIuuAFErlow3FBmunBoQ/9K3Ghl4xbVkpVaRgIrUIpSWM4/9omz0PP8bxCOJyCjdOQlqJ+E+uVILm+DqrHgxkqy+A9bXEYROFbLZkb3wgvZY21dbfKFq3qu4AAUXP45NuOn7Eqj5BAWm3vvDUR5l2xer7Rucrd/xaX2RIs4HW2j3GbtImb9aeAjcnKchyOSkphkYow1o6gLESidQWGYKtpMblolUIIdu1BvVbbKqGDx2TXbKFym4hrbH95PMHoOMeZ7bJw+8m+yP1I38tG4Q3KrsL6F2v0Cl7SPSEF4h4Gp2EU2WNtpYY5K4GEo29U9huZiOI/GQW0wZNyj9NNPxrZ/D1q5pPAiBGoGJxQTHaj8voNHjnGkF+XmJj03Uf+wx3FcVtvrQeRmcCkHDcYZ6YV
- jg/OxRnO
- FFck1+hOierssVUleSSltoIH3tPPZ4n3eRJPTPhTKTxNAWbHg0f9KEZMeKHQfQi9bXzYMHyweCGZ21iHFBeNV4A/dn0KzKhEdSfk+gXVIX4hS00MbL4JtRUrQ1CVEV6IHLdtKHCF7+GegRswrct0UixhUX6pbRBz8SP9hnu9kzXjZsItAShVl4Fzx85GeuQF7WWftBxm2lFG2GIdwwqZ4RHtJvuifNxl8q4L0e8sD50+RywpWyD/tM0EV+OmlTPWb+lVgL/a8NyGr/5v2MOh8znnZR4Zx/pnIS+D6Wck77ENSBOX/HndUAnLe/4prS71rmGs6Y1xHVHGDQakQqm24/O0TRg4xOXuyg7iGyDqBx8LSiRIhy/y83q0iuvQcS/7ecpTUr+nfr4kLeQm1GeS+HFh3OZVV7ai92hbtKyJSQVCCLDXa8rdOX6dTc7uIhrNIpfLhVAFHiqwMjW1T6d8/wK2tNBY4RlWQLwmu2SYCoIKw3+jS8CWMErtcCKDfwZdUuaxVLFo2cWXvTJmqUf6UrnhyfhMMPguIc13m2AIk7LoT+gQ=
+X-Rspamd-Queue-Id: 48D7D1C000B
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 5nsn4aqucpp4rjxac5hccaith693e384
+X-HE-Tag: 1755083860-263782
+X-HE-Meta: U2FsdGVkX18qW5sitTGsmmCmJcTvZlvvq1nlr7YnSjkcy+Iv4LN0YZWU4Ri41iUg2VFRdXrIquIlC3sipvRKv2x61TDZao7MB/HEqGlZnnwCiotzlioCJErBcETxWJ9g43uZk2CULZ8gc/l5PidPzweyzNa6YFzAzISerIIkb/R1kKqwjlAzDl2vtgEQwqRMd0tSryjpWSlEH5bMCq8yeIcsXO+C6ZvFUZjTkG5VjV89knjHZRxtWlA88/Lp8HEWtyuEtnJDZ2g9QbHRi2H1Y+45dFBTXYP2rXAbuGH6CdfhelyKPw97IAookp9J/jXRvWRC5LRhNlgW4iTeOEI0CU37s803q9XfoKf1HRwq12Sz/qkyZq7BLFfxtU3SC3mto3D8rx3tVVX+B0Y4DvqyPHkIiT3y3iu/Ug8v/OCuDN0NbfKFUr8qMOFkMjq7qyiCyYvxmvKnQYbrpuMenr+YsliMEUmrNKGWY2VJ6EQ2OFXijLPjbzErfNI1JCusrVgZ2ycfPmp2j8proEAQVy6RfwZ4Ejm4hCNuHg9U/j92LQU76cHNrgOlqYdf6EdLJnA5qEMomY/oxX72LR/Sr/GfyploTqr48a/9y7aKFg7yAFfCBvZzrnHvrBi6Qlr6PZSiJ6GFMO1XrPcN14aMKcHOKVFhIiBZxxr7gXwR4S3mqrJ5/Oe3AkD+XOAanpYlac9dssovwBLBd/DZZ7DD8YyUA06gVezKOJhAEDlxC/r76765kk+aFTU+SQcseej4Q3A/bdSd5Kx1E6mE4Zs718qfLEvDnlJCU4phu6RRiyVWa9XpdkdJfc4ZsViXfRmS6GD9VQlo/gbF0GoA/quShnfZGWMm4406hIDNIxWzCOIQEeIEaUMbuvMeVVlFitsehb2xuZljQdA6vs5/9F7KC9wOIQFgmqLxxPkoeHeY3I+dnzXXmjUketoMuzpvH+zYkRq1Tw1Q+9EOl6Vvwv48fO4
+ IfIv3cQG
+ xQdxEuemJvpY1/g3u4oEhnEli9u58Etk2PvRh8jrbRdN9/xSJ7mZi/jBL/N617PlOhLSNc6ee99inE8MXguE9dipyzf/SoDjPNS7UAN/stiQ6EVTxLGQCjszbzUAzMA43FIKJ1+hHsT6eDu2eSthgkgZugVcedvbr/p8PvAwfkNJyOZF+UwgMRD5GqzgTTaM0nd17DQPdT8qyr9S2rRaU9ribS5IRaz2YfY/ONIxBvgcepjbA1DFuMQfTZ7U7wJsXjCKoC3+3bHUYp+p7l1I/VQBbBYTlu1CMcqwy9Cd27VU69g7yFy/vLIOukOEi2720iIpx7+1r9J4R7NIRpKB3BJMBUm6xd0SgX1mPLbqDkYtks/eeSoc8yNG95YXdllofLVj+bMxooW3JMdSvX+TjmQY5hiBZhK88ouseCcIe/q/3hAmD4FZUxZ+7G2tqoUdEyTIsNBPnzFXE+TRd+GZy1EoCdkFPP1OfMRg3CFcm8bpimZmyPgs2usONFpK/X8op/ZrjKnFD+Zvegp1cHswaWou5xTcPo+ALgg3qwzrNzEs3hsMDhH/VsolYQaLq6U5N9iLTcNa1vJhAMarpS/RrsTZv1memXS6rMNS1wmuEmdUxCxtklFF5N8ycvDdzZ0UGEh5SNvVSd0pGiiJbPV5zkS1Oa2eH2fLGaj9gzN3a2wbyFx911UpHQMGNzlGxbULQwQwPfhYIoOH5A0LxnNBC/269k4FfseN4YOnb6dGRT4i5rgE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,62 +134,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08/12/25 at 07:14pm, Andrey Konovalov wrote:
-> On Tue, Aug 12, 2025 at 6:57 PM Andrey Konovalov <andreyknvl@gmail.com> wrote:
-> >
-> > On Tue, Aug 12, 2025 at 2:49 PM Baoquan He <bhe@redhat.com> wrote:
-> > >
-> > > Currently only hw_tags mode of kasan can be enabled or disabled with
-> > > kernel parameter kasan=on|off for built kernel. For kasan generic and
-> > > sw_tags mode, there's no way to disable them once kernel is built.
-> > > This is not convenient sometime, e.g in system kdump is configured.
-> > > When the 1st kernel has KASAN enabled and crash triggered to switch to
-> > > kdump kernel, the generic or sw_tags mode will cost much extra memory
-> > > for kasan shadow while in fact it's meaningless to have kasan in kdump
-> > > kernel.
-> > >
-> > > So this patchset moves the kasan=on|off out of hw_tags scope and into
-> > > common code to make it visible in generic and sw_tags mode too. Then we
-> > > can add kasan=off in kdump kernel to reduce the unneeded meomry cost for
-> > > kasan.
-> >
-> > Hi Baoquan,
-> >
-> > Could you clarify what are you trying to achieve by disabling
-> > Generic/SW_TAGS KASAN via command-line? Do you want not to see any
-> > KASAN reports produced? Or gain back the performance?
-> >
-> > Because for the no reports goal, it would be much easier to add a
-> > command-line parameter to silent the reports.
-> >
-> > And the performance goal can only be partially achieved, as you cannot
-> > remove the compiler instrumentation without rebuilding the kernel.
-> > (What are the boot times for KASAN_GENERIC=n vs KASAN_GENERIC=y +
-> > kasan=off vs KASAN_GENERIC=y btw?)
-> >
-
-Thanks a lot for checking this.
-
+On 8/13/25 07:09, Byungchul Park wrote:
+> On Tue, Jul 29, 2025 at 08:02:10PM +0900, Byungchul Park wrote:
+...>> For net_iov, use ->pp to identify if it's pp, with making sure that ->pp
+>> is NULL for non-pp net_iov.
+>>
+>> This work was inspired by the following link:
+>>
+>> [1] https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
+>>
+>> While at it, move the sanity check for page pool to on free.
 > 
-> Ah, you don't want the shadow memory for kdump, sorry, I somehow missed that.
-
-Yeah, for kdump kernel, the shadow is a heavy burden, and most
-importantly kasan is useless for kdump. We don't want to capture a
-kernel memory bug through kdump kernel running becuase kdump is a
-debugging mechanism.
-
+> Hi, Andrew and Jakub
 > 
-> I'm not familiar with the internals of kdump, but would it be
-> possible/reasonable to teach kdump to ignore the KASAN shadow region?
+> I will spin the next one with some modified, once the following patch,
+> [1], gets merged.
+> 
+>     [1] https://lore.kernel.org/all/a8643abedd208138d3d550db71631d5a2e4168d1.1754929026.git.asml.silence@gmail.com/
+> 
+> This is about both mm and network.  I have no idea which tree should I
+> aim at between mm tree and network tree?  I prefer the network tree tho.
+> 
+> However, it's totally fine regardless of what it would be.  Suggestion?
 
-Yes, we can teach kdump to do that. Then people may hate those conditional
-check "if (is_kdump_kernel())" being added in kasan code. E.g even
-though we skip kasan_init(), we still need to check is_kdump_kernel()
-in kasan_populate_vmalloc(), right? 
+It should go to net, there will be enough of conflicts otherwise.
+mm maintainers, do you like it as a shared branch or can it just
+go through the net tree?
 
-Combined with the existing kasan_arch_is_ready(), it will make kasan code
-ugly. I planned to add kasan_enabled() via static key
-kasan_flag_enabled, then it can also easily remove kasan_arch_is_ready()
-cleanly.
+
+It'd also be better to split mm and net changes into a separate
+patches. A patch I had before, it might need a rebase though.
+
+From: Pavel Begunkov <asml.silence@gmail.com>
+Date: Thu, 17 Jul 2025 11:46:21 +0100
+Subject: [PATCH] mm: introduce a page type for page pool
+
+Page pool currently uses ->pp_magic aliased with lru.next to check
+whether a page belongs to it. Add a new page type, a later patch will
+convert page pool to use it.
+
+Suggested-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+---
+  include/linux/mm.h         | 20 --------------------
+  include/linux/page-flags.h |  6 ++++++
+  mm/page_alloc.c            |  7 +++----
+  3 files changed, 9 insertions(+), 24 deletions(-)
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 0d4ee569aa6b..21db02e92b33 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4205,26 +4205,6 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
+  #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT - 1, \
+  				  PP_DMA_INDEX_SHIFT)
+  
+-/* Mask used for checking in page_pool_page_is_pp() below. page->pp_magic is
+- * OR'ed with PP_SIGNATURE after the allocation in order to preserve bit 0 for
+- * the head page of compound page and bit 1 for pfmemalloc page, as well as the
+- * bits used for the DMA index. page_is_pfmemalloc() is checked in
+- * __page_pool_put_page() to avoid recycling the pfmemalloc page.
+- */
+-#define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
+-
+-#ifdef CONFIG_PAGE_POOL
+-static inline bool page_pool_page_is_pp(const struct page *page)
+-{
+-	return (page->pp_magic & PP_MAGIC_MASK) == PP_SIGNATURE;
+-}
+-#else
+-static inline bool page_pool_page_is_pp(const struct page *page)
+-{
+-	return false;
+-}
+-#endif
+-
+  #define PAGE_SNAPSHOT_FAITHFUL (1 << 0)
+  #define PAGE_SNAPSHOT_PG_BUDDY (1 << 1)
+  #define PAGE_SNAPSHOT_PG_IDLE  (1 << 2)
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index 8d3fa3a91ce4..0afdf2ee3fbd 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -933,6 +933,7 @@ enum pagetype {
+  	PGTY_zsmalloc		= 0xf6,
+  	PGTY_unaccepted		= 0xf7,
+  	PGTY_large_kmalloc	= 0xf8,
++	PGTY_net_pp		= 0xf9,
+  
+  	PGTY_mapcount_underflow = 0xff
+  };
+@@ -1077,6 +1078,11 @@ PAGE_TYPE_OPS(Zsmalloc, zsmalloc, zsmalloc)
+  PAGE_TYPE_OPS(Unaccepted, unaccepted, unaccepted)
+  FOLIO_TYPE_OPS(large_kmalloc, large_kmalloc)
+  
++/*
++ * Marks pages allocated by page_pool. See (see net/core/page_pool.c)
++ */
++PAGE_TYPE_OPS(Net_pp, net_pp, net_pp)
++
+  /**
+   * PageHuge - Determine if the page belongs to hugetlbfs
+   * @page: The page to test.
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index d1d037f97c5f..67dfd6d8a124 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1042,7 +1042,6 @@ static inline bool page_expected_state(struct page *page,
+  #ifdef CONFIG_MEMCG
+  			page->memcg_data |
+  #endif
+-			page_pool_page_is_pp(page) |
+  			(page->flags & check_flags)))
+  		return false;
+  
+@@ -1069,8 +1068,6 @@ static const char *page_bad_reason(struct page *page, unsigned long flags)
+  	if (unlikely(page->memcg_data))
+  		bad_reason = "page still charged to cgroup";
+  #endif
+-	if (unlikely(page_pool_page_is_pp(page)))
+-		bad_reason = "page_pool leak";
+  	return bad_reason;
+  }
+  
+@@ -1379,9 +1376,11 @@ __always_inline bool free_pages_prepare(struct page *page,
+  		mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
+  		folio->mapping = NULL;
+  	}
+-	if (unlikely(page_has_type(page)))
++	if (unlikely(page_has_type(page))) {
++		WARN_ON_ONCE(PageNet_pp(page));
+  		/* Reset the page_type (which overlays _mapcount) */
+  		page->page_type = UINT_MAX;
++	}
+  
+  	if (is_check_pages_enabled()) {
+  		if (free_page_is_bad(page))
+
+-- 
+Pavel Begunkov
 
 
