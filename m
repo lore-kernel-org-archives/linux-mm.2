@@ -2,90 +2,131 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 101B9CA0EE0
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 16:49:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 788FFCA0EE0
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 16:57:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C5959000B0; Wed, 13 Aug 2025 12:49:14 -0400 (EDT)
+	id 025C19000B1; Wed, 13 Aug 2025 12:57:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 875D8900088; Wed, 13 Aug 2025 12:49:14 -0400 (EDT)
+	id F3F8A900088; Wed, 13 Aug 2025 12:57:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78BC09000B0; Wed, 13 Aug 2025 12:49:14 -0400 (EDT)
+	id E7C7B9000B1; Wed, 13 Aug 2025 12:57:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6720A900088
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 12:49:14 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 13B15C035F
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 16:49:14 +0000 (UTC)
-X-FDA: 83772319428.05.5195133
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A2B7BC0014
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 16:49:12 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UK1WJO+x;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755103752; a=rsa-sha256;
-	cv=none;
-	b=L+E8gnKK9FzJReauO/46x8hj1kFL4Ve4lcC5Nw3xBkIeuuvP85CgEYE0UV5oMfInO0+omB
-	McgQ0YeR7yAxSydhpVS0D5FaORFyNJSo9uCmhYaabKsDFdWYcWN9HLAwo2hVSuhlaktD3b
-	ie2jYDUTRalbtDnbytlgT6O5qWXthzA=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UK1WJO+x;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D9C19900088
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 12:57:41 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3B4651A0471
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 16:57:41 +0000 (UTC)
+X-FDA: 83772340722.04.49AAD84
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 523AD180002
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 16:57:39 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=F7v5cd8H;
+	spf=pass (imf06.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755103752;
+	s=arc-20220608; t=1755104259;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GG5ONhXMZCzfaiuz+2YZsiiJGKwtZjHiKabjdvSHbsk=;
-	b=GMsbDTJbEUeJto1vvcx/2FWXk3auVV7/kntZ4zZ4yidV9SEMYvemE2PvYzeJ0oFII/P9L7
-	Ebge6jP6gj31qOB2BfDWa5b3/ICGPOK75XaTDAiAOUejd7EiXNoL/jKcCiGAnZ67wOPgxh
-	PZs53+c195am18vs0R+IUAZwj0PM5uc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 941B25C6A1B;
-	Wed, 13 Aug 2025 16:49:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16452C4CEEF;
-	Wed, 13 Aug 2025 16:49:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755103751;
-	bh=CSFaSozMOw3PaXtP/V3KWHY28EmmlL/o1GQ0agoqXDY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UK1WJO+x86Xc9PmtfdbEVJHuMZOa/tpxzVdWXSB+H8OpvyNUYzl/9EUmEqQUGy6WI
-	 OO+/Kma3G6O4zOfWkPLIZxMyi4l9HsxxmtqLjFdzUcsWjaNpNZEZd3TZIJDlGsfFM0
-	 bzjHt7SAMVmhX5u6y7O+KeEa2HqxycRLJLpC0DpkXCpVa7cY92EOOoUyZsezSVr7p0
-	 LjayP5I9fN2JKiVuMMkzzGE+m7+7EEFNvVuZA6xEIjatd2fBOxKSYTsXLugNCAhTG3
-	 BIoTsI+9BJhOcHzxD7cFysUSe2skX6y/qyQe7NGcmhauOGbNgMzO4vHOUcMh+RL8dw
-	 74RkYcechA7ZA==
-From: SeongJae Park <sj@kernel.org>
-To: Quanmin Yan <yanquanmin1@huawei.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	wangkefeng.wang@huawei.com,
-	zuoze1@huawei.com
-Subject: Re: [RFC PATCH -next 12/16] mm/damon: add damon_ctx->min_region and damon_target->min_region
-Date: Wed, 13 Aug 2025 09:49:07 -0700
-Message-Id: <20250813164907.5885-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250813050706.1564229-13-yanquanmin1@huawei.com>
-References: 
+	bh=a2gxI4yFXWVOtLhM/0polO/7seLsXtV2FXKtzlfxTr8=;
+	b=Va1JRv+io/pfrFVOkO7xqtGNnPIqKXu0hCjdaf/ruSzFD1h/Gm4SSD7fK+2oYzwtXEgPe3
+	Qgq53ToyVbervCBxqs3Z26vX+UHMBHF6zSjR31SKtB8TSwP+ze9EZdhEN6nUqq9vh1/HuQ
+	eD0YGwY1EzNZbHne22Z2vqeHIwPmb0M=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=F7v5cd8H;
+	spf=pass (imf06.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755104259; a=rsa-sha256;
+	cv=none;
+	b=SxLYheXkt7kKQ6cfjRrWPzdELzcOaAc1TtiKf5VSpjWVFEMmBwf9uOPXa6k7dwC0EWjsgU
+	32wLB2vbg61HwgBzPmQ7RbzfiLx/W3SVPAWBuFW2b30GXZnnMCFgQlalSmKAk7QVWTeYCS
+	Nz6t82HUmCIvL27vWX8F6GvSzfaxnn4=
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-afcb73394b4so11704966b.0
+        for <linux-mm@kvack.org>; Wed, 13 Aug 2025 09:57:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755104258; x=1755709058; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=a2gxI4yFXWVOtLhM/0polO/7seLsXtV2FXKtzlfxTr8=;
+        b=F7v5cd8HoGAzKbmCSpWc1AgjtK1L+2+2AfKsJrdX63nP9Slh87TFDv7CNTiR/qFVmO
+         nZLTf8ctVRR9TZbhcR0WXi7eggvZESmg+Vi3bkDVFnD9Did6DnFHRqRz4orUg+9X0Kkt
+         2bu4+Rt7NoX+aa6sbRv98HJqL5gs0WLvQ1TK5ANnrGXewhQJjjtkyLb5I9KcmcnEx7kv
+         OvK1xMSxpPU4LRHDg3lI5tsZW9rEip/MXNrpeRrlbUbLYZkWMmzpz/pd0GXZwyQN/617
+         2THyz1fAHRlG+YkUUNp1D0bPY3SUtgjyd97yxqB/MhseodGustcwpzUXfchb8dfgYUD5
+         mc6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755104258; x=1755709058;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=a2gxI4yFXWVOtLhM/0polO/7seLsXtV2FXKtzlfxTr8=;
+        b=Pdj6BPbNwxlpljk8qlBcIDtixQM5QTYxLjllys4iwIVYEii6xvan32HxRjPIEqCXB1
+         BmmnkFD8Nti1XLTy0G00kPmWyRPf3Pyk53O+LzabEsdRlSSG0AxLe4a1ik3vRz3eWx2a
+         tHwEt2DKObqTf3u2w019iLSaei8Sq0H3X1bfbBDRB4LELOR60q4lyNVMVEEoEmvzSssA
+         d7xKCVkslfrrAbfcz3E7ykeBC+RBWFiM0hNMQE55JS60qMDfXLqT+XfVjrOMYbrBpfEk
+         0VD3KpNX0dG8mSX9nL8PsgHNAf+KKj8wkpPCSgBqlQHNWBHg3hhIwxAEeTXdSYuPkF7C
+         EITw==
+X-Forwarded-Encrypted: i=1; AJvYcCWSWUz72BoAtxpFOp9YPmTu0ho0UW84RRe6BwxvRtyBkaJj1sP1ZrKIi+tcfXWeKWO2EDlWlbsRhA==@kvack.org
+X-Gm-Message-State: AOJu0Yy4JT39UQVfAL8hVKiVQLdiu+lAVZnEn9j788cox1WJXaFrdxDh
+	arIS1U8EmaJPGAPx0CdEUGlGOuAZQ0oNSBZVq1Kzcmk67GW9X2bXv53gClTkx0T+bsEz06XZa5y
+	97HvjNhYX/FMNojQUnXxi51yy+DsZMzg=
+X-Gm-Gg: ASbGncs12Je+FFKtppjBM65AAqypktVl0QcBln23JY31d1uaPDCfk4WfowwkU05q55g
+	eZwPM0z14rLs1bwpFpOxlFO0mgNAKmIoThfjT775H45zt4CiaVjDLWMRgHKo1wNdSviFImXqVT/
+	kJ6M4E0v3HnZweqdG3DmMmxMVXZJzgkIzhjkHsF2amahZYlYAjnGnE3UR1lqYxJTGT4wVlFIp1W
+	Sy/LfbpYg==
+X-Google-Smtp-Source: AGHT+IHbk44OEj1r3kasIcTcyEDngMuhrBuyXGAMgY2npDrtdlj0x5dJHeL/vjl9xwrgnQvrGKpG6wybKFGCryjWMzw=
+X-Received: by 2002:a17:907:3f0b:b0:af9:116c:61c4 with SMTP id
+ a640c23a62f3a-afca4e44cd7mr358157166b.48.1755104257569; Wed, 13 Aug 2025
+ 09:57:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A2B7BC0014
-X-Stat-Signature: bsg9ubdntj4j7wbkopubgb77uq9666e9
+References: <20250812-pinctrl-gpio-pinfuncs-v4-0-bb3906c55e64@linaro.org> <20250812-pinctrl-gpio-pinfuncs-v4-3-bb3906c55e64@linaro.org>
+In-Reply-To: <20250812-pinctrl-gpio-pinfuncs-v4-3-bb3906c55e64@linaro.org>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Wed, 13 Aug 2025 18:57:00 +0200
+X-Gm-Features: Ac12FXzRwEdbOG7WcfkJrIX52h7RVyVAx5HnOB8PpoXFNYyQXL2enxp09SWUXag
+Message-ID: <CAHp75VeSA=AYDKOV5XQ5nnz7EZRmnhbbVyJrcBUcMO2LrRMTmQ@mail.gmail.com>
+Subject: Re: [PATCH v4 03/15] pinctrl: airoha: replace struct function_desc
+ with struct pinfunction
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
+	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
+	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
+	linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
+	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 523AD180002
+X-Stat-Signature: 9o1psno7idb6m6bm1wnjubn6td3i7dok
 X-Rspam-User: 
-X-HE-Tag: 1755103752-6304
-X-HE-Meta: U2FsdGVkX1/uIAo3Z8BJiZXH/aKI0HnDEDLQZ/Vbwr97RRbRcgNc4MseK8264w0eFTwz9tB7ojf/sefp5Lg6C4iFTk49YPUAoK5g9S3rQ6EiQ2wCT9E08TTkJGYDfU/ThF9iw2ti79aCSEGVGln0flk+FzNUx7G1sIh121evTCUz8UE6hPLJm7VBrMjcQUeqQ8niGEPmPRiV+L3VuGmQ7j1ZZ/h52KiLitdWefU94hzeRd40oAacn55ptJSDvLn87lkwmgzIPuuO7QZnROnRETCEJrFPVmLIcws/Kf6WTP6ziwlC4J4WiFci3up4HUPUakwzXvhhGxtwo7L6SwrV2i0LZbH1cRd9H1oQsXV9gX4T4OpzJmrgATLwLil7gfDdiH5mDYLv9T6Sx9kyrQhiXkOta6qKm3ynWgAD6cLnm1gcP58DMkV19r66TV35c+UH0ihmAOnE3P14z9ANqyeY2wDqt78JczTVhjAIwWGF6AmM4mKDGbqXCfAcZI7JAed6yXjI1WxFo65o01DvmmLJsdIIYLnguuoC3UPcTnphiDHg0lEI+BwTl/ItDQ9Od5DYlWeLaDnUX7hgxTumZ4LLg5eR2inWNTuHG/CJwRtRY5H2kxZYN/2GDEBY9Zq/azNBfXk6naJH1itH3DxuK3F5zimZH7peKfP2ch9NtuxNTrRCU9Q92QRPfKun9MPzcH9Yf0RPZRFIM/ce8O0jV+VeigXSNq+0dFGdK1HqmzMCECW5hFSOtXNXV4lF0MuFABW7VPVt8oY98br+O+wJ+4GxEdduOgoFcymVfRdNGr7scQAodFRpwq9FismaL8NMQ8D37fJpaaj+ShVVvIwKV0cG4ffTo/tKm0jCdOEP8/RdVIzwPXUR/38FPhL3Wv1CNjqkZssrq+KNrP/4VZQNzuOWsy+geliViSxo4d5qRbLtmbkFqaGGUaJ7FTKhUr8tiCICTUtAKwJV16Oz3UbLqKu
- R+YIljEU
- s878n
+X-HE-Tag: 1755104259-52208
+X-HE-Meta: U2FsdGVkX18cFDhlSEOFxUcV7Wtbpye3/fUy8LCSMZCQ0WI6pbuP02Sfdas1FfXZQHhJSxilWE+ofGOlbmTTih+YSGApu7oEjq56o8YxOt5J3yw9MLT4xgf6YD7W8aF8+gHsM93yCEl1e/jQumEcrh9+PXlZX05AegyWyGY1CM2sODdtXBPTOBkO0X1ZqfpI6etiXYG2yc0mgDQQBsUJ26ewdokWDckX54l9VfTICom5nF+eJMQINlQpbkqn/dQ4cIoKSt7dGyuo69+SmJKCnCjBAmCYOv2xOOtnVEmEdk74RSJgDaqbKSwZpPLp9s0b7ShFR8pvmiSxqqoveuZu9zNWHODs0a1A7s9yLPyDliC6XJqYLGYwHMS1RzJGPzTqpNgrwvUSc7tNMm8xuJ9rq0uAcMH3H0HkyBrD+BIm0bD1ooCNge1NZiZtPKunr+pi2MRNV0FLnG6nwnHKWzDp3H19mqzELugPXd21AC1XxKApdfjZVJn8Jmncid8pxynY8stSiFKJe4+FgmgyStiXZp58UYuq5mTCsq3SRhxubFyPQB60juOVpYnEDlvPBXGCiq+Wq8lbUt8aQqxLRWMvwi9DNEQ+9MN1uQG80hXfeWf0nRBb726L1nE7XUWbFi6rJ5P4PwrqGT+IfMVStV1/wLuLFSkcR8PCdaC1WxrXive/795a6yGcO5I0SWbm3ev4WrsAskbQiVGVafJ+pj6V+1RTwwZJ3qDc8m9UnI/NoVXNHz31y1VjkAH0tWCjMjR5020fkkrUeXHZtdyo7U3DbcMrbuBOoRNc0v0BKaDBs44dIirCrXPFWiFqhgvvaAmPh2zuM7lL71bTOsEHCdgeFyXLRsQwZmpAVJ+tI01K36HwoKSCHdt21lzyIS5fSDveJuTFQeRL+MCpTHSKJlGDJPl6vImku5S2PQPDcbfN37vwwdBRlIVIk0SUXfxQ1meIoJOTZPd8hTZCtGQMbQK
+ bLfHKHPh
+ k6VWwJoqS4sn4sHbZAOYbHpqcMlZzW9DbFkuh4vjNFXpTZCe6opxGTJNG0XROEGsWZLKoBvTdkguBFRn5tL/VlBUPl5piRutd6p8LxFPGGxru6CP7JkNWb5Etu+mB9pnVfJP7uwSSXsLVDk8Le6SuIaDbbSCFK/VYJxUQo2xL1lmhHhUHKeUhqk5QUG1LdcrqnKD+w7rTPcMuez546ZNtDBbipvD3vJVyFbe+b3lIGqJyoBZTMJE93evo1+4SO7hOfIQtq1fiNX0WVp3Cj3w7KN8utdOfNqKDu6Z7Vgg7T3ReTwtFplYJN1Ewdqi7HOhr3u0zUfnzpHYw0M+ZlXlkfY6kJ5FvTl2q24geuR9I/bKum0YXFsTTjDEarIJszaTF4IxvvQQi1acyAkbw4jikJkz72UhTHlDHZpAKSMfhnNcjtQCG/W0SAnCqwccX7l+HymuRQEWgyJJ2Eyo33IDoyHNvr2cG8382C2TcxL0uviEGvPsgJPBDe/vJQrvuM+qQaFwQFRTeO7bclTIVxvijFpicTGBEBQNSrBqJH/Ks2v6ZFwUS6CzxYPWS3+m59mh/1zGH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,30 +135,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 13 Aug 2025 13:07:02 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
+On Tue, Aug 12, 2025 at 10:27=E2=80=AFAM Bartosz Golaszewski <brgl@bgdev.pl=
+> wrote:
+>
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>
+> struct function_desc is a wrapper around struct pinfunction with an
+> additional void *data pointer. This driver doesn't use the data pointer.
+> We're also working towards reducing the usage of struct function_desc in
+> pinctrl drivers - they should only be created by pinmux core and
+> accessed by drivers using pinmux_generic_get_function(). Replace the
+> struct function_desc objects in this driver with smaller struct
+> pinfunction instances.
 
-> Adopting addr_unit would make DAMON_MINREGION 'addr_unit * 4096'
-> bytes and cause data alignment issues[1].
-> 
-> Add damon_ctx->min_region to change DAMON_MIN_REGION from a global
-> macro value to per-context variable,
+...
 
-Nice!
+>  #define PINCTRL_FUNC_DESC(id)                                          \
+>         {                                                               \
+>                 .desc =3D {                                              =
+ \
+> -                       .func =3D {                                      =
+ \
+> -                               .name =3D #id,                           =
+ \
+> -                               .groups =3D id##_groups,                 =
+ \
+> -                               .ngroups =3D ARRAY_SIZE(id##_groups),    =
+ \
+> -                       }                                               \
+> +                       .name =3D #id,                                   =
+ \
+> +                       .groups =3D id##_groups,                         =
+ \
+> +                       .ngroups =3D ARRAY_SIZE(id##_groups),            =
+ \
 
-> let target inherit the min_region
-> from its associated ctx to avoid excessive passing of ctx.
+Can this use PINCTRL_PINFUNCITON() ?
 
-To me, keeping the synchronization seems more complicated than just passing the
-addr_unit value to relevant functions.  I'd prefer passing the addr_unit to
-relevant functions.  It could require more changes and might make code uglier,
-but I think that's easier to maintain, and we can cleanup/refactor the code
-later.
+>                 },                                                      \
+>                 .groups =3D id##_func_group,                             =
+ \
+>                 .group_size =3D ARRAY_SIZE(id##_func_group),             =
+ \
 
-Could you please do so in the next version?
+>  };
 
-
-Thanks,
-SJ
-
-[...]
+--=20
+With Best Regards,
+Andy Shevchenko
 
