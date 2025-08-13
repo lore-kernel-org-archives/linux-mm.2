@@ -2,84 +2,115 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 718ADC87FCF
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 15:45:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CDAB8CA0EE0
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 16:17:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 108579000A8; Wed, 13 Aug 2025 11:45:14 -0400 (EDT)
+	id 2D6AB9000A9; Wed, 13 Aug 2025 12:17:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B968900088; Wed, 13 Aug 2025 11:45:14 -0400 (EDT)
+	id 2AE59900088; Wed, 13 Aug 2025 12:17:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F38709000A8; Wed, 13 Aug 2025 11:45:13 -0400 (EDT)
+	id 1C4719000A9; Wed, 13 Aug 2025 12:17:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E1786900088
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 11:45:13 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8F3C0117498
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 15:45:13 +0000 (UTC)
-X-FDA: 83772158106.05.945C62C
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	by imf03.hostedemail.com (Postfix) with ESMTP id B93BE2000E
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 15:45:11 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EprmuzHO;
-	spf=pass (imf03.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B068900088
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 12:17:13 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AEA23137EAE
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 16:17:12 +0000 (UTC)
+X-FDA: 83772238704.29.B25C16C
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B477240004
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 16:17:10 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=In9cU0gt;
+	spf=pass (imf27.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755099912;
+	s=arc-20220608; t=1755101830;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SsPDwhSTBJoReLg/9/YKJlevSdDByn1CpS92UikRLrs=;
-	b=FCqlVIfaPrXnWiOGeTr1ptMztgmiYIDnf+cnzgS6ptKlD3KqqleeTYzW5q9JSoyBkt3q/P
-	tAg6pD196nNuxO1LMo1OBWpi3/Zdixvnb+6YyEROVyS90Ieg1xbpgYnleMIyF/YB50MP6t
-	wKxrOgywqTcbWw9bcBq3IWBgHHDr6Ms=
+	bh=y0r8lX0/1M6KsfijF5/m66QhjeQjFJTvODKoUvnEDMw=;
+	b=2gtNNSSSIsJCn8l7FxQTZwQ5nEr0MQJSBVGlIQkJMIAqdYnd5SYj86nr1VbUN8zXVTDpY3
+	XMHNzKXeysmCCAuzvgEz5Lx/wZrU7BG/CSRcfX8ZN952e/bUpirPmGCevzvSbKPf7d2uDT
+	wc9u82jrJqyPf1AsDrJR6qbTZhM0xCA=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EprmuzHO;
-	spf=pass (imf03.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755099912; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=In9cU0gt;
+	spf=pass (imf27.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755101830; a=rsa-sha256;
 	cv=none;
-	b=BkJjMD++ZxKl2TFPseOQbbCUtqMDV0i2NmtWjJ9Mb024w+QpV668y0oUCB0KQisG9la/6t
-	kADPaz1f7GYeDOgQ03hubj+u7IzNaz7EMgAVb8oczLN6FQpEK1w1H7KEUWNa7iIe3+sbAp
-	VzjzCha8OGWmHuFp8TtatHZalNEdChc=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755099909;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SsPDwhSTBJoReLg/9/YKJlevSdDByn1CpS92UikRLrs=;
-	b=EprmuzHOFgXR6T/Un4d8FyvdxlSvFwXlSh+XmMWLyARs9/QurDnM9B2l748u+jSFn+YVu5
-	cGeYlgobVLC9l02O58aMzTZc3Sc8TbqTVd31gv7iOf2l5w06YraQo1dkybNq4ipvKctMRC
-	XXUItOdleZVof38aYxrbhvgEPK93qX8=
-From: Roman Gushchin <roman.gushchin@linux.dev>
+	b=Y5mn1lB7DTRK/IuhpUOuUY7PcSd7qlL4Mb9/bUPWm2jpuJ+Vmn52CDh0HG8uwaeyPkdWgW
+	Cs7Z/Flc34LgQb060JSGY563zABM3XE5nkIAMiX+SaAizOgW2iddNRY7c1QWAGkGsmpQaj
+	y8/1h74a3bKvsZFU/Iz3QaEXfIh9prg=
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7e62a1cbf82so478770185a.2
+        for <linux-mm@kvack.org>; Wed, 13 Aug 2025 09:17:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1755101830; x=1755706630; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=y0r8lX0/1M6KsfijF5/m66QhjeQjFJTvODKoUvnEDMw=;
+        b=In9cU0gtUXHyMraglkh73efDg4kQUiWcRS9UcDHRsfOypYvdfeGcNL7TwAC92HDray
+         qqvqO+jzdouTqho5qNdX/l3bR6DJr66reuAfPgyUSvW9dJqPRUetKqy+uuN2bEK0wttR
+         UDQlk02iwI0jkocrTrB9h0XQkHYtQFcHa6nFob97kpPZxHoyM9K0JgvheXolnHba23kI
+         i0BXSjlK9+ARF7BoRDQzrdWyYbB/hVzDiHrQJIJg4vwJe8AEZa5j6oeL4t7ZhB38dbx9
+         M6QPtun/EUEgEbyBljY/QBVRcWDylAywBl6vxccD2tsTqItuHL4WykvQDJFJhihpaa2A
+         jojw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755101830; x=1755706630;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y0r8lX0/1M6KsfijF5/m66QhjeQjFJTvODKoUvnEDMw=;
+        b=fzzSRh7UiiZj3yIRYOMfzX437UDKuDM6i2J0HAnKMrPREAL0pNRZiUG2IzHpFWLyTU
+         PmaOmSOUUMD+zZxCnbvvhOKaSrf7qcmNI37MMjAS68uToI/pCVAsveXIqc7hT79yi/xK
+         KbwxCrHKjq1iOOw3GliR98yLSXnCC44PrHjf+UItAwk+wZLLDwcrLvdFZOsgMQqImTdm
+         xG4LniUbj0VyfUdANo2UDRAvINPNr/+bUM8S0XrU6RGY8CJcLOXem+9XVMlx1NTxM1R+
+         iJVoYVxrD2YM7h7W8lAPd2aQf9dLec9QQeU1uGUumZx+Ky4GXA+Vx5zg29R+CDWmIXKb
+         ntuA==
+X-Gm-Message-State: AOJu0YyiQjKB8Bcyd+p35A9cQNyaXAZjMvd/5mY9Zldu99dYQ9o+QRhB
+	KeXSiOIL34gs02NgGkUhcmcKJuw1YLItlkp0d3jpmSmLNe2g5UYLFAvYVhHl1AcxaBs=
+X-Gm-Gg: ASbGncu7rstFWZ7QySlV2OI+PzBTwIfy95lNdkXPBVmp+7xg2eOU9zig404/3P9Zjkc
+	jY1IjJOEWh+QDSQOEsFl+9RZy7A/NADUs5FZss4LLdEA3ub3qjYu/UgQ9JaFo4a1vRbtGO3qORj
+	UPzDLUiISkqukAge6E/dzCbtc2osVEQSNiHpSEEHB7XXh8Y5UPNg7Q9gYHFmSGHhejJoGIgzLq/
+	tY1sn17oSctV9/SPq6TIc1DIlh7NdRBQUQz+70Gt9qOqNHO6Z9MPzgc/wTRDy6xhVS0VCqFTxTe
+	aWZ2Xdw1u51V0q0qxB+Q0JSNsOFzALDJo57+ksimetoe9xgdAtpvOD067Zq+H1hw6CIaailiP9i
+	wqvJRfsDUJxYNNwG3nnEb4g==
+X-Google-Smtp-Source: AGHT+IGHCZVUArn+hQTSYfm5ZLOiQRAX3EihSL5rOgIAp2pUobtvdJENs5NTWAKywrm2ri8umYv+Hw==
+X-Received: by 2002:a05:620a:560d:b0:7e0:e7b0:967e with SMTP id af79cd13be357-7e86522c104mr386843385a.7.1755101829593;
+        Wed, 13 Aug 2025 09:17:09 -0700 (PDT)
+Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
+        by smtp.gmail.com with UTF8SMTPSA id d75a77b69052e-4af230d8a21sm153187231cf.51.2025.08.13.09.17.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Aug 2025 09:17:09 -0700 (PDT)
+Date: Wed, 13 Aug 2025 12:17:08 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
 To: Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-mm@kvack.org,  LKML <linux-kernel@vger.kernel.org>,  Peter
- Zijlstra <peterz@infradead.org>,  Johannes Weiner <hannes@cmpxchg.org>,
-  Michal Hocko <mhocko@kernel.org>,  Shakeel Butt <shakeel.butt@linux.dev>,
-  Muchun Song <muchun.song@linux.dev>,  cgroups@vger.kernel.org,  Andrew
- Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, LKML <linux-kernel@vger.kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
 Subject: Re: [PATCH] memcg: Optimize exit to user space
-In-Reply-To: <87tt2b6zgs.ffs@tglx> (Thomas Gleixner's message of "Wed, 13 Aug
-	2025 16:57:55 +0200")
+Message-ID: <20250813161708.GA115258@cmpxchg.org>
 References: <87tt2b6zgs.ffs@tglx>
-Date: Wed, 13 Aug 2025 08:45:02 -0700
-Message-ID: <87ectfgr9d.fsf@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87tt2b6zgs.ffs@tglx>
+X-Rspamd-Queue-Id: B477240004
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B93BE2000E
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 749ndb3zoqymha1hh3u1ggpizsufgynw
-X-HE-Tag: 1755099911-50593
-X-HE-Meta: U2FsdGVkX199sTaZJ38QVsb8Wg35XTdeFdu6+TlemdXD3XZl7pjLpM+6/5cagSPku1oQLrODWPkm+FChKN5Yos0lJNrlOHln3DXSY2uIMoOpfCfTD8/7o2kuxZofukV2d7Ow3yedYpl4om32jN9RmDGAAc8jFK5I8nbACUMmgWcKSjC1jCw6v96C2hnksrmSqRTjzh9V96ZO6oD7omc4QcA9yOYy0tRdlLGtOZGZ4FfR3GlZz7pjDugtRDhb8N7oy8Xw3usTFMjE2vs4z9gTY0PgU2HgZF23tj1yK/4kwUIxnd6xAAujcCalBaCX5HPvjRc9Y3dgYi7HjG+EoDLrgtRiXoUz8zyhhYPHBGVNQ5QAENnp4ImyvUZKhPxn53wcmmMgbZCWCHlhYQJoMVyooAIMymuA1mPKV5dzCtskxzPLSGhEhwGXQk3f4FQtND9/VD5wjdAxhJSgtkk6LeGuSFvwfrcztE1N141mp7wh0gb/7ky2hXoTIksRSzkrl4i5PylNx0Xd5j86GrBmNL7zqGIuIuAuUYGjSCWQQrl+5xtJrPodm3EdA5S1XQgUiZqg3MuQYpKsL0pWEsMd/MIcFNO1JO4iOEBX9fQErGuqqFeHbLPiih0Iw9JDWGqpkyuRAzMo8CR+s9W6Bft8zzoBy+9IfdFE4vQcY+icJi0kVPyw9pzyggWG6WNd2r0qAsLSoVuco4Owv4BgK9jr1tJ1ZTR0W9eOVLSvEsYuxCEmRZG8UqnTQoPWMvFvjJ1AvZoPlEiJs26He8qxAGupaaoYGXSdaDJSpTwGW1qKuc60dtOBLT0C6pCocLoXlAidRU6HyftyF+tyBrxPLMe1YWdlCrGYPEbYjFD+h5SEbC8ibAZfjtRZScxx6+0HqtQd1XcMX/fpKTgaYmd1kC/Prq2ZGbX9q6GG/kZsYgBnkYpeuZsd9ePMo0dVkGvFr1oc3Z6Tg0yz4JleiqWpbX3FKdV
- fPivFYy5
- KMEez3D64yE6PcGEzUtpu1JHKcrw35qAe5KDEzSWQp5nqOVz47EE5f2gwgzRZlCM7HT3MJ0YlVFH5RSxA8YLUm/S5f941TT1ukXwHRRP900BmnuNwbwq3K/qXoZ/b8PujM5z+/QO6Qutb3Kqf75HUcMKsdZa161uJCAlFrUMSh7RXzfCetze00i1KlZrBsrHbfWKBnAIz4dN4qQiSLwRwO3bAExmJ6+fcBpzl21BwJwSw1b6uuJaErFluXt5ncMLyoNYWeoWzRMbOFQ9Qv9xUdA54z8b8UGUwMEuL7aIZT65J7Rs=
+X-Stat-Signature: 3but1hjbzzpy3nhj6d5u47hpyjywqwts
+X-HE-Tag: 1755101830-346267
+X-HE-Meta: U2FsdGVkX18zmUywSX0ATFkXKqN8HtdGSsF7usrNmMMZr9Xgtrt2iwDb5XgfsZERS+EiQjK3qhrBGHdLw+iMW6IpeqwskppSJVrTLEnf0YoiqE6wydZVdY/QdnnyTpVU1Oz8sttEfv8gkuZFhxZ2K3FvtrqGcXgW0E4blLORksE6Zd3xwM6Bi//85tWDEeWRnjiNfrmH3Lz23nghewWhQUWmKQjy4RQoFIONmOJzA7Zs2ZvPhDJI+RYvz1AVCBb5G0QWvPHLORGinxZKRHlvu7nUX1RhZOSm/ITz+MxA2QEJqGcJXBrdMp15VIVJCr2D94+BHTA1qk1/uuuusQwU5NHjuSQOwkdnjw+WgK/0YEmvm0+pk0EjBqQdfJfRBphH8cEIrnzewAqF/XyZvT9MbQ3VIO7dwgSHtzcIJ9A3fEJzXJ9VS4frrNiGnj+EnX4I2Bc8YAKuNTs90EQX34+GIdTbgLus2uVRV60volVXGjUPw+SFx5msGor6VCKNa5djcMZoxcqK6B6GY3q1we7Xnj3JijD36s79KzaglPovuRuE1I5V95UYXI/PDUpR04arMRJ5W3AULQnm5SJOr2zO+popP9tYldPLZtlcMASxMi4t55csVqZShr1e8HAmjnURpgOb+RmGfoQX/L/7y1YHBUPrSSzbfBoInoWQfzyJ5a63MqsAOzwrYXFgZq1V5lj8Gb1xqRcbSRPaTvC6t7QB2ZSx+yI7WulAGAzOGzm2gvfXtDkv4D70KNCCcucPaxB5AhJN+D2ueCSCHd7Bajze965JzjWM7YkOb75KpPPNOPcLVNndK8hNOPJDAUNyi0QhF1lCnpcZrqTCMX1erd9cnFXP3ReWW9rahBPyBvXx+SZy8o6CHoKjs6MxQzgOGOWhT522Sie84sMqASVLG75rlcTv/FdiaM32B6uYv1/X8mkrj5/wA4qhuRF2cZkYqdeCNQHpf/IYZcqwMpds0tA
+ aTxMkjgo
+ wm1KBzrKM6aVAKHWDSPBHhbb30SLulwkudDZSyKx48ahxR2+/Ypw02mho+87kb45EzPO1sls9EwdpVkHq9YSL23K5alyqgXh1CSW/yKWqiCZN7ybo17ac6KXuInjcKxdi2ikmR0K5OKH+ZsKA6NL5dvyq3eAvXHHpiqBJzblsJpCB54Rl869QHWP8Ks72U2CQFdbJmMN8CbWkG8Fed5AMLsEmFvzPzfMzUDnsprBt2hOVwH4fmTXv7X/rQicU1mPUbV9y/YZG6xFF32/rqUJ2bqPLEZG9eci9jW+X1cuQKirJC9LrvSpv+De0Z+KkQFw6NPE7+r62FcnZl3Ttw+23VXyBu8X62PfRTR2IVQZ3TUy+JmzLYSY4JhwhLrUyhoTvPrAqWJsnPceF4tRIBmuTQl0QUUpPbUsM28UKXLf+88N2xl4IwPCrLwSKpZ+3w+pPCx+tm/6m73DQV4+IAKWVvqF9EaC3pqxJYFburJak9o/RvGACgr1IxEOvPmElRHdWtuzNBvkvCySr0m9L4px/Q/tnWAJdgA/YuAuZCZzgALKYZnoV2ei4ApIfJmGa/Ji6pSukr7YywtPxvndaRbJrTT8a215q/uEShwPR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,22 +119,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thomas Gleixner <tglx@linutronix.de> writes:
-
+On Wed, Aug 13, 2025 at 04:57:55PM +0200, Thomas Gleixner wrote:
 > memcg uses TIF_NOTIFY_RESUME to handle reclaiming on exit to user
 > space. TIF_NOTIFY_RESUME is a multiplexing TIF bit, which is utilized by
 > other entities as well.
->
+> 
 > This results in a unconditional mem_cgroup_handle_over_high() call for
 > every invocation of resume_user_mode_work(), which is a pointless
 > exercise as most of the time there is no reclaim work to do.
->
+> 
 > Especially since RSEQ is used by glibc, TIF_NOTIFY_RESUME is raised
 > quite frequently and the empty calls show up in exit path profiling.
->
+> 
 > Optimize this by doing a quick check of the reclaim condition before
 > invoking it.
->
+> 
 > Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 > Cc: Johannes Weiner <hannes@cmpxchg.org>
 > Cc: Michal Hocko <mhocko@kernel.org>
@@ -112,7 +142,7 @@ Thomas Gleixner <tglx@linutronix.de> writes:
 > Cc: Muchun Song <muchun.song@linux.dev>
 > Cc: Andrew Morton <akpm@linux-foundation.org>
 
-Reviewed-by: Roman Gushchin <roman.gushchin@linux.dev>
+Nice!
 
-Thanks!
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
