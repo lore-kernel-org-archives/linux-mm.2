@@ -2,125 +2,101 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 06D98C87FCF
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 13:39:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2486BC87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 13:39:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C877900075; Wed, 13 Aug 2025 09:38:47 -0400 (EDT)
+	id B136B900076; Wed, 13 Aug 2025 09:39:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 87A63900044; Wed, 13 Aug 2025 09:38:47 -0400 (EDT)
+	id A9D60900044; Wed, 13 Aug 2025 09:39:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74105900075; Wed, 13 Aug 2025 09:38:47 -0400 (EDT)
+	id 9B2C3900076; Wed, 13 Aug 2025 09:39:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A9BF900044
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 09:38:47 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 22ACB1171E3
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 13:38:47 +0000 (UTC)
-X-FDA: 83771839494.04.6537B90
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 5E50F40007
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 13:38:45 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VR+uueYi;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of ethan.w.s.graham@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=ethan.w.s.graham@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755092325; a=rsa-sha256;
-	cv=none;
-	b=rOF5JpUAAOv1KygpkchM5eJ7KJmhVR8BSkXOxBhF4yVgeXDK5Q11F6TjCV8TpamBXJGyvV
-	pvE4TVBoLkSkRO/0eWL0rb4XrIOmHwIVXKnnoDuW9jh8YVsdiQi8wuY3WET5Y51bEn+ojJ
-	Q8EE09t33eGYlRP6hwSzV2xnZPzRCUA=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VR+uueYi;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of ethan.w.s.graham@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=ethan.w.s.graham@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8457D900044
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 09:39:14 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4930682ACC
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 13:39:14 +0000 (UTC)
+X-FDA: 83771840628.02.B56D51E
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	by imf28.hostedemail.com (Postfix) with ESMTP id A1357C0008
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 13:39:11 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=XVumdE7z;
+	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755092325;
+	s=arc-20220608; t=1755092352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WCmoTAq+24iKRI4CSHEBG8UaeJTBmRNFmOmZvFaISJE=;
-	b=gre4Nkmk+T1yzdr+zmbhR6ICYlqyMqDsRCfYj3nFZquXHvrRiCS7A30S/4ef+QlKbPVTXG
-	RqbDMigLOoejE6wrMrwXb5DCF9pTE83HdDAEI9jF9CtcoHPB1bulaHEkKrd7TIOp0dx2dC
-	o8tf+3eOs+YyN+7WuGjh3TakoUy6yYo=
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3b8de6f7556so3759033f8f.1
-        for <linux-mm@kvack.org>; Wed, 13 Aug 2025 06:38:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755092324; x=1755697124; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WCmoTAq+24iKRI4CSHEBG8UaeJTBmRNFmOmZvFaISJE=;
-        b=VR+uueYihfY9vwiYska13xjhhsCrFZrmtjXSyx6co9KU6QIZYa1+U/fuKSK+iEYsy3
-         YtKNvno+j8R0e699WbgOVL6+mvV7qTbEGHm5dQQU4jlODyfL6KTdsC/tRkAGOIVt9ko9
-         VD4JbOdHn/kPU5PKBrf2Yg8C7+Gnt4zpBW6KpZaaQXucGCIQCNiSC6WTAUkq4j3OhxTH
-         Xti3o7eXyL11QCMGEdsn2F60W7qyNAGbSKg+9YQHjZTZdR4QuOE5kd2hBhVjvbGBH/ke
-         3Mn6qAmTmz9yCsw/sAIywGwQI9ez3EYmfMLeZN4ATGIp6L3mHVmJ3JDwJZXINbjCbiM9
-         jdmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755092324; x=1755697124;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WCmoTAq+24iKRI4CSHEBG8UaeJTBmRNFmOmZvFaISJE=;
-        b=cI1FVOgHzzDh6B1OqM7xY43uiQTiD60Y+98nrrKi01mjCewbly9kO08gFLIiORWw8J
-         TARDMTnb4Y5HCaIw+fsAzgZEPD01XggOyL/kEWbYO3hcM1HBD2PPVsFXyvv6DpcfMi4N
-         23bGQGbBMe5Nss3w/Mh0OUSic9SQUeKWGVpjIkzkUC7Rla0tTgZKxt8Hs5JFESlPQDB2
-         4E9MHOdhkYGr6Rjv+Qrt5LSU7ALebJVEWwHcYHCNaYnV7PO9yBfHjAJsK+nUvgTnjWMe
-         d0XDkPq/wN9Tg3EoHs0IxpHzxWvefqsCAeO94gVc/ZVgrYciEvxqakhTm13UKJsF/VTx
-         +eZg==
-X-Forwarded-Encrypted: i=1; AJvYcCXXklZyDL6lAkgj0bVPPIL+nGLlHAyelCW91QhzCBMqNSneL4hHdavRoUOvx0zmKitd9Tff1ct1zw==@kvack.org
-X-Gm-Message-State: AOJu0YzPXKpl0D9yK0aR7QPf/nwmb/nZJmgw1SFSVpm6Epxb8Cdjz6Hh
-	wtCsUpuwhEyPR/NHhY4gqX8G3h7jBCy9rc1AtGIXFSb9oA5pNGbmDiK2bDeqy3dXcVyWng==
-X-Gm-Gg: ASbGncvUSovTxcvckOrYH1AjuFt/KN4nKuAn4boMuu7XA+U+LSe0scDhn3bM6Hb0Dm1
-	WM3lkirDNzNQYx6hd5oZdPqb7yHcYtLH1/NR5QV6ubToBf+qrCBXZWJRZlr3entAZ+bg6op/yts
-	CrhnEzVz2qfPpfPgzPS+xR76gkSb4FHY9DPhL6WhOEE7gq0mpIAPrAsuIfIummbUOQqjQpZlw/h
-	9quF7QlmtxKX8e+zHFi3AQZy7rDetxNQKcEl2uHEcXfHW3d99Na1HoJw//Mk49N2rMOwpvzUhAI
-	hk5bgl+TnN8qlAWrPrHueOXOIzcf3RN+UFmKEHZ3byP8p3umNqZ4TyviGxOKi6lKE/uxnXAK3o+
-	0eB+eEk8y1qdIhpGaAPvjYv7FyY635LN4+RFBYO/u0nApNxxsh2q0D7NS5CSyF47DWJy6JRm2Qk
-	vvhgziTn5kq/+8AOOgRq6iRec4Tw==
-X-Google-Smtp-Source: AGHT+IHW7Qd1SAbOSY879BbiErQpR32SX8ht+p3w2HKrir466M04lOt+huUQxcKj+6by6JWF/cRHzQ==
-X-Received: by 2002:a05:6000:4308:b0:3b7:84fc:ef4c with SMTP id ffacd0b85a97d-3b917d2d303mr2420863f8f.6.1755092323832;
-        Wed, 13 Aug 2025 06:38:43 -0700 (PDT)
-Received: from xl-nested.c.googlers.com.com (87.220.76.34.bc.googleusercontent.com. [34.76.220.87])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b8f8b1bc81sm25677444f8f.69.2025.08.13.06.38.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Aug 2025 06:38:43 -0700 (PDT)
-From: Ethan Graham <ethan.w.s.graham@gmail.com>
-To: ethangraham@google.com,
-	glider@google.com
-Cc: andreyknvl@gmail.com,
-	brendan.higgins@linux.dev,
-	davidgow@google.com,
-	dvyukov@google.com,
-	jannh@google.com,
-	elver@google.com,
-	rmoar@google.com,
-	shuah@kernel.org,
-	tarasmadan@google.com,
-	kasan-dev@googlegroups.com,
-	kunit-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v1 RFC 6/6] crypto: implement KFuzzTest targets for PKCS7 and RSA parsing
-Date: Wed, 13 Aug 2025 13:38:12 +0000
-Message-ID: <20250813133812.926145-7-ethan.w.s.graham@gmail.com>
-X-Mailer: git-send-email 2.51.0.rc0.205.g4a044479a3-goog
-In-Reply-To: <20250813133812.926145-1-ethan.w.s.graham@gmail.com>
-References: <20250813133812.926145-1-ethan.w.s.graham@gmail.com>
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=u6x3JsIhx0Qrae5V9qZe8mSeS1eQz4BcSBsyhSmJ+qg=;
+	b=wRUCIujzQI4M6XwmOEQm5qFmlqKgIslQ7WPcJlubMLfYASgrTB7AT4Xs6m0aSca/1sF2gr
+	vxL7oJ4ZDKAAZjvseZ2t1szGJKSEFyQnimQdLWQFkChXoapbqheslslXG9/0Y19fC93orZ
+	V0CRBbQLzXXT0WeVunQkvkL0xxfyZOk=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=XVumdE7z;
+	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755092352; a=rsa-sha256;
+	cv=none;
+	b=0vIK4h7IOWhsvILv5g18vrOmK1EbW701x9QeAjFiYqjYSxG+j5hwjBtt3ttAsCeQw34m9X
+	MjfUIepo7/WmXDSu9fPNv77npzOn5POEG7I9SMH28odTZaMJfzkdcXXMtR2GK6V4jvPLVy
+	qB6rWgPHMJwGPbFRtMK0/nc8WKH9Zlw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755092352; x=1786628352;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=ey8eSMdRLAlmFC09vuKwkFOnHkFG0NstFyZA4ySXPNo=;
+  b=XVumdE7zOjB0sdSCDJuRdfJr/ieIutOvcMtLPGBod9IloTU4avE4wMi1
+   qorQBRoBxxmP9yo6O+RT0qJ/+TuDL1hjZdCL4cOvn/xE/HwwEuu7xIjz2
+   gJMY6s3u5E3zVt6SPp8Kpn1Wm2rx3be3cbUwTdmDG+JsAWAlgzKXFryu0
+   uAiJo5nOWav/b2/jg70pNw6jywhzvXV0bDH+XCzSznmhQ+zuXxN4H16MX
+   qTvK8LwnsuBEgDvxcu7SHPMBtOKz6do9XClNGbD/sx21kIqbsNFyXZ1Ln
+   mcDgEj8Ap3kHQ9r2BIh4xoXg5GEDA0S4qTL7b/CYAiAPeyL6HD+Pyn4x8
+   A==;
+X-CSE-ConnectionGUID: 48FBXiz+SnW1vsS82bg3gw==
+X-CSE-MsgGUID: BoVVaW/tTLGBTmjWi8Pqrw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="67659876"
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
+   d="scan'208";a="67659876"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 06:39:10 -0700
+X-CSE-ConnectionGUID: 6KWxgs+yQ02+qcBirhtOmg==
+X-CSE-MsgGUID: w3KQMHZORJOS1da0gFH+uw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
+   d="scan'208";a="165660598"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by orviesa006.jf.intel.com with ESMTP; 13 Aug 2025 06:39:09 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1umBgK-0009wo-1d;
+	Wed, 13 Aug 2025 13:38:31 +0000
+Date: Wed, 13 Aug 2025 21:34:15 +0800
+From: kernel test robot <lkp@intel.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>
+Subject: [akpm-mm:mm-new 123/137] arch/s390/mm/mmap.c:188:3: error: call to
+ undeclared function 'mm_flag_set'; ISO C99 and later do not support implicit
+ function declarations
+Message-ID: <202508132154.feFNDPyq-lkp@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: nzhou4gdddcci614eh7tja91drag3m41
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Queue-Id: A1357C0008
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5E50F40007
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1755092325-546114
-X-HE-Meta: U2FsdGVkX1/430rBZ9odVa0Y4ycJHziXP5JMClLLRIw10u8bMluZkOkXDlmGxnSup99Dev+mMpz6SCY32wwQKn0YKan2o0wUTfOiGW5U2fxkyL+tLcuiOLL+YI2gwyJYzme/sGwLwhmQsiTkUDBwKMgKi/CkPBsfxPg3DKwzXNhqoyg4mEWTr5JkawIHjyoaxjZFMcsarVs/X/Sv1WPoty486aDoyqBLSsy/ddJAzrxWcXj/wuxl8iSoVlz4RnPO3tlECCUlH+YQ9CoY8C63zIxsdWDs66PIsVsvd3V5HrRIDN0x1JsgSi/DiH1IhrA9gSY3s6oeGWsbU/Ks2lHVMSVoqxdAmeR3lwNPUdbXYtKYBc2Vjz3JQGkfWLCjLDIh8vfncTe1YuYhrXBI1q2FOhlYVypr76Jn4AVBb/jqzGuZHZjEcsiML69vHMvdKL0KCc8StfeFFbEoY+xSkDd68PgSxVcIxng3yurdoCrsfNFjlePxPkx0QJdOH3EUAKAuB2HRgsns/2zG+KF/Z3TvnuRFsMp6PxCKBG9yuYUmb8Ji7+/NgK5SJkRsoFHZq7xzgw682jX+bVDdv3MTI9uw26M/jOXL6bs/tXyjI639Eyj3J63QT3Tv1/LuyfhBcau/Nr5QXC/nVYxrNfzJoSwkWis28wEzlaRt2C4KtY9PXp2qmNEuk7ins2bahDF6SpjSf0C3tsS1iG+rZEbSxnSqMQAMOjWM5GfCUehSbmtLCYa/4DJUU4vp9uOWihDdLvot0xitRtEykMOk3y+OTC7QcmEfTe9xjXvIhiz8LPTBqPLZSrq+BRrDNSVOrQ9UP6otRAJNfNT3+cJZZ0LnNUf9pRIqljOpRJUhJ3Ozcsa5UHDzZVqaTJpSIvad2pGmaNL0Cjco1tBtr5D1p/oEIEjI6TzdrRgLpJ9bwZQETxcoqsRUipdD0HxExyUShIeUNtX0K2cm6Op4IaX0WsB/vaE
- eNR0Fxxc
- 0tjGSPOtyhT5V7pT4ifies6cWebPsRUY6HxP9TLOiulKLtPhm9ODqpd7zEnM9/9xSdAIcJhShSQ7aGXM57vQSf3h91dCVtf/ljZyaBR84TJMElW6AoBazYz/2kCxgl5aQxSa3
+X-Stat-Signature: okwe3pwwtm7gs7n9ayfunjq7bi3y6qrz
+X-HE-Tag: 1755092351-448754
+X-HE-Meta: U2FsdGVkX1/eJV0Yf9IIU88V+MdoUu45dyn1U/zOsYyxwvzZzX+/0bH3sfQo/cJ6cXfPcBnrNu5yfUBbsapT6IFdjc+SRFQhJjJWUUbryNMCZJmUfJk5wuLPgeglWazb+G68lCxrPQhViaEyxL0EOM763dnehT4fBatZ3BfESRFZKCk9m5zIR/GYC+rWAM5k5luxkWLClHw7p+ZdXb6QSyg2hgHKlyh5CNg7G5EIKUkFsUgWNUN4L5Al/EDAKhiJYI7Ziq28phuQf6STH0sLLhosOa/lRnx2PLKfvsChP3gAgOC/Az5CiRfw3+x0Wx9H+4YDZwWnVRYQv5aERJj8jC0YUFgOGiZDKurANAxMZtMapupp/k42+AtoAGXbqXUi+ylem6UyjHNkJAfXKD5WVVrn85Sp0Q926P/XfUPkHbcpsQTL1gNPH1Bw0pFeMCoFOL17BHtX9ExL9bvDjPQD5WksxP5mprvBdppWj/2VclpCn2F8IUlTFNI+mTIiZHyhMdBWFlWj33QVWcYDvDzdkgZFbJrqEghpWuCpnWZ5DPMWaw3iro6mnyopHHeoXL4PP8pdksDG31dDUIyQvXHlFZ1tbadZ345P1xKylXIAGtlx6d6mD14fsIiWyEt8G9ruBMH6QXYgAJzNIyLgzrJl+KZJRD+IUZwJXb6pB+Du9Ph/7tI2MImyZAXZ1h3OA0/uGnlbh+mIPkEILK06wY3WBQVn1yoXDNLlLgGy3xI4NjugSZUtRp7Srq7hpOMk1IKbmIY3l370x8g28ey6dKvqGejr6fBhqGEkGbYMAK+TZ7MoaMpt/AWN8+0IG5mToWdp6e7ZMdVkiDr+21/QJmmnKQshZaLVCosW1WWz2YX2ehdCXQfBCRFD4EvcB/oI+P9rBBSjUS8m38OQo9BROLr6ZqF3HL1Z0ztXfcW9d3lEwCqnx/31za9B4mAnf7ydnzX1sG5L+FTA7/p1fB6ifIh
+ 2pLU023P
+ ieP8xUcibx06swvksYOFoa92uNfbp6S5qTBmxjpUaQARViSuD88rngsoItaaB0BmVdv8O3suWKOU+v8lZI9b+7ulKZ263dk4Z5i9dZvM7El5pCgr3X8UVWTfzWR5YsGJz0FrMq7skJuk58JFQ7oSt+5QnzYkMAWU6zWilrVcryzmtHJedK9eGR18v1j6FUUxoCMakRNWjSLniTIfZzI4RAUU5ku2P8atIuG73gPYAPbd3PfZQsRNmcgkTEyf5e9vJAvH5nwthajtM0b5MHN7FNulcqxVNChuKRzfPJLSSwHsfKvGS9nTg7lUA/IaWiq3hqMVbKN/ZglIHOEp64w5BxUPpF7sWKQP/nwbZ6gbcCi5ZSr83A4AjulImUYaaDK2a7XmgYcq8aoYRzhma6odaLrLkQW5oZPfW4u8LeqnHHO7Z7gTF5on9Wvv3dA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,111 +105,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ethan Graham <ethangraham@google.com>
+Hi Lorenzo,
 
-Add KFuzzTest targets for pkcs7_parse_message, rsa_parse_pub_key, and
-rsa_parse_priv_key to serve as real-world examples of how the framework is used.
+FYI, the error/warning was bisected to this commit, please ignore it if it's irrelevant.
 
-These functions are ideal candidates for KFuzzTest as they perform complex
-parsing of user-controlled data but are not directly exposed at the syscall
-boundary. This makes them difficult to exercise with traditional fuzzing tools
-and showcases the primary strength of the KFuzzTest framework: providing an
-interface to fuzz internal, non-exported kernel functions.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   694c8e78f486b09137ee3efadae044d01aba971b
+commit: 70fd92efa9e96967353bb39665bac8f5276aaaae [123/137] mm: convert arch-specific code to mm_flags_*() accessors
+config: s390-allnoconfig (https://download.01.org/0day-ci/archive/20250813/202508132154.feFNDPyq-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 3769ce013be2879bf0b329c14a16f5cb766f26ce)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250813/202508132154.feFNDPyq-lkp@intel.com/reproduce)
 
-The targets are defined directly within the source files of the functions they
-test, demonstrating how to colocate fuzz tests with the code under test.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508132154.feFNDPyq-lkp@intel.com/
 
-Signed-off-by: Ethan Graham <ethangraham@google.com>
----
- crypto/asymmetric_keys/pkcs7_parser.c | 15 ++++++++++++++
- crypto/rsa_helper.c                   | 29 +++++++++++++++++++++++++++
- 2 files changed, 44 insertions(+)
+All errors (new ones prefixed by >>):
 
-diff --git a/crypto/asymmetric_keys/pkcs7_parser.c b/crypto/asymmetric_keys/pkcs7_parser.c
-index 423d13c47545..e8477f8b0eaf 100644
---- a/crypto/asymmetric_keys/pkcs7_parser.c
-+++ b/crypto/asymmetric_keys/pkcs7_parser.c
-@@ -13,6 +13,7 @@
- #include <linux/err.h>
- #include <linux/oid_registry.h>
- #include <crypto/public_key.h>
-+#include <linux/kfuzztest.h>
- #include "pkcs7_parser.h"
- #include "pkcs7.asn1.h"
- 
-@@ -169,6 +170,20 @@ struct pkcs7_message *pkcs7_parse_message(const void *data, size_t datalen)
- }
- EXPORT_SYMBOL_GPL(pkcs7_parse_message);
- 
-+struct pkcs7_parse_message_arg {
-+	const void *data;
-+	size_t datalen;
-+};
-+
-+FUZZ_TEST(test_pkcs7_parse_message, struct pkcs7_parse_message_arg)
-+{
-+	KFUZZTEST_EXPECT_NOT_NULL(pkcs7_parse_message_arg, data);
-+	KFUZZTEST_ANNOTATE_LEN(pkcs7_parse_message_arg, datalen, data);
-+	KFUZZTEST_EXPECT_LE(pkcs7_parse_message_arg, datalen, 16 * PAGE_SIZE);
-+
-+	pkcs7_parse_message(arg->data, arg->datalen);
-+}
-+
- /**
-  * pkcs7_get_content_data - Get access to the PKCS#7 content
-  * @pkcs7: The preparsed PKCS#7 message to access
-diff --git a/crypto/rsa_helper.c b/crypto/rsa_helper.c
-index 94266f29049c..79b7ddc7c48d 100644
---- a/crypto/rsa_helper.c
-+++ b/crypto/rsa_helper.c
-@@ -9,6 +9,7 @@
- #include <linux/export.h>
- #include <linux/err.h>
- #include <linux/fips.h>
-+#include <linux/kfuzztest.h>
- #include <crypto/internal/rsa.h>
- #include "rsapubkey.asn1.h"
- #include "rsaprivkey.asn1.h"
-@@ -166,6 +167,20 @@ int rsa_parse_pub_key(struct rsa_key *rsa_key, const void *key,
- }
- EXPORT_SYMBOL_GPL(rsa_parse_pub_key);
- 
-+struct rsa_parse_pub_key_arg {
-+	const void *key;
-+	size_t key_len;
-+};
-+
-+FUZZ_TEST(test_rsa_parse_pub_key, struct rsa_parse_pub_key_arg)
-+{
-+	KFUZZTEST_EXPECT_NOT_NULL(rsa_parse_pub_key_arg, key);
-+	KFUZZTEST_EXPECT_LE(rsa_parse_pub_key_arg, key_len, 16 * PAGE_SIZE);
-+
-+	struct rsa_key out;
-+	rsa_parse_pub_key(&out, arg->key, arg->key_len);
-+}
-+
- /**
-  * rsa_parse_priv_key() - decodes the BER encoded buffer and stores in the
-  *                        provided struct rsa_key, pointers to the raw key
-@@ -184,3 +199,17 @@ int rsa_parse_priv_key(struct rsa_key *rsa_key, const void *key,
- 	return asn1_ber_decoder(&rsaprivkey_decoder, rsa_key, key, key_len);
- }
- EXPORT_SYMBOL_GPL(rsa_parse_priv_key);
-+
-+struct rsa_parse_priv_key_arg {
-+	const void *key;
-+	size_t key_len;
-+};
-+
-+FUZZ_TEST(test_rsa_parse_priv_key, struct rsa_parse_priv_key_arg)
-+{
-+	KFUZZTEST_EXPECT_NOT_NULL(rsa_parse_priv_key_arg, key);
-+	KFUZZTEST_EXPECT_LE(rsa_parse_priv_key_arg, key_len, 16 * PAGE_SIZE);
-+
-+	struct rsa_key out;
-+	rsa_parse_priv_key(&out, arg->key, arg->key_len);
-+}
+>> arch/s390/mm/mmap.c:188:3: error: call to undeclared function 'mm_flag_set'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     188 |                 mm_flag_set(MMF_TOPDOWN, mm);
+         |                 ^
+   arch/s390/mm/mmap.c:188:3: note: did you mean 'mm_flags_set'?
+   include/linux/mm.h:740:20: note: 'mm_flags_set' declared here
+     740 | static inline void mm_flags_set(int flag, struct mm_struct *mm)
+         |                    ^
+   1 error generated.
+
+
+vim +/mm_flag_set +188 arch/s390/mm/mmap.c
+
+   167	
+   168	/*
+   169	 * This function, called very early during the creation of a new
+   170	 * process VM image, sets up which VM layout function to use:
+   171	 */
+   172	void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
+   173	{
+   174		unsigned long random_factor = 0UL;
+   175	
+   176		if (current->flags & PF_RANDOMIZE)
+   177			random_factor = arch_mmap_rnd();
+   178	
+   179		/*
+   180		 * Fall back to the standard layout if the personality
+   181		 * bit is set, or if the expected stack growth is unlimited:
+   182		 */
+   183		if (mmap_is_legacy(rlim_stack)) {
+   184			mm->mmap_base = mmap_base_legacy(random_factor);
+   185			mm_flags_clear(MMF_TOPDOWN, mm);
+   186		} else {
+   187			mm->mmap_base = mmap_base(random_factor, rlim_stack);
+ > 188			mm_flag_set(MMF_TOPDOWN, mm);
+   189		}
+   190	}
+   191	
+
 -- 
-2.51.0.rc0.205.g4a044479a3-goog
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
