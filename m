@@ -2,98 +2,120 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A1940C87FCF
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 05:16:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E9C94C87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 05:33:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E6D68E01BA; Wed, 13 Aug 2025 01:16:43 -0400 (EDT)
+	id 524C78E01BB; Wed, 13 Aug 2025 01:33:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BEC88E01B6; Wed, 13 Aug 2025 01:16:43 -0400 (EDT)
+	id 459738E01B6; Wed, 13 Aug 2025 01:33:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FBAD8E01BA; Wed, 13 Aug 2025 01:16:43 -0400 (EDT)
+	id 350378E01BB; Wed, 13 Aug 2025 01:33:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C5278E01B6
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 01:16:43 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C981F1A0266
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 05:16:42 +0000 (UTC)
-X-FDA: 83770574244.19.E2ACF40
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 2452D1C000C
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 05:16:41 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NJ8kdtSm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755062201; a=rsa-sha256;
-	cv=none;
-	b=f5hvN3ClJfSZ/qWM72mqlcHX/RUW1JBZoTa2hHonxPKQXzTr6iNxy3m7rxEe52uGckkk67
-	jNlgaq2BqciSkE/rHHdHdSNU4EdokwUgbZA/AMUeugYZaxYr8kv6F5eyBKdrmQMOdK4kM/
-	4zR8mLQQBsMQIXkcgj0YWMg2F26Kfag=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NJ8kdtSm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F5608E01B6
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 01:33:12 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9515757ABB
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 05:33:11 +0000 (UTC)
+X-FDA: 83770615782.23.53ECF65
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	by imf20.hostedemail.com (Postfix) with ESMTP id AE8561C0005
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 05:33:09 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ixsbNBjC;
+	spf=pass (imf20.hostedemail.com: domain of kuniyu@google.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=kuniyu@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755062201;
+	s=arc-20220608; t=1755063189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qliO/ao3WFlCOOgotU45EFsgsw1nG4vz09qlzIJSLSI=;
-	b=TU4oFN29xSUbJSsGJkIjdAa8KvtJc9Vl7JPO342G6o2AdurQpwRL6VzkS53Q40uj3iphyb
-	hP/M+CnTq56dY2lflP5hidher1UcFPXuwNXKBspgYPBTqWkP0dnfSnn1edfzcTVeEyT9ud
-	BHzBgQQhYAPCpXlkPrYomKZ+66bc4U4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 30E48601CE;
-	Wed, 13 Aug 2025 05:16:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6485C4CEEB;
-	Wed, 13 Aug 2025 05:16:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755062199;
-	bh=QHGINcBtgZyN5lwSuC4ihOdgAfkWxrXCvNILJWMOBVA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NJ8kdtSmVYuDmZ9UTC9uyVZDWkHKpE44JmKlAUuCa7NZxop2ZK8q7CC++ZZVKGYqf
-	 2FtFO5vBHtDjYhIFJTJjQSsJRbxUaf0a5k9GCO/vI0kEc2Amu0RlAFK5LI+90qUwE8
-	 Wt/HmHsp350LKxT3V5edx5EIk5k5/dHroc1gWPsZBPQTy3e4Ep/IgKDgKWQmnFs0sw
-	 6cqFtidy2jtFeD3RQfgLFaCCGVcqzgmOXefeTkU64Ioo3+VbGhOKm4ArnHUoBv87xd
-	 3Pvm2U1X+nJMrmwtp/okmHBkuSQR3Yb1oCRfS+C3ip0SypefYd4i8fT0xp5j3V9lPt
-	 9tySUkpa34FBg==
-Date: Tue, 12 Aug 2025 22:16:33 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: kernel test robot <lkp@intel.com>
-Cc: Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>, llvm@lists.linux.dev,
-	oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Maximilian Bosch <maximilian@mbosch.me>,
-	Ryan Lahfa <ryan@lahfa.xyz>, Christian Theune <ct@flyingcircus.io>,
-	Arnout Engelen <arnout@bzzt.net>, linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	Dominique Martinet <asmadeus@codewreck.org>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] iov_iter: iterate_folioq: fix handling of offset >=
- folio size
-Message-ID: <20250813051633.GA3895812@ax162>
-References: <20250811-iot_iter_folio-v1-1-d9c223adf93c@codewreck.org>
- <202508120250.Eooq2ydr-lkp@intel.com>
+	bh=fd5Hzu0+89GoFhfPNDsRG3A11ZVeQEs8/UJ+qwaOXUU=;
+	b=L+a0HNQXb7d6MUe8EKFLlGgOfc/RYEbiIpU3EjubnqDiknWTiFRiBcy0TkISbslIf09gSN
+	wjVC4xn2MJ15rav6BAp2przRYDaTzyovxxG2eFU2s9hqhq7YCyNV0Dgn2LrCT6DJML808o
+	W14p8S/siwRGo08lagw9Yj3EMBEiFpk=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ixsbNBjC;
+	spf=pass (imf20.hostedemail.com: domain of kuniyu@google.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=kuniyu@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755063189; a=rsa-sha256;
+	cv=none;
+	b=M0gPYOFBzVWo1ma/Fjx/Kff0RUaBDkul0xk+H9FZd8je7beMdVVP46nEcD1uPO+WwfGaqG
+	wCOIcp4EonJ8NGllntJeZmTiVla+v/j1Co5vwOJ0KFUIejW0LeeD1rDi9fJeioj1AgKHD5
+	y9D5pCyE1cOLpRdLZAqv+xtmrto9r38=
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-32117db952aso5127275a91.0
+        for <linux-mm@kvack.org>; Tue, 12 Aug 2025 22:33:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755063188; x=1755667988; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fd5Hzu0+89GoFhfPNDsRG3A11ZVeQEs8/UJ+qwaOXUU=;
+        b=ixsbNBjCA/Lu/wwExbi8vqvt4dAvP0P3GTJTJE7+k7f/4JmGJ06MZTW/P7XkdU7bfB
+         z9YlZXPoTA+KLez1iqLzbt6O9nVy5sfDIQ4o5Vq+rUfa+cCr4+XC+YTlNXEWVOGccwm4
+         Q94ubzxGohqIecGVm5hZ2Bf8hhZS1A3wxLOO+3xWm+LwF3Cm5uo9YlU+vf/0P6Qob8YQ
+         mLLKZqAt+ABSFFDDajveO+ecm5ukDP8TAVJTyAk3UJfFpEqJPDJaMu98Y4I4Ml7LzAtt
+         9hI8QCQvu39YbntOqNzr59cEsE4tGc5aWTW/v7IsC8NIqakZtbdDAaR92k+jqtilycB1
+         xSfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755063188; x=1755667988;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fd5Hzu0+89GoFhfPNDsRG3A11ZVeQEs8/UJ+qwaOXUU=;
+        b=U/+W0TR4kIqlBuFsdaxEh7Ph+RBp3LOv40dKJ8A4CignC5W85fjq3g1V/ggfYgAfPk
+         Dqn9avOITTJPYMJTngEu2xipMTJUGm18WS5SFA1ChJA1wx9ivrehoaDHeNShMsT5T43+
+         MIbZLhlBJFoyDT/Ar1vZHuABisyWuQ8dFP4RuXRqUTAfCt6tSy4oLwH8Anu4/x6iCbgv
+         q0gOCHpgi4kIMAAMANbM2xoDHYq75C0/6767c2pZBp+rDc9DtwOLCxZBRK4XehzOFZsm
+         Lqc0+M5Fhdt+xp3u8u5S7eld0k+qJgA46HHwei8Z+EIYExjd64aVI6i8ZO5blOunWYvh
+         690g==
+X-Forwarded-Encrypted: i=1; AJvYcCUJ32Ppk3BjHssOOi2l9TUdCZrQ4e38SMuZL/rYN47iUhirSn7/PBcceSxGsKHJrUpluQE78DftHQ==@kvack.org
+X-Gm-Message-State: AOJu0YyZiplEa6eTMQg22KjrqsMFmPOxIzwaWNiKx6kMOm19UleAHNOU
+	PgOSwfHH3de0zRXf8omxBvrExkPzd5Lkhdj1JmKuiDIF9zeIjnFUoAGbRa/pLQxF0Q146BpnPT4
+	XaQQz4S5tl1wSzQJnxu+3v49AySyCvKtlG3dXXOp3
+X-Gm-Gg: ASbGnctiy0nLloRyY/EbGvYtL11/Yn08q6cW0ym5yQPWqIq0Z7apysAS9XTX9miXhyC
+	5j5ZhucTU7DRirY/HrVta5RHftFyknEsOgH9prBOH1ybpsldkCmkG7SSFxIylMh+8brcK4FjVTG
+	nbUNJfrpWbC7fBKf2PgvvG9JK81EGPNFtJ/s+SSHA65WMuz3ZOaj8MK1LYjjWU3teE+p53oHRrB
+	rRsAETU33YeA5iglpgbSEMgtdUETo9IE4tWC7AOIqqMC4H42sM=
+X-Google-Smtp-Source: AGHT+IH3Ow5heN5Ax2cYKZiN1J5uErCtHiipF//JGUZalAKyO1nKABn3UiGzqPqVAQOS02PYRiux0Wll/uHc1/Zh/PU=
+X-Received: by 2002:a17:90b:3c08:b0:321:c567:44bf with SMTP id
+ 98e67ed59e1d1-321d0eb0f49mr2505895a91.29.1755063188104; Tue, 12 Aug 2025
+ 22:33:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202508120250.Eooq2ydr-lkp@intel.com>
-X-Rspamd-Server: rspam03
+References: <20250812175848.512446-1-kuniyu@google.com> <20250812175848.512446-13-kuniyu@google.com>
+ <87ldnooue4.fsf@linux.dev>
+In-Reply-To: <87ldnooue4.fsf@linux.dev>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Tue, 12 Aug 2025 22:32:56 -0700
+X-Gm-Features: Ac12FXzONwUY1or--rg6Ax98ZVLm-UmE3bBgmXpdqTrH-hTrcJWYQJLYQ9n4lIg
+Message-ID: <CAAVpQUDZ_8RN_VxQWH_wipRd_Ge++YZU5SQC9535CR8W6m-JnQ@mail.gmail.com>
+Subject: Re: [PATCH v3 net-next 12/12] net-memcg: Decouple controlled memcg
+ from global protocol memory accounting.
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, Matthieu Baerts <matttbe@kernel.org>, 
+	Mat Martineau <martineau@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Tejun Heo <tj@kernel.org>, Simon Horman <horms@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Mina Almasry <almasrymina@google.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: AE8561C0005
+X-Stat-Signature: c9nkenc18xmdf76ujc61w915tba9myo4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2452D1C000C
-X-Stat-Signature: 6i9o5ki51bhzq8c9duqq9n3oh84xxfnh
-X-HE-Tag: 1755062201-716088
-X-HE-Meta: U2FsdGVkX18omypekfPY+eCrSHyZKK2/05sAyWmcfUE445O7ry0OCeFZcCt4W7EKPzCqeDVUG4OXKlY9caPf2Ez8cpJOUshsL1FOMlgGcT5Si0F53YKcGBAhPOGa8pnNUr5cQ0DP+am/Z59HF49RPXjzxV20lXzL/wn/k1J45wihsA9QkZGheIutkn+VYhGJG0+chxvs9kwG0Y7MC7s/9byf05WYZ+Iyknt7obGdaMTu74EPZEAlXnJFdDUD0e6crILPFfXb7zunswHajW0kM51v564y+tSMcxgiOskyIpQf6o/iqogH73cCd9uk0xc7drhwX6IS/sStWvyH+rUqDQ55Q9/8Gu+VC0b/Qo6S8s3rtOHx1FTrKTn1E2Izlk1ZOzJfSCyedX1YHADKxBb0q4zev/XGzzm7zC1Wa47PNEluDTPm82UoL7b7VgKzzMrfT8QCv2jr9qTMF/xRtafbVb8rbr0aqDP8ooOHoK7R+kDzlV6bLMPaDWUW/qRjV8A5eoU/9v3m4fmSNPRMsLLbtiaYCKucechr/jVZ0tC10kd/kz0KKUIjnlsJHp6Fhk0RVl1PAgJFX2/bInu0zPFM56VPUeu6iqGGXogmOgaqCsMmf88E8FqZ0GfP7LRpu264Ce9J2o1d+5trOoF+vtKmWco9ZcroAcD+XjhmEwli65fJkHwZdKKSWhrkKfCAGV4SJ4hZ5B3C/cVKSzxJmAlGP+uUtKB7XMhW+nWH5C1wz9PmclikndoVJhkNnh4nD6SSZ2YnXOceklq0Whb25ZATQiUGicaNyZEdAa7uoZItLLdrh47A0BM3dXZ+UFKY77RnSLR2DrmVAI/z33e8zFqEv0oz1cUBxMkpq56iTg6YccNodb2thekp/9X31yXxRzkzJ6nC7rNEVZHsQv2u3lNI431M5OXlwzroofmDAmiRrAmm4DaocZb6TiIb8IeVFMg75cpH7jcB+IoY/IwK7Mv
- SA3haRjn
- kRi3XMolFd4cC8hR6UrPh3E5ZVFyXS+h+Vi71x8BbfZRXv8jHiwv5NvuK3+VcEjlg4PTAI6SW54FmP5LvbDWcV8qV1QHiRxhO4rZHrvUcV6nLJJ0w9mo4CLUOniSrdPll8eORkwX5VeSOTCkostTW3cMRWn8Vug3WacCDRwNIUxmojB4hykjgHyVvbP764bTkKAqaIIhTUa578553wR1+yLaGmoRT2h3RxbUZzcjGj9ypFZk4yl6FIOa/5ywl4q4G+u4NidQlwUtaR1LWspEdDdl9lJdKFRBBIVW8iIoo9aMDjD7261ydqgB1UtTom4frOgOVHY+B1KirJKFW6XGaPJei9qS0XAVHSn4BbnH1vyv1VjA/DLK8KRpf/wdbpA7J0XgNYh9fPqWJaLDLvX+6IDEXkKbAOhYZTJhN4MbNiV8Lpof/WZxKZjSfCKbiTW7Hfj6DUYGqqp3S9v1DOkZDMEWr4GgemzylxT3IgNAbqhKoj6lXgJBbt4U5LGwq46W2vNVwhS1DHScPp8aiupvSs5koFWVAmg/aJl2ANN8wpnx+khR9Jbsv0AzUUNsV0r7WpR1XK29NRG0fdbH+bYofBtAvpg==
+X-HE-Tag: 1755063189-399547
+X-HE-Meta: U2FsdGVkX180Z7LAJ1H5NW1WRAFIEEV6CRwuXrs+act2Nh41olHmQcdwLFLJ9lBQ3HDysee1TmnnIK8AihRLFhmIiDVnadEzweBmALronFO6TpGK4iHfEIcFLzYBRpbWSNUiZTcXlvgUtE28N7DLvbcGAPojoiHbhPtxfxr4WuudvLPfTaHSFH50qax3Ta4o2Phr0ypCixwdThg65jewcZrtU+iihnya5kkak7U8XmTXORZmKyBWZVYlwECuHDgjynqA+B46H0MD1H+S9zFhwGdnAKvOopkACbyn8SZ7I9LFCAOua7ReYLMpmVlEBQ6hGe4NWVjFhjHP+5hECfzf1Khs2DFvi5HpYmSVznGHQzqHwWogIBPD0JSKFsKIgnb/mJR587EDLgEbMb73Q5IY4k/2ho/x046XA/AD3K9Xg/Eswa7q/9be/2RjBca+vPf4rFG8evajsrGU8DgV8Wq/cQQBj54XZkDd9BLyPnMBrp3P/I3V7W3YITupu1+PBbzcLzWkOo1NBVglRs6lbui8zBWEmMwqE8imZW7PXvWErqefyxFaPZLcAkPJ6QIWza5slP2/kxCKhY4d8B0QwAOBNT44QRsxzLmvjn8qVKRiwVS25tv5OKWUYsyw9CPHlTiEy7yfVkpbmjguan5UARQDhMi3eIthgGIRU3m1uQ6qgUja+56BtpaJOE8FVeTffV8p612HmHSMqQ62e2NpK2FgMp32qb2YSpjFANGZZSTvkOqXkb2NUWOWCTIJ/LMX228INCGNx/YLC1zrwzRq/L9qhR8CXtQuxUBorge48DsRQhSpfR+y9X6T4BoR5P3O/ewiLKcIBlpdgb5+pBmS4ZpYgiEQflXQv2tGkrqqrCwmjUaKZJA/H7aQF19AdHjyEt3C1VfzeLUUCxcraVJnD0DRfn+gaAAepC1Szd89Dfw4kPtwL8h3etaQL//vGCV/X9FI0oX7nIMv8fggjyFyb0e
+ OlmmqY9m
+ 5s2Rqi43wX6GutH3Kns2/GBw9V75bbX/Ec5ixrOl6toLz4VLu8rhAT+KhT99ibfuX7EWsoz6alcjZC7csOCkIbOOLlNSwWod7o/jDB/RlhnF7L6YFiya6dqiASDFXYtT/dL06fox+EizlNUOYm7Xun3Q11MRnk+JsIst3cFPmhJ2kzlx9SqdhSlwxwie1Yu5tQQZrfeCaeoU2+6YBY+Yo/XEMaHOCGCS55WDb
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,111 +124,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 12, 2025 at 02:55:55AM +0800, kernel test robot wrote:
-> Hi Dominique,
-> 
-> kernel test robot noticed the following build warnings:
-> 
-> [auto build test WARNING on 8f5ae30d69d7543eee0d70083daf4de8fe15d585]
-> 
-> url:    https://github.com/intel-lab-lkp/linux/commits/Dominique-Martinet-via-B4-Relay/iov_iter-iterate_folioq-fix-handling-of-offset-folio-size/20250811-154319
-> base:   8f5ae30d69d7543eee0d70083daf4de8fe15d585
-> patch link:    https://lore.kernel.org/r/20250811-iot_iter_folio-v1-1-d9c223adf93c%40codewreck.org
-> patch subject: [PATCH 1/2] iov_iter: iterate_folioq: fix handling of offset >= folio size
-> config: i386-buildonly-randconfig-002-20250811 (https://download.01.org/0day-ci/archive/20250812/202508120250.Eooq2ydr-lkp@intel.com/config)
-> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250812/202508120250.Eooq2ydr-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202508120250.Eooq2ydr-lkp@intel.com/
-> 
-> All warnings (new ones prefixed by >>):
-> 
->    In file included from lib/iov_iter.c:14:
-> >> include/linux/iov_iter.h:171:7: warning: variable 'remain' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
->      171 |                 if (skip >= fsize)
->          |                     ^~~~~~~~~~~~~
->    include/linux/iov_iter.h:190:7: note: uninitialized use occurs here
->      190 |                 if (remain)
->          |                     ^~~~~~
->    include/linux/iov_iter.h:171:3: note: remove the 'if' if its condition is always false
->      171 |                 if (skip >= fsize)
->          |                 ^~~~~~~~~~~~~~~~~~
->      172 |                         goto next;
->          |                         ~~~~~~~~~
->    include/linux/iov_iter.h:163:22: note: initialize the variable 'remain' to silence this warning
->      163 |                 size_t part, remain, consumed;
->          |                                    ^
->          |                                     = 0
->    1 warning generated.
+On Tue, Aug 12, 2025 at 6:58=E2=80=AFPM Roman Gushchin <roman.gushchin@linu=
+x.dev> wrote:
+>
+> Kuniyuki Iwashima <kuniyu@google.com> writes:
+>
+> > Some protocols (e.g., TCP, UDP) implement memory accounting for socket
+> > buffers and charge memory to per-protocol global counters pointed to by
+> > sk->sk_proto->memory_allocated.
+> >
+> > When running under a non-root cgroup, this memory is also charged to th=
+e
+> > memcg as "sock" in memory.stat.
+> >
+> > Even when a memcg controls memory usage, sockets of such protocols are
+> > still subject to global limits (e.g., /proc/sys/net/ipv4/tcp_mem).
+> >
+> > This makes it difficult to accurately estimate and configure appropriat=
+e
+> > global limits, especially in multi-tenant environments.
+> >
+> > If all workloads were guaranteed to be controlled under memcg, the issu=
+e
+> > could be worked around by setting tcp_mem[0~2] to UINT_MAX.
+> >
+> > In reality, this assumption does not always hold, and processes that
+> > belong to the root cgroup or opt out of memcg can consume memory up to
+> > the global limit, becoming a noisy neighbour.
+> >
+> > Let's decouple memcg from the global per-protocol memory accounting if
+> > it has a finite memory.max (!=3D "max").
+>
+> I think you can't make the new behavior as the new default, simple becaus=
+e
+> it might break existing setups. Basically anyone who is using memory.max
+> will suddenly have their processes being opted out of the net memory
+> accounting. Idk how many users are actually relying on the network
+> memory accounting, but I believe way more than 0.
+>
+> So I guess a net sysctl/some other knob is warranted here, with the old
+> behavior being the default.
 
-I see this in -next now, should remain be zero initialized or is there
-some other fix that is needed?
+I think we don't need a knob to change the behaviour because
+the affected case must have a broken assumption.
 
-> vim +171 include/linux/iov_iter.h
-> 
->    143	
->    144	/*
->    145	 * Handle ITER_FOLIOQ.
->    146	 */
->    147	static __always_inline
->    148	size_t iterate_folioq(struct iov_iter *iter, size_t len, void *priv, void *priv2,
->    149			      iov_step_f step)
->    150	{
->    151		const struct folio_queue *folioq = iter->folioq;
->    152		unsigned int slot = iter->folioq_slot;
->    153		size_t progress = 0, skip = iter->iov_offset;
->    154	
->    155		if (slot == folioq_nr_slots(folioq)) {
->    156			/* The iterator may have been extended. */
->    157			folioq = folioq->next;
->    158			slot = 0;
->    159		}
->    160	
->    161		do {
->    162			struct folio *folio = folioq_folio(folioq, slot);
->    163			size_t part, remain, consumed;
->    164			size_t fsize;
->    165			void *base;
->    166	
->    167			if (!folio)
->    168				break;
->    169	
->    170			fsize = folioq_folio_size(folioq, slot);
->  > 171			if (skip >= fsize)
->    172				goto next;
->    173			base = kmap_local_folio(folio, skip);
->    174			part = umin(len, PAGE_SIZE - skip % PAGE_SIZE);
->    175			remain = step(base, progress, part, priv, priv2);
->    176			kunmap_local(base);
->    177			consumed = part - remain;
->    178			len -= consumed;
->    179			progress += consumed;
->    180			skip += consumed;
->    181			if (skip >= fsize) {
->    182	next:
->    183				skip = 0;
->    184				slot++;
->    185				if (slot == folioq_nr_slots(folioq) && folioq->next) {
->    186					folioq = folioq->next;
->    187					slot = 0;
->    188				}
->    189			}
->    190			if (remain)
->    191				break;
->    192		} while (len);
->    193	
->    194		iter->folioq_slot = slot;
->    195		iter->folioq = folioq;
->    196		iter->iov_offset = skip;
->    197		iter->count -= progress;
->    198		return progress;
->    199	}
->    200	
-> 
-> -- 
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests/wiki
+There are 3 possible cases below.
+
+1) memory.max =3D=3D "max"
+
+2) memory.max !=3D "max" and tcp_mem does not suppress
+   memory allocation
+
+3) memory.max !=3D "max" and tcp_mem suppresses memory
+   allocation
+
+1) is not affected, and 2) is not affected too because decoupling
+does not change the situation.
+
+Then, for 3), this change will allow more memory than ever,
+but it's still limited by memory.max, which is configured by
+the sys admin.
+
+If this could be a problem, then the total amount of all memcg's
+memory.max should exceed the amount of system memory,
+which is unlikely if configured properly.
+
+Also, in the 3) case, TCP has quite bad performance and the
+sys admin should have raised the tcp_mem limit and moved
+to 2) like our unlimited tcp_mem setting.
+
+What do you think ?
 
