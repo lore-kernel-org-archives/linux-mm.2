@@ -2,69 +2,69 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9DA51CA0EC4
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 03:52:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 10CC8C87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 03:52:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE8C78E01A9; Tue, 12 Aug 2025 23:52:38 -0400 (EDT)
+	id C2B118E01AA; Tue, 12 Aug 2025 23:52:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC0268E01A4; Tue, 12 Aug 2025 23:52:38 -0400 (EDT)
+	id B3FB38E01A4; Tue, 12 Aug 2025 23:52:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFE6B8E01A9; Tue, 12 Aug 2025 23:52:38 -0400 (EDT)
+	id A540A8E01AA; Tue, 12 Aug 2025 23:52:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B6BD68E01A4
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 23:52:38 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7259381EC4
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 03:52:38 +0000 (UTC)
-X-FDA: 83770362396.01.FAF598B
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 3FB291C0002
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 03:52:35 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 941ED8E01A4
+	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 23:52:39 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5B7C2B73DB
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 03:52:39 +0000 (UTC)
+X-FDA: 83770362438.21.0BF7B84
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 34E68160008
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 03:52:36 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf18.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755057156; a=rsa-sha256;
-	cv=none;
-	b=1LcENlv/ghh9mLEBmJSA3LnsULR9ovQrVezULFJ8imNpjBbgflgevLJzsoPUnZN+8/5LVG
-	3PVxdxefIX+FLxr4Ev09GZQ+SLK9ytY1r/TFEQJb3zY4N0rRy76mhXeEF0fTKlXbCqRCWJ
-	2DA2VbUAjMN+dTzCBhnPmpqqvu262KU=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf18.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
+	spf=pass (imf08.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755057156;
+	s=arc-20220608; t=1755057157;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=O0hikmuBXhgDG+P+TyGK5N9ETDTYyeTbvcmCjTiVRBw=;
-	b=jZbaqgNPUdUfhg7ErtTMSwRQP9DeYRYf0wzxr0KRCpbmYPGep/KhCXtSIkPmI9y2r+PP8U
-	70pBVwLUhjB9g2t3Iloq8zvB7xOimFVQfzF655HoRlIjAKaXLyyqmz+3yADPKrajNyflzK
-	oXMD6/u3HLSh2rexNjFj8M1kEUa/EMY=
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4c1vTK4X9Vz14MRH;
-	Wed, 13 Aug 2025 11:47:33 +0800 (CST)
+	bh=T55MbBZEuJGkBcV84r7h27FXqjSjQrK8uID7Sn9xNVM=;
+	b=L15YoUsB12UFhCQmLt6B9MENwlwLWT/m0I/YU5T9a9SSaN6/QV/pbIYJ2b1rZ6V2My/CQF
+	IYH9V08AFjMNeZIIgBMWI0k9A+qVrMbifhbVqSyEt8Dxsbc2Z3f1sGcPgQq1F4n+P22H55
+	aVElDdKY1zgqOstPVb9JsGvgb0PjgxE=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf08.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755057157; a=rsa-sha256;
+	cv=none;
+	b=GhC5UdOGJRV2z2WOKqGgfkCHjDIfkvlZD5+mnjOpoUmuWeKE/cuJ09OZpzXmnKKha6oxCW
+	ylxKCYFSFt8qRWRXFbykQaV4ENo9hL1wN53vZlmDTNuKtyf/pMMKBaLCggTtqWFw4OeIvp
+	da9MryBWu1mNoGfYU7S866A6hewYGYA=
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4c1vX30h4Zz2Dc11;
+	Wed, 13 Aug 2025 11:49:55 +0800 (CST)
 Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
-	by mail.maildlp.com (Postfix) with ESMTPS id E88C3140202;
-	Wed, 13 Aug 2025 11:52:32 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 7EFDF180044;
+	Wed, 13 Aug 2025 11:52:34 +0800 (CST)
 Received: from huawei.com (10.175.113.32) by dggpemf200018.china.huawei.com
  (7.185.36.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 13 Aug
- 2025 11:52:32 +0800
+ 2025 11:52:33 +0800
 From: Quanmin Yan <yanquanmin1@huawei.com>
 To: <sj@kernel.org>
 CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
 	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
 	<yanquanmin1@huawei.com>, <wangkefeng.wang@huawei.com>, <zuoze1@huawei.com>
-Subject: [RFC PATCH -next 05/16] mm/damon/paddr: support addr_unit for MIGRATE_{HOT,COLD}
-Date: Wed, 13 Aug 2025 13:06:55 +0800
-Message-ID: <20250813050706.1564229-6-yanquanmin1@huawei.com>
+Subject: [RFC PATCH -next 07/16] mm/damon/sysfs: implement addr_unit file under context dir
+Date: Wed, 13 Aug 2025 13:06:57 +0800
+Message-ID: <20250813050706.1564229-8-yanquanmin1@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250813050706.1564229-1-yanquanmin1@huawei.com>
 References: <20250813050706.1564229-1-yanquanmin1@huawei.com>
@@ -74,14 +74,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.175.113.32]
 X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
  dggpemf200018.china.huawei.com (7.185.36.31)
-X-Rspamd-Server: rspam03
+X-Stat-Signature: h5hxheayjukr17dhfapjehxqw39kpebj
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3FB291C0002
-X-Stat-Signature: eybixyksbb1d4ze77z3j8fei5uxgzhtg
-X-HE-Tag: 1755057155-677327
-X-HE-Meta: U2FsdGVkX1+o/JKivaWvoMdzkenzuDeCkslxcnW+TvrdbVi08Z1yubWhWkbCwH2kcXTFQxOjM9rOtgHRPGufpZOk+EjRrXeStagtGPhAqaIUDwt3gMXMukdLaeibKRZb7OIAubZ/ol1FEAb/+iTXdX/6/LYbZyHWGImwQB1pldZElHymlqJUP3V96aliMcfb4vCgJ+tp7MRoEr9vfwfZ4tmXnwsu6YoSZZWi64adSrliCr4EBguZEuuHUcOmO6GgBRWY/6ZrEy8taQz0R6KWJTAael7/QDvEbB7+GcK24qAWRgs2TQXEXhRy8Isa8rxgXueYWz1g8OTvLNZ8BN2xxV+16G/ZAjq8uQjNwMvmIjMlOarCn5AcdTbNB6oDZ5Yp0Q1AVJgq2gcnNGmw4VhbNPmGKS8gPv2yWLzOCLxRBs6MSOQXR1LJn8mjoj5ZJmj4ojXHsM46YCmOjD4vjGrRlY1oQEcy96NiZQMs+1QrnbY7t/wcJbK9wWNtmmd5ol2YP/FEOjfr/f4PyeosAYs7erTbkoHNx0nRyQX51BZ5oEFMH/4RvCT2bfcSirOwMzCFROkaL4s6+zv8IWl2BMQAFmlYPakyZuAKVIYeevhfxlCJtWun6fsr9Xh5tvm9OT1ReqYBEgtf3aruwegp3fdOnARFQNhynqpfEh8qwF4Gxy+CUIUdSIKB8rE30diZR5YhPu7fgbN2SQ9M06hUXrbg3DVJhYWzstpHnw4kf75F0V9voB4BmBlIy1/nlyHajGrD9UYwGMRK1ofwxe3XoCP8BZErKSOZYqj80LUTkSUdYBPFmbXkBaBfzLUKSEf+7bWn1oHkXsmluPRJfeZII8UeG7lwCFxRlyXyuDU9c7kKO6apG22UwwAtNqhRgevfPL+2yTL4OmuAjZRnrU9GAiNL3iHZjFM5x1XTZqZZ709CYbadxdgdQft4nOQmXGuqpFOtL6cRIp8bytl3haehcuG
- lHdOMFGo
- vdAfMdUeJjuiui/iPoTUFLK6fDcSMzU8IdEy4jySBztc+QIdjUIfaozREzVa1BnWMC80IbyxES22cEcyCWme5tOLvY1lH/+MDCFFzR7MDRUUMBzFrvd6rnNdRnvfK//NVG+sRmsEy8yY/evtSKZ8Nwu3AvkLVY2EsxmQHalprajFwxNMlfQHoU5StJ0fA613Njr/JvuV70q/BWjCWVhPwnSjwzKz3JaStkBcH4VJ6m6cLAQy97RrDPgl+c7VNkOAg7yJD67IoO6T93glkGTjGi14uVA==
+X-Rspamd-Queue-Id: 34E68160008
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755057156-749210
+X-HE-Meta: U2FsdGVkX19fdvpGet/SWYHebBKPmml9euocVMbT5GatuG317aqqEXAitTqaqz+1F5eb7mn2u0XF4e/mpTV5FT7KVtWB7ITkVyzeDaaFz6ykNn7jJk2qJDewdb1vorHo204r2upWYE307d9fII9JU2xsQqH7SMZRWQfERN/ka1IBsPgWKkgAMQGgIlBO//GaEl/Aj5DA0F8LJMnJhKLGJzAoBq6IgXAeQA6hLR1OhfCPMIQ9bDOCrYr+6WWtDfjq0rozT42cekVnaI4tv501TU5Ws44S/NebnMAhpg/tAaVPHy0o9Nmom4uLU8XH8BNXV1WZqfZa1as/vqE8Hck1So04PmBJiC6lqf+Ptl71ZemB5o6FEUUxSq28cybILB7SYjPtK3kCYKIvdAKbJ7ur3ekJ/c2nvvi6OmVQjstk8H6M2O+svhArRwWEvQkRVxkBK/KCoAgdSpeIX6gTJ5rEJGdo3N0NqKIcpssbPckS0xTbkQlkEs/+wgE9OVZRb0XsQhiIrMSnTbR2NEP/585eOqdFCtGdfOxwmhRzdPqS7m6gRKgQOhAvKkSBR0Bw2vtZlSUBtJmvXwwFD+QuKWa89X2Xzi38v09t0z71qLVRuiHDKTKzoNS6KN+uZ4frYrgUgWfqIIWeSMiwpXtyHJlqlneeAqw0FjbMY2dLNdp+uauG2SUf8lCdK9LDPsEcPuyKG6VfsMgwjL/uHJoYFAEEgeClRU3WYSLZyls8ci0L/M/MI6eWzdn9DQC1GLGDsv+PCUUDibsesvKGuEB3V1cYGeZI2X7gQR+g8//ldFDpuZtx6XGYGNEd2UXArdz5mdJV+dAp8WFRl8l/THQDlURmrhvqkWxIWz1BRiD2ILP3wdxW9zQWEtUbFO9ggwRKcaTtQZkCZJWHf6Wx7nlbDQyUbC8joBrF3UkW4nZALSgsMw+lHy6OZHtuP0lQqwy4V5uj+LvsGRU6e0CPh3UAlF4
+ O6ZpRoEA
+ cWOmehVl+QMrkNVqNqIaAjs1G4lEEU8H6scm2F1Dzn6a16o3XcAtNT4vlt18akZ6I2SDvVmGLIFhnhbY44WjgKLyXz/nb761uNNIouuEkb6uLw9om0F55W+4q8B7kXgrKGmhSgduUykdT50ZRl7TX14SUgt56eMHpZg//Ad5JcLDaFXyYgr+/ZDudrOpHU11ZPMUn7nuRG6b+icm/W7wZ7XR0E4ux321yKxgWFFCIHMJHG9hLxa22hcUz6/MFTl2ebrcfDsDBsIZ3MF1R0qUWzXKANA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,50 +92,82 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: SeongJae Park <sj@kernel.org>
 
-Add support of addr_unit for DAMOS_MIGRATE_HOT and DAMOS_MIGRATE_COLD
-action handling from the DAMOS operation implementation for the physical
-address space.
+Only DAMON kernel API callers can use addr_unit parameter.  Implement a
+sysfs file to let DAMON sysfs ABI users use it.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/paddr.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ mm/damon/sysfs.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-index b8a7f462967b..76e1ee82b441 100644
---- a/mm/damon/paddr.c
-+++ b/mm/damon/paddr.c
-@@ -245,15 +245,17 @@ static unsigned long damon_pa_deactivate_pages(struct damon_region *r,
- 			sz_filter_passed);
+diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+index 6d2b0dab50cb..bea782b0a711 100644
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -834,6 +834,7 @@ static const struct damon_sysfs_ops_name damon_sysfs_ops_names[] = {
+ struct damon_sysfs_context {
+ 	struct kobject kobj;
+ 	enum damon_ops_id ops_id;
++	unsigned long addr_unit;
+ 	struct damon_sysfs_attrs *attrs;
+ 	struct damon_sysfs_targets *targets;
+ 	struct damon_sysfs_schemes *schemes;
+@@ -849,6 +850,7 @@ static struct damon_sysfs_context *damon_sysfs_context_alloc(
+ 		return NULL;
+ 	context->kobj = (struct kobject){};
+ 	context->ops_id = ops_id;
++	context->addr_unit = 1;
+ 	return context;
  }
  
--static unsigned long damon_pa_migrate(struct damon_region *r, struct damos *s,
-+static unsigned long damon_pa_migrate(struct damon_region *r,
-+		unsigned long addr_unit, struct damos *s,
- 		unsigned long *sz_filter_passed)
- {
--	unsigned long addr, applied;
-+	phys_addr_t addr;
-+	unsigned long applied;
- 	LIST_HEAD(folio_list);
- 	struct folio *folio;
+@@ -997,6 +999,25 @@ static ssize_t operations_store(struct kobject *kobj,
+ 	return -EINVAL;
+ }
  
--	addr = r->ar.start;
--	while (addr < r->ar.end) {
-+	addr = damon_pa_phys_addr(r->ar.start, addr_unit);
-+	while (addr < damon_pa_phys_addr(r->ar.end, addr_unit)) {
- 		folio = damon_get_folio(PHYS_PFN(addr));
- 		if (damon_pa_invalid_damos_folio(folio, s)) {
- 			addr += PAGE_SIZE;
-@@ -330,7 +332,7 @@ static unsigned long damon_pa_apply_scheme(struct damon_ctx *ctx,
- 				sz_filter_passed);
- 	case DAMOS_MIGRATE_HOT:
- 	case DAMOS_MIGRATE_COLD:
--		return damon_pa_migrate(r, scheme, sz_filter_passed);
-+		return damon_pa_migrate(r, aunit, scheme, sz_filter_passed);
- 	case DAMOS_STAT:
- 		return damon_pa_stat(r, scheme, sz_filter_passed);
- 	default:
++static ssize_t addr_unit_show(struct kobject *kobj,
++		struct kobj_attribute *attr, char *buf)
++{
++	struct damon_sysfs_context *context = container_of(kobj,
++			struct damon_sysfs_context, kobj);
++
++	return sysfs_emit(buf, "%lu\n", context->addr_unit);
++}
++
++static ssize_t addr_unit_store(struct kobject *kobj,
++		struct kobj_attribute *attr, const char *buf, size_t count)
++{
++	struct damon_sysfs_context *context = container_of(kobj,
++			struct damon_sysfs_context, kobj);
++	int err = kstrtoul(buf, 0, &context->addr_unit);
++
++	return err ? err : count;
++}
++
+ static void damon_sysfs_context_release(struct kobject *kobj)
+ {
+ 	kfree(container_of(kobj, struct damon_sysfs_context, kobj));
+@@ -1008,9 +1029,13 @@ static struct kobj_attribute damon_sysfs_context_avail_operations_attr =
+ static struct kobj_attribute damon_sysfs_context_operations_attr =
+ 		__ATTR_RW_MODE(operations, 0600);
+ 
++static struct kobj_attribute damon_sysfs_context_addr_unit_attr =
++		__ATTR_RW_MODE(addr_unit, 0600);
++
+ static struct attribute *damon_sysfs_context_attrs[] = {
+ 	&damon_sysfs_context_avail_operations_attr.attr,
+ 	&damon_sysfs_context_operations_attr.attr,
++	&damon_sysfs_context_addr_unit_attr.attr,
+ 	NULL,
+ };
+ ATTRIBUTE_GROUPS(damon_sysfs_context);
+@@ -1397,6 +1422,7 @@ static int damon_sysfs_apply_inputs(struct damon_ctx *ctx,
+ 	err = damon_select_ops(ctx, sys_ctx->ops_id);
+ 	if (err)
+ 		return err;
++	ctx->addr_unit = sys_ctx->addr_unit;
+ 	err = damon_sysfs_set_attrs(ctx, sys_ctx->attrs);
+ 	if (err)
+ 		return err;
 -- 
 2.34.1
 
