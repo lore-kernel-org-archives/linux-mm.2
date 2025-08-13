@@ -2,103 +2,115 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D501C87FCF
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 18:03:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 81C36CA0EE0
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 18:14:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8C009000BF; Wed, 13 Aug 2025 14:03:44 -0400 (EDT)
+	id 230379000C0; Wed, 13 Aug 2025 14:14:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6422900088; Wed, 13 Aug 2025 14:03:44 -0400 (EDT)
+	id 1E136900088; Wed, 13 Aug 2025 14:14:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA1059000BF; Wed, 13 Aug 2025 14:03:44 -0400 (EDT)
+	id 11FAE9000C0; Wed, 13 Aug 2025 14:14:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B8D11900088
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 14:03:44 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 66BC9160440
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 18:03:44 +0000 (UTC)
-X-FDA: 83772507168.28.E9FFA9C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 97F411A0016
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 18:03:42 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YgZqVbaP;
-	spf=pass (imf19.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 00B5D900088
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 14:14:31 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A8F4C1DD112
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 18:14:31 +0000 (UTC)
+X-FDA: 83772534342.22.1713310
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C60AA100009
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 18:14:29 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Kpwq9NZm;
+	spf=pass (imf14.hostedemail.com: domain of elver@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755108222;
+	s=arc-20220608; t=1755108869;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HHydpDYXf3xqaxuzsdcRUsqHAi9QaZltO6kLO6NK0ts=;
-	b=mfadyKjsZJpyPAu9c7a3rBKJ7YzomSGpgZQS08kOTiL0k7H0YMh8XU2rA3fac7N54KEyVo
-	itsSx+y7ytz/zFUtoOTerjRAOsZc+X6FWIHcFZaGkNFCYEAbHcFi5plK593HN2xyk7KtQd
-	VxS8+aprUCmGSwftGjHMi3MV8F4lSDs=
+	bh=4hxBfzmvH2TsE+jx0zUQqB7m43IVHQfBxYfENPa1oII=;
+	b=mivWcSztG1H3uxvw1/IaBJyIValsTqT/vC0hBwveF+Txy7h9GRoyR0iYez3Cs6JvOI2DM6
+	I6evGB27XXJQZ/EnkyIykIaWsdmnayaDgYa+t/0Cc9ebiQjaDWO7n9j84LugeB9QeDb92F
+	r9fNXWwW2rgju1vmgB98MQgu8360PGs=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YgZqVbaP;
-	spf=pass (imf19.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755108222; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Kpwq9NZm;
+	spf=pass (imf14.hostedemail.com: domain of elver@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755108869; a=rsa-sha256;
 	cv=none;
-	b=7s/0z2pJtl/tUMr1NS2h3ZhpD/9WvHmzHROsCCiV3aeoGgzj+1ZxXchnC7qMO06XD22aZm
-	rfTi2TyZGKdoMaREuP5xrWMTtoWvbooicPDhi2GQCpdyebTc3x7h+ytaBn0KQ57cWQBvGW
-	bwnynWdStIW62LCjVy5nmkRkSuA4UAo=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 48CAE43784;
-	Wed, 13 Aug 2025 18:03:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EED5DC4CEEB;
-	Wed, 13 Aug 2025 18:03:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755108221;
-	bh=mxBe9IZW17EWG3soqFkqLWOPvQ9A5xBcmo8kGlCtxDM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YgZqVbaPkJd4dniV6okJBx5xLrjRW6Nf9S1FYJbycm9dTQd1ycvHK6+kmO2rIKnIG
-	 fL/p5pq3Aqc5QRf470boWhZV7uBym8vwGg4KotZ8tYK7BA56V3dwVxFU3sczONp9C7
-	 jsP5GYyzrdiLfxfQeUQ9d7Svs68k26O0g8FdQowl8LaxiXSHhEfWnlI+D9dcFM2VLX
-	 rdmTPJjyI+O30X9nNvHn/ysdaFa9eBaPwn94dLJNyBSiH0OOYv0Bd1l2NIJiwOZGob
-	 NK8knKosCgCZcpHMwvHgVwqVqxAcOEEh2AXA2dIgSKnpBLGlL/4XfC+7/xWoV8as8e
-	 zjgHNra0uuvMg==
-Date: Wed, 13 Aug 2025 08:03:39 -1000
-From: Tejun Heo <tj@kernel.org>
-To: Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>
-Cc: Daniel Sedlak <daniel.sedlak@cdn77.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org,
-	netdev@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
-	Matyas Hurtik <matyas.hurtik@cdn77.com>
-Subject: Re: [PATCH v4] memcg: expose socket memory pressure in a cgroup
-Message-ID: <aJzTeyRTu_sfm-9R@slm.duckdns.org>
-References: <20250805064429.77876-1-daniel.sedlak@cdn77.com>
- <aJeUNqwzRuc8N08y@slm.duckdns.org>
- <gqeq3trayjsylgylrl5wdcrrp7r5yorvfxc6puzuplzfvrqwjg@j4rr5vl5dnak>
+	b=D6PEVAfpTYtspH7JeC4GRyuG4FxwCHQIlYM65vTWz5eRt/su/R0id2yS108Nng2OjLBxbt
+	W/ss1EKOn4ntLu5VuV/nY0ryLLSrZ27e9Kmc7WduEEQVB/31LMmosqqPQ8+1WLJrWTh1Zd
+	9KO2mmZRO3gbMfkqJJ+uqERyUuSbMQs=
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-24458317464so353595ad.3
+        for <linux-mm@kvack.org>; Wed, 13 Aug 2025 11:14:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755108868; x=1755713668; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=4hxBfzmvH2TsE+jx0zUQqB7m43IVHQfBxYfENPa1oII=;
+        b=Kpwq9NZmG7kyfJzBxFS5ibza4aPLJWBoJqzCDce0OtItODx+yEPifCAd8QIYgCyeDQ
+         9iPdI6fZ2jfsWlQLY/cN8j80r/5NaTKy7HNe2L8o8vmEEm5LtNqyRApJuVSGQQl3Kkup
+         pvWGPzLfrjHF74YSbn6nw8j108LZS+bk/b+bx6wdJcapTHapIUdLA36973q1hdK0ZOu/
+         eRAXFe/bAcgXsO1WfG7LLhmkqqiDkW38iaCCJ3b55iqdeQzyEm9vb52/G3eHey80/cO/
+         szIZ6V8hKi08DpN9LIo+2B/WMGhcBrUfSr7cvY0qCV9TY0NPXCqOaqzj1e7x4lTACwXv
+         vCWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755108868; x=1755713668;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4hxBfzmvH2TsE+jx0zUQqB7m43IVHQfBxYfENPa1oII=;
+        b=Gmg5hmYenP/6Iz+11htmV+dIFcZpQ0QxgzcplWzBovP0UeNotQb9n52eFvEG/RFZk4
+         2aUl1SDQqDkfFuXdhXq1Ll60hwa9rbP7gLmovbmKIVvyEn/hSA9mblDaNorTg4CAhrl5
+         YQ+wn8T3D/JKZC6HncvoCS1xVYrRr3bpJ882lmZqkhVzaw/8s9S8LgXxSWHktjF7f5kC
+         KpWG/08Jb9JhZJY8nHiSrZksxlGOJzouSGxpmNH/ILK8GJIXoTynLagz8qJma492j2+6
+         5o26dkWClr9QfkgD2luXiT/Rcy3lUCSC1dkhYUKmkIi8ZzEDg4hivA90t6xbaqy1peCv
+         CnHA==
+X-Forwarded-Encrypted: i=1; AJvYcCXIE+yDiMH/a0bEg5Yvxjv4uMT0OSXUBC0pUTstsw097x4YAP5rpVNLOIIwaSaB4FIvmUofsd2beA==@kvack.org
+X-Gm-Message-State: AOJu0Yym55gdMoO6QhnVd9IZsjCioOze1NLK7swuxhlqTEEbOBrOX0C6
+	kbv590jUdCFfNIKYse2z0/ksnd23LJWglDlR2Rqb7fXXRfiROI/yvF/QtM1kZ8HV1vK7wAaU9hf
+	bMiAgdmI4o0sjw1v4gNLwtVV+oEcLN8G0NeUiU6sQ
+X-Gm-Gg: ASbGncsAn0O8Keg7VhPlh9sZwFnRrl5hcx68lGuIb/CqkxUlbcFLxU+0BEcLAB/TStY
+	aWnqUIvMXsNC7Q/MiuYhgY3QiZLCAMIKKaCUZns0Fl7RldA6tYv3Uiqk98Xg8Du8sdDA0gRygkH
+	zv2JbQUL9U01UqSvaJzKgefEhXDAlw+rLmLwE3yoeQmLYwOcukmh8W7EVVpk+Qzee9F3L8QT7Hy
+	951l7OmSAcP+CPZckxQ4EhtrAKSAgCAUy7dEZjc7fa349cL
+X-Google-Smtp-Source: AGHT+IHotfho3h1ZZecOKGuq1D2CciZoVsCtf5moBH0RJz5U14Jr0GnJ8FzYfeu03dCe85qFQ/eJAyGnggeHSkOqeXI=
+X-Received: by 2002:a17:902:d542:b0:240:41a4:96c0 with SMTP id
+ d9443c01a7336-2445867ed19mr701285ad.29.1755108868210; Wed, 13 Aug 2025
+ 11:14:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <gqeq3trayjsylgylrl5wdcrrp7r5yorvfxc6puzuplzfvrqwjg@j4rr5vl5dnak>
+References: <20250813133812.926145-1-ethan.w.s.graham@gmail.com> <20250813133812.926145-7-ethan.w.s.graham@gmail.com>
+In-Reply-To: <20250813133812.926145-7-ethan.w.s.graham@gmail.com>
+From: Marco Elver <elver@google.com>
+Date: Wed, 13 Aug 2025 20:13:51 +0200
+X-Gm-Features: Ac12FXwt2pSL7dVwRutKcMu_hFjjWXkjb4Jh6zDHbgaT8hltdL3d-RuGkNjKm24
+Message-ID: <CANpmjNMXnXf879XZc-skhbv17sjppwzr0VGYPrrWokCejfOT1A@mail.gmail.com>
+Subject: Re: [PATCH v1 RFC 6/6] crypto: implement KFuzzTest targets for PKCS7
+ and RSA parsing
+To: Ethan Graham <ethan.w.s.graham@gmail.com>
+Cc: ethangraham@google.com, glider@google.com, andreyknvl@gmail.com, 
+	brendan.higgins@linux.dev, davidgow@google.com, dvyukov@google.com, 
+	jannh@google.com, rmoar@google.com, shuah@kernel.org, tarasmadan@google.com, 
+	kasan-dev@googlegroups.com, kunit-dev@googlegroups.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	David Howells <dhowells@redhat.com>, Lukas Wunner <lukas@wunner.de>, 
+	Ignat Korchagin <ignat@cloudflare.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	"David S. Miller" <davem@davemloft.net>, 
+	"open list:HARDWARE RANDOM NUMBER GENERATOR CORE" <linux-crypto@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: mdn3986ksya8m71ogxod8ewfpf1ofzt8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 97F411A0016
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ymp9g17hw5xbxrk9fbfyr9b1t8e6ofnf
-X-HE-Tag: 1755108222-972827
-X-HE-Meta: U2FsdGVkX1/u8VLKOcjBxxfsvI6q9SsMjpcZkCNptvWqIKA64m2x+tGISWSQ0KnC5J14LJpAQ4FVReta/FCW4h5MQaAh2MnWx1dA0f/O5DzqKA/BIwuMV7VZjen+lwLxVd0Pdcb9UG9MdFNz3mAsHp0bRZ6Ts30E4JgQEZ1DIUNkMpxO5e7hpZjmrWyXjFcXPlRCtvSHI59o/t1F8BxQlcOy5vyD58rzfjNtgY8RsMaEdXWtJorRdtQnyisNAUPF0RDnuj2iP/0SNuOI7FwEfMNmSmqHsmy03DwlPDykMjMMlG62ItnfJIqOX7evoMNkNFynzgHXYW1y3jaE/+tjCrh24vva4zQTHHnIvZaNPLatRmMBMa3TvCPR2n6cC5SoHZq0iossuFSYCPaJS2keQHsDmEx8XUTO5JYx5+NJIt3UMQTfOJyBjchD5BGEIys1EGrvl0fsvGgU1egHx0N1A+yZjxKKQuOXo7QunZaj67txhMwGTnp9TRf0yXJVHgDmPa+SuNW/nK2wXwrNSg3nTr3vXqJy7TSqXopCVC3ONSBcKylpNLjQaIGwa+KHFLFkdQZstYYVlyWc+8mkDUb0SoR1DZZHTXz7/QGjZfZhyl9BA2YJDXmcypSj/2dkHfXOPo7jcS1BQbjI+GPSjO19AKmAUzbIuZfgyhUGZDpu5qbSjU5wpsqtPnzbZyrAZFBr6z3LjbOfaL3imayvwcZo0jJ+RHiTluPAPe0sU6NtfGbL7uWzOO28NVm7ACmG6hZOOTu6y/Iq33prK32FU4UuYb8Vio14xzwWKz1CxVHi3uG5geE4+ptwU4OcMpOKHYHrVkJTZ10EDT6iETvhwOTzZaMuR7vpe1mhVHbLJtAbuAwqKYigR3aJz78mSYbWa5f4ym4taorMVVC8yKw8YvfNrpQ8qOEzFmWO/ErzScAMG0CtCbx54CLDRvWmu9PVsL4oKAX6Qubbj3yVHKLpunW
- FY05lmAI
- iZEWkML35gCw43MxZ7VffRKXh6YaiErk5rXE+SrtN+VbivNKi3nmH3OFjRDbBWeqAi6Q/p1SJtr1ckV9HUsOGTs/WG9AFrtt1DNVC3/cEKZ2VnZIhNr2gQBjDvPt1RDJB0GHupFoQBg+A0DihuQSQvyYtrOU4hZkfEj6jduDU+WzOmh61MidHQPOuogWPtiPQmjb2mezoacToF+H+7+ePtRWA+mQJHhmSo6J2E/EeVelfqr4=
+X-Rspamd-Queue-Id: C60AA100009
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755108869-817260
+X-HE-Meta: U2FsdGVkX1/c71DY/KOOhASV9eAYxCeDhxe9FOC/JLN95lYdON1O/sHxOM4SU16pP0i/E+aoCTkoaDa5ZRkQM2Chm1hk2dSLunsAzLWzV8m1BnaL6mnhnmAgXLUt4H0NWq/Z7Lq/Bw4v3zTezdnNA9wwTxEALWgur9mPUhVEotdUQ21zgcseJmeMaM0N7brm0EOA8agPfXAjTxqCRJVPZX1iH6+F6xebEP+0zNqPPgcMnqVYHdpJSkFB8IZHLKumyQ25G9IteVlkiLaq0ZQj1oLRecF6vJoEStJDJogWjn69IbPJAdQTXeY8q45z+fy71Guy7tVu0R+ASVjZ9NJDM+FGAOCO8xoWIapZlnpG1tCrcVIGrZ1pPkmknyHNPoBT/CG2cs8TmHzAKrHnkkuqjuMBX+7BWPUbs2QU1fcQBo4o+dw0zMMGiT+/qkKFNSU8sS6qK4lGZb+bp5Lf7qdyT9NgTdoUyIIJXhurNBky3uXfnj96Pl6kG+LYc+7lrKPiktEp/m4Ni3pXfbGQzOaVcXY/6IQIrijuemc11iK5E5El8EormLYd0Hbdd0aWefKEF5L8b/2Lb4eQLiZs7WlUbM0vsIK7jEcUlGzPmwAKwNz1xPcQStyIQcP6JJmfzK4Zl+qAukFZQPoXJRraKKH5aL5edGJfHAd0WhYdzINnMwSwHWsTW4K7alFhoL3e5TltOBKEPLgqjol95+9KItri1HP4V5HBtKFAGRukim5jrnyuO6kOOz/3vn0s16r7srsTKQ8wwZBIwtdBvT+BA75stUL2OCFzL1/kzybx8Dd9qxvwAqq4KTnlYOVdCKrieNYXFlAP/hNpG1rgY3DDdGhiZAxRlm8T1XWJTt61WE+etsRAcpnC6MZ4oFR+69qcSTj9zGVNuV8+X61nG+wkn/Y1F4RPTDuSTH5sNpO8tYhgxuwOUoc2MayIvlbQyFg/Z+IRX3KJRUskLee5nVKd2i+
+ ceWkIEX8
+ rPM+AiFfiwIQnGVgH6ei5KVVhnsTz+fTWg9GdYso9VC/tJmaWw+thcZN03gTlL1ZpvVZ+dsJUhrys87sJoNxkHibLuBxOCC6egJOBDCTi7CK9Mr9cJzjRQf5+WzKoG23jnvhydqyUE8dGpyjNab2idQP3lsW7vMHraHTJfl7EntcffLFufYnoMW+yYZg/F0i8iaycxdmmfEygWeTwcvZApccM8/zbaX8xeJb1iCdrjzNAVdTlP8vmutKbvvD91z20RbAIYbn8P0QdsDRv3+TC5ACIUzl3KmySybLFJv/yWtQu0AuFQ7+DdBZUVc+0qaIiCTlLgAWg4H/l1ZgWAd6G6aMDavFmF/zor3bV
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,28 +119,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+[+Cc crypto maintainers]
 
-On Wed, Aug 13, 2025 at 02:03:28PM +0200, Michal Koutný wrote:
-...
-> One more point to clarify -- should the value include throttling from
-> ancestors or not. (I think both are fine but) this semantic should also
-> be described in the docs. I.e. current proposal is
-> 	value = sum_children + self
-> and if you're see that C's value is 0, it doesn't mean its sockets
-> weren't subject of throttling. It just means you need to check also
-> values in C ancestors. Does that work?
+On Wed, 13 Aug 2025 at 15:38, Ethan Graham <ethan.w.s.graham@gmail.com> wrote:
+>
+> From: Ethan Graham <ethangraham@google.com>
 
-I was more thinking that it would account for all throttled durations, but
-it's true that we only count locally originating events for e.g.
-memory.events::low or pids.events::max. Hmm... I'm unsure. So, for events, I
-think local sources make sense as it's tracking what limits are triggering
-where. However, I'm not sure that translates well to throttle duration which
-is closer to pressure metrics than event counters. We don't distinguish the
-sources of contention when presenting pressure metrics after all.
+Should also Cc crypto maintainers, as they'll be the ones giving
+feedback on how interesting this is to them. Use
+./scripts/get_maintainer.pl for that in the next round, and either add
+the Cc list below your Signed-off-by so that git send-email picks it
+up only for this patch, or just for the whole series (normally
+preferred, so maintainers get context of the full series).
 
-Thanks.
-
--- 
-tejun
+> Add KFuzzTest targets for pkcs7_parse_message, rsa_parse_pub_key, and
+> rsa_parse_priv_key to serve as real-world examples of how the framework is used.
+>
+> These functions are ideal candidates for KFuzzTest as they perform complex
+> parsing of user-controlled data but are not directly exposed at the syscall
+> boundary. This makes them difficult to exercise with traditional fuzzing tools
+> and showcases the primary strength of the KFuzzTest framework: providing an
+> interface to fuzz internal, non-exported kernel functions.
+>
+> The targets are defined directly within the source files of the functions they
+> test, demonstrating how to colocate fuzz tests with the code under test.
+>
+> Signed-off-by: Ethan Graham <ethangraham@google.com>
+> ---
+>  crypto/asymmetric_keys/pkcs7_parser.c | 15 ++++++++++++++
+>  crypto/rsa_helper.c                   | 29 +++++++++++++++++++++++++++
+>  2 files changed, 44 insertions(+)
+>
+> diff --git a/crypto/asymmetric_keys/pkcs7_parser.c b/crypto/asymmetric_keys/pkcs7_parser.c
+> index 423d13c47545..e8477f8b0eaf 100644
+> --- a/crypto/asymmetric_keys/pkcs7_parser.c
+> +++ b/crypto/asymmetric_keys/pkcs7_parser.c
+> @@ -13,6 +13,7 @@
+>  #include <linux/err.h>
+>  #include <linux/oid_registry.h>
+>  #include <crypto/public_key.h>
+> +#include <linux/kfuzztest.h>
+>  #include "pkcs7_parser.h"
+>  #include "pkcs7.asn1.h"
+>
+> @@ -169,6 +170,20 @@ struct pkcs7_message *pkcs7_parse_message(const void *data, size_t datalen)
+>  }
+>  EXPORT_SYMBOL_GPL(pkcs7_parse_message);
+>
+> +struct pkcs7_parse_message_arg {
+> +       const void *data;
+> +       size_t datalen;
+> +};
+> +
+> +FUZZ_TEST(test_pkcs7_parse_message, struct pkcs7_parse_message_arg)
+> +{
+> +       KFUZZTEST_EXPECT_NOT_NULL(pkcs7_parse_message_arg, data);
+> +       KFUZZTEST_ANNOTATE_LEN(pkcs7_parse_message_arg, datalen, data);
+> +       KFUZZTEST_EXPECT_LE(pkcs7_parse_message_arg, datalen, 16 * PAGE_SIZE);
+> +
+> +       pkcs7_parse_message(arg->data, arg->datalen);
+> +}
+> +
+>  /**
+>   * pkcs7_get_content_data - Get access to the PKCS#7 content
+>   * @pkcs7: The preparsed PKCS#7 message to access
+> diff --git a/crypto/rsa_helper.c b/crypto/rsa_helper.c
+> index 94266f29049c..79b7ddc7c48d 100644
+> --- a/crypto/rsa_helper.c
+> +++ b/crypto/rsa_helper.c
+> @@ -9,6 +9,7 @@
+>  #include <linux/export.h>
+>  #include <linux/err.h>
+>  #include <linux/fips.h>
+> +#include <linux/kfuzztest.h>
+>  #include <crypto/internal/rsa.h>
+>  #include "rsapubkey.asn1.h"
+>  #include "rsaprivkey.asn1.h"
+> @@ -166,6 +167,20 @@ int rsa_parse_pub_key(struct rsa_key *rsa_key, const void *key,
+>  }
+>  EXPORT_SYMBOL_GPL(rsa_parse_pub_key);
+>
+> +struct rsa_parse_pub_key_arg {
+> +       const void *key;
+> +       size_t key_len;
+> +};
+> +
+> +FUZZ_TEST(test_rsa_parse_pub_key, struct rsa_parse_pub_key_arg)
+> +{
+> +       KFUZZTEST_EXPECT_NOT_NULL(rsa_parse_pub_key_arg, key);
+> +       KFUZZTEST_EXPECT_LE(rsa_parse_pub_key_arg, key_len, 16 * PAGE_SIZE);
+> +
+> +       struct rsa_key out;
+> +       rsa_parse_pub_key(&out, arg->key, arg->key_len);
+> +}
+> +
+>  /**
+>   * rsa_parse_priv_key() - decodes the BER encoded buffer and stores in the
+>   *                        provided struct rsa_key, pointers to the raw key
+> @@ -184,3 +199,17 @@ int rsa_parse_priv_key(struct rsa_key *rsa_key, const void *key,
+>         return asn1_ber_decoder(&rsaprivkey_decoder, rsa_key, key, key_len);
+>  }
+>  EXPORT_SYMBOL_GPL(rsa_parse_priv_key);
+> +
+> +struct rsa_parse_priv_key_arg {
+> +       const void *key;
+> +       size_t key_len;
+> +};
+> +
+> +FUZZ_TEST(test_rsa_parse_priv_key, struct rsa_parse_priv_key_arg)
+> +{
+> +       KFUZZTEST_EXPECT_NOT_NULL(rsa_parse_priv_key_arg, key);
+> +       KFUZZTEST_EXPECT_LE(rsa_parse_priv_key_arg, key_len, 16 * PAGE_SIZE);
+> +
+> +       struct rsa_key out;
+> +       rsa_parse_priv_key(&out, arg->key, arg->key_len);
+> +}
+> --
+> 2.51.0.rc0.205.g4a044479a3-goog
+>
 
