@@ -2,122 +2,149 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 807ECCA0EE0
-	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 08:16:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 82407C87FCF
+	for <linux-mm@archiver.kernel.org>; Wed, 13 Aug 2025 08:16:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F990900047; Wed, 13 Aug 2025 04:16:10 -0400 (EDT)
+	id 1FA4E900048; Wed, 13 Aug 2025 04:16:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A9F0900044; Wed, 13 Aug 2025 04:16:10 -0400 (EDT)
+	id 1AA81900044; Wed, 13 Aug 2025 04:16:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0992A900047; Wed, 13 Aug 2025 04:16:10 -0400 (EDT)
+	id 09A0D900048; Wed, 13 Aug 2025 04:16:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E4332900044
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 04:16:09 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 944D01402B2
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 08:16:09 +0000 (UTC)
-X-FDA: 83771026458.26.66BFCEF
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf10.hostedemail.com (Postfix) with ESMTP id AFFF4C0011
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 08:16:07 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EA0CE900044
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 04:16:39 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9160C82839
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 08:16:39 +0000 (UTC)
+X-FDA: 83771027718.20.308DF07
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf10.hostedemail.com (Postfix) with ESMTP id BD1B2C0002
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 08:16:37 +0000 (UTC)
 Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=t3ZaanvF;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=E1zvWv48;
-	spf=pass (imf10.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hkfryBge;
+	spf=pass (imf10.hostedemail.com: domain of kas@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755072968;
+	s=arc-20220608; t=1755072997;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vgBW8b/WLrVQq0BHMU+zEk/Lyyfrm6a/mGbcYhX7PWw=;
-	b=khnht9EmVeD5Ig5ZmEABd33Zi13tnhfwWwkNtBWKrx/g/gzQyCcuUxaru7i5c4NftairWn
-	Tx1guYyoCQJp8yaNK0XbAff5obXmb12NIg8sZ2MZj9+4/D3KuMajHYumGVmSTgcJW/rExg
-	jEHkVBfdg7gdeIO65ezTWgIxDnosG78=
+	bh=B+u0wmRt6PJvGdFQtCZAI1oS3UKAenlpPK7AYmnU7pY=;
+	b=JS67oK29ogHXlpzbvRyxXq8crbA1bwn8dJ90KeYurpPL58p+huXdZe8vjpbELQSnngImTw
+	s/eevPJgiqN+aZtJ5GW4nS3aX8gEBCtXtvE2DZxUvpAaDuFSAXuDO03uuS8LCyNtJMmy5J
+	oCIFfzxynnRS11BWX5FAisoCnY2f+Dc=
 ARC-Authentication-Results: i=1;
 	imf10.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=t3ZaanvF;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=E1zvWv48;
-	spf=pass (imf10.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755072968; a=rsa-sha256;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hkfryBge;
+	spf=pass (imf10.hostedemail.com: domain of kas@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755072997; a=rsa-sha256;
 	cv=none;
-	b=FeSfu6cnzTeKLsPJkbrb+8BDYCVPmXAQUAJ8Aday/2KhlyBfhVO/EJuzfz3J6nKlU3Usjo
-	2gRCT0FIDus5BRaV8jzzpWh1OcMJOacSMBusQtY5QhbNyu8ly+6l7Q0CjhCSfwrKAHB0fZ
-	9kLVnV7R5MpoOZQuMnnTihZmXW0+FaQ=
-Date: Wed, 13 Aug 2025 10:16:02 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1755072965;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vgBW8b/WLrVQq0BHMU+zEk/Lyyfrm6a/mGbcYhX7PWw=;
-	b=t3ZaanvFJHTW1l1H2nSwoa1VFh8EVFo/BJn0UMRG7bq78PXYOpzqMO9UGefI5UiLZP7nNe
-	J1FX1/E5cqcFOVpKvUjolk1j8zY71ykS0B7X6UJ1jM73mZGhOMT+2RFDhdp4Y1WmHG3lB8
-	fhvgGlk/PFabS5Cn+w3uMjkgmqVzkQuRRvX4xJrjg/8hJ+0j7jOT/qLXJIWkp6a9jfxObj
-	LUOs4JziO5PF87uDbwzJHBzRMHIM1CkGRGPGIwWfVdP7ckTLMMlHtUDzc+O5vxoBEjlmG7
-	1skI/bKKNj/R2CTmQujVy01wAp2WhS97QfxNvozWzsRXygdxqvZz7+ZCEZyixQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1755072965;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vgBW8b/WLrVQq0BHMU+zEk/Lyyfrm6a/mGbcYhX7PWw=;
-	b=E1zvWv48KJJ+SOu4RstGU/Hts0jpCLaRVEpYFntAu8DSCAbOKCuCF3vYrHswu5Uo/Nk8OK
-	GMt5eI9bpKssCIDA==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Andy Lutomirski <luto@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-	Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Russell King <linux@armlinux.org.uk>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Nicolas Schier <nicolas.schier@linux.dev>, linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, linux-mm@kvack.org, linux-um@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
-	linux-s390@vger.kernel.org, linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, Jan Stancek <jstancek@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@redhat.com>, Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: Re: [PATCH v4 00/24] vdso: Reject absolute relocations during build
-Message-ID: <20250813101305-04911850-2375-4be5-9a06-ced21de3ca22@linutronix.de>
-References: <20250812-vdso-absolute-reloc-v4-0-61a8b615e5ec@linutronix.de>
- <CANiq72nV62c8cVBzke73OH-sfLdgerDBGrLKTmT83+OQtK6PjA@mail.gmail.com>
+	b=nqwQhv9QCFdRz2TmqnhOdGVG1fabs9J3h9bfXGfnmgi70Ww1fZfdEEn9Eb5wN9VM3udrkm
+	jtgwqioQTqSoJXMw0S80LFGIeaNXxP9/1McJKmQ4NmiGDu8y5tDSrQ42fNHyBOCf3gFBlT
+	XelAWWiLO4lcDhOEeVnfsg0l60W48Pc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 7BB725C1089;
+	Wed, 13 Aug 2025 08:16:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AAC9C4CEEB;
+	Wed, 13 Aug 2025 08:16:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755072996;
+	bh=HpmLvrPHn4sb+82i2lRKMP37vraziwdZWtrOQHjkRDc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hkfryBgeEEtiAWYIAQM4oQy2XQ9Z4BPn9Ge0qwzZB/gVcEWi6hUMZeyimxqR5eK1X
+	 zMTyToZyJ8ClSiddiN5ACV823OpY68O96TkrI5PN5MYUWtCwhQn6KIAOstUth1wm9m
+	 3U2Mvc1WWQkvIgF/2qfazdGDQdQ459nPKGN5DpWERkKNxbTdgQW/QTJ/mvQBq0c4mf
+	 GMSeWyMjI6HSS0qu23qk5qvFLTe1Jp6m5Nw7wsouTSbfNL/1A43XbaY6YJwXZCORd2
+	 oeQb3oNnUfp2IIoNUQgtKUI3/dx1R5sBbikq9o7AM439nJSrLoPFoy0dCuDTlpT24v
+	 ZiA/xS2wWCHFw==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id B8421F40067;
+	Wed, 13 Aug 2025 04:16:32 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Wed, 13 Aug 2025 04:16:32 -0400
+X-ME-Sender: <xms:4EmcaJ9bYlqpENhWu9ZM3b1rkWpwlG0ejAGfN5hl5gpmWDsXJZb2dg>
+    <xme:4EmcaENOzt1tVLSLCMXrultW8L17ql7E4FM4HK4IpxV0IwbEtdp1obf0VUusmmMyw
+    IcwitAMdbROBw4JosY>
+X-ME-Received: <xmr:4EmcaFQ0k6CLoJc_wiBIEX78Ie8QrsLWwJlSGdc_NpJQrnqaDtOjJI6MFkkG>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddufeejjeduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepheeikeeuveduheevtddvffekhfeufefhvedtudehheektdfhtdehjeevleeuffeg
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepudejvddpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepmhgrtghivghjrdifihgvtgiiohhrqdhrvghtmhgrnhesihhnthgvlhdrtghomh
+    dprhgtphhtthhopehnrghthhgrnheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghr
+    nhgusegrrhhnuggsrdguvgdprhgtphhtthhopegsrhhoohhnihgvsehkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhmpdhr
+    tghpthhtohepuhhrvgiikhhisehgmhgrihhlrdgtohhmpdhrtghpthhtohepfihilhhlse
+    hkvghrnhgvlhdrohhrghdprhgtphhtthhopehkrghlvghshhhsihhnghhhsehgohhoghhl
+    vgdrtghomhdprhgtphhtthhopehrphhptheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:4EmcaG8rQsE8nkO8Pw7BXFUXXd-RiXJNyqApIZXatEwUdlY2ztWfjA>
+    <xmx:4EmcaP1k2sWKIPsVnixXMBMnZq2BC4N6nxNUox2x8df5vJ19bCsHAA>
+    <xmx:4EmcaIKL7gUAWTyNuo8HT5jw93fJosAdbDIZuVFUt4IZ5EQd4puIQA>
+    <xmx:4EmcaN73ABzTnA_tXNVpp2lcwvZwZx0hbVCFteVB1zox2VpbNSuCPA>
+    <xmx:4EmcaEjpfrJQy1TacPbbA7uC_HvJWGEvLn3o1pPc_tSJJSAJSSn_V_gA>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 13 Aug 2025 04:16:31 -0400 (EDT)
+Date: Wed, 13 Aug 2025 09:16:29 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Cc: nathan@kernel.org, arnd@arndb.de, broonie@kernel.org,
+ 	Liam.Howlett@oracle.com, urezki@gmail.com, will@kernel.org,
+ kaleshsingh@google.com, 	rppt@kernel.org, leitao@debian.org,
+ coxu@redhat.com, surenb@google.com, 	akpm@linux-foundation.org,
+ luto@kernel.org, jpoimboe@kernel.org, changyuanl@google.com,
+ 	hpa@zytor.com, dvyukov@google.com, corbet@lwn.net,
+ vincenzo.frascino@arm.com, 	smostafa@google.com,
+ nick.desaulniers+lkml@gmail.com, morbo@google.com, 	andreyknvl@gmail.com,
+ alexander.shishkin@linux.intel.com, thiago.bauermann@linaro.org,
+ 	catalin.marinas@arm.com, ryabinin.a.a@gmail.com, jan.kiszka@siemens.com,
+ jbohac@suse.cz, 	dan.j.williams@intel.com, joel.granados@kernel.org,
+ baohua@kernel.org, 	kevin.brodsky@arm.com, nicolas.schier@linux.dev,
+ pcc@google.com, 	andriy.shevchenko@linux.intel.com, wei.liu@kernel.org,
+ bp@alien8.de, ada.coupriediaz@arm.com, 	xin@zytor.com,
+ pankaj.gupta@amd.com, vbabka@suse.cz, glider@google.com,
+ 	jgross@suse.com, kees@kernel.org, jhubbard@nvidia.com,
+ joey.gouly@arm.com, 	ardb@kernel.org, thuth@redhat.com,
+ pasha.tatashin@soleen.com, 	kristina.martsenko@arm.com,
+ bigeasy@linutronix.de, lorenzo.stoakes@oracle.com,
+ 	jason.andryuk@amd.com, david@redhat.com, graf@amazon.com,
+ wangkefeng.wang@huawei.com, 	ziy@nvidia.com, mark.rutland@arm.com,
+ dave.hansen@linux.intel.com, 	samuel.holland@sifive.com,
+ kbingham@kernel.org, trintaeoitogc@gmail.com,
+ 	scott@os.amperecomputing.com, justinstitt@google.com,
+ kuan-ying.lee@canonical.com, 	maz@kernel.org, tglx@linutronix.de,
+ samitolvanen@google.com, mhocko@suse.com,
+ 	nunodasneves@linux.microsoft.com, brgerst@gmail.com,
+ willy@infradead.org, ubizjak@gmail.com, 	peterz@infradead.org,
+ mingo@redhat.com, sohil.mehta@intel.com, linux-mm@kvack.org,
+ 	linux-kbuild@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ x86@kernel.org, 	llvm@lists.linux.dev, kasan-dev@googlegroups.com,
+ linux-doc@vger.kernel.org, 	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 00/18] kasan: x86: arm64: KASAN tag-based mode for x86
+Message-ID: <mt3agowg6ghwhvcjqfgqgua3m3al566ewmvwvqkkenxfkbslhq@eun5r3quvcqq>
+References: <cover.1755004923.git.maciej.wieczor-retman@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72nV62c8cVBzke73OH-sfLdgerDBGrLKTmT83+OQtK6PjA@mail.gmail.com>
-X-Stat-Signature: efx8quktb76ujjprid3ipnbgan9zu881
+In-Reply-To: <cover.1755004923.git.maciej.wieczor-retman@intel.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AFFF4C0011
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1755072967-722110
-X-HE-Meta: U2FsdGVkX1/JDyv9AK/2VOSZ91JjSs1SP4buO+8HKjvTvVomq7u25sTqwui+b+Mu6L3mjicZ5KtHuID0jtDvMXi0S/EDIU+yXPu/SyzdF4x73L9I+p6hOmHvP7zWcvz8+r+/ndB0g8SsZT9Qq2piaVk+FfwNLxaFOE2Deehudy9lUOkOS516chCC8MH4sKWsNR8UYBlH8ohjv5VdfZVxOWS7clamVeKvivA5R362axXZWupO5okQSsqi8hvAg1Yi7c3XFSDBaFychvKhtQoFb6V4i+IjAQDxrIJV78878UGGCbVwVqQi9lx02rZsIiSDlTKp6ZGDcbKClPmp7tEzkSGWg26sPbYiFgy7KBPA20KM8f3APaB+tMhiw/6U1gsBSdnWgAjy1XJFo5QUv2RuxKCLrq9fbsXdOtKJZdDKrzrvHctYGBvvF+S6NyLRxXeovpDfb8rZChkXy8tnwYnSY/SJVfIxh44QWTrPu+kAA3HabAi8KDEUd9UK00nqmJucvGEYo4bKZIfr8NhcUpDm//T1QV2m3NvZMZB/kUAXGOReTXHVockMxesAhiS6nNet2n2gvrvVgW1aTpEU1fKxUEy8imVVNoF1A8rWONf7aT4Yie/n7mfDv3nXKu0mb/yvWvkpU5RZIqvoCxTHe1Rlgs/o1g4KBwTP0vMJ9FyZU05Tw50hQ/hxkkX9QPPafzRFqnr+hfaXsF9y87dPRf7dneri53dhuXEiS5H/u+CE4qbd5HJecviBWOEoHqTze98BnGYYDg+XqwbJu1jWfzDBRS0I+3pFXrSEYsi24uxAfDtfb50GGONGJyAaAjHskdKV8lHk/wnKf1/dR9Dj9+wF0BFGuiT8sXzK+Xapu7Gf9Lx22SAqUNw0mRV4husNmMsSEqHOWGY6iwJeFfRHORlb2Y6do/tUkG5jyOWpBRsrAEzukR8mlcJez/VG75nTQSn9b+T8f3kqjlpRGDroBv0
- s3oKQhYY
- czvvDoo22h7nn+jA1gTN47psQ1t08qYElWtI4QQmQbAQ0DsqNur2utXO6B/itHzsKfPMtLdchHv9K/gs9+sUiNkOQ7joB2VDX5oontW1Q3hUE0jGLnw9HdGKhb9ge0zDDcFLdT65rx/sxkmoNAiGHtOc2//9FN/aDqe/Gu0imyx9OsRJmVl+xK6CAGCIfaZGaC9ewmcXkJYmJW4iGsto1CytXs5bp9AS4fMyyV5yZ0ejZXomWAWgJanwzYM742XwbVPjzeb3Pya+dPvt58LF/HD+WWo89xo9VLuzfTfMCi/UlseUiSv7pY5LauFk+uA2uzCW9dFg0YyvQVgsUHvl7Nudpi3bbc2E2qnyzRErHrGDsfrXoLIiBbxIWVcinjfbOoWIpJ1RP2T0q0cC7uc70CRE6yIOAsVszofLV7HIEQbsnRnVA+6k9ncpPVbVzJ2/oY99QlBcDHKxV4CcqHVlxSMGDKFaGAZpB1TDcRDkyJH4SpJE/lvEF9I3pjQcDlZjO3aQ7
+X-Rspamd-Queue-Id: BD1B2C0002
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 3qyxggmgo1prmmdyjhsfkfy9erohwkq1
+X-HE-Tag: 1755072997-346492
+X-HE-Meta: U2FsdGVkX19hW2ADSfkpBrnSDFJbyzzo4bzVzRROguKXMHQh2EsMLDMhZ6GR/Ml0WtKpx+30HMMO2l3CmLw6vSklDSsa3YEK9/En8vNNXM2myjX5HMc5Ir/o5MfmJiN3plum9NJYg89MBBDQQyPm3iGGyCoCuXkjVO7zMXzyh7zV4lB5Cjl7bf3XWvU6YnGXqiEg0EQed11av1nDQhU94Q0lpMro4bIvEUlxNfsyJGrTXB3avlow1QzLXZo2flSiOXDTOMCfALrdcGcM40wnPnWbZf32xuwm8rXXlkIGZpLuKppWBSNe3xUSlu8BymAPg/Us1wd7Ssl1CinO/PPN+F2RNhKR+NVefSHe5Eb5X4iN+a66K1SwF964vHZrTVA98C7Whrvmgo5Lrl/PPWcPY7GsHL7ME3NGoEsLYcV2bP5md4usG66TaazX0zO9Qq74U5O8UvJPndIYDgvbog+11vqR0bf4fP3q9b6IMQGWEtgTq8pB7U0sE25qbuMZbafRL59iAoVerSYpDrb0fcQb0r2HNaybzC9MIr72vTl1S8zUiwERXoUin2wL76Nis2UDs1vjxt/DwYTDlxfSUvLXCZ6BnianL5ZWyjqQGMP29jYwgdapjHLPfRi0K6pogjnHUx7xKg/o9PtVUKvDzt3He5prQJa4vufrOkOuZZnii5La9mcf0r7doO4vZszkhdpE+hEbgrCpI03gvfYEv9jolyEAV2V0YFZ7YHzsvFGIdtI28v4KeoL5sSeBhjjtTZt8dKasBEhx/5W0kCkszMPfXIXOuAWV8t0rtpjBVFzwCpZYgGEvvejj1zDG150XdjSTEpIrxKUDpW28VFJ0vwEJ+wW3ujmO9Zn3NRJ3eYvGkvud6zZvwoeig80fmHEBqbCLldmsGfZn5zD4hKGg+3eEp/logMyVlklfYPzBpMapKnr0bKC3+Pi5mHFLoAI0pYjRsTzlfhHfsrq5orZ1Gko
+ DHtbQ5/F
+ UjtKoTteMz/XocdwuYjYbkvYzQ4crWCanxK4o
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,29 +153,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 12, 2025 at 01:07:34PM +0200, Miguel Ojeda wrote:
-> On Tue, Aug 12, 2025 at 7:44 AM Thomas Weißschuh
-> <thomas.weissschuh@linutronix.de> wrote:
-> >
-> > Kbuild and Rust folks: This contains custom definitions of hostprog
-> > bindgen and rust library commands.
-> > These are currently only defined inside the subsystem directory.
-> > Let me know if they should go into scripts/Makefile.host.
-> 
-> Glad to see more Rust host progs :)
-> 
-> Keeping them local may be a bit easier initially to land, I guess
-> (e.g. no docs), and then we can generalize when needed later.
+On Tue, Aug 12, 2025 at 03:23:36PM +0200, Maciej Wieczor-Retman wrote:
+> Compilation time comparison (10 cores):
+> * 7:27 for clean kernel
+> * 8:21/7:44 for generic KASAN (inline/outline)
+> * 8:20/7:41 for tag-based KASAN (inline/outline)
 
-I'm happy to do the docs etc. I only wanted to avoid doing all that work,
-only for it to stay a subsystem-local solution.
+It is not clear if it is compilation time of a kernel with different
+config options or compilation time of the same kernel running on machine
+with different kernels (KASAN-off/KASAN-generic/KASAN-tagged).
 
-Also it would be nice to have a Kconfig symbol, RUSTC_CAN_LINK or similar,
-which indicates that the rust compiler can build host programs.
-
-> By the way, for consistency with elsewhere, probably we want
-> `HOSTRUSTLIB` -> `HOSTRUSTC L`. Though I am thinking to remove the `L`
-> anyway since eventually a lot of code will be "lib".
-
-Ack.
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
