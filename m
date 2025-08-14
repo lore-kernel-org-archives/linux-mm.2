@@ -2,201 +2,117 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 083BFCA0EE4
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 15:15:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D625BCA0EDC
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 15:28:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C45D90018A; Thu, 14 Aug 2025 11:15:06 -0400 (EDT)
+	id 4D94390018B; Thu, 14 Aug 2025 11:28:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99BBD900172; Thu, 14 Aug 2025 11:15:06 -0400 (EDT)
+	id 4B114900172; Thu, 14 Aug 2025 11:28:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88AD190018A; Thu, 14 Aug 2025 11:15:06 -0400 (EDT)
+	id 3EDDB90018B; Thu, 14 Aug 2025 11:28:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 732BE900172
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:15:06 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2875AC06D5
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 15:15:06 +0000 (UTC)
-X-FDA: 83775711012.04.91DDFED
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2057.outbound.protection.outlook.com [40.107.236.57])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D2111100016
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 15:15:02 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=uLQvOu30;
-	spf=pass (imf05.hostedemail.com: domain of ziy@nvidia.com designates 40.107.236.57 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755184503;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D3A1900172
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:28:30 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CC70483492
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 15:28:29 +0000 (UTC)
+X-FDA: 83775744738.26.FC8E145
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	by imf26.hostedemail.com (Postfix) with ESMTP id BF6AC140014
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 15:28:27 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=cloudflare.com header.s=google09082023 header.b=Vfzbxo4y;
+	spf=pass (imf26.hostedemail.com: domain of ignat@cloudflare.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=ignat@cloudflare.com;
+	dmarc=pass (policy=reject) header.from=cloudflare.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755185307;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+t6KslPj3SAtsgptsUnrxpGW4FenpxFpxGwUINluNNs=;
-	b=57omXsti8JmOVjds2zILgntU6KxNPkvE11AH9RgJ3Qp56SZJETtGfx/Y8H3S7h8iail9wL
-	DlDXag+wgeyqby6mab2PMPm9rcgpOCOyhOhQ5ENF9L22iKTlH8B4Ib+tK5K2vFoR0kc74V
-	O2WAiQPYPYRtpit5iaZle+ZlRO71Muk=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=uLQvOu30;
-	spf=pass (imf05.hostedemail.com: domain of ziy@nvidia.com designates 40.107.236.57 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755184503; a=rsa-sha256;
-	cv=pass;
-	b=evJdtAfWiUJZ17vFMuU/8TOANGWb6f+99dTO/7vJTDpaQJ3x8i+QxqVTknPiNCDuyRIiqK
-	AikPZ1gBOPdtcP/17BTYt7arguYqMfbLLmGV/7krAlzuC3pPLi0c31WekvGcoHNsLrLVwn
-	ifqa6DtzPAuF7beCtW8ep6/bX1UwWJw=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=d4kGRUoNuKfkkpQKssXF8F3jv+YityuLHicsnk993mraLlWCQtLCoYXEUxAdTlvKvIUTKR+qT8ZclKkRtWSglxyP+hrhe2oXQNl2vCaRHG/6HERTmE2YgrHGfBaSiC7MVDVDJQOgnXiUnRIf5VN6jqtgxS5DcQdNwarofHHzw+ArjsxO3F3JbodgFuMt9fYUhA8ntT401n25ivPfoT20K9e7V+4wboWDz31Mru61OC39jvqhYP5qyHHAyaF/KT5K2X2XDKCflXUdBUZdKOXCTi/fU43M6RqznoRubhgDbTPStEtdHyLtRQ1Aso+4ZLsvspeQQzjSmDAwZzTbw5e7Ag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+t6KslPj3SAtsgptsUnrxpGW4FenpxFpxGwUINluNNs=;
- b=nCmElgISKEj9PdTGpUYXHQHM1UKzjxhOcn3ehgsohTH4RpJhDjLZo7iHp9Cb96H7bmoMIKqZ9ReOeP/6LAnAOHEzke3ce/F+Heox0mjT2HIyVfAi7jm53HvgEWwF7TSs8VhF9Myi8AUmOaWWc0vBtV+ZzR33I5M0MZtFP5sKt1Us8lytte7uBEn90EeWBpWOQYYvYytIFU0tpbNGbyhhXIdq5cRTprajoxQNnrvj8jjOUW8eRSm6Bnj0cGGJ+4FSmMSQ7LvK2orKMXlWfzqNdR2ghGSJqLRyK6CzFIns12IVrZno8XezWNPNvgd2OW5ZWgOLtbToCQXxjYZX6aFlvQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+t6KslPj3SAtsgptsUnrxpGW4FenpxFpxGwUINluNNs=;
- b=uLQvOu30pLKBkn3L+9B6LrUBGhsBN3zIA7u1MZ+x7Wh6U54sufoI59X6Mk33O7BVP5oaooAgbVpl2osa/LA9a48atqEyoHxUi8YPhH8Y4AF2sx1ffQp4YRUONSDnDGwh2Q76qmSgcQbinTNRpCGN06695lpi33Xc71QyTB6lQpVbWmE7ZuFrFewjmhBF9yDvDvdsJF+cjMaAaF8Oa1vsAiibTQg17PQ8fCZIXXjUzPMHYCk6FWCU5FVwsCkBSBHKhAMm2jbQSnWhMv9gjw8AvZSuvFl/HIxgbuICewZl5fXJrG9f7Sno8s7fOZL8nLzrxjVYqfYfvPc2/0z62feDPg==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- SJ0PR12MB6903.namprd12.prod.outlook.com (2603:10b6:a03:485::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9031.16; Thu, 14 Aug 2025 15:14:55 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%6]) with mapi id 15.20.9031.014; Thu, 14 Aug 2025
- 15:14:55 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Usama Arif <usamaarif642@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@redhat.com,
- linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, corbet@lwn.net,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org,
- baohua@kernel.org, shakeel.butt@linux.dev, riel@surriel.com,
- laoar.shao@gmail.com, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
- npache@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- ryan.roberts@arm.com, vbabka@suse.cz, jannh@google.com,
- Arnd Bergmann <arnd@arndb.de>, sj@kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v4 3/7] mm/huge_memory: respect MADV_COLLAPSE with
- PR_THP_DISABLE_EXCEPT_ADVISED
-Date: Thu, 14 Aug 2025 11:14:51 -0400
-X-Mailer: MailMate (2.0r6272)
-Message-ID: <365027D2-9BB3-439A-9080-2684E1795B7F@nvidia.com>
-In-Reply-To: <20250813135642.1986480-4-usamaarif642@gmail.com>
-References: <20250813135642.1986480-1-usamaarif642@gmail.com>
- <20250813135642.1986480-4-usamaarif642@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BLAPR05CA0023.namprd05.prod.outlook.com
- (2603:10b6:208:36e::25) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=CNZq1Plf7qYhg3FaQgA7s7d5l7vZ/mBnFNpSg0zUHLI=;
+	b=zNBe92dLX0iEqfFQI7YzBX6Cj2Pnuq0fhIqztqQHtlx66Le5z16BtKbGvB/VjQmRrmTwOl
+	V4AXddUNxTfKiQFS03IFG2p2084Ko61UnTxR3WJlaO+7yRPE/PrQbb00sAOe+IqGVKcqeT
+	2UHVpv26Yx20NWJszxto1/eWyYgvZgE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755185307; a=rsa-sha256;
+	cv=none;
+	b=Prrp4ccVcQ4sMqpRFohfWuEJFAdKfneioYUCZfReW3nduDpohQiziaChH646UCKxbfCT/o
+	XHymN7BctjCAYAXcUiN7NmRqsuYgTCeVlC9uFxkjQkQBLXhN5q9Dj5FqpsDat7o7TzBs+H
+	O6r+L8gPKlS50VJae4sjN9qobsXL+t8=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=cloudflare.com header.s=google09082023 header.b=Vfzbxo4y;
+	spf=pass (imf26.hostedemail.com: domain of ignat@cloudflare.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=ignat@cloudflare.com;
+	dmarc=pass (policy=reject) header.from=cloudflare.com
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-55ce5277b8eso1105708e87.2
+        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 08:28:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1755185306; x=1755790106; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CNZq1Plf7qYhg3FaQgA7s7d5l7vZ/mBnFNpSg0zUHLI=;
+        b=Vfzbxo4yaX7ptoM1YdMLM5k1Jh18Im9iUzcHhskTd2eRtmI+Ui6djL/40dQTfl69/0
+         sEtqp6WUi67BmVL3sZiQ3+WpwwhnUreAlISGxvneIRUjirwxdw23OfFL2BNesLm0aRBl
+         J964Hu45n57cTIpUD7gJxfrH65wnA4u8+3NyDAHj7GarGcsoPg//zj33eqZdl0Gc/MFR
+         wdbkn48/2jUhfSliHFgjm2NuPLbKj0s1vs7JIbKz+TyiIJSU3MB5iWmzh45mgHRSuULf
+         5W7EQByLKb97LY8OE6/0v/zYcOw0ZD9zBOymJsZDtLZ41FjBnsSvsmdDK7s4/yjm0xbf
+         UsiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755185306; x=1755790106;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CNZq1Plf7qYhg3FaQgA7s7d5l7vZ/mBnFNpSg0zUHLI=;
+        b=p2vDIpXti9jpNWlQB1v0T6USNQea1mOfC0JtCOhqfFEWmZHfhw9dOwG2jggjGL0BAp
+         7oOVxcjLHXNyr9ThuVVxEOn9gN7kTZcKK9S6v7LU+hLpdfTqanoeHXQOUgbGDWeouGsv
+         cMurklIajUcCMWmmiE1u3OVqCidZzV+uYC32R95z8DzRGEPMvKWSudDKZFfCwzulyO7Y
+         rDXcuN0LQaP5HswuUhqHQLmSTpUmIK7y9qAAcVzs9TJWvj8ELjuCwjB6uh5tTFPRv1as
+         38JuVOctSpp3mftzC3qAhDGNXU5xp2lLY9st/aLfa2lNP4rjaxejjsoNV4vMV/kxfzyC
+         FLGA==
+X-Forwarded-Encrypted: i=1; AJvYcCXmUxJr+fpiyXBoNlfRFyTPc8McfC3ZJHPMoi5okYwJYpIQ6F3E4h49aLrJJCoMnnx4tbj6rEQ9SA==@kvack.org
+X-Gm-Message-State: AOJu0Yw0cdeyn1dgNbwxpQ6nek505mWbtnI/NUwTrJiaIMiFTCwN0gP7
+	rP+duqrHHLNLGpaXhf4/ZuyKIiiajC9q00RuzRWGFobSHRbe0p8WzGFFgqgD/2KH0H5izDSNJ+8
+	c952sQiqQagrXsu6NffmZjoF1fPyy5RLMYopBUewo5A==
+X-Gm-Gg: ASbGncuQveNiUvQgzKGnZcvCaHW13rXbg1hYRwMOSUhbmTfvAL8RZt4340mLo9l4Tne
+	tJd85VhCX+gwXxib+h6kXANBnougEpzXREIzfrfX5MwLpds7BhVQHfcuPRr0RAC4BcznRMPIRKX
+	BkmN6/aV8wfVl08YgXpQMYV2xa80xjgh27JpO7VY/SKdJyKGj4J7VerJTIuIGJA83rkgvrx5gE4
+	hfRrHga6oCBYgfnhZjexRqfkQ==
+X-Google-Smtp-Source: AGHT+IHQ8F3iADMu1+UWrg73CrYiGwX8UpQYUYOvtGC+LP7TmJAAopR8WHzWm3NU2ztOeAgz1cMRk77sbhDWFguLt2c=
+X-Received: by 2002:ac2:4e16:0:b0:55b:8540:da24 with SMTP id
+ 2adb3069b0e04-55ce50133c8mr1226637e87.20.1755185305657; Thu, 14 Aug 2025
+ 08:28:25 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|SJ0PR12MB6903:EE_
-X-MS-Office365-Filtering-Correlation-Id: f100202c-baa7-4fa2-07ec-08dddb45532e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?RllHcndMQmtnaU9FMGd0VC8vdUhWelFqaGRUQVBYdkkxTlpGWW5PcmRLQTYy?=
- =?utf-8?B?ak1weW11aldzQlFMQlo4c0lrWmV2THpUSUR2U243SEFyQ0tuVVl3VC9Mdkl4?=
- =?utf-8?B?NWhTQmJtTUNEa3RkdmxJZFZPMDQzb1pveVdsWXBRMTVHTEMyL045U1QrYXdq?=
- =?utf-8?B?RloxSnFLbjBwbEcyRW95NWJZeGRPUGhEdlBGSFIwcEgvSWwxbjA0Y0dzcGFM?=
- =?utf-8?B?UXlVaEtkbHhOQWltNktYaW9KKzlHMmRDSGpYMzNnS1UwUXdKMzhMaGs2Rlpw?=
- =?utf-8?B?Y2U3TmRYQVRCMGdLOTh2MXFyaFp6emRpOEhyUmFndm9wMFpFb2I1RmVlanZP?=
- =?utf-8?B?dVF4WEVIWlZVZXlJUERZa1I3NElXWXZLZ2xRNVQrUExqODhJYWVnNnpKTWRO?=
- =?utf-8?B?SUJKRisvSUNadURYcjZId0ZtK1QrM0ZhYi9wLzY1bGw5L0NRclRCaDhmNDVB?=
- =?utf-8?B?Y25vNUhFeW1hbTdmR3R0UDhnMjBDNm9JSUJUSFdLVHE0OVVSYTBkUElnY2ts?=
- =?utf-8?B?MHdUNVl5QkZVVGlWLytlQnA0d1F4VUdkb3kySHpCWGZxZHNROEdWWnBFYW9O?=
- =?utf-8?B?MmhicUxGUUxjYnB0ZEdDa0liWEdUSFlVdVE3KzNmT0ZkSENod1AyWW85dWY0?=
- =?utf-8?B?Vy9ETlJSN3hoSEpmeXMwZ0JIMy80MFFqTzhCd1h5djBIZExzcklJOEkrMUR6?=
- =?utf-8?B?V3lMSDFCN3VvVXZDbTlXUnFnNXpyYmpOd1BubE5QNkJmckxrTWZIbDFySGNp?=
- =?utf-8?B?K3grK1lPZWF1R2ppbnpINCs3cjNWYzErVjVRSDRkUHp5SFJmUE1qRlRjTzZr?=
- =?utf-8?B?ZGdnbmtUNUh1ZjBDQnVqMGpOZHNnZ1I0OWVKWVNrbGlsQ3VOWXFnTkxCbXdy?=
- =?utf-8?B?S2ZvMzUzemZPWXVLNkplTWJrNUloQkt4dkxVU0Q2NDdqb09aSEViOEtRUXI4?=
- =?utf-8?B?cXVGZE9MYW8xWmd4Vm9PMzA5VmkrcFpUcmlic3FNZHZPSGlNUHdmQ1pwaFhW?=
- =?utf-8?B?VTJYOEw4OXBqcC93dUVtZnB2RlhqcDBrY24yenAwYWQydFFvUlE1NXN0NnlE?=
- =?utf-8?B?MlRXWDJ5VDRTYUNVL2NzSUxiQUdOTlRZVHNSSkJua3NpUEhHeE5LMHphaW14?=
- =?utf-8?B?WTdoQzdtNXVmZjFTNlZiU3hxbFptaDNadGpKdTR4K1dQaEQzMXo0V0M5dVo2?=
- =?utf-8?B?THluSUJLUVNZemN0Y2IxZ1NxYkRHTXM3a3pzOWluVUNmbzZJbThMc3AzSmkv?=
- =?utf-8?B?RWg2UEw4dFduMVIybUtSOXlkS3E4V1FkTG04ZjJoOFUvWm9oKzZxYkFxZVU0?=
- =?utf-8?B?QnI0a3hxeDFLUHJCYTZURFY1SUx1L1B5N2t3dXBBb290Z0RSQkYxMytJdGFn?=
- =?utf-8?B?dms1M2VabU1XbDg5d2JtclhRSCttZUNxMUFWeWlnY2haODdqYTBZQiszZXh6?=
- =?utf-8?B?eU9MdlpWdVdjRFBkdi85UU1YMlBwNG1EbjNjVTVCaEFJMDA4UjFTczFCa1Zp?=
- =?utf-8?B?RTFtd3FmbXQydzNpeXBINmFwa1pJTUpwSFBhNkR5TTM2dU1Xb2tkQi9qWEFY?=
- =?utf-8?B?TWVYRk1ZSWlWNWVtT1VIUXFEL1dsQmhGZW04Nk5UcGIvL1FNbnJNODZXQ0NZ?=
- =?utf-8?B?Wlh2dGhFZ3hLNHZMVVVMdnFsaFF6bkQ5MkpQTGcraHR5dlZMWlVaaVoxRU1R?=
- =?utf-8?B?MjRIOWdEaEREMjFkcVZjODRFTXBlNmRHaXdFdEYwaDVMc280NldXT251R3Y1?=
- =?utf-8?B?ZmF0N2k0UXIvRENJMzAybGtUWVpvZXdiTGQ1bWI3ZFdMTnptY0NzUEtWMGV4?=
- =?utf-8?B?RXdkdm1YcFduaVNQcCt1eHE4Tmg1OUVaUXlxUzVOUlVSOExKdGtCVExrdVYv?=
- =?utf-8?B?Mk1TQjZ5dDJScmFKaG1NOHFCbURVQ0RaNlBvczBsMVVXYUJMQ2VtNlg4cE03?=
- =?utf-8?Q?RPBOrHjibMA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Kzc0RUJWczM4T0hKWWJIZzB5emM3bEFXZkZQSzQ0MllyMEZrRVkwQXZnZWpr?=
- =?utf-8?B?aHBWa1NGQlYxWGpwWFZrOGNsRzlNS3E1d3liWHpRVU81U1BURUdLQWtnYVBl?=
- =?utf-8?B?dHNKVjNSRkJiUWl5VFFXMnF4MGNIUE00aDdsK25VVGk1ZXNKWHdxTWhYMzBx?=
- =?utf-8?B?MGVPTVVzbTNvSExESnhWSFc1R01RdlYwRTVzNmIyUUtjUUc4aFcxZXRsYjJ1?=
- =?utf-8?B?RytNNFF0NnFGK2h6dlY0b0ZUM093N3NLQlFLbjdQUnRyMElRZU9iTTE2amw2?=
- =?utf-8?B?NGU0QWRSSmZ0S1pxQ0swblJ4ZnpvclZXVUFWbld5K0xrRUJCbmh4QVRyN1hB?=
- =?utf-8?B?Ukdhbk10aldZOXlqckh1dEoxb2NGalRCNW9wQWh2bGFueUUwaXlqQXF1M24w?=
- =?utf-8?B?ckxyK0VINUtEWWNaYzN2enZINEFrTzZUT1hWYjk1T0FVTy9pdmpKM3N2eHA3?=
- =?utf-8?B?S0ZMMzFvOHlEc1BGMGJsNGZXS3h1MjMzMFNYOHQycUp5RForNmhkUVBDUUFK?=
- =?utf-8?B?b05HR0FERy9ZWHdXU1l4TXpZZXZ6SStGRFVVMzRtakk2N1kxOU1Pb1VzcGlv?=
- =?utf-8?B?YXE1YlVGU3VaT3djbVdQNFZhckU4ZnZnOE12K1hxdjJwQlpoSkkvWldteVNs?=
- =?utf-8?B?Mld0dUlXUGZWUmpHWER1Qm5aRHBUUU93SFhMUnhzV3NxekgyNEJsSEYvT0d3?=
- =?utf-8?B?L3hyWnRNM3BVSVVodmxSSHZRTnZ0U1ZxWnhlbHk4Ny96OEZsODVUVkxPMjZ2?=
- =?utf-8?B?bG9lV0pTU1BEQlVRdURDNTlOSTNMTStrV2V3Rzh4elZ1VDlZdFJkd01CTFZi?=
- =?utf-8?B?UStlZjZiVTVPSC9iSi8vSENiYWd1TlRqWGZ3a3B3SGpjZTBSczg4aHYwZlhx?=
- =?utf-8?B?bEdCVTRtWUlJS1dveVY5M3l3QkhUbXgreU9wdHNSMVM4OU5LcUtlRWxOVzFR?=
- =?utf-8?B?K0pleGxDWEVlY0JBNUNxVHlnYzNTWk9BOFZ0eHFXZEJLWjVOU1V5RkVWbzI2?=
- =?utf-8?B?VmdXeWxxcWVld3NYaTVWTWllWkI1bk1Jb1pNV2F0a3c1TzZWZ2NaSXQrRjh1?=
- =?utf-8?B?NENwS0F3Z2VKTFlrcXJJQ2ZrL3EvaFJKaU1ld0dicE9YdmxGdzdqOVliak1i?=
- =?utf-8?B?UUVRcXlIdVl1cGRaV1hPaGpkRjFyd01JdXlaWHRHcXpQZ1J5Um5RZm9nU1NP?=
- =?utf-8?B?bUNrODFFc0xJL1J3WmpheTMwUGF6bnVHaGtWZG5laEZNZW5BbUhJeUp5cDJI?=
- =?utf-8?B?VkhZT3JIYWNmNVFmZG5FUURKcnhRMWtQUkM5UVowMUU2SHBSYlMyVmhjZFVs?=
- =?utf-8?B?TnJpcXNMdEhBT1pHRUs0dlpvV3lKQitKQ2xVNkNreFVsb0VBU1JqN2pZbWN1?=
- =?utf-8?B?TU03dE1EOGtuemtsemhOYXFldENybnZpOGZ5U3BjUThPNmRqRndMMFpSSjll?=
- =?utf-8?B?eW1QSDZIZ3JobHlrbWloSzZUUVhVRnFna0RYc0N0VlhCU2ZzT3E0RGFiazQ5?=
- =?utf-8?B?OVVVK25pZUV6bktkL1E5bVlmOWxIVmVVZElMV2t0TTY2MHhoKzhaQTlmVlFm?=
- =?utf-8?B?QnNVQU0vOGdpdHBra3lUT1hTN3lMTnZ6NXV5OGZ5TTJaNVlqMVhSdUl2Vmc3?=
- =?utf-8?B?Y3NmcXFmYmxSVGpmMDlpQ1IrK1UxdHFYUFZxeS90VzM4dEhCbmkyQmkwNHlx?=
- =?utf-8?B?NHhIbjBuTWgxU0J2Mmxzb1VwU1kyYzlvMWpXQ3F5UEFGamRlaWVETUVISW5s?=
- =?utf-8?B?SXBzb2orUDYyZzlyK04zSWJ3TmpudmNweDNtYVYzVWs3YkZOa3ZueWt1bmUz?=
- =?utf-8?B?RGs2S1ZFelA3Mzh1R1BGbW8xZ25YTmppTGVQNDlST3ZuSTZ6MFk5UHFSK0hC?=
- =?utf-8?B?SkFtNDFUQnpUTEpjc21iMndhd3lIcS96NmlHODlZaVhLSENHNDlSUlBQMjd0?=
- =?utf-8?B?REY2M1c1ZE9IRlEwMkNFbXJRblc4M0o0Y3FEeWdxRDVDMXRqaWJOV00wakxa?=
- =?utf-8?B?elU5UXlpclB6Rko0eEl0YnhRRFM4MEM4THdSWTlsd0VGaUxIRWFCMDZXNkhr?=
- =?utf-8?B?emtab3M2WW54bWllYmpER2FPeVQra0dCSnJOalN4TmR6SUhJcjBIWWJPbUJB?=
- =?utf-8?Q?TnmmR1BpX72spWjbu6aZdyemL?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f100202c-baa7-4fa2-07ec-08dddb45532e
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2025 15:14:55.2499
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: I3cLb+zaHJ0CDiYds/vtyhIQCP2iy0uOx08CTazAW12h1nTpanbv3NigUV9I3yr/
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6903
-X-Rspamd-Queue-Id: D2111100016
+References: <20250813133812.926145-1-ethan.w.s.graham@gmail.com>
+ <20250813133812.926145-7-ethan.w.s.graham@gmail.com> <CANpmjNMXnXf879XZc-skhbv17sjppwzr0VGYPrrWokCejfOT1A@mail.gmail.com>
+In-Reply-To: <CANpmjNMXnXf879XZc-skhbv17sjppwzr0VGYPrrWokCejfOT1A@mail.gmail.com>
+From: Ignat Korchagin <ignat@cloudflare.com>
+Date: Thu, 14 Aug 2025 16:28:13 +0100
+X-Gm-Features: Ac12FXx9I9MrbtuwHaesyssft3AApB1lCQVaDorKwBHz1btfjTXbPnGjfwlVOBI
+Message-ID: <CALrw=nFKv9ORN=w26UZB1qEi904DP1V5oqDsQv7mt8QGVhPW1A@mail.gmail.com>
+Subject: Re: [PATCH v1 RFC 6/6] crypto: implement KFuzzTest targets for PKCS7
+ and RSA parsing
+To: Marco Elver <elver@google.com>, Ethan Graham <ethan.w.s.graham@gmail.com>, ethangraham@google.com
+Cc: glider@google.com, andreyknvl@gmail.com, brendan.higgins@linux.dev, 
+	davidgow@google.com, dvyukov@google.com, jannh@google.com, rmoar@google.com, 
+	shuah@kernel.org, tarasmadan@google.com, kasan-dev@googlegroups.com, 
+	kunit-dev@googlegroups.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	David Howells <dhowells@redhat.com>, Lukas Wunner <lukas@wunner.de>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
+	"open list:HARDWARE RANDOM NUMBER GENERATOR CORE" <linux-crypto@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: BF6AC140014
+X-Stat-Signature: opcsbpxono45bew9oa53pdpa5wtuxu8b
 X-Rspam-User: 
-X-Stat-Signature: uxrzpbts1eidms6u9sec7p5czbw6h9dq
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1755184502-353045
-X-HE-Meta: U2FsdGVkX1+5AJPCrnUh4evrfaSjmKlO87P4qGlMTwQKeG64BvawVFK3vXsVZjyzLicwLVqAAK+Flb4nU1gjwaSRyqYCCE2Ooc+Xv4Zew1e1y/C7KOXQDgWDjL/6Mkozn2YODJIqxGhJrSb6l6nsN0IpeUh/xMAFbK3ZbSGa1VHE7IXqZvEZkT51jCq5qLrgvkCLytjoJAj7/jnLZaPNazmjr0StGwkQ/7VSUsD7oh/vNQxwG2yBWIlLDffb9i5RBRxAt49+o4lt+i8qjoezmDCaq2Yfym4+Wc3IWqm9odbFcQRyFV/M08ku7vdM86XfMuME5ABQvk56W8fZ3ywuZqe+DgpgOg6hiUUgywIyVwmR5PPUoRnEBY8VswVvRcBgOl7uTSWq86MVD9wCH6bu1mTVL+3+vyq2sshAG775xatc7ggNd6+7Igvik7RxC4d4XLKqnB6ClMtqbEprKwkDCx/EJpY7gU8LqqHVzokBHEFwrpyvhgFOBv0TnQI6WBjQWtygwWKtoOx2zFUtbi8Z1vW39vaajrDsk+pBvOiFczeopewsgsGqpowyMuRPGZ9c5zMqFOb/NzXWGwdnyaXXL0G/ZYpX91fQc+wwh0SM4UHvCzH9/aP0/d/eLqa5cMIjuGkJ7TJFM0vW92M5Px3zGvNGJh16z9iNJ20WTUN600SP14mS29YeKMZ1UWBRbDmPSvKNeD1W13LTbzjJAsLQCB0N76HeIz0QaMIDdis8KNDBuZi9CGkXwc3JECQa1JdcCHh6qW3IH7CwhwAR3OvXMH6jywWrID4RsMmH+OWqxA5RElJ596NMnFRYpsol4rQy51uJCkN8HU+Vw3ba9JLn66tbYe123MhZnS4+/u1B9uNJTG8o4TSNvohSClmI4NCffuwN/Ps58UCIu1lecB3e4EiHsnawC12MIf51PE5au9Z5QD3yqj5r11mg57LtpKvOOvIQqH7CADFKjscUe4m
- ejJpB6GS
- smIY2Vz/bEJ2PhPdnQVxaDxxo+lMZJ6rLsAPBm6Vlcqy0sPKDeNKttfIuYbaImrXLalMGVO92xfrrHuaooUReVgEgOse0MqyoMZkIeUVkCEge4/29VzvhGATMmoZoU40Go/HYkBJcT4TVv3M3C9dGVSYRD22rI4QtoprnGeeJiJOcfhmsVUHtPIsCOpGI4sNEUVEP2pTZcTLD/TMEGUP8yLQK+ntDjKFBweJ4yI931AqO8fWNHIgF3TkiuLr6aqxbtVhoF1lVVJGKUpTDckQ+PTQcYpq1rY3xTBzRRQTt+yPh+xCGjhIuTiVQvwj0Et3DZtRahqlabi/S7ThW1zfSSm2H/0q66H+ruReCX18hcpj9Iw4i+sGgCZQg1D9r9VXnXKIkwcDaEkPs5wb/3+dSuFbdW7/j0wJp7dE3bxJvub4o5WN2osegn5RxVgjwC3qTXwUEIFRrUPmHWkCmzS2cPKZNuAYBkKFYOo4gm3nKk755rfMj9GJ0rthkof18aaaJBXChEmupz8MF0tcKLMS0rZz+iIs4VyDTSpLjtYdBbFTvqWxWBH56zB4mJuJv8PFAXFyO42DBIUoFk7JD0Yxi4uw5pFCGxl0SOhvcxD0Bec7jiJXlDal7yaW4Y/rZfP0VQsE7XXxehTDizxwj9YQEII5sih05IIJPXrxuN31n9AIOVAo02KvOChcwD7P7AtdLOefLnUnS7l8iQA+nAObwUZ3PZ+7mJXB4xcJd0hi0DLK7cSM=
+X-HE-Tag: 1755185307-591947
+X-HE-Meta: U2FsdGVkX1/TUFfvYMMVMKz8ANy0B87eLgC7ADD6bs/Iw9c8zm1n9pQmOvsy56k//fKvJ/L/BwySKE9DZeFBZ86nPXBQw2n8y4wq2vU5vUdzLmMXNjbWRYUO1kSt/RhWok7MBqfvd79xPIMETY/w95+nRVUHQvZWllDQzF/nCuNVjsRRc7p3sODdLfy+z+ESva0iUFfvuaEmeDY3QQ7CmixewNou8BQohiBsqN5sJOfx7hjlfG3mUKWrvoCIxnhzlDAJZ5bL1aFLFOaNsQQ1T6ShqBS9nmpkstZTO5fynqQv21LqWiyU0hZcaz+Vh6vcCh1EO7j62D9usuBKqw7kBgL+7mrJ4C5v9uxgOx86GWr1sPMtISy3CeSLTd0drIdcHfh2RCzcsyDfav3qpyaRdHaVVgSIWqpl7MrY/YWhBGuOcHPrR0Iu/qb3JZESCNvJRE7hzEjl2EGFxpliJpqTUv+zlLCekjK/nFmeTfhlAYvek1OfiOCVeHBjQrzSlSUlX8OUTcXF7xxcL5345qwbGtxCertWVcYBs2QeaMpCnu/5gKfMySvhq8N+GDpvhn6DBl2drkZ2Pflnj+5uQBNgtPmn/SvrjGAdQaZBppQrX1jEEugZ/DIaLQoqsjfJ6G3tCDowpY/YqTdxRyCtfj8ru70nxjUd4LxJqfRIIJ/K/LosjOBh3dp4qgIVkgH85yNdZPEbPJvUkKbyQKcsphJurBAnyyAcyKGX5UGadlBZf8OCayLDA3OJP/yftFJs9MSB9NHTLDRXFrbzjU+Wd9Hlw2RQ9itZM8YtgEo5qbmOUnjQjMGKgXlILtDqhxwngnER17VCizHsKRXvt9MPvpqNkxxXIkwecZqhlPOShAXXeGttHoO+Y8+rVrqDeTl5tITshoQcWKPTSrN489ywpjv6ID5Rlu/Kq9y0bpDKnVjPvnL17LG1Pe/WT1daUfhMSsf0Jpy8NHt7z4Zq+oX2M/Z
+ lg7JU1U/
+ vr5+sD7WdSro9OsETp7FgyuRzE3xGCyM4Lw9ruf9to5+T2nW/iN2HbPjuNplfeKMzcy4YTGbiOEubRpTzFHBsTR9Y3o+wUSycHs9vxZwdQShxAQTUjY0/XAc6z7KXBVeB+Ohbr6UHqXHY2ziSayhHjNda9XdyeYXiYQF3TT5wqmMxYM5OQiaQdPZR0yVxqBw05MNKErI++p2enVkUtZjkBDvCFnObwPe+eHoxYYD7OOsKn/DP7K93YoGjuIcs/IzWgldLFrdl7pwoY8kkxdd5SjhyDjNthuy/JZLceBRNZu3HJeTQTP08Nitx3vQdzo+wetZzs277A5a6j6esvfEHhIdFB/rCMZG0zfDJcBVFUSJc/PxnU19LkuwS7DnDlrXQG9WzoGj9Y+2fef9P5xqPOLJu3bHBp0nuAIEd
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -205,149 +121,164 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 13 Aug 2025, at 9:55, Usama Arif wrote:
+On Wed, Aug 13, 2025 at 7:14=E2=80=AFPM Marco Elver <elver@google.com> wrot=
+e:
+>
+> [+Cc crypto maintainers]
+>
+> On Wed, 13 Aug 2025 at 15:38, Ethan Graham <ethan.w.s.graham@gmail.com> w=
+rote:
+> >
+> > From: Ethan Graham <ethangraham@google.com>
+>
+> Should also Cc crypto maintainers, as they'll be the ones giving
 
-> From: David Hildenbrand <david@redhat.com>
->
-> Let's allow for making MADV_COLLAPSE succeed on areas that neither have
-> VM_HUGEPAGE nor VM_NOHUGEPAGE when we have THP disabled
-> unless explicitly advised (PR_THP_DISABLE_EXCEPT_ADVISED).
->
-> MADV_COLLAPSE is a clear advice that we want to collapse.
->
-> Note that we still respect the VM_NOHUGEPAGE flag, just like
-> MADV_COLLAPSE always does. So consequently, MADV_COLLAPSE is now only
-> refused on VM_NOHUGEPAGE with PR_THP_DISABLE_EXCEPT_ADVISED,
-> including for shmem.
->
-> Co-developed-by: Usama Arif <usamaarif642@gmail.com>
-> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> ---
->  include/linux/huge_mm.h    | 8 +++++++-
->  include/uapi/linux/prctl.h | 2 +-
->  mm/huge_memory.c           | 5 +++--
->  mm/memory.c                | 6 ++++--
->  mm/shmem.c                 | 2 +-
->  5 files changed, 16 insertions(+), 7 deletions(-)
->
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index 92ea0b9771fae..1ac0d06fb3c1d 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -329,7 +329,7 @@ struct thpsize {
->   * through madvise or prctl.
->   */
->  static inline bool vma_thp_disabled(struct vm_area_struct *vma,
-> -		vm_flags_t vm_flags)
-> +		vm_flags_t vm_flags, bool forced_collapse)
->  {
->  	/* Are THPs disabled for this VMA? */
->  	if (vm_flags & VM_NOHUGEPAGE)
-> @@ -343,6 +343,12 @@ static inline bool vma_thp_disabled(struct vm_area_s=
-truct *vma,
->  	 */
->  	if (vm_flags & VM_HUGEPAGE)
->  		return false;
-> +	/*
-> +	 * Forcing a collapse (e.g., madv_collapse), is a clear advice to
-> +	 * use THPs.
-> +	 */
-> +	if (forced_collapse)
-> +		return false;
->  	return mm_flags_test(MMF_DISABLE_THP_EXCEPT_ADVISED, vma->vm_mm);
->  }
->
-> diff --git a/include/uapi/linux/prctl.h b/include/uapi/linux/prctl.h
-> index 150b6deebfb1e..51c4e8c82b1e9 100644
-> --- a/include/uapi/linux/prctl.h
-> +++ b/include/uapi/linux/prctl.h
-> @@ -185,7 +185,7 @@ struct prctl_mm_map {
->  #define PR_SET_THP_DISABLE	41
->  /*
->   * Don't disable THPs when explicitly advised (e.g., MADV_HUGEPAGE /
-> - * VM_HUGEPAGE).
-> + * VM_HUGEPAGE, MADV_COLLAPSE).
->   */
->  # define PR_THP_DISABLE_EXCEPT_ADVISED	(1 << 1)
->  #define PR_GET_THP_DISABLE	42
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 9c716be949cbf..1eca2d543449c 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -104,7 +104,8 @@ unsigned long __thp_vma_allowable_orders(struct vm_ar=
-ea_struct *vma,
->  {
->  	const bool smaps =3D type =3D=3D TVA_SMAPS;
->  	const bool in_pf =3D type =3D=3D TVA_PAGEFAULT;
-> -	const bool enforce_sysfs =3D type !=3D TVA_FORCED_COLLAPSE;
-> +	const bool forced_collapse =3D type =3D=3D TVA_FORCED_COLLAPSE;
-> +	const bool enforce_sysfs =3D !forced_collapse;
->  	unsigned long supported_orders;
->
->  	/* Check the intersection of requested and supported orders. */
-> @@ -122,7 +123,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_ar=
-ea_struct *vma,
->  	if (!vma->vm_mm)		/* vdso */
->  		return 0;
->
-> -	if (thp_disabled_by_hw() || vma_thp_disabled(vma, vm_flags))
-> +	if (thp_disabled_by_hw() || vma_thp_disabled(vma, vm_flags, forced_coll=
-apse))
->  		return 0;
->
->  	/* khugepaged doesn't collapse DAX vma, but page fault is fine. */
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 7b1e8f137fa3f..e4f533655305a 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -5332,9 +5332,11 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct=
- folio *folio, struct page *pa
->  	 * It is too late to allocate a small folio, we already have a large
->  	 * folio in the pagecache: especially s390 KVM cannot tolerate any
->  	 * PMD mappings, but PTE-mapped THP are fine. So let's simply refuse an=
-y
-> -	 * PMD mappings if THPs are disabled.
-> +	 * PMD mappings if THPs are disabled. As we already have a THP ...
-> +	 * behave as if we are forcing a collapse.
+Thanks Marco!
 
-What does the =E2=80=9C...=E2=80=9D mean here?
-
-Shouldn=E2=80=99t it be:
-
-As we already have a THP,
-behave as if we are forcing a collapse.
-
->  	 */
-> -	if (thp_disabled_by_hw() || vma_thp_disabled(vma, vma->vm_flags))
-> +	if (thp_disabled_by_hw() || vma_thp_disabled(vma, vma->vm_flags,
-> +						     /* forced_collapse=3D*/ true))
->  		return ret;
+> feedback on how interesting this is to them. Use
+> ./scripts/get_maintainer.pl for that in the next round, and either add
+> the Cc list below your Signed-off-by so that git send-email picks it
+> up only for this patch, or just for the whole series (normally
+> preferred, so maintainers get context of the full series).
 >
->  	if (!thp_vma_suitable_order(vma, haddr, PMD_ORDER))
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index e2c76a30802b6..d945de3a7f0e7 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -1817,7 +1817,7 @@ unsigned long shmem_allowable_huge_orders(struct in=
-ode *inode,
->  	vm_flags_t vm_flags =3D vma ? vma->vm_flags : 0;
->  	unsigned int global_orders;
->
-> -	if (thp_disabled_by_hw() || (vma && vma_thp_disabled(vma, vm_flags)))
-> +	if (thp_disabled_by_hw() || (vma && vma_thp_disabled(vma, vm_flags, shm=
-em_huge_force)))
->  		return 0;
->
->  	global_orders =3D shmem_huge_global_enabled(inode, index, write_end,
-> --=20
-> 2.47.3
+> > Add KFuzzTest targets for pkcs7_parse_message, rsa_parse_pub_key, and
+> > rsa_parse_priv_key to serve as real-world examples of how the framework=
+ is used.
+> >
+> > These functions are ideal candidates for KFuzzTest as they perform comp=
+lex
+> > parsing of user-controlled data but are not directly exposed at the sys=
+call
+> > boundary. This makes them difficult to exercise with traditional fuzzin=
+g tools
+> > and showcases the primary strength of the KFuzzTest framework: providin=
+g an
+> > interface to fuzz internal, non-exported kernel functions.
+> >
+> > The targets are defined directly within the source files of the functio=
+ns they
+> > test, demonstrating how to colocate fuzz tests with the code under test=
+.
+> >
+> > Signed-off-by: Ethan Graham <ethangraham@google.com>
+> > ---
+> >  crypto/asymmetric_keys/pkcs7_parser.c | 15 ++++++++++++++
+> >  crypto/rsa_helper.c                   | 29 +++++++++++++++++++++++++++
+> >  2 files changed, 44 insertions(+)
+> >
+> > diff --git a/crypto/asymmetric_keys/pkcs7_parser.c b/crypto/asymmetric_=
+keys/pkcs7_parser.c
+> > index 423d13c47545..e8477f8b0eaf 100644
+> > --- a/crypto/asymmetric_keys/pkcs7_parser.c
+> > +++ b/crypto/asymmetric_keys/pkcs7_parser.c
+> > @@ -13,6 +13,7 @@
+> >  #include <linux/err.h>
+> >  #include <linux/oid_registry.h>
+> >  #include <crypto/public_key.h>
+> > +#include <linux/kfuzztest.h>
+> >  #include "pkcs7_parser.h"
+> >  #include "pkcs7.asn1.h"
+> >
+> > @@ -169,6 +170,20 @@ struct pkcs7_message *pkcs7_parse_message(const vo=
+id *data, size_t datalen)
+> >  }
+> >  EXPORT_SYMBOL_GPL(pkcs7_parse_message);
+> >
+> > +struct pkcs7_parse_message_arg {
+> > +       const void *data;
+> > +       size_t datalen;
+> > +};
+> > +
+> > +FUZZ_TEST(test_pkcs7_parse_message, struct pkcs7_parse_message_arg)
 
-Otherwise, LGTM. Reviewed-by: Zi Yan <ziy@nvidia.com>
+Not sure if it has been mentioned elsewhere, but one thing I already
+don't like about it is that these definitions "pollute" the actual
+source files. Might not be such a big deal here, but kernel source
+files for core subsystems tend to become quite large and complex
+already, so not a great idea to make them even larger and harder to
+follow with fuzz definitions.
 
+As far as I'm aware, for the same reason KUnit [1] is not that popular
+(or at least less popular than other approaches, like selftests [2]).
+Is it possible to make it that these definitions live in separate
+files or even closer to selftests?
 
-Best Regards,
-Yan, Zi
+Ignat
+
+> > +{
+> > +       KFUZZTEST_EXPECT_NOT_NULL(pkcs7_parse_message_arg, data);
+> > +       KFUZZTEST_ANNOTATE_LEN(pkcs7_parse_message_arg, datalen, data);
+> > +       KFUZZTEST_EXPECT_LE(pkcs7_parse_message_arg, datalen, 16 * PAGE=
+_SIZE);
+> > +
+> > +       pkcs7_parse_message(arg->data, arg->datalen);
+> > +}
+> > +
+> >  /**
+> >   * pkcs7_get_content_data - Get access to the PKCS#7 content
+> >   * @pkcs7: The preparsed PKCS#7 message to access
+> > diff --git a/crypto/rsa_helper.c b/crypto/rsa_helper.c
+> > index 94266f29049c..79b7ddc7c48d 100644
+> > --- a/crypto/rsa_helper.c
+> > +++ b/crypto/rsa_helper.c
+> > @@ -9,6 +9,7 @@
+> >  #include <linux/export.h>
+> >  #include <linux/err.h>
+> >  #include <linux/fips.h>
+> > +#include <linux/kfuzztest.h>
+> >  #include <crypto/internal/rsa.h>
+> >  #include "rsapubkey.asn1.h"
+> >  #include "rsaprivkey.asn1.h"
+> > @@ -166,6 +167,20 @@ int rsa_parse_pub_key(struct rsa_key *rsa_key, con=
+st void *key,
+> >  }
+> >  EXPORT_SYMBOL_GPL(rsa_parse_pub_key);
+> >
+> > +struct rsa_parse_pub_key_arg {
+> > +       const void *key;
+> > +       size_t key_len;
+> > +};
+> > +
+> > +FUZZ_TEST(test_rsa_parse_pub_key, struct rsa_parse_pub_key_arg)
+> > +{
+> > +       KFUZZTEST_EXPECT_NOT_NULL(rsa_parse_pub_key_arg, key);
+> > +       KFUZZTEST_EXPECT_LE(rsa_parse_pub_key_arg, key_len, 16 * PAGE_S=
+IZE);
+> > +
+> > +       struct rsa_key out;
+> > +       rsa_parse_pub_key(&out, arg->key, arg->key_len);
+> > +}
+> > +
+> >  /**
+> >   * rsa_parse_priv_key() - decodes the BER encoded buffer and stores in=
+ the
+> >   *                        provided struct rsa_key, pointers to the raw=
+ key
+> > @@ -184,3 +199,17 @@ int rsa_parse_priv_key(struct rsa_key *rsa_key, co=
+nst void *key,
+> >         return asn1_ber_decoder(&rsaprivkey_decoder, rsa_key, key, key_=
+len);
+> >  }
+> >  EXPORT_SYMBOL_GPL(rsa_parse_priv_key);
+> > +
+> > +struct rsa_parse_priv_key_arg {
+> > +       const void *key;
+> > +       size_t key_len;
+> > +};
+> > +
+> > +FUZZ_TEST(test_rsa_parse_priv_key, struct rsa_parse_priv_key_arg)
+> > +{
+> > +       KFUZZTEST_EXPECT_NOT_NULL(rsa_parse_priv_key_arg, key);
+> > +       KFUZZTEST_EXPECT_LE(rsa_parse_priv_key_arg, key_len, 16 * PAGE_=
+SIZE);
+> > +
+> > +       struct rsa_key out;
+> > +       rsa_parse_priv_key(&out, arg->key, arg->key_len);
+> > +}
+> > --
+> > 2.51.0.rc0.205.g4a044479a3-goog
+> >
+
+[1]: https://docs.kernel.org/dev-tools/kunit/index.html
+[2]: https://docs.kernel.org/dev-tools/kselftest.html
 
