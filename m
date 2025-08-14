@@ -2,106 +2,86 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6EB37CA0EDC
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 12:09:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4934BCA0EE6
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 12:11:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F8F690014F; Thu, 14 Aug 2025 08:09:38 -0400 (EDT)
+	id C2835900150; Thu, 14 Aug 2025 08:11:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0AA73900023; Thu, 14 Aug 2025 08:09:38 -0400 (EDT)
+	id BD295900023; Thu, 14 Aug 2025 08:11:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F292790014F; Thu, 14 Aug 2025 08:09:37 -0400 (EDT)
+	id B0FCF900150; Thu, 14 Aug 2025 08:11:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DF64E900023
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 08:09:37 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A01AB1605DF
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 12:09:37 +0000 (UTC)
-X-FDA: 83775243594.30.3BFEDD8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 089DE40010
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 12:09:35 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=peuKMqOU;
-	spf=pass (imf01.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E7E6900023
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 08:11:52 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1CA30140633
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 12:11:52 +0000 (UTC)
+X-FDA: 83775249264.09.8DBB0EC
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+	by imf23.hostedemail.com (Postfix) with ESMTP id EE570140005
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 12:11:49 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	spf=pass (imf23.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.195 as permitted sender) smtp.mailfrom=alex@ghiti.fr
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755173376;
+	s=arc-20220608; t=1755173510;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xI3tuETXrdzqL2LBVjFzxf+uycnTvDjpHkxWgbpphj4=;
-	b=M6pTlt9ZO7BanvMRI+hGbse5R+N9vnsh+8Pc+iYhs4VxV88siJ5cIKQauhhXn/izRufqFe
-	Eo/qXhsvwAuMnB5EQSD3fM28Jrz0yJnUMmOVYh1wK+XboNpPmkre01TgMhCpGRwei2Ezon
-	nN/ZdG1ArU37bKBPE2dhgdD6hJ+6RG8=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=j7HALERGN5G1JxCktbFRVEITsXgQmzqpouuUe3GDuCw=;
+	b=tJNRrfhOBAnkRag+KCiPEJG1UnMJCT3wtNhlW33/F66/ERpTRCY3CTgt6B8gqUulrhapFp
+	K2l4jJS2jaOxb7lMbs7vrycQIupp01a9Kjuf7+WOQ9H5azgv8wBWZ1yTiiAbFrNc46NvoF
+	8ZmorwUT7grDuPjUjEjFiRX+WAs7t4s=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=peuKMqOU;
-	spf=pass (imf01.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755173376; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=none;
+	spf=pass (imf23.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.195 as permitted sender) smtp.mailfrom=alex@ghiti.fr;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755173510; a=rsa-sha256;
 	cv=none;
-	b=C87dphLtaBlq7yO0KwDe+4oq+TRMRHx2lHRUxFJakL0h7GqB5PSrlF8nASP3Yt9Bqz7drQ
-	IHoO+p0d43KGPC/0qIUQSqmbnVXBv1WFCqgCXJqZ13Fo+3XawjD3n34NGInEMXN2UhTYou
-	9M+49gWha6t+MF6G0dSoM0TrAfv/7Tg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 58CBB601DF;
-	Thu, 14 Aug 2025 12:09:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1021BC4CEED;
-	Thu, 14 Aug 2025 12:09:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755173375;
-	bh=gpnex3Vd8qVIbIJY0F+J1N3ucXel3F/WTFMjzzOmJyg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=peuKMqOUACl5UuhoepTx5K9KNtA4V6LwnSzzEQyrFwwHzANVvJ3u3yXnOxbjqblcm
-	 ufMGKIIlHSTgJQcdEJ30saGaXUb0vs6aXwA4cOjFAmxwPfRO7Dc87JwZdW8VPUwFFg
-	 7LQtN2U8wXq/UYg3jJ5yGK34gZDADjUo2aL5g2NmWqysZeqB420yvaiD5TWZ/YoSjy
-	 EgdZnSjMQeAhXebV/ayiBuKBfNsDaNltMwkuU5v4NCWdl/B+D/6NStPhH9PnWLJc9C
-	 hBrGbGkv4R/eGxHxVsjMMCzFGME24nsaPUBiHDEN+Ryp0Y/jDnUZC85s4PUXnKYRr2
-	 cJx/nlSF3Vxzg==
-Date: Thu, 14 Aug 2025 13:09:26 +0100
-From: Mark Brown <broonie@kernel.org>
-To: David Hildenbrand <david@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Usama Arif <usamaarif642@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org, corbet@lwn.net, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org,
-	baohua@kernel.org, shakeel.butt@linux.dev, riel@surriel.com,
-	ziy@nvidia.com, laoar.shao@gmail.com, dev.jain@arm.com,
-	baolin.wang@linux.alibaba.com, npache@redhat.com,
-	Liam.Howlett@oracle.com, ryan.roberts@arm.com, vbabka@suse.cz,
-	jannh@google.com, Arnd Bergmann <arnd@arndb.de>, sj@kernel.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v4 7/7] selftests: prctl: introduce tests for disabling
- THPs except for madvise
-Message-ID: <47e98636-aace-4a42-b6a4-3c63880f394b@sirena.org.uk>
-References: <20250813135642.1986480-1-usamaarif642@gmail.com>
- <20250813135642.1986480-8-usamaarif642@gmail.com>
- <13220ee2-d767-4133-9ef8-780fa165bbeb@lucifer.local>
- <bac33bcc-8a01-445d-bc42-29dabbdd1d3f@redhat.com>
- <5b341172-5082-4df4-8264-e38a01f7c7d7@lucifer.local>
- <0b7543dd-4621-432c-9185-874963e8a6af@redhat.com>
- <5dce29cc-3fad-416f-844d-d40c9a089a5f@lucifer.local>
- <b433c998-0f7b-4ca4-a867-5d1235149843@sirena.org.uk>
- <eb90eff6-ded8-40a3-818f-fce3331df464@redhat.com>
+	b=5F/cTS/IZh0hTlCpCOean3lalFkAB1m7Rn6Jo5XvCR1zc2F30ZzHQBPnIoY17LZAr/8TlH
+	lN2r224x0teyjqGP5rTN6AXpzNux+gCF6X7nc8KEuxzEFoUJfRnSJ07cNnI0IVPa1y+L+n
+	TaAbsHci3y5pRbnYQjiO9wy7RFXdXWI=
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 0E68F2059F;
+	Thu, 14 Aug 2025 12:11:45 +0000 (UTC)
+Message-ID: <5aa057d0-dc76-4723-80d1-82065320a428@ghiti.fr>
+Date: Thu, 14 Aug 2025 14:11:45 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="GHi46nNQCVWNJMJH"
-Content-Disposition: inline
-In-Reply-To: <eb90eff6-ded8-40a3-818f-fce3331df464@redhat.com>
-X-Cookie: This sentence no verb.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 06/13] mm/page_table_check: Reinstate address
+ parameter in [__]page_table_check_pud_clear()
+To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-mm@kvack.org
+Cc: akpm@linux-foundation.org, x86@kernel.org,
+ linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, pasha.tatashin@soleen.com,
+ sweettea-kernel@dorminy.me, nicholas@linux.ibm.com,
+ christophe.leroy@csgroup.eu, Rohan McLure <rmclure@linux.ibm.com>,
+ Ingo Molnar <mingo@kernel.org>
+References: <20250813062614.51759-1-ajd@linux.ibm.com>
+ <20250813062614.51759-7-ajd@linux.ibm.com>
+Content-Language: en-US
+From: Alexandre Ghiti <alex@ghiti.fr>
+In-Reply-To: <20250813062614.51759-7-ajd@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddugedutdehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomheptehlvgigrghnughrvgcuifhhihhtihcuoegrlhgvgiesghhhihhtihdrfhhrqeenucggtffrrghtthgvrhhnpefhhfdutdevgeelgeegfeeltdduhfduledvteduhfegffffiefggfektefhjedujeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppeduleefrdeffedrheejrdduleelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelfedrfeefrdehjedrudelledphhgvlhhopegludelvddrudeikedrvddvrddutddungdpmhgrihhlfhhrohhmpegrlhgvgiesghhhihhtihdrfhhrpdhnsggprhgtphhtthhopedugedprhgtphhtthhopegrjhgusehlihhnuhigrdhisghmrdgtohhmpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepgiekieeskhgvrhhnvghlrdhor
+ hhgpdhrt
+ ghpthhtoheplhhinhhugidqrhhishgtvheslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehlihhnuhigqdgrrhhmqdhkvghrnhgvlheslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-GND-Sasl: alex@ghiti.fr
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 089DE40010
-X-Stat-Signature: 4obqfex748dg68focuaptriocxyri7qq
+X-Rspamd-Queue-Id: EE570140005
+X-Stat-Signature: 8uqjwpuhmyyn7z99ypaf6o99okbqp7zr
 X-Rspam-User: 
-X-HE-Tag: 1755173375-450050
-X-HE-Meta: U2FsdGVkX19x3DC+Xkj4ggu2cnm+RxNTnLY8gQfdfex+1nnUKfzZXcP62NINEL02S8DSI8Hd1ehjBo5JZAEasdiKbrnJ5ISwwZWyiFemhjsJaXz83B41ZNq40vUzYMXDhWMNrrb3Mx7qBIUXhqA8aKhs9MAJUN1OwVqf7rhPF761grR+PlIyyAoNOFOuJcmN5jQUvkEtaYUgmUIA0kD0ATeeev4ibLIAsFjVoCUO2yjIaYp8SgroaDhm2lmKIuU1cXe671kHqCUooZ27uX//53HnpR4qBEmRUWxNHVhXI0WOnEXp7sUsLh21PebMEQbNxopGpGMJuSZuZ0FLf4eqVSo9H0WD5Lcy+m99O/6m4KcCl4tktN/YO782zGdTeDgP6H5k51n/xVWNK+I/A5uKG6ztBwc0WhLCisGvIC+Xhs9YZkkVrIwcK9z+nLxRbAizk0XMKyzVj/zJG4/+Npwh61RpIxEYLS1WvmtsRT7tan9bMIhwDI1g2LGJ3t9cpPc8ZaToEjYUgHVtMNuj6f0tVkwGj7oU08FZ3yamOEsg7cIJnmtDLC94t2ap8rQY4y0oFnw7nFhH3v6pPvg4hdhEnDGa34d495RTG0H/iUH0Ge+xAMry3YZkgcn5BjsK4g/V5IATJi381P8DNxw9WWfteQaX9Yib3CVKwNbzE19zYNRTmsCVBCqScdK3JF03ohZa+QJ17w1OPtreXbkDz6Q2vGsjHg7NdpavfD9My7EjL/CduONSK4XAzEb0LD5TPMaDXC/azwHfNZKNu9kH56SyASt+0swTMALrthUTUmKHbm1SeIIe2V+GT4K/WNLDvS5PT+FrIiQWbE1TA5uexvfCejF+HY7hiJc2PyGx/4kZVe7mfDhCwccwqLa3bDF9ekJMaczxDyKtXoC7tiOT9ynsghvJdM8KjtBulsYitRDhCEgiYFn/40jjpWov9welHFd3TJ+OnRPyGfHNH+IIbnS
- poCMbJeO
- 4hItz36bpCo6iZ1BvMpFk+fVWPSaaTwX9+pQSoVtPtKNUVr2A+UOIct/miYFPZFjMRRb2FEZqj/KmtFeamYsUrKBsbTqw8V8ZzG1FhtGmzMyKy0unWWvTU4Y1313jjypcvHTy7ERsKVwu7wxTT/XqSOyzT4eNhZADulQ5k1DZ5j+MlNHqcrDZ/aFX19De94wTj0lc50pR+hRAZl80AwC/RfGyBHihrX1wPwt8j5FiA3+THQ02mY3zswgz+8mv8mcI8BIfag1Bn115uV13VSarkt0I3weD84wq2QR17vKUY60QxHBUbcEbt71qehZIIm1Z1dpZWwL7Za/Uz+WXj/U+WLIfwG51H9nFZsEXuZ6hp/OrcSCQG+sN0/WZC1qmXLtRsZNQ
+X-HE-Tag: 1755173509-314490
+X-HE-Meta: U2FsdGVkX18r9YGto480qp556S2bavNyWtIzmX531WLRfAaOUIx5fjDY3jkbUD5t3PaAGD4bLXij02/75Xg/R+3k2uWJF+HgkLdOJqSZwXDHntx+ITfKnyfIkVCcXjS6w3sA6ETRtOaCAPChQpcXA2zd+eg80B0bKdF/tzuWBi/wj4sWXPadan+IWvM6nmcTw/yO762IrYarpKruTpEK0ZU+IsgK+tP6v6CyHENZw86k4kRjarKzLHNe2TALvmaF2Mmf5A3dZnRIJxrOs6Bt4YsEXur9btrWMMtqk1eFano5tEOplC74txZ2lqPXsxqwjNuEeUyd/rUPOCfs8YCC7y1v0/WbJYWjEbZkOLQ0Os5y9zNgAyd3QfqAkNAr3Zfv4vAiwnuKKmZigIrs9EAIz3nceRnrq3QxZWNpRKxfMKpNgLlnJ7AAQW84msl9pzER28514rUO/8/xcpXn2GzaHZC3yGNcTP1MQrk/iwaSIi2zc+6XtBvqhLD1el9LPMilwNwfJoJYK2g5wmWCAGzes1XUJkxs1YwouD7DLMKb6IulOZiL/JQ/RCh/dqgL7mPEuar1oRUbE35ueJNZBeV0dqLulwG47TGtnYrXBPP+blGMloeZWFGi34E4qD2ovli+bgBDfXXwi1Vn48K9JJsUcTTCQJgJEWowaTEXN+SXlxV4GNx/KqZjcEh9aT3R7W78edIWD4AQH3u3MFG3am83OQR9Iv+IhJsnNwgD8wI6Qj1POsHkkI24nuILWnnVGbYCDsNdiCmzVs6emXr4WZ1opfEpztsETJZIDyL0HpFbzs2OnzBxOqsTaYS9wY3Sf55BRSt4+km1J+KSwKOxEDZyqCshiv8S3Vq/rtHxSQqzjDhahxJzRHfj2fXswoNc8Dy3CJfpgWngfIKh2tWKIrx3wYO3aVb2ykl628FjOkrmvkwGtB46+hhJiavvqb4udpi3ddLxIBetNFPh0fyDPz0
+ mfiyoNAR
+ QKa3Muv2LP2qggQI3f1szkuoiMU+Osi8qPvcINRUC/kD2xRR9clf9b+8wCx6ZZsdOg+XmbDotrCpNfCREU8Xd58Z6yjjWwE6Tl7SJcCxM3G4NmmXMCWtYvAZyLlogR9+9R3zPdu+fpivLlkx6FTsonOkGZR0wZ5yzo3l71vl0ZZ1iRmg2nO9358iU6nZmOocfljGofnCyZgdU0ZZ9pTialNZ7TzX1nVd4jOy2pbN9Cs++fWZpApBI5o4Ck0BlzTGZVpiAYMzH1/rsyOyDw59yAKQuWMxQdCyfw0VRgQs435huguEatH1BeiIeBA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,40 +90,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 8/13/25 08:26, Andrew Donnellan wrote:
+> From: Rohan McLure <rmclure@linux.ibm.com>
+>
+> This reverts commit 931c38e16499 ("mm/page_table_check: remove unused
+> parameter in [__]page_table_check_pud_clear").
+>
+> Reinstate previously unused parameters for the purpose of supporting
+> powerpc platforms, as many do not encode user/kernel ownership of the
+> page in the pte, but instead in the address of the access.
+>
+> [ajd@linux.ibm.com: rebase on arm64 changes]
+> Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
+> Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Acked-by: Ingo Molnar <mingo@kernel.org>  # x86
+> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+> ---
+> v15: rebase
+> ---
+>   arch/arm64/include/asm/pgtable.h |  2 +-
+>   arch/x86/include/asm/pgtable.h   |  2 +-
+>   include/linux/page_table_check.h | 11 +++++++----
+>   include/linux/pgtable.h          |  2 +-
+>   mm/page_table_check.c            |  5 +++--
+>   5 files changed, 13 insertions(+), 9 deletions(-)
+>
+> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> index 06ea6a4f300b..81f06e5e32b2 100644
+> --- a/arch/arm64/include/asm/pgtable.h
+> +++ b/arch/arm64/include/asm/pgtable.h
+> @@ -1374,7 +1374,7 @@ static inline pte_t __ptep_get_and_clear_anysz(struct mm_struct *mm,
+>   		break;
+>   #ifndef __PAGETABLE_PMD_FOLDED
+>   	case PUD_SIZE:
+> -		page_table_check_pud_clear(mm, pte_pud(pte));
+> +		page_table_check_pud_clear(mm, address, pte_pud(pte));
+>   		break;
+>   #endif
+>   	default:
+> diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
+> index 8ee301b16b50..8b45e0c41923 100644
+> --- a/arch/x86/include/asm/pgtable.h
+> +++ b/arch/x86/include/asm/pgtable.h
+> @@ -1329,7 +1329,7 @@ static inline pud_t pudp_huge_get_and_clear(struct mm_struct *mm,
+>   {
+>   	pud_t pud = native_pudp_get_and_clear(pudp);
+>   
+> -	page_table_check_pud_clear(mm, pud);
+> +	page_table_check_pud_clear(mm, addr, pud);
+>   
+>   	return pud;
+>   }
+> diff --git a/include/linux/page_table_check.h b/include/linux/page_table_check.h
+> index 66e109238416..808cc3a48c28 100644
+> --- a/include/linux/page_table_check.h
+> +++ b/include/linux/page_table_check.h
+> @@ -16,7 +16,8 @@ extern struct page_ext_operations page_table_check_ops;
+>   void __page_table_check_zero(struct page *page, unsigned int order);
+>   void __page_table_check_pte_clear(struct mm_struct *mm, pte_t pte);
+>   void __page_table_check_pmd_clear(struct mm_struct *mm, pmd_t pmd);
+> -void __page_table_check_pud_clear(struct mm_struct *mm, pud_t pud);
+> +void __page_table_check_pud_clear(struct mm_struct *mm, unsigned long addr,
+> +				  pud_t pud);
+>   void __page_table_check_ptes_set(struct mm_struct *mm, unsigned long addr,
+>   		pte_t *ptep, pte_t pte, unsigned int nr);
+>   void __page_table_check_pmds_set(struct mm_struct *mm, unsigned long addr,
+> @@ -59,12 +60,13 @@ static inline void page_table_check_pmd_clear(struct mm_struct *mm, pmd_t pmd)
+>   	__page_table_check_pmd_clear(mm, pmd);
+>   }
+>   
+> -static inline void page_table_check_pud_clear(struct mm_struct *mm, pud_t pud)
+> +static inline void page_table_check_pud_clear(struct mm_struct *mm,
+> +					      unsigned long addr, pud_t pud)
+>   {
+>   	if (static_branch_likely(&page_table_check_disabled))
+>   		return;
+>   
+> -	__page_table_check_pud_clear(mm, pud);
+> +	__page_table_check_pud_clear(mm, addr, pud);
+>   }
+>   
+>   static inline void page_table_check_ptes_set(struct mm_struct *mm,
+> @@ -123,7 +125,8 @@ static inline void page_table_check_pmd_clear(struct mm_struct *mm, pmd_t pmd)
+>   {
+>   }
+>   
+> -static inline void page_table_check_pud_clear(struct mm_struct *mm, pud_t pud)
+> +static inline void page_table_check_pud_clear(struct mm_struct *mm,
+> +					      unsigned long addr, pud_t pud)
+>   {
+>   }
+>   
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index 8aab3fa19c85..28fcff844b63 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -661,7 +661,7 @@ static inline pud_t pudp_huge_get_and_clear(struct mm_struct *mm,
+>   	pud_t pud = *pudp;
+>   
+>   	pud_clear(pudp);
+> -	page_table_check_pud_clear(mm, pud);
+> +	page_table_check_pud_clear(mm, address, pud);
+>   
+>   	return pud;
+>   }
+> diff --git a/mm/page_table_check.c b/mm/page_table_check.c
+> index 0957767a2940..bd1242087a35 100644
+> --- a/mm/page_table_check.c
+> +++ b/mm/page_table_check.c
+> @@ -167,7 +167,8 @@ void __page_table_check_pmd_clear(struct mm_struct *mm, pmd_t pmd)
+>   }
+>   EXPORT_SYMBOL(__page_table_check_pmd_clear);
+>   
+> -void __page_table_check_pud_clear(struct mm_struct *mm, pud_t pud)
+> +void __page_table_check_pud_clear(struct mm_struct *mm, unsigned long addr,
+> +				  pud_t pud)
+>   {
+>   	if (&init_mm == mm)
+>   		return;
+> @@ -246,7 +247,7 @@ void __page_table_check_puds_set(struct mm_struct *mm, unsigned long addr,
+>   		return;
+>   
+>   	for (i = 0; i < nr; i++)
+> -		__page_table_check_pud_clear(mm, *(pudp + i));
+> +		__page_table_check_pud_clear(mm, addr + PUD_SIZE * i, *(pudp + i));
+>   	if (pud_user_accessible_page(pud))
+>   		page_table_check_set(pud_pfn(pud), stride * nr, pud_write(pud));
+>   }
 
---GHi46nNQCVWNJMJH
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Thu, Aug 14, 2025 at 02:00:27PM +0200, David Hildenbrand wrote:
+So this made me realize we (riscv) did not implement 
+pudp_huge_get_and_clear(), which was a mistake since we support THP PUD. 
+I have implemented this function in this patch 
+https://lore.kernel.org/all/20250814-dev-alex-thp_pud_xchg-v1-1-b4704dfae206@rivosinc.com/T/#u
 
-> Some people (hello :) ) run tests against distro kernels ... shame that
-> prctl just knows one sort of "EINVAL" so we cannot distinguish :(
+That's a fix so I'll merge it in 6.17 (at least I'll try) so your 
+patchset will break the build on riscv, I'll keep you posted when it 
+gets merged!
 
-> But yeah, maybe one has to be more careful of filtering these failures out
-> then.
+Thanks,
 
-Perhaps this is something that needs considering in the ABI, so
-userspace can reasonably figure out if it failed to configure whatever
-is being configured due to a missing feature (in which case it should
-fall back to not using that feature somehow) or due to it messing
-something else up?  We might be happy with the tests being version
-specific but general userspace should be able to be a bit more robust.
+Alex
 
---GHi46nNQCVWNJMJH
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmid0fYACgkQJNaLcl1U
-h9C9EAf/aEPUAni8qteBGzYVxbP+2fWh24gpZRUzIwMgipxQm2thCmcg68/+dFq4
-dstImKXyE21x8t30rJinOCW+RpwSzA1V3b9ZHm6cjQPe2ZDB16BP01neXpXNU4um
-v9RalcxQY8+Pfdy++yS1rfUKx6/D9Shag9pDvu4iOyrOv4xeH/MkKD/23OvyB7fE
-Ukwx3wKDnx7NAHX/kfqg3P+OQwn7AWGZRhL1hQt2rZqDok7vUEN2lyQQnMsV8L1u
-lB4FldRiC0ODiUV+A+BZ4qc/QYvHGz3Lys1VcRcQEVCzODOYyCxsfvQRXdopcULf
-wxyiXZpWXsqfM//MSw9F0h7ihG9rnQ==
-=O/vD
------END PGP SIGNATURE-----
-
---GHi46nNQCVWNJMJH--
 
