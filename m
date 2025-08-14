@@ -2,230 +2,137 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 50CFCCA0EDC
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 07:59:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F28BCA0EDC
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 08:27:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBCAB90010B; Thu, 14 Aug 2025 03:59:04 -0400 (EDT)
+	id C528C90010C; Thu, 14 Aug 2025 04:27:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6D4A900088; Thu, 14 Aug 2025 03:59:04 -0400 (EDT)
+	id BFC69900088; Thu, 14 Aug 2025 04:27:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE70890010B; Thu, 14 Aug 2025 03:59:04 -0400 (EDT)
+	id AC49990010C; Thu, 14 Aug 2025 04:27:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A86FC900088
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 03:59:04 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 742BE1DD802
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 07:59:04 +0000 (UTC)
-X-FDA: 83774612208.05.23516FE
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0065E40004
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 07:59:00 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=QeM5uQTh;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=VJILg1yQ;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf27.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755158341;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 91DC4900088
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 04:27:42 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 286331A05D6
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 08:27:42 +0000 (UTC)
+X-FDA: 83774684364.02.31C99F9
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 68CC510000D
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 08:27:40 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cSWJOQUE;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755160060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zUqqipyVbXIwfu5AkaFzSJoUb080FHOmRCc47JvPFQg=;
-	b=AxWmJp2LBYwEbSbmHmL12SrbtEwZiLM3T5/4xzPHT+5+/8jY+CkK6h6+T1nxSaK/fFXOpy
-	cIoXiiHi9vOdQY9S9gFVSa5PZL5nRYZ21GUAFbD9PRC4zDsF5kD4czL5kFJlnPMEsd3qTc
-	DrwA+WxZyU2RUW6t6mOsIbu6EVsmVUg=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=QeM5uQTh;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=VJILg1yQ;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf27.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755158341; a=rsa-sha256;
-	cv=pass;
-	b=DqCcYcGSL5S9bPfmN8wT+kpkiXoazbND43AqBTuvwAdkCSlw0Jb8O7iNlpBohodkusefQ/
-	Y4JcWDG1fyNI/mW8oAZ4OS3FHvs35QfmLQ3h6J2JxJH8iLykf2oCK9cHASi2SOZqN/s3rf
-	0KuHb0SUP1VfV4vgR2NMdzqP//t1AiA=
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57E7u9rp031520;
-	Thu, 14 Aug 2025 07:58:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=zUqqipyVbXIwfu5Aka
-	FzSJoUb080FHOmRCc47JvPFQg=; b=QeM5uQThf8KyOSlQQLKmAqwGtTnkbkep9e
-	csNwAabTkYepv8QAval3qeWjA5T4XYEKWKuJfQbbXQqB9MZi6dMNAWJitJ8NOqO5
-	byuC+RuuCPjk9N19V4D+C8cIdrfTPRvIcu10o1tzecP1FnygyoGrBEsUBTXSRdj9
-	txqNQI4LYGvg4tKY4Bi+a1I6d+NpmDKPhXgs3VP8SmgXR9JFqLn7cMFBGC0hq4r5
-	+FQDruFOjI8ELf5QUkpuMHA3bUR5twEmnijuEGv4zXor1dBW0aiOSORWazSJxflP
-	tvdInlZtbXOGVTjSvjfI9HZSc9v4iFDDbI04ZAMCwc2JevTqRaaw==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48dvx4hb8p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 14 Aug 2025 07:58:54 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57E71PnH029998;
-	Thu, 14 Aug 2025 07:58:54 GMT
-Received: from nam02-dm3-obe.outbound.protection.outlook.com (mail-dm3nam02on2084.outbound.protection.outlook.com [40.107.95.84])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48dvsce48t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 14 Aug 2025 07:58:54 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rD1yFRVQ2YilPcKb9i8wo/nh9rXFEMN6t81D1LGKT8x8/ScJ0OrRcUDBCzgQpoiUnR9wB3i+T3eyL/JZv0ZofH+tKJahIdq43THovIwawxVCT3HYY8WGrTKZ3h/yZ42S4woHiLDnwajQKeptOre+z+Ya8eBQ5fuMj4c6dpr+5V9ktdwrL36DSRN5FYlCbf8j7Ljubkoaw4mHwvBXSd0eU6KXlB9Miwv6Wsp1XpsRUUozT+QQMrMFzORb1+W0T7Sg746U7S4qLUcZuWwn3ib7h0im3d1RQBBAkXr/KEcuXufOw+JLt6xjjMbKRlT0uk/XZ30CdKnVP3RxvupqT1Cdmg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zUqqipyVbXIwfu5AkaFzSJoUb080FHOmRCc47JvPFQg=;
- b=SYBAWcEP8eymjqzwiM3To8pGWW/YTMkuRodPHdVSXy8+ZIim/dEWWT4kHuu48jS9vJGCrbde/mDatf81/kNjNgCOlEG7x4KmsgO8zi5vtpph53AEK0Loood7ot3v5CzRpN9WVZTMbmaEhtDcbpxa13COktWwdLHwVBeHqcukEWl46ojuKOjur/CbVZnW2sipjC8OeZWrEr9PE5JeVUhZ5q5GmQKTkLR0ehpbrmhEkRDiZGESGUEp+RSFa1+Ucj5STv4yig+xceXrvTaxNdNRUFFb5ciFAhBRLbZ/Q3yeRFgfrNmTGrIV+NmrE2ON/2n2CUM38SofPa3yHsCPtHM41g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zUqqipyVbXIwfu5AkaFzSJoUb080FHOmRCc47JvPFQg=;
- b=VJILg1yQ4SqHZgjAehkyS6Iq70wVXKpOZ/E9OusAilqLVjIic/11yoPHxy5AORW3Roq+S2z4M8U2+5+D95P+Tr5698nNGSeGVwKGntYurQIE4gdLnaOLVEEhNdOyNqOpPcBF4PqODRUn9CIx7Fb3RLfpmQz54nhjEucyjBfrip0=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by CH0PR10MB5098.namprd10.prod.outlook.com (2603:10b6:610:da::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.17; Thu, 14 Aug
- 2025 07:58:51 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9031.014; Thu, 14 Aug 2025
- 07:58:51 +0000
-Date: Thu, 14 Aug 2025 08:58:48 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Alice Ryhl <aliceryhl@google.com>
+	bh=PueiqpaBfajs2fwiV/gMXWKvigpl0XXK0MHS05H1kJw=;
+	b=x0jFp25213eojzfT97Vrzt6kW/msJXjdiWRiKefNKaHejSlVZ3rVXkAiq4tQK/nWwbtasZ
+	ugk8ppVPVVFSYVk3HRUbIjM9Bz017H4Evh0tp9/UytgAPsDvUV6JBWUF2sBkSq0dKuRE28
+	R9OjLUHaZ9Na/4Ck+mXaDfWG1cNu3Jw=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cSWJOQUE;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755160060; a=rsa-sha256;
+	cv=none;
+	b=x8vgBq1UM4uQdjLS3aRvy2f1UAcYHa9re/vfipokZEbDA9vm1NSXUoh1edwDuHo5AHKcCg
+	pMLjqE25+gTKPjMGrLH1kJZcl9353UXuFiouJ2z6VTWeykmkHEsObUHBHe+mcloLBifn4y
+	nAuN4aP4Ul1YuNXAHl4gPoIE4/obTb0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 264965C68A8;
+	Thu, 14 Aug 2025 08:27:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F5DEC4CEF4;
+	Thu, 14 Aug 2025 08:27:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755160058;
+	bh=+g86Qmw3P3PJ1AG+gPw3MtOk3EbK2uZf8gwDidq2cAI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cSWJOQUEjXVFkQuLaLSb2GZTQV42DBKhjom9hLlp6cgwyLHr/55l7aXyPclUXWGis
+	 o8pDfmcFi1wf8KgwgDlQVITxnSQDDZYfEMdMbxusrQFYy8hc0s6uiy7Fj3svNy2Y82
+	 f+zPAUPB8R6fGV79yj7qVMB97Ros2mn4exQsTKBlmnIMWT4BdsjGeHaxSZyGCpOqPw
+	 kaOtS8C9RyUhdhyYQS26T9XV6N0FXAjwfM0FEOQhrX/otTrMCAv0lGe8/4LW+1C3IN
+	 gCfrjjyrRvJsH0MycZRtHf9bqqdwMEDKvgmlMyR1URpxz6ISltaIXA0bnklNrJR7Dc
+	 SuK6AFs6EBSow==
+Date: Thu, 14 Aug 2025 11:27:15 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
-        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        Danilo Krummrich <dakr@kernel.org>,
-        Uladzislau Rezki <urezki@gmail.com>, Vlastimil Babka <vbabka@suse.cz>,
-        rust-for-linux@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: rust: add page.rs to MEMORY MANAGEMENT - RUST
-Message-ID: <b42620fb-42a9-48ed-b816-21c08e401aff@lucifer.local>
-References: <20250814075454.1596482-1-aliceryhl@google.com>
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Kees Cook <kees@kernel.org>, David Hildenbrand <david@redhat.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	David Rientjes <rientjes@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Matthew Wilcox <willy@infradead.org>,
+	Mateusz Guzik <mjguzik@gmail.com>, linux-s390@vger.kernel.org,
+	linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org
+Subject: Re: [PATCH 02/10] mm: convert core mm to mm_flags_*() accessors
+Message-ID: <aJ2d41cF5dFhZ3qs@kernel.org>
+References: <cover.1755012943.git.lorenzo.stoakes@oracle.com>
+ <1eb2266f4408798a55bda00cb04545a3203aa572.1755012943.git.lorenzo.stoakes@oracle.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250814075454.1596482-1-aliceryhl@google.com>
-X-ClientProxiedBy: GV3P280CA0005.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:150:b::19) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CH0PR10MB5098:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2a132419-32a2-4e54-7751-08dddb08689a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?EeUjYCEc/k4vysFn8wz4Dfv4ysqk+EldlaqWDDO3KnCPMYuMOU4uj2C8Ttuo?=
- =?us-ascii?Q?o3l6fWROHaa/bndYL3xxp0rLaeZWs8pEo2OANkL5O+4/6HRfdi+tXLyCD8dx?=
- =?us-ascii?Q?dKkj3TDHp237yzl69Luq7GdwnmFKfQAXarYtv5e5S8QuM7GO+MO4Vr1FXmtA?=
- =?us-ascii?Q?R3SyAe20EV15Mh5zwPB0lvJx/cviLbjJSYq8KJf1nBYNX5ZGmyOMAQ25Rdwy?=
- =?us-ascii?Q?X/o+czspUQfK+7EozYLLon4K65OawfYvOwz9/BYGiEm/Z5sGvxGzyzeVYi5R?=
- =?us-ascii?Q?2o7rnPeJ5ocyE3KTwB3qQ0PXOjx99YsSBEt625gbqlWXeSDX7a1pobP0n/q3?=
- =?us-ascii?Q?WVDH9wbXncCX/+q7I0mhxGi0/cNwVgD0Kuz2dvNTKVNRfbLmqp6tXIH/Zdvp?=
- =?us-ascii?Q?rOU0jkHi1bBXK86YkdQQrJjR67VXCRZ05B36bxTF4GQWGfPtLSmkLfpFWjV2?=
- =?us-ascii?Q?99FwHTuDu8oUuHf3+V0kJ+kublGauSn+gKttZENQzR79n660SXPv7t/P6Vy4?=
- =?us-ascii?Q?bWJo6sIO0qCYPeb06fRQKeeBcROO2XPKaGW32jWntsJnhW8E7Zvzb1XppGGJ?=
- =?us-ascii?Q?HDUhOjVEl/ltxWi87gA5hRMFtsO1VDOz61HoZCxWzZDLyJkTBzWU2YL2Q8MU?=
- =?us-ascii?Q?vUGy55SisNTEU3Ank6Mwd+G9+1kj4Vo2iX3C7qxKvNpESwCyrrTZpXS6exye?=
- =?us-ascii?Q?BptRNStCNwALszES7uDROjKwdaCf7xxHCsP9o9o7MXHkt0o7kT+LcZmr1Y/8?=
- =?us-ascii?Q?MF9f4R0MRSv1vqnp96dr8KwXkxaiSrm9FkuO8mCpOemn7E0HKUHvewoqHkt/?=
- =?us-ascii?Q?ghriYHzOPvlCg9akEtMoMZIXbWKLMFVwV+xQuVOizu3z9zBCplOoK4JeuHLW?=
- =?us-ascii?Q?fJHhOslzVIhiRZ24PaItk5WnX1kgDolT6+WDLEVftWuGergzH4nTX+FaTh9i?=
- =?us-ascii?Q?zaVC1tCpkkvFuDvzlE4KUPyLDKJwUjbG7WcVg6ue476YaGLlNUDZv1vFATxu?=
- =?us-ascii?Q?pmPlIzn2xbtNa+2N0yV64n2ysx/uFZ/GF4nVOvwbR0B6DRucEZFHjNrFnG25?=
- =?us-ascii?Q?BJ7Tx9SVuXImDHyE0pzYEei1QenwUyW0ZcAzCjsofkI+YTX8ivtpqRKJcJCQ?=
- =?us-ascii?Q?4tVVd35xoyLZ6iNc74hhhlqgbocfpUVTtZEqgmr6di29B+C1VV6VnSA8Iq5S?=
- =?us-ascii?Q?7BBdjr+fq/T8rGABV9ZkivAoATYsn9tnEM3XTYuAwgy8s8vHDlXcpw3OI6XB?=
- =?us-ascii?Q?fz2RzaDg1iE5PJ+zEC5fv68SRR9wJs399cszjzWdiJJDaUWswO1uk1Ivgmmj?=
- =?us-ascii?Q?xxQP0I3p/I1YGAjBalKElGtVgxrvbjpGhH53UHwVbU5cleLR4Mcsp0pZuMGC?=
- =?us-ascii?Q?Thid9IQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?nznuNNgyntHXmkXgR7rmD2/85eKzWMxpoDsb6JhNXr4/hRxUjQP+MYx8HBI4?=
- =?us-ascii?Q?rdinbVY5sUFegVaoIvmx3jY1m34zxcwoS7dKueI+dvJEiIyL61i+OINqG2M3?=
- =?us-ascii?Q?S8AcHkk6hE1NtU24ivwVCdURbPA8srj3n54+YslBtBRInM6iLRvU6XBb+wqc?=
- =?us-ascii?Q?OCCqDTJrJudxRlhyzqXkKoe1mRWmRlHB66fFvKfwvzgRvfI0qNqSQqOU4WpO?=
- =?us-ascii?Q?MSr/fqCzogmhpyQLKSywheuPbug84/YwdqB0AYO+GQWd6SiEvtYRSm+pzJ0x?=
- =?us-ascii?Q?F3A/KvBy4XKzjKh+LbVwLEKCTmCJrrvujXSNEvyrQ5sKDXBNjhiDKB1WI7TZ?=
- =?us-ascii?Q?sohpAgNlH0Kg9KXLwUqIbRJKzxaNJwAt00rDLl505xl0pgFUEOJnm0l2zwxT?=
- =?us-ascii?Q?FlY5daegttG4Er2EpBli/9IB5KISNOgcWoz8TFZ3hoso+ecRVrMxUv0sK6QT?=
- =?us-ascii?Q?tBTpQ99GnKi/CXT8P9ufGFGngSRJldRX8aT1GLld+34lG5OIRWC5yGV9RLLI?=
- =?us-ascii?Q?PqdGThM5ZTL1TvANTZ5FfWFH2l6AWCIjv9NeWMa4S+O6OGg7egR6pM905n3J?=
- =?us-ascii?Q?4o3CrjgzURp+5uEXFfwqjOZjZjsAeFnHCYDxpJNSOdhrx6DzSELAirGM0RVg?=
- =?us-ascii?Q?gCJwU8Dw90fjKYH1yKUs88iwIlFza7n5/lB2khm75KTtZPFUQ9pEzs49FdCn?=
- =?us-ascii?Q?uP1YxG6xN+ZZv58ZFH0tlhgRrwIMogtWz0BgHS7ci4ISj0cw0jOaBfAouSLd?=
- =?us-ascii?Q?vqKOZAVf1f//TzEzNfPyRbWu0MehewZ4+Dq381PHrLbvbsup0SPESgWqYs5U?=
- =?us-ascii?Q?IBt0LdUhYIlBDE4LEle6QR5SyRZVqAYETlFFwXpkwQLiMcitHkZlz1nyIDeh?=
- =?us-ascii?Q?mb6kLNXtPQp4EOkXojrK6OGmgLeg9D5j4HxGWZLP34uMVgutn6Ejnr+dndsu?=
- =?us-ascii?Q?7xliFBc0lgSld7D8zq9Zobhcj83FB1sovyzLMK3aG7P7DrCysDZbkjNKXIzB?=
- =?us-ascii?Q?jg0KGk2iUcWsLOXgzO4oBe/3JkEjzdBGRkgagOfxt9hy1LaZkM7xkRc9L2Ve?=
- =?us-ascii?Q?IE+33MwDjQtyQ0rlS3sAsc3OQAJFi90OFk/9tyDDlLwKCc6lJYNQ28YP0Yc3?=
- =?us-ascii?Q?jN4IwyQ+an1M8XxmZahVEfIb0yPpaQYOF4a1wMF8zqG6txC6RR4S52Pmn7Fu?=
- =?us-ascii?Q?q1ajN6DqOObGLOXCezXh3vhes+T1BDegcuEhLYOmxBEkgD0CRvgFnjlIccuN?=
- =?us-ascii?Q?iiw3TSOjy2H5igJbrh1xakCUH/WNGQjgpPtvrtuU1kCiXk8+MV3f1FlqdpUU?=
- =?us-ascii?Q?3kSvNfI4cBTwq/SAWGGo37PtNnwAnGepF1tWiszYdfoRbh4obILwFFpUiCPn?=
- =?us-ascii?Q?K0CnJ2N9TCZdOsK5eDV9HbHvIW09CGYByuWjqQnLe8KSDgd4oL9ChWy1JWB+?=
- =?us-ascii?Q?JHEhocM/016w7aS9uyhVwxZGr3utLuqUiwQpVZNIpfFlthVHc/gTHLxeBva3?=
- =?us-ascii?Q?I8YBC7fA5XZzACOOUOUUXcG2PS4CQRo9GdUTJaj7fjMCj1jWw3iJGbhpUemx?=
- =?us-ascii?Q?F5Ny426wgZYLCXK5M/5prQ2Ifk9zPinXn/s1R9MHZX1cmuEIhyn+sE/8jVAB?=
- =?us-ascii?Q?gw=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	kF3OR2eiel7EjiVaYGSSUUKtmsRCAIf8g9DAYY6aqB8pGLFJBsmCatHY1KKMfWDK7938UyBMg2RgrbPdLLoOEZEc+cq5sgXkwz4wbSoE1UJ12Uin/fHJ91yedXbuFkP3I0bipjHKxoZApUM992V9OiMIk/Q77ozIkPTav/qHtTd6tx+VnAwDQ0xpolI6D4THE+nfFUJ86NPngNcCJbEeNFqcSs2LxQpE6cdge6sKB+DIFznyUW/TYcEG/oJbFqt8Xpl1H17ltvatirrWRbG9MhPJo1OS4X96qpu4P3kIrIn7H7JyePfedvek1ZKy+a/OyfDqymwxeZwS/4EydLiXHM+bslBq7PS9AyJUN/D+4gHkBHAEgrLS/TgC7cwqVLGxLl9P0G9kZwjNjME6fbfsiiuo9lmb4a8FcCnNCBWrFCjUqLfERQQPui7qMtMitnNwUpKX/IBkI5G/aNqkjhwI0NKEi2LdJOVrXTEpGyKpM20Lk75Mhx2e785KiUkA/QMqR+5hPvZldJPC0lSb8XXU2rgCly89p2Iy/IGFscy79lkRoNED3/6ptRppaO3qnVEDI7+mhGtu7SLV3hLz6nqet0nwO958LomKb7gZZ/B9kmU=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2a132419-32a2-4e54-7751-08dddb08689a
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2025 07:58:51.8278
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2CTp6mzQDrLJb8qV6MvlUul8jCq6gKSK/NXSwRx5evnLM6DkySScqkty4Y8Q+b1Crx9u8PJvK/P5IvQmoaHCoiGxmSaVYD9ljW5aqVHbnpQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB5098
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-13_02,2025-08-11_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0
- malwarescore=0 spamscore=0 bulkscore=0 mlxlogscore=999 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2507300000 definitions=main-2508140064
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE0MDA2NCBTYWx0ZWRfXyWZXt87fNdYd
- yevxoqQjqPJkRwWCKx8M5Y6FwZA5oBFseftrNggygI2iql9uJ+yMDLiJMygpo7R6mb+vI5I6TIq
- hcHbwFeQaj84jAGOOfHVAI8FI1lJTFGpkKz26FeRc3Pcqcj6e9xvK7pY1URD6rDS+pvExg0Zhc5
- GTDB0u23ETkC1iFkWXtW3dtpVGFuG35F+y5CSzVm5LP1KGSy+OvbSc2cAVAMkoDY3c2hPU/6rXn
- 6zptopFaDYvRpqojbbpH67Lx+MGQN7s8+whlawbvl6QLl0XK/yJNp0gsY+mB4SckYJ2f9/qROg5
- w7YjA6aBU4ZKy0Nxqzglk3P1zq8qVBgh5/wu8OqgonuvYWUIrjBt2t6ntpqTL/3icFU8sbr6/Rt
- aAZeBYGVMf2mozHYSBcyzzWdhD539rRnD+Yb6+uRdTWic/kmknjlENuCvtjvHqbt+682g0Sl
-X-Authority-Analysis: v=2.4 cv=eIsTjGp1 c=1 sm=1 tr=0 ts=689d973e cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=1-S1nHsFAAAA:8 a=1XWaLZrsAAAA:8
- a=yPCof4ZbAAAA:8 a=37rDS-QxAAAA:8 a=VwQbUJbxAAAA:8 a=Z4Rwk6OoAAAA:8
- a=WaG9-Ayan1ZUo_Gh08MA:9 a=CjuIK1q_8ugA:10 a=gK44uIRsrOYWoX5St5dO:22
- a=k1Nq6YrhK2t884LQW06G:22 a=HkZW87K1Qel5hWWM3VKY:22
-X-Proofpoint-GUID: FCQnPqnjv-PNo4AE0w-UMiSmNf7OH-v_
-X-Proofpoint-ORIG-GUID: FCQnPqnjv-PNo4AE0w-UMiSmNf7OH-v_
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0065E40004
-X-Stat-Signature: u5qc8sfubu5tai8n6kh3db5ot79t6bmg
+In-Reply-To: <1eb2266f4408798a55bda00cb04545a3203aa572.1755012943.git.lorenzo.stoakes@oracle.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 68CC510000D
+X-Stat-Signature: 4mp3wjotbup4cs713fbee5h15635tp8b
 X-Rspam-User: 
-X-HE-Tag: 1755158340-514329
-X-HE-Meta: U2FsdGVkX1+F4GfqTe6FJhMAMyscUE8gisZReutwap78njvT41S4Vu0bw82MzWGQXHNdnYe+EEunUUY4FovRX4qSeu+GqbNk365lDkvD5EbdJ5OWjv4h8RHatyfli9lBsszE9P+UcgvNyVuqbJSZuHSX7ETIDI89hfd20eNWrg6lx6zG6lmCcwuwbbn0yRV5oqhCyLt1dQhVPNdNThzI5DS8fDz8ey+UFKEFkr7kJHULpIJnBif7w+KmBdkWBlfWviUnePYENDohnT3CmMGiakAT9AncdWpTKTRgMyPyXQm+hsxsX3r9TI1K6/iyqyoIFFpj3PRglbUNW5PJKnHCITUS1TtAVg1vBLC+35L1bbyyFNKrDpf8h+gTN8SJ7efxI2/SEfihJPVj8PA4I8mp460E8twCWW2o1DcG176XDqJgT26IB3P1FEmZej1CNFPkSZZQU7k0aZrRvZr3Shfrkvi3Orxn2h2mnDORx4EkaHDX8eMWixCTj3PpoBQAm7/GH8Vh20t613VyVpt0NTeMfjQampsdNPmWDD5yKaclpyRyH3xIFBvqflzduv8crdhLLircvZl0s498uh61scFAKIMekZWFYaXZGSOFpQ/KM+D3DkAuW2f9SBUsxwNQ2QzdqVEUPr0NLxbiAU1wo/3ScczN7m0Cikn0jw91X/jOC4DyNtGu7pLWt3HmCWMbVep241V62nBZViBJRTzjH9H2RHehOl319FL6oTI/ftVJZac/YFvgS9xhtNjcgZJBiOarIsdYwZrmPh1uAngeTs4yU3YYlp8XKfd0xzD9kLZXtnXkxMBisaavlMEbuzpuJE8MHMsQ26RXt9l8LNcdHaklnWBai08Q75jhJQQQ7kqwazrtMjkIiaRSnOTx0KARD0AqoW2Q8jjQBD+mIwXNXCK+qaS0eYQg1oq2yZ4lks1uZhFTlRwNl52qvaL3nuMmnLze3p2A9BoU3rs6BjwI/AX
- cnb6lVed
- /rTm5RbTWtc7UjNULcSgWHdSTc3XO/FCKaPl5vn4y2+EG243pLAFQH4hDSNQ8bksx+CPJed8I6v4ELuKCaBSQqQp0rWguMWuzLg4hHq96Y7+Dldtb06+11SPFuJE9rg4kvvPJzzbocpFRMq5nC00eJ0MkFG0kJVfhm4FTRuykfVPFematQe3ojXwmnAOomZoKlipPIUFUcEzHgnW+nJu5fln4vAHMOgDfk1KJinJPV9kBAdk1PWP4OQa8dzhHuXtBMJcz43la3+Dd7B3AThTjubuK1XIhD5BCkv9fthKUJF66I5GvkxonAr7VtfaEcT5Z53XKN5exE2Id0DVwwI26FoIULryvJHaxajOwQQi8cyxcGtEkXjC1O0sRmaiILcxkjOSZoRCKLuokSWuLV1SFs8CUmKL3TILF4D6FFMD6OLDMZL1L3AOmL4IX11i8biswoGKU6rDUVP0YzjUapZkuGJThLKkjzNcmIkC832WpF/U13wyLCqghmXNLEza3WS6ao8bXY1O+hNkaZp3ZJURz0yDyTMRkmTVOy0vNo3NKgtQcRxw0mwQDZw55N+BTnC1cXL01+17Blpn3oW7V5UAlZvyXXlKQLOq9fvevMNfBK52GURxcY+ZunLSyaHewqmPISLjmnVlViWBg1Pfix32V5FWQN1KE0tr/yNsS+zHkBTo02OmwkT/RNJSul2TVErGNeyZPR1vs/XfNR2PEHfYg3F4kJ+NjwmRbX2hOgpy4uH9H2VquEttzWtU3912itNiYVdoZvJTLeTdvozDkEYOyzL1VzmXefNprwyX7IKsQtRhqp0Tz2earABlOZ3IBYyB/cunBwuSi5sVM0eUvGY8Kv9FPkdadODZU2LPgXZTFd+72MEBYfLGwzHlpb3Qv8kOBCSo/2/5U6C6AQUb5qxdukY7QQyWP3M15ioODy04IWm7vU40=
+X-HE-Tag: 1755160060-956748
+X-HE-Meta: U2FsdGVkX18fDFYSjFBGOTT0wxrmv9hgYSTBmPNi6GZn9COyn67Oh4tt6I5KzNfqQPPSXGD5vxKl951WXgaNNLx1fHqFCWFSi/sWqW0ouUzY42Rpw3ja6s/qmiBNajehpuRkOmQJPdUSnZJla2MjIpORck55DFZQKhhiCUZVJR4zKZAmNcZFwVTgyyjPvI4VmE8mNd/cFCb+hehMZOJ4g/uXW2/WZo+6+dZ9aq50vByXASzcVWPMxJoY1z/oRDC6u8chC+xitgqZ/3eyBYbUZse1M9xjWk2qafuvKsSUeE4xtYXjTFtf+uyGpyGHBJltNFPBYNOxP3gsNzeBXYjnTo5C5LTQwYJOgfMGMS5t+h9VLdFPu4jLAHlWmIYbjPz8xEoAPxzqZMkV6SICe1Fh5fCr07MBAfVqFYeFB40QiZJEeILdh2WysXpqe8gigFm0Q/FALWZAqycWMrGl9YVzXh9KB6HwUqsz9EWWf+IYJeS/wVkVhRB8WqtHrMruANCTinMJmYWoDn9mPnSvUsUaMe8liB6ktX8z6Amcsp4iloEHxAvQC3HADCydgBqA8zfhuVzTbABWR/MM2Rkwscf+e6Blqj+CRfnrUoNi/YpHAWyhtzGezV7U452LsQieVHUbiqpycdcpuMz1b9p+ETWeFzmX0vP43hvQt7NUAOLzN5hEwwGG84v+EfbPY1JYqK0cBHeXTvx4AtHhGqwZJkaqwhxrgbz6hqhGqJRyaGFQi6O7f+1keEhsXLxnuwFazDahPv/273itAO6d/Ehd77k0RxcVy16IkBOPabB7fOby2KONb4UEO6nMs7gxARQbfwl4X8OmvB68Ys4NV8OV7Ucy01w3yhe2TQpe5Aj8Fm6qwpfIUdsw6eeSQ2iiTQSEU7AArHQmXsmNPTJNaxRmX7WbZN+BXOOBAOPJqrRaaNONnMHPSkEX+V7TjlxMzHB5ivmvAa3LzJ4Oo79Y4fLS3GN
+ P8qlHE1m
+ RAv7fDGK9m/W1Jrqwr5IQip9r48qwJRtd71WKPbH0PX7T+cHe/kPD0oLmfF5uwJWSwv+Z804UrZaK77oV6R0OTdJu7JOZqHWwi5IWdHy4xv8FJNAORpnXWS4u10hLOBO67Pi9KgDGcI9bjODcRYAbySyva5YZiVWzpVAbRu3LpV1b/xrmWTe3XDc/WDC55prg0DUE/BkG0lwDj9gKy8xdkK9vxCwq4tNQYW8+MSY7xtYGJ+uYcM8t8D13btsACBDQ38bbN3W06huFIC+LtFKX6qy4hnF+aJG+JgX4cAbYLsTVJZbDuYhTRmCFjbckzbr9k3ptYIIiI/nf3FSa4DSHVXb+W+EF/qfmvzUmgszCoyU/oVGXIFvYTDrKkIP9HiPVw6Ba
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -234,51 +141,597 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 14, 2025 at 07:54:54AM +0000, Alice Ryhl wrote:
-> The page.rs file currently isn't included anywhere, and I think it's a
-> good fit for the MEMORY MANAGEMENT - RUST entry. The file was originally
-> added for use by Rust Binder, but I believe there is also work to use it
-> in the upcoming scatterlist abstractions.
->
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+On Tue, Aug 12, 2025 at 04:44:11PM +0100, Lorenzo Stoakes wrote:
+> As part of the effort to move to mm->flags becoming a bitmap field, convert
+> existing users to making use of the mm_flags_*() accessors which will, when
+> the conversion is complete, be the only means of accessing mm_struct flags.
+> 
+> This will result in the debug output being that of a bitmap output, which
+> will result in a minor change here, but since this is for debug only, this
+> should have no bearing.
+> 
+> Otherwise, no functional changes intended.
+> 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 > ---
->  MAINTAINERS | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index fe168477caa4..45f7a21dafd4 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16244,15 +16244,17 @@ S:	Maintained
->  MEMORY MANAGEMENT - RUST
->  M:	Alice Ryhl <aliceryhl@google.com>
->  R:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->  R:	Liam R. Howlett <Liam.Howlett@oracle.com>
->  L:	linux-mm@kvack.org
->  L:	rust-for-linux@vger.kernel.org
->  S:	Maintained
->  W:	http://www.linux-mm.org
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
->  F:	rust/helpers/mm.c
-> +F:	rust/helpers/page.c
->  F:	rust/kernel/mm.rs
->  F:	rust/kernel/mm/
-> +F:	rust/kernel/page.rs
+>  include/linux/huge_mm.h    |  2 +-
+>  include/linux/khugepaged.h |  6 ++++--
+>  include/linux/ksm.h        |  6 +++---
+>  include/linux/mm.h         |  2 +-
+>  include/linux/mman.h       |  2 +-
+>  include/linux/oom.h        |  2 +-
+>  mm/debug.c                 |  4 ++--
+>  mm/gup.c                   | 10 +++++-----
+>  mm/huge_memory.c           |  8 ++++----
+>  mm/khugepaged.c            | 10 +++++-----
+>  mm/ksm.c                   | 32 ++++++++++++++++----------------
+>  mm/mmap.c                  |  8 ++++----
+>  mm/oom_kill.c              | 26 +++++++++++++-------------
+>  mm/util.c                  |  6 +++---
+>  14 files changed, 63 insertions(+), 61 deletions(-)
+> 
+> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+> index 14d424830fa8..84b7eebe0d68 100644
+> --- a/include/linux/huge_mm.h
+> +++ b/include/linux/huge_mm.h
+> @@ -327,7 +327,7 @@ static inline bool vma_thp_disabled(struct vm_area_struct *vma,
+>  	 * example, s390 kvm.
+>  	 */
+>  	return (vm_flags & VM_NOHUGEPAGE) ||
+> -	       test_bit(MMF_DISABLE_THP, &vma->vm_mm->flags);
+> +	       mm_flags_test(MMF_DISABLE_THP, vma->vm_mm);
+>  }
+>  
+>  static inline bool thp_disabled_by_hw(void)
+> diff --git a/include/linux/khugepaged.h b/include/linux/khugepaged.h
+> index ff6120463745..eb1946a70cff 100644
+> --- a/include/linux/khugepaged.h
+> +++ b/include/linux/khugepaged.h
+> @@ -2,6 +2,8 @@
+>  #ifndef _LINUX_KHUGEPAGED_H
+>  #define _LINUX_KHUGEPAGED_H
+>  
+> +#include <linux/mm.h>
+> +
+>  extern unsigned int khugepaged_max_ptes_none __read_mostly;
+>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>  extern struct attribute_group khugepaged_attr_group;
+> @@ -20,13 +22,13 @@ extern int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
+>  
+>  static inline void khugepaged_fork(struct mm_struct *mm, struct mm_struct *oldmm)
+>  {
+> -	if (test_bit(MMF_VM_HUGEPAGE, &oldmm->flags))
+> +	if (mm_flags_test(MMF_VM_HUGEPAGE, oldmm))
+>  		__khugepaged_enter(mm);
+>  }
+>  
+>  static inline void khugepaged_exit(struct mm_struct *mm)
+>  {
+> -	if (test_bit(MMF_VM_HUGEPAGE, &mm->flags))
+> +	if (mm_flags_test(MMF_VM_HUGEPAGE, mm))
+>  		__khugepaged_exit(mm);
+>  }
+>  #else /* CONFIG_TRANSPARENT_HUGEPAGE */
+> diff --git a/include/linux/ksm.h b/include/linux/ksm.h
+> index c17b955e7b0b..22e67ca7cba3 100644
+> --- a/include/linux/ksm.h
+> +++ b/include/linux/ksm.h
+> @@ -56,13 +56,13 @@ static inline long mm_ksm_zero_pages(struct mm_struct *mm)
+>  static inline void ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
+>  {
+>  	/* Adding mm to ksm is best effort on fork. */
+> -	if (test_bit(MMF_VM_MERGEABLE, &oldmm->flags))
+> +	if (mm_flags_test(MMF_VM_MERGEABLE, oldmm))
+>  		__ksm_enter(mm);
+>  }
+>  
+>  static inline int ksm_execve(struct mm_struct *mm)
+>  {
+> -	if (test_bit(MMF_VM_MERGE_ANY, &mm->flags))
+> +	if (mm_flags_test(MMF_VM_MERGE_ANY, mm))
+>  		return __ksm_enter(mm);
+>  
+>  	return 0;
+> @@ -70,7 +70,7 @@ static inline int ksm_execve(struct mm_struct *mm)
+>  
+>  static inline void ksm_exit(struct mm_struct *mm)
+>  {
+> -	if (test_bit(MMF_VM_MERGEABLE, &mm->flags))
+> +	if (mm_flags_test(MMF_VM_MERGEABLE, mm))
+>  		__ksm_exit(mm);
+>  }
+>  
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 4ed4a0b9dad6..34311ebe62cc 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -1949,7 +1949,7 @@ static inline bool folio_needs_cow_for_dma(struct vm_area_struct *vma,
+>  {
+>  	VM_BUG_ON(!(raw_read_seqcount(&vma->vm_mm->write_protect_seq) & 1));
+>  
+> -	if (!test_bit(MMF_HAS_PINNED, &vma->vm_mm->flags))
+> +	if (!mm_flags_test(MMF_HAS_PINNED, vma->vm_mm))
+>  		return false;
+>  
+>  	return folio_maybe_dma_pinned(folio);
+> diff --git a/include/linux/mman.h b/include/linux/mman.h
+> index de9e8e6229a4..0ba8a7e8b90a 100644
+> --- a/include/linux/mman.h
+> +++ b/include/linux/mman.h
+> @@ -201,7 +201,7 @@ static inline bool arch_memory_deny_write_exec_supported(void)
+>  static inline bool map_deny_write_exec(unsigned long old, unsigned long new)
+>  {
+>  	/* If MDWE is disabled, we have nothing to deny. */
+> -	if (!test_bit(MMF_HAS_MDWE, &current->mm->flags))
+> +	if (!mm_flags_test(MMF_HAS_MDWE, current->mm))
+>  		return false;
+>  
+>  	/* If the new VMA is not executable, we have nothing to deny. */
+> diff --git a/include/linux/oom.h b/include/linux/oom.h
+> index 1e0fc6931ce9..7b02bc1d0a7e 100644
+> --- a/include/linux/oom.h
+> +++ b/include/linux/oom.h
+> @@ -91,7 +91,7 @@ static inline bool tsk_is_oom_victim(struct task_struct * tsk)
+>   */
+>  static inline vm_fault_t check_stable_address_space(struct mm_struct *mm)
+>  {
+> -	if (unlikely(test_bit(MMF_UNSTABLE, &mm->flags)))
+> +	if (unlikely(mm_flags_test(MMF_UNSTABLE, mm)))
+>  		return VM_FAULT_SIGBUS;
+>  	return 0;
+>  }
+> diff --git a/mm/debug.c b/mm/debug.c
+> index b4388f4dcd4d..64ddb0c4b4be 100644
+> --- a/mm/debug.c
+> +++ b/mm/debug.c
+> @@ -182,7 +182,7 @@ void dump_mm(const struct mm_struct *mm)
+>  		"start_code %lx end_code %lx start_data %lx end_data %lx\n"
+>  		"start_brk %lx brk %lx start_stack %lx\n"
+>  		"arg_start %lx arg_end %lx env_start %lx env_end %lx\n"
+> -		"binfmt %px flags %lx\n"
+> +		"binfmt %px flags %*pb\n"
+>  #ifdef CONFIG_AIO
+>  		"ioctx_table %px\n"
+>  #endif
+> @@ -211,7 +211,7 @@ void dump_mm(const struct mm_struct *mm)
+>  		mm->start_code, mm->end_code, mm->start_data, mm->end_data,
+>  		mm->start_brk, mm->brk, mm->start_stack,
+>  		mm->arg_start, mm->arg_end, mm->env_start, mm->env_end,
+> -		mm->binfmt, mm->flags,
+> +		mm->binfmt, NUM_MM_FLAG_BITS, __mm_flags_get_bitmap(mm),
+>  #ifdef CONFIG_AIO
+>  		mm->ioctx_table,
+>  #endif
+> diff --git a/mm/gup.c b/mm/gup.c
+> index adffe663594d..331d22bf7b2d 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -475,10 +475,10 @@ EXPORT_SYMBOL_GPL(unpin_folios);
+>   * lifecycle.  Avoid setting the bit unless necessary, or it might cause write
+>   * cache bouncing on large SMP machines for concurrent pinned gups.
+>   */
+> -static inline void mm_set_has_pinned_flag(unsigned long *mm_flags)
+> +static inline void mm_set_has_pinned_flag(struct mm_struct *mm)
+>  {
+> -	if (!test_bit(MMF_HAS_PINNED, mm_flags))
+> -		set_bit(MMF_HAS_PINNED, mm_flags);
+> +	if (!mm_flags_test(MMF_HAS_PINNED, mm))
+> +		mm_flags_set(MMF_HAS_PINNED, mm);
+>  }
+>  
+>  #ifdef CONFIG_MMU
+> @@ -1693,7 +1693,7 @@ static __always_inline long __get_user_pages_locked(struct mm_struct *mm,
+>  		mmap_assert_locked(mm);
+>  
+>  	if (flags & FOLL_PIN)
+> -		mm_set_has_pinned_flag(&mm->flags);
+> +		mm_set_has_pinned_flag(mm);
+>  
+>  	/*
+>  	 * FOLL_PIN and FOLL_GET are mutually exclusive. Traditional behavior
+> @@ -3210,7 +3210,7 @@ static int gup_fast_fallback(unsigned long start, unsigned long nr_pages,
+>  		return -EINVAL;
+>  
+>  	if (gup_flags & FOLL_PIN)
+> -		mm_set_has_pinned_flag(&current->mm->flags);
+> +		mm_set_has_pinned_flag(current->mm);
+>  
+>  	if (!(gup_flags & FOLL_FAST_ONLY))
+>  		might_lock_read(&current->mm->mmap_lock);
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index b8bb078a1a34..a2f476e7419a 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -251,13 +251,13 @@ struct folio *mm_get_huge_zero_folio(struct mm_struct *mm)
+>  	if (IS_ENABLED(CONFIG_PERSISTENT_HUGE_ZERO_FOLIO))
+>  		return huge_zero_folio;
+>  
+> -	if (test_bit(MMF_HUGE_ZERO_FOLIO, &mm->flags))
+> +	if (mm_flags_test(MMF_HUGE_ZERO_FOLIO, mm))
+>  		return READ_ONCE(huge_zero_folio);
+>  
+>  	if (!get_huge_zero_folio())
+>  		return NULL;
+>  
+> -	if (test_and_set_bit(MMF_HUGE_ZERO_FOLIO, &mm->flags))
+> +	if (mm_flags_test_and_set(MMF_HUGE_ZERO_FOLIO, mm))
+>  		put_huge_zero_folio();
+>  
+>  	return READ_ONCE(huge_zero_folio);
+> @@ -268,7 +268,7 @@ void mm_put_huge_zero_folio(struct mm_struct *mm)
+>  	if (IS_ENABLED(CONFIG_PERSISTENT_HUGE_ZERO_FOLIO))
+>  		return;
+>  
+> -	if (test_bit(MMF_HUGE_ZERO_FOLIO, &mm->flags))
+> +	if (mm_flags_test(MMF_HUGE_ZERO_FOLIO, mm))
+>  		put_huge_zero_folio();
+>  }
+>  
+> @@ -1145,7 +1145,7 @@ static unsigned long __thp_get_unmapped_area(struct file *filp,
+>  
+>  	off_sub = (off - ret) & (size - 1);
+>  
+> -	if (test_bit(MMF_TOPDOWN, &current->mm->flags) && !off_sub)
+> +	if (mm_flags_test(MMF_TOPDOWN, current->mm) && !off_sub)
+>  		return ret + size;
+>  
+>  	ret += off_sub;
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 6b40bdfd224c..6470e7e26c8d 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -410,7 +410,7 @@ static inline int hpage_collapse_test_exit(struct mm_struct *mm)
+>  static inline int hpage_collapse_test_exit_or_disable(struct mm_struct *mm)
+>  {
+>  	return hpage_collapse_test_exit(mm) ||
+> -	       test_bit(MMF_DISABLE_THP, &mm->flags);
+> +		mm_flags_test(MMF_DISABLE_THP, mm);
+>  }
+>  
+>  static bool hugepage_pmd_enabled(void)
+> @@ -445,7 +445,7 @@ void __khugepaged_enter(struct mm_struct *mm)
+>  
+>  	/* __khugepaged_exit() must not run from under us */
+>  	VM_BUG_ON_MM(hpage_collapse_test_exit(mm), mm);
+> -	if (unlikely(test_and_set_bit(MMF_VM_HUGEPAGE, &mm->flags)))
+> +	if (unlikely(mm_flags_test_and_set(MMF_VM_HUGEPAGE, mm)))
+>  		return;
+>  
+>  	mm_slot = mm_slot_alloc(mm_slot_cache);
+> @@ -472,7 +472,7 @@ void __khugepaged_enter(struct mm_struct *mm)
+>  void khugepaged_enter_vma(struct vm_area_struct *vma,
+>  			  vm_flags_t vm_flags)
+>  {
+> -	if (!test_bit(MMF_VM_HUGEPAGE, &vma->vm_mm->flags) &&
+> +	if (!mm_flags_test(MMF_VM_HUGEPAGE, vma->vm_mm) &&
+>  	    hugepage_pmd_enabled()) {
+>  		if (thp_vma_allowable_order(vma, vm_flags, TVA_ENFORCE_SYSFS,
+>  					    PMD_ORDER))
+> @@ -497,7 +497,7 @@ void __khugepaged_exit(struct mm_struct *mm)
+>  	spin_unlock(&khugepaged_mm_lock);
+>  
+>  	if (free) {
+> -		clear_bit(MMF_VM_HUGEPAGE, &mm->flags);
+> +		mm_flags_clear(MMF_VM_HUGEPAGE, mm);
+>  		mm_slot_free(mm_slot_cache, mm_slot);
+>  		mmdrop(mm);
+>  	} else if (mm_slot) {
+> @@ -1459,7 +1459,7 @@ static void collect_mm_slot(struct khugepaged_mm_slot *mm_slot)
+>  		/*
+>  		 * Not strictly needed because the mm exited already.
+>  		 *
+> -		 * clear_bit(MMF_VM_HUGEPAGE, &mm->flags);
+> +		 * mm_clear(mm, MMF_VM_HUGEPAGE);
+>  		 */
+>  
+>  		/* khugepaged_mm_lock actually not necessary for the below */
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index 160787bb121c..2ef29802a49b 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -1217,8 +1217,8 @@ static int unmerge_and_remove_all_rmap_items(void)
+>  			spin_unlock(&ksm_mmlist_lock);
+>  
+>  			mm_slot_free(mm_slot_cache, mm_slot);
+> -			clear_bit(MMF_VM_MERGEABLE, &mm->flags);
+> -			clear_bit(MMF_VM_MERGE_ANY, &mm->flags);
+> +			mm_flags_clear(MMF_VM_MERGEABLE, mm);
+> +			mm_flags_clear(MMF_VM_MERGE_ANY, mm);
+>  			mmdrop(mm);
+>  		} else
+>  			spin_unlock(&ksm_mmlist_lock);
+> @@ -2620,8 +2620,8 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+>  		spin_unlock(&ksm_mmlist_lock);
+>  
+>  		mm_slot_free(mm_slot_cache, mm_slot);
+> -		clear_bit(MMF_VM_MERGEABLE, &mm->flags);
+> -		clear_bit(MMF_VM_MERGE_ANY, &mm->flags);
+> +		mm_flags_clear(MMF_VM_MERGEABLE, mm);
+> +		mm_flags_clear(MMF_VM_MERGE_ANY, mm);
+>  		mmap_read_unlock(mm);
+>  		mmdrop(mm);
+>  	} else {
+> @@ -2742,7 +2742,7 @@ static int __ksm_del_vma(struct vm_area_struct *vma)
+>  vm_flags_t ksm_vma_flags(const struct mm_struct *mm, const struct file *file,
+>  			 vm_flags_t vm_flags)
+>  {
+> -	if (test_bit(MMF_VM_MERGE_ANY, &mm->flags) &&
+> +	if (mm_flags_test(MMF_VM_MERGE_ANY, mm) &&
+>  	    __ksm_should_add_vma(file, vm_flags))
+>  		vm_flags |= VM_MERGEABLE;
+>  
+> @@ -2784,16 +2784,16 @@ int ksm_enable_merge_any(struct mm_struct *mm)
+>  {
+>  	int err;
+>  
+> -	if (test_bit(MMF_VM_MERGE_ANY, &mm->flags))
+> +	if (mm_flags_test(MMF_VM_MERGE_ANY, mm))
+>  		return 0;
+>  
+> -	if (!test_bit(MMF_VM_MERGEABLE, &mm->flags)) {
+> +	if (!mm_flags_test(MMF_VM_MERGEABLE, mm)) {
+>  		err = __ksm_enter(mm);
+>  		if (err)
+>  			return err;
+>  	}
+>  
+> -	set_bit(MMF_VM_MERGE_ANY, &mm->flags);
+> +	mm_flags_set(MMF_VM_MERGE_ANY, mm);
+>  	ksm_add_vmas(mm);
+>  
+>  	return 0;
+> @@ -2815,7 +2815,7 @@ int ksm_disable_merge_any(struct mm_struct *mm)
+>  {
+>  	int err;
+>  
+> -	if (!test_bit(MMF_VM_MERGE_ANY, &mm->flags))
+> +	if (!mm_flags_test(MMF_VM_MERGE_ANY, mm))
+>  		return 0;
+>  
+>  	err = ksm_del_vmas(mm);
+> @@ -2824,7 +2824,7 @@ int ksm_disable_merge_any(struct mm_struct *mm)
+>  		return err;
+>  	}
+>  
+> -	clear_bit(MMF_VM_MERGE_ANY, &mm->flags);
+> +	mm_flags_clear(MMF_VM_MERGE_ANY, mm);
+>  	return 0;
+>  }
+>  
+> @@ -2832,9 +2832,9 @@ int ksm_disable(struct mm_struct *mm)
+>  {
+>  	mmap_assert_write_locked(mm);
+>  
+> -	if (!test_bit(MMF_VM_MERGEABLE, &mm->flags))
+> +	if (!mm_flags_test(MMF_VM_MERGEABLE, mm))
+>  		return 0;
+> -	if (test_bit(MMF_VM_MERGE_ANY, &mm->flags))
+> +	if (mm_flags_test(MMF_VM_MERGE_ANY, mm))
+>  		return ksm_disable_merge_any(mm);
+>  	return ksm_del_vmas(mm);
+>  }
+> @@ -2852,7 +2852,7 @@ int ksm_madvise(struct vm_area_struct *vma, unsigned long start,
+>  		if (!vma_ksm_compatible(vma))
+>  			return 0;
+>  
+> -		if (!test_bit(MMF_VM_MERGEABLE, &mm->flags)) {
+> +		if (!mm_flags_test(MMF_VM_MERGEABLE, mm)) {
+>  			err = __ksm_enter(mm);
+>  			if (err)
+>  				return err;
+> @@ -2912,7 +2912,7 @@ int __ksm_enter(struct mm_struct *mm)
+>  		list_add_tail(&slot->mm_node, &ksm_scan.mm_slot->slot.mm_node);
+>  	spin_unlock(&ksm_mmlist_lock);
+>  
+> -	set_bit(MMF_VM_MERGEABLE, &mm->flags);
+> +	mm_flags_set(MMF_VM_MERGEABLE, mm);
+>  	mmgrab(mm);
+>  
+>  	if (needs_wakeup)
+> @@ -2954,8 +2954,8 @@ void __ksm_exit(struct mm_struct *mm)
+>  
+>  	if (easy_to_free) {
+>  		mm_slot_free(mm_slot_cache, mm_slot);
+> -		clear_bit(MMF_VM_MERGE_ANY, &mm->flags);
+> -		clear_bit(MMF_VM_MERGEABLE, &mm->flags);
+> +		mm_flags_clear(MMF_VM_MERGE_ANY, mm);
+> +		mm_flags_clear(MMF_VM_MERGEABLE, mm);
+>  		mmdrop(mm);
+>  	} else if (mm_slot) {
+>  		mmap_write_lock(mm);
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index 7306253cc3b5..7a057e0e8da9 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -802,7 +802,7 @@ unsigned long mm_get_unmapped_area_vmflags(struct mm_struct *mm, struct file *fi
+>  					   unsigned long pgoff, unsigned long flags,
+>  					   vm_flags_t vm_flags)
+>  {
+> -	if (test_bit(MMF_TOPDOWN, &mm->flags))
+> +	if (mm_flags_test(MMF_TOPDOWN, mm))
+>  		return arch_get_unmapped_area_topdown(filp, addr, len, pgoff,
+>  						      flags, vm_flags);
+>  	return arch_get_unmapped_area(filp, addr, len, pgoff, flags, vm_flags);
+> @@ -1284,7 +1284,7 @@ void exit_mmap(struct mm_struct *mm)
+>  	 * Set MMF_OOM_SKIP to hide this task from the oom killer/reaper
+>  	 * because the memory has been already freed.
+>  	 */
+> -	set_bit(MMF_OOM_SKIP, &mm->flags);
+> +	mm_flags_set(MMF_OOM_SKIP, mm);
+>  	mmap_write_lock(mm);
+>  	mt_clear_in_rcu(&mm->mm_mt);
+>  	vma_iter_set(&vmi, vma->vm_end);
+> @@ -1859,14 +1859,14 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
+>  			mas_set_range(&vmi.mas, mpnt->vm_start, mpnt->vm_end - 1);
+>  			mas_store(&vmi.mas, XA_ZERO_ENTRY);
+>  			/* Avoid OOM iterating a broken tree */
+> -			set_bit(MMF_OOM_SKIP, &mm->flags);
+> +			mm_flags_set(MMF_OOM_SKIP, mm);
+>  		}
+>  		/*
+>  		 * The mm_struct is going to exit, but the locks will be dropped
+>  		 * first.  Set the mm_struct as unstable is advisable as it is
+>  		 * not fully initialised.
+>  		 */
+> -		set_bit(MMF_UNSTABLE, &mm->flags);
+> +		mm_flags_set(MMF_UNSTABLE, mm);
+>  	}
+>  out:
+>  	mmap_write_unlock(mm);
+> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+> index 25923cfec9c6..17650f0b516e 100644
+> --- a/mm/oom_kill.c
+> +++ b/mm/oom_kill.c
+> @@ -1,7 +1,7 @@
+>  // SPDX-License-Identifier: GPL-2.0-only
+>  /*
+>   *  linux/mm/oom_kill.c
+> - * 
+> + *
+>   *  Copyright (C)  1998,2000  Rik van Riel
+>   *	Thanks go out to Claus Fischer for some serious inspiration and
+>   *	for goading me into coding this file...
+> @@ -218,7 +218,7 @@ long oom_badness(struct task_struct *p, unsigned long totalpages)
+>  	 */
+>  	adj = (long)p->signal->oom_score_adj;
+>  	if (adj == OOM_SCORE_ADJ_MIN ||
+> -			test_bit(MMF_OOM_SKIP, &p->mm->flags) ||
+> +			mm_flags_test(MMF_OOM_SKIP, p->mm) ||
+>  			in_vfork(p)) {
+>  		task_unlock(p);
+>  		return LONG_MIN;
+> @@ -325,7 +325,7 @@ static int oom_evaluate_task(struct task_struct *task, void *arg)
+>  	 * any memory is quite low.
+>  	 */
+>  	if (!is_sysrq_oom(oc) && tsk_is_oom_victim(task)) {
+> -		if (test_bit(MMF_OOM_SKIP, &task->signal->oom_mm->flags))
+> +		if (mm_flags_test(MMF_OOM_SKIP, task->signal->oom_mm))
+>  			goto next;
+>  		goto abort;
+>  	}
+> @@ -524,7 +524,7 @@ static bool __oom_reap_task_mm(struct mm_struct *mm)
+>  	 * should imply barriers already and the reader would hit a page fault
+>  	 * if it stumbled over a reaped memory.
+>  	 */
+> -	set_bit(MMF_UNSTABLE, &mm->flags);
+> +	mm_flags_set(MMF_UNSTABLE, mm);
+>  
+>  	for_each_vma(vmi, vma) {
+>  		if (vma->vm_flags & (VM_HUGETLB|VM_PFNMAP))
+> @@ -583,7 +583,7 @@ static bool oom_reap_task_mm(struct task_struct *tsk, struct mm_struct *mm)
+>  	 * under mmap_lock for reading because it serializes against the
+>  	 * mmap_write_lock();mmap_write_unlock() cycle in exit_mmap().
+>  	 */
+> -	if (test_bit(MMF_OOM_SKIP, &mm->flags)) {
+> +	if (mm_flags_test(MMF_OOM_SKIP, mm)) {
+>  		trace_skip_task_reaping(tsk->pid);
+>  		goto out_unlock;
+>  	}
+> @@ -619,7 +619,7 @@ static void oom_reap_task(struct task_struct *tsk)
+>  		schedule_timeout_idle(HZ/10);
+>  
+>  	if (attempts <= MAX_OOM_REAP_RETRIES ||
+> -	    test_bit(MMF_OOM_SKIP, &mm->flags))
+> +	    mm_flags_test(MMF_OOM_SKIP, mm))
+>  		goto done;
+>  
+>  	pr_info("oom_reaper: unable to reap pid:%d (%s)\n",
+> @@ -634,7 +634,7 @@ static void oom_reap_task(struct task_struct *tsk)
+>  	 * Hide this mm from OOM killer because it has been either reaped or
+>  	 * somebody can't call mmap_write_unlock(mm).
+>  	 */
+> -	set_bit(MMF_OOM_SKIP, &mm->flags);
+> +	mm_flags_set(MMF_OOM_SKIP, mm);
+>  
+>  	/* Drop a reference taken by queue_oom_reaper */
+>  	put_task_struct(tsk);
+> @@ -670,7 +670,7 @@ static void wake_oom_reaper(struct timer_list *timer)
+>  	unsigned long flags;
+>  
+>  	/* The victim managed to terminate on its own - see exit_mmap */
+> -	if (test_bit(MMF_OOM_SKIP, &mm->flags)) {
+> +	if (mm_flags_test(MMF_OOM_SKIP, mm)) {
+>  		put_task_struct(tsk);
+>  		return;
+>  	}
+> @@ -695,7 +695,7 @@ static void wake_oom_reaper(struct timer_list *timer)
+>  static void queue_oom_reaper(struct task_struct *tsk)
+>  {
+>  	/* mm is already queued? */
+> -	if (test_and_set_bit(MMF_OOM_REAP_QUEUED, &tsk->signal->oom_mm->flags))
+> +	if (mm_flags_test_and_set(MMF_OOM_REAP_QUEUED, tsk->signal->oom_mm))
+>  		return;
+>  
+>  	get_task_struct(tsk);
+> @@ -892,7 +892,7 @@ static bool task_will_free_mem(struct task_struct *task)
+>  	 * This task has already been drained by the oom reaper so there are
+>  	 * only small chances it will free some more
+>  	 */
+> -	if (test_bit(MMF_OOM_SKIP, &mm->flags))
+> +	if (mm_flags_test(MMF_OOM_SKIP, mm))
+>  		return false;
+>  
+>  	if (atomic_read(&mm->mm_users) <= 1)
+> @@ -977,7 +977,7 @@ static void __oom_kill_process(struct task_struct *victim, const char *message)
+>  			continue;
+>  		if (is_global_init(p)) {
+>  			can_oom_reap = false;
+> -			set_bit(MMF_OOM_SKIP, &mm->flags);
+> +			mm_flags_set(MMF_OOM_SKIP, mm);
+>  			pr_info("oom killer %d (%s) has mm pinned by %d (%s)\n",
+>  					task_pid_nr(victim), victim->comm,
+>  					task_pid_nr(p), p->comm);
+> @@ -1235,7 +1235,7 @@ SYSCALL_DEFINE2(process_mrelease, int, pidfd, unsigned int, flags)
+>  		reap = true;
+>  	else {
+>  		/* Error only if the work has not been done already */
+> -		if (!test_bit(MMF_OOM_SKIP, &mm->flags))
+> +		if (!mm_flags_test(MMF_OOM_SKIP, mm))
+>  			ret = -EINVAL;
+>  	}
+>  	task_unlock(p);
+> @@ -1251,7 +1251,7 @@ SYSCALL_DEFINE2(process_mrelease, int, pidfd, unsigned int, flags)
+>  	 * Check MMF_OOM_SKIP again under mmap_read_lock protection to ensure
+>  	 * possible change in exit_mmap is seen
+>  	 */
+> -	if (!test_bit(MMF_OOM_SKIP, &mm->flags) && !__oom_reap_task_mm(mm))
+> +	if (mm_flags_test(MMF_OOM_SKIP, mm) && !__oom_reap_task_mm(mm))
+>  		ret = -EAGAIN;
+>  	mmap_read_unlock(mm);
+>  
+> diff --git a/mm/util.c b/mm/util.c
+> index f814e6a59ab1..d235b74f7aff 100644
+> --- a/mm/util.c
+> +++ b/mm/util.c
+> @@ -471,17 +471,17 @@ void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
+>  
+>  	if (mmap_is_legacy(rlim_stack)) {
+>  		mm->mmap_base = TASK_UNMAPPED_BASE + random_factor;
+> -		clear_bit(MMF_TOPDOWN, &mm->flags);
+> +		mm_flags_clear(MMF_TOPDOWN, mm);
+>  	} else {
+>  		mm->mmap_base = mmap_base(random_factor, rlim_stack);
+> -		set_bit(MMF_TOPDOWN, &mm->flags);
+> +		mm_flags_set(MMF_TOPDOWN, mm);
+>  	}
+>  }
+>  #elif defined(CONFIG_MMU) && !defined(HAVE_ARCH_PICK_MMAP_LAYOUT)
+>  void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
+>  {
+>  	mm->mmap_base = TASK_UNMAPPED_BASE;
+> -	clear_bit(MMF_TOPDOWN, &mm->flags);
+> +	mm_flags_clear(MMF_TOPDOWN, mm);
+>  }
+>  #endif
+>  #ifdef CONFIG_MMU
+> -- 
+> 2.50.1
+> 
 
-LGTM!
-
-Apologies I've been a bit quiet on the rust front, is workload-related,
-hope to dip in and out when I can :>)
-
-Glad to see it's all moving forward nicely!
-
->
->  MEMORY MAPPING
->  M:	Andrew Morton <akpm@linux-foundation.org>
-> --
-> 2.51.0.rc0.215.g125493bb4a-goog
->
+-- 
+Sincerely yours,
+Mike.
 
