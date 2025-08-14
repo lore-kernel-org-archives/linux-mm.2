@@ -2,90 +2,117 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D22CDCA0EE4
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 23:13:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 13604CA0EE4
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 23:22:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67CF29001EE; Thu, 14 Aug 2025 19:13:50 -0400 (EDT)
+	id 46CA49001EF; Thu, 14 Aug 2025 19:22:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 653569001D5; Thu, 14 Aug 2025 19:13:50 -0400 (EDT)
+	id 444699001D5; Thu, 14 Aug 2025 19:22:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 590189001EE; Thu, 14 Aug 2025 19:13:50 -0400 (EDT)
+	id 3894C9001EF; Thu, 14 Aug 2025 19:22:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 47C5F9001D5
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 19:13:50 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 061D0836CD
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 23:13:50 +0000 (UTC)
-X-FDA: 83776917420.23.1F82810
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 43F7C4000A
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 23:13:48 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=pONeTZiZ;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 299939001D5
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 19:22:46 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 67349138984
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 23:22:45 +0000 (UTC)
+X-FDA: 83776939890.04.BD88E6E
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 98E95180003
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 23:22:43 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=KX+pqEbO;
+	spf=pass (imf24.hostedemail.com: domain of kuniyu@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=kuniyu@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755213763; a=rsa-sha256;
+	cv=none;
+	b=df8/NxMERHN728fryl3RewTNKcgCgfnws0v3lzsOgmCXBVM2ejs7a4V3Q8+Sge0oBdsfcG
+	X3jnB+OAuFcVW4flhfRDccs+E7kuaQR3nRqXLmPGWgG319JxuJBcRiTvmy/ai2h5PTudTT
+	YB5YJO4zoRO8BafojlHdy9r2n6YBXzA=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=KX+pqEbO;
+	spf=pass (imf24.hostedemail.com: domain of kuniyu@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=kuniyu@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755213228;
+	s=arc-20220608; t=1755213763;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w6k5/Q/shK0VDN0eaW0mLPiE0MlWp4ZCoi0cTl4gBmI=;
-	b=qgKD8uyh46NCOzplXriOKc56Cv4qLIUJ7kDQurSl9sy99hFMP1jFvgYoPNzlhHPhc/WTv+
-	EiprWkbvKdq1zsztKF4605Sku4I6Uv/ImesRKOMXD5Bu7NBRo2ZUTvHQbgUM8V0L+2FOLy
-	t5uOO1KidAyVQiib713aip945qoXfBE=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=pONeTZiZ;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755213228; a=rsa-sha256;
-	cv=none;
-	b=sPPD9UbxIkwiE+99W9LJDfAJi1drH60sOdVh98ORcOoABKqX6MZ0cPNi9m4CCkK6wCVFTu
-	vs+oMB2Vt/jSZQCk88BRt6UiqCFlctNhUcZqPnduvGBXLQ4RkzwaCAEvTYYltWfPt6Pvr0
-	gnIrzdXYBhZ89rAREnVlgLD0NiPxRzA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 635A15C5DF2;
-	Thu, 14 Aug 2025 23:13:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602FEC4CEED;
-	Thu, 14 Aug 2025 23:13:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1755213227;
-	bh=QDuybNx730xQBT3wod57laf9u9iTM7rHjUvW1T2v/A8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=pONeTZiZjNbzBFiiZPEIM2iR6kPyC71xQPFcDNY7Xl5VTFDYMMwzfV6aeXw6EYmIg
-	 QN8UhlLAm6z2zfYK+Y8bSzg1m19jWmKEVpgCJlyQdJvsXzxoziN2aShH1YGhk+Az5v
-	 YwJI3SQFXeUZEUmPp3C4zuamATd1QhSAuH7/1bvc=
-Date: Thu, 14 Aug 2025 16:13:45 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: <zhongjinji@honor.com>
-Cc: <linux-mm@kvack.org>, <mhocko@suse.com>, <rientjes@google.com>,
- <shakeel.butt@linux.dev>, <npache@redhat.com>,
- <linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
- <peterz@infradead.org>, <dvhart@infradead.org>, <dave@stgolabs.net>,
- <andrealmeid@igalia.com>, <liam.howlett@oracle.com>, <liulu.liu@honor.com>,
- <feng.han@honor.com>, Joel Savitz <jsavitz@redhat.com>, Thomas Gleixner
- <tglx@linutronix.de>
-Subject: Re: [PATCH v4 0/3] mm/oom_kill: Only delay OOM reaper for processes
- using robust futexes
-Message-Id: <20250814161345.b2ddf7120dfcc420c3199e67@linux-foundation.org>
-In-Reply-To: <20250814135555.17493-1-zhongjinji@honor.com>
-References: <20250814135555.17493-1-zhongjinji@honor.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 43F7C4000A
-X-Rspamd-Server: rspam04
+	bh=YQ7YCZjjUdesfp/4AmnBBp2EwgfrYAy7oWynoXY99mk=;
+	b=J1ILFSHF02UsPL99/7vMIeSb6vH8erjbUMgB0Q+q6Wzf2Uu5Cu51lSDGSgkKJFRmdjUT8v
+	IFdSMOjM59ub3kd2gUG5kjhqi/qZKDtbdkRfKZKYlH5bceBSGpOvGlTfbLJM+PHr5Ca1j9
+	WByPBxUEFBS0IzS5gl/R7lDWZMFaDek=
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-24457f47000so13636655ad.0
+        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 16:22:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755213762; x=1755818562; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YQ7YCZjjUdesfp/4AmnBBp2EwgfrYAy7oWynoXY99mk=;
+        b=KX+pqEbOxo8Th+lbKoPfWpaaNHrAotJ0ceyrIbDMdxclme7aNQTXDR8mMrUs+QIvpz
+         dhumZbUW4VV00KC6MN85IwceuVC9vjxXKxo5uOJWMj88ACga+5L0ShMFir/JamWdu7AY
+         BNhiutEcyAQMoVNGXkmN/WOELKyVTypRAGDKggMbAfhh7yYAhtqfFu4JowBq5mbc2rYk
+         QdAwQ0gx/rVUquQ7/9GWxFiK9+ta+nj3xBF9wJ3/9rUvHADLVMpwlRLoRjy5qe+ofHeb
+         FNG5JJGhzf+f9A8Uin6B8GBETJzMAOjLDmpQbWynmp7G/RSl0HBbq9lD1jcBakNCoUac
+         OkYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755213762; x=1755818562;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YQ7YCZjjUdesfp/4AmnBBp2EwgfrYAy7oWynoXY99mk=;
+        b=SIVJVnoEHzxZgtQrbJMUa4qxWjY3rLIWN2S9iNTf8KxbpZJbI6SBQqZv0Bbpg/WuaG
+         Qr6HrVTm4Non+6/+DRgRiGaHqDo48zYFRW/k1D0pU5uc1Le0Qmo4J8LkR9zw671P2QVD
+         sxKLoHxfCpvlWfwniKmyJuOdYLr3vaX/+jElZJmUM+8sn+DTTPkblF4sEptnpMQfCKbw
+         p+GCZvXt4G49oEmAqvk92qBU1jOq5cuLunfGwdNeoXkngjROASZIuoqLtkPiI+h6yzrf
+         eThzYaQXyiUMWeQzvkVnhnNDqyFW12qhcRCqpg189rae+MjpCC34Fovvv5HoqAFt9VOA
+         g3Qw==
+X-Forwarded-Encrypted: i=1; AJvYcCX2ACXlFXhqgORFyVarSQ0p1yQGiYtDItUaM1I9l1/zxLuAn0QqumcwFOwr+Bm4nw0cn9nM+1CTZg==@kvack.org
+X-Gm-Message-State: AOJu0Yz8o+hUGZIoQELosuPRM54/HDIVPVLvezk1qnxErqVIA1fXECRW
+	ykDsut1yR9a+KBu38IAeCTZi8GXbxacKT2ZERoSObd4KFnBDUj2yrGKlCn71YHvcCy+Nv5UOVNR
+	ouMk81oM1r34WAcyevFCM2N3UpbH7gxeRQpklMjIL
+X-Gm-Gg: ASbGncvevfMMpgQFB03hYEkULDCq84Ueh8rRoK4Gydal9n0QsDnLNvJadTRxw+hzRqe
+	rztPAei+J5J0MCm/RdlJQJRLCgzurgj0gJK26aZGp1bK9Gv3rq4MTaw9gQTXwwpE4qaM86qHfP8
+	1Vdt+4T2I8MzCzGOpHUgPuTjR4H38fOzJxqPNs4Mr6Tmbwo5rma1/lZxoZEu/5xAgcJQubqmQph
+	6E+tjsiGDKcsY9ab184GIjS2rlAOuFu7YotciZYPkNJcroO9yuZ8Xxx
+X-Google-Smtp-Source: AGHT+IG+GzkTFoWSxjI/UBpeB+AhhE8U81bSEVut4K3CLnycOTHj2PFasfm2kLor4XHXf2jf8tiH2o7md6AgbgQhI+o=
+X-Received: by 2002:a17:903:2444:b0:23f:c945:6067 with SMTP id
+ d9443c01a7336-244586c3d33mr71675685ad.41.1755213762138; Thu, 14 Aug 2025
+ 16:22:42 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250814200912.1040628-1-kuniyu@google.com> <20250814200912.1040628-10-kuniyu@google.com>
+ <pl47mmcmxu53ptfa5ubd7dhzsmpxhsz2qxpscquih4773iykjf@3uhfasbornxc> <7pbqwjm4yl3oxebibihbdqkdusamnnui5ypzhfh32pxfkcordq@o3hottcdlavs>
+In-Reply-To: <7pbqwjm4yl3oxebibihbdqkdusamnnui5ypzhfh32pxfkcordq@o3hottcdlavs>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Thu, 14 Aug 2025 16:22:31 -0700
+X-Gm-Features: Ac12FXwLp2y7n2f70IACCfZi6vRBARC4QHPOIBg0j8Z8siCHACfmll_htqDpnyQ
+Message-ID: <CAAVpQUDxXZaYz98hen3ariCek4s9TQ9JxWqS_zRoDK=ON-asbQ@mail.gmail.com>
+Subject: Re: [PATCH v4 net-next 09/10] net-memcg: Pass struct sock to mem_cgroup_sk_under_memory_pressure().
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, Matthieu Baerts <matttbe@kernel.org>, 
+	Mat Martineau <martineau@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Tejun Heo <tj@kernel.org>, Simon Horman <horms@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Mina Almasry <almasrymina@google.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 98E95180003
+X-Stat-Signature: dwdka975ey7x17b61cwqi4oia46pf9en
 X-Rspam-User: 
-X-Stat-Signature: cwrehhqjswbhskh3yhihp66effprr4u8
-X-HE-Tag: 1755213228-121655
-X-HE-Meta: U2FsdGVkX18dboHEa6L+He6z2Pb4OElWRNY+OrXyniElKtukiZ7M5lRAM7foLXiq7tU3QKBiEhfOQkR43iQqyLgmsoWFCQgirh0ssN5/4tvFxFG0FNP3oaY0HCTQgV2+DcrZ7QlODAFK3erhA5h95Lnh9hiHuEeBsWeGysEIv5iP0W8vy/01cIBN9BuX0AUgVuqSyWKXNiCAX0NwbtXNv+UxL5y0eT/cat2fjEIW9z3JX0gmjFDugFph063puPPIeKme17YS/c6ApLMsQmQG2ly4o4soKDJDbm2gG9ORj9CwPvKmZ8rrTonX4nk+KunZxGpPwGOB8Fc6DuPZjV7Pe63DRFq3Z0iZQLSiCdcYEXgR4BikqHJHA5N7k7t8iwgQwNyWNdPQu7UH+rzH0UeHTsRUURc4WScbwYqqqup4GD3btvEDx+Kb74vbhERathTU7vHU1v3SvQSNavf04iBRJ3cJZzVldxnZvXzLX8oiTcGg2L3qmAr6Dx7ACzXHuS/cySQg4HSxr9D5aJwac2KsK+Uj9zgRrzR8cqQ4ZZ/tGOiy6MXqsTDCJ2p8IBAmB+Q+ER2hGSzuEHwtOWNsV5WKJg+r7S2Fl73DAMobEtOiHmo9+7nG7zufJ5GhWD/O5/PsycqThvsr0IRXAteJe0WCvJUGTFFB1FlQadekUHO6HGw4MsOukBDgxYkQGrqMJwaW1OJWauQsLrhgMX4axxmxQzh1fswkCd+YV6ZD0DJtGEhZRq4rNRdvfxewd9W1IxAkP/sINKXfs89mvOuGErQpdRNMShkZ+Dl7MAwYjs7hN8M5S8dq1rrvGQe/hAJgDiY8xQ6wxT2T/np92vbLjLH7uzLsCmrQ8F29b0VaYCsrJPzUsATWhYxnu/bEwlbaf8EMmrIRIhVuO6enHpdKXihAvvCZYYdYm9xUcNm9WX85O9dcDnDXahMv4PcizQIuqSZyqtTK2dW9hj8oxCF9BI6
- giCUKJsF
- xcUXaciKcs629EtfDzRiEJiXcs20yyGcDgfpzELRsHIIMuq2IwP2qkj2IiJDCwIn4l+Jb9rV44XuYfFmiyUq700e1OR9KaEuwG7iy62BuKDWO5tfB8iwaX24vXq9xgmVydIRNrrW2ICiLpFJVd6JCFJ+Svm0XKz3FUOvVuIhjmHZD3RQK/REkc6RU3vtIWrnV6M8E5CMLf7K0JFp5kGMllEijNKJcNeS60gxuYRUKitpSIYCWageRAXzwX/+thc8K32CPTDbNSnpNaCZ293nJzsy4isf885nzzf0IKmztNV9WEqkuGwSAJbtDkbGQhiD9SVfMHllwRsZqrpmgTYxy55kagEhmLrvl0OpM
+X-HE-Tag: 1755213763-105886
+X-HE-Meta: U2FsdGVkX1+hpoXh2bbEtiS5ap07DenpBKdJHHQQYIv4eErpY9oSlBggQOZz99bbgtoGFwyJAKPbJY0TNZiYKk7FpFRkFY1Ir5F/gdnPqGmhGKK5Bp3dQvWpORNpWHPc3R0ijjNvdj0ftRJVNmu4UjjTpgkciByEXyAOTV8+3qGvGv1JaVvlnAm+nz7zrPiH4JetGGmC3wLhdHTW5Z2IOnw1RzYjMTo5hRAZ/BFBl5yDwWEqf5B94i4aoPf7pVlOkt4PtqfFUjweG8G24bKE6nuLqAIAZbwTJWhaipsXVGtd4R9jETdx4NWuo+gC+8rzY8hhyPQO4wbqoWIYuohocKDm0Ko2ZH7LR0QNW2lENNSi5sdKgoC8hYNazYHU1+2Z8By5uD9bpOYwUcFKCkpMIzNfTZ5HGKAYqKem8JNcZ9GrIW2wA9tfH3jT+kY1qXMH3K4616+JLQtuRiwZB2Qz76oC56lP4MGyXl4hulu9ERn+Ms8Fs9W1CojVwBhQivMXBc+cbD+BqaaG567JE4LScnHD3QUQACS9CLlbhwEx8/4UpE52V5hR/t08ub3AQbakscprJvrFHr2Yv0xcQgXC8pRW3TCiAs1jLT/R3WAkqVw7v6CiPaVpMPNR64ZioUcz8btdJGcYw70aMNzQjKskDq+aii90Ln2C53Dl7zb6mTNtFYhjyvHD5DgFJz7twAZAkvZTKrW+DZMFLJhIklpeBp2t5q0W2u0TNNb51rNsGNYn1QAINBZg75PO1otIz7zHklu+RfLi0PP32YWBd6H6D8EASkABfzDHtWQylh6+90oasJhLLOZJLUQn3NgzcZUvrCSbzbJXQe7Y6bpIF8IR8QVHJ0W4QrTSdD7ScEc0I+EvNwCO0hvHmW3ek7QggAfqfssQV86DSG0teLsLpGpyT9CEuwJ0RD5C2psJeGH1hEOrLkyVtV5E2Q81zLL7t2KPIwfPIjfqAUg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,38 +121,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 14 Aug 2025 21:55:52 +0800 <zhongjinji@honor.com> wrote:
+On Thu, Aug 14, 2025 at 3:10=E2=80=AFPM Shakeel Butt <shakeel.butt@linux.de=
+v> wrote:
+>
+> On Thu, Aug 14, 2025 at 03:00:05PM -0700, Shakeel Butt wrote:
+> > On Thu, Aug 14, 2025 at 08:08:41PM +0000, Kuniyuki Iwashima wrote:
+> > > We will store a flag in the lowest bit of sk->sk_memcg.
+> > >
+> > > Then, we cannot pass the raw pointer to mem_cgroup_under_socket_press=
+ure().
+> > >
+> > > Let's pass struct sock to it and rename the function to match other
+> > > functions starting with mem_cgroup_sk_.
+> > >
+> > > Note that the helper is moved to sock.h to use mem_cgroup_from_sk().
+> >
+> > Please keep it in the memcontrol.h.
+> >
+>
+> Oh is this due to struct sock is not yet defined and thus sk->sk_memcg
+> will build fail?
 
-> The OOM reaper quickly reclaims a process's memory when the system hits OOM,
-> helping the system recover. Without the OOM reaper, if a process frozen by
-> cgroup v1 is OOM killed, the victim's memory cannot be freed, leaving the
-> system in a poor state. Even if the process is not frozen by cgroup v1,
-> reclaiming victims' memory remains important, as having one more process
-> working speeds up memory release.
-> 
-> When processes holding robust futexes are OOM killed but waiters on those
-> futexes remain alive, the robust futexes might be reaped before
-> futex_cleanup() runs. This can cause the waiters to block indefinitely [1].
-> 
-> To prevent this issue, the OOM reaper's work is delayed by 2 seconds [1]. Since
-> many killed processes exit within 2 seconds, the OOM reaper rarely runs after
-> this delay. However, robust futex users are few, so delaying OOM reap for all
-> victims is unnecessary.
-> 
-> If each thread's robust_list in a process is NULL, the process holds no robust
-> futexes. For such processes, the OOM reaper should not be delayed. For
-> processes holding robust futexes, to avoid issue [1], the OOM reaper must
-> still be delayed.
-> 
-> Patch 1 introduces process_has_robust_futex() to detect whether a process uses
-> robust futexes. Patch 2 delays the OOM reaper only for processes holding robust
-> futexes, improving OOM reaper performance. Patch 3 makes the OOM reaper and
-> exit_mmap() traverse the maple tree in opposite orders to reduce PTE lock
-> contention caused by unmapping the same vma.
-
-This all sounds sensible, given that we appear to be stuck with the
-2-second hack.
-
-What prevents one of the process's threads from creating a robust mutex
-after we've inspected it with process_has_robust_futex()?
+Right, we can't touch any field of struct sock in memcontrol.h as
+noted in patch 6.
 
