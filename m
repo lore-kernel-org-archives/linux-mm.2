@@ -2,176 +2,126 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D4ED3CA0EDC
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 09:15:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 10D29CA0EDC
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 09:16:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 712D590011D; Thu, 14 Aug 2025 05:15:35 -0400 (EDT)
+	id A247390011E; Thu, 14 Aug 2025 05:16:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6EAE1900088; Thu, 14 Aug 2025 05:15:35 -0400 (EDT)
+	id 9D496900088; Thu, 14 Aug 2025 05:16:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6004C90011D; Thu, 14 Aug 2025 05:15:35 -0400 (EDT)
+	id 8EA7490011E; Thu, 14 Aug 2025 05:16:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 48589900088
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 05:15:35 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 12BCCC0592
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 09:15:35 +0000 (UTC)
-X-FDA: 83774805030.28.BCA8521
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C24DC100006
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 09:15:32 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VlUbxOPf;
-	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DD63900088
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 05:16:52 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0230D1177F9
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 09:16:51 +0000 (UTC)
+X-FDA: 83774808264.24.3876D7F
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E502680009
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 09:16:49 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CIBQYbD1;
+	spf=pass (imf02.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755162932;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1755163010;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pdq1zJqnP2uAEiZ7qSEJPdjozc60JgkfexDjAUfx3j0=;
-	b=upiCdhClO2C+GWtOYXfAS9F6BNxxc61BizfMlYfUB7UDUTAz+PhrglNCM33lA4X37hzLZj
-	bl1M/LbA2bfaYcy1WLqmeOoFnlzU7FdP5rKq58hWcJYPVFfCrNVwKTw0Z6CWyWH/6SjBqI
-	S+df5ooFh9iMguxI0PcVoaieGDJquqU=
+	bh=maL8ja7snbyxSg/aB0udz/2XPVl8dYyS2NvjcHhRBsU=;
+	b=q00JzzcrbVgWsEp5c5JQ8j3kP69U+5tf9PyGBjfzh4jOkGfnPHssd4einZaDlOOLgYPwGB
+	m/QBY4r1NZmxVxJV171T5+JDjzTuZAQX1WprcN0sfScxDmdVp9OfDG2/ykqEtVF2dwAd20
+	8njd0g+P2596GHmYQokUFLK3C3SAspk=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VlUbxOPf;
-	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755162932; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CIBQYbD1;
+	spf=pass (imf02.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755163010; a=rsa-sha256;
 	cv=none;
-	b=Fu++aromrieXesUXx6hRhWZoi2X4AXFDdjOZwKSDs0Q/x4GFv8A8qS/brzE30TyuMk3nQl
-	z8w82M5QNq+HBjN5kaP7IfhkQ73IOI4BdsR3PRv8JljI7UiOc+cTxsSOt8qKWvrp2CBf02
-	N4O/FxzLdxmicOlcezAu+2HubPPKPFg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755162932;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=pdq1zJqnP2uAEiZ7qSEJPdjozc60JgkfexDjAUfx3j0=;
-	b=VlUbxOPf3iefE+5LTRCnko650f4uX/cdWOqS73P1I101Hx3dkVHBqvXbqFbbi7m1IlUdMb
-	9fOApkYnfNwQsKDOR5YuMhVpRRfGdFCA/M4G/zoL1FzGFaxyHyEhRId2c+QBpL1h/WmcnM
-	ymASOjYwQtG/CSnueacGZAoX1HN9asE=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-377-swg5fHw0OEKRCv7bzYv1XQ-1; Thu, 14 Aug 2025 05:15:30 -0400
-X-MC-Unique: swg5fHw0OEKRCv7bzYv1XQ-1
-X-Mimecast-MFC-AGG-ID: swg5fHw0OEKRCv7bzYv1XQ_1755162929
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3b9edf332faso269475f8f.3
-        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 02:15:30 -0700 (PDT)
+	b=TYtPOLNoyZr4rUD4MXz95EgK5l61GVZGb8F7VUKoTL5h9zl3xS9iQ4upBkNO0GTlRyd244
+	EjZP81X1VucCx6M0QRN58IVejyAxvaMs3IIQA8zyZqTsFZn6XeR6P6027yPQDR35bjrIlV
+	ldaXVXR+UjZ25NZeV/hx57NqQ5PB/sI=
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6188b70abdfso994256a12.2
+        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 02:16:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755163008; x=1755767808; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=maL8ja7snbyxSg/aB0udz/2XPVl8dYyS2NvjcHhRBsU=;
+        b=CIBQYbD1uQspsNpbjmuzbPjD2YqjncUK1zMFTSBF3jsK/eoC6nImOZh0ymWEO2n6KX
+         sQXFTPXOjwlYFbJSstpHM+LtDzOvxEUQvcUpcCa9UZmcPU/NDsFNOlfiP4jOl8ydhrco
+         05xbnU2ao7UC+oF1ARtxSLmSXuBvvraaqtIj5gzweuEOk/QG5Az74sLPzlIKC7YwMshn
+         JKE/0Zksu1SoQcM+StsHXaWWh+dorUamKDKTIjo2vkTNeOXvmN/a21qanS+yRe8khNxf
+         8FUnsfocySlXwDQoYBYReS046af67lFWrrFFoeGVMrybhW8N+GpwqW3+USzp50VovnbE
+         bvoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755162929; x=1755767729;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pdq1zJqnP2uAEiZ7qSEJPdjozc60JgkfexDjAUfx3j0=;
-        b=R90mwIZbkzpOwcVRCz2Xxssu+6r+hROF1ugU5x3ffkXg9eZHOt2Jexy0Ph776j3gjN
-         p8O3H4wJ0JtNLUpoZXv0LCi93V5tcx2X4/F3DtXbvAwvzBs3fkX2vb6g8o5G96UXoLrw
-         i0guGXW/rRjh/lAtHMa9pklClOucFGeLxYw6c+udE7OJxL3J3RwsqX2MwIdUXlFwz9C3
-         p7nYDsXS7BAUenpNdAgzwkZLvWM2zXTeAxormMoeir7Nsk/QHpiIRF0Z6d8IWkhokBks
-         fBPNrCuZNfL6shUgoq2ezpSS2+mh9s+ZpV+he6oK3HKS4mukngXFNdvb8h622DY+Ilfg
-         vhPw==
-X-Forwarded-Encrypted: i=1; AJvYcCUy0XVQ3jerYnoKXcrv4gddKDhPifRdM+0P7Ql+odXeudsmXbgyIf/TIprTE0AhugU9GCci2crAGg==@kvack.org
-X-Gm-Message-State: AOJu0YwJBnLxCFOWCg1+AEFw/E8+ybpDrfFNMBGP6UoQneMvFdrZP4s4
-	cfH4UY0WSoS2dHmgdGF93b0if3Ros8X73efmVIa0N+oPUgPvYfSiphb+O49aUQCfbdT5e0PPE8L
-	QH2nWedMZ6OgFF7iwu4fa2KTMMZwBvx5aikT2VY+ujqOcgfkWopj3661WWYsF
-X-Gm-Gg: ASbGncvkKx3qcJ7O6I8ZNNUM/npzQwfAyWNqN82FFQ8AFbQJgo7OA80hLktwzgrSJ5h
-	8p4cF1gmMz2yBKDmHa0tLCCcnIhbQxHKogfNuLN2QcOZjo8ZFwBn5y7sZfvHwb1RjQJR9H6u/hv
-	mHoCa8kfthAjVEgvxLoaKzX9v34pSNYmv+WWstHvSfRCl30q9ym6QPIlG6tCsG2LICV5syHmn1r
-	90JBUQmxEnMCOX5iMlwTkt9irua3+6DIeRu2naP2r6jgL2w2nHhYxzr/rWwbgCfqce4M/CzHTfy
-	FG5b+dC8CtJEPIpSGlAd2zhH7nj9s7uUDxCWPJ2/lEZbBWnC5eO+8uwz74BRmzmp0UIY3UAgAGs
-	0MLwnc5F4os9kkeTvQj81o2DOccUPJlfn31TYfiStvOi7hCyh1gv6qCO2vHpeo67Wv18=
-X-Received: by 2002:a05:6000:2884:b0:3b7:99cb:16f6 with SMTP id ffacd0b85a97d-3b9fc35fe36mr1949810f8f.53.1755162929388;
-        Thu, 14 Aug 2025 02:15:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEcrX2+PzCY0XZvo29SUS3M4OEb/0+9x7J+b/dmSOc+iPiPpMRSSVKrKAMc+n8yaXSCp4+hKw==
-X-Received: by 2002:a05:6000:2884:b0:3b7:99cb:16f6 with SMTP id ffacd0b85a97d-3b9fc35fe36mr1949782f8f.53.1755162928978;
-        Thu, 14 Aug 2025 02:15:28 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f44:3e00:9fca:7d89:a265:56f3? (p200300d82f443e009fca7d89a26556f3.dip0.t-ipconnect.de. [2003:d8:2f44:3e00:9fca:7d89:a265:56f3])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a1c71068csm13649375e9.29.2025.08.14.02.15.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Aug 2025 02:15:28 -0700 (PDT)
-Message-ID: <7b8f4380-d74d-4498-9e14-b1302f1dec0b@redhat.com>
-Date: Thu, 14 Aug 2025 11:15:27 +0200
+        d=1e100.net; s=20230601; t=1755163008; x=1755767808;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=maL8ja7snbyxSg/aB0udz/2XPVl8dYyS2NvjcHhRBsU=;
+        b=DGS+j5mASEGIAOz4WU1m+xVWhieXD3Jb0MwAjaM+IvlIlzJuKqCW4xLXvQyFeo54cd
+         nXrh18BtldMM0iSQTKy+5DqFBZWkxYr8nEhxB9Xhr+vnUihfsZ83alBPBYFrjVKKOBWO
+         Tem4BQZy6oZf+tTHBT72FRxgtPNl7iqIrVYIIkhUtEAdcZ5E/K3m0qlBbewjXVcMTLem
+         pMVHH/IO5jxDSn3iyfY1K0YrL98XwwIE40mtP5AW2wjQkQPmFuZjLTwvvxDL4td0EuO0
+         b4JBYk4s+C4+QJttnU8z0zIUdegmQ8/v9q2WKDOgL99J6IV95eKJHqyrkGTujs+uaplx
+         JJvA==
+X-Forwarded-Encrypted: i=1; AJvYcCVZzeJAOu2g72PmQbFnsxMUShEZuRxf1tBlzfyU01uLeDYiqiuGSst2c0WYgCtfGRN4+xdcgj1Xqg==@kvack.org
+X-Gm-Message-State: AOJu0YzInc/b/oIz8TBxYiv+kpNFVRsWvLc2tgX/20sGOGi7jRh5htjQ
+	dA2hZdzMDXNQCmB418oAQwm+XER9yN7Q4DldEvxeGf45norbKwS1fNLv
+X-Gm-Gg: ASbGncsxaUlil+okN8RJlsxu6FrQyhPIl47CKdCV2/drBxbL3t1uepuzSxhjC3QQlMr
+	JANBBpeui3/eUrNWOL9/noT2wl8DrSfapLwgAQL1RyGcDnsw6NzS32giFdEMGmllp8nCVkcS3bL
+	LcuVrx/8uCakWIwTttQpvWcvmlMcyuR/84qLYKmXYv8tXuctTECxtaJOKlRLHpMPaVnWhJ9VlKb
+	OS3lpiJ6qTSs0loRw8KK9fjgczX9a3ZqNhRPTP9brTlOEaXXJqDCi42K5KVcHGf1GDr1thZYTgh
+	oXIMyfDA9ZtvLkJskM3BmoYXf/sGS/4Qqwyp4y5DzTScnT0Jqi2ASXhKNE6ra6QGWOm50LWDXZU
+	jNSUFKCZxzvR14uYptKhV5A==
+X-Google-Smtp-Source: AGHT+IE13oXUtnMs/Hs8gStTap5qVhOyy5FFDOfkTObdSMHP/qfsbCsjE7ChNeDnKH/AZiw3TDdy+Q==
+X-Received: by 2002:a05:6402:90c:b0:618:2011:cad4 with SMTP id 4fb4d7f45d1cf-6188b92f8camr2177926a12.15.1755163007905;
+        Thu, 14 Aug 2025 02:16:47 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-615a8f245c1sm23289384a12.22.2025.08.14.02.16.47
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 14 Aug 2025 02:16:47 -0700 (PDT)
+Date: Thu, 14 Aug 2025 09:16:47 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Zi Yan <ziy@nvidia.com>, g@master.kvack.org
+Cc: Wei Yang <richard.weiyang@gmail.com>, wang lian <lianux.mm@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@redhat.com>, linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v3 4/4] selftests/mm: check after-split folio orders in
+ split_huge_page_test.
+Message-ID: <20250814091647.6prozsywma7qlugm@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250812155512.926011-1-ziy@nvidia.com>
+ <20250812155512.926011-5-ziy@nvidia.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: =?UTF-8?B?UmU6IFvlpJbpg6jpgq7ku7ZdIFJlOiBbUEFUQ0hdIG1tL2h1Z2V0bGI6?=
- =?UTF-8?Q?_early_exit_from_hugetlb=5Fpages=5Falloc=5Fboot=28=29_when_max=5F?=
- =?UTF-8?Q?huge=5Fpages=3D0?=
-To: "Li,Rongqing" <lirongqing@baidu.com>,
- "muchun.song@linux.dev" <muchun.song@linux.dev>,
- "osalvador@suse.de" <osalvador@suse.de>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20250814082950.2888-1-lirongqing@baidu.com>
- <7e88d01a-10bb-4edb-9010-f9c0bca31a46@redhat.com>
- <8db5f7f3b66a40af8abf921290db42ab@baidu.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
- ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwZoEEwEIAEQCGwMCF4ACGQEFCwkIBwICIgIG
- FQoJCAsCBBYCAwECHgcWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaJzangUJJlgIpAAKCRBN
- 3hD3AP+DWhAxD/9wcL0A+2rtaAmutaKTfxhTP0b4AAp1r/eLxjrbfbCCmh4pqzBhmSX/4z11
- opn2KqcOsueRF1t2ENLOWzQu3Roiny2HOU7DajqB4dm1BVMaXQya5ae2ghzlJN9SIoopTWlR
- 0Af3hPj5E2PYvQhlcqeoehKlBo9rROJv/rjmr2x0yOM8qeTroH/ZzNlCtJ56AsE6Tvl+r7cW
- 3x7/Jq5WvWeudKrhFh7/yQ7eRvHCjd9bBrZTlgAfiHmX9AnCCPRPpNGNedV9Yty2Jnxhfmbv
- Pw37LA/jef8zlCDyUh2KCU1xVEOWqg15o1RtTyGV1nXV2O/mfuQJud5vIgzBvHhypc3p6VZJ
- lEf8YmT+Ol5P7SfCs5/uGdWUYQEMqOlg6w9R4Pe8d+mk8KGvfE9/zTwGg0nRgKqlQXrWRERv
- cuEwQbridlPAoQHrFWtwpgYMXx2TaZ3sihcIPo9uU5eBs0rf4mOERY75SK+Ekayv2ucTfjxr
- Kf014py2aoRJHuvy85ee/zIyLmve5hngZTTe3Wg3TInT9UTFzTPhItam6dZ1xqdTGHZYGU0O
- otRHcwLGt470grdiob6PfVTXoHlBvkWRadMhSuG4RORCDpq89vu5QralFNIf3EysNohoFy2A
- LYg2/D53xbU/aa4DDzBb5b1Rkg/udO1gZocVQWrDh6I2K3+cCs7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <8db5f7f3b66a40af8abf921290db42ab@baidu.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: kCyaqeLTDuKSIOm9i8PYTYLhbbXijb3eZFHEkaiUP1A_1755162929
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C24DC100006
-X-Stat-Signature: ffdwayxoee7i7oe614cqqugrq7puzsnh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250812155512.926011-5-ziy@nvidia.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-Rspam-User: 
-X-HE-Tag: 1755162932-986047
-X-HE-Meta: U2FsdGVkX1/ZDuYHlsbR6QftZaCkIlsscIg4Ko12gI7FBfGLtZahKxcOf5M6FnA0Gm0EImHlX5N5qHibTDpzeJeVJKxZgjQ54yfmv2eCeSOTf5w9a4L34/t0/2sRYp2w9sOnhiAuZ3RIW7ew4if4YVa8LznqeOz8GfJhWPpMWiyWuJoBWHckt/4De5gPX4ktK0B42AzSVWQ004C96D+fCv45ynPgSDdt2ujk5KpLE4S50DSizf5sY5+H2XoevpwAg07tcF8pgOkVJ8Y7QrQsjZkwPQ4YC5tqllcTOqa9tArH4MCAos5Cc7IIe3FbQ0MvmwXDa4RUM4bTc+AzjPmnlFtAxUKBofii1wDoHOL4/n/iDS7ibXclT9rdaDw0eMjDyr69bRKN/LcGPfF8ZaijRd/KXKRD98cqRspSW5RDh1dz46VzIGm8wPS6h33IAmj8MTfjTaF4Oo2HD6QWTIRcZa/fSe98DBQKG50owKyHqmFB3q/3+7lqBtIHa1CO+9osoHe3T2SEejRf4Gd6f0Mi1emHK9R3QKvsMV5+2rgbVZIuoLdD/x/B8pNIBQC2+7YjR0OXWxtVAeuXKvJDjOj7DqW4OcIaArxE/ldapSPZingCxnDFG9Im5TZ1cazyeK02KQoJaEatnbFtBF1YXLe2o+Os8gK6CuwL3PAMXtYhWfgMKIMDYjvYAzaPyYvwYyGhbPNiteEsdKByWdbTL66Y9fSFAimbhJRSHnf2shQIdtv+9+3HLCvNqI8P9mj4uuOiNg9VfsUuDZ5x0Z/J8uzDJRBn9q+cibBu9n9de6FtuwCXamaywwBT5l7bF34U54izS3dhb0JfNFx2YDb9QYKqLFq72zW+mRngIrQ44V1ST4Uj2HGsbHdKhUfhdlecQIVhwthLNR7bhkpT5WO5ESfOz/U5ZGHg8znkmu+i2cX6cm5uI1/RKEpYHcwOWrKedzwsFbxuxCpq2GAQ8zYvhpm
- ewzvlkpG
- DtmCLPYIPlX/vURfBoFV9k09Vu39e4EQ8qwrIUE2fxLqtvWefGAzkYx/Q/Ay+wUfpjTpc5Uxt7HBjYg1/4pkMTODqkgtg/K/LVXpHSeCS3k7Hdi3K3xtlzrq9BBGopEHtySz8sVz9A8K3plNcjW/UOaWr1cr40DUUmo5kSZse4s1i94E/01FqaWPA/WfLSZlmPfa09y9Soj1fNplpteyjTGJjC4ocR6PMxnIiv8NA4Wb11YIWvIaJQipD+86bcfYxC/UiHohfEXdYyifk+yZQZhTCWVWqmdGefWkuGFIVlStBYKjDkt2f3BUo/GLHYxOTrcJCTOoK3XFz870xpKIoEzMwpMHAc+DqDrV96yiNDhboZcQSokxkj0IdQXODikXwv3eKgA4b5hXOV2d6VXz97O+//vC6UQO8wR5tt5DpZSqrBLoyTzV7e4wk5T7Kk3iHel+A3D2+BngdRBe1qD55M/uxRECJJ0jdcidd6UgRAplO2c33Kat/3Q/lbT6IYKvXzTzP09ptle8SOSeinupCVmwTffCa1XopmG+8PJjx4xmFLR96nkiCTZjHx8kV4fdH6EKL5a6kIcfyNM4iD0AX4hDuo+HumsNt5GN3hhHNdojeSzo2s/KGe2NrO0EgzyifVmKi45KKZcVN9lrn0G+8ErQEfaKwDA1aWp80zGfI2Nab+C2EXDJ5dszosw==
+X-Rspamd-Queue-Id: E502680009
+X-Rspamd-Server: rspam06
+X-Stat-Signature: srs31w67xgaprb7fup7ssui3xqf3jzdh
+X-HE-Tag: 1755163009-273031
+X-HE-Meta: U2FsdGVkX18t4+KALXf0kJrTa6mTK4QmItosh4uvtwNgyHd7dv6Aeds7kcMwnt4fVEOnBJUOxoZc57bYHYyuxvXaUsj2Lj3ji+LZDrp0M5fl/ujSADU8iK2MnIfaTFa2FEciMYwMallGLHQkFdetybhU/716kKyXCPr7kF9J2TMNaXoVkUv9Sx2xQ5fInOBd1ritipCOzigb+ikUz+7wyIvXpuwj4pmtwfYDSSyyuOyDkVVQMHYs/6L5U02EOBrmOyDgzsyWXKZK4qqkDAxAqGaX2WoUQPN4juTn2k8koZs6CBgA3s20tSMzpwWRp0u6VxFpimzogsb4H2oMylOCIQnQF+/76CXjqmvXqihICnMC2a7XyA+tiFx2zAICD1XlgSNVsxCFsDLRspkUn5Fxb3uq/pG+GLEtJ+hC2o2sIv5fcWnwblvKPYgFedJrW6kTkvx6gm2CNzxZsvbolO+Cm2wt47VWdrwxa4k49cxOR4AE02U9uSmcCxLg2FTXWBO7fZ5oANN+h5WnzdYUE6POU6ElB15J9MrD2lX3GVYD2zcJ6fNEuJd35XW4v3GxHPIBsnbSQ3xovR4NwIAHjJpwL7jOAga0l6XvmrobfgI4fkr2Gf9m+1kMazNWRzKEbx1Cwu/vhICrqqmUjq/aw6ZG364avCFg9ZXx3x+NS44xklKG/dgfBPAn/LQrhmorimDfYVes5h/ZqBC927pahx60mZtrOz4JSz3RY86KL0KcQ9PW2dVV5s8+c7t5xjK+oudKQ13Y+vxD5INibSydNCPTylcIysGrcgdu2RF5Km8zLZcQRXX0Hxv5jxbtmzeI/Nx0RiSajrymqlqcObgZvpRWj8PQvzo78AIcduJtGkwD2fj0p7UcbEU3AhysuFjSdRkzVd0q1kCzGE0c2t6yj7GIlD9izn7m75AMSZcFd2dNpL94DbMb/ERcqi0dpOXMbj2kwuQEOwEwp2bxG+LQu9B
+ gy9Yr5ll
+ gySbBdP5eBKWlb+pJBSlpYj8hP5Zw512CReHhP6v+NQFz9NFd87ILOHT8BEc/KN9U1f7c2yYua0Pzwjso8HFEz2EFdD613MU9zdhbcJKgTxWWGDaW4iS9jWUwBRVKwj/+aGk6OlNMufeO2GW5AOE8rQ1KKYzcE3wqbK9826rp3d8rIaznO9jGlP9hBt5m3PCSZHTKuDvHsPP9LYLrKE3UMGL7Fl51X9KU5jiQ4QYrEFjfAGSv03J13nWgAB+m4C/K7EkNk6Ny7Y699ZE7QzbqTykiBWoL45ASuUi2uHY1hVQAHNGyxG1Pxb7Rek86UoyUWa5pEznqRyYodmlFoffcmVTiaN7O99wfPCqXbKtzcux4XSuAWaOcEwPg1ltqtw5h8VOCxIJRSFfBal4GBDPzxdWfm20HGgZrxspOxyTzMmX/8XNv2F/4ObGYMXelV8Vhp07e0zqEXpk+KECQiReB2WpbNV8eExle6DG4tho3FOtyLc/HGfp9qwLJhGB8T0X89QD3eiG/O2LcJSGpj9IO+U0bN7/GSpUQDNKcC1MLMRnoKhKuXSX2U+/naj7Yt6HaE53qQGkKQUrVoy8ivbxx53GZ4yAyG8FnhxvW5zZ2SvpWZjfeU7fqZmANTb1xLOYndk562FS8SKddpCOKnLK1wH1BfPrCvdFDjPoXEnmXzseh3QeBwaaR20jAOYwZ2ix0ei5KpnzFdH1vcWZpmpuICoLpw52zc255xHFam8EJtK5gvvnIZaOytCXZQnnpXTaSGsVnIK2xCl655dZntPyUH1Ifxg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -180,26 +130,231 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 14.08.25 11:12, Li,Rongqing wrote:
->> On 14.08.25 10:29, lirongqing wrote:
->>> From: Li RongQing <lirongqing@baidu.com>
->>>
->>> Optimize hugetlb_pages_alloc_boot() to return immediately when
->>> max_huge_pages is 0, saving cycles when hugepages aren't configured in
->>> the kernel command line.
->>
->> Do we really care?
->>
+On Tue, Aug 12, 2025 at 11:55:12AM -0400, Zi Yan wrote:
+>Instead of just checking the existence of PMD folios before and after folio
+>split tests, use check_folio_orders() to check after-split folio orders.
+>
+>The following tests are not changed:
+>1. split_pte_mapped_thp: the test already uses kpageflags to check;
+>2. split_file_backed_thp: no vaddr available.
+>
+>Signed-off-by: Zi Yan <ziy@nvidia.com>
+>---
+> .../selftests/mm/split_huge_page_test.c       | 85 +++++++++++++------
+> 1 file changed, 61 insertions(+), 24 deletions(-)
+>
+>diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+>index 3aaf783f339f..1ea2c7f22962 100644
+>--- a/tools/testing/selftests/mm/split_huge_page_test.c
+>+++ b/tools/testing/selftests/mm/split_huge_page_test.c
+>@@ -26,6 +26,7 @@ uint64_t pagesize;
+> unsigned int pageshift;
+> uint64_t pmd_pagesize;
+> unsigned int pmd_order;
+>+int *expected_orders;
 > 
-> I find this when I see the boot log, I think this log is unnecessary if user did not configure hugetlbfs in kernel cmdline
+> #define SPLIT_DEBUGFS "/sys/kernel/debug/split_huge_pages"
+> #define SMAP_PATH "/proc/self/smaps"
+>@@ -37,6 +38,11 @@ unsigned int pmd_order;
 > 
-> kernel: HugeTLB: allocation took 0ms with hugepage_allocation_threads=32
+> #define GET_ORDER(nr_pages)    (31 - __builtin_clz(nr_pages))
+> 
+>+const char *pagemap_proc = "/proc/self/pagemap";
+>+const char *kpageflags_proc = "/proc/kpageflags";
+>+int pagemap_fd;
+>+int kpageflags_fd;
+>+
+> int is_backed_by_folio(char *vaddr, int order, int pagemap_fd, int kpageflags_fd)
+> {
+> 	unsigned long pfn_head;
+>@@ -49,18 +55,21 @@ int is_backed_by_folio(char *vaddr, int order, int pagemap_fd, int kpageflags_fd
+> 
+> 	pfn = pagemap_get_pfn(pagemap_fd, vaddr);
+> 
+>+	/* non present page */
+> 	if (pfn == -1UL)
+> 		return 0;
+> 
+> 	if (get_pfn_flags(pfn, kpageflags_fd, &pfn_flags))
+> 		return 0;
+> 
+>+	/* check for order-0 pages */
+> 	if (!order) {
+> 		if (pfn_flags & (KPF_THP | KPF_COMPOUND_HEAD | KPF_COMPOUND_TAIL))
+> 			return 0;
+> 		return 1;
+> 	}
+> 
+>+	/* non THP folio */
+> 	if (!(pfn_flags & KPF_THP))
+> 		return 0;
+> 
+>@@ -69,9 +78,11 @@ int is_backed_by_folio(char *vaddr, int order, int pagemap_fd, int kpageflags_fd
+> 	if (get_pfn_flags(pfn_head, kpageflags_fd, &pfn_flags))
+> 		return 0;
+> 
+>+	/* head PFN has no compound_head flag set */
+> 	if (!(pfn_flags & (KPF_THP | KPF_COMPOUND_HEAD)))
+> 		return 0;
+> 
+>+	/* check all tail PFN flags */
+> 	for (i = 1; i < (1UL << order) - 1; i++) {
+> 		if (get_pfn_flags(pfn_head + i, kpageflags_fd, &pfn_flags))
+> 			return 0;
 
-That's valuable information to add to the patch description :)
+The comment in is_backed_by_folio() is more proper to be in previous patch?
+
+>@@ -198,6 +209,12 @@ void split_pmd_thp_to_order(int order)
+> 		if (one_page[i] != (char)i)
+> 			ksft_exit_fail_msg("%ld byte corrupted\n", i);
+> 
+>+	memset(expected_orders, 0, sizeof(int) * (pmd_order + 1));
+>+	expected_orders[order] = 4 << (pmd_order - order);
+>+
+>+	if (check_folio_orders(one_page, len, pagemap_fd, kpageflags_fd,
+>+			       expected_orders, (pmd_order + 1)))
+>+		ksft_exit_fail_msg("Unexpected THP split\n");
+> 
+> 	if (!check_huge_anon(one_page, 0, pmd_pagesize))
+> 		ksft_exit_fail_msg("Still AnonHugePages not split\n");
+>@@ -212,22 +229,6 @@ void split_pte_mapped_thp(void)
+> 	size_t len = 4 * pmd_pagesize;
+> 	uint64_t thp_size;
+> 	size_t i;
+>-	const char *pagemap_template = "/proc/%d/pagemap";
+>-	const char *kpageflags_proc = "/proc/kpageflags";
+>-	char pagemap_proc[255];
+>-	int pagemap_fd;
+>-	int kpageflags_fd;
+>-
+>-	if (snprintf(pagemap_proc, 255, pagemap_template, getpid()) < 0)
+>-		ksft_exit_fail_msg("get pagemap proc error: %s\n", strerror(errno));
+>-
+>-	pagemap_fd = open(pagemap_proc, O_RDONLY);
+>-	if (pagemap_fd == -1)
+>-		ksft_exit_fail_msg("read pagemap: %s\n", strerror(errno));
+>-
+>-	kpageflags_fd = open(kpageflags_proc, O_RDONLY);
+>-	if (kpageflags_fd == -1)
+>-		ksft_exit_fail_msg("read kpageflags: %s\n", strerror(errno));
+> 
+> 	one_page = mmap((void *)(1UL << 30), len, PROT_READ | PROT_WRITE,
+> 			MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
+>@@ -285,8 +286,6 @@ void split_pte_mapped_thp(void)
+> 
+> 	ksft_test_result_pass("Split PTE-mapped huge pages successful\n");
+> 	munmap(one_page, len);
+>-	close(pagemap_fd);
+>-	close(kpageflags_fd);
+> }
+> 
+> void split_file_backed_thp(int order)
+>@@ -489,6 +488,7 @@ void split_thp_in_pagecache_to_order_at(size_t fd_size, const char *fs_loc,
+> 		int order, int offset)
+> {
+> 	int fd;
+>+	char *split_addr;
+> 	char *addr;
+> 	size_t i;
+> 	char testfile[INPUT_MAX];
+>@@ -502,14 +502,27 @@ void split_thp_in_pagecache_to_order_at(size_t fd_size, const char *fs_loc,
+> 	err = create_pagecache_thp_and_fd(testfile, fd_size, &fd, &addr);
+> 	if (err)
+> 		return;
+>+
+> 	err = 0;
+> 
+>-	if (offset == -1)
+>-		write_debugfs(PID_FMT, getpid(), (uint64_t)addr,
+>-			      (uint64_t)addr + fd_size, order);
+>-	else
+>-		write_debugfs(PID_FMT_OFFSET, getpid(), (uint64_t)addr,
+>-			      (uint64_t)addr + fd_size, order, offset);
+>+	memset(expected_orders, 0, sizeof(int) * (pmd_order + 1));
+
+I am not familiar with split, you change it to split on each pmd_pagesize from
+4 pmd_pagesize. Is there any difference?
+
+>+	if (offset == -1) {
+>+		for (split_addr = addr; split_addr < addr + fd_size; split_addr += pmd_pagesize)
+>+			write_debugfs(PID_FMT, getpid(), (uint64_t)split_addr,
+>+				      (uint64_t)split_addr + pagesize, order);
+
+                                                ^--- here should be vaddr_end
+
+Curious why not (uint64_t)split_addr + pmd_pagesize?
+
+>+
+>+		expected_orders[order] = fd_size / (pagesize << order);
+>+	} else {
+>+		int times = fd_size / pmd_pagesize;
+>+
+>+		for (split_addr = addr; split_addr < addr + fd_size; split_addr += pmd_pagesize)
+>+			write_debugfs(PID_FMT_OFFSET, getpid(), (uint64_t)split_addr,
+>+				      (uint64_t)split_addr + pagesize, order, offset);
+
+As above.
+
+>+
+>+		for (i = order + 1; i < pmd_order; i++)
+>+			expected_orders[i] = times;
+>+		expected_orders[order] = 2 * times;
+>+	}
+> 
+> 	for (i = 0; i < fd_size; i++)
+> 		if (*(addr + i) != (char)i) {
+>@@ -518,6 +531,13 @@ void split_thp_in_pagecache_to_order_at(size_t fd_size, const char *fs_loc,
+> 			goto out;
+> 		}
+> 
+>+	if (check_folio_orders(addr, fd_size, pagemap_fd, kpageflags_fd,
+>+			       expected_orders, (pmd_order + 1))) {
+>+		ksft_print_msg("Unexpected THP split\n");
+>+		err = 1;
+>+		goto out;
+>+	}
+>+
+> 	if (!check_huge_file(addr, 0, pmd_pagesize)) {
+> 		ksft_print_msg("Still FilePmdMapped not split\n");
+> 		err = EXIT_FAILURE;
+>@@ -569,9 +589,22 @@ int main(int argc, char **argv)
+> 
+> 	nr_pages = pmd_pagesize / pagesize;
+> 	pmd_order = GET_ORDER(nr_pages);
+>+
+>+	expected_orders = (int *)malloc(sizeof(int) * (pmd_order + 1));
+>+	if (!expected_orders)
+>+		ksft_exit_fail_msg("Fail to allocate memory: %s\n", strerror(errno));
+>+
+> 	tests = 2 + (pmd_order - 1) + (2 * pmd_order) + (pmd_order - 1) * 4 + 2;
+> 	ksft_set_plan(tests);
+> 
+>+	pagemap_fd = open(pagemap_proc, O_RDONLY);
+>+	if (pagemap_fd == -1)
+>+		ksft_exit_fail_msg("read pagemap: %s\n", strerror(errno));
+>+
+>+	kpageflags_fd = open(kpageflags_proc, O_RDONLY);
+>+	if (kpageflags_fd == -1)
+>+		ksft_exit_fail_msg("read kpageflags: %s\n", strerror(errno));
+>+
+> 	fd_size = 2 * pmd_pagesize;
+> 
+> 	split_pmd_zero_pages();
+>@@ -596,6 +629,10 @@ int main(int argc, char **argv)
+> 			split_thp_in_pagecache_to_order_at(fd_size, fs_loc, i, offset);
+> 	cleanup_thp_fs(fs_loc, created_tmp);
+> 
+>+	close(pagemap_fd);
+>+	close(kpageflags_fd);
+>+	free(expected_orders);
+>+
+> 	ksft_finished();
+> 
+> 	return 0;
+>-- 
+>2.47.2
 
 -- 
-Cheers
-
-David / dhildenb
-
+Wei Yang
+Help you, Help me
 
