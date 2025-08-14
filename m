@@ -2,116 +2,120 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DB2C9CA0EDC
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 20:11:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A8E50CA0EE4
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 20:12:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A2F89001D9; Thu, 14 Aug 2025 16:11:20 -0400 (EDT)
+	id 471389001DA; Thu, 14 Aug 2025 16:12:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 77A939001D5; Thu, 14 Aug 2025 16:11:20 -0400 (EDT)
+	id 421BF9001D5; Thu, 14 Aug 2025 16:12:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B7F89001D9; Thu, 14 Aug 2025 16:11:20 -0400 (EDT)
+	id 366C39001DA; Thu, 14 Aug 2025 16:12:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BC0E9001D5
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 16:11:20 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E6BC51DDDDB
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 20:11:19 +0000 (UTC)
-X-FDA: 83776457478.07.DB4B64B
-Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 04B4340004
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 20:11:17 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CyQzAFC7;
-	spf=pass (imf04.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.219.181 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 21E0F9001D5
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 16:12:19 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id F2DEE1DDC40
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 20:12:18 +0000 (UTC)
+X-FDA: 83776459956.06.45BD376
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf06.hostedemail.com (Postfix) with ESMTP id D2B0318000D
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 20:12:16 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=IdojiDFq;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf06.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755202337; a=rsa-sha256;
+	cv=none;
+	b=l2JbzMuVMgdT8QIBypXyXw0i+hGxCrjYl91sXEujl9ePewGjg1NwirsLQ53IoR/jO7ckP6
+	zRkp3efmR3ppmvO2xBissnHP/FOJYXbG2WHbRjrR/oyI6qBgvAfv8jOnEq1a4FFbejLO5X
+	za1tc+II41RSgirypFqkWwpj4TzM5V0=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=IdojiDFq;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf06.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755202278;
+	s=arc-20220608; t=1755202337;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uqQpJ45auHuyENf7Xrb4hjMMbZo4/kym1zJWi/LJlxc=;
-	b=BZh/GyIJlcr6HfiKWY1BeWAMJGorFHN/SXQD+zb4BmM4ORb/YixDo/AX/WOygyffB5yM7q
-	yDqePPPDW3LRS0Ru1apZDWzBvTvDt/82oEUdRgCMkJD7jgxaAPna0J3G0BSjo1EQwUQPLr
-	xXS8/bbJ0KrlXWLt7D/I/jFirHFi/hs=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CyQzAFC7;
-	spf=pass (imf04.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.219.181 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755202278; a=rsa-sha256;
-	cv=none;
-	b=5KN1euyKOx1vImY5HFnMQT0fWL9nYZ2bHEcieS40mFHxMXzy9WToqQ1eGDWI2VjRq3jbfS
-	mxBBO2U92YXt910a7BnF5KGMO0nQsG5tHnJLYh/PJfA79PkoNLkv25JkqhnwKerVu1B3zV
-	YPJRlnndAc48I1rG4LmlGYmpq0V919g=
-Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-e931c71df7aso1367227276.0
-        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 13:11:17 -0700 (PDT)
+	bh=vxzbcrq7nK91VwgR31UC0slmrQGlL/0X3fwR0ytXvYk=;
+	b=yxRjfjerdn4n617x9x6wnlCWmOTeoDSidHSY8HSrMrHZHES+gJwE6Q3x5Nwis4ULlHzUcf
+	HsUWBrw7CTbV97aDJHkQf/Bs2Uvcvk/D85NYmJtwK9cAhdvOdO9doqS/sKUStozPeozOU9
+	8HvNEna/H9Lo65Rcph+PsICY5PjfWSw=
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4b10957f506so18191601cf.0
+        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 13:12:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755202277; x=1755807077; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uqQpJ45auHuyENf7Xrb4hjMMbZo4/kym1zJWi/LJlxc=;
-        b=CyQzAFC7BjWMGh6wAjPq7vU9CKc0iQS3CE80+GoPBSV/1JKMmivJATgxXB7lrfkN0g
-         JAI1T4XnQIYICe1SQU8VfPh+9NoxWF2T512mK5+hDiPNZ+1dkddI+agOUyzWx4VNd9ge
-         1Iqs5LgB8/jfB992KbKb2DoO/wX+8Bn3q01KYFbhdRWfFCZ2XAB2w3pr7OI6T1+Nmdsp
-         q9uQ0s6UigSfU3NzInhGLkOIPSsOk4pR+NgFI/itFSEmzdJ/c06sJ900XtB39dS+DUIy
-         gqIsSjwUqb77H+Dyk4g7tqSLnH9GmHXUW74GXFaG3slXxjZHjbTFt9DgIbM+MHruK0L0
-         XjuQ==
+        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1755202336; x=1755807136; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vxzbcrq7nK91VwgR31UC0slmrQGlL/0X3fwR0ytXvYk=;
+        b=IdojiDFqnW2JGdewu0lpHNvh69b++PNltmrr8DUxbGGbAv1ye25WQ1XKqzq1EvKiSo
+         eZ8egzm7rxiqQJZ1mi4QC+zKtF3lImhLknyl3JEGrflhHemrARn6xScI579Oan08NaqE
+         gKxNRuChBkM9A0jxt6X3zrfQxuwt2tKf3IqJFsqKx09zde2/l2/uMHjmBaS/zi98MsjS
+         aedWFkwDAeByF36jD2mOpc9Zk/dgjFXoF7MiqHdqxvlI/hjKbCFGLSCgdTKSM7ahgHlm
+         jhQtu6DSAvrAIbdoG+T01Kk+zz4hBpj1MkrWXBCuXknxrAPuPBOqFWo/DnDr1uX6YpV9
+         vaaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755202277; x=1755807077;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uqQpJ45auHuyENf7Xrb4hjMMbZo4/kym1zJWi/LJlxc=;
-        b=LrkESlelFk3HsCyz70BHaoy7G7BsfWSCOOTVr05pi23SO5oDkcMgAQ/I6GdBdxTtha
-         SgjTLe456+gGtbckoTWFM/PGqz6DoD7N3Jk7VzGGeNvd+8TTxIo2kjR7IZXNg3Ny5NiO
-         8nOPpzJxPbb/mh1sh6+uzAgkPlZVgjmSOpBOzV6+odw0Y9ynIO8xGCGeD4etApXOHWD/
-         ti2MwzxMMbvGYmrbed3x9HbslkhrS25+tDVIOQC0kFdjPzaWKNw4rJ/QivxBye3daPlp
-         7xrtfCSm5M/HGz3pO/iRRVL0/E+UAT+nj3obaYfzMEkLmzl1iC7M1UuJVw/lFUuxqHmr
-         BYaA==
-X-Forwarded-Encrypted: i=1; AJvYcCU1nJc8A9s5bBTuoXwFdz8dwci4B7jpZ3Lnl0KgH1QTRVgMb0Pd24tHKm7vsOISDy5R/bkmEk38MQ==@kvack.org
-X-Gm-Message-State: AOJu0YzTAbjGFCngpk3Jj45x4zGPzcJTULh1JM7tJ9JslTYmzLVnE3le
-	ilwdnNGsDEPKqmT8uFhgj1kNh3Wdjq4Yjq+1rmTt29PGxB0iNVMNkDa7
-X-Gm-Gg: ASbGncuo3VG+Q58TPJDq7xGiDFI3teemU+6rJGjzXlOTtRoIlg77Brcm92xjvA+T4Bh
-	WBYpTxx+xOaxDqTxln53HC9PE/bNTYmxc50oqUGYFzDcJG/PKC7U1ydeJNKPGAUPD+fgRP8DzwE
-	TnMfg1YRZ5eoZg4PDfi/RCwwaLm5tm2Iy8p0/AVYNcQshAgGhyB2ygjU41XSEbVCQYICGVwTFMK
-	0Sy4JzXbtdIkgiqG8n39Dz4ikd9rJuoqmYo4dbca+LDq0bJBESduEzAYZ9MMJfE41H9j1H6wjZn
-	eQUSS0XVkWVyW+igxzT1OHt9pzb6aFvUlMfhaUm+lWcbi/723YMzZtQHS8lSLaQ10H6DwNe/xQ4
-	CRmxs9NRPzoJy4e20Rwaz
-X-Google-Smtp-Source: AGHT+IGZ4r+yBtbQRfO+KcqX023xsx4kj8P3ukZFnSPGCzjXMXe4Xf7eM+FXEVmJxWIT8IPWpDPdRA==
-X-Received: by 2002:a05:6902:3485:b0:e8e:1e32:c2ac with SMTP id 3f1490d57ef6-e931e163b31mr5382666276.16.1755202276774;
-        Thu, 14 Aug 2025 13:11:16 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:5::])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e931d447899sm879567276.9.2025.08.14.13.11.16
+        d=1e100.net; s=20230601; t=1755202336; x=1755807136;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vxzbcrq7nK91VwgR31UC0slmrQGlL/0X3fwR0ytXvYk=;
+        b=BGHp4Q6Wrkv0wr0/ZpsJ3O3NBPqTxq3xhK1vRmdGJ8J/Qy76XMpCNNSR8t+k3WTOUy
+         UpQUfgYRdURqcpg0WCB7YIZJYjGvuWnW06qpx1C7K4C2qFkaUhWn37DmJSQN/1rtybip
+         /3pvaugLaxKhRmOM2kA03alu7Sj+4tVHloVS4bA7wacC/Ukqudn0dS71RbcxwPJ/i1fy
+         nkWX99C6hDX13e9xsPWYXNm7pwCSePNWggoq9wViPC9eTTMW1SFQI4L8khLzjsqIQmrH
+         nDeZb4clea0eldP6FdWVmc8RSlnEQdcKvdj32+cikNLtbfnCFcJdcQY10NvM0hZdjxUT
+         YA+g==
+X-Forwarded-Encrypted: i=1; AJvYcCUK+v1lIHnMnLIURSTK/VBbQcm3mSLCnETMDi0XUBf6/bYqU6DGiRFvVOMnm0GwTUd7iqqaYpbdzQ==@kvack.org
+X-Gm-Message-State: AOJu0YwUyw2JbVuDHGv97OZtQztu/lPjuHJhtQURwWfot/kJUQ7RGYHX
+	EW0bVFmgWEZpXoGK+MNk92eF2B1nDGo5gruEoo1OSryyJKLojKVXwvJaMXz9ohJDEJI=
+X-Gm-Gg: ASbGncsb3enV9q8vE9KUM6b5ZxyVF1Gbtt60vTanHimrn4mbDSp7TZr04m8EPHBYgtt
+	VA/pJhvgbtfXdVr3hdn+88wnIIFwa14PHqZJnmTky5s9To/1cnMZoex/iJD28UZEmnXv04Mrdmc
+	XSUc0j2x+kDhiAr5APVSLhqm5Yc5Au0JJ7G4A7X2oJtoRZUgxLh7HJ4Er6Ffz3LieJM9ur6InB5
+	hZp34WpRL9eL8yoIKwbmFTmCSu5enDJUh/5EoVH+Mh/9lP4kTuGFXZCbMXmGdrLPWLwr/x5mm6P
+	webtQHVbDC3XJjey0K6ypaBlG8LAQuG67ae9bflVzOL22AGsiM/iu1R/78J8Fah+1+e8bCZcnwb
+	SffaWckqhFlIr0II/xVPzTSSOF4X/aBro
+X-Google-Smtp-Source: AGHT+IHGbf38wjASlzpdG8s8MvlkeKwc6OkOeZzYzGmyvaBvUc5P6M+am5GJahVd5Ex2+2MRB/ryEA==
+X-Received: by 2002:a05:622a:248c:b0:4b0:8a29:b5c with SMTP id d75a77b69052e-4b10fbf3e00mr47146221cf.2.1755202335629;
+        Thu, 14 Aug 2025 13:12:15 -0700 (PDT)
+Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
+        by smtp.gmail.com with UTF8SMTPSA id d75a77b69052e-4b11a87ab86sm1040601cf.5.2025.08.14.13.12.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Aug 2025 13:11:16 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Yueyang Pan <pyyjason@gmail.com>
-Cc: Suren Baghdasaryan <surenb@google.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Usama Arif <usamaarif642@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [RFC 1/1] Add memory allocation info for cgroup oom
-Date: Thu, 14 Aug 2025 13:11:08 -0700
-Message-ID: <20250814201114.1921580-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <790da5ffebf18a5a1211ad8dbe4e5b4a19871408.1755190013.git.pyyjason@gmail.com>
-References: 
+        Thu, 14 Aug 2025 13:12:15 -0700 (PDT)
+Date: Thu, 14 Aug 2025 16:12:11 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
+	Mel Gorman <mgorman@techsingularity.net>, kernel-dev@igalia.com,
+	Helen Koike <koike@igalia.com>,
+	Matthew Wilcox <willy@infradead.org>, NeilBrown <neilb@suse.de>,
+	Thierry Reding <thierry.reding@gmail.com>
+Subject: Re: [PATCH] mm/page_alloc: only set ALLOC_HIGHATOMIC for __GPF_HIGH
+ allocations
+Message-ID: <20250814201211.GI115258@cmpxchg.org>
+References: <20250814172245.1259625-1-cascardo@igalia.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 04B4340004
-X-Stat-Signature: g8a3fcje798cyayrjzdzbwfen47teqzc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250814172245.1259625-1-cascardo@igalia.com>
+X-Rspamd-Queue-Id: D2B0318000D
+X-Stat-Signature: unxrsr9sm4dzf5c5wt7by63r5n9tigby
 X-Rspam-User: 
-X-HE-Tag: 1755202277-972670
-X-HE-Meta: U2FsdGVkX18j853munxsW55cUSK/hn/cCRJXQE0lOaXwFXxIpYcrWOGyJI1JAUI5ZiFHZdn+BeIWSfbhYdCFjZZEYNx6LKp7M6B0l8ywnfR22Rbk7Vwx6GzY8PNLhYRD9Od9FAuuSjmUqSl7wOfegakCl0EYA7tEG2yZKr1Z1JcOLha6V45FDf7d7NYxZrDvlihkJiM4pzOWUyEQ6jojZ/DYWf5ZZKK1RgFTXHjDJECV2JygQ8e+oZzb4NMYUbtaLype94DIMDP4y4cqWaN/5GOQbx1k7YWxTF10aI499tuHOllvQCPGRKfkMNoDiDMvhU4Okc1PIjXWh+RQ4mPY5OsCkyTSAOXTIjgIq4Vo2fthRbG/ngrLcZnX5LgH6dtkltLfDG6/AfyB4udloAzP4Mts6+EEGRQ5RS2fIO498ws1EANv3kHBS6wEWQnfLzJ1mavXXKVEZhJG0gPKIEyuf0z0Tv+DwXykda9gfW8JTY0Sz0bpSm9bIaujLX9A5OvC5mNG9y+Lje7u1RGkQDo+KjVIkb+kukhN66/njncZRYCPF1o7lByGnxVNNuvW7aMv2c5Df4zDVH9cb+HXmbclFX4Z2Bt0Bs+VjIrclyG+TExGeskXe0C3GpA3JRiq2hxQuaE6AZ1cLNAVkKzmD4rH5kaZVhr6LTozY5t/AbepTORIt6BWo6ficycCOWnRlUtCXMvNKglWWugoBqauC0qZlK7hj10tyv4j7/NzLVfl3hUqFvA3WzmHqQAzU5X57X5SqCn1zH4CaVde0Wh2VAWvfcXJcqPouZGc96GSx+4HL9LwFrNoytAfU/4/3dx6jLUlD4HUTmJ1zzmUNLyIxLv1OLsjWFBbZqnEopYZ9vd3JqxAe55KI0/XVblusPhGMSj9Lw3txZ+WB6ATdhPt9hMVhXIv0uo9RLnhJ9XQ6S9B9rnARytHDNDKJRNpWRlbSIdqJoMZSHhsGqi4DH+PaBd
- 0HBbfDTO
- LWnum0q44cDtzUP8tktRSGPVFY9m+Pr2Dalx7bRZloPxs5yEwJCKxKNjRe1GUTlv50/HggM5jv3u4KIkYeG6imYwhDkCq7Cb4K1j/X15puiFV1XVzRfmv04MAQWdPy/71jF0uAYQ6Tth4ex4gfgzLc9YNlEapVGI0KLl9XEgu2Lp+oEZQFmX/SjgCXNRVtvcfkmtSoEZs3UsU+Dvp9xdyIIZ8GNETZ9APh3j+KLDD+lGpZ5vRphEKdhge/DGf2LR9uaAyeMLRdeCGZVOQPl+kJ4ysr4HqlAAop1oy3yzbPJxAoSHYVXu/PpSYWyvud5wXZCHXe0GuZQzEPK7v0u2sJnhyzWWQBV0V9vB42QdHRKDQ+GDpA8I85Jsr1kjwYAf3bgz4J5Agvjq1DW+aPrG4tiRK9m2aBfIomGUoEpvTRjKHchkAb0YfZOA4bb9VrOppK7+soriEZVzDysvCyyFbphg/5tdaYE7BdsqUaH672cLnLQlysdtTLXsT4Rq2LZBlykR5KqOJxVK/vta+Cy0QtTLA1H/zBihyiJ+H
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1755202336-399247
+X-HE-Meta: U2FsdGVkX181eHT4Xo/6cU2/osANwmAtVHKlAxjzeLlCqSUDjgaYDUIBJ0muxCcPqDrV5BPAwW/egfdrL8Bvb2aqinStZiNkCgmoshUX35zhXcjcnd8lltVJRtXesYLw/en48vu4NIkjgwfDhnfDiibFB8JUoKGbQRzMWU64XfGQ1uuOiRanA3rst48WXlzAuwuAB6wQvvyvqGR2/1VEo7Fx8Cpli6fhOYUTFP2iDf4+rMh8ZLloGPQX26EzgeHLxXmBEVSztTTDxkV51K3blukDZTjyrIt9ZXoGx45x9hyXLol2/RyEBozJeEFqgx9ebiUmcrrDKel9YjmmRW4ycj71TGoILlhqe9pV4XjXIuecHfAMVM+OgifjLRrPbv1zndbQAcufXUkcMOsdUfHPtXAAUXW2rfBOoJF+QW8ZaL6FW22bhMm0TdQkNnrS3U8DDKD2kz4UZzjDlfe9KB0DVe20h/qSSCd9HNFsRXPlSUtfhS9LZcerYrcGCfjUoVIBKkplgSUrtKpSPbeDn4qgQFU2zsR7HOmRLY1wzAjlnxeeUgFO4jGrJS8MB20OInPXXuC4XQ5Q5GD8oGIJCRgzZDlL6D+i2TQLq9ZI9iIejKUCRA4AtRVUH6VZPPu+CkNGyB9bsGr/Fc8+xaxNfTXP+vK3MHEVSJWxAgubmBzEpJe1A26WnlDKY2dgQW3SZZzYgs/U8Fop99TwQpED1RG5Kvax+zdZ/LjwBuEJ8xBElaeWUHhFCukKbA1U0BRok2xShDpSDiV6vEqFEfn9jAj8w23F7loZ5cFjazOMUzOnL4ydNvfXc4p6jzkmZgE98KvjuZigj32MqOINe+Q9vTxZsjkc5+/2e+Hns7OkE5n/LMBl6iHqu+OBhfdfdn9oFTJ2MGIQjwWZ5pWk+nPIgj8aKEIxjVYgVT/ALFKJ1Fl59Mb/CU/cFxQ15gQGyfsPyqtjseSBJNGOBnqbKY6BfqO
+ W66CiJ7j
+ 0hoJZpsK1hR+X2EgEYtMzLSLzxwpp5+bThBbZACG026tkxf9vS6lCAWpTsnKRs75u8brj/9Wrl3yBfNR/aUTSNXE+wYN22RdKrPn4LQqKGrND67iADFeREMEdn8qQoYpfdCHkndl6vmUy4WTqDJsBMQXv7GzDabGdVeAkRAO8QTI/J06qrHJUHaCDGqhB5RbJ9tjY4IKDxKUkgEtUkf080byo4S84NYyRq/Zu/2xxmPmk17jRWKnmrmGwH39J9RVFQk1OnRw3VJKgVshaiubKGKydLTq+YywSWx86qY5GsmOj+pNfpxqCztuyctlyUbFy/NmBg9uvii8JS2EiM9ov30ucUniwqRS+ZP0vx01D1G07rW+RF+H6G5otw3MNuiEWPxVCs5wjA9+bpEtpOBLQSffzD/Gn950BbTaVWxGcRykoAkMTY6FEHrXdbHKtCwOljFLLBi7LAo/BOuGXKBt9GmxoJeG/iSEpvouG4Faw5MU246NlVeYRd2kDsJp6lld6+rG/vcmJrSpILjKXKl89yIOkiej4re1fwbijV+0F/MHwsEOeEzIZO2eh5l2sFSOAgKfoxr7S35f6LRExR/qjiiVLVK4PVvoaibOL8IAHs+XZG/g43mnN785bDg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,62 +124,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 14 Aug 2025 10:11:57 -0700 Yueyang Pan <pyyjason@gmail.com> wrote:
+Hello Thadeu,
 
-> Enable show_mem for the cgroup oom case. We will have memory allocation 
-> information in such case for the machine.
-
-Hi Pan,
-
-Thank you for your patch! This makes sense to me. As for your concerns from the
-cover letter on whether this is too much information: personally I don't think
-so, but perhaps other developers will have different opinions?
-
-I just have a few comments / nits.
-
-> Signed-off-by: Yueyang Pan <pyyjason@gmail.com>
-> ---
->  mm/oom_kill.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+On Thu, Aug 14, 2025 at 02:22:45PM -0300, Thadeu Lima de Souza Cascardo wrote:
+> Commit 524c48072e56 ("mm/page_alloc: rename ALLOC_HIGH to
+> ALLOC_MIN_RESERVE") is the start of a series that explains how __GFP_HIGH,
+> which implies ALLOC_MIN_RESERVE, is going to be used instead of
+> __GFP_ATOMIC for high atomic reserves.
 > 
-> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-> index 17650f0b516e..3ca224028396 100644
-> --- a/mm/oom_kill.c
-> +++ b/mm/oom_kill.c
-> @@ -465,8 +465,10 @@ static void dump_header(struct oom_control *oc)
->  		pr_warn("COMPACTION is disabled!!!\n");
->  
->  	dump_stack();
-> -	if (is_memcg_oom(oc))
-> +	if (is_memcg_oom(oc)) {
->  		mem_cgroup_print_oom_meminfo(oc->memcg);
-> +		show_mem();
+> Commit eb2e2b425c69 ("mm/page_alloc: explicitly record high-order atomic
+> allocations in alloc_flags") introduced ALLOC_HIGHATOMIC for such
+> allocations of order higher than 0. It still used __GFP_ATOMIC, though.
+> 
+> Then, commit 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH
+> non-blocking allocations accesses reserves") just turned that check for
+> !__GFP_DIRECT_RECLAIM, ignoring that high atomic reserves were expected to
+> test for __GFP_HIGH.
 
-Below, there is a direct call to __show_mem, which limits node and zone
-filtering. I am wondering whether it would make sense to also call __show_mem
-with the same arguments? show_mem() is just a wrapper around __show_mem with
-default parameters (i.e. not filtering out nodes, not filtering out
-zones).
+It indeed looks accidental. From the cover letter,
 
-If you think this makes sense, we can even take it out of the if-else statement
-and call it unconditionally. But this is just my opinion, please feel free to
-keep the unfiltered call if you believe that fits better in here.
+    High-order atomic allocations are explicitly handled with the caveat that
+    no __GFP_ATOMIC flag means that any high-order allocation that specifies
+    GFP_HIGH and cannot enter direct reclaim will be treated as if it was
+    GFP_ATOMIC.
 
-> +	}
+it sounds like the intent was what your patch does, and not to extend
+those privileges to anybody who is !gfp_direct_reclaim.
 
-NIT: Should this closing brace be on the same line as the following else
-statement, as per the kernel style guide [1]
+> This leads to high atomic reserves being added for high-order GFP_NOWAIT
+> allocations and others that clear __GFP_DIRECT_RECLAIM, which is
+> unexpected. Later, those reserves lead to 0-order allocations going to the
+> slow path and starting reclaim.
 
->  	else {
->  		__show_mem(SHOW_MEM_FILTER_NODES, oc->nodemask, gfp_zone(oc->gfp_mask));
->  		if (should_dump_unreclaim_slab())
-> -- 
-> 2.47.3
+Can you please provide more background on the workload and the
+environment in which you observed this?
 
-Thanks again Pan, I hope you have a great day!
-Joshua
+Which GFP_NOWAIT requests you saw participating in the reserves etc.
 
-[1] https://docs.kernel.org/process/coding-style.html
-
-Sent using hkml (https://github.com/sjp38/hackermail)
+I would feel better with Mel or Vlastimil chiming in as well, but your
+fix looks correct to me.
 
