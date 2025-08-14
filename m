@@ -2,77 +2,78 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3874ACA0EE4
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 15:33:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7FEFCCA0EE4
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 15:33:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BEB0290018C; Thu, 14 Aug 2025 11:33:44 -0400 (EDT)
+	id 1D9A190018D; Thu, 14 Aug 2025 11:33:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9AC6900172; Thu, 14 Aug 2025 11:33:44 -0400 (EDT)
+	id 1889C900172; Thu, 14 Aug 2025 11:33:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A626990018C; Thu, 14 Aug 2025 11:33:44 -0400 (EDT)
+	id 029D490018D; Thu, 14 Aug 2025 11:33:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9031F900172
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:33:44 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3B71883539
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 15:33:44 +0000 (UTC)
-X-FDA: 83775757968.30.FD3C2D2
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2084.outbound.protection.outlook.com [40.107.92.84])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 5C6D11A0006
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 15:33:41 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=qJDOxJhb;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E09F5900172
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:33:50 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 64F4E8352D
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 15:33:50 +0000 (UTC)
+X-FDA: 83775758220.01.54FC865
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2056.outbound.protection.outlook.com [40.107.220.56])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 8D33E40010
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 15:33:47 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=NVXcTV8I;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf19.hostedemail.com: domain of Raghavendra.KodsaraThimmappa@amd.com designates 40.107.92.84 as permitted sender) smtp.mailfrom=Raghavendra.KodsaraThimmappa@amd.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755185621; a=rsa-sha256;
-	cv=pass;
-	b=DdqQzVf+OVNIMJGK3Oy99TjMyyCVoqxIDX8b7wIASaGgCXRjVbaGvToyYbjghFdyw2oxhc
-	534BXXPT6F2ZVAWXS7MfMNhUlUlZhhiMQ/aBLCYYtIstgblarQ51Gbjl0pHi+zHI6kfodT
-	qhpWzSzoYzfSfbZbn4FiKMaAddAmP18=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=qJDOxJhb;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf19.hostedemail.com: domain of Raghavendra.KodsaraThimmappa@amd.com designates 40.107.92.84 as permitted sender) smtp.mailfrom=Raghavendra.KodsaraThimmappa@amd.com
+	spf=pass (imf12.hostedemail.com: domain of Raghavendra.KodsaraThimmappa@amd.com designates 40.107.220.56 as permitted sender) smtp.mailfrom=Raghavendra.KodsaraThimmappa@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755185621;
+	s=arc-20220608; t=1755185627;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=JGE2DJS2OcZ1YYW2CRsS8unO2SfFvd01Lvw9o6ftf1c=;
-	b=UUO7AFQ3MJvQJosNeFprMYtzVRDADityrQEK6lwtQTIkN+7oaQtKTjcMcsbPZNTOp1OvpY
-	X7u/x4yitqkQJB+hfT3ZH1+ew59VLaPDb6uMuk2aUN9btFwF/CFbvAJPKK00z4sI6z+3N1
-	tXfus8fnR3OpkOQ5RTVY1SHpBIiCBUM=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=U8ZBHsg2ICU7iooyE/1e0HC8I4bKgZSlDZ7JgRXUGVc=;
+	b=WE6w3PYl9CynGJlq5ZO9jgECYSXEoYugH0DyhvJiOZff7WLL0qoCMvgSD0s8SnUL+w/Urm
+	pLgLgEJOOsnXxpHBl3uihLd/eA9vx7nXFpMdwqmemq0GkE4xZ/gM5AryCDb3tESGuVId2Z
+	i/FWzCATItaL5taRYwaSKcksDdSjtWo=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755185627; a=rsa-sha256;
+	cv=pass;
+	b=hEBYEU59+cVXLcG299XMoWN7siUOHTOSKFhRn3HtmZS3LlvmCAPcNunxi6RpQ5vaI3+6E5
+	QN4+LwtZ/hQKbvzrO6ZRGSE2wwOP0Tg//4nEV8m6D5+bRkyA9eosc7ernejNKbawlZr9Zw
+	XFolI00LTB+g9oFOAdBNaTVLFnBbcpA=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=NVXcTV8I;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf12.hostedemail.com: domain of Raghavendra.KodsaraThimmappa@amd.com designates 40.107.220.56 as permitted sender) smtp.mailfrom=Raghavendra.KodsaraThimmappa@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Nc7l5OW56vUVmKcu0yLN2yBWSF1SBx/HdjxKFb6R9JUfVq/tWv1hn4wfz6do2hB3bWKuTQecULITWsWSWUrYZ0A9lDYH+VZZ8vT8upoHfPsVP7nOnnthUyUfAyBvKle0qnhELeZNYLyH7c2udS3/KOS9mt/1FKND00Xsjw37terfCFrsI1RvEu6L3k6VZ4bga4cIR0oJ91VUHq+2NUQ99PRDzclNgLmgR598b+6FuF2zPZ92A0HdI958q4VACwweVu/bXp8GuW0pGkr4wyGPEhNsAHvuZ7Guk2n34kLNdnzk7LuSDhvk0ZgPkh8ItkokbjLmjO3fRdiOsgjNy7jvVg==
+ b=TdUU7Ck7x6dZNShMXaxIVekgHrFGGe8PAlfgjtY9hom+hUANsJSBedsvrEx2zFtixFA/V6zuvQgHHBVWttWpVLEtajYtx6Kcon269mCN+oYB8HeoCRFwHpb7of1PCo3t/j6FwZ99zNE1ZECz8DfZaUEJt1uhTloGp+fVAT799xYd1Q/QNnJBKqN07uXgZCY8+IArU+EcpAAeMehmNBYTHChZ6zFnoLnkEiIZwwblypSAU4n/jb4Yi+JJM82ZwWujXNClMS3GoKdyktNsEsh5+CWpLBLMtyGH4jbuRnOEuRoLIuPuzmh8CzjxJALCypOp63Dbv63HlMroJCSZLzz+5w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JGE2DJS2OcZ1YYW2CRsS8unO2SfFvd01Lvw9o6ftf1c=;
- b=PtKZHhcZVlCDM8q/bbR1/inFiLq+B9YRrv1934D43OpppUadKO4xojHDtLocvxvL+EDqCynBF35sr1S7k500GPaSf4jnjZyqLVg/x5UhJsvRaC1GZBu/T1eiNaz2irYfzKtfl/fl+Xc60knaJ9rFzQHHNQuwSebI3zWvhFyb6tG3/U64VUvvs52xrRyCdljwI10oC9RZPnxbRLNUJXb1AvHiulFi7QYoXLUnIVmKIFHLMJlCEKPE1/REglnK9kUV9Mi4nnXVrOGNp1e4d0cAqOHcCO0H9ncfyhKSzMCP5OESKHQv0OsdCbfPeOz22m4Uts56rsU4rxyfL8JjK9axIQ==
+ bh=U8ZBHsg2ICU7iooyE/1e0HC8I4bKgZSlDZ7JgRXUGVc=;
+ b=nv51vOeQR3zgDkhN88W0/2MwSjkAKBMsiyYri9/JBaQY4gS1gNUeSQ4VUKL5ZbhXCnaXLHichFijyHVr6or5Epp/qNSrWfWg17oJzb4WkVUA15Q+vnzke7hLCuTvNVTZSPLQofGmcLPAoNeqk9Bu6FytLtVkH6HJR3kUCYDaIZhz/llJvQcnx+O8+1YiNzAP3EknfGhQy9RNetlyse/xSZUtXAZVrLC79Rcc0vd8yeNrAkU9bbTiZo6U0e/M/aA+pZ7+E3sxAAnRXeKZwYcflM6wPW+7ieA+fc+qiln6vp9p+jtYfLOl8qdquwjtzvC2yRz2L1jU2EkRj5GWswcrFw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=arm.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JGE2DJS2OcZ1YYW2CRsS8unO2SfFvd01Lvw9o6ftf1c=;
- b=qJDOxJhbo3uCtFq82KJ5aIf/gsPBzCBVoJ83pfMsE1ObcW6dWn5IXv5nZBzbqgPUO16uaTvQ9fpGNa76lUHsFRLbHYLkmNT9Asu/68KIeKHcHXaZsf7TvOD9ZfpFOKDdHkajTgHVcVI3QS5cLbWtt3mevbj6aJ95jd/BC/wazc8=
-Received: from BN9PR03CA0371.namprd03.prod.outlook.com (2603:10b6:408:f7::16)
- by SN7PR12MB6689.namprd12.prod.outlook.com (2603:10b6:806:273::17) with
+ bh=U8ZBHsg2ICU7iooyE/1e0HC8I4bKgZSlDZ7JgRXUGVc=;
+ b=NVXcTV8I79svMtDXpPLQXb3A+MMjtT5kcOjUsP6sgXtuianhYbnKy4U5N8wkZW4+D7+63bvJJUXrc56k4tQxksXzWdnftBrdTjo8XCEtsUbrn/08D1ye+f2EItnaMC0wZXRFQoUxXlj/g8SVV83uUScOU2VAAYXm/KKr6GQMyzo=
+Received: from MN0PR04CA0003.namprd04.prod.outlook.com (2603:10b6:208:52d::15)
+ by LV8PR12MB9417.namprd12.prod.outlook.com (2603:10b6:408:204::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.13; Thu, 14 Aug
- 2025 15:33:36 +0000
-Received: from MN1PEPF0000ECD6.namprd02.prod.outlook.com
- (2603:10b6:408:f7:cafe::1f) by BN9PR03CA0371.outlook.office365.com
- (2603:10b6:408:f7::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9031.18 via Frontend Transport; Thu,
- 14 Aug 2025 15:33:36 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.15; Thu, 14 Aug
+ 2025 15:33:43 +0000
+Received: from BN3PEPF0000B077.namprd04.prod.outlook.com
+ (2603:10b6:208:52d:cafe::bf) by MN0PR04CA0003.outlook.office365.com
+ (2603:10b6:208:52d::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9031.17 via Frontend Transport; Thu,
+ 14 Aug 2025 15:33:43 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -80,13 +81,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- MN1PEPF0000ECD6.mail.protection.outlook.com (10.167.242.135) with Microsoft
+ BN3PEPF0000B077.mail.protection.outlook.com (10.167.243.122) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.9031.11 via Frontend Transport; Thu, 14 Aug 2025 15:33:36 +0000
+ 15.20.9031.11 via Frontend Transport; Thu, 14 Aug 2025 15:33:42 +0000
 Received: from tunga.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 14 Aug
- 2025 10:33:21 -0500
+ 2025 10:33:31 -0500
 From: Raghavendra K T <raghavendra.kt@amd.com>
 To: <raghavendra.kt@amd.com>
 CC: <AneeshKumar.KizhakeVeetil@arm.com>, <Michael.Day@amd.com>,
@@ -105,10 +106,12 @@ CC: <AneeshKumar.KizhakeVeetil@arm.com>, <Michael.Day@amd.com>,
 	<ziy@nvidia.com>, <Jonathan.Cameron@huawei.com>, <dave@stgolabs.net>,
 	<yuanchu@google.com>, <kinseyho@google.com>, <hdanton@sina.com>,
 	<harry.yoo@oracle.com>
-Subject: [RFC PATCH V3 00/17] mm: slowtier page promotion based on PTE A bit
-Date: Thu, 14 Aug 2025 15:32:50 +0000
-Message-ID: <20250814153307.1553061-1-raghavendra.kt@amd.com>
+Subject: [RFC PATCH V3 01/17] mm: Add kscand kthread for PTE A bit scan
+Date: Thu, 14 Aug 2025 15:32:51 +0000
+Message-ID: <20250814153307.1553061-2-raghavendra.kt@amd.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250814153307.1553061-1-raghavendra.kt@amd.com>
+References: <20250814153307.1553061-1-raghavendra.kt@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -117,59 +120,60 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF0000ECD6:EE_|SN7PR12MB6689:EE_
-X-MS-Office365-Filtering-Correlation-Id: cadffb43-47d0-4ca1-33d3-08dddb47ef8d
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B077:EE_|LV8PR12MB9417:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5fc26e38-0182-48ea-8adc-08dddb47f338
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|36860700013|82310400026|1800799024;
+	BCL:0;ARA:13230040|7416014|82310400026|36860700013|376014|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?VkHeIklZwQX+EdPcl9mGICTKACzpiCO9GiRHM9DCZTMXtQKq+PIiK9+CfX5K?=
- =?us-ascii?Q?eiiIZrIyX2F9lN+bDE9Abjuo2scKPV9RBHNYzowEBrtAbk+GcDnS5hU6n0zI?=
- =?us-ascii?Q?EsQtOQk2vybGAiepaZ6cLTzWHgQSxid85w+oNENupnFZMLXUjkW7t0AQ9hs+?=
- =?us-ascii?Q?h3UyE3mwhLV3SQOBkIVFJ+ObJDdCyoCmKQv0D8rgv1fCZGR+mP231BmiocEm?=
- =?us-ascii?Q?ECVQuOTy4loQpch+ZTTjqb+DOUe1MGhKaHqWuGdkWt4AbanhqEAbDgYlKga9?=
- =?us-ascii?Q?VyZ90MlpRrrKpsaiHAF3JWPpOVbA7rDYWzP3FAVTZPvlRTsV/Q2IAhVEPMic?=
- =?us-ascii?Q?4PX8M98ZzY2jIgysW1rC/VE/e4sLC8F/hIfbRs5LDWy/sIW839ycitbfpsOl?=
- =?us-ascii?Q?cpir2/2f8YzB2pFrTrb1Kf4hzOTYtyl/0HVhpobXMmlVkAyW0/Mfm2dNbWvb?=
- =?us-ascii?Q?vEIizYlBYA6WAzsYd6Uj7j3GFEK60hZmBdZqSrySQC3E61Hlk0LUug2eqzao?=
- =?us-ascii?Q?/Iq02dhXFFAJ1fIiprlY56cnui1pN1/bANGMzSCAiiy2tskbgzdS/HgyHfXp?=
- =?us-ascii?Q?p60odAXjhy/k9RZQtyie5bsKYAMBjrFdDReM+QFSsO96yGhYW9Mh0ybslTYi?=
- =?us-ascii?Q?tMufN6K/x3kWJaVkPGBTDmiQhHnGLYA4x1eLA+Y/I4tLHlq4jXFZVWMYn7i+?=
- =?us-ascii?Q?B14akXEVFAbM63hapZMhn282B3/Y7SIy8Sk+HTvKoiU50EoZNR+/oj1uBku4?=
- =?us-ascii?Q?nE5APMv+fqqU1QVqKHubrYgLc74Jk/FA6VbCrNlJ8pG/qYzgPN92F2eBNZms?=
- =?us-ascii?Q?qBAVUPTsuURA+LfN6bDyr5aV8N6sJLItwEmJzShmRQDRSN5zyUW8XmSaZMAS?=
- =?us-ascii?Q?YtAe3ip+I2cRYGrc0INoIu4wIrkKdbwEpxtnnk7tyxz8rkxGMfjQjTs1XJg/?=
- =?us-ascii?Q?Gw9eBjc7SIXKZA+Xdl0zGyVeJsXm2q17IvYwJR1SUgHpp/xYRrEPjgT3u3WR?=
- =?us-ascii?Q?w6whIPxMoFBSqbWJH4rtj+Pv55QmYFJd/6N8FlYprFfEyW3Eo3t/b1Q9E6cK?=
- =?us-ascii?Q?aefHUUAc+sdTG0liHevMekpxmUps25wuQ3ZLmWwstZT1bFIBdHZxO88if2g5?=
- =?us-ascii?Q?yePaS0xkaqYH0KtrvXtNNOLBalYm83i7alUMk3QNrTAxRmoWzdNRYCT5z8Ya?=
- =?us-ascii?Q?yAV6kJFyMYCRu6Qjg1jEEkO6WD7LPJ534e2pjE0PKNchHA833zsmPJIAPWFL?=
- =?us-ascii?Q?66kzysHhhtw+5pkWu/gpsOEMvjND58WbN3yNsyUy8k2HdfMl6kL4T4no5QnA?=
- =?us-ascii?Q?DPmfVCWpAlUf5YWC0A2r1xd7ObVh5c1lEGahsl4gBqVSMFyCMHgd6uA0pY33?=
- =?us-ascii?Q?VP5rIV9uwEgMM+68oN3obVcc00QT9o1bglOcIoia8xMc7euyqoGSJfXZmtyV?=
- =?us-ascii?Q?/bgVwqjQg71EDJ8b+AFNb0WOSW6tE43eA1YUeIneY5unUJi33o/T7g=3D=3D?=
+	=?us-ascii?Q?IaI4EpwIE6SWNJTbatCz3Wi+R1Xlop3wsKrgg0M1U5/S1ha6cNrVgdX4ievG?=
+ =?us-ascii?Q?ZJLJfMEYAgEWbHJxPx1QPCOiN0H/WMBvq/whI1bhh1QIb4OCmld4dUzTU3tG?=
+ =?us-ascii?Q?wWNFAlACBmoeaTHdHhoslkmBYptFmwzvvihRWd1Znkv2909Bl/334zbyeLEp?=
+ =?us-ascii?Q?UY5TrpryA1PFlt8viKQGrmDwJuJ9dw5KansFCnY76OjowNawnN/Qqr9rBErr?=
+ =?us-ascii?Q?O309mR1XtFVrheMprlOXHiFNYjATYSTgiXxouFdiZo7RHG+1AGvwRkuUyzYg?=
+ =?us-ascii?Q?S1h4pZpldhwoGzQFHtD8AQruQmBsTvJltmZzeQ3cntaVqHnDjQasYkwov2Po?=
+ =?us-ascii?Q?N2dAIDv8dt1aZqFWvpBP/gTDXazU04BMKyKx16T+/veuPN19v7zowK2PstPD?=
+ =?us-ascii?Q?WYRYF/obZw5Eg7mN7bbwXnu/rhPteT7VeseSoiWwg4Fh2sbIYsgLKDpSbPF+?=
+ =?us-ascii?Q?H/u7ztZVqCUMctGLLfMshF3zGWDH4XIPFjVRng3JxwLghD/s0VsL0yc1fpq4?=
+ =?us-ascii?Q?3USosIKgaLQtit6ud4FSweUOeQivSIHzfvAWyX+BB/UglfZqQun0h93sle4P?=
+ =?us-ascii?Q?IidrbormP1foLGa+8tQP2IVCQCp3VRBHim0aYmXddYijcjARDhj8aAn8fwSJ?=
+ =?us-ascii?Q?hhJWNr4R+bQA+4U7ZTlJCAH/9Y877u9Mxpmakr5GNuJVX4twKD1OApuoQeLP?=
+ =?us-ascii?Q?9Egb/cAeCUvIQLcHhIFZI+N+7rJcsaXB8ESolYL6XVYoj2/vn8w28QL9zsQB?=
+ =?us-ascii?Q?EEbithZnjU+3aO0Ytvqrsa/Cxb83YDscN0qiW4nr6C7otMhGjkjcuWacP7PC?=
+ =?us-ascii?Q?bgdaS6Ew45W/HfiuKDI42zlYXYobbEJAihS4udRnRwuCqwxnvrXzXU+KWtMc?=
+ =?us-ascii?Q?YaIOOgiyrb1Nbzzye19Nq5muv2kJzbSvyT1n0mV+HIphzmKKUS5Kl8qfY02o?=
+ =?us-ascii?Q?vKm1+bWJme6xv6c7YB/w42NTKqFnhtvdy9KFmzwcn7D322vCTvIQG1Rgh1kE?=
+ =?us-ascii?Q?F3J/FKF/wg0j2UEstQjuEcahifNHm4sJ4EsIqz3X6emNu5nxfmPoU4FLWgXO?=
+ =?us-ascii?Q?hbNOS3h0LOA5bnCf3leqA1da5w2i3SWvdz8ttFcXhBlg/emARgiqGmp5EpIg?=
+ =?us-ascii?Q?Uk0GM9jYNz3x0qHj3D0gw6cz8d3wqXOT5baEUb2TBzGO0nFJ0Ptl/fqUbydj?=
+ =?us-ascii?Q?bU0CaXGDohI73rluqAyTjeatzzXSr5cmNw8yTww/HH4LppMhE7refstdHyIy?=
+ =?us-ascii?Q?K4faDjBaghNOx8owR9Sa7G+mUYkgLZ3pEa8ZC4PgYPu1wE8OKoxYGgBx6W/z?=
+ =?us-ascii?Q?LJtWgfHBesSDEDVP4w8ZGwtEtphxC+o6F+PAptmoGmdPDsvviI7spOZkdkMa?=
+ =?us-ascii?Q?l2rR5GGuh25lPSz2kkXmHuKWFAvP1yyoSpP/Whk0RRJJq4WE9r/8SCRKhbNh?=
+ =?us-ascii?Q?XN2AU36ItT6P2EmDqnIpsA60U+WG/sYc299XpfmH2rw8l8MjDOTSy35CiZWp?=
+ =?us-ascii?Q?BSqbxoW05eNlKOYvwrFFRkKm792Ehsm6E2hX?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(36860700013)(82310400026)(1800799024);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(82310400026)(36860700013)(376014)(1800799024);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2025 15:33:36.4215
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2025 15:33:42.5792
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cadffb43-47d0-4ca1-33d3-08dddb47ef8d
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5fc26e38-0182-48ea-8adc-08dddb47f338
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	MN1PEPF0000ECD6.namprd02.prod.outlook.com
+	BN3PEPF0000B077.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6689
-X-Rspamd-Server: rspam03
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9417
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8D33E40010
+X-Stat-Signature: smhzpxe3pgtdxuux7prheyyqx9gjo6r1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5C6D11A0006
-X-Stat-Signature: jbxdorhzr6upj4q56ss719bktttdq6zs
-X-HE-Tag: 1755185621-247125
-X-HE-Meta: U2FsdGVkX1+u6OvCboxbwZa455hb7QrtFHfjy+8V5kChTkgDDJ6fhzpn2VTLMtjL8jDXaTa6D4eMIZexbRJJC6AI4uwTcB7M+26w04stoZQ3ZNvOVw36deeEyOwaTiPEvahlQxtO/sVINKlpwiST3mJILIHRFnazqeRPZ253UhWYtwxvZbfgafrtJeSGZwMP7gsrJ/WilpiIOIAHI+ziDSnqVJy1lGUZxEqb6An3rFggps52lK669ccsdmOCseNjvubpsjLGX3+UZvjQCmmHnmRb64Oqewh1q4y253R+U2upkHUazlrpITfcFaoFdpf3qBC1TiSt5Gf7obiIbdDQGAt5U+vPeZ9NbBA1uVTgPYdbYcJ1ZVJyqjhIjGWtfLLDMWh37M0llnutMN639kyqcfWeMBtOonZrlra2a+oMe8395mKKrHXpdls1B/3C74NLGU+l6TS36ZOZjvDpjKj3yjkjLd2tBSE/RBX5PhGHKDzDw4BRPnNvQvlD2Cw/GugK31mrd5dDAM3/qDaoE3wxWiTHZ6PPkUMmh+LWONbLPXYE96cvdqk9Qe2fOwQefq4p89aLWMGe0gA9gjuZ5542K802EPy+Z49V8SXVNCmnYc/vZ9rHjOAq2LB18Wd5OPt8bFMqhFbfEz6+XYRrCabjGwKni9fEpMIbpc7xrOyjYxlgyb0ulyi+b8ilj0svykS7QWa+GXs7/NobdVz4RWUleJRd9GsVRUNnSU26HWsdLT3AteP4LXtYf9ayfhbfgyKNzza4v1qj6AS7s2xN+6f5l+9TW0JZIvCuPOlpl8MzBzBX2hCrV+uJWJWuOsVIG92YP3EJiU5wIE9h/BXg7CTwSs0nwlxEwErnwk2Fp71JBvGiD2hfaEat9/wjoGtsC6b+h0tr3wH8nKGkOrCZ/dPwV/kXYK3GZXjXaQ0GIGuETgoku0DwYuyFq2vHWxkiqUXUX+nqlGKgHbvKCdr4wO9
- do4YLtnh
- mGpsBxXXVkwtMHcqwEK+bFcgflmMo1/hxHS3/J237Kp45v78DRTZGum0iSAprooiVnDC8cWn/6mlxoYSP8dz9u+xoV4/sKyMP1/xo0r5DYNHyVQmSoSZpdaCRGrWsHTu4ORfB1Qz8/iDMi1sL6xH9O7UvumnG+VF4IXKmQCd+BtmkrhjUyDZBlGZLSnITDsj3/szU/hYrqykmHeZ+m3IdIEI1LegqZuwsna1moGjYviztHP4Vkti7g2QmTkOBd6GLr3jI64ly4qIPBbzRURVqVVvaMnQOK4dGwqOHyysUZXFlE37EO06XRTKQNzVHlwg+ZGsbOfHlZpgHj/CrCndUdNt9f7pfiQuF5bZIMhPY6KlNj6OWlxTBG2RSyjouXa+u0Fu1CCiySc6jOIyY29J9/Wt/v+qA8sjDbsSPBItbuPXQE4ktEtSIH3cyjFiRLtEj1jouS0ktE2OqWv3jSEvKq6T9V7B9zLYH6WKdDMePc9FwoZoLENbiAyPTTcZh3nbfTWyNVX0CCnIGM689TZj1krgfrKbfnO3cGjQv1o5bJBJLX6nYRA5+TyfaYAFb4am5jh57oQsXzAzEvP6EOATQO5xmVJiEHlDHpwV7S4WET/wFviDgTrhL+5ak/HPAFzIM8c0gMwakvFjdAywyIDNR47lla3ioA8yOqPHJ0C87wxVcWWfp2ajw924XyIhq01hMytvhFjvMjxzzJB2NnzX1oNgxE4oWvSn5yQOpvBTRAPow5OgX+lKKYqmu+fJ2Bu8o7Rx/AlJxpY4dod/o9Wsftl1v4MmcdmSomL6Z+n+lCpbPq1LTQXdidNT8rzyt0JqkJdcbX6LVGRB7p4sAHqdgGTBxgZxkEkJZww97aZY7rl2JzA8DsEHBlbj8Wlj4fGxkwHVDuw3tGk0LRr7ZYeI+AbuZsA==
+X-HE-Tag: 1755185627-438552
+X-HE-Meta: U2FsdGVkX19bq07TxnrXB6b/z20WGRmoV6WyLheSwjP29B0FNlHxQdjvRF2GYivRbGbXoL0KJCGTAuWaK6pvxRXtzs/HtC/Oe7qGcU1Cq5fmjwCfO4DM4PjSrk2TBjkGyTxWwC+EeZzZHbe3JWJabCPZljJfrj5KC9seGO2hlU4Eyd6xTs9oF/gv58Dy6AIL/6d2hWZIevxVALSSUxBb+7URaxiNxX2RfVfBrFxXE0NQtaQsG/kyLlNToG/QSR7TL1ralKKo9gCZYbkaVD3u/IPCR9EpI9icpHmRyIxnWstYHD7ds0o6E4ZoqFO/kc90Hvus+rUjbnGDwBzuUdFI44i6yh4LHzAzwrJp1yDjmPyGKsqAl1bGLNvRCl/w8q2O0hKlWvCn/xi0tWR3+Ty3t8HXBXoYW+jc+HB8z4uymyi6iNA43RN03v8arqFf3kXtUGtFDDL1gJ8pdJQ4p7uNPKjQQwtErgXX+H+eaXQWAY6uY2hhRmAGxmHcsIcfEzFoOscDLwE4ff3H1ktjHMHNBrwuNHxarmlDr7N5wyftR6EKLYIARjzyrMhu1ELQzjSXK0YdR5XXIIIQ3RBd4ibsm99mzEgbhL4W1vORTffGnbsCCpTWYHZnCIloXdElFrzjEZRh/7+0fLde97fHFJaItsOz876jmtyfpvACdl/bfGyxmMW5C+eRs1++zrPnk5sB1PRjEDbt+Bpj8csL6FFWDc1JqZJ+Td/ihZLL9CjPLzHImFgSZLNWOlrrUnOKxDIx0E6DNu1LhX00uuiW9J3MTIF2YDHvdE3ltStILd9OINin4nYrbHKn5ewr56R6+PeyfijARRTa8GK5kdfbIWHuyfgJX7b9UjPS0iVVv6Ng/eNtjjGZiOstM9yhUOt7lZ4WL3k5MT7OzDLhi+1rLetUMzS5+vUA6F3xd0VrMWGPp1/jNYN18cn6T8wDLK0MW11gjBEOx4Zmj/9MghD7ZyI
+ X2Uhgy2v
+ fkjaA5KHPF37YENivNM+SZr8DaJLiA0NpGAnMJJnLZFjW0t+EgJkWyUYUDRvVOvSMTu+E12R/Ukaof7u14p2nMpKresitTg9dFsgc+6ZsTqb3YPG+ywGKD5/Mame+HPD+N1Y/KoZznOLhDQtgCDWBFHksuu0bi6tnX2edUHgs7Y21RjzAxoXUZIfEmbTCy+S4Sv8lEJcFvaBs2sQgIQnGLBTKJ/+63OQw3QbGqwbFNOeMaCzMPa+CDBud7FI5kpHW3zrmy0y2OCR7Q4/fNVQiQ2YCUVp/tctoB0NtfLkUvpwSn50mE52WunNIvoWRhEmC1F9Dg/7lLREDXp4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -178,186 +182,227 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The current series has additional enhancements and comments' incorporation on top of
-RFC V2.
+Also add a config option for the same.
 
-This is an additional source of hot page generator to NUMAB, IBS [4], KMGLRUD [5].
+High level design:
 
-Introduction:
-=============
-In the current hot page promotion, all the activities including the
-process address space scanning, NUMA hint fault handling and page
-migration is performed in the process context. i.e., scanning overhead is
-borne by applications.
+While (1):
+  Scan the slowtier pages belonging to VMAs of a task.
+  Add to migation list.
 
-This RFC V2 patch series does slow-tier page promotion by using PTE Accessed
-bit scanning. Scanning is done by a global kernel thread which routinely
-scans all the processes' address spaces and checks for accesses by reading
-the PTE A bit.
+A separate thread:
+  Migrate scanned pages to a toptier node based on heuristics.
 
-A separate migration thread migrates/promotes the pages to the top-tier
-node based on a simple heuristic that uses top-tier scan/access information
-of the mm.
+The overall code is influenced by khugepaged design.
 
-Additionally based on the feedback, a prctl knob with a scalar value is
-provided to control per task scanning.
-
-Changes Since RFC V2:
-===================
- - Enhanced logic to migrate on second access.
-
- - Using prctl scalar value to further tune the scanning efficiency.
-
- - Using of PFN instead of folio to record hot pages for easy integration
-with kpromoted/kmigrated [4].
-
- - Rebasing on top of fork/exec changes in v6.16.
-
- - Revisiting mm_walk logic and folio validation based on Harry's comments.
-
- - Feedback from migration system to slowdown scanning when more migration failures
- happen.
-
- - Masami's comment on trace patch.
-
- - Bug fix to overnight idle system  crash due to incorrect kmemcache usage.
-
- - Enhanced target node finding logic to further obtain fallback nodes to migrate.
-(TBD: This needs followup patch that actually does migration to fallback target nodes)
-
-Changes since RFC V1:
-=====================
-- Addressing the review comments by Jonathan (Thank you for your closer
- reviews).
-
-- Per mm migration list with separate lock to resolve race conditions/softlockups
-reported by Davidlohr.
-
-- Add one more filter before migration for LRU_GEN case to check whether
- folio is still hot.
-
-- Rename kmmscand ==> kscand kmmmigrated ==> kmigrated (hopefully this
- gets merged into Bharat's upcoming migration thread)
-
-Changes since RFC V0:
-======================
-- A separate migration thread is used for migration, thus alleviating need for
-  multi-threaded scanning (at least as per tracing).
-
-- A simple heuristic for target node calculation is added.
-
-- prctl (David R) interface with scalar value is added to control per task scanning.
-
-- Steve's comment on tracing incorporated.
-
-- Davidlohr's reported bugfix.
-
-- Initial scan delay similar to NUMAB1 mode added.
-
-- Got rid of migration lock during mm_walk.
-
-A note on per mm migration list using mm_slot:
-=============================================
-Using per mm migration list (mm_slot) has helped to reduce contention
- and thus easing mm teardown during process exit.
-
-It also helps to tie PFN/folio with mm to make heuristics work better
- and further it would help to throttle migration per mm (OR process) (TBD).
-
-A note on PTE A bit scanning:
-============================
-Major positive: Current patchset is able to cover all the process address
- space scanning effectively with simple algorithms to tune scan_size and
- scan_period.
-
-Thanks to Jonathan, Davidlohr, David, Harry, Masami Steve for review feedback on RFCs.
-
-Future plans:
-================
-Evaluate how integration with hotness monitoring subsystem works, OR
-as a standalone integration with kmigrated API* of [4]
-
-Results:
-=======
-Benchmark Cbench (by Bharata) to evaluate performance promotion in
-slowtier system.
-
-Benchmark allocates memory on both regular NUMA node and  slowtier node,
-then does continuous access.
-Goal: Finishing fixed numaber of access in less time
-
-SUT: Genoa+ EPYC system
-
-base 6.16 NUMAB2 (because this has the best perf)
-patched 6.16 + current series
-
-Time taken in sec (lower is better)
-               base           patched
-8GB            228            206
-32GB           547            534
-128GB          1100           920
-
-Links:
-[1] RFC V0: https://lore.kernel.org/all/20241201153818.2633616-1-raghavendra.kt@amd.com/
-[2] RFC V1: https://lore.kernel.org/linux-mm/20250319193028.29514-1-raghavendra.kt@amd.com/
-[3] RFC V2: https://lore.kernel.org/linux-mm/20250624055617.1291159-1-raghavendra.kt@amd.com/
-[4] Hotpage detection and promotion: https://lore.kernel.org/linux-mm/20250814134826.154003-1-bharata@amd.com/T/#t
-[5] MGLRU: https://lkml.org/lkml/2025/3/24/1458
-
-Patch organization:
-patch 1-5 initial skeleton for scanning and migration
-patch 6: migration
-patch 7-9: scanning optimizations
-patch 10: target_node heuristic
-patch 11: Migration failure feedback
-patch 12-14: sysfs, vmstat and tracing
-patch 15-16: prctl implementation and enhancements to scanning.
-patch17: Fallback target node finding
-
-Raghavendra K T (17):
-  mm: Add kscand kthread for PTE A bit scan
-  mm: Maintain mm_struct list in the system
-  mm: Scan the mm and create a migration list
-  mm/kscand: Add only hot pages to migration list
-  mm: Create a separate kthread for migration
-  mm/migration: migrate accessed folios to toptier node
-  mm: Add throttling of mm scanning using scan_period
-  mm: Add throttling of mm scanning using scan_size
-  mm: Add initial scan delay
-  mm: Add a heuristic to calculate target node
-  mm/kscand: Implement migration failure feedback
-  sysfs: Add sysfs support to tune scanning
-  mm/vmstat: Add vmstat counters
-  trace/kscand: Add tracing of scanning and migration
-  prctl: Introduce new prctl to control scanning
-  prctl: Fine tune scan_period with prctl scale param
-  mm: Create a list of fallback target nodes
-
- Documentation/filesystems/proc.rst |    2 +
- fs/proc/task_mmu.c                 |    4 +
- include/linux/kscand.h             |   30 +
- include/linux/migrate.h            |    2 +
- include/linux/mm.h                 |   13 +
- include/linux/mm_types.h           |    7 +
- include/linux/vm_event_item.h      |   12 +
- include/trace/events/kmem.h        |   99 ++
- include/uapi/linux/prctl.h         |    7 +
- kernel/fork.c                      |    6 +
- kernel/sys.c                       |   25 +
- mm/Kconfig                         |    8 +
- mm/Makefile                        |    1 +
- mm/internal.h                      |    1 +
- mm/kscand.c                        | 1754 ++++++++++++++++++++++++++++
- mm/migrate.c                       |    2 +-
- mm/mmap.c                          |    2 +
- mm/vma_exec.c                      |    3 +
- mm/vmstat.c                        |   12 +
- 19 files changed, 1989 insertions(+), 1 deletion(-)
- create mode 100644 include/linux/kscand.h
+Signed-off-by: Raghavendra K T <raghavendra.kt@amd.com>
+---
+ mm/Kconfig  |   8 +++
+ mm/Makefile |   1 +
+ mm/kscand.c | 163 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 172 insertions(+)
  create mode 100644 mm/kscand.c
 
-
-base-commit: 038d61fd642278bab63ee8ef722c50d10ab01e8f
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 781be3240e21..d1e5be76a96e 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -750,6 +750,14 @@ config KSM
+ 	  until a program has madvised that an area is MADV_MERGEABLE, and
+ 	  root has set /sys/kernel/mm/ksm/run to 1 (if CONFIG_SYSFS is set).
+ 
++config KSCAND
++	bool "Enable PTE A bit scanning and Migration"
++	depends on NUMA_BALANCING
++	help
++	  Enable PTE A bit scanning of page. The option creates a separate
++	  kthread for scanning and migration. Accessed slow-tier pages are
++	  migrated to a regular NUMA node to reduce hot page access latency.
++
+ config DEFAULT_MMAP_MIN_ADDR
+ 	int "Low address space to protect from user allocation"
+ 	depends on MMU
+diff --git a/mm/Makefile b/mm/Makefile
+index 1a7a11d4933d..a16ef2ff3da1 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -97,6 +97,7 @@ obj-$(CONFIG_FAIL_PAGE_ALLOC) += fail_page_alloc.o
+ obj-$(CONFIG_MEMTEST)		+= memtest.o
+ obj-$(CONFIG_MIGRATION) += migrate.o
+ obj-$(CONFIG_NUMA) += memory-tiers.o
++obj-$(CONFIG_KSCAND) += kscand.o
+ obj-$(CONFIG_DEVICE_MIGRATION) += migrate_device.o
+ obj-$(CONFIG_TRANSPARENT_HUGEPAGE) += huge_memory.o khugepaged.o
+ obj-$(CONFIG_PAGE_COUNTER) += page_counter.o
+diff --git a/mm/kscand.c b/mm/kscand.c
+new file mode 100644
+index 000000000000..f7bbbc70c86a
+--- /dev/null
++++ b/mm/kscand.c
+@@ -0,0 +1,163 @@
++// SPDX-License-Identifier: GPL-2.0
++#include <linux/mm.h>
++#include <linux/mm_types.h>
++#include <linux/sched.h>
++#include <linux/sched/mm.h>
++#include <linux/mmu_notifier.h>
++#include <linux/swap.h>
++#include <linux/mm_inline.h>
++#include <linux/kthread.h>
++#include <linux/string.h>
++#include <linux/delay.h>
++#include <linux/cleanup.h>
++
++#include <asm/pgalloc.h>
++#include "internal.h"
++
++static struct task_struct *kscand_thread __read_mostly;
++static DEFINE_MUTEX(kscand_mutex);
++
++/* How long to pause between two scan cycles */
++static unsigned int kscand_scan_sleep_ms __read_mostly = 20;
++
++/* Max number of mms to scan in one scan cycle */
++#define KSCAND_MMS_TO_SCAN	(4 * 1024UL)
++static unsigned long kscand_mms_to_scan __read_mostly = KSCAND_MMS_TO_SCAN;
++
++bool kscand_scan_enabled = true;
++static bool need_wakeup;
++
++static unsigned long kscand_sleep_expire;
++
++static DECLARE_WAIT_QUEUE_HEAD(kscand_wait);
++
++/* Data structure to keep track of current mm under scan */
++struct kscand_scan {
++	struct list_head mm_head;
++};
++
++struct kscand_scan kscand_scan = {
++	.mm_head = LIST_HEAD_INIT(kscand_scan.mm_head),
++};
++
++static inline int kscand_has_work(void)
++{
++	return !list_empty(&kscand_scan.mm_head);
++}
++
++static inline bool kscand_should_wakeup(void)
++{
++	bool wakeup = kthread_should_stop() || need_wakeup ||
++	       time_after_eq(jiffies, kscand_sleep_expire);
++
++	need_wakeup = false;
++
++	return wakeup;
++}
++
++static void kscand_wait_work(void)
++{
++	const unsigned long scan_sleep_jiffies =
++		msecs_to_jiffies(kscand_scan_sleep_ms);
++
++	if (!scan_sleep_jiffies)
++		return;
++
++	kscand_sleep_expire = jiffies + scan_sleep_jiffies;
++
++	/* Allows kthread to pause scanning */
++	wait_event_timeout(kscand_wait, kscand_should_wakeup(),
++			scan_sleep_jiffies);
++}
++static void kscand_do_scan(void)
++{
++	unsigned long iter = 0, mms_to_scan;
++
++	mms_to_scan = READ_ONCE(kscand_mms_to_scan);
++
++	while (true) {
++		if (unlikely(kthread_should_stop()) ||
++			!READ_ONCE(kscand_scan_enabled))
++			break;
++
++		if (kscand_has_work())
++			msleep(100);
++
++		iter++;
++
++		if (iter >= mms_to_scan)
++			break;
++		cond_resched();
++	}
++}
++
++static int kscand(void *none)
++{
++	while (true) {
++		if (unlikely(kthread_should_stop()))
++			break;
++
++		while (!READ_ONCE(kscand_scan_enabled)) {
++			cpu_relax();
++			kscand_wait_work();
++		}
++
++		kscand_do_scan();
++
++		kscand_wait_work();
++	}
++	return 0;
++}
++
++static int start_kscand(void)
++{
++	struct task_struct *kthread;
++
++	guard(mutex)(&kscand_mutex);
++
++	if (kscand_thread)
++		return 0;
++
++	kthread = kthread_run(kscand, NULL, "kscand");
++	if (IS_ERR(kscand_thread)) {
++		pr_err("kscand: kthread_run(kscand) failed\n");
++		return PTR_ERR(kthread);
++	}
++
++	kscand_thread = kthread;
++	pr_info("kscand: Successfully started kscand");
++
++	if (!list_empty(&kscand_scan.mm_head))
++		wake_up_interruptible(&kscand_wait);
++
++	return 0;
++}
++
++static int stop_kscand(void)
++{
++	guard(mutex)(&kscand_mutex);
++
++	if (kscand_thread) {
++		kthread_stop(kscand_thread);
++		kscand_thread = NULL;
++	}
++
++	return 0;
++}
++
++static int __init kscand_init(void)
++{
++	int err;
++
++	err = start_kscand();
++	if (err)
++		goto err_kscand;
++
++	return 0;
++
++err_kscand:
++	stop_kscand();
++
++	return err;
++}
++subsys_initcall(kscand_init);
 -- 
 2.34.1
 
