@@ -2,173 +2,114 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 28E20CA0EE4
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 06:40:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 94E4CCA0EDC
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 06:47:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 919639000F3; Thu, 14 Aug 2025 02:40:36 -0400 (EDT)
+	id 356069000F4; Thu, 14 Aug 2025 02:47:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89BD5900088; Thu, 14 Aug 2025 02:40:36 -0400 (EDT)
+	id 30719900088; Thu, 14 Aug 2025 02:47:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 744529000F3; Thu, 14 Aug 2025 02:40:36 -0400 (EDT)
+	id 1F5D69000F4; Thu, 14 Aug 2025 02:47:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F7EC900088
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 02:40:36 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0F55583144
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 06:40:36 +0000 (UTC)
-X-FDA: 83774414472.25.208589C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 86D3E16000F
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 06:40:33 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Gsugp3Tj;
-	spf=pass (imf08.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B644900088
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 02:47:46 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AD560C0556
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 06:47:45 +0000 (UTC)
+X-FDA: 83774432490.24.85EC7D4
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf22.hostedemail.com (Postfix) with ESMTP id E1E0BC0004
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 06:47:43 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=XUEKtGb4;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf22.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755154064; a=rsa-sha256;
+	cv=none;
+	b=3J8zvVh1QRhK2Xk1wwA+oJazGEqyAEeqa76AI/AQhVHSSv7xd2Inqao3WFBcxC+rVQXEci
+	l+DVI5wmdZQQIDVWQFt9FO3BtJZky6f711gUsRP+sPtJazE0WnrKJvxhDpEsXXEQ62mIWB
+	KSGlQJROxqnwYwjBuIIZUDUYJpf6d6A=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=XUEKtGb4;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf22.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755153633;
+	s=arc-20220608; t=1755154064;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=du3zfsORdvVjs9q/P+9kw8vHH6MGBwUxinGwAKW+wLI=;
-	b=WoFcVkHkLx6vr+aFz8TpatFZWxlfjmtrN8BSR1wOB/wkZyNaAKSWGyyKZoAv7nSSRrEMdj
-	keEOxavLXLlFmfUAb6JLh4qZImiw3070dLi2sBzHLowMhjMsYvSm+0RXSs4cRJFTEjLT8T
-	6WFN4pDqLbL47VIBLYTqgVLhISHIedU=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Gsugp3Tj;
-	spf=pass (imf08.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755153633; a=rsa-sha256;
-	cv=none;
-	b=oGcjwdXWbmT7xTcwo4ubj2fNjfs1HBM1zDmkophDriPw4ixJ6rDooclv2IERmecUW3qqpc
-	Mm0VUECnRrsE+vF0jD2vIsNbU4iecsY6WmOe/QLtoIHkCQjGeDvqcXLN7OoNoBXgRrcth+
-	VPENbp5gGI+pCxVuM8w60vJF/jmAyCQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755153632;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=du3zfsORdvVjs9q/P+9kw8vHH6MGBwUxinGwAKW+wLI=;
-	b=Gsugp3Tjhwz1eGsJZFjNfaaqdjJG2haL3Nhe7oJJ2PoiP/U8HiutN7FNIYvN14tLa79Sev
-	DZm4W5bBUAnjCvV30VDGy5TGuVfvX1BqKc/ueqwEtZ1UAkSUDFSuRks0GhCNa4MOtRxRWL
-	SCA1i1u7qjjRa5t4llTIT3qYOtWAbXo=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-134-KGTmpYevMy-JIQ59Wjci4g-1; Thu, 14 Aug 2025 02:40:30 -0400
-X-MC-Unique: KGTmpYevMy-JIQ59Wjci4g-1
-X-Mimecast-MFC-AGG-ID: KGTmpYevMy-JIQ59Wjci4g_1755153629
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3b9e418aab7so224255f8f.3
-        for <linux-mm@kvack.org>; Wed, 13 Aug 2025 23:40:30 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Zc/79XSwvseOMROg0iCTGbt49umwlFqoanOatXRXlL8=;
+	b=DRacOi/0fMXqvCHjDF9SQrjKhHM5aOVcdkjDyc3J5hp/Xhit8NZ4R4R7wem0MpPBQ+vUlf
+	kL8rKLaf91cH64CodhGMXdIzxuMDB7C/AuFJYFDJewXsQ12aL6qd7xJ2enLnUV/gBNmyp5
+	Xc3N2LqIu18QhflarXAe59R3zAYoC48=
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2445805aa2eso4830415ad.1
+        for <linux-mm@kvack.org>; Wed, 13 Aug 2025 23:47:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1755154063; x=1755758863; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Zc/79XSwvseOMROg0iCTGbt49umwlFqoanOatXRXlL8=;
+        b=XUEKtGb4I9IudiN3rPHBpVMERl0wom0727iksBPUjleAJFB+0fGsOb9mD0mBQrJTbE
+         Dvpj4lPLvqM/vfyaXCqxcK4rhRzOE9yGXhwuKaLM0gS/QJMPpXeVVh8MUTOubdsxFBUG
+         RiB+yLa4FSE4gJErr2ehzZf/8W4y1T/M+vkIXwxd88Aa9KDGoo7RgywQT8kwCSa+PUkc
+         vFsT81hK9Ag/J2VVD3WJhMcdNJn7+KFQpPoTUr/kzUFu70vDGRwVTY2bVFdEaQYubZko
+         zvUP45V1S9atjwprIzuRApIeiWyCvyzrSQzy58KTrC15udaKL1y/ULZinUXk60+lAQqm
+         OqPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755153629; x=1755758429;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1755154063; x=1755758863;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=du3zfsORdvVjs9q/P+9kw8vHH6MGBwUxinGwAKW+wLI=;
-        b=hdLk039bfKD536JfH+pYRfA/gppcb2QIqt5Nw3MjwiOI74yBpIRuYv0bpqVbFIPveR
-         mWue2O6R6W38o6x2jPj/c20LgivAssoDY2anCjj/Gymgrh4GbUm+MB8BD37Qyh3zsKNw
-         iplxCSlfA2lqurLUHFlr7j5KliTH7uq9JqiIrO4AKS4S+WOJ+7WE/wmPVpUiCmuW8KQJ
-         oX5gp0x6UgDXFOmMheVsvOfLcIwN690ZOEPYgQjdocYAAWE2yeGtso6caeTiyoczPRQS
-         o+XlyKVOADj2UJ3igGYDQ74MflyZSmLyQR+iux/hf/bQcnyAB+SmKH36n3oAgMEhjHBE
-         Ruqg==
-X-Forwarded-Encrypted: i=1; AJvYcCVg+yV8x4kZ4CHqFuHTL10iSQ8GM2s7dvMaFgiJAEZB0X5Bhj2L8nkzRILSl5P5WkGYmpSWBfhEuw==@kvack.org
-X-Gm-Message-State: AOJu0YwbYYGtutAro4Fn0Ng6GF7Ihig95PNa6KDwI/AHv44pD+2ozLRl
-	BTJMlxxcavTFkE7K2kroJnUPqwlxRJX3kUC51Ffdcz5WYwp9cjrdKL+Px53SaRPDyUbipqdPPdG
-	+Jl0mw12m35L0/NKvlbqcahKfBEaqJ3wPJhP2EK3BlNR+TAmpGoVe
-X-Gm-Gg: ASbGncu+Z4ZuUPqBOQryYK3+KDC6UGxvrmyqgM98Gvk9yZSgLJLzE7uAAEnWmMP60YI
-	SQ+x8E1ehYT5VDJhxONu8gzQzm/PN+62aeXpvw+8kKMp8R5+aSTWt5v0/1ZnkpR+8EU6BK3IFTv
-	rMbW/r593Xu1EhGoc8e08nGrybLcJHiPn0QWZGa+r3J4JYBAciDSbfEM637Zn0CLQ6fxzU5R0v2
-	j4jhSbejUEYLEwsDCFjAMEDVgelB0up2MRMYchKfDDxAh/A6V8dtu5OGyINGuyKpcw3X1NDaeY3
-	OgJaf1N4eg65u9uEbD1wfjQ7/N3Ad+uoSClhNPoL4th8wDETukk8Kf6UhbnAU5d1bd8Us13szOu
-	1cwwdzfkOYUC8z+qETGx6l4v2SLr+GJiHjc1cVx7HQePS4H5W7Pi8/xRePE0NYNg/vfM=
-X-Received: by 2002:a05:6000:220b:b0:3a4:e841:b236 with SMTP id ffacd0b85a97d-3b9edf934a6mr1553037f8f.33.1755153629282;
-        Wed, 13 Aug 2025 23:40:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEEuzHOhmRMBolwYD3ba0HOXKl2gUhu4r2blnmeUTx+XZ6xs0oqA7j73MqUnp9DNH4unTfJvA==
-X-Received: by 2002:a05:6000:220b:b0:3a4:e841:b236 with SMTP id ffacd0b85a97d-3b9edf934a6mr1553015f8f.33.1755153628813;
-        Wed, 13 Aug 2025 23:40:28 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f44:3e00:9fca:7d89:a265:56f3? (p200300d82f443e009fca7d89a26556f3.dip0.t-ipconnect.de. [2003:d8:2f44:3e00:9fca:7d89:a265:56f3])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c3ac036sm49649765f8f.15.2025.08.13.23.40.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Aug 2025 23:40:28 -0700 (PDT)
-Message-ID: <871ed36d-796c-46ae-a522-89ce9a0fb5b1@redhat.com>
-Date: Thu, 14 Aug 2025 08:40:26 +0200
+        bh=Zc/79XSwvseOMROg0iCTGbt49umwlFqoanOatXRXlL8=;
+        b=bjGSYCLDr1UwvTJTRcOOP1JNDW6aOIylFiRbaWqPdPm/AJx92pgrcSq2gD73mKaifn
+         0S9eaxDOEj89PmFT9Iwl+/fiL5PyxqNnU+4VHvfqOyF7MA6XWggK8VxPYCBTTs9hZYTr
+         lhCNShr1MW1lqt5iNVfxxy9Lb1ILnctqNt2wlsosuGCB2R6gBw6TLQWJ98mYEGTR7Oml
+         qmWkMWOuwG7fdh3jpMZJg7roE/INS4e4YyNRqMvOIUXDpWhxADqlQPV7QF8XVGaroZMq
+         IrSbSn1qjKUmnyrJGt55GXSj3blSI2D8+kpiref3VlcPnHlry/8wl29lG+47mQuMT2jG
+         EK0A==
+X-Forwarded-Encrypted: i=1; AJvYcCXBWPMlQoxu9fISHOCkRjKfK3mzAsFKKVp+IJp2IX2FXGk0IpzwNm6u3cMlc4dW210sXxwafcRJZQ==@kvack.org
+X-Gm-Message-State: AOJu0YwkdeJe++qa2HMHOq87xSPw3rSogpTUAxXMJja6Yr9ERDFna094
+	nl8Xmxdlq9sc3BUp8q27vJlKmPbUbOilceLVnBLYm/mDzMzLjYsK4aogwy6nEr2G0s8=
+X-Gm-Gg: ASbGncsfQwpbj79+dEtyNM0C8P4aeHnOJ8w1ZqSk4jkZ8HqgIfy7rVKR+5vYKyaUVu7
+	vGFEc8nMKjLK8IQr3b6dBt1lnQOaS5t2R30R2s0Z5bgiJ6mk/o09bVi2HOFkuN3a42dPantMx1B
+	P+AQ1V1ApcDHk5TCj28nR2XRvCG+s2DyJooVN5cHD/9cA+0j5wCfX+wnHEIjaWgLAnCv/+PC/Ma
+	VByJhuJDpxJfvy93qfCCLh9CDXDIMIY+6SDm2BthSWHyxJJ+ed00JqoZeJJENfWEHReCJKeDSNX
+	BLDftXbgdrWFESqUZISgRPQCooWSltNYG7oUAd9290zfvV9BN2NPoi/VKcVwLc8/bO5kQNZlfPv
+	vqpNbz4hxlMWLgW5V/vp9WWxlYrXKLxZp5gSNyycML2XRRCvC3Q==
+X-Google-Smtp-Source: AGHT+IEb3eJicXsgaNlyzBQ3nJS4mCdWERJyOxedSkNcWUM25YdoSAcIjs1UdYpqo12C3/PgqtNh2g==
+X-Received: by 2002:a17:902:ebcb:b0:240:58a7:8938 with SMTP id d9443c01a7336-244584af696mr28229005ad.7.1755154062636;
+        Wed, 13 Aug 2025 23:47:42 -0700 (PDT)
+Received: from localhost.localdomain ([203.208.189.14])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241d1ef6a8fsm340923605ad.23.2025.08.13.23.47.39
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 13 Aug 2025 23:47:42 -0700 (PDT)
+From: lizhe.67@bytedance.com
+To: alex.williamson@redhat.com,
+	david@redhat.com,
+	jgg@nvidia.com
+Cc: torvalds@linux-foundation.org,
+	kvm@vger.kernel.org,
+	lizhe.67@bytedance.com,
+	linux-mm@kvack.org,
+	farman@linux.ibm.com
+Subject: [PATCH v5 0/5] vfio/type1: optimize vfio_pin_pages_remote() and vfio_unpin_pages_remote()
+Date: Thu, 14 Aug 2025 14:47:09 +0800
+Message-ID: <20250814064714.56485-1-lizhe.67@bytedance.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/memory-failure: fix infinite UCE for VM_PFNMAP'ed
- page
-To: Miaohe Lin <linmiaohe@huawei.com>, Jinjiang Tu <tujinjiang@huawei.com>
-Cc: wangkefeng.wang@huawei.com, nao.horiguchi@gmail.com,
- akpm@linux-foundation.org, xueshuai@linux.alibaba.com, ziy@nvidia.com,
- osalvador@suse.de, linux-mm@kvack.org
-References: <20250811043323.899130-1-tujinjiang@huawei.com>
- <c39474a9-31b2-7df8-8ce8-229f706b05de@huawei.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <c39474a9-31b2-7df8-8ce8-229f706b05de@huawei.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 7M-4Radm76yFYdmbpXf-hvVIqmRWGfmzHMo1TUOmXRA_1755153629
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 86D3E16000F
-X-Rspamd-Server: rspam04
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: 8zjkfe3fngjnida49tak8638msaatg8k
-X-HE-Tag: 1755153633-585832
-X-HE-Meta: U2FsdGVkX19qziVT4UKiCNfidMzZA46Zh7BzlmzCXQI62T/frTNgc4xdnjlTD16VW5iax9nOyYDHP0OkTmAo0ksFuYFG/AzjPcw8KKp+tr3fdem2xMGQJKySKZoGqDnnDNa6ogivdltU9OIwPWX6WfaXUqIspA5g8cr+8FEJ/SvAQrhqaWTx2yLEeyvTp+Bru/jvSwadYGhcnAbPuSSnpVuYFXeLmMXXXZi3ISPcNCkhI2o6NLbTjeeEdtZP5KptY4Q7C8raq5H/66Sq7W6156wgmj4/J6S7Y9N92VoxmJjnhFd/ZxDzQgf9DY4Ke81BZO5HgIOd/WudJQ/BETs/3O87VY0F5sJrwaC1vb26ZTM3tpKyIT0aqmQa8q/v+KNS8WV02HNWFWgryM+OQigeAAmdbbglL+weEEeW94SK4GdFTPhaImnGIuiccIhh1ZbrpE5UE8xHi2AMkbt4ne+zpSRQz3U/4MPyytEeb0PAzxhI3jPNxmygYYAe4krdMxhCtnd3CLsrX39b6yQXHW0JHNXKUUv7PKgwZ5+QIPBLyaKIQOqj/SWjA15A55CAYLGkNmeafBawGhWZWnvvEMObT6WEBeIIzrV992E9/7VYlm2lQZaks6P/RuJ901N6DykqAqZCjatpbmhIdbJt1+uuu5MIzd9K9b5V3lH9f3AM+U8IROEtxcqZvB6q1U8MZmhOR+h1QQzt3sJr2Fnpcsr/Oc8x/wkR80ANr/sG8F/xibbFmTRdusZIFDmu/M4l3HBHjMDAy5nPNOQTiQsxUVWcmZMCIzu4Q5jJE2OEz6rDUTvu4guV1ypL69JZwphPiTOM2/e9DZJapCTuWO63ekSsKJ/VxemNegvuwgHEGrNTUDqKRHYAk2ZjRgyQQIXB66RWymFG6ZDFXItbdPNPf23fNEqOw09Ctee061s6tMj7eLdilXPMZNbBhktmtLUZYCe8hxNbBJvHnFWnLZjGSFD
- 1A1g6JiU
- lWUVMmFYCdnq/KO41MjnJgRiaf5p/xMj9/SK1/UuHPkqutXXWOTbxKbK4+iV89oiAtBMSGb0A/MC4FUpdp15k6zrK98LtJqStVVz4t8TqCHZWMq4XMI47xGo9fJWZp6aKqDClFuooH6iCG3lSWip7eJ+CknP8YZWlh2iLfl9iZV0PHDOhWTLoOxn1XT1ITX/BElv5Sz/+8kZn6jJkTZ7T10A4qtKMaBP2KRj1p2tnstK28tVGgJ42kgBwOeoPcN5L1jV0oSra+OVHhp5e2aPyq1Z5TQFrRN1NVc/HpdVucHqcgxl5rC6o5MpwqM9/VHDJz7oCIT1O/9taVs0VRGVD74q5JDXHqa+WZqU5An0NgfgtMum8dN4uZQVi/qnM+61mUZ3DnDom1ej5PSbcCS7CqEjCWs04GabqdS/dc5mtB9EqtxiFFgp5J1UVQ5fUoU5pWgYSCCnSWa48w3fy34suqxY/+g72yGYvhR3v6VEt4hc6XioRH960aG2QzRUbB13eZ4z3pJZECVq+wF523sJB4UIXw2CVvR+FMyuwKCEHc8D+Kgq/KnXzcEQgmA==
+X-Rspamd-Queue-Id: E1E0BC0004
+X-Stat-Signature: dksmjh9h1yenkj3unt9mqzjrkr6r9hm7
+X-HE-Tag: 1755154063-42805
+X-HE-Meta: U2FsdGVkX1+VdkRyngstAtUCpzA873YTHPR2lLvk8v+8fQCAgzEB4ltYE4z+dHqc49fEi6yWbhLMzBGZw/v5EK2V2VaVvzJDKOlMZMKlExEinwnAZQnKtoYGyV0YD2U6/ay+NXehmH9DpRQrzdBe3GY45syTh2JifFxtQbdTio18OqGr4O9yR6WTFP451e2n8ntXCqQF2bwKalEnDV9IGgrJ5Mpdmx3Xg87X+gyy9i+XLMT6uMSxtDgGHN1Ockpq5yiGIzKawL4kQWxPK1e36jCjQ1P8GtctNw4PjkGsBXW+jJaZiWL4yT0BXGp/93QyQ1qR7zjGV+CMCmHYoCwr16si8pvt+1EFMMMWX7Zyky2o0tdCCuOtM8bE6rptR/JCAsB2kqouOc5PYUoVHNMNoeP/qkGvZRSkCUIVt63F21vMWK7UDxFuqooVCA1mhYQnXdk/CUtrGcB98mL4vyuLr2qfm+pCVcpK0Pp1QNMQkt1C43H93+/DZNpzw3+83jgX6XRWAAMBMmytmiT8ptfx25l4oQR5I1kI3yoZHlAgN/eAjKrnAoyNlZNr04q51Gb358oBVT6qNELiWW1x857O0Dkac7OC9eOII6qt+0p7faHndWl2yq/lI83v34ND1gv+vVGWJmV9t/6mY7TnTfs9mBsp2yAc6dZ7bWFzo2A8i4MmTGabfPsWt+7t3HoNJEC5x82c52BUKYQlvZ2CCzRljqCpGXXMXVc/2O3wfLzMY5vJE1Ni4flW0nfwfyQRGl2HJfjTrqpmIvU80qbEoOnDOYTClaKHBUOkBFLrxUdMoZYZbRNWbsDcChGv2TTMVPX/gk5jcyYwQMd0eSIxMEYdpABm+mkQl3Y73EDLmUqvKfaYwGcyjdSQHriq3ElapVOwpT7AcBsDTaBzL+OVaLnwwNQjD/f+j7uUAOOjwN7eyUsGgjmmppjcem4NpASmMM6kB+kDJsNgNsC0GMwGHEI
+ Ote0/iYw
+ dXE2aGJH3WVeeYKTYR9siIitBkA0qVtEmNXeApz7VsH/g7fghIQgvu4yqmDOF65MWAJG9Q8xRVmLM/j8vueE4ngI/Ne/1EJdRhJukNd0btQEH0YI5wclure8mZwXznmwipAJwK0MJY0BchXLOg9oGophX3yRjC2KTJTzcifK1MwgRmQz/Kx6DacM83AM5qj4EkLCPia1DgO/9X6o7c1CjjaUMFJhKrtbOj1MjE1Ebh5DkXtlBATpmBOZirvJvOztXUPhUY7oQfUpygzGjbb3d9xaoVezqLMxq4Zgya10obcqPsH1mxltUfkioJFu74I8lOARZEeY0LWwxxguOnUpwqgYll2CDwLqtURj6fod7sn4EBp494T1zkyNWyep3IjsKMIIhA53KadIKfkwxviiEAI8F2w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -177,57 +118,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12.08.25 04:01, Miaohe Lin wrote:
-> On 2025/8/11 12:33, Jinjiang Tu wrote:
->> When memory_failure() is called for a already hwpoisoned pfn backed with
->> struct page, kill_accessing_process() will conditionally send a SIGBUS to
->> the current (triggering) process if it maps the page.
->>
->> However, in case the page is not ordinarily mapped, but was mapped through
->> remap_pfn_range(), kill_accessing_process() wouldn't identify it as mapped
->> even though hwpoison_pte_range() would be prepared to handle it, because
->> walk_page_range() will skip VM_PFNMAP as default in walk_page_test(). As
->> a result, walk_page_range() will return 0, assuming "not mapped" and SIGBUS
->> will be skipped. The user task will trigger UCE infinitely because it will
->> not receive a SIGBUS on access and simply retry.
->>
->> Before commit aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to processes
->> with recovered clean pages"), kill_accessing_process() will return EFAULT.
->> For x86, the current task will be killed in kill_me_maybe().
->>
->> To fix it, add .test_walk callback for hwpoison_walk_ops to process
->> VM_PFNMAP VMAs too.
->>
->> Fixes: aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to processes with recovered clean pages")
->> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
->> ---
->> Changelog since v1:
->>   * update patch description, suggested by David Hildenbrand
->>
->>   mm/memory-failure.c | 7 +++++++
->>   1 file changed, 7 insertions(+)
->>
->> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
->> index e2e685b971bb..fa6a8f2cdebc 100644
->> --- a/mm/memory-failure.c
->> +++ b/mm/memory-failure.c
->> @@ -853,9 +853,16 @@ static int hwpoison_hugetlb_range(pte_t *ptep, unsigned long hmask,
->>   #define hwpoison_hugetlb_range	NULL
->>   #endif
->>   
-> 
-> It might be better to add a comment on why below hwpoison_test_walk is needed.
-> It looks somewhat weird as hwpoison_test_walk simply return 0.
+From: Li Zhe <lizhe.67@bytedance.com>
 
-Agreed.
+This patchset is an integration of the two previous patchsets[1][2].
 
-/* We also want to consider pages mapped into VM_PFNMAP. */
+When vfio_pin_pages_remote() is called with a range of addresses that
+includes large folios, the function currently performs individual
+statistics counting operations for each page. This can lead to significant
+performance overheads, especially when dealing with large ranges of pages.
 
-Acked-by: David Hildenbrand <david@redhat.com>
+The function vfio_unpin_pages_remote() has a similar issue, where executing
+put_pfn() for each pfn brings considerable consumption.
 
+This patchset primarily optimizes the performance of the relevant functions
+by batching the less efficient operations mentioned before.
+
+The first two patch optimizes the performance of the function
+vfio_pin_pages_remote(), while the remaining patches optimize the
+performance of the function vfio_unpin_pages_remote().
+
+The performance test results, based on v6.16, for completing the 16G
+VFIO MAP/UNMAP DMA, obtained through unit test[3] with slight
+modifications[4], are as follows.
+
+Base(6.16):
+------- AVERAGE (MADV_HUGEPAGE) --------
+VFIO MAP DMA in 0.049 s (328.5 GB/s)
+VFIO UNMAP DMA in 0.141 s (113.7 GB/s)
+------- AVERAGE (MAP_POPULATE) --------
+VFIO MAP DMA in 0.268 s (59.6 GB/s)
+VFIO UNMAP DMA in 0.307 s (52.2 GB/s)
+------- AVERAGE (HUGETLBFS) --------
+VFIO MAP DMA in 0.051 s (310.9 GB/s)
+VFIO UNMAP DMA in 0.135 s (118.6 GB/s)
+
+With this patchset:
+------- AVERAGE (MADV_HUGEPAGE) --------
+VFIO MAP DMA in 0.025 s (633.1 GB/s)
+VFIO UNMAP DMA in 0.044 s (363.2 GB/s)
+------- AVERAGE (MAP_POPULATE) --------
+VFIO MAP DMA in 0.249 s (64.2 GB/s)
+VFIO UNMAP DMA in 0.289 s (55.3 GB/s)
+------- AVERAGE (HUGETLBFS) --------
+VFIO MAP DMA in 0.030 s (533.2 GB/s)
+VFIO UNMAP DMA in 0.044 s (361.3 GB/s)
+
+For large folio, we achieve an over 40% performance improvement for VFIO
+MAP DMA and an over 67% performance improvement for VFIO DMA UNMAP. For
+small folios, the performance test results show a slight improvement with
+the performance before optimization.
+
+[1]: https://lore.kernel.org/all/20250529064947.38433-1-lizhe.67@bytedance.com/
+[2]: https://lore.kernel.org/all/20250620032344.13382-1-lizhe.67@bytedance.com/#t
+[3]: https://github.com/awilliam/tests/blob/vfio-pci-mem-dma-map/vfio-pci-mem-dma-map.c
+[4]: https://lore.kernel.org/all/20250610031013.98556-1-lizhe.67@bytedance.com/
+
+Li Zhe (5):
+  mm: introduce num_pages_contiguous()
+  vfio/type1: optimize vfio_pin_pages_remote()
+  vfio/type1: batch vfio_find_vpfn() in function
+    vfio_unpin_pages_remote()
+  vfio/type1: introduce a new member has_rsvd for struct vfio_dma
+  vfio/type1: optimize vfio_unpin_pages_remote()
+
+ drivers/vfio/vfio_iommu_type1.c | 112 ++++++++++++++++++++++++++------
+ include/linux/mm.h              |   7 +-
+ include/linux/mm_inline.h       |  35 ++++++++++
+ 3 files changed, 132 insertions(+), 22 deletions(-)
+
+---
+Changelogs:
+
+v4->v5:
+- Update the performance test results based on v6.16.
+- Re-implement num_pages_contiguous() without relying on nth_page(),
+  and relocate it into mm_inline.h.
+- Merge the fixup patch into the original patch (patch #2).
+
+v3->v4:
+- Fix an indentation issue in patch #2.
+
+v2->v3:
+- Add a "Suggested-by" and a "Reviewed-by" tag.
+- Address the compilation errors introduced by patch #1.
+- Resolved several variable type issues.
+- Add clarification for function num_pages_contiguous().
+
+v1->v2:
+- Update the performance test results.
+- The function num_pages_contiguous() is extracted and placed in a
+  separate commit.
+- The phrase 'for large folio' has been removed from the patchset title.
+
+v4: https://lore.kernel.org/all/20250710085355.54208-1-lizhe.67@bytedance.com/
+v3: https://lore.kernel.org/all/20250707064950.72048-1-lizhe.67@bytedance.com/
+v2: https://lore.kernel.org/all/20250704062602.33500-1-lizhe.67@bytedance.com/
+v1: https://lore.kernel.org/all/20250630072518.31846-1-lizhe.67@bytedance.com/
 -- 
-Cheers
-
-David / dhildenb
+2.20.1
 
 
