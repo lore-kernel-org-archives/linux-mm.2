@@ -2,132 +2,104 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0D012CA0EE4
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 11:40:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2267ACA0EDC
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 11:45:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9987D900149; Thu, 14 Aug 2025 07:40:06 -0400 (EDT)
+	id A149190014A; Thu, 14 Aug 2025 07:45:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9427D900023; Thu, 14 Aug 2025 07:40:06 -0400 (EDT)
+	id 9EC09900023; Thu, 14 Aug 2025 07:45:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80AFB900149; Thu, 14 Aug 2025 07:40:06 -0400 (EDT)
+	id 902AF90014A; Thu, 14 Aug 2025 07:45:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D7C1900023
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 07:40:06 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 228DA117BBE
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:40:06 +0000 (UTC)
-X-FDA: 83775169212.26.92393B2
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 32E5C40015
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:40:04 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=LIpjXngc;
-	spf=pass (imf17.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F529900023
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 07:45:53 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4AA1C1A0649
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:45:53 +0000 (UTC)
+X-FDA: 83775183786.14.4D5D304
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7F7E1C000D
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:45:51 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OPnGEXsm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755171604;
+	s=arc-20220608; t=1755171951;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UArTXp3Hq+mbNcbOcxemSDB3MaKfXzy1pobCYymFKQg=;
-	b=NE1uwHtS125r4aGsW0nD/QQ2fpl9wrxzRf6uggw2a3houfAwQO/xU/ym9gupTbe9w/b9wh
-	qL0fuCnC06+WMoZvLNf9QiTVm8pbIT7J/cdDazsJK4IyU5ZBFcVxoQVciZs5M08k2Wfdwr
-	5hw0e3omIc6C3KkVY/+HyOTbGqaTUBk=
+	bh=W8UKMe/BMa6O+mFHq4Z5RP3mjo6LhY8rsjitVFWMaek=;
+	b=j6xqE9vero8FIAIbYfUeXHeW31AIFJabtFO2h0FPZVaZmJ2tsUaaU/sXwR8DTTzAPy/L4O
+	Q2y76dTDLVFKBsaEIZMh6G72YNvktmaBGmATpIGqL+LzPH93tJZsSfxirsAkXAu76sypqc
+	TkkCWAE4sMjYHVfIgbnwG3z+ns2TfMs=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=LIpjXngc;
-	spf=pass (imf17.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755171604; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OPnGEXsm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755171951; a=rsa-sha256;
 	cv=none;
-	b=YwtQxeOS0WsNwD9bIXgILZsfudKaLs5p38vDHhE5cAdN1fMzMCqhikcSnnwiM9/PCb8CF9
-	4c6A1TqynZ442Ydu+biz/TpvRZM5h/lrmGJ1rocG4E1mkncPsX57Za8ZEOG44hJHEEg/4o
-	FjztAwP/MW8DUdexgh1gEuQ9Olh36dE=
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-b471738daabso647084a12.1
-        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 04:40:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755171603; x=1755776403; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UArTXp3Hq+mbNcbOcxemSDB3MaKfXzy1pobCYymFKQg=;
-        b=LIpjXngcnzor6VyNaMVYIeTTMiWEwJaQDtPda2UzCqTn8v+o6nXAajbAQg6hVz+cGZ
-         iYigOegQVdFdkJ7nOzuzYhmU8MxpYU8JKSiHa5OW/VQ/lUM1DSocpPZvMyxAoLB+ijtJ
-         BGCoD0BReTVu5H8vlcF8UTCTsvCSV2PLikTQJgLeZP0IrODYEHlM6YoIbx4wIG3Yyr3W
-         XmekCEUo7pfzCOtq4wyvEHNjpyOqCrVlpXHWUi10kt+c3Ca1knTTJUoaJe2wbBj5WxvR
-         kn5yNPfPEcJT30IZSogPta5DA5AycHSKzfcNZqqYwU9CMr28daA1FyS0nJAxVxqBWsZP
-         FpKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755171603; x=1755776403;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UArTXp3Hq+mbNcbOcxemSDB3MaKfXzy1pobCYymFKQg=;
-        b=jQLoDdsfZJ8x9C3jbT0onJIKX1rlE3SESFy3LMCHbPsuvZT+wBj9ISt4pHe1+zpeoc
-         NuPbiCYK7z9xqlW4LhH4K3HSCcDe/Ow39MunvkzM4OLb2LtChgxdoSTcKQ+tGZ+LQsca
-         xJWZCsuKGl4eQyuQ6Jl8Y7wzRdSBvB6EqeiySToCDAVDSUiDQHVURmU3RSb66ExQUWNU
-         zUiUOSkiYnikX/0+Hqc2FTrv0y+rs9LMgU96SaZWsikAQjSIBFQSAyfEbPCKqpZfrEcS
-         WSCgzEHinnw2d2dJMPH/bxgIRjC9CZm0ScRii6qqFSxbI/ZsqRm5Obj6ww4biClotvnp
-         UUCA==
-X-Gm-Message-State: AOJu0Yz2Kw80x+1DZ0khei0xIpncmUXmBKAvl27P+1ZpnSI6fNDUcAtY
-	OJcRTuq84u9HzFjY0mcMO+4BNWPQ6fCAz3IeQOezqbqDTNUsCneWzFHX
-X-Gm-Gg: ASbGncs2G3F21kDMKhLDLnY0syyv7WWTjY6OtFwwsAP+mrLRdL08VGWXvCB0a4BhGfR
-	qOYszCJaFWA48R1+eG2/TzRLDvv0XqK2itr6yQM1fGeuIB+Te1RH5kU9U49PVXNRvAeV/9p5SvQ
-	SU/tq94lhQiyBsR5guh3bJlIPeX3yHDwfk/FwblldouHz1nDssYr64Dzc0cEIJoXUWXD2DVXEPF
-	Z9Xp2+EV9G7Glcn84ekolH4oIArYSRS/yrtyjWygi0SOJBfFwMz+dbIRC0Bl20AQeFIJLl6OmhY
-	+872AX2ak7vQ+D14UHhXGh2ObWXuYsZ8zll9t/xGclk1OHv4BhKhidqK/DpEXHrFIsdEHRjbFkn
-	W98nJXPsbLlilw+5jg9JXhF9cpOo=
-X-Google-Smtp-Source: AGHT+IGwUAfXN4KQiQgbnxyLq1NQf2dT/Iah65zRG8p7QtWnmVS6K3f/iWmzK8+w4TcvIKMHoj2lZQ==
-X-Received: by 2002:a17:903:2947:b0:240:3bb7:fdc3 with SMTP id d9443c01a7336-244586c46damr28681005ad.28.1755171603003;
-        Thu, 14 Aug 2025 04:40:03 -0700 (PDT)
-Received: from vernon-laptop ([114.232.195.227])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2430b53d504sm49046215ad.87.2025.08.14.04.39.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Aug 2025 04:40:02 -0700 (PDT)
-From: Vernon Yang <vernon2gm@gmail.com>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	glider@google.com,
-	elver@google.com,
-	dvyukov@google.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	muchun.song@linux.dev,
-	osalvador@suse.de,
-	shuah@kernel.org,
-	richardcochran@gmail.com
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.or,
-	Vernon Yang <vernon2gm@gmail.com>
-Subject: [RFC PATCH 7/7] selftests: mm: support wp mTHP collapse testing
-Date: Thu, 14 Aug 2025 19:38:13 +0800
-Message-ID: <20250814113813.4533-8-vernon2gm@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250814113813.4533-1-vernon2gm@gmail.com>
-References: <20250814113813.4533-1-vernon2gm@gmail.com>
+	b=MwnCkjerD+fTYXUAsyD9Xr2v6DuVlvaQlvl44n2RYy1HK6hj5yMqSlV5gyUNWenug2uQst
+	4GZVytXzR1M1NiYFkf8Nfsk+nvM8CKiwVNNDX7UZeMr1d5v4iJxrtzAhxV1qoDr8nmwpNU
+	S2D6zOrMTy2iDCy2OSl3OOKay1GXoh4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1B6FB4375F;
+	Thu, 14 Aug 2025 11:45:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6900C4CEF1;
+	Thu, 14 Aug 2025 11:45:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755171950;
+	bh=FexkV7nvaMJKSQuSjt56VRn1ropgn6XWofqYu3VqSl0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OPnGEXsmQefCR5XKxWgB20+CdEPRHLpwVjZ9QqpgyiEZ/0tCDnmajIc2xnznI+BzQ
+	 Is37m5tR5w39ME0RZCAMaBBsKQRSYqMs9a9tZjjyQriX3RqQOr5IihltzPkGu3m3Q4
+	 vZTJUJH1TKkWTXuh5TamQ5xvr35SXOixpW9FVi2OiCGYyXHmfuOj0dXi7B8UQAC5Q+
+	 zxQk6CKRtdavLtwGvB7gY6HSlp4w30N0rA/eF4w9gIis1iaNFxzbmJZsXiOQE7bHUr
+	 9ZJMetEeDzQbchb9v2/vyLtoHZnblpw/SncrzFzAA5/Uj9OF05Wi8okNIKcTLXJXu5
+	 tNIXry1AK4ePw==
+Date: Thu, 14 Aug 2025 12:45:42 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: David Hildenbrand <david@redhat.com>,
+	Usama Arif <usamaarif642@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org, corbet@lwn.net, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org,
+	baohua@kernel.org, shakeel.butt@linux.dev, riel@surriel.com,
+	ziy@nvidia.com, laoar.shao@gmail.com, dev.jain@arm.com,
+	baolin.wang@linux.alibaba.com, npache@redhat.com,
+	Liam.Howlett@oracle.com, ryan.roberts@arm.com, vbabka@suse.cz,
+	jannh@google.com, Arnd Bergmann <arnd@arndb.de>, sj@kernel.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v4 7/7] selftests: prctl: introduce tests for disabling
+ THPs except for madvise
+Message-ID: <b433c998-0f7b-4ca4-a867-5d1235149843@sirena.org.uk>
+References: <20250813135642.1986480-1-usamaarif642@gmail.com>
+ <20250813135642.1986480-8-usamaarif642@gmail.com>
+ <13220ee2-d767-4133-9ef8-780fa165bbeb@lucifer.local>
+ <bac33bcc-8a01-445d-bc42-29dabbdd1d3f@redhat.com>
+ <5b341172-5082-4df4-8264-e38a01f7c7d7@lucifer.local>
+ <0b7543dd-4621-432c-9185-874963e8a6af@redhat.com>
+ <5dce29cc-3fad-416f-844d-d40c9a089a5f@lucifer.local>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 32E5C40015
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="HgKF1GOS9//9I841"
+Content-Disposition: inline
+In-Reply-To: <5dce29cc-3fad-416f-844d-d40c9a089a5f@lucifer.local>
+X-Cookie: This sentence no verb.
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 7F7E1C000D
+X-Stat-Signature: bw4487sjsyhyg6669ckgwqha94ph7pu8
 X-Rspam-User: 
-X-Stat-Signature: omxt5pk7n1d87dwhsab8haaee1iyrdet
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1755171603-24392
-X-HE-Meta: U2FsdGVkX19nbX9TbWhEhr5NzfgodFW8rYMSC5tSL69zbxmXFXMzeIDI0XZDd4A/ca4VVl460F1uUd41n/wMgnMnH9JzDzH2TtMoZVI37tqnnu4jhPUqjKoY15YKWZKhaO5HFBiMP5NL47ZrXu4YCmaOP1tOzDzJFz5/K7VS8vPtbWG3e9i5BABAt4h0EImzoLGDPh4XZIKYAtwkSSrVEW3ygCVEpcjP28gMCGR1nNTYKLXxt/V8MAC1Zql/Tw+kIQkdS8Ms5O0tlcIqXLnu9pHaGvTLuM03W8YJNcdwAusweXd2+e+F6TgsAIrwYgrs0pIjqWk86aP57MyJWurNmBfnyOGgM5UkEeVmSFeVyCyxhNrDjCP01h3m6uLlTMY+KCLcG6oNJ6yvLToCfpwz72JxigD3BZxawckVJGpUXWpTvCntDfydJbn/eVmeU+85nENc2q1HZoUWLTLhEjx2kkM7xrbXT74FnIJe9a+VgciYddiOIsZ+d2efHoNEFhTKs8IeTfN0Qt9oJofNrba6R17gA4wQpIs7UJ2VGkPbbtn5fNLnItIkU6mywHjmmu0VluLzhHAIiEvw0kzS7H21RaqIOYIaQB0YRbKR9koF8GROq5Dbe5EHhzaMb2IHvDnJrPuwdnlJPSfTxoneU4ZT2ib/cJe0o17QjPSsyI02DGwXwoajVAk1IempWuuhfmRwZk06G+67jcjtqNYPR+YligyU0adB/NKyuRAPAI2yI0cXZX0uUPXhBnYTjH7NavuhXOKx50tZdw8O8soDSe5JKQVHI2nQKDz+k4kaCd/q6RV3DknoXDewwnrqtVst3Bx4crPHhK0ULQX2D+NreyV9PUWXUBD+CFprg8rW38+7IdCNH2JIl7kKqAtlWaC1MbJ8EhrsvIBm0pm/ygEUFZvWXHcuBckibePHhWaywb8O8xSM3ObDvdj8SZfRl4WwGJlMX5uoTWEsfI91nizdBiD
- uGZsj1k5
- cJUxcRY5kcdOd3YWJI4h3dEkqjDogL0xsIu8LOTZ9jOOsZLl33EsUu02cHj3INF5WEprMZ1o//wss6yaywNvav2ryCGiQrIqmhBBB7GSgmRcrrUmDMi58b/KdNolMfx8aZso+uqpAxY8CtjKZZHVL0VgKqTtoPtLzqKA3i6vDSfvqAV1d2uLt6MJW8IzbnhyA/1y2TG/f1+ZnkQ15CYoC7AnEfM/RONJayhebl3x9yqj0LvrA///3kk8CSpKq4Qyvzgjb3oTtWa/kIgq/Wvo+WnSgdKMlJ99d1qDgsusaW/YyYdsxpn1+Je2ja7q7n4o0kfgoiTagR9VuU+attx54sV6S87msMpNyjMUSnJBYoCcBdQpQog4/W8fINQ67ZeYD6OOsdxsNnbqdmW5XlkG41BkHtNkCmtxjwWVvXfz/5+M7rf95ASkMx+4rEAKMnvn0bWs1HUdp+9EiYvJhLGE9Dyvxsx4CQpzaSHJCHxUfkrPyiviRykmVhCfkQ+K3YrcNFPoV
+X-HE-Tag: 1755171951-761038
+X-HE-Meta: U2FsdGVkX1/hg9+OxExMV8n4LNAOLh5nUWPJ+zEdAQr+PcA1BaFITeXy+MrQMp6ly2gfCOQRdRmXTgjfNUbPw97NaLicVLhk954jz1gRmmdvBv4xA+IAsOzdkTcu+mYKABAUvvks25T6IP34OBsJNsG8Vs1owSeOufeuxRluaJ1QqQxvnRP4M4xR+IyAN4qvs7MCKnuC7I1ofCGSB4YoAVUJTk4QrKiSkhC2MtiishL+JMuT1KA03rxKiHdt9ENzz6NCpzPq6x3WZ0b4U3WG6uFRgru4JbE/83d18lmcS1dkFF3ADh7hUxSk2UAR83xU73xx6K9yqBI9J93Yn4+DaWJAU2cWVlFAVpfzCNAcMMnQKlFM1cBE632mn1zaI/aZt9E6rtkIlKddCfwOZB3LSSJGXc015XySpYb7ACqhldV/ljEzOrGmiCVED+H1pE0a8tpUbvq70MClf0If3lghPWe8EEq06Ky5TqbipbQTGOewzR2r6EeIULVhYGG/eOit/PDgy31F6OGI9avF7CLq8o9mpgwimFbdyjd8f51YzYbymkw0bHNKMHLoxiLEnXl/HFSlI6fJxrjnXNWYeeTieN5yg2lOt4GMohu+f5t4eYEt0PzUiKYTSb2HQRtc8oL8C4YTjy0MTOejmmRIiOl93+90+DpmvytyjCcZ8sOFerjJSAEqaheYkAagW+x9ucza9Pe0yjXyxj5TLkwI6Ptoxjc9uOePjli8YU0mv3qUutXnckeOUnCLG3miFBNtNC6rpNuU9e19RAsq9rilqnM2FsGIYIjG0dBlmHdyNd4FFbQtr/umIdPEb4MmKMmFQw2QyDRNt6xnw5CX2NP+22SbsTnuth7weGRXriwuoWG9sR5ry7c02/yihD31+o1lbJaJ8dstFE8M2tUyQZMkHBdrWDhfEb7OvTTjHznB2ZMU2gjLKP4JwcwefI/18JXzGEZqZnVsN4SPP/71+rqTpia
+ HYwUg8+2
+ LxFZJRFFpTfA1fT2dMk/XFQmusMIrdUqkd14/IKHrAudcFL2AHhB4CsmNkxMidIae7TA18PdfMLTGztkWksMPvk4K6X2/hy9zdfUgPoPnamCl/NvLtqoGwhzgJJhvxS8BmJBNVRIWJOT8A71jCP2KLKv6L/YTLMOCheIy7ytzc/UQHhLQ1WdHaiyuhmQ3tI6OUsek3Lcl35de1nCUunxccw/OMyV8xAhkexm7yFndJJwWmbDYeJG5VAreycDhcyikAnG7e0z1nWYEeNJvqpOHTXAZQEqN+hCTDIWy7bWnd6kdpYSo4MohRWd/AazXlnI7feuSDih5qFzVo3gQoLsJ0KdGkNHVZoj0F9EipA6UBw01gT7PwD97Gwjqap38ZGMjaHzk
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,38 +108,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add wp mTHP collpase testing. Similar to the anonymous page, users can
-use the '-s' parameter to specify the wp mTHP size for testing.
 
-Signed-off-by: Vernon Yang <vernon2gm@gmail.com>
----
- tools/testing/selftests/mm/khugepaged.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+--HgKF1GOS9//9I841
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-index 8a4d34cce36b..143c4ad9f6a1 100644
---- a/tools/testing/selftests/mm/khugepaged.c
-+++ b/tools/testing/selftests/mm/khugepaged.c
-@@ -981,6 +981,7 @@ static void collapse_fork_compound(struct collapse_context *c, struct mem_ops *o
- static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops *ops)
- {
- 	int max_ptes_shared = thp_read_num("khugepaged/max_ptes_shared");
-+	int fault_nr_pages = is_anon(ops) ? 1 << anon_order : 1;
- 	int wstatus;
- 	void *p;
- 
-@@ -997,8 +998,8 @@ static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops
- 			fail("Fail");
- 
- 		printf("Trigger CoW on page %d of %d...",
--				hpage_pmd_nr - max_ptes_shared - 1, hpage_pmd_nr);
--		ops->fault(p, 0, (hpage_pmd_nr - max_ptes_shared - 1) * page_size);
-+				hpage_pmd_nr - max_ptes_shared - fault_nr_pages, hpage_pmd_nr);
-+		ops->fault(p, 0, (hpage_pmd_nr - max_ptes_shared - fault_nr_pages) * page_size);
- 		if (ops->check_huge(p, 0))
- 			success("OK");
- 		else
--- 
-2.50.1
+On Thu, Aug 14, 2025 at 11:49:15AM +0100, Lorenzo Stoakes wrote:
+> On Thu, Aug 14, 2025 at 11:32:55AM +0200, David Hildenbrand wrote:
+> > On 13.08.25 20:52, Lorenzo Stoakes wrote:
 
+> > > I can't see anything in the kernel to #ifdef it out so I suppose you mean
+> > > running these tests on an older kernel?
+
+...
+
+> > > But this is an unsupported way of running self-tests, they are tied to the
+> > > kernel version in which they reside, and test that specific version.
+
+> > > Unless I'm missing something here?
+
+> > I remember we allow for a bit of flexibility when it is simple to handle.
+
+> > Is that documented somewhere?
+
+> Not sure if it's documented, but it'd make testing extremely egregious if
+> you had to consider all of the possible kernels and interactions and etc.
+
+> I think it's 'if it happens to work then fine' but otherwise it is expected
+> that the tests match the kernel.
+
+> It's also very neat that with a revision you get a set of (hopefully)
+> working tests for that revision :)
+
+Some people do try to run the selftests with older kernels, they're
+trying to get better coverage for the stables.  For a lot of areas the
+skipping falls out natually since there's some optionality (so even with
+the same kernel version you might not have the feature in the running
+kernel) or it's a new API which has a discovery mechanism in the ABI
+anyway.  OTOH some areas have been actively hostile to the idea of
+running on older kernels so there are things that do break when you try.
+TBH so long as the tests don't crash the system or something people are
+probably just going to ignore any tests that have never passed.
+
+--HgKF1GOS9//9I841
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmidzGUACgkQJNaLcl1U
+h9A7uAf/TsWdfXYkIPkM2Rj3C1HzjIuj6j4nnUhMESgtZSbf9Am99POGQmQxnUay
+Mz75k34/LOlxbUGyk2oz2tqb4Ad725WPmSqg4IEQXJ3or551O2tAApBrrbwTKfrT
+ha9jUqj/hhFasDuM9PZsHTUcEk4DKGYtFHOtrucuQMDOSNH7lsB3BEVyaY4xxHzM
+d2dWm3i1c8VlbU8gFIX794INH1sdcja2Syh0d5wraBAZ+NS+uJ5iWyZw43YgTGiX
+qQR+HWxD/m3NSNX6L58jpZYJq6Q40xDz8aQQiAd2omnwIYWln4HIitcYTpeNvQNw
+Poh6lZXtgIVoXt2Io6PYJpr3LnpP6A==
+=Xem/
+-----END PGP SIGNATURE-----
+
+--HgKF1GOS9//9I841--
 
