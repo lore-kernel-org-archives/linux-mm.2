@@ -2,91 +2,91 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 26005CA0EE4
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 11:39:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E23B6CA0EE4
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 11:39:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B65E1900145; Thu, 14 Aug 2025 07:39:32 -0400 (EDT)
+	id 7BCD2900146; Thu, 14 Aug 2025 07:39:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B15C3900121; Thu, 14 Aug 2025 07:39:32 -0400 (EDT)
+	id 76C8F900121; Thu, 14 Aug 2025 07:39:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0573900145; Thu, 14 Aug 2025 07:39:32 -0400 (EDT)
+	id 65C94900146; Thu, 14 Aug 2025 07:39:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 857EB900121
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 07:39:32 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4D8D61A0635
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:39:32 +0000 (UTC)
-X-FDA: 83775167784.15.B3E2AF6
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7F50A180005
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:39:30 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=d6aPRkwW;
-	spf=pass (imf16.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 52CED900121
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 07:39:39 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 720D659D79
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:39:38 +0000 (UTC)
+X-FDA: 83775168036.06.1E4E325
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 9799BC0015
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:39:36 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mAxzN47x;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755171576; a=rsa-sha256;
+	cv=none;
+	b=SnHTk5H/lV18KZuvzIwOlAIvGZj7I959wrFNlzxbrfmCx89PWjARJsZYVlxJTwp/2QUcbr
+	DQpsppO9yv8Fo1bLwWPDF29Pg/QU1G66s2ZVae2kOse2P9pcqaCv56/q4fwweywxOuv1QB
+	BKivyUJWZH6WJTfnQUHfPLHyLwb9Xo8=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mAxzN47x;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755171570;
+	s=arc-20220608; t=1755171576;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ayvZ5dUHZHYBnN7fiC5x+TgX4Nps+9054dmh9GXnXkE=;
-	b=O3DW7IWiEKu0e4aOveeYS9f9UouAfO9CVcVIYO1/iCUs8vW1gxybd5sRY516TE/q0UbTdN
-	Va44V+egLwQ21R07KVY2rjRm9Yt+Yu3PnJZs76KyQi1y0VG8pxUAf/4b4VtIDa9RW0S6/7
-	oz3JyqSWZTyX3myVSKC0qG7sQGesxfg=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=d6aPRkwW;
-	spf=pass (imf16.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755171570; a=rsa-sha256;
-	cv=none;
-	b=PGTI1ElrTocuxxsxIX8GgfGtsdZg0riL9MR9FuNLrZPF0rajL2vNDFmeP+hE3A73wdwlND
-	d2EKAQK3u0LAc170NGun+PGzQj4GN2RFmt/42TN9z5yjodEX/JvsFomfsh7xyQNuoFCm3M
-	IzvgbWPqzOodNC6e0YFjFFqjYXbwZ1U=
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b4717390ad7so490765a12.1
-        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 04:39:30 -0700 (PDT)
+	bh=LNuHZOu4rJp5ydgKv6yBABXB4uRFEE0hKx+JLsxn4GU=;
+	b=CH9b8U/qYfNpNm8zYBYbNy9SWb3F3lMi43b2HgKLJhGdIgymhnXrWws4ESN+R+Nf4JuZBs
+	hkNP/6qJrJ/i+z+uRS9zhsWPy+REKsSauq4Db1/4BfmejnIBLSDt4wMGzXenC8SYdovrhT
+	pqOSE9Tz7QD3D1wieJxqR0pKV43b5B8=
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-24457f3edd4so5823305ad.0
+        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 04:39:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755171569; x=1755776369; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1755171575; x=1755776375; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ayvZ5dUHZHYBnN7fiC5x+TgX4Nps+9054dmh9GXnXkE=;
-        b=d6aPRkwWa+KN62LGO95XXzJjUm1Ypb77a4B9XBRvK/DXrs/UAjTrH6SWFnx62xTKnR
-         kI8o6QEfi7+QFM+G3RxqxI2IymdqlW/u1BdcV8bYI8VcrkJFXYG68cgrrVljZzBJhFsf
-         /bptZTre9G2Qk7PCvQZISH/gN1/7Ix3714Bi6GK8jH9AC6iUrd03MhiLrdRh9AvX8mvY
-         AWjPiOPtCwDHwSWA9jSQb8YMdbahjMpkvqZzFenYqdW6wz1mM9FHFE0wxK8qIKcAWvIs
-         AFMwQ9bBld+FdBmFbhwceLF52auUcDey+f3vORek4+6Kx9JY9ybvT5zSNvOkWKaXUQyS
-         I+qw==
+        bh=LNuHZOu4rJp5ydgKv6yBABXB4uRFEE0hKx+JLsxn4GU=;
+        b=mAxzN47xYTI/4gM5WZvqNAxj5zRDeWzWHFE2LxKMPXgeAf1t1ocxVyEd7ZaLbt/2wx
+         kLUR2Hz5hE26sbNfTsdGGlVM33TdoQwCWzUuscHtadCdse3eoiUDcXpnWDNouxd8Hzx3
+         bKYfDHJcsHSK0BeJjCf9P4Xq3/FRjg65ae/lMAdzDUSJkKBdLv0NF2PzDeDucw0asCEA
+         5nuuK1ofE7ZRNoTIPPk1aQLaKJ5h9/cAeDUo7j5khGLGXIwilD5FCdzIzyA0EJ4iBlMs
+         8Dria7Y0m2ZD1QXrmw88T//3XeVsGknLEwwOTGqUUeLgBawKhSnTZld2b2h2y8KGfSu+
+         gcNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755171569; x=1755776369;
+        d=1e100.net; s=20230601; t=1755171575; x=1755776375;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ayvZ5dUHZHYBnN7fiC5x+TgX4Nps+9054dmh9GXnXkE=;
-        b=F5jUkcOxDkCZ8DK4936u3caCktZekhE3G/qNSJIR+s1v9Il8j4AEqf6LyYawRqWIbH
-         2Qzj8JE4fuRDOFctDi5KYF8XYu9HouRU81RH0SaKfUyyI+69QeQOBJ1Isfi5rVnrulTw
-         XxduRB4FUnpV/zsl9Mq01QMOdvjp5RpbD+r1X0dK1RZMW0n7POBwmZc2IKEVUmsHlcSo
-         ZhlDp1CSLNYEeEt8NiOJ+i9vgY9C3D0qaAVYBNgPDbrgKKZls7BGoqPIadqjLlaK7Ly4
-         AAOIMah5iu48tdgrr3ndMDeDElx4UOJeqeMt8AhjDAgNa2kwQ8ISgeDgEyF1rpZenXR2
-         dpTQ==
-X-Gm-Message-State: AOJu0YwBvw341czsGtUL1+kN2KRFO/86TrPTFHiS/kLnZngls8z81PuF
-	NnSK7tbl9Y7GerqrwcO6GLTkahNky4iuvC66sIE+//8jYYPO9Uxatjuw
-X-Gm-Gg: ASbGncuWO05DU4HJMBEU+IeXLGJqj76+Y6VbLYR1R+s5kJCrc3RQ5+0hho/TIzpd5WN
-	QB8hT1PxAqACJzEh1SmL64eBg6NMYgJdGVZ2YFsNwj2NzPTkCocDuML2iMoZhJovFpFqGwNXi0u
-	J4jTOksejvOd2cDtqMQUcxd+o31Cox6P+ktwTlDedgEIq3DYSnL60/r2ZqGNg89Z8mH4siFjoo3
-	x5BRCBZ9Y7QQ1xz+nGHrDdU8CrZX4RPFBOUPfhxPMajK9UlrFlIqkJwkjrgI1uZoB2TIvOid1r2
-	520KWADC/vsG8/o0lVTXdmDWWU3bQOzSNdyBnK0pGy6Xi+834Hi9inhVMxTiCbeij7I1Infe6PI
-	IEuuWLfXoPnuZHoQm3wDLO3CpWSw=
-X-Google-Smtp-Source: AGHT+IHSfvOxfw5DmKMaEy/JlDJCB3mLagTa7aiA6fiEDBi1eueH8dmGjxi20xp7/4FJKBEhhJWvaA==
-X-Received: by 2002:a17:902:f711:b0:235:779:edf0 with SMTP id d9443c01a7336-244586dc54cmr34641645ad.50.1755171569348;
-        Thu, 14 Aug 2025 04:39:29 -0700 (PDT)
+        bh=LNuHZOu4rJp5ydgKv6yBABXB4uRFEE0hKx+JLsxn4GU=;
+        b=Zw8rV9rbKWxS9wrfZkqm3AluInYMW+GGomJHXmcQ7s//JEaC+KBEoRl1XSHv/hkfc/
+         rmHbvCP5E7fxqukUB/BeTv5saE523E0hadMD6/9EaptzXwtY4PXzCXzFE3Ri6Q/eNi1J
+         4BU293hG1RwaALZo1P1s9VrFUH4udRJU8sNfedyQf2R8WFkHKMA1buOkrKAfHLHtLn3v
+         0XWtQgawEqcM8e86P2DRVE/YC+7lbqJu/dhlMrjPzdj09OHqkoObM1OZbxmnTAmnh6UO
+         i3fgshMu1Adpzb+YLdZEkLTu9UxIimMD6R0glCHrktrnaiuJxGRz7fhRFyPZajYC/oh8
+         FSaQ==
+X-Gm-Message-State: AOJu0Yzqje7QQA0kR3wFg882cv3do1qVIyo915EnTa4pw+E1a4XS/s3t
+	j1hB7yD4aylUtw5DeRV6P2Bs6CzxbCxdFXSx2sH/PWktXxm4rcZZ040k
+X-Gm-Gg: ASbGncumQGe+M+KSJcVzDWWXP9fCf7IdWT4cJUPRVhd1WDBB72hSiAv2SQI3EIzhRCr
+	zGCuUwoGErtUFs6yd1r+deAtJbMdE8B0J86RoHQ6erkAd6PnHohD9eR6djd/qexUqBV1F8jh4fy
+	6tybQIYH0+sWl5pGmEJ2mUapd35Feq4hRaEV+KhmwI1bR6fv0wizpnbWHP3qQIhz+DSAE6aByhR
+	5OIRu0vTTcQtUuDYYOUSTykO09A2lSKEyy16YPcMApiHMaIpBcArFyaUx2j97woxXZ9UZoPgEIh
+	tMYBvAKGinwk9dPgnrdXc01Iczalpa8rTZPqy4dPUWL8dOuKTDkud/FomT28zugcnT2YSmOHHk0
+	NctQ+NdUaVNVtAfjqTjmCm8R0QG0=
+X-Google-Smtp-Source: AGHT+IFsKgNUwOvyog40PfGpaCEvYG2txTVMQ6blgY5tFnvSw46elh2c9XkcDpn2yNrj6B/iK38/AQ==
+X-Received: by 2002:a17:903:138a:b0:240:4d19:8797 with SMTP id d9443c01a7336-24458a50a4amr46327525ad.22.1755171575402;
+        Thu, 14 Aug 2025 04:39:35 -0700 (PDT)
 Received: from vernon-laptop ([114.232.195.227])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2430b53d504sm49046215ad.87.2025.08.14.04.39.23
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2430b53d504sm49046215ad.87.2025.08.14.04.39.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Aug 2025 04:39:28 -0700 (PDT)
+        Thu, 14 Aug 2025 04:39:34 -0700 (PDT)
 From: Vernon Yang <vernon2gm@gmail.com>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
@@ -112,22 +112,22 @@ To: akpm@linux-foundation.org,
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.or,
 	Vernon Yang <vernon2gm@gmail.com>
-Subject: [RFC PATCH 2/7] mm: memory: add ptep_clear_flush_range function
-Date: Thu, 14 Aug 2025 19:38:08 +0800
-Message-ID: <20250814113813.4533-3-vernon2gm@gmail.com>
+Subject: [RFC PATCH 3/7] mm: memory: add kmsan_copy_pages_meta function
+Date: Thu, 14 Aug 2025 19:38:09 +0800
+Message-ID: <20250814113813.4533-4-vernon2gm@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250814113813.4533-1-vernon2gm@gmail.com>
 References: <20250814113813.4533-1-vernon2gm@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7F50A180005
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: s4iipd5zuntdoxi8txyxfjjpnng6fj9i
-X-HE-Tag: 1755171570-993956
-X-HE-Meta: U2FsdGVkX1/dIIejLTiLlMPGoHWbjuCfxAdJartlk2G8roygmuytK+3QqFrvqUtIjhCWMElUP928roqGVRobzdRs0vx9Kj2Z1KCn+UpsH0BTNaA1J3MSyQwOme7g7JCpFdoZzG99q2Muz1yFf6WAQqQapwAv+KFzLFu2FsA+2GQp/S/pRyvLDWzfn97eVJvLh7WmYay7WotBECJJW+usKeaKiG7bIOGW73XehmLFKIso6IR0KgRj9cDVEAJYS9D0ZYarYjSYk8VGMnF3GMke+qV1Fo7u/qtAJLd95dEJiiT7mN6JWlG+6XMUy+tl0etc2r4sCSEfx7mhxVmEVYAkNCh9GDmqTUoce5dvXEi52IgdhP2ohZCVJQ3/Vts4rQxTK+KuaI5UudEh4rxHGFuhysEoVhnLfcfxD+J2AkTCxK98r4kZxBDMl70hU53b9XMITvF5lUqU3ccUOktLQCtYwCH7ycwXJ/jPcBkr9RLhnmoiw5k0NSebdYDdoAasbAc+j9Zn4Gy/nQ7GKMPfcslzrgurl2meqLl1OQ5SDLPxMTGB4rp5O0gMoAgJtAxXG0F9Bgwg7itzrZ10xw4yLEQqIDY/+zyD4qxyQLM3eegD0xx6gsZjlWVk+2pCx0bnU9ThrRWgPIYKyW5gSQ6EL4UzoJD+OwoMDcl7IlmVKJ/YEMfBrZtSgZDLcuBx54EIq0LV8XgOQCCsO862PRSNFlNaqLb5uzcOjUhsqp21Kk1I15NU0sHBS57H9Ftf1HUGxv/G/wBcTJXngKL0ZdahN3hobRRGmZhPf7Ni8oXU5Z8PtWdbFNjUY++nqxMqiuKVXw6wql25TF64hagwzvyc+oaTH63/hR1cxgvtRjMA+0alkmLZfbRm60jRq4ECZpQOihC2P+KZ2YYZ81OpAWugjtADE2aZ7rdkdm2LxdN5d+cajNa7UpN84/Hl5Z7T3ajeKTERz2xS4wjALqsqLnM3M/4
- sSlYolRW
- HGNKsuHTcVVO2C71EtPypN6ahwYLUuZn4xHYGJMRp14gVkHKQJrdBLUqftp8/MqQvA2aijy+A0p4adJOtxE7MeMwWcTIZtpy+LjAbNLIHmPxth3BzHGrfpJ5COTqF3nIPHlg8o9eoC6aFnAwEzLTlUYggOt8G2UaUAoIO/kE0zeutABwJnK3MIW2FMWxMg4PPWStN8OBlScSu3HHBoqGyIiGbe5o1BKVPj4PF4eBxewDHbJ4hA9tzK8X00KofVQxK7sT9Eb0Gjg99/OLiFGYpk0O6K32v+USerVRPe4noZucmYQHjsi6qYCoI8SYg1Fq8SJj4FAfRS3u2CgCjvzbB4OUtgOxeijSCH0kYFocmQ6aSoMa9v/eFwc6ohppGZIa6l8/BJMgkgjOamB/m1RoZDLQ2ydVP4SxSM0LZXXyvgSea+Becpn+pDZP96BLvZjOymlGg/KUufndBUSS9gIMSf62uwWPDSBW89NeZcTnP4bskFrJ5UPpq3Gf9xFtcsdR/7STgcq/lQFB8Y4oFmsMXXc8n9LlP+4q468SLyedLWZgn4KDb6lUfWc0cHih9jpm25bMe1Ve1ALrPeCvkwlhxUcifT1jtFtT+T0jXewcgE3ADy2vqt0Ny3NiRvw==
+X-Rspamd-Queue-Id: 9799BC0015
+X-Stat-Signature: oygd1q4bchkzykms4pq4kojno6ichtoo
+X-HE-Tag: 1755171576-640827
+X-HE-Meta: U2FsdGVkX1///hVQCV+V1aB4ItpFZ3E0cpr3nmrcnGS035dBYIsv4j9bKUgMa3F9HT2KX/hRWwZkM0S/uFAi/jkiyTu2ZfoWYVhC7yXPWQDsMK0NC9kP3s8a2iF/hzR4A2mGNQcHk3RALkIFyMCnjG6FbYm4pdPh2hWzMRVfFHI8KMrMiAOgJ7ljjr0PdzmVNhbOkK9nu379WsUXAi8iP0OfCDp2uWL4E5tkGrS/dh6AKDEGfATDe9RTr49O85Hvj+8o5+tXj4hjE6EtOMqj8op58t1l1q2ab4KregV147bUVIxuuSo7shw5IlVt1wCPUSYwi+tMxv9z5Q/F7KgmLd8oCjw/ggrtIkFyNLVRiE2pzQYQJ2sPX3hYwhdIQ1gBXJzfb63l2xjYXbu1zYdIBnyyMQfh0Eu2Pmy3ONsl0nTDk3H6gZAoF+zsKrG+WmtlWcK3R9YmS8iBGdGuUsIqg2J2LcqFSuZT7SPpttt2KZHAVUaAR9Y2Ja9IHMI1WigMSjUVy5Y9+bSm1WA4dO09/Xej/8Oewfl3IHdTbhOLEoab/PfI6rVCd3NHPglfzrpcv6TFDMbyx6jbDFjALRkw+SGcyHvBSBS1hxD2hBlFWb4rbA0bqGd9zt1J/5YWxWJIXXf9cyG+epq1qR4Y6QU+mZ89efBmKlFuCpLEyQiM8gRPXaBgAsNVB8K58etNR+ixLjYDLqcPZUs1eQxPNClWAuPXBP0XUQtOewU1LRUq1danClH+Kj56JPHezxq5gMxq9aAF5xC9GUvHb+Wq/hn9MIZ+lpnccKOMQrYOVR4HJkEoyY3MuX+gzjWvtfBI1L/UgWC++RVymrKoVZWTjAPL45Kp6S6GU12QeFsJf873HsuHiqGK2P5aJcnSEHhT2cJSgUYG0jskz6d+U616YmOQLiPyr2b0P4lu+KPYnHNTekPF4kQdJLQA3OrfumUmGeNODZj//BT5OUKohP+d/H8
+ St5A2iJN
+ b5x0bEyBJgdoeFEFO5RtpUgSeHmU6uOjPOJAKkfImWEgRWSwdXIkR6Zda0FGP1Y8i0dsDgc2cLQ7K0gP6GDGEWDCFtrZLbUxrfamOYA+7kIBtJ4LBj0aO0n8IDziHX0Z608EIyXyOq4OaL4bNDV+ZWTZGFVt4Wc53GZNQLCelJC9YcEXMytEhNq+U2MTi+cckgealHO8GEKKy+gpLnafKqrvvmrbx57jFc1DIf3Xs2Xi5kzqRKI+92NzyyXkiXvokkeEvluXSX15rXzL/anQzO37HgiHGuOX6YnfbATBoYD/u54kVkIV66LdAYJkGxGVU3Fsuverc4Pz2pWnhypX4bwhQhE9ZlcvzbebDxMEzvqJM3dypCs/FRUQICCI7K33VPQl/ANTLJZLYf5+ekQWR5nvg8S2pQtNfUpxhISAO3KsLNZoY//2gPD1b1qp46mNmG8Vo9KHSLtKzLePmd4vOhwXNOSPvTBp2+q1pxIm7iAy/e/ibMC6G+rwHOCyDOWGd8Ffp6sM1JEZ1In9Db32ysboELNv7IJ0kYbYZsGuwAFvLrrdxLZ5qSYD4PWhzoL/po/bFPaaiajfIRoM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,74 +136,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In preparation for wp to support mthp, add the ptep_clear_flush_range()
-function to clear and flush TLB for PTE in the specified range.
+In preparation for wp to support mthp, add the kmsan_copy_pages_meta()
+function to copy multiple pages of the source page to the target page.
 
 Signed-off-by: Vernon Yang <vernon2gm@gmail.com>
 ---
- include/linux/pgtable.h |  3 +++
- mm/memory.c             |  2 +-
- mm/pgtable-generic.c    | 20 ++++++++++++++++++++
- 3 files changed, 24 insertions(+), 1 deletion(-)
+ include/linux/kmsan.h | 13 ++++++++++---
+ mm/kmsan/shadow.c     | 26 +++++++++++++++++++-------
+ mm/memory.c           |  2 +-
+ 3 files changed, 30 insertions(+), 11 deletions(-)
 
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 0b6e1f781d86..1ccddcd0098f 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -826,6 +826,9 @@ static inline void clear_not_present_full_ptes(struct mm_struct *mm,
- extern pte_t ptep_clear_flush(struct vm_area_struct *vma,
- 			      unsigned long address,
- 			      pte_t *ptep);
-+extern void ptep_clear_flush_range(struct vm_area_struct *vma,
-+				   unsigned long address,
-+				   pte_t *ptep, unsigned int nr);
+diff --git a/include/linux/kmsan.h b/include/linux/kmsan.h
+index 2b1432cc16d5..a3f227c3947f 100644
+--- a/include/linux/kmsan.h
++++ b/include/linux/kmsan.h
+@@ -78,15 +78,16 @@ void kmsan_alloc_page(struct page *page, unsigned int order, gfp_t flags);
+ void kmsan_free_page(struct page *page, unsigned int order);
+ 
+ /**
+- * kmsan_copy_page_meta() - Copy KMSAN metadata between two pages.
++ * kmsan_copy_pages_meta() - Copy KMSAN metadata between two pages.
+  * @dst: destination page.
+  * @src: source page.
++ * @nr_pages: copy number of page.
+  *
+  * KMSAN copies the contents of metadata pages for @src into the metadata pages
+  * for @dst. If @dst has no associated metadata pages, nothing happens.
+  * If @src has no associated metadata pages, @dst metadata pages are unpoisoned.
+  */
+-void kmsan_copy_page_meta(struct page *dst, struct page *src);
++void kmsan_copy_pages_meta(struct page *dst, struct page *src, int nr_pages);
+ 
+ /**
+  * kmsan_slab_alloc() - Notify KMSAN about a slab allocation.
+@@ -324,7 +325,8 @@ static inline void kmsan_free_page(struct page *page, unsigned int order)
+ {
+ }
+ 
+-static inline void kmsan_copy_page_meta(struct page *dst, struct page *src)
++static inline void kmsan_copy_pages_meta(struct page *dst, struct page *src,
++					int nr_pages)
+ {
+ }
+ 
+@@ -407,4 +409,9 @@ static inline void *memset_no_sanitize_memory(void *s, int c, size_t n)
+ 
  #endif
  
- #ifndef __HAVE_ARCH_PMDP_HUGE_CLEAR_FLUSH
-diff --git a/mm/memory.c b/mm/memory.c
-index a6bc1db22387..90cbed5ad150 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -3632,7 +3632,7 @@ static vm_fault_t wp_page_copy(struct vm_fault *vmf)
- 		 * that left a window where the new PTE could be loaded into
- 		 * some TLBs while the old PTE remains in others.
- 		 */
--		ptep_clear_flush(vma, vmf->address, vmf->pte);
-+		ptep_clear_flush_range(vma, vmf->address, vmf->pte, 1);
- 		folio_add_new_anon_rmap(new_folio, vma, vmf->address, RMAP_EXCLUSIVE);
- 		folio_add_lru_vma(new_folio, vma);
- 		BUG_ON(unshare && pte_write(entry));
-diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-index 5a882f2b10f9..cdffec4f54d9 100644
---- a/mm/pgtable-generic.c
-+++ b/mm/pgtable-generic.c
-@@ -101,6 +101,26 @@ pte_t ptep_clear_flush(struct vm_area_struct *vma, unsigned long address,
- 		flush_tlb_page(vma, address);
- 	return pte;
- }
-+
-+void ptep_clear_flush_range(struct vm_area_struct *vma, unsigned long address,
-+			    pte_t *ptep, unsigned int nr)
++static inline void kmsan_copy_page_meta(struct page *dst, struct page *src)
 +{
-+	struct mm_struct *mm = (vma)->vm_mm;
-+	bool accessible = false;
-+	pte_t pte;
++	kmsan_copy_pages_meta(dst, src, 1);
++}
++
+ #endif /* _LINUX_KMSAN_H */
+diff --git a/mm/kmsan/shadow.c b/mm/kmsan/shadow.c
+index 54f3c3c962f0..1dd0f7a1eb5f 100644
+--- a/mm/kmsan/shadow.c
++++ b/mm/kmsan/shadow.c
+@@ -148,24 +148,36 @@ void *kmsan_get_metadata(void *address, bool is_origin)
+ 	return (is_origin ? origin_ptr_for(page) : shadow_ptr_for(page)) + off;
+ }
+ 
+-void kmsan_copy_page_meta(struct page *dst, struct page *src)
++
++void kmsan_copy_pages_meta(struct page *dst, struct page *src, int nr_pages)
+ {
 +	int i;
 +
-+	for (i = 0; i < nr; i++) {
-+		pte = ptep_get_and_clear(mm, address + i * PAGE_SIZE, ptep + i);
-+		if (!accessible && pte_accessible(mm, pte))
-+			accessible = true;
+ 	if (!kmsan_enabled || kmsan_in_runtime())
+ 		return;
+-	if (!dst || !page_has_metadata(dst))
++
++	for (i = 0; i < nr_pages; i++) {
++		if (!dst || !page_has_metadata(dst))
++			break;
++		if (!src || !page_has_metadata(src))
++			break;
 +	}
 +
-+	if (accessible) {
-+		flush_tlb_mm_range(vma->vm_mm, address, address + nr * PAGE_SIZE,
-+				   PAGE_SHIFT, false);
-+	}
-+}
- #endif
++	if (i == 0 && !dst) {
+ 		return;
+-	if (!src || !page_has_metadata(src)) {
+-		kmsan_internal_unpoison_memory(page_address(dst), PAGE_SIZE,
++	} else if (i < nr_pages) {
++		kmsan_internal_unpoison_memory(page_address(dst),
++					       nr_pages * PAGE_SIZE,
+ 					       /*checked*/ false);
+ 		return;
+ 	}
  
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ 	kmsan_enter_runtime();
+-	__memcpy(shadow_ptr_for(dst), shadow_ptr_for(src), PAGE_SIZE);
+-	__memcpy(origin_ptr_for(dst), origin_ptr_for(src), PAGE_SIZE);
++	__memcpy(shadow_ptr_for(dst), shadow_ptr_for(src), nr_pages * PAGE_SIZE);
++	__memcpy(origin_ptr_for(dst), origin_ptr_for(src), nr_pages * PAGE_SIZE);
+ 	kmsan_leave_runtime();
+ }
+-EXPORT_SYMBOL(kmsan_copy_page_meta);
++EXPORT_SYMBOL(kmsan_copy_pages_meta);
+ 
+ void kmsan_alloc_page(struct page *page, unsigned int order, gfp_t flags)
+ {
+diff --git a/mm/memory.c b/mm/memory.c
+index 90cbed5ad150..7b8c7d0f9ff4 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -3589,7 +3589,7 @@ static vm_fault_t wp_page_copy(struct vm_fault *vmf)
+ 			delayacct_wpcopy_end();
+ 			return err == -EHWPOISON ? VM_FAULT_HWPOISON : 0;
+ 		}
+-		kmsan_copy_page_meta(&new_folio->page, vmf->page);
++		kmsan_copy_pages_meta(&new_folio->page, vmf->page, 1);
+ 	}
+ 
+ 	__folio_mark_uptodate(new_folio);
 -- 
 2.50.1
 
