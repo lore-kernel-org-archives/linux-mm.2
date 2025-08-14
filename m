@@ -2,115 +2,112 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 46002CA0EDC
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 14:15:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EF5B7CA0EE4
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 14:37:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5FAE90017F; Thu, 14 Aug 2025 10:15:18 -0400 (EDT)
+	id 63DF6900180; Thu, 14 Aug 2025 10:37:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3764900172; Thu, 14 Aug 2025 10:15:18 -0400 (EDT)
+	id 5CE08900172; Thu, 14 Aug 2025 10:37:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B63AF90017F; Thu, 14 Aug 2025 10:15:18 -0400 (EDT)
+	id 3A54B900180; Thu, 14 Aug 2025 10:37:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D1DD900172
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 10:15:18 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 51C89C06AF
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 14:15:18 +0000 (UTC)
-X-FDA: 83775560316.03.270C57D
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 35B388000D
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 14:15:16 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=NmvqVtt3;
-	spf=pass (imf02.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.178 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 21EA7900172
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 10:37:44 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 92590138711
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 14:37:43 +0000 (UTC)
+X-FDA: 83775616806.29.B7489E1
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 4F501C000D
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 14:37:40 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=SyUENzi3
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755180916;
+	s=arc-20220608; t=1755182262;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2BUQkPCyVmoncxak/Y7aRi7IQhlbH4GfyrdWoO6ES88=;
-	b=YZQZF4l6ylAYLqgnTJOf1iL/1e9H+48IkvemEbp4rAddWvH+VSXQKfZf32Wq7dQ4vF893q
-	pZQfpjIkn9d/XGcRl523UpUrupLk8R5svHDa/+LmAwWPpPm6q44NewiK4o9Wg9wCWv080i
-	58XadzIsKa8UYOAa/ko0mvifHru9RKI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755180916; a=rsa-sha256;
-	cv=none;
-	b=pAOKmIOaQPsjJSXi5jb9TiaPJ/QeViXU+wIptjH/YYJ0d3vufCyCD9HfuYPrngTFziSXao
-	lLrZn943iVm/3ppPwXR5NLP44RcD0qVAgOk5M3+tWSyf8TIZDKm6qBEOzuh+ecamguvByd
-	rwMJvCYbSFUkAs2jOIlFTcgIeUDlLI8=
+	bh=eDgRnsuLo8vubpJ2VjlcjumR5pIerCmW/K+TXJ575Pg=;
+	b=B/fGi66LkDmsAbfWuUOZXiIbmkJKmd0i1I5FwIP9WCMR9qO0ijZNXU89ECaCEEshLWCBl4
+	iiuo9BLd74mdFr+zGOb+aQR+RlB3mXsmzM4QH5LaoG9ul5Vcqxt9d2Bd809Y2gGn5rBpEx
+	8jZ27DSTCuRTeI6QJmelFYCTQHiVHCM=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=NmvqVtt3;
-	spf=pass (imf02.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.178 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4b109c482c8so17783121cf.3
-        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 07:15:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1755180915; x=1755785715; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2BUQkPCyVmoncxak/Y7aRi7IQhlbH4GfyrdWoO6ES88=;
-        b=NmvqVtt3AUJDcctZKsaCqXbTY2fFOnv12VGR01jIpLpx+CEbbEPmpkfrb1RoKgbYaI
-         iILJ0TNAXhNzNHNKEs99iezHf726DfSl3Ifc1c2H3YGRpLvc7uuPXsmpsfZIWg6ItIj/
-         WLAdC3FnmW8H9PIVpefAUVtUMvX/U596djVWebYQSFSxDttLzpc4OHiYlFD/hfMyPcTn
-         weeRdeKwuL5slqOF9H+I+TdZf6NA86Ypii3gqwbHMaRUVSXiYlmWfwiZcZ+cZ3+56UF4
-         Pfk3eAV8wTAxjg8VJUnfzYwkLBDYJdBb979pMe7M+ZdGjH1mbxWo8NG6iNpU3ofi7QNE
-         I87Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755180915; x=1755785715;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2BUQkPCyVmoncxak/Y7aRi7IQhlbH4GfyrdWoO6ES88=;
-        b=Cpoy2mHoe0bkFcJMZc3cbJUX0brsudIVyi8pB/eNsksIjSOSNu9JNuivdXKL9eB7x/
-         CVQR/BPhnZA38Mq5bRyb/JQMtTgn+rvzE8MVTUzrvsQ+LZvK8+8/z86uJsgLmdYjmF/A
-         gktb8h/ej27Yb3UIHBuCMqPjYddUVhA0iEq3QlIV8QvA+HTkAel939PMbNXQ3vkyAwbb
-         PElg4xFNPFcUEdQqPgy2ER27tHRhM/Da2PoKuKl6PAFJ0aiOrVyM0XfHS1oAQfae2x9G
-         fSAAjQDb8oTcn4k070jGCHk7B4nbrnqbUGpMHx/Plhd2MMKo78g/c3bMgYmlTkx5aKTn
-         7mzw==
-X-Forwarded-Encrypted: i=1; AJvYcCWSd4vgC18P+vxgPd3b3AohRYq8iqLQzWvvIDTo2U1T2U+Zey85O6ZzIhuSFFZQS6aEQmcSJSUZPA==@kvack.org
-X-Gm-Message-State: AOJu0Yy+YV3vIbd5nkPW5yFHFBaOOoaT2IeYxhVMHErzNSkiFYArsDQN
-	gPyx62NKfS46K019Gf0yNptTanedEOoGGqHlwyC7TjJ4IZ2m2DcYQqIqD428iwWtDEE=
-X-Gm-Gg: ASbGnct4kK1ZFOaqtsh82JKw3Lp1WpzrfVhd7MpaADsIuL2Lj8c5m/Yz68VfzEooocy
-	tKs/n9pVzZM5FydV1vhpuzw8R0jalO3lT8p75NbNA7pj4pl6K/7MALvxI3LRobhQShHZHB0XAPS
-	S6GA60QrJPpx9LKpKR87C8QpW/LUGKqSXs9GL9BDymXCGUMXXm742SFNzQaf7esHiz5dRVk1ck3
-	0bO52dQlavvbELXf0iKWXsB5lyqrgJm4pQ97Mfuo5XcRK6G3JTlACdDlM7lM1wAuWwwD6R16Dth
-	zL+xbKmBBmLsTdW5YK5ArWozhVt9h9zR9a9FAhwi4O7N0ERwWL6Q84nTqI1ufT21+V3S0N4i+aD
-	vlq/Y8W9qt2+SRmySfzvncLYaDVFZzijl
-X-Google-Smtp-Source: AGHT+IF9dyhnIQhWpXCycIJ6xPTYoImLg+4fKfvhwrB8MgdBLjKixENuSwgcpdo7nZyGKshdy3C1yA==
-X-Received: by 2002:a05:622a:1ccc:b0:4b1:dd3:e3a1 with SMTP id d75a77b69052e-4b10dd3ee68mr26844041cf.64.1755180914955;
-        Thu, 14 Aug 2025 07:15:14 -0700 (PDT)
-Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
-        by smtp.gmail.com with UTF8SMTPSA id d75a77b69052e-4b06a86735asm155735351cf.31.2025.08.14.07.15.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Aug 2025 07:15:14 -0700 (PDT)
-Date: Thu, 14 Aug 2025 10:15:13 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>, Ye Liu <liuye@kylinos.cn>,
+	imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=SyUENzi3;
+	dmarc=none;
+	spf=none (imf10.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755182262; a=rsa-sha256;
+	cv=none;
+	b=LxZKXiWPxtZUJ/AE0+atVNPOXH26j07mcAHj+1zsj+uNvm7Y9mP2XAKzmSeEo3ssbzvOYQ
+	yqFhfLVaMLA7OVWDUnKApN0RGmIzbPgGaPAuEtHwcPJa5iHrlEOI7lmSbEkkVq/aZTdBpD
+	uVo8/hYubWHnI6in9j4ypR2H/fttL5M=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=eDgRnsuLo8vubpJ2VjlcjumR5pIerCmW/K+TXJ575Pg=; b=SyUENzi3LjRgnMVxZh9rxyPzEb
+	pvjQGv+BzBjZNJOoDdH1M5wIrmhjf8BYuSm0iS4vljrHEukpEaSYTVBLTtdm7Cu6vwB8npzhj2AWW
+	pVxFXgxAZ8I5z3fWWo0KGJSvZ69RB5OrUqwhnfWUWdirkyxkhnSNV30tLX2DIPVkFi3PQ7mmyXg8+
+	sBV6ANNZjFCzy0gjxtBAMoB5CVQ9ZZYGtE/c7snxaNtYteGpWDA9AuL4hA93TA4MpDfacuYwY+EQX
+	K7o3nvZPdYInwTfBUSKDNTySR0FsnxrOOTDy7Gsu7pWFuERAFxKnYHtMvtZbJwMfjqAuaRAWB2E+y
+	nbFygHyg==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1umZ4w-0000000GS8T-0A08;
+	Thu, 14 Aug 2025 14:37:18 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 550C7302DA9; Thu, 14 Aug 2025 16:37:17 +0200 (CEST)
+Date: Thu, 14 Aug 2025 16:37:17 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	len brown <len.brown@intel.com>, pavel machek <pavel@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/show_mem: Print totalreserve_pages in show_mem output
-Message-ID: <20250814141513.GG115258@cmpxchg.org>
-References: <20250814092622.24535-1-ye.liu@linux.dev>
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Nico Pache <npache@redhat.com>, xu xin <xu.xin16@zte.com.cn>,
+	wangfushuai <wangfushuai@baidu.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Jeff Layton <jlayton@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+	Adrian Ratiu <adrian.ratiu@collabora.com>, linux-pm@vger.kernel.org,
+	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v1 0/9] freezer: Introduce freeze priority model to
+ address process dependency issues
+Message-ID: <20250814143717.GY4067720@noisy.programming.kicks-ass.net>
+References: <20250807121418.139765-1-zhangzihuan@kylinos.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250814092622.24535-1-ye.liu@linux.dev>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250807121418.139765-1-zhangzihuan@kylinos.cn>
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 4F501C000D
+X-Stat-Signature: 3zykbs7bgx48a4mwptcagk7jg8ab4psz
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 35B388000D
-X-Stat-Signature: 7ds4nbrz47x11ycieqtit3b79eqhkdoj
-X-HE-Tag: 1755180916-459067
-X-HE-Meta: U2FsdGVkX1/lyO0cI8Z5tpXL/Ulk7Hl5uXhdqvhu6Nb0EKJlpJGeU1d7GE71kxgf0ofRxyp8w9iuWmpYHTbwNQT3J+5PbgiU0CIW6nOGHu+ORj5dGAPadNbeMMaiIt7avX+OGnSvnp9mV3NyMC1G54RUNgQC4kipd2DZsJLDtxD2S7+WJ9eeIKPyAMRd4Ih3o0Za9jaEm3a6b0IdSs/feM1PMt8e30byPkfM86wKRzoRCIYYdQu1Q2cMacr/M8pG1Idz9ygNCMljSSInoL37EpmLh0r521Tknbs/+4RAr8D2j+95QCnxf09vM7hlDZ23A0lDIqz1a+KtnALQ6g0fEddwMfxEK5kCg9OYJ2VMgBPt1Kph2JRiw7fsZMV+ga+5NzAoXn33YVJ5EVFJhGSPCnE3KOaKxA5TsATWhSjT4pb6awjuWI9GGPZFuk+5WSZutYU9MGJyBYsi9rq90HMznn/sAMLYUmxJFr1yloHmVjAzhXZu6uegNAhYUwwkc5DPJiweEyQ0iA6N08GQdzIqviJSZ2jRYcMmaybDPSj75ajbM+GNieNHgTPWaPr4iHmdyC2rUpZVmR3JwsSOBgDQNNmcicMS4e/1JQ/bjsJqI0GvE74BtUSe8+1MxEfC9CbqRZPlOpLZrSJzmcdWrLGMCoQ7VoKI6MfEHMZziczRbftAH67+Q9nuDb4N0KRJnO3FhVoHtgnkV1Pi1QZsEYZq+6IN9r/UJRAiVxnXKpcX9NWjwN+0lxBayDxXwI22GCO4UPFWdrGd9U9zq4/YFJWcWRQeBoF/8dcZEFRgBL24LXo1s4UVwVkTOi+BxSdXSamwrge3wxeBSCX83CMOMLcvIsiKYzYJoe3YECRVwDGE4DPOSx9Su2HeIEkkTCP1YouhbIEXoRX8BmUTrUx+lDfCloNlka62mX0htdJckHnbETZVZpSzVHbiAh+1ukPZe28BuXstXQIiZT0kPzcQqPk
- hsg/yeat
- 1YXfX0YgYOthkwDlruT22kTWvG5Rh9o2TNU3g8QvZK7UC9UUNzFb2DSotWDhbysI9rFLyOdG6xm9x6idPN3TJ4/0OmQVJNO8mMfoYU9jKfUyi3EV4wIMawYxeBbWT3YXFBOTcxbEilwc8HmQWmzXwwwu91cTlNgwwJjsHvSeI6oJ6YiaATaaHxnU/CabQr+Y/i5bCWIt19EyNHmiBc0LjMOVYDRQ0CncAhqzY4Ysk9qIrSDfa4OflsACLBKOe16UrqItcpnvU+4TPo/z4NWqZ5apWE24R3BrzExmIuyhqwD7URw1A6XkINs83pJipeM3AnQp/czoJp2LQJDQPtDACMSx/KMDft7m+64XrGOu16LoExvxqswQxfaEN4Vixg591L8x3mmV4zaKAGaR3qAi7zoEUZpGOYR0RoEHV6iNX2wNatWfU48lKsJwfgwzxEdqtUPcq3bmGXdssK19FNKic1fRxxN4JCFxT36Y8OpXYVvSUhi6CdicCJamNGDKQJRUJb9eEDk6sT+8XhYNlpvVErIpb42+g+6O3X1ioAj3J0TFdvxs=
+X-HE-Tag: 1755182260-395023
+X-HE-Meta: U2FsdGVkX19dVAH12biIFTSHhr51l0M98PUrhPwENi4r/OIrYLtFa6ovQFxmNLxXCWh4Jf6FmSitOUC8VWb5cJ4Og/Hadgs+j1Cv12nANBt4eR9gpF3rwEcW1BGo5HA/jnO2DMURWTdfBvxIuNhT6g4Tpqtl4eQ9wWh6HdXlpAzGW6xOoNCJADQEsH3CZQwVsdc5eAfw+kRwL/PrBnf1t4k2KUWJSO7XISt9hhkZlKijscMWZQNfLhnqVu6llgxDLEpulzd38wc0vmifHr9XUdHqYwRUOA57jc/CJxSloXCOdvV61xeXSkgaIaoZLBDVUr/n3KrmIWkJlCT17qQVN8xQw2rVIKW3eHXO7qO0kp7jTGBCqLE9MAvWjaPH1D5CAU9t5KA0WCSz+Xe20OJe+10XHoEwHQoMqLL1C2eaOTtux/oi9h2TZ6sw6COpX1mnA1x8bGtXN1q1fPQrL5S8jsgwLsLCxC/CRTbdSQ65+bt70t+RUlpY/FT6fpxMQ6ixcXuGVUz9eApLZnhX74fqDe3teubsSAsFIXYAP/U9lVBGeSE38afKwCQuY77Hd+zfAfYxWRKkEo86zXjsVOIu6OgysJMT9QyHOj+q6KfXwudxX+bun36DUV5nARjdTJXWNkL2Cl1wWrkI46fyvNkW+xHGkSrVP/xvVuXg751+EEFQMp7ZfYjXdhkmM2/MOigO7vr/MIMFGt+j1yy0hdwNaqXLR4Q9Iap8jF8pexUA/qyqBoK/SYBF5ceChNSlLvgZ5SQOQmM5u6IsZMrepy7+mwGL4NeuZ446sVw+/8YaNAXI7PR0FP27BXDXCv8N/GUCT1au3TaOyyie4dq+z3MICnRYEoQy1+Us68k1CaLDQhHL8/1CkNVJFOPINFYYAl7jIMKMPeeBdFnpaiK0jrlBT2wisRlYa9NLI3CSVwup4Jl7Sk1U5cnSx6gca9EnvDct5w8f9pcEuij/bdg3sMa
+ EmAYoEMQ
+ xEvypVjNwxpyeDmXWRKQIi4Mp2azVJrbC5bol1TAf2uuvNm3qWIKsTwBqlW22msFd3Si08evanshheBpwBRiB0pmQ5B1rC45B+01lfzci6sc5iullC27+T/SK5KQDKL3WW/98R7u8vrJtxK3ilorSU7lbhWfUM+YhlVSqCeZ4M+ILIYP9HIo/1UVI75176JRPSHk7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,17 +116,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 14, 2025 at 05:26:21PM +0800, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
+On Thu, Aug 07, 2025 at 08:14:09PM +0800, Zihuan Zhang wrote:
+
+> Freeze Window Begins
 > 
-> Add totalreserve_pages to the main show_mem output line for easier
-> debugging and memory analysis. This helps developers and
-> administrators quickly see how many pages are reserved by the kernel
-> and not available for user allocations.
+>     [process A] - epoll_wait()
+>         │
+>         ▼
+>     [process B] - event source (already frozen)
+> 
 
-This number isn't used very widely in decision making.
-
-For actual allocations, what matters is watermarks, lowmem_reserve,
-highatomic, and cma pages - all of which are already printed out on a
-per-zone basis in show_mem().
+Can we make epoll_wait() TASK_FREEZABLE? AFAICT it doesn't hold any
+resources, it just sits there waiting for stuff.
 
