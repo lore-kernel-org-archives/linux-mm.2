@@ -2,88 +2,96 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F4AFCA0EE4
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 16:24:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F43BCA0EDC
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 16:27:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E087E9001A5; Thu, 14 Aug 2025 12:24:52 -0400 (EDT)
+	id 9C8709001A6; Thu, 14 Aug 2025 12:27:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB964900172; Thu, 14 Aug 2025 12:24:52 -0400 (EDT)
+	id 97839900172; Thu, 14 Aug 2025 12:27:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA8979001A5; Thu, 14 Aug 2025 12:24:52 -0400 (EDT)
+	id 867699001A6; Thu, 14 Aug 2025 12:27:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B39D4900172
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 12:24:52 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 640CE1A0742
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 16:24:52 +0000 (UTC)
-X-FDA: 83775886824.27.02453BB
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 67E58140012
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 16:24:50 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="a/SCaoyo";
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 70910900172
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 12:27:31 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EF8D7140694
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 16:27:30 +0000 (UTC)
+X-FDA: 83775893460.25.5152038
+Received: from mail-internal.sh.cz (mail-internal.sh.cz [95.168.196.40])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C057880017
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 16:27:28 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=cdn77.com header.s=dkim2019 header.b=j8zGTjgi;
+	spf=pass (imf30.hostedemail.com: domain of matyas.hurtik@cdn77.com designates 95.168.196.40 as permitted sender) smtp.mailfrom=matyas.hurtik@cdn77.com;
+	dmarc=pass (policy=quarantine) header.from=cdn77.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755188690;
+	s=arc-20220608; t=1755188849;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=daL1ydrlIa2uJjdib/75Q05PSAxoGggNa+MCdc76D4g=;
-	b=ttqvgDJE9o8YCpHffIzBxQoscMwujI3HUdiSfBA9+QfgS0+F/di2fDcyhLCD0dBXwWVxJc
-	mGVYavNSGOsQuTjgeC6+2SltHNvGiTrAztNUpX0RM1TucNbvSbS4VnS9GFVCXTjlSbBnCB
-	67y91VloEbenAXVfZmNE7BBVG1iwIDc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755188690; a=rsa-sha256;
-	cv=none;
-	b=Zav02ZIi0kwn7gdiJb8Z98Rwfr7x+/YVh/W6Ja5W/5LQ4mj2prvLhjOB+nXiiIMTI4xmaI
-	tKV2T35a8OPQr/9095g/5q++MHcFbyq7VanLc+Mt+hg9TM38N+2kibKaI76gvY/6R56iKA
-	smxHTeJyBlSbwVWjCMkWgL17oZ9oqD4=
+	bh=GKRpkbuM0/E1wsSLFsbRln4KtsFPqU6wbMr0a/aHKeA=;
+	b=pb6YLvkvKpmdD54rtZXMVh5nlPxBup3FXtJl/ivCer1/YVRe6gkMw+/79L6rcZdUXOH38N
+	fAEvp+HGB3KwfXkPmm6GSjHNAnqOBew4B6UPFAR+7WyZbbAu1Fy+iqidrNfR2iLmAaNMPK
+	zlo3VeQYy2+sv4Esj7IjXvh5GJ/9zjo=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="a/SCaoyo";
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 3B7F15C63E7;
-	Thu, 14 Aug 2025 16:24:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA653C4CEED;
-	Thu, 14 Aug 2025 16:24:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755188688;
-	bh=/90Iz8vIooGO4iCtEcpK2bvDlLQw9crMvQb8eGHP9hM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a/SCaoyohj7uAQ7Iach6v/htYHMaejdrTKYIDnnI0wmUitztRMj/XZuoAXteiL4zM
-	 ImqrFe2UmxWjTtyNdsT4l832yJ54+O9qZpT5LIzOyOPcOe1XDwwZZLtqHq21c15kTI
-	 FHvysF/jUVh2pIc2GkjO484NGWW2iLg8ee4+5+CNOLa/antE/1Hnv6jYFyHgu1ZBAp
-	 RB8eU+PXbLXXXsWFXtlxJ3+bblt0poVl3ayDO7pJ0oCFx9a4FwXgc+xHWqIerNw3ZF
-	 0XwuC6oGvfEPLB2Zp5z2qRFcQ5668C3vDHmXIRezYiQFMZ2U+es6p6njZHCvKKBfBS
-	 7zA7I9opp5Sjw==
-From: SeongJae Park <sj@kernel.org>
-To: Enze Li <lienze@kylinos.cn>
-Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	enze.li@gmx.com
-Subject: Re: [PATCH] mm/damon/Kconfig: enforce DAMON_STAT when DAMON_STAT_ENABLED_DEFAULT is selected
-Date: Thu, 14 Aug 2025 09:24:46 -0700
-Message-Id: <20250814162446.69575-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250814121703.648925-1-lienze@kylinos.cn>
-References: 
+	imf30.hostedemail.com;
+	dkim=pass header.d=cdn77.com header.s=dkim2019 header.b=j8zGTjgi;
+	spf=pass (imf30.hostedemail.com: domain of matyas.hurtik@cdn77.com designates 95.168.196.40 as permitted sender) smtp.mailfrom=matyas.hurtik@cdn77.com;
+	dmarc=pass (policy=quarantine) header.from=cdn77.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755188849; a=rsa-sha256;
+	cv=none;
+	b=Xw4vqrpLN3jIa7tU7McPoJR6urhZyHk4nFaPGNc+iNY2+Jf++JILj2yaY/i5xsdS8jibX7
+	HkcwT5BPkkvgMWh7NpvtCrlWbRAojovqESKLSXdYqwYSic3pJMyoG5N59lj96icQ6OtkHx
+	IxlsPndHQjOweN/Wxc7/zINMbYAYqb4=
+DKIM-Signature: a=rsa-sha256; t=1755188844; x=1755793644; s=dkim2019; d=cdn77.com; c=relaxed/relaxed; v=1; bh=GKRpkbuM0/E1wsSLFsbRln4KtsFPqU6wbMr0a/aHKeA=; h=From:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:References;
+   b=j8zGTjgiu1Lbnh6rbl49SMWTbww4nmtpvOx4j5K9rUFmeSWNGesTct+bV42djMrLiH/FD4mRmjhcOwc6h705IPcgywAdEGBDHgTXHReEDGwba3mM1Ce4YtaUuXxfz9/lPBiXKI4OV3qEpbU8fi7Gf531nRoGCltjXZbkwX5rNDM=
+Received: from [10.26.1.187] ([80.250.18.198])
+        by mail.sh.cz (14.1.0 build 16 ) with ASMTP (SSL) id 202508141827234129;
+        Thu, 14 Aug 2025 18:27:23 +0200
+Message-ID: <4937aca8-8ebb-47d5-986f-7bb27ddbdaba@cdn77.com>
+Date: Thu, 14 Aug 2025 18:27:22 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] memcg: expose socket memory pressure in a cgroup
+To: Shakeel Butt <shakeel.butt@linux.dev>,
+ Daniel Sedlak <daniel.sedlak@cdn77.com>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Neal Cardwell <ncardwell@google.com>, David Ahern <dsahern@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org,
+ netdev@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
+ Tejun Heo <tj@kernel.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
+References: <20250805064429.77876-1-daniel.sedlak@cdn77.com>
+ <fcnlbvljynxu5qlzmnjeagll7nf5mje7rwkimbqok6doso37gl@lwepk3ztjga7>
+ <CAAVpQUBrNTFw34Kkh=b2bpa8aKd4XSnZUa6a18zkMjVrBqNHWw@mail.gmail.com>
+ <nju55eqv56g6gkmxuavc2z2pcr26qhpmgrt76jt5dte5g4trxs@tjxld2iwdc5c>
+ <CAAVpQUCCg-7kvzMeSSsKp3+Fu8pvvE5U-H5wkt=xMryNmnF5CA@mail.gmail.com>
+ <chb7znbpkbsf7pftnzdzkum63gt7cajft2lqiqqfx7zol3ftre@7cdg4czr5k4j>
+ <0f6a8c37-95e0-4009-a13b-99ce0e25ea47@cdn77.com>
+ <qsncixzj7s7jd7f3l2erjjs7cx3fanmlbkh4auaapsvon45rx3@62o2nqwrb43e>
+Content-Language: en-US
+From: Matyas Hurtik <matyas.hurtik@cdn77.com>
+In-Reply-To: <qsncixzj7s7jd7f3l2erjjs7cx3fanmlbkh4auaapsvon45rx3@62o2nqwrb43e>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 67E58140012
-X-Stat-Signature: pe3pb9z98o7xq1ekef1ta36q76j1ytj7
+X-CTCH: RefID="str=0001.0A00210F.689E0DCE.007A,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0"; Spam="Unknown"; VOD="Unknown"
+X-Rspamd-Queue-Id: C057880017
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1755188690-743756
-X-HE-Meta: U2FsdGVkX1/amB3+8Jzz8ro3sgWG9Fo6oSUhkwPGEl+Rkud4k2L3j7comrD9BMmtgKxKekXofoYcZobbiMveO/10hVO3qCv4E6cEHmIPkqD4shK8G5R6txjg/4h+dDNh2LID6S4+8rmgJGBtsJzDhNNnOqWa22YDG+tHxi5xNnsQOuAVsLnGskSkgA8HPsdYF5SfufS+Fh3MIU9SezwsYOkz/FikUc+XcdykfL6+lDmu4yK6wF0jUVFwqUA4RMlotZxwX1MOJsZ6Yn9F0FhoHhH6O3hdD7AZXYhq6uSrbhbQkAzLc7QuztCyF5JIxITDOv5DtXUQcQ2jrqUv/hgBUuiso/eH/Chxg+qmPIxs+kXLA303ZV911tCWMkd8U8CisT8Ni5Mm6jjsDvBkb4bAAnIE1Jk/1QCT+YfnUnvnyXWJlKqaMa1853OX3hERMYLGGuEyUEw/Lroh5+HgsNKA+6heINbxhlU6C28trVeCD/nE3SLo1icfvQiCkGhsaP7E4dWrKoPXMt8anAm7ikXbefmVyJSnequnZ+m4XSCwFkSvKOJG0OVuPdz7zd6+Q08k1j8NNB85MpabNcHrklzVZDrSTgFJUCw1wsilTfTceBSM6FCLK7GV8bdW47PlGMoZrAOrMtjYga9W7l0Q7njYSsUgo2u6OxUKFg+i88gTgvwI9RBLY9xEWmg42BFh20piFEAyX7/aT1DgGnCftEglLqI5SQseRHEnyOlqnLuwFF8T8SZzRt+B8InXeugi/OaLVdatiZzG/IOL0yZPcOCxPZwQdpJ42Yr68XaGj52w7bwqm1W/MPedYOQzh8gTFdt2fc0XrrogL+rG725DO/W0Z3sgvn4AzAad9+BInG3ewqqH65Qvc2lLpSbbxbq+xkerwjzsPc+4x6QALZ5PaYqWv+CLxeCgMhdT8s9pmGeWj5BN5+l9+Hk7vWXxqf1pSbDUy4JhyGh4zMmJHzv0Kdc
- QnI/2MY8
- 65tZaSfkd+MwBC1YVQiIP0Bo6tkR5Pkxoeuvc2U38yQNZqj+WA3Ictoz6/UlmsmlU6zGwc0QhRPIh23XUm8lq3UqKFr+Pr09favKNSROG5t2t3vdRR15sRJaydh/a3H7HUu2EYvflnnpNgDLEllyVP9TeEHtrJtzxuBZU1K+qZwOWpONf4eRKizEjXD4APdrDNxzqKpZeS479azJE1RE+pKpOh3VNRgAYUhMaBIUqL9hnoMdtwQFcmWfAxlimm6zPY9JUi+S+oFvWFtlkPDZgfoxqE68L8i7f42SC
+X-Stat-Signature: igandiz6jyydfra6yhzb6fn3b1hwtihz
+X-HE-Tag: 1755188848-524034
+X-HE-Meta: U2FsdGVkX18R99bXUVoAcrHL44E2A4GZQBWueYLHHhcVR5GrIQ2CNZ3WExvT67ispOvTB+yw5MK/vYRyBKWXiSI2iGp5pZCmmM2zAYBlgmfCY+/tNZcy/TxMz+OT1+5QLYBaAANvN/uANGwp1jm1RRfBYC3GTesCuyBNn0YyYm7pGrth8rrh1rwY3pNkvrXuAmgp3QKaBblwmCGo5fmDOBNlWhA9avQ87RG0FFi8KibTcQ4CrkSIqjiobqeHqdgOErTXV3ZSWtyoeQsp4Kzb2urU1KFN3N/pMAaStr18vi6aavf6bPKVUxun2ZbXdoPGEmo1b8tueRbwk8pr7BwbMA+OnnXSXwPLFQe80q572ZUchPu588kg2ssHJU4Dy9lzzl8MSw5vcGzswtxluNd9iG1RTPCmUh1zjmlBReHdMgkhw34YmLnVbWvwxLtYM9ducp5lHbAhT9DEQX/a/Rm41/ONnTSAkG23ANjkZQKC/nEXtpyni1jdv6ms+MlEMy+/KO8liXRAas7wdfjlo6hH4UiAsqtQ75c3dHyxBVKZKhs1nbuYTMxikMZ7wVh6h9zG761GCGvrn3WX6RsbxU5ua9INPZiNeKi9i4Ox0unR+K4BUxTEbBCM6NMrG6+QysEpqSmkGIajkUocp1KSLgx5ys+YolQr+6XW4NC4Ke05bsmYR/CRyXI/vwCk1fAw+aElfmnMG6VTpeNgO2TfPIeUA2bIQKil4LYDn2103hS1oiUzSjg7LTZukzue0I4A5pB3XK3At+X/B6SWnXFLV4X/IPoeaBtkoUaT0s8Pw4X+dQi2UNsJGiwdafgAFehWk9lquDRpXhVxfwjKklhvRoyr07OIfqh6SitjceMtbVcBQ1Xl3WApo1lqVHOYA7MEqrbAtKw7J0TRDT7wzU9l030QQ4hkEYKsD+4UDLWNXuyRbRs2kb8uTgWNjK/DkOt7xVX3cKRyH3/yKMSli9KTZeR
+ yQM9Yoth
+ FFMxCzfUEBAYr6J93jaYMbmeyXTra2lcp+zTKjwQ51iTmrT8WDIbbHXHfyby+I4M8mmrlzaioKpTKFE5q0gMQOjglFg2j+59ujNdjsdyvAKX3qxEdj8Mty2PfClzWbvGmKSP8xwVwKBnoRnRuCYlOFIVs4f7oX8asBaI1WS3yflu+SeOhVr+La/bCX2P/sIz4+lmZG6YMj0tFLxDXeK6FLQ6nD/G+t0KOlFHlbYJTOf6Hha8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,69 +100,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Enze,
+On 8/7/25 10:52 PM, Shakeel Butt wrote:
 
-On Thu, 14 Aug 2025 20:17:03 +0800 Enze Li <lienze@kylinos.cn> wrote:
+> We definitely don't need a global lock. For memcg->net_pressure_lock, we
+> need to be very clear why we need this lock. Basically we are doing RMW
+> on memcg->socket_pressure and we want known 'consistently' how much
+> further we are pushing memcg->socket_pressure. In other words the
+> consistent value of diff. The lock is one way to get that consistent
+> diff. We can also play some atomic ops trick to get the consistent value
+> without lock but I don't think that complexity is worth it.
 
-> The DAMON_STAT_ENABLED_DEFAULT option is strongly tied to
-> DAMON_STAT -- enabling it alone is meaningless.
+Hello,
 
-Nice catch, thank you Enze!
 
-> This patch modifies the
-> logic to automatically enable DAMON_STAT whenever
-> DAMON_STAT_ENABLED_DEFAULT is selected, ensuring functional consistency.
-> 
-> Signed-off-by: Enze Li <lienze@kylinos.cn>
-> ---
->  mm/damon/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/damon/Kconfig b/mm/damon/Kconfig
-> index b3171f9406c1..5bc71354e6f3 100644
-> --- a/mm/damon/Kconfig
-> +++ b/mm/damon/Kconfig
-> @@ -105,7 +105,7 @@ config DAMON_STAT
->  config DAMON_STAT_ENABLED_DEFAULT
->  	bool "Enable DAMON_STAT by default"
->  	depends on DAMON_PADDR
-> -	default DAMON_STAT
-> +	select DAMON_STAT
+I tried implementing the second option, making the diff consistent using 
+atomics.
+Would something like this work?
 
-I don't think we need to drop 'default DAMON_STAT', though.
+if (level > VMPRESSURE_LOW) {
+   unsigned long new_socket_pressure;
+   unsigned long old_socket_pressure;
+   unsigned long duration_to_add;
+   /*
+     * Let the socket buffer allocator know that
+     * we are having trouble reclaiming LRU pages.
+     *
+     * For hysteresis keep the pressure state
+     * asserted for a second in which subsequent
+     * pressure events can occur.
+     */
+   new_socket_pressure = jiffies + HZ;
+   old_socket_pressure = atomic_long_xchg(
+     &memcg->socket_pressure, new_socket_pressure);
 
-To me, it seems the problem is the wrong dependency.  What about making
-DAMON_STAT_ENABLED_DEFAULT depends on DAMON_STAT, like below?
+   duration_to_add = jiffies_to_usecs(
+     min(new_socket_pressure - old_socket_pressure, HZ));
 
-"""
-diff --git a/mm/damon/Kconfig b/mm/damon/Kconfig
-index ecbdb3e2ae58..d5f8db812dd3 100644
---- a/mm/damon/Kconfig
-+++ b/mm/damon/Kconfig
-@@ -104,7 +104,7 @@ config DAMON_STAT
+   do {
+     atomic_long_add(duration_to_add, &memcg->socket_pressure_duration);
+   } while ((memcg = parent_mem_cgroup(memcg)));
+}
 
- config DAMON_STAT_ENABLED_DEFAULT
-        bool "Enable DAMON_STAT by default"
--       depends on DAMON_PADDR
-+       depends on DAMON_STAT
-        default DAMON_STAT
-        help
-          Whether to enable DAMON_STAT by default.  Users can disable it in
-"""
+memcg->socket_pressure would need to be changed into atomic_long_t,
+but we avoid adding the memcg->net_pressure_lock.
 
-Also, the subject sounds like a bit strong tone ("enforce").  How about
+> We don't need memcg->net_pressure_lock's protection for
+> sk_pressure_duration of the memcg and its ancestors if additions to
+> sk_pressure_duration are atomic.
 
-"mm/damon/Kconfig: make DAMON_STAT_ENABLED_DEFAULT depends on DAMON_STAT" ?
-
->  	help
->  	  Whether to enable DAMON_STAT by default.  Users can disable it in
->  	  boot or runtime using its 'enabled' parameter.
-> 
-> base-commit: 0cc53520e68bea7fb80fdc6bdf8d226d1b6a98d9
-> -- 
-> 2.43.0
+With regards to the hierarchical propagation I noticed during testing that
+vmpressure() was sometimes called with memcgs, created for systemd oneshot
+services, that were at that time no longer present in the /sys/fs/cgroup 
+tree.
+This then made their parent counters a lot larger than just sum of the 
+subtree
+plus value of self. Would this behavior be correct?
 
 
 Thanks,
-SJ
+
+Matyas
+
 
