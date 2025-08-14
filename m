@@ -2,85 +2,116 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ABB32CA0EDC
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 10:03:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9474ECA0EDC
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 10:13:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3870B900129; Thu, 14 Aug 2025 06:03:38 -0400 (EDT)
+	id 1C6E590012A; Thu, 14 Aug 2025 06:13:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35D48900121; Thu, 14 Aug 2025 06:03:38 -0400 (EDT)
+	id 17862900121; Thu, 14 Aug 2025 06:13:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 29AFB900129; Thu, 14 Aug 2025 06:03:38 -0400 (EDT)
+	id 03FEE90012A; Thu, 14 Aug 2025 06:13:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 18C46900121
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 06:03:38 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2CD6C138479
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 10:03:37 +0000 (UTC)
-X-FDA: 83774926074.08.88DCAF5
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C0390C0007
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 10:03:33 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=FyCovBqC;
-	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id DEDF5900121
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 06:13:52 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8AA5D59BDB
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 10:13:52 +0000 (UTC)
+X-FDA: 83774951904.25.03B376A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 131E8A000B
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 10:13:50 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GbJfmdOg;
+	spf=pass (imf15.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755165815;
+	s=arc-20220608; t=1755166431;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ocqGFWwlEESKe0BZACXQhN4GorNLeklOvmcYh0YlYp8=;
-	b=IgG9UyaGw5wdEkxWfW+hfpOcYtyN7HX50icp1hLZYYOgti+Aabz7elrwcqIK0pHquUyhY1
-	3+lXYWwqCJscep9VCNl5PX5mcbO6hMlK2MRz6JlkiPY4NLPZY2LeiDCsOKVVmH/11MCQZI
-	eGmgaN1vJLTf4BW7L0pBJmw8kIJ6qFA=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=QPYc3H/ma9xbsf5ZJdhCt7HUcPhgteyPOGxxaB+GH/M=;
+	b=3m0CUj07EJtSeriyElOs+pWggIY3EqYF6I702zW1qC8HOFI6sTuuamhfcjninwUZaExIrS
+	+Rbc8fFKyzuLSRrQg72m4wjNWcA4wASXT9GwYVf67WJ6Qhwh42RHBE2277ILHSlgcyTnnJ
+	CAmEWgVnKy4cgB2RSs8Ul/Mw+fsTNHw=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=FyCovBqC;
-	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755165815; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GbJfmdOg;
+	spf=pass (imf15.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755166431; a=rsa-sha256;
 	cv=none;
-	b=TaOy3HjMMzZgg/IJYwAT1Up6K/vS/V4urGfirdlVqDyHd9Kqvv4k6IblsKNEo1zsxlqfYx
-	p0+fYEDaeTpuBBwC22HF8+zwgn3KbusxwGOjOlAdvu1anhCc5ZKm+o5LZOFJ+LC6IGaFsh
-	yTD59cI1pdG9yf04WloCsBXRmey4SL8=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1755165810; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=ocqGFWwlEESKe0BZACXQhN4GorNLeklOvmcYh0YlYp8=;
-	b=FyCovBqC3Mt5BohHtPCdg4byY5rxCjP4UwSFIwRpIHoiJFUVO1j5qMhVgclrEtju0ug04MoMahclznUI8cZg/k3bzgOz79k1ce13saH797tEpnMJ1SVU5n/fuaBzIuoIpkDrqHyZJrQEV37VXFP4acf1iSuhZLtD62Aap+KeL3E=
-Received: from 30.74.144.115(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WljqW7d_1755165806 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 14 Aug 2025 18:03:27 +0800
-Message-ID: <323ed726-fc69-4d80-a7e8-e3762c161ee1@linux.alibaba.com>
-Date: Thu, 14 Aug 2025 18:03:26 +0800
+	b=yUUcBYde6+8boT74Mgj1sqaE6vieG8fn07ldEXavYJeA7F0ZwK8BbyFxg//Ufuz+Z2J1BC
+	0AP8hnbjAhj5aRMubvtl981HME0vyFh+LHws6kD2Gi7LJwRp4gqG6nguhUtezy5Ai3kE9N
+	miWwiAHad9638AUjjfiFxNy7VGsfJl8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1F5C36020A;
+	Thu, 14 Aug 2025 10:13:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15191C4CEED;
+	Thu, 14 Aug 2025 10:13:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755166429;
+	bh=WvslSImvBRVIN9npZ+rLYR2kEKQBnxvpUzJZAvcwdxs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=GbJfmdOggEzm8njF3Ipzk+wplt5NpDFzWhDA8mQ22Appp4nEs/hEpcVVQQVZajRLT
+	 O88nGQEEP2f1y6g2DJ7AUnqg/jSHQfu6+8ooocHr11sduLrzG6pTywne0g+/M1EJAl
+	 02AnRdTbqcBbrPm3eJlvH+DaHFAahHTWIQ+4WG+JESkwNk7gs0x7vG654nR9ortQ+C
+	 VUWu+YXBeLXmlENfAVjFuPe7B1/xCB0sT5de0HgVXmYkUrv0XTzn9PxsTCEZarm8vE
+	 c1/pPOXYYDc3IibUSAxgsv8+okkLIlwU60yNvt77zmNHT/ed7hVFRfvFLMl7PYBeoB
+	 iMmfPD5OzUqFg==
+From: Leon Romanovsky <leon@kernel.org>
+To: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Danilo Krummrich <dakr@kernel.org>,
+	iommu@lists.linux.dev,
+	Jason Wang <jasowang@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Joerg Roedel <joro@8bytes.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Juergen Gross <jgross@suse.com>,
+	kasan-dev@googlegroups.com,
+	Keith Busch <kbusch@kernel.org>,
+	linux-block@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-nvme@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-trace-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	rust-for-linux@vger.kernel.org,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev,
+	Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Subject: [PATCH v2 00/16] dma-mapping: migrate to physical address-based API
+Date: Thu, 14 Aug 2025 13:13:18 +0300
+Message-ID: <cover.1755153054.git.leon@kernel.org>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm: shmem: fix the strategy for the tmpfs 'huge='
- options
-To: Hugh Dickins <hughd@google.com>
-Cc: akpm@linux-foundation.org, willy@infradead.org, david@redhat.com,
- lorenzo.stoakes@oracle.com, ziy@nvidia.com, Liam.Howlett@oracle.com,
- npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <701271092af74c2d969b195321c2c22e15e3c694.1753863013.git.baolin.wang@linux.alibaba.com>
- <e6898dca-d6c6-465c-a373-8298858839ab@linux.alibaba.com>
- <3705f034-808a-4afe-5dde-4b4e9815a8d0@google.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <3705f034-808a-4afe-5dde-4b4e9815a8d0@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 1fqpiza7q4kpyobh3131txw1pgxbd3ec
+X-Rspamd-Queue-Id: 131E8A000B
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C0390C0007
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1755165813-646122
-X-HE-Meta: U2FsdGVkX1+OC+pvH2th3xFmQLkFJ53QRVcKYaaiDBlriSGYhsI0PuhtwoddDts8IEEHnYRKLgGmhsX7fR9GE2oFyiTyPDxUqVIrypGInLgvPJJ/EQNEfgSqhm4xaPsgDdVp9Wqg+rYufRpskQCyHRp2JxVPIb6QQAYHxoBtNWDNlnO9lKzXs8AaTqNcBtBl1DcIFkhQdmCF9681AhhiN6yLnug/CZu2OstVyS+VmZ0myZtWFD0GYaE0rmX26EbURj451KilWeB0Xq9Kird0QvMzFd0QrRp2GyyQkMMGoeFKjtUw29G2xO+MCFMe9K52nfOOXGZDO+v4eGT3ARxoa9PJuSgLW2+CpvXrVtvrKFIRlsY4BP7qxFTHfe1b/WlZTmJC9xPx2r2/IBVz7Oyia31MThnhIpcGo/CQ+s+km4BgR27/6FV5y/WsDYSAALu9xO3r6diNVzLm3W1xIozX+IiRVY7mIkNS8WqVdmsIAAkJaNha56mgGcawWxYERZuYhDPVfjyM5GkmWj0mDS4boP93RMluwkV/sIeM08qjLz8vV3YsC0eGKRSov30EAPQSvE/zGG8sK3duS9gm7UmXer2hUMp7gQSbdZYnC7dpldyiAvhoDWKpaxXoHa9KIuXYP5DEEX8I8eU+5hv2/TLbEi6x0LPeyYnSPaxAnHZuAJ8RF5ia5FqzTZco60B2ol0mg90VJs0XaZAzejLgKe9BRPG+zoWZnZkkxugpF9lnWYm+cjHiMavYLieG7LJHYHkR/WN0t2h8b7ReYrRYr3Tc0sMfFD2i9oIra6BTkqacaKJUj+w5h7Qcjtd2wTQ1YlpOsGguz2/WEZdYzI1fdxZ9fLzguEU1fg2IpADAGqa2TrkZaK/SPG7B2LJM1JmF2Bjj80wVMTT+izKTtEcff5ycq6FOq9jdZoKj82wvyq/952ULU0FuQaHi2oaEwepWz9o2x/CyQydTa9lKtNo4JQQ
- +birAtZk
- ekTYvyf1kRLZO0k5Hrn7EusLixlGhVMoqNZI5xTlAZ1u60i4Cy13GvlosSf9wu/McMwokh61f1ahbnE4TMqRimEnjsWJeDTNxbXNKzcQszlolU9KOqaBSZjgH3JbxBGfnQAY1yeXnpgK0PJdxp/e9fvgHs1catrAHkjY77r6x5SR71vg0vaNM1B4+ncsdcNo1DOfDWlmsz8NiUEiVHg2brCPjVM8LybSSVhptujLBmKdRgGaKg38CaIof0kPzlpbmJDidxypVq0XX2cdvuZSA6eTKA8kVw2t8iDRih4yxUsENOBVUkVccmJzejaAlC+SWxPeodkYVPZ8mXhN+d3NpZpseO+qaucSvAzMI
+X-Stat-Signature: 3kyo8psi9zxj4j59ng8mz3fgdgnfo3nx
+X-HE-Tag: 1755166430-662090
+X-HE-Meta: U2FsdGVkX191JfuOY6DFlVr2XHsFvLqLKbMY9O53ht0WZo3OQGrRkKf4+fPtbdHir/jlueKbwMEpdCRUe+yREByR0Kzk0Bdo4hjavGpkAzZviNc6lA27OFArptYnOpzbQkefmxTrLDv0zjQSgLLJ7IYpBUygdu4b9ViAMii92zgtm8dOcbnXem/MiPI78uGW8+tFh9MXtMk7kp0HnGTT9Zckq8lX+7ek8EBUsXw3TzYUXk7KByuoghisBmqWcRUQEwPjB5aqUb6OzFAS1cRr7GB/0jMY/4wtptY+v1WbbGZNiUm3D5Ery2Q4EpUIfO5XHalVThf4D7eI3tCa45xdwRSXtWQrVOoGkLTRVeCxE0gvYc4ZGoCQQ72NUCU0SI1plCtirddRo70f0ez7IKD7+AjmXOeOPAH/4iPi5UqVQsdqXXyjOxqAR3TArkkJIS2oOP9M8b+LSwHdwAheSKeRNKZ89/qek+9S8X5XTNFTl/geDSA74iN9UDkl0hTSqULTRnheMv7xcnWuwOPuIC3wnjNWXEdvYJvkUggp1cxEHG52fiEUILOTncwnlx2gKhQoI+WY1UlQc+yPPJ9U6EGiwCkmpchVGIzkm/VB60W1AmVAa4jYogi6jv1UD2szJoBMpLeVQ/njpLzmcOh6M/Ce5ghuWEZKutDFZkcrcspve8M7jr/EAMz4iFFJ3b0fjorQVcEcOnM6gVa1OM8k8ysCf5mXrhPEsfGy/Mxh2c2oSigXcUbMOu6ycGthEsv/avy884wjx/IZYv7KULH3TBHOI2Q5psTU68ZQBX0z8LZewLa6mOJEMevaqY7O2eYEJW3YE0j3z6wcuWqnlM0yQtwDXiGwTWxv6oW1/vpR4Nhsjga27kRbD/O/pnb7qkfy5xWksPJ7++5ZuojpvaM/dUWWWM4A2o4PcyetqJSg9xOERsjdV2nM0woIDfEcnoyYl8jcZ7T5P00XV1282eM5EQJ
+ iZsZ2v0Z
+ TNQvNV6AVzHAJEs8TWNQkvfFfNAg0mXu/F9X5fSD7vKn69RB75ypAP81QEmQfi+J95dL9f91yQ8L5kIJkfQynAoWUnVXt21+YZ0kF3kRLAvtCKmkKSiz2ymA7Lpj67BfNWwF2RZSQiug4r4y0tKm7QOcQzAJXEg72N2kSkLGMvhB5w2iCSX75qQsXUb6IQLZqaxhmAcW1RcIdlE0AX3u6xFgnn9ELp60BMDpWHdXSU8kf+wuxuuqmHudYJuK08kzkHsrWNRr2p3OdZbRjMFfMwjMeB1vafoB+k29WwWjzU0snQd4L9Z6b6U4Ufg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,105 +120,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Changelog:
+v2:
+ * Used commit messages and cover letter from Jason
+ * Moved setting IOMMU_MMIO flag to dma_info_to_prot function
+ * Micro-optimized the code
+ * Rebased code on v6.17-rc1
+v1: https://lore.kernel.org/all/cover.1754292567.git.leon@kernel.org
+ * Added new DMA_ATTR_MMIO attribute to indicate
+   PCI_P2PDMA_MAP_THRU_HOST_BRIDGE path.
+ * Rewrote dma_map_* functions to use thus new attribute
+v0: https://lore.kernel.org/all/cover.1750854543.git.leon@kernel.org/
+------------------------------------------------------------------------
 
+This series refactors the DMA mapping to use physical addresses
+as the primary interface instead of page+offset parameters. This
+change aligns the DMA API with the underlying hardware reality where
+DMA operations work with physical addresses, not page structures.
 
-On 2025/8/13 14:59, Hugh Dickins wrote:
-> On Tue, 12 Aug 2025, Baolin Wang wrote:
->> On 2025/7/30 16:14, Baolin Wang wrote:
->>> After commit acd7ccb284b8 ("mm: shmem: add large folio support for tmpfs"),
->>> we have extended tmpfs to allow any sized large folios, rather than just
->>> PMD-sized large folios.
->>>
->>> The strategy discussed previously was:
->>>
->>> "
->>> Considering that tmpfs already has the 'huge=' option to control the
->>> PMD-sized large folios allocation, we can extend the 'huge=' option to
->>> allow any sized large folios.  The semantics of the 'huge=' mount option
->>> are:
->>>
->>>       huge=never: no any sized large folios
->>>       huge=always: any sized large folios
->>>       huge=within_size: like 'always' but respect the i_size
->>>       huge=advise: like 'always' if requested with madvise()
->>>
->>> Note: for tmpfs mmap() faults, due to the lack of a write size hint, still
->>> allocate the PMD-sized huge folios if huge=always/within_size/advise is
->>> set.
->>>
->>> Moreover, the 'deny' and 'force' testing options controlled by
->>> '/sys/kernel/mm/transparent_hugepage/shmem_enabled', still retain the same
->>> semantics.  The 'deny' can disable any sized large folios for tmpfs, while
->>> the 'force' can enable PMD sized large folios for tmpfs.
->>> "
->>>
->>> This means that when tmpfs is mounted with 'huge=always' or
->>> 'huge=within_size',
->>> tmpfs will allow getting a highest order hint based on the size of write()
->>> and
->>> fallocate() paths. It will then try each allowable large order, rather than
->>> continually attempting to allocate PMD-sized large folios as before.
->>>
->>> However, this might break some user scenarios for those who want to use
->>> PMD-sized large folios, such as the i915 driver which did not supply a write
->>> size hint when allocating shmem [1].
->>>
->>> Moreover, Hugh also complained that this will cause a regression in
->>> userspace
->>> with 'huge=always' or 'huge=within_size'.
->>>
->>> So, let's revisit the strategy for tmpfs large page allocation. A simple fix
->>> would be to always try PMD-sized large folios first, and if that fails, fall
->>> back to smaller large folios. However, this approach differs from the
->>> strategy
->>> for large folio allocation used by other file systems. Is this acceptable?
->>>
->>> [1]
->>> https://lore.kernel.org/lkml/0d734549d5ed073c80b11601da3abdd5223e1889.1753689802.git.baolin.wang@linux.alibaba.com/
->>> Fixes: acd7ccb284b8 ("mm: shmem: add large folio support for tmpfs")
->>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->>> ---
->>> Note: this is just an RFC patch. I would like to hear others' opinions or
->>> see if there is a better way to address Hugh's concern.
-> 
-> Sorry, I am still evaluating this RFC patch.
-> 
-> Certainly I observe it taking us in the right direction, giving PMD-sized
-> pages on tmpfs huge=always, as 6.13 and earlier releases did - thank you.
-> 
-> But the explosion of combinations which mTHP and FS large folios bring,
-> the amount that needs checking, is close to defeating me; and I've had
-> to spend a lot of the time re-educating myself on the background -
-> not looking to see whether this particular patch is right or not.
-> Still working on it.
+The series maintains export symbol backward compatibility by keeping
+the old page-based API as wrapper functions around the new physical
+address-based implementations.
 
-OK. Thanks.
+This series refactors the DMA mapping API to provide a phys_addr_t
+based, and struct-page free, external API that can handle all the
+mapping cases we want in modern systems:
 
->> If we use this approach to fix the PMD large folio regression, should we also
->> change tmpfs mmap() to allow allocating any sized large folios, but always try
->> to allocate PMD-sized large folios first? What do you think? Thanks.
-> 
-> Probably: I would like the mmap allocations to follow the same rules.
-> 
-> But finding it a bit odd how the current implementation limits tmpfs
-> large folios to when huge=notnever (is that a fair statement?), whereas
+ - struct page based cachable DRAM
+ - struct page MEMORY_DEVICE_PCI_P2PDMA PCI peer to peer non-cachable
+   MMIO
+ - struct page-less PCI peer to peer non-cachable MMIO
+ - struct page-less "resource" MMIO
 
-Yes, this is mainly to ensure backward compatibility with the 'huge=' 
-options. Moreover, in the future, we could set the default value of 
-‘tmpfs_huge’ to ‘always’ (controlled via the cmdline: 
-transparent_hugepage_tmpfs=) to allow all tmpfs mounts to use large 
-folios by default.
+Overall this gets much closer to Matthew's long term wish for
+struct-pageless IO to cachable DRAM. The remaining primary work would
+be in the mm side to allow kmap_local_pfn()/phys_to_virt() to work on
+phys_addr_t without a struct page.
 
-> other filesystems are now being freely given large folios - using
-> different GFP flags from what MM uses (closest to defrag=always I think),
-> and with no limitation - whereas MM folks are off devising ever newer
-> ways to restrict access to huge pages.
-> 
-> And (conversely) I am unhappy with the way write and fallocate (and split
-> and collapse? in flight I think) are following the FS approach of allowing
-> every fractal, when mTHP/shmem_enabled is (or can be) more limiting.  I
-> think it less surprising (and more efficient when fragmented) for shmem
-> FS operations to be restricted to the same subset as "shared anon".
+The general design is to remove struct page usage entirely from the
+DMA API inner layers. For flows that need to have a KVA for the
+physical address they can use kmap_local_pfn() or phys_to_virt(). This
+isolates the struct page requirements to MM code only. Long term all
+removals of struct page usage are supporting Matthew's memdesc
+project which seeks to substantially transform how struct page works.
 
-Understood. We discussed this before, but it didn’t get support :(
+Instead make the DMA API internals work on phys_addr_t. Internally
+there are still dedicated 'page' and 'resource' flows, except they are
+now distinguished by a new DMA_ATTR_MMIO instead of by callchain. Both
+flows use the same phys_addr_t.
+
+When DMA_ATTR_MMIO is specified things work similar to the existing
+'resource' flow. kmap_local_pfn(), phys_to_virt(), phys_to_page(),
+pfn_valid(), etc are never called on the phys_addr_t. This requires
+rejecting any configuration that would need swiotlb. CPU cache
+flushing is not required, and avoided, as ATTR_MMIO also indicates the
+address have no cachable mappings. This effectively removes any
+DMA API side requirement to have struct page when DMA_ATTR_MMIO is
+used.
+
+In the !DMA_ATTR_MMIO mode things work similarly to the 'page' flow,
+except on the common path of no cache flush, no swiotlb it never
+touches a struct page. When cache flushing or swiotlb copying
+kmap_local_pfn()/phys_to_virt() are used to get a KVA for CPU
+usage. This was already the case on the unmap side, now the map side
+is symmetric.
+
+Callers are adjusted to set DMA_ATTR_MMIO. Existing 'resource' users
+must set it. The existing struct page based MEMORY_DEVICE_PCI_P2PDMA
+path must also set it. This corrects some existing bugs where iommu
+mappings for P2P MMIO were improperly marked IOMMU_CACHE.
+
+Since ATTR_MMIO is made to work with all the existing DMA map entry
+points, particularly dma_iova_link(), this finally allows a way to use
+the new DMA API to map PCI P2P MMIO without creating struct page. The
+VFIO DMABUF series demonstrates how this works. This is intended to
+replace the incorrect driver use of dma_map_resource() on PCI BAR
+addresses.
+
+This series does the core code and modern flows. A followup series
+will give the same treatment to the legacy dma_ops implementation.
+
+Thanks
+
+Leon Romanovsky (16):
+  dma-mapping: introduce new DMA attribute to indicate MMIO memory
+  iommu/dma: implement DMA_ATTR_MMIO for dma_iova_link().
+  dma-debug: refactor to use physical addresses for page mapping
+  dma-mapping: rename trace_dma_*map_page to trace_dma_*map_phys
+  iommu/dma: rename iommu_dma_*map_page to iommu_dma_*map_phys
+  iommu/dma: extend iommu_dma_*map_phys API to handle MMIO memory
+  dma-mapping: convert dma_direct_*map_page to be phys_addr_t based
+  kmsan: convert kmsan_handle_dma to use physical addresses
+  dma-mapping: handle MMIO flow in dma_map|unmap_page
+  xen: swiotlb: Open code map_resource callback
+  dma-mapping: export new dma_*map_phys() interface
+  mm/hmm: migrate to physical address-based DMA mapping API
+  mm/hmm: properly take MMIO path
+  block-dma: migrate to dma_map_phys instead of map_page
+  block-dma: properly take MMIO path
+  nvme-pci: unmap MMIO pages with appropriate interface
+
+ Documentation/core-api/dma-api.rst        |   4 +-
+ Documentation/core-api/dma-attributes.rst |  18 ++++
+ arch/powerpc/kernel/dma-iommu.c           |   4 +-
+ block/blk-mq-dma.c                        |  15 ++-
+ drivers/iommu/dma-iommu.c                 |  61 ++++++------
+ drivers/nvme/host/pci.c                   |  18 +++-
+ drivers/virtio/virtio_ring.c              |   4 +-
+ drivers/xen/swiotlb-xen.c                 |  21 +++-
+ include/linux/blk-mq-dma.h                |   6 +-
+ include/linux/blk_types.h                 |   2 +
+ include/linux/dma-direct.h                |   2 -
+ include/linux/dma-map-ops.h               |   8 +-
+ include/linux/dma-mapping.h               |  33 ++++++
+ include/linux/iommu-dma.h                 |  11 +-
+ include/linux/kmsan.h                     |  12 ++-
+ include/trace/events/dma.h                |   9 +-
+ kernel/dma/debug.c                        |  71 ++++---------
+ kernel/dma/debug.h                        |  37 ++-----
+ kernel/dma/direct.c                       |  22 +---
+ kernel/dma/direct.h                       |  52 ++++++----
+ kernel/dma/mapping.c                      | 116 +++++++++++++---------
+ kernel/dma/ops_helpers.c                  |   6 +-
+ mm/hmm.c                                  |  19 ++--
+ mm/kmsan/hooks.c                          |  36 +++++--
+ rust/kernel/dma.rs                        |   3 +
+ tools/virtio/linux/kmsan.h                |   2 +-
+ 26 files changed, 333 insertions(+), 259 deletions(-)
+
+-- 
+2.50.1
+
 
