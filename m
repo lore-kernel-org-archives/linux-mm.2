@@ -2,65 +2,65 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2356ACA0EE4
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 17:54:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 10833CA0EE8
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 17:54:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B28DF9001C0; Thu, 14 Aug 2025 13:54:46 -0400 (EDT)
+	id 9F0D09001C1; Thu, 14 Aug 2025 13:54:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB2D7900172; Thu, 14 Aug 2025 13:54:46 -0400 (EDT)
+	id 9A151900172; Thu, 14 Aug 2025 13:54:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92CC89001C0; Thu, 14 Aug 2025 13:54:46 -0400 (EDT)
+	id 8416D9001C1; Thu, 14 Aug 2025 13:54:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 765A3900172
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 13:54:46 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 24695140716
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 17:54:46 +0000 (UTC)
-X-FDA: 83776113372.22.827C194
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 8C0744000D
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 17:54:44 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iIPdKT0a;
-	spf=pass (imf17.hostedemail.com: domain of leon@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=leon@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FCD4900172
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 13:54:50 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2D90E117EE9
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 17:54:50 +0000 (UTC)
+X-FDA: 83776113540.07.66F0933
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7727810000A
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 17:54:48 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C6w4ugQY;
+	spf=pass (imf14.hostedemail.com: domain of leon@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755194084;
+	s=arc-20220608; t=1755194088;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pzRaznYWcPEPErIBBlcoY/4/ZIrl67NZIXZ6kqZ6GFg=;
-	b=2LoRkV4h6/GvDCb51pzYo7YqEQjEgtWq8e0svpqZAPnMvNEtEynXvMztQUuImb5NnoV12S
-	MUtHUW/CNyFC5kR7DqYOpuyOAZD0YGdF78hqB3wKR5LVIbOtND/m0E2CowW7TpDOT7x7Sj
-	Q0V5VXb40xTFdgTAZqBbOb8gaGCLcO4=
+	bh=eUWODOYu7xl20YNi/5H7WavDXD5EiHAIElpuMjzztLk=;
+	b=HgCYr49+yIuWXLT2s8ipNwFLQE2z5XA0BToDTiNoGuHlaBWT0txQXMWOrFYMvGg1WQ9PtD
+	5juP2o9ig5wmV5cg7NuiiNJhJFA+pWNE/jCnNEI07GiNuW1O+S6JhtSJSyfHT9xv9xasdA
+	nzVHTXBPX6TLPjkocqQXHNmyA8M4wD4=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iIPdKT0a;
-	spf=pass (imf17.hostedemail.com: domain of leon@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C6w4ugQY;
+	spf=pass (imf14.hostedemail.com: domain of leon@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755194084; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755194088; a=rsa-sha256;
 	cv=none;
-	b=Pd+zXP534mh14YdhKYkTvzqUbP/swUWuq7oPQAMvaz6OPDjOQZTdqJRh7yA5lMw8qniO/T
-	+CsQHqSVI/UasMMD+Wgkd0+a1UNk1l2ZmJSw42dEse4VMDKRloLkDBXW0AaIHh4LtD2l1O
-	RvHHz/UsQAAhAjd8i/p3OPo0PIausm4=
+	b=ibGXmce3LSC9osZsdzGtLOq6o0u1la9s5uLa0+W8/eAX7ZXIam7aVq/zVnl/TNazFWN4KU
+	0C2Mb4CYvg8UuX8vh9O0C4KqrcwCMAvhP5FYk4T19fuWsZjn1E5o08tbsn9sGhoHPvY7d0
+	x+IsLu4TWuu3fzRfBS+6zC3MYH/71JI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id DD020A573EF;
-	Thu, 14 Aug 2025 17:54:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D180CC4CEEF;
-	Thu, 14 Aug 2025 17:54:42 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id AD63A5C721E;
+	Thu, 14 Aug 2025 17:54:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F749C4CEF6;
+	Thu, 14 Aug 2025 17:54:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755194083;
-	bh=R7qBwFAm9izbrLVrPILQ9w37/FtDeJtTkRXoDvtS1CI=;
+	s=k20201202; t=1755194087;
+	bh=6kQRc8M4kSTN6oNlv6UupesxmLI8KrU+a1TL4nhd0iE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iIPdKT0aBIcYkeb/LiN0KqK3Xncf9eZZsRXFgIanpuSaYiJCb/1rKUprk4/hACv32
-	 BbT/YJJLOF1rEPaztLA0oAft4rdkYqJNcaKExvnXyxrjj7rUbZ403eWhTwUzzvGabi
-	 afIjuWmko6gtMe1wRQTcqQriX67Lbt8bIC9fmmy6DUCNJKHtMEbqhw+L7qlcixBxn7
-	 fjPsiNM1dAf4aRYRmpsTtAuBGONpGleKAROv8v+xxiaCx8/8uPPJxUSnIphNqZvuBJ
-	 CCEQXBAUhxVm9aEvfsThLZHa6lCGABl4QFyBMxqqn6Dy4rhPlrIWIYiWRRD23CPfu6
-	 oSidLdWzGZhIw==
+	b=C6w4ugQYiUdcIBDBap/wpiQAIwZla3sL70dXT7fdDwlS8iAo7WkvllaYcXF4QU2M9
+	 kt4WEnzYrIn4ZDZURbuikMUlP1Qp9CxkQOq+obTZHosuKzmVJJ0AF/lK9fQSX5YtoJ
+	 kzMxjlyIoIy5MaeVth9MfY0uS93UJW4vr922gEZKEo2egnsKAq7kg8ZgHQF2XBxqCZ
+	 F1uVGjeU46DFgcCqPy+lW15qydDCb2UvhK7t93bEVpZBLmZ+yVMS129GxQ41QBkFWL
+	 CFslA3zPU9Peu4BjTd3+d/0rvdaudAz+bJ7W9WzhuA5hIM9mliO10n+CPNH4ALRsGy
+	 OQQa8odedrzVg==
 From: Leon Romanovsky <leon@kernel.org>
 To: Marek Szyprowski <m.szyprowski@samsung.com>
 Cc: Leon Romanovsky <leonro@nvidia.com>,
@@ -99,22 +99,22 @@ Cc: Leon Romanovsky <leonro@nvidia.com>,
 	virtualization@lists.linux.dev,
 	Will Deacon <will@kernel.org>,
 	xen-devel@lists.xenproject.org
-Subject: [PATCH v3 08/16] kmsan: convert kmsan_handle_dma to use physical addresses
-Date: Thu, 14 Aug 2025 20:53:59 +0300
-Message-ID: <38de1c5ffb567c5705826f14742fcaf54522c083.1755193625.git.leon@kernel.org>
+Subject: [PATCH v3 09/16] dma-mapping: handle MMIO flow in dma_map|unmap_page
+Date: Thu, 14 Aug 2025 20:54:00 +0300
+Message-ID: <ae473ed08a384bd70e3816cc74e11513213d71f4.1755193625.git.leon@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1755193625.git.leon@kernel.org>
 References: <cover.1755193625.git.leon@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: mhb5mez6kfyzujo1e5qe9xemjtyhsr6i
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 7727810000A
+X-Stat-Signature: 8cy79kp4tnqraiztgunec5y7jxgs1qcg
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8C0744000D
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755194084-745078
-X-HE-Meta: U2FsdGVkX18PTYuFhWDkxkwFTfm1UyCXMNNu5KAZl/YbCzJLvlVTqI2yqoGxVeGH5jDX77AqZRCLMeuKgSqWakrgpKkPbTmAzyeIf7kJWhEmOJM/nVzSU0crnBxY9s18kf+x9rzHVTppD7eam8KUYg4s8yRZIHxrSTgo5iYPXOZfIcCA7YfgDjsttwwggXOFnl31X2qogM7dFOuXRg4ZAvF9GjVvOeIHBpvHBd/kET426dErV+czFFO+GaRauBZPhUr9q2EDy+DnVq5GRYsclmbk4Pr9MOZyMnO4vkTTFpgC6gaOFarz6ATDGzSnXvRMnYagJ3nml9xluhiQEm2NAo0bVY0YLqYsFL6DFR5C2bijZX0hrGrME3RcMdMnURJkXwX3URp/RzqXKWi8bgsNzkx0hFArxoZ1OxPKDKXOWb2Zn+F6MhkU9oCNhcVtV8j9TuggChQ6oCQsD7rH854p8PsukBu7dQ+Ym3WJuW/9pWh3SVWsaZ6oaJcg7vIrnjpfV7HiOkDJnkzMAp3lFXvHH2lY734LuFsQzB9WP06Cz434GEYctuGKNDFiZeXBJnbnWArseT17fcyl4AdXqjDzYcTDy9zGigldRt+buPDeC/A+kZeWKaHcVze7xEvZ+5pjcGz2CTZw1Z/Mgdufezw3jVFbVpvZC6BcncY9NYM/H5m9kDNpI4hkh4ijPGaSnCvB9W7TZ2o/1WCgemF+mTgPGpYUWflTYJdmem4sPJOCVqkCQET2R9PPFftguMTCrH99fXJM91PZR718mExOvwBCU3HmNW2nbX/nCBTKcKkqYf6Yi07+5bPNLph7BqCCwGR67D6TZwtZLehB9hj9XrZoL6RS66MBOcRNk+onRx3ZrHI1iOjZEi2xfWQrwolcsznwSKfzhnUHa1NaMnzhEj9V6GLoJX/SbxO39qKPMOEkL4CRr7SQ/4eGTW3KpybXpnHOedw2+t95CAJA+2mmRVO
- FAb9ruPs
- iCKv2d12mDvhOI50VwH3gVhAoagJOdq5F7q6PGRT3DeO6u0pI7YQO+s4JIgacJj+cj3C2QcWe/aBpFs0HSpz70R/NhuHcKuVwSsbK3qdVenlCcLE4FvUhntx+gQvdgl9aE3RIn+QUm70XJhEaFJCDb+jLFpUFO3hzwIpqwY3Lqilq52LZsYNbWfpWYe1IXPeZUMN0kdHArHl4slxJcJezdW38oIjU/qtktUMx9mHQmF13MPrVGwAsBPkXdmyR8avS+fYxV0C2obMAsZx1M8i1hyRJ0pvE5cor/yNv6DimMRggl8RDHwijy05tUK1NGWVHnsOlx90dMYH2BiwtvuUfzSSOy+KqvUS1GZkO++uhOm4MuZVnL6VEHiphYlT5NSz+taWD
+X-HE-Tag: 1755194088-609236
+X-HE-Meta: U2FsdGVkX1+JilOL/Q2tSR7lUJ5SNTqdEK4uSLpUaUUoJpM4399gDOTs1NovmfpfV+46rKdR+6Hm9/cOdDDQS+0MVqobL079XXFsouZJVpdH02W+pXpeaQ4H+5Y5IM81bm0RTxDkl56LXTtArxa74+kK5WdAxi37Y9bzeDNlLWfMI2qoaFNwximnKI1bxQ3sbfQvtYhrPiDdsD41AgXZ4iznYPT+6Xp4WnLLUn7v4zo7vPLvUK8CgvrkIsE4/GuqbKNY9/d5meHsFuM9vT1zcH617GcwztJcj8WnCBjcqsZBsIqQI0f3wg+OtP4vaghFObyCxZx9awXpJozObxihSYVnzZldelkJCbaotwt6LdDibPd573OuQ9HzHo7/hGaqDBvs38IDT7rw05zAMgA7jqCFk4ZGkBVuIRH2Q4VU0J8mzV5pFsv8Zq2pBAbs5tjVrIasiOiTeAPokUeKruBnWTofNspkLDK9vB6qI21mJ6gkl42556zMQmJdb638ecjJIt6EEH/Lvfa5tuxzghlCD6Nwuk2CaLx5F9VcYnrWBKxJX6Jox/Rhisek18X1j7vBD4x4WV6aoC+hiTfFuD2kSVf8+H4kNHrVjc9WvV5aaCJSGoh73677Hb5adEc08rpRaTc77hKohrI6YOTdYU8l6YJKUPz4KTmTB6bDAQU8B8zvzZ/ZUs3FXaDyMGb6Si+IDc8Ou5sSfDGD0DcY0tTrGig+qJrRffFPzQPsbyce1hYfHS1qVd1uBYzq+GGLVTtpdlggwLCEgbp4c9fs8N0TalHGg3a0FBMKUgbpcaY4orjAuBT0f7J6bnSQjbjBtAR+5ObAWxud7kzcDxDua4VKtHc0+9tCvSft7DmJgabIK6vKZfW3DvzPpokjLSHeYL5bClyToXJ9+y1yFiMumAFTGpB5Mtya8vqQxZS0RFlPqNPKN/hOPRlWfbFSoyaKMT2pUM1HNEGsNRyFiD55o2A
+ b3yvd61y
+ Wh3rX/On1motFf4iKMAGtmy4ZQ3iYMqI/o8AHtY5kV9S53PRg5vdaIHGeGSOKI+yjBOdrjY9i/RSj9LI19A5pbJrhHWRhgB85IjL/wV6Ocn0/zAfYLcIZiZkgW0kksClU+uJFWKcmAjLv4bG6wZaGwsAOXhYCJUqo8uzU8kbO+1EvrRFnytt6s+D21Luxy6acl8vNEw6VvrtzZ9T8znBVmORJZwowdnMlo2udv6WEKuYbLK804aJGxiQ6L8a7MLmH9gunqXNu/2KnmPMGkxntnJOkZRNn2rK+Wm3pOa8f/+/TeIfiI1dJd4lDn+3cnZaCwkruJ3PxKgh2unD3W6mi5NtV8mahrhTz0YVD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,129 +125,77 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Leon Romanovsky <leonro@nvidia.com>
 
-Convert the KMSAN DMA handling function from page-based to physical
-address-based interface.
-
-The refactoring renames kmsan_handle_dma() parameters from accepting
-(struct page *page, size_t offset, size_t size) to (phys_addr_t phys,
-size_t size). The existing semantics where callers are expected to
-provide only kmap memory is continued here.
+Extend base DMA page API to handle MMIO flow and follow
+existing dma_map_resource() implementation to rely on dma_map_direct()
+only to take DMA direct path.
 
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
- drivers/virtio/virtio_ring.c | 4 ++--
- include/linux/kmsan.h        | 9 ++++-----
- kernel/dma/mapping.c         | 3 ++-
- mm/kmsan/hooks.c             | 7 ++++---
- tools/virtio/linux/kmsan.h   | 2 +-
- 5 files changed, 13 insertions(+), 12 deletions(-)
+ kernel/dma/mapping.c | 26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/virtio/virtio_ring.c b/drivers/virtio/virtio_ring.c
-index f5062061c408..c147145a6593 100644
---- a/drivers/virtio/virtio_ring.c
-+++ b/drivers/virtio/virtio_ring.c
-@@ -378,7 +378,7 @@ static int vring_map_one_sg(const struct vring_virtqueue *vq, struct scatterlist
- 		 * is initialized by the hardware. Explicitly check/unpoison it
- 		 * depending on the direction.
- 		 */
--		kmsan_handle_dma(sg_page(sg), sg->offset, sg->length, direction);
-+		kmsan_handle_dma(sg_phys(sg), sg->length, direction);
- 		*addr = (dma_addr_t)sg_phys(sg);
- 		return 0;
- 	}
-@@ -3157,7 +3157,7 @@ dma_addr_t virtqueue_dma_map_single_attrs(struct virtqueue *_vq, void *ptr,
- 	struct vring_virtqueue *vq = to_vvq(_vq);
- 
- 	if (!vq->use_dma_api) {
--		kmsan_handle_dma(virt_to_page(ptr), offset_in_page(ptr), size, dir);
-+		kmsan_handle_dma(virt_to_phys(ptr), size, dir);
- 		return (dma_addr_t)virt_to_phys(ptr);
- 	}
- 
-diff --git a/include/linux/kmsan.h b/include/linux/kmsan.h
-index 2b1432cc16d5..f2fd221107bb 100644
---- a/include/linux/kmsan.h
-+++ b/include/linux/kmsan.h
-@@ -182,8 +182,7 @@ void kmsan_iounmap_page_range(unsigned long start, unsigned long end);
- 
- /**
-  * kmsan_handle_dma() - Handle a DMA data transfer.
-- * @page:   first page of the buffer.
-- * @offset: offset of the buffer within the first page.
-+ * @phys:   physical address of the buffer.
-  * @size:   buffer size.
-  * @dir:    one of possible dma_data_direction values.
-  *
-@@ -192,7 +191,7 @@ void kmsan_iounmap_page_range(unsigned long start, unsigned long end);
-  * * initializes the buffer, if it is copied from device;
-  * * does both, if this is a DMA_BIDIRECTIONAL transfer.
-  */
--void kmsan_handle_dma(struct page *page, size_t offset, size_t size,
-+void kmsan_handle_dma(phys_addr_t phys, size_t size,
- 		      enum dma_data_direction dir);
- 
- /**
-@@ -372,8 +371,8 @@ static inline void kmsan_iounmap_page_range(unsigned long start,
- {
- }
- 
--static inline void kmsan_handle_dma(struct page *page, size_t offset,
--				    size_t size, enum dma_data_direction dir)
-+static inline void kmsan_handle_dma(phys_addr_t phys, size_t size,
-+				    enum dma_data_direction dir)
- {
- }
- 
 diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index 80481a873340..891e1fc3e582 100644
+index 891e1fc3e582..fdabfdaeff1d 100644
 --- a/kernel/dma/mapping.c
 +++ b/kernel/dma/mapping.c
-@@ -172,7 +172,8 @@ dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
+@@ -158,6 +158,7 @@ dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
+ {
+ 	const struct dma_map_ops *ops = get_dma_ops(dev);
+ 	phys_addr_t phys = page_to_phys(page) + offset;
++	bool is_mmio = attrs & DMA_ATTR_MMIO;
+ 	dma_addr_t addr;
+ 
+ 	BUG_ON(!valid_dma_direction(dir));
+@@ -166,14 +167,25 @@ dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
+ 		return DMA_MAPPING_ERROR;
+ 
+ 	if (dma_map_direct(dev, ops) ||
+-	    arch_dma_map_phys_direct(dev, phys + size))
++	    (!is_mmio && arch_dma_map_phys_direct(dev, phys + size)))
+ 		addr = dma_direct_map_phys(dev, phys, size, dir, attrs);
+ 	else if (use_dma_iommu(dev))
  		addr = iommu_dma_map_phys(dev, phys, size, dir, attrs);
- 	else
- 		addr = ops->map_page(dev, page, offset, size, dir, attrs);
--	kmsan_handle_dma(page, offset, size, dir);
+-	else
++	else if (is_mmio) {
++		if (!ops->map_resource)
++			return DMA_MAPPING_ERROR;
 +
-+	kmsan_handle_dma(phys, size, dir);
++		addr = ops->map_resource(dev, phys, size, dir, attrs);
++	} else {
++		/*
++		 * The dma_ops API contract for ops->map_page() requires
++		 * kmappable memory, while ops->map_resource() does not.
++		 */
+ 		addr = ops->map_page(dev, page, offset, size, dir, attrs);
++	}
+ 
+-	kmsan_handle_dma(phys, size, dir);
++	if (!is_mmio)
++		kmsan_handle_dma(phys, size, dir);
  	trace_dma_map_phys(dev, phys, addr, size, dir, attrs);
  	debug_dma_map_phys(dev, phys, size, dir, addr, attrs);
  
-diff --git a/mm/kmsan/hooks.c b/mm/kmsan/hooks.c
-index 97de3d6194f0..a080400290e7 100644
---- a/mm/kmsan/hooks.c
-+++ b/mm/kmsan/hooks.c
-@@ -336,14 +336,15 @@ static void kmsan_handle_dma_page(const void *addr, size_t size,
- }
- 
- /* Helper function to handle DMA data transfers. */
--void kmsan_handle_dma(struct page *page, size_t offset, size_t size,
--		      enum dma_data_direction dir)
-+void kmsan_handle_dma(phys_addr_t phys, size_t size,
-+		      enum dma_data_direction dir, unsigned int attrs)
+@@ -185,14 +197,18 @@ void dma_unmap_page_attrs(struct device *dev, dma_addr_t addr, size_t size,
+ 		enum dma_data_direction dir, unsigned long attrs)
  {
-+	struct page *page = phys_to_page(phys);
- 	u64 page_offset, to_go, addr;
+ 	const struct dma_map_ops *ops = get_dma_ops(dev);
++	bool is_mmio = attrs & DMA_ATTR_MMIO;
  
- 	if (PageHighMem(page))
- 		return;
--	addr = (u64)page_address(page) + offset;
-+	addr = (u64)page_address(page) + offset_in_page(phys);
- 	/*
- 	 * The kernel may occasionally give us adjacent DMA pages not belonging
- 	 * to the same allocation. Process them separately to avoid triggering
-diff --git a/tools/virtio/linux/kmsan.h b/tools/virtio/linux/kmsan.h
-index 272b5aa285d5..6cd2e3efd03d 100644
---- a/tools/virtio/linux/kmsan.h
-+++ b/tools/virtio/linux/kmsan.h
-@@ -4,7 +4,7 @@
- 
- #include <linux/gfp.h>
- 
--inline void kmsan_handle_dma(struct page *page, size_t offset, size_t size,
-+inline void kmsan_handle_dma(phys_addr_t phys, size_t size,
- 			     enum dma_data_direction dir)
- {
- }
+ 	BUG_ON(!valid_dma_direction(dir));
+ 	if (dma_map_direct(dev, ops) ||
+-	    arch_dma_unmap_phys_direct(dev, addr + size))
++	    (!is_mmio && arch_dma_unmap_phys_direct(dev, addr + size)))
+ 		dma_direct_unmap_phys(dev, addr, size, dir, attrs);
+ 	else if (use_dma_iommu(dev))
+ 		iommu_dma_unmap_phys(dev, addr, size, dir, attrs);
+-	else
++	else if (is_mmio) {
++		if (ops->unmap_resource)
++			ops->unmap_resource(dev, addr, size, dir, attrs);
++	} else
+ 		ops->unmap_page(dev, addr, size, dir, attrs);
+ 	trace_dma_unmap_phys(dev, addr, size, dir, attrs);
+ 	debug_dma_unmap_phys(dev, addr, size, dir);
 -- 
 2.50.1
 
