@@ -2,92 +2,129 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 78E70CA0EE4
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 11:17:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E8882CA0EE4
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 11:39:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14792900142; Thu, 14 Aug 2025 07:17:29 -0400 (EDT)
+	id 43FC2900143; Thu, 14 Aug 2025 07:39:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11FC4900121; Thu, 14 Aug 2025 07:17:29 -0400 (EDT)
+	id 37530900121; Thu, 14 Aug 2025 07:39:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05CCA900142; Thu, 14 Aug 2025 07:17:29 -0400 (EDT)
+	id 23C4C900143; Thu, 14 Aug 2025 07:39:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E4DB9900121
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 07:17:28 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AF1DD59D83
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:17:28 +0000 (UTC)
-X-FDA: 83775112176.02.E851864
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 2836880009
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:17:25 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=LhIyxLw3;
-	spf=pass (imf30.hostedemail.com: domain of yangshiguang1011@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=yangshiguang1011@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755170247; a=rsa-sha256;
-	cv=none;
-	b=xhEGb4etA4VrxKZzBVsqp7rNS277eCBPuJTS+P6FjbjYsk2JBw39CaTWF/xQAPpKMVL7BI
-	fNCfayhKQ4irOd1E7eIAf6mh50rubVkHxG30vC5H8mz2wOqHQYgGjxkqYWqOYgoJVS+PyC
-	3ieDX2TwxOOYk4qAJURC80TrM7+KHuo=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=LhIyxLw3;
-	spf=pass (imf30.hostedemail.com: domain of yangshiguang1011@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=yangshiguang1011@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1023D900121
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 07:39:19 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A0E0F1A0662
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:39:18 +0000 (UTC)
+X-FDA: 83775167196.15.5926297
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E9A181C0005
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:39:16 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=A5YyXAW8;
+	spf=pass (imf20.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755170247;
+	s=arc-20220608; t=1755171557;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=E02voVBQAU1rJD41PTsszXfus1cHekX350eLoFLGHrY=;
-	b=3Mp6mg6G4P5lGW/7M2dhGXNdgX2u9It/Q2mhHW8DTc3x8QJ+DOTaw488nNw1/e9GUiT5YG
-	miBgeK6hlO7gGoC8Nn2GJGf7Dg6ICDQjweKC+QyBe5F6YxYYktZhC7tM2/nH+VjhJt1YZ/
-	+MoPRhDWvKkIwUSSDqpggkMn4fbVNTw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=E0
-	2voVBQAU1rJD41PTsszXfus1cHekX350eLoFLGHrY=; b=LhIyxLw3gMDvP7o+qj
-	XhM+eOjzEBncHGNWm1AsBj1VRIW/TTvyjIL/2fVEWorzr3XrVES85ckEnp9FjG6D
-	YPGbw/nW34SQ9uKxI5Nw14/tCvPRKMCnEop03kYYkX4GAKTwuzEhGzR1QJWRv7QM
-	1sJ9DdNyj86j/NryHBVaHa6sw=
-Received: from mi-work.mioffice.cn (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wA3sla6xZ1ofjt8Bw--.11362S4;
-	Thu, 14 Aug 2025 19:17:15 +0800 (CST)
-From: yangshiguang1011@163.com
-To: harry.yoo@oracle.com
-Cc: vbabka@suse.cz,
-	akpm@linux-foundation.org,
-	cl@gentwo.org,
-	rientjes@google.com,
-	roman.gushchin@linux.dev,
-	glittao@gmail.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	yangshiguang <yangshiguang@xiaomi.com>
-Subject: [PATCH v2] mm: slub: avoid wake up kswapd in set_track_prepare
-Date: Thu, 14 Aug 2025 19:16:42 +0800
-Message-ID: <20250814111641.380629-2-yangshiguang1011@163.com>
-X-Mailer: git-send-email 2.43.0
+	bh=VZ3Ok5UmHLoHWrDAxujuogwrgdytQSS8sb0kcHc3uIw=;
+	b=gqjdUaQDem40QWSspiWsVdcUfsQ2woCpMDE5TXTPJrN6FXL5cZfR2WBLmNKNBQ+83pzTL5
+	kXZeBv5UCwoaRzDvDQ6mzOomdA7SyBCgU9jAScGpMAwpgd4dTxoC5fmVPN+uJMlBdH9TUZ
+	nGBa9159I2neRLMXi3OvrmYqlM+JeIQ=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=A5YyXAW8;
+	spf=pass (imf20.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755171557; a=rsa-sha256;
+	cv=none;
+	b=f+hf0O1+ujBnsxJv1k0IB6b1TOeLgiyjz3cBnb8372B8f8xy0AXgT5NKVRRD2mBSguht2J
+	CRb4In9bblgOQQq7RSq1EgZhvNj7u7k51fSorzc7O/2B/PJJFgzq22Sj34ek4Jp7ZJpl0q
+	ngmxJuYwpjwTBVOPajJ16/2uGeVEPOs=
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b471740e488so821090a12.1
+        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 04:39:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755171556; x=1755776356; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VZ3Ok5UmHLoHWrDAxujuogwrgdytQSS8sb0kcHc3uIw=;
+        b=A5YyXAW87LhTJ1Wax1UZMr2xBtsXzAcYXQ5I0/zmlKKQ31JaCMZloN1fe0irgg8Ff1
+         oBf12MwJMDF/tPLQ5P4Gdka/WAanEtymeH93GDHIxS986XOwPGMEbK5/eQAABYRaUGud
+         mgmOroEeMLkRrtk2mHl3QcdTvfuVInBASmFg5/h1NI+wqgqWz9cKuOa7CStugM0AEPO7
+         yCEvkgDM8ZUOkrsmvtEfcPcrd7YHcIHKBkc9DcCRxjf+8aUmNgq8wNQhNUp/8PYTqTqC
+         RcUP26w4A2Qlq3NIMG7B3kIHse60vgrjHTe6x97lw5peaddjeIniWKA7UJ44RZvVhWKy
+         T7Cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755171556; x=1755776356;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VZ3Ok5UmHLoHWrDAxujuogwrgdytQSS8sb0kcHc3uIw=;
+        b=P15A5Mab3oHNeFesL6D/HpV84AyjnGKeVD2DH7ZFKfilnmRycKxZcQVSiC+mpH4QHE
+         Vt25hGTME0JD6N6c4m3UAsEBbPE0UHzVeW3gqsrnSE2kBmqEDDBQsCV2lDhuFqpiCj0Z
+         NiJsj29vuZgNOFQBloi4Ad5mphQSD5uW6S4MT8bc9AOmNEti8OwOWX4ttHppGdC3a3F3
+         0KD4RihkzXZrYb9WBe2b2vjurRctnu2M55Wfcv4dXCHvswNqYzTLVPqkHQiG8PoTMubK
+         w7uey6hSyCXc82367wGq+CHXv60Rlokmk8OztvrXRGkR/+VCH4iQdtqtVnxfWxfdCDnG
+         fcmg==
+X-Gm-Message-State: AOJu0Yxo7IaBL2ONHHirbQwpkGJB6bwXRNRUlHfWTiJAtscr1LzHhyRK
+	RfDmdUKTIvm4GJuzcEFM6ZbWIUT7IBP005duK1rG1MHVXkQwqLoHOXUn
+X-Gm-Gg: ASbGnctK4Uh1LQp/X+etz4UnDCn0qsRdkkUTl4IuHdTko1Qt9esY0lJjZGd/h354pQI
+	Zuoy6S4VZvGzrkw/mE1RudOu9TPlPZ3UHCERYLj+3jaB+TDWmdzMz5mtcim4zSJwno1ioPsq7fM
+	MZ09vk9TVDLl5FXkwAzz9edT6zVvTj7SkINwx55VDp2gNdZScBjzoeCoSbmOUL+fc913FXqEGwy
+	T0e68qgaS+hEWoxI6o/mTvt7Tjm1xnNmPzl2MeplEXSJJ3YdJdPQdFWpf2qQdG+s73Rg0ix7wAe
+	5M7oZoNDedD9/RbOu3Ze8Qwbe9TlVDrjgmdsnWLGMaNok+wav8cAiWCp2zl6CghMmTRKWMWc9NY
+	qkhYkEDOwQ9LbcUxnTqdjP2301V/G19LZvPClDg==
+X-Google-Smtp-Source: AGHT+IFfX8J3F6Rx/3rOvL5CK1Vx8/H+JlLRh8JssMEAUGNYAO+7LoyRN52FNBK4eHlgg1RVjnH7qw==
+X-Received: by 2002:a17:903:2f90:b0:235:f459:69c7 with SMTP id d9443c01a7336-244586f73f9mr36455375ad.52.1755171555703;
+        Thu, 14 Aug 2025 04:39:15 -0700 (PDT)
+Received: from vernon-laptop ([114.232.195.227])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2430b53d504sm49046215ad.87.2025.08.14.04.39.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Aug 2025 04:39:14 -0700 (PDT)
+From: Vernon Yang <vernon2gm@gmail.com>
+To: akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	glider@google.com,
+	elver@google.com,
+	dvyukov@google.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	muchun.song@linux.dev,
+	osalvador@suse.de,
+	shuah@kernel.org,
+	richardcochran@gmail.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.or,
+	Vernon Yang <vernon2gm@gmail.com>
+Subject: [RFC PATCH 0/7] add mTHP support for wp
+Date: Thu, 14 Aug 2025 19:38:06 +0800
+Message-ID: <20250814113813.4533-1-vernon2gm@gmail.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wA3sla6xZ1ofjt8Bw--.11362S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW3Jr43XFWkKF1UCFWkWryUWrg_yoW7XFyrpF
-	W7GFy3JF48JryjqFWUAw4Uur1SvrZ3CrW8CF43Wa4ruFyYqr48GFW7tFyjvFWrArykuanF
-	ka1UuFn3Ww4UZaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jZTmDUUUUU=
-X-Originating-IP: [1.202.162.48]
-X-CM-SenderInfo: 51dqw25klj3ttqjriiqr6rljoofrz/1tbiSAWp5WidxSUN3gAAsH
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2836880009
-X-Stat-Signature: ybh8ib9ck93hupo5sx14aroqu91ha76w
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E9A181C0005
+X-Stat-Signature: x7qzktm4u1zqjufsq8xcej1a9tajzue6
 X-Rspam-User: 
-X-HE-Tag: 1755170245-697753
-X-HE-Meta: U2FsdGVkX1/rS0zv5SMu5kbc8fwXk6sU2VBeta2k+5z45Jja0N3+EgpMT1SQNKub8xR0MYkIVS9VSvySpZZCGO7AyaYaVQSi+9spKVHB5q0xsncsANmBlqMpKt+PWew45UfSNy1Dv3R9y/2QbFH0XSNLOpbNsS3HBmE5ScIAq43muRJmWCKmlS09DKc3hGkO/pvr1rVo4vWeU8f4lbLSM5T4daXg84w/jTCWCbIQwNWRSY3EIFVYn27j/7DiKhoQR+bM5K6hGGX4gDAthgbrGVO+uMozURxf4Fb/yGKbZzeMRgNTAV+JGil93YZdUd1Pds+uIWuiTWH2eemqMbFR+s4BClEzBLG/hHraDYtvIZsEXDEq9USxOUVrbvknZOIXKQe5mSmTyl2YiSrRryqdjNsLbaLt3ebNdvsNTE9XElVnriXlEfmcthouRILW/920ow42yfE8ddx8e0m62DgOrJmYC1cTvkEDf3pDB3AJjunjAZBsE5hSV2A8s7j2mX3vSXxN8rao1bfsOqwtSnzh78+s9xRNxIx0rT6IwacPVKcH3DH18em+WTxS5zTDvDQz461/+DXAH+glGBaSHbZuIb62LnMJuO1Pwx+Vf792qWVVd5b6LNeHQU/moZ2nUYYiTo3KyCijr1Ul9JNETT3QbouC/Ykdm7XNILoZ7nqvnz6e/J15dHQ8YPGeq8S+bm90JxOvSwke7gfgIDkUviHjUMFPumIl1KaVJ0b18e05Dgi8sPT8Q8goIRGZJ4/M4fJSy+ZmaFHy61VbNef/+gbvWAMztZp29lmxE7UG0s6VkxWeCOriCxkweixcbzcLUDB4zwdzNJKuZvNynTEge8FvWhf6WrScSdVd9Nr2cwNQEYWZ3nh7aZzHCBoRl2AygSPmHrfTqggtrVrlhH7Y0hb2EKeUIE/A72kh/YqHrYo41dXmn0p7JMMa0IXvS6fLqh4j9aiZ/shosIgVXJ/++WH
- yQV1YDE9
- NgnNkUDtMy0H3Y0tgkYm2pYkKx/Ec/IB1uvG1Xc1mpVCMuoHN9rH0OhQcnMF1ToVu7To/G2Tvogv4DAozMXPEJ3E5hP4t//RtJn3YzInqwkiCMAJyYZ8OTIci9tjBisueRLcszWd+i0o8bnMRPFlv2SR4Z/2wSQDCVzqViUyHF9dzJD7KpSPUzRRRM3qRNd9VA8Kg8SJ0CHWKwsG1PKggaRqE+AHH8MTa0VOId3zJzOJLq4/QPJw8E5+VCRShb4G34Vjd/WnVHdmq0VcHHdV+4Jla5zAEOe/LoxfBzOHk6r0AQuWszXxac17eVJEBt6eNKT2NvbiK7ZgbDX00Q5FqnboYGoJYiRTImDBcKAsfhlDJg+BwVhFAj7E+wxDoMj6o7oQHly7pwBWuwhJp086kE4Egexs2QqrNDWSdHKKeyi31Mo9jR4Sx5FVxf+0oiFTq/29SSlj2uml/oowlyBwGZpea8MyLEPAzDFG163X8zqZCiVE=
+X-HE-Tag: 1755171556-298084
+X-HE-Meta: U2FsdGVkX1+/3o6KEzK8+wmQsW1KntsHpU29RHXTdSrN8uK6LS8pTJDFaLBo6NUeL0l5PtZL12FrEvUyVVSVsTqrqbWs1CxQkXhlcZKcfMAiiduFQqXTt44TSCFgz6e/IjrI6qzJrdgIsM94ScpChuGDIf81B+DCdctz90KaiMLLvn92GEBDLySJ9TTya4NqSoMmQhC0dJApoGNzuIas75eo2QQGsrXtgvUYnCtsiXNwDGB0XTS4vKTcpjUCmF3wyxqiVH5lzY59pWpMzLK9zFkKcBuVrLNH5PN5jTxLTLQH6FB057qxgBChEBz7rW3CkmFXue47G6RYNmFLvFv8miX7cXdmEFnQXs/D7addEHl1iyC70o7yAwDJe/cscV3NNYLjUtMYLWcP+h1Hdsjd6x8L9cFNZhZeB9cR9GolX/olwYqK8o/HVfXTxJzGZ/D1k3ehDodm1jO/pDmjilJXME4HK9gA93qWAE+pGuvO6Unn4rUt0fGjYvcDiABnlaXKKZBgWrqmj5g5oEUcLpmQoYWv+p0GVnuIepYVdfaCzOsK+OpKIqhwuySyrOMWM1SCnAcDy3LnXYyf3lnpDCSSMpjwSy0bFodU4N4G0XnuvSDi0gY85XdKsdUWpm5wjHv7BgMQcwUMld8cismg4DMnNUoE65EL+h4TVrLAmDD13dh+7d46GyWBc204usPUC6ayX02fXm0NkP11gEsph1yBtt1V5ifefjnV92Fwhoy3m1C1QO8ItIsTv4mXi9LuuVqluTGSE0v8W4gETkMO+9ewXgm+9hCfOfdEIrbeWMv55wGioN5T/DaMOBV5CStILlQsdDo1JDMepwJLt95ibYA3F3nfX9G8GNczOdpHV43lRxFFisCUCv/SKtpQox5kaxJVklXthTRF82S4WrlbfT9jDeYpHJksjk/41XmXS6plYZ7CJTO9q1vjWFzPziF1XbD6aaDvkByNTzaMpu7DoWc
+ p01QkGnh
+ Uw1M5NYwuS8UVgOD+bAwXR9kGH9wX5AhGOVLcpZ+wUDxsx2PvosvTxrq6rjfgViYiP9eDjUd/WS1cvg+52SQwAMYBRsVbTYE279O2XRhA6cgVwSVkYGR5DEQnFZMfrlTAEuBR+pRSYi9y8URmfZ/tCwy0dJzOOUmERMTCW9tuUUOKbST3/PFYTICBwsg2l1QWf1qohR4LjCWQHKE/QTPKyWSvxr8A+fbFTYJZPgZ/+vmpAIo6zp2KZXr+g9YW1mFYN122g1gOfuIvW9ClIkz3TLnCAQlSUDpqtElbGFcfi57YfrQFrQLhQInXkXxbgmZz9OSLz5lib2Kv9Pzv0FE4qXv0o8PZiDZ6YazElljX5lddOZuWdCifsCukvHJxZ6tJtk1VLrLC1owlFel8A6JHuvWzqRtCrQVyR4fbG79eshuMnFFoOjdXXNuNF1CwH2EzgfecVlMez+7EH0p4TXLxMXlV7YIia0qmW7krXSdr1k3jhurSUKjgwnsierc/t7kXvIBRbego1WW/pls8Dc9CiLDmaNERyIgzVuJulkBtLtgm5e9ThTbMz23xv0uOSY1vAz60
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,151 +133,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: yangshiguang <yangshiguang@xiaomi.com>
+Hi all,
 
-From: yangshiguang <yangshiguang@xiaomi.com>
+This patchset is introduced to make pagefault write-protect copy support
+mthp, with this series, pagefault write-protect copy will have a 9-14%
+performance improvement.
 
-set_track_prepare() can incur lock recursion.
-The issue is that it is called from hrtimer_start_range_ns
-holding the per_cpu(hrtimer_bases)[n].lock, but when enabled
-CONFIG_DEBUG_OBJECTS_TIMERS, may wake up kswapd in set_track_prepare,
-and try to hold the per_cpu(hrtimer_bases)[n].lock.
+Currently pagefaults on anonymous pages support mthp [1], and hardware
+features (such as arm64 contpte) can be used to store multiple ptes in
+one TLB entry, reducing the probability of TLB misses. However, when the
+process is forked and the cow is triggered again, the above optimization
+effect is lost, and only 4KB is requested once at a time.
 
-So avoid waking up kswapd.The oops looks something like:
+Therefore, make pagefault write-protect copy support mthp to maintain the
+optimization effect of TLB and improve the efficiency of cow pagefault.
 
-BUG: spinlock recursion on CPU#3, swapper/3/0
- lock: 0xffffff8a4bf29c80, .magic: dead4ead, .owner: swapper/3/0, .owner_cpu: 3
-Hardware name: Qualcomm Technologies, Inc. Popsicle based on SM8850 (DT)
-Call trace:
-spin_bug+0x0
-_raw_spin_lock_irqsave+0x80
-hrtimer_try_to_cancel+0x94
-task_contending+0x10c
-enqueue_dl_entity+0x2a4
-dl_server_start+0x74
-enqueue_task_fair+0x568
-enqueue_task+0xac
-do_activate_task+0x14c
-ttwu_do_activate+0xcc
-try_to_wake_up+0x6c8
-default_wake_function+0x20
-autoremove_wake_function+0x1c
-__wake_up+0xac
-wakeup_kswapd+0x19c
-wake_all_kswapds+0x78
-__alloc_pages_slowpath+0x1ac
-__alloc_pages_noprof+0x298
-stack_depot_save_flags+0x6b0
-stack_depot_save+0x14
-set_track_prepare+0x5c
-___slab_alloc+0xccc
-__kmalloc_cache_noprof+0x470
-__set_page_owner+0x2bc
-post_alloc_hook[jt]+0x1b8
-prep_new_page+0x28
-get_page_from_freelist+0x1edc
-__alloc_pages_noprof+0x13c
-alloc_slab_page+0x244
-allocate_slab+0x7c
-___slab_alloc+0x8e8
-kmem_cache_alloc_noprof+0x450
-debug_objects_fill_pool+0x22c
-debug_object_activate+0x40
-enqueue_hrtimer[jt]+0xdc
-hrtimer_start_range_ns+0x5f8
-...
+vm-scalability usemem shows a great improvement,
+test using: usemem -n 32 --prealloc --prefault 249062617
+(result unit is KB/s, bigger is better)
 
-Signed-off-by: yangshiguang <yangshiguang@xiaomi.com>
-Fixes: 5cf909c553e9 ("mm/slub: use stackdepot to save stack trace in objects")
----
-v1 -> v2:
-    propagate gfp flags to set_track_prepare()
+|    size     | w/o patch | w/ patch  |  delta  |
+|-------------|-----------|-----------|---------|
+| baseline 4K | 723041.63 | 717643.21 | -0.75%  |
+| mthp 16K    | 732871.14 | 799513.18 | +9.09%  |
+| mthp 32K    | 746060.91 | 836261.83 | +12.09% |
+| mthp 64K    | 747333.18 | 855570.43 | +14.48% |
 
-[1]https://lore.kernel.org/all/20250801065121.876793-1-yangshiguang1011@163.com/
----
- mm/slub.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+This series is based on Linux v6.16 (038d61fd6422).
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 30003763d224..dba905bf1e03 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -962,19 +962,20 @@ static struct track *get_track(struct kmem_cache *s, void *object,
- }
- 
- #ifdef CONFIG_STACKDEPOT
--static noinline depot_stack_handle_t set_track_prepare(void)
-+static noinline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
- {
- 	depot_stack_handle_t handle;
- 	unsigned long entries[TRACK_ADDRS_COUNT];
- 	unsigned int nr_entries;
-+	gfp_flags &= GFP_NOWAIT;
- 
- 	nr_entries = stack_trace_save(entries, ARRAY_SIZE(entries), 3);
--	handle = stack_depot_save(entries, nr_entries, GFP_NOWAIT);
-+	handle = stack_depot_save(entries, nr_entries, gfp_flags);
- 
- 	return handle;
- }
- #else
--static inline depot_stack_handle_t set_track_prepare(void)
-+static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
- {
- 	return 0;
- }
-@@ -996,9 +997,9 @@ static void set_track_update(struct kmem_cache *s, void *object,
- }
- 
- static __always_inline void set_track(struct kmem_cache *s, void *object,
--				      enum track_item alloc, unsigned long addr)
-+				      enum track_item alloc, unsigned long addr, gfp_t gfp_flags)
- {
--	depot_stack_handle_t handle = set_track_prepare();
-+	depot_stack_handle_t handle = set_track_prepare(gfp_flags);
- 
- 	set_track_update(s, object, alloc, addr, handle);
- }
-@@ -1921,9 +1922,9 @@ static inline bool free_debug_processing(struct kmem_cache *s,
- static inline void slab_pad_check(struct kmem_cache *s, struct slab *slab) {}
- static inline int check_object(struct kmem_cache *s, struct slab *slab,
- 			void *object, u8 val) { return 1; }
--static inline depot_stack_handle_t set_track_prepare(void) { return 0; }
-+static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags) { return 0; }
- static inline void set_track(struct kmem_cache *s, void *object,
--			     enum track_item alloc, unsigned long addr) {}
-+			     enum track_item alloc, unsigned long addr, gfp_t gfp_flags) {}
- static inline void add_full(struct kmem_cache *s, struct kmem_cache_node *n,
- 					struct slab *slab) {}
- static inline void remove_full(struct kmem_cache *s, struct kmem_cache_node *n,
-@@ -3878,7 +3879,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
- 			 * tracking info and return the object.
- 			 */
- 			if (s->flags & SLAB_STORE_USER)
--				set_track(s, freelist, TRACK_ALLOC, addr);
-+				set_track(s, freelist, TRACK_ALLOC, addr, gfpflags);
- 
- 			return freelist;
- 		}
-@@ -3910,7 +3911,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
- 			goto new_objects;
- 
- 		if (s->flags & SLAB_STORE_USER)
--			set_track(s, freelist, TRACK_ALLOC, addr);
-+			set_track(s, freelist, TRACK_ALLOC, addr, gfpflags);
- 
- 		return freelist;
- 	}
-@@ -4422,7 +4423,7 @@ static noinline void free_to_partial_list(
- 	depot_stack_handle_t handle = 0;
- 
- 	if (s->flags & SLAB_STORE_USER)
--		handle = set_track_prepare();
-+		handle = set_track_prepare(GFP_NOWAIT);
- 
- 	spin_lock_irqsave(&n->list_lock, flags);
- 
--- 
-2.43.0
+Thanks,
+Vernon
+
+[1] https://lore.kernel.org/all/20231207161211.2374093-1-ryan.roberts@arm.com/
+
+Vernon Yang (7):
+  mm: memory: replace single-operation with multi-operation in wp
+  mm: memory: add ptep_clear_flush_range function
+  mm: memory: add kmsan_copy_pages_meta function
+  mm: memory: add offset to start copy for copy_user_gigantic_page
+  mm: memory: improve wp_page_copy readability
+  mm: memory: add mTHP support for wp
+  selftests: mm: support wp mTHP collapse testing
+
+ include/linux/huge_mm.h                 |   3 +
+ include/linux/kmsan.h                   |  13 +-
+ include/linux/mm.h                      |   8 +
+ include/linux/pgtable.h                 |   3 +
+ mm/hugetlb.c                            |   6 +-
+ mm/kmsan/shadow.c                       |  26 +-
+ mm/memory.c                             | 309 ++++++++++++++++++------
+ mm/pgtable-generic.c                    |  20 ++
+ tools/testing/selftests/mm/khugepaged.c |   5 +-
+ 9 files changed, 302 insertions(+), 91 deletions(-)
+
+--
+2.50.1
 
 
