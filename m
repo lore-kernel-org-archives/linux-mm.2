@@ -2,119 +2,73 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 55563CA0ED1
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 10:15:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C4691CA0ED1
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 10:23:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E74F490013A; Thu, 14 Aug 2025 06:14:59 -0400 (EDT)
+	id 5FD9790013B; Thu, 14 Aug 2025 06:23:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E259B900121; Thu, 14 Aug 2025 06:14:59 -0400 (EDT)
+	id 58661900121; Thu, 14 Aug 2025 06:23:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CEC8390013A; Thu, 14 Aug 2025 06:14:59 -0400 (EDT)
+	id 4757990013B; Thu, 14 Aug 2025 06:23:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B7210900121
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 06:14:59 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 785651384C6
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 10:14:59 +0000 (UTC)
-X-FDA: 83774954718.10.E90EFE8
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf05.hostedemail.com (Postfix) with ESMTP id EF6D910000D
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 10:14:57 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sgcAjNmQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of leon@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=leon@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 34AB6900121
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 06:23:52 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DA4BA1405F4
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 10:23:51 +0000 (UTC)
+X-FDA: 83774977062.12.C4D8769
+Received: from baidu.com (mx22.baidu.com [220.181.50.185])
+	by imf08.hostedemail.com (Postfix) with ESMTP id A33D216000F
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 10:23:48 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=baidu.com;
+	spf=pass (imf08.hostedemail.com: domain of lirongqing@baidu.com designates 220.181.50.185 as permitted sender) smtp.mailfrom=lirongqing@baidu.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755166498;
+	s=arc-20220608; t=1755167029;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CCfmBvMQcZnHpKPeupg0PVl7hYfqXMfZSFQbxGlwy/M=;
-	b=lab5eN1rf81fZPX0gpbrKSRCaYBMIU8Z03KzAZ/wa5QIPR5GiHhqV64Q2BbknerhXZiopz
-	aMnn3IsbJVmVImLnCm7THe25w2QZMeY9+rX4tbB/O8Um16vsEFkBIwHxdUchfCYGvp2Uwz
-	L5o5KH08+XA3T/kPiy3PYAENFL1xK7U=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=5SeDNEhbzLQZrdIJEO7M/n5pAwUnC+OYtNRDDKEKb/o=;
+	b=5Sk+IGa2uJtBieZvd4amj+EpKhPkfAjntwRmlSnLReBIwzEi/c2alR9GDEwEaZkwMXmp7+
+	ykZ5wUxDmiag0pLdZZvnrzkcHTOBcSItey+LdYyGZMKqtDw8THrzg/o1wO/EnfH2ybseYz
+	lbUalqdNZ6UAgMJuTWWsWPtkft6SfaM=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sgcAjNmQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of leon@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=leon@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755166498; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=baidu.com;
+	spf=pass (imf08.hostedemail.com: domain of lirongqing@baidu.com designates 220.181.50.185 as permitted sender) smtp.mailfrom=lirongqing@baidu.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755167029; a=rsa-sha256;
 	cv=none;
-	b=owPRa5gm1MC9OxWbjckpXS0fstPkCQz4P4jegZ5k+u1hjGPemZqXLUk7ceBN0zM4ns8CHa
-	jAlcgc2K4cmZuDDXa7NIzNgqnJvkn38WQHZT9LjTfBn5IVWBoU4hOf2GwVcvcBx7+k3A34
-	gZ3WTCv9H4HHYh/9k5J56v4m4xUPEek=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 6F71EA5685E;
-	Thu, 14 Aug 2025 10:14:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E732C4CEED;
-	Thu, 14 Aug 2025 10:14:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755166497;
-	bh=VNpaHZYPDKoIVZk7JizQ+fAc7bXMl6IIrMQIwsKC7lg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sgcAjNmQ4H9PR9eNw1PcsrGYJZDdCoIhSA00MB1PlPh4PY294zzHjmBNp/Feerkz5
-	 onfh+H4AOnhzfctRKBnuKCZx/TKbia4qDj/ZGv49iPN8pTjetV2F9L2VUkgOWdWDRc
-	 XlrdyafRknSjL//iLlaNOBweJcYzh6FKt3CyXPCoJvTLjW4fEmAhBIfd9+UAEg8Pzu
-	 GT/aO6y+QSatuf+mIF+REo7cmsN0/u40Aqx/jFMMVRttbv3XnuIdoCIUPj7ks/cy6e
-	 xakUo8h2pDLy9UhEDhcLSzeOH+G0q/blCWi158fJN5vnT8J/3Fmo24+nsmO++3Zqz5
-	 MlYCBR+W1ikrA==
-From: Leon Romanovsky <leon@kernel.org>
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Danilo Krummrich <dakr@kernel.org>,
-	iommu@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Joerg Roedel <joro@8bytes.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Juergen Gross <jgross@suse.com>,
-	kasan-dev@googlegroups.com,
-	Keith Busch <kbusch@kernel.org>,
-	linux-block@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: [PATCH v2 15/16] block-dma: properly take MMIO path
-Date: Thu, 14 Aug 2025 13:13:33 +0300
-Message-ID: <87b7d3a0e3f6be9da49947923d52355ed0835833.1755153054.git.leon@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1755153054.git.leon@kernel.org>
-References: <cover.1755153054.git.leon@kernel.org>
+	b=FD1sVORK45KiPCbIwXuFMV6ByqelkW7XQXRmDRAv5xmbx2hGdLX1lhHg+mWaw2PH84Lrk0
+	gaznVviO4oIi9dqjJ1WZRIxR0fNM1m5MLULBrOmXKJzdEDmTLlRQZHUlF+6YRKGvcJArgP
+	m/e0yXgivdHMtjwYgMm5Pq4lezxgVxE=
+From: lirongqing <lirongqing@baidu.com>
+To: <muchun.song@linux.dev>, <osalvador@suse.de>, <david@redhat.com>,
+	<akpm@linux-foundation.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+CC: Li RongQing <lirongqing@baidu.com>
+Subject: [PATCH][v2] mm/hugetlb: early exit from hugetlb_pages_alloc_boot() when max_huge_pages=0
+Date: Thu, 14 Aug 2025 18:23:33 +0800
+Message-ID: <20250814102333.4428-1-lirongqing@baidu.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: EF6D910000D
-X-Stat-Signature: maqnncofa6w6wsiuug9fkcbxsp4cijnb
+Content-Type: text/plain
+X-Originating-IP: [10.127.73.8]
+X-ClientProxiedBy: bjhj-exc2.internal.baidu.com (172.31.3.12) To
+ bjkjy-exc3.internal.baidu.com (172.31.50.47)
+X-FEAS-Client-IP: 172.31.50.47
+X-FE-Policy-ID: 52:10:53:SYSTEM
+X-Stat-Signature: t8ntno9gcx33x4nrjtydtx5ggfixajo6
 X-Rspam-User: 
-X-HE-Tag: 1755166497-877965
-X-HE-Meta: U2FsdGVkX197PNzha2CK6oehCysWdM0CVj8/9nIH4EdkvILiiBSAeN3cQarFDKOaYFXJpiP6iRj9u9x5uPkNh7vOE+FtMDy67H4BzcKxBNECJw3NdeQ3DNKch1OZ2bmpD/7D/FYRqZFbxRwrQRTeTi0KiGA6HSQsPoTRDPMVm7+eUa5MRl9mwnPrMxIJbXSZWjfVYGixhH/MacmVnF8re2mxkSRpoi3Q4DH9/ol3wxX2Ak8VHmLtw5x+UF6NaUto+gaJ88UiDiVHT3k3XPj/zBGK0AQcQZmLSVPMQ148EWPkoZmYs7XiV/Kc6OnF9riFHARb1x1xSvP0MZboS3BOqtl0+GI/I/jplwyNrgqvGaydBVPfLFN+3AtfG+ul0+pBccPDW3tLZP+SC99PXdfg15Fv7TtamTSpYESqndH7/iPN7iOrOT78vLTguZjnCLUzVp8Hf4JCQLjxDD+FKB8oNCopTwvJo0Bd0VZywll/8eZICziMmiD6TJ+Ml16e1+ZH8VqzGbxS430/39vSFQWD793RQbubNKXrxN4GrwLsL08t0Jjnb+25VpinLP5kxIVjndu+y6hcDxYQZXM7Zijpdhib2IhQ6z+W72WLjUXeLmFtDn8Rel0Cqby6X4slvTwez+oCCWjKqzgofmE+Nv+lvKMZtXmJsUOc0wt00q4rgK3G5fYoYrIvRW9ZvWU4ulC4XO2xQtQJfMJW7g5/hCWi9qPPY7MTcgckPjaZA4iUTBUVX88u678awoPEnrJCAzeZ6wy6ztVoQGJL6AoSCWd0tujNepm1kLl7Fplw+VKOc/l1NRDSJXrBj7eaIG1Oq3CYcIp5cHTb81HhoFMLoQcCeX3GVUUQZkrhXtefOTH3JWXBUZ4FyuX4QOidVgUqdfkBefn8bs8VibbwZXJaV9lpmSU+WDqIZJtxofX+B2UIMhVCc7SSZfS0/z7zbd/2Vbn0PJSp5s9zR9HETLE2Xh8
- 7vVE/IdL
- CTKmVN3OEzNw2ssoImwKQ2JUW5M6A50jO0/LjRQOMS3jbUBxHKX7Aa59ue+q2NjLU3qndgG7BG7GJOjh0CcSRfcmuccuhJod8FmBRHqspXSyKkIJ1e1orw2iKwyeqTiOT19C1i4j8b1Z6e1IQcHMdldQzf59veNXMvfojiOGp+RZGeEq2UYrtPlpGaJfZIYCJX9fqAoCbFqA14KntmDMP/t5uN/BpwBXp2Fa0qHXWO6jS7KkqkQIQNs/1SJ20BEqD3/EIwB2/pQVvJK2+OPacaJ9mLMHLxugfSreKubcCzBAZAN6dyk6oNSziC1xUTf6NrKSc/htNkMLviPhYAs/iQkrcLg==
+X-Rspamd-Queue-Id: A33D216000F
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755167028-184156
+X-HE-Meta: U2FsdGVkX18rdZcZ8XiktBtpkwSuIYxG4otpRMoTxvITkzSXpAE2/Czd78SmUiMq5VQmstjMWGdADXnPHCacxmXNlzS3aFRxRdDUbPYGgZQ1G+RMxcvODYnUcsAgNVKxt7PGy2ecOJi41U1G01xOtp6DZqVCT0BL34jI+8QnAQc3a/BEhJLULssjhH9cXxy2aWwNYUqV83JuU1/bxMDcCASUgTSB7MDyXPW/sk4U57CIpgurYYVZsVtwTO0Er6Nuf/DpfteDPxaGgi59IOppBdpdpwToGaVWhY/5k/5Q8SCzH9LiyxYd1YaWaBC8oTjWD6Tj7a63IfKwBIVA+RGYeYGJVbbMQ+gBCICjlb/++vyOm5ttGXDKCNnIeU7trIi03Gdkopg6BGG+FJCntpd01IJ/jdk1iHQm355fF/fMaidiNUR0TU1pfhc0j3LYqkFgn5WlUYDzi0+eiXSSimUyLlJHDSik594BMsCXcHTZknhMccTchUTgc60C3BeUHE/RW3OwRUo2AWeRokVbe8rd5TXMBeayrW091K2slOJXgh7O5IvhMhbmHIx0EfuFcDGhhwzFu/nZ+gJ6SL+74tJlcmC9Dd7qO2TxDkmns65mDajPQT+ZHeiX0b6RYc1azp38wV6trAJNAL27EtoOTU/0X0FuzHA6+EcTumYLWKYq7PM5F0GEqKcek+oF0ipRc7hVHMJcJ17zJKdXRw2reOpDp+5mPsnacMi+Qc2LdJCiyc4LhbpcHD4qZlhuiuRyQi2WgYhL0jGP7dqwrf9Q2tZZWJymSzS/YQehrRSe0sbnGMVuGzx10ziYuBIHLYAFXtRpwxDxMxHD738fcn8984IeIWhZeydvuyezXBbZ64BSCa/gPwLbxy2qCg6mDxA8D8+5qYPnUv3mHBHNZv/2z3EK0qNAGF8mpaTHB2FVDShvNqPQQKS4ilt9aDuTLJpkhoMbETJtYXfhehxBI98s4Vt
+ iHGrRhEH
+ 7NZ7Sr362YMVpvqpCBRFX+B9hggphcLL/cIm5Ri8AXig5Ey7nmZvwhiYr06rj79P4WGxovthcnN17PkDkWnfqBvU1nyPQKc4OY19XCvoVd8R7nSSCLCU3qUk4cCntS471ghApZnApX6C/osMThFnrR78AUXXmUkrHwY2o
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,107 +77,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Li RongQing <lirongqing@baidu.com>
 
-Make sure that CPU is not synced and IOMMU is configured to take
-MMIO path by providing newly introduced DMA_ATTR_MMIO attribute.
+Optimize hugetlb_pages_alloc_boot() to return immediately when
+max_huge_pages is 0, avoiding unnecessary CPU cycles and the below
+log message when hugepages aren't configured in the kernel command
+line.
+[    3.702280] HugeTLB: allocation took 0ms with hugepage_allocation_threads=32
 
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
 ---
- block/blk-mq-dma.c         | 13 +++++++++++--
- include/linux/blk-mq-dma.h |  6 +++++-
- include/linux/blk_types.h  |  2 ++
- 3 files changed, 18 insertions(+), 3 deletions(-)
+diff with v1: adding the reduced log messages in commit header 
 
-diff --git a/block/blk-mq-dma.c b/block/blk-mq-dma.c
-index 37e2142be4f7..d415088ed9fd 100644
---- a/block/blk-mq-dma.c
-+++ b/block/blk-mq-dma.c
-@@ -87,8 +87,13 @@ static bool blk_dma_map_bus(struct blk_dma_iter *iter, struct phys_vec *vec)
- static bool blk_dma_map_direct(struct request *req, struct device *dma_dev,
- 		struct blk_dma_iter *iter, struct phys_vec *vec)
- {
-+	unsigned int attrs = 0;
-+
-+	if (req->cmd_flags & REQ_MMIO)
-+		attrs = DMA_ATTR_MMIO;
-+
- 	iter->addr = dma_map_phys(dma_dev, vec->paddr, vec->len,
--			rq_dma_dir(req), 0);
-+			rq_dma_dir(req), attrs);
- 	if (dma_mapping_error(dma_dev, iter->addr)) {
- 		iter->status = BLK_STS_RESOURCE;
- 		return false;
-@@ -103,14 +108,17 @@ static bool blk_rq_dma_map_iova(struct request *req, struct device *dma_dev,
- {
- 	enum dma_data_direction dir = rq_dma_dir(req);
- 	unsigned int mapped = 0;
-+	unsigned int attrs = 0;
- 	int error;
- 
- 	iter->addr = state->addr;
- 	iter->len = dma_iova_size(state);
-+	if (req->cmd_flags & REQ_MMIO)
-+		attrs = DMA_ATTR_MMIO;
- 
- 	do {
- 		error = dma_iova_link(dma_dev, state, vec->paddr, mapped,
--				vec->len, dir, 0);
-+				vec->len, dir, attrs);
- 		if (error)
- 			break;
- 		mapped += vec->len;
-@@ -176,6 +184,7 @@ bool blk_rq_dma_map_iter_start(struct request *req, struct device *dma_dev,
- 			 * same as non-P2P transfers below and during unmap.
- 			 */
- 			req->cmd_flags &= ~REQ_P2PDMA;
-+			req->cmd_flags |= REQ_MMIO;
- 			break;
- 		default:
- 			iter->status = BLK_STS_INVAL;
-diff --git a/include/linux/blk-mq-dma.h b/include/linux/blk-mq-dma.h
-index c26a01aeae00..6c55f5e58511 100644
---- a/include/linux/blk-mq-dma.h
-+++ b/include/linux/blk-mq-dma.h
-@@ -48,12 +48,16 @@ static inline bool blk_rq_dma_map_coalesce(struct dma_iova_state *state)
- static inline bool blk_rq_dma_unmap(struct request *req, struct device *dma_dev,
- 		struct dma_iova_state *state, size_t mapped_len)
- {
-+	unsigned int attrs = 0;
-+
- 	if (req->cmd_flags & REQ_P2PDMA)
- 		return true;
- 
- 	if (dma_use_iova(state)) {
-+		if (req->cmd_flags & REQ_MMIO)
-+			attrs = DMA_ATTR_MMIO;
- 		dma_iova_destroy(dma_dev, state, mapped_len, rq_dma_dir(req),
--				 0);
-+				 attrs);
- 		return true;
+ mm/hugetlb.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 753f99b..514fab5 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -3654,6 +3654,9 @@ static void __init hugetlb_hstate_alloc_pages(struct hstate *h)
+ 		return;
  	}
  
-diff --git a/include/linux/blk_types.h b/include/linux/blk_types.h
-index 09b99d52fd36..283058bcb5b1 100644
---- a/include/linux/blk_types.h
-+++ b/include/linux/blk_types.h
-@@ -387,6 +387,7 @@ enum req_flag_bits {
- 	__REQ_FS_PRIVATE,	/* for file system (submitter) use */
- 	__REQ_ATOMIC,		/* for atomic write operations */
- 	__REQ_P2PDMA,		/* contains P2P DMA pages */
-+	__REQ_MMIO,		/* contains MMIO memory */
- 	/*
- 	 * Command specific flags, keep last:
- 	 */
-@@ -420,6 +421,7 @@ enum req_flag_bits {
- #define REQ_FS_PRIVATE	(__force blk_opf_t)(1ULL << __REQ_FS_PRIVATE)
- #define REQ_ATOMIC	(__force blk_opf_t)(1ULL << __REQ_ATOMIC)
- #define REQ_P2PDMA	(__force blk_opf_t)(1ULL << __REQ_P2PDMA)
-+#define REQ_MMIO	(__force blk_opf_t)(1ULL << __REQ_MMIO)
- 
- #define REQ_NOUNMAP	(__force blk_opf_t)(1ULL << __REQ_NOUNMAP)
- 
++	if (!h->max_huge_pages)
++		return;
++
+ 	/* do node specific alloc */
+ 	if (hugetlb_hstate_alloc_pages_specific_nodes(h))
+ 		return;
 -- 
-2.50.1
+2.9.4
 
 
