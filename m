@@ -2,106 +2,138 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F3F47CA0EDC
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 08:41:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EBB6ACA0EE4
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 08:42:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 982BE900115; Thu, 14 Aug 2025 04:41:00 -0400 (EDT)
+	id 763E1900116; Thu, 14 Aug 2025 04:42:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95A3C900088; Thu, 14 Aug 2025 04:41:00 -0400 (EDT)
+	id 71401900088; Thu, 14 Aug 2025 04:42:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89781900115; Thu, 14 Aug 2025 04:41:00 -0400 (EDT)
+	id 6029A900116; Thu, 14 Aug 2025 04:42:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7861E900088
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 04:41:00 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2FC261383DA
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 08:41:00 +0000 (UTC)
-X-FDA: 83774717880.26.5281B7F
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 5C5EC120014
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 08:40:58 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=r1ez95Ol;
-	spf=pass (imf29.hostedemail.com: domain of 3GKGdaAgKCB0C35DF3G49HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--jackmanb.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3GKGdaAgKCB0C35DF3G49HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F7DF900088
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 04:42:38 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 072F914058F
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 08:42:38 +0000 (UTC)
+X-FDA: 83774721996.03.D2D42D5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4945120006
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 08:42:36 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N9V8L5Lv;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755160858;
+	s=arc-20220608; t=1755160956;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Il/U4eiIvjz9tsKhNGMfHkx+2RjUv+CVTnBQlCiCA4s=;
-	b=u0J/iyg4pFDx3Td7GXH3GrlAbbmx0w4JTo02mMKTdShnQcjy9p/wfWpKW9itduWIwtto9r
-	Ne09857lbfroyNcraJkkRSu+Kw//SrkJ6dlLayUTMIXudEgI1yASoZsj1oNRZiK6wM78N1
-	I3OM2SzP+UA2S+inDacIIBhrbZZDlyo=
+	bh=jpWycGqfo381MBQ60BIQKvksuCWRVa/RRiJk+UelBwE=;
+	b=PbT6WiMCP29ZcesqfcJpkt+0J8CkHu5Odi+s/nEeBb6f6kUepFcui2rNnezeseLBarxP/W
+	j/g17T15Fk5uRgizHswY3YJCixiAjW/zevdLMAwV+whHxPGFkXKopu55dNQ/Eq85JnYRNX
+	YJ8Ot+rak9aJi1jZTXr6eH/lEMkKYR8=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=r1ez95Ol;
-	spf=pass (imf29.hostedemail.com: domain of 3GKGdaAgKCB0C35DF3G49HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--jackmanb.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3GKGdaAgKCB0C35DF3G49HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755160858; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N9V8L5Lv;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755160956; a=rsa-sha256;
 	cv=none;
-	b=Q0659ujKdT84vTJ+2V3T4ufekzSPKVOx4T0ktF8OKZTrrPq+OBiqtMwuo2gHrS5E0WDGE6
-	zd1TUIk2v6DymajKkEQv9yh9Vv/Gp2bjXfn+1XCsBQWwXDqwlE+0pP4DeXPWr4fcnQx42/
-	9aHnER+PUUWRQ1R0FsV9p1WOsFhwDGE=
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-6188b70a993so614022a12.2
-        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 01:40:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755160857; x=1755765657; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Il/U4eiIvjz9tsKhNGMfHkx+2RjUv+CVTnBQlCiCA4s=;
-        b=r1ez95Olq6DYnzvMdPXll6EO2OfOuWW/RUv7DlU14LinnkqeD7Qo1v+Lol7dbsD0E1
-         +ahl8ON3exGnnZHDuB6E5u01iWaxmCn8gNRFByYcWElzndDXcQOqv3rcHjM1jyAD6gvh
-         7eTs197VVvRmH4hSH5e6eZNjtMNLm6pK81qFlPcT2yTfvMQKrhX+j8oKvh1dzb/cmw4C
-         eoAB96+/3vtqY7CI7dx9bK2HelHKogiZRKn49aTfzlV0HXzZKRJvrgFCYmTZjrQxkyJf
-         PQQXGBtOEX2uZGzNdVdgrDn5UtCpl4KBen2Pbj8JdVe6y9AK69JAdaJc50Nxr+RRpSos
-         qcJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755160857; x=1755765657;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Il/U4eiIvjz9tsKhNGMfHkx+2RjUv+CVTnBQlCiCA4s=;
-        b=pzAXCsx1aBNqP/Lv+8F7zGwiCBQGbwPsxS7D/bVi3exJwn/SLPv0W853sT2VMrRNk6
-         dR2De/b8fmAsJt1hL4FC9UEhOP0M7Q6d88PH0HNuo1BekWeIdVmFFqM4amCwDaKcxdAD
-         OjjC9RQ1MPAhfAhM4uUWWKC4KcidNLRkCm6TzHc02nOjc2stljeZgfGdEmrKy7jARTpy
-         RCWCLZc2P8SoWOJLgRnkVyd5z0XNzjOo/FNwp2fRqoMtQYUuuKKV9JnKIPm1ETn8dwOs
-         rsaL0lW9atKCQp+UPAirZ6UTPxxMzQYyMY7TkhIQ5RXnZu6uJ+bGqRDTZcD92d9SA8W9
-         D+5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXh0zUCzrNuE7cRXpXMI3fFS58pYwyggUeeOtVOouZnDF/1mj9t8IYXv55OwrfkLgwJjNWYHLHG3A==@kvack.org
-X-Gm-Message-State: AOJu0YyHwOdgjZHCIEVGdqcdHInVLwMW8dZ9O1VksVqA6cr9zb8qKKDb
-	PxfIrf7DJWdZc295RoDuuz7xwDz5Zpf2BeLiTh/yZcYnJOwq9734mTICT8+KbcXDnJd6KZ3EQjG
-	ucAj63LbwU+FXrA==
-X-Google-Smtp-Source: AGHT+IGBO/FVtv5Fz5TwK+7kMge1vcO6cPjAknpyeSrJy+CEUQA6/lPkatqZKsJon7bRCNXwfEJF+OhHwNl96w==
-X-Received: from ejcxh21.prod.google.com ([2002:a17:907:d715:b0:af9:8135:75bc])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:1c89:b0:af9:d863:5ce4 with SMTP id a640c23a62f3a-afcbe075846mr174843966b.15.1755160856865;
- Thu, 14 Aug 2025 01:40:56 -0700 (PDT)
-Date: Thu, 14 Aug 2025 08:40:55 +0000
-In-Reply-To: <20250814071828.12036-1-ye.liu@linux.dev>
-Mime-Version: 1.0
-References: <20250814071828.12036-1-ye.liu@linux.dev>
-X-Mailer: aerc 0.20.1
-Message-ID: <DC20LHZMD7MQ.23X87A0C9M3TO@google.com>
-Subject: Re: [PATCH] mm/page_alloc: Remove redundant pcp->free_count
- initialization in per_cpu_pages_init()
-From: Brendan Jackman <jackmanb@google.com>
-To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@suse.cz>
-Cc: Ye Liu <liuye@kylinos.cn>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5C5EC120014
-X-Stat-Signature: 56r43kxn5pmitg54c6nsw6bb5db1bpx9
+	b=Ff/986mLlmJ+iB49cMWngL1n5D2TPIZKjJwKNYlOaEh4N6yJQHKvB/5JDxK4AE62Z/X3rI
+	+L+/BHU0dOgoOem1xoTSmFSk+aszlAAxyGzoXOQueMGE2iRx7/tbEe5GoFSK7z9o4JkX8w
+	m3mFHNrK9OmVC+2kdzV7M1dov946Om8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3D99741B74;
+	Thu, 14 Aug 2025 08:42:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 210FEC4CEEF;
+	Thu, 14 Aug 2025 08:42:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755160955;
+	bh=SUBXHVjiIpc5FK6CF6DFvCj6KZQzp4Joo5u+EpVZoMI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=N9V8L5LvpCRYDZdnvjdkWNnyF5ilnojdxYc4xR+1jf6USGswyy05H/dqneQYcqivI
+	 gtp73vcs9LYpcfm1CcyfJiZoQwm/beqGU14bCsUmSe5pgghsvWXe6VbDZUcWw9XAo5
+	 kY+367T2oc3xqTdlDUBzZlXFMP8exkL3rJ9lRlOAliHsBVllf3aHksUgE0xZHDFda2
+	 +vQ+rGSh9gS4COKgE6dNKbUjbLkD95PYty5iSv5A4gWzKrMERDRP062Hw+ci/yY92H
+	 0IzfPbHGuYVoXyIfOq89jBHH2U88/SHWfZwfukmOCq0i8qM9O5eCNW3peh3aZeoPBu
+	 3W1AMRWMsh3Gw==
+Date: Thu, 14 Aug 2025 11:42:10 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Kees Cook <kees@kernel.org>, David Hildenbrand <david@redhat.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	David Rientjes <rientjes@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Matthew Wilcox <willy@infradead.org>,
+	Mateusz Guzik <mjguzik@gmail.com>, linux-s390@vger.kernel.org,
+	linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org
+Subject: Re: [PATCH 09/10] mm: convert remaining users to mm_flags_*()
+ accessors
+Message-ID: <aJ2hYlUGnAPxPFox@kernel.org>
+References: <cover.1755012943.git.lorenzo.stoakes@oracle.com>
+ <cc67a56f9a8746a8ec7d9791853dc892c1c33e0b.1755012943.git.lorenzo.stoakes@oracle.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cc67a56f9a8746a8ec7d9791853dc892c1c33e0b.1755012943.git.lorenzo.stoakes@oracle.com>
+X-Rspamd-Queue-Id: 4945120006
 X-Rspam-User: 
-X-HE-Tag: 1755160858-768300
-X-HE-Meta: U2FsdGVkX18hNIeF40GD3xkq2x/fg49nWFOUcrl4XzEgN/iu0l1Ck2aZUhHvrHqOFsOQ91/Nu7OAL39UoZevyqDI+ovCXoxwxn0qgDyEtOEtJ91Xm5KF4pjejYfkuyr0UEi0vcbpCoUVxYwyfp7A1zrNlgsnEGs3VGFRQueO0iSyWkss/C7islOb29JtBirTU0fIcbVlgcfYVAjVVaj2AyE9TzoNBvc1n22s4dFAk+DUmDkrdcrx+ZgZPMbKI9VTxNUhzCcHzwTctZcEnGW57jB/jVix09kE61rcKba/6iB8NuFmXvcmpdivUIjbclEgiEo/tFA1Mo1MPT8BIxnkx0B6O/TtBlI5bLNMKUagbdnJxhNtLPDEt7A+0wbDxDiuE9gbFUBDARqVHqYCAhd7LWtCMMtjYhbQm3BPu4UvyVZVgn3ZM6u7tdtZNaTFrL5Yrzkflag2Qf8icQTgT0VH55Lmlel2Ye/GA12orqto8zEL6d3mUhRl5r//KQugo9ImyyfKqm1Qv2Bgl9H8VXGy8CNP5wsP0strzJlDlr/LYdg0VF5OqwEgdBSFcnHhZcjyJ7aiFctuDmEfoFlT+R7We/2O0RKm4u2h73HY3D7yEwC1dK33L59Zd7VahR1MNj3ScAlToqYLLl1QkB2wsCC4Qcc45qyQzpyDBChazpp7hF/6mwqUQA4uvbW3837wpgzv/MXjf1rOloniAN2olX8IiJ7GyOnkAWVqVp+sQQjcMcOUmwkSiALnmG2LNa/UWmPA2fuSwD2rHTmo0J83VA5ieb+5xCACrJAurVPaSZD6SjMfSt/9WXgnU74MgFbymRlVbIiPLCtnCzPdTEffeBhtlnG6P1ccmz14KVbm6gN2N3niVfs7cKehPUFNpw9OsbXiMLzVVvRloEqiQ20cFdQdHo67tCOtkUNuCPOA68alf3re4X7IVwHNoZuy6gHS9vYhQhasO+8t7/7P/EGHeOf
- IgMXn/B7
- CMdYuOMiKO0cRgAYSDI+kx3ATtnhH4hh0goM/lhAVGhxpmmye30XSGIYzxOvs01hD6xiGHkXqwA/CuNxvT5DFN4MO1aqWesSu6Yija9txfiWBifRFuYUKMOv7T4aM4KsYDgGZ7o6RnkLUMTDRN5/nnBTzqcuwGs0EwvEcqhG1lMPI9U+8nl3pZyuE3fr9hjG68fLtbruHCEu27R5CUzvKvlyWP7AWeG6TK0tLxKfVOmuS20/79cYGm2xfHdWMRuuP5QPxP1+SjdROgdHVd4CoJHigV7L334Syfhn+G2k3dGYU3e2UUiSiu682GAffFrYSnWKE6HIqS0W5NBNu2oA4riJhhY8aB8UxETPSeAwoEb0smTkg3ohRHRo+jdYQrtJKJ2MYQASSeuHJB1i5GehEeSHw8BqAHPCZUNaEln1R30qy+Df3UIoMdQN2J0FcEqC6HoNBdrbkBv0MqgUEjfmCRj2mksczEdblbBABIf4v4+7J+eA+sScDuKuIwC0lUPdz3n3a0DfIaprmRY9w1jTlyMsLEn2j+pZZr9ZPU9qmjlieZxxmuxU3QQkgd3BW97UnM3TCVEJXQRGaZU8UcQwBoqEBY5fDq2uV+xCQ
+X-Stat-Signature: 783mzex6ozx6mqwy7ey9apbrowwwmygm
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1755160956-572693
+X-HE-Meta: U2FsdGVkX1+DpwIj1NNNBacaQmw/vmVbvwl4s9ExZLlGOW2PnH3ejnVhw9z6tCaeBWR6ZAkx2y2bN59Sns19HjQp/SD83a899MZOBdBpU5ClGDw5l/htxZ8FlTySUET3h1AgLRLQwwKJy026gviP7Q/bg91kNl2esOH9tjEnlGB2MoE2WY6JSFjBs1hdhgUlmkfoBRA0B3MFfw2DYaqIbjUrhIINfnNtXIOFwNeVB6l8ciG9vsyOoYxR9Hqo8zG/UgR6oRIQSBeHHF6mZYKnBxUbK720FVvo6eR3ZnmSlHJEp6EVESXq2MlVaLoGGoJ6zlZrX4JXbeUcp/kaJRauEO7P7xa1EPuVH3errmU+zlzafcwqBTho7zjW34Jo5OBN32m7tQFf7+lXE3RJfwMXIPC8qkVXl7W2JkAkldLbFx/d5QzcpRb9RDqFoSlM3SmcQgY+SQ1m93b9XXnlvj+RkYEvW5iz3zbnZeNl49D5hNTQUPJaFY5BmymCBWeEQk5/4hzAg8rEsVNuITObiVYr1EKgYznEohUugan7CRgd01gZR33fJlNR5RY4kVdcKxabC4F9MiE/ZEy2lVjpoYhkLsBQ06GooaernBzNRlF8K4TEGq4CURiYussnXEfjDCAouhh5VtnpzzbUP0+5ZaokJTO/10k7Qlw4DDN65RaljPHw6FuuvTxD7jMcalbnSRLE30qFd75cqc7nr5+bEXeqWX4RL58eXHRjOKcyeB2f41agb9XN6ppzmOG+PMccc3Hi87i3TN23oaSnTBPJZWRud8zgk54ECjsRpZGAR3+aozz3fjVN6BjDoUAa/io62YtGNtP8z7WqciIgXn/vM9F/ai5/HrRqLRbIGGSr93V1+SxJ+EeOqvBifpnD83al51bMDHVMgkGOzy/FNtRQw8tCD7NARiNQvvRFo0RHNFxs7miWAJmmRVuUVaYkQvqaUy8x3wjtLaIV4G9qE0dSguk
+ k3/qkiCc
+ ye/4+XYM+UXrY3583VbXaajrnNV8BrWyMrrxz7iRieIYco5bFsJ9nyuFa+FkmOvsT4z5rbCArhYQ7V9utbSptUSOmGuw04PV56Fi6XvhH4Lr8opdeRUCQic7e2eClVYBoGKpD6gG58t/aArgLs/VhWvBiWwHHE3JrOJPhpew0wnCpS+J8er8bPJ0flo7RI0bXOA5dhTY3OYVBwMmQ2/Y6nXqdywI+1eLlGfB6lpBWcx0kcGi/Ng8iNyLm0Qs8ZmeU6zWl6f8yURwh/Q1HGN6PsyhF0xSc2fXQWZIV7ZGqy5QQUbdHGIUh2hIGkRFn19h2aqPZciXUWCNuIZXORg5flEPYZITWkV2Ru8KkossMI9UmsiKAXxIbbbUDDhmMbYJhzMLQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,16 +142,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Aug 14, 2025 at 7:18 AM UTC, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
->
-> In per_cpu_pages_init(), pcp->free_count is explicitly initialized to 0,
-> but this is redundant because the entire struct is already zeroed by
-> memset(pcp, 0, sizeof(*pcp)).
->
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+On Tue, Aug 12, 2025 at 04:44:18PM +0100, Lorenzo Stoakes wrote:
+> As part of the effort to move to mm->flags becoming a bitmap field, convert
+> existing users to making use of the mm_flags_*() accessors which will, when
+> the conversion is complete, be the only means of accessing mm_struct flags.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-[heroically,]
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Reviewed-By: Brendan Jackman <jackmanb@google.com>
+> ---
+>  fs/proc/array.c    | 2 +-
+>  fs/proc/base.c     | 4 ++--
+>  fs/proc/task_mmu.c | 2 +-
+>  kernel/fork.c      | 2 +-
+>  4 files changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/fs/proc/array.c b/fs/proc/array.c
+> index d6a0369caa93..c286dc12325e 100644
+> --- a/fs/proc/array.c
+> +++ b/fs/proc/array.c
+> @@ -422,7 +422,7 @@ static inline void task_thp_status(struct seq_file *m, struct mm_struct *mm)
+>  	bool thp_enabled = IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE);
+>  
+>  	if (thp_enabled)
+> -		thp_enabled = !test_bit(MMF_DISABLE_THP, &mm->flags);
+> +		thp_enabled = !mm_flags_test(MMF_DISABLE_THP, mm);
+>  	seq_printf(m, "THP_enabled:\t%d\n", thp_enabled);
+>  }
+>  
+> diff --git a/fs/proc/base.c b/fs/proc/base.c
+> index f0c093c58aaf..b997ceef9135 100644
+> --- a/fs/proc/base.c
+> +++ b/fs/proc/base.c
+> @@ -1163,7 +1163,7 @@ static int __set_oom_adj(struct file *file, int oom_adj, bool legacy)
+>  		struct task_struct *p = find_lock_task_mm(task);
+>  
+>  		if (p) {
+> -			if (test_bit(MMF_MULTIPROCESS, &p->mm->flags)) {
+> +			if (mm_flags_test(MMF_MULTIPROCESS, p->mm)) {
+>  				mm = p->mm;
+>  				mmgrab(mm);
+>  			}
+> @@ -3276,7 +3276,7 @@ static int proc_pid_ksm_stat(struct seq_file *m, struct pid_namespace *ns,
+>  		seq_printf(m, "ksm_merging_pages %lu\n", mm->ksm_merging_pages);
+>  		seq_printf(m, "ksm_process_profit %ld\n", ksm_process_profit(mm));
+>  		seq_printf(m, "ksm_merge_any: %s\n",
+> -				test_bit(MMF_VM_MERGE_ANY, &mm->flags) ? "yes" : "no");
+> +				mm_flags_test(MMF_VM_MERGE_ANY, mm) ? "yes" : "no");
+>  		ret = mmap_read_lock_killable(mm);
+>  		if (ret) {
+>  			mmput(mm);
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index e64cf40ce9c4..e8e7bef34531 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -1592,7 +1592,7 @@ static inline bool pte_is_pinned(struct vm_area_struct *vma, unsigned long addr,
+>  		return false;
+>  	if (!is_cow_mapping(vma->vm_flags))
+>  		return false;
+> -	if (likely(!test_bit(MMF_HAS_PINNED, &vma->vm_mm->flags)))
+> +	if (likely(!mm_flags_test(MMF_HAS_PINNED, vma->vm_mm)))
+>  		return false;
+>  	folio = vm_normal_folio(vma, addr, pte);
+>  	if (!folio)
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index b311caec6419..68c81539193d 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -1887,7 +1887,7 @@ static void copy_oom_score_adj(u64 clone_flags, struct task_struct *tsk)
+>  
+>  	/* We need to synchronize with __set_oom_adj */
+>  	mutex_lock(&oom_adj_mutex);
+> -	set_bit(MMF_MULTIPROCESS, &tsk->mm->flags);
+> +	mm_flags_set(MMF_MULTIPROCESS, tsk->mm);
+>  	/* Update the values in case they were changed after copy_signal */
+>  	tsk->signal->oom_score_adj = current->signal->oom_score_adj;
+>  	tsk->signal->oom_score_adj_min = current->signal->oom_score_adj_min;
+> -- 
+> 2.50.1
+> 
+
+-- 
+Sincerely yours,
+Mike.
 
