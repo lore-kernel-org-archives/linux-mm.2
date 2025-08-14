@@ -2,92 +2,92 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 60B21CA0EDC
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 16:11:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ECFCBCA0EDC
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 16:23:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E86F29001A2; Thu, 14 Aug 2025 12:11:30 -0400 (EDT)
+	id 5C8CD9001A3; Thu, 14 Aug 2025 12:23:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E37E9900172; Thu, 14 Aug 2025 12:11:30 -0400 (EDT)
+	id 577F3900172; Thu, 14 Aug 2025 12:23:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D27C89001A2; Thu, 14 Aug 2025 12:11:30 -0400 (EDT)
+	id 441619001A3; Thu, 14 Aug 2025 12:23:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B9BAC900172
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 12:11:30 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 720A3117E3D
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 16:11:30 +0000 (UTC)
-X-FDA: 83775853140.03.260A2D2
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf03.hostedemail.com (Postfix) with ESMTP id B977120006
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 16:11:28 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="c8K/QkvY";
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 26D45900172
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 12:23:04 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CA30383577
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 16:23:03 +0000 (UTC)
+X-FDA: 83775882246.23.7DB2B68
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7F117100005
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 16:23:01 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf14.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755187888;
+	s=arc-20220608; t=1755188582;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zsy47NKhUY8tIrVXD+3YdDYTjMlSMwXgKAo5KN0TdPM=;
-	b=l4RdRrruhymbK/eIMSGQ2C4cZ+mCjrsOesyWZbqx1RwgbUZTIG3u3U5tThxIhZe6G5/NGr
-	r7DT+D/IlEWNaekKlR9Hx/i4QXQU9p+DndD8h8uiIK6PfVI3kbS/LReq2VzT+x7MVcWJTP
-	zVYihYWs0PkgOoB/ta7py/nOqVqMWlg=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="c8K/QkvY";
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755187888; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=9E7QOfStBz0vXdG6NVQ0zsmIE9heN8GKfR205mEOHBQ=;
+	b=hVnLzDPjtuXrBmJp3TpW+ZhYRZOaVFfIR2Qwc1eYhUEfWBJLpD9CEgjHdeL6CbI6gIEX2L
+	L4h6aTrUAngAp8Yit4PuixO2uSvt/MnTlyA4pAhARgrXrPzQ96zGAZmPt7Z8p9+L2xPMFg
+	zo+4SlkZOcQFLGnXSI2G/fcXJbL0SwA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755188582; a=rsa-sha256;
 	cv=none;
-	b=uNpRXsZ1Bof529o1qvGoP6qzjvo913O8xYA1kmxe/dooWo4MoBh5rDFxyxA/33vflT2Oab
-	uo8Ld4J/Wm88SyJYxXJeXoFt+7wRuvKKKfCPMM2zWvHShhbuNwfk2+9kflB8nlebfvkwjp
-	tqnFiKC8uGvX+6M2/O17eDdmYVN70M8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 04F29A56EAB;
-	Thu, 14 Aug 2025 16:11:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81AF8C4CEED;
-	Thu, 14 Aug 2025 16:11:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755187887;
-	bh=08/3DM8LoFIHR7/BNGxuLaxDxNLDuFb1zlEw9gyMNdQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c8K/QkvYAZUSLTmYvCDdY7DHU0hbICvAA1weY6qGkXzn9FQYu+81sqYA0kcq6k+Cd
-	 7rTBOYUMYpkj4Q0wTOKEYyGWuoeOqrcd4HvXijlEUjfWjl1xyKEvR8KypKfiPgOALi
-	 9mKkTc6ed5mUsXA9CpT5Kg+Pq/eJANp2zzxfxXZmYTWZ7Nr7Po5CM6wa8Dnz6FQSWH
-	 a02UeSlvlFOTpLTivuLE9sS6R4EgutHFLUzead5V+C+WwP6PxQC1gbWdvE5VkvoaJ2
-	 R2u2E2xJYtcixHNVl/JOn63noKQOIt8U/1WZxE06cQVJY6ucikVlNHmyV7vaDbBdfe
-	 a6rP/W2d5xcvg==
-From: SeongJae Park <sj@kernel.org>
-To: Quanmin Yan <yanquanmin1@huawei.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	wangkefeng.wang@huawei.com,
-	zuoze1@huawei.com
-Subject: Re: [RFC PATCH -next 11/16] mm/damon: add addr_unit for DAMON_RECLAIM and LRU_SORT
-Date: Thu, 14 Aug 2025 09:11:25 -0700
-Message-Id: <20250814161125.67602-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <39e07350-2510-49fe-ae4a-e5d10b69291c@huawei.com>
-References: 
+	b=EpVuwrpcbCQE13z06TnYpZUsnxnojRYtwn8Vmrzy+JC6+caC/nJOHoqubzfYA6NL9wjyN3
+	oiXWddDI2QDeGlamGn3PD1ZdvSH9ozusvde8dcgiG5Xzu+Fqmmu0EC2pfF9I51f0NffMag
+	o7qrD4jbWERTxua95s1VKfyCpMBCAsY=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf14.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4c2r7K1ch5z6L4wB;
+	Fri, 15 Aug 2025 00:20:13 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id AD6E714010C;
+	Fri, 15 Aug 2025 00:22:57 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 14 Aug
+ 2025 18:22:57 +0200
+Date: Thu, 14 Aug 2025 17:22:55 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Chaitanya S Prakash <chaitanyas.prakash@arm.com>
+CC: <linux-arm-kernel@lists.infradead.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, Ryan Roberts <ryan.roberts@arm.com>, "Yang
+ Shi" <yang@os.amperecomputing.com>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Kevin Brodsky
+	<kevin.brodsky@arm.com>, Anshuman Khandual <anshuman.khandual@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>, Zhenhua Huang
+	<quic_zhenhuah@quicinc.com>, Joey Gouly <joey.gouly@arm.com>
+Subject: Re: [PATCH 1/2] arm64/mm: Allow __create_pgd_mapping() to propagate
+ pgtable_alloc() errors
+Message-ID: <20250814172255.000039ca@huawei.com>
+In-Reply-To: <20250813145607.1612234-2-chaitanyas.prakash@arm.com>
+References: <20250813145607.1612234-1-chaitanyas.prakash@arm.com>
+	<20250813145607.1612234-2-chaitanyas.prakash@arm.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B977120006
-X-Rspamd-Server: rspam04
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.66]
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 X-Rspam-User: 
-X-Stat-Signature: r9wdhnjno6qbjuws3kzcjuzunzpzxtyk
-X-HE-Tag: 1755187888-586075
-X-HE-Meta: U2FsdGVkX1+4QFve//0yxX5eiLgq74vOo3aoxaVB3YJHiB+zG6HaS+Ohr9OGtXXOBMRUbcQOzEft9vlDyEvax+vtAkcDFJ+CuJ++o6nkVDHuqUyHXmmbOXiylIsYfZJavcN1raBpOvWBN0QHN1ObFwbaTLMS0v3UIHB9VocjPkdytPx2DK7TxcaA0XVrMbYOyXI/0GoM6pbErsDlhIu7BxIA4DYL4D2TaLHNHTK5JO7+ssOclBJ4prK3v5b/oFB7/ZOvUYe+cFpjGpNRWxE5a14ArUmDX6uKnIud+JRlDj3SuKuSPLZkbWva7qPbmz22RFN7/YSOBsy/VRjCdXKWZuGBXp/PddnkFG1XE0Khoncorv29s8m4a+J1wBB3toksixt4batO1CEAllNv0NpiDPAdbVJR9vK7KcR7FVs3rL6Lk7mODRUTx+rhxGvJ4den2NVvF5e8Nyk1Dl1L9W+rvE9pyeH41klZ8VlddeT5NCK4r2OBk0+pA5hDKDrpgMfrXLUoEdmOfTSmYLLSCfA76bRv9xsNmLABAidxxuH5XZdaWe0KY7uPXj7R2h2caufolmQIQt6gAxZQMkOOU+PysUesRtVjCsnKCagaezQ5Btuncr612CgbfCf+M5gAxIaNWL+WyPTTb9Pvz2yKT71R8D4/AzpmckKH4/xHMPD0j/QqcynbpO0TmFuRw5QIk0LXJve5Cpg5IvlCiEjB47phfQ6dv/MSVqEY8rZc0Q81YP2p667Z0psNe8WYVQ7G6b4o+WO4kVS80AzMJlbOcneIkUXHcuTuETqlRJa6PTgTobNzrHQH53xsxyN8pT+Vun5purpsNVm+6lmQtE/mSU9xSeGvHJ6tdfgq3PgRvvWPCoRNpeBOOwvibscl97F21rdU+u+IzX2K2D4baiIRt9UATl9t/q71sRAAQJjDS5/8Bfh2qEX1AuweIqO9lsLzJ6qTj7/fL+FIP8E45/5st+J
- GJ/Vx3gQ
- oMsJE9gZTP7oTuVy03iuoBqWA05/bzYiI8hZgx18bfW/IjxEj6FCKAFx2YJkMMMoK0qXYFS1ywf0BoD7dFg8vd0O3OxcoQXPGF8QlWM6ZgMJjc3fGgSFqVhCl3LdQdHkZOZxpO6zU1UGnRwn56/zis7y7AJNj4lfi4A6I9JWaqjjiCJ2QvAKTwI3+THyMdjOhNKeoZRdA3hBtvSMRdQjR6WD9duWOE/GJ/zacfD6G5nhWlcyAl3HSNtDaQZ2+f+dRWpYoboqFPuCadqmr8lFQXktaUUGj570bk7BeVx3c4w4lEFpE4PI0evl+6Q==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7F117100005
+X-Stat-Signature: qqtahtpbcgon94og9wt9wgswhysou4oq
+X-HE-Tag: 1755188581-583683
+X-HE-Meta: U2FsdGVkX1+qir/tpEIZRHixt1GGvckPYv326z1Ygs0T0a93zPuP7XsQad24rcVd4XnMgVrictsdv5z4p4N6iOlA61PR8aWSB4ITcp2YG7rxLZzvr9GaGuYt3UmjmcWphQfIp7YgiIF44bQIRPEwqCveHEYdiziokA1Llhrg5WZuMkSSmxMjArsZf2DH8qqP5ahai1xbw1+A61Nx6HXMtKPb5xa2qRzkHLO6ydhF/NyO9HmaDcY0TCzSKdp52pZcnLiJ4pKr8jDryYE6PyqUNMMOEF9WpBJ1vCbr6ZWkUCHXFlKGWL3MSk96XuAOb+Q0+KeFPz6N6ZSoOUmOLCFqF5ApyHKfp7EEQqJhbspCdaWwbkG973Xn/0YthGIT+QSasYeTiMbKjkQ5aYV2+KsHFZdbprZx4wRBGppkwPKpYmDdwqVTrS8E0r35gXsDvWPEDLvoLpwhh1d9iln/C7yUWvS2/ActEVQmlEP2IZxEio/wIDiNqB4X21T9TR+9FCUK7egymUx7UVhWdOpOT3mTfqems/jxNz3/ftitLpd+bv/cShG2QeyN3fUhIyTf6B51Ffb6/miaT6OJTurIFiO/OHuL8l29gBZdxlkbsAB+UCoDm5023XqHkIr2I4GYizCuTuLdn8QYsaHPCrnhE+DQGDQUU/68dOmBsgIJWPk9G6YRu6FwoVnD/wclZ3PZBgtT9kF+SMEetDRI5QjNufnM7hScOcRH+t98CcH/mzuEIX4ROATf/aIEDC86Gnd03O4AaSRfX2OvCevDe/ZN0/7AVoLY32t7R3oYU6OjyOcDF8tTihjiENj5LKuGIDJcAqr+CNtm2qXSgoOxcVMxDiXH9Sca0AD6UxokXGHbYHx28n3L2GFS9fJq7M/fRsKyhJ28UwjuqlrCuRyoBU4u/1cXX/R3vd8zyy3SmyzijOB+FM/ZFd/EF0tr026TErTPiAWxpVtR4SscjO4l7Iv+l9O
+ 2MJ/83bY
+ rinOHGEBEW57m2i62Q/SSBxBUcVQTgtJPa4q69Cq3sXjxWGblYJaA1gtS6aGRpMmiLj1X10doQRRf70bIfUvDJpCUN+793Vzi09e1ftpZv/NkaRFv98D3ZQWJX4TL/CMZAJXB4yGfZeyXlyUMBVcdAQCCA3drT8dy9Sn6twCC+D/FU6yET40cJXpswNize9j8AsYs/9WmkMlgTrcgRC/yJGxic7BbU7TCftExyW8PzK4bUUBSvKsZpqCHZeoQvJ3jJ+Ce0Mq7xZP4CT+RsbfuSENjXOEkAkMEgfcOY2njxqTmsx0dSgwzgG77jaib+YCxpdi8Gg+50lMDIBY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,45 +96,233 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 14 Aug 2025 20:59:04 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
+On Wed, 13 Aug 2025 20:26:06 +0530
+Chaitanya S Prakash <chaitanyas.prakash@arm.com> wrote:
 
+> arch_add_memory() is used to hotplug memory into a system but as a part
+> of its implementation it calls __create_pgd_mapping(), which uses
+> pgtable_alloc() in order to build intermediate page tables. As this path
+> was initally only used during early boot pgtable_alloc() is designed to
+> BUG_ON() on failure. However, in the event that memory hotplug is
+> attempted when the system's memory is extremely tight and the allocation
+> were to fail, it would lead to panicking the system, which is not
+> desirable. Hence update __create_pgd_mapping and all it's callers to be
+> non void and propagate -ENOMEM on allocation failure to allow system to
+> fail gracefully.
 > 
-> 在 2025/8/14 0:36, SeongJae Park 写道:
-> > On Wed, 13 Aug 2025 13:07:01 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
-> >
-> >> In module DAMON_RECLAIM and DAMON_LRU_SORT, the damon_ctx is
-> >> independent of the core, necessitating dedicated addr_unit
-> >> integration for these features.
-> >> Additionally, if the input monitor_region_start and monitor_region_end
-> >> are both 0 while addr_unit is set to a non-zero valuethe default
-> >> system RAM range should be divided by addr_unit.
-> > Do you plan to, and need to use DAMON_RECLAIM and DAMON_LRU_SORT on LPAE-ARM32
-> > environments?  Can't you use DAMON sysfs interface instead?  If need to use the
-> > modules, this change looks good to me in high level.  But if not, I'd like to
-> > skip this change, and wait until someone requests it.
-> >
-> > I'll review the code change in depth after the above question is answered.
-> >
-> Hi SJ,
+> But during early boot if there is an allocation failure, we want the
+> system to panic, hence create a wrapper around __create_pgd_mapping()
+> called ___create_pgd_mapping() which is designed to BUG_ON(ret), if ret
+> is non zero value. All the init calls are updated to use the wrapper
+> rather than the modified __create_pgd_mapping() to restore
+> functionality.
 > 
-> Yes, we need to use these modules in an LPAE-ARM32 environment. The modular
-> approach often provides more flexibility in our workflow, so we would greatly
-> appreciate it if you could take some time to review the code!🙂
+> Signed-off-by: Chaitanya S Prakash <chaitanyas.prakash@arm.com>
 
-Thank you for clarifying.  Ok, I understand this change is really required.
+> ---
+>  arch/arm64/mm/mmu.c | 156 +++++++++++++++++++++++++++++++++-----------
+>  1 file changed, 117 insertions(+), 39 deletions(-)
+> 
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index 00ab1d648db62..db7f45ef16574 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -196,12 +196,13 @@ static void init_pte(pte_t *ptep, unsigned long addr, unsigned long end,
+>  	} while (ptep++, addr += PAGE_SIZE, addr != end);
+>  }
+>  
+> -static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+> +static int alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+>  				unsigned long end, phys_addr_t phys,
+>  				pgprot_t prot,
+>  				phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+>  				int flags)
+>  {
+> +	int ret = 0;
+>  	unsigned long next;
+>  	pmd_t pmd = READ_ONCE(*pmdp);
+>  	pte_t *ptep;
+> @@ -215,6 +216,10 @@ static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+>  			pmdval |= PMD_TABLE_PXN;
+>  		BUG_ON(!pgtable_alloc);
+>  		pte_phys = pgtable_alloc(TABLE_PTE);
+> +		if (!pte_phys) {
+> +			ret = -ENOMEM;
 
-However, I think reviewing and revising this part may take time.  Meanwhile,
-seems this part is not an essential one of this patch series, and has no
-problem at be separated and merged after the essential parts.
+return -ENOMEM;
 
-So, could we separate this part from this patch series?  That is, let's work on
-the essential part first.  After the work on the essential part is done, you
-could post this part as another patch series, and then we can work together
-again on it.
+When I saw this I wondered if local style was to always exit at the end of
+functions, but it isn't so early returns should be fine and simplify this
+a fair bit.
+
+> +			goto out;
+> +		}
+>  		ptep = pte_set_fixmap(pte_phys);
+>  		init_clear_pgtable(ptep);
+>  		ptep += pte_index(addr);
+> @@ -246,12 +251,16 @@ static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+>  	 * walker.
+>  	 */
+>  	pte_clear_fixmap();
+> +
+> +out:
+> +	return ret;
+
+	return 0;
+
+>  }
+>  
+> -static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+> +static int init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+>  		     phys_addr_t phys, pgprot_t prot,
+>  		     phys_addr_t (*pgtable_alloc)(enum pgtable_type), int flags)
+>  {
+> +	int ret = 0;
+>  	unsigned long next;
+>  
+>  	do {
+> @@ -271,22 +280,27 @@ static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+>  			BUG_ON(!pgattr_change_is_safe(pmd_val(old_pmd),
+>  						      READ_ONCE(pmd_val(*pmdp))));
+>  		} else {
+> -			alloc_init_cont_pte(pmdp, addr, next, phys, prot,
+> -					    pgtable_alloc, flags);
+> +			ret = alloc_init_cont_pte(pmdp, addr, next, phys, prot,
+> +						  pgtable_alloc, flags);
+> +			if (ret)
+> +				break;
+
+	return ret;
+
+>  
+>  			BUG_ON(pmd_val(old_pmd) != 0 &&
+>  			       pmd_val(old_pmd) != READ_ONCE(pmd_val(*pmdp)));
+>  		}
+>  		phys += next - addr;
+>  	} while (pmdp++, addr = next, addr != end);
+> +
+> +	return ret;
+return 0;
+
+Same in the other cases where there is nothing else to do and they are simply
+early error returns.
 
 
-Thanks,
-SJ
+>  }
 
-[...]
+>  
+> -static void __create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
+> +static int __create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
+>  				 unsigned long virt, phys_addr_t size,
+>  				 pgprot_t prot,
+>  				 phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+>  				 int flags)
+>  {
+> +	int ret = 0;
+> +
+>  	mutex_lock(&fixmap_lock);
+> -	__create_pgd_mapping_locked(pgdir, phys, virt, size, prot,
+> -				    pgtable_alloc, flags);
+> +	ret = __create_pgd_mapping_locked(pgdir, phys, virt, size, prot,
+> +					  pgtable_alloc, flags);
+>  	mutex_unlock(&fixmap_lock);
+
+Could use guard(mutex)(&fixmap_lock);
+but maybe not worth introducing that stuff just to simplify this.
+
+> +
+> +	return ret;
+> +}
+> +
+> +static void ___create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
+> +				  unsigned long virt, phys_addr_t size,
+> +				  pgprot_t prot,
+> +				  phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+> +				  int flags)
+> +{
+> +	int ret = 0;
+> +
+> +	ret = __create_pgd_mapping(pgdir, phys, virt, size, prot, pgtable_alloc,
+> +				   flags);
+> +	BUG_ON(ret);
+>  }
+>  
+>  #ifdef CONFIG_UNMAP_KERNEL_AT_EL0
+> @@ -485,9 +553,11 @@ static phys_addr_t __pgd_pgtable_alloc(struct mm_struct *mm,
+>  {
+>  	/* Page is zeroed by init_clear_pgtable() so don't duplicate effort. */
+>  	struct ptdesc *ptdesc = pagetable_alloc(GFP_PGTABLE_KERNEL & ~__GFP_ZERO, 0);
+> -	phys_addr_t pa;
+> +	phys_addr_t pa = 0;
+> +
+> +	if (!ptdesc)
+> +		goto out;
+
+I'd return 0 here.
+>  
+> -	BUG_ON(!ptdesc);
+>  	pa = page_to_phys(ptdesc_page(ptdesc));
+>  
+>  	switch (pgtable_type) {
+> @@ -505,6 +575,7 @@ static phys_addr_t __pgd_pgtable_alloc(struct mm_struct *mm,
+>  		break;
+>  	}
+>  
+> +out:
+>  	return pa;
+>  }
+>  
+> @@ -533,8 +604,8 @@ void __init create_mapping_noalloc(phys_addr_t phys, unsigned long virt,
+>  			&phys, virt);
+>  		return;
+>  	}
+> -	__create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
+> -			     NO_CONT_MAPPINGS);
+> +	___create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
+> +			      NO_CONT_MAPPINGS);
+>  }
+>  
+> @@ -1369,23 +1440,30 @@ int arch_add_memory(int nid, u64 start, u64 size,
+>  	if (can_set_direct_map())
+>  		flags |= NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
+>  
+> -	__create_pgd_mapping(swapper_pg_dir, start, __phys_to_virt(start),
+> -			     size, params->pgprot, pgd_pgtable_alloc_init_mm,
+> -			     flags);
+> +	ret = __create_pgd_mapping(swapper_pg_dir, start, __phys_to_virt(start),
+> +				   size, params->pgprot, pgd_pgtable_alloc_init_mm,
+> +				   flags);
+> +
+> +	if (ret)
+> +		goto out;
+>  
+>  	memblock_clear_nomap(start, size);
+>  
+>  	ret = __add_pages(nid, start >> PAGE_SHIFT, size >> PAGE_SHIFT,
+>  			   params);
+> -	if (ret)
+> -		__remove_pgd_mapping(swapper_pg_dir,
+> -				     __phys_to_virt(start), size);
+> -	else {
+> +	if (ret) {
+> +		goto out;
+> +	} else {
+>  		/* Address of hotplugged memory can be smaller */
+>  		max_pfn = max(max_pfn, PFN_UP(start + size));
+>  		max_low_pfn = max_pfn;
+>  	}
+>  
+> +	return 0;
+> +
+> +out:
+> +	__remove_pgd_mapping(swapper_pg_dir,
+> +			      __phys_to_virt(start), size);
+This one is fine as common cleanup to do.
+
+Jonathan
+
+>  	return ret;
+>  }
+>  
+
 
