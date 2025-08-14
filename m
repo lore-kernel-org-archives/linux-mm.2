@@ -2,66 +2,66 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E54A6CA0EDC
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 08:39:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1CC0ECA0EDC
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 08:40:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 698E3900113; Thu, 14 Aug 2025 04:39:21 -0400 (EDT)
+	id A1E5D900114; Thu, 14 Aug 2025 04:40:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6708E900088; Thu, 14 Aug 2025 04:39:21 -0400 (EDT)
+	id 9F590900088; Thu, 14 Aug 2025 04:40:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 586B9900113; Thu, 14 Aug 2025 04:39:21 -0400 (EDT)
+	id 90BF7900114; Thu, 14 Aug 2025 04:40:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 45FBA900088
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 04:39:21 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0ADD0140568
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 08:39:20 +0000 (UTC)
-X-FDA: 83774713722.02.5046561
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4F5891C000E
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 08:39:19 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JzwSedKi;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7CD45900088
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 04:40:24 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 084F1160574
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 08:40:24 +0000 (UTC)
+X-FDA: 83774716368.12.39E4606
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 674F810000D
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 08:40:22 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZZ5tqXiS;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755160759;
+	s=arc-20220608; t=1755160822;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gtesHyIGbv9kln7RB0GzCr5FxVorGkocSx8TRiQ3g2Q=;
-	b=Q13TGNGzWAMrknzAzW2VeMMGoJixW9WJGFY8XM8CQqShWKL1pQQNVIBfbObx31sSMpDeOe
-	dfUmEJMqQm5pPGE1g1M+lmPtsBgzrf40ZjfE0K3WsFFXeZRixarkQq2w7+CSaH9VmM10G3
-	yerV5dBcbkDVBzqEfXMideZ6Il3A7Po=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JzwSedKi;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755160759; a=rsa-sha256;
+	bh=ALAQ1hCCvfMNneTPSDmW2WXC/XQXQuv7liTcDor4eJI=;
+	b=Xejzy4iP/x6ePQVQv9N3N9MqsVrOSEPCt3j40WLES2sUDg5wIambQrKja5X6VfX2bAVUXa
+	6PkdG7lIC0tYP0kThKT2B8qPa+8CcvitAHUDmfdr5HiO4thLNHmt672UmGyo42LRcn9rDH
+	KBdNVAarx8efCr4W/lmm9qhuS7BUhxo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755160822; a=rsa-sha256;
 	cv=none;
-	b=nlq0v8kY1OLJcDWXscw0ltX4es5o/CEz8R5u7qn5yYu05QUd94Qe3PItpaPkmRY6+YODBi
-	va6Osbv9AYJ56TSMIgxxqduT0NL0zBnRWv43/48knpw9BKikxm0qPH3bL4DShT7ACPt8VC
-	n4fUD6WZd6nqXJAmiLoh5Tz8xLfQgn4=
+	b=bHNZd7hZ5EyfrL2NnYjps8Gvumhp1Bjx/FTYLZyE5k8jVSFJpDxn2pIfmRHVXINRfSXrPX
+	trBVsmNH/LwInIHInNrVTMg8t5sUJfFLshtf+22M6CvrAY9VQnGXhN4lxDgpOdRLVDOLO/
+	RE3ussPF/1Y6vlavfEK8SZMttW9F9qY=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZZ5tqXiS;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id D80945C61FD;
-	Thu, 14 Aug 2025 08:39:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7188CC4CEF4;
-	Thu, 14 Aug 2025 08:38:57 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id AB33DA5576B;
+	Thu, 14 Aug 2025 08:40:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FC94C4AF09;
+	Thu, 14 Aug 2025 08:40:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755160756;
-	bh=wfqWmiFu+hf5riWH1oiwtGbPEfN6D8DeAmej1du6BhY=;
+	s=k20201202; t=1755160821;
+	bh=zqmt4Jj8Tl4AG5pUIufRcdzVJq4JYdl8O/zAhI2YC70=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JzwSedKiUIueXjAwiEvvgu9Pg7k0kNpnO8Uu4NT96uQ5AFJeZLFlxMhMYmmqQKgf9
-	 vkRr6fLBH/J6KQaFSI5SL4BICjVxdtsmUGvpcNsQgVqh8n+TDsLp/ZSzZGKwJy6Vu/
-	 P26Vc0ScJ0V1qyZCwGuo5A9RurBj/wQK5MgjLtYcBOlURHX9zRDDmhud/nvuI+G1Kp
-	 7AR6ipV+2txrE2N62GVE5xzXojsCfMmVJMeTlKseveRHMqgGHGJeEa8Tt0gzNwMRjO
-	 9krcCidK65DrhHDCRoNCXT2dOKsRCBYhgtjRqtbs1HvHnV8ajX5CJxMw/Oe6FjlzvD
-	 kjMlCCcya+wJA==
-Date: Thu, 14 Aug 2025 11:38:53 +0300
+	b=ZZ5tqXiSOEwYFaq79WS5EhkFn8Z5imGYNmIePfhjJTAhyZJEgDA7Bwly8nCqYBrRu
+	 d5UBO0ASyeI4lggmFmZP5Ii3320gaokMa2FN+oxetsh12TTGQ+8oWdtIFgLAmFwDa8
+	 JmyiIhU5NvRChb93aRk4sfsoi6H8QvZGvsj0WePGnaiA2KQ0/+8V6zFvTPRMYPKrqn
+	 1S4BU4qOOBW810STnQ9C/RqF+W8yGtXS38JRPzp9ypmj54uCmkS4f0kA57Jmi573iT
+	 nQhBwXuhJUpx99j/CnWWG20Qpb4JWWkPn9hA8ESGXnWKA625fvfdzX3MjXix2LjKhh
+	 b4YJ1g7zPit1g==
+Date: Thu, 14 Aug 2025 11:39:57 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -117,23 +117,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
 	linux-trace-kernel@vger.kernel.org,
 	linux-perf-users@vger.kernel.org
-Subject: Re: [PATCH 07/10] mm: correct sign-extension issue in MMF_* flag
- masks
-Message-ID: <aJ2gnTpRW3QLTcn6@kernel.org>
+Subject: Re: [PATCH 08/10] mm: update fork mm->flags initialisation to use
+ bitmap
+Message-ID: <aJ2g3VODv5Fp9aQL@kernel.org>
 References: <cover.1755012943.git.lorenzo.stoakes@oracle.com>
- <f92194bee8c92a04fd4c9b2c14c7e65229639300.1755012943.git.lorenzo.stoakes@oracle.com>
+ <9fb8954a7a0f0184f012a8e66f8565bcbab014ba.1755012943.git.lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f92194bee8c92a04fd4c9b2c14c7e65229639300.1755012943.git.lorenzo.stoakes@oracle.com>
-X-Rspamd-Queue-Id: 4F5891C000E
-X-Rspamd-Server: rspam04
+In-Reply-To: <9fb8954a7a0f0184f012a8e66f8565bcbab014ba.1755012943.git.lorenzo.stoakes@oracle.com>
 X-Rspam-User: 
-X-Stat-Signature: 55uhb9d4wzyuebi8ip7rp9x3sqjq9cju
-X-HE-Tag: 1755160759-351807
-X-HE-Meta: U2FsdGVkX1884F/oFMFFUuhLZx9zeQpc9LgKe2QLbIM+XSBvUnD3dtkWHTR+RvLkRiA9tAbtXBC/p224/RsBjehWR6c3PoGs42mnAXfHmK2Fy0cZVxVI/WmUIsZjiLHQbVd8/6cDPqeB2nA2Y4lI/2xgp4x9WlN0XbCAtD0q1BsBiOq6YBYKLZZoEIFy9imdRi8h8yZFWKIBE5q4br6QdqjkVeIwNX6KGvssX7tZ+wMuk4twoWPhSWXU2DbEyZAdjYiIX0vfk6mksPoDLHWTItr0qEVBTvjmoIwUgllUN3j2NNMAiyb5UeJ9KM56ZkPwBh5Q7xM89ICkUIou5saqPO8WBVwUFhcgdSVG4VGxFEQ9PSPH/EZ6eLUrOj1UGy9sQ/tJs/tmE5z5pfaqTX50VVgTzCLBvK54Vi3zrWNLZLOksjZRUwLpPltvMQa5/fUTVAs3JhxkArbUiu5d8gAUEwN/Euto9SXySMlQuOw+mTgoq7ue68p1tlqz2P7H4ngBMsXJNkuc8LxCWoYfmv3gq+/WjKdUG2KGEm/o5/OpguRX4Z9/zdPjmZuuM67S+B9ZIGQjyl5pxRkooQtZXfp9654ujH9M8cWMXPO4c8x5Kv3Ege0TXdkLlgt+jozdbC7dczjbLspb6v97ZFKcgp2NbqLhBWN2whwa7Fco+MqQ0MLSKSCUaQf9l1MEfff7wxAnhaEN2uM37rNcUO3y92/a4luemCZNKhypmX7IUniE8nNGsiIgbveZUFVUsB5taXLDBZMgDXRqiAd0Xe8QZpYOj/O7GbmDcomW75vm5Ug8j1UUQdT0mWlEYyxe/L4JBC8SnFgpJDKFsBKyrJI8rK9f/tsrzeSr7iTybm0rTwdrPhnf4dKV0iSy/ZiJFFOEgqaYDhpZHz83oJTUsvMkIoTVS3DCSo6DRE9JiqOxY7j3NAHj8in+mjZzhjT3fQ7Tjm6wP91q8ewvNNyzwGclypU
- RP5dm+XG
- yuxsFnIuGMMb+dfHP18JiubvbU5HNqlVGslTrqYgzd5no4YEOJrhDIXvWZF9AgZlaDJP3kxtzYji53ciIy0TZu0+0HuaC4apW94rn03KWs5VeUmBJ9Q+BoE3gxwem5/GFqYZ1x84LE+nd98W3fJGumvG4v5Fa2UMirC01nG7ZHTztoEAgsMY3PQLTQuXhCEMMKJb3AfZ3NiHg2fT9vO5L8qvRMKXwfxxGuYDgD/y8RM40E3GMJJJaavI1xqTpiKJkdumcbKg8vd//qnn6tK95Rc/Lc2ma3QgC2EfxIsT82SDdFKhGdKFoQYqLQWPQpVRq9NAXZ85EFD8vZR5hj3k+ougHJhCALRK79jti
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 674F810000D
+X-Stat-Signature: unu9t9c3hpynqps4bodudk9kr69y6kaw
+X-HE-Tag: 1755160822-347243
+X-HE-Meta: U2FsdGVkX18J7Tv4XS7ZDQboitu7uR7X2W13wtLm3qZ58j5bUddq21lhGR8vsgnGSUWL6XkO1Kc24Tadr/t2kzAgN0HC3EMAaZm4lTkbGmsLMCwN8iRkT8NgiELKd+ymbvbFjxPimH6Vp2Rte+Y0Xco4Ezfyz31du1HD+F6VtWwyoDcxXVIjcgyUTp6CXpkwlqMwyzxPHGR5e4OrUEktEIGgrvx2UK1r4kYwUpLD9VeAchNRNM/7Mw0vqJRj3K5YTfLjVEIkocv+IQvDHK1lXXtmW8+4ZKkZEDYzJGkP3dSGaQnTtL/1+HdWC6fmivoAcoSK0943vcWHP6JhqhB+bOcR0dp25FJC2AaIsRmRrtF5jegpqNmaOijy3i19ReTiSjjaKccizn7ho/zLo4LVYdwaz1/lV4wvEPFwikOqVacUBrxmLggx7rGdCEyUnitEgcs6vsq8pJHc4vJQnFDaSkrhmOlqPhcJa2FzvJgyWJ7l6aAXJrVy+B1sJUJQaYSeXoDN4lR/r9rpGVgeO3vjCR5gmEZSQYrfmXM0/0NLNcYtRuq9eliyTN/MQREOqEYFs166fz9idkZadgEc+8esRicBr810/z6XC84iCDT9TBjSUMmrEDnVu1TG9pyqTeaKijg6zHSyScwA9CYElBDSly7KXtmD5ZMUTnpv7sXK8eROBzOp1a8fhs4R+jqN0Co3VvFp76D+nw9fmr6/QeByi5A7atyj/XoX83w+ZLJbHE4ysjbCbpvmVM6cLdpSobyFxFTOzJOiJNHmmIQcPzV+WNCiHNkbi3INy87ExDs0o4XGaVpdk300Sp5iw5A9/K9AlQdv0mZiO+dufiZ5bCAbLWSOoGg2VuxagchzRZgBC+SGjQDOup4NBXYRQOrWN9KqmlPfzL6SQvp/5eTE8ND3Nz25DiUGhjQm04U93hJq9zal9HrmkQzBBDyWUHxhuXUKQW0TmylnmIpew9461T8
+ HNctoFCu
+ zoaVkTmdUc5Ia5J3Yibu7fu3a3bb02NbR69AXdqAEzJJcWNKkkPdHn7ZuhA1OvrPvIwnzKCX9Nr0/bUFeIy5vTQ54724VfWDQErGM3dzRQMhgwkBP2z4KW7RMDEkH4hEcb2t1pK4CZxCvl29Q3J0ke0tXQbfzYVdWe4Rnzv/C2DxnqRjmc200ZnMXSI6JamdpAOCKic6RaHKz2hqLV5HADq6ilEUg2TcYw3rQI2tKztjCP+DaKcOSgBJPTHjWduLBpJogAmE/2f1DxJ66Lcu9yjQjxn0mVfsvLtlUIJ+slAuuXs4xCVamaiQeqj3LVR9ZCZiHV/E8KhS+RSU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,97 +142,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 12, 2025 at 04:44:16PM +0100, Lorenzo Stoakes wrote:
-> There is an issue with the mask declarations in linux/mm_types.h, which
-> naively do (1 << bit) operations. Unfortunately this results in the 1 being
-> defaulted as a signed (32-bit) integer.
+On Tue, Aug 12, 2025 at 04:44:17PM +0100, Lorenzo Stoakes wrote:
+> We now need to account for flag initialisation on fork. We retain the
+> existing logic as much as we can, but dub the existing flag mask legacy.
 > 
-> When the compiler expands the MMF_INIT_MASK bitmask it comes up with:
+> These flags are therefore required to fit in the first 32-bits of the flags
+> field.
 > 
-> (((1 << 2) - 1) | (((1 << 9) - 1) << 2) | (1 << 24) | (1 << 28) | (1 << 30)
-> | (1 << 31))
+> However, further flag propagation upon fork can be implemented in mm_init()
+> on a per-flag basis.
 > 
-> Which overflows the signed integer to -788,527,105. Implicitly casting this
-> to an unsigned integer results in sign-expansion, and thus this value
-> becomes 0xffffffffd10007ff, rather than the intended 0xd10007ff.
-> 
-> While we're limited to a maximum of 32 bits in mm->flags, this isn't an
-> issue as the remaining bits being masked will always be zero.
-> 
-> However, now we are moving towards having more bits in this flag, this
-> becomes an issue.
-> 
-> Simply resolve this by using the _BITUL() helper to cast the shifted value
-> to an unsigned long.
+> We ensure we clear the entire bitmap prior to setting it, and use
+> __mm_flags_get_word() and __mm_flags_set_word() to manipulate these legacy
+> fields efficiently.
 > 
 > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 > ---
->  include/linux/mm_types.h | 19 +++++++++----------
->  1 file changed, 9 insertions(+), 10 deletions(-)
+>  include/linux/mm_types.h | 13 ++++++++++---
+>  kernel/fork.c            |  7 +++++--
+>  2 files changed, 15 insertions(+), 5 deletions(-)
 > 
 > diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index 46d3fb8935c7..38b3fa927997 100644
+> index 38b3fa927997..25577ab39094 100644
 > --- a/include/linux/mm_types.h
 > +++ b/include/linux/mm_types.h
-> @@ -1756,7 +1756,7 @@ enum {
->   * the modes are SUID_DUMP_* defined in linux/sched/coredump.h
->   */
->  #define MMF_DUMPABLE_BITS 2
-> -#define MMF_DUMPABLE_MASK ((1 << MMF_DUMPABLE_BITS) - 1)
-> +#define MMF_DUMPABLE_MASK (_BITUL(MMF_DUMPABLE_BITS) - 1)
->  /* coredump filter bits */
->  #define MMF_DUMP_ANON_PRIVATE	2
->  #define MMF_DUMP_ANON_SHARED	3
-> @@ -1771,13 +1771,13 @@ enum {
->  #define MMF_DUMP_FILTER_SHIFT	MMF_DUMPABLE_BITS
->  #define MMF_DUMP_FILTER_BITS	9
->  #define MMF_DUMP_FILTER_MASK \
-> -	(((1 << MMF_DUMP_FILTER_BITS) - 1) << MMF_DUMP_FILTER_SHIFT)
-> +	((_BITUL(MMF_DUMP_FILTER_BITS) - 1) << MMF_DUMP_FILTER_SHIFT)
->  #define MMF_DUMP_FILTER_DEFAULT \
-> -	((1 << MMF_DUMP_ANON_PRIVATE) |	(1 << MMF_DUMP_ANON_SHARED) |\
-> -	 (1 << MMF_DUMP_HUGETLB_PRIVATE) | MMF_DUMP_MASK_DEFAULT_ELF)
-> +	(_BITUL(MMF_DUMP_ANON_PRIVATE) | _BITUL(MMF_DUMP_ANON_SHARED) | \
-> +	 _BITUL(MMF_DUMP_HUGETLB_PRIVATE) | MMF_DUMP_MASK_DEFAULT_ELF)
->  
->  #ifdef CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS
-> -# define MMF_DUMP_MASK_DEFAULT_ELF	(1 << MMF_DUMP_ELF_HEADERS)
-> +# define MMF_DUMP_MASK_DEFAULT_ELF	_BITUL(MMF_DUMP_ELF_HEADERS)
->  #else
->  # define MMF_DUMP_MASK_DEFAULT_ELF	0
->  #endif
-> @@ -1797,7 +1797,7 @@ enum {
->  #define MMF_UNSTABLE		22	/* mm is unstable for copy_from_user */
->  #define MMF_HUGE_ZERO_FOLIO	23      /* mm has ever used the global huge zero folio */
->  #define MMF_DISABLE_THP		24	/* disable THP for all VMAs */
-> -#define MMF_DISABLE_THP_MASK	(1 << MMF_DISABLE_THP)
-> +#define MMF_DISABLE_THP_MASK	_BITUL(MMF_DISABLE_THP)
->  #define MMF_OOM_REAP_QUEUED	25	/* mm was queued for oom_reaper */
->  #define MMF_MULTIPROCESS	26	/* mm is shared between processes */
->  /*
-> @@ -1810,16 +1810,15 @@ enum {
->  #define MMF_HAS_PINNED		27	/* FOLL_PIN has run, never cleared */
->  
->  #define MMF_HAS_MDWE		28
-> -#define MMF_HAS_MDWE_MASK	(1 << MMF_HAS_MDWE)
-> -
-> +#define MMF_HAS_MDWE_MASK	_BITUL(MMF_HAS_MDWE)
->  
->  #define MMF_HAS_MDWE_NO_INHERIT	29
->  
->  #define MMF_VM_MERGE_ANY	30
-> -#define MMF_VM_MERGE_ANY_MASK	(1 << MMF_VM_MERGE_ANY)
-> +#define MMF_VM_MERGE_ANY_MASK	_BITUL(MMF_VM_MERGE_ANY)
->  
+> @@ -1820,16 +1820,23 @@ enum {
 >  #define MMF_TOPDOWN		31	/* mm searches top down by default */
-> -#define MMF_TOPDOWN_MASK	(1 << MMF_TOPDOWN)
-> +#define MMF_TOPDOWN_MASK	_BITUL(MMF_TOPDOWN)
+>  #define MMF_TOPDOWN_MASK	_BITUL(MMF_TOPDOWN)
 >  
->  #define MMF_INIT_MASK		(MMF_DUMPABLE_MASK | MMF_DUMP_FILTER_MASK |\
+> -#define MMF_INIT_MASK		(MMF_DUMPABLE_MASK | MMF_DUMP_FILTER_MASK |\
+> +#define MMF_INIT_LEGACY_MASK	(MMF_DUMPABLE_MASK | MMF_DUMP_FILTER_MASK |\
 >  				 MMF_DISABLE_THP_MASK | MMF_HAS_MDWE_MASK |\
+>  				 MMF_VM_MERGE_ANY_MASK | MMF_TOPDOWN_MASK)
+>  
+> -static inline unsigned long mmf_init_flags(unsigned long flags)
+> +/* Legacy flags must fit within 32 bits. */
+> +static_assert((u64)MMF_INIT_LEGACY_MASK <= (u64)UINT_MAX);
+> +
+> +/*
+> + * Initialise legacy flags according to masks, propagating selected flags on
+> + * fork. Further flag manipulation can be performed by the caller.
+> + */
+> +static inline unsigned long mmf_init_legacy_flags(unsigned long flags)
+>  {
+>  	if (flags & (1UL << MMF_HAS_MDWE_NO_INHERIT))
+>  		flags &= ~((1UL << MMF_HAS_MDWE) |
+>  			   (1UL << MMF_HAS_MDWE_NO_INHERIT));
+> -	return flags & MMF_INIT_MASK;
+> +	return flags & MMF_INIT_LEGACY_MASK;
+>  }
+>  
+>  #endif /* _LINUX_MM_TYPES_H */
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index c4ada32598bd..b311caec6419 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -1056,11 +1056,14 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
+>  	mm_init_uprobes_state(mm);
+>  	hugetlb_count_init(mm);
+>  
+> +	mm_flags_clear_all(mm);
+>  	if (current->mm) {
+> -		mm->flags = mmf_init_flags(current->mm->flags);
+> +		unsigned long flags = __mm_flags_get_word(current->mm);
+> +
+> +		__mm_flags_set_word(mm, mmf_init_legacy_flags(flags));
+>  		mm->def_flags = current->mm->def_flags & VM_INIT_DEF_MASK;
+>  	} else {
+> -		mm->flags = default_dump_filter;
+> +		__mm_flags_set_word(mm, default_dump_filter);
+>  		mm->def_flags = 0;
+>  	}
+>  
 > -- 
 > 2.50.1
 > 
