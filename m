@@ -2,90 +2,101 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 98245CA0EE4
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 00:57:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 63C3AC87FCF
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 01:15:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08D959000E3; Wed, 13 Aug 2025 20:57:45 -0400 (EDT)
+	id AA0AB9000E4; Wed, 13 Aug 2025 21:15:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 016F1900088; Wed, 13 Aug 2025 20:57:44 -0400 (EDT)
+	id A76A6900088; Wed, 13 Aug 2025 21:15:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E20F49000E3; Wed, 13 Aug 2025 20:57:44 -0400 (EDT)
+	id 9B37C9000E4; Wed, 13 Aug 2025 21:15:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CD678900088
-	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 20:57:44 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3DDB31604BB
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 00:57:44 +0000 (UTC)
-X-FDA: 83773550448.09.295B7CD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id AC3C91A0006
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 00:57:42 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="MOcl/GGf";
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B9EC900088
+	for <linux-mm@kvack.org>; Wed, 13 Aug 2025 21:15:02 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1D62F138096
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 01:15:02 +0000 (UTC)
+X-FDA: 83773594044.07.DF677CB
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by imf24.hostedemail.com (Postfix) with ESMTP id D9031180006
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 01:14:58 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=codewreck.org header.s=2 header.b=tPycMhMr;
+	spf=pass (imf24.hostedemail.com: domain of asmadeus@codewreck.org designates 62.210.214.84 as permitted sender) smtp.mailfrom=asmadeus@codewreck.org;
+	dmarc=pass (policy=none) header.from=codewreck.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755133062;
+	s=arc-20220608; t=1755134099;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i9rPM1F4Bmpk8+Y8IZxAqyCeXh6yO7JggUuOCKIZCqc=;
-	b=FQ0G6Y/1RzeeEohXRH8O57AqMs8u/z2DT8cPdrByKG8Tjfk+u2IhYx7IaXswG3/kfcxp1P
-	+36+7zVHzUM3rJyl9ay+XklHrAAbJeZ2akNK1BgT1+k7ai7q+I48gcbop9/QPf4zNbPXnr
-	Cp65J1TouhXOmD0OOkO/NQc6pnQnoco=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=VSS/GzTf7mRkzo4sO438c/imKZ2sgMqL0KjQB+0sB9s=;
+	b=cWTy2owQKlYpsqYE5jKAsvt0MWdSjk+NDTxnaxwj+YRmXjm/j+nG9YP0521FBVKUCG/qU/
+	SToU5TRbWnY7TKERi4K1y6yzXffBcHqJSjPw+Yanhw5/kL+6NWc2tNvnSK9vdeh1EDbH1C
+	MZqtb4eBJjmrAqBfm0+O5d/z+bfQccU=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="MOcl/GGf";
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755133062; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=codewreck.org header.s=2 header.b=tPycMhMr;
+	spf=pass (imf24.hostedemail.com: domain of asmadeus@codewreck.org designates 62.210.214.84 as permitted sender) smtp.mailfrom=asmadeus@codewreck.org;
+	dmarc=pass (policy=none) header.from=codewreck.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755134099; a=rsa-sha256;
 	cv=none;
-	b=JSZoP3gJrPx/mrPffu8pmjRyBvr1Q1J6xxf9/EsOeAlnCaZCgz7X5pBvnNi9XGxdGNziZ3
-	orRFqMcjGgqVFFDwXSc55Skq6mRwtyl0t4IBgkzotNk5Nbw2/3nTskt/t+iZ1PZFEMcHLN
-	0WbH9mX/lP9vV3bCOeW3iP8HnMmeSTE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CFA86601EE;
-	Thu, 14 Aug 2025 00:57:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60EE4C4CEED;
-	Thu, 14 Aug 2025 00:57:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755133061;
-	bh=153zhUSGq/KWvkkdlqL7wLh94pOu0kTwnsKJAuOqD14=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MOcl/GGfHB4GpoAi6OiNe1lLxxd54T5fSjtzKKYyxnjje7GHL0MsHp/TYCJAB1XG+
-	 QrZULcM+dWWj8pjXjiFwjTwmz4rfV/Duu4mrxP2+zauPGCN7TvrsK8iDYMynrGDYX9
-	 wQ8vbSH4TFObnopKdvw/XE3rAaZ1N4cY0z53bdK+lpDtHbD6L5T4kyxEmqxJzXK9Cw
-	 agUIel/yCiDCoa/nskdheQjzD74m8i+MUS3oRbwInZby0C8WFzTcm4/AgUDmrWUQ8M
-	 6doSFc7I0n2F2gCu5r3CVbaBdxJW78ojMSsHtj/cCwoCFfZfMI8VF5GbHx+sZhVVEq
-	 YEk2OQR/xJ70Q==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Quanmin Yan <yanquanmin1@huawei.com>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	wangkefeng.wang@huawei.com,
-	zuoze1@huawei.com
-Subject: Re: [RFC PATCH -next 00/16] mm/damon: support ARM32 with LPAE
-Date: Wed, 13 Aug 2025 17:57:38 -0700
-Message-Id: <20250814005738.52844-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250813172545.6637-1-sj@kernel.org>
-References: 
+	b=qU9uD4nw9GSsr1zewASfVh1OCFgY1m/ZTGk0qQ/UwoK4eQK/3Rt1bfgKnFfnIZ8tRwTx5T
+	emp2tNW0zQ7RpZdzF4BurCU41ieucnPm20v9+4/Z595puN1GHZbUzFp1VauNal3eVd33wZ
+	DeDo39vMTowA59zU1YpaTR2yM2iiang=
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 468D714C2D3;
+	Thu, 14 Aug 2025 03:14:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1755134096;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to; bh=VSS/GzTf7mRkzo4sO438c/imKZ2sgMqL0KjQB+0sB9s=;
+	b=tPycMhMr7X0wubaDHNZnMqB/VEiz0UUE8omXCbl8cVPraMQEqlPqNl3No+vWVKYafyfuSA
+	xhjW37XOoQV3q0j5uHaXh7YYbCRG3IZ+tEUlLhY8SaSBmV/WqNdlGIekaFWtvKennOmXOg
+	0jP8VHStgbUj1JeXRD4kB6OG5m1l26zOxuPZDjMXERijZSNrQI3moAFxCHhbi/gpYqBfCC
+	2bzC09Ecy/3pG2mjK78rVDFpscJKNFoOvRfr4bJcTgSUHhKrooXlVZISs1Qm35JZT+XjI1
+	2qZyXvNOntTkDnzLDvryfNjAjjTCBnXfmst23VvZ/ZElMoQUN43e9Adp+48JMQ==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 5e52dd40;
+	Thu, 14 Aug 2025 01:14:49 +0000 (UTC)
+Date: Thu, 14 Aug 2025 10:14:34 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>, llvm@lists.linux.dev,
+	oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Maximilian Bosch <maximilian@mbosch.me>,
+	Ryan Lahfa <ryan@lahfa.xyz>, Christian Theune <ct@flyingcircus.io>,
+	Arnout Engelen <arnout@bzzt.net>, linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] iov_iter: iterate_folioq: fix handling of offset >=
+ folio size
+Message-ID: <aJ04ej2P3ZXiBjOG@codewreck.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AC3C91A0006
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <f389ac0d-de77-4443-9302-3d8895e39daf@paulmck-laptop>
+ <aJyYp-3VA9kJ5YMd@smile.fi.intel.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D9031180006
+X-Stat-Signature: rf3i6xhciewkw9j717aqiytcmob8jd9y
 X-Rspam-User: 
-X-Stat-Signature: yq4uionuun3nf11519pabh7hpnwctbuf
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1755133062-113453
-X-HE-Meta: U2FsdGVkX1/ueUsf3pHNfyr3xlIN4FXOc6t5HKxM/u1X0nwvvG8LbC2pGbUYUUBNHG2D08z9WzfWk63juuyDNdPZOWZY9qRA69rHd7gnXlIgPz7ZmYRTvKdh22d+qlOIO/qg+64/fS7qvfga6K7bxQTOda1td4qfEncTvWOW+5m6gGPu2ByPUJVz/nrUIqX5wpF1nuUMiyyzXqW7ZduHCbRSxuVW31z9gZDCfZozxmbhaLWd9hyqkZfBNP94fj6TDePERGJ6ed7oaoeqdVlDQPBvSxS7eeuA0f7kSwr09kAtjXSDwDEQZSTN1ssGI0aSEZOwq8Xeo38MpW09/UCCQcTL0l1lPjQqUI3J3G/S4g/iD2brZxmtNdrhstPd0B9PlACQw28KdPONBandKdQbXMrFwFa3jA6FljgYG3FrTqwGynmXptZNF/BjBsxBOtRJ0vX3d+5jApnGxywefp6GtvsPb0OiH/2akfQyZZRDRBB7LJvwtLALHwiRvXuVv1C5cgRDyDBd6C5kJqi9SF216rZZnPQFeenY7c1RGWfnxajdGFUvZ6WDhHdb/Otk8pd6Pw91eQzdGOIE+d07NCviSjSxK8H22VmSVMK8UTdHMtpMDBj0iSE1Y+HR+V5JZ1QZCemL6S/PFq8G2erz/LSQ+m7N9spPjd74YGSdC1AjWlgMRqmDPTdA5XD9vQ2rgKsLQgMAZVFUnRKH8obVvm639F5qiLY+uXzna/WFj8nhEom5hR/IwQNIzfktKS2zv1BlqglDaNDq56ELqlyi/CLYzY7RURUOCtju6NHPEX1Atpf80nb+aTNlKNAOYe1aj/RSfPwyPW9LdSaW5Ov+lZZYvsj0e1JkbP0J6sqQRBFn4kWs2PwkGizB5RBd7oRwKKmjle3ADLoFwY+x8heqoHXwb0GiNy4cEo7cUSTm5QopRbK0yEwUaW2Axl3rMknXm8KJX7o+vLvibSlsBOLoIGC
- de0sReEu
- Fjxjp0uOH3voNX5urZS82da7hwAiwDrskMmoDoPN16NejIQ+sQkPs7XHqBr7Bp8gqWyNtgLHr/lCI0+uVHuxyOiUAsna9cIGiI5iuDvJVAg+jECX7Velw0OtPcxkarzlQf2n9CglpfcPdIzz5PM1Fqrjf84uZGmkk7qhk7mDAeQw2M+z7SVRgFATw0Ve8CJdfKQtAmd+ysH+yXoOVN2e981GEZI+8fusehfsTFiElDuv21mA/7hGM5LI1nJMI++23PV0B
+X-HE-Tag: 1755134098-182847
+X-HE-Meta: U2FsdGVkX18iDFmOYH/nZc96x3EXz4doasOHPcZ7SHVHErClD3vBLFns1KgefLidpRKUfn0V9zXLPxsxlUk0z32m8HnT8r2oY/Q+GQPIG88Gzsen0NqGKExMS8jOSL9YqUBJnJqVpfrjA3BFtehE6+TxUkMcdYLT8shNI2sEGqWiqc+lFOUJ2Z75ewLx2RXe/b6sOFQiFVZUeZmIEmFSIALFTqEcRv2hbk5NsWuVTaJO6aZwvTmkM80GCQwWwk3sYRxEnvlP47qF+JMoQzrDTPWqoXgCSA5SD1ScBfJliCrCFIys6SiF68BIFzZ6zMY2/0vDkz1ABe75Z6AbpdYookUWmieQCY567Q3xMYNIbeVcCV76SnyWRasrXiGX/im5wMhgPvdA/7FMd0Z5wzFZiC15WHN3BfkDFQ7oRryBAH4JmgJYswHa4LxpJFIvbUodxPQy0C52mTfHSMVAC/XrWJGk7eWYxdazifyLzF7MmN2AjMveZNSCv9t626bS4wdPS3KlYC7b64GOY1wFribP2G9UF+EFEKovfCKAj9YbnfsQGvnga0jKmT0bAN1a3fufbNxzypDVjCFi/c/QQEzc17h9CDK+z9R9GSd0NMPsbvnaOIabmvXK65pbgjACoQqMqayDoqV/UJn+2mjdh5zLEFQX57AdlMbNvdAbfUbe4YJwuuuQMxwL/3rbqqLyTuWTW2I5RtPcbjSDyXrSLQuzb7Dy7aMspnRM/cmp6E+1qYzoJf4Nw7Ky6M/PRYwewa928fu04JK1mpqPXfqEkBVfWkX+nKLBSgKH+Ua2BdBiBnbvKsUhbkL6UsUs+YT0qYJSdHIblWz6toae8H0BQybTRB/bKdPzzBWiofYQH45RbOJ4EkaRJYnHcTlJ4vjQV9e3G67KmHjYHV+pJ4E81WlNIJ9eExL1xZrMHafUZQ99WpwJQkPsv4ax4Z597zxZiVfWw1np33pGE3+6dg+di1B
+ 63ayJh0w
+ Psxf96J15ilwBCJx3Wi9auCK+yhnZnDcMrEJgzC7dh39NYFwUSMCiKG6V5/ocZDbYazqvSO6YKK58ewOcguH+ZBqiY79eeiir5ODZzhAflzWGdLNvSyDuyOPut2eufGBcomgj12tFkyZtMWSlzrkOT57SLISNac5B6Ru03Q5L8Q01gZXckQ3AzAz2RpzeumMfiGhV7ZhhPoi8cAVKSzO8TB35PjVVDLkmYAvIj+K7L9xUvaYbG4W+UhvmDsFSFKy1idmchm3+zCRtu8rQypw9ivAAZ+lWzX2B8rMYZVLb8dJtP9QhC8INlEbGlIBj/rAzJH4yF0RdlQjLLdZ8RR3xxfouiBF3VUKCbTs5jH78+74v4Q1ZErIpGXb8/TfNJ14sa1JrPHJ5nnwi86yUyDRzXdvXFGXbvWJr4eSzyaHEpkNiFH4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,56 +105,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 13 Aug 2025 10:25:44 -0700 SeongJae Park <sj@kernel.org> wrote:
+Andy Shevchenko wrote on Wed, Aug 13, 2025 at 04:52:39PM +0300:
+> > I actually test with W=1 too, but somehow this warning doesn't show up
+> > in my build, I'm not quite sure why :/
+> > (even if I try clang like the test robot... But there's plenty of
+> > other warnings all around everywhere else, so I agree this is all way
+> > too manual)
+> 
+> Depends on your config, last few releases I was specifically targetting x86
+> defconfigs (32- and 64-bit) to be build with `make W=1`. There are a couple of
+> changes that are still pending, but otherwise it builds with GCC and clang.
 
-> Hello Quanmin,
-> 
-> On Wed, 13 Aug 2025 13:06:50 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
-> 
-> > Previously, DAMON's physical address space monitoring only supported
-> > memory ranges below 4GB on LPAE-enabled systems. This was due to
-> > the use of 'unsigned long' in 'struct damon_addr_range', which is
-> > 32-bit on ARM32 even with LPAE enabled.
-> > 
-> > Implements DAMON compatibility for ARM32 with LPAE enabled.
-> 
-> Thank you for working on this, Quanmin!
-> 
-> > 
-> > Patches 01/16 through 10/16 are from the mailing list[1], add a new core
-> > layer parameter called 'addr_unit'. Operations set layer can translate a
-> > core layer address to the real address by multiplying the parameter value
-> > to the core layer address.
-> > 
-> > Patches 11/16 through 14/16 extend and complement patches 01~10, addressing
-> > various issues introduced by the addr_unit implementation.
-> > 
-> > Patches 15/16 and 16/16 complete native DAMON support for 32-bit systems.
-> 
-> Overall, looks good to me.  I have a few change requests including below major
-> ones, though.
-> 
-> First, let's squash patches for fixing problems made with patches 1-10 into
-> patches 1-10.  If you don't mind, I will post RFC v2 of those so that you can
-> pick into your series.
-> 
-> Second, let's keep DAMOS stats in 'unsigned long' type.  This require fixups of
-> patches 1-10.  If you don't mind, I will also do this in RFC v2 of those.
+I meant it the other way around: the warning isn't showing up on master
++ these patches for my config.
 
-Instead of posting completely new RFC v2 of the ten patches, I think posting
-fixup patches as replies to this thread might be a better approach.  I will
-make fixups first, see what looks easier for working together with you, and
-either post entirely new version of the patch series, or send individual fixups
-as replies to each patch of this thread.
+But now I double-checked, 'CC=clang make W=1' doesn't actually use
+clang, I should have tried 'make CC=clang W=1'...
+And, yeah, it just doesn't show up with gcc so I'll know it's better to
+check both compilers...
 
-And one more questions.  What is the baseline if this series?  I cannot simply
-apply these patches on mm-unstable or mm-new.  It would be nice if you could
-share a git tree having these patches fully applied, since 'cherry-pick' is
-easier than 'am' for me.
+Paul E. McKenney wrote on Wed, Aug 13, 2025 at 04:04:19PM -0700:
+> > I hope this to happen sooner as it broke my builds too (I always do now `make W=1`
+> > and suggest all developers should follow).
+> 
+> This build failure is showing up in my testing as well.
+> 
+> In the service of preventing bisection issues, would it be possible to
+> fold the fix into the original patch?
 
+Andrew just picked v3 up, so there won't be any such problem, and -next
+will stop failing after today's update
 
-Thanks,
-SJ
-
-[...]
+-- 
+Dominique Martinet | Asmadeus
 
