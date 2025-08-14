@@ -2,113 +2,101 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DD9CBCA0EE4
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 19:17:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EECDFCA0EDC
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 20:08:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6673F9001CC; Thu, 14 Aug 2025 15:17:50 -0400 (EDT)
+	id 0E70C9001CD; Thu, 14 Aug 2025 16:08:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 617EA900172; Thu, 14 Aug 2025 15:17:50 -0400 (EDT)
+	id 09D8B900172; Thu, 14 Aug 2025 16:08:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DF7F9001CC; Thu, 14 Aug 2025 15:17:50 -0400 (EDT)
+	id EA13A9001CD; Thu, 14 Aug 2025 16:08:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C09B900172
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 15:17:50 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DC5865AC4D
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 19:17:49 +0000 (UTC)
-X-FDA: 83776322658.30.90D4F2F
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	by imf26.hostedemail.com (Postfix) with ESMTP id EAD0E140013
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 19:17:47 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=DoxHu5Bl;
-	spf=pass (imf26.hostedemail.com: domain of 3WjaeaAYKCIsz92xD9v33v0t.r310x29C-11zAprz.36v@flex--kuniyu.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3WjaeaAYKCIsz92xD9v33v0t.r310x29C-11zAprz.36v@flex--kuniyu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id D6B92900172
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 16:08:43 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B0DE2160733
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 20:08:42 +0000 (UTC)
+X-FDA: 83776450884.05.5FC7E2E
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 07EAAA000D
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 20:08:40 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kLQWHfAy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of nathan@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=nathan@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755202121; a=rsa-sha256;
+	cv=none;
+	b=mY7PDjrmxbJNcdqK38duMwXnOx8hE7GppA8+m3669QGyfbFf2Sa6L2cmnperog9s3tc5KQ
+	TX1+IEJQASL2RTvSs7SbIxUarGqp4+4U+YyP1XEonlp3t9rcjwzljtaAFCNNi/W/UnvcyD
+	yp+v492ytQUEEcz2pEUisdRikdjlJxo=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kLQWHfAy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of nathan@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=nathan@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755199068;
+	s=arc-20220608; t=1755202121;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EZza0Qr24kX4zeRfch0J1JO+Vr53b7hyjzL3yynCoQA=;
-	b=tj8GCd3ZfWAnjGIUBXK0BydVL+myuQYx+pQ1YY/7Aq3Et8HzGRBFZuKwAJqtOFM2B4VoS+
-	z6S3dsr8pD1TWVfXQsIWhW/wb9G9c9ZQ1rYFbNKXCN8zgZS1PLttClWTBBRpSoUajeY/5F
-	jTOGaowge9xlHREhE0ir1Ov1Ff9cDlA=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=DoxHu5Bl;
-	spf=pass (imf26.hostedemail.com: domain of 3WjaeaAYKCIsz92xD9v33v0t.r310x29C-11zAprz.36v@flex--kuniyu.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3WjaeaAYKCIsz92xD9v33v0t.r310x29C-11zAprz.36v@flex--kuniyu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755199068; a=rsa-sha256;
-	cv=none;
-	b=m3IZMtFUUw7BWGGBitPuiZyxFJypMCSZKfHcVFz4wqUm5XQC7oNG8Y3MtfsxoWk1aQ5QiK
-	xE/Txqe4hZs8bF7YRxrKFIrO+9WscmvWOayUwgx/WUL+36mZ6IeIW4WgLn8i36vf4/RraH
-	LNzjayROcVmKn3SBDIoUcetlVy7ieas=
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b47174b2582so1841906a12.2
-        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 12:17:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755199067; x=1755803867; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=EZza0Qr24kX4zeRfch0J1JO+Vr53b7hyjzL3yynCoQA=;
-        b=DoxHu5Bl7CYBSo/6NNVWaUs9/w5zBQp797Tw8dnp0xeM0AvJDLI5S41vi6lJ549afL
-         pSAx02GGqPcSKKo2l8w94eZDB1MhU0qmAQFGOeHyggySX/3bUYt0YCe74i9HxPF3ez1R
-         dVW//sJWzwgnBLd6ajdOQ0bL0R6TRYHYgojMENy6crqC05pTixLTtIttddHY/3ycLQbP
-         9zUX7heNoldgmYszuRrPWZbtnPJ8a42YI+Tecz/arT3XxeeBc9sbttiCNsZmI+Lb1RYD
-         I27kFmuw4LooNF+EwB4PmZYutBEn5P1QAD3K1LV9WPu56MTraD6awIIuLhaRyMvf8ljV
-         mOIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755199067; x=1755803867;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=EZza0Qr24kX4zeRfch0J1JO+Vr53b7hyjzL3yynCoQA=;
-        b=SMG/HPUgb/8X03WuxK/MA1gVkbrg2PgOy0hncCo/qPzjHvg70AHnIsZJH9hf2aSjJE
-         iRe40tM83+b5WgQ/+SUjKBJZcDpwRpAlfiOP1aRvLGUjyGix0O+FieROnfdV6Tizro8U
-         9NV9n29O9UCuYAWJWHp9MSzA3lauVr7YwbN0vfS5hUAu+tvq5BbksZXXm4bHvx7eQ2oy
-         zgsvgcPIQhGIwHtOQ3zeawmZVfqsKTIQBCCCWCO2xRNuxRrN9SELrCIyg43kfKML8yGi
-         ZQ/4MwS9jxfYMRhlMdsTN7K/sSR/3iHlH/qZNxUeayWLFRd8XWD4jl720WmsB5O3NC1P
-         7Lsg==
-X-Forwarded-Encrypted: i=1; AJvYcCWjlA4YLHnxk17RzTnFyuOd9Dx6I4QbYVzF616l/eQmd/h9y1YVuUQ5uslGe1Tmv8X7y3t6fL2txA==@kvack.org
-X-Gm-Message-State: AOJu0YyLoUmcl1WUbimlPz4NIbNT4cAI48wfFCEN4i2PKTn0SHpVaPm3
-	Chd4lSg7RCBe6Hip9u7gANfNF5WaCS+6GI5aXMLbwQmsEnbKuq3/tV+XhJiANeOGp2HC/cZbmwl
-	J4gOLug==
-X-Google-Smtp-Source: AGHT+IF8M48EbLNDh3PUuZR9X+h4b9X+7Ma3XKAwBjlInmKrGPQbmdm3UVCpaMvvU/zhWWLLunWDR1msQ18=
-X-Received: from pfbdf9.prod.google.com ([2002:a05:6a00:4709:b0:76e:26c9:b2a9])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:33a8:b0:23d:d9dd:8e4f
- with SMTP id adf61e73a8af0-240bd238d7dmr6038674637.28.1755199066655; Thu, 14
- Aug 2025 12:17:46 -0700 (PDT)
-Date: Thu, 14 Aug 2025 19:17:41 +0000
-In-Reply-To: <ukfrq6ybrbb2yds5duyj2ms6i7xgssjsywzgknxctfgkpzupor@tjxbuiil5ptt>
-Mime-Version: 1.0
-References: <ukfrq6ybrbb2yds5duyj2ms6i7xgssjsywzgknxctfgkpzupor@tjxbuiil5ptt>
-X-Mailer: git-send-email 2.51.0.rc1.163.g2494970778-goog
-Message-ID: <20250814191745.853134-1-kuniyu@google.com>
-Subject: Re: [PATCH v3 net-next 01/12] mptcp: Fix up subflow's memcg when CONFIG_SOCK_CGROUP_DATA=n.
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: mkoutny@suse.com
-Cc: akpm@linux-foundation.org, almasrymina@google.com, cgroups@vger.kernel.org, 
-	davem@davemloft.net, edumazet@google.com, geliang@kernel.org, 
-	hannes@cmpxchg.org, horms@kernel.org, kuba@kernel.org, kuni1840@gmail.com, 
-	kuniyu@google.com, linux-mm@kvack.org, martineau@kernel.org, 
-	matttbe@kernel.org, mhocko@kernel.org, mptcp@lists.linux.dev, 
-	muchun.song@linux.dev, ncardwell@google.com, netdev@vger.kernel.org, 
-	pabeni@redhat.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
-	tj@kernel.org, willemb@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: EAD0E140013
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=pA9EdWV/SxLEb38C+RRUbVDtiK1nUI10k3NpYwO7o04=;
+	b=ef2MPn+c0n5NsmxwaW9Rycgnqo3j6Cx22a4lPE6iuA5feAbBYgsxAQpKoytgg/l6DbsMtW
+	dfPjkXOBzfyLA5s0dB3lqhDwtygeCW7ZLPuHLytLI6FknXiYUfImgHhekysfXeqgivwD+v
+	Rsbc8iuOr6u/t+T2t7rMxi4ANjL0FlE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 41DC1A55367;
+	Thu, 14 Aug 2025 20:08:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95B7FC4CEED;
+	Thu, 14 Aug 2025 20:08:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755202119;
+	bh=xcfeo2/DQtmCLjuZc4lx76Xl5JQ/w8kZY0rp9JIkZh8=;
+	h=From:Date:Subject:To:Cc:From;
+	b=kLQWHfAyHImX7AQXABORqZ+fce4DMi4GN3e/nOuAXZqUpBXuAcdoxb1yj21YyFJNk
+	 SsSbbo+jHBvRe0K2KYVLALgQvRFM25sMbVc3RoJQ/SZVMVJH7CCxH9PCGsxYwCPge3
+	 tGXwz5z5u4jZ+Q5Z8I3hktUXIXh0oPjA4WvjvQeyyxmok2BKMJBkP2gZSIOwAVaVnn
+	 Zk4p6budaB8J4G/Re3WeWMoCGHsK6p3xjMNYCNNlZmymL9EK5UWxSLVJ8fkOhJPc7e
+	 bzvhn4eIR0XbRsriNgnwmCauSOZaQ/yGuMuQg6Qy4LCBguxOjSGe5+1raWu2JnAsmh
+	 JGoSYw6WdQ25A==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Thu, 14 Aug 2025 13:05:22 -0700
+Subject: [PATCH] mm/rmap: Always inline __folio_rmap_sanity_checks()
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250814-rmap-fix-build_bug-conversion-v1-1-fb7b10a0b362@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAIFBnmgC/x2MQQqEMAwAvyI5G2hrFdeviEitUQNrlRRlQfz7V
+ o8DM3NBJGGK0GQXCJ0ceQsJdJ6BX1yYCXlMDEaZUtXaoqxux4l/OBz8HfvhmNFv4SR5Svwoa7V
+ XRTVZA+mxCyX3/bfdff8BMsVfxW8AAAA=
+X-Change-ID: 20250814-rmap-fix-build_bug-conversion-90441c036f42
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@redhat.com>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Rik van Riel <riel@surriel.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>, 
+ linux-mm@kvack.org, llvm@lists.linux.dev, patches@lists.linux.dev, 
+ Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2110; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=xcfeo2/DQtmCLjuZc4lx76Xl5JQ/w8kZY0rp9JIkZh8=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDBnznFyjnirtNJzLvLT5L9ed7A8f+fadub56858jRmacz
+ qxZM+UfdJSyMIhxMciKKbJUP1Y9bmg45yzjjVOTYOawMoEMYeDiFICJpIowMiwOmXTlu8aRpo54
+ X4eMDxbNXXsuWG2fNS/Myzx6dkamawgjw8Ef33ukomcenPzkfJ3xiasON7idLQ6t1jqe4unwpi3
+ pKiMA
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+X-Rspamd-Queue-Id: 07EAAA000D
+X-Stat-Signature: 5rgc5xc4i7384x8zpojhfywt3si7s9a5
 X-Rspam-User: 
-X-Stat-Signature: kgbcrskq8bhoxwh78k7jphxwp15tp9by
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1755199067-506394
-X-HE-Meta: U2FsdGVkX18vm3EDO7h5Jc7EOwsub44zYHvYl+6iELLEW91X7LkKuynN3mS1iqt5lFz1FUK/QPYvUafJkks7ZKeiBLuL6NgykiWi9TDqJyzXis1d5HbzZDrUWTdiE/C5zaKCnHbjZlm8nx9eNoTayQHblw+jDetB+SHSvt+cx4QrQmfx+6bsaS0tXn7gIXBu/gLWDDnyRNas2qSBS/vt0PyuKZZ/JVzxxtIo4DSpI9bqENoF1hUuXsZ1waUwnGrvzAG43X0M2mDHqCERUJxyDnhUjfBUprTsNVIhql3KEx+uek2OWKJQCtWCPLXn9FhcWq85xIR36pmBzMvGT7Alc03uYTEz3ZJA1FcgJ2Py6hxisR2KAjyCC3m6lXJ+jlViNeQyL7iEfscSS9D6xaV6GIjC+akCRIOfLtIMSbh2GXFdSIvvD6/+ACtV4R5+on9WEwzs3RKzs0x9vCpKfMDRUoVQLs+p+g+vh+7TsQHp/KutjVMzVbiuB4Z920rjWRmm9iIpOAL0GnGHFJTKiiOrSF8kr5GcI1mTrU3Mdq8xGHt2dKztHvIg6Fc1c/K+oxEs4BBj0MuhpVPbTaXHwumZlEmzmAtWaa4yGl7ze4e6ks6xSRlzVfvEjPrrnpIewWHp3IUOne94dsl7Gc9Tb9fyjC1ndSu+svkNwqu8CAZ4CsXIjEoZOjX6A5Jm+VVtE0KmNauBupqY8P6QJCWiSjh3fEfmM0KsFI2RdrMA62y1Mc1T3SAoFvQH/38zxYdbBKabLW39XAzaToz/pW753NXJSpmiK5RNLPf4M8bWZPIwhEuXEVkC940e6VPDbm+7NxL5OGRCe2bFO4dVDPqJKwysCILzM5Q6WYWfp5HxYXR2W7sMkWoOQRam/Ft8IQLmYDQV4rQwBhFWimasDQzaJHY1CZII11DCuunx22c0m18maGFuPFBLAGDLEQEMWwVP84k5XzA8rrBOCfDCnswz9vJ
- 5ot+uemQ
- J1+1gPmAA//lpfMSbsUZfqprIL9QwJmrYQu3eEvmZqMDbkUVyMMMR2ikvjvNg+tMuAyJQQ6XO1cPb9kCuXtpQiaMseOasr0kNHANgTqQu5xqsHvTFOGVk/RofQ+pe/THdBMk3Tc9LOJQ/VimALs0uynamezw1nFScqngLBtcRk+L78YcdzVsOOEsk6Qto78i1ODMiU+s5EsNaHZcW2vmU+qxm5jW5wpvrhjlqXG9pIvb4lClD0VxNFNo0NSJcWDXwj2uYrfz0K9003Hj5ezCH7THPLO+RWvo3526VczyE0li2k1Dy1OzulyORYdB2dlLqpRHRc1sXdsMee0m/X8N+7XO8F8ROEpt/AxMC9Cg8NYhdtFahUeOCRRfaOODW6NQARiHAQEMhkO65IYGQHRB7nrP9VsIFNa6+WA4/3Ht++uPpQCehmAhijVs93lapjfEBT8eKF3IG4yy8dx1NS6Sxu5FkFBUrpYmWX3t3z0vaE34TqF3gwVXAkXp5Q27gLFxZ5zNAOV01I1wu8kGEFZDV6IH7h+I5PyGdOm2H9KXR5w4SGHWnsgez/A3n0eV+KlhMYPhSny4ybt3UfLy9y0I8ks9nyzR7MAKZgovUB3EZQp0F00y/ksClCxEcU+w8bM7RCkHXmL2x5D41gSM=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1755202120-362379
+X-HE-Meta: U2FsdGVkX1/FHRKL6hYGQEpFoEzFslOvq6XO7tvNGbRAvyGW/a1OUvphcqAYG8NkwgrDJJjznm+OdXAHNlYJb9D3B1jPIM1hbFNhBViFhyBdlHaO6O9m84GKdTgmK2H6uU6lEYN5qgeyulOTd4F8qK/+EmoYkoHGimpbqmX2yXUuoOElQmgY/qniaGQ7bi5pQIzquxrK2aB6Z4csetF5gdAmMB5+YyNn5lLg2n4z14pKcHQI09i4nwcHqeRnJJMBXQ+9w9g6PO7Yj+FFKYQD0VTefWL4BVOE2niZ7P+xV+5otyaRie+ZJUHP1eondaHAEUX6xVYAT4fndGdwbMlC90KG0lKYRd/ByHkwwonb9cKvyCCN8PSqsnA6VnTJc2elQEl9AoDZ9n71X4C+fvLEDlLSINx27eFFx91XAIapfF5LlmzdseZUDV4Ivy5c/sS9k5QbGx5XQ80Djawangha7pF1fIuXSP2hMY7B0kbXjIzlgchdDe/Ymsj2IJRcEZAgXnWgJQAhEGJcGEJEC6E9CsGFCHAgo4GJ2ya/vIDvAJOJBUG4P+LPy/L4d3SMUqaL2qgSjtTHFRU7sqJ2J9a/3gbPVfzo4TgYSlW+LSIVXB8IWj5hoD43SKPIy4baOS/iiIJHC/hhtl/p5/e7g0/SznFAvZJBYKjlr7klM7erT2QNnx17S2tKAwhWkfdbGCuiQdhTXxXTb5Og5XF7+0MEGkFdcIaslDUXHR9hkczoy9LaktzOIr33kwxbxtM7s0besM76lSBc2MWyqPfmY/iGr77x0jPBnedsD9Fo1rsrOVdZklFunmQ2JbYL+Io3qmfC5/UYrA6KTC3LTgticV7VYQKc4KZJc9IPk+pBCtN4mZQt6Y4JKnmw3DO7DHDGn1jgXUVkMXVnXKpl70xJ4SwbHe2bXogTyKJYbHBn82feCIlFJFSW904kAC8b3Fx+Bk0oU8XPP78+NLHpwSySJQk
+ EPsD8vG8
+ h6YP3bffSCxeRXtkJGOSIbbn7bFwqKG8DFa2UEuajcvGZzxn6MxlPsGdavzXAmnlW/869/X/Fn3U6eszZevAni4YqyJ8w5o2Y22s1NnllHij+TnghpPGbDiAF67KWcZI9FQoaO/QPx2XJXQ50o5PUpRzd6dppdGHPM0eXsiNOZAqWARnkgrd40UnxxE7NBNjMIXwX8DPUmubVagvJzbbMe19zhwtavAeFyIIJFpFRU0BRyJRCrc5g7oazVsuSejL2oUCmOr0tJXf5LjaLqp6507pKlppSzJsCewMI
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,101 +105,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Michal Koutn=C3=BD" <mkoutny@suse.com>
-Date: Thu, 14 Aug 2025 14:30:05 +0200
-> Hello.
->=20
-> On Tue, Aug 12, 2025 at 05:58:19PM +0000, Kuniyuki Iwashima <kuniyu@googl=
-e.com> wrote:
-> > When sk_alloc() allocates a socket, mem_cgroup_sk_alloc() sets
-> > sk->sk_memcg based on the current task.
-> >=20
-> > MPTCP subflow socket creation is triggered from userspace or
-> > an in-kernel worker.
->=20
-> I somewhat remembered
-> d752a4986532c ("net: memcg: late association of sock to memcg")
->=20
-> but IIUC this MPTCP codepath, the socket would never be visible to
-> userspace nor manipulated from a proper process context, so there is no
-> option to defer the association in similar fashion, correct?
->=20
-> Then, I wonder whether this isn't a scenario for
-> 	o =3D set_active_memcg(sk->sk_memcg);
-> 	newsk =3D  sk_alloc();
-> 	...
-> 	set_active_memcg(o);
->=20
-> i.e. utilize the existing remote charging infra instead of introducing
-> specific mem_cgroup_sk_inherit() helper.
+Commit 5e901e249ad1 ("mm/rmap: convert "enum rmap_level" to "enum
+pgtable_level"") changed VM_WARN_ON_ONCE, a run time warning, into
+BUILD_BUG, a compile time error. After this adjustment, certain builds
+with older versions of clang (such as arm64 allmodconfig) started
+failing to build with:
 
-Sounds good to me.  sock_create_kern() is much larger than
-other set_active_memcg() users, most of which just wrap simple
-alloc() functions, but probably that's okay.
+  In file included from mm/rmap.c:63:
+  In file included from include/linux/ksm.h:14:
+  include/linux/rmap.h:440:3: error: call to __compiletime_assert_890 declared with 'error' attribute: BUILD_BUG failed
+                  BUILD_BUG();
+                  ^
+  ...
+  <scratch space>:21:1: note: expanded from here
+  __compiletime_assert_890
+  ^
 
-I'll use this in the next version.
+While __folio_rmap_sanity_checks() is marked 'inline', the compiler may
+not always honor it, such as when sanitizers or other instrumentation is
+enabled.  If __folio_rmap_sanity_checks() is not inlined, there is no
+way the compiler can eliminate the default cause.
 
-Thanks!
+Mark __folio_rmap_sanity_checks() as __always_inline to allow the
+BUILD_BUG() to work consistently, which clears up the error.
 
----8<---
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 8dd7fbed5a94..450862e7fd7a 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -5006,8 +5006,11 @@ void mem_cgroup_sk_alloc(struct sock *sk)
- 	if (!in_task())
- 		return;
-=20
-+	memcg =3D current->active_memcg;
-+
- 	rcu_read_lock();
--	memcg =3D mem_cgroup_from_task(current);
-+	if (likely(!memcg))
-+		memcg =3D mem_cgroup_from_task(current);
- 	if (mem_cgroup_is_root(memcg))
- 		goto out;
- 	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys) && !memcg1_tcpmem_active(me=
-mcg))
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index 3f1b62a9fe88..a4809054ea6c 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -1717,14 +1717,6 @@ static void mptcp_attach_cgroup(struct sock *parent,=
- struct sock *child)
- 	/* only the additional subflows created by kworkers have to be modified *=
-/
- 	if (cgroup_id(sock_cgroup_ptr(parent_skcd)) !=3D
- 	    cgroup_id(sock_cgroup_ptr(child_skcd))) {
--#ifdef CONFIG_MEMCG
--		struct mem_cgroup *memcg =3D parent->sk_memcg;
--
--		mem_cgroup_sk_free(child);
--		if (memcg && css_tryget(&memcg->css))
--			child->sk_memcg =3D memcg;
--#endif /* CONFIG_MEMCG */
--
- 		cgroup_sk_free(child_skcd);
- 		*child_skcd =3D *parent_skcd;
- 		cgroup_sk_clone(child_skcd);
-@@ -1757,6 +1749,7 @@ int mptcp_subflow_create_socket(struct sock *sk, unsi=
-gned short family,
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+I assume this will be squashed into
+mm-rmap-convert-enum-rmap_level-to-enum-pgtable_level.patch so no fixes
+tag.
+---
+ include/linux/rmap.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+index 9d40d127bdb7..e8aff6d2deda 100644
+--- a/include/linux/rmap.h
++++ b/include/linux/rmap.h
+@@ -394,7 +394,7 @@ typedef int __bitwise rmap_t;
+ /* The anonymous (sub)page is exclusive to a single process. */
+ #define RMAP_EXCLUSIVE		((__force rmap_t)BIT(0))
+ 
+-static inline void __folio_rmap_sanity_checks(const struct folio *folio,
++static __always_inline void __folio_rmap_sanity_checks(const struct folio *folio,
+ 		const struct page *page, int nr_pages, enum pgtable_level level)
  {
- 	struct mptcp_subflow_context *subflow;
- 	struct net *net =3D sock_net(sk);
-+	struct mem_cgroup *memcg;
- 	struct socket *sf;
- 	int err;
-=20
-@@ -1766,7 +1759,9 @@ int mptcp_subflow_create_socket(struct sock *sk, unsi=
-gned short family,
- 	if (unlikely(!sk->sk_socket))
- 		return -EINVAL;
-=20
-+	memcg =3D set_active_memcg(sk->sk_memcg);
- 	err =3D sock_create_kern(net, family, SOCK_STREAM, IPPROTO_TCP, &sf);
-+	set_active_memcg(memcg);
- 	if (err)
- 		return err;
-=20
----8<---
+ 	/* hugetlb folios are handled separately. */
+
+---
+base-commit: 6bee0462de1f9f4fa9400f153d3b0792c20d7111
+change-id: 20250814-rmap-fix-build_bug-conversion-90441c036f42
+
+Best regards,
+--  
+Nathan Chancellor <nathan@kernel.org>
+
 
