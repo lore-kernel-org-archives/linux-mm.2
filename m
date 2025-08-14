@@ -2,104 +2,131 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2267ACA0EDC
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 11:45:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D303CA0EDC
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 11:51:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A149190014A; Thu, 14 Aug 2025 07:45:53 -0400 (EDT)
+	id 1BCE490014B; Thu, 14 Aug 2025 07:51:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9EC09900023; Thu, 14 Aug 2025 07:45:53 -0400 (EDT)
+	id 19488900023; Thu, 14 Aug 2025 07:51:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 902AF90014A; Thu, 14 Aug 2025 07:45:53 -0400 (EDT)
+	id 0AA6790014B; Thu, 14 Aug 2025 07:51:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F529900023
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 07:45:53 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4AA1C1A0649
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:45:53 +0000 (UTC)
-X-FDA: 83775183786.14.4D5D304
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 7F7E1C000D
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:45:51 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OPnGEXsm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EEADF900023
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 07:51:37 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 69D2F116D8D
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:51:37 +0000 (UTC)
+X-FDA: 83775198234.15.479FDFA
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 6A3C32000A
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:51:35 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=E5p9hhdb;
+	spf=pass (imf03.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755171951;
+	s=arc-20220608; t=1755172295;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W8UKMe/BMa6O+mFHq4Z5RP3mjo6LhY8rsjitVFWMaek=;
-	b=j6xqE9vero8FIAIbYfUeXHeW31AIFJabtFO2h0FPZVaZmJ2tsUaaU/sXwR8DTTzAPy/L4O
-	Q2y76dTDLVFKBsaEIZMh6G72YNvktmaBGmATpIGqL+LzPH93tJZsSfxirsAkXAu76sypqc
-	TkkCWAE4sMjYHVfIgbnwG3z+ns2TfMs=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OPnGEXsm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755171951; a=rsa-sha256;
+	bh=6VnTFOiEQ/KEA1BYExh4enVyNJmydSamaAd1v3h7zMU=;
+	b=QXF92FPzJ0e4UByf30DdHhqYkw0IyaapD1T6YYatA+6Ce6XxTBgagSDNjTgDPUO+EGmiCB
+	lEE4GeA1vFNFffqOehxJ74AV289CABl71gTX5e7h8kCxGQGZ7RkhfVpIPwXgbaKcVCcYQE
+	r7+j2UqeO3w+l2dr67zdMuchfrFFoqo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755172295; a=rsa-sha256;
 	cv=none;
-	b=MwnCkjerD+fTYXUAsyD9Xr2v6DuVlvaQlvl44n2RYy1HK6hj5yMqSlV5gyUNWenug2uQst
-	4GZVytXzR1M1NiYFkf8Nfsk+nvM8CKiwVNNDX7UZeMr1d5v4iJxrtzAhxV1qoDr8nmwpNU
-	S2D6zOrMTy2iDCy2OSl3OOKay1GXoh4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1B6FB4375F;
-	Thu, 14 Aug 2025 11:45:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6900C4CEF1;
-	Thu, 14 Aug 2025 11:45:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755171950;
-	bh=FexkV7nvaMJKSQuSjt56VRn1ropgn6XWofqYu3VqSl0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OPnGEXsmQefCR5XKxWgB20+CdEPRHLpwVjZ9QqpgyiEZ/0tCDnmajIc2xnznI+BzQ
-	 Is37m5tR5w39ME0RZCAMaBBsKQRSYqMs9a9tZjjyQriX3RqQOr5IihltzPkGu3m3Q4
-	 vZTJUJH1TKkWTXuh5TamQ5xvr35SXOixpW9FVi2OiCGYyXHmfuOj0dXi7B8UQAC5Q+
-	 zxQk6CKRtdavLtwGvB7gY6HSlp4w30N0rA/eF4w9gIis1iaNFxzbmJZsXiOQE7bHUr
-	 9ZJMetEeDzQbchb9v2/vyLtoHZnblpw/SncrzFzAA5/Uj9OF05Wi8okNIKcTLXJXu5
-	 tNIXry1AK4ePw==
-Date: Thu, 14 Aug 2025 12:45:42 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: David Hildenbrand <david@redhat.com>,
-	Usama Arif <usamaarif642@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org, corbet@lwn.net, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org,
-	baohua@kernel.org, shakeel.butt@linux.dev, riel@surriel.com,
-	ziy@nvidia.com, laoar.shao@gmail.com, dev.jain@arm.com,
-	baolin.wang@linux.alibaba.com, npache@redhat.com,
-	Liam.Howlett@oracle.com, ryan.roberts@arm.com, vbabka@suse.cz,
-	jannh@google.com, Arnd Bergmann <arnd@arndb.de>, sj@kernel.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	kernel-team@meta.com
+	b=dkGN1onk4ygtTY2z5mNhkiuahHXw1s0wBn2+tdhkn00Z42YVQFaAxppVF6152Lj1S4dHrT
+	OATTvxf9tmhUO9aHPlgSg7+LLYv8PDOTAEoTNncd5ZuQLpNGFc5vzvOHtY6CDI3QQ8kWMy
+	CYx2WGzc7WRzvhNn+suCN3t0qPok2X8=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=E5p9hhdb;
+	spf=pass (imf03.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-45a1b0d231eso4558795e9.3
+        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 04:51:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755172294; x=1755777094; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6VnTFOiEQ/KEA1BYExh4enVyNJmydSamaAd1v3h7zMU=;
+        b=E5p9hhdby26miwfiSmdm/onftAeQW3HgArtecr0NBE3DWL4CmfQJts53ZIzd7M36oC
+         +RsB3/mKIGYL/mlboqVsGYxJlioyeC227uKa8krPLpK7ez2LYwTTKQAuS3s4QWy2LSpW
+         PKPYFT6PRcIj0VVO6zcRgR4gcAdhZIaKe7hllb9PWCZhcUXC3w++X+I9N9EnPCjghhuD
+         0+TFgx7RIH4X9jYrGyY4oPzYuRIfrSdOsVPaPBfbUNQeMNUAROVwxqAzmGMiD/aiFcd9
+         r/KDHPFAu6u7QaVwGvpbJ46lRDMXLq6VopnQzWzvAL11VDSSLfmGSFHl3Uzt+1ZWllmp
+         A2Lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755172294; x=1755777094;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6VnTFOiEQ/KEA1BYExh4enVyNJmydSamaAd1v3h7zMU=;
+        b=VK3lZxPpFYVvBUT3t5bahvcb2rFUMdRkFo4IxWtnqGItzNZmQ5TgV0Cr6q073ItmNy
+         84+mZjW/xZlTSF661sOUGS6mIgpV8tyVy4/+92hRVHq8eMIFzqAq4d0QuSl3FAxNqSLR
+         ENFKFf4jvFHJwOEAK6TP4TZPGFZMtg3NA7j5pKSoOMFOXnjCdFIpgpI8BEpDerkSy81j
+         7eQIYKWtNKeCwHFTi0wnmQf6EJ7SfbEemVeBgAyX5MI7q+c4vr3TwCO/C7krkNzyn/5q
+         QaJLnx4UPEuqG2npfzvKOYcuzZMfk5UG1PJVDoCgoUZCZtnefGsBiVYexqCpKgPBzUi6
+         TeXw==
+X-Forwarded-Encrypted: i=1; AJvYcCVN3O4rAvonBkJfWb1W5f5aGbFoJYgWZYEC3tPahC9bajPtXtTdR9Bns33Zwb5DY5Z+UB2YiG1I7w==@kvack.org
+X-Gm-Message-State: AOJu0YzA2HWrr32nUoAlPhJWLOaoVW0JYvyNJKSL2dc/xj37kcUzN5Uo
+	4rb6ei0nC/rFOgzwowV9zuHUzUgapm0FLCS7cIAaDT/i8wp1zNY9EZE6
+X-Gm-Gg: ASbGnctDATbGmd6+xb0O7IUN5Oykc/MMu/RvYu7Rcy/SauaznzBO5+pLC/ea46BbLWb
+	1ylVIxW1bSBiiLg5748omkW7j+M+CdKA12fX32VRmjPEWk/Hcl4rsII0mBs7vzn1ink8bYLD/qt
+	8sAQpv3fWwRkp8kb94cgDPWm/Qlmt3hmkLBvvcTYkuTyvEXX/R9FTDwj+SuyWk3cU2kSTOFa5Ht
+	/z3A9v3PFFDpG+7LGsE2fX2OWupzWXFDmb3I/0dAFcimAjHrBwuEANUArXpTOpFdpJ9bUkDSkYL
+	J/m20AIX/pvqaZEjNp4OHr1P0OVJN2Tvz5NKzJ1EeVbCMDKtz6nsD77EI2nwZ/jl9IkZLVWndaz
+	ClLT+bb4VNdz4I1uVRPShbpS+KrhGZ36s3/WzimFvVFwqrYmsIIbzbbeO1CQ6aaS547FR5EMGlU
+	exEzkP9A==
+X-Google-Smtp-Source: AGHT+IHthldMbcpzDbaJ1GGbyBIqgCUgRr8Aa4x6eTmOxq4YHMkcIGai32HHy+wWjTZMm4tR/4WApw==
+X-Received: by 2002:a05:600c:1390:b0:459:db5a:b0b9 with SMTP id 5b1f17b1804b1-45a1b67a215mr16749815e9.28.1755172293482;
+        Thu, 14 Aug 2025 04:51:33 -0700 (PDT)
+Received: from ?IPV6:2a03:83e0:1126:4:14f1:c189:9748:5e5a? ([2620:10d:c092:500::7:8979])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c3abeb2sm50579340f8f.11.2025.08.14.04.51.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Aug 2025 04:51:32 -0700 (PDT)
+Message-ID: <4d23ba51-e8d8-41bc-8d46-a7bccb4c3c20@gmail.com>
+Date: Thu, 14 Aug 2025 12:51:29 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v4 7/7] selftests: prctl: introduce tests for disabling
  THPs except for madvise
-Message-ID: <b433c998-0f7b-4ca4-a867-5d1235149843@sirena.org.uk>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: David Hildenbrand <david@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, corbet@lwn.net, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org, baohua@kernel.org,
+ shakeel.butt@linux.dev, riel@surriel.com, ziy@nvidia.com,
+ laoar.shao@gmail.com, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ npache@redhat.com, Liam.Howlett@oracle.com, ryan.roberts@arm.com,
+ vbabka@suse.cz, jannh@google.com, Arnd Bergmann <arnd@arndb.de>,
+ sj@kernel.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ kernel-team@meta.com, Mark Brown <broonie@kernel.org>
 References: <20250813135642.1986480-1-usamaarif642@gmail.com>
  <20250813135642.1986480-8-usamaarif642@gmail.com>
  <13220ee2-d767-4133-9ef8-780fa165bbeb@lucifer.local>
  <bac33bcc-8a01-445d-bc42-29dabbdd1d3f@redhat.com>
  <5b341172-5082-4df4-8264-e38a01f7c7d7@lucifer.local>
- <0b7543dd-4621-432c-9185-874963e8a6af@redhat.com>
- <5dce29cc-3fad-416f-844d-d40c9a089a5f@lucifer.local>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="HgKF1GOS9//9I841"
-Content-Disposition: inline
-In-Reply-To: <5dce29cc-3fad-416f-844d-d40c9a089a5f@lucifer.local>
-X-Cookie: This sentence no verb.
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7F7E1C000D
-X-Stat-Signature: bw4487sjsyhyg6669ckgwqha94ph7pu8
+ <1ff24f1b-7ba2-4595-b3f6-3eb93ea5a40d@gmail.com>
+ <a8b0eb8d-442e-4cfc-ab79-3c6bc6a86ff0@lucifer.local>
+Content-Language: en-US
+From: Usama Arif <usamaarif642@gmail.com>
+In-Reply-To: <a8b0eb8d-442e-4cfc-ab79-3c6bc6a86ff0@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1755171951-761038
-X-HE-Meta: U2FsdGVkX1/hg9+OxExMV8n4LNAOLh5nUWPJ+zEdAQr+PcA1BaFITeXy+MrQMp6ly2gfCOQRdRmXTgjfNUbPw97NaLicVLhk954jz1gRmmdvBv4xA+IAsOzdkTcu+mYKABAUvvks25T6IP34OBsJNsG8Vs1owSeOufeuxRluaJ1QqQxvnRP4M4xR+IyAN4qvs7MCKnuC7I1ofCGSB4YoAVUJTk4QrKiSkhC2MtiishL+JMuT1KA03rxKiHdt9ENzz6NCpzPq6x3WZ0b4U3WG6uFRgru4JbE/83d18lmcS1dkFF3ADh7hUxSk2UAR83xU73xx6K9yqBI9J93Yn4+DaWJAU2cWVlFAVpfzCNAcMMnQKlFM1cBE632mn1zaI/aZt9E6rtkIlKddCfwOZB3LSSJGXc015XySpYb7ACqhldV/ljEzOrGmiCVED+H1pE0a8tpUbvq70MClf0If3lghPWe8EEq06Ky5TqbipbQTGOewzR2r6EeIULVhYGG/eOit/PDgy31F6OGI9avF7CLq8o9mpgwimFbdyjd8f51YzYbymkw0bHNKMHLoxiLEnXl/HFSlI6fJxrjnXNWYeeTieN5yg2lOt4GMohu+f5t4eYEt0PzUiKYTSb2HQRtc8oL8C4YTjy0MTOejmmRIiOl93+90+DpmvytyjCcZ8sOFerjJSAEqaheYkAagW+x9ucza9Pe0yjXyxj5TLkwI6Ptoxjc9uOePjli8YU0mv3qUutXnckeOUnCLG3miFBNtNC6rpNuU9e19RAsq9rilqnM2FsGIYIjG0dBlmHdyNd4FFbQtr/umIdPEb4MmKMmFQw2QyDRNt6xnw5CX2NP+22SbsTnuth7weGRXriwuoWG9sR5ry7c02/yihD31+o1lbJaJ8dstFE8M2tUyQZMkHBdrWDhfEb7OvTTjHznB2ZMU2gjLKP4JwcwefI/18JXzGEZqZnVsN4SPP/71+rqTpia
- HYwUg8+2
- LxFZJRFFpTfA1fT2dMk/XFQmusMIrdUqkd14/IKHrAudcFL2AHhB4CsmNkxMidIae7TA18PdfMLTGztkWksMPvk4K6X2/hy9zdfUgPoPnamCl/NvLtqoGwhzgJJhvxS8BmJBNVRIWJOT8A71jCP2KLKv6L/YTLMOCheIy7ytzc/UQHhLQ1WdHaiyuhmQ3tI6OUsek3Lcl35de1nCUunxccw/OMyV8xAhkexm7yFndJJwWmbDYeJG5VAreycDhcyikAnG7e0z1nWYEeNJvqpOHTXAZQEqN+hCTDIWy7bWnd6kdpYSo4MohRWd/AazXlnI7feuSDih5qFzVo3gQoLsJ0KdGkNHVZoj0F9EipA6UBw01gT7PwD97Gwjqap38ZGMjaHzk
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6A3C32000A
+X-Stat-Signature: zu8rob4hguy8q5dpgaoaejaeq5iyn367
+X-HE-Tag: 1755172295-88630
+X-HE-Meta: U2FsdGVkX1+ZEcYJmUZ3FOFnHff9wS3XNq5CcyI1iTi1HeuVzxZWZieFk9xRin5G/r0C/MyUdkw+niTEWFYpmoga95r7d5/srmCyJb+0aWnR/Ts0FyXcbrlwgqD17RNO8MKB6ysTFCqayutcmwBx64T5F9zL89A1Q+DDhtymc7DX2X5FB7xqIfrYBm1xZFnawDuAyiU9qMWsxKREXFu989qHBKMu/ul2DA1qf0aszlnbgB0PSz8m2d42AZ/HWVG8lm3izV7jpkQhPt3AMgoVdgXAb5JTpuBRqDE8ohLfgWQ5DIyGOws73Xqcjvq78Zgh2NvFVhy6Z6ASLOA9Ju5pv68GRwhdjOnGK/8TB1JnEqiZ4XVAmEiEsn4pxar7330XoBt+mCDaABEPRyC44scvDT+Bez0/sryRYtdq1MOyuAeJ00Vup+uTuFVYCOGPBEHD80vjPypVZPGOH13yfunuiNJzpJLUxhAh+S0TxGpEKlCYX3JOLCqczSDqL2GiNdWlqwJ+aS6HChbWcQq88rlRriqTEfAXb+VAAE2vabSFeiH49HOc/RfGKV+iCw03qw5y6LsVplkEQ5svtxjUllPYHQDg2XN9KiAXWmDPxfnNQSHncF4Ctx+RmYnAWqEn+vkKqv3MV3jqAsdqqDGdQion0v2I1dm/2ALaDPnQFxYkzNUYtCkZzW8Ni3AJ9wg04TGcillPXaby84U+9IFrOUbXQpUY7WLv7y005JRr7Bbt6WAmE4Aqv56aXqr5Vc8kJ4NSRdzvEhDjjnT5TSUD4h0s9H3FtJ218CqzTTBmDZhmF3Ov/VSYwnHfq/LiWKv7C0t8JJ5HaNwX7diZKaUj4CosKcvX43N0mpErA7+G/ny3z00sD0X5CEjPrOZtK+e8PZz+AXsZb9WtooiaMEVj8pKYqb79jyNGbx/4oXakZxMxLXNHdIYrelDsSuzdbKSnt04eLspwTd6KPEQjzYIKkA4
+ xYdKP0yb
+ eq+oQa7AcmBOwRgc8ZM3UfcMYEJnJOpM3SGoBvcAJqLxM0qurMN4ZLQe7iHssicBFM0XaEZgZ7tc4Pl/58A80u2IpSEe2VBo1ublhNiQYlyam20EswanwJ+TMqCJNJtQQme8Q+XoTXymFXmuWfgxsDbvSKUAjPqtJyBVj9T9PZ/33QUcIJi6hTj+Ts3CSPcJXUPRxosQLrLmyoNiKvJaL/wkORNRjap/jA75IsWV1JSLMRnGyxT/u35l+x3RUteIOcRiFQE0kDdmd0MJ0m0LdYxml9qSJ4KyhMSSULsM1i5wykwaFTWdyqyDGxy1/05H8fXndAGlfFElPfuIctk/KqXjy3+3DeORzOY6NdmbHMvruTc5IhFJJq+Tk7N7fAVS6WsQN8v8kgORBn4jQkKi6TenfJW2mZFacL235d1efIoKJR9Qu7kX1dKco9lC6EpzAVSbiHTovmrAuuQv8CRMDB05oj7lGzTaWdEPJMQmqCLYKU16TzHwByfsDzb5lbrJAxyNa2o2uAEAV6ZZZyS7XgCcclqKI772Hr59HXfNkxPNss74cSgii5NvTleGm0lVtNUUg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,61 +136,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
---HgKF1GOS9//9I841
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Thu, Aug 14, 2025 at 11:49:15AM +0100, Lorenzo Stoakes wrote:
-> On Thu, Aug 14, 2025 at 11:32:55AM +0200, David Hildenbrand wrote:
-> > On 13.08.25 20:52, Lorenzo Stoakes wrote:
+> 
+> Why would you move things around though? Think it's fine as-is, if something on
+> setup fails then all tests should fail.
 
-> > > I can't see anything in the kernel to #ifdef it out so I suppose you mean
-> > > running these tests on an older kernel?
+If its a "test" itself and not a check, I think its better if it belongs in TEST_F and
+not FIXTURE_SETUP.
+But yeah this is ofcourse going to be the first test, so if it fails the entire thing
+is marked as a failure and we dont proceed.
 
-...
+> 
+> Cheers, Lorenzo
 
-> > > But this is an unsupported way of running self-tests, they are tied to the
-> > > kernel version in which they reside, and test that specific version.
-
-> > > Unless I'm missing something here?
-
-> > I remember we allow for a bit of flexibility when it is simple to handle.
-
-> > Is that documented somewhere?
-
-> Not sure if it's documented, but it'd make testing extremely egregious if
-> you had to consider all of the possible kernels and interactions and etc.
-
-> I think it's 'if it happens to work then fine' but otherwise it is expected
-> that the tests match the kernel.
-
-> It's also very neat that with a revision you get a set of (hopefully)
-> working tests for that revision :)
-
-Some people do try to run the selftests with older kernels, they're
-trying to get better coverage for the stables.  For a lot of areas the
-skipping falls out natually since there's some optionality (so even with
-the same kernel version you might not have the feature in the running
-kernel) or it's a new API which has a discovery mechanism in the ABI
-anyway.  OTOH some areas have been actively hostile to the idea of
-running on older kernels so there are things that do break when you try.
-TBH so long as the tests don't crash the system or something people are
-probably just going to ignore any tests that have never passed.
-
---HgKF1GOS9//9I841
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmidzGUACgkQJNaLcl1U
-h9A7uAf/TsWdfXYkIPkM2Rj3C1HzjIuj6j4nnUhMESgtZSbf9Am99POGQmQxnUay
-Mz75k34/LOlxbUGyk2oz2tqb4Ad725WPmSqg4IEQXJ3or551O2tAApBrrbwTKfrT
-ha9jUqj/hhFasDuM9PZsHTUcEk4DKGYtFHOtrucuQMDOSNH7lsB3BEVyaY4xxHzM
-d2dWm3i1c8VlbU8gFIX794INH1sdcja2Syh0d5wraBAZ+NS+uJ5iWyZw43YgTGiX
-qQR+HWxD/m3NSNX6L58jpZYJq6Q40xDz8aQQiAd2omnwIYWln4HIitcYTpeNvQNw
-Poh6lZXtgIVoXt2Io6PYJpr3LnpP6A==
-=Xem/
------END PGP SIGNATURE-----
-
---HgKF1GOS9//9I841--
 
