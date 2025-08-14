@@ -2,78 +2,78 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E7C00CA0EDC
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 15:35:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E0E1CA0EDC
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 15:35:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8453F900194; Thu, 14 Aug 2025 11:35:03 -0400 (EDT)
+	id F2826900195; Thu, 14 Aug 2025 11:35:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F499900172; Thu, 14 Aug 2025 11:35:03 -0400 (EDT)
+	id EAB36900172; Thu, 14 Aug 2025 11:35:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 69424900194; Thu, 14 Aug 2025 11:35:03 -0400 (EDT)
+	id CFDE0900195; Thu, 14 Aug 2025 11:35:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 538A6900172
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:35:03 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 20ADF1DD092
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 15:35:03 +0000 (UTC)
-X-FDA: 83775761286.01.7740888
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2041.outbound.protection.outlook.com [40.107.220.41])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 591F520006
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 15:35:00 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=YRsAZaMm;
-	spf=pass (imf03.hostedemail.com: domain of Raghavendra.KodsaraThimmappa@amd.com designates 40.107.220.41 as permitted sender) smtp.mailfrom=Raghavendra.KodsaraThimmappa@amd.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B919A900172
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:35:21 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 933521406AF
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 15:35:21 +0000 (UTC)
+X-FDA: 83775762042.29.F17CC78
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2081.outbound.protection.outlook.com [40.107.101.81])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 231E0140010
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 15:35:16 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b="PUvuD1/6";
 	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755185700; a=rsa-sha256;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf23.hostedemail.com: domain of Raghavendra.KodsaraThimmappa@amd.com designates 40.107.101.81 as permitted sender) smtp.mailfrom=Raghavendra.KodsaraThimmappa@amd.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755185718; a=rsa-sha256;
 	cv=pass;
-	b=wiglPz7wOq09j1fBsF2mWAr8hrGyp6G2HxmY/lJPvSwLM5gakJ3eIQ+HTRIkMGPfQ/keJw
-	dsiewb20j3SnRkAL0NUCT+Zo1pUpsDHYAz9yCtko6jIzygzb9XvVxjK85jgrHU0dCU5ehk
-	TCjjQjUTpx9MaBmXGrafXwnkZDio7gQ=
+	b=GNyOgxjFOUCCWv3YJ5xaw+suo6A7rx8oBQOi7t+pSnrqAMShNUlcBn08IM+mKELYYcZKDG
+	6r34EWfU7plMawR6qRJgbrB5EgKQ0G6tDztF26+P63gfNPPg6YTNMgYBCrbv4cw+lVzXHT
+	x3nM1aKDP7QKlM7XoGfihoHiK24PHoU=
 ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=YRsAZaMm;
-	spf=pass (imf03.hostedemail.com: domain of Raghavendra.KodsaraThimmappa@amd.com designates 40.107.220.41 as permitted sender) smtp.mailfrom=Raghavendra.KodsaraThimmappa@amd.com;
+	imf23.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b="PUvuD1/6";
 	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf23.hostedemail.com: domain of Raghavendra.KodsaraThimmappa@amd.com designates 40.107.101.81 as permitted sender) smtp.mailfrom=Raghavendra.KodsaraThimmappa@amd.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755185700;
+	s=arc-20220608; t=1755185718;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WPVAyiNS4OZw8nJS07dTRaK/Lrchm9e7Lwh000KIeVY=;
-	b=OmacJrsZ+BbT+ABcvOijUIK3CsPOlCAEZh9pOYEAfXOpyHBJAerdha7YyPPEs/gPIw/G9w
-	+hOYS+eBZmL7zN6bF8FeuvjZCOzVPxtiqjEjZ+z04kxB8hl1EfX5djJl5Q3xul+53e2bGF
-	BAHQPP4wATA9StMS67DiXWZ8sGnHcSA=
+	bh=woX07bXSCoSE29Y9wKE+L2cWmZShzkBFCGt3WmiIeoM=;
+	b=fGxO5w+VVsav2otRDHYI9EKpElPi9TiqEO79w+7WV5GqzRhpGQJmTURzmqcdhZyWyigO9R
+	kyKVy8jV1ScIUSwXe82WicSDYRmJf9Uovx+mpNmMQrZakAaL1XMZfMUGvvyzsdkmVlOSW/
+	12MG44C+yvd4wAZRcAVfukyT63stnOo=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jvM6iM5ceCuOQVC3oj7oefy6BqfmFH4zAg9bOctTrjnPidNrKzWMNShVITc4kD/R5tDZI2kCAeFQhew2o0fMz0IrQ+WNK67DpksJ2pdXP+1tuBmpmZdQQVWlrnj64crhOrKeXxdCiMaRyqjKqSDy3gLnUYF843c1/iKcM1EvA3BLGAS2LjJ6WREwIUuvoJ0bJ45XcoZNumLiioga2253CcaM3r9G2cychZQ8ap2BZjulFhS6gglgHCMFZSDlq623B80sNeys96iBpy6RpWK+3wnCy3uIgwiNx+nz/aAOMEifMTIdWAZNRmmLFWZ6Tkl+AwA+pC/spLj83DoKdXI6ew==
+ b=qqLqiiGXd+X+F4PWXy7oHVaixU021X9evXbmT0oV7tf4O77pWi6rnVFNoJmcEnsKM+7oDTyzjt5w0NmH8kFCV9/0JBmFzDyc8RdHGH6XMfxX7eYJZSUdMwqDZPtWvY3BalzWimVTmyI1+ngAn4b9ihFRQUc+CAfTikCzfYA82Fg6p/4WQQssT2IgDnFtoLYIN9qePgiZTiqU0L/Dct42zGnMbTS55GvtWUZZO8o7ximPj2eY2zaF0uGH72UnEj2qpujg/ZweDYR9nsGNoKWHqXCA9IEYr+CtbxJt1LBvCCfj8Glo471+os73wKGUxtmZIwJeFS5RmUtc0X5f+oI4Aw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WPVAyiNS4OZw8nJS07dTRaK/Lrchm9e7Lwh000KIeVY=;
- b=zVIPLjSHaLLEdiflPThM90/Ii5UTJQEekvz0MotIe9w9BiQbkMxK4NJB0ZNt7wp2wrQOxHMTqPiDTY744jZrjz29TFk0tq7md4FeYTW4f8uwXruqpjSm3q5dunrfxkFfS+K4bZCyaTBHwzzMSC2v58JX26/+CMbiQXZkh+ITDUNr9sD2xcJGnjSKOe9AEBGibOlFOchI9pgTNiifTWJCllZ7w1b9ExjTcsB0AIYWryMjXbt3ubXpzkm57faW/W5grU6ToPC2L0kygYKn7I3X0iGVhgsyecjrRrR8x6/pxvC1jpU1UFPo/5oB0FjR2sOqDJTWXbSRyEQukBa6Wi2OIQ==
+ bh=woX07bXSCoSE29Y9wKE+L2cWmZShzkBFCGt3WmiIeoM=;
+ b=EgcQ+ku1jnYow+WowCfw7LmTuuIwMEC3PHH3C4ttQwOxdXcNX+UPoJELH82WIjyMiXl1KA6rFbDhs9i6abc3qQfLrEnOpDJ2U6gEQt5eQQmEPUSi7XkfzjHtKXA0ryF4oMN/sVVTHQiUslZYTi0ZWLDvAJESjm3AkWYYW0OxjwA7viZIK3amrb76fszrF68DZ2++BPShw4Zgn2hviRRUSPPGn71//7hJJD5po/KkNcgbGnw4T1OHZ/Sg5W08kkIVY2i6/g6Y2pBkRKnDzWblRUW7vFhRcdHCz5+HxuItVeC/oSKpzDSUjlYGk0J2OBQ2xLVV0XVY81bvrsIYSBFdxQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=arm.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WPVAyiNS4OZw8nJS07dTRaK/Lrchm9e7Lwh000KIeVY=;
- b=YRsAZaMmtP9uVLef7zKlohaEvrxMzJvTta6J/mQh3kmFZ/yZXA9vsfI1T8buprz+yMsIT2kwuKO0wEnvbkw55Zyv3Z96xscyV4wTgAMG9/KYArOWIsPGR97c4FDrDJnx85jeM0atHqxSBOYmzbXyyV5ftboTd/6OBT31rMDQfhc=
-Received: from MN2PR05CA0026.namprd05.prod.outlook.com (2603:10b6:208:c0::39)
- by SA0PR12MB7076.namprd12.prod.outlook.com (2603:10b6:806:2d5::11) with
+ bh=woX07bXSCoSE29Y9wKE+L2cWmZShzkBFCGt3WmiIeoM=;
+ b=PUvuD1/6HsdFcViD08WTKKHmf4JIxXhBQigPGPz5j5Z2OyOXq391aUDXV7fgMV6jJgCkkSVkzryx5IZZlOhkjPckUhaQK06z/NdI7LEXIsAb++Nq6/sFLs/QOp6A6SYcPQvfy7n1CgwGhJeE12tCewGefgSJUMjS91KpyO53C9k=
+Received: from MN0PR04CA0028.namprd04.prod.outlook.com (2603:10b6:208:52d::27)
+ by MN0PR12MB5980.namprd12.prod.outlook.com (2603:10b6:208:37f::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.13; Thu, 14 Aug
- 2025 15:34:57 +0000
-Received: from BN3PEPF0000B075.namprd04.prod.outlook.com
- (2603:10b6:208:c0:cafe::46) by MN2PR05CA0026.outlook.office365.com
- (2603:10b6:208:c0::39) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9052.6 via Frontend Transport; Thu,
- 14 Aug 2025 15:34:56 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.15; Thu, 14 Aug
+ 2025 15:35:13 +0000
+Received: from BN3PEPF0000B074.namprd04.prod.outlook.com
+ (2603:10b6:208:52d:cafe::53) by MN0PR04CA0028.outlook.office365.com
+ (2603:10b6:208:52d::27) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9031.17 via Frontend Transport; Thu,
+ 14 Aug 2025 15:35:13 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -81,13 +81,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN3PEPF0000B075.mail.protection.outlook.com (10.167.243.120) with Microsoft
+ BN3PEPF0000B074.mail.protection.outlook.com (10.167.243.119) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.9031.11 via Frontend Transport; Thu, 14 Aug 2025 15:34:56 +0000
+ 15.20.9031.11 via Frontend Transport; Thu, 14 Aug 2025 15:35:13 +0000
 Received: from tunga.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 14 Aug
- 2025 10:34:46 -0500
+ 2025 10:34:56 -0500
 From: Raghavendra K T <raghavendra.kt@amd.com>
 To: <raghavendra.kt@amd.com>
 CC: <AneeshKumar.KizhakeVeetil@arm.com>, <Michael.Day@amd.com>,
@@ -106,9 +106,9 @@ CC: <AneeshKumar.KizhakeVeetil@arm.com>, <Michael.Day@amd.com>,
 	<ziy@nvidia.com>, <Jonathan.Cameron@huawei.com>, <dave@stgolabs.net>,
 	<yuanchu@google.com>, <kinseyho@google.com>, <hdanton@sina.com>,
 	<harry.yoo@oracle.com>
-Subject: [RFC PATCH V3 08/17] mm: Add throttling of mm scanning using scan_size
-Date: Thu, 14 Aug 2025 15:32:58 +0000
-Message-ID: <20250814153307.1553061-9-raghavendra.kt@amd.com>
+Subject: [RFC PATCH V3 09/17] mm: Add initial scan delay
+Date: Thu, 14 Aug 2025 15:32:59 +0000
+Message-ID: <20250814153307.1553061-10-raghavendra.kt@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250814153307.1553061-1-raghavendra.kt@amd.com>
 References: <20250814153307.1553061-1-raghavendra.kt@amd.com>
@@ -120,60 +120,60 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B075:EE_|SA0PR12MB7076:EE_
-X-MS-Office365-Filtering-Correlation-Id: c99a4623-ea3f-43c3-16d3-08dddb481f81
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B074:EE_|MN0PR12MB5980:EE_
+X-MS-Office365-Filtering-Correlation-Id: e20a28e1-8ea9-475c-d4d7-08dddb48293c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|82310400026|36860700013|7416014|376014|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?pJli8E3NtzuwHCX561DIowNErRI4bURBXTfcsdjZytezFdcXJSQ0cuEHOmD2?=
- =?us-ascii?Q?fZe4x6kQPhXGpRrfFGzViJPm1SwqCCo57tloOXRtTCoLPEOUA7GCRzUUAFkj?=
- =?us-ascii?Q?AmtPHZgZNE/xFQaYAy2yR0al9QqTcB94VfdRHaf58kMn2nHzIIwFqU9YgCzG?=
- =?us-ascii?Q?Jw0t8quDaUpUy1H2IU5tpr6JnUeHbZxkUyzP4OZ1lsPqIZwR/Vmbn6FakIsp?=
- =?us-ascii?Q?O9No9dlBVMkznNvehmCOE7qlRKVMwSVVvRow6T6FD6jBluqGSb602z3xREVa?=
- =?us-ascii?Q?HU7Nf3crg/GY2C2UsjyuW/IO0UWP1XmB4c+Xg1d4+15c/cQkvaVhjAvvRsGV?=
- =?us-ascii?Q?2xMVBy2pfkZmbuzkUv817UPAuwvsYYQeOKGE/16s/Jj4nMm1wEZbSjZSvUtv?=
- =?us-ascii?Q?pTdzGv7/xgkqZUwgqGIbhAe/96LRWA/dXNjpb+qVVGVOHbbdNkXXQAIniUlJ?=
- =?us-ascii?Q?KwblkJOsGm0zkTfR2tEQm0b6Aeb7DA6O64fSgmyXzo9UYsH6oaYver017kaM?=
- =?us-ascii?Q?n4910WMlfnYlPhHXeRrLA3Vbcom5j2rxoXZcT5bwk3dblzvJ/4djtXjNhYRC?=
- =?us-ascii?Q?vsTqzydQTwqh8WOtfZQ9ydwvUOTk2zAdUXK9kMaKTI/M97Sko+2s6+lNhG5x?=
- =?us-ascii?Q?QeYkvVGPEyIzAHHserlmVmQBHFm2R/Bazt36VMEg57YPlaH8vz/GpnOm9mxJ?=
- =?us-ascii?Q?BqDY12XkrcNSJgh1j2W8lbwlQ9ISO+Q++KL1JnV+Ql0IObiSgALh+ml1G8Ps?=
- =?us-ascii?Q?4yaKX0JPuqiwKO9ubnZjRqVxx6rgoIPe/fLk7bkCOAfhPrQMEFWAMyeikT+T?=
- =?us-ascii?Q?g/yAT8m5MS7qPg/o9NANb6XTq+jPd8/bPLHFrnWu6XfuvdslGKAgIMHHn+kk?=
- =?us-ascii?Q?44gbIZJftHwHuMPyA/mvFWuJxJxsp8nFrtetzfdGa867RdqjLA9OCxg1EbPA?=
- =?us-ascii?Q?77o38tpBTJunSWKQcw8vJ2gIf4uQAfl+G9zQsOXkeHfS9fK24Y0MoqODYVTu?=
- =?us-ascii?Q?z0S+MXLlARcdo1ah4kDxzzgCmoY0wTLWIXK4VJm+CQypuz5PaX1N+XbTVuH1?=
- =?us-ascii?Q?w77xerjpkKXDDtXpNaYuZy9sbn6ziC2/xDVzoqhLc/Z/UDCC4kohOFeW6LOE?=
- =?us-ascii?Q?OJZAnowGD+P/cKSL2DEYgc0yEDrqO9ZhGf1yAnka5d3w4gUtejnilGlCE4sU?=
- =?us-ascii?Q?7pzTCO5ZzynUHTmIf7vPHA4TIGxbeVZ1mOMx8pJCEZ9iFOBtnrJbEJFVXiqq?=
- =?us-ascii?Q?1Q9W/sGTG9uM+to+bwurWxG08FKym/LHuMgyBeP/Cf1LC+7G1kf8Fscgp39x?=
- =?us-ascii?Q?upkn7e9e05rnh9Jn8OtCAzXapWPdWF2ReTH3uQGDBetshpH2PFbRDgrhl4mU?=
- =?us-ascii?Q?DnhS6+sH5UjJwSEpUUYeI9hUvzarldYtRs4K4S77al8Z7O/oy2b9AjvB6e1h?=
- =?us-ascii?Q?v0m9KZKMMbxz8Hw1PG1Vm3nrgPP7uovuFP6ZqwVssd7YqRh27SupNT/NMzUp?=
- =?us-ascii?Q?AqynZMFH8d3NbBKM/xcZczIFtJtJHkkDo6f0?=
+	=?us-ascii?Q?3QjItbxSWK55f9S8dJPN8kJzmutDu8gaeU6Xz9KXs8LZZMM34wtS9STeL9+W?=
+ =?us-ascii?Q?OYL0PNYV7vQNcydspLuUb0nqjxBUWzXcx+pgJA9L2BvXFFjI61q4SPdhtDfC?=
+ =?us-ascii?Q?MrtI3KBLNT1rtTZNc4FD578qGHhlnGjpMTIeAUC53qFu/6qZ92XpoWC2J1D7?=
+ =?us-ascii?Q?iBRzOz1FAuxNOWrxQ7gPKBkyMCjsusEaRFVORB2zD1pOfLx9U1ptXeCh3R2P?=
+ =?us-ascii?Q?dVlmpKb3GC4Zj8HPLEI9hcQ5sxRTUNNV4saROoJ3nJBQ2dqn8eFibYLrrwA4?=
+ =?us-ascii?Q?p8x+6j36Ptx6XOCVD8ROZXGJvjvYgqh8KPqfwBpsZVWpjkWX36pvHkaTPgAp?=
+ =?us-ascii?Q?HJijaOmxVwHc53J0r1EMTEhMBNlbPYeXGyTjJs1VBirKO4NG4wy4WFoI3IJW?=
+ =?us-ascii?Q?wiNgqEFic6FuTtzgD63rKM0BttRE68RsRnJVk4hXcbZzvamtE1/vQVBX75CB?=
+ =?us-ascii?Q?v7Mv3XAzY3vDE1DQ5OSOcZlbHQ8ytJXpHw+/tXjC5WMi6hSAIUMNrWhopMk5?=
+ =?us-ascii?Q?CS4G0L6W40dC03xp9qm49+EyDyIq44GOVGoLyrTuWvaXrpMpjo7B5WDYIPvx?=
+ =?us-ascii?Q?i8T1MxPhW04PS2s4VAtP1oFyIXJG3T44O6jImDHuCHFm4yrFDJWjqnqi3Ri+?=
+ =?us-ascii?Q?kylzML5OLz7GCxPCaAysFykHeO49UBm/6dUi+7hiEcs0Ko4XjQ2R4swR9nD2?=
+ =?us-ascii?Q?0CKGvnKy8XQIah8utA8HSmbqT83dSiceivXXCc95d83sCg/OtONnp/yDLc4M?=
+ =?us-ascii?Q?hZD6DWBERWURUUgrAqbbczkgSVxre7ND1brrrCDb5Tt1VRNu4lpgxDcBsTV6?=
+ =?us-ascii?Q?ozFQ/AR9zxaFW5rxwhPpybJr4J3YzjNSTt7rRtS3ywuYs4adN8S1vzeNK9J3?=
+ =?us-ascii?Q?Td7WsK16v96H3chF3QO9cfY2iIteFNyoxhtJD7CsH6+rIG3uAqBD2VWesFqa?=
+ =?us-ascii?Q?NGJ27Bypi2bQIcIkTB6L0G7yxyl+beKYLnJclcFpmzzVgQRtTF1Z1Dh8XHoO?=
+ =?us-ascii?Q?VqLMlxD1C0iod9410TxFn95pw2bEddocbvBClPRHtEq48+if+iUv2d5ruW0t?=
+ =?us-ascii?Q?4TEFhzy6Vu5nPrz6mPHqWLEfVuMGo01R+f16LJQTGPg4Wfk8X/F9A0NtH7Oy?=
+ =?us-ascii?Q?nhmXPYPT3l7wVRoRgvJal+AZghPGjiSnSddXF+VKGaKO0KccoeFttOr4YdCf?=
+ =?us-ascii?Q?UydJWOrV45w6yulZYrZx0W2pcRLoFCdOUw4y4JLOq5tGOGp8F7fK0FmgsB0W?=
+ =?us-ascii?Q?1OKu53BJxBrb/zZVHe/XzD8c2YGdR/F+1irRmrZV/Cm1fOmxkCpFqJLKcD6a?=
+ =?us-ascii?Q?UVzZtnguNs4je1g9wPrliyKE1pi3SuQxgeVdeJ9KxrjoGTfsTQjtaAL0NF4S?=
+ =?us-ascii?Q?rgc2opJGtNiDNxdugTJipJtr/LaLDZp3+OBZn87IZWKTx55tPe+P4zDLkbWp?=
+ =?us-ascii?Q?np3nduxCmOMVU+IMnHwhJJj6e14WIVLCGbMTogSp2Jh0Z/zTMcN4WyN25+vj?=
+ =?us-ascii?Q?n9YvFSQygAYKao6TJqTTusOKllbpWarJaEvn?=
 X-Forefront-Antispam-Report:
 	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2025 15:34:56.8733
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2025 15:35:13.2043
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c99a4623-ea3f-43c3-16d3-08dddb481f81
+X-MS-Exchange-CrossTenant-Network-Message-Id: e20a28e1-8ea9-475c-d4d7-08dddb48293c
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF0000B075.namprd04.prod.outlook.com
+	BN3PEPF0000B074.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB7076
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 591F520006
-X-Stat-Signature: sxuzseqhfthhgbehyarf8possjqja9gu
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5980
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1755185700-819500
-X-HE-Meta: U2FsdGVkX1/qgga9nO1ZVB88ER94zID2vWdlf/GrKfv6n8pvuyWbuf1v8e2uBCpSyPzU4RR8j6hVjz0rPaOT9qZWq1OcXmwEGosa8ZIwO7sIkr0T3zRiMfMoTVdwWAOU7NIha6PZJs2DIUjv0caLLAL/NAHBls0FAkGAqk04Q5TVdH+8brGVRdo+yFvasQJu8xQNdXbWgGxuBBQlCmvfqYOLUCpn77KcrH07SkoH8JtQx8YJCmxY2tt8FO5AG7QCMoO156OeAC1S1uNp2/NOSc84utomf+K3ZS2UAblhMKqbGTDidFBVDBBHHXKWZ02729sIAqssVrI6zYghGfgUIIvAX+WbSRiw5vxkf8IacccsvHrvNc5KPtVtIWZvjcAHz6dKvHCYGIYWbBBizHNOgHnaqm0Za2DBmGQPJ/EqGgyFnX+2uwIdLGmpOL9gMoZFT7u9Y2bG64u92X36cpEterLG+eHG3yAPgV8IiwePQT4AGyEhif2zTvtidwYlXdHpf6BaoptzJnGRDdBos0BOYi3mP3pnQlWj7+0gNVQvpJQyTK58RUdHJDIwp21k1ul3+JG/Sg62kf3TREbrSy2xdlnQTrThMaeUrwJFQpJ/I9OHDWjHr4nm77WJ5rGimeqOi2yDPYNvtsaXBM/h0e+IOq9qtreOrwRmDmJHzV6lpx1XF7A1FEcWHukcgeo9YIHN7/AmqgQFxK17BTCTvOZAFshdMvLqfjLsz5/79lUWeMSuNvDiR1kZqDB6SAu4L3XZ2j26xbFHaLl59ryqia+48AtWTtUHKsb0O1R/Hkr/Z5NC+jGqN3jUhEkJoCMQ4/gqbli1TayM14qc4Fo70gqVxEyMyp741TORrscmOp/q/kIKsadC8mlURhaOEoXrOqdck4ghyQb/HaQM92xP57RXfd4tww86dF6TRZJOhajfUre2oXbaxgNOIng1KU7PelaM0HJ0ZJf2gbR7TGRAK1d
- wARKjP/N
- WrIq1PAjrkNyYoD2g+UQ1vlwl8usRPq8RXio8XhYPKcww0IqcYINSRUrLPiiu9F7bh/hpCZYBSH1rUa647yU04a6A/qQieZguo9oCVXSZ7Xumuo4TC/WN26qDSocrjQaqb8Q/qspty1jkEVHy+Q8EzJFV2c5xHfZKw5gjY2R8KzRSKhdyQrrGwjssTmtEm3H50PhAPFivQ2aXvLAOu7ejpRYZdClc8/vNPlIah7AZGc3+FavwKdPqmkhjzpaBrEJMkMqXAiqhsFpXH5hyd2kWxRft0UHE6NFUUaBKtoLLD7QgwnEGEYkyX3RmRiHU5Qbion8/iQbYKynRlEVs2YiPVp3QmAnww7mPnigyR15AQgTMPC0IRrfu228pHxuTHXvVXs7s
+X-Rspamd-Queue-Id: 231E0140010
+X-Stat-Signature: oe3bsf4bdwbytcbehpioo5q3ea8yub7w
+X-HE-Tag: 1755185716-834550
+X-HE-Meta: U2FsdGVkX1+B56fGVaD6sfcHQsIH5cgj9AS2RC2/QglOKjhNWGTcjtLMO0s9ijNvu3RgjH8HLOTXtbas77qapcdS/sqFQBac8hflE6OMk17IPMNcdWWdG8Ygt0HK00WbKzN1czwI7CMQZUP2HUthA1EJLzdxJMe5BocQYXKLjZHvovYPe1SUcMdLL+hubDZNL26o36juP9phHdXG6S4loaBp0ty+hCmfOjwpzS3UWBRfgtb7PnBEGI09j6U95qt1Ap3ySvzUcNLALtXF7OZQM0duq9BhS6Le0HvU4evHsYWVczRLD5lcQClux+weU9i89XiDveFmmr+NP7mf4QjIOeGMdDcqh+KVA7UQtFE4Safr2CfzLwCdjI1xYLjBR31lHvDOuM201mdeHLL52n7JMONk9PmJFMoD4/ukIy9IA4F4uwCDvq37+FXJhw2NSZ9WDvTgcmWgjOrNYaNKVYijrCez6CQRenT9JzKH0ySQSYeVbgRGPATB9olXlmMhEEDrfUozdpLs5Cerse4jjHLWsijxVVvEJxrp8WSOrbLDbWBXccYi4KlKjpHV/P+f9wpjz0TM+N6sSoaaVD/VH3zRQKaTWR60FiVfuLikJx9D05jcaoOXXhxvm84QQD+tLBOu+NzFj308cNm/Rlv9YlXKLM5VzMp9TiMmwrjL8PuFqD9lEyTJcQbn7TuSodwVQPU84m7l43STaTGr94E2YkSM5juLmlme602PGHxybqX4ruvWL4wmIpfTqk88MAMnCVmMfJoc0PLZyMByEcZvUF5qnnmHOjGtXGjAKUmMYMV3+UwfwCQ2xStaX/mluq0IOAboWh+YOtGubW0rH3Nymj5dZnNqJdj8gaBDIchkYQX/ewpBPoxB9UXXt6LwC3uj+05uLFpvX2q5SxnXogimoPvAYLY0C+Csqm7PeS1RiEh7JElP8DTAPwSsVIM/lkZAkI1v4qD3FfiAYUWN9s0jz4O
+ Nip0iNQp
+ qQoeWQJjCkY6vYPkoixltifzR9PK2WUAxDFnjgZ7Wyp1asuIiuB7NOtaRmdSYRlTA2UPCALrNpBieIMnuP8SAZM4UMlUPiHFXVZhBoyiXxXcEbCeITLGZJoKy52j39d6Ks03HYMOSyp0cQrKlCdK8se91mCdmaKnl3T1mRxN0MAKaUuVCU9nkAiZDQVuRye5Zvbz+pUBoxox8j1puaBtwA+x1t0rMS1JqT6RjBvIYfODzNPe7jZ1HZhOjxJEZQvVrD3oOI5Raf0feoGl3M4hQQi6N46Lcnwj7F+Lrt+u/al1uGwUdRm26AhPSC314jFxxEl4K6jU3PVgRnbRtIR/K04hpipbqd8Tmwpk8bGubnCLmm06IRcxeOOXovlwYjRJweE3/QNssFWEO3BEnz/Ary6uKHjt5JKajGDb9ycV/KN0UCz4UTEYl3g2ZM+LAkNXotN4JUqXD6Gui9mbZTqGMYTvP1Sk2upAiVyhE6ovJAJ/Bzu0Axhy5unN59mV7T8GaM/FZ25TvFR7LtBIKhvcD5f+Zh80qOe7j3f1Aat3CzGFOuZLNGXVOxBwIfYJT5rtOOABrx8l02FoirPAiuqZV7pOeT+esCdcKh+z0IserBcPjLCRKsDmvH50fnCDIB7HJwf82+3vh5cWvuMlCUHAY82+HWIytj0aGUjK54D6uhFTDx/Nd30F5n4olN9r4S3higJ8wBDJ8DQKu5Px4eyfqkkaGfPnl4GnUzWEIPjK39z/p5B77PTc9ZtQuhXlFU3DJzzuSoUwIaOzkirF2dMwmz1v4egcYiL61s2P5MKogZIrSl07DSpggnLs6xvOhxXmZyvUIcVRl23f1NWRFYuR/L3uTSBy2tLS5DQNeMIl4IQ4QV2E=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,152 +182,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Before this patch, scanning is done on entire virtual address space
-of all the tasks. Now the scan size is shrunk or expanded based on the
-useful pages found in the last scan.
-
-This helps to quickly get out of unnecessary scanning thus burning
-lesser CPU.
-
-Drawback: If a useful chunk is at the other end of the VMA space, it
-will delay scanning and migration.
-
-Shrink/expand algorithm for scan_size:
-X : Number of useful pages in the last scan.
-Y : Number of useful pages found in current scan.
-Initial scan_size is 1GB
- case 1: (X = 0, Y = 0)
-  Decrease scan_size by 2
- case 2: (X = 0, Y > 0)
-  Aggressively change to MAX (4GB)
- case 3: (X > 0, Y = 0 )
-   No change
- case 4: (X > 0, Y > 0)
-   Increase scan_size by 2
-
-Scan size is clamped between MIN (256MB) and MAX (4GB)).
-TBD:  Tuning based on real workloads
+ This is  to prevent unnecessary scanning of short lived tasks
+to reduce CPU burning.
 
 Signed-off-by: Raghavendra K T <raghavendra.kt@amd.com>
 ---
- mm/kscand.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ mm/kscand.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/mm/kscand.c b/mm/kscand.c
-index 843069048c61..39a7fcef7de8 100644
+index 39a7fcef7de8..880c3693866d 100644
 --- a/mm/kscand.c
 +++ b/mm/kscand.c
-@@ -28,10 +28,15 @@
+@@ -28,6 +28,7 @@
  
  static struct task_struct *kscand_thread __read_mostly;
  static DEFINE_MUTEX(kscand_mutex);
-+
++extern unsigned int sysctl_numa_balancing_scan_delay;
+ 
  /*
   * Total VMA size to cover during scan.
-+ * Min: 256MB default: 1GB max: 4GB
-  */
-+#define KSCAND_SCAN_SIZE_MIN	(256 * 1024 * 1024UL)
-+#define KSCAND_SCAN_SIZE_MAX	(4 * 1024 * 1024 * 1024UL)
- #define KSCAND_SCAN_SIZE	(1 * 1024 * 1024 * 1024UL)
-+
- static unsigned long kscand_scan_size __read_mostly = KSCAND_SCAN_SIZE;
- 
- /*
-@@ -94,6 +99,8 @@ struct kscand_mm_slot {
- 	unsigned long next_scan;
- 	/* Tracks how many useful pages obtained for migration in the last scan */
- 	unsigned long scan_delta;
-+	/* Determines how much VMA address space to be covered in the scanning */
-+	unsigned long scan_size;
- 	long address;
- 	bool is_scanned;
- };
-@@ -746,6 +753,8 @@ static void kmigrated_migrate_folio(void)
-  */
- #define KSCAND_IGNORE_SCAN_THR	256
- 
-+#define SCAN_SIZE_CHANGE_SHIFT	1
-+
- /* Maintains stability of scan_period by decaying last time accessed pages */
- #define SCAN_DECAY_SHIFT	4
- /*
-@@ -761,14 +770,26 @@ static void kmigrated_migrate_folio(void)
-  *		Increase scan_period by (2 << SCAN_PERIOD_CHANGE_SCALE).
-  *	case 4: (X > 0, Y > 0)
-  *		Decrease scan_period by SCAN_PERIOD_TUNE_PERCENT.
-+ * Tuning scan_size:
-+ * Initial scan_size is 4GB
-+ *	case 1: (X = 0, Y = 0)
-+ *		Decrease scan_size by (1 << SCAN_SIZE_CHANGE_SHIFT).
-+ *	case 2: (X = 0, Y > 0)
-+ *		scan_size = KSCAND_SCAN_SIZE_MAX
-+ *  case 3: (X > 0, Y = 0 )
-+ *		No change
-+ *  case 4: (X > 0, Y > 0)
-+ *		Increase scan_size by (1 << SCAN_SIZE_CHANGE_SHIFT).
-  */
- static inline void kscand_update_mmslot_info(struct kscand_mm_slot *mm_slot,
- 				unsigned long total)
+@@ -1010,6 +1011,7 @@ void __kscand_enter(struct mm_struct *mm)
  {
- 	unsigned int scan_period;
- 	unsigned long now;
-+	unsigned long scan_size;
- 	unsigned long old_scan_delta;
+ 	struct kscand_mm_slot *kscand_slot;
+ 	struct mm_slot *slot;
++	unsigned long now;
+ 	int wakeup;
  
-+	scan_size = mm_slot->scan_size;
- 	scan_period = mm_slot->scan_period;
- 	old_scan_delta = mm_slot->scan_delta;
+ 	/* __kscand_exit() must not run from under us */
+@@ -1020,10 +1022,12 @@ void __kscand_enter(struct mm_struct *mm)
+ 	if (!kscand_slot)
+ 		return;
  
-@@ -789,20 +810,25 @@ static inline void kscand_update_mmslot_info(struct kscand_mm_slot *mm_slot,
- 	if (!old_scan_delta && !total) {
- 		scan_period = (100 + SCAN_PERIOD_TUNE_PERCENT) * scan_period;
- 		scan_period /= 100;
-+		scan_size = scan_size >> SCAN_SIZE_CHANGE_SHIFT;
- 	} else if (old_scan_delta && total) {
- 		scan_period = (100 - SCAN_PERIOD_TUNE_PERCENT) * scan_period;
- 		scan_period /= 100;
-+		scan_size = scan_size << SCAN_SIZE_CHANGE_SHIFT;
- 	} else if (old_scan_delta && !total) {
- 		scan_period = scan_period << SCAN_PERIOD_CHANGE_SCALE;
- 	} else {
- 		scan_period = scan_period >> SCAN_PERIOD_CHANGE_SCALE;
-+		scan_size = KSCAND_SCAN_SIZE_MAX;
- 	}
- 
- 	scan_period = clamp(scan_period, KSCAND_SCAN_PERIOD_MIN, KSCAND_SCAN_PERIOD_MAX);
-+	scan_size = clamp(scan_size, KSCAND_SCAN_SIZE_MIN, KSCAND_SCAN_SIZE_MAX);
- 
- 	now = jiffies;
- 	mm_slot->next_scan = now + msecs_to_jiffies(scan_period);
- 	mm_slot->scan_period = scan_period;
-+	mm_slot->scan_size = scan_size;
- 	mm_slot->scan_delta = total;
- }
- 
-@@ -814,6 +840,7 @@ static unsigned long kscand_scan_mm_slot(void)
- 	unsigned int mm_slot_scan_period;
- 	unsigned long now;
- 	unsigned long mm_slot_next_scan;
-+	unsigned long mm_slot_scan_size;
- 	unsigned long vma_scanned_size = 0;
- 	unsigned long address;
- 	unsigned long total = 0;
-@@ -843,6 +870,7 @@ static unsigned long kscand_scan_mm_slot(void)
- 	mm_slot->is_scanned = true;
- 	mm_slot_next_scan = mm_slot->next_scan;
- 	mm_slot_scan_period = mm_slot->scan_period;
-+	mm_slot_scan_size = mm_slot->scan_size;
- 	spin_unlock(&kscand_mm_lock);
- 
- 	if (unlikely(!mmap_read_trylock(mm)))
-@@ -994,6 +1022,7 @@ void __kscand_enter(struct mm_struct *mm)
- 
++	now = jiffies;
  	kscand_slot->address = 0;
  	kscand_slot->scan_period = kscand_mm_scan_period_ms;
-+	kscand_slot->scan_size = kscand_scan_size;
- 	kscand_slot->next_scan = 0;
+ 	kscand_slot->scan_size = kscand_scan_size;
+-	kscand_slot->next_scan = 0;
++	kscand_slot->next_scan = now +
++			2 * msecs_to_jiffies(sysctl_numa_balancing_scan_delay);
  	kscand_slot->scan_delta = 0;
  
+ 	slot = &kscand_slot->slot;
 -- 
 2.34.1
 
