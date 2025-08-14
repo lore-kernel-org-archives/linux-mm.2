@@ -2,134 +2,128 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 96762CA0EE6
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 15:05:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 98E16CA0EDC
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 15:11:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F8BD900188; Thu, 14 Aug 2025 11:05:47 -0400 (EDT)
+	id 1F3C9900189; Thu, 14 Aug 2025 11:11:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A96D900172; Thu, 14 Aug 2025 11:05:47 -0400 (EDT)
+	id 1A427900172; Thu, 14 Aug 2025 11:11:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 19881900188; Thu, 14 Aug 2025 11:05:47 -0400 (EDT)
+	id 09425900189; Thu, 14 Aug 2025 11:11:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 04DCB900172
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:05:47 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 697631A0709
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 15:05:46 +0000 (UTC)
-X-FDA: 83775687492.11.6B2E2AB
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 75779140016
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 15:05:44 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=e+8NSf7b;
-	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E571C900172
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:11:28 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 99EF9C06C2
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 15:11:28 +0000 (UTC)
+X-FDA: 83775701856.16.5F03DFA
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 67D831A0011
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 15:11:26 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Ll5BnBwV;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf19.hostedemail.com: domain of jannh@google.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=jannh@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755183944;
+	s=arc-20220608; t=1755184286;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4zaTlP5pzo/qg9qINxtiKx2DfK943m3JT2OR6iyYMuY=;
-	b=nJlnPIa6exIF3wVdbip3C/EeP6BiXv+0o+LBjPZGRuEMAELbpAMriHDEO7XDLPKVOb/POU
-	domLOIM7Dram7sjsIqkG+dzt1q0I9n4KmCqVA9yx2kB2tpCVLPCsUu+Hp0F+wQXlhzqt4r
-	shMWVRDoWHeW+3ATNblwQL5bWkaU92M=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=SskdpEkHcdWpBQfUP2UXfkwhjkYyC/FVECNBfHZs9y8=;
+	b=4m7xzAeOakOZnCYiEV2zgKQQ7FbU06Aa5VjQka6B8FUfcXeycfOj5T3eVilbr7Y4uwO0RW
+	uYDKqjxYpKXMSxkwWrTeMeKTiLnhQJXgqDXfMoP2Daf28HNhwKLjfg/pNBto/9KkGs104x
+	hnCByKM4tYHBS+TYKe7zSkIV9FOcLjA=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=e+8NSf7b;
-	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755183944; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Ll5BnBwV;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf19.hostedemail.com: domain of jannh@google.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=jannh@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755184286; a=rsa-sha256;
 	cv=none;
-	b=HlSPWPge6Wj7y7dlof+CSWmfwQXCuhCLFTzNpXsqyAuFz4Rd3dj+FkQA3PlWTK37YasFyD
-	HznxJFjjjCTQUAmEt12MHIdgWVJvzPtqZXegCz7L457qedL7pghrKu9g+/G5QuEkh3rI/F
-	kXNkNhii/TyUFO8LLOpqR002Q+A+WEI=
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4b0faa6601cso21451281cf.1
-        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 08:05:44 -0700 (PDT)
+	b=O0Uk1ZSOP5FZgf58Cox5S8eIVC9O51L+XBNsEjaPLbz5RBHSmzFc2fgPf7BXR247XPgMdG
+	7OMugTQmdJ5y3i48DNcBXjKRFLWtQKzMd5VlHP+hIGPkXWn58Vw35D7Brl0q2lXVH/vS2H
+	aDWk3QSJ9opBv1Iih3wTlc7N23fOPAM=
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-459fc779bc3so68405e9.1
+        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 08:11:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1755183943; x=1755788743; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4zaTlP5pzo/qg9qINxtiKx2DfK943m3JT2OR6iyYMuY=;
-        b=e+8NSf7b8tynSmf6FIX8VAgRmstVoOngoF4WHHR6n4FOrLjMei9L8IhsqFLOm7L2kq
-         ctt7MW4/uXAsWcAdaElwXrVc3mesrAN5zdBluirXRG/PTEMKmh0Y3QmsWY3MFOsO1lCU
-         xf5iDa+t5dNMprwh4TTWzDn2KL6R6e1iZnjNmdHSv1klA+2VSmtN1UvQyt6zL0fYosT3
-         w59/xWDP9DgkNoOynWBVzZnOnUU6b51n0An9xvcfNA8VyXkfRiw2PXa0Ubf5KjJ/gnww
-         7vAUZQnCAhEy6OfCr8sItJC25Bh9rx+MvqLyhSsMVklWyE48bKGYvtpZqvR/IsvGTsum
-         wckw==
+        d=google.com; s=20230601; t=1755184285; x=1755789085; darn=kvack.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SskdpEkHcdWpBQfUP2UXfkwhjkYyC/FVECNBfHZs9y8=;
+        b=Ll5BnBwV57jGCsbOayLEBqNZ7HH8Qo6BU2h9KEW65onzPKpdL5KswijEo7ODQtaDXu
+         zQWfqWTs8NZo0lN8qOYLeffEnINakvwjoS1m9aryybBPbqTITKpc99cplJtRiIX3At3d
+         fd1jqr0CsVZz74EHnvKXoH7y2m78NONhl6O2+flum3YCIyX7diB/+B9SUzNgfy4hngSj
+         XD/ppv2o+61ylExbkFmRkf1bx2w4CHvLz1XFwdlcn2kgsNbS5erkLCEO+nsrRHoSYvlq
+         hV/uX/vl5t42AyyC/pzU7/knsUHFvSwKIYBaYL+N0/alaBwx/xe+xrn9wGn4o/S670on
+         EwpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755183943; x=1755788743;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4zaTlP5pzo/qg9qINxtiKx2DfK943m3JT2OR6iyYMuY=;
-        b=weObdjLa+kYPoZ6cnjbpMMb7IKC1nGNIYIlx9HaUSMpgdahy+EEtm5J2e2Tzv0wsvJ
-         ZudfzNawYf5e+sEHqsdZWVhj6TuSVtxyw4lZtKh2Duuz1FtWvmpWz66uylLpw3wgrFW4
-         DTq5AUpJe9DOqUECgGKMvxVY74oTYZRbZug2J/Ch3rmwWxkAptP4j4pnm8Z61DfS7utU
-         7SfMTJUEQJo/Ill4gSzco0G4voPYhenFwvvmxHn3t2cShEtJ3isrM1JzSkc0xYFqfyko
-         BtD1z+aHvczSyOp8jD4l7Beohzt7/2JiVO0xsvydX/7VT8fqFVz46JDeG8mWGBlnZF/B
-         UjMw==
-X-Forwarded-Encrypted: i=1; AJvYcCWGa94sSsg3Ocyn5VENg5wCwDKAnqh3rZzUz2YmkzOh3Zq0rMMo/Rj9kou6TMv39UtU9xzAj7V1XQ==@kvack.org
-X-Gm-Message-State: AOJu0YwE8AAUXPH5D9RzzsOt/e2ZIDRsBFN99iLdVNHR787piXwN0ly2
-	bQiSz96ucYEdxF7+dvJ1nSJ7q4+GcELuCkfpC3qbb/emdJEo0Yf8LSIsMxo3bqkg2zz3qOvPa9a
-	ZJFrKS5CfMl+5ouMGW+oCmoPdw7L4RVaan/9/CfWYHQ==
-X-Gm-Gg: ASbGnctN8kQziMHUMLn3Zs/QzPphIZRzZz7qeywI1I4L19c77wg/+rwYKo0HfMqmfYz
-	X8vysxxXOZbzUG8BxYaW/qgZlinDRINRsXlXOB+zpyDbmQDuX5UVDGMq6ZjYaibuhmNYWSvUywj
-	AorQC0MIHo5XiZ9hW/XqXt8hBCX9VHVFoyRCwpsWcHcQeIvCZgDwpNyKhH9jaz1sVgZrqKplne/
-	W0xdt6LiCELHlc=
-X-Google-Smtp-Source: AGHT+IGd/DJ84Imu5KYRHkgnpNm4NZ636lX1WUQFrgSI87aMZKq+0zSxGBg+110FdN/squBIYOywjRpAp8ettpbigko=
-X-Received: by 2002:a05:622a:5e09:b0:4b1:1109:6090 with SMTP id
- d75a77b69052e-4b1110964camr21827551cf.4.1755183943358; Thu, 14 Aug 2025
- 08:05:43 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1755184285; x=1755789085;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SskdpEkHcdWpBQfUP2UXfkwhjkYyC/FVECNBfHZs9y8=;
+        b=rMdlKCHYJeRq5eWwMDPk2AP0TXWlNnlh0nckMq/7WOHxWmhZ/laXutAFcUVHn6705V
+         kLziVB9c6AaFmhCZwHIEB6eVjZneueqy17xrtqML5XYDZik+T6KTaYd5MBV5GZwd6FM0
+         LVeg9oz/hDWWI9BhJcBwxe8DKdiZfRj6nActsqh3UTnmp4iUQIb/Ca0WLpIGAeCFIRA/
+         HPaEkWG9C31zfwxL/mlH5z2GmmVIhPkZ/srCp9/im3QP2kQf9euxdfgNF9c6yQSLaweZ
+         qG9YK7f7H2FPIXNzvt/2ho7qHuOZLA5k2q2Z/LeaGV2bUDJ/2uHR7TbYk/Py1ktnFReZ
+         Bazg==
+X-Forwarded-Encrypted: i=1; AJvYcCUpf5JN2c1X0RynDMjg+RRyZ3a6bwsWuB7KGxWW/c/M0oTV6O9DAZGUV0IXZpQSybBgF0HNe803jg==@kvack.org
+X-Gm-Message-State: AOJu0YzyX0vPwypV8wmQ8q21Z+U2ndOPvaUbXhdIlwRBIuNYxlLANdlH
+	TXmDKZhPXBaIxqIlKPP/C0z0YfewMySlPpIAq/9fIX9WdgLrtWbFIe69Y16cI8bmfg==
+X-Gm-Gg: ASbGncsh7ABUMwYqAKuPpXbxck1YGDeBC1c4xZ0mhwh+SmWjoxjohCrGs2I1Dew5yof
+	SMRVPoDc+5WNf+vf/24VWQNY/lNlXQIgHtSGygY5vJ9syLPKnjQe9D7eps9i6Csw0deOLOR0KOX
+	Ymc0lGAaLHhZi3f+bA1UemF0kSIJCF1nHOUWc/lyjylhIO5zbROp0gKcIGYrZooNRDDMhJZWWbc
+	HzP7QWcuEtUzMFIXdxo9ruwctDbO30yG9xlXocHSsbtU6B//K3WfI+iuJjj8DoYYcTftAk6YwcK
+	oAQeRUTvzPLhDvhHWMRaMNE9ZdGtsW+f2AedvRLfbMMv/bwCepv2XTAzGx3R5nz9FCrWRo0ssBB
+	tCjbFnw6QiHM/Qvz9
+X-Google-Smtp-Source: AGHT+IHFuKzvFCHbuJcOA23BDSSsr0lmibgl/giYWdRmsmNyG65kEdnqrR+zs/DzX5Vpr3zDoXAx/w==
+X-Received: by 2002:a05:600c:c4a6:b0:439:8f59:2c56 with SMTP id 5b1f17b1804b1-45a1b177b3amr2085275e9.2.1755184284501;
+        Thu, 14 Aug 2025 08:11:24 -0700 (PDT)
+Received: from localhost ([2a00:79e0:9d:4:3dd3:b636:a51b:d0a4])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3ba54b6c93fsm1524246f8f.12.2025.08.14.08.11.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Aug 2025 08:11:23 -0700 (PDT)
+From: Jann Horn <jannh@google.com>
+Date: Thu, 14 Aug 2025 17:11:10 +0200
+Subject: [PATCH v3] kasan: add test for SLAB_TYPESAFE_BY_RCU quarantine
+ skipping
 MIME-Version: 1.0
-References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
- <20250807014442.3829950-8-pasha.tatashin@soleen.com> <20250814132233.GB802098@nvidia.com>
-In-Reply-To: <20250814132233.GB802098@nvidia.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Thu, 14 Aug 2025 15:05:04 +0000
-X-Gm-Features: Ac12FXy7hDZjxYMY4c9rpouOJZeOk5g8OwQ5wREtab5YlBDjZqQf27ADm8vAB8Y
-Message-ID: <CA+CK2bCbjmRKtVVAok7GH8xvh8JWrga5Oj-iK-p=1M79AqvhRA@mail.gmail.com>
-Subject: Re: [PATCH v3 07/30] kho: add interfaces to unpreserve folios and
- physical memory ranges
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
-	changyuanl@google.com, rppt@kernel.org, dmatlack@google.com, 
-	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
-	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
-	aliceryhl@google.com, masahiroy@kernel.org, akpm@linux-foundation.org, 
-	tj@kernel.org, yoann.congal@smile.fr, mmaurer@google.com, 
-	roman.gushchin@linux.dev, chenridong@huawei.com, axboe@kernel.dk, 
-	mark.rutland@arm.com, jannh@google.com, vincent.guittot@linaro.org, 
-	hannes@cmpxchg.org, dan.j.williams@intel.com, david@redhat.com, 
-	joel.granados@kernel.org, rostedt@goodmis.org, anna.schumaker@oracle.com, 
-	song@kernel.org, zhangguopeng@kylinos.cn, linux@weissschuh.net, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
-	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
-	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
-	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	saeedm@nvidia.com, ajayachandra@nvidia.com, parav@nvidia.com, 
-	leonro@nvidia.com, witu@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 75779140016
-X-Stat-Signature: mhu4a73up1r6zcijidpwybbbu4z41fu1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250814-kasan-tsbrcu-noquarantine-test-v3-1-9e9110009b4e@google.com>
+X-B4-Tracking: v=1; b=H4sIAI38nWgC/4WPwRKCIBRFf8VhHQ1CarjqPxoXgC9lKkhApsbx3
+ yN1pl0tz1ucc9+EPDgNHtXZhBxE7bU1CdguQ6oXpgOs28SIElqQih7xVXhhcPDSqREbO4zCCRO
+ 0ARzAB1yoijJWVkCKEiXJw8FFP5fAuVnZwTCmTliP30ydbRH2IwKUVFJyToAe6pijj7PXPlj3W
+ n6IdJFuJv5vbqQ4x21eypZzRrjip87a7gZ7Ze+omef5DVQWozEhAQAA
+X-Change-ID: 20250728-kasan-tsbrcu-noquarantine-test-5c723367e056
+To: Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
+ Alexander Potapenko <glider@google.com>, 
+ Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>, kasan-dev@googlegroups.com, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Jann Horn <jannh@google.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755184280; l=2857;
+ i=jannh@google.com; s=20240730; h=from:subject:message-id;
+ bh=1jDJoKW+0uL8pCUw24xwM3FK0vdRrfgga7GPmYtrP6Q=;
+ b=7eqsCi6f+oUTHibo06jMfimP7X6uftqxmyns3NemnHriDHDs4/42buGL0Ep6842p7TLguABrF
+ 82V650jX80EB7QQQKwD0jNYibeGS0nG/peuF5xjkz/gf8dq6hlxxyc7
+X-Developer-Key: i=jannh@google.com; a=ed25519;
+ pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 67D831A0011
+X-Stat-Signature: jn6ogmjkj6umy5uo3ih5hxnrupk3jtrh
 X-Rspam-User: 
-X-HE-Tag: 1755183944-316061
-X-HE-Meta: U2FsdGVkX1/YOsXdafArqCyFY8r2MuHovgAvHZMoc/q4czYtiaTaF/lNZzXP8xNkJfIyKSypoVS/mCWbOb8PKeIUydpKy2v2GoWE8HW2pin1J4x6HZ+kHS+N5r43eWra/a1Xm5fhM0vl9ZpS6X0JRdZLeJloUrkcxnBi9PE8jh9ag+gsRtnWyWoBy9nqpTfJZbG42bzWlr2C8+F1ZO5xA0MMCGVaUO7dkHVLuQ6FreBslMxPMsEns4gK7nfAzq/aO0YS/9whQEq2f7zlNxbsg17nezSv0IdbaUgz57S4XL92TiO9EuSYttrbCN5EvqEWFGTOBT/EuzPp4d4FKgnrSp3sEL8U8z945OlF6JRqNMaLZGfMaRgNBrrlUjGmFJ3FG6cKnYFXjkgRsyifQntLysWO1YZdXcDHUvoTG7wuCWKwP3UzYjZSNPt38G23lRy0irV9PMAwL9gM1zPdWS02g/N6ZV1YaEeop+hrwEN1It4NSIcqYq/UtlskVQph8qrTyfoFkeuYWFqDjoxqjvw8yYFcOj7hTUAQCxl2Sbn1KxD27tjHYrSR3iEgzsoYIICm6wlkl+mSsx4SGlpvqvYGOwNrmNks9F+DMI/g3Zb/9PrFVLePH6kUPoIvCYXuP5rT/I5yJCTbkSgpI3fm/8+1zWeafHBG1tfTXsfwFSnA1hoUB7L3r/8WqIkEHPLQlYtGP7q+YtA3EJmDdJb8o5OTFbrL9ass8h+V5GwfLWGiAAswS6rUaypr06Dt1AW69B1GI/WMXgaicU6ZrG2tkLLP2CaH0ywwWHd8fahyaB7DMwm67OVTrOIZEH8DR5OtJqLQxTaPazrj1Qfn8VDZfcJA6ovebt80CGo3PoVzejMXqAURk4SIJciAPIOZJuedHzHqupdD6qzZWfGFRl2MuAHx4lvMtxxcqYUGO4oxhVZn99uqBxGVKfFZnu8JvBQNQaOEXz0cMM1MsuGNFc0Mhgr
- djbx3T6M
- gwbaAKfEpRwrOFesmLpZMySGemlVi02FFFqitpjOkKWyQFL0npicUGbgVOLQLF2+gQRkR8ip76qNJDr72/Jq1tQesBNIYpo4PWAI216a3XPgyuh56CnbcxekvD1Liuq+amtj8QX9ajuDKjzMNPyOrw1pCPOnUEGorHmrKMf4uKVwLyc6dMnU5p9RTwPbo7/ap5MjFMzPDkN3Q7H1AbBRAu6fdccVmWibtUSvqNYhSZ4LhtiSchXIFb9Vk/q/cXy18Nwhd9vro6IEhIa//Yiotqmwp1MVNqDM0V2FT
+X-HE-Tag: 1755184286-622954
+X-HE-Meta: U2FsdGVkX18LeieQCK07CiQQ5IayavgHFO7Ue4IKtNvRPN/GP2VeEBfxzsfQttjP3I/IY18oAEsRIT1liJHHWYw7WfnchFyQPPh0ppESir8+VWtAKKxxBEPKSz+W7OO8mBlsmNasBRArXxNM9xCxlUBJ5aamzhPKF8o6D2Q0WGye+fKDPw9fUyye/i5mq31WGmcA9ztsYSv7sdThq1DBRkt8/ft6PGpF/5VkgOSKQgDG7GzM5FVZay/r528Xo0H0rV5PJ0gRtyeWwKbhlyDyUV+/C+F+CA3Mu+YUHXz231MSj9k7Nk1qjRAe4BG6tASD/tkg06FKNsKQ2D0aomBbzltV56elFfMGRVMxcb40AscboTWuB7n3MY8pRacOZaVPUtG5oer3HNSHzfgjIp7IdBZ2EV9GBXt9M21qdGQKRBvU9LAYTS9nCvIyXr7H8BWhn8sjU4+pc/qsVOQ6IPlgJg4YzByv5dCetOZLVoc6i0emyilnYLJxskLJ9NaXiGuCNAV2ouw10XrBjJlHTG7dYFi+VooFAax3WIf+15FlEUmmz+CJXAXoCtHbu+CRwQ9CMhiU7MKTAiK+nEMQ4Wnoiw4pg4wvVNZtT25ALT8iqvrXnTUomXzIALe+zuFKziM1c+3I3yFg9LbNQh9ZzeA6MRk48wOv6c273z3DAF43M2IKi25x+3kSqkfGwBPRko9wvy7dSQW9GzIbPJaGP3T4VajRsyKDhhrRGRoR68xg/vRUGfTaUfAOkSuuWGg2gKVuLtAYYxDI0/2ZrvGZFDszi7gY6bYdBaohaad/Pd4lFVEZgKFCi21id9yvqsGp/LvLMb6+FcbIqcZltmiznCXWJXMYbx+EwJ6qQIqRLFI8peyOC//8lbRiBkfndzEli/AsIybqL064bbRUyXpTzpodnBEzkDunL1FCexG3+a7HKLXQdLd9Gcm9l8coob7eprvcZbJZT1ye6giLRtni6Df
+ TnL9POK4
+ EMnL3qWvW0zBAC0cEXRdrVvDNu+axQ6EEaSZKtdBO6SqqqTPAL+ygBCm6nPNB8B0nK/v0HsJPmDI5rwmAed9jheQNAr7ER8lTWkG1IBOpPAqDjXuCwAztRwbzY/zasfCSHbhCt8yq1aa4n9pybbXMtl+YgaCA7Vo3Ib0cgEc9xw/Sgi3GnOKDpp8ALw40v2xSMxBZXxpRobMsFwMsXLKUYsIJWjosTwD1WmT3XhKu7EgqHZYRcATA5kGzbN8rJsP5xK7DkgcLYpusM0h02Eon9gV7HmIThq9uja3AHEznMLPkfKqEsl2Is9Lcb0s5ZSygLohUYNvLigxkgXHwcDYjZssUYowfkbbv1vqHM9ZDfYkkF3QyPO4Zveu9GuwSE64w6Fl3/ZzlwvMScnvUJNNoNqVq5yTaOe+axEY1Vn/Y96blbwLkNWz/sZkoag==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,58 +132,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 14, 2025 at 1:22=E2=80=AFPM Jason Gunthorpe <jgg@nvidia.com> wr=
-ote:
->
-> On Thu, Aug 07, 2025 at 01:44:13AM +0000, Pasha Tatashin wrote:
-> > +int kho_unpreserve_phys(phys_addr_t phys, size_t size)
-> > +{
->
-> Why are we adding phys apis? Didn't we talk about this before and
-> agree not to expose these?
+Verify that KASAN does not quarantine objects in SLAB_TYPESAFE_BY_RCU slabs
+if CONFIG_SLUB_RCU_DEBUG is off.
 
-It is already there, this patch simply completes a lacking unpreserve part.
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Jann Horn <jannh@google.com>
+---
+Changes in v3:
+ - add vbabka's ack
+ - make comment more verbose (andreyknvl)
+ - Link to v2: https://lore.kernel.org/r/20250729-kasan-tsbrcu-noquarantine-test-v2-1-d16bd99309c9@google.com
+Changes in v2:
+ - disable migration to ensure that all SLUB operations use the same
+   percpu state (vbabka)
+ - use EXPECT instead of ASSERT for pointer equality check so that
+   expectation failure doesn't terminate the test with migration still
+   disabled
+---
+ mm/kasan/kasan_test_c.c | 40 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-We can talk about removing it in the future, but the phys interface
-provides a benefit of not having to preserve  power of two in length
-objects.
+diff --git a/mm/kasan/kasan_test_c.c b/mm/kasan/kasan_test_c.c
+index 5f922dd38ffa..0affadb201c2 100644
+--- a/mm/kasan/kasan_test_c.c
++++ b/mm/kasan/kasan_test_c.c
+@@ -1073,6 +1073,45 @@ static void kmem_cache_rcu_uaf(struct kunit *test)
+ 	kmem_cache_destroy(cache);
+ }
+ 
++/*
++ * Check that SLAB_TYPESAFE_BY_RCU objects are immediately reused when
++ * CONFIG_SLUB_RCU_DEBUG is off, and stay at the same address.
++ * Without this, KASAN builds would be unable to trigger bugs caused by
++ * SLAB_TYPESAFE_BY_RCU users handling reycled objects improperly.
++ */
++static void kmem_cache_rcu_reuse(struct kunit *test)
++{
++	char *p, *p2;
++	struct kmem_cache *cache;
++
++	KASAN_TEST_NEEDS_CONFIG_OFF(test, CONFIG_SLUB_RCU_DEBUG);
++
++	cache = kmem_cache_create("test_cache", 16, 0, SLAB_TYPESAFE_BY_RCU,
++				  NULL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, cache);
++
++	migrate_disable();
++	p = kmem_cache_alloc(cache, GFP_KERNEL);
++	if (!p) {
++		kunit_err(test, "Allocation failed: %s\n", __func__);
++		goto out;
++	}
++
++	kmem_cache_free(cache, p);
++	p2 = kmem_cache_alloc(cache, GFP_KERNEL);
++	if (!p2) {
++		kunit_err(test, "Allocation failed: %s\n", __func__);
++		goto out;
++	}
++	KUNIT_EXPECT_PTR_EQ(test, p, p2);
++
++	kmem_cache_free(cache, p2);
++
++out:
++	migrate_enable();
++	kmem_cache_destroy(cache);
++}
++
+ static void kmem_cache_double_destroy(struct kunit *test)
+ {
+ 	struct kmem_cache *cache;
+@@ -2098,6 +2137,7 @@ static struct kunit_case kasan_kunit_test_cases[] = {
+ 	KUNIT_CASE(kmem_cache_double_free),
+ 	KUNIT_CASE(kmem_cache_invalid_free),
+ 	KUNIT_CASE(kmem_cache_rcu_uaf),
++	KUNIT_CASE(kmem_cache_rcu_reuse),
+ 	KUNIT_CASE(kmem_cache_double_destroy),
+ 	KUNIT_CASE(kmem_cache_accounted),
+ 	KUNIT_CASE(kmem_cache_bulk),
 
->
-> The places using it are goofy:
->
-> +static int luo_fdt_setup(void)
-> +{
-> +       fdt_out =3D (void *)__get_free_pages(GFP_KERNEL | __GFP_ZERO,
-> +                                          get_order(LUO_FDT_SIZE));
->
-> +       ret =3D kho_preserve_phys(__pa(fdt_out), LUO_FDT_SIZE);
->
-> +       WARN_ON_ONCE(kho_unpreserve_phys(__pa(fdt_out), LUO_FDT_SIZE));
->
-> It literally allocated a page and then for some reason switches to
-> phys with an open coded __pa??
->
-> This is ugly, if you want a helper to match __get_free_pages() then
-> make one that works on void * directly. You can get the order of the
-> void * directly from the struct page IIRC when using GFP_COMP.
+---
+base-commit: 0df7d6c9705b283d5b71ee0ae86ead05bd3a55a9
+change-id: 20250728-kasan-tsbrcu-noquarantine-test-5c723367e056
+prerequisite-change-id: 20250723-kasan-tsbrcu-noquarantine-e207bb990e24:v1
+prerequisite-patch-id: 4fab9d3a121bfcaacc32a40f606b7c04e0c6fdd0
 
-I will make this changes.
+-- 
+Jann Horn <jannh@google.com>
 
->
-> Which is perhaps another comment, if this __get_free_pages() is going
-> to be a common pattern (and I guess it will be) then the API should be
-> streamlined alot more:
->
->  void *kho_alloc_preserved_memory(gfp, size);
->  void kho_free_preserved_memory(void *);
-
-Hm, not all GFP flags are compatible with KHO preserve, but we could
-add this or similar API, but first let's make KHO completely
-stateless: remove, finalize and abort parts from it.
-
->
-> Which can wrapper the get_free_pages and the preserve logic and gives
-> a nice path to possibly someday supporting non-PAGE_SIZE allocations.
->
-> Jason
 
