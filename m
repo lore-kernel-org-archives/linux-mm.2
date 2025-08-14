@@ -2,185 +2,127 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D371BCA0EE4
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 13:35:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3BD6FCA0EDC
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 13:43:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 73813900167; Thu, 14 Aug 2025 09:35:20 -0400 (EDT)
+	id 8F817900168; Thu, 14 Aug 2025 09:43:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70FF2900023; Thu, 14 Aug 2025 09:35:20 -0400 (EDT)
+	id 8A8DC900023; Thu, 14 Aug 2025 09:43:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FEB3900167; Thu, 14 Aug 2025 09:35:20 -0400 (EDT)
+	id 7BF44900168; Thu, 14 Aug 2025 09:43:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D8C7900023
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 09:35:20 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 14B3DBAA2B
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 13:35:20 +0000 (UTC)
-X-FDA: 83775459600.22.53AF5BF
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2049.outbound.protection.outlook.com [40.107.220.49])
-	by imf03.hostedemail.com (Postfix) with ESMTP id BD81320014
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 13:35:15 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=PSv2pERd;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf03.hostedemail.com: domain of ziy@nvidia.com designates 40.107.220.49 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755178517;
+	by kanga.kvack.org (Postfix) with ESMTP id 6BD12900023
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 09:43:18 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1E9BD1DD9CF
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 13:43:18 +0000 (UTC)
+X-FDA: 83775479676.20.D4923C2
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9511E1C000B
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 13:43:15 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=none;
+	spf=pass (imf20.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755178996; a=rsa-sha256;
+	cv=none;
+	b=jjkBKH8GVVOyBO1ssrw5rb0R6k5csJZfVlWNOWd/515/pB5G07JJLDRTLDfKo171098QoK
+	g9ik5oHGFhNW9E1PACCBk+Eq1tS5tffyXr5FFvYieY1Gzo2WygwgoFv6z+EI6VpFt1xzZv
+	8i9dRzp21lSnA88mKVFboQjDNnDpUjI=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=none;
+	spf=pass (imf20.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755178996;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F/eftZ5/GujxBBroW7lrI/FdAq99dEmCGyoiyG5nrxA=;
-	b=g4EdgwKQ1wZbYKXNUmLjQq+ygQeV2j4o/RFMtq23xWLC943akPJz/Ko2zmIimsGpoxOFD9
-	h26AB03klF+y90sJsOuhRSql6somJZzGxSfCWTCFBkTQnJ2kc8ho8TnYM3xB8nTSyMLTaB
-	jm/7UFPv5VHYGs1KSTtosWFrC8vqUIk=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=PSv2pERd;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf03.hostedemail.com: domain of ziy@nvidia.com designates 40.107.220.49 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755178517; a=rsa-sha256;
-	cv=pass;
-	b=Sg4GfNQViZLwPpOQIbeLy5L9EmlGp6AZCtQL8nfAohb5gly53pQSL6MpEq4Zs1CwhEBkzg
-	NxP0ZaeItPgax1aijIvIAiZxpZHV3C6hZjpiVa1zXqT+6frXKbd5rUcR/LNbZXKA0FanLC
-	lvci1ibGPvC9uHyCkcUIJ87REZ5uF4o=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PqaGQC6FEhmv1yqTA5B9VcT0ObBhRbLqJ+SGTC+5XTPB7Ixi6M4Vln7JVfMSdL9SYiyYOLcy/f7Et0SfLjIwY1nzQSZJT+UI51xA/xW04fOgJ1OtjxiE8ymrpwaVgSwrg/ZrepQQ4kHdKiUij2HncIjqOySjtgehaGUsnHaxUxGLsWbR3g+OhCnijlO4fsJyFqum8ZAECW5tlHZyZ+WDpXKJp8HAldG8J+wV0r5HJse/LgwmWq2PwEgrih5BU9mpM0v9PtXDSwnQw5Gl71K33wubx8V52bnGSIK5yW/CfrFbBMlXArMRKFXal5PXOs6RToPPyjD8jg7HO16OzNnOsw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=F/eftZ5/GujxBBroW7lrI/FdAq99dEmCGyoiyG5nrxA=;
- b=qM0uwjL/v2ZnDzn8FmyeUV06jpbOmHfg8U9ohYf4cvqqHyDC5M9B3h+9UkF4x7n4naIIPAYrIjSLmfdofP92sMCVWJUGHEmmm5Z+wuTzFZEusYw0GjIi2BuYEpHobOxH18ndGxFT1LBgoeOg00wQWFyv93X3fYLtQhAAx9tl5dMCArMqA+avbo8EOR2GQxdaBHm1b6uJLh+XcbvsvqWVwch+pPwLRREm6H13meP3lKNnXaj3vFB/5mjiXvDCyJlA3yf09fDko+4tdZWeTZ9GgVFaALnCiHPhidB6xU2rNKbKeQ3lzZ/MCcePuVq8NNEX8iv3W3oDk3oaaBf4SeRStA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=F/eftZ5/GujxBBroW7lrI/FdAq99dEmCGyoiyG5nrxA=;
- b=PSv2pERd3Yk1CF7Z/dww9/091JwbVNjYK33VYOauiMiWJSdPjo7D+pCBV5qY2534x+cQKfTZ6eS7GKz914T99sg2dnIg8C+f78DYpLGPVooGgoHVHhtXvfVgRqAHhlzPJFlD0wYtbvo/Kuexg5/SDe03yHdogKIJTS9nLjKz6D+NpXZZvrvXI7aOYly3pcZnObQrFL31T8ujoetmDur315GNvxgPnC+KNXbspRaZTnwek9rzlXYkgSDdk2c7/2ufrif8Xai7WtjieApOu67QwBQ1eYj+8WuXiuwddHuB2HzEfGLilt6iQLxmA/Zf7ZODbzTReYmhZ4UxiU068gS/0g==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- MW6PR12MB8663.namprd12.prod.outlook.com (2603:10b6:303:240::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9031.14; Thu, 14 Aug 2025 13:35:12 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%6]) with mapi id 15.20.9031.014; Thu, 14 Aug 2025
- 13:35:11 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: wang lian <lianux.mm@gmail.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- David Hildenbrand <david@redhat.com>, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v3 4/4] selftests/mm: check after-split folio orders in
- split_huge_page_test.
-Date: Thu, 14 Aug 2025 09:35:08 -0400
-X-Mailer: MailMate (2.0r6272)
-Message-ID: <5981F8F3-9935-4570-B5CA-DD8B0FF43EDE@nvidia.com>
-In-Reply-To: <20250814091647.6prozsywma7qlugm@master>
-References: <20250812155512.926011-1-ziy@nvidia.com>
- <20250812155512.926011-5-ziy@nvidia.com>
- <20250814091647.6prozsywma7qlugm@master>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BL1P221CA0034.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:208:5b5::18) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	 in-reply-to:in-reply-to:references:references;
+	bh=S5J+mLAP2QlIEt8PDLcOSFod+Rvn+2kAxka0kZb8QO0=;
+	b=rdpntSe2aKM+lI2kqKdBhlC7xltENn2Rm1Mpu6jsC8rGVORCPyN7K7R1CdE3Eghfh/De0S
+	J86R2NXfd+SDMHzu21KyupxVUcrU1HxC5h5hGqMbIKuW40zevVGdX01dRehAHNyr1SX+CF
+	7LN0oyU/OzTi/j3ghJE2tYb3nLeOdm8=
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4c2mf947xHz9sSR;
+	Thu, 14 Aug 2025 15:43:13 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id mPu6Xjo1vLlQ; Thu, 14 Aug 2025 15:43:13 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4c2mf83Tw5z9sSL;
+	Thu, 14 Aug 2025 15:43:12 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4D6A38B765;
+	Thu, 14 Aug 2025 15:43:12 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id eqmp3JHpIEX9; Thu, 14 Aug 2025 15:43:12 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id C584A8B763;
+	Thu, 14 Aug 2025 15:43:09 +0200 (CEST)
+Message-ID: <86186254-b2c6-4818-af0a-4eb67d90e501@csgroup.eu>
+Date: Thu, 14 Aug 2025 15:43:09 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|MW6PR12MB8663:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9dfa6f11-4594-415e-c3c5-08dddb37645f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?MsPHsoJkqa3VUJPgE1SS1dBxG3KLk5K5/z5avLPjNga/4/pou+xNh7r6SL+R?=
- =?us-ascii?Q?gpqkKvpu4Mdj0ymhbdxBwqnhL8j8N3Sb1LLXV9jlPr7NsOeWuDYuFsFbpWMx?=
- =?us-ascii?Q?P9ManSE00JtsExURAaXG5JtZVWVJBMMrUwuD+6yEcGCXFvN+gff4tu+xPpoJ?=
- =?us-ascii?Q?7eshEjknE3EPlz6qLbf2WLARKZyMtKUwvwujwlURQqrd3U5JGJMu5BJK8m0d?=
- =?us-ascii?Q?apOut3qGo6Sm/HiPzwncX+MxsaXPeeXlzAPRscglZfeQZ0d+5uSUZ1RCyTgE?=
- =?us-ascii?Q?ZYagUb2HIVVdNqQ5oQzPDF/QEZFDEW8JOXAF7MpxeU0sZWASkzLEtUS1fSz7?=
- =?us-ascii?Q?/hRLwbIoyi5jmclyNOfhYxY7NK7Qybp3De0veJNT/IbAdpSWjXuo1FySrmnx?=
- =?us-ascii?Q?JW4P2K5tWsIqBuJF28KGOXAf+XJSVHdTkw3MqY0NsobfkwGM3tE9RZaIXxS5?=
- =?us-ascii?Q?809AFSHL+m2jYaVpucePJO9naDdY0yKt/o598zMzDWbMR+kHBe5evNzOlamy?=
- =?us-ascii?Q?yB+z3kajt/BtJMcHMGgQSa+SOi1V2yd+VgGHJenV6PA/QM8hE/7tvLG9B782?=
- =?us-ascii?Q?gUR68IQpLT7vZDb+GxUM9uu1WSJ3rzQSWjctWKg4EEkQ//J7mCuUdibUk4A2?=
- =?us-ascii?Q?dfq7qs/ToTmhw+k77BUnMO4jWPiLS2hR3UIy066VyB8mbaQ7/tvQHP7518jy?=
- =?us-ascii?Q?4sMF1CRrQA958fSiiVkrcBw29jBVWdUqKG/WFxfrwcifjDQ8LDHWPVx+H52z?=
- =?us-ascii?Q?Rd1YSTp7VzDEuzrfpFV1t0PPe6wU37fJGPoKWCwmyJKe+RcVdKVs7PRKxYG8?=
- =?us-ascii?Q?RXMajdep+uE/wrAx6AWFvYp5JSFjk2f4MxgwXcc1ivO30g6fLpy0gW5vI43t?=
- =?us-ascii?Q?duJIhzyXSsiCZeDl2ln4UDaVdHcOHpMAtCY6lKyT0Nwle+S1W53lFcZUgA5m?=
- =?us-ascii?Q?Ste5vL4gc2dTQMvEXE+6HJxT+2Vz+Rk9KrcsyFkpSov5nckzJDf2+LV3S06b?=
- =?us-ascii?Q?uzpe82whpOPtaAj/HHCBri6veIt6YDbwgaZewOrkKgc/WsLI+jPGnYqtLHNl?=
- =?us-ascii?Q?kR1nr6SSNBBZ1eB7v96xPJ0GlDSw8fHZ5GY1+qW2tLn+hNfe7aLr24DcOXvT?=
- =?us-ascii?Q?4c2FsUMNAG7YyigoonBYYBInbKCVGP8F0jVBxQTB10+ixbHQQ9MphA2mm3lO?=
- =?us-ascii?Q?BdK3UF+XXsYvaBTb979TjaOuy4+xWOwJbcoz+ddrWxww0h9vJjUkAbNjrU6/?=
- =?us-ascii?Q?3xJ2VOMc7KM+X+FvUFE3rinS13dFBOXx277AOyRSBvCJD8tMsFu50/C3tc5O?=
- =?us-ascii?Q?cDtuH6kAJwV48iTzNa8zVVgknp1/D1QUkViGBa9FYuvQaDvUVq0GWY0nUSpX?=
- =?us-ascii?Q?eAEqrU+py0XkSan8hG6ExJg1DgANzQIbF57xvsMp6kmYRNHJAg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?gnbmu3uKpQHgCGwZVqw8mCzR1JBdvtPqC1nwHa6LCXbzRsHSpvIpWjukc6oj?=
- =?us-ascii?Q?Gk150hFx6IDJp9ZisDJ4gMq9AzS6bPVNqdZuq/eHtcQd7FhYJ7mSkhxmvIKB?=
- =?us-ascii?Q?WmsX5Zmm0ElxuHrClfku666mb7ommesWzxNsl4BPb7cBKvL7Oy9zBUQ3v0yz?=
- =?us-ascii?Q?PVJTacnCkjSMSBl8LCKnPfcdpNUYF6MjFptWPxBRLlyrMs3D+x9/IgGPi4Vf?=
- =?us-ascii?Q?+b6LYYLlQbzarr1dgok+o7ykOKUTkMNoV4hapcZx4NM7VQnsTXoEMHIj9R9v?=
- =?us-ascii?Q?DF5jwqj3Ch62/9CtGInaOuzejVUVpe292kUuR7n7mhAlkMKTRfk+dvfdcLcU?=
- =?us-ascii?Q?nfZRvTIpZQ/HekOEJsxpxVcfvUX0wMHGXqV8BCF7Acoo8wE96ZiZflnYCWmY?=
- =?us-ascii?Q?Ax35ueAIxAkAzoKdk2DHu0zDgam1vEUJ172VoNMrnx85v50KokrvpL8vcOek?=
- =?us-ascii?Q?0XADw/s9NXFvCzSOyJqfkYOv019oO7T0AkFhw4DgtCo7PRBwzuoJplcDbprR?=
- =?us-ascii?Q?xRnZkP4rjqCoXjnt5xwChuzKlk66SExoNBPS2BMAJl18g1UJaalegMbEvHHf?=
- =?us-ascii?Q?ZVHsoSR7ymXicUqoLKJ4nYRorJ/D8fi8to5j44TN9q4i2ZphK4OmGEDeOggZ?=
- =?us-ascii?Q?R/Qi4dFJIzuTjt0Q5rznKg3Suout3QOzn+JqrrmAJf8MYL3zsgWmIZQTp1qa?=
- =?us-ascii?Q?i6NpSDV3G2DZMfNYec9RiwhIzjMP49ksqInbaDzmEJednqMWE9fVFzTcum+F?=
- =?us-ascii?Q?FGW5hWEyJJCFIjBo3aDAMNfUpgknZOyDJU8OULLNW9igfMRLcsdfrnNWug/7?=
- =?us-ascii?Q?cgOpdGdh2UNAo+fwcg/V+4NK7YUN4+2Q/XgybsOwWoSx+Xnt7ZXSgGMlQl5+?=
- =?us-ascii?Q?vaZhw2ZBCRq/URGWAlViwAQT+mIjfg8EyyKqcqfWraoTIMr3cZz5fSE4YFot?=
- =?us-ascii?Q?7IkX5z7w7r9i0X4ZzhtmQmlRybK+V6bvZWEcme3heEpMWlPpCaykfT5sHois?=
- =?us-ascii?Q?4thtmfk+iaEAVGhHr7sG+veJ/9tymvdEGGy+7iM/KjP02r2Dk5lyuramQYMU?=
- =?us-ascii?Q?85ySQ13AfNDCo5ijIfASttip1KlmQlpvxoIQJS4Um3W31XGrViHN09ivvy2F?=
- =?us-ascii?Q?4oD2GTplWramM3RY8NrffTDex3PGKYkz416GAiraAsNi+vfPoS0JMU4NHRum?=
- =?us-ascii?Q?z0o6eyZ0cvfNeMIlAVh+yQDLozalLJGIjMpX/lq/jAQHBeEpF0yMhF+IWZX7?=
- =?us-ascii?Q?h0aDG46KJKzRqX2dJAUNhAO8V+wYPkRPBVJwfKTYjb9F+Di+QR7nSX4vFzgu?=
- =?us-ascii?Q?02d0djtP0cKgOGAWd2X+v3nHgfofBOsqS4zwBJ/rzlzygXPbsLtU6uVuXUGh?=
- =?us-ascii?Q?bjT4ftFIPAZSvMDBs7KvOxYGMX+BuNn0aW3y8yyxLEEw3hu6Ygx+waRGJwul?=
- =?us-ascii?Q?MeVHNQ/WcGhxtO7TcPOQMyaa7Brc3xFuTW83dnQ8fkgyZ+BjwslOuwiFxOrB?=
- =?us-ascii?Q?UYVhyb/qyuoWH8gk8lzG8wM309rSkMJH4010FGZOJuK0HhUYPBzZHxd+TXp9?=
- =?us-ascii?Q?h8TzfmPOckQLHWhQWhNitQLtvgYuHd23n8a3Espf?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9dfa6f11-4594-415e-c3c5-08dddb37645f
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2025 13:35:11.1731
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mB6JkeWVcvxWqkNbm3RdmOYjfXGEMRJ4aUUu/++HReKCicABomulMX7o4jaLcbdd
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8663
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BD81320014
-X-Stat-Signature: qtohdqbwtdc9pnumkdja6chrt15jj1qn
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 00/24] vdso: Reject absolute relocations during build
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <kees@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>
+Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ llvm@lists.linux.dev, linux-mm@kvack.org, linux-um@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ loongarch@lists.linux.dev, linux-s390@vger.kernel.org,
+ linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, Jan Stancek <jstancek@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@redhat.com>,
+ Alexandre Ghiti <alexghiti@rivosinc.com>
+References: <20250812-vdso-absolute-reloc-v4-0-61a8b615e5ec@linutronix.de>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <20250812-vdso-absolute-reloc-v4-0-61a8b615e5ec@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9511E1C000B
+X-Stat-Signature: 6twwh83ef1kjdf5r7hcrqewbmgkcxktr
 X-Rspam-User: 
-X-HE-Tag: 1755178515-49083
-X-HE-Meta: U2FsdGVkX1+/H0k0eLUTDyYITAdG6JEnu0/C4NlVUht7dtRMrO54eYXFh4vCrIhCAMco6Cdg7c6Rkcau5HJAgOVuoz/wMR0sRKJr14wPsjfoJMnUh2Xp7hiAQa/NLUKwRtwZtQYaQxluFk2M7Fsx7tNZyd20qz5xiZDcKHSgama1dfEJCb9f1xYXzzgpnxOx0+1xt38El4VUuN8LHo0YF2Tyxpmeh1mmNsOxsVpiyh3S6NQdstxeRIGcNxbWvoG377acC6hNr1C/NF+NeF+hoj10cyL8SMxr8HqpNeY/sWLrYSwXBw2SzVJQNaR9aia8XvRLnntayEnz4wOuu1k1x7ULvmEtjWkTbLy3PnBk3A/WYY5lxHYP+yLqkz3R/NtgKvH8JGy13VXAgDRa7wJpdyq2jg5zRUpDMdiEY1hOheCwlWzd3hQ5ml7bE39ibBP1sYa2H9ZnClKLXT6GB738BgfRx16IBuVc05+DROOj8CjPAjXlGeQrvt+zW6gYqiqGmdmpPQOU+hbS3u3q7BjhQ3m2X+vpKw2tnfJzD1GmTBICEla/ORMtbMis88LgO2gHTK74wZjYHyF+5XyeWSj/4VLTHkEmqp9t9alThoy1XyDQ3mtqB4LgL3EepHiSeRMM4I0RTIboLjFytEtOAqSohdyslctAra9zqrmPfkSz2wWygNxhWQmk7EFHXsdC/rBWpDHL3pBjr77aFPdUOmDJQ6qMbZpi9mnUBnhffP7A60ClFaVqorQkiLUC0P7sf31mZeJ0VfboUgvvUwOp9a/I4mggrn172K48/hevokiOagwibvC1hetfR3BpccittLZ3q1fI+ynMHBscdsri2Nj81Ke7oPuDqeBM1N+dyJX7KVm6yQ2iEkYGcH7tHWuGbJDMPxdDFrFz8rLUTKgTnFKuAW5Vm0k4Rl+6Bk/I9jpZuwpHRAbC8tHINJ+cIVYE0p/g6ofDJ2KwcKUTt1PGudv
- MTmykzSJ
- 4Uc4BX7Hwc7xKioGNVa0v333ElP0s3rqDQxlqA+TaXmQolnOhr609mPKZhrOP4zXON2GpcsIfj9+HUnHlUcbZFnhB5k82Tt0cCoWUZO5Y7b+BJ1uFNqHH3PAElMa3y+5CEknwugrn4YQb0ytCV90nydG6PYiUEVhLmW7WWuuAhXzfl/5M2UWFfC1mylbpkjzSzm0L5S8jarGJ8vAEFARJwVTkqf/tg2bMiPSyeaa9dVhNKwWu26jX7js7FA04b7p8HAZGeY4K0PUSPCuNhu9X4VQPDVYWbT0a+1QL9wOfFO0K9/doPxRHpp3WYy4bIxE/Dpb38f0v3scCbOUs17iXPnENGg6d3NFNQlZqDu3vgy1cSanJeaP4sIGg/5hHCP9NLMr9LYOYbzE6FEn483cD0ZjU0mOeu2j7f3n+Z4K00eD0wl5s3AwVTSF1RGFpIUi52gqO04HVo9QruefXk8g8xLvGRErGVqR1fEPmo1y2CD7hLMVidNzlHzPMErSNMi9IIRDeY+uxM+uurhHyp6MKMvLSWV9K/41PHaajTC4+n4r/wLD2cnmmiufA/FrKLJ1u3HubLcsfrwPo8RtgasUYYCz6vn5+6UscxpNn
+X-HE-Tag: 1755178995-408297
+X-HE-Meta: U2FsdGVkX185r+pKBPbhXnHZ7jXZXqDcpqJf1KmXh4fRFpzQl0GFZqveb/aTSdVoFUe0t1Mz+mXGA7SJFBwIRaSZZHj/OA4rmYkOL9LT7qsqR+3obzv2artzXETh7SxCzhy5otF3TiEpR9sOtpbHb7wgHIHgTqnBLR2gEhNuX5SXGDJdLksthiB8FUMssS+shGGgmk7/VBqugecXUrT/wVv3bNdfc1n2zyymEfZeSMq2tW8aG9cbmA9aG297nKvgQiS39v5hgfgK/zg02C4l15Kvg+caYm+d1U8bqkkwJN6+aUWkxxh9SK8t9e23VRQZbDAISTE3Zj4lVanbaIT959+oW+jXaKN3vi7UGTodf6sz1O3Ln3N36ObRSEog+xYcywdixa9BkHc5CU0MJ9O8GQachAzPO7gMss5u/aMo6/JBOHZU6h9jgWfURWi8hogXH0iOmNgCUqtZhJF186uwfL14tE2H4HtQUHgyr9tsVR9d00IqERhAK8e3/A+RIjaOFFkn0nmQLLXgNLmoj+i6HOMP1c8+xAPwr8Zr+WMLLmKeIk5+/HOhXx4a1ZQqffcSI77RmCgYkufILPCj2pGpZXjgYfZ6V1nOlx6wcu+RoWjhP7SfxGsV8Yhu/S0yOHeWmYWQ/YpJF0TrMGbjriCPIlS+QmdfmRbew0HDm+qKDAV/QpZwhzhqtBUGl09paB8cRbwsULKfQEyBbC2Or7zAMVZx0Ydgd7Zhm8Rk+TnsneZcscouUP5jHi5ywAQEsqYEFSZfg5uXm8tnbvxxH8wHI/1F+h8uvu0cm1kDFz/1CEw+SAbjxrMCP8xtH529JuZYMHWuovRTAWaLHTAEkea6grT5VqRS+VdAUQ5KxrMpCvmDFXjo4B6T/m2KzkG67sDnJh2vJdiUGMajw+aJMyg1B/sLr0Ly6ALR7qaHrAlaGVHdBa6Fm9ptDgUhBnW3kMGLY5qNuP2nmpsrylrFEWM
+ qG7XvaSk
+ PN7CftSqBabAdmIMZS5bhJb/v3Ss2NELgUJyTdrUkHJUIHP8Gxwg//yGFIkGUgVqLR5p4Ux7oXyfruyQ+fnIShrMkejSqAywGATnHOUgQZq9STaSh20wPvMAygaNVNB/EKlBhwuIFBl/QQ3MPP7+HLfqjYn4Fkk3+fmYhdORx9ypKKLQhx8a5s6FQTfA3l8lSHdfsjKnZjRLkTOO9e1EjfLsBrR1wvQk1agL6UEt6snFIZTvlIYmCHoAagQN0P/Sup92FM/Yz2jLcmYl45PMrq/hbT1xkBb45k7XXKc4sN4ap9g2pdJYFG+oPTa6Bjx/vjE4UnUj3A4ibgJejIEW3PcDjb32fMT4w//qCXYe154LaiGqqVCTqiPf3Ow==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -189,206 +131,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 14 Aug 2025, at 5:16, Wei Yang wrote:
 
-> On Tue, Aug 12, 2025 at 11:55:12AM -0400, Zi Yan wrote:
->> Instead of just checking the existence of PMD folios before and after =
-folio
->> split tests, use check_folio_orders() to check after-split folio order=
-s.
->>
->> The following tests are not changed:
->> 1. split_pte_mapped_thp: the test already uses kpageflags to check;
->> 2. split_file_backed_thp: no vaddr available.
->>
->> Signed-off-by: Zi Yan <ziy@nvidia.com>
->> ---
->> .../selftests/mm/split_huge_page_test.c       | 85 +++++++++++++------=
 
->> 1 file changed, 61 insertions(+), 24 deletions(-)
->>
->> diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools=
-/testing/selftests/mm/split_huge_page_test.c
->> index 3aaf783f339f..1ea2c7f22962 100644
->> --- a/tools/testing/selftests/mm/split_huge_page_test.c
->> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
->> @@ -26,6 +26,7 @@ uint64_t pagesize;
->> unsigned int pageshift;
->> uint64_t pmd_pagesize;
->> unsigned int pmd_order;
->> +int *expected_orders;
->>
->> #define SPLIT_DEBUGFS "/sys/kernel/debug/split_huge_pages"
->> #define SMAP_PATH "/proc/self/smaps"
->> @@ -37,6 +38,11 @@ unsigned int pmd_order;
->>
->> #define GET_ORDER(nr_pages)    (31 - __builtin_clz(nr_pages))
->>
->> +const char *pagemap_proc =3D "/proc/self/pagemap";
->> +const char *kpageflags_proc =3D "/proc/kpageflags";
->> +int pagemap_fd;
->> +int kpageflags_fd;
->> +
->> int is_backed_by_folio(char *vaddr, int order, int pagemap_fd, int kpa=
-geflags_fd)
->> {
->> 	unsigned long pfn_head;
->> @@ -49,18 +55,21 @@ int is_backed_by_folio(char *vaddr, int order, int=
- pagemap_fd, int kpageflags_fd
->>
->> 	pfn =3D pagemap_get_pfn(pagemap_fd, vaddr);
->>
->> +	/* non present page */
->> 	if (pfn =3D=3D -1UL)
->> 		return 0;
->>
->> 	if (get_pfn_flags(pfn, kpageflags_fd, &pfn_flags))
->> 		return 0;
->>
->> +	/* check for order-0 pages */
->> 	if (!order) {
->> 		if (pfn_flags & (KPF_THP | KPF_COMPOUND_HEAD | KPF_COMPOUND_TAIL))
->> 			return 0;
->> 		return 1;
->> 	}
->>
->> +	/* non THP folio */
->> 	if (!(pfn_flags & KPF_THP))
->> 		return 0;
->>
->> @@ -69,9 +78,11 @@ int is_backed_by_folio(char *vaddr, int order, int =
-pagemap_fd, int kpageflags_fd
->> 	if (get_pfn_flags(pfn_head, kpageflags_fd, &pfn_flags))
->> 		return 0;
->>
->> +	/* head PFN has no compound_head flag set */
->> 	if (!(pfn_flags & (KPF_THP | KPF_COMPOUND_HEAD)))
->> 		return 0;
->>
->> +	/* check all tail PFN flags */
->> 	for (i =3D 1; i < (1UL << order) - 1; i++) {
->> 		if (get_pfn_flags(pfn_head + i, kpageflags_fd, &pfn_flags))
->> 			return 0;
->
-> The comment in is_backed_by_folio() is more proper to be in previous pa=
-tch?
+Le 12/08/2025 à 07:44, Thomas Weißschuh a écrit :
+> The compiler can emit absolute relocations in vDSO code,
+> which are invalid in vDSO code.
+> Detect them at compile-time.
 
-Oops, these should be in the prior patch.
+I'm a bit puzzled with this series.
 
->
->> @@ -198,6 +209,12 @@ void split_pmd_thp_to_order(int order)
->> 		if (one_page[i] !=3D (char)i)
->> 			ksft_exit_fail_msg("%ld byte corrupted\n", i);
->>
->> +	memset(expected_orders, 0, sizeof(int) * (pmd_order + 1));
->> +	expected_orders[order] =3D 4 << (pmd_order - order);
->> +
->> +	if (check_folio_orders(one_page, len, pagemap_fd, kpageflags_fd,
->> +			       expected_orders, (pmd_order + 1)))
->> +		ksft_exit_fail_msg("Unexpected THP split\n");
->>
->> 	if (!check_huge_anon(one_page, 0, pmd_pagesize))
->> 		ksft_exit_fail_msg("Still AnonHugePages not split\n");
->> @@ -212,22 +229,6 @@ void split_pte_mapped_thp(void)
->> 	size_t len =3D 4 * pmd_pagesize;
->> 	uint64_t thp_size;
->> 	size_t i;
->> -	const char *pagemap_template =3D "/proc/%d/pagemap";
->> -	const char *kpageflags_proc =3D "/proc/kpageflags";
->> -	char pagemap_proc[255];
->> -	int pagemap_fd;
->> -	int kpageflags_fd;
->> -
->> -	if (snprintf(pagemap_proc, 255, pagemap_template, getpid()) < 0)
->> -		ksft_exit_fail_msg("get pagemap proc error: %s\n", strerror(errno))=
-;
->> -
->> -	pagemap_fd =3D open(pagemap_proc, O_RDONLY);
->> -	if (pagemap_fd =3D=3D -1)
->> -		ksft_exit_fail_msg("read pagemap: %s\n", strerror(errno));
->> -
->> -	kpageflags_fd =3D open(kpageflags_proc, O_RDONLY);
->> -	if (kpageflags_fd =3D=3D -1)
->> -		ksft_exit_fail_msg("read kpageflags: %s\n", strerror(errno));
->>
->> 	one_page =3D mmap((void *)(1UL << 30), len, PROT_READ | PROT_WRITE,
->> 			MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
->> @@ -285,8 +286,6 @@ void split_pte_mapped_thp(void)
->>
->> 	ksft_test_result_pass("Split PTE-mapped huge pages successful\n");
->> 	munmap(one_page, len);
->> -	close(pagemap_fd);
->> -	close(kpageflags_fd);
->> }
->>
->> void split_file_backed_thp(int order)
->> @@ -489,6 +488,7 @@ void split_thp_in_pagecache_to_order_at(size_t fd_=
-size, const char *fs_loc,
->> 		int order, int offset)
->> {
->> 	int fd;
->> +	char *split_addr;
->> 	char *addr;
->> 	size_t i;
->> 	char testfile[INPUT_MAX];
->> @@ -502,14 +502,27 @@ void split_thp_in_pagecache_to_order_at(size_t f=
-d_size, const char *fs_loc,
->> 	err =3D create_pagecache_thp_and_fd(testfile, fd_size, &fd, &addr);
->> 	if (err)
->> 		return;
->> +
->> 	err =3D 0;
->>
->> -	if (offset =3D=3D -1)
->> -		write_debugfs(PID_FMT, getpid(), (uint64_t)addr,
->> -			      (uint64_t)addr + fd_size, order);
->> -	else
->> -		write_debugfs(PID_FMT_OFFSET, getpid(), (uint64_t)addr,
->> -			      (uint64_t)addr + fd_size, order, offset);
->> +	memset(expected_orders, 0, sizeof(int) * (pmd_order + 1));
->
-> I am not familiar with split, you change it to split on each pmd_pagesi=
-ze from
-> 4 pmd_pagesize. Is there any difference?
->
->> +	if (offset =3D=3D -1) {
->> +		for (split_addr =3D addr; split_addr < addr + fd_size; split_addr +=
-=3D pmd_pagesize)
->> +			write_debugfs(PID_FMT, getpid(), (uint64_t)split_addr,
->> +				      (uint64_t)split_addr + pagesize, order);
->
->                                                 ^--- here should be vad=
-dr_end
->
-> Curious why not (uint64_t)split_addr + pmd_pagesize?
+If I understand correctly, the check will be done only when you have 
+RUST available ?
 
-It is in V1->V2 changelog. split_huge_pages_pid() always step in PAGESIZE=
+I wouldn't expect having RUST to build a C kernel.
 
-to be able to split mremapped PTE-mapped THPs. Using [addr, addr + fd_siz=
-e)
-makes the PMD THP be split multiple times. The goal of this test is to
-check the result of one non-uniform split,
-so use [split_addr, split_addr + pagesize) to achieve that.
+By the way, aren't relocations already detected by command 
+cmd_vdso_check in lib/vdso/Makefile.include , using readelf ? Why is a 
+new tool needed and why does it have to be written in RUST langage ?
 
-I will add the above to commit message and a comment here.
+Thanks
+Christophe
 
->
->> +
->> +		expected_orders[order] =3D fd_size / (pagesize << order);
->> +	} else {
->> +		int times =3D fd_size / pmd_pagesize;
->> +
->> +		for (split_addr =3D addr; split_addr < addr + fd_size; split_addr +=
-=3D pmd_pagesize)
->> +			write_debugfs(PID_FMT_OFFSET, getpid(), (uint64_t)split_addr,
->> +				      (uint64_t)split_addr + pagesize, order, offset);
->
-> As above.
->
+> 
+> libc elf.h is missing some of the relocation constants,
+> so make user of the kernels own UAPI headers instead.
+> 
+> Kbuild and Rust folks: This contains custom definitions of hostprog
+> bindgen and rust library commands.
+> These are currently only defined inside the subsystem directory.
+> Let me know if they should go into scripts/Makefile.host.
+> 
+> This will conflict with my SPARC64 generic vDSO patches [0].
+> If both end up being applied at the same time, please leave out commit
+> 'vdso/vdsocheck: Drop the transitional kconfig option' from this series.
+> 
+> [0] https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Flkml%2F20250724-vdso-sparc64-generic-2-v1-0-e376a3bd24d1%40linutronix.de%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C3f03f6747325451ee98808ddd9634f27%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638905742749561064%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=HacF%2FvlUoxA9P6fTiN1ytw49gwayX1wNE7IxfEkFutE%3D&reserved=0
+> 
+> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+> ---
+> Changes in v4:
+> - Replace the inline shell logic with a dedicated build-time tool
+> - Link to v3: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fr%2F20250611-vdso-absolute-reloc-v3-0-47897d73784b%40linutronix.de&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C3f03f6747325451ee98808ddd9634f27%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638905742749584369%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=7NxAhutk6IXl%2B3fe1kkZEzhZz6CWye%2FVAcFO%2BgtS4uo%3D&reserved=0
+> 
+> Changes in v3:
+> - Drop already applied bugfix for arm64
+> - Disable LTO for the riscv vDSO, as it is incompatible
+> - Link to v2: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fr%2F20250430-vdso-absolute-reloc-v2-0-5efcc3bc4b26%40linutronix.de&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C3f03f6747325451ee98808ddd9634f27%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638905742749600546%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=uv0qMS5qq0DovLHtxfRvT42atbJEkztylpOS8zt6bJ4%3D&reserved=0
+> 
+> Changes in v2:
+> - Link to openend (invalid) GCC bug containing more explanations
+> - Refine commit messages
+> - Don't fail on commit absolute relocations in debug info
+> - Link to v1: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fr%2F20250429-vdso-absolute-reloc-v1-0-987a0afd10b5%40linutronix.de&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C3f03f6747325451ee98808ddd9634f27%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638905742749616057%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=K5iwoz0Xqc8kheotWEc4M2KrZ7UVMDObOyFfCPj4N8Q%3D&reserved=0
+> 
+> ---
+> Thomas Weißschuh (24):
+>        elf, uapi: Add a header for relocation constants
+>        x86/elf, um/x86/elf: Move relocation constants to UAPI
+>        ARM: elf: Move relocation constants to UAPI
+>        arm64: elf: Move relocation constants to UAPI
+>        powerpc/elf: Move relocation constants to UAPI
+>        riscv: elf: Move relocation constants to UAPI
+>        LoongArch: Move relocation constants to UAPI
+>        s390/elf: Move relocation constants to UAPI
+>        MIPS: ELF: Move relocation constants to UAPI
+>        tools headers UAPI: Sync ELF headers with the kernel sources
+>        vdso: Add the vdsocheck tool
+>        x86/vdso: Enable the vdsocheck tool
+>        ARM: vdso: Enable the vdsocheck tool
+>        arm64: vdso: Enable the vdsocheck tool
+>        powerpc/elf: Add 32-bit REL16 relocation definitions
+>        powerpc/vdso: Enable the vdsocheck tool
+>        riscv: vdso: Deduplicate CFLAGS_REMOVE_* variables
+>        riscv: vdso: Disable LTO for the vDSO
+>        riscv: vdso: Enable the vdsocheck tool
+>        LoongArch: vDSO: Enable the vdsocheck tool
+>        s390/vdso: Enable the vdsocheck tool
+>        MIPS: ELF: Add more PC-relative relocation definitions
+>        MIPS: vdso: Enable the vdsocheck tool
+>        vdso/vdsocheck: Drop the transitional kconfig option
+> 
+>   arch/arm/include/asm/elf.h          |  24 --
+>   arch/arm/vdso/Makefile              |   4 +-
+>   arch/arm64/include/asm/elf.h        |  55 ----
+>   arch/arm64/kernel/vdso/Makefile     |   4 +-
+>   arch/loongarch/include/asm/elf.h    | 100 ------
+>   arch/loongarch/vdso/Makefile        |   4 +-
+>   arch/mips/include/asm/elf.h         |  53 ---
+>   arch/mips/vdso/Makefile             |   8 +-
+>   arch/powerpc/include/uapi/asm/elf.h | 201 ------------
+>   arch/powerpc/kernel/vdso/Makefile   |   4 +-
+>   arch/riscv/include/uapi/asm/elf.h   |  66 ----
+>   arch/riscv/kernel/vdso/Makefile     |  11 +-
+>   arch/s390/include/asm/elf.h         |  83 -----
+>   arch/s390/kernel/vdso32/Makefile    |   4 +-
+>   arch/s390/kernel/vdso64/Makefile    |   4 +-
+>   arch/x86/entry/vdso/Makefile        |   6 +-
+>   arch/x86/include/asm/elf.h          |  34 --
+>   arch/x86/um/asm/elf.h               |  33 --
+>   include/uapi/linux/elf-r.h          | 631 ++++++++++++++++++++++++++++++++++++
+>   include/uapi/linux/elf.h            |   1 +
+>   lib/vdso/Makefile                   |   2 +
+>   lib/vdso/Makefile.include           |  17 +
+>   lib/vdso/check/.gitignore           |   3 +
+>   lib/vdso/check/Makefile             |  28 ++
+>   lib/vdso/check/elf.rs               | 488 ++++++++++++++++++++++++++++
+>   lib/vdso/check/vdsocheck.rs         | 279 ++++++++++++++++
+>   tools/include/uapi/linux/elf-em.h   |  71 ++++
+>   tools/include/uapi/linux/elf-r.h    | 631 ++++++++++++++++++++++++++++++++++++
+>   tools/include/uapi/linux/elf.h      | 112 ++++++-
+>   29 files changed, 2277 insertions(+), 684 deletions(-)
+> ---
+> base-commit: 5180c6526acc9f1cb58f8b11fba67583c22e0854
+> change-id: 20250428-vdso-absolute-reloc-a226293c1761
+> 
+> Best regards,
 
-See above.
-
---
-Best Regards,
-Yan, Zi
 
