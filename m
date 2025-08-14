@@ -2,81 +2,107 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 13716CA0EDC
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 13:08:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 56F2BCA0EDC
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 13:09:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F7D890015F; Thu, 14 Aug 2025 09:08:42 -0400 (EDT)
+	id E9D2D900160; Thu, 14 Aug 2025 09:09:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A7AB900023; Thu, 14 Aug 2025 09:08:42 -0400 (EDT)
+	id E7524900023; Thu, 14 Aug 2025 09:09:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7969390015F; Thu, 14 Aug 2025 09:08:42 -0400 (EDT)
+	id D6486900160; Thu, 14 Aug 2025 09:09:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 673E6900023
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 09:08:42 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EB0035A135
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 13:08:41 +0000 (UTC)
-X-FDA: 83775392442.03.C913058
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5B3DE20007
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 13:08:40 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C586F900023
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 09:09:09 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 70FC91DD447
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 13:09:09 +0000 (UTC)
+X-FDA: 83775393618.22.6FF6A59
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A74B320007
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 13:09:07 +0000 (UTC)
 Authentication-Results: imf03.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none);
-	spf=pass (imf03.hostedemail.com: domain of cmarinas@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kCaNwslg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755176947; a=rsa-sha256;
+	cv=none;
+	b=LwuyVmVIadulds9dr6TAS/ijO0IXoP0KGii0q3Um2kaoglrfimN4yr7XqJB95GxxipFGD7
+	G6RrjrZZvFxdFDUcSTWNn9yvZfHyMK0HdW38xol+n2R1/awgLThoKr2iXmuptfkCAcMO/T
+	RSAJ/p23ntCiv1fsd18fmMqwc6PoZsc=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kCaNwslg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755176920;
+	s=arc-20220608; t=1755176947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yl645NV1xizfbGAK6fxM4kSaGs5z+FjQwvJRvcYLVjg=;
-	b=B8Wn5rYXwWLGIGx4H9kAfsLh6ajz3lrvatHANmwfawni9Uwpmm9y4sCDwo1H93waKJqXtT
-	Ezoe7tGycwgdoRZAh47mwMEUW7hA7BfuJucQEJt1Vhs1dAYy9ZoZS7g6r/hcZlEz056m8S
-	xkCCLyirwZhYbFM3JvgDtCmeN4hVn9s=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none);
-	spf=pass (imf03.hostedemail.com: domain of cmarinas@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755176920; a=rsa-sha256;
-	cv=none;
-	b=KDGcMc1f4P7FAE1ms986G8ShT7Hm7FOLoy+Hw2aVUvrWlCifUEsCA6q3DUkfsp3NQec1hh
-	1JaZdUTsBUvV+qvQeTOcdRA6217hfODBLYrxgqEPnQMGSUAVwdVsPsvkEqYVzR/dEYVQSm
-	wKQ6ZksF5iFzqblrlFL+ufg5Vt/lZSk=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xQJMM/YYrs2s4WRnjgpQQh4s4aE8GYsNElMfYbBZ9r4=;
+	b=3oOzyqDJufaXOge6lXkrVDCqmtzBOoi1MnZOds/2kYqoN7wpc/CDSUFvZhu0o47WkS4Csb
+	LG/fgn1ZGAQG0uJiAWoq2gfxuMRuxQNkylUC5ISotJYtmnOv/ODLudj8cWcVLJkXU5wwEg
+	Aejm80j9EG27kmpfO58FyQ/JSsvbPP8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id AADAEA56E4F;
-	Thu, 14 Aug 2025 13:08:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5C2C4CEF1;
-	Thu, 14 Aug 2025 13:08:37 +0000 (UTC)
-Date: Thu, 14 Aug 2025 14:08:35 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Gu Bowen <gubowen5@huawei.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org,
-	linux-mm@kvack.org, Waiman Long <llong@redhat.com>,
-	Breno Leitao <leitao@debian.org>,
-	John Ogness <john.ogness@linutronix.de>,
-	Lu Jialin <lujialin4@huawei.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH v3] mm: Fix possible deadlock in console_trylock_spinning
-Message-ID: <aJ3f05Dqzx0OouJa@arm.com>
-References: <20250813085310.2260586-1-gubowen5@huawei.com>
- <20250813155616.d7e5a832ce7cda7764942d10@linux-foundation.org>
- <f3e631dc-245a-4efe-98e5-cbe94464daec@huawei.com>
+	by sea.source.kernel.org (Postfix) with ESMTP id 5EFFD440BB;
+	Thu, 14 Aug 2025 13:09:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC5B4C4CEEF;
+	Thu, 14 Aug 2025 13:09:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755176946;
+	bh=V0/mzt7rpQ7Ja/nnjC462dZYJStiYQcl4BcFdcuXGcQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kCaNwslgBWiblbN70JZHhnR5rMobNvr1yRsRWdmRLk8CfXmjfDOFKtMilcgwfucRX
+	 VeMVXVBYLCiJ3I8uK9A5rhZbCBO5DyKMWzaR6iU74ujFIK1PF2tUlV0MZwZC4MFwfV
+	 T9npTDmENz+NZ/nlqn5WLnVUPCxEN/pyzmuaDXZkcyckKJ4thf38213tTBFf8fw09Y
+	 ZEqOBWi+nL8MyTv1WdLnph3/Lz7lSTYVo20jjsUne0fWuxO5yhhhQcILxgJZr0P2Sv
+	 zHHZ0qGsMIWdb/pxVY+kyc5a2GYdPdKp0R91s+uUI3uq4UJBCBKP+tgDV04sTt5Xti
+	 6u9VjIh0hhAbA==
+Date: Thu, 14 Aug 2025 14:08:57 +0100
+From: Mark Brown <broonie@kernel.org>
+To: David Hildenbrand <david@redhat.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Usama Arif <usamaarif642@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org, corbet@lwn.net, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org,
+	baohua@kernel.org, shakeel.butt@linux.dev, riel@surriel.com,
+	ziy@nvidia.com, laoar.shao@gmail.com, dev.jain@arm.com,
+	baolin.wang@linux.alibaba.com, npache@redhat.com,
+	Liam.Howlett@oracle.com, ryan.roberts@arm.com, vbabka@suse.cz,
+	jannh@google.com, Arnd Bergmann <arnd@arndb.de>, sj@kernel.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v4 7/7] selftests: prctl: introduce tests for disabling
+ THPs except for madvise
+Message-ID: <620a586e-54a2-4ce0-9cf7-2ddf4b6ef59d@sirena.org.uk>
+References: <20250813135642.1986480-8-usamaarif642@gmail.com>
+ <13220ee2-d767-4133-9ef8-780fa165bbeb@lucifer.local>
+ <bac33bcc-8a01-445d-bc42-29dabbdd1d3f@redhat.com>
+ <5b341172-5082-4df4-8264-e38a01f7c7d7@lucifer.local>
+ <0b7543dd-4621-432c-9185-874963e8a6af@redhat.com>
+ <5dce29cc-3fad-416f-844d-d40c9a089a5f@lucifer.local>
+ <b433c998-0f7b-4ca4-a867-5d1235149843@sirena.org.uk>
+ <eb90eff6-ded8-40a3-818f-fce3331df464@redhat.com>
+ <47e98636-aace-4a42-b6a4-3c63880f394b@sirena.org.uk>
+ <1387eeb8-fc61-4894-b12f-6cae3ad920bd@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="glbdhY1Z3FbfdGG7"
 Content-Disposition: inline
-In-Reply-To: <f3e631dc-245a-4efe-98e5-cbe94464daec@huawei.com>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5B3DE20007
-X-Stat-Signature: 8npon885s4gs5hqbiahuhxc7ws9nmoko
+In-Reply-To: <1387eeb8-fc61-4894-b12f-6cae3ad920bd@redhat.com>
+X-Cookie: This sentence no verb.
+X-Rspamd-Queue-Id: A74B320007
+X-Stat-Signature: cawuzwq7kfwqi1bsegdf7aa77oh37ecq
 X-Rspam-User: 
-X-HE-Tag: 1755176920-119519
-X-HE-Meta: U2FsdGVkX18Gkhc9KPla7cqlhvvWt6yTkwcqixj2pHwun8IZtIe7NqScw0MRc+wnEOs+4hXzXQtqW+QkBP2rNgC1JVx6HRMseIsZ7NxBF3RzNoVBYZstzgjDnQsOLVcd7Dz3YwuLch/zYf0I1zmQAmLUKz/smHntQORa9TnBMfH7SNAnO20DFr7xqbTDBad73qFXzE1uQ/n4FdRC4MuyzIOV0QK0tXY0e1vmMli58VBP1AnbklgPr1Gw7PHcHDptiC3c7Ll2X4fuE3G115p9lfy5OMwgffndD4kvKVLXWI1jIIqgjKX5BJep0UfZPs45Ask2WbdxsgNSsJr10DL1nBH94KKC3JlQ0YILFUSKD1ADyZGFAauVeo3l9C8yKUGrKP3lKJk18Us4vUIDLcS9LDLGwWko4LdaOb677yXcRzPP+zNSxucwHLtCu5W36CE33rEw6aH/aiV9kR9sP7o3HXLFdf70idxKSkRsIL2U4xHZ8QU0hya+QWpu3uxM9d4yTTNY7z9K3timkRB1BhACkVx274DhCGJMiISXOVTCqco9TJQ/Y0vqWscyT4wRb6OsRME3rGVdRmq3DFyePjAK3KXq9ctt4oFpoa1Z9XnokCnXhnKkFbHTidOVrSl4T+KTWcGEOWKS9dGi3cvIh2PFj2g1jHWiksh1GNHMgg+8vdRJHKyQYHKeMGzNYtYW17FScvcKgvRtpahouQ8/iI+UEkLbtuQo+ItVBJs+lX0AANatLiEyxK/t+Wf+yanSYuYd1XMJCBo0CDh5TD4q4HXcrEjRoAfzRFHZIl2ZZhvVgriHnNgOknTR8VEaXAwgrm/uOznyxpvNsXupiBmmFhUeockiG9r16DfV7cEyhLrjhD67DNDDdSZPm5wrvEXsUQ3iRXuXLhTccmxvzSKz13Ft13eFu46nNTQM7RQwtLpemykYQJWGbhzkAzxDogeDfHaA8wdm9WxLe7naJSGErdq
- vCj+1Crv
- t3k/eok/lvnCVKjFk4Hf2YPfcg2Mz8PwLk9QsIMCGJUvQe+Zmg8eRIzXxYRZXMv6X4tZn4zs5zd+2hDOIqzW//A1C7MuAN4x5gtrmS57+AUYklH80Xr+aJAkTumZ3UOHHhy6mUsX5+J7bjMIHSdiQAmjJhzxJgZDaoTYhjYEOyTPalNqOr01RSq35JjjmAtTCSWf+Xs2h/e/85soh22JIXu8uSOnzCSQuEoTEdwF1Kt4ptIbng26BO6wNzRj3ePywFCowvDE2pD41W/z3p1Ssqc1UcDjChFi6yHeW12nexoKPEpdC2v9bWqjBQNF21OxpjsmjG1t6+7KrmLPwwFCS+cTUaj02EXJQjtK4GgU0Wq4Oj0CVEm38skFYa1dhVFUlKdST4vUOkw4H4ChURqiyzShI2kq0gDnqAyZY
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1755176947-575681
+X-HE-Meta: U2FsdGVkX1/4eg+pv9Ka5iRUTQjDpkDFfr3w+IpvcD2QQhYG6OPp2+6733lnjalS9rQ1dJ3hJjOmtgLMLioFUpOxh1TDLAMcZhMtIrOKLuRZtP/7/elyr3byz3QVkNNmK5nHmdfqjHx55F53Ni0rZxMLnOoA8SU1RqVeHpohzuD7H3Oq5Uv09loI1jQYqXLD/OPdx2Wbh6FAz8IhEe6S46UJrDPYM5CFUQ74pRDgzuPL20DjtaO+cl9BOPlbcVBeGFTfLf8gulRjKKbO5h692Pz509JZUleAdo7os/GWBKm0RZlUz9bZew7jRxFj6edl/JXWcYc01OCX0brEBOOgM+1tCyIELj6vj6yXeVH1RcLjD0DuaaKPovDUwnrLVn8oEmUYPOxjyTIGFeVAhCoYeIq1norbE38zQ6/6oTj9R8tDmpEiGGkGqZ7ZQKdy9fhPxrPFeZ9JjboRQim4r16scOpwZMfGKinbMkSKteI0e/U03OBi3x/OjyWQ54lnx7dEVQ4w9JRN2j/Y6lo613rcUBGeFIHvQlJOBow8gDIT95zLvU4O86+rs7+Wr3Hh70BHPkxYA/PTA2KFm2XMqt9tuQGKq7570ojnqfL0R3LZfL7V+7BV+rOMHPSBSw2dC1GyPq4laoIGodz8J2K3dZUbfHni4EDIWMiWMA1dWfAIO89Cqj8Se5buQDmm1ncH2BuVQWs4skGqTW/LzbmYgi9rJQViKUnvYs4E42my5NAAQjB31HQDK9Fd31hHZWK19rn5RkPzXNDKp6/GBc4M2hOzxsFIJG/mMiLjhcmmQg9iW3ukwvzS0+7NBNJjy3MuQgH7pLD510EyvFTt3QofoKQ/zhx6ow7t7kGbXMTrqLnqe8BjVEc0Hw3UR/4JGMoM/ucViPurEYr2n+f69XORSfoYhDes4JV7+X2Z5b6tuLHbYu4KLctlul8sDqlwAvFRZPlb0Bm6wQ0AnwE4pez5bxr
+ O+Wt7//n
+ ZRDl9PMvnQXTTQeXHCcpl54uZdTL58r9s5Gx2hyygeEMBIYVcGc88NkxMT6JRPil2u2+RWepYQKa5vXaFQrLrhYF1NFRxrBkIwFcdIK/BJr3A+7DSGTi3IxpOYssIRrkCyiYZ1PzwoxnnXK0f+D8xEGP6aQr2AxJY+edA/TYELHLDFbHzJPTn4/zB748J5XtixgfZjwQSC2d5Ux2+SBKRnD9BC9GDysa/HT6NcfehbzupTjeDhmApaAlABsO3Uz75uqUrCyN9UnDD+Pvd/Owz7ysNf1l09OPex4oT/SBtM6sTIIi+GFhWaRNBrCdioT5AXhzy9ZYAKAr8YNvtCnPvJw5T43TksGE4Me89oI8UoLOpuh3iZwzbdx/C6+EXB8CGSOJp
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -85,30 +111,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 14, 2025 at 10:33:56AM +0800, Gu Bowen wrote:
-> On 8/14/2025 6:56 AM, Andrew Morton wrote:
-> > I'm not sure which kernel version this was against, but kmemleak.c has
-> > changed quite a lot.
-> > 
-> > Could we please see a patch against a latest kernel version?  Linus
-> > mainline will suit.
-> > 
-> > Thanks.
-> 
-> I discovered this issue in kernel version 5.10. Afterwards, I reviewed the
-> code of the mainline version and found that this deadlock path no longer
-> exists due to the refactoring of console_lock in v6.2-rc1. For details on
-> the refactoring, you can refer to this link :
-> https://lore.kernel.org/all/20221116162152.193147-1-john.ogness@linutronix.de/.
-> Therefore, theoretically, this issue existed before the refactoring of
-> console_lock.
 
-Oh, so you can no longer hit this issue with mainline. This wasn't
-mentioned (or I missed it) in the commit log.
+--glbdhY1Z3FbfdGG7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-So this would be a stable-only fix that does not have a correspondent
-upstream. Adding Greg for his opinion.
+On Thu, Aug 14, 2025 at 02:59:13PM +0200, David Hildenbrand wrote:
+> On 14.08.25 14:09, Mark Brown wrote:
 
--- 
-Catalin
+> > Perhaps this is something that needs considering in the ABI, so
+> > userspace can reasonably figure out if it failed to configure whatever
+> > is being configured due to a missing feature (in which case it should
+> > fall back to not using that feature somehow) or due to it messing
+> > something else up?  We might be happy with the tests being version
+> > specific but general userspace should be able to be a bit more robust.
+
+> Yeah, the whole prctl() ship has sailed, unfortunately :(
+
+Perhaps a second call or sysfs file or something that returns the
+supported mask?  You'd still have a boostrapping issue with existing
+versions but at least at any newer stuff would be helped.
+
+--glbdhY1Z3FbfdGG7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmid3+kACgkQJNaLcl1U
+h9DBEAf/atqlzm4RBPppUe6r1XpYt+RajQsB5AiYLmN8lTjImryp/2Gh23hCHlZw
+gm22HJ5HZ/zAJketjugdDOiovu1RPgg4kJNoXy/tDnG/Sq1bFd9eZzu1QLKutztl
+Hr2SbJii1zQgWo7bcSXMKKoHOva+AbkhTItweml/3eD0ntEoAak2niwtuhKYzw25
+3DhOe5GOhsDt3OUTx9Z5kakWLDGkbmTc0ITomwJCste4pcdUFFOtv4m5XSGkAQOT
+8xyA9jEUMM5ZXsrhdkNa85XMDb3/CPhNEX0jHBr4tikptYvJDf/ZV5a9rCldNAvl
+lYGN1sDmGdtMHATgR170R/sTrdE2vw==
+=ASIV
+-----END PGP SIGNATURE-----
+
+--glbdhY1Z3FbfdGG7--
 
