@@ -2,92 +2,92 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C5AC1CA0EDC
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 06:48:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CEE61CA0EE3
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 06:48:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F08D9000F8; Thu, 14 Aug 2025 02:48:08 -0400 (EDT)
+	id 68BDF9000F9; Thu, 14 Aug 2025 02:48:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59FA3900088; Thu, 14 Aug 2025 02:48:08 -0400 (EDT)
+	id 63E0A900088; Thu, 14 Aug 2025 02:48:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48F849000F8; Thu, 14 Aug 2025 02:48:08 -0400 (EDT)
+	id 52B2C9000F9; Thu, 14 Aug 2025 02:48:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 360F8900088
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 02:48:08 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EB2FA160534
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 06:48:07 +0000 (UTC)
-X-FDA: 83774433414.06.52AB065
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 1AD1A40007
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 06:48:05 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=VgUTVY+5;
-	spf=pass (imf17.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DED2900088
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 02:48:13 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 028C7138301
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 06:48:12 +0000 (UTC)
+X-FDA: 83774433666.24.05F0E35
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 1B350180005
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 06:48:10 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=S0doueTe;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf16.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755154086;
+	s=arc-20220608; t=1755154091;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l3Cfy9MkuTryrGPvIYV/gwml2MAD5wD8AXaGEu8eeiY=;
-	b=jcTMFlcGQmtzqYr6URgye24WBxTkIjddoKRBK6mePvTDGLozq4CVqG0OhlNgBj2OVWr+cT
-	ObwxaTwqpxczDkXuoH7Hp/AesadOAplDuMWaiK1L76Uu95YvOa5DLPzjxVbAX/Su0Hty3a
-	ba62yqvRVzxUvz8NnYQKoch35Yxocjg=
+	bh=dgSEQM6TLLcMsFdat9WzEVNebtvzRsoxOWl4t4MuHzE=;
+	b=INrH3DRNWygQ/czSnXIn6L+16Ev70A19C3nGohZ0KKphDghNFZx1EQ/MSr2ru6BTKvUEqF
+	t+wcUssHNaCavBIBnppdMiJOqtNGmJTIw6vWwf+vDfzL9GARCtWnBUnFdOpg3WLTm0DtOw
+	kyiYuCJGk9SgK410LRbNbob4HYs9LSc=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=VgUTVY+5;
-	spf=pass (imf17.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755154086; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=S0doueTe;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf16.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755154091; a=rsa-sha256;
 	cv=none;
-	b=fu6GiNJhRscx5/KMgcVQ3cFO7NfY3u2r/crU86Dh/NkMUaKuwpKxlKlAk1LChnDN+nfOz2
-	LDmd/l0JhnKpKsKk1kihPr5L1KzxB0/AsUZANYlJXrnDMH3sKzhILNJwiTrYWzTbDV42g+
-	ke/AAt+UDRnpKnX58peJ6tXG9hKIZl4=
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b471746a879so326311a12.2
-        for <linux-mm@kvack.org>; Wed, 13 Aug 2025 23:48:05 -0700 (PDT)
+	b=FFfGquyiEXy838PWbd/nN/Sb2v4Ub8K1q5I84jzsJI64UcrSrj93DVz/oAgYAdY9HbYT8C
+	ZhgK+ORs51oT04S+XeuF5eK2JIdGBi5q5Tqimul9eKt4ALxJ7G4qub9cfExQe3NpdsFPpp
+	CII8Cs1x+bx+DYVNhwIdQ2eG1zJs9e8=
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-32326df0e75so521243a91.2
+        for <linux-mm@kvack.org>; Wed, 13 Aug 2025 23:48:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1755154085; x=1755758885; darn=kvack.org;
+        d=bytedance.com; s=google; t=1755154090; x=1755758890; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=l3Cfy9MkuTryrGPvIYV/gwml2MAD5wD8AXaGEu8eeiY=;
-        b=VgUTVY+5WZTPWb6JQnZuCRzB4YJ2LHzTiGXP0naOcZkI/weO9ZWBf0Deo0NxJUhZYx
-         gyZOzLUKXndZzkOjfsdWO1yJgfUAwNUAdG1sIkTsheXGJtzJfn+1KXC7DJa5IolwS6Fx
-         T5tOd+B1L0kPBYWyLAcdE0zssCm/Xis2qHdkyW+Ed/+Zvzt6WlyGu9g9+l6PjVGMcUR9
-         7g5KjZpriNJA6qCUAkBkAEDeL4jmZQLCBQpbiHSPeRZRj+UYMzA1LXTw2VEUtAXrNMqP
-         u+r8fquG8BU2+qNFAF/2A5LRNtP7W599+Q4AcJhsG1fqL4v2c8LQpRamPXoOUyOnF/N1
-         tF1Q==
+        bh=dgSEQM6TLLcMsFdat9WzEVNebtvzRsoxOWl4t4MuHzE=;
+        b=S0doueTeddGBzUWaXIQ01rC80a1W5agOzF335QHeiGE9Tk93/IHocs9d4nlIwWQ7VV
+         EggUkLpCbGkoeMdypC+aukHp3BR2NrG9/c87CSOgtNu1bMdWKRo19gquyP49EVocrbQm
+         gnZQCAqZvV40iJBk6t6Fh2ilgoMwZaPzzGxP2lVZaZXfQiCyc9DidFjxRYI+VmvrEhf+
+         gxmzHZHynKTk3NZ2WXIKhrnR/TgL+EJmT2bvZPCOjUYF0QcfyoQcGi1HQQP1g+PhrXXw
+         lAoGs5vhrP/wksgHy+khbuLiHE7Dq6V57KktWZUeSM82TgGIRpQWGyqDq/U8nKclBCoE
+         6eyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755154085; x=1755758885;
+        d=1e100.net; s=20230601; t=1755154090; x=1755758890;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=l3Cfy9MkuTryrGPvIYV/gwml2MAD5wD8AXaGEu8eeiY=;
-        b=i0htsC1LuEJFLp1wjVxlY8l8vHFsF+lrlV/nrJ2T2U0bHcngWyWhoic4j1IZC/mzGm
-         C1XTC7hj+kvRPBACo6gn3mZCwtctesqiL9IWYiyYA1Pe4cTqF3IelaFfl2C1M4R6hYP2
-         xdn+jDCZmko5U7lCuJB5tT4mzpdjiXkQsqHE6eaadSIlYsHP9fBc2l8qeOJBaG5hhDli
-         tinYPHWsOPF+5ioyCD2xkuqQY4fFEzFD7IyO5Jw55lCzAgE5j2ipjtxD0NMUKqdwOVY2
-         E1LUhSMbzNf+cb4LFB9tE+rKERCchEiDmfr9MC5HEWGEsw6uhVAEVkJm2y4lvoX20SJe
-         9A2g==
-X-Forwarded-Encrypted: i=1; AJvYcCXV9RACP5kd+a0vsMKi2XAqNfHrZ6kbAJd9WRY5RdL3T450Htf5jWujISwobdqxptQlAgOUQOtmwg==@kvack.org
-X-Gm-Message-State: AOJu0YzmnB4us6+DjK10Y27Fpgppol3Fu6U+UcdEASnU1AikOTorjKS9
-	k6YTGcf8ddi0wGGOqacLAAItnwG8ik5MucdOE6DtOBokUwMp873wCjqIjJmhFA77glw=
-X-Gm-Gg: ASbGncsXwlBECYZ5GS/g95/JNPtWK46eip8en9+n9VnoMtwhwkH7miSs+pl/PAc/FOf
-	vL1jGg6uiu0nrT9H3JTPoSP7eP+3LuYsqYLTAu8tz6MZFvlo691hpZwIfF9HdhdKmU84J8wcRMl
-	3hhdkX5PQNontR6KYAFcDDKvDR5aCeSfCkdRjGmhvJU5ohmyS8RIj9VpTh6mgLhHYfjtmE/jNbX
-	Eq3L6DBaZnXwx9xfjcY9EabtVlmm/XF04B+4QqxKxqGEQO7P2QmfNyOQT6HTfFS4tKwEkYV+I7v
-	ZXF7KnzzHq6+52EH7GAlgT1ubv4VpPT/6GTQUUk9EwGAMfqQnxWiGo5hSdA3OwLAiKnt0cQqXwL
-	jqR1JeFCMGLYsPjiEwPGoDtXrUjx4bIx5DOI3i4she0k0BeMtMQ==
-X-Google-Smtp-Source: AGHT+IH8PhH+kdbJo3TseIftuOS4YtVpdigzS/1u9iU7jJG3amFRXpK5xS1ruA8Xmy2+ygpXe+27pg==
-X-Received: by 2002:a17:903:46cb:b0:243:11e3:a742 with SMTP id d9443c01a7336-244586eee45mr28699945ad.55.1755154084954;
-        Wed, 13 Aug 2025 23:48:04 -0700 (PDT)
+        bh=dgSEQM6TLLcMsFdat9WzEVNebtvzRsoxOWl4t4MuHzE=;
+        b=tSEnYLlHj3AYVQGS+V6ZOmwd9xdgcf9dXDhJfgPPwopEe4MnXQ9oUXIKu1kBMiw1R/
+         m1B8s3kMJ6E6pBr8Ak6fmPZ+0n6SQaIu+q9PygCQhtpZFurcO9RrsA3Jii7m57DpNuBZ
+         AQ/jjcLfQU6kn18OZy5gmp+F6HpJ0CfbIPviyVdSUlD5+V8QPYRnBE3LkjJANb6CXXCc
+         nybjeDUPKDzZwRCmD828+98MebTmXeQ3pTltYIXJVK2QfE8x7b6WAWnEdjv7gLX9WzEM
+         0Td5ec0uNqf3HztwAEK9AgjmL8x3OBQfu9ynONGaTkbrkAIKN1pzsj0EYlL4syJ5jIvv
+         MF0g==
+X-Forwarded-Encrypted: i=1; AJvYcCWNmbRAoBCBlPjCyZ2s8W1VSXX7VyzW8jnHUwq8+ez+DXuQd2jRyV1yVc+VBQA7YmnRpY7UaFu0Hg==@kvack.org
+X-Gm-Message-State: AOJu0Yz5P1jtMSs5N9vFA/QW47RnuGSyhFF3tt/vbCF+WyuUi3NAx+34
+	GhWW915JBWitBaoD5MxrOKYVoozlmP5EaG33qGbIzp38xpmoU1CkYdvtcJhKvjmqOwg=
+X-Gm-Gg: ASbGnctSsCKbOaavipGRlI9YxrHOkeBVFUwh4c0EaUy6KpfdBW85uItSqfZRSf0Mmcy
+	xDzcZ2Mik2ffFyPpn2U0nk3tB6B60LALUj3F42Ll6DxfYds9rADxK4ODtV7cSNBjgc6g+vKxo1D
+	LrU+Ty92b9Swp02oJ4GoGMYWRRgoEt5eBcfJok6EvaadqN5GTRFlXwzqBBCJqu3l6e+SabiyWtX
+	L1piOAf488Dbw2mlPua6JxXZFlr27LUoMSPKNzI3r9NlZ0jQLpbza6C+ZQmdF5S/qxMSeFSoGbj
+	fGsEXKjCMXdn340jWih+lq+3MInh9W05ef1XpiPcgPtMjL+g6aAuHYBaMm6kpknmSTPdys23uRx
+	oBCXfPqqS8QxG2p8b21pp1Qe13L8IxXOMiZxMSC9eBNa3YZzxerP3vksDkvEb
+X-Google-Smtp-Source: AGHT+IEtImpTkJKFIJSVx3t14qt/Mp3kImtU354IarnQKNBYqxeUtpf1mqOF0jI/d26u52bUnF0w8Q==
+X-Received: by 2002:a17:902:ef46:b0:240:4d5b:29b4 with SMTP id d9443c01a7336-244582c38cdmr31031305ad.0.1755154089931;
+        Wed, 13 Aug 2025 23:48:09 -0700 (PDT)
 Received: from localhost.localdomain ([203.208.189.14])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241d1ef6a8fsm340923605ad.23.2025.08.13.23.48.01
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241d1ef6a8fsm340923605ad.23.2025.08.13.23.48.06
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 13 Aug 2025 23:48:04 -0700 (PDT)
+        Wed, 13 Aug 2025 23:48:09 -0700 (PDT)
 From: lizhe.67@bytedance.com
 To: alex.williamson@redhat.com,
 	david@redhat.com,
@@ -96,23 +96,24 @@ Cc: torvalds@linux-foundation.org,
 	kvm@vger.kernel.org,
 	lizhe.67@bytedance.com,
 	linux-mm@kvack.org,
-	farman@linux.ibm.com
-Subject: [PATCH v5 4/5] vfio/type1: introduce a new member has_rsvd for struct vfio_dma
-Date: Thu, 14 Aug 2025 14:47:13 +0800
-Message-ID: <20250814064714.56485-5-lizhe.67@bytedance.com>
+	farman@linux.ibm.com,
+	Jason Gunthorpe <jgg@ziepe.ca>
+Subject: [PATCH v5 5/5] vfio/type1: optimize vfio_unpin_pages_remote()
+Date: Thu, 14 Aug 2025 14:47:14 +0800
+Message-ID: <20250814064714.56485-6-lizhe.67@bytedance.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20250814064714.56485-1-lizhe.67@bytedance.com>
 References: <20250814064714.56485-1-lizhe.67@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1AD1A40007
-X-Stat-Signature: gzjsyhqxaa6dmhu1hsu96zowq3i3b51z
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1B350180005
+X-Stat-Signature: nwkjumyymdea4jxfrp1kycqdw9jucy85
 X-Rspam-User: 
-X-HE-Tag: 1755154085-456247
-X-HE-Meta: U2FsdGVkX1/gtfe5tEYL0ZaD7TRuhdckW3VEjYqcmn1+RrS2on1MmGSHf15jcE5grgQ8VhBHJMEBy8ludeZ4BNAASxMAeLPZ6tZGOlFte7mTmw1lbYDJieoh4UTaxnobl4/0oP6hPd43Lz89hW7KHgIaxIWt9EOe0yAZwh5vjnyMv3BTAxH/9ZI18vwysdxW2Rn7ojfjoEYiQmT9g6KC6b4/i2qOu2SQw0be74KIA+lHc/UqDEPoji3yDhY/jKk4UboACwrgbtpzte4DG9KnNM+t2fNFB++PskwruUzL2vlwEq5L7xg3ktBiK4a664ueeN9DDyzsspszoXOqC2SJcd3tgrtUF9xvEeqSLnOe68cnDIXUFdUyOrVS+G25YxTkyFRUdSWQpAJEv2AiOYZfMIVBwNgVM3PGtoixp6jzJ86X2527MmeinVoZKfJkYOSjiOIXSgdHG+RntEQV+6da2TLLjeMJpEs6Ey+M8ChOwFT/cFyaMEMpSLvF+COtdreNvF0JaTAmoANB2R5b66+onyzi30BrJrTMwvVCVk3sd67SxMJV4wqpGV0fkSyTRc5i252k3Z7aXuLOkFoQ8p6N52cqr41xxSm2Kz4vrX8E9sIX56aQXbsaFhL8Z1SP7kLKJ6OXGt/iTjkDEeSlFfmdekNabOI8USVg8ioPilOb1qy9Ep3nPzV8csqEWdVr/MJt7Y1N5csruHeo07hquvMSMDIM4mG1Uys8ehio6CNMtXPwgxh4mA6u+VmBc441n211onkbghy54xSs2DEkKnXHnrYdfkZQrmDD9F2+a/AUstR0ug64rM/5SzZ8L8KVzFjDJ0weCOWtgWUqelqb5Y/zyQN1FguQdyqIldiJ5kUrwONd+cOwkShIr38dEJm59Ooi6u2YiH5eueHSCujHE76FLiI7LkDefWkg4nOS2+Xm3i1mEukYq/AtaPZpPAMegEtkLAMbvTwHGqY2Wu9Na3j
- MtfPkJTq
- gcXbPNWsvRfQey6/krS1MTgPzgYsX+U4uA2lZfDos/VolHqIThrksX7NIHAoJTsCF9H1Ye5jsIvf/IoCMslfQCH5F1KafsmPxVx+AUWxaT2eyAgYGtvPz1Cy4ia2wpKO2CQfxLYIOGTJ6N08mV53GnlvpSMmHSyDNnrCLzhf5d8mCV3p2ZORC4oe0jvUFsStyxmEE9NuODcvhJIVmk1KOnnRJFxsw77DztwJRqiAlWg94KbmUOGOc7ZC9PQhy2nlmf0Qgbd2n58JAgFsegBGkgRdqmPGqGuSv0Mlmvl2gunbnrD34X754HJlfU1I99fo5/ZyfzNlqbKW02cnCrboqpcGCGQ==
+X-HE-Tag: 1755154090-404537
+X-HE-Meta: U2FsdGVkX1+Z3/aBhoeFNYPmKwrzKKO2NVaM6wXNHXjWxK1fPpkX2EmKRj/DxhksNYACg7pei5iMQItF9ee2iPPe88jStamNf6UYD801nTY32xIv3p4GDXHcXi6cXmLKNwwJQwAXl2UFMeABMT0qowxKvwp9m22xbhXG086gM+2akr1WW8e6uTRRnOL1Fe1Qh6Lc5f9aGstucKO+8QTmz9A0EUl90Tf6s246jwO2/felL0PwGbeXdi2s2LLPYSqzKONt9/FpCNYc9155MDvFlmeM2yE+/50Hf2FnzBfLg6or2icJxhoEOFFyqvaVeIyjaWRFoMYByYbrHed241TEjyzYnIPM6YYwXKxApPa3VYTNvOjQSpOzc1d5IR8IE0xtBzO0QGJbIzcNRRQ9qR+jQdmSzQy51/hal/MfRy+5EH8+tvHOIY2kNuuNyH65tLAyUEQr0XNEsY2mBlJb1mUJiDuzUYZd2DhzC99fYNiHZ4yIwz8V4xrknXBfWWEji63H/7uowJfh8+l2eL2xNB2iIQKxjOpF8KAS/8+ZDN7TsVKs0moBDGGA1HLSCEgnB1h6L1Ca/bJdJxILBXVvMnQefMEfd/hTbAXEbwtxPiR/Lx+rJnox0PB/b/lcrx71zHpHWt9ZcdVUHoLDyMufrU3Ru18a8q2lkHmKFT+CGK7vrssLRshIlQq9pe6Re+OxRk/grdsDUmDl6nbYhuVPJCf0fDddUptty38FCtTUOvOTxbJEnwCCqsFV3AHRRhq7vtz4H/94sQ9RwXDTO7flb/wB07mPZSTcYsr6ShY3B9RqyPufYmUheehN5Ore8W2VE18hmkr3pWJWXp6qExe+M5smXxlTd0vXYZ2U8cmxIcmBzZQDGIiEXoJWDKqOX2I4RdVFvNz1jN0NrQCPDf+ECJeaK2agNPumRdTkT7Pcguunm75pFZEabMcIuuA7K1UoK5HqZKq7MBXHy9BYtTZk+K5
+ Oi5S5eVW
+ t18N2434IzdjocRO3e299RqELv+/bmtPIcn9NdIn7j5DTvUPiPgARRlXYWg2KKreOHrnr+S//JNLrmw5HPxDNS2LkrydYc8EFRobnmBKnCMzxEWOlbz0TpENFOiVeCLie6VMeZzXAqz9fq+dz60Lt0JwpszheEe5wtc8poC+gqAc9FdJV8HF4X1W6IMQf3RLAm5Ikle3xMr2MxAS0YvSXkEMFQ7Lx11CAyrfBBXOuFxXTJNd3naq8hk2lMKUw4YbF3yqgQNC2onlldIReiI0BMHuj4dWxS2Cyhg9H/CptXDA695X5TNQFYFrIdwtK1eUdtxi2/lvuZig5RPZNPTS5VZDn1zrk8P8WcBQ9a7dy3Q8rEbWdipivuvO23e8EQHKExVw8V9X/fxLJS5g=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,38 +124,87 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Li Zhe <lizhe.67@bytedance.com>
 
-Introduce a new member has_rsvd for struct vfio_dma. This member is
-used to indicate whether there are any reserved or invalid pfns in
-the region represented by this vfio_dma. If it is true, it indicates
-that there is at least one pfn in this region that is either reserved
-or invalid.
+When vfio_unpin_pages_remote() is called with a range of addresses that
+includes large folios, the function currently performs individual
+put_pfn() operations for each page. This can lead to significant
+performance overheads, especially when dealing with large ranges of pages.
 
+It would be very rare for reserved PFNs and non reserved will to be mixed
+within the same range. So this patch utilizes the has_rsvd variable
+introduced in the previous patch to determine whether batch put_pfn()
+operations can be performed. Moreover, compared to put_pfn(),
+unpin_user_page_range_dirty_lock() is capable of handling large folio
+scenarios more efficiently.
+
+The performance test results for completing the 16G VFIO IOMMU DMA
+unmapping are as follows.
+
+Base(v6.16):
+------- AVERAGE (MADV_HUGEPAGE) --------
+VFIO UNMAP DMA in 0.141 s (113.7 GB/s)
+------- AVERAGE (MAP_POPULATE) --------
+VFIO UNMAP DMA in 0.307 s (52.2 GB/s)
+------- AVERAGE (HUGETLBFS) --------
+VFIO UNMAP DMA in 0.135 s (118.6 GB/s)
+
+With this patchset:
+------- AVERAGE (MADV_HUGEPAGE) --------
+VFIO UNMAP DMA in 0.044 s (363.2 GB/s)
+------- AVERAGE (MAP_POPULATE) --------
+VFIO UNMAP DMA in 0.289 s (55.3 GB/s)
+------- AVERAGE (HUGETLBFS) --------
+VFIO UNMAP DMA in 0.044 s (361.3 GB/s)
+
+For large folio, we achieve an over 67% performance improvement in
+the VFIO UNMAP DMA item. For small folios, the performance test
+results appear to show a slight improvement.
+
+Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
 Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
 Reviewed-by: David Hildenbrand <david@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
 ---
- drivers/vfio/vfio_iommu_type1.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/vfio/vfio_iommu_type1.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
-index dbacd852efae..30e1b54f6c25 100644
+index 30e1b54f6c25..916cad80941c 100644
 --- a/drivers/vfio/vfio_iommu_type1.c
 +++ b/drivers/vfio/vfio_iommu_type1.c
-@@ -93,6 +93,7 @@ struct vfio_dma {
- 	bool			iommu_mapped;
- 	bool			lock_cap;	/* capable(CAP_IPC_LOCK) */
- 	bool			vaddr_invalid;
-+	bool			has_rsvd;	/* has 1 or more rsvd pfns */
- 	struct task_struct	*task;
- 	struct rb_root		pfn_list;	/* Ex-user pinned pfn list */
- 	unsigned long		*bitmap;
-@@ -782,6 +783,7 @@ static long vfio_pin_pages_remote(struct vfio_dma *dma, unsigned long vaddr,
- 	}
+@@ -800,17 +800,29 @@ static long vfio_pin_pages_remote(struct vfio_dma *dma, unsigned long vaddr,
+ 	return pinned;
+ }
  
- out:
-+	dma->has_rsvd |= rsvd;
- 	ret = vfio_lock_acct(dma, lock_acct, false);
++static inline void put_valid_unreserved_pfns(unsigned long start_pfn,
++		unsigned long npage, int prot)
++{
++	unpin_user_page_range_dirty_lock(pfn_to_page(start_pfn), npage,
++					 prot & IOMMU_WRITE);
++}
++
+ static long vfio_unpin_pages_remote(struct vfio_dma *dma, dma_addr_t iova,
+ 				    unsigned long pfn, unsigned long npage,
+ 				    bool do_accounting)
+ {
+ 	long unlocked = 0, locked = vpfn_pages(dma, iova, npage);
+-	long i;
  
- unpin_out:
+-	for (i = 0; i < npage; i++)
+-		if (put_pfn(pfn++, dma->prot))
+-			unlocked++;
++	if (dma->has_rsvd) {
++		unsigned long i;
+ 
++		for (i = 0; i < npage; i++)
++			if (put_pfn(pfn++, dma->prot))
++				unlocked++;
++	} else {
++		put_valid_unreserved_pfns(pfn, npage, dma->prot);
++		unlocked = npage;
++	}
+ 	if (do_accounting)
+ 		vfio_lock_acct(dma, locked - unlocked, true);
+ 
 -- 
 2.20.1
 
