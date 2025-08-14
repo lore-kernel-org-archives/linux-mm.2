@@ -2,91 +2,91 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E587DCA0EE4
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 11:39:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 04936CA0EE4
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 11:39:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72050900121; Thu, 14 Aug 2025 07:39:46 -0400 (EDT)
+	id 9433F900147; Thu, 14 Aug 2025 07:39:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FDC6900023; Thu, 14 Aug 2025 07:39:46 -0400 (EDT)
+	id 8F4FA900023; Thu, 14 Aug 2025 07:39:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60EF6900121; Thu, 14 Aug 2025 07:39:46 -0400 (EDT)
+	id 76E0C900147; Thu, 14 Aug 2025 07:39:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 42F6A900023
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 07:39:46 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C9CFB137D4D
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:39:45 +0000 (UTC)
-X-FDA: 83775168330.12.BAC759F
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	by imf14.hostedemail.com (Postfix) with ESMTP id E7A4E10000C
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:39:43 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XK6wJfPY;
-	spf=pass (imf14.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 59E90900023
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 07:39:52 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 28A441360E5
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:39:52 +0000 (UTC)
+X-FDA: 83775168624.18.9F14743
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 60690160015
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 11:39:50 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZurSoaxB;
+	spf=pass (imf08.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755171584;
+	s=arc-20220608; t=1755171590;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Siw9DsX8IWhSgi7MTre4CZ6lTKJuNoAzdRBlrvonfQk=;
-	b=03a9eUAdYKggUBvL3oiuTVtqP4u1dS7iA2K4F3NJ+nGEWgmxFrpuMz85RUbkH0EXCFxlfn
-	xImq85PrtfLYrFsTxjFBEUo+VQuphxXkDL7KDLZTRUDF9Yj192sxVeb5ZDie0cf4vmBTUO
-	ZE8rLnXJs5u3/KKbOs008VW8oWXx94U=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XK6wJfPY;
-	spf=pass (imf14.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755171584; a=rsa-sha256;
+	bh=g2tNODR+gIE1wISYj1B5DIPH8+ubzJqnYNm1qCk1BQs=;
+	b=TyUiUOaDRWHmGdFnufbhYM8IklbJH+PFLOlJFYJGfWTtsNfGe2wa6K8/9Bjz825B9w8EsV
+	gW4E3+JDAa9m4lvZfh+MrvexB7npvWYT8m+LRvIzPV75sfUXVQZVLIzAXgseaJRZiCNWzu
+	BELKfMGkP2R65J2yzcas4VnCqV/MI7o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755171590; a=rsa-sha256;
 	cv=none;
-	b=lmfZ0r3ATVe73pPxEoEQijBt3GBsXeTqfGgjOd36VS/WmrGNE2CP71ZzglCGtMU9KuYXEO
-	tafThEIuDVB4PvxgTpj25TohjUb6sXXDsJvypMzFUxYZ/rAg6NDkeVYwXoR9nwl3LDWgYp
-	SFuspWSlph+lvVAy1tgNXi4x9rB5Af8=
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-76e2ea79219so1032547b3a.2
-        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 04:39:43 -0700 (PDT)
+	b=y9IAmTrszGNUnen/hvjHtgNbn4Zw7cziLUHmOVhr61NOCxImAbIWpYueRggKz4IZVpExgV
+	UhNQ5Z7xLbrs95ugov53Kztjf14J5Tf3WoTgjjk54LjziZ1oG3nJAxMvo2cZWe2e0u+G8w
+	d2Mk6bjzCFNoHajScRH05lPzPHysfSU=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZurSoaxB;
+	spf=pass (imf08.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b4716fb320cso620497a12.0
+        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 04:39:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755171583; x=1755776383; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1755171589; x=1755776389; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Siw9DsX8IWhSgi7MTre4CZ6lTKJuNoAzdRBlrvonfQk=;
-        b=XK6wJfPYMXOB030HGllZLyGLz1LnVdqyVs+jWdmzynHTHc+cY8rZMNp57i0VyHErGv
-         YSO7TeswVi98RgRhy4NDKBCbthF4tqxkfnI+6gqyaYJP9g9SFnCwcnmPz6M9kgFCsoHY
-         zD67TUeEIH6EBfiz+7Da8JVu80cUVBlDwdP/i5Xy51CboA9YN5EH/4DvXwhMgTW1EiIl
-         MFty3KU9WopJ8XftrmUkcp+U9y169Vgp3MBYV/tJ2izK3POomtWJPa94cW3WpHi4fU3x
-         hfKGfnC604m1eNT1uEXn2HNKSTgCxLKRarSeQQb4JWa46xe9+CfHTJB2Sy03CZIGOkOh
-         SWDg==
+        bh=g2tNODR+gIE1wISYj1B5DIPH8+ubzJqnYNm1qCk1BQs=;
+        b=ZurSoaxBB54kKh+jY5lfDyWS++9loTuMsor9hlT7Oc/312l3kDIsGIi0fflQ7tIiWV
+         GKTN/uA73tTD7r6FGNQK6zzjbvNu4cNWvZ3X30LtU8UBW831giuq6mJWeyYG+sucR3gI
+         w++qH3pbblfUjIKOBH8T5XL6397Ca3LN1XOqR0lYi4BWen2sYCVHiFbw7vE38ZvM0/va
+         fY+dX3Z44NuP1RrdMC3AGJ6XEaHLCkMC4bbv0hhmLxn86X0VwT4qHBfSbjNKP325/k/S
+         AXa6kp9e7z7tWoW4Ol+aXLfBQKlwOmvuDCP6fD81p+JQmu5e5eZDw4d9lkdI/Q5xMqM1
+         A0mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755171583; x=1755776383;
+        d=1e100.net; s=20230601; t=1755171589; x=1755776389;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Siw9DsX8IWhSgi7MTre4CZ6lTKJuNoAzdRBlrvonfQk=;
-        b=AqnsvNDTRt/qJlDQUhJcINwbJjkHTGzpQSgKzcM0D8/zaBKYGlLAFHO4QgL4O33+b3
-         YK+ecRnqM+IKCmryfAZuFNLchYlzsuXVKlLc0gEnQYldm4yauOPt2OQnAYrSPZb0R+bx
-         LtTSRuIRcl/aT2V0K5QKWWzC9WgloCEgT0cxU3j9uudGfIJfAI6kHiRDyyGevpHfrNyy
-         Efpith/naJsW8Dc3aLKe/q84I2RNzfh06Sr7RfhYCCRbRfCurgr/3BYIhn/BatYRUpjl
-         8ThXiiRMpKCI/VLzi4zqfv5oAz1BKgup5ZpHBxgKtHNKObNasNrsGbXORaW11W9/3SCQ
-         s7xQ==
-X-Gm-Message-State: AOJu0Yze5CJ12KAyIcO78K8pVEpennnxpWE4hmaW16+CYijbsAf8D7js
-	bQD469qUoKPxw9u3GaK244B0r2nsww4nGrSWcTMG2WRFDuAUunxyMfAx
-X-Gm-Gg: ASbGncuUvAkgt7qtE27/khiFSuakKU+TFcFgCNq8ZsMVKaximBFYp9xv7DTYlk6iSmO
-	vdECP18kvoTmDIK7I7JY596gXGwSa902c9Nhn9GCxdgy3y8n3x9GmsJnGPVN+BLCoE+hBtRTcmQ
-	8vnuiqNUDKGZOQwnuZSf6yP+qknWPqxwzh9Fiv6N6vsQL1WfThDRXWMGgdTDgKDodST++8efHOk
-	ZXxSa7s0MHDeIsJdenqZuB889Gw73Iwoqv82tLZuRcYYVJYiPdmw0lpXH7WYmYUR94G8vyUOoIW
-	0f2I/xxOBxFTzTSTU9RYsez3QyX7e48Q924q5aWFW/DChat5qDQenyb0Rxx4xQrveIxLskD1nMf
-	RjWWTXlX+N04/U4wWWNjmLWpr7zI=
-X-Google-Smtp-Source: AGHT+IGMd16t2RXLIzdNEugJRNwYRWos5SYiV9iJVUcDWcvOePo09FZSkA7mgkzSpPOI3o4pkkhaQg==
-X-Received: by 2002:a17:903:1b64:b0:234:ed31:fca7 with SMTP id d9443c01a7336-244586daca3mr40410685ad.48.1755171582702;
-        Thu, 14 Aug 2025 04:39:42 -0700 (PDT)
+        bh=g2tNODR+gIE1wISYj1B5DIPH8+ubzJqnYNm1qCk1BQs=;
+        b=uJAAsWLb1JPFZfqXicXD1NK4NQ5T3QGsMjTqxlDwEQj0ATDFo2u2PA6F75Ouvq9eBE
+         doC91OztADBzPc4QO4fdNgGGjG75XG5cNuK8piUYSEUaam9WVtHnkdXwTddEGsgABTj3
+         lA0eBhPgwWdtHQ/1u6Z9D892gc0LOnCNw9ZgUmIAWvDQwr8LEDicLcIZkML7xtLwOhOH
+         /onI8ssINqqS04XQObKnu9HGrcLs+VFhWC9+hHBF+pa5fv3/CqsCpsqA7/3PSTnQP1N+
+         sWmr9YIUvQPxqFpQFf8mbAS4c3bnxBtvlokwgowIvU57LA43g7jSJRq7pBNQCl9MxoG1
+         63Tg==
+X-Gm-Message-State: AOJu0YwZt5NUJV1Aw0wOvqhd2ylLWDEzKCfv9bLlDv5bmTH23xhGKn/t
+	MBs1NUQlqSqLrelnddPk+6eVTBgiGH1mcDRWCMUUURYjGbpn3qATUKun
+X-Gm-Gg: ASbGnctwT2ewOqpV5+KPnDynu4OO9sfJAcHis78qFeemExpfrf29Ucv0jggYB9zltR1
+	XppeS42sA7+uxIkLXJ+4rafJzCeEoiyyFuKPNFyZDgj0zF6lH6BBLbEcHiF6eIiQiQvYUabhNgN
+	0voNQsP9ojXtVX0iPQNI2RlVca0PokjJEB4MLMRmpoT7d7Wsne4v+YAMwnh8RAe5Qd/dZwj/vsp
+	EOj70vxzweVL6LPPXJEghby6d3KILg8n4y1fPNr3ArJcaBTGGD90mUu0fPSxVq0WcG807stlkBB
+	oc0O3MgoX4TY96KGj9q0irrNDvtdmsWH52/ccYh9j9U8JCuLFO/tQfk/Y7JZ5k5tHUR61IkRceC
+	Rff07M3+tOaAQIXC3ACqb4deBLAI=
+X-Google-Smtp-Source: AGHT+IEv/oEQGlnhKqQ5p0Ybl45qr0FrNbXN2QJZLABQwVzSNsQgxKPY+ctDBDLR50hqplRR0nVUOA==
+X-Received: by 2002:a17:903:144f:b0:234:b743:c7a4 with SMTP id d9443c01a7336-244586c5006mr42599525ad.38.1755171589129;
+        Thu, 14 Aug 2025 04:39:49 -0700 (PDT)
 Received: from vernon-laptop ([114.232.195.227])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2430b53d504sm49046215ad.87.2025.08.14.04.39.36
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2430b53d504sm49046215ad.87.2025.08.14.04.39.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Aug 2025 04:39:42 -0700 (PDT)
+        Thu, 14 Aug 2025 04:39:48 -0700 (PDT)
 From: Vernon Yang <vernon2gm@gmail.com>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
@@ -112,22 +112,22 @@ To: akpm@linux-foundation.org,
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.or,
 	Vernon Yang <vernon2gm@gmail.com>
-Subject: [RFC PATCH 4/7] mm: memory: add offset to start copy for copy_user_gigantic_page
-Date: Thu, 14 Aug 2025 19:38:10 +0800
-Message-ID: <20250814113813.4533-5-vernon2gm@gmail.com>
+Subject: [RFC PATCH 5/7] mm: memory: improve wp_page_copy readability
+Date: Thu, 14 Aug 2025 19:38:11 +0800
+Message-ID: <20250814113813.4533-6-vernon2gm@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250814113813.4533-1-vernon2gm@gmail.com>
 References: <20250814113813.4533-1-vernon2gm@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E7A4E10000C
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 60690160015
+X-Stat-Signature: ot6xmetqz9smq155npcfwg9peuhkq4ja
 X-Rspam-User: 
-X-Stat-Signature: wabsdicy97ft3njf6hp55mq1ts6zc6rw
-X-HE-Tag: 1755171583-721041
-X-HE-Meta: U2FsdGVkX182qEsGrupfVSJbBfmz9KlCED3l/hA5c8tvUb7DqfDOCVkjFTG4aFTmpbqGxBRHMjitKkFGsYfXsOejt/x4JyXd7xFCW93utXfDfi3DURGNQ304FzidXZPt2v3pRxjMzDC8htWpdxETaaH5WNCa+RLGuEBZzNcQ8D3d1gl76M/XMF/NntiJWpLbMdk5MNc+CxGvG2drHSg6k1ag9k/ki3LDxHXoRC3LHYGST4rIbuoV3qMa4g0kO8bzIphHw36z3NW8hXCjZSe9Y2x30Knpa9X8SlOe9Oo8U9r3gHo1cArWNGKBm9nYslMrA0gNdYE5j1ngfOZgRt6qOLWFKuCovCkyHicKtYa/5dhrUPOoAcMXZiw9hMpgmrFSY9yoxzL3ZcgC0ZpQOqDk1CWtlQBklntvEQ4k/RngJnyZhQGBqcsv7l9ARbgo55Shp4BwEv9rV6+TM0uT9hX8Dmiksnu2AoyRT8UuwpgOblc8de4gpoAWoqTCLD/QGinyTbE1Sdrx3qu259//EtOz26zB5dBTpMaX0uA3kuQKbzwpK3isfpcdteyGHHoCxCrHL9l3xFNgMY93bn6R0bW9BmuVGkXP/gj/Sn4Qf4cIUr0t9UoIN9p0iCQUaMpbChK7FcaTAI8vF0HtKakJbfcSeOklAbCgb1ldY02Hp22Xgs36AhYv3ZTzmHEA/b3YnxngNcDFZe9PCtOqZVqIH1SBlP1W12eg1qDc/pkesN3Q0jrueYBriVjyzAhdZkTEmMG43dPtzOrFLF25jCvfQHDBhybOoVYt938Wn2PGVfEvlRqdJ1gGUjbnbtwlruIcu2tStmIgctnXVs6OuxJFJ6hz9oxbK/GrIZW52AgwGwXiziaYbREUWKdKXNWrWORNB9mbJnPMtlhSfmlsSKFzSudHP63ORiQ9H3hkKCKENecYAWPN7IE0kWd+VGt5WUF4oHjzOpgXPhApqVF1qpyE85c
- JhQi7ti9
- cqoArY/qidl6QahokNrnoh82jm1cYvhzH0xcZRwn59mAtLvL8UwY1iSoFhd/RwiZ14BkcV13/rtNXHnpHRzlcHtGiyrEk4QtOyhfBWGOJ8rgFIKzdP3D0j0flz5gQLvaV3h4uogO+OVJmKkYqOlf0K2sM4fE/XhWRNJfdVwiRjKK5bCF3MfmYtPtCuKVw989jtJfb1qcWl48fLXMQQnULmarm30I0Qc9UK8ZXE/B23P6wG/tp8tq1tDwodxgyBWYU6Aysc/BLr9Bgp1GwhtZLw9omQ3XO3aPCznroWhw2DmLY7fRDbUu2JfngiuZPXRqfQYf59k5BCwRgf0ZuZuAnGQDeQv7QI6TQCn9aWplWdT6iZPvKrocnUaP7Uu+WtwuKqlEtwJvRgopjOpx7lZ9fY8L+jfnc/Nx9eWfPbGu37nUVwDakrzewjGgoodCsTcm96iI0NbwlcVXdO1Ygs7aXWWVcIj5RHaEPyyGg3TpO7i4MDTyIGLgtZWYros4bh7v09xdKv/yswTRWvM6jtLBV1vp78zNJVYDTe6IFZt2G1BlG8XAccn5BCcG3SwtBPqU24UuNOQU0KaQ3oas=
+X-HE-Tag: 1755171590-534903
+X-HE-Meta: U2FsdGVkX189oKdgDYeeVnjGUmHK8lcfEj/Mwt7RtgmIaQKuWRn/lKM64FY8Z81gkoXQXH9ytP9M6QGbVBPY8LETljM0mKHIiHvI0c+VFc1TQE9zs21iWDzxvX2CaLYecFjFTk8BUuwI9qqKxlaDR6sMNIhOtOlnMCrclTavCn5l/5nchfahMMo88W2x9TNITAAjOeirSG4dfqkmyRihxG9gmdvlVIOtOMsysPD/cgAUpP9kMTOUEa8aPzaMLrsot3Lh4tLWY97gXWNIWwo9qOc7gVXme2EQ2K6vpYZAG112ek2mN6Lq8iTimJ8AUb1fXZjrUaIeo3sIRmlevLqr1Yd5VlLdj2B4r8gyHQnVIyRHNKtXcXVESZxzySfyh8EyZcn5g9ymQ0xJccTBwTKbbLEOb7l0mDHcu/m0RKHb7ukQ1NmxJISObqn+jXPKjfmnInqS+5jbkyGCfbpVq526Jku9RR/MUTmHEpO5r/OV3MaF52uSE+aJ8/N72hcf0BI3oQAhQo6HjACF+XL4lBY8rWlSLpLbsqa0ItyhsimYJpJ8DBNlDsfWpQbEZXkHu1qiXGrfmTu/yD7Soq3lhWcRnhGiZgQE1GR6WQgGo60FBteGqw7nJPsGgwBlJzy17DkFQ//QvbBIKNrus8jMecLtmBUdHQA4lLQCQPl6oeU8zHCG/ovZodTuh5GkjYk/09WPXCx3PmKM895crFDcjP2SJ/QeOFqyfjquVZeRDm0se96fdWu29GBaoCRiCzANl6KGQNvWTsY+07JS71MiwrV4Xiu4xj7TLew2qC8whpXiysBYKm5sKhQ98eUMjwcD9cIvyYNxK+XO6yk0VyQiaO6yqAg2jscgjKB2jQjA5Vpt7mmFYp1ERn+Xr2FfYoA+9JZJbfBFXHotMo8JReygb3NITDXLYlhfbvhMdwNxSDDsZ7XcZD25pRbh/HARjjVHyJf53G+DVG9Nd2ewt2fI3gd
+ 3pamqNpI
+ 0EqFDmHLZ4Iu94DlcAhU9RSLLqEE2en3NTcS1lAr7zYh2+pMf+At8+O3Kna1VSjXSQOiqHlD2FQTsiT15xLU1MVuBjbCqfXa257IZoaDJOVsiY+uIsL9BJM+q8JdNwNciWbsZmDD5Y3i9gY4VLhSdkvTF/EFaiqbITzO+sEtlihwqwAxr62/0qEGDeEc6kYXMB8Cfj1QnNE+knMdxj1m9OOZV+ikynxpNT8GOv+2fgk5o2KU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,119 +136,214 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In preparation for wp support mthp, add offset to start copy for
-copy_user_large_folio() function.
+In preparation for wp support mthp, improve wp_page_copy() readability,
+without any functional changes.
 
 Signed-off-by: Vernon Yang <vernon2gm@gmail.com>
 ---
- include/linux/mm.h |  1 +
- mm/hugetlb.c       |  6 +++---
- mm/memory.c        | 11 ++++++++---
- 3 files changed, 12 insertions(+), 6 deletions(-)
+ mm/memory.c | 148 +++++++++++++++++++++++++++-------------------------
+ 1 file changed, 77 insertions(+), 71 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 80c6673f419e..e178fb1049f7 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4006,6 +4006,7 @@ enum mf_action_page_type {
- #if defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_HUGETLBFS)
- void folio_zero_user(struct folio *folio, unsigned long addr_hint);
- int copy_user_large_folio(struct folio *dst, struct folio *src,
-+			  unsigned int offset,
- 			  unsigned long addr_hint,
- 			  struct vm_area_struct *vma);
- long copy_folio_from_user(struct folio *dst_folio,
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index a0d285d20992..91e1ec73f092 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5682,7 +5682,7 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
- 					break;
- 				}
- 				ret = copy_user_large_folio(new_folio, pte_folio,
--							    addr, dst_vma);
-+							    0, addr, dst_vma);
- 				folio_put(pte_folio);
- 				if (ret) {
- 					folio_put(new_folio);
-@@ -6277,7 +6277,7 @@ static vm_fault_t hugetlb_wp(struct folio *pagecache_folio,
- 	if (unlikely(ret))
- 		goto out_release_all;
- 
--	if (copy_user_large_folio(new_folio, old_folio, vmf->real_address, vma)) {
-+	if (copy_user_large_folio(new_folio, old_folio, 0, vmf->real_address, vma)) {
- 		ret = VM_FAULT_HWPOISON_LARGE | VM_FAULT_SET_HINDEX(hstate_index(h));
- 		goto out_release_all;
- 	}
-@@ -6992,7 +6992,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
- 			*foliop = NULL;
- 			goto out;
- 		}
--		ret = copy_user_large_folio(folio, *foliop, dst_addr, dst_vma);
-+		ret = copy_user_large_folio(folio, *foliop, 0, dst_addr, dst_vma);
- 		folio_put(*foliop);
- 		*foliop = NULL;
- 		if (ret) {
 diff --git a/mm/memory.c b/mm/memory.c
-index 7b8c7d0f9ff4..3451e6e5aabd 100644
+index 3451e6e5aabd..8dd869b0cfc1 100644
 --- a/mm/memory.c
 +++ b/mm/memory.c
-@@ -7071,6 +7071,7 @@ void folio_zero_user(struct folio *folio, unsigned long addr_hint)
- }
+@@ -3551,16 +3551,18 @@ static vm_fault_t wp_page_copy(struct vm_fault *vmf)
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	struct folio *old_folio = NULL;
+ 	struct folio *new_folio = NULL;
++	struct page *old_page = vmf->page;
+ 	pte_t entry;
+ 	int page_copied = 0;
+ 	struct mmu_notifier_range range;
+ 	vm_fault_t ret;
+ 	bool pfn_is_zero;
++	unsigned long addr;
  
- static int copy_user_gigantic_page(struct folio *dst, struct folio *src,
-+				   unsigned int offset,
- 				   unsigned long addr_hint,
- 				   struct vm_area_struct *vma,
- 				   unsigned int nr_pages)
-@@ -7082,7 +7083,7 @@ static int copy_user_gigantic_page(struct folio *dst, struct folio *src,
+ 	delayacct_wpcopy_start();
  
- 	for (i = 0; i < nr_pages; i++) {
- 		dst_page = folio_page(dst, i);
--		src_page = folio_page(src, i);
-+		src_page = folio_page(src, offset + i);
+-	if (vmf->page)
+-		old_folio = page_folio(vmf->page);
++	if (old_page)
++		old_folio = page_folio(old_page);
+ 	ret = vmf_anon_prepare(vmf);
+ 	if (unlikely(ret))
+ 		goto out;
+@@ -3570,10 +3572,12 @@ static vm_fault_t wp_page_copy(struct vm_fault *vmf)
+ 	if (!new_folio)
+ 		goto oom;
  
- 		cond_resched();
- 		if (copy_mc_user_highpage(dst_page, src_page,
-@@ -7095,6 +7096,7 @@ static int copy_user_gigantic_page(struct folio *dst, struct folio *src,
- struct copy_subpage_arg {
- 	struct folio *dst;
- 	struct folio *src;
-+	unsigned int offset;
- 	struct vm_area_struct *vma;
- };
++	addr = ALIGN_DOWN(vmf->address, PAGE_SIZE);
++
+ 	if (!pfn_is_zero) {
+ 		int err;
  
-@@ -7102,7 +7104,7 @@ static int copy_subpage(unsigned long addr, int idx, void *arg)
- {
- 	struct copy_subpage_arg *copy_arg = arg;
- 	struct page *dst = folio_page(copy_arg->dst, idx);
--	struct page *src = folio_page(copy_arg->src, idx);
-+	struct page *src = folio_page(copy_arg->src, copy_arg->offset + idx);
+-		err = __wp_page_copy_user(&new_folio->page, vmf->page, vmf);
++		err = __wp_page_copy_user(&new_folio->page, old_page, vmf);
+ 		if (err) {
+ 			/*
+ 			 * COW failed, if the fault was solved by other,
+@@ -3589,90 +3593,92 @@ static vm_fault_t wp_page_copy(struct vm_fault *vmf)
+ 			delayacct_wpcopy_end();
+ 			return err == -EHWPOISON ? VM_FAULT_HWPOISON : 0;
+ 		}
+-		kmsan_copy_pages_meta(&new_folio->page, vmf->page, 1);
++		kmsan_copy_pages_meta(&new_folio->page, old_page, 1);
+ 	}
  
- 	if (copy_mc_user_highpage(dst, src, addr, copy_arg->vma))
- 		return -EHWPOISON;
-@@ -7110,17 +7112,20 @@ static int copy_subpage(unsigned long addr, int idx, void *arg)
- }
+ 	__folio_mark_uptodate(new_folio);
  
- int copy_user_large_folio(struct folio *dst, struct folio *src,
-+			  unsigned int offset,
- 			  unsigned long addr_hint, struct vm_area_struct *vma)
- {
- 	unsigned int nr_pages = folio_nr_pages(dst);
- 	struct copy_subpage_arg arg = {
- 		.dst = dst,
- 		.src = src,
-+		.offset = offset,
- 		.vma = vma,
- 	};
+ 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm,
+-				vmf->address & PAGE_MASK,
+-				(vmf->address & PAGE_MASK) + PAGE_SIZE);
++				addr, addr + PAGE_SIZE);
+ 	mmu_notifier_invalidate_range_start(&range);
  
- 	if (unlikely(nr_pages > MAX_ORDER_NR_PAGES))
--		return copy_user_gigantic_page(dst, src, addr_hint, vma, nr_pages);
-+		return copy_user_gigantic_page(dst, src, offset, addr_hint,
-+					       vma, nr_pages);
+ 	/*
+ 	 * Re-check the pte - we dropped the lock
+ 	 */
+-	vmf->pte = pte_offset_map_lock(mm, vmf->pmd, vmf->address, &vmf->ptl);
+-	if (likely(vmf->pte && pte_same(ptep_get(vmf->pte), vmf->orig_pte))) {
+-		if (old_folio) {
+-			if (!folio_test_anon(old_folio)) {
+-				sub_mm_counter(mm, mm_counter_file(old_folio), 1);
+-				add_mm_counter(mm, MM_ANONPAGES, 1);
+-			}
+-		} else {
+-			ksm_might_unmap_zero_page(mm, vmf->orig_pte);
+-			inc_mm_counter(mm, MM_ANONPAGES);
+-		}
+-		flush_cache_range(vma, vmf->address, vmf->address + PAGE_SIZE);
+-		entry = folio_mk_pte(new_folio, vma->vm_page_prot);
+-		entry = pte_sw_mkyoung(entry);
+-		if (unlikely(unshare)) {
+-			if (pte_soft_dirty(vmf->orig_pte))
+-				entry = pte_mksoft_dirty(entry);
+-			if (pte_uffd_wp(vmf->orig_pte))
+-				entry = pte_mkuffd_wp(entry);
+-		} else {
+-			entry = maybe_mkwrite(pte_mkdirty(entry), vma);
++	vmf->pte = pte_offset_map_lock(mm, vmf->pmd, addr, &vmf->ptl);
++	if (unlikely(!vmf->pte))
++		goto release;
++	if (unlikely(vmf_pte_changed(vmf))) {
++		update_mmu_tlb(vma, addr, vmf->pte);
++		pte_unmap_unlock(vmf->pte, vmf->ptl);
++		goto release;
++	}
++
++	if (old_folio) {
++		if (!folio_test_anon(old_folio)) {
++			sub_mm_counter(mm, mm_counter_file(old_folio), 1);
++			add_mm_counter(mm, MM_ANONPAGES, 1);
+ 		}
++	} else {
++		ksm_might_unmap_zero_page(mm, vmf->orig_pte);
++		inc_mm_counter(mm, MM_ANONPAGES);
++	}
++	flush_cache_range(vma, addr, addr + PAGE_SIZE);
++	entry = folio_mk_pte(new_folio, vma->vm_page_prot);
++	entry = pte_sw_mkyoung(entry);
++	if (unlikely(unshare)) {
++		if (pte_soft_dirty(vmf->orig_pte))
++			entry = pte_mksoft_dirty(entry);
++		if (pte_uffd_wp(vmf->orig_pte))
++			entry = pte_mkuffd_wp(entry);
++	} else {
++		entry = maybe_mkwrite(pte_mkdirty(entry), vma);
++	}
  
- 	return process_huge_page(addr_hint, nr_pages, copy_subpage, &arg);
- }
++	/*
++	 * Clear the pte entry and flush it first, before updating the
++	 * pte with the new entry, to keep TLBs on different CPUs in
++	 * sync. This code used to set the new PTE then flush TLBs, but
++	 * that left a window where the new PTE could be loaded into
++	 * some TLBs while the old PTE remains in others.
++	 */
++	ptep_clear_flush_range(vma, addr, vmf->pte, 1);
++	folio_add_new_anon_rmap(new_folio, vma, addr, RMAP_EXCLUSIVE);
++	folio_add_lru_vma(new_folio, vma);
++	BUG_ON(unshare && pte_write(entry));
++	set_ptes(mm, addr, vmf->pte, entry, 1);
++	update_mmu_cache_range(vmf, vma, addr, vmf->pte, 1);
++	if (old_folio) {
+ 		/*
+-		 * Clear the pte entry and flush it first, before updating the
+-		 * pte with the new entry, to keep TLBs on different CPUs in
+-		 * sync. This code used to set the new PTE then flush TLBs, but
+-		 * that left a window where the new PTE could be loaded into
+-		 * some TLBs while the old PTE remains in others.
++		 * Only after switching the pte to the new page may
++		 * we remove the mapcount here. Otherwise another
++		 * process may come and find the rmap count decremented
++		 * before the pte is switched to the new page, and
++		 * "reuse" the old page writing into it while our pte
++		 * here still points into it and can be read by other
++		 * threads.
++		 *
++		 * The critical issue is to order this
++		 * folio_remove_rmap_pte() with the ptp_clear_flush
++		 * above. Those stores are ordered by (if nothing else,)
++		 * the barrier present in the atomic_add_negative
++		 * in folio_remove_rmap_pte();
++		 *
++		 * Then the TLB flush in ptep_clear_flush ensures that
++		 * no process can access the old page before the
++		 * decremented mapcount is visible. And the old page
++		 * cannot be reused until after the decremented
++		 * mapcount is visible. So transitively, TLBs to
++		 * old page will be flushed before it can be reused.
+ 		 */
+-		ptep_clear_flush_range(vma, vmf->address, vmf->pte, 1);
+-		folio_add_new_anon_rmap(new_folio, vma, vmf->address, RMAP_EXCLUSIVE);
+-		folio_add_lru_vma(new_folio, vma);
+-		BUG_ON(unshare && pte_write(entry));
+-		set_ptes(mm, vmf->address, vmf->pte, entry, 1);
+-		update_mmu_cache_range(vmf, vma, vmf->address, vmf->pte, 1);
+-		if (old_folio) {
+-			/*
+-			 * Only after switching the pte to the new page may
+-			 * we remove the mapcount here. Otherwise another
+-			 * process may come and find the rmap count decremented
+-			 * before the pte is switched to the new page, and
+-			 * "reuse" the old page writing into it while our pte
+-			 * here still points into it and can be read by other
+-			 * threads.
+-			 *
+-			 * The critical issue is to order this
+-			 * folio_remove_rmap_pte() with the ptp_clear_flush
+-			 * above. Those stores are ordered by (if nothing else,)
+-			 * the barrier present in the atomic_add_negative
+-			 * in folio_remove_rmap_pte();
+-			 *
+-			 * Then the TLB flush in ptep_clear_flush ensures that
+-			 * no process can access the old page before the
+-			 * decremented mapcount is visible. And the old page
+-			 * cannot be reused until after the decremented
+-			 * mapcount is visible. So transitively, TLBs to
+-			 * old page will be flushed before it can be reused.
+-			 */
+-			folio_remove_rmap_ptes(old_folio, vmf->page, 1, vma);
+-		}
+-
+-		/* Free the old page.. */
+-		new_folio = old_folio;
+-		page_copied = 1;
+-		pte_unmap_unlock(vmf->pte, vmf->ptl);
+-	} else if (vmf->pte) {
+-		update_mmu_tlb(vma, vmf->address, vmf->pte);
+-		pte_unmap_unlock(vmf->pte, vmf->ptl);
++		folio_remove_rmap_ptes(old_folio, old_page, 1, vma);
+ 	}
+ 
++	/* Free the old page.. */
++	new_folio = old_folio;
++	page_copied = 1;
++	pte_unmap_unlock(vmf->pte, vmf->ptl);
++release:
+ 	mmu_notifier_invalidate_range_end(&range);
+ 
+ 	if (new_folio)
 -- 
 2.50.1
 
