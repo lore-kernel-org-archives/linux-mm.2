@@ -2,127 +2,170 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3BD6FCA0EDC
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 13:43:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 563DECA0EE4
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 13:49:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F817900168; Thu, 14 Aug 2025 09:43:18 -0400 (EDT)
+	id D71A4900169; Thu, 14 Aug 2025 09:49:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A8DC900023; Thu, 14 Aug 2025 09:43:18 -0400 (EDT)
+	id D22DB900023; Thu, 14 Aug 2025 09:49:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BF44900168; Thu, 14 Aug 2025 09:43:18 -0400 (EDT)
+	id BEB05900169; Thu, 14 Aug 2025 09:49:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BD12900023
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 09:43:18 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1E9BD1DD9CF
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 13:43:18 +0000 (UTC)
-X-FDA: 83775479676.20.D4923C2
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 9511E1C000B
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 13:43:15 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755178996; a=rsa-sha256;
-	cv=none;
-	b=jjkBKH8GVVOyBO1ssrw5rb0R6k5csJZfVlWNOWd/515/pB5G07JJLDRTLDfKo171098QoK
-	g9ik5oHGFhNW9E1PACCBk+Eq1tS5tffyXr5FFvYieY1Gzo2WygwgoFv6z+EI6VpFt1xzZv
-	8i9dRzp21lSnA88mKVFboQjDNnDpUjI=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755178996;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AA293900023
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 09:49:05 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A8EC61DCDD7
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 13:49:04 +0000 (UTC)
+X-FDA: 83775494208.19.3C8FF9F
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2045.outbound.protection.outlook.com [40.107.94.45])
+	by imf22.hostedemail.com (Postfix) with ESMTP id C3FA7C0004
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 13:49:01 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=3lsvFmnn;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf22.hostedemail.com: domain of bharata@amd.com designates 40.107.94.45 as permitted sender) smtp.mailfrom=bharata@amd.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755179341;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=S5J+mLAP2QlIEt8PDLcOSFod+Rvn+2kAxka0kZb8QO0=;
-	b=rdpntSe2aKM+lI2kqKdBhlC7xltENn2Rm1Mpu6jsC8rGVORCPyN7K7R1CdE3Eghfh/De0S
-	J86R2NXfd+SDMHzu21KyupxVUcrU1HxC5h5hGqMbIKuW40zevVGdX01dRehAHNyr1SX+CF
-	7LN0oyU/OzTi/j3ghJE2tYb3nLeOdm8=
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4c2mf947xHz9sSR;
-	Thu, 14 Aug 2025 15:43:13 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id mPu6Xjo1vLlQ; Thu, 14 Aug 2025 15:43:13 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4c2mf83Tw5z9sSL;
-	Thu, 14 Aug 2025 15:43:12 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4D6A38B765;
-	Thu, 14 Aug 2025 15:43:12 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id eqmp3JHpIEX9; Thu, 14 Aug 2025 15:43:12 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id C584A8B763;
-	Thu, 14 Aug 2025 15:43:09 +0200 (CEST)
-Message-ID: <86186254-b2c6-4818-af0a-4eb67d90e501@csgroup.eu>
-Date: Thu, 14 Aug 2025 15:43:09 +0200
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=2y+ej3IBFomyuby1AfuDvl/ss35A5/PG/qzlYZMlZ5I=;
+	b=tXcGK5ppf5Gjhs7rq4J5x36aRZviRrQn7+lAWhoIlpPn64PVH5h7/uEOTo//2ELnpmpY47
+	IL0QIxRdji+kkXxCsowgAycD5t9XQN9MIcz+/iONKCiFuHtQHupApyja205Elz9li9rk+P
+	aGqf5G0xhF6CA5vF5H0M2zTQ6Ri4Ugo=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=3lsvFmnn;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf22.hostedemail.com: domain of bharata@amd.com designates 40.107.94.45 as permitted sender) smtp.mailfrom=bharata@amd.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755179341; a=rsa-sha256;
+	cv=pass;
+	b=jYsPu3e0Ghp2Cdc7dOPsR7jQflWAeROB+MO3lrd9pbPSup0lHsrUeo9HJhd51h0CPjdTKT
+	gnAbaVIb27HteP8x9FfsLwZVN7GhcZa31Or8smQj5r2HLnx+XLkmEsqxXdFC3ghec84LCj
+	pl3DFdu8muRyxaGcNUX+Xi33gV9PcUI=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=T1bSukaxSLdCmmDpzKdFRJsgwEVtJPDuhPXh/Mn6XGni/yB3ekh8vXxrAiwXEV9LwmLL/xBSR5tMUGpVGMkcd1uIB1VKOIOe1TUQEkHqDb/zvVQ4dj1vKsOsz18a+FivC9U5vwWMcPpIjIv+v5MqjoDlkXcmKyvXcHmbo7P/nmm8BYNCsNiwHgl76itQuhfx0BYWdBJ1emnvumiKinWWqjNdlddUNgKwk7YjaKHcnLajs/caxRaxd/vhWqzf14UwYZsloEjNL0IAwHT7owqsQDtSMy568qIlPt41NTi8s3BfggzJEQ6hGJ1nwA2NbU2r8WEI00Oy0J5hwOyNH824eg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2y+ej3IBFomyuby1AfuDvl/ss35A5/PG/qzlYZMlZ5I=;
+ b=QXlsRtw7VOjuRTHmpiJ289PPT2dJTFzsrlAcwZdamQNErY1nBQP0yAX46cx4I67edbmQ9DSi22LTRkr/be5QTS8TVTOnwjTbam0rWIQfGJnN81qilLoWYkxPEPrV50IjkU8/w7PRvDf8SbsLAw9qDqbVcilTeVji37NbrcXdhy1k2iO2QzwMfWba96GUm65uKktv1IuQFOfLIWF/Aq+9bjuwBQcRSZyIT7Z9uAapTG+CeY8NAy/31DdLy8rDLxagG9LZLWGC8jgC7oSM3VAUI+0pYe71j1yr5YDFekT+7EB9T7gsvjn6w5uCwu+BifjsySWZoo5K7YTml1D5+oitPg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2y+ej3IBFomyuby1AfuDvl/ss35A5/PG/qzlYZMlZ5I=;
+ b=3lsvFmnnUnOnXx1VUiKCP6BhkQM18l6r/fF2Lb3x5Fi8ADfTigLQS1JzwG8YTsho/uHGqjTyNPl/n1Tei5qS63Zt+akPq0iG21gjvskBkW5DHe6u8rD6tLeKKX55/jzHMn06XSQpv0XbV8iLk1AdFYbxJm67292llh8ed8xiDvw=
+Received: from BY3PR05CA0022.namprd05.prod.outlook.com (2603:10b6:a03:254::27)
+ by SN7PR12MB7883.namprd12.prod.outlook.com (2603:10b6:806:32b::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.16; Thu, 14 Aug
+ 2025 13:48:59 +0000
+Received: from SN1PEPF00036F3F.namprd05.prod.outlook.com
+ (2603:10b6:a03:254:cafe::a) by BY3PR05CA0022.outlook.office365.com
+ (2603:10b6:a03:254::27) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9052.5 via Frontend Transport; Thu,
+ 14 Aug 2025 13:48:58 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SN1PEPF00036F3F.mail.protection.outlook.com (10.167.248.23) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.9031.11 via Frontend Transport; Thu, 14 Aug 2025 13:48:58 +0000
+Received: from BLR-L-BHARARAO.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 14 Aug
+ 2025 08:48:50 -0500
+From: Bharata B Rao <bharata@amd.com>
+To: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
+CC: <Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>,
+	<gourry@gourry.net>, <hannes@cmpxchg.org>, <mgorman@techsingularity.net>,
+	<mingo@redhat.com>, <peterz@infradead.org>, <raghavendra.kt@amd.com>,
+	<riel@surriel.com>, <rientjes@google.com>, <sj@kernel.org>,
+	<weixugc@google.com>, <willy@infradead.org>, <ying.huang@linux.alibaba.com>,
+	<ziy@nvidia.com>, <dave@stgolabs.net>, <nifan.cxl@gmail.com>,
+	<xuezhengchu@huawei.com>, <yiannis@zptcorp.com>, <akpm@linux-foundation.org>,
+	<david@redhat.com>, <byungchul@sk.com>, <kinseyho@google.com>,
+	<joshua.hahnjy@gmail.com>, <yuanchu@google.com>, <balbirs@nvidia.com>,
+	Bharata B Rao <bharata@amd.com>
+Subject: [RFC PATCH v1 0/7] A subsystem for hot page detection and promotion
+Date: Thu, 14 Aug 2025 19:18:19 +0530
+Message-ID: <20250814134826.154003-1-bharata@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/24] vdso: Reject absolute relocations during build
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <kees@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>
-Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- llvm@lists.linux.dev, linux-mm@kvack.org, linux-um@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- loongarch@lists.linux.dev, linux-s390@vger.kernel.org,
- linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kbuild@vger.kernel.org, Jan Stancek <jstancek@redhat.com>,
- Arnaldo Carvalho de Melo <acme@redhat.com>,
- Alexandre Ghiti <alexghiti@rivosinc.com>
-References: <20250812-vdso-absolute-reloc-v4-0-61a8b615e5ec@linutronix.de>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <20250812-vdso-absolute-reloc-v4-0-61a8b615e5ec@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9511E1C000B
-X-Stat-Signature: 6twwh83ef1kjdf5r7hcrqewbmgkcxktr
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF00036F3F:EE_|SN7PR12MB7883:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2445c812-e6ec-4b81-4e20-08dddb3951bf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|36860700013|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?JiuJB6w+bk9yL1NOymCra9E2B7O3hsIT9CafZdsSXDJ/ob67hd/2WFcGoWG6?=
+ =?us-ascii?Q?dxWe7ay2PLYaEMwGzNqS/ooOcYFMnaBi0gNd6jaUAH9IUyC/QJI7KC7l+riF?=
+ =?us-ascii?Q?Ihdh5EcUv1Pz4KsYhvNlnP21uYAh0qFK1qNWj295Uz/gZCUwHVwPFfbCTjsD?=
+ =?us-ascii?Q?0kGnEl9DGQHSLgLc1krQEAXR2XPAJ1+oNPxnIQ+kb8XHmZ743lGuCHuKT9/H?=
+ =?us-ascii?Q?e59oyw4AsJRPHoz+gl0uYLufBv8cTPWKg5HbDQAEHDpZ3ShzmvBtJ6HZeobx?=
+ =?us-ascii?Q?ElBMjm7fas8XwQ3nJdVi/EnnQdiuhoKlvQ8iVYdX0hh4gsCLWVs3P29JVOfR?=
+ =?us-ascii?Q?bFA+KXHnl3OuqXnZiK0yjnHYlbLnpnDu8IBR3AKlfIpnsuDAaNH0xxPzu4Kh?=
+ =?us-ascii?Q?vswUCTElIVvkEAKqh8BOGm8IZ1dG5rZjX1BPXyRiuJruyqZ0OAMMANXZnGhm?=
+ =?us-ascii?Q?aWGHZVlkBZTWBotauq7ZUBlcubORdQVzEEW6v2Ibw1slUOD3E2CtBIh8d9TR?=
+ =?us-ascii?Q?GkUXTE1Fyo+KjoeoAvzg6tdlVxp287Hm3vDeYZxxNdgFMTUycH2iw10CHcgZ?=
+ =?us-ascii?Q?5rUHVGklkCix54q75m28F9a5CAZlWKeBQpWJK4zO6Xqu2+eYivOGcoFPFauZ?=
+ =?us-ascii?Q?JOPpMJz+6JYM6yPRj0LYwDKfHE1/FEBymT1j6umVFC5MbJFQmuub395Zc1aQ?=
+ =?us-ascii?Q?qPBUgqFlWabVFzCn4UIXZKK+l6oO3xeUXb1HUnprNqQe4173pbBCZgPRvW9x?=
+ =?us-ascii?Q?vSzM9/83uRLYyR7hs+4jCEHLiTrgHnsHMmT8hAB8pG57vHpkg34UjItjq7Mm?=
+ =?us-ascii?Q?EDe4avZ4B7z2c5fd29/KFjw1fmko5o08pleM9onLfD1+Z6rEiVCXUBD6NJfO?=
+ =?us-ascii?Q?bpTJoPZ8ozPlAjHyvpCYTmBCJKiGXCUui4ZLl6iAhUt2Ku4YBQ6Vc91nv0Fx?=
+ =?us-ascii?Q?GA3Vw4412u5EhhqEHpkcUCIvpwsY27CGRKGMHSP57khhRk2iUbKoSbjtgeL4?=
+ =?us-ascii?Q?tjrBr9oCaGJTw/Y2gIGaOviX/aqjYOY0QH3R+XU9cVm8b/D3k1GB+KpZM9BE?=
+ =?us-ascii?Q?dW1NV4aMIN7TExuQ/aOofnKKeAPdR5JrkrJd0lPKlsWGqvgWZJN2+2wa2eQg?=
+ =?us-ascii?Q?8cQWJQ2OhNkz1dwKog2qedUiuVqWkZQt7L/F1qqFWv1Hqhjeqb3qtok7SfjZ?=
+ =?us-ascii?Q?X0lPz8e8qWp9T99C/EoaWfCr65pMPZGKosv9SryBaz0gKpRTTKVrXTUNy9AP?=
+ =?us-ascii?Q?E5sYNrU9aqX/aXwCd6Pi5Dis59JkXOyuaPTUaY79mqjh4bqsqWHqFzJt7QIa?=
+ =?us-ascii?Q?yvtQcbNehNykFT1W7PKR2F9mFrpqDriVScDYIPmpQ58mFC5UhaCvH+zV8tEG?=
+ =?us-ascii?Q?SnrBsoggvewdAGeB4OLW3OGuzzuac4s2yq+MoU4wGPOmZSCulc6Zx+gTHF++?=
+ =?us-ascii?Q?WWJ+RVcK7zJS/Lz8RWoRqQ2RiGgJPJJbMh3Mn7bx6MpztMfmL7ciy6QVlg1t?=
+ =?us-ascii?Q?03a/ZEfP+wGujd0Ql2EndYfg8/uDtvvyi/63nvmhdLlaUWy2K4kXl2gb5A?=
+ =?us-ascii?Q?=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(36860700013)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2025 13:48:58.6842
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2445c812-e6ec-4b81-4e20-08dddb3951bf
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF00036F3F.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7883
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C3FA7C0004
+X-Stat-Signature: g9jr74ibu5m5uxzbeyxh1chreyxndthk
 X-Rspam-User: 
-X-HE-Tag: 1755178995-408297
-X-HE-Meta: U2FsdGVkX185r+pKBPbhXnHZ7jXZXqDcpqJf1KmXh4fRFpzQl0GFZqveb/aTSdVoFUe0t1Mz+mXGA7SJFBwIRaSZZHj/OA4rmYkOL9LT7qsqR+3obzv2artzXETh7SxCzhy5otF3TiEpR9sOtpbHb7wgHIHgTqnBLR2gEhNuX5SXGDJdLksthiB8FUMssS+shGGgmk7/VBqugecXUrT/wVv3bNdfc1n2zyymEfZeSMq2tW8aG9cbmA9aG297nKvgQiS39v5hgfgK/zg02C4l15Kvg+caYm+d1U8bqkkwJN6+aUWkxxh9SK8t9e23VRQZbDAISTE3Zj4lVanbaIT959+oW+jXaKN3vi7UGTodf6sz1O3Ln3N36ObRSEog+xYcywdixa9BkHc5CU0MJ9O8GQachAzPO7gMss5u/aMo6/JBOHZU6h9jgWfURWi8hogXH0iOmNgCUqtZhJF186uwfL14tE2H4HtQUHgyr9tsVR9d00IqERhAK8e3/A+RIjaOFFkn0nmQLLXgNLmoj+i6HOMP1c8+xAPwr8Zr+WMLLmKeIk5+/HOhXx4a1ZQqffcSI77RmCgYkufILPCj2pGpZXjgYfZ6V1nOlx6wcu+RoWjhP7SfxGsV8Yhu/S0yOHeWmYWQ/YpJF0TrMGbjriCPIlS+QmdfmRbew0HDm+qKDAV/QpZwhzhqtBUGl09paB8cRbwsULKfQEyBbC2Or7zAMVZx0Ydgd7Zhm8Rk+TnsneZcscouUP5jHi5ywAQEsqYEFSZfg5uXm8tnbvxxH8wHI/1F+h8uvu0cm1kDFz/1CEw+SAbjxrMCP8xtH529JuZYMHWuovRTAWaLHTAEkea6grT5VqRS+VdAUQ5KxrMpCvmDFXjo4B6T/m2KzkG67sDnJh2vJdiUGMajw+aJMyg1B/sLr0Ly6ALR7qaHrAlaGVHdBa6Fm9ptDgUhBnW3kMGLY5qNuP2nmpsrylrFEWM
- qG7XvaSk
- PN7CftSqBabAdmIMZS5bhJb/v3Ss2NELgUJyTdrUkHJUIHP8Gxwg//yGFIkGUgVqLR5p4Ux7oXyfruyQ+fnIShrMkejSqAywGATnHOUgQZq9STaSh20wPvMAygaNVNB/EKlBhwuIFBl/QQ3MPP7+HLfqjYn4Fkk3+fmYhdORx9ypKKLQhx8a5s6FQTfA3l8lSHdfsjKnZjRLkTOO9e1EjfLsBrR1wvQk1agL6UEt6snFIZTvlIYmCHoAagQN0P/Sup92FM/Yz2jLcmYl45PMrq/hbT1xkBb45k7XXKc4sN4ap9g2pdJYFG+oPTa6Bjx/vjE4UnUj3A4ibgJejIEW3PcDjb32fMT4w//qCXYe154LaiGqqVCTqiPf3Ow==
+X-HE-Tag: 1755179341-45391
+X-HE-Meta: U2FsdGVkX1+tLmseHcoJ4NXMy9sCOEQFO6QO6VJ3HABsY6ixqsmCILLKbByrIR1WvM7M/cMG1FXtSy9XKWja4cHfhPDb1aSOV90+euiBgRcRGZb0GiwhImr+Wz/48e7uawtvXh9FYSGbYQuYR/SWO/wxdzxze0L69khcHxBJrB+gtCUxXxqjA8bmJ9g+QfieauOx3YjwFTfNbZ9qum1G6CEZaZ6hzQP5q9EWZnKD1cjMj7iEzq/ybyrVBaRNm4x+w/Oj9GT4+Bf9yYQr30BdjpN75vD6D2hRrOhQcrSCEJdEzbt7h3wAaj5nxUnQKYrISMIQ8rhee3KsHyRYODxloUTlnk8KnpJocKVUuW6JusfXMPxyNwH8epAuGOU6jxtE+XebKLaoSXtaEkZHXwzPJYAhcFmAIVyEODOvImuA+7Pp+1GhnKHMVn7Qo7HmGFiGT4t2rmtKc2y9FmwvVKrNaz7jrQiy8fVMSgBdBjT2Qq7FMNPc3Fr/LksjUnThZIHBOkPjSqq3fbe0WWJWcZgGegtYZlWY3PJk57nJHvGQudwhWQ3AxpEUSooDBKsVRS6S+3/K/Rkwhr9qi5Qz79I5d4oEa7C0L/3mSDEKDeyNl7liZWZQY70j6ImRBr9L+jBv8CNJw7OPp0C9IKR0O5qhHXrSuUvRH7lO79cm1A0AoVF038o8lQKoDHnxBewcjecAU+xE92uh5ARLDHgFYMPwdLdOJeKuOP6FogyWEDT84rMLdxgRcVM/7g6R59pAxmmjctmkNNLwh/Jk1cvXbUnd09OZVqDhiwpZJdkUxHGlURp1IJmigi7f2fPc4grjvcJRh9mbaiNNCPi2b10LOlHqHs4BFVLsXEgfNRdMqPDIUI0rW3P40GHaqtfD4L8GP60sbA/P5O2uMlLZSdPvOSjML9GC8cPSaC3ghEKb8au2L47gCTPy14wpQWrrtahR5QEwVLvvEkSADSJbuavTnOj
+ r8exkhEy
+ mqCThxBoZ1OY7aAKPwgcDvNDlcGglMM5h3rD4t492TfNBB3JuRJZKP3mfZCjvBlVxHljDqkgRegrcfoyfkzXDYo7T1nmuDLtOVc/Qg8gIsBC7pXqeUkabtN6+C07EWkCmMSLxT2uNi2za5U8xIuaQcFUyjLtJwmlFh93oXcdPAlg+RsGyvSH8wcEq12HFNMLOj3BF2Icmlk8idWyOYLG33FiyEBlaj76V1WK1oJPf/rUAcEzU7JEuZBxx97KuPM8+dtXHKzBt5CVyR3ZvEqETPm7rhuAUNdRp3V49fvwtLB80CUDV7xpg94gii1Y4zanr6XN1jEQlOKgxRKBxn0vRlRsptOFalpjBEteZ9mgWs2K11XvsW9IVL6YPPaZM6084orQwe07QICt8vJ3o2yPG3JNFQeWOelDQhqMgnso87U6P5WqAaJyGp/IztTpsFi+Rh0w/0RFCmUU6Er9nDS/Rj/Ma0i3YUIIi1j1y6TzsqPoNiXspIHx8OkWxRMvXGJTBo9VFy+8G1m5T6Sm2JYUFb9SI2e1Kc/1WGWkEyzAcEKxW5hsgKRno+0zMcw+pMifG+N93d7jmV9Y9dInCDDYvw1oQyezJmPlBI06Y4EI27vGESVVKSKyFDtoHp664Qmw8kgORY9RV/jvZzuNpZbm5dFekHJ7cn8ReEuTaFtl0qJtg40NoSYYGly3cQ9iRJF3K3YkxcwlULXHyxtMjMwIxDCh+EQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,120 +174,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi,
 
+This patchset is about adding a dedicated sub-system for maintaining
+hot pages information from the lower tiers and promoting the hot pages
+to the top tiers. It exposes an API that other sub-systems which detect
+accesses, can use to report the accesses for further processing. Further
+processing includes system-wide accumulation of memory access info at
+PFN granularity, classification the PFNs as hot and promotion of hot
+pages using per-node kernel threads. This is a continuation of the
+earlier kpromoted work [1] that I posted a while back.
 
-Le 12/08/2025 à 07:44, Thomas Weißschuh a écrit :
-> The compiler can emit absolute relocations in vDSO code,
-> which are invalid in vDSO code.
-> Detect them at compile-time.
+Kernel thread based async batch migration [2] was an off-shoot of
+this effort that attempted to batch the migrations from NUMA
+balancing by creating a separate kernel thread for migration.
+Per-page hotness information was stored as part of extended page
+flags. The kernel thread then scanned the entire PFN space to pick
+the PFNs that are classified as hot.
 
-I'm a bit puzzled with this series.
+The observed challenges from the previous approaches were these:
 
-If I understand correctly, the check will be done only when you have 
-RUST available ?
+1. Too many PFNs need to be scanned to identify the hot PFNs in
+   approach [2].
+2. Hot page records stored in hash lists become unwieldy for
+   extracting the required hot pages in approach [1].
+3. Dynamic allocation vs static availability of space to store
+   per-page hotness information.
 
-I wouldn't expect having RUST to build a C kernel.
+This series tries to address challenges 1 and 2 by maintaining
+the hot page records in hash lists for quick lookup and maintaining
+a separate per-target-node max heap for storing ready-to-migrate
+hot page records. The records in heap are priority-ordered based
+on "hotness" of the page.
 
-By the way, aren't relocations already detected by command 
-cmd_vdso_check in lib/vdso/Makefile.include , using readelf ? Why is a 
-new tool needed and why does it have to be written in RUST langage ?
+The API for reporting the page access remains unchanged from [1].
+When the page access gets recorded, the hotness data of the page
+is updated and if it crosses a threshold, it gets tracked in the
+heap as well. These heaps are per-target-node and corresponding
+migrate threads will periodically extract the top records from
+them and do batch migration. 
 
-Thanks
-Christophe
+In the current series, two page temperature sources are included
+as examples.
 
-> 
-> libc elf.h is missing some of the relocation constants,
-> so make user of the kernels own UAPI headers instead.
-> 
-> Kbuild and Rust folks: This contains custom definitions of hostprog
-> bindgen and rust library commands.
-> These are currently only defined inside the subsystem directory.
-> Let me know if they should go into scripts/Makefile.host.
-> 
-> This will conflict with my SPARC64 generic vDSO patches [0].
-> If both end up being applied at the same time, please leave out commit
-> 'vdso/vdsocheck: Drop the transitional kconfig option' from this series.
-> 
-> [0] https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Flkml%2F20250724-vdso-sparc64-generic-2-v1-0-e376a3bd24d1%40linutronix.de%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C3f03f6747325451ee98808ddd9634f27%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638905742749561064%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=HacF%2FvlUoxA9P6fTiN1ytw49gwayX1wNE7IxfEkFutE%3D&reserved=0
-> 
-> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-> ---
-> Changes in v4:
-> - Replace the inline shell logic with a dedicated build-time tool
-> - Link to v3: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fr%2F20250611-vdso-absolute-reloc-v3-0-47897d73784b%40linutronix.de&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C3f03f6747325451ee98808ddd9634f27%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638905742749584369%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=7NxAhutk6IXl%2B3fe1kkZEzhZz6CWye%2FVAcFO%2BgtS4uo%3D&reserved=0
-> 
-> Changes in v3:
-> - Drop already applied bugfix for arm64
-> - Disable LTO for the riscv vDSO, as it is incompatible
-> - Link to v2: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fr%2F20250430-vdso-absolute-reloc-v2-0-5efcc3bc4b26%40linutronix.de&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C3f03f6747325451ee98808ddd9634f27%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638905742749600546%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=uv0qMS5qq0DovLHtxfRvT42atbJEkztylpOS8zt6bJ4%3D&reserved=0
-> 
-> Changes in v2:
-> - Link to openend (invalid) GCC bug containing more explanations
-> - Refine commit messages
-> - Don't fail on commit absolute relocations in debug info
-> - Link to v1: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fr%2F20250429-vdso-absolute-reloc-v1-0-987a0afd10b5%40linutronix.de&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C3f03f6747325451ee98808ddd9634f27%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638905742749616057%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=K5iwoz0Xqc8kheotWEc4M2KrZ7UVMDObOyFfCPj4N8Q%3D&reserved=0
-> 
-> ---
-> Thomas Weißschuh (24):
->        elf, uapi: Add a header for relocation constants
->        x86/elf, um/x86/elf: Move relocation constants to UAPI
->        ARM: elf: Move relocation constants to UAPI
->        arm64: elf: Move relocation constants to UAPI
->        powerpc/elf: Move relocation constants to UAPI
->        riscv: elf: Move relocation constants to UAPI
->        LoongArch: Move relocation constants to UAPI
->        s390/elf: Move relocation constants to UAPI
->        MIPS: ELF: Move relocation constants to UAPI
->        tools headers UAPI: Sync ELF headers with the kernel sources
->        vdso: Add the vdsocheck tool
->        x86/vdso: Enable the vdsocheck tool
->        ARM: vdso: Enable the vdsocheck tool
->        arm64: vdso: Enable the vdsocheck tool
->        powerpc/elf: Add 32-bit REL16 relocation definitions
->        powerpc/vdso: Enable the vdsocheck tool
->        riscv: vdso: Deduplicate CFLAGS_REMOVE_* variables
->        riscv: vdso: Disable LTO for the vDSO
->        riscv: vdso: Enable the vdsocheck tool
->        LoongArch: vDSO: Enable the vdsocheck tool
->        s390/vdso: Enable the vdsocheck tool
->        MIPS: ELF: Add more PC-relative relocation definitions
->        MIPS: vdso: Enable the vdsocheck tool
->        vdso/vdsocheck: Drop the transitional kconfig option
-> 
->   arch/arm/include/asm/elf.h          |  24 --
->   arch/arm/vdso/Makefile              |   4 +-
->   arch/arm64/include/asm/elf.h        |  55 ----
->   arch/arm64/kernel/vdso/Makefile     |   4 +-
->   arch/loongarch/include/asm/elf.h    | 100 ------
->   arch/loongarch/vdso/Makefile        |   4 +-
->   arch/mips/include/asm/elf.h         |  53 ---
->   arch/mips/vdso/Makefile             |   8 +-
->   arch/powerpc/include/uapi/asm/elf.h | 201 ------------
->   arch/powerpc/kernel/vdso/Makefile   |   4 +-
->   arch/riscv/include/uapi/asm/elf.h   |  66 ----
->   arch/riscv/kernel/vdso/Makefile     |  11 +-
->   arch/s390/include/asm/elf.h         |  83 -----
->   arch/s390/kernel/vdso32/Makefile    |   4 +-
->   arch/s390/kernel/vdso64/Makefile    |   4 +-
->   arch/x86/entry/vdso/Makefile        |   6 +-
->   arch/x86/include/asm/elf.h          |  34 --
->   arch/x86/um/asm/elf.h               |  33 --
->   include/uapi/linux/elf-r.h          | 631 ++++++++++++++++++++++++++++++++++++
->   include/uapi/linux/elf.h            |   1 +
->   lib/vdso/Makefile                   |   2 +
->   lib/vdso/Makefile.include           |  17 +
->   lib/vdso/check/.gitignore           |   3 +
->   lib/vdso/check/Makefile             |  28 ++
->   lib/vdso/check/elf.rs               | 488 ++++++++++++++++++++++++++++
->   lib/vdso/check/vdsocheck.rs         | 279 ++++++++++++++++
->   tools/include/uapi/linux/elf-em.h   |  71 ++++
->   tools/include/uapi/linux/elf-r.h    | 631 ++++++++++++++++++++++++++++++++++++
->   tools/include/uapi/linux/elf.h      | 112 ++++++-
->   29 files changed, 2277 insertions(+), 684 deletions(-)
-> ---
-> base-commit: 5180c6526acc9f1cb58f8b11fba67583c22e0854
-> change-id: 20250428-vdso-absolute-reloc-a226293c1761
-> 
-> Best regards,
+1. IBS based memory access profiler.
+2. PTE-A bit based access profiler for MGLRU. (from Kinsey Ho)
+
+TODOs:
+
+- Currently only access frequency is used to calculate the hotness.
+  We could have a scalar hotness indicator based on both frequency
+  of access and time of access.
+- There could be millions of allocation and freeing of records
+  and from atomic contexts too. Need to understand how problematic
+  this could be. Approach [2] mitigated this by having pre-allocated
+  hotness records for each page as part of extended page flags.
+- The amount of data needed for tracking hotness is also a concern.
+  There is scope for packing the three parameters (nid, time, frequency)
+  in a more compact manner which I will attempt in next iterations.
+- Migration rate-limiting needs to be added.
+- Very very lightly tested atm as the current focus is to get the
+  hot data arragement right.
+
+Regards,
+Bharata.
+
+[1] Kpromoted - https://lore.kernel.org/linux-mm/20250306054532.221138-1-bharata@amd.com/
+[2] Kmigrated - https://lore.kernel.org/linux-mm/20250616133931.206626-1-bharata@amd.com/
+
+Bharata B Rao (4):
+  mm: migrate: Allow misplaced migration without VMA too
+  mm: Hot page tracking and promotion
+  x86: ibs: In-kernel IBS driver for memory access profiling
+  x86: ibs: Enable IBS profiling for memory accesses
+
+Gregory Price (1):
+  migrate: implement migrate_misplaced_folios_batch
+
+Kinsey Ho (2):
+  mm: mglru: generalize page table walk
+  mm: klruscand: use mglru scanning for page promotion
+
+ arch/x86/events/amd/ibs.c           |  11 +
+ arch/x86/include/asm/entry-common.h |   3 +
+ arch/x86/include/asm/hardirq.h      |   2 +
+ arch/x86/include/asm/ibs.h          |   9 +
+ arch/x86/include/asm/msr-index.h    |  16 +
+ arch/x86/mm/Makefile                |   3 +-
+ arch/x86/mm/ibs.c                   | 343 +++++++++++++++++++
+ include/linux/migrate.h             |   6 +
+ include/linux/mmzone.h              |  16 +
+ include/linux/pghot.h               |  87 +++++
+ include/linux/vm_event_item.h       |  26 ++
+ mm/Kconfig                          |  19 ++
+ mm/Makefile                         |   2 +
+ mm/internal.h                       |   4 +
+ mm/klruscand.c                      | 118 +++++++
+ mm/migrate.c                        |  36 +-
+ mm/mm_init.c                        |  10 +
+ mm/pghot.c                          | 501 ++++++++++++++++++++++++++++
+ mm/vmscan.c                         | 176 +++++++---
+ mm/vmstat.c                         |  26 ++
+ 20 files changed, 1365 insertions(+), 49 deletions(-)
+ create mode 100644 arch/x86/include/asm/ibs.h
+ create mode 100644 arch/x86/mm/ibs.c
+ create mode 100644 include/linux/pghot.h
+ create mode 100644 mm/klruscand.c
+ create mode 100644 mm/pghot.c
+
+-- 
+2.34.1
 
 
