@@ -2,116 +2,118 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 99D37CA0EE3
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 07:55:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 29217CA0EDC
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 07:58:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F148C900109; Thu, 14 Aug 2025 03:55:20 -0400 (EDT)
+	id BC00A90010A; Thu, 14 Aug 2025 03:58:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EECEF900088; Thu, 14 Aug 2025 03:55:20 -0400 (EDT)
+	id B9779900088; Thu, 14 Aug 2025 03:58:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E28E8900109; Thu, 14 Aug 2025 03:55:20 -0400 (EDT)
+	id AD49090010A; Thu, 14 Aug 2025 03:58:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D34B6900088
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 03:55:20 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7B5F7BA207
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 07:55:20 +0000 (UTC)
-X-FDA: 83774602800.16.13894B0
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 8F3F7C0006
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 07:55:18 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=kytYbp93;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf22.hostedemail.com: domain of 3ZJadaAkKCFMv63xzCJ2619916z.x97638FI-775Gvx5.9C1@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3ZJadaAkKCFMv63xzCJ2619916z.x97638FI-775Gvx5.9C1@flex--aliceryhl.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755158118; a=rsa-sha256;
-	cv=none;
-	b=ZVBb5kuQXuCvRW50+27p4WexlWaPrq+0lev5Ec3NgwdfKBM6WRg+vDpaQerYl88P0z4QDr
-	73ibifVTAbA4KD3VoUbY8DDIgx+ZKeqTzeg5+9+w7eeHFZM/5q2PZiPXf4dqUF611+8xLp
-	JBMtu83mECOCvxfGUynoJRxrm6Za9VU=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=kytYbp93;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf22.hostedemail.com: domain of 3ZJadaAkKCFMv63xzCJ2619916z.x97638FI-775Gvx5.9C1@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3ZJadaAkKCFMv63xzCJ2619916z.x97638FI-775Gvx5.9C1@flex--aliceryhl.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F798900088
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 03:58:38 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 519F11DD559
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 07:58:38 +0000 (UTC)
+X-FDA: 83774611116.12.51FE27D
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	by imf21.hostedemail.com (Postfix) with ESMTP id AD0751C0005
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 07:58:35 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=jkIHCfIX;
+	spf=pass (imf21.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755158118;
+	s=arc-20220608; t=1755158316;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=pkt9ozF4HjNo8N7YGJsDJbGhL2IzfusvyUWTBzPyf7M=;
-	b=TFyK2k/3Bl2+hm6eMkaXiO0PE915OFB0Zam80q5qAO/Jh8svU+liX/FRykZ94eGtk0TMHc
-	ZJCJc9wmz6GxxbGFINEQZUYTkEM2kM2aZ/cI1dILE3VNrBAGo0WN0+kx/7hv0Hb0XOpUC8
-	AEh/l5KdMb2bZN5arcJ4hA7+R8NjEOE=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45a1b0b14daso2136835e9.2
-        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 00:55:18 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4s2oDqQ9Axxr0LU8mruMwn41CcHNr/5Tx31AQ1BHTKY=;
+	b=3zBZfhuTslZN16tJ/Y3zszZls6uKoIz0XYRsR5IfLQuJHQk2jZFr4HnRhMODdBJhFftGVy
+	NWnkshw2ITVAwKIARbZj1vgN0hmA9JdbWaZwY0hcPI5R7JLBWVmh0oKYofygE8DgDk04s9
+	CxtN2zLCgVC7bP0MvAh9S4j955vFFPM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755158316; a=rsa-sha256;
+	cv=none;
+	b=ZkTE4kZdywU+sKql7HI/2qhNCXhGv2qHUDk+rN3lCnY1USC3Uzih1iYw/TA671enPndK1i
+	ZMGnhMt4d9XV95vjuNpCWEECz0ln8CBu0XOr7tq+x+lAy15XyZTrPgcrW0Cs4m6w5qITyO
+	oh89M/o1dHhEublMfWlkqiMD83XUqgY=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=jkIHCfIX;
+	spf=pass (imf21.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-76e2e6038cfso1131636b3a.0
+        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 00:58:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755158117; x=1755762917; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=pkt9ozF4HjNo8N7YGJsDJbGhL2IzfusvyUWTBzPyf7M=;
-        b=kytYbp937TQQqynHRzMCRZgw+hysNCLCfrXluzepBkHzNaCUu1MZYmIbAgI1hLNUnu
-         4KhOlPopvi9pMA9t5Vfk8jhC/boX7cRFHrFJ4Dhk38UL+5Jef9IprBXIceELeNWKQMX8
-         pZbVmaooqXIyl3Ts6EeSekJf4Jf/P/5lEzX8384ILPWOrlA3bbfSdfZyFd0YARbGQeHa
-         V70GTsdYOlHrDzVH1iEIvMGpLekRRIex2jwxoIznXl1gnM9eYUNi1y7GDIOeWqNOgSIu
-         9JgTzNmQxoQs5fG7quCUocWqw8Vy+atU/e5rXbkAWEZ5sb2vBVt4DUdgIkl4Eq4rP0sJ
-         MJXg==
+        d=bytedance.com; s=google; t=1755158314; x=1755763114; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4s2oDqQ9Axxr0LU8mruMwn41CcHNr/5Tx31AQ1BHTKY=;
+        b=jkIHCfIXmadf9xJqmiZnSDtgT/ithORfLVG4jNqMnhXVuV6JIpU4EjlzMRfcrtd6jG
+         lRyNjre4A2eyEXJUEkoXEqYrXFYTemOqRaPveTLSTm9ewn8fCHiFO73O9hVA/+ivD0fz
+         sqx6xup3Z2jAqQBxe2XMslbbMRWTVJMl6L2oYDFs6CvLEszEGvNf1mdqo0wjcUMff79k
+         zRsupDddJxlQp29HkuCrgCBqcEL0QuQrNLBiufBkWoOUiXMH4q7KlBVl9YR1BzOf1X+J
+         PnIxYIX+nrbjZU48qvZeZPnDb+Vz3PpzGjULle05GOh9cSzs8NsNe7qHGMMOIXaYYTAf
+         kgqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755158117; x=1755762917;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pkt9ozF4HjNo8N7YGJsDJbGhL2IzfusvyUWTBzPyf7M=;
-        b=SNwNem06vZ+/kMo/yA/GMo+HblaKvGOX01C6UOQDcrTtZ0KXvHzOnvnCMRpi4bcxlw
-         CCgP8CDU5H4yd8yVBZjAbEBiEthBoDOEeiPL6Kur0xnRdofWqmYB4jqta1fT8uRQi4WC
-         r9DezSqNUZj8SFwsMwwnCAJcrdF3/LQNCO1WUdYbn8B13fe8tvxpm+GhlOlc7RqFA7Ss
-         YknejfUTvmWyg0r17B9AyNqlTnIjLLEg5ExUfWtNDyp1wWEBDEQPj5/TxaFkt//t5bWP
-         u1v3U3N6YC/g6yKQR+cGV+tA0Dok9UlESdPh9yBR6DtnFKrAzMIhbOSVcgy2hWfNXbEx
-         ceHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWlsDnAKg0jwAlv35Vm0g7WRHPGrc8AsRWATay/Zouu+ekQ9gw5cXo1OrsPwOPt+nZPXCuaaCtHIw==@kvack.org
-X-Gm-Message-State: AOJu0Yw6QYP7JfT2UvovDrhYQHeahL/2krPsrHZxd33XhJ/nNybeRO+O
-	DpIH/KAlC6+tjceXvRXAkdPxJqOlWj/wcJR2+kE3OwuVKnIpkgGNJfOjDUuXFrjVNU5Aw03YnCx
-	X5adtV/65mZ9qExQlGw==
-X-Google-Smtp-Source: AGHT+IEwXLvyCAoWDtNfNW5WIiz6Y+KDZTy2eN5q6Eu1bB6BXaaznui8SXDAth8yHInJovhcWZQN9Sn9q2E2DRU=
-X-Received: from wmbem15.prod.google.com ([2002:a05:600c:820f:b0:451:d768:b11d])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1d16:b0:459:94a7:220f with SMTP id 5b1f17b1804b1-45a1b6577f9mr12470205e9.26.1755158116883;
- Thu, 14 Aug 2025 00:55:16 -0700 (PDT)
-Date: Thu, 14 Aug 2025 07:54:54 +0000
-Mime-Version: 1.0
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1090; i=aliceryhl@google.com;
- h=from:subject; bh=VMoY9uH+QCsljh5aA/42PVLV0HoLhQc+LEs/AXP4pXo=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBonZXTyaGB12UQz+He5R88gG56onLNWGp1jIqZ1
- vmC6SORLquJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaJ2V0wAKCRAEWL7uWMY5
- RmxKD/9XTAtpkY0tqkvQ/KI118GdnayeBzkBm3Ju8ZviwzKu1pt+Tj6C1oq7NXbmw4VPt2/JwEr
- +R97IGMF5xudWN38Ee9hYouRwVKyE4412lVzr9KrDd0L59UpOvfYViUFV2Jt8pZynbJUUdDeVu4
- NJ7AQJguuboQVezTI72dlooiVSoEqQgjqlTI5695l8FS31ddO7IBRt1gd3402n3emVpGjNUq7FD
- QJz4++Wa2QsJ2SK8w9beudiWP1zXoFtJFQqQJp7eYVbFCtYi044prekxwkOpZayKSOa6YU6WfCq
- dtSPrqA9zQESg+HbayhaPci7lGtJyGIqO70/gLuGesr5Ql440rigeOD8lO9OXkVLGw7+q5tAZWi
- M1PQffntwdm6EQBR+fS437Z6Fu+wD6hXnDjJDpv/r/0DN22z0WH2Vd4+VP5qnsM3GQcl+GitSXo
- gvbx3C/SuktLE7U1OMFFY9X9fzmV+lwi9ToMuL6OkwGpHYyX41TuoftVpF+qhDcqfoSXKAA2SI4
- O54FedWn8jTp8GeasAV/pVgFAC/aklaQ5CBrmWyaZ4GH7kBSBzC9EEMz41LXZK/0jCJ4DamiqAh
- guRlN8WW7goErG1vaOvwNELh0WlekDFeb8MoU4WRMBtLwLYLaqie52aaITPoleWWXJoept+Lbc7 83Xlpn3nO+wY5Hg==
-X-Mailer: git-send-email 2.51.0.rc0.215.g125493bb4a-goog
-Message-ID: <20250814075454.1596482-1-aliceryhl@google.com>
-Subject: [PATCH] mm: rust: add page.rs to MEMORY MANAGEMENT - RUST
-From: Alice Ryhl <aliceryhl@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, Vlastimil Babka <vbabka@suse.cz>
-Cc: rust-for-linux@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam03
+        d=1e100.net; s=20230601; t=1755158314; x=1755763114;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4s2oDqQ9Axxr0LU8mruMwn41CcHNr/5Tx31AQ1BHTKY=;
+        b=iEpS7p284u0L+4mzisHXj/4hyxcH9+D+LH8fJ+Y5cGfVqNGMkd4lHEna3EGmgBkM0l
+         jP8S9VNSQjmuYf7R0erDn7Gr32B2GoAHUoQM8P97j2+xWkrkcwpUmg5KCNRUVu0wyAjj
+         vYT0lD4ub32bqsppF55YltgZkS1fbYOI4T3A8oUnUbWPi1vPrWwdSqh6Wq7KV/Asm398
+         ZBVVeftCdoK/0panrZPi86WgBbA4AqtsGlFzXkNczsYpF/yCFGf2MfF/yJ5r54k6aeLs
+         BQ6L4Gm6A0JFsXbYE8XmjdQSKPPsGMI3L/u42aHnzKW4x+iBu9i18beY8kAAKHe0hSVB
+         CC2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVMIx1iPyrDw2n2etYnFbxDo5WV+mOd+pUnBz766Vb3eJyXmLp3ZalVaJJr0h+VNKAl7wOfRgSQxQ==@kvack.org
+X-Gm-Message-State: AOJu0YyqtwgY6ApoNh6ot5sIhcECVnHxIgN+FM1Pd63cdhuJLWJLoARe
+	hf2MDUk9hdpf32atAjEZlVuDfOpqkrUEvZiw3ngsQUqEO36DnCLOz13W+lGQdqW2hmg=
+X-Gm-Gg: ASbGnctnLdnSUdBKeI10K7ms/f94ajKaFqYmt5FdT0Fd2K7tSUipNf2X5W8W1vR9tOR
+	/Ail/cJice1YBT0xycCp9ej9QoMYzoybiEH8PwnwA8Yf4S9H/gQ7Pc/AxiGSdAOOOmdIaikvfJa
+	gQnTCjfxIz+5BaEOPdVdzlFyCwz1dSVBTm31P2Dj/vS4KMV8ZTBipc3StxCK7uRbEyMZ70yNRi6
+	s38uF8oj8oPk2WV9XhUsuHW7Y02Wt3A/NvRktUyB/MNIAWhxgvt5dH7cv/NEO9F5DCEuMaCPLz/
+	zBiL2L7xRaNRqbGqNNvlXA7KhJMmzssXUMENgh5UdkFakylPaoc/mBPLW34LtshauvWfoyqKK6O
+	ja68gp846SiUaLPPpJVuFqrJ+ryksAG+iBbaYnyKbfcPLnG/B
+X-Google-Smtp-Source: AGHT+IGQFCOid1xU/kTL2mXM8U4CeNYlG9RrTgm/Ucs/YfzENunJyjCSeSACd8ELwR+xBvztlldT5w==
+X-Received: by 2002:a05:6a21:998c:b0:240:211e:8e0 with SMTP id adf61e73a8af0-240bd286e8bmr3253974637.35.1755158314373;
+        Thu, 14 Aug 2025 00:58:34 -0700 (PDT)
+Received: from localhost.localdomain ([203.208.189.8])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b4263836324sm21721780a12.10.2025.08.14.00.58.30
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 14 Aug 2025 00:58:34 -0700 (PDT)
+From: lizhe.67@bytedance.com
+To: david@redhat.com
+Cc: alex.williamson@redhat.com,
+	farman@linux.ibm.com,
+	jgg@nvidia.com,
+	jgg@ziepe.ca,
+	kvm@vger.kernel.org,
+	linux-mm@kvack.org,
+	lizhe.67@bytedance.com,
+	torvalds@linux-foundation.org
+Subject: Re: [PATCH v5 1/5] mm: introduce num_pages_contiguous()
+Date: Thu, 14 Aug 2025 15:58:27 +0800
+Message-ID: <20250814075827.62858-1-lizhe.67@bytedance.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <b426d3b9-c674-436e-95c3-fcc7647a044b@redhat.com>
+References: <b426d3b9-c674-436e-95c3-fcc7647a044b@redhat.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8F3F7C0006
-X-Stat-Signature: ajhbr4zo4hoexd8moynak4df7tmyaqgw
-X-HE-Tag: 1755158118-527073
-X-HE-Meta: U2FsdGVkX1+0tisQZdS8EPCxVfBawPPXk1mzDbhJ+RMaElaMe8fDeEoiZHFGuzRJbI0OLxqyOS0GfwsTVCpfn/WzXA+/WMm2CORExDMbJJZloLw+lagr7lSIiDKfD7CtsUm/DpAZJ+H8AlR5nMV89SWmK133R6J1NGAGXkF3Gk3fkLtBPFe+tH+MuQ0bL1zPXW3fVL/QXeFdCXUDPiPseL+dpyLYt04+A60wWtGhhPOWmn31d2mvtuRVgRmyfLMIrO/eyCesKOkLPBHGScon1dwqq0jK8Y1OR6Yfu2ZlsFZKX35Sw6xHwJeLJaDZ1/V/NaqO1ActIDjXVTGTtCYoUwMd7LxacdPCAEgIqGch9SC2jtaKgr0gjlgzPcsICa7MYMyrhQdWLjzKBjsUu9KdKdRFJjwVzFRNCKX8lziUZMY1o4yeIDT171QGIRQEmOKN1pfENv81rJCg5GQl5kGCAxvjbJP3nw+3Mzumka9ZLUwg4Qk7UMLyZtNfuK3r1oIfSs0pZVlLh6rsOAdhXTkH2X9VBx8yJ7S5lit1kHiDrKnu8ZWch9ap8fyT7gtA1mjje6aOVFCJqLc0e/HJJPyaxWJ/nfUdkpQ9b4+YwT5nhV3Ln8ixdjrJALrbpY17FHG2K9xtMYvgZG7r1zrYo7uIRlWTz9FKJBmRgb0TCmopXHocd9eR2Ego3ik8jGuUK7rzaJoH9hJBjSsQPr0P1dDHx85J3xr1UKYHgo4PJ+aYkvKMPBc0I4uyOMTt84T8zGyq3SKujw1g57mY6pB6tRiIRk1asYfBW80UfRaqKUmYV+PszqnYJhEFavehVBlvfnIQ+NhFb3ospy+cK7AUrdAXRioPHFWalBDIoAiDy8LfZwIRE224gNpxqUTGL66JWfQkOyJ5bDAY52g8jf9JKO3HFHQC5+MIz7/U2TaO9b9NpRDPnZV9QelEQNhtnurQlPU1CRNX0jYk7qPP65gUVkL
- DT0KDj3H
- KXBZ8yfQwDIEE5TVP7dqc+muN1csHiYrSSp23jrnYBEQK5WdIbkO+UOQ9R69NmEzkRYN7EYUagyB1M4S8Mp12F+6blynilX3qt8gJ/8Epoj5/nXPu5F6wowAs+agDyc9oom0yzho277XOYQuV0BE5NDY44JT8VTPx3Su2eoEQNuc6gNvlhzWA/f4uX3h2T3fjSkQNBEsgMvUz1NwfC2kHnX2rWfZAkhpNf8DfEaPREW5NQKRTx6nuwgTsbKYfRL2iwS30QHqzAx8KHNLS5dcYSMqcHs+i937+wrGqaPjED14yYJ0+rtPl4FQhYs6vplA70xPQI8uRj/W4tAa5pZAPc/QeWAD/P/33muJ6IvOQDKdtCY5xujtTUdw9yTO/BT5EIKcozP4iWgeBTEoD+cylKmn6N8OJf3AnbuOWRucqEbvrcm5wNm0LBHr26bF8Fewd/aN08A/KCQgrTcNtyX4f5/gqaso7e8vPc2heCZRnMypHqJvW12GVXjHf7quVnEOe6VYpMqu8+peozaib50zqzoV5qVBzNgvqnAEG1Ub1OhdcOgKBR0aObL+RbIxDC4ytZ3gAkwAUp/5gp6A9MFFCUWxbYNhLbf2ATqIgO0iLOi2cYZvJxzbcWBtdcrKtP1C7dWuyU6tB2DZ8SwyZEig4rlt+u2RfB5lQ/4QVtx6VUrGPPZ8gN3DUW3DCuDyrqv667yce7LU3sj1/T2aR7eytNoKyWNXbKmLy174aate/bYWBOblsYh4ArBS9oltsBmIMGsy2GNAk7vuw5iQohNg0WYkulOck5fG/S74K
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: AD0751C0005
+X-Stat-Signature: uw855e9xyofy1s6njew86hprpr4gybjn
+X-HE-Tag: 1755158315-940851
+X-HE-Meta: U2FsdGVkX199VnJrzj56Gck+1GcGWxIC7FG3DfncGJaYl11ME+WV7UBd089GQfpspc+lZZXNWC3zbruyPokBuXHFEpHibwacII+sDoGGL8zfk9PxM/8xUaOWVQt3WwBaEu/ltJjqEUMk4XRkJnbwA1UfbQEy2vNdf0fFCh5YW5Y2AbDX+4uKEEQ2dNISEiWt+Fcp09BAY85tlH51YUPOFwnBkrN72I3LqJ6z7fHjiUtbV6j+hFZb3GGrDUcWpLZlraOH5ffML6SmaXym3ox2z1cDLylzYYg5OlVOff/dl9RaQNV1JlyR0+bAb4v94srNz+XTU+2Yjo4+HTzkLRDb5xOcTsNBVOM5rNa0i/HDgxIXERSl244eCHYoisbYqBi2nmTsaujlKdIXP1EuIlJpL6sDNH9aaVZYxtq3y5dRqslI3XxBWfGfzXo3o32pd7lh5dxIe+wiqXKmk+vNyB9xgSTGrUcxSwjXhPsfl9gA2J+76HcHQLfycboGRqJBld9riH+X4YRWznwFFNFthkPZbLJa7fyuGb9f/Fi1hxQX7BKEt9Ku2G9200lHg1DcK428/aznXOyVIh9nu0ZVYik88VUoD9TxoOMkLCPf7YrRRIEt5/v1usy29JgO5LEPPI7ijWos+fV4BLxJnYYV6ECRkPOdxjHJCC9RDe6N5bB4d5ohSK5wI2un0UIFNmXskVAkPT8dlk5XY2lHb2HECHPBw8YXybDSV/v6JE61jTDp9PE9A4RRSrIS/dtYtmFnEjlTelUOXtv8L8IG+iqkb5SEHwOG8M5axH50z+RZHnUMfdcv4pdnRYSfOgvY3pAfKVFmgl3BPWKqNpf735V7MtD1HeiNq28H/0ZjQ/G5C4HnkYDRcGQ0BasxBLRpFN5O3tDsaGdsg+63BqyyMJsMEfjyvbYQpt8P92M4BC9Hbob2u0Kt39PBXFYtytncp8cIRiTtzA5IUg8nIczTREL1K7M
+ YP1ZuFSr
+ 1JAbpz3dffRXCskPIDGfToe952CL5Bg3/9vx2UJtOf8ZHK4aP1eF6YdSlojEYTw1dDLXNzppecVBU89bAzUmFcmNZzybriB6VBOebgsbFLk5FLWzCRETfpNLblRfkyRCpUK2jgTyGOIjVC/3YwPTtJhrn+jl8Z0OiThyQQDenpQO/8pbxMhXywb8hqg0DnMPN6mycbNfLmFQ8B+aCAaP45tXu4WG6qcwCOWE/9Kj8qvXNUtglnJNEK7PFoupie4Yg7W61LQID7fWAfFOcPRN+qYDtzzxUjB2jyQENMboqpAovED/qVCleNLiuegJGs3L+2Yli41bVaRdh+L66AdzbWM1JZufurwye3X2REPSYYiqUEpBmOJvXg4atktlk06kVZ8BN3tDKAteD6G8rD0ydQfrI4JZHu5pvQ8exk7CwjeAroyU8GYDGJZ3u+Ff8JBDTsCnBFh3VE+qcoyQ8SpFhpyx3L5OyNmNIXogsQL24LBbCvl4pIMOT4IvLOY+uazyJVq7dsN777MlJgsAha1itDmJrQg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,39 +122,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The page.rs file currently isn't included anywhere, and I think it's a
-good fit for the MEMORY MANAGEMENT - RUST entry. The file was originally
-added for use by Rust Binder, but I believe there is also work to use it
-in the upcoming scatterlist abstractions.
+On Thu, 14 Aug 2025 08:54:44 +0200, david@redhat.com wrote:
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
+> On 14.08.25 08:47, lizhe.67@bytedance.com wrote:
+> > From: Li Zhe <lizhe.67@bytedance.com>
+> > 
+> > Let's add a simple helper for determining the number of contiguous pages
+> > that represent contiguous PFNs.
+> > 
+> > In an ideal world, this helper would be simpler or not even required.
+> > Unfortunately, on some configs we still have to maintain (SPARSEMEM
+> > without VMEMMAP), the memmap is allocated per memory section, and we might
+> > run into weird corner cases of false positives when blindly testing for
+> > contiguous pages only.
+> > 
+> > One example of such false positives would be a memory section-sized hole
+> > that does not have a memmap. The surrounding memory sections might get
+> > "struct pages" that are contiguous, but the PFNs are actually not.
+> > 
+> > This helper will, for example, be useful for determining contiguous PFNs
+> > in a GUP result, to batch further operations across returned "struct
+> > page"s. VFIO will utilize this interface to accelerate the VFIO DMA map
+> > process.
+> > 
+> > Implementation based on Linus' suggestions to avoid new usage of
+> > nth_page() where avoidable.
+> > 
+> > Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+> > Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
+> > Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+> > Co-developed-by: David Hildenbrand <david@redhat.com>
+> > Signed-off-by: David Hildenbrand <david@redhat.com>
+> > ---
+> >   include/linux/mm.h        |  7 ++++++-
+> >   include/linux/mm_inline.h | 35 +++++++++++++++++++++++++++++++++++
+> >   2 files changed, 41 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > index 1ae97a0b8ec7..ead6724972cf 100644
+> > --- a/include/linux/mm.h
+> > +++ b/include/linux/mm.h
+> > @@ -1763,7 +1763,12 @@ static inline unsigned long page_to_section(const struct page *page)
+> >   {
+> >   	return (page->flags >> SECTIONS_PGSHIFT) & SECTIONS_MASK;
+> >   }
+> > -#endif
+> > +#else /* !SECTION_IN_PAGE_FLAGS */
+> > +static inline unsigned long page_to_section(const struct page *page)
+> > +{
+> > +	return 0;
+> > +}
+> > +#endif /* SECTION_IN_PAGE_FLAGS */
+> >   
+> >   /**
+> >    * folio_pfn - Return the Page Frame Number of a folio.
+> > diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+> > index 89b518ff097e..5ea23891fe4c 100644
+> > --- a/include/linux/mm_inline.h
+> > +++ b/include/linux/mm_inline.h
+> > @@ -616,4 +616,39 @@ static inline bool vma_has_recency(struct vm_area_struct *vma)
+> >   	return true;
+> >   }
+> >   
+> > +/**
+> > + * num_pages_contiguous() - determine the number of contiguous pages
+> > + *			    that represent contiguous PFNs
+> > + * @pages: an array of page pointers
+> > + * @nr_pages: length of the array, at least 1
+> > + *
+> > + * Determine the number of contiguous pages that represent contiguous PFNs
+> > + * in @pages, starting from the first page.
+> > + *
+> > + * In kernel configs where contiguous pages might not imply contiguous PFNs
+> > + * over memory section boundaries, this function will stop at the memory
+>  > + * section boundary.
+> 
+> Jason suggested here instead:
+> 
+> "
+> In some kernel configs contiguous PFNs will not have contiguous struct
+> pages. In these configurations num_pages_contiguous() will return a
+> smaller than ideal number. The caller should continue to check for pfn
+> contiguity after each call to num_pages_contiguous().
+> "
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index fe168477caa4..45f7a21dafd4 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16244,15 +16244,17 @@ S:	Maintained
- MEMORY MANAGEMENT - RUST
- M:	Alice Ryhl <aliceryhl@google.com>
- R:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
- R:	Liam R. Howlett <Liam.Howlett@oracle.com>
- L:	linux-mm@kvack.org
- L:	rust-for-linux@vger.kernel.org
- S:	Maintained
- W:	http://www.linux-mm.org
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
- F:	rust/helpers/mm.c
-+F:	rust/helpers/page.c
- F:	rust/kernel/mm.rs
- F:	rust/kernel/mm/
-+F:	rust/kernel/page.rs
- 
- MEMORY MAPPING
- M:	Andrew Morton <akpm@linux-foundation.org>
--- 
-2.51.0.rc0.215.g125493bb4a-goog
+Thank you for the reminder! The comment here should be revised as
+follows:
 
+/**
+ * num_pages_contiguous() - determine the number of contiguous pages
+ *			    that represent contiguous PFNs
+ * @pages: an array of page pointers
+ * @nr_pages: length of the array, at least 1
+ *
+ * Determine the number of contiguous pages that represent contiguous PFNs
+ * in @pages, starting from the first page.
+ *
+ * In some kernel configs contiguous PFNs will not have contiguous struct
+ * pages. In these configurations num_pages_contiguous() will return a num
+ * smaller than ideal number. The caller should continue to check for pfn
+ * contiguity after each call to num_pages_contiguous().
+ *
+ * Returns the number of contiguous pages.
+ */
+
+Thanks,
+Zhe
 
