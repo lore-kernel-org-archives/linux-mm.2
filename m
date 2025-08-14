@@ -2,101 +2,108 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EECDFCA0EDC
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 20:08:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DF21BCA0EE4
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 20:09:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E70C9001CD; Thu, 14 Aug 2025 16:08:44 -0400 (EDT)
+	id 666529001CE; Thu, 14 Aug 2025 16:09:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09D8B900172; Thu, 14 Aug 2025 16:08:44 -0400 (EDT)
+	id 63D93900172; Thu, 14 Aug 2025 16:09:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA13A9001CD; Thu, 14 Aug 2025 16:08:43 -0400 (EDT)
+	id 57ACE9001CE; Thu, 14 Aug 2025 16:09:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D6B92900172
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 16:08:43 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B0DE2160733
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 20:08:42 +0000 (UTC)
-X-FDA: 83776450884.05.5FC7E2E
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 07EAAA000D
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 20:08:40 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kLQWHfAy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of nathan@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=nathan@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755202121; a=rsa-sha256;
-	cv=none;
-	b=mY7PDjrmxbJNcdqK38duMwXnOx8hE7GppA8+m3669QGyfbFf2Sa6L2cmnperog9s3tc5KQ
-	TX1+IEJQASL2RTvSs7SbIxUarGqp4+4U+YyP1XEonlp3t9rcjwzljtaAFCNNi/W/UnvcyD
-	yp+v492ytQUEEcz2pEUisdRikdjlJxo=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kLQWHfAy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of nathan@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=nathan@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 44A45900172
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 16:09:18 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B1F7B140775
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 20:09:17 +0000 (UTC)
+X-FDA: 83776452354.24.13F3BDD
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	by imf09.hostedemail.com (Postfix) with ESMTP id F1D6214000B
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 20:09:15 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="H/nR5hBn";
+	spf=pass (imf09.hostedemail.com: domain of 3akKeaAYKCLMdngbrnZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--kuniyu.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3akKeaAYKCLMdngbrnZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--kuniyu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755202121;
+	s=arc-20220608; t=1755202156;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=pA9EdWV/SxLEb38C+RRUbVDtiK1nUI10k3NpYwO7o04=;
-	b=ef2MPn+c0n5NsmxwaW9Rycgnqo3j6Cx22a4lPE6iuA5feAbBYgsxAQpKoytgg/l6DbsMtW
-	dfPjkXOBzfyLA5s0dB3lqhDwtygeCW7ZLPuHLytLI6FknXiYUfImgHhekysfXeqgivwD+v
-	Rsbc8iuOr6u/t+T2t7rMxi4ANjL0FlE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 41DC1A55367;
-	Thu, 14 Aug 2025 20:08:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95B7FC4CEED;
-	Thu, 14 Aug 2025 20:08:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755202119;
-	bh=xcfeo2/DQtmCLjuZc4lx76Xl5JQ/w8kZY0rp9JIkZh8=;
-	h=From:Date:Subject:To:Cc:From;
-	b=kLQWHfAyHImX7AQXABORqZ+fce4DMi4GN3e/nOuAXZqUpBXuAcdoxb1yj21YyFJNk
-	 SsSbbo+jHBvRe0K2KYVLALgQvRFM25sMbVc3RoJQ/SZVMVJH7CCxH9PCGsxYwCPge3
-	 tGXwz5z5u4jZ+Q5Z8I3hktUXIXh0oPjA4WvjvQeyyxmok2BKMJBkP2gZSIOwAVaVnn
-	 Zk4p6budaB8J4G/Re3WeWMoCGHsK6p3xjMNYCNNlZmymL9EK5UWxSLVJ8fkOhJPc7e
-	 bzvhn4eIR0XbRsriNgnwmCauSOZaQ/yGuMuQg6Qy4LCBguxOjSGe5+1raWu2JnAsmh
-	 JGoSYw6WdQ25A==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Thu, 14 Aug 2025 13:05:22 -0700
-Subject: [PATCH] mm/rmap: Always inline __folio_rmap_sanity_checks()
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250814-rmap-fix-build_bug-conversion-v1-1-fb7b10a0b362@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAIFBnmgC/x2MQQqEMAwAvyI5G2hrFdeviEitUQNrlRRlQfz7V
- o8DM3NBJGGK0GQXCJ0ceQsJdJ6BX1yYCXlMDEaZUtXaoqxux4l/OBz8HfvhmNFv4SR5Svwoa7V
- XRTVZA+mxCyX3/bfdff8BMsVfxW8AAAA=
-X-Change-ID: 20250814-rmap-fix-build_bug-conversion-90441c036f42
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@redhat.com>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Rik van Riel <riel@surriel.com>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>, 
- linux-mm@kvack.org, llvm@lists.linux.dev, patches@lists.linux.dev, 
- Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2110; i=nathan@kernel.org;
- h=from:subject:message-id; bh=xcfeo2/DQtmCLjuZc4lx76Xl5JQ/w8kZY0rp9JIkZh8=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDBnznFyjnirtNJzLvLT5L9ed7A8f+fadub56858jRmacz
- qxZM+UfdJSyMIhxMciKKbJUP1Y9bmg45yzjjVOTYOawMoEMYeDiFICJpIowMiwOmXTlu8aRpo54
- X4eMDxbNXXsuWG2fNS/Myzx6dkamawgjw8Ef33ukomcenPzkfJ3xiasON7idLQ6t1jqe4unwpi3
- pKiMA
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
-X-Rspamd-Queue-Id: 07EAAA000D
-X-Stat-Signature: 5rgc5xc4i7384x8zpojhfywt3si7s9a5
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=HPx3oS3D/U5/Z6SJp4+G98+eGPb8Zkxs9lelPKWCUiM=;
+	b=D+NLGGt3HpuWcjEDTnKM5/fN9jjmDXvyHm8WIOKa09Pyd/OuT6DX8+snXWUfQfoNVebUL5
+	LV9QiHkT3t6JcLV8XndB3WY0p+LRWpnbTompCRpMeW6bMIZ4Lj9gPlkTMdGkHV0HHy/TF9
+	mUEDKOcasFEzquAVm7l+J9ZaXHUNG20=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="H/nR5hBn";
+	spf=pass (imf09.hostedemail.com: domain of 3akKeaAYKCLMdngbrnZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--kuniyu.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3akKeaAYKCLMdngbrnZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--kuniyu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755202156; a=rsa-sha256;
+	cv=none;
+	b=CE6Ez847dXqi3czi50SaCPAkvFX15M7cerXsgaJwXi2QAuET9GKyOBb90rd+7ZtXijDYGe
+	S5knnEUp9dEooJs0mRulDpHtRF1KBK+MtVesEcMpMGjhurSrZ8PAnpPmiCuVjuvEdNpn1D
+	duWUAFuZurY/Q6r5+TubOr2ZeueBHkA=
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3232669f95eso1305915a91.0
+        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 13:09:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755202155; x=1755806955; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=HPx3oS3D/U5/Z6SJp4+G98+eGPb8Zkxs9lelPKWCUiM=;
+        b=H/nR5hBnfB/t9894LvAAy/3iOFYq5cOqTeq8VjducqTLJJfHSN4N0m0x2jaQPXs27O
+         6ra+eeibWZ+Iki0UOIFJMXLCsie/JtYFRYTpsHcMrOn+GkA7TGkohwq8KMj9hd8EpzuF
+         7j8XyQn6n+gnPgkbpo0SlNvMALXMpN5LlND3dkEP4XNFvslnQ04XCB+jTmKOXQMLcnAw
+         VUXVydesZI8PCg1O6kDU4JHWyDawSJi3ib4zk2jAE5x0pd1n5+SNYjC5dFhr7CZWVAwT
+         4uIwIlu0RbqD4IjJ7OMHq0LsIi243bB32Uvn5ScNGgqaKsE1dLDwTxOma3sd/AVd5w3+
+         z4AQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755202155; x=1755806955;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HPx3oS3D/U5/Z6SJp4+G98+eGPb8Zkxs9lelPKWCUiM=;
+        b=BugEJwTRA8lVOQP0z9QVboD4LRxVqBdbXgabtp6F6BuRJCPKd+KHZ9yhW/654cS9Qw
+         zlGkbpH/fe92wPABrOPV06LJkMSCJ886G1xw7GDnE/mlKGolY/hOz1ejcs4vJh06VANN
+         aciNcwNDQg99tRbIbqmvUegSbKJCdmecDUtWGxqBlDQkdSOOCBctKUcbruGWVJUkHPHq
+         HtrrY/km1E8Y8BDvHfVI4e+NAiP9e38LT9kKhtjqwEor7h7U8u2M0UJNNnac4usQliOW
+         65Gc7ZrGccWGRXG1fsGeDQ9n72JSr2asEO2EtPTtRSMgp6ArOCTVpIBSgZdF0rsw1eBG
+         D8xQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWtI5gyEVnVvC0+bFP4+lP/DkNAyE/HIgV2OoEdNDmXPAYWBqEDGdqYQMeUg255kkJGBkp9VsFA1A==@kvack.org
+X-Gm-Message-State: AOJu0YyCrEmtA1KZ1GPTw6rT4gwXFIs3IB3F+twxYImXkCUYPJKSHygK
+	39goY0hXz0c0nx7E7kZAGat561H0kViVrmi8YytzM5McNMty/ZeMIXAM0P1s/KNR91QNWoUCEvV
+	43Utj7A==
+X-Google-Smtp-Source: AGHT+IHoeO4kZujSsChFOwaTNJ8uA4UdHGwa9a1sAiH+eAKhd1r6y1himci0q94O8Kz1fkx16/6OM5R2r0A=
+X-Received: from pjbsy14.prod.google.com ([2002:a17:90b:2d0e:b0:31e:c1fb:dbb2])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:48c2:b0:31f:6d6b:b453
+ with SMTP id 98e67ed59e1d1-3232b7b76damr5551630a91.30.1755202154816; Thu, 14
+ Aug 2025 13:09:14 -0700 (PDT)
+Date: Thu, 14 Aug 2025 20:08:32 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.rc1.163.g2494970778-goog
+Message-ID: <20250814200912.1040628-1-kuniyu@google.com>
+Subject: [PATCH v4 net-next 00/10] net-memcg: Gather memcg code under CONFIG_MEMCG.
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, Matthieu Baerts <matttbe@kernel.org>, 
+	Mat Martineau <martineau@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	"=?UTF-8?q?Michal=20Koutn=C3=BD?=" <mkoutny@suse.com>, Tejun Heo <tj@kernel.org>
+Cc: Simon Horman <horms@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Mina Almasry <almasrymina@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: F1D6214000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1755202120-362379
-X-HE-Meta: U2FsdGVkX1/FHRKL6hYGQEpFoEzFslOvq6XO7tvNGbRAvyGW/a1OUvphcqAYG8NkwgrDJJjznm+OdXAHNlYJb9D3B1jPIM1hbFNhBViFhyBdlHaO6O9m84GKdTgmK2H6uU6lEYN5qgeyulOTd4F8qK/+EmoYkoHGimpbqmX2yXUuoOElQmgY/qniaGQ7bi5pQIzquxrK2aB6Z4csetF5gdAmMB5+YyNn5lLg2n4z14pKcHQI09i4nwcHqeRnJJMBXQ+9w9g6PO7Yj+FFKYQD0VTefWL4BVOE2niZ7P+xV+5otyaRie+ZJUHP1eondaHAEUX6xVYAT4fndGdwbMlC90KG0lKYRd/ByHkwwonb9cKvyCCN8PSqsnA6VnTJc2elQEl9AoDZ9n71X4C+fvLEDlLSINx27eFFx91XAIapfF5LlmzdseZUDV4Ivy5c/sS9k5QbGx5XQ80Djawangha7pF1fIuXSP2hMY7B0kbXjIzlgchdDe/Ymsj2IJRcEZAgXnWgJQAhEGJcGEJEC6E9CsGFCHAgo4GJ2ya/vIDvAJOJBUG4P+LPy/L4d3SMUqaL2qgSjtTHFRU7sqJ2J9a/3gbPVfzo4TgYSlW+LSIVXB8IWj5hoD43SKPIy4baOS/iiIJHC/hhtl/p5/e7g0/SznFAvZJBYKjlr7klM7erT2QNnx17S2tKAwhWkfdbGCuiQdhTXxXTb5Og5XF7+0MEGkFdcIaslDUXHR9hkczoy9LaktzOIr33kwxbxtM7s0besM76lSBc2MWyqPfmY/iGr77x0jPBnedsD9Fo1rsrOVdZklFunmQ2JbYL+Io3qmfC5/UYrA6KTC3LTgticV7VYQKc4KZJc9IPk+pBCtN4mZQt6Y4JKnmw3DO7DHDGn1jgXUVkMXVnXKpl70xJ4SwbHe2bXogTyKJYbHBn82feCIlFJFSW904kAC8b3Fx+Bk0oU8XPP78+NLHpwSySJQk
- EPsD8vG8
- h6YP3bffSCxeRXtkJGOSIbbn7bFwqKG8DFa2UEuajcvGZzxn6MxlPsGdavzXAmnlW/869/X/Fn3U6eszZevAni4YqyJ8w5o2Y22s1NnllHij+TnghpPGbDiAF67KWcZI9FQoaO/QPx2XJXQ50o5PUpRzd6dppdGHPM0eXsiNOZAqWARnkgrd40UnxxE7NBNjMIXwX8DPUmubVagvJzbbMe19zhwtavAeFyIIJFpFRU0BRyJRCrc5g7oazVsuSejL2oUCmOr0tJXf5LjaLqp6507pKlppSzJsCewMI
+X-Stat-Signature: d78xpwepdktg48d7bfsqhdmb9akouscq
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1755202155-649287
+X-HE-Meta: U2FsdGVkX1+4T95tGyCYO8SLpWylBRauvLKyDXrZ6WXlVKG7248mQWyMpDjIHif1da7XzkRZcQFVHTSVFFmdco7U482M+SakdRvTFsQZZtYniERmYouu/PIFco7OYuUmjNgxtl1/kC5gPGeXDyqZHNNNyctm8WZNiemYn9YLu2DG83qf1XkmhrhSCaE9SQcpnTMZRu+cMymmZ04DssY6yV65tg8kpv8+DguSennx0bKvIzOUSLfkbO6oclL+388WLCKy+4JNN/WUCuCVQAIHwT0IWxi4QSaxRSD01MMSVALua/95cQLNdTvIOAs3KPmebq4WMbMP9JJUBdYOZF/p12wsrae2/M1ROASg02KJ71CiCVKxQsAE06+lWUFg/DGlFEumIkviC9nKTItkD9fz0qsl/aKesIbE92nHDy9zUngkvIx4IhP0kObPo3rrGJDnzqwDAM1zzCwVhwpr8qK9kc2W3ZnBKyN3abV1LFP9lMe1nTIwf6n4RNhZ2WqqjeenNkMbzs6vImCu+Y9talyAU1hZ2j9XdwsPIFfhv6fImeVbYu8azfcofsAGG5qFW4AN6xTUwAK/PfFradk/xsOEsimcJcYV8cU/R/GXwlQNL/GAENs4m4EAzWdwTq2SosCaRtKcpGKp99S6WJGNUohvTLzzhTpVUPHJaFFrUr6Udhbg85YbG/grtkIZTwKG7X++B6pES2c1qxeAfQnWmPzb0m0ANVF9fpipNYPvW+hWVsM3LxeNx+7TuPG3gMuzfE1evaOxmWgKS2ao3hAC3Rg0chmouX14MqSHdHxNMcFa7tU5ZuvhH3aPcCeVrf9/Alvxpxy6qZdKWxg5L75ZjwRiRWpc8pqNdSL7rkcVBywL/X+TfHOCH/1AoDwUdgKQ81HI+oA4UnEn27mAxYa4rtOmJG9znKJsZoodFB+Cq8xBiDGLY8F6wz1l6bsFt5gXPgeDYT6Jxw2o+H7k4n27XK+
+ mNKKETxN
+ Nanjmg8GULXTadboMRjFegRmym7y3s4zsbzUIl+6jWSntnzXR2uDx6K0MDqEv3UP6cldM5w8iAmKLu5tBULEGG42j9eXnPm3fbZ1pjXQgsY/M63iWJcBcL4H60Lu4i/xIrwTqa6NC+2dHvBJo+JK48+1sSXohFIyiblKI4fOatMRE6TYbHsepyQEhDaMxHqXRECcLvs9X8a5Y0iMA2t9zrlrp3jl6Qf4zbBGkIT+sQ5c+7vN8wn52Uo3dKt3/CqwjTtMsszzugp8CWSFdcGraIZEoOlaNO1o4BK4LvzfgQe5OBx/AfKwBLlD3KbVthYGg/UPhBOFT1zXbOXj64fGWMKehiXGxi1bGtiqcS9DsNOUc2DTvGyR9eMrfYRAgmUorn4uf7fudixjyNG6tNQbZtkeikk0BlBVOPjhFacZvwKIhvGTn1D+p5u+Q71YE1zkP0YV4m77+9smB3zEjts8Kxoe+anvhqOZ7MTyF22PhfcRNNBqpEgSDRp9ZZ7ABOWpNa/qt37CucG5HpPl7RN+oHH8gReVmUbK1Fwaex8KQHDha405iiFwXghcyJChTZa8xxPTh0SPs2CAttnh4OBpeZC8nDlE1B5z1FiUBW6/wExdp6ic=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,59 +112,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 5e901e249ad1 ("mm/rmap: convert "enum rmap_level" to "enum
-pgtable_level"") changed VM_WARN_ON_ONCE, a run time warning, into
-BUILD_BUG, a compile time error. After this adjustment, certain builds
-with older versions of clang (such as arm64 allmodconfig) started
-failing to build with:
+This series converts most sk->sk_memcg access to helper functions
+under CONFIG_MEMCG and finally defines sk_memcg under CONFIG_MEMCG.
 
-  In file included from mm/rmap.c:63:
-  In file included from include/linux/ksm.h:14:
-  include/linux/rmap.h:440:3: error: call to __compiletime_assert_890 declared with 'error' attribute: BUILD_BUG failed
-                  BUILD_BUG();
-                  ^
-  ...
-  <scratch space>:21:1: note: expanded from here
-  __compiletime_assert_890
-  ^
+This is v4 of the series linked below but without core changes
+that decoupled memcg and global socket memory accounting.
 
-While __folio_rmap_sanity_checks() is marked 'inline', the compiler may
-not always honor it, such as when sanitizers or other instrumentation is
-enabled.  If __folio_rmap_sanity_checks() is not inlined, there is no
-way the compiler can eliminate the default cause.
+I will defer the changes to a follow-up series that will use BPF
+to store a flag in sk->sk_memcg.
 
-Mark __folio_rmap_sanity_checks() as __always_inline to allow the
-BUILD_BUG() to work consistently, which clears up the error.
 
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
-I assume this will be squashed into
-mm-rmap-convert-enum-rmap_level-to-enum-pgtable_level.patch so no fixes
-tag.
----
- include/linux/rmap.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Overview of the series:
 
-diff --git a/include/linux/rmap.h b/include/linux/rmap.h
-index 9d40d127bdb7..e8aff6d2deda 100644
---- a/include/linux/rmap.h
-+++ b/include/linux/rmap.h
-@@ -394,7 +394,7 @@ typedef int __bitwise rmap_t;
- /* The anonymous (sub)page is exclusive to a single process. */
- #define RMAP_EXCLUSIVE		((__force rmap_t)BIT(0))
- 
--static inline void __folio_rmap_sanity_checks(const struct folio *folio,
-+static __always_inline void __folio_rmap_sanity_checks(const struct folio *folio,
- 		const struct page *page, int nr_pages, enum pgtable_level level)
- {
- 	/* hugetlb folios are handled separately. */
+  patch 1 is a bug fix for MPTCP
+  patch 2 ~ 9 move sk->sk_memcg accesses to a single place
+  patch 10 moves sk_memcg under CONFIG_MEMCG
 
----
-base-commit: 6bee0462de1f9f4fa9400f153d3b0792c20d7111
-change-id: 20250814-rmap-fix-build_bug-conversion-90441c036f42
 
-Best regards,
---  
-Nathan Chancellor <nathan@kernel.org>
+Changes:
+  v4:
+    * Patch 1
+      * Use set_active_memcg()
+
+  v3: https://lore.kernel.org/netdev/20250812175848.512446-1-kuniyu@google.com/
+    * Patch 12
+      * Fix build failrue for kTLS (include <net/proto_memory.h>)
+
+  v2: https://lore.kernel.org/netdev/20250811173116.2829786-1-kuniyu@google.com/
+    * Remove per-memcg knob
+    * Patch 11
+      * Set flag on sk_memcg based on memory.max
+    * Patch 12
+      * Add sk_should_enter_memory_pressure() and cover
+        tcp_enter_memory_pressure() calls
+      * Update examples in changelog
+
+  v1: https://lore.kernel.org/netdev/20250721203624.3807041-1-kuniyu@google.com/
+
+
+Kuniyuki Iwashima (10):
+  mptcp: Fix up subflow's memcg when CONFIG_SOCK_CGROUP_DATA=n.
+  mptcp: Use tcp_under_memory_pressure() in mptcp_epollin_ready().
+  tcp: Simplify error path in inet_csk_accept().
+  net: Call trace_sock_exceed_buf_limit() for memcg failure with
+    SK_MEM_RECV.
+  net: Clean up __sk_mem_raise_allocated().
+  net-memcg: Introduce mem_cgroup_from_sk().
+  net-memcg: Introduce mem_cgroup_sk_enabled().
+  net-memcg: Pass struct sock to mem_cgroup_sk_(un)?charge().
+  net-memcg: Pass struct sock to mem_cgroup_sk_under_memory_pressure().
+  net: Define sk_memcg under CONFIG_MEMCG.
+
+ include/linux/memcontrol.h      | 39 ++++++++++++++--------------
+ include/net/proto_memory.h      |  4 +--
+ include/net/sock.h              | 46 +++++++++++++++++++++++++++++++++
+ include/net/tcp.h               |  4 +--
+ mm/memcontrol.c                 | 29 ++++++++++++++-------
+ net/core/sock.c                 | 38 ++++++++++++++-------------
+ net/ipv4/inet_connection_sock.c | 19 +++++++-------
+ net/ipv4/tcp_output.c           |  5 ++--
+ net/mptcp/protocol.h            |  4 +--
+ net/mptcp/subflow.c             | 11 +++-----
+ 10 files changed, 124 insertions(+), 75 deletions(-)
+
+-- 
+2.51.0.rc1.163.g2494970778-goog
 
 
