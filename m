@@ -2,65 +2,65 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A02CCA0EE4
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 10:13:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F2B0CA0EDC
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 10:14:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A813390012B; Thu, 14 Aug 2025 06:13:57 -0400 (EDT)
+	id 9B7F990012C; Thu, 14 Aug 2025 06:14:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A036F900121; Thu, 14 Aug 2025 06:13:57 -0400 (EDT)
+	id 940B7900121; Thu, 14 Aug 2025 06:14:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CBBE90012B; Thu, 14 Aug 2025 06:13:57 -0400 (EDT)
+	id 794ED90012C; Thu, 14 Aug 2025 06:14:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7073C900121
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 06:13:57 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 22105117A90
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 10:13:57 +0000 (UTC)
-X-FDA: 83774952114.27.E5E6A00
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DFD7900121
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 06:14:01 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 08D34117B04
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 10:14:01 +0000 (UTC)
+X-FDA: 83774952282.12.1970F2F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 52BFA4000E
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 10:13:55 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WhF8V3MQ;
-	spf=pass (imf01.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf28.hostedemail.com (Postfix) with ESMTP id 5A500C000D
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 10:13:59 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iJnTdVoA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755166435;
+	s=arc-20220608; t=1755166439;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KfgzUojTM/DB/MYkk7DA2Hi+SCW1x3wlstgTHhLqb3I=;
-	b=CMgHMymXmC72qqFIHG90RQpH1O64HZHrJq+9ysurdLg3moKyJv7Ny+IiQBU0H5M7cQ6u5I
-	23OA/GyhSMfAgKkWWkv6yXez2O+dsz64oXsO0UEJU3z+De7z0cKFetw6Tw4gMKvRzl0IFI
-	JMLLuGrN7jhu+EK2XlgwcUi6GbX6x/8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755166435; a=rsa-sha256;
-	cv=none;
-	b=veNczzOCRPombd+6GKX3UyEqz5tvQkiSwThNKIMO3od+0DUawGL7JxbgXePrcFbxNIOnKV
-	iyHnCkORpu+OT+18mEBPp1GdxSJjQZBtFvRqPR5qD0NWgyDbaqsEiWmF7Rn+orK3z8f+gb
-	W1DWABW6Kapr9Swf29stvTrAoHVgvaU=
+	bh=v3bm79vW8TmRkbMs8v1DEAwPfoV8hY4/GHRwYQJsC0o=;
+	b=Nudcxs0TeUqiFPE8fVbO+irNb/TDseNe6LLLe1oQ43phCAb5oNsXLrleBE9SQcSPVkXTSI
+	e9BUtPSJCnhH6G3I3OHEqOFeeo7uRO5KmkVeOr2/nnlKeVNLK1i4ndtc/+ooKNC/DkfyYw
+	ReAltQ3fchl3q+4rinoDFBKaYGP6JUc=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WhF8V3MQ;
-	spf=pass (imf01.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iJnTdVoA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755166439; a=rsa-sha256;
+	cv=none;
+	b=WL37dVac9g3TdoXRHnopULr0x0mohN3YmxA0Q2teBf1gRDFIRn0/CebWCynWO4Cp5OVquF
+	OOnwUXtRjYwYkyqUSVl5692O1+Yojsv1MZiRmSpt8up6HvD3fo0fNU8rc9PKxNGP85i9yn
+	1tRQODwcxU2MyyeNAsDYwku38fyVpmE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DEC1444F83;
-	Thu, 14 Aug 2025 10:13:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B60C4CEED;
-	Thu, 14 Aug 2025 10:13:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6725845594;
+	Thu, 14 Aug 2025 10:13:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80CB7C4CEED;
+	Thu, 14 Aug 2025 10:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755166433;
-	bh=mXPBKGOTAXMaA8YnIACrT4VeK6ColaZH6f/lOi0T5+M=;
+	s=k20201202; t=1755166438;
+	bh=20hTY/Bpuo8LaRouoti+FqOb/uYNdZEkCPYgzhSUTHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WhF8V3MQY1kDGquxRYbh0NmsCB2Br/5DNiI2oZxdSf0D7/1nzwXONLwHh3TQyJgYo
-	 Zi4hNVXYHJbSNRl18JzHH5ePFjcnBukBnVvwIpOjEfuvBdbkdLDOz++Dx7brj0zL08
-	 Z5yYKodFOLJKulPacHVmSFMdKJ+QXiC45zTRXFB7rXffkQrKIZgH0rJ7pT46IfLBpS
-	 Omdc/djNuuIR/4wGVQ5lnMIWcYp+7ClehysztY3r0y0VbEWf8WYVok6B/wxvNx+zTH
-	 hNMj5f2hrXhEDdzZJyn9hiO1cyolHcCJYmcJAvBOtiNMyKf85U/AhAwv9g4tigIlCj
-	 wyOBJ0QRoptAQ==
+	b=iJnTdVoAAfN+/Xmg0sENmXfmecar7mR18tZJR2Bssi/yKcCFsAqfqd8yIy8d6+7T0
+	 4cpGu3Nev5L57PEt//45pHdIh1Lpgnsn3eKqfNvyldstATPdrx9y+2/wvt8O1xOqYx
+	 0TARiCfmcQFlgM0m24ah0By4BQ8/wzSRKeUT8fci1OYqIQCC9JFc5UOL7W2TCrSXfR
+	 vjl32GDpJ+pmD1jY1ixOBoax/KXXLxrXKqp77CRTekhWEwW+gmg/C8r27lcyIl4yD4
+	 CLA6A8gMmOrf5aBfQnCOLLhuuCdEKTsxzAwuGVvNkUYlC0V8TNUlpNK6i0NxDGLSyW
+	 EVsttayqq2y3g==
 From: Leon Romanovsky <leon@kernel.org>
 To: Marek Szyprowski <m.szyprowski@samsung.com>
 Cc: Leon Romanovsky <leonro@nvidia.com>,
@@ -99,22 +99,22 @@ Cc: Leon Romanovsky <leonro@nvidia.com>,
 	virtualization@lists.linux.dev,
 	Will Deacon <will@kernel.org>,
 	xen-devel@lists.xenproject.org
-Subject: [PATCH v2 02/16] iommu/dma: implement DMA_ATTR_MMIO for dma_iova_link().
-Date: Thu, 14 Aug 2025 13:13:20 +0300
-Message-ID: <4f39936e5a7319a848b1eebffe928c251e2ec0d6.1755153054.git.leon@kernel.org>
+Subject: [PATCH v2 01/16] dma-mapping: introduce new DMA attribute to indicate MMIO memory
+Date: Thu, 14 Aug 2025 13:13:19 +0300
+Message-ID: <f832644c76e13de504ecf03450fd5d125f72f4c6.1755153054.git.leon@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1755153054.git.leon@kernel.org>
 References: <cover.1755153054.git.leon@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 52BFA4000E
-X-Stat-Signature: qjgmnk55sgo7aijtzaceug3mrwya4oyz
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5A500C000D
+X-Stat-Signature: oq68ray7cgorfifwcttxtk6thhwdmbg6
 X-Rspam-User: 
-X-HE-Tag: 1755166435-53396
-X-HE-Meta: U2FsdGVkX1+phPXAb1QYH+Jkj+WkvUY+A+AwXWEhi8KjPi8lj17GzNKAuQhZZocDhN4h6NAkmsKI/aSasAanBHTdaz4Tkcf1HCowgCkrqSWbmw8ot55Y1BE7tZgJ/YRZjgH1GUAUM52Op+qnJfRGGtQJp1C5WJnbqV679FQEwR8/hCv/FQpaKxmZ1cCHsPz89pDqH4Edl2VkGyii8JPVMLTdQF5dCw9NghJBoxGAoVivcHyNrfneGspE58OSM1UHZ61wuuUTFHvrdoAFAIFMY7cAQv66nULgogrrU4zydX5QJzt0G4oxYTRqkFX92tJF9bNDq/506B3xjHuNCZI7VQJYYPLxA8QvA2mrURScYVzdW4VOsZqrpFYVqsCKG2qGrw+HOQ0IY/gDGp1IKsOXWYVx3BFfhrF4RG90owChT9Dr+v2QNo2IKZ7awTJXqi1sdJuNGiOQsxNpdWESRBejWxjDg8yj/nynwqVeTXXlfLYeCX+WcEOTWa3PIaZsZCP8o4eu2yQHUAvCdrAgjgpl+LPnJsOfCZzPmW3t0Cecxt0H+GJkieTFZoUxSnZ7To+xxuqSaPaGORneeQJfp+6ZIxdyG2LnDIW+8NwQg1ogYOZtdABwKbgz0X3TkTNLO1ACniRMVUoJTIfFrpQgF+mp1ym+DLj0UD2a/hj04XqyI76YTMp3jxMfawPLzedRHlx0kySZhJEp0jnTjb7HnOyB5WbMg8AaSGajxX4b71MvwkU4GTyWJva0qLIIFjNJAJj4RvEaC6kF33KZPC8lq0J/2Kz4ft+qWb3v/tORpaMCDp+orDwp0NFNVuv4CT0t7hw7NeDnHwg9qBnD06AEhiUaTQg5gCQ324m0eLk/gAoxmA5M6KhBKqPlvif8Zfgm+3aXfzB747V83K45t7BPmdm4E2aiRMdM9AcLhBlPDzcAUDSPsl8QjP2CzpKYQDn4Q4AKSadzUKC/aLBW1sy2GTC
- gtWDC0Wn
- Lv27OHt/r5tDVn72AkKmoaCt3ifimlfzrrTLIo9WHPY8cJrjJevbOM94SUvjOrlBCwubjUQq/6hy/s92U3goUVRD0v/LAd8rC/zm9KT4U8MDKqkB7GVRvJFypn6X/0amDtqzndJjuWPQ1eW0AXH0dLVuVlkJ7Q91o4bERqu9pHUv2GSASk7VTnkMi0CmwWJhMpJOgw9emmPMfxlkF6rejNFmks4w6RGd1+zT1y2voBJGEZRRrOnLMgU2jB8B+nM06CcaIKZnmahN571uEB9GSTfBB+SLoV4ZlG6/1eTmVHmg0rYRIyMlAkUZNmlv3w6Ty8GPk58R9jX23crCsp90lX3wbdaCZBbFqi/JE
+X-HE-Tag: 1755166439-862673
+X-HE-Meta: U2FsdGVkX19oRvoJZjS6Bz1R1RzEnPsXJx2Jg6UGcmeFgJH6Xd3OaOH/LAS++sVwQD9J7dai2VZ5QigPnNPTw/ita6fhlGjZCNQbV/xIhmM/vqzripcasBQUTlT/pPNZVOFGOg0fMX2c6D6ytl4vWQCOT074yZN1rBvFi3jzS3dEg9NmhiWBhZPjXctU3pLme+k65HNEAIGN0mAlobAeRgtLEYsqNGWmrHZe110Wk4XfUNfGvkiw7fwPqYPwJKacdfLDQqBdfCtOLZgBf2s7i5/L7JJ0XMZ2lUXBAi9TLHMLfuor8p0/hqZ6zq4ktHoybfAdyXOjLyzwbR6vKpY29LWs8ZCkUtB+wCbZvr/gBVATJvagV2dLlnpONfhxpJIPlV4UHQG9KmV8EfaB6Ske7fk3QD7r5MMO06r1oxcs9cFXdHbD4DUc/+0FC1/D/N51bMkJjGCwUahgGPj7kFY6mIuOSHF27AQUsci67fgxx+MGJ5EVEHgjjSbKR7YiJdRKp/CmRZZo0Pw4/Z7wMXcwt22sM/spc4Vq1X3JuLGFTZ0QOLamGmL9t0Xpob+3rXsHqR955egwCBbEp2bEX5/b2GFmVvLsvnZZ79ils80UiN5UYW4xKgfqc7yt62vC2fMZzksEVcEaTO2P0vrSmJJE9uZOB6GIEzNBI3e0NhTUN4zBqrExtrWgl2G5J2eQ2GgsvSQtXh8n8jg4bY5UOyJeDCg7yCUeNkKN5IAIxcw5888KaMbuxH4f8NI7F9Da0UyN40Rg/rf+EkmR+hujADYEsUePOl5Yz3556KABCungRwzNWuQPCLWiBtJ2UeheQL+2ue+9pBCzqhVxEmRMjCaXEYhqlHerput4wlyPuWySecKGZktCsfWkrSptS0dL8pbApgJyMZu2bOEx04ATzUQimUCSa05qStSm7R2UVka0QRXmNb6FrV3XtpdiD6qtFiviw9DAWKl1EAhpRN4WHLq
+ k3j9HLQn
+ 09bRIYTo9WkmGDnewD+rFqEVDrtjbzG9nZFBqlkpVuglls4ZAajKvP68YMFbJKdqfZZQMGGhX7X7YSNkeEIT7kzrg/HqFF3JEudqcpDJ2M9kQTLdgz+2BLkXFANquBdpgK603Frda0CygRZowW5V2cOxwoVdoAr9O2BIMCbmabHM/ByoR6RetiB2LPp0WPiUk9Tsbr63vxJo6Y2PxTxBbSCj9b6DQraNvwzoQfrxQzWg/2AcXfdwuQSG50Ombq94wBdsoLmEzw+1IR3j9Rf9Dddy6JB5qLk14Cleq2XZcVLHDpdpmEJEYvY5ZEA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,68 +125,112 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Leon Romanovsky <leonro@nvidia.com>
 
-This will replace the hacky use of DMA_ATTR_SKIP_CPU_SYNC to avoid
-touching the possibly non-KVA MMIO memory.
+This patch introduces the DMA_ATTR_MMIO attribute to mark DMA buffers
+that reside in memory-mapped I/O (MMIO) regions, such as device BARs
+exposed through the host bridge, which are accessible for peer-to-peer
+(P2P) DMA.
 
-Also correct the incorrect caching attribute for the IOMMU, MMIO
-memory should not be cachable inside the IOMMU mapping or it can
-possibly create system problems. Set IOMMU_MMIO for DMA_ATTR_MMIO.
+This attribute is especially useful for exporting device memory to other
+devices for DMA without CPU involvement, and avoids unnecessary or
+potentially detrimental CPU cache maintenance calls.
 
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+DMA_ATTR_MMIO is supposed to provide dma_map_resource() functionality
+without need to call to special function and perform branching by
+the callers.
+
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
- drivers/iommu/dma-iommu.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ Documentation/core-api/dma-attributes.rst | 18 ++++++++++++++++++
+ include/linux/dma-mapping.h               | 20 ++++++++++++++++++++
+ include/trace/events/dma.h                |  3 ++-
+ rust/kernel/dma.rs                        |  3 +++
+ 4 files changed, 43 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-index ea2ef53bd4fe..e1185ba73e23 100644
---- a/drivers/iommu/dma-iommu.c
-+++ b/drivers/iommu/dma-iommu.c
-@@ -724,7 +724,12 @@ static int iommu_dma_init_domain(struct iommu_domain *domain, struct device *dev
- static int dma_info_to_prot(enum dma_data_direction dir, bool coherent,
- 		     unsigned long attrs)
- {
--	int prot = coherent ? IOMMU_CACHE : 0;
-+	int prot;
+diff --git a/Documentation/core-api/dma-attributes.rst b/Documentation/core-api/dma-attributes.rst
+index 1887d92e8e92..58a1528a9bb9 100644
+--- a/Documentation/core-api/dma-attributes.rst
++++ b/Documentation/core-api/dma-attributes.rst
+@@ -130,3 +130,21 @@ accesses to DMA buffers in both privileged "supervisor" and unprivileged
+ subsystem that the buffer is fully accessible at the elevated privilege
+ level (and ideally inaccessible or at least read-only at the
+ lesser-privileged levels).
 +
-+	if (attrs & DMA_ATTR_MMIO)
-+		prot = IOMMU_MMIO;
-+	else
-+		prot = coherent ? IOMMU_CACHE : 0;
++DMA_ATTR_MMIO
++-------------
++
++This attribute indicates the physical address is not normal system
++memory. It may not be used with kmap*()/phys_to_virt()/phys_to_page()
++functions, it may not be cachable, and access using CPU load/store
++instructions may not be allowed.
++
++Usually this will be used to describe MMIO addresses, or other non
++cachable register addresses. When DMA mapping this sort of address we
++call the operation Peer to Peer as a one device is DMA'ing to another
++device. For PCI devices the p2pdma APIs must be used to determine if
++DMA_ATTR_MMIO is appropriate.
++
++For architectures that require cache flushing for DMA coherence
++DMA_ATTR_MMIO will not perform any cache flushing. The address
++provided must never be mapped cachable into the CPU.
+diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+index 55c03e5fe8cb..ead5514d389e 100644
+--- a/include/linux/dma-mapping.h
++++ b/include/linux/dma-mapping.h
+@@ -58,6 +58,26 @@
+  */
+ #define DMA_ATTR_PRIVILEGED		(1UL << 9)
  
- 	if (attrs & DMA_ATTR_PRIVILEGED)
- 		prot |= IOMMU_PRIV;
-@@ -1838,12 +1843,13 @@ static int __dma_iova_link(struct device *dev, dma_addr_t addr,
- 		unsigned long attrs)
- {
- 	bool coherent = dev_is_dma_coherent(dev);
-+	int prot = dma_info_to_prot(dir, coherent, attrs);
++/*
++ * DMA_ATTR_MMIO - Indicates memory-mapped I/O (MMIO) region for DMA mapping
++ *
++ * This attribute indicates the physical address is not normal system
++ * memory. It may not be used with kmap*()/phys_to_virt()/phys_to_page()
++ * functions, it may not be cachable, and access using CPU load/store
++ * instructions may not be allowed.
++ *
++ * Usually this will be used to describe MMIO addresses, or other non
++ * cachable register addresses. When DMA mapping this sort of address we
++ * call the operation Peer to Peer as a one device is DMA'ing to another
++ * device. For PCI devices the p2pdma APIs must be used to determine if
++ * DMA_ATTR_MMIO is appropriate.
++ *
++ * For architectures that require cache flushing for DMA coherence
++ * DMA_ATTR_MMIO will not perform any cache flushing. The address
++ * provided must never be mapped cachable into the CPU.
++ */
++#define DMA_ATTR_MMIO		(1UL << 10)
++
+ /*
+  * A dma_addr_t can hold any valid DMA or bus address for the platform.  It can
+  * be given to a device to use as a DMA source or target.  It is specific to a
+diff --git a/include/trace/events/dma.h b/include/trace/events/dma.h
+index d8ddc27b6a7c..ee90d6f1dcf3 100644
+--- a/include/trace/events/dma.h
++++ b/include/trace/events/dma.h
+@@ -31,7 +31,8 @@ TRACE_DEFINE_ENUM(DMA_NONE);
+ 		{ DMA_ATTR_FORCE_CONTIGUOUS, "FORCE_CONTIGUOUS" }, \
+ 		{ DMA_ATTR_ALLOC_SINGLE_PAGES, "ALLOC_SINGLE_PAGES" }, \
+ 		{ DMA_ATTR_NO_WARN, "NO_WARN" }, \
+-		{ DMA_ATTR_PRIVILEGED, "PRIVILEGED" })
++		{ DMA_ATTR_PRIVILEGED, "PRIVILEGED" }, \
++		{ DMA_ATTR_MMIO, "MMIO" })
  
--	if (!coherent && !(attrs & DMA_ATTR_SKIP_CPU_SYNC))
-+	if (!coherent && !(attrs & (DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_MMIO)))
- 		arch_sync_dma_for_device(phys, size, dir);
- 
- 	return iommu_map_nosync(iommu_get_dma_domain(dev), addr, phys, size,
--			dma_info_to_prot(dir, coherent, attrs), GFP_ATOMIC);
-+			prot, GFP_ATOMIC);
+ DECLARE_EVENT_CLASS(dma_map,
+ 	TP_PROTO(struct device *dev, phys_addr_t phys_addr, dma_addr_t dma_addr,
+diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
+index 2bc8ab51ec28..61d9eed7a786 100644
+--- a/rust/kernel/dma.rs
++++ b/rust/kernel/dma.rs
+@@ -242,6 +242,9 @@ pub mod attrs {
+     /// Indicates that the buffer is fully accessible at an elevated privilege level (and
+     /// ideally inaccessible or at least read-only at lesser-privileged levels).
+     pub const DMA_ATTR_PRIVILEGED: Attrs = Attrs(bindings::DMA_ATTR_PRIVILEGED);
++
++    /// Indicates that the buffer is MMIO memory.
++    pub const DMA_ATTR_MMIO: Attrs = Attrs(bindings::DMA_ATTR_MMIO);
  }
  
- static int iommu_dma_iova_bounce_and_link(struct device *dev, dma_addr_t addr,
-@@ -1949,9 +1955,13 @@ int dma_iova_link(struct device *dev, struct dma_iova_state *state,
- 		return -EIO;
- 
- 	if (dev_use_swiotlb(dev, size, dir) &&
--	    iova_unaligned(iovad, phys, size))
-+	    iova_unaligned(iovad, phys, size)) {
-+		if (attrs & DMA_ATTR_MMIO)
-+			return -EPERM;
-+
- 		return iommu_dma_iova_link_swiotlb(dev, state, phys, offset,
- 				size, dir, attrs);
-+	}
- 
- 	return __dma_iova_link(dev, state->addr + offset - iova_start_pad,
- 			phys - iova_start_pad,
+ /// An abstraction of the `dma_alloc_coherent` API.
 -- 
 2.50.1
 
