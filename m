@@ -2,138 +2,106 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1CC0ECA0EDC
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 08:40:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F3F47CA0EDC
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 08:41:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1E5D900114; Thu, 14 Aug 2025 04:40:24 -0400 (EDT)
+	id 982BE900115; Thu, 14 Aug 2025 04:41:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F590900088; Thu, 14 Aug 2025 04:40:24 -0400 (EDT)
+	id 95A3C900088; Thu, 14 Aug 2025 04:41:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90BF7900114; Thu, 14 Aug 2025 04:40:24 -0400 (EDT)
+	id 89781900115; Thu, 14 Aug 2025 04:41:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CD45900088
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 04:40:24 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 084F1160574
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 08:40:24 +0000 (UTC)
-X-FDA: 83774716368.12.39E4606
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 674F810000D
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 08:40:22 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZZ5tqXiS;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7861E900088
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 04:41:00 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2FC261383DA
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 08:41:00 +0000 (UTC)
+X-FDA: 83774717880.26.5281B7F
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5C5EC120014
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 08:40:58 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=r1ez95Ol;
+	spf=pass (imf29.hostedemail.com: domain of 3GKGdaAgKCB0C35DF3G49HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--jackmanb.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3GKGdaAgKCB0C35DF3G49HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755160822;
+	s=arc-20220608; t=1755160858;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ALAQ1hCCvfMNneTPSDmW2WXC/XQXQuv7liTcDor4eJI=;
-	b=Xejzy4iP/x6ePQVQv9N3N9MqsVrOSEPCt3j40WLES2sUDg5wIambQrKja5X6VfX2bAVUXa
-	6PkdG7lIC0tYP0kThKT2B8qPa+8CcvitAHUDmfdr5HiO4thLNHmt672UmGyo42LRcn9rDH
-	KBdNVAarx8efCr4W/lmm9qhuS7BUhxo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755160822; a=rsa-sha256;
-	cv=none;
-	b=bHNZd7hZ5EyfrL2NnYjps8Gvumhp1Bjx/FTYLZyE5k8jVSFJpDxn2pIfmRHVXINRfSXrPX
-	trBVsmNH/LwInIHInNrVTMg8t5sUJfFLshtf+22M6CvrAY9VQnGXhN4lxDgpOdRLVDOLO/
-	RE3ussPF/1Y6vlavfEK8SZMttW9F9qY=
+	bh=Il/U4eiIvjz9tsKhNGMfHkx+2RjUv+CVTnBQlCiCA4s=;
+	b=u0J/iyg4pFDx3Td7GXH3GrlAbbmx0w4JTo02mMKTdShnQcjy9p/wfWpKW9itduWIwtto9r
+	Ne09857lbfroyNcraJkkRSu+Kw//SrkJ6dlLayUTMIXudEgI1yASoZsj1oNRZiK6wM78N1
+	I3OM2SzP+UA2S+inDacIIBhrbZZDlyo=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZZ5tqXiS;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id AB33DA5576B;
-	Thu, 14 Aug 2025 08:40:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FC94C4AF09;
-	Thu, 14 Aug 2025 08:40:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755160821;
-	bh=zqmt4Jj8Tl4AG5pUIufRcdzVJq4JYdl8O/zAhI2YC70=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZZ5tqXiSOEwYFaq79WS5EhkFn8Z5imGYNmIePfhjJTAhyZJEgDA7Bwly8nCqYBrRu
-	 d5UBO0ASyeI4lggmFmZP5Ii3320gaokMa2FN+oxetsh12TTGQ+8oWdtIFgLAmFwDa8
-	 JmyiIhU5NvRChb93aRk4sfsoi6H8QvZGvsj0WePGnaiA2KQ0/+8V6zFvTPRMYPKrqn
-	 1S4BU4qOOBW810STnQ9C/RqF+W8yGtXS38JRPzp9ypmj54uCmkS4f0kA57Jmi573iT
-	 nQhBwXuhJUpx99j/CnWWG20Qpb4JWWkPn9hA8ESGXnWKA625fvfdzX3MjXix2LjKhh
-	 b4YJ1g7zPit1g==
-Date: Thu, 14 Aug 2025 11:39:57 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Kees Cook <kees@kernel.org>, David Hildenbrand <david@redhat.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Xu Xin <xu.xin16@zte.com.cn>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	David Rientjes <rientjes@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-	Peter Xu <peterx@redhat.com>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Matthew Wilcox <willy@infradead.org>,
-	Mateusz Guzik <mjguzik@gmail.com>, linux-s390@vger.kernel.org,
-	linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org
-Subject: Re: [PATCH 08/10] mm: update fork mm->flags initialisation to use
- bitmap
-Message-ID: <aJ2g3VODv5Fp9aQL@kernel.org>
-References: <cover.1755012943.git.lorenzo.stoakes@oracle.com>
- <9fb8954a7a0f0184f012a8e66f8565bcbab014ba.1755012943.git.lorenzo.stoakes@oracle.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9fb8954a7a0f0184f012a8e66f8565bcbab014ba.1755012943.git.lorenzo.stoakes@oracle.com>
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=r1ez95Ol;
+	spf=pass (imf29.hostedemail.com: domain of 3GKGdaAgKCB0C35DF3G49HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--jackmanb.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3GKGdaAgKCB0C35DF3G49HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755160858; a=rsa-sha256;
+	cv=none;
+	b=Q0659ujKdT84vTJ+2V3T4ufekzSPKVOx4T0ktF8OKZTrrPq+OBiqtMwuo2gHrS5E0WDGE6
+	zd1TUIk2v6DymajKkEQv9yh9Vv/Gp2bjXfn+1XCsBQWwXDqwlE+0pP4DeXPWr4fcnQx42/
+	9aHnER+PUUWRQ1R0FsV9p1WOsFhwDGE=
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-6188b70a993so614022a12.2
+        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 01:40:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755160857; x=1755765657; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Il/U4eiIvjz9tsKhNGMfHkx+2RjUv+CVTnBQlCiCA4s=;
+        b=r1ez95Olq6DYnzvMdPXll6EO2OfOuWW/RUv7DlU14LinnkqeD7Qo1v+Lol7dbsD0E1
+         +ahl8ON3exGnnZHDuB6E5u01iWaxmCn8gNRFByYcWElzndDXcQOqv3rcHjM1jyAD6gvh
+         7eTs197VVvRmH4hSH5e6eZNjtMNLm6pK81qFlPcT2yTfvMQKrhX+j8oKvh1dzb/cmw4C
+         eoAB96+/3vtqY7CI7dx9bK2HelHKogiZRKn49aTfzlV0HXzZKRJvrgFCYmTZjrQxkyJf
+         PQQXGBtOEX2uZGzNdVdgrDn5UtCpl4KBen2Pbj8JdVe6y9AK69JAdaJc50Nxr+RRpSos
+         qcJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755160857; x=1755765657;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Il/U4eiIvjz9tsKhNGMfHkx+2RjUv+CVTnBQlCiCA4s=;
+        b=pzAXCsx1aBNqP/Lv+8F7zGwiCBQGbwPsxS7D/bVi3exJwn/SLPv0W853sT2VMrRNk6
+         dR2De/b8fmAsJt1hL4FC9UEhOP0M7Q6d88PH0HNuo1BekWeIdVmFFqM4amCwDaKcxdAD
+         OjjC9RQ1MPAhfAhM4uUWWKC4KcidNLRkCm6TzHc02nOjc2stljeZgfGdEmrKy7jARTpy
+         RCWCLZc2P8SoWOJLgRnkVyd5z0XNzjOo/FNwp2fRqoMtQYUuuKKV9JnKIPm1ETn8dwOs
+         rsaL0lW9atKCQp+UPAirZ6UTPxxMzQYyMY7TkhIQ5RXnZu6uJ+bGqRDTZcD92d9SA8W9
+         D+5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXh0zUCzrNuE7cRXpXMI3fFS58pYwyggUeeOtVOouZnDF/1mj9t8IYXv55OwrfkLgwJjNWYHLHG3A==@kvack.org
+X-Gm-Message-State: AOJu0YyHwOdgjZHCIEVGdqcdHInVLwMW8dZ9O1VksVqA6cr9zb8qKKDb
+	PxfIrf7DJWdZc295RoDuuz7xwDz5Zpf2BeLiTh/yZcYnJOwq9734mTICT8+KbcXDnJd6KZ3EQjG
+	ucAj63LbwU+FXrA==
+X-Google-Smtp-Source: AGHT+IGBO/FVtv5Fz5TwK+7kMge1vcO6cPjAknpyeSrJy+CEUQA6/lPkatqZKsJon7bRCNXwfEJF+OhHwNl96w==
+X-Received: from ejcxh21.prod.google.com ([2002:a17:907:d715:b0:af9:8135:75bc])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:1c89:b0:af9:d863:5ce4 with SMTP id a640c23a62f3a-afcbe075846mr174843966b.15.1755160856865;
+ Thu, 14 Aug 2025 01:40:56 -0700 (PDT)
+Date: Thu, 14 Aug 2025 08:40:55 +0000
+In-Reply-To: <20250814071828.12036-1-ye.liu@linux.dev>
+Mime-Version: 1.0
+References: <20250814071828.12036-1-ye.liu@linux.dev>
+X-Mailer: aerc 0.20.1
+Message-ID: <DC20LHZMD7MQ.23X87A0C9M3TO@google.com>
+Subject: Re: [PATCH] mm/page_alloc: Remove redundant pcp->free_count
+ initialization in per_cpu_pages_init()
+From: Brendan Jackman <jackmanb@google.com>
+To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@suse.cz>
+Cc: Ye Liu <liuye@kylinos.cn>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5C5EC120014
+X-Stat-Signature: 56r43kxn5pmitg54c6nsw6bb5db1bpx9
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 674F810000D
-X-Stat-Signature: unu9t9c3hpynqps4bodudk9kr69y6kaw
-X-HE-Tag: 1755160822-347243
-X-HE-Meta: U2FsdGVkX18J7Tv4XS7ZDQboitu7uR7X2W13wtLm3qZ58j5bUddq21lhGR8vsgnGSUWL6XkO1Kc24Tadr/t2kzAgN0HC3EMAaZm4lTkbGmsLMCwN8iRkT8NgiELKd+ymbvbFjxPimH6Vp2Rte+Y0Xco4Ezfyz31du1HD+F6VtWwyoDcxXVIjcgyUTp6CXpkwlqMwyzxPHGR5e4OrUEktEIGgrvx2UK1r4kYwUpLD9VeAchNRNM/7Mw0vqJRj3K5YTfLjVEIkocv+IQvDHK1lXXtmW8+4ZKkZEDYzJGkP3dSGaQnTtL/1+HdWC6fmivoAcoSK0943vcWHP6JhqhB+bOcR0dp25FJC2AaIsRmRrtF5jegpqNmaOijy3i19ReTiSjjaKccizn7ho/zLo4LVYdwaz1/lV4wvEPFwikOqVacUBrxmLggx7rGdCEyUnitEgcs6vsq8pJHc4vJQnFDaSkrhmOlqPhcJa2FzvJgyWJ7l6aAXJrVy+B1sJUJQaYSeXoDN4lR/r9rpGVgeO3vjCR5gmEZSQYrfmXM0/0NLNcYtRuq9eliyTN/MQREOqEYFs166fz9idkZadgEc+8esRicBr810/z6XC84iCDT9TBjSUMmrEDnVu1TG9pyqTeaKijg6zHSyScwA9CYElBDSly7KXtmD5ZMUTnpv7sXK8eROBzOp1a8fhs4R+jqN0Co3VvFp76D+nw9fmr6/QeByi5A7atyj/XoX83w+ZLJbHE4ysjbCbpvmVM6cLdpSobyFxFTOzJOiJNHmmIQcPzV+WNCiHNkbi3INy87ExDs0o4XGaVpdk300Sp5iw5A9/K9AlQdv0mZiO+dufiZ5bCAbLWSOoGg2VuxagchzRZgBC+SGjQDOup4NBXYRQOrWN9KqmlPfzL6SQvp/5eTE8ND3Nz25DiUGhjQm04U93hJq9zal9HrmkQzBBDyWUHxhuXUKQW0TmylnmIpew9461T8
- HNctoFCu
- zoaVkTmdUc5Ia5J3Yibu7fu3a3bb02NbR69AXdqAEzJJcWNKkkPdHn7ZuhA1OvrPvIwnzKCX9Nr0/bUFeIy5vTQ54724VfWDQErGM3dzRQMhgwkBP2z4KW7RMDEkH4hEcb2t1pK4CZxCvl29Q3J0ke0tXQbfzYVdWe4Rnzv/C2DxnqRjmc200ZnMXSI6JamdpAOCKic6RaHKz2hqLV5HADq6ilEUg2TcYw3rQI2tKztjCP+DaKcOSgBJPTHjWduLBpJogAmE/2f1DxJ66Lcu9yjQjxn0mVfsvLtlUIJ+slAuuXs4xCVamaiQeqj3LVR9ZCZiHV/E8KhS+RSU=
+X-HE-Tag: 1755160858-768300
+X-HE-Meta: U2FsdGVkX18hNIeF40GD3xkq2x/fg49nWFOUcrl4XzEgN/iu0l1Ck2aZUhHvrHqOFsOQ91/Nu7OAL39UoZevyqDI+ovCXoxwxn0qgDyEtOEtJ91Xm5KF4pjejYfkuyr0UEi0vcbpCoUVxYwyfp7A1zrNlgsnEGs3VGFRQueO0iSyWkss/C7islOb29JtBirTU0fIcbVlgcfYVAjVVaj2AyE9TzoNBvc1n22s4dFAk+DUmDkrdcrx+ZgZPMbKI9VTxNUhzCcHzwTctZcEnGW57jB/jVix09kE61rcKba/6iB8NuFmXvcmpdivUIjbclEgiEo/tFA1Mo1MPT8BIxnkx0B6O/TtBlI5bLNMKUagbdnJxhNtLPDEt7A+0wbDxDiuE9gbFUBDARqVHqYCAhd7LWtCMMtjYhbQm3BPu4UvyVZVgn3ZM6u7tdtZNaTFrL5Yrzkflag2Qf8icQTgT0VH55Lmlel2Ye/GA12orqto8zEL6d3mUhRl5r//KQugo9ImyyfKqm1Qv2Bgl9H8VXGy8CNP5wsP0strzJlDlr/LYdg0VF5OqwEgdBSFcnHhZcjyJ7aiFctuDmEfoFlT+R7We/2O0RKm4u2h73HY3D7yEwC1dK33L59Zd7VahR1MNj3ScAlToqYLLl1QkB2wsCC4Qcc45qyQzpyDBChazpp7hF/6mwqUQA4uvbW3837wpgzv/MXjf1rOloniAN2olX8IiJ7GyOnkAWVqVp+sQQjcMcOUmwkSiALnmG2LNa/UWmPA2fuSwD2rHTmo0J83VA5ieb+5xCACrJAurVPaSZD6SjMfSt/9WXgnU74MgFbymRlVbIiPLCtnCzPdTEffeBhtlnG6P1ccmz14KVbm6gN2N3niVfs7cKehPUFNpw9OsbXiMLzVVvRloEqiQ20cFdQdHo67tCOtkUNuCPOA68alf3re4X7IVwHNoZuy6gHS9vYhQhasO+8t7/7P/EGHeOf
+ IgMXn/B7
+ CMdYuOMiKO0cRgAYSDI+kx3ATtnhH4hh0goM/lhAVGhxpmmye30XSGIYzxOvs01hD6xiGHkXqwA/CuNxvT5DFN4MO1aqWesSu6Yija9txfiWBifRFuYUKMOv7T4aM4KsYDgGZ7o6RnkLUMTDRN5/nnBTzqcuwGs0EwvEcqhG1lMPI9U+8nl3pZyuE3fr9hjG68fLtbruHCEu27R5CUzvKvlyWP7AWeG6TK0tLxKfVOmuS20/79cYGm2xfHdWMRuuP5QPxP1+SjdROgdHVd4CoJHigV7L334Syfhn+G2k3dGYU3e2UUiSiu682GAffFrYSnWKE6HIqS0W5NBNu2oA4riJhhY8aB8UxETPSeAwoEb0smTkg3ohRHRo+jdYQrtJKJ2MYQASSeuHJB1i5GehEeSHw8BqAHPCZUNaEln1R30qy+Df3UIoMdQN2J0FcEqC6HoNBdrbkBv0MqgUEjfmCRj2mksczEdblbBABIf4v4+7J+eA+sScDuKuIwC0lUPdz3n3a0DfIaprmRY9w1jTlyMsLEn2j+pZZr9ZPU9qmjlieZxxmuxU3QQkgd3BW97UnM3TCVEJXQRGaZU8UcQwBoqEBY5fDq2uV+xCQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,86 +110,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 12, 2025 at 04:44:17PM +0100, Lorenzo Stoakes wrote:
-> We now need to account for flag initialisation on fork. We retain the
-> existing logic as much as we can, but dub the existing flag mask legacy.
-> 
-> These flags are therefore required to fit in the first 32-bits of the flags
-> field.
-> 
-> However, further flag propagation upon fork can be implemented in mm_init()
-> on a per-flag basis.
-> 
-> We ensure we clear the entire bitmap prior to setting it, and use
-> __mm_flags_get_word() and __mm_flags_set_word() to manipulate these legacy
-> fields efficiently.
-> 
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+On Thu Aug 14, 2025 at 7:18 AM UTC, Ye Liu wrote:
+> From: Ye Liu <liuye@kylinos.cn>
+>
+> In per_cpu_pages_init(), pcp->free_count is explicitly initialized to 0,
+> but this is redundant because the entire struct is already zeroed by
+> memset(pcp, 0, sizeof(*pcp)).
+>
+> Signed-off-by: Ye Liu <liuye@kylinos.cn>
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+[heroically,]
 
-> ---
->  include/linux/mm_types.h | 13 ++++++++++---
->  kernel/fork.c            |  7 +++++--
->  2 files changed, 15 insertions(+), 5 deletions(-)
-> 
-> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index 38b3fa927997..25577ab39094 100644
-> --- a/include/linux/mm_types.h
-> +++ b/include/linux/mm_types.h
-> @@ -1820,16 +1820,23 @@ enum {
->  #define MMF_TOPDOWN		31	/* mm searches top down by default */
->  #define MMF_TOPDOWN_MASK	_BITUL(MMF_TOPDOWN)
->  
-> -#define MMF_INIT_MASK		(MMF_DUMPABLE_MASK | MMF_DUMP_FILTER_MASK |\
-> +#define MMF_INIT_LEGACY_MASK	(MMF_DUMPABLE_MASK | MMF_DUMP_FILTER_MASK |\
->  				 MMF_DISABLE_THP_MASK | MMF_HAS_MDWE_MASK |\
->  				 MMF_VM_MERGE_ANY_MASK | MMF_TOPDOWN_MASK)
->  
-> -static inline unsigned long mmf_init_flags(unsigned long flags)
-> +/* Legacy flags must fit within 32 bits. */
-> +static_assert((u64)MMF_INIT_LEGACY_MASK <= (u64)UINT_MAX);
-> +
-> +/*
-> + * Initialise legacy flags according to masks, propagating selected flags on
-> + * fork. Further flag manipulation can be performed by the caller.
-> + */
-> +static inline unsigned long mmf_init_legacy_flags(unsigned long flags)
->  {
->  	if (flags & (1UL << MMF_HAS_MDWE_NO_INHERIT))
->  		flags &= ~((1UL << MMF_HAS_MDWE) |
->  			   (1UL << MMF_HAS_MDWE_NO_INHERIT));
-> -	return flags & MMF_INIT_MASK;
-> +	return flags & MMF_INIT_LEGACY_MASK;
->  }
->  
->  #endif /* _LINUX_MM_TYPES_H */
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index c4ada32598bd..b311caec6419 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -1056,11 +1056,14 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
->  	mm_init_uprobes_state(mm);
->  	hugetlb_count_init(mm);
->  
-> +	mm_flags_clear_all(mm);
->  	if (current->mm) {
-> -		mm->flags = mmf_init_flags(current->mm->flags);
-> +		unsigned long flags = __mm_flags_get_word(current->mm);
-> +
-> +		__mm_flags_set_word(mm, mmf_init_legacy_flags(flags));
->  		mm->def_flags = current->mm->def_flags & VM_INIT_DEF_MASK;
->  	} else {
-> -		mm->flags = default_dump_filter;
-> +		__mm_flags_set_word(mm, default_dump_filter);
->  		mm->def_flags = 0;
->  	}
->  
-> -- 
-> 2.50.1
-> 
-
--- 
-Sincerely yours,
-Mike.
+Reviewed-By: Brendan Jackman <jackmanb@google.com>
 
