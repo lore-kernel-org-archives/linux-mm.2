@@ -2,91 +2,92 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 94E4CCA0EDC
-	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 06:47:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B3B04CA0EE3
+	for <linux-mm@archiver.kernel.org>; Thu, 14 Aug 2025 06:47:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 356069000F4; Thu, 14 Aug 2025 02:47:46 -0400 (EDT)
+	id 5048F9000F5; Thu, 14 Aug 2025 02:47:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30719900088; Thu, 14 Aug 2025 02:47:46 -0400 (EDT)
+	id 4B53E900088; Thu, 14 Aug 2025 02:47:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F5D69000F4; Thu, 14 Aug 2025 02:47:46 -0400 (EDT)
+	id 37CCA9000F5; Thu, 14 Aug 2025 02:47:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B644900088
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 02:47:46 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AD560C0556
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 06:47:45 +0000 (UTC)
-X-FDA: 83774432490.24.85EC7D4
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E1E0BC0004
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 06:47:43 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=XUEKtGb4;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf22.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755154064; a=rsa-sha256;
-	cv=none;
-	b=3J8zvVh1QRhK2Xk1wwA+oJazGEqyAEeqa76AI/AQhVHSSv7xd2Inqao3WFBcxC+rVQXEci
-	l+DVI5wmdZQQIDVWQFt9FO3BtJZky6f711gUsRP+sPtJazE0WnrKJvxhDpEsXXEQ62mIWB
-	KSGlQJROxqnwYwjBuIIZUDUYJpf6d6A=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=XUEKtGb4;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf22.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2318C900088
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 02:47:52 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BCE1B83103
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 06:47:51 +0000 (UTC)
+X-FDA: 83774432742.19.5FEC843
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E362440002
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 06:47:49 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=JP8lMAr5;
+	spf=pass (imf11.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755154064;
+	s=arc-20220608; t=1755154070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Zc/79XSwvseOMROg0iCTGbt49umwlFqoanOatXRXlL8=;
-	b=DRacOi/0fMXqvCHjDF9SQrjKhHM5aOVcdkjDyc3J5hp/Xhit8NZ4R4R7wem0MpPBQ+vUlf
-	kL8rKLaf91cH64CodhGMXdIzxuMDB7C/AuFJYFDJewXsQ12aL6qd7xJ2enLnUV/gBNmyp5
-	Xc3N2LqIu18QhflarXAe59R3zAYoC48=
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2445805aa2eso4830415ad.1
-        for <linux-mm@kvack.org>; Wed, 13 Aug 2025 23:47:43 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Jr5/c0ih2aPBl1Sup9MkhjI5We69n+SvmshTmYr92Lo=;
+	b=nCrzRu1EqHFOV9KnRQYbrvij2TloPKrW+bXKkY1oADbj/qw+TNSlTquRMRCpyGWLyPAPzT
+	/JNZGf7gg+A5QwgcWYYo5AI6oa5fYGc/1kS3clEQrPqlfcbm58pvI6jP0ImWCJmJKdQ09+
+	iw6mubiSeOTJvBxFVJ1q7pPxVj7YazI=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=JP8lMAr5;
+	spf=pass (imf11.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755154070; a=rsa-sha256;
+	cv=none;
+	b=XmZxL2zfki/S8pE5CmfhoJvhLx8tYusNbh+zsjsy1zBT2LNwSWlMDAclBgyHdyZlCPQhMN
+	E8S2vJUW9oSKCdooAC38LIYr3JW4TX/26GmwSwnGgPVk+W06b+EzjNOFuiRxJEX0zOU/wZ
+	g90BwGXTfBXeLt0PS6K+AflvowAwmcI=
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-24456ce0b96so8173135ad.0
+        for <linux-mm@kvack.org>; Wed, 13 Aug 2025 23:47:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1755154063; x=1755758863; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zc/79XSwvseOMROg0iCTGbt49umwlFqoanOatXRXlL8=;
-        b=XUEKtGb4I9IudiN3rPHBpVMERl0wom0727iksBPUjleAJFB+0fGsOb9mD0mBQrJTbE
-         Dvpj4lPLvqM/vfyaXCqxcK4rhRzOE9yGXhwuKaLM0gS/QJMPpXeVVh8MUTOubdsxFBUG
-         RiB+yLa4FSE4gJErr2ehzZf/8W4y1T/M+vkIXwxd88Aa9KDGoo7RgywQT8kwCSa+PUkc
-         vFsT81hK9Ag/J2VVD3WJhMcdNJn7+KFQpPoTUr/kzUFu70vDGRwVTY2bVFdEaQYubZko
-         zvUP45V1S9atjwprIzuRApIeiWyCvyzrSQzy58KTrC15udaKL1y/ULZinUXk60+lAQqm
-         OqPQ==
+        d=bytedance.com; s=google; t=1755154069; x=1755758869; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Jr5/c0ih2aPBl1Sup9MkhjI5We69n+SvmshTmYr92Lo=;
+        b=JP8lMAr5Dysb8ndu6fqvsOQNLidaSPOlHqIvSz44eQTGkt/cb3cj7K/6uFGcS4qIo3
+         QdioinPv9AX3l9pJm574ciRjzjk3Rd7r06ma4SuYycq6oQ8oh6AfP85u7kQy/m5KGkhY
+         aQXbtql8dBgCaaKfyaDqeqg/jET/I/QNJvge16el7qj9/a7NwC0Xoa0x1uGo8tO/skkk
+         8+WDMpiYZ+jocvc4TwYMlh4jkb/DCMB5waBws0EYP+5RV7eWIDLi4v/fjY66S+8Gnetl
+         yXI0KxGXA8r8JjhYuoc8XzrPv5uyomU+/VQ55UlGp73y0JTANAwI4LplZHSWK67BpkSO
+         uiKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755154063; x=1755758863;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Zc/79XSwvseOMROg0iCTGbt49umwlFqoanOatXRXlL8=;
-        b=bjGSYCLDr1UwvTJTRcOOP1JNDW6aOIylFiRbaWqPdPm/AJx92pgrcSq2gD73mKaifn
-         0S9eaxDOEj89PmFT9Iwl+/fiL5PyxqNnU+4VHvfqOyF7MA6XWggK8VxPYCBTTs9hZYTr
-         lhCNShr1MW1lqt5iNVfxxy9Lb1ILnctqNt2wlsosuGCB2R6gBw6TLQWJ98mYEGTR7Oml
-         qmWkMWOuwG7fdh3jpMZJg7roE/INS4e4YyNRqMvOIUXDpWhxADqlQPV7QF8XVGaroZMq
-         IrSbSn1qjKUmnyrJGt55GXSj3blSI2D8+kpiref3VlcPnHlry/8wl29lG+47mQuMT2jG
-         EK0A==
-X-Forwarded-Encrypted: i=1; AJvYcCXBWPMlQoxu9fISHOCkRjKfK3mzAsFKKVp+IJp2IX2FXGk0IpzwNm6u3cMlc4dW210sXxwafcRJZQ==@kvack.org
-X-Gm-Message-State: AOJu0YwkdeJe++qa2HMHOq87xSPw3rSogpTUAxXMJja6Yr9ERDFna094
-	nl8Xmxdlq9sc3BUp8q27vJlKmPbUbOilceLVnBLYm/mDzMzLjYsK4aogwy6nEr2G0s8=
-X-Gm-Gg: ASbGncsfQwpbj79+dEtyNM0C8P4aeHnOJ8w1ZqSk4jkZ8HqgIfy7rVKR+5vYKyaUVu7
-	vGFEc8nMKjLK8IQr3b6dBt1lnQOaS5t2R30R2s0Z5bgiJ6mk/o09bVi2HOFkuN3a42dPantMx1B
-	P+AQ1V1ApcDHk5TCj28nR2XRvCG+s2DyJooVN5cHD/9cA+0j5wCfX+wnHEIjaWgLAnCv/+PC/Ma
-	VByJhuJDpxJfvy93qfCCLh9CDXDIMIY+6SDm2BthSWHyxJJ+ed00JqoZeJJENfWEHReCJKeDSNX
-	BLDftXbgdrWFESqUZISgRPQCooWSltNYG7oUAd9290zfvV9BN2NPoi/VKcVwLc8/bO5kQNZlfPv
-	vqpNbz4hxlMWLgW5V/vp9WWxlYrXKLxZp5gSNyycML2XRRCvC3Q==
-X-Google-Smtp-Source: AGHT+IEb3eJicXsgaNlyzBQ3nJS4mCdWERJyOxedSkNcWUM25YdoSAcIjs1UdYpqo12C3/PgqtNh2g==
-X-Received: by 2002:a17:902:ebcb:b0:240:58a7:8938 with SMTP id d9443c01a7336-244584af696mr28229005ad.7.1755154062636;
-        Wed, 13 Aug 2025 23:47:42 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1755154069; x=1755758869;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Jr5/c0ih2aPBl1Sup9MkhjI5We69n+SvmshTmYr92Lo=;
+        b=Rx0ks5i4/4BDBMSzDXzoRpphZzIEbFRzxL4gpOq7dPLhFZi7Mqr0HAZMKlzO9dUiFK
+         RQsA39RMgoBJfqcvKM8yVaKmKcsID+LffIJt06bn1en9ku+ByoxMFp0tu3klei7rOmL5
+         0sveNyg+C7s4/aCt6b3OIAHfnV35F7OC1qw+Fu3CG6UxwcjMLUXWvTuPd6yxIgpmB7Tf
+         YYb+8sLMDHg0shgjjwUKPCCLlS+tYmOOA4LRXBtNDcQrqFJN0xR06ZlhfQrCFSQoKG0b
+         TvdbyKFt19QKo9cc/GlcesnQNu6VsJ67BlOfTesQCcqVBH5aIqLHZuJ48AV+14wrLIok
+         Lm4w==
+X-Forwarded-Encrypted: i=1; AJvYcCUBPC8xPgnXEe5wlW72z+7F1COF0xgNVfBwkCfWKCzCJXtlFQV6eVcxrzOiC1Fng3Gub0IsBVKp0A==@kvack.org
+X-Gm-Message-State: AOJu0Yx40+6wWyK2iapkxrGgMM+M+onfi6iUJlhNe7PW7heHyb6AZ1dr
+	mCqVgAlfEG4k9DR0N0sC7NaKn9aDi7c+Sh5vHV/6+JnFLMQOMxP5OoSxn6xtz6ZC81w=
+X-Gm-Gg: ASbGncvNt1k5OvtWi3wGqDbzlyOFpRW6lPhCUhhIjzb8vyXIiCY95AUFC/0qnALEka2
+	eTY0aUkUvE7hQqu+8BkbnLR/KlEHh4EAH0ns7K1mqIOSVW28oJ+WhMZEZW0Lxg3OCBItb5lXjSG
+	gAurYxB/qopN7U0cNbU5t4KDo8Q57HmKJW3Ltfw0RIHY6qLF5+QSK1YUPjctbSwaqnvrbDkQwgx
+	MYd5oah/9eSyXaS77mygBjcjk+ctjl80MBidDlSTwJKdSkE+1FpaeFdZ/kjAX5zucmvNK3Lgq8y
+	ou8iAth81tgCJqz2yU0i70gvg50e6IfHrAZex8uwu9U70CBQomj+PbY0zGcf8Fr42mueNFctpJe
+	sJkmioSt7uMIlG40yhPDRC9Z+Z8cd9+wUkgNfRjCmN4ZI98Le9A==
+X-Google-Smtp-Source: AGHT+IFcMJ7Qsm2ilcv/Nmo7NkFkz9T5H1au+m2D6Cn5ycnQi6y/Vpy+QFsu7gjfy7KrvvvRuX3J0Q==
+X-Received: by 2002:a17:902:cf11:b0:240:86fa:a058 with SMTP id d9443c01a7336-244594c7a56mr25154165ad.7.1755154068655;
+        Wed, 13 Aug 2025 23:47:48 -0700 (PDT)
 Received: from localhost.localdomain ([203.208.189.14])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241d1ef6a8fsm340923605ad.23.2025.08.13.23.47.39
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241d1ef6a8fsm340923605ad.23.2025.08.13.23.47.44
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 13 Aug 2025 23:47:42 -0700 (PDT)
+        Wed, 13 Aug 2025 23:47:48 -0700 (PDT)
 From: lizhe.67@bytedance.com
 To: alex.williamson@redhat.com,
 	david@redhat.com,
@@ -95,21 +96,24 @@ Cc: torvalds@linux-foundation.org,
 	kvm@vger.kernel.org,
 	lizhe.67@bytedance.com,
 	linux-mm@kvack.org,
-	farman@linux.ibm.com
-Subject: [PATCH v5 0/5] vfio/type1: optimize vfio_pin_pages_remote() and vfio_unpin_pages_remote()
-Date: Thu, 14 Aug 2025 14:47:09 +0800
-Message-ID: <20250814064714.56485-1-lizhe.67@bytedance.com>
+	farman@linux.ibm.com,
+	Jason Gunthorpe <jgg@ziepe.ca>
+Subject: [PATCH v5 1/5] mm: introduce num_pages_contiguous()
+Date: Thu, 14 Aug 2025 14:47:10 +0800
+Message-ID: <20250814064714.56485-2-lizhe.67@bytedance.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20250814064714.56485-1-lizhe.67@bytedance.com>
+References: <20250814064714.56485-1-lizhe.67@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E362440002
+X-Stat-Signature: rsoco5zcrdd33awsuzfafboh4qz8nk91
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E1E0BC0004
-X-Stat-Signature: dksmjh9h1yenkj3unt9mqzjrkr6r9hm7
-X-HE-Tag: 1755154063-42805
-X-HE-Meta: U2FsdGVkX1+VdkRyngstAtUCpzA873YTHPR2lLvk8v+8fQCAgzEB4ltYE4z+dHqc49fEi6yWbhLMzBGZw/v5EK2V2VaVvzJDKOlMZMKlExEinwnAZQnKtoYGyV0YD2U6/ay+NXehmH9DpRQrzdBe3GY45syTh2JifFxtQbdTio18OqGr4O9yR6WTFP451e2n8ntXCqQF2bwKalEnDV9IGgrJ5Mpdmx3Xg87X+gyy9i+XLMT6uMSxtDgGHN1Ockpq5yiGIzKawL4kQWxPK1e36jCjQ1P8GtctNw4PjkGsBXW+jJaZiWL4yT0BXGp/93QyQ1qR7zjGV+CMCmHYoCwr16si8pvt+1EFMMMWX7Zyky2o0tdCCuOtM8bE6rptR/JCAsB2kqouOc5PYUoVHNMNoeP/qkGvZRSkCUIVt63F21vMWK7UDxFuqooVCA1mhYQnXdk/CUtrGcB98mL4vyuLr2qfm+pCVcpK0Pp1QNMQkt1C43H93+/DZNpzw3+83jgX6XRWAAMBMmytmiT8ptfx25l4oQR5I1kI3yoZHlAgN/eAjKrnAoyNlZNr04q51Gb358oBVT6qNELiWW1x857O0Dkac7OC9eOII6qt+0p7faHndWl2yq/lI83v34ND1gv+vVGWJmV9t/6mY7TnTfs9mBsp2yAc6dZ7bWFzo2A8i4MmTGabfPsWt+7t3HoNJEC5x82c52BUKYQlvZ2CCzRljqCpGXXMXVc/2O3wfLzMY5vJE1Ni4flW0nfwfyQRGl2HJfjTrqpmIvU80qbEoOnDOYTClaKHBUOkBFLrxUdMoZYZbRNWbsDcChGv2TTMVPX/gk5jcyYwQMd0eSIxMEYdpABm+mkQl3Y73EDLmUqvKfaYwGcyjdSQHriq3ElapVOwpT7AcBsDTaBzL+OVaLnwwNQjD/f+j7uUAOOjwN7eyUsGgjmmppjcem4NpASmMM6kB+kDJsNgNsC0GMwGHEI
- Ote0/iYw
- dXE2aGJH3WVeeYKTYR9siIitBkA0qVtEmNXeApz7VsH/g7fghIQgvu4yqmDOF65MWAJG9Q8xRVmLM/j8vueE4ngI/Ne/1EJdRhJukNd0btQEH0YI5wclure8mZwXznmwipAJwK0MJY0BchXLOg9oGophX3yRjC2KTJTzcifK1MwgRmQz/Kx6DacM83AM5qj4EkLCPia1DgO/9X6o7c1CjjaUMFJhKrtbOj1MjE1Ebh5DkXtlBATpmBOZirvJvOztXUPhUY7oQfUpygzGjbb3d9xaoVezqLMxq4Zgya10obcqPsH1mxltUfkioJFu74I8lOARZEeY0LWwxxguOnUpwqgYll2CDwLqtURj6fod7sn4EBp494T1zkyNWyep3IjsKMIIhA53KadIKfkwxviiEAI8F2w==
+X-HE-Tag: 1755154069-629992
+X-HE-Meta: U2FsdGVkX199QjzWCErouKtbnWqWFDDtltqitwm/OTSP1mSor4SWEmxqYxqq19j21p9jO+IA6R2vxSte6D1/wxMFtITQEbgkTkUIdo7G0fnP3/E6jhb9Jsj1vH0rK1O6T0+bVgpn0d6o4Yo8Cqb5M9eHUs6+vvRAN0CC/jFEgc27C6fXS2UyBZJBUcxPa/lR8x3C7V/DIh1VQAy7/OYrS6uSZmcwuXGr2p3+PCWzok1NtH216xypVlqFh9/F48BsXpaoyOOn1e3PgrV4gq4ltzGKpfRG5+frHMSxEDOyAeKT0CZKonSJQb2almzpn9GhPxhwICfKccdmnAE+1R3odbEmP8xS5yNqUKEY07h4LtM1bJhACXdkxijOiWkYAWJwH+0P/RmRdhHTqrNjzljWCjL+DWp/ve2IDQNuyW0RGNWzV6R57RUjjyHA0T1SXKAZyURAz/qq73iwKNj72OmAQ+uX62IC10XNpqkvw8zuqWZAHCbjSLM9l3PthTIlTAShYaOzZv/15+VNNKTr1TFdwlhip+GWg9ydf1ghd/ZVdhCvoC9eURJNAfzkYqFsyJ4kNZq2kvtP6e2lKFkwjOPCt9M4eZkyY16hDQ3bS+NtA/A2t87VPF89G3JTpCnAVYoEbDmA16jD/NIZQtmJCrqo4no8sFEn+hjqFpYolNvNAXX3OYG38VA2O8c1s+FR5O8j987690IooxFw8/82iIH1puonq94crr7kCZ7fujGuw4Eg7/Nz0OBEgpNxMUGfd+tabMZH0LObzQmOSGJCfwthaJdRnOmlCCNCKIaFhZHK8Tqjjcl7mfEFJztan7XHwHyPMjCU3ru0eC78u97Dy3iwqkaMlRM93b8Iu9IfGt2YnGWgysd9qjqSpwPIIvDmvMNdae0Lw2voREWJfHgKqd0FJgrHhQxlXpX4N19sq1fQsd3d9mD7pKZPl+hVMqtsXlk5LwdUTXpOVU+Bo11nEp0
+ FayiY0cC
+ 807r7boSImM1bijWPb9CNpc+4VwyEF74iCVF/yPUUMnPJY1eCUMn8CMLjc9kvwGHqzNkwz7ccAazf466O9AQzV/DixmLsFawcJ5dxt5MdQ75PxOH8bYsg8OiwWtCVGzTVUPoOxBpu5MI6xNXReycO1vuZcHgg7A+EUOzp6DEOeFl2Mp7yaN0wPymScMDQyFkU2mmuhQ3VQU2LdVGLeTmjj3OvE06aCN+IzdCSaaawzpyIDybaH0FBIH4vIZ65kd50zu9wisAyXOMDHbdDeN/TwiRX41H2U1bY46Sq34sd3NUba3YONzzu2vRX9AdzwjrSCUdXv2bJjyQAYmFvgc+Zi/PKr9Co7EddJciOrvZXSZOmKzhIatjeE3KdiWFFkSWQdTwz6l+DwnjqhQxXPefuBD/aZU+19zhSUBn6hwY8cRLbjqg1alZv472+XdpIgV3l+Iy55g5YRycdodsiRRouiwQqMwcgXRlH0J97fiEe4r3VFd/fY2IFn7qIklCJSzDE5dedioBh/KDzuxyt+99OeLj9qw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,100 +124,99 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Li Zhe <lizhe.67@bytedance.com>
 
-This patchset is an integration of the two previous patchsets[1][2].
+Let's add a simple helper for determining the number of contiguous pages
+that represent contiguous PFNs.
 
-When vfio_pin_pages_remote() is called with a range of addresses that
-includes large folios, the function currently performs individual
-statistics counting operations for each page. This can lead to significant
-performance overheads, especially when dealing with large ranges of pages.
+In an ideal world, this helper would be simpler or not even required.
+Unfortunately, on some configs we still have to maintain (SPARSEMEM
+without VMEMMAP), the memmap is allocated per memory section, and we might
+run into weird corner cases of false positives when blindly testing for
+contiguous pages only.
 
-The function vfio_unpin_pages_remote() has a similar issue, where executing
-put_pfn() for each pfn brings considerable consumption.
+One example of such false positives would be a memory section-sized hole
+that does not have a memmap. The surrounding memory sections might get
+"struct pages" that are contiguous, but the PFNs are actually not.
 
-This patchset primarily optimizes the performance of the relevant functions
-by batching the less efficient operations mentioned before.
+This helper will, for example, be useful for determining contiguous PFNs
+in a GUP result, to batch further operations across returned "struct
+page"s. VFIO will utilize this interface to accelerate the VFIO DMA map
+process.
 
-The first two patch optimizes the performance of the function
-vfio_pin_pages_remote(), while the remaining patches optimize the
-performance of the function vfio_unpin_pages_remote().
+Implementation based on Linus' suggestions to avoid new usage of
+nth_page() where avoidable.
 
-The performance test results, based on v6.16, for completing the 16G
-VFIO MAP/UNMAP DMA, obtained through unit test[3] with slight
-modifications[4], are as follows.
-
-Base(6.16):
-------- AVERAGE (MADV_HUGEPAGE) --------
-VFIO MAP DMA in 0.049 s (328.5 GB/s)
-VFIO UNMAP DMA in 0.141 s (113.7 GB/s)
-------- AVERAGE (MAP_POPULATE) --------
-VFIO MAP DMA in 0.268 s (59.6 GB/s)
-VFIO UNMAP DMA in 0.307 s (52.2 GB/s)
-------- AVERAGE (HUGETLBFS) --------
-VFIO MAP DMA in 0.051 s (310.9 GB/s)
-VFIO UNMAP DMA in 0.135 s (118.6 GB/s)
-
-With this patchset:
-------- AVERAGE (MADV_HUGEPAGE) --------
-VFIO MAP DMA in 0.025 s (633.1 GB/s)
-VFIO UNMAP DMA in 0.044 s (363.2 GB/s)
-------- AVERAGE (MAP_POPULATE) --------
-VFIO MAP DMA in 0.249 s (64.2 GB/s)
-VFIO UNMAP DMA in 0.289 s (55.3 GB/s)
-------- AVERAGE (HUGETLBFS) --------
-VFIO MAP DMA in 0.030 s (533.2 GB/s)
-VFIO UNMAP DMA in 0.044 s (361.3 GB/s)
-
-For large folio, we achieve an over 40% performance improvement for VFIO
-MAP DMA and an over 67% performance improvement for VFIO DMA UNMAP. For
-small folios, the performance test results show a slight improvement with
-the performance before optimization.
-
-[1]: https://lore.kernel.org/all/20250529064947.38433-1-lizhe.67@bytedance.com/
-[2]: https://lore.kernel.org/all/20250620032344.13382-1-lizhe.67@bytedance.com/#t
-[3]: https://github.com/awilliam/tests/blob/vfio-pci-mem-dma-map/vfio-pci-mem-dma-map.c
-[4]: https://lore.kernel.org/all/20250610031013.98556-1-lizhe.67@bytedance.com/
-
-Li Zhe (5):
-  mm: introduce num_pages_contiguous()
-  vfio/type1: optimize vfio_pin_pages_remote()
-  vfio/type1: batch vfio_find_vpfn() in function
-    vfio_unpin_pages_remote()
-  vfio/type1: introduce a new member has_rsvd for struct vfio_dma
-  vfio/type1: optimize vfio_unpin_pages_remote()
-
- drivers/vfio/vfio_iommu_type1.c | 112 ++++++++++++++++++++++++++------
- include/linux/mm.h              |   7 +-
- include/linux/mm_inline.h       |  35 ++++++++++
- 3 files changed, 132 insertions(+), 22 deletions(-)
-
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
+Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+Co-developed-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
-Changelogs:
+ include/linux/mm.h        |  7 ++++++-
+ include/linux/mm_inline.h | 35 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 41 insertions(+), 1 deletion(-)
 
-v4->v5:
-- Update the performance test results based on v6.16.
-- Re-implement num_pages_contiguous() without relying on nth_page(),
-  and relocate it into mm_inline.h.
-- Merge the fixup patch into the original patch (patch #2).
-
-v3->v4:
-- Fix an indentation issue in patch #2.
-
-v2->v3:
-- Add a "Suggested-by" and a "Reviewed-by" tag.
-- Address the compilation errors introduced by patch #1.
-- Resolved several variable type issues.
-- Add clarification for function num_pages_contiguous().
-
-v1->v2:
-- Update the performance test results.
-- The function num_pages_contiguous() is extracted and placed in a
-  separate commit.
-- The phrase 'for large folio' has been removed from the patchset title.
-
-v4: https://lore.kernel.org/all/20250710085355.54208-1-lizhe.67@bytedance.com/
-v3: https://lore.kernel.org/all/20250707064950.72048-1-lizhe.67@bytedance.com/
-v2: https://lore.kernel.org/all/20250704062602.33500-1-lizhe.67@bytedance.com/
-v1: https://lore.kernel.org/all/20250630072518.31846-1-lizhe.67@bytedance.com/
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 1ae97a0b8ec7..ead6724972cf 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -1763,7 +1763,12 @@ static inline unsigned long page_to_section(const struct page *page)
+ {
+ 	return (page->flags >> SECTIONS_PGSHIFT) & SECTIONS_MASK;
+ }
+-#endif
++#else /* !SECTION_IN_PAGE_FLAGS */
++static inline unsigned long page_to_section(const struct page *page)
++{
++	return 0;
++}
++#endif /* SECTION_IN_PAGE_FLAGS */
+ 
+ /**
+  * folio_pfn - Return the Page Frame Number of a folio.
+diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+index 89b518ff097e..5ea23891fe4c 100644
+--- a/include/linux/mm_inline.h
++++ b/include/linux/mm_inline.h
+@@ -616,4 +616,39 @@ static inline bool vma_has_recency(struct vm_area_struct *vma)
+ 	return true;
+ }
+ 
++/**
++ * num_pages_contiguous() - determine the number of contiguous pages
++ *			    that represent contiguous PFNs
++ * @pages: an array of page pointers
++ * @nr_pages: length of the array, at least 1
++ *
++ * Determine the number of contiguous pages that represent contiguous PFNs
++ * in @pages, starting from the first page.
++ *
++ * In kernel configs where contiguous pages might not imply contiguous PFNs
++ * over memory section boundaries, this function will stop at the memory
++ * section boundary.
++ *
++ * Returns the number of contiguous pages.
++ */
++static inline size_t num_pages_contiguous(struct page **pages, size_t nr_pages)
++{
++	struct page *cur_page = pages[0];
++	unsigned long section = page_to_section(cur_page);
++	size_t i;
++
++	for (i = 1; i < nr_pages; i++) {
++		if (++cur_page != pages[i])
++			break;
++		/*
++		 * In unproblematic kernel configs, page_to_section() == 0 and
++		 * the whole check will get optimized out.
++		 */
++		if (page_to_section(cur_page) != section)
++			break;
++	}
++
++	return i;
++}
++
+ #endif
 -- 
 2.20.1
 
