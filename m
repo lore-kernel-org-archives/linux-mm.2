@@ -2,131 +2,109 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F0DFDCA0ED1
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 23:40:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0517BCA0ED1
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 23:41:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE6558E0221; Fri, 15 Aug 2025 19:40:01 -0400 (EDT)
+	id 9A43A6B008A; Fri, 15 Aug 2025 19:41:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B96E28E020B; Fri, 15 Aug 2025 19:40:01 -0400 (EDT)
+	id 8B0DB6B0093; Fri, 15 Aug 2025 19:41:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9241A8E0221; Fri, 15 Aug 2025 19:40:01 -0400 (EDT)
+	id 7A2016B008C; Fri, 15 Aug 2025 19:41:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E5688E020B
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 19:40:01 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2B10D1DC66C
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:40:01 +0000 (UTC)
-X-FDA: 83780612202.24.67FCE4A
-Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3DB7B100007
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:39:59 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=bur.io header.s=fm1 header.b="C JkZ695";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=hwPLoMui;
-	spf=pass (imf05.hostedemail.com: domain of boris@bur.io designates 103.168.172.155 as permitted sender) smtp.mailfrom=boris@bur.io;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 652218E020B
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 19:41:06 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 207F7137FB3
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:41:06 +0000 (UTC)
+X-FDA: 83780614932.03.6C815AF
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6CF60A000D
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:41:04 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=yP4pyInp;
+	spf=pass (imf25.hostedemail.com: domain of axelrasmussen@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=axelrasmussen@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755301199;
+	s=arc-20220608; t=1755301264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ysxGKdmacR1jImBbFNdapk+E8q3B6D5l8QdS9hmlj44=;
-	b=yX5KnmzBeSMQixWmIRLNTvOk3oMdvudDtqVNimORHLZVkLTZWI9WxuPmaLfFBjDuQP50EU
-	Mv4YL6dE/zqXggd4eu8UTXfg7BDGuzrYArMknRZ52eRu6S7T5FFGMR+xP1yiR7IW43tNh0
-	rrw1D9PvpA3QcRgriX+g0gz9OBwKwwI=
+	bh=eC+hmy8FxOOZt0BUy+LXGgoJOiZCGQ/IiVXODEc3P1o=;
+	b=Azzn3vbk8neJ4LX5EHyS/d6rNPmvE7qr98TlOPgcOdDSdc2g0M+KA57zfA6xDdutTX/blQ
+	yT7cNP53842FKON+Zd3ote3KOp3ukh/DAHgtEUxhDw32Em5naZlxm3P1m0IssrMy6DA7cO
+	psyNJpS327pdSPiZnS1G5lj0MK6uR+o=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=bur.io header.s=fm1 header.b="C JkZ695";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=hwPLoMui;
-	spf=pass (imf05.hostedemail.com: domain of boris@bur.io designates 103.168.172.155 as permitted sender) smtp.mailfrom=boris@bur.io;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755301199; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=yP4pyInp;
+	spf=pass (imf25.hostedemail.com: domain of axelrasmussen@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=axelrasmussen@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755301264; a=rsa-sha256;
 	cv=none;
-	b=JX6eFCR++hKYl8hmBa/l9e+raTrLls/VfMDDi9iCg6OVgFtiaHtR1zPrXZjhZBZ6dXOGZx
-	fIgiFD2LorGWczVr3dlcjKFBY2HUy6jQvOWWLChibHsSd9MkCVrc1pT5QT/QKJZq8/1XqH
-	gdRxYZRFUVvM1TZSPbGGRhB1QhfViz0=
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 9FCA014000B7;
-	Fri, 15 Aug 2025 19:39:58 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Fri, 15 Aug 2025 19:39:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bur.io; h=cc:cc
-	:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1755301198; x=
-	1755387598; bh=ysxGKdmacR1jImBbFNdapk+E8q3B6D5l8QdS9hmlj44=; b=C
-	JkZ6957clUeSfKcNKxIGkBGQ//e2i+bc+P/MxsLr5TgDyoLhilpsWF/ZhD0Dbwbi
-	iNVsVo5epgswE/znf0Z8LrLCqlw34SW+Q6FtWVzOeHJ8keIO+9LC/FCFfzCOPMCN
-	U6dXoSB0s6oP+/sr8pV/h5UDUqKwYCoRTGRo2tlOJ6dq+NXkkyROYLqyn+K8MMBC
-	f4MR1raMln12bS3DjgPPwDSX8vUr6CXfpVZxtZio5PKFk4MeRs9usCdauSyJ/671
-	A+WEimWTYEznPU0SwxpvxgCtNEGnZsIyqjmH7SM2LPifSR+gPRobqwwV8XaUSEoP
-	pGf4HAfMMCoEKDPA+mdag==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1755301198; x=1755387598; bh=y
-	sxGKdmacR1jImBbFNdapk+E8q3B6D5l8QdS9hmlj44=; b=hwPLoMuiQt07Dkkci
-	eMtO2RMKbh+MxoV8lwzFYBK8zSzrpC0nUKZFH67jo/u4ZlSVKhjS8cBEWPLJt2Xm
-	njLCmq3Fd8xpLEoVm8B42cSKiwcfSjHej31mmWa0MdNvwUpdapBzMDMYzgSMOzX+
-	rGqus7cPI2839ELlqsnnApaVUri8ktmy99iyeyYXzuSuzFE6kU+7upvI4YsgKNFt
-	oBRQgQ8nqpTHSbd4VJtX0mg2Gki5M4wBIyDVWMsQUWb17tZ2QXZePTxQfqB3C6T9
-	iv1Fw1e3SwFP6YUB3q3v4SgX/E1mGXGQZeCWZy30loXVk/VeW4e5LiWVRppKIdu8
-	6ZWOg==
-X-ME-Sender: <xms:TsWfaIOXboGGrI9Uqfdww4PNgu4x6H0UOc9lbnXT6AYQ21bHjjm69A>
-    <xme:TsWfaCwJrwb9Ha9W6bQ5ge27E_xAx6v1kF5mVZOnHc3yTFGmno59u5-rqczT9HUBq
-    NNYLZMjs8zM93_iAic>
-X-ME-Received: <xmr:TsWfaIXPoQnqLohrTuM6IEnHNBGo1quW9utkPCeg-ewAb-39cLNKisFKAR_AX8ha5OnopbYdwXY8jpNSYbd7EreJlAw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddugeehfedtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucgoufhorhhtvggutfgvtghiphdvucdlgedtmdenucfjug
-    hrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeeuohhrihhsuceu
-    uhhrkhhovhcuoegsohhrihhssegsuhhrrdhioheqnecuggftrfgrthhtvghrnhepgedute
-    ffveeileetueejheevveeugfdttddvgfeijefhjeetjeduffehkeelkeehnecuvehluhhs
-    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghorhhishessghurh
-    drihhopdhnsggprhgtphhtthhopeejpdhmohguvgepshhmthhpohhuthdprhgtphhtthho
-    pehlihhnuhigqdgsthhrfhhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
-    eplhhinhhugidqmhhmsehkvhgrtghkrdhorhhgpdhrtghpthhtoheplhhinhhugidqfhhs
-    uggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehkvghrnhgvlh
-    dqthgvrghmsehfsgdrtghomhdprhgtphhtthhopehshhgrkhgvvghlrdgsuhhttheslhhi
-    nhhugidruggvvhdprhgtphhtthhopeifqhhusehsuhhsvgdrtghomhdprhgtphhtthhope
-    ifihhllhihsehinhhfrhgruggvrggurdhorhhg
-X-ME-Proxy: <xmx:TsWfaEM1zZLipvgxxCkwcntZP9DQ-zmWraG2bnXb9q7atu4CEbSFKg>
-    <xmx:TsWfaKDaZqEf3d17c09rfc1jPtAJEnKorgRFfjMTYIAS5yvtLPy0pg>
-    <xmx:TsWfaBeUQwA9ZcZR31MQ27FpM7s5XMfiwgSMSSJY4G_FvkAPsOZAnw>
-    <xmx:TsWfaJPV778mxHNw7TrZUHgFv8tj8Xya7miniPhSuHD0vQ7DCeS1qg>
-    <xmx:TsWfaLtneBBKie269hHhP6VQ_hgwEiGTdLj7TZpLV7U0V-B2tw__WhGR>
-Feedback-ID: i083147f8:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 15 Aug 2025 19:39:58 -0400 (EDT)
-From: Boris Burkov <boris@bur.io>
-To: linux-btrfs@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	kernel-team@fb.com
-Cc: shakeel.butt@linux.dev,
-	wqu@suse.com,
-	willy@infradead.org
-Subject: [PATCH v2 3/3] btrfs: set AS_UNCHARGED on the btree_inode
-Date: Fri, 15 Aug 2025 16:40:33 -0700
-Message-ID: <786282400115bf7701d7f9c6b00a9549f67e29f7.1755300815.git.boris@bur.io>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1755300815.git.boris@bur.io>
-References: <cover.1755300815.git.boris@bur.io>
+	b=ybQrMVQNVP/jEgBcE5HAeYai/APtXyjIicPZaaarqFA32gbysRa1TNf00owDG0BB1zvIVW
+	bxPymZUa/nSdo+1fd8QNGfbaZLybaM8zS7ApkVQnFB3gblS3Gw8NIV9wI3W7KhtD7GqYSp
+	rsofWtw2OKez6AtmWIMi8vVCp2Ll2SU=
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4b0bf08551cso88851cf.1
+        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 16:41:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755301263; x=1755906063; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eC+hmy8FxOOZt0BUy+LXGgoJOiZCGQ/IiVXODEc3P1o=;
+        b=yP4pyInpVFIblTCOvmRma7osIvRlHOl5RqeZiT5oVVwNrO+tgf4K2P4rkiYkWMzTmm
+         ae2nFPe+2PtnnOJMeE9zDwxdPvoQ/7MySD3Re2uKThFqZRtVME1t4YitZVJLtgp56JfZ
+         82kTeazMEZ0oHrrZCft2ExiIcz+m9ItyD+YZM9Xn8QIjdtDZgWwccI+ueac1RByxfeEQ
+         gxBfYSZwS0L0ZxbAqNTJw+gAAthA5N0w6RiAp9OmB+u1p6MaMt2fWRJgeIMDGVNQ7PPw
+         M/Tdo4LtSs8/m3UBcPU086cehKIYmIC8LmFJpKHgMA3A29GhLdJJocULUXuE2IyiQwHc
+         4hcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755301263; x=1755906063;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eC+hmy8FxOOZt0BUy+LXGgoJOiZCGQ/IiVXODEc3P1o=;
+        b=dN13sAQbV1MEplJofveB8ALo12qmKKm1SrZryXGt+VI5q9LBd/ieR3ulIF8hZxn10V
+         42IrCvEMWgPGaU8+Pit5FN0i35Ut+VxkW4Zpdz/yvIjhB/Ys5yY5XCcabO8r0iRcRENx
+         cFBEKzd4birTVmU3AJcTQ8EfAcYw4h+quhrUaecDotzUFWqY2yVsJFWErmmEHYddQy4i
+         EX2WVy4K8mQMEGrqju7EfgX0H2Fn1WkOe+t9c6ZyPPLnfS5YI0i3CTiI6wq+S6tyH6Nx
+         bi/hQVi64HGTWaRmQt2LZmZuS8SWDd5QgI7ZdRnn8edMruayuhT289I71O7cwJFhzxq4
+         2TTg==
+X-Forwarded-Encrypted: i=1; AJvYcCXrg6dtQEsfz55S/nkLOntMC3wVj/0kPdDJOLSdfUmLq1+LbOj4/C5VD03JtxsAXPUdpR6kIPFhVg==@kvack.org
+X-Gm-Message-State: AOJu0Yy9xXy69774uXbQC65W8MIhAi2OUQ7CMtz+tnezP/7wweRDdH25
+	xiVBwl5h0GpafYg/pLZd1iAhEwPdXfYsu0jsgJUfaYasQfXpzAxkrYTIhCzoSokyBswHHB4MckW
+	8Gcfu2vgqPzqgdcFlCMe382sj4uqERb3Pf9/Zsbbs
+X-Gm-Gg: ASbGnctI5ChGjD4U5FF/boRTxYZSRLWP3WBYD7q6KrYKKaYm6I/6mZbD/BqgKT+8Rg4
+	ih8JzabAQoRDcKeQORbWoXFrLOvFggFWxbV7uEtlFo+qd8ce2ICA4pBGJe+EDzGN7J/QPfXOTWf
+	IzSChvmbrqNgBdl407/d/jLVSHFo93OPvtx22CtciAH7pCIg+HfumFboI+oSXzjs0SZxlv9+7wv
+	Wnh7ClK9xWP8Zlfp6njJiQ=
+X-Google-Smtp-Source: AGHT+IGrhyPvvxTOfa6TjnEQTZi75pbn9usZY5vdhT1RdyXHVbBFYpxokexBB2Fw8B3UMydhkThzOeMQPkqiMVkwmJU=
+X-Received: by 2002:ac8:7d48:0:b0:4a6:f525:e35a with SMTP id
+ d75a77b69052e-4b12bac1cd2mr671791cf.9.1755301263038; Fri, 15 Aug 2025
+ 16:41:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250815215914.3671925-1-axelrasmussen@google.com> <7a46f7jwlwgkbdjvbxjaalrrdamgtxkptmytllhkr2qv4ovbge@nbugfzavwh5w>
+In-Reply-To: <7a46f7jwlwgkbdjvbxjaalrrdamgtxkptmytllhkr2qv4ovbge@nbugfzavwh5w>
+From: Axel Rasmussen <axelrasmussen@google.com>
+Date: Fri, 15 Aug 2025 16:40:26 -0700
+X-Gm-Features: Ac12FXw_HFPZ095gKMlHpRFMN8lgcVFvzndQzLXfmu0HxmUJr4sDsvsxZ5Xh-Uk
+Message-ID: <CAJHvVchYa-vUcQo92awyHE663n-iMsLK31o+1FKrMvdLMAuUOg@mail.gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: mark MGLRU as maintained
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Yu Zhao <yuzhao@google.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3DB7B100007
-X-Stat-Signature: chdgphh6upprrzxn739q8rp5n88y8xhn
+X-Rspamd-Queue-Id: 6CF60A000D
+X-Stat-Signature: sseonzegrzas936xehuxk9xco14nbs58
 X-Rspam-User: 
-X-HE-Tag: 1755301199-309183
-X-HE-Meta: U2FsdGVkX18AvvPB+fQgZ6W0Yjx+OXIDNz4XSRptaqo0N2fBFe/z/YB/hgNDf9Sz9G/d1frLtL7wDyyk13ApgFzW5fNMMomC2aodNMra50WhGbPHNQSUk2vShOVHEs0AtpU7XQ6Yda+yHomK/+CPWG8VdkD8iZWl215P5vME24WIeifbnaZUW2bnM4RloRXkb7BX5Z07AIzbzrePqRhO7CskkUagiTYP9SllEOAyBDktssmjMiwNnb4ShWou8+8YmpLfVyJg081LTkDL6PC6ZfL4DffxlwdHQ49LON8iavBrsFAIH+N2FU5NTqFqGgM0PugIA76zPzPzteCmyGgxIuIFNwq4U0qz/1RAu13vswelbv6XSfCWwRUVjwjcGAb7jqxCQDdwLHuUy3Sm2fINM2IiBfCVJ+lvGDtgaDpy+LJiKvNHiCKOsxM9/VR/iCzYDhZZAy22dQ6Cno85QXtL5L4kzqRAZrshD6BoYBsHVXaGS5TV/DCACVh/ntv6RlsiF78VsxiV1JvzTNLwfSMzfwF3a56eQyrJIGapRUhnZ8SOjn1OBLF35YT9irhbXutw2rqLp9N9p0W9vBC63Zu5sd89VSuVWiJi9+zMgY05HiiPlJSO7PODs9uuEj5T0bgDt5ObK+/GdwF2agyCgc6sy3i570D+DhSKhgTZ3Rycbtxk0FO07VYL+g1r45sGUMwgZ69KMfrzuSjngLwx948osYrE60HsrtllUD2N6JS8Cy4mcv83LsHwmLNvDegb+Sne0mz6h1NLLKgHBmpVH4wvI3Wp4WnYa8xG1abg7PdaRnXYif59N1pTmXvJ0fbg69HZgF9UIBTEMaNAyH7t9sM65YqPj54apIJoKpiktPTKrdlcbtaxVG7SXKXWMxce9Naasf2BQ6XpPK+np5vqDYqq+y8S97bkJ9tDmm+wRQd2NXfV9hUCd7LUbjMOqLAiUU+NuJGL69P0QwYKF8w/CQW
- tJfBK83n
- ruaLxQPscYvtovzYXXdXtuZX/Ngyd97uBvWeMIRkk6v8XoHW6T961otxvMAsYf532JCFtSWe+Qw2h5LsAfEX8iVVvI1oLakSonksPB5TFgpoVNaKrT3hVScwhDr4eAWNgk4WgUNF5D+SInIoraY92PdJ/NTYwk0pVkhPQbj5mNKsz91ZDUHt5sZwSkAH30/ektiEL2bqdqaa3mH3ki/MjwPjZaJbOr7ojlJoCecSTBcsyRSgrX1oQUXR32QIjxezmceZA2RrRH09qNfNPefrx58gQlg==
+X-HE-Tag: 1755301264-522318
+X-HE-Meta: U2FsdGVkX19nIof6ZIEl+QKIhfVxCHFvHdAPTDhwIv+Xs/fN37wFD9/4kq5duOY7IouEEnQU9MLKF8auIskYPtsEP7i3usmfFdudpgO+iITlIA2rj2ltF7m6wC6lMemvw4tMh7WPv1jwZaoF3POuKsgMzIXDSpGOtuKSIdoxDJ5/MTYkXddsGd9qLLQajGfuessQtYlPrYrQcGWrGiI5YVMHJLLvVBFkt9D78nLUEowvnnlwnvnY4cqhee5Z6ASbhE01UWnaF2qXKkI/s7dNAgNKdDZ56a35EPxkIdU1/EP5YBI1qFwP6yyuhEeKeKF3fOfF5YhjVVgENHsivVq/tb4fbpr7hyL4ycGOsmIaa0gu1kKgpy0EpWJCnZqYlbuywIY52oN1eDUsSeBhOg8VTgxxcvRe3QKCZCqY++8LB0HfYafnMa4xZEAiXptEy05FNgslmiWQUOuSjCdGPoFy2oWJtj1UI98XnsWwOStw+/bWglfG0ledA6oEjvAvYV2rpKEtJMLbSbIJRDmjxepDQ0ivtbvrFwlZpXXqjUBRXd9ZB4uniZ8CmMPXtVLZy7O/9PUDGD3mw0OgaP87IpX9yYr4FSXAqb31wbVUQWe0xcyizRmYczWVk4D9qa2solPJYNHM8048MBAB1xuE90r8G4K7QWU2WHCDWBQ51Euc2EUE+dDwIYLcpr7ahz2FIMHyLp9KyhSYWA0beb6PkoEzZNWOQDEkzlSWoz/6SWEId47tX31A+QpeXz9vg552CrBqukOBdhLlWlgBPsT6k6ZtW4wZibaBSK8Y4nGwlyb7P03oZxJBpkPqAt4kuOyy0JFz8uZskHAGXY4ZcdTVQz9r5ls7huERzvYrnqLEcv9vsT9M3wIk7sVm+tfEXKgxnXRyL4RzR2CFf9vG6xO98i4J4K+XqUyNYvuV
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,31 +113,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-extent_buffers are global and shared so their pages should not belong to
-any particular cgroup (currently whichever cgroups happens to allocate
-the extent_buffer).
+On Fri, Aug 15, 2025 at 4:13=E2=80=AFPM Shakeel Butt <shakeel.butt@linux.de=
+v> wrote:
+>
+> On Fri, Aug 15, 2025 at 02:59:14PM -0700, Axel Rasmussen wrote:
+> > The three folks being added here are actively working on MGLRU within
+> > Google, so we can review patches for this feature and plan to contribut=
+e
+> > some improvements / extensions to it on an ongoing basis.
+> >
+> > With three of us we may have some hope filling Yu Zhao's shoes, since h=
+e
+> > has moved on to other projects these days.
+> >
+> > Signed-off-by: Axel Rasmussen <axelrasmussen@google.com>
+> > ---
+> >  MAINTAINERS | 17 +++++++++++++++++
+> >  1 file changed, 17 insertions(+)
+> >
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index daf520a13bdf..8e987f2668cd 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -16058,6 +16058,23 @@ F:   mm/mempolicy.c
+> >  F:   mm/migrate.c
+> >  F:   mm/migrate_device.c
+> >
+> > +MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)
+>
+> Why not just add yourselves (and the missing files) to the existing
+> reclaim section? Eventually we want a single reclaim solution, so why
+> not start with single reviewer section?
 
-Btrfs tree operations should not arbitrarily block on cgroup reclaim or
-have the shared extent_buffer pages on a cgroup's reclaim lists.
+Sure, I can see the argument for that.
 
-Signed-off-by: Boris Burkov <boris@bur.io>
----
- fs/btrfs/disk-io.c | 1 +
- 1 file changed, 1 insertion(+)
+I suppose the case against would be, perhaps the folks already listed
+in the RECLAIM section don't want to additionally get e-mail for the
+extra files listed in this patch? (Perhaps mostly the MGLRU
+documentation, the rest of them aren't necessarily MGLRU specific.)
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 123c397ca8f8..6a6ed8c1389c 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -1930,6 +1930,7 @@ static int btrfs_init_btree_inode(struct super_block *sb)
- 	BTRFS_I(inode)->root = btrfs_grab_root(fs_info->tree_root);
- 	set_bit(BTRFS_INODE_DUMMY, &BTRFS_I(inode)->runtime_flags);
- 	__insert_inode_hash(inode, hash);
-+	set_bit(AS_UNCHARGED, &inode->i_mapping->flags);
- 	fs_info->btree_inode = inode;
- 
- 	return 0;
--- 
-2.50.1
+I don't have a strong preference either way, I think mostly I'd be
+interested to know Andrew's or the other reviewers' preference. Note
+Lorenzo suggested a separate MGLRU section here:
+https://lkml.org/lkml/2025/8/14/271
 
+>
+> > +M:   Andrew Morton <akpm@linux-foundation.org>
+> > +M:   Axel Rasmussen <axelrasmussen@google.com>
+> > +M:   Yuanchu Xie <yuanchu@google.com>
+> > +R:   Wei Xu <weixugc@google.com>
+> > +L:   linux-mm@kvack.org
+> > +S:   Maintained
+> > +W:   http://www.linux-mm.org
+> > +T:   git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> > +F:   Documentation/admin-guide/mm/multigen_lru.rst
+> > +F:   Documentation/mm/multigen_lru.rst
+> > +F:   include/linux/mm_inline.h
+> > +F:   include/linux/mmzone.h
+> > +F:   mm/swap.c
+> > +F:   mm/vmscan.c
+> > +F:   mm/workingset.c
+> > +
+> >  MEMORY MANAGEMENT - MISC
+> >  M:   Andrew Morton <akpm@linux-foundation.org>
+> >  M:   David Hildenbrand <david@redhat.com>
+> > --
+> > 2.51.0.rc1.163.g2494970778-goog
+> >
 
