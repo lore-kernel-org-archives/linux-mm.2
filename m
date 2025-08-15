@@ -2,102 +2,88 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DE013CA0EE4
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 16:51:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EBE2BCA0EE9
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 16:59:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6083C90025C; Fri, 15 Aug 2025 12:51:20 -0400 (EDT)
+	id 864136B04C3; Fri, 15 Aug 2025 12:59:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E03B900256; Fri, 15 Aug 2025 12:51:20 -0400 (EDT)
+	id 8145B6B04C4; Fri, 15 Aug 2025 12:59:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51E2990025C; Fri, 15 Aug 2025 12:51:20 -0400 (EDT)
+	id 703876B04C5; Fri, 15 Aug 2025 12:59:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FF8F900256
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 12:51:20 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E65701A0215
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 16:51:19 +0000 (UTC)
-X-FDA: 83779582278.17.B552B42
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A73F580009
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 16:51:17 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=YeD2g1yb;
-	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D0486B04C3
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 12:59:09 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F1081B7014
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 16:59:08 +0000 (UTC)
+X-FDA: 83779601976.16.36D1C99
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 62545100006
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 16:59:07 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iQnc5YgI;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755277147; a=rsa-sha256;
+	cv=none;
+	b=nkyCSKrJWtM9XeyMF2RL6vpIQMKcHOLMl9nfDzn1Th9CHeJEBzKyag24LR3vGc7YqwIf93
+	cSAY40wTsGG6qgGchpl/D8dB4HTw8IHAZBilNzMguQsACfL1yNDFtuH+/IYTfzfadzxEoP
+	osDooS6gz+woeqV1nVrkK3/fBJClB/Y=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iQnc5YgI;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755276678;
+	s=arc-20220608; t=1755277147;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=iZHrHiuqQeD6+PZiIYH7jOWULczdLFN1tp692+CFSi4=;
-	b=3e0yP6cRtqzffQtuRfWYig8HydAclKnrxquR+efPpJKM8j9VB6H/bSn/2sSfz88VLLKV18
-	fBczfPlFq2DxWqZJd0vlfSk6FUqJKmXLHgW/vhZYvTG6WaQgg6yuMLQMpuCevqC0AqWH8V
-	DQ2vfhHgfCvvzKQ0x7lTIoucGYBzDYc=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=YeD2g1yb;
-	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755276678; a=rsa-sha256;
-	cv=none;
-	b=cN8cFO3u4cqnqIVuFpGCPLTXFrm9txyQTikwuw+KKujCeRiLHMg6fePSUUzBkdevLMCOQI
-	sAUkQerfFD5vlfecbYP5Jz/LQ4I7bHPMLde3UZLwXYFhCx3QNA8NeXWegbua8eGZ2YG0Xf
-	8zqNdlwSQIM+lX2HXZFd0+xhhz4sn0c=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755276678; x=1786812678;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=7NTaViNVxaMYuQr9mTPMGMMhBcYakL9cKYcXpQrkLF8=;
-  b=YeD2g1ybuG5de1a3FTlGvVKBQNBWd5FR0NRh5KsOGrLB3NVY/ngTNsv7
-   qjei+zXuuee9IhZwICTjcSauijQVd4NHpl1tXMyi7YeAixUYqmnNVPxkG
-   yYYbQd/DJqat7XtGZyhP02+Ue9MUjhfOCwuVNlF3a33bdyBQPth7nYpmZ
-   rWnCxkyoiGbcXAPCwB305wB9/3g50uZg98vCSyWuSQqfPIIN9M5f8UpQx
-   1FIp8ETUGbUMjYhgTqHrvGZ5r3zTrxdfb61cq1y3GED/OPUvLf9ibKMAz
-   8dinYb3qup+WOsB3SuJJ2zWu+1it8YnMhuOtaeqt8itHKdlkM1kQL/xrn
-   g==;
-X-CSE-ConnectionGUID: LDchbIjdR12GZYB0XEuaXg==
-X-CSE-MsgGUID: /gN3mUt5RtCYd4FjGzzadA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11523"; a="61410966"
-X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; 
-   d="scan'208";a="61410966"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2025 09:51:16 -0700
-X-CSE-ConnectionGUID: 6CrZOOFpQpacTi1bb2gudg==
-X-CSE-MsgGUID: f2Oz+VuMTO6WqnQkxAeCbA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; 
-   d="scan'208";a="166543218"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by fmviesa007.fm.intel.com with ESMTP; 15 Aug 2025 09:51:14 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1umxdM-000C8S-06;
-	Fri, 15 Aug 2025 16:50:53 +0000
-Date: Sat, 16 Aug 2025 00:50:02 +0800
-From: kernel test robot <lkp@intel.com>
-To: Rohan McLure <rmclure@linux.ibm.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Andrew Donnellan <ajd@linux.ibm.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>
-Subject: [akpm-mm:mm-new 136/142] include/linux/compiler_types.h:572:38:
- error: call to '__compiletime_assert_352' declared with attribute error:
- BUILD_BUG failed
-Message-ID: <202508160059.Aj29DucC-lkp@intel.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NQTq3g8w5S0NSnAK98E2MBp+fo2HrZ39mmo7PadxJzs=;
+	b=uDnXK4bXO01Yy6pF0WFO5KZf3Y9nQdYyvTD/sNI3VejmpOg1N831p5xjMvrtYaakTIctaV
+	QJrU8X8DVB4P4DkzdBt3hniXJeU+r2rrC0s0uO8DlQZLVEUYvLJlBMDXtp9ynT5HfvEsv7
+	EYz6xFjfgzphRk90vsS38f4mcPM9Cb4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 8DEC1A58309;
+	Fri, 15 Aug 2025 16:59:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A8AC4CEEB;
+	Fri, 15 Aug 2025 16:59:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755277146;
+	bh=NGegCFhiyZ1h1w697ypgzowDLyLqjIrtnSAlxH3t/VE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=iQnc5YgIDUcyweR2XFx0UO+yui+YXy9sSk48egUARHzbaANC89iGrBATo3uJTIs/E
+	 8uDUT0hyQhAEWl5muQbXKSrEeslENfalxgoYETmW76TE6yXE9avBHqKbFctM4l8MOX
+	 qN6f6vitvi1SFuUSTeajhiMBUyKqF4rZXquF8y736xB3V5jvnn1awhHlJJBtjtrylr
+	 e2szxAvm1nf1Li/hgCtb1/IqTrh+JRRc6gyNG3npfUCQzh1/ntBk857Ljot6XKch3B
+	 Pr94HwaYnlZLGCtLSkVfoRqUyaYMXnk6n0cR8TLqfOnkRQ0GMQz8fWZn5UeXLE73xM
+	 4cLIAYTgHaIQA==
+From: SeongJae Park <sj@kernel.org>
+To: Enze Li <lienze@kylinos.cn>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	enze.li@gmx.com
+Subject: Re: [PATCH v2] mm/damon/Kconfig: make DAMON_STAT_ENABLED_DEFAULT depend on DAMON_STAT
+Date: Fri, 15 Aug 2025 09:59:03 -0700
+Message-Id: <20250815165903.13330-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250815092110.811757-1-lienze@kylinos.cn>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A73F580009
-X-Stat-Signature: 7gyp79fmmazx9wnjfgg1sg3587hwqpem
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 62545100006
+X-Stat-Signature: n8aj7ea868dieixmtraiyt1jyb6umqd7
 X-Rspam-User: 
-X-HE-Tag: 1755276677-375660
-X-HE-Meta: U2FsdGVkX18BdcWxbUSeS3rHrpd6zPhG5m9FyyN6PVW9ho3gkTzyqfJovFq7ynCOwdsuxZz1214kNoi9OqHdwy2fjBbTVB9kM4nCDHaqGwahZS/zg/z0b+IHPzMwOKihX1Yog+XOiWaTh9XMB+G0KZ8iUN3YkG+ruPbu//4qBbpWdKD7c0dqZ1Aj7Hqxf4sh3CNI04wiAp6SzoWXXyyIWxnBPr4egvoSvDGjU5RYt4NIfVRONSZpfnc9mTx38+XIweCMYCTSWqpbgieznTTchI1rIfkC54pdhIfuIpAUkRj1qqaTv5ewXEfxaz5rfgJnZ3vez1kXZ9FBHdJEfGr2l5Duf4qYKnP0fFQSIiFciJ3+WY5fiVW9MMY8mBmnaRqoJTUzATG4JvS6Slwq5hqnGF3S1EAe74k5JJjJXKMX0dwXw9S74C4mgrAQS4Cn0nOne3XrWmAjrkPLWjQIKS5xF0sTXGLfZEQei6bYvvmNN/7PlI0cHDtruwcveEFdZisC8/6VOPK8ebdr7TfymcJ2V+LRdJG3DX8jna9w08Tz+1fd53ZVEbWDOn6bdo96z9i6vKmizlR5dvtNAQ2bgUKy3HUl/ggxnADkjHel1M3Cos/QKikdJ3QuTR+ssHITwrxmL0QsYvpwjGfq+k8etKAwVn08FnJ5qA0vFJdxoUSa5mSGJ6Mfto/tfLE5InSNZMT/d8ei1TKLRmS3G1nz06/sLFm1LSDh3PG+Bp4Nh4qio0LmgkpseJrL3UNPZ3P3KwpSyoZdt1+BkXI+uSrNbHLNFbTtj2WVala+Le5l9l+jwuztyQ4uVFQjFhFdNo0UMWSF58BTDwCIXsOxQkO/EZY/PPCmmHHbzBv8J9JxJtwBiTN+TAPyW3QX6l9L1r/nu17otEpt0B91+dMc3rlH31/QWaq8veiuvIRMD/wBHt9Kdz1mVnmUcEXe15s4XOJO/KoFfRzCc2TrTME5o7Bet5t
- bS31qSwX
- 2yq3Gg/fBlfnE0d5DoEFq36yo8h2l0MDXpli1Pp7M864e5Xl1DPfkx/kfmylOlJ8O5aMOrfIGmcNmKDZ7cU53S7PQYRhLElerx8Td3/QDNJnLsfBWqpVN1pAQiJ8F1NoswNWbO9f6HwoklHaFL18SRd5QJpPcrvfFWHXqPFhdkp1Lt0sMibN0g4KHssgFZWNA35P214T1EbHP8HvbHPBsvCcnNJUtbetqD08AT5SWAs79CJP+jK7jQs75Ye4NzrguQWEbT5sdhIiyXp/thocRylMTt9TGnqzpHGW1eH9x1U91CUBwKjLIB7aWZ/sh8Q6Xtv+PLnS17SzPOafssiDd/JcgLZS0KRIz/agqfZoZLaC+ZzFxor7yDa0q1A==
+X-HE-Tag: 1755277147-784629
+X-HE-Meta: U2FsdGVkX1+K2LvZuQkvIxYNYfURE5c2AepVQ7D/8Z8CuTo2xqbsoLHnopQQAxSX+bVAGNho+5oAIRYCdtdHIB54ZdMKdXAmgz8jNSpCAMXT7ZhuvZtrGHdx+kZU6LbDn2vmSBCukgBHCe0Kgbq1GxbUhmExLbd0PcMVb5KfoBNDxX2xF/9DAN/TuPn5sEfpxA+d24YO8+lXINV9ahkliUX3g7unjKwlTbCst5tcdKfp7PLHYv1ITt+joo22SSy4hmVzVqHFZf3TTXW2HK9eQcCaVMeQvdnPK0SBlrvnnBvfYsX6wipPkm3zGL839pmm3GYLedhJZSY1gwTU0h/ZY0z44ypCNjfKHG7cJ/Ix/1SIpG+zui2PEON5RSVN3Bwr/UGQLh/ToGPomGvvcvhYws5JDirAJHn9o7b05mIohBTkoqJl0VLaC1WQxG8OU8lIkAmM7a4MDxK3PsxlcMgluCUujBDo6iEuj1vwgkYMF0NiZtEU6E3b7TQY3Zn+sYGj3diKG0D4O+zikgZQZFacK+KHdmYJ1MeGXv/b/EZbUPXIhyd3AAFX5R+63se0RCyJvGfwlFOTsdV+oMa5N9HM5jKi3Q5TlToF09CjYSI4sjMUe7wdyGxc7Mf8iF/ucn5Mayt224u/r8tmhp3AymSSYSwkAn0Rmfw9IgnKuqrbTslilPHds9GTEy5BMj1kHDzlK/BNDTyMdxVgkc/pEau0jWRlgXSJx+L5HGEHYww95ll16KOC6W6Mn4d/fD8wxUslkGmaevRLqIhsQGdoqE1ZO04FuSdPGcoSzqwyGju16DLODw/mv93pp/viFY6FMhMYbznzYtibTwPncBK5Dm7q5U8A0ije0WdPuOVxOf5kwygvC4CwXlhkN3WLsP3ZU6QYjycTNp1fFtE9mpfDErovvKXWao3KphEDLXlBegHKtSvT+dMeButFeLea+vXW0ZtkQSZucBnm3DMC54No5uo
+ eMiMb5qL
+ K2+RTyyjRSDGnZ8PnysAfWbvTp/d+g7tPXpKXDQz3V9iTWaT/STf0ygodxNP5mqe9WNxoQbmurv8CRD4vSvAoHBhBiTxDvGdhHmGMO2ymU3/QdwVsAh+GaNuciwUtxAbmAqL4Ulws0F6tKvkNFCaYFhQ1qVsvajR59rVD81VwijHZmlLXrzfGZjZhv/E6NwmKVMkWmrQ+Do23JeKuNivtHKhVP4Hp4/5RMBuKmlhoBYtZohcjL00wIA+mkGyK8LR9IwypOvCRnY1mdjdOQ1E3kXDKaw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,69 +92,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-head:   916e1f0416709c79737776abd5283cb27a5da908
-commit: 119a909df9ee611b1656fa9cbdefa9ea68032048 [136/142] powerpc: mm: add pud_pfn() stub
-config: powerpc64-randconfig-002-20250815 (https://download.01.org/0day-ci/archive/20250816/202508160059.Aj29DucC-lkp@intel.com/config)
-compiler: powerpc64-linux-gcc (GCC) 10.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250816/202508160059.Aj29DucC-lkp@intel.com/reproduce)
+On Fri, 15 Aug 2025 17:21:10 +0800 Enze Li <lienze@kylinos.cn> wrote:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508160059.Aj29DucC-lkp@intel.com/
+> The DAMON_STAT_ENABLED_DEFAULT option is strongly tied to DAMON_STAT
+> option -- enabling it alone is meaningless.  This patch makes
+> DAMON_STAT_ENABLED_DEFAULT depend on DAMON_STAT, ensuring functional
 
-All errors (new ones prefixed by >>):
+s/depend/depends/ ?
 
-   In file included from <command-line>:
-   In function 'pud_pfn',
-       inlined from 'follow_pfnmap_start' at mm/memory.c:6695:7:
->> include/linux/compiler_types.h:572:38: error: call to '__compiletime_assert_352' declared with attribute error: BUILD_BUG failed
-     572 |  _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |                                      ^
-   include/linux/compiler_types.h:553:4: note: in definition of macro '__compiletime_assert'
-     553 |    prefix ## suffix();    \
-         |    ^~~~~~
-   include/linux/compiler_types.h:572:2: note: in expansion of macro '_compiletime_assert'
-     572 |  _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |  ^~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
-      39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-         |                                     ^~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:59:21: note: in expansion of macro 'BUILD_BUG_ON_MSG'
-      59 | #define BUILD_BUG() BUILD_BUG_ON_MSG(1, "BUILD_BUG failed")
-         |                     ^~~~~~~~~~~~~~~~
-   arch/powerpc/include/asm/pgtable.h:221:2: note: in expansion of macro 'BUILD_BUG'
-     221 |  BUILD_BUG();
-         |  ^~~~~~~~~
+> consistency.
+> 
+> Signed-off-by: Enze Li <lienze@kylinos.cn>
+
+Fixes: 369c415e6073 ("mm/damon: introduce DAMON_STAT module")
+Reviewed-by: SeongJae Park <sj@kernel.org>
+
+> ---
+> v2:
+>   - Change the subject as suggested by SJ.
+>   - Keep 'default DAMON_STAT' as before.
+
+Thank you for addressing my comments!
 
 
-vim +/__compiletime_assert_352 +572 include/linux/compiler_types.h
+Thanks,
+SJ
 
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  558  
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  559  #define _compiletime_assert(condition, msg, prefix, suffix) \
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  560  	__compiletime_assert(condition, msg, prefix, suffix)
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  561  
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  562  /**
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  563   * compiletime_assert - break build and emit msg if condition is false
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  564   * @condition: a compile-time constant condition to check
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  565   * @msg:       a message to emit if condition is false
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  566   *
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  567   * In tradition of POSIX assert, this macro will break the build if the
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  568   * supplied condition is *false*, emitting the supplied error message if the
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  569   * compiler has support to do so.
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  570   */
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  571  #define compiletime_assert(condition, msg) \
-eb5c2d4b45e3d2 Will Deacon 2020-07-21 @572  	_compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  573  
-
-:::::: The code at line 572 was first introduced by commit
-:::::: eb5c2d4b45e3d2d5d052ea6b8f1463976b1020d5 compiler.h: Move compiletime_assert() macros into compiler_types.h
-
-:::::: TO: Will Deacon <will@kernel.org>
-:::::: CC: Will Deacon <will@kernel.org>
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+[...]
 
