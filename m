@@ -2,89 +2,100 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 49A1DCA0EE4
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 09:16:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C1D09CA0EE4
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 09:21:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E37E5900240; Fri, 15 Aug 2025 05:16:17 -0400 (EDT)
+	id 4CD3A900241; Fri, 15 Aug 2025 05:21:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE8E98E01E3; Fri, 15 Aug 2025 05:16:17 -0400 (EDT)
+	id 47D978E0002; Fri, 15 Aug 2025 05:21:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDE338E0002; Fri, 15 Aug 2025 05:16:17 -0400 (EDT)
+	id 345C3900241; Fri, 15 Aug 2025 05:21:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B76208E0002
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 05:16:17 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5F76F1408DB
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 09:16:17 +0000 (UTC)
-X-FDA: 83778435594.26.AD6F43B
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E54C8E0002
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 05:21:41 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BEEE31408E3
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 09:21:40 +0000 (UTC)
+X-FDA: 83778449160.14.37B04A0
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf03.hostedemail.com (Postfix) with ESMTP id F356C20006
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 09:16:10 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	spf=pass (imf03.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
+	by imf24.hostedemail.com (Postfix) with ESMTP id E9716180009
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 09:21:37 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	spf=pass (imf24.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755249374;
+	s=arc-20220608; t=1755249698;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/7ya8INStVMqkmoMSO2oxJYj8QSnxMUfKWHQpCBE+ws=;
-	b=TgW5cxaMR20kevSKWcbAuzuYxr9scKqMi5uHlCMUuIYfirSncURfsSezOa08iYrhWcgfhq
-	dDxMXtK+YOmUZc4uw+C/m2M51YSAAXbtEazMfe6CfqUVpqDLu/ltV96JR/R+M+toq6YyRG
-	wGxm2jC1s6oo+kiLUxQI5K7uTIHAzGs=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=none;
-	spf=pass (imf03.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755249374; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=ExduLD9fxfud2irz0LLMDbE/R4PgWzDW0AfyTw5F+kM=;
+	b=GjLOl8M92VmKaEuSwYetiN/T2EeZ5jlmUmAkeu3DKyF0p2FSeSGDvBhZqfNkS2PpKXPFBx
+	KsC0vSVMSeikuOy3ZrPyLDU0/pTp7aBUcWIJJMRwdAhLZTDB7ugJOHovLNOvQ+oTPXk0Bi
+	HhrLI0eSIQmKVO5XdRIB0QytsBjkd4c=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755249698; a=rsa-sha256;
 	cv=none;
-	b=1Bg6Rt5F2oaW5o9IpeLdgHIKdkNOCgl4gGFc+UIq/ft8P0/6U7Mm0qmUxfPrGzk/u/G8y+
-	/IJfo9z9d21IcZrub8/l25P2Fa2W8JQCHKXLHKbamF1wvPlUff9ttoEq9ktgVj7nDfdufq
-	zD89VUY9PguESWKqCAZS50K7LwGZL2w=
-X-UUID: 761695a079b811f0b29709d653e92f7d-20250815
+	b=oMVPtC7x9XU8B0no6B1HKqeIiyCEwcqiGKEDJ3oZxleO1ZvsqMxHaErWhDnvEG8REHlroj
+	P9XKUkwmoQ4fqUNvfI4c3ON1hxWUPIPAozBvLsAGkOjvnGKfD3BRxhDf66MzEzBK/9+rrC
+	4LooDQR3rWFSXX8eIi8M0hFICrTdhRk=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
+X-UUID: 391f8c8279b911f0b29709d653e92f7d-20250815
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
+	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
+	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
+	DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS
+	GTI_RG_INFO, GTI_C_BU, AMN_T1, AMN_GOOD, AMN_C_TI
+	AMN_C_BU, ABX_MISS_RDNS
+X-CID-CACHE: Type:Local,Time:202508151717+08,HitQuantity:1
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:f11915a3-68c4-4069-9eb1-1092cd56b60d,IP:10,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:-5
-X-CID-INFO: VERSION:1.1.45,REQID:f11915a3-68c4-4069-9eb1-1092cd56b60d,IP:10,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-5
-X-CID-META: VersionHash:6493067,CLOUDID:638da975861fe3bbe853ae5512f271c7,BulkI
-	D:250815002500R9UDT29E,BulkQuantity:1,Recheck:0,SF:17|19|24|44|64|66|78|80
-	|81|82|83|102|841,TC:nil,Content:0|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,B
-	ulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:
-	0,BRE:0,ARC:0
+X-CID-O-INFO: VERSION:1.1.45,REQID:972d1f86-3388-4f2c-9a28-ef1168239777,IP:10,
+	URL:0,TC:0,Content:0,EDM:-30,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,AC
+	TION:release,TS:-35
+X-CID-INFO: VERSION:1.1.45,REQID:972d1f86-3388-4f2c-9a28-ef1168239777,IP:10,UR
+	L:0,TC:0,Content:0,EDM:-30,RT:0,SF:-15,FILE:0,BULK:0,RULE:EDM_GN8D19FE,ACT
+	ION:release,TS:-35
+X-CID-META: VersionHash:6493067,CLOUDID:ab7f1c49c2a63aa729cbabf1c15971fc,BulkI
+	D:2508151717102HAXJBFB,BulkQuantity:0,Recheck:0,SF:17|19|24|44|66|78|102,T
+	C:nil,Content:0|50,EDM:2,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:n
+	il,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 0
 X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_FSI,TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-UUID: 761695a079b811f0b29709d653e92f7d-20250815
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI
+X-UUID: 391f8c8279b911f0b29709d653e92f7d-20250815
 X-User: lienze@kylinos.cn
-Received: from kylin [(223.70.159.239)] by mailgw.kylinos.cn
+Received: from kylin.. [(223.70.159.239)] by mailgw.kylinos.cn
 	(envelope-from <lienze@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 380113571; Fri, 15 Aug 2025 17:16:01 +0800
+	with ESMTP id 2106063409; Fri, 15 Aug 2025 17:21:28 +0800
 From: Enze Li <lienze@kylinos.cn>
-To: SeongJae Park <sj@kernel.org>
-Cc: akpm@linux-foundation.org,  damon@lists.linux.dev,  linux-mm@kvack.org,
-  enze.li@gmx.com
-Subject: Re: [PATCH] mm/damon/Kconfig: enforce DAMON_STAT when
- DAMON_STAT_ENABLED_DEFAULT is selected
-In-Reply-To: <20250814162446.69575-1-sj@kernel.org> (SeongJae Park's message
-	of "Thu, 14 Aug 2025 09:24:46 -0700")
-References: <20250814162446.69575-1-sj@kernel.org>
-Date: Fri, 15 Aug 2025 17:15:54 +0800
-Message-ID: <87a541c5dh.fsf@kylinos.cn>
+To: sj@kernel.org,
+	akpm@linux-foundation.org
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	enze.li@gmx.com,
+	Enze Li <lienze@kylinos.cn>
+Subject: [PATCH v2] mm/damon/Kconfig: make DAMON_STAT_ENABLED_DEFAULT depend on DAMON_STAT
+Date: Fri, 15 Aug 2025 17:21:10 +0800
+Message-ID: <20250815092110.811757-1-lienze@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: F356C20006
-X-Rspamd-Server: rspam04
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 6s5n6wufqe9314j35di3zccici46ed33
-X-HE-Tag: 1755249370-364414
-X-HE-Meta: U2FsdGVkX19YzLo9P391twURdJdV9rFU8k1AcmxE/O78uHI2vWwPCAVLSdufQQi4X6+r805xUcnpT7vjXrkEeEqIzgy2IlKPCZsaHV7gyefZA63mJHlKoe1dWA4kKcZzd2XgvGbffFgF6ZjXRD2AawpIjRtBbG2ZPE+hAY679ujhDMTQUAKVmoHqEXuUKpILxuZHR1fvOL0f3qMut7+xtj8fVIGP75wVA+VLfJ1y9jzh43FkjNJ0ntQMRYLP0FkVWu9LdvMgKPdqyRW5nZYe1Y9asegCerEqGfzq9fzmJuL36H6zAm/sRkRaBbCX6FWDAN6aBvT6QuBM9JYlHIz5lHFb3FdceFgKUCEG3oFuoa+5x4mj4RLxtAwau6hU7PVt15W1qOeSDBxpruMqjVWUbWqERJZj92LWRgZSLsfK5+nDqMN6rTI69G5Z9AHn6vIbAuXuxeAjXV/q3EKhpkDDOymWezhnV6sdKeY7mVZAxjL6VKnzAMza8bD9kmLsYn/00lxACf4Kar4pRUFhmz0iWjWFRBtzIXDG2US/WF0ktdXDJ+H7siXI7iK7VzNBWXTHVTbIqzK/TKKZeE/7vGmWjp9/wjx1MKSBhKhr98ZqJNrJpXdXlgo0No5dqszbw1pxBVrUuKSUrdyMhApOlLOVt2Ki2e3s5qWjOOGhXHUCs5QCqYtwOKXt/syXNaNxWaxe+rtC/KraGGvQDC8dbi/Crd1NnhsIX+0YE/TAtdRfEB2GV4dwMO/s/umHGz88A1okexRs6tutrN1Znn4kJ3nYg+Hfu0VmqC8crwghJWDJl8moJuh/TdzItBhBlnl2+lzSq3iQFoT1h/s=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E9716180009
+X-Stat-Signature: wh1wrtbawnr45gzxa4178ehrmbiriqix
+X-HE-Tag: 1755249697-350080
+X-HE-Meta: U2FsdGVkX19ZB9+5Y2oqbvhF77TKe2jxXSJ32LU36zT/Wxz7nLG5qujLOcN57duMMopr7XEBqOkIRMQxVtvbLvmn8WUL95p61t9TDbsodpbEKaERLvCCWfrv2HYE0GCVBPxYJhMbILw/E8pn+QdvVm9Vgoxia4t9fw4uw9OfpcXUNlN4e4K81M68kaQjY+ra7ID7nmypxwiss5wpJ+PB3RHEd38YXYjTGMFWS8AGzDP/TWHPiTjn7Ih2cMp6IyxtLv43DeOAp8QP5TFfm980qekbVSGBkkNlSL7VXBf9vNCh7UysSsbAS6DFbHnDSJTkdgwh6Za+XwZVuOwPVtqV9S1srTVZ1mJB0kNxZ+Whb70k6mZu2Q9JNWyunb5sbSIdM0njt8JxS4eLFeI5SPk0I4py2y8J6hLdhL4RtpLdhaSAVX+0otzl2oDfhXpkkLQe5DIhG0wRlAkA23kDmUtrsgaJWc8xf0x6WWGlw1G1IgRvkZCc7dbrUcI5tBTf6DCinEr431o8UFH7RAV5bdUs8X2XcubFHp8gul1d81ZXCY+MlOYKpVSmftU1rVP0AjvVlpwgPwqVAc0z3JN+4XOg1y/i8zhrmKc4+HWQN154Qo/47iq9/FulC9EBmybMaeLogv5kYMEP/dUcwv6QtQ5LlkNB+14OZUcVpI/Vn8p3GbSkGlXsGosj7kYomIN6m+XlAkyndrlenqSrHAw2DP7JKmsRxlvE2AD6adrxYNL6H9QgNTDapsqgd8QfCZJXYlyeRKMN+EQDrw653/Kr53BzRuKxhRJHcfFmvQBm8xa/o4U9NsvWK174iEWOX4yqwkdHfKt3MeKOXQ8rbeyXDhygjM8Hzn/mbyy20L4oO6M+Fr3RkKXQjNulA9Q4el1NvlQYfjHp4omY/RiEICWYHRouKoOJ48rIaqz/8X0aGL6v79gzHkhn18BomAov1tAKJYNjs3w5Syt+KinE2fdbW1H
+ 9Nv0KkQg
+ MNGZM8rQ+dUhaC1RzJPG+vcKDUUGO8iUB0F5yXqEhTju3VlI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,69 +104,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SJ,
+The DAMON_STAT_ENABLED_DEFAULT option is strongly tied to DAMON_STAT
+option -- enabling it alone is meaningless.  This patch makes
+DAMON_STAT_ENABLED_DEFAULT depend on DAMON_STAT, ensuring functional
+consistency.
 
-On Thu, Aug 14 2025 at 09:24:46 AM -0700, SeongJae Park wrote:
+Signed-off-by: Enze Li <lienze@kylinos.cn>
+---
+v2:
+  - Change the subject as suggested by SJ.
+  - Keep 'default DAMON_STAT' as before.
+---
+ mm/damon/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> Hi Enze,
->
-> On Thu, 14 Aug 2025 20:17:03 +0800 Enze Li <lienze@kylinos.cn> wrote:
->
->> The DAMON_STAT_ENABLED_DEFAULT option is strongly tied to
->> DAMON_STAT -- enabling it alone is meaningless.
->
-> Nice catch, thank you Enze!
->
->> This patch modifies the
->> logic to automatically enable DAMON_STAT whenever
->> DAMON_STAT_ENABLED_DEFAULT is selected, ensuring functional consistency.
->> 
->> Signed-off-by: Enze Li <lienze@kylinos.cn>
->> ---
->>  mm/damon/Kconfig | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->> 
->> diff --git a/mm/damon/Kconfig b/mm/damon/Kconfig
->> index b3171f9406c1..5bc71354e6f3 100644
->> --- a/mm/damon/Kconfig
->> +++ b/mm/damon/Kconfig
->> @@ -105,7 +105,7 @@ config DAMON_STAT
->>  config DAMON_STAT_ENABLED_DEFAULT
->>  	bool "Enable DAMON_STAT by default"
->>  	depends on DAMON_PADDR
->> -	default DAMON_STAT
->> +	select DAMON_STAT
+diff --git a/mm/damon/Kconfig b/mm/damon/Kconfig
+index b3171f9406c1..8c868f7035fc 100644
+--- a/mm/damon/Kconfig
++++ b/mm/damon/Kconfig
+@@ -104,7 +104,7 @@ config DAMON_STAT
+ 
+ config DAMON_STAT_ENABLED_DEFAULT
+ 	bool "Enable DAMON_STAT by default"
+-	depends on DAMON_PADDR
++	depends on DAMON_STAT
+ 	default DAMON_STAT
+ 	help
+ 	  Whether to enable DAMON_STAT by default.  Users can disable it in
 
-Thanks for your review.  I've updated the patch addressing all your
-comments below.  And I'll send the new version to the list shortly.
+base-commit: d7ee5bdce7892643409dea7266c34977e651b479
+-- 
+2.43.0
 
->
-> I don't think we need to drop 'default DAMON_STAT', though.
->
-> To me, it seems the problem is the wrong dependency.  What about making
-> DAMON_STAT_ENABLED_DEFAULT depends on DAMON_STAT, like below?
->
-> """
-> diff --git a/mm/damon/Kconfig b/mm/damon/Kconfig
-> index ecbdb3e2ae58..d5f8db812dd3 100644
-> --- a/mm/damon/Kconfig
-> +++ b/mm/damon/Kconfig
-> @@ -104,7 +104,7 @@ config DAMON_STAT
->
->  config DAMON_STAT_ENABLED_DEFAULT
->         bool "Enable DAMON_STAT by default"
-> -       depends on DAMON_PADDR
-> +       depends on DAMON_STAT
->         default DAMON_STAT
->         help
->           Whether to enable DAMON_STAT by default.  Users can disable it in
-> """
->
-> Also, the subject sounds like a bit strong tone ("enforce").  How about
->
-> "mm/damon/Kconfig: make DAMON_STAT_ENABLED_DEFAULT depends on DAMON_STAT" ?
->
-
-Best Regards,
-Enze
 
