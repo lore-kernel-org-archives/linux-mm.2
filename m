@@ -2,109 +2,128 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AD9BECA0ED1
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 15:04:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F1AFCA0EE4
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 15:05:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DAE2190024D; Fri, 15 Aug 2025 11:04:37 -0400 (EDT)
+	id 2117090024E; Fri, 15 Aug 2025 11:05:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7F1790024B; Fri, 15 Aug 2025 11:04:37 -0400 (EDT)
+	id 1E95C90024B; Fri, 15 Aug 2025 11:05:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B84AF90024D; Fri, 15 Aug 2025 11:04:37 -0400 (EDT)
+	id 1013990024E; Fri, 15 Aug 2025 11:05:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A49D990024B
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 11:04:37 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 29BF9B6F27
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 15:04:37 +0000 (UTC)
-X-FDA: 83779313394.27.B726ADA
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 3A5ABA0012
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 15:04:34 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WyS49w2N;
-	spf=pass (imf25.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F316690024B
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 11:05:53 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7BA431401C6
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 15:05:53 +0000 (UTC)
+X-FDA: 83779316586.29.81307DD
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 7712C40014
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 15:05:51 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=dabbelt-com.20230601.gappssmtp.com header.s=20230601 header.b=rFmjd8NX;
+	spf=pass (imf12.hostedemail.com: domain of palmer@dabbelt.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=palmer@dabbelt.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755270275;
+	s=arc-20220608; t=1755270351;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gp94pLZripqg6DXdOBsKXQLYLF6BHz1zUMlVq+K/gJM=;
-	b=QfEqurNe5If9Ck5XpNG9+UgTMYClTssBbxCKf6XBQ0RDJCEpMy3JOoVuxggsNbjviPugT0
-	6NppK0gwQqM3UaLoS31xQcDBh+P7W3z0GXCUt314c64WDYQytyASeDH3IkAZ6Y3irTmbYZ
-	5EUG5dQMWTpsQS8x0Zv5uv8JX2dpGdY=
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=38zqqxNHqbGz3C68JOy9Ugb8wAb711DWGVbxjNinx0U=;
+	b=M8JO2RL1XwcvnnptHS2fztuzs5eiISbAK8DsRWVXwoA1qrjkg4YQM3AHXQE8Bf9hPNMkmd
+	+mUUh+DCcreqTAphrJTE/RUdOFScyVZvxvs1eoZIBLdmNijws9bXP3S6OSt3KtjChD3aRp
+	+1HOlmRME2y1RF6yWYG6sT25HxMnXQk=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WyS49w2N;
-	spf=pass (imf25.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755270275; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=dabbelt-com.20230601.gappssmtp.com header.s=20230601 header.b=rFmjd8NX;
+	spf=pass (imf12.hostedemail.com: domain of palmer@dabbelt.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=palmer@dabbelt.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755270351; a=rsa-sha256;
 	cv=none;
-	b=UJyJQffjabiuijpI9Dg6Ltl1KRdkzPnYb7hGtpepULOiqLVx7X31rSsI7KWvdb/BrU05Wk
-	dl6BITbXUrPQV39dvDYJ3jnFo+D+C/4/eOMPiqKf2huJcucVDkRGu1SoHhfSVX99RiZmm4
-	R2ox8W1JQ3rck0vaCEvtf/sP6+gegK0=
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-55ce526a25eso2139871e87.3
-        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 08:04:34 -0700 (PDT)
+	b=BFzcGO0kEaXpVhaKJArYnFh+5ZtV7zAqgbKfp2HcvIB1nIfojG2S0yGH60NEv23erU8cMk
+	MuQv39ekyx5muszZ5JgBGKD/f+t8b7JEjJepScW7hJBzohuvbYpybey05y8or2aqRZtjcf
+	OemY96ZDBx0vCpOBT7jVzSIjKH3b1Kg=
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-76e2e618a98so1632949b3a.0
+        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 08:05:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755270273; x=1755875073; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Gp94pLZripqg6DXdOBsKXQLYLF6BHz1zUMlVq+K/gJM=;
-        b=WyS49w2NTqoIO+ZrUPRJ2gDhiONbkDjZC7oPzkl3IHb9gnwp785Lu8VL7g14gqzIEL
-         qJsqCQHg5FOw+GPSAmMbZNgr9W0T/wo84x2O10YWTI/MqZcJ9/KV4K+eVQtxbwNR1QtW
-         hqVcs3uLqcDN/AILrpmPEHaB+icR0AtS23Wd6iVW4Omgyne9y5AkaQYIRK1wVV/9x9To
-         L2y0xZqvGxbj/5QPet999hderqDaIk+fpSSpT7mXNvghimo/hAE/EcufRcAPX5Im1vxP
-         YbGzEDLB5MrEh6D1eo6lT2ZbzqbUrmssB+zjeMRY56lq/ajtP13xv7TvakZ520UuiXse
-         Sp5w==
+        d=dabbelt-com.20230601.gappssmtp.com; s=20230601; t=1755270350; x=1755875150; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=38zqqxNHqbGz3C68JOy9Ugb8wAb711DWGVbxjNinx0U=;
+        b=rFmjd8NXsQh7545PKGdf0dLvM39UN3hXa/6D1UTs4UUkZim7tVBWPLXJu9aviWAKBt
+         KN/JGoh2z4lPqEh9X6WFYHu2XpVWNww7kcc/+rBwPrpbdeODP6MJ10vtTaU+zrJxmUVO
+         aU9X79PZDyW/BCR0DeZXWrBBfWWcOULFWrH2cQ56mwG1rFt1zb+gw8UMqWcek24pBfFM
+         9fj4/z0StWtb9Bf65dDKKUzoeOAe9hdC8oKTVL3VolmpTvf4fXrY84BJep5WaRxN+B3F
+         xeav1dMvRQdlKeJTE41J7mC+4BTqpF9bttrcFAGmirqmzHYB8un3YjrFCxCelx+pFs2T
+         qoAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755270273; x=1755875073;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Gp94pLZripqg6DXdOBsKXQLYLF6BHz1zUMlVq+K/gJM=;
-        b=do1kv+xRas72tT8PG/XXH6Z17ZU4a+xlwXWVMSIBPHs9GM9ocqhtJr0l5j46ZiC8QW
-         AFW6hDG6xJ8Gyjg33ykiPge/Dp/u2Rr46lN1oLoaih8y1JzrolG9SHyw9XncACtvP3qZ
-         A3+Z2OzYOYNeQJL2K1TaHusG9OQoG+oEFqmkvgZJHClWCC7vGF6JG5Z5R5s3Vl/YPErq
-         zwC+M8VV38F2U688QnJ+hqkK/CBc8I9CtkckCc7xsFy/uTihmQe9d5MOyXSsjhJBzpeF
-         44mnq3TFc02vOCGJlgoooqdsOo8SsJuqWQUQIBaZ8A1zZSHYhcB0amLuXoh7x/F6qJU5
-         F82Q==
-X-Gm-Message-State: AOJu0YxZ4Nh37ZqTDL/Xq9BY7LstZpmigsNiUX39Vxpuzz+y1xHg14nG
-	bQOrGwGxKFjRyDPVRFaHxcQnIcaFrapi0AMHeaaln8dvY/8fiA2yp3osnA3Duqn3vjXsRx4DvDz
-	iSJaoDwXkzs2FGtCPjPLtzKJsRmvhH+M=
-X-Gm-Gg: ASbGncspBy03pUUdZJeWWvic3v61vUCXuP6Rsx15m8hGcqqnV/3fO4Qel2EoagcljVd
-	tMEovNpanY+KdLlnblLezGR2a/lK/O7N76JaHTGWwinbMAYFDRV5Kxj7k/jsBgLY+JBDE+lF1a6
-	mcgoY6TEhvDmq1qYKZ7Vg0M6rRxFl2Xf3t/6aFtmpkAPziAUSJGYGYkp4krEwdxJOwxHO6FmUXs
-	qTQ+IE=
-X-Google-Smtp-Source: AGHT+IE8Qk6BHMFBf9U3IWk6DXLCzSG3SFLdYC+TdgKQVfcghPqI3c01lgGm49VUwUOg3oEbKVySGxlwZy1bUXGI3iU=
-X-Received: by 2002:a05:6512:3f14:b0:553:cede:6a9 with SMTP id
- 2adb3069b0e04-55ceebb869amr541797e87.55.1755270272957; Fri, 15 Aug 2025
- 08:04:32 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250815121252.41315-1-ryncsn@gmail.com> <aJ8m42sM1NX_wEE9@casper.infradead.org>
-In-Reply-To: <aJ8m42sM1NX_wEE9@casper.infradead.org>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 15 Aug 2025 23:03:56 +0800
-X-Gm-Features: Ac12FXxYXlBYCdJIvWrwehc72wOjc3c-8FR_1vIHreuh2_FrYBGdZYJ_kEHzaBM
-Message-ID: <CAMgjq7CYzdmt+mJbbkrskiksfvXuhOhLQ72hTnqGhc5nu8uH0g@mail.gmail.com>
-Subject: Re: [PATCH] mm/page-writeback: drop usage of folio_index
-To: Matthew Wilcox <willy@infradead.org>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 3A5ABA0012
+        d=1e100.net; s=20230601; t=1755270350; x=1755875150;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=38zqqxNHqbGz3C68JOy9Ugb8wAb711DWGVbxjNinx0U=;
+        b=tya68VXfv4zkswLO2x1JoXbuEimTOyDSjUeMwr8WmU0siNzndHGlaP4a4GoGPhZlOn
+         LK3FgR2Meq+Yck1hHEZjg0Ul7um05Qvwln4QT/+EIpbAmQEk4TCAFfaBMtR9VvasEGZD
+         2iJk0xE00rBipWpNVbqg0dSSc2eErJmNjH8pxTUaOFbViGhNzRA7hUPsxQl+QqPPCoY1
+         2TD8kYe8/e/sALX4C8xdgF06LYCdS41aQqYQhAi9s/IYuZP9Cfe/qN6FvstP/lp9JYGt
+         2VzOPkiiD+MZ2jL6axOqz1yI7w3xIVALJ24InNmnd8Q5r9xL9v3/otDQSmzmrQZP7K+B
+         qEuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXaS3Hh6ThWCOoFQXi0KYis0b67oG242ycKl2uQviMcuh0VrlPoNKDvb5gc1Fssnhfrxa7/1HhNag==@kvack.org
+X-Gm-Message-State: AOJu0Yz3F8WcMjCBKoBS0jWTSpe+4yX7IoRhOmUmVAskHArVGN3YLi1X
+	+y3+04oQJl8GlsoWSFofwbSwrNvMr34RMKdOLU7tFRK3njR8hcd6KYEtrx4ssA7/LvU=
+X-Gm-Gg: ASbGncuKB5XLRW90taEIwHucVjwKr0JlssARN5O4V2kuM8lW3ApG05z3tC/ffWT0cUp
+	LR9cf4m2+r8kGo2/uvkLJHcwM3SZ69bk09QCmjjqgYJzq5d6ImJfsdoBZdQALrHYARFaIOE7Oml
+	tKqtPbCeJZFNJV6KbjtlI+KMnalibH9a2ArYBGs9misn3XCRQv69a71sQv8kdgfdL2kGU6upE1B
+	SwYrLBCA/zbNnL2tfNCnQOkboPvwc09WcENUXCYUp+wkYmas8BpJYXSJwIGHbmBypzGmk+YAOfx
+	ODz2TMavdcSak7UlcBmiD6nVSeKA4xiDMXrqKALZ7SiYj93Lm+rojn4xfrWrEqUi+rexxBlk19I
+	N+azr05qA9Q+49svbhE9i2ZBYVgvQeNjvJUA=
+X-Google-Smtp-Source: AGHT+IG3gBMogdOr+spUGY65daTLUVfmz5lhgO/opdXo6UimhkccgL0C2Gx+F8DUbrOBq4AI/2z6Vg==
+X-Received: by 2002:a17:903:198c:b0:240:a222:230c with SMTP id d9443c01a7336-2446d5af743mr41307075ad.12.1755270349908;
+        Fri, 15 Aug 2025 08:05:49 -0700 (PDT)
+Received: from localhost ([192.184.165.199])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-2446cadf96fsm16286885ad.41.2025.08.15.08.05.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Aug 2025 08:05:49 -0700 (PDT)
+Date: Fri, 15 Aug 2025 08:05:49 -0700 (PDT)
+X-Google-Original-Date: Fri, 15 Aug 2025 08:05:47 PDT (-0700)
+Subject:     Re: [PATCH v4 06/24] riscv: elf: Move relocation constants to UAPI
+In-Reply-To: <20250812-vdso-absolute-reloc-v4-6-61a8b615e5ec@linutronix.de>
+CC: Paul Walmsley <paul.walmsley@sifive.com>, aou@eecs.berkeley.edu,
+  Alexandre Ghiti <alex@ghiti.fr>, nathan@kernel.org, nick.desaulniers+lkml@gmail.com, morbo@google.com,
+  justinstitt@google.com, luto@kernel.org, tglx@linutronix.de, vincenzo.frascino@arm.com,
+  kees@kernel.org, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+  hpa@zytor.com, richard@nod.at, anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
+  linux@armlinux.org.uk, Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+  maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+  chenhuacai@kernel.org, kernel@xen0n.name, hca@linux.ibm.com, gor@linux.ibm.com,
+  agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com, tsbogend@alpha.franken.de,
+  ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+  bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+  tmgross@umich.edu, dakr@kernel.org, nicolas.schier@linux.dev, linux-riscv@lists.infradead.org,
+  linux-kernel@vger.kernel.org, llvm@lists.linux.dev, linux-mm@kvack.org, linux-um@lists.infradead.org,
+  linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+  linux-s390@vger.kernel.org, linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org,
+  linux-kbuild@vger.kernel.org, jstancek@redhat.com, acme@redhat.com, alexghiti@rivosinc.com,
+  thomas.weissschuh@linutronix.de
+From: Palmer Dabbelt <palmer@dabbelt.com>
+To: thomas.weissschuh@linutronix.de
+Message-ID: <mhng-5B6E084E-60EE-440E-BFF9-5E81AAC9A473@Palmers-Mini.rwc.dabbelt.com>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 7712C40014
 X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: gw7dowjyqdjtbqx67g88837t6ermh9au
-X-HE-Tag: 1755270274-61159
-X-HE-Meta: U2FsdGVkX1/ETrtAG8ysjtWBOmjT3o03rvY0DoQOfX5S+CtM7agTUIovIQmo7/3ZgDWa+07JcaoYla5S9ycyx2ybTquHMi1CNhvXQ7GjNWE6aI1Vw3LElH3rusnf8wswLEgwSWtbANvYaNnSPYShzjNeeSbUSqFxcsoAdFVgleI/qWj/UCHxuVKjHGugWQK85R57Ao7g/m0t6C9L+ieAr2Yxbrb87b5UGZr1BYaOL1bY9BQ73dsut+9J5eI+686AS7GFoqJyubbvGa+y/5WzoTGlhUTrd1YeCSpS4M1VDWu10bnhcTnRVmFXhTHG4LHoxgNPZ6ypguaT+bcN0Wblaohu+RT/Sf4ilxFpMKk/s1vlO6Aqwqnej3SURwPgSztD40pT6J4bTOvjm7Ewl1g1cI99YMmXCV0KStg0hWjXXOFjcY92r83t0duSDGCrQZ3WDGk47166XN/O6yBxy1PiYBloYV5zWmQ3PUUYunK4X/Iifbzch7skRVME+uCYB3RNCBNXX7A3hzG9RRdpE6kfXY9vGI7dwMgDoDOc6v1MNEIf7UDxMB3FJIQkMZU1Kcz4eJfEubEsFi79M1LVMLM0vfnLFFIGHPsUdbKrpQDdvP4YQ3k3jCUyG/cJeoSi9TlbZuJBLoqeImyHjxcj/KlAtt87UrUhl6pUMJIFZ2Qer7qrtO+S+vz1PnKaNwuZASyI6U1Y1WFObgl+xu1Hj64TsIJHym0kI6FaL47gsZFIf2ZuxOxi8XC4F9g4Wu1uquqNIT5tBSegQsCMiH4YeZ/mUs+FNiRWG8y16ozRhkSoMuslzSqkbbTPiVNf7PtiyTf4Ee3jCEaaB25/D4N9BhqNocNG9t744xR3//laFd3NyXkJnK4rG6PfFCiO4KD3Zg5bySeH66PUg5YbmfGlASxZg5g3uBymkPjMkZ4kBPb3qfLwgpGDmQK7Lno+tShHr47I+UPBi+JOW7Q6wJzSjaI
- w520JG9F
- z5oAHwFEzzyvtpgfMp6gP+34FOMiOJ//G9iqy2g4TmjvZF6dcCa730ivpzBONKxJpJDtBvvGUYruZP9V/AX8PVeM83OUs+zfeBD8V4NyWTN8kuncNwGFRrtc5qkUnJUqp7tte2/990R8yNS8hnpldSAp6vwJG/YNdmw1o/Pk2SWjE4Zv4+cFaAgKFZ71O3FXnJ8nhtJuoz6KE276A1YM8CvEESSZgrYbZo7LQmSdhSFGKA0GY3sWlVM5bF+fIvGcYHIkyhB4tRZnrpPOF1SbjZMONHS5ZHsXjAFADEzTMlq3nNE6fMdEBNzumbs8D7K2moBTMu9uSbop12Y/rcxaB/qY8BRtDvCc8Do+MihtHRW3dSHiFVLWxw7TpRQRWageX+jRl6kaGFsvsko/9T1Bg4YhXq+fLtNDnk7B/OpubQCI7GqmksuZEKimlndWdnOTVEZvm0NmBck7pCCE2qEAUqYCCUA==
+X-Stat-Signature: a8yanuiiothygyadgt6ykwuxzepbcu4p
+X-HE-Tag: 1755270351-79571
+X-HE-Meta: U2FsdGVkX19sEoRhC+ZBlffoEttsJYL4wcxh/1Ie0qs+hNoNbkYLJ5xGQbqo4eokjKIaynGMhfBQW+wfQgw1Te/iRyRiqatri0ybpDdSr8TnSA7ZFAgZq4L8PMy9XaqGq2FOFs3mY1OwRqT+Hr31f/bMaDHoDBF2QRXf7qAdyXtNXpanyn7lfHcEIMxo/sjkPaMt+P4/6GplABCLbjaLRbxm8noA1M45YMegz/Btb7GCWNmhCGUuAc0mGJpy5YJ3DBKfJ0hFuAPLPVKEHqgkzRXSQ1WarYLZxVrPV0FNKCG+wuco+JbCsJgr9adb1jEWHJJE6KFfXw1ooOY/8JnQevgqn2XPKmPizW73EuYDTAUTL0yBfKgv9ZphgKchAUN0p5SeMS49XibOvgMptl5xQHVw/S/I6ldotRmTFzZdCNc4IfQEGqmRufKjdXDy4aW1+5kLGubkGT2JhaqAWyZhN3tThTHj5mywtrd3/nM0JosSa3bKpPyWMLTvMeIv60+8k2mOKMdhvEzUogpVlc/6JhkjjVpWLEn/bZk0FgF9uys9bSUh/2HeM3KJmYqAX2gsGMQuFyN2zTk7DfTyYQ6ryJ70EAmC8+xTcAP0U+R7ldqKEw6/eTQ9+3v6DXgGyYR6gzaVQGObpeZvPmsMZ9BHlOi01PICDvXTjIWQz3VzPvqYNy+DuYzqgX0LL6prTcqD0uyLtrSqwmKNpW+zRQqNxMwjQy0Ebmw5Ko0StiozpuaDtlvUMueEpNyqm/w8c5NnlSRsgPlCVc1DkYH8Wsw9a6UtG9JDV78KqDTnyUvK5V63FH+xrf8sKkctDbojSme5v/zhsUxl+peksU3mDaeaEqQMBawW9ek3/szb98BmfQwLCK18DKgMmGTBr3O9ZKNCHuO9BFOVBtrCPkb32+B9ABlHTRZO7I63YjXZvkAeAfynGMqd011Ac0opZWWAW4b+U5QZMXsKTHS2RWPo7rK
+ hqyjYv37
+ g4S8ZysxI2clKiAXcNiOESsEg5iO3GA1dlujwcLpnTwdcdeyrhg1oobZNZ0EY20UpzajdtenMVG/04BDPpPynNBMChhod8qGpnbVn6gKpPVBU5zK/2QBP/XCF/bdrcY1+6oBlkOnFthkExnQAG/a8JWYCWxudqE2PJfJLsktg4a8lHs93mXNu1PEH9ZidAmBxWbt8dDLKdMx0sy1XuCHRG8JA5BnfC5DdpxvSnbCoN3eo/XStEpPDVe0DT1+FfoPHL1iCGl4aZFzbonaxvkRqk5Ieo6nq9SmOuHggqoGujQrFr1twqaFl19k0FHsHddwpchbyX+bq4W0Ce0Urp5hFvF9cCBDsnZds6/H+n69E3sGTNLcawSNVx4XJm1kBXBxa8CRuU3wYztw3b3iBLKXsNU384CLg54bfsQBzcMoERSqIhKkoetfE2I8LV+AYUf7lX8baXN9u+Xs7jp8wGxYIeb/Enhk9Mv4LYyMVcPvG9kA0+5wBl7I4RvM+s5LAWQCfbRVe1S0DGbpCY+Tjp6dMXi+dVmUf6pHOtOdNe5Waaq93t6Cw1k7uSk1fz3IVaAruPzn6ndtn141J8SsYt2hu/qGHNFTmfvhm2zfpjFmZN0e09oGOTMl7R77XKdvg7oaykSXH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,64 +132,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 15, 2025 at 9:48=E2=80=AFPM Matthew Wilcox <willy@infradead.org=
-> wrote:
+On Mon, 11 Aug 2025 22:44:19 PDT (-0700), thomas.weissschuh@linutronix.de wrote:
+> These constants are useful for cross-platform userspace, for example to
+> process ELF files during kernel cross-compilation.
 >
-> On Fri, Aug 15, 2025 at 08:12:52PM +0800, Kairui Song wrote:
-> > +++ b/mm/page-writeback.c
-> > @@ -2739,8 +2739,8 @@ void __folio_mark_dirty(struct folio *folio, stru=
-ct address_space *mapping,
-> >       if (folio->mapping) {   /* Race with truncate? */
-> >               WARN_ON_ONCE(warn && !folio_test_uptodate(folio));
-> >               folio_account_dirtied(folio, mapping);
-> > -             __xa_set_mark(&mapping->i_pages, folio_index(folio),
-> > -                             PAGECACHE_TAG_DIRTY);
-> > +             __xa_set_mark(&mapping->i_pages, folio->index,
-> > +                           PAGECACHE_TAG_DIRTY);
-> >       }
-> >       xa_unlock_irqrestore(&mapping->i_pages, flags);
-> >  }
+> Move them from the kernel-private architecture-specific header to the UAPI.
 >
-> What about a shmem folio that's been moved to the swap cache?  I used
-> folio_index() here because I couldn't prove to my satisfaction that this
-> couldn't happen.
+> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+> ---
+>  arch/riscv/include/uapi/asm/elf.h | 66 ---------------------------------------
+>  include/uapi/linux/elf-r.h        | 66 +++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 66 insertions(+), 66 deletions(-)
 
-I just checked all callers of __folio_mark_dirty:
+Acked-by: Palmer Dabbelt <palmer@dabbelt.com>
 
-- block_dirty_folio
-    __folio_mark_dirty
-
-- filemap_dirty_folio
-    __folio_mark_dirty
-
-For these two, all their caller are from other fs not related to
-shmem/swap cache)
-
-- mark_buffer_dirty
-    __folio_mark_dirty (mapping is folio->mapping)
-
-- folio_redirty_for_writepage
-    filemap_dirty_folio
-      __folio_mark_dirty (mapping is folio->mapping)
-
-For these two, __folio_mark_dirty is called with folio->mapping, and
-swap cache space is never set to folio->mapping. If the folio is a
-swap cache here, folio_index returns its swap cache index, which is
-not equal to its index in shmem or any other map, things will go very
-wrong.
-
-And, currently both shmem / swap cache uses noop_dirty_folio, so they
-should never call into the helper here.
-
-I think I can add below sanity check here, just to clarify things and
-for debugging:
-
-/*
- * Shmem writeback relies on swap, and swap writeback
- * is LRU based, not using the dirty mark.
- */
-VM_WARN_ON(shmem_mapping(mapping) || folio_test_swapcache(folio))
-
-And maybe we can also have a VM_WARN_ON for `folio->mapping !=3D mapping` h=
-ere?
+I'm going to assume you want to take these all together though some 
+other tree, thanks!
 
