@@ -2,109 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0517BCA0ED1
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 23:41:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77312CA0EE4
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 23:50:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A43A6B008A; Fri, 15 Aug 2025 19:41:06 -0400 (EDT)
+	id F2F118E0222; Fri, 15 Aug 2025 19:50:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B0DB6B0093; Fri, 15 Aug 2025 19:41:06 -0400 (EDT)
+	id F071B8E020B; Fri, 15 Aug 2025 19:50:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A2016B008C; Fri, 15 Aug 2025 19:41:06 -0400 (EDT)
+	id E1C3A8E0222; Fri, 15 Aug 2025 19:50:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 652218E020B
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 19:41:06 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 207F7137FB3
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:41:06 +0000 (UTC)
-X-FDA: 83780614932.03.6C815AF
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6CF60A000D
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:41:04 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=yP4pyInp;
-	spf=pass (imf25.hostedemail.com: domain of axelrasmussen@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=axelrasmussen@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CE6808E020B
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 19:50:04 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 733AC140305
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:50:04 +0000 (UTC)
+X-FDA: 83780637528.23.ED077DB
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D3D5120013
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:50:02 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IegLU5zL;
+	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755301264;
+	s=arc-20220608; t=1755301803;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eC+hmy8FxOOZt0BUy+LXGgoJOiZCGQ/IiVXODEc3P1o=;
-	b=Azzn3vbk8neJ4LX5EHyS/d6rNPmvE7qr98TlOPgcOdDSdc2g0M+KA57zfA6xDdutTX/blQ
-	yT7cNP53842FKON+Zd3ote3KOp3ukh/DAHgtEUxhDw32Em5naZlxm3P1m0IssrMy6DA7cO
-	psyNJpS327pdSPiZnS1G5lj0MK6uR+o=
+	bh=AStwkjtYPFPs1losmNujuyfgT/P/Bko56FEl6sEmJLE=;
+	b=a2pw7CaDpFeMja92UEnmJ+qC6ij4vADNJxkwr4WVtEZ8gYGBtERwX8JMUKX/XzKoT2EW48
+	28gJTgdaPThDWFvBFMdR8TIU3k5q//8RNqk5E+1cwFQ0CXPWw5vHhRvzhEbUke88IG8Z5e
+	FTItf+7wCzcS6dxlhGYdk5tKSeCSsoY=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=yP4pyInp;
-	spf=pass (imf25.hostedemail.com: domain of axelrasmussen@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=axelrasmussen@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755301264; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IegLU5zL;
+	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755301803; a=rsa-sha256;
 	cv=none;
-	b=ybQrMVQNVP/jEgBcE5HAeYai/APtXyjIicPZaaarqFA32gbysRa1TNf00owDG0BB1zvIVW
-	bxPymZUa/nSdo+1fd8QNGfbaZLybaM8zS7ApkVQnFB3gblS3Gw8NIV9wI3W7KhtD7GqYSp
-	rsofWtw2OKez6AtmWIMi8vVCp2Ll2SU=
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4b0bf08551cso88851cf.1
-        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 16:41:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755301263; x=1755906063; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eC+hmy8FxOOZt0BUy+LXGgoJOiZCGQ/IiVXODEc3P1o=;
-        b=yP4pyInpVFIblTCOvmRma7osIvRlHOl5RqeZiT5oVVwNrO+tgf4K2P4rkiYkWMzTmm
-         ae2nFPe+2PtnnOJMeE9zDwxdPvoQ/7MySD3Re2uKThFqZRtVME1t4YitZVJLtgp56JfZ
-         82kTeazMEZ0oHrrZCft2ExiIcz+m9ItyD+YZM9Xn8QIjdtDZgWwccI+ueac1RByxfeEQ
-         gxBfYSZwS0L0ZxbAqNTJw+gAAthA5N0w6RiAp9OmB+u1p6MaMt2fWRJgeIMDGVNQ7PPw
-         M/Tdo4LtSs8/m3UBcPU086cehKIYmIC8LmFJpKHgMA3A29GhLdJJocULUXuE2IyiQwHc
-         4hcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755301263; x=1755906063;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eC+hmy8FxOOZt0BUy+LXGgoJOiZCGQ/IiVXODEc3P1o=;
-        b=dN13sAQbV1MEplJofveB8ALo12qmKKm1SrZryXGt+VI5q9LBd/ieR3ulIF8hZxn10V
-         42IrCvEMWgPGaU8+Pit5FN0i35Ut+VxkW4Zpdz/yvIjhB/Ys5yY5XCcabO8r0iRcRENx
-         cFBEKzd4birTVmU3AJcTQ8EfAcYw4h+quhrUaecDotzUFWqY2yVsJFWErmmEHYddQy4i
-         EX2WVy4K8mQMEGrqju7EfgX0H2Fn1WkOe+t9c6ZyPPLnfS5YI0i3CTiI6wq+S6tyH6Nx
-         bi/hQVi64HGTWaRmQt2LZmZuS8SWDd5QgI7ZdRnn8edMruayuhT289I71O7cwJFhzxq4
-         2TTg==
-X-Forwarded-Encrypted: i=1; AJvYcCXrg6dtQEsfz55S/nkLOntMC3wVj/0kPdDJOLSdfUmLq1+LbOj4/C5VD03JtxsAXPUdpR6kIPFhVg==@kvack.org
-X-Gm-Message-State: AOJu0Yy9xXy69774uXbQC65W8MIhAi2OUQ7CMtz+tnezP/7wweRDdH25
-	xiVBwl5h0GpafYg/pLZd1iAhEwPdXfYsu0jsgJUfaYasQfXpzAxkrYTIhCzoSokyBswHHB4MckW
-	8Gcfu2vgqPzqgdcFlCMe382sj4uqERb3Pf9/Zsbbs
-X-Gm-Gg: ASbGnctI5ChGjD4U5FF/boRTxYZSRLWP3WBYD7q6KrYKKaYm6I/6mZbD/BqgKT+8Rg4
-	ih8JzabAQoRDcKeQORbWoXFrLOvFggFWxbV7uEtlFo+qd8ce2ICA4pBGJe+EDzGN7J/QPfXOTWf
-	IzSChvmbrqNgBdl407/d/jLVSHFo93OPvtx22CtciAH7pCIg+HfumFboI+oSXzjs0SZxlv9+7wv
-	Wnh7ClK9xWP8Zlfp6njJiQ=
-X-Google-Smtp-Source: AGHT+IGrhyPvvxTOfa6TjnEQTZi75pbn9usZY5vdhT1RdyXHVbBFYpxokexBB2Fw8B3UMydhkThzOeMQPkqiMVkwmJU=
-X-Received: by 2002:ac8:7d48:0:b0:4a6:f525:e35a with SMTP id
- d75a77b69052e-4b12bac1cd2mr671791cf.9.1755301263038; Fri, 15 Aug 2025
- 16:41:03 -0700 (PDT)
+	b=FspLS/mWIzJjy30gqf79hfslTZPHhCgFB6gA+VMuftLJ4NkYN1edisQm3T3qKN7cjgsK/a
+	Pl8VIYSQ+ODq0BsbSlR4srDXS9JRdKof16GJWSVGhcOHGGDIRqxmwG47AVXlAAQUeETzCW
+	x85jqY6QtpfFrJ42Zm0LQda6fjXRiD4=
+Date: Fri, 15 Aug 2025 16:49:51 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1755301800;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AStwkjtYPFPs1losmNujuyfgT/P/Bko56FEl6sEmJLE=;
+	b=IegLU5zL8xqeUevd5W/ZUhA7+P0SoQWo7A3zgD9QHDVTKAOuGgz2faXZ+MVoaRs4rsFHBE
+	+UT12MZslTrYzjw9xGeBxraKE859jeYtIwU/Cbz66QXlM3LFo+xlBY2ccazs0qnujoTiOa
+	oXsDvKyCz0YyomNTrTSxQonC6Oyhdlo=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, Matthieu Baerts <matttbe@kernel.org>, 
+	Mat Martineau <martineau@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Tejun Heo <tj@kernel.org>, Simon Horman <horms@kernel.org>, 
+	Geliang Tang <geliang@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Mina Almasry <almasrymina@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v5 net-next 04/10] net: Call
+ trace_sock_exceed_buf_limit() for memcg failure with SK_MEM_RECV.
+Message-ID: <pnlok4z77uygki2roci4sn32fosakjyciahfmtg5rnzj5vlkmy@u7jogibgoybx>
+References: <20250815201712.1745332-1-kuniyu@google.com>
+ <20250815201712.1745332-5-kuniyu@google.com>
 MIME-Version: 1.0
-References: <20250815215914.3671925-1-axelrasmussen@google.com> <7a46f7jwlwgkbdjvbxjaalrrdamgtxkptmytllhkr2qv4ovbge@nbugfzavwh5w>
-In-Reply-To: <7a46f7jwlwgkbdjvbxjaalrrdamgtxkptmytllhkr2qv4ovbge@nbugfzavwh5w>
-From: Axel Rasmussen <axelrasmussen@google.com>
-Date: Fri, 15 Aug 2025 16:40:26 -0700
-X-Gm-Features: Ac12FXw_HFPZ095gKMlHpRFMN8lgcVFvzndQzLXfmu0HxmUJr4sDsvsxZ5Xh-Uk
-Message-ID: <CAJHvVchYa-vUcQo92awyHE663n-iMsLK31o+1FKrMvdLMAuUOg@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: mark MGLRU as maintained
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Yu Zhao <yuzhao@google.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6CF60A000D
-X-Stat-Signature: sseonzegrzas936xehuxk9xco14nbs58
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250815201712.1745332-5-kuniyu@google.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D3D5120013
+X-Stat-Signature: rp7ungugt7uhz15ppkjj8ayhdgy4tsik
 X-Rspam-User: 
-X-HE-Tag: 1755301264-522318
-X-HE-Meta: U2FsdGVkX19nIof6ZIEl+QKIhfVxCHFvHdAPTDhwIv+Xs/fN37wFD9/4kq5duOY7IouEEnQU9MLKF8auIskYPtsEP7i3usmfFdudpgO+iITlIA2rj2ltF7m6wC6lMemvw4tMh7WPv1jwZaoF3POuKsgMzIXDSpGOtuKSIdoxDJ5/MTYkXddsGd9qLLQajGfuessQtYlPrYrQcGWrGiI5YVMHJLLvVBFkt9D78nLUEowvnnlwnvnY4cqhee5Z6ASbhE01UWnaF2qXKkI/s7dNAgNKdDZ56a35EPxkIdU1/EP5YBI1qFwP6yyuhEeKeKF3fOfF5YhjVVgENHsivVq/tb4fbpr7hyL4ycGOsmIaa0gu1kKgpy0EpWJCnZqYlbuywIY52oN1eDUsSeBhOg8VTgxxcvRe3QKCZCqY++8LB0HfYafnMa4xZEAiXptEy05FNgslmiWQUOuSjCdGPoFy2oWJtj1UI98XnsWwOStw+/bWglfG0ledA6oEjvAvYV2rpKEtJMLbSbIJRDmjxepDQ0ivtbvrFwlZpXXqjUBRXd9ZB4uniZ8CmMPXtVLZy7O/9PUDGD3mw0OgaP87IpX9yYr4FSXAqb31wbVUQWe0xcyizRmYczWVk4D9qa2solPJYNHM8048MBAB1xuE90r8G4K7QWU2WHCDWBQ51Euc2EUE+dDwIYLcpr7ahz2FIMHyLp9KyhSYWA0beb6PkoEzZNWOQDEkzlSWoz/6SWEId47tX31A+QpeXz9vg552CrBqukOBdhLlWlgBPsT6k6ZtW4wZibaBSK8Y4nGwlyb7P03oZxJBpkPqAt4kuOyy0JFz8uZskHAGXY4ZcdTVQz9r5ls7huERzvYrnqLEcv9vsT9M3wIk7sVm+tfEXKgxnXRyL4RzR2CFf9vG6xO98i4J4K+XqUyNYvuV
+X-HE-Tag: 1755301802-885424
+X-HE-Meta: U2FsdGVkX1/5DtnfWvA5hF3qgNAk5Z4OmkETSAYtgD1s6WmZvdzS1N9XUK2UcxvBX3lY17F7BIZCVq105ydiWBlgNAavLAtOSTq4eXcKRbizVlkZCTPlnG6sPltO2vbHMeZlvxaaqM85ffl9ny7ZvS4sN0UKTsQmqBmwmmMjnUGY8thsSNPSlCt0w3OPU5O9zzfgdTAtfN+DpJZkZkTCg/fecbgZ5ev+ntS+H73zATO0DIGUcjP1g59x/bIulq2AB1hcDtKZtzYHq/HYbY4/n16JXUdWrE0esR3ySmAOM3+Mu73vRGCDqOtbdaspSepO4jp2czmfXjLWGu3EAj2dZ2S67n9TMNW9f2GujPnA4kh/Tg/qdwsMVM8WGw8DUmOEjEy9wBXPhVpQbmIbIYjtjXos8/rz5/4CdQb1bdLj3OQRCBp0TLqD0YmZ7hJpZldnN1VNvzPdci3HoqDARltNM+8CsTiPZysjYNsVPZ/tezMYrDZ9nCIkiCQEL+FR0/JI52IvLbgzVgOW6MOWM43YF6Xjxvx9o6ZOsjWhfWLsaHgWmOTUVOeVsLKSaBO706hVfCgIK20qP/ujRL4OEDGeGQsARWpxm1ECa3Ldzcwe7mX9Uf7Sz8xkCI/S2i/VSNSFtjoGd5b4QOufxY/QvtFxx5k5ULIi5GAeVVkHbVuuoVZcbIOdYK6ViEJdASSjiOMszvyaSCT38xKqpc92PA0Ag8eZje+cYN6GluuY/7xann4LIBLH3Buda+wufmKc1A4kPZcrQOCLZJXRUXPgt/0M73EH/s0h3SxhTUEX3l8VVkKZyiNEsevYV+wl0PmbmqD00da/1nnarSGnoQ9oIgWpT1A/rKZJ26vim1jea3FQHj5wRt3cG/3k3W8Ob4BP9aTddTQL2VmNW14hKLEOK6iJfUcWFlBw4ggE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,71 +94,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 15, 2025 at 4:13=E2=80=AFPM Shakeel Butt <shakeel.butt@linux.de=
-v> wrote:
->
-> On Fri, Aug 15, 2025 at 02:59:14PM -0700, Axel Rasmussen wrote:
-> > The three folks being added here are actively working on MGLRU within
-> > Google, so we can review patches for this feature and plan to contribut=
-e
-> > some improvements / extensions to it on an ongoing basis.
-> >
-> > With three of us we may have some hope filling Yu Zhao's shoes, since h=
-e
-> > has moved on to other projects these days.
-> >
-> > Signed-off-by: Axel Rasmussen <axelrasmussen@google.com>
-> > ---
-> >  MAINTAINERS | 17 +++++++++++++++++
-> >  1 file changed, 17 insertions(+)
-> >
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index daf520a13bdf..8e987f2668cd 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -16058,6 +16058,23 @@ F:   mm/mempolicy.c
-> >  F:   mm/migrate.c
-> >  F:   mm/migrate_device.c
-> >
-> > +MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)
->
-> Why not just add yourselves (and the missing files) to the existing
-> reclaim section? Eventually we want a single reclaim solution, so why
-> not start with single reviewer section?
+On Fri, Aug 15, 2025 at 08:16:12PM +0000, Kuniyuki Iwashima wrote:
+> Initially, trace_sock_exceed_buf_limit() was invoked when
+> __sk_mem_raise_allocated() failed due to the memcg limit or the
+> global limit.
+> 
+> However, commit d6f19938eb031 ("net: expose sk wmem in
+> sock_exceed_buf_limit tracepoint") somehow suppressed the event
+> only when memcg failed to charge for SK_MEM_RECV, although the
+> memcg failure for SK_MEM_SEND still triggers the event.
+> 
+> Let's restore the event for SK_MEM_RECV.
+> 
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> Reviewed-by: Eric Dumazet <edumazet@google.com>
 
-Sure, I can see the argument for that.
-
-I suppose the case against would be, perhaps the folks already listed
-in the RECLAIM section don't want to additionally get e-mail for the
-extra files listed in this patch? (Perhaps mostly the MGLRU
-documentation, the rest of them aren't necessarily MGLRU specific.)
-
-I don't have a strong preference either way, I think mostly I'd be
-interested to know Andrew's or the other reviewers' preference. Note
-Lorenzo suggested a separate MGLRU section here:
-https://lkml.org/lkml/2025/8/14/271
-
->
-> > +M:   Andrew Morton <akpm@linux-foundation.org>
-> > +M:   Axel Rasmussen <axelrasmussen@google.com>
-> > +M:   Yuanchu Xie <yuanchu@google.com>
-> > +R:   Wei Xu <weixugc@google.com>
-> > +L:   linux-mm@kvack.org
-> > +S:   Maintained
-> > +W:   http://www.linux-mm.org
-> > +T:   git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> > +F:   Documentation/admin-guide/mm/multigen_lru.rst
-> > +F:   Documentation/mm/multigen_lru.rst
-> > +F:   include/linux/mm_inline.h
-> > +F:   include/linux/mmzone.h
-> > +F:   mm/swap.c
-> > +F:   mm/vmscan.c
-> > +F:   mm/workingset.c
-> > +
-> >  MEMORY MANAGEMENT - MISC
-> >  M:   Andrew Morton <akpm@linux-foundation.org>
-> >  M:   David Hildenbrand <david@redhat.com>
-> > --
-> > 2.51.0.rc1.163.g2494970778-goog
-> >
+Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
 
