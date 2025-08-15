@@ -2,118 +2,86 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BE7D6CA0EE8
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 11:11:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 96798CA0ED1
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 11:13:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2AB08E0002; Fri, 15 Aug 2025 07:11:31 -0400 (EDT)
+	id 10F4D8E01ED; Fri, 15 Aug 2025 07:13:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB4D88E01EC; Fri, 15 Aug 2025 07:11:31 -0400 (EDT)
+	id 0C0D78E01EC; Fri, 15 Aug 2025 07:13:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CCAC28E0002; Fri, 15 Aug 2025 07:11:31 -0400 (EDT)
+	id F3F648E01ED; Fri, 15 Aug 2025 07:13:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B6B6B6B0099
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 07:11:31 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1857014011B
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 11:11:31 +0000 (UTC)
-X-FDA: 83778725982.13.5FEFB0B
-Received: from relay.hostedemail.com (unirelay05 [10.200.18.68])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0181B40012
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 11:11:28 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755256289;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2Gql3grWctAD9kAoPHIz8LeiAXnZHKZ+fqWnLH+g66A=;
-	b=rVn42LdaMWwxHEGF83fyPdpJ/NhsEt3aiQ3pl1Duv1F0tFKjnwC7zTQCrVQKQzX2xHWgUT
-	Ixolc4HC6ilUxuvhA9UWNftolLOROjta12iY7nUBE4ck8zzWUjLG2F4BBd2DnMOmtaw/7x
-	hZwEM2ksaMnidAjUixlIvwbz/Rg/V4o=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755256289; a=rsa-sha256;
-	cv=pass;
-	b=gkOqm3HmnSsvSL8Mq33eMbazUl4VGyzMNDVLUltHJgjEtuX5KAaE1YBcjNatjJ54B/Q0Ag
-	5s+oTxw23bKelmpXNYWrqOvnqMcQjPps1cpLsHoUMAF0/RF7vukr/xYEpmC6hYaSBviHGG
-	BuI459GxLti+53f10qCFUqZkgJPboX0=
-Received: from relay.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D9E1050FB3
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 11:11:27 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D9B528E01EC
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 07:13:29 -0400 (EDT)
 Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BB1F61D3520
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 11:11:27 +0000 (UTC)
-X-FDA: 83778725814.17.3B1583C
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 22EB920007
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 11:11:24 +0000 (UTC)
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7D795160113
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 11:13:29 +0000 (UTC)
+X-FDA: 83778730938.17.1C47F38
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id A87F740002
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 11:13:27 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=none;
+	spf=pass (imf01.hostedemail.com: domain of cmarinas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755256286;
+	s=arc-20220608; t=1755256408;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2Gql3grWctAD9kAoPHIz8LeiAXnZHKZ+fqWnLH+g66A=;
-	b=KqkSg8JLM3+yZqU0LZUR/rq9j74NqYJAZrZ4433V7qCI6SD5MuuiKrP2lk3o5lwdSdFKJR
-	7Dd+9+AdNNqjFrJKq3pft26hOsuOm+AZUIXHCPPsS++lKZaFGpzuZ9Tsg25ieYceZUXExd
-	ivCMGlQY3el0Wt7Jh0I7XpEr4YC5o7c=
+	bh=gbUJHuak2u5MhS/qm2dIicmSf5kMrLrrJoF5h7UvVAU=;
+	b=yagFubkSZ7NCJIGM6F+M1ycoKZR+3+06vO0e3Ml0A85WxBQbGO/4KJWJGEC4tXN67IoicF
+	GV0xZfDNOLGtcWfLJehGrswaJQLRRCP70yWJMV765GM+hql22iC3aU3tG0g/ZxzjuutCsn
+	uwL7egV6mo0tDquN1AsBkVnZZElWzVg=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
+	imf01.hostedemail.com;
 	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755256286; a=rsa-sha256;
+	spf=pass (imf01.hostedemail.com: domain of cmarinas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755256408; a=rsa-sha256;
 	cv=none;
-	b=cn4d0mP+tfN2IGMHw9fndgRuFR63TS3IdE6CqSeP3FF+Ad91uJae+skPgJxoiuQDl5vS0l
-	KdjgpmDUpxdqU28BXqov6PBfK1zykSMc8Q0hIiTIZustxZr5fGayWE+dC4/Pkf7BDgoBZs
-	bp+Z5rQ1teT4NBhTV7iqGjI5ZG4PMyQ=
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4c3K9B2y9mz2gKyr;
-	Fri, 15 Aug 2025 19:08:30 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4FB6A140145;
-	Fri, 15 Aug 2025 19:11:21 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 15 Aug 2025 19:11:20 +0800
-Message-ID: <dd536c65-0f00-4b29-9042-f1e84c374c81@huawei.com>
-Date: Fri, 15 Aug 2025 19:11:19 +0800
+	b=hNGCll4XRB1MPGURQoof4u4xfk+DMlYI481Jbk0fdzQ+o3/NbtqiJFhOSHlPOxZLCXqFCj
+	tdUZtzNCHhZ0zsJjORuw386kqNcYoUtBtHNi65sHlYqO59iKChXQVwIi3TM+W88AqriJQ+
+	i2JKEwmyPyv0xIJGnZhFCpAayuf2q7E=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2547F43A44;
+	Fri, 15 Aug 2025 11:13:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85B8BC4CEEB;
+	Fri, 15 Aug 2025 11:13:21 +0000 (UTC)
+Date: Fri, 15 Aug 2025 12:13:19 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
+	dvyukov@google.com, vincenzo.frascino@arm.com, corbet@lwn.net,
+	will@kernel.org, akpm@linux-foundation.org,
+	scott@os.amperecomputing.com, jhubbard@nvidia.com,
+	pankaj.gupta@amd.com, leitao@debian.org, kaleshsingh@google.com,
+	maz@kernel.org, broonie@kernel.org, oliver.upton@linux.dev,
+	james.morse@arm.com, ardb@kernel.org,
+	hardevsinh.palaniya@siliconsignals.io, david@redhat.com,
+	yang@os.amperecomputing.com, kasan-dev@googlegroups.com,
+	workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v2 1/2] kasan/hw-tags: introduce kasan.store_only option
+Message-ID: <aJ8WTyRJVznC9v4K@arm.com>
+References: <20250813175335.3980268-1-yeoreum.yun@arm.com>
+ <20250813175335.3980268-2-yeoreum.yun@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/numa: fix uninitialized memory nodes causing kernel
- panic
-To: Yin Tirui <yintirui@huawei.com>, <akpm@linux-foundation.org>,
-	<rppt@kernel.org>, <david@redhat.com>, <Jonathan.Cameron@huawei.com>,
-	<dan.j.williams@intel.com>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-CC: <chenjun102@huawei.com>
-References: <20250815103040.511627-1-yintirui@huawei.com>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <20250815103040.511627-1-yintirui@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- dggpemf100008.china.huawei.com (7.185.36.138)
-X-HE-Meta: U2FsdGVkX1+aS4Uhvz1Knt6nM6qSflJvO3C7xtosF1RWFGEzl3VOg30hTkE1kFc0aXd+TSRU987jPwIHdtmfobw4RaQPn1kPU+tRxC+yZOX/DT3LLFr2qgFXPP/bNXTnCvQuXH8FogbtxqHbC6JgEC9z7RTw5EqRv0lyW1nnN+MqxkfCV/hWH47Jx3EAtWYf4K+IXDiCq24XFS2a8DZFYKu4yMJ372JSJIbI6LfTTLWCj11DYYx/qzhrytCSJ01H47gQPzxFEQXUylPuggZ4AiM/wsBl0oZExigwwWQlVWMOl39JVDyoPzYOVbRywZD+49GewO7D1IYKAsqtxyh+C6Ldw0uTJt1Lt3RUKRxDqJjdqGjq3NVibeh8Yms3aDH5/lyfcPnuk5eWjcDBGeK80Ems17Ocmt1qVJWsa7PP5E0CA0TMS4gG9wrvcFv26wUzto5yi90osoyGw1DTHpnlEL0lj5ZyI5yQXn4uTj8pR0TGIayiXCm4hugJJ0g6LsbPKY+g2Z6s3gVvPMGtjeA5Z3IOLUKuq4T3EIXQyAovQylYM54GrO59xpxIp/gqvGi65M53UjQApKxXKwvyF7hEuO/FV/ophq1Ed/JB/mVKTnHKZ+rM33UsloO/jxSAe/yvPtfzEypyCCEmRkDUtI5iP2zLYYEMSrnb8PvEfV5H+/L/c1/Sf0C4nJ7BznXmffZzsIgaBcV0ApgfLBFSE6kXoiqSCl30gxGi2ymS9dilzvEH2XhUYIdX8/bfkcQuR1xpj83p64AHd9BK73yrEXRdxYYHZ91C+BIE/FXaUgbsGkNu+1jcMNn6X+AcyC65Dw118erlN2Mc4iP/TwgyovCWUpB7ikfZap8vzB9C5zs/AF/FL0w/fBJN8zgOgyvovdqKLXxs61ZZsZI=
-X-Stat-Signature: oqf5qhboxryws4i35bd4zfsym5etxz5y
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250813175335.3980268-2-yeoreum.yun@arm.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A87F740002
+X-Stat-Signature: pdapus8nphucpb1fm4c1wb9twawneo5d
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0181B40012
-X-HE-Tag-Orig: 1755256284-737261
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755256288-840820
-X-HE-Meta: U2FsdGVkX1/BnWExbFGRgMMz/mfWtpkunOQMyQ9Wz0tWo7vFHocQjNn8iRmwLYGuVs5zw3hCFm7uHXT7AFY2oWam7Vtf8cZz+mXxje/BLoY4gL0p7tCAORyuX99d/+PCjCkiJgHLp5m0pTz/xZanoQUfzytEa3HSlEhgeQgZg60JVt8yDVL5HEXORAQajWfykktEOqGkJrRmqAKuWmXLbJc2EBYwrZtVbj2UB5O2j4iE16h5rxUbrbKBBQ61xRHbwnNkdDIVpAffCLAq2ErsQKzQxV1uJOfPHQADQWJ2M08kiyrU+QKg4NTun29qqykE9y7hOrN3l3gJByM8inMichYFSIEQXVNFiF7170vQZ+y9K8P0Cb3xDcHUOUHvlB4XjswXs8iRViw/JosFNw/GUD6L0a52rxsxOKVzrdey1ZeU7mmTQ2kSYxHqyIJ67GEyTPbUd/Kxd8/fGa8w2lyGu4WUXUZmGY+CAQ4ZgNDM+2GdK/vfubnxOMRZIYb2CPC2lbeQRYuQTfUN98GOG1oyFdo9Qu4SBNOh//A4XW6DF3ai3JZkNGb4SNq7EniQz5Orx364KiiqFfeMUMgSpDZw93SFLIwwALcvxgXfhu+2+Wa5VAWLWrdw6Qz3U4gnAyUbY3nihHRBXeRgy7aQwkRR+sLk6sH45JJJ9HYC9UGBIsBfGPzywmafcOk/xLVxy8cHF13WZ3qGa+HvGKdGWS13tvMWmrCNZzkcU1uaBgIV1FStjZxXIkfd9pn8Vksrow0WayUfwYL+zZxIsCYIae6N7UPN7117T97iX14vEPfkSr4MF4d+P2h3noO02d+Xawp0Rrvlu9isB3m5yUsRA8vCuUKGkmKRWTR+Y1Ue20o8H2xDefkUdqoUS8leYWNPXIbRntf9OK9rd01PuvCFnc9/pXkaUbwSavMCVyojzQx1ztMnPX6+l8vt3I6bQT13i39aEG+3YaZt0NBUTErtFE2
- sNRww0HM
- sxjtaZC70eMdziENM+UAfwJxWK67Y34iPO6Q/Mm5wzHWptulRZKNfdBMlN6GpLRM6uQmuo7U25U+tWvAOP0hvafL3aNP8NElG0Js4JZaBCTuf5SRaEs3P+h1td0BPR3kzYKSquf5xggspUERuHVagNEMyvOtW2SUzk018lw0mCMYHG7j5V+zBHOVq4OOkphSKuEt4YfY3ch1jsvvBQirHs3yo7exAxdZqKfH70B5QdkVCoaMFPUNeJ/i+Oa3wEXZ9bAaR1oRjoDfVPN4=
+X-HE-Tag: 1755256407-720934
+X-HE-Meta: U2FsdGVkX19CwU8wrD9nNa3/QqR9GWl4CISiQ4R7lAS4Om8uD6djfI52g5XnATLW69GsXo9o4muPXnwiHgH579rsfVc2Psg4hLj2/5yRbiwiliSSCsfQMU96o4N41/pNBg/07+sctsvyFvxxzX550lpMlG5aJxVDPVnteAPtwj+gIwQicvUI9ex3WHigYpAGaZCOwfHMxklLDkLqiguBJkNyx8UTMd3hjtopzKVkLeKTdAEac0+Fn9X3OlFLXxCGRi38GCa6NmdAVj620o6OGQj6wQTH/6eAmheA9bAMuGRLgqF5zqGYNwfnNW79MRzZFg7Dt1ZDdp44U3W0wi494Cv5NCkq3BS3FCo7U7oNhz8Kzwc71DAjuHab50cMGBhabylWEOf7XAshPnkzihpzhPGbz2yRMkjCxXyp3nl1pGG+wIJulSs7pfQ8j9JAcHJcbJDJxc56kU8sE/oqCrGHrVSGG3kK4ih+IqEd6R7pkfqOpDsl73cfzY19BcXqVhoD4c1MxMoeKZSk0BhPdNUPryuC6tTy75Er/vF5GIxDbwHZ+pCOxXUVSWdGMVPQ9pUxYc9qOaJm03HCUul1OzWidCXbAbdJFgzgseeFT5I3SjCJwYnXItSpEkrMWFT4bhEbPA1A+Ks/f2QuRicvXrO/y3+ABJEstyqWPxJHmWnmiTMXw7gKghjR72r8G7XIKHa0OH2csV4B5aphCui/WKO4QC9Czf7u0Kc8uuz5dxjlvfA9Efbf+gZlgloBEqrPu8yLSiBlcCqVV/VDrMsvRsT70JwjE0zlyrx7Nn2g9C7IoKfFm3s2n8x2DSIc4DIkB301/j50Go1udoKmB4YaXJUatq14pQPqGVvQUWJ8HO2/N9fundC949JJzegcSpdNnHKMBVwXoB0OWdB8czX8tPQnP0OMHqd1w4rGYXzeyZbURh+yyOnUsbSwefAmCsVhRq5xOtGpiJ0dz5JiG6b5Imu
+ ATt32Gt4
+ NXtUGnEw0PMTsWDRbqr8j5xqPQZg9BEbbislNR0w4JSBOAZcySkaIzpm2YPYqGSEIE9GPaKGeqGwpku5cmI5CfMcg4Tep1/7JsqTXfoFzv6xmW9agMIvOpO7v/pP0XY8+HtVb//MLaSbeRXMarladJs8y1dTDKVCePyF1WXTDIsDa0aCxGAJwtQSgN8AWJen4HRYwyaZtTwiqcSzPAM4boqM6GVglWLABZVLp0YJHnnx6lj1pyLUgNxhvPd1k/fHG+TCCVHnUgKS6lgkqlJPp6hP1Fr+AH7RZz7cCYbuxnh7TJ0rI13AGrLwPpTIEqMd9pK3YhVCiuJ/YGLzroIzwNxWdprbHdr3ds4vMWEI2HzA8Xj7bN5qqKvdj4xQRdBN84BmK+eXH0uXQR56jUYhpLngdMsfwb00I7wEV87FKEkenzDmlZa3MNsOyYM5H8cZSPggtMVBfkN7pMqao7cCplBCKXA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,69 +90,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Aug 13, 2025 at 06:53:34PM +0100, Yeoreum Yun wrote:
+> diff --git a/arch/arm64/include/asm/mte-kasan.h b/arch/arm64/include/asm/mte-kasan.h
+> index 2e98028c1965..3e1cc341d47a 100644
+> --- a/arch/arm64/include/asm/mte-kasan.h
+> +++ b/arch/arm64/include/asm/mte-kasan.h
+> @@ -200,6 +200,7 @@ static inline void mte_set_mem_tag_range(void *addr, size_t size, u8 tag,
+>  void mte_enable_kernel_sync(void);
+>  void mte_enable_kernel_async(void);
+>  void mte_enable_kernel_asymm(void);
+> +int mte_enable_kernel_store_only(void);
+>  
+>  #else /* CONFIG_ARM64_MTE */
+>  
+> @@ -251,6 +252,11 @@ static inline void mte_enable_kernel_asymm(void)
+>  {
+>  }
+>  
+> +static inline int mte_enable_kenrel_store_only(void)
+				^^^^^^
+This won't build with MTE disabled (check spelling).
 
-
-On 2025/8/15 18:30, Yin Tirui wrote:
-> When the number of CPUs is fewer than the number of memory nodes,
-> some memory nodes may not be properly initialized because they are
-> not added to numa_nodes_parsed during memory parsing.
-> 
-> In of_numa_parse_memory_nodes(), after successfully adding a memory
-> block via numa_add_memblk(), the corresponding node ID should be
-> marked as parsed. However, the current implementation in numa_add_memblk()
-> only adds the memory block to numa_meminfo but fails to update
-> numa_nodes_parsed, leaving some nodes uninitialized.
-
-The issue is not existed in ACPI NUMA,
-
-     acpi_parse_memory_affinity
-       numa_add_memblk
-       node_set(node, numa_nodes_parsed);
-
-so we only need to fix of_numa_parse_memory_nodes(),
-> 
-> During boot in a QEMU-emulated ARM64 NUMA environment, the kernel
-> panics when free_area_init() attempts to access NODE_DATA() for
-> memory nodes that were uninitialized.
-> 
-> [    0.000000] Call trace:
-> [    0.000000]  free_area_init+0x620/0x106c (P)
-> [    0.000000]  bootmem_init+0x110/0x1dc
-> [    0.000000]  setup_arch+0x278/0x60c
-> [    0.000000]  start_kernel+0x70/0x748
-> [    0.000000]  __primary_switched+0x88/0x90
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 87482708210f ("mm: introduce numa_memblks")
-
-I think the Fixes tag should be commit 767507654c22
-（"arch_numa: switch over to numa_memblks").
-
-
-> Signed-off-by: Yin Tirui <yintirui@huawei.com>
-> ---
->   mm/numa_memblks.c | 8 +++++++-
->   1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
-> index 541a99c4071a..1dfe434e71b5 100644
-> --- a/mm/numa_memblks.c
-> +++ b/mm/numa_memblks.c
-> @@ -197,7 +197,13 @@ static void __init numa_move_tail_memblk(struct numa_meminfo *dst, int idx,
->    */
->   int __init numa_add_memblk(int nid, u64 start, u64 end)
->   {
-> -	return numa_add_memblk_to(nid, start, end, &numa_meminfo);
-> +	int ret;
+> +{
+> +	return -EINVAL;
+> +}
 > +
-> +	ret = numa_add_memblk_to(nid, start, end, &numa_meminfo);
-> +	if (!ret)
-> +		node_set(nid, numa_nodes_parsed);
+>  #endif /* CONFIG_ARM64_MTE */
+>  
+>  #endif /* __ASSEMBLY__ */
+> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+> index 9ad065f15f1d..7b724fcf20a7 100644
+> --- a/arch/arm64/kernel/cpufeature.c
+> +++ b/arch/arm64/kernel/cpufeature.c
+> @@ -2404,6 +2404,11 @@ static void cpu_enable_mte(struct arm64_cpu_capabilities const *cap)
+>  
+>  	kasan_init_hw_tags_cpu();
+>  }
 > +
-> +	return ret;
->   }
->   
->   /**
+> +static void cpu_enable_mte_store_only(struct arm64_cpu_capabilities const *cap)
+> +{
+> +	kasan_late_init_hw_tags_cpu();
+> +}
+>  #endif /* CONFIG_ARM64_MTE */
+>  
+>  static void user_feature_fixup(void)
+> @@ -2922,6 +2927,7 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
+>  		.capability = ARM64_MTE_STORE_ONLY,
+>  		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
+>  		.matches = has_cpuid_feature,
+> +		.cpu_enable = cpu_enable_mte_store_only,
 
+I don't think we should add this, see below.
 
+>  		ARM64_CPUID_FIELDS(ID_AA64PFR2_EL1, MTESTOREONLY, IMP)
+>  	},
+>  #endif /* CONFIG_ARM64_MTE */
+> diff --git a/arch/arm64/kernel/mte.c b/arch/arm64/kernel/mte.c
+> index e5e773844889..8eb1f66f2ccd 100644
+> --- a/arch/arm64/kernel/mte.c
+> +++ b/arch/arm64/kernel/mte.c
+> @@ -157,6 +157,20 @@ void mte_enable_kernel_asymm(void)
+>  		mte_enable_kernel_sync();
+>  	}
+>  }
+> +
+> +int mte_enable_kernel_store_only(void)
+> +{
+> +	if (!cpus_have_cap(ARM64_MTE_STORE_ONLY))
+> +		return -EINVAL;
+> +
+> +	sysreg_clear_set(sctlr_el1, SCTLR_EL1_TCSO_MASK,
+> +			 SYS_FIELD_PREP(SCTLR_EL1, TCSO, 1));
+> +	isb();
+> +
+> +	pr_info_once("MTE: enabled stonly mode at EL1\n");
+> +
+> +	return 0;
+> +}
+>  #endif
+
+If we do something like mte_enable_kernel_asymm(), that one doesn't
+return any error, just fall back to the default mode.
+
+> diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
+> index 9a6927394b54..c2f90c06076e 100644
+> --- a/mm/kasan/hw_tags.c
+> +++ b/mm/kasan/hw_tags.c
+> @@ -219,6 +246,20 @@ void kasan_init_hw_tags_cpu(void)
+>  	kasan_enable_hw_tags();
+>  }
+>  
+> +/*
+> + * kasan_late_init_hw_tags_cpu_post() is called for each CPU after
+> + * all cpus are bring-up at boot.
+
+Nit: s/bring-up/brought up/
+
+> + * Not marked as __init as a CPU can be hot-plugged after boot.
+> + */
+> +void kasan_late_init_hw_tags_cpu(void)
+> +{
+> +	/*
+> +	 * Enable stonly mode only when explicitly requested through the command line.
+> +	 * If system doesn't support, kasan checks all operation.
+> +	 */
+> +	kasan_enable_store_only();
+> +}
+
+There's nothing late about this. We have kasan_init_hw_tags_cpu()
+already and I'd rather have it all handled via this function. It's not
+that different from how we added asymmetric support, though store-only
+is complementary to the sync vs async checking.
+
+Like we do in mte_enable_kernel_asymm(), if the feature is not available
+just fall back to checking both reads and writes in the chosen
+async/sync/asymm way. You can add some pr_info() to inform the user of
+the chosen kasan mode. It's really mostly an performance choice.
+
+-- 
+Catalin
 
