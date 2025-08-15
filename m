@@ -2,84 +2,99 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 26F47CA0ED1
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 21:44:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 060E5CA0ED1
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 21:59:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 627638E0214; Fri, 15 Aug 2025 17:44:47 -0400 (EDT)
+	id 5FA928E0215; Fri, 15 Aug 2025 17:59:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FF8E8E020B; Fri, 15 Aug 2025 17:44:47 -0400 (EDT)
+	id 5D2178E020B; Fri, 15 Aug 2025 17:59:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5159D8E0214; Fri, 15 Aug 2025 17:44:47 -0400 (EDT)
+	id 50EE98E0215; Fri, 15 Aug 2025 17:59:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 377088E020B
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 17:44:47 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id ABED158613
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 21:44:46 +0000 (UTC)
-X-FDA: 83780321772.21.AA590F6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 35A8C1C0007
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 21:44:45 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MvJKmlGo;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3BF458E020B
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 17:59:25 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id ABF49584C7
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 21:59:24 +0000 (UTC)
+X-FDA: 83780358648.27.6ECEE2D
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	by imf28.hostedemail.com (Postfix) with ESMTP id F3B0FC0008
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 21:59:22 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=yLaVzIhm;
+	spf=pass (imf28.hostedemail.com: domain of 3ua2faA0KCN4AXELRASMUSSENGOOGLE.COMLINUX-MMKVACK.ORG@flex--axelrasmussen.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3ua2faA0KCN4AXELRASMUSSENGOOGLE.COMLINUX-MMKVACK.ORG@flex--axelrasmussen.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755294285;
+	s=arc-20220608; t=1755295163;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ddej+nWarCGuUCh9onLf7yjqgRc918kPIAdFxdWK8wI=;
-	b=SHOH8s2f7Cz1yznCk/7XAxYTFtOXzCCmkmCGlXE7zfm8JeySMpnuunXFCzFEwACM+ZXGiw
-	50GGAs6LzGCURIYhgnU1CXIxQ7aSmMlTABwxwXfVVoonmaHPE4aya8O3VvPW0jNr6e+Ndk
-	6NMZfmGumcvOtrVBrDCDYlJuPudPuV4=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=DeW1hinUZFH5xo0Pcsfyi8Qr/5QxONJwH9+uEctWdNE=;
+	b=0YfJuergWcxaBB2Pu5/PnxZ0uqGQbLsfIl0ysVP27kXxxv/LciM2aN62KX5Y6/e+UMJL7n
+	xmqVALhEsRRVpwbmdLa/pW46EWZviseptYtbrul7EQHsEflG9+I1jK6ilM92VLPNAM4GUK
+	fHQO+76rPhtnSDMSgoum0W9RgWpmHaI=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MvJKmlGo;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755294285; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=yLaVzIhm;
+	spf=pass (imf28.hostedemail.com: domain of 3ua2faA0KCN4AXELRASMUSSENGOOGLE.COMLINUX-MMKVACK.ORG@flex--axelrasmussen.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3ua2faA0KCN4AXELRASMUSSENGOOGLE.COMLINUX-MMKVACK.ORG@flex--axelrasmussen.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755295163; a=rsa-sha256;
 	cv=none;
-	b=fI9PXCXRubvjXtxYiagmaJzc7B7JMlVyC8JfHgaAuHR90U3O2LrN8RuBGI9CWke/Pk634U
-	tkVtYLbQsPpQxgEd42w2XiS/1Hj2y9eby3vJLKzslNdfxelCjdZ3otFVZBgFelp0ZEZ2hY
-	08SftQbdSgN1xRDfGbCXFfG38joA5QI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 44B2C61164
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 21:44:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA4E4C4CEEB;
-	Fri, 15 Aug 2025 21:44:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755294284;
-	bh=w8bI3K06v5qE0O96wS27g3AHvYkRCqTbCUA44CgzYFw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=MvJKmlGoGPC3SoPcH3STEEW7WDVtuMET4SzWHzRaP99yr+4AfL17RZ0G60aMb5OsE
-	 COmi1+feMJWR91MG3PCVj/RoGLw7h5HxBcY2QwKWNzxS9SNmq3rPCD60Gdfbfs79L0
-	 zzftKzqvFWf3uHcaAchh9zYTpwkr86igzFIXGcMnYU0/ebksTGEkRXPNHeW7Xz6KQC
-	 pLu7Jz9xn7602d8cxWvHV6SpVVsdd+J/V1pMw4rfULFicjFLQx9EkodGy+PBFtpH2g
-	 zTxZERDHYKcUcu/h0uomK01YAu1Tg5SFX0Z8T4HDy3WjrRW0awlAQc2lFsEPE7n5+u
-	 N+TawuTomJMnA==
-From: SeongJae Park <sj@kernel.org>
-To: damon@lists.linux.dev
-Cc: SeongJae Park <sj@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: DAMON Beer/Coffee/Tea chat reminder for the week of 2025-08-18
-Date: Fri, 15 Aug 2025 14:44:40 -0700
-Message-Id: <20250815214440.89592-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 35A8C1C0007
-X-Rspamd-Server: rspam04
+	b=IKKIV1URm8RwMVoi8aSMazJrPsYQW08mQqD34+XAe06NIESLBDYDDXoOeIPyeYcewExa0G
+	QsSMWlaXl5pIuUTF+rm3G18+H6vdPhkD0JLfJV7QAvqJTf+kQP3B5peBxNVtAXpwGrWrTZ
+	KHSpwgx793NoPBputfgNZb41F3LizSw=
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-323266d8396so2249153a91.0
+        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 14:59:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755295162; x=1755899962; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=DeW1hinUZFH5xo0Pcsfyi8Qr/5QxONJwH9+uEctWdNE=;
+        b=yLaVzIhmuOTYOeNxe27yg3ecEcqf+wTofs2nIox9q/oST0kY4xKOtiBrzlCtBg3diL
+         rWiriq3coRgqo7YcE7XynHeHfh8E9k2iMMJjG661u1F7dPR7oaLqMfskRr97s1N7Ra3B
+         ZM0Hx9W31cRYl1pge/BBBm7ryHZ6tao9/1ov3nOrfcjpopXHUCaTYNeF3QbzaOaaSxkA
+         mEjEO4SJBvcx3rnIDwstvcjn3ZyYPvTMtW5TR0bVRxb1HrVg0odzi5oDw/7vMc67omnr
+         MJ6uRtXPYooFKnLgGaIaNYwEEJ4a7uaHJvSun6XntKwTvjivLgsVat44zIktG/M3YWB5
+         USOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755295162; x=1755899962;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DeW1hinUZFH5xo0Pcsfyi8Qr/5QxONJwH9+uEctWdNE=;
+        b=XltqbmZXTs1zJbn37ndXtHbbFVbvJobf7MZJH0dSVh6m91kwS98abQb6ESj/DY2pP6
+         wOm4ZvSpYNgqUCKNTEyKJ2Lj/OE7Qj9Wk8rlfXbzWZPvD6BGdc4ockvXiDXUVaxqL8+K
+         wVBbJiroGBRlLnvsvwLIAzERX0tOifqQnQ6BYPgyqVVBrUk052J4LGn22PJOkEU/vEZ+
+         HdjW9ccneSzFHLYGZ7+LnhrN/yIjlgPg5gIsRl26Hv6PM272UWFDbCZXlapuTZyipLvc
+         9WlshmICZm3O7cPdJUwBHtLJP1wUN9M7MauEcaS28tavjjy1q3gtHOY7moY4Xc8xcVnK
+         2yDg==
+X-Gm-Message-State: AOJu0YzSdI/KXgiPlcYw0ygUDCH6jM6Z4xcWJUOw+popNC7VdyxdrRQw
+	CUXtmSgqg25ty+RGyGpTG7WRJPlv+VuNwh3Vjdvy11cT+gxtTqhOCSVEsFLIrAtGex6k00jKHJV
+	bi2kKg6XK9E+SUF3AspMPINHsDluAeOYpzg==
+X-Google-Smtp-Source: AGHT+IF7W4Ic4QzDVW1k6cnS1X7CAqCEfRJLNt6vJbRlq09rPQM7OjZfHM6WC0Rg3oYE7E9w+5p83hp6sRXF9TOTaF4m
+X-Received: from pjbli10.prod.google.com ([2002:a17:90b:48ca:b0:321:cc91:ad5d])
+ (user=axelrasmussen job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:2808:b0:311:c5d9:2c70 with SMTP id 98e67ed59e1d1-32341ee3103mr5225173a91.15.1755295161789;
+ Fri, 15 Aug 2025 14:59:21 -0700 (PDT)
+Date: Fri, 15 Aug 2025 14:59:14 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.rc1.163.g2494970778-goog
+Message-ID: <20250815215914.3671925-1-axelrasmussen@google.com>
+Subject: [PATCH] MAINTAINERS: mark MGLRU as maintained
+From: Axel Rasmussen <axelrasmussen@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Yu Zhao <yuzhao@google.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: F3B0FC0008
 X-Rspam-User: 
-X-Stat-Signature: yqkgeqr8ihhxatajiqp77mdt4ni7kade
-X-HE-Tag: 1755294285-869910
-X-HE-Meta: U2FsdGVkX19l702JjtjERE5tgqyWzp+Xk9UkuNLh5EAQd8qzicwH8w2tMcx9mIk/rwK+wfT0RGBAUG0S+YtsSM89ewA3kqoz/n8wjlzOXhaxO5axIZevg48yBSQjHcFVDLzWYbeXoyEWsV7Q2bFwYVeN7w+6cOJ7sAOqZIB6aLgMHNCsYESI0shPSxHYXPXH8gb9CrdQ2/+5+1DEA0bO7OIzON24AW/cZuJ3O2LgxN0kgcqMdPcotX41XuF66VYHU8PuXMxgFzICDz/KyF32HV7spdN6mWCa4t9/msZKBGtDhU0eeBC8H4TZ/K2Vl764Ex1K4fuztNf794OC1MFYscdS9iGhD2wb5vCK525lw3AhZP32o6U7DK6RTWsaasLoCKuLw3wtUU85jxZ2RLYRxhL78sFsTg6y8tFq0D0r9tgGQdfoqlkfLPGoWpV564JrGKHHFz5Ry9QGt2Sw5lP3UZfuCOuefZsxS4iAQ2/DUx06w6Xu8gbKjc4qKq1oc1Boaw7JlaRER09nBFWjPpBCEopx8yURyKKp4NAfiTZV/szdb08WC209halA14J4vS1SxwcK4399HQe2ZTKuURyDbl/beQBl5P4mGaenoml2ilr3aTFtkAZNLdU/P6Cc5sJBKRCtq3uScfwjpxTbllrhoxJY3XSk4XQwaI302/mAjx8RL0MXGxc4wS2JIWjYbpsAYp3yLK1jIhbgZzQs483ioAg/OZCXygGg5rAHd0Y1uZOTEG6BGIWqU1M0IQ9Hnzp9hTUcRQ4hp0v+cXhEUac2T/y7mB0tVWyHUje990PKzbsKV6HBhpn8OI+tcT5nuw1Dp5cCQazjUwQc1eZIINaKJ645NR2vS3NKZWs98rCQWuM4L0GzFEHX95hE+TkJK3FlGZ+Z9INhoU0hDqp/3R1rS03LHYFixDkq1WBXGWddKvE/F9Mvaydc1ic5zulyzSg5g/ontls5e6LYwkFK/a0
- vl4jVP2S
- TJu/5XcoNEPjg088GUR5PWbYDsWTj4IRwNySwoDHOPH4/FviIvkOydGBXhjhfhznPOfRJwoNln4gcaJ+6BX6juk8n74+mgmBMyqPVBoQCEms83ytFaByQF2aSVdRyYgdhr5bdU3etSwQ0Gn3MIilT+hVa9HLQ3xQhstuMcIBhA5BrVy1MiaJVeDexfEaom4mu6nPVGkxSOvW3Op8E+huE0vl0EuW2T7MvmvLTqKVM9P3Il3RNwteQw2iFri8JRLzxL8YjPe4IMcVn0+16FRlTPck/ZnEr+U2JvbY/BJfhxHnQ09M6MSrfSrBMww==
+X-Stat-Signature: wc1d1cimjr33zr3h8xjqgcegttj1ywws
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1755295162-215813
+X-HE-Meta: U2FsdGVkX1/D/HFctDYmoS4bbpJaBo+HyWLm3DLK/MCUpIBfK6H6y3Tp8x7EkH2Uwgs6a1cm6pz4OkigWOIAfzmWo3blVxPwcPOx4pY2NtjiljMikLuD9/Uy5p6V8k4ujN186rMNqmrxgGaKYJhiFVRqyo4l0l8nzP935SBeb1zyuZOHaspNVFUY02q9MD8P7x51lR0z6FoUtLUJrnAK2VDynGxnBHqtXohW6Sp8Q63RXzbOutcuJHSUQw2rYvcIfW/wLRn4VDu2/ZgUELGlgURaLa+zd3eOhEc1pbigDVgl5z8AgmBDVBKV1G80+roBE6IRxzeEoWISk5+flDg7lD8WXUI/piLIsZCkmEhtx4d9oLOr8Sk8JK52/soh4bP0pgTxSL9oXUUnOHNZWze8UN8us5kPoaqr/ALdTwbHXT6SZBs92biMxZoT5G6lbKWEScUzCG31aaM2U8sC4uRask/U8uSeFWlNPgHCk7Zxu3Ok0k4dBEYOroIvLH41dE6tgaRLx/+XkCh6q/ZyvaqmW2gFbwZu4vvvMI/7Dw3vaqd1/yVetZECIqmLX+MYu4vEH6TPbHDqJm8VdhBIDid/gggmFoLC/84tePM5AJme1/BtgzetBSNLAcq5NQ8x5GZRmFxHKct3nYmmAxTHUUb6f4nYKOeHKAAkJAlOQsw6EBr2KGOfNlW4fZKtd75lelJycbdTj/3g+Mmu+5oHGeUmNWAmg23OJucEZlOWYNXDivUCSqSASsqmU63+OFnfqj0hjxj2pKpYRC6wrqgAYRxGdWYF7VWf+ezJSEmBHSAm8dBFGXAai2FhW58KZ7SJKtSqIHbAehSuAIJRd1kGlWS65tky8NJFzT69phNbkvstSgCp9Fn6CZ42daQyk4FUugeAN0XovpjARQhPPhtGuo6xqaYHOgcxpC/ZrBzW5+Zn4OV0aIa1fEWOoUdqx/64mnMTBPO2pufEwS0zQjAM1vc
+ PMeEzBG/
+ JOkuyh7ksuB2/Y3fPCVQgKx12Y9Sw2xscL1DCOWD/7+qYr3mEqjXHJAjQ5j3HYpWSTtbz/y/mQThg1DUqSEsPcWYnS9EaH6kyRTWLGnkYVYseOUHLlWqpN8qHoRBu+pFdSb3NLkDXug7sHsq+niVWhLEqEQj7E9WekSP2s7DV62v9mVFEewzaqOZQ3D/nwBFszTVCk8hKw9MF1PRDYoZdWipL+G6jws6w8dz9MGZjO9LYvIeppyCjBODvNhsjJhozYECdjsFu2pqqqDuKGqpgZWU0oaiCvo0susGYXOBDNLovpmkZ3GINCozLsU6XqEcS14l4bZHYjlUtjXVtJjRBltg67dNhw9pZjTeqaGEnyq8+otJrBteRs4j9tTEpUxoHYI5weciigg893gPfwwYAkpQbzHzZU0MVjJefsn4F8JaXih6vANUmmM+tZjJibv/0Czqza2GWkJOR2+QH84+Z8qlUKna9Jr9HkZRsW0+udKXlM/OBo6R4D25a1DGnbT/utk3/JZ4gh+GWjdvYWIGy+vQcXolnHFBKZT8hsw6pgXCvzBdKO2vBk6xhmTUnMpadZmz706URuVGeVaBBrnw/Xp7Rk0afLaA9u4K30rNXNO7yIFvCcNkxO20HUzAmBJ2ADZf0iUvnpSuUC6Zc8Co/o0DwllBnIEr9t1bwmC+M7n7BoHsw5sFda5fXEFzjxuNLIc0N7O/6rmZjt4xU9bNqVgSA5MXMHIG2xvPcY4t8gb7GH/sXSB4DJXnz14GHYe9UtWRPBN1f6IhvSyNYVEZlJuDQfC/fLpkpSFpsXbtZvaf/RWcXYcSQIYV2QpxPmal7AscxKfOoSg1cyOqrj/98IyWRy9eyXDA319K4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,44 +103,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+The three folks being added here are actively working on MGLRU within
+Google, so we can review patches for this feature and plan to contribute
+some improvements / extensions to it on an ongoing basis.
 
+With three of us we may have some hope filling Yu Zhao's shoes, since he
+has moved on to other projects these days.
 
-This is yet another reminder of upcoming DAMON Beer/Coffee/Tea chats
-(https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing)
-for the week of 2025-08-04.
+Signed-off-by: Axel Rasmussen <axelrasmussen@google.com>
+---
+ MAINTAINERS | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-We have two time slots for meetings in the week, as usual.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index daf520a13bdf..8e987f2668cd 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16058,6 +16058,23 @@ F:	mm/mempolicy.c
+ F:	mm/migrate.c
+ F:	mm/migrate_device.c
+ 
++MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)
++M:	Andrew Morton <akpm@linux-foundation.org>
++M:	Axel Rasmussen <axelrasmussen@google.com>
++M:	Yuanchu Xie <yuanchu@google.com>
++R:	Wei Xu <weixugc@google.com>
++L:	linux-mm@kvack.org
++S:	Maintained
++W:	http://www.linux-mm.org
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
++F:	Documentation/admin-guide/mm/multigen_lru.rst
++F:	Documentation/mm/multigen_lru.rst
++F:	include/linux/mm_inline.h
++F:	include/linux/mmzone.h
++F:	mm/swap.c
++F:	mm/vmscan.c
++F:	mm/workingset.c
++
+ MEMORY MANAGEMENT - MISC
+ M:	Andrew Morton <akpm@linux-foundation.org>
+ M:	David Hildenbrand <david@redhat.com>
+-- 
+2.51.0.rc1.163.g2494970778-goog
 
-I will skip those for weeks of 2025-09-01 and 2025-09-15 since I will have a
-travel during the time.  Feel free to reach out in any way as usual, though!
-
-Next six time slots are as below.
-
-2025-08-18 (Mon) 18:00 PT (reserved)
-2025-08-20 (Wed) 09:30 PT (not yet reserved)
-2025-09-29 (Mon) 18:00 PT (not yet reserved)
-2025-10-01 (Wed) 09:30 PT (not yet reserved)
-2025-10-13 (Mon) 18:00 PT (not yet reserved)
-2025-10-01 (Wed) 09:30 PT (not yet reserved)
-
-Please reach out to me (sj@kernel.org or whatever) to reserve the
-not-yet-reserved time slots for your topics.  The reservation is made in a
-First-Come First-Served way, and I will send a Google Meet link to
-reservation-confirmed attendees.
-
-Please note that other time slots are also available on demands.
-
-Shared Calendar
----------------
-
-You can get the schedule via this shared Google Calendar:
-https://calendar.google.com/calendar/u/0?cid=ZDIwOTA4YTMxNjc2MDQ3NTIyMmUzYTM5ZmQyM2U4NDA0ZGIwZjBiYmJlZGQxNDM0MmY4ZTRjOTE0NjdhZDRiY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t
-
-You can also get the past and upcoming schedules via
-https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing
-
-
-Thanks,
-SJ
 
