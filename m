@@ -2,88 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F1249CA0EDC
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 01:38:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 874E3CA0EE4
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 01:40:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 554A79001FD; Thu, 14 Aug 2025 21:38:31 -0400 (EDT)
+	id 2233F9001FE; Thu, 14 Aug 2025 21:40:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DE8C9001D5; Thu, 14 Aug 2025 21:38:31 -0400 (EDT)
+	id 1ADE69001D5; Thu, 14 Aug 2025 21:40:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37E129001FD; Thu, 14 Aug 2025 21:38:31 -0400 (EDT)
+	id 09BB49001FE; Thu, 14 Aug 2025 21:40:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 232AB9001D5
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 21:38:31 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 998EA5B7C5
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 01:38:30 +0000 (UTC)
-X-FDA: 83777281980.27.71F20D2
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 2D53D1C0007
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 01:38:26 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Rv7j8MQ3;
-	spf=pass (imf18.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E83E29001D5
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 21:40:08 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 64FFF5B7D8
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 01:40:08 +0000 (UTC)
+X-FDA: 83777286096.20.0A40FA5
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+	by imf11.hostedemail.com (Postfix) with ESMTP id DB21640004
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 01:40:05 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JyCHEiYG;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf11.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755221908;
+	s=arc-20220608; t=1755222006;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FvIK9iJ7V8SHnncWDIUPYMTGNncr21um3VSz5HwThLw=;
-	b=ffQh9YpPx70xuzgl2qvliXkk7w/lj2JVgeasNWZ0jrp0ySw+Fl7aKKKGplfLmi4/EPUgYV
-	ZE0LG0bKKmo33d8eML68N5DVEV1dATTHajDmiCI/V0XA/b0jaQF2rkajZ0u0v/EfC/mI6c
-	xTQ6hzjnz52FvDBsCe+NizpSnQnOXOg=
+	bh=mM6ETlRb4AUaAvsKe6UppqbUP1u8KlXUj2EtKdJpteA=;
+	b=7xjQH6W7hwOaT0gjFlMgw9oFmH/lHIGeGmE+PEff+UOrygOZujrgOUfkbRq1y6mZlA6Zim
+	PeDNANeC59LLNx63/eI9Th1nzd8YTzra9IoXNG3PDLN8Zdrl5zUxAw3DjelnBKW0++2ex2
+	UPRC6uwXVZevro9HJTtN7Bp9T/a9obM=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Rv7j8MQ3;
-	spf=pass (imf18.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755221908; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JyCHEiYG;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf11.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755222006; a=rsa-sha256;
 	cv=none;
-	b=tkm4HzheF7JevMgOXkXBIUDXdQQXl9k+juwonRHdsz7amfOMcFC3+VeCtHhluuYYP1btyE
-	6VxA/reRlm1CrRmS0PuNpDnwyy2IRPc//JtdBwW/foKbAVa1vCgOcqSRSzbBmUZSyMZiDl
-	dEVMp/GYxwxqyJQXnwBLyHqpO5qavGE=
-Message-ID: <0032c975-1e37-484f-9b7b-a3f0fea0401a@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755221905;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FvIK9iJ7V8SHnncWDIUPYMTGNncr21um3VSz5HwThLw=;
-	b=Rv7j8MQ3/UNGwwdvhntFdBWKEAHI300ZJy5nVbhPaQxP2lu1/Xv6QTPG/vsbkanIXvGX0v
-	Gch2UTO+opI2CgstTS5Yq8HjzJWUE64pYMaswUN/0i1GK+1eJ5QD9hbCdcCiY1GLb9bJqV
-	ZXEStufgTaSGJR+4CsA+mCz6bpgR/ME=
-Date: Fri, 15 Aug 2025 09:38:15 +0800
+	b=OkjHI5lmqwh5Ew46EOs7H58JNas0wMOVapE+pGxsi+RTWSiWiceFlPilNjkR4Zc1cYhPfg
+	vxdz4p5ZrqSgts2lawyOC/oICuiDNZEPNnWGgKwE4kWJPjPMOcySBXDFtin5nvGcs6M8U9
+	btva6mwh/yX49beIs/CaKo+kXyTBbWk=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1755222002; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=mM6ETlRb4AUaAvsKe6UppqbUP1u8KlXUj2EtKdJpteA=;
+	b=JyCHEiYGxKkS7TCdZ1j/3onv6mb2JBU4J2UUxJsqzM/h7BPIvmtSeD84E4X751/MRjrjk+Z0I9yGWQLU8ovtbNyR+rvWZB0euKifwj+BoZ3s+SMrYo5OirENoZ1TR9YDZ86fqA/7JkB4w5bXxQMItds9Mgyb6rsPDv+PhDyasFY=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WlmgyQm_1755222000 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 15 Aug 2025 09:40:00 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Bharata B Rao <bharata@amd.com>
+Cc: <linux-kernel@vger.kernel.org>,  <linux-mm@kvack.org>,
+  <Jonathan.Cameron@huawei.com>,  <dave.hansen@intel.com>,
+  <gourry@gourry.net>,  <hannes@cmpxchg.org>,
+  <mgorman@techsingularity.net>,  <mingo@redhat.com>,
+  <peterz@infradead.org>,  <raghavendra.kt@amd.com>,  <riel@surriel.com>,
+  <rientjes@google.com>,  <sj@kernel.org>,  <weixugc@google.com>,
+  <willy@infradead.org>,  <ziy@nvidia.com>,  <dave@stgolabs.net>,
+  <nifan.cxl@gmail.com>,  <xuezhengchu@huawei.com>,  <yiannis@zptcorp.com>,
+  <akpm@linux-foundation.org>,  <david@redhat.com>,  <byungchul@sk.com>,
+  <kinseyho@google.com>,  <joshua.hahnjy@gmail.com>,  <yuanchu@google.com>,
+  <balbirs@nvidia.com>
+Subject: Re: [RFC PATCH v1 2/7] migrate: implement
+ migrate_misplaced_folios_batch
+In-Reply-To: <20250814134826.154003-3-bharata@amd.com> (Bharata B. Rao's
+	message of "Thu, 14 Aug 2025 19:18:21 +0530")
+References: <20250814134826.154003-1-bharata@amd.com>
+	<20250814134826.154003-3-bharata@amd.com>
+Date: Fri, 15 Aug 2025 09:39:59 +0800
+Message-ID: <87a541e51s.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm/page_alloc: simplify lowmem_reserve max calculation
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@suse.cz>, Ye Liu <liuye@kylinos.cn>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20250814090053.22241-1-ye.liu@linux.dev>
- <EF575A1E-6AE2-45D7-9AC0-49C462A0CE5C@nvidia.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ye Liu <ye.liu@linux.dev>
-In-Reply-To: <EF575A1E-6AE2-45D7-9AC0-49C462A0CE5C@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2D53D1C0007
-X-Stat-Signature: m77si3quwrn3wkokoiqhnyudgsbqffix
+Content-Type: text/plain; charset=ascii
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: DB21640004
+X-Stat-Signature: 76fyscewi13udcipqa5qh3epds94rg37
 X-Rspam-User: 
-X-HE-Tag: 1755221906-71885
-X-HE-Meta: U2FsdGVkX189bRJ5kpPTy3AtviV7GwEYpaAFAGeKM55H31bge5dlTVpcWhpHHXFfZj0lEVbJw83qz/IWBPsjlTn1BYPNVRlMMp0awiEs/r5LemWkFz/jokO+JFZN8ldrSabOZAciXeFRNbQ9ZMUw/w279AyniEghPvm8npqWdQQRTwt+w+VNod2I88rsNWEipNU3ihoVx8Hn53jj/QLtGhP3z3QeQdQOYjAyhu9arYLRnhHvP5yLoA+VSoSgEmrt9PrZF6YwRh9QHQIKKml//F/rvc2bLR3FlvOjPPqphWcw710pdPXP0yNgwxkch5FdyCD00bb6SGBNm13/R54aKCJuaodzjAy3Us6J5T/FA0jSVzN52dOQEk8Dvnx8roCf2qNg0nifWxFu7u10HtE4TMI+YFrQ0zxF23NUtkssIobwvLfXsSBozN4vuuxfWblbC9H1diYzQzxSMKVqt54QuIKJMRDIklucxE39u+JBpZo+jqMsBS6qpfNUvygAYhJOsoJpw15oPuSsYVQjH9X8PQiCYqD2djB1TY8nPi/TflksOCiaU8tqoqNvxfN4bQTlB8JnSKxLBMAU5UUQexJnq7P4FaWF0mqPsQB7ArjZHi/pF9fX9Ee7h0XRqwC79HDtVaUEbFPWonvC6MrwGo6f3utoIfyEWevRfwrV/Ks9cjHHrDomk8SY+JtqOf/YbrhW6zZlucRUj6ZHoYZc9XUd81pQRDiteciIyPyozdiRycFGXxS3lmSQm4uXsOq/EfgelA9hqyXSV+y5TY3f88UoidPwuU35e7UsAkffDdTQ/MgLEOoqhV0blSWqaiNbnKTw6eIT9p63YPceKDBaMqQxX7NOXN0o30tZSIZhv4VOuYeMu7Rgy8hdm7AdnikCox1Twgim0tfISuKmKUHQ/4Ft8rbjBDGayxl/H5pl9LGgpLSEOU6zbepiye0ZZOklmTwwv8LQlEwKOgEfXzvhWTV
- MJ0/5cYC
- jltmUoyOIClYm+ORXH3oxwKcR8ik0GwlUsQ1lW7wWwDyLhSpeNU9bM+KJ8t5Wi/DYxMw9NdGjH5c8lAlK2ho2VvSxELvTWBhRfKeWkpxrQ++MWvreiACbg825JptPqkcHSPpL6MJAJvYpsCpMjATjlV0KlGpxIiuq9OaPbmujscd2amOswpY3q+TIransAfwBlOJs8gSjrVd8WCd7NpX+gDrkxzOB+j+92fEp00z4TuoJW5gEKXpc+T7n2WBCFCdsrwtGWGNeQ3+jxLg=
+X-HE-Tag: 1755222005-877583
+X-HE-Meta: U2FsdGVkX19bhnbS4/15ZJ6O1DHuP+khLdl7gPnAS2H299jObcGQFRebLoBp3QLVUFvstRrIOxMBjmiXHSz3SWJGKKFwdN7S67WF74gZp7rb9oKALeyv8sTYydq9TuM8VR0+pNefpUlB9MiWzCLqoBhxM6nM/7afIwZ8Buxi5bgQDzzRtPfNPyqDRNBTeyoO2AvKBkcGP+t4pArukseN8Sp0CIehWm35+OBPwAxhv/vV7GaIYiXjAqfLIJuHFwlFGFQRucxfqSaDibKQ7CnluABZb5omagCXJWnJTaN0P7Mr04uhOZfR96ejgboCDQigJAd3WJJM29x5ohDt7WpHRhCCuF27jGscPfNrFzQDDtAN4L44IDDu6lGyDkc4wsnicHpeMr0P2Y/+j+sqOoEnxc15t7MNRe7GHEDsSEkp9DpKsHEPGQ0C5iWsHztMachgRIKo2rCiYPYKYCOnB/5jpHNqu8w4sRhPnRZRg3nCslFEycV75d6Z8yJLsh9fhTmnGyHanz4SIRNCg6phy5M1DYnXrkp/NuguVO2iqheJKMryX06jjROupHlYzJyQ5FN31NhLwtueLMZHS1UMwLvMuN0kz6wIIMFYH5TrWOEWrCIIucaXz/Gpwe4n6o4Gmflz+wD8V6+BXi3dA2uU0sSCkmvQTEZJ/1rFebG00ex3fgnu82egmz3pJz1tDKSn5eA+Iuv6FSHNmK+cTZCXeoeSS8ae0Fcdkj9PDdrx9GdTq3QXRFR+fKYwJkSBpYgIi8Q/1LoosSJAolwFAWjgSXI9beLPkTT25RDPecNRFsERqG+ZXYiO0n6MZgFJZ/c00zpenqxOK4WtNZec1w11oTTfsoy+myAfbK2rWiNdNy00MJPB95HRJJXzcMS2iNMdOdqhHMJDxGYW2sh3T1FGaG/8v20Zd/MptskI0NNWRqpCQrt3OJz4y/bpxPmLIzMPUtuehibfyr+OPAHPXVOUmem
+ sVZVfCoC
+ xgkcRy6EtN8PoWyoGyPXrKiEEu53sTNdQXh9KMF5uao1DDrD0eZXYrWBwe56qr3aMddQB8YH+VUQEvxcLP75FMpkMX33IVg4S2nYBIPoMesSFxH0D+U9Tv2ilBY7U1Bh57HeNUXxpgeUAjLDve2xX+9nItfFs6Sk2SGH/2UTIWgGwU7m4k8zRHvMTkWeKOg3ILS/+7VGAvsFVaj6vEj8hIxY3gscO6uQt4cIvDweUXKdPAIBQIJinpE8xwaH6j3e8K1u2HTfanwkHdv/dA0uqpYQN369vYRGmAYabqMuZbYGVa7rMlE4aUfFu0weH1EA8OwvdH/RPAa0YDM2So09YuECq56jcWv7q6ddJb6ooQqbM6jGnsA7koY3mXgOKNTmSUlKPpmeFSW+xSIU6wXOfJFLTyZKXR3W8Eeg6kppzIgz4IZa84yKmym6VRINCpfY/QJSFfYWvCE1HnfPN8ZcQm7sBsHuNrcN22Sy33KZSiGsJoiN5BAaceMetHdgDlycN59ob
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,52 +94,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Bharata B Rao <bharata@amd.com> writes:
 
+> From: Gregory Price <gourry@gourry.net>
+>
+> A common operation in tiering is to migrate multiple pages at once.
 
-在 2025/8/14 22:47, Zi Yan 写道:
-> On 14 Aug 2025, at 5:00, Ye Liu wrote:
-> 
->> From: Ye Liu <liuye@kylinos.cn>
->>
->> Use max() macro to simplify the calculation of maximum lowmem_reserve
->> value in calculate_totalreserve_pages(), instead of open-coding the
->> comparison. The functionality remains identical.
->>
->> Signed-off-by: Ye Liu <liuye@kylinos.cn>
->> ---
->>  mm/page_alloc.c | 3 +--
->>  1 file changed, 1 insertion(+), 2 deletions(-)
->>
->> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->> index 64872214bc7d..8a55a4951d19 100644
->> --- a/mm/page_alloc.c
->> +++ b/mm/page_alloc.c
->> @@ -6236,8 +6236,7 @@ static void calculate_totalreserve_pages(void)
->>
->>  			/* Find valid and maximum lowmem_reserve in the zone */
->>  			for (j = i; j < MAX_NR_ZONES; j++) {
->> -				if (zone->lowmem_reserve[j] > max)
->> -					max = zone->lowmem_reserve[j];
->> +				max = max(max, zone->lowmem_reserve[j]);
->>  			}
-> 
-> There is a “if (max > managed_pages)” below. Maybe convert that as well?
+Is it common now?  If so, you can replace some callers of
+migrate_misplaced_folio() with migrate_misplaced_folios_batch().
 
-I should use min() here, but I noticed the two variables have different types: 
-one is 'long' and the other is 'unsigned long'. So, I should use min_t(). 
-But then again, why is lowmem_reserve of type 'long'? 
-It should be a non-negative number, right? 
-Is it possible to change the type of lowmem_reserve to 'unsigned long' and 
-change all uses of it at the same time? Is it necessary?
+> The migrate_misplaced_folio function requires one call for each
 
-> 
-> Feel free to add Acked-by: Zi Yan <ziy@nvidia.com>.
-> 
-> Best Regards,
-> Yan, Zi
+IMHO, migrate_misplaced_folio() is more concise than
+migrate_misplaced_folio function.
 
--- 
-Thanks,
-Ye Liu
+> individual folio.  Expose a batch-variant of the same call for use
+> when doing batch migrations.
+>
+> Signed-off-by: Gregory Price <gourry@gourry.net>
+> Signed-off-by: Bharata B Rao <bharata@amd.com>
+> ---
+>  include/linux/migrate.h |  6 ++++++
+>  mm/migrate.c            | 31 +++++++++++++++++++++++++++++++
+>  2 files changed, 37 insertions(+)
+>
+> diff --git a/include/linux/migrate.h b/include/linux/migrate.h
+> index acadd41e0b5c..0593f5869be8 100644
+> --- a/include/linux/migrate.h
+> +++ b/include/linux/migrate.h
+> @@ -107,6 +107,7 @@ static inline int migrate_huge_page_move_mapping(struct address_space *mapping,
+>  int migrate_misplaced_folio_prepare(struct folio *folio,
+>  		struct vm_area_struct *vma, int node);
+>  int migrate_misplaced_folio(struct folio *folio, int node);
+> +int migrate_misplaced_folios_batch(struct list_head *foliolist, int node);
+>  #else
+>  static inline int migrate_misplaced_folio_prepare(struct folio *folio,
+>  		struct vm_area_struct *vma, int node)
+> @@ -117,6 +118,11 @@ static inline int migrate_misplaced_folio(struct folio *folio, int node)
+>  {
+>  	return -EAGAIN; /* can't migrate now */
+>  }
+> +static inline int migrate_misplaced_folios_batch(struct list_head *foliolist,
+> +						 int node)
+> +{
+> +	return -EAGAIN; /* can't migrate now */
+> +}
+>  #endif /* CONFIG_NUMA_BALANCING */
+>  
+>  #ifdef CONFIG_MIGRATION
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index 7e356c0b1b5a..1268a95eda0e 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -2714,5 +2714,36 @@ int migrate_misplaced_folio(struct folio *folio, int node)
+>  	BUG_ON(!list_empty(&migratepages));
+>  	return nr_remaining ? -EAGAIN : 0;
+>  }
+> +
+> +/*
+> + * Batch variant of migrate_misplaced_folio. Attempts to migrate
+> + * a folio list to the specified destination.
+> + *
+> + * Caller is expected to have isolated the folios by calling
+> + * migrate_misplaced_folio_prepare(), which will result in an
+> + * elevated reference count on the folio.
+> + *
+> + * This function will un-isolate the folios, dereference them, and
+> + * remove them from the list before returning.
+> + */
+> +int migrate_misplaced_folios_batch(struct list_head *folio_list, int node)
 
+In addition to working on a list of folios instead of single folio, I
+found there are some difference about memcg counting between
+migrate_misplaced_folios_batch() and migrate_misplace_folio().  Why?
+
+And, can we merge the implementation of two functions to reduce code
+duplication?
+
+> +{
+> +	pg_data_t *pgdat = NODE_DATA(node);
+> +	unsigned int nr_succeeded;
+> +	int nr_remaining;
+> +
+> +	nr_remaining = migrate_pages(folio_list, alloc_misplaced_dst_folio,
+> +				     NULL, node, MIGRATE_ASYNC,
+> +				     MR_NUMA_MISPLACED, &nr_succeeded);
+> +	if (nr_remaining)
+> +		putback_movable_pages(folio_list);
+> +
+> +	if (nr_succeeded) {
+> +		count_vm_numa_events(NUMA_PAGE_MIGRATE, nr_succeeded);
+> +		mod_node_page_state(pgdat, PGPROMOTE_SUCCESS, nr_succeeded);
+> +	}
+> +	BUG_ON(!list_empty(folio_list));
+> +	return nr_remaining ? -EAGAIN : 0;
+> +}
+>  #endif /* CONFIG_NUMA_BALANCING */
+>  #endif /* CONFIG_NUMA */
+
+---
+Best Regards,
+Huang, Ying
 
