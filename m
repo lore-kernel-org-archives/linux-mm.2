@@ -2,128 +2,106 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D1C1ACA0EEA
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 15:07:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E100CA0EE4
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 15:10:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C327900250; Fri, 15 Aug 2025 11:07:37 -0400 (EDT)
+	id 109A0900251; Fri, 15 Aug 2025 11:10:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3743590024B; Fri, 15 Aug 2025 11:07:37 -0400 (EDT)
+	id 0E21890024B; Fri, 15 Aug 2025 11:10:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EE30900250; Fri, 15 Aug 2025 11:07:37 -0400 (EDT)
+	id 01E2C900251; Fri, 15 Aug 2025 11:10:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1030F90024B
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 11:07:37 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B2743115A55
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 15:07:36 +0000 (UTC)
-X-FDA: 83779320912.22.AF3CDA6
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	by imf24.hostedemail.com (Postfix) with ESMTP id D79C9180009
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 15:07:34 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=dabbelt-com.20230601.gappssmtp.com header.s=20230601 header.b=J6BZZMyC;
-	spf=pass (imf24.hostedemail.com: domain of palmer@dabbelt.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=palmer@dabbelt.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E1E7890024B
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 11:10:25 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 57AE814012B
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 15:10:25 +0000 (UTC)
+X-FDA: 83779328010.10.8D5BA50
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 6613740003
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 15:10:23 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XJNyW0os;
+	spf=pass (imf04.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755270623; a=rsa-sha256;
+	cv=none;
+	b=uGlhyyGauuXXZm/TwyKJkL9UMpvltSw3XVk9WNYVWjiC2jdkfi1+Fh7t9H99Cllndcf8N1
+	ZN4i0/z/LkEcGSz8mJVuWzOKrr6MtgAt5MjDr4kF4fHxXMOxswFbAqwxxu43UX10YMcaKe
+	vnGfddDMFZKD0NGxil6BF1oSirtESB8=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XJNyW0os;
+	spf=pass (imf04.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755270454;
+	s=arc-20220608; t=1755270623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=HSuqWusYtC3hY8ploe0KH7jPL7SusiQWfMM3CIlvAWY=;
-	b=KeX1N1xTzpOr3F7vUPVIDTGPQOkTFNUnKWPVIGfITkDg+mxT/Y/UUxNR1nogMVv80VWdsV
-	4mW0eZFco2zQljk9cQ570uKuuzDtJwxrXTBi8TPPcNEtdtORW1mZQ79bQ4n+hyoF0u3iyQ
-	fXgBz6V6vSBO/TJTUTG2vEugGjXkmSs=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=dabbelt-com.20230601.gappssmtp.com header.s=20230601 header.b=J6BZZMyC;
-	spf=pass (imf24.hostedemail.com: domain of palmer@dabbelt.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=palmer@dabbelt.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755270454; a=rsa-sha256;
-	cv=none;
-	b=jKVCmsXceQgeZrYrt9uA13J05Lf/2H3YXpSpqhf58nZZgk53Y6Q7B/HKtn5BEtvIZ5kujp
-	eEOtHi0OrVmcss1eM+ToV1gVI/yO/GDLRafo2G09jj9jjWXFvNjP9lXG/UXifPaw99ewTP
-	fOMnIhbXkPUzzqL5uO5UYo1mRs+udug=
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-76e2e614b84so2125194b3a.0
-        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 08:07:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20230601.gappssmtp.com; s=20230601; t=1755270454; x=1755875254; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HSuqWusYtC3hY8ploe0KH7jPL7SusiQWfMM3CIlvAWY=;
-        b=J6BZZMyCXknB6z0+Thk3JhBsSYUxPWWn4HIkTtvVG0J+JyNrS8If+jE0MuQM+1MIXK
-         V3h4MlqNrcOjU341dT3Y19CYCSp+39/UD8Xe6jLM4N4jS7t9vjxEDs6sxmG7jHh+FTaQ
-         CziYaxZCtULgAvkKSvy7eTGPAzbYTjVxoumPQLg3HwL6rbHHF+BWv/PQth6dI2ceemKY
-         mBAzeC60rAzE/t1W4Vle2zbsT9ElMTwUoyAXb0EiH1VWyKbX34jFJpaEEmSPSzDnPXFh
-         +M3/DUmP1nJTAmBkxYjjMPdDb7agkS1MhSCnBpRq4UIFgMTgsYEUmzNUQp+iOnXflZbC
-         5Hlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755270454; x=1755875254;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HSuqWusYtC3hY8ploe0KH7jPL7SusiQWfMM3CIlvAWY=;
-        b=EP4YSKawpaGSP1w3ERljGEU/XJes5jsfX5hDXAo1okcP8ElTddYUyeeJgR1I4jirI+
-         wtqvxEjjUwoa66gcag3yAdSrgp44TyoSBid+ZJKdmkpHR4DdrfdO1Cs2ge/5+0OEKA6Y
-         WJsMpdAnVxYbSL3gPiJf50+fALd0D3TaEK55kvLRqUhYLzVhBDUmgXUOi0AuW968X4w/
-         xltzvXoZlXSAeUZWKTLRaNxZaD0NJv73sizhonZhZ2T+FYMy3wFgJ3PlXH83IxH41/X4
-         TmVqIa6To/igD4O+39XQSIMpIQHvQS8UwZmpHnh57iWDewSMiU4MqkXkcaQCH7lYM6nc
-         1+Gw==
-X-Forwarded-Encrypted: i=1; AJvYcCXw/FBrJ8IOMvfNrJIqo6DjbuSNm946NBi87uh+dlyZ774SnFmHr6EA3KFbUVGJH5/gVpaKlpsqWQ==@kvack.org
-X-Gm-Message-State: AOJu0YwYhWBu+fhI91O+yk5DQ+/UfrosK4eWuV+r6gv1FjhsBlmk1K70
-	4iaWpEKGR9xFEyJ1Yeuyy7IEx7J5MCchcroUJiOzTun4OkJfjMGBgOd9nmscq04l+bg=
-X-Gm-Gg: ASbGncvyI5MLiXn7pKSdZJGevU+1kf/TWCH8EgNenMD1vp2MgH2N/8J76O1qjOUXNEQ
-	mH44Lg3A7ZUIP1zNmURmdUbdxyHwDFg8i6zwVpRKKTj5OvXD+H91TDNPCMpqv++KZs4qpNoYe1T
-	rgnLUeS4QBs8ShVkLo6MIcYDSpkzGa8qOXHUUdkHO6N0kfihKJXYVUONQONr44L74DT7GquCLyo
-	GdJtATEpC3Pk2D0ux3eZmgMTdqbqbEq1cFpTm18jYJWU/YlxorauaifsGE06dSuvsL5eZLDF+nf
-	gNkFGxNgoCHPJvQofKMVoINLNtsdFklZeqWqYIZ9IzCpwjFfiYr3gkJFRgcR5441hCVQ6LAUh9p
-	5B6ZqOVXG1ZivkR63Gj4F8GNPFRsyo6vU4rI=
-X-Google-Smtp-Source: AGHT+IGQbGMaqUCBVjgHpE03NJ6lUtJGuN0cfMPLFV18k27l43zYHixLrnt22lRnZXhrjts5z9io5w==
-X-Received: by 2002:a05:6a20:1611:b0:23f:f5bf:35d7 with SMTP id adf61e73a8af0-240d3039205mr3462386637.45.1755270453673;
-        Fri, 15 Aug 2025 08:07:33 -0700 (PDT)
-Received: from localhost ([192.184.165.199])
-        by smtp.gmail.com with UTF8SMTPSA id 41be03b00d2f7-b472d5e58d0sm1499710a12.23.2025.08.15.08.07.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Aug 2025 08:07:33 -0700 (PDT)
-Date: Fri, 15 Aug 2025 08:07:33 -0700 (PDT)
-X-Google-Original-Date: Fri, 15 Aug 2025 08:07:29 PDT (-0700)
-Subject:     Re: [PATCH v4 18/24] riscv: vdso: Disable LTO for the vDSO
-In-Reply-To: <20250812-vdso-absolute-reloc-v4-18-61a8b615e5ec@linutronix.de>
-CC: Paul Walmsley <paul.walmsley@sifive.com>, aou@eecs.berkeley.edu,
-  Alexandre Ghiti <alex@ghiti.fr>, nathan@kernel.org, nick.desaulniers+lkml@gmail.com, morbo@google.com,
-  justinstitt@google.com, luto@kernel.org, tglx@linutronix.de, vincenzo.frascino@arm.com,
-  kees@kernel.org, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-  hpa@zytor.com, richard@nod.at, anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
-  linux@armlinux.org.uk, Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
-  maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-  chenhuacai@kernel.org, kernel@xen0n.name, hca@linux.ibm.com, gor@linux.ibm.com,
-  agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com, tsbogend@alpha.franken.de,
-  ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-  bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
-  tmgross@umich.edu, dakr@kernel.org, nicolas.schier@linux.dev, linux-riscv@lists.infradead.org,
-  linux-kernel@vger.kernel.org, llvm@lists.linux.dev, linux-mm@kvack.org, linux-um@lists.infradead.org,
-  linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
-  linux-s390@vger.kernel.org, linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org,
-  linux-kbuild@vger.kernel.org, jstancek@redhat.com, acme@redhat.com, alexghiti@rivosinc.com,
-  thomas.weissschuh@linutronix.de
-From: Palmer Dabbelt <palmer@dabbelt.com>
-To: thomas.weissschuh@linutronix.de
-Message-ID: <mhng-146EE95D-951E-41BB-898C-033437B27EA3@Palmers-Mini.rwc.dabbelt.com>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: yu4wq3m6ef5ftswy9fkw3ubwi63aho8j
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vPVsKPeicanKuWIsOH7c0PREAW8FxRcmf8EIQ7kymMU=;
+	b=inwbxTie5TpRBkF4jpt4Aoi7if7N44rofiK3fuyha5kbRh+oCDPtiWNjn7U5SIi91vZHk4
+	+BPM9pVo9GReSv23p44iwlcZ96jHKIFdKZRoiHzTcHEhNvfp/TyD0zPn2zaKugknGCUbmO
+	HI6JTjODxBhINjvolTnIq80hIob5ZtM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 102C646117
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 15:10:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9653C4CEFC
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 15:10:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755270621;
+	bh=fGDwaVSvPH8pm2BAhxS+J5h/sgd3Il31C8JSmXIzOUc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=XJNyW0os+xxrhkJvYpZsokPkFKsGLhk47WqtFAIrqesvSAaZr18FTX3x6QBLz1+jn
+	 cpQoPNPcJFlJwzjxvlBpGpE6e63WDAlg1CdXqQiwx9tUu+neTcZ4wQqO+8J3Zkvlmf
+	 5rB+oPsYATfeLP9t/A6HfqGlhgFrvNbwnKgMjeEk+68xPqMrAT+EGzFZY35vzrGs2r
+	 pRtMVKRLedR7oYImdff6nJAN/UbYgmluYC9b8PZ+llFIH9/1sSbnSx5+6VkC/3QG1M
+	 H83CuPaY2fuJCAgEjcsP6SVLPbJZ9D24jJ7OEclcDmPk5DrmPd6XEZKk0wsbYEecDP
+	 ESCY4XMCYCEyg==
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-459fc779bc3so61665e9.1
+        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 08:10:21 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXZI9sav+F4Jy59GtoOpeSnt9uOPWzC7k2ELQN+f2+pufFRsgpCg1rdy0z+/4qGFWZ7xPWl9C+p2g==@kvack.org
+X-Gm-Message-State: AOJu0YyjvhoJ8Cvm8AuKaGHE87TTzF7bt1RaLyctIbYan2KOgw9d3Se2
+	RElBk9r0cfniZtEsmUvhrE/0L+GziAmBgJgHId6MDhjzdvOJ1fSo84bs2GMhHZETrRuQG9AemvT
+	mG7l47Ps68MrhN1K+ny5zVSPJjd+kRTTjNn1mpzjc
+X-Google-Smtp-Source: AGHT+IG/Z8MebvAbTWGT9RmBQgvG1DLMFgUD0Xtc1EusOb89eQmpS0MfrZue4XkJq0FF4+vgGgs58TCUtMWhT5S+eqQ=
+X-Received: by 2002:a05:600c:18a3:b0:439:8f59:2c56 with SMTP id
+ 5b1f17b1804b1-45a20980c41mr1461135e9.2.1755270620316; Fri, 15 Aug 2025
+ 08:10:20 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250716202006.3640584-1-youngjun.park@lge.com>
+ <20250716202006.3640584-2-youngjun.park@lge.com> <jrkh2jy2pkoxgsxgsstpmijyhbzzyige6ubltvmvwl6fwkp3s7@kzc24pj2tcko>
+ <aH+apAbBCmkMGPlO@yjaykim-PowerEdge-T330> <aH/baxIgrBI3Z1Hl@yjaykim-PowerEdge-T330>
+ <uyxkdmnmvjipxuf7gagu2okw7afvzlclomfmc6wb6tygc3mhv6@736m7xs6gn5q>
+In-Reply-To: <uyxkdmnmvjipxuf7gagu2okw7afvzlclomfmc6wb6tygc3mhv6@736m7xs6gn5q>
+From: Chris Li <chrisl@kernel.org>
+Date: Fri, 15 Aug 2025 08:10:09 -0700
+X-Gmail-Original-Message-ID: <CAF8kJuMo3yNKOZL9n5UkHx_O5cTZts287HOnQOu=KqQcnbrMdg@mail.gmail.com>
+X-Gm-Features: Ac12FXxaQMgJCxryg4vXQEsqpIxPtgndj7TaEMxwJoTPbnI-r8lKXY393MbSlPo
+Message-ID: <CAF8kJuMo3yNKOZL9n5UkHx_O5cTZts287HOnQOu=KqQcnbrMdg@mail.gmail.com>
+Subject: Re: [PATCH 1/4] mm/swap, memcg: Introduce infrastructure for
+ cgroup-based swap priority
+To: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
+Cc: YoungJun Park <youngjun.park@lge.com>, akpm@linux-foundation.org, hannes@cmpxchg.org, 
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
+	muchun.song@linux.dev, shikemeng@huaweicloud.com, kasong@tencent.com, 
+	nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, gunho.lee@lge.com, 
+	iamjoonsoo.kim@lge.com, taejoon.song@lge.com, 
+	Matthew Wilcox <willy@infradead.org>, David Hildenbrand <david@redhat.com>, Kairui Song <ryncsn@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6613740003
+X-Stat-Signature: e13g1h9z4a4ebq8t58ynk5n74w6831xj
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D79C9180009
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755270454-317460
-X-HE-Meta: U2FsdGVkX1827xNaHesvYJO9hauM5WAMJW1aDE0Ue2jaQ4lQUGCP+17obrIz+uAFAjbp5SjjgdPRerdcx0BuTQJfMrMGGkE+eGPZbSQ3JrhzcAWo+kzGMLwlizO/KUCBuEPUiaI6Wpb4PoGycqSnbVw+h1xn1L8823uhqDUMswimpYsiGGnGblomLgNTSWQRv8v1uyQHwPaJdP82GACYlVbPFx7ZdXWNqxtiZLz75AJyY12PjZeviwFNjCIbWSztYY7hcsDChqQBMrZx5Ka94QLw18T3aV5ua+7cgotUwC4pQSbUnRHs3fzBWY3N51d+c8CevnMV+oOh7egLlW2EexKQmzFJa/hldE5m9UIfRS4+9fyZ2Qq2iZCiyO1zSJpY+qKdpmUWNUbknueQvVTrzuzA5YJcb6asEV+9TRorKpL+U5CCPqm5Kf8MHbzAsAPrhBrO30RtQH4yXaByEmY/xAu+T883iLU9zAouLcfwbzVYBByBPYDMjTHD+a7GS/2z5sjDDFon/dl575nk/GIXdbv1jg2Z/sjO/M2Txzuh/7NKebf7mUU2TGGnprTpHJ7LaKFhxg0R+xNfb844lfIPwSBMZIX3MzkjcR6BCBIqP8G3dbw5qO7NyqmArEeSF9IzINbTXaS0wh/McNvrHd0VWbsriRU9qcEHgtwZXLW8SeSNACm6R64+hQzg4ySDL3NdEWKGs+/4fRW+wKxjnGB4chG7mWOLN01KS/IqesPskj/jmBgMs0WRSOqgGoq/BOKBJOmXAt9gltOeLittU0cW5jbKUp+rqj/Zd5ofHuRIT72JKZcOCKJFKXCLesWP69V8xqE14BEkfVxT5GvA5SGuN7cfdRu7cNx1bJho1/hhw1ZxhqqAg45m7MQsu/IBLR/5WBv+JdP5KATVPf/yUKscCIjIl7/MtGSoMDVdpez8XP0sttLi2X8jLI6RpwrPM+ltnaJ7pfeBKc2iKVe73gB
- aj0KHinA
- QAqT1pvukdJdUbqF+iDO8ba2rFcVuykfto4UuXA1s8LCWZYBqgtGkAPoSGow6VX2AqnVrr0L2WdYw1hntFXYRJOxWZGkVKrXp4bB7NP10EDawQjsPkI23izccFvori5DkAEoqoVVbk5CVtS5HM1puXNF0LTyuxupHZRCwZTWK3XW7j7pKG1sDzPRVmVzHYGmK5v/0Hjp+CIr6o3S794Dz0IsZvNU8BvqNwSJHYcGTMy1tnIKPtlR6ZGkYIqPUu/TzUS6ps+JgnkT/CHpWLHcSQ6g1jNp9ZRY9oKqGLZdBl+szVJZSVeDqhOiCa3Jf4Vrk5COX/WjLF5XBXmFzYRxhAxaZd6OD+tHwjBOPmpXb+9EeA2smsNvxGw1wO+9z6+qPqOM3wJQxEmhxSm2z6FVTyn9MqTweKYQkkTl8/Vd7Kkc+t5/Vv338WRRebEAuOLt2Eeq7sYE5OCdFecYhcR34lN7QL277wLSZyM4oQkzY0t+mI+UB6cpYhvtgC+NQBZSwpp4P9Gw+ngSoy4B+QMVpq5h0z7L24P+FhYL07wfH1p5HOSTo1CdZ31WR6IJjSaKMwnCpV7bs5eSUw7hyTjLvLlHPe7x6OH486bkI9Wm2qk6IxpW5qrziw0cXkbAY9EI7ngSe4qSkBV5nyEUcBuOCY+9tj38MtjT6TV+7LYhC+ZmBdT4=
+X-HE-Tag: 1755270623-123203
+X-HE-Meta: U2FsdGVkX1/i2UUqIf3VhxhdmQ5wvjnn+Jn0XWE+QTUcTf4YjIYZ9IUX22goBDZ0GNo2lQsHzQX88xZ2iDjJoWAjuEnsW59WNDjXJg9RpqLcrWDTC9SM2Wj/rxtVUX4uBdy3txYmiUYK+s5rnVuc1wef1QkwV/uPsMXw6TpEpAddTcH3VP+VZa/dd9CrlB+ZdtwrX2hAx54I7gNuL8cOLwdj68Sd0mRWtxNkHoCBg2XGpitqtwIfKp1fh/OhinZMHLf93LUU7aTLeuZ+LB1me8UsAFnKbkXj7hHMkAV0Jfhoc+sFH4FVXsm/UeC2QTe2R3+ynj/uU+ZDzeScOBtZ3qu0fe1DSmouuTSqW4c91C64Bubsswy+OdVia36szFBu4HzNBrApkmp2pmxx9v3+nXdcCv4kmdJuIfJQu0W7aiHFQmswhjPMH7ZMuEYophWygWE82QhNO6GEk0Tet7sH/X+nXCjMFCrHfA2S2tzKbGnbXslFJq02yS3y5d0RY97RIf77xpXb2cy0NQJPC884NdiYD3Go45qPtCCiLnCGxTmebjzrkjxlNcnamYOUXkImMwbuS7y1Gu8r7wTXoxoaIrPTRzs2C05Tcce6P59w0t4WYb7KzcyyLRjDQEH61qxL29YVRJRW850KoZpeb8A1qIBIhFxgtQxPeo+AdOQWl260X5MIMyRy561HvA94X5h+E+HZwSnNNX/m2T01sb4OLMKHfX54+8wPaqwWu9n2cYZR8HiePk7mH/k0KGWpTJ07okkjbypnmDL3Yo8hZR0byvGnn8uIegkBZt2m5hr7eOcWm4xqYNcO+g7rSeZ1j/UlW+Oqr6nA/yf9251kfX8wDV/g8kwtJyCjtkQTb9lQ/FXm+ZKYDdnEILpEhzZLET5Om3tXg/foLP/uZvulZjD6u5vcOQ9rszH2qzbAWJ+0dPZ6uPWHq7EXfJQAvE5GSKCtsMxYN90HtbZpSZc72yX
+ zNw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,41 +110,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 11 Aug 2025 22:44:31 PDT (-0700), thomas.weissschuh@linutronix.de wrote:
-> All the other architectures supporting LTO (x86, arm64, loongarch) do not
-> use it for the vDSO.
->
-> Its is problematic for some upcoming compile-time validation of the
-> generated object code.
-> The LTO object files do not contain the necessary relocation information
-> and -flto-fat-objects is not compatible with clang < 16.
->
-> For consistency and to enable the mentioned compile-time checks,
-> disable LTO for the vDSO.
-> The vDSO heavily uses __always_inline anyways.
->
-> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-> Tested-by: Jan Stancek <jstancek@redhat.com>
-> ---
->  arch/riscv/kernel/vdso/Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/riscv/kernel/vdso/Makefile b/arch/riscv/kernel/vdso/Makefile
-> index c19c3c76f7c9f6b2f7523a59269de3b683656323..9f1bf5bae9bd473e43d9fd3022e9e1a185128b73 100644
-> --- a/arch/riscv/kernel/vdso/Makefile
-> +++ b/arch/riscv/kernel/vdso/Makefile
-> @@ -49,7 +49,7 @@ CPPFLAGS_vdso.lds += -DHAS_VGETTIMEOFDAY
->  endif
->
->  # Disable -pg to prevent insert call site
-> -CFLAGS_REMOVE_VDSO = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
-> +CFLAGS_REMOVE_VDSO = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS) $(CC_FLAGS_LTO)
->  CFLAGS_REMOVE_vgettimeofday.o = $(CFLAGS_REMOVE_VDSO)
->  CFLAGS_REMOVE_getrandom.o = $(CFLAGS_REMOVE_VDSO)
->  CFLAGS_REMOVE_hwprobe.o = $(CFLAGS_REMOVE_VDSO)
+Hi Michal and YoungJun,
 
-Acked-by: Palmer Dabbelt <palmer@dabbelt.com>
+I am sorry for the late reply. I have briefly read through the patches
+series the overall impression:
+1)  Priority is not the best way to select which swap file to use per cgrou=
+p.
+The priority is assigned to one device, it is a per swap file local
+change. The effect you want to see is actually a global one, how this
+swap device compares to other devices. You actually want  a list at
+the end result. Adjusting per swap file priority is backwards. A lot
+of unnecessary usage complexity and code complexity come from that.
+2)  This series is too complicated for what it does.
 
-Also assuming this goes with the others.  Thanks!
+I have a similar idea, "swap.tiers," first mentioned earlier here:
+https://lore.kernel.org/linux-mm/CAF8kJuNFtejEtjQHg5UBGduvFNn3AaGn4ffyoOrEn=
+XfHpx6Ubg@mail.gmail.com/
+
+I will outline the line in more detail in the last part of my reply.
+
+BTW, YoungJun and Michal, do you have the per cgroup swap file control
+proposal for this year's LPC? If you want to, I am happy to work with
+you on the swap tiers topic as a secondary. I probably don't have the
+time to do it as a primary.
+
+On Thu, Aug 14, 2025 at 7:03=E2=80=AFAM Michal Koutn=C3=BD <mkoutny@suse.co=
+m> wrote:
+>
+> On Wed, Jul 23, 2025 at 03:41:47AM +0900, YoungJun Park <youngjun.park@lg=
+e.com> wrote:
+> >
+> > After thinking through these tradeoffs, I'm inclined to think that
+> > preserving the NUMA autobind option might be the better path forward.
+> > What are your thoughts on this?
+
+The swap allocator has gone through a complete rewrite. We need to
+revisit whether the NUMA autobinding thing is still beneficial in the
+new swap allocator. We need more data points. Personally I would like
+to decouple the NUMA to the swap device. If the swap device needs more
+sharding, we can do more sharding without NUMA nodes. Using NUMA nodes
+is just one way of sharding. Should not be the only way to do
+sharding. Coupling the swap device with NUMA nodes makes things really
+complicated. It would need a lot of performance difference to justify
+that kind of complexity.
+
+> > Thank you again for your helpful feedback.
+>
+> Let me share my mental model in order to help forming the design.
+>
+> I find these per-cgroup swap priorities similar to cpuset -- instead of
+> having a configured cpumask (bitmask) for each cgroup, you have
+> weight-mask for individual swap devices (or distribution over the
+> devices, I hope it's not too big deviation from priority ranking).
+
++1. The swap tiers I have in mind is very close to what you describe
+
+> Then you have the hierarchy, so you need a method how to combine
+> child+parent masks (or global/root) to obtain effective weight-mask (and
+> effective ranking) for each cgroup.
+
+Yes, swap tiers has a hierarchy module story as well. Will talk about
+that in a later part of the email.
+
+>
+> Furthermore, there's the NUMA autobinding which adds another weight-mask
+> to the game but this time it's not configured but it depends on "who is
+> asking". (Tasks running on node N would have autobind shifted towards
+> devices associated to node N. Is that how autobinding works?)
+
+Again, I really wish the swap file selection decouples from the NUMA nodes.
+
+> From the hierarchy point of view, you have to compound weight-masks in
+> top-down preference (so that higher cgroups can override lower) and
+> autobind weight-mask that is only conceivable at the very bottom
+> (not a cgroup but depending on the task's NUMA placement).
+
+I want to abandon weight adjusting, focus on opt in or out.
+
+> There I see conflict between the ends a tad. I think the attempted
+> reconciliation was to allow emptiness of a single slot in the
+
+I think adjusting a single swap file to impact the relative order is backwa=
+rds.
+
+> weight-mask but it may not be practical for the compounding (that's why
+> you came up with the four variants). So another option would be to allow
+> whole weight-mask being empty (or uniform) so that it'd be identity in
+> the compounding operation.
+> The conflict exists also in the current non-percg priorities -- there
+> are the global priorities and autobind priorities. IIUC, the global
+> level either defines a weight (user prio) or it is empty (defer to NUMA
+> autobinding).
+>
+> [I leveled rankings and weight-masks of devices but I left a loophole of
+> how the empty slots in the latter would be converted to (and from)
+> rankings. This e-mail is already too long.]
+
+OK. I want to abandon the weight-adjustment approach. Here I outline
+the swap tiers idea as follows. I can probably start a new thread for
+that later.
+
+1) No per cgroup swap priority adjustment. The swap file priority is
+global to the system.
+Per cgroup swap file ordering adjustment is bad from the LRU point of
+view. We should make the swap file ordering matching to the swap
+device service performance. Fast swap tier zram, zswap store hotter
+data, slower tier hard drive store colder data.  SSD in between. It is
+important to maintain the fast slow tier match to the hot cold LRU
+ordering.
+
+2) There is a simple mapping of global swap tier names into priority range
+The name itself is customizable.
+e.g. 100+ is the "compress_ram" tier. 50-99 is the "SSD" tier, 0-55 is
+the "hdd" tier.
+The detailed mechanization and API is TBD.
+The end result is a simple tier name lookup will get the priority range.
+By default all swap tiers are available for global usage without
+cgroup. That matches the current global swap on behavior.
+
+3) Each cgroup will have "swap.tiers" (name TBD) to opt in/out of the tier.
+It is a list of tiers including the default tier who shall not be named.
+
+Here are a few examples:
+e.g. consider the following cgroup hierarchy a/b/c/d, a as the first
+level cgroup.
+a/swap.tiers: "- +compress_ram"
+it means who shall not be named is set to opt out,  optin in
+compress_ram only, no ssd, no hard.
+Who shall not be named, if specified, has to be the first one listed
+in the "swap.tiers".
+
+a/b/swap.tiers: "+ssd"
+For b cgroup, who shall not be named is not specified, the tier is
+appended to the parent "a/swap.tiers". The effective "a/b/swap.tiers"
+become "- +compress_ram +ssd"
+a/b can use both zswap and ssd.
+
+Every time the who shall not be named is changed, it can drop the
+parent swap.tiers chain, starting from scratch.
+
+a/b/c/swap.tiers: "-"
+
+For c, it turns off all swap. The effective "a/b/c/swap.tiers" become
+"- +compress_ram +ssd -" which simplify as "-", because the second "-"
+overwrites all previous optin/optout results.
+In other words, if the current cgroup does not specify the who shall
+not be named, it will walk the parent chain until it does. The global
+"/" for non cgroup is on.
+
+a/b/c/d/swap.tiers: "- +hdd"
+For d, only hdd swap, nothing else.
+
+More example:
+ "- +ssd +hdd -ssd" will simplify to: "- +hdd", which means hdd only.
+ "+ -hdd": No hdd for you! Use everything else.
+
+Let me know what you think about the above "swap.tiers"(name TBD) proposal.
+
+Chris
 
