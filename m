@@ -2,56 +2,56 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F1CC5CA0EE6
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 08:55:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A8025CA0ED1
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 08:56:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 929E9900218; Fri, 15 Aug 2025 04:55:59 -0400 (EDT)
+	id 44926900219; Fri, 15 Aug 2025 04:56:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 900D08E0002; Fri, 15 Aug 2025 04:55:59 -0400 (EDT)
+	id 3F98A8E0002; Fri, 15 Aug 2025 04:56:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7CA27900218; Fri, 15 Aug 2025 04:55:59 -0400 (EDT)
+	id 33700900219; Fri, 15 Aug 2025 04:56:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 649CF8E0002
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 04:55:59 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D21D8E0002
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 04:56:03 -0400 (EDT)
 Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 181D61408D4
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 08:55:59 +0000 (UTC)
-X-FDA: 83778384438.26.FAE0727
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DA1DE83A1B
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 08:56:02 +0000 (UTC)
+X-FDA: 83778384564.26.3EFFCED
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6EB2040007
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 08:55:56 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 322D01A0004
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 08:56:00 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf01.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	spf=pass (imf19.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755248156;
+	s=arc-20220608; t=1755248161;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xScE1ZeqkqR6cVLz8VDAxvPBqz1u2D3A/BF5V85Xz48=;
-	b=bQREXlk66BnCPyh8/b3AKxSFbsLSoEjxEq++HfFaOUOmTqTFCD+r4lFHaRRXG1BeUuGR0n
-	TWE5jsmgYVFIjvb4F6IhtlmkVUHtYCjenNMM/LFFqQN5IrDPrXd3Kunvp+2LAsuHgY2CrH
-	XPxOEA6j7B3jwPzwe7xeIp3WtxiWlts=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755248156; a=rsa-sha256;
-	cv=none;
-	b=X0n5eL4wvMq24hYF036I0eF5qazw4qpOa1NXc0d/KPU1hUyQxaU5URs8DCFXW/hJk2gogb
-	e3FdrIEU1g0/EbW3V2VZPbGCqaxZj57oFQng2SRtL4Yr0Wx7ykjILEsZR1PL9kkjnrTQ6N
-	5O5iwNBXaPE6VhqkAwws6tCkPEtSExE=
+	bh=I9Uv6PMeEitsNbE3DZPwOTfx/f+eI4cUe3OB2+EV8DU=;
+	b=kS3lJ+K/qh2wDU1j1apjumdpPpLTiBuQMvhj/xs+hkj/XPkfd6frwd8lB/+xSCs4/qasTq
+	jSOL/60qLfLUpdvgPgxmRYIkewHPVdaojuTB3qt+i/Lk7DxP36Wezx350dH+OqVtI9kOeV
+	/H3Dd792PC1YXutU89yEzEwJuNN+FvY=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
+	imf19.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf01.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	spf=pass (imf19.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755248161; a=rsa-sha256;
+	cv=none;
+	b=udfzEzQAuiCEnPMsIOjkh8T8snmuu8tXVeI1IaQg7SbOAmlUNlMnXpIfCY2FSHdUu6+9/M
+	BhVd8s0NPNFA2zJAkIUEsjJQ9ud5JRx9BceJSM6AmWThdVklPJHHaHDyRdCcRwwbPX42BQ
+	eo2BBpmhtyRuF+A968Cun9NZKUnX4Cs=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 619F51E32;
-	Fri, 15 Aug 2025 01:55:47 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3B7B31E32;
+	Fri, 15 Aug 2025 01:55:52 -0700 (PDT)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 076A53F63F;
-	Fri, 15 Aug 2025 01:55:50 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D84FA3F63F;
+	Fri, 15 Aug 2025 01:55:55 -0700 (PDT)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-hardening@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -84,22 +84,22 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mm@kvack.org,
 	x86@kernel.org
-Subject: [RFC PATCH v5 06/18] arm64: set_memory: Implement set_memory_pkey()
-Date: Fri, 15 Aug 2025 09:55:00 +0100
-Message-ID: <20250815085512.2182322-7-kevin.brodsky@arm.com>
+Subject: [RFC PATCH v5 07/18] arm64: Reset POR_EL1 on exception entry
+Date: Fri, 15 Aug 2025 09:55:01 +0100
+Message-ID: <20250815085512.2182322-8-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250815085512.2182322-1-kevin.brodsky@arm.com>
 References: <20250815085512.2182322-1-kevin.brodsky@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: gzr67ugr13nr7xpz6dp4agqsqzrxrsqn
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6EB2040007
-X-Stat-Signature: 4xjjtauqtopm3poty67xb1tn58pm5tr9
-X-HE-Tag: 1755248156-703165
-X-HE-Meta: U2FsdGVkX1/PXviE1fPvghhlUMZsobiqGNiqM0NB40Wob4fZfKAltS/rZ7fJ+mYWNNXRWyp4DqT31If9MvPFkVD5PvwUSDkCgc2QlT9rOTG2u4rQoKKR/RAI+5VI4XDoF8dMPAV5oDi1044f8yaNV2MRfdYnr7bWJ98Rk63vTfwckXcxLD3GsubLBs1+d0iXPE4uBv3+xT9jObYHZvYCm1dTqBRSs4vQ+fIdFBsd7qwIeYIxSxpje0XBBr+/5UCf/KqsNckHaRj/WD19bHoPIe/Lj1MF84UEwGE5sZBibPfSnyhOIQ2buhp/ItXi/t/CymQi7D97UCCcScS5VHuEDaIvut0OIYgn5KSusQHeZes+pMI2sVb5lKtf3fI4NQlo6DXYVo449EIbnYKyDGDQCVS728rir/lwca490OtMhIgQTg5MPhicmv9+DnblnPghqujMdThj9Igb7HBSIKHjA/4PposSZtjFJUHPJP81FxUXgnV8DMZv/b8rFGmpcSkdyzB7l1REccqiZmD00ElIXjYexFzo9gwFOCw6IgY04kboF76ELyEFkfKWHQl9WTv9VzpJ9WIlntMCN33zh7wWMaS7Gu3nNkndhiItU5gO9U7XpPPRr9Y0ZsCTFWkCcZdq2E5F240MjxpWsJvw2RkU3CuXDD/1FuaqSZ4f0RWFQ3ceHORZEsW0/JeyHdzvFDeU0kSLSZTzupW7JGEfb97AKON7/YjYOSDcuGQqkdd05pWWEMDsw5DSu+kZ8QeadbT0pRSTQEQsHVvZq8EpaYVbSM9LKOcuc1hSKckvxb+cv9XI+HcbdL3k5sIoAH4xH4jIY/jL74aonEIScv6WeDrjR7HUBvuYD36+Jn9KdThYir0RQcopxPiYxV7R2v5SSAFG8dIeR+7txDN+AZH5SzDODwZ0LOTJobuIcvDoRxAb2DgwTpySshhM8Z6NA8WnxQSbZreEcYH8yukx3VKlW8q
- o/DY5yKJ
- u50p2bRZS0VyR6mNnDvz5awsHoo6QzrKM68bo3jo6IlaS5u2lbvm8ti3I4Eo3+uvS6KLiozGzbGgEWhE084skiRUgGZUatkk7QSnbYfBzZOhZe2lAvoUIaXzHSBkUTaOr6VKf/8N8f56oYeyGt1O9PUqENUBGIsNHVktY7AILYJvNE/YJA1YW7WGxs4PbX3etK/y33GWvO/JkSh8VS6F4FaWLS19WkVZqZShxKdP00LEJxgs=
+X-Rspamd-Queue-Id: 322D01A0004
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755248160-927258
+X-HE-Meta: U2FsdGVkX1/dUmAfczQn9Kssi/rr9A3ltpqcqfxbVJxS9uN1JZ3LM7lhIJWd7wrNcfqZJxxnh3zUyWwovyRxegl4vEEqDjbdQWeOwdCI4Bjn2slAa5RJq8wZv/Qvx/yJ8k1HWT8CSwNb3PZfBU0Hr/8qOAwjz1P6nHHTz1Fzncf7YpWYsNI+Qd623ptWPkpQ1JLZlJFlnt6OKEhxnQKRKBK9nVsqGB8d/A/LGhG8wSRZ8RzXJ+eh49/M6fAteRaTaz+LVmz8g3iZLWS4ujaqSDZkjMLR7IONNZRY+4/FgluO/XKaKxAdl8uHmPP+D6dncwNRFbgh7tFTqdHfIgxbj+Eeri9YD3b3x4iWWZGS3bh06UUsv6qSGX0PT82zBfVfls1ju2tBRCAdQA6dhqmr6BZ9O2LXDFB7TeCAwvZpyT3y1W/BKDkcnFHTz5d0DxOwDpoG3UmGZS/nu/gTtNk/XDs/0D1Pccz48FlijzR0lWCjBUej3zgCtzRX52IEM3V1itAbxxhfXotd+TX0yPuV0s8ADqRrUzY0bJvAHWnSWtQPdyc636j876p44RbUjlJFrcbkj/liDzXxQW66RRuinjp8ApkVxXn5SOmXc+YJjTC7exh4CmyomGoNWvc1JeUGxO0g3pN0Z6/30L4st7IgmtW+RpQhpWoJ7J9CZDOP1jFXLzr6PMfnpeGbvBWWwI6e6rggV5BVuU2k4oNYzWqiZBeT72aufEUCnDXgyQCslNQnLJeZzUsD72csQAu2tPvHi+VfcSL59pEOS7GYxFVM4qrNEI6ez5AfaFV4mhFhBheMvItA3Hz7od96rwBTP/NI9seLm8dQwHt+O+BVxc0OWNrukHAOacYeZOtPlDsEy/ccdQJD8knsjlG7m87CJYLOCV+zGHvasH7TZfMKbTaXoR2ONtghVkECmzNAAjtY0RqaW66nN/QzCTdfqwpbhmhrMRSGXnNiVKMuidDLQo4
+ jIQv0YXK
+ ulNanzogD/e2SgFTikhUADgKfDnkYHR5ia2GWaEm2ndSvfCgkTux4Vv9P7ggqy9xK8J0rlnwzcTEFDqaxbCHMQt2jwsBBinpPJ62XsHB4XMkOaGkBmbSHzi/mDj4ZTdXfKoFHAyy6+P+TzTAz4keqadQ9QXk+Aq9pbUsyEBNO9MoWwWSGOJsXk/dY5qSesOIDDaPHZ0weLfHeBik=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,70 +108,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Implement set_memory_pkey() using POE if supported.
+POR_EL1 will be modified, through the kpkeys framework, in order to
+grant temporary RW access to certain keys. If an exception occurs
+in the middle of a "critical section" where POR_EL1 is set to a
+privileged value, it is preferable to reset it to its default value
+upon taking the exception to minimise the amount of code running at
+higher kpkeys level.
+
+This patch implements the reset of POR_EL1 on exception entry,
+storing the original value in a new pt_regs field and restoring on
+exception return. To avoid an expensive ISB, the register is only
+reset if the interrupted value isn't the default. No check is made
+on the return path as an ISB occurs anyway as part of ERET.
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/arm64/include/asm/set_memory.h |  4 ++++
- arch/arm64/mm/pageattr.c            | 25 +++++++++++++++++++++++++
- 2 files changed, 29 insertions(+)
+ arch/arm64/include/asm/kpkeys.h | 10 ++++++++++
+ arch/arm64/include/asm/por.h    |  4 ++++
+ arch/arm64/include/asm/ptrace.h |  4 ++++
+ arch/arm64/kernel/asm-offsets.c |  3 +++
+ arch/arm64/kernel/entry.S       | 24 +++++++++++++++++++++++-
+ 5 files changed, 44 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/set_memory.h b/arch/arm64/include/asm/set_memory.h
-index 90f61b17275e..b6cd6de34abf 100644
---- a/arch/arm64/include/asm/set_memory.h
-+++ b/arch/arm64/include/asm/set_memory.h
-@@ -19,4 +19,8 @@ bool kernel_page_present(struct page *page);
- int set_memory_encrypted(unsigned long addr, int numpages);
- int set_memory_decrypted(unsigned long addr, int numpages);
+diff --git a/arch/arm64/include/asm/kpkeys.h b/arch/arm64/include/asm/kpkeys.h
+index 3b0ab5e7dd22..79ae33388088 100644
+--- a/arch/arm64/include/asm/kpkeys.h
++++ b/arch/arm64/include/asm/kpkeys.h
+@@ -8,6 +8,14 @@
  
-+#ifdef CONFIG_ARCH_HAS_KPKEYS
-+int set_memory_pkey(unsigned long addr, int numpages, int pkey);
-+#endif
+ #include <asm-generic/kpkeys.h>
+ 
++/*
++ * Equivalent to por_set_kpkeys_level(0, KPKEYS_LVL_DEFAULT), but can also be
++ * used in assembly.
++ */
++#define POR_EL1_INIT	POR_ELx_PERM_PREP(KPKEYS_PKEY_DEFAULT, POE_RWX)
 +
- #endif /* _ASM_ARM64_SET_MEMORY_H */
-diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
-index 04d4a8f676db..41d87c2880fe 100644
---- a/arch/arm64/mm/pageattr.c
-+++ b/arch/arm64/mm/pageattr.c
-@@ -8,6 +8,7 @@
- #include <linux/mem_encrypt.h>
- #include <linux/sched.h>
- #include <linux/vmalloc.h>
-+#include <linux/pkeys.h>
++#ifndef __ASSEMBLY__
++
+ static inline bool arch_kpkeys_enabled(void)
+ {
+ 	return system_supports_poe();
+@@ -46,4 +54,6 @@ static __always_inline void arch_kpkeys_restore_pkey_reg(u64 pkey_reg)
  
- #include <asm/cacheflush.h>
- #include <asm/pgtable-prot.h>
-@@ -292,6 +293,30 @@ int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid)
- 	return set_memory_valid(addr, nr, valid);
+ #endif /* CONFIG_ARM64_POE */
+ 
++#endif	/* __ASSEMBLY__ */
++
+ #endif	/* __ASM_KPKEYS_H */
+diff --git a/arch/arm64/include/asm/por.h b/arch/arm64/include/asm/por.h
+index bffb4d2b1246..58dce4b8021b 100644
+--- a/arch/arm64/include/asm/por.h
++++ b/arch/arm64/include/asm/por.h
+@@ -10,6 +10,8 @@
+ 
+ #define POR_EL0_INIT	POR_ELx_PERM_PREP(0, POE_RWX)
+ 
++#ifndef __ASSEMBLY__
++
+ static inline bool por_elx_allows_read(u64 por, u8 pkey)
+ {
+ 	u8 perm = POR_ELx_PERM_GET(pkey, por);
+@@ -38,4 +40,6 @@ static inline u64 por_elx_set_pkey_perms(u64 por, u8 pkey, u64 perms)
+ 	return (por & ~(POE_MASK << shift)) | (perms << shift);
  }
  
-+#ifdef CONFIG_ARCH_HAS_KPKEYS
-+int set_memory_pkey(unsigned long addr, int numpages, int pkey)
-+{
-+	unsigned long set_prot = 0;
++#endif	/* __ASSEMBLY__ */
 +
-+	if (!system_supports_poe())
-+		return 0;
-+
-+	if (!__is_lm_address(addr))
-+		return -EINVAL;
-+
-+	if (pkey >= arch_max_pkey())
-+		return -EINVAL;
-+
-+	set_prot |= pkey & BIT(0) ? PTE_PO_IDX_0 : 0;
-+	set_prot |= pkey & BIT(1) ? PTE_PO_IDX_1 : 0;
-+	set_prot |= pkey & BIT(2) ? PTE_PO_IDX_2 : 0;
-+
-+	return __change_memory_common(addr, PAGE_SIZE * numpages,
-+				      __pgprot(set_prot),
-+				      __pgprot(PTE_PO_IDX_MASK));
-+}
+ #endif /* _ASM_ARM64_POR_H */
+diff --git a/arch/arm64/include/asm/ptrace.h b/arch/arm64/include/asm/ptrace.h
+index 47ff8654c5ec..e907df4225d4 100644
+--- a/arch/arm64/include/asm/ptrace.h
++++ b/arch/arm64/include/asm/ptrace.h
+@@ -166,6 +166,10 @@ struct pt_regs {
+ 	u64 orig_x0;
+ 	s32 syscallno;
+ 	u32 pmr;
++#ifdef CONFIG_ARM64_POE
++	u64 por_el1;
++	u64 __unused;
 +#endif
-+
- #ifdef CONFIG_DEBUG_PAGEALLOC
- /*
-  * This is - apart from the return value - doing the same
+ 
+ 	u64 sdei_ttbr1;
+ 	struct frame_record_meta stackframe;
+diff --git a/arch/arm64/kernel/asm-offsets.c b/arch/arm64/kernel/asm-offsets.c
+index 30d4bbe68661..8ae5cc3c203b 100644
+--- a/arch/arm64/kernel/asm-offsets.c
++++ b/arch/arm64/kernel/asm-offsets.c
+@@ -75,6 +75,9 @@ int main(void)
+   DEFINE(S_SYSCALLNO,		offsetof(struct pt_regs, syscallno));
+   DEFINE(S_SDEI_TTBR1,		offsetof(struct pt_regs, sdei_ttbr1));
+   DEFINE(S_PMR,			offsetof(struct pt_regs, pmr));
++#ifdef CONFIG_ARM64_POE
++  DEFINE(S_POR_EL1,		offsetof(struct pt_regs, por_el1));
++#endif
+   DEFINE(S_STACKFRAME,		offsetof(struct pt_regs, stackframe));
+   DEFINE(S_STACKFRAME_TYPE,	offsetof(struct pt_regs, stackframe.type));
+   DEFINE(PT_REGS_SIZE,		sizeof(struct pt_regs));
+diff --git a/arch/arm64/kernel/entry.S b/arch/arm64/kernel/entry.S
+index f8018b5c1f9a..0dd6f7fbb669 100644
+--- a/arch/arm64/kernel/entry.S
++++ b/arch/arm64/kernel/entry.S
+@@ -20,6 +20,7 @@
+ #include <asm/errno.h>
+ #include <asm/esr.h>
+ #include <asm/irq.h>
++#include <asm/kpkeys.h>
+ #include <asm/memory.h>
+ #include <asm/mmu.h>
+ #include <asm/processor.h>
+@@ -277,6 +278,19 @@ alternative_else_nop_endif
+ 	.else
+ 	add	x21, sp, #PT_REGS_SIZE
+ 	get_current_task tsk
++#ifdef CONFIG_ARM64_POE
++alternative_if_not ARM64_HAS_S1POE
++	b	1f
++alternative_else_nop_endif
++	mrs_s	x0, SYS_POR_EL1
++	str	x0, [sp, #S_POR_EL1]
++	mov	x1, #POR_EL1_INIT
++	cmp	x0, x1
++	b.eq	1f
++	msr_s	SYS_POR_EL1, x1
++	isb
++1:
++#endif /* CONFIG_ARM64_POE */
+ 	.endif /* \el == 0 */
+ 	mrs	x22, elr_el1
+ 	mrs	x23, spsr_el1
+@@ -407,7 +421,15 @@ alternative_else_nop_endif
+ 	mte_set_user_gcr tsk, x0, x1
+ 
+ 	apply_ssbd 0, x0, x1
+-	.endif
++	.else
++#ifdef CONFIG_ARM64_POE
++alternative_if ARM64_HAS_S1POE
++	ldr	x0, [sp, #S_POR_EL1]
++	msr_s	SYS_POR_EL1, x0
++	/* No explicit ISB; we rely on ERET */
++alternative_else_nop_endif
++#endif /* CONFIG_ARM64_POE */
++	.endif /* \el == 0 */
+ 
+ 	msr	elr_el1, x21			// set up the return data
+ 	msr	spsr_el1, x22
 -- 
 2.47.0
 
