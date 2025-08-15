@@ -2,56 +2,56 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 337AACA0EE4
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 09:00:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D0D78CA0EE4
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 09:00:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C8FD790022A; Fri, 15 Aug 2025 05:00:38 -0400 (EDT)
+	id 710A190022B; Fri, 15 Aug 2025 05:00:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C3EDB8E0002; Fri, 15 Aug 2025 05:00:38 -0400 (EDT)
+	id 699DD8E0002; Fri, 15 Aug 2025 05:00:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE04190022A; Fri, 15 Aug 2025 05:00:38 -0400 (EDT)
+	id 5B01D90022B; Fri, 15 Aug 2025 05:00:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 983208E0002
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 05:00:38 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5A9881A092A
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 09:00:38 +0000 (UTC)
-X-FDA: 83778396156.25.8965D0C
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 471248E0002
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 05:00:43 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 08CF216089D
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 09:00:43 +0000 (UTC)
+X-FDA: 83778396366.03.A7C638D
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B512C140009
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 09:00:36 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 678D510000B
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 09:00:41 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf23.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	spf=pass (imf05.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755248436;
+	s=arc-20220608; t=1755248441;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xRv0RAAjUy0pz9IeL7JheJmqlZJufx0UVFFlFCfd/rk=;
-	b=p+7tXIPgteS6dwVrrRID9C3V5e3bgzRZqfz0BW4mAvR71Q5yUUl5yKVHQ8muguMwBwEjmn
-	z7adf5pIhbeITxrZjdbVwi3HstoVEFravPkaR9/8Y+Ll7dvET+XKR8i++lgeD+cux+cm2A
-	OnqCR19fOcKfl7iMoUXfPoBn+k9fxZM=
+	bh=LwixIVgggwhQLCQw4oWGwiHErSAAejOEdd8GmzOgHbA=;
+	b=yXSsPRyws8aChb/Jac+OSyqPJ/EBMR6BECew5mS+bkGGiBrm0JTWqfSOKIATK8IEjsuUcV
+	ioWxxxs/sC8Ubq09DnLE5HIViMKo8V/bn3fQQP5Dl1KCMTBV8T/asmclOjVwlMxUsc4lLQ
+	KS7DMbUtYZYw9OBjz8sGZdRuqxGVOuU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755248441; a=rsa-sha256;
+	cv=none;
+	b=lXDu4t328wAmBsXGMYdcl5wuRwdn9tzD76LmYoxVC0YAFSYRaXx+5nbqFIgr7htJhOkeMx
+	p57u/jK3Wte7W5hvGnZLQtLzc0OpzbT+low2pIz++BrUblOFQmJX24q+wxu6EX3i3bloXg
+	ZPrygQCuC7xo71ffoupN79afxeA5epY=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
+	imf05.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf23.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755248436; a=rsa-sha256;
-	cv=none;
-	b=SUrFALJ1dY8nmUVpbPyzRGEYcBu59hlMUV4gghHdnZkt4jXiCKfXTpUZDACmpLuTFesDRR
-	cbFkUiBIHBYoyyjRwBhVPB5K8X4g1NBsRxg24fQsRGoxCmzv/SFgLSjI0SfPeJEUgJdC1C
-	xR09DfY2T1mS5rkBqfZmrHrQfmsmdts=
+	spf=pass (imf05.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CA1E62C43;
-	Fri, 15 Aug 2025 02:00:27 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8898D2C46;
+	Fri, 15 Aug 2025 02:00:32 -0700 (PDT)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9416A3F63F;
-	Fri, 15 Aug 2025 02:00:31 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4FCD33F63F;
+	Fri, 15 Aug 2025 02:00:36 -0700 (PDT)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-hardening@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -83,22 +83,22 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mm@kvack.org,
 	x86@kernel.org
-Subject: [RFC PATCH v2 6/8] cred: Protect live struct cred with kpkeys
-Date: Fri, 15 Aug 2025 09:59:58 +0100
-Message-ID: <20250815090000.2182450-7-kevin.brodsky@arm.com>
+Subject: [RFC PATCH v2 7/8] fs: Protect creds installed by override_creds()
+Date: Fri, 15 Aug 2025 09:59:59 +0100
+Message-ID: <20250815090000.2182450-8-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250815090000.2182450-1-kevin.brodsky@arm.com>
 References: <20250815090000.2182450-1-kevin.brodsky@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: s3n5eo3jrfrwha4ph9e4oi4x7tirm5j7
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 678D510000B
+X-Stat-Signature: txhzadkuymkinpjm9npf1yux81wbrcwu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B512C140009
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755248436-925270
-X-HE-Meta: U2FsdGVkX1+a9caoPlP6NpkIoDnFsZsI0JuJocHU8UJJDb8KL9+bPw7wLmKQWoLmVH4mV+CmkYfPML+ghEI1PIH3iLYIF1MER8f8D7wqAHybSYjk5n+Y1XTYHsWehdjYPbqhRE8AEvWNUH72QW9kMyzByRuhX8A+DYEb5Dht0KXJvvTDlUR8s8mATQTWsl91MsvS6hvXCnx+wipZOlOl2p44IGshjQbcXwde5obKK94+hriYHjpqfqEmD82JurndT0ATyJzzdaLWnp3pOwsAnglyTAc0e1H+rYBTL/IgLPF0OP92NzfLgHEaKvIMtT44FVRXk0XwjwXVECWpUES0LBgdKKwxUqv5Dx/Rlkp28mNTJ6mLWAAW0IIP+h8QJ1lvQozZ6VSHjoktdKTGDqh7NnQizcDX4bSet6GfSAs3WYsv9AYlymj0o+iZ1FQDK6OYFG19FEyKwaj3wdMUDzBCskTUIAzf+7MnVuDBTbt6MQ8JuejDZaeCukTijjgMacYR6G0WRrsZOPoQJFm1v/VYFlid9ssvesaww0dy5C4n8a0Vhtky0z4FhyKcPCc/VHVaPVT5VKGQjXxpjXFgh1mqZepyjGNXqo9GbsiFT6WsmJZQB0ErUvehv4RGCCRAwM0YUbI+EFs+OPfZbVBFL7qMn8M3B55Dtj/bciM7Sm5GdQxV+dkejccCUvAuIhWwKp+w3SqWjqwfbXLqnMAq1cVeoXLps78b6TdP0xBphs+xN7rRpGTf1mC75MgrP/nktgMhchLbdbDRJqFhCnF4kcZRGMmHW2R4aTU8RvOFx6MC0TnmI8tP3PfRdW70gLBrl9A+fubOgBoflHXO7EEH33h+xHfERCA0ffsq9OU4hCHNOp/9GvZ7PuTxJfQw3tRJbYygofGfwUAlkQP8fuvkI1Bc7Qtlm3mjy07E1SP1dIAAeNhHdpK0TcEHB97Qg5rkvVvbJdvwBOiX03RfFgkiv43
- r6agjokS
- HfEeAJGtjpgDwOZf3Wf1gWxKAepfK3Y5Z+2XPHT6WTZet63IVjvxv5Mx13qgNxW4Kq85uNJ6qYZ+BYpAHZR2GEnKw0IOGRKAvvBirCl2Srhq9D0guGO1pX3PFyj1RxUsM7m3r4jalKmSDjWbOq05DORaboA==
+X-HE-Tag: 1755248441-788192
+X-HE-Meta: U2FsdGVkX1/RCZjIjZz8DkSl4jFtRKHfwjaPN6DSX4e8tQLP47FHxbVr6YftsiN3OBT4Oj7btj7lYAf1Hj0bg/jFn1yJVHgx+KfXVlLLJOkSt+OUM1EygEUKJImo8ZrHty6fwSNtBjdiR6hgYVKW1V7v7rd3NKcIb4+6En69yn7/OMiEEGBmOUI1lxe4nZSSWxk8uR3jrVKoUe0s6o//29OBCsvO9XZYWVQo+CInyPmt1lq94nqT/1TJYhY6mvg0ZBGmtlzuFnBuFLFXVg7lFpiELx8sz/HNz6r+MU1y95fCOQEjIDPOawE0mTcTbQ86T2e3IsH79ozqnufWigUr3PUUgxDxdyrvDWRbtF6kFnV1woYORUFJp+IDqQJSR+4IPb4y+qiRHBvItxn50P2u+27uXfTTrDbNBCSr5pUYAUhDB1VuLdY2N8mqlI0eOVbsS9x8GQuwtqHVAeBnoDn8/PjZYin6/nEzRpTvUTAzE+erseVqPjK7y8p/7gLjj4wW767MBDBjVeBNrysY8n7M3+ev2xAkPwAyrhi9RktHGoyLnMo6gJtJ8m4JNNwilipBVjW9zdZKrLOGgZj3WyN1rCRlBMd9qqHfKHL9PqL/rhBUtan4xz1UoX5oLzm2exXs/P2gbK4uiiKGT0Pl9YEi5DthtbxrYz01zaXQTipOMjeWFfxvI5UHAwoDrohPYGEeUtVJu0K1iLJtlN7ZXEm7/hYPHOG+gciNUQtxgLVN0NZK9TLHmYoQE43bTor/wTRiyCrdkIzZhJKT77coKEsTIFgB9ToOcUnK/QccRsKX+MCmkHS2tqo7nSJtAYvT88UvITrnmrQIx2a5mB+Acni7HkbdhnX1WU6PXZVn+B5JXtpfhB/0soHcZ/ehmq8LTvmz23fB6xxeO5MKvXPPpb1uLSZa0tEQapNDw8jfyQsjuIJ5xpRuJgyWex0UGv1+Mfz6MLTP8mjzKlKpXinczfH
+ xJvrJbVO
+ Z6/19nlQ5JD1U0TprXKwrEeDQO6U56kUoTLBP70dHFG/Uvn0FdoUxuq/vPUhb7Cj9Sviekuym/0XoqdmAtuif5xSVQiyMI6ye8wVL5ZFA5twPy+pd7K4wppodEOu63afqxo2bPcZXrBV5hYCFps8RjdNL8c4eZZvexmT7jxV/nlNIXRY6S1x1LVWuM8y+wsEG+nNXgRkD9BXLzTHDYaXLV3C8U38B0IuQNf6jk+UV/e3xDv8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,399 +107,153 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch introduces a feature to prevent unintended modifications
-of live credentials, by moving them to protected memory when they
-are installed via commit_creds(). The protection mechanism is kernel
-pkeys (kpkeys): protected memory is mapped with a non-default pkey
-and write access is disabled by default. As a result,
-task->{cred,real_cred} can only be written to by switching to a
-higher kpkeys level.
+The kpkeys_hardened_cred feature, when enabled, automatically
+protects credentials installed by commit_creds(). However, because
+override_creds() does not consume its argument, it is up to its
+callers to protect the credentials before calling override_creds().
+This is done by calling protect_creds(), moving the credentials to a
+protected memory location.
 
-The kpkeys_hardened_cred feature is enabled by choosing
-CONFIG_KPKEYS_HARDENED_CRED=y and running on a system supporting
-kpkeys.
+In some cases, the credentials returned by prepare_creds() are
+passed to override_creds() as-is. In such situation where write
+access to the credentials is not needed, prepare_protected_creds()
+is used to avoid the copy incurred by a separate call to
+protect_creds().
 
-Credentials are not directly allocated in protected memory, as that
-would force all code preparing new credentials to switch kpkeys
-level. To avoid such disruption, prepare_creds() and variants still
-allocate standard memory. When commit_creds() is called, the
-credentials are copied to protected memory, and the temporary object
-(in a standard kmalloc slab) is freed.
+This patch covers the main users of override_creds(), but it is not
+comprehensive.
 
-This approach does not work so transparently when it comes to
-override_creds(), because it does not consume the reference: the
-object it gets passed cannot be moved. Callers of override_creds()
-will need to explicitly call a new protect_creds() helper to move
-the credentials to protected memory once they are done preparing
-them. Some of these callers use the unmodified output of
-prepare_creds(); prepare_protected_creds() is introduced to avoid an
-unnecessary copy in such cases. This patch does not handle these
-situations, but it does not break them either (credentials installed
-by override_creds() will simply be unprotected).
-
-Various helpers need to modify live credentials. To that end,
-guard(kpkeys_hardened_cred) is introduced to switch to the kpkeys
-level that enables write access to KPKEYS_PKEY_CRED.
+This patch is a no-op if kpkeys_hardened_cred isn't enabled.
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- include/linux/cred.h       |  12 +++
- kernel/cred.c              | 179 +++++++++++++++++++++++++++++++------
- security/Kconfig.hardening |  13 +++
- 3 files changed, 177 insertions(+), 27 deletions(-)
+ fs/aio.c              | 2 +-
+ fs/fuse/passthrough.c | 2 +-
+ fs/nfs/nfs4idmap.c    | 2 +-
+ fs/nfsd/auth.c        | 2 +-
+ fs/nfsd/nfs4recover.c | 2 +-
+ fs/nfsd/nfsfh.c       | 2 +-
+ fs/open.c             | 2 +-
+ fs/overlayfs/dir.c    | 1 +
+ fs/overlayfs/super.c  | 2 +-
+ 9 files changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/cred.h b/include/linux/cred.h
-index a102a10f833f..8eacc4f3de60 100644
---- a/include/linux/cred.h
-+++ b/include/linux/cred.h
-@@ -16,10 +16,17 @@
- #include <linux/uidgid.h>
- #include <linux/sched.h>
- #include <linux/sched/user.h>
-+#include <linux/kpkeys.h>
+diff --git a/fs/aio.c b/fs/aio.c
+index 7fc7b6221312..7529399bb71d 100644
+--- a/fs/aio.c
++++ b/fs/aio.c
+@@ -1658,7 +1658,7 @@ static int aio_fsync(struct fsync_iocb *req, const struct iocb *iocb,
+ 	if (unlikely(!req->file->f_op->fsync))
+ 		return -EINVAL;
  
- struct cred;
- struct inode;
- 
-+#ifdef CONFIG_KPKEYS_HARDENED_CRED
-+KPKEYS_GUARD(kpkeys_hardened_cred, KPKEYS_LVL_CRED)
-+#else
-+KPKEYS_GUARD_NOOP(kpkeys_hardened_cred)
-+#endif
-+
- /*
-  * COW Supplementary groups list
-  */
-@@ -162,6 +169,8 @@ extern int set_create_files_as(struct cred *, struct inode *);
- extern int cred_fscmp(const struct cred *, const struct cred *);
- extern void __init cred_init(void);
- extern int set_cred_ucounts(struct cred *);
-+extern struct cred *prepare_protected_creds(void);
-+extern struct cred *protect_creds(struct cred *);
- 
- static inline bool cap_ambient_invariant_ok(const struct cred *cred)
- {
-@@ -199,6 +208,7 @@ static inline const struct cred *get_cred_many(const struct cred *cred, int nr)
- 	struct cred *nonconst_cred = (struct cred *) cred;
- 	if (!cred)
- 		return cred;
-+	guard(kpkeys_hardened_cred)();
- 	nonconst_cred->non_rcu = 0;
- 	atomic_long_add(nr, &nonconst_cred->usage);
- 	return cred;
-@@ -223,6 +233,7 @@ static inline const struct cred *get_cred_rcu(const struct cred *cred)
- 	struct cred *nonconst_cred = (struct cred *) cred;
- 	if (!cred)
- 		return NULL;
-+	guard(kpkeys_hardened_cred)();
- 	if (!atomic_long_inc_not_zero(&nonconst_cred->usage))
- 		return NULL;
- 	nonconst_cred->non_rcu = 0;
-@@ -246,6 +257,7 @@ static inline void put_cred_many(const struct cred *_cred, int nr)
- 	struct cred *cred = (struct cred *) _cred;
- 
- 	if (cred) {
-+		guard(kpkeys_hardened_cred)();
- 		if (atomic_long_sub_and_test(nr, &cred->usage))
- 			__put_cred(cred);
- 	}
-diff --git a/kernel/cred.c b/kernel/cred.c
-index 9676965c0981..95d316f73786 100644
---- a/kernel/cred.c
-+++ b/kernel/cred.c
-@@ -20,6 +20,8 @@
- #include <linux/cn_proc.h>
- #include <linux/uidgid.h>
- 
-+#include "../mm/slab.h"
-+
- #if 0
- #define kdebug(FMT, ...)						\
- 	printk("[%-5.5s%5u] " FMT "\n",					\
-@@ -62,6 +64,48 @@ struct cred init_cred = {
- 	.ucounts		= &init_ucounts,
- };
- 
-+static bool hardened_cred_enabled(void)
-+{
-+	return IS_ENABLED(CONFIG_KPKEYS_HARDENED_CRED) && arch_kpkeys_enabled();
-+}
-+
-+static bool cred_is_protected(const struct cred *cred)
-+{
-+	struct slab *slab;
-+
-+	slab = virt_to_slab(cred);
-+	if (!slab)
-+		return false;
-+
-+	return slab->slab_cache->flags & SLAB_SET_PKEY;
-+}
-+
-+static struct cred *alloc_unprotected_creds(gfp_t flags)
-+{
-+	if (hardened_cred_enabled())
-+		return kmalloc(sizeof(struct cred), flags);
-+	else
-+		return kmem_cache_alloc(cred_jar, flags);
-+}
-+
-+static struct cred *alloc_protected_creds(gfp_t flags)
-+{
-+	return kmem_cache_alloc(cred_jar, flags);
-+}
-+
-+static void free_creds(struct cred *cred)
-+{
-+	bool cred_in_jar = true;
-+
-+	if (hardened_cred_enabled())
-+		cred_in_jar = cred_is_protected(cred);
-+
-+	if (cred_in_jar)
-+		kmem_cache_free(cred_jar, cred);
-+	else
-+		kfree(cred);
-+}
-+
- /*
-  * The RCU callback to actually dispose of a set of credentials
-  */
-@@ -75,7 +119,8 @@ static void put_cred_rcu(struct rcu_head *rcu)
- 		panic("CRED: put_cred_rcu() sees %p with usage %ld\n",
- 		      cred, atomic_long_read(&cred->usage));
- 
--	security_cred_free(cred);
-+	scoped_guard(kpkeys_hardened_cred)
-+		security_cred_free(cred);
- 	key_put(cred->session_keyring);
- 	key_put(cred->process_keyring);
- 	key_put(cred->thread_keyring);
-@@ -86,7 +131,7 @@ static void put_cred_rcu(struct rcu_head *rcu)
- 	if (cred->ucounts)
- 		put_ucounts(cred->ucounts);
- 	put_user_ns(cred->user_ns);
--	kmem_cache_free(cred_jar, cred);
-+	free_creds(cred);
- }
- 
- /**
-@@ -174,7 +219,7 @@ struct cred *cred_alloc_blank(void)
- {
- 	struct cred *new;
- 
--	new = kmem_cache_zalloc(cred_jar, GFP_KERNEL);
-+	new = alloc_unprotected_creds(GFP_KERNEL | __GFP_ZERO);
- 	if (!new)
- 		return NULL;
- 
-@@ -189,29 +234,10 @@ struct cred *cred_alloc_blank(void)
- 	return NULL;
- }
- 
--/**
-- * prepare_creds - Prepare a new set of credentials for modification
-- *
-- * Prepare a new set of task credentials for modification.  A task's creds
-- * shouldn't generally be modified directly, therefore this function is used to
-- * prepare a new copy, which the caller then modifies and then commits by
-- * calling commit_creds().
-- *
-- * Preparation involves making a copy of the objective creds for modification.
-- *
-- * Returns a pointer to the new creds-to-be if successful, NULL otherwise.
-- *
-- * Call commit_creds() or abort_creds() to clean up.
-- */
--struct cred *prepare_creds(void)
-+static struct cred *__prepare_creds(struct cred *new)
- {
- 	struct task_struct *task = current;
- 	const struct cred *old;
--	struct cred *new;
--
--	new = kmem_cache_alloc(cred_jar, GFP_KERNEL);
--	if (!new)
--		return NULL;
- 
- 	kdebug("prepare_creds() alloc %p", new);
- 
-@@ -248,8 +274,57 @@ struct cred *prepare_creds(void)
- 	abort_creds(new);
- 	return NULL;
- }
-+
-+/**
-+ * prepare_creds - Prepare a new set of credentials for modification
-+ *
-+ * Prepare a new set of task credentials for modification.  A task's creds
-+ * shouldn't generally be modified directly, therefore this function is used to
-+ * prepare a new copy, which the caller then modifies and then commits by
-+ * calling commit_creds().
-+ *
-+ * Preparation involves making a copy of the objective creds for modification.
-+ *
-+ * Returns a pointer to the new creds-to-be if successful, NULL otherwise.
-+ *
-+ * Call commit_creds() or abort_creds() to clean up.
-+ */
-+struct cred *prepare_creds(void)
-+{
-+	struct cred *new;
-+
-+	new = alloc_unprotected_creds(GFP_KERNEL);
-+	if (!new)
-+		return NULL;
-+
-+	return __prepare_creds(new);
-+}
- EXPORT_SYMBOL(prepare_creds);
- 
-+
-+/**
-+ * prepare_protected_creds - Prepare a new set of credentials in protected
-+ * memory
-+ *
-+ * This function is equivalent to protect_creds(prepare_creds()), but avoids
-+ * the copy in prepare_creds() by directly allocating the credentials in
-+ * protected memory. The returned object may only be modified by switching to
-+ * a higher kpkeys level, if kpkeys_hardened_cred is enabled.
-+ */
-+struct cred *prepare_protected_creds(void)
-+{
-+	struct cred *new;
-+
-+	new = alloc_protected_creds(GFP_KERNEL);
-+	if (!new)
-+		return NULL;
-+
-+	guard(kpkeys_hardened_cred)();
-+
-+	return __prepare_creds(new);
-+}
-+EXPORT_SYMBOL(prepare_protected_creds);
-+
- /*
-  * Prepare credentials for current to perform an execve()
-  * - The caller must hold ->cred_guard_mutex
-@@ -309,7 +384,9 @@ int copy_creds(struct task_struct *p, unsigned long clone_flags)
- 		return 0;
- 	}
- 
--	new = prepare_creds();
-+	guard(kpkeys_hardened_cred)();
-+
-+	new = prepare_protected_creds();
- 	if (!new)
+-	req->creds = prepare_creds();
++	req->creds = prepare_protected_creds();
+ 	if (!req->creds)
  		return -ENOMEM;
  
-@@ -400,6 +477,10 @@ int commit_creds(struct cred *new)
- 	BUG_ON(task->cred != old);
- 	BUG_ON(atomic_long_read(&new->usage) < 1);
+diff --git a/fs/fuse/passthrough.c b/fs/fuse/passthrough.c
+index 607ef735ad4a..4451651b1e51 100644
+--- a/fs/fuse/passthrough.c
++++ b/fs/fuse/passthrough.c
+@@ -248,7 +248,7 @@ int fuse_backing_open(struct fuse_conn *fc, struct fuse_backing_map *map)
+ 		goto out_fput;
  
-+	guard(kpkeys_hardened_cred)();
-+
-+	new = protect_creds(new);
-+
- 	get_cred(new); /* we will require a ref for the subj creds too */
+ 	fb->file = file;
+-	fb->cred = prepare_creds();
++	fb->cred = prepare_protected_creds();
+ 	refcount_set(&fb->count, 1);
  
- 	/* dumpability changes */
-@@ -555,9 +636,16 @@ int set_cred_ucounts(struct cred *new)
-  */
- void __init cred_init(void)
- {
-+	slab_flags_t flags = SLAB_HWCACHE_ALIGN | SLAB_PANIC | SLAB_ACCOUNT;
-+	struct kmem_cache_args args = {};
-+
-+	if (hardened_cred_enabled()) {
-+		flags |= SLAB_SET_PKEY;
-+		args.pkey = KPKEYS_PKEY_CRED;
-+	}
-+
- 	/* allocate a slab in which we can store credentials */
--	cred_jar = KMEM_CACHE(cred,
--			      SLAB_HWCACHE_ALIGN | SLAB_PANIC | SLAB_ACCOUNT);
-+	cred_jar = kmem_cache_create("cred", sizeof(struct cred), &args, flags);
+ 	res = fuse_backing_id_alloc(fc, fb);
+diff --git a/fs/nfs/nfs4idmap.c b/fs/nfs/nfs4idmap.c
+index 00932500fce4..6eef34b02513 100644
+--- a/fs/nfs/nfs4idmap.c
++++ b/fs/nfs/nfs4idmap.c
+@@ -228,7 +228,7 @@ int nfs_idmap_init(void)
+ 	set_bit(KEY_FLAG_ROOT_CAN_CLEAR, &keyring->flags);
+ 	cred->thread_keyring = keyring;
+ 	cred->jit_keyring = KEY_REQKEY_DEFL_THREAD_KEYRING;
+-	id_resolver_cache = cred;
++	id_resolver_cache = protect_creds(cred);
+ 	return 0;
+ 
+ failed_reg_legacy:
+diff --git a/fs/nfsd/auth.c b/fs/nfsd/auth.c
+index 4dc327e02456..09b377a97147 100644
+--- a/fs/nfsd/auth.c
++++ b/fs/nfsd/auth.c
+@@ -79,7 +79,7 @@ int nfsd_setuser(struct svc_cred *cred, struct svc_export *exp)
+ 	else
+ 		new->cap_effective = cap_raise_nfsd_set(new->cap_effective,
+ 							new->cap_permitted);
+-	put_cred(override_creds(new));
++	put_cred(override_creds(protect_creds(new)));
+ 	return 0;
+ 
+ oom:
+diff --git a/fs/nfsd/nfs4recover.c b/fs/nfsd/nfs4recover.c
+index 2231192ec33f..63ffa7936246 100644
+--- a/fs/nfsd/nfs4recover.c
++++ b/fs/nfsd/nfs4recover.c
+@@ -82,7 +82,7 @@ nfs4_save_creds(const struct cred **original_creds)
+ 
+ 	new->fsuid = GLOBAL_ROOT_UID;
+ 	new->fsgid = GLOBAL_ROOT_GID;
+-	*original_creds = override_creds(new);
++	*original_creds = override_creds(protect_creds(new));
+ 	return 0;
  }
  
- /**
-@@ -584,7 +672,7 @@ struct cred *prepare_kernel_cred(struct task_struct *daemon)
- 	if (WARN_ON_ONCE(!daemon))
- 		return NULL;
- 
--	new = kmem_cache_alloc(cred_jar, GFP_KERNEL);
-+	new = alloc_unprotected_creds(GFP_KERNEL);
- 	if (!new)
- 		return NULL;
- 
-@@ -627,6 +715,43 @@ struct cred *prepare_kernel_cred(struct task_struct *daemon)
+diff --git a/fs/nfsd/nfsfh.c b/fs/nfsd/nfsfh.c
+index 74cf1f4de174..887ee5adb2dc 100644
+--- a/fs/nfsd/nfsfh.c
++++ b/fs/nfsd/nfsfh.c
+@@ -223,7 +223,7 @@ static __be32 nfsd_set_fh_dentry(struct svc_rqst *rqstp, struct net *net,
+ 		new->cap_effective =
+ 			cap_raise_nfsd_set(new->cap_effective,
+ 					   new->cap_permitted);
+-		put_cred(override_creds(new));
++		put_cred(override_creds(protect_creds(new)));
+ 	} else {
+ 		error = nfsd_setuser_and_check_port(rqstp, cred, exp);
+ 		if (error)
+diff --git a/fs/open.c b/fs/open.c
+index 9655158c3885..351ac9e86a15 100644
+--- a/fs/open.c
++++ b/fs/open.c
+@@ -461,7 +461,7 @@ static const struct cred *access_override_creds(void)
+ 	 * freeing.
+ 	 */
+ 	override_cred->non_rcu = 1;
+-	return override_creds(override_cred);
++	return override_creds(protect_creds(override_cred));
  }
- EXPORT_SYMBOL(prepare_kernel_cred);
  
-+/**
-+ * protect_creds - Move a set of credentials to protected memory
-+ * @cred: The credentials to protect
-+ *
-+ * If kpkeys_hardened_cred is enabled, this function transfers @cred to
-+ * protected memory. The returned object may only be modified by switching to a
-+ * higher kpkeys level, for instance by using guard(kpkeys_hardened_cred).
-+ *
-+ * Because the credentials are copied to a new location and the old location is
-+ * freed, any exising reference to @cred becomes invalid after this function is
-+ * called. For this reason only the caller should have a reference to @cred.
-+ *
-+ * If any failure occurs, or if kpkeys_hardened_cred is disabled, @cred is
-+ * returned unmodified.
-+ */
-+struct cred *protect_creds(struct cred *cred)
-+{
-+	struct cred *protected_cred;
-+
-+	if (!hardened_cred_enabled())
-+		return cred;
-+
-+	if (WARN_ON(atomic_long_read(&cred->usage) != 1))
-+		return cred;
-+
-+	protected_cred = alloc_protected_creds(GFP_KERNEL);
-+	if (WARN_ON(!protected_cred))
-+		return cred;
-+
-+	guard(kpkeys_hardened_cred)();
-+
-+	*protected_cred = *cred;
-+	kfree(cred);
-+	return protected_cred;
-+}
-+EXPORT_SYMBOL(protect_creds);
-+
- /**
-  * set_security_override - Set the security ID in a set of credentials
-  * @new: The credentials to alter
-diff --git a/security/Kconfig.hardening b/security/Kconfig.hardening
-index 653663008096..cb494448c7ae 100644
---- a/security/Kconfig.hardening
-+++ b/security/Kconfig.hardening
-@@ -289,6 +289,19 @@ config KPKEYS_HARDENED_PGTABLES_KUNIT_TEST
+ static int do_faccessat(int dfd, const char __user *filename, int mode, int flags)
+diff --git a/fs/overlayfs/dir.c b/fs/overlayfs/dir.c
+index 70b8687dc45e..7e7d4f26198d 100644
+--- a/fs/overlayfs/dir.c
++++ b/fs/overlayfs/dir.c
+@@ -575,6 +575,7 @@ static const struct cred *ovl_setup_cred_for_create(struct dentry *dentry,
+ 	 * We must be called with creator creds already, otherwise we risk
+ 	 * leaking creds.
+ 	 */
++	override_cred = protect_creds(override_cred);
+ 	old_cred = override_creds(override_cred);
+ 	WARN_ON_ONCE(old_cred != ovl_creds(dentry->d_sb));
  
- 	  If unsure, say N.
+diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+index df85a76597e9..0a45760ff7ae 100644
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -1326,7 +1326,7 @@ int ovl_fill_super(struct super_block *sb, struct fs_context *fc)
  
-+config KPKEYS_HARDENED_CRED
-+	bool "Harden task credentials using kernel pkeys"
-+	depends on ARCH_HAS_KPKEYS
-+	select KPKEYS_UNRESTRICTED_RCU
-+	help
-+	  This option enforces the immutability of tasks credentials
-+	  (struct cred) by allocating them with a non-default protection (pkey)
-+	  and only enabling write access to that pkey in a limited set of cred
-+	  helpers.
-+
-+	  This option has no effect if the system does not support
-+	  kernel pkeys.
-+
- endmenu
- 
- config CC_HAS_RANDSTRUCT
+ 	err = -ENOMEM;
+ 	if (!ofs->creator_cred)
+-		ofs->creator_cred = cred = prepare_creds();
++		ofs->creator_cred = cred = prepare_protected_creds();
+ 	else
+ 		cred = (struct cred *)ofs->creator_cred;
+ 	if (!cred)
 -- 
 2.47.0
 
