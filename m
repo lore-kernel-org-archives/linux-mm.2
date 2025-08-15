@@ -2,111 +2,119 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BC83BCA0ED1
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 06:21:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E1C4CA0ED1
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 06:43:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DC818E01D8; Fri, 15 Aug 2025 02:21:00 -0400 (EDT)
+	id A249F8E01D9; Fri, 15 Aug 2025 02:43:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18E968E0002; Fri, 15 Aug 2025 02:21:00 -0400 (EDT)
+	id 9FD198E0002; Fri, 15 Aug 2025 02:43:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 055FC8E01D8; Fri, 15 Aug 2025 02:20:59 -0400 (EDT)
+	id 8EAF88E01D9; Fri, 15 Aug 2025 02:43:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E39FA8E0002
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 02:20:59 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 67EC41180FB
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 06:20:59 +0000 (UTC)
-X-FDA: 83777993838.12.D434E50
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 7E6E240002
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 06:20:57 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=gINOpAoa;
-	spf=pass (imf01.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C9B98E0002
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 02:43:31 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2FA69138AF7
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 06:43:31 +0000 (UTC)
+X-FDA: 83778050622.01.93B3BFC
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 357C08000B
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 06:43:28 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lT7bPXpf;
+	spf=pass (imf30.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755238857;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1755240209;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/rR24//5Cm6vPMiW1pUvuDPyIFf9QUDVrJzX55PqcQY=;
-	b=s235PE1tn8nALu7UQhs8b/17oyE9RBZbGBfTlPItT01UaAtz+1hCu1I1LZABNiBhc01q4k
-	T78wmWljBfT//Nd0By8udFGLP9JbTSpNhiyJuths1+WGNfeh9HXzax5cicpn5OxW2opjSs
-	thvsHzPGk4yuV6qK+inHhZzr3XTpSJw=
+	bh=RQ+FKPOPxHYzBg0qRiV9WQnD66XSjRAhVwtd58VUZ+w=;
+	b=jBVHiWZfFcNF40j9Dq4AVbichuCjy0QriAuKMCfjuQ8yFIUuyiVeh2fIALk4ypAsI2wtjf
+	ZIYkQFgBvT8saA+2WF7t9UMtJrr4dAaDp+F9EZKkuxe/ZyQu5RIyd0X48mqEpatdwJUyg5
+	eKfntytZ29XWEKanYqEUD6c2BQHC3nY=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=gINOpAoa;
-	spf=pass (imf01.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755238857; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lT7bPXpf;
+	spf=pass (imf30.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755240209; a=rsa-sha256;
 	cv=none;
-	b=7J5i9+PXQswZYEd2q4MSmhUhDlzTqhtlz/uLBJL/mAJhpVhZ3zDFyBvmqagDuxv3iv7zYv
-	IlHuLhi8GkviEhEV06qXq/ThqxjQPnZviDrY53+RIkw6//Uu2lirPJ5II6A5UB0VxEsK70
-	YHriRTp49AztzAGiMyaCFWq9bE1qGv4=
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2445818eb6eso13810465ad.2
-        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 23:20:57 -0700 (PDT)
+	b=fWRGHuygbSGmSF3kLXJFuvsmdw0igzHB4HOygBRdATpVwDRtZbuZzBo7CV9Mzp0211Isfk
+	JMOfzHH3zXQFxjQtR/W7RzDHkLSF7rouf7vNhQIyfvsgM9vpPTlyv1Wp145Vszz8diwjIa
+	36e9ImG3tshJJi+qEJxb7CEhWW78Kng=
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6188b73e6ddso3520180a12.3
+        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 23:43:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1755238856; x=1755843656; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/rR24//5Cm6vPMiW1pUvuDPyIFf9QUDVrJzX55PqcQY=;
-        b=gINOpAoaXX3Hb/KJ8cWCWwKiXsLip6A9uGWzNakb6jY3b3NSRHYglhTdPnTCnB4o4W
-         P8lg5Yz2AIDO9NoAvHWGrNZcTpi0QJawDosdTFLC7RfLJUOs8PbAZGlCXOHrzSDk/d3q
-         P17IGFZpp/pGSHBABNk7H07AY7ipQkuR7dnME=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755238856; x=1755843656;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1755240208; x=1755845008; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/rR24//5Cm6vPMiW1pUvuDPyIFf9QUDVrJzX55PqcQY=;
-        b=Sg3P5o88eUUxtTgGxl4DNqBwCw3DQJHtE4q2rvpM1tkRlvunFMiduWlwwwSslVC4iy
-         BsAiZvory+MlT0O7/ZIJELXsIW46gyQz3Gy5paFMN8Slw0aymO7Absd+eKCJRRFd9qXc
-         lNAdIHPsuvum12614C4W/Z+rD656QsOdnVq5dfmq8Nr6eAnRwH96e6zlbzFvHkn3W5bz
-         yTYE0/P1PmhEPyhzw3tLatUTqlj8SK6up3LSaQM4otHA43XpXY79OCmqMJ38Xso6oLNP
-         a59JIMQmbJcKG9jSowaNLyNnJYgAw12AW7w/jHiOH1xinn2WJE3iCKySChAgatnKgoNG
-         bMLA==
-X-Forwarded-Encrypted: i=1; AJvYcCUKVB6BLIPXWzLMk2oCiO2m+Pn8o9cmrcaILrdSGNXIZTloNJS8b82FnLOZdvvRNHUmJ4tq7IuU2g==@kvack.org
-X-Gm-Message-State: AOJu0YyRCD26TB8pmrMJZZfhl5BA2A51fPiU+YXDGel8eDm5QzoFzWVV
-	pb8JpTw6EKfoexl2WWgvSDk5xooUcEMq+hTbTICn2uw9iOWm5Si92IfzIYCAKCHNjQ==
-X-Gm-Gg: ASbGncsr6t9NexysimNYs9Ns8bVjJKDeG3WldADPoFqFpc2A/nNwsf+VNQKH2CPoLhv
-	i/Ig0YKxIlJsVbuObrF2u6Ac6MOINAgcOQ0wxB7Olq+OQ6fdLSFdB0rmGfqLP3VaR8MzIT6lMon
-	BB46GWzSaEh2Ap0o+kUvgiVEYXvndunm1q14kPhwR2sD1ltpShqMpdVDH4e+KPsV4UaFTOWZZwe
-	FISQ7BL4LmwH/UYXChEK+jw11e/OaS3S8HMVbl6llcDLX+RCPsH27jxJ0tsXONexLgA8QzS1XE8
-	O+2cOdRMx1b88Q2w+uMjFnC/ec8taLogmm1ZvVQ9JZMSSNVEEBlZcM8QlEPe/LbmWr0L+1JKMU7
-	jZkeRN88d6AAjAMNtYAoKkn9Z
-X-Google-Smtp-Source: AGHT+IEYKXi8lWkNB18A5d01PalWbEiDPkniHD9LNzszKhC3ppcK5xRYDEJqm3s1E8UkeX5BahX4Lg==
-X-Received: by 2002:a17:903:b07:b0:23d:fa76:5c3b with SMTP id d9443c01a7336-2446d745130mr16515475ad.22.1755238856391;
-        Thu, 14 Aug 2025 23:20:56 -0700 (PDT)
-Received: from google.com ([2401:fa00:8f:203:df07:bcb4:bd69:d61])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446d50f6f6sm6675165ad.92.2025.08.14.23.20.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Aug 2025 23:20:55 -0700 (PDT)
-Date: Fri, 15 Aug 2025 15:20:50 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@suse.com>
-Cc: Suren Baghdasaryan <surenb@google.com>, 
-	Suleiman Souhlal <suleiman@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: Re: mm: swapin read-ahead and zram
-Message-ID: <dr2ndbnav6ynrxjixfjjsbe4jr66a3niplzpxcbbt3ztjimwzh@l47amo3k5jt5>
-References: <7ftwasufn2w3bgesfbp66vlchhpiuctxkhdxp24y5nzzgz2oip@pi4kdyqkl5ss>
+        bh=RQ+FKPOPxHYzBg0qRiV9WQnD66XSjRAhVwtd58VUZ+w=;
+        b=lT7bPXpfWcm/frhNmYrjp5CQwPbOWghpKBMxXEcfg4F6LuJM/w2K/CFJM6X1WPUbQ9
+         ZzknYlyEZuKV+l2X1sq3aRE5O0HbP73tnjFy77ggVLnL04YnknErQM+V8lFI7WWNlbnk
+         PVOma2e7U9t+UrhlF8RycPe83IpAJIt58n/oY09X6wseTdeADIKjp9E8FobKiMtXGPIa
+         RKe0e75/fQi/W3WEEGxugzLl8F75puVqKlYgcxJPxUjp7d0sVrRENHrTlER8q9LALWDu
+         S/DElc//hu0C0rpLPePhZNH9YXBWwBtsvg2PMzVTqDHuo1U85ZFJw6m3HsxIan9mls5b
+         6AQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755240208; x=1755845008;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=RQ+FKPOPxHYzBg0qRiV9WQnD66XSjRAhVwtd58VUZ+w=;
+        b=FNG1tDR8ZtpesTZ482xr1LIgWvWISFpFkAvNeQdRrJjccQWRfTHYI2ftx8uqDN7rxn
+         0z5NiA5iONOO0XZCrptIed1T9CA4K3qEWZ1m5omuJnF4buglh5LQ4ommLRzrV0Mq/UKq
+         Js0CO053YDQhwgO14l004jVaryYbNT0FN1qnLCSvW5TO6wOWQGQ3Uu7S+RcNlGM59r7c
+         wHRPZIELKeoP47/mS7Naja73rh8DwhLJq94Dow5LNdHbspYL+dZ1ue8Pl1+XLPhiGqVL
+         +knfuv5YqaQxxc3dr6WqDH62Tvmib64fhXPX/3QQhx6zpYK16ZgRh2DnJxpmPuYiHX9J
+         897w==
+X-Forwarded-Encrypted: i=1; AJvYcCVosPf1Dj1v+qPG4Fv5HOWOAFnGganj53Nrwq13vi4FpenPVUo/q8VhtfqsVLAvL/CjMaHTkw8GmQ==@kvack.org
+X-Gm-Message-State: AOJu0YxKSE5Y6uIwWcjfxOpIYdNafoAKzksV8igDncwTDHchtosTGff1
+	yvQLI4iGLPK2KAYnHFRk6p8ZTiqD/FuV+l8U4jZ2ZCST28LAjmFBPkBD
+X-Gm-Gg: ASbGncv8wZ33NyouMebtw+OiNe+8+SIOkds0karRVRtA7MqYm4OK9lU/K/3QJbPjyWV
+	8VWv7Ho4Hbmmtx53WEKftJkNh748834Jntx9iBDo5w5koj2MsiodASVxX6GkZfg7WjJaUt0tqBZ
+	nIAuNaeKysHRTVwe3DxPR33cJKMUPmAMfpiXzdm9aDb9UUlVgLgYM0su2Fn7eCx0oCsXwTMX/H5
+	NWrpN5AF7qVeR8A+91C2tPFG8tr5HJZh0O+zgHimLPaUL/Xf1deQ2BX5O3pBSq1/j3QYFdZDHMB
+	Cnl1qgiapiytFmgYFtCtmyhW/96163tWU5BkkwqIhqgInyL1IiBlFSNqgRHiUKqniU/WE/zCB3H
+	Rtf8/kWZz3+dVHc+n7DFw3Q==
+X-Google-Smtp-Source: AGHT+IGPFk4+EoYus2GiJezFDslbVAG50BHI7St5CSnh5npe7++NmJQ+qpasnKnRTuGEMgD6zS98Qw==
+X-Received: by 2002:a05:6402:2713:b0:618:1485:3749 with SMTP id 4fb4d7f45d1cf-618b056089fmr728966a12.18.1755240207429;
+        Thu, 14 Aug 2025 23:43:27 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-618b01b5facsm727726a12.41.2025.08.14.23.43.26
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 14 Aug 2025 23:43:27 -0700 (PDT)
+Date: Fri, 15 Aug 2025 06:43:26 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Ye Liu <ye.liu@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>, Ye Liu <liuye@kylinos.cn>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] mm/page_alloc: simplify lowmem_reserve max calculation
+Message-ID: <20250815064326.itngdnefuoihlk2j@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250815024509.37900-1-ye.liu@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7ftwasufn2w3bgesfbp66vlchhpiuctxkhdxp24y5nzzgz2oip@pi4kdyqkl5ss>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7E6E240002
-X-Stat-Signature: trqyici5tpf7fptgxstf3j7xfgot1wbj
+In-Reply-To: <20250815024509.37900-1-ye.liu@linux.dev>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Stat-Signature: ny4tz8acjjchb43y7oukekuu9ea63p6k
 X-Rspam-User: 
-X-HE-Tag: 1755238857-848068
-X-HE-Meta: U2FsdGVkX1892bUFaMisVIGzNFQgng8GEmhuNhp9I5oHsmj1EetwoHRJQx2sZ1LS9sirZ4JA3eJWcHyQj63Vd+3K4YSKqAwavLNetHwbEhNsW0XuQLHqZPhN8ycAT9qw3u5GFklGjXtHz1jbB+Pv9oEA6N0hcapueL3ycqosOTSM1s3r8xH+yWDbvxGvUnTzQrlznkV33AwBqhykBxtOKDKDb/YUIGrHy3Rqn6jk6+LNV3+sxjk3+6dUVlGHSkBlzovJeq42A2yrRSGd1bpn34Obl4rN4DywhwD8fWJS9DgM52Q9erlUJKbx1dDVJvdPYC6hKLPrsM1NPRy92TcKDcoyUazjVupIc/p4G74rhDSbiUICGpMBBDP1HZuWxU5CbL/IcJ9kNm4cTpolZdSTCcPx727znCgCAM1GwXUvACQfDOYYVYMDwvbb2ZnyGUW3AKybaEmQ3vP7Vw96OIdG4l5gMD4L/JGQaO8y/eNoPJJvnVkHwImr4A4iEoxP0PAE171gANUVAWPTCYxihkD38/7yQRX0dktaVUSsg2AzyETKZvcchfGSA0cX4zfttGaWlDODeJjDhi9S+57TD9jHtWXsTNetGsqTsWbBzVQej46hA1Kwwv+mlisE3DPPSUlRF+lwxsP8K9fIjlF58PALeRLgc9N16w8KUeOHh9WB2bwsV0BiJfnADWcqjKXinJThsuKTKZ1yBNQjU7QUvt/jOf9B8ZWhNulXIg4EdxfXwxPwIZhm1D5PDYed6ip75srC8CDKGNpIAGvo9bun2/YyQoJZqQ5CuisDhKCen4p0RYT8xj8hJ3X43OxIbAKyzgV9j1Grd/jMEQ+IvL7/L64wxmEmtg7rjF69V7gnARg3dtS8Z6ArkzceDAT7aLC6Mu56l5ArcpsKsStNzwHx5UBhNKoBwiaceRW60l1fIx7YAtB7zOtZlQ6+ROEeVFu/R8pYRgBfMlipRozOCWseKSm
- B5ACWzHD
- DswHk/KwHyssFeimfgici51uwqOYfGNBL8s0rpsDx1TfTlbkdJ/iXuRhX4E0CNxNl13+V/6B0swtC11fwyvrK/XOsiZVNAKNQcll4YGi/exc5AacvWL9L/eoZwgMb02T4A0YhKKH5sgPU+hCMrhG5S5su/ZY/be+sZYhhpXKwthm0/p+Zhsk1G/Aj+2oWqlAy+/vaReSeq1r6K77r0JquGj9TxOZ4c+0hEfIcr/dxikuGuE1niKW+BlFbw+l4CH7UfoJR9xNgH17ZIkjyjkB4N0QDdY6yrPKmV9+Nzd/rxziy9FwwsgqRbCihz+P+1k85Y/wB4j2/BUmLh9CnxXi1cisYHX9ghkZEDrz19wff8uHGZ3Y=
+X-Rspamd-Queue-Id: 357C08000B
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755240208-798696
+X-HE-Meta: U2FsdGVkX19Apg1XwcGQ8GYLstg/lf7iGG1fcb8mwfzjq3hTTlvdpQb4cKqgmwFDY/kbuG5womcGiyBNJiESwb6rkUVOI6fDt+XMXjmKdL7oSkqHaUZiPb5cBnqAivPP8drTohd2Dni5i6Us0Yk7shsD0LkBOZMomQYwEg/9H4BcFb3v2bcoLoXoRmPhWm6APijWkApZbUsdWyEU7cCA8ZJeToxQCXSbEI+iXC9b/5bhjMFvH6c5XciIW8DoXQTw5IPsNjc711g9nuFb6gwqP+BPc7IuZ57fwdZ7fa2fqgS2msiAPDS+ssyLTnzA0+farVP1zEUDQR0rjHUkB0qPF9nU8D5IDpiQ6aMASUTY4mdgV4naSRaf+M8sz+5j8aeUmb9EewWj1mXoA76LHucw99GSIwqJhuhZHCQRvqMj8RL3rpWUGLB+RTQxXSCMVqR34t12C94pp8EVUnP36FV2BZzG+4gsJKK0vYFr55ZbH6cOSN5NSlwvqA2lzG6PCIvc0wPaasmzEf7uxQxpU8Godgr19wuWP7XmMMABmP4pkL8uXIjhqQ7pRMTxlNnkaiZ7Ejd0p5JKoxQ0RsDP8GfbFYdyKCfnGHEkX1baf8/w1uMKimm8Pe2FH+thRWfry02R0/svCZybFp/SNLkwtNFOeXLscnNmj6Kxg6fNxmvoEWELqCfXAHDyoK6I5MuQXyzMVNe90X/97Afvri8cDUw51uwHr/XwhOUijHI7eSXq81uaiKGtlmVlO3whCcSXslgF8+heZ0PDJmQUyoil2ml8ClcPGF4NhI7oq4FWRUqZYJo8SN0zc7hwo3w4QmeEH9l90ZPw/1Ilo2N850zSWhZeduTC9KpsSuEXZTpY0q9h27au3fLkVrBqM+OVsGUWgedDAs7aUHPe1+KR2jkfB3UexZcFah6o8ZhXIE7QsjrCZte6OFE9ZIwW5VmQT2vZOraDbm4qrZPnZBwMwdWXt37
+ gRETYqsF
+ uejJBfrmgyJJRgWm0Y5GkkQCrn+m7cw0RC0kT20d28mqyBm5STFknBgEGtFZgnIqmfwEBKHQMfl1jgat0cnPDvZ0JtkjdIeKopR438arZlT9bx0oNjgciO7Zs0zFwoiImuoJqCHtIaHU1BY3ZjHNU3jwu0+VnbgDcMWNkAkMBTd99YrR9c2Zd9ziOAnUygxaqxQBhVsetpUMR8XemE5jTBlpB+NNHiRW+mt2MRZtfEjFodxSefmP4mOmbaP+DKsTgjDTyqabbyU1lmr73YLK3EK9H6wtjTXw15c64WnH/2/4teG5ofmC5L+X5F/ngCsJd6ITXfxSfI3oFEBKOqwhQxayzv7iLQbrZPcsS9EHgOBuZVPTdbdj99+gFQKoBe5V6hMRQqfW3JKX8h7z7PNOONIMEMkgVHw7Eyec5XMKTthUj4HmVCS9qBrB72VL8/EK2j5KtvL3BErsY6AgilMy9WjHISmznnVlpG7Rg+NCbZxIJmukzHHUz2mPYLMLgrzRwQfys84od69DJnv2uWNHOVVBwTVsR0aC153ndhN74QOdylDm4Z3yZ3uIaFgP9wz0DL1EoxtGbBC0NFnQ8LWcc19mjeeKuBN0x/igcLXsBzsCPauzJR5HUmwH7p9Cosza6EaaPA4DxkO8oEL4KsTTvOv60qnvsb2MFkEimjI0EJ3m5+U/D0Kt2DR/Lzdl3Rm610HGqJ0nVsMTHhqivF9sR20RKdi89YNx0pg2y0mBSZ4aYjmMw07vXvgYcxlCGsYbXVsWY4wepLQbZg95C77yxiGXeIQK/pWIlZ3DE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,28 +123,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (25/08/15 14:51), Sergey Senozhatsky wrote:
-[..]
-> For instance, notice how entry 1615265 is read, decompressed, then
-> presumably evicted from the memory, and read/decompressed again
-> soon after, almost immediately.  Also notice how that entry 1615265
-> has already went through this cycle 189 times.  It's not entirely
-> clear why this happens.
-> 
-> As far as I can tell, it seems that these extra zram reads are coming from
-> the swapin read-ahead:
->  handle_mm_fault
->   do_swap_page
->    swapin_readahead
->     swap_read_folio
->      submit_bio_wait
->       submit_bio_noacct_nocheck
->        __submit_bio
->         zram_submit_bio
->          zram_read_page
->           zram_read_from_zspool
+On Fri, Aug 15, 2025 at 10:45:09AM +0800, Ye Liu wrote:
+>From: Ye Liu <liuye@kylinos.cn>
+>
+>Use max() to find the maximum lowmem_reserve value and min_t() to
+>cap it to managed_pages in calculate_totalreserve_pages(), instead
+>of open-coding the comparisons. No functional change.
+>
+>Signed-off-by: Ye Liu <liuye@kylinos.cn>
+>Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+>Acked-by: Zi Yan <ziy@nvidia.com>
 
-Sorry, I need to correct myself here, it seems that read-ahead win is 1
-pretty much all the time in swap_vma_readahead(), so that's probably not
-read-ahead after all.
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+
+-- 
+Wei Yang
+Help you, Help me
 
