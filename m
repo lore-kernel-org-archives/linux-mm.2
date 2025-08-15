@@ -2,127 +2,88 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 41F51CA0ED1
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 17:06:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 16B33CA0ED1
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 17:07:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C44AF8E0007; Fri, 15 Aug 2025 13:06:52 -0400 (EDT)
+	id A71308E01FF; Fri, 15 Aug 2025 13:07:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF6718E0001; Fri, 15 Aug 2025 13:06:52 -0400 (EDT)
+	id A21CE8E0001; Fri, 15 Aug 2025 13:07:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE5598E0007; Fri, 15 Aug 2025 13:06:52 -0400 (EDT)
+	id 937FE8E01FF; Fri, 15 Aug 2025 13:07:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 998418E0001
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 13:06:52 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 496ED16021A
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 17:06:52 +0000 (UTC)
-X-FDA: 83779621464.19.791C002
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 3E98B180006
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 17:06:50 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gQBfVZCz;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/p860hM2";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gQBfVZCz;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/p860hM2";
-	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8014F8E0001
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 13:07:03 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 37F64B73CC
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 17:07:03 +0000 (UTC)
+X-FDA: 83779621926.11.77AD724
+Received: from mta20.hihonor.com (mta20.hihonor.com [81.70.206.69])
+	by imf17.hostedemail.com (Postfix) with ESMTP id ED8024000E
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 17:07:00 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=honor.com;
+	spf=pass (imf17.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=zhongjinji@honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755277610;
+	s=arc-20220608; t=1755277621;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uccM8kZmqedgGup1mx23o04K/x+hNFFVdcMyZEbPEOA=;
-	b=LrkaPWXq7Drsq4SdGPmv2fL9wBLEML6boVWIJCrgRhU2iYV69HkZZDJ9zpd+bjAwhAZFp/
-	q7QEili/j2R8xguU3sxjB64tGwHcB7VLHlWwblJoA4jqWwIzeRZkCKK8Wqy8kaDYuLs94S
-	h6MZulBs6bVrrSOdoGFb3BlmHQWrJSE=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gQBfVZCz;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/p860hM2";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gQBfVZCz;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/p860hM2";
-	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755277610; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=3qmtGF8u3VnEQktRjzCgXQV/wBb1bBInpYEUXB0Nzlg=;
+	b=HVJgAzUhXzzTkZtWyXTsYsstOrgECYvzZk8CkLG3eMmBA0mnVaMYWfD4VYBkHd7V4E9lUY
+	b9CU4CgD0YMBr442zLHKxlIpNP2Wrhn8wym5Wos81WhnScpWrpgmgUyx6hvUCOgMGUe9Mc
+	l1Y/y0et/fkyzaIzKPjsFwhla0CWgyU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755277621; a=rsa-sha256;
 	cv=none;
-	b=ZZmIyOXXGZKvNl58wXirC7ACulr7PhF5aA/l/+qadFTrZ/w2ox7mHL20XOunUgUQUYhC1L
-	7RBWNw9xFdsDDvDLJBfE8qiThQwhV8aS5+ZW6vvddVe8cWifJGe1YMYXV/OA6V2EwxvgS4
-	Y1NwuvQX9oUi990DisTtAw85KdjcCIM=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 804701F83C;
-	Fri, 15 Aug 2025 17:06:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1755277608; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uccM8kZmqedgGup1mx23o04K/x+hNFFVdcMyZEbPEOA=;
-	b=gQBfVZCzL8XjVvRVv1xBNgvLDmCwe4Mr6G9J7e7FgwHAOh5HB9WWbi8C2USx89PfWl+SFO
-	2BYWOQh4rvoAJvzGJ3yMZZ2UAAn8COQxt31orjfgBl97wj0fOSF3Sq5BCrwCGmvrgtbvDG
-	efIJf+gq5NIJivDUHrAA3WTW1FklRMg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1755277608;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uccM8kZmqedgGup1mx23o04K/x+hNFFVdcMyZEbPEOA=;
-	b=/p860hM23pO0TV79cBNHKMQE8xdvZJW/8aBzhr/3i/Joh9yE6JubdeBQYa9Z29672nudLp
-	4ylUlxeaHKfPfCAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1755277608; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uccM8kZmqedgGup1mx23o04K/x+hNFFVdcMyZEbPEOA=;
-	b=gQBfVZCzL8XjVvRVv1xBNgvLDmCwe4Mr6G9J7e7FgwHAOh5HB9WWbi8C2USx89PfWl+SFO
-	2BYWOQh4rvoAJvzGJ3yMZZ2UAAn8COQxt31orjfgBl97wj0fOSF3Sq5BCrwCGmvrgtbvDG
-	efIJf+gq5NIJivDUHrAA3WTW1FklRMg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1755277608;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uccM8kZmqedgGup1mx23o04K/x+hNFFVdcMyZEbPEOA=;
-	b=/p860hM23pO0TV79cBNHKMQE8xdvZJW/8aBzhr/3i/Joh9yE6JubdeBQYa9Z29672nudLp
-	4ylUlxeaHKfPfCAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E98071368C;
-	Fri, 15 Aug 2025 17:06:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id rJHZNSdpn2hzMgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 15 Aug 2025 17:06:47 +0000
-Date: Fri, 15 Aug 2025 18:06:49 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Matthew Wilcox <willy@infradead.org>, maple-tree@lists.infradead.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Subject: Re: [PATCH v2 1/3] testing/radix-tree/maple: Hack around kfree_rcu
- not existing
-Message-ID: <ttrjb4dhf7w6da3qqlav3kydcpohtimmdewvuxiojdvd3drn5n@rlxb6q656olb>
-References: <20250812162124.59417-1-pfalcato@suse.de>
- <rocriz7qo5is6m2dcimj3qiczgv3eoneqwrqvrcpsrtgqnnmmy@eswbhyo2a6w4>
+	b=6RTTUf+d8cx4naDSC1Sf7jVjZy7zqH7bmSvjLVSnk1CkkvTyee3wZcQ9CKOdHBcfty1lfG
+	axwcCSEZG3FKKPrINyzfDVirPu67CnBS7nu+PRATcm5x87+TPm/lHPyzxUxFXrK86zxOLA
+	SRyxP0me0z/Wy3k2h7Teh8+1PWf9lEU=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=honor.com;
+	spf=pass (imf17.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=zhongjinji@honor.com
+Received: from w001.hihonor.com (unknown [10.68.25.235])
+	by mta20.hihonor.com (SkyGuard) with ESMTPS id 4c3T6b4gYzzYkxsP;
+	Sat, 16 Aug 2025 01:06:47 +0800 (CST)
+Received: from a018.hihonor.com (10.68.17.250) by w001.hihonor.com
+ (10.68.25.235) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Sat, 16 Aug
+ 2025 01:06:56 +0800
+Received: from localhost.localdomain (10.144.20.219) by a018.hihonor.com
+ (10.68.17.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Sat, 16 Aug
+ 2025 01:06:55 +0800
+From: zhongjinji <zhongjinji@honor.com>
+To: <akpm@linux-foundation.org>
+CC: <andrealmeid@igalia.com>, <dave@stgolabs.net>, <dvhart@infradead.org>,
+	<feng.han@honor.com>, <jsavitz@redhat.com>, <liam.howlett@oracle.com>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <liulu.liu@honor.com>,
+	<mhocko@suse.com>, <mingo@redhat.com>, <npache@redhat.com>,
+	<peterz@infradead.org>, <rientjes@google.com>, <shakeel.butt@linux.dev>,
+	<tglx@linutronix.de>, <zhongjinji@honor.com>
+Subject: Re: [PATCH v4 0/3] mm/oom_kill: Only delay OOM reaper for processes using robust futexes
+Date: Sat, 16 Aug 2025 01:06:51 +0800
+Message-ID: <20250815170651.11457-1-zhongjinji@honor.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20250814161345.b2ddf7120dfcc420c3199e67@linux-foundation.org>
+References: <20250814161345.b2ddf7120dfcc420c3199e67@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <rocriz7qo5is6m2dcimj3qiczgv3eoneqwrqvrcpsrtgqnnmmy@eswbhyo2a6w4>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3E98B180006
-X-Stat-Signature: 11qhyyeo8oxxc9ukmh3eqkmf58jjz6he
+Content-Type: text/plain
+X-Originating-IP: [10.144.20.219]
+X-ClientProxiedBy: w002.hihonor.com (10.68.28.120) To a018.hihonor.com
+ (10.68.17.250)
 X-Rspam-User: 
-X-HE-Tag: 1755277610-629559
-X-HE-Meta: U2FsdGVkX18T/H7ss9UrPHJjSIbZarS81bbZZLnRPvD8lC5mRHepzePkpetiSzHf1j/WE4sP1r6WxweCcTpmKJNb1Dl5BeqL8OkwBXFc718OajmQyNwkESNWaKa89ITCZ1Vf4Fjt2VIziqpHg96uLcJk494l1niV5DuuezIzdH85vWGiZS4oIOzIQt6Ir6Nwih6ERw4buzqTOo2cEId9uaGB3ymHcf9D6v48B0tTG8gqp7On2KGnOShoU0xz8NBmXaOb7po8w+A6nh4uOR/mtQRVdpUNC/cudvTjOVjITeyIDnu8469I+34rKjbOUed1ZnOmZXcp9UoqxlnClt4SQQ8TTWzECiE5BAfQsiPLJkmqIWt22oWOeyCrlua70qP+QrpezbQwXC/J/ylqSBN3/a8v3KGWvnFOOWyv36bJWMTxMk9wBvXPxZxZEFSrdDBwl5h4XFh/JKPPGqP6BRMcQkPvO1GCgc/cgZ+mn8c9EUNqHK/a7p9RgjqzMCruTkKvxsZZwEahIyYy3M/ovcgIL+XztOmoUGXg8psBGESfFrGrf27spJcvttjSEXHzzZflSg2cy90Dm7TphfDSBbmdojXNQwsbb4ofzuMSikuV9jQs9n/YHnb66pXiisefrBOOHvuIGzn5LpMErPqUFZUrncl38/QlBQJKV9ss6EYvM5wZ+AU1GxOMhwPMczvmDIzkMj/H4oZoiwVVjZnquJQTFgWQkvXMblnAGFCUYsdOcPM8ze1OAzP5allIW1A2OL2jkaG9w84TmHr9lDEokKfKiap01M+bC6kie2mBUZiHEmc1Y3EyK/xeqneJvY0nDuNBYzUEsqgOaiQX4Vp6DBJUZIzLjq5gd+TQoIIQvwl69+5L/bDmzRvD0rdnbJE50WiyL2u4ihiTMd6PkIynMi7dLB9l1FxVIJgEgKU547qxAP6ZM+2y1+mcEW+sh9l+9Cfe+EfuxvfSyXoMWXhfCtI
- lAZDRfjB
- jKzuWNbHS21WVuGcue5zd0TbeGA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: ED8024000E
+X-Stat-Signature: 4qmiry9nsiqdnmopr8c584zon3qk4rm4
+X-HE-Tag: 1755277620-23131
+X-HE-Meta: U2FsdGVkX19+DGn5j9KACTrBNGuF4T20coC/7SHJtGnfl8ZSuvvKsLVBlXVbzOk8hbb7YbyUGSw3CjiMzvSou/dNR9UB32uWiP1VwspXmGKNizYXV15KF99DmnzJe/qV3PtRZNmiy2NEWfEXJYO+zP0/vxiMtRJ13/8qTeoMzJ1vdazpU1uYQeirFfYZQWAx89hIgj2mALYuHF+sMknKTBKZkR7CwlGg2cBkCidKmlq7MX5tlz8Dqwa8pbf6B670NHWFe5fVinEbOZRlpvOrisRa/rtCfQTJd45z8+T3AtIvi2XzVpVFrKrfbJYvk2EBqvSxfNE7nQmDeTJSlTrfJJy8uBLR4DHV+EFkc3wNadcdFo/jASsy27NBummNu4b6QxlaviHv7PpvmoZVYH3JOJx5neBIyaBm8fjx9R9neiPRjEOzhC/0xZnfuolwfAK6VDKavhkzVIx0V64/ueNXu71/6HJY7nZ+KdHW4I+Cx1RN+HU7PXc2ytYb7DfPxTbRji0yUl0sbA8DTygdDXTZCp3H9qvgO5PKfDRFYYIgU0QoBl2ehDrqe09CvlV06/GsTkQUl60Kn6pMij6YGdU/ofDBYEsx8zwaUhFncY7pOf4LgyNqOj8npnpDusJcj+yuxvn8/ysdZYUsVqcJ38pl60zsJjDf3MLo6HwHTD5blJ5MlGbXpLMkvIfrm0IxN66RzisfLaYC6sxaWNyBnUSsS/dv79ZkBVGg6/gZWUNk/jcM7JP0w3y7R+Pho/GxWGuKrorpuCZeJhf0klRCreSBhcjbg1CT/sf+nImPxbcOb89ldc9YLEUxqt3BsDRu33yqdeTQUNF9UR8ScOXRoX1GVbPMQbr/dledrFH0sngW/kw5OXtRehMOiXalXSUAYsQR5Riw71suKksIOeQiThoCwjHiJ42lTxBnJPdHfssGL2siNAd7/r5rVVGBJHiKBgpUNiSoobjoNAsiCJ023SC
+ nYgj35Ub
+ 1SHnbEJaKyrmRKBZG2w7TGTk8mfQrJ+hzklDvXVB2pobZTBg2DInMeXGxmL44pZ7KhtQ5PRmmN0ozB3yoeFiDXownV+dDi9H4cnzaSmB3oH8TpRRYLCrhTVN+zOgQhkSt7hLqrZP0r6HN71NlqbasNlhg1WNNz49yfIntXAgDtctdnr4RLWGCBktRN3PpZxSurZwGoq29+pRnWzQYuw7LJ+Gb8Kue+gLRwJwH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,31 +92,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 15, 2025 at 11:11:30AM -0400, Liam R. Howlett wrote:
-> * Pedro Falcato <pfalcato@suse.de> [250812 12:21]:
-> > liburcu doesn't have kfree_rcu (or anything similar). Despite that, we
-> > can hack around it in a trivial fashion, by adding a wrapper.
+On Thu, 14 Aug 2025 21:55:52 +0800 <zhongjinji@honor.com> wrote:
+
+> > The OOM reaper quickly reclaims a process's memory when the system hits OOM,
+> > helping the system recover. Without the OOM reaper, if a process frozen by
+> > cgroup v1 is OOM killed, the victim's memory cannot be freed, leaving the
+> > system in a poor state. Even if the process is not frozen by cgroup v1,
+> > reclaiming victims' memory remains important, as having one more process
+> > working speeds up memory release.
 > > 
-> > This wrapper only works for maple_nodes, and not anything else (due to
-> > us not being able to know rcu_head offsets in any way), and thus we take
-> > advantage of the type checking to avoid future silent breakage.
+> > When processes holding robust futexes are OOM killed but waiters on those
+> > futexes remain alive, the robust futexes might be reaped before
+> > futex_cleanup() runs. This can cause the waiters to block indefinitely [1].
 > > 
-> > Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-> > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+> > To prevent this issue, the OOM reaper's work is delayed by 2 seconds [1]. Since
+> > many killed processes exit within 2 seconds, the OOM reaper rarely runs after
+> > this delay. However, robust futex users are few, so delaying OOM reap for all
+> > victims is unnecessary.
+> > 
+> > If each thread's robust_list in a process is NULL, the process holds no robust
+> > futexes. For such processes, the OOM reaper should not be delayed. For
+> > processes holding robust futexes, to avoid issue [1], the OOM reaper must
+> > still be delayed.
+> > 
+> > Patch 1 introduces process_has_robust_futex() to detect whether a process uses
+> > robust futexes. Patch 2 delays the OOM reaper only for processes holding robust
+> > futexes, improving OOM reaper performance. Patch 3 makes the OOM reaper and
+> > exit_mmap() traverse the maple tree in opposite orders to reduce PTE lock
+> > contention caused by unmapping the same vma.
 > 
+> This all sounds sensible, given that we appear to be stuck with the
+> 2-second hack.
 > 
-> Andrew,
-> 
-> Please drop this patch set.  We will have it go through Vlastimil's tree
-> to avoid conflicts with other work and to maintain the userspace testing
-> in mm-new while that happens.
+> What prevents one of the process's threads from creating a robust mutex
+> after we've inspected it with process_has_robust_futex()?
 
-In case this helps, Andrew, it's maple_tree-use-kfree_rcu-in-ma_free_rcu.patch
-and testing-radix-tree-maple-hack-around-kfree_rcu-not-existing.patch in your series file.
+Thank you, I didn't consider this situation.
+Since process_has_robust_futex() is called after the kill signal is sent,
+this means the process will have the SIGNAL_GROUP_EXIT flag when calling
+process_has_robust_futex().
+We can check whether task->signal->flags contains the SIGNAL_GROUP_EXIT
+flag in set_robust_list() to ensure that the process is not being killed
+before creating the robust mutex.
 
-(Yes, I should have used a cover letter here, it would've made it easier to
-manage, my mistake)
-
--- 
-Pedro
 
