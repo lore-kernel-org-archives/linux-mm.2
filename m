@@ -2,56 +2,56 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 23247CA0EE6
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 08:56:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D8D4ACA0EE6
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 08:56:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC24890021C; Fri, 15 Aug 2025 04:56:17 -0400 (EDT)
+	id 756E490021D; Fri, 15 Aug 2025 04:56:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B73058E0002; Fri, 15 Aug 2025 04:56:17 -0400 (EDT)
+	id 7061B8E0002; Fri, 15 Aug 2025 04:56:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB26490021C; Fri, 15 Aug 2025 04:56:17 -0400 (EDT)
+	id 61C7390021D; Fri, 15 Aug 2025 04:56:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 917EE8E0002
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 04:56:17 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5045983A1F
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 08:56:17 +0000 (UTC)
-X-FDA: 83778385194.17.A7BB75F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5172A8E0002
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 04:56:22 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1E9D71A0918
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 08:56:22 +0000 (UTC)
+X-FDA: 83778385404.13.1A492ED
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B6E538000B
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 08:56:15 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 7EA8216000D
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 08:56:20 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf30.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	spf=pass (imf08.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755248180; a=rsa-sha256;
+	cv=none;
+	b=YC7MTB5aoU6Kau/N2d4u01C0i1CeqVFF6SdTvqhG0Ycac/JeMK8d2zeZqPnvTQP+c7YEC+
+	iYkm29YAOrXC4C5WtTU+BU7PTfG5Ke/sT2ssk5FTP46DbxpcdEtqGaz5z7+a2wZvLAiafc
+	My/5jQz5CxjOYR7XLKVXw2sVpmfkAR4=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755248175;
+	s=arc-20220608; t=1755248180;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=eDMLq40IQIK4A1/29IQR2+cU8CquAMdkzYmfVx5fV9A=;
-	b=jPxR4erivQBWgLRMQYBZ428Q2dBxNKbIb2HiNRjvJ5vU8TrhI30P6sakUUhiET3rMpfqF/
-	teM6qDKBFTkr3wIes39JZngmqZp3x0SVApAWTaJGk9rwVUd4//lYiV8/n/Qs2RCb/t3GzO
-	0LtEaGOSG7jU/j8bwjnYt213hFFOWs0=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf30.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755248175; a=rsa-sha256;
-	cv=none;
-	b=w934//uYloEAfloMKrkY8rm6wwWCc274kAqiEMFndZUb6ryK9BVdNoQaY39KyVDTTtKDTE
-	iixZ5FmHWEENsHMAPs+Z541Ow6/OmNvBrco59msg9gyjoH2Gdj45Ah1oynVjnszeko3zXC
-	rjN8sV8wwRJllggJW3dykC8VgHrQXsA=
+	bh=rERn3rtGEvUrAdJLPdiij/tpOVbfy8tftDeD0deRkhg=;
+	b=VIxez0hZOzWAOQQ9qSuIWaWfdSDi38m5FZKi2+a05GayIl6D8Z0k80eD8vceNyF3bPP3Q1
+	l+odtA8FeI1hdxwQdGxYIwyHTfdJnX4D15Dtdd5lsXJ2hCOGqEQKrubZ3P6LRk1nNg6VgW
+	tmCj3RFA7jFkRd20f8d9xvYUE6+5eNQ=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C99AA1688;
-	Fri, 15 Aug 2025 01:56:06 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A38611688;
+	Fri, 15 Aug 2025 01:56:11 -0700 (PDT)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6ED623F63F;
-	Fri, 15 Aug 2025 01:56:10 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4C4DA3F63F;
+	Fri, 15 Aug 2025 01:56:15 -0700 (PDT)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-hardening@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -84,22 +84,22 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mm@kvack.org,
 	x86@kernel.org
-Subject: [RFC PATCH v5 10/18] mm: Introduce kernel_pgtables_set_pkey()
-Date: Fri, 15 Aug 2025 09:55:04 +0100
-Message-ID: <20250815085512.2182322-11-kevin.brodsky@arm.com>
+Subject: [RFC PATCH v5 11/18] mm: Introduce kpkeys_hardened_pgtables
+Date: Fri, 15 Aug 2025 09:55:05 +0100
+Message-ID: <20250815085512.2182322-12-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250815085512.2182322-1-kevin.brodsky@arm.com>
 References: <20250815085512.2182322-1-kevin.brodsky@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: yea1qbe8r7dgkp6h48fxs73uwn83xeg8
+X-Rspamd-Queue-Id: 7EA8216000D
+X-Stat-Signature: og6qgdj4nd5dye5fez96d11wwx7crdeu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B6E538000B
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755248175-645567
-X-HE-Meta: U2FsdGVkX19rAXEUwFLVLDCZiDBeNA3yNafQ3DVFq9uOiHWoDeqUtGocMQgokDp+Xj5FdVYgbm542mtT7UCX+ubhn5MiRqHcU3QfXe9Mi4/Z2rxta/JLWydDi4E81Z+YTsskVpXhGifYdDe5vcPulg1yFNFS5TV/KD6WKZ4MXtUEAmEBhsqnlNqVSpiY31TUQxEtcPr97Q+FZ6MeYpzecdG3DVYspio436NF7FMF9u2jOvDgKkv97FKe0nKOI5FbB/dFR9F/RTZduMP7WrMlKdf4bQ3qqdm1eIG5M0FkWO9cGBFvqwgN7lNGyHDSslDItKMOL/brsCGoV4Gi7lQ9R1YVbJCw1/05E1dgBuHFvbyso+EcdNMuCC0rRD5fQdbEqVYqG825C535P+j01k0SSQAx+AbR9Gwkhv8P+gYDLfkry8C+D1b2EwUK7cYwUGdTIggOx9ZpEraWpVYapKKtSWDLmyzYueFqs5IFUuv8FteoSaIMXvsY7cv+/OxbFIJPU086Tofj1OIbEyyXXaCNOwzGKbnJ/dweGWTaXP4FpfR/fYRPxzGnk3vH1BbBXdWoU+ND03/3Z2AJrZCkSukFByEZQi4zZ3TirBTmOH+XCnP+Snq08ENUanqfvj4qs8H7fZkohIxtzKOzNS8wOMCIounp+lxHm1x3jNQwkePqqDvHr28yEtMKp1IHmqjJBu0YxOFjbLtCyVyusjx0C2cv01M+bH9P8MyZA0u9VvGk3UWdzUG5a5p0L1IbdVYYADX+uSCVLJuN+zsU3nvUy5Q7EyIS8hN/mVqF/n7ZaJ/23OZP/6QMae7ZKwaxHqDpIv2ghTe03vnHj7DahTPJoByRIlfMe7Av0EMMDp+CaR3FCfFR7dL3gmqDgZTRjVNqRKDL3Eain1ui8DePUpPEljPVfo2UuUeIWx7CEMR2GfIkCMQn/qbxlTcMKRyH4+gAv9NUQe8wbNde83y2UZfG2r5
- mHK/xucK
- 6n6nUWi6bgfQpWY8sECkUt6GXFunIi7dE9UD9bxJaVw5FG67kiktkH+0be1Q6HnSHdjmFUwj0zxG6s56DORnaW0YbaqADBGzyTyFKRV0u3x3fpNKmfzv7aAXL3o97wLxFp4GzsiysEDuU/dB83F1MY/jwekdVkc2fXd8zll+WeOzEhd2gJi+QPvpw7exmUf3JOo0+6RZANR4aeNpt77hzFtIuO1c0tOteBE4UE7StgsZAtHI=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1755248180-870808
+X-HE-Meta: U2FsdGVkX18xnhW48P3SRNB9+nOp1r9+P1ml0wbvSKXgWn+CNA5KblvJCq5QJ86UGVgFJkiUbIVuiYgJ/vbqJIcK11g9Ui2XfvFfSSpcv3f3rYDHG11PAQYoLprIg9IyLQIvaR+O3Fl6YbhvJmGtD9dtUMZI0r5zryZkv//b4Al/hBMzrIW9ELCmLC2i0HV1XJc8Yty9AU2GpQ8NR1WKId0wxjVOHZDYJjgQVd54ooexEpvQEcY/TvT6f5affX6legKxQlsd87olx4nICBg/t5Lr45NkPCmdWgcP/U6RJNXXSKCCZtCrYqIMcP4nsiXxq+tm8jIeCq6d1y6xXxVlj/WETtPkvGF4+mEVqes1jqKSrX6fw7rKDUcxcifijqfzWT549EjRmT3nPrSZCKbWPtruF24B8i8CoAExHCnOj/G5QKJDpRFNxcwtGoNCt96GAzl64uh+5iokLx05z2nXcSkUnues9uX6y2C3p5fMMW6jNTkPCkhZJqoIMXu56K/tmLg4vYN/JsgpvM6Dob5etUzNaaLK/g5G9KsYsm4YFIcqZbCrS9GWdVt2M7OUqfkJ9/UA7KvUIGwdiu0QkqLY6DaDeLqBtgWiWnisI0MCSgG7VRnfIfYDXobBC1myudL59dtvbup78qN2j87j8qCxyq7pMa1G+OyJ3kpNa2/PvYRCyP3JBfgyjDiHkdrhpjjxnE/wxTpvJ7w7wr1DL63R85Y+i8wUskU+P9+sa+fUDGWzBge7BXWMc2cveYk/80f7zohH9IQccnLtG0COJOoERASr4CYKel2rkAEw06f4DhcyrwJ0xJxt1+gENOYDKhH46t4ljIY39nUAlN1rx5H5WA52B1foFkrISW9jg03eSkCABgUHhkMTnJOzmUVCCtd2f9DSCkrp+DZZj/k3NZdfREiHjip9pZmV+U3GmgwMDiR/nn9tR6AzAD11+7/5F6ajP93d9yTaGAnmlTdf0Nd
+ 86hLIdqv
+ j+RMg4+8z3P8px/aS1AxIx3NO+pQ8GIy7ya51jTzycV5CzTP8oaYxYVAd6TGiBELfnubaMhupPW+n7OJTeC7sL5pr1gtEzTHQQir880X68rb0D3djVrhLWrv9nP/2ErGYIWpc1C4B8srJZUfsxp8sRnmvqAZBqbNlyIrpT9tJlCu+/Vawz9DTIHpF5jXnRg20Fr0cSSFZC11+3BuNMKZ4aL4GpTFxVIlZbHCN3G2iWFTlIgs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,184 +108,215 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kernel_pgtables_set_pkey() allows setting the pkey of all page table
-pages in swapper_pg_dir, recursively. This will be needed by
-kpkeys_hardened_pgtables, as it relies on all PTPs being mapped with
-a non-default pkey. Those initial kernel page tables cannot
-practically be assigned a non-default pkey right when they are
-allocated, so mutating them during (early) boot is required.
+kpkeys_hardened_pgtables is a hardening feature based on kpkeys. It
+aims to prevent the corruption of page tables by: 1. mapping all
+page table pages, both kernel and user, with a privileged pkey
+(KPKEYS_PKEY_PGTABLES), and 2. granting write access to that pkey
+only when running at a higher kpkeys level (KPKEYS_LVL_PGTABLES).
+
+The feature is exposed as CONFIG_KPKEYS_HARDENED_PGTABLES; it
+requires explicit architecture opt-in by selecting
+ARCH_HAS_KPKEYS_HARDENED_PGTABLES, since much of the page table
+handling is arch-specific.
+
+This patch introduces an API to modify the PTPs' pkey. Because this
+API is going to be called from low-level pgtable helpers, it must
+be inactive on boot and explicitly switched on if and when kpkeys
+become available. A static key is used for that purpose; it is the
+responsibility of each architecture supporting
+kpkeys_hardened_pgtables to call kpkeys_hardened_pgtables_enable()
+as early as possible to switch on that static key. The initial
+kernel page tables are also walked to set their pkey, since they
+have already been allocated at that point.
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- include/linux/mm.h |   2 +
- mm/memory.c        | 137 +++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 139 insertions(+)
+ include/asm-generic/kpkeys.h  |  4 +++
+ include/linux/kpkeys.h        | 46 ++++++++++++++++++++++++++++++++++-
+ mm/Kconfig                    |  3 +++
+ mm/Makefile                   |  1 +
+ mm/kpkeys_hardened_pgtables.c | 44 +++++++++++++++++++++++++++++++++
+ security/Kconfig.hardening    | 12 +++++++++
+ 6 files changed, 109 insertions(+), 1 deletion(-)
+ create mode 100644 mm/kpkeys_hardened_pgtables.c
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 1ae97a0b8ec7..f4dd96f3db91 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4134,6 +4134,8 @@ int arch_get_shadow_stack_status(struct task_struct *t, unsigned long __user *st
- int arch_set_shadow_stack_status(struct task_struct *t, unsigned long status);
- int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
+diff --git a/include/asm-generic/kpkeys.h b/include/asm-generic/kpkeys.h
+index ab819f157d6a..cec92334a9f3 100644
+--- a/include/asm-generic/kpkeys.h
++++ b/include/asm-generic/kpkeys.h
+@@ -2,6 +2,10 @@
+ #ifndef __ASM_GENERIC_KPKEYS_H
+ #define __ASM_GENERIC_KPKEYS_H
  
-+int kernel_pgtables_set_pkey(int pkey);
++#ifndef KPKEYS_PKEY_PGTABLES
++#define KPKEYS_PKEY_PGTABLES	1
++#endif
 +
+ #ifndef KPKEYS_PKEY_DEFAULT
+ #define KPKEYS_PKEY_DEFAULT	0
+ #endif
+diff --git a/include/linux/kpkeys.h b/include/linux/kpkeys.h
+index faa6e2615798..5f4b096374ba 100644
+--- a/include/linux/kpkeys.h
++++ b/include/linux/kpkeys.h
+@@ -4,11 +4,15 @@
  
- /*
-  * mseal of userspace process's system mappings.
-diff --git a/mm/memory.c b/mm/memory.c
-index 0ba4f6b71847..4f144abf5fc3 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -75,6 +75,8 @@
- #include <linux/ptrace.h>
- #include <linux/vmalloc.h>
- #include <linux/sched/sysctl.h>
+ #include <linux/bug.h>
+ #include <linux/cleanup.h>
++#include <linux/jump_label.h>
++
++struct folio;
+ 
+ #define KPKEYS_LVL_DEFAULT	0
++#define KPKEYS_LVL_PGTABLES	1
+ 
+ #define KPKEYS_LVL_MIN		KPKEYS_LVL_DEFAULT
+-#define KPKEYS_LVL_MAX		KPKEYS_LVL_DEFAULT
++#define KPKEYS_LVL_MAX		KPKEYS_LVL_PGTABLES
+ 
+ #define __KPKEYS_GUARD(name, set_level, restore_pkey_reg, set_arg, ...)	\
+ 	__DEFINE_CLASS_IS_CONDITIONAL(name, false);			\
+@@ -110,4 +114,44 @@ static inline bool arch_kpkeys_enabled(void)
+ 
+ #endif /* CONFIG_ARCH_HAS_KPKEYS */
+ 
++#ifdef CONFIG_KPKEYS_HARDENED_PGTABLES
++
++DECLARE_STATIC_KEY_FALSE(kpkeys_hardened_pgtables_key);
++
++static inline bool kpkeys_hardened_pgtables_enabled(void)
++{
++	return static_branch_unlikely(&kpkeys_hardened_pgtables_key);
++}
++
++int kpkeys_protect_pgtable_memory(struct folio *folio);
++int kpkeys_unprotect_pgtable_memory(struct folio *folio);
++
++/*
++ * Enables kpkeys_hardened_pgtables and switches existing kernel page tables to
++ * a privileged pkey (KPKEYS_PKEY_PGTABLES).
++ *
++ * Should be called as early as possible by architecture code, after (k)pkeys
++ * are initialised and before any user task is spawned.
++ */
++void kpkeys_hardened_pgtables_enable(void);
++
++#else /* CONFIG_KPKEYS_HARDENED_PGTABLES */
++
++static inline bool kpkeys_hardened_pgtables_enabled(void)
++{
++	return false;
++}
++
++static inline int kpkeys_protect_pgtable_memory(struct folio *folio)
++{
++	return 0;
++}
++static inline int kpkeys_unprotect_pgtable_memory(struct folio *folio)
++{
++	return 0;
++}
++static inline void kpkeys_hardened_pgtables_enable(void) {}
++
++#endif /* CONFIG_KPKEYS_HARDENED_PGTABLES */
++
+ #endif /* _LINUX_KPKEYS_H */
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 90f2e5c381a6..e34edf5c41e7 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -1175,6 +1175,9 @@ config ARCH_HAS_PKEYS
+ 	bool
+ config ARCH_HAS_KPKEYS
+ 	bool
++# ARCH_HAS_KPKEYS must be selected when selecting this option
++config ARCH_HAS_KPKEYS_HARDENED_PGTABLES
++	bool
+ 
+ config ARCH_USES_PG_ARCH_2
+ 	bool
+diff --git a/mm/Makefile b/mm/Makefile
+index ef54aa615d9d..10848df0ca85 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -147,3 +147,4 @@ obj-$(CONFIG_SHRINKER_DEBUG) += shrinker_debug.o
+ obj-$(CONFIG_EXECMEM) += execmem.o
+ obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
+ obj-$(CONFIG_PT_RECLAIM) += pt_reclaim.o
++obj-$(CONFIG_KPKEYS_HARDENED_PGTABLES) += kpkeys_hardened_pgtables.o
+diff --git a/mm/kpkeys_hardened_pgtables.c b/mm/kpkeys_hardened_pgtables.c
+new file mode 100644
+index 000000000000..931fa97bc8a7
+--- /dev/null
++++ b/mm/kpkeys_hardened_pgtables.c
+@@ -0,0 +1,44 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <linux/mm.h>
 +#include <linux/kpkeys.h>
 +#include <linux/set_memory.h>
- 
- #include <trace/events/kmem.h>
- 
-@@ -7183,3 +7185,138 @@ void vma_pgtable_walk_end(struct vm_area_struct *vma)
- 	if (is_vm_hugetlb_page(vma))
- 		hugetlb_vma_unlock_read(vma);
- }
 +
-+static int __init set_page_pkey(void *p, int pkey)
++DEFINE_STATIC_KEY_FALSE(kpkeys_hardened_pgtables_key);
++
++int kpkeys_protect_pgtable_memory(struct folio *folio)
 +{
-+	unsigned long addr = (unsigned long)p;
++	unsigned long addr = (unsigned long)folio_address(folio);
++	unsigned int order = folio_order(folio);
++	int ret = 0;
 +
-+	/*
-+	 * swapper_pg_dir itself will be made read-only by mark_rodata_ro()
-+	 * so there is no point in changing its pkey.
-+	 */
-+	if (p == swapper_pg_dir)
-+		return 0;
++	if (kpkeys_hardened_pgtables_enabled())
++		ret = set_memory_pkey(addr, 1 << order, KPKEYS_PKEY_PGTABLES);
 +
-+	return set_memory_pkey(addr, 1, pkey);
++	WARN_ON(ret);
++	return ret;
 +}
 +
-+static int __init set_pkey_pte(pmd_t *pmd, int pkey)
++int kpkeys_unprotect_pgtable_memory(struct folio *folio)
 +{
-+	pte_t *pte;
-+	int err;
++	unsigned long addr = (unsigned long)folio_address(folio);
++	unsigned int order = folio_order(folio);
++	int ret = 0;
 +
-+	pte = pte_offset_kernel(pmd, 0);
-+	err = set_page_pkey(pte, pkey);
++	if (kpkeys_hardened_pgtables_enabled())
++		ret = set_memory_pkey(addr, 1 << order, KPKEYS_PKEY_DEFAULT);
 +
-+	return err;
++	WARN_ON(ret);
++	return ret;
 +}
 +
-+static int __init set_pkey_pmd(pud_t *pud, int pkey)
++void __init kpkeys_hardened_pgtables_enable(void)
 +{
-+	pmd_t *pmd;
-+	int i, err = 0;
-+
-+	pmd = pmd_offset(pud, 0);
-+
-+	err = set_page_pkey(pmd, pkey);
-+	if (err)
-+		return err;
-+
-+	for (i = 0; i < PTRS_PER_PMD; i++) {
-+		if (pmd_none(pmd[i]) || pmd_bad(pmd[i]) || pmd_leaf(pmd[i]))
-+			continue;
-+		err = set_pkey_pte(&pmd[i], pkey);
-+		if (err)
-+			break;
-+	}
-+
-+	return err;
-+}
-+
-+static int __init set_pkey_pud(p4d_t *p4d, int pkey)
-+{
-+	pud_t *pud;
-+	int i, err = 0;
-+
-+	if (mm_pmd_folded(&init_mm))
-+		return set_pkey_pmd((pud_t *)p4d, pkey);
-+
-+	pud = pud_offset(p4d, 0);
-+
-+	err = set_page_pkey(pud, pkey);
-+	if (err)
-+		return err;
-+
-+	for (i = 0; i < PTRS_PER_PUD; i++) {
-+		if (pud_none(pud[i]) || pud_bad(pud[i]) || pud_leaf(pud[i]))
-+			continue;
-+		err = set_pkey_pmd(&pud[i], pkey);
-+		if (err)
-+			break;
-+	}
-+
-+	return err;
-+}
-+
-+static int __init set_pkey_p4d(pgd_t *pgd, int pkey)
-+{
-+	p4d_t *p4d;
-+	int i, err = 0;
-+
-+	if (mm_pud_folded(&init_mm))
-+		return set_pkey_pud((p4d_t *)pgd, pkey);
-+
-+	p4d = p4d_offset(pgd, 0);
-+
-+	err = set_page_pkey(p4d, pkey);
-+	if (err)
-+		return err;
-+
-+	for (i = 0; i < PTRS_PER_P4D; i++) {
-+		if (p4d_none(p4d[i]) || p4d_bad(p4d[i]) || p4d_leaf(p4d[i]))
-+			continue;
-+		err = set_pkey_pud(&p4d[i], pkey);
-+		if (err)
-+			break;
-+	}
-+
-+	return err;
-+}
-+
-+/**
-+ * kernel_pgtables_set_pkey - set pkey for all kernel page table pages
-+ * @pkey: pkey to set the page table pages to
-+ *
-+ * Walks swapper_pg_dir setting the protection key of every page table page (at
-+ * all levels) to @pkey. swapper_pg_dir itself is left untouched as it is
-+ * expected to be mapped read-only by mark_rodata_ro().
-+ *
-+ * No-op if the architecture does not support kpkeys.
-+ */
-+int __init kernel_pgtables_set_pkey(int pkey)
-+{
-+	pgd_t *pgd = swapper_pg_dir;
-+	int i, err = 0;
++	int ret;
 +
 +	if (!arch_kpkeys_enabled())
-+		return 0;
++		return;
 +
-+	spin_lock(&init_mm.page_table_lock);
-+
-+	if (mm_p4d_folded(&init_mm)) {
-+		err = set_pkey_p4d(pgd, pkey);
-+		goto out;
-+	}
-+
-+	for (i = 0; i < PTRS_PER_PGD; i++) {
-+		if (pgd_none(pgd[i]) || pgd_bad(pgd[i]) || pgd_leaf(pgd[i]))
-+			continue;
-+		err = set_pkey_p4d(&pgd[i], pkey);
-+		if (err)
-+			break;
-+	}
-+
-+out:
-+	spin_unlock(&init_mm.page_table_lock);
-+	return err;
++	static_branch_enable(&kpkeys_hardened_pgtables_key);
++	ret = kernel_pgtables_set_pkey(KPKEYS_PKEY_PGTABLES);
++	WARN_ON(ret);
 +}
+diff --git a/security/Kconfig.hardening b/security/Kconfig.hardening
+index b9a5bc3430aa..41b7530530b7 100644
+--- a/security/Kconfig.hardening
++++ b/security/Kconfig.hardening
+@@ -265,6 +265,18 @@ config BUG_ON_DATA_CORRUPTION
+ 
+ 	  If unsure, say N.
+ 
++config KPKEYS_HARDENED_PGTABLES
++	bool "Harden page tables using kernel pkeys"
++	depends on ARCH_HAS_KPKEYS_HARDENED_PGTABLES
++	help
++	  This option makes all page tables mostly read-only by
++	  allocating them with a non-default protection key (pkey) and
++	  only enabling write access to that pkey in routines that are
++	  expected to write to page table entries.
++
++	  This option has no effect if the system does not support
++	  kernel pkeys.
++
+ endmenu
+ 
+ config CC_HAS_RANDSTRUCT
 -- 
 2.47.0
 
