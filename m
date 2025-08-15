@@ -2,82 +2,92 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 14520CA0ED1
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 23:13:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5848ACA0EE4
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 23:31:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8268E8E021C; Fri, 15 Aug 2025 19:13:14 -0400 (EDT)
+	id A71ED8E021D; Fri, 15 Aug 2025 19:31:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78A878E020B; Fri, 15 Aug 2025 19:13:14 -0400 (EDT)
+	id A229B8E020B; Fri, 15 Aug 2025 19:31:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 678C68E021C; Fri, 15 Aug 2025 19:13:14 -0400 (EDT)
+	id 95FFE8E021D; Fri, 15 Aug 2025 19:31:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 534608E020B
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 19:13:14 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0E351117460
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:13:14 +0000 (UTC)
-X-FDA: 83780544708.17.70A701E
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 0A1271C0002
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:13:11 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=T0CNXYot;
-	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 853D58E020B
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 19:31:46 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 05DC9C02F7
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:31:46 +0000 (UTC)
+X-FDA: 83780591412.29.A447D4D
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 38B214000C
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:31:43 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vUalADxH;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755300704; a=rsa-sha256;
+	cv=none;
+	b=HpvpFMzBzkkt5uNyP3fM4mjMsJ8Zitm+K8DMtoY0NGAq7p8EDmmLk3qrZgPsGsZSjwJ1yS
+	P0dp4RJ6z7NUUO02MX5y23qUIg569FtDTLaeUowtHlnFd0VmHZK2hSSfW2IciSj5JFlKkO
+	SDY7yIwTT0CJ/4lGZfj1cmR4xmxLkGM=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vUalADxH;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755299592;
+	s=arc-20220608; t=1755300704;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BxM4nv7eHd9SuH5ros1aBkbmXIdblLOqlo44TIn88VI=;
-	b=AUDMGPfOG8WAa6kkq1M4/ijMrLzIIQChid/pOAdBL8njNhN5CGl3qhGL+2ffV/VIIfchOg
-	bgp9aeZP4Kfb90mCeF34SV/qFpnOCztctyVhXAWyPaLamJpj7xLtDHmO2Wnkep7JbdUYbb
-	iim3LKvkdysIDmeCz162e7NfgYR0SvU=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=T0CNXYot;
-	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755299592; a=rsa-sha256;
-	cv=none;
-	b=i3s4Ib8BCPKrgH2OEX0RKS6C/ZjWxvA3GZ/X0VA8N4pTFsNpdvhAqBhY1QHeWRHjlIjE/3
-	a7JNNWdKmmD1hTZ5akwcaNrnAgyeyS3P1hwdV3l8UkUecibElFQJNG2PrJr5DtGy6G6Wka
-	GfCsSgFJRxlthVEXmWGF0Eaz/f7qG8o=
-Date: Fri, 15 Aug 2025 16:13:00 -0700
+	bh=8mWAMiGacIPdo/U9tWrZ4G95PCsJeEqc6aHk78b6x74=;
+	b=TkqYZcqLn91HqNjK2dt/XPMnFc7es9B7N65bgG8mxk9CTs9i9J743EXt7/Yql0xTDfLkvs
+	+3TbmvW+8pmOjkrp+HlNLlcyHbUWd+l5UXzFYj7PdfmN+zfL6yyIfJkwx5LdP6QYPWc2RT
+	miZpGhRdy5lgp2ldMC5f2JoLNXvkQr8=
+Date: Fri, 15 Aug 2025 16:31:27 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755299589;
+	t=1755300701;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BxM4nv7eHd9SuH5ros1aBkbmXIdblLOqlo44TIn88VI=;
-	b=T0CNXYoth9mLqTfFPM/Rn13mKGw2USAyatawX6LT3DYDqjfVxRg7exGcvzKhNTH0lOq9Vn
-	+aamORjVx3GYUlKkfhq/FZ2okstmDVIDDb/X7QH6YmrRGOejvRByAehLmO/SjOGFBULwco
-	0onk0x04unL9ucdTRJp0qNiZiPGLYmM=
+	bh=8mWAMiGacIPdo/U9tWrZ4G95PCsJeEqc6aHk78b6x74=;
+	b=vUalADxHq4n5TJyKV8RytL6pshWYqmbgSJ52T0tz2UYUci8EEBIB85xnniIlNi5ddQLAR7
+	ucGIjd839HqjVorE6RTr1GxfMme8r59DDlekkpWP/EcvAs2oI7tWmFQdBFW5MpBXbUHFK4
+	+Rh2quaCh0LQ46ltOhdBynDEnItymNI=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Yu Zhao <yuzhao@google.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: mark MGLRU as maintained
-Message-ID: <7a46f7jwlwgkbdjvbxjaalrrdamgtxkptmytllhkr2qv4ovbge@nbugfzavwh5w>
-References: <20250815215914.3671925-1-axelrasmussen@google.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, Matthieu Baerts <matttbe@kernel.org>, 
+	Mat Martineau <martineau@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Tejun Heo <tj@kernel.org>, Simon Horman <horms@kernel.org>, 
+	Geliang Tang <geliang@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Mina Almasry <almasrymina@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v5 net-next 01/10] mptcp: Fix up subflow's memcg when
+ CONFIG_SOCK_CGROUP_DATA=n.
+Message-ID: <3x5m5rvbvtnta6lqyyx6k3uew4zhg5nxt2wmadkpi5t6tlsko6@peltw6axwvkg>
+References: <20250815201712.1745332-1-kuniyu@google.com>
+ <20250815201712.1745332-2-kuniyu@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250815215914.3671925-1-axelrasmussen@google.com>
+In-Reply-To: <20250815201712.1745332-2-kuniyu@google.com>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0A1271C0002
-X-Stat-Signature: yjxbkybysomhsfsoj81kap6gmmgtkrj8
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1755299591-149326
-X-HE-Meta: U2FsdGVkX1+20J27HHscPvMeK245QxHDfZBaQjvCoJYAd/SCsfaPC1GRBwb9OUSCTqC1694tKfGyhy+O/7efBXb8XEsYGzzEkrp5ecuOFFTLOGx+DErppDDV694T8AGviDv0xx/3SLsl3jdSjNtbLv3u0q0eHCvAf9DYCYY2OxZqsecofxbBBfj2sK1AMJOwx1DYNkihUV/Nr2fSZyEUqWqnWMzuOWuEa4iDQgU9r3cQ3AkzuthB7inEZwPtx6tB+fTF92ql2FNCI6ufQ6DB4kVNtO0xJ7T78QOB1kLrpzgyjnL5NeJYw3+OQDEtU3mRScfakpfK3+/OZrPsvN+p0Aa/BMIUbyOepKDrpYdwh6PqId3ZyOlmdWYTxJAjW/2+KUs0J6l9qapVlQkU/GTOVIcj+QgtQxtBtgUAqM9cii5jEyhqoWaZmnAcARXZOQXPFecxdidBOsfp93K0WsmbX37ZBoJINrGyV+BsTtEXRe9NVrvuNMxSp19mOO5QCmpNK/TuVjye+eZgP8I2c17I0TM8Z5a8mYV854QtIcIIPpllJjqa9J2HHiJk0B/GYUZevdc8gFO8exxA7ttS/yYvzGwB7S0g3MXaDrR4nqBIMqYf4esr0GVMZMKbMnypbfCgM9xc8v43tz1mx5MIviZ2AKYPlavD24AKEFmpbeTU2g00Tg771Qg1yC22ciRJBNm7U2Fn/azyXVgjqxOJ2D152dmyMpD2U9dPpsFYUBxSoYZojVRpQV7OxfLUkv87d7PZFO6AN8MqvjX3t5VmnUrh7Df+DL/JBxJofHOhgZeFmXfITH2bLIpFTmToa6LXUPhQd680yD9nU1mRB5Sm9hNkTmsSm0tUm0gPBmrxk6/KYwTFJI/bKFEUFwGL3xYGTClGA2Zoc351jRn11QPEket8E47Y6RS7lKt6UyGG4F9A/GFTavDS7Ulvf3YjCan6Hidfl0V18d8XPVTEX3+HU1o
- u8iv/TOK
- ZyDI7YT0lGV/S5Q5osAyF8EA2TyFliUAOpkLrQtOTk40Z6WSEu4QsN3f0I6aVCdqxwMCO9pzh1S+DdyTXlolkgVpuWrVU/sNKC4RMEqdk6qiQOkwGqkU6IB2Lx8yptu3+MXhB8WlfSC4+ezUUxLU/qAwQr+0ZKq3+olH3mbOBKCCofS+IUxLoR7yFbL2GcKZvGYf+VpF3PEhU6wj+UYhRZd7zxNdBCRZqvBjMXJIURSSzhGQgGs/EaAOTYKqWe8EPW+xPuNYcQsBCgLoDN5t93uJNgFZtWlHFrYHWRY5ZfFCi8qun0nipfP6gwYc9MDp1RrCEypZncR2cvSN6YqGYzIraJpu+/DrnXNRezdvKIta4BM/1nLRbhmLiF7DWn4IN0nNzmPQLRdYy1hyTp2mvk2vJlYUq0DTqMF+G
+X-Rspamd-Queue-Id: 38B214000C
+X-Stat-Signature: 4yowbcgsmnae1zujuf6eaxfn99sp9ikz
+X-HE-Tag: 1755300703-797190
+X-HE-Meta: U2FsdGVkX19DKgPdH+pF3MGrLu79ipdJangTIGN+Qc72/O4iOt2wrEl13ojJ1hP5fP9sZdBqlDS5y0H6wHz3U/uauFq7wKmFxiZzOg1+kInZRjWs3bfpbge0XGruZl2B+0OwXxRM0dbCYwGFYGf3OH3MyZdzwoEQMKY+oIrhcEKwn0Apvkrze14OpI+s9SWKEFFuLvDqhJVrD3j/csbmGPKTbOovFgwcuB/8LzHRokfh9w2BuxHNpAVCAfyesHRhLZ6pj2DzQm8t8hb6pdq0b+SMamcIENXGdQEvVqEjT02S0z95J5VHkOdeTIBd9B5mT7NNM+LOUnCW24fJ2H3FiNjuEhYulQ8DGrMsSp/l8s1dyLRlMCdhMZEsS5fDP9hgU8+uxOh/VTpTG7sqous0oZZur/c+D3apsoxPwlQZyDuhWk6alDxjeTaxM9rM2jVp+HXKUU5vLM513yGilgO1HzECmwkQaw+7jT4Y3PBtnq8D72d18b7j14j2huAcL1OXbfTW3OIEWKdiVANQgsPwmCRv3kwp5GGnVUl9JWqgThpdR+5CljGMVlZt0UrCVilPtF7SRyvbDzkaWibTkLhftVo+dlbve7xP+rPUD7BWuEuS4dDTKCHnmaLh/381dt2oGSkamp8q6YnUk9p062b8zVSpDHHAzLincm0/3JBGKvjOiS3Z9yh7eiKe5OLcSbUZiR7u7Ksf0Gef297M8D8V7oCBToM0o+YiK6aHYQOsQy7SWFsc5SBcY7W6XjBTIMBe/U5iqyeVEWDPSc71zHx09UDCH0Cm+VjsAIb8TdrOGN1NTycXS8fDWvB5ylO4O4k89HPpryNvyE2ifLjGH2jEUlkWkkcwnVWsqo2D/VqeDzjf6qKqet8VPb0++GTmNxZ4kq01GqKSDrQtEeck3ouR4CbdI9nieoqpTK2YEcVT3SZpPbyGKRYkCBbWQntGIapPyq/2Eca/w3nLmJSE2Kk
+ 3+9MJTUP
+ 6cK9EZnjnmfgWfU0VVA+NnVCUpFwNqs1jDPUxiU6Yt3EeRbLrsp69+PRlReFvsNsY19D7F8cVOOLPzF03JAHQbZhdAjOuVG1TT0yQNqATcl41Py9LYnQ6y01Js0h0JB5B9nEArnAjokEQVIFRohU1k4uT8VmuiKK78ka7ZEJ6IrDLmgnEqJUML6Dd6zSrpnoXLo27aAafP9ChbIit5dCxwuO189DzdrMP8miGy/90UliKmx1TkR90MmLzegGoCLwT+Z1ymgSGoA/6V9OpevkxEepJHBPD8iO73SDfhgd7QTk19fE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -86,53 +96,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 15, 2025 at 02:59:14PM -0700, Axel Rasmussen wrote:
-> The three folks being added here are actively working on MGLRU within
-> Google, so we can review patches for this feature and plan to contribute
-> some improvements / extensions to it on an ongoing basis.
+On Fri, Aug 15, 2025 at 08:16:09PM +0000, Kuniyuki Iwashima wrote:
+> When sk_alloc() allocates a socket, mem_cgroup_sk_alloc() sets
+> sk->sk_memcg based on the current task.
 > 
-> With three of us we may have some hope filling Yu Zhao's shoes, since he
-> has moved on to other projects these days.
+> MPTCP subflow socket creation is triggered from userspace or
+> an in-kernel worker.
 > 
-> Signed-off-by: Axel Rasmussen <axelrasmussen@google.com>
-> ---
->  MAINTAINERS | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
+> In the latter case, sk->sk_memcg is not what we want.  So, we fix
+> it up from the parent socket's sk->sk_memcg in mptcp_attach_cgroup().
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index daf520a13bdf..8e987f2668cd 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16058,6 +16058,23 @@ F:	mm/mempolicy.c
->  F:	mm/migrate.c
->  F:	mm/migrate_device.c
->  
-> +MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)
+> Although the code is placed under #ifdef CONFIG_MEMCG, it is buried
+> under #ifdef CONFIG_SOCK_CGROUP_DATA.
+> 
+> The two configs are orthogonal.  If CONFIG_MEMCG is enabled without
+> CONFIG_SOCK_CGROUP_DATA, the subflow's memory usage is not charged
+> correctly.
+> 
+> Let's move the code out of the wrong ifdef guard.
+> 
+> Note that sk->sk_memcg is freed in sk_prot_free() and the parent
+> sk holds the refcnt of memcg->css here, so we don't need to use
+> css_tryget().
+> 
+> Fixes: 3764b0c5651e3 ("mptcp: attach subflow socket to parent cgroup")
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> Reviewed-by: Eric Dumazet <edumazet@google.com>
+> Acked-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-Why not just add yourselves (and the missing files) to the existing
-reclaim section? Eventually we want a single reclaim solution, so why
-not start with single reviewer section?
-
-> +M:	Andrew Morton <akpm@linux-foundation.org>
-> +M:	Axel Rasmussen <axelrasmussen@google.com>
-> +M:	Yuanchu Xie <yuanchu@google.com>
-> +R:	Wei Xu <weixugc@google.com>
-> +L:	linux-mm@kvack.org
-> +S:	Maintained
-> +W:	http://www.linux-mm.org
-> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> +F:	Documentation/admin-guide/mm/multigen_lru.rst
-> +F:	Documentation/mm/multigen_lru.rst
-> +F:	include/linux/mm_inline.h
-> +F:	include/linux/mmzone.h
-> +F:	mm/swap.c
-> +F:	mm/vmscan.c
-> +F:	mm/workingset.c
-> +
->  MEMORY MANAGEMENT - MISC
->  M:	Andrew Morton <akpm@linux-foundation.org>
->  M:	David Hildenbrand <david@redhat.com>
-> -- 
-> 2.51.0.rc1.163.g2494970778-goog
-> 
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
