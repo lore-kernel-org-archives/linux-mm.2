@@ -2,99 +2,83 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 060E5CA0ED1
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 21:59:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FA17CA0ED1
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 22:12:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5FA928E0215; Fri, 15 Aug 2025 17:59:25 -0400 (EDT)
+	id 6DBAF6B019F; Fri, 15 Aug 2025 18:12:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D2178E020B; Fri, 15 Aug 2025 17:59:25 -0400 (EDT)
+	id 68BB66B01A0; Fri, 15 Aug 2025 18:12:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50EE98E0215; Fri, 15 Aug 2025 17:59:25 -0400 (EDT)
+	id 5A2216B01A1; Fri, 15 Aug 2025 18:12:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BF458E020B
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 17:59:25 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id ABF49584C7
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 21:59:24 +0000 (UTC)
-X-FDA: 83780358648.27.6ECEE2D
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	by imf28.hostedemail.com (Postfix) with ESMTP id F3B0FC0008
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 21:59:22 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=yLaVzIhm;
-	spf=pass (imf28.hostedemail.com: domain of 3ua2faA0KCN4AXELRASMUSSENGOOGLE.COMLINUX-MMKVACK.ORG@flex--axelrasmussen.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3ua2faA0KCN4AXELRASMUSSENGOOGLE.COMLINUX-MMKVACK.ORG@flex--axelrasmussen.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 465A66B019F
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 18:12:49 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D4DAD1A02C4
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 22:12:48 +0000 (UTC)
+X-FDA: 83780392416.22.709C6D8
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf17.hostedemail.com (Postfix) with ESMTP id EBC5440007
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 22:12:46 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JxjxCkJg;
+	spf=pass (imf17.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755295163;
+	s=arc-20220608; t=1755295967;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=DeW1hinUZFH5xo0Pcsfyi8Qr/5QxONJwH9+uEctWdNE=;
-	b=0YfJuergWcxaBB2Pu5/PnxZ0uqGQbLsfIl0ysVP27kXxxv/LciM2aN62KX5Y6/e+UMJL7n
-	xmqVALhEsRRVpwbmdLa/pW46EWZviseptYtbrul7EQHsEflG9+I1jK6ilM92VLPNAM4GUK
-	fHQO+76rPhtnSDMSgoum0W9RgWpmHaI=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7aMzF7zLYEW4cbiDJEQWA8qoxDxBNLq3HfkBAC7ZA/4=;
+	b=7+PZgtOqx83LhIpMLCFkkgcCu50Y12NUyimxshXyGu7UoQheazfqWpt3SxyKH+D1lyfMe4
+	4paaVPkQYVR+fvwJ6sWYUINtyIT/qbMVuJqE2nwb+vHSAHFVrPrY18eInb6Wbk998BJ6fy
+	gh5hPa2jpg3DCc9LPwtQbcT31cujE94=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=yLaVzIhm;
-	spf=pass (imf28.hostedemail.com: domain of 3ua2faA0KCN4AXELRASMUSSENGOOGLE.COMLINUX-MMKVACK.ORG@flex--axelrasmussen.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3ua2faA0KCN4AXELRASMUSSENGOOGLE.COMLINUX-MMKVACK.ORG@flex--axelrasmussen.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755295163; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JxjxCkJg;
+	spf=pass (imf17.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755295967; a=rsa-sha256;
 	cv=none;
-	b=IKKIV1URm8RwMVoi8aSMazJrPsYQW08mQqD34+XAe06NIESLBDYDDXoOeIPyeYcewExa0G
-	QsSMWlaXl5pIuUTF+rm3G18+H6vdPhkD0JLfJV7QAvqJTf+kQP3B5peBxNVtAXpwGrWrTZ
-	KHSpwgx793NoPBputfgNZb41F3LizSw=
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-323266d8396so2249153a91.0
-        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 14:59:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755295162; x=1755899962; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=DeW1hinUZFH5xo0Pcsfyi8Qr/5QxONJwH9+uEctWdNE=;
-        b=yLaVzIhmuOTYOeNxe27yg3ecEcqf+wTofs2nIox9q/oST0kY4xKOtiBrzlCtBg3diL
-         rWiriq3coRgqo7YcE7XynHeHfh8E9k2iMMJjG661u1F7dPR7oaLqMfskRr97s1N7Ra3B
-         ZM0Hx9W31cRYl1pge/BBBm7ryHZ6tao9/1ov3nOrfcjpopXHUCaTYNeF3QbzaOaaSxkA
-         mEjEO4SJBvcx3rnIDwstvcjn3ZyYPvTMtW5TR0bVRxb1HrVg0odzi5oDw/7vMc67omnr
-         MJ6uRtXPYooFKnLgGaIaNYwEEJ4a7uaHJvSun6XntKwTvjivLgsVat44zIktG/M3YWB5
-         USOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755295162; x=1755899962;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DeW1hinUZFH5xo0Pcsfyi8Qr/5QxONJwH9+uEctWdNE=;
-        b=XltqbmZXTs1zJbn37ndXtHbbFVbvJobf7MZJH0dSVh6m91kwS98abQb6ESj/DY2pP6
-         wOm4ZvSpYNgqUCKNTEyKJ2Lj/OE7Qj9Wk8rlfXbzWZPvD6BGdc4ockvXiDXUVaxqL8+K
-         wVBbJiroGBRlLnvsvwLIAzERX0tOifqQnQ6BYPgyqVVBrUk052J4LGn22PJOkEU/vEZ+
-         HdjW9ccneSzFHLYGZ7+LnhrN/yIjlgPg5gIsRl26Hv6PM272UWFDbCZXlapuTZyipLvc
-         9WlshmICZm3O7cPdJUwBHtLJP1wUN9M7MauEcaS28tavjjy1q3gtHOY7moY4Xc8xcVnK
-         2yDg==
-X-Gm-Message-State: AOJu0YzSdI/KXgiPlcYw0ygUDCH6jM6Z4xcWJUOw+popNC7VdyxdrRQw
-	CUXtmSgqg25ty+RGyGpTG7WRJPlv+VuNwh3Vjdvy11cT+gxtTqhOCSVEsFLIrAtGex6k00jKHJV
-	bi2kKg6XK9E+SUF3AspMPINHsDluAeOYpzg==
-X-Google-Smtp-Source: AGHT+IF7W4Ic4QzDVW1k6cnS1X7CAqCEfRJLNt6vJbRlq09rPQM7OjZfHM6WC0Rg3oYE7E9w+5p83hp6sRXF9TOTaF4m
-X-Received: from pjbli10.prod.google.com ([2002:a17:90b:48ca:b0:321:cc91:ad5d])
- (user=axelrasmussen job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:2808:b0:311:c5d9:2c70 with SMTP id 98e67ed59e1d1-32341ee3103mr5225173a91.15.1755295161789;
- Fri, 15 Aug 2025 14:59:21 -0700 (PDT)
-Date: Fri, 15 Aug 2025 14:59:14 -0700
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.51.0.rc1.163.g2494970778-goog
-Message-ID: <20250815215914.3671925-1-axelrasmussen@google.com>
-Subject: [PATCH] MAINTAINERS: mark MGLRU as maintained
-From: Axel Rasmussen <axelrasmussen@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Yu Zhao <yuzhao@google.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: F3B0FC0008
+	b=Z8Q0/PN7egVNUcLgNkp2VqM7X4jPUJ6PzAcBNftTkBa3NDd1mOznhQP1P8kyNcl9aOIGPP
+	MLOisoFzrJTt6+mU71RiZrSg2ggk5tF/SmWofxsSrVLvBZfcOx0v2Dp8YanGtEGtlN5N9W
+	Or3MbxsTvlN5IVVNhpn+T4rdKZWsfNg=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1755295964;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7aMzF7zLYEW4cbiDJEQWA8qoxDxBNLq3HfkBAC7ZA/4=;
+	b=JxjxCkJg/4qMeRz3ovAU11EoP3v60Ug/FOMSkRBGceB/7zg+O2z3dM32LXse3Lo2wQklPc
+	bDAPS22SJbdrJ3TYHzMEFEPmbaW0/IIeSXBzuOmcmhnEJJQ4LrRanwl9L1THTqw7y2oLnQ
+	HuRnRbu4Qc8pMCQi1u1NDNmPqfzx9OU=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,  "linux-mm@kvack.org"
+ <linux-mm@kvack.org>,  "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>
+Subject: Re: Regression caused by commit 4687fdbb805a ("mm/filemap: Support
+ VM_HUGEPAGE for file mappings")
+In-Reply-To: <aJ-gGXNwOMeLBs0W@casper.infradead.org> (Matthew Wilcox's message
+	of "Fri, 15 Aug 2025 22:01:13 +0100")
+References: <87plcw8lyq.fsf@linux.dev> <aJ-gGXNwOMeLBs0W@casper.infradead.org>
+Date: Fri, 15 Aug 2025 15:12:39 -0700
+Message-ID: <87plcwdyjs.fsf@linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: EBC5440007
+X-Stat-Signature: suawhb9zz4dwqgecqx3z9d4zidpkcfmj
 X-Rspam-User: 
-X-Stat-Signature: wc1d1cimjr33zr3h8xjqgcegttj1ywws
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1755295162-215813
-X-HE-Meta: U2FsdGVkX1/D/HFctDYmoS4bbpJaBo+HyWLm3DLK/MCUpIBfK6H6y3Tp8x7EkH2Uwgs6a1cm6pz4OkigWOIAfzmWo3blVxPwcPOx4pY2NtjiljMikLuD9/Uy5p6V8k4ujN186rMNqmrxgGaKYJhiFVRqyo4l0l8nzP935SBeb1zyuZOHaspNVFUY02q9MD8P7x51lR0z6FoUtLUJrnAK2VDynGxnBHqtXohW6Sp8Q63RXzbOutcuJHSUQw2rYvcIfW/wLRn4VDu2/ZgUELGlgURaLa+zd3eOhEc1pbigDVgl5z8AgmBDVBKV1G80+roBE6IRxzeEoWISk5+flDg7lD8WXUI/piLIsZCkmEhtx4d9oLOr8Sk8JK52/soh4bP0pgTxSL9oXUUnOHNZWze8UN8us5kPoaqr/ALdTwbHXT6SZBs92biMxZoT5G6lbKWEScUzCG31aaM2U8sC4uRask/U8uSeFWlNPgHCk7Zxu3Ok0k4dBEYOroIvLH41dE6tgaRLx/+XkCh6q/ZyvaqmW2gFbwZu4vvvMI/7Dw3vaqd1/yVetZECIqmLX+MYu4vEH6TPbHDqJm8VdhBIDid/gggmFoLC/84tePM5AJme1/BtgzetBSNLAcq5NQ8x5GZRmFxHKct3nYmmAxTHUUb6f4nYKOeHKAAkJAlOQsw6EBr2KGOfNlW4fZKtd75lelJycbdTj/3g+Mmu+5oHGeUmNWAmg23OJucEZlOWYNXDivUCSqSASsqmU63+OFnfqj0hjxj2pKpYRC6wrqgAYRxGdWYF7VWf+ezJSEmBHSAm8dBFGXAai2FhW58KZ7SJKtSqIHbAehSuAIJRd1kGlWS65tky8NJFzT69phNbkvstSgCp9Fn6CZ42daQyk4FUugeAN0XovpjARQhPPhtGuo6xqaYHOgcxpC/ZrBzW5+Zn4OV0aIa1fEWOoUdqx/64mnMTBPO2pufEwS0zQjAM1vc
- PMeEzBG/
- JOkuyh7ksuB2/Y3fPCVQgKx12Y9Sw2xscL1DCOWD/7+qYr3mEqjXHJAjQ5j3HYpWSTtbz/y/mQThg1DUqSEsPcWYnS9EaH6kyRTWLGnkYVYseOUHLlWqpN8qHoRBu+pFdSb3NLkDXug7sHsq+niVWhLEqEQj7E9WekSP2s7DV62v9mVFEewzaqOZQ3D/nwBFszTVCk8hKw9MF1PRDYoZdWipL+G6jws6w8dz9MGZjO9LYvIeppyCjBODvNhsjJhozYECdjsFu2pqqqDuKGqpgZWU0oaiCvo0susGYXOBDNLovpmkZ3GINCozLsU6XqEcS14l4bZHYjlUtjXVtJjRBltg67dNhw9pZjTeqaGEnyq8+otJrBteRs4j9tTEpUxoHYI5weciigg893gPfwwYAkpQbzHzZU0MVjJefsn4F8JaXih6vANUmmM+tZjJibv/0Czqza2GWkJOR2+QH84+Z8qlUKna9Jr9HkZRsW0+udKXlM/OBo6R4D25a1DGnbT/utk3/JZ4gh+GWjdvYWIGy+vQcXolnHFBKZT8hsw6pgXCvzBdKO2vBk6xhmTUnMpadZmz706URuVGeVaBBrnw/Xp7Rk0afLaA9u4K30rNXNO7yIFvCcNkxO20HUzAmBJ2ADZf0iUvnpSuUC6Zc8Co/o0DwllBnIEr9t1bwmC+M7n7BoHsw5sFda5fXEFzjxuNLIc0N7O/6rmZjt4xU9bNqVgSA5MXMHIG2xvPcY4t8gb7GH/sXSB4DJXnz14GHYe9UtWRPBN1f6IhvSyNYVEZlJuDQfC/fLpkpSFpsXbtZvaf/RWcXYcSQIYV2QpxPmal7AscxKfOoSg1cyOqrj/98IyWRy9eyXDA319K4
+X-HE-Tag: 1755295966-919224
+X-HE-Meta: U2FsdGVkX1/fLkgGVedXJHJMAEAQYNz+fAocimx0B0gv2ePuYnV5i4AejDLwPnGcsoW4go1Om4SSaIL884/tEuaEhoTxsG2tS5JX9J0I3FOVBzijCum0+i4fSB2tq2q0fbU/8spEUzqE1R8zwhJ07+hhQjo+BwaJ+6+7VB0cikk8AMqVkXP1mWzQvo7Uy/MFa8DTi20+o/COgeHRSVeL6l0yIYbfBx1Ypp0pgZlmAZHactwBZswUenfc74mzjHA1s+4h9XVBVeDLQfc1+eXlvHhNRpoFANJT4ptkHZv6VnpS9aa/rQBqvcWKWUYJd1MjLMSk1JrqHD1pxSY+MJIV5RucwMBI8YOkYL6AieEyAGPdbr7nYFqDJ+a2qc0V76zsKJoc9+Y5a/WCZRFymLGWiJIwOafbFFrAqA7R9kUg/c2FowhlVCrMUY2e9nC1fTmKU6pxKODUcbbJBpMxYtDUFYs5WvK643rH8mKvDO4S2vIrNVabWRjnVNCU7uSbZuqobhA/CdfLF4QrpI1sTbzyXYqfBnt3/yrFe5qA3kK2VqYY6ajh5CXPs76XVcwM0C9A/gm7y6jrpZZICi1pJwpkcXRZfv1zfbrp2xmGuQhFDsLxcKeJ22+MUk5KI/ccc8wCwoithaOvD+bM6T2JiYe3e+N3ESAWm0zDqBEZLAGN4hsHaHWmuDf7H/JXXS5j50ydqx6n/xri2qb2lG69llKMYl2NrlrAAk/M4Xfgu3cdsaSeh+7iqiX67b+TkQgn0xXQFY/5VnbHwrrTbPULnf0iRBk3tqjNIMHu8jdNVZoHsTMA+lJKebihM6+46Wk/Q3wqss4nN/Vxmmzj6lWCkMej2FJCLm51+acmzDNVCkbrYRnJnjhJdhoX/kXmUl7mbqpWoKta4oRSlq8i1jyLc4QDtKTBONAaCX35JB4ndIPq11ZU8KVvRvyDg5VZaaid+q0Cs/Eo+sGYwipW2LbSekp
+ wkl3DTgF
+ K30Nt2Y7d6OvEtDcd2T7aZzMuAdoeK9+f7RzVBMLHePKvOEH7U0RybeVT3HZ95xEgMLeMNHU+yNd79lNextfoC1xgNA1EvQfmKEWwO7nHm4LsQMTX6XdJCLRZxSPtB1tYCiIhwc38nZ7kwUjBJVNYOkz4/s6ZZwcUZ9AJABPKbI76qszMqnDcXgv/nLScgNi8i12z9P13b80gKDxH9/lgdSN0XkMKVKnyiNmrQzzNsQMecy1UpbPeh2rC3oSxywkii0F/9I2OmNe4jhLDCisPmQe6ZO1ZaOyD7HPOaVEq+wQ8dHoMuVfcPaJv0w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,47 +87,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The three folks being added here are actively working on MGLRU within
-Google, so we can review patches for this feature and plan to contribute
-some improvements / extensions to it on an ongoing basis.
+Matthew Wilcox <willy@infradead.org> writes:
 
-With three of us we may have some hope filling Yu Zhao's shoes, since he
-has moved on to other projects these days.
+> On Fri, Aug 15, 2025 at 11:43:25AM -0700, Roman Gushchin wrote:
+>> The commit 4687fdbb805a ("mm/filemap: Support VM_HUGEPAGE for file
+>> mappings") causes a regression in our production for containers
+>> which are running short on memory. In some cases they are getting
+>> stuck for hours in a vicious reclaim cycle. Reverting this commit
+>> fixes the problem.
+>> 
+>> As I understand, the intention of the commit is to allocate large folios
+>> whenever possible, and the idea is to ignore device-specific readahead
+>> settings and the mmap_miss logic to achieve that, which makes total
+>> sense.
+>> 
+>> However under a heavy memory pressure there must be a mechanism to
+>> revert to order-0 folios, otherwise the memory pressure is inevitable
+>> increased. Maybe mmap_miss heuristics should still be applied? Any other
+>> ideas how to fix it?
+>
+> What's supposed to happen is that we should have logic like:
+>
+>                         if (order > min_order)
+>                                 alloc_gfp |= __GFP_NORETRY | __GFP_NOWARN;
+>
+> so we try a little bit to free memory if we can't allocate an order-9
+> folio immediately, but we shouldn't be retrying for hours.  Maybe
+> that got lost somewhere along the line because I don't see it now.
 
-Signed-off-by: Axel Rasmussen <axelrasmussen@google.com>
----
- MAINTAINERS | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+Yeah, I see it in __filemap_get_folio(), but not in ra_alloc_folio().
+I'll prepare a fix for this.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index daf520a13bdf..8e987f2668cd 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16058,6 +16058,23 @@ F:	mm/mempolicy.c
- F:	mm/migrate.c
- F:	mm/migrate_device.c
+>
+>> Also, a side question: I wonder if it makes sense to allocate 1-2
+>> PMD-sized folios if mapping_large_folio_support() is not there?
+>
+> Um, we don't?
+>
+>         if (!mapping_large_folio_support(mapping) || ra->size < min_ra_size)
+>                 goto fallback;
+
+Sorry, I wasn't clear, I mean we're still allocating 2-4MB of readahead.
+Shouldn't we do something like this instead?
+
+--
+
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 983ba1019674..e5fb9034118d 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3222,7 +3222,8 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
  
-+MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)
-+M:	Andrew Morton <akpm@linux-foundation.org>
-+M:	Axel Rasmussen <axelrasmussen@google.com>
-+M:	Yuanchu Xie <yuanchu@google.com>
-+R:	Wei Xu <weixugc@google.com>
-+L:	linux-mm@kvack.org
-+S:	Maintained
-+W:	http://www.linux-mm.org
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-+F:	Documentation/admin-guide/mm/multigen_lru.rst
-+F:	Documentation/mm/multigen_lru.rst
-+F:	include/linux/mm_inline.h
-+F:	include/linux/mmzone.h
-+F:	mm/swap.c
-+F:	mm/vmscan.c
-+F:	mm/workingset.c
-+
- MEMORY MANAGEMENT - MISC
- M:	Andrew Morton <akpm@linux-foundation.org>
- M:	David Hildenbrand <david@redhat.com>
--- 
-2.51.0.rc1.163.g2494970778-goog
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+        /* Use the readahead code, even if readahead is disabled */
+-       if ((vm_flags & VM_HUGEPAGE) && HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER) {
++       if ((vm_flags & VM_HUGEPAGE) && HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER &&
++           mapping_large_folio_support(mapping)) {
+                fpin = maybe_unlock_mmap_for_io(vmf, fpin);
+                ractl._index &= ~((unsigned long)HPAGE_PMD_NR - 1);
+                ra->size = HPAGE_PMD_NR;
 
 
