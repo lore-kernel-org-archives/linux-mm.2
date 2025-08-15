@@ -2,97 +2,97 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F1AFCA0EE4
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 15:05:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BEABFCA0EE4
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 15:07:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2117090024E; Fri, 15 Aug 2025 11:05:54 -0400 (EDT)
+	id 5C01490024F; Fri, 15 Aug 2025 11:07:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E95C90024B; Fri, 15 Aug 2025 11:05:54 -0400 (EDT)
+	id 5964E90024B; Fri, 15 Aug 2025 11:07:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1013990024E; Fri, 15 Aug 2025 11:05:54 -0400 (EDT)
+	id 4ACA090024F; Fri, 15 Aug 2025 11:07:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id F316690024B
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 11:05:53 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7BA431401C6
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 15:05:53 +0000 (UTC)
-X-FDA: 83779316586.29.81307DD
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7712C40014
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 15:05:51 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=dabbelt-com.20230601.gappssmtp.com header.s=20230601 header.b=rFmjd8NX;
-	spf=pass (imf12.hostedemail.com: domain of palmer@dabbelt.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=palmer@dabbelt.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 35A7D90024B
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 11:07:36 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A6531137402
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 15:07:35 +0000 (UTC)
+X-FDA: 83779320870.18.2B09E04
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 99E4A20017
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 15:07:33 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=dabbelt-com.20230601.gappssmtp.com header.s=20230601 header.b=HvVGHLhe;
+	spf=pass (imf03.hostedemail.com: domain of palmer@dabbelt.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=palmer@dabbelt.com;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755270351;
+	s=arc-20220608; t=1755270453;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=38zqqxNHqbGz3C68JOy9Ugb8wAb711DWGVbxjNinx0U=;
-	b=M8JO2RL1XwcvnnptHS2fztuzs5eiISbAK8DsRWVXwoA1qrjkg4YQM3AHXQE8Bf9hPNMkmd
-	+mUUh+DCcreqTAphrJTE/RUdOFScyVZvxvs1eoZIBLdmNijws9bXP3S6OSt3KtjChD3aRp
-	+1HOlmRME2y1RF6yWYG6sT25HxMnXQk=
+	bh=EHLPRMwsFUXklJ+HOrV/DsMAdiggx2WSG2UfKCJiulY=;
+	b=3MqTHdus7cJyDCKeU9nhxeNSvQifRFu8a5eaqFq1SLkzLaA9NtsafGX87cJv8cpsmPonwD
+	6Rg+LHokaWVImfVZZKJrvIODOQuOEB2LzHBQpDRcIXHnudOlFZKQ6JLrq+7peH/aHnN3dH
+	NvWMsBt1OjmC+GQcUR7HTtAStO3FO1I=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=dabbelt-com.20230601.gappssmtp.com header.s=20230601 header.b=rFmjd8NX;
-	spf=pass (imf12.hostedemail.com: domain of palmer@dabbelt.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=palmer@dabbelt.com;
+	imf03.hostedemail.com;
+	dkim=pass header.d=dabbelt-com.20230601.gappssmtp.com header.s=20230601 header.b=HvVGHLhe;
+	spf=pass (imf03.hostedemail.com: domain of palmer@dabbelt.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=palmer@dabbelt.com;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755270351; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755270453; a=rsa-sha256;
 	cv=none;
-	b=BFzcGO0kEaXpVhaKJArYnFh+5ZtV7zAqgbKfp2HcvIB1nIfojG2S0yGH60NEv23erU8cMk
-	MuQv39ekyx5muszZ5JgBGKD/f+t8b7JEjJepScW7hJBzohuvbYpybey05y8or2aqRZtjcf
-	OemY96ZDBx0vCpOBT7jVzSIjKH3b1Kg=
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-76e2e618a98so1632949b3a.0
-        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 08:05:51 -0700 (PDT)
+	b=WOmkNdRabOGtdIcKrAE273OiF574stKcg/1mkXJwkf7WQfCy9mCqQN9wy+qZrHSqJGzONJ
+	xTyCftp4R/VOr17dMDVEoAkBYvaAb6FVOO9oILWv4ijUsJunExad5VOhjs+d2SLEyeu4Im
+	CTPRyY0h/U7Mb36RPmotxa5suHIobYo=
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-76e2e8e54f8so1854136b3a.1
+        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 08:07:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20230601.gappssmtp.com; s=20230601; t=1755270350; x=1755875150; darn=kvack.org;
+        d=dabbelt-com.20230601.gappssmtp.com; s=20230601; t=1755270452; x=1755875252; darn=kvack.org;
         h=content-transfer-encoding:mime-version:message-id:to:from:cc
          :in-reply-to:subject:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=38zqqxNHqbGz3C68JOy9Ugb8wAb711DWGVbxjNinx0U=;
-        b=rFmjd8NXsQh7545PKGdf0dLvM39UN3hXa/6D1UTs4UUkZim7tVBWPLXJu9aviWAKBt
-         KN/JGoh2z4lPqEh9X6WFYHu2XpVWNww7kcc/+rBwPrpbdeODP6MJ10vtTaU+zrJxmUVO
-         aU9X79PZDyW/BCR0DeZXWrBBfWWcOULFWrH2cQ56mwG1rFt1zb+gw8UMqWcek24pBfFM
-         9fj4/z0StWtb9Bf65dDKKUzoeOAe9hdC8oKTVL3VolmpTvf4fXrY84BJep5WaRxN+B3F
-         xeav1dMvRQdlKeJTE41J7mC+4BTqpF9bttrcFAGmirqmzHYB8un3YjrFCxCelx+pFs2T
-         qoAA==
+        bh=EHLPRMwsFUXklJ+HOrV/DsMAdiggx2WSG2UfKCJiulY=;
+        b=HvVGHLhebhie4G/i7+Z9le1HeKgILVCrcTN/7cACibxriXGInnxrCjK8jvuli+ORYf
+         WfaEkDJny434RP9uQCoMSWq4CbyDOGQQNMINmj/YFLe6otzKaTPIPCyTX05K9MW3lrRA
+         tQPg0NT4roNWb5X0eUAqkJB4aTrNZO5BOl21IuKRuR3ap3O00waM0f4FRYdVztlZzigG
+         9I/d2nw44EKfKbL/sASfwypFVbqKnuHqwMXsM4zWoQcwd+BVTpJjaQtwNlPfZ5XHmN7E
+         qsj4aPnkEl2l0QX766H3x0s5H2e68IjGmoV/zqkee+2Ry76ewdOSLAljLfI3qGebBf3w
+         GPKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755270350; x=1755875150;
+        d=1e100.net; s=20230601; t=1755270452; x=1755875252;
         h=content-transfer-encoding:mime-version:message-id:to:from:cc
          :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=38zqqxNHqbGz3C68JOy9Ugb8wAb711DWGVbxjNinx0U=;
-        b=tya68VXfv4zkswLO2x1JoXbuEimTOyDSjUeMwr8WmU0siNzndHGlaP4a4GoGPhZlOn
-         LK3FgR2Meq+Yck1hHEZjg0Ul7um05Qvwln4QT/+EIpbAmQEk4TCAFfaBMtR9VvasEGZD
-         2iJk0xE00rBipWpNVbqg0dSSc2eErJmNjH8pxTUaOFbViGhNzRA7hUPsxQl+QqPPCoY1
-         2TD8kYe8/e/sALX4C8xdgF06LYCdS41aQqYQhAi9s/IYuZP9Cfe/qN6FvstP/lp9JYGt
-         2VzOPkiiD+MZ2jL6axOqz1yI7w3xIVALJ24InNmnd8Q5r9xL9v3/otDQSmzmrQZP7K+B
-         qEuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXaS3Hh6ThWCOoFQXi0KYis0b67oG242ycKl2uQviMcuh0VrlPoNKDvb5gc1Fssnhfrxa7/1HhNag==@kvack.org
-X-Gm-Message-State: AOJu0Yz3F8WcMjCBKoBS0jWTSpe+4yX7IoRhOmUmVAskHArVGN3YLi1X
-	+y3+04oQJl8GlsoWSFofwbSwrNvMr34RMKdOLU7tFRK3njR8hcd6KYEtrx4ssA7/LvU=
-X-Gm-Gg: ASbGncuKB5XLRW90taEIwHucVjwKr0JlssARN5O4V2kuM8lW3ApG05z3tC/ffWT0cUp
-	LR9cf4m2+r8kGo2/uvkLJHcwM3SZ69bk09QCmjjqgYJzq5d6ImJfsdoBZdQALrHYARFaIOE7Oml
-	tKqtPbCeJZFNJV6KbjtlI+KMnalibH9a2ArYBGs9misn3XCRQv69a71sQv8kdgfdL2kGU6upE1B
-	SwYrLBCA/zbNnL2tfNCnQOkboPvwc09WcENUXCYUp+wkYmas8BpJYXSJwIGHbmBypzGmk+YAOfx
-	ODz2TMavdcSak7UlcBmiD6nVSeKA4xiDMXrqKALZ7SiYj93Lm+rojn4xfrWrEqUi+rexxBlk19I
-	N+azr05qA9Q+49svbhE9i2ZBYVgvQeNjvJUA=
-X-Google-Smtp-Source: AGHT+IG3gBMogdOr+spUGY65daTLUVfmz5lhgO/opdXo6UimhkccgL0C2Gx+F8DUbrOBq4AI/2z6Vg==
-X-Received: by 2002:a17:903:198c:b0:240:a222:230c with SMTP id d9443c01a7336-2446d5af743mr41307075ad.12.1755270349908;
-        Fri, 15 Aug 2025 08:05:49 -0700 (PDT)
+        bh=EHLPRMwsFUXklJ+HOrV/DsMAdiggx2WSG2UfKCJiulY=;
+        b=HrxDiD+o4mC6hO1vkaHbeEjhT8E48B+FjidLKtDb8VuIaHpPSeFesEwneGnyPEurdN
+         Y+QtxuQxsGPAmyOTlTm1DFbLq2JW0hMZym7LQXJbveaShuP+kjJ487rgG7nNn5aJTlpm
+         X56nOXrvWfqhuVeDHtiSdXU5QWR3XFCg1OErB6tantwDtOzvQaaySbqi7uJvS2ZepUfm
+         6x2G+096DrNE6IUSTpFSepZrj5kHqO5PhBbPUQxQOsmmT7hImbfOMyG5m0YDQ9jfN/g6
+         70mazrdLvBkdBvO/2bhTSLvZyTJYQJCo7n08FDtfYTJYBkua7NkRj1B7dzIf1akvoKXq
+         +6DQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVU2rv9Hk5zzuYo6e7f+YxgYCb7OP+JOKbmBW2weDr5//PmkWNs/BlOIiP/LJT4xA8LlJ4ctgdL2w==@kvack.org
+X-Gm-Message-State: AOJu0Yz65lzr2NOsIGhMn6Nat2JG1zFNphJqgP6lYx759H1xZQCpKfaS
+	eqrN4prskpJ50LBm/ZQvPuO42/hjdQuW/a0P3Uqig73dEH05K6IPiqoHM4OgnRKrDWc=
+X-Gm-Gg: ASbGncu6VOKgZtFUMOq2B8O/ziIMdCOtVknWVnsNtsjjOM0fN+wMHnTCj89UiiGtqyg
+	i0wv1l0jSvAcdQjuDg9fxENSeP/LfdcK3/o5o8b4iNJPC01p1qVU9tZX6pjkJY9CwkIj0UbmGEh
+	TgLawmS9lqtlmZG3+kdzxZJgFZJ/2tYLZWsQl3RnQvuI2r48hKGS7eAsY9PuWpcvRzesK8IpQCm
+	KrdLXfWfA0IqmXGOa04ENNmTZxmNdgJ0FBTuFRZNsDmEghY8Bszz6TsosCkLL1f2GnWu147F96L
+	ksGbK3yxi1H79LnmLZ7QHX2FTWuPu+OmcBzTGg4G75ENvZ36qqjUurZpp9ULXkzg2W4s2NxaHrI
+	ggh+7mf3AVfzAVZVo72j6THe79Kqal0NrXLo=
+X-Google-Smtp-Source: AGHT+IHmxnV+YR9cR/LeaPBJErhvHjNkppxMDemXEcOX3MCe4Sp9OWex1hLOxvkMk2wkz7dST8S4eg==
+X-Received: by 2002:a05:6a00:4f96:b0:769:a6a2:fe1e with SMTP id d2e1a72fcca58-76e447e3389mr3104455b3a.11.1755270452302;
+        Fri, 15 Aug 2025 08:07:32 -0700 (PDT)
 Received: from localhost ([192.184.165.199])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-2446cadf96fsm16286885ad.41.2025.08.15.08.05.48
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-76e4558bf19sm1309791b3a.99.2025.08.15.08.07.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Aug 2025 08:05:49 -0700 (PDT)
-Date: Fri, 15 Aug 2025 08:05:49 -0700 (PDT)
-X-Google-Original-Date: Fri, 15 Aug 2025 08:05:47 PDT (-0700)
-Subject:     Re: [PATCH v4 06/24] riscv: elf: Move relocation constants to UAPI
-In-Reply-To: <20250812-vdso-absolute-reloc-v4-6-61a8b615e5ec@linutronix.de>
+        Fri, 15 Aug 2025 08:07:31 -0700 (PDT)
+Date: Fri, 15 Aug 2025 08:07:31 -0700 (PDT)
+X-Google-Original-Date: Fri, 15 Aug 2025 08:06:56 PDT (-0700)
+Subject:     Re: [PATCH v4 17/24] riscv: vdso: Deduplicate CFLAGS_REMOVE_* variables
+In-Reply-To: <20250812-vdso-absolute-reloc-v4-17-61a8b615e5ec@linutronix.de>
 CC: Paul Walmsley <paul.walmsley@sifive.com>, aou@eecs.berkeley.edu,
   Alexandre Ghiti <alex@ghiti.fr>, nathan@kernel.org, nick.desaulniers+lkml@gmail.com, morbo@google.com,
   justinstitt@google.com, luto@kernel.org, tglx@linutronix.de, vincenzo.frascino@arm.com,
@@ -112,18 +112,18 @@ CC: Paul Walmsley <paul.walmsley@sifive.com>, aou@eecs.berkeley.edu,
   thomas.weissschuh@linutronix.de
 From: Palmer Dabbelt <palmer@dabbelt.com>
 To: thomas.weissschuh@linutronix.de
-Message-ID: <mhng-5B6E084E-60EE-440E-BFF9-5E81AAC9A473@Palmers-Mini.rwc.dabbelt.com>
+Message-ID: <mhng-540E0EE0-A9CF-4EE3-9E71-969B40D29C50@Palmers-Mini.rwc.dabbelt.com>
 Mime-Version: 1.0 (MHng)
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7712C40014
-X-Rspamd-Server: rspam04
+X-Stat-Signature: s8odzbhxo16ahqb8rhpjpi9zyao44i8o
 X-Rspam-User: 
-X-Stat-Signature: a8yanuiiothygyadgt6ykwuxzepbcu4p
-X-HE-Tag: 1755270351-79571
-X-HE-Meta: U2FsdGVkX19sEoRhC+ZBlffoEttsJYL4wcxh/1Ie0qs+hNoNbkYLJ5xGQbqo4eokjKIaynGMhfBQW+wfQgw1Te/iRyRiqatri0ybpDdSr8TnSA7ZFAgZq4L8PMy9XaqGq2FOFs3mY1OwRqT+Hr31f/bMaDHoDBF2QRXf7qAdyXtNXpanyn7lfHcEIMxo/sjkPaMt+P4/6GplABCLbjaLRbxm8noA1M45YMegz/Btb7GCWNmhCGUuAc0mGJpy5YJ3DBKfJ0hFuAPLPVKEHqgkzRXSQ1WarYLZxVrPV0FNKCG+wuco+JbCsJgr9adb1jEWHJJE6KFfXw1ooOY/8JnQevgqn2XPKmPizW73EuYDTAUTL0yBfKgv9ZphgKchAUN0p5SeMS49XibOvgMptl5xQHVw/S/I6ldotRmTFzZdCNc4IfQEGqmRufKjdXDy4aW1+5kLGubkGT2JhaqAWyZhN3tThTHj5mywtrd3/nM0JosSa3bKpPyWMLTvMeIv60+8k2mOKMdhvEzUogpVlc/6JhkjjVpWLEn/bZk0FgF9uys9bSUh/2HeM3KJmYqAX2gsGMQuFyN2zTk7DfTyYQ6ryJ70EAmC8+xTcAP0U+R7ldqKEw6/eTQ9+3v6DXgGyYR6gzaVQGObpeZvPmsMZ9BHlOi01PICDvXTjIWQz3VzPvqYNy+DuYzqgX0LL6prTcqD0uyLtrSqwmKNpW+zRQqNxMwjQy0Ebmw5Ko0StiozpuaDtlvUMueEpNyqm/w8c5NnlSRsgPlCVc1DkYH8Wsw9a6UtG9JDV78KqDTnyUvK5V63FH+xrf8sKkctDbojSme5v/zhsUxl+peksU3mDaeaEqQMBawW9ek3/szb98BmfQwLCK18DKgMmGTBr3O9ZKNCHuO9BFOVBtrCPkb32+B9ABlHTRZO7I63YjXZvkAeAfynGMqd011Ac0opZWWAW4b+U5QZMXsKTHS2RWPo7rK
- hqyjYv37
- g4S8ZysxI2clKiAXcNiOESsEg5iO3GA1dlujwcLpnTwdcdeyrhg1oobZNZ0EY20UpzajdtenMVG/04BDPpPynNBMChhod8qGpnbVn6gKpPVBU5zK/2QBP/XCF/bdrcY1+6oBlkOnFthkExnQAG/a8JWYCWxudqE2PJfJLsktg4a8lHs93mXNu1PEH9ZidAmBxWbt8dDLKdMx0sy1XuCHRG8JA5BnfC5DdpxvSnbCoN3eo/XStEpPDVe0DT1+FfoPHL1iCGl4aZFzbonaxvkRqk5Ieo6nq9SmOuHggqoGujQrFr1twqaFl19k0FHsHddwpchbyX+bq4W0Ce0Urp5hFvF9cCBDsnZds6/H+n69E3sGTNLcawSNVx4XJm1kBXBxa8CRuU3wYztw3b3iBLKXsNU384CLg54bfsQBzcMoERSqIhKkoetfE2I8LV+AYUf7lX8baXN9u+Xs7jp8wGxYIeb/Enhk9Mv4LYyMVcPvG9kA0+5wBl7I4RvM+s5LAWQCfbRVe1S0DGbpCY+Tjp6dMXi+dVmUf6pHOtOdNe5Waaq93t6Cw1k7uSk1fz3IVaAruPzn6ndtn141J8SsYt2hu/qGHNFTmfvhm2zfpjFmZN0e09oGOTMl7R77XKdvg7oaykSXH
+X-Rspamd-Queue-Id: 99E4A20017
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755270453-634040
+X-HE-Meta: U2FsdGVkX19Z3orbsH1KlO2ZfxrLsq+a1jnHfuDi+lvyZzoUxTZRkfdjg3mgTtVox/UKacPsKzsr+0q8NEIzNCtlpNsfvgLz8l/pKB6Ght9kzic2z1zXHEoHzy0ANucMVA7bJW/93kS7MAn1mq+ePm0+PfwhZPJVeZNG7waOwc2yeZ2XLGNZTAbvlWpDrRLl57W5W/xfpIGsUQoHyplHGOOnAo1+V10Boe774y/Stmh92XGF3GMPqGzUZGdbC85MBHIR7jWMbcxiXFXl/82iY4KtIcC2cAVZS4ROy7I6nkxQHltnbwAoc6oW9UL5E7SxRosYtkwCtTaXSbHGqDipMXn97dacW6jBEc697bkWMj2UMdMtIrGA3QR3kdQLQNYGButDBX9ZXJS9fBIV7ghkGlHDv7nJVVyMEkTbabrBuJlg8G+MnFyPUHbuEGD0oqLAu9Yhl7A1/OoAT9X/oWKBzTnS5E++FgMerV3ntfwuXSwWJH+bw8Kqe92hsFytPqeSQolSAtjYZxnzjw+9wvWzqKli3H2O8lNx84N5qL8au64oiXp40pU/3ob9J6YZK4YWmI0QXK9nNDnGm+882+PHq4rtkieKA4X/zRoYHGmMirDmCbXJIZtpfNgbKK5zUhGY2Y3EBKJKQxjfInepRIvmym6qFFvoF48WxN0ELPblaq24IP0xhhNVbkTqiyZIN3Jwmid4QNN4yBxgrJqgqOrGm/EuJERqSCYPBkcY0gY6TEUHPJ/3B2QxkP0Y5m2Ivjep0ISp41kRbapqoxzzzZYwwT9/97vP5iuy9PqPRpfLYDTFKfAQ4bwbd5Yro+hdhDbDf/Aa5SRT+4urM/ac9Kx7xlPBfCH8LWE2rgoARSBBckz6hZCiZV43qUg1hS8P/6C/R+thiB95J6oB55/MuUmcQmoURToh8urp4Yd3OfpF5iHA9X+zc3hs+a2NgxDK0wyQ6M3M6LEwcgm3aDduD8r
+ OspzgBP4
+ 8erHSpRrguZeFMk/7YCvkZ37aYlP8AQj+XMuseNNMPDcraBF1O4GL9E8USKWIIqp9epROGber1Y6NpzEBXZdGuuOOKhkzqCvn0gO1MCY0IQ9gObwqIN/pKNM0IUrbs6Gff+qN3Lbn3t+94nePjo66t8nT8Rm0BM4OLb3zO2l59nHiuCsgtS633fFQSK0w2ACDrFXm20NxBgxWt9xQcOIJMfFo9FC6ClwXeTvQdVzyk6L8z/xerMqcvtxZiKhg7NjQ5WKO6YTUBZZ0kWFupOtkVx8shwLLYhTGsiHdtJII+wJ4vDol5KdSY2blXLvyr9kGuwNF3+eZfoZQnVYhtIJF6ouC6Ic56lsl4l0R2MMiwdEq8SQGa6AxfAKCpJbSXDuoRjK0rHofKV3Xh4EMQvq/fF/LaHE8n28x8QyrFsAyjB7K9yNJFie80aWoPdoXYrI4AowfiV/94XFkEFDpnyXAvV97SpP6k4/YxdTAbDhgECnfIKD/XZfAuCJgBdd+1o4QWQXJMV8D1tLGbKq2ggzdrIFg4Yhs5LFApESQxQh05LQW3+Lag+FpFVbAz23d1VTvlmbrZ3qgfbtqKZLIdT9zo4bobfpiSJYNq9owgXr/tcZYB3FhC9jBV/MIYzvFbbzVk9KxRWu5siFRAAtU2WkMnQv82d5bSzELZe/o6kf1gvQjpGxhYrc3qIfuvtccYMRFuVU3oPDXJQrtZGWNRTFydnnAVYl6VIS4qbphLuIPKuXHfyNAgONlg+iTDo/sBMheMx7MWKS9PxlDAMZqMqWXPN3MZQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,20 +132,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 11 Aug 2025 22:44:19 PDT (-0700), thomas.weissschuh@linutronix.de wrote:
-> These constants are useful for cross-platform userspace, for example to
-> process ELF files during kernel cross-compilation.
->
-> Move them from the kernel-private architecture-specific header to the UAPI.
+On Mon, 11 Aug 2025 22:44:30 PDT (-0700), thomas.weissschuh@linutronix.de wrote:
+> All vDSO objects need the same treatment.
+> To make changes to both the list of objects and the list of removed flags
+> easier, introduce a helper variable.
 >
 > Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+> Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+> Tested-by: Jan Stancek <jstancek@redhat.com>
 > ---
->  arch/riscv/include/uapi/asm/elf.h | 66 ---------------------------------------
->  include/uapi/linux/elf-r.h        | 66 +++++++++++++++++++++++++++++++++++++++
->  2 files changed, 66 insertions(+), 66 deletions(-)
+>  arch/riscv/kernel/vdso/Makefile | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/riscv/kernel/vdso/Makefile b/arch/riscv/kernel/vdso/Makefile
+> index 9ebb5e590f93a3228c451dca58e6d5cfbbc03ff7..c19c3c76f7c9f6b2f7523a59269de3b683656323 100644
+> --- a/arch/riscv/kernel/vdso/Makefile
+> +++ b/arch/riscv/kernel/vdso/Makefile
+> @@ -49,9 +49,10 @@ CPPFLAGS_vdso.lds += -DHAS_VGETTIMEOFDAY
+>  endif
+>
+>  # Disable -pg to prevent insert call site
+> -CFLAGS_REMOVE_vgettimeofday.o = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
+> -CFLAGS_REMOVE_getrandom.o = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
+> -CFLAGS_REMOVE_hwprobe.o = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
+> +CFLAGS_REMOVE_VDSO = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
+> +CFLAGS_REMOVE_vgettimeofday.o = $(CFLAGS_REMOVE_VDSO)
+> +CFLAGS_REMOVE_getrandom.o = $(CFLAGS_REMOVE_VDSO)
+> +CFLAGS_REMOVE_hwprobe.o = $(CFLAGS_REMOVE_VDSO)
+>
+>  # Force dependency
+>  $(obj)/vdso.o: $(obj)/vdso.so
 
+Reviewed-by: Palmer Dabbelt <palmer@dabbelt.com>
 Acked-by: Palmer Dabbelt <palmer@dabbelt.com>
 
-I'm going to assume you want to take these all together though some 
-other tree, thanks!
+Also assuming you want to take this with the others.
 
