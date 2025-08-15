@@ -2,90 +2,88 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 53405CA0EDC
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 01:29:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F1249CA0EDC
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 01:38:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA4709001FC; Thu, 14 Aug 2025 21:29:11 -0400 (EDT)
+	id 554A79001FD; Thu, 14 Aug 2025 21:38:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7C649001D5; Thu, 14 Aug 2025 21:29:11 -0400 (EDT)
+	id 4DE8C9001D5; Thu, 14 Aug 2025 21:38:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C69D49001FC; Thu, 14 Aug 2025 21:29:11 -0400 (EDT)
+	id 37E129001FD; Thu, 14 Aug 2025 21:38:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B3DB59001D5
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 21:29:11 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5B9FEC07DD
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 01:29:11 +0000 (UTC)
-X-FDA: 83777258502.14.C1BB472
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B51C9100007
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 01:29:08 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uhfhNylk;
-	spf=pass (imf05.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 232AB9001D5
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 21:38:31 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 998EA5B7C5
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 01:38:30 +0000 (UTC)
+X-FDA: 83777281980.27.71F20D2
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 2D53D1C0007
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 01:38:26 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Rv7j8MQ3;
+	spf=pass (imf18.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755221349;
+	s=arc-20220608; t=1755221908;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EvOx8YJGoL8XjrEaDdqtn6ehN7T5qVmlpqM2R57SM4Y=;
-	b=NVMNfTJpiyQkgD2V77kZqlDcZMkJ5dztk2pQMz7OHWq+ruVPbPlf0pKi13GbVBwrO/z0wY
-	tTJLJynmPAblZ62tL1jLauB0J1K8gqTvqWqzHyrCAy8sVTZ5IT2e7XZ3zT+dQ1nrAmVC2i
-	i45QBFLIW9o3bSIZoVN4e9YcIc47zB0=
+	bh=FvIK9iJ7V8SHnncWDIUPYMTGNncr21um3VSz5HwThLw=;
+	b=ffQh9YpPx70xuzgl2qvliXkk7w/lj2JVgeasNWZ0jrp0ySw+Fl7aKKKGplfLmi4/EPUgYV
+	ZE0LG0bKKmo33d8eML68N5DVEV1dATTHajDmiCI/V0XA/b0jaQF2rkajZ0u0v/EfC/mI6c
+	xTQ6hzjnz52FvDBsCe+NizpSnQnOXOg=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uhfhNylk;
-	spf=pass (imf05.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755221349; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Rv7j8MQ3;
+	spf=pass (imf18.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755221908; a=rsa-sha256;
 	cv=none;
-	b=xPHpNf7BGOFDUuKstcbEVQPOerfZmTTXEbPrph8zNYOV+2wlzMhobHS+Yjz5PVYTiXFbe4
-	536fvYYgm7Sjn9UXw3L4tUPd7BVcDAdgFmz6PHuRqCEL46dGdG7lWZNMx4NcZvxO1x0qY9
-	6TQHogwzA76ge5LfJT8x0svWkcdXJQ4=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1755221345; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=EvOx8YJGoL8XjrEaDdqtn6ehN7T5qVmlpqM2R57SM4Y=;
-	b=uhfhNylk+lfH9dSWPp/ZGEazWtDrYDhM+XJUoFl8V3FQ5iGubGqTjz9bh9HigER2JmZSfukGpZ4G06E4Qt0fFcZGkBTmyQRpyr72Heg+BYuNW8w3nseum6qlVx137pK1lLJZB3x356limqXJkJH+EkUiK0Ymb6oWzhGjAU8Qsco=
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0Wlmcoul_1755221341 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 15 Aug 2025 09:29:03 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Bharata B Rao <bharata@amd.com>
-Cc: <linux-kernel@vger.kernel.org>,  <linux-mm@kvack.org>,
-  <Jonathan.Cameron@huawei.com>,  <dave.hansen@intel.com>,
-  <gourry@gourry.net>,  <hannes@cmpxchg.org>,
-  <mgorman@techsingularity.net>,  <mingo@redhat.com>,
-  <peterz@infradead.org>,  <raghavendra.kt@amd.com>,  <riel@surriel.com>,
-  <rientjes@google.com>,  <sj@kernel.org>,  <weixugc@google.com>,
-  <willy@infradead.org>,  <ziy@nvidia.com>,  <dave@stgolabs.net>,
-  <nifan.cxl@gmail.com>,  <xuezhengchu@huawei.com>,  <yiannis@zptcorp.com>,
-  <akpm@linux-foundation.org>,  <david@redhat.com>,  <byungchul@sk.com>,
-  <kinseyho@google.com>,  <joshua.hahnjy@gmail.com>,  <yuanchu@google.com>,
-  <balbirs@nvidia.com>
-Subject: Re: [RFC PATCH v1 1/7] mm: migrate: Allow misplaced migration
- without VMA too
-In-Reply-To: <20250814134826.154003-2-bharata@amd.com> (Bharata B. Rao's
-	message of "Thu, 14 Aug 2025 19:18:20 +0530")
-References: <20250814134826.154003-1-bharata@amd.com>
-	<20250814134826.154003-2-bharata@amd.com>
-Date: Fri, 15 Aug 2025 09:29:00 +0800
-Message-ID: <87ectde5k3.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	b=tkm4HzheF7JevMgOXkXBIUDXdQQXl9k+juwonRHdsz7amfOMcFC3+VeCtHhluuYYP1btyE
+	6VxA/reRlm1CrRmS0PuNpDnwyy2IRPc//JtdBwW/foKbAVa1vCgOcqSRSzbBmUZSyMZiDl
+	dEVMp/GYxwxqyJQXnwBLyHqpO5qavGE=
+Message-ID: <0032c975-1e37-484f-9b7b-a3f0fea0401a@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1755221905;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FvIK9iJ7V8SHnncWDIUPYMTGNncr21um3VSz5HwThLw=;
+	b=Rv7j8MQ3/UNGwwdvhntFdBWKEAHI300ZJy5nVbhPaQxP2lu1/Xv6QTPG/vsbkanIXvGX0v
+	Gch2UTO+opI2CgstTS5Yq8HjzJWUE64pYMaswUN/0i1GK+1eJ5QD9hbCdcCiY1GLb9bJqV
+	ZXEStufgTaSGJR+4CsA+mCz6bpgR/ME=
+Date: Fri, 15 Aug 2025 09:38:15 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Stat-Signature: ritgkb9wcm3bfbtrfsebz36ug9fxprkc
+Subject: Re: [PATCH] mm/page_alloc: simplify lowmem_reserve max calculation
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@suse.cz>, Ye Liu <liuye@kylinos.cn>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20250814090053.22241-1-ye.liu@linux.dev>
+ <EF575A1E-6AE2-45D7-9AC0-49C462A0CE5C@nvidia.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ye Liu <ye.liu@linux.dev>
+In-Reply-To: <EF575A1E-6AE2-45D7-9AC0-49C462A0CE5C@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2D53D1C0007
+X-Stat-Signature: m77si3quwrn3wkokoiqhnyudgsbqffix
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B51C9100007
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1755221348-531306
-X-HE-Meta: U2FsdGVkX19pu/sKP7kIu31Sfgl2oUZiqWNMJPtfNQWP1nmA8J8P/BrGE1WzqbbmAmLHfyjeTfI4E+cEjoajUJzY7DyH+rzhRqrY5Z4lX4DsKQRjYID90zbthpYFlU0rPMS20JTgPNUvbybo3f6ZEa3KXT6E8aBGwA5/zouMxT1P0gAt4dkK08576beziCAfVovgCqsV0VfCoZK6rzJRof42aD61kWNKEg6Z0YO4Hw2ua9QAqFf28Zhi11ITEWrZb/W0L5GGX7eP4N40ZOSCYioazU3FzK3kmrYS5dg5CmOvSVQGJn6sNHsq0faBhKAMvFD+jFlJbEtfdfP1OjPr6YDXMqYZaVT4iV73SaACx4vnHOYUEVbrMstTPHT8CZWi56HDHmXauYAfl1eC7JPfIoMXFQPSMGOsPsV7u3LsUYQISRx8kL66gumzTqYGKI9QEBo2oO/MuCI+ihgBstqScT5+3Xek9hbWK656klqgBAY79zjNEDv7d5iFcPQ721G5MlHpraBF3B45JLdCCAJXflrqxlwcjLU8F/J3uSDiTKribl/3t6QEpNDvJqslPkS6mQoV2v+EDz0mfIKVwCHuapsSqUd8NadY7wOIixxTEwnr6fUN88bIOns6kKTj52LBDMsz9DYmI9UYHDlLbq2wZsvbPxO/9ybGhkTACikclklsTvqYYzqlBHwZU/qYjdt2bEHOU4RaK4pPjZh2i/k97Zi6oIspAMNixlPhDrJaYhPDRKBUJ+Sk4Ncsf0T5H1y76xljWnYEKfp8+r3raRcIRryv9kVGNFAc50LGkSxHPynJwkKldoYrtG039BkHAjX/Nzs6bK1m8sROciT7yurYlB9cVen+SHpm8E8kwE5pnU1r+cACqGF795pldartTcy8WM669zJc9RrG1xwsdqn3JXzepnEe/yaT+uAwbRemBAUZW9V4n7wkhB6cvO/BL0BzLp4qmlYmaYCwZxHg3uN
- QYozXGn+
- BIkB5rbtwK6JWsPPBQWrSL6N9Tnyyw6B8gRG5Dc/OZR7WDATcjjByWGYAFyi7D4gsYlFK+RK3eNSrGpmf4VohC49XeZ5NY5JoulATSaNtIRPlYoSKZulGTrIwL58S2NPwQsHvXT1xuRec1J0xosN84cZGG5/TmX96VTFeHIxQbofKzdzLK1MlvOhj+d7zdkdcev32YSFeZWyPgq15Yx3gp082vPIqVz+obRm6eR4xOrmvx2zvKmaDxYle1AsRE2ix2DuOc+YoU6NuXOJqOy4/xBbrkDfNDXoocQDYagH72CgoUDa6DfdecT1DnKZ3aZ5pDUqlR4Qk+95r/ZiBykJ+ke+0CxGtlIJ6iDtQLfNUV9bWpDvcZL23kqxT+A==
+X-HE-Tag: 1755221906-71885
+X-HE-Meta: U2FsdGVkX189bRJ5kpPTy3AtviV7GwEYpaAFAGeKM55H31bge5dlTVpcWhpHHXFfZj0lEVbJw83qz/IWBPsjlTn1BYPNVRlMMp0awiEs/r5LemWkFz/jokO+JFZN8ldrSabOZAciXeFRNbQ9ZMUw/w279AyniEghPvm8npqWdQQRTwt+w+VNod2I88rsNWEipNU3ihoVx8Hn53jj/QLtGhP3z3QeQdQOYjAyhu9arYLRnhHvP5yLoA+VSoSgEmrt9PrZF6YwRh9QHQIKKml//F/rvc2bLR3FlvOjPPqphWcw710pdPXP0yNgwxkch5FdyCD00bb6SGBNm13/R54aKCJuaodzjAy3Us6J5T/FA0jSVzN52dOQEk8Dvnx8roCf2qNg0nifWxFu7u10HtE4TMI+YFrQ0zxF23NUtkssIobwvLfXsSBozN4vuuxfWblbC9H1diYzQzxSMKVqt54QuIKJMRDIklucxE39u+JBpZo+jqMsBS6qpfNUvygAYhJOsoJpw15oPuSsYVQjH9X8PQiCYqD2djB1TY8nPi/TflksOCiaU8tqoqNvxfN4bQTlB8JnSKxLBMAU5UUQexJnq7P4FaWF0mqPsQB7ArjZHi/pF9fX9Ee7h0XRqwC79HDtVaUEbFPWonvC6MrwGo6f3utoIfyEWevRfwrV/Ks9cjHHrDomk8SY+JtqOf/YbrhW6zZlucRUj6ZHoYZc9XUd81pQRDiteciIyPyozdiRycFGXxS3lmSQm4uXsOq/EfgelA9hqyXSV+y5TY3f88UoidPwuU35e7UsAkffDdTQ/MgLEOoqhV0blSWqaiNbnKTw6eIT9p63YPceKDBaMqQxX7NOXN0o30tZSIZhv4VOuYeMu7Rgy8hdm7AdnikCox1Twgim0tfISuKmKUHQ/4Ft8rbjBDGayxl/H5pl9LGgpLSEOU6zbepiye0ZZOklmTwwv8LQlEwKOgEfXzvhWTV
+ MJ0/5cYC
+ jltmUoyOIClYm+ORXH3oxwKcR8ik0GwlUsQ1lW7wWwDyLhSpeNU9bM+KJ8t5Wi/DYxMw9NdGjH5c8lAlK2ho2VvSxELvTWBhRfKeWkpxrQ++MWvreiACbg825JptPqkcHSPpL6MJAJvYpsCpMjATjlV0KlGpxIiuq9OaPbmujscd2amOswpY3q+TIransAfwBlOJs8gSjrVd8WCd7NpX+gDrkxzOB+j+92fEp00z4TuoJW5gEKXpc+T7n2WBCFCdsrwtGWGNeQ3+jxLg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,46 +92,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Bharata B Rao <bharata@amd.com> writes:
 
-> We want isolation of misplaced folios to work in contexts
-> where VMA isn't available. In order to prepare for that
-> allow migrate_misplaced_folio_prepare() to be called with
-> a NULL VMA.
->
-> Signed-off-by: Bharata B Rao <bharata@amd.com>
-> ---
->  mm/migrate.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 425401b2d4e1..7e356c0b1b5a 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -2619,7 +2619,8 @@ static struct folio *alloc_misplaced_dst_folio(struct folio *src,
->  
->  /*
->   * Prepare for calling migrate_misplaced_folio() by isolating the folio if
-> - * permitted. Must be called with the PTL still held.
-> + * permitted. Must be called with the PTL still held if called with a non-NULL
-> + * vma.
 
-The locking rule is changed.  IMO, it deserves more explanation in patch description.
+在 2025/8/14 22:47, Zi Yan 写道:
+> On 14 Aug 2025, at 5:00, Ye Liu wrote:
+> 
+>> From: Ye Liu <liuye@kylinos.cn>
+>>
+>> Use max() macro to simplify the calculation of maximum lowmem_reserve
+>> value in calculate_totalreserve_pages(), instead of open-coding the
+>> comparison. The functionality remains identical.
+>>
+>> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+>> ---
+>>  mm/page_alloc.c | 3 +--
+>>  1 file changed, 1 insertion(+), 2 deletions(-)
+>>
+>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>> index 64872214bc7d..8a55a4951d19 100644
+>> --- a/mm/page_alloc.c
+>> +++ b/mm/page_alloc.c
+>> @@ -6236,8 +6236,7 @@ static void calculate_totalreserve_pages(void)
+>>
+>>  			/* Find valid and maximum lowmem_reserve in the zone */
+>>  			for (j = i; j < MAX_NR_ZONES; j++) {
+>> -				if (zone->lowmem_reserve[j] > max)
+>> -					max = zone->lowmem_reserve[j];
+>> +				max = max(max, zone->lowmem_reserve[j]);
+>>  			}
+> 
+> There is a “if (max > managed_pages)” below. Maybe convert that as well?
 
->   */
->  int migrate_misplaced_folio_prepare(struct folio *folio,
->  		struct vm_area_struct *vma, int node)
-> @@ -2636,7 +2637,7 @@ int migrate_misplaced_folio_prepare(struct folio *folio,
->  		 * See folio_maybe_mapped_shared() on possible imprecision
->  		 * when we cannot easily detect if a folio is shared.
->  		 */
-> -		if ((vma->vm_flags & VM_EXEC) && folio_maybe_mapped_shared(folio))
-> +		if (vma && (vma->vm_flags & VM_EXEC) && folio_maybe_mapped_shared(folio))
->  			return -EACCES;
->  
->  		/*
+I should use min() here, but I noticed the two variables have different types: 
+one is 'long' and the other is 'unsigned long'. So, I should use min_t(). 
+But then again, why is lowmem_reserve of type 'long'? 
+It should be a non-negative number, right? 
+Is it possible to change the type of lowmem_reserve to 'unsigned long' and 
+change all uses of it at the same time? Is it necessary?
 
----
-Best Regards,
-Huang, Ying
+> 
+> Feel free to add Acked-by: Zi Yan <ziy@nvidia.com>.
+> 
+> Best Regards,
+> Yan, Zi
+
+-- 
+Thanks,
+Ye Liu
+
 
