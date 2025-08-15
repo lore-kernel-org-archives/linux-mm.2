@@ -2,94 +2,116 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C86FCC87FCB
-	for <linux-mm@archiver.kernel.org>; Tue, 12 Aug 2025 13:34:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 847E5CA0EE4
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 13:51:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 62A688E013F; Tue, 12 Aug 2025 09:34:16 -0400 (EDT)
+	id EFD358E01EC; Fri, 15 Aug 2025 09:51:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58C0A8E00E5; Tue, 12 Aug 2025 09:34:16 -0400 (EDT)
+	id ED4DE8E0003; Fri, 15 Aug 2025 09:51:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 47ADC8E013F; Tue, 12 Aug 2025 09:34:16 -0400 (EDT)
+	id E134F8E01EC; Fri, 15 Aug 2025 09:51:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 33C418E00E5
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 09:34:16 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D7E221167D9
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:34:15 +0000 (UTC)
-X-FDA: 83768199270.01.A3B4082
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf08.hostedemail.com (Postfix) with ESMTP id EB87216000C
-	for <linux-mm@kvack.org>; Tue, 12 Aug 2025 13:34:13 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SiWpAanX;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf08.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755005654; a=rsa-sha256;
-	cv=none;
-	b=S7Wl+Er5MLgMIUUALNj8G1F3P9NDQyFxElRBXH9B5L3peFnXe3AS3h0Vdi+fbiahWKOuSG
-	riIy1aQeAGg8bCB4TMwT6Cjl0+sL5iC36svSY0ks06UuR7Et0NvhshyJKYIVg+QCOEX1Kb
-	Ioh2H9utZk+6u3IRPZRplg85XSDV4Cw=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SiWpAanX;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf08.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D0B618E0003
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 09:51:47 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 55A921D9CBB
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 13:51:47 +0000 (UTC)
+X-FDA: 83779129854.14.AEFF3E4
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 7700DC0017
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 13:51:45 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=zSb+9UiY;
+	spf=pass (imf28.hostedemail.com: domain of aliceryhl@google.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=aliceryhl@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755005654;
-	h=from:from:sender:reply-to:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=SyGio/OeA3YMlzqg5t7NCMACn4NnFGBQQvjFkUaqSpQ=;
-	b=2Xd0WEvZyxRd02J4OsbokYQF9W4o0liNBAzPHcpgPiiKakQufbtTqWkbOx5v8wkyOdFKyM
-	AIEWqvZO0y3XWg9YFkmEMFJnuJ5MQomAwxe96DicC8GKydD5s8rHVNwX7CcTalurqEdmSn
-	QD/LZo2Fz+P4fuc2a7p1IIBLUWuGh5s=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755005653;
-	h=from:from:reply-to:subject:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type;
-	bh=SyGio/OeA3YMlzqg5t7NCMACn4NnFGBQQvjFkUaqSpQ=;
-	b=SiWpAanXLIVG4uaTEtZopD9pgHuFfxLt6FbVrJ9UHyAH6tV/hVnveNtE/P+Z6LD/3bdIki
-	NfLYOIcUYkBoLuEUaO1auE+6nkUfKv0s9XQLlirG7u/WSgZz9omrpXRaFRvcgY+B+QUXDa
-	lGw6xt1rggv4D7DQQbDpPNc0bLtBwn4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-619-1XAP1QBxMDm8VyzuVDE8yw-1; Tue,
- 12 Aug 2025 09:34:10 -0400
-X-MC-Unique: 1XAP1QBxMDm8VyzuVDE8yw-1
-X-Mimecast-MFC-AGG-ID: 1XAP1QBxMDm8VyzuVDE8yw_1755005649
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2828E19560B7;
-	Tue, 12 Aug 2025 13:34:09 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.156])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F0839180028A;
-	Tue, 12 Aug 2025 13:34:07 +0000 (UTC)
-Date: Tue, 12 Aug 2025 21:34:03 +0800
-From: Baoquan He <bhe@redhat.com>
-To: linux-mm@kvack.org, christophe.leroy@csgroup.eu
-Message-ID: <aJtCy5dUInygEaTm@MiWiFi-R3L-srv>
+	s=arc-20220608; t=1755265905;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=093IlVQTdAFvs60Lglv1mh61RWoRsNADFmPT6VwOqcw=;
+	b=bXjYEdZMGXNaE2EH56axIw//NXEPKURU8FtzX3tEJTXRocnhKdCw+/JuxDh35p2t5c05EG
+	gks5RZiUJ/aerCxJhYB/Vkq/Tuds8hATaDP7WXVpdhO6bP1P16wvWsSIxIUkVwym1mbsR/
+	8/IlxGceTkSeLtfwJ2v9qcFJQuICYf0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755265905; a=rsa-sha256;
+	cv=none;
+	b=WTSlgNi0GdGH8d2fbF5A/iy60+lKz1EUL7HpUpFyffogoMF3xQNkj3v4fJdxw3BVObUeIn
+	LENniJNCLI4XIzTy1ZhRqbatqWUN4rPnGoaucVc8OoMDGqIPqt2zdDViRPBO60H/Kz7FtK
+	MlsgRAN3NorwuOgV7N1fnl+r+MsbGiA=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=zSb+9UiY;
+	spf=pass (imf28.hostedemail.com: domain of aliceryhl@google.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=aliceryhl@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-45a1b00f23eso10839625e9.0
+        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 06:51:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755265904; x=1755870704; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=093IlVQTdAFvs60Lglv1mh61RWoRsNADFmPT6VwOqcw=;
+        b=zSb+9UiYK0+ViaKW9WYhPUS+IYB4a0H8oWdwmjKHqcs3CrehpACYu7m8S/fCR7zQ6V
+         K++xh9nbgOFBj/31+I6nIAVtECEGqucATin4Wju/w57uvc317YCRGIAsMuuYzgR0gF3d
+         3jczlAZuAof83TS5lf5DrKZgp8zPNmY4b1YpVmn0xWY+cmvVGN3KnjvsKCSfjN1T3gZE
+         Ie1VG8hPTfHIWU0G11Y0IbYzYjcwMA5oxo6CCdmutaAhUw7j6kYfCUoc8koPdVqz1RdV
+         uH5rWBl+L9mH1XfXNgY0RGvaQtYmuAHJZAGQd6m33QKBLx1Wme9CyXAqzQCTOV1z5du6
+         yX1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755265904; x=1755870704;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=093IlVQTdAFvs60Lglv1mh61RWoRsNADFmPT6VwOqcw=;
+        b=ind0CzmhNX6XK6FV2CT9/DydeVNrS8/MbrEXbqIwYHQdV9FVSNCXIvGCrts7AcoDLY
+         i2Rr1rHyu4nJ9YWuVqK/BHDjDsiUG8HFYidLyNmYwchApwrs45GUXj1O/ZnAI9h8bc2O
+         w0WmrB7etcrMtllFl71i1xFBzaULnVukgA+n5fJmNd8RJz7aZpPwNvvnQlI+rIPBP1ha
+         v5csBPyFapVujgHrBjZmCe4eBRH8lXZZinhiA3+mBkF0LnXvluVypngVQDmBS8Hcz8si
+         lA1Ub5ZVTJJFsXYXdEpoANFRdt1M0ygMNARP77//VhsVsspc/NajzwMcliT206RqviwO
+         cmow==
+X-Forwarded-Encrypted: i=1; AJvYcCV1QXffLgKULIG2PlTrC5N4QoVfhpjK5BC+AZ7FnaudfaZ5sgy/zMFXs2kADgfLmiEnKtyv7m6tRA==@kvack.org
+X-Gm-Message-State: AOJu0Yzial6j20yg5qm27dIXYPiCQmpG/2iSG23x5Z0JjU8ips1iQ0qX
+	JSda/zZ6cUWmymppXj/DGWmAs6hew2pUJWopYzKAhY+k2Rd0xHmMV2eRg7p4vJBME+ssYgjWpJn
+	aWpAsnp4risGGGMlqazltJ/Q9UVTrXmo1U3QHMAV4
+X-Gm-Gg: ASbGnctP9RFhotQeaFIRwCQQaJfxKVSuTyyeb2QDuJdlMWBTrg+Z68E3SThRyhOL77r
+	UGykOsmur7pWiT4r9gVXMZnLzmlfVh/ynQNkIUjsaZOcR49eeX+JAAHQnyBli+FSAHL7ge1zAz7
+	8hHx1524DOTx1AN3uM6O5Le4wNzm0X2Wm8oIt6ydOx4OQqQVhUEvGyrTvXmdL7lbtA4/LhRD1Gf
+	Qd4nowUDWZ7FJA/kdx1qH3PiN7Vzf7HvTrzTcSvYH2WHVdpYAoHhtU=
+X-Google-Smtp-Source: AGHT+IFv6jZ3CYzc8+DB8tcb3iOZ0eSeAMRULpcmDGXTdj1HKyqd8QladLBnI4IfXS+FlzQLbMsVXltn+AO6gJPqM/U=
+X-Received: by 2002:a05:6000:2481:b0:3b5:f93a:bcc with SMTP id
+ ffacd0b85a97d-3bb68a17993mr1756183f8f.35.1755265903498; Fri, 15 Aug 2025
+ 06:51:43 -0700 (PDT)
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: potuXXmNnr1ds7C8tmjxgKwVC9AE5Zll_7OkSDfAO10_1755005649
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: EB87216000C
-X-Stat-Signature: nctu7hd1ggectdbmiudq7s8mzst164g1
+References: <20250716091158.812860-1-shankari.ak0208@gmail.com>
+In-Reply-To: <20250716091158.812860-1-shankari.ak0208@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 15 Aug 2025 15:51:31 +0200
+X-Gm-Features: Ac12FXzFwpjZfyVT_iQ3XLEvKiGOnwXqbtcp9YGn_MuwLv_LAEO4d7-XhWxUDaA
+Message-ID: <CAH5fLgiUfZG4e0k6ajkkKo+iaidWHu4dTRfBbgm4Y_CQPGLHpg@mail.gmail.com>
+Subject: Re: [PATCH 3/7] rust: mm: update ARef and AlwaysRefCounted imports
+ from sync::aref
+To: Shankari Anand <shankari.ak0208@gmail.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1755005653-286492
-X-HE-Meta: U2FsdGVkX1+s3fd9MvFWs19gHw+OKlm55DVAvzCaK5s59vowGsSlhIDA1UVVCgGmiTijHDcKPrHysERZ16jHpM3USBHigvyeoVK7XcdSAjcyqNCNH3zvhH0EfMrMQorHkb7vPvMO4iaD12P2k13N5z0iWZwAbckgaK5N1YKwkYHGPUlV/KTcpR7hHdmwk78EXpl8rN/J3zPp2yvd0iVjhkM03lJFCV8KDUAuk8em9dUnhvXcJYlnvFasYepO10Y7IVyK5NUXw72fJdGWsW2qM95jNaRkS/1Vw+FJknE3vTdicNYhKhng3US8KOQ2VLGwi/4/nSyrA46rSwsvoMM1WpqSK1vql0f0/PNN5j1HboPwnXgjMfNy+kdWFosaEJxx1m08652eGSiml8N2VU2gr8ZB4Q2xq+Okap5leKQ3jlLrdfO1XUg7kw1w244a2Vb8Xrw7CrRpjj9OXwRH/3D7dyYv5bz8sIt3s5Dd6zPhap0B1/yAazSV+jJLblfsbO/pDcLf8bfhiVosRCR8Re8+ebOzIqUDWCuCV8FAqbv6TTh3IqAf+4GnGSiteP9wBNv0DV0Zw8gq1rGtClgrspOPdaE+qncsS9luI19ypSNKgHowGbZvzLw72X1nSR1RuAZfumwFsKBZyaRjmVhRZzg2FeSme2l1HGibdSm1XwNGPhgjsCDLfrVqTBB1X4K2W6vZT9iS86Usf7HNc1udZcy4/APDxDvIaiUHKCZvsfZ4IB3rc6VWgL2VmfAsjdHoQYUIA1SG7ICwbiwskxPtiPdZjsLLPNLHpFfXjCql1pDwT/yzIgTy+mL/QtPXWers2/xFD7qlIJJCGk7AUVYWkIRzsO3jBpzclUQVUa4lhuFoZVFwgZLGQHkg9BFdhM+oJ2zyxjJNu4zc64CAsU3+rsAy0Kb/FdEjMV/yVkOiHxhMvLnLD/NTLjPxd6yx2H9FR4VRHycrSsEPncKR2QbzHUz
- 3TQ49LGg
- pRANhL5XAH3f+FsS6yXrxYUFRznv9PtwnK5iQgXYUhptNAiaOeSSbMixujhu2vNUZ6IkgTzisLPO3X6JnrIuOU13XDFtXUqIsvrGYkRJjNYycutc2rzkZlejEtptnHSg733nGn2F5Vb8xF8D1AQnDatbcsljE24RTqC1/gdmzj83VHaY3fOs4ke8bqwIZaYGpFQxFDLFkhbjAFDyYUnPAFA7nq1JA6vKXmVtwDjzswUMQsl6HKrxG1Jfb/hmsOdggWWWf9Zi9b2lAL8LBE5rp68YhVc2p2X8/788gIY07y/my1yF/e697Kw6nXu3+PIPZLS88N2OEZ7kW/NvWFbsMyqsiW9D1NkjlGbUViSJLV9NPPZlTOCj731fqh2xWMhIwAMGEAo8cL9PXrCfW2+kwSobx+UHDL+p/zfF4BhnWWTRdN6pnXVlTY99pL1fHgzBufq6di6IHZGKe+Em2EYZDPvgwiY3Ugaufc4o5+wdfgzmskRH/qvDo66wFtbL6yuS/qiOq8yOe3tuIJrUNYZbmQAATVpe4blBWH0un6WrM+f4z+E65j9xonXwMrw77QckM+VCCKOwazb+sEAl4MWRtuejQ9IvjC2tcV8UZs8svCSpwF2IIcnmlPH8xvHXhHEqBMdO2JvKsSU5V+XEzcTu98IMCrkp8drNqv6grPPYrU8/bevT3PT0pyEvL6NJm++Au9/cf76ZVOyhiStf3pOvyFCrahGwuuUgkBec1doscBMl1d7Edcs32mLVi3+4Oa0Us+nmHkmqLMSuIrRcWnxm16YA/CKcmgPF5yNWQAUdjagT4iApG0ldp2Oi2Q0QtCi3lI0PPIvqXR0atUQoooFFQ0haP/cBhWRyQawZoZkZ9If1M/HxBk8Q7lsjpgE29YL7hbWmVWQloG+plqro3Y02hwbPbPW0YTpu/wclt53WmPjdpOZbuSt4S7sMigsec8FI/HsBV5LqtQ7i9yaY4eIb8bOIN5Fo2
- eQfJdmFh
- 4Zs+YX2ceoaTCB5hPnj/vF4JHe9uKASYjiVsl2BGcbtFwVpH/wjQkw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7700DC0017
+X-Stat-Signature: b5zpmqjipbhm9j8am75cte6wbb78uaxo
+X-HE-Tag: 1755265905-276874
+X-HE-Meta: U2FsdGVkX1+4goZ72EPhTDCWTyawuF4sjgL8ZtCjPdAxrUT/JygveELrqd1hcpysV+gZ09vYtGn2/pyaueOXPP6ZLdRsHNTvL4P29Ry4SFvgtzmn7zfzJgke0miEt7F2P6b91dfPCqhE17lJGblgdb5q9Yl+JiiL8enlpV7vCoiStWKcKxIp9+JgEq1+pVvap+EYKKEVlT50J+BBc7PgQp83qIRu0xslUkOSQw+t7qpOqh7X5f9YtvVL74TTUdKeriHp3QY9ZUpm8jdKrbpxCJnRD/6oxzeaSMxyZOe06BDW88YvO81wVMoe8CYbvRIZOUAmgvXcL7IKM6YsMRZbgxiQ6If95pv8u4irU2wjGgOxyC1FLL+l5wrPqZXqlO7VBDKHNOSd8tkjjYREq98gs7i5xKM33A0PCF1RB247hcBBPs5s/gbfJdSuMYtOsDeWX5s7Ji5EesCLt5xou82+SmrqA/M8f8oMAKPOp7Jhz8Zpq/yj1TnPpeEP5K6kgSiHpWFYK2oSHUyt1eyg0hw9E6rc6F0YG7wNb2dT2ccNU6on7+hwzf5Ld8ozqxpDXXlZXKPEoiVap1+DfeYxAnNA0iO6mW/BEZdv+DS47vii4uRX9t0sQcSZifGYKxqLIlWbRu/9sr8/UUDA05vIMkKsL/21lKbTYP8BQ7eiOjXoyqc25rzO2wXllLA0w8E8/Nrz7hCqLQXIx4DpHhFxX4DCFZiWnoNM8PbgC37ZsCfNSzcfCyHjD6PRCRNmrdKH+JSaD87KoO4evXOY1IvWI8kpNieWMhKKZHJNXRUNFlG4yJHejHcgwHR1kdAzLqaOWVlGYoipxHu5JQ/ywBF4wLkPBfQZd6Sc/IEunjz5jsLC4hF9kGj54TsnOX3FNse8ZTK8ZOztIfEaSq5p2zNwETEY1JOmJ2HW5IaKPmL/5uXjqbSfDMhm3Duh+6zJGgvM14rNWVvLc1xervxehU38Wwf
+ e9mSH/WZ
+ oVqLCMhirYT0G8iopAHm+WkNuUfvfSba85Fo8HH21HnAkCGHiluHz560BpuLdxMMQlfI3+UbW3J0xJUbkZvlS5NuhdydUvlJY0nzhGhcq7aM8LZSOCMaRW4uyKK4TmVMvVurLT3N9/Y4/jGee8WX6KZy2iGaGstsqH7Ocw3+aN9ZEwItxIS+MB9sAZS+WGcPbL21SSCEe1PNCXTlFNDGEJRWrYJccwTgZULofw/xJO7p3mVVxNe+caHr7Iy0HcZSZXaMNs3vwlJ0SUq77NgZNFfZIP/UFYypOKo+1cUBiPv+Os5D2rtLt/4UiY4RrI133KXaahkw7o3Zz5/cGAVI3SkJD+pRuEsGMZqu5tJ/dKXcAbRc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,126 +120,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-alexghiti@rivosinc.com, agordeev@linux.ibm.com, linux@armlinux.org.uk,
-linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
-linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-x86@kernel.org, chris@zankel.net, jcmvbkbc@gmail.com, linux-um@lists.infradead.org
-Cc: ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
-	dvyukov@google.com, vincenzo.frascino@arm.com,
-	akpm@linux-foundation.org, kasan-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	sj@kernel.org, lorenzo.stoakes@oracle.com, elver@google.com,
-	snovitoll@gmail.com
-Bcc: bhe@redhat.com
-Subject: Re: [PATCH v2 00/12] mm/kasan: make kasan=on|off work for all three
- modes
-Reply-To: 
-In-Reply-To: <20250812124941.69508-1-bhe@redhat.com>
+On Wed, Jul 16, 2025 at 11:16=E2=80=AFAM Shankari Anand
+<shankari.ak0208@gmail.com> wrote:
+>
+> Update call sites in the mm subsystem to import `ARef` and
+> `AlwaysRefCounted` from `sync::aref` instead of `types`.
+>
+> This aligns with the ongoing effort to move `ARef` and
+> `AlwaysRefCounted` to sync.
+>
+> Suggested-by: Benno Lossin <lossin@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1173
+> Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
 
-Forgot adding related ARCH mailing list or people to CC, add them.
+Andrew, would you be able to pick up this patch? Thanks!
 
-On 08/12/25 at 08:49pm, Baoquan He wrote:
-> Currently only hw_tags mode of kasan can be enabled or disabled with
-> kernel parameter kasan=on|off for built kernel. For kasan generic and
-> sw_tags mode, there's no way to disable them once kernel is built.
-> This is not convenient sometime, e.g in system kdump is configured.
-> When the 1st kernel has KASAN enabled and crash triggered to switch to
-> kdump kernel, the generic or sw_tags mode will cost much extra memory
-> for kasan shadow while in fact it's meaningless to have kasan in kdump
-> kernel.
-> 
-> So this patchset moves the kasan=on|off out of hw_tags scope and into
-> common code to make it visible in generic and sw_tags mode too. Then we
-> can add kasan=off in kdump kernel to reduce the unneeded meomry cost for
-> kasan.
-> 
-> Changelog:
-> ====
-> v1->v2:
-> - Add __ro_after_init for __ro_after_init, and remove redundant blank
->   lines in mm/kasan/common.c. Thanks to Marco.
-> - Fix a code bug in <linux/kasan-enabled.h> when CONFIG_KASAN is unset,
->   this is found out by SeongJae and Lorenzo, and also reported by LKP
->   report, thanks to them.
-> - Add a missing kasan_enabled() checking in kasan_report(). This will
->   cause below KASAN report info even though kasan=off is set:
->      ==================================================================
->      BUG: KASAN: stack-out-of-bounds in tick_program_event+0x130/0x150
->      Read of size 4 at addr ffff00005f747778 by task swapper/0/1
->      
->      CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.16.0+ #8 PREEMPT(voluntary) 
->      Hardware name: GIGABYTE R272-P30-JG/MP32-AR0-JG, BIOS F31n (SCP: 2.10.20220810) 09/30/2022
->      Call trace:
->       show_stack+0x30/0x90 (C)
->       dump_stack_lvl+0x7c/0xa0
->       print_address_description.constprop.0+0x90/0x310
->       print_report+0x104/0x1f0
->       kasan_report+0xc8/0x110
->       __asan_report_load4_noabort+0x20/0x30
->       tick_program_event+0x130/0x150
->       ......snip...
->      ==================================================================
-> 
-> - Add jump_label_init() calling before kasan_init() in setup_arch() in these
->   architectures: xtensa, arm. Because they currenly rely on
->   jump_label_init() in main() which is a little late. Then the early static
->   key kasan_flag_enabled in kasan_init() won't work.
-> 
-> - In UML architecture, change to enable kasan_flag_enabled in arch_mm_preinit()
->   because kasan_init() is enabled before main(), there's no chance to operate
->   on static key in kasan_init().
-> 
-> Test:
-> =====
-> In v1, I took test on x86_64 for generic mode, and on arm64 for
-> generic, sw_tags and hw_tags mode. All of them works well.
-> 
-> In v2, I only tested on arm64 for generic, sw_tags and hw_tags mode, it
-> works. For powerpc, I got a BOOK3S/64 machine, while it says
-> 'KASAN not enabled as it requires radix' and KASAN is disabled. Will
-> look for other POWER machine to test this.
-> ====
-> 
-> Baoquan He (12):
->   mm/kasan: add conditional checks in functions to return directly if
->     kasan is disabled
->   mm/kasan: move kasan= code to common place
->   mm/kasan/sw_tags: don't initialize kasan if it's disabled
->   arch/arm: don't initialize kasan if it's disabled
->   arch/arm64: don't initialize kasan if it's disabled
->   arch/loongarch: don't initialize kasan if it's disabled
->   arch/powerpc: don't initialize kasan if it's disabled
->   arch/riscv: don't initialize kasan if it's disabled
->   arch/x86: don't initialize kasan if it's disabled
->   arch/xtensa: don't initialize kasan if it's disabled
->   arch/um: don't initialize kasan if it's disabled
->   mm/kasan: make kasan=on|off take effect for all three modes
-> 
->  arch/arm/kernel/setup.c                |  6 +++++
->  arch/arm/mm/kasan_init.c               |  6 +++++
->  arch/arm64/mm/kasan_init.c             |  7 ++++++
->  arch/loongarch/mm/kasan_init.c         |  5 ++++
->  arch/powerpc/mm/kasan/init_32.c        |  8 +++++-
->  arch/powerpc/mm/kasan/init_book3e_64.c |  6 +++++
->  arch/powerpc/mm/kasan/init_book3s_64.c |  6 +++++
->  arch/riscv/mm/kasan_init.c             |  6 +++++
->  arch/um/kernel/mem.c                   |  6 +++++
->  arch/x86/mm/kasan_init_64.c            |  6 +++++
->  arch/xtensa/kernel/setup.c             |  1 +
->  arch/xtensa/mm/kasan_init.c            |  6 +++++
->  include/linux/kasan-enabled.h          | 18 ++++++-------
->  mm/kasan/common.c                      | 25 ++++++++++++++++++
->  mm/kasan/generic.c                     | 20 +++++++++++++--
->  mm/kasan/hw_tags.c                     | 35 ++------------------------
->  mm/kasan/init.c                        |  6 +++++
->  mm/kasan/quarantine.c                  |  3 +++
->  mm/kasan/report.c                      |  4 ++-
->  mm/kasan/shadow.c                      | 23 ++++++++++++++++-
->  mm/kasan/sw_tags.c                     |  9 +++++++
->  21 files changed, 165 insertions(+), 47 deletions(-)
-> 
-> -- 
-> 2.41.0
-> 
+Acked-by: Alice Ryhl <aliceryhl@google.com>
 
+> It part of a subsystem-wise split series, as suggested in:
+> https://lore.kernel.org/rust-for-linux/CANiq72=3DNSRMV_6UxXVgkebmWmbgN4i=
+=3DsfRszr-G+x3W5A4DYOg@mail.gmail.com/T/#u
+> This split series is intended to ease review and subsystem-level maintena=
+nce.
+>
+> The original moving patch is here:
+> https://lore.kernel.org/rust-for-linux/20250625111133.698481-1-shankari.a=
+k0208@gmail.com/
+>
+> Gradually the re-export from types.rs will be eliminated in the
+> future cycle.
+> ---
+>  rust/kernel/mm.rs             | 3 ++-
+>  rust/kernel/mm/mmput_async.rs | 2 +-
+>  2 files changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
+> index 43f525c0d16c..4764d7b68f2a 100644
+> --- a/rust/kernel/mm.rs
+> +++ b/rust/kernel/mm.rs
+> @@ -13,7 +13,8 @@
+>
+>  use crate::{
+>      bindings,
+> -    types::{ARef, AlwaysRefCounted, NotThreadSafe, Opaque},
+> +    sync::aref::{ARef, AlwaysRefCounted},
+> +    types::{NotThreadSafe, Opaque},
+>  };
+>  use core::{ops::Deref, ptr::NonNull};
+>
+> diff --git a/rust/kernel/mm/mmput_async.rs b/rust/kernel/mm/mmput_async.r=
+s
+> index 9289e05f7a67..b8d2f051225c 100644
+> --- a/rust/kernel/mm/mmput_async.rs
+> +++ b/rust/kernel/mm/mmput_async.rs
+> @@ -10,7 +10,7 @@
+>  use crate::{
+>      bindings,
+>      mm::MmWithUser,
+> -    types::{ARef, AlwaysRefCounted},
+> +    sync::aref::{ARef, AlwaysRefCounted},
+>  };
+>  use core::{ops::Deref, ptr::NonNull};
+>
+> --
+> 2.34.1
+>
 
