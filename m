@@ -2,89 +2,130 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D2E35CA0ED1
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 17:38:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EF1D5CA0ED1
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 17:39:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 200F88E0202; Fri, 15 Aug 2025 13:38:05 -0400 (EDT)
+	id 81EBA6B0092; Fri, 15 Aug 2025 13:39:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D9008E0001; Fri, 15 Aug 2025 13:38:05 -0400 (EDT)
+	id 7CF0A6B009B; Fri, 15 Aug 2025 13:39:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 115F38E0202; Fri, 15 Aug 2025 13:38:05 -0400 (EDT)
+	id 6988C6B009D; Fri, 15 Aug 2025 13:39:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F04568E0001
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 13:38:04 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7605D13798D
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 17:38:04 +0000 (UTC)
-X-FDA: 83779700088.19.CC1430C
-Received: from mta20.hihonor.com (mta20.honor.com [81.70.206.69])
-	by imf22.hostedemail.com (Postfix) with ESMTP id BD1BEC000F
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 17:38:01 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=honor.com;
-	spf=pass (imf22.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=zhongjinji@honor.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 53E596B0092
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 13:39:29 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 09AE71601E7
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 17:39:29 +0000 (UTC)
+X-FDA: 83779703658.16.A91AF8F
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 2807FC0014
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 17:39:26 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=aksV3qHu;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf28.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mkoutny@suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755279567; a=rsa-sha256;
+	cv=none;
+	b=E27mY9ZWiJI6Hn2RxIsOcIuU5f5xFTre/DJEBkxxQ8mDTQZWAeqnANS9kaHHdLOCAM7kBZ
+	adbU5eZn3SLITRqKWiqMQBoLwuF90tzC94hhK9Sz5/OjJzlmIzwC/uCSYZrvTdD2s8dcPR
+	E8dyqL1q9z4WSB+2RiLMM87LKr5K/PU=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=aksV3qHu;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf28.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mkoutny@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755279482;
+	s=arc-20220608; t=1755279567;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+10pdeMQpRINhPqXTKRw/7zBKzUarRO7NvIjYOfl6q8=;
-	b=25l7c9B03KG9pq7LrbKx/RqpRSUWisQs6ndVOR4yRjAdTfKa6ugFAES8H9w11zSo/Wwz89
-	lWB8hguftcTBr+6lClEjUgHN3Yx26XPaadwX2LyTEMDYU+WLV3RkGVx4DrGYMW6A3Bwka9
-	rmRrdngUY63rthXOf2aemhk5xOyLpmU=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=honor.com;
-	spf=pass (imf22.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=zhongjinji@honor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755279482; a=rsa-sha256;
-	cv=none;
-	b=eF0OM+D4mCO5V4/aIkWSsxb7Rv63RRNe6L3H3X0KX3YvcZNo+p0rLiZSX+YJh1uOvt1KE/
-	G1cvDyuAS83rLtqz3FfeBg69pWKWJE6iuLkUHbaNp96sDIlfMF1Cwu1AFAI5Px0oAsIlw4
-	ibIEZYcNrys7Ex+7EmBzzNdqfk4nqB4=
-Received: from w011.hihonor.com (unknown [10.68.20.122])
-	by mta20.hihonor.com (SkyGuard) with ESMTPS id 4c3TpP1ZcfzYpCvG;
-	Sat, 16 Aug 2025 01:37:49 +0800 (CST)
-Received: from a018.hihonor.com (10.68.17.250) by w011.hihonor.com
- (10.68.20.122) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Sat, 16 Aug
- 2025 01:37:57 +0800
-Received: from localhost.localdomain (10.144.20.219) by a018.hihonor.com
- (10.68.17.250) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Sat, 16 Aug
- 2025 01:37:54 +0800
-From: zhongjinji <zhongjinji@honor.com>
-To: <lorenzo.stoakes@oracle.com>
-CC: <akpm@linux-foundation.org>, <andrealmeid@igalia.com>,
-	<dave@stgolabs.net>, <dvhart@infradead.org>, <feng.han@honor.com>,
-	<liam.howlett@oracle.com>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>, <liulu.liu@honor.com>, <mhocko@suse.com>,
-	<mingo@redhat.com>, <npache@redhat.com>, <peterz@infradead.org>,
-	<rientjes@google.com>, <shakeel.butt@linux.dev>, <tglx@linutronix.de>,
-	<zhongjinji@honor.com>
-Subject: Re: [PATCH v4 3/3] mm/oom_kill: Have the OOM reaper and exit_mmap() traverse the maple tree in opposite orders
-Date: Sat, 16 Aug 2025 01:37:50 +0800
-Message-ID: <20250815173750.15323-1-zhongjinji@honor.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <8e20a389-9733-4882-85a0-b244046b8b51@lucifer.local>
-References: <8e20a389-9733-4882-85a0-b244046b8b51@lucifer.local>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=DzG0LZlHGH3bOOtZ8yuLvRlkiHDfO2BsTKY54JW4yq4=;
+	b=ZadwiMhGuSaNOZIKhUd/dOw4hWdwfwSFOvJ0WBAGeQ+n3ATTYZnE+MyYEzIq+VpD8D32ns
+	ZbSyab0NZcDlK+j1u7WoikZUrN+f8BTcw5CeKCSSEmdsvFZH6q3TZy7UyoBIKk26BifcbY
+	iQ8WOhPLd7fSiMSq8TjTPBx0DTCGZXU=
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-45a1b05a59fso14415615e9.1
+        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 10:39:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1755279565; x=1755884365; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DzG0LZlHGH3bOOtZ8yuLvRlkiHDfO2BsTKY54JW4yq4=;
+        b=aksV3qHuKqmJxnLzvyHQdPEPqImw6FlzgMETbQJaFbUtnJhu7WCtEP0NSvBRDBPMkr
+         7DKzkZTO7kHBEDjzoPiUQALxTSlevPhAsltia53Tb5TQFr74lwafwEPpagf0hxxbWQfc
+         ZgkkxPHrtAhD8SiL/llI74idB9Gu5L97yvX1mvv7Yf0X2ZG5T/ev4KK4lm/QKic4igEr
+         kLXhXc7wb0Ia8+/Acr+6qq/u1eoOoQYnVYRS0QETKWGD6gWLH08gYRnjpY+ABTOlxTJY
+         d+8kEhh4FFfWUberngFYyxutPMaJqnM9P8oj4zQ//xj8pU/rvcxHfO+3SUDtcBRt/B3T
+         tLtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755279565; x=1755884365;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DzG0LZlHGH3bOOtZ8yuLvRlkiHDfO2BsTKY54JW4yq4=;
+        b=PLzbW6w1Sp50RFYCEaRPr+xEocsIf5LTeuZH5Fl2kgRw29hcjKVfPBbyuVvjOPznl8
+         l3HQuoqPS8g+gAAxCTqkxOge0gPfe28piKWBilFjG4LijbUZg1q+YA9Ics/YdhtA8bnx
+         TBhuK1B8D3NpBgU8+Yv24O2+5sWbWTmzSdrUDMJumdYXpbftJPecq89161yp7ysGy3nr
+         w61YHBQdId3ynx3fK4T3KB7zSHqPdMvORiV1Nm6paU+AY6zpGjrdVj/M+7iKF+pXezxv
+         vrQjyv1YU4xDp4OLd8TE32flL4iwSdxOITQGIX6NB/C7pk0tiMABbJ42Vp1NaVhc4DDg
+         tV+A==
+X-Forwarded-Encrypted: i=1; AJvYcCXs4SucTIgF8IstZ0Uk+EH7FlvPjhO8j2XhfSQ8IOV8LcoFFxrWrpDZDm3SSfPBbB5VmxhT7EkvfA==@kvack.org
+X-Gm-Message-State: AOJu0YxoTlsNM96Y+9OFqQ1k6FV9UKCEBn0JvpbZHwQD1oL0oX+3SkoA
+	fXaUVZrk92Iu3s2THw36YOwjKQa4cmO4wsjwsvS9c4C0sIpQ50AUwo74ZZ4Z8D8KIs4=
+X-Gm-Gg: ASbGncuYVLWHptgrhm97wfS/7727FOAsEuoBDiw9tdEPDNM5JyWg22fo8QZptPfYXNH
+	7OvW4vWR6Jkpz9hYycff9RRsDmGVV6/PUQwhAsPk/OG89qFr4nKfxToZ8XHXMQgDlihXd/C/pe0
+	S6HFUhVuA1f3kbOZIKaMmqpqgrQF8mYu9DHFcQE6q/aEK3jOvaXNpqeKuDAF8mTPMcWxYHzoNnp
+	nTUwbQfTVMd2sUuvUa486/idj9R2yO5V2nuvinzIt/cS9nYqvc5UZNSBKyt8C2doQLn8fyKWnjh
+	UBnlPQnXLWaPkbL1YMSMY8MKcR8Y782ddVcmrUwZQHS8tomTq/p1veAKO69+8QGjiRg+MLZDT6j
+	MJy8BqdCithJw7gl1xcV+3Jg1+cSkVa7ULczdyWIK7w==
+X-Google-Smtp-Source: AGHT+IEQtqoj7OJMpPUFnt1ji9bSa+u38yG5PGpHc7mF3c26ryzthKx7wFt40yjy8HfsIxTJ4Rr5hA==
+X-Received: by 2002:a05:6000:2289:b0:3b8:d0bb:7541 with SMTP id ffacd0b85a97d-3bb68fdd5efmr2396919f8f.40.1755279565547;
+        Fri, 15 Aug 2025 10:39:25 -0700 (PDT)
+Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-323311233cdsm4872522a91.21.2025.08.15.10.39.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Aug 2025 10:39:24 -0700 (PDT)
+Date: Fri, 15 Aug 2025 19:39:06 +0200
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>, 
+	Matthieu Baerts <matttbe@kernel.org>, Mat Martineau <martineau@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Tejun Heo <tj@kernel.org>, Simon Horman <horms@kernel.org>, 
+	Geliang Tang <geliang@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Mina Almasry <almasrymina@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v4 net-next 01/10] mptcp: Fix up subflow's memcg when
+ CONFIG_SOCK_CGROUP_DATA=n.
+Message-ID: <gmiwpzpgcnnzg2jjhonfcchkbv7zrzgbawvgfgfwrjmvvihqdc@gaq7bbe4ktwc>
+References: <20250814200912.1040628-1-kuniyu@google.com>
+ <20250814200912.1040628-2-kuniyu@google.com>
+ <cs5uvm72eyzqljcxtmienkmmth54pqqjmlyya5vf3twncbp7u5@jfnktl43r5se>
+ <CAAVpQUDyy9f7=LNZc2ka2RiOhR3_eOhEb+Nih37HnF0_cdrJqA@mail.gmail.com>
+ <r3czpatkdegf7aoo3ezvrvzuqkixsb557okybueig4fcuknku3@jkgzexpt7dnq>
+ <CAAVpQUAx9SyA96b_UYofbhM2TPgAGSqq_=-g6ERqmbCZP04-PA@mail.gmail.com>
+ <kr6cv3njfdjzc2wcrixudszd2szzcso7ikpm6d5xsxe7rfppjs@5bvfwpelgj6f>
+ <CAAVpQUCMcm8sKbNqW9o6Ov1MtC67Z--NTv9me1xcYgCkbJxK5g@mail.gmail.com>
+ <CAAVpQUBO8TXjjtt++kF0R-qs-Utn-eY5o321NyAALEYTfq0xGw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.144.20.219]
-X-ClientProxiedBy: w003.hihonor.com (10.68.17.88) To a018.hihonor.com
- (10.68.17.250)
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BD1BEC000F
-X-Stat-Signature: ui31ccfp1qc77jsjdscuqtx8id4symt7
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="y4wp3wkqhrel3mvn"
+Content-Disposition: inline
+In-Reply-To: <CAAVpQUBO8TXjjtt++kF0R-qs-Utn-eY5o321NyAALEYTfq0xGw@mail.gmail.com>
+X-Rspamd-Queue-Id: 2807FC0014
+X-Stat-Signature: ypxd61gw7inwwcqtqj11pnxt5aerwhtg
 X-Rspam-User: 
-X-HE-Tag: 1755279481-23314
-X-HE-Meta: U2FsdGVkX1+7JMbqMwJ7m9Z+7lq44WV3wDznJd2EKwtHUG9EvAFqQnb73ZVy5bXC67s0KlFxB4z1UeMjd/AOhSiNY2k+Ub2XAiIHGY2UMRrAIcFM7dowOpVqY72K7SYemPecHpne7IDZZ6si39jrhRVX9UMCjSVPTw4S0pywUKaLfc/Q9LU/lvMRWFeRKB4mcxA+E9gbzdsACo64ZO78fEI4kWMnMAzLqh4I0Zvm+Skawz7glbXdbHZkItsU/ZI5R4niTLG1WPBmX2W/hIRM/MIYcprcePPRe49lm64sC6r5PyDGCnT7pG3QNIn4L+MsNT/Cn5ztOqBmaqPqY4ldR6Dxf07rc95lUVMyBqgYOh4MxH5qYF0EVIex2K5MLOLb77oP92mL4+X/ColbpZGk3o4mmf055aBrvo8Hg7+IwCgHjKJFJMmxL16jYITWwdTEJyk5TfDb/6OZNMB0iHwn6za2SOQQq8NZ53qKlCmfgozRu2d+OvYVbpgiP+xY8LgR29vI33lI//nvXpx3scG/gBbKJB7qGoISAZvynqZPtcsMxknF5GjGuDWU6krHjXdZ/dn2EToST56NApYxW6bh7rck5Ib049YThNqHlSWqzYNk8c/phkj/BbQEDeVc1v2XQRR18LlE3tZH9GssaRZK7p3JmCugMeszv+b0htaRDE4CgMh7w2TFRHUOuRw6288ploA1pt/ncLxLpIUhng+r/HQbpqFVkMJ09+2+2GNks5qa+OOFmnne4TiMLE6Dx2aNCubI8w2AkfCBFgbCOZ3qNrq2thnSPpT9jBvqUA0nC2YsP8eIj84VD8fwj9sHFYa4RMjaEDV3IagFbLq2SqNEKUjdSLEosIhUr8ebZs/4WjF4wmLn2jY2Su6jgLn7U/2ymPYRKWcjWL0yPyRaY6paeTzzi59JutjHmDabR6J4B7O7ml5zBnOgFyXkZxZfRrJPTXa7wYVdw2c/Ixf3Noi
- yH+wi1+L
- IH+/y6JvOQ3Anw4u9OF7cA7PZAfCeFSr/iZJSwo2vxhHbM3OMTRpkErQd3GoMifUgb8Av0r1SzVkqBgnT+dtT8lzulXd0I17ZbvxHYhQylnGJuYZhm3jnDMgQDNe1OVj6vsBlsiN81Bb29RxBi0N+mkvvZ98Jp4pxwyE4dvBSZWu6MISB8n9Mk1CX8MdPcAZhP9rsJtHKxv4kelldWxCvntAH5bIzI1s5rfdZ/uJKsRwckX8oNh3Uh1C+hS4T9elVe7eX
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1755279566-327567
+X-HE-Meta: U2FsdGVkX19lhPt909Jfadv356MGmuv8KOTX4HA3dM/lzcW5Tpy6eAC/u/xJTRSG7rsfbv8P/uwazweLy4+pSp4ICiKC9ieM307nBjbv5FmYrtTe0UR3piXANxUUdCt4z8mLNmDE0KpR63Xu5XsjBF31tq04CfGJSxQAxqpbFtinqRA/w/KsLVT9nY3MCMMeqRE0w9HMB4DyCd2PEfQclgYA7Y8WOPVZbceIhH1Xfqey/lL4e5jycgu+KMhuTuQQ6KfMKtbsYsAULNEGX73hkJS+uBvUe+55eGxyerFtBWMB84bCzCuZCby+Rbc5wBPsyIxRkkphRUoMrGbFZhuL6a7u82gIF3IhjXWrpML6FqvdmwgswbPd5BjIAsEeg77AWn3n9KbN5a9nrsuzLkiBdCGKRUyAyGHBWL8GlN1ZoK5oVc0QNl4StW+iWhxcp6dV2HQobjBRY1A986r0Vp3C+zMgk+7KQ/ooyJlY+vZsDfykqLn88fFRvlKN4koD2i8G3070lIPL8uqzb0/FXJnKKgSDpRloUlvojFt9xl4+oMm+yBnz2aITrdx0zffDAxPj30JzfJpAxW710vApXjFzx2G2MsMdMCjA6cbRu1uRG2wu6mrwynXWzB1y86+bH/0+5INC/O6GU5TolxpEgLxTq8uMVhxEUG8NxlFJdsn5lqTvy/8yuY0X7z2v7or6xgkene68JfVvIYfCV4eiyQUlw0A+fpzHQnBeJwZJHoXxe+iaFqUOjy5CUO349HnLRtsGcHGjxAScS6s9tO7hyz4iwxmMlZMX8DN1F2hu8qhFnlKOlYFMJ66Rm4qvagFKD0KSwNzigy+MHQ1pN/IH+D2Xxg3Ws9ZmMI507vMeWgAs36LWMMqgm+JlzJZs48+sCqbM4SpFrwhF/hllk22CoDNFdCnfd1N501o+VKXOeU+9CMXIR1iyu3P47QquksW08Xa7XqGkS0Q8eD9V2EZZjhY
+ laOLi/DD
+ SMEDe651h0EwAt+dvCAQfBi4NYOrE/rq+ZNFyAZkmrxi6GUW/LNPSKsMXCf0d2e1qIM+tKtMbokzXRd3X/+SXeOU5feOFYG1UkfSQDnk9AP8/5MHMP7WtZALPSbHfzoVXOzVsUubLzj11RJyMGYgxL1JTbqcTUaYYrGowCPkG1Tivh4XYtlaQDXQ3KenUQKGz3KLG6TanZ3fw3e/YJfUelUxSa6LywdiT9er+l9YwMtb7DVjYSc3VxWVtQg3npu4BkuZSKiz/KF+uzEkpn83YTpwStATLUCFFNTcjIxHf08ijp+rjrHv/KVN9ifuEjkry7HVbKy5vk9WFWqIVAx6EM5CsxZ09NhjwVALLfJ7e3wEoT2++nAkNqmXa+Pua4Og8r0kyGSZV3DdCyvDPGbZBpzTN+g7064FwPp3yy7WUqQ9MVZw4/bzFbtpJDgMG+VCUdw+Hq7UMYTjPMJHmF1g5GISTrledft/NB8c297L9jdYLndzEj3HTOeU14MTYMaXrmOs1eaU7ebBl4VsGguwAn09X1A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,113 +134,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> 
-> On Thu, Aug 14, 2025 at 09:55:55PM +0800, zhongjinji@honor.com wrote:
-> > From: zhongjinji <zhongjinji@honor.com>
-> >
-> > When a process is OOM killed, if the OOM reaper and the thread running
-> > exit_mmap() execute at the same time, both will traverse the vma's maple
-> > tree along the same path. They may easily unmap the same vma, causing them
-> > to compete for the pte spinlock. This increases unnecessary load, causing
-> > the execution time of the OOM reaper and the thread running exit_mmap() to
-> > increase.
-> 
-> You're not giving any numbers, and this seems pretty niche, you really
-> exiting that many processes with the reaper running at the exact same time
-> that this is an issue? Waiting on a spinlock also?
-> 
-> This commit message is very unconvincing.
 
-Thank you, I will reconfirm this issue.
+--y4wp3wkqhrel3mvn
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Subject: Re: [PATCH v4 net-next 01/10] mptcp: Fix up subflow's memcg when
+ CONFIG_SOCK_CGROUP_DATA=n.
+MIME-Version: 1.0
 
-> 
-> >
-> > When a process exits, exit_mmap() traverses the vma's maple tree from low to high
-> > address. To reduce the chance of unmapping the same vma simultaneously,
-> > the OOM reaper should traverse vma's tree from high to low address. This reduces
-> > lock contention when unmapping the same vma.
-> 
-> Are they going to run through and do their work in exactly the same time,
-> or might one 'run past' the other and you still have an issue?
-> 
-> Seems very vague and timing dependent and again, not convincing.
+On Fri, Aug 15, 2025 at 10:24:12AM -0700, Kuniyuki Iwashima <kuniyu@google.com> wrote:
+> and we need to manually copy the memcg anyway..
 
-well, Thank you, I should capture a perf trace for the oom reaper, not perfetto.
+(Is that in a later patch?)
 
-> 
-> >
-> > Signed-off-by: zhongjinji <zhongjinji@honor.com>
-> > ---
-> >  include/linux/mm.h | 3 +++
-> >  mm/oom_kill.c      | 9 +++++++--
-> >  2 files changed, 10 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > index 0c44bb8ce544..b665ea3c30eb 100644
-> > --- a/include/linux/mm.h
-> > +++ b/include/linux/mm.h
-> > @@ -923,6 +923,9 @@ static inline void vma_iter_set(struct vma_iterator *vmi, unsigned long addr)
-> >  #define for_each_vma_range(__vmi, __vma, __end)				\
-> >  	while (((__vma) = vma_find(&(__vmi), (__end))) != NULL)
-> >
-> > +#define for_each_vma_reverse(__vmi, __vma)					\
-> > +	while (((__vma) = vma_prev(&(__vmi))) != NULL)
-> 
-> Please don't casually add an undocumented public VMA iterator hidden in a
-> patch doing something else :)
-
-sorry, I got it.
-
-> 
-> Won't this skip the first VMA? Not sure this is really worth having as a
-> general thing anyway, it's not many people who want to do this in reverse.
-> 
-> > +
-> >  #ifdef CONFIG_SHMEM
-> >  /*
-> >   * The vma_is_shmem is not inline because it is used only by slow
-> > diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-> > index 7ae4001e47c1..602d6836098a 100644
-> > --- a/mm/oom_kill.c
-> > +++ b/mm/oom_kill.c
-> > @@ -517,7 +517,7 @@ static bool __oom_reap_task_mm(struct mm_struct *mm)
-> >  {
-> >  	struct vm_area_struct *vma;
-> >  	bool ret = true;
-> > -	VMA_ITERATOR(vmi, mm, 0);
-> > +	VMA_ITERATOR(vmi, mm, ULONG_MAX);
-> >
-> >  	/*
-> >  	 * Tell all users of get_user/copy_from_user etc... that the content
-> > @@ -527,7 +527,12 @@ static bool __oom_reap_task_mm(struct mm_struct *mm)
-> >  	 */
-> >  	set_bit(MMF_UNSTABLE, &mm->flags);
-> >
-> > -	for_each_vma(vmi, vma) {
-> > +	/*
-> > +	 * When two tasks unmap the same vma at the same time, they may contend for the
-> > +	 * pte spinlock. To avoid traversing the same vma as exit_mmap unmap, traverse
-> > +	 * the vma maple tree in reverse order.
-> > +	 */
-> 
-> Except you won't necessarily avoid anything, as if one walker is faster
-> than the other they'll run ahead, plus of course they'll have a cross-over
-> where they share the same PTE anyway.
-> 
-> I feel like maybe you've got a fairly specific situation that indicates an
-> issue elsewhere and you're maybe solving the wrong problem here?
-
-Thank you, I will reconfirm this issue.
-
-> 
-> > +	for_each_vma_reverse(vmi, vma) {
-> >  		if (vma->vm_flags & (VM_HUGETLB|VM_PFNMAP))
-> >  			continue;
-> >
-> > --
-> > 2.17.1
-> >
-> >
+But fair enough :-/
 
 
+Michal
+
+--y4wp3wkqhrel3mvn
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaJ9wuAAKCRB+PQLnlNv4
+CH4YAQC8zojrNNQgYpmFJQUBnZHfg4T+IF01Rw6OCepycZuaVgD8Cfgdr1bVXJly
+2vehjqtlGG8wN1oo3l6EVENniEd0yAo=
+=/lQI
+-----END PGP SIGNATURE-----
+
+--y4wp3wkqhrel3mvn--
 
