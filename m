@@ -2,192 +2,89 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C62FCA0ED1
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 02:41:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E0B8CCA0EDC
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 02:41:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08BBF900205; Thu, 14 Aug 2025 22:41:24 -0400 (EDT)
+	id 8A189900206; Thu, 14 Aug 2025 22:41:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 062B28E0002; Thu, 14 Aug 2025 22:41:24 -0400 (EDT)
+	id 8516A8E0002; Thu, 14 Aug 2025 22:41:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9388900205; Thu, 14 Aug 2025 22:41:23 -0400 (EDT)
+	id 740EE900206; Thu, 14 Aug 2025 22:41:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D56888E0002
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 22:41:23 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5A673138907
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 02:41:23 +0000 (UTC)
-X-FDA: 83777440446.22.7C0A283
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2088.outbound.protection.outlook.com [40.107.93.88])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8D81A40002
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 02:41:20 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=jXFGH2X6;
-	spf=pass (imf27.hostedemail.com: domain of ziy@nvidia.com designates 40.107.93.88 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755225680;
+	by kanga.kvack.org (Postfix) with ESMTP id 62AE68E0002
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 22:41:26 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3BF45118065
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 02:41:26 +0000 (UTC)
+X-FDA: 83777440572.29.4651AFC
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6A5C61C0006
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 02:41:24 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mOpxZTSb;
+	spf=pass (imf20.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755225684;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZOFucGLbAtIDgoQmxbAMel8LUFNABmzph7RuE2bUnPI=;
-	b=2LXsI8BBx7gGKQxjrofoW1nSN6siVYZmEU7yiiJux30rmusSFMUrtF6Wzh4QvrrgQBg4HW
-	yz6ED1Iq6TVe+avj3XNjqYns5/61ENeLPMlGSm7nrgJAwX4QyVvDwsrW3RNOX5OX+kP+Qh
-	w8s4PHq7pzROvahMyVQ3kfj8o5df9iA=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=jXFGH2X6;
-	spf=pass (imf27.hostedemail.com: domain of ziy@nvidia.com designates 40.107.93.88 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755225680; a=rsa-sha256;
-	cv=pass;
-	b=qeJxUZpB4SSJFK85GXSfv/oKvSQQT8JMoGAa0AroBaFN82hRaj5viLxLt6Jv/to6jnEL3p
-	IQB6crlEYAbkMadMihctmWkyHfn9mYJiectiOogHsYnlXjYMKdYxWZ0YgbCTJsKfSt3cid
-	4DGW+IIn5z0pdG1klwEqeHGd7SAxG1I=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zD3w+0ZMaseQHvqH+DrCTdS7gB5mpkP4rKevj/cDbneWksLCCQwTVmg7v9a4ljVeGOzFFCII8t3M09sWypGXgpqPCdtWryxAXRs1NIxo921vJXi4QI/ISo6TkfsIFtp59DMYV76ZhAmhO9cVeFrx+SZcRfO6PQWgsb8NzNyz6IgjFoIxhYRHPXz9Yfe4o4XRuiP7JxhG4Ft0iCWNrBgqs5eBiiMwcIiV+6CCsZk13xQ1a6O+6vnDz93zRFR5iFzoCNxNnuzur95HxZKP5WDCydc1LrGeaIsTAtlzUKO2D0rD5XZckuq7bW/QbD6chUwHGriFQvRHxrJaLGV4+o3OvA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZOFucGLbAtIDgoQmxbAMel8LUFNABmzph7RuE2bUnPI=;
- b=EwV8VsTHC6DnF2q9ztaIa7G5YV+MBaVlMDZmW7q5YUlo2BLOK3DVEZf2M1EaWVBUJ4Pv5s+LRjEDTF5XlU6orK1qa4+0nyrqYjTha2vYZGSuY3qkwryepzskiTXV2ToI10iMo6VWmlHnZZWK80MaNT+GSyF5zxhkwF87mFP4s4yW1ezr4++w+86g4UN6/rDNcZKmx+dFy/tyRCEOe18jgkWxwrzcFQ+X34u87npR7nHatYfKG9bqy/DA3WFwfJwcIe8mO0zSDQQM6loN4Isuri5U7rnO6DlWUdkwvCS5p8z7KROdHQwzx9wBwjoqhm1BemP9UtOB/gmUosyuzEXGVg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZOFucGLbAtIDgoQmxbAMel8LUFNABmzph7RuE2bUnPI=;
- b=jXFGH2X6D43ua7Zwh5r6Ow/FCHBtc2nyCGhza0igY0iA7zy4W0h7cY034g84xxbrMOLH/UVMxHy+FZSYbQm50CzqBCna7Gx3sb4AaVUMefjw7cKRAxWQs3gQeU6OWSu1xK52jIpe7PKBoH5FTBzf2PCQNE34uPzqanZdG6pygzzqBjq9NYqlphUqq39TzI4Uq1Pp7tvQrMxlgyV2ZcoqDmJRrkdDBMDb3wH9KZ6iiWM/q+Vn3eJvh+ESqtAJKv+j/kHN4iX/xYAKnNt5wWFOhI7Q5mr0uVjHHlrWLF719ldjBTU9G0wYFqklXla/2lebY6nMhZ99+7/AqMmd7uvseQ==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- SN7PR12MB7226.namprd12.prod.outlook.com (2603:10b6:806:2a9::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.14; Fri, 15 Aug
- 2025 02:39:40 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%6]) with mapi id 15.20.9031.014; Fri, 15 Aug 2025
- 02:39:40 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Wei Yang <richard.weiyang@gmail.com>,
-	wang lian <lianux.mm@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@redhat.com>,
-	linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Zi Yan <ziy@nvidia.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH v4 3/5] selftests/mm: reimplement is_backed_by_thp() with more precise check
-Date: Thu, 14 Aug 2025 22:39:12 -0400
-Message-ID: <20250815023915.1394655-4-ziy@nvidia.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250815023915.1394655-1-ziy@nvidia.com>
-References: <20250815023915.1394655-1-ziy@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BN9P223CA0028.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:408:10b::33) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=waVzgAtOi12GgE5yS/99lkSoGQsnDE3UwmJZtXxGlEI=;
+	b=WKsrqEnw220xFklSC+Y1IzEzLIBnopLlJ1ad7xsnCM/1QXKXzWaKx/1BMZtYGZcc8w/REn
+	gAAbOgoGosBXWUtVyJqlaSY7CJsKmibkjpadERNwneRSD8gl4+FP5Ft257wK6x0OF+tptj
+	OZQwPKLMqNEYAg549vpVWASshSLUsrI=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mOpxZTSb;
+	spf=pass (imf20.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755225684; a=rsa-sha256;
+	cv=none;
+	b=1cwxDj1pYz1KQZYAUv027xacOuWkqn9gyrF02MeYqNzY5K1sk/5pOc/29nor98hc0YPDiI
+	jIed4DWpbtMwy4GXyTjCNqNAKsJdct0jmVooUPz9MJIGkeuLvnLkg2IQUlZZSwZrWWd71p
+	vGc6UtUkJI9CFr2L/PZ7t2bpMC3akSI=
+Message-ID: <be1a8882-fb43-4038-a500-01c3e1a6d577@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1755225682;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=waVzgAtOi12GgE5yS/99lkSoGQsnDE3UwmJZtXxGlEI=;
+	b=mOpxZTSbLfxNoXp5e2h13cpSn1859H5ulR05HsjEyQA5K+tfvtP5JtlCf5X2GxoErJr5sE
+	OUTgM7JscK5L2uLEBj+jv2FfpktYyHI0SihUTRvqrkjh/S25sfz8qOj+AXqJiqAgD/FM21
+	bn0apTMTP65b6yIoSuCGHjV6S3jkVI8=
+Date: Fri, 15 Aug 2025 10:41:16 +0800
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|SN7PR12MB7226:EE_
-X-MS-Office365-Filtering-Correlation-Id: 95e60f47-aa00-4ead-126d-08dddba4fbf6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?h1fUKQGN9xGe1cZ3vYnML2P9k2NOVFYQGkO12WH3eYxaNyyCzyIARPTpMlaP?=
- =?us-ascii?Q?hPu+5nlME0TPQpauF2Qj58ps7SlzTKg/gcnP6Wj87hdQohVr7tKFTXR8G/qj?=
- =?us-ascii?Q?aHAqf+IDYjAZ9boefD83q8pwuiXnPlG0EgvfTpV6BEXCQzKtyWLSZ9KQ2pWV?=
- =?us-ascii?Q?/iLWYYkmizkPSz7ypcZ78wskw8f72zu2PU5pq7NwROECx+5DVMEXOaoRbcDp?=
- =?us-ascii?Q?30Lh36NrHRRROvMxjFryeQedmKTFVaG9QDIhTmxRO1vzfBiFOL8skO04f/wh?=
- =?us-ascii?Q?H3qQeBOYOL/DvGq2t+GNexmj2N4f5dYmr/rldxKXP2OsjS+MYaPqfcluazt4?=
- =?us-ascii?Q?TYIQL2W67ah/CC9cUFVQsrgz+OehgSWawMs+RTyIlbkY6NIZpVm8rlHdhi64?=
- =?us-ascii?Q?alH2qpoGWf/A7TaaIRu6ngJHt7/x6VF/d1+KqxVhdHSwtUx8I0Km5mWM7jT2?=
- =?us-ascii?Q?PTRH73VTlWrfOKZo4l4H5s6Dv17Vs2ln/n1ODVaDmFzwIdmIuOA2rzQMpHOf?=
- =?us-ascii?Q?RANtk0NLk/QYj9Da01D1i9xwY17PKAQx+tcF2bf3nsd54eB5TWptijmpRZ6v?=
- =?us-ascii?Q?mc++NEGaojFLxdDugHfIhQ1x9bPKh7Yy+/kJldOT+hMx76ueJozajK4F7Aib?=
- =?us-ascii?Q?tcQtGsGnKnbmnXtImGrOlSuGWepfg8WR0BOlnudaaStd1pkyDDiVFcaAZKfo?=
- =?us-ascii?Q?GEcGikqOPtAYRojBxItSq5vAKnr3VEH4tpcXMbu7PzAUYUz9LtzjXKjtiFHw?=
- =?us-ascii?Q?klOJRncADYhtoJBtzRsjdSgmRPITg3LSbXIJJf/8Y4AONJFKu8ljYlg7wCJX?=
- =?us-ascii?Q?EZJ2k009zNzbUNlrcV0eL01wa/t3uakCAj+GRY9iKP26i5lDIVpx1i30Eq97?=
- =?us-ascii?Q?8rgD451P6jmOpP2vwLOaC5ml8zn+FfXrd2HubmmpPMBQ+HHCnOad7QedFmqr?=
- =?us-ascii?Q?1HCHt/hN50uisfWILWF2wTBoyqNK0kXoB0q7mGanoBcgBtvuRvSOr9VUlXG8?=
- =?us-ascii?Q?eg7okPVTgc4lsSLY6+/m4Bym0OABI6OPEs54WpwI4ihmmLNCQvx6NidNO15V?=
- =?us-ascii?Q?ApEhwHif9AwLEeNf+1d4VdipDIyRzKI1m1BjTRhNU/E1x46SCN+O9PE1sOR9?=
- =?us-ascii?Q?NXjxD/Viy9yrDzt/+ESz8o5nvyBzCUT+0n9g9dkKAH26dkzJe2FhavCEQv5F?=
- =?us-ascii?Q?nbfNZlQyFHdw6ShX11/0ps6Rw0qlstWZw811fcrZWhRYCBDOXn6goBlHwLAA?=
- =?us-ascii?Q?CfT9Vik85dZDZ3zT9/0XzcmbPC2Hx+rtUeCvDZrh5ldxUKm7lDHg66Gy88/H?=
- =?us-ascii?Q?fTZcahEcYlySfFC735X8KZ19u+gl6mJfml/8amNaZfLbC55yIH0BjV3Ek7Oq?=
- =?us-ascii?Q?hMaNqsArlMnqDqdpehgw20g6689IV2fo/G67wOFpVhzbyeTzUydR53XcKFLm?=
- =?us-ascii?Q?xgCrlcSZPOU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?vPKdVt0EF3OAmJDDSZxa8ir969/pLJjox12Ey9Cdx793rIF4q4KO50UEvZMi?=
- =?us-ascii?Q?8JHbN/sPKBcEDwf0aAYlf8kxxskP+cJG9ui/FqpDKBAHe4puG9l6IvJhm13z?=
- =?us-ascii?Q?nse023TRl2VLMC+iE9hnoy/DqD3NIQS3gF9Na0dnvuTaYBWS/rycsAJBuzaw?=
- =?us-ascii?Q?SUpsDoLnqCf+1fPiuHw14yaCscqk6f+4Gk/JmjFK9yl/zZEk4GUP0D1JugP+?=
- =?us-ascii?Q?puIUbgp8l7Jfzjozv3xfjI94840cqJ44g+VuSRTyrd0qF/2IZcfolEeS/WA/?=
- =?us-ascii?Q?W+OOVoEtY4rvzhZgXNCufzddeBNjwfUu2wQqD+whNphyMZFMnDzQxwaWcyM+?=
- =?us-ascii?Q?sRn7dBH3gKisPKdlCZocfg559YvzpWS9huT8uxW7hRWce2Civ9dJrFrzL3my?=
- =?us-ascii?Q?PnVSISSr9UctE4FCsGCXq1ONA7n/4359AQtGg4crVBPGnT/MBXnu/pGImLu5?=
- =?us-ascii?Q?ohg5NI8NvJJ35cYE2bO6AclQ9De8FDHDPVhmrc++jJm/gOuaqRBQ+nXYjfeu?=
- =?us-ascii?Q?BZrflrPINQKEbqK/xbGPA/uU0Ur77DXpv5iX9BK8WQKeE+83pfebVtCB9KNr?=
- =?us-ascii?Q?sJYTUd6z99F1tuup/bYr+vlZFgnz8XRvGE7U2JKm34GBrwsjqfMxa8dLqnzB?=
- =?us-ascii?Q?P1vELcGaiDT2qAAwqVr2UjP3misRB7jezdPXYd3mVlaUpVHrXt01x4ghsqXh?=
- =?us-ascii?Q?l4hRKfrrDqYVS7KSghvxJAG2XrxRYZu6baZ0DgJvoS0gu3Vr/7fAiz24x0Ii?=
- =?us-ascii?Q?RwKLh9LKWprGMKz4tE76DrgsdHgX+P5+Cgva9cjJ4flQwYonjg6Au8YYvg10?=
- =?us-ascii?Q?nLDOfLTJDwlcld4TxHCOCrpNtYYibjkF16MmnbcRHkXjhA968o9JKoWxGDl+?=
- =?us-ascii?Q?Mnb+WhJSDfUMPBOFh9/Z107XabeKC30xbOdp0J3Cr5lu8iQAbJjglIealphB?=
- =?us-ascii?Q?2jKvLpv+RvbPuYWiHhoqdT/EJ2J/yKQhphIO6cllcAqYmuBhKkt+4K9inj8L?=
- =?us-ascii?Q?LBzRlgHMX8QiQyBAvtZWL/2d806Qe1SmJKWZ6HYFWi3pPYtUzmdDyufbExSK?=
- =?us-ascii?Q?mgU82QL0L6DFsq6QJT5UMXmluEQpSB2HLUQe5oAl7aCQENuP6u991Nepgw/m?=
- =?us-ascii?Q?JE7SNC4KgvIu2PwZMmBHo+aEIN77xzyP676hqC3TQEn/OzD+W1OOCqy4CYxH?=
- =?us-ascii?Q?X+3ENW7jq5tV5TJOZ7PhG7rMVHD2nr6ww+f5HRgn1oe4rwf7LUbx1JJOloVL?=
- =?us-ascii?Q?LrUHQt7GYKRvmkpUoqy5eox1ROoryhAvorzxTKcL70nfyXAChUeNnukHB3NL?=
- =?us-ascii?Q?x3ZW6G+9zurwNKiXHvM2Fa81NKrE+5iZw2Nb22nMLOOXCxSZlSl4A1PLyTFh?=
- =?us-ascii?Q?i0HAgfvoz8K9EjM22gl5mlc35cua8sJL1YI5Jhy48kzXcNVXLZRJz0ZRZmMr?=
- =?us-ascii?Q?2tuPszX8qwrjrDsvuOfTkbvbiOa7GcYLqpvyzpiMfYXOPw9Kxl87P4ConChp?=
- =?us-ascii?Q?DrnIjSPM9wuoZhWaIi0Z7hxpN0B7JlNwFfK5uGAgt8Z0KuPK2+Cq/KVwr+Rk?=
- =?us-ascii?Q?OyBLezP20ihKBiYMu766AzM2QF28CYajzWXyR8my?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 95e60f47-aa00-4ead-126d-08dddba4fbf6
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Aug 2025 02:39:40.5784
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6WxREiRA7nB4rmHAqk3+5q/d0/FtIfd7mfL6euXL+ZEdQRNEV6eOCVEsCBFmaY/3
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7226
-X-Rspamd-Queue-Id: 8D81A40002
+Subject: Re: [PATCH v2] mm/page_alloc: simplify lowmem_reserve max calculation
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@suse.cz>, Ye Liu <liuye@kylinos.cn>,
+ Johannes Weiner <hannes@cmpxchg.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20250815023500.36893-1-ye.liu@linux.dev>
+ <E5434A0E-3125-48C7-BD25-185CDA4D9FAC@nvidia.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ye Liu <ye.liu@linux.dev>
+In-Reply-To: <E5434A0E-3125-48C7-BD25-185CDA4D9FAC@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: nbobt5br1wuh5ktnzhah73ra1uj8j44n
 X-Rspam-User: 
-X-Stat-Signature: ac8nhhyt9s9n5icynj6843uatc8o4iny
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1755225680-404208
-X-HE-Meta: U2FsdGVkX18bws3tQ8RAF2MoG/cBHAMhT6anjRJsG7rVVTWnLHr/2lbMjT3rws41/k31R7h2sAtIc/JXgzb7nBA75P/IyGpdSaTfCbCilySpDQaLVt9PPOGXe8WmWD36u9G9E1ITYUgsFOVJO4lxPGj013dGon2XaPw44lEGoQxt0WoGQmUhVj9s3tOYkDTghW+9U0KlynxhP01j2RKVLSjLiBp2mm24kksc+imGI8H3rajsyNlYJocEhggocfWyuUFfd08OpTGIBGqfmm4pZR4qWzL5y4fzHKQXil7Ic1owbMylNO6CCDvUTiZ6q1XYv+SBngpjKW6m0erAeVuyyUnyY67V7MlnLXrZ6uXBS0fUouqPFXrBJwKPzVh4XAKtxS8OUIepCHWbcEihP3ZVbJY4WVlThewktJ31Lnn2iIrvz0yA0NddXg4fcVlFjUYmIuyqoCjppKN3GpyoHSz/+7JZ3BBRO4wvAMhrGZXd2y+why1FvTwt+uRffkXZKT9MEpollIrLgPgaaFowYex9hRXdkeZWyx0VYK/EJJOWsbs/RpJN7QoIy3rdhMnLmr0amf3T4YB3iufAr3rTDwS0IZ+pG+Wp5U52CiVAYXqoJnOi4JJsBA1vS4/bOAwLqHCWSh2hjwtK2lUsZaUSPji+BpBYd8+69qX34FDsLTn3LLztRoQP4t9OqsnhbDe8Na9CkpLtpFSERZ8TvWSXz7IMe4da9kLGOpoL9q0t9lTheD69YFUJXa6pYq+EmXSsb3m2i7p5FyDCCM1vYYjd7axFtGRSEN+59DlOk4MLCd1mfEQN4Ws605+pdr1CSdTe1R0D8xRB/lVSzHWLkxoeaBSPEwUADz46XFoatDlYfhwJ89efyusl3tmcxJKFwgfDDgidAQxvWDt/J30gLPUXEqRRPTbvpC7vLj9byPM23KobTvlt7BrJT5spmR3DqqAtRyKUrWqJflgNyjuQMk//aLk
- 55lmYLcn
- L1KTbHOqCr1jvmsLG5fcn7ApV+zSvyNCBQwW6Qm0/gdxEPeWHZhYKg+QKmI5rXZVMgFIDkWbe14v2Z0MJgSDOJbNZ+G2q4cm5q3L/G4RCXxW28I+RXsCe5sVObeaJ+UZ26EY5LaAgzFeuIiRqueUe9a8g3Capvk/3pRpMufljCqAN3pM6gT53dJBZuIXJp309P9UTAASIXMUPRcT8cazXG0VXIZGAD57r38eROq95/ZRWiY68mVqsZ62shKs7tW880LmULsX7MIp623D9jIea+AemYRfk0Z3wp2o2vyndJn4aUWerRFiFWUVHCxDrG+3NDWmnbG2scXaBPemR8j92ZbEZ1eyZZAWCOdSg7aJ8dxna/VKSCsjYgUm1htAlfqAQDTa7cNstEbJM15C1ZUaymFmOpIPlLPDLnpvK5VDH6bUyxWQYfAk2IGJzynV+nq0Iqrp1+yRs+yt4Lo6k7LBK20TqufHTe3RUfXUBUazSkrLukdOm3IbumroVG1EYndlKyEwCZ8zs3E9J86+4Oakh/WJGOkOAa0y5El78XUB07fFvDN3mr91TwIWQtkEm3GP03hp5Bdk8HQibe46BgztnZEv/rNqbIPugkMBK
+X-Rspamd-Queue-Id: 6A5C61C0006
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755225684-536618
+X-HE-Meta: U2FsdGVkX19DQg8TObDYqG2cN/oo8KsHeQOcD7BoVoQDcGPfanptAo16G67Uu4uvRhwt2RfKo3ykjjpudGhjQhJOEglJePsl9kqJXx5gt5pTAOaQhIgRwq9RbKRaCEP5wIm2ELbWqYVy4sPr5PtYyONhRGlXqb44xxULfYQvSsKImHK4YM8VRe9odx6dXCxo6r9cBV6olzjn/inYQfA+V0rZM+E7ccOJm7+Q0Jup87+pQY38WxXfHNx4wrVykzmsDjBlhPqeODLOnd2JNeHTRp0B5je3rSzNiIlNalJDo+B3XkBV49wAq9ra3wmf7iYj6yMtvqOcHuR6hashR5kdZoiV0Ml8GU5cvxqEkAMetwXRLmbbvEKahI5GAyQkbatEUU0JXt7VUr1SuozCP+rTDlL34dRhYVShpTg/3e5yIAdBS6ypEC4X9WdeF1HaYcTLQ69ioivmeYrATPGNSzcjtQyXgdFfQB3pV0lLXEezuNl8Jfx33Uj6SpOMIS7blXyuNByDYanV7HKyxMuD7kbRUJUUrQgMstd3g0o7vZC6opVtiSTn9zvLRWo+T6cDhz04n8QuDxuKDmmAc8IVNEACS7z+dbnLSHJPhOpgywtgZXUJ8zFLfRFI/c6mqz4plXG463J2mpJXsaAd7fmGtx1OVhvNaLCJjpyt3ww7KI0Sy+dzWfiELdpohHMBLLK3K4cLTxDR2jB6XN+LRar9sd5KevjqjRcBQgvS6gL5wqLIy+vzRmapX/Fl4zCbTNv4Y22qp2AyB12d1GykZzEKf07PrIeXl38gDdSkEjxrUmGLcH0DxOhUn8qObMbftOHS1COiE1HJK90yNK+uzBOg13LjKN4zEKKIolEeTeh0wOMRuO4mJIYCbvddqfCV6Ew4LbhxrQ1PNIVKciCG4pSm6ZJAMPx/9saCGivjmNjUk1V4RsteID/UDNPAbLYD3ZzKsT9aI1QraoRGeb+x6e5UfRc
+ qiGXMLla
+ MCNMnPK1AHkbS2y8FrWhhjMBuLZbHNgff5+4HUTlt039H0uMSZNjM40ata/dQX/HM/b5d4TplEHKQ6ML64vAs6xSE32ane8TWmkjE1DK64eTHT0WPKQzYnICDVAv7PTXvBEYRPWYRLfCw/IKbbMXY6PuEJQ1e0o5PjbFSCpVAxu2tlHM317dVTtbXDV9eQij0k7j81wrz7XPIXiL/R4clYNDWE0B8F2NWtBs8QV6kW8ZpW+comU5BZt1mLrbl3m4zRkP0DnixONANvRoSbbB3cABJkx4iPrwt57ACHXCyBuFhEdxh67Oki/yiIZokJ0+Mzi/+ScT0nFa3C26LbxiMDtMTdKCcqmAW2ckSSKNj6G7G+qm4d15BCcb4fARtEdUqYCuQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -196,232 +93,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-and rename it to is_backed_by_folio().
 
-is_backed_by_folio() checks if the given vaddr is backed a folio with
-a given order. It does so by:
-1. getting the pfn of the vaddr;
-2. checking kpageflags of the pfn;
 
-if order is greater than 0:
-3. checking kpageflags of the head pfn;
-4. checking kpageflags of all tail pfns.
+在 2025/8/15 10:36, Zi Yan 写道:
+> On 14 Aug 2025, at 22:34, Ye Liu wrote:
+> 
+>> From: Ye Liu <liuye@kylinos.cn>
+>>
+>> Use max() to find the maximum lowmem_reserve value and min_t() to
+>> cap it to managed_pages in calculate_totalreserve_pages(), instead
+>> of open-coding the comparisons. No functional change.
+>>
+>> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+>> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+>> Acked-by: Zi Yan <ziy@nvidia.com>
+>>
+>> Changes in v2:
+>> - Drop unnecessary braces
+>> - Replace "if (max > managed_pages)" with min_t()
+>> - Link to v1:https://lore.kernel.org/all/20250814090053.22241-1-ye.liu@linux.dev/
+>> ---
+>>  mm/page_alloc.c | 9 +++------
+>>  1 file changed, 3 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>> index 64872214bc7d..2617fd2f4b73 100644
+>> --- a/mm/page_alloc.c
+>> +++ b/mm/page_alloc.c
+>> @@ -6235,16 +6235,13 @@ static void calculate_totalreserve_pages(void)
+>>  			unsigned long managed_pages = zone_managed_pages(zone);
+>>
+>>  			/* Find valid and maximum lowmem_reserve in the zone */
+>> -			for (j = i; j < MAX_NR_ZONES; j++) {
+>> -				if (zone->lowmem_reserve[j] > max)
+>> -					max = zone->lowmem_reserve[j];
+>> -			}
+>> +			for (j = i; j < MAX_NR_ZONES; j++)
+>> +				max = max(max, zone->lowmem_reserve[j]);
+>>
+>>  			/* we treat the high watermark as reserved pages. */
+>>  			max += high_wmark_pages(zone);
+>>
+>> -			if (max > managed_pages)
+>> -				max = managed_pages;
+>> +			min_t(unsigned long, max, managed_pages);
+> 
+> Should be
+> 
+> max = min_t(unsigned long, max, managed_pages);
+> 
+> ;)
 
-pmd_order is added to split_huge_page_test.c and replaces max_order.
+Haha I forgot to git add after I modified it ;)
 
-Signed-off-by: Zi Yan <ziy@nvidia.com>
----
- .../selftests/mm/split_huge_page_test.c       | 90 ++++++++++++++-----
- tools/testing/selftests/mm/vm_util.c          | 13 +++
- tools/testing/selftests/mm/vm_util.h          |  4 +
- 3 files changed, 84 insertions(+), 23 deletions(-)
+> 
+>>
+>>  			pgdat->totalreserve_pages += max;
+>>
+>> -- 
+>> 2.43.0
+> 
+> 
+> Best Regards,
+> Yan, Zi
 
-diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
-index 89d3dc08fe4c..80f718ca21c7 100644
---- a/tools/testing/selftests/mm/split_huge_page_test.c
-+++ b/tools/testing/selftests/mm/split_huge_page_test.c
-@@ -25,6 +25,7 @@
- uint64_t pagesize;
- unsigned int pageshift;
- uint64_t pmd_pagesize;
-+unsigned int pmd_order;
- 
- #define SPLIT_DEBUGFS "/sys/kernel/debug/split_huge_pages"
- #define SMAP_PATH "/proc/self/smaps"
-@@ -34,27 +35,71 @@ uint64_t pmd_pagesize;
- #define PID_FMT_OFFSET "%d,0x%lx,0x%lx,%d,%d"
- #define PATH_FMT "%s,0x%lx,0x%lx,%d"
- 
--#define PFN_MASK     ((1UL<<55)-1)
--#define KPF_THP      (1UL<<22)
- #define GET_ORDER(nr_pages)    (31 - __builtin_clz(nr_pages))
- 
--static int is_backed_by_thp(char *vaddr, int pagemap_file, int kpageflags_file)
-+static int is_backed_by_folio(char *vaddr, int order, int pagemap_fd,
-+		int kpageflags_fd)
- {
--	uint64_t paddr;
--	uint64_t page_flags;
-+	unsigned long pfn_head;
-+	uint64_t pfn_flags;
-+	unsigned long pfn;
-+	unsigned long i;
- 
--	if (pagemap_file) {
--		pread(pagemap_file, &paddr, sizeof(paddr),
--			((long)vaddr >> pageshift) * sizeof(paddr));
-+	if (pagemap_fd == -1 || kpageflags_fd == -1)
-+		goto fail;
- 
--		if (kpageflags_file) {
--			pread(kpageflags_file, &page_flags, sizeof(page_flags),
--				(paddr & PFN_MASK) * sizeof(page_flags));
-+	pfn = pagemap_get_pfn(pagemap_fd, vaddr);
- 
--			return !!(page_flags & KPF_THP);
--		}
-+	/* non present page */
-+	if (pfn == -1UL)
-+		return 0;
-+
-+	if (get_pfn_flags(pfn, kpageflags_fd, &pfn_flags))
-+		goto fail;
-+
-+	/* check for order-0 pages */
-+	if (!order) {
-+		if (pfn_flags & (KPF_THP | KPF_COMPOUND_HEAD | KPF_COMPOUND_TAIL))
-+			return 0;
-+		return 1;
- 	}
--	return 0;
-+
-+	/* non THP folio */
-+	if (!(pfn_flags & KPF_THP))
-+		return 0;
-+
-+	pfn_head = pfn & ~((1 << order) - 1);
-+
-+	if (get_pfn_flags(pfn_head, kpageflags_fd, &pfn_flags))
-+		goto fail;
-+
-+	/* head PFN has no compound_head flag set */
-+	if (!(pfn_flags & (KPF_THP | KPF_COMPOUND_HEAD)))
-+		return 0;
-+
-+	/* check all tail PFN flags */
-+	for (i = 1; i < 1UL << order; i++) {
-+		if (get_pfn_flags(pfn_head + i, kpageflags_fd, &pfn_flags))
-+			goto fail;
-+		if (!(pfn_flags & (KPF_THP | KPF_COMPOUND_TAIL)))
-+			return 0;
-+	}
-+
-+	/*
-+	 * check the PFN after this folio, but if its flags cannot be obtained,
-+	 * assume this folio has the expected order
-+	 */
-+	if (get_pfn_flags(pfn_head + (1UL << order), kpageflags_fd, &pfn_flags))
-+		return 1;
-+
-+	/* this folio is bigger than the given order */
-+	if (pfn_flags & (KPF_THP | KPF_COMPOUND_TAIL))
-+		return 0;
-+
-+	return 1;
-+fail:
-+	ksft_exit_fail_msg("Failed to get folio info\n");
-+	return -1;
- }
- 
- static void write_file(const char *path, const char *buf, size_t buflen)
-@@ -235,7 +280,7 @@ static void split_pte_mapped_thp(void)
- 	thp_size = 0;
- 	for (i = 0; i < pagesize * 4; i++)
- 		if (i % pagesize == 0 &&
--		    is_backed_by_thp(&pte_mapped[i], pagemap_fd, kpageflags_fd))
-+		    is_backed_by_folio(&pte_mapped[i], pmd_order, pagemap_fd, kpageflags_fd) == 1)
- 			thp_size++;
- 
- 	if (thp_size != 4)
-@@ -252,7 +297,7 @@ static void split_pte_mapped_thp(void)
- 			ksft_exit_fail_msg("%ld byte corrupted\n", i);
- 
- 		if (i % pagesize == 0 &&
--		    is_backed_by_thp(&pte_mapped[i], pagemap_fd, kpageflags_fd))
-+		    is_backed_by_folio(&pte_mapped[i], 0, pagemap_fd, kpageflags_fd) == 0)
- 			thp_size++;
- 	}
- 
-@@ -524,7 +569,6 @@ int main(int argc, char **argv)
- 	const char *fs_loc;
- 	bool created_tmp;
- 	int offset;
--	unsigned int max_order;
- 	unsigned int nr_pages;
- 	unsigned int tests;
- 
-@@ -545,28 +589,28 @@ int main(int argc, char **argv)
- 		ksft_exit_fail_msg("Reading PMD pagesize failed\n");
- 
- 	nr_pages = pmd_pagesize / pagesize;
--	max_order = GET_ORDER(nr_pages);
--	tests = 2 + (max_order - 1) + (2 * max_order) + (max_order - 1) * 4 + 2;
-+	pmd_order = GET_ORDER(nr_pages);
-+	tests = 2 + (pmd_order - 1) + (2 * pmd_order) + (pmd_order - 1) * 4 + 2;
- 	ksft_set_plan(tests);
- 
- 	fd_size = 2 * pmd_pagesize;
- 
- 	split_pmd_zero_pages();
- 
--	for (i = 0; i < max_order; i++)
-+	for (i = 0; i < pmd_order; i++)
- 		if (i != 1)
- 			split_pmd_thp_to_order(i);
- 
- 	split_pte_mapped_thp();
--	for (i = 0; i < max_order; i++)
-+	for (i = 0; i < pmd_order; i++)
- 		split_file_backed_thp(i);
- 
- 	created_tmp = prepare_thp_fs(optional_xfs_path, fs_loc_template,
- 			&fs_loc);
--	for (i = max_order - 1; i >= 0; i--)
-+	for (i = pmd_order - 1; i >= 0; i--)
- 		split_thp_in_pagecache_to_order_at(fd_size, fs_loc, i, -1);
- 
--	for (i = 0; i < max_order; i++)
-+	for (i = 0; i < pmd_order; i++)
- 		for (offset = 0;
- 		     offset < nr_pages;
- 		     offset += MAX(nr_pages / 4, 1 << i))
-diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-index 6a239aa413e2..18b7cb51fc56 100644
---- a/tools/testing/selftests/mm/vm_util.c
-+++ b/tools/testing/selftests/mm/vm_util.c
-@@ -338,6 +338,19 @@ int detect_hugetlb_page_sizes(size_t sizes[], int max)
- 	return count;
- }
- 
-+int get_pfn_flags(unsigned long pfn, int kpageflags_fd, uint64_t *flags)
-+{
-+	size_t count;
-+
-+	count = pread(kpageflags_fd, flags, sizeof(*flags),
-+		      pfn * sizeof(*flags));
-+
-+	if (count != sizeof(*flags))
-+		return -1;
-+
-+	return 0;
-+}
-+
- /* If `ioctls' non-NULL, the allowed ioctls will be returned into the var */
- int uffd_register_with_ioctls(int uffd, void *addr, uint64_t len,
- 			      bool miss, bool wp, bool minor, uint64_t *ioctls)
-diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-index 1843ad48d32b..03481ca0a1b4 100644
---- a/tools/testing/selftests/mm/vm_util.h
-+++ b/tools/testing/selftests/mm/vm_util.h
-@@ -18,6 +18,9 @@
- #define PM_SWAP                       BIT_ULL(62)
- #define PM_PRESENT                    BIT_ULL(63)
- 
-+#define KPF_COMPOUND_HEAD             BIT_ULL(15)
-+#define KPF_COMPOUND_TAIL             BIT_ULL(16)
-+#define KPF_THP                       BIT_ULL(22)
- /*
-  * Ignore the checkpatch warning, we must read from x but don't want to do
-  * anything with it in order to trigger a read page fault. We therefore must use
-@@ -85,6 +88,7 @@ bool check_huge_shmem(void *addr, int nr_hpages, uint64_t hpage_size);
- int64_t allocate_transhuge(void *ptr, int pagemap_fd);
- unsigned long default_huge_page_size(void);
- int detect_hugetlb_page_sizes(size_t sizes[], int max);
-+int get_pfn_flags(unsigned long pfn, int kpageflags_fd, uint64_t *flags);
- 
- int uffd_register(int uffd, void *addr, uint64_t len,
- 		  bool miss, bool wp, bool minor);
 -- 
-2.50.1
+Thanks,
+Ye Liu
 
 
