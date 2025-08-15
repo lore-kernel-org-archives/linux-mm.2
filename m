@@ -2,99 +2,99 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 176A6CA0EE4
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 09:09:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 85E71CA0EE6
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 09:09:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 74B17900236; Fri, 15 Aug 2025 05:09:32 -0400 (EDT)
+	id E515E900237; Fri, 15 Aug 2025 05:09:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FBBC8E0002; Fri, 15 Aug 2025 05:09:32 -0400 (EDT)
+	id DD9F48E0002; Fri, 15 Aug 2025 05:09:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59C67900236; Fri, 15 Aug 2025 05:09:32 -0400 (EDT)
+	id BDE9C900237; Fri, 15 Aug 2025 05:09:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BFEA8E0002
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 05:09:32 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B8828136F35
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F50B8E0002
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 05:09:33 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 614225BB73
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 09:09:33 +0000 (UTC)
+X-FDA: 83778418626.29.CCD0E92
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 57DCD10000A
 	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 09:09:31 +0000 (UTC)
-X-FDA: 83778418542.19.E2B9FE3
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9B5E120013
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 09:09:29 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=MR6Ndyw6
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=GMAUQzKJ
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755248969;
+	s=arc-20220608; t=1755248971;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rcnhHIb6eNEwdjxZYrigpF4SQxNgYqLi3t6s+DqhmIc=;
-	b=eDLeKXXJpqGT3WTiulF6Go1ISX6c0LfxYRqx/RdYQDOIS9oV8sNZYwoV+mKumF0L6cNEsQ
-	WUng5/+QYvR4dydf3clNM32NSVOtbXTQwNIVqBl+83OeCUZzmxx/Jofi+Zf4HCFivtyP2m
-	soMFA13GnyCmdO13LIFweKI+szKO2zQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755248969; a=rsa-sha256;
-	cv=none;
-	b=iKb8+MHIsmGXKydgCHUcXR5S3jIlgsNPmCbUutKolc3sfgnU2IT/F2dkUcu8L/XQbQsXiE
-	sH95iBorlycWlARjmScTp5glaeqouxP4Jd7PJtPJ3K+5pC5jib+QxtjNfJiUN6TwN7Lndv
-	8bimrqPllFVVZSAqc63pWGmcmpWCFlY=
+	bh=Sg6yGo5rWgbm4nmbYQkhIExx2oT2rNxy+gO58coC/aU=;
+	b=mtzrcWyEVDgvDrsFo82QQABljyu1eW+1Ppm9rQcKcWyboC4hscATY631SFkcy+4QI7Bc7o
+	Yrw+EZ93OILs3WRWtOR4MfGZJNTjEoL1zjN/kd3Z5KGwO2LPO/dUF9f1dbtXRXZRtLb/Jp
+	NYxLb7S0htCbwT/PvYMpjpqT1ykDEns=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=MR6Ndyw6;
-	spf=none (imf03.hostedemail.com: domain of brgl@bgdev.pl has no SPF policy when checking 209.85.221.54) smtp.mailfrom=brgl@bgdev.pl;
+	imf14.hostedemail.com;
+	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=GMAUQzKJ;
+	spf=none (imf14.hostedemail.com: domain of brgl@bgdev.pl has no SPF policy when checking 209.85.128.44) smtp.mailfrom=brgl@bgdev.pl;
 	dmarc=none
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3b9d41bea3cso1562876f8f.0
-        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 02:09:29 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755248971; a=rsa-sha256;
+	cv=none;
+	b=pKD2k65sqCRzTLqot/6222tO6l76QhmyOdgnTJZ3sV3NU1c9vhYxPg3UyqKyOVpnq9e3DV
+	dkZPEuLhedBDFBAS31ioOIDihHTW3f49icdYT7MqpIVtq7hLpqBdwsi+qBK6+Ow8JeN7nH
+	EVIyssjquuDbKSI9x9eTiARLZzRtOVQ=
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-45a1b098f43so11390505e9.2
+        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 02:09:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1755248968; x=1755853768; darn=kvack.org;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1755248970; x=1755853770; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=rcnhHIb6eNEwdjxZYrigpF4SQxNgYqLi3t6s+DqhmIc=;
-        b=MR6Ndyw6GE6UJkZVflieqfMmBeM4Q9bU3jB56GIdhtG+PiItdXlOvrez3Vgz0mcQ9J
-         Je31p80EoSwzhAgSyJvwj78Y6sarepcJ+6D8OJMpXlKrAikiqA1fBJYIm5hpg1xp28AS
-         Qq0ik46PSr3uzounTHYshyam1OsAlYl+KIH8+akd5UM/2PJHxiESFpO3q5iIAPY5U8mn
-         YNFX8FdUgVQLvExctH4tS8XgE+OVYiNmXwR9n47RrJDsX/QC3iVaBCp5lDH/z1k8a2B/
-         d6xZOUkBoJilSABe/52W678q12fKdrZiCRHyqpSsXjxyg4w7/LC0n8451m1A+Yr4xOfP
-         WLhA==
+        bh=Sg6yGo5rWgbm4nmbYQkhIExx2oT2rNxy+gO58coC/aU=;
+        b=GMAUQzKJi515V07vOlY+8c/EFbP5GByrlpeFViwX1Yik+FJmmkYIqDLt5KhJ/FZ6sX
+         DQXWd+4TfAF7nUxL5LXtxXOe+GglYZJTjcxvr88Nvus3qmtSQxIDnw090EyLEn+LyylN
+         jJesZHt04fVIuhoZBgCBckXaZNzw2WY2iTNC0JMkTpWYjuXCF7PDAhDZ9hjxfDG8/k0f
+         CUj1yxa/AOcYxBM0b/lSVute54aKDnff138QcKRe3ocP6Z9bjHG6m+6fXW+Hmzjh9X8x
+         eKZVaNIh4+3hdys/hZahtkAm2t0a/OLmgMvMTs7pYYFiBWvqMhGOx4MLxpuZjCM57feL
+         ZBuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755248968; x=1755853768;
+        d=1e100.net; s=20230601; t=1755248970; x=1755853770;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rcnhHIb6eNEwdjxZYrigpF4SQxNgYqLi3t6s+DqhmIc=;
-        b=UAfec8jqJc+d+pyhVyXQNhfLQZQOOBixHX1vI5oqAmT+fl/L+Pe5gvNC4H5hM2WdT1
-         K4e0llBv3JQZOM5M/8zOhkOLYiUF6tFy77u+FLskYPn+mgXPVcQ86zR8G/pqWjG1VFqN
-         tnvVLDT2CYbf6XmLF4sEcaKxE6D5QZ5JjUP+WEVnOoQIyvE3vjeD/6Gsx+WQgltTZgf1
-         pmcKvglq7e2OU4pojl49NZjYDMuQT0rJQhp8xsSB9qmUW/3WBpEzpFk2ZvX3o2ANMwTL
-         rxufHFzMX9JBCRWE69vja7HJz1bZ0NWyqfBBj5QQAAU6gwIA1PQjWNFO5EXqYD2TBVc0
-         nSjw==
-X-Forwarded-Encrypted: i=1; AJvYcCXxNPK3L4ZwYAc4VEv5LSmynFIUCp3MuAGg027oV1Us2176tcjr/frP12Hor2Nx/2Qq1P0dEs6NQQ==@kvack.org
-X-Gm-Message-State: AOJu0YxSdK0tNgjPFj2mhr1eVJe3WvAkV+5miDk24d76rpVG+lrnM/MG
-	v+rXWJ099EbBDppM+mqzZUrKQsS3URqpJfHBAQ7nLsg25Snihp2b3cO8PC80s1RLRhY=
-X-Gm-Gg: ASbGncsrB9mEO2osV05LtkQHxrEWDJYGXPPhURw6lc2uvZC3Cnt8vW7Mxp+NDeqoUtT
-	QbZrggbyT6dNJ9+BBmgCZBBFZZAmTX2tNxrp6WJq3Iqxm+hNvWOf3cS0xFlLAL77tixFl6/fN4f
-	ow2PDYeFNBXSC0D2DzBVOmBLV6P3CevL12i5AIHL4YCTNvl4i7hkZyMKKg9CrkBs0tdI6M5qgOX
-	0QmVooHjuVagSmLXR5Z7LhdH/zMVVReloZDoYTWnKdSOjguqXZXQsuFU5WvXvgx/8KilaKstwrW
-	JFrblRZBS8m1rKTfVQp4GWkrwydoMr5yN5jby5A9YF6Ivw82rNuzSiK8PVSQV9ZU7fluf+MZXOu
-	VcPVVxE8okAGOoIFq0w==
-X-Google-Smtp-Source: AGHT+IECk334T6DAR4a8TS6EmWlh7UZ1cAoTGRWibGBdabTMKZmowz1e9Ft1rEqZaj0/xx+92lKCEg==
-X-Received: by 2002:a05:600c:3596:b0:458:add2:d4b4 with SMTP id 5b1f17b1804b1-45a21803ebdmr13438335e9.12.1755248968009;
-        Fri, 15 Aug 2025 02:09:28 -0700 (PDT)
+        bh=Sg6yGo5rWgbm4nmbYQkhIExx2oT2rNxy+gO58coC/aU=;
+        b=YHqvaZOsC/9YOQdBpTkMxlUisNiZmgEGXjED67muGrw16QKjpeZveQ0pCnlEv/Fv89
+         QT4WfWLO1Z2Q6ErxOG6FjU4hcFabUa/9nLenYEB9c0k6TJHoPSQSghyoSlaO1PGzmuG8
+         ujZnAxgYgsuD5CNGFpzkpnjRFQgdCRDBH6rtpooHbdwkNcou27JmgXqVnZjoJU85pei3
+         hYSSuzOIwA2Jw+FOw4PmvzRxOeU6no78yAsOb64QEApgZ5Rm8XSWolvtR0KdHi2Df1Df
+         Mc0RlDpiPyRDybTM6jeEjqg9YaWc3emzweIA+niWzPEJ1xjboj6VPE1mo4oQAhE1d6tt
+         ieWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXgDkBWORAAK9nGCzBgTm8Fp/qRyiu0dY/rwXKLbF+rcrreaRZBDCyW9imjyLwsPSfVNTDjrLWKhA==@kvack.org
+X-Gm-Message-State: AOJu0YxwVjmP1gCXLdYnPeDbItMUcsKeR9ZACxeO4AfHg2CLLHysGBOX
+	9K5FmLqFDSXTbsXLzVSv2ftLQH9iB85lD0kUoh0TnBxshGtGr+vLTa0iA+OHBidh6Uc=
+X-Gm-Gg: ASbGncv3XZju5B/+ddTdftStWJZoq5s7ak9KQ0uBE6T1V6BtexHssKic7z6odUesFBn
+	fYL8Ugf2Exvkb6Dv1drcQxl0nXLKPz5C7Ml7Zkkki82YTcWnc95g9OwrRh+jASoq4ggAjXme9zB
+	5Z9mMfUlqTKEtvmbTM+g4o2Lr2kYKVbQIstwSxVjWDY3EpOOMpZG1RlYtJhefZty73AKIvuHXlv
+	3PFOM9jihXfjYuLkzCtpNYaX3WrWHyQc379bL2kCqZEivQWIefkEbGrur3ai3l46+JebvrKZ/7v
+	YlHFgMsv6X7ZfCo8txY/95K+XVZa7YtZBKRJcqSIBNW4XuVDddOBlA8g/WCSqKZugtUhppIikI2
+	0HWWzQH8AosZI2TebDw==
+X-Google-Smtp-Source: AGHT+IEuSRLd3B0h4SE3RR2S2yHycoqFTSLj7jDNuZgFZPq4txV7qE0+ov1t4k8bQpePbvf3meSvDg==
+X-Received: by 2002:a05:600c:5286:b0:459:db80:c2ce with SMTP id 5b1f17b1804b1-45a21e7f2e8mr9560235e9.7.1755248969664;
+        Fri, 15 Aug 2025 02:09:29 -0700 (PDT)
 Received: from [127.0.1.1] ([2a01:cb1d:dc:7e00:a125:bd3e:6904:c9f9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3bb676c9a67sm1205210f8f.35.2025.08.15.02.09.26
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3bb676c9a67sm1205210f8f.35.2025.08.15.02.09.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Aug 2025 02:09:27 -0700 (PDT)
+        Fri, 15 Aug 2025 02:09:29 -0700 (PDT)
 From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Fri, 15 Aug 2025 11:09:09 +0200
-Subject: [PATCH v5 07/15] pinctrl: keembay: release allocated memory in
- detach path
+Date: Fri, 15 Aug 2025 11:09:10 +0200
+Subject: [PATCH v5 08/15] pinctrl: keembay: use a dedicated structure for
+ the pinfunction description
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250815-pinctrl-gpio-pinfuncs-v5-7-955de9fd91db@linaro.org>
+Message-Id: <20250815-pinctrl-gpio-pinfuncs-v5-8-955de9fd91db@linaro.org>
 References: <20250815-pinctrl-gpio-pinfuncs-v5-0-955de9fd91db@linaro.org>
 In-Reply-To: <20250815-pinctrl-gpio-pinfuncs-v5-0-955de9fd91db@linaro.org>
 To: Linus Walleij <linus.walleij@linaro.org>, 
@@ -128,31 +128,31 @@ Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
  Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1867;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2974;
  i=bartosz.golaszewski@linaro.org; h=from:subject:message-id;
- bh=qPaUa8oAewMMgl8vCYU8JU6h4WrDoK89nonD2PTBKh4=;
- b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBonvk49vTvI4Yqki2vhfowvJ8itgBed07OfvWWP
- 1IW0D/2sAiJAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCaJ75OAAKCRARpy6gFHHX
- co8/D/9RViTI69yJDAM4EMnxpBHjTbkjgLCo5+12MdD6irQvlPH7WAMDEHdgXHTfPuZCBslRHDn
- F681CDNXek0ARfTKOVwzdElXzOuvo5lfXVhpGWSo6l/hIEvn/8FvOQKWjbblDOQBRaPA4kW/SsT
- PX0h2zSSKtBSPAgqPlNsj3Hrjk02z5swiKfVNby/Rf75Gmt3jrn1gicqYNy4XvAdvk8MfssoZ67
- ILV1I34DYFex70AWKbHeILC0np2n1j0JNkhqPrZW98Pb8Fs0D2ZBVUAWwSBYZHOTEJvcetF0ptk
- hgBOxHPAlBP1/ZOqzemRwR6dI9QFVOBr7WXCBrHngAGalo4je2J0NXKdLUKMdxskRm4eC4yalT9
- vRvVjU/79HbKWhgGWCMMx5Yqu4cn8xAgkTtnpB382uQCJA33DiwPkovDMv+sdXi6PT3XORi6b2C
- dw4oNnImVUmuboHfeuZ2yL1MBZjfbpanOwrJp9ctvS1yWQHZG5n42OosyJncBXExsKHd+EdepP7
- UdKsNk5KwjnxNWyAi4y2GVvTE9N8ZJNJlbjNuGv2CIE2tr7kd/JRzZaj8hvlYwXIdp0un3ZUhX8
- ut8bcXSn36AAFe5iXHWX0OLQHgarcKs4M1EDx+6cfYjBM8lnOjLezxbetYfeTZSYpZEZMac2O3I
- zIs9a+PBsdnaHXg==
+ bh=HD9TOJpRmpG6enieox3SLEnzfmanpdaE65mOB6T5MYc=;
+ b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBonvk4AelBkHWJWZSjBIznNV8JlLBDYLHWXKinX
+ +GiHJ5uogmJAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCaJ75OAAKCRARpy6gFHHX
+ codHEACM4UcW4XmQxoTdvJG0sbAVF+QyQHCaGbqkMyiyny6aH7RK2tq8Xl6yZSAoDRX9DIkdLsV
+ cjvfs0JZcnSCGBsxTN0eEICrrspOHQJRa0Wz7f9MKd9Mfp7PkVGQBphWEZafv185lvBfoQYn10/
+ KMtkOfMe5hOMHj/bH0r2Pc+DV6X5sEMdx/LSX4oRC8+cpTqF3s+mMLqSOrQN1alY6PnM/461gt2
+ eI0f1lIQyiWLUH6ciwIJP9DWMIWGmXQP+TPp+em65RkBCAYoqFmoeyXOlz2RCO8St5K6+fuqAFp
+ 5nFyEPiGfSr/wntSpNNNoZNz0fVOdELEgqJ0275bDqBW5cek9dhFtaO6MFMvPn1FGP7wpac46ie
+ ZX0acGHA+eBIISkExKYmPTBWlX4UNY3tLCaHgedPbnTVe/8blQMS+jtcmlT8N0vTDcLPocFUqVm
+ m98XIN8qONHj6xwZHnc05CyexQgealE1ZYeYBYHkpC/2FWyUzIpZ0dnN2HiEpj8H2J0+PoZ1l8A
+ ZguDBgwMeJJF1j0ZYFn4ZZKDu8zgJoZeGsNcp1BnOb0+ALnGFfMwsfTeOg4e6NiqXThqwizkUXp
+ 0ln7J9lak+xaWe5YElclyG7HeWIY7RLTvgOSJd+mhwsTItLmpI417ypQDquLMvaUrdEKVlQwWyM
+ 1H1INlqKY1Feo3g==
 X-Developer-Key: i=bartosz.golaszewski@linaro.org; a=openpgp;
  fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
+X-Stat-Signature: fejjx9x6jtm3yqyfy3m6zjefe8azopsh
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9B5E120013
-X-Stat-Signature: r5x8chom38kze55himb9kq9588p8y336
-X-HE-Tag: 1755248969-441486
-X-HE-Meta: U2FsdGVkX18k1uCsfG3a3L2btExHKCpOg7Tl8OBq2/DQo1fgpSCa+Kv51sWjHy7ZClSnQaKF98bvGHeG/tpu2/ePufiCH66NrnV5oKyzCmCU/ZdKkVrbh73nAgWIFJ+3MHj0I6QfMEO1u7kiQywg4DvbKAJeGeK5q6tGvQy2RuwgkJMjc3x1FubrTOo6FfXwn6T/8izOe69/HL0bwFllc/YxWwLuvN0J2A6Ka/DDGIE1w24slrBB4w66rmmVHqDui6eoYg7B2Z4PBQfzenU4gvzCc3cAunxlDBuZsXcWCG1jLwgz1mlTZuYl2fuIWQ+mBzulLVcE5dYwDgRzMhlr1aQPKn9eIlTfiPCtkeXSDHsjCokaGGvOJg49a7kXZc+8EGyusdRJFhxmdOCUGSd/4hPu3HpTOBfSY5rBywKR2SnRFWu9fSovzYsiHGFe4cgP4gpKD6Nv1XwcF4wabLZ1/oeuQrIONyA6gc06JQVi9wFn17S497lkgUCa930JT+EjdaJ+mKRT0iZC+cD8AEIuai6l7tFUZaEnfxBEV8kfWL8GccOjulKYo0IGCsv7ftfW/fm5TDFqf9232/UdOFkuet+B2cvm2weA2aQjkM2fDtfDtJyoatc4s29KG8Fa2V3BTIJY0gMizngj+XMcF+uXf3haxT1onbkVfyYzKjWaVSqRXbdopL17pA3u1HlPy8KQ/VlxgvzuSS81JzDlgPRonF8LFHdc3LzmzaZRlVax8orGWTkHDD2lc/u1r/JOyYQmEbfbyAWfTJ5GyuE8LV/2VACR93rmMJCiFwp2G0oxJJBVLvpXk7H9keSjYJx4luRVL2YMp/rfJGDa/jidqnM9pI3XQ/4xWU6c+a/+a0lTUoG+sdW7u+HTpd+7QzX6Ug5pSG8fEX6aAM2NawKph9BpUBSTVpoxcOL9Rl9b3bfLM7/Es3d7UrDmMqr2U02W4b+oqgixCXlvK8Uf+vkijZc
- 11V1pKRo
- 8DB41TjWk2eWT+QP4JaHKaNqW/b8hhqQpXNy795EwY44KMJZeFQYW4ejY0+nbQ+GFbOu0Wbb7zqkfXXi299Lfekgnr6VyyfuENwcp+ggsyOTEsbdGDDlPDFBB8/aBCKt+HkVQaRgLPjAXR/+Jk47AvlkGUSLehWqUDwatNlsrtRs0QtN/C6LiUGIXm84ca2nKEJrkzfHezkX22WwQ94CXUVy4T/ut+xUG0xzdbcxit+XZLNY/h7JhshBLoLqWu9F1XZbrm430cp9mfVWVZy39jq7/8JhButTw7tWGqlkT4WVNRy2hzWqoIxagfdhH18HTFt1vEqiZUc8Sgy+SvI2H1ydw7Y5WVTk+lCmNutG/8MGHvrWzzodJo0neLRQV8kg53zTstBpAgh1uxymgYUOsfq40SJI11cNRJI9GZXU+Ynn4c3x3Ov8vlnxpIQ0LnPS09RD28uUvKweb78GHNCfaxURDJDW6Yj82L/2tUXT+I3ttOgAKtY3qkMfzpUzP3IAMw/8S
+X-Rspamd-Queue-Id: 57DCD10000A
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755248971-572641
+X-HE-Meta: U2FsdGVkX1+JqjDmisBW16jNOG3VYAVNezhzafDNwFF4D4GD09H6OHGphJC3VUQiCKwzFCvwRB46NoBfIN+4/x8L5toSnq1ASw3dHFegxGsVxaftCMrufXxO0j6XD4MhVsEnZqmxwIIC+iDEf2+WiUGXBQgFrxddtIHmGBG5HeFidW/eDKdOvFeA6F1yZ0W+hEnz8onMCB2ZFFYcUqaEXv/M05PgpW9DhNq48RaMD4KAeGV11ww8lVriguYee+dMtV5RAhvHXySFFP3l4o+xEAZKqiNF5hHwdsv38yVkPawjiU0aDORFYDDZ9JQudkVVhQR2gq77nBYBnrLM5d07A1LPJzCWuA8ktFZBx7RHYjM9fFetZdLZYD639loWXI6iMIB720UQgj6wIUg3X2Bi8SMGZjiEO0U53/x1ojq7EQGS3ZjTXuIQ0GZ9jEX16PbHANfKLUX5OJlNfhFiuM6m+IZ+icwNWiQaD9rQMtlCHrmiqtrskcVC4xKYeF5/QaxS/9aO+kvJgklDrPu00ok6ywCQ1KhYqSc2Y93W//BETqDx5+x3T/NxvOWvtpnS7vgYc8QMpzfl6RVC9yNO0jb37b6zToQVKJpqPw5WjHxlVJdBK8L2SILs5WNNT2JHjhJcNOKAz6jsHnsotNxbzxqK5MybnbiYuqGKuqaS5yrQ01dnULm61tFIxZ/IY3YJKgjRu7YhFZX3e9ofGvDT7XDPqYilQG62VyT0VUshDTY8XkRlBDMV0Ad6JtJA+RnqyovLFVPfnBchFI9Ba3RQt9tvA2313uckDeGCsHqsX589oRccfcOxKyvmunLHEQs+QcXkCn7hm886ZUDeS6Ko4Hz3vb4XbRCCMaTl6RAFvoeuMOCMFlLRN9jpPeOADvtJxIgydQRyupgDdxQI2piXhDJrykipjY+C361Ljz2gWlqA16LjHarNM3IxScNPAx2ZwTy/w43SD7t0vsWAPoJl2xD
+ t6P77qE8
+ YbZwh4QM/G80DGUMlDt1EuQsphqDS0TidCSmyRK7nrlkukETr/jZC8Bqd1JuDV90kKKyUAZNL97Bza7JyFkBhJuq1XTV23oi/ffPpAhJ/OYWb4bOGsYmjXVSTMuhCe3tJJN2CJ7VJbOI7HLiQ2Imi5rr1CPVoVaIjqc/06gp1uoOb4f+P8p8GF9iND/g9sJU6HwqKJNI8BTXKVP9EeXztC6BslPTKLuH1Ioe/K1JzaG2/RGpNOtc9e/mNk4JWbw1RvYhUcgdHQRBiA3gd7wxI0bNIVYgRDPYGYAAzow5REiuELd9i6+F5ZJejA9vi8hkXHWZL0V+SqXtKG73zVBibpawCZKxvEIm+mS/NRdn5ABs97gQc6a2jXWsI1laNC5ksDqArc0T53HnHO3WvYFq4h/ktfoHXDBXppA/PtpJHSdX4hYZ0k/z27hf6rqHZfTmglc4n1923ivMLQ3aKENNGQWRGUN880+N6VpCURlsiLgvzE9fLcmjV4owXRYoqQIGJmw2rR50wljP3r4XgGb4aMtCKzsmDZqFBZamd
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -163,47 +163,87 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-Unlike all the other allocations in this driver, the memory for storing
-the pin function descriptions allocated with kcalloc() and later resized
-with krealloc() is never freed. Use devres like elsewhere to handle
-that. While at it - replace krealloc() with more suitable
-devm_krealloc_array().
-
-Note: the logic in this module is pretty convoluted and could probably
-use some revisiting, we should probably be able to calculate the exact
-amount of memory needed in advance or even skip the allocation
-altogether and just add each function to the radix tree separately.
+struct function_desc is a wrapper around struct pinfunction with an
+additional void *data pointer. We're working towards reducing the usage
+of struct function_desc in pinctrl drivers - they should only be created
+by pinmux core and accessed by drivers using
+pinmux_generic_get_function(). This driver uses the data pointer so in
+order to stop using struct function_desc, we need to provide an
+alternative that also wraps the mux mode which is passed to pinctrl core
+as user data.
 
 Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 ---
- drivers/pinctrl/pinctrl-keembay.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/pinctrl/pinctrl-keembay.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/pinctrl/pinctrl-keembay.c b/drivers/pinctrl/pinctrl-keembay.c
-index 60cf017498b32a9f36a1f8608e372951c2b8f12a..6aefcbc31309995ec1e235416b40aab3e4a073a9 100644
+index 6aefcbc31309995ec1e235416b40aab3e4a073a9..e78c8b3ec245aad56e3e74a26d27c41ba4a98281 100644
 --- a/drivers/pinctrl/pinctrl-keembay.c
 +++ b/drivers/pinctrl/pinctrl-keembay.c
-@@ -1603,7 +1603,8 @@ static int keembay_build_functions(struct keembay_pinctrl *kpc)
- 	 * being part of 8 (hw maximum) globally unique muxes.
- 	 */
- 	kpc->nfuncs = 0;
--	keembay_funcs = kcalloc(kpc->npins * 8, sizeof(*keembay_funcs), GFP_KERNEL);
-+	keembay_funcs = devm_kcalloc(kpc->dev, kpc->npins * 8,
-+				     sizeof(*keembay_funcs), GFP_KERNEL);
- 	if (!keembay_funcs)
- 		return -ENOMEM;
+@@ -135,6 +135,11 @@ struct keembay_pin_soc {
+ 	const struct pinctrl_pin_desc *pins;
+ };
  
-@@ -1634,7 +1635,9 @@ static int keembay_build_functions(struct keembay_pinctrl *kpc)
- 	}
++struct keembay_pinfunction {
++	struct pinfunction func;
++	u8 mux_mode;
++};
++
+ static const struct pinctrl_pin_desc keembay_pins[] = {
+ 	KEEMBAY_PIN_DESC(0, "GPIO0",
+ 			 KEEMBAY_MUX(0x0, "I2S0_M0"),
+@@ -1556,13 +1561,13 @@ static int keembay_pinctrl_reg(struct keembay_pinctrl *kpc,  struct device *dev)
+ }
  
- 	/* Reallocate memory based on actual number of functions */
--	new_funcs = krealloc(keembay_funcs, kpc->nfuncs * sizeof(*new_funcs), GFP_KERNEL);
-+	new_funcs = devm_krealloc_array(kpc->dev, keembay_funcs,
-+					kpc->nfuncs, sizeof(*new_funcs),
-+					GFP_KERNEL);
- 	if (!new_funcs) {
- 		kfree(keembay_funcs);
- 		return -ENOMEM;
+ static int keembay_add_functions(struct keembay_pinctrl *kpc,
+-				 struct function_desc *functions)
++				 struct keembay_pinfunction *functions)
+ {
+ 	unsigned int i;
+ 
+ 	/* Assign the groups for each function */
+ 	for (i = 0; i < kpc->nfuncs; i++) {
+-		struct function_desc *func = &functions[i];
++		struct keembay_pinfunction *func = &functions[i];
+ 		const char **group_names;
+ 		unsigned int grp_idx = 0;
+ 		int j;
+@@ -1588,14 +1593,14 @@ static int keembay_add_functions(struct keembay_pinctrl *kpc,
+ 	/* Add all functions */
+ 	for (i = 0; i < kpc->nfuncs; i++)
+ 		pinmux_generic_add_pinfunction(kpc->pctrl, &functions[i].func,
+-					       functions[i].data);
++					       &functions[i].mux_mode);
+ 
+ 	return 0;
+ }
+ 
+ static int keembay_build_functions(struct keembay_pinctrl *kpc)
+ {
+-	struct function_desc *keembay_funcs, *new_funcs;
++	struct keembay_pinfunction *keembay_funcs, *new_funcs;
+ 	int i;
+ 
+ 	/*
+@@ -1614,7 +1619,7 @@ static int keembay_build_functions(struct keembay_pinctrl *kpc)
+ 		struct keembay_mux_desc *mux;
+ 
+ 		for (mux = pdesc->drv_data; mux->name; mux++) {
+-			struct function_desc *fdesc;
++			struct keembay_pinfunction *fdesc;
+ 
+ 			/* Check if we already have function for this mux */
+ 			for (fdesc = keembay_funcs; fdesc->func.name; fdesc++) {
+@@ -1628,7 +1633,7 @@ static int keembay_build_functions(struct keembay_pinctrl *kpc)
+ 			if (!fdesc->func.name) {
+ 				fdesc->func.name = mux->name;
+ 				fdesc->func.ngroups = 1;
+-				fdesc->data = &mux->mode;
++				fdesc->mux_mode = mux->mode;
+ 				kpc->nfuncs++;
+ 			}
+ 		}
 
 -- 
 2.48.1
