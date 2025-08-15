@@ -2,60 +2,60 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4142ECA0ED1
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 23:32:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B6DEFCA0ED1
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 23:36:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA8EB8E021E; Fri, 15 Aug 2025 19:32:53 -0400 (EDT)
+	id 4AFDB8E021F; Fri, 15 Aug 2025 19:36:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D599E8E020B; Fri, 15 Aug 2025 19:32:53 -0400 (EDT)
+	id 439DF8E020B; Fri, 15 Aug 2025 19:36:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C96CF8E021E; Fri, 15 Aug 2025 19:32:53 -0400 (EDT)
+	id 2DA598E021F; Fri, 15 Aug 2025 19:36:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B9E278E020B
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 19:32:53 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7830CC02D4
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:32:53 +0000 (UTC)
-X-FDA: 83780594226.30.5D36E7D
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D2318E020B
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 19:36:01 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7FD3482938
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:36:00 +0000 (UTC)
+X-FDA: 83780602080.05.503731F
 Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf16.hostedemail.com (Postfix) with ESMTP id DEE8C180004
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:32:51 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VqNZM3WV;
-	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	by imf02.hostedemail.com (Postfix) with ESMTP id C90E180008
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:35:58 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=I1KSa3iP;
+	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755300772;
+	s=arc-20220608; t=1755300959;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rXLIjULjHIbwG6bxUtOeWzsAAQ+xy0b4gmrNOnGTqG4=;
-	b=DLMjfXBaqGJ4btTSgSeRI+pC8YemcR5YZD4UeMvw/xh3wwwVQOqE5St2UF/X7c3LCnRCYl
-	TdXswWEy/Dt2r3iDEUmW1ro8lUZW6VJnuaf6+23sFauB78SKDrPobabBWqNFO98BBreCJM
-	XSbKe3MORiQiMKrcOGkQ+aQua1tE1ao=
+	bh=lcqbcpR+PPLolCotgvnuTTzNHDIi6DR9EnEVb+T8qy0=;
+	b=ipIx5MqTqmRCc8L/fopkhKwAX+srCxz3iitYeZ/kaJWZylhF1nZjfrqQqGQxNRBuwiUloP
+	WYCUyRCShWKbmbd6qN8637+NiEspK226gCtQVypYhYMhe4Ix7KzxIwUd6Z+HVSWy2f6WcX
+	QuP2iR4v2thY97K+E6v9uUxmgkDavxg=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VqNZM3WV;
-	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=I1KSa3iP;
+	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755300772; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755300959; a=rsa-sha256;
 	cv=none;
-	b=RmmoIGd6TNFE6XWTy/+ZVLI07tP9WRAuh9fAGpX3LNvj4L1lgf4mENORsxUOQvLvP3KaLl
-	mY+hxpy7upjygmC1OMfw5IAE4xlWYHelwykLxad1QDOI1edZcnDQ4lZe+0Cg8GdTSB9yWf
-	7WaPsGCBLbaPt2RtlKFzzp6ha/8vpDM=
-Date: Fri, 15 Aug 2025 16:32:42 -0700
+	b=E4bkHCugDLPC2gQ1O+4jyuMYDoCye5IY/SYa16QP8mYSTFs35bbDYzTl51Y6tvW9t1N0U1
+	ibKBJvXFsUx935cjPvm+ilUYEpRVHVQdxi0cwY7OnqQEhb4P40SeJHMpqzAESsC6TsjhPC
+	3BWmSw61WVBx1MZAhPDquka9yjITK/c=
+Date: Fri, 15 Aug 2025 16:35:50 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755300769;
+	t=1755300957;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rXLIjULjHIbwG6bxUtOeWzsAAQ+xy0b4gmrNOnGTqG4=;
-	b=VqNZM3WVNHiEwegbdEeOrBiwjv+u9KHv1mwrE2FQPW3BrRaLz3tbXZPdXM33SVSh44czJi
-	UaD2eXhYLBJRfn2PbG+xXhnRrI5UT8RtcxsBjT+d2ZEUkl/7n3YD8wkxvW3lEbs0dxeJIg
-	10j7dSS/lFi6xMyINEXBJfa4uB79F70=
+	bh=lcqbcpR+PPLolCotgvnuTTzNHDIi6DR9EnEVb+T8qy0=;
+	b=I1KSa3iPECj/Wsi8SDf6g94yBfaB/ykJX7hBJxYk/MeurOgwRt3Sk68DV1gE7JOrcJSbcY
+	sS3o3rH35F/X4THaHv0DGoc/9gWC8z4FmjfuNHO+JP535625SiUr+N62DFZU/dW5FX3q2H
+	0O9H5Qfvt9jxbHkzIs+OHmZyUXbeSCM=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Kuniyuki Iwashima <kuniyu@google.com>
@@ -70,22 +70,24 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Geliang Tang <geliang@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
 	Mina Almasry <almasrymina@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
 	mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v5 net-next 02/10] mptcp: Use tcp_under_memory_pressure()
- in mptcp_epollin_ready().
-Message-ID: <j4npjivymessz7rnlc7xvec77k7634b4ldfrd2to5zpcgofci4@5adfxbs3hcl3>
+Subject: Re: [PATCH v5 net-next 03/10] tcp: Simplify error path in
+ inet_csk_accept().
+Message-ID: <a53fhshvazugtmvszdak5j3arzpf2dkiqy227bredme6drt7cj@5vlq2zyeyv3u>
 References: <20250815201712.1745332-1-kuniyu@google.com>
- <20250815201712.1745332-3-kuniyu@google.com>
+ <20250815201712.1745332-4-kuniyu@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250815201712.1745332-3-kuniyu@google.com>
+In-Reply-To: <20250815201712.1745332-4-kuniyu@google.com>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: DEE8C180004
-X-Stat-Signature: dej15w7emkgqfwaajpi8drxrepja8qsm
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C90E180008
+X-Stat-Signature: 6wj6fisj4ikosot5x4oqrtgcd8endmoq
 X-Rspam-User: 
-X-HE-Tag: 1755300771-272158
-X-HE-Meta: U2FsdGVkX1+16Jo6IR+zPUdamarDAxYg3h7JnDQvs1MgpSJ80CauQo18F0OGJQWir2g3maHRXRX36wbeETPbsOZr01UakCjM88iDvYNT9P2r7dAbMppoE9VzOuxZoj25p0JnCqt7oBn/I19xgUjO2MTzBJ5sFgBvkBjVNTq/uS4azhwZ8ccp7+wzr/8PXk3EbdWN/oji1qbPkQtkkJG8aGigENCGpMH5EwiJ1p/Cys8LZ/bTQAC3f0IA4dVv2GorA0aH22CykSdrxgyCR1ZpF74BluaQ+MUNeOGtYnRLy6ToLK9xIvOhlgzFNDVNozpKG66z0hTEtllFk0Wragg4uVTi1boSRJJa6hx3bs42cCtHNPbTcyKNAkca8b+WNSVZKyZKk32FknINASNWk/8zwwKP1wJYH5cZi+Jh+y8Wb98UD0IsgU6AO/JlGlypvtUMVISd0wqnW7tWKQzK6Asp+m8/seNEyDL/ja/viIiuoFQpCKkElASiOgIXP7U68ISRMq3UyRwz2iOLiI2sNSmz7WDIeCBoefLoNKhYXgFKQ1jZbrqUFu1ZhfI9066Uv1iJJkC/Ey70vAbD3/MiWPoOlVsJcXLEfSPn4QIjboed8g8nyho1iZE3U3thSRXcsQ2wtG4doCtnqobj8Ft4GiqOjpaUvcJetWYtV/wUi5ZjAieRogRKdkooFGpKlNyuPuQkFHoZnYD7lmBkiPgCwej1dkbzrykPy5RkP3fAIDBzi8/WtZVGvxyZvAjNkYLqaBofd/Stxa5UkGLU+ojx+rLCEmMttRGKtjo+GHYFrrSh5ylb9uUHQrS1mMOt4/UDAnZzknLWnKbVsXtSW1GxrKQB89v4CootXZSU2ojUoVBQf+GtrXFyi+jHpFzhqfShI+xzsjdYICGl18x0IPHKuYRP5hGDD7PQ2tCW
+X-HE-Tag: 1755300958-630190
+X-HE-Meta: U2FsdGVkX1+DV9sW4aJSJsvtPerQz/CoVWgm8Y01JorRHZU9ezIu5mtFmZPQWjGa6HsK31nGfS567MIbA44nKsJBop8e2ozUgkht7VmQpcEcr0CJhzk8s4mlkiXxOaEDV92VB14QSkYer3ihpSTBGWbJ1K1eq6nfmaKHvPdiGvHYX165Vpd30mtkdmnwsQ3DGFuK1CWNBZGVTGu0LFWk5JGAgmOitzpnfFHoGSSfl9JeJO9zfDxQos5fBmq8DENtmqWkLsxir58+ZZyMKi7qZPSewsqxGbIMg/8Oc4hxcQq4th9wYG5CErRixlIquYApQH4sX3boNGEFRoVkXHs60OwNyLWNy6QIll1SiqxglcpBk527UMUWGKg5bMeOdSzvtTWNg4gMz2zloLQbi9MkFa6UVIB1w6bxfaGwOJHBO0Iv99weYBB9v+7CxfGIo4fD0D05cJCF+kFCOpDZhriNvWvCiCRgXFeQsDzkJKyFqNMrO1d1xmLHjAQCRUOMQssQWfTMOWq8vjK9Lp5zCcd4hUJ6RU+6ns/Al4T+UegW4mHz+xQalorc59i+6cbXKmb7snVG8qQ2c5QfXWOREOR1+9fKr4bwaICidu5LsIRjIw34WDiUd3CIy5CdoHukwT4XRLKvTraqXPmHjDJzxsxtBy1/WXwQKr7y77XUK6OP+An1/lkC0U9kYPzboky4uf4qz5GVG4rGb15kgjcHBYZASr5ZpYM+hDH12d9oppGUB/8f2+bpNfwa9s3VAwhHGts/HKQVedoWvsL0vRuOtDOz0LesXXgTHuD+ypgmkrX4aP0rXXPajW0DO58TbzdiGs3wnPY/ltzRyD2nnPcKevPW+uK8xPSCVRdO31FYV+tLTA2X0Yp0+9ivKYwAuTwkvTRTmeLyDaRa3YvOKsYxpfoJHd/Eht6xAbVEIup+oHO7Ac7NYro35gpdq0/lblBL2Ncgknm4Kby9HOIntzI1gJJ
+ GvWTOTjU
+ DpuuVEGX759qNcnP81A3sLuqje5T4NMS7YFqw+WymuN7AtKdSnqScS41OZFZrmNiQLSCLFXTQvl2jNFa/CmCt7wEcBI1J2bE6QYgECY+7CFdOcCcf3OWwNjAjq0/i2o6+E+U7vqfBwvJdL08NK9TYK14m6OZRSwjh93jBbSmgTJ1ElAQen9VWgNOPLPXvf6zwmzuocCkzs4XqiZ4BXds0malnK+MaOOSZRqXNfm8OUPNcotcuadBpY7PiFqKW1VnpnF4hydmenWEz/238LR7/0yEpYw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,18 +96,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 15, 2025 at 08:16:10PM +0000, Kuniyuki Iwashima wrote:
-> Some conditions used in mptcp_epollin_ready() are the same as
-> tcp_under_memory_pressure().
+On Fri, Aug 15, 2025 at 08:16:11PM +0000, Kuniyuki Iwashima wrote:
+> When an error occurs in inet_csk_accept(), what we should do is
+> only call release_sock() and set the errno to arg->err.
 > 
-> We will modify tcp_under_memory_pressure() in the later patch.
+> But the path jumps to another label, which introduces unnecessary
+> initialisation and tests for newsk.
 > 
-> Let's use tcp_under_memory_pressure() instead.
+> Let's simplify the error path and remove the redundant NULL
+> checks for newsk.
 > 
 > Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 > Reviewed-by: Eric Dumazet <edumazet@google.com>
-> Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
 Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
- 
 
