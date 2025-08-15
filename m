@@ -2,107 +2,119 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 050C5CA0ED1
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 05:51:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A6A1DCA0EE0
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 06:08:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DBD190020D; Fri, 15 Aug 2025 01:51:57 -0400 (EDT)
+	id 36C258E01D5; Fri, 15 Aug 2025 02:08:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78C9D8E0002; Fri, 15 Aug 2025 01:51:57 -0400 (EDT)
+	id 31E5E8E0002; Fri, 15 Aug 2025 02:08:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A1F990020D; Fri, 15 Aug 2025 01:51:57 -0400 (EDT)
+	id 0ACDB8E01D5; Fri, 15 Aug 2025 02:08:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 58CC78E0002
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 01:51:57 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 10ECA117D77
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 05:51:57 +0000 (UTC)
-X-FDA: 83777920674.30.48EE213
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3E52840004
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 05:51:55 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="Bhed/ZiC";
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf27.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.179 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755237115; a=rsa-sha256;
-	cv=none;
-	b=XMCsKT+vfd/KTk5LtOiUq/HW+g5V7ZZX48XCzL+sf2h1nZSFUlecYTW4y96apf9Bcl5El3
-	zH7N7JUUKnir20EkP96exXiqyTt8jFwd1aTVcWiCSj7lAa/eOjF4Mtcum2OLvtjkTcm9Qk
-	p5xv/pHzG4UuwljU8EcdMSSWfJIghWc=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="Bhed/ZiC";
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf27.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.179 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EDC7C8E0002
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 02:08:10 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A1109C08A0
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 06:08:10 +0000 (UTC)
+X-FDA: 83777961540.14.28D78DD
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 6C6D916000F
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 06:08:07 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=fqxUkf8c;
+	spf=pass (imf08.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755237115;
+	s=arc-20220608; t=1755238088;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=yPIUpNhjQ6AEsRDjGeq+2bkZwxUUqcPh43FblPu4aOQ=;
-	b=hw2HXVg+HT4CCimNI7VzS3usquuIHAib2uHqNck9L3gCqxkUH15KUC7B8c+TayJL8xzeOG
-	Q5EpBLZ9XvLoyNotdPnTaTdjfP9T16ZcGHeFa1oeA3GawNSzWcSU36NIkHwLkmeRarUd8F
-	alM2rcMGmOCdZRIGPAp1EYaiWyy3J2M=
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-76e39ec6f52so1215843b3a.1
-        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 22:51:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1755237114; x=1755841914; darn=kvack.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yPIUpNhjQ6AEsRDjGeq+2bkZwxUUqcPh43FblPu4aOQ=;
-        b=Bhed/ZiC2GlGVF2wYYh8H0yoKDTGgHoUTYX/4t7YjomBnS8DTQPsYT5RoPZHpme19D
-         7FKbHYOQsvrtrdsOdsFBiCT+5XyfR+1h0QrdDusiLkSPO1fUcsB1F74QsZ3MkYX8NdpY
-         DNbSVeJy2nC8RkW8l63wWNtBSBaHUT/3/uVnk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755237114; x=1755841914;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yPIUpNhjQ6AEsRDjGeq+2bkZwxUUqcPh43FblPu4aOQ=;
-        b=PeN5SvHF70Ag0EFDp+0u3fRwOhctLCYp6EAyxDE1zOwUqfs2u/0P+0f4x8hvpme0TP
-         y1Q/6YB7l9pukj5+06aJlKGa3bsc8ECWs68QUSQ1aB+X+16sPASCKUIO3Nf1vY/nXi6i
-         BtfqvWIBd6dgWk2/hYmW94BAXyXIDsxrpwR2ZiPbTAAmtf30/iekVd+o1dK6/Swncr6u
-         BtfszcGHjUQ7JoArW0UPoKn6+k85nVK45DY7t+roXVH6WhSR4DL08OKMjkbu1tIu5JBV
-         Dr9WIB6y1Jk/Ax8HDvQqCm1+R49grs7pkixE1WuwVzgeH0dppJrAQo69NzKSS2mr0P4C
-         K5ag==
-X-Forwarded-Encrypted: i=1; AJvYcCXZUB5zQpDb/5/L/g7y57KSs17obFjWBlW9sCB7Rp1+ikw2GsSyC3J61kYS0YHWUX1CcnIpoHHyGg==@kvack.org
-X-Gm-Message-State: AOJu0YwAA5RfdQnsiNtyLBqf3skLZIhvtlzX2UHF4iKi3r6mWAzi+bX5
-	yTcRP+K7H1kigj3KjRbt3Sbb/eGPdacfJ1TIegd4RNXjz86WH2ddcSwz3f3j2UdFUw==
-X-Gm-Gg: ASbGnct1RWen8AFknkj6MXFUG5Oqv8lAuyIvZUteq3RCg24KAr6c2aWXjqu9hROXH2P
-	T5qX8QmM6kLaNxFjetXjT7u/S4dOjo5djoDIz/hKxSkmbG4T7LE5elukONGHoS75i1fWOQvn8dZ
-	METFDMQVea/FusyVw/XGQnde+r7FUkqlQc1JxIv7cG0oYxMrsyqHq8LlBK7LWlh3vlErSFCXECJ
-	CRxRD2rBIODJ1zpGdpZTxP4ZHgVMm8gQuKV2k4c6ZKE548WS8myLhrNSbtgVZaLp9fnl0ksZop7
-	GvJqyxc/4KLj/wcZJEhX/TIE2AlXnftEQhFbA7d/Z8313Zb5aTgpOdKWquDZHO6rYdqfa4mcGI9
-	JwyzTNlH3S/4LEUYPCoNoWLk8
-X-Google-Smtp-Source: AGHT+IFJSyBpiKOo5C13YIk4+PTK+ebPvaiWmR1lvuCNUWOKdDoo+4Xpqje9qDjgOndVHMPSNmSjOQ==
-X-Received: by 2002:a05:6a00:2342:b0:76b:f0ac:e7b2 with SMTP id d2e1a72fcca58-76e447cd663mr1100191b3a.13.1755237114143;
-        Thu, 14 Aug 2025 22:51:54 -0700 (PDT)
-Received: from google.com ([2401:fa00:8f:203:df07:bcb4:bd69:d61])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e4526d1ffsm379278b3a.16.2025.08.14.22.51.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Aug 2025 22:51:53 -0700 (PDT)
-Date: Fri, 15 Aug 2025 14:51:49 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@suse.com>
-Cc: Suren Baghdasaryan <surenb@google.com>, 
-	Suleiman Souhlal <suleiman@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: mm: swapin read-ahead and zram
-Message-ID: <7ftwasufn2w3bgesfbp66vlchhpiuctxkhdxp24y5nzzgz2oip@pi4kdyqkl5ss>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=c6Xki8soLW+vw63qx0n+Ld6/faF33zlxnTUtiZxzosw=;
+	b=61oOrFvLPMcIyezmYHwztrzZ+wEF3mV3bx38LmZyTRCXM8q7mzrCZveUOcOAOHT//DMET4
+	4y5dJ8ciICgzjGUkm271vwKyOdzGeALWM8S269PdT9buvKLCGp/+2Irc8XL4j+gXKlqEd4
+	8ZhlzXOTRBiDfgsVz6R6Ujpf7GJAVJE=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=fqxUkf8c;
+	spf=pass (imf08.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755238088; a=rsa-sha256;
+	cv=none;
+	b=kQItbiUn4/SuhaZDpjZNvFqCgFk89zR2wu5AEHdL2zspOJAitcE3Tc+S1tm366muSc/PfL
+	CwcOXQpH81rOmbULJszyciA1wC2TVOWCphJzHpRnFJWSGcu+8bLkE9yDRhD6e5G4G5/xT5
+	s/eINaNolEK6OhDNzRMrg/TNs0e0Hic=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1755238084; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=c6Xki8soLW+vw63qx0n+Ld6/faF33zlxnTUtiZxzosw=;
+	b=fqxUkf8cWnfCqh0p4/H5f581qXTJ37nkRhmiyR89roWMAGIrpdryV3i/eWoP7ft8cOZAkUNurHDYku7MNORIWhrIgSmo8lubIt9d3pJXSRMQSkYFl+XAAqhet+Kvy9eB35Kc74KUAk7Rosf2c8gTQB4ne/9Wn5rIp05kJh1psbU=
+Received: from 30.74.144.112(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wlnr11M_1755238078 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 15 Aug 2025 14:07:59 +0800
+Message-ID: <0e26b400-e477-4722-a524-8a3c520f5429@linux.alibaba.com>
+Date: Fri, 15 Aug 2025 14:07:57 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam03
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/10] mm: convert core mm to mm_flags_*() accessors
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, "David S . Miller"
+ <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
+ <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, "H . Peter Anvin" <hpa@zytor.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Kees Cook <kees@kernel.org>, David Hildenbrand <david@redhat.com>,
+ Zi Yan <ziy@nvidia.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>,
+ Kan Liang <kan.liang@linux.intel.com>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Matthew Wilcox <willy@infradead.org>,
+ Mateusz Guzik <mjguzik@gmail.com>, linux-s390@vger.kernel.org,
+ linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org
+References: <cover.1755012943.git.lorenzo.stoakes@oracle.com>
+ <1eb2266f4408798a55bda00cb04545a3203aa572.1755012943.git.lorenzo.stoakes@oracle.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <1eb2266f4408798a55bda00cb04545a3203aa572.1755012943.git.lorenzo.stoakes@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: wcezk91prjnono1adcp9f1aodxek7ey3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3E52840004
-X-Stat-Signature: 3mnyjg6x67txu5nj5w39abrqrkfs3hef
-X-HE-Tag: 1755237115-532940
-X-HE-Meta: U2FsdGVkX1+QI5433JIgs0LEdNRVW+mIfOPYPTcQpnI7X5O3m1ynGdVi213/5XDTZMEtSUE+9vUrA17Lq6BpcZrpr7thw2ckiWLZmawaxQUyxa8xuYQ9xQBU/gT9qc+F2dY5K9Qenp8xKUDgxZSxq8efltyOAYksXGan7O1InyVLPJbkZJ+I5vsRB3YC9xMPFZaMEiK/sQ0tLPp7pDTHUHTty2VbjQ+le4vxLlBIrN0/s2Ov+1fIXV+Grr1Am2uOYewvRY7bPoIy1aDoXrCVzD4By8156aSlVc3HxKEp2r+BM/xl+tCynLYeBYLfpb99Q/OTnTQgXi2Gsm1thq+dvkK5tWuxcxEtAxiirrRY/Ip69rEoR9rlA9Iam7IHR/4h76pBmKoEtVt5u+9n50J9PByYOSEduE0S3F9d8k2M+jnaHvOBImYa+vGHEooYohLcZL1GFUHcbFJaAVIJOOsJ9DS+HB9EkgtcEM1SvXAQKkSteRkR00lDoCz0DIY0DqPitV9SjlA7NccaYMt1wo+mP/L5oze7AHBavt013v5Ogczn4QUtaSmUVxZ8EWLKUMnrM2Xfm0BRPZr5jJp2MA3IoCg/EI6VwgoCYY5CXW3YRIgQU3TVc6R8KHQvLv2Jcnh79ZeLpHVmGuMhlhkN/2cVv+XWY/hH7G6jMqtTcH0Cu7uXT/60jE1OFInjnxC0fQEQwBUQc2rDW2GvGvUnkAWFnECFRN6HL2ftrCn/KWFgzqYvbyEPdwquCWWRxaOXDDPyI3+BDJs9Ey42pVuamjmW1oJ1obDdI86ZbluCbLyXwqV7b6KeaJ4m0rxzLRNihd/n5tuedjUGz6UWFUAVc49pcYFx6wCdDaBjFbk3d/yaGCbleum4OX7ZkLyoFlOwHEys/8q/XIJ4kRDa/+LhghE2RYO9nX86g7WVEK/VYAyEfiNemjFhEktIsvyxxjua/uIH4NXkljNKdJxWB3FhStf
- NrnBm7Mx
- jjuK3o48veAwujEmlX8qXOTZ0Md/OKdEEMNLduM2z605hiNT2cg1XbmrY1Vz/bGRmPIkl7ktVJ9nreTJe0gBbBS+g/ILXO41Bcf3qJpps1ZvohgZbBlWC7PXB9yDMmYq1QyMdCmIkXipDByUJvuQ5oxgvEfl1H3djpe2FCJBqAmD4Bki/1GSTn6jRNWz54xLnl1TnuBAUKAh2bCRcFduEH3fd7UqxJSqaDEI+YSWH5q1z0wr/fuqca1jFQW2+EJwM283fceuRtpw1LLOmVH0bZ62B0AiYwEtEPioV/LZFPdHXWRyVX3M899NPWZH83i1bXW0FfNPhNjx2F4Fk6wN0f66fV0D7eM+mqJS7UJi29gspB9I=
+X-Rspamd-Queue-Id: 6C6D916000F
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755238087-187327
+X-HE-Meta: U2FsdGVkX18kkqaH2FPXbX59VevKVk4TazzKU9Pu2rNaA0BqT8rj8D57IkUQr4+qfh5QFjCRW8OyxeJfrEcctOqfoXzqmkporfrUTasfvLqXN2mNQjjwmN4xjhBIY85xb/3eSxPMIu821C8WwMf0y1TcsZTsnnMlkHcW3bj6lwdF8tGmPhakrBHQd2JAFzHY3Vjh8vN4MvE0fueh9IEArua17mZwAuT3PmjB0yBd36pgpSdxolDT3n5L1Giepnn6fy5xP12nkTzeKtgEnKDLqWY6cb9c0Szvo6b4Jgaa4YN+Dg6qQvrj1m1VfYmQZ9XpPACK/khLG/EPewDq6Ot3BdAUwsHtyXWn9XfM76D63215fZvXJ7rTFbCnUZie4LJRWThWQ1LbYHb7kgd8jTrx5F3sqyIMGPcGCyfENdYadngI1ofHWUT135ff3spHnUagr1Ns0cScc3CD9LGl4zN3cDGUTSUsRUVBFlYjuTc7S5sds4DhsHDbCxNxLHUseHbJHQl69Yh2F8O/ZNnJ3qOwEpXGFXBQ/fDoxIDbUN11S2iT0qXhb3lOpZkfDVR72AmK89B7qqFywIylZgfdhuF8L4MySkaYNhGwVDINYbmcpJTZo1e7SZpyGaDqIiYGTlmSRSah95Hx6CDX6F+FW8JzGHT0rJeSl917hMqZ8vpw3m5pCx3Wh6b9BsWpWK7Z9UndOWIxADBkgSrQZoWMlUNe1DPC0xzh7rKyQ1YSWFE4GMHW1D6pHVifZr3Rxhnv01ztQflMSlhX7oq1ksKLtNhpqW9P5V6bvdEArbvNA4QOM886U8rj9EXrvZuSOBjd5iDDcTuivXjdZ6elTwDev8qrB1BTvb2ViyO3ETmprMqEGt1399aWqZUedT6iBQO1GNpRtuIhlvLqF0auVZqnKeA/ADpECrAIHOYO+2okexJ4lSerbZX4xJo/RRI8RIuRYIRzDTyVBvDIbQ8yUP0Wr9/
+ Hr8Twi62
+ RF6JW4AcajyPhRlJC19VfYSWOfpDzRnWE40+LCgp3TIsMTeR19VeqVFAgjJVGZXDwc0GJNFxzPv1yRvjRpxCFfu/0NTn4Y6Aw1F0xQ1BtihclErZM1pZWx5lgyshh7hb5euu5rQOgDXTTlPPDxi9UeQ/WBWnqrLTf7PH4w6f7W2NK8JfxLaets63MSxuAt8JAozkowi2f90/Y/lX6gEikWQl9unYNwO72BRDg3WpN5QXWjBmkLXLvwUjEW6Rx4+THx+kyx0lshsaPO2dIPlpNOFPyfmSdm3qT7gr14qqFYDqAXgrgTftLtjdeXkP4dMGyofxRbyKTCJ7tB5eFkAOIrbz9zqpRWE2zEge5YAomCa4MoRqNVyRx5UHJKA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,79 +123,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
 
-We are seeing an unexpected behavior under standard memory pressure
-test with zram being configured as a swap device (I tested on several
-LTS kernels: 6.12, 6.6, 5.4).  Namely, we observe multiple, repetitive
-reads of (compressed) zram entries, sometimes in a very short time span:
 
-...
-[ 1523.345784] zram: decompress entry idx:1615265 zsmalloc handle:ffffa28c8be3ee70 obj_size:986 num_reads:188
-[ 1523.365401] zram: decompress entry idx:1615265 zsmalloc handle:ffffa28c8be3ee70 obj_size:986 num_reads:189
-[ 1523.385934] zram: decompress entry idx:1307291 zsmalloc handle:ffffa28c70100b50 obj_size:788 num_reads:227
-[ 1523.405098] zram: decompress entry idx:150916 zsmalloc handle:ffffa28c70114fc0 obj_size:436 num_reads:230
-[ 1523.475162] zram: decompress entry idx:266372 zsmalloc handle:ffffa28c4566e5e0 obj_size:437 num_reads:192
-[ 1523.476785] zram: decompress entry idx:1615262 zsmalloc handle:ffffa28c8be3efe0 obj_size:518 num_reads:99
-[ 1523.476899] zram: decompress entry idx:1294524 zsmalloc handle:ffffa28c475825d0 obj_size:436 num_reads:97
-[ 1523.477323] zram: decompress entry idx:266373 zsmalloc handle:ffffa28c4566e828 obj_size:434 num_reads:111
-[ 1523.478081] zram: decompress entry idx:1638538 zsmalloc handle:ffffa28c70100c40 obj_size:930 num_reads:40
-[ 1523.478631] zram: decompress entry idx:1307301 zsmalloc handle:ffffa28c70100348 obj_size:0 num_reads:87
-[ 1523.507349] zram: decompress entry idx:1307293 zsmalloc handle:ffffa28c701007c8 obj_size:989 num_reads:98
-[ 1523.540930] zram: decompress entry idx:1294528 zsmalloc handle:ffffa28c47582e60 obj_size:441 num_reads:386
-[ 1523.540930] zram: decompress entry idx:266372 zsmalloc handle:ffffa28c4566e5e0 obj_size:437 num_reads:193
-[ 1523.540958] zram: decompress entry idx:1294534 zsmalloc handle:ffffa28c47582b30 obj_size:520 num_reads:176
-[ 1523.540998] zram: decompress entry idx:1615262 zsmalloc handle:ffffa28c8be3efe0 obj_size:518 num_reads:100
-[ 1523.541063] zram: decompress entry idx:1615259 zsmalloc handle:ffffa28c8be3e970 obj_size:428 num_reads:171
-[ 1523.541101] zram: decompress entry idx:1294524 zsmalloc handle:ffffa28c475825d0 obj_size:436 num_reads:98
-[ 1523.541212] zram: decompress entry idx:150916 zsmalloc handle:ffffa28c70114fc0 obj_size:436 num_reads:231
-[ 1523.541379] zram: decompress entry idx:1638538 zsmalloc handle:ffffa28c70100c40 obj_size:930 num_reads:41
-[ 1523.541412] zram: decompress entry idx:1294521 zsmalloc handle:ffffa28c47582548 obj_size:936 num_reads:70
-[ 1523.541771] zram: decompress entry idx:1592754 zsmalloc handle:ffffa28c43a94738 obj_size:0 num_reads:72
-[ 1523.541840] zram: decompress entry idx:1615265 zsmalloc handle:ffffa28c8be3ee70 obj_size:986 num_reads:190
-[ 1523.547630] zram: decompress entry idx:1307298 zsmalloc handle:ffffa28c70100940 obj_size:797 num_reads:112
-[ 1523.547771] zram: decompress entry idx:1307291 zsmalloc handle:ffffa28c70100b50 obj_size:788 num_reads:228
-[ 1523.550138] zram: decompress entry idx:1307296 zsmalloc handle:ffffa28c70100f20 obj_size:682 num_reads:61
-[ 1523.555016] zram: decompress entry idx:266385 zsmalloc handle:ffffa28c4566e7c0 obj_size:679 num_reads:103
-[ 1523.566361] zram: decompress entry idx:1294524 zsmalloc handle:ffffa28c475825d0 obj_size:436 num_reads:99
-[ 1523.566428] zram: decompress entry idx:1294528 zsmalloc handle:ffffa28c47582e60 obj_size:441 num_reads:387
-...
+On 2025/8/12 23:44, Lorenzo Stoakes wrote:
+> As part of the effort to move to mm->flags becoming a bitmap field, convert
+> existing users to making use of the mm_flags_*() accessors which will, when
+> the conversion is complete, be the only means of accessing mm_struct flags.
+> 
+> This will result in the debug output being that of a bitmap output, which
+> will result in a minor change here, but since this is for debug only, this
+> should have no bearing.
+> 
+> Otherwise, no functional changes intended.
+> 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> ---
 
-For instance, notice how entry 1615265 is read, decompressed, then
-presumably evicted from the memory, and read/decompressed again
-soon after, almost immediately.  Also notice how that entry 1615265
-has already went through this cycle 189 times.  It's not entirely
-clear why this happens.
+LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-As far as I can tell, it seems that these extra zram reads are coming from
-the swapin read-ahead:
- handle_mm_fault
-  do_swap_page
-   swapin_readahead
-    swap_read_folio
-     submit_bio_wait
-      submit_bio_noacct_nocheck
-       __submit_bio
-        zram_submit_bio
-         zram_read_page
-          zram_read_from_zspool
-
-There are several issues with this.
-
-First, on systems with zram powered swap devices, these extra reads result
-in extra decompressions, which translates into excessive CPU (S/W compression)
-and battery usage.  Along with the fact that each decompression first requires
-a zsmalloc map() call, which may result in memcpy() (if compressed object
-spans two physical pages).
-
-Second, the read-ahead pages are likely to increase memory pressure, as
-each read-ahead object decompresses into a PAGE_SIZE object, while we
-also hold the compressed object in zsmalloc pool (until slot-free
-notification).
-
-Setting `sysctl -w vm.page-cluster=0` doesn't seem to help, because
-page-cluster 0 limits the number of pages read-ahead to 1, so we still
-read-ahead.
-
-Can swapin read-ahead be entirely disabled for zram swap devices?
 
