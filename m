@@ -2,119 +2,93 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 456A0CA0EE4
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 13:00:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 68A06CA0ED1
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 13:18:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ADE8D6B02BE; Fri, 15 Aug 2025 09:00:54 -0400 (EDT)
+	id D28D78E01F3; Fri, 15 Aug 2025 09:18:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8E386B02BF; Fri, 15 Aug 2025 09:00:54 -0400 (EDT)
+	id CFF7B8E01EC; Fri, 15 Aug 2025 09:18:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CAF76B02C0; Fri, 15 Aug 2025 09:00:54 -0400 (EDT)
+	id BEF9E8E01F3; Fri, 15 Aug 2025 09:18:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C3646B02BE
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 09:00:54 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3D1DF16014C
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 13:00:54 +0000 (UTC)
-X-FDA: 83779001628.13.71533DE
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1D87018000D
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 13:00:51 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=cloudflare.com header.s=google09082023 header.b=Arc7qU6c;
-	spf=pass (imf06.hostedemail.com: domain of ignat@cloudflare.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=ignat@cloudflare.com;
-	dmarc=pass (policy=reject) header.from=cloudflare.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AB9038E01EC
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 09:18:15 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 52ED455202
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 13:18:15 +0000 (UTC)
+X-FDA: 83779045350.30.DD4AD2C
+Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A401CC0011
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 13:18:13 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=crudebyte.com header.s=kylie header.b=HlWIwWEB;
+	spf=pass (imf10.hostedemail.com: domain of linux_oss@crudebyte.com designates 5.189.157.229 as permitted sender) smtp.mailfrom=linux_oss@crudebyte.com;
+	dmarc=pass (policy=quarantine) header.from=crudebyte.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755262852;
+	s=arc-20220608; t=1755263893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M5aKJ6EuhxrNInhVNv1lAb8m/GnY8B+pF9rLGMgta08=;
-	b=n0/JVxf/rzPFHBtvWc3mJIf3kVu2NNtX06l7OvU0yC+CM6zOPNPiUFlUImEmbHndFtENDj
-	uUWSwNh/Ykmsg6Ra9mfxpCmvJcgYXahXcgf5YP3BbjUfXlaoJWOWLC7HA+lA314edgqZ1Y
-	iWpayEu49A/JcjNrodlrDpb/xbORMWM=
+	bh=Bb0W3QreuMWhX9jUJbsxnZFTBv+9eZ2r5LVq6jjWm9M=;
+	b=W7N3u4h0ZyzwfFCIDoAJ0gNA7FkJoVigP+ga9lW1wvWJphvka8Pi8Au7bQLOlg2qkp27Pn
+	8INH6Ov7Z1BvVkIKQcUpdneJ08BGKH2PzoF3diH1zDMhjybOx0dJPaj7uSR5wnlg+IIdI5
+	6Ap+LUu53j8x+4HDITDU6zTNtLztDhM=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=cloudflare.com header.s=google09082023 header.b=Arc7qU6c;
-	spf=pass (imf06.hostedemail.com: domain of ignat@cloudflare.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=ignat@cloudflare.com;
-	dmarc=pass (policy=reject) header.from=cloudflare.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755262852; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=crudebyte.com header.s=kylie header.b=HlWIwWEB;
+	spf=pass (imf10.hostedemail.com: domain of linux_oss@crudebyte.com designates 5.189.157.229 as permitted sender) smtp.mailfrom=linux_oss@crudebyte.com;
+	dmarc=pass (policy=quarantine) header.from=crudebyte.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755263893; a=rsa-sha256;
 	cv=none;
-	b=23eizISXM4rFnFYIMG1KgHR8eGXAp9z25qH/H0QoCd+8QaGoky436UzybErIZcLsjJ12tJ
-	THLQi00zSlehwl+k/5SWJ2Z80DQwnLknilX75yFAbBQT8pZ64UlvW2Cn5ZzQsjw74Eo2ZL
-	WJ/KQOR7v4nsJW+ZcCGPrtBT9TXUwXY=
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-55ce52ab898so2264354e87.3
-        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 06:00:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1755262850; x=1755867650; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=M5aKJ6EuhxrNInhVNv1lAb8m/GnY8B+pF9rLGMgta08=;
-        b=Arc7qU6c6qGFBGBj4xmqT26uctaDwe7N1rwpt2mJx73LuK3DPD+aZQyYIpuM1S4RlE
-         Z3nG/2WZlkuS85uL+7b9FjpmKs9oMqTmVLMfsR6pRQOATjIWGU/WkT/nfQYeHNyHGvoR
-         QzSnXHUtBOmlCN/mnTYYy4Iu4ep7o0uVINH68TOoxLT+ooYDny9lP1DbsGLspq9jk0Gm
-         urJiDF8+Q9ovpJgB0ktLwM123DeDwmlRGH8WMGALu8cMlL6NipqNAVMhZA4IftZSHH6O
-         +PyrRy8lxZ4TcdhaO0tW1dJqBpmuQ2eWjDgXH/VLKmr+saqVYzBFAKDl5Wzc/sClDyr3
-         BZFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755262850; x=1755867650;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=M5aKJ6EuhxrNInhVNv1lAb8m/GnY8B+pF9rLGMgta08=;
-        b=VHwyzRisiNsXtQE1PK75MoOJvBWv0fPGtpJXaufBdIYquW/Z+MPsqxKiv5/G3ANn2d
-         So1ys+UtIrZJdT4Z/fEma3lGvvxRs6PFUik7V6f9VkqjJDRsW5R8wbfFbO2OaEBEjoeX
-         hGXW+ox/n3MtN7zofMLgFSATTD7dB/WfYiW9XyUpaHPKCiMTUJeG+7TPImEH5QLbxeTv
-         qchOi17mO2TPr7si4KniuXloR+8qQ7yE2i0zI0PgJPVkgxlgGISl6ASMUuGc2hxZFgBt
-         dmZSRlckYL/E0wJHth+Yaut574gzThk08oaogAhwXqg2ZLpa0mXyofPqMzhImqtme+4F
-         1UwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVl3EewJLeaNVaJpbmWDZSDaWXx1093qqzKU3RICjADxfJyJPO+EQVVCYFKm5A5NeOrQjtR9OFkBg==@kvack.org
-X-Gm-Message-State: AOJu0YzoleeLAr1CVJdlq3ICj+oheEWGgGMxaiGip774IvunOBBltySs
-	EyK+PFuQ3tn5dYuqIp6CzCE+aiM37+eB1eSwhzN/PV1B74UH6vW0qdY6RdTe7atO/pKhJ0yD0eC
-	YlGCJ79Qe7dcM5WaKCUuaUStzsjtEP9IIv9UkASSgyw==
-X-Gm-Gg: ASbGncvE1YZj3oCar7HhCWmzLtNIzs/Jx3lhABhNVuAlCk7VxnnLRDZNzAFLfYqZVyv
-	/knVHVK+zbOtAr3AsuUDzMAA5mM6QPc4Kzl1uD7vsbFjvKF0u3xu/FOkwwdvauqzKjU2vA/+cUr
-	/XjpQ20HsdAhTQ1JO5+2LJG19mkaj/FE5W75g7LgRsm0ZrIzIwpRHqs3hBZFpyiyyhuGR/JQwFo
-	FkPUiITGg55g1uC2v4+j+aGkQ==
-X-Google-Smtp-Source: AGHT+IFNKOB1rrD+w7VKvQTDOwyeOYLz2abWlq0iGeI3es8w5nvcHLIOmT4MUBEah/yIuNYyhBR1ZRVJ1G+8nKdddYc=
-X-Received: by 2002:a05:6512:3c81:b0:55b:8e2e:8cc9 with SMTP id
- 2adb3069b0e04-55ceeb2d2c4mr585014e87.33.1755262848871; Fri, 15 Aug 2025
- 06:00:48 -0700 (PDT)
+	b=X2qLZChBUiilEZ9iqjWXbFKpUUyz4cK0xAj7mBReLHc+qKfuaX3wtWkIh6psOyPq460DSR
+	JuJE+c69cXZiXD4XBcFI2zmsV5NVQKyFSQOoTP8lz9fCzEy3LB07U5EVvml5aNsPCNTDVe
+	x3RKuy0xEtgybUxdWr71FTn/zWsoK/M=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Content-ID:Content-Description;
+	bh=Bb0W3QreuMWhX9jUJbsxnZFTBv+9eZ2r5LVq6jjWm9M=; b=HlWIwWEBqPR/Zm0MJM4XZkTkcn
+	nDFvNRBpr4AVclJ1HxMDZaB7lsHvPZ8SoSY6VcBFQJOaT/31N47M4wsp0DPwIOPun6/tN39n0qBBo
+	pFkCEd2sUjq0EK8RWYLRZ7E37LKSb6m/5qGZmUs9SQ+LbdT86p5x87ps3DCn7OgJaKnDeen8fd137
+	CcSm4grFuU1Uodx8rRhIeR//qeUeONx6M7p9SdWEyM7kNcODf4mK4JnVzKzkHRtICC71j0zI+97fF
+	DnidqvSSuXHANejecsAWI/P78cNhci7FaeUAH29idc/mA+fxUd+cmkXdFuwakzEdZOhiha2NBjt6r
+	YIFbh+OwiMvnp+Rz6di+bhtPusP8DQTUI19c76/uuQ8Xooycg83dOHlxluXvcE5D0Iek9QJduKP0d
+	GMADli2B0dCcFOf4MRPQsbRS4mMl1+0+Xy83dEmrZkGy4k/57EVRetHYIFPUhbF61rko/0BvOao9V
+	WZDQycmLblFJDpNhws04kiB/WA2uoXPpdT7vxz1DVzjcHUt6HRbsj8ImIJZGpA2CQgP2CPE1uZYv1
+	DIUQ9PF+s5pXMe3LOkrGhcHkKA6dKniR1XQlv+Q1IthguKq1tnp8dlt4JzFtI5rdYXiw4ZxGBO91q
+	Jg7hQvvdr7x+cVuGf7f9Ynjabc+0MY4qETQc5jXjQ=;
+From: Christian Schoenebeck <linux_oss@crudebyte.com>
+To: Harry Yoo <harry.yoo@oracle.com>,
+ Dominique Martinet <asmadeus@codewreck.org>
+Cc: syzbot <syzbot+3f9768ec54c86997ddfb@syzkaller.appspotmail.com>,
+ akpm@linux-foundation.org, apopple@nvidia.com, byungchul@sk.com,
+ david@redhat.com, gourry@gourry.net, joshua.hahnjy@gmail.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, matthew.brost@intel.com,
+ rakie.kim@sk.com, Eric Van Hensbergen <ericvh@kernel.org>,
+ Latchesar Ionkov <lucho@ionkov.net>, syzkaller-bugs@googlegroups.com,
+ ying.huang@linux.alibaba.com, ziy@nvidia.com
+Subject: Re: [syzbot] [mm?] WARNING in alloc_frozen_pages_noprof
+Date: Fri, 15 Aug 2025 15:17:45 +0200
+Message-ID: <5288409.JjrPIszM2I@silver>
+In-Reply-To: <aJwZPq0b2rckG-ap@codewreck.org>
+References:
+ <689bb893.050a0220.7f033.013b.GAE@google.com> <aJvc5m8Ocm3S_Xkc@hyeyoo>
+ <aJwZPq0b2rckG-ap@codewreck.org>
 MIME-Version: 1.0
-References: <20250813133812.926145-1-ethan.w.s.graham@gmail.com>
- <20250813133812.926145-7-ethan.w.s.graham@gmail.com> <CANpmjNMXnXf879XZc-skhbv17sjppwzr0VGYPrrWokCejfOT1A@mail.gmail.com>
- <CALrw=nFKv9ORN=w26UZB1qEi904DP1V5oqDsQv7mt8QGVhPW1A@mail.gmail.com> <20250815011744.GB1302@sol>
-In-Reply-To: <20250815011744.GB1302@sol>
-From: Ignat Korchagin <ignat@cloudflare.com>
-Date: Fri, 15 Aug 2025 14:00:37 +0100
-X-Gm-Features: Ac12FXxJSZN0OfDcjS8s6OFmiOlXF2SG0blAOcgASCk44-lWBGEmHN2xDuaUJKY
-Message-ID: <CALrw=nHcpDNwOV6ROGsXq8TtaPNGC4kGf_5YDTfVs2U1+wjRhg@mail.gmail.com>
-Subject: Re: [PATCH v1 RFC 6/6] crypto: implement KFuzzTest targets for PKCS7
- and RSA parsing
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: Marco Elver <elver@google.com>, Ethan Graham <ethan.w.s.graham@gmail.com>, ethangraham@google.com, 
-	glider@google.com, andreyknvl@gmail.com, brendan.higgins@linux.dev, 
-	davidgow@google.com, dvyukov@google.com, jannh@google.com, rmoar@google.com, 
-	shuah@kernel.org, tarasmadan@google.com, kasan-dev@googlegroups.com, 
-	kunit-dev@googlegroups.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	David Howells <dhowells@redhat.com>, Lukas Wunner <lukas@wunner.de>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
-	"open list:HARDWARE RANDOM NUMBER GENERATOR CORE" <linux-crypto@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 1D87018000D
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Rspamd-Queue-Id: A401CC0011
 X-Rspam-User: 
-X-Stat-Signature: nzg3kgp9bq7azb6ayr6btp59ebz31xob
+X-Stat-Signature: numpkueqhzdw3xhejj5x6kjpbx3gad8u
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1755262851-927570
-X-HE-Meta: U2FsdGVkX19HBqqgT2ypwoJs0LRjd8GMU+09UwaKeX7NAJg/2WhiYYitv54/kh9Ccnzf4P6cWw+NAXdVehYWVt9CeM+uuDSJHdQOFr8TVRkKf3NC3JiSCQYMSN7e+4+QjZxT5CnbPbg7ysZ2obSeYLL98qjuYEX7KhBaYxKii6idYSefepWFJYup4wrVd91BDHI65yoffjXqOlj00Tz0EmQ8gVlU+QXtLAsJezArZVjsF/3fX0wByztoyIEIwn75LGu18+CmS94KrgvcEl14UN9CNcuhR5gIKMI6YAxFLx3KRDr1PsQMhuGE0maxeK61yknrrBen9fc41E/21P7hAqb5rM1S9JAsa80ZewnRKPd+nd57wyG2rFSqbLSTNCh1JJwVp5LnFgGmdQr0MWdeVERH9TCf/U0oBLpx7IJFdGIW7K9yhNd2288dTFMIcu0eI4OZPZRmbbcXsbR5t/tYapEnrS909poT14TPlfjDDrEJTcW+6MrgIIO0Hjhk/76KB+mfkpsN90rmrPp9pfi90Jd2IKHHFvze75dZ4DISIWARaz5eIA6JlUWDC/x9FdfNujDRruGbWOqn0vn+ppYcEAdIM+0NbZodhDYWq7Yc683GdDLR0VtcuQXQwavyrCz6RAqUNwMAcuboTbvqXcDZGQZ0VgTlqA+jaXNL8fuxADZjg0xCXyqrJz0hlxZ+thTw5Dqe6tKvIlsMnE5VNauIRw5Ye33LeISnks9+qPWx1EDoQy+UG4W1fFpW12BQaDugLtE9zx3Ou3K7emRjOJkHDt/zWujIaXhCxGndgS5kBDWo+4n0lIKw8A/jAeACAKUoZTYYbZdJWiTBSlmWN/92qurFrgmu92MN34vrKE3dm5EBHYQcCrFnWUHXVHXbAwU/kuNYfiy8M2izYNuQUw/fPJSMJ0rY0mL9/zSUzfA0brz2904ln9Vv1LeX1D7b6Wn01jnDmQpnrNqkq5KILnp
- FWeSEka7
- WD8rjRFaHVBuHIOE6ZVUkrHAjzGPivzCWQr5UqR7br4k2ccJ/nfrjvonksPX8Qp+GiJf8xIYv6KN94QPbQM1VJbzOzCFavIwSEj8EDH7pNjAKn4xLQPMMAyxY/mF4a3xJhLMj0Ec5dKUynwtqWf1QdaLDb1LOhaz2X79Sz2YPZ11qmzRuNq68ZKuqDS+am7wtTkQXFtvqoGPcIYRAy1REv3oBYhqyPhWV77vBe/h4vEmkAP3wwBjj30qBCf04es3pZYLxPZA7lo6SdZcyV+D6dLNZCf7W/b0ShJ9dlQbra8FcQ9jCN0TTliD21Q==
+X-HE-Tag: 1755263893-116634
+X-HE-Meta: U2FsdGVkX19Eq49NvYcQUibhW5cIw7ALmg9Rvjm7yhmzxyVfDFjJcUWhBCOBMnxIc1JRF8vMUJJgzFWyunco8O44RWkSZdP2SC8tyZAoFX5JejnT82pb3zjbiPq5kBSxn30/MzI0teekBFHcdhD3AburGvUe7PE7i9BwoKUU7jcgzbKlaEoq28N0L7YXXOx7H9q7MsjlKlk4/Ud3DzJJTGmzXj619YF/7XixWQejcmGwdcM5aXzk1N6pxunnJoYnIR+/Lshew7lfpDZCTNzHcXNRED5jdWiv3i0B8bup1S6sqixKiewR1EDWQcvvQnRLcItekP4TXfKF7hjWImIC7gv97Q95bPA2MFZ96p7i0laVIrLuwBg4d9j1OuCILVQpx6jZxo2xfcOKrnELYP8trTFmdL4UMujpQx1ee0hJgNz3P+OrAmdAjpNo0/j4hDnM8zUTT6lSv/ou7wVYnTcPOVEUWje1cV8Wxri73eRjVJoofLndx+GW9gvfH9bh71/mN9LOZ8Nhb20uO/BuVd+pNcQv9wI7KURX3Oq5y5XMMaOK0VijqpiUjO9Lr2hhrNNlp+671SkQsGDvveqdU4a8eUE8AN0kshTdgVUmT9JoAiC5MNMRQhCjJT6d4Kqf5kXscWqFX256WnXwVbpxYw0FSEcTZ0v8Pc2c2XDE86jpTinXP7EMQ3QbzAdhBZboiEFSxYps8XkauRdbOMJ4WKwKL0ARIKVp6vEXitW4vkIaRABrySqwrNxVkOW+1CReqV+uE1EMOjR7XYk8SNe0KKvqA87fpsVFg241eaNhfPxNhlT14Gvj0vVpniQNWx858wJHaBigh7BUl7GaeYQcxaKV0SewR9VRH4NiESwYkpNWrFzquFU67puE7yUAQzH101q2SXO6rpZpidEQjvsC0RbzbW7pcIEAa9paa/TwE7WHeJ5ECcjgm4KNO2gsKXnfn5HZVEClmglXnlsJR7+n42R
+ WuOxlbiF
+ aVLJQ7SJETDANtdUulQ8Onk/U7sswjMDrFmZN7WLOVkVfxj1oLL7f3WAcKpn6aCxVYbeq/9mrvkoYgLvOXeyIgun6hXKswM3aynMwsq7tXVjVx5m8HDK5vlSboWMP5alpudJmWTjCjMrvHpyjv5BSNKUAwe19K4ICpQ11cpFNY06tICfRXS3T8SulO5Z3jjCx3QIUF0/BuW7tplXo3T66ms44k237AjSVD7UXiGHBWb5ftRN165fDCTFyV9fc8KuRr1/ZtskjMpSdCzJMCiOMeJh0LUaXATkvz6VA2IPjBkfcA7Q1CgGvNMC8bxkVxxx5LpJBxAsxajPEyS7kWSL3n2RVJIx3kYVM1LgGfRrM/cY0PKB16O4pRJfc2ZttPN4tkv+0CH85Tcv1Qy/7AGD5yPaMWdA1CwIhNSWC6M8vTUSPLcH5QVDwlaS1PyBWy4aiiCkM/2YLHwBGWY8pfI0IInEq2f/Br8jg8XAVE2b/W1c50gTdAUHa+g59OiBF8CRVvSNw/wYC13iFPagrQXslMlA9Q/QdBTlPF1uRueISSlTbLYHO/8MPo2zCXjUZmGGUB4xGQSwjP8ANeqN9tCfGX9o88f3lcjaBuhhKK8GEjE12uZ0R/bIUdIe6FWQmd+h0MH1YtOFRmMTwEj/6NYuZa+XUi6yf6dTNFxDhdoPRp833kpig4+vfIX53lg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,37 +97,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 15, 2025 at 2:18=E2=80=AFAM Eric Biggers <ebiggers@kernel.org> =
-wrote:
->
-> On Thu, Aug 14, 2025 at 04:28:13PM +0100, Ignat Korchagin wrote:
-> > Not sure if it has been mentioned elsewhere, but one thing I already
-> > don't like about it is that these definitions "pollute" the actual
-> > source files. Might not be such a big deal here, but kernel source
-> > files for core subsystems tend to become quite large and complex
-> > already, so not a great idea to make them even larger and harder to
-> > follow with fuzz definitions.
-> >
-> > As far as I'm aware, for the same reason KUnit [1] is not that popular
-> > (or at least less popular than other approaches, like selftests [2]).
-> > Is it possible to make it that these definitions live in separate
-> > files or even closer to selftests?
->
-> That's not the impression I get.  KUnit suites are normally defined in
-> separate files, and KUnit seems to be increasing in popularity.
+On Wednesday, August 13, 2025 6:49:02 AM CEST Dominique Martinet wrote:
+> Harry Yoo wrote on Wed, Aug 13, 2025 at 09:31:34AM +0900:
+> > The warning is:
+> > 
+> > 	/*
+> > 	 * There are several places where we assume that the order value is sane
+> > 	 * so bail out early if the request is out of bound.
+> > 	 */
+> > 	if (WARN_ON_ONCE_GFP(order > MAX_PAGE_ORDER, gfp))
+> > 		return NULL;
+> > 
+> > There's not much the buddy allocator can do when a user requests
+> > order > MAX_PAGE_ORDER allocations.
+> > 
+> > >  alloc_pages_mpol+0x1e4/0x460 mm/mempolicy.c:2416
+> > >  alloc_frozen_pages_noprof+0xe0/0x210 mm/mempolicy.c:2487
+> > >  ___kmalloc_large_node+0xac/0x154 mm/slub.c:4306
+> > >  __kmalloc_large_node_noprof+0x2c/0x8c mm/slub.c:4337
+> > >  __do_kmalloc_node mm/slub.c:4353 [inline]
+> > >  __kmalloc_noprof+0x3bc/0x4c8 mm/slub.c:4377
+> > >  kmalloc_noprof include/linux/slab.h:909 [inline]
+> > >  kzalloc_noprof include/linux/slab.h:1039 [inline]
+> > >  v9fs_fid_get_acl+0x64/0x114 fs/9p/acl.c:32
+> > 
+> > So... 9p FS shouldn't really request that?
+> > 
+> > Cc'ing 9p FS folks.
+> 
+> Thanks for the Cc.
+> 
+> So, this comes up once in a while, everytime we discuss limiting the
+> xattr size, then someone says we should do something else or I'm using
+> the wrong define or I don't remember and then when I ask what we should
+> do never reply again.
+> 
+> See [1] or [2] for the last two time this happened.
+> [1] https://lore.kernel.org/all/20240304-xattr_maxsize-v1-1-322357ec6bdf@codewreck.org/T/#u
+> [2] https://lore.kernel.org/lkml/20240202121319.21743-1-pchelkin@ispras.ru/
+> 
+> I'll be happy to take any patch you send (or one of the older patches if
+> you tell me which is "correct"), I don't care anymore.
+> 
 
-Great! Either I was wrong from the start or it changed and I haven't
-looked there recently.
+Not that I would care much either, but as nobody else responded, I still think
+the following is the way to go:
 
-> KFuzzTest can use separate files too, it looks like?
->
-> Would it make any sense for fuzz tests to be a special type of KUnit
-> test, instead of a separate framework?
+diff --git a/fs/9p/xattr.c b/fs/9p/xattr.c
+index 8604e3377ee7..97f60b73bf16 100644
+--- a/fs/9p/xattr.c
++++ b/fs/9p/xattr.c
+@@ -37,8 +37,8 @@ ssize_t v9fs_fid_xattr_get(struct p9_fid *fid, const char *name,
+ 	if (attr_size > buffer_size) {
+ 		if (buffer_size)
+ 			retval = -ERANGE;
+-		else if (attr_size > SSIZE_MAX)
+-			retval = -EOVERFLOW;
++		else if (attr_size > KMALLOC_MAX_SIZE)
++			retval = -E2BIG;
+ 		else /* request to get the attr_size */
+ 			retval = attr_size;
+ 	} else {
 
-I think so, if possible. There is always some hurdles adopting new
-framework, but if it would be a new feature of an existing one (either
-KUnit or selftests - whatever fits better semantically), the existing
-users of that framework are more likely to pick it up.
+---
 
-> - Eric
+Values > KMALLOC_MAX_SIZE are triggering the reported warning.
+
+XATTR_SIZE_MAX (64k) would be much smaller than KMALLOC_MAX_SIZE (4M).
+
+The call stack in question comes from ACL handling. In this case there is no 
+XATTR_SIZE_MAX limit involved on 9p client side. If 9p server side does,
+then server responds with an error anyway. If however server does not have
+this limit then why limiting it to XATTR_SIZE_MAX on client side for all?
+
+And if OTOH the call stack comes from the general purpose xattr API (i.e. not
+ACL stuff), then there is already a XATTR_SIZE_MAX check on xattr VFS layer.
+So no need to check for XATTR_SIZE_MAX on 9p layer for a 2nd time:
+
+https://github.com/torvalds/linux/blob/d7ee5bdce7892643409dea7266c34977e651b479/fs/xattr.c#L616
+
+In the end it is merely a theoretical issue. POSIX ACLs are quite compact
+encoded into xattrs. To fill 64k you need a ridiculous large set of ACLs.
+
+/Christian
+
+
 
