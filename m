@@ -2,56 +2,56 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B43FCA0EE6
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 09:00:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2735ECA0EE6
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 09:00:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F109900225; Fri, 15 Aug 2025 05:00:15 -0400 (EDT)
+	id BCB31900226; Fri, 15 Aug 2025 05:00:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A2778E0002; Fri, 15 Aug 2025 05:00:15 -0400 (EDT)
+	id B7B2D8E0002; Fri, 15 Aug 2025 05:00:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BA3E900225; Fri, 15 Aug 2025 05:00:15 -0400 (EDT)
+	id A6A3D900226; Fri, 15 Aug 2025 05:00:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 088078E0002
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 05:00:15 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BC4FF83A12
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 09:00:14 +0000 (UTC)
-X-FDA: 83778395148.14.ADD406D
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 93D898E0002
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 05:00:19 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5D6A51408CA
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 09:00:19 +0000 (UTC)
+X-FDA: 83778395358.26.D852F2C
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1B25040005
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 09:00:12 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
+	by imf22.hostedemail.com (Postfix) with ESMTP id C0F5FC000F
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 09:00:17 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf11.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	spf=pass (imf22.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755248413;
+	s=arc-20220608; t=1755248417;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=XU5bu+lKKeDLR9H4YP964In4FuB9GNE60ZYvTs3tXww=;
-	b=hqyFkj8n/v/l/+Y6nb4epVeIGAY8j94qXs9ujOvg+5WffGRzS10icWDQvv6W8ThXUd1TX3
-	FhWb6o0rM0PE295tFToCpLIVcTTq9CfsaUDKBSR4XVFhG1jz4LGrwp61IXw6TV9007DgzL
-	9GK9wYW1AdTSsDgdOT+m0SLO4l8NfWA=
+	bh=WWMyLJjFwfDhUGhjD3NSb7U3rCUdr5sjqOjLOhtLe2M=;
+	b=8hxBZNOBYQl396SpOWHliTfdZnKstumz/SBIMjCbnpPo4sFT2L9RkSSXLUH/3qs/Rm+zfv
+	IZnKjI7zMlpUUXb/CqBpaRzyITYy8BuFQwRxs1kNVweR5fsdRha6uMBAFDuCTOPLrOvEgD
+	bRz8RWimL3PTEdwoN5JujsTxQxpkbNM=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
+	imf22.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf11.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755248413; a=rsa-sha256;
+	spf=pass (imf22.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755248417; a=rsa-sha256;
 	cv=none;
-	b=TqJO0+eQRzrlP78HE3QdkmcIk5wAkGCz3pydfYHL3zx3otyotgjAfv4kg8kBhUuBYPrbSZ
-	1BilSMSGJH5vMAZb+8OJDXoXLFh3in1eKiH01ikuQCUcK7gLqVw7sgtfdrI422zFtAz1rU
-	kIBLyexu1+S+lVCBvMankNELmRvHjw0=
+	b=lW10iA6n8DByuAa863Jr9fytVKot49/HlISxM4ZFiQ9mC0EgH021BemSzrOWSKKeh3I8g7
+	NKYmOi512Yyi777CCESTU1zQ4DN/5xaTh4ZU7qHFxX3aChSLOSGdDy+loz2ZhV1cXcOOh9
+	xb84cOytYfv9Da+39iO6a9+5WIdzHc4=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 18FDD1E32;
-	Fri, 15 Aug 2025 02:00:04 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C51341E5E;
+	Fri, 15 Aug 2025 02:00:08 -0700 (PDT)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D38593F63F;
-	Fri, 15 Aug 2025 02:00:07 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8EE173F63F;
+	Fri, 15 Aug 2025 02:00:12 -0700 (PDT)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-hardening@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -83,22 +83,22 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mm@kvack.org,
 	x86@kernel.org
-Subject: [RFC PATCH v2 1/8] arm64: kpkeys: Avoid unnecessary writes to POR_EL1
-Date: Fri, 15 Aug 2025 09:59:53 +0100
-Message-ID: <20250815090000.2182450-2-kevin.brodsky@arm.com>
+Subject: [RFC PATCH v2 2/8] mm: kpkeys: Introduce unrestricted level
+Date: Fri, 15 Aug 2025 09:59:54 +0100
+Message-ID: <20250815090000.2182450-3-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250815090000.2182450-1-kevin.brodsky@arm.com>
 References: <20250815090000.2182450-1-kevin.brodsky@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1B25040005
-X-Stat-Signature: 818ci65zbxqn18gnahizm73pt96gr8pj
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C0F5FC000F
+X-Stat-Signature: 7nqasikmqzcrzyyiss3buqgxwugn9pxh
 X-Rspam-User: 
-X-HE-Tag: 1755248412-54517
-X-HE-Meta: U2FsdGVkX185ZrU8srreOXXI/olDfeHwGReJJGZDAtxkfnXA+sXyXl5bftdkEBd6WIcF+3A+SR5gBff54K3A/AUgxNaydHTvRiNkaeRAaHPF0AthcvIYmc4jz+GC+Zy8kVITSJZiufDecA3Zal8a/j/fiMMe0jCOKfEZqMQ2KSJWV3w4LQ/YQUYWSQ/KA/WZ6HmksMiXTSuKTJ2/8pdAZGedIzXbzjBtf1RI/uo3c3zAgRdw4TSpioIARni5YsT82WaJAR+cWLXa9DXVvmi8CCbjczWdu3RoRvJ7WZ4b9xg1AI3z+4P3GIpMx9VbPxa2bwfKGbiOe3BQPYFPT008gBlC1BrsjpUYrPcjN3DJUirX1+eJF2p5P0PViQcCQZPKWbHdKmL67n09Mg7afaXRar7ujWxr8HtLtBVkw1i5i/ONlxKiaG5LazqbFUI9lv52SaU6K4cBe2HrAUiIKJlxE4ku5J+Ar35aYlB1bbXNhdZDg8fg2alXTukj0gDz63TMu5vEDWtEuX2Nbk2eTRbGESWGqwPWUaVOcPaQu4tF1A+iQok18I5uPdyn/0ZLpdsHkRL9/4jFbo3OqVgqVIF2slk3BziVAC5vfpywr9FW03bM2IzbzsCFgFisT845jnCy+cJoGjn5FjvHjwHnU4kIH2G1urubqv+Dk7ecTzt/JUvj5XVFB1v2DsrSsQSpHwlWqQqEEPyEXigPR2djHgoczlwg1kWozHzB+zF2bL4Ki47O9q8PVlFfutJpAQTwRpFiuEKNf2pLAWo+EwmNt1ZP4TirTOlvo8EtkNJyxV9Lc+1cP07Vmc2Tsn4A6luOL9A2XgmUBB2sUzE5xrYbYhudomSdRjtEoBFSEo+LLcSpQNosynZwZigHrSx6+vTVHjKW/m8oMn0jH2+qLr67MCTlzdZatfLS7OaVsrSUATV2q9aLcKG60fd1TW7D7YfM7BuzNaCijQiIr34UjBLOQOa
- gwSblAr4
- IdhdalKkLYceCyfq6puKO/+E+v0sdlopPy8qOudDo0d4IXfFP+gdmZpldGsIea0EccfzwlrikhqHYQoRjYp5gcUqhPuJYJhY8zRAzFIOq/FvE35OKChYVU5B37DsXiPrFbpEeatcULVmFPbbdRT0Kx3KSVZKnvrlO6KU6W7ExSVhDuQpF7riN2pGZNJMyUWEj2PLpJABNxiHPlXU=
+X-HE-Tag: 1755248417-224225
+X-HE-Meta: U2FsdGVkX19MQZHoaRrhm1+zqhYjdce8wD5+6T7OXm+mvPGckjuZrZY0xc+G1TYmsPI7VcslzFOneqJFqSnUOF4Y9n5aNxwvaDAt+Qf5to1C5SSZMky9/Ju8MXjxO6vsistAP6B3yniMe4+3lDcJtggaCPkDNQVIy9SkUuK68AEt567OVZZHcFFuphGZNr4RMOXbdt72i/cZ3xazAh7eE9LE5XmoyhGwPmabUjWmbIt76vL3KfdfI0F2k+BRDl7pvv8+MVmLH12Qp+CgqCzoa9K/NQzo2cXnK8y4YTNQ6S7ew4PO8yLH2+ewDrEcvr9a+fzBp0SyY9cW8V8HZySszKiYdtO3qxfyOfVaa7V887IpbyqMBgVK1BI7EhotJsDxw6Fv5sMIe6MLc8vcID385+yoZ8dYk2eInGy7ULLiUCtg4tvSNnsXdLJTix+sGhxZlio0sBLazWaEDBD1S2T5Dxe3HcM/GCtUUlDhLVAZtM2VVQr2OCWGV5BmBBo0kDxxvI92nswUNgv8PxmqcWTldPX900NGMGGKd4rkDyPpXCFWVR6OGvyFglDN1deICduNRyj4ls5sIvw7P183PVEVmJ4GorLBwrXsfMtML+DyJ70jjzvV/ZKqliM8OIRJb3gwCZN6b/OgbShhNCT+pzAe141twjqihs84F42u8ZEGf0Wge9/j8++/+G4cQFkbNwX+dVWJEd1KD8wCWot8oTvl/JnLfa7Uv/MYucYt+l5CuEd6Ux30HmxpOUpaDwQb6gosMjIU9MI5luC0GpZ6pWV3qFVSIjzVa4rG5wnvz7R9Pn6UgcF45Z2P9be6QdcamvzMFdRfr0AGOjB+RoFMKoroy6/b/sFV75nhUePmTufRwbiGLqyKMCkdTcGO+j0+e+ENtjC6boR6SLJYuA7g9DSDUQHIy/7E7I0hYL/RFw8mtnsPQc1rFQsGOd8vaeQueSaMeeq3NFhHnvkxGcSVsXL
+ IW16UN33
+ Vwx/ihe58hObpcRj+81jL+SrjVUEKWNLKENDKInd9kCZ/2BxMXMunhpzXwV4ojZEEcxVeUOTdxRFj509KguCrsdU92gPUttHl0zqB3XIYaU0AHnivh+AdvacAF45oZeOWRW/g0GqTQEmQwjhmV+2tzO50Tg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,33 +107,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Nested uses of kpkeys guards are about to be introduced, which means
-that kpkeys_set_level() may not actually need to change the value of
-POR_EL1. Since updating POR_EL1 requires an expensive ISB, let's
-skip the write if the value is unchanged, by returning
-KPKEYS_PKEY_REG_INVAL. This will cause the matching
-kpkeys_restore_pkey_reg() call to bail out without calling
-arch_kpkeys_restore_pkey_reg().
+Highly privileged components, such as allocators, may require write
+access to arbitrary data. To that end, introduce a kpkeys level that
+grants write access to all kpkeys.
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/arm64/include/asm/kpkeys.h | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/include/asm/kpkeys.h | 4 +++-
+ include/linux/kpkeys.h          | 3 ++-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/arch/arm64/include/asm/kpkeys.h b/arch/arm64/include/asm/kpkeys.h
-index 64d6e22740ec..70e21df84252 100644
+index 70e21df84252..ded5d6e988dc 100644
 --- a/arch/arm64/include/asm/kpkeys.h
 +++ b/arch/arm64/include/asm/kpkeys.h
-@@ -43,6 +43,9 @@ static __always_inline int arch_kpkeys_set_level(int level)
- 	u64 prev_por = read_sysreg_s(SYS_POR_EL1);
- 	u64 new_por = por_set_kpkeys_level(prev_por, level);
+@@ -28,7 +28,9 @@ static inline u64 por_set_kpkeys_level(u64 por, int level)
+ {
+ 	por = por_elx_set_pkey_perms(por, KPKEYS_PKEY_DEFAULT, POE_RWX);
+ 	por = por_elx_set_pkey_perms(por, KPKEYS_PKEY_PGTABLES,
+-				     level == KPKEYS_LVL_PGTABLES ? POE_RW : POE_R);
++				     level == KPKEYS_LVL_PGTABLES ||
++				     level == KPKEYS_LVL_UNRESTRICTED
++				     ? POE_RW : POE_R);
  
-+	if (new_por == prev_por)
-+		return KPKEYS_PKEY_REG_INVAL;
-+
- 	__kpkeys_set_pkey_reg_nosync(new_por);
- 	isb();
+ 	return por;
+ }
+diff --git a/include/linux/kpkeys.h b/include/linux/kpkeys.h
+index 5f4b096374ba..48f240bea8e1 100644
+--- a/include/linux/kpkeys.h
++++ b/include/linux/kpkeys.h
+@@ -10,9 +10,10 @@ struct folio;
  
+ #define KPKEYS_LVL_DEFAULT	0
+ #define KPKEYS_LVL_PGTABLES	1
++#define KPKEYS_LVL_UNRESTRICTED	2
+ 
+ #define KPKEYS_LVL_MIN		KPKEYS_LVL_DEFAULT
+-#define KPKEYS_LVL_MAX		KPKEYS_LVL_PGTABLES
++#define KPKEYS_LVL_MAX		KPKEYS_LVL_UNRESTRICTED
+ 
+ #define __KPKEYS_GUARD(name, set_level, restore_pkey_reg, set_arg, ...)	\
+ 	__DEFINE_CLASS_IS_CONDITIONAL(name, false);			\
 -- 
 2.47.0
 
