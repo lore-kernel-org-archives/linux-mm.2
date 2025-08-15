@@ -2,113 +2,99 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3156ECA0EE6
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 08:50:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A8306CA0EE6
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 08:50:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A25C8E01E1; Fri, 15 Aug 2025 04:50:02 -0400 (EDT)
+	id 43BAA8E01E2; Fri, 15 Aug 2025 04:50:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1535A8E0002; Fri, 15 Aug 2025 04:50:02 -0400 (EDT)
+	id 4139F8E0002; Fri, 15 Aug 2025 04:50:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01BE18E01E1; Fri, 15 Aug 2025 04:50:01 -0400 (EDT)
+	id 350BA8E01E2; Fri, 15 Aug 2025 04:50:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D51138E0002
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 04:50:01 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9A652160875
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 08:50:01 +0000 (UTC)
-X-FDA: 83778369402.25.126B69D
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D4F39140007
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 08:49:59 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZsMB9Qvp;
-	spf=pass (imf09.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 233C18E0002
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 04:50:51 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D33A31181A3
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 08:50:50 +0000 (UTC)
+X-FDA: 83778371460.17.B4B43D3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id C0473180009
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 08:50:48 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PbW+Lki5;
+	spf=pass (imf06.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755247799;
+	s=arc-20220608; t=1755247849;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=0UAYlgaj0WFRwfyJcLterfTnNMoo1buggHkCH2QGz00=;
-	b=5W2YVeqtAqW4LtmfgmSs2fABDHhVW9gylmptXxVCNefIVE2YGvzAs2Kte1QHTzixdj0dEQ
-	W1HxAnTbyVcIobPVbf2WbafqNZoMtijnnfszDs6es1ARTvPDQFCHnCrcsrUXZvilsKxxS7
-	JQsNquXKtNKXPwYkNPv3Ajp4kPzjihc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755247800; a=rsa-sha256;
-	cv=none;
-	b=UCtuV9l4SsEnG7xiu7cVUdb8Hzoc7+MbctSKZjixYPC9kgx2auJpKm1w4Cv8NGkpjqg8vX
-	496ftB/8na8u2Krk2ObCTvqU2ToZZ3UoxIWCqcPirk9ABpmPF9Q+MQ2AAL+JoI1Bo3DP7E
-	BOr0erxYybNTNH4neE+MNpb3ttJcy0g=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BS5mq5xmrljgDToC2dHxxtMWqLV6gMkzshrhDBsTsnQ=;
+	b=ddqIME7oJSVpKwlTnTDMq+eNGMZuHIDNGuzEj1Prkzm60nkfibBY5DMo0obovmtjNNEzz/
+	VpDDTYodcExks5wMud+c3VIcdrjyjWNHaCxCss4TEYP++cwlaip4yuFXomq9QEE6ZWP5do
+	IPEXSLz6VcIoU+64LMkg//L9rdlJ7zA=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZsMB9Qvp;
-	spf=pass (imf09.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-afcb7ae6ed0so225745266b.3
-        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 01:49:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755247798; x=1755852598; darn=kvack.org;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=0UAYlgaj0WFRwfyJcLterfTnNMoo1buggHkCH2QGz00=;
-        b=ZsMB9Qvp8xlS7tzvtzcKrRW4JUqYynguBSKMbMaOuGPpBk5kCiCK2P7wvDptKrWF6f
-         xuOmQfLqRmd510dI/yv6stuj4hdDMOF2gQowQoDxCpsxsEtVsJtp4g3jTTbSYdADcTtf
-         oeJU24eyQfMpGt3x3bOQ3kzI1i38ooNXmhrcsfE0Cg5Boelk9K2XclBy1vZLZiBxeB3u
-         dyXLsCWRuJg5wdn96fa+aR6uyt4DbGe+tZP2R1hF1a9nRaR5BO3Bc3HlR6KWEYOEJ7zi
-         dnYH1wdswA10bow8LBZKKTxAUUy14Nm1HVz9n9ovWr15gwvGnhAOx2nmqD2LNvXbgCLF
-         s/SA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755247798; x=1755852598;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0UAYlgaj0WFRwfyJcLterfTnNMoo1buggHkCH2QGz00=;
-        b=pRKzRHAQ8gShXy3x2X+SDI97E8He47JfgGQf5I/w67VVvimanzxYFHA78aZEylpnKW
-         Zh0IYU6Phc19YrM8GFaqT/I57yY6xtXaQ2ZRSNb3wEMOW0H4wHi6GDdLASsb8JaN+3qy
-         HENKVcOlN/wEuPbK3iuqsNeAXBn6UWTT18cIqTUT1+UGgZ3caF6q3f5RywPkAGJxZFCS
-         ANrv1g8c2zJubdV4m8MzJ2ISVMzylKNkLv0w5kkRxc+VcnKW1jTF/DDmiX7MAiIZsyVg
-         dvX0Gc7/bipkl2gw67iG7clRsRx176fadkHJKn0QmY3DDmp27TKKu5H8B6jtG0wykvc0
-         t/pA==
-X-Gm-Message-State: AOJu0YzjbOq3I25fQ9FWQ3f/O/xsD6lCkpJuMbopoStSfgEfK79N6UMX
-	j0GCDfyhQGc4T13rTsS+bkkSL6RBV0/lakMADRGJ01Z9Q3TPpl25kEPp
-X-Gm-Gg: ASbGncsB8gEpEZnL+hAJTjJm17ihVIWwk+HUIa3jSoT1uih3MkFDKZeWjyC/gBPDo5f
-	ncBuX2jLAdwwM4Js8bP5s9YhwOKeRdtjWNySLEkreucIyqJFO4JoQmXqkAnDqPA/dsMUi0LLRSn
-	UzYrtg+uUp1MYeC6y4d4i/jUb/RSyRxFfDE3G5by3OvT1hOiZ2mUram1phfq+35NEMy3xpS9GO7
-	pAXKTbo8t43B+X5A1/mPBXjlyttDu4fip8VjWOqmMYYzus6SO5IpqVO5swuEwpy9gKMaucFsOS+
-	R+cXOQaU1hsyJIIizgEP4z/5gHNtl8p4fCX56I5id1hy2gPTYqlwVKBJ6jTqNpM78Z9j+q2iGhi
-	M+suS4tG223+sKGMjSHYsXw==
-X-Google-Smtp-Source: AGHT+IGc1McCDrpmoAO09U0eI9XuT12LebO5LaSdIXrZ9Qi+mTKe9/T6fNr2h3R+bwF07TJAfyuqPQ==
-X-Received: by 2002:a17:907:6a13:b0:af9:ff87:4d02 with SMTP id a640c23a62f3a-afcdc288d90mr102639366b.31.1755247798256;
-        Fri, 15 Aug 2025 01:49:58 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afcdce73e2esm94972366b.39.2025.08.15.01.49.57
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 15 Aug 2025 01:49:57 -0700 (PDT)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	riel@surriel.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	harry.yoo@oracle.com
-Cc: linux-mm@kvack.org,
-	Wei Yang <richard.weiyang@gmail.com>
-Subject: [PATCH 3/3] mm/rmap: use folio_large_nr_pages() when we are sure it is a large folio
-Date: Fri, 15 Aug 2025 08:49:43 +0000
-Message-Id: <20250815084943.23063-4-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20250815084943.23063-1-richard.weiyang@gmail.com>
-References: <20250815084943.23063-1-richard.weiyang@gmail.com>
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PbW+Lki5;
+	spf=pass (imf06.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755247849; a=rsa-sha256;
+	cv=none;
+	b=zGHvDaXTeVQS8gEdFOTaLPzD/pZ92otH8g2AsogtMb824RFtDTEj36aewaVTzczbAhgAWd
+	OQ8LohzNLMlH89VeABfWLJE98CwUlMujdZRVs2oOdPKf+m3+FZbJnG7NPiHbG/FKA1OUiI
+	L5Tr94HriBDhpSrULkvvv4bWNt5Lh8w=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 664D646061
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 08:50:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47846C4CEF5
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 08:50:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755247847;
+	bh=tFZ3dQRjUlI5OEsCU7Ae9mW17LHD+V/Wk9uO9K/WBhY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=PbW+Lki5GdtgPRWk6KJHakW5fq3skKRHg3Tjd7HfkKceyASIol5k3IhD8AgRZzUWx
+	 1JuJgF27o3H3SOLmxi8Pa7TJgus526rKsrRxulrOkoYwSpaY4WqmV1j7/7fCv/USMN
+	 M4UhPKa0JR6Pk24SqUvJn/VO/MdeoLIk3aPUmbdFZZufY6FGJMxiGCKZsDQONWhO+p
+	 p2Y7O0l8J+4aawypmZTvTmzWslQ//IaMoWp2l5Tm1Qwi9LhoXAL9JDgVDwRuJVq4Xe
+	 uo9CWt9/ofd5UzuzeE+PXzRWwsL0Q8aZ5XY0nhFUmp5G6OybZgjCBmVgD+b/Ox4Jjn
+	 mPfdQ/Qt+1Evg==
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6188b656159so2902965a12.1
+        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 01:50:47 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUmrypEwOr71QemoKwllopBajy6ZNf5VAIPV261b1dS4KuxeB3mHw2q0C8vYl0jE04nAgePN90wJg==@kvack.org
+X-Gm-Message-State: AOJu0YwdgeX9RSFIPBCVObeqLB231+a9yVrwi2KzUAhvvQM861taUIvy
+	YUVfRIdkLJD4ZekF/kNjyZd1aldx6khOrvPtMqO9/HRQs1N33YObvDxPhGvNXdCv/qRLD5UdXZY
+	rCgA9Diqi6uIRTQMDgG2w76JcE66DfM0=
+X-Google-Smtp-Source: AGHT+IHGCpf4wRlB5ShJISeqNfHm1ljWIRp3fTE5KL5hhOU/yg6wagjRCoeo9Wgjye7juXOhgtVcmtt1IGZWWoeFvbE=
+X-Received: by 2002:a05:6402:51ca:b0:618:aea9:725b with SMTP id
+ 4fb4d7f45d1cf-618b050d1f4mr851259a12.6.1755247845748; Fri, 15 Aug 2025
+ 01:50:45 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250721101343.3283480-1-chenhuacai@loongson.cn> <20250811185635.f51ddda72f36bc0c2ba20600@linux-foundation.org>
+In-Reply-To: <20250811185635.f51ddda72f36bc0c2ba20600@linux-foundation.org>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Fri, 15 Aug 2025 16:50:34 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H60uwMpuwOi1Jb0sgQO5oE=5AioMONAt3MtGTWzgm6uyw@mail.gmail.com>
+X-Gm-Features: Ac12FXxMi_qLVWq4FNkYvA5_28kW1mRomx7voeDtiMJFOvKVKYCDp8Jp6A_eE9Q
+Message-ID: <CAAhV-H60uwMpuwOi1Jb0sgQO5oE=5AioMONAt3MtGTWzgm6uyw@mail.gmail.com>
+Subject: Re: [PATCH V3] init: Handle bootloader identifier in kernel parameters
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Huacai Chen <chenhuacai@loongson.cn>, linux-mm@kvack.org, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: da31ehx3jhak7q6k95t1brdim1oous7z
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D4F39140007
-X-Stat-Signature: xizysteof6qw9axdzi7p4zc5gzhifg9b
-X-HE-Tag: 1755247799-752422
-X-HE-Meta: U2FsdGVkX19TlSKfDkzC0HcFmETf/Mm1zzn5VpSwglNqMenxiqP6ed5cvKzn1plnYuI8unv9iGhWsSC65YyhgE/TWf6LAFO3e2VHt4YATHmrt8bYzVEXB8Lm4qN9437tz2XfXWzOr+sg+jIRsHe7mvVeFaVu+I/pWNJ3REaU0KXDHXmxC5hdDRohicRBywbWzsdfq1FlLyaG6XLO3Jw32pcBPu3Zkvor85pjt78gmznkwmRIgi0+2yjHep81iiC8q+CGZfryqBkwRxSIHHju3TEPRjI6wAskeirRqG3tHOIluRvbr7VaBjq2ONU5oUNdAGjursMZ77oMNu1AUFpe5rcuJxct88SAo6dGQZjbK4gpEiCp6S2M2kmzA/seyuoLLXB8k6iCPj5dme9QR3sF62QXxhGKJFvmZZne0C4aN9JQfTaqCHnPEKAJGotPwIrRFEBfAIM3jjgCR5gnT+ODBZe4rXKFu041vuugW5pljR077h7lQCgAKwr9uk5Oh+R2IjAJoBFZDw/maJDAqLWkcIcoa2LD543BWz4BLVaqm+5AO45ssEm6haX4AgTsVqALQ0fF6oRHCnZaTuzB/V2hfqf3hpO81f0sQ/eVb7S+mK9x/P9PGhl4cEe+uzqtcysjbZYvi7AW5OlX3z5Ep+c9EQpEQW+QBfs1Y+YdfeNuD9lmV49B6UEPQ6qTaO8Sr2fVcNWmglFUj/X2XJ2oubH101Md08D+iPdSDF9C0fn3F8l4kkun6MnbMheN8nyv4hvLHQI3zGfoYG42Hw7RmCS/w1UsctjLqBMlyoHGg8Y4hIhlektlz8cIGepBg6j98h5U4ar70J9aGOh4clnL89ANxvN+VZwfzeJDMoQVC9X84nWJdRZK5W5sypHfaY+0OTADaE4aIkcfc2bP3uY8sBYbtaEPGwhY0/EI2yZtuP61S3jNQ2ScNZnAXUcbAtmw1RBV9gqVB0Om6X2mhO3oMCd
- TQqWi4Ir
- LUUlUsGkOjvAv4mkgr+jZ/zKmAEtBmCbn1/Q9AACX7Z7RpoIIjrZMq+eLaymvC3+Y3tdE/A+T7MrflSfEvL9dxwuQ0kBnqBSBZbdQgwOzfLZ3urKNQN8Vu+Y/2ZFZWHXH+0/ihc68jLyCq7YtvWZqr6ZGlrp6SdFbdYqO4rDnYCKzFW9g0vVPdTVmL1CXfxLnQUje7H0nyzGrz6YpQbeB9RgRSSvpAFEmVLgv4XaDJuRTuvn0ce/CHTUa6x9gl/H70zsX7s+rqo03oUaSN1w+xCZLBzmtK6/WaKkkbSgMeu4wUKknbkw85m9A8UwFAg06/Kw2NPKrCYNoXlvT7bSszQLjYzGAEjGTGrFi3HI27cuM5DEJPkfW38uvF7umImUkKhf9o6smAGTmnX+kYspdS5KgapWKC6oqmqy9wWvFzE+G5D+rn1dszIwn0QiSDTOMpWsOOCS5dBOSlloMRCR+Q3xaN1u1tD/U/253v7bNcclmRb/wNpsuFBiSVdEqse2a1VtGZkWn4aO6N0iEQm8idbUxLESK1tUlvA5SyuBmSLt5gz9/QUec8k9J35aw98xE2jDS/AXEfVw6gEwqrdmMStWp1oWuwLK/ymLowmih9bcJZgCqAscopKU5HGoNWTfk98ogNbIZFavonr6WSZY6JGAje34T6sqqThT9Er6c445ccxEDLTSQ7tFjfjTGDyq8yObBnR2PovLfcbdZvYoSjpIe0ozhI3zpkUGmnekv8rEZH2s=
+X-Rspamd-Queue-Id: C0473180009
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755247848-197249
+X-HE-Meta: U2FsdGVkX1+uJi8Hgfuw4K19qHkP61ZGpmd/BAPBl4kxb5yEpHNlKkpbZkgrpta7EXJoHFo3A62YSo9Jizn01Ben9w0nuE4ceRaWxfn5d2d5LsiHmUvW8ACtOnv/TzD0aEqiMz0a4Nucw/DifMFJLlzBjRPlGJkMYIvf70eytJkETdp0A3knFDsnGBHc2slfZLOR3w42JYD+IQpFAFvGODkAQJdoMIMblYjBntr8V+O/+JCoSPORx/B6d0nTREiFw02sqXyN+Np/2kHdce0EO8nn89AGVj11eGIA4GiNCIjbIldVr9at0PpDGF+nRMiANpRDFsaz3w0LDcasolEzHrRM7PrunSpmxWy/Q92e0pwXGnW03N0/Sj2494LXD4hQpmjlQGSnha2ZZ9Azy2nKrd7Y6rjQGyoC/Z8LzW383nhQSdwc3lWME14q+4YJKb5+/+3+aq2payfY+bDifGOHzSwTDSPMP3cQMuOSkPcEzoBWlwXrusIsvqp+Oa2I3tPwObBCLyq88VnfeyD51xt9CCqBg/mPt35BSWxmlB6RabfLEOipi90jW1u4GobgrQvlTQ/Yugw8RU6olUGA9CdbmrtDj79cRVLcQyEzP9XHqqH2ZD38i6H3w0CAeU31mf+PLo8ik3aWR650rTM9U6HWPX3QHdqdwPBDXBWx3DrhzRDEHayZVVfIpp1rOEcPLp13HdTIfXqGv9pEfYImS2XWvni9ddoWe3HUdSiO2M6RXky90EOCeTkWaPRfL9eWmMfliwEbie4kwhRpZqKHCoc+cKqYpff3eVcoIkWPa+ZaJD1sPpM7Rvzms8hVan8tVavxe2CxBWFgITCkBotH76ueTyqPYUfWNhavkvJeIPkMEvUt62jgPOIudzoUaR7IvAlpdR2yIKyYlKux3cs4P6tbe0d6CBoXRyi1te7lyNxjTIuiZNNv+WPe6Y43Cn0X73jcKc/nH+F6VoY8E2tn2ZP
+ ga9ELuCU
+ ZzHYS6sKyKM6356nqC8RSZsSvmik+reQTjasm/L6RUxm5wtmErysFs2vkUuiexnHU4FGOJBXTynCY0m0nTHwr5EFTsvM0D1/kDEe8fOcMeGx4LYRzznfr+ub14OKOBMn0nFDG7+UHG16yQxGMZ0aCvAlxG6WQj3PHp73/rxx7BRQDolvvhX5dEEBj+/t91Jjey/MgpTXjEBNMTqUN4SDgRnvRP5UEiUmFZTuFvvKzAPtfGyODeefBPap+/hgCbEUltswi5hju0Amzq8Zzge91eGIVh2d7vYBVEi0zBETAWuLeNI+ANZY9huRz5eVcWuWDWylYBenJ6e6yJCo4kCVRr4jX7QEtPbcjvzTI3fg47MdodiOqzS7Y1UyE7cCmZ7C07kSAva/UkvupC+8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,36 +103,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Non-large folio is handled at the beginning, so it is a large folio for
-sure.
+On Tue, Aug 12, 2025 at 9:56=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Mon, 21 Jul 2025 18:13:43 +0800 Huacai Chen <chenhuacai@loongson.cn> w=
+rote:
+>
+> > BootLoader (Grub, LILO, etc) may pass an identifier such as "BOOT_IMAGE=
+=3D
+> > /boot/vmlinuz-x.y.z" to kernel parameters. But these identifiers are no=
+t
+> > recognized by the kernel itself so will be passed to user space. Howeve=
+r
+> > user space init program also doesn't recognized it.
+> >
+> > KEXEC/KDUMP (kexec-tools) may also pass an identifier such as "kexec" o=
+n
+> > some architectures.
+> >
+> > We cannot change BootLoader's behavior, because this behavior exists fo=
+r
+> > many years, and there are already user space programs search BOOT_IMAGE=
+=3D
+> > in /proc/cmdline to obtain the kernel image locations:
+> >
+> > https://github.com/linuxdeepin/deepin-ab-recovery/blob/master/util.go
+> > (search getBootOptions)
+> > https://github.com/linuxdeepin/deepin-ab-recovery/blob/master/main.go
+> > (search getKernelReleaseWithBootOption)
+> >
+> > So the the best way is handle (ignore) it by the kernel itself, which
+> > can avoid such boot warnings (if we use something like init=3D/bin/bash=
+,
+> > bootloader identifier can even cause a crash):
+> >
+> > Kernel command line: BOOT_IMAGE=3D(hd0,1)/vmlinuz-6.x root=3D/dev/sda3 =
+ro console=3Dtty
+> > Unknown kernel command line parameters "BOOT_IMAGE=3D(hd0,1)/vmlinuz-6.=
+x", will be passed to user space.
+> >
+> > Cc: stable@vger.kernel.org
+>
+> I think I'll keep this in -next until 6.18-rc1 - I suspect any issues
+> here will take a while to discover.
+>
+> > --- a/init/main.c
+> > +++ b/init/main.c
+> > @@ -545,6 +545,12 @@ static int __init unknown_bootoption(char *param, =
+char *val,
+> >                                    const char *unused, void *arg)
+> >  {
+> >       size_t len =3D strlen(param);
+> > +     /*
+> > +      * Well-known bootloader identifiers:
+> > +      * 1. LILO/Grub pass "BOOT_IMAGE=3D...";
+> > +      * 2. kexec/kdump (kexec-tools) pass "kexec".
+> > +      */
+> > +     const char *bootloader[] =3D { "BOOT_IMAGE=3D", "kexec", NULL };
+> >
+> >       /* Handle params aliased to sysctls */
+> >       if (sysctl_is_alias(param))
+> > @@ -552,6 +558,12 @@ static int __init unknown_bootoption(char *param, =
+char *val,
+> >
+> >       repair_env_string(param, val);
+> >
+> > +     /* Handle bootloader identifier */
+> > +     for (int i =3D 0; bootloader[i]; i++) {
+> > +             if (!strncmp(param, bootloader[i], strlen(bootloader[i]))=
+)
+> > +                     return 0;
+> > +     }
+>
+> We have str_has_prefix().
+>
+> And strstarts()!  Both of which are awfully similar and both of which
+> lamely do two passes across a string.
+OK, I will send V4 with strstarts().
 
-Use folio_large_nr_pages() here like elsewhere.
-
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Harry Yoo <harry.yoo@oracle.com>
----
- mm/rmap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 645d924bfc7d..1b7011afc663 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1703,7 +1703,7 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
- 			nr = folio_sub_return_large_mapcount(folio, nr_pages, vma);
- 			if (!nr) {
- 				/* Now completely unmapped. */
--				nr = folio_nr_pages(folio);
-+				nr = folio_large_nr_pages(folio);
- 			} else {
- 				partially_mapped = nr < folio_large_nr_pages(folio) &&
- 						   !folio_entire_mapcount(folio);
--- 
-2.34.1
-
+Huacai
 
