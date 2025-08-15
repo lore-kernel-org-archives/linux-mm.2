@@ -2,92 +2,128 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B6DEFCA0ED1
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 23:36:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C1F2ECA0EE4
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 23:39:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4AFDB8E021F; Fri, 15 Aug 2025 19:36:01 -0400 (EDT)
+	id 4DED06B02C6; Fri, 15 Aug 2025 19:39:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 439DF8E020B; Fri, 15 Aug 2025 19:36:01 -0400 (EDT)
+	id 4B6F86B02C7; Fri, 15 Aug 2025 19:39:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DA598E021F; Fri, 15 Aug 2025 19:36:01 -0400 (EDT)
+	id 3F53A6B02C8; Fri, 15 Aug 2025 19:39:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D2318E020B
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 19:36:01 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7FD3482938
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:36:00 +0000 (UTC)
-X-FDA: 83780602080.05.503731F
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf02.hostedemail.com (Postfix) with ESMTP id C90E180008
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:35:58 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=I1KSa3iP;
-	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D12B6B02C6
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 19:39:56 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C3D3C1378BE
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:39:55 +0000 (UTC)
+X-FDA: 83780611950.29.CC6A294
+Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
+	by imf29.hostedemail.com (Postfix) with ESMTP id D815F120014
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:39:53 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=bur.io header.s=fm1 header.b=HDrvnGEG;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="hbE4w8/g";
+	spf=pass (imf29.hostedemail.com: domain of boris@bur.io designates 103.168.172.155 as permitted sender) smtp.mailfrom=boris@bur.io;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755300959;
+	s=arc-20220608; t=1755301194;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lcqbcpR+PPLolCotgvnuTTzNHDIi6DR9EnEVb+T8qy0=;
-	b=ipIx5MqTqmRCc8L/fopkhKwAX+srCxz3iitYeZ/kaJWZylhF1nZjfrqQqGQxNRBuwiUloP
-	WYCUyRCShWKbmbd6qN8637+NiEspK226gCtQVypYhYMhe4Ix7KzxIwUd6Z+HVSWy2f6WcX
-	QuP2iR4v2thY97K+E6v9uUxmgkDavxg=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=I1KSa3iP;
-	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755300959; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=sZ4Ffa9LjIufP3LldpHrc2CPMG78ZFVCnuyEXE80K6w=;
+	b=1E3da5VCQTqwbgVs24MmwwiBFanlGc6K7bpw/RQFclWTqqId/+oGl0sbQ0OIwMY2Bnsb0k
+	rezjlDNcC5rnmG60cai5vPSLaNyjDAjO74VEnSvW3c4zyvqo+2cOvtsH+7KyULOFYr0sRp
+	C0LfTxcIfIGi3xcPWXG96XIlllg313Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755301194; a=rsa-sha256;
 	cv=none;
-	b=E4bkHCugDLPC2gQ1O+4jyuMYDoCye5IY/SYa16QP8mYSTFs35bbDYzTl51Y6tvW9t1N0U1
-	ibKBJvXFsUx935cjPvm+ilUYEpRVHVQdxi0cwY7OnqQEhb4P40SeJHMpqzAESsC6TsjhPC
-	3BWmSw61WVBx1MZAhPDquka9yjITK/c=
-Date: Fri, 15 Aug 2025 16:35:50 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755300957;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lcqbcpR+PPLolCotgvnuTTzNHDIi6DR9EnEVb+T8qy0=;
-	b=I1KSa3iPECj/Wsi8SDf6g94yBfaB/ykJX7hBJxYk/MeurOgwRt3Sk68DV1gE7JOrcJSbcY
-	sS3o3rH35F/X4THaHv0DGoc/9gWC8z4FmjfuNHO+JP535625SiUr+N62DFZU/dW5FX3q2H
-	0O9H5Qfvt9jxbHkzIs+OHmZyUXbeSCM=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, Matthieu Baerts <matttbe@kernel.org>, 
-	Mat Martineau <martineau@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Tejun Heo <tj@kernel.org>, Simon Horman <horms@kernel.org>, 
-	Geliang Tang <geliang@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Mina Almasry <almasrymina@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
-	mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v5 net-next 03/10] tcp: Simplify error path in
- inet_csk_accept().
-Message-ID: <a53fhshvazugtmvszdak5j3arzpf2dkiqy227bredme6drt7cj@5vlq2zyeyv3u>
-References: <20250815201712.1745332-1-kuniyu@google.com>
- <20250815201712.1745332-4-kuniyu@google.com>
+	b=3nCd2zVBx/MzmSDqJBqCeER522yDwCxCgc1EBU1R26TbdKTcp6bFQe8scirjFAFZxrUx1m
+	4LcblwUd9v2eHHkhO4mFD4WT067VVuo9bQrhfL7JYLssogXOZj/pgdyYsUMs4pnSkaqvgO
+	nzwUFSK8B7Cr3MsX7Ci+ss/MwGCCoFo=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=bur.io header.s=fm1 header.b=HDrvnGEG;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="hbE4w8/g";
+	spf=pass (imf29.hostedemail.com: domain of boris@bur.io designates 103.168.172.155 as permitted sender) smtp.mailfrom=boris@bur.io;
+	dmarc=none
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 0CF001400079;
+	Fri, 15 Aug 2025 19:39:53 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-12.internal (MEProxy); Fri, 15 Aug 2025 19:39:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bur.io; h=cc:cc
+	:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm1; t=1755301193; x=1755387593; bh=sZ4Ffa9LjIufP3LldpHrc
+	2CPMG78ZFVCnuyEXE80K6w=; b=HDrvnGEGjkl0Jx+ejkHkEaBCQx5AcsEO+ii40
+	g/5mfOvJ5V4n2Zgc3gfOdQhkX9Fyo0SpGvKWu33C1sUyoy5zPEvSC/u0/E1Bv6jn
+	NNuAk8piVk0seSWBAwoqTkRRa1H2p2Ja2DLq5TTqdDxYsmlsbCLJjRvmuOhP/dPu
+	e9u14a52jfOQDMaRZ6ygqk8em1IiMXw5p+kKyIrZE25KVCgtHNVsDZK6CYPfAZ8Q
+	lyAuqTm/sZU+tZRN/kVmLRPpHs8gzkVRt2xxN8cUjVSxnHlHyb3nDV+NbVfjPpyj
+	K+b7y51hkjLll9uHkBmnaGikei87U4tcd4A0UKbJLwA4NIArQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1755301193; x=1755387593; bh=sZ4Ffa9LjIufP3LldpHrc2CPMG78ZFVCnuy
+	EXE80K6w=; b=hbE4w8/gg31GsY51ankoKebjx0j9ytY1l88OWskDjBm5V4RDWFr
+	CMqOo7tPDcAFEa7m5KyU8LlMbfQ7OUwKpCvYmYVnMCiX8tk8/kTMqhGXZKZBs5X4
+	JCNSQAVv0HFeuvq9yxL0VVL5AmSmhBdUxVViQYuo/z4speSTc/oF00KvdK/zJ96U
+	LKwH0shWOGCRHYfMBd+OdFhEWXSOWYO3ikXWjicZxOoiBNuAlhCLLK27SW9PbgQd
+	XLoUGlXg2kYfXmQXQueOjfY7VNHX0yCJYl74jZ1uFY/DznNWn/7vyXFtwoenPy4T
+	M4rqTLTu+GIVINSjvdonoCm/UckWypgdcTQ==
+X-ME-Sender: <xms:SMWfaKc14A97yBhu4P2td-DDLCjev2yovlRtCBuumLQkelRX5h3dzA>
+    <xme:SMWfaIC2U8J9L5GLb_t99D83ZBrT6bsGbTZmwYeuxoywxHU_sWgVrV3A4m8Ww5NJm
+    8Utj1j0BAJuDmS20d4>
+X-ME-Received: <xmr:SMWfaEkU6YMsGYRUK68IQiH4BAsA-xYHzho-AJEQ6xM4Fml9Rd_U7xDlaUyN_6iXepf0wHvK3dEm3aWKUqQGuq0u8eo>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddugeehfedtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucgoufhorhhtvggutfgvtghiphdvucdlgedtmdenucfjug
+    hrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeeuohhrihhsuceuuhhr
+    khhovhcuoegsohhrihhssegsuhhrrdhioheqnecuggftrfgrthhtvghrnhepieegleehje
+    elfeeifeeiuefhfefgvefgkedtjefhiedvveetgfduleejheeifffgnecuffhomhgrihhn
+    pehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
+    grihhlfhhrohhmpegsohhrihhssegsuhhrrdhiohdpnhgspghrtghpthhtohepjedpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhinhhugidqsghtrhhfshesvhhgvghrrd
+    hkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdrohhr
+    ghdprhgtphhtthhopehlihhnuhigqdhfshguvghvvghlsehvghgvrhdrkhgvrhhnvghlrd
+    horhhgpdhrtghpthhtohepkhgvrhhnvghlqdhtvggrmhesfhgsrdgtohhmpdhrtghpthht
+    ohepshhhrghkvggvlhdrsghuthhtsehlihhnuhigrdguvghvpdhrtghpthhtohepfihquh
+    esshhushgvrdgtohhmpdhrtghpthhtohepfihilhhlhiesihhnfhhrrgguvggrugdrohhr
+    gh
+X-ME-Proxy: <xmx:SMWfaLeUnQfpzjgLCkb9aVzWqBh0_bUPE7pAuefD1g8ERS_ujenqmQ>
+    <xmx:SMWfaAS30SomTNa0YGBK8NEw9XYGAZF04xQF8tD1MWzGljwG8bZ0bw>
+    <xmx:SMWfaKtC9WgEVzTmCxbn4AorxehnTZiosA_yRP8j_GcX1YRODK_ezA>
+    <xmx:SMWfaJci4D4nKAfaZO1HP3jubIhBl00leIcyzSQRHZN795thq-vDLw>
+    <xmx:ScWfaI98xR2MCZFPU5b8kA57YJ9plX2EWtzu2VaGS3nhSM-GlxUyYf6f>
+Feedback-ID: i083147f8:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 15 Aug 2025 19:39:52 -0400 (EDT)
+From: Boris Burkov <boris@bur.io>
+To: linux-btrfs@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	kernel-team@fb.com
+Cc: shakeel.butt@linux.dev,
+	wqu@suse.com,
+	willy@infradead.org
+Subject: [PATCH v2 0/3] introduce uncharged file mapped folios
+Date: Fri, 15 Aug 2025 16:40:30 -0700
+Message-ID: <cover.1755300815.git.boris@bur.io>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250815201712.1745332-4-kuniyu@google.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C90E180008
-X-Stat-Signature: 6wj6fisj4ikosot5x4oqrtgcd8endmoq
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1755300958-630190
-X-HE-Meta: U2FsdGVkX1+DV9sW4aJSJsvtPerQz/CoVWgm8Y01JorRHZU9ezIu5mtFmZPQWjGa6HsK31nGfS567MIbA44nKsJBop8e2ozUgkht7VmQpcEcr0CJhzk8s4mlkiXxOaEDV92VB14QSkYer3ihpSTBGWbJ1K1eq6nfmaKHvPdiGvHYX165Vpd30mtkdmnwsQ3DGFuK1CWNBZGVTGu0LFWk5JGAgmOitzpnfFHoGSSfl9JeJO9zfDxQos5fBmq8DENtmqWkLsxir58+ZZyMKi7qZPSewsqxGbIMg/8Oc4hxcQq4th9wYG5CErRixlIquYApQH4sX3boNGEFRoVkXHs60OwNyLWNy6QIll1SiqxglcpBk527UMUWGKg5bMeOdSzvtTWNg4gMz2zloLQbi9MkFa6UVIB1w6bxfaGwOJHBO0Iv99weYBB9v+7CxfGIo4fD0D05cJCF+kFCOpDZhriNvWvCiCRgXFeQsDzkJKyFqNMrO1d1xmLHjAQCRUOMQssQWfTMOWq8vjK9Lp5zCcd4hUJ6RU+6ns/Al4T+UegW4mHz+xQalorc59i+6cbXKmb7snVG8qQ2c5QfXWOREOR1+9fKr4bwaICidu5LsIRjIw34WDiUd3CIy5CdoHukwT4XRLKvTraqXPmHjDJzxsxtBy1/WXwQKr7y77XUK6OP+An1/lkC0U9kYPzboky4uf4qz5GVG4rGb15kgjcHBYZASr5ZpYM+hDH12d9oppGUB/8f2+bpNfwa9s3VAwhHGts/HKQVedoWvsL0vRuOtDOz0LesXXgTHuD+ypgmkrX4aP0rXXPajW0DO58TbzdiGs3wnPY/ltzRyD2nnPcKevPW+uK8xPSCVRdO31FYV+tLTA2X0Yp0+9ivKYwAuTwkvTRTmeLyDaRa3YvOKsYxpfoJHd/Eht6xAbVEIup+oHO7Ac7NYro35gpdq0/lblBL2Ncgknm4Kby9HOIntzI1gJJ
- GvWTOTjU
- DpuuVEGX759qNcnP81A3sLuqje5T4NMS7YFqw+WymuN7AtKdSnqScS41OZFZrmNiQLSCLFXTQvl2jNFa/CmCt7wEcBI1J2bE6QYgECY+7CFdOcCcf3OWwNjAjq0/i2o6+E+U7vqfBwvJdL08NK9TYK14m6OZRSwjh93jBbSmgTJ1ElAQen9VWgNOPLPXvf6zwmzuocCkzs4XqiZ4BXds0malnK+MaOOSZRqXNfm8OUPNcotcuadBpY7PiFqKW1VnpnF4hydmenWEz/238LR7/0yEpYw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D815F120014
+X-Stat-Signature: c46m7ijwmucg44sqkujctju9ysotxi47
+X-HE-Tag: 1755301193-584191
+X-HE-Meta: U2FsdGVkX19QI5PMzf+2iYArZoBnSfpLhG9AKsGff8lWW/1Tm1daSndy5FSHgjLfYgrX8E9nIDLuoH6Uc6oM0wraAMf6uSSgKExFFBbS2KIOukR/f9CjGvpQDOWXoHNR5VirS91y3jt40M/tdryn3pbX9Ed7tTTxHndH7pRqPS0rMFi+MQv4YdBq7k0kc1pi3tSra7Z0I3ztjZ8S5D3k1rWV4Pi2oH+X3p1MRl+D4jspkEwqgsG7u0IbBuGGsTe3KH6fZ4uheOIaczwxJKG8eQ2MGjvoSaA4GNXjg7KkUxTtFxW5IxZ/8tf2x1Ap+X36Bc2ZhZ6BvFDFACVUD8VKszJgDzhHJH0vDIqxFzpMRxeJc4i/sv23BzYpssiYreNPj+8T1lc6PbD8hn/xq0YppfBGYs1NW1hmAvgqzHn6WXiuZ0fPyLDPx4SE5clpD5DxI67DawK1UxntqoPxuPn21+f3UaCWp0QIY4MtYIv1kgrkOpbIX2EDfq7o77ic4Ts1biMc+dpMgsY++Y5rEFlWsFQ3ey8M9TT+T3OXRR9IsTiwtRdBlgBzFf5Tun6HzAIjSbG2enwocG3gO30XyYOnwqmXtLD/E1PCz2AhcDhkLc4dqnZYvr2rvhSIyxyApEWj5Zo/EeTshqh5wpknDJ/nM+pDvqGzJMP07kVLpJOUzUJGqMvSaltoEtIMryaHLJOUsvIYdo51Na/lingGKoeyOoLb5TqK34B0CY9obO9pkxR4p8YrVIAuYGQmLgvt2Y1RgLOPuWewxaZiY6KxQDtqD5n5mVXmlsgl0EFRMAVEW4/AUwn5YekXNsPNNGHkv/SddY4h6IOcJ9KFZ/4lqmR2OiO+FLxrqyTzRZUL3zL+vMCZYefjHUGHBVzxe8fFJGIG3D5FkuZ3a4gK4ETCjN78pVovkOkyb5n3R29Q8YsmZsnKaKJ36rvpRwjFP9xY40jGkYA3/3243LkNAyYsIC1
+ X+m2R+jn
+ Hh0UHSmgvPjVsqFBGg90CVXjyPkqUo0nf0yl37hlXKm9qISdph53hFou1Lm2WPpyG2/uNIkiH7WhnsiiC9aqlTkNMr8cOU1OLx7BFwz9zcBNzrYTYaqm8Lc8OfzDJhlzVCfXhh2maR7rQfcY0cQ8HjK3lVZ6D2dzA98R92Bu2s8/aSN8nr+YHPae8cxfEGrqn2eMOeoaC4Z5a7WGFWFZbHQiEKUeyDZyhBRdtyoOe6EsiJty8iYI+yv3GnNF0poP5PL+5+nVzftAbt6I3tULfjUw3m7WdqagBgUep8EFCvzctM5R1UiUiumW3u/edVZZxPIYQb4G/whFn+Veg/QL34Wc9Uw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,18 +132,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 15, 2025 at 08:16:11PM +0000, Kuniyuki Iwashima wrote:
-> When an error occurs in inet_csk_accept(), what we should do is
-> only call release_sock() and set the errno to arg->err.
-> 
-> But the path jumps to another label, which introduces unnecessary
-> initialisation and tests for newsk.
-> 
-> Let's simplify the error path and remove the redundant NULL
-> checks for newsk.
-> 
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> Reviewed-by: Eric Dumazet <edumazet@google.com>
+I would like to revisit Qu's proposal to not charge btrfs extent_buffer
+allocations to the user's cgroup.
 
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+https://lore.kernel.org/linux-mm/b5fef5372ae454a7b6da4f2f75c427aeab6a07d6.1727498749.git.wqu@suse.com/
+
+I believe it is detrimental to randomly account these global pages to
+the cgroup using them, basically at random. A bit more justification
+and explanation in the patches themselves.
+
+---
+Changelog:
+v2:
+- switch from filemap_add_folio_nocharge() to AS_UNCHARGED on the
+  address_space.
+- fix an interrupt safety bug in the vmstat patch.
+- fix some foolish build errors for CONFIG_MEMCG=n
+
+Boris Burkov (3):
+  mm/filemap: add AS_UNCHARGED
+  mm: add vmstat for cgroup uncharged pages
+  btrfs: set AS_UNCHARGED on the btree_inode
+
+ fs/btrfs/disk-io.c      |  1 +
+ include/linux/mmzone.h  |  3 +++
+ include/linux/pagemap.h |  1 +
+ mm/filemap.c            | 29 +++++++++++++++++++++++++----
+ mm/vmstat.c             |  3 +++
+ 5 files changed, 33 insertions(+), 4 deletions(-)
+
+-- 
+2.50.1
+
 
