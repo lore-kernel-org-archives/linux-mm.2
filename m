@@ -2,56 +2,56 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B99D1CA0EE6
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 08:56:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 85453CA0EE4
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 08:56:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 581EE90021F; Fri, 15 Aug 2025 04:56:37 -0400 (EDT)
+	id 1FF31900220; Fri, 15 Aug 2025 04:56:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5320E8E0002; Fri, 15 Aug 2025 04:56:37 -0400 (EDT)
+	id 1AF878E0002; Fri, 15 Aug 2025 04:56:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FA2090021F; Fri, 15 Aug 2025 04:56:37 -0400 (EDT)
+	id 09F8F900220; Fri, 15 Aug 2025 04:56:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D2858E0002
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 04:56:37 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E14B511709B
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 08:56:36 +0000 (UTC)
-X-FDA: 83778385992.12.1017138
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E9FA28E0002
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 04:56:41 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C26801DE096
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 08:56:41 +0000 (UTC)
+X-FDA: 83778386202.26.765E0B9
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 57260100006
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 08:56:35 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 1BBA140008
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 08:56:39 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf14.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	spf=pass (imf07.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755248195;
+	s=arc-20220608; t=1755248200;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Cd8SVz56UFDTvkQjpDWLbjdDftI6n7YlnUbxT3vQe+A=;
-	b=ixFraiso8AisgkP+0/UoQDvY9kRErdBYnCsUBAo2WKxzIeZACSm4cpoSWqjzWMziX7xiNq
-	8bzHOHSDe/H7CiMmOT7vMjLAQbDvedEjnxHAeI5SVQm/HKi1kX4tDeeX2In22ImIFdKsak
-	68YTqECdR6f6/C7OAvHRoNTJ7eTxQp0=
+	bh=8AfMJV8wA54NFmPOthPFDFuukDzQtMz5lbwOiWe+/DU=;
+	b=yFZauGF0rHEwOFREFCfGf7A1J7FUbbd6BEjH2YXf0cGXrOb/prnjsubAbBMwISR57WXs0x
+	+oiG6a81fCDNLJUftbXCWXR+AOdxYuPK2yJzxFPILDJKsFP/2XUctRw9Y41UMr73av3tWr
+	phEexpr9u63/HKOIvsBUddZaQE6qh8k=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755248200; a=rsa-sha256;
+	cv=none;
+	b=O+t6VdQThmwEQKEXnbcMW/dxxYiO56YpzUT0t/Z89OTt5Ytk6RLXMJLArkSLms/ht7pvKE
+	CgA/RVUF5CJIVd00j9Wtkeyz4qOA5vfiUSORh5ytqpRJk9wdhej4HH66CL1zqmtDUFh7D0
+	I/5p0h6AE0qFnWlK/VeRtybriwNSsKM=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
+	imf07.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf14.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755248195; a=rsa-sha256;
-	cv=none;
-	b=yW2Yp3zvJSSTwmm5VyEse8l5ZZYpoPI7ngvRd3QPteKPyYCzFRvBpxdpMhp/kkY4wxPgHT
-	DpWvNZaUI1mihWxEGtnC68pM6FD4F8+F7bTH/Pz6JDVcHJ2hRwLe2XFkQ3wgcLiBbhaSt7
-	+PFQ+Wt4Xr1lxj9zbw21TqMMi4f+K0g=
+	spf=pass (imf07.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 58492497;
-	Fri, 15 Aug 2025 01:56:26 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1963E497;
+	Fri, 15 Aug 2025 01:56:31 -0700 (PDT)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D5F693F63F;
-	Fri, 15 Aug 2025 01:56:29 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B32173F63F;
+	Fri, 15 Aug 2025 01:56:34 -0700 (PDT)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-hardening@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -84,22 +84,22 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mm@kvack.org,
 	x86@kernel.org
-Subject: [RFC PATCH v5 14/18] arm64: kpkeys: Support KPKEYS_LVL_PGTABLES
-Date: Fri, 15 Aug 2025 09:55:08 +0100
-Message-ID: <20250815085512.2182322-15-kevin.brodsky@arm.com>
+Subject: [RFC PATCH v5 15/18] arm64: mm: Guard page table writes with kpkeys
+Date: Fri, 15 Aug 2025 09:55:09 +0100
+Message-ID: <20250815085512.2182322-16-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250815085512.2182322-1-kevin.brodsky@arm.com>
 References: <20250815085512.2182322-1-kevin.brodsky@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 71aim5w7zsmaeh7ipqar7gc4zoidixhc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 57260100006
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755248195-958701
-X-HE-Meta: U2FsdGVkX1+n6w1MuPDxuqOTqq/7PK98/mPyl4kHxuyiROQddfl0CriewcfDZW7/lnEZIeQNFoq6+oMAmMjNrk2ViWNGuOR8XCAiUV1DjqV65W6d5+M6qhu7GtAX8ZwZAFk68Nm/xvzA5FGetB/2pTva+Gpt/jLUEGmFDt8sP8rIpfQ4yZ1gMPXf92BKvE0VUZDNUo/Uoziq5hapNcQh9f/K3c0Wun38dE3PX+zpq44rXa9RrHRy3X5UXElCc6LqHp0C9erISBKIV7zEmv71JRpQ0EuAR6N1ms6yvjR0m7yQB6y4LMu5qUusmCgi5Vm+gLn+V4NpFAo4skN7ck1wGl1dqj6F1f9DKTTkYlTiWnWzOooLcOPrXmTI73PcVKefrJZlItZVDKMCHU54GjRhNF5UYJYxbuRcdtCnuJjNGOATT+3XZ7jmV05iGce5zZs+/PLno3Dlmbhc+1KxMcryNhA0e2cdwViHtr9FOy1msUnIRFVcsJD+52T1+hJV9tScG5OgKVqcshjw8AainorPLg+CNSNqvahSGeTGJnYuMnPwJBd0CY6sx1TeAmUlQNkP3yr5DzFV9We/zm03EZ08tqLJkSQbVAqpLG0QSpOBKXB4KF5XSf619tP91OKBhoFAlFxZQVjZaReL/it8Qasldr1PiDgWComAqt1BlKvtAAL7hdRM7ANVc1zfw/ix+jgqhOGhL05STxRqv+xEtdT7PpMG8ltHvwHzvQLaDq8rs3fUUF1M9j+B4HxOxo2z/0JFk4aPKNsefrJ51oSt7S+OKHWrymLK9x1YxeDQxtdWoVFGzYZH8epI32tUoMLvuIv5B8tgvzVHO89iyVVUJ8ljN1TY59oXDVpx9WcBgWr4p+okYihCFf0JeWNxyTx33GMhjD/2xhT79TMXNRW09vjOpTTvxfKA0zRe8vFTO5o011wMW8esU1WIGMCIi5k3O04MvJZiY7EiGZcwdPUCHMO
- +QVmTQYV
- 6aNEbJTY64Vc42yMNdOn9ASM3aT8mbltrgUVQ21C905pMNRgazpUp4uFtuRXNJ8BA/HR2PmNHwew3uUp4xQB+WRAuyAwOykdGMVR+V7M+jwhTz7h0SCS1IS0K4qMaFHNNxfJ11YQTkV1vOr3/1AFQGIqv3Uj93sKy/nmd153VxAJrN4iMPNKFfCTMQ1lYriZHQ30IxFjUEkXRkbc=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1BBA140008
+X-Stat-Signature: cyzt5zajzxx9tnaok1a8ns65b16peadw
+X-HE-Tag: 1755248199-933448
+X-HE-Meta: U2FsdGVkX193twLlm3s6PVGsGZNMM5ep3O4j7wyuDY9AVCVfbiw5tGEDih2LFkpx9KaM83HIkXKYiUEpobUzIsA5tlnvm8DzU+vP7cHIxMpY+qeLUncleH9jpHnmeUktebnJLCgPh7Sbio8EfSSE1U9BJYaxon8/Bq8zBoIsSEuaNg3KUHWDE8A2cTnXbzez3O5QugjzyFZfGwtl87SEZhlx1eFiK/PgRFNEggodgE+svngfzGew/Pmbn3+6vMoodXW616sH3VcMYrGYM0bjL/IFV1uAffSMi+rUUhfDNyZeOIQym9SQpNCj9nPJ1t/mKEiJt2Z1sW9/XpxxjZswoMN3b4//rABVOHRbDyY7Y1Mo+Ni2CrAsJXPgfEdQXim4vPrltd7dPe6YK8Ub5h4iiXtIR7CPp4u3OZbnz4PDIduymdBrXbxRGqYoxXgOGthvFD8uPKa6Mgp1p8IpmIVK2LTtv1ccVNVLqPrId+EJ9ffxaUISh5QO1OzrLtZZcAwWePwq/bUt2+ZFwY5ZLrYZp3ni+uzvsQj0yls8f2qmXEGjqd1nOWxMcpadiJYlEcAoNvtSLVSMYPs9kFqahelE5ZU0Wz9O4SjziTV3p598yZncW2qqb1YINpnTr3mD6T+JFIR57jSkaI90oEeVIxtkLy0eY1f/z8yHaTHEX0OxoHS+OHsUKsBHRRpmGrISFYRA8fse7e7MQvK041k/eQa7qZoNE0eLlxc8YuyrwUAhMNljSmlE/9jOSB4DhYfJkn5/0xsGpHNhYQLQHhaMXYfLDbTzHZhCgSNE8h7PRO9/2YNBP8N7BbNUA7B4V1FV7Dx5PkiiW7YciuxpM/XamZyCtZ+QiXLt90Q5+QmM5LZLciptHx4k8pbVcvC4e1RRQFHJXBi52qScGdr10gCqPD83QbPlzjAQ1dVH3r17apPVV7lr3K5V0N2YYPqNDdwsGZDNxVli/dkQAW8hBMhuM2Y
+ Zk3G45II
+ HLsXALOFGmUBtnst1L7ZpSV649Kpn5z3lC2NU627NiaEYWhdRcUJEK/rJQmSLknVj1yvpv/UwT6VaoiQcVJJj0AsE98UQkyiJFPzKpPi/qGrsVa5ihw9ja0BclhoRCvMhG4CYtIcqZke0+J1gLxRX4h5l9GhQ/vQKivQxKwbCYxIkHXNGPFrNEuVlPxOgTwDcFUInu98GSxXyrGiJF4j8feBuJHIWg/MXZS9x
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,38 +108,142 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Enable RW access to KPKEYS_PKEY_PGTABLES (used to map page table
-pages) if switching to KPKEYS_LVL_PGTABLES, otherwise only grant RO
-access.
+When CONFIG_KPKEYS_HARDENED_PGTABLES is enabled, page tables (both
+user and kernel) are mapped with a privileged pkey in the linear
+mapping. As a result, they can only be written at an elevated kpkeys
+level.
+
+Introduce a kpkeys guard that sets POR_EL1 appropriately to allow
+writing to page tables, and use this guard wherever necessary. The
+scope is kept as small as possible, so that POR_EL1 is quickly reset
+to its default value. Where atomics are involved, the guard's scope
+encompasses the whole loop to avoid switching POR_EL1 unnecessarily.
+
+This patch is a no-op if CONFIG_KPKEYS_HARDENED_PGTABLES is disabled
+(default).
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/arm64/include/asm/kpkeys.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/pgtable.h | 22 +++++++++++++++++++++-
+ arch/arm64/mm/fault.c            |  2 ++
+ 2 files changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/kpkeys.h b/arch/arm64/include/asm/kpkeys.h
-index 79ae33388088..64d6e22740ec 100644
---- a/arch/arm64/include/asm/kpkeys.h
-+++ b/arch/arm64/include/asm/kpkeys.h
-@@ -12,7 +12,8 @@
-  * Equivalent to por_set_kpkeys_level(0, KPKEYS_LVL_DEFAULT), but can also be
-  * used in assembly.
-  */
--#define POR_EL1_INIT	POR_ELx_PERM_PREP(KPKEYS_PKEY_DEFAULT, POE_RWX)
-+#define POR_EL1_INIT	(POR_ELx_PERM_PREP(KPKEYS_PKEY_DEFAULT, POE_RWX) | \
-+			 POR_ELx_PERM_PREP(KPKEYS_PKEY_PGTABLES, POE_R))
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index abd2dee416b3..1694fb839854 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -39,6 +39,14 @@
+ #include <linux/mm_types.h>
+ #include <linux/sched.h>
+ #include <linux/page_table_check.h>
++#include <linux/kpkeys.h>
++
++#ifdef CONFIG_KPKEYS_HARDENED_PGTABLES
++KPKEYS_GUARD_COND(kpkeys_hardened_pgtables, KPKEYS_LVL_PGTABLES,
++		  kpkeys_hardened_pgtables_enabled())
++#else
++KPKEYS_GUARD_NOOP(kpkeys_hardened_pgtables)
++#endif
  
- #ifndef __ASSEMBLY__
- 
-@@ -26,6 +27,8 @@ static inline bool arch_kpkeys_enabled(void)
- static inline u64 por_set_kpkeys_level(u64 por, int level)
+ static inline void emit_pte_barriers(void)
  {
- 	por = por_elx_set_pkey_perms(por, KPKEYS_PKEY_DEFAULT, POE_RWX);
-+	por = por_elx_set_pkey_perms(por, KPKEYS_PKEY_PGTABLES,
-+				     level == KPKEYS_LVL_PGTABLES ? POE_RW : POE_R);
+@@ -390,6 +398,7 @@ static inline pte_t pte_clear_uffd_wp(pte_t pte)
  
- 	return por;
+ static inline void __set_pte_nosync(pte_t *ptep, pte_t pte)
+ {
++	guard(kpkeys_hardened_pgtables)();
+ 	WRITE_ONCE(*ptep, pte);
  }
+ 
+@@ -858,6 +867,7 @@ static inline void set_pmd(pmd_t *pmdp, pmd_t pmd)
+ 	}
+ #endif /* __PAGETABLE_PMD_FOLDED */
+ 
++	guard(kpkeys_hardened_pgtables)();
+ 	WRITE_ONCE(*pmdp, pmd);
+ 
+ 	if (pmd_valid(pmd))
+@@ -918,6 +928,7 @@ static inline void set_pud(pud_t *pudp, pud_t pud)
+ 		return;
+ 	}
+ 
++	guard(kpkeys_hardened_pgtables)();
+ 	WRITE_ONCE(*pudp, pud);
+ 
+ 	if (pud_valid(pud))
+@@ -999,6 +1010,7 @@ static inline void set_p4d(p4d_t *p4dp, p4d_t p4d)
+ 		return;
+ 	}
+ 
++	guard(kpkeys_hardened_pgtables)();
+ 	WRITE_ONCE(*p4dp, p4d);
+ 	queue_pte_barriers();
+ }
+@@ -1127,6 +1139,7 @@ static inline void set_pgd(pgd_t *pgdp, pgd_t pgd)
+ 		return;
+ 	}
+ 
++	guard(kpkeys_hardened_pgtables)();
+ 	WRITE_ONCE(*pgdp, pgd);
+ 	queue_pte_barriers();
+ }
+@@ -1316,6 +1329,7 @@ static inline int __ptep_test_and_clear_young(struct vm_area_struct *vma,
+ {
+ 	pte_t old_pte, pte;
+ 
++	guard(kpkeys_hardened_pgtables)();
+ 	pte = __ptep_get(ptep);
+ 	do {
+ 		old_pte = pte;
+@@ -1363,7 +1377,10 @@ static inline pte_t __ptep_get_and_clear_anysz(struct mm_struct *mm,
+ 					       pte_t *ptep,
+ 					       unsigned long pgsize)
+ {
+-	pte_t pte = __pte(xchg_relaxed(&pte_val(*ptep), 0));
++	pte_t pte;
++
++	scoped_guard(kpkeys_hardened_pgtables)
++		pte = __pte(xchg_relaxed(&pte_val(*ptep), 0));
+ 
+ 	switch (pgsize) {
+ 	case PAGE_SIZE:
+@@ -1436,6 +1453,7 @@ static inline void ___ptep_set_wrprotect(struct mm_struct *mm,
+ {
+ 	pte_t old_pte;
+ 
++	guard(kpkeys_hardened_pgtables)();
+ 	do {
+ 		old_pte = pte;
+ 		pte = pte_wrprotect(pte);
+@@ -1469,6 +1487,7 @@ static inline void __clear_young_dirty_pte(struct vm_area_struct *vma,
+ {
+ 	pte_t old_pte;
+ 
++	guard(kpkeys_hardened_pgtables)();
+ 	do {
+ 		old_pte = pte;
+ 
+@@ -1516,6 +1535,7 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
+ 		unsigned long address, pmd_t *pmdp, pmd_t pmd)
+ {
+ 	page_table_check_pmd_set(vma->vm_mm, pmdp, pmd);
++	guard(kpkeys_hardened_pgtables)();
+ 	return __pmd(xchg_relaxed(&pmd_val(*pmdp), pmd_val(pmd)));
+ }
+ #endif
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index d816ff44faff..c4ab361bba72 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -214,6 +214,8 @@ int __ptep_set_access_flags(struct vm_area_struct *vma,
+ 	if (pte_same(pte, entry))
+ 		return 0;
+ 
++	guard(kpkeys_hardened_pgtables)();
++
+ 	/* only preserve the access flags and write permission */
+ 	pte_val(entry) &= PTE_RDONLY | PTE_AF | PTE_WRITE | PTE_DIRTY;
+ 
 -- 
 2.47.0
 
