@@ -2,59 +2,61 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 96798CA0ED1
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 11:13:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C30BCA0EE4
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 11:19:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10F4D8E01ED; Fri, 15 Aug 2025 07:13:30 -0400 (EDT)
+	id D2D368E01EE; Fri, 15 Aug 2025 07:19:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C0D78E01EC; Fri, 15 Aug 2025 07:13:30 -0400 (EDT)
+	id CDC978E01EC; Fri, 15 Aug 2025 07:19:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3F648E01ED; Fri, 15 Aug 2025 07:13:29 -0400 (EDT)
+	id BA4798E01EE; Fri, 15 Aug 2025 07:19:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D9B528E01EC
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 07:13:29 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7D795160113
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 11:13:29 +0000 (UTC)
-X-FDA: 83778730938.17.1C47F38
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A87F740002
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 11:13:27 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A63148E01EC
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 07:19:42 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 50B2252CF8
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 11:19:42 +0000 (UTC)
+X-FDA: 83778746604.07.DCD10CD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 86FBAA000C
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 11:19:40 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
 	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of cmarinas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none);
+	spf=pass (imf15.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755256408;
+	s=arc-20220608; t=1755256780;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=gbUJHuak2u5MhS/qm2dIicmSf5kMrLrrJoF5h7UvVAU=;
-	b=yagFubkSZ7NCJIGM6F+M1ycoKZR+3+06vO0e3Ml0A85WxBQbGO/4KJWJGEC4tXN67IoicF
-	GV0xZfDNOLGtcWfLJehGrswaJQLRRCP70yWJMV765GM+hql22iC3aU3tG0g/ZxzjuutCsn
-	uwL7egV6mo0tDquN1AsBkVnZZElWzVg=
+	bh=aqyNw+Jm7HoH5Z0KlAgJAQwfjE1pdVnkoWxhIxI0/t0=;
+	b=b2CI1uQY82pYBDaPXZMRO+vCpV0mKIsj8CYfohpflzPg7AyJqG2Udjgmm3ZNWg3EN97Sj2
+	4KIt0QoYgfm4u/XKwjrnp8qf/+k0CIWGJqZdqtICvbYpTc6SZcOROse2XhgBv5B63DDyC4
+	1xycZABBwShDvPeAXKxo+lKSo6EdI00=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
+	imf15.hostedemail.com;
 	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of cmarinas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755256408; a=rsa-sha256;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none);
+	spf=pass (imf15.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755256780; a=rsa-sha256;
 	cv=none;
-	b=hNGCll4XRB1MPGURQoof4u4xfk+DMlYI481Jbk0fdzQ+o3/NbtqiJFhOSHlPOxZLCXqFCj
-	tdUZtzNCHhZ0zsJjORuw386kqNcYoUtBtHNi65sHlYqO59iKChXQVwIi3TM+W88AqriJQ+
-	i2JKEwmyPyv0xIJGnZhFCpAayuf2q7E=
+	b=Y9v8hWalwAHASlWpBNrqmvWV+ASCCj+nWGdgLfPeb2bVjdwrIYW5T9woCkTCS7YsbsbgQT
+	mI2blylMc/0qaOX/k1nmDEtw7I4+ZxL6ZIEqJZZafC/pedSE8v4X/y+RBd6qe/d6RS/0Ko
+	Z+nZoJ8539QZQZmFWojJ/og9VnJbCgA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2547F43A44;
-	Fri, 15 Aug 2025 11:13:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85B8BC4CEEB;
-	Fri, 15 Aug 2025 11:13:21 +0000 (UTC)
-Date: Fri, 15 Aug 2025 12:13:19 +0100
+	by tor.source.kernel.org (Postfix) with ESMTP id 9C5FB6116F;
+	Fri, 15 Aug 2025 11:19:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5CE9C4CEF0;
+	Fri, 15 Aug 2025 11:19:34 +0000 (UTC)
+Date: Fri, 15 Aug 2025 12:19:32 +0100
 From: Catalin Marinas <catalin.marinas@arm.com>
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
+To: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, glider@google.com,
+	Marco Elver <elver@google.com>, ryabinin.a.a@gmail.com,
 	dvyukov@google.com, vincenzo.frascino@arm.com, corbet@lwn.net,
 	will@kernel.org, akpm@linux-foundation.org,
 	scott@os.amperecomputing.com, jhubbard@nvidia.com,
@@ -67,21 +69,23 @@ Cc: ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	linux-mm@kvack.org
 Subject: Re: [PATCH v2 1/2] kasan/hw-tags: introduce kasan.store_only option
-Message-ID: <aJ8WTyRJVznC9v4K@arm.com>
+Message-ID: <aJ8XxLGiaVmWUCk6@arm.com>
 References: <20250813175335.3980268-1-yeoreum.yun@arm.com>
  <20250813175335.3980268-2-yeoreum.yun@arm.com>
+ <CA+fCnZd=EQ+5b=rBQ66LkJ3Bz2GrKHvnYk0DQLbs=o9=k0C69g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250813175335.3980268-2-yeoreum.yun@arm.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A87F740002
-X-Stat-Signature: pdapus8nphucpb1fm4c1wb9twawneo5d
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+fCnZd=EQ+5b=rBQ66LkJ3Bz2GrKHvnYk0DQLbs=o9=k0C69g@mail.gmail.com>
+X-Stat-Signature: m61gewzz748o47mp8zxsufagwo4bkq4w
 X-Rspam-User: 
-X-HE-Tag: 1755256407-720934
-X-HE-Meta: U2FsdGVkX19CwU8wrD9nNa3/QqR9GWl4CISiQ4R7lAS4Om8uD6djfI52g5XnATLW69GsXo9o4muPXnwiHgH579rsfVc2Psg4hLj2/5yRbiwiliSSCsfQMU96o4N41/pNBg/07+sctsvyFvxxzX550lpMlG5aJxVDPVnteAPtwj+gIwQicvUI9ex3WHigYpAGaZCOwfHMxklLDkLqiguBJkNyx8UTMd3hjtopzKVkLeKTdAEac0+Fn9X3OlFLXxCGRi38GCa6NmdAVj620o6OGQj6wQTH/6eAmheA9bAMuGRLgqF5zqGYNwfnNW79MRzZFg7Dt1ZDdp44U3W0wi494Cv5NCkq3BS3FCo7U7oNhz8Kzwc71DAjuHab50cMGBhabylWEOf7XAshPnkzihpzhPGbz2yRMkjCxXyp3nl1pGG+wIJulSs7pfQ8j9JAcHJcbJDJxc56kU8sE/oqCrGHrVSGG3kK4ih+IqEd6R7pkfqOpDsl73cfzY19BcXqVhoD4c1MxMoeKZSk0BhPdNUPryuC6tTy75Er/vF5GIxDbwHZ+pCOxXUVSWdGMVPQ9pUxYc9qOaJm03HCUul1OzWidCXbAbdJFgzgseeFT5I3SjCJwYnXItSpEkrMWFT4bhEbPA1A+Ks/f2QuRicvXrO/y3+ABJEstyqWPxJHmWnmiTMXw7gKghjR72r8G7XIKHa0OH2csV4B5aphCui/WKO4QC9Czf7u0Kc8uuz5dxjlvfA9Efbf+gZlgloBEqrPu8yLSiBlcCqVV/VDrMsvRsT70JwjE0zlyrx7Nn2g9C7IoKfFm3s2n8x2DSIc4DIkB301/j50Go1udoKmB4YaXJUatq14pQPqGVvQUWJ8HO2/N9fundC949JJzegcSpdNnHKMBVwXoB0OWdB8czX8tPQnP0OMHqd1w4rGYXzeyZbURh+yyOnUsbSwefAmCsVhRq5xOtGpiJ0dz5JiG6b5Imu
- ATt32Gt4
- NXtUGnEw0PMTsWDRbqr8j5xqPQZg9BEbbislNR0w4JSBOAZcySkaIzpm2YPYqGSEIE9GPaKGeqGwpku5cmI5CfMcg4Tep1/7JsqTXfoFzv6xmW9agMIvOpO7v/pP0XY8+HtVb//MLaSbeRXMarladJs8y1dTDKVCePyF1WXTDIsDa0aCxGAJwtQSgN8AWJen4HRYwyaZtTwiqcSzPAM4boqM6GVglWLABZVLp0YJHnnx6lj1pyLUgNxhvPd1k/fHG+TCCVHnUgKS6lgkqlJPp6hP1Fr+AH7RZz7cCYbuxnh7TJ0rI13AGrLwPpTIEqMd9pK3YhVCiuJ/YGLzroIzwNxWdprbHdr3ds4vMWEI2HzA8Xj7bN5qqKvdj4xQRdBN84BmK+eXH0uXQR56jUYhpLngdMsfwb00I7wEV87FKEkenzDmlZa3MNsOyYM5H8cZSPggtMVBfkN7pMqao7cCplBCKXA==
+X-Rspamd-Queue-Id: 86FBAA000C
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755256780-613905
+X-HE-Meta: U2FsdGVkX18lZ+U6lCI3D3t56CGNXrMofyfwkvUZ232/Xz/Twql/FLKeJcSouwOutUWxCa6YEJgQ3y4GDcZ0NCRQywlrmqM6kyfvmVENHJZUWOClqfQ2ko482m0PuoD1jU6U1oqmzB6BDvKnsaI9SQaHZOSxd6Y5i1yMSLLln/mkcQXRd6q4kwMqFY/JED+fePr/vYp8/JFxzRWGFBV+R6uf520hwIFlIbUG1vYdauWMoRdvbDORhRc4crKqDGLh2qdWopGm6u9N2XWbMsHcC+iHXjt8VUILUvVj5ZvUBlz4HPTB0hELe5C8KGPYOzEkq9NpTp5/NipI/xyTPtIPedSS27pGzi1KCF0T7EJ1Y1qN6r93Sm+ImpH/X3Q8auiplq56k4DdOVhzA9XOy7UMwJK5ndrUJ23SZ+CCR9JSUGx/si9/JtqKOqbNwS8fbRmfgdw/EH91Xm1hGuAjjQ7WuIkKupKf6bHwPwysQ88ZVdJTmxiODbddqPB5jrxHVKMkqjB7L9MiQjVDANXyDedqlVA4i1vu+E4t7T4XvDK9BU5dDDCch8xaO+j8N6higHxDUIC+sLbznBJt/2eQIZxXaWv6PVb6Asncbw51Hzx6Y9IG+Z21XLrg6BegqiTXvJiOFKzBaE69pztvN49eHnyHPB58g6a9Ue5ZpfBpdy86WQQWueGFVIWuQjbxxlrc0F7sxALcSFP9YtHqQXClAMZYEH70+An7lj/MbBCphcHFqRReni0s/H6eVAMW0QIXiUmPHImogclpNfQOKQFSkqJVuhV6cSog1FHmkMWEN5sxiIpJQ4i0K0AlME9SpbM5H6V4qP03Yo9aFp+Z99VFuwhxNyoo+rWcT31pO6jLQNxj9npOKpmVS4MIzmN5xJQpaSShYSl94lbvRm9uJsrRPA2L4c4WrtzfCd4sombrXR9KdGc6Jmp3kl0fLGBPFTMs46juUyOUqoYlRHRoNkyWKth
+ uQBjV5mL
+ +4zDrcYYdgKho28Lz99OjHQXWT/n6yBxyZ0wHIH5xstkNyN6rU3+XaoCIOCUgCs1j4AduUH5LINqRH6WjqREYRLl73LnnErdr+Jlx4i+iIRAhSnXZz9v3aWr/JgvjnIgK93/x5L2FSDbBwOx/eSlAX3RtLLUAjQV27iH/f4ysaa1Gj0iSLevYk8a5GLcEG/L670s7ds83Kh0cKsuDn8VvYI6QMnT5CFIVZR/dJBjwkb2LyCt5EXEPwX0UCBC8ag11065p4L12yM3PkeP5K+zxmWVXXLi6p7n2UihqvNOFNkFB9MtQOO5T5BiLr5ZXUabaEBiyk8OAh0W9VqvyO9djd4lIzIpIrigbBz2AK/bvffTvgXModm5es96S0+qda6uokuLs7KF3zYOnLZ4oPxp6bQdBSZDMOtVmjFCPAib9XuLhXc2Z2Jrs5TMP1FMzuXDLv3dSKjePl/NhjUGieyVhnZ/LeEi8yMvpFMagNT2tyfn9NVBNAfbc/s4+wD/G8xOBj4BCZlIqbvpSovykhpNpUN/7nKNCV6d1Ef6LHYvz6+Z1iY0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,122 +94,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 13, 2025 at 06:53:34PM +0100, Yeoreum Yun wrote:
-> diff --git a/arch/arm64/include/asm/mte-kasan.h b/arch/arm64/include/asm/mte-kasan.h
-> index 2e98028c1965..3e1cc341d47a 100644
-> --- a/arch/arm64/include/asm/mte-kasan.h
-> +++ b/arch/arm64/include/asm/mte-kasan.h
-> @@ -200,6 +200,7 @@ static inline void mte_set_mem_tag_range(void *addr, size_t size, u8 tag,
->  void mte_enable_kernel_sync(void);
->  void mte_enable_kernel_async(void);
->  void mte_enable_kernel_asymm(void);
-> +int mte_enable_kernel_store_only(void);
->  
->  #else /* CONFIG_ARM64_MTE */
->  
-> @@ -251,6 +252,11 @@ static inline void mte_enable_kernel_asymm(void)
->  {
->  }
->  
-> +static inline int mte_enable_kenrel_store_only(void)
-				^^^^^^
-This won't build with MTE disabled (check spelling).
+On Thu, Aug 14, 2025 at 07:03:35AM +0200, Andrey Konovalov wrote:
+> On Wed, Aug 13, 2025 at 7:53 PM Yeoreum Yun <yeoreum.yun@arm.com> wrote:
+> > Since Armv8.9, FEATURE_MTE_STORE_ONLY feature is introduced to restrict
+> > raise of tag check fault on store operation only.
+> > Introcude KASAN store only mode based on this feature.
+> >
+> > KASAN store only mode restricts KASAN checks operation for store only and
+> > omits the checks for fetch/read operation when accessing memory.
+> > So it might be used not only debugging enviroment but also normal
+> > enviroment to check memory safty.
+> >
+> > This features can be controlled with "kasan.store_only" arguments.
+> > When "kasan.store_only=on", KASAN checks store only mode otherwise
+> > KASAN checks all operations.
+> 
+> I'm thinking if we should name this "kasan.write_only" instead of
+> "kasan.store_only". This would align the terms with the
+> "kasan.fault=panic_on_write" parameter we already have. But then it
+> would be different from "FEATURE_MTE_STORE_ONLY", which is what Arm
+> documentation uses (right?).
 
-> +{
-> +	return -EINVAL;
-> +}
-> +
->  #endif /* CONFIG_ARM64_MTE */
->  
->  #endif /* __ASSEMBLY__ */
-> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-> index 9ad065f15f1d..7b724fcf20a7 100644
-> --- a/arch/arm64/kernel/cpufeature.c
-> +++ b/arch/arm64/kernel/cpufeature.c
-> @@ -2404,6 +2404,11 @@ static void cpu_enable_mte(struct arm64_cpu_capabilities const *cap)
->  
->  	kasan_init_hw_tags_cpu();
->  }
-> +
-> +static void cpu_enable_mte_store_only(struct arm64_cpu_capabilities const *cap)
-> +{
-> +	kasan_late_init_hw_tags_cpu();
-> +}
->  #endif /* CONFIG_ARM64_MTE */
->  
->  static void user_feature_fixup(void)
-> @@ -2922,6 +2927,7 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
->  		.capability = ARM64_MTE_STORE_ONLY,
->  		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
->  		.matches = has_cpuid_feature,
-> +		.cpu_enable = cpu_enable_mte_store_only,
-
-I don't think we should add this, see below.
-
->  		ARM64_CPUID_FIELDS(ID_AA64PFR2_EL1, MTESTOREONLY, IMP)
->  	},
->  #endif /* CONFIG_ARM64_MTE */
-> diff --git a/arch/arm64/kernel/mte.c b/arch/arm64/kernel/mte.c
-> index e5e773844889..8eb1f66f2ccd 100644
-> --- a/arch/arm64/kernel/mte.c
-> +++ b/arch/arm64/kernel/mte.c
-> @@ -157,6 +157,20 @@ void mte_enable_kernel_asymm(void)
->  		mte_enable_kernel_sync();
->  	}
->  }
-> +
-> +int mte_enable_kernel_store_only(void)
-> +{
-> +	if (!cpus_have_cap(ARM64_MTE_STORE_ONLY))
-> +		return -EINVAL;
-> +
-> +	sysreg_clear_set(sctlr_el1, SCTLR_EL1_TCSO_MASK,
-> +			 SYS_FIELD_PREP(SCTLR_EL1, TCSO, 1));
-> +	isb();
-> +
-> +	pr_info_once("MTE: enabled stonly mode at EL1\n");
-> +
-> +	return 0;
-> +}
->  #endif
-
-If we do something like mte_enable_kernel_asymm(), that one doesn't
-return any error, just fall back to the default mode.
-
-> diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
-> index 9a6927394b54..c2f90c06076e 100644
-> --- a/mm/kasan/hw_tags.c
-> +++ b/mm/kasan/hw_tags.c
-> @@ -219,6 +246,20 @@ void kasan_init_hw_tags_cpu(void)
->  	kasan_enable_hw_tags();
->  }
->  
-> +/*
-> + * kasan_late_init_hw_tags_cpu_post() is called for each CPU after
-> + * all cpus are bring-up at boot.
-
-Nit: s/bring-up/brought up/
-
-> + * Not marked as __init as a CPU can be hot-plugged after boot.
-> + */
-> +void kasan_late_init_hw_tags_cpu(void)
-> +{
-> +	/*
-> +	 * Enable stonly mode only when explicitly requested through the command line.
-> +	 * If system doesn't support, kasan checks all operation.
-> +	 */
-> +	kasan_enable_store_only();
-> +}
-
-There's nothing late about this. We have kasan_init_hw_tags_cpu()
-already and I'd rather have it all handled via this function. It's not
-that different from how we added asymmetric support, though store-only
-is complementary to the sync vs async checking.
-
-Like we do in mte_enable_kernel_asymm(), if the feature is not available
-just fall back to checking both reads and writes in the chosen
-async/sync/asymm way. You can add some pr_info() to inform the user of
-the chosen kasan mode. It's really mostly an performance choice.
+"write_only" works for me, kasan is meant to be generic even though it
+currently closely follows the arm nomenclature.
 
 -- 
 Catalin
