@@ -2,92 +2,92 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 66ABACA0EE4
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 13:56:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 80171CA0ED1
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 13:56:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C21328E01F8; Fri, 15 Aug 2025 09:56:02 -0400 (EDT)
+	id E6CA88E01F9; Fri, 15 Aug 2025 09:56:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF7998E0003; Fri, 15 Aug 2025 09:56:02 -0400 (EDT)
+	id D57B98E0003; Fri, 15 Aug 2025 09:56:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE7E38E01F8; Fri, 15 Aug 2025 09:56:02 -0400 (EDT)
+	id C461E8E01F9; Fri, 15 Aug 2025 09:56:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B12E8E0003
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 09:56:02 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5B2DD136BEA
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 13:56:02 +0000 (UTC)
-X-FDA: 83779140564.11.B6BC191
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	by imf16.hostedemail.com (Postfix) with ESMTP id B2039180005
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 13:56:00 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gOOXzwZY;
-	spf=pass (imf16.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B63FE8E0003
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 09:56:03 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8569D11585A
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 13:56:03 +0000 (UTC)
+X-FDA: 83779140606.24.457FE2A
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E3BA2A0009
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 13:56:01 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=fkUBvPcp;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755266161; a=rsa-sha256;
+	cv=none;
+	b=0svw2H5kf2Fs2mTka+no3qNEf+0a2t2CLKZpPPGR6D2cpF9GYh+n6G/QvLhUWfSwEMZ5g/
+	EVNXhgANVUgHr56aia9sSeCBr9Dyq6aC5QKVM/Y7H6yDCCVltD0/uWuOE8fxmdRWA3ly7F
+	KgBsRVxlassjvL2KUnZTpS5ZXT9F24A=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=fkUBvPcp;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755266160;
+	s=arc-20220608; t=1755266161;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HjAM2kVPg7HSAJDIq3Fm+b8P0QFUYqeRJ1MrMImZHTY=;
-	b=YI//7jAjX7yQN6/7McWlN/cI3p6CsiGCq6GYcWfSRGw5dldldl46Zs3xi/2wN1rWu7Q+gH
-	aQZCFtn7MmcaUANdJ2FYDZHGrTdcGVzmlb9zi6WrhMXuOtEiqQqTH80ZLTRgzV5QOGjQf9
-	ThXl9RT13NXIrqEuSf2e5AgCeaBLYWQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755266160; a=rsa-sha256;
-	cv=none;
-	b=xBKl2utkzFH6cdj8+vNt2rLeDdTZ9MdGFq18LYS/9ZcFuOoXghdWQwtO2zLhxpMHNV6OE2
-	ppZqrwoN1WvsirBfuVMXEX+2PJkkwiDJNkO6tpuiVxjkRWWWLSRsRexONrvNkc6n1jJTFa
-	GMjd63yJ9vYqEg4X0xOMIuZCXWa9nZY=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gOOXzwZY;
-	spf=pass (imf16.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7e870621163so131891085a.2
-        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 06:56:00 -0700 (PDT)
+	bh=htOuw1jckUm3cFOQCy2Ez0sym5NjcBkm+jIoTXRQCgk=;
+	b=MFz4FVtZJUbt+HtxvpjLfH+RdO8YV9j/OdMWgIw+Z3MY+u26RvAIkauG5TO0tC5MK3e8aB
+	qNWYltv/n563CJjf1m3cGdcFEpP+ABRNHcDc1k95qIzfBrQE5UE0hB7mTqq8wn71fKApy0
+	Sc8iBTMCnbN1UgmSHM76v7mw3aJa7pc=
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4b109c6532fso18788381cf.3
+        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 06:56:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755266160; x=1755870960; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1755266161; x=1755870961; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HjAM2kVPg7HSAJDIq3Fm+b8P0QFUYqeRJ1MrMImZHTY=;
-        b=gOOXzwZYGkaHs+fcuNh/rA4+ZKDwEtkEnKIkH0hvYAQbacJk04Jp0XS3NGWIXJUiKv
-         ZUEEdUIkILFT8dPApdx0vMs7dTGAwBNJiUawsjpkimkFyLQjRoBAWssoNZrHBuBv2ugM
-         p/ss9S0+/CDckZAT/QuG5t0ZmmlRFm3pVa2GpEr42hxBYvVxbD6gIOkiy9Lk/tC6yCpu
-         oxbtTDknsTg86ivd2+SCD6pdIW5bdfvRfakA9pCJD8NBI88SyJzLNF2ZfF+codLIH6Wi
-         FWAKsgHzQAHED048dom+g6ago1OTdvnErFTDPq49LwRaFiNlrPkONq3k89WwKFr/ryVJ
-         KKjQ==
+        bh=htOuw1jckUm3cFOQCy2Ez0sym5NjcBkm+jIoTXRQCgk=;
+        b=fkUBvPcpdlGWmuYN7GevohIwfwbvA/re36dD2GqwqceRkpAyHMsdN+utIluTxjXwTf
+         Xw3d4Pkb8a3bDOeUXzQL4D6v9hRYMPkUka26iPA7J37CDXYpnE9+cGFKzkDdM/zZioy9
+         +CJmdlinp6Z/C/WHdthQyAI0baNq8gUAobOUTtw6nygjL/lZGxp2wK9Zgd27eeZWN+EP
+         BTYcR8zqBpE2wPsSU34/MvO8udFJl6VbbXgKB/O/VzsfoQj451FHxan8QKFN0QZ2p26J
+         7S1nCaDNTi7R19onvUxsHPVnWjMWWdANQUXXTc8w2l7fUo5PwTNo5UfMv+moTbBhSR9E
+         D9vA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755266160; x=1755870960;
+        d=1e100.net; s=20230601; t=1755266161; x=1755870961;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HjAM2kVPg7HSAJDIq3Fm+b8P0QFUYqeRJ1MrMImZHTY=;
-        b=eTkdg/BAllV7X4sJz6wkh3G6DJytGFKifjjvRB28njxym2BfgQ3w4wiJ16TcQwmHyC
-         rV9TD1yW3TwiwuAtUJf4LiYttNLBz0V1WWKoL4p8KNGoqYXiILzoQkCiGEF3lbUR5qZN
-         nZpSFB28OhvfOqlNh4ugseqTl4tSBEgar/mcIxgo4l8+l7x/tm7OD+pdRUDN8R+IUS2s
-         1IKst/vHzroUj/BR6R0jy42GBr9MELmRsT+YioUZ/SuXNrwOJUIcISFcMbjwUGLLqlA+
-         NKLr9CO5R4tkDIN1SK02Z7bF1l005on/5TuNSJmnQZcfIVddA+J8/gP464+M3jDlCOzU
-         HeYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXLbZ8mY+kvVzARRx+5JZTFP8Lj3d9wlznGTWH9RVhlb+6uaL9o2oFIiBoBCUekYGbOOCegTDkJkQ==@kvack.org
-X-Gm-Message-State: AOJu0Yxkkt/eF4mlbrLZnslV+TdBWINPHiviLj3AFmePyyrJKyaqL7vP
-	GphDzAMyQ1nYLkL7EVYEZAUG8r8g0+CIALHN2gFzfbM0aXkwWOXJcup0mw1bxlS1
-X-Gm-Gg: ASbGncv7iJIKAWbmoKNXKyW6C0Q8iRPB/ndD/ih6K/tJnNbvKFMvM7phfakXLA9FO3a
-	Wa9py113KCA0P39ItAtoI+hBvqDCHgOE+unqOjg6t1JAmeBm8YzYDsoX1t/0o+RVqGnMYw3LZWx
-	ctAeiuZKynSllcbzMNHsF7dG+1g4kH00Z2yGv5ZD+C9+52y8kd/NGo9+cKhWirCygSy5Fbsgzvw
-	jqBYSsI9krhwQWcXSicObYK0y8kFd1tI6CtfwRNfCXhQjMBoqybMfYz1fbNz41OiKAFLwM+CeX4
-	S+/Ro2JMnuyIVUrtk4OoprtAEtN8L/WyliprV6+mx+HFK8XHrjmJNppxZKUNCxFFvYJmTQD0afx
-	3nz2mzS0lqFKeEqZjIuva
-X-Google-Smtp-Source: AGHT+IFF9RW9CTYz5caN0M6+lm/SBlFq7E34PjjRXGEeqVn4nYoCKB9rubR5z1M4MA3PdwlDkbJAVw==
-X-Received: by 2002:a05:620a:370d:b0:7e6:28d3:c4df with SMTP id af79cd13be357-7e87df87270mr299191685a.14.1755266159571;
-        Fri, 15 Aug 2025 06:55:59 -0700 (PDT)
-Received: from localhost ([2a03:2880:20ff:74::])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e87e1ddd9fsm108971485a.71.2025.08.15.06.55.58
+        bh=htOuw1jckUm3cFOQCy2Ez0sym5NjcBkm+jIoTXRQCgk=;
+        b=UU9Tft2k6uRxZLHWskO/lt+jFJmRx0cShWN3/KfGiOcyohqu8zZYzXSohqsANS3vli
+         k+lgsbqqNleKFxOf7t+UK7u1XlnODdx5y8T/p2vPICllaz33rjD30uHfYUpTepZDIGUN
+         /zu0f/Hnfo5MHHQfD06SAgiugrdtY/bDFfah7nf/91cy0EkTdPZj+AWHBHOPVEHIELfT
+         NFSuBesJx8kySdfV7F53BxLbtjF0A36/6zb9rvQgv4ZtqVWoLF1nydWaD7WuuwDVP6+y
+         g4gaiH6T0MUQxiTwiMIkNnhGsJyMWFoaYfapSImQXkIq3gjkDdHUmygeLDz8rAKt2SXO
+         nR0g==
+X-Forwarded-Encrypted: i=1; AJvYcCXn9ulz6OWNehwSAml97lW8QnqCyrqOFKt3h4PIkeCTbxHsown6jKv1wdjOOSIJRjvCt/tQNH4DjQ==@kvack.org
+X-Gm-Message-State: AOJu0YyC/atO6zUGvn5y12oXZzLCL+MYHxJRz8DBN9t8MzBOTR2KICQh
+	TXzwwOGJ92qJ1t6aYHBN3ldnz4tMT8Yo1avRSN8dkeAe3JuQbsUwfNxy
+X-Gm-Gg: ASbGncvblGKL7RVoXZBVRHdtN6D+Le6lH1Oi5uG6gOQseZHeXpr/5Ly7I4UWjyO11h8
+	wc1VMKgEGDn+2fTxlwRkAcf+kntWaYcNp2kepzBsu6qQ7tHtbgyVi0O00sb7Cfho2+9uUs2eF1f
+	1VvBGkpVTfpeNbdcEd6F4GCEaiTR5C85CJDja4ckhhxxlPhrktSY6tucPmEdl6fJOSIPgGTO+b5
+	b3+hG5PCm+06+tZao1vacfu+KisAeP6puB1FJj8+hOqnxQ0qrzDOywskR+qu6jqWmtAHA55uFo7
+	q9LSe1Gf4cohNTRLuLy5/mrA69YIjKL/qIxuDKeZ0xLvDqyOjD4CRsv91ZfKekTVcMmeyPHiKlj
+	hxdEPxrNpdDHsYpnbFnpg
+X-Google-Smtp-Source: AGHT+IFA5ocU0t0P6Vd1e5Jiomncb95U626f/HquasQ6giNUDflHW0b1pvVh3BD+6pcW5GWRqf2ajg==
+X-Received: by 2002:ac8:57d0:0:b0:4b0:89c2:68e0 with SMTP id d75a77b69052e-4b11e2c638cmr30410701cf.60.1755266160836;
+        Fri, 15 Aug 2025 06:56:00 -0700 (PDT)
+Received: from localhost ([2a03:2880:20ff:71::])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b11de55b61sm9255701cf.56.2025.08.15.06.56.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Aug 2025 06:55:58 -0700 (PDT)
+        Fri, 15 Aug 2025 06:56:00 -0700 (PDT)
 From: Usama Arif <usamaarif642@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	david@redhat.com,
@@ -117,22 +117,22 @@ Cc: linux-fsdevel@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	kernel-team@meta.com,
 	Usama Arif <usamaarif642@gmail.com>
-Subject: [PATCH v5 3/7] mm/huge_memory: respect MADV_COLLAPSE with PR_THP_DISABLE_EXCEPT_ADVISED
-Date: Fri, 15 Aug 2025 14:54:55 +0100
-Message-ID: <20250815135549.130506-4-usamaarif642@gmail.com>
+Subject: [PATCH v5 4/7] docs: transhuge: document process level THP controls
+Date: Fri, 15 Aug 2025 14:54:56 +0100
+Message-ID: <20250815135549.130506-5-usamaarif642@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250815135549.130506-1-usamaarif642@gmail.com>
 References: <20250815135549.130506-1-usamaarif642@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B2039180005
-X-Stat-Signature: zwb5mo14pah1753zegnpaa9fy5c1b6r3
+X-Rspamd-Queue-Id: E3BA2A0009
+X-Stat-Signature: 47gifdpa8f1mh4er68o4t1i49wtrq3u4
 X-Rspam-User: 
-X-HE-Tag: 1755266160-20046
-X-HE-Meta: U2FsdGVkX19jLd8oGqpzsLE2IJXx3mEt6uzzjJ7yeBbwY1U/L/SFt+Hbs1UpT1EdCMqIkDfEmoDtUEVCegoxqQo/QbFXIaIHjJV15gWa9t1efiHfhLSGvLABNOE0c4zBLVBxYhhv9BFCajvNeQtXIwZ3WhjheaRltVAEn6PrAPHGmn87NczeGDw2QlRzA+T1rHsFg0DyURJxxGEjZPH/ImzUgjN7C0/mUZP++rR9nDx2AvU0pjO29czVMSESY1poUUB6ssxiCgMD1VMw6/QwBWS5JRFQipnVyp11rRZvF5ZSZgKnVn/CdnVc+It6BI1Mn4zxNRi/arAZlgDU1wYyBg27sUI27WCcrrf4TK43MOyR+frAxdHKBBw6PbYwhV2vqvQJRC79cI4NJT0F8td6a4wcHct/VMTODSPoEsQqna2dm09J0g64by2VE/wojhm7WMzOOwo2KWIS1ub/cU2WGfe15r4SANTYltVpE6+9aq28fhqqHZi1RRqVmpEdp7r+VayHqc98PYJuC6AMt8jZ/7NJYc0G7m6N7N9N61QBjiEJzboYOuf5oFiM2tm6b+d7Za58hY8TsyvsGD0KtQKx0NNUYU46Xfn/fSh7uM2HbXJ2PeLKXqKGwgZnZe6lopMXYOsdq3+piopr45EyiMjVkorME4g5L4WEgED3ehTxCnhtuV3HYhzxVMHKft4UB7nz4zmqGdkIZkUYl9ntWHRGuGKV0Wx4PRh5ifhl9J8dYFclEX7brD065EFfT+hUmjNfKZXRql5u/ZckwE2wNtr7I0EACxgpIMZVfmSQQ1rSqoRDulpuNHacaUHwGaLc9ZfVYuTTdtSwYZWFd3Er63+ny2Eu83782GXEMnih6IQ+lVskxCWruNe2HSM/llGTnxcTDvUFNCr/ylcPkvDAr599QBE9ElPaKQxYVHt778P+2GfMnwVPlNPcBIRTD8V1E1Fyfu50wwWundbm6Expcto
- 92lzLnOg
- THg5YYi91HfMtt6ipjiBW5Ky049gAwyFrkPCopaey/3dfV2Svoj4YRUs2USu63OgojhLTKTi/Jw3LbA1toF5aB6O3oz8l8S4xLPcKucWdsO29NtR5OG7dC274ze03s1JrsUQmifNp1VJ8JyisehDA50sieoHuSRjzSPVlKb3/AgVYpiSxJvw2p/FPvVbiBms3KZonBwar6p1q8eg7x5yCClthhwrEB5hecpfeNpcktOXTKcFK1W/PYSra6YF1MabpXNEH
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1755266161-311116
+X-HE-Meta: U2FsdGVkX1/a9Uax/fkffdlpvKHJ90mEgUhQZy0S5dEj4YrKiqhJZvlW6X5KXXFufTIrJ06qpUEzfq9rrKPcP1TL1CDWphZ3xSdZNhWlujARju4+5MD785YyC7ppD1hNsIHFXAEOKtXcevjcf2asbZY5rQghdmD4hQOlQMIXZAbCmw3ZhgtE5NgmtfOU+fDFLA24vdN0nws4FFQcnL/it4uSiNtt56N9H14SR1yz75KIcUHj5C6H99+EarjnGVnzCMVc2pZfYCn/8HGs6i/5U77263BIqsQk0l7xV7G6XtKUtO4Kt9L+s+hpVg8CH5xZkXT9Y29oqaVVZu4XSzXh0eeqXJ0Ea66/Y5WSUpuh4+kkyDB+8qHpKko6+DGVSSuzETP11ipQIOKOdfUGY4bWG5er6Jp2rOlrehhB4rBiQeBy8FqBJErqCmaZGZ99CUQ3HQt0cVzUikOhr+Ubm3D+r+QJ9s4FYFbYKSiB9I93AjUmaZLNXp6k1b10b4OJ6zyMf1Xs+0awE+QwFd33kLsVv+dV5Vo015XgyxQWw6pktCX1+syjKF9xf0VXFWac0LpVj53XTryiVMAHwuIdbex+HXxVZ/8UkUxADNlVo7UnwvegCLXrxvGkfBaYgC0QlFrJczOue0juZqhhLs2FH5R8qvD9Glh+3bn+l2HVXYZwJyx4QvL+AQmi3uPk01yEWwtIFuanrROZ7UyNuOTc488p/aj0XHxMWloWSp1oYrkDfkVsXNCnsts/qdW33vLA6B9Ju2Eqr7+kCdAPp5XFHAUUY5YHD6MDn2DvGp6ZW1GF3PeVhXwoeICcRwjFCSnHmsTrZ0sfgVRCDuSCrv9m/1wR772j74m+UpUA0QjfORkDcyp7bSbDowMLxCsmVsBwiXOI7GuKiV1VgE9y1tDRqVOfoz1uPqJQklcdgGC8YslCFUEX1WVnA0MRHCxt1gTHOw3mlT8FzsfU1eTpVJOKFEi
+ Wdr/DHX7
+ O5WiQCxfCOHc7ZbdtjJQ1/A49nEg+zCcB23DBnbi0u5iGkt4FxdbUVbcBbOAvlD7JrekvUhs2RhCxTJJ4A2sxEfFuwp9My2FR4Hm2vBYG84Ep8leGknE8fKStcbEt9LyeEdtfiQ1P9pA3wN8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,126 +141,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: David Hildenbrand <david@redhat.com>
+This includes the PR_SET_THP_DISABLE/PR_GET_THP_DISABLE pair of
+prctl calls as well the newly introduced PR_THP_DISABLE_EXCEPT_ADVISED
+flag for the PR_SET_THP_DISABLE prctl call.
 
-Let's allow for making MADV_COLLAPSE succeed on areas that neither have
-VM_HUGEPAGE nor VM_NOHUGEPAGE when we have THP disabled
-unless explicitly advised (PR_THP_DISABLE_EXCEPT_ADVISED).
-
-MADV_COLLAPSE is a clear advice that we want to collapse.
-
-Note that we still respect the VM_NOHUGEPAGE flag, just like
-MADV_COLLAPSE always does. So consequently, MADV_COLLAPSE is now only
-refused on VM_NOHUGEPAGE with PR_THP_DISABLE_EXCEPT_ADVISED,
-including for shmem.
-
-Co-developed-by: Usama Arif <usamaarif642@gmail.com>
 Signed-off-by: Usama Arif <usamaarif642@gmail.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Reviewed-by: Zi Yan <ziy@nvidia.com>
 ---
- include/linux/huge_mm.h    | 8 +++++++-
- include/uapi/linux/prctl.h | 2 +-
- mm/huge_memory.c           | 5 +++--
- mm/memory.c                | 6 ++++--
- mm/shmem.c                 | 2 +-
- 5 files changed, 16 insertions(+), 7 deletions(-)
+ Documentation/admin-guide/mm/transhuge.rst | 36 ++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index 92ea0b9771fae..1ac0d06fb3c1d 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -329,7 +329,7 @@ struct thpsize {
-  * through madvise or prctl.
-  */
- static inline bool vma_thp_disabled(struct vm_area_struct *vma,
--		vm_flags_t vm_flags)
-+		vm_flags_t vm_flags, bool forced_collapse)
- {
- 	/* Are THPs disabled for this VMA? */
- 	if (vm_flags & VM_NOHUGEPAGE)
-@@ -343,6 +343,12 @@ static inline bool vma_thp_disabled(struct vm_area_struct *vma,
- 	 */
- 	if (vm_flags & VM_HUGEPAGE)
- 		return false;
-+	/*
-+	 * Forcing a collapse (e.g., madv_collapse), is a clear advice to
-+	 * use THPs.
-+	 */
-+	if (forced_collapse)
-+		return false;
- 	return mm_flags_test(MMF_DISABLE_THP_EXCEPT_ADVISED, vma->vm_mm);
- }
+diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
+index 370fba1134606..a16a04841b960 100644
+--- a/Documentation/admin-guide/mm/transhuge.rst
++++ b/Documentation/admin-guide/mm/transhuge.rst
+@@ -225,6 +225,42 @@ to "always" or "madvise"), and it'll be automatically shutdown when
+ PMD-sized THP is disabled (when both the per-size anon control and the
+ top-level control are "never")
  
-diff --git a/include/uapi/linux/prctl.h b/include/uapi/linux/prctl.h
-index 150b6deebfb1e..51c4e8c82b1e9 100644
---- a/include/uapi/linux/prctl.h
-+++ b/include/uapi/linux/prctl.h
-@@ -185,7 +185,7 @@ struct prctl_mm_map {
- #define PR_SET_THP_DISABLE	41
- /*
-  * Don't disable THPs when explicitly advised (e.g., MADV_HUGEPAGE /
-- * VM_HUGEPAGE).
-+ * VM_HUGEPAGE, MADV_COLLAPSE).
-  */
- # define PR_THP_DISABLE_EXCEPT_ADVISED	(1 << 1)
- #define PR_GET_THP_DISABLE	42
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 9c716be949cbf..1eca2d543449c 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -104,7 +104,8 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
- {
- 	const bool smaps = type == TVA_SMAPS;
- 	const bool in_pf = type == TVA_PAGEFAULT;
--	const bool enforce_sysfs = type != TVA_FORCED_COLLAPSE;
-+	const bool forced_collapse = type == TVA_FORCED_COLLAPSE;
-+	const bool enforce_sysfs = !forced_collapse;
- 	unsigned long supported_orders;
++process THP controls
++--------------------
++
++A process can control its own THP behaviour using the ``PR_SET_THP_DISABLE``
++and ``PR_GET_THP_DISABLE`` pair of prctl(2) calls. The THP behaviour set using
++``PR_SET_THP_DISABLE`` is inherited across fork(2) and execve(2). These calls
++support the following arguments::
++
++	prctl(PR_SET_THP_DISABLE, 1, 0, 0, 0):
++		This will disable THPs completely for the process, irrespective
++		of global THP controls or madvise(..., MADV_COLLAPSE) being used.
++
++	prctl(PR_SET_THP_DISABLE, 1, PR_THP_DISABLE_EXCEPT_ADVISED, 0, 0):
++		This will disable THPs for the process except when the usage of THPs is
++		advised. Consequently, THPs will only be used when:
++		- Global THP controls are set to "always" or "madvise" and
++		  madvise(..., MADV_HUGEPAGE) or madvise(..., MADV_COLLAPSE) is used.
++		- Global THP controls are set to "never" and madvise(..., MADV_COLLAPSE)
++		  is used. This is the same behavior as if THPs would not be disabled on
++		  a process level.
++		Note that MADV_COLLAPSE is currently always rejected if
++		madvise(..., MADV_NOHUGEPAGE) is set on an area.
++
++	prctl(PR_SET_THP_DISABLE, 0, 0, 0, 0):
++		This will re-enable THPs for the process, as if they were never disabled.
++		Whether THPs will actually be used depends on global THP controls and
++		madvise() calls.
++
++	prctl(PR_GET_THP_DISABLE, 0, 0, 0, 0):
++		This returns a value whose bits indicate how THP-disable is configured:
++		Bits
++		 1 0  Value  Description
++		|0|0|   0    No THP-disable behaviour specified.
++		|0|1|   1    THP is entirely disabled for this process.
++		|1|1|   3    THP-except-advised mode is set for this process.
++
+ Khugepaged controls
+ -------------------
  
- 	/* Check the intersection of requested and supported orders. */
-@@ -122,7 +123,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
- 	if (!vma->vm_mm)		/* vdso */
- 		return 0;
- 
--	if (thp_disabled_by_hw() || vma_thp_disabled(vma, vm_flags))
-+	if (thp_disabled_by_hw() || vma_thp_disabled(vma, vm_flags, forced_collapse))
- 		return 0;
- 
- 	/* khugepaged doesn't collapse DAX vma, but page fault is fine. */
-diff --git a/mm/memory.c b/mm/memory.c
-index 7b1e8f137fa3f..d9de6c0561794 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5332,9 +5332,11 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
- 	 * It is too late to allocate a small folio, we already have a large
- 	 * folio in the pagecache: especially s390 KVM cannot tolerate any
- 	 * PMD mappings, but PTE-mapped THP are fine. So let's simply refuse any
--	 * PMD mappings if THPs are disabled.
-+	 * PMD mappings if THPs are disabled. As we already have a THP,
-+	 * behave as if we are forcing a collapse.
- 	 */
--	if (thp_disabled_by_hw() || vma_thp_disabled(vma, vma->vm_flags))
-+	if (thp_disabled_by_hw() || vma_thp_disabled(vma, vma->vm_flags,
-+						     /* forced_collapse=*/ true))
- 		return ret;
- 
- 	if (!thp_vma_suitable_order(vma, haddr, PMD_ORDER))
-diff --git a/mm/shmem.c b/mm/shmem.c
-index e2c76a30802b6..d945de3a7f0e7 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1817,7 +1817,7 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
- 	vm_flags_t vm_flags = vma ? vma->vm_flags : 0;
- 	unsigned int global_orders;
- 
--	if (thp_disabled_by_hw() || (vma && vma_thp_disabled(vma, vm_flags)))
-+	if (thp_disabled_by_hw() || (vma && vma_thp_disabled(vma, vm_flags, shmem_huge_force)))
- 		return 0;
- 
- 	global_orders = shmem_huge_global_enabled(inode, index, write_end,
 -- 
 2.47.3
 
