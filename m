@@ -2,114 +2,89 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 36C13CA0EE6
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 09:12:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 49A1DCA0EE4
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 09:16:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C81E090023F; Fri, 15 Aug 2025 05:12:37 -0400 (EDT)
+	id E37E5900240; Fri, 15 Aug 2025 05:16:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0C6D8E0002; Fri, 15 Aug 2025 05:12:37 -0400 (EDT)
+	id DE8E98E01E3; Fri, 15 Aug 2025 05:16:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD39390023F; Fri, 15 Aug 2025 05:12:37 -0400 (EDT)
+	id CDE338E0002; Fri, 15 Aug 2025 05:16:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 98B648E0002
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 05:12:37 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6F2F411815B
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 09:12:37 +0000 (UTC)
-X-FDA: 83778426354.29.F25ABCD
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf03.hostedemail.com (Postfix) with ESMTP id BC4B12000C
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 09:12:35 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B76208E0002
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 05:16:17 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5F76F1408DB
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 09:16:17 +0000 (UTC)
+X-FDA: 83778435594.26.AD6F43B
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf03.hostedemail.com (Postfix) with ESMTP id F356C20006
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 09:16:10 +0000 (UTC)
 Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k64qKfJ6;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	spf=pass (imf03.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755249155;
+	s=arc-20220608; t=1755249374;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z6jMVoNjuLExgM2DNeijTwj09vj8ODT4Hf5Hk3P1Q4M=;
-	b=pIKjKNtqT6/cRo9TYYf6QFVG/s3bZMTgD6Mb+kskRUEaRZ2Cyk1R+TtEU1YAeAs6jHXLu6
-	eG0XPjrRmd06cF3zNQpbme4t5DZnmGdPl2l+XS1APKw3mVOPBLRcG9tXijotymcSd15uvD
-	qlGeVzDzWWXvpBCd87gHIPN5yEqmzE4=
+	 in-reply-to:in-reply-to:references:references;
+	bh=/7ya8INStVMqkmoMSO2oxJYj8QSnxMUfKWHQpCBE+ws=;
+	b=TgW5cxaMR20kevSKWcbAuzuYxr9scKqMi5uHlCMUuIYfirSncURfsSezOa08iYrhWcgfhq
+	dDxMXtK+YOmUZc4uw+C/m2M51YSAAXbtEazMfe6CfqUVpqDLu/ltV96JR/R+M+toq6YyRG
+	wGxm2jC1s6oo+kiLUxQI5K7uTIHAzGs=
 ARC-Authentication-Results: i=1;
 	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k64qKfJ6;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755249155; a=rsa-sha256;
+	dkim=none;
+	spf=pass (imf03.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755249374; a=rsa-sha256;
 	cv=none;
-	b=y8iaTL3t7B6N2w8sch88K1Ey2DxSaxkC8dFAEUra65NeE9aDIJnLMerSU2PqUpiV7s/1EE
-	ad8jNIx/u3daPcvr5C+tBDO/bv1Sk8CpHphUp6tOLy/T4vuUnEe4hEddqsgOgjQO4kVnYC
-	rXxDa44fcgv0xjlzdZseilpGiV61J8s=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 7B78F5C48E2;
-	Fri, 15 Aug 2025 09:12:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36ED2C4CEEB;
-	Fri, 15 Aug 2025 09:12:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755249154;
-	bh=NCVfEVQN6LHwkNoCyqO9selISDvFLOPAgNrIg0ejz0k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=k64qKfJ6zNJDhsnuWxR0fgqX3BVaqQwvdZElR/klQAEoCxi1g56cxeHTAZN0/wswK
-	 Pq+3GThmFMau+x8U6BogKChu5yqp5BwT3RbxGdJVY+yxVsA/3n3361XvguUQYtAzo0
-	 CwsxkbStJHs9RAUy1BQLHDF5j08YA23EQWtialVtSTBmcZtV4ZgvbsnBJMyvgGhChp
-	 CJH00Qs5o00iwlgrtxYWMVa2jp4VjDFoGjgtjzcCsiVePDp+01FqKPujeYxhNnJ5cJ
-	 L4zaOZ7N9WkPfF3VfgjAaCkkSQpngOXjnWintiz60FKc8w0raVBwqKL8kvbukYzLFm
-	 Bt1jthD93yq4g==
-Date: Fri, 15 Aug 2025 12:12:10 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, pratyush@kernel.org,
-	jasonmiu@google.com, graf@amazon.com, changyuanl@google.com,
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
-	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
-	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
-	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
-	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
-	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
-	dan.j.williams@intel.com, david@redhat.com,
-	joel.granados@kernel.org, rostedt@goodmis.org,
-	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn,
-	linux@weissschuh.net, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-mm@kvack.org,
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com,
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
-	aleksander.lobakin@intel.com, ira.weiny@intel.com,
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
-	brauner@kernel.org, linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
-	ajayachandra@nvidia.com, parav@nvidia.com, leonro@nvidia.com,
-	witu@nvidia.com
-Subject: Re: [PATCH v3 07/30] kho: add interfaces to unpreserve folios and
- physical memory ranges
-Message-ID: <aJ756q-wWJV37fMm@kernel.org>
-References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
- <20250807014442.3829950-8-pasha.tatashin@soleen.com>
- <20250814132233.GB802098@nvidia.com>
+	b=1Bg6Rt5F2oaW5o9IpeLdgHIKdkNOCgl4gGFc+UIq/ft8P0/6U7Mm0qmUxfPrGzk/u/G8y+
+	/IJfo9z9d21IcZrub8/l25P2Fa2W8JQCHKXLHKbamF1wvPlUff9ttoEq9ktgVj7nDfdufq
+	zD89VUY9PguESWKqCAZS50K7LwGZL2w=
+X-UUID: 761695a079b811f0b29709d653e92f7d-20250815
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:f11915a3-68c4-4069-9eb1-1092cd56b60d,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:-5
+X-CID-INFO: VERSION:1.1.45,REQID:f11915a3-68c4-4069-9eb1-1092cd56b60d,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:6493067,CLOUDID:638da975861fe3bbe853ae5512f271c7,BulkI
+	D:250815002500R9UDT29E,BulkQuantity:1,Recheck:0,SF:17|19|24|44|64|66|78|80
+	|81|82|83|102|841,TC:nil,Content:0|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,B
+	ulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:
+	0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_FSI,TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-UUID: 761695a079b811f0b29709d653e92f7d-20250815
+X-User: lienze@kylinos.cn
+Received: from kylin [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <lienze@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 380113571; Fri, 15 Aug 2025 17:16:01 +0800
+From: Enze Li <lienze@kylinos.cn>
+To: SeongJae Park <sj@kernel.org>
+Cc: akpm@linux-foundation.org,  damon@lists.linux.dev,  linux-mm@kvack.org,
+  enze.li@gmx.com
+Subject: Re: [PATCH] mm/damon/Kconfig: enforce DAMON_STAT when
+ DAMON_STAT_ENABLED_DEFAULT is selected
+In-Reply-To: <20250814162446.69575-1-sj@kernel.org> (SeongJae Park's message
+	of "Thu, 14 Aug 2025 09:24:46 -0700")
+References: <20250814162446.69575-1-sj@kernel.org>
+Date: Fri, 15 Aug 2025 17:15:54 +0800
+Message-ID: <87a541c5dh.fsf@kylinos.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250814132233.GB802098@nvidia.com>
-X-Stat-Signature: zdhbwpamfddk99b5wmbxr1mefxnpo3cd
+Content-Type: text/plain
+X-Rspamd-Queue-Id: F356C20006
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BC4B12000C
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1755249155-336238
-X-HE-Meta: U2FsdGVkX1/W+GecRMBZlzxlKBG2wyATnKF0S0ViV2x0O1uiW7KcHYdHApFpM3VeUmHw830pMXnSlAoeBmab54L9VIgHEl3ZiW8O7rf0mi6e/jF4VNIsoaj/GKAxvU/o35kqCCVb+DodmWBQoClDy+svHcRM2CAO7qtryVqvCwnX/Sp5NZj9CnkWFov+QMABUkHHk3UBD7HZKl21BjKmnDhgxouUYwg6W7teLOKKV3Ei7zGIKlEcjgQk6x5+2lrg03Toz7WdiNsYVqsJzzIa1VY111dzrXwwBh+51ILT22+u3yWJJrIGWye7Pd6bB62YHnK60TIPpllHwQ4/sRgdwgAXa+kt65ULDkLSlnf4OEi/t4cPyqsTqHDX73mJWwvRgZo715tajs3cSAkWjHN+G6GYdLqrepTfMyTKFPx7dMLXmJADMXfty9oA54WSo/DlHS/awJHPIK4Xp01VUMw42P2uRvUxBgx6OOb4zuuTQwfcXyLAm1hd6T3F658uC3PHs4IFvNKFENPRgTXUB7/xJZnlWP65G00MNYFr+epXEnoX6EcoTepfnBuUYteg80DxRfKKSKdgsxjz9+u3Sppptws7Fi/STxlgZVpF6LC3NhyJdG/Fnp/C8X5XYk6f4IF04nHS4nSW3dD/09YrEWfA4v3n2zmkZHJkotxNFB8aaiFmTg+zabZzcbtQHNk0vyva11ZRHaSJUvUU1kHhwtckcsiCmM6bRvY0HiSBfLl/jOSeKddy8WPipUH9+Paetq00W64Oy0FZI0FujjmASeeDzEsnVrZIAPnnL5Ixut6GLL9QW5DKqSni6Xp3wy3kytYfxCG/txmDinONvKWx60/jS/PnxiRO9eR0OGrkS0lWcWSRNLJcy1LypuAlkkgEAGqN+TaH84MqcfGxyvUpInxOUdrNrYvvHTCgBxlXOj+dJNVfKh98f0yKj0AoDvNJ/Pis0KcIOmr9Ua1x0YbeTKB
- fMtjC4ZV
- i/LoS0DxoHk7odkvdBVw465t8sds5PVQGkP8eYOaQ1E5NNWiOlNL9IlAwn/3d2d8FWc1B2p7ITXhSkQMm8GNgPn+DZ4sj2fjWX9rdOWVpyHWGDgKB/LGd85zRFBybGPmD5T0fgcHRo4TdCkfIlDdThDGqW5YDued8VyAuzetxGIQxyqg+8C45p3Tv5w2fXvlpU36m0QygUEoALm7DZ2YKgx37rzajuaoLNOOhjbZGlBG4MiA9AF5RKeY0zQb4jl3Q4v22/kYxAmBrJAdVa8yJIq8vux62YGS2prMA5VQOqoGOFWMve7U2sa4DRTzZETc1xUR7VuQ6Fd1FaJc=
+X-Stat-Signature: 6s5n6wufqe9314j35di3zccici46ed33
+X-HE-Tag: 1755249370-364414
+X-HE-Meta: U2FsdGVkX19YzLo9P391twURdJdV9rFU8k1AcmxE/O78uHI2vWwPCAVLSdufQQi4X6+r805xUcnpT7vjXrkEeEqIzgy2IlKPCZsaHV7gyefZA63mJHlKoe1dWA4kKcZzd2XgvGbffFgF6ZjXRD2AawpIjRtBbG2ZPE+hAY679ujhDMTQUAKVmoHqEXuUKpILxuZHR1fvOL0f3qMut7+xtj8fVIGP75wVA+VLfJ1y9jzh43FkjNJ0ntQMRYLP0FkVWu9LdvMgKPdqyRW5nZYe1Y9asegCerEqGfzq9fzmJuL36H6zAm/sRkRaBbCX6FWDAN6aBvT6QuBM9JYlHIz5lHFb3FdceFgKUCEG3oFuoa+5x4mj4RLxtAwau6hU7PVt15W1qOeSDBxpruMqjVWUbWqERJZj92LWRgZSLsfK5+nDqMN6rTI69G5Z9AHn6vIbAuXuxeAjXV/q3EKhpkDDOymWezhnV6sdKeY7mVZAxjL6VKnzAMza8bD9kmLsYn/00lxACf4Kar4pRUFhmz0iWjWFRBtzIXDG2US/WF0ktdXDJ+H7siXI7iK7VzNBWXTHVTbIqzK/TKKZeE/7vGmWjp9/wjx1MKSBhKhr98ZqJNrJpXdXlgo0No5dqszbw1pxBVrUuKSUrdyMhApOlLOVt2Ki2e3s5qWjOOGhXHUCs5QCqYtwOKXt/syXNaNxWaxe+rtC/KraGGvQDC8dbi/Crd1NnhsIX+0YE/TAtdRfEB2GV4dwMO/s/umHGz88A1okexRs6tutrN1Znn4kJ3nYg+Hfu0VmqC8crwghJWDJl8moJuh/TdzItBhBlnl2+lzSq3iQFoT1h/s=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,60 +93,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 14, 2025 at 10:22:33AM -0300, Jason Gunthorpe wrote:
-> On Thu, Aug 07, 2025 at 01:44:13AM +0000, Pasha Tatashin wrote:
-> > +int kho_unpreserve_phys(phys_addr_t phys, size_t size)
-> > +{
-> 
-> Why are we adding phys apis? Didn't we talk about this before and
-> agree not to expose these?
-> 
-> The places using it are goofy:
-> 
-> +static int luo_fdt_setup(void)
-> +{
-> +       fdt_out = (void *)__get_free_pages(GFP_KERNEL | __GFP_ZERO,
-> +                                          get_order(LUO_FDT_SIZE));
-> 
-> +       ret = kho_preserve_phys(__pa(fdt_out), LUO_FDT_SIZE);
-> 
-> +       WARN_ON_ONCE(kho_unpreserve_phys(__pa(fdt_out), LUO_FDT_SIZE));
-> 
-> It literally allocated a page and then for some reason switches to
-> phys with an open coded __pa??
-> 
-> This is ugly, if you want a helper to match __get_free_pages() then
-> make one that works on void * directly. You can get the order of the
-> void * directly from the struct page IIRC when using GFP_COMP.
-> 
-> Which is perhaps another comment, if this __get_free_pages() is going
-> to be a common pattern (and I guess it will be) then the API should be
-> streamlined alot more:
-> 
->  void *kho_alloc_preserved_memory(gfp, size);
->  void kho_free_preserved_memory(void *);
+Hi SJ,
 
-This looks backwards to me. KHO should not deal with memory allocation,
-it's responsibility to preserve/restore memory objects it supports.
+On Thu, Aug 14 2025 at 09:24:46 AM -0700, SeongJae Park wrote:
 
-For __get_free_pages() the natural KHO API is kho_(un)preserve_pages().
-With struct page/mesdesc we always have page_to_<specialized object> from
-one side and page_to_pfn from the other side.
+> Hi Enze,
+>
+> On Thu, 14 Aug 2025 20:17:03 +0800 Enze Li <lienze@kylinos.cn> wrote:
+>
+>> The DAMON_STAT_ENABLED_DEFAULT option is strongly tied to
+>> DAMON_STAT -- enabling it alone is meaningless.
+>
+> Nice catch, thank you Enze!
+>
+>> This patch modifies the
+>> logic to automatically enable DAMON_STAT whenever
+>> DAMON_STAT_ENABLED_DEFAULT is selected, ensuring functional consistency.
+>> 
+>> Signed-off-by: Enze Li <lienze@kylinos.cn>
+>> ---
+>>  mm/damon/Kconfig | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>> 
+>> diff --git a/mm/damon/Kconfig b/mm/damon/Kconfig
+>> index b3171f9406c1..5bc71354e6f3 100644
+>> --- a/mm/damon/Kconfig
+>> +++ b/mm/damon/Kconfig
+>> @@ -105,7 +105,7 @@ config DAMON_STAT
+>>  config DAMON_STAT_ENABLED_DEFAULT
+>>  	bool "Enable DAMON_STAT by default"
+>>  	depends on DAMON_PADDR
+>> -	default DAMON_STAT
+>> +	select DAMON_STAT
 
-Then folio and phys/virt APIS just become a thin wrappers around the _page
-APIs. And down the road we can add slab and maybe vmalloc. 
+Thanks for your review.  I've updated the patch addressing all your
+comments below.  And I'll send the new version to the list shortly.
 
-Once folio won't overlap struct page, we'll have a hard time with only
-kho_preserve_folio() for memory that's not actually folio (i.e. anon and
-page cache)
- 
-> Which can wrapper the get_free_pages and the preserve logic and gives
-> a nice path to possibly someday supporting non-PAGE_SIZE allocations.
-> 
-> Jason
-> 
+>
+> I don't think we need to drop 'default DAMON_STAT', though.
+>
+> To me, it seems the problem is the wrong dependency.  What about making
+> DAMON_STAT_ENABLED_DEFAULT depends on DAMON_STAT, like below?
+>
+> """
+> diff --git a/mm/damon/Kconfig b/mm/damon/Kconfig
+> index ecbdb3e2ae58..d5f8db812dd3 100644
+> --- a/mm/damon/Kconfig
+> +++ b/mm/damon/Kconfig
+> @@ -104,7 +104,7 @@ config DAMON_STAT
+>
+>  config DAMON_STAT_ENABLED_DEFAULT
+>         bool "Enable DAMON_STAT by default"
+> -       depends on DAMON_PADDR
+> +       depends on DAMON_STAT
+>         default DAMON_STAT
+>         help
+>           Whether to enable DAMON_STAT by default.  Users can disable it in
+> """
+>
+> Also, the subject sounds like a bit strong tone ("enforce").  How about
+>
+> "mm/damon/Kconfig: make DAMON_STAT_ENABLED_DEFAULT depends on DAMON_STAT" ?
+>
 
--- 
-Sincerely yours,
-Mike.
+Best Regards,
+Enze
 
