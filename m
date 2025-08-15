@@ -2,90 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 37F6BCA0ED1
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 20:17:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1E407CA0ED1
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 20:17:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F8EF6B0301; Fri, 15 Aug 2025 16:17:48 -0400 (EDT)
+	id C1AFE6B0303; Fri, 15 Aug 2025 16:17:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 082796B0302; Fri, 15 Aug 2025 16:17:48 -0400 (EDT)
+	id BCC1D6B0304; Fri, 15 Aug 2025 16:17:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB1F96B0303; Fri, 15 Aug 2025 16:17:47 -0400 (EDT)
+	id A930F6B0305; Fri, 15 Aug 2025 16:17:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D21BA6B0301
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 16:17:47 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AAA061A0232
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 20:17:47 +0000 (UTC)
-X-FDA: 83780102574.14.7C7CDC7
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 953A06B0303
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 16:17:49 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 303C01DBFD4
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 20:17:49 +0000 (UTC)
+X-FDA: 83780102658.11.992E5C5
 Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E1A1C1A0004
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 20:17:45 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ZXv0XpG2;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf19.hostedemail.com: domain of 36JWfaAYKCN0JTMHXTFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--kuniyu.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=36JWfaAYKCN0JTMHXTFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--kuniyu.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755289066; a=rsa-sha256;
-	cv=none;
-	b=Y3uZdAwL6wSH/WxB5iCfsuYHarndvoZ3WFTU7AXJW7KdieBDyEck9EXbQCa3oYiWlN5soQ
-	vPctZCbiPCsxScLX+JqgfDtYOqHMnXActpGRUBn4tXSq9pi0ZNwCNQwMaKrotZaeOel6Y3
-	jrf4cIoR7zKMuGZ0z62tiJWYpgGMes8=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ZXv0XpG2;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf19.hostedemail.com: domain of 36JWfaAYKCN0JTMHXTFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--kuniyu.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=36JWfaAYKCN0JTMHXTFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--kuniyu.bounces.google.com
+	by imf30.hostedemail.com (Postfix) with ESMTP id 47C9B80014
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 20:17:47 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=qW5NyLso;
+	spf=pass (imf30.hostedemail.com: domain of 36pWfaAYKCN8LVOJZVHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--kuniyu.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=36pWfaAYKCN8LVOJZVHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--kuniyu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755289066;
+	s=arc-20220608; t=1755289067;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8Mp+7e2gfxyzJJta6x3bXxbo+4BlzrD3g7OeGza9E6Y=;
-	b=ftVd66M1i8+aVx7wBJ6eL6vgh6mDcLlEAEsY+y9F70HUTpjIUvyyCRgfTBzbH14y/Z8HlB
-	i4LfHXFnz/jykFFAHqpa7YLwFoW3Ov2zTAdP8moyil+d+HqkAEV6IrYxjeaCbETgei5jKL
-	lapCC2CNY/yqRTsD0QfThYPuHoqBZ6Y=
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-76e2ea9366aso1943796b3a.2
-        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 13:17:45 -0700 (PDT)
+	bh=GfW0AKjgNSELXjjoDcEX6Y6n+0gVaLsZmB/XYkuwP9I=;
+	b=8cyHUlzbxjCIp9wRFkYwG78S2bYU75yN71oz/alAfRSpq/zKAT/SyrQDyo4GUsRU6T7u3B
+	nGsxQr5wMfWIDEBFjAKbBTYWit2VUUsm16IPlPn70yKDJXmNfv8941yCwu81Aw6jW1dC+C
+	0HHrEYgFZSVmHZ5KiMvkDjKR52zw8BU=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=qW5NyLso;
+	spf=pass (imf30.hostedemail.com: domain of 36pWfaAYKCN8LVOJZVHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--kuniyu.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=36pWfaAYKCN8LVOJZVHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--kuniyu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755289067; a=rsa-sha256;
+	cv=none;
+	b=BGmVxCU1LwzNo6loQDway0pbACwAtZYUTYOzjGNYoM/qqymyDL8JiFRCqoV+FzKC7rrGK+
+	e0wzRYGLjZpeDpJ2Gn8vrZh8ZMzWfIN7fUU6ir7rgd8Evj6C83tAEJYoRcX5vRfIq7bqh6
+	lAc0L0PRlHkusBuRJVDJGmM0XXjFNOQ=
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-76e2ea9366aso1943816b3a.2
+        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 13:17:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755289065; x=1755893865; darn=kvack.org;
+        d=google.com; s=20230601; t=1755289066; x=1755893866; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8Mp+7e2gfxyzJJta6x3bXxbo+4BlzrD3g7OeGza9E6Y=;
-        b=ZXv0XpG2Lcjb+fr/oY6SSOU09/5lLnII2T126+BuIhl2P/dlira1MBa1hwRdCzzapI
-         l3w/3d7S1CVOcUsMBbZmvaBoEdaJ/vFl6jkZsabqISNG/8hteVN27+xRhVJTJc111wyG
-         Cl615hxNhNvI2OPq985LYpBSfLw/6FgWiB8SMhGQz1KfwLjHPW3yXHUx3fesasFJKQMD
-         JAMNgwyeSI/dTBKfTlnVdYv28kiL6NNN+PrU5H7eMFxl+qOPpG+0jmpVPzAlq86FsUIH
-         DoFrx3SmtQAdyb/kVvaq43Y+Eb64q4jIO/b6JvgECmeqBycx/ItmPtnd6h7/hikMLOOD
-         AaHQ==
+        bh=GfW0AKjgNSELXjjoDcEX6Y6n+0gVaLsZmB/XYkuwP9I=;
+        b=qW5NyLsoWmqaRNQ3ymWnxV5IwjNJ13eqUe4Ic1ZA/IYK4ISHFsDlfPiNzHllhC5OdC
+         dfNdlbALbJquHv3R0pZ1XXLm5aE6uVb670f9LfeJgfG/jGLOR+DrvGFUkzhEvljYLN7H
+         azkWM0c/o6tJN2uOHrgR5XmRA8TmSqH0vQYgli2NbpP9K5McoFahX5M2YANGePCiwzxu
+         7k77RcX3WXarCc7y7kHg/zx045l7vX+R0oMfjaSP3dGQjhRaR8a1UTf3p+hp7wR4bCqk
+         cyeetUBVkO9ynp6CB2OiRvGxbTrGW5Wpi94jYkCz9y2+6UKxsFSojHfQNSQucUDfxn6H
+         LwXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755289065; x=1755893865;
+        d=1e100.net; s=20230601; t=1755289066; x=1755893866;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8Mp+7e2gfxyzJJta6x3bXxbo+4BlzrD3g7OeGza9E6Y=;
-        b=u65ODDUDd2piTB2OJUOkxRo+/BESt7QRK9fqvKAIWrg5fFvOvRwi3B7b/o+QKaZMA1
-         9V8T0uhvQIrfNfO4+laYNHztQLzghm/C7SJf+vrE/AHQgDd2CJgpupicH+S/cokfh/74
-         2vL11Ly5uZP6IQ1wd6RJCgxuWj0Bjn3qKRjIByuCaei/3c313k4DUJBpFTYZ5X/zlw02
-         pFPDf5EmX0X02bL1dAxVzrFZpmglMmxUoFTv/la6mIQmEnU3vC6hXw/34Q+W9f0+pzNK
-         pmkl3HTd3xPhdBYhT7YWbiPy2EqKWtr4lQcpRwOTnxTrbou6/AHirXWgB6+fwk23PLJ2
-         VFQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV6LqMvxZSpluBIIBYSi2R4LNrUYBqVpJaCsO+4mG8UZiYa59SzNwvALZZ3g+3eA8V2Bcu3lOT1Ig==@kvack.org
-X-Gm-Message-State: AOJu0Yzbp2MiIr5D+M3Pqk5v7nU26AtJXQqN3KwMYcqV+yZFgejXwgdm
-	1/1rFZ84FFanI1RIlHXIL/dHsMQ9hd69TcU2i3VWKN2FMGuGfwzNqHKnxQ4gW/vIYZbO+EYMp7K
-	ZzO0F2g==
-X-Google-Smtp-Source: AGHT+IG5FBv3Dc0dvsUM0MYH02dugnLFfR8sX8Mh4NHngLs2eiGnFx+J6RBCbR3sas2sD1KA15Q90KlIGAA=
-X-Received: from pfrj12.prod.google.com ([2002:aa7:8dcc:0:b0:76b:3822:35ea])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:b42:b0:736:3979:369e
- with SMTP id d2e1a72fcca58-76e446ffb04mr3567357b3a.9.1755289064709; Fri, 15
- Aug 2025 13:17:44 -0700 (PDT)
-Date: Fri, 15 Aug 2025 20:16:15 +0000
+        bh=GfW0AKjgNSELXjjoDcEX6Y6n+0gVaLsZmB/XYkuwP9I=;
+        b=r3+7pjRQmW5Z9mF0oXeZkL5RfR3iCnyWFItWLKQyEyVFJTsiE9njFdCiVrEc2FDTpp
+         d+0olE2wHsAGzUnm9mM9MY2YvfRHYWimR6piIiHhRO9Ws0RwpTuAoBra39pXSoC42/rV
+         p9Bqv6UBAjjEak/7mfwqotAJzUAfTCL4kc8SOB5aCYIOxnU7VqryII8uH3QfZFvD4xrG
+         BfdHnbq8O0EudCUSCgHG773SPyChMy14vXhLB1vNn4Vx09ImYynTa8LHbVPiBR+NqfP6
+         FGWKnbTScON0Fg7MGCOin7hDmjumV9mBnjok3A/Udatc7yGkPJRf9WYvgQZG6OJT4B9E
+         5dzg==
+X-Forwarded-Encrypted: i=1; AJvYcCWvqxk9rAQsimK+Nn9tbSNtrkesC8LidU3b58dAUy5td3lj804zb6F7yAUABvSthalIRwr4WmjM1Q==@kvack.org
+X-Gm-Message-State: AOJu0YygkshEpOPJPFDl+tp9ioJvSThOyRaNYQmmgOvNiIFYB/RlQSq9
+	pseIU/pCUYiXcIp0+BcI//YCWqh2V//aZIcGPcLgd/yFy6tkdDofLFg8GF4fvlBijjwoL1U9crl
+	/zHQbfg==
+X-Google-Smtp-Source: AGHT+IElDnvoGmI5tD6Ho6R2PezWL3Vx1xKjyABAEM7ehtZ7uqynZz9sJvg0jdDpQOByEtsqMjA1ed/8pGE=
+X-Received: from pgbeu24.prod.google.com ([2002:a05:6a02:4798:b0:b46:dae0:dfe8])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:3d8a:b0:23e:19fd:e182
+ with SMTP id adf61e73a8af0-240d302fdd7mr6071025637.13.1755289066069; Fri, 15
+ Aug 2025 13:17:46 -0700 (PDT)
+Date: Fri, 15 Aug 2025 20:16:16 +0000
 In-Reply-To: <20250815201712.1745332-1-kuniyu@google.com>
 Mime-Version: 1.0
 References: <20250815201712.1745332-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.51.0.rc1.163.g2494970778-goog
-Message-ID: <20250815201712.1745332-8-kuniyu@google.com>
-Subject: [PATCH v5 net-next 07/10] net-memcg: Introduce mem_cgroup_sk_enabled().
+Message-ID: <20250815201712.1745332-9-kuniyu@google.com>
+Subject: [PATCH v5 net-next 08/10] net-memcg: Pass struct sock to mem_cgroup_sk_(un)?charge().
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
 	Jakub Kicinski <kuba@kernel.org>, Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
@@ -99,14 +99,14 @@ Cc: Simon Horman <horms@kernel.org>, Geliang Tang <geliang@kernel.org>,
 	Kuniyuki Iwashima <kuniyu@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
 	mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam03
+X-Stat-Signature: 341iwr7cfk473oimxojumfpq4dia5tdp
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E1A1C1A0004
-X-Stat-Signature: ontk8u5qca1efm76kqrrb4ekpn5qnb9q
-X-HE-Tag: 1755289065-336494
-X-HE-Meta: U2FsdGVkX1+SPgpUXUY9ROizM4HaUAht6ZwTC63n5ySQZSQ/FDHkjKTHR8wXqeNNa8+I8TNVxPbiUx4HF0YR3rPgz1ulaj+YtYBVbXrG7Z9RuSCIGPgNBjslwNVhG2mDqS35EEBMvD2JUE19ycZyjaclVKLfr/B0ee+uIz9JJ+99iUWKVuEexDz8PDf0ZXLCi/zpfeqrR7C35DCjJ2loJr1YFIjdtVrmzKpOjpzMANUK0+yXjA1phjNTs+oN96umTsE+xf58SfmY3iFaHlXfMHrO8/CxkPBxdDKdbABIuacgNBU9NgkgMIO1j/oXWEZZOllsgpa+4PNRYDXgb+mThYWM7kKZfzX6dV5BGev04ZOIeZnpEvyEXgTmNAcYjtMNlMAEzKPIX4Vsjo67uQo6fpJNR4bhDURI7Z1JJieEV27Vye5pEuFDQhA0Q2OlPfr0CfP4Z2eeuYe5Jd26bP/VifJD35fsQUHWmdyoziTOIABYRwFc3KghyOnv5OJuMEWCAlVWN3KjQbiE7mS0ovadwL/C1vwKTflPQ1hfnYTFgXihewvudioar7hcANZjoFOCxVnFXxHCvUh9QVF/gSbrJTbb2Bk63ZYWZ1zaZYuu3wxO7aKh2fgcgVDSIcslmoHbfon7tE2Isoy/AQdt1lx5cV21FeWBCbha4vf8ycapGv+HUz2+A9x8ixsCEaayC+ho6h3aplPKa7cVw0kpdLQg3eQCG9+hHg5UoM2eiJ6AOp96MveqkvUmPG2GSd04avQMFaX9q2EDI78ejz6SiRm5DSW0oXBIIFfoWKJi0OOiN+kXKr1jwIeJkZcPU3wT9js3+swZKApD5yqklzkmHuTCTxj5K1mNEtxoxR265eCNUsEsE5pvrE3dvkeLDz8iiNL9E36Ee55Nnt8evngVlD7H8Khkv8bfXbuCJQZzmvJTcneyLHJNmq7oCIsMwPgN4xXsB2+6pDZd4hGMynNMFQv
- 5n8yRqNO
- 2WXS8wB4V/vbXO+MsuYrCABUgExcusqTYJSo0TuqNo9pQvyRO3ItzP0UDzN28kG4B0qdNayur4P5ZicqYGHutxldCN7P6bahSwr8Kdnkue9/XkZhlJL+N2O/gnk11RhEOiHmzXFGnxKo/WzXQZs6/Ksd4AX18HU2OkCowZhS/Zmz/1jl8/dTRJXvh8i35a6Sx5AExcNyRN2AizbpbPnMoSlqGhRwEayDpa2RoQlhs1LLecvxaEHPt4ZtaRxB2N7WBJBC2Mwv82cM0AjV1qkTTVoA1aQs+qrWNoCLk+8pB2qYcDB9P8oumcqbJrxlanBZ768Zm4frK3EKwpe57EaAVwECPimvr2/VniWQ0OSz3oPJndEvZ+8Mu78UaU3n9i/nHrgNdwEVV5Qy15klEnyqEPGiuTduAYZsJXI9s2jDd+bGdBw4DVEV09g5Dl1ZHULs3+306rimYBwZX5daKnKV4Z+scPOZFSzM1VGAik4xdCmBne631SZ8trXPjpsH99XcGsT1Pn2/I66qgLazZ/E4yprTBsb2pQPDa0ysKtGx2JuGzKgTB+nEQ0R5P5114zehq3SS+wKz5com6gUPhQ3pOr0tCKQ==
+X-Rspamd-Queue-Id: 47C9B80014
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755289067-851957
+X-HE-Meta: U2FsdGVkX1+VAr8Xj2ZJqZUe3Ikt0L2OU+fc2WXKkaFr5t2fODbpiRi7mYV+h4J0StM4S+Sxb6uFP+2E+T7GPy8LBJrIR2bPfw6Gv3AVgFmp1jxddXBxYItzWsTaEpTjdIRPdfSwzkNZ2GnrjeQ9iC8ErO6/SnizqYaHWycaaIHNqB85YV5up/BRNMsqpqKDiXgglexOtJlUlAsNOVi6v82sXi806mP2bak6h1qAL+TLGT1hjp2lc23RXubRfbLBO6mUkVHeJ7+WO+mrM7R/QomfkRtskUNkWVbKG2qQ5zS6szPle/mB6r1A9iuCTS+tlqCrSiEYxZQwSWi12p4989bfWOuv6G21oCakPaNyEPBZwSg60gNFsOrHXclZso+pKGUGGZPUN5Gaaz1OmRZK2aWKntGxHMWYzzXDwFChjCBknnuNXleVKWtgmlKAEgPIdEZiJAEmYQxrTAnwtD0fMenAsKWiAyYcGdsndeeHb26YVlNamqCeZRM6OPh0tXR2iD2BQsG5uURTlMGyAoPyKdXH4wSrSuxlCj+7TlSgFH/oCwFepvl0blo2KWekOMdt5kAcTgrxRY5cpp8+bnI4QMl0vu36PoYb/MeITSOsqWbob42HBO5kAAbLr2ViQoDHAfQImnznFwA4KqI3ykNQDhSS2FDimgmCVzkSpiVxELeEN8OSucyL8ar4WYCghk3LYXjOmhbDyrOfEdEOvg9sYsC32T1oMi3QR80GkcXc0pXcjREVu/7FSZKcJ3MD8Wz9aSiLg4ttfJbuROcey7FPjbauovDdcSfiAS8XG44NIEvWakAwBhisw0V54PcJA1If9YF5btULjyDpxVsiHAlb6Ll7O9RqrG6McXjsxPa8Lw8EXelkbkEBPFNqiZfMDcJIXU4Xf6gtUddg2ER8DGW6N1uwfNMAd6yomKGGjAp3Wk55vq6HaiejFDBnnPHVWU34u8E8blIJPc5GwBZE+q4
+ nASc3owB
+ d2kMVOp7ntZwK4W0uzKxHX65x9qnpp6tBeJi/6Ok5GVQpm3gl0iDIQs/BYJu9aVo4l3f2rB9J964BDpGDfwRE7cgiABmCO5XYNXAAPbFI+8wG09rEXmOlTMyZBmOBLg9CJCRXPEyJNkwXgFiX2RGJ0lMm52itMw6O4fP9mDBc+TjMsL/2Uscq4k0sQe9NqtNCbjQ2LZdC1mfaVTscGDYWEdsushUS/9d4Kn5v9tC7lxRx6txfKrtLtnxXwjx4pvOnh71V9AS9W+VXmj4UE5FYRoRYa3juF+KEebXvbyZ9TqgTl0H+HSBcJoqY8QvKrlgOE5KCEVv95cqbuRQydl7G+ZnZ0C8Q3S632FSppGRVRGJ5MOnfUEvb/JmjB7zzpP2rBbbpTFMYIMBNJKV/aewovszZ0cPuZB5PRTySYFkF/hxntxcXB0Dhx0uy7x3wpT/t2ulPFZ5F4p/OzV1G/SZCb6Cu81vt1FD/DTrvLzXePLKCCGXjXF2KrWUGS1mDg4HGi/KS2maQiUa7HRXZTsHq96X43WKAWHNBDrSjborjwcNLtZ5k4Xu/EQy0DjmQfHPllfCj8qw+UBWRxgA9qrHZLoP2I1RR6OyoxS5+NEr685aF8oczidYOSaBgzg0V6mgnjzacWMadwNV1aeEM44O8jbVBCN4BoxBXcB8v
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,121 +115,236 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The socket memcg feature is enabled by a static key and
-only works for non-root cgroup.
+We will store a flag in the lowest bit of sk->sk_memcg.
 
-We check both conditions in many places.
+Then, we cannot pass the raw pointer to mem_cgroup_charge_skmem()
+and mem_cgroup_uncharge_skmem().
 
-Let's factorise it as a helper function.
+Let's pass struct sock to the functions.
+
+While at it, they are renamed to match other functions starting
+with mem_cgroup_sk_.
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 Reviewed-by: Eric Dumazet <edumazet@google.com>
 Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
 Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 ---
- include/net/proto_memory.h |  2 +-
- include/net/sock.h         | 10 ++++++++++
- include/net/tcp.h          |  2 +-
- net/core/sock.c            |  6 +++---
- net/ipv4/tcp_output.c      |  2 +-
- 5 files changed, 16 insertions(+), 6 deletions(-)
+ include/linux/memcontrol.h      | 29 ++++++++++++++++++++++++-----
+ mm/memcontrol.c                 | 18 +++++++++++-------
+ net/core/sock.c                 | 24 +++++++++++-------------
+ net/ipv4/inet_connection_sock.c |  2 +-
+ net/ipv4/tcp_output.c           |  3 +--
+ 5 files changed, 48 insertions(+), 28 deletions(-)
 
-diff --git a/include/net/proto_memory.h b/include/net/proto_memory.h
-index a6ab2f4f5e28..859e63de81c4 100644
---- a/include/net/proto_memory.h
-+++ b/include/net/proto_memory.h
-@@ -31,7 +31,7 @@ static inline bool sk_under_memory_pressure(const struct sock *sk)
- 	if (!sk->sk_prot->memory_pressure)
- 		return false;
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 25921fbec685..0837d3de3a68 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -1596,15 +1596,16 @@ static inline void mem_cgroup_flush_foreign(struct bdi_writeback *wb)
+ #endif	/* CONFIG_CGROUP_WRITEBACK */
  
--	if (mem_cgroup_sockets_enabled && sk->sk_memcg &&
-+	if (mem_cgroup_sk_enabled(sk) &&
- 	    mem_cgroup_under_socket_pressure(sk->sk_memcg))
- 		return true;
- 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 811f95ea8d00..3efdf680401d 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -2599,11 +2599,21 @@ static inline struct mem_cgroup *mem_cgroup_from_sk(const struct sock *sk)
- {
- 	return sk->sk_memcg;
- }
+ struct sock;
+-bool mem_cgroup_charge_skmem(struct mem_cgroup *memcg, unsigned int nr_pages,
+-			     gfp_t gfp_mask);
+-void mem_cgroup_uncharge_skmem(struct mem_cgroup *memcg, unsigned int nr_pages);
+ #ifdef CONFIG_MEMCG
+ extern struct static_key_false memcg_sockets_enabled_key;
+ #define mem_cgroup_sockets_enabled static_branch_unlikely(&memcg_sockets_enabled_key)
 +
-+static inline bool mem_cgroup_sk_enabled(const struct sock *sk)
-+{
-+	return mem_cgroup_sockets_enabled && mem_cgroup_from_sk(sk);
-+}
+ void mem_cgroup_sk_alloc(struct sock *sk);
+ void mem_cgroup_sk_free(struct sock *sk);
+ void mem_cgroup_sk_inherit(const struct sock *sk, struct sock *newsk);
++bool mem_cgroup_sk_charge(const struct sock *sk, unsigned int nr_pages,
++			  gfp_t gfp_mask);
++void mem_cgroup_sk_uncharge(const struct sock *sk, unsigned int nr_pages);
+ 
+ #if BITS_PER_LONG < 64
+ static inline void mem_cgroup_set_socket_pressure(struct mem_cgroup *memcg)
+@@ -1660,13 +1661,31 @@ void set_shrinker_bit(struct mem_cgroup *memcg, int nid, int shrinker_id);
+ void reparent_shrinker_deferred(struct mem_cgroup *memcg);
  #else
- static inline struct mem_cgroup *mem_cgroup_from_sk(const struct sock *sk)
- {
- 	return NULL;
- }
+ #define mem_cgroup_sockets_enabled 0
+-static inline void mem_cgroup_sk_alloc(struct sock *sk) { };
+-static inline void mem_cgroup_sk_free(struct sock *sk) { };
 +
-+static inline bool mem_cgroup_sk_enabled(const struct sock *sk)
++static inline void mem_cgroup_sk_alloc(struct sock *sk)
++{
++}
++
++static inline void mem_cgroup_sk_free(struct sock *sk)
++{
++}
+ 
+ static inline void mem_cgroup_sk_inherit(const struct sock *sk, struct sock *newsk)
+ {
+ }
+ 
++static inline bool mem_cgroup_sk_charge(const struct sock *sk,
++					unsigned int nr_pages,
++					gfp_t gfp_mask)
 +{
 +	return false;
 +}
- #endif
- 
- static inline long sock_rcvtimeo(const struct sock *sk, bool noblock)
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 526a26e7a150..9f01b6be6444 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -275,7 +275,7 @@ extern unsigned long tcp_memory_pressure;
- /* optimized version of sk_under_memory_pressure() for TCP sockets */
- static inline bool tcp_under_memory_pressure(const struct sock *sk)
++
++static inline void mem_cgroup_sk_uncharge(const struct sock *sk,
++					  unsigned int nr_pages)
++{
++}
++
+ static inline bool mem_cgroup_under_socket_pressure(struct mem_cgroup *memcg)
  {
--	if (mem_cgroup_sockets_enabled && sk->sk_memcg &&
-+	if (mem_cgroup_sk_enabled(sk) &&
- 	    mem_cgroup_under_socket_pressure(sk->sk_memcg))
- 		return true;
+ 	return false;
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index d8a52d1d08fa..df3e9205c9e6 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -5043,17 +5043,19 @@ void mem_cgroup_sk_inherit(const struct sock *sk, struct sock *newsk)
+ }
  
+ /**
+- * mem_cgroup_charge_skmem - charge socket memory
+- * @memcg: memcg to charge
++ * mem_cgroup_sk_charge - charge socket memory
++ * @sk: socket in memcg to charge
+  * @nr_pages: number of pages to charge
+  * @gfp_mask: reclaim mode
+  *
+  * Charges @nr_pages to @memcg. Returns %true if the charge fit within
+  * @memcg's configured limit, %false if it doesn't.
+  */
+-bool mem_cgroup_charge_skmem(struct mem_cgroup *memcg, unsigned int nr_pages,
+-			     gfp_t gfp_mask)
++bool mem_cgroup_sk_charge(const struct sock *sk, unsigned int nr_pages,
++			  gfp_t gfp_mask)
+ {
++	struct mem_cgroup *memcg = mem_cgroup_from_sk(sk);
++
+ 	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
+ 		return memcg1_charge_skmem(memcg, nr_pages, gfp_mask);
+ 
+@@ -5066,12 +5068,14 @@ bool mem_cgroup_charge_skmem(struct mem_cgroup *memcg, unsigned int nr_pages,
+ }
+ 
+ /**
+- * mem_cgroup_uncharge_skmem - uncharge socket memory
+- * @memcg: memcg to uncharge
++ * mem_cgroup_sk_uncharge - uncharge socket memory
++ * @sk: socket in memcg to uncharge
+  * @nr_pages: number of pages to uncharge
+  */
+-void mem_cgroup_uncharge_skmem(struct mem_cgroup *memcg, unsigned int nr_pages)
++void mem_cgroup_sk_uncharge(const struct sock *sk, unsigned int nr_pages)
+ {
++	struct mem_cgroup *memcg = mem_cgroup_from_sk(sk);
++
+ 	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys)) {
+ 		memcg1_uncharge_skmem(memcg, nr_pages);
+ 		return;
 diff --git a/net/core/sock.c b/net/core/sock.c
-index 000940ecf360..ab658fe23e1e 100644
+index ab658fe23e1e..5537ca263858 100644
 --- a/net/core/sock.c
 +++ b/net/core/sock.c
-@@ -1032,7 +1032,7 @@ static int sock_reserve_memory(struct sock *sk, int bytes)
- 	bool charged;
- 	int pages;
+@@ -1041,8 +1041,8 @@ static int sock_reserve_memory(struct sock *sk, int bytes)
+ 	pages = sk_mem_pages(bytes);
  
--	if (!mem_cgroup_sockets_enabled || !sk->sk_memcg || !sk_has_account(sk))
-+	if (!mem_cgroup_sk_enabled(sk) || !sk_has_account(sk))
- 		return -EOPNOTSUPP;
+ 	/* pre-charge to memcg */
+-	charged = mem_cgroup_charge_skmem(sk->sk_memcg, pages,
+-					  GFP_KERNEL | __GFP_RETRY_MAYFAIL);
++	charged = mem_cgroup_sk_charge(sk, pages,
++				       GFP_KERNEL | __GFP_RETRY_MAYFAIL);
+ 	if (!charged)
+ 		return -ENOMEM;
  
- 	if (!bytes)
-@@ -3271,7 +3271,7 @@ int __sk_mem_raise_allocated(struct sock *sk, int size, int amt, int kind)
+@@ -1054,7 +1054,7 @@ static int sock_reserve_memory(struct sock *sk, int bytes)
+ 	 */
+ 	if (allocated > sk_prot_mem_limits(sk, 1)) {
+ 		sk_memory_allocated_sub(sk, pages);
+-		mem_cgroup_uncharge_skmem(sk->sk_memcg, pages);
++		mem_cgroup_sk_uncharge(sk, pages);
+ 		return -ENOMEM;
+ 	}
+ 	sk_forward_alloc_add(sk, pages << PAGE_SHIFT);
+@@ -3263,17 +3263,16 @@ EXPORT_SYMBOL(sk_wait_data);
+  */
+ int __sk_mem_raise_allocated(struct sock *sk, int size, int amt, int kind)
+ {
++	bool memcg_enabled = false, charged = false;
+ 	struct proto *prot = sk->sk_prot;
+-	struct mem_cgroup *memcg = NULL;
+-	bool charged = false;
+ 	long allocated;
+ 
  	sk_memory_allocated_add(sk, amt);
  	allocated = sk_memory_allocated(sk);
  
--	if (mem_cgroup_sockets_enabled && sk->sk_memcg) {
-+	if (mem_cgroup_sk_enabled(sk)) {
- 		memcg = sk->sk_memcg;
- 		charged = mem_cgroup_charge_skmem(memcg, amt, gfp_memcg_charge());
+ 	if (mem_cgroup_sk_enabled(sk)) {
+-		memcg = sk->sk_memcg;
+-		charged = mem_cgroup_charge_skmem(memcg, amt, gfp_memcg_charge());
++		memcg_enabled = true;
++		charged = mem_cgroup_sk_charge(sk, amt, gfp_memcg_charge());
  		if (!charged)
-@@ -3398,7 +3398,7 @@ void __sk_mem_reduce_allocated(struct sock *sk, int amount)
- {
+ 			goto suppress_allocation;
+ 	}
+@@ -3347,10 +3346,9 @@ int __sk_mem_raise_allocated(struct sock *sk, int size, int amt, int kind)
+ 		 */
+ 		if (sk->sk_wmem_queued + size >= sk->sk_sndbuf) {
+ 			/* Force charge with __GFP_NOFAIL */
+-			if (memcg && !charged) {
+-				mem_cgroup_charge_skmem(memcg, amt,
+-					gfp_memcg_charge() | __GFP_NOFAIL);
+-			}
++			if (memcg_enabled && !charged)
++				mem_cgroup_sk_charge(sk, amt,
++						     gfp_memcg_charge() | __GFP_NOFAIL);
+ 			return 1;
+ 		}
+ 	}
+@@ -3360,7 +3358,7 @@ int __sk_mem_raise_allocated(struct sock *sk, int size, int amt, int kind)
+ 	sk_memory_allocated_sub(sk, amt);
+ 
+ 	if (charged)
+-		mem_cgroup_uncharge_skmem(memcg, amt);
++		mem_cgroup_sk_uncharge(sk, amt);
+ 
+ 	return 0;
+ }
+@@ -3399,7 +3397,7 @@ void __sk_mem_reduce_allocated(struct sock *sk, int amount)
  	sk_memory_allocated_sub(sk, amount);
  
--	if (mem_cgroup_sockets_enabled && sk->sk_memcg)
-+	if (mem_cgroup_sk_enabled(sk))
- 		mem_cgroup_uncharge_skmem(sk->sk_memcg, amount);
+ 	if (mem_cgroup_sk_enabled(sk))
+-		mem_cgroup_uncharge_skmem(sk->sk_memcg, amount);
++		mem_cgroup_sk_uncharge(sk, amount);
  
  	if (sk_under_global_memory_pressure(sk) &&
+ 	    (sk_memory_allocated(sk) < sk_prot_mem_limits(sk, 0)))
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index 93569bbe00f4..0ef1eacd539d 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -727,7 +727,7 @@ struct sock *inet_csk_accept(struct sock *sk, struct proto_accept_arg *arg)
+ 		}
+ 
+ 		if (amt)
+-			mem_cgroup_charge_skmem(newsk->sk_memcg, amt, gfp);
++			mem_cgroup_sk_charge(newsk, amt, gfp);
+ 		kmem_cache_charge(newsk, gfp);
+ 
+ 		release_sock(newsk);
 diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index caf11920a878..37fb320e6f70 100644
+index 37fb320e6f70..dfbac0876d96 100644
 --- a/net/ipv4/tcp_output.c
 +++ b/net/ipv4/tcp_output.c
-@@ -3578,7 +3578,7 @@ void sk_forced_mem_schedule(struct sock *sk, int size)
- 	sk_forward_alloc_add(sk, amt << PAGE_SHIFT);
+@@ -3579,8 +3579,7 @@ void sk_forced_mem_schedule(struct sock *sk, int size)
  	sk_memory_allocated_add(sk, amt);
  
--	if (mem_cgroup_sockets_enabled && sk->sk_memcg)
-+	if (mem_cgroup_sk_enabled(sk))
- 		mem_cgroup_charge_skmem(sk->sk_memcg, amt,
- 					gfp_memcg_charge() | __GFP_NOFAIL);
+ 	if (mem_cgroup_sk_enabled(sk))
+-		mem_cgroup_charge_skmem(sk->sk_memcg, amt,
+-					gfp_memcg_charge() | __GFP_NOFAIL);
++		mem_cgroup_sk_charge(sk, amt, gfp_memcg_charge() | __GFP_NOFAIL);
  }
+ 
+ /* Send a FIN. The caller locks the socket for us.
 -- 
 2.51.0.rc1.163.g2494970778-goog
 
