@@ -2,126 +2,133 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 22373CA0EE0
-	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 03:15:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B3E91CA0EE0
+	for <linux-mm@archiver.kernel.org>; Fri, 15 Aug 2025 03:27:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93C4C8E01CF; Thu, 14 Aug 2025 23:15:05 -0400 (EDT)
+	id 2C8F590020A; Thu, 14 Aug 2025 23:27:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 914108E0002; Thu, 14 Aug 2025 23:15:05 -0400 (EDT)
+	id 2793D8E0002; Thu, 14 Aug 2025 23:27:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 829D58E01CF; Thu, 14 Aug 2025 23:15:05 -0400 (EDT)
+	id 140CA90020A; Thu, 14 Aug 2025 23:27:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 724828E0002
-	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 23:15:05 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 22DAE118079
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 03:15:05 +0000 (UTC)
-X-FDA: 83777525370.10.3D03C4C
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 1A8BB100008
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 03:15:02 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fNizPdEv;
-	spf=pass (imf05.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id EF9F38E0002
+	for <linux-mm@kvack.org>; Thu, 14 Aug 2025 23:27:05 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9FCAEC0852
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 03:27:05 +0000 (UTC)
+X-FDA: 83777555610.27.091BAD6
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	by imf08.hostedemail.com (Postfix) with ESMTP id BD88C160008
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 03:27:03 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LYt1k+dO;
+	spf=pass (imf08.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755227703;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1755228423;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jil/SDWoEH0VnNo/eFUe9s+p3KUllo94Bl9QN7tRkts=;
-	b=nH6FPphhepHW37eMDxRSyd/1j20yl5bAFOZo1BWGzkXofPEstS3rAQ9kChF3O+jN66zH1z
-	g8XQ7c0XTEybzhSUqVJDK24W3Ibbk2YauDkBBWGt2jMGhTnw1f11O8jLYqG9UlMl6B8kYP
-	DyW8zE5pMEutphCH3hEaOsVUhdGBHEs=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fNizPdEv;
-	spf=pass (imf05.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755227703; a=rsa-sha256;
+	bh=i4clEhlACsA0tDdg/T9dMN1cKs24lEi4PWd19tCjEwc=;
+	b=JBXUaEoyihaTZR9EWBhNEemb5hWMhhxUzGNvgfOwIINJQgYXcj86mhD/0tZCD75Enun873
+	Fvtc8FHFXiu2t+72bsfBQ5R8pJKOZu8iKHIUcsQ0Njeu+0H2vhT8EFMLSBqdw+qOnKEqK/
+	rsXJL3if8YuF9ccNMhwR58gdkVgLGOE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755228423; a=rsa-sha256;
 	cv=none;
-	b=YmHD4MZ9Bz4OHz2l3xjjlG9vuwCr0TdTCSLp9G5JGIjDYeYCl0iQMR9C87stgnxtS6X7SA
-	rYszPMSO98FLIDDmeO3ndj4a94jKL3X8P/0Eqn6MWlfh6fyq//Rd4rPAQbo/rnuyXPmYkH
-	ADUr5aYwgJYZS3heiCaYiarBjwlwaCI=
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6188b65a2f0so2944646a12.1
-        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 20:15:02 -0700 (PDT)
+	b=Y7Y+cmSYTgo54Q2RnY00Lbcy4OAOEuuM8GljPoURkXIIR72hz4Gz/m13wruIJcXgeoQLDJ
+	y1+rWX1ODvtqVYUFAMiuoZ//+MdTnUMjf39keTdscy9Tg81sLtifIAmq8DekqzPRJ6z3xs
+	1dSmUKLGr4AD0Jux4Sri4ob6jfwWRSo=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LYt1k+dO;
+	spf=pass (imf08.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-76e2eb9ae80so1442414b3a.3
+        for <linux-mm@kvack.org>; Thu, 14 Aug 2025 20:27:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755227701; x=1755832501; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1755228422; x=1755833222; darn=kvack.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jil/SDWoEH0VnNo/eFUe9s+p3KUllo94Bl9QN7tRkts=;
-        b=fNizPdEv8BommSxd1m3llCWiwlYwcVjWAdBaLz6UJLwof37L/4vGoJZuqfSbTuaRrb
-         VrA0/GO6Yd3oM3HdjwwTckefYTKj6UsQoBL+r5JByGz+Um5dninH6W7zDseFANwfcCPk
-         TSmwg1BT/dmQzRPuPQ2kycy9fyeEWQd95c3GJ6ORKDUNukhh+5nngfQ7QfuoWVgdMFNz
-         ZK2WdehLp1SzyhbJ6a17/jrk/xMP1+59thHFIRjffRVqhUDssSkoI+V5mAFGqJMp4i3a
-         Y4HiQqEn4czLUs8tds6JNDWwGbrM/YvGBLQo3OmSsYZk577AGBxGoxozagytNkU45oY1
-         PTiw==
+        bh=i4clEhlACsA0tDdg/T9dMN1cKs24lEi4PWd19tCjEwc=;
+        b=LYt1k+dOIBYq06qXOfMapEhvRkQNpo+xtsGS1nXK8z0smKsRJXYLIlxgJu99qk5/UA
+         74S3rphZhWGdGAcscY3LQsN4Ej/QGXk8P2xaU5nKuxc6pd4sY/ItRJXO3zm5FqIqNacR
+         dhiZmNbN0uFuYDvVZ2o66CnQ+bHBINRMAXwGH26/alUFQqR0TK1nR4TZOejh9l43KEX6
+         0MNptGBHMdzb49HSa0aQoFoVi+8Z7DYNJpV8+38YYKh4S+XuzemATyoLgGlnnoLORy6d
+         PmGBwAkyGhAqO+he29ogHAELuWCoZO1iXhE1ffQWcsR2ZR8yIdqgeUHULeb7T0tAYZ4s
+         JrFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755227701; x=1755832501;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jil/SDWoEH0VnNo/eFUe9s+p3KUllo94Bl9QN7tRkts=;
-        b=NuKtgfO3XoE7YpDsbf0bhy6C4oGy1J7oI7s1du6/61B9aV5nhdIcGK4BRg/USsIWZ9
-         J5twaFZHMuWQs1MLKKsmpnw/CybSt2Urgu4p71KZLTGYnGZobyqh5eI0xgwd1Tcu1mBI
-         7K4iv5lUc6DnzoXtu/7I98ccR1JA5Xknb/o2YzRSFnM2E6Vb7yNgULccSppSJOYTxsyb
-         yINLFJxrRfhW2JubsDas3OKgcn59loHyLEnf7ZIlvoNsO0IhQqQEsCIEk3fHjCmEvooe
-         iJ65aoojuIsL24ABR883DxkPtE9rW0ubiSJiZmgQrVx7pbNp8t+g+vNXyrrTTU/jsyaQ
-         d68Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWfyjqKTcEqeO2vVNXRB32A9BzuPLsTVDcL0uabUJe0OzVX7BmBZAbIgf34jcl6t7Bq85hlF7oWXQ==@kvack.org
-X-Gm-Message-State: AOJu0YyARBAlzFryGbpC8YLhYXeihIicUf0DOn1s6zPZ6XLkG9jxRC0H
-	6ZcZug4E6E/zUNZsgaHbnEqyawDVp89zNeTFCxRaH6bwXKV82CpYoVrE
-X-Gm-Gg: ASbGncvW7nQohhQ7ssZ47FcKCSKRz4WoGpxrzEdZgF/Oou/aJvhATsIi4EOadUhH0yA
-	2kZNJpKtLbj58aPhhf8VutOvBT66ZMYzTB1OVoumIOdGfwY2lhvAEdF7VeFeiLU3aNz4VbhHwpC
-	IuC8nYYYNMbz5yEkwzIDFHjqZmDkBSlZgQZXbIs7Y6lJkilJ2wAxTT/E0QxW5V4s2DLyEWePZIa
-	CDgZ5X0SVbGb4EAcTB6O1HOt9NmdGfr1DZs+blMRliSkk4ZREJZ/8RoyCOQXCR/q7e6qmBiAcPj
-	mH4jBKaac5dw+ChFuzxij8BtHM85FY8NxgSuzDA7XAWcUoJJkHuVidTsDywp97NW/qqZw1e+XgZ
-	CbDA1ZhAm0RKmUSqAeCsrYQ==
-X-Google-Smtp-Source: AGHT+IGs5zK6Ch8KejfddlgpsFL2gRX/QDwoXH7kjER4bd5FDXapFk6ehUlWVvF4mB7EqW25R6CYIA==
-X-Received: by 2002:a05:6402:350f:b0:618:4a1e:9be4 with SMTP id 4fb4d7f45d1cf-618b054aa91mr339368a12.20.1755227701104;
-        Thu, 14 Aug 2025 20:15:01 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-618af9da5d9sm393836a12.16.2025.08.14.20.14.59
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 14 Aug 2025 20:15:00 -0700 (PDT)
-Date: Fri, 15 Aug 2025 03:14:58 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, wang lian <lianux.mm@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@redhat.com>, linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v4 3/5] selftests/mm: reimplement is_backed_by_thp() with
- more precise check
-Message-ID: <20250815031458.455xxdaiv4m3npxc@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
+        d=1e100.net; s=20230601; t=1755228422; x=1755833222;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=i4clEhlACsA0tDdg/T9dMN1cKs24lEi4PWd19tCjEwc=;
+        b=hOxuI7bURHP5ktoB7zQ7cKnNHHhal4Q1nlo0oC4OGu2PjxqBC6tOmqabWsSI9yPXVo
+         nmSN9A+igAO0prNH0utI6c200kBV6xY78nX6SVZUWScm7s2Dl5f1zKCxmrzil67ILCFQ
+         c0lVlvQf815Wgjkdzo8jXBJb7+KCcD6NzcdD1AQ7QA/PIK5bZyMosGtX0cKuEuARTKKl
+         pCq593m2IsXNJ45df20tDR9OIjNc8Ixci9mEskJZlVgtPBgiiGjKhELiDsQwhTcP+KgX
+         dJ//+C1Bb9mSZccsAi3Gd81FlyUse+oiKs4dU69FlHMgB4JXs6JXLjmywRfU7tBAA3O9
+         OpIA==
+X-Forwarded-Encrypted: i=1; AJvYcCUabIUCxhVe4KvtapKbwA7zYIaeKS8ij73my8+h+lKkxvDL0aE/v0Od9qfSdQg4DHbtFs7xeneHCQ==@kvack.org
+X-Gm-Message-State: AOJu0YxkuGolbHSAaTz0yh5gufPNOFAa96AchJTKg4gpv+21fuqA1e1g
+	0fkKMNhd8EyPn1i+JnI2yOtcWin33DvGNOPR83oQ0wsMt4im9aMHsmJZ
+X-Gm-Gg: ASbGnctl1VLHP9XX4oqlPcZ9X2HoebA3EfGap3CUOvYHHodxqReyGbKWjtKnhxeir3i
+	fU7unnhN6ziTw6cUVlfa5vFW/p0FJ9OQUiKAbVeiYNFgnZEHbWsVpdE58YpIrt8jFshXRwVe8Za
+	7sHZKUMN5N4+QnBglmFxuTTIyF7FsJvt9Cw5bGBOR1E4UvE3mjbrRhAOvy12a8qK6FeYGnaxjiR
+	P9I5c4r9rZJe/n4jR3i3HRe3Qs85DL67PfUenu0dLdeSFkpeWRfvY9RsThOLxau429RYAViqbpt
+	e5VZk6wcv4l6Lt9xx/1Mp5anIZEOm6Y8TDTXxNlXY0SDYS04N9PjzdgHDRuYDD8SDk61T9nY8dh
+	IUM4m2dVzW3U=
+X-Google-Smtp-Source: AGHT+IEWmNmS0mZB+sG7vmnApcWmG90xfM+LSnDAqr9fergPICvDpFzevhiBxYKw6Ow5a6S6XPe5Qw==
+X-Received: by 2002:a05:6a00:1793:b0:76b:e561:9e1b with SMTP id d2e1a72fcca58-76e446c8803mr593207b3a.1.1755228422508;
+        Thu, 14 Aug 2025 20:27:02 -0700 (PDT)
+Received: from smtpclient.apple ([2402:1f00:8001:567::104])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e4528c28csm153092b3a.29.2025.08.14.20.26.56
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 14 Aug 2025 20:27:02 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH v4 2/5] selftests/mm: mark all functions static in
+ split_huge_page_test.c
+From: wang lian <lianux.mm@gmail.com>
+In-Reply-To: <20250815023915.1394655-3-ziy@nvidia.com>
+Date: Fri, 15 Aug 2025 11:26:43 +0800
+Cc: Wei Yang <richard.weiyang@gmail.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ David Hildenbrand <david@redhat.com>,
+ linux-mm@kvack.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>,
+ linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <219CDAAB-2571-4F47-815C-96A41F8D4410@gmail.com>
 References: <20250815023915.1394655-1-ziy@nvidia.com>
- <20250815023915.1394655-4-ziy@nvidia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250815023915.1394655-4-ziy@nvidia.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 1A8BB100008
-X-Stat-Signature: 1w8xx8m7p3b1gwhrsjs6pkmwrged3ock
+ <20250815023915.1394655-3-ziy@nvidia.com>
+To: Zi Yan <ziy@nvidia.com>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
 X-Rspam-User: 
-X-HE-Tag: 1755227702-508755
-X-HE-Meta: U2FsdGVkX1+lj8M+zEa4Zjc33LVcksZxhEEnu+Jmjzb7QWWRhbyTTfut7IkgAjRnaN8HneVCez/A4Wm+CUuw8OByr5V04Evq3saOoAUZviU7qY1lqERd9m5SiBkHswJikmrdh3wue+9M6P5i6tDLFSH0EWji2jBd8Tubmn7IamZyQm2+ls27T2/OjFWVM4q2uf9AvinRxycMdHTgrmMUALW7GETxrTOnrWIuwlHqIEKvg+aGJTSpWiM8j4cukA36LAKEvXiu2pQSMNXPfh/w/qO3J96O51uqJktW67iO1xmBZmc9RtZkDXwtfydU2czRzcbQDTQGfbkZxPYbT+hnRmykWI9egqUPezhY2ovRWN2c9++vekwM6sVlD/SmdanCdmwLWhAYWvmLyygENs1wbzZGvK7hViIIjTND7GzEFkyMAXDQP7R0mEa39k3NAqfltA4SWhqehuruDmt/RG3XGZaJsn5AItJ5aZkWtX0qTAYlDF4dU/3wCN8reojr0HHqyGScCsspIpCpe1cA3OZtfwRxuRWAgZgEuitq7zkjSDPaqR55YiFagGmdtKTkbH9VnC5lLuhcO1ae8ZN9VlKJXlypRSPXw+0eJZxnei8clnzQ3FlrO8PhSYp/+l947CuBRxfUzvHf8dYVANsdB5XK4WKQTbO4xbgoE7RpTjEAE+Lk2wGkuKwcvWo0bpSw8/d0tDhIZ3sTKEodN6gid4vTnGLUDGb0imL/03PAWfIvfzt8u2AECkf4vKmtiRpDo99yOT8s0oFCSqcrZCsYHRcle1fEosWO9cyQ29XC2pmuWc9gkZlH7nOWp5+3ieFHrGliUnqCMgRbBI4XohCSjbwJ6NB7hF3QOy09AQ8g7H+28YdqM4HE6uRfTQtdQYDoP/5NFeh/4DjDp3LiFUJ2v1GAwF9C7iO7kwQyYxccP7OrLYdnY+bhj0aPZtyxGVbHXrDaWoNQ7dEtzm3RSpDts1D
- +aIEcDC6
- DouQc45vqGDjL1MoJyukvQwC6qjPxEsS7K4gijTIuksLiarIIobQxToF2GYhuD+735S0B1MPvrMqsRR/I450cRNe9FVzg6ZbRfNuGLhXFeXJaEKV+jjMrKnHnFq0KqYeVgLCx0juS4MRJRViq0rDsM1zfjJP7GrNZ+tL9az2mQW+ATT2h8kt0DfzYk1Ka/efz+dNtAGd55BrXZDknB9/6lxbDH840EsIxv0WPj0zB2EniUJBVxU/liRbL1cKPsOqwoLA01WsABE2GMCacg1fS/+Hdjr1N1JwUwcP21r7o8Ly0lbIVi48Z8kwf2twQa1CmyVAdJ9fxMgwPL7/oJ1QSZNtgtYKqIg0Va0SIztIjNRvWqNSbpladQ0RP26ghpaWlc/0W4mzf8bRv6B+kN9an5bW1dFM3O7Or4KeGf9x4NjS5bOEzynE7MjvEVKILkUSkIAjB7fBkJuRglR825G1M+22OxmwBkLr/I3OzgAqibfXG8mjOqJ2Ynijq5/rT2f1IQbWZodBcODmh69xhSpFoGVpNOlTLAi4d8ETkwHkaH5cpCPEXA6Gd3PQY3fPZGdCKogEp8q1J9kLyEP/3ke9MlCDbXjjG46rdje5v7wBZWeFmX5Ag49J8PsaQ13+oHudXlTZ3bcCqX182nF6etA24CiZQ/yHNRM+lxfIe7psXI7jog0KMmCLYOuRxZ8mUCvtcYGrh9f3lFScO9JhtC2enz6zhFxBSgp0ITyC3YQLVEumPz32ct0JdxXXfFrKiVuAEOoWhcbuCO1Po5ZJP+DQA1hNPmdclEY1BgQDSn//eo01kr/KFv2Lt8l43PctDG19CqZ4h
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BD88C160008
+X-Stat-Signature: a3a3z8xsm4kreypajibxmixk68ekydeu
+X-HE-Tag: 1755228423-28880
+X-HE-Meta: U2FsdGVkX193AfQc/wSFY12Pze1vGOQGcbY41G8+Wb2YFwQHTCXdwpQLxvNfB29RL8jD3ZLHlu53h4LoKPzfPsfvbfNCPgd3eXXWs/eEcFAhvuv6UrBiHf9UP0xuXPxCvgJ/zDqDpvru6e/4SlmQKbog10U3pX1sEXAKQsvNBZPZTBQOO+CeXS32gSEbnjCbu8gAYhTcNlaVVsM+H6D+6Hr7t9cgiLhQjvg61oJ8178S4Sq2Q1ibViZxCu/q5PVul5qx7j86xgK4GiYOo7OHht+DvIPqxg9zfZgroi10lswrm10f9SbRrbwwJwswcaJlFpX9vZWLyL2KxZMUrcz3Y+/aT6aiKXngfx5VPp7aBi7ysLv0US3b52hwDUPl29cHPOK/Qz6alQX1jFz5uQBnpond9/nAUg0JEJMXXHJ9vtP5LaAKJZMRG17Smf35fw1fgeirNRIK6aeQ9PZaTsKMMNHAc2rXP6AOTpJZvnNSlLqVUmhF2urCEgSxCew72CFAoWK4BXe4OspWUvKpbrwt5zPHyYVKZyWNnLG5ZrK3h9qXj4eJUv+64wAQ9ps5MUUsOuQs5KUUvKeFMbXkb9u85/tWi/kV5MFgt7wxy1yB4LDhZiA+kcHjxpAVDzM7zgADNGfhcTCVhL/nctDPK29R6R2FdlY3q2TaI9UtzV9h3k8CP0xMKtrgdY/ZBLT5SZkvNg0d2bBda8U/dcUY4NghV8+1Xvc6Sc4MIgeqE8/fGDx5pmoR+h5fndTK96ICl2Yxx8L96w3OODyxGrKD9IxXUhS69ScKYG3jhwEhHhubt1hjo58I1df7j9UC+NOzv0ArXLwEBArK8pi5ocyswkZb2+srzGyoQk/NsP5+qOKez59ShM6lGAD0nLwwm95imWgl+oD0m8eMhB77J3pfEjOMElAV5nviKpVmSK3FYzObLKkq3qOobfWP2WZ7p6A/X36Su1ZF8t7ZOPD+vL+RYFS
+ dKKtEJTV
+ TEe69YA0V5jI5qh3ecz+oL9I/AiepY3UfU4QsgnFhbAkJECkOqos0rOd2bYFzS2xfCvIImu1Ta8J6bVmWIzFrC/djRHAOuTWmMiRi6Kkgr9sO/p969fkgp9GZsRkmy9m+Fj/Oiuit+uSxzLfa4qncRB4XmwP1ND5o4T1oLM61eF0d5IUVFsc315w5WQ5mlHGBNy4kh4FuBQdoSnhc7PS8XsLrxSA3FqCJ16jtmacWr89aZ4tKK/w4+OwyKQayCn3p6KtfX6VwfMGTdcekBi0nWXQdLlVZvrsQJElz5uVoBMBTxIppza1rLysFVyi1hI3HeQH7Q6ldVI1KiWI9zs8wwFtjcC43lwsJ5v0SgL9cWosbmtS+hGHDihRSPQdNjVMuei4+AMqutPxizcUSzfNRBrcXGg+qSvwcY8a4j+Xxejx2qhkBiI4X35N3o6bYGYlNJ2RcEYNeoLX+jwHqeZhQOQOtg1vVi1235K9ngP2mSPAaH6XdKwiLVXUBd2E72TpEzgdiAlOugI+wVzXytu3zMwqi3j47a71r/zliOINZ1ULrgnqND1V4UEAOdW0T6lqiW4wKP8dm1aafAGmaKNiG3PAdLh3oaVLVhX4YDZOVhhjcRrKopvyPyw9yJQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,25 +137,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 14, 2025 at 10:39:12PM -0400, Zi Yan wrote:
->and rename it to is_backed_by_folio().
->
->is_backed_by_folio() checks if the given vaddr is backed a folio with
->a given order. It does so by:
->1. getting the pfn of the vaddr;
->2. checking kpageflags of the pfn;
->
->if order is greater than 0:
->3. checking kpageflags of the head pfn;
->4. checking kpageflags of all tail pfns.
->
->pmd_order is added to split_huge_page_test.c and replaces max_order.
->
->Signed-off-by: Zi Yan <ziy@nvidia.com>
 
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
 
--- 
-Wei Yang
-Help you, Help me
+> On Aug 15, 2025, at 10:39, Zi Yan <ziy@nvidia.com> wrote:
+>=20
+> All functions are only used within the file.
+>=20
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> ---
+> .../selftests/mm/split_huge_page_test.c       | 22 +++++++++----------
+> 1 file changed, 11 insertions(+), 11 deletions(-)
+>=20
+> diff --git a/tools/testing/selftests/mm/split_huge_page_test.c =
+b/tools/testing/selftests/mm/split_huge_page_test.c
+> index 5d07b0b89226..89d3dc08fe4c 100644
+> --- a/tools/testing/selftests/mm/split_huge_page_test.c
+> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
+> @@ -38,7 +38,7 @@ uint64_t pmd_pagesize;
+> #define KPF_THP      (1UL<<22)
+> #define GET_ORDER(nr_pages)    (31 - __builtin_clz(nr_pages))
+>=20
+> -int is_backed_by_thp(char *vaddr, int pagemap_file, int =
+kpageflags_file)
+> +static int is_backed_by_thp(char *vaddr, int pagemap_file, int =
+kpageflags_file)
+> {
+> 	uint64_t paddr;
+> 	uint64_t page_flags;
+> @@ -136,7 +136,7 @@ static void =
+verify_rss_anon_split_huge_page_all_zeroes(char *one_page, int nr_hp
+> 		       rss_anon_before, rss_anon_after);
+> }
+>=20
+> -void split_pmd_zero_pages(void)
+> +static void split_pmd_zero_pages(void)
+> {
+> 	char *one_page;
+> 	int nr_hpages =3D 4;
+> @@ -148,7 +148,7 @@ void split_pmd_zero_pages(void)
+> 	free(one_page);
+> }
+>=20
+> -void split_pmd_thp_to_order(int order)
+> +static void split_pmd_thp_to_order(int order)
+> {
+> 	char *one_page;
+> 	size_t len =3D 4 * pmd_pagesize;
+> @@ -182,7 +182,7 @@ void split_pmd_thp_to_order(int order)
+> 	free(one_page);
+> }
+>=20
+> -void split_pte_mapped_thp(void)
+> +static void split_pte_mapped_thp(void)
+> {
+> 	char *one_page, *pte_mapped, *pte_mapped2;
+> 	size_t len =3D 4 * pmd_pagesize;
+> @@ -265,7 +265,7 @@ void split_pte_mapped_thp(void)
+> 	close(kpageflags_fd);
+> }
+>=20
+> -void split_file_backed_thp(int order)
+> +static void split_file_backed_thp(int order)
+> {
+> 	int status;
+> 	int fd;
+> @@ -365,7 +365,7 @@ void split_file_backed_thp(int order)
+> 	ksft_exit_fail_msg("Error occurred\n");
+> }
+>=20
+> -bool prepare_thp_fs(const char *xfs_path, char *thp_fs_template,
+> +static bool prepare_thp_fs(const char *xfs_path, char =
+*thp_fs_template,
+> 		const char **thp_fs_loc)
+> {
+> 	if (xfs_path) {
+> @@ -381,7 +381,7 @@ bool prepare_thp_fs(const char *xfs_path, char =
+*thp_fs_template,
+> 	return true;
+> }
+>=20
+> -void cleanup_thp_fs(const char *thp_fs_loc, bool created_tmp)
+> +static void cleanup_thp_fs(const char *thp_fs_loc, bool created_tmp)
+> {
+> 	int status;
+>=20
+> @@ -394,8 +394,8 @@ void cleanup_thp_fs(const char *thp_fs_loc, bool =
+created_tmp)
+> 				   strerror(errno));
+> }
+>=20
+> -int create_pagecache_thp_and_fd(const char *testfile, size_t fd_size, =
+int *fd,
+> -		char **addr)
+> +static int create_pagecache_thp_and_fd(const char *testfile, size_t =
+fd_size,
+> +		int *fd, char **addr)
+> {
+> 	size_t i;
+> 	unsigned char buf[1024];
+> @@ -461,8 +461,8 @@ int create_pagecache_thp_and_fd(const char =
+*testfile, size_t fd_size, int *fd,
+> 	return -1;
+> }
+>=20
+> -void split_thp_in_pagecache_to_order_at(size_t fd_size, const char =
+*fs_loc,
+> -		int order, int offset)
+> +static void split_thp_in_pagecache_to_order_at(size_t fd_size,
+> +		const char *fs_loc, int order, int offset)
+> {
+> 	int fd;
+> 	char *addr;
+> --=20
+> 2.50.1
+
+LGTM.
+Reviewed-by: wang lian <lianux.mm@gmail.com>
+
 
