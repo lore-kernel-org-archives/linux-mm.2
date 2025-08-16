@@ -2,118 +2,122 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9FB00CA0EE4
-	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 09:33:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 75F8ECA0EE6
+	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 10:05:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2ECAA8E0017; Sat, 16 Aug 2025 05:33:08 -0400 (EDT)
+	id 6DECD8E0018; Sat, 16 Aug 2025 06:05:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29DAA8E000F; Sat, 16 Aug 2025 05:33:08 -0400 (EDT)
+	id 6B6B98E000F; Sat, 16 Aug 2025 06:05:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B3868E0017; Sat, 16 Aug 2025 05:33:08 -0400 (EDT)
+	id 5CCAB8E0018; Sat, 16 Aug 2025 06:05:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 07D618E000F
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 05:33:08 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AFB631A0226
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 09:33:07 +0000 (UTC)
-X-FDA: 83782106814.08.43E3BB9
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C9688180003
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 09:33:05 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Zq3almMM;
-	spf=pass (imf16.hostedemail.com: domain of giorgitchankvetadze1997@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=giorgitchankvetadze1997@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AB988E000F
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 06:05:13 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BDE67C0196
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 10:05:12 +0000 (UTC)
+X-FDA: 83782187664.27.9DFED64
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	by imf26.hostedemail.com (Postfix) with ESMTP id EBE0214000E
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 10:05:10 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OEF0Lmzc;
+	spf=pass (imf26.hostedemail.com: domain of giorgitchankvetadze1997@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=giorgitchankvetadze1997@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755336785;
+	s=arc-20220608; t=1755338711;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Px5kT9Zj2OEa6lf/DpL6BrsHwqOYEXNq7iLeLvlTsBw=;
-	b=2j9NmFd/pLmg6Al3jLuf9ENTcDgciCnwc0J9W7l4F/U5vUkrxZ6y8OZirwA6co8xf1OANo
-	frfqVrXNkVUrQapLowBa7Vv/U8/6SRqovzN+2N0OpQkkkhiFBa4eaBKQWePUFMZVg6VDRU
-	ibwgdDhiFYOmU7IhOPxoC4+DtKDvB8k=
+	bh=CxDv8OHf8HL4ucJb11nPt7YcC5lE7gHGLDMJMXw1j90=;
+	b=NsACkm8i/DkRuexhBPG8KCS0y1gRlIJC5j2WXmW12NSLFIGqW5doWO0t1Eb2EEL/A7PBhc
+	V8eTIZFuzDdMt6Q3bN8EVpMtHiwYpcs7+PcEjt1+nsWSPrFSZqrGCxzzW5lDSK27AJ9Olz
+	NPMy7CygkcJ7ZQUyKbnv8GOLHiSb114=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Zq3almMM;
-	spf=pass (imf16.hostedemail.com: domain of giorgitchankvetadze1997@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=giorgitchankvetadze1997@gmail.com;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OEF0Lmzc;
+	spf=pass (imf26.hostedemail.com: domain of giorgitchankvetadze1997@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=giorgitchankvetadze1997@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755336785; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755338711; a=rsa-sha256;
 	cv=none;
-	b=FvK6cFkJjLD43arJYNLYGvoa71j4f6QcOGHH/yBROXVjybbAHUBKnwQ3o7cd4sGgZpGdos
-	IuhedxCG2zhiWRv8dj5JfWJe2Zp67oArVRWisRY+/Au24TZHqGSt3Hr2fAmMI5KGiipXiK
-	hm7jwCVvABqUpGPeYxVylwp5cY/Tdm4=
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3b9e4110df6so363681f8f.2
-        for <linux-mm@kvack.org>; Sat, 16 Aug 2025 02:33:05 -0700 (PDT)
+	b=vLMVxZiIYGPMYY6CEWyZVvVk+w7LJ/ePO0XLp4ykmte0pi+6H79V7m5wPeigW7cl8qXu/Z
+	72NsPas5fJHLWOPmU1wT7gtF1N5XcMMF3w7bBAPqgBuJ8Z0sHSc2De2EWN6I1NxFMCK8uF
+	R7YpcrZEALJuu07dshmb5I6irJPl+W8=
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3b9e414ebb5so82642f8f.3
+        for <linux-mm@kvack.org>; Sat, 16 Aug 2025 03:05:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755336784; x=1755941584; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1755338709; x=1755943509; darn=kvack.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Px5kT9Zj2OEa6lf/DpL6BrsHwqOYEXNq7iLeLvlTsBw=;
-        b=Zq3almMMSOPMGENmodmjTI9UwJta4GZ7Fu5ov/TQnT+Y9gJvN32Qk863S8mbSqnsVA
-         DqlT/TevwRyc8q6KWFz9KMjMJFVBk15FNOhkKVPgJU0o2/PCDa72s3Z5YgbxFptU13cT
-         ps/tQ9YRnVaOfwaDm5sXB6Daj8JkBj+J0KTgCC+ZKPG+wVa/uJoLva/B/TXXfgxX5ktf
-         8MClfxW6YIEQKt5ROyN6pRb4Sy6wvpcF7O84IVmb48Ur+qN5pKzFhL35/RGBL/i91kzw
-         JpFMJ8qkLurnozFDuKZjVoe9smFYvll/fPr0l6qYVzSqNAGBdcVrNDyq3+q1jHJhj0tI
-         zUqQ==
+        bh=CxDv8OHf8HL4ucJb11nPt7YcC5lE7gHGLDMJMXw1j90=;
+        b=OEF0LmzcAq1E+snjQNwWSUZ8yYHNsBLZQdu1r6WfAzFwvC1g1GPbhjBc8eDDcxdbCK
+         PbYxSiCGsZEV9oJPBgqf31DWkIFrni1696YZadQ9ETLCkNItaaW9FKyDWE4smq6lvQvr
+         qc8RTb0UEHyucF60QZ9NpWCb4G+/4IgmrpOeqTCynZUVPcMCrtxlKi/vRkZL+7N/+cZx
+         jeydtxP7rEwvb0LAAlhZOTULJTO/g1IWNwmI+eqrpbf/hljgKslMXOIg4W5KSQ2SeIxq
+         2CkKGs7fFGmsJLoJSbzTbEpTkclcsQGZZ3pmxWOsYJC0uAbHBwVV7doDSe4EG3LUJmBv
+         uLMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755336784; x=1755941584;
+        d=1e100.net; s=20230601; t=1755338709; x=1755943509;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Px5kT9Zj2OEa6lf/DpL6BrsHwqOYEXNq7iLeLvlTsBw=;
-        b=efN8M14wNM5N4AYxUtJx4vTDyducYWkLGpZOwl3js1eEGDeFnDJ4An4RQwrezwsmqA
-         wt8xnwuTaH6/v+5ZodL2+ya/debY6a9PT0SKIIeC/VHLWevmUuDbjqdsQV3D9gFbDZ1R
-         iXAm/JJK120QRb+yWywaKIwidfgBq90DxnJ79ppGEn0VXTxrblu6+oNjOCGuG3AgbkNv
-         eBI7sJqxsqlOarFpvQDbFbVNICs+PG/lUnsj3V+3pS8+2FW8R7Yh7QIKu9QtVh0D8fFB
-         ybck0QTCHuttVCHkSdAB8VETUnkJNRJcq7iOLKmqmIWcgHs+PokJA6fKm4B9qxHh8H7J
-         PZ5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXpHpJFTuASfLaxGO/VgxS3eUXPk0I9oUzSbwPcAiMOTMO5EcuvkhJYC84b0xhwbb3OzcGk2iUt8A==@kvack.org
-X-Gm-Message-State: AOJu0YyV0Z64lpBG8eRiBHZOTBHD8LjrHyDL/tapR8lTXTqD5OR0MFrq
-	DmmQ66wJJTDHgGKLky4XhGJHor0WVj5qwoGz7pCyaf3jJmAx23zdc8vd
-X-Gm-Gg: ASbGncumZRdSdKny2HRn3ZidV3vF16FK3U72lTgHQdMGp2og8X/kWZMca3EpulGAhFL
-	eJzD6PGkzxDfgl9RWtPNRU+tKCss/Nji8GMqkXZDYow7Kz4VaPoDML97wyY1eweXD36WoqABd34
-	C+i86qwoaTUYiVWmwwT0yi6bQoIAzpUOhoHbId+Dj6iQXEUBVZV3MHBW7XpfbkBh08o321AiLAZ
-	qhL+SgeNjhAewo9wFlmX6dsRHbl/A3/0e/w3OOtTW1DtMFtNck5U1CFS/rIYJ3024yIOiGE48aQ
-	1Ht9zX8ni0rcLBog9XGO5w0w+wuii8z19W3tvCIIVJeQ7JsPw/nHyyEfnaYcdTusuTdf4hh/SWC
-	XcR7ZDQ+IGJxY3747g5NK3+50Be3VCOPNQRmbHM7FkkSPtUe4xbLw
-X-Google-Smtp-Source: AGHT+IHOKiBGjTArO+Umj5Qhqd1VsyKLXbP72Y00mZJdxOsRmVixr/6cIZOinpjUeu5gz+hEOi9gkA==
-X-Received: by 2002:a05:600c:444a:b0:459:d449:a629 with SMTP id 5b1f17b1804b1-45a21895202mr18979955e9.8.1755336783950;
-        Sat, 16 Aug 2025 02:33:03 -0700 (PDT)
+        bh=CxDv8OHf8HL4ucJb11nPt7YcC5lE7gHGLDMJMXw1j90=;
+        b=D3YD6zmf1awYL6S3ylPl1rIVCxu8hbPZdvUNFvxfxXP+2e0SAZSg/zR7fb5aTwXmdp
+         hBGNrSGNB7JFq4VmFJZ5UQhD4HKtLiozZfND+lOCO5uhHr0ec5blcV/fJ8Ak2IB9JkAz
+         4BwPb2fQC6NwOy3EOWblW894X5x3Brj3AaC4Mf4VGL4zusbJhlH9DT66AYz5evJcRmYX
+         GqbcjIixxJJnHk/S1NBf+Wp+FqGwkjDZPOjt94izUOM7bZvFp3N5oP40Dr8h2VdJ1wD5
+         1jylXG+oBFI2UYzfbEh+wr/7q/bAzzzRk5OCUNPMTXcK6dePm1zaAmfIY1/8sdJykZSq
+         lcXA==
+X-Forwarded-Encrypted: i=1; AJvYcCWwznb1Y56RFnoLclGgW3tbSkF9RWxM5CnxC8sBgU6vEW3bjaPPa+zMq0kf4XJz9sEVfb+F7GQHlA==@kvack.org
+X-Gm-Message-State: AOJu0YzVWfZLwUbsLQ03QMM0fxB8P4PC5UkbUDSYdH8trk4K8oFjvMSr
+	iK+SUvPI0hIg5mlsLvFLrRdSJ6UegTbvn7Rd8NnbhaMkZBeXOGdMOj3N
+X-Gm-Gg: ASbGncvxBPA4eoNyxVxVAz1rE8nqyxYvkbxZTH9F7Q1Kg8mI286d65HGKrAHL4gNPKq
+	lSLbqboiavooUIfY643ouG2MzkYRM1i5VnZS/ywN6OFkG9itGVXw1kpuW0vkKmQD5CMriRY41ym
+	JFq31/C1HyGA76EGhRj8D/lBnWOhNSobcG1VLq3PwC7VOnJ6OYGtfOVDdHoQaZDOkZSThxidf9z
+	kINsHnmWUu0pMiiL5SlPiJPN6olRgbssMvui7NxLaAAdUgpa0XqFl9TTJW39EyHnLkyq3RQQLjQ
+	p8TPo1Fi0sltMWXhK9DyyNZWLg3ZJEWFMAqa58ekoTwrjSWeej5FuuSurlmFspeCMQpW+X/AVFG
+	q/0SzSiTRVGEM1cS/lyqGfqvGGfbtldh2YrCZbkZh7LnTyXZyL0uc
+X-Google-Smtp-Source: AGHT+IGk0QiO93qwLWgp2oMN12N3vGTw2Is+g3e+INhg8F4TqlnrWbctD7RK33P6CnmYO98DFd0wdg==
+X-Received: by 2002:a05:600c:46cf:b0:459:ddd6:1cbf with SMTP id 5b1f17b1804b1-45a21781fb3mr17025265e9.0.1755338709086;
+        Sat, 16 Aug 2025 03:05:09 -0700 (PDT)
 Received: from [192.168.100.4] ([149.3.87.76])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3bb6475857dsm5171864f8f.2.2025.08.16.02.33.02
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a209c25a1sm61067435e9.22.2025.08.16.03.05.07
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 16 Aug 2025 02:33:03 -0700 (PDT)
-Message-ID: <eab6a734-b134-41a4-b455-7269eaaf033e@gmail.com>
-Date: Sat, 16 Aug 2025 13:33:00 +0400
+        Sat, 16 Aug 2025 03:05:08 -0700 (PDT)
+Message-ID: <d18b67f8-92a4-4e10-9341-fb7e075a885f@gmail.com>
+Date: Sat, 16 Aug 2025 14:05:06 +0400
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: slub: avoid wake up kswapd in set_track_prepare
-To: Harry Yoo <harry.yoo@oracle.com>, yangshiguang1011@163.com
-Cc: vbabka@suse.cz, akpm@linux-foundation.org, cl@gentwo.org,
- rientjes@google.com, roman.gushchin@linux.dev, glittao@gmail.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- yangshiguang <yangshiguang@xiaomi.com>
-References: <20250814111641.380629-2-yangshiguang1011@163.com>
- <aKBAdUkCd95Rg85A@harry>
+Subject: Re: [PATCH 2/3] mm/rmap: could be partially_mapped only after no
+ entire map
+To: David Hildenbrand <david@redhat.com>, Wei Yang <richard.weiyang@gmail.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, akpm@linux-foundation.org,
+ riel@surriel.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ harry.yoo@oracle.com, linux-mm@kvack.org
+References: <20250815084943.23063-1-richard.weiyang@gmail.com>
+ <20250815084943.23063-3-richard.weiyang@gmail.com>
+ <458c4ea9-1e33-4159-a545-6ad2c5b81add@lucifer.local>
+ <15ccbbb0-8ebc-4c50-a1c8-fbe5416ecf46@redhat.com>
+ <20250816090654.u5eoys2vkpswe553@master>
+ <88117e56-6b81-4601-a954-26d5f630aabd@redhat.com>
 Content-Language: en-US
 From: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
-In-Reply-To: <aKBAdUkCd95Rg85A@harry>
+In-Reply-To: <88117e56-6b81-4601-a954-26d5f630aabd@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C9688180003
-X-Rspamd-Server: rspam04
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: EBE0214000E
+X-Stat-Signature: ghputy97kwcefxwwegiezf9r1oabi9xh
 X-Rspam-User: 
-X-Stat-Signature: d9f8tt8fdgrgjc44kf39skn4ub8pjjs4
-X-HE-Tag: 1755336785-570305
-X-HE-Meta: U2FsdGVkX19o7wBMO8XKjbwDUp1hxkTIa3Bi0Gytkv2UL8+HcDC82jgUuhtmb/TjZ/iOcmTArklN3YeuxZl6wKPEqhNcsthixyuMhGFrpb32LDLAdccB+hj5f8CcT9vlbB44zQaKLQFsrRgo3OSkjpQkdVFZ7dCOyXfjtt0BABcxmsUJnHB0XyBrkLh0np1THjifbm1FRiBLklnCV6i4k+57duJqNz2Th7SKR5gksdL7L6Uxj+E2ttoW3DDiK5j7tmzp63usf+RPT/9M3BQWyOR1eAgr6OWYfyZ5DwqgGp1tsOaDSrhku65IDHZE7E16uEqpaRN0bxoRy2WGSmEk7C8+KumNXnzpK1loJV3+4B7TAcEOHLBQmDm0Xb/mNyf35Yruh3ChDQlDUopvfxhRkWRRaI/MiXGltqPjvJ86jceD1vFz1xTwDhP4J81pStVxNpt9Qyq8hb4KwIgWVHKOPvGTey/t1HJ3OJQaELk0PAMa6JReyUUbnzwU28hedNGPW1nnGyPsQ2MVFqa9htLwfIwiAluC6+MZROi0zyeXe0eeNP2GOD2rlsESwfkTrj+l0B9H1BPL66qdR/ZbjEjcsJ7L8kP5c7GsrkoCKnG01LC/u2y/wFbsP2urecS1kzJ8GCHJCT889CYIbcno+opzwVwcUZd9gEGbGnG6wVlWPOt1u0IiqSQwpEiYloQSeLKHs6phuURi6cgmGBnyfZmbW9EXLUsUs9ccX+elzptvuQKtsBNnhsKzAfPQQ6Bibl5OF5CFFyLspz3u9qda42mMr7n8LJU61pPSXJdC0+0kxB4wfXL4U1QQXuFhXveqHfDwx3AZEcTpJt1MONkEr3uredv/biE3YJCfPXYJ2LMg8qy5CCAyjKj2UlTo5K6oUE8zKCnbTBY4VJ3nmRnWrvpmLtQrQSJ0f7tp3L6P3cy3adWZeV3uQO3A3sM4cd6aKivBdD3VkMapKfrONlQAmM6
- QJTiLiQh
- bbwwIjD0gVIkMGCReIcoPeJB1fXS5VEccsDvaXzNI2Rhv8hC5I1TSFrly8+4SuzvBVUtlXobuER0O8Endno5F+a+bMgXrth0CxBjtJU/EBUY8TIE=
+X-HE-Tag: 1755338710-963594
+X-HE-Meta: U2FsdGVkX197xR0MfQp1C2xVq4w5/PX3do3d2OM5q3Eac+69YB97BClP/hYLiuDz6xjH06tPJnExzLry4NY+bg2ULFkQNeIkFhdC/5eja1/9nLRynfwuORbgXsyeUpN7KhZSoygkfP8ClJGvXTxL2VRNQhba//e72K8+n4UoxcuoSPf7WLvP/ZDGrEH3DS0o3ASvFhD3mnE0woVEBlUOE4MZJzLvVxQU8y+pLKEjkPpLLXMo5k0a8HAnAgiXdgXr8En3EfIF6QCdjf6+crpHpz/kGLylWUmSMWJ6/tR3PWwUyoB+SMEkKg7VR1T1KYjj8j3rJJpyffS7jOKwIJL2VlztY8bZAWuID0WrmYfOem45rfO2+WYxpC3exLFGlzwdGTbzfJpOuEIR84j0bCvHUHRhaxtHjUUXQSYhQ9VdcGftqCEMhGZ3ik+VR3Tu/2NEyzbTOOWXO6z/HIWKHktL1LM7aOKY9P2S9036p51n+KAr21MD7ZglOCtjYbYDxXx22nsGP/8PAx5uXhcw/oln5KK20qA5uFQ+0JPVIUf2brCcZEvh/OrFYeLm+LHM7AByIO0wCQz2xCGLpIcDuvhZhFJLQj3kj81O3I7+A8k7UYSIPPM3mYuvORtJ3LT4sX+F8AUpeYGP0rGWZpoX/F73D12rFldnGHtFiiluVf3Pe/Vw+X2J3wDXv9hmyZWH1dxSIywUmjYhu++Lya7h6qoF6pPLKtGAY1OMddgmn46DzkWJRySG7MX4cWTWh+62tgk5eAfvjQRgMJAXYz5laAtysAtcJOIXWvo25la+hW0OalOLUwEAnsisnN6FXFv88KPcCE+hsqyHbi+GfjnCddhnmt37pRk1wXgublSJFrpwYXpp2lQu7y3TfHnyTylfmiXnp4ylbKOxKkunhU/NOrmLk9FBnsr1N+cQJXWWQmdIWPu3Qi8MhCYWVCai8U+xN3+Vc+qr2H531erorbCvBeC
+ CDDjcX2P
+ Xk/rjxvlFB5t+roRy8pknRh9bwX+/rhoO8tj1KG/RCS2Xo7SFNI35mA6REJSYwVIxI0Utva/9XJDTehIfgSOqcBez2/rshazorrC0apucRqx+Uw/Y1Qa43NbS/lm3Bw3ULBWW3uILJXfuB4syL74AFI3yFmhqqZR9xewuvnKsXPLKn/Y=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,130 +126,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Rather than masking to GFP_NOWAIT—which still allows kswapd to be 
-woken—let’s strip every reclaim bit (`__GFP_RECLAIM` and 
-`__GFP_KSWAPD_RECLAIM`) and add `__GFP_NORETRY | __GFP_NOWARN`. That 
-guarantees we never enter the slow path that calls `wakeup_kswapd()`, so 
-the timer-base lock can’t be re-entered.
+Since the compiler can prove the expression will always be false in one 
+branch, there's no need to execute that computation at all in that 
+branch, right?
 
-On 8/16/2025 12:25 PM, Harry Yoo wrote:
-> On Thu, Aug 14, 2025 at 07:16:42PM +0800, yangshiguang1011@163.com wrote:
->> From: yangshiguang <yangshiguang@xiaomi.com>
->>
->> From: yangshiguang <yangshiguang@xiaomi.com>
->>
->> set_track_prepare() can incur lock recursion.
->> The issue is that it is called from hrtimer_start_range_ns
->> holding the per_cpu(hrtimer_bases)[n].lock, but when enabled
->> CONFIG_DEBUG_OBJECTS_TIMERS, may wake up kswapd in set_track_prepare,
->> and try to hold the per_cpu(hrtimer_bases)[n].lock.
->>
->> So avoid waking up kswapd.The oops looks something like:
-> 
-> Hi yangshiguang,
-> 
-> In the next revision, could you please elaborate the commit message
-> to reflect how this change avoids waking up kswapd?
-> 
->> BUG: spinlock recursion on CPU#3, swapper/3/0
->>   lock: 0xffffff8a4bf29c80, .magic: dead4ead, .owner: swapper/3/0, .owner_cpu: 3
->> Hardware name: Qualcomm Technologies, Inc. Popsicle based on SM8850 (DT)
->> Call trace:
->> spin_bug+0x0
->> _raw_spin_lock_irqsave+0x80
->> hrtimer_try_to_cancel+0x94
->> task_contending+0x10c
->> enqueue_dl_entity+0x2a4
->> dl_server_start+0x74
->> enqueue_task_fair+0x568
->> enqueue_task+0xac
->> do_activate_task+0x14c
->> ttwu_do_activate+0xcc
->> try_to_wake_up+0x6c8
->> default_wake_function+0x20
->> autoremove_wake_function+0x1c
->> __wake_up+0xac
->> wakeup_kswapd+0x19c
->> wake_all_kswapds+0x78
->> __alloc_pages_slowpath+0x1ac
->> __alloc_pages_noprof+0x298
->> stack_depot_save_flags+0x6b0
->> stack_depot_save+0x14
->> set_track_prepare+0x5c
->> ___slab_alloc+0xccc
->> __kmalloc_cache_noprof+0x470
->> __set_page_owner+0x2bc
->> post_alloc_hook[jt]+0x1b8
->> prep_new_page+0x28
->> get_page_from_freelist+0x1edc
->> __alloc_pages_noprof+0x13c
->> alloc_slab_page+0x244
->> allocate_slab+0x7c
->> ___slab_alloc+0x8e8
->> kmem_cache_alloc_noprof+0x450
->> debug_objects_fill_pool+0x22c
->> debug_object_activate+0x40
->> enqueue_hrtimer[jt]+0xdc
->> hrtimer_start_range_ns+0x5f8
->> ...
->>
->> Signed-off-by: yangshiguang <yangshiguang@xiaomi.com>
->> Fixes: 5cf909c553e9 ("mm/slub: use stackdepot to save stack trace in objects")
->> ---
->> v1 -> v2:
->>      propagate gfp flags to set_track_prepare()
->>
->> [1] https://lore.kernel.org/all/20250801065121.876793-1-yangshiguang1011@163.com
->> ---
->>   mm/slub.c | 21 +++++++++++----------
->>   1 file changed, 11 insertions(+), 10 deletions(-)
->>
->> diff --git a/mm/slub.c b/mm/slub.c
->> index 30003763d224..dba905bf1e03 100644
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
->> @@ -962,19 +962,20 @@ static struct track *get_track(struct kmem_cache *s, void *object,
->>   }
->>   
->>   #ifdef CONFIG_STACKDEPOT
->> -static noinline depot_stack_handle_t set_track_prepare(void)
->> +static noinline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
->>   {
->>   	depot_stack_handle_t handle;
->>   	unsigned long entries[TRACK_ADDRS_COUNT];
->>   	unsigned int nr_entries;
->> +	gfp_flags &= GFP_NOWAIT;
-> 
-> Is there any reason to downgrade it to GFP_NOWAIT when the gfp flag allows
-> direct reclamation?
-> 
->>   	nr_entries = stack_trace_save(entries, ARRAY_SIZE(entries), 3);
->> -	handle = stack_depot_save(entries, nr_entries, GFP_NOWAIT);
->> +	handle = stack_depot_save(entries, nr_entries, gfp_flags);
->>   
->>   	return handle;
->>   }
->>   #else
->> -static inline depot_stack_handle_t set_track_prepare(void)
->> +static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
->>   {
->>   	return 0;
->>   }
->> @@ -4422,7 +4423,7 @@ static noinline void free_to_partial_list(
->>   	depot_stack_handle_t handle = 0;
->>   
->>   	if (s->flags & SLAB_STORE_USER)
->> -		handle = set_track_prepare();
->> +		handle = set_track_prepare(GFP_NOWAIT);
-> 
-> I don't think it is safe to use GFP_NOWAIT during free?
-> 
-> Let's say fill_pool() -> kmem_alloc_batch() fails to allocate an object
-> and then free_object_list() frees allocated objects,
-> set_track_prepare(GFP_NOWAIT) may wake up kswapd, and the same deadlock
-> you reported will occur.
-> 
-> So I think it should be __GFP_NOWARN?
-> 
-
+On 8/16/2025 1:16 PM, David Hildenbrand wrote:
+> The compiler can figure out that it can move the whole statement to the 
+> "if (last)" branch because it knows that nr == 0 otherwise and 
+> partially_mapped == 0 already.
 
