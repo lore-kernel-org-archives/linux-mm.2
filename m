@@ -2,114 +2,117 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0EB27C87FCF
-	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 04:15:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F4102C87FCF
+	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 04:28:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 885C78E0233; Sat, 16 Aug 2025 00:15:15 -0400 (EDT)
+	id 830F78E0234; Sat, 16 Aug 2025 00:28:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 836AA8E0006; Sat, 16 Aug 2025 00:15:15 -0400 (EDT)
+	id 7E1678E0006; Sat, 16 Aug 2025 00:28:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74BF98E0233; Sat, 16 Aug 2025 00:15:15 -0400 (EDT)
+	id 71E388E0234; Sat, 16 Aug 2025 00:28:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6386F8E0006
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 00:15:15 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DD360140348
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 04:15:14 +0000 (UTC)
-X-FDA: 83781305748.07.8BC148C
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 27BE4C0005
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 04:15:12 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=aCIFT63H;
-	spf=pass (imf22.hostedemail.com: domain of hughd@google.com designates 209.85.219.177 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 624158E0006
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 00:28:53 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0F26C82FE2
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 04:28:53 +0000 (UTC)
+X-FDA: 83781340146.01.6BDA8C3
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 38B6240003
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 04:28:51 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=j7MZVDMb;
+	spf=pass (imf07.hostedemail.com: domain of gxxa03070307@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=gxxa03070307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755317713;
+	s=arc-20220608; t=1755318531;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KUehadT0V53VE6Ngws3FvMAkJvl7sJD5MGU+DK0jxI4=;
-	b=JxmObp7VyP+7uj6KfIVb0ALQmGJgL1Q6Ntdja3EqjU8W6rarb5vh4FPFIsV9D6OTpLEZpc
-	vHNqXTxUeKV80Cy9gq9jlZV3zH/Dj9sjMdrTv9GszpokOrVQA9vSpS/cEp8V4agBQy7cYP
-	Fp6R4VQLRUzb1nEURZq7bXHSHXLyjhI=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=nUdKVXAydBJ9wkHs/z6NzRQghT8Ti2LWocpy6KfUJOo=;
+	b=fy8KYojiQs56YQ3c0rWU+2ae/LqCmsDdzhwtutWWwVStKggyGUR/XqGMCIkTjKIrjNB8NN
+	Xr3xayMAyvgaih9wG3vfTDXgFVKHRLVfA8cDBqEvH2/vsM5u83ZhENF/1cEHeuPLBkANXZ
+	nGCZYk+KywoI9Hv87Vzgjgtcc/oQ0LA=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=aCIFT63H;
-	spf=pass (imf22.hostedemail.com: domain of hughd@google.com designates 209.85.219.177 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755317713; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=j7MZVDMb;
+	spf=pass (imf07.hostedemail.com: domain of gxxa03070307@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=gxxa03070307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755318531; a=rsa-sha256;
 	cv=none;
-	b=PUbYdmeTFhelertitDBoLqD2T5d8IbHvRTomag+YNNkIkyQ5oCbPEcAigCM4xG24mmXIDI
-	CVMJ/C+HZgDkV5DPr9jz67lBu0k54O9Qzs/qmJSi7tnh66oEZiTBlcRqG+f8kVCchyf9Xx
-	XYOYQ897HI1pYAHh+Yf8vDTaNkHPEK8=
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e931cc2ab5fso2170999276.2
-        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 21:15:12 -0700 (PDT)
+	b=OZPGtNOvl9SkOkUNS6UW++jBuWqXy+YxXFMeV3pQ1ChQd11+Fw/b++j8a4/gS3IBj5lY+z
+	UCEV0f/adlkBso7wVjF2HJCW1xK9GQjozD7LxriL2DGN5HqykSvBTQc+sl2muZ3X0RQifx
+	l0+sLnCwWweja0f8SY/aSelSlMbdBWM=
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-76e2eb20a64so2918421b3a.3
+        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 21:28:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755317712; x=1755922512; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KUehadT0V53VE6Ngws3FvMAkJvl7sJD5MGU+DK0jxI4=;
-        b=aCIFT63HMg170IIpLbYq0ELNZhduFiX1+GBoAZJTotOrjHFJtphrFO6uA0NZ3hhaew
-         w+Z+TDyD8TlLaJ3HLi7gSNxSWZl1FRXR6JoC9ERnj60T1rK2zMT/Lh+u5H8oaJoGPbDJ
-         ytSj6jvEhz4s5GjmCV83UIUDi2T7QJe8Yk8tymI3OMNG95oYt1ukARn6d2Nq82rJ6HtK
-         oDlk0ALQQ5BoIKpYx3fqaydeI+Jhgvtx5R3PAOnTKXapUHUB71sYJhsyDWdaQdxB6i+L
-         D29YQ3u6RY5ISZ6j2DjlDue/z1KnFbQSSzRvDnjUI+4/MJDT3HoCB7aoymH/aDJVN3Mh
-         gX/Q==
+        d=gmail.com; s=20230601; t=1755318530; x=1755923330; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nUdKVXAydBJ9wkHs/z6NzRQghT8Ti2LWocpy6KfUJOo=;
+        b=j7MZVDMbGM/wsaZ6NxCly0gjJD9fRLhtWmpQDkblYnU+2bhehEsnQHx6Cjgk1PHOOH
+         YQSFsmgWsy1kSW9HZZaFl2jyI0pXmGAv84W8qT5bxNxBRLkrelqWuhbdLWPK3kAW+71G
+         l6gs8RsV91ttqKD4ryqqDFqa7QzTlDT1+k0tESGlZ0mIwPThd0WJ/4W1d4E5ZY1wGIdG
+         GrMNPpSF7LzuKLsv2DeImH177WTJ/vE/xHVoJpi+iT8ysFtuUp3rznmgz4BsYggoS0CA
+         HGcjhMS2k++sKcrWM3NMRWLASBSY17LtcjJjKnaSMyIF7W5ArurgrqQt3YQW3YuV7pTz
+         GH0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755317712; x=1755922512;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KUehadT0V53VE6Ngws3FvMAkJvl7sJD5MGU+DK0jxI4=;
-        b=xKOBkOGrSGqs1uzd6GFPjmGeJFGf/QPgd1Hf4FmtZuwrT5braABKBKloNxVhmuls/3
-         4KdiTG0ZFrFqzpXgLCX/Ay7qTS7fg9HZYroHFmFtwFGn7zKMbZhxUGeFNgY1gYuGyBuK
-         IC4KrphYXDHWAocZpjeGYtLLakA4L1FzOpUauFVTexX3HnRYaT2fJS88h4ydoSXeXb3r
-         WR4awh4kkJ/MtoDxNziArSgOQhpdJDA8t1Dpi1ViDRoKAcU0y9kUnmCV5zxerjmaSpa1
-         JFVZgiFJ64wiu0HBeMLVWSfTAj+KQ7LjuaPPrawRCxFLXatkh6Q11ZkxkJoL3b3HTvUf
-         IcNw==
-X-Gm-Message-State: AOJu0YwwWPOobouNz3tLnq2mF6nF9kp++cm+IC8X6LoJJN1Ot88D1Ayu
-	DsgN7u7bUatBdZAAHh5LCU+ZO8y8lWSzPKCN7/YD/w0k8gNZIdo/sxKRkXiNQPHa6w==
-X-Gm-Gg: ASbGncvJ72JCstwBY1Qsf6pMsmIM1jEbodgqvh1PUnQzwxz8LbtQX81tBu41r/U+3De
-	JJPVAnRTMG8nTeLp098X1las4SitOGPOEeAB2KErEnuRqUul7aWgrNB/egL9CqJxtH2lAr4vlb9
-	D+uG6fBUPPiy6oIdDALbfxfXSKO0MupavlPuXYR50uzRkPzb4xAIQj0TcHZTEluqDfYM/bPH2bQ
-	11iANsY8DtguTlBqv10U8E2AFrfrBJKLUJwa+neL5mfJN7JrljPHzAJsspfjLu+cxf1eAY+0wL1
-	JN5V/MpRxNv8N4c8twO/T2guh4DNl1QEmKIiHQFlUAN3K2DLvMe5gqSIAUmrZiQKaCP6kA/lzur
-	82XBKdf/UmNWF3D+efbfeol2deBi9X/vm7xdxlI6lwdYApWsw+/vUfRQVMT0ANqiLng38eI52+J
-	NQAOY4XsNbftmodh8vwsZbJ+Zw
-X-Google-Smtp-Source: AGHT+IEoz5xk2tT5r2yE8JK4nthMMpd7ZQMp3zWO8Q0rCgmw7gen9uSYcCzOmwTuA00q0E6HkEXVTw==
-X-Received: by 2002:a05:6902:320d:b0:e93:3c21:cad0 with SMTP id 3f1490d57ef6-e933c21cf24mr2813695276.13.1755317711784;
-        Fri, 15 Aug 2025 21:15:11 -0700 (PDT)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e933288971esm1104986276.37.2025.08.15.21.15.09
+        d=1e100.net; s=20230601; t=1755318530; x=1755923330;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nUdKVXAydBJ9wkHs/z6NzRQghT8Ti2LWocpy6KfUJOo=;
+        b=sq9p13eufu1XCpDo4tO5sJVYTz5a3n8iKJD+tq7wTQ9ZnIiKGiRc7KPs4BmAok/hYp
+         DzGN7GXEp7NZcA7zavNetdn7hxtqLQzKUq+qz1a4PnADaDZ7qqxcrfbKeQQTbJgWBH8G
+         v5sqnBrwErjGVTmT38tZBanZK+PcONcDmTXe48RQCmhESwFHf34oKRPjJ+EXHMLcg6Mm
+         O7qr80Eo0KFSPcQQEH6nuKkEBfPOSXeil9zl3HP2k4Ya415adUVn68ceF8su8fu3guy2
+         RBEbGSRo21FBgIfo94Wn5s9S20pf+ABlmAs55ZWL2p7pdv3cf2rc2gUkaFO7c0gLOQco
+         eTPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXdFe2fFYisrGNzyjMX834bbn/Hn6elFIAYANOULGXLhR+p6nyFjS4shIS4jJjXFvmPFlcD27JFAQ==@kvack.org
+X-Gm-Message-State: AOJu0YytO5oocJ5+8ZiZN3RIPp+35UUiWTmUBlX54EC1eJIs+fhsCDgw
+	fGBKgh2wdnj+Cp3+gEaIabNYGyqeqrxWVTeFCLGz0dosO+npH74OSPFt
+X-Gm-Gg: ASbGncsBSXryTBz1vvM1Zr+HoWPcQwyrOag4VCkoNqripgebNsdQxDuGBQGGrwlU/pW
+	R2aNfu0aSvAow2J/mV96NBF2VWwA7taQUHgjSkIsTqJJ39trLvvALAKDMi6kMB8EuMLs3VrwZP/
+	PhwB7v+/X13ekYoyfDDnGi4Q20zZfJ/Wa5mGE89BqcqXwvAwp75X/ngP6tyd3XkFWiIUvf6czec
+	rX7ojzQsdBRC7kGRDfeO9CGAUSUVJZrFeUMOYM/oDuM46Z2uUQR8NIMC+iqHZ/OEyoPlXCv+8i1
+	zd90l0+/Stt0SpTEhFST7tdriCzQej7B8ZFB1QXgwVijCjQHr9qphDnnbyVVuXGLkkEKHtACFe3
+	E2GfjRMt7n3IbheEaiWA7CA6UBV5gIbyKj2mensaaJtQXKN+JUtsAn1Rc322j/5ia
+X-Google-Smtp-Source: AGHT+IHFWWtb1KbXVIg+UozThISuavCO9wv+AE+Tap4j/B944QQFysY2kNhergonWcz8XuW9tB67gQ==
+X-Received: by 2002:a05:6a21:6da6:b0:220:3870:c61e with SMTP id adf61e73a8af0-240d2d7d678mr7691737637.4.1755318530006;
+        Fri, 15 Aug 2025 21:28:50 -0700 (PDT)
+Received: from bj-kjy-standalone-gaoxiang17.mioffice.cn ([43.224.245.244])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b472d73a418sm2611958a12.38.2025.08.15.21.28.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Aug 2025 21:15:10 -0700 (PDT)
-Date: Fri, 15 Aug 2025 21:14:48 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: Will Deacon <will@kernel.org>
-cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-    Hugh Dickins <hughd@google.com>, Keir Fraser <keirf@google.com>, 
-    Jason Gunthorpe <jgg@ziepe.ca>, David Hildenbrand <david@redhat.com>, 
-    John Hubbard <jhubbard@nvidia.com>, Frederick Mayle <fmayle@google.com>, 
-    Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>, 
-    Rik van Riel <riel@surriel.com>, Vlastimil Babka <vbabka@suse.cz>
-Subject: Re: [PATCH] mm/gup: Drain batched mlock folio processing before
- attempting migration
-In-Reply-To: <20250815101858.24352-1-will@kernel.org>
-Message-ID: <c5bac539-fd8a-4db7-c21c-cd3e457eee91@google.com>
-References: <20250815101858.24352-1-will@kernel.org>
+        Fri, 15 Aug 2025 21:28:49 -0700 (PDT)
+From: Xiang Gao <gxxa03070307@gmail.com>
+To: akpm@linux-foundation.org,
+	david@redhat.com
+Cc: lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	gaoxiang17 <gaoxiang17@xiaomi.com>
+Subject: [PATCH] mm/cma: print total and used pages in cma_alloc()
+Date: Sat, 16 Aug 2025 12:28:42 +0800
+Message-Id: <20250816042842.3959315-1-gxxa03070307@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Queue-Id: 27BE4C0005
-X-Rspamd-Server: rspam04
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ru8j8u71xjt6injzqyngifwekjrhgspb
 X-Rspam-User: 
-X-Stat-Signature: idr6ujq7yihr9y5jdeddemqrw7s3i9x8
-X-HE-Tag: 1755317712-731244
-X-HE-Meta: U2FsdGVkX1/cpeuFdrQ6WH4pY7Q+h0AeKbuRowQjWBp9vlH2X4izpHgqiPOH1ayzI2WhgKsf0K5tWTHqfd27uc1SEL3gQFSdHL/ME8AbbfKA1IvztbwxL3HZUqcQ+SRkE5R/bE0Uhq3CrcQs+N7Ziq8IFJvzrxEmyIeuok9XEgBEWJDbkapppM9uTqi3gNcP8Kh4N5/nSwbUWz0SzCyPTFN6SFrmyMH/KMXy4GY7bNPho0rCMW9JuwNGyeoC0U0lKWoctw4A9qLC8qUNS7OjgEnClIOnlPXCCaw6Qo57TAQRG8OjXmQGvid6ayAHQ7wff9aGYUz4llmEMx2H9rfQTiLidIspCHyK6mttDSUZw84Om5GCTZ5rB1OrlUzoIk9SM0jtX8A4Rhb/Oh1wLuvM2VpvFpDcA8hf9uyy/3r1gVt1LbS2pQjP/sPbEVUfYA5NaQEGTzLPe4F1txfV8oj6WzA33DC9FUjC9ttGSD6zjTmVMh2e0lXEmf+o/XUipYPR6d1E2geRLFg6Pj2l6eqYFBg8tdmmEg4OntC1ve52uNcCeVEuxS5OqiamBXfxxsdPeV1JPe8pr3hMrBk62a6+qcRUBd+YfR6dbpOVTaRlUNNTDW5CM3TAIfNbhqSIMnx3551lE/yDPZkxC6ooOMzXNw6HMwRi7Grt+yBHQ7LBXvSKa0jA/CLeGRcX8LlnUwc+DR3toHNGFgMD7PK99d9RJbW1ctOVqofyPCGWmrJiyQZbR//ZxkkabjYh47Kfcwdqc5zdQQP6nOae28GFyP+Ai4Pio4jrZJHQ2BYA8A3HMOz1Um1ilYCqqkgYAYIpydA5iZUAbTNmWJBA8ADNQk+Y9uoJAHts1xxp2XjhF9OZoqREkm3vCZQP1Ujo8oY/jRPsZByD15fw7THCklzdoYbDGnJx1eycDTqDzSiDKT8FR9+OGrdrwOq0ejwdAgrdZIzsLXQ8x08Zyk9UfrWsl/Z
- BTN6APY4
- WEexj8LkPGHKl/Zr2OkD714I98CW6lBI9iJSDk95qSpcR1/15AxLtTmfdCBG3u+A+N0xTu3TlEyzMYt0RcOuLcI+Ea2gJE0AK+fg882nSXc4ICakxfceJmMUuv5BXEDxTPYIgwwq/z+HYbEWRqEr6Wci9aj9Jl8CpLhn7vYD3zJWUYQiH7OaM5CmUyKabbvyOHT34qSFwb4aypZt5F+nF7iAQsXXLJfGaLkEdRzbR5TkiwqNzceImAReloSkrLimypuTgCJ16huX8awmCIN5XdkgJHCg11aR0KIG5R7ZVPrSHmgXzAm4k6D8fZSIE8bGir/OAob/X5ANAOwL8cQ4ave1vm5plWQzSlCKmJm1SKYMrUyHSMj6LrCPywtvFWsFktWg+m+oJeElc6hsTskGMzfmi1KyXLtELv7MYY+HDKfvIz6e0N/j3H1kAt4c2efxjvOQpsI6WOqHcZHcrMvude2pubx0Z/TU4FL8ghGR4dOZxx6d1FjXzb/9jng==
+X-Rspamd-Queue-Id: 38B6240003
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755318531-927981
+X-HE-Meta: U2FsdGVkX1/K1QXKiaeGyQ7EYZjJP87HsQZoPelwrMIoNeyQeRUH6gnaUMfMNJ91Mwj4j9XrTV0k3pCrPHpu9E2t/zCloJ68vNNfJ3mdjG9E/oTdiBHmNgwQw5MI50ELpVslVuh+aGAAFW+u9VAoGl/2sePcS/7B039UDfpOMzDVREtsWbFTzY+ETEFNwcrzQC1TrFn9JIVoUlkW62qCIfkpi9gWwkM/RkOcn4STFCyfT8OrAyWyGmL3iaUcLawvOZQAhnmcITj1iJyZnuvOogOuBlW30QkexDM4IbEDRr/T7SYBbMsC/A4ocP5KmbSi01lsk/Qzerr4G3wOeGIUkf4aT7bPbyQU2UxSIKJUlfSWVITk0iTZv06gh+SvkA78U6thd34EFQQF2YF0fVhyoRwNOWV/u3OpDcaEXGNzq0M9wED0iT+UStTDd6+wBXvf4qCXNPc/UhHkhtdmBC9SsRxnsZz6LRC7yxeOsBT5q2TqnAKNjdmkP4HcnMhJu8Jcv7rmYzWhlVKFMjhVEjEkn+eeo5OetyH3aqCosdXhRSgxGyccxXSK0FDvWtTv5Fuk1J8lB8PtfS2KNlX4N2CZpcy+NAsr0gQlyIWVkahiTd2kUysgbIcKW8q0g1tqx6hVpDNIXxYcpRfe2+IFIuheGbV/onaZ28hMoNNOKHaXomjZqgd17bU90KZ8Rl2dpTpzNf+yg7whxrm4JvmF2swJ1ERY/PqNIq3kIF2mi9wBQh5fMn5JyKA9wArhlW72EE9Rvg9Bx0AC1dbWaPOMBDkRe2xxhk0R7iveEORxdqHUtcXHsw1a8WRJcPzC7FOkM29Ue80Uzf+7WL+KLAe3Sfs1hcHCVTtO63vgd5Pt7RywKaxpUsBfL5cQNAUD7WmfF80Qz6BtDUWGr0uT9PGfY5NCLxKQz8su4zOXebvEy8bZFiv5Q8PYX46jegp9Mymzwu7wVZeSuZCQNqDx00DUHD4
+ u3dreA7q
+ 8hAjtHMx8h4RtgB6OYyXHi1PpVf1l07HWL+y2tSdHjD+a2I9Nj7YBiqRa9NQ8Dz7g+phGwQONiDA/OsZBJiCN744tU9BidF+uFmXm7J3sKM74Tks0rIZwFB7ohTscWUlv8uF2NLd9ZqL3L5CiliYJzHqkfWBlpLpQFlpAnbxaIcIrvT4N8eM4zx9nALbHuno2zhzUAeIVJdRcrNBPy455Mq1CZd1a5kzxjhKDevRY7MqeNDd7nTBoHRG6q9LMpWmNt+rdDmLS1E9Az3zFRKCKRIDMz8LHbPdZ8ol2sQSVMoW6D+3baH4Z9Dzy99e8OcuM4R/sMGrHuE7v8DJQrTVwhpLdi9pWe4wa/sjkzmEHFushhpfkuMx6gMESPHLbGZNhADxBkDy3m8xQxeBxuUuK7gIRhdT5F/h8ha+rjhY3U+50VLX0oo7en+lqvkb0exfAhNY4YxvoZSRDSTI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,132 +121,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 15 Aug 2025, Will Deacon wrote:
+From: gaoxiang17 <gaoxiang17@xiaomi.com>
 
-> When taking a longterm GUP pin via pin_user_pages(),
-> __gup_longterm_locked() tries to migrate target folios that should not
-> be longterm pinned, for example because they reside in a CMA region or
-> movable zone. This is done by first pinning all of the target folios
-> anyway, collecting all of the longterm-unpinnable target folios into a
-> list, dropping the pins that were just taken and finally handing the
-> list off to migrate_pages() for the actual migration.
-> 
-> It is critically important that no unexpected references are held on the
-> folios being migrated, otherwise the migration will fail and
-> pin_user_pages() will return -ENOMEM to its caller. Unfortunately, it is
-> relatively easy to observe migration failures when running pKVM (which
-> uses pin_user_pages() on crosvm's virtual address space to resolve
-> stage-2 page faults from the guest) on a 6.15-based Pixel 6 device and
-> this results in the VM terminating prematurely.
-> 
-> In the failure case, 'crosvm' has called mlock(MLOCK_ONFAULT) on its
-> mapping of guest memory prior to the pinning. Subsequently, when
-> pin_user_pages() walks the page-table, the relevant 'pte' is not
-> present and so the faulting logic allocates a new folio, mlocks it
-> with mlock_folio() and maps it in the page-table.
-> 
-> Since commit 2fbb0c10d1e8 ("mm/munlock: mlock_page() munlock_page()
-> batch by pagevec"), mlock/munlock operations on a folio (formerly page),
-> are deferred. For example, mlock_folio() takes an additional reference
-> on the target folio before placing it into a per-cpu 'folio_batch' for
-> later processing by mlock_folio_batch(), which drops the refcount once
-> the operation is complete. Processing of the batches is coupled with
-> the LRU batch logic and can be forcefully drained with
-> lru_add_drain_all() but as long as a folio remains unprocessed on the
-> batch, its refcount will be elevated.
-> 
-> This deferred batching therefore interacts poorly with the pKVM pinning
-> scenario as we can find ourselves in a situation where the migration
-> code fails to migrate a folio due to the elevated refcount from the
-> pending mlock operation.
+This makes cma info more intuitive during debugging.
 
-Thanks for the very full description, Will, that helped me a lot
-(I know very little of the GUP pinning end).
+before:
+[   24.407814] cma: cma_alloc(cma (____ptrval____), name: reserved, count 1, align 0)
+[   24.413397] cma: cma_alloc(cma (____ptrval____), name: reserved, count 1, align 0)
+[   24.415886] cma: cma_alloc(cma (____ptrval____), name: reserved, count 1, align 0)
 
-But one thing would help me to understand better: are the areas being
-pinned anonymous or shmem or file memory (or COWed shmem or file)?
+after:
+[   24.069738] cma: cma_alloc(cma (____ptrval____), name: reserved, total pages: 16384, used pages: 64, request pages: 1, align 0)
+[   24.075317] cma: cma_alloc(cma (____ptrval____), name: reserved, total pages: 16384, used pages: 65, request pages: 1, align 0)
+[   24.078455] cma: cma_alloc(cma (____ptrval____), name: reserved, total pages: 16384, used pages: 66, request pages: 1, align 0)
 
-From "the faulting logic allocates a new folio" I first assumed
-anonymous, but later came to think "mlocks it with mlock_folio()"
-implies they are shmem or file folios (which, yes, can also be
-allocated by fault).
+Signed-off-by: gaoxiang17 <gaoxiang17@xiaomi.com>
+---
+ mm/cma.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-IIRC anonymous and COW faults would go the mlock_new_folio() way,
-where the folio goes on to the mlock folio batch without having yet
-reached LRU: those should be dealt with by the existing
-!folio_test_lru() check.
+diff --git a/mm/cma.c b/mm/cma.c
+index 2ffa4befb99a..46cc98e7f587 100644
+--- a/mm/cma.c
++++ b/mm/cma.c
+@@ -776,6 +776,17 @@ static void cma_debug_show_areas(struct cma *cma)
+ 	spin_unlock_irq(&cma->lock);
+ }
+ 
++static unsigned long cma_get_used_pages(struct cma *cma)
++{
++	unsigned long used;
++
++	spin_lock_irq(&cma->lock);
++	used = bitmap_weight(cma->bitmap, (int)cma_bitmap_maxno(cma));
++	spin_unlock_irq(&cma->lock);
++
++	return used << cma->order_per_bit;
++}
++
+ static int cma_range_alloc(struct cma *cma, struct cma_memrange *cmr,
+ 				unsigned long count, unsigned int align,
+ 				struct page **pagep, gfp_t gfp)
+@@ -858,8 +869,8 @@ static struct page *__cma_alloc(struct cma *cma, unsigned long count,
+ 	if (!cma || !cma->count)
+ 		return page;
+ 
+-	pr_debug("%s(cma %p, name: %s, count %lu, align %d)\n", __func__,
+-		(void *)cma, cma->name, count, align);
++	pr_debug("%s(cma %p, name: %s, total pages: %lu, used pages: %lu, request pages: %lu, align %d)\n",
++		__func__, (void *)cma, cma->name, cma->count, cma_get_used_pages(cma), count, align);
+ 
+ 	if (!count)
+ 		return page;
+-- 
+2.34.1
 
-> 
-> Extend the existing LRU draining logic in
-> collect_longterm_unpinnable_folios() so that unpinnable mlocked folios
-> on the LRU also trigger a drain.
-> 
-> Cc: Hugh Dickins <hughd@google.com>
-> Cc: Keir Fraser <keirf@google.com>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: John Hubbard <jhubbard@nvidia.com>
-> Cc: Frederick Mayle <fmayle@google.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Peter Xu <peterx@redhat.com>
-> Fixes: 2fbb0c10d1e8 ("mm/munlock: mlock_page() munlock_page() batch by pagevec")
-> Signed-off-by: Will Deacon <will@kernel.org>
-> ---
-> 
-> This has been quite unpleasant to debug and, as I'm not intimately
-> familiar with the mm internals, I've tried to include all the relevant
-> details in the commit message in case there's a preferred alternative
-> way of solving the problem or there's a flaw in my logic.
-> 
->  mm/gup.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/gup.c b/mm/gup.c
-> index adffe663594d..656835890f05 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -2307,7 +2307,8 @@ static unsigned long collect_longterm_unpinnable_folios(
->  			continue;
->  		}
->  
-> -		if (!folio_test_lru(folio) && drain_allow) {
-> +		if (drain_allow &&
-> +		   (!folio_test_lru(folio) || folio_test_mlocked(folio))) {
->  			lru_add_drain_all();
->  			drain_allow = false;
->  		}
-
-Hmm.  That is going to call lru_add_drain_all() whenever any of the
-pages in the list is mlocked, and lru_add_drain_all() is a function
-we much prefer to avoid calling (it's much better than the old days
-when it could involve every CPU IPIing every other CPU at the same
-time; but it's still raising doubts to this day, and best avoided).
-
-(Not as bad as I first thought: those unpinnably-placed mlocked
-folios will get migrated, not appearing again in repeat runs.)
-
-I think replace the folio_test_mlocked(folio) part of it by
-(folio_test_mlocked(folio) && !folio_test_unevictable(folio)).
-That should reduce the extra calls to a much more reasonable
-number, while still solving your issue.
-
-But in addition, please add an unconditional lru_add_drain()
-(the local CPU one, not the inter-CPU _all) at the head of
-collect_longterm_unpinnable_folios().  My guess is that that
-would eliminate 90% of the calls to the lru_add_drain_all() below:
-not quite enough to satisfy you, but enough to be a good improvement.
-
-I realize that there has been a recent move to cut down even on
-unjustified lru_add_drain()s; but an lru_add_drain() to avoid an
-lru_add_drain_all() is a good trade.
-
-(Vlastimil, yes, I've Cc'ed you because this reminds me of my
-"Agreed" in that "Realtime threads" thread two or three weeks
-ago: I haven't rethought it through again, and will probably
-still agree with your "should be rare", but answering this mail
-forces me to realize that I was thinking there of the folio being
-mlocked before it reaches LRU, forgetting this case of the folio
-already on LRU being mlocked.)
-
-Hugh
 
