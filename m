@@ -2,93 +2,93 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D9351CA0EE4
-	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 14:43:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F1C9ACA0EE4
+	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 14:46:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BA8C6B00CA; Sat, 16 Aug 2025 10:43:27 -0400 (EDT)
+	id 75D378E0021; Sat, 16 Aug 2025 10:46:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66BB86B00CB; Sat, 16 Aug 2025 10:43:27 -0400 (EDT)
+	id 6E5CC8E000A; Sat, 16 Aug 2025 10:46:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 559A16B00CC; Sat, 16 Aug 2025 10:43:27 -0400 (EDT)
+	id 5D4E38E0021; Sat, 16 Aug 2025 10:46:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3ED9C6B00CA
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 10:43:27 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D9D7C16041E
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 14:43:26 +0000 (UTC)
-X-FDA: 83782888812.09.1FFA333
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D7A8EA0006
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 14:43:24 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=eT7IKYRN;
-	spf=pass (imf15.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 497B68E000A
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 10:46:08 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C437FB993D
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 14:46:07 +0000 (UTC)
+X-FDA: 83782895574.26.F9F7B85
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	by imf23.hostedemail.com (Postfix) with ESMTP id BC096140009
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 14:46:05 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="dE+xF/Ku";
+	spf=pass (imf23.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755355405;
+	s=arc-20220608; t=1755355565;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Yklf0U5QFdhyrLX5rUnNnZYccDAUmCcCKkGNXA7e/fo=;
-	b=r6u2rlglFxRSiz1eBsjX+8FKXnAWT9hX6dLrESSsEjju9LeGs/mnpTCRwcW5RuIw4cwv6h
-	P+mkDzm8VRIX5IuIUVRywOu3RPhcP61/MlWoJ2YpqkvjID/sQqismOBwlfdJVtbGchwoCp
-	GkZEY58Bd7FyHz7Qn81an9giK4D3aw0=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=eT7IKYRN;
-	spf=pass (imf15.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755355405; a=rsa-sha256;
+	bh=Lj2xlwN8FaYSBmnA8nJC1cMfqZAxHNyF4eUqmUL4BG4=;
+	b=6lEwGf18GZP57KzLD4rfzZyEj6q/tTU4JA7BhGN9HJnVSKakU0PQT3LKu2W26WGEDObKmU
+	Ta+XI62LriXN5D8HPIm1hirh5KlDFAjadcDq8DJ8oZVn19XfvOxYWPyeDZ182WSRe93+Tz
+	w6SK3e/gBwFIL7OKyGZo4KHuafiecYY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755355565; a=rsa-sha256;
 	cv=none;
-	b=MAqsAELLEENMVN0H+fHIxxzEzuxvR0sxAW5dGPWf3XaYf7khmQkCD2TihnN12qItKjh7Q2
-	r/bMDh5jRZ8bthnZnGvSYmL03DlKUskYGl/wS6kZNAPW1I+jTuZLGNUPBpT9imXXOdRztQ
-	C2Crhgic/pVAm5RwSA5ujNebaXWNuA8=
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-afcb7a3b3a9so409613366b.2
-        for <linux-mm@kvack.org>; Sat, 16 Aug 2025 07:43:24 -0700 (PDT)
+	b=OGD7f/eixjeRqTw1eq/hc6rxuVnCtLw6gN8QAXwOd1ceS8Vvh8NjXMZq6SAp8/dnu6EZjF
+	pONZh3qSJ45XLiXvN1RpA1qmmjrdogcj6S4FrqHfzXWNe4AVdlcvMaek1AOVP0l8X/L7R1
+	me3bH9Zx1b56GIn+wGy4BYMINDcYXDg=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="dE+xF/Ku";
+	spf=pass (imf23.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-afcb78c77ebso450972766b.1
+        for <linux-mm@kvack.org>; Sat, 16 Aug 2025 07:46:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755355403; x=1755960203; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1755355564; x=1755960364; darn=kvack.org;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Yklf0U5QFdhyrLX5rUnNnZYccDAUmCcCKkGNXA7e/fo=;
-        b=eT7IKYRNhpqtPAhPLHyAe/KexH3mSYm7hI4S5MK8EL7V4xa0MRRk4be1Ge6oQzMCxo
-         DUH02xiNdXvlFSkgt90CUBq+sf1z1udz4UukrrhWUU8BDhG3TN8q1T8C+t7CLqf6RQzo
-         +94cdnwKruoLD63n76KlYjz5xCrA70jfJL1+5rNSrYoN0sD6saOR12Z92x9rdj1bTRXJ
-         /yD9vYLLnJDlH4b31YbDt5ChaFYBle9YbSyjGnyvN0mkIIJs1MfgUdOF+xjk/s36raQI
-         esU2Dn0CdRZ3pv2UeSo9++pFIKF7EeIhbRDOfS0CpPHMcU9g7KdX6heW9KJwHE7Kbp02
-         DlvQ==
+        bh=Lj2xlwN8FaYSBmnA8nJC1cMfqZAxHNyF4eUqmUL4BG4=;
+        b=dE+xF/Ku3zkWhrIxYguAsmAj1qg/v8FmWVEZXigJ4pzO0YX/OxoXq+Lp+C8NUv0RFe
+         qMLFsGaQPlrfa4D+Zmr4g4fss/mNKIapm/x1W7ppbwM26mCsunXnSV2iRJd2EdTAuKi6
+         lrhaXi9NtITXi9HKTqw2EPO0CclErsGFkZKpwnbQrpk6Cw2URb1SiN0rboIPdfn0JNI8
+         z6/ORZ9pSP+P6pi94j08TsvfzM02bvE4Qeq05nXLSba64E+VOCDRtu1GmzR2NOOQMMnc
+         To67W64+TMjIirdTflV532a7cXUPir5NVQHbQgn8vy64NuKqiPAHxl9Xl5r0fyZTiBts
+         BRSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755355403; x=1755960203;
+        d=1e100.net; s=20230601; t=1755355564; x=1755960364;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Yklf0U5QFdhyrLX5rUnNnZYccDAUmCcCKkGNXA7e/fo=;
-        b=fBQLBY7+WBvbNCIS3sbm1Quvf6eD4Ajrk4w9M+0h5TFUy0jaX28d6K+NYs0SoHpzoD
-         cpuYhJoagg72MgseFpWrn0xQZwWpvALay4M5r9xjHblMSe8xqTuyWufSw5GdDR8lrbWd
-         qt9ApprIkumaq45BIpfPdwNgmdM0dWRhBXHcc+Do7V6Nv/7vxmB1YebvGuuRUZtyCGqz
-         ypSZVNtvTc9kQEVHS4iT6D4xh6nEPVho+dhEqdT8Rzf/BIT/rZ383/CA8+Us8FhSXUPl
-         SCf8wj6HmOXqiQCWM3Y5qyRZmQCFwNusfxWmTCSQ0lJuloilIeSItEJ1aN9HzGOXlHfh
-         VPQw==
-X-Forwarded-Encrypted: i=1; AJvYcCV5wGa0ywExqlhmCHSWFh5cKLo6uLvt/3jp9b1ZLDU4JZCOArpEbmEzLtPIHot7oor4AXandutbcw==@kvack.org
-X-Gm-Message-State: AOJu0Yymzn/hehFq7HLPm7Lc+De2FoHkNhDBCy8OlW8uBumYiGXXPvN4
-	zrRieGZv8MCCVIF3xeN7EDPgnOjGa//ZuDeeA7KLhJxCfdggAfN6WkWh
-X-Gm-Gg: ASbGnctYrMfjAIPDbkMZyUIbTvg8ueNZNSIDUTM96yC5Mx7tPPRyizc8GUHrxRIVkHu
-	XYWERZUNm+3hjeBsHAdYx/JcNta6R3kCIj0evtY3rALeg0YI4fV1Otdb+BElVZlqw1v6KvvdPCZ
-	/4c3aco+E7Pg6N0eV+oaHjxzFIjcuiZRJHdFEQYlzXojUck8F1bNkFSEzSu7EJu82g+zbvV9ciN
-	ENGCpzJMsvnZpgZVzUPl1Q6Z975lpmvwRAtLLvsEC5GBtFT9TfP5f+sdyMWDhn+g5tnlHWPVC1B
-	uzGF8feUjF6rVn3HuhvdHqMUr5vU8bzsXldVjzOz2jXwk7ZclQ1fOjywFLq9xuSgQ4sfhCl3xPu
-	YvtxwfAByhnJ96iN1qTIDNA==
-X-Google-Smtp-Source: AGHT+IEGqVbAIDII1mY1gCF9jBAvWgrpMrhi6faWvY2jr8e0MUYDYVLLmVWONSAn0yE+VDd8vjzzzw==
-X-Received: by 2002:a17:906:6a0f:b0:ad8:85df:865b with SMTP id a640c23a62f3a-afcdc288daemr532008566b.33.1755355403259;
-        Sat, 16 Aug 2025 07:43:23 -0700 (PDT)
+        bh=Lj2xlwN8FaYSBmnA8nJC1cMfqZAxHNyF4eUqmUL4BG4=;
+        b=XEWbYwLXeX8HNKlh9c9gaqZSR9U9VeDhUXlAB/0MdonqhBD+RGpvPG/6/YcRvbopor
+         e7yduQ0EF5MCnbhKUroHVZiT2DF6/iLcSpTl2WsRuNR86d5IOrwWePUYV1MDKskjZ0Al
+         YnZzfb8aEpUlXUHSsciSiQeeYCFTXio+XYn/bzXU0GV3srW77LHz6bkANXCzO4SZKyvM
+         MsWKygbn7t69uynM4/qdkB1cApYY7p9PK8gINz+9nlImcyeaf+Xv8FGaXFieWzp9WdQ/
+         aiPapMErwlf2Yhcp/pSRAW33t+d9hpASJZ4XyX6HrILDSmlsreKsXFh7+67YCgd6C0ow
+         SZLA==
+X-Forwarded-Encrypted: i=1; AJvYcCWpx201N0j/6qYOl9FHfxHJXUvkJMGj3JKPPMCY53jbjyKA2xAOwRmk3FD/atZQ3bSqAWHIgdG5eg==@kvack.org
+X-Gm-Message-State: AOJu0YxBzSq3efLy95wwiVwVrLjM8dV/aBMshEiOglr9VxmmKCKaqqfa
+	iI/5CPFBUIi/m8BEVhs27Jra+aVmI75UYOzJwNlz37GjWYQ/wEOInu/a
+X-Gm-Gg: ASbGncvXG65xhLhYkj0SVvBSb5u8sqlkq4rTApBUKB5H8uWwEP3KxpA2K46TsBAiDyq
+	s+jRC7woG+cYsy3sszmC9g7A0j5+Yw2Sr4ZEDYyS9kLPF3D2P7j0jM3ZHgNTkQRp2VJF8xhZ26T
+	xKgRinf5Z/lvo54ZN+HT65b3ayBoRfwV4lBSueO29C9/byM8DJ9bb1a5FJ6nIxdfqksP6csnLvL
+	M2x8O3c0a/86FSizaM3QAKn/mMoCry+pEjqtJ/aTtgi9zxXnkd3yK03UTfjyc5/M3QGCFuETC1y
+	W4GvpHtAwQpmXXCEc6uNipHI/yT9ltm602TzaB6h40OSsR6JQYH8bm7m4l7PKlgMHI2OGbYM1F8
+	eT/lgq0diRL3CiVOUy9NLTw==
+X-Google-Smtp-Source: AGHT+IHYzSam8oaaPBGoeoFOYde9ZA5LUMifw8sPAmxG2jXP0i4Znt5bpM3wACSxr0qigpThqDMa1w==
+X-Received: by 2002:a17:907:980d:b0:afc:d3f5:c40c with SMTP id a640c23a62f3a-afcdc362bc8mr521879566b.40.1755355564222;
+        Sat, 16 Aug 2025 07:46:04 -0700 (PDT)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afcdce53f5fsm393726666b.2.2025.08.16.07.43.22
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afcdcfccbebsm388692966b.59.2025.08.16.07.46.03
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 16 Aug 2025 07:43:22 -0700 (PDT)
-Date: Sat, 16 Aug 2025 14:43:22 +0000
+        Sat, 16 Aug 2025 07:46:03 -0700 (PDT)
+Date: Sat, 16 Aug 2025 14:46:03 +0000
 From: Wei Yang <richard.weiyang@gmail.com>
 To: Aboorva Devarajan <aboorvad@linux.ibm.com>
 Cc: akpm@linux-foundation.org, Liam.Howlett@oracle.com,
@@ -98,25 +98,25 @@ Cc: akpm@linux-foundation.org, Liam.Howlett@oracle.com,
 	baohua@kernel.org, richard.weiyang@gmail.com, linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
 	donettom@linux.ibm.com, ritesh.list@gmail.com
-Subject: Re: [PATCH v4 5/7] selftests/mm: fix child process exit codes in
- ksm_functional_tests
-Message-ID: <20250816144322.nh7qwwfiuhnjp76g@master>
+Subject: Re: [PATCH v4 6/7] selftests/mm: skip thuge-gen test if system is
+ not setup properly
+Message-ID: <20250816144603.43nxd74hz6nrockz@master>
 Reply-To: Wei Yang <richard.weiyang@gmail.com>
 References: <20250816040113.760010-1-aboorvad@linux.ibm.com>
- <20250816040113.760010-6-aboorvad@linux.ibm.com>
+ <20250816040113.760010-7-aboorvad@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250816040113.760010-6-aboorvad@linux.ibm.com>
+In-Reply-To: <20250816040113.760010-7-aboorvad@linux.ibm.com>
 User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Queue-Id: D7A8EA0006
-X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: hw7enhja68ybc9khk1q6oc9mrrhb5psz
-X-HE-Tag: 1755355404-242810
-X-HE-Meta: U2FsdGVkX18/+ai+OijAthDY3ZeLWqdqmFUVWJN9Vewc0MeCHOP+McWhsIHMvuP0ibXz0ygPQOe5eT2szdMDr6TSqdNMFpJLY1KEdY1z+O3BMjjlQgSMSOOMQT1uN28iAfsX+rDul0JfbWm9qyrBTojxKhqFAV9VxVtmGaQA+VZZb+2MhK+JOLoEkKOTeOFXdDuZjNT/XJSWlDh0GQ/VqZ+oyFep+K6nHjKqTEZTuI+ZGdY60MQov8DuGixnRqm7ksf2XhR9zM/zKP+nVz/+Kz4vS92kW4vdR/wD1+i1dD534wmfCdifj9S4J7IgS8DVjHg9IqjfXjGGrqGmhQgL/A4JFZzgxsRN+2fM5tnY81ufz/lMmKgJVyJ2vx40XK4NOMxiZ6jjeaCr9umo8Wey660FgCUj5jBtBqXH6W+n30Srg5nUqxYooeE89kqjq8I0YFWuNAwTp450pUWgx61pzYHmrFvoG2bksmwR2tW+Lpvl8ZBb6SFkPhIQrtqgYtBGxFk97vgl0mx9bmhxpmu8vQfvZ5rHNlM68p2RFoMTdoavnk8o2GE/e2h+KPm6N6H+84BnIfunJKSycGjODpcJcP0kNpWhMNi0qIU5kzUfx1PMRDKdcxl5oEeML4oWdyxH8hxA4JZ2xrh+RCtRY1WyNNgqh7oiDYEtKiOcfM5BFHq8giF1e7l2DuFby9J0o92Dq6bdU4guWVqjakZp0jkaIPJro6meCnPfqIAWONr5f9KRtr7jbSZvTLO5oRPnBmtJakfDnrVerBYwUr4924ekdn1Nv24HN1FEthcsB/KRd004Pn5nDWxtdUepP3GtWrQ7c8Pg6MnxBa9jFKCF4BKZvBPuL+z4bFcfbANE/e/MjmAdMzWOnhZ+B1T017sSKP5/CNI8b7WChQx1w3m3jYAdl2dxUSPDWbzm37SJUseyjPYWicbVkxXWpoXSYRbtNIHIu5PNVgS1206/c7Sp2KV
- GZzveyuH
- mvYa1sHggYOT5tetUvtMYdbpgwNXNqH8mHZjvxDcqubVDVSWrm8P83qWjcH62n4bWMljs6YY22FlD4+nJDF4P4Hm5Kng5AGWxwTKp/d0Z0mcAU4ufLrb3r/JvItJ/LZDAqy3G5nBjYlgQjHzclzmSmcwO4InnSm/NsWhuKL3QvXtwCwc5BXhzgG1V2IEeGZ5gF1Wl4UyG5zdkpcHA+JmAwPrLd0yZinWK7ZYYPwZiBwrB4gBBTTlg8OfJQPPcJAqLpTvFZ8fQaWLaYeBOpfsiCehSSDYNfQamic7uSLbuXxsRz1kjLUVvcOI/cRU5HtBzCoSpZg+lbFVxAE3VXP9bNP8tpRNfPTngW02RfvlPoSJvaBV5bCNiPAE3G40IixB5l7WhVgkIfMOXiMtX5XTDjWwSn2LBSImE5M+yVqOl58WYOJtymhvzQ3dSr3E/J4ihYEp0nJXFcSlhX+z7lxNUiZe6PmvsAb34hMY2+a2+9uxkENLDsULbKneDie9Hcze7Viqd4obcJtZY8lUpk6vT2JfO3Nc6piCLXGdqh5biVcqtSa6zgHooC6k85iWMPv1bQq6caDZZPhMEWy5HKHMdEMtq2j0BCAkqoq4Kr+SetrSRgZSQjvInxyYmOsPafxtInj4KtaS5UDzOrwjXggBLzR1yicU9ozCcoqLhvxYDnyHFlvEo1kUreCoebmWf0onT3f2y9eQqHZJ+X9qI33jZYj1bCagb9LTg7caCjFDoTtXZDH3FJrsNMaV/ogf54qsJHqyyarrqp8+cozJEdMUzdYSyQ+qVD66ZpzURw5W43V6c1P7I0+oywIJkX8nHsPA9Y+KQ
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BC096140009
+X-Stat-Signature: abitc5qbbq5a3cfq8z7ey1bqti8zzhmy
+X-HE-Tag: 1755355565-141773
+X-HE-Meta: U2FsdGVkX1+blz9qHtZR7C2BDcwnKggtZaFgcYhltqNJ8ikZZJk6PWqGlC8W3LyFynMJsMf7LUlz8h7lVln+XBMc0jREIWPs4ROMzr1MQ+7O5jLE83H3rlE0KC1h7T4UcuwIhL+TvxXCMAL7Va3c077T/WG6BZpmDRo70HZc6VwaoiyGmit/o9T+ugo5Yie9upgG39mcxAXy5fzDIQhcMZULQMwBHILFR4itPAIO3CN1D6fvY7YlZggAHWPl3g5ubew5+P8qmm63mQljG6EKXOOr/8XIuguyaNt2tTaO5lxwK+jGmBh75LGPRPZKv0xyEt1G7gyCY4ir1oXtnkkWKggm6F37sAUmfbQ5AuVHDhlHswlw9MmqlO9O1wjnLhewI9VMyh6oRD9vO6niNfdYKIyPvnxVwO2HC5Ucqxq31CoS8cTNQx9/8hXL/4uDQds14phth92sBxPLxHfhtL4pEfs2viMT2j1FFMV0Z4lmir3FHS1pkWq2xnkLNxKW2FHVy3wYONYkk2sJJ9zYNh3dSpYkNeKHr/LEUknTKq7gvkFKZPoNgraw5o0RDo0MnfblVXxze6weNSie9iupYw54yXtb61LNbKWmgdcXwiPUx8i9ZQP8yRABoLzlAq4jr29VI8I7NJurbS9v1K6jST8XAx00+LBj2OcSs/U5YxiwPdIm9wtyImMjr/R1x+8jnK4BuLJfV65pALeK6JuvHTBpCnBqv15Fn7eY1NB+xpUdAyvuniPwb5E9s/aT04ZQP0p2rMvzueieBusRAe4kMglK3cKBnhIDfBG8gSKoWzihGIQeFo0FRnuaXBJxWPqK9k+xcqcR3FOvNX/WMfDaS0G+IE46G6od/FtKWux6EqOkS1cQub1X+DORBKvDpXQrIwH7kMTCTjBNHqfEHmH2Xlja7dDWMvLrirGXLFWEdP4pbjRhg3U9oNCVSmSelFQlWAlPPuMsqSmF7THJqmKufaE
+ t8zdcc4f
+ q0rdqhkGBdzpHh+N9CAuNlI0IlyeHwQDJZj+/fMIoIWvXVqLdxH3Spy2sx9zwzZY9fwUzYm8cvg8BFyGM/LCk3hItuHtBbPGcH5HGfp9HDOTymsWxNOh4szzmU3NpoYe10tITt/3wNzODGpJXnxR1I3W5Re1555FhVOgd0RYiP03QyUbzSmvuSlrSXCmRgPmykIdrTWcwfGdVXO/0g4vN6M22cMMHHyH0mIH3H+DiEpx55weHvKfDyR6PaaKv3eycqB6DSWICq6AfODw48vkrig5c/nUD0ToXbKoDey48EuGIybQ3Bu5Vo1wb6mVitLv4TgB04wWRv0x7zo2zeHfHBGzyqRrbxTDBdrteuOP4YkQ2+mm6ipI4xpbK2sFuh2KHOipkIBWwzoKnFkgFlmogvJALxS1B957/NOufXS422m/IZKGdaQIXeixOE7unI8wLiNphMFD5Trl/M52wzE7jo3U7vcS23MUIfBF9yinR6YlUbKQgGSksIc2O51E3X36/qthVryl2CWJS77zijYrcLmLgpWTOStBC1bYbgy+Dr4RYj/3CmS+Z7ESfJ4ZpELejVpaW0ajZ3TRcWfGV0KGsHbiNtOhh2Mgezw3IKI5RCyYirYBtuS3XnX/Oh8grwzedzOgD0NyLwRHpqqB2BV9i5KRBnflw5vWBtI5mnc0/yzrbVLpEPizIQoc/+IbPZIG5su7xUptMPivKvVDI1v2IZiLLDSTqBSWJy15wPvqqgci/iM+aGsnohzkPPR4sp/NwqLLZNmaELrwpY3YlxGkMNDZckU9ZIt0TxkjwRbTr/AgFnwbk1g/ksb2BvpmWxJkpgtBN2YMJSiqOfdp9xsXl3bubno5NgFPCiP5qPnOvh0T6nLA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,63 +125,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 16, 2025 at 09:31:11AM +0530, Aboorva Devarajan wrote:
->In ksm_functional_tests, test_child_ksm() returned negative values to
->indicate errors.  However, when passed to exit(), these were interpreted
->as large unsigned values (e.g, -2 became 254), leading to incorrect
->handling in the parent process.  As a result, some tests appeared to be
->skipped or silently failed.
-
-This is because "the least significant 8 bits" is returned to parent, right?
-
+On Sat, Aug 16, 2025 at 09:31:12AM +0530, Aboorva Devarajan wrote:
+>Make thuge-gen skip instead of fail when it can't run due to system
+>settings.  If shmmax is too small or no 1G huge pages are available, the
+>test now prints a warning and is marked as skipped.
 >
->This patch changes test_child_ksm() to return positive error codes (1, 2,
->3) and updates test_child_ksm_err() to interpret them correctly.
->Additionally, test_prctl_fork_exec() now uses exit(4) after a failed
->execv() to clearly signal exec failures.  This ensures the parent
->accurately detects and reports child process failures.
+>-------------------
+>Before Patch:
+>-------------------
+>~ running ./thuge-gen
+>~ Bail out! Please do echo 262144 > /proc/sys/kernel/shmmax
+>~ Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
+>~ [FAIL]
+>not ok 28 thuge-gen ~ exit=1
 >
->--------------
->Before patch:
->--------------
->- [RUN] test_unmerge
->ok 1 Pages were unmerged
->...
->- [RUN] test_prctl_fork
->- No pages got merged
->- [RUN] test_prctl_fork_exec
->ok 7 PR_SET_MEMORY_MERGE value is inherited
->...
->Bail out! 1 out of 8 tests failed
->- Planned tests != run tests (9 != 8)
->- Totals: pass:7 fail:1 xfail:0 xpass:0 skip:0 error:0
+>-------------------
+>After Patch:
+>-------------------
+>~ running ./thuge-gen
+>~ ~ WARNING: shmmax is too small to run this test.
+>~ ~ Please run the following command to increase shmmax:
+>~ ~ echo 262144 > /proc/sys/kernel/shmmax
+>~ 1..0 ~ SKIP Test skipped due to insufficient shmmax value.
+>~ [SKIP]
+>ok 29 thuge-gen ~ SKIP
 >
->--------------
->After patch:
->--------------
->- [RUN] test_unmerge
->ok 1 Pages were unmerged
->...
->- [RUN] test_prctl_fork
->- No pages got merged
->not ok 7 Merge in child failed
->- [RUN] test_prctl_fork_exec
->ok 8 PR_SET_MEMORY_MERGE value is inherited
->...
->Bail out! 2 out of 9 tests failed
->- Totals: pass:7 fail:2 xfail:0 xpass:0 skip:0 error:0
->
->Fixes: 6c47de3be3a0 ("selftest/mm: ksm_functional_tests: extend test case for ksm fork/exec")
 >Co-developed-by: Donet Tom <donettom@linux.ibm.com>
 >Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+>Reviewed-by: Dev Jain <dev.jain@arm.com>
 >Acked-by: David Hildenbrand <david@redhat.com>
+>Reviewed-by: Zi Yan <ziy@nvidia.com>
 >Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
 
-If so:
-
 Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-
-Thanks, I am afraid to make the same mistake if you don't point out.
 
 -- 
 Wei Yang
