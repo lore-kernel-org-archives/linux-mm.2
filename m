@@ -2,116 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 90539CA0EE6
-	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 15:00:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2DD6BCA0EE6
+	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 16:02:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 139CF6B0377; Sat, 16 Aug 2025 11:00:34 -0400 (EDT)
+	id 45A618E0023; Sat, 16 Aug 2025 12:02:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EA7A6B0375; Sat, 16 Aug 2025 11:00:34 -0400 (EDT)
+	id 432068E000A; Sat, 16 Aug 2025 12:02:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F1B596B0376; Sat, 16 Aug 2025 11:00:33 -0400 (EDT)
+	id 2FAAE8E0023; Sat, 16 Aug 2025 12:02:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DCB4F6B0374
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 11:00:33 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6FEF913858A
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 15:00:33 +0000 (UTC)
-X-FDA: 83782931946.29.AF96D40
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 60E01160019
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 15:00:31 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=pe05GzJ+;
-	spf=pass (imf08.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 155B68E000A
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 12:02:58 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7F3408356B
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 16:02:57 +0000 (UTC)
+X-FDA: 83783089194.02.3E3AD4C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id BE57D4000A
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 16:02:55 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="pwMC0D2/";
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755356431;
+	s=arc-20220608; t=1755360175;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vul7COE0io0WgsaBqJz6prHxr50hd7AzfA83m1brrv0=;
-	b=q/vzrPpkPZZAhQcNHPwXu7L3kvhH6y00PQ7FJaMUklqhws9rUBGM2eTb/WUfEzaltpSt26
-	3nekCPrAF0PwKNcL7geX8+m2WnjPeZ5QjqFrAMc5Q9c3ukkcB5JaXIYd7oDqLq0gua97Me
-	673fu4KRWPN2yEOUWjYL3isn9q204W8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755356431; a=rsa-sha256;
-	cv=none;
-	b=zYQFCo2gMtmr0gRHibSABSGgN/psbVYwkEkldCILwm/3k7DzX6tGIcaNjiJFco5cKwFekW
-	jH9keAAePpfflf08YiVzUrRZYwqXKq2NWZ33uN3fNNWIcd1begJZbRZX+OeruIwG2bma7a
-	TRIJ6ygItGtFuRLHylhq39JfcI9nZ80=
+	bh=rFJEROw5iYhS4rseuKElZqF9FSRV7gYQF4Yx8wDDkK8=;
+	b=ceY3xkDac3oyG3ytaOv4dDszgJkfEGMYXDLaw46USNlddNq/ON4l3UD10/xpnWUXB6FGGo
+	JWG7YEsTqGyl2u3cxzUKodp88Ssc7W2wu6/QO4OKXWWs8l1DljxckCyhXRiiRHgFWipUHl
+	i4g9yPfTfTi8XDbZpQ6d1koYG+jiziE=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=pe05GzJ+;
-	spf=pass (imf08.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-618076fd48bso4526a12.1
-        for <linux-mm@kvack.org>; Sat, 16 Aug 2025 08:00:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755356430; x=1755961230; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Vul7COE0io0WgsaBqJz6prHxr50hd7AzfA83m1brrv0=;
-        b=pe05GzJ+xCbKPcpIWwjlrQKFkE67chKNF9TgeKOsqCFS6mYAVzKSAhRvVHaDcbfTs6
-         Egn6jddRRmsxT4itZRY1WqwQ4FOMZl9fykd7xJo4wcgN/s8o30bOfrOUusplo2t+W9Up
-         6jVx6EXN+/LTYNAticR6mIfY78DPl8IWownDuZOKkG/VWCm+fUzlmmD3ONvNSapiN5Us
-         kyb17NwVkK+JpoWt+s/e8mBboJU1iTSTDIqJ70HIhmNYEjvnnYiEp+7+0uFKroNNz48N
-         ufMjESFFK2J1ADgphATGl6vHKgqensFCGoK3TeBjaiSWNQkQLdNhaL0wqRxm3Wwgc72V
-         9LjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755356430; x=1755961230;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Vul7COE0io0WgsaBqJz6prHxr50hd7AzfA83m1brrv0=;
-        b=ANIXEjC++ZJCxM6sHSTCIrCEcf4/wU6xPJx+Y3ft24E7QiTXlZxsHMkvcGxxkIDs9H
-         AFqIbaphc56+uCG233KsvxNSZ51um2LM6UBzIfF7UxohF5RZmx/hNeXS/jrR0RWaEeCx
-         qNnjiCz9liYMyf69lkXEuOx/FTdPo4RIQWziJKbb7twqIk6/5Ncfa5vOaDkML1vgm742
-         4Dww9Z6dwMOpyXs7XtQ8wHYn56JRDx+6WNhB4EdB+3qNCsfPxW4p3WbDiM/yhJTT31DL
-         cdIAD2CN83teQ3O0itkwYTxgTX8o4+wweGc67cLWhZAMPa/Qes7N+BiYmSYBazZKsvMs
-         qPuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX0aVwx4rbpqzsa1f5/GF3e6cV1CLbPQo3yQCMj+nIO6AwXaxECXTeJPyeOp5DSfpIN7mn7HG9HrQ==@kvack.org
-X-Gm-Message-State: AOJu0YxaiX8W3ChQgicc/8jWMQAAzkXz9e4YRF3AfWoGAzSzedTga6dr
-	kHOmw3Y3tW+sVQDJC2h2EykmLoRZ7OZlqP2Ea0oX/UtuPvWx2a3126EZo9gJmozyVH6kc+l459s
-	8vgOykBnS3iZMgqLL1d2e+GNe+17tvTw5GDscZY10
-X-Gm-Gg: ASbGncv8WwH9riAL1mS/ONvb+JYIMoO/x8h1s9DKHI+P3Xd6m30IKBaWk8AKhSW8sBo
-	pFSJ9U+SaaT128Xuyk90aXQv6yJ6KGiHmAQ+ez6tBX1h8sfXKM7xuHRKMgNVNDXf1dlQBx5tZ5I
-	BsDYhVcJROySPUxmz2nbvJeBG2kkAa5H0D04vwuuneEF533vHwy2AGx2VmQkDkR7pey1WrLSfV5
-	9nOBTaeroIPBTq6hT4C8agfbwJHsNfmv/f/Ibocs+L61aJPX7QzPjSh
-X-Google-Smtp-Source: AGHT+IEBzRezYSYENEGQB4vdaRuKAx6mnqwYgnJlL+f4GN/mn8+qaw7DmjcIAZ19UuK4URTXsDvO8Pn1rKjDF7g3rts=
-X-Received: by 2002:a50:a688:0:b0:618:8373:30f0 with SMTP id
- 4fb4d7f45d1cf-61989f4aabdmr42872a12.2.1755356429386; Sat, 16 Aug 2025
- 08:00:29 -0700 (PDT)
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="pwMC0D2/";
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755360175; a=rsa-sha256;
+	cv=none;
+	b=T14wWhSkBRFWfj1AqRFtwIwjOYehv1TWsdF8Dumjx+QFmIz7nff8NGwTVuZhhLPstTiYNh
+	N+tXdWnAT5UlDzsdBrzWSqP5sG51OAh4ljgqYU/Em0FlZES7vLGRLEShZMj7ytHEBEq1C0
+	EkuM4pmxFlivYW/J4q3JWUY9umCUOPc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 47EEC43829;
+	Sat, 16 Aug 2025 16:02:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9AE9C4CEEF;
+	Sat, 16 Aug 2025 16:02:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755360174;
+	bh=ktZjid3+BpzR8rOMcJIPTq3guGfZitnWVvcU1eZzbFs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=pwMC0D2/2yQnF9vzZbqBk8XQjcx825f6bAT18NQKmIEjhUvEAJKC8YGaR7wsLrnYT
+	 kKGigUhIwO6ZiJwCiiLsRZsFwJn8yDBG5OHKBCKxZlDvI7d+0KwoNw8GPJTXk2S7mF
+	 HawKjKG17hQEtoeNgbvDbDQMVnmKoKOqv0gci8+LtqULDjIickRY4vrrcJZxcHj/8v
+	 lv02uAMwrHy6V/eWYjPYN8OZzFBQQKC+S5x3awpNZGpbfKsWl9304Xf9dV53UxPRWM
+	 BXyoGTqFT6RVIe65iTcB8VwDGN/6VKa0HGt4+a0Ps/CXtrI8mQCFE1aRPZg8yTLT8O
+	 hn60Eq0gmRMCw==
+From: SeongJae Park <sj@kernel.org>
+To: Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	honggyu.kim@sk.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	stablee@vger.kernel.org
+Subject: Re: [PATCH] mm/damon/core: fix damos_commit_filter not changing allow
+Date: Sat, 16 Aug 2025 09:02:51 -0700
+Message-Id: <20250816160251.63436-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <CABFDxMG2Mr+zO6i7a2_J5S5j7+4etiQYFur=0a+U3oNOS8TMMA@mail.gmail.com>
+References: 
 MIME-Version: 1.0
-References: <20250813193024.2279805-1-lokeshgidra@google.com>
- <CAGsJ_4w5bAJHyBrwb5+n_EANqzhz4cFSX+9yZacmOiXVJZ_Dkw@mail.gmail.com>
- <CAGsJ_4wt_30C82B9_ZoOB2umBi-u_kE441ARvYoJVjkLtLqFCg@mail.gmail.com>
- <CA+EESO4NfgT6uAP52eQEt4_cx7KPdHv4MxnSw_UwHVSurime8w@mail.gmail.com> <CAGsJ_4wwHMDocUjg=PBGafWYXmyDdbuDOi8kB3Xm2Q=J3VpCbQ@mail.gmail.com>
-In-Reply-To: <CAGsJ_4wwHMDocUjg=PBGafWYXmyDdbuDOi8kB3Xm2Q=J3VpCbQ@mail.gmail.com>
-From: Lokesh Gidra <lokeshgidra@google.com>
-Date: Sat, 16 Aug 2025 08:00:15 -0700
-X-Gm-Features: Ac12FXzNg6vh5n_QlZ8x6Ax4Y-ZniX5_i1umDqlfb7dKVuW-D5hNIsKUXldoccI
-Message-ID: <CA+EESO7cO7WBPvrrC2BqHqT0sg4k4J60c7bQtN-T68kJCWC0Yg@mail.gmail.com>
-Subject: Re: [PATCH v5] userfaultfd: opportunistic TLB-flush batching for
- present pages in MOVE
-To: Barry Song <21cnbao@gmail.com>
-Cc: akpm@linux-foundation.org, aarcange@redhat.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, ngeoffray@google.com, 
-	Suren Baghdasaryan <surenb@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	Barry Song <v-songbaohua@oppo.com>, David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 60E01160019
-X-Stat-Signature: y9b1ibhz93f6k6c76kneay343a6yuq5p
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: BE57D4000A
+X-Stat-Signature: 7skop7xzaaa161gopiyi1593p815yy1t
 X-Rspam-User: 
-X-HE-Tag: 1755356431-954983
-X-HE-Meta: U2FsdGVkX19azVU17rDlpytlULZktntfFe7SVTlDduH0MarWyQOWeDvG+xpeIfSls72a8v1vW4qfzzXPdX8hAj5u9crzH/ZsSiFJlVo7vqWa8LEAKr8T7oo9W/5i4Z1EmURL7nzbFakF7f7PGvetI3N69G35Wqn286AFOHRanvL1GsB21S+icIVG23/jiqfHGxpLyDEleYOtAO0zwN1D1spxfJXrGhi41f0TDvkgBdWpf+Q2q5seoLD1plabJ2+UxVHnLShsSDBMNTF4QldVCQW+xqmyfRC51qaD/1OiuRYEG46TQYZv0fBi+o0RWs1MYLlDgOqlxbRF34pd2JyJihI70xatnz9GDg0s3YihbV/+qlAdwqYTBtfrPUPuZk7tfe2YzXF0kvodGvuLtxoixqnCJkswSf5UHMAqbotbpYa0Rl4HA72UP56pZxLYNPd61z169OmYeqPjUKEZU2Pr4Zy+Fagu0FNh2cN6FSitij+UjtXMDtrmJz3Y9jRp44jwumRBhAzOY/78py6QBvf5Toqhr6VSqWp+xJgMn/iuH169ggI/iKJVOTKYmMdAtN/G2ES9///Lmn2RjFIjViSpfmy5y3TfLYwGQc2soF0yAmyajGgia6Eg4VnT3oRORe6PmpzLFe8l0+MdKOQDhS69X4rRNYEcWtfEnCiBrFmtFW+PLJvIMdRdu4ghk9xtyYAbo6WvvVoOXXchUc0qHY3IEFfKJLRdVSutQWdtSEnu8lYT8jU4hU/2XmNzKkJ5NyrhZzibcemvaf/3TZ2HLeyYzZIjgs3DomSJJ+14qmmGCSihdgu3Cf/2oC832sPbkJFbBl/pc3QiqkT7Jxdh0/Ki+j4p1I4GxAG5h7nmo+19OqDSGLkV3+bPApsSGuT7LMcEA+f45ORhpblhBGQJjp8KtyUDiCafqLoagnBl57kTjUpg2mP+TbLDaQI8QgriDoH9hXsO8bJ5mLPFbeNTael
- 7ML2sbcV
- rvWAobuEmT2jONa2HK3yaJZ9bGQY2pD88/T6Z0rdQyoc9JfnbIA+FcXSBNBHdijteS1tnAIMPNhAeN5oEq/5MsnpzywwOJW0fZjTp0aczSvxpx1k13YTPLi9h7b7u6U6nhZcHgYkwli+4fIMKMBkKz9AeyvRO+9opPjWy8gJRBhD8lVnzOwCa10xbOPmSLp7dFURoRu33v0V+U8O6t2RWUUWW9c0Bzv974QHdhbwlCaC8hHTm0vNsWuFkOHpbjFqFuQXIbAs7xm44w/j2H7ipqa/VFxn0sIz9zNo84gxPh0gPKC9tCY8Qfjk2dw==
+X-HE-Tag: 1755360175-17587
+X-HE-Meta: U2FsdGVkX1+/6QEtq/S1zJzw1Y3FOUlJv5NZoveFdlLl7c2bZe5RK4Mxj4rPFpOlgGGBgMA3palHkPvxrDzwWMw5ZTEZVHyDa5fM4cYLx07U8NdaxRQbewbGKnRtZy42qxgLWCZ3nKmLxUdvAAml/lvdGvTzNOJFrp8urPfyemQZT4jJrN2Iv4cnPDtJWBV0q425Emb9CVgjy7hPqJsTVLA2QNGfs/Aux9o0W3cd5suxTlQxKDVpkF4u6uQ4sLhDQwHbRZatsB9mtpMoVB0HvHw8LhXFeIDHjMLLNrrKbP1DGtQHaO64GowJ/2NF8ZRt8+Pz2YRS9Tx5h4oi0acOO5NmuRMk60wsJCQHLDWe87jrntlDftvl0YbH7OdH9i/XAqEjDHgVJmfXOeGMmYrNq/DG4CvRtdWPDcXarb0QUwvNN2rbobT91sTwJ1uNJKpq2LsHOY8ADfaa4SpwFvy/rdoOPCuVeRvOPVzeWkPzggD1XNpfYbUTUyHOcTMTFBGhnx7NGvEwlM/1Q8FV25hHfteF+kmVMlKYUxaQzILEKtFo3RW7u4+DQeMkseP/DGpuy34AhHLORh9bOHo4PTHkaHRgHr+/RpT5cKfzFJ1223+RU+WzQNm0RujV/bFGHW/TShES56mr1LiwM3b0T41xGpQEF374NxBztUjUPQdqo19kNSLb7TmCWKrADShGWr8NItSsSsIw9J5RQ621PSMJOsMK4qqo9Tl3QU1BZv1hGr8gniyfda/KOK514Zy/tlSi/TMWrbhG1PVHgly23Xz7g4BtztSAc2/S6Dik8x14YwlpDxcQs0AZ7pBkUIvKniye0yQz9XVjH+h1BgGu4TlkCkZGCCt6fA1sNfKQoBgTqrJwIN1WWzpEUKb7xeK1QKd1uU47mRO92hkuD+hToumu9skqok1gR3lbOBX8P1gGGUkIGuoQuS6UFWWEGqe5oCGNktZK4XJoD8MipAsGCH2
+ QEh208Bt
+ LG0Pp6BvlHphYnkxj1DhcIvzDFdY7D1U7EWHgq07TrE3zPaBrPwzUpcqgjVDpaqncoyC60rWYL+CMDpUIAIHQCnevOztltoKS7aAv3WYYg5m3PnK15f4droR9D7QEeoPsljb/LMG9SDW030Lk7aX2tKKGOvNBGH7aa3bEH/WGdmNq6Uwvo1r/JD+seT3yfz1dzLeOjO/bn0IHQ3AhBsQydVDLNwxWE3B58G1akdNba6VZp5w+MY2JBpRpQzIlQ1QOC9wFgImP8yqLUxcweFqEmphuWy0CFYO5enLK2lZtXBLMUZ/99YJCbJsBUjhHs3MxjaGfbCPTzyyB8zo9cdqRbX36/A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,154 +94,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 15, 2025 at 11:38=E2=80=AFPM Barry Song <21cnbao@gmail.com> wro=
-te:
->
-> On Sat, Aug 16, 2025 at 12:27=E2=80=AFAM Lokesh Gidra <lokeshgidra@google=
-.com> wrote:
+On Sat, 16 Aug 2025 10:18:13 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
+
+> Hi SeongJae
+> 
+> On Sat, Aug 16, 2025 at 2:25 AM SeongJae Park <sj@kernel.org> wrote:
 > >
-> > On Fri, Aug 15, 2025 at 3:11=E2=80=AFAM Barry Song <21cnbao@gmail.com> =
-wrote:
-> > >
-> > > On Fri, Aug 15, 2025 at 9:44=E2=80=AFPM Barry Song <21cnbao@gmail.com=
-> wrote:
-> > > >
-> > > > On Thu, Aug 14, 2025 at 7:30=E2=80=AFAM Lokesh Gidra <lokeshgidra@g=
-oogle.com> wrote:
-> > > > >
-> > > > > MOVE ioctl's runtime is dominated by TLB-flush cost, which is req=
-uired
-> > > > > for moving present pages. Mitigate this cost by opportunistically
-> > > > > batching present contiguous pages for TLB flushing.
-> > > > >
-> > > > > Without batching, in our testing on an arm64 Android device with =
-UFFD GC,
-> > > > > which uses MOVE ioctl for compaction, we observed that out of the=
- total
-> > > > > time spent in move_pages_pte(), over 40% is in ptep_clear_flush()=
-, and
-> > > > > ~20% in vm_normal_folio().
-> > > > >
-> > > > > With batching, the proportion of vm_normal_folio() increases to o=
-ver
-> > > > > 70% of move_pages_pte() without any changes to vm_normal_folio().
-> > > > > Furthermore, time spent within move_pages_pte() is only ~20%, whi=
-ch
-> > > > > includes TLB-flush overhead.
-> > > > >
-> > > > > When the GC intensive benchmark, which was used to gather the abo=
-ve
-> > > > > numbers, is run on cuttlefish (qemu android instance on x86_64), =
-the
-> > > > > completion time of the benchmark went down from ~45mins to ~20min=
-s.
-> > > > >
-> > > > > Furthermore, system_server, one of the most performance critical =
-system
-> > > > > processes on android, saw over 50% reduction in GC compaction tim=
-e on an
-> > > > > arm64 android device.
-> > > > >
-> > > > > Cc: Suren Baghdasaryan <surenb@google.com>
-> > > > > Cc: Kalesh Singh <kaleshsingh@google.com>
-> > > > > Cc: Barry Song <v-songbaohua@oppo.com>
-> > > > > Cc: David Hildenbrand <david@redhat.com>
-> > > > > Cc: Peter Xu <peterx@redhat.com>
-> > > > > Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
-> > > >
-> > > > Reviewed-by: Barry Song <baohua@kernel.org>
-> > Thanks :-)
-> > > >
-> > > > [...]
-> > > > > +static long move_present_ptes(struct mm_struct *mm,
-> > > > > +                             struct vm_area_struct *dst_vma,
-> > > > > +                             struct vm_area_struct *src_vma,
-> > > > > +                             unsigned long dst_addr, unsigned lo=
-ng src_addr,
-> > > > > +                             pte_t *dst_pte, pte_t *src_pte,
-> > > > > +                             pte_t orig_dst_pte, pte_t orig_src_=
-pte,
-> > > > > +                             pmd_t *dst_pmd, pmd_t dst_pmdval,
-> > > > > +                             spinlock_t *dst_ptl, spinlock_t *sr=
-c_ptl,
-> > > > > +                             struct folio **first_src_folio, uns=
-igned long len,
-> > > > > +                             struct anon_vma *src_anon_vma)
-> > > > > +{
-> > > > > +       int err =3D 0;
-> > > > > +       struct folio *src_folio =3D *first_src_folio;
-> > > > > +       unsigned long src_start =3D src_addr;
-> > > > > +       unsigned long src_end;
-> > > > > +
-> > > > > +       if (len > PAGE_SIZE) {
-> > > > > +               len =3D pmd_addr_end(dst_addr, dst_addr + len) - =
-dst_addr;
-> > > > > +               src_end =3D pmd_addr_end(src_addr, src_addr + len=
-);
-> > > > > +       } else
-> > > > > +               src_end =3D src_addr + len;
-> > > >
-> > > > Nit:
-> > > >
-> > > > Look at Documentation/process/coding-style.rst.
-> > > >
-> > > > This does not apply if only one branch of a conditional statement i=
-s a single
-> > > > statement; in the latter case use braces in both branches:
-> > > >
-> > > > .. code-block:: c
-> > > >
-> > > >     if (condition) {
-> > > >         do_this();
-> > > >         do_that();
-> > > >     } else {
-> > > >         otherwise();
-> > > >     }
-> > Sorry for missing that. I can fix this in v6.
-> > > >
-> > > > By the way, what about the following for both cases? Would it impac=
-t
-> > > > performance in the `PAGE_SIZE` cases?
+> > On Fri, 15 Aug 2025 18:40:59 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
 > >
-> > I just wanted to avoid a bunch of instructions in two pmd_addr_end
-> > invocations for the (len =3D=3D PAGE_SIZE) case, which is not going to =
-be
-> > uncommon. But I guess overall, it is not big enough to matter so can
-> > be removed.
->
-> Reducing the number of instructions doesn=E2=80=99t necessarily improve
-> performance=E2=80=94in fact, it can often have the opposite effect. It ma=
-y lead
-> to increased branch mispredictions or make the code more memory-bound.
-> In this particular case, could branch misprediction be the real issue?
->
-That's true. I didn't even consider branch misprediction. I will
-upload v6 which removes the condition, thereby also fixing the nit.
-> > > >
-> > > > len =3D pmd_addr_end(dst_addr, dst_addr + len) - dst_addr;
-> > > > src_end =3D pmd_addr_end(src_addr, src_addr + len);
+> > > Current damos_commit_filter() not persist allow value of filter. As a
+> > > result, changing allow value of filter and commit doesn't change
+> > > allow value.
 > > >
-> > > By the way, do src and dst always have the same offset within a
-> > > single PMD? I don=E2=80=99t think so. If not, how can we verify that =
-if
-> > > src=E2=80=99s PMD is not overflowing, dst is safe as well?
-> > >
-> > > Have you only checked src? And for src, since you are already using
-> > > pmd_addr_end(), is src_end =3D src_addr + len fine? Why are you calli=
-ng
-> > > pmd_addr_end twice after your first pmd_addr_end has already limited
-> > > the range?
+> > > Add the missing allow value update, so commit filter now persist changing
+> > > allow value well.
 > >
-> > Effectively, we have to calculate min(len, extent in src pmd, extent
-> > in dst pmd). That's the max that can be batched within a single
-> > critical section of src_ptl and dst_ptl. The first pmd_addr_end() is
-> > calculating min(len, extent of dst pmd). The second pmd_addr_end() is
-> > calculating min(result of previous pmd_addr_end, extent of src pmd). I
-> > don't think I'm missing any overflow check. But please correct me if
-> > I'm mistaken.
->
-> You are right. I misunderstood your code yesterday.
->
-> Thanks
-> Barry
+> > Thank you for finding and fixing this!
+> >
+> > >
+> > > Fixes: 9cb3d0b9dfce ("mm/damon/core: implement DAMON context commit function")
+> >
+> > At the time of the commit, damos_filter->allow didn't exist.  I think below is
+> > more correct.
+> >
+> > Fixes: fe6d7fdd6249 ("mm/damon/core: add damos_filter->allow field")
+> 
+> I found a wrong commit, I'll fix them.
+> 
+> > Also,
+> >
+> > Cc: stablee@vger.kernel.org # 6.14.x
+> 
+> I'll also add them.
+> 
+> > > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> > > ---
+> > > While fixing kselftest, I found another bug and succeeded in
+> > > reproducing. I think this patch is similar with previeous patch [1].
+> > > Also instead of sending patch with test, should we check which is better:
+> > > a seperate patch or patchset?
+> >
+> > Separate patches are better for me.
+> >
+> > I'm not sure how you will make the test, but I'd usggest making the test as a
+> > kunit test.
+> > Please refer to mm/damon/tets/core-kunit.h file.
+> 
+> I made kselftest with drgn, but I think that kunit could be a solution as well.
+
+Thank you :)  I prefer kunit here, since the test should be for the specific
+core function that can easily be tested using kunit.  Writing it as a drgn
+based selftest seems too much to me.
+
+> Honestly, I haven't used kunit test before, so i need to look into of
+> that. Please just wait a little bit.
+
+No worry, take your time and fun :)
+
+FYI, you can run DAMON kunit test as below:
+
+    $ ./tools/testing/kunit/kunit.py run --kunitconfig ./mm/damon/tests
+
+And the document is available at
+https://docs.kernel.org/dev-tools/kunit/index.html
+
+
+Thanks,
+SJ
+
+[...]
 
