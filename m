@@ -2,89 +2,92 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 79ACBCA0EE9
-	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 16:10:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 50F61CA0EE6
+	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 16:23:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 073498E0024; Sat, 16 Aug 2025 12:10:23 -0400 (EDT)
+	id CEBAE8E0025; Sat, 16 Aug 2025 12:23:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 022BE8E000A; Sat, 16 Aug 2025 12:10:22 -0400 (EDT)
+	id CC3EC8E000A; Sat, 16 Aug 2025 12:23:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7BAD8E0024; Sat, 16 Aug 2025 12:10:22 -0400 (EDT)
+	id BD9D28E0025; Sat, 16 Aug 2025 12:23:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D3E558E000A
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 12:10:22 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7A8CD160407
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 16:10:22 +0000 (UTC)
-X-FDA: 83783107884.05.E5B21BD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id D815014000C
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 16:10:20 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gX9I0BMF;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A90288E000A
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 12:23:49 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1304CC03E9
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 16:23:49 +0000 (UTC)
+X-FDA: 83783141778.02.C17F1F4
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf21.hostedemail.com (Postfix) with ESMTP id A9F541C0004
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 16:23:46 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=HMOGqysT
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755360620;
+	s=arc-20220608; t=1755361427;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3tfpCAGsVtRyAJUXlmI4xOb33OBzTi9PEAhbYlZz+cc=;
-	b=rDRmL+fj28NlQni9kJ8RgNAvSFnUPAa+YRv47Ga/b3y2Nzv67MbZzG5oIiux3NS6RKl2zb
-	DCnxVFQbV5V+N9zA6rnZ3jDIATJM2b7u9nUbf9CUm2qLm6G0iw+qtU8rwSnm8u2LBMtMmE
-	2m21ehDuBc1OYWO04E0O14YQwkZy9rs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755360620; a=rsa-sha256;
-	cv=none;
-	b=1MiYaN7hMOptaszbM2aSBMFbFrOK5hhF01EO1+UFu9Xp7+zy534vt8WxhkTh8KItZioDZG
-	UFgWab7oIS9ADl3f1iIVhhbu81ASE8YzEoD0J5TQapIaB5XhiNp2wB1P6Q18LfMe2wHc9g
-	oO28GtY79dOdCn0SPn1WhV2nqklbR8A=
+	bh=+HWoCRfW0ZS3On5syAjsKZlW7if0MwQudqfkU82yqG0=;
+	b=DoN6Gf/ssbbRkKJdk349vM/SVMiG7gwQrw+Md0JCCJRvNMQHhhWyLGy6LGrxCpOYQ9ym0B
+	nKoh6Et8z3eJ4ZNEsiXOYoq9zeiaAmtXxarRJ8FLN4G4S/xxblsDQVNLpf4xn81ciGfqf7
+	n3KpCinIJHaLWcxcPBKEhiF2SIg6HgU=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gX9I0BMF;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 40E4B613F3;
-	Sat, 16 Aug 2025 16:10:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C60A1C4CEEF;
-	Sat, 16 Aug 2025 16:10:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755360620;
-	bh=dvV7dkSDKHOe3uTIJaHJRjvzm9dgErExd276G6LKKEg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gX9I0BMFfx847u0g9Qcvr0PdLMcjCdGZGNF3ef3Oh225nzkdRmmSTVoBVpORDEx4s
-	 Vbt0HW2IdbwcRQ3XJl9I/9OfAP9bsATqnAEHKKTr9iNU3Ga2BB4AanixDYSXvYo6ax
-	 qBuedFW/UVm4yMqIUVZy17SCg09iM+yLo/7bfb8efllSCbTPC6nMqE6ItjEY7sbECJ
-	 50lIuAVwbMy9wddoBLOid0prubrnqb+gXz3hNPC8n5PyEhFerVndjbK++WyAfcL6U2
-	 S72uG1VUmVJ1Y9ac6ISI47bbM0o4GghpRaqRK7oiN9P9v+i3xw3EqiW9pqqlataqs7
-	 5io568DjxjABA==
-From: SeongJae Park <sj@kernel.org>
-To: Sang-Heon Jeon <ekffu200098@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	honggyu.kim@sk.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v2] mm/damon/core: fix damos_commit_filter not changing allow
-Date: Sat, 16 Aug 2025 09:10:17 -0700
-Message-Id: <20250816161017.63692-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250816015116.194589-1-ekffu200098@gmail.com>
-References: 
+	imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=HMOGqysT;
+	spf=none (imf21.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755361427; a=rsa-sha256;
+	cv=none;
+	b=ZZ+Hs9+huhcXQMAzDhAkKbkszZS1bT/JnBVXtUFypQmaT74jsSHm8eJ8ws8dQSPhgBD/hu
+	P02Wu+CtKDrcyPZGhnOfead6esiRR1lsaQ3STeLpKyr/5xyc5yy0dMLYeL2OnHfBCoemSg
+	vtKZ/c9Mg8gyYh2jC/iiAMXRviEzD08=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=+HWoCRfW0ZS3On5syAjsKZlW7if0MwQudqfkU82yqG0=; b=HMOGqysTT3F9ZUtoBjslEpxSXf
+	2fnpQ0k82dLplCoE0BwdsVAy4ZlphT/D5Gc2+VmttgWr2TF7flKJVz7VU7F5Xcf8IURFcUzF8w+Zc
+	e0wWfuHrOU16HN7/npGnZAJvEZj6876pZIgdYwET0gutT27dTQ/yt97hGM/iE3jV/bBChcf+vwKQY
+	6zRwV8Sc5aYb5LYPr5n0JE1UQJ+O1u1JmuW1n59ptIqeyuLgkFeANS9EJPKmYUqiG3LaY1AY1M4aV
+	usd2JntfNIbuqZWe1cqbtCvNCZ3LTeqAboQzHrRCwLzm/QGY4qAHdk/AaG1b29z6ZxLMddcqMMse5
+	gim6anmA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1unJgy-0000000BceU-1n72;
+	Sat, 16 Aug 2025 16:23:40 +0000
+Date: Sat, 16 Aug 2025 17:23:40 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: David Hildenbrand <david@redhat.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	Zi Yan <ziy@nvidia.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Harry Yoo <harry.yoo@oracle.com>, linux-kernel@vger.kernel.org,
+	Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH] mm/migrate: Fix NULL movable_ops if CONFIG_ZSMALLOC=m
+Message-ID: <aKCwjCJTEhX4Q6wW@casper.infradead.org>
+References: <20250815090539.1578484-1-chenhuacai@loongson.cn>
+ <a20d605c-79a0-4d89-985b-9512a990b492@redhat.com>
+ <CAAhV-H470h2HDEN_NY2qNBxUqQrSRQhLzwqZe9PB8GjnNsZVFQ@mail.gmail.com>
+ <66ebc632-6704-4637-b62d-1cb11e5a4782@redhat.com>
+ <9db98f7f-b90f-464b-ae7f-e94ac523bc28@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9db98f7f-b90f-464b-ae7f-e94ac523bc28@redhat.com>
+X-Stat-Signature: fg7ttxb4ut7wyrpan5tyiwmtw91m51g4
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D815014000C
-X-Stat-Signature: d3wth9pzd3gt1ahh1stebfjsgkagmtoa
-X-HE-Tag: 1755360620-500358
-X-HE-Meta: U2FsdGVkX1+YJTdy9iVd/wd4XJf1q1+fbPgCdPUTDZQQhMqCxdwav2bRy0azOEoWaWUiDYDcgUBOKVKwRGYVnYRDG3BqFEpBCj9luQMNtzUBeDMZum7jGu2wmgU4gR0za2KkBqJ/Qm6B9iCUAJXqa5GoLL4YqWFWpxtHhJF53rOSCpfcpTOzFHAOr3LSW4o+3Hvq+jBNqkUpOCV4uCSMhCfiiYSCOF6pnnq2s9IHxwPqgbTFx4hFlgq58+w8CUW63USqTIVir+Bb2ZEhjOyqU3g1quS+uz/j2muy9TNrP+GxotSyxCyucEZqBC1jn1gWshnz3BwStdFDtDcvniYg/U9MWLouelksU92KeN9bq7nsvcZuRRKm4WjfWNXDofO+y4OTxKGEMS8fBEcR/jmOUPsArvSXt5MYgTNYvMB+xXBsewUAqhg1sI7SkbDaTgHlxD3bx7aAknXJitHxLyCOHsoFqssb/RbuYhDH99U1e4L2SubqY0ZoPiYYzYATw3/9Y/uzrcl4TuY/xtWoP8gqHhaB9HO8ZRi7vY//fuSdsQSTCYXwMsOAqIPthPlAiBrOHvbl898pFp6W5jsDbJLMnvy/WefGrPa/PWfy9GLLLNmJpztC42r4VcPm8Z8Y2dlW5tJ0fgxrQcuKVYbQvU8WOLyKI1Hnz2LRAU7MJQSOk0Sv9DDZVDTv+NPc+tdp5TflxiTtIf31oRuAQrGu6+p4no8xf23tSRMbN5FXuMj+t6GDhkaaZ0wtmp+KNZSee2ZFjv4ONMZIpvLdEIQQcLyaZ5Xv7kDwmPf41C10zwm8sEG77D2cZv/A5+BXxQZdtjG/+PeNSIbb+DZXXbNb6cU9fsAgxCS7i0h8wk4jkCbKL0YkCaiF/IeUq5LiF/Fb0rIOnmkBZ636XGPfAjFoshUZm40WMMpYDuUWtHLPsX0hmqko6baEEDWgsh1Mnf8v9O/WUU5UIXl9L4hzx012t7R
- WDtS4mBp
- wKzhw1kyObQTmMyUNRBUteO5QLHr1pShyv66fjvYeoaNgDEPKYie/+KAeHBF22lAOpejSLvQf67iL+p/1rp1DmMDzeiCf9m/ZyRTktXrQwBt887Dva2/hIyBRhc+adg9SMHI+ty6IPGGIkUa9p790x407hUOgN9XXTZJDkycqfFN0X9axx3Mp3a4PAbO1QONihINtV0Mc8VKBYhz35/5KFPVYi79Mp4WGzoLq6GlP6oYMwLY3qxCtSqAMlm0pOBd3w+6EreEaRzgqwTuZO4fjOPN0rRmWkHzsrI2RMVAV61hmPQ8=
+X-Rspamd-Queue-Id: A9F541C0004
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755361426-880894
+X-HE-Meta: U2FsdGVkX1+HYQpFXz/WnB3g/DvPp3M3WG23zLumX7BXOrDzsuKo7oarV3xqX67OUdmRJ1Ix0tSKT9aiakca1MG2R4rT/pASrI0/xizFjBzGGwivbrFrq5L2kBSRtf+CvQeMVlT762MTFo0bfgpuSPU3+cttsyY2pQhzsutzXgFrTLvA2IqgugZ6OX6PxUom6KCJJafCc0uVn13310vh7aRUu2xiw0pANF6Iw08KDK3Hn0ki6pwtYj5fYv0yPRUkDXyekNu9dhwg/wJzuAq5GiW+GzeNrgFBeGLwXr7WKcm9ZcOwo9aS4+MObknFnjlrWJqaW8653temiAFqhLmqIoJL6ZjO/MUHmzWOBqeDcpvJpjYbZt7Pd3HKSN10mPD5c5oDZu2MAs9BLgTx35LockSNjBd6KB2FNhE42dhyoDExg2D66HLQRCvGyBTUt4pob2wLyxmQ4T8CpUi6ZFjNcDBOfE85VR0s1yEZsMnQ6/qZ7oCmv2sB7LiA+cqO5kjEa7bCLp5lLp47C6ZYPVRdsfHoBS4OVKxvw3CznQHGRy3GxNvp+o6w8O7FLqpO6fMBJwyFUSBg+a3YT0zDBhSB7LyVLwqnjfa/jGkc71z3QDZgfBeuCehxDrOhsMHFxeJjAYikho+2cNXtSFViT+lQyH0ySyqNbZnDqX5RNXpcMwFAD2NVgPs0M+6t9Iw5nnSzGvh+35X+wePCiQ+fgk9Kr6NLaKc2FOx0KuvgtlM+BER9DXXzZVwyYi1LKGCGnDbqPZnhMyNarkYH/v17pxKyKIkSbnWW6A6VXjl3tliHqeU+5xEy6LKIgbSqoyjpa22mDtITGj78VdxdZATjoNJqevXj+jFkN7enQH//neb+FGB/CWzGLE2QhAsNoa2818v9yQmqCFa1qBjddb0rmkrqOsJY5mYSU7d3RkxlfIK1Esuxn8GlY9ZtmJ15XAAVHzjz+Is7YWeOBhQs/KpGBc6
+ 8pFP81Qn
+ HFIeIG6apy3/dlwZUyIT1NGqaEoqOTwJz7AI43aBDJfeTg7G5T/BlmHq3bE8/4khv1NwEblKZATgnsBxAGOO7Xt7Ajj5ynRjF9fTJIwVCgH2Eni3vy0MqL3Uchyc456QJeoDalil1PF2AuDerYS2k7tqesnrgttaq0ebuXXQqY9Bi9RpcPN+ZDQlcRYqa9e0v7nB4mpmkXg8pLihmjeqovMqzLXGGZ8CNj2bp
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,26 +96,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+ Andrew
+On Sat, Aug 16, 2025 at 12:54:52PM +0200, David Hildenbrand wrote:
+> +++ b/mm/balloon_compaction.c
+> @@ -256,8 +256,10 @@ const struct movable_operations balloon_mops = {
+>  static int __init balloon_init(void)
+>  {
+> -	movable_ops[MOVABLE_BALLOON] = &balloon_mops;
+> -	return 0;
+> +	int rc;
+> +
+> +	rc = register_movable_ops(&balloon_mops, PGTY_offline);
+> +	return rc;
 
-On Sat, 16 Aug 2025 10:51:16 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
+Using 'rc' as the name of this variable is an anti-pattern.  All it
+tells you is "this is the return value".  Calling it 'err' is far
+better because now we know it's an error number (or zero for success,
+of course).
 
-> Current damos_commit_filter() not persist allow value of filter. As a
-> result, changing allow value of filter and commit doesn't change
-> allow value.
-> 
-> Add the missing allow value update, so commit filter now persist changing
-> allow value well.
-> 
-> Fixes: fe6d7fdd6249 ("mm/damon/core: add damos_filter->allow field")
-> Cc: stable@vger.kernel.org # 6.14.x
-> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+It seems to be a particularly IBM derived antipattern ;-)
+Some internal style guide, perhaps?
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
+> +void unregister_movable_ops(const struct movable_operations *ops, enum pagetype type)
+> +{
+> +	switch (type) {
+> +	case PGTY_offline:
+> +		WARN_ON_ONCE(offline_movable_ops != ops);
+> +		offline_movable_ops = NULL;
+> +		break;
+> +	case PGTY_zsmalloc:
+> +		WARN_ON_ONCE(zsmalloc_movable_ops != ops);
+> +		zsmalloc_movable_ops = NULL;
+> +		break;
 
+This might be a bit excessive ... just passing the pagetype and not
+having the sanity checks should be enough for the tiny number of users
+this interface will have.
 
-Thanks,
-SJ
-
-[...]
 
