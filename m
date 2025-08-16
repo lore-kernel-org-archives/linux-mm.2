@@ -2,138 +2,114 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7372ACA0EE4
-	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 04:03:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0EB27C87FCF
+	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 04:15:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 117966B0485; Sat, 16 Aug 2025 00:03:06 -0400 (EDT)
+	id 885C78E0233; Sat, 16 Aug 2025 00:15:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EFDA6B0486; Sat, 16 Aug 2025 00:03:06 -0400 (EDT)
+	id 836AA8E0006; Sat, 16 Aug 2025 00:15:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 005066B0487; Sat, 16 Aug 2025 00:03:05 -0400 (EDT)
+	id 74BF98E0233; Sat, 16 Aug 2025 00:15:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E6C5E6B0485
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 00:03:05 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BA2C4B8B46
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 04:03:05 +0000 (UTC)
-X-FDA: 83781275130.17.827E87A
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6E98E40005
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 04:03:03 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=j9Td8sW2;
-	spf=pass (imf12.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6386F8E0006
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 00:15:15 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DD360140348
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 04:15:14 +0000 (UTC)
+X-FDA: 83781305748.07.8BC148C
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 27BE4C0005
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 04:15:12 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=aCIFT63H;
+	spf=pass (imf22.hostedemail.com: domain of hughd@google.com designates 209.85.219.177 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755316983;
+	s=arc-20220608; t=1755317713;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PMcQ23ZFIrS4lFSR/NDkPpS8Eu4jYkAwRz0zhZuUv6k=;
-	b=CYJ4DDv8o4qdYnQ1kWP9dOWwzPikImw4xLGpawXgSqw7d3Asx+xrcVbZWQxivCBtIbkPjz
-	r3igGnOcfPBe+1Mr87+sgDr1x/jzFbczSKxnSGVPGouU0Qdm9uNMhoEnoX5PBZeJF6UYnj
-	rnTs6jY7AeOhDJEsfbV6plx5ELeJjn8=
+	bh=KUehadT0V53VE6Ngws3FvMAkJvl7sJD5MGU+DK0jxI4=;
+	b=JxmObp7VyP+7uj6KfIVb0ALQmGJgL1Q6Ntdja3EqjU8W6rarb5vh4FPFIsV9D6OTpLEZpc
+	vHNqXTxUeKV80Cy9gq9jlZV3zH/Dj9sjMdrTv9GszpokOrVQA9vSpS/cEp8V4agBQy7cYP
+	Fp6R4VQLRUzb1nEURZq7bXHSHXLyjhI=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=j9Td8sW2;
-	spf=pass (imf12.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755316983; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=aCIFT63H;
+	spf=pass (imf22.hostedemail.com: domain of hughd@google.com designates 209.85.219.177 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755317713; a=rsa-sha256;
 	cv=none;
-	b=u6yc3c6o+XQW8Q5EAda9V8lFiQ/HeCeR9rz8jH1kVYqnuF/6qBHLyN8VEzJuRgAGC+9DCY
-	8Lp3/P6xc0gO0VKxk3tMUJHEareGvtGvaGAZS2EKMw3CErdlRKJ1fl85YDNtqkqFDS+wFY
-	MWCpxL+Ivtt/clOvoCQpi5WdYx6AoCU=
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57G304XN027324;
-	Sat, 16 Aug 2025 04:02:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=PMcQ23ZFIrS4lFSR/
-	NDkPpS8Eu4jYkAwRz0zhZuUv6k=; b=j9Td8sW2STyOO/pbDydh8RUjN5ieShndq
-	VG+a+Rq3OgI0/GBFva3YHlrJaAv7B5SPDl8KyUvI20BkonUdXEKSf3lMlGxLG2PC
-	oMrgKgFh8OT4kqcoGZr9oXfURLdTgKRjJtrzhjkEkG52yq7Afj9KqPanH6X2pUGv
-	5DmVqyaqtoABEKJed83ay+Lj4hGJe4kEFBM6MDAAqA110Ke2ffKGKLs37D9U1UcY
-	sPcwgdXSfUyx+IC/fR5bT4Uo7d7aX6w+FpXLkaCO9LrKqdPnf+FNfHQY2h7k3BCM
-	ZL+5dBFm97XxGaPFEErBcmr7ok3pcUbr+7ODtLbzbWVmdCC+83xbw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48jhnxr46j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 16 Aug 2025 04:02:58 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57G42vcS004763;
-	Sat, 16 Aug 2025 04:02:57 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48jhnxr46e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 16 Aug 2025 04:02:57 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57G1TB5j020615;
-	Sat, 16 Aug 2025 04:02:56 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48ehnqbrv4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 16 Aug 2025 04:02:56 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57G42qLp49873340
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 16 Aug 2025 04:02:52 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 225C920043;
-	Sat, 16 Aug 2025 04:02:52 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 04A7420040;
-	Sat, 16 Aug 2025 04:02:41 +0000 (GMT)
-Received: from aboo.ibm.com.com (unknown [9.36.5.210])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sat, 16 Aug 2025 04:02:40 +0000 (GMT)
-From: Aboorva Devarajan <aboorvad@linux.ibm.com>
-To: akpm@linux-foundation.org, Liam.Howlett@oracle.com,
-        lorenzo.stoakes@oracle.com, shuah@kernel.org, pfalcato@suse.de,
-        david@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-        npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-        baohua@kernel.org, richard.weiyang@gmail.com
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
-        linux-kernel@vger.kernel.org, donettom@linux.ibm.com,
-        ritesh.list@gmail.com, aboorvad@linux.ibm.com
-Subject: [PATCH v4 7/7] selftests/mm: skip hugepage-mremap test if userfaultfd unavailable
-Date: Sat, 16 Aug 2025 09:31:13 +0530
-Message-ID: <20250816040113.760010-8-aboorvad@linux.ibm.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250816040113.760010-1-aboorvad@linux.ibm.com>
-References: <20250816040113.760010-1-aboorvad@linux.ibm.com>
+	b=PUbYdmeTFhelertitDBoLqD2T5d8IbHvRTomag+YNNkIkyQ5oCbPEcAigCM4xG24mmXIDI
+	CVMJ/C+HZgDkV5DPr9jz67lBu0k54O9Qzs/qmJSi7tnh66oEZiTBlcRqG+f8kVCchyf9Xx
+	XYOYQ897HI1pYAHh+Yf8vDTaNkHPEK8=
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e931cc2ab5fso2170999276.2
+        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 21:15:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755317712; x=1755922512; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KUehadT0V53VE6Ngws3FvMAkJvl7sJD5MGU+DK0jxI4=;
+        b=aCIFT63HMg170IIpLbYq0ELNZhduFiX1+GBoAZJTotOrjHFJtphrFO6uA0NZ3hhaew
+         w+Z+TDyD8TlLaJ3HLi7gSNxSWZl1FRXR6JoC9ERnj60T1rK2zMT/Lh+u5H8oaJoGPbDJ
+         ytSj6jvEhz4s5GjmCV83UIUDi2T7QJe8Yk8tymI3OMNG95oYt1ukARn6d2Nq82rJ6HtK
+         oDlk0ALQQ5BoIKpYx3fqaydeI+Jhgvtx5R3PAOnTKXapUHUB71sYJhsyDWdaQdxB6i+L
+         D29YQ3u6RY5ISZ6j2DjlDue/z1KnFbQSSzRvDnjUI+4/MJDT3HoCB7aoymH/aDJVN3Mh
+         gX/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755317712; x=1755922512;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KUehadT0V53VE6Ngws3FvMAkJvl7sJD5MGU+DK0jxI4=;
+        b=xKOBkOGrSGqs1uzd6GFPjmGeJFGf/QPgd1Hf4FmtZuwrT5braABKBKloNxVhmuls/3
+         4KdiTG0ZFrFqzpXgLCX/Ay7qTS7fg9HZYroHFmFtwFGn7zKMbZhxUGeFNgY1gYuGyBuK
+         IC4KrphYXDHWAocZpjeGYtLLakA4L1FzOpUauFVTexX3HnRYaT2fJS88h4ydoSXeXb3r
+         WR4awh4kkJ/MtoDxNziArSgOQhpdJDA8t1Dpi1ViDRoKAcU0y9kUnmCV5zxerjmaSpa1
+         JFVZgiFJ64wiu0HBeMLVWSfTAj+KQ7LjuaPPrawRCxFLXatkh6Q11ZkxkJoL3b3HTvUf
+         IcNw==
+X-Gm-Message-State: AOJu0YwwWPOobouNz3tLnq2mF6nF9kp++cm+IC8X6LoJJN1Ot88D1Ayu
+	DsgN7u7bUatBdZAAHh5LCU+ZO8y8lWSzPKCN7/YD/w0k8gNZIdo/sxKRkXiNQPHa6w==
+X-Gm-Gg: ASbGncvJ72JCstwBY1Qsf6pMsmIM1jEbodgqvh1PUnQzwxz8LbtQX81tBu41r/U+3De
+	JJPVAnRTMG8nTeLp098X1las4SitOGPOEeAB2KErEnuRqUul7aWgrNB/egL9CqJxtH2lAr4vlb9
+	D+uG6fBUPPiy6oIdDALbfxfXSKO0MupavlPuXYR50uzRkPzb4xAIQj0TcHZTEluqDfYM/bPH2bQ
+	11iANsY8DtguTlBqv10U8E2AFrfrBJKLUJwa+neL5mfJN7JrljPHzAJsspfjLu+cxf1eAY+0wL1
+	JN5V/MpRxNv8N4c8twO/T2guh4DNl1QEmKIiHQFlUAN3K2DLvMe5gqSIAUmrZiQKaCP6kA/lzur
+	82XBKdf/UmNWF3D+efbfeol2deBi9X/vm7xdxlI6lwdYApWsw+/vUfRQVMT0ANqiLng38eI52+J
+	NQAOY4XsNbftmodh8vwsZbJ+Zw
+X-Google-Smtp-Source: AGHT+IEoz5xk2tT5r2yE8JK4nthMMpd7ZQMp3zWO8Q0rCgmw7gen9uSYcCzOmwTuA00q0E6HkEXVTw==
+X-Received: by 2002:a05:6902:320d:b0:e93:3c21:cad0 with SMTP id 3f1490d57ef6-e933c21cf24mr2813695276.13.1755317711784;
+        Fri, 15 Aug 2025 21:15:11 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e933288971esm1104986276.37.2025.08.15.21.15.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Aug 2025 21:15:10 -0700 (PDT)
+Date: Fri, 15 Aug 2025 21:14:48 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Will Deacon <will@kernel.org>
+cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+    Hugh Dickins <hughd@google.com>, Keir Fraser <keirf@google.com>, 
+    Jason Gunthorpe <jgg@ziepe.ca>, David Hildenbrand <david@redhat.com>, 
+    John Hubbard <jhubbard@nvidia.com>, Frederick Mayle <fmayle@google.com>, 
+    Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>, 
+    Rik van Riel <riel@surriel.com>, Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [PATCH] mm/gup: Drain batched mlock folio processing before
+ attempting migration
+In-Reply-To: <20250815101858.24352-1-will@kernel.org>
+Message-ID: <c5bac539-fd8a-4db7-c21c-cd3e457eee91@google.com>
+References: <20250815101858.24352-1-will@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=XbqJzJ55 c=1 sm=1 tr=0 ts=68a002f2 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8 a=Ikd4Dj_1AAAA:8
- a=9-ECl0np4EkliaZUNCgA:9
-X-Proofpoint-ORIG-GUID: DsoJurbOVixvCwG9hjw2GXYFWuwatWgd
-X-Proofpoint-GUID: nGAL8WzpqwAdoD_KGG-f6QOBx5h3cC75
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE2MDAyNyBTYWx0ZWRfX7wdgCsGcsdTN
- Y3TlhNndkcy962LcryatPdwy4CAd45T+YeL7jbdV2QSxLkMIImqqkQP3LET3Mbmh2so6bemJigL
- xyV/zceGJTnBYfffdQMiAc6qbHAVvMXBEW389ndib7IeVFNsdBCRVNsmUSReml2suKuwuZmzDzR
- vuj2nuMstzWIYhiuEwOSv33eJw4HavKdNfEkEavIhprAgbdBWSptXiO5cKabtue7JlJOMId8ygd
- FdJ3NYLcqfNijYJ/5/jj5jNY+WK9AlmqoPdGvjZ3wmPu1jTW5XsZWVloaFlS/mEon16h592mazQ
- MXlMR/IeY1GbRy6SyjMkZw7H9MzaQ88C0RQYz2+Z7fNrzwWDfp8fAferO4U6ZYGAk47IyDQ2QsQ
- LQxUg0WK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-16_01,2025-08-14_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 adultscore=0 suspectscore=0 priorityscore=1501 bulkscore=0
- clxscore=1015 malwarescore=0 spamscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508160027
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6E98E40005
-X-Stat-Signature: m9zfj86eu8gitzfymtrbsbbgijtdu3n9
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Queue-Id: 27BE4C0005
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1755316983-564051
-X-HE-Meta: U2FsdGVkX1+tmhm4vAKfz0C4UozwvJ+T/nv7EwoB04Dopzq9oCfy2+qImAAs/QRAZpKiYpXcpOK8SPNRIoRUzQ2dDxzHwg/aQIVQvH10nc/TBWT+BdOXMaY6hOHcCzp7447n4amPai58zUAndrs6gX6u5O7wk1db9jncSPR0XGEtp1cvI1kip6A5TXYYJhx6YxOBkmKHbajOGl3LXAzr5KvgZBwHt77RgnX3/Ce6xRM5t7VNmt1+joCNtYsAxK1s9ISE3S7TApC4GLZs197eVMXHo/aQcLiBqsqTDHXY5pbWidI7ALsHEnIMICZogdCKdLHkOsdStYcd6skllXKqXTKQxUhOfaAV75GTwM4xVtlbTB6MEGp+vewawJhMGIkEEAdeA5Gj0y5LdO5r+Po6cfE7I4V1gqe7eIUBz4GUBh3jbch1Zat4yHOUqF2WTA+J4KYqNtAiP9mjDeaVrqlyQlS+eGoEF+49nwnN/3zoy25BHH6cnLWMACNGNp2si2S4fcNKob/Pjj+5N09O4DATd0XG8VhNAOvFgbPTki91NXogmcNr9OPt9WfhGCqR0RjXkwRiDmzTqbomt5Zm5htj71aFRFWRRBy8oisZUm7ph2CpN290Q8qcN23vPXfxEJVPLsC84YomgXU/YwjqCO7LPIOxiCeBmyAbZDZFGumFZk8Mnb2W6ZcR4+Q496oubtgGIHDqUPbqb5EDu3DrebTdkoSECb8BY3PcOmTsWv3yUClEtrcqdm7mQd1B1+c6fxAK/zqnhCdtVRjA5F3m+HXr0rlVWMav7PLUzysFKCwurm6YTjcW9HVe7fIzK3WfiuW4c20Qa/IlY/94TDVHGC86bf41B0WYb/mUChqISD65ntc+LDJOuc1PIZ228wtkFjb6d0D95Kl0yc9udHJab8U8fxD7XhpJU0DkFzsuWTkvHDgah9lNtOG6dX4h86WMJT0s
+X-Stat-Signature: idr6ujq7yihr9y5jdeddemqrw7s3i9x8
+X-HE-Tag: 1755317712-731244
+X-HE-Meta: U2FsdGVkX1/cpeuFdrQ6WH4pY7Q+h0AeKbuRowQjWBp9vlH2X4izpHgqiPOH1ayzI2WhgKsf0K5tWTHqfd27uc1SEL3gQFSdHL/ME8AbbfKA1IvztbwxL3HZUqcQ+SRkE5R/bE0Uhq3CrcQs+N7Ziq8IFJvzrxEmyIeuok9XEgBEWJDbkapppM9uTqi3gNcP8Kh4N5/nSwbUWz0SzCyPTFN6SFrmyMH/KMXy4GY7bNPho0rCMW9JuwNGyeoC0U0lKWoctw4A9qLC8qUNS7OjgEnClIOnlPXCCaw6Qo57TAQRG8OjXmQGvid6ayAHQ7wff9aGYUz4llmEMx2H9rfQTiLidIspCHyK6mttDSUZw84Om5GCTZ5rB1OrlUzoIk9SM0jtX8A4Rhb/Oh1wLuvM2VpvFpDcA8hf9uyy/3r1gVt1LbS2pQjP/sPbEVUfYA5NaQEGTzLPe4F1txfV8oj6WzA33DC9FUjC9ttGSD6zjTmVMh2e0lXEmf+o/XUipYPR6d1E2geRLFg6Pj2l6eqYFBg8tdmmEg4OntC1ve52uNcCeVEuxS5OqiamBXfxxsdPeV1JPe8pr3hMrBk62a6+qcRUBd+YfR6dbpOVTaRlUNNTDW5CM3TAIfNbhqSIMnx3551lE/yDPZkxC6ooOMzXNw6HMwRi7Grt+yBHQ7LBXvSKa0jA/CLeGRcX8LlnUwc+DR3toHNGFgMD7PK99d9RJbW1ctOVqofyPCGWmrJiyQZbR//ZxkkabjYh47Kfcwdqc5zdQQP6nOae28GFyP+Ai4Pio4jrZJHQ2BYA8A3HMOz1Um1ilYCqqkgYAYIpydA5iZUAbTNmWJBA8ADNQk+Y9uoJAHts1xxp2XjhF9OZoqREkm3vCZQP1Ujo8oY/jRPsZByD15fw7THCklzdoYbDGnJx1eycDTqDzSiDKT8FR9+OGrdrwOq0ejwdAgrdZIzsLXQ8x08Zyk9UfrWsl/Z
+ BTN6APY4
+ WEexj8LkPGHKl/Zr2OkD714I98CW6lBI9iJSDk95qSpcR1/15AxLtTmfdCBG3u+A+N0xTu3TlEyzMYt0RcOuLcI+Ea2gJE0AK+fg882nSXc4ICakxfceJmMUuv5BXEDxTPYIgwwq/z+HYbEWRqEr6Wci9aj9Jl8CpLhn7vYD3zJWUYQiH7OaM5CmUyKabbvyOHT34qSFwb4aypZt5F+nF7iAQsXXLJfGaLkEdRzbR5TkiwqNzceImAReloSkrLimypuTgCJ16huX8awmCIN5XdkgJHCg11aR0KIG5R7ZVPrSHmgXzAm4k6D8fZSIE8bGir/OAob/X5ANAOwL8cQ4ave1vm5plWQzSlCKmJm1SKYMrUyHSMj6LrCPywtvFWsFktWg+m+oJeElc6hsTskGMzfmi1KyXLtELv7MYY+HDKfvIz6e0N/j3H1kAt4c2efxjvOQpsI6WOqHcZHcrMvude2pubx0Z/TU4FL8ghGR4dOZxx6d1FjXzb/9jng==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,70 +118,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Gracefully skip test if userfaultfd is not supported (ENOSYS) or not
-permitted (EPERM), instead of failing.  This avoids misleading failures
-with clear skip messages.
+On Fri, 15 Aug 2025, Will Deacon wrote:
 
---------------
-Before Patch
---------------
-~ running ./hugepage-mremap
-...
-~ Bail out! userfaultfd: Function not implemented
-~ Planned tests != run tests (1 != 0)
-~ Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
-~ [FAIL]
-not ok 4 hugepage-mremap # exit=1
+> When taking a longterm GUP pin via pin_user_pages(),
+> __gup_longterm_locked() tries to migrate target folios that should not
+> be longterm pinned, for example because they reside in a CMA region or
+> movable zone. This is done by first pinning all of the target folios
+> anyway, collecting all of the longterm-unpinnable target folios into a
+> list, dropping the pins that were just taken and finally handing the
+> list off to migrate_pages() for the actual migration.
+> 
+> It is critically important that no unexpected references are held on the
+> folios being migrated, otherwise the migration will fail and
+> pin_user_pages() will return -ENOMEM to its caller. Unfortunately, it is
+> relatively easy to observe migration failures when running pKVM (which
+> uses pin_user_pages() on crosvm's virtual address space to resolve
+> stage-2 page faults from the guest) on a 6.15-based Pixel 6 device and
+> this results in the VM terminating prematurely.
+> 
+> In the failure case, 'crosvm' has called mlock(MLOCK_ONFAULT) on its
+> mapping of guest memory prior to the pinning. Subsequently, when
+> pin_user_pages() walks the page-table, the relevant 'pte' is not
+> present and so the faulting logic allocates a new folio, mlocks it
+> with mlock_folio() and maps it in the page-table.
+> 
+> Since commit 2fbb0c10d1e8 ("mm/munlock: mlock_page() munlock_page()
+> batch by pagevec"), mlock/munlock operations on a folio (formerly page),
+> are deferred. For example, mlock_folio() takes an additional reference
+> on the target folio before placing it into a per-cpu 'folio_batch' for
+> later processing by mlock_folio_batch(), which drops the refcount once
+> the operation is complete. Processing of the batches is coupled with
+> the LRU batch logic and can be forcefully drained with
+> lru_add_drain_all() but as long as a folio remains unprocessed on the
+> batch, its refcount will be elevated.
+> 
+> This deferred batching therefore interacts poorly with the pKVM pinning
+> scenario as we can find ourselves in a situation where the migration
+> code fails to migrate a folio due to the elevated refcount from the
+> pending mlock operation.
 
---------------
-After Patch
---------------
-~ running ./hugepage-mremap
-...
-~ ok 2 # SKIP userfaultfd is not supported/not enabled.
-~ 1 skipped test(s) detected.
-~ Totals: pass:0 fail:0 xfail:0 xpass:0 skip:1 error:0
-~ [SKIP]
-ok 4 hugepage-mremap # SKIP
+Thanks for the very full description, Will, that helped me a lot
+(I know very little of the GUP pinning end).
 
-Co-developed-by: Donet Tom <donettom@linux.ibm.com>
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
----
- tools/testing/selftests/mm/hugepage-mremap.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+But one thing would help me to understand better: are the areas being
+pinned anonymous or shmem or file memory (or COWed shmem or file)?
 
-diff --git a/tools/testing/selftests/mm/hugepage-mremap.c b/tools/testing/selftests/mm/hugepage-mremap.c
-index c463d1c09c9b..2bd1dac75c3f 100644
---- a/tools/testing/selftests/mm/hugepage-mremap.c
-+++ b/tools/testing/selftests/mm/hugepage-mremap.c
-@@ -65,10 +65,20 @@ static void register_region_with_uffd(char *addr, size_t len)
- 	struct uffdio_api uffdio_api;
- 
- 	/* Create and enable userfaultfd object. */
--
- 	uffd = syscall(__NR_userfaultfd, O_CLOEXEC | O_NONBLOCK);
--	if (uffd == -1)
--		ksft_exit_fail_msg("userfaultfd: %s\n", strerror(errno));
-+	if (uffd == -1) {
-+		switch (errno) {
-+		case EPERM:
-+			ksft_exit_skip("Insufficient permissions, try running as root.\n");
-+			break;
-+		case ENOSYS:
-+			ksft_exit_skip("userfaultfd is not supported/not enabled.\n");
-+			break;
-+		default:
-+			ksft_exit_fail_msg("userfaultfd failed with %s\n", strerror(errno));
-+			break;
-+		}
-+	}
- 
- 	uffdio_api.api = UFFD_API;
- 	uffdio_api.features = 0;
--- 
-2.47.1
+From "the faulting logic allocates a new folio" I first assumed
+anonymous, but later came to think "mlocks it with mlock_folio()"
+implies they are shmem or file folios (which, yes, can also be
+allocated by fault).
 
+IIRC anonymous and COW faults would go the mlock_new_folio() way,
+where the folio goes on to the mlock folio batch without having yet
+reached LRU: those should be dealt with by the existing
+!folio_test_lru() check.
+
+> 
+> Extend the existing LRU draining logic in
+> collect_longterm_unpinnable_folios() so that unpinnable mlocked folios
+> on the LRU also trigger a drain.
+> 
+> Cc: Hugh Dickins <hughd@google.com>
+> Cc: Keir Fraser <keirf@google.com>
+> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: John Hubbard <jhubbard@nvidia.com>
+> Cc: Frederick Mayle <fmayle@google.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Peter Xu <peterx@redhat.com>
+> Fixes: 2fbb0c10d1e8 ("mm/munlock: mlock_page() munlock_page() batch by pagevec")
+> Signed-off-by: Will Deacon <will@kernel.org>
+> ---
+> 
+> This has been quite unpleasant to debug and, as I'm not intimately
+> familiar with the mm internals, I've tried to include all the relevant
+> details in the commit message in case there's a preferred alternative
+> way of solving the problem or there's a flaw in my logic.
+> 
+>  mm/gup.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/gup.c b/mm/gup.c
+> index adffe663594d..656835890f05 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -2307,7 +2307,8 @@ static unsigned long collect_longterm_unpinnable_folios(
+>  			continue;
+>  		}
+>  
+> -		if (!folio_test_lru(folio) && drain_allow) {
+> +		if (drain_allow &&
+> +		   (!folio_test_lru(folio) || folio_test_mlocked(folio))) {
+>  			lru_add_drain_all();
+>  			drain_allow = false;
+>  		}
+
+Hmm.  That is going to call lru_add_drain_all() whenever any of the
+pages in the list is mlocked, and lru_add_drain_all() is a function
+we much prefer to avoid calling (it's much better than the old days
+when it could involve every CPU IPIing every other CPU at the same
+time; but it's still raising doubts to this day, and best avoided).
+
+(Not as bad as I first thought: those unpinnably-placed mlocked
+folios will get migrated, not appearing again in repeat runs.)
+
+I think replace the folio_test_mlocked(folio) part of it by
+(folio_test_mlocked(folio) && !folio_test_unevictable(folio)).
+That should reduce the extra calls to a much more reasonable
+number, while still solving your issue.
+
+But in addition, please add an unconditional lru_add_drain()
+(the local CPU one, not the inter-CPU _all) at the head of
+collect_longterm_unpinnable_folios().  My guess is that that
+would eliminate 90% of the calls to the lru_add_drain_all() below:
+not quite enough to satisfy you, but enough to be a good improvement.
+
+I realize that there has been a recent move to cut down even on
+unjustified lru_add_drain()s; but an lru_add_drain() to avoid an
+lru_add_drain_all() is a good trade.
+
+(Vlastimil, yes, I've Cc'ed you because this reminds me of my
+"Agreed" in that "Realtime threads" thread two or three weeks
+ago: I haven't rethought it through again, and will probably
+still agree with your "should be rare", but answering this mail
+forces me to realize that I was thinking there of the folio being
+mlocked before it reaches LRU, forgetting this case of the folio
+already on LRU being mlocked.)
+
+Hugh
 
