@@ -2,139 +2,104 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 78186CA0EE9
-	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 18:31:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 996B6CA0EE6
+	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 19:11:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09EB46B02C5; Sat, 16 Aug 2025 14:31:46 -0400 (EDT)
+	id F2A4A8E002E; Sat, 16 Aug 2025 15:11:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04FA76B02CA; Sat, 16 Aug 2025 14:31:45 -0400 (EDT)
+	id EDB6C8E000A; Sat, 16 Aug 2025 15:11:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E32AA6B02CC; Sat, 16 Aug 2025 14:31:45 -0400 (EDT)
+	id DA3188E002E; Sat, 16 Aug 2025 15:11:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CD1176B02C5
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 14:31:45 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3AAFB1DD80A
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 18:31:45 +0000 (UTC)
-X-FDA: 83783464170.23.48A7290
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E367540008
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 18:31:42 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=a67ON98K;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="kiip+/on";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=bKVvBBTY;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=f93zNYiR;
-	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755369103; a=rsa-sha256;
-	cv=none;
-	b=3j/u2V+X1aVhv7QBTqqpR/n8zK5DuAwZpE0ei1T/jwUF4UqGKzM9dX7CzIj/FovuGO+2MC
-	W4U2IgMhPsFSJv5+Y1sBQX3ZxutgkovlEwAA+Mld4qV1YcRwny3phIE771utr+n2EMVOcR
-	FLqaPpFazkSnaY2O0jCH77aVn19FgWY=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=a67ON98K;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="kiip+/on";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=bKVvBBTY;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=f93zNYiR;
-	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B8B568E000A
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 15:11:39 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3493958FC7
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 19:11:39 +0000 (UTC)
+X-FDA: 83783564718.05.33446D1
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 6A7091C000E
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 19:11:37 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=vyS0MJn2;
+	spf=pass (imf18.hostedemail.com: domain of 36NegaAsKCGcQTPJXMLNIWFLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--lokeshgidra.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=36NegaAsKCGcQTPJXMLNIWFLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--lokeshgidra.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755369103;
+	s=arc-20220608; t=1755371497;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MZ3PzzQW4uU5pO1+Nv8StLCU9Y2RLWdIj4dVek3lkDI=;
-	b=WGaKkYApw0skvFFdj/osrlljQNJZ40le3aPE8mP49TNljN4TeEVsY61ZjUJPYAnZ5X4p1Q
-	9QIyVwnyZ3H6RLZiJPyiEAUTBJQT5k9li1ybMmeKlcisNX6+63wLSEiyBuQbhMFEfzn+0+
-	YlJt0ZpUl9Abl86cbW9S/nla4RaX1ZQ=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id F0613218A2;
-	Sat, 16 Aug 2025 18:31:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1755369101; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MZ3PzzQW4uU5pO1+Nv8StLCU9Y2RLWdIj4dVek3lkDI=;
-	b=a67ON98KsieZnR/spc10Co8TpfbvY3xcYpL8D2IEq/J1Gyl+7pejh9tT6uPZLa8zA30bKW
-	GAnBLDQZW1WWFtCPhNJCKERpc/zSWDdIjpdD+LvMUeKWmfLEYzoWV2DuwDzmNSlctd+Yc3
-	oLUzEHam25aon1K7Ry2NmftuNCvMdvQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1755369101;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MZ3PzzQW4uU5pO1+Nv8StLCU9Y2RLWdIj4dVek3lkDI=;
-	b=kiip+/on8sp6CwHWeBqziZ4ozj58C4JBiB/8t7IZn2JxYTGXh6BpG0z7cUW2A0Ua8djjWc
-	wj7AW7OtMvc0M1Cg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1755369100; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MZ3PzzQW4uU5pO1+Nv8StLCU9Y2RLWdIj4dVek3lkDI=;
-	b=bKVvBBTYYLXnsNrbclQiGjxZ3ubzGm9CanfHWACJkm7FavAwLfUMFpl8Ew3rYSc1HwWvl4
-	laEm0Q6xqT15DLksm0Va/baEjWoPVOez0gXvnJIhjmkyo3gepp5mEyP44XYWg440X4QC5K
-	Lli6ht6CzzwXAj9cU8tnnwzCUbSBWe0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1755369100;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MZ3PzzQW4uU5pO1+Nv8StLCU9Y2RLWdIj4dVek3lkDI=;
-	b=f93zNYiR2qbUNvmFmi3gy8tpI5JmBwwIPaCI2QFZnL3PZ+PCGoBGzToZigb3ypIj1yvGTG
-	WL/pYKM1BwMiP7BA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 72EAA13432;
-	Sat, 16 Aug 2025 18:31:40 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id LqE2GozOoGgqCAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Sat, 16 Aug 2025 18:31:40 +0000
-Message-ID: <22666e86-2523-4136-94e6-0de126fcec1e@suse.cz>
-Date: Sat, 16 Aug 2025 20:33:47 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 00/14] SLUB percpu sheaves
-From: Vlastimil Babka <vbabka@suse.cz>
-To: Sudarsan Mahendran <sudarsanm@google.com>,
- Harry Yoo <harry.yoo@oracle.com>
-Cc: Liam.Howlett@oracle.com, cl@gentwo.org, howlett@gmail.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- maple-tree@lists.infradead.org, rcu@vger.kernel.org, rientjes@google.com,
- roman.gushchin@linux.dev, surenb@google.com, urezki@gmail.com,
- Greg Thelen <gthelen@google.com>
-References: <20250723-slub-percpu-caches-v5-0-b792cd830f5d@suse.cz>
- <20250815225259.3012455-2-sudarsanm@google.com> <aKA7180s0HdLfOKc@harry>
- <CAA9mObAiQbAYvzhW---VoqDA6Zsb152p5ePMvbco0xgwyvaB2Q@mail.gmail.com>
- <498fc518-d78a-43a4-9196-507891e9b844@suse.cz>
-Content-Language: en-US
-In-Reply-To: <498fc518-d78a-43a4-9196-507891e9b844@suse.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam03
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=D2b4I74l91nF0HRNssQ7bSgGkLbdaG7n4udVN8wFuGU=;
+	b=BY3p+ht8GQTpWImMRk4FgtJgbYIdm1wjOETsBIZYFwcGN87WlR9iNXLFQkj0+fn+VecGfF
+	ggrXHvmpRKr0LUlOFirNRo61YO+/rD7J7qGQ1pCJITvjadcgQAQXO2ThkWXP6+b+ebQUOG
+	Urr5tTKT979ODK8oEfljq28Y/6Ns7yE=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=vyS0MJn2;
+	spf=pass (imf18.hostedemail.com: domain of 36NegaAsKCGcQTPJXMLNIWFLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--lokeshgidra.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=36NegaAsKCGcQTPJXMLNIWFLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--lokeshgidra.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755371497; a=rsa-sha256;
+	cv=none;
+	b=Qxq8Fe4E1K6Rh8Bbqk3I/XZx7KvVhFZKXbEEokCcPZQ6KLNYMNGm20YQbu0CtFK162Tf2q
+	MqoIReoPMuHnt0SKBfQ8AyQRjcRjceexqywV17fd9VOgatBsmqDrMO6+eu5IWllgY8uTmv
+	hxTDb31PEH3DOZDAQr8t9oNYRjFM9nA=
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2445827ab71so24136965ad.3
+        for <linux-mm@kvack.org>; Sat, 16 Aug 2025 12:11:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755371496; x=1755976296; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=D2b4I74l91nF0HRNssQ7bSgGkLbdaG7n4udVN8wFuGU=;
+        b=vyS0MJn2PQeBe5NlW13qtvZXy3iKJhAiXtFteOp90iRCuEVR9jx/pf5xy5GLd42dQo
+         A2+BTWadnwSJL4QPjpyN9RC4R/CltaUOKpG6/AOaZaV4ol73SDpvZTVZlAeMvxwhjSwq
+         D8x1T0l2RnWaxDWy3RaOALMK4YSqmUwHl8k99djYoICdONYQ7wr187py6lmZ1AUMIsaF
+         Ci42HqZ3pxNvie+Vfn1n9Iazd6rn7zKpqffkawWyjjQSZ+lRbhy9APTadQuXDoDo7nAO
+         WwtWNHemx+gzzlzOlaGf78vA43gu9a2ljQHmsQD1YTK3mwTWSS6mFpW5rz+FlRIU/z+m
+         ej/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755371496; x=1755976296;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=D2b4I74l91nF0HRNssQ7bSgGkLbdaG7n4udVN8wFuGU=;
+        b=j9QHhVZnkXaGzODBU0PfFwFAKMv6gIfVeAZW18wvJB/Tp3yh8qWmU/1vqz72E01ZtK
+         bgKNTGhnVZAFUOHwLCTonoSQvIGFuD7Ep7c7Pj/mUg3eMLON07TraILw0RLSj+atiPWi
+         Qx2Jy+iEDnXhuHMowbNhXZMnBEVO+JjEpFYsoNrmRg87mQoNGtZ1wd8k+PRgR6uxsowP
+         zgIoBPqd05+QN6s2FEEoNouJvCRiP4UoqDcchUG6Xvaw2FO4Wy93JeVrehwXT+OENqh6
+         1Wf704wiCSiTNpGIgufJ3+iD+Cm5Dy2Pp5nlU6jdsyC9JNfBHP5nwgeXEN6KfdNi5/8x
+         pomw==
+X-Forwarded-Encrypted: i=1; AJvYcCVyI89MGjP9aocoLp2J6sfeVS+LBR1KS9Jr9Vl2fzaJKq42EFTeleBT1XLVnQGHClg+0WfoHU5Ddg==@kvack.org
+X-Gm-Message-State: AOJu0YzaqXfd8ITbd5cENbkFGrh7YUCUWoF5rMHaljQ/cq+1MPiIq5/2
+	IJdS8vR3GoyovtF9fVtKBwpAMRu2jrb7+qnZwKDMNkyQvl48ii5jjmIVTG/HCKq12yQ7o0KqNEF
+	9bgw2rIh3tfjyFlD2Is+59ObIIA==
+X-Google-Smtp-Source: AGHT+IEv7ZdU4wvYCo/SVKfigEVmFu/5ziUfJ5s1mjOpawzYxvJHEyoQC3Uidz0JBv5hO62anh8pwHoDhmRHvpQd5g==
+X-Received: from plbkh16.prod.google.com ([2002:a17:903:650:b0:240:718d:564a])
+ (user=lokeshgidra job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:903:187:b0:234:aa9a:9e0f with SMTP id d9443c01a7336-24478f6356amr42485355ad.23.1755371496139;
+ Sat, 16 Aug 2025 12:11:36 -0700 (PDT)
+Date: Sat, 16 Aug 2025 12:11:23 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.rc1.163.g2494970778-goog
+Message-ID: <20250816191123.3601561-1-lokeshgidra@google.com>
+Subject: [PATCH v6] userfaultfd: opportunistic TLB-flush batching for present
+ pages in MOVE
+From: Lokesh Gidra <lokeshgidra@google.com>
+To: akpm@linux-foundation.org
+Cc: aarcange@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	ngeoffray@google.com, Lokesh Gidra <lokeshgidra@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	Barry Song <v-songbaohua@oppo.com>, David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>, 
+	Barry Song <baohua@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 6A7091C000E
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E367540008
-X-Stat-Signature: symnq8t7nudkruu9ep3ucpb4t45ht1ox
-X-HE-Tag: 1755369102-760345
-X-HE-Meta: U2FsdGVkX18yub47NbqYAroXcwrpQuecOV4C+Fs8egWu1aR8B6kwzVhnm0+hnpsvOB3ilVElXyesREn8Ww0xql9zUAeJ3QYssqNsEVRAVZilCb2Up5CH+ZYJaaB0YrwNj6jJW8k6/xsGi8apzwFJrNpAUtUDD+OuMoXZWJvqr3MPTHcHoaXHxKYCF+Tu2duBsg8UX323oP741Bo8c7LUZR4lnuMg2K2sgIILGD5RjV5h01CNQ92YcwLmAcIq5VUElApX0NSN6vB+5BiB9/EkAlnWigv8UQIzuwgDLhDzH2tJuxiuRs5J8Y3GCgC7mZZu/ZKmXFHi0InC/4+YbmylqJejLjfiMvQkTYQvGWVHl5dI/yXbTir/+XtwUa+Bnp8l/LqIfXl9PJ+Ufx4LdKoR8HxEpL+jV/5OLcuefe3FtWjEHBCKMpn8g19zSrfddX13dCfMMMaYYjG1F0Ecd1K8VXXKwtRQ3W3zhJloHswBhA6xKz8zsIseBnlocgxe6z1owgm/dNbVWE1PM2MwdvAgklFjh8fH3vKjT0Y+qF+9TgwCbuS9dSGnT3tzKNAXcAlq1tTka6g/CUKc8W6GilE68XG9AzjuZDpObQPq7woxcv5PPciUU/5UMp3qL7zMwjvqaL4LJHKDpjT3E0D63NPHmg49HF1Qns73bkcN2Dlp0K9VXeuDBiR5Lzsde9FGkf2NuipLF/hzEtXq4UjkvVRY8s4Rwm3tm1tln3bAkg2fGriqutOqaTY0ZVAbfSgwi9AzLMbn4P9Pd48tBmprJhIaqvN5HY5W8lVDO3D3D4ILiedmyy+2htvv0ELAK8sRRBggTPN9N9Yl3Z6q8kbIk0IufMajh3yg2p6u1Hb/YEOHCahuBc4F9QGLLltCn0KBqmgFSrrbXk329UmpGH+5umlvXsS8BdwoJRdSVRnjTIMKEoM6f+OIk5Ni0SHCzYQ/O15ZgwzrcCqbvsJRVnvLrqa
- hIqc5I/N
- EvFmf3+fXtye3uAGbO+G3Re0bAmqLGcxbVQLtdvruU0H6wiKhYrU4e53vTIHSvBrpyqxDOwT+gI4Mu7lknL2Cc3xX5yV1UBJXaMlZXmFJ2O62vhGiJ5INI3MuaknmxfURPWuAkFfQm9mKB/2nqTSjXl08dgs2HaUjtYqvyX8OSoJZ4LdJQ80guDNLiyHLJ3zwdXS4OuxxQhdCQYZ2yiw5ekT1sANcuTsWiAPm+qxn0GXAbG21gfFLFM8CSgtmTWhi6dPx1bvBFnpack64JT0DMa6N6QdOQ+al2PZvcVfjKBZJGvmjHVyff+uo/g==
+X-Stat-Signature: yucqgs8eafuconwbn95k47w975xaoke4
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1755371497-638966
+X-HE-Meta: U2FsdGVkX1/WxNT6uLHMmg12o2I/cljowUHmK8fy4lrKmS4hJKgTvgSw/okX9o30TwlxZpUdQ3NbOWSFKRqfcK4tLC2BJqRemFhe1TE77LMQxzoFV88dfDdj86HEtrt0kpqP8aBEDcOy4hXvufy8Ue7f3BwKz1L+pP3tYa2joTxD123nefmD7cwihhp5TTSEo0hxvdatJrsP5dzBdjWGou+BaK3ruQoDwNHiULbUWelZ4AFhm4O55Ok4zp2S1/fa91Z20UJzNKbkfN2WgR5M96OGXOqIQEwM/fVzIxFQkvjl5S1g+U+vWZYuNp+nli+NDjqteC4s9h9P/FRCg8JOWymyqDEpwZbejKI/EwHQ41Znjs2dAwzztcsxN8OKp1iAq2tp2Ivrji4sqYP7KPGu9rNEy0yhEWBiPjbTIrWjwqch8hPaxliC44DGd9PC8SpEy1sx+NKBq8FgzGl+fYo05XCJ1MbQc1VRw1oCqKKV+Gvqb1tAPwzD6EUHCRATuNSEiio9fbkI67LLhMmt57IwvmLuqPasGtpHnzReEcnCM5egHzTCnr5srztfWc+q4MRjPs5qraBOLsED6JQMTAuWLG7bDQjrJIjwi3jLkurioNQmvbC+onZQ/ZM+gidUBETE0pbgg1gPomKz3kKiVp2PDp4N/84GAMu00wrgbrOSI2IF8XYNCcq9okXtUNpF9HMGz1mrrIpoGY3Pdf82Mgw2qYYmXBNsoNf+Ko0AiNQKFdpeVbbR+nTWnIqzsSNSQDEv/DVGXiVxf3Bn8w+4SiRErfw0vUzsUmSb4eU9sDstgyeLaiC0N5fLHTmkplmMJmMCyA3YtBjZ9OsOOTzClQKJw6WbwJfUhFm1j7rEr5Tku8iIW56RWG4K0+iTjxXz+jwihn8vfEJRVR4hNGxAWdQb7Z46mElgWcZTArX7iypWJpfQFm+iQjsAfDAAR+1HEWJRe82gCpJgC0Doew6/4p1
+ sc5mKo1V
+ wnqJAzs4xhM9AK3SWvCxRCnBnRDS5j5Bov7GlA3kvmo4ld20SCBk8/ttwC9BpNzO35ispe/sF2X3HbQRZAWVGBrRyc8TFY3UPaKuq5Fo+J+0buNzqSIhs0gJUE7069l6IrKSYqilRDdocNefV+g9P8dbFRm0fEh91xA9agYpjVtM87UV2/3stCYsacQeYUT27OSjCokyGQkxxD4PsThJDOphqqO0arVMfZteHUGoKFxzCXt4T9ttHucBSP9qqGOB5eo7BLvJfdYEckbmJmahUUObrFz97ibCoQDt9XOQ5i0272p2O7E3FP1jI/BXsiP9DnNkramNQSNeuw7UU75EZYJbos2zolTk4UWqGTk7llZ7rPU390qJlpvw7XrQBj52LVywyeegi8dCvFtd9vJ/dr+tsAnU4zkxR7J2svfqjCbbNNtjVrczpm0wXN5sHGaKpVn1lZIB4ePt1npkGo5J0u/uJn9z+08M7LeIqOaJhh9tUhXjRo7Y1JqvvtbwdDg61Pdk7MioF5TvzO4IiuqdJrwkAgBe48zAifMTe0+Dtc8oy/LD86jhQOWnsI1/CBYfbH0WV833YXPSeYx8Pb2ogw/KCnpSa/KuIOpVfXsIu8cZCdIM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,14 +108,515 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/16/25 8:31 PM, Vlastimil Babka wrote:
->>
->> I assume somehow the free_to_pcs_bulk() fallback case is taken, thus
->> calling __kmem_cache_free_bulk(), which calls free_to_pcs_bulk() ad nauseam.
-> Could it be a rebase gone wrong? Mine to 6.17-rc1 is here (but untested)
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/
+MOVE ioctl's runtime is dominated by TLB-flush cost, which is required
+for moving present pages. Mitigate this cost by opportunistically
+batching present contiguous pages for TLB flushing.
 
-This branch specifically
-https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/log/?h=b4/slub-percpu-sheaves
+Without batching, in our testing on an arm64 Android device with UFFD GC,
+which uses MOVE ioctl for compaction, we observed that out of the total
+time spent in move_pages_pte(), over 40% is in ptep_clear_flush(), and
+~20% in vm_normal_folio().
+
+With batching, the proportion of vm_normal_folio() increases to over
+70% of move_pages_pte() without any changes to vm_normal_folio().
+Furthermore, time spent within move_pages_pte() is only ~20%, which
+includes TLB-flush overhead.
+
+When the GC intensive benchmark, which was used to gather the above
+numbers, is run on cuttlefish (qemu android instance on x86_64), the
+completion time of the benchmark went down from ~45mins to ~20mins.
+
+Furthermore, system_server, one of the most performance critical system
+processes on android, saw over 50% reduction in GC compaction time on an
+arm64 android device.
+
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Kalesh Singh <kaleshsingh@google.com>
+Cc: Barry Song <v-songbaohua@oppo.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>
+Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
+Acked-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Barry Song <baohua@kernel.org>
+---
+Changes since v5 [1]
+- Make calculation of largest extent that can be batched unconditional
+  on length, per Barry Song
+
+Chagnes since v4 [2]
+- Replaced 'err' with 'ret' in move_pages_ptes(), per Barry Song
+- Use pmd_addr_end() for calculating largest extent that can be
+  batched under the same src and dst PTLs, per Barry Song
+- Add a description comment for move_present_ptes() explaining what
+  conditions are to be met by folios to be batched, per Barry Song
+
+Changes since v3 [3]
+- Fix unintialized 'step_size' warning, per Dan Carpenter
+- Removed pmd_none() from check_ptes_for_batched_move(), per Peter Xu
+- Removed flush_cache_range() in zero-page case, per Peter Xu
+- Added comment to explain why folio reference for batched pages is not
+  required, per Peter Xu
+- Use MIN() in calculation of largest extent that can be batched under
+  the same src and dst PTLs, per Peter Xu
+- Release first folio's reference in move_present_ptes(), per Peter Xu
+
+Changes since v2 [4]
+- Addressed VM_WARN_ON failure, per Lorenzo Stoakes
+- Added check to ensure all batched pages share the same anon_vma
+
+Changes since v1 [5]
+- Removed flush_tlb_batched_pending(), per Barry Song
+- Unified single and multi page case, per Barry Song
+
+[1] https://lore.kernel.org/all/20250813193024.2279805-1-lokeshgidra@google.com/
+[2] https://lore.kernel.org/all/20250810062912.1096815-1-lokeshgidra@google.com/
+[3] https://lore.kernel.org/all/20250807103902.2242717-1-lokeshgidra@google.com/
+[4] https://lore.kernel.org/all/20250805121410.1658418-1-lokeshgidra@google.com/
+[5] https://lore.kernel.org/all/20250731104726.103071-1-lokeshgidra@google.com/
+
+ mm/userfaultfd.c | 222 +++++++++++++++++++++++++++++++----------------
+ 1 file changed, 149 insertions(+), 73 deletions(-)
+
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 45e6290e2e8b..bd7053673a3b 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1026,18 +1026,64 @@ static inline bool is_pte_pages_stable(pte_t *dst_pte, pte_t *src_pte,
+ 	       pmd_same(dst_pmdval, pmdp_get_lockless(dst_pmd));
+ }
+ 
+-static int move_present_pte(struct mm_struct *mm,
+-			    struct vm_area_struct *dst_vma,
+-			    struct vm_area_struct *src_vma,
+-			    unsigned long dst_addr, unsigned long src_addr,
+-			    pte_t *dst_pte, pte_t *src_pte,
+-			    pte_t orig_dst_pte, pte_t orig_src_pte,
+-			    pmd_t *dst_pmd, pmd_t dst_pmdval,
+-			    spinlock_t *dst_ptl, spinlock_t *src_ptl,
+-			    struct folio *src_folio)
++/*
++ * Checks if the two ptes and the corresponding folio are eligible for batched
++ * move. If so, then returns pointer to the locked folio. Otherwise, returns NULL.
++ *
++ * NOTE: folio's reference is not required as the whole operation is within
++ * PTL's critical section.
++ */
++static struct folio *check_ptes_for_batched_move(struct vm_area_struct *src_vma,
++						 unsigned long src_addr,
++						 pte_t *src_pte, pte_t *dst_pte,
++						 struct anon_vma *src_anon_vma)
++{
++	pte_t orig_dst_pte, orig_src_pte;
++	struct folio *folio;
++
++	orig_dst_pte = ptep_get(dst_pte);
++	if (!pte_none(orig_dst_pte))
++		return NULL;
++
++	orig_src_pte = ptep_get(src_pte);
++	if (!pte_present(orig_src_pte) || is_zero_pfn(pte_pfn(orig_src_pte)))
++		return NULL;
++
++	folio = vm_normal_folio(src_vma, src_addr, orig_src_pte);
++	if (!folio || !folio_trylock(folio))
++		return NULL;
++	if (!PageAnonExclusive(&folio->page) || folio_test_large(folio) ||
++	    folio_anon_vma(folio) != src_anon_vma) {
++		folio_unlock(folio);
++		return NULL;
++	}
++	return folio;
++}
++
++/*
++ * Moves src folios to dst in a batch as long as they share the same
++ * anon_vma as the first folio, are not large, and can successfully
++ * take the lock via folio_trylock().
++ */
++static long move_present_ptes(struct mm_struct *mm,
++			      struct vm_area_struct *dst_vma,
++			      struct vm_area_struct *src_vma,
++			      unsigned long dst_addr, unsigned long src_addr,
++			      pte_t *dst_pte, pte_t *src_pte,
++			      pte_t orig_dst_pte, pte_t orig_src_pte,
++			      pmd_t *dst_pmd, pmd_t dst_pmdval,
++			      spinlock_t *dst_ptl, spinlock_t *src_ptl,
++			      struct folio **first_src_folio, unsigned long len,
++			      struct anon_vma *src_anon_vma)
+ {
+ 	int err = 0;
++	struct folio *src_folio = *first_src_folio;
++	unsigned long src_start = src_addr;
++	unsigned long src_end;
+ 
++	len = pmd_addr_end(dst_addr, dst_addr + len) - dst_addr;
++	src_end = pmd_addr_end(src_addr, src_addr + len);
++	flush_cache_range(src_vma, src_addr, src_end);
+ 	double_pt_lock(dst_ptl, src_ptl);
+ 
+ 	if (!is_pte_pages_stable(dst_pte, src_pte, orig_dst_pte, orig_src_pte,
+@@ -1051,31 +1097,56 @@ static int move_present_pte(struct mm_struct *mm,
+ 		err = -EBUSY;
+ 		goto out;
+ 	}
++	/* It's safe to drop the reference now as the page-table is holding one. */
++	folio_put(*first_src_folio);
++	*first_src_folio = NULL;
++	arch_enter_lazy_mmu_mode();
++
++	while (true) {
++		orig_src_pte = ptep_get_and_clear(mm, src_addr, src_pte);
++		/* Folio got pinned from under us. Put it back and fail the move. */
++		if (folio_maybe_dma_pinned(src_folio)) {
++			set_pte_at(mm, src_addr, src_pte, orig_src_pte);
++			err = -EBUSY;
++			break;
++		}
+ 
+-	orig_src_pte = ptep_clear_flush(src_vma, src_addr, src_pte);
+-	/* Folio got pinned from under us. Put it back and fail the move. */
+-	if (folio_maybe_dma_pinned(src_folio)) {
+-		set_pte_at(mm, src_addr, src_pte, orig_src_pte);
+-		err = -EBUSY;
+-		goto out;
+-	}
+-
+-	folio_move_anon_rmap(src_folio, dst_vma);
+-	src_folio->index = linear_page_index(dst_vma, dst_addr);
++		folio_move_anon_rmap(src_folio, dst_vma);
++		src_folio->index = linear_page_index(dst_vma, dst_addr);
+ 
+-	orig_dst_pte = folio_mk_pte(src_folio, dst_vma->vm_page_prot);
+-	/* Set soft dirty bit so userspace can notice the pte was moved */
++		orig_dst_pte = folio_mk_pte(src_folio, dst_vma->vm_page_prot);
++		/* Set soft dirty bit so userspace can notice the pte was moved */
+ #ifdef CONFIG_MEM_SOFT_DIRTY
+-	orig_dst_pte = pte_mksoft_dirty(orig_dst_pte);
++		orig_dst_pte = pte_mksoft_dirty(orig_dst_pte);
+ #endif
+-	if (pte_dirty(orig_src_pte))
+-		orig_dst_pte = pte_mkdirty(orig_dst_pte);
+-	orig_dst_pte = pte_mkwrite(orig_dst_pte, dst_vma);
++		if (pte_dirty(orig_src_pte))
++			orig_dst_pte = pte_mkdirty(orig_dst_pte);
++		orig_dst_pte = pte_mkwrite(orig_dst_pte, dst_vma);
++		set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
++
++		src_addr += PAGE_SIZE;
++		if (src_addr == src_end)
++			break;
++		dst_addr += PAGE_SIZE;
++		dst_pte++;
++		src_pte++;
++
++		folio_unlock(src_folio);
++		src_folio = check_ptes_for_batched_move(src_vma, src_addr, src_pte,
++							dst_pte, src_anon_vma);
++		if (!src_folio)
++			break;
++	}
+ 
+-	set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
++	arch_leave_lazy_mmu_mode();
++	if (src_addr > src_start)
++		flush_tlb_range(src_vma, src_start, src_addr);
++
++	if (src_folio)
++		folio_unlock(src_folio);
+ out:
+ 	double_pt_unlock(dst_ptl, src_ptl);
+-	return err;
++	return src_addr > src_start ? src_addr - src_start : err;
+ }
+ 
+ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
+@@ -1140,7 +1211,7 @@ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
+ 	set_pte_at(mm, dst_addr, dst_pte, orig_src_pte);
+ 	double_pt_unlock(dst_ptl, src_ptl);
+ 
+-	return 0;
++	return PAGE_SIZE;
+ }
+ 
+ static int move_zeropage_pte(struct mm_struct *mm,
+@@ -1167,20 +1238,20 @@ static int move_zeropage_pte(struct mm_struct *mm,
+ 	set_pte_at(mm, dst_addr, dst_pte, zero_pte);
+ 	double_pt_unlock(dst_ptl, src_ptl);
+ 
+-	return 0;
++	return PAGE_SIZE;
+ }
+ 
+ 
+ /*
+- * The mmap_lock for reading is held by the caller. Just move the page
+- * from src_pmd to dst_pmd if possible, and return true if succeeded
+- * in moving the page.
++ * The mmap_lock for reading is held by the caller. Just move the page(s)
++ * from src_pmd to dst_pmd if possible, and return number of bytes moved.
++ * On failure, an error code is returned.
+  */
+-static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+-			  struct vm_area_struct *dst_vma,
+-			  struct vm_area_struct *src_vma,
+-			  unsigned long dst_addr, unsigned long src_addr,
+-			  __u64 mode)
++static long move_pages_ptes(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
++			    struct vm_area_struct *dst_vma,
++			    struct vm_area_struct *src_vma,
++			    unsigned long dst_addr, unsigned long src_addr,
++			    unsigned long len, __u64 mode)
+ {
+ 	swp_entry_t entry;
+ 	struct swap_info_struct *si = NULL;
+@@ -1194,11 +1265,10 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+ 	struct folio *src_folio = NULL;
+ 	struct anon_vma *src_anon_vma = NULL;
+ 	struct mmu_notifier_range range;
+-	int err = 0;
++	long ret = 0;
+ 
+-	flush_cache_range(src_vma, src_addr, src_addr + PAGE_SIZE);
+ 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm,
+-				src_addr, src_addr + PAGE_SIZE);
++				src_addr, src_addr + len);
+ 	mmu_notifier_invalidate_range_start(&range);
+ retry:
+ 	/*
+@@ -1212,7 +1282,7 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+ 
+ 	/* Retry if a huge pmd materialized from under us */
+ 	if (unlikely(!dst_pte)) {
+-		err = -EAGAIN;
++		ret = -EAGAIN;
+ 		goto out;
+ 	}
+ 
+@@ -1231,14 +1301,14 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+ 	 * transparent huge pages under us.
+ 	 */
+ 	if (unlikely(!src_pte)) {
+-		err = -EAGAIN;
++		ret = -EAGAIN;
+ 		goto out;
+ 	}
+ 
+ 	/* Sanity checks before the operation */
+ 	if (pmd_none(*dst_pmd) || pmd_none(*src_pmd) ||
+ 	    pmd_trans_huge(*dst_pmd) || pmd_trans_huge(*src_pmd)) {
+-		err = -EINVAL;
++		ret = -EINVAL;
+ 		goto out;
+ 	}
+ 
+@@ -1246,7 +1316,7 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+ 	orig_dst_pte = ptep_get(dst_pte);
+ 	spin_unlock(dst_ptl);
+ 	if (!pte_none(orig_dst_pte)) {
+-		err = -EEXIST;
++		ret = -EEXIST;
+ 		goto out;
+ 	}
+ 
+@@ -1255,21 +1325,21 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+ 	spin_unlock(src_ptl);
+ 	if (pte_none(orig_src_pte)) {
+ 		if (!(mode & UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES))
+-			err = -ENOENT;
++			ret = -ENOENT;
+ 		else /* nothing to do to move a hole */
+-			err = 0;
++			ret = PAGE_SIZE;
+ 		goto out;
+ 	}
+ 
+ 	/* If PTE changed after we locked the folio them start over */
+ 	if (src_folio && unlikely(!pte_same(src_folio_pte, orig_src_pte))) {
+-		err = -EAGAIN;
++		ret = -EAGAIN;
+ 		goto out;
+ 	}
+ 
+ 	if (pte_present(orig_src_pte)) {
+ 		if (is_zero_pfn(pte_pfn(orig_src_pte))) {
+-			err = move_zeropage_pte(mm, dst_vma, src_vma,
++			ret = move_zeropage_pte(mm, dst_vma, src_vma,
+ 					       dst_addr, src_addr, dst_pte, src_pte,
+ 					       orig_dst_pte, orig_src_pte,
+ 					       dst_pmd, dst_pmdval, dst_ptl, src_ptl);
+@@ -1292,14 +1362,14 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+ 			spin_lock(src_ptl);
+ 			if (!pte_same(orig_src_pte, ptep_get(src_pte))) {
+ 				spin_unlock(src_ptl);
+-				err = -EAGAIN;
++				ret = -EAGAIN;
+ 				goto out;
+ 			}
+ 
+ 			folio = vm_normal_folio(src_vma, src_addr, orig_src_pte);
+ 			if (!folio || !PageAnonExclusive(&folio->page)) {
+ 				spin_unlock(src_ptl);
+-				err = -EBUSY;
++				ret = -EBUSY;
+ 				goto out;
+ 			}
+ 
+@@ -1313,7 +1383,7 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+ 			 */
+ 			if (!locked && folio_test_large(folio)) {
+ 				spin_unlock(src_ptl);
+-				err = -EAGAIN;
++				ret = -EAGAIN;
+ 				goto out;
+ 			}
+ 
+@@ -1332,7 +1402,7 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+ 			}
+ 
+ 			if (WARN_ON_ONCE(!folio_test_anon(src_folio))) {
+-				err = -EBUSY;
++				ret = -EBUSY;
+ 				goto out;
+ 			}
+ 		}
+@@ -1343,8 +1413,8 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+ 			pte_unmap(src_pte);
+ 			pte_unmap(dst_pte);
+ 			src_pte = dst_pte = NULL;
+-			err = split_folio(src_folio);
+-			if (err)
++			ret = split_folio(src_folio);
++			if (ret)
+ 				goto out;
+ 			/* have to reacquire the folio after it got split */
+ 			folio_unlock(src_folio);
+@@ -1362,7 +1432,7 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+ 			src_anon_vma = folio_get_anon_vma(src_folio);
+ 			if (!src_anon_vma) {
+ 				/* page was unmapped from under us */
+-				err = -EAGAIN;
++				ret = -EAGAIN;
+ 				goto out;
+ 			}
+ 			if (!anon_vma_trylock_write(src_anon_vma)) {
+@@ -1375,10 +1445,11 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+ 			}
+ 		}
+ 
+-		err = move_present_pte(mm,  dst_vma, src_vma,
+-				       dst_addr, src_addr, dst_pte, src_pte,
+-				       orig_dst_pte, orig_src_pte, dst_pmd,
+-				       dst_pmdval, dst_ptl, src_ptl, src_folio);
++		ret = move_present_ptes(mm, dst_vma, src_vma,
++					dst_addr, src_addr, dst_pte, src_pte,
++					orig_dst_pte, orig_src_pte, dst_pmd,
++					dst_pmdval, dst_ptl, src_ptl, &src_folio,
++					len, src_anon_vma);
+ 	} else {
+ 		struct folio *folio = NULL;
+ 
+@@ -1389,20 +1460,20 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+ 				pte_unmap(dst_pte);
+ 				src_pte = dst_pte = NULL;
+ 				migration_entry_wait(mm, src_pmd, src_addr);
+-				err = -EAGAIN;
++				ret = -EAGAIN;
+ 			} else
+-				err = -EFAULT;
++				ret = -EFAULT;
+ 			goto out;
+ 		}
+ 
+ 		if (!pte_swp_exclusive(orig_src_pte)) {
+-			err = -EBUSY;
++			ret = -EBUSY;
+ 			goto out;
+ 		}
+ 
+ 		si = get_swap_device(entry);
+ 		if (unlikely(!si)) {
+-			err = -EAGAIN;
++			ret = -EAGAIN;
+ 			goto out;
+ 		}
+ 		/*
+@@ -1422,7 +1493,7 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+ 					swap_cache_index(entry));
+ 		if (!IS_ERR_OR_NULL(folio)) {
+ 			if (folio_test_large(folio)) {
+-				err = -EBUSY;
++				ret = -EBUSY;
+ 				folio_put(folio);
+ 				goto out;
+ 			}
+@@ -1439,7 +1510,7 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+ 				goto retry;
+ 			}
+ 		}
+-		err = move_swap_pte(mm, dst_vma, dst_addr, src_addr, dst_pte, src_pte,
++		ret = move_swap_pte(mm, dst_vma, dst_addr, src_addr, dst_pte, src_pte,
+ 				orig_dst_pte, orig_src_pte, dst_pmd, dst_pmdval,
+ 				dst_ptl, src_ptl, src_folio, si, entry);
+ 	}
+@@ -1461,7 +1532,7 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+ 	if (si)
+ 		put_swap_device(si);
+ 
+-	return err;
++	return ret;
+ }
+ 
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+@@ -1732,7 +1803,7 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+ {
+ 	struct mm_struct *mm = ctx->mm;
+ 	struct vm_area_struct *src_vma, *dst_vma;
+-	unsigned long src_addr, dst_addr;
++	unsigned long src_addr, dst_addr, src_end;
+ 	pmd_t *src_pmd, *dst_pmd;
+ 	long err = -EINVAL;
+ 	ssize_t moved = 0;
+@@ -1775,8 +1846,8 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+ 	if (err)
+ 		goto out_unlock;
+ 
+-	for (src_addr = src_start, dst_addr = dst_start;
+-	     src_addr < src_start + len;) {
++	for (src_addr = src_start, dst_addr = dst_start, src_end = src_start + len;
++	     src_addr < src_end;) {
+ 		spinlock_t *ptl;
+ 		pmd_t dst_pmdval;
+ 		unsigned long step_size;
+@@ -1844,6 +1915,8 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+ 						  dst_addr, src_addr);
+ 			step_size = HPAGE_PMD_SIZE;
+ 		} else {
++			long ret;
++
+ 			if (pmd_none(*src_pmd)) {
+ 				if (!(mode & UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES)) {
+ 					err = -ENOENT;
+@@ -1860,10 +1933,13 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+ 				break;
+ 			}
+ 
+-			err = move_pages_pte(mm, dst_pmd, src_pmd,
+-					     dst_vma, src_vma,
+-					     dst_addr, src_addr, mode);
+-			step_size = PAGE_SIZE;
++			ret = move_pages_ptes(mm, dst_pmd, src_pmd,
++					      dst_vma, src_vma, dst_addr,
++					      src_addr, src_end - src_addr, mode);
++			if (ret < 0)
++				err = ret;
++			else
++				step_size = ret;
+ 		}
+ 
+ 		cond_resched();
+
+base-commit: 90d970cade8e67e20b09bbfdc2f0b52064322921
+-- 
+2.51.0.rc1.163.g2494970778-goog
+
 
