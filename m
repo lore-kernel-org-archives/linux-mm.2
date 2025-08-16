@@ -2,89 +2,85 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D277FCA0EE4
-	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 07:34:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 417C2CA0EE4
+	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 07:37:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E6848E023C; Sat, 16 Aug 2025 03:34:22 -0400 (EDT)
+	id CE1FF8E023D; Sat, 16 Aug 2025 03:37:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 697648E000B; Sat, 16 Aug 2025 03:34:22 -0400 (EDT)
+	id C934B8E000B; Sat, 16 Aug 2025 03:37:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C6628E023C; Sat, 16 Aug 2025 03:34:22 -0400 (EDT)
+	id B81148E023D; Sat, 16 Aug 2025 03:37:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 46D638E000B
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 03:34:22 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0899358A26
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 07:34:22 +0000 (UTC)
-X-FDA: 83781807564.25.A60C082
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5B79A1C0003
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 07:34:20 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=nycIx506;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A12138E000B
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 03:37:40 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 279581177DD
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 07:37:40 +0000 (UTC)
+X-FDA: 83781815880.16.1C78DCD
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 5AA39C0008
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 07:37:36 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of yintirui@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755329660;
+	s=arc-20220608; t=1755329858;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uDw0oBL3Va0OnluBaQtZqi3/A0ErKLAzhvTzXPaxkTY=;
-	b=HIIWtm1xwUVuBPefyt8kQxW0b9ad5Q1Ey1HIeJFCSlT5e0rUH6Za60J4a1qajKdcXkHjka
-	IMhBLzc29ukkQNTGl6NogxBeOWC/nErIbpLI6lXzCAjHO4pdBgALFXw+wtNCFqVmf+/cse
-	mdDAuywcnDDQidfUy7ktq+2EkZemb2w=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=nHyYUs7c5cPufj+ORxuTJTENVRLZeNseXVnIuV0JDL0=;
+	b=pgce4+Mp8lh4fFIu6Da7oF6z7d6lV6zK1V5pmmMrab0SsuXnBHB3Np+b10+syCTGvBeMDL
+	9sPxEmklda5NAv+U/SxX+SHzzUNkqfddgwcP2Bmt/9o+6vTspIIRpmsZ+FfroGgMaXwYUX
+	youK9uUER1WjS+7zGatujvtk9f9Lzng=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=nycIx506;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755329660; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of yintirui@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755329858; a=rsa-sha256;
 	cv=none;
-	b=luzW84qinMc/w2gw9/j3m+C4cJ9x5LhceFPaQdT7mPFjJLny/LjM5taugYJJ5nvkzUZKG1
-	5eeXWnCJ9Kui+aB4mKbOIymkE7Rz/3neGHu7Z/0fPzOIZRCxiWLi9ou0UMLE7vTVoCWysM
-	bbvMXRRBTV/0ePSU57N/Nk/CD2ywIiY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 64BB25C49B4;
-	Sat, 16 Aug 2025 07:34:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B273EC4CEEF;
-	Sat, 16 Aug 2025 07:34:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1755329659;
-	bh=RBllP1HyuurzngS1PYFclVqgZxQMsi/60lRopv0XgZs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=nycIx506DjjSuPyBwZha4dR4dyULJn+oZM7AxMBlxDvtnotMOCCCtdejoR/8MEOND
-	 +iwwu3/QA833OQNZvhpg01GPq5VHljkRvw8UeRkJA0hpM3D6wGzqGGMo4oe1WC6HfL
-	 Cc82ObFNcUhvbo9BctYnSIjtatfuWm8qXsnYVHbQ=
-Date: Sat, 16 Aug 2025 00:34:18 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: David Hildenbrand <david@redhat.com>
-Cc: Xiang Gao <gxxa03070307@gmail.com>, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, gaoxiang17 <gaoxiang17@xiaomi.com>
-Subject: Re: [PATCH] mm/cma: print total and used pages in cma_alloc()
-Message-Id: <20250816003418.b2a62f6ddbcf9468fde87a18@linux-foundation.org>
-In-Reply-To: <701bfbb4-6c12-4614-a322-def3ca923c78@redhat.com>
-References: <20250816042842.3959315-1-gxxa03070307@gmail.com>
-	<ee29262a-911b-4a97-b619-0dea3b657252@redhat.com>
-	<20250815234528.882ab58247cefc96e4137811@linux-foundation.org>
-	<701bfbb4-6c12-4614-a322-def3ca923c78@redhat.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: jfobsm5b18hfto71pci73orq5grtszpu
+	b=FQ2XBN7t2jdTXvmokiz3EMBm7yL78FDUbg4NhRtFjSTSDW018xeH5/Zx4JAER/dAyfjaOY
+	8wqDiIsRkhpfZinq0PmK/O/GEp1Q9W806EHUyOw3QZPjHx1MKvnkSlhPXldQPt2GM/fdH0
+	mYjPRTq2z2eCS7Gp2MLKOd5v3ULavuY=
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4c3rQ52gM0zqVTs;
+	Sat, 16 Aug 2025 15:36:29 +0800 (CST)
+Received: from kwepemo100001.china.huawei.com (unknown [7.202.195.173])
+	by mail.maildlp.com (Postfix) with ESMTPS id 09FDD140123;
+	Sat, 16 Aug 2025 15:37:29 +0800 (CST)
+Received: from huawei.com (10.175.101.6) by kwepemo100001.china.huawei.com
+ (7.202.195.173) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Sat, 16 Aug
+ 2025 15:37:28 +0800
+From: Yin Tirui <yintirui@huawei.com>
+To: <robh@kernel.org>, <saravanak@google.com>, <dan.j.williams@intel.com>,
+	<akpm@linux-foundation.org>, <david@redhat.com>, <rppt@kernel.org>,
+	<Jonathan.Cameron@huawei.com>, <devicetree@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+CC: <wangkefeng.wang@huawei.com>, <chenjun102@huawei.com>,
+	<yintirui@huawei.com>
+Subject: [PATCH v2] of_numa: fix uninitialized memory nodes causing kernel panic
+Date: Sat, 16 Aug 2025 15:31:31 +0800
+Message-ID: <20250816073131.2674809-1-yintirui@huawei.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.175.101.6]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemo100001.china.huawei.com (7.202.195.173)
+X-Rspamd-Queue-Id: 5AA39C0008
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5B79A1C0003
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755329660-466928
-X-HE-Meta: U2FsdGVkX1+HRIA9JgisCoHLByxnIPcqHHobah0jY/wnE5o871pnTJbt54Uj6tbg4BZ8LjPuDNMC2I5j/nq/PLdcUWtA63LX5b2HY3hoE9e1UI59FaRv3hxTyZO9a1HHUFkZjH/UhI1dn7s/q5470go7B0bGFa7Au69zbW8sM67NHIZTC+kzKyJ+NUCsuKeZ1y8TgNwJzUaOIpTcEBQODNU8KzhhwPXfMROjx472j37VP6Y7z8u4NUHmhAWVA6ifRa25v3WsmR6Xg0+jKSUiCy+pfkm2EuU1nsHkdh00J8PCRS3ZjwKXRfhH18O4C8zuOZUvK1JJZh8hJRpe+NV8GtM5hw+lYLYpTjAagg7CgvM8HE7yqlUwgU7UDV/ZNct/SRxVEnpvM3DLjDDhYhe5rHX9YzaEivEA8bXkYdDkDAK7MGmCUS54ScNusoFBnnkH8MJLp7wlKhxqgzD1fJDST9fMnnTEnO1a/HO2wV3TiaLuQxNBIrAKWm6WtGkraZyvglOUIia2TSxpu1pNR/WZOpskCUMHFmk1f0tEe3EUgaysSOMbhL0CBMrv7GsSaMdXGtCLEr+RmRp6DKoNFnoCyDZJO/fo2Q7VEjnI6k4NdoGRDPvACj+GedkSA6iTexyzsHcX0SWKd3kyd/3XwIfJGZSdGJ6h0sw2ml8FeEU9NhRhMQT957+2E85ojGLH8EUvPoX+91eIwS87UXorlplkaLalIGv8D+mpCXdfNsAhbmIGOFVJ6INTyTyIgpJ+w6DgdDc/xTj3qyjlm75fUdd8vkQiax8FY3Jz5gunaBagBRzxaQZIo8d2xATRofzEsYo0zSc+TFsPD0+AkSXD5lHiiUxd7U8DwCA3oEMDQT8tFEqn0JaASkkbvvHV6gnNrruH+LNSC8xssK7UV4jXLMiuBIiCqXIK+5/T6a1y7P5V2egjj/5bM38v2/1GX1n9Qf+MKFWx02IjDCduZfWZDJ6
- feDTFOgr
- 4LE8Gd3+xVgyN3nTeljLsxHreWkLOBc/0Qnwu7rUX81/Bt7hfxEZ8LTqMdfvoOex/w8zpMzNXOJFpBpi1dWMgytuhiTFhFU9aVZdCCjmLl5ACilQ9gu3YpOls//4tSgzMnR17oYviunq2FsosLGPlrssuWRtgCEy9GLxDf8ZlKuhNV+fsouTRew1lzNV8WSvLrI0pmI/xEPZQAtUvCoeOQksAUReplDDVx+VFLnGU+3sG6GgEA2Y1fQsEFOAzdypWv71De05vAdLD6UPDuMFkgLwyFYiy9nmbNpw6s3PFKJfQS3Qh/XvXrYofbXC/C2luNTYC
+X-Stat-Signature: bqzeefdgb98otakiwaukn64bkp8kp3ds
+X-HE-Tag: 1755329856-323239
+X-HE-Meta: U2FsdGVkX1+yZphPl6KjOwxkdQQ0Nte8lXL0s3oU+wnceTPv2qq1FVShb0zj+o7RV0NO0lgV/hHpXY63hPv6TYusriU5qwEP+EaKaQJYDD1ZKAbvxHow+46T9BExHwqIOkmYWxbq5ixnz/DtHaCurKLyoM6+85sXfeG1fNlKk14YOpWRQYYiV0hgFV8K/Hr6gAuks6TdVbMbMAXI0WxfIsuz83wSXIEPyEH3u8qOlmcqd1qrTK1LqdvIEv2fatF5uARMa9ADrFUniYd8Uc5ffNdzFtrTcEmIXrIejuQHnHuxp/y4L04I6L23yblyeTpN+GtBA0wsHVMuXnUmp+I/R2tCVWg+5lDPiChRrzv4cI0GcxMU3Q4i6TS8itcGP1mENVYtC+8gYGiFCMhZC9zxk/oOMjT4sbpYT9NLJWSsvOFxy71O1YiIXQVXJutwHQOqEFPP+H9ooyanxbYAZXifEmFs+OZKKh3WrklssS3lvqx0OmZibVq0XOY67lSLB0RrFBSGhYztO8mTD7fqWneH2ks8c8EcwSGmt4G+9hSR8S/xcfmV0/YdHom5m+1/vWCfspmPPv7F9FcOovxA9gS8wQqtWk5+mw4GyU0hVomeTaHHl2hT0eIRa8uAzlHvli/aGSoWn2Ha8sFRTzoa9V/1b2tnCMoWu/1AZePTxb5hNFnGxl83GTiV2yGcBvm8S6u+qvPvUGKMIE0xVDqCJVvFGiOUZbARGKGoqWnDPdR9RnUM2KHsSLVIUyG0hnLJdG73cIPZ1y/k2Z9N2Ymvm5lnbHwwCXTjwNK4JXU++WbvYFrLRAv24kzIT6Jn5/bARb1tkoX5fJSu4rf5EcICLxHOqv9cUkryv3v4rjs+QCmBQ9AIJD5AuyalOH69w6IVv8VRrzVqNM7EpiuJWBhYFR/k6W9SC5x/ILPc5/8TjsIQZ7zqhTLLn3GecBh2BkV5aNzMUztJOam3a3NgCL6eyy2
+ ATUqeLKP
+ 3oAMcE5rzKucBR5mRle9lkrG9EGCp96lNgbJpeH9d8aVZK+4dPiZDJvRhY3c3NBbUWViFo8eogtjsCUAFzLdqOfEGjx8Djhpzjy+iaBW8UI5yOeseRHFLEsDZW8Jv+bgvXl+uOYVERsD6RclM5FOXR5RVIKWHdUU/maX4ukPjv5c5yUmMLOkumXfiZzbG3Osku8GudRyngcFRx5ffJKP+nckonLiqFfouiZFcsOvAZVutobcX1dIKFJhKMiireCp1JBCynGsNUMt1jN8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,38 +89,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 16 Aug 2025 08:56:47 +0200 David Hildenbrand <david@redhat.com> wrote:
+When the number of CPUs is fewer than the number of memory nodes,
+some memory nodes may not be properly initialized because they are
+not added to numa_nodes_parsed during memory parsing.
 
-> On 16.08.25 08:45, Andrew Morton wrote:
-> > On Sat, 16 Aug 2025 08:27:39 +0200 David Hildenbrand <david@redhat.com> wrote:
-> > 
-> >>> @@ -858,8 +869,8 @@ static struct page *__cma_alloc(struct cma *cma, unsigned long count,
-> >>>    	if (!cma || !cma->count)
-> >>>    		return page;
-> >>>    
-> >>> -	pr_debug("%s(cma %p, name: %s, count %lu, align %d)\n", __func__,
-> >>> -		(void *)cma, cma->name, count, align);
-> >>> +	pr_debug("%s(cma %p, name: %s, total pages: %lu, used pages: %lu, request pages: %lu, align %d)\n",
-> >>> +		__func__, (void *)cma, cma->name, cma->count, cma_get_used_pages(cma), count, align);
-> >>
-> >> 		^ one space missing for proper indentation.
-> >>
-> >> But doing another spinlock cycle just for debugging purposes? That does
-> >> not feel right, sorry.
-> > 
-> > If we're calling pr_debug() frequently enough for this to matter, we
-> > have other problems!
-> 
-> We call it for each and every actual CMA allocation? I really don't see 
-> why we want to just randomly make CMA allocation latency worse.
+In of_numa_parse_memory_nodes(), after successfully adding a memory
+block via numa_add_memblk(), the corresponding node ID should be
+marked as parsed. However, the current implementation in numa_add_memblk()
+only adds the memory block to numa_meminfo but fails to update
+numa_nodes_parsed, leaving some nodes uninitialized.
 
-pr_debug() is 12 million times more expensive than a spin_lock()!
+During boot in a QEMU-emulated ARM64 NUMA environment, the kernel
+panics when free_area_init() attempts to access NODE_DATA() for
+memory nodes that were uninitialized.
 
-> Is the existing pr_debug() a problem? Maybe. But who actually has debug 
-> messages enabled in any sane setup?
+[    0.000000] Call trace:
+[    0.000000]  free_area_init+0x620/0x106c (P)
+[    0.000000]  bootmem_init+0x110/0x1dc
+[    0.000000]  setup_arch+0x278/0x60c
+[    0.000000]  start_kernel+0x70/0x748
+[    0.000000]  __primary_switched+0x88/0x90
 
-Nobody, clearly.  If anyone enabled pr_debug() in here, they'd
-immediately have to remove those statements to get any work done.  Kill
-it.
+Cc: stable@vger.kernel.org
+Fixes: 767507654c22 ("arch_numa: switch over to numa_memblks")
+Signed-off-by: Yin Tirui <yintirui@huawei.com>
+
+---
+
+v2: Move the changes to the of_numa related. Correct the fixes tag.
+---
+ drivers/of/of_numa.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/of/of_numa.c b/drivers/of/of_numa.c
+index 230d5f628c1b..cd2dc8e825c9 100644
+--- a/drivers/of/of_numa.c
++++ b/drivers/of/of_numa.c
+@@ -59,8 +59,11 @@ static int __init of_numa_parse_memory_nodes(void)
+ 			r = -EINVAL;
+ 		}
+ 
+-		for (i = 0; !r && !of_address_to_resource(np, i, &rsrc); i++)
++		for (i = 0; !r && !of_address_to_resource(np, i, &rsrc); i++) {
+ 			r = numa_add_memblk(nid, rsrc.start, rsrc.end + 1);
++			if (!r)
++				node_set(nid, numa_nodes_parsed);
++		}
+ 
+ 		if (!i || r) {
+ 			of_node_put(np);
+-- 
+2.43.0
 
 
