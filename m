@@ -2,172 +2,115 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C97DCA0EE4
-	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 06:32:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B2B8CA0EE6
+	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 06:38:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 132E190025E; Sat, 16 Aug 2025 02:32:31 -0400 (EDT)
+	id 8BC4390025F; Sat, 16 Aug 2025 02:38:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10B178E000B; Sat, 16 Aug 2025 02:32:31 -0400 (EDT)
+	id 893188E000B; Sat, 16 Aug 2025 02:38:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0213790025E; Sat, 16 Aug 2025 02:32:30 -0400 (EDT)
+	id 7D05790025F; Sat, 16 Aug 2025 02:38:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E47718E000B
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 02:32:30 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 97071116F95
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 06:32:30 +0000 (UTC)
-X-FDA: 83781651660.05.61B6CC3
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 55B3220004
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 06:32:28 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VzDFyDMT;
-	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D3E58E000B
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 02:38:45 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EAD6C16037C
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 06:38:44 +0000 (UTC)
+X-FDA: 83781667368.08.A333D7F
+Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 184F2180009
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 06:38:42 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gSP80f+V;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.221.178 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755326323; a=rsa-sha256;
+	cv=none;
+	b=g7yJcp+/Cq/EzERlvf+0758jItFtCAVeYZaiTl26jg7BcakOHIM+N+z22Ln0L8rMAm4nCx
+	qdR9SXPI4WdHa9t4oV2Ikr0h4waqyVjrlPGrosmdbZvbM6Bxd2UnprAN4HTAQQESvA/7V2
+	E/Ubb7gU3aUYz1ZFaL/ppfZuectF8Rk=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gSP80f+V;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.221.178 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755325948;
+	s=arc-20220608; t=1755326323;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RfYakrmDEwMuGxlRf7o7XtZykiYhmHT/h/2wZuof0q4=;
-	b=zZ7hHYaIXm5eLGxe/jM0WU2P1mOKnDWESD308/bUY0ILh64k1FjftO6a7cj9Or5Lg1aECW
-	0mbH3qMSNrBif7ndt51tlKlqFklQ0gJHuyLJGqDZoUs8wQP9Fbl8NAi9MenKiDmBUNGXTT
-	XEe6iOaO3enM8iHWMUNf1PIQ/N0iCS4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755325948; a=rsa-sha256;
-	cv=none;
-	b=O4AAjPdPK4albwTmni6Fm9Vbz9T19gBEhSygCfTgOdLJuG7CNY76YzF9ahVTHqJFtyTOB8
-	8CBWdn7zDtslazikoavs8Fn5LqOi4Rq5EhzaCJwK87kr4aeOBiDoE8izXyQUT2m35MIXLo
-	bbxzy3iz/LZc6l6iefxxn8gpFovsgng=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VzDFyDMT;
-	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755325947;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=RfYakrmDEwMuGxlRf7o7XtZykiYhmHT/h/2wZuof0q4=;
-	b=VzDFyDMTumvJvtz57z0SDxDv0IFkdh3uvt+0BNTFkZbHF7dSk49ket7f9eR35zbhRhdVX1
-	fzGPxc3s8oY8OKkXhtqon0tcX2jKpvrceAfnJRTOyDJVr+THXN9dSxcXOiQnW3NVHyamNg
-	v8jr0VvaBBoSZzHWCzoMpCrCxdwQRbU=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-515-YALGt9_zMNW7oA4szlXtfA-1; Sat, 16 Aug 2025 02:32:23 -0400
-X-MC-Unique: YALGt9_zMNW7oA4szlXtfA-1
-X-Mimecast-MFC-AGG-ID: YALGt9_zMNW7oA4szlXtfA_1755325942
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3b9e4146aa2so1420222f8f.2
-        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:32:22 -0700 (PDT)
+	bh=wQnIeoP+s7VQU+kygRJWTfXX5/GWV+imwlaAnb6OVOA=;
+	b=cnyQZl3EEQshBm6wic1IOEZl1kM/Lar29uRzJinlnFxxyQY3L0doRjuDDlRB4oZqMP2Paq
+	u8ARUuqKZfs8M6P4DKGlaUbHlSEAWjg9ec7k4IKpvpdXovCgTGiqy9KQTjKrUI60zcE/Du
+	N51xNhSrHtsoG+zMUzJxTIkNgYBJ4Ac=
+Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-53b174dbfceso861387e0c.2
+        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:38:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755326322; x=1755931122; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wQnIeoP+s7VQU+kygRJWTfXX5/GWV+imwlaAnb6OVOA=;
+        b=gSP80f+Vm8GoQPEiadLTuZBc4q3tfxijpOpYXv6WeuyAGa4HDeKeRKvIjATyyaxTIm
+         JreySf6smwuhjALRfVaICo9mQG9tdhfALviHO6N+GEs00YIjAhgPLabzCJzOQjyaIiKS
+         9QYO+57WQ7D0vRIMjFo9qLDvxEmx5o/MhJFoF82G5YBZ6WBMCNLbQIOd5Sdy6bh77ndb
+         +qy0CiI8FkuhcUWaJ9eXQb5vamB4Zj9fvWkMn7ImLPlcv4wjvRCja1a8KxRSkyjwAwLA
+         3gOZn/b4K5rYckY5nsisahd5VFLCD2ycs03cdit5MSpyOo8/2p86lvHEAz+Ko4B0YIyg
+         uhPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755325942; x=1755930742;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RfYakrmDEwMuGxlRf7o7XtZykiYhmHT/h/2wZuof0q4=;
-        b=CWu60w+VPHGY4MaMhugeAmrZpD1VrplzI+gWYA2TUyTK0y0XUvcdRWKY00Rsv/flxt
-         XMTzz8F4bp9FxC9AhBrmQygj3znkyFlHNF+nXWT4721t2hbjTp9UA6U9EhzxjgxXtoAe
-         fFYWZtwquI/5Mdhdz96FuO7tNsKpRNbCnNA+HC7REA7CgXb+hzITSZa/N7OybkvR6twX
-         7VQ7sTv8vx7aIELDOT/NN1//Lt4QnyvZ5a1yDoBArDsHqYktO0bdguDldYZbybG+tCT/
-         EDBHqRTCUEaGW+hiTjQITBGPVoTiJh788u56YoGQ7URCYoX6sQrHDqbtx66qk5IOwoGC
-         z7mA==
-X-Gm-Message-State: AOJu0YxQz17MmrD/m5YhqmceOwXLgOnhtIKEAQzLMgPmIVDL0q+b0giu
-	tBsFOejk+wmc3x0+ZxKkFfApXcj9bOi1LSKUvPjjj6Y6RKWHo6s9I/YtjToG1gDDtP4ZJsMI/oq
-	HJTmif1jFkbFIxULYbUfbwmLPIvxs5mo6oSzEBCE3BAGzY4DiA7PF
-X-Gm-Gg: ASbGnctK2QFwcdxLqtz1+s3Hq2KgXdRat5OJ/WrZX6JDUbgbNwtMd8dTEXil8YCIG0k
-	q3HumRfTFIZspRiEa7VbRHlmyOZbUF13Tz9CIC8c8LaBj/OC8u3Qm4o+21GMepA3QdH0jI4CVrj
-	TExzR2cKY7ZDYNzYL7UKZRsSRd2zs6kSfswVmAX7RcpoDByQ3UKiLdTqhbf5s6kmgKdndLIGWBU
-	7umznT+bUGa1tQgl6EOPq1yMlo+mbrn7/3CpoMQ6RKuJRYWuWl9wdvH/n8DyxEetvrx91mhZpXR
-	WHfX/hGubBTMD6nYUQn1wAd3RyOqSoG3FZkNsBCQekzUym8qiGjrgHG3deyRd0RN4dRoACGX9Dp
-	TU+Ad6yvbb3hJ4gG4R7wT7GOkRXlVeUG6divKRAWoZKkJKxwe6lMo55tgtqEEBAP/YqE=
-X-Received: by 2002:a05:600c:358e:b0:459:dfa8:b854 with SMTP id 5b1f17b1804b1-45a2395a8c9mr30529305e9.5.1755325941923;
-        Fri, 15 Aug 2025 23:32:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEYohcjgkTvBdR4s32I5kXSbQJjF4MDLL2iMOi/C70W+VNhrgl1v8jooHP7XC8mFHqWH/c4Nw==
-X-Received: by 2002:a05:600c:358e:b0:459:dfa8:b854 with SMTP id 5b1f17b1804b1-45a2395a8c9mr30529105e9.5.1755325941481;
-        Fri, 15 Aug 2025 23:32:21 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f23:c700:d8ae:41bf:492a:9e4c? (p200300d82f23c700d8ae41bf492a9e4c.dip0.t-ipconnect.de. [2003:d8:2f23:c700:d8ae:41bf:492a:9e4c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a2232fea4sm44478985e9.28.2025.08.15.23.32.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Aug 2025 23:32:20 -0700 (PDT)
-Message-ID: <ef8fd826-3abc-4c63-b25a-93eed18ed0b9@redhat.com>
-Date: Sat, 16 Aug 2025 08:32:20 +0200
+        d=1e100.net; s=20230601; t=1755326322; x=1755931122;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wQnIeoP+s7VQU+kygRJWTfXX5/GWV+imwlaAnb6OVOA=;
+        b=vvOvbihsWyC9EqslGL3iTxOn4C9PyTfLUfMJaz1UrTASFYl1vmvaUJoYXRvvNMZCVA
+         RQAKhyTzHdoDD/P77D/dUjRi6BHkixd73NdpmYYA4EBqY+RXprWMvD2l41MMrnDu2v1J
+         XZMogcfmUMzAGNraIctrW/KUI4IjIdbTPbzBlzygrZ6wTrypH6GwqdeuZZAYofXL0hww
+         mtxHe5XBsiQu9RiWBI37Xb8oIKPtv0xuxFJbMw6aGwKoNnzDp05xOHAS30btrqCIuw3S
+         yAgEeesACwJSwUYuJ0Ok2Yk8I+3P+kQoz8wLamjPbQx2P+mLGBMMiz2D6+Zle1d8vDXY
+         JHxA==
+X-Forwarded-Encrypted: i=1; AJvYcCXjtvQNiLhFyTaRtujxalXMGekkuWlU/fyLPrxfgtcF8DTWq1SBljR+Ok3yloEtBk2S2OH4XiTOnw==@kvack.org
+X-Gm-Message-State: AOJu0Yx9sbD/XY+ivmPJZcBfMntv2yoBkU7iG/Vh1cMNVfAq0Wfdcfec
+	53lA2wJ5bYqrHpBQ9cyvT1y+kOlbULzRGyOJEuV2mMOstVQxM4Ygj3sd50W9VSqDsnFK4jFEuzt
+	zOHpKrW3qmUsDX4471eBdcZQ3S++DVg8=
+X-Gm-Gg: ASbGncuBI+FjWXxehp3TADmDCj0eg1NAJEzCg5oIRHsbBDJ141PxdCjke5BgiXr69G9
+	c4J3ge5wSy0oWSu3qcunW/ZNZgJa9PrYFrbvWyhHmc9xbqDWyAUE7At+shYc3QmqrI9CbBj9rY2
+	n8h+gq/fy6fOsoWTjleHGizDrk9UhyilovMersI5kOdxwJUfD085oy8PK2qJm0r7c6u8P+V/g+d
+	3K6UEjdvkj7EboqHw==
+X-Google-Smtp-Source: AGHT+IFTBt0NsG+0QYclG+jSrN2ZA3xi0vSYGNE0ci5JVOTRpGQ3xUkVJgoW/6nmW62VzJSlkY+L7UjQUUl9QZNp72M=
+X-Received: by 2002:a05:6102:508d:b0:505:ff14:8e0 with SMTP id
+ ada2fe7eead31-5126af225afmr1907875137.11.1755326321996; Fri, 15 Aug 2025
+ 23:38:41 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] mm/rmap: use folio_large_nr_pages() when we are sure
- it is a large folio
-To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, riel@surriel.com, Liam.Howlett@oracle.com,
- vbabka@suse.cz, harry.yoo@oracle.com
-Cc: linux-mm@kvack.org
-References: <20250815084943.23063-1-richard.weiyang@gmail.com>
- <20250815084943.23063-4-richard.weiyang@gmail.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
- ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwZoEEwEIAEQCGwMCF4ACGQEFCwkIBwICIgIG
- FQoJCAsCBBYCAwECHgcWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaJzangUJJlgIpAAKCRBN
- 3hD3AP+DWhAxD/9wcL0A+2rtaAmutaKTfxhTP0b4AAp1r/eLxjrbfbCCmh4pqzBhmSX/4z11
- opn2KqcOsueRF1t2ENLOWzQu3Roiny2HOU7DajqB4dm1BVMaXQya5ae2ghzlJN9SIoopTWlR
- 0Af3hPj5E2PYvQhlcqeoehKlBo9rROJv/rjmr2x0yOM8qeTroH/ZzNlCtJ56AsE6Tvl+r7cW
- 3x7/Jq5WvWeudKrhFh7/yQ7eRvHCjd9bBrZTlgAfiHmX9AnCCPRPpNGNedV9Yty2Jnxhfmbv
- Pw37LA/jef8zlCDyUh2KCU1xVEOWqg15o1RtTyGV1nXV2O/mfuQJud5vIgzBvHhypc3p6VZJ
- lEf8YmT+Ol5P7SfCs5/uGdWUYQEMqOlg6w9R4Pe8d+mk8KGvfE9/zTwGg0nRgKqlQXrWRERv
- cuEwQbridlPAoQHrFWtwpgYMXx2TaZ3sihcIPo9uU5eBs0rf4mOERY75SK+Ekayv2ucTfjxr
- Kf014py2aoRJHuvy85ee/zIyLmve5hngZTTe3Wg3TInT9UTFzTPhItam6dZ1xqdTGHZYGU0O
- otRHcwLGt470grdiob6PfVTXoHlBvkWRadMhSuG4RORCDpq89vu5QralFNIf3EysNohoFy2A
- LYg2/D53xbU/aa4DDzBb5b1Rkg/udO1gZocVQWrDh6I2K3+cCs7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20250815084943.23063-4-richard.weiyang@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: eXskZ5CVcO9cSe4yHu6WIWMf4oMvLFKoZQFzNTFzpK4_1755325942
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250813193024.2279805-1-lokeshgidra@google.com>
+ <CAGsJ_4w5bAJHyBrwb5+n_EANqzhz4cFSX+9yZacmOiXVJZ_Dkw@mail.gmail.com>
+ <CAGsJ_4wt_30C82B9_ZoOB2umBi-u_kE441ARvYoJVjkLtLqFCg@mail.gmail.com> <CA+EESO4NfgT6uAP52eQEt4_cx7KPdHv4MxnSw_UwHVSurime8w@mail.gmail.com>
+In-Reply-To: <CA+EESO4NfgT6uAP52eQEt4_cx7KPdHv4MxnSw_UwHVSurime8w@mail.gmail.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Sat, 16 Aug 2025 14:38:31 +0800
+X-Gm-Features: Ac12FXzp4854qVOc_OABL1f6f01YvG2rCYIPXU2drb4n_pA96sDmbgBZnCK5-6g
+Message-ID: <CAGsJ_4wwHMDocUjg=PBGafWYXmyDdbuDOi8kB3Xm2Q=J3VpCbQ@mail.gmail.com>
+Subject: Re: [PATCH v5] userfaultfd: opportunistic TLB-flush batching for
+ present pages in MOVE
+To: Lokesh Gidra <lokeshgidra@google.com>
+Cc: akpm@linux-foundation.org, aarcange@redhat.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, ngeoffray@google.com, 
+	Suren Baghdasaryan <surenb@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	Barry Song <v-songbaohua@oppo.com>, David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 55B3220004
-X-Stat-Signature: dh3wpxei1ea7k87xehw946q7uki51gy7
-X-HE-Tag: 1755325948-935065
-X-HE-Meta: U2FsdGVkX18F2D9BJhE7p+FzD/T2hi+uqE+uVtO/oZK6DVv58BBpUmsWqmFwouKyxO6ni/0N9T3JVaO58KzVUu5q7D2PnA2sFdRBJDQvpdqHwm+tcgwvgjR2NNJcmXfCIQ8DzDgOYLY9hmDwXA319yIkEuRSjQC6l3GRKAll89vKNd+yZdZgGLO1T4RoHMqM9IRfYVqmH3U7LztncOVyRZ2qa2czdq4oMWUpUJQsVl+ShRiDGy8fyeGgE9V43UE+XNFyTSqeQ6T8Afiv0mtCxxi8Wjfc8ifhgBRimKqxBDVfmxXn0+3P0UtLsJF5hw0G0o645Ox4tVwpGpXC2kuN0omep2ynPH20Wg5ayVLJAdjiPFJ1DXgmO0dv48TszAhJ0OfGwLc2ol/wUYSp24pXYL1OOfB7FPbt5+3FoL3Ar9vlmM43QL4pVBVfA43DLJ3eubxeLsjYeDxOFTZTsDbPc2CWBYARbs5N/vbP3s3qg2/lvnZyE2dwHkqC48/UY5xpfvnQW3jj0NH1T5Y4krndtiVjYiaU8ObEfAuRy864Fre+TNlPWb8hBBc0cQ/60/FIrUP6NdXy14+9aphTOAfSL6/k7vv8249VRdd2U+4fo7PE9huLsDaOKGO8tuSyV2fiZRIzravUP3nPSb9C22ehy6LLxYHKEKxz9EZG/aWxMy4dCT7WVBTxfa4xeqdioHU9xFrGZJyJQFaJIG8sAGga3C28Ct9t4TAXS7G5+w2JeFpiz9nhF015NS4N/Itx8HuKTgxILWMrLeB/iluCK71dEcupVv54uYEbySgV+JF6mwCf8oepUO9b3zJ3z+f9EM+cYjX+v/GiBFjCfeBhvTg+8shXO8nUlhsSeEc2kYlriIwRXdipGNaZ9WzcpHt3BJ3DANLDdR20X1Zo/A5M9CGKq84bWfGwTDCzzE15QBDsPr9yFOyTx6la+Vg3IUkGkoQOq2dkmPOZrzKIMn40vvu
- 7YjWT+zI
- orcBUS1sMV/piB+ZK3M/QiAqB2oHfMIt99gpGh+BRY2hnkBgYAyDUPOGhiyo9EyFob/ACK3ulXWo2ud3vI+Yla4ls/i4DYMNidpLDJ6tbnzHFtLFzfY2SodoD3297b2RZ8Sh8IalZ1q0SLRKa37fxVPhrJpCFJz5fsbdT5fO8douwG1XhIFE9hYONjTTsdMcJqamql4eXClRJsbBc/V3XiVUFGRUO/QsltCvveFwr0aPxp74zTtAB8oiqPUyG6Z2BI1b2dsCBauCpAsiUg71R2fWfyl9g9x5OVOJ/lGg2pBKgCopfn7Ruc5FXPbp43R98chCwb56boL8XoQLmabhV7LWuL/PBAGf9v34KfdJcF63Q7VzjSwgKLUwuMbtpMI5QSulLMYZ7aQECL24/s3+fz5+lFaIZh84DcEXPmhZm7JIRVWwDDRMwEkrJrsSyhwH82LMujhjo9UEzBwDQ7y1oxlxjym7rZs9v1h9W+VI0UfZzxy+IiFcE6GVL8RGFxPZvM1wOn/31IqlWCW0OzXOrbEOq7GWvWXuK2VB2Hgx0vdcfe3eg2elByK6DwQu56bPS1DZDokyhO2tJ7XiS/QyZtLDXBwKB7JP0axlNUq62VDTZWSWkWM4NDVMu5m0H53n73NZTHoka0nUj/ygngufnmo3C8c5fmTwM7PAv
+X-Rspamd-Queue-Id: 184F2180009
+X-Stat-Signature: tsbx199xpo1n9z6nrzx85oncdf98w693
+X-HE-Tag: 1755326322-776292
+X-HE-Meta: U2FsdGVkX1/KNHERV8bCv0vEcDy6FyL/Mj2bTwspJymfA5DKilI4sDSthMovQo1K24pWOXkvvOrs4wsg2PQBclIGk35nHc9jnz76hru5jNfTi4wg846EB2copJrAr0Ogpskr4BAnCcMnYtMCtasPFaOQ5Aon3pYROwJXZ0krwoqGNQB8sxDG3Ho2+nUa9O3ufn3am/huQ3AhAWRW8dd47u/3ok37OANZh9JczWK3QsNoegemJ6brrKFUlXsRkAenQyTpiNNHjk6Y8HR8Slj24j6CeTkOAvlO1MWvil56/W78CMem0aRvED8ENm5cYkjZLMCsp8P1m9yEgSY/Ob7GAzxbjPx2ikv3wt3j6JVL1njtLZcpUNBytM94XExVTUByo1DTekqxpJrreUfjmcMYi2XrfWJFRhR9a4Z05JaR/nIM48ljwByS3vL5yvw4NO8Ki4/q3E8DWFBoSOONruXWC5e7GeJoe9RHIrWy619rePGkWVrBzOqchN9BomNAUEPiF8VTeR8mTY1MTRS0i8N2TaAtkgJRscastZPqWw5HaCutFmtMPtZnOm22bQ/dT9QBBcEXB4re59ujB/BJGfrcLFzSG7aEYtLaj5eC6xSvIDfEn0wrTkZxO/rSnlmxn9tL4zwc2cdfFFK/hvsnKzxMAWa+fm3LkjNZ+xmGmYNBV/metGZSJ0BFJAZVmgEceWNpzs70kzHYnzsfjhlKs9fTepaqPZ1DRfVrC9L92ksz0K+NSaTrisM/iQhJV2RqVIj9yPmfbgpqoyOE7pjzJ81u1dFePjD0cnO3wtQ7tymZVVlsuOI+ejncK2VvnfL3/X1K8Y5lVWSWfiWc67H0bpblO5ecso9/QsK9BZKeiusp2jdPIIlGQvfm+CeKZR9Fb00aTpm2bxyl7avpoMyolcpMXu5ntWy8oYK26EBuwCDO3PiMZJ4sY2ffOby1u8RBQyGN72MA2E5NAnhdfljvbi7
+ QqSD68+1
+ LMx2iNv8FJlTd3VwY0HT59nAGYfgnqDKecrvTnLDINMApgUXCtA00UE940AlS3CjoTOlqijuHw9yfkVnhF5kvjBfBO1t+WVgKi43mgn9exH7hO/0HSHH5uKPEJv2QFmeFWirnwc/c+gfyr20fCFqBm9FVaWVTQC1xvkBjKaRjKvkIceSg71FMfCVNsLxOM1gBi5U0qiEe97W+vtD4YuSifSUwzvGzSO3xJTNlnREbf3vUJwz4Qr4BUSBcOpHop/iaM8uravM0Z+on7GFBW/fjf6lwaqNos+c7GHIslRB+KEu7Oi+y2IFUIoY6u5c8O72L6ye6d6P5dvwQBtq8OIsexI/oMTN8tdoqO1hGE3V1cEtkNxtv9AHvVyERTcE0P36mWw7M+K7hE6+s5clBq+Q8crsKfY07ELIQOE3RatAQmiOAy41u08EG+sadbe8MqinGwjoSCP2Lo3DYar4pJPIraEwJTA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -176,26 +119,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 15.08.25 10:49, Wei Yang wrote:
-> Non-large folio is handled at the beginning, so it is a large folio for
-> sure.
-> 
-> Use folio_large_nr_pages() here like elsewhere.
-> 
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Rik van Riel <riel@surriel.com>
-> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Harry Yoo <harry.yoo@oracle.com>
-> ---
+On Sat, Aug 16, 2025 at 12:27=E2=80=AFAM Lokesh Gidra <lokeshgidra@google.c=
+om> wrote:
+>
+> On Fri, Aug 15, 2025 at 3:11=E2=80=AFAM Barry Song <21cnbao@gmail.com> wr=
+ote:
+> >
+> > On Fri, Aug 15, 2025 at 9:44=E2=80=AFPM Barry Song <21cnbao@gmail.com> =
+wrote:
+> > >
+> > > On Thu, Aug 14, 2025 at 7:30=E2=80=AFAM Lokesh Gidra <lokeshgidra@goo=
+gle.com> wrote:
+> > > >
+> > > > MOVE ioctl's runtime is dominated by TLB-flush cost, which is requi=
+red
+> > > > for moving present pages. Mitigate this cost by opportunistically
+> > > > batching present contiguous pages for TLB flushing.
+> > > >
+> > > > Without batching, in our testing on an arm64 Android device with UF=
+FD GC,
+> > > > which uses MOVE ioctl for compaction, we observed that out of the t=
+otal
+> > > > time spent in move_pages_pte(), over 40% is in ptep_clear_flush(), =
+and
+> > > > ~20% in vm_normal_folio().
+> > > >
+> > > > With batching, the proportion of vm_normal_folio() increases to ove=
+r
+> > > > 70% of move_pages_pte() without any changes to vm_normal_folio().
+> > > > Furthermore, time spent within move_pages_pte() is only ~20%, which
+> > > > includes TLB-flush overhead.
+> > > >
+> > > > When the GC intensive benchmark, which was used to gather the above
+> > > > numbers, is run on cuttlefish (qemu android instance on x86_64), th=
+e
+> > > > completion time of the benchmark went down from ~45mins to ~20mins.
+> > > >
+> > > > Furthermore, system_server, one of the most performance critical sy=
+stem
+> > > > processes on android, saw over 50% reduction in GC compaction time =
+on an
+> > > > arm64 android device.
+> > > >
+> > > > Cc: Suren Baghdasaryan <surenb@google.com>
+> > > > Cc: Kalesh Singh <kaleshsingh@google.com>
+> > > > Cc: Barry Song <v-songbaohua@oppo.com>
+> > > > Cc: David Hildenbrand <david@redhat.com>
+> > > > Cc: Peter Xu <peterx@redhat.com>
+> > > > Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
+> > >
+> > > Reviewed-by: Barry Song <baohua@kernel.org>
+> Thanks :-)
+> > >
+> > > [...]
+> > > > +static long move_present_ptes(struct mm_struct *mm,
+> > > > +                             struct vm_area_struct *dst_vma,
+> > > > +                             struct vm_area_struct *src_vma,
+> > > > +                             unsigned long dst_addr, unsigned long=
+ src_addr,
+> > > > +                             pte_t *dst_pte, pte_t *src_pte,
+> > > > +                             pte_t orig_dst_pte, pte_t orig_src_pt=
+e,
+> > > > +                             pmd_t *dst_pmd, pmd_t dst_pmdval,
+> > > > +                             spinlock_t *dst_ptl, spinlock_t *src_=
+ptl,
+> > > > +                             struct folio **first_src_folio, unsig=
+ned long len,
+> > > > +                             struct anon_vma *src_anon_vma)
+> > > > +{
+> > > > +       int err =3D 0;
+> > > > +       struct folio *src_folio =3D *first_src_folio;
+> > > > +       unsigned long src_start =3D src_addr;
+> > > > +       unsigned long src_end;
+> > > > +
+> > > > +       if (len > PAGE_SIZE) {
+> > > > +               len =3D pmd_addr_end(dst_addr, dst_addr + len) - ds=
+t_addr;
+> > > > +               src_end =3D pmd_addr_end(src_addr, src_addr + len);
+> > > > +       } else
+> > > > +               src_end =3D src_addr + len;
+> > >
+> > > Nit:
+> > >
+> > > Look at Documentation/process/coding-style.rst.
+> > >
+> > > This does not apply if only one branch of a conditional statement is =
+a single
+> > > statement; in the latter case use braces in both branches:
+> > >
+> > > .. code-block:: c
+> > >
+> > >     if (condition) {
+> > >         do_this();
+> > >         do_that();
+> > >     } else {
+> > >         otherwise();
+> > >     }
+> Sorry for missing that. I can fix this in v6.
+> > >
+> > > By the way, what about the following for both cases? Would it impact
+> > > performance in the `PAGE_SIZE` cases?
+>
+> I just wanted to avoid a bunch of instructions in two pmd_addr_end
+> invocations for the (len =3D=3D PAGE_SIZE) case, which is not going to be
+> uncommon. But I guess overall, it is not big enough to matter so can
+> be removed.
 
-Acked-by: David Hildenbrand <david@redhat.com>
+Reducing the number of instructions doesn=E2=80=99t necessarily improve
+performance=E2=80=94in fact, it can often have the opposite effect. It may =
+lead
+to increased branch mispredictions or make the code more memory-bound.
+In this particular case, could branch misprediction be the real issue?
 
--- 
-Cheers
+> > >
+> > > len =3D pmd_addr_end(dst_addr, dst_addr + len) - dst_addr;
+> > > src_end =3D pmd_addr_end(src_addr, src_addr + len);
+> >
+> > By the way, do src and dst always have the same offset within a
+> > single PMD? I don=E2=80=99t think so. If not, how can we verify that if
+> > src=E2=80=99s PMD is not overflowing, dst is safe as well?
+> >
+> > Have you only checked src? And for src, since you are already using
+> > pmd_addr_end(), is src_end =3D src_addr + len fine? Why are you calling
+> > pmd_addr_end twice after your first pmd_addr_end has already limited
+> > the range?
+>
+> Effectively, we have to calculate min(len, extent in src pmd, extent
+> in dst pmd). That's the max that can be batched within a single
+> critical section of src_ptl and dst_ptl. The first pmd_addr_end() is
+> calculating min(len, extent of dst pmd). The second pmd_addr_end() is
+> calculating min(result of previous pmd_addr_end, extent of src pmd). I
+> don't think I'm missing any overflow check. But please correct me if
+> I'm mistaken.
 
-David / dhildenb
+You are right. I misunderstood your code yesterday.
 
+Thanks
+Barry
 
