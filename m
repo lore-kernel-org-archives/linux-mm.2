@@ -2,111 +2,111 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0025FCA0EE4
-	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 06:27:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 420FCCA0EE4
+	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 06:29:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CAEE8E0237; Sat, 16 Aug 2025 02:27:50 -0400 (EDT)
+	id BDB64900256; Sat, 16 Aug 2025 02:29:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A1978E000B; Sat, 16 Aug 2025 02:27:50 -0400 (EDT)
+	id B8BCB8E000B; Sat, 16 Aug 2025 02:29:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 791568E0237; Sat, 16 Aug 2025 02:27:50 -0400 (EDT)
+	id A7A87900256; Sat, 16 Aug 2025 02:29:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 63FA28E000B
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 02:27:50 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D41CF14039A
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 06:27:49 +0000 (UTC)
-X-FDA: 83781639858.25.BE5FA8C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 7760CA0008
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 06:27:47 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OVh3pBvL;
-	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755325667; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 9619F8E000B
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 02:29:47 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6212AB8FA2
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 06:29:47 +0000 (UTC)
+X-FDA: 83781644814.14.6AD1760
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 47E8940008
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 06:29:45 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PVHDgdWq;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf12.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755325785; a=rsa-sha256;
 	cv=none;
-	b=z/1bGnEJSiZFvBfY61SLEHsoxGdAPjP84DvGbZOfVYlS53Ecm1xTdngpiWMNZu18bDVUTZ
-	YpKv9tnI1zqQHdYdHOan10jahvnOXFdUrOpzFkjMh2jaOePZ1TruZF/83OOLtVB0YAUxkg
-	j57fE0zXIevfi0e0tSO/lPEbLaLhE+c=
+	b=JCryia8rcnvACKQDjJ5DeTG7l+XsVPzLkbTwps9yPXogQeKJhj+9AM2R8kEAj7lY+005kW
+	aNp+j/YnAZc2DPZCYIT0cdO1iMB76PxInJ46jhEoQ3RxFjtLteFHeNsjPOWPcVbL3gdnQ2
+	aySuoj/FsRPpk6d+jtIpuvA3mMi671U=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OVh3pBvL;
-	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PVHDgdWq;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf12.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755325667;
+	s=arc-20220608; t=1755325785;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fUuoR3W6iZ2p6uoKb6adWtn5/8ajohyLB0yXCyvc0h8=;
-	b=I14rg+j6NyJfHG83/vfPZmGG7qZEJARrhr89T5ujVeUvMQtnIGTIm2KdEtLhdkxAIcEXCm
-	mrgsz9ULPNbfs//vfjyk8YYhrMaHFWwY9AFkrhtGKoqgrl+huAwbePP1Ky5Dah+yiYSSQ6
-	q0W8nACOK05XSyq+r6dgbj+rqbqc0ns=
+	bh=DoA6fOTFrfdqKU1348k7QENmJ9d26UvCg8a8Yb5qig0=;
+	b=bOtfoZRZD6XyT77F1jaKK9zZ1twzQkb1z9w8Rj01Ymn0Ilue/cuTKvgjUseAodmvVBaVf2
+	A1757mk1+nWCwSthD7/rh9+3NaNEPHNHtCMwyiQ/2t3iO4Pyyhe4x2ydg9/lQj5BgY5otI
+	ytM/7++tfdBTfuW2dSixFKln8vNqGFo=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755325666;
+	s=mimecast20190719; t=1755325784;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=fUuoR3W6iZ2p6uoKb6adWtn5/8ajohyLB0yXCyvc0h8=;
-	b=OVh3pBvL3T/Sq1BL08wkmdNejPIwjo/n6bFs1Eg+8uRoIEd1fPWvSS7sO3LNvK7H/AHBRS
-	r+7R9XxCd8bzGhR+kkzeHjBHTkR3Pba4759JREo/ckbVJSeKYhxn5UcOnkpnicpLRKakGb
-	4Cuaaq/jTS0pm8iAwumBvcEY102vU6A=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=DoA6fOTFrfdqKU1348k7QENmJ9d26UvCg8a8Yb5qig0=;
+	b=PVHDgdWqb8p8R6X4kf9lF/33t4rzvFJaG7DaNsy8x74337oeOGudAUkDEAP8Y94CbYdux1
+	N6oeRsb0xxzaf9ap5QfSfFwef6IXkY3XZ7Z0ARH/9rWYiQeQMt9XKHKXowhI4e6jPJ/LLl
+	FmSnqldU3aFcO0s3fmnDx7jzIjXyuTw=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-298-HMOcaUbaMCiN8Cfhjb9enA-1; Sat, 16 Aug 2025 02:27:43 -0400
-X-MC-Unique: HMOcaUbaMCiN8Cfhjb9enA-1
-X-Mimecast-MFC-AGG-ID: HMOcaUbaMCiN8Cfhjb9enA_1755325662
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45a1b05a59cso11979935e9.1
-        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:27:42 -0700 (PDT)
+ us-mta-543-_c5mW9nnNlmfhuR_RrnC4A-1; Sat, 16 Aug 2025 02:29:43 -0400
+X-MC-Unique: _c5mW9nnNlmfhuR_RrnC4A-1
+X-Mimecast-MFC-AGG-ID: _c5mW9nnNlmfhuR_RrnC4A_1755325782
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3b9edf34ad0so1655494f8f.3
+        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:29:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755325662; x=1755930462;
+        d=1e100.net; s=20230601; t=1755325782; x=1755930582;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=fUuoR3W6iZ2p6uoKb6adWtn5/8ajohyLB0yXCyvc0h8=;
-        b=dtDLLoleVVKhdCGZ1IPjRqZLwZRRb7YPlJ30EfetOfA9l0PArJWBZPuBPIzX7s3Y3M
-         Q7vheYzy7Q+fDAj2Z+a7zYIGE6LElWgrytWJ4y/5PrTa0sov9k2E7vTI4hYXM8p7NE/J
-         r/g95zHUArCAFcdwLlH9XZ5I3mgthg7KwV740/eJ2ganJMJ9vx/msIJXsLGSq3PEkPp5
-         tNhpz/U67hvoXUqnxtqHwioElXeQbI/aVgPNac3Wk8cRjs8gYD50U/q16Mfqfh4ltoTF
-         6vFSd498OnEDHiX/Y91rApgsrg/z5nDri/vV9RjIo1GUD1e/hCWvhnOwzkoMtgG3EJJK
-         HXaA==
-X-Forwarded-Encrypted: i=1; AJvYcCXIyLNCNxmLEg+bsi60iEAnn7erTKwXidYLw/noOI6xo8QTo97l3BgUdprIa1HXzSdiOhiKkki27A==@kvack.org
-X-Gm-Message-State: AOJu0YzrGlFBcmDK2LNbd4YSHOgPZyUwZdj2GJQJSS7vIDpctY8109ub
-	8hZBC+jrlUpiHR+VPjQArCfIYTO21jydXUFnzrI6CylsvnJ6l1FErvtMpi79RL74htbz7HlYShw
-	HY57iOdiVqM0CGBxS+W5xKwZhJnpyqhNAdOwn34yvwvOiQ2JzWHhw
-X-Gm-Gg: ASbGncslp/bA+p7dxKh80r4ZcLT5keF4nPCtMNO279wfbZvtzGkztt8F/0g3W54ZLt/
-	zBzUe0GXhSouQz4vRRsxf5GvJBEhqtgUPNIonxGG3Zz5yFkc5mLz62Ez+oSu3NbkPqLwkazE+5U
-	IHIDBrF8KEbfKVW1YIeBArxrP38eacbarmh+tJXWlsqCb/yS/8pBkYN9xhNxVPEzXk2abbmWCWT
-	M7lf1kype4fV2cgd+Yuc2jk92R7NUo8r3hJsI9AV3XsjlcbmaNS0RcyRkDsnNa+0HNIXlPcAC/5
-	P5Y6AXgX3mSywKnw7fpuucJCnh1JVM1BCKZ8emSY8uSpL0rWd7alNTPPDAsy+HHpOun13xjfSYl
-	rTWz6++2KJRdSAEjNTSkOq6eQxMO+1FAFB0MJTJ8T+Pr+s7d9QspSL4Z6lobBLVSWUXg=
-X-Received: by 2002:a05:600c:c04b:10b0:459:e3f8:9308 with SMTP id 5b1f17b1804b1-45a21ab157fmr22208055e9.11.1755325661986;
-        Fri, 15 Aug 2025 23:27:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFaL5U3yulaxPkegpoMwZPMWC4xqYC1NkrnFhrR/g7GiOgEyUoKNgfM5RiObhMGQcjcxWIdJg==
-X-Received: by 2002:a05:600c:c04b:10b0:459:e3f8:9308 with SMTP id 5b1f17b1804b1-45a21ab157fmr22207915e9.11.1755325661595;
-        Fri, 15 Aug 2025 23:27:41 -0700 (PDT)
+        bh=DoA6fOTFrfdqKU1348k7QENmJ9d26UvCg8a8Yb5qig0=;
+        b=dbCJR/wno7F8tq8TQjTW5KDSCphiI45jCFNiEVhlezQO15jBg0M2igOWUj2kjBJ5Bt
+         j17nBxuDe6S8t3ichKPZVkc99+nu5az9pMoR1xhW11hnVGZY5MDgxgXMLlNcQuLqoKtx
+         V+q6QjZ7YCGePyDv1PAw80xz04TgdQsE67LYDiG+iss8PoAADH8Ym3NRFckkeXLwVEeV
+         cw2gTJm+F6gCxgRyFyVFL6Oxcg++puM6FOB4fStxcLEzG7eCbasEQ2H1Ty0CH3agpu0P
+         jt1UTYQMo+iMYMXWHvIAdEsiDlNN1I6qdaUSdKLlT7Albv9lVlJyP/SKnoxbm1csOW/Y
+         kkRA==
+X-Gm-Message-State: AOJu0YyZM/OyThUm221dO4J5R+ATAbOfTQao17joZoiGHnw0o6A2nzHX
+	yTRu5Mg9Hyp0r7sEQwBiRjHK9j8Z5lsccHofYmJOdDTmPuloeIUmEPANER9L2CI6lD5/BOD6/3j
+	xwZYfHJJbJ47XZ5qE8wCM2p+EEub8kmSm7fipgI68mFWoGPaomR29
+X-Gm-Gg: ASbGnct0+ICG2i+OnJQ3UVLW2sCYB1WA9ZDiN7jvsiOPjjJQYSAuwI9Ovb3ybAab4Ou
+	QAeTIKAtj8LkJl9Qp6ywbqXNTTeBcxAVpOYFKpD+YtNNr7wwFBnPPsqWGtMO8xk0KnWAGNil3dW
+	ALH4ehx9S4GOSoWS+jwGAxVBnc0K0L7tL8cCCeWfZ1Ho+9sgtqwaI/lP73+frr9y4pTF1w1HlRm
+	jwhzAhT/YmtoylbSnBoUkz8ZtXp1g/6fqEfdeRfK11ZaT16fIOlZCGLFJk7rHSU0EHAnUEGsG9n
+	lNQQR0vjlK8h/Y0w+lAPi5nnKL4qe2BcIRFgsSlpZpTlucUTR9VYUG4gkUG2ItW8QjwdIbmc9hz
+	CVGAbhTToyCOcK1IRATA2mJUVC0V9K5eu/QliNT4x+m/ArYVFx8UXCZvxmguhjspYfN0=
+X-Received: by 2002:a05:6000:2c11:b0:3b7:9d83:5104 with SMTP id ffacd0b85a97d-3bb69c717eemr3876069f8f.51.1755325781898;
+        Fri, 15 Aug 2025 23:29:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGKJ186/sz1lSR/RJ2HYX24FML9Gt9C5jORadiNAW1ArmUFhniIT/GF8vIzvHlJ38rB1gVVvw==
+X-Received: by 2002:a05:6000:2c11:b0:3b7:9d83:5104 with SMTP id ffacd0b85a97d-3bb69c717eemr3876054f8f.51.1755325781515;
+        Fri, 15 Aug 2025 23:29:41 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f23:c700:d8ae:41bf:492a:9e4c? (p200300d82f23c700d8ae41bf492a9e4c.dip0.t-ipconnect.de. [2003:d8:2f23:c700:d8ae:41bf:492a:9e4c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a2221136dsm44144735e9.5.2025.08.15.23.27.40
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3bb64d33340sm4596023f8f.21.2025.08.15.23.29.40
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Aug 2025 23:27:41 -0700 (PDT)
-Message-ID: <ee29262a-911b-4a97-b619-0dea3b657252@redhat.com>
-Date: Sat, 16 Aug 2025 08:27:39 +0200
+        Fri, 15 Aug 2025 23:29:40 -0700 (PDT)
+Message-ID: <601ff999-6a3d-4010-b316-6b4b294b5417@redhat.com>
+Date: Sat, 16 Aug 2025 08:29:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/cma: print total and used pages in cma_alloc()
-To: Xiang Gao <gxxa03070307@gmail.com>, akpm@linux-foundation.org
-Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, gaoxiang17 <gaoxiang17@xiaomi.com>
-References: <20250816042842.3959315-1-gxxa03070307@gmail.com>
+Subject: Re: [PATCH 1/3] mm/rmap: not necessary to mask off FOLIO_PAGES_MAPPED
+To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, riel@surriel.com, Liam.Howlett@oracle.com,
+ vbabka@suse.cz, harry.yoo@oracle.com
+Cc: linux-mm@kvack.org
+References: <20250815084943.23063-1-richard.weiyang@gmail.com>
+ <20250815084943.23063-2-richard.weiyang@gmail.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -152,21 +152,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20250816042842.3959315-1-gxxa03070307@gmail.com>
+In-Reply-To: <20250815084943.23063-2-richard.weiyang@gmail.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 9EutiAy-mDPpb4EkS4VM3zBJqAPaFm8pskVMNi7g1dw_1755325662
+X-Mimecast-MFC-PROC-ID: gIS2DlteOxm1v-zcQ_968Fb7uG94wnQHzLEkg9vMJes_1755325782
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7760CA0008
-X-Stat-Signature: qkby8kmsdyg9wdgi5esmn9n7y8c36zen
+X-Rspamd-Queue-Id: 47E8940008
+X-Stat-Signature: dkumqhbmmi19ej9z8os6n4gtzsgqdo1o
 X-Rspam-User: 
-X-HE-Tag: 1755325667-608357
-X-HE-Meta: U2FsdGVkX18BanelAkCaHiiJ+k7JpeFF4hN6APprqmbJX4NcFKbcyaL01BvSJH1GndX/6Iw6xpHbtR43U6sMOr9GzTjXYOB9WjYEAVxxhokgzlPDEG7UWKGM0NVPh0Da6JtlqR7wIN2bvw8/p3pQJ+gZtQ5Wd/5Li2bc8gQfU1Lp1jolwfobTrWRKBNBLKf0IEK98d2qP1SFwlhFMeRvs7NqE24b3N1yvCiyElvUhG1Sl3THCiPtCz2KHKYAiUBcRIILC8CMPK9uLuLWsJ7RA1hvru0vCBvKpNMMP0cK10ors4jgQ4HBFv1ytF62L3RLx9oZbYLBWxmwg1UhxSrNhLCt4bgj0GwftxYs2BPPHhpsuTZS7w/NsVo/yaiREefzXTkegwmxLjTJbtAoz4Nhr/Pzwnks2EX7HWrWGBY1Iq5aORnCPfEhe5A/LLNT87zkrXgXuQoEv03CTcPnzkrsIm32iTwX3mN0BJ7LvWR1UQC91nvQU1BA5Z0uLexVMmXFLW1C2LgjP6Lt9Mo4AFnzGosCtfOC61OLkB0i+KAAsO7SOafJf9edEhD55yJ/zZ118dMDmJlJoX0+ch4NmSypgjSneMQTtQMuv86x/GEzQt5pn0i1QF7yOn89UrHFapZlngElGwkuqqCKRpqGY2OJEOLLF8oTqVjNpabMULV9pwOTFovLL/JESjP71jsJF54OK5uye5GxT3ELGjZ2RkxGeYyz0YJPPYS/6zSLTEy0k+RDupg7G+86bEFjSPCa4K+pugSsPLCkngB0I2DJJt8uJ+O4QD5AN697E0oGJ1z1sVBRZHQKpbFCyOvpALHGbm9Grus94/LuNrsIrc7Fan7buqvirl94T6EjUTxPtcKTRR7EVDvhG5LjXgcrpm1utJGdP92RNMBSIbFY1i/j+WmVqbVJfyColX66y9yNkMC2rTK6f2FP5aEMF+clYPInCgQhoq+Fpybwxw7nZ4T3Pp2
- o/q0r7h5
- m046WdrQaLmMcJSGjlc/22QrH7UoihvAOMNLakgZHpfXDDCRaG9+5E8XZ7bx4+4ng50RT6g8OFWLqWxCwW8M3TXkzy4v7tx1NQtfAbcyRBK87ZzirNHw0xb/zSSKCCtK51QpSblnM2OENRPQl+2X0B5DfBiP6TTIBsH8ConuHtzcx0W8+ARNRJyuT4G/Ju7y/hB7hl1qcuIf+1zXSSXwNXpa/MQ==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1755325785-372770
+X-HE-Meta: U2FsdGVkX19i5xn5C5LmVxvXGKh2M5Qa+b75LT9USnUqcLH9yofqDKr9Z2Z1YUU2fB/OO5kMIrdWYXLuzg0tpHKltWbovIN/I6nMbWSPmhM9GfxjeTJSN+axEP3mymAib3iF9kjocYVvYpafDI6rgk6c99YgVzaKGQZL8ew0oV1WmaCQtYWy4qtVjipji1JVwxEIziJfadoJc0+GCJWCmEMj9JpYpaZAE8L76LKyFYkcmE74qtwb1cwCwLsWG9p0DoWijhjzxWaLefDIyFz4LGAYSIQLPBvku7bcSmQJjhoD20aaGLYgLKLn8KWlBK9j+oK1b2VwfRrRBEtqg20BlZKXI8A+TqXbOJM31+C5gw0ROIUtG2sQ5BWw27vlfQkv9Cvj8lN8qiALrx79RjzlnhCW9qJfBR/uRYphRyKX+zpIaKfgD6xKIzDiupP62PRl616NI05Uc6tXLnJw+NN0uWfB3t+S4qhL1S2e5FAXIFMvNWNWkMPxBvWb/P+yhxIo4kIxLAAuj74rX3QmFwWJkLji73b9xHMGKtg/NberWYe2hlwxIjuxE5Tdl0TtnXZO5MH+QkHHqjZVkYhsfmtONyIl1aiZX8CRR6QKO7BjJpl4srkYmKaTDlZObKQ7Pup6OJXYPMBeuykt6Ci6FFK3V77vTn3Cbbk2DgvxJZjtgDxGmtqljvCbVJBIGaIeWpV2RxDUGmBE4dx4uM1GpBBatCfbKMhQls4fc0uFRUs4R+DS/HO3EyOxHzdRhc2zSKzYDGPUiQzzVZ6TzOyEHJQDwBBynEq8jIWbRUAWN/I1TZE2/0xpKzX/phcelKx719usIYLADDUbHb9k2Vq/7ThpV0nVb7L8twVty+4yWQ/W3Gjqp8F4gPCyE/FprnyJing3qKzRuUesRdYbDaSlBtQuRLjl0Nu1hW3qj4cATevw4d01bgLnlL0anJWceL/RAZ60XeIoZfCTNgtu+pKeXb6
+ yCfR4oz9
+ 3Eu/mehHuhXiq6f2L7Ezm2TBJSnrP+UnpCB6p3nTYDz7f7OsAAplhZ+7uqbfwiZaJY8DUZ2oUBKigCu38aFEF4/cer2bZke1kvuAu1zmAObAlv9LqxH2w7SKckJhjOHoE5S+9sfohtI7iJqRm4YNDiaxYBxQ0pwdonxjy
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -175,61 +175,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 16.08.25 06:28, Xiang Gao wrote:
-> From: gaoxiang17 <gaoxiang17@xiaomi.com>
+On 15.08.25 10:49, Wei Yang wrote:
+> At this point, we are sure (nr < ENTIRELY_MAPPED). This means the upper
+> bits are already cleared.
 > 
-> This makes cma info more intuitive during debugging.
+> Not necessary to mask off it.
 > 
-> before:
-> [   24.407814] cma: cma_alloc(cma (____ptrval____), name: reserved, count 1, align 0)
-> [   24.413397] cma: cma_alloc(cma (____ptrval____), name: reserved, count 1, align 0)
-> [   24.415886] cma: cma_alloc(cma (____ptrval____), name: reserved, count 1, align 0)
-> 
-> after:
-> [   24.069738] cma: cma_alloc(cma (____ptrval____), name: reserved, total pages: 16384, used pages: 64, request pages: 1, align 0)
-> [   24.075317] cma: cma_alloc(cma (____ptrval____), name: reserved, total pages: 16384, used pages: 65, request pages: 1, align 0)
-> [   24.078455] cma: cma_alloc(cma (____ptrval____), name: reserved, total pages: 16384, used pages: 66, request pages: 1, align 0)
-> 
-> Signed-off-by: gaoxiang17 <gaoxiang17@xiaomi.com>
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Rik van Riel <riel@surriel.com>
+> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Harry Yoo <harry.yoo@oracle.com>
 > ---
->   mm/cma.c | 15 +++++++++++++--
->   1 file changed, 13 insertions(+), 2 deletions(-)
+>   mm/rmap.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/mm/cma.c b/mm/cma.c
-> index 2ffa4befb99a..46cc98e7f587 100644
-> --- a/mm/cma.c
-> +++ b/mm/cma.c
-> @@ -776,6 +776,17 @@ static void cma_debug_show_areas(struct cma *cma)
->   	spin_unlock_irq(&cma->lock);
->   }
->   
-> +static unsigned long cma_get_used_pages(struct cma *cma)
-> +{
-> +	unsigned long used;
-> +
-> +	spin_lock_irq(&cma->lock);
-> +	used = bitmap_weight(cma->bitmap, (int)cma_bitmap_maxno(cma));
-> +	spin_unlock_irq(&cma->lock);
-> +
-> +	return used << cma->order_per_bit;
-> +}
-> +
->   static int cma_range_alloc(struct cma *cma, struct cma_memrange *cmr,
->   				unsigned long count, unsigned int align,
->   				struct page **pagep, gfp_t gfp)
-> @@ -858,8 +869,8 @@ static struct page *__cma_alloc(struct cma *cma, unsigned long count,
->   	if (!cma || !cma->count)
->   		return page;
->   
-> -	pr_debug("%s(cma %p, name: %s, count %lu, align %d)\n", __func__,
-> -		(void *)cma, cma->name, count, align);
-> +	pr_debug("%s(cma %p, name: %s, total pages: %lu, used pages: %lu, request pages: %lu, align %d)\n",
-> +		__func__, (void *)cma, cma->name, cma->count, cma_get_used_pages(cma), count, align);
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index 1c5988dbd1e7..a927437a56c2 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -1749,7 +1749,7 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
+>   				nr_pages = folio_large_nr_pages(folio);
+>   				if (level == PGTABLE_LEVEL_PMD)
+>   					nr_pmdmapped = nr_pages;
+> -				nr = nr_pages - (nr & FOLIO_PAGES_MAPPED);
+> +				nr = nr_pages - nr;
+>   				/* Raced ahead of another remove and an add? */
+>   				if (unlikely(nr < 0))
+>   					nr = 0;
 
-		^ one space missing for proper indentation.
-
-But doing another spinlock cycle just for debugging purposes? That does 
-not feel right, sorry.
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Cheers
