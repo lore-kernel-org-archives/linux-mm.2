@@ -2,111 +2,112 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E8FA3CA0ED1
-	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 01:40:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 925FACA0ED1
+	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 01:52:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AEC08E022F; Fri, 15 Aug 2025 21:40:49 -0400 (EDT)
+	id 214436B02F5; Fri, 15 Aug 2025 21:52:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 866F48E0008; Fri, 15 Aug 2025 21:40:49 -0400 (EDT)
+	id 1C50E6B02F6; Fri, 15 Aug 2025 21:52:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79CB88E022F; Fri, 15 Aug 2025 21:40:49 -0400 (EDT)
+	id 0BB7D6B02F7; Fri, 15 Aug 2025 21:52:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 65B028E0008
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 21:40:49 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 138381A0322
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 01:40:49 +0000 (UTC)
-X-FDA: 83780916618.16.0282D51
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 500828000C
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 01:40:47 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cwgjQCdz;
-	spf=pass (imf02.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EB7A16B02F5
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 21:52:55 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 59F701DA766
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 01:52:55 +0000 (UTC)
+X-FDA: 83780947110.08.20FC5E5
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 8F77340008
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 01:52:53 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gIloYCSR;
+	spf=pass (imf07.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755308447;
+	s=arc-20220608; t=1755309173;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=paq/IdzHGLOy+RGY7FtKr+S2+lm7qcZDiB17Sluzsd0=;
-	b=b2MeJGPLoZTaYnP5G0MKWXMOIuCq/bLz2F7WEZLhRsTS7HuLH9bGVF4cE2ZVZ6eRlyA86W
-	8cTuQU/k5+R5pILg29Kt+va3yikeBfVH8CHDalU/QgNIXEnoMaJf/giFVT4mMhggv+V0sr
-	3jcM8v+zAzopfQ0yTHuiaDd06R2R83g=
+	bh=NLKG6jNvVUsekFiiFHIYl022cHqokzDGITdYQJ2LTYk=;
+	b=k9EMmgzK0t+0j5QOCEwz555RibowWT61SGG/7Q9s1BNWqBPeBbUGyRc0fu5uaIooZAHcur
+	E47v7prPpyfylYdCClkG0fl5Yk+tf2qpAYAkxMIQT72P/+Xd0ID4Ose2UNEdDPECk3YAPb
+	iLaM10cz7lLZZGU6D2rUlEZRKwB4/D4=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cwgjQCdz;
-	spf=pass (imf02.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gIloYCSR;
+	spf=pass (imf07.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755308447; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755309173; a=rsa-sha256;
 	cv=none;
-	b=v0cx0odWi6yZ2dwZMZlGXgmAUNVK2dssYL+qZYuuB9BNfYjzmEZOD0XmhCWLJbPtU9jlqo
-	TCm4LMS2grxS+GZ0NJy5kt1t7Q1EIk+kyxCUuowM6bMcEw+pf1j6yWg5ApMHFNP+3D9iEr
-	Rq34iDuc7t0EKHSS+0HQl0dMdQYbUFM=
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-323267b7dfcso2574803a91.1
-        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 18:40:47 -0700 (PDT)
+	b=ExHGm/UKxqFN7fO6xnKWm46cXco4aRRsP/O0UF6kZVY5yGfQ+0Eon5piR8imWFlLgT8KLB
+	oEBxisHcKgGkkCI7CBLxAqEu/w8G/mWuQWcmJgtbT5IynbTImtiF8H42XsUc6w3s0ViGvG
+	Qr7O7H3DaqbF9+zCrDTinPyFuYNzwas=
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-76e39ec6e05so1380259b3a.2
+        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 18:52:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755308446; x=1755913246; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1755309172; x=1755913972; darn=kvack.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=paq/IdzHGLOy+RGY7FtKr+S2+lm7qcZDiB17Sluzsd0=;
-        b=cwgjQCdzbRPBsy2f9xbMBViINE2kyhV4BTP/0lSL7tcAVq9bepZziGeS92h49Q9/0k
-         LsKufG9Ek+kbq5xywmXmUzRC8sN/7GtXHvGWBecakb5nqef1JpXQZSweC+dcO1BhAuXF
-         r7nbo6bGUVxbaqtqDqMfmVi612fEfIgC/BLj2GJH8XQ4s217GfH86pxZo5ESWPwlLbes
-         YCk4canWH7QCKCrT3XxyJglkzXhYPBfQ/pMw0ZIx/WAXibZF7JKeMNCWfESkGWXFS4jS
-         H3UoWKqqTlnkdvx30TMMl2XGK7/u1xVe92S8pQ6p6Qg9P1003NG5JO9C6pc//utqxAY2
-         zrFQ==
+        bh=NLKG6jNvVUsekFiiFHIYl022cHqokzDGITdYQJ2LTYk=;
+        b=gIloYCSRzhelHvPf3BWPAl2sux8xBfs5CLjILzT1LcZcHKt8+HjNBdisEpqSVClFqe
+         xhCAJqupq1tvDmNVFLn4hlgG53+WhuGwVl1DGvI2NlXJ4T6LJ6MQwDWcHJG3Szzahpbl
+         2HzYv1byjVmwKGSC13uV8xaQ4Vbniq8YHQ/c8qKgHyk4MSVUaC0T0rfb4agCxes2yTUo
+         ME441h+3lwIkjh5oAIK7ilFIh+h+uIRw2P7UC9JYhoQb+/pv1DikSWnU9m00h8KzKZrB
+         OC2EauXQ1WXpnfRBz5gFTRjD7m9VZgEg0wXkESAq+hfNQBA6xBYJASIEyYp6B6msA5RD
+         WLww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755308446; x=1755913246;
+        d=1e100.net; s=20230601; t=1755309172; x=1755913972;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=paq/IdzHGLOy+RGY7FtKr+S2+lm7qcZDiB17Sluzsd0=;
-        b=C+BPPIDn70Z1VM2IH113BEtEJVAK7/GhF6RTVCdvIZhRtbv0rzBqt8yM8zRYweMVWo
-         cqxCIompzxELSwL6klleG3ti596eCv88wvO4YIzUUKkJ2rNqx1r4bd6mGvwywR36ToeZ
-         eL6io+zFhH7ZeWBuP9X7RNpkv8JUw1HO6N2pwMIulqraqpfMVUnFjE/DHZccDqxVgTyW
-         PeNkQSw6TMBHNs3TwsuMVvuqNK+E7uJ2C+sQsMzRael5Arc47VzVbuEuhM58lXhxHYBh
-         ju/HyCds21AJ9vriQWeZRT8n1cB28RJfStBuaxfWnxShm7hlLNcGWsjPI8a5IAbh2gG9
-         5aag==
-X-Forwarded-Encrypted: i=1; AJvYcCWyoehsE09NAHKS3SwlSyTjQaH9DYJkU4BCRPeq7VfojYLRjN/1hQM4Zu032vYO/B1QJTaQnDj/vg==@kvack.org
-X-Gm-Message-State: AOJu0YwJSkzmpVPNOsM4ecqXpTjazWQ2wH+8hV2DwK3bDV1J9BJVuxLO
-	uASCu7wH4Y8e2EijgqwjLNB3brNGwX1G8/g+nS6aDYT2Ta4jO0ELx7RdlhVKDofQ
-X-Gm-Gg: ASbGncteQm/bYkBFwSrGuFHiTmy8vBBX8y/1K3dhq94buH60Xxgi65T+FfNVU5TZofb
-	i8vTcyqjger8yLVZch+kRkV7JqC9CuZBoVQs+zG4emh4SRN+fUUhQOlzoPyHj022Stw2+VUlmFZ
-	dFwjQ4cS3cZw7TWseCuikDroz1WXby+iE48O+7AynrB/d/zOopPKfT7OWT5qz5Wedt4b+SdXQbC
-	AsbQZIXrCHiQ13aL9NxYj5Zu1pUYDAhoXSrkgP5pVhw8mmhiUpiWSBDf58sc7H1S8O/gmDIelk1
-	UN2+Lvl7/0gX2zqj7BUBQD2B1CKABPS57wy3W0gRuqu6sko+sfTSrdwN3bkVOt1gLTHJ7iBTH++
-	b5J7/pu3FsYZvrwn0fC1UhErSB7o=
-X-Google-Smtp-Source: AGHT+IEldIYgUTPBqs2QmokMM903macHwQZdSbaxDJzg3Sh/WqP1PBIrJOtUGSrl/jElEKFStjgRtg==
-X-Received: by 2002:a17:90a:dfcb:b0:31e:eff1:71a5 with SMTP id 98e67ed59e1d1-3234210439cmr5067770a91.29.1755308446042;
-        Fri, 15 Aug 2025 18:40:46 -0700 (PDT)
+        bh=NLKG6jNvVUsekFiiFHIYl022cHqokzDGITdYQJ2LTYk=;
+        b=MKWt/CV2DHifex7o6UWJSvkWWUDXDz71Gd0shydbo6vsZxDMNlYNRiBdRlzKtfGPmO
+         4NC92yO9ZiMNPei2Y26cNfvGLexBO+VrPxX4eowoGMwB1M2n04l/S5cwz/SUGdkGy6P9
+         Dsq3jB3a1At6VnYHf4u2C7nYwuzzdmqMJgDnIs/iSWpmmgHJzbft3T2KMGrjpjtO5K0m
+         48fCy4eChT1VlDUGZcYDrnE67bn8bikB+b3v1bBSfGL/Nab3R+lMLszTi960H0D6QtgR
+         OwKC1XOfO42K7CRpp2rTysgugsNrL2/0qVgq6DJtG92Wf51Xk1TTMfE9wIBP0hCH4Png
+         LzlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWoJeVrdg7lhHyxRiTY/9iiwX2UE0Aouvumz93nXrnREtvku6fzhf8aOQwoGd3m51VtBvvIXFUy9A==@kvack.org
+X-Gm-Message-State: AOJu0YyBt735GVPHr+OfbJ5I94lQCx9vjc6paR0nu95TX6xf2i0+qPvP
+	ButxnKN3AeZPYBuxpBT81OA1LXN32XBsQiJOqGZJfE7lKEf0Go9sk8jN
+X-Gm-Gg: ASbGncvx2+1dvdDX1FV1N1xi98A3l3t1UUYyvE9FYXfaTZDsRZaykixpefr3BfWrQbE
+	UUJf3DUmqVXCjlnDgWAblG/VX/L72XFysMyCsU1qx1nekiHwNGlOjqa9LIwRNERaFQe9IsMXlCA
+	jW0SCVSQ6HgxLFv9HfUERUafSe+wGNZe4cG2jZo7gAwFiRr4mnkfKza96MZ8yy0vJGJHFnaE6jt
+	Jle/J8ZvNIDtQG7UQNjKVmUtNbJp/zMUhvpBy1ArEEA2Mr71OHnICep/SsKYl30QiGss0RVeXtc
+	luIi0eyE82NeEKSmrcBQEE6m+jGJlOx0grBSZ1bJl8pLENufqf/2W6Q8BZZjDKVDC1zsYWHAm9+
+	w/ANgPRq1uC61bGA2
+X-Google-Smtp-Source: AGHT+IF9A2Kqr68he/7eryBtdSIV/oxea5NzcQp/EEPSEaGXhlmWWl1RqA4Rfv6eTN56d7YYgkaoMQ==
+X-Received: by 2002:a05:6a00:238c:b0:73d:fa54:afb9 with SMTP id d2e1a72fcca58-76e446fcdcbmr6372130b3a.7.1755309172232;
+        Fri, 15 Aug 2025 18:52:52 -0700 (PDT)
 Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b472d76f9e0sm2324227a12.44.2025.08.15.18.40.43
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e45293ddbsm2076609b3a.49.2025.08.15.18.52.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Aug 2025 18:40:45 -0700 (PDT)
+        Fri, 15 Aug 2025 18:52:51 -0700 (PDT)
 From: Sang-Heon Jeon <ekffu200098@gmail.com>
 To: sj@kernel.org,
 	honggyu.kim@sk.com
 Cc: damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	Sang-Heon Jeon <ekffu200098@gmail.com>
-Subject: [PATCH v2 mm-unstable] selftests/damon: change wrong json.dump usage to json.dumps
-Date: Sat, 16 Aug 2025 10:40:33 +0900
-Message-ID: <20250816014033.190451-1-ekffu200098@gmail.com>
+	Sang-Heon Jeon <ekffu200098@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] mm/damon/core: fix damos_commit_filter not changing allow
+Date: Sat, 16 Aug 2025 10:51:16 +0900
+Message-ID: <20250816015116.194589-1-ekffu200098@gmail.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: md6jh7f354msufe1df9p7spwjsga1h1d
+X-Stat-Signature: o5ixqd65opa3ab7reeowfodgijw5wfuu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 500828000C
+X-Rspamd-Queue-Id: 8F77340008
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1755308447-451031
-X-HE-Meta: U2FsdGVkX18nGAP8xovtmPAgcp7wCVRAMkHwl7gsDtfjWanSD0cJxElkCUh5uqLKHiJpNJ1R8YMGZV70N4HPmqfbbty97AvkGlS+aLt+guUd8fRDGkzaVoB9/5dMPClchjzlJocpGOF+zPL2P9jnqq0tKsI3a3ss82cgdvNzIj2ycdBp+PSy4oA1BSDvSBjeS+0vqKUtSkd7aSICzoXxMz6zRhL7m2QxYUAcHOli4moXSwrXyTMYDnBbrBnRhrgkSmE0L3HoPOWZT09j3OicxFouW5MIXy1LigT+X3hQhS3Wwgi5DUGDqv8ZgujKwC9hUjctKOc1JNqDfwvQVipQj80YHnQWuAdH+I48VyBqndHk+zY8w2nvZx5FZ9bAgc1LI6It0QUhNqIvWYg2vK4KTJCI6GbF1WP2qZnfW/9YCy1YQlG0eLymQpSGOAZUCxsfysaubpwrs1Gq56mhPp8KRzSzW7TMJBjx+l6oVhvg1ou1Q2LOe0mn2nvbMtYuAKMkgwl/xaL5iS3StMfz6Gvw2n0UHXhrPE/gG/tdIc6JlxyRp8+PazhAckaCURjtDCOs1oKD3/qEgHjONxLObTUQUOF5W/bGtD7IXupQ2bjQVXa2wBhqMzWHGEKBz/LdlVXXSAN5kAUG9vdWhooNX6WWiGEHh3kF7mhh2g+lE8x6C+3MYhIwrqT4b4Pbkl2VDRZWq/aU+ZlMJLqQDb6S15s7+WkO/JQ1ZYKkzg+e688WUUMmnRRUDSj3IySUTGMPYzbRF322d8VORnoVB73M5B7PBLcztitlt5mzfVefxB6BSiVfc3v9/b7R5SSCXM8+zuuvWdmG5nIZH/dnTaKpxIffIigr21NqP8FJ5T0cCMg1VafDgr4IgzY5hJM7EP+FWQ8F9ZKrRNLaMvPmzzKNxPZ0GMoKeottI86AiC8tczfFyZl5KIV413e6YJgIJkVaOkj2j6cLp/x8bOL73dSSPhu
- EqMW4P0v
- jGE5iDbqa/NGotrPKshdUd8tMud3rq5Rs7eAOtiRaVyHNU4B0ISJQzJneLh6ZzZnJXhyjklIwaXDvIpjRFp+qKwxrW3k6ctqrCfMWguUdTer7fWgOyUIFr4158YzruD7d3HrFU4TQn22KJ/P8olDJ851x3XccAWGgG0Kh8+AKpL9jS8tkke++KD6kRxRyUJqSIMfGxAHwYYdYk5rJ8/oOgWqXBMd8n5G2LcONJEJeUA3FAEDivOLxuQYtpl2ukuNex3CiyJ1QXqd7SGPjFgN59m7hH3tbZ+c6LkRvRF3UaXv055wVW+V2IOdQLgktNDXQbMjJYzQ1SB2gHPalpcZxXQeylaDZSD6l6S9/xf2FPU2VDHCCc9qHN1rHFRwMbyxY0yh+kTSwGqzPE5wLmv9EJpD627GtYHkkwffTYOkV9TTw6a070Q/W+drjkA==
+X-HE-Tag: 1755309173-548654
+X-HE-Meta: U2FsdGVkX18sYXquLnV+YtPu/6d6Yeav23Q8OoV9gSMNiWhZXvoiLkNspmPSh+oL6K4NB3tM7qSnSU0vvrOZbvEhYscOZjd+4UUOx4J1bxixlIJVr6GZ9Wd9GscMzXtuPFjg4pE3xSJsttb0aeH/raj6ZpQbpquWR8I3mTjl+2SUSBe69JQgVYeAqyEKYF9of7pXk29fn2eLYayDNx5HRZvAlJk2Lt0ymduMAF/O87bdTL/XBaJLMygJayG/oi22SlZ/rq6Ge2hpfedXkvbElHqVRc2WtyA6JRy6gaKQMRnwm5IZ24m8Fl0CXh3B02jtDQxkaN9kFD/SdTVQat6fpClVmRgwkGa+OQOjkv7w1bJg305SPQ5zW5G0C/DXkni4BMxCNpMJfWsOF8psIn7hOeK8f8mTZBdBKPsGS6B/LTHaBGWgIdSkx2AbEB7wRId75hTT+iGu3B3UdDjdHkINLBgAFrvPARSuyDMO4iwmZFrjD+1oxXakV7VEvs919kXVIRbjF7/VbRAssE0eUpmaJGFCST65ZOTqs9XIQGSZUblyQCYmpDdlmdGvGC94Vs0+gZn205F5qyxMNSttm4zOZcd09lRWSyZURAae9CRUEWPzmEqa4jWFQThzUgjAmCGxPr0Ay5+ctE8mmM0UM/CSvSvpzVaYwAjsOLzPh15rkzRRUSA1+irJSNiviDseVNOw9x3MyYLNGkdlkfh9DN17tZFp5voyc/kE+7GSuJDMK11u4lhJtqT0EoAZPN1bX2SlLriXR8jOsRxSFwWtzNPQNUS7dxmLYP8hRwow0c3rZppmBlJIrnThYQi/OmZPx0uYYnr/OLJt0VyTUjIgZUdtazqSyN9ZqbYU6Gny1zUAI6mQD5ofdKO+Go8wNIcEYP3GV0TWB8V6xQVWZQ85v5nKROKhLMH4tcNcDRW+VIaZwygTckYkXnUeMAwnzV3/9CCU88iQUMpb1freHe1thNu
+ OMVlpYYz
+ iomX5Oa5h1qJ1nSjakn6rOtNXJavEyE9Nad6qQt2Wtp7DBWmTLS/VicRx+JDlbrU0MI4kifPyIcQRVaGMhGs7+HIG17gJeimjimFeXziYVp0pfpozBMlvnWdFAWAqDv5P+JZ6DR/4Ho0IIMmJ6G9NNS+STR7LfqNY8N1CeN7G3Zo7FTPsS7HkqLLhiufJdXqCgpPuLxiQs1RGrOpNPL6ZqStpVzoqW8SSIQI6uu392Q0zAN3VaR3nx3VOxY1W50Bbebo1GAOxk9FIwQh368aJhWTg93l3owI3YqxoM5E9MkqeGl3DPHJeMdUuMZSn9CXj9dXXD3bDeSi0tUOizdBDlDgA98XvTkayVvKprA7D1VvSfDe1t+KXyMfBVVgbMSg8HmG4PtWXuZRA/v7CE0lYNC3srQe+9bhrnmJnjLF6uLSyAJrkusKMPB8baEzO/LMWSNAlCThoXOFMiLM7psHAuOSArXL0Ku/+z//+
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,37 +116,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-To print drgn status to stdout json.dumps should be used without
-json.dump. Change incorrect function call by typo.
+Current damos_commit_filter() not persist allow value of filter. As a
+result, changing allow value of filter and commit doesn't change
+allow value.
 
-Fixes: 441f487d6ebf ("selftests/damon: test no-op commit broke DAMON status") # mm-unstable
+Add the missing allow value update, so commit filter now persist changing
+allow value well.
+
+Fixes: fe6d7fdd6249 ("mm/damon/core: add damos_filter->allow field")
+Cc: stable@vger.kernel.org # 6.14.x
 Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
 ---
 Changes from v1 [1]:
-- Change patch subject with DAMON convention 
-- Add branch hint to fixes section
+- Fix wrong fixes section commit
+- Add cc section for backporting
 
-[1] https://lore.kernel.org/damon/20250815094029.133063-1-ekffu200098@gmail.com/
+[1] https://lore.kernel.org/damon/20250815094059.133769-1-ekffu200098@gmail.com/
 
 ---
- tools/testing/selftests/damon/sysfs_no_op_commit_break.py | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/damon/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/damon/sysfs_no_op_commit_break.py b/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
-index f557587ebc81..2c65cffe6b54 100755
---- a/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
-+++ b/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
-@@ -62,8 +62,8 @@ def main():
-         exit(1)
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 19c8f01fc81a..cb41fddca78c 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -900,6 +900,7 @@ static void damos_commit_filter(
+ {
+ 	dst->type = src->type;
+ 	dst->matching = src->matching;
++	dst->allow = src->allow;
+ 	damos_commit_filter_arg(dst, src);
+ }
  
-     if before_commit_status != after_commit_status:
--        print(f'before: {json.dump(before_commit_status, indent=2)}')
--        print(f'after: {json.dump(after_commit_status, indent=2)}')
-+        print(f'before: {json.dumps(before_commit_status, indent=2)}')
-+        print(f'after: {json.dumps(after_commit_status, indent=2)}')
-         exit(1)
- 
-     kdamonds.stop()
 -- 
 2.43.0
 
