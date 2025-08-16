@@ -2,179 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 14F41CA0EE6
-	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 17:13:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 07431CA0EE9
+	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 17:21:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 918BF8E002A; Sat, 16 Aug 2025 13:13:45 -0400 (EDT)
+	id 8B9CA8E002B; Sat, 16 Aug 2025 13:21:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F1228E000A; Sat, 16 Aug 2025 13:13:45 -0400 (EDT)
+	id 815EC8E000A; Sat, 16 Aug 2025 13:21:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DE358E002A; Sat, 16 Aug 2025 13:13:45 -0400 (EDT)
+	id 706DC8E002B; Sat, 16 Aug 2025 13:21:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E0158E000A
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 13:13:45 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 13FC2140451
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 17:13:45 +0000 (UTC)
-X-FDA: 83783267610.20.A44CEA5
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 9FB50C0004
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 17:13:42 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MMixcwFe;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf22.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755364422; a=rsa-sha256;
-	cv=none;
-	b=OHHMSrap6I4ACBJCAajB86oF9TGKoiGp99DbsMeaqWvQjR9SoWcCnIYt03qoNNwUpsMEfZ
-	v0krLLN0aNJW5Cn6t5ICV04lhmARBRjxQiglznNnxdrsp8GGvSinIn5AXBmbJcgF0p/UIY
-	n1eSWzTQVW7jAFfLPRjMr954sYptqbE=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MMixcwFe;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf22.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 58CF58E000A
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 13:21:27 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EDFEB1404A0
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 17:21:26 +0000 (UTC)
+X-FDA: 83783286972.03.A588AF1
+Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 3D89D140009
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 17:21:23 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf26.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755364422;
+	s=arc-20220608; t=1755364885;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2cgk6Zbx0vB/BGOo5PYZi9awyuAzqjuvaL4aveRfbkI=;
-	b=GIXTm5ikG2To9K1zIIToGI7FyzDjjJ8OLyvzVar+Zpvk1mxFlFBrrvo/v7t7klRL3+vO5f
-	51ChZcSgYhQJGJ/3lziWHTUELOeXj4VbE3mM1pDaDedI1YtSA9skNksdq7JuhO/NN0OClp
-	Mjr/gY4BoVuR5cjCd9fd6pPXmVIU8lA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755364422;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=2cgk6Zbx0vB/BGOo5PYZi9awyuAzqjuvaL4aveRfbkI=;
-	b=MMixcwFenB2EpZI1KUgfG56KSj4YYuqNkB0y2lDqb73JyzbueCtJEKbzBKpdJhFivnp2RS
-	iewbBaO3lKoCYavlOBAmIB7nCczyI1CWwybIL1PnExy8nIEM2nt0U5JT5LtR/COPzPK6ly
-	rhzEcZN2/K1u6pIRCSKaY1xZ64Srg2M=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-353-fzD-a7DBNbu94f4sXPXLRQ-1; Sat, 16 Aug 2025 13:13:40 -0400
-X-MC-Unique: fzD-a7DBNbu94f4sXPXLRQ-1
-X-Mimecast-MFC-AGG-ID: fzD-a7DBNbu94f4sXPXLRQ_1755364419
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3b9edf2d82dso1556425f8f.2
-        for <linux-mm@kvack.org>; Sat, 16 Aug 2025 10:13:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755364419; x=1755969219;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2cgk6Zbx0vB/BGOo5PYZi9awyuAzqjuvaL4aveRfbkI=;
-        b=GOQXlQiUPwZ9YgK+ypTExTerai5h2zjY5espIHl7jpp+bgbOPnRBM8xXNVCK+7mcBx
-         aah7EvAd8Pa0QYBrny8HTQFJNKhQAJfiq76Dw9NjMKY15Qpq+fff+MkwfYDtKbgdwUpc
-         WBZcdWqZ3VflviFJETUToYIt8+PhrHI4HDfBQD7eHKUNAoC6qo6G3QOlJy0QwRvxHObA
-         kKNGDJ+CTlkF3lfDxt2vtFJhres1y7iaBvq9dvNBfzeEx15K6RmnKyYdXbV5sT1yKd8z
-         hnId2B68gouizsdk/3fwpMklH0i+yEuLwc/41vTct8TfY2eRW77lPEry8SnUul7mVejz
-         MBrw==
-X-Forwarded-Encrypted: i=1; AJvYcCXNWyoXHaKrIBWdjORzI009ldHa6vSz0tcZaEI2A0XLW0oJE/E1IGUQ3QkZl3OoWiVBiYWyoSft0w==@kvack.org
-X-Gm-Message-State: AOJu0Yy+j65oz7zNqBK4cxn+938bLAsxKtljozraAxIy5ofoFclfGAYS
-	VvXBO8Rc4aD55N9KXCnuqtf7OBPzRd+Lr4MLxDB+5JBrd+hKiJdpwHLHJ1a0IomrxKzzZiw80PS
-	mO0kecOjuYc2b1wAlTcrONT0ijnJMWCcQkN+ToF2KKyykoelZid1Z
-X-Gm-Gg: ASbGncsDyQCAuzuQkWy+XVz82Sv/7bdJ7d0BgfZNyqZKw3NvVTDlwcVuyXkYzFYvPJm
-	Qj9lmYxJCaFFbncuGwgy38eOp+wC0CjKxy7OFkUMLiluqudBCkKShlqUbZBpPyCO7HdHRBjbU2Z
-	IfDj2MD1OFKiMT4X1pt0nIw69dG9xEiQWVPo6HiYNj4k4gJSpJnST9Y5xGwG1oBSW3ImJtn/C9Y
-	kqi61X/RVmI3TwJc5UmFP1mWHG30SQmnrnAiT2Vbv8j5XsIBukbiNJbSGFsMwDQDwWLMR1qTZ+y
-	Rjmh3tpNPZvYZ4rZsrOnilIHslMsqHSKBKfFNlsocxZWsAX6mvaoQJjnRlLOcyWlq836D0m/Kgv
-	KUvnWbPeDGgD8Ow8OBM7aFxZDDHgkEGTtWzb7T8M5aRdo7ZyHtgHE9UA1gBQ4ezs1I0U=
-X-Received: by 2002:a05:600c:1c14:b0:459:d494:faf9 with SMTP id 5b1f17b1804b1-45a28ff178emr9712035e9.10.1755364419371;
-        Sat, 16 Aug 2025 10:13:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEF90eN2Nz0toFUZwAqn9DD5dp3Ri1E/8xuFSl/glYZ2CcKQtMM8PsgWaRo64HcVxwKlIeLsQ==
-X-Received: by 2002:a05:600c:1c14:b0:459:d494:faf9 with SMTP id 5b1f17b1804b1-45a28ff178emr9711895e9.10.1755364419003;
-        Sat, 16 Aug 2025 10:13:39 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f23:c700:d8ae:41bf:492a:9e4c? (p200300d82f23c700d8ae41bf492a9e4c.dip0.t-ipconnect.de. [2003:d8:2f23:c700:d8ae:41bf:492a:9e4c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a1cc22739sm107942655e9.27.2025.08.16.10.13.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 16 Aug 2025 10:13:38 -0700 (PDT)
-Message-ID: <353ad5f3-2864-4f2f-bab7-5836aceb7f1a@redhat.com>
-Date: Sat, 16 Aug 2025 19:13:37 +0200
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uHMw85qGQOaHO+wJumWTzsT1jjB+PbnjSgvXvtbWF9o=;
+	b=QQLCQbc5KF0uyjbRBogH8O/Jev/1byHp4Zvn53vTOyV+CGFPjQFiZAVR14+AFmdNr/tlrz
+	weLPqhG0gPANpqk4SHgatTRQFv8v6nj+Fqp7sFWT+NAlmMPQo9LEEKSZUXeOkLTCz+uOUX
+	krwrcwhDE+a93t/LXlFuljR7/eZ49CA=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf26.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755364885; a=rsa-sha256;
+	cv=none;
+	b=UCxDQihJNLBufevx6e/gyRYiKVgVWx/KMyHGKtxuzDG5neZPQsf8thA8AKJBMW0TFfmEP7
+	cqQz16FlbTgVfWhl+hUqLotSgS0BwRwIHRD8piLyz1Y9GgEYJzwv/2j+6ULiM0wGwjGUGW
+	GAcBssnRPARL7zLJs7tvrp1WmR2hLtY=
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.102 with ESMTP; 17 Aug 2025 02:21:21 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Sun, 17 Aug 2025 02:21:21 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Chris Li <chrisl@kernel.org>
+Cc: Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, shikemeng@huaweicloud.com,
+	kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com,
+	baohua@kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, gunho.lee@lge.com,
+	iamjoonsoo.kim@lge.com, taejoon.song@lge.com,
+	Matthew Wilcox <willy@infradead.org>,
+	David Hildenbrand <david@redhat.com>,
+	Kairui Song <ryncsn@gmail.com>
+Subject: Re: [PATCH 1/4] mm/swap, memcg: Introduce infrastructure for
+ cgroup-based swap priority
+Message-ID: <aKC+EU3I/qm6TcjG@yjaykim-PowerEdge-T330>
+References: <20250716202006.3640584-1-youngjun.park@lge.com>
+ <20250716202006.3640584-2-youngjun.park@lge.com>
+ <jrkh2jy2pkoxgsxgsstpmijyhbzzyige6ubltvmvwl6fwkp3s7@kzc24pj2tcko>
+ <aH+apAbBCmkMGPlO@yjaykim-PowerEdge-T330>
+ <aH/baxIgrBI3Z1Hl@yjaykim-PowerEdge-T330>
+ <uyxkdmnmvjipxuf7gagu2okw7afvzlclomfmc6wb6tygc3mhv6@736m7xs6gn5q>
+ <CAF8kJuMo3yNKOZL9n5UkHx_O5cTZts287HOnQOu=KqQcnbrMdg@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/migrate: Fix NULL movable_ops if CONFIG_ZSMALLOC=m
-From: David Hildenbrand <david@redhat.com>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: Huacai Chen <chenhuacai@loongson.cn>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Harry Yoo <harry.yoo@oracle.com>, linux-kernel@vger.kernel.org,
- Minchan Kim <minchan@kernel.org>,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- "Michael S. Tsirkin" <mst@redhat.com>
-References: <20250815090539.1578484-1-chenhuacai@loongson.cn>
- <a20d605c-79a0-4d89-985b-9512a990b492@redhat.com>
- <CAAhV-H470h2HDEN_NY2qNBxUqQrSRQhLzwqZe9PB8GjnNsZVFQ@mail.gmail.com>
- <66ebc632-6704-4637-b62d-1cb11e5a4782@redhat.com>
- <9db98f7f-b90f-464b-ae7f-e94ac523bc28@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <9db98f7f-b90f-464b-ae7f-e94ac523bc28@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 0HOeQ3xh1AcJpZb-8Oetc4Hwp99ube1Wll93mSh4Qno_1755364419
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9FB50C0004
-X-Stat-Signature: t5kxrt5f1xrcmg7iw85c169suag6mhkj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAF8kJuMo3yNKOZL9n5UkHx_O5cTZts287HOnQOu=KqQcnbrMdg@mail.gmail.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3D89D140009
+X-Stat-Signature: at7ot8i4xr6goymtgj6zs4shnjrbkkj7
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1755364422-885118
-X-HE-Meta: U2FsdGVkX1/IpF/50ajB025QSwM2O8UrOUBogvx+nmMtxf4cK5qX72ao7fp6cDrXlhGfi7tszyc7pb8yGeGD5OHU3bSw3+CaWFmS2SRGrEXG3t7HOKNYrbaYI7H4fYoRVL3YZo1obVyznnsEfQeZIJLU/lwgqrj5UoZnyrFUkggtDTndqyE/ba6Zk4xE8wEx4BJsGFAUt0FRB1KH9gI9aNstK4ickEhWt9hjPXP7oAP+7M+nYHyh4zHCd2Kj1cUflomz/s+ZKPlukLt4npIcxT2iyrmt9PmQVP4aJfJkQnLetCQ43NPXE5qZX93SEBc1iX89rxqGiTgBTSfp1QoIGMzJYM8vcwYDLi2s4bjMl4qHJvGJTlzkD0xcxVgcOWDWi6upjB3P7rqJVU9R0QdRKOhk/rNohEAZyq44+b7bkeA2G086T92C06Y22tuYIssPmBXdA9H/3rCeycsQTSn2FTll5u/EKahysf7EIaWxP4W1ufkbURU1flE6DR+XvrUSh2IQnkuupoOkuZVJ5wcY0HES4hnGZh4KDb36a6X1ng+9WGa+zNHppSzZnJ7expKW/oA+Z/39NG66D9QB7iVqhGHee3Yg1G2IniToyAhcB8Ps2Irp7wOe8JAHnb4/lgWYstT1lNHvF+B39Iwz2y3v2HC2tL+hVWGTyPKUbgrJgdpI8O7qTW5f7O1B0+4MgCe99ALq7gagCIv4qHdjAQ48yyAWY9p1Q+0F2qC9HEFhEqYNaeo/v24XDO+nqlieptErapojE3R07Q4XEjkHbY8KDm7dkuULBm6D3+ELwJsnAMSell/XCJM88X8iyVaUO4qoNP6gh6qTLYcSx5fh5b8kW2nWoXRj//2oGCz1+YTBtAx9cajCkkvMO+hJ0qXB2wJVDMyz94GNqQmEjNQkN8nJRPsSICAc117YRrx1EULmq6/ArDTBNd4xWMK4IaFZl3qI8BbdTh30abSreDCYJni
- M4McSrrY
- S7xG6Jm0fMunhX04VPQ93oWbl8eldOpFozk8Vw/DHz4g1BTot0iX7bAboBHbcuVxU4xWnC3jAj0SYEJu0HzjZmM1bLZenwCIsSfeGWHoIYNRUi7bLBuZhJsYa35avhM6QwSCCZP9wjNwEsNwZaViN9WB4oPbJ+nHQJSpyzy4i4l5NEW2VyFHDPT4dF3pTS79ANDpur+WFoeikVGHKRYm80/NMdoLCrLrYiPz4TXXGUdB1OclSuV+HaCdGK3oU+h8RFlK+ryqgFIaSIYWkJakU6R+40vtmRjCg6lBsPm9C0QCgUb3WeT+6TeEo/l0WPlNdR40TzdalEG4kWyfzWAoKYTxx7cDFxHT9fqg49JFQsm2ZfGV9WYFgR4klbiDFGRc4IkzGCzHKgpb7YNXMZ+8w0KfgrVcVh9mmFYaFGIscOduiyn4W2HCoCW/tMDPGrs5lx5JyIUCysrCBc/p5jv2V2MJEyBzWakL0AK4KqvxvMPEmZ80tOU3WABwiAujbVLs6/Ue7wrgaIcmzuBEkDpewLMtBFR2lDXerpQb7/lH2J5J2MrScVbv21/scva0f+K2GASo7MCN+XMAGUi5XBpcTEwp1KloLm/2sY5/N
+X-HE-Tag: 1755364883-601596
+X-HE-Meta: U2FsdGVkX19y6jBNg5i26cr29S9kqy70zwKBk3Dl+RUZrO7JumkckwQ0WtCIi+2NZWtGQsRDjvcEJuI7EGYz3UE0Mz/8DrnFBf6xQI1tRji3VAZj8Pmd95lXk4aJ264wTI4SPR1WX3XvbN0i1VdOq0vuFuVaKsHmdhZgJV3NxT3xeHp0PCv4Abx1THAtZAq3KjrtSI6Sh4yFuIX2a76va4eZanfrVaL0NqFOIeoh02CqVP6FQUbcuhmA7A06MiwQd++ESCQ60U69Yb1DxOwcXpztnsohNFuc7kDmvIPGhjTOY2vJqoRUWt14tEu4ag5Y5sdtEQYpUXkiNXvRzyJEwtdvtBRaP+JgvkeCI/Ta7oKaKsPDD7GQuvPD5OCpFgssvSF9WuIfKL2CQPWlvTLKQWciJsxfz4j3YgC3KZeFaGnowIn7nIKxmDMnrqtKgFoxaKNYmS3cOHnmpqQxkArRyFmqGNpNcyZC9yhKKL63GvCYWBH00W/xLIlIHvk6jsThUJA3O4Zgo241wxx4LgRXr6vOdfmzKRuqow2Bhpop/P9qQH2z7bvYjlq8/IgtOgVHW6aiV+7O/8CS3su5WCt00riaB+4tKQmrCPzcRoHq4trnrnWlD6JHi6SOuT3rnPU3whbmLr1zCQKDq9sgUPob4JoxtWPYb5HpPnzAHTFWBPvqrSQcVh1ZMNN7LLhKd/IERZQ3kHykX/Ffq3MFtpwMY6NPTYwfJBCs1PtDOJV/hEsp6kW4iDO2bMdE9uT+YDWtK2wZuil+Jps8/SLeZX+XSVqM4xQsoAFYMVe5FQK5BwiablyX5hUPgBxTddarqxAPYepwRKFPyIgQH8fi+3sGQ5ZFTKSv/oNEhhiDVAbsdzA7F3KrnBc70TgiA1HWaN7hW4N/ZQLhPxJALZasmU/G4COfY/vPumuWqUyyyljeMx6JnJ5CM2WQwI+HhDxue4DgoLISObOeKooSF6YClMl
+ wde/gI6Q
+ TJVxqy7Qp20Ur9yN78AC+ve8fsmZgRarS4JqDjYuwm2vzBFioU8659n75PCwLXR6OhMSeeXbtHQy8wvMdQwC2W9J7aRYBNb0QfWdx43daikIfG5pqlfCtTE6t8EJU3xx/Vy7y2NSuAoR0smvLgI/r314IihwaXx3SeBhVXfS+cGEOSePB0bnJ30NGH4Yu1SkqRzoccPW1FWz5s60VGzqX58nWrzipJ2mJFw+7Qkx6Dq6BRBqEjtnu9I7NZawZzG9an14TRWKxAoABldk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -183,27 +94,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> diff --git a/mm/balloon_compaction.c b/mm/balloon_compaction.c
-> index a1d2625b5c391..c391435ce9942 100644
-> --- a/mm/balloon_compaction.c
-> +++ b/mm/balloon_compaction.c
-> @@ -256,8 +256,10 @@ const struct movable_operations balloon_mops = {
->    
->    static int __init balloon_init(void)
->    {
-> -	movable_ops[MOVABLE_BALLOON] = &balloon_mops;
-> -	return 0;
-> +	int rc;
-> +
-> +	rc = register_movable_ops(&balloon_mops, PGTY_offline);
-> +	return rc;
+On Fri, Aug 15, 2025 at 08:10:09AM -0700, Chris Li wrote:
+> Hi Michal and YoungJun,
 
-Staring again at this hunk, the temp variable is of course not required 
-here.
+First of all, thank you for sharing your thoughts. I really appreciate the
+detailed feedback. I have many points I would like to think through and
+discuss as well. For now, let me give some quick feedback, and I will follow
+up with more detailed responses after I have had more time to reflect.
 
--- 
-Cheers
+> I am sorry for the late reply. I have briefly read through the patches
+> series the overall impression:
+> 1)  Priority is not the best way to select which swap file to use per cgroup.
+> The priority is assigned to one device, it is a per swap file local
+> change. The effect you want to see is actually a global one, how this
+> swap device compares to other devices. You actually want  a list at
+> the end result. Adjusting per swap file priority is backwards. A lot
+> of unnecessary usage complexity and code complexity come from that.
+> 2)  This series is too complicated for what it does.
 
-David / dhildenb
+You mentioned that the series is overly complex and does more than what is
+really needed. I understand your concern. I have spent quite a lot of time
+thinking about this topic, and the reason I chose the priority approach is
+that it gives more flexibility and extensibility by reusing an existing
+concept.
 
+Where you see unnecessary functionality, I tend to view it as providing more
+degrees of freedom and flexibility. In my view, the swap tier concept can be
+expressed as a subset of the per-cgroup priority model.
+
+> I have a similar idea, "swap.tiers," first mentioned earlier here:
+> https://lore.kernel.org/linux-mm/CAF8kJuNFtejEtjQHg5UBGduvFNn3AaGn4ffyoOrEnXfHpx6Ubg@mail.gmail.com/
+> 
+> I will outline the line in more detail in the last part of my reply.
+> 
+> BTW, YoungJun and Michal, do you have the per cgroup swap file control
+> proposal for this year's LPC? If you want to, I am happy to work with
+> you on the swap tiers topic as a secondary. I probably don't have the
+> time to do it as a primary.
+
+I have not submitted an LPC proposal. If it turns out to be necessary,
+I agree it could be a good idea, and I truly appreciate your offer to
+work together on it. From my understanding, though, the community has
+so far received this patchset positively, so I hope the discussion can
+continue within this context and eventually be accepted there.
+ 
+> OK. I want to abandon the weight-adjustment approach. Here I outline
+> the swap tiers idea as follows. I can probably start a new thread for
+> that later.
+> 
+> 1) No per cgroup swap priority adjustment. The swap file priority is
+> global to the system.
+> Per cgroup swap file ordering adjustment is bad from the LRU point of
+> view. We should make the swap file ordering matching to the swap
+> device service performance. Fast swap tier zram, zswap store hotter
+> data, slower tier hard drive store colder data.  SSD in between. It is
+> important to maintain the fast slow tier match to the hot cold LRU
+> ordering.
+
+Regarding your first point about swap tiers: I would like to study this part
+a bit more carefully. If you could share some additional explanation, that
+would be very helpful for me.
+ 
+> 2) There is a simple mapping of global swap tier names into priority range
+> The name itself is customizable.
+> e.g. 100+ is the "compress_ram" tier. 50-99 is the "SSD" tier, 0-55 is
+> the "hdd" tier.
+> The detailed mechanization and API is TBD.
+> The end result is a simple tier name lookup will get the priority range.
+> By default all swap tiers are available for global usage without
+> cgroup. That matches the current global swap on behavior.
+> 
+> 3) Each cgroup will have "swap.tiers" (name TBD) to opt in/out of the tier.
+> It is a list of tiers including the default tier who shall not be named.
+> 
+> Here are a few examples:
+> e.g. consider the following cgroup hierarchy a/b/c/d, a as the first
+> level cgroup.
+> a/swap.tiers: "- +compress_ram"
+> it means who shall not be named is set to opt out,  optin in
+> compress_ram only, no ssd, no hard.
+> Who shall not be named, if specified, has to be the first one listed
+> in the "swap.tiers".
+> 
+> a/b/swap.tiers: "+ssd"
+> For b cgroup, who shall not be named is not specified, the tier is
+> appended to the parent "a/swap.tiers". The effective "a/b/swap.tiers"
+> become "- +compress_ram +ssd"
+> a/b can use both zswap and ssd.
+> 
+> Every time the who shall not be named is changed, it can drop the
+> parent swap.tiers chain, starting from scratch.
+> 
+> a/b/c/swap.tiers: "-"
+> 
+> For c, it turns off all swap. The effective "a/b/c/swap.tiers" become
+> "- +compress_ram +ssd -" which simplify as "-", because the second "-"
+> overwrites all previous optin/optout results.
+> In other words, if the current cgroup does not specify the who shall
+> not be named, it will walk the parent chain until it does. The global
+> "/" for non cgroup is on.
+> 
+> a/b/c/d/swap.tiers: "- +hdd"
+> For d, only hdd swap, nothing else.
+> 
+> More example:
+>  "- +ssd +hdd -ssd" will simplify to: "- +hdd", which means hdd only.
+>  "+ -hdd": No hdd for you! Use everything else.
+> 
+> Let me know what you think about the above "swap.tiers"(name TBD) proposal.
+
+Thank you very much for the detailed description of the "swap.tiers" idea.
+As I understand it, the main idea is to separate swap devices by speed,
+assign a suitable priority range for each, and then make it easy for users to
+include or exclude tiers. I believe I have understood the concept clearly.
+
+I agree that operating with tiers is important. At the same time, as I
+mentioned earlier, I believe that managing priorities in a way that reflects
+tiers can also achieve the intended effect.
+
+I have also been thinking about a possible compromise. If the interface is
+intended to make tiers visible to users in the way you describe, then mapping
+priority ranges to tiers (as you propose) makes sense. Users would still have
+the flexibility to define ordering, while internally we could maintain the
+priority list model I suggested. I wonder what you think about such a hybrid
+approach. 
+
+Thank you as always for your valuable insights.
+
+Best regards,
+Youngjun Park
 
