@@ -2,102 +2,85 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D5595CA0EE6
-	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 16:31:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 90BE9CA0EE6
+	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 16:41:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E3748E0026; Sat, 16 Aug 2025 12:31:01 -0400 (EDT)
+	id D8AA58E0027; Sat, 16 Aug 2025 12:41:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66B408E000A; Sat, 16 Aug 2025 12:31:01 -0400 (EDT)
+	id D60E38E000A; Sat, 16 Aug 2025 12:41:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 532FF8E0026; Sat, 16 Aug 2025 12:31:01 -0400 (EDT)
+	id C9DD08E0027; Sat, 16 Aug 2025 12:41:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 35DB88E000A
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 12:31:01 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A5B74B9A48
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 16:31:00 +0000 (UTC)
-X-FDA: 83783159880.18.02B6EBA
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 9E216C0005
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 16:30:57 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="Rm/aPLPL";
-	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B36288E000A
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 12:41:39 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 55A6B59146
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 16:41:39 +0000 (UTC)
+X-FDA: 83783186718.27.61D3FBF
+Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 24FEAC0008
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 16:41:36 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755362497; a=rsa-sha256;
+	cv=none;
+	b=D2hWiV8UFMEFm9aRiDdiY4gMpNAGM1mkztsajJbTpt6H/n7ae0NyiZvQLwfbmx0h9lRjbO
+	EbNe1b5tx1insP35aVQeaMUVGdmKUBeqLE6A1988kaYoHeCxNX1XT/QBCuCD2GgtJLPE43
+	FWLDUjd8c0Ghqof5VUu0ap4U5DXC87g=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755361858;
+	s=arc-20220608; t=1755362497;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l/zFl6OTdh7Nc1iuXR3BGWZ/+TsSlJrsSXs1/J8+T6k=;
-	b=b/qUkbW/PMsirLxreh0skctit/xKKoXMRRmvH3zGiJxmNJiJQFlX/Tg8ib+x/B1K/aodY9
-	gcJqkkfC0wBT4HAaiFo3pPD4sS56M7SB8sNCs3ueRX/uekNuRxXdV28u8sBMvQmXVywq9O
-	ZwFOlKzaYdOk3hcUPYsFvH5QXMqLCDE=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="Rm/aPLPL";
-	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755361858; a=rsa-sha256;
-	cv=none;
-	b=NRSLaQ/ngJzPIHkjI47zbTIYWy9oj2FOI8BiG0Wl6L9FUVJhgMWX4UN9ioLzD3AI8AFQvX
-	MzZrcgSKcC6Al984dBYUsDCQYsWMtVoIuBEHH99+rspck8qozFdVHkPGzYgGKYxtmUHKuZ
-	gjf6el9zMLc5/7TWymXha2ELvbsHptY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755361858; x=1786897858;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ZFfAo8apibsWsI1omhLl8iawazNCfUYxTJ6h2jfQBZY=;
-  b=Rm/aPLPLOA9wxKXndJzwdfqN/1HrOR7bcl1MYitmGIZnl9TwMtXUfwqX
-   elZyWyRkHDJrLYwSza47/f5pRP/8iZNrnhOTRY/IDR9W/VBL4uy7r3n9x
-   ux12CGky5sxkShYHMcU3jvxOs3Ju60BKoqD1AFmMUlMxCDieRQz9qTnge
-   Xm0Ctp4GNnsxuMo72PIDevqc6aNsDyAgzYvKk8xQiGx2B5pH/QbEA3lbK
-   qk52PFua6BO3z513JEwwQxgyAMdnx1HTQG+nor5z5mFRhCcYmI18HvbSe
-   JoQ5zhxWB6pOkCJOARKdhdEvGgt+0WM2Z7gp0zknHjlUcfviEbo7e/xsz
-   Q==;
-X-CSE-ConnectionGUID: kQsCVfjOQpieB0YUM7hfxQ==
-X-CSE-MsgGUID: QhmOuxpsQ9O3y1Hd8/n/Og==
-X-IronPort-AV: E=McAfee;i="6800,10657,11524"; a="69020225"
-X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; 
-   d="scan'208";a="69020225"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2025 09:30:56 -0700
-X-CSE-ConnectionGUID: PZSfjvSKRIqbKzG5XmYmLA==
-X-CSE-MsgGUID: CK+ohIFiTxO5RXZQZAbzeg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; 
-   d="scan'208";a="167481802"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa008.jf.intel.com with ESMTP; 16 Aug 2025 09:30:52 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1unJnu-000D0S-1k;
-	Sat, 16 Aug 2025 16:30:50 +0000
-Date: Sun, 17 Aug 2025 00:30:16 +0800
-From: kernel test robot <lkp@intel.com>
-To: Xiang Gao <gxxa03070307@gmail.com>, akpm@linux-foundation.org,
-	david@redhat.com
-Cc: oe-kbuild-all@lists.linux.dev, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, gaoxiang17 <gaoxiang17@xiaomi.com>
-Subject: Re: [PATCH] mm/cma: print total and used pages in cma_alloc()
-Message-ID: <202508170014.PK57XSd7-lkp@intel.com>
-References: <20250816042842.3959315-1-gxxa03070307@gmail.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZkzBrgDGw/3dggcsgZvVLVUB+THoethtutrUhMkk8TQ=;
+	b=T+slXArbKtALmEsp67JLyZM2O++64qg97WZVM9N9x0eHErc/B44XdHTWENUfaTZbSP+y80
+	DX0GpzXbRxYHQ58ikyO+qp9fpGTdmaQY+SoWpyOP5hQIxQAe72SMGE+e5rp47DoWxuRBC/
+	UIVKz6gemSgwaWGUrjBrWNxBf5f+I38=
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.103 with ESMTP; 17 Aug 2025 01:41:34 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Sun, 17 Aug 2025 01:41:34 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, shikemeng@huaweicloud.com,
+	kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com,
+	baohua@kernel.org, chrisl@kernel.org, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, gunho.lee@lge.com,
+	iamjoonsoo.kim@lge.com, taejoon.song@lge.com
+Subject: Re: [PATCH 1/4] mm/swap, memcg: Introduce infrastructure for
+ cgroup-based swap priority
+Message-ID: <aKC0vrr0vIdRV/Ob@yjaykim-PowerEdge-T330>
+References: <20250716202006.3640584-1-youngjun.park@lge.com>
+ <20250716202006.3640584-2-youngjun.park@lge.com>
+ <jrkh2jy2pkoxgsxgsstpmijyhbzzyige6ubltvmvwl6fwkp3s7@kzc24pj2tcko>
+ <aH+apAbBCmkMGPlO@yjaykim-PowerEdge-T330>
+ <aH/baxIgrBI3Z1Hl@yjaykim-PowerEdge-T330>
+ <uyxkdmnmvjipxuf7gagu2okw7afvzlclomfmc6wb6tygc3mhv6@736m7xs6gn5q>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250816042842.3959315-1-gxxa03070307@gmail.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9E216C0005
-X-Stat-Signature: m88uqaxyhsgoqza9aurmfy7iyfyzq5bf
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <uyxkdmnmvjipxuf7gagu2okw7afvzlclomfmc6wb6tygc3mhv6@736m7xs6gn5q>
+X-Rspamd-Queue-Id: 24FEAC0008
+X-Stat-Signature: d4pacya3hp4kwun3dhuj1f95njhzbpda
 X-Rspam-User: 
-X-HE-Tag: 1755361857-470079
-X-HE-Meta: U2FsdGVkX1/Zm+G/mvzDCsBVT794rz2UNRlxc7DjqyPa6nLxQIm164/6DENpHL3ByMkcFm9OMqKnFOFQwTOGj5Y5Z7S+4Mt+5N+gfDdaY7VaKXv8zFRF6w0ljhhm+NO3ycpHjxxPRL6NKqg9nJ9ARwSevyltyCHHpJdB8t/8EzU62wcG0By4aUiuGFZlasn6ofa0OFl0NFKefCf95AaB+aXREj455U981pfJDq8nP2ghNP8Uit7phoaaHkGiZP3iuWvYyAyr+xx2TK4pqSGDd0K6L6/MiBOmNr/S5VuNGZWEe+fBzIsaRcSmy9vlytrdoBd/5NtPRIBEp/BXAowZEE9Y+e88du1APAbesj9jyB+S7y0YOjGkL7JjqgRr3VnSJJgVy1vG38IwCTvMZHWllOlTEu1DN2Esui6V3iHGWmU4365ttAnfh/nyUXBrymXjsRDGqX/oUflc9ADBzHWft8lLXAGfrFc/H6RJok/7MUqQ3/atKWsW+l2snLp1+RTyGZWIxsOhegSpv+Oarem+iCdYZms8Hpde8DFw8r3JK1LENXTv8MkxpubgqfeGXJab3kYaP/CC9vbnIRyxzGAvJfY3YyAk2lQ4BeVkHkgXXW+Ilh+b0WxVruQbsvz8XyvjZSMo8K+5vwhReH26joI3H+PR2+u1vzzKe7DaPz3cFFSPcApUNRlEQbFphJl8g12sodyF94WwdRm5URY17h77EVew1MZnFu0nVIdoIqKjWFU9msPcAwHeAbLxyyHfOySX5LboI8QrzvB43IodBpPUijjRAwOrF88m33gCG3Tghn5wpb+6LS1WqpkRFAuxPjJ5pOqpf+9ePV0mBmrvTOiTV6Ld2eoiDebIKyB3vIHBHyDIJHTzjzp89GyIeKN8Ckq3BebHY1S0CB+sdlBtHtBXjcGdCbrAtqsMKZTFN6/yDmQ=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1755362496-789565
+X-HE-Meta: U2FsdGVkX1+UoGBL8tE/LCS/Lgb94VyvJaWe656NSlpT3l3Q+oYcW3rGuZFMJq0xrMBukqeBpAVGZsYo+wJAtjK/e/Mb8a8aNauUN7W+cb7kQM7PKg5Ujiu/9IUYiH/r4k6Gm3YQFMe8+OBqfQYSn0SscL3FavV48X9lQek780E6ddWnGukdTy5VlwF/tN3bMywT0Iltog+UeGwZpjYu8gz83Jf+EardZcQoL2cC8IDypoTCnUmOvfwd/K+fL9rE3C/CRhwbqIYrWMsuMLDB7bsPF9E9OdLSsaSLMbdk6Cy2EAmV8Z3pp4mVMAa3evFHiSXMTZFXfrFUdikGvYR760SGoBWx+5OUAWGJ+aD83q+UpQmvxzrggOnQqnhNaPZpzgu8fxWqj4VCr9uEQMy5D8u5RFWrcGn8eomECCK8vUlDBLuRjCk0LrvtFgvQ6HdnDUsrhAtnOCWp1grtsKvXz6cDs7sMTmBidOTzJjr7qOSOnHqs+K1jPtF7ok+qEiXHNC0Emz5DM3B8JTEiKWBsjrHcW3ybdzUfc38cHBYs0/7GEIIG4yIIWFpZDMB2m4ybcPn8oGSrzGE46x3qJ3cY35REAMZheFEVfLWVL8wWAy06llBWNS1kpAK1j3jNbARq4wDHD7c0GZg3hUlGNqrLwF3pQcD3Wljtyxd5wJWfYBzWNDvDisjaPEBygOTOUf57wn5fC4OP+GL+PDeEnYvBaLP2vIfBFwluruu7eqPIj2uufyv678j2L+VlG6oy42w47Zi+lclWg6DoZNyKxgzkRe7Q2+vZiHw8QnedFJoORxjRfwbVIyrj5kSWJapgE1gfCaEiMTfhmo6OzsMX2pIQ6AscyF4tt6W/7cbABVlQJ4pRps0WjNt5Kw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,56 +89,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Xiang,
+On Thu, Aug 14, 2025 at 04:03:36PM +0200, Michal Koutný wrote:
+> On Wed, Jul 23, 2025 at 03:41:47AM +0900, YoungJun Park <youngjun.park@lge.com> wrote:
 
-kernel test robot noticed the following build errors:
+> Let me share my mental model in order to help forming the design.
 
-[auto build test ERROR on akpm-mm/mm-everything]
+First of all, thank you very much for your detailed reply. As Friday was a
+public holiday in Korea and I had some personal commitments over the weekend,
+I only got to check your email late — I hope you can kindly excuse the delayed
+response.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Xiang-Gao/mm-cma-print-total-and-used-pages-in-cma_alloc/20250816-122940
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20250816042842.3959315-1-gxxa03070307%40gmail.com
-patch subject: [PATCH] mm/cma: print total and used pages in cma_alloc()
-config: arm-randconfig-002-20250816 (https://download.01.org/0day-ci/archive/20250817/202508170014.PK57XSd7-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 10.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250817/202508170014.PK57XSd7-lkp@intel.com/reproduce)
+For the points that require deeper consideration, I will provide detailed
+answers later. For now, let me share some quick feedback on the parts I can
+respond to right away.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508170014.PK57XSd7-lkp@intel.com/
+> I find these per-cgroup swap priorities similar to cpuset -- instead of
+> having a configured cpumask (bitmask) for each cgroup, you have
+> weight-mask for individual swap devices (or distribution over the
+> devices, I hope it's not too big deviation from priority ranking).
+> Then you have the hierarchy, so you need a method how to combine
+> child+parent masks (or global/root) to obtain effective weight-mask (and
+> effective ranking) for each cgroup.
+> 
+> Furthermore, there's the NUMA autobinding which adds another weight-mask
+> to the game but this time it's not configured but it depends on "who is
+> asking". (Tasks running on node N would have autobind shifted towards
+> devices associated to node N. Is that how autobinding works?)
 
-All errors (new ones prefixed by >>):
+Yes, your description indeed captures the core concept of how autobinding
+works.
+ 
+> From the hierarchy point of view, you have to compound weight-masks in
+> top-down preference (so that higher cgroups can override lower) and
+> autobind weight-mask that is only conceivable at the very bottom
+> (not a cgroup but depending on the task's NUMA placement).
+> 
+> There I see conflict between the ends a tad. I think the attempted
+> reconciliation was to allow emptiness of a single slot in the
+> weight-mask but it may not be practical for the compounding (that's why
+> you came up with the four variants). So another option would be to allow
+> whole weight-mask being empty (or uniform) so that it'd be identity in
+> the compounding operation.
+> The conflict exists also in the current non-percg priorities -- there
+> are the global priorities and autobind priorities. IIUC, the global
+> level either defines a weight (user prio) or it is empty (defer to NUMA
+> autobinding).
+> 
+> [I leveled rankings and weight-masks of devices but I left a loophole of
+> how the empty slots in the latter would be converted to (and from)
+> rankings. This e-mail is already too long.]
 
-   mm/cma.c: In function 'cma_get_used_pages':
->> mm/cma.c:784:26: error: 'struct cma' has no member named 'bitmap'
-     784 |  used = bitmap_weight(cma->bitmap, (int)cma_bitmap_maxno(cma));
-         |                          ^~
->> mm/cma.c:784:41: error: too few arguments to function 'cma_bitmap_maxno'
-     784 |  used = bitmap_weight(cma->bitmap, (int)cma_bitmap_maxno(cma));
-         |                                         ^~~~~~~~~~~~~~~~
-   In file included from mm/cma.c:34:
-   mm/cma.h:77:29: note: declared here
-      77 | static inline unsigned long cma_bitmap_maxno(struct cma *cma,
-         |                             ^~~~~~~~~~~~~~~~
+Yes. A single slot emptiness is enemy..
+The problem arises from two aspects: (1) allowing per-device priorities
+inherently leads to the possibility of single-slot emptiness, and (2)
+depending on swapon configuration, empty slots may be inevitable. That’s
+why the compounding rules ended up allowing this complexity. I’ll review
+your suggestions carefully and share soon how we might simplify this
+direction.
 
+> 
+> An very different alternative that comes to my mind together with
+> autobinding and leveraging that to your use case:
+> - define virtual NUMA nodes [1],
+> - associate separate swap devices to those nodes,
+> - utilize task (or actual (mem)cpuset) affinity to those virtual NUMA
+>   nodes based on each process's swap requirements,
+> - NUMA autobinding would then yield the device constraints you sought.
 
-vim +784 mm/cma.c
+Creative. I have understood the overall concept for now.
 
-   778	
-   779	static unsigned long cma_get_used_pages(struct cma *cma)
-   780	{
-   781		unsigned long used;
-   782	
-   783		spin_lock_irq(&cma->lock);
- > 784		used = bitmap_weight(cma->bitmap, (int)cma_bitmap_maxno(cma));
-   785		spin_unlock_irq(&cma->lock);
-   786	
-   787		return used << cma->order_per_bit;
-   788	}
-   789	
+Thank you as always for your valuable insights.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Best regards,  
+YoungJun
 
