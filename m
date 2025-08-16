@@ -2,93 +2,93 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 239BBC87FCF
-	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 04:02:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 36C27CA0EE4
+	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 04:02:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 841436B016E; Sat, 16 Aug 2025 00:02:06 -0400 (EDT)
+	id CAE6F6B02A4; Sat, 16 Aug 2025 00:02:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F2116B0170; Sat, 16 Aug 2025 00:02:06 -0400 (EDT)
+	id C86566B02A5; Sat, 16 Aug 2025 00:02:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7077F6B0171; Sat, 16 Aug 2025 00:02:06 -0400 (EDT)
+	id B9CA48E0006; Sat, 16 Aug 2025 00:02:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 618256B016E
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 00:02:06 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DE4B31A0368
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 04:02:05 +0000 (UTC)
-X-FDA: 83781272610.26.02CEB7C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ACBC76B02A4
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 00:02:18 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 386AE138127
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 04:02:18 +0000 (UTC)
+X-FDA: 83781273156.25.763A04F
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 72090180005
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 04:02:03 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=jzp9cuL8;
-	spf=pass (imf16.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com;
+	by imf10.hostedemail.com (Postfix) with ESMTP id ADD06C0007
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 04:02:15 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=PBWlJ1n7;
+	spf=pass (imf10.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755316923;
+	s=arc-20220608; t=1755316935;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xPy3sO++d8R7+mZ5S3adOnuOng0bHe11Z8Kz+7bq/u4=;
-	b=gbXfvOEjMfdhgSwieqlZuKMCM4OwGxXfTET9kZGCFDZB4HDVvQqx6iRvva3Y2CZ1Mrz145
-	+R3LFN7bXUILRdKDykLF+7UZ3LUjrpWefV54zCL6rmyTQzwDzHot0gj1e8fRetCOLcbV6L
-	fUykpOh1v9prgsZHoJzFC7M55CiJeOU=
+	bh=eGzWIZiqMaWv4GVzOQCi1nMNGqm4yh5E7Pden64lkc4=;
+	b=BE+aC7owwcgnHZypPvXWs/EO/UnwGg55yNA8FkNvuzDaWEpnVmK3le9YU0BLONdXfRAcFH
+	mw8m9Z2EwU0ywbmy9fJJNReV6xEi7mBlKxttM1ImQFG6zRbE5jFOsPhbqutyptfvqU7dJb
+	uMxANVsdlVVv3lgC8xoJtvyBdrfNv0s=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=jzp9cuL8;
-	spf=pass (imf16.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=PBWlJ1n7;
+	spf=pass (imf10.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755316923; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755316935; a=rsa-sha256;
 	cv=none;
-	b=seE0gGTp9+elWXIttcj8FjZ4fCcAsYZMqFUEBSzkIPmU8K6blbAtdvQxq4DNHKTAfpPTlE
-	V9yTVxwXh+WCjrovuKGvdKEm/ZvXqDj2TB5wP0BGjl6m6jdzI4gH5SAX3/zuHZvSFK5pHC
-	YISmTf5Ypn19QJAkPFnzqZWTLZMZCCw=
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57G2xgUO026356;
-	Sat, 16 Aug 2025 04:01:58 GMT
+	b=LG7pWDUxr8TQacZVMx89eJ6JljUW853hh2pdc0Pooch9JTamEYmeeff03nda872gS7aMRf
+	1vk9Dgf3IsRUoNAD5olF+erfQYuVJ++R8n43zeDeLRg4AsFIzgKaMHe2rsP7ZEHyzhK89+
+	EyDVJthDCHayesbhrVcXvns+wyQ8+e0=
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57G3fHa5002575;
+	Sat, 16 Aug 2025 04:02:10 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=xPy3sO++d8R7+mZ5S
-	3adOnuOng0bHe11Z8Kz+7bq/u4=; b=jzp9cuL8K2QAO/SpfDovAltSasgSptj0o
-	3wCjKdBMOcCLLDC+bf7e2HuVR6G2r7EFG22kLXh1eFwp/KSodzkxTskcvUCJ/Zgo
-	+qD/vgEfiznQ1smFpohHj+uY4MHK9tCcGXQ3MVTJWXAw6tS5VEnIUVNTZrdeBpLC
-	tbocL4PHlQQeaxHWjyVcRVw758k7BqbzCm33bfmDJnsagNIMLM71Arxp7WtWnqMq
-	kgWTj/QOf1wdZKQFo+F4P9/9oZkeJ7mEw4SIhNu898lw+gqLX7L7m1sHIsAbmURQ
-	NCDdE9zCxbSEOxXfazF2Ob/D+7Lwz0BorLCEqGSkHSrSx0xNM3SYA==
+	:mime-version:references:subject:to; s=pp1; bh=eGzWIZiqMaWv4GVzO
+	QCi1nMNGqm4yh5E7Pden64lkc4=; b=PBWlJ1n7VktRBBpUGfghIB9xKv/FHKpXP
+	ivQnJpUCE9yA7GSm30HXF6o2DrT1X4BtPziOKwi21O/9RXrMdb41h6R0VJIT4JQa
+	EijBt7iRsd6s0/gCWqhSqYS6hRR/7w1d/KBsBKemwsi6iaEjUIWnr2bWtkbyRCpV
+	V46qp/f4/PAktduhYR8zR9UMujQY+kaYh9HgZ4iG5dAQ2N+ugOdqdW/t0lP7pe+q
+	JUBWiWyaBer0HAqdIw7eYotLJ0DqozY+jxKSc6y64nwZrxPggqL3qpilZDkxBX/O
+	9OsPuVgGhba2KHRJvF5OLo2e2Hty7khjcGsjzmMH0DoSHU9ib+3dw==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48jhnxr44x-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48jhq9g442-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 16 Aug 2025 04:01:58 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57G3wb69030745;
-	Sat, 16 Aug 2025 04:01:57 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48jhnxr44t-1
+	Sat, 16 Aug 2025 04:02:10 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57G40Oi1003065;
+	Sat, 16 Aug 2025 04:02:09 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48jhq9g43y-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 16 Aug 2025 04:01:57 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57G3VL5w017606;
-	Sat, 16 Aug 2025 04:01:56 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 48ekc43f7r-1
+	Sat, 16 Aug 2025 04:02:09 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57G1hKqI028582;
+	Sat, 16 Aug 2025 04:02:08 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48ej5nkqqd-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 16 Aug 2025 04:01:56 +0000
+	Sat, 16 Aug 2025 04:02:08 +0000
 Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57G41rPR53805428
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57G4244H20775218
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 16 Aug 2025 04:01:53 GMT
+	Sat, 16 Aug 2025 04:02:04 GMT
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 224432004B;
+	by IMSVA (Postfix) with ESMTP id 371DD20040;
+	Sat, 16 Aug 2025 04:02:04 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0CE9220043;
 	Sat, 16 Aug 2025 04:01:53 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 121EE20040;
-	Sat, 16 Aug 2025 04:01:41 +0000 (GMT)
 Received: from aboo.ibm.com.com (unknown [9.36.5.210])
 	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sat, 16 Aug 2025 04:01:40 +0000 (GMT)
+	Sat, 16 Aug 2025 04:01:52 +0000 (GMT)
 From: Aboorva Devarajan <aboorvad@linux.ibm.com>
 To: akpm@linux-foundation.org, Liam.Howlett@oracle.com,
         lorenzo.stoakes@oracle.com, shuah@kernel.org, pfalcato@suse.de,
@@ -98,44 +98,43 @@ To: akpm@linux-foundation.org, Liam.Howlett@oracle.com,
 Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
         linux-kernel@vger.kernel.org, donettom@linux.ibm.com,
         ritesh.list@gmail.com, aboorvad@linux.ibm.com
-Subject: [PATCH v4 2/7] selftests/mm: Add support to test 4PB VA on PPC64
-Date: Sat, 16 Aug 2025 09:31:08 +0530
-Message-ID: <20250816040113.760010-3-aboorvad@linux.ibm.com>
+Subject: [PATCH v4 3/7] selftest/mm: Fix ksm_funtional_test failures
+Date: Sat, 16 Aug 2025 09:31:09 +0530
+Message-ID: <20250816040113.760010-4-aboorvad@linux.ibm.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250816040113.760010-1-aboorvad@linux.ibm.com>
 References: <20250816040113.760010-1-aboorvad@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=XbqJzJ55 c=1 sm=1 tr=0 ts=68a002b6 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=7CQSdrXTAAAA:8 a=20KFwNOVAAAA:8
- a=Ikd4Dj_1AAAA:8 a=WmnS56O_TwYD7c2XGFoA:9 a=a-qgeE7W1pNrGK8U0ZQC:22
-X-Proofpoint-ORIG-GUID: ejoYArjV969070TmiEX0lepj9eH35uQD
-X-Proofpoint-GUID: CPC1I9ANuAlCecLDI3vFdpLyyCUnehTQ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE2MDAyNyBTYWx0ZWRfX5NAKPf+ZWHY6
- C1LwpL8fxKLpg4r66NlosVvl+4FXGALI8k7u8jP23tZlK0FIPPZm1ePuJuRbQJAzrgXRNwCZscj
- l3pt7Ec6hPOtQoJYKztSj0RUt7dxG5W3A92OvHQ7F5AgaeYJTLiyvOrRJIb83Wyxf4EoKsnEIGa
- HkITpwJnz3VKolGPHTnWu53KpiUN7Bz+4urtojVkMtkZLyf7jZ5xdvHGMTQbuNvfi3WxUnkMZKE
- lI1WOZfPOnIjhurE8f82iWZLZWtOIOyisqiiTl+4jSc3dB8zPTRlqY5S2n11+Ay7dK9bNzIZwEd
- 6urW80DoF1uCitB5K97S89r9lIod5VMH/E51MPRMMIf2SFqz9jHcfSwJq0NUfRVcgTcR1NCdIiR
- +0XooGjy
+X-Authority-Analysis: v=2.4 cv=N50pF39B c=1 sm=1 tr=0 ts=68a002c2 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=yVrA2fujCtLeWmk1P3cA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE2MDAyNyBTYWx0ZWRfX8pCM/R0SBNnt
+ 82cyqeqxyMUvnDqpC6Wlz9ftzCjaRXh07IcDhBimcwdlQuUKYEcOawUciRCacNFmuPeZN3AfP/I
+ XTARpWxPQA+apLotgcp60tGEucV2cd97RTOOZ19h/xrlmwWWEmNN1+dhmqCXq2jxLD/w8VuyGtj
+ 2a0zvK2ScMHcpl9HZVlDwDY2iSKMhiFyavxbyeRnLZ9jmUI1iTu2gc2PYb/p1B3OXDU3JpLYUu0
+ iqMyH7A/yJdXc1wKbKBYJF5How9/Rk9VOR+51A70ePlmD+xrT03YG7cC2Mw8TCSb6IrGvOx+TDE
+ KMzrVOcvEwacjchXe0s09QMTkVrzZfcn1G9iISEvB4AZbLeC9ihR4A1iEccZZ0olJis8H78sn+f
+ DwrehoNc
+X-Proofpoint-GUID: 4-QCN-rltZBnaB5UUevzv8HjYHCMBP0U
+X-Proofpoint-ORIG-GUID: iADUmERIIYRuRT5DyeVXIzSWCbExzVxC
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-16_01,2025-08-14_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 adultscore=0 suspectscore=0 priorityscore=1501 bulkscore=0
- clxscore=1015 malwarescore=0 spamscore=0 impostorscore=0
+ malwarescore=0 phishscore=0 suspectscore=0 impostorscore=0 bulkscore=0
+ adultscore=0 priorityscore=1501 spamscore=0 clxscore=1015
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508160027
-X-Stat-Signature: g91fqi7cxdgot565bskerusojwcj7zot
+X-Rspamd-Queue-Id: ADD06C0007
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 72090180005
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755316923-467131
-X-HE-Meta: U2FsdGVkX1/tLXcPfVvHvmUDR5VpePsDfRQEEx1dh8VnGFOyel6fDfruDZc6DPOLVKIGqQKeYMlmqJUtZW64Sr1h35Vg5Z1ekREBgaU+Mw3TxSwmd67Nbkw/TflxY2fJaCi1rLH/qtTQzbPQeZjYUSI2gBHFOa9oztUWqbT78//opBOrhL+ybSg7WfpEe9nWuBPFJkaLVQik1gAt4qf4Z5BETSnuxmyX3DbBtAkak1S0WzPUzb3vlUwFInuxEDlZKJahMSkoasReqwJREjOQ/3YQVd9BlIu5ps8RYcSUm3eFkjcag2EmKvafo/hY26xxgWH8PdG6jIkAkf9FHSsIVD1fNfcncfSwSrWHtBUxyMnHTEhKZcq6KkoGXGlKUw5m6Ll6EMkwWVE8uIV2Lg8OHqnyDQmUa8ZqdFTnegcq0jssrXcuuQ2tPxIG7UsTvhH7F1GZx97azVPsRubI/WDvMA+03iJlzPl4FEhy7Q2m7Ft74n/6KnSrDb1MG4ZT+t+ZbysUaTRRi7RG+qnAlcqfVEBBhLXBt+PaiEUJStIe1JNNkM0JECCfw1GKJifPl2sDke6mJOCuvTCuBF5PB9BKpX1MO6WTaGhtR78pzjervYEC9OFMeY7pjhOPrdYFWf7qNmniS6LE6TLe1EnAJ6ToHM3PGRIfi1JohERL73pNkP63lsAJc+++iFw4ZUZeXeE75E534iTe5wy87q//zN8FFFYIyKR5s1L6xmfQcUV9Wven9p59RTj5uezVlErb60taEZN2RjJ6HCTxxxQyGxujYBLxddyo6rJBB8HBF/jOmZitvbq7pEri9iHaFcsh0uZ468QEjfpQciYXy3r4MpWiS2Y+gTFbovdOgnWkrV7k5e0J0tgJvueYPuavl3gpH1J5wk6dPrKx9ZfVB9F8uzsYyiou1LIXe+E4IESDoiOw5GwbmLddJdqed/KIYdNmJFoWM9dEL+Vvf/O+cxlyZlQ
- X6p9Hn4m
- JHKLuMViNRkSGMOj0+FkEFmybeeivkFk9q3zkfHhm0+ixbY+gQSq+7cT6JX7BWbVezOGkNar9uJUN0NpeI+Ib4iF0EQFuZbkFDp7rDQ56PhHVth8iv4zUehXkF/Wc7qDppAFyxPXwtHlVEjiAnPzfPn0Tk3XTG9hRC0Fl7kwxcR1VBL5Jf56I3HUsmIA3sTVNlOgb/efBAsBlfpB7Jry3U2dAWnnkc3ZUBWjwrcpjOl0DRjmJYHeouFDnuyG8S4C7RkH+3qsjVZpbkV55BWi9AtrMo2b7MaRRqDyqT2JFIE2vqtRMvrHpN8V0fvOPIoNqvlEtMxNgqGY2TQ89k/ORxJWLlEmGJk7xVwr046KpM5GmyfoBAgW8i4hV7JVdlObsn1f5ENTGZmciaHucUuqUn3VQ8BUEVMN1bYKXSmhhByjzQmCZGlzmCAUA/PHeUUdjWc4YWLjG4NevOITUW6OBRRBRfA==
+X-Stat-Signature: zb8paj6mso6yn1cotpu6igokjmuyih5g
+X-HE-Tag: 1755316935-10548
+X-HE-Meta: U2FsdGVkX18+ZbHLjWqcahrgnnc8ySJxL0g4j7/Hwa9lhPVLemCIidqPnLJpI042MlhawOr1EsddHywD4EU8SNiVMNHWXLk3stNDR3zu3xQGtzRiZvhbw5EWmO07ETLqEcsawK4EXtextmt80WxUxC+A4nLU0JSA/lQySlEEfYsVvokYUakyueqjFXMXqZKcCEbGd4RuzhlRDJovkuS24sIZW1KJD8lDafkcxrH+CeS3hCbEoKmNWU2dPffP0hs29crhT8qnObY4aNOyELGtCuqdyxo07iGP5jONh0ikf03Y3EDQJ7sqL7+xuvyR2zszImLVolB/73WeufoETxXtsKzAEHgSJMY33kTgW9E1RqbD4O/6l1wdxFok5LypCRaUgJYPxUTurypJfx2mw7Fd8yVLtGPtxcA4M6ugbdJEUM/VeTRXgHfyJIxgf5CbiW0ZSxhTbSHcU4ez71QbA5SIwDsWVpBZOclBHALWv3EPLIvoV5PNep2Xw+QPXFTOfTFXsFd8fz/f+P77GLnJflmBorOWXbvo+u/6dX9/F5y/w5c0y2IBN0y9WcROw/CuRKUN9sf73vcEJxG2xeGHIzptkP1T+mRdLyCb+2Eg/H1C+EblokQDXqNFyxm+LILJ6LhorQEgjxQmRITluf0EhFYracAWIbUInuMSxkx0ZLefLRoTFVTbHrvvS6+x4tvbcJe9iCDr9a+YjVde4YLw+DqbBOwWnZSrlLLwFXQpQ/ayfCsXDTHkasetT0Di9GE9dfCOZOyTf+9cylmFvE2MwlHljOvQQyc1L9FVcHH7mVZx+7R+xk0zyRJOvFgo/f5ikLLDUulSatGTerXstRN4KnTTq2OqNObralzun8aI61WuoZxVceJVf2Y9k0w9zZdY2aAchXPUG88lkz0DXKo8hNksHEMDFLksZzZFk22JGRcC6aqJR4/UzzW9FabSrpMa0dLF8tEELi9JWf9pu18D7Fn
+ XybEw/cA
+ APGpRx7ZVvyGTT1RAy1YPv3xKaztE4NpUJL/7VPcqlJas4Q9D041nyYlHzZ0SU6+TZ9Je0js8tZ0xVcbiKPp5oA5Xpdw3HZFdrbt1ixNln7fkTC2ixObRmCjmro2fKt9jtPUMxmTQxNjcDq/R/q5K12dqk+zLtNl5NS8VYxu5aKwxCCAy8e670PrDqxgFo+kEpRjRInBtOajNhM1MfmaIsAWMRrN8fo9/kMggvYkGj+xfzI1gMMX6KsmrjX2jMQxxxA/EIl0oKRD8rOOpf4/oyLIpHYhpt7+hbISOUHKoLc+oum1HVnV4N/CuKJW/vQ/QmQXI
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,58 +145,132 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Donet Tom <donettom@linux.ibm.com>
 
-PowerPC64 supports a 4PB virtual address space, but this test was
-previously limited to 512TB. This patch extends the coverage up to
-the full 4PB VA range on PowerPC64.
+This patch fixed 2 issues.
 
-Memory from 0 to 128TB is allocated without an address hint, while
-allocations from 128TB to 4PB use a hint address.
+1) After fork() in test_prctl_fork, the child process uses the file
+descriptors from the parent process to read ksm_stat and
+ksm_merging_pages. This results in incorrect values being read (parent
+process ksm_stat and ksm_merging_pages will be read in child), causing
+the test to fail.
 
+This patch calls init_global_file_handles() in the child process to
+ensure that the current process's file descriptors are used to read
+ksm_stat and ksm_merging_pages.
+
+2) All tests currently call ksm_merge to trigger page merging.
+To ensure the system remains in a consistent state for subsequent
+tests, it is better to call ksm_unmerge during the test cleanup phase
+
+In the test_prctl_fork test, after a fork(), reading ksm_merging_pages
+in the child process returns a non-zero value because a previous test
+performed a merge, and the child's memory state is inherited from the
+parent.
+
+Although the child process calls ksm_unmerge, the ksm_merging_pages
+counter in the parent is reset to zero, while the child's counter
+remains unchanged. This discrepancy causes the test to fail.
+
+To avoid this issue, each test should call ksm_unmerge during cleanup
+to ensure the counter is reset and the system is in a clean state for
+subsequent tests.
+
+execv argument is an array of pointers to null-terminated strings.
+In this patch we also added NULL in the execv argument.
+
+Fixes: 6c47de3be3a0 ("selftest/mm: ksm_functional_tests: extend test case for ksm fork/exec")
 Co-developed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
 Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
 Signed-off-by: Donet Tom <donettom@linux.ibm.com>
 ---
- tools/testing/selftests/mm/virtual_address_range.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ tools/testing/selftests/mm/ksm_functional_tests.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/mm/virtual_address_range.c b/tools/testing/selftests/mm/virtual_address_range.c
-index e7ef6759baa1..1de62f6cadc7 100644
---- a/tools/testing/selftests/mm/virtual_address_range.c
-+++ b/tools/testing/selftests/mm/virtual_address_range.c
-@@ -44,12 +44,18 @@
-  * On Arm64 the address space is 256TB and support for
-  * high mappings up to 4PB virtual address space has
-  * been added.
-+ *
-+ * On PowerPC64, the address space up to 128TB can be
-+ * mapped without a hint. Addresses beyond 128TB, up to
-+ * 4PB, can be mapped with a hint.
-+ *
-  */
+diff --git a/tools/testing/selftests/mm/ksm_functional_tests.c b/tools/testing/selftests/mm/ksm_functional_tests.c
+index d8bd1911dfc0..996dc6645570 100644
+--- a/tools/testing/selftests/mm/ksm_functional_tests.c
++++ b/tools/testing/selftests/mm/ksm_functional_tests.c
+@@ -46,6 +46,8 @@ static int ksm_use_zero_pages_fd;
+ static int pagemap_fd;
+ static size_t pagesize;
  
- #define NR_CHUNKS_128TB   ((128 * SZ_1TB) / MAP_CHUNK_SIZE) /* Number of chunks for 128TB */
- #define NR_CHUNKS_256TB   (NR_CHUNKS_128TB * 2UL)
- #define NR_CHUNKS_384TB   (NR_CHUNKS_128TB * 3UL)
- #define NR_CHUNKS_3840TB  (NR_CHUNKS_128TB * 30UL)
-+#define NR_CHUNKS_3968TB  (NR_CHUNKS_128TB * 31UL)
++static void init_global_file_handles(void);
++
+ static bool range_maps_duplicates(char *addr, unsigned long size)
+ {
+ 	unsigned long offs_a, offs_b, pfn_a, pfn_b;
+@@ -274,6 +276,7 @@ static void test_unmerge(void)
+ 	ksft_test_result(!range_maps_duplicates(map, size),
+ 			 "Pages were unmerged\n");
+ unmap:
++	ksm_unmerge();
+ 	munmap(map, size);
+ }
  
- #define ADDR_MARK_128TB  (1UL << 47) /* First address beyond 128TB */
- #define ADDR_MARK_256TB  (1UL << 48) /* First address beyond 256TB */
-@@ -59,6 +65,11 @@
- #define HIGH_ADDR_SHIFT 49
- #define NR_CHUNKS_LOW   NR_CHUNKS_256TB
- #define NR_CHUNKS_HIGH  NR_CHUNKS_3840TB
-+#elif defined(__PPC64__)
-+#define HIGH_ADDR_MARK  ADDR_MARK_128TB
-+#define HIGH_ADDR_SHIFT 48
-+#define NR_CHUNKS_LOW   NR_CHUNKS_128TB
-+#define NR_CHUNKS_HIGH  NR_CHUNKS_3968TB
- #else
- #define HIGH_ADDR_MARK  ADDR_MARK_128TB
- #define HIGH_ADDR_SHIFT 48
+@@ -338,6 +341,7 @@ static void test_unmerge_zero_pages(void)
+ 	ksft_test_result(!range_maps_duplicates(map, size),
+ 			"KSM zero pages were unmerged\n");
+ unmap:
++	ksm_unmerge();
+ 	munmap(map, size);
+ }
+ 
+@@ -366,6 +370,7 @@ static void test_unmerge_discarded(void)
+ 	ksft_test_result(!range_maps_duplicates(map, size),
+ 			 "Pages were unmerged\n");
+ unmap:
++	ksm_unmerge();
+ 	munmap(map, size);
+ }
+ 
+@@ -452,6 +457,7 @@ static void test_unmerge_uffd_wp(void)
+ close_uffd:
+ 	close(uffd);
+ unmap:
++	ksm_unmerge();
+ 	munmap(map, size);
+ }
+ #endif
+@@ -515,6 +521,7 @@ static int test_child_ksm(void)
+ 	else if (map == MAP_MERGE_SKIP)
+ 		return -3;
+ 
++	ksm_unmerge();
+ 	munmap(map, size);
+ 	return 0;
+ }
+@@ -548,6 +555,7 @@ static void test_prctl_fork(void)
+ 
+ 	child_pid = fork();
+ 	if (!child_pid) {
++		init_global_file_handles();
+ 		exit(test_child_ksm());
+ 	} else if (child_pid < 0) {
+ 		ksft_test_result_fail("fork() failed\n");
+@@ -595,7 +603,7 @@ static void test_prctl_fork_exec(void)
+ 		return;
+ 	} else if (child_pid == 0) {
+ 		char *prg_name = "./ksm_functional_tests";
+-		char *argv_for_program[] = { prg_name, FORK_EXEC_CHILD_PRG_NAME };
++		char *argv_for_program[] = { prg_name, FORK_EXEC_CHILD_PRG_NAME, NULL };
+ 
+ 		execv(prg_name, argv_for_program);
+ 		return;
+@@ -644,6 +652,7 @@ static void test_prctl_unmerge(void)
+ 	ksft_test_result(!range_maps_duplicates(map, size),
+ 			 "Pages were unmerged\n");
+ unmap:
++	ksm_unmerge();
+ 	munmap(map, size);
+ }
+ 
+@@ -677,6 +686,7 @@ static void test_prot_none(void)
+ 	ksft_test_result(!range_maps_duplicates(map, size),
+ 			 "Pages were unmerged\n");
+ unmap:
++	ksm_unmerge();
+ 	munmap(map, size);
+ }
+ 
 -- 
 2.47.1
 
