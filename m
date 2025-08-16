@@ -2,120 +2,111 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 29A12CA0EE4
-	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 14:08:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AC485CA0EE4
+	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 14:12:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA0568E0020; Sat, 16 Aug 2025 10:07:59 -0400 (EDT)
+	id 4584C6B03A6; Sat, 16 Aug 2025 10:12:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B76F68E000A; Sat, 16 Aug 2025 10:07:59 -0400 (EDT)
+	id 406C56B03A7; Sat, 16 Aug 2025 10:12:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB40B8E0020; Sat, 16 Aug 2025 10:07:59 -0400 (EDT)
+	id 2F6986B03A9; Sat, 16 Aug 2025 10:12:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BECC8E000A
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 10:07:59 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4EA5A1DD5DF
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 14:07:59 +0000 (UTC)
-X-FDA: 83782799478.02.2A4F57D
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 3A8BD1C0002
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 14:07:56 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="X+1Q/0t4";
-	spf=pass (imf18.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 160CA6B03A6
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 10:12:37 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A3E14140451
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 14:12:36 +0000 (UTC)
+X-FDA: 83782811112.30.DE87E76
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C4BB31C000C
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 14:12:34 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="f3/Z190t";
+	spf=pass (imf21.hostedemail.com: domain of ujwal.kundur@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=ujwal.kundur@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755353554; a=rsa-sha256;
+	cv=none;
+	b=tGFHHstQ/whNy4+CSNpOgA+lx4HGJLXEVQYKIADTYXYHV9lQ19vqceDC0rKZBywlWeY48x
+	M3a4T5verLa2nNzGQw8tzG/4ei3j4vGpolO+dTIQTGcvn1YElw4Ii2dfIBTV0UsIQeDmJV
+	OpERbuMj2xVJ3TWNLFaXtNlMH+vJUZ8=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="f3/Z190t";
+	spf=pass (imf21.hostedemail.com: domain of ujwal.kundur@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=ujwal.kundur@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755353277;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1755353554;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5uaxDkrC90fmKFDmTr+OGwUc637UVz7/TValI+Y8iKI=;
-	b=JbdMhZs/eCcKrqc4NFGKk/fq3dHEF+zYYhxlB4nSKt2tfHjZvgVU8HI/wVHsWEnwAmY/51
-	tQTCx3PkED6bE3/F6xWscy6E8TdRXIvgGWb3dwQQ2/KgdyIRyExDjk3XsDfWxnqNLeWxDr
-	0O7nHwnL4lIZIo5f2GlF1hOhIR5M5BA=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="X+1Q/0t4";
-	spf=pass (imf18.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755353277; a=rsa-sha256;
-	cv=none;
-	b=IL7Q+CdI2DPQJO5ScnxyndnMXKdobrg+biXpBeCCBEC09He0waDYgx13F4KpNtytBEDhs4
-	DcWZe8ZToixBbOiiEqNolI/muoUiuWdGJZpns7Yb+laY2pTamwsn9ul1CRjoT/VxOyMcsa
-	p13Bkrd1+3jvMKUyRREWd24Jdu55km4=
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6188b5ad4f0so3751429a12.0
-        for <linux-mm@kvack.org>; Sat, 16 Aug 2025 07:07:56 -0700 (PDT)
+	bh=feoSPjnrOdX0//SvROhIkB9I3UqFW46Ajumc7uAoMRI=;
+	b=xamAGwE06FBKN2i5jSpyeD+ptMtfDU4xlqJ+o3MldY9Hb9+tGHOMH8y6tHGcZkjOhFFWqR
+	x17bXptO6AYhU1gEpYnEY750Gx5ufTF83nc6BrZRY5W7VKusR7y99UvUFu6ocmeXxDuMDg
+	xUCTNAvwc4ss4Kp7yEb4bAn5rYQ+sR8=
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6197efa570eso1312994a12.1
+        for <linux-mm@kvack.org>; Sat, 16 Aug 2025 07:12:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755353276; x=1755958076; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5uaxDkrC90fmKFDmTr+OGwUc637UVz7/TValI+Y8iKI=;
-        b=X+1Q/0t4kLY/j+ruhuqvegNKlJ99BCPv03Df04eeGUAZMB/2zH5kYw8YOgqmAOU0+s
-         oqNjA7911N/rPnz66aOGaFRrsFUhjxqt0xVINkzQtONO2jWdB3uI/Bvd6ZnxPzGcZbNN
-         8/7uvO3iK3YYbuqR41uIJqRpJ6RexFrvljGGsRmLpnvrSfmXT5nEBnTVoMbDARk9hJr1
-         pEPaL4wkj3cwlWpJ+dtV1ISZm3/mV+zWik8gIanwnxid0mdkXIpGQ4ZBhbo+MNAI7cbz
-         An95bciPIgXH8aB/raEdqy+QICs5al7kaWRVKjjyIAlyW4l95R99QDdie1fZfpszWfza
-         4Ulg==
+        d=gmail.com; s=20230601; t=1755353553; x=1755958353; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=feoSPjnrOdX0//SvROhIkB9I3UqFW46Ajumc7uAoMRI=;
+        b=f3/Z190t+niYHrJxieAGCoiB3Ig9mmTeG+Q+Bq+R8H7xZza+xxjSQvr4fhAivqGUru
+         bXiGhKFST61n7XKNL6SVAzxPlJK8r285FHQwYc5Kv7DyUVkgeoK2o6fG7xpgKKa/bBlt
+         Usq4TlgjJWnhH+uSK2lLby4DjEYJISyRdZWd3Zw+agRW/dCdLD171FXDGrUuD+iuFmgj
+         vgViuhkxQW4+iraj7m7PQ3280tzmBEVsuH9xMUzhn1rU/svQ+8WdAcvPz1MBzFbn/1Fp
+         xc1ckzr3Qu22Cxac13nwNTO1IiVbkOUAHTakzrAAIG1Fg5NjRXG+/GxF+CiCYJ1urgu4
+         9B0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755353276; x=1755958076;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5uaxDkrC90fmKFDmTr+OGwUc637UVz7/TValI+Y8iKI=;
-        b=JIzJJg/GNUlkvbHeKuKJMm/stWY/toPE4wv9S6jHfCHwf6ozWZAWGWJKN0L1uBPG+n
-         ZqmmjPSs7MwSJ0HiKnQhNx1r+TIS9Cuf/OReIQACNwj2avoDyKMpkZyY0cUJ3HfdUCFA
-         5EIeq3KXfufHTxwdPYtRYLN3FbpiMKZJoHs8vLsz1ik+A/ew3tl5gSwcF/vtZGGvm2mH
-         T7hXTBQ07Xb7G/l5wzvXhIYJ0xMDTORiCP4svHaGJXzJS81SgPVXcBTWIbBIz4nzj2/G
-         92+lkYTjsGgHraH3rh4RRhek8Z0J4HooWd/oMnd+J9EGFbO2YtJ0L5zAPdsN2yv3mIKn
-         Wd+g==
-X-Forwarded-Encrypted: i=1; AJvYcCUPvF9QRk9MjoZDghl7oVc/yYhXydANnry+iT7O8iFNdT2Yxboy05JFOcJcO0t5c8YeeDu/VvRMcw==@kvack.org
-X-Gm-Message-State: AOJu0YzcHSBiEHmzDOoPGhtYnowihK50+9Lv8xTJrxM/nnqR/mcorLyg
-	XApAPVay1niNfxlUQaPtXHEIa3qLU8EcFOcf4ZzpclIAiHzqebIJ5e40
-X-Gm-Gg: ASbGncuhICoxinqjTuqyN2gc2zinYR/Hh2aYWGtP6Dt8uMIndbtuepqlUH4E/ft+W/+
-	5DoX2R1vFuCIj/I6vWQdkTjzRBxdBTob08z0ey+7H7LZ/l7//aurb1JfOm1+mf0RWQ4bhCeFcAk
-	67cLL+jT9vlaloDnYnfxzpiwfUsCiRoSl+lXFUqFSyrHQXmok8IHmQ2U4V8pbp1LjN7UTAg0yhR
-	4GnYcp6qbCScvOU5f+4Odf+6dDzSU0U0miXj896z2+lV+uAyA608HKg/O+5kNWfheHzyKrB33L2
-	ujG/N4u2vKPrqeh7hgqlT83ckJiB316WTPY1ybZ0o4YEllV6k9Xx5CQ90LYYr5Fvvkml2vk9EiZ
-	xYTVfjJznVD977su3qJtNug==
-X-Google-Smtp-Source: AGHT+IE1b/Pj74re6G/Q6vJ6st0rdkU7h9PGlQizm286SNk7tjVfBDAwwmFTOY+1Vb+2pSq1IfaDTw==
-X-Received: by 2002:a05:6402:2681:b0:615:a201:df41 with SMTP id 4fb4d7f45d1cf-618b054fbb2mr4471169a12.22.1755353275548;
-        Sat, 16 Aug 2025 07:07:55 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-618b01ae4besm3499692a12.38.2025.08.16.07.07.54
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 16 Aug 2025 07:07:55 -0700 (PDT)
-Date: Sat, 16 Aug 2025 14:07:54 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Cc: akpm@linux-foundation.org, Liam.Howlett@oracle.com,
-	lorenzo.stoakes@oracle.com, shuah@kernel.org, pfalcato@suse.de,
-	david@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, richard.weiyang@gmail.com, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	donettom@linux.ibm.com, ritesh.list@gmail.com
-Subject: Re: [PATCH v4 3/7] selftest/mm: Fix ksm_funtional_test failures
-Message-ID: <20250816140754.tgkn5kwf2i2oe7va@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250816040113.760010-1-aboorvad@linux.ibm.com>
- <20250816040113.760010-4-aboorvad@linux.ibm.com>
+        d=1e100.net; s=20230601; t=1755353553; x=1755958353;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=feoSPjnrOdX0//SvROhIkB9I3UqFW46Ajumc7uAoMRI=;
+        b=ZToBa7Qi/xfUXPeLWNj2xchnIYe0FSMumAZbPlJMDRlKGX7veOZPuSi7vNSoTbFd4A
+         PzDmmg+1+j73xE5scx6T2eUBF6407oiHf3o0Q8+wqtZQ3jJXQjFcVVM25531ltl2n4dd
+         4oL/+8dSWZLQouFnPAF+bqPyVE/pY2yumhT718S6BT7z76ZIrvTHw64oYoqz+HLlJxgT
+         AZ17vQGlQWjkrEfBRzYtoBSSQsuESEvRk+Mj7DgNdMjORPXBYnkxS7FpeWLpht6Aj4Ik
+         v9t7frFNdw8QhBZbjImtCma1H83/VkdTFyhc3sWWPJS23aJVOsPVLup2gZ/gOMA0ijNW
+         1jkw==
+X-Forwarded-Encrypted: i=1; AJvYcCXDuCirGPGLI0Pbexd7YN5s+ezAI9UejSnmSJlPtSo1VMOg4lDAldoRThqNeKOKxOtzL+ZKuVe16w==@kvack.org
+X-Gm-Message-State: AOJu0YwwH+fhDteRsNgmtYhU3r63awNtxgX+M7Tua09etESglTiohOcu
+	jAYUOrpeIk71pR9Xf98/ZLx1+LoSt0LOS6jqeG+73WzG98gNWvkFcibr+8rTGYQqEZ7kZqzgjv4
+	NvxbkCzHILdtNn5U7PTUv+/3CJzy8Zg==
+X-Gm-Gg: ASbGncvT4avuvuXZmFRCC1AgwoTqkpEpeGmbFg93NTdB+o31QXzVw+nJ4WMo754xAWh
+	jEdClu3hqGQdBU9J7P7nnaxaorWXxIxKsKPy/DbVUfsGhGfOQ28/Tmh+XheLSI/Uh25uwGXC9Wd
+	ThT++lKe4XlEEjRXt0iKJlnzlWla02p8wAPzuxwSjeB3K7WMsbtVRzk7vAUZ7PHRObl/cIopCPa
+	tpIjLI=
+X-Google-Smtp-Source: AGHT+IF39sA2/AVBMFINcOLAmtFs2hW/T/K1I1gQxZpjqQbWUrpFsMrEH1JB5BTTlUPFahsCPdZqX+kgleQP4aRgk+c=
+X-Received: by 2002:a05:6402:35c3:b0:606:ebd9:c58b with SMTP id
+ 4fb4d7f45d1cf-619b6f65d97mr2325294a12.1.1755353553120; Sat, 16 Aug 2025
+ 07:12:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250816040113.760010-4-aboorvad@linux.ibm.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3A8BD1C0002
-X-Stat-Signature: 3d6yhk9tzp4c66edrio9s9abzddikxcb
+References: <20250501163827.2598-1-ujwal.kundur@gmail.com> <20250702152057.4067-1-ujwal.kundur@gmail.com>
+ <aGf_W_ZgIf63dmAz@x1.local> <CALkFLLJua-LeS+S5GpiXORA-3wNSR0DTzbh2bvU=Vg-Uzd2VFA@mail.gmail.com>
+ <CALkFLLLoXfTNtigbcyD4RdJfY+b5Rh5-5Zta1QM9dBQxZd19cQ@mail.gmail.com> <DC19N1YGQP7J.1MH8WV5KHUHFF@google.com>
+In-Reply-To: <DC19N1YGQP7J.1MH8WV5KHUHFF@google.com>
+From: Ujwal Kundur <ujwal.kundur@gmail.com>
+Date: Sat, 16 Aug 2025 19:42:20 +0530
+X-Gm-Features: Ac12FXyvzVN6lhXuryFknwNkw_NPGtcXZDTU-i8PRTDQZLOHQyctkouzXjWB6_Y
+Message-ID: <CALkFLLKmjj=Gt8g2Y-2u28HEkoXXF5cFG=v1cV2MEDHjZ=0OgA@mail.gmail.com>
+Subject: Re: [PATCH v6 1/1] selftests/mm/uffd: Refactor non-composite global
+ vars into struct
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Peter Xu <peterx@redhat.com>, akpm@linux-foundation.org, shuah@kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C4BB31C000C
+X-Stat-Signature: jksugpsh5orz46i9wx6guoewrmtmiw4m
 X-Rspam-User: 
-X-HE-Tag: 1755353276-371410
-X-HE-Meta: U2FsdGVkX19mcM25952/696/TWRdE0Bdb2ykQel6L9D7DWAruvA5QumH+2zWh2Y34HrbDJVu0t6YUHkSRaBb4Z7kN4/3Yrny3uypHNR87ywMYJbDHRvKuTUPiVjaBykWxLpvZBnc0p7+PHwzfJYP3OrjRWJrk1MGo6hUHZzPoZZgvn2X84JnBNaumyiQBbutmsaJGOUpUPkQATI2OzRt6Wboa07qfy1ZSRp7Ph/K7/pgUgsXhX+/RCoWOzUpRdiDJwQzS74O+jQpk6B7NKv5X9RT1wLcmOr87oXSNUCmmufgiLvb7kgdKYPpPzoHuFwZafn2WteVhn2G4BXRF6R9JySMC51P4PZyykNpt0VYOTMrOrDJJ28x3KAlcCQM4G6Gh5pC4bSnnTKJA/uKJ7I56RH3LPUw6sTgkuSwVeIw5Zxwd4gf0hgAA6E/LPml/u7tUi6zveyj+jgmWI2WlrKD6YSSYC9X/Lg4uBNIOzVZelAPeHwkY2U3yhLWdQd4ZGyHUuDIZ7TzljtTMoz+v9zzm308aq12Dpogd4kIvUUWpr/uE9OXka+nvDwpWIqLcI4f0y3yQGpJbjGT99oLa8GojotfjU9FqL944Kn8H3sfnNLsYlRAYq1184bsHb6IotC5jTa1dTxfm/gs1pxfTmadRkOeTGITulAZTrgQVUgGmZPkYv6G+YSWXmV43tn8ljbsQYk/+AOkD/y1ANbmj8e8lpytcn65IEBPMav5h4X3WfH9WsiLZHzf5mOCOX2uzn2KWhISHk54r7SJlEuaP9AkvGiqcm5KUovJlm/p4mTimaqb291uQtPkP+AWo6BAfma5y3ybyV3hx/mFgl+D2yMRSq43zApQ4Bg92htdA0724HNjb/Gh64FtN9w/Z5LtPyeN2rZJT9Eom12f9HqBE5dsA85S9zMLzaKNy/N6a4obTb//59gVU0QYCqCfvdFLscGu9lI2KDxVs4BrVdl15Zu
- 9GY6X4JD
- Gm66zJJ4/odb3yaRV1MiS8ejzz3rVfhD2vzPRkeWpFixcQjn6xe0KZQUzGEHDNkP+v24YynvJ2EoJ0WPXKkepU32443OwYV9H4W9ewy+sKrvePQdq2pbzuhhBJi5rCnYpmCeOswBnRsEeAmMgUv5Qq8VS4tPt9H1o1ST5Wl44uGY+KmTLgLrJtWK8ZrL/wQdwwugtgTU0o4pxceG4EKFjtTZLrYbBT4Kb5gJLzoGs7EZURZW3j1IpdsF6O8yduqxsEF271gJ25KzUJNSrCrEklxPqNQcUylzSq7nQXoUkYaCzDH1mwa4cmtoQJUrVPkUDSQQmDTmP1P4OdVHP9IA52ESgmYngx1LK4jm5ie/4ZsWyQQWYI7ZbN25B7DCnHikTGncUdXfcqgx6V82EzZ6ND7hoUcZo9Ed4tqhr8MkgAp7u15FeHVjtFLg9IciuZQjyc5tS5VyFMmDf1ZnX/uX2m1NhshAq4AjvGVC0ZSz0oGEi2LjhPoNIqdIFl5h+K7gwHUu8sNsMdr4l4lavkUULrKYegoUK4QKt+uTEMTxy4uvrhrN7g6uC2lD0MZr4jNlhSXVn5PlCFTOBaC9Mr8CPH1lB8tCKkrrG9r6y55eS2hx3JJMf7s0Zg8OW7Ac1v7KBgQ4pB8gHAl59nRi7BXt9mIxfW3eFQvAsNWBRZMxa6Jo1XttxKBDarzpiMLftJH9gHGSQ8B5p7LIMTNsBh1kHUGnZFOOAphlX/YmROwKEBkXrs3i2J46GHwrjxJ+qDU0XaxYBDfqrwHqHHAu+gmoRlxGa84JHeH2YL9rQrhbFunRfGiY=
+X-HE-Tag: 1755353554-849512
+X-HE-Meta: U2FsdGVkX19CTXl2CEDPYVXN1SgKyhP8CGSOz9tyoMtEnpL2d/T+nvKf1Al+W3I8C9hwQwgp2qbOWigMcjenVUqI0irUAJye8y/i9Mz1WYRLlF7o8bgaE+21ZnZgUP7wy5xTPVBl2xN3Fhl8M2DolKC24XeVjm+fXbEE09LmgIldXhzpat+S5kz/fNnPSh9oThu8ODRCi8Yw1R3XM7v35UOfVnXicwKgNXh9WOU2KyzTiQqHMGXvoeXB8CgvbmOA69Ju7u/XGdOdCGRiVtPENBiReYbGitkZGxc0zHyzD2b1qWHN4KpWS5kJw/WF2VaPax7qMUYnxhncuJStqhW/vvzNtaLqCfQGp2y9cVDtf/v2+UkRPkN/zsRJdT1+nOpYMub+4xInhBURihTkUYDSyqgdktjcLUruJhrZCmhzHNMaeJCYkKDaLjJL3Zr5DQnF2b0t0ePnigpDwAYaRs1QUdZdlLY/4HGvE2daaLv5+k8cho7MQOlwMfqJUZ0wneYgnDwbaVMl7HxbLeuLzzmpGJM3TDLY7IKFtIWn/QUK4VuHIpswmoFj3SYajJegEuaRc6vmOTaNk6bIkfkwO7HVk+2XTpj6hyE+IkDFafeOfM7eCwBGVQX4JjOJbLv1fvMOn7enMhGtsgNg9sn3oeQqk9/AxhyNi37r867l2yD0iI4EWx/tKpcCm7RYnP9obG5s18MLpdjmAp571R1hzIiEyznvwKuz3ttua0iGXLbALciQRfDgkptpCELWfUhB6B7YHmZiON1xKLRUGuVH1Mws9pkcCZSnY4fF1fNHNIESrhWZhgnLooKTIbk0hJzMYMBQ4hhdafwv+Ij/w00MvLr3mf3pmdSBscaDx837oe8dsIpOFrcJjtZMIfeFfb9hYa89mzqcSr3gL7CTntkzl++KUy9bwExVCpdyteAaJWlHi19B+bTWAyDG/eEXzkB2ojutjtJdWNIhl6GY3/RnGyT
+ 30W2qJDa
+ JD2XDrl6SeZO14F0rgtbEpeAgCQlna8MV+SqLel/I6KQ44ucyaazackt2kEFtY62euOHM06AC0ooMuvYKKxqVfTrMX2MmFUpwXmwRG1VwHq4ZuL41cXY8wMGzRYhNsLjuoTtwBkNY4udepA6BX7VqrrV9LCkEb/MK0qnQiHFXJaORn1vK/Q4jWWX44IcaETMip0EYn4Qlc+ls5lMFluDhX1pBVoCv4WQut9beBRkTipngj9m5ZRcByqScxuw2PqFF7eOLepJ2uS/Ba2h/90KdYryEh4bdA8SKPdNVKEL6ThkrrlgdnqHckA6bzK0FGCysNipvJlRI7jykDzPiw4Lvgnq5fcwgT8kycPPqc51kliWHcRq2eXGvTJQPTA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,49 +115,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 16, 2025 at 09:31:09AM +0530, Aboorva Devarajan wrote:
->From: Donet Tom <donettom@linux.ibm.com>
->
->This patch fixed 2 issues.
->
->1) After fork() in test_prctl_fork, the child process uses the file
->descriptors from the parent process to read ksm_stat and
->ksm_merging_pages. This results in incorrect values being read (parent
->process ksm_stat and ksm_merging_pages will be read in child), causing
->the test to fail.
->
->This patch calls init_global_file_handles() in the child process to
->ensure that the current process's file descriptors are used to read
->ksm_stat and ksm_merging_pages.
->
->2) All tests currently call ksm_merge to trigger page merging.
->To ensure the system remains in a consistent state for subsequent
->tests, it is better to call ksm_unmerge during the test cleanup phase
->
->In the test_prctl_fork test, after a fork(), reading ksm_merging_pages
->in the child process returns a non-zero value because a previous test
->performed a merge, and the child's memory state is inherited from the
->parent.
->
->Although the child process calls ksm_unmerge, the ksm_merging_pages
->counter in the parent is reset to zero, while the child's counter
->remains unchanged. This discrepancy causes the test to fail.
->
->To avoid this issue, each test should call ksm_unmerge during cleanup
->to ensure the counter is reset and the system is in a clean state for
->subsequent tests.
->
->execv argument is an array of pointers to null-terminated strings.
->In this patch we also added NULL in the execv argument.
->
->Fixes: 6c47de3be3a0 ("selftest/mm: ksm_functional_tests: extend test case for ksm fork/exec")
->Co-developed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
->Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
->Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+> Hey sorry I've been on a nice long holiday but I can take a look at this
+> soon. Just need to get out from under my other review snowdrift first!
 
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-
--- 
-Wei Yang
-Help you, Help me
+Thanks! I'll have to rebase on mm-new again after the 6.17-rc1
+changes. Will push a V7 out soon, this time without threading the
+patch as suggested :)
 
