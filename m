@@ -2,106 +2,107 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 65D65CA0EE6
-	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 17:02:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CF761CA0EE6
+	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 17:04:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A390A8E0029; Sat, 16 Aug 2025 13:02:58 -0400 (EDT)
+	id 6B7876B0344; Sat, 16 Aug 2025 13:04:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0F7A8E000A; Sat, 16 Aug 2025 13:02:58 -0400 (EDT)
+	id 668EC6B0346; Sat, 16 Aug 2025 13:04:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8FE588E0029; Sat, 16 Aug 2025 13:02:58 -0400 (EDT)
+	id 55E886B0344; Sat, 16 Aug 2025 13:04:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C79F8E000A
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 13:02:58 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B2C3359163
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 17:02:57 +0000 (UTC)
-X-FDA: 83783240394.04.0CA055C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 412006B0344
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 13:04:11 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A5F3EB9875
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 17:04:10 +0000 (UTC)
+X-FDA: 83783243460.23.6C9611C
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 23B234000B
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 17:02:54 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GeH4NuFI;
-	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 4E25C120016
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 17:04:08 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QDvUz5fF;
+	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755363775;
+	s=arc-20220608; t=1755363848;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rFOP4bP93eQhTLAi/4pMwsYYbYyGFzwy8zCXssqgG+s=;
-	b=0r5VOxl1uLtf07zCq3w0T3fbVwd8XvbVjWW+Fb6HMtWu2nTHmo0uZVvsqN4XAQsfqMKApn
-	lxUAdChYP3mYi4zwCS1eX/My62UiOwrgvg0sujZ8o128sbu0mzxtOl3Ja7GwX33cSOu90Z
-	lcuJsTqJ2BlJ9p6lPh4WcWHDShwNZpk=
+	bh=4Vdzv3DmlnaOpYN+0D5wTRGqHnadxEawRnToIYrOHH0=;
+	b=Xqe26Hk2NJa+gIEQYdlPnFpxS8pzuMczK8a9d3Nb12mPm1lrEenN6Jaw9EcbCeWSa/N6xN
+	nFRIJfCk7+paOytzolbgWfUjxIYxwGlqC7yf9EZXiSzhVh42kwyhbnGTbLyxj/RIQCyJ6j
+	i59YinXwe+Ww7/ZHoxg1Siyq133JUFE=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GeH4NuFI;
-	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QDvUz5fF;
+	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755363775; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755363848; a=rsa-sha256;
 	cv=none;
-	b=kgQ20zcCflKSUXyfPtUgvuixf6a5bwmrhnLokgIGefCUyZ3VRqeYzzT04AlDMEZVYHBJre
-	2T5ydnNhO+PlEX9CnZPj8B9fItWKqebhT/T3fvztAQem6PquiPFn3u9OCbXs2iq4xNeQh/
-	v6K1I1OOpEfQCMSfY86fOTV6Vb6e/oI=
+	b=KjG6ZkG3LY8m7zdmQdBEi4Wi/6DP+k19S3NsRMuAoghInRYKYrUPHXYvXM/j6KSrhb6etL
+	iLV+JwjpTxdikYOJMz06HytnhaeRPGjLVsNkNXUntR/4ss6+42AhjpEh7uA3S2i5AFee3x
+	jecBYqLl5KoLD0AiKaOTcG9RXJeYz4I=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755363774;
+	s=mimecast20190719; t=1755363847;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rFOP4bP93eQhTLAi/4pMwsYYbYyGFzwy8zCXssqgG+s=;
-	b=GeH4NuFIhqHNbHXtd2LC1Zqa2lxmM1LQ9cP7Chq9HVL6Onqs+d79hLIACKaIR2n6myBoN0
-	9mfA2zSO/tuBDdG6NTN8FlDTtuS2X0Eb26jDmneWRBvRLHX4enm3C9uoEkHQJwdL+EHvDu
-	SEp1eUBSZaePdCjO80K12NMU7Ta559I=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=4Vdzv3DmlnaOpYN+0D5wTRGqHnadxEawRnToIYrOHH0=;
+	b=QDvUz5fFaH158V98NSSm9BNhCvPXccMT90FZaOH7U5h3701dhfF5l2+VWeLF2AwymkKogi
+	o37l7dH3VY/4WxIfNGsJTvvRuJv4YO9rttoUhYsvwdTNspdbkRPXVL3XMiNLO5FLsJemDl
+	v7S9IRfVjZDIwUU0G9eCqVI9GktJZIQ=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-338-2XdfdPL2N8G2smcZXi2OZQ-1; Sat, 16 Aug 2025 13:02:53 -0400
-X-MC-Unique: 2XdfdPL2N8G2smcZXi2OZQ-1
-X-Mimecast-MFC-AGG-ID: 2XdfdPL2N8G2smcZXi2OZQ_1755363772
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45a1b0098c0so16694115e9.0
-        for <linux-mm@kvack.org>; Sat, 16 Aug 2025 10:02:53 -0700 (PDT)
+ us-mta-372-qcNUGTiAPwavY3NIkFfxkQ-1; Sat, 16 Aug 2025 13:04:06 -0400
+X-MC-Unique: qcNUGTiAPwavY3NIkFfxkQ-1
+X-Mimecast-MFC-AGG-ID: qcNUGTiAPwavY3NIkFfxkQ_1755363845
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-7e87031d3e5so716245385a.0
+        for <linux-mm@kvack.org>; Sat, 16 Aug 2025 10:04:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755363772; x=1755968572;
+        d=1e100.net; s=20230601; t=1755363845; x=1755968645;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
+         :references:cc:to:from:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=rFOP4bP93eQhTLAi/4pMwsYYbYyGFzwy8zCXssqgG+s=;
-        b=QRcqBN98VyH13Jb+/BceAZW5v6w/nOVFVm0qZm6YGyZ4lryve4Jq/pAdKGOn3l7U+2
-         PWzRebP4F2Hv9cur16x8b4KMzF8MqaanEsXQpDHyY8wovwcq7dzJslvGmHPZmk3XRgcX
-         wEMYpchswB3Qz4KA0nN0K/OiBPgIQEnhIGonFm8qS1cxkDUajzBfYQLK3LsxAb7fbnSz
-         ePwPNlBGZMN3OGknc2F4byHptg78q5hyKq2qBeHMN9KkfMcsoy1z0NrhHlwLVEfmML0z
-         /IxZZdbdt4/UxJ/Hg2WUTpSMfCJnI1zmKotbDBWId17JTaE14zh7Hwsv6c1IJRA1lEkE
-         1yog==
-X-Forwarded-Encrypted: i=1; AJvYcCWHcMqrWJjYCJT6Kk+utD6aD7t1fr053lRglnWEO7hghBXp2bW+SMGy4buqyfGPpq3Y2oup3WBPTQ==@kvack.org
-X-Gm-Message-State: AOJu0YyFCCA9Rzz9MGE4Tc2DVasOcay3lQ77w8qFE+lpdNVwRk4w6jpP
-	p40c2EN4RHnXkxxnC5XehNVEKtF+Sy6+SbH+9SnQKEr+HJvrvhKdJtwDcoH//aCx+oJBRIe7RWh
-	kwOMpXZyoufpUTydjQJbt4rUlGY5vLScJd74YKB3Z20W8tQwqL6UH
-X-Gm-Gg: ASbGncvEp0CTBYXKrLnKGPFIY9Wb9tnGyo2OqWdopPBNGg56oJ2HHf5c473uMHYWHSS
-	KfVfAB2s4vf22cPmCxwk6Lt7YE6EUC2LJ57Sc6oV1dvUGd4qNpvGq71q/dHK7EoQiVgb4LSrMNh
-	2TFM4J0s2XJEbwxb14W59CVIp0OM/R0B25sD1rXe5TKMIBXgWIYoht+Zbl4KWJagavt8/aXrAKR
-	y4zq+T229+2McBZU+DWe/qj8JEvL4pPzCszyk4CTk6i7K+XnW1erzxWWvZCRm7d34d/xh6Yw3ov
-	bKO0AMpSkYf6ZiWgYYFZHWoUi8M4bIZEyHSDUR06yvSdJD3pRf1EJOfNzRvDg80XtnjF0TCwWrG
-	TCkOo598+WmzH2J4NtRgiYtpVZdVQH2uB3PN1G1rFZSuO/qm/pd40tgqQsihJf9Reov0=
-X-Received: by 2002:a05:600c:474e:b0:459:ddd6:1cc7 with SMTP id 5b1f17b1804b1-45a2177eb16mr61148525e9.0.1755363772092;
-        Sat, 16 Aug 2025 10:02:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHOyYAkn234G8pFJcO4TueuMIUSgTIyfD8FB92vg7RHPAiraVq7PwNpRBwY9X2yqOnzbai3+A==
-X-Received: by 2002:a05:600c:474e:b0:459:ddd6:1cc7 with SMTP id 5b1f17b1804b1-45a2177eb16mr61148305e9.0.1755363771677;
-        Sat, 16 Aug 2025 10:02:51 -0700 (PDT)
+        bh=4Vdzv3DmlnaOpYN+0D5wTRGqHnadxEawRnToIYrOHH0=;
+        b=K/1qEPNMsbDV0OvXVg40CMKuYqrB9LygOZEnIiB1kjh8dw2i3WZJho9+HK+Rt0xk8z
+         DsOw7LoZ9IpWPCdXBPbkb27Z1Z8Cx6JkttTTcSLZZz20n9MlG9CdqIdKoq4OsZFX5rtr
+         NY+H1aqCXscMk1zNqjUY9AtSvdhEOLlHSLj4wCHEEPkVP2fIwnwPmEv/GINV0ThyVIB5
+         NS4vFl0xc0I1FNE01P0eDr0Sk+CecZo1R66qF8MTmc7/xvKvEXv0xfBx1akxdjtsRd8G
+         Z7KXow4j9KWLgX0R/mGSrY0vAfnsIsLqoWS9ZYx6fvxKM54+kMyxcsZDdpjcHjlidf4t
+         51LA==
+X-Forwarded-Encrypted: i=1; AJvYcCWFBkEZl1oZZJqm2yyBtBwNRhGF93qpMlOl7t2pP+DXvf5ZiPzwLASf6NcDxP6O7/oqRouoj1ZT+Q==@kvack.org
+X-Gm-Message-State: AOJu0YxnZRoyTdJQAfa4tmY4fYZh7XKdQUaU3PWoIwqHK+3veMuYtpeE
+	jFj1sLC6z3m3kCVd5CJeP6/W5dfqSA9dGzBBcaj5OmIgj3WCazaAQPRy6ANWjq0B7sNLrGsCnQX
+	bNOzun0QtMusFRk0CONy99ONaPELqNW1NIwUsch4n59tLFmv6EuF5
+X-Gm-Gg: ASbGncv1d+G2UsV+Lo4fa+Uq+G+QWhm38gPtGcCOncSvF9qpd3NJH1/wIaHsw+xsG9W
+	0cYNp95Uvh4xh6icEWpjmSHrZhElygAo2qxbvYmOJOpcU2D002+Xm9s7BGjLhkj8GSNFrF8+dZ+
+	tD4bms6ojWeU/xcHO7JFm8vrjwL7ime0f+VmaM1BQaF0mnkehZlKCl/0zcir638P0c7XZ62zjh/
+	SQumjCdV/mY4Ff6C9NMUBPzcD8O0hK2uyZFa3O4PW7GPIgmeQNq5u78UTc42alwhQjdHLMR3tuL
+	J1JrpR8AVbEtaPaFGDBBMgPH3ihYiD95PsWPzOhVfDAxfQ8JqNjQQfVcBcVSd0dIM0P9JeVRvCU
+	UjVMr1xhOaRsuOASl2LOBnaQ4zlApqETxQe9a4mzrKd8FobJU3r/shTJ2PNuPhTAHmkY=
+X-Received: by 2002:a05:620a:319c:b0:7e6:3f78:8f08 with SMTP id af79cd13be357-7e88688587fmr514791085a.60.1755363845424;
+        Sat, 16 Aug 2025 10:04:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFNaUZO42WuGpZxpSuCZqndfUjaEylzUym4Cf72hFk1jzKC0ptFmeGKh1sj47e4Q0dIMo8G4g==
+X-Received: by 2002:a05:620a:319c:b0:7e6:3f78:8f08 with SMTP id af79cd13be357-7e88688587fmr514786285a.60.1755363845013;
+        Sat, 16 Aug 2025 10:04:05 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f23:c700:d8ae:41bf:492a:9e4c? (p200300d82f23c700d8ae41bf492a9e4c.dip0.t-ipconnect.de. [2003:d8:2f23:c700:d8ae:41bf:492a:9e4c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3bb64758463sm6419268f8f.4.2025.08.16.10.02.50
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e87e1e5a7bsm290177485a.75.2025.08.16.10.04.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 16 Aug 2025 10:02:50 -0700 (PDT)
-Message-ID: <e06f23d9-adcf-4d0a-8ba1-bda6d4b483b1@redhat.com>
-Date: Sat, 16 Aug 2025 19:02:49 +0200
+        Sat, 16 Aug 2025 10:04:04 -0700 (PDT)
+Message-ID: <07b17e1c-92e6-432a-9af6-13d3fc8246bc@redhat.com>
+Date: Sat, 16 Aug 2025 19:04:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm/migrate: Fix NULL movable_ops if CONFIG_ZSMALLOC=m
+From: David Hildenbrand <david@redhat.com>
 To: Matthew Wilcox <willy@infradead.org>
 Cc: Huacai Chen <chenhuacai@kernel.org>, Huacai Chen
  <chenhuacai@loongson.cn>, Andrew Morton <akpm@linux-foundation.org>,
@@ -117,7 +118,7 @@ References: <20250815090539.1578484-1-chenhuacai@loongson.cn>
  <66ebc632-6704-4637-b62d-1cb11e5a4782@redhat.com>
  <9db98f7f-b90f-464b-ae7f-e94ac523bc28@redhat.com>
  <aKCwjCJTEhX4Q6wW@casper.infradead.org>
-From: David Hildenbrand <david@redhat.com>
+ <e06f23d9-adcf-4d0a-8ba1-bda6d4b483b1@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -162,21 +163,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aKCwjCJTEhX4Q6wW@casper.infradead.org>
+In-Reply-To: <e06f23d9-adcf-4d0a-8ba1-bda6d4b483b1@redhat.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: pT5Unh6eT3Y6iq4KbbNNOUFUhisHW5AW2E6Ht02JnU0_1755363772
+X-Mimecast-MFC-PROC-ID: TqIz_QKe9L5GGbbB-WP-wAQkPnzIUqwyKWrt-39qE7U_1755363845
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 8ttkyd6yy7a796wim6p9whr3omu89ict
+X-Rspamd-Queue-Id: 4E25C120016
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 23B234000B
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755363774-881826
-X-HE-Meta: U2FsdGVkX1/XpIstAcH2+g/ih0niIVL4CL6iOU0pO+853VtbOBHXhCRkcNFvLJhXEiCK84PhK0P3/TVWBT0UOdBxndL4ZntegEMfDkdybOmXh/UbHrgDZIMVSu9SMPozCzu5K2P6f8YlkSFcudxZojMHD1eY1zIfPwCCStwdCw59auwabUDRRLARATcmtizzz8fpdeCufe1AieLDs0jOwStW9ozffQGlJ1+K2fBx0w4pnYZtSxYO0cmkw3wK2EQkaJGrQs1KnM+4zolfMIqT9C8vkdgF8NxfjO0GncX1xNI6eq9G7YCwF0WE0v3pEGKg8AXjA0/AMW1U5YTSQqvsM1QMHkHFRpF8EkNGGv9Qw8IcMRpzAjxIcTkj3O4z+ZdcHXs96qP8EUcqJh+uFqUxx8LgArfTvtQp1daRx12GaRAhYPg1O0oN/TLETePYfjnNulWQsNy0sUe7rt9rZ5e0XwWO+/GO3saQWe4+2BG+ncas6f0ZgM5Q3pN1aSIvF8KLtktzLMCSIdXOLo+n1Z1+t8XTElgDWGuENrI+ja6G3/c1j9NgqbYGY8MyMFH1SBDoVeUIlm0yGyt+vwvg87MyNIaR8SjYhMpMgFsH/3l+Gnrv7kuliYUbYZqV+yt7Q4UeNaj7oyhK8owu+uQULxFuMPRT0KvXr6T6AVFGlq+qJse+ayl7bsGEY3wjF1DzEY7cx8ePYpHmUlWWMY9FkDvxcFMbJEo8BDY2lQH1wMbEF5G4G7/xJXfUZY11HeO4Q42tt8uERpoIfOVMT5vj0xsgTHr8reWm/EDH5fZIU4rmB2+NyvbMWuoymyD7IZpidRW82xD0Lhmy/8K05hI4LkwQeBxO7DX6swiaK56V/BgifvSo5X1HWUTuiJ1bi9ikjFexRJkLdyHji5LBo8yMU90e2uymz63LgCVuewYGJR0iSKxYHJufeve+R7MeBKZVe0heoro1GLj98xoHolyVHx6
- 9ooGc+VV
- TtU5ES4Z8CL9wBQRDtwgXxg4Ysa5IDEbmZ2zicAZ/Pq6FNmF4Oc9l0T+3feCp76gr2sNepHYo5ggcYzi08NOopew9x55kf/8fnrIMt0Z+moJxlbRXXkzFKP8pYFYIp4dcH96e5a0pcvdcoobcLv4uaLyyJ+2n/0JSLMFV0DFzxjx6Gc6v8JFVEYgiRzkFmn9dhlyQSaHrLKrpv3Pl8+fIC/Yj5DD8Bb9XiRLdSF087gHs6CJ63fBcpT+LCkl8uP3HxR9s+9ySocjmBIFN9YC2ZL0ayidYK5t0Z5BbgSMoH50DqJUpwRILgV1wz7iPj1msvqn5M3f8fEgiIbpfEldV8wWXQ7GPtsIkChc9kO4KcyHGQj0ciUmfNC014JsqidIWqyHtl56LZlZ2GOiQ2XmnS/HNXaR0by0CTNSNxA6X2Y2e9muZEoRm2vuktcguLDq2rZ+/oZ4nQJw30cQEG6Pgqxm/zpc0Cyj44Sra
+X-Stat-Signature: jt3aqscj7t74ekkosrpfgbkapzc6hsp6
+X-HE-Tag: 1755363848-591989
+X-HE-Meta: U2FsdGVkX1/gp9LIb7u962J1T+TiqakPs8GBVsjuSSm2Q/71pmdS2Axx14AXrKwL0UcCyxU3LfkprBDG8NqlY8OBnL2YukSHfoMuIbs1GhniYCbfEmuizRvGKQULjSTJQI+UmGTjN7wgCRDDLzpHn/fBtUthsXNflLzjtfRv5QBad+fvx77Mv9Hagxfeeijwdb+UHMlS2emjK8/EY7EmrLbLhVJnUlTRvwaRO4mrZOBeGUjLKAD/lJ8DrBwdsxGac6BbHqFP3ShyY+3wlE63iGDp0pd4OCnTEVfleVSz4QNPP+FENGOVcETQRBCt+xolmBJdJRpqKzINTAhNideteTfjqSo9jseV4F12h0wVvZjcm3L8whvk1koBFyNQOKPLX7b42T0BNAwgTkXKIdw6anuCfg8TKxqWmfMysP9mlClQ7NwjpEmluBr+RwJY8mw2nSBW5hVm+qhV9KwarU82tVlOUAD0iMMQO2JvORpreJ1BSRw+x/vkwYEIwvMGF336o0hkFWVcteORvVgIFYLpp2QkRagDIxt25EzYKlFa0gkhoMfAICFRN2HcPceZzxtprxVtDLYsd+kuU7Qq7f7D7JRVMXnjY5QxMjJdDBq2uJfOYPT1g+65JkOLcB+w9VL/DDFFtGQQ8ujkjjLZ7Fc6AEAmFZxD85pOWU3+KRRMVJTv36phAO9x4ady1IQJwlO/QQO0i6vlPx84Yz0ZxGT4LycB+GX0W8JDHrAS8YppHgLcH+ur/u3YQf6qjRg8+w59dnJfpFW19jrFdUXluY3a5Hq0Xop1LQRZu9Jyy7ehF0aU6gwpRD6qv/ATCERqM0MJ8A8hgcgME34t6x7u5ccqMg4E+g/qHgEkQttUSISpWGCGHkWPfCDYb4++nhqM/kpx17q4zfmLVya44Ji2rKyg8RYpPio0E92qu08zENlh9aVgE1D0g5bDAkiUrhfN49EkAra7bKtsyt6Lh02anTm
+ iOnE+uKd
+ G86+WyWXbCp92CY2rKAuTAxQyx8ermkP+HCwq7aK7+Vhk98dvZhD00pYEsIx4r2oe3i5sevab2lXLahkCZn0JB4cXWqfGGkb+Nixmi72ZahP7P+uWpxcPgYSJMXWe/f3wuHiTAWuNYsa+OFVwCaCX15bVB6Gmuc0wSYzSNn/PIJiszRgryWZh8rXWbqRPqRw8cMxcFl/uczGUYL3upjYr/Hfjqj6rmsK6wITjhoQAZ1ZjjQp+gF1GpeXmqbqDV8io5Ut7mkd7+HUWeoCqqzhRR9vV4PPm6OtLIdRWY+LFQQlwxg2DVlZLGgj3umP+OLlnIBkp/V1Vao6+cGc0OIlAwGeA1PNs/G8A2BbTb2WQJEpSdTgyJPYjx5z4GAd8UkcCBPrGzkhX2kI6NTlBtZw5/+TRLwYubq9DD4wtE0EPDr6Z6SM8x3JLZa1XayOgthqXm2glyhH6mj5yjEeAdMDZwRPiiCB0i4q49jsNU4+VK70Ht+46UM6x96xRPRLJ2wk9lV9SRCIKFnU5/qLV+RIeAK5XdWXQyjb+C62De9ibKCbdn05yULEU9xEMfHHlYRvm03FHAC3NEymUQdT7DwlIRt98bSH2bYhh+1rV
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -185,63 +186,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 16.08.25 18:23, Matthew Wilcox wrote:
-> On Sat, Aug 16, 2025 at 12:54:52PM +0200, David Hildenbrand wrote:
->> +++ b/mm/balloon_compaction.c
->> @@ -256,8 +256,10 @@ const struct movable_operations balloon_mops = {
->>   static int __init balloon_init(void)
->>   {
->> -	movable_ops[MOVABLE_BALLOON] = &balloon_mops;
->> -	return 0;
->> +	int rc;
->> +
->> +	rc = register_movable_ops(&balloon_mops, PGTY_offline);
->> +	return rc;
+On 16.08.25 19:02, David Hildenbrand wrote:
+> On 16.08.25 18:23, Matthew Wilcox wrote:
+>> On Sat, Aug 16, 2025 at 12:54:52PM +0200, David Hildenbrand wrote:
+>>> +++ b/mm/balloon_compaction.c
+>>> @@ -256,8 +256,10 @@ const struct movable_operations balloon_mops = {
+>>>    static int __init balloon_init(void)
+>>>    {
+>>> -	movable_ops[MOVABLE_BALLOON] = &balloon_mops;
+>>> -	return 0;
+>>> +	int rc;
+>>> +
+>>> +	rc = register_movable_ops(&balloon_mops, PGTY_offline);
+>>> +	return rc;
+>>
+>> Using 'rc' as the name of this variable is an anti-pattern.  All it
+>> tells you is "this is the return value".  Calling it 'err' is far
+>> better because now we know it's an error number (or zero for success,
+>> of course).
 > 
-> Using 'rc' as the name of this variable is an anti-pattern.  All it
-> tells you is "this is the return value".  Calling it 'err' is far
-> better because now we know it's an error number (or zero for success,
-> of course).
-
-I know, we all have our things to complain about. Some about Cc: above 
---, others about the name of error variables :P
-
-$ git grep "int rc" | wc -l
-12730
-$ git grep "int ret" | wc -l
-80386
-$ git grep "int error" | wc -l
-4349
-$ git grep "int err " | wc -l
-6117
-
+> I know, we all have our things to complain about. Some about Cc: above
+> --, others about the name of error variables :P
 > 
-> It seems to be a particularly IBM derived antipattern ;-)
-
-Careful miser :D
-
-> Some internal style guide, perhaps?
-
-Kernel-internal style guide maybe ;)
-
+> $ git grep "int rc" | wc -l
+> 12730
+> $ git grep "int ret" | wc -l
+> 80386
+> $ git grep "int error" | wc -l
+> 4349
+> $ git grep "int err " | wc -l
+> 6117
 > 
->> +void unregister_movable_ops(const struct movable_operations *ops, enum pagetype type)
->> +{
->> +	switch (type) {
->> +	case PGTY_offline:
->> +		WARN_ON_ONCE(offline_movable_ops != ops);
->> +		offline_movable_ops = NULL;
->> +		break;
->> +	case PGTY_zsmalloc:
->> +		WARN_ON_ONCE(zsmalloc_movable_ops != ops);
->> +		zsmalloc_movable_ops = NULL;
->> +		break;
+>>
+>> It seems to be a particularly IBM derived antipattern ;-)
 > 
-> This might be a bit excessive ... just passing the pagetype and not
-> having the sanity checks should be enough for the tiny number of users
-> this interface will have.
+> Careful miser :D
 
-Yeah, no strong opinion, this was a 3 minute hack.
+"mister". No idea if "miser" exist and if so, whether it could be 
+considered offensive ;)
 
 -- 
 Cheers
