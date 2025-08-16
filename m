@@ -2,115 +2,178 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B2B8CA0EE6
-	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 06:38:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A43ECA0EE4
+	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 06:40:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BC4390025F; Sat, 16 Aug 2025 02:38:45 -0400 (EDT)
+	id 1939E900260; Sat, 16 Aug 2025 02:40:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 893188E000B; Sat, 16 Aug 2025 02:38:45 -0400 (EDT)
+	id 16BB08E000B; Sat, 16 Aug 2025 02:40:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D05790025F; Sat, 16 Aug 2025 02:38:45 -0400 (EDT)
+	id 00B7D900260; Sat, 16 Aug 2025 02:40:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D3E58E000B
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 02:38:45 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EAD6C16037C
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 06:38:44 +0000 (UTC)
-X-FDA: 83781667368.08.A333D7F
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 184F2180009
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 06:38:42 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gSP80f+V;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.221.178 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755326323; a=rsa-sha256;
-	cv=none;
-	b=g7yJcp+/Cq/EzERlvf+0758jItFtCAVeYZaiTl26jg7BcakOHIM+N+z22Ln0L8rMAm4nCx
-	qdR9SXPI4WdHa9t4oV2Ikr0h4waqyVjrlPGrosmdbZvbM6Bxd2UnprAN4HTAQQESvA/7V2
-	E/Ubb7gU3aUYz1ZFaL/ppfZuectF8Rk=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gSP80f+V;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.221.178 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E574C8E000B
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 02:40:46 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8B1B61D9674
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 06:40:46 +0000 (UTC)
+X-FDA: 83781672492.30.923CA07
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 02CDDC000A
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 06:40:43 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MkfFOXav;
+	spf=pass (imf10.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755326323;
+	s=arc-20220608; t=1755326444;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wQnIeoP+s7VQU+kygRJWTfXX5/GWV+imwlaAnb6OVOA=;
-	b=cnyQZl3EEQshBm6wic1IOEZl1kM/Lar29uRzJinlnFxxyQY3L0doRjuDDlRB4oZqMP2Paq
-	u8ARUuqKZfs8M6P4DKGlaUbHlSEAWjg9ec7k4IKpvpdXovCgTGiqy9KQTjKrUI60zcE/Du
-	N51xNhSrHtsoG+zMUzJxTIkNgYBJ4Ac=
-Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-53b174dbfceso861387e0c.2
-        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:38:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755326322; x=1755931122; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wQnIeoP+s7VQU+kygRJWTfXX5/GWV+imwlaAnb6OVOA=;
-        b=gSP80f+Vm8GoQPEiadLTuZBc4q3tfxijpOpYXv6WeuyAGa4HDeKeRKvIjATyyaxTIm
-         JreySf6smwuhjALRfVaICo9mQG9tdhfALviHO6N+GEs00YIjAhgPLabzCJzOQjyaIiKS
-         9QYO+57WQ7D0vRIMjFo9qLDvxEmx5o/MhJFoF82G5YBZ6WBMCNLbQIOd5Sdy6bh77ndb
-         +qy0CiI8FkuhcUWaJ9eXQb5vamB4Zj9fvWkMn7ImLPlcv4wjvRCja1a8KxRSkyjwAwLA
-         3gOZn/b4K5rYckY5nsisahd5VFLCD2ycs03cdit5MSpyOo8/2p86lvHEAz+Ko4B0YIyg
-         uhPA==
+	bh=jpRMVDaaLqCDMC4grBCrsBXEgRiflpzfM+Z/fw5Kj/s=;
+	b=RV7ItdhvNPsuW2TVTmNPBNBxa4eUz2GdM5IA1G/SLjv9Jpw1EFZXUVo9b0abIVJJN44qkN
+	CUgJp2Go6FdycehOv8+wI0twdQrdVaSevz3FzF/WT+8fjQpsSNqyq2TdP0aUqyx3qTCUG/
+	QzZcBlovvlArOMdTkKq0VLWD8VGJBBI=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MkfFOXav;
+	spf=pass (imf10.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755326444; a=rsa-sha256;
+	cv=none;
+	b=xix7q7SW2cPwA6NXLRcuoGghp1YqhVoAVa6LsmgVKkMxAUhAr5FhQL+ymsf4bAcnIKkY45
+	E5JoveEWELS+mX62OyJUGi1ytG5Z9+82fPOL0f4MUD45Xg+3UVTuwqr9avnBz/iFjp9tce
+	BYCzoQS+sw1uK06Q3E/Y3HZSoFfQieQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755326443;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=jpRMVDaaLqCDMC4grBCrsBXEgRiflpzfM+Z/fw5Kj/s=;
+	b=MkfFOXavwjY4PreLhz3s2ESeaBCw0MRbdnv5fo7Nmt1gWouxJYfzGqQSSmlU9A8Gv4wg+e
+	K0rb2lCNyTleqZIPgIKCo4wEQ3nVi7tK+YhxpAVUQVqxiWmWZfELlmvDgzFCl5vAUjrX9u
+	I/xDwGjD1aLwQ65nn1Q1InBavlKTcMk=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-373-gMhBP9kTPYGsLN20e3cqnA-1; Sat, 16 Aug 2025 02:40:41 -0400
+X-MC-Unique: gMhBP9kTPYGsLN20e3cqnA-1
+X-Mimecast-MFC-AGG-ID: gMhBP9kTPYGsLN20e3cqnA_1755326440
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45a1b05b15eso17786875e9.1
+        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:40:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755326322; x=1755931122;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wQnIeoP+s7VQU+kygRJWTfXX5/GWV+imwlaAnb6OVOA=;
-        b=vvOvbihsWyC9EqslGL3iTxOn4C9PyTfLUfMJaz1UrTASFYl1vmvaUJoYXRvvNMZCVA
-         RQAKhyTzHdoDD/P77D/dUjRi6BHkixd73NdpmYYA4EBqY+RXprWMvD2l41MMrnDu2v1J
-         XZMogcfmUMzAGNraIctrW/KUI4IjIdbTPbzBlzygrZ6wTrypH6GwqdeuZZAYofXL0hww
-         mtxHe5XBsiQu9RiWBI37Xb8oIKPtv0xuxFJbMw6aGwKoNnzDp05xOHAS30btrqCIuw3S
-         yAgEeesACwJSwUYuJ0Ok2Yk8I+3P+kQoz8wLamjPbQx2P+mLGBMMiz2D6+Zle1d8vDXY
-         JHxA==
-X-Forwarded-Encrypted: i=1; AJvYcCXjtvQNiLhFyTaRtujxalXMGekkuWlU/fyLPrxfgtcF8DTWq1SBljR+Ok3yloEtBk2S2OH4XiTOnw==@kvack.org
-X-Gm-Message-State: AOJu0Yx9sbD/XY+ivmPJZcBfMntv2yoBkU7iG/Vh1cMNVfAq0Wfdcfec
-	53lA2wJ5bYqrHpBQ9cyvT1y+kOlbULzRGyOJEuV2mMOstVQxM4Ygj3sd50W9VSqDsnFK4jFEuzt
-	zOHpKrW3qmUsDX4471eBdcZQ3S++DVg8=
-X-Gm-Gg: ASbGncuBI+FjWXxehp3TADmDCj0eg1NAJEzCg5oIRHsbBDJ141PxdCjke5BgiXr69G9
-	c4J3ge5wSy0oWSu3qcunW/ZNZgJa9PrYFrbvWyhHmc9xbqDWyAUE7At+shYc3QmqrI9CbBj9rY2
-	n8h+gq/fy6fOsoWTjleHGizDrk9UhyilovMersI5kOdxwJUfD085oy8PK2qJm0r7c6u8P+V/g+d
-	3K6UEjdvkj7EboqHw==
-X-Google-Smtp-Source: AGHT+IFTBt0NsG+0QYclG+jSrN2ZA3xi0vSYGNE0ci5JVOTRpGQ3xUkVJgoW/6nmW62VzJSlkY+L7UjQUUl9QZNp72M=
-X-Received: by 2002:a05:6102:508d:b0:505:ff14:8e0 with SMTP id
- ada2fe7eead31-5126af225afmr1907875137.11.1755326321996; Fri, 15 Aug 2025
- 23:38:41 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1755326440; x=1755931240;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jpRMVDaaLqCDMC4grBCrsBXEgRiflpzfM+Z/fw5Kj/s=;
+        b=Vhf+x3Lah62RjhKswh/PawrQV5dP+fmoi/1XDVB7lJwoFoUUep67tgZ/XJd2VjCd+c
+         DcMSBjBS8w1MoEXJzby3VaRBe+RP1ZJS/PC4waOzPg0KU+FPmFjVMCRLGukENQKidJa4
+         wUALBZsL+RHUKc+LBEwCwyZuM5uLK/Of5aBjjci1+viz1Uz1SXqx7uzXsK1EPn4Uqb8b
+         2wnlM7TIm6AvJ+4sEYyKuBnPeTkFgpkN9DftftkS0WJEkz4xFpoBVEDR+FJRoKIyx5oq
+         CKXUK7psFdy9rmLvRU4jOJQq9U+RD6JarOPlEkldN1GSzk2sv9Pwj8cH6oLgoTVnYwe6
+         5b+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCX9zNM56wyXs5xibVwjQX41f1e9ZlEaxE/zxu/LSDEUpbMZNs5hIEpH0aBoztY+soUoy1U5NpsY1w==@kvack.org
+X-Gm-Message-State: AOJu0YxDTv/TvA3GUm4Ge9KKfKzU/yb92S15PMwhFKPRpiKRPsrTZVon
+	CXNuotnSqFgtCeU2Rep023wnsOkAiivmINkddNS4rpHVbAgk71Yw9K/k3+r05qVlK07hgrTHAYH
+	6XGeci8+GvVPUGRc/EtZvgMzHPLAq2AO9Z9gEaSgZpr54y/A0G3s8
+X-Gm-Gg: ASbGncv/yTEhT9QNpzDz2AKldkJDUR4hglrS45HNLUlX1DzeQDPHCckXrWLzXUr+XwJ
+	Nxwje4c3hMYHSRpGo99UCxh5vZgOEGdPE0nPGCfDPEaES1ZquCM+47mLP7pznFpXU2qYSdT9Qnn
+	hoAvP9g3NCLuGEf+LyqGT14eN+8CwihN6GKlSB2ahqGfahIMwjs2DJU4JFilLYZ9vNnX0vBMgWU
+	Bmz4ouDKKwlAKnhBAEHrltBBG1iRk/VZ9ycH/0S4vzcKzjLhUSviZnRouo6nR9Mma/msX2cbca9
+	WP+32oqjIrniqPWKJW+VU4EYmWlP7RoEX7uXDAm/OJve7+iydWTUF2Ipd4OJAkk3rYe4MdXdPy1
+	cOzvREnjuI5uh1Kc7lLzvf1EEuZ71PNjYo5YQ+l0iPODRw6284936YYKSj8gSk8ABSKU=
+X-Received: by 2002:a05:600c:4ecb:b0:43c:f8fe:dd82 with SMTP id 5b1f17b1804b1-45a2677e60amr10342525e9.18.1755326440256;
+        Fri, 15 Aug 2025 23:40:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEpfUkhjb1UsDmaY7WU/zF1Z7iPtlNuRIErvYfv3ZUEuiVzH0icWl5g9qcQkZoeYwyzg2Na9Q==
+X-Received: by 2002:a05:600c:4ecb:b0:43c:f8fe:dd82 with SMTP id 5b1f17b1804b1-45a2677e60amr10342355e9.18.1755326439560;
+        Fri, 15 Aug 2025 23:40:39 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f23:c700:d8ae:41bf:492a:9e4c? (p200300d82f23c700d8ae41bf492a9e4c.dip0.t-ipconnect.de. [2003:d8:2f23:c700:d8ae:41bf:492a:9e4c])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a22210ab4sm44725805e9.3.2025.08.15.23.40.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 15 Aug 2025 23:40:38 -0700 (PDT)
+Message-ID: <dfbaa342-632d-4911-a0c5-f1ffe32f9e57@redhat.com>
+Date: Sat, 16 Aug 2025 08:40:37 +0200
 MIME-Version: 1.0
-References: <20250813193024.2279805-1-lokeshgidra@google.com>
- <CAGsJ_4w5bAJHyBrwb5+n_EANqzhz4cFSX+9yZacmOiXVJZ_Dkw@mail.gmail.com>
- <CAGsJ_4wt_30C82B9_ZoOB2umBi-u_kE441ARvYoJVjkLtLqFCg@mail.gmail.com> <CA+EESO4NfgT6uAP52eQEt4_cx7KPdHv4MxnSw_UwHVSurime8w@mail.gmail.com>
-In-Reply-To: <CA+EESO4NfgT6uAP52eQEt4_cx7KPdHv4MxnSw_UwHVSurime8w@mail.gmail.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Sat, 16 Aug 2025 14:38:31 +0800
-X-Gm-Features: Ac12FXzp4854qVOc_OABL1f6f01YvG2rCYIPXU2drb4n_pA96sDmbgBZnCK5-6g
-Message-ID: <CAGsJ_4wwHMDocUjg=PBGafWYXmyDdbuDOi8kB3Xm2Q=J3VpCbQ@mail.gmail.com>
-Subject: Re: [PATCH v5] userfaultfd: opportunistic TLB-flush batching for
- present pages in MOVE
-To: Lokesh Gidra <lokeshgidra@google.com>
-Cc: akpm@linux-foundation.org, aarcange@redhat.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, ngeoffray@google.com, 
-	Suren Baghdasaryan <surenb@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	Barry Song <v-songbaohua@oppo.com>, David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 6/7] mm: memory: add mTHP support for wp
+To: Vernon Yang <vernon2gm@gmail.com>
+Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ glider@google.com, elver@google.com, dvyukov@google.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, muchun.song@linux.dev,
+ osalvador@suse.de, shuah@kernel.org, richardcochran@gmail.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20250814113813.4533-1-vernon2gm@gmail.com>
+ <20250814113813.4533-7-vernon2gm@gmail.com>
+ <226e21a5-8a8e-43a0-bf5f-12a761f49a27@redhat.com>
+ <aJ9QJ2V0WQ5XneJx@vernon-pc>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aJ9QJ2V0WQ5XneJx@vernon-pc>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: s0mPT71fOCqstOoNOs_G7dhJiMmQW8ZitLEnol_5ouM_1755326440
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: q4epbrxsxfxezpye94mnji4u77e95yia
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 184F2180009
-X-Stat-Signature: tsbx199xpo1n9z6nrzx85oncdf98w693
-X-HE-Tag: 1755326322-776292
-X-HE-Meta: U2FsdGVkX1/KNHERV8bCv0vEcDy6FyL/Mj2bTwspJymfA5DKilI4sDSthMovQo1K24pWOXkvvOrs4wsg2PQBclIGk35nHc9jnz76hru5jNfTi4wg846EB2copJrAr0Ogpskr4BAnCcMnYtMCtasPFaOQ5Aon3pYROwJXZ0krwoqGNQB8sxDG3Ho2+nUa9O3ufn3am/huQ3AhAWRW8dd47u/3ok37OANZh9JczWK3QsNoegemJ6brrKFUlXsRkAenQyTpiNNHjk6Y8HR8Slj24j6CeTkOAvlO1MWvil56/W78CMem0aRvED8ENm5cYkjZLMCsp8P1m9yEgSY/Ob7GAzxbjPx2ikv3wt3j6JVL1njtLZcpUNBytM94XExVTUByo1DTekqxpJrreUfjmcMYi2XrfWJFRhR9a4Z05JaR/nIM48ljwByS3vL5yvw4NO8Ki4/q3E8DWFBoSOONruXWC5e7GeJoe9RHIrWy619rePGkWVrBzOqchN9BomNAUEPiF8VTeR8mTY1MTRS0i8N2TaAtkgJRscastZPqWw5HaCutFmtMPtZnOm22bQ/dT9QBBcEXB4re59ujB/BJGfrcLFzSG7aEYtLaj5eC6xSvIDfEn0wrTkZxO/rSnlmxn9tL4zwc2cdfFFK/hvsnKzxMAWa+fm3LkjNZ+xmGmYNBV/metGZSJ0BFJAZVmgEceWNpzs70kzHYnzsfjhlKs9fTepaqPZ1DRfVrC9L92ksz0K+NSaTrisM/iQhJV2RqVIj9yPmfbgpqoyOE7pjzJ81u1dFePjD0cnO3wtQ7tymZVVlsuOI+ejncK2VvnfL3/X1K8Y5lVWSWfiWc67H0bpblO5ecso9/QsK9BZKeiusp2jdPIIlGQvfm+CeKZR9Fb00aTpm2bxyl7avpoMyolcpMXu5ntWy8oYK26EBuwCDO3PiMZJ4sY2ffOby1u8RBQyGN72MA2E5NAnhdfljvbi7
- QqSD68+1
- LMx2iNv8FJlTd3VwY0HT59nAGYfgnqDKecrvTnLDINMApgUXCtA00UE940AlS3CjoTOlqijuHw9yfkVnhF5kvjBfBO1t+WVgKi43mgn9exH7hO/0HSHH5uKPEJv2QFmeFWirnwc/c+gfyr20fCFqBm9FVaWVTQC1xvkBjKaRjKvkIceSg71FMfCVNsLxOM1gBi5U0qiEe97W+vtD4YuSifSUwzvGzSO3xJTNlnREbf3vUJwz4Qr4BUSBcOpHop/iaM8uravM0Z+on7GFBW/fjf6lwaqNos+c7GHIslRB+KEu7Oi+y2IFUIoY6u5c8O72L6ye6d6P5dvwQBtq8OIsexI/oMTN8tdoqO1hGE3V1cEtkNxtv9AHvVyERTcE0P36mWw7M+K7hE6+s5clBq+Q8crsKfY07ELIQOE3RatAQmiOAy41u08EG+sadbe8MqinGwjoSCP2Lo3DYar4pJPIraEwJTA==
+X-Rspamd-Queue-Id: 02CDDC000A
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755326443-367576
+X-HE-Meta: U2FsdGVkX1/+g+IZgxMBVye+YdWeCEgfUT5zMxEAhFydJm4lUAMSm2uxstHvuFMxs9Qsj4i51/txc17wdZs6wJMZ1AUZP81AlZjWLP7CdhQMEr9DUO5HBQq7fxB7wyiimLxOoLWK306NtPtBBkjd3EnBQAY83Ze9tsGD5ahqyNU0OW53nQ/gTzgWHm0OFA4Cgp9t3p6SdjmRMTckk6KoeT5moxNE4HhwPEkijycuKOpAV68u3KPvd2o+z+SQM+EkQF7fCUMKm3+tWrCp1QJ6gMSX4zbkosDJqxUAgRHqlVh+TiQ97Ke9zlxusroyzVucuzzcREpXcZWij/kLTWH44Jqt5V/ni8cyPYFv9LTyqE+dkn9vQEsPE1WOe2F08iTczv9vlXl3hnOoeQzTg785jtgp+HnSQ2nBmtPbT5Xu6dT3wEf1TjCmHIQa128jZDivAZVDT0UQ5c+rWct/LQrzTzlq5Z0TFlg+dyPb1tG2XUWqtIoSuvEeqkIQfP6maN/5ggqtarCG7EaCRoMzOeZkdamRbfCwdV0m28PDTUwWXG3IhBmKnFCJxUaUzBI2RQ7eETEogOmiT9ZwGe3Oz474EdnL2le+A1hqNi7wZVVY3nmXsqMF7uPu2qo6c6oqFyKuml9qvuhLqBEeeb3uYYS5KV2sbC75W98ORB98nCLurDyvV7YcwcTqFb9oqer4pw+8I20vkHxOjbPJTFSahYViEHaITnZ5+SdstaVugqKpmT79P1Q50GIuS/hWXDaZGq/fPVOzSdqDPN6+7FcRmkWzk2nWbd/DMJMxeUuKK4ZFUiIT5kTbd2D3C/2gHXcyq7ZyRRxC/CmPKV1Orxx5yYY/DduLkzfJRKmd5RakzccBSr0CpI2w6KwQZEJVFkI0ugc86ZmpUf7T3uE4fyDBRvJ29FMted9bHlDU+qj6nmtrKD6YI4g9Z/xD8ixHgxOw+0+YmJMDmIxek53Bu9U7J+c
+ OufGzV3M
+ /SdHJ3dgGS3U1F+9JViiLg1UcG1YkjItSxB2+38crC69DTvp+GOCaIvTB82SHv0uRjk8UzGEwS/br248njsrXe4R/iISGGMlCqfWGaYnCgKlZ6BZbm22lGX4pFL6KZIJXNvs2miSkNOfaKTZpO6KbAmSEUt3ETmB9Rfps78sSNHIGztUQOEJm7J3+NWJJVbm4xo+Ad4cip+ALOXveMiMU2lwC2kJf/LE6P7CEUYbmWSPkDEjO8Iog69R1HaPJtBeKudjBkpRT79uPqx4oLQ8lsEr/mHT58FsqQVqsPXOBhnJthtn+ChwhFJQC/o823ku42TUGeNSSV/V233jhLAB5kylTQWHzyx6gHA0NSBAQj2CDHINK2/GBKBQdcItLcaDX71MtwTkh1ilxCGwj1FUMA9K34ibEoLd1dMylbbUMNvLxleHI57S468NgYHYohuCa3fCm3JXMlQZ5DWhIN1Jm1rfv+zA4p6kRMVxEjSIxNMoUu2PnwuDz7kQFztRfti+5/JJGN8NDWJH/rkQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,141 +182,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 16, 2025 at 12:27=E2=80=AFAM Lokesh Gidra <lokeshgidra@google.c=
-om> wrote:
->
-> On Fri, Aug 15, 2025 at 3:11=E2=80=AFAM Barry Song <21cnbao@gmail.com> wr=
-ote:
-> >
-> > On Fri, Aug 15, 2025 at 9:44=E2=80=AFPM Barry Song <21cnbao@gmail.com> =
-wrote:
-> > >
-> > > On Thu, Aug 14, 2025 at 7:30=E2=80=AFAM Lokesh Gidra <lokeshgidra@goo=
-gle.com> wrote:
-> > > >
-> > > > MOVE ioctl's runtime is dominated by TLB-flush cost, which is requi=
-red
-> > > > for moving present pages. Mitigate this cost by opportunistically
-> > > > batching present contiguous pages for TLB flushing.
-> > > >
-> > > > Without batching, in our testing on an arm64 Android device with UF=
-FD GC,
-> > > > which uses MOVE ioctl for compaction, we observed that out of the t=
-otal
-> > > > time spent in move_pages_pte(), over 40% is in ptep_clear_flush(), =
-and
-> > > > ~20% in vm_normal_folio().
-> > > >
-> > > > With batching, the proportion of vm_normal_folio() increases to ove=
-r
-> > > > 70% of move_pages_pte() without any changes to vm_normal_folio().
-> > > > Furthermore, time spent within move_pages_pte() is only ~20%, which
-> > > > includes TLB-flush overhead.
-> > > >
-> > > > When the GC intensive benchmark, which was used to gather the above
-> > > > numbers, is run on cuttlefish (qemu android instance on x86_64), th=
-e
-> > > > completion time of the benchmark went down from ~45mins to ~20mins.
-> > > >
-> > > > Furthermore, system_server, one of the most performance critical sy=
-stem
-> > > > processes on android, saw over 50% reduction in GC compaction time =
-on an
-> > > > arm64 android device.
-> > > >
-> > > > Cc: Suren Baghdasaryan <surenb@google.com>
-> > > > Cc: Kalesh Singh <kaleshsingh@google.com>
-> > > > Cc: Barry Song <v-songbaohua@oppo.com>
-> > > > Cc: David Hildenbrand <david@redhat.com>
-> > > > Cc: Peter Xu <peterx@redhat.com>
-> > > > Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
-> > >
-> > > Reviewed-by: Barry Song <baohua@kernel.org>
-> Thanks :-)
-> > >
-> > > [...]
-> > > > +static long move_present_ptes(struct mm_struct *mm,
-> > > > +                             struct vm_area_struct *dst_vma,
-> > > > +                             struct vm_area_struct *src_vma,
-> > > > +                             unsigned long dst_addr, unsigned long=
- src_addr,
-> > > > +                             pte_t *dst_pte, pte_t *src_pte,
-> > > > +                             pte_t orig_dst_pte, pte_t orig_src_pt=
-e,
-> > > > +                             pmd_t *dst_pmd, pmd_t dst_pmdval,
-> > > > +                             spinlock_t *dst_ptl, spinlock_t *src_=
-ptl,
-> > > > +                             struct folio **first_src_folio, unsig=
-ned long len,
-> > > > +                             struct anon_vma *src_anon_vma)
-> > > > +{
-> > > > +       int err =3D 0;
-> > > > +       struct folio *src_folio =3D *first_src_folio;
-> > > > +       unsigned long src_start =3D src_addr;
-> > > > +       unsigned long src_end;
-> > > > +
-> > > > +       if (len > PAGE_SIZE) {
-> > > > +               len =3D pmd_addr_end(dst_addr, dst_addr + len) - ds=
-t_addr;
-> > > > +               src_end =3D pmd_addr_end(src_addr, src_addr + len);
-> > > > +       } else
-> > > > +               src_end =3D src_addr + len;
-> > >
-> > > Nit:
-> > >
-> > > Look at Documentation/process/coding-style.rst.
-> > >
-> > > This does not apply if only one branch of a conditional statement is =
-a single
-> > > statement; in the latter case use braces in both branches:
-> > >
-> > > .. code-block:: c
-> > >
-> > >     if (condition) {
-> > >         do_this();
-> > >         do_that();
-> > >     } else {
-> > >         otherwise();
-> > >     }
-> Sorry for missing that. I can fix this in v6.
-> > >
-> > > By the way, what about the following for both cases? Would it impact
-> > > performance in the `PAGE_SIZE` cases?
->
-> I just wanted to avoid a bunch of instructions in two pmd_addr_end
-> invocations for the (len =3D=3D PAGE_SIZE) case, which is not going to be
-> uncommon. But I guess overall, it is not big enough to matter so can
-> be removed.
+On 15.08.25 17:20, Vernon Yang wrote:
+> On Thu, Aug 14, 2025 at 01:58:34PM +0200, David Hildenbrand wrote:
+>> On 14.08.25 13:38, Vernon Yang wrote:
+>>> Currently pagefaults on anonymous pages support mthp, and hardware
+>>> features (such as arm64 contpte) can be used to store multiple ptes in
+>>> one TLB entry, reducing the probability of TLB misses. However, when the
+>>> process is forked and the cow is triggered again, the above optimization
+>>> effect is lost, and only 4KB is requested once at a time.
+>>>
+>>> Therefore, make pagefault write-protect copy support mthp to maintain the
+>>> optimization effect of TLB and improve the efficiency of cow pagefault.
+>>>
+>>> vm-scalability usemem shows a great improvement,
+>>> test using: usemem -n 32 --prealloc --prefault 249062617
+>>> (result unit is KB/s, bigger is better)
+>>>
+>>> |    size     | w/o patch | w/ patch  |  delta  |
+>>> |-------------|-----------|-----------|---------|
+>>> | baseline 4K | 723041.63 | 717643.21 | -0.75%  |
+>>> | mthp 16K    | 732871.14 | 799513.18 | +9.09%  |
+>>> | mthp 32K    | 746060.91 | 836261.83 | +12.09% |
+>>> | mthp 64K    | 747333.18 | 855570.43 | +14.48% |
+>>
+>> You're missing two of the most important metrics: COW latency and memory
+>> waste.
+> 
+> OK, I will add the above two test later.
+> 
+>>
+>> Just imagine what happens if you have PMD-sized THP.
+>>
+>> I would suggest you explore why Redis used to recommend to disable THPs
+>> (hint: tail latency due to COW of way-too-large chunks before we do what we
+>> do today).
+> 
+> Thanks for the suggestion, I'm not very familiar with Redis indeed. Currently,
+> this series supports small granularity sizes, such as 16KB, and I will also
+> test redis-benchmark later to see the severity of tail latency.
+> 
+>>
+>> So staring at usemem micro-benchmark results is a bit misleading.
+>>
+>> As discussed in the past, I would actually suggest to
+>>
+>> a) Let khugepaged deal with fixing this up later, keeping CoW path
+>>     simpler and faster.
+>> b) If we really really have to do this during fault time, limit it to
+>>     some order (might even be have to be configurable).
+> 
+> This is a good way to add a similar shmem_enabled knob after if need.
+> 
+>>
+>> I really think we should keep CoW latency low and instead let khugepaged fix
+>> that up later. (Nico is working on mTHP collapse support)
+>>
+>> [are you handling having a mixture of PageAnonExclusive within a folio
+>> properly? Only staring at R/O PTEs is usually insufficient to determine
+>> whether you can COW or whether you must reuse].
+> 
+> There is no extra processing on PageAnonExclusive here, only judging by R/O PTEs,
+> thank you for pointing it out, and I will look into how to properly handle
+> this situation later.
 
-Reducing the number of instructions doesn=E2=80=99t necessarily improve
-performance=E2=80=94in fact, it can often have the opposite effect. It may =
-lead
-to increased branch mispredictions or make the code more memory-bound.
-In this particular case, could branch misprediction be the real issue?
+Yes, but as I said: I much prefer to let khugepaged handle that. I am 
+not convinced the complexity here is warranted.
 
-> > >
-> > > len =3D pmd_addr_end(dst_addr, dst_addr + len) - dst_addr;
-> > > src_end =3D pmd_addr_end(src_addr, src_addr + len);
-> >
-> > By the way, do src and dst always have the same offset within a
-> > single PMD? I don=E2=80=99t think so. If not, how can we verify that if
-> > src=E2=80=99s PMD is not overflowing, dst is safe as well?
-> >
-> > Have you only checked src? And for src, since you are already using
-> > pmd_addr_end(), is src_end =3D src_addr + len fine? Why are you calling
-> > pmd_addr_end twice after your first pmd_addr_end has already limited
-> > the range?
->
-> Effectively, we have to calculate min(len, extent in src pmd, extent
-> in dst pmd). That's the max that can be batched within a single
-> critical section of src_ptl and dst_ptl. The first pmd_addr_end() is
-> calculating min(len, extent of dst pmd). The second pmd_addr_end() is
-> calculating min(result of previous pmd_addr_end, extent of src pmd). I
-> don't think I'm missing any overflow check. But please correct me if
-> I'm mistaken.
+Nico's patches should soon be in shape to collapse mthp. (see the list)
 
-You are right. I misunderstood your code yesterday.
+-- 
+Cheers
 
-Thanks
-Barry
+David / dhildenb
+
 
