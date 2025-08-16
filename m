@@ -2,91 +2,137 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BFB06CA0ED1
-	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 03:07:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8AE14C87FCF
+	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 04:01:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15E8D8E0232; Fri, 15 Aug 2025 23:07:37 -0400 (EDT)
+	id C5FBE8E0008; Sat, 16 Aug 2025 00:01:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10F898E0008; Fri, 15 Aug 2025 23:07:37 -0400 (EDT)
+	id C10D38E0006; Sat, 16 Aug 2025 00:01:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F18F08E0232; Fri, 15 Aug 2025 23:07:36 -0400 (EDT)
+	id B26FC8E0008; Sat, 16 Aug 2025 00:01:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E18D58E0008
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 23:07:36 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AE8B316033D
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 03:07:36 +0000 (UTC)
-X-FDA: 83781135312.02.29C3B71
-Received: from mail-il1-f208.google.com (mail-il1-f208.google.com [209.85.166.208])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 042528000A
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 03:07:34 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf30.hostedemail.com: domain of 39vWfaAkbAK0flmXNYYReNccVQ.TbbTYRhfRePbagRag.PbZ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.208 as permitted sender) smtp.mailfrom=39vWfaAkbAK0flmXNYYReNccVQ.TbbTYRhfRePbagRag.PbZ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755313655;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=kw8F5Lzqp6COSqt4H6pn9waIodi7atpwNgik3Fo2NQI=;
-	b=M1n8gD1xhfGNQs2dVvCpAaYHXLmg9FBfDyibbrQec+ifYr66WZS1CluDkSWyNtnxGO+qxd
-	eNdfvnCMK4Fcb0L6wpLfFI4BHxq5OsFBKFAILKxOw/hYMLtZwYLJLZ5kQS812imq0G6AVX
-	Yts3nGpOssP7/5d9ymZyWtsbnov2E4g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755313655; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A1D0E8E0006
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 00:01:44 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 278CB140367
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 04:01:44 +0000 (UTC)
+X-FDA: 83781271728.15.C7B92C9
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf14.hostedemail.com (Postfix) with ESMTP id D69F610000C
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 04:01:41 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="UQVUx/s0";
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf14.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755316902; a=rsa-sha256;
 	cv=none;
-	b=XD9Un1YRVjZr2BlepnnmEZpJIBw6A7zb2qLNfPNqdXrZCQod5p6CdUoh/VK/2WObu+Ec7u
-	YwAxDyQxwEHL83WZAt0DYzTbYUxiLwtYIYc5lJR//VvAwNdgRU86Vgi/0IHqOU2v1xaVjP
-	Y5JExXuvyzBZlcY7c/CzM2zcVuMssCY=
+	b=bSjjTem1cUvhaGhv3FZM91Ctxk/XFdYQ35xtWjuqTyXr86lT6vPNzHtn45FX8/iOtG7pdW
+	aru3EClS92pmZ7M7ihTjur/X89YF4eiB9i5kKw7h74rKPqvONoNlTMKl/LFu6NlDiqfSTb
+	pNaK9/+1f2Bo1a76+vOfia36Los5yVs=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf30.hostedemail.com: domain of 39vWfaAkbAK0flmXNYYReNccVQ.TbbTYRhfRePbagRag.PbZ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.208 as permitted sender) smtp.mailfrom=39vWfaAkbAK0flmXNYYReNccVQ.TbbTYRhfRePbagRag.PbZ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f208.google.com with SMTP id e9e14a558f8ab-3e56fe805d8so68500725ab.0
-        for <linux-mm@kvack.org>; Fri, 15 Aug 2025 20:07:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755313654; x=1755918454;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=kw8F5Lzqp6COSqt4H6pn9waIodi7atpwNgik3Fo2NQI=;
-        b=WMMD0re8//n75tkXUYAf/2+TGlR5lwjOtMiMej0NAYF+CTMMRN+AyZj6uHolaRlRrD
-         zNAIOki73CGYrhyuTbS/VF1+EzOFy/28hvb7Xwg51aXur2g4NQSjWTQA1tnyiWEY8lMO
-         4YuB9KkRY1jWqlUXigQhO3WK+Pw74vIBlMm5ruaeva8CdcU1ZwRGG9hFTes5CGQuK8gE
-         lE//jIxFus7QzxlFVZhlSItCURcusN2fWQoRcJyhQzcxfPTz68xYMEhVu79fR1cTMcxT
-         7nYHic6l/foAfBjJYwFJgp9/LzwH3Kd8BlSQMey/0j4bQT0e0LIjioaKFT2Pk9JtoB4z
-         bMgw==
-X-Forwarded-Encrypted: i=1; AJvYcCUnboRFhx/Tdk9ZSbTgsdGic5OdoErmGEPiD7pU2IjHuJqJ+A4Uox81HmWeWNkdCqpob5pz6M9yYA==@kvack.org
-X-Gm-Message-State: AOJu0Yy6Z6oikzyOIFZUASFhyId1pB2AhHLYKEpWmz4OOYX5GZQ0RAXX
-	ktzp/GAkpXvDA3rzVoYLfw1cV7MEn/YQUp0y/JO6vFetFo5V/vwrHXoifObNJtODXMKgMaPu6Ea
-	ZXTANWxCXKoWTfTyG/ftYfrN/S9AO88H9p2ajtELkykbHWgsHoUMoD/oEBDI=
-X-Google-Smtp-Source: AGHT+IELHELCACuSMkAg+/pbcECBh6w0FeDIvzCihrg/KTP+X0M6Mipk713ay9G+x3YicfP5e/sL4nR0H7/afhAKAt3iAvixxBny
+	imf14.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="UQVUx/s0";
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf14.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755316902;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ULVaA8RtCg8Rt4wkESRC4hkPhJHPXvkbBRl57XWyXUE=;
+	b=2ANbIzOfNxHU9Spt2pMdxsUeYXFGmp2KUc/Tb15CtUm8RoyriARHY3cChWUxIdX+y0pmCo
+	IIhpdeP82h2bgc7HqMIfIaJazUmJe4vG6fRirljmXEq9Le2axxaPlHNnuoiMVBRW663Bsu
+	rGddU/JUuTSURCY3Q3KlSEPNJ4Ue4hc=
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57G2AAYe029541;
+	Sat, 16 Aug 2025 04:01:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=ULVaA8RtCg8Rt4wkESRC4hkPhJHPXvkbBRl57XWyX
+	UE=; b=UQVUx/s0XiQArYv2KMH9K9knc1OTAUvR8LUMRMKEPO/VFYps2emw2p7KP
+	A84Ulp/8enIDgq7lGxk2PbwTVVhuiSNUt30dmmChsOW4ohVsDTqOcBkV+FQgHy2L
+	pc4it5h8hxtk7LJJ0/8S8KdsWktCYLvkNoGi8KcfMJga9kSC/H7KUGzUqS68mDaW
+	VHRExzxp0lU6k8wLyTGWGjlKYIklabwjBif1Esw2mEhLn5Quwi8niJBfeo9x0BdE
+	Une/VdsQ/NdUjQG66mggZF0tBz+kDJyn63lzBghPxt85WkvPrrUBkyDTvxryfjPZ
+	0QSear+zLhIdN8teUN5IvZUOBufFA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48jfdrgf6w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 16 Aug 2025 04:01:33 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57G41WNL030378;
+	Sat, 16 Aug 2025 04:01:32 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48jfdrgf6t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 16 Aug 2025 04:01:32 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57G0YZFW026377;
+	Sat, 16 Aug 2025 04:01:32 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48eh21kxnq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 16 Aug 2025 04:01:32 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57G41Srn49283338
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 16 Aug 2025 04:01:28 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2AABC2004B;
+	Sat, 16 Aug 2025 04:01:28 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4E28620043;
+	Sat, 16 Aug 2025 04:01:17 +0000 (GMT)
+Received: from aboo.ibm.com.com (unknown [9.36.5.210])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Sat, 16 Aug 2025 04:01:16 +0000 (GMT)
+From: Aboorva Devarajan <aboorvad@linux.ibm.com>
+To: akpm@linux-foundation.org, Liam.Howlett@oracle.com,
+        lorenzo.stoakes@oracle.com, shuah@kernel.org, pfalcato@suse.de,
+        david@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+        npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+        baohua@kernel.org, richard.weiyang@gmail.com
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+        linux-kernel@vger.kernel.org, donettom@linux.ibm.com,
+        ritesh.list@gmail.com, aboorvad@linux.ibm.com
+Subject: [PATCH v4 0/7] selftests/mm: Fix false positives and skip unsupported tests
+Date: Sat, 16 Aug 2025 09:31:06 +0530
+Message-ID: <20250816040113.760010-1-aboorvad@linux.ibm.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1a85:b0:3e5:4715:ebdc with SMTP id
- e9e14a558f8ab-3e57e8244damr79813405ab.8.1755313654082; Fri, 15 Aug 2025
- 20:07:34 -0700 (PDT)
-Date: Fri, 15 Aug 2025 20:07:34 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <689ff5f6.050a0220.e29e5.0030.GAE@google.com>
-Subject: [syzbot] [mm?] KASAN: slab-use-after-free Read in mremap
-From: syzbot <syzbot+4e221abf50259362f4f4@syzkaller.appspotmail.com>
-To: Liam.Howlett@oracle.com, akpm@linux-foundation.org, jannh@google.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
-	pfalcato@suse.de, syzkaller-bugs@googlegroups.com, vbabka@suse.cz
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 8F7Mu2elyPnZERHNYc6ja-6KH8o6w7mi
+X-Proofpoint-GUID: 9CNViZUNZ1h3TVDrxEyzmuhfdYVLujRA
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE2MDAwMSBTYWx0ZWRfXyvAhJj9SVkK6
+ 32AHfiikHsGKlOwl5GOTOwZMMQOTFDEW458aqYUc84U1y0YtAGgk3E4SQZupG0PMNmMCNND8EXt
+ IPo0i34sTp5w2kCq++c0Kp0GO9ity9rNh3DHc10OMPPzL+9TSqOQSnGqfUj3ISGQpOGFFa1iSvX
+ JrFlXo6bwvAPU5lD6Gu6AEInJmRnvkYnpgM5JgG8NjmDpjSacH8tDZFyo0/8DOUw2he3wjQiXEJ
+ +M58UZRBR4VIcX1ZwRZp2MhCXccn5LHpqfMCMxvkwTGntqHx6ZV7i3wF3uDe/aSV/xR3cd2J7B0
+ y7+d8tqsJfEuaegLu497MZVXkgLtpQ5O3FbhpB+w1p5GeMPkOtQ5lNsISE8mdMCJgNQzKLeB9QB
+ CgPPwxVr
+X-Authority-Analysis: v=2.4 cv=GotC+l1C c=1 sm=1 tr=0 ts=68a0029d cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=lqfGnVuM_wKh1zUdGBEA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-16_01,2025-08-14_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 spamscore=0 adultscore=0 suspectscore=0 clxscore=1015
+ priorityscore=1501 malwarescore=0 bulkscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508160001
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 042528000A
-X-Stat-Signature: gfe1rbhnc9sj3d6a94t466mycqcm6yma
-X-HE-Tag: 1755313654-209807
-X-HE-Meta: U2FsdGVkX1/L247R0ifk9gbKK6PodFPBv/KiIUUQlxuu7jc4AZNgtpeBKt2j/HZpmVYut1/vGI81mowxBZnw8ONAAH+QM0cIsS/Zi912uwVxHR8lRkDkw9jrr2ofHtlFaeWaN+H4iPpciWbkraB5B9ujJogIycty8uznL3hCjAiM1ygV7DiWuO8UCCiXD+iFMG0msJWPeaXSw4xVRYikYIs1nd0rR6BqfpaxIBSmsl0XB6ZOUtyCUE2ISJDtejTBX7QZmsn1awaJ+EX0CgnDgfexVS8n0CtBJbjVjUVXA31xmqw+4q5ULwwQPp0NMI2CR4G7HfX1DJi/ZVTsJVtNeNvYAD2w8Q7jghyHV9OwaasfOyyHOFiwegOPxsKx0zELAneckJ9MmTdO4ruFqIN7WRbPIohMyXIHAAT6LCjeCvgUzRKaARqZz4FOpRRiAkYcXZjkaBesK0sThCfkrBLb8LqUWD8avQ2zBNph+Qk+kbDW790uSvZr3x4WMR0hO7QntfDEip3v9lW2b8HsIJL2KMa6jk5BfiBZJt07NoaX5Xq9EgSdxHPJZAKENMXcggks+3qmbaxF3LcaypSIMR8BWrWDvW+59FiFTh2VvL6/ZAEiwgoAiK49TIfaYlf218eYLiGi/SN8V27K/smOqfJBFcpnokMbQJJb9uqwj8/8ALLxukP8X4TvFOP5GvIAU+lvm2MY1WPMKMmJNHnY/u9gi1/zVR66wnW2nFr49Rb/O3fzNL4F2lNhRBx2QbKIbdiwSrKQ6XhGyaGwTqQmlh/nNN+aW3v+eoc7I/39lxWQbZjQ6ogCF1QsAqjNa3NfwH+jKqT7ELgmhskyjMbLX+DaVwh27COwH6zjan0lr5erxVoVmvr6aEVO24bjuhIrlC0gcb/XEli6Z5crjJ5JzGTt50gK0mXWjQGaHeT9xe4pFUcUZTO6Qsgv50gyTQcrjEnLjiCv0sWg1VHqDQeuyzh
- y8XoZ1cH
- /sRjks+JRckZqCaUTZWKeXhwTBtzmi3UXkkmRvqX6yaIWX7Lfw3GodV59b0157jWzq2caWIQgTjKGERGX8ZAbquFGCVAw/WHgAA80A/r17/vRodIKVGxEaIr05CzXLBm6/F9fKEWBX7ulkQ9uNw3gsSANPUbe6+YuC4uiDj5bh2zfhPrlKaIy8SahcaxvPQ2pIVVVdCsMmGCHlGaPTGcGDpvP9K5r/6LaJ7E0y6W6Djzz+AgY6GBdEWPu0fVViv2ittfb/EY59x3qjswMl8T9Kdj6IBmlF/2rK7ZB9O/0SYeTXwMrS9/zJ99gNKH5IuvAC5IoAG3SKmyp1LWrhGv+wMsc58Vurk/FI2ccuFfEkspg2NcBW2PzSC5YHaun4+vHmM2llNb9IVSyNF5+EAHqM1CxrIrf1mmo1pPbSDRhn0OzdYkLIRYsmOJDFgPtXGzFQbm21cXpM9/ZJH7s0+ThvANQORrgMMWn43mdLApow+Hi0QE1xN7wMToy+yK4vlwvf0J4gipw1+PagVwpE2tFcIpz1NGzboac4pQlta9DgEoafDt5+DLnA1R0njrlLz4XVcb3nLXOk/vSzXzH/WONrWwdjslJP8kmQmPtLGebv5hL4C1ljVQ7EQZcC2zK8wcx989lxszVEnG/hprdklFRpacnM1T07BnjykYUQ8myYYOF+2MOW7QX61Db1OHH3kwTGDy+8hmo+ewttrsJUPRRH/vby3nKmp7REouGGmrytF+blf5/8/0ZLCm5UnCD4yq/sKLqF+YQG/m303xWRZkHSXKUGmgo8jxRquaBh5zwFAOGJYluLbVKtWzpjuQAgfyTgYBOp61ZxFGuJbvOutJL+lEgZBQUuHfvCefXmT6TubJ8ABEmi5ECwblYCqPM3P26d9oX0i4a2v1VxbMKhBNdrWUbnFwPYpZziOg/vwZ2Y2GVbqLjoPePa/nJCoNJRt8NjFXV5+sWf28KKuQBi0uYKpjOOaCK
- 35+p/KML
- CVacHbD/acBckz78PnlmtPgaHLMDqwcwNYW/UoACVKnNf4AY+0esKO+K1H7Du/gFWyIfwH51eSwbSecT/h4XUVDFGUF3DA0a0PIc5ISq+NJAXe/58lILhrWlDWbUwTWJIyHIQwW5EBMZV/3KrlkYxdiAizo8S6gVL5LwnJqqQg60FlWAnY5ZLdcmACGqPgjElOR9OfksnU1lJURFJhw5d1SHY4Ey3HVSWxL5//EDor/qSpSsNQOcz/iDMpSc9lGbIMDcWlnd7lzjPWaqUeW//AC/oSQlMSSTCbG9I+BsFGwI/JxJNBptfFcoYGHOqHxtKTQ2p98XbG2STrwp/gnR24Vwa9oiAlqpQDSTg+JHzo76TQKi3+94S3aCnia0lqwMNkummgC8/7eoAXLZUEpiMQ==
+X-Rspamd-Queue-Id: D69F610000C
+X-Stat-Signature: bnepbg7d5esmfgj7owbezghfmra7im35
+X-HE-Tag: 1755316901-598225
+X-HE-Meta: U2FsdGVkX18BAvlVmuyLPI2DeMhbXXm/3W8Y7+wif46hmJyA0iGPmLD5H8rnehxfzCcsc8wRMuB5hWLoeOGNbaK0EjraJ1xn16VFpnX8A75RFCwZifK8cCcOTbVoS/YrVpFpnkftLEVF+7skxU8SdrZCdFrPRU7mhI0qp6nDjQzIS3zdqtHW5Cwnu4/X+3hrDkhKji0FP9Bcu0hHc4rb/xkyzvSYyVhyJzv2IviOeaXb29OW+fogwBim883ZvNkNmSK+GX88JXjH5a6BO8c4+0f6fsmi37cPp+5XYzmUbYhweGgObxlMJF7UBM/b08NOR7qWtRjcp92EeRXSoNurJFd75nKOPYlhvX/K1yeEkcXCBlTQAI6qmKc8u476ThVqxQyBLj5m3UM3mmTnendXqgfEBgSKn+szspBAsjEh6bQk6TI7cEJhxjSu2Ypypo3Y+p1U7N219bdBaZVuz0UV83e2V18sB63h7G7Zpoj+26GTIFjv8kLfvj23XMeJ13exm1rk4SWX2PTgsvf89X9T8CyhgDClrY317x3eZXNTx71Dq5RYO+2yFZXE9kAn1rImbAz4NOcwZeyhZefYT38HOed8ffFcUw2UjplZLt4Bc01jCVkwH7ubDiy1+Lsa3Cx/BSfzKAmFqgPmu4g+n7W0NCqrWAgSqd0K5FXdjszcOtS04X0NUBWtbrDK/C2TNoN4PH0PNGx9rF+FRXXbiLvS+WawcSvZSZzNwboKUYaZ/j3PGidXLQlYZk1Ry5CLkBsW/lF6qI353TAUsts3dwQg/vCb/izezo/GZ0Zbxfk7/VH3lVKbofykCkgoIRNUSRFJWVKcjmdpXzEa5jNaNmKSh7knkK07v+Qtt9UYTmBxwyClFWOztN2V7ttC7/m81C7DXewhd60dwWq48jehIf9Oc2dhURD6NF6A8+pXkbRuNrI5svG/6D9Z/BTWqnbX3WgJPc1UbXRtn/yGqwtCvIZ
+ TFq9bd9/
+ JWrB+5K+ypzzvntLWEgt1S9/db1y/fIWESlfTB/lHt8bU2IlCNRAWSVWejnMfrVBGqD4wW3hOohnIt4QLSIR6T2HEJMYYRwWxeAfTn/oxNXBvw2zYwe4HrRysbXEeZLKQIhB8mhYGdiZhKmcSjjLaggz8feqPYUdOLDf4sc5wjydZilT3RRLtfLAc7wzMTgY+Qf3LhVDMWRAQXZOw5XrLX2Lz2tRsWj0PY865bSPCyMFQxmanKxpldhSBoWC0eeDoLS5qwpmipPM/RmCauq6of0WzufVj4bjCPt7oZupr+ONhamo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,233 +141,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+Hi all,
 
-syzbot found the following issue on:
+This patch series addresses false positives in the generic mm selftests
+and skips tests that cannot run correctly due to missing features or system
+limitations.
 
-HEAD commit:    931e46dcbc7e Add linux-next specific files for 20250814
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=16a66af0580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=bb7fbecfa2364d1c
-dashboard link: https://syzkaller.appspot.com/bug?extid=4e221abf50259362f4f4
-compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11fb3c34580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=173c2dbc580000
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/68e3ffeee4c1/disk-931e46dc.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/3cc40de4a0c3/vmlinux-931e46dc.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/aed3e4f6a518/bzImage-931e46dc.xz
+v3: https://lore.kernel.org/all/20250729053403.1071807-1-aboorvad@linux.ibm.com/
 
-The issue was bisected to:
+Changes in v4:
 
-commit d50dabff4d1f2c815b2faf184f5d6db40596e2cc
-Author: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Date:   Sun Aug 3 11:11:22 2025 +0000
+  - Rebased onto the latest mm-new branch, top commit of the base is commit 916e1f041670 ("drivers/base: move memory_block_add_nid() into the caller"). Dropped the v3 patches that had already been merged and re-applied them to the mm-new branch.
+  - Only Patch 4 is updated to address review comments, all other patches remain unchanged from v3.
 
-    mm/mremap: catch invalid multi VMA moves earlier
+--- 
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=16fadda2580000
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=15fadda2580000
-console output: https://syzkaller.appspot.com/x/log.txt?x=11fadda2580000
+v2: https://lore.kernel.org/all/20250703060656.54345-1-aboorvad@linux.ibm.com/
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+4e221abf50259362f4f4@syzkaller.appspotmail.com
-Fixes: d50dabff4d1f ("mm/mremap: catch invalid multi VMA moves earlier")
+Changes in v3:
 
-==================================================================
-BUG: KASAN: slab-use-after-free in vma_multi_allowed mm/mremap.c:1623 [inline]
-BUG: KASAN: slab-use-after-free in remap_move mm/mremap.c:1884 [inline]
-BUG: KASAN: slab-use-after-free in do_mremap mm/mremap.c:1923 [inline]
-BUG: KASAN: slab-use-after-free in __do_sys_mremap mm/mremap.c:1987 [inline]
-BUG: KASAN: slab-use-after-free in __se_sys_mremap+0xb33/0x1150 mm/mremap.c:1955
-Read of size 8 at addr ffff888074738558 by task syz.0.59/6077
-
-CPU: 1 UID: 0 PID: 6077 Comm: syz.0.59 Not tainted 6.17.0-rc1-next-20250814-syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0xca/0x240 mm/kasan/report.c:482
- kasan_report+0x118/0x150 mm/kasan/report.c:595
- vma_multi_allowed mm/mremap.c:1623 [inline]
- remap_move mm/mremap.c:1884 [inline]
- do_mremap mm/mremap.c:1923 [inline]
- __do_sys_mremap mm/mremap.c:1987 [inline]
- __se_sys_mremap+0xb33/0x1150 mm/mremap.c:1955
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f7fd678ebe9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fff51cbeae8 EFLAGS: 00000246 ORIG_RAX: 0000000000000019
-RAX: ffffffffffffffda RBX: 00007f7fd69b5fa0 RCX: 00007f7fd678ebe9
-RDX: 0000000000002000 RSI: 0000000000002000 RDI: 0000200000041000
-RBP: 00007f7fd6811e19 R08: 00002000004c3000 R09: 0000000000000000
-R10: 0000000000000003 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f7fd69b5fa0 R14: 00007f7fd69b5fa0 R15: 0000000000000005
- </TASK>
-
-Allocated by task 5972:
- kasan_save_stack mm/kasan/common.c:56 [inline]
- kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
- unpoison_slab_object mm/kasan/common.c:339 [inline]
- __kasan_slab_alloc+0x6c/0x80 mm/kasan/common.c:365
- kasan_slab_alloc include/linux/kasan.h:250 [inline]
- slab_post_alloc_hook mm/slub.c:4180 [inline]
- slab_alloc_node mm/slub.c:4229 [inline]
- kmem_cache_alloc_noprof+0x1c1/0x3c0 mm/slub.c:4236
- vm_area_dup+0x2b/0x680 mm/vma_init.c:122
- dup_mmap+0x90c/0x1ac0 mm/mmap.c:1780
- dup_mm kernel/fork.c:1485 [inline]
- copy_mm+0x13c/0x4b0 kernel/fork.c:1537
- copy_process+0x1706/0x3c00 kernel/fork.c:2175
- kernel_clone+0x21e/0x840 kernel/fork.c:2605
- __do_sys_clone kernel/fork.c:2748 [inline]
- __se_sys_clone kernel/fork.c:2732 [inline]
- __x64_sys_clone+0x18b/0x1e0 kernel/fork.c:2732
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Freed by task 2999:
- kasan_save_stack mm/kasan/common.c:56 [inline]
- kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
- __kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:587
- kasan_save_free_info mm/kasan/kasan.h:406 [inline]
- poison_slab_object mm/kasan/common.c:252 [inline]
- __kasan_slab_free+0x5b/0x80 mm/kasan/common.c:284
- kasan_slab_free include/linux/kasan.h:233 [inline]
- slab_free_hook mm/slub.c:2417 [inline]
- slab_free_after_rcu_debug+0x129/0x2a0 mm/slub.c:4730
- rcu_do_batch kernel/rcu/tree.c:2605 [inline]
- rcu_core+0xca8/0x1770 kernel/rcu/tree.c:2861
- handle_softirqs+0x286/0x870 kernel/softirq.c:579
- do_softirq+0xec/0x180 kernel/softirq.c:480
- __local_bh_enable_ip+0x17d/0x1c0 kernel/softirq.c:407
- spin_unlock_bh include/linux/spinlock.h:396 [inline]
- batadv_nc_purge_paths+0x318/0x3b0 net/batman-adv/network-coding.c:471
- batadv_nc_worker+0x328/0x610 net/batman-adv/network-coding.c:720
- process_one_work kernel/workqueue.c:3236 [inline]
- process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3319
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3400
- kthread+0x711/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x3f9/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-Last potentially related work creation:
- kasan_save_stack+0x3e/0x60 mm/kasan/common.c:56
- kasan_record_aux_stack+0xbd/0xd0 mm/kasan/generic.c:559
- slab_free_hook mm/slub.c:2378 [inline]
- slab_free mm/slub.c:4680 [inline]
- kmem_cache_free+0x2f6/0x400 mm/slub.c:4782
- remove_vma mm/vma.c:468 [inline]
- vms_complete_munmap_vmas+0x626/0x8a0 mm/vma.c:1293
- do_vmi_align_munmap+0x358/0x420 mm/vma.c:1536
- do_vmi_munmap+0x253/0x2e0 mm/vma.c:1584
- do_munmap+0xe1/0x140 mm/mmap.c:1068
- mremap_to+0x2df/0x7a0 mm/mremap.c:1372
- remap_move mm/mremap.c:1879 [inline]
- do_mremap mm/mremap.c:1923 [inline]
- __do_sys_mremap mm/mremap.c:1987 [inline]
- __se_sys_mremap+0xadf/0x1150 mm/mremap.c:1955
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-The buggy address belongs to the object at ffff888074738500
- which belongs to the cache vm_area_struct of size 256
-The buggy address is located 88 bytes inside of
- freed 256-byte region [ffff888074738500, ffff888074738600)
-
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x74738
-memcg:ffff888030d7f981
-flags: 0xfff00000000000(node=0|zone=1|lastcpupid=0x7ff)
-page_type: f5(slab)
-raw: 00fff00000000000 ffff88801bed5b40 dead000000000100 dead000000000122
-raw: 0000000000000000 00000000000c000c 00000000f5000000 ffff888030d7f981
-page dumped because: kasan: bad access detected
-page_owner tracks the page as allocated
-page last allocated via order 0, migratetype Unmovable, gfp_mask 0x52cc0(GFP_KERNEL|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP), pid 5248, tgid 5248 (udevd), ts 24347982328, free_ts 24338159697
- set_page_owner include/linux/page_owner.h:32 [inline]
- post_alloc_hook+0x240/0x2a0 mm/page_alloc.c:1851
- prep_new_page mm/page_alloc.c:1859 [inline]
- get_page_from_freelist+0x21e4/0x22c0 mm/page_alloc.c:3858
- __alloc_frozen_pages_noprof+0x181/0x370 mm/page_alloc.c:5148
- alloc_pages_mpol+0x232/0x4a0 mm/mempolicy.c:2416
- alloc_slab_page mm/slub.c:2487 [inline]
- allocate_slab+0x8a/0x370 mm/slub.c:2655
- new_slab mm/slub.c:2709 [inline]
- ___slab_alloc+0xbeb/0x1410 mm/slub.c:3891
- __slab_alloc mm/slub.c:3981 [inline]
- __slab_alloc_node mm/slub.c:4056 [inline]
- slab_alloc_node mm/slub.c:4217 [inline]
- kmem_cache_alloc_noprof+0x283/0x3c0 mm/slub.c:4236
- vm_area_dup+0x2b/0x680 mm/vma_init.c:122
- dup_mmap+0x90c/0x1ac0 mm/mmap.c:1780
- dup_mm kernel/fork.c:1485 [inline]
- copy_mm+0x13c/0x4b0 kernel/fork.c:1537
- copy_process+0x1706/0x3c00 kernel/fork.c:2175
- kernel_clone+0x21e/0x840 kernel/fork.c:2605
- __do_sys_clone kernel/fork.c:2748 [inline]
- __se_sys_clone kernel/fork.c:2732 [inline]
- __x64_sys_clone+0x18b/0x1e0 kernel/fork.c:2732
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-page last free pid 23 tgid 23 stack trace:
- reset_page_owner include/linux/page_owner.h:25 [inline]
- free_pages_prepare mm/page_alloc.c:1395 [inline]
- __free_frozen_pages+0xbc4/0xd30 mm/page_alloc.c:2895
- pagetable_free include/linux/mm.h:2917 [inline]
- pagetable_dtor_free include/linux/mm.h:3015 [inline]
- __tlb_remove_table+0x2d2/0x3b0 include/asm-generic/tlb.h:220
- __tlb_remove_table_free mm/mmu_gather.c:227 [inline]
- tlb_remove_table_rcu+0x85/0x100 mm/mmu_gather.c:290
- rcu_do_batch kernel/rcu/tree.c:2605 [inline]
- rcu_core+0xca8/0x1770 kernel/rcu/tree.c:2861
- handle_softirqs+0x286/0x870 kernel/softirq.c:579
- run_ksoftirqd+0x9b/0x100 kernel/softirq.c:968
- smpboot_thread_fn+0x542/0xa60 kernel/smpboot.c:160
- kthread+0x711/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x3f9/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-Memory state around the buggy address:
- ffff888074738400: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff888074738480: fb fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
->ffff888074738500: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                                                    ^
- ffff888074738580: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff888074738600: fc fc fc fc fc fc fc fc 00 00 00 00 00 00 00 00
-==================================================================
-
+  - Rebased onto the latest mm-new branch, top commit of the base is commit 0709ddf8951f ("mm: add zblock allocator").
+  - Minor refactor based on the review comments.
+  - Included the tags from the previous version.
 
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+v1: https://lore.kernel.org/all/20250616160632.35250-1-aboorvad@linux.ibm.com/
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+Changes in v2:
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+   - Rebased onto the mm-new branch, top commit of the base is commit 3b4a8ad89f7e ("mm: add zblock allocator").
+   - Split some patches for clarity.
+   - Updated virtual_address_range test to support testing 4PB VA on PPC64.
+   - Added proper Fixes: tags.
+   - Included a patch to skip a failing userfaultfd test when unsupported,
+     instead of reporting a failure.
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+---
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+Please let us know if you have any further comments.
 
-If you want to undo deduplication, reply with:
-#syz undup
+Thanks,
+Aboorva
+
+Aboorva Devarajan (3):
+  selftests/mm: fix child process exit codes in ksm_functional_tests
+  selftests/mm: skip thuge-gen test if system is not setup properly
+  selftests/mm: skip hugepage-mremap test if userfaultfd unavailable
+
+Donet Tom (4):
+  mm/selftests: Fix incorrect pointer being passed to mark_range()
+  selftests/mm: Add support to test 4PB VA on PPC64
+  selftest/mm: Fix ksm_funtional_test failures
+  mm/selftests: Fix split_huge_page_test failure on systems with 64KB
+    page size
+
+ tools/testing/selftests/mm/cow.c              |  5 ----
+ tools/testing/selftests/mm/hugepage-mremap.c  | 16 +++++++++--
+ .../selftests/mm/ksm_functional_tests.c       | 28 +++++++++++++------
+ .../selftests/mm/split_huge_page_test.c       | 22 +++++++++------
+ tools/testing/selftests/mm/thuge-gen.c        | 11 +++++---
+ tools/testing/selftests/mm/uffd-wp-mremap.c   |  5 ----
+ .../selftests/mm/virtual_address_range.c      | 13 ++++++++-
+ tools/testing/selftests/mm/vm_util.h          |  5 ++++
+ 8 files changed, 71 insertions(+), 34 deletions(-)
+
+-- 
+2.47.1
+
 
