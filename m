@@ -2,112 +2,111 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CF761CA0EE6
-	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 17:04:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 14F41CA0EE6
+	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 17:13:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B7876B0344; Sat, 16 Aug 2025 13:04:11 -0400 (EDT)
+	id 918BF8E002A; Sat, 16 Aug 2025 13:13:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 668EC6B0346; Sat, 16 Aug 2025 13:04:11 -0400 (EDT)
+	id 8F1228E000A; Sat, 16 Aug 2025 13:13:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55E886B0344; Sat, 16 Aug 2025 13:04:11 -0400 (EDT)
+	id 7DE358E002A; Sat, 16 Aug 2025 13:13:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 412006B0344
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 13:04:11 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A5F3EB9875
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 17:04:10 +0000 (UTC)
-X-FDA: 83783243460.23.6C9611C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 4E25C120016
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 17:04:08 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QDvUz5fF;
-	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 6E0158E000A
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 13:13:45 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 13FC2140451
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 17:13:45 +0000 (UTC)
+X-FDA: 83783267610.20.A44CEA5
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 9FB50C0004
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 17:13:42 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MMixcwFe;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf22.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755364422; a=rsa-sha256;
+	cv=none;
+	b=OHHMSrap6I4ACBJCAajB86oF9TGKoiGp99DbsMeaqWvQjR9SoWcCnIYt03qoNNwUpsMEfZ
+	v0krLLN0aNJW5Cn6t5ICV04lhmARBRjxQiglznNnxdrsp8GGvSinIn5AXBmbJcgF0p/UIY
+	n1eSWzTQVW7jAFfLPRjMr954sYptqbE=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MMixcwFe;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf22.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755363848;
+	s=arc-20220608; t=1755364422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4Vdzv3DmlnaOpYN+0D5wTRGqHnadxEawRnToIYrOHH0=;
-	b=Xqe26Hk2NJa+gIEQYdlPnFpxS8pzuMczK8a9d3Nb12mPm1lrEenN6Jaw9EcbCeWSa/N6xN
-	nFRIJfCk7+paOytzolbgWfUjxIYxwGlqC7yf9EZXiSzhVh42kwyhbnGTbLyxj/RIQCyJ6j
-	i59YinXwe+Ww7/ZHoxg1Siyq133JUFE=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QDvUz5fF;
-	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755363848; a=rsa-sha256;
-	cv=none;
-	b=KjG6ZkG3LY8m7zdmQdBEi4Wi/6DP+k19S3NsRMuAoghInRYKYrUPHXYvXM/j6KSrhb6etL
-	iLV+JwjpTxdikYOJMz06HytnhaeRPGjLVsNkNXUntR/4ss6+42AhjpEh7uA3S2i5AFee3x
-	jecBYqLl5KoLD0AiKaOTcG9RXJeYz4I=
+	bh=2cgk6Zbx0vB/BGOo5PYZi9awyuAzqjuvaL4aveRfbkI=;
+	b=GIXTm5ikG2To9K1zIIToGI7FyzDjjJ8OLyvzVar+Zpvk1mxFlFBrrvo/v7t7klRL3+vO5f
+	51ChZcSgYhQJGJ/3lziWHTUELOeXj4VbE3mM1pDaDedI1YtSA9skNksdq7JuhO/NN0OClp
+	Mjr/gY4BoVuR5cjCd9fd6pPXmVIU8lA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755363847;
+	s=mimecast20190719; t=1755364422;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=4Vdzv3DmlnaOpYN+0D5wTRGqHnadxEawRnToIYrOHH0=;
-	b=QDvUz5fFaH158V98NSSm9BNhCvPXccMT90FZaOH7U5h3701dhfF5l2+VWeLF2AwymkKogi
-	o37l7dH3VY/4WxIfNGsJTvvRuJv4YO9rttoUhYsvwdTNspdbkRPXVL3XMiNLO5FLsJemDl
-	v7S9IRfVjZDIwUU0G9eCqVI9GktJZIQ=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=2cgk6Zbx0vB/BGOo5PYZi9awyuAzqjuvaL4aveRfbkI=;
+	b=MMixcwFenB2EpZI1KUgfG56KSj4YYuqNkB0y2lDqb73JyzbueCtJEKbzBKpdJhFivnp2RS
+	iewbBaO3lKoCYavlOBAmIB7nCczyI1CWwybIL1PnExy8nIEM2nt0U5JT5LtR/COPzPK6ly
+	rhzEcZN2/K1u6pIRCSKaY1xZ64Srg2M=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-372-qcNUGTiAPwavY3NIkFfxkQ-1; Sat, 16 Aug 2025 13:04:06 -0400
-X-MC-Unique: qcNUGTiAPwavY3NIkFfxkQ-1
-X-Mimecast-MFC-AGG-ID: qcNUGTiAPwavY3NIkFfxkQ_1755363845
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-7e87031d3e5so716245385a.0
-        for <linux-mm@kvack.org>; Sat, 16 Aug 2025 10:04:05 -0700 (PDT)
+ us-mta-353-fzD-a7DBNbu94f4sXPXLRQ-1; Sat, 16 Aug 2025 13:13:40 -0400
+X-MC-Unique: fzD-a7DBNbu94f4sXPXLRQ-1
+X-Mimecast-MFC-AGG-ID: fzD-a7DBNbu94f4sXPXLRQ_1755364419
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3b9edf2d82dso1556425f8f.2
+        for <linux-mm@kvack.org>; Sat, 16 Aug 2025 10:13:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755363845; x=1755968645;
+        d=1e100.net; s=20230601; t=1755364419; x=1755969219;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :references:cc:to:from:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=4Vdzv3DmlnaOpYN+0D5wTRGqHnadxEawRnToIYrOHH0=;
-        b=K/1qEPNMsbDV0OvXVg40CMKuYqrB9LygOZEnIiB1kjh8dw2i3WZJho9+HK+Rt0xk8z
-         DsOw7LoZ9IpWPCdXBPbkb27Z1Z8Cx6JkttTTcSLZZz20n9MlG9CdqIdKoq4OsZFX5rtr
-         NY+H1aqCXscMk1zNqjUY9AtSvdhEOLlHSLj4wCHEEPkVP2fIwnwPmEv/GINV0ThyVIB5
-         NS4vFl0xc0I1FNE01P0eDr0Sk+CecZo1R66qF8MTmc7/xvKvEXv0xfBx1akxdjtsRd8G
-         Z7KXow4j9KWLgX0R/mGSrY0vAfnsIsLqoWS9ZYx6fvxKM54+kMyxcsZDdpjcHjlidf4t
-         51LA==
-X-Forwarded-Encrypted: i=1; AJvYcCWFBkEZl1oZZJqm2yyBtBwNRhGF93qpMlOl7t2pP+DXvf5ZiPzwLASf6NcDxP6O7/oqRouoj1ZT+Q==@kvack.org
-X-Gm-Message-State: AOJu0YxnZRoyTdJQAfa4tmY4fYZh7XKdQUaU3PWoIwqHK+3veMuYtpeE
-	jFj1sLC6z3m3kCVd5CJeP6/W5dfqSA9dGzBBcaj5OmIgj3WCazaAQPRy6ANWjq0B7sNLrGsCnQX
-	bNOzun0QtMusFRk0CONy99ONaPELqNW1NIwUsch4n59tLFmv6EuF5
-X-Gm-Gg: ASbGncv1d+G2UsV+Lo4fa+Uq+G+QWhm38gPtGcCOncSvF9qpd3NJH1/wIaHsw+xsG9W
-	0cYNp95Uvh4xh6icEWpjmSHrZhElygAo2qxbvYmOJOpcU2D002+Xm9s7BGjLhkj8GSNFrF8+dZ+
-	tD4bms6ojWeU/xcHO7JFm8vrjwL7ime0f+VmaM1BQaF0mnkehZlKCl/0zcir638P0c7XZ62zjh/
-	SQumjCdV/mY4Ff6C9NMUBPzcD8O0hK2uyZFa3O4PW7GPIgmeQNq5u78UTc42alwhQjdHLMR3tuL
-	J1JrpR8AVbEtaPaFGDBBMgPH3ihYiD95PsWPzOhVfDAxfQ8JqNjQQfVcBcVSd0dIM0P9JeVRvCU
-	UjVMr1xhOaRsuOASl2LOBnaQ4zlApqETxQe9a4mzrKd8FobJU3r/shTJ2PNuPhTAHmkY=
-X-Received: by 2002:a05:620a:319c:b0:7e6:3f78:8f08 with SMTP id af79cd13be357-7e88688587fmr514791085a.60.1755363845424;
-        Sat, 16 Aug 2025 10:04:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFNaUZO42WuGpZxpSuCZqndfUjaEylzUym4Cf72hFk1jzKC0ptFmeGKh1sj47e4Q0dIMo8G4g==
-X-Received: by 2002:a05:620a:319c:b0:7e6:3f78:8f08 with SMTP id af79cd13be357-7e88688587fmr514786285a.60.1755363845013;
-        Sat, 16 Aug 2025 10:04:05 -0700 (PDT)
+        bh=2cgk6Zbx0vB/BGOo5PYZi9awyuAzqjuvaL4aveRfbkI=;
+        b=GOQXlQiUPwZ9YgK+ypTExTerai5h2zjY5espIHl7jpp+bgbOPnRBM8xXNVCK+7mcBx
+         aah7EvAd8Pa0QYBrny8HTQFJNKhQAJfiq76Dw9NjMKY15Qpq+fff+MkwfYDtKbgdwUpc
+         WBZcdWqZ3VflviFJETUToYIt8+PhrHI4HDfBQD7eHKUNAoC6qo6G3QOlJy0QwRvxHObA
+         kKNGDJ+CTlkF3lfDxt2vtFJhres1y7iaBvq9dvNBfzeEx15K6RmnKyYdXbV5sT1yKd8z
+         hnId2B68gouizsdk/3fwpMklH0i+yEuLwc/41vTct8TfY2eRW77lPEry8SnUul7mVejz
+         MBrw==
+X-Forwarded-Encrypted: i=1; AJvYcCXNWyoXHaKrIBWdjORzI009ldHa6vSz0tcZaEI2A0XLW0oJE/E1IGUQ3QkZl3OoWiVBiYWyoSft0w==@kvack.org
+X-Gm-Message-State: AOJu0Yy+j65oz7zNqBK4cxn+938bLAsxKtljozraAxIy5ofoFclfGAYS
+	VvXBO8Rc4aD55N9KXCnuqtf7OBPzRd+Lr4MLxDB+5JBrd+hKiJdpwHLHJ1a0IomrxKzzZiw80PS
+	mO0kecOjuYc2b1wAlTcrONT0ijnJMWCcQkN+ToF2KKyykoelZid1Z
+X-Gm-Gg: ASbGncsDyQCAuzuQkWy+XVz82Sv/7bdJ7d0BgfZNyqZKw3NvVTDlwcVuyXkYzFYvPJm
+	Qj9lmYxJCaFFbncuGwgy38eOp+wC0CjKxy7OFkUMLiluqudBCkKShlqUbZBpPyCO7HdHRBjbU2Z
+	IfDj2MD1OFKiMT4X1pt0nIw69dG9xEiQWVPo6HiYNj4k4gJSpJnST9Y5xGwG1oBSW3ImJtn/C9Y
+	kqi61X/RVmI3TwJc5UmFP1mWHG30SQmnrnAiT2Vbv8j5XsIBukbiNJbSGFsMwDQDwWLMR1qTZ+y
+	Rjmh3tpNPZvYZ4rZsrOnilIHslMsqHSKBKfFNlsocxZWsAX6mvaoQJjnRlLOcyWlq836D0m/Kgv
+	KUvnWbPeDGgD8Ow8OBM7aFxZDDHgkEGTtWzb7T8M5aRdo7ZyHtgHE9UA1gBQ4ezs1I0U=
+X-Received: by 2002:a05:600c:1c14:b0:459:d494:faf9 with SMTP id 5b1f17b1804b1-45a28ff178emr9712035e9.10.1755364419371;
+        Sat, 16 Aug 2025 10:13:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEF90eN2Nz0toFUZwAqn9DD5dp3Ri1E/8xuFSl/glYZ2CcKQtMM8PsgWaRo64HcVxwKlIeLsQ==
+X-Received: by 2002:a05:600c:1c14:b0:459:d494:faf9 with SMTP id 5b1f17b1804b1-45a28ff178emr9711895e9.10.1755364419003;
+        Sat, 16 Aug 2025 10:13:39 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f23:c700:d8ae:41bf:492a:9e4c? (p200300d82f23c700d8ae41bf492a9e4c.dip0.t-ipconnect.de. [2003:d8:2f23:c700:d8ae:41bf:492a:9e4c])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e87e1e5a7bsm290177485a.75.2025.08.16.10.04.02
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a1cc22739sm107942655e9.27.2025.08.16.10.13.37
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 16 Aug 2025 10:04:04 -0700 (PDT)
-Message-ID: <07b17e1c-92e6-432a-9af6-13d3fc8246bc@redhat.com>
-Date: Sat, 16 Aug 2025 19:04:01 +0200
+        Sat, 16 Aug 2025 10:13:38 -0700 (PDT)
+Message-ID: <353ad5f3-2864-4f2f-bab7-5836aceb7f1a@redhat.com>
+Date: Sat, 16 Aug 2025 19:13:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm/migrate: Fix NULL movable_ops if CONFIG_ZSMALLOC=m
 From: David Hildenbrand <david@redhat.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Huacai Chen <chenhuacai@kernel.org>, Huacai Chen
- <chenhuacai@loongson.cn>, Andrew Morton <akpm@linux-foundation.org>,
- linux-mm@kvack.org, Zi Yan <ziy@nvidia.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: Huacai Chen <chenhuacai@loongson.cn>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  Harry Yoo <harry.yoo@oracle.com>, linux-kernel@vger.kernel.org,
  Minchan Kim <minchan@kernel.org>,
  Sergey Senozhatsky <senozhatsky@chromium.org>,
@@ -117,8 +116,6 @@ References: <20250815090539.1578484-1-chenhuacai@loongson.cn>
  <CAAhV-H470h2HDEN_NY2qNBxUqQrSRQhLzwqZe9PB8GjnNsZVFQ@mail.gmail.com>
  <66ebc632-6704-4637-b62d-1cb11e5a4782@redhat.com>
  <9db98f7f-b90f-464b-ae7f-e94ac523bc28@redhat.com>
- <aKCwjCJTEhX4Q6wW@casper.infradead.org>
- <e06f23d9-adcf-4d0a-8ba1-bda6d4b483b1@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -163,21 +160,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <e06f23d9-adcf-4d0a-8ba1-bda6d4b483b1@redhat.com>
+In-Reply-To: <9db98f7f-b90f-464b-ae7f-e94ac523bc28@redhat.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: TqIz_QKe9L5GGbbB-WP-wAQkPnzIUqwyKWrt-39qE7U_1755363845
+X-Mimecast-MFC-PROC-ID: 0HOeQ3xh1AcJpZb-8Oetc4Hwp99ube1Wll93mSh4Qno_1755364419
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4E25C120016
-X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9FB50C0004
+X-Stat-Signature: t5kxrt5f1xrcmg7iw85c169suag6mhkj
 X-Rspam-User: 
-X-Stat-Signature: jt3aqscj7t74ekkosrpfgbkapzc6hsp6
-X-HE-Tag: 1755363848-591989
-X-HE-Meta: U2FsdGVkX1/gp9LIb7u962J1T+TiqakPs8GBVsjuSSm2Q/71pmdS2Axx14AXrKwL0UcCyxU3LfkprBDG8NqlY8OBnL2YukSHfoMuIbs1GhniYCbfEmuizRvGKQULjSTJQI+UmGTjN7wgCRDDLzpHn/fBtUthsXNflLzjtfRv5QBad+fvx77Mv9Hagxfeeijwdb+UHMlS2emjK8/EY7EmrLbLhVJnUlTRvwaRO4mrZOBeGUjLKAD/lJ8DrBwdsxGac6BbHqFP3ShyY+3wlE63iGDp0pd4OCnTEVfleVSz4QNPP+FENGOVcETQRBCt+xolmBJdJRpqKzINTAhNideteTfjqSo9jseV4F12h0wVvZjcm3L8whvk1koBFyNQOKPLX7b42T0BNAwgTkXKIdw6anuCfg8TKxqWmfMysP9mlClQ7NwjpEmluBr+RwJY8mw2nSBW5hVm+qhV9KwarU82tVlOUAD0iMMQO2JvORpreJ1BSRw+x/vkwYEIwvMGF336o0hkFWVcteORvVgIFYLpp2QkRagDIxt25EzYKlFa0gkhoMfAICFRN2HcPceZzxtprxVtDLYsd+kuU7Qq7f7D7JRVMXnjY5QxMjJdDBq2uJfOYPT1g+65JkOLcB+w9VL/DDFFtGQQ8ujkjjLZ7Fc6AEAmFZxD85pOWU3+KRRMVJTv36phAO9x4ady1IQJwlO/QQO0i6vlPx84Yz0ZxGT4LycB+GX0W8JDHrAS8YppHgLcH+ur/u3YQf6qjRg8+w59dnJfpFW19jrFdUXluY3a5Hq0Xop1LQRZu9Jyy7ehF0aU6gwpRD6qv/ATCERqM0MJ8A8hgcgME34t6x7u5ccqMg4E+g/qHgEkQttUSISpWGCGHkWPfCDYb4++nhqM/kpx17q4zfmLVya44Ji2rKyg8RYpPio0E92qu08zENlh9aVgE1D0g5bDAkiUrhfN49EkAra7bKtsyt6Lh02anTm
- iOnE+uKd
- G86+WyWXbCp92CY2rKAuTAxQyx8ermkP+HCwq7aK7+Vhk98dvZhD00pYEsIx4r2oe3i5sevab2lXLahkCZn0JB4cXWqfGGkb+Nixmi72ZahP7P+uWpxcPgYSJMXWe/f3wuHiTAWuNYsa+OFVwCaCX15bVB6Gmuc0wSYzSNn/PIJiszRgryWZh8rXWbqRPqRw8cMxcFl/uczGUYL3upjYr/Hfjqj6rmsK6wITjhoQAZ1ZjjQp+gF1GpeXmqbqDV8io5Ut7mkd7+HUWeoCqqzhRR9vV4PPm6OtLIdRWY+LFQQlwxg2DVlZLGgj3umP+OLlnIBkp/V1Vao6+cGc0OIlAwGeA1PNs/G8A2BbTb2WQJEpSdTgyJPYjx5z4GAd8UkcCBPrGzkhX2kI6NTlBtZw5/+TRLwYubq9DD4wtE0EPDr6Z6SM8x3JLZa1XayOgthqXm2glyhH6mj5yjEeAdMDZwRPiiCB0i4q49jsNU4+VK70Ht+46UM6x96xRPRLJ2wk9lV9SRCIKFnU5/qLV+RIeAK5XdWXQyjb+C62De9ibKCbdn05yULEU9xEMfHHlYRvm03FHAC3NEymUQdT7DwlIRt98bSH2bYhh+1rV
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1755364422-885118
+X-HE-Meta: U2FsdGVkX1/IpF/50ajB025QSwM2O8UrOUBogvx+nmMtxf4cK5qX72ao7fp6cDrXlhGfi7tszyc7pb8yGeGD5OHU3bSw3+CaWFmS2SRGrEXG3t7HOKNYrbaYI7H4fYoRVL3YZo1obVyznnsEfQeZIJLU/lwgqrj5UoZnyrFUkggtDTndqyE/ba6Zk4xE8wEx4BJsGFAUt0FRB1KH9gI9aNstK4ickEhWt9hjPXP7oAP+7M+nYHyh4zHCd2Kj1cUflomz/s+ZKPlukLt4npIcxT2iyrmt9PmQVP4aJfJkQnLetCQ43NPXE5qZX93SEBc1iX89rxqGiTgBTSfp1QoIGMzJYM8vcwYDLi2s4bjMl4qHJvGJTlzkD0xcxVgcOWDWi6upjB3P7rqJVU9R0QdRKOhk/rNohEAZyq44+b7bkeA2G086T92C06Y22tuYIssPmBXdA9H/3rCeycsQTSn2FTll5u/EKahysf7EIaWxP4W1ufkbURU1flE6DR+XvrUSh2IQnkuupoOkuZVJ5wcY0HES4hnGZh4KDb36a6X1ng+9WGa+zNHppSzZnJ7expKW/oA+Z/39NG66D9QB7iVqhGHee3Yg1G2IniToyAhcB8Ps2Irp7wOe8JAHnb4/lgWYstT1lNHvF+B39Iwz2y3v2HC2tL+hVWGTyPKUbgrJgdpI8O7qTW5f7O1B0+4MgCe99ALq7gagCIv4qHdjAQ48yyAWY9p1Q+0F2qC9HEFhEqYNaeo/v24XDO+nqlieptErapojE3R07Q4XEjkHbY8KDm7dkuULBm6D3+ELwJsnAMSell/XCJM88X8iyVaUO4qoNP6gh6qTLYcSx5fh5b8kW2nWoXRj//2oGCz1+YTBtAx9cajCkkvMO+hJ0qXB2wJVDMyz94GNqQmEjNQkN8nJRPsSICAc117YRrx1EULmq6/ArDTBNd4xWMK4IaFZl3qI8BbdTh30abSreDCYJni
+ M4McSrrY
+ S7xG6Jm0fMunhX04VPQ93oWbl8eldOpFozk8Vw/DHz4g1BTot0iX7bAboBHbcuVxU4xWnC3jAj0SYEJu0HzjZmM1bLZenwCIsSfeGWHoIYNRUi7bLBuZhJsYa35avhM6QwSCCZP9wjNwEsNwZaViN9WB4oPbJ+nHQJSpyzy4i4l5NEW2VyFHDPT4dF3pTS79ANDpur+WFoeikVGHKRYm80/NMdoLCrLrYiPz4TXXGUdB1OclSuV+HaCdGK3oU+h8RFlK+ryqgFIaSIYWkJakU6R+40vtmRjCg6lBsPm9C0QCgUb3WeT+6TeEo/l0WPlNdR40TzdalEG4kWyfzWAoKYTxx7cDFxHT9fqg49JFQsm2ZfGV9WYFgR4klbiDFGRc4IkzGCzHKgpb7YNXMZ+8w0KfgrVcVh9mmFYaFGIscOduiyn4W2HCoCW/tMDPGrs5lx5JyIUCysrCBc/p5jv2V2MJEyBzWakL0AK4KqvxvMPEmZ80tOU3WABwiAujbVLs6/Ue7wrgaIcmzuBEkDpewLMtBFR2lDXerpQb7/lH2J5J2MrScVbv21/scva0f+K2GASo7MCN+XMAGUi5XBpcTEwp1KloLm/2sY5/N
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,44 +183,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 16.08.25 19:02, David Hildenbrand wrote:
-> On 16.08.25 18:23, Matthew Wilcox wrote:
->> On Sat, Aug 16, 2025 at 12:54:52PM +0200, David Hildenbrand wrote:
->>> +++ b/mm/balloon_compaction.c
->>> @@ -256,8 +256,10 @@ const struct movable_operations balloon_mops = {
->>>    static int __init balloon_init(void)
->>>    {
->>> -	movable_ops[MOVABLE_BALLOON] = &balloon_mops;
->>> -	return 0;
->>> +	int rc;
->>> +
->>> +	rc = register_movable_ops(&balloon_mops, PGTY_offline);
->>> +	return rc;
->>
->> Using 'rc' as the name of this variable is an anti-pattern.  All it
->> tells you is "this is the return value".  Calling it 'err' is far
->> better because now we know it's an error number (or zero for success,
->> of course).
-> 
-> I know, we all have our things to complain about. Some about Cc: above
-> --, others about the name of error variables :P
-> 
-> $ git grep "int rc" | wc -l
-> 12730
-> $ git grep "int ret" | wc -l
-> 80386
-> $ git grep "int error" | wc -l
-> 4349
-> $ git grep "int err " | wc -l
-> 6117
-> 
->>
->> It seems to be a particularly IBM derived antipattern ;-)
-> 
-> Careful miser :D
+> diff --git a/mm/balloon_compaction.c b/mm/balloon_compaction.c
+> index a1d2625b5c391..c391435ce9942 100644
+> --- a/mm/balloon_compaction.c
+> +++ b/mm/balloon_compaction.c
+> @@ -256,8 +256,10 @@ const struct movable_operations balloon_mops = {
+>    
+>    static int __init balloon_init(void)
+>    {
+> -	movable_ops[MOVABLE_BALLOON] = &balloon_mops;
+> -	return 0;
+> +	int rc;
+> +
+> +	rc = register_movable_ops(&balloon_mops, PGTY_offline);
+> +	return rc;
 
-"mister". No idea if "miser" exist and if so, whether it could be 
-considered offensive ;)
+Staring again at this hunk, the temp variable is of course not required 
+here.
 
 -- 
 Cheers
