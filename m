@@ -2,82 +2,82 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D08CCCA0EE4
-	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 00:49:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 80F14CA0ED1
+	for <linux-mm@archiver.kernel.org>; Sat, 16 Aug 2025 00:50:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 63D8E8E022A; Fri, 15 Aug 2025 20:49:18 -0400 (EDT)
+	id F1AE08E022B; Fri, 15 Aug 2025 20:50:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EE6E8E0008; Fri, 15 Aug 2025 20:49:18 -0400 (EDT)
+	id EA45C8E0008; Fri, 15 Aug 2025 20:50:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52B368E022A; Fri, 15 Aug 2025 20:49:18 -0400 (EDT)
+	id DE1B38E022B; Fri, 15 Aug 2025 20:50:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BA078E0008
-	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 20:49:18 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B35D7581A7
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 00:49:17 +0000 (UTC)
-X-FDA: 83780786754.22.4CAD391
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id DE46A20007
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 00:49:15 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="scrT/Tl6";
-	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755305356; a=rsa-sha256;
-	cv=none;
-	b=7JZrwmFbAgwqZJ1q7a43XrbaXKg234XYSRSe3WAO2F9tb6IZ1c+nnd+jO3zjNQymlOHagu
-	mt3OR6qNZTV1UwiEEKOJm1mS5kW9OIbBxJhtPPNZDek1VzC39KNSv+bEAHwUZsg4cXTpXK
-	rc2VOV6PwY+EHT8SYt2/7QxxI1evQ1w=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="scrT/Tl6";
-	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CF3968E0008
+	for <linux-mm@kvack.org>; Fri, 15 Aug 2025 20:50:47 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 844CB138054
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 00:50:47 +0000 (UTC)
+X-FDA: 83780790534.01.38FAADF
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf27.hostedemail.com (Postfix) with ESMTP id BC75B40002
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 00:50:45 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=i0lOVaBK;
+	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755305356;
+	s=arc-20220608; t=1755305446;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=12vBt6pvl2+GG2p3H0QKahJtZuQMrZF6zbce7Pu/ysk=;
-	b=kSoWcgSrSjeVrMp3GOja+b5XCdNVAwhDd6zONHJJSyNpdrFyNl3Jgy+nFPEfNG38VLIlYW
-	CIyFYSrl9i8HDAvPePHRYCcrX+Ac8Zlh2g6Y+TQbz8fzONycRueNS0Py3N1CEEnxLexh5Z
-	fzJk8RlWfOmdeabMSOpZ26QPFLXgHAE=
-Date: Fri, 15 Aug 2025 17:48:33 -0700
+	bh=JYBQzGDsedWj5iS2Ox4ruwlLXhsJn8Up52SCqrZu26M=;
+	b=xPGp9NRNW79s8ULsW1rMhwg2xqbRDv7V1O4a4+14efRS8Jm0140YhwMWljPu2PH6paEXOO
+	dyUj+vDsg88KvPl1ITl8iWr995+f8J7HH7jlfw35mj5eID7iSZKt/OqczxrP8unTJa86sh
+	88RHIfU1mTOevX9PJ2j6Ub3YLF4Oyuk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755305446; a=rsa-sha256;
+	cv=none;
+	b=8bySyus+EWoKtuGAXmJSbG1T8YK+uGeU2wEeUbMLOzskitC+DCftakaLYFiJep9M3t17fh
+	WOH/3hUgC2wqQlX7/jAoPHrGRpy2MiOYm0dnKt0UgLHUbBOxV22L0XM4u7zEXCl1NbUJnj
+	RHXQs1VGBCs+f/0F6mqLmpv2h1OZS5g=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=i0lOVaBK;
+	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Fri, 15 Aug 2025 17:50:28 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755305353;
+	t=1755305444;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=12vBt6pvl2+GG2p3H0QKahJtZuQMrZF6zbce7Pu/ysk=;
-	b=scrT/Tl6kq2/8qsHIu672v4EAg2jieacJyrIn2ZS7JZ/+DIn8+Fzc+R/iCY+CPNT2AaLhP
-	8pySf8eWL+30PYXncarpQDaboAq4PG8bxHcibDP2qk2tC3qegkFd2iMq+VDXvu0G+RpSbj
-	MImgIvi4ut8bHDyFCHpLUG5MVYH3ugk=
+	bh=JYBQzGDsedWj5iS2Ox4ruwlLXhsJn8Up52SCqrZu26M=;
+	b=i0lOVaBKU/KtRy5RzOuMa+9ztCY5xKPzokqbgv0c5rfXlz0ju2FitYrkJSKPEa04WUvNVW
+	3Z3QZxn9GT6+kmc3Buh4o9m2Bsj5woiXutsudPxwLmroN7utFdFyI8vkrXaUKS7vXFbDnl
+	qM6IGgXhuydH1vqKEqay57nkoZ1OUXI=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Boris Burkov <boris@bur.io>
 Cc: linux-btrfs@vger.kernel.org, linux-mm@kvack.org, 
 	linux-fsdevel@vger.kernel.org, kernel-team@fb.com, wqu@suse.com, willy@infradead.org
-Subject: Re: [PATCH v2 2/3] mm: add vmstat for cgroup uncharged pages
-Message-ID: <ztt2lhdpzfb3ddvgtqqwzuvdmlz4i5l6ijnwizyky4tv62dncz@taho2tjmqjkc>
+Subject: Re: [PATCH v2 3/3] btrfs: set AS_UNCHARGED on the btree_inode
+Message-ID: <mlfxq3ocdmnzvpykzo3zmeebdv5rpohk64aevx3fbwvmj6xitb@ebxlwsd72utx>
 References: <cover.1755300815.git.boris@bur.io>
- <a0b3856a4f86bcd684c715469c8a1cb2000bcbe2.1755300815.git.boris@bur.io>
+ <786282400115bf7701d7f9c6b00a9549f67e29f7.1755300815.git.boris@bur.io>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a0b3856a4f86bcd684c715469c8a1cb2000bcbe2.1755300815.git.boris@bur.io>
+In-Reply-To: <786282400115bf7701d7f9c6b00a9549f67e29f7.1755300815.git.boris@bur.io>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: DE46A20007
-X-Stat-Signature: zoj8phtiwybfdps5apoqzozaz4npc7xf
 X-Rspam-User: 
-X-HE-Tag: 1755305355-567521
-X-HE-Meta: U2FsdGVkX1++UEsZC2rB2Xy1yVljr7B+M+r9CSeYXdnUwIltcpAgjvt8ylO/EzojooUL+dJM72cHXNWP8rbWewjS4zYoBZgmtyBVNpSwL0NOhVLWRspTuKT9Dz0smm2yhLquny65utEvq6TOeLqQ84vWJSsT61wx++q1oxxzn7Ja9ZTDZhe37cROFcAh+StPfceqcUZRkAvoag0j6E933duu/hpB7KKp59eXWurx7lfUI4NRP+zPQL6hrTf+xJpSvLa4O0Q3To4gNvxbPDSXNMJcfaBPKmAtv4/89iaoULTmL2rMEq/7G3Z8uAfqGpadPZPLbs8bcanJP0+zV1x9alo3zy+H7qNiRUK9A+wNda37lJiMBJ0rhjkIyfRyQ5x8waZzJCEkZGURAjTX89EF5LGgDrUjSokdsEzSz6z54gX84wBLdUbaTOJnErHgQnwZR5aXBh7EMb57d/d4fKAzVk3x//h/JxeBLA9wSdSoBEMcekn1GF3OUvWImrJD6nADDITMewBCxUYScFWNz9xO2gGYRn37GzNpTU4Mf27s/wV/kqBOnMYOOSq0c5piNFKuRW90XpjgijBrwArArRiJaYRE0E990mgFK8EyiU2PD+R2SwN41hIqXmka1axb3fT+io2sCPMBUTOhWwzNQiVRzBR5gOXDVCFNudx69syEUAMMfqX68rmJ/tIh92S4suCxkbGy5qE17ZoHh4tcoB7P8sISnaK/JL7SOZHqxxercv+LAEPJfGxQuBQ+j0U+iIf5odglTYvFcdKLAb2VGxw4kHDfdTD28nS3PtC/kPFwAhVDvots4rCpQKGHbyofcZNoptXkoBv1RBgveYHzy9BXT0n8TWzu2FzSGvfgyejdDyZrrWylEhX5hifjrHqqBI5XRw3xe59gKXzhXv5a3l9xpLO+zCWDN/mEAg8kf3mv23QfIFbDsjofNNdr8uz7pQuCfKxFLmxh0ZUsvg+sDuP
- CqwXm0w6
- rhPFj4sRpdIj5QsQVeOffYn2boXwqugjSxzxa8UFUui8rCNAoA4InNPmyTAeHHUrUddzc+JblIY2XtHeJfgoq3xTjKg8ncaOtx3elzXdMkxaYCrwgIa8nLDlhZ+lx6d1czA44l/sNwbcYnxe8oth9VHGyJuDVHk30l1gziTmu92SFx6I0k4st8tIa1V3/uvYm6KBK0LruMLamQF2mZ/rhhwqR1B41W7mFFHvhoFBzZPsM8Rw=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BC75B40002
+X-Stat-Signature: kmriaz6eiy5us6oyxc8wk4wjqcpos9et
+X-HE-Tag: 1755305445-219295
+X-HE-Meta: U2FsdGVkX18JlZEGWMksJfxZwHKoMDc1fOVaQKJOnLlhkIeE3drmDReOsinR+glaSa5CB/b51uOHJYu/DiP+lq5gaYhYcGciNDE7GmgAkXZwiggqUCjCwcwW1dcoaNcSnMH01WW3rTstRWbofuDTJlDPDiEvoRU6p2IwQxb90xbFeDQ4TT8eT1L2BcPi6uhEYK/6xceKiA7+jaM/7aS3wr46J7V9nui4dLXJL95wLOC7M4qmwE7ruHuF9b3RfX+n9OmwOKlJ7i1sVnqf1qNSU4AtYpH6iUOKxNrlMhzp2P+4paoseG2zOqpatCqblUsZQGKNXHMkkUaZnTb2N1qq0XjEHmUtqAybLiavubexLzS/oNIe2h2aSiHrW+auvsxHR/IFbv+jtAYZ/oiELXl43ozmyX/S/rBLTUznZ41fqd6qRwkkRTTY9zq42cEagV/bR6P9QqxFFNaU+KjyaVZMrFgYBUf1ATXlDMJ1l7xH820eVlCMahyA8V2cZ1+528yjdJlwpJrU2ZLuPeKRfYF7NScWEzX8IoxpmGyPUBb27ky1beZiO7eWHSj24ygPb/NB1LGSTPg5NaYvubUHBNhqrIc1qtY2cW7X3hLWZdPGVz0BgMVZYmdfyxTkWfw7CCabSXh6po6JARGf0GjN687w4bNpmYZyz0EIvG8jHdz5XwVnZ2fhHcjqb53lG3yc1YNUv4yjZ3PifaqLfZ4Unzv80z2ww1fNJVLQOSmL/koP1Fp/qeCNVi+K3Mk1tUNxdyHmqAJp7qxrxABHh6Ou7yuf6RS09HH6nIZ1xU5QfZG6JSMElgMpKipXLNA5IX+Da6nvhyfwpVGr0hSM2mYYAmaTr176/nZeFVgdZtLB6AKiQHROA4HkU4VJXc9eh97JeLek8l6hnCYpXmswW4LWND1JXgWCprQfL+tnjxDnsFmexQuNHC/IB5IWfeAxAC3SCqhxff52g8Q2teyTb+r7qVy
+ ty7PqzVD
+ U3rd27tvZIl0WC3tls6MahngaTbc2HAzZsLoN3OqOrbpnW/xL8YzzmbjC+cChxoqnb6izvls/eHkVIYZHywad4C4aJ5hl0rj61VAsJCXVQO/t/gQ+H9R6sNHh7VSzW5vqiQ2swZab+1qf6UxrzmednLin7KAlSwclVB1zHEX9KpKEm4/FCSEMinvfR+UKtrWf0CbU9g7bbOB7ZOwdSoQQlaauvmBnV/129svpB5sB9N8Th/YZSjEGoFhGJVhFhcM6uqP/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -86,59 +86,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 15, 2025 at 04:40:32PM -0700, Boris Burkov wrote:
-> Uncharged pages are tricky to track by their essential "uncharged"
-> nature. To maintain good accounting, introduce a vmstat counter tracking
-> all uncharged pages. Since this is only meaningful when cgroups are
-> configured, only expose the counter when CONFIG_MEMCG is set.
+On Fri, Aug 15, 2025 at 04:40:33PM -0700, Boris Burkov wrote:
+> extent_buffers are global and shared so their pages should not belong to
+> any particular cgroup (currently whichever cgroups happens to allocate
+> the extent_buffer).
 > 
-> Confirmed that these work as expected at a high level by mounting a
-> btrfs using AS_UNCHARGED for metadata pages, and seeing the counter rise
-> with fs usage then go back to a minimal level after drop_caches and
-> finally down to 0 after unmounting the fs.
+> Btrfs tree operations should not arbitrarily block on cgroup reclaim or
+> have the shared extent_buffer pages on a cgroup's reclaim lists.
 > 
-> Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
 > Signed-off-by: Boris Burkov <boris@bur.io>
-> ---
->  include/linux/mmzone.h |  3 +++
->  mm/filemap.c           | 17 +++++++++++++++++
->  mm/vmstat.c            |  3 +++
->  3 files changed, 23 insertions(+)
-> 
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 0c5da9141983..f6d885c97e99 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -245,6 +245,9 @@ enum node_stat_item {
->  	NR_HUGETLB,
->  #endif
->  	NR_BALLOON_PAGES,
-> +#ifdef CONFIG_MEMCG
-> +	NR_UNCHARGED_FILE_PAGES,
-> +#endif
->  	NR_VM_NODE_STAT_ITEMS
->  };
->  
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 6046e7f27709..cd5af44a838c 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -146,6 +146,19 @@ static void page_cache_delete(struct address_space *mapping,
->  	mapping->nrpages -= nr;
->  }
->  
-> +#ifdef CONFIG_MEMCG
-> +static void filemap_mod_uncharged_vmstat(struct folio *folio, int sign)
-> +{
-> +	long nr = folio_nr_pages(folio) * sign;
-> +
-> +	lruvec_stat_mod_folio(folio, NR_UNCHARGED_FILE_PAGES, nr);
-
-Since we expect to add this metric to memory.stat, I think we should use
-mod_node_page_state() instead here.
-
-With that you can add:
 
 Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+
+I think mm-tree is better for this series.
 
 
