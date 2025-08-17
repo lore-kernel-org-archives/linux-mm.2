@@ -2,92 +2,98 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1BE8CCA0EE4
-	for <linux-mm@archiver.kernel.org>; Sun, 17 Aug 2025 08:34:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 99797CA0EE4
+	for <linux-mm@archiver.kernel.org>; Sun, 17 Aug 2025 08:35:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B191C8E003A; Sun, 17 Aug 2025 04:34:48 -0400 (EDT)
+	id 290EA8E003B; Sun, 17 Aug 2025 04:35:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ACA5D8E0035; Sun, 17 Aug 2025 04:34:48 -0400 (EDT)
+	id 268638E0035; Sun, 17 Aug 2025 04:35:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A07268E003A; Sun, 17 Aug 2025 04:34:48 -0400 (EDT)
+	id 17E7B8E003B; Sun, 17 Aug 2025 04:35:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8949E8E0035
-	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 04:34:48 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6ADEC1DDBA4
-	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 08:34:47 +0000 (UTC)
-X-FDA: 83785588614.26.A17980B
-Received: from mail-io1-f70.google.com (mail-io1-f70.google.com [209.85.166.70])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B0DD8C000D
-	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 08:34:45 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of 3JJShaAkbAB8NTUF5GG9M5KKD8.BJJBG9PN9M7JIO9IO.7JH@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.70 as permitted sender) smtp.mailfrom=3JJShaAkbAB8NTUF5GG9M5KKD8.BJJBG9PN9M7JIO9IO.7JH@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 002D38E0035
+	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 04:35:58 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A6BDE118131
+	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 08:35:58 +0000 (UTC)
+X-FDA: 83785591596.01.FEEFC5D
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 5C04B100006
+	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 08:35:54 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	spf=pass (imf14.hostedemail.com: domain of chenhuacai@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=chenhuacai@loongson.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755419685;
+	s=arc-20220608; t=1755419757;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=/XbfEN1k/gSsBEABxdcrTawukqj9qiBDPSr2V37dmic=;
-	b=IBqGIdCGl1NurguRo8H02BrjK8xraJP9+ycqqqePyHhuzdwrvj7fSqLzp9WWWUnuk/RT/c
-	nRSMAbgJTNKsAQEpVK38rsmRtjU7J4jtNAbjsxkw8k+w3SHn6cggoixPDjr3e4cGtPg2oZ
-	+aX/PyZXRoXsxYUrmtL9PWh2ZiHXxSk=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=0QEU6rxca66gxdaDTX4BKW3w7+p8hrm0o5luvKasAAY=;
+	b=dD26257u4Bi7o+YLROCGr1tJz/BZ66deTA2E85rDZiU2jcQh5kC6l07sFINpb27EIivBDW
+	7pzE1GgCXH0LpuZax++4aDqf08Oq6tZ5xexS2XSKhqc5kn1Hhe4egMnVGupJfA7CJxwZkH
+	cCffyxHkYCVQL0XKQs4S8nSHYbPcCEA=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
+	imf14.hostedemail.com;
 	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of 3JJShaAkbAB8NTUF5GG9M5KKD8.BJJBG9PN9M7JIO9IO.7JH@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.70 as permitted sender) smtp.mailfrom=3JJShaAkbAB8NTUF5GG9M5KKD8.BJJBG9PN9M7JIO9IO.7JH@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755419685; a=rsa-sha256;
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of chenhuacai@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=chenhuacai@loongson.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755419757; a=rsa-sha256;
 	cv=none;
-	b=rREkgD//jHSLIenX+TPeW0+WH+kpKNHVhVhr20BEzjKRq2mm+A0Zo8cv6yjRTq4KTzhBKS
-	4Jfvi3Y8rNmaC5oLe8YHb7RQPF0rJgdMfHszTeGlVVX55fWgIpNa3lBOaEN4NcRz/XiuN+
-	3N2UHSEkznqfYGQLsSBrDnYqg/xlxSE=
-Received: by mail-io1-f70.google.com with SMTP id ca18e2360f4ac-88432cc8949so346127239f.0
-        for <linux-mm@kvack.org>; Sun, 17 Aug 2025 01:34:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755419685; x=1756024485;
-        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/XbfEN1k/gSsBEABxdcrTawukqj9qiBDPSr2V37dmic=;
-        b=XvyXIoG7nnBZqcrIxQt1QasPG7oe7KyWq9otyKlBbRVQDNCJweVfaGwCTtHQNLM2Of
-         InImB2KQjUlSUto3EvSr54fknIHqTT/jKqNyJ4VQ4thr8Qw7wnmB2pRLdjxXx01foB5V
-         dgLmXyaN+m/IdPyCIvrUu0oSIBDcGgAfK3d0tudc13Akf44F2dAzTW+ZuqhkHMmpiXgn
-         FAr5q++PtKowuWj2Sdkm/TlabDLmwM8AehKSBShlMDs9ZFLWLXCPTj2Zo9edoilSLDxi
-         kmNK06KMZ1sPrcK90sspla/F3fl1NeAhKB5RRRcuBfkAb6UqUPeKyYiV32eXCAJMZoTr
-         C9NA==
-X-Forwarded-Encrypted: i=1; AJvYcCXiwjuec6mMhnn9AG6bpWct9l8PcPXFnT6vR7SESdJ1mZXX0zvqIi09/v3RhIYqOpcG0JrvIuMi1w==@kvack.org
-X-Gm-Message-State: AOJu0YweSADA3BFFRNSZt3cj35YEIZLjR21mCd4cmKK1vnWQLBwUAULV
-	gBnuL5FBU4nkgCGA+WhPFIlEK3MD4GwljcWBt15GS2BMLgWX/rgXdHxr8IgTiF+l/GGqq2zYLEE
-	IzGfEQelhazufuDUvegVA+upg5PE+W0Sy1/FJrwd60AnR9Tlwec6BtBqfeHc=
-X-Google-Smtp-Source: AGHT+IGiWqrm1nJEcVFM1ZVWdN0l9BXcpBE0JAq4jPEYdSb0wjl90ebdKLrv0nt+wJuydm1ouwQt+qpV+rodHXLfAEpOXkVHEmO3
+	b=hXVvwGG4rrcexBqGHmPT9TuyWzDW681NAVe0ndkAltBsCFUVmTETobQdiNXGaTf9oxQQPD
+	iBS+SK+ZhtoAPJBgLmT+Nu+UODiUews/Xp+BBP6jlFA2WeKWt2SNYXSq/HJv8cEX7BX9t1
+	sg1OnWcmmbHPFSVEKR7qLOiHvOhxS0g=
+Received: from loongson.cn (unknown [223.64.69.45])
+	by gateway (Coremail) with SMTP id _____8DxzOJnlKFosvFAAQ--.56926S3;
+	Sun, 17 Aug 2025 16:35:51 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.69.45])
+	by front1 (Coremail) with SMTP id qMiowJDxscJilKFolzhTAA--.44172S2;
+	Sun, 17 Aug 2025 16:35:50 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
+	David Hildenbrand <david@redhat.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH V3] mm/migrate: Fix NULL movable_ops if CONFIG_ZSMALLOC=m
+Date: Sun, 17 Aug 2025 16:35:34 +0800
+Message-ID: <20250817083534.2398601-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1545:b0:3e5:66a6:a46a with SMTP id
- e9e14a558f8ab-3e57e9c4a5emr131036615ab.17.1755419684780; Sun, 17 Aug 2025
- 01:34:44 -0700 (PDT)
-Date: Sun, 17 Aug 2025 01:34:44 -0700
-In-Reply-To: <cover.1755300815.git.boris@bur.io>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68a19424.050a0220.e29e5.0065.GAE@google.com>
-Subject: [syzbot ci] Re: introduce uncharged file mapped folios
-From: syzbot ci <syzbot+ciacf14517a343602e@syzkaller.appspotmail.com>
-To: boris@bur.io, kernel-team@fb.com, linux-btrfs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, shakeel.butt@linux.dev, 
-	willy@infradead.org, wqu@suse.com
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: B0DD8C000D
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJDxscJilKFolzhTAA--.44172S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoWxKF4xGF4kWFWrWF1fAr43Jwc_yoW3Aw4DpF
+	48Ar4UGr48JrW7JF17AF1UAry5Wws7uF48Jr9rGw1UZrn8Ww17GFyUtFy7Zr1rWrW5JF17
+	JF1Dtw1Ykr4UJ3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUkFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+	1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
+	67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2
+	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
+	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
+	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE
+	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
+	kF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07URa0PUUUUU=
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 5C04B100006
+X-Stat-Signature: paoqn3hwmmsrdy3fh4d1uo4hturneois
 X-Rspam-User: 
-X-Stat-Signature: kwew9no18z3mco91ij1qae4coiqmnab1
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1755419685-282072
-X-HE-Meta: U2FsdGVkX1/vCbahEuGwha52Vfah1K7Jbt9q+HNNfXbKDjsJBEiy3ZS9jHEIkFSa0TmPqyyZO05i8+0VV+QufRUqAywK0qUy9vSmn7bWvtyQBJ8zwDExC27NpuSkwbd8IYYccI1OmeFj0r4me24aDqoFiNNorjacgBknYzLe+UnxYv5FHBpQxVsehpxFzwfr7Stec3UH8tyCKR3IHecEsYKDkjayeCY2Z3FMB8PThDXR2asx1vlSoBl0nQswnkN3Iq8GG5Y+aAAIGfLouSHVYN8/P04OXH3LHyhcVzGw1o3ZChD7BzMuJ9Ln7awGxyVsqrbjc/yJ2oiMNoCmEpZt20Ldx8j2WQaOyLJBfrPMoIeOUJ/C8tQRo3nxc2k4K5Ht+cqGzWX3eRT0BIEffsOwHoMKh/sFCWuVCQI05QNRW7xe/+apXbVHdCK3ZIqXvUEO9eraaDoqeEX3vCRqPyONLjjixyKRsnLPRLH2MyeI00BgCEsDOQbKdaGyMwnyK4hlR5ivm8e3613GhoZmKNRbnTMnEeZqg8mF7/7ReBPWfO69RhgXXxFgmFM9VQEkeWNwTTKgVANsebt7ycmjSSDlOSJzvJq4Ij6H9GBB7aWj/6gNcvPo8G3HYjZ6IxmX+nlSnaNLyJJW/7B9WtiYuPxGNFmcUIrbt7aOWziUGEQ0px4KuTqCrSucF9Nw3WDYVkUwP3rpgw7c9SFw7Tl6daaLe427OiDNTdbqlnlnZ/XqnhyxICmKqJ+MZx0+XpsuPHbHx+rhi4LwOV5byhHAKmesxFOzXWZ8vmTnI0+NGolB+AG9iJgWBN4Ybcd4jLJVKMPdlUDWyWDx/lMgVyLwEyiLz0pTBrlvLKFW5b5ff/kT5RSnYyIlBPXDsdoG/dYqL3R8x9RmAYLm0Oys/SqbiFNDf724C5GWXzreabcGp4qs2abRIsk3ri6NeP36z5ppzSff3V0cso+ogZ4mRQK9cAG
- 7ffrioZF
- hWnNaj1TG0kT3bIHgWDI2bhTG7lXoNTRduXBkq/tMIl3R6xuOXJDIEVmLp8XkUjN5zTUy4FNNH/nwU9oeOHiuH0QW0oRsD+7e62VJi3Fsa81csWRrKoroKwln85oYW9Qq29mQeQuAuCJmSU8z6RWAvmeZz+qqwRi+xWyjV7/8UOPOHUFaqVycJ4S9G8Joojx8+kooluPHVfwAe6iKS04F1n63jH7I3GMoFOwyeLe2LTNIF6SNn36H81mX15MbypkevaJKWE8hBm6cSJd+eq8uroCEm96Aflhl8h1dHaEx3d8YPi82xbVSbD7uGEAjow/a2xSCQBOTGCrYcMgmds2s1Nns3PXZ3VLXlf6+w+zmBQbFKwaYnGGyew8FXh7rBQuKj/6P9FOUcEeVJFUXCeGwRryxxoct4ZT/EXRvH1mrRUph1yKamxhBYkKCDQoUWB9oPgJc5cYCzF+c4PNr+rJRruGDQS6yocimozIgGlx1sX2g/9rJQqpv4nhYczq2nlmiMxBuh3G15e+VwPTT2zvdJr3HOEn2/SAzvzuwbQ1Eg0RdNbaTKGnNy4RDfkbbS3gO4U6FNhxvGCNddAZBc3ZFV6POy8R9/Up/ksi1SetPrZ67n9c/MLjCv72cvW9JRuAHoda2033Dr8kHcVS0TRo8Y8+q7wFlziUQEI0seYKSD/ZuXm38p9pG9LKPzAWLTJimC1A8SFOh5BzLMZL0PazRKyJObmlhAuT62HSDvpZScziePpvStLcxOBpD98xC7oPxI700D6LaI5zY55ZJlPisC5wzvIMzeVe5zGk/3lLOJXQB8iRKqhSU/c8SJGIz2TGg9fIsLvuroMuQjosfFr2Y6/TF6XMMaNZhkCdOPoSwa4F11R7Gwl1hAHdE+pL21Sng0HoMeVOsCKrrxEY=
+X-HE-Tag: 1755419754-756847
+X-HE-Meta: U2FsdGVkX1+0Tdi90+LwWekIpbzOMvGVWYq6yNFCPGMPf258LFXccBr936DNuN5WocDIdnIii9zuvLkli5OwdjEtlDqMz5fvYAbVXVtlP5bI3PuRMQcRMhyUxFdSMmUC3aYrrRukPWPyqB1T163uR8RLErV3RqAdA32sRDF9fexCnvx/484LQJ9fOITkeaqknkVWLv9us1MFfYPQwSE+ZDMQ3D7Hnt9yTnraJCp+UvcOK0wTmDKfOxXqW2yHu4N1MaiUQSGs+PQFy5mJhZ62HuKLN5sgp1krXhxX+GRwpPtpZZK8RJtcfmv5YrSsyYgVftpbWVa3TEoGM8B7zJiL82n2BD1WzYgIDslkqUTlgaFKS6aDfq3Tifyp80/OHTcJr0hDPhwnInBcm5y4ci0fnhtPcZB0zNmb6ScOFC1inrWN8y98RgIBN14iWpcVTKwjOKtNmD/sn4tcSIPeKEic73TKaGJ5A3Eazkue0rTLkCcq24VxdzjRrXPUc/5MGEowewNfKZcQVvQ/FdcFVvZ1NTUF19H5pRy73PPtL3sG1HcFSmv6FCDw0RdgNSZP3yq8uXkzXTAbe1BWOEYyDaYoZFb5THcpYezWElZ+eQ7KWunXY30Io7wRKfVBvLZxzmvuNbOQePqdp1+wUC14dOhf8Up0rnEjMOJ5/oSwji9ogdQp39/iYkWkQcbtxgs8HenhSfwYJPCVgDOMB8g5R+S3zF90pK5FvCwUAg10QbwcqkZlylUOXG6llleu0rWjWg3EOOGwjmuIWFVpU2gV4Hb+4jdiHMqC3Uo4PjOiVtoEDXJtEZe+NBvVrTGhkZVMG2gtQ/e9S1LzITiJsSq63IqAmPiUP7/prYUMJ2yZClL6q58vuBk+45OvjSjEFF+WuoBVO7uRtWJ8TzKnwrTa05BvozF9VZ8x+J8CegqHJK6IRBt1pecKe7j4kYv5Mgi8oy4/q8/DSehrtFZmRemhia6
+ GzEnFExV
+ 5TqiKefI3kBL7KBiKk/zlzkcM/Fk6d9Cp1PYxKenP5kXKyeqfCTk94KkXYErv0VnFbrt+xyhUIz/4G9w=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,99 +102,207 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot ci has tested the following series
+After commit 84caf98838a3e5f4bdb34 ("mm: stop storing migration_ops in
+page->mapping") we get such an error message if CONFIG_ZSMALLOC=m:
 
-[v2] introduce uncharged file mapped folios
-https://lore.kernel.org/all/cover.1755300815.git.boris@bur.io
-* [PATCH v2 1/3] mm/filemap: add AS_UNCHARGED
-* [PATCH v2 2/3] mm: add vmstat for cgroup uncharged pages
-* [PATCH v2 3/3] btrfs: set AS_UNCHARGED on the btree_inode
+ WARNING: CPU: 3 PID: 42 at mm/migrate.c:142 isolate_movable_ops_page+0xa8/0x1c0
+ CPU: 3 UID: 0 PID: 42 Comm: kcompactd0 Not tainted 6.16.0-rc5+ #2133 PREEMPT
+ pc 9000000000540bd8 ra 9000000000540b84 tp 9000000100420000 sp 9000000100423a60
+ a0 9000000100193a80 a1 000000000000000c a2 000000000000001b a3 ffffffffffffffff
+ a4 ffffffffffffffff a5 0000000000000267 a6 0000000000000000 a7 9000000100423ae0
+ t0 00000000000000f1 t1 00000000000000f6 t2 0000000000000000 t3 0000000000000001
+ t4 ffffff00010eb834 t5 0000000000000040 t6 900000010c89d380 t7 90000000023fcc70
+ t8 0000000000000018 u0 0000000000000000 s9 ffffff00010eb800 s0 ffffff00010eb800
+ s1 000000000000000c s2 0000000000043ae0 s3 0000800000000000 s4 900000000219cc40
+ s5 0000000000000000 s6 ffffff00010eb800 s7 0000000000000001 s8 90000000025b4000
+    ra: 9000000000540b84 isolate_movable_ops_page+0x54/0x1c0
+   ERA: 9000000000540bd8 isolate_movable_ops_page+0xa8/0x1c0
+  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
+  PRMD: 00000004 (PPLV0 +PIE -PWE)
+  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
+  ECFG: 00071c1d (LIE=0,2-4,10-12 VS=7)
+ ESTAT: 000c0000 [BRK] (IS= ECode=12 EsubCode=0)
+  PRID: 0014c010 (Loongson-64bit, Loongson-3A5000)
+ CPU: 3 UID: 0 PID: 42 Comm: kcompactd0 Not tainted 6.16.0-rc5+ #2133 PREEMPT
+ Stack : 90000000021fd000 0000000000000000 9000000000247720 9000000100420000
+         90000001004236a0 90000001004236a8 0000000000000000 90000001004237e8
+         90000001004237e0 90000001004237e0 9000000100423550 0000000000000001
+         0000000000000001 90000001004236a8 725a84864a19e2d9 90000000023fcc58
+         9000000100420000 90000000024c6848 9000000002416848 0000000000000001
+         0000000000000000 000000000000000a 0000000007fe0000 ffffff00010eb800
+         0000000000000000 90000000021fd000 0000000000000000 900000000205cf30
+         000000000000008e 0000000000000009 ffffff00010eb800 0000000000000001
+         90000000025b4000 0000000000000000 900000000024773c 00007ffff103d748
+         00000000000000b0 0000000000000004 0000000000000000 0000000000071c1d
+         ...
+ Call Trace:
+ [<900000000024773c>] show_stack+0x5c/0x190
+ [<90000000002415e0>] dump_stack_lvl+0x70/0x9c
+ [<90000000004abe6c>] isolate_migratepages_block+0x3bc/0x16e0
+ [<90000000004af408>] compact_zone+0x558/0x1000
+ [<90000000004b0068>] compact_node+0xa8/0x1e0
+ [<90000000004b0aa4>] kcompactd+0x394/0x410
+ [<90000000002b3c98>] kthread+0x128/0x140
+ [<9000000001779148>] ret_from_kernel_thread+0x28/0xc0
+ [<9000000000245528>] ret_from_kernel_thread_asm+0x10/0x88
 
-and found the following issue:
-WARNING in folio_lruvec_lock_irqsave
+The reason is that defined(CONFIG_ZSMALLOC) evaluates to 1 only when
+CONFIG_ZSMALLOC=y, we should use IS_ENABLED(CONFIG_ZSMALLOC) instead.
+But when I use IS_ENABLED(CONFIG_ZSMALLOC), page_movable_ops() cannot
+access zsmalloc_mops because zsmalloc_mops is in a module.
 
-Full report is available here:
-https://ci.syzbot.org/series/15fd2538-1138-43c0-b4d6-6d7f53b0be69
+To solve this problem, we define a movable_ops[] array in mm/migrate.c,
+initialise its elements at mm/balloon_compaction.c & mm/zsmalloc.c, and
+let the page_movable_ops() function return elements from movable_ops[].
 
-***
-
-WARNING in folio_lruvec_lock_irqsave
-
-tree:      torvalds
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux
-base:      dfc0f6373094dd88e1eaf76c44f2ff01b65db851
-arch:      amd64
-compiler:  Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
-config:    https://ci.syzbot.org/builds/5b3f7bc8-d0c2-4985-8ae6-d51ea4e2baed/config
-C repro:   https://ci.syzbot.org/findings/f02552bd-e7e6-4c3f-8cc3-04a5a946771d/c_repro
-syz repro: https://ci.syzbot.org/findings/f02552bd-e7e6-4c3f-8cc3-04a5a946771d/syz_repro
-
- do_new_mount+0x2a2/0x9e0 fs/namespace.c:3805
- do_mount fs/namespace.c:4133 [inline]
- __do_sys_mount fs/namespace.c:4344 [inline]
- __se_sys_mount+0x317/0x410 fs/namespace.c:4321
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 5951 at ./include/linux/memcontrol.h:734 folio_lruvec include/linux/memcontrol.h:734 [inline]
-WARNING: CPU: 0 PID: 5951 at ./include/linux/memcontrol.h:734 folio_lruvec_lock_irqsave+0x184/0x1d0 mm/memcontrol.c:1252
-Modules linked in:
-CPU: 0 UID: 0 PID: 5951 Comm: syz-executor Not tainted 6.17.0-rc1-syzkaller-00036-gdfc0f6373094-dirty #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:folio_lruvec include/linux/memcontrol.h:734 [inline]
-RIP: 0010:folio_lruvec_lock_irqsave+0x184/0x1d0 mm/memcontrol.c:1252
-Code: 74 0c 4c 89 f7 e8 cc 53 f8 ff 48 8b 04 24 49 89 06 eb a0 48 89 df 48 c7 c6 60 4e 98 8b e8 a4 36 fd fe c6 05 52 a1 62 0d 01 90 <0f> 0b 90 e9 a5 fe ff ff 44 89 e1 80 e1 07 80 c1 03 38 c1 0f 8c 22
-RSP: 0018:ffffc9000359f540 EFLAGS: 00010246
-RAX: f0f9782cf8520600 RBX: ffffea0000807140 RCX: f0f9782cf8520600
-RDX: 0000000000000002 RSI: ffffffff8dba6067 RDI: ffff888020a73980
-RBP: ffffc9000359f5e0 R08: ffff88804b024253 R09: 1ffff1100960484a
-R10: dffffc0000000000 R11: ffffed100960484b R12: ffff88804b032fe8
-R13: ffff88801ba80918 R14: ffff888106950000 R15: 0000000000000000
-FS:  0000555587fa3500(0000) GS:ffff8880b861c000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000c00003e720 CR3: 0000000029a9c000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- folio_lruvec_relock_irqsave include/linux/memcontrol.h:1544 [inline]
- folio_batch_move_lru+0x20a/0x3a0 mm/swap.c:167
- lru_add_drain_cpu+0x119/0x880 mm/swap.c:647
- lru_add_drain+0x122/0x3e0 mm/swap.c:735
- __folio_batch_release+0x48/0x90 mm/swap.c:1054
- folio_batch_release include/linux/pagevec.h:101 [inline]
- invalidate_inode_pages2_range+0x889/0xa80 mm/truncate.c:707
- close_ctree+0x6ff/0x1380 fs/btrfs/disk-io.c:4408
- generic_shutdown_super+0x135/0x2c0 fs/super.c:643
- kill_anon_super+0x3b/0x70 fs/super.c:1282
- btrfs_kill_super+0x41/0x50 fs/btrfs/super.c:2114
- deactivate_locked_super+0xbc/0x130 fs/super.c:474
- cleanup_mnt+0x425/0x4c0 fs/namespace.c:1378
- task_work_run+0x1d4/0x260 kernel/task_work.c:227
- resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
- exit_to_user_mode_loop+0xec/0x110 kernel/entry/common.c:43
- exit_to_user_mode_prepare include/linux/irq-entry-common.h:225 [inline]
- syscall_exit_to_user_mode_work include/linux/entry-common.h:175 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:210 [inline]
- do_syscall_64+0x2bd/0x3b0 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f4a78b8ff17
-Code: a8 ff ff ff f7 d8 64 89 01 48 83 c8 ff c3 0f 1f 44 00 00 31 f6 e9 09 00 00 00 66 0f 1f 84 00 00 00 00 00 b8 a6 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 01 c3 48 c7 c2 a8 ff ff ff f7 d8 64 89 02 b8
-RSP: 002b:00007ffe33fe80a8 EFLAGS: 00000246 ORIG_RAX: 00000000000000a6
-RAX: 0000000000000000 RBX: 00007f4a78c11c05 RCX: 00007f4a78b8ff17
-RDX: 0000000000000000 RSI: 0000000000000009 RDI: 00007ffe33fe8160
-RBP: 00007ffe33fe8160 R08: 0000000000000000 R09: 0000000000000000
-R10: 00000000ffffffff R11: 0000000000000246 R12: 00007ffe33fe91f0
-R13: 00007f4a78c11c05 R14: 000000000000f471 R15: 00007ffe33fe9230
- </TASK>
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-Tested-by: syzbot@syzkaller.appspotmail.com
-
+Fixes: 84caf98838a3e5f ("mm: stop storing migration_ops in page->mapping")
+Acked-by: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+V2: Use EXPORT_SYMBOL_GPL_FOR_MODULES instead of EXPORT_SYMBOL and fix build.
+V3: Use register interface instead of set array directly (Thank David).
+
+ include/linux/migrate.h |  5 +++++
+ mm/balloon_compaction.c |  6 ++++++
+ mm/migrate.c            | 38 ++++++++++++++++++++++++++++++--------
+ mm/zsmalloc.c           | 10 ++++++++++
+ 4 files changed, 51 insertions(+), 8 deletions(-)
+
+diff --git a/include/linux/migrate.h b/include/linux/migrate.h
+index acadd41e0b5c..9009e27b5f44 100644
+--- a/include/linux/migrate.h
++++ b/include/linux/migrate.h
+@@ -79,6 +79,7 @@ void migration_entry_wait_on_locked(swp_entry_t entry, spinlock_t *ptl)
+ void folio_migrate_flags(struct folio *newfolio, struct folio *folio);
+ int folio_migrate_mapping(struct address_space *mapping,
+ 		struct folio *newfolio, struct folio *folio, int extra_count);
++int set_movable_ops(const struct movable_operations *ops, enum pagetype type);
+ 
+ #else
+ 
+@@ -100,6 +101,10 @@ static inline int migrate_huge_page_move_mapping(struct address_space *mapping,
+ {
+ 	return -ENOSYS;
+ }
++static inline int set_movable_ops(const struct movable_operations *ops, enum pagetype type)
++{
++	return -ENOSYS;
++}
+ 
+ #endif /* CONFIG_MIGRATION */
+ 
+diff --git a/mm/balloon_compaction.c b/mm/balloon_compaction.c
+index 2a4a649805c1..03c5dbabb156 100644
+--- a/mm/balloon_compaction.c
++++ b/mm/balloon_compaction.c
+@@ -254,4 +254,10 @@ const struct movable_operations balloon_mops = {
+ 	.putback_page = balloon_page_putback,
+ };
+ 
++static int __init balloon_init(void)
++{
++	return set_movable_ops(&balloon_mops, PGTY_offline);
++}
++core_initcall(balloon_init);
++
+ #endif /* CONFIG_BALLOON_COMPACTION */
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 425401b2d4e1..9e5ef39ce73a 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -43,8 +43,6 @@
+ #include <linux/sched/sysctl.h>
+ #include <linux/memory-tiers.h>
+ #include <linux/pagewalk.h>
+-#include <linux/balloon_compaction.h>
+-#include <linux/zsmalloc.h>
+ 
+ #include <asm/tlbflush.h>
+ 
+@@ -53,6 +51,33 @@
+ #include "internal.h"
+ #include "swap.h"
+ 
++static const struct movable_operations *offline_movable_ops;
++static const struct movable_operations *zsmalloc_movable_ops;
++
++int set_movable_ops(const struct movable_operations *ops, enum pagetype type)
++{
++	/*
++	 * We only allow for selected types and don't handle concurrent
++	 * registration attempts yet.
++	 */
++	switch (type) {
++	case PGTY_offline:
++		if (offline_movable_ops && ops)
++			return -EBUSY;
++		offline_movable_ops = ops;
++		break;
++	case PGTY_zsmalloc:
++		if (zsmalloc_movable_ops && ops)
++			return -EBUSY;
++		zsmalloc_movable_ops = ops;
++		break;
++	default:
++		return -EINVAL;
++	}
++	return 0;
++}
++EXPORT_SYMBOL_GPL(set_movable_ops);
++
+ static const struct movable_operations *page_movable_ops(struct page *page)
+ {
+ 	VM_WARN_ON_ONCE_PAGE(!page_has_movable_ops(page), page);
+@@ -62,15 +87,12 @@ static const struct movable_operations *page_movable_ops(struct page *page)
+ 	 * it as movable, the page type must be sticky until the page gets freed
+ 	 * back to the buddy.
+ 	 */
+-#ifdef CONFIG_BALLOON_COMPACTION
+ 	if (PageOffline(page))
+ 		/* Only balloon compaction sets PageOffline pages movable. */
+-		return &balloon_mops;
+-#endif /* CONFIG_BALLOON_COMPACTION */
+-#if defined(CONFIG_ZSMALLOC) && defined(CONFIG_COMPACTION)
++		return offline_movable_ops;
+ 	if (PageZsmalloc(page))
+-		return &zsmalloc_mops;
+-#endif /* defined(CONFIG_ZSMALLOC) && defined(CONFIG_COMPACTION) */
++		return zsmalloc_movable_ops;
++
+ 	return NULL;
+ }
+ 
+diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+index 2c5e56a65354..6c574ab8abff 100644
+--- a/mm/zsmalloc.c
++++ b/mm/zsmalloc.c
+@@ -2246,8 +2246,15 @@ EXPORT_SYMBOL_GPL(zs_destroy_pool);
+ 
+ static int __init zs_init(void)
+ {
++	int rc;
++
+ #ifdef CONFIG_ZPOOL
+ 	zpool_register_driver(&zs_zpool_driver);
++#endif
++#ifdef CONFIG_COMPACTION
++	rc = set_movable_ops(&zsmalloc_mops, PGTY_zsmalloc);
++	if (rc)
++		return rc;
+ #endif
+ 	zs_stat_init();
+ 	return 0;
+@@ -2257,6 +2264,9 @@ static void __exit zs_exit(void)
+ {
+ #ifdef CONFIG_ZPOOL
+ 	zpool_unregister_driver(&zs_zpool_driver);
++#endif
++#ifdef CONFIG_COMPACTION
++	set_movable_ops(NULL, PGTY_zsmalloc);
+ #endif
+ 	zs_stat_exit();
+ }
+-- 
+2.47.3
+
 
