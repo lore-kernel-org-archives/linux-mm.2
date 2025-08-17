@@ -2,110 +2,116 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 189DBCA0EE4
-	for <linux-mm@archiver.kernel.org>; Sun, 17 Aug 2025 03:41:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C4F77CA0EDC
+	for <linux-mm@archiver.kernel.org>; Sun, 17 Aug 2025 04:28:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 882188E0032; Sat, 16 Aug 2025 23:41:02 -0400 (EDT)
+	id E941F8E0033; Sun, 17 Aug 2025 00:28:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 833CC8E000A; Sat, 16 Aug 2025 23:41:02 -0400 (EDT)
+	id E6AFE8E000A; Sun, 17 Aug 2025 00:28:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 770188E0032; Sat, 16 Aug 2025 23:41:02 -0400 (EDT)
+	id D59C28E0033; Sun, 17 Aug 2025 00:28:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 667DD8E000A
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 23:41:02 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C0DF08E000A
+	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 00:28:54 -0400 (EDT)
 Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C09DB83912
-	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 03:41:01 +0000 (UTC)
-X-FDA: 83784848322.16.908E2DB
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C78DA1C0002
-	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 03:40:59 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bqGCi7HM;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf21.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755402060; a=rsa-sha256;
-	cv=none;
-	b=T96DDSOs3LlisxKnv4PjBI0VhE1qxYgmh4MhZpat6H28jjRIvSaVS1wFsuJiTeisKVQZB4
-	VGi1nkhftz38h3IwYMuHXC9g5tUy675wsoODpcgEILvXrpwJcvCfqJjplPkZ376Y677tvI
-	yUzLyzRgdghMVAmNl+CengG+o97y05U=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bqGCi7HM;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf21.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E7458140575
+	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 04:28:53 +0000 (UTC)
+X-FDA: 83784968946.16.C2FB8F1
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0621740002
+	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 04:28:51 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=FM5Q6fxd;
+	spf=pass (imf07.hostedemail.com: domain of sudarsanm@google.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=sudarsanm@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755402060;
+	s=arc-20220608; t=1755404932;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3Y0oXgvbJlVAXUapKet03fj1MIE/RRaWOW5OiNzH2oU=;
-	b=BaFU36jTESgoTtCdT58JXHriNl6SL3/DtfcxywhCqABZFjFe7veqSu0RzqUn1yNHuVKEWU
-	f/WM7hEoZwgv5zKE8+3b6w/9ZBmED5/oQxWLfiHjB9N30kPXYp0mWPkj56+Z0OzKKmdpSg
-	Bd6zjzz0oI5dxe0WsxuNf8ommsFtYMs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755402059;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3Y0oXgvbJlVAXUapKet03fj1MIE/RRaWOW5OiNzH2oU=;
-	b=bqGCi7HMHwUIpZfRR0NB4O3GcNfFZ5RpdRpK0CGGv2FrdZTeT1tG6/wCmtO0YeuUSHbLXp
-	Apt773qQbJXOd2C3ElM0IPsvgqq++W0SdKzULU+xzVk052Obtw8gsWBG8yZJupq4TvrXZD
-	VnRZimggtjHIqaSfthlBDnmLtRnOYWc=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-80-PkT_4EHSPaqREfWT33cFVQ-1; Sat,
- 16 Aug 2025 23:40:55 -0400
-X-MC-Unique: PkT_4EHSPaqREfWT33cFVQ-1
-X-Mimecast-MFC-AGG-ID: PkT_4EHSPaqREfWT33cFVQ_1755402053
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 544231800340;
-	Sun, 17 Aug 2025 03:40:53 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.34])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E5A23180044F;
-	Sun, 17 Aug 2025 03:40:50 +0000 (UTC)
-Date: Sun, 17 Aug 2025 11:40:46 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: linux-mm@kvack.org, ryabinin.a.a@gmail.com, glider@google.com,
-	dvyukov@google.com, vincenzo.frascino@arm.com,
-	akpm@linux-foundation.org, kasan-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	sj@kernel.org, lorenzo.stoakes@oracle.com, elver@google.com,
-	snovitoll@gmail.com
-Subject: Re: [PATCH v2 00/12] mm/kasan: make kasan=on|off work for all three
- modes
-Message-ID: <aKFPPi2sti7+3JZ9@MiWiFi-R3L-srv>
-References: <20250812124941.69508-1-bhe@redhat.com>
- <CA+fCnZcAa62uXqnUwxFmDYh1xPqKBOQqOT55kU8iY_pgQg2+NA@mail.gmail.com>
- <CA+fCnZdKy-AQr+L3w=gfaw9EnFvKd0Gz4LtAZciYDP_SiWrL2A@mail.gmail.com>
- <aJxzehJYKez5Q1v2@MiWiFi-R3L-srv>
- <CA+fCnZfv9sbHuRVy8G9QdbKaaeO-Vguf7b2Atc5WXEs+uJx0YQ@mail.gmail.com>
- <aJ2kpEVB4Anyyo/K@MiWiFi-R3L-srv>
- <CA+fCnZcdSDEZvRSxEnogBMCFg1f-PK7PKx0KB_1SA0saY6-21g@mail.gmail.com>
+	bh=BiJC33MJvOH1Vpmx9TcHijUmBr5sO/XAeGk2/N8gTkw=;
+	b=6ALQx+UOjXeq1zB4s2Y2Cj0GSsgllgvXZaC4cCy2X5QLui8VQF2AxNzQcoOt1KlAJZvzf5
+	Zmo7/vBUTwDPIEuczNsKEDKYcULAK8D0HJjZnb+H05tUCmxnymkR0VqIc6Cm6o0nYkB+BY
+	7OmvJdrOoyop0NLhWHlyWbHacvvYkK4=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=FM5Q6fxd;
+	spf=pass (imf07.hostedemail.com: domain of sudarsanm@google.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=sudarsanm@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755404932; a=rsa-sha256;
+	cv=none;
+	b=sBmIzkxiJhUabu7jW+hcho0ROUNHK7mKAuuRMjJWescG2/HgHKPrnqAzH1CwVA3gK1EBgR
+	/XX0ayInKLPsUmIfnIIJ8ReyGtDOlOCUaw/8a00aprwLwG+hdB6Lkz6g50ZJIlAJokEy+V
+	wZXvwlipUu8LTbNMWlraTY2RHPDP08o=
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3b9dc5c2f0eso2122163f8f.1
+        for <linux-mm@kvack.org>; Sat, 16 Aug 2025 21:28:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755404930; x=1756009730; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BiJC33MJvOH1Vpmx9TcHijUmBr5sO/XAeGk2/N8gTkw=;
+        b=FM5Q6fxd17SKVaT078Af2cR0Q3Mu/TFuIJfK4V1HftGBY+xrI3jUyj2nvcAeju6rpT
+         jutIlTg+tfOZ88Kd5LIdNHLVpXknqQ3XD4xNFj31RT9gwZa9oTFb8tjnvXjj5bMv+ixj
+         Y3xpO6j2XmCFKNoLiAH2om6pKKHsDIs6Qzz1jA7uqZG7p+HubDp4BDvM0WAd8m0Z8ydv
+         oB40yKIgbUc7HLEcanB0NClmBZDPFzCoHuEQoEiGTbdg5UMy+PhPEIIsf7A0BwcgGB1z
+         cSV/PkAX/9Bf8Y8Li1Q05cF80+1qErKc5fmDO7ezrynAKv2u6V7XUaSpvZbOC74qqGr0
+         +4QQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755404930; x=1756009730;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BiJC33MJvOH1Vpmx9TcHijUmBr5sO/XAeGk2/N8gTkw=;
+        b=WtMjo0Htg0Wzm0ZQQInVPCtEeh0QaFbPJisTFhDkPfxP7ZNRAlDfn9zGsfrNsAaVmA
+         tiKI9hJw4/DyLivFxBWDAgZPysAOF1FA+Ds4p/N713e1wWZ9VBYGPORWegtv7yehktlX
+         1zxowYwJtY40AgsWW1IeMblNtNLjAk22hf1n9hnO/r1NzCubXg+U96IIv2GyVTLLSi2B
+         b9IjcUh3OA0Bj5otqnL3OWx28fsEySKmpd1ZQMfcAB6cQtubuuk8GAHodm+Fiw47WmHp
+         YddCYhfnVk0sQY3ibMrGIXesa2CtrrAcN5C4qLW0MjnyZrhuvvIqs1QxIh5uSlBSjofY
+         rF5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWxV6/vMwPu5zxVo9obAvyrca03dDz+IV+imwxAJi8M0hioBwS1MOlECvAPRqE+ny8ScfwaSVeFGA==@kvack.org
+X-Gm-Message-State: AOJu0Yw0LYYsJgg414+PYi08aZcbWIRx3pR5ITiwtGke8nyr9Q6I3q8k
+	aXDoq4AFi1GGRAj3Lz4FPr9m2+eu234kTKguaY3iqCG03Lbms1+GWFUOWRLJxxHwApgvt7vyq/Y
+	KPA2i8U4yaCKUE+Gx02FqJJ5gvCYpat+dmpVECZub
+X-Gm-Gg: ASbGnct8uXxghbLUMLCFeld2o6B/cAeiDaJbg7Qk9q1ga6vkvu1XiIY8UM2FDKsrkXb
+	lq5EJ00dSz+CwrgAKzaEhcj+KcaVQzQaAa44/rSJt2Bt3a1cyB9OtfsJaABxTwPnZNt2cALo/KC
+	nQ0kFTo5cqYqREGefT61gvQ8IooxKd3dXINQOX7upxmoelpK15fHjAAIqh9GZ1D4VHHkHN/aGtL
+	fVAgHX5GpTMBpVJx9Yf15TwbrOT7M7X+1Za
+X-Google-Smtp-Source: AGHT+IGS1pBzG3LJi4LJWdLgnoIui/QvinF2gyEaQMWHssnXGuqeTADFCMUiB+RW5hDg9XSqK51zw3Dazhk17SzXGFw=
+X-Received: by 2002:a05:6000:400b:b0:3b7:8914:cd94 with SMTP id
+ ffacd0b85a97d-3bc6aa272c6mr3281632f8f.41.1755404928970; Sat, 16 Aug 2025
+ 21:28:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+fCnZcdSDEZvRSxEnogBMCFg1f-PK7PKx0KB_1SA0saY6-21g@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Rspamd-Server: rspam03
+References: <20250723-slub-percpu-caches-v5-0-b792cd830f5d@suse.cz>
+ <20250815225259.3012455-2-sudarsanm@google.com> <aKA7180s0HdLfOKc@harry>
+ <CAA9mObAiQbAYvzhW---VoqDA6Zsb152p5ePMvbco0xgwyvaB2Q@mail.gmail.com>
+ <498fc518-d78a-43a4-9196-507891e9b844@suse.cz> <22666e86-2523-4136-94e6-0de126fcec1e@suse.cz>
+In-Reply-To: <22666e86-2523-4136-94e6-0de126fcec1e@suse.cz>
+From: Sudarsan Mahendran <sudarsanm@google.com>
+Date: Sat, 16 Aug 2025 21:28:12 -0700
+X-Gm-Features: Ac12FXw1MXLMOdAVkoTs0tVE-q5mUXa0vf_noCRKGgACEIZjA3myKp54MhzQnoA
+Message-ID: <CAA9mObALY3L=G3Ti52pSnWYGHspDa01Xr6NeiWHwTGOX76K7nw@mail.gmail.com>
+Subject: Re: [PATCH v5 00/14] SLUB percpu sheaves
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Harry Yoo <harry.yoo@oracle.com>, Liam.Howlett@oracle.com, cl@gentwo.org, 
+	howlett@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	maple-tree@lists.infradead.org, rcu@vger.kernel.org, rientjes@google.com, 
+	roman.gushchin@linux.dev, surenb@google.com, urezki@gmail.com, 
+	Greg Thelen <gthelen@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 0621740002
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C78DA1C0002
-X-Stat-Signature: 581ssr49rrhbmi5j3hs7iojr8hbq7q8n
-X-HE-Tag: 1755402059-286853
-X-HE-Meta: U2FsdGVkX18zWkzebCLRrNRmTpmeFa2NKruF7YHqp3wRinjVu7c9qot4/BqWgEkT4IVuXYHsDjrBERUt5zeWyGUCyPYLb+0xyyOCNBXw6uFFRvtMfqVu7Hl28k8BFoTtLg/ue4ZEs3YieRaoQiS3X9kHhV5PuzfmY5jLKoN99EIYneoX+t9fZHXpQyQM5kTUr8J1YrOM7fi9V542UivTc2j3hPtdRObu9yNqPAnfJ8YWsWEMD5gNz/PFjil6jZTHYhxQ/6g8yS5LxxrYSGHsRvuxzBKR8tiYvZqyoEoljAwRmFqmAlf8i7MJ4cmO5EEOlTVorWhsc2LTiQ5PJ+W5/j1MYJneqWRODODGzjVXFbhHHrkxbUt5polnDqqzNlTl6YX5Z7CaM6+GQCMxZEK5qWIgCFLeCwg1WkhC6OS7Rksehc4DQ5CWHloKdCMDID65FhAacxiC18NfPeztieCU1bZMYzP3ItCDqS25obMRv8jbe2j0rDwAGhLR0GqZbKJQ4QkiP8RMEqfKffxAkLGYK3qXhtbMUQIbblYJvFVbcidalOtEDPQebJ3iH3fBoUCbeUk+qpTkNSN4BvvEvOPhXJzfeMD72c8H687kmppX5YBIMQrHpkoTulXXZhyZe5/ba/dzYdngfcWNRoF0ApGH9Sg5b450Yqk/btTyDU3OX1j8nmRlrRel/6m+OQZzyo0iIBom91NkoqxOHn5nmbbIHqUfVdU+/JuIMb4wJ4rraH8ZAUW0WMqe9Rv1G0xisMsQgzoQmqF71GZHV8un4WAMew1JFjuonSjgSyV3x+UclzbEMbRHnc4+eCy+G5zXdzYrNwx5BEer9NmlJosY+4w6d39be0kQjUe3p98fzX8pI68kNXeROGy1E3dFq6TBoJ30BkmDyoIedRiJybMduBZL+38b1ZoXodG4AvRKUZFtiqnQfVOkVg/Ddzl5ThlEoqXastD3YmStEPQLHG42uMF
- F0khTVIx
- utwZEDuzzlh1vl9wNqthBYOU5pk8IJXrCfFaHkMIFVGf3cKr1RmKXukYia3JVA/pBIWGDc81PvC+AqK2VyNRrBK1tVd4Lw+9nI1voqUslXqBIknW1ZvLvR1PWZCcbM6yQoDW/upPTe7KDS5DeRhw88EssgS8vZ1XEaxoi1b2rh8+mbfq37vAU3azhBqshSJHZr1aVIX/jSVvhA52QWK6HuGOd/ylEZ4oqA/jcNdY/gHO5+THPUbgJSnH174v5Tlrid9eMq3X702RRFQHIMa3QDPznrNuF3UBHcc6GZNznQSUGsWLncf6KJ9h+/BFnnVChi5AGCI1F1mN0CCAwtXsZbPBsNKNipZkrb/qs6fiwv540eI9ApAFI6vfSswNO1DDiMa2x9Ys5iyoT+OGyGQ5wvIkgOf8w3qmy3osx/LjkK9oLrRSTicI4QMKvsYQ762Hm0lxSNcjRMNk7w0MLFQMo9iVr1038J1S9zpA8UCaXHfnlXAh6wkM36dev7Lxnt6OdpK555WoltTuwZdo=
+X-Stat-Signature: nzpmd771zjhp74pg69g9okbzzwp59gfb
+X-HE-Tag: 1755404931-952875
+X-HE-Meta: U2FsdGVkX1+WEknCCjC/FRlFstdHmIcHEYGmTnnmzf1kf4gCe4D5ShBxXSIyvgLEJTs0Eh105qeMtz7NrlrpfMT+jEmNUHeYlA4khV0jfH/JgetHHpXcEfQB2mOvfDRMSlH2FQibim16rUm1kC2zUDawFlXGMCagy+4/3lXa5zo2k04wVgV4S8uklIrcN0CDLsTQ5AEZkr77DAuovjEX5MEu49leenX88aA/tM7U1cUuvMEBFSStIHpWAKDVYusy2Q7Z2+C54W+RxZjSlfWllElcBx/RucJoOkwIO5uNixl6T3Bm0/VL9fu6IkBeU7QtVyzZ6xr3YrQrQFt9UtJrdL5ZN+YHdj0KYp4uIQHWQj11IJCGiNflybltoqqmSMPMguJRPLJ3ZGmtQ819VCgU2gB/uB109854XM1wDhFtS/B1ctxKqUbrLRqCJKs8MKdxgbV/3r6JlduM/WbLvsBSxB/yghXZR2+5Yye6rVJAiW3+1oi5+47XzLFkA3dsnkt0NMmAA7LhSjqTPSzs5n2TNmaP48U5IB0XfCf+zbIc+e/+i1DKwQheRNAniSLIcA1OxNMOoeXVUe7pmhlgdLtkwKalYTSk2e7shdkIyNTaOZG011IZg7fh/zu9IWMG7pG9Prj2M9phD/hmXMOFKeWCjXIKqBN2LgWZdBkhDfewP2u7mH3zoSSAz8rnYEX/v7Qq9+xRFxtDzd9qiMRoecneczOIuzDYA4pFP9vkxLnKi99Q/M+l9T5dR78wO3f8nkXMcP3dUI/TGzJiAjsJ4cwgLBdYtpf6oPDnGRh2nKR+dEGUeJhO4RL4DpJRxiwoAOjiX08WKe+tXYYTYMoFEW7bDM4LQh9M/cOL/JB6zMvUDGMhbmJJRfiD9oEm2lNoMQIjjY6Bqd9hu/y2V4XB/Q/Iq/jyMiL/IWQtIYvHzNvx2+IrOJxWy41OuUPy5u05Vgt23l7e+EkPco8Pt+fNzF0
+ VOQdt3Fl
+ 7YX8v4qxho7dcZQ06MEg4IGjLJPgGXyilh33dz3R8cxB2/VTgFL+J/uEQ2b3q4cmfiqznByFKOt4glQMiDJKg266gD3L6dUCmnS0LexRTU01kPSp9rBiLVRYWw9T1lDz6btZw+Ddv+KPLaxgT/zMijgmiai7yCGanzc3vNmH2XrEMK/7HPlBTW4twsV97k7QEMRsgfQJDOmThkBq/DWhA1bHa+vBRozzILPcG
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,42 +120,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08/16/25 at 06:50am, Andrey Konovalov wrote:
-> On Thu, Aug 14, 2025 at 10:56 AM Baoquan He <bhe@redhat.com> wrote:
-> >
-> > Ah, I got what you mean. We probably are saying different things.
-> >
-> > In order to record memory content of a corrupted kernel, we need reserve
-> > a memory region during bootup of a normal kernel (usually called 1st
-> > kernel) via kernel parameter crashkernel=nMB in advance. Then load
-> > kernel into the crashkernel memory region, that means the region is not
-> > usable for 1st kernel. When 1st kernel collapsed, we stop the 1st kernel
-> > cpu/irq and warmly switch to the loaded kernel in the crashkernel memory
-> > region (usually called kdump kernel). In kdump kernel, it boots up and
-> > enable necessary features to read out the 1st kernel's memory content,
-> > we usually use user space tool like makeudmpfile to filter out unwanted
-> > memory content.
-> >
-> > So this patchset intends to disable KASAN to decrease the crashkernel
-> > meomry value because crashkernel is not usable for 1st kernel. As for
-> > shadow memory of 1st kernel, we need recognize it and filter it away
-> > in makedumpfile.
-> 
-> Ah, I see, thank you for the explanation!
-> 
-> So kdump kernel runs with the amount of RAM specified by crashkernel=.
-> And KASAN's shadow memory increases RAM usage, which means
-> crashkernel= needs to be set to a higher value for KASAN kernels. Is
-> my understanding of the problem correct?
+On Sat, Aug 16, 2025 at 11:31=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> w=
+rote:
+>
+> On 8/16/25 8:31 PM, Vlastimil Babka wrote:
+> >>
+> >> I assume somehow the free_to_pcs_bulk() fallback case is taken, thus
+> >> calling __kmem_cache_free_bulk(), which calls free_to_pcs_bulk() ad na=
+useam.
+> > Could it be a rebase gone wrong? Mine to 6.17-rc1 is here (but untested=
+)
 
-Yeah, you are quite right.
+Yes Vlastimil,
 
-When I tested it, on x86_64 and arm64, usually I set crashkernel=256M
-and it's sufficient. However, when KASAN is enabled and generic mode is
-taken, I need set crashkernel=768M to make vmcore dumping succeed. In
-kdump kernel, read_vmcore() uses ioremap to map the old memory of
-collapsed kernel for reading out, those vmalloc-ed areas are lazily
-freed and cause more shadow memory than what we usually think shadow
-memory only costs 1/8 of physical RAM.
+You're right. It is a rebase gone wrong. Thanks for catching this.
 
+I ported this patch series on top of v6.17-rc1 using b4 cmd
+
+b4 am -o - 20250723-slub-percpu-caches-v5-0-b792cd830f5d@suse.cz | git
+am --reject
+
+For some reason b4 merging yielded me this:
+
+git show 893ee67b5c75e7411e4e3c6ddaa8d0765985423e
+slab: add opt-in caching layer of percpu sheaves
+
+@@ -5252,6 +6133,15 @@ static void __kmem_cache_free_bulk(struct
+kmem_cache *s, size_t size, void **p)
+        if (!size)
+                return;
+
++       /*
++        * freeing to sheaves is so incompatible with the detached freelist=
+ so
++        * once we go that way, we have to do everything differently
++        */
++       if (s && s->cpu_sheaves) {
++               free_to_pcs_bulk(s, size, p);
++               return;
++       }
++
+        do {
+
+
+Whereas the original patch [1] had this instead:
+
+@@ -5033,6 +5801,15 @@ void kmem_cache_free_bulk(struct kmem_cache *s,
+size_t size, void **p)
+  if (!size)
+  return;
+
++ /*
++ * freeing to sheaves is so incompatible with the detached freelist so
++ * once we go that way, we have to do everything differently
++ */
++ if (s && s->cpu_sheaves) {
++ free_to_pcs_bulk(s, size, p);
++ return;
++ }
++
+
+I have no idea why b4 got confused between kmem_cache_free_bulk() and
+__kmem_cache_free_bulk().
+
+After I fixed this issue, I'm able to boot the kernel successfully.
+
+[1] https://lore.kernel.org/all/20250214-slub-percpu-caches-v2-1-88592ee096=
+6a@suse.cz/
+
+> >
+> > https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/
+>
+> This branch specifically
+> https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/log/?h=
+=3Db4/slub-percpu-sheaves
 
