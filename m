@@ -2,97 +2,89 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 57338CA0EE4
-	for <linux-mm@archiver.kernel.org>; Sun, 17 Aug 2025 15:18:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 45D73CA0EDC
+	for <linux-mm@archiver.kernel.org>; Sun, 17 Aug 2025 17:04:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6172F8E003F; Sun, 17 Aug 2025 11:18:20 -0400 (EDT)
+	id 8E2558E0040; Sun, 17 Aug 2025 13:04:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EF3F8E0035; Sun, 17 Aug 2025 11:18:20 -0400 (EDT)
+	id 893028E0035; Sun, 17 Aug 2025 13:04:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52C038E003F; Sun, 17 Aug 2025 11:18:20 -0400 (EDT)
+	id 7CFBB8E0040; Sun, 17 Aug 2025 13:04:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 41BE58E0035
-	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 11:18:20 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BA92D118359
-	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 15:18:19 +0000 (UTC)
-X-FDA: 83786605518.10.B94E071
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4B34E20002
-	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 15:18:16 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	spf=pass (imf13.hostedemail.com: domain of chenhuacai@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=chenhuacai@loongson.cn
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CE2D8E0035
+	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 13:04:47 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E50D55A43F
+	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 17:04:46 +0000 (UTC)
+X-FDA: 83786873772.18.E8AF778
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3D47040008
+	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 17:04:45 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XMy7gPQw;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755443898;
+	s=arc-20220608; t=1755450285;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=JZtNjv/2KPBsyQqtUixlABdFDDDAfcs6fH4WzVkcFoU=;
-	b=HafARdrEHtx//L4zevD7XV6tROCZvX1reFY55vY41s+FKv+cCYwvonH0FULADkB4NBWGhz
-	u4+7j9d+NE9Gyco89rfj+vdC9wC4CkAF4opTVpfw2AP/oOeD84mTT8k3K7BbGTZRMIChxK
-	/INsGcZ/CThKr3xY2xF5/AGvmUXTg+c=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7EoVNwhkLSb8056vofmP/Nncw9DXysnHXa2Iq0AEUKE=;
+	b=Dmncl6PmjDt8PgaU3tb0C0pduLQvoE/Quo36kgtEkv4jpx2jlHGpe/DTdIjSzB0nyjqpnF
+	eKXNoyET3iHsaaSw/lr03D5Sc9ksa5E2nQLL59Ui4TqPMYOg2paBdqRo5/uSIISr3sA9z9
+	tjnLgBq3qXKz0gGe8F6bB9yUIMer87M=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of chenhuacai@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=chenhuacai@loongson.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755443898; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XMy7gPQw;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755450285; a=rsa-sha256;
 	cv=none;
-	b=IgWrui9HiNzQG3bvhpCC64iUdzW2TvNolbW7n2jAXNib9NY3aQGduATMMAfn/6KxX/dP8g
-	UPVVTPmGtgmP6vTAUk4TgLTOTViNCnUcRwFc8hlYnhRZOzHqY7GznnM6bnLBv4UkVEgjXc
-	e/AcAGTg/8HwGtADB5er9WHjnMiKkbY=
-Received: from loongson.cn (unknown [223.64.69.45])
-	by gateway (Coremail) with SMTP id _____8AxLOK28qFoIwZBAQ--.16614S3;
-	Sun, 17 Aug 2025 23:18:14 +0800 (CST)
-Received: from localhost.localdomain (unknown [223.64.69.45])
-	by front1 (Coremail) with SMTP id qMiowJAx_8Gw8qForr9TAA--.35417S2;
-	Sun, 17 Aug 2025 23:18:12 +0800 (CST)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org,
-	David Hildenbrand <david@redhat.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	"Michael S . Tsirkin" <mst@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH V4] mm/migrate: Fix NULL movable_ops if CONFIG_ZSMALLOC=m
-Date: Sun, 17 Aug 2025 23:17:59 +0800
-Message-ID: <20250817151759.2525174-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.47.3
+	b=8ULydPAyC9/jzSqSG6EjynK1xYwcl7JUFLCGJDPDlbSsIpyanp/mLdIjwbKUG4hLK2E5bL
+	Nhlf4k6/9MqF51C2qTJp3l+6CGCPXiRF9Y+H2VvJ1shfttGaebPdCsD/S1UKt64OXTXGzv
+	eTWOff1Ea8r2A/FYDVayehy+Xcftm9w=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id C490F417CA;
+	Sun, 17 Aug 2025 17:04:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 840C1C4CEEB;
+	Sun, 17 Aug 2025 17:04:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755450283;
+	bh=KTWQtwe8r6oIJ7x+q3kv/WoFv4VvQPP2AkriCOou1Xw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=XMy7gPQwKc2CeZF7hxhYl7SdA4uPUsXfFIcw3Rp+eshqqCZYUzB24bpJmWSdPn++D
+	 UwGTIgFWu2uRQfrWH8wkj323iIoKE7WZIp/7n/5f1EDwEFa4yO0518Ru9oxImP29Tk
+	 f+nCiCRJOMhwo9/+GKq2AKGuOkxHIRMoxkDl9TK/mNHdQgEp61D3kmAFdkQUQNLdf8
+	 /JEWDxc+bbQ8VxWv80PgEhpP+QBZ2+kDvf6RLhz/1CFYH5Kc+PO6Q0KK9UN4Yc0aO1
+	 2MmIbmvMHcuLAsJuLdVVdI5T/AZGcT32JoCEJ/QkIBXiB/wQpBeKrD5bV9nbEZ5WWB
+	 AGeYAgleigYEg==
+From: SeongJae Park <sj@kernel.org>
+To: Enze Li <lienze@kylinos.cn>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	enze.li@gmx.com
+Subject: Re: [PATCH v2] mm/damon/Kconfig: make DAMON_STAT_ENABLED_DEFAULT depend on DAMON_STAT
+Date: Sun, 17 Aug 2025 10:04:41 -0700
+Message-Id: <20250817170441.9817-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <bjoel05s.fsf@kylinos.cn>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAx_8Gw8qForr9TAA--.35417S2
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoWxKF4xGF4kWFWrWF1fAr43Jwc_yoW3ZFy3pF
-	48Ar4UGr48JrW7JF17AF1UAry5Wws7uF4UJr9rGw1UZrn8Ww17GFyUtFy7Zr1rWr45JF17
-	JF1Dtw1Ykr4UJ3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUk2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
-	1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
-	67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2
-	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
-	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
-	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE
-	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
-	kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU2ID7UUUUU
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 4B34E20002
-X-Stat-Signature: 3zch1yjhybimhu8xmyubtycasfzxk8t8
+X-Stat-Signature: x1ukjzomew1z1wiw9bguc6ogimrxhosq
 X-Rspam-User: 
-X-HE-Tag: 1755443896-23004
-X-HE-Meta: U2FsdGVkX1/xX+As6y7Ln1XzoHrbWIEhbAriiYGE+oSr4vBU8DmKyOBdZFbH3cw1LaUt6y/UotOXSeeCppm8hA5cIOjcCcEzCfu8MVyFTkppQgyUhsuK4Bfhp/7MWNE6Dr1CDBSF4iDzpuffIh3luen3+S6NUqUNWWYAsWN1X1FY+nwXqYakc+lEfDF+fHAdFZlQyuRYgqen78JGVyvHyQLjBwIX8EFBuDLynCARFH1K+HlItLHJSOKss/y54ZdsJi5JWr3TejudDyRF9+ChBlggvzdAAWlrPppTShZIEqvsgq3KrDIliDrkaBuLv4XDdWZdDKGULkNCdsjG8FT5NqVuESBFOMSe6kw0sOTwZCo4srqF68bo84sO9oiOfNNRfkzKeEEWgxtMcgLPwz0qlZf+WSsTgBhXTzxzG0yjptSqjWKaGXMuLCQ+XSl+OKnEMSRqI+TCLOO1ncMmUYqDIAb/n/Ge9EMZ2KK8GcV9BtB+T5mMCJ8lR+euBvAmXW/ROHSoE2upro5M2UhKtjk6VNzmWE0Nscq9/kHHS9+Xux555oyvQnEGdmUAenfh0a+BNV35Bvsn7FF/S4JnjB7DbESMRHDVsGo42onAzmBhFtJQLwKVkwzZxNSpkp1AjUTwxiTEQyBqiJyVwWiFxRKaym8kRPEM8ddvZfANmgmkEib2RkY+5t5990qF3Oufd7NHEEMGIKQrihmMyYlhiOX1KWALZ88q5NPB4LyzpOJhCKAHGi08XGvPZWLwCWPAhZSt2fWSaZaUxJ1U0hDpWLnvZbJBliasoo5rKRIW/1mew1I=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Queue-Id: 3D47040008
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755450285-910583
+X-HE-Meta: U2FsdGVkX18/aWlioKmaOPSA1/VGlKHSYzn+kNqVxvxRSkx4debd/uhP+TBcopoqI++99tQKZR0OlwRilb3bXrEQnfP+isgHYoM9Rc3lKafoCwFsQ+meKEoChUjGUUg0EM2xrE08q597NbE5kY0q6ON8d/csJIoN92hul/vHEtT5FwZnxFMVT+opa0RgX0wtf3NfJYK0HVfO0BKI+cVCWJ5nUXRmeNaF9RJgz7Dahmu7mDlYTgV+g5n0MKPqAj3WVb6/fHzcJjsEg07NjgNgo5puFtCZ8iddIZOMLcFfCoCZbS1paWzEXv19ufnAl6EkWeH2HBPXPbjs8ho6wQUwixWPRfv1Do1paA2+xJwdOvaXkG0AJtHarlBMUZOIi3SE97v5XTeyJCrdr7nKw26N8vtRvxkqb0KXY5BmIQLJWgCiYlLhaz8e8d1hGb7WY1Weqnzf+Kccl/WuasTD9n2lZxpJg5JUzReGutl9dJzK3jakLsSg6tuEFsNznoxeP4aIBSG4mCWbwCjiEoS/twi2ASdb6100vgqzKnCSBRMc9iBav37iELLy4c30rFEXtnwivFKUH1AZetZuthiMGXeAfmrd3miGWKM7H1iZHUtqIsu0Zp8WnOGcXg+e+Mat4gtmuYWSDTOdYTo2XFmXuiH9Ak3gZO5AJoKcLAd0A9oYqBVyMnJAkQfYedj0qoA8RB0CneN5/DzwqKZxQD3Zlpn+EDt1iUuSh48cHG+LTw0h/gOxJJkD14LecEoNPny0dZP9NL5taI7UOFivtC0oGCqrEbPlZCiwkyt6Os2pbQjLWjCtiVvdT/DZfjefobo0Pu2kSY+P3RuX2In1BDQ7Tqdg9BjPC4SEFuR8XmJrI+zCVAVMCYM1x+flZI9dm8htIqwOOGw6WZFiIzd7XW4GozUD3uw6unaALxqQfWQciYKYtATZqI4Q+/yTI6xAaqu9vJY4uf7zyLkswucv5wZOlok
+ ANuB0NNO
+ t95IeU6j4N6MZlhV4DAAqdW9qxQdp017vpTsPsibLSyXgfhyH994xnU/XaFWVPnpU6N8UXeEtFTzWPjuQiALv6jLsgDYjw8aBO+ELz1cH8Xcv73lYwe4xvE1xO3BagijTHQpLwD51k+ASwE+g6kFyayPTVl2HEcPVpw94RRvglEDhUGYYD6R1KcydP/M6ibEjWsLjuEb8sBl3xfuRTZG/ypKK+1M5B2mMlW5j/dM+bjw4OzLTImA/uDGnY02LMrQQOUHi
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000001, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,210 +92,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-After commit 84caf98838a3e5f4bdb34 ("mm: stop storing migration_ops in
-page->mapping") we get such an error message if CONFIG_ZSMALLOC=m:
+On Sun, 17 Aug 2025 18:20:31 +0800 Enze Li <lienze@kylinos.cn> wrote:
 
- WARNING: CPU: 3 PID: 42 at mm/migrate.c:142 isolate_movable_ops_page+0xa8/0x1c0
- CPU: 3 UID: 0 PID: 42 Comm: kcompactd0 Not tainted 6.16.0-rc5+ #2133 PREEMPT
- pc 9000000000540bd8 ra 9000000000540b84 tp 9000000100420000 sp 9000000100423a60
- a0 9000000100193a80 a1 000000000000000c a2 000000000000001b a3 ffffffffffffffff
- a4 ffffffffffffffff a5 0000000000000267 a6 0000000000000000 a7 9000000100423ae0
- t0 00000000000000f1 t1 00000000000000f6 t2 0000000000000000 t3 0000000000000001
- t4 ffffff00010eb834 t5 0000000000000040 t6 900000010c89d380 t7 90000000023fcc70
- t8 0000000000000018 u0 0000000000000000 s9 ffffff00010eb800 s0 ffffff00010eb800
- s1 000000000000000c s2 0000000000043ae0 s3 0000800000000000 s4 900000000219cc40
- s5 0000000000000000 s6 ffffff00010eb800 s7 0000000000000001 s8 90000000025b4000
-    ra: 9000000000540b84 isolate_movable_ops_page+0x54/0x1c0
-   ERA: 9000000000540bd8 isolate_movable_ops_page+0xa8/0x1c0
-  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
-  PRMD: 00000004 (PPLV0 +PIE -PWE)
-  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
-  ECFG: 00071c1d (LIE=0,2-4,10-12 VS=7)
- ESTAT: 000c0000 [BRK] (IS= ECode=12 EsubCode=0)
-  PRID: 0014c010 (Loongson-64bit, Loongson-3A5000)
- CPU: 3 UID: 0 PID: 42 Comm: kcompactd0 Not tainted 6.16.0-rc5+ #2133 PREEMPT
- Stack : 90000000021fd000 0000000000000000 9000000000247720 9000000100420000
-         90000001004236a0 90000001004236a8 0000000000000000 90000001004237e8
-         90000001004237e0 90000001004237e0 9000000100423550 0000000000000001
-         0000000000000001 90000001004236a8 725a84864a19e2d9 90000000023fcc58
-         9000000100420000 90000000024c6848 9000000002416848 0000000000000001
-         0000000000000000 000000000000000a 0000000007fe0000 ffffff00010eb800
-         0000000000000000 90000000021fd000 0000000000000000 900000000205cf30
-         000000000000008e 0000000000000009 ffffff00010eb800 0000000000000001
-         90000000025b4000 0000000000000000 900000000024773c 00007ffff103d748
-         00000000000000b0 0000000000000004 0000000000000000 0000000000071c1d
-         ...
- Call Trace:
- [<900000000024773c>] show_stack+0x5c/0x190
- [<90000000002415e0>] dump_stack_lvl+0x70/0x9c
- [<90000000004abe6c>] isolate_migratepages_block+0x3bc/0x16e0
- [<90000000004af408>] compact_zone+0x558/0x1000
- [<90000000004b0068>] compact_node+0xa8/0x1e0
- [<90000000004b0aa4>] kcompactd+0x394/0x410
- [<90000000002b3c98>] kthread+0x128/0x140
- [<9000000001779148>] ret_from_kernel_thread+0x28/0xc0
- [<9000000000245528>] ret_from_kernel_thread_asm+0x10/0x88
+> Hi SJ,
+> 
+> On Fri, Aug 15 2025 at 09:59:03 AM -0700, SeongJae Park wrote:
+> 
+> > On Fri, 15 Aug 2025 17:21:10 +0800 Enze Li <lienze@kylinos.cn> wrote:
+> >
+> >> The DAMON_STAT_ENABLED_DEFAULT option is strongly tied to DAMON_STAT
+> >> option -- enabling it alone is meaningless.  This patch makes
+> >> DAMON_STAT_ENABLED_DEFAULT depend on DAMON_STAT, ensuring functional
+> >
+> > s/depend/depends/ ?
+> 
+> I'm not well-versed in grammar, but using 'depends on' here feels a bit
+> weird to me.  After consulting grammar references, it seems to me that
+> I've found the answer.
+> 
+> In *Collins COBUILD English Grammar 4th* (Section 3.210, titled
+> transitive verbs with an infinitive without _to_), it says:
+> 
+> > A few verbs are followed by an object and an infinitive without to,
+> > not an -ing participle or a to-infinitive.  They are let, make, and
+> > have in the sense of cause to happen or experience.
+> 
+> It's somewhat like what we often call 'make the machine *work*'.  This
+> is my understanding.  If I misunderstood or missed something, please let
+> me know, I would be happy to submit v3 of the patch to fix the typo.
 
-The reason is that defined(CONFIG_ZSMALLOC) evaluates to 1 only when
-CONFIG_ZSMALLOC=y, we should use IS_ENABLED(CONFIG_ZSMALLOC) instead.
-But when I use IS_ENABLED(CONFIG_ZSMALLOC), page_movable_ops() cannot
-access zsmalloc_mops because zsmalloc_mops is in a module.
+My English is really poor, so I believe you're right.  Thank you for correcting
+me! :)
 
-To solve this problem, we define a set_movable_ops() interface to
-register and unregister offline_movable_ops / zsmalloc_movable_ops in
-mm/migrate.c, and call them at mm/balloon_compaction.c & mm/zsmalloc.c.
-Since offline_movable_ops / zsmalloc_movable_ops are always accessible,
-all #ifdef / #endif are removed in page_movable_ops().
 
-Fixes: 84caf98838a3e5f ("mm: stop storing migration_ops in page->mapping")
-Acked-by: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
-V2: Use EXPORT_SYMBOL_GPL_FOR_MODULES instead of EXPORT_SYMBOL and fix build.
-V3: Use register interface instead of set array directly (Thank David).
-V4: Update commit message for V3 changes and fix warning.
+Thanks,
+SJ
 
- include/linux/migrate.h |  5 +++++
- mm/balloon_compaction.c |  6 ++++++
- mm/migrate.c            | 38 ++++++++++++++++++++++++++++++--------
- mm/zsmalloc.c           | 10 ++++++++++
- 4 files changed, 51 insertions(+), 8 deletions(-)
-
-diff --git a/include/linux/migrate.h b/include/linux/migrate.h
-index acadd41e0b5c..9009e27b5f44 100644
---- a/include/linux/migrate.h
-+++ b/include/linux/migrate.h
-@@ -79,6 +79,7 @@ void migration_entry_wait_on_locked(swp_entry_t entry, spinlock_t *ptl)
- void folio_migrate_flags(struct folio *newfolio, struct folio *folio);
- int folio_migrate_mapping(struct address_space *mapping,
- 		struct folio *newfolio, struct folio *folio, int extra_count);
-+int set_movable_ops(const struct movable_operations *ops, enum pagetype type);
- 
- #else
- 
-@@ -100,6 +101,10 @@ static inline int migrate_huge_page_move_mapping(struct address_space *mapping,
- {
- 	return -ENOSYS;
- }
-+static inline int set_movable_ops(const struct movable_operations *ops, enum pagetype type)
-+{
-+	return -ENOSYS;
-+}
- 
- #endif /* CONFIG_MIGRATION */
- 
-diff --git a/mm/balloon_compaction.c b/mm/balloon_compaction.c
-index 2a4a649805c1..03c5dbabb156 100644
---- a/mm/balloon_compaction.c
-+++ b/mm/balloon_compaction.c
-@@ -254,4 +254,10 @@ const struct movable_operations balloon_mops = {
- 	.putback_page = balloon_page_putback,
- };
- 
-+static int __init balloon_init(void)
-+{
-+	return set_movable_ops(&balloon_mops, PGTY_offline);
-+}
-+core_initcall(balloon_init);
-+
- #endif /* CONFIG_BALLOON_COMPACTION */
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 425401b2d4e1..9e5ef39ce73a 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -43,8 +43,6 @@
- #include <linux/sched/sysctl.h>
- #include <linux/memory-tiers.h>
- #include <linux/pagewalk.h>
--#include <linux/balloon_compaction.h>
--#include <linux/zsmalloc.h>
- 
- #include <asm/tlbflush.h>
- 
-@@ -53,6 +51,33 @@
- #include "internal.h"
- #include "swap.h"
- 
-+static const struct movable_operations *offline_movable_ops;
-+static const struct movable_operations *zsmalloc_movable_ops;
-+
-+int set_movable_ops(const struct movable_operations *ops, enum pagetype type)
-+{
-+	/*
-+	 * We only allow for selected types and don't handle concurrent
-+	 * registration attempts yet.
-+	 */
-+	switch (type) {
-+	case PGTY_offline:
-+		if (offline_movable_ops && ops)
-+			return -EBUSY;
-+		offline_movable_ops = ops;
-+		break;
-+	case PGTY_zsmalloc:
-+		if (zsmalloc_movable_ops && ops)
-+			return -EBUSY;
-+		zsmalloc_movable_ops = ops;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(set_movable_ops);
-+
- static const struct movable_operations *page_movable_ops(struct page *page)
- {
- 	VM_WARN_ON_ONCE_PAGE(!page_has_movable_ops(page), page);
-@@ -62,15 +87,12 @@ static const struct movable_operations *page_movable_ops(struct page *page)
- 	 * it as movable, the page type must be sticky until the page gets freed
- 	 * back to the buddy.
- 	 */
--#ifdef CONFIG_BALLOON_COMPACTION
- 	if (PageOffline(page))
- 		/* Only balloon compaction sets PageOffline pages movable. */
--		return &balloon_mops;
--#endif /* CONFIG_BALLOON_COMPACTION */
--#if defined(CONFIG_ZSMALLOC) && defined(CONFIG_COMPACTION)
-+		return offline_movable_ops;
- 	if (PageZsmalloc(page))
--		return &zsmalloc_mops;
--#endif /* defined(CONFIG_ZSMALLOC) && defined(CONFIG_COMPACTION) */
-+		return zsmalloc_movable_ops;
-+
- 	return NULL;
- }
- 
-diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-index 2c5e56a65354..6c574ab8abff 100644
---- a/mm/zsmalloc.c
-+++ b/mm/zsmalloc.c
-@@ -2246,8 +2246,15 @@ EXPORT_SYMBOL_GPL(zs_destroy_pool);
- 
- static int __init zs_init(void)
- {
-+	int rc __maybe_unused;
-+
- #ifdef CONFIG_ZPOOL
- 	zpool_register_driver(&zs_zpool_driver);
-+#endif
-+#ifdef CONFIG_COMPACTION
-+	rc = set_movable_ops(&zsmalloc_mops, PGTY_zsmalloc);
-+	if (rc)
-+		return rc;
- #endif
- 	zs_stat_init();
- 	return 0;
-@@ -2257,6 +2264,9 @@ static void __exit zs_exit(void)
- {
- #ifdef CONFIG_ZPOOL
- 	zpool_unregister_driver(&zs_zpool_driver);
-+#endif
-+#ifdef CONFIG_COMPACTION
-+	set_movable_ops(NULL, PGTY_zsmalloc);
- #endif
- 	zs_stat_exit();
- }
--- 
-2.47.3
-
+[...]
 
