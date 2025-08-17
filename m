@@ -2,116 +2,89 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C4F77CA0EDC
-	for <linux-mm@archiver.kernel.org>; Sun, 17 Aug 2025 04:28:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E2D0CA0EE4
+	for <linux-mm@archiver.kernel.org>; Sun, 17 Aug 2025 06:27:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E941F8E0033; Sun, 17 Aug 2025 00:28:54 -0400 (EDT)
+	id 69DD88E0034; Sun, 17 Aug 2025 02:27:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6AFE8E000A; Sun, 17 Aug 2025 00:28:54 -0400 (EDT)
+	id 674808E000A; Sun, 17 Aug 2025 02:27:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D59C28E0033; Sun, 17 Aug 2025 00:28:54 -0400 (EDT)
+	id 58BD28E0034; Sun, 17 Aug 2025 02:27:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C0DF08E000A
-	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 00:28:54 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E7458140575
-	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 04:28:53 +0000 (UTC)
-X-FDA: 83784968946.16.C2FB8F1
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0621740002
-	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 04:28:51 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=FM5Q6fxd;
-	spf=pass (imf07.hostedemail.com: domain of sudarsanm@google.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=sudarsanm@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 458A08E000A
+	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 02:27:45 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6C3F2B9E9B
+	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 06:27:44 +0000 (UTC)
+X-FDA: 83785268448.23.0C752CB
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf09.hostedemail.com (Postfix) with ESMTP id CA320140003
+	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 06:27:42 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C4XdW7xb;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755404932;
+	s=arc-20220608; t=1755412062;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BiJC33MJvOH1Vpmx9TcHijUmBr5sO/XAeGk2/N8gTkw=;
-	b=6ALQx+UOjXeq1zB4s2Y2Cj0GSsgllgvXZaC4cCy2X5QLui8VQF2AxNzQcoOt1KlAJZvzf5
-	Zmo7/vBUTwDPIEuczNsKEDKYcULAK8D0HJjZnb+H05tUCmxnymkR0VqIc6Cm6o0nYkB+BY
-	7OmvJdrOoyop0NLhWHlyWbHacvvYkK4=
+	bh=5AQERq5OatpVNiNUItjF0hacw8nU1T7OW4izVD9NYbw=;
+	b=JEMYiJyBJPwhJh+qbfyEiBulxEKdvkkLa5LaUlC2R4EguPW7r7XOchPFxuh2vwQozjk9jJ
+	YLjSeuOP0kJ6xOUs9ODqXn8CFeasGgumHmc+o/HvkPoI53X20G9aXhd15qBrkCT2dRZGRM
+	MKVTDlZXiJ+bKU2yju7xiIclPQEfBWA=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=FM5Q6fxd;
-	spf=pass (imf07.hostedemail.com: domain of sudarsanm@google.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=sudarsanm@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755404932; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C4XdW7xb;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755412062; a=rsa-sha256;
 	cv=none;
-	b=sBmIzkxiJhUabu7jW+hcho0ROUNHK7mKAuuRMjJWescG2/HgHKPrnqAzH1CwVA3gK1EBgR
-	/XX0ayInKLPsUmIfnIIJ8ReyGtDOlOCUaw/8a00aprwLwG+hdB6Lkz6g50ZJIlAJokEy+V
-	wZXvwlipUu8LTbNMWlraTY2RHPDP08o=
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3b9dc5c2f0eso2122163f8f.1
-        for <linux-mm@kvack.org>; Sat, 16 Aug 2025 21:28:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755404930; x=1756009730; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BiJC33MJvOH1Vpmx9TcHijUmBr5sO/XAeGk2/N8gTkw=;
-        b=FM5Q6fxd17SKVaT078Af2cR0Q3Mu/TFuIJfK4V1HftGBY+xrI3jUyj2nvcAeju6rpT
-         jutIlTg+tfOZ88Kd5LIdNHLVpXknqQ3XD4xNFj31RT9gwZa9oTFb8tjnvXjj5bMv+ixj
-         Y3xpO6j2XmCFKNoLiAH2om6pKKHsDIs6Qzz1jA7uqZG7p+HubDp4BDvM0WAd8m0Z8ydv
-         oB40yKIgbUc7HLEcanB0NClmBZDPFzCoHuEQoEiGTbdg5UMy+PhPEIIsf7A0BwcgGB1z
-         cSV/PkAX/9Bf8Y8Li1Q05cF80+1qErKc5fmDO7ezrynAKv2u6V7XUaSpvZbOC74qqGr0
-         +4QQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755404930; x=1756009730;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BiJC33MJvOH1Vpmx9TcHijUmBr5sO/XAeGk2/N8gTkw=;
-        b=WtMjo0Htg0Wzm0ZQQInVPCtEeh0QaFbPJisTFhDkPfxP7ZNRAlDfn9zGsfrNsAaVmA
-         tiKI9hJw4/DyLivFxBWDAgZPysAOF1FA+Ds4p/N713e1wWZ9VBYGPORWegtv7yehktlX
-         1zxowYwJtY40AgsWW1IeMblNtNLjAk22hf1n9hnO/r1NzCubXg+U96IIv2GyVTLLSi2B
-         b9IjcUh3OA0Bj5otqnL3OWx28fsEySKmpd1ZQMfcAB6cQtubuuk8GAHodm+Fiw47WmHp
-         YddCYhfnVk0sQY3ibMrGIXesa2CtrrAcN5C4qLW0MjnyZrhuvvIqs1QxIh5uSlBSjofY
-         rF5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWxV6/vMwPu5zxVo9obAvyrca03dDz+IV+imwxAJi8M0hioBwS1MOlECvAPRqE+ny8ScfwaSVeFGA==@kvack.org
-X-Gm-Message-State: AOJu0Yw0LYYsJgg414+PYi08aZcbWIRx3pR5ITiwtGke8nyr9Q6I3q8k
-	aXDoq4AFi1GGRAj3Lz4FPr9m2+eu234kTKguaY3iqCG03Lbms1+GWFUOWRLJxxHwApgvt7vyq/Y
-	KPA2i8U4yaCKUE+Gx02FqJJ5gvCYpat+dmpVECZub
-X-Gm-Gg: ASbGnct8uXxghbLUMLCFeld2o6B/cAeiDaJbg7Qk9q1ga6vkvu1XiIY8UM2FDKsrkXb
-	lq5EJ00dSz+CwrgAKzaEhcj+KcaVQzQaAa44/rSJt2Bt3a1cyB9OtfsJaABxTwPnZNt2cALo/KC
-	nQ0kFTo5cqYqREGefT61gvQ8IooxKd3dXINQOX7upxmoelpK15fHjAAIqh9GZ1D4VHHkHN/aGtL
-	fVAgHX5GpTMBpVJx9Yf15TwbrOT7M7X+1Za
-X-Google-Smtp-Source: AGHT+IGS1pBzG3LJi4LJWdLgnoIui/QvinF2gyEaQMWHssnXGuqeTADFCMUiB+RW5hDg9XSqK51zw3Dazhk17SzXGFw=
-X-Received: by 2002:a05:6000:400b:b0:3b7:8914:cd94 with SMTP id
- ffacd0b85a97d-3bc6aa272c6mr3281632f8f.41.1755404928970; Sat, 16 Aug 2025
- 21:28:48 -0700 (PDT)
+	b=z3F30tJ901RgqYsHuZA1I0IYeWxWg5Ioun6z1xpu3Ido2zuqd9kKBZnSzae/ZnDTEdWKGQ
+	6640vHKPtk4vwblJZBx7db93UeW+0bGZw9+HF2Iq3fznobhAVUKety6AU7wAiZRQ/VxjNk
+	q2xYv9iz0SM6hDLzjlD+CTXAPB77NUo=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 8E1DB5C1660;
+	Sun, 17 Aug 2025 06:27:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A0C1C4CEEB;
+	Sun, 17 Aug 2025 06:27:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755412061;
+	bh=TpmqSwdZ371xVQIviS8OQTjs+jZME4B/LsCHX3bDftw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=C4XdW7xbTBpqFEORPxC1v3F8aSWpsZ+Ea/95jk9ry8PCZOXJVI+ZamyYFNTPxhbEQ
+	 6INhZjVaNkUoxlfLOTIBvpRSlhgB4QOPTStKhXz4gtG4AoiHUW/hMgNK3LW3DI4oX/
+	 ksMbj7ImH7mHfYimQfwqymhHw1c7TCzEpOrEflQbr/ABlhHGWv5dKkU+P6OXz4Bj1u
+	 LgDQ8T/aDiYzq2nDIC3lR+KqKxwtjg2TFon0nNaRaR7/GcFMEGdVce8R4hFxyFt+Ha
+	 QT+1F+o1GJapakOZSMqtE06huxFIx7w6OS7Mro9hVMlGQm5OcciEYHM6jN7jtJmxMP
+	 yEgE2yPtudFlA==
+Date: Sun, 17 Aug 2025 09:27:33 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Yin Tirui <yintirui@huawei.com>
+Cc: robh@kernel.org, saravanak@google.com, dan.j.williams@intel.com,
+	akpm@linux-foundation.org, david@redhat.com,
+	Jonathan.Cameron@huawei.com, devicetree@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	wangkefeng.wang@huawei.com, chenjun102@huawei.com
+Subject: Re: [PATCH v2] of_numa: fix uninitialized memory nodes causing
+ kernel panic
+Message-ID: <aKF2VZ1y8OuEChmw@kernel.org>
+References: <20250816073131.2674809-1-yintirui@huawei.com>
 MIME-Version: 1.0
-References: <20250723-slub-percpu-caches-v5-0-b792cd830f5d@suse.cz>
- <20250815225259.3012455-2-sudarsanm@google.com> <aKA7180s0HdLfOKc@harry>
- <CAA9mObAiQbAYvzhW---VoqDA6Zsb152p5ePMvbco0xgwyvaB2Q@mail.gmail.com>
- <498fc518-d78a-43a4-9196-507891e9b844@suse.cz> <22666e86-2523-4136-94e6-0de126fcec1e@suse.cz>
-In-Reply-To: <22666e86-2523-4136-94e6-0de126fcec1e@suse.cz>
-From: Sudarsan Mahendran <sudarsanm@google.com>
-Date: Sat, 16 Aug 2025 21:28:12 -0700
-X-Gm-Features: Ac12FXw1MXLMOdAVkoTs0tVE-q5mUXa0vf_noCRKGgACEIZjA3myKp54MhzQnoA
-Message-ID: <CAA9mObALY3L=G3Ti52pSnWYGHspDa01Xr6NeiWHwTGOX76K7nw@mail.gmail.com>
-Subject: Re: [PATCH v5 00/14] SLUB percpu sheaves
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Liam.Howlett@oracle.com, cl@gentwo.org, 
-	howlett@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	maple-tree@lists.infradead.org, rcu@vger.kernel.org, rientjes@google.com, 
-	roman.gushchin@linux.dev, surenb@google.com, urezki@gmail.com, 
-	Greg Thelen <gthelen@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 0621740002
-X-Rspamd-Server: rspam04
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250816073131.2674809-1-yintirui@huawei.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: CA320140003
+X-Stat-Signature: 9f9ofwqe57rp634d6teidyzo6uk9sh6b
 X-Rspam-User: 
-X-Stat-Signature: nzpmd771zjhp74pg69g9okbzzwp59gfb
-X-HE-Tag: 1755404931-952875
-X-HE-Meta: U2FsdGVkX1+WEknCCjC/FRlFstdHmIcHEYGmTnnmzf1kf4gCe4D5ShBxXSIyvgLEJTs0Eh105qeMtz7NrlrpfMT+jEmNUHeYlA4khV0jfH/JgetHHpXcEfQB2mOvfDRMSlH2FQibim16rUm1kC2zUDawFlXGMCagy+4/3lXa5zo2k04wVgV4S8uklIrcN0CDLsTQ5AEZkr77DAuovjEX5MEu49leenX88aA/tM7U1cUuvMEBFSStIHpWAKDVYusy2Q7Z2+C54W+RxZjSlfWllElcBx/RucJoOkwIO5uNixl6T3Bm0/VL9fu6IkBeU7QtVyzZ6xr3YrQrQFt9UtJrdL5ZN+YHdj0KYp4uIQHWQj11IJCGiNflybltoqqmSMPMguJRPLJ3ZGmtQ819VCgU2gB/uB109854XM1wDhFtS/B1ctxKqUbrLRqCJKs8MKdxgbV/3r6JlduM/WbLvsBSxB/yghXZR2+5Yye6rVJAiW3+1oi5+47XzLFkA3dsnkt0NMmAA7LhSjqTPSzs5n2TNmaP48U5IB0XfCf+zbIc+e/+i1DKwQheRNAniSLIcA1OxNMOoeXVUe7pmhlgdLtkwKalYTSk2e7shdkIyNTaOZG011IZg7fh/zu9IWMG7pG9Prj2M9phD/hmXMOFKeWCjXIKqBN2LgWZdBkhDfewP2u7mH3zoSSAz8rnYEX/v7Qq9+xRFxtDzd9qiMRoecneczOIuzDYA4pFP9vkxLnKi99Q/M+l9T5dR78wO3f8nkXMcP3dUI/TGzJiAjsJ4cwgLBdYtpf6oPDnGRh2nKR+dEGUeJhO4RL4DpJRxiwoAOjiX08WKe+tXYYTYMoFEW7bDM4LQh9M/cOL/JB6zMvUDGMhbmJJRfiD9oEm2lNoMQIjjY6Bqd9hu/y2V4XB/Q/Iq/jyMiL/IWQtIYvHzNvx2+IrOJxWy41OuUPy5u05Vgt23l7e+EkPco8Pt+fNzF0
- VOQdt3Fl
- 7YX8v4qxho7dcZQ06MEg4IGjLJPgGXyilh33dz3R8cxB2/VTgFL+J/uEQ2b3q4cmfiqznByFKOt4glQMiDJKg266gD3L6dUCmnS0LexRTU01kPSp9rBiLVRYWw9T1lDz6btZw+Ddv+KPLaxgT/zMijgmiai7yCGanzc3vNmH2XrEMK/7HPlBTW4twsV97k7QEMRsgfQJDOmThkBq/DWhA1bHa+vBRozzILPcG
+X-HE-Tag: 1755412062-904132
+X-HE-Meta: U2FsdGVkX1/aweBLzJt/P/B7o1801vus4Xpz5rNtuUpjgziErb4o++ML6hWyUxNMVrQmVWVGe4eb4j93k3RMLYCOmkHE/1PhEgFRTC/37F4VqzR48Vk2bhe+96JiCU1kxkT/kNEKtd8+tL8GzgCm27d2+dF5iySAxPV/gWYNYxR1m7OhmRbz49EZBcmi+ccTioGY1zTdSCoYMN7o9r+aAnMAwA5R3RFbpm2DABnh92Rf5A4XC7va3uEaCplKbYacdt52yHkyhrd9uvyxJcVdPae0mrKVcdBgIzbriWAjisGNsa675rXfUg2KzVA6rtQ7mvoVtRrS1TKA8aEC4yBNQxmGDa7OAKNpoaifQF/0DmalInAaDa/gQ/yoNUvz4MyozR+ImPCZBE7lR2tZareiDHMxoJ3VEK3/Ufb2yp1YGjMuzyuLckkfXjgU7+wUVEzIAFwzoBZHe9JSDI+V+Iq/ShYQv3spICfJ3oXC4uWdO44eoGLhantrCYdDaPL9KNyw78wQ4SIpd610BA0y7kFmT5vSL5/SBxQOK4TgiKIzEx0tmYNOzu7pWlfBHJMRFBncaoNwRhPZOcGsLsHZY/ms+SzKK0ZgEOrE8cF//f6fyiq0Cej0moC2npO6mC2JGsy+sWvvw40LWn3fifT7jWR8ihbphUDuOv5KGk/drYaw/Un4PB7CJHGF1R2ab+yze44PxmI8ur3wPfoE35SEL1aBCmNeg+zbZAH4GUeuI2rTg1f1Abf3pEmlHBZsRawNBvsWvWM7gLdSweCRoKgaeQ9iY2HfeFdI4xFFKlJ5dfQ0nbJelCgHKiFVDna7Y1NqKeIQvG6MQztDqJLcHUyjibdoHaIA9El4FVgZc3P8G0shND5XPO6zy7x9GVHIlDzzF8/JfFGlEk4eLG3nO7zjelHOzhuXcE1n4NEfspltb26Z7GGtrTh0kC6uOkGhqrkdEnPybzfdY/oWADaeWkCyvVB
+ fCId2/t4
+ aUCXo96mCfEqAkEvj0g20Svy304ql0lZ+a0u5FcfpiK+F7xoW/UwG1BTrUuX3thI9uGGOCZhZEOV/F6HmWttmoDdvGFgJyR/oDZ7wRwy5zEnyKR3mdL33ZlwUyYvx5ChzQyiBA9bHgFQm5EfJNdBZPo+ejPC2f813OVV4iMINci3d8wxCSg8Huf/xbfZCzZcWv3vVFcRuFs+ATJ3N/06VGhF+OMwKaWrmlkCkbeYqEKmewREZPIZjRDLjDgq2+P2OI2j9rDrqjtA8o6/c8tAcoaYr8FYJz5HwqjuS2jJqn3Z+OKhqwn6gWKaCkk70KdAPE2V4+i/IVWLxkbjYAITYbXkQOsyOQ0CDQ3T4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,78 +93,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 16, 2025 at 11:31=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> w=
-rote:
->
-> On 8/16/25 8:31 PM, Vlastimil Babka wrote:
-> >>
-> >> I assume somehow the free_to_pcs_bulk() fallback case is taken, thus
-> >> calling __kmem_cache_free_bulk(), which calls free_to_pcs_bulk() ad na=
-useam.
-> > Could it be a rebase gone wrong? Mine to 6.17-rc1 is here (but untested=
-)
+Hi,
 
-Yes Vlastimil,
+On Sat, Aug 16, 2025 at 03:31:31PM +0800, Yin Tirui wrote:
+> When the number of CPUs is fewer than the number of memory nodes,
+> some memory nodes may not be properly initialized because they are
+> not added to numa_nodes_parsed during memory parsing.
 
-You're right. It is a rebase gone wrong. Thanks for catching this.
+Why the issue happens when there are less CPUs than nodes?
+Does anything updates numa_nodes_parsed when there are more CPUs than
+nodes?
+ 
+> In of_numa_parse_memory_nodes(), after successfully adding a memory
+> block via numa_add_memblk(), the corresponding node ID should be
+> marked as parsed. However, the current implementation in numa_add_memblk()
 
-I ported this patch series on top of v6.17-rc1 using b4 cmd
+... current implementation of of_numa_parse_memory_nodes()?
 
-b4 am -o - 20250723-slub-percpu-caches-v5-0-b792cd830f5d@suse.cz | git
-am --reject
+> only adds the memory block to numa_meminfo but fails to update
 
-For some reason b4 merging yielded me this:
+maybe "... but skips updating"
 
-git show 893ee67b5c75e7411e4e3c6ddaa8d0765985423e
-slab: add opt-in caching layer of percpu sheaves
+> numa_nodes_parsed, leaving some nodes uninitialized.
+> 
+> During boot in a QEMU-emulated ARM64 NUMA environment, the kernel
+> panics when free_area_init() attempts to access NODE_DATA() for
+> memory nodes that were uninitialized.
+> 
+> [    0.000000] Call trace:
+> [    0.000000]  free_area_init+0x620/0x106c (P)
+> [    0.000000]  bootmem_init+0x110/0x1dc
+> [    0.000000]  setup_arch+0x278/0x60c
+> [    0.000000]  start_kernel+0x70/0x748
+> [    0.000000]  __primary_switched+0x88/0x90
 
-@@ -5252,6 +6133,15 @@ static void __kmem_cache_free_bulk(struct
-kmem_cache *s, size_t size, void **p)
-        if (!size)
-                return;
+Would have be nice to have the full crash trace here and more details how
+qemu was run.
 
-+       /*
-+        * freeing to sheaves is so incompatible with the detached freelist=
- so
-+        * once we go that way, we have to do everything differently
-+        */
-+       if (s && s->cpu_sheaves) {
-+               free_to_pcs_bulk(s, size, p);
-+               return;
-+       }
-+
-        do {
+> Cc: stable@vger.kernel.org
+> Fixes: 767507654c22 ("arch_numa: switch over to numa_memblks")
+> Signed-off-by: Yin Tirui <yintirui@huawei.com>
+> 
+> ---
+> 
+> v2: Move the changes to the of_numa related. Correct the fixes tag.
+> ---
+>  drivers/of/of_numa.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/of/of_numa.c b/drivers/of/of_numa.c
+> index 230d5f628c1b..cd2dc8e825c9 100644
+> --- a/drivers/of/of_numa.c
+> +++ b/drivers/of/of_numa.c
+> @@ -59,8 +59,11 @@ static int __init of_numa_parse_memory_nodes(void)
+>  			r = -EINVAL;
+>  		}
+>  
+> -		for (i = 0; !r && !of_address_to_resource(np, i, &rsrc); i++)
+> +		for (i = 0; !r && !of_address_to_resource(np, i, &rsrc); i++) {
+>  			r = numa_add_memblk(nid, rsrc.start, rsrc.end + 1);
+> +			if (!r)
+> +				node_set(nid, numa_nodes_parsed);
+> +		}
+>  
+>  		if (!i || r) {
+>  			of_node_put(np);
+> -- 
+> 2.43.0
+> 
 
-
-Whereas the original patch [1] had this instead:
-
-@@ -5033,6 +5801,15 @@ void kmem_cache_free_bulk(struct kmem_cache *s,
-size_t size, void **p)
-  if (!size)
-  return;
-
-+ /*
-+ * freeing to sheaves is so incompatible with the detached freelist so
-+ * once we go that way, we have to do everything differently
-+ */
-+ if (s && s->cpu_sheaves) {
-+ free_to_pcs_bulk(s, size, p);
-+ return;
-+ }
-+
-
-I have no idea why b4 got confused between kmem_cache_free_bulk() and
-__kmem_cache_free_bulk().
-
-After I fixed this issue, I'm able to boot the kernel successfully.
-
-[1] https://lore.kernel.org/all/20250214-slub-percpu-caches-v2-1-88592ee096=
-6a@suse.cz/
-
-> >
-> > https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/
->
-> This branch specifically
-> https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/log/?h=
-=3Db4/slub-percpu-sheaves
+-- 
+Sincerely yours,
+Mike.
 
