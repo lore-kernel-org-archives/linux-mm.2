@@ -2,113 +2,110 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 04435CA0EE4
-	for <linux-mm@archiver.kernel.org>; Sun, 17 Aug 2025 03:27:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 189DBCA0EE4
+	for <linux-mm@archiver.kernel.org>; Sun, 17 Aug 2025 03:41:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA5F56B03D4; Sat, 16 Aug 2025 23:27:14 -0400 (EDT)
+	id 882188E0032; Sat, 16 Aug 2025 23:41:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC4F06B03D5; Sat, 16 Aug 2025 23:27:14 -0400 (EDT)
+	id 833CC8E000A; Sat, 16 Aug 2025 23:41:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0BA86B03D2; Sat, 16 Aug 2025 23:27:14 -0400 (EDT)
+	id 770188E0032; Sat, 16 Aug 2025 23:41:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BA3A6B03CD
-	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 23:27:14 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5005716034B
-	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 03:27:14 +0000 (UTC)
-X-FDA: 83784813588.21.322AE04
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B3701A0006
-	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 03:27:12 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cNWCGX4G;
-	spf=pass (imf15.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755401232;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=V1BtoQA/QkZ6I6pbCFHA5NhFfEEg4VOTrg4sxiNV2KI=;
-	b=RA3U+hqaltPkTIMZxwUiGnEohqVM33bo0T5I7aWEgV8MNeHaiz8+E0IZ+bGzq4tOGCZ/5g
-	hhbc6Iy2b9MjRHoByO8IckhRYbYUO3+FfRV2F6CrkLVC8B0WnjmhbBpVbXhzP9Pqt0R6zT
-	z2BirE5ADVB6ss9g/FwNVZg6CHA4qIE=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cNWCGX4G;
-	spf=pass (imf15.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755401232; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 667DD8E000A
+	for <linux-mm@kvack.org>; Sat, 16 Aug 2025 23:41:02 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C09DB83912
+	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 03:41:01 +0000 (UTC)
+X-FDA: 83784848322.16.908E2DB
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C78DA1C0002
+	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 03:40:59 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bqGCi7HM;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf21.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755402060; a=rsa-sha256;
 	cv=none;
-	b=na7AdXFqAhhJeo569rFa2BPsZmwklC0aoRcrHc98itIdcCAR63ewGb2IK0R7hRjd3yqP4C
-	27/TpwBzVbimo0UWHs304hl3aoxHBTK+aJ4HKm+hgLNphLix7TAkWGMMBWtRvZxr9Pgk03
-	zmlKfcMKEZ4FxRXWmuTsNo0l0hIseBE=
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-afcb6856dfbso549178466b.1
-        for <linux-mm@kvack.org>; Sat, 16 Aug 2025 20:27:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755401231; x=1756006031; darn=kvack.org;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=V1BtoQA/QkZ6I6pbCFHA5NhFfEEg4VOTrg4sxiNV2KI=;
-        b=cNWCGX4G3Dort22GNWT4f+cruWYsxbIgk31w3dPXFfJbnvAS8+AEc9gRaOtE6TgNBV
-         2xgMWQn1nrr6C01P8u14Y4684Uzcyk9PMpd7v4/cw5Pn5Q5GIFKzzmMdRzuR69pZBZsU
-         rzpnkwUaJQ7Skl2b0gL3/1alytDHYua6ZwEgFnFCUYIZcwl1bbRlmiEso3pxNEKjOoD2
-         avcpoMFArBM0vq84facyeutZ8JMkMB4kN9SC1KJudZubHdyXcwi7UimssR8tCAMuQZj5
-         bNmTiENmQsdguzibhHgYjkHkMnpCwWB+OEhY5hAsJJ4NqJGIc/MCvnI7o1oGwhdMjtAC
-         MwyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755401231; x=1756006031;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=V1BtoQA/QkZ6I6pbCFHA5NhFfEEg4VOTrg4sxiNV2KI=;
-        b=IjkK3KLZBGAW/XmUFHql2h6O3nhmAVRXy38QCweYW9Ofltwm1xAJ6hzJBEpA3YeM90
-         wp/GmpUlUlpWvkNI3DpfJuDjexNQeBhID8pOXnZtG/aWciwAIqbZQ3AqTgo0YPOLrTRX
-         yhucHzsXNTK6flqoHKn5QuQzyJx469H6GXKIak3orGjx5rLaNsgXp+/UhaIy84nfdQsm
-         i9qmZYiBxAkL/cBW5VPeK1MaoPrQZSINQm002sGxvM0Mlkkf8Du+9Q0BthjXZLlBg/Dd
-         mTiBiN/HTGsf3Ds0AbBp9eOJDFE4W7n9xFr1Cs0rc1Lhe2Hh9pe1WnJ/1hz+CCObbQxz
-         dU1g==
-X-Gm-Message-State: AOJu0YxDJm9yGD3jJUmKmNN04aDaJ2rG078gLINKzaO6cZehxmcBKhj/
-	BC9RBPeCL0qX3zP2ozRpUDu3bvHr8XMbc6pxmjqCpcCzY5FXitb2a0xJ
-X-Gm-Gg: ASbGnct62Js7AaApTL7haEHEbl719REgi9JzPxrkxc59wXESrpN6FJxw5UgxlisultQ
-	KJkDbhDcGnh+jOso6mPPOUKyVkKyTK6/0VqMyFoxsI20M31gDuvkmBdRzzv93KnHDHZhslT+ITB
-	8lbHzIoEuxsujI0ZBausCR0dB98WRxh8ejTA+gPqzgpV82+o0JbRzNNN0uQaWr+zHahDdiA5aY8
-	CUZzxTLhLzwwtHEyC7IpXwmJoKfQEad0+/U6m0otYlh2ByfH9pZ25/l++B669G3N1O0drRpq+G9
-	Kg21+JGj2Xk1WSX0gIaMQQE1RXny2XWOpXRtmvRpCWldzBdz+Q/+C6jfK5eVmfYZiNq2JD9CddI
-	vFCc1VOX7+pKwZYSbGZ2+r0ykoyg/1CIH
-X-Google-Smtp-Source: AGHT+IGaT3EHimg1DgQp2p5EYBU7LKzQaje0JR+nPkMEkKMxgfOgiZVN89kRm+wFCU8JIyHwE1WNGw==
-X-Received: by 2002:a17:906:cc10:b0:af9:9e50:470 with SMTP id a640c23a62f3a-afcdb2dc6afmr660361666b.28.1755401231084;
-        Sat, 16 Aug 2025 20:27:11 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afcdce53e52sm497015166b.25.2025.08.16.20.27.10
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 16 Aug 2025 20:27:10 -0700 (PDT)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	riel@surriel.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	harry.yoo@oracle.com
-Cc: linux-mm@kvack.org,
-	Wei Yang <richard.weiyang@gmail.com>
-Subject: [Patch v2 2/2] mm/rmap: use folio_large_nr_pages() when we are sure it is a large folio
-Date: Sun, 17 Aug 2025 03:26:47 +0000
-Message-Id: <20250817032647.29147-3-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20250817032647.29147-1-richard.weiyang@gmail.com>
-References: <20250817032647.29147-1-richard.weiyang@gmail.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B3701A0006
-X-Stat-Signature: 8ghgwf6sjgkdc95q7srmgufwhknc5sj1
+	b=T96DDSOs3LlisxKnv4PjBI0VhE1qxYgmh4MhZpat6H28jjRIvSaVS1wFsuJiTeisKVQZB4
+	VGi1nkhftz38h3IwYMuHXC9g5tUy675wsoODpcgEILvXrpwJcvCfqJjplPkZ376Y677tvI
+	yUzLyzRgdghMVAmNl+CengG+o97y05U=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bqGCi7HM;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf21.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755402060;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=3Y0oXgvbJlVAXUapKet03fj1MIE/RRaWOW5OiNzH2oU=;
+	b=BaFU36jTESgoTtCdT58JXHriNl6SL3/DtfcxywhCqABZFjFe7veqSu0RzqUn1yNHuVKEWU
+	f/WM7hEoZwgv5zKE8+3b6w/9ZBmED5/oQxWLfiHjB9N30kPXYp0mWPkj56+Z0OzKKmdpSg
+	Bd6zjzz0oI5dxe0WsxuNf8ommsFtYMs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755402059;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3Y0oXgvbJlVAXUapKet03fj1MIE/RRaWOW5OiNzH2oU=;
+	b=bqGCi7HMHwUIpZfRR0NB4O3GcNfFZ5RpdRpK0CGGv2FrdZTeT1tG6/wCmtO0YeuUSHbLXp
+	Apt773qQbJXOd2C3ElM0IPsvgqq++W0SdKzULU+xzVk052Obtw8gsWBG8yZJupq4TvrXZD
+	VnRZimggtjHIqaSfthlBDnmLtRnOYWc=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-80-PkT_4EHSPaqREfWT33cFVQ-1; Sat,
+ 16 Aug 2025 23:40:55 -0400
+X-MC-Unique: PkT_4EHSPaqREfWT33cFVQ-1
+X-Mimecast-MFC-AGG-ID: PkT_4EHSPaqREfWT33cFVQ_1755402053
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 544231800340;
+	Sun, 17 Aug 2025 03:40:53 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.34])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E5A23180044F;
+	Sun, 17 Aug 2025 03:40:50 +0000 (UTC)
+Date: Sun, 17 Aug 2025 11:40:46 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: linux-mm@kvack.org, ryabinin.a.a@gmail.com, glider@google.com,
+	dvyukov@google.com, vincenzo.frascino@arm.com,
+	akpm@linux-foundation.org, kasan-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+	sj@kernel.org, lorenzo.stoakes@oracle.com, elver@google.com,
+	snovitoll@gmail.com
+Subject: Re: [PATCH v2 00/12] mm/kasan: make kasan=on|off work for all three
+ modes
+Message-ID: <aKFPPi2sti7+3JZ9@MiWiFi-R3L-srv>
+References: <20250812124941.69508-1-bhe@redhat.com>
+ <CA+fCnZcAa62uXqnUwxFmDYh1xPqKBOQqOT55kU8iY_pgQg2+NA@mail.gmail.com>
+ <CA+fCnZdKy-AQr+L3w=gfaw9EnFvKd0Gz4LtAZciYDP_SiWrL2A@mail.gmail.com>
+ <aJxzehJYKez5Q1v2@MiWiFi-R3L-srv>
+ <CA+fCnZfv9sbHuRVy8G9QdbKaaeO-Vguf7b2Atc5WXEs+uJx0YQ@mail.gmail.com>
+ <aJ2kpEVB4Anyyo/K@MiWiFi-R3L-srv>
+ <CA+fCnZcdSDEZvRSxEnogBMCFg1f-PK7PKx0KB_1SA0saY6-21g@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+fCnZcdSDEZvRSxEnogBMCFg1f-PK7PKx0KB_1SA0saY6-21g@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1755401232-464220
-X-HE-Meta: U2FsdGVkX18RRQbaAJODtM/z+hFwD3FGB8Jh5Lbo1qrkq+o5nOmxgkO5NtWyoDjhIK39IPkoxt+/A3ZcDUNHFTaaVCWg3Ym6b07ki38NEp0eU5UrqaF2n0REoi3677BK+arfjFbXFuaZocciYI8ZMULucIJLpXtqjrnRoQS34MCNKtZCK4vYmk1MCluzjiu9Vtya/oe9u1K5G34KWcEAYyZxPlgsKJUtp7Wn7/ecqikwA8bhYBbvDjXV8zd+IJ4/1QTL5M2kcUrjlIY8re10cII0W5g1u6zZe7AakQlgdNmY1/VNYj4ClWI8Z5d+gcLNAfHtiWYizM6Oe7tocVi1PqQzKLs/El0aGuLV7XZy33GMxZqqxfTCkUXZUbCmNGuB/RO2ReGniyeNkh29G/SdnVjFNDC2kns3FpxojGDyMoKbguBemyDZ/3wHhQUR+1g4jks+WPyq/4vuJ4R3hjZBO5FyCO29JTJ/Y6Td8fhcuJFp6HTyCjABg5rYWBqhpTw+fkKbuxo8vWAep5gEzbCwQV20aEIg9V0Vo6Opyj6nuLhp6j/J1RZGqbV2g+oXaKrnSJspejrmtZTWqKN8qv3pQm43+zKUeBqjOO0zpwPvCbHIuQAT2tUpF9ngCIt0/wiaotg3VgpkTdjggeLLO8fnt07gNxZMByYhMKaQzPDqY9LoivYafJRkS3eulqMWydWuIcEG9GYBMU4f1ytclMhFRQWPiZIX01yPLzPQLo43C87RjfNIKROPqK6QNtvpU1yKBpfhKnlV6rrLiAgh2Ah7N8Oeb0hWPIjYFWx/RaQ3iLDUdnYKmwp9H/0qS4pSPFn/T2g10mT8LcMNUIVF+fjafOHOAdDnY2mmr6yFqud3cwBlqWajcIE30ET5oAuDWNlcCOOYLsfwhw3XxZN3j2t6jV/lvR7dPnh60/z3zRNkW1wTlQV8BKwKovnPmntXNpAiqwnXqz6j5aNpvbMgAfm
- K2cYnRWQ
- oL298nDkf8Mnv5PvOzfxanQQE7UNIsp52bvCN3YNHng1fzEzwiIgLdWr1Ai/ZnwDw2BX2PQ7v+ye30UFQno6Jw10OwW3YGYE/ypDGRnBn5VrAA6mxktz3qNN54YBJ401p42JxhFrsXHUNPjCtPpnSjx2Q/mkVsuRIRiBB78R+rCvyhLTItMOCpmkmmBy4OIBV/3nSN/Xtjl8kDPimZXY3j4eefiNgcAmjSREp7jcHrbcr2GJ0QUHoGmRC5Q==
+X-Rspamd-Queue-Id: C78DA1C0002
+X-Stat-Signature: 581ssr49rrhbmi5j3hs7iojr8hbq7q8n
+X-HE-Tag: 1755402059-286853
+X-HE-Meta: U2FsdGVkX18zWkzebCLRrNRmTpmeFa2NKruF7YHqp3wRinjVu7c9qot4/BqWgEkT4IVuXYHsDjrBERUt5zeWyGUCyPYLb+0xyyOCNBXw6uFFRvtMfqVu7Hl28k8BFoTtLg/ue4ZEs3YieRaoQiS3X9kHhV5PuzfmY5jLKoN99EIYneoX+t9fZHXpQyQM5kTUr8J1YrOM7fi9V542UivTc2j3hPtdRObu9yNqPAnfJ8YWsWEMD5gNz/PFjil6jZTHYhxQ/6g8yS5LxxrYSGHsRvuxzBKR8tiYvZqyoEoljAwRmFqmAlf8i7MJ4cmO5EEOlTVorWhsc2LTiQ5PJ+W5/j1MYJneqWRODODGzjVXFbhHHrkxbUt5polnDqqzNlTl6YX5Z7CaM6+GQCMxZEK5qWIgCFLeCwg1WkhC6OS7Rksehc4DQ5CWHloKdCMDID65FhAacxiC18NfPeztieCU1bZMYzP3ItCDqS25obMRv8jbe2j0rDwAGhLR0GqZbKJQ4QkiP8RMEqfKffxAkLGYK3qXhtbMUQIbblYJvFVbcidalOtEDPQebJ3iH3fBoUCbeUk+qpTkNSN4BvvEvOPhXJzfeMD72c8H687kmppX5YBIMQrHpkoTulXXZhyZe5/ba/dzYdngfcWNRoF0ApGH9Sg5b450Yqk/btTyDU3OX1j8nmRlrRel/6m+OQZzyo0iIBom91NkoqxOHn5nmbbIHqUfVdU+/JuIMb4wJ4rraH8ZAUW0WMqe9Rv1G0xisMsQgzoQmqF71GZHV8un4WAMew1JFjuonSjgSyV3x+UclzbEMbRHnc4+eCy+G5zXdzYrNwx5BEer9NmlJosY+4w6d39be0kQjUe3p98fzX8pI68kNXeROGy1E3dFq6TBoJ30BkmDyoIedRiJybMduBZL+38b1ZoXodG4AvRKUZFtiqnQfVOkVg/Ddzl5ThlEoqXastD3YmStEPQLHG42uMF
+ F0khTVIx
+ utwZEDuzzlh1vl9wNqthBYOU5pk8IJXrCfFaHkMIFVGf3cKr1RmKXukYia3JVA/pBIWGDc81PvC+AqK2VyNRrBK1tVd4Lw+9nI1voqUslXqBIknW1ZvLvR1PWZCcbM6yQoDW/upPTe7KDS5DeRhw88EssgS8vZ1XEaxoi1b2rh8+mbfq37vAU3azhBqshSJHZr1aVIX/jSVvhA52QWK6HuGOd/ylEZ4oqA/jcNdY/gHO5+THPUbgJSnH174v5Tlrid9eMq3X702RRFQHIMa3QDPznrNuF3UBHcc6GZNznQSUGsWLncf6KJ9h+/BFnnVChi5AGCI1F1mN0CCAwtXsZbPBsNKNipZkrb/qs6fiwv540eI9ApAFI6vfSswNO1DDiMa2x9Ys5iyoT+OGyGQ5wvIkgOf8w3qmy3osx/LjkK9oLrRSTicI4QMKvsYQ762Hm0lxSNcjRMNk7w0MLFQMo9iVr1038J1S9zpA8UCaXHfnlXAh6wkM36dev7Lxnt6OdpK555WoltTuwZdo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,38 +114,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Non-large folio is handled at the beginning, so it is a large folio for
-sure.
+On 08/16/25 at 06:50am, Andrey Konovalov wrote:
+> On Thu, Aug 14, 2025 at 10:56 AM Baoquan He <bhe@redhat.com> wrote:
+> >
+> > Ah, I got what you mean. We probably are saying different things.
+> >
+> > In order to record memory content of a corrupted kernel, we need reserve
+> > a memory region during bootup of a normal kernel (usually called 1st
+> > kernel) via kernel parameter crashkernel=nMB in advance. Then load
+> > kernel into the crashkernel memory region, that means the region is not
+> > usable for 1st kernel. When 1st kernel collapsed, we stop the 1st kernel
+> > cpu/irq and warmly switch to the loaded kernel in the crashkernel memory
+> > region (usually called kdump kernel). In kdump kernel, it boots up and
+> > enable necessary features to read out the 1st kernel's memory content,
+> > we usually use user space tool like makeudmpfile to filter out unwanted
+> > memory content.
+> >
+> > So this patchset intends to disable KASAN to decrease the crashkernel
+> > meomry value because crashkernel is not usable for 1st kernel. As for
+> > shadow memory of 1st kernel, we need recognize it and filter it away
+> > in makedumpfile.
+> 
+> Ah, I see, thank you for the explanation!
+> 
+> So kdump kernel runs with the amount of RAM specified by crashkernel=.
+> And KASAN's shadow memory increases RAM usage, which means
+> crashkernel= needs to be set to a higher value for KASAN kernels. Is
+> my understanding of the problem correct?
 
-Use folio_large_nr_pages() here like elsewhere.
+Yeah, you are quite right.
 
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Harry Yoo <harry.yoo@oracle.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Acked-by: David Hildenbrand <david@redhat.com>
----
- mm/rmap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/rmap.c b/mm/rmap.c
-index a927437a56c2..14cf3b24ae50 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1703,7 +1703,7 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
- 			nr = folio_sub_return_large_mapcount(folio, nr_pages, vma);
- 			if (!nr) {
- 				/* Now completely unmapped. */
--				nr = folio_nr_pages(folio);
-+				nr = folio_large_nr_pages(folio);
- 			} else {
- 				partially_mapped = nr < folio_large_nr_pages(folio) &&
- 						   !folio_entire_mapcount(folio);
--- 
-2.34.1
+When I tested it, on x86_64 and arm64, usually I set crashkernel=256M
+and it's sufficient. However, when KASAN is enabled and generic mode is
+taken, I need set crashkernel=768M to make vmcore dumping succeed. In
+kdump kernel, read_vmcore() uses ioremap to map the old memory of
+collapsed kernel for reading out, those vmalloc-ed areas are lazily
+freed and cause more shadow memory than what we usually think shadow
+memory only costs 1/8 of physical RAM.
 
 
