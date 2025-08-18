@@ -2,177 +2,89 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AD0BFCA0ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 09:44:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 872B5CA0ED1
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 09:52:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 43C8D8E002B; Mon, 18 Aug 2025 05:44:26 -0400 (EDT)
+	id 0A6B08E002C; Mon, 18 Aug 2025 05:52:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C5738E001E; Mon, 18 Aug 2025 05:44:26 -0400 (EDT)
+	id 057468E001E; Mon, 18 Aug 2025 05:52:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28DC18E002B; Mon, 18 Aug 2025 05:44:26 -0400 (EDT)
+	id E87CD8E002C; Mon, 18 Aug 2025 05:52:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D4E48E001E
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 05:44:26 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CF7B61390EE
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 09:44:25 +0000 (UTC)
-X-FDA: 83789392890.02.E09F840
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 6899720004
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 09:44:23 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BZY56k3P;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755510263; a=rsa-sha256;
-	cv=none;
-	b=tfE+TwlL/kF6+tH77UWCS1FMDrD3OPjWceM2ad+lD4Vjhw9mvWboDjzxPaEO+MycAdFVLe
-	hL2zQCwpLrsYnhRh2jiC58slH8kaOXklNHPz//3lYZp1GEK6n8pJb3ANHJO4CDlbY2j+zr
-	SugA7LGM3+++bNCGTIe1dk0kdC19RVY=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BZY56k3P;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id CF8198E001E
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 05:52:53 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3835D16081C
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 09:52:53 +0000 (UTC)
+X-FDA: 83789414226.15.BEB8434
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2F68C20002
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 09:52:51 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf13.hostedemail.com: domain of ben.horgan@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ben.horgan@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755510263;
+	s=arc-20220608; t=1755510771;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bO/hi//70PNQS4PRKZk6OCbLR0nHf4/8WHcoc8PRhG0=;
-	b=y+KqlL9l3CtZJrsLa634Qktm9+qtNXPSMrnlcU/Tfpo6QEjhqWqFiYXN33vNUCUMHRf4ti
-	RFBc+voJgJYSxFCZBqRZep5IF/ivbxF5TU68CZpQG6ayrpCH9ItG/rU4uj261wSmfbDRDA
-	Qtuicy9Opu1H7VAEGOCxGV3eTRFcOr0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755510262;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=bO/hi//70PNQS4PRKZk6OCbLR0nHf4/8WHcoc8PRhG0=;
-	b=BZY56k3PVNTByusUR28PjCNLQrKUqVCaY6eLVXpvrnJR9lTBlFvnu9zmYmYJfbW5D8GxJ+
-	1wuLLyKHfazwDw/O1bhLkwpsGDFo5CeO3hBGu7cTFK9nAQh/a8qnRIfPXwmad6G6MWAeA5
-	aFtrRvEUdSsrGvrMz+l92Vwh2o/LM2c=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-20-M8aNwJz8OUiKpqLnM_NTLw-1; Mon, 18 Aug 2025 05:44:20 -0400
-X-MC-Unique: M8aNwJz8OUiKpqLnM_NTLw-1
-X-Mimecast-MFC-AGG-ID: M8aNwJz8OUiKpqLnM_NTLw_1755510259
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45a1ba17bbcso15857905e9.0
-        for <linux-mm@kvack.org>; Mon, 18 Aug 2025 02:44:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755510259; x=1756115059;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bO/hi//70PNQS4PRKZk6OCbLR0nHf4/8WHcoc8PRhG0=;
-        b=EYilKVjHYR2aFTDAw01wO9BvsZz81mo9qKxPCt+UVuxIXkoc/cd4wJK8F337GRE4jR
-         8HBaeg6Q34AMVEOk8rGt0JCoxNaGQaWBhL+uWHGmwPBOChWjOc3vKmZraZ6yGogUqKHs
-         6TvOOxlTfXlEiTOddNtDgOZfVv90z36vXUidekK6FDyQEonIVKoGTZ8arraB1YGytQK8
-         KNFsXJmNact1efrWK0mC3Zs5K4hUxGbo592AYuBInCVWTPziByEVxPsGeaMoTTJjaAh0
-         N/4l5vCTFl2o8Q5//LM/ACT2SZCxGIxUzbvKnSJdEonUEoJCzYRGqTWgRMIKU5mOQO6I
-         Lkxg==
-X-Forwarded-Encrypted: i=1; AJvYcCXvglrFLvqPa4xKKhxBg8vvpDZ4EzOHZa9BJQTvqxKvJ020I6aCVVe1wP52BkGA7mq6ri/iS5VWjQ==@kvack.org
-X-Gm-Message-State: AOJu0Yx6eZklZ7IisJPoyv1Y+6MY4v4gHbZnWc16v5F8a0fW4v4ov8Wa
-	+0r3EQtsAeLBc9u8clY37Qwy1HI2Dm8KJJjKM3YqPT1yDuyWEpyVMHYEGLp7DxTx4Nw9NEmG+wI
-	rQkoEAVPvwPu7mLXNWMK1XrsWTIGce6IL9VLnMUlbMTX1xMPf8Ae7
-X-Gm-Gg: ASbGncuPPURoYb2X2GRZxM/BtGPs/RpGgCTllW6xLP6QfHLGpzTraPIG3emhBjeOsGn
-	h+A1U7+CBCQWu6t3QwBdceoK6grQk/9D5W9SGzyHiT+usjRgsZ16z9a2PRWrwvoIwxbjW9qTgxr
-	/kP/zmxdSQccb8hqSVYCQf9kcdCh/vmxzNTZqVdQChpHcr5EOb0397gEp/QLZf5kAcMREV1xlWD
-	Nv7nUx8N/mVfvknlHeLqSv5l4scZuIj6EiqtLaOyFf0KQyoITr7mGHezzJtMGFE6tZq4UcSugXy
-	KhSpIjLnwSuahTxoCrh2N6TOB+z+t/jv3wCiiTPuwNYvdyqG0Se4mrpfk8zu0lH/WuAVXWdkcqn
-	bMac5ok319XI5dlO/p11GymWX8FqvAIkL+KnUgGwhShmGUlM/vZoGRl5ny6OwetnK
-X-Received: by 2002:a05:600c:1e0d:b0:459:db80:c29f with SMTP id 5b1f17b1804b1-45a22031cefmr78156915e9.1.1755510259116;
-        Mon, 18 Aug 2025 02:44:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHjiMETiwxz6+Sga98bI/im2QTZ4KQOy7MiHPd8ZEIVTObrOWdDHjAMkOKMLStR98OStBvZxA==
-X-Received: by 2002:a05:600c:1e0d:b0:459:db80:c29f with SMTP id 5b1f17b1804b1-45a22031cefmr78156675e9.1.1755510258626;
-        Mon, 18 Aug 2025 02:44:18 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f22:600:53c7:df43:7dc3:ae39? (p200300d82f22060053c7df437dc3ae39.dip0.t-ipconnect.de. [2003:d8:2f22:600:53c7:df43:7dc3:ae39])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a221bbadfsm125147675e9.0.2025.08.18.02.44.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Aug 2025 02:44:18 -0700 (PDT)
-Message-ID: <3970cd97-2e9e-403f-867a-3addfbe399dc@redhat.com>
-Date: Mon, 18 Aug 2025 11:44:16 +0200
+	 in-reply-to:in-reply-to:references:references;
+	bh=vAyGMsNO5MqtCEuECkJvS2htOljGLG6x5/G5la1l6Vs=;
+	b=cQsSXQhM1K0KpPDbpumMTZIKC4+ymRLN1VIgs64WoKX3hrtn/L8QbjCzJebCJorV7yMkTZ
+	zNRdTIzyMDu3iW1ZkepTr6GwfQGEYrq2e8aa+hMTJC2tKNYwvmYARLamHdCnzk4VPUSw1S
+	Hg5vgAKJ7LS6jJv/21RXXo+8ogyL4iE=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf13.hostedemail.com: domain of ben.horgan@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ben.horgan@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755510771; a=rsa-sha256;
+	cv=none;
+	b=E6OkGykJ5IXQvuiNFHtwtdt48EJ9Lx9kM8uNzZmkYxJDlKHd2XOxFIRP/AiWT2oqbukLp3
+	XwMimwlJW6iCYZ4TbiWqisr1hgcyIbjuVlVTCGjOJd0JloOoVzqGXhXAq4sCcxRnjqnCEz
+	uXcsJVestrE5dlzQvAenR3BgWy2NFQU=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C8C0A1596;
+	Mon, 18 Aug 2025 02:52:41 -0700 (PDT)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 09BE63F63F;
+	Mon, 18 Aug 2025 02:52:45 -0700 (PDT)
+Message-ID: <2736fe09-ef37-408c-ba53-a8e492dcc3e8@arm.com>
+Date: Mon, 18 Aug 2025 10:52:44 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/6] Remove XA_ZERO from error recovery of
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: maple-tree@lists.infradead.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Vlastimil Babka <vbabka@suse.cz>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- Charan Teja Kalla <quic_charante@quicinc.com>, shikemeng@huaweicloud.com,
- kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org,
- chrisl@kernel.org, Matthew Wilcox <willy@infradead.org>
-References: <20250815191031.3769540-1-Liam.Howlett@oracle.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20250815191031.3769540-1-Liam.Howlett@oracle.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: _GhCGK2Ln9AP0I1cpNsUmkhQnrCN3kb_gSsJfNTBUbk_1755510259
-X-Mimecast-Originator: redhat.com
+Subject: Re: [PATCH v4 1/2] kasan/hw-tags: introduce kasan.write_only option
+To: Yeoreum Yun <yeoreum.yun@arm.com>, ryabinin.a.a@gmail.com,
+ glider@google.com, andreyknvl@gmail.com, dvyukov@google.com,
+ vincenzo.frascino@arm.com, corbet@lwn.net, catalin.marinas@arm.com,
+ will@kernel.org, akpm@linux-foundation.org, scott@os.amperecomputing.com,
+ jhubbard@nvidia.com, pankaj.gupta@amd.com, leitao@debian.org,
+ kaleshsingh@google.com, maz@kernel.org, broonie@kernel.org,
+ oliver.upton@linux.dev, james.morse@arm.com, ardb@kernel.org,
+ hardevsinh.palaniya@siliconsignals.io, david@redhat.com,
+ yang@os.amperecomputing.com
+Cc: kasan-dev@googlegroups.com, workflows@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
+References: <20250818075051.996764-1-yeoreum.yun@arm.com>
+ <20250818075051.996764-2-yeoreum.yun@arm.com>
 Content-Language: en-US
+From: Ben Horgan <ben.horgan@arm.com>
+In-Reply-To: <20250818075051.996764-2-yeoreum.yun@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
+X-Stat-Signature: 516ufacstpb8dcxboesteyoiaiseb8tk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6899720004
-X-Stat-Signature: pk9co39y45u4f9iwkuc9r3pj4g64mkkx
-X-HE-Tag: 1755510263-652262
-X-HE-Meta: U2FsdGVkX1+FcyjgzL6VINN5qOLudDBY11osESGRfqMsluUmbFpB96e1qZIxtkoX2Gp81RzdZM8Y4Eo9e9+oFCiRPcHa7BdMa3NA8p5N8hQO5+2ja1lb2FHqjvB+XwWzmG6cf0v9JFFCOP6VfNeyD2KHjvVuCVPsD3sh7gxSMKOMG0juiHY5ADhPpfGoPk8xIulQQia856E4FCwyeSlO2uBN7QXgxeXTtKlXG1sljFjsLN1YvqcBCXz1bSNa0xHWM2zEQ4PjFlI0OSDHUC6m+au6svdzYsP6/ybVRpfNqyGhntZbKMCP6CQd2B068HS4hS1cqVko7il1hlMZWAckqFTuQ9C01rYw0J7pKDVMXe/IQfVNEAk4IfELf8Clv/Dp4SzQTyPD8glqS6+6ZITq/B87lidH8eyGTjQyOUzxBvA/EuL0jr2kWbJxe2qU8FgDjVQrzwTzTtVi7bWG2d4ufRBomyIeRzieSpbCT4x8PhNOJLlPFS/a/7tfPtE2WIUGmsfjjnLwK99xAoRBjjS9Pe+xcXbwp9j0dLg+Srq1IK8ESTh98UyXx5rGJ/JTAzTWNbt7zgSwp/IufME55AsiZ2c+ugsN0vbbVeWg03D1BYVIBvsdM+q8d7tResY7Tm91HDCENNBSNdrJlCvYXAboZtXak1k7IebJjSjFcFuGmBNtBQzNLX1SjUQkUMT3SGl4RofqnViwUFID4rtIyFtjNL7UXnaYiSa9fd6r0398pm+KXv4yVoJpg/9vgvjOiYHTAPGZ51fm15IuNm0HTJBUTC0JbYLGi1wEBJIh1V4alST/PwmQjLiGf0f6Viw2K8qTcO8rXboYLb0Vk5+HBqpLLjtKK0XAxB2yTS/x9c4fr5UUe0yMwlLxSuzt/p2/myv36jPvfIc0YK3PLpiXg7p7OgYGrdbtBk6mB7deiseXTTwdgNTrwwufbb0hrC8EALSu3MmtZhJOYZeGnN55yWg
- wfVv6qz0
- bDB7o8T44RdhW01uMxalCS84eqQJrvVBtdewAi9FZ+0BWtvrXH9AedBHBo/eWLRuvtIwVswJVFmIh1i561/YlxUOxTaW1L3/GfVk58xGQC+DJaKZpOjZmovVuw85DAYjY4NcpayPGu2ZvL4VPto3epXhnfPwtlMgOr7aednv8TOlfeJ3CSNKtj5qfB8qZeNhFe55KpT4/dyykB0C3bkAC8EPhUs0m3LvBsyTTsFKnjiTbx8VLcpyqvSf7a7Isn8+Y3gd/oBET8PG4btG7zSbWWjAT+PXSdAcYs60fQfxyvH3nxwLXoBqX8x7B1M3xx+L7g4Cu6r19EMPapr/B2030kGKrauRP7v7RpbfDNguc8wbj7OZ8o0MLOjMIqom2gaWK6XhpGRv/p7zCcjDFnI87bxNhQrfm8cPOeys0um9r80rEnw/0XUTDM2fG8zJZQEO3mtYy7hJL79hlQlTPYqzihEykMVtujDNFv3Y3kM0fw+EUsDyGGsDzIp2h0ZNPW18bvqDmEZ0038FoL06uyx6te39vIbO2+L1RdKHxqTTqmCUHkvI/erx5ltLOhrkGgppvbNNoXievhmLWhsGt2PuogeqAZDx0r+R6ZyZX
+X-Rspamd-Queue-Id: 2F68C20002
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755510770-2425
+X-HE-Meta: U2FsdGVkX19V0y33xYoEIwpnR5QXfsABJGmFSm6BuPTVtMXSzh0BEnt26EZNM3dtXLt03R3f+uvFuu45+q9wH6JoFYV2C3FU6/FPy+TDsBIlrDpwCpFwf9TzY3/XRw6uwxW2H0UZNufjTgI6iYJ8fKLv5BibfKHw4v9sU4p6F0LoM0KDffrAy3p9h/ERT27LLJWLJMKJWCByR0myWM/pU95bAenW5nsWyhUv9uBjAL6D7Qod6OWV5v7Ho4b8mUgA0/UTQC8z/6k/J0JV8UcQEZGr1xoVcnUTNTBB0BUp4lUsM1D3TJ733EpfPpDeglzyUM9gFV21QiUtNKEzzD2Xqx8nhLYlrQJb5DUzxpTBgIjD6VDa6kjVXkeMNJutgMiuo2O//oGoc/vnpO+JT5GcvrHByb+DMmAKEOaTvANo+oYa9IibceK9HgWiDCvVt5tlh5rPIFVvLWPgvxx8JDL83g9gvriSsLBafflWVz3hWj2kc6gCs77EIxUr5/spruOFRxcr9nYZOXGOLUMo5fDZsebgAa7OHMQcmK/xpx9xDIZBtchTNFDXoOKGe4RW3sxTNTCokrwSCGeI1KNUpaa4mHTKF/i2Z9fyx3u3nJ4TXQHCaLkHbYzfhFctmGrYr+yNH3QkOLoTFiToSfIw6hgjD3ezG3fzO7WBz+F5WeTxpkx2L9ch0R9dAceaLVfp26sp1Y51/kA/mStaqY3l9dklTrHIxA2eX9K6sS25jNTzRsyhmlae3+FcKM7+uT+4qYBKP9Q6hCExBZkYkae01trEj0azX9LfvlaHyXdf66rhAZ7OzHNjDyk+9zt+A3lIuf6WH+vpQk7RlfefElDkxLBCnl7HKUujEPE9rWjVSg1rTONIYCZuXEWI262dLd+YiDjoxPWQUhYbjiKypJk1m7ftIXEf16Tsnl9HqzG6BzHgZlfU8+f/DlRkdezpzcHYTo/PwaF3Y0DTt1BsRq6CLu4
+ AwKQY08t
+ rcUeYQNmALoUlE7BZfsy4+8Gio0YWvxM+m5qFXsUXOQqJCeCXFesQURHc3eXRYviKEqQXkIE80tJv3fdEfpNYBsdPAs1lKk0m+6sX3QARmc9Esf/xD4B55H0FCsAh93a2NcUKtgu+qlDA3kTjhvQQLUizewJyZS1bnyLxz86PMG8Fhb0hwOiIvgtlyT0T96H04f09sQJdZDYd+/NRYu+wBTyErsVOhewJ1fqiR6nkKgoOCuvDT5RzBACQ/7dNc4iYtf5tw6wnVuLMCgD2UMjjOYS5E3GrFt/l5DWsnCMbOjXfCngrVyXQiOzHDMe1+XKvFDgE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -181,51 +93,278 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 15.08.25 21:10, Liam R. Howlett wrote:
-> Before you read on, please take a moment to acknowledge that David
-> Hildenbrand asked for this, so I'm blaming mostly him :)
+Hi Yeoreum,
 
-:)
-
+On 8/18/25 08:50, Yeoreum Yun wrote:
+> Since Armv8.9, FEATURE_MTE_STORE_ONLY feature is introduced to restrict
+> raise of tag check fault on store operation only.
+> Introcude KASAN write only mode based on this feature.
 > 
-> It is possible that the dup_mmap() call fails on allocating or setting
-> up a vma after the maple tree of the oldmm is copied.  Today, that
-> failure point is marked by inserting an XA_ZERO entry over the failure
-> point so that the exact location does not need to be communicated
-> through to exit_mmap().
+> KASAN write only mode restricts KASAN checks operation for write only and
+> omits the checks for fetch/read operations when accessing memory.
+> So it might be used not only debugging enviroment but also normal
+> enviroment to check memory safty.
 > 
-> However, a race exists in the tear down process because the dup_mmap()
-> drops the mmap lock before exit_mmap() can remove the partially set up
-> vma tree.  This means that other tasks may get to the mm tree and find
-> the invalid vma pointer (since it's an XA_ZERO entry), even though the
-> mm is marked as MMF_OOM_SKIP and MMF_UNSTABLE.
+> This features can be controlled with "kasan.write_only" arguments.
+> When "kasan.write_only=on", KASAN checks write operation only otherwise
+> KASAN checks all operations.
 > 
-> To remove the race fully, the tree must be cleaned up before dropping
-> the lock.  This is accomplished by extracting the vma cleanup in
-> exit_mmap() and changing the required functions to pass through the vma
-> search limit.
+> This changes the MTE_STORE_ONLY feature as BOOT_CPU_FEATURE like
+> ARM64_MTE_ASYMM so that makes it initialise in kasan_init_hw_tags()
+> with other function together.
 > 
-> This does run the risk of increasing the possibility of finding no vmas
-> (which is already possible!) in code this isn't careful.
-
-Right, it would also happen if __mt_dup() fails I guess.
-
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> ---
+>   Documentation/dev-tools/kasan.rst  |  3 ++
+>   arch/arm64/include/asm/memory.h    |  1 +
+>   arch/arm64/include/asm/mte-kasan.h |  6 ++++
+>   arch/arm64/kernel/cpufeature.c     |  2 +-
+>   arch/arm64/kernel/mte.c            | 18 ++++++++++
+>   mm/kasan/hw_tags.c                 | 54 ++++++++++++++++++++++++++++--
+>   mm/kasan/kasan.h                   |  7 ++++
+>   7 files changed, 88 insertions(+), 3 deletions(-)
 > 
-> The passing of so many limits and variables was such a mess when the
-> dup_mmap() was introduced that it was avoided in favour of the XA_ZERO
-> entry marker, but since the swap case was the second time we've hit
-> cases of walking an almost-dead mm, here's the alternative to checking
-> MMF_UNSTABLE before wandering into other mm structs.
+> diff --git a/Documentation/dev-tools/kasan.rst b/Documentation/dev-tools/kasan.rst
+> index 0a1418ab72fd..fe1a1e152275 100644
+> --- a/Documentation/dev-tools/kasan.rst
+> +++ b/Documentation/dev-tools/kasan.rst
+> @@ -143,6 +143,9 @@ disabling KASAN altogether or controlling its features:
+>     Asymmetric mode: a bad access is detected synchronously on reads and
+>     asynchronously on writes.
+>   
+> +- ``kasan.write_only=off`` or ``kasan.write_only=on`` controls whether KASAN
+> +  checks the write (store) accesses only or all accesses (default: ``off``)
+> +
+>   - ``kasan.vmalloc=off`` or ``=on`` disables or enables tagging of vmalloc
+>     allocations (default: ``on``).
+>   
+> diff --git a/arch/arm64/include/asm/memory.h b/arch/arm64/include/asm/memory.h
+> index 5213248e081b..f1505c4acb38 100644
+> --- a/arch/arm64/include/asm/memory.h
+> +++ b/arch/arm64/include/asm/memory.h
+> @@ -308,6 +308,7 @@ static inline const void *__tag_set(const void *addr, u8 tag)
+>   #define arch_enable_tag_checks_sync()		mte_enable_kernel_sync()
+>   #define arch_enable_tag_checks_async()		mte_enable_kernel_async()
+>   #define arch_enable_tag_checks_asymm()		mte_enable_kernel_asymm()
+> +#define arch_enable_tag_checks_write_only()	mte_enable_kernel_store_only()
+>   #define arch_suppress_tag_checks_start()	mte_enable_tco()
+>   #define arch_suppress_tag_checks_stop()		mte_disable_tco()
+>   #define arch_force_async_tag_fault()		mte_check_tfsr_exit()
+> diff --git a/arch/arm64/include/asm/mte-kasan.h b/arch/arm64/include/asm/mte-kasan.h
+> index 2e98028c1965..0f9b08e8fb8d 100644
+> --- a/arch/arm64/include/asm/mte-kasan.h
+> +++ b/arch/arm64/include/asm/mte-kasan.h
+> @@ -200,6 +200,7 @@ static inline void mte_set_mem_tag_range(void *addr, size_t size, u8 tag,
+>   void mte_enable_kernel_sync(void);
+>   void mte_enable_kernel_async(void);
+>   void mte_enable_kernel_asymm(void);
+> +int mte_enable_kernel_store_only(void);
+>   
+>   #else /* CONFIG_ARM64_MTE */
+>   
+> @@ -251,6 +252,11 @@ static inline void mte_enable_kernel_asymm(void)
+>   {
+>   }
+>   
+> +static inline int mte_enable_kernel_store_only(void)
+> +{
+> +	return -EINVAL;
+> +}
+> +
+>   #endif /* CONFIG_ARM64_MTE */
+>   
+>   #endif /* __ASSEMBLY__ */
+> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+> index 9ad065f15f1d..505bd56e21a2 100644
+> --- a/arch/arm64/kernel/cpufeature.c
+> +++ b/arch/arm64/kernel/cpufeature.c
+> @@ -2920,7 +2920,7 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
+>   	{
+>   		.desc = "Store Only MTE Tag Check",
+>   		.capability = ARM64_MTE_STORE_ONLY,
+> -		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
+> +		.type = ARM64_CPUCAP_BOOT_CPU_FEATURE,
+>   		.matches = has_cpuid_feature,
+>   		ARM64_CPUID_FIELDS(ID_AA64PFR2_EL1, MTESTOREONLY, IMP)
+>   	},
+> diff --git a/arch/arm64/kernel/mte.c b/arch/arm64/kernel/mte.c
+> index e5e773844889..cd5452eb7486 100644
+> --- a/arch/arm64/kernel/mte.c
+> +++ b/arch/arm64/kernel/mte.c
+> @@ -157,6 +157,24 @@ void mte_enable_kernel_asymm(void)
+>   		mte_enable_kernel_sync();
+>   	}
+>   }
+> +
+> +int mte_enable_kernel_store_only(void)
+> +{
+> +	/*
+> +	 * If the CPU does not support MTE store only,
+> +	 * the kernel checks all operations.
+> +	 */
+> +	if (!cpus_have_cap(ARM64_MTE_STORE_ONLY))
+> +		return -EINVAL;
+Would it be better to make this function return void and add a static 
+key in the manner of mte_async_or_asymm_mode, perhaps 
+mte_store_only_mode? This information could then be used to help 
+determine whether it is required to enable and disable tco in 
+__get_kernel_nofault() and load_unaligned_zeropad(). The function 
+signature would also match that of the other hw_enable_tag_...().
 
-Changes look fairly small and reasonable, so I really like this.
+> +
+> +	sysreg_clear_set(sctlr_el1, SCTLR_EL1_TCSO_MASK,
+> +			 SYS_FIELD_PREP(SCTLR_EL1, TCSO, 1));
+> +	isb();
+> +
+> +	pr_info_once("MTE: enabled stonly mode at EL1\n");
+nit: stonly can be expanded to store only
+> +
+> +	return 0;
+> +}
+>   #endif
+>   
+>   #ifdef CONFIG_KASAN_HW_TAGS
+> diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
+> index 9a6927394b54..df67b48739b4 100644
+> --- a/mm/kasan/hw_tags.c
+> +++ b/mm/kasan/hw_tags.c
+> @@ -41,9 +41,16 @@ enum kasan_arg_vmalloc {
+>   	KASAN_ARG_VMALLOC_ON,
+>   };
+>   
+> +enum kasan_arg_write_only {
+> +	KASAN_ARG_WRITE_ONLY_DEFAULT,
+> +	KASAN_ARG_WRITE_ONLY_OFF,
+> +	KASAN_ARG_WRITE_ONLY_ON,
+> +};
+> +
+>   static enum kasan_arg kasan_arg __ro_after_init;
+>   static enum kasan_arg_mode kasan_arg_mode __ro_after_init;
+>   static enum kasan_arg_vmalloc kasan_arg_vmalloc __initdata;
+> +static enum kasan_arg_write_only kasan_arg_write_only __ro_after_init;
+>   
+>   /*
+>    * Whether KASAN is enabled at all.
+> @@ -67,6 +74,8 @@ DEFINE_STATIC_KEY_FALSE(kasan_flag_vmalloc);
+>   #endif
+>   EXPORT_SYMBOL_GPL(kasan_flag_vmalloc);
+>   
+> +static bool kasan_flag_write_only;
+> +
+>   #define PAGE_ALLOC_SAMPLE_DEFAULT	1
+>   #define PAGE_ALLOC_SAMPLE_ORDER_DEFAULT	3
+>   
+> @@ -141,6 +150,23 @@ static int __init early_kasan_flag_vmalloc(char *arg)
+>   }
+>   early_param("kasan.vmalloc", early_kasan_flag_vmalloc);
+>   
+> +/* kasan.write_only=off/on */
+> +static int __init early_kasan_flag_write_only(char *arg)
+> +{
+> +	if (!arg)
+> +		return -EINVAL;
+> +
+> +	if (!strcmp(arg, "off"))
+> +		kasan_arg_write_only = KASAN_ARG_WRITE_ONLY_OFF;
+> +	else if (!strcmp(arg, "on"))
+> +		kasan_arg_write_only = KASAN_ARG_WRITE_ONLY_ON;
+> +	else
+> +		return -EINVAL;
+> +
+> +	return 0;
+> +}
+> +early_param("kasan.write_only", early_kasan_flag_write_only);
+> +
+>   static inline const char *kasan_mode_info(void)
+>   {
+>   	if (kasan_mode == KASAN_MODE_ASYNC)
+> @@ -257,15 +283,26 @@ void __init kasan_init_hw_tags(void)
+>   		break;
+>   	}
+>   
+> +	switch (kasan_arg_write_only) {
+> +	case KASAN_ARG_WRITE_ONLY_DEFAULT:
+> +	case KASAN_ARG_WRITE_ONLY_OFF:
+> +		kasan_flag_write_only = false;
+> +		break;
+> +	case KASAN_ARG_WRITE_ONLY_ON:
+> +		kasan_flag_write_only = true;
+> +		break;
+> +	}
+> +
+>   	kasan_init_tags();
+>   
+>   	/* KASAN is now initialized, enable it. */
+>   	static_branch_enable(&kasan_flag_enabled);
+>   
+> -	pr_info("KernelAddressSanitizer initialized (hw-tags, mode=%s, vmalloc=%s, stacktrace=%s)\n",
+> +	pr_info("KernelAddressSanitizer initialized (hw-tags, mode=%s, vmalloc=%s, stacktrace=%s, write_only=%s\n",
+>   		kasan_mode_info(),
+>   		str_on_off(kasan_vmalloc_enabled()),
+> -		str_on_off(kasan_stack_collection_enabled()));
+> +		str_on_off(kasan_stack_collection_enabled()),
+> +		str_on_off(kasan_arg_write_only));
+>   }
+>   
+>   #ifdef CONFIG_KASAN_VMALLOC
+> @@ -392,6 +429,13 @@ void kasan_enable_hw_tags(void)
+>   		hw_enable_tag_checks_asymm();
+>   	else
+>   		hw_enable_tag_checks_sync();
+> +
+> +	if (kasan_arg_write_only == KASAN_ARG_WRITE_ONLY_ON &&
+> +	    hw_enable_tag_checks_write_only()) {
+> +		kasan_arg_write_only == KASAN_ARG_WRITE_ONLY_OFF;
+> +		kasan_flag_write_only = false;
+> +		pr_warn_once("System doesn't support write-only option. Disable it\n");
+> +	}
+>   }
+>   
+>   #if IS_ENABLED(CONFIG_KASAN_KUNIT_TEST)
+> @@ -404,4 +448,10 @@ VISIBLE_IF_KUNIT void kasan_force_async_fault(void)
+>   }
+>   EXPORT_SYMBOL_IF_KUNIT(kasan_force_async_fault);
+>   
+> +VISIBLE_IF_KUNIT bool kasan_write_only_enabled(void)
+> +{
+> +	return kasan_flag_write_only;
+> +}
+> +EXPORT_SYMBOL_IF_KUNIT(kasan_write_only_enabled);
+> +
+>   #endif
+> diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
+> index 129178be5e64..c1490136c96b 100644
+> --- a/mm/kasan/kasan.h
+> +++ b/mm/kasan/kasan.h
+> @@ -428,6 +428,7 @@ static inline const void *arch_kasan_set_tag(const void *addr, u8 tag)
+>   #define hw_enable_tag_checks_sync()		arch_enable_tag_checks_sync()
+>   #define hw_enable_tag_checks_async()		arch_enable_tag_checks_async()
+>   #define hw_enable_tag_checks_asymm()		arch_enable_tag_checks_asymm()
+> +#define hw_enable_tag_checks_write_only()	arch_enable_tag_checks_write_only()
+>   #define hw_suppress_tag_checks_start()		arch_suppress_tag_checks_start()
+>   #define hw_suppress_tag_checks_stop()		arch_suppress_tag_checks_stop()
+>   #define hw_force_async_tag_fault()		arch_force_async_tag_fault()
+> @@ -437,11 +438,17 @@ static inline const void *arch_kasan_set_tag(const void *addr, u8 tag)
+>   			arch_set_mem_tag_range((addr), (size), (tag), (init))
+>   
+>   void kasan_enable_hw_tags(void);
+> +bool kasan_write_only_enabled(void);
+>   
+>   #else /* CONFIG_KASAN_HW_TAGS */
+>   
+>   static inline void kasan_enable_hw_tags(void) { }
+>   
+> +static inline bool kasan_write_only_enabled(void)
+> +{
+> +	return false;
+> +}
+> +
+>   #endif /* CONFIG_KASAN_HW_TAGS */
+>   
+>   #if defined(CONFIG_KASAN_SW_TAGS) || defined(CONFIG_KASAN_HW_TAGS)
 
-I agree with Jann that doing a partial teardown might be even better, 
-but code-wise I suspect it might end up with a lot more churn and weird 
-allocation-corner-cases to handle.
+Thanks,
 
--- 
-Cheers
-
-David / dhildenb
+Ben
 
 
