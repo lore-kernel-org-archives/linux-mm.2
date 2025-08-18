@@ -2,92 +2,92 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3DFA8CA0ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 12:29:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D638CA0ED1
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 12:29:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD6C96B007B; Mon, 18 Aug 2025 08:28:59 -0400 (EDT)
+	id ADBB66B009F; Mon, 18 Aug 2025 08:29:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C882C6B0098; Mon, 18 Aug 2025 08:28:59 -0400 (EDT)
+	id A8CA26B00A0; Mon, 18 Aug 2025 08:29:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4F8D6B009B; Mon, 18 Aug 2025 08:28:59 -0400 (EDT)
+	id 953F48E003F; Mon, 18 Aug 2025 08:29:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F0A56B007B
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 08:28:59 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6D18983F47
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 12:28:59 +0000 (UTC)
-X-FDA: 83789807598.16.A207BB3
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 8FBC61C000D
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 12:28:57 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ImOgq83x;
-	spf=pass (imf21.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7EE856B009F
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 08:29:06 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2FC391186B9
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 12:29:06 +0000 (UTC)
+X-FDA: 83789807892.18.16604A1
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 67F6040010
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 12:29:03 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=aEZJQV8d;
+	spf=pass (imf12.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755520137;
+	s=arc-20220608; t=1755520143;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Nxh86RQjx8x9Y8+TdxwdmIa/RJOrFh+0RUsbopHZ3sQ=;
-	b=0g5qvuH/e1Tcj0eTy5PwU+218WBh1fSlVP9xU/fnmpG6NN2JBQNQWwzI3aPZH/oJayBOBh
-	yMqqZGgQ6LcCeO9sAdedx+tH5+QFcc9ncDYzhLak78hzWYuLbZ3M7Kzpr4UNQ2X3ud43J/
-	MWtx7WnZP2twz8nFN0MB2+sFa/6UebA=
+	bh=iWGhIiUrKxsgr5+uGk+m1lOyTRB3MBYIRFP+EnuGnws=;
+	b=WjaKR06wFbkO7ZiMsVw4Ar/BvradB59MBfcoUN/TpsAFmZKPQVADAkT0OPFlyTjhlCEqOI
+	QqfBalNwh1aAntEACjAr5qebheemRTfU4QcHv5jJIY2KIjUih+uf5S1Z26jKWiaKj63nqx
+	5N6N39EcDGeaE6QhfVw6qH2ha9f015w=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ImOgq83x;
-	spf=pass (imf21.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=aEZJQV8d;
+	spf=pass (imf12.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755520137; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755520143; a=rsa-sha256;
 	cv=none;
-	b=Fpqx7kFcG9Q0f5zZc5Pqau9iuxOXml9nql/QZXkRpeQLL+yXya5zgIguvNEphFB3Jjeae4
-	HosGIvI9feBo/B5glT5eQHpBnvAR8VYy9AplvJ4sndID3i4S7dxgcSvfyCACL4cmTOKPIP
-	0F38uZV4i4uJ9x/8rc3m/eRNzo7rKYM=
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-24457f47492so26238815ad.0
-        for <linux-mm@kvack.org>; Mon, 18 Aug 2025 05:28:57 -0700 (PDT)
+	b=NY47e4hE6lJlVuI7yN0SWY38BwjLUFaOTvRiM8T4vpvkKOMpDKJHH+CTgmos4EUl2Ssyqg
+	qPSDLpZX4p4nh3P302cnTKQ89e3VU7ajgAPHXhgLrYGdEBptN46S/FsKWsKPoZxNn7mgFK
+	StzBuJDGlPnY9cgOUYVTmxgwkYyPz2Y=
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-244580523a0so34428685ad.1
+        for <linux-mm@kvack.org>; Mon, 18 Aug 2025 05:29:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755520136; x=1756124936; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1755520142; x=1756124942; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Nxh86RQjx8x9Y8+TdxwdmIa/RJOrFh+0RUsbopHZ3sQ=;
-        b=ImOgq83x7l9ZjOyjG3mNZvkcADTjlwDsb2spkMHvXA4pBDcCFK8Ib7u7o7NLSQF4t3
-         R2RgxI5P3480mwslcqu5Lj9TKx2g5PModl4QZ9HK9do3E8S5UyjwsJqpGIYsZNYMc8mf
-         fdv//Uq7uPIdaDblnkAPsytHkhX93hrxNE9Vfqd55w24MUmqFlxGiIBknz1Qilh5l7jD
-         1nfOGKT2QF96Mibbs0y2Sjmx+tawr4MWxFulznC0Y+Tt2PdWkPQeXeyQY5M8SlXJNBS3
-         iTIryEdViuCfuB+QFHPPbHBYy1fSOHonzhQokk8v1Kc3BsAvft180IygvT9LAf8P+DOm
-         Zfdg==
+        bh=iWGhIiUrKxsgr5+uGk+m1lOyTRB3MBYIRFP+EnuGnws=;
+        b=aEZJQV8dSmGbjGSevs2gcpbChCRzXT8AQC3fQMpQVtgYCOciE/Ku1pjDj/cUKwbu0n
+         WN75GK51vrpxRcVtBjaets6tBu+KFyOsX6wbOZPkXcDLpGPoqqgJC/XwJuNf7ztnNBTd
+         EyARxSZ01JOSohDm9L1s6JZbghrBra2o0a/IEB8vFysdz2p7cLzQkUPiPY3aQRq6ubOG
+         b4cDVtVEuFB/asR+HrBSPmIXoowOrqlBX2fPHs88ubF9I4UhQgRTI6j88/9DhPy9g2/l
+         /1ZBJryfUHk2gNOAftaZ5/Os60nMNfm8SRcKUTHx8fzR3sC8rDz1NI5CcZ21imYMrcLo
+         swvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755520136; x=1756124936;
+        d=1e100.net; s=20230601; t=1755520142; x=1756124942;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Nxh86RQjx8x9Y8+TdxwdmIa/RJOrFh+0RUsbopHZ3sQ=;
-        b=gM/ohEUdcnzldbn0+xLq+VzqEqDSnMGT51R9CU2eXPtYHwGeYrCAcyNK5QivYOWCOm
-         Q/ESSszCR7TiJdqEEG5X7/paRTJKYrdygbLw/yCOZ/D3eRdW+V0adq9aWAWz9dCtlJvk
-         ECf9D1kbD8zQ2AeBWGVuQiwj+mOp/58UbRLHI+yvXSHrC9dUPiuWzDbydw+OdP61r9nt
-         CPjOcj4bBf74jEyq8VjEf3q4t1yFmNqpOKOXxq94EhpdQYdEb4kWFzM21Ci2/XUmNMgW
-         m0W6QjIYzri+/vQxkzreVqfXwMpX9xwVJAWsI+80ye+Zhpo+P3eI+IMF3G7BtiKktafl
-         2Haw==
-X-Forwarded-Encrypted: i=1; AJvYcCVx4eN5qImOroOoPxpab9kYG53SELJ+VJbClFYPnLm5XiCB3kami1Ri1Saug1Oey+8I4Jrf0HqOuA==@kvack.org
-X-Gm-Message-State: AOJu0YxdG3JczVHsfmME40OtRDlioREMyEfy2uii1O0wgUqdkFmNIr2N
-	4oVvhbSbNv/U4AmFOfXBZwwmoc0Ffgrn63L8ZKasbVo2HuJ/N7dWXkk5RXVANj9me9xxEQ==
-X-Gm-Gg: ASbGncs2Fg8u2XSHN1nizfJKu5MPGgajOXALjZnECTXp5T3kYgzOMxR5XvDJjsgDhaa
-	wn+QywQiS8uq31Dtp6IEUYaDtSqkHbPQk8FgtWGwbrXw+LW/bf2X4g6BRdGJU1NI9aULiBWa+2N
-	r79YKjllgeYebjRWnmuY+67Yz7YytR3Qdh4qPBNU3w8VZhRZ/j9zl2oOPzczE5jrcEo5tXXWSW7
-	XzPGN7SwzoweC55IYs6+Qe8Friueunms2CLvaArfDdyEfm0QKcI2eMbuAoauxOd4fybeO6Q91EA
-	ke4FQFjLTSpN4sP4jnV5/2Q4d5yKN7Uaw98m9Cp9YbtQBIAhbk9TLuJO+wNSlO+ClzPQcHBws9K
-	+dNzJSiAlhSrGxt78i1MgzscNdPxi
-X-Google-Smtp-Source: AGHT+IGaSWeKYBv3gFakrVGYfHWtsjon//FUbcLW3c3fM5l7j3n889K+m8tBE3IoQkxw8ZsbZ6mXEw==
-X-Received: by 2002:a17:903:3c67:b0:240:6fd0:25b7 with SMTP id d9443c01a7336-2446d8f9568mr203579095ad.38.1755520136340;
-        Mon, 18 Aug 2025 05:28:56 -0700 (PDT)
+        bh=iWGhIiUrKxsgr5+uGk+m1lOyTRB3MBYIRFP+EnuGnws=;
+        b=VkhNFsqktaTOu22Ak1vcyZcGY1UqH/wmIQDg1RBUmu8v+03eWANEhzMQSSaiqUBEoP
+         LCbTxwDDUnoVnCfeY4dXt9TXvbREDNlKZWJ7+iKC2JWSfao3t1hQPjQ5nYzGO6AYU+ei
+         zYlpmRz4BzmImHBecg5OC1ZLyCRcuijufIC3YXW1u1cbxFPJEnZkojLsQIEvfWZCGvFY
+         tX8JC5AWJ8KGNawZBScgLHE3pSbKAXxtLqC4pqudkxvBMDV01tVuanXk2a5kPn14KUCy
+         c+wNHmk2SHzhShtDectKlMMxd0RlwbYV+N8ZNFtyFUUwRqpJamyGc1ttM4Vm5g4jDAxF
+         4n2g==
+X-Forwarded-Encrypted: i=1; AJvYcCVmDgjv8uxwyNt2Oqr28PJK4D/C6Diudrsw66X2QZuMIZeWtZPEnodPqog59SwdHnTlBGq86xEtYQ==@kvack.org
+X-Gm-Message-State: AOJu0Yxay40NuwG2fdWjJpaqJQ10ugCrnWqTYjMsuLYzTyCTSdiy/M5K
+	jgscM5vxUQG+GWvNQ0vDFz/eP477PhHJFSPW4Tn+k6nv2NFTw3BXh3g1
+X-Gm-Gg: ASbGncvvSuCIhJQsMZc9KjfzCnME/DhwhbeGlOso4AKk/mYzU6XarzzL0y8B4nOuYS8
+	T7eBJTe7DU6tR4oUk8sW5P+aorBKoW12hpxUlXbY3tkiCCrZsIGzQqRYWDL0pR617egurNHlpAf
+	Qj0yGpR96IsT8s2pjSKHO9wxUm8QVqNANpObVKk9lSUOv4dxosZBzr3Usbd+IJNvVVFvyRYNQ9W
+	9QP50/McTgsHXvMK50ZcYgxNOziesgqa4uYtlMiqPXtIfjkoy0nbzCKSmwFUhFIyTqS2q/oFyqk
+	bM/vxfn7fTQHRTK8gkDhsFAwvDKlHa/VNmQrDJGP9r0u7p8T/yLSTSNeLYBggIuJhSMW+RVWFgj
+	sCxu6AiYpu9NGkPYZ9DMdE7oEAI22vK0/fQ==
+X-Google-Smtp-Source: AGHT+IEtwU3EH40nw5zAQzPHHXzoiBUOdJKizYRpuvX2BrnKPMV4mvfPsFyaNhmOO6WxMZTmIw0cfg==
+X-Received: by 2002:a17:903:32c8:b0:240:7fb:cb05 with SMTP id d9443c01a7336-2446d6eeb26mr162548755ad.10.1755520142112;
+        Mon, 18 Aug 2025 05:29:02 -0700 (PDT)
 Received: from localhost.localdomain ([2604:a840:3::3008])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446d57f12esm79236705ad.157.2025.08.18.05.28.52
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446d57f12esm79236705ad.157.2025.08.18.05.28.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Aug 2025 05:28:55 -0700 (PDT)
+        Mon, 18 Aug 2025 05:29:01 -0700 (PDT)
 From: Jinchao Wang <wangjinchao600@gmail.com>
 To: akpm@linux-foundation.org
 Cc: mhiramat@kernel.org,
@@ -97,11 +97,11 @@ Cc: mhiramat@kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org,
 	Jinchao Wang <wangjinchao600@gmail.com>
-Subject: [RFC PATCH 12/13] mm/kstackwatch: Add debug and test functions
-Date: Mon, 18 Aug 2025 20:26:17 +0800
-Message-ID: <20250818122720.434981-13-wangjinchao600@gmail.com>
+Subject: [RFC PATCH 13/13] mm/kstackwatch: Add a test module and script
+Date: Mon, 18 Aug 2025 20:26:18 +0800
+Message-ID: <20250818122720.434981-14-wangjinchao600@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250818122720.434981-12-wangjinchao600@gmail.com>
+In-Reply-To: <20250818122720.434981-13-wangjinchao600@gmail.com>
 References: <20250818122720.434981-1-wangjinchao600@gmail.com>
  <20250818122720.434981-2-wangjinchao600@gmail.com>
  <20250818122720.434981-3-wangjinchao600@gmail.com>
@@ -114,16 +114,17 @@ References: <20250818122720.434981-1-wangjinchao600@gmail.com>
  <20250818122720.434981-10-wangjinchao600@gmail.com>
  <20250818122720.434981-11-wangjinchao600@gmail.com>
  <20250818122720.434981-12-wangjinchao600@gmail.com>
+ <20250818122720.434981-13-wangjinchao600@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8FBC61C000D
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 67F6040010
+X-Stat-Signature: h8tqozqa4xww4ysw3q9incz6w9ajdps6
 X-Rspam-User: 
-X-Stat-Signature: 6mnmcxnfipn8s3nfgypgdc4tb8ookpgw
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1755520137-640518
-X-HE-Meta: U2FsdGVkX18y7ZysjqXEeu8282mtdZzbugX0+qq1CdcAL4AQuWRCfMAS/0sVZVmeAnhLVVuhImff/V5RgQ3akqqS7yF2nOmuITcYTQX8HqXbpKSGgwSN4+hDRXO8YzUwFsCKEM4BgHhY4709mq+CKYBpnpu2EHDxNUCOkYKhd87Cu6Vbyv1LQe8tS1xiwm49dw6mtFvZAus8326bE3ROT6tk0JtqAgvU2jdQUQoWCjGReyJPTEzxpaIjSxPXSnMdULaqSkkfzh/1jnChuIKNPYkr0CrbdEVPSa9qIrxyjrLxG7fxdg5LXpzDHOfkPlh7RtrKZZ2M6x5f9J5HvPGqilVQZmA2TSJXqzZwSdZdVHzqok4b4hzTJerSutxnBW1Z273fM7SVCf67BvMOhQDkKHj57ogeoHk7lun6YyWmEYytzrGkV4mkN61MfRLHujsbYGaLniaeSr0vM4f9sZmxvhsalyrOl3Q0VXMJgD5U8D1qBkFNjeapaqPa2usuRsdPzKjjB9Qx/7EgNMdhyffzfT5JH+XpH3W7R98+LdYISUEfwlbV7JaT0kWHf5I1O7Sl8Q3fOiXs37n9HG8FhGKmx3sXT3LtKUjuagjtEFvAgj5pYNPCp6jFWMQp2KTFOreX2kxRnZ3buIeeAnnZVQ8/08YJEXGCaMwV1qbRHl1Py0OfHRgmgQzaqg+WZivLPRrWZbFKmKl8OUdUEPVTORmHVntn9hoqJ1H+mIlvAi07LrcGxJdKP5wiA6xELY7ZU+rfT9yTBySTFHJTm3mvR/EHJ03Obxs/ngJL9RpfCnySi5nCNSenin2sj69foFXuAw1w9EuJUzOaIZSj30J0jg2ANzPe25yC3qAlDpwJKu2A1Nb4Ha5x6wWONvkBtQA/0+/Ywr5o9AMdQ7ussWeQIuQm9H2Jc88AgxClPCrAgCHjwsuVnaYpLDmgA0jvyJS/kPxaTo7Pr2VlT69lxaFudI+
- vD+9/Vk5
- DouWxO/fTxt+ML5EKznkth/HfsLls2UFBHySDg1+uqqh9PCBVPrRzW7CGRriFGevadxyNinJaLkEJ3FRljyWTMXBBPAzu8ThBC3+w/Ks3O//dORe8wEdVxtyEZ/RPTwBGSj9Q30HOAQhX8qmE8XKHtFu0c04hsMEM9LUfCv57mhyN45MsVKS/zISLne1MsGhBO9JaDnBOHrakkG69Qv/sTjsXrQz6t++wCBh+G9gF4WBDhYD/C4hC7D7wWt0Q8TDXpspvKNnRLN4yLXWWlJHvGMi+9EU5s28TI/1HZupwloTHtYqh2ZDBvt4e2LnmntRcoWMhBdSxhze8BbSQ2MTS6ur/IYZPbpwJKHEFu+vmFp8G4D70yM4a7jwHDNX+siqbWj6mPFMa1FvtL9WECybFYmlgdooMT1NPrPd27Ob6Pf9o3k01p8eG/fJbB02Mf1NA+KePrOzJDRXpaVw7CDqrsjg206DSGeG9EO0Vmysr+msDeJOyBS+AK1bnzWzpCqBcmzMC
+X-HE-Tag: 1755520143-498084
+X-HE-Meta: U2FsdGVkX1+c0Odw2th4ZaVdR2Dhq7YIpBrtONpVsZ1tftBqRZ437VlcB5fktl5D6Bd3LujtcrcEpmdS5+nq9CCukIE2Dk7Xi0SxH+Z+olVIIVNjxaQdRp0Q+zb60tPxGXuN1A8Q9wKtXXJaLiH5sk41hKfdbAQAmhox37rOwAcE3cdnrZwZFKT2XNhtdGQJUINA1klbHhMOZmpo0UeTcdP8ZhrS/fTGzBzhHqgwCJEhYb9ZV3/o6IdGAYPsHMHmWuKeE8BfxeeX13xEMRJULOPz5Lf0qDKihpH11AQ5jPzvv44c3TRN2z8LAmsDrKOZkpxusyVO1Lc96pI9BSnbOaxXHIVZp74VVXRPUNqYr4mzMPwhoPS10NQnzRxXyXKMXs9EBPERjfHcQVgLl3/hgl3C6cWZubIZoSEMd6taZuZbobNw3YyGHsfghu3/4B4wv4K7iKhxJDCawNVMeujeVOg1RyvOfYw1aAcqheHD6EHkPR50V1Gi9LkXzLo/3UZz8zpkevpq8f8c1qwJA4sFGN3hganVLSt49d/ra8qnS8KP6VNz79DhJuNsmtwBeV+ZbW5OAfJolqGtLIIIbUNJRKtFiwaSQT7x6Kz0x2q8c6RzhAWzJebXj5vgyTm79h1wfFNoGW0cbUjfNxvhVk2HlMLxtEzXaJdUTxv1MXLZWwv9cKhzsLFPjcj9wexBJKjTgmpESQPmE9cNzjMgPDOg2e0NO5xqy4gwkCT2DdJsJH0QXITq7eQPT64xhHg1V+qhlVL4LBs/9FyYNgINYxNFYs+3CGzFhrYS2tuoJ1igyf6fpnhQUzUT0zwhQBe8zprGq2w86NWvFm7zspMvDSgUvyTaYGzgz/EXJQXON7kqzBeFHsF7ICvbUc/eob1jDtQFsdiFfIvRkb4YPt3bgzkJEG36f/QLEvDRTNKOrLAno3v+zqYg3C31lhziiINagkmEjLKNWjiGoRyIldnLvti
+ ExAe/8PO
+ mIY/SK5brc2Ba6+XfRl6JW2OjpakHGxmfJNCHdVGkdP6rK9pyW1D+xP8ITJeKmuMTIS2RizAvl9Qy7Itpf5m1SDuK2g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,71 +133,441 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch adds new helper functions to the kstackwatch module to aid in
-debugging and testing.
+This patch introduces a test module and a helper script to verify the
+functionality of the KStackWatch debugging tool.
 
-- `ksw_watch_show()`: Displays information about the currently active hardware
-  breakpoint, such as its address and length. This is useful for verifying
-  that a breakpoint has been correctly installed.
-- `ksw_watch_fire()`: Manually triggers the active hardware breakpoint. This
-  function is for testing the breakpoint handler to ensure it correctly
-  identifies and reports the stack corruption.
+The `kstackwatch_test.c` module provides a set of controlled scenarios for
+stack-related issues, including:
+- Direct write using ksw_watch_fire().
+- Intentional stack overflow.
+- Corruption of a local variable from another thread.
+- Recursive function calls to test nested stack frames.
+
+The accompanying `kstackwatch_test.sh` script automates the process of
+loading the test module, configuring the KStackWatch tool via its debugfs
+interface, and triggering each test case. This script also includes
+instructions for users to find the necessary offsets for their specific
+kernel build.
+
+This dedicated test module and script significantly aid in the development,
+validation, and long-term maintenance of the KStackWatch tool.
 
 Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
 ---
- mm/kstackwatch/kstackwatch.h |  4 ++++
- mm/kstackwatch/watch.c       | 20 ++++++++++++++++++++
- 2 files changed, 24 insertions(+)
+ mm/Kconfig.debug                      |  11 ++
+ mm/kstackwatch/Makefile               |   8 +
+ mm/kstackwatch/kstackwatch_test.c     | 237 ++++++++++++++++++++++++++
+ tools/kstackwatch/kstackwatch_test.sh | 122 +++++++++++++
+ 4 files changed, 378 insertions(+)
+ create mode 100644 mm/kstackwatch/kstackwatch_test.c
+ create mode 100644 tools/kstackwatch/kstackwatch_test.sh
 
-diff --git a/mm/kstackwatch/kstackwatch.h b/mm/kstackwatch/kstackwatch.h
-index c24a651977c0..27c71a9391ac 100644
---- a/mm/kstackwatch/kstackwatch.h
-+++ b/mm/kstackwatch/kstackwatch.h
-@@ -2,6 +2,8 @@
- #ifndef _KSTACKWATCH_H
- #define _KSTACKWATCH_H
+diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
+index dd9c1bb7f549..5e9402e39001 100644
+--- a/mm/Kconfig.debug
++++ b/mm/Kconfig.debug
+@@ -321,3 +321,14 @@ config KSTACK_WATCH
+ 	  which is useful for debugging stability issues.
  
-+#include <linux/kprobes.h>
-+#include <linux/perf_event.h>
- #include <linux/types.h>
- 
- #define MAX_FUNC_NAME_LEN 64
-@@ -48,5 +50,7 @@ int ksw_watch_init(struct ksw_config *config);
- void ksw_watch_exit(void);
- int ksw_watch_on(u64 watch_addr, u64 watch_len);
- void ksw_watch_off(void);
-+void ksw_watch_show(void);
-+void ksw_watch_fire(void);
- 
- #endif /* _KSTACKWATCH_H */
-diff --git a/mm/kstackwatch/watch.c b/mm/kstackwatch/watch.c
-index 1b4cf5d42db9..28ea24e4ae3a 100644
---- a/mm/kstackwatch/watch.c
-+++ b/mm/kstackwatch/watch.c
-@@ -218,3 +218,23 @@ void ksw_watch_off(void)
- 	ksw_watch_on((unsigned long)&marker, sizeof(marker));
- 	pr_info("KSW: All HWBPs disarmed\n");
- }
+ 	  If unsure, say N.
 +
-+/* Debug functions */
-+void ksw_watch_show(void)
++
++config KSTACK_WATCH_TEST
++	tristate "KStackWatch Test Module"
++	depends on KSTACK_WATCH
++	help
++	  This module provides controlled stack exhaustion and overflow scenarios
++	  to verify the functionality of KStackWatch. It is particularly useful
++	  for development and validation of the KStachWatch mechanism.
++
++	  If unsure, say N.
+diff --git a/mm/kstackwatch/Makefile b/mm/kstackwatch/Makefile
+index 076822eb7661..5e63e8c2e7c0 100644
+--- a/mm/kstackwatch/Makefile
++++ b/mm/kstackwatch/Makefile
+@@ -1,3 +1,11 @@
+ obj-$(CONFIG_KSTACK_WATCH)	+= kstackwatch.o
+ 
+ kstackwatch-y := kernel.o stack.o watch.o
++
++obj-$(CONFIG_KSTACK_WATCH_TEST)	+= kstackwatch_test.o
++
++kstackwatch-y := kernel.o stack.o watch.o
++CFLAGS_kstackwatch_test.o := -fno-ipa-sra -fno-inline \
++                             -fno-optimize-sibling-calls \
++                             -fno-section-anchors \
++                             -fno-pic -fno-pie
+diff --git a/mm/kstackwatch/kstackwatch_test.c b/mm/kstackwatch/kstackwatch_test.c
+new file mode 100644
+index 000000000000..c21618ca0c8b
+--- /dev/null
++++ b/mm/kstackwatch/kstackwatch_test.c
+@@ -0,0 +1,237 @@
++// SPDX-License-Identifier: GPL-2.0
++#include <linux/module.h>
++#include <linux/kernel.h>
++#include <linux/proc_fs.h>
++#include <linux/uaccess.h>
++#include <linux/string.h>
++#include <linux/kthread.h>
++#include <linux/delay.h>
++#include <linux/sched.h>
++
++#include "kstackwatch.h"
++
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Jinchao Wang");
++MODULE_DESCRIPTION("Simplified KStackWatch Test Module ");
++
++static struct proc_dir_entry *test_proc;
++#define BUFFER_SIZE 4
++#define MAX_DEPTH 4
++
++/* Global variables for multi-thread test synchronization */
++static u64 *g_corrupt_ptr;
++static struct completion g_wait_for_init;
++
++/*
++ * Test Case 0: Write to the canary position directly (Canary Test)
++ * This function uses a u64 buffer
++ * 64-bit write, corrupting the stack canary with a single operation.
++ */
++static void canary_test_write(void)
 +{
-+	struct perf_event *bp;
++	u64 buffer[BUFFER_SIZE];
 +
-+	bp = *this_cpu_ptr(watch_events);
-+	pr_info("KSW: HWBP info test - bp_addr: 0x%px len:%llu\n",
-+		(void *)bp->attr.bp_addr, bp->attr.bp_len);
++	pr_info("KStackWatch Test: Starting %s with u64 write\n", __func__);
++	ksw_watch_show();
++	ksw_watch_fire();
++
++	buffer[0] = 0;
++	/* make sure the compiler do not drop assign action */
++	barrier_data(buffer);
++	pr_info("KStackWatch Test: Canary write test completed\n");
 +}
 +
-+void ksw_watch_fire(void)
++/*
++ * Test Case 1: Stack Overflow (Canary Test)
++ * This function uses a u64 buffer
++ * 64-bit write, corrupting the stack canary with a single operation.
++ */
++static void canary_test_overflow(void)
 +{
-+	struct perf_event *bp;
-+	char *ptr;
++	u64 buffer[BUFFER_SIZE];
 +
-+	bp = *this_cpu_ptr(watch_events);
-+	ptr = (char *)READ_ONCE(bp->attr.bp_addr);
-+	*ptr = 0x42; // This should trigger immediately
++	pr_info("KStackWatch Test: Starting %s with u64 write\n", __func__);
++	pr_info("KStackWatch Test: buffer 0x%px\n", buffer);
++
++	/* Intentionally overflow the u64 buffer. */
++	buffer[BUFFER_SIZE] = 0xdeadbeefdeadbeef;
++
++	/* make sure the compiler do not drop assign action */
++	barrier_data(buffer);
++
++	pr_info("KStackWatch Test: Canary overflow test completed\n");
 +}
++
++/*
++ * Corrupts the variable on multi_thread_corruption_test's stack
++ */
++static int multi_thread_corruption_thread2(void *data)
++{
++	pr_info("KStackWatch Test: Starting %s\n", __func__);
++
++	wait_for_completion(&g_wait_for_init);
++
++	pr_info("KStackWatch Test: Thread2  woke up. Corrupting variable at 0x%px\n",
++		g_corrupt_ptr);
++	if (g_corrupt_ptr)
++		*g_corrupt_ptr = 0xdeadbeefdeadbeef;
++
++	pr_info("KStackWatch Test: Thread2 finished corruption\n");
++
++	return 0;
++}
++
++/*
++ * Test Case 2: Multi-threaded Local Variable Corruption
++ * multi_thread_corruption_test initializes a local variable
++ * makes its address globally available,
++ * and then sleeps. Thread B corrupts it.
++ */
++static void multi_thread_corruption_thread1(void)
++{
++	u64 local_var = 0x1234567887654321;
++
++	pr_info("KStackWatch Test: Starting %s\n", __func__);
++
++	pr_info("KStackWatch Test: Thread1 local_var address: 0x%px, value: 0x%llx\n",
++		&local_var, local_var);
++	WRITE_ONCE(g_corrupt_ptr, &local_var);
++
++	/* Signal Thread 2 that the pointer is ready, then sleep */
++	complete(&g_wait_for_init);
++	msleep(1000);
++
++	pr_info("KStackWatch Test: Thread1 woke up. Final local_var value: 0x%llx\n",
++		local_var);
++}
++
++static void multi_thread_corruption_test(void)
++{
++	struct task_struct *corrupt_thread;
++
++	pr_info("KStackWatch Test: Starting %s\n", __func__);
++
++	/* Reset completion */
++	init_completion(&g_wait_for_init);
++
++	corrupt_thread = kthread_run(multi_thread_corruption_thread2, NULL,
++				     "corruption_b");
++	if (IS_ERR(corrupt_thread)) {
++		pr_err("KStackWatch Test: Failed to create corruption thread\n");
++		return;
++	}
++	multi_thread_corruption_thread1();
++}
++
++/*
++ * Test Case 3: Recursive Call Corruption
++ * This function calls itself recursively and corrupts the stack at a specific depth.
++ * This tests whether KStackWatch can handle dynamic stack frames.
++ */
++static void recursive_corruption_test(int depth)
++{
++	u64 buffer[BUFFER_SIZE];
++
++	pr_info("KStackWatch Test: Recursive call at depth %d\n", depth);
++	pr_info("KStackWatch Test: buffer 0x%px\n", buffer);
++	if (depth <= MAX_DEPTH)
++		recursive_corruption_test(depth + 1);
++
++	buffer[0] = depth;
++
++	/* make sure the compiler do not drop assign action */
++	barrier_data(buffer);
++
++	pr_info("KStackWatch Test: Returning from depth %d\n", depth);
++}
++
++static ssize_t test_proc_write(struct file *file, const char __user *buffer,
++			       size_t count, loff_t *pos)
++{
++	char cmd[256];
++	int test_num;
++
++	if (count >= sizeof(cmd))
++		return -EINVAL;
++
++	if (copy_from_user(cmd, buffer, count))
++		return -EFAULT;
++
++	cmd[count] = '\0';
++	strim(cmd);
++
++	pr_info("KStackWatch Test: Received command: %s\n", cmd);
++
++	if (sscanf(cmd, "test%d", &test_num) == 1) {
++		switch (test_num) {
++		case 0:
++			pr_info("KStackWatch Test: Triggering canary write test\n");
++			canary_test_write();
++			break;
++		case 1:
++			pr_info("KStackWatch Test: Triggering canary overflow test\n");
++			canary_test_overflow();
++			break;
++		case 2:
++			pr_info("KStackWatch Test: Triggering local variable corruption test\n");
++			multi_thread_corruption_test();
++			break;
++		case 3:
++			pr_info("KStackWatch Test: Triggering recursive corruption test\n");
++			/* depth start with 0 */
++			recursive_corruption_test(0);
++			break;
++		default:
++			pr_err("KStackWatch Test: Unknown test number %d\n",
++			       test_num);
++			return -EINVAL;
++		}
++	} else {
++		pr_err("KStackWatch Test: Invalid command format. Use 'test1', 'test2', or 'test3'.\n");
++		return -EINVAL;
++	}
++
++	return count;
++}
++
++static ssize_t test_proc_read(struct file *file, char __user *buffer,
++			      size_t count, loff_t *pos)
++{
++	static const char usage[] =
++		"KStackWatch Simplified Test Module\n"
++		"==================================\n"
++		"Usage:\n"
++		"  echo 'test0' > /proc/kstackwatch_test  - Canary test test\n"
++		"  echo 'test1' > /proc/kstackwatch_test  - Canary overflow test\n"
++		"  echo 'test2' > /proc/kstackwatch_test  - Multi-threaded local variable corruption test\n"
++		"  echo 'test3' > /proc/kstackwatch_test  - Recursive corruption test\n";
++
++	return simple_read_from_buffer(buffer, count, pos, usage,
++				       strlen(usage));
++}
++
++static const struct proc_ops test_proc_ops = {
++	.proc_read = test_proc_read,
++	.proc_write = test_proc_write,
++};
++
++static int __init kstackwatch_test_init(void)
++{
++	test_proc = proc_create("kstackwatch_test", 0644, NULL, &test_proc_ops);
++	if (!test_proc) {
++		pr_err("KStackWatch Test: Failed to create proc entry\n");
++		return -ENOMEM;
++	}
++	pr_info("KStackWatch Test: Module loaded, use 'cat /proc/kstackwatch_test' for usage\n");
++	return 0;
++}
++
++static void __exit kstackwatch_test_exit(void)
++{
++	if (test_proc)
++		remove_proc_entry("kstackwatch_test", NULL);
++	pr_info("KStackWatch Test: Module unloaded\n");
++}
++
++module_init(kstackwatch_test_init);
++module_exit(kstackwatch_test_exit);
+diff --git a/tools/kstackwatch/kstackwatch_test.sh b/tools/kstackwatch/kstackwatch_test.sh
+new file mode 100644
+index 000000000000..33ca590b7374
+--- /dev/null
++++ b/tools/kstackwatch/kstackwatch_test.sh
+@@ -0,0 +1,122 @@
++#!/bin/bash
++
++# --- Usage function ---
++usage() {
++    echo "======================================"
++    echo "  KStackWatch Test Script Usage"
++    echo "======================================"
++    echo ""
++    echo "IMPORTANT: Before running, make sure you have updated the offset values!"
++    echo ""
++    echo "To find your offsets, use objdump:"
++    echo "  objdump -S --disassemble=canary_test_write vmlinux"
++    echo ""
++    echo "Then search for your function names to find the instruction addresses."
++    echo "- Instruction offset: address relative to function's start"
++    echo "- Stack var offset: distance from stack base (%rbp) to the variable"
++    echo ""
++    echo "Usage: $0 [test_case_number]"
++    echo ""
++    echo "Available test cases:"
++    echo "  0  - Canary Write Test"
++    echo "  1  - Canary Overflow Test"
++    echo "  2  - Multi-threaded Local Variable Corruption Test"
++    echo "  3  - Recursive Corruption Test"
++    echo ""
++    echo "======================================"
++    echo ""
++}
++
++# --- Interactive menu ---
++show_menu() {
++    echo "Select a test case to run:"
++    echo "  0) Canary Write Test"
++    echo "  1) Canary Overflow Test"
++    echo "  2) Multi-threaded Local Variable Corruption Test"
++    echo "  3) Recursive Corruption Test"
++    echo "  q) Quit"
++    echo ""
++    echo "WARNING: Each test may cause system crash/hang!"
++    echo ""
++    read -p "Enter your choice [0-3/q]: " choice
++    echo ""
++
++    case "$choice" in
++        0) test0 ;;
++        1) test1 ;;
++        2) test2 ;;
++        3) test3 ;;
++        q|Q) echo "Exiting..."; exit 0 ;;
++        *) echo "Invalid choice. Please try again."; echo ""; show_menu ;;
++    esac
++}
++
++# --- Test Case 0: Canary Write ---
++test0() {
++    echo "=== Running Test Case 0: Canary Write ==="
++    # function+instruction_off[+depth] [local_var_offset:local_var_len]
++    echo "canary_test_write+0x19" > /proc/kstackwatch
++    echo "test0" > /proc/kstackwatch_test
++    echo ""
++    echo "-------------------------------------"
++    echo ""
++}
++
++# --- Test Case 1: Canary Overflow ---
++test1() {
++    echo "=== Running Test Case 1: Canary Overflow ==="
++    # function+instruction_off[+depth] [local_var_offset:local_var_len]
++    echo "canary_test_overflow+0x19" > /proc/kstackwatch
++    echo "test1" > /proc/kstackwatch_test
++    echo ""
++    echo "-------------------------------------"
++    echo ""
++}
++
++# --- Test Case 2: Multi-threaded Local Variable Corruption ---
++test2() {
++    echo "=== Running Test Case 2: Multi-threaded Corruption ==="
++    # function+instruction_off[+depth] [local_var_offset:local_var_len]
++    echo "multi_thread_corruption_thread1+0x2b 0:8" > /proc/kstackwatch
++    echo "test2" > /proc/kstackwatch_test
++    echo ""
++    echo "-------------------------------------"
++    echo ""
++}
++
++# --- Test Case 3: Recursive Corruption ---
++test3() {
++    echo "=== Running Test Case 3: Recursive Corruption ==="
++    # function+instruction_off[+depth] [local_var_offset:local_var_len]
++    echo "recursive_corruption_test+0x2b+3 0:8"  > /proc/kstackwatch
++    echo "test3" > /proc/kstackwatch_test
++    echo ""
++    echo "-------------------------------------"
++    echo ""
++}
++
++# --- Run all tests ---
++# Removed: These tests cause system crashes and should not be run sequentially
++
++echo 7 > /proc/sys/kernel/printk
++
++# --- Main ---
++if [ -z "$1" ]; then
++    usage
++    echo ""
++    show_menu
++else
++    case "$1" in
++        0) test0 ;;
++        1) test1 ;;
++        2) test2 ;;
++        3) test3 ;;
++        help|--help|-h) usage ;;
++        *)
++            echo "Error: Invalid argument '$1'"
++            echo ""
++            usage
++            exit 1
++            ;;
++    esac
++fi
 -- 
 2.43.0
 
