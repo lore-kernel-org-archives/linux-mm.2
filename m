@@ -2,96 +2,95 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C3E5CA0ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 18:18:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 26BCDCA0ED1
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 18:26:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 936C86B00AF; Mon, 18 Aug 2025 14:18:06 -0400 (EDT)
+	id AA8566B00B5; Mon, 18 Aug 2025 14:26:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E6F06B00B2; Mon, 18 Aug 2025 14:18:06 -0400 (EDT)
+	id A80686B00B7; Mon, 18 Aug 2025 14:26:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D5AA6B00B5; Mon, 18 Aug 2025 14:18:06 -0400 (EDT)
+	id 9BD4F6B00BA; Mon, 18 Aug 2025 14:26:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 66B3C6B00AF
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 14:18:06 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3366D1408C1
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 18:18:06 +0000 (UTC)
-X-FDA: 83790687372.28.0CF2477
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 88472140009
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 18:18:04 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DGThcSp5;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 898D16B00B5
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 14:26:31 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 155FC5C240
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 18:26:31 +0000 (UTC)
+X-FDA: 83790708582.26.8D2D012
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2C7FD2000F
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 18:26:28 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=X9diEnfv;
+	spf=none (imf03.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755541084;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1755541589;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q9wGRp6+9zdsbZ3sDKC/whjsg3YC/gseE+3JhibvcD4=;
-	b=YUgKJ7OQoS5XSeEI7gl1Ts2b05pNsdNwEIzvdqmNQ/AJnQC+26OGGicQaBRRqnt9pZCc3S
-	vWSRUuh1AsdlMI/COGlYMS9yocRakLR20Ce8mZJnXyp4Q2t75jLCbuR74MaJyC6rAuLnVb
-	l3FIJfXtYF1sq/miaTwuMV2MA0aV0hw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755541084; a=rsa-sha256;
-	cv=none;
-	b=jlhIsbzENCh/zXEnjW5RIoJdCNds77cgaCoNGTnQUIFhcnwsM0NXhXxI5mCXI4QJX6Wf/2
-	jO99sagbFPzA5StTr136LBh6QZKc468Z7Nb359SbtxCRWqxMY8IeOPBmNQ1BPl9xsa5DGK
-	7gPI8hSVtrlm8Zzta8R/6s+i9h9e1Ik=
+	bh=O75UIUPO5Nhi6baLItc5aorQTbl3aXRmvPV/kSs4z1U=;
+	b=aXyEFJyjRWUhS35eE0qChF0x+K7vocRRCEoHPuhDfLPMnLRInphKyLM3ilPSYC+szlkbQR
+	uL0h6/I7X1JO/ytlAwm4iveFE+YOOlfe4GAGIoXusYvHflja6baXSPinaPwftU8/MIuS6i
+	K4GFCJxnPbjfmmPF+q1/JaG5+xrTUrI=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DGThcSp5;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AABEF600AE;
-	Mon, 18 Aug 2025 18:18:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A39C4CEEB;
-	Mon, 18 Aug 2025 18:18:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755541083;
-	bh=Si2VsEJ435Hpz9aDrpmWKX7tHYNWWnfoh3OSHQI95Lo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DGThcSp5EmIH6OIMOMjHy5Sg+5LMsSPOLcKKceL23Y/OVokFATTs5cJKf92RMvu56
-	 a0XGF/1YRoXq1FvcxPtc8A3Clr0Jl5z3JB7ycOMvDrbGHrIwYOGQUY7Z6+1swhcmts
-	 hvkEvN1S8FFkFL4snSuIvPvSpCXWK6gS9JAnynaoX1kUJl/oi5ahZyxJwGo4Q6jkK+
-	 QSWM+SP/HvkICyA8onfG7otTJ4eFby37lUIXgidh0CJdz3txJkOIJGU5kVnmhdZtAs
-	 S4D6rFZD1J8LVmAxP1JtOy9mNM5amOc5owoUj2SBY5Fh4YFxdivYrFbwh9LcET+j6p
-	 4x5kbQXeTStXw==
-From: SeongJae Park <sj@kernel.org>
-To: Chris Li <chrisl@kernel.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	David Hildenbrand <david@redhat.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Takero Funaki <flintglass@gmail.com>,
-	Hugh Dickins <hughd@google.com>
-Subject: Re: [PATCH v2] mm/zswap: store <PAGE_SIZE compression failed page as-is
-Date: Mon, 18 Aug 2025 11:18:00 -0700
-Message-Id: <20250818181800.59827-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <CAF8kJuPwfRVHpvNRr=1NT4z_3Pmr-1u4vfRYmkvh_Kh4uNGy9w@mail.gmail.com>
-References: 
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=X9diEnfv;
+	spf=none (imf03.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755541589; a=rsa-sha256;
+	cv=none;
+	b=YlXdL8irW98x+EZAXNVdJ/whzHLjDCOFWuqCBMqcyVSOVNUCe82oDKCwZSwVqk+Umzs/jx
+	mKQhhX8zjHDE7jtkFa4zd4zTrqLasiSdmvpPnYhILo2abV5KcAVPARtkAoj9F8AsbByDof
+	Bqo9tFGuEeqZB6xABRFqFSeWNGtrJNM=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=O75UIUPO5Nhi6baLItc5aorQTbl3aXRmvPV/kSs4z1U=; b=X9diEnfvb8vsZSK7H4Ybwyad7Z
+	VGXrBAuw2mdZ8xiMQYV7DxC1p7tKM3M5WM/UjU+XMGlCrjrjI0Mq0M2JvEz6MXJ/BXJXw3nLzU4eB
+	F31BmJj5GovtvGO5IMSUv5I5qPzczC99qT8PEQtKonLLVan26mNpujoOC6QIPU+yvJoFIl9SUOf76
+	2hseD7EdBenfHkZApwqQFF0MXHvA3024HDtRdCoDNq+Ckj524lpzzRDJl5aRZcKllFh0tupl83bby
+	fcgTywetRcz6pD8NZawdz1QNwugUBHj9I4e7ncdz+FXNc7WYaaBKRPGbtmb4pGRJIetez3cU3LH64
+	+7DImIsA==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uo4Yi-000000078b6-0d8k;
+	Mon, 18 Aug 2025 18:26:16 +0000
+Date: Mon, 18 Aug 2025 19:26:16 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: syzbot <syzbot+1ec0f904ba50d06110b1@syzkaller.appspotmail.com>
+Cc: andrii@kernel.org, ast@kernel.org, bigeasy@linutronix.de,
+	bpf@vger.kernel.org, brauner@kernel.org, daniel@iogearbox.net,
+	davem@davemloft.net, eddyz87@gmail.com, edumazet@google.com,
+	haoluo@google.com, jack@suse.cz, jiri@resnulli.us,
+	john.fastabend@gmail.com, jolsa@kernel.org,
+	kerneljasonxing@gmail.com, kpsingh@kernel.org, kuba@kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, martin.lau@linux.dev, netdev@vger.kernel.org,
+	pabeni@redhat.com, sdf@fomichev.me, song@kernel.org,
+	syzkaller-bugs@googlegroups.com, tglx@linutronix.de,
+	yonghong.song@linux.dev
+Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in sys_umount (3)
+Message-ID: <20250818182616.GB222315@ZenIV>
+References: <67555b72.050a0220.2477f.0026.GAE@google.com>
+ <68a2f584.050a0220.e29e5.009d.GAE@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <68a2f584.050a0220.e29e5.009d.GAE@google.com>
+X-Rspamd-Queue-Id: 2C7FD2000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 88472140009
-X-Stat-Signature: e7g17puq6uhdrojsr54tbcshsif8qsju
-X-HE-Tag: 1755541084-942759
-X-HE-Meta: U2FsdGVkX19Cj7JA9U2W4bP4h8aYp7oTgTsBpDYnWC9Ni89tu12EFmcjITPYDGfjbNp5YD+L5N68AMGdc2ZDTgKkWl8dq73RXgfGtxTo7F/qUje7lr6xhm86H7hBB6ZYLP1bgHmqZHidx9d5bCEERcjx/fRyk3nja0RUFrCcUblnp9i4lTmmjB7y+OybBMyONxMQfrKbOixCkq1T1rX3YnSuFFR2dwuh3Y17UoLZkJRUundI7rNJ9rxzgABo8d98QRBWhnMmsmk0FtcF77Z3GYhUS827PItNKJgZqmolyYHEf7/vpI76Dg2fdEDpowPeSa5Sp8eWCh+Dfa6B8mMc+5FeUVT3j0jm5t3Wkg7Jd//2prcnCiKjxenHdWpr9KvVlx2abNuo679IW73JkmI4kb82u/UpCWYoEv6awoIDxvnAjPNqZ6sFh/KjXx1VU40Ptbj6FmW5mhIXPVxKnszRufboUFGCeGpCmCZK8mkymxMWqnXBzyaR9RGmFM8UE7O1JKqeux+VfOEWRxutBVdIGZTltZNuzBRRkhd0Du/jfVoPC+4fwjMkDUOAc2Anl8fXR/+yaJUYx1P834M4KJ/3oVoIbZpkkS/iFiRE6Nv8TotZzTK2R8J537h3M2CFxSafF4bnYQ1pNYAqNoZoMJC3dtX9++NVcR9F9Q1U/rtT9WALt26Nz/L/veXnkdAZliqqIGqnQHP8wJ0PWcsHZnj5be+QUDDlQ8dDqilSNaa4o5zVcLhfDie1ZEEGOh/5lXWgfjq3WN+TbGRziN+i7u+O4vRGjhiNqXaX2f1lRDth7lE84sQobhy3YR0lRH//TPTvDgnDGqnu5+bPqVi4HDi0QfiBg912FMHuCbu5YablQtiPapm1miXGAhOmYfNTsR0RqPm+umXbDN4Wmvc7IsQjoIA++fHPEfw0JDIu7LrYRihOoViT80iNOvSD/bzU9Yt2jONYMrRzBIUCLlnEEG5
- oxE/tLtc
- 3xG4OwPidzi1AGaRVmBO9Xk/5Kr7jGdIgy7aL444fsPMzueFOWl0PcMdIOASUcwlqMhVqSiPAgLLYEcXEEwgBVv34wb4PVesj6tboqp9kaJElXvnPWM9sg4jcSQrYddBGzFwmnYr6QSL6yz48/0oFAUenpCSFAUkKuTtiS0BnDlDqquIwuMXY1VdhEp3lXElJkAEh+LE/lYQrVwZcozSYtRGC85r5NBR1X4BmkwopIxabY82mCgHTrHcJKNbmm4K4qSbWDEh07n7rSlzmxy7+i7XzORbVyWo4tbxs1E39R0SsYa1jK9mR+1IchjeseGuke73nbA6mS+DwCVgX43ZQyFYxPg==
+X-Stat-Signature: ojzxwp7n4upne4trafh88xqk8ni33h7s
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1755541588-555324
+X-HE-Meta: U2FsdGVkX19Wx78t9eAB18taAVyO/ZX3Lqc0jL07Vb2T1/eZLm0QQUkHXcsdPrHWUAFmigzwDKOVkw7PS6yY1/Cx32X8obS92AizvE1fSMaOgV7ZDB2L0xTEl/hBXoSf5X9fGC4RXOnHvXEgT+saA2CIiTZ0dBNESbvG6mNd0yqiMFC6tSDW0qPiab3Q2OCWzfkTx2XvQz1HjW8fEk1xDYq4VwXKEsNwm51T2avXgsP7mXe/VltYDl8KPlf9ElP8gzsL615DeYCD4L3ozSPnr7YA0YK3JejC+6jVbp9SITwbI+G8huoWEkAPJDk6JcPRbIWd/N7s4cdWL2YngTCivUjuMc9Ps0AgF9lVeP2hiA5FVk+Ae1cTO+EKxddmBwCSwd5YzHhwtlxuEoDkzBzp9DU1mhTDTxf6UJ7M8yXrsmcXq/pQig5ENYxRZNGlXdrA5OvWYcmF2073NPR3THdrlN3kBl/bhYyfb7XYMZ1a48XHJdaaZ1lRVjDC+Pq4p7V4B4JNnb/cSyiNVMwGdjaPXm/r2FNjVi/RWmT1YPeYwu4OSIhAMwSBN6GOqqliBq4YhJpWBXYu9dkSMzJxNrwIkoAs31O37BrRHu6K4bBQwjjPruFM+twZuwXLI+xLRWqzZZhYsgmLQTZ2/jBjcc+s1EhvEYCQHOJzUMaxuFSdUaP42dPnsHPPa9US5CP9dG476DoxQQD41t/NlbizLbrDvmkQf9hETvUb0ImwofJY6XME7+43iZ1jFE2TR7X2VfrK6Ip5Vgz5CH+bTMyVIpcmBiyHFKyhNaIh4BH4zOqlQ6JyzC9YmZTGUm7k/SD0I/cCGcIIuwbAeU7UyOL3JtV7hLgaG6ZnHGx3bU6Jgrg4QnICrX/IEzk0lXJbKmblcPooV9sayZh/MNzK6T82i3XzRnLfu0JvbuaeuxH0b33Ic/P9gez8yd30N+wpjzerFHvUPxaIdazBmFSbJdsYW1b
+ SoRxFBlH
+ /atrDG13S5QkVvWaYN1euud+XRsiI17+lN3Pss9zHcSvwBY5XE8LtlpR5DoDlhUQF9PDIyppjXafSUcsaEDOVB8skd8if87LO22RjtfAzpwKeItaWBl4yUA0vKAtQ16J0LkXh+JMteOseBnYJAsbFw8ovdFPBvxRioH5G/kLwCA/Lqsa8Pl+sQs1RZv+xgeBAgvW4Ne4HuQt9mbjYrpeTsw5zaMPW0R7msrC6hFMl+FiDdSLZgHjPiH22xP1oQviFBsMeqYfl1WtEmj7kWWcwN/EGAaMuOeEx6X+p8v9dHkb9eBmraY8pjhdImFXd/l+Lo/zR2L073fwWy0Q5aDWfLW1neC99zDS1pH8d6/gxuKT7MAJ7U+XEosEDgcV5NaNKBJaN/hJGjaAslliUscvd/HKlulro81HY4bNJDJU9bp8z1s6MyxQPf3cJKVQ3A5C0fL9/s1Y/dV7qu1NHTtZwc/xbOl6XpIdzr8502Qc1BpvoDODJmRalk4PN1BzN35NWLaJPISoCOb1O1i1zRJVM7mkaJjNwDDDAZuPfCjx9HelL1UGr6Cx5XWzh8P6tvYQp3xcV07IaCenh6umeuMsQleEUc6sSE8q1nkkiM0Y4UJBC1N9yW6Ef9c18b+M01cN+zNWDSF6tMrx9Ht0WD5PVxehbDjfGeuH4cX53C1hEIMbCt1Mofo5OKKMjOyicP3PmtjX7UNOps6D3sI07QgZC5bsn6VHYqfz6NHXDZErgEEKhBnpcbE/WgPsEsD1HFc5dvzBm5BSaIcDYt+M36D2ToQ6eW58qFqK5gr9pdG8lTg8aTCNNJX3+CYrTuLgQc4vq1ptU9mxU1YMXTdaaB7QlzgMngIP9E3zo1bmhZy06Cit4fJT46jTA1Ec1u2O4PHEPmKKNi3ATKkdjg9SezzUsOCGOKw8cH5OVnXSOu9kt1JMMQsO3ntUi3trqY6eX1TDbd2Ug2Cy3QkHL28ES0ASseEwKEQjT
+ JT0425Zh
+ Z452LFAkaT06aIb3VU8gHzbV2hCmixj+cXvOsttXF4Z39jrJjp5IOiUmEhEs8sykTigLmHLD8BfMdo5ZFcMn6h/7CdK9p4AfQpc/NZ07RUNz/doENv7K2U95Uo92KBCC+TN2Q4FKf/M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,27 +99,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 15 Aug 2025 19:23:10 -0700 Chris Li <chrisl@kernel.org> wrote:
-
-> On Fri, Aug 15, 2025 at 5:14 PM SeongJae Park <sj@kernel.org> wrote:
-> >
-> > Sounds good.  So in the next version (v4), I will drop compress_fail.  Instead,
-> > I will add two new counters, namely compress_engine_fail and the new atomic
-> > counter, say, stored_uncompressed_pages.  Please suggest better names or
-> > correct me if I'm missing some of your points.
+On Mon, Aug 18, 2025 at 02:42:28AM -0700, syzbot wrote:
+> syzbot has found a reproducer for the following issue on:
 > 
-> Sounds great. As I suggest in my other email, if up to me,
+> HEAD commit:    8f5ae30d69d7 Linux 6.17-rc1
+> git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
+> console output: https://syzkaller.appspot.com/x/log.txt?x=1321eba2580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=8c5ac3d8b8abfcb
+> dashboard link: https://syzkaller.appspot.com/bug?extid=1ec0f904ba50d06110b1
+> compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+> userspace arch: arm64
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10cba442580000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10a1eba2580000
 > 
-> "crypto_compress_fail" and "stored_incompressible_pages"
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/18a2e4bd0c4a/disk-8f5ae30d.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/3b5395881b25/vmlinux-8f5ae30d.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/e875f4e3b7ff/Image-8f5ae30d.gz.xz
+> mounted in repro: https://storage.googleapis.com/syzbot-assets/43186d9e448c/mount_0.gz
+>   fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=174ba442580000)
+> 
+> The issue was bisected to:
+> 
+> commit d15121be7485655129101f3960ae6add40204463
+> Author: Paolo Abeni <pabeni@redhat.com>
+> Date:   Mon May 8 06:17:44 2023 +0000
+> 
+>     Revert "softirq: Let ksoftirqd do its job"
 
-Nice names, thank you!  I'll send the next verison soon, following all your
-suggestions[1] together.
+Would be interesting to see how it behaves on 
 
-[1] https://lore.kernel.org/CAF8kJuPCpnGAoz=1CBwe46ytpcR0ZUMAEWLFQce7eUWkb+0ERA@mail.gmail.com
-
-
-Thanks,
-SJ
-
-[...]
+git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs.git #fixes (cda250b0fc83)
 
