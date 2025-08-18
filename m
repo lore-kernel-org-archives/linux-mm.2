@@ -2,117 +2,140 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D69CCA0EE4
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 14:24:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 82682CA0EE4
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 14:26:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B72E06B00CA; Mon, 18 Aug 2025 10:24:22 -0400 (EDT)
+	id 0A2748E0014; Mon, 18 Aug 2025 10:26:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4A7F6B00CB; Mon, 18 Aug 2025 10:24:22 -0400 (EDT)
+	id 07A918E0005; Mon, 18 Aug 2025 10:26:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5FD56B00CD; Mon, 18 Aug 2025 10:24:22 -0400 (EDT)
+	id E84748E0014; Mon, 18 Aug 2025 10:26:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 91F9A6B00CA
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 10:24:22 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3CC36140945
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 14:24:22 +0000 (UTC)
-X-FDA: 83790098364.07.878D1A2
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4D04020007
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 14:24:20 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KHhwkPqA;
-	spf=pass (imf13.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D0DAF8E0005
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 10:26:56 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8EA8F1DE426
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 14:26:56 +0000 (UTC)
+X-FDA: 83790104832.03.41AE4D3
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 3633F1A0012
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 14:26:54 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=quicinc.com header.s=qcppdkim1 header.b="X+/fQxfB";
+	spf=pass (imf19.hostedemail.com: domain of quic_charante@quicinc.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=quic_charante@quicinc.com;
+	dmarc=pass (policy=none) header.from=quicinc.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755527214; a=rsa-sha256;
+	cv=none;
+	b=sdMfScXSSN2lcLXmzg7MvinOQn1L/d0NsQvw7YYe155iNaeDDCobk8hHCLDPbYopMoqVPA
+	zB62RkW+q24Q7MbrnK+1N55TIo12R3acRrrhp1vcVPN7H6c77XN/j3j1HfG2zILx0XXxLE
+	JNwasWkqzd0dGclfuq419/mawmAIXZU=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=quicinc.com header.s=qcppdkim1 header.b="X+/fQxfB";
+	spf=pass (imf19.hostedemail.com: domain of quic_charante@quicinc.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=quic_charante@quicinc.com;
+	dmarc=pass (policy=none) header.from=quicinc.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755527060;
+	s=arc-20220608; t=1755527214;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nkI9YOv4r07AZaOuAgohpCftqKz/9ZS5s+LWNoe/iJ0=;
-	b=LRqz8xVQBau/lnwXW9TbY/lz8WnThmWCZrnX/DCipwWnreAMptOTtbwe+PUvaUUfutUe+k
-	DzoJjMWmD9wU4oLdiAzZPCpt8+veEckbLjWoDSBDGGBPpolC6et6Js3JJJVWwErzkW3l9V
-	aEfldVEH6+X3j0YEpq1HF+QACevHZOU=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KHhwkPqA;
-	spf=pass (imf13.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755527060; a=rsa-sha256;
-	cv=none;
-	b=M2vUt4ulYOIMp0i3/ZLLPW2GOStFb9d9CHcAXSu+y92uqdFozqR85es8XcdpGIpk3zCVoc
-	Lg5d6Ic44A/m49MtY2ckdXIooKSaugUMAOpilRIqyvUb94CpftfyC+AAiU5AxfHC85wPVY
-	hirrPhuSvDjZk1tHgtb5jFATRbcjZSk=
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-45a1b0b6ac4so20423765e9.2
-        for <linux-mm@kvack.org>; Mon, 18 Aug 2025 07:24:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755527059; x=1756131859; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nkI9YOv4r07AZaOuAgohpCftqKz/9ZS5s+LWNoe/iJ0=;
-        b=KHhwkPqAROpY8J9A6E+hKJECsqfxT4f7YsHr/nrR7ul3NHr2izLvkbNQ6G8hsOhPFN
-         RGj0y1QXCxbowQHigyHHH9yrYYP8Hce1BVMj/KaEEtLyhfHNgxa5wwL1ssDLKQGVelpJ
-         jGPlmHZrcibZt2kHjtYL8PLY7vmpV1SQ3g+SubD4hpj0l/Ch06bk+Fo7SVFP1pfwLJg6
-         E0LE0LvrUXjel6cU2VL/Fj8uhKiGYiO8HfgHp5FMunYgUlXpiAY1W0mXYkuzGHEcxXec
-         NXnGAvpEO94dmmjupG0us8BPOL0wo/GKHKHcDZrkBs/JNs2lfvy5TuRGb+Bpv9vwOpsl
-         sIRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755527059; x=1756131859;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nkI9YOv4r07AZaOuAgohpCftqKz/9ZS5s+LWNoe/iJ0=;
-        b=ui2EoQGXhMCQLVbTvPGngJxSAjeJdLUEgve4gQ/hDR17GfftpsE5ZpOGxfD9ztlD2A
-         wHgZuZht2BuqMoaClYZamKdKg5617Erge0yygvl8brfiKyAZ2efgPOtgGw9r9KAC1kQn
-         fpns+0ht5lf20J2HvHQrPnJfrLB8YTCAbqa40DgdDKGFU1QW/IjyK6O2RXIeLEgPdRdP
-         r7ydzsFxLzfLVdkcDP0HFJgozX56bi/rhuTIdpzXBE1BIpUiZEvE4928CI3McNj86OP7
-         Fel1dXTOSr91lV0SjmdrExaUdfvC0gdZ2XEDHt8dXFWrFfJPbj2df3EKvaltrgPE4JJ3
-         VoHg==
-X-Forwarded-Encrypted: i=1; AJvYcCWw8g3otpFdIeN0GvyrtUqZLEZOCIx5TkLvL/2rCjYAWcOyb2HAw4+AC7u/mHuTJ3szZ0TnK6ME5Q==@kvack.org
-X-Gm-Message-State: AOJu0YxkHw3kxwuG6bfU9bPfg4atCXMuEQ/R+iFlLmSId57RsKs+U4Ki
-	FFLRe3uluOEq0m8fw+gPiuGSdVxrO50taN2jMje6Ccgge5kwd/WNbBSFODWth5U7bH/QKg==
-X-Gm-Gg: ASbGncsdRB0qxFwAg9BrOi/K9uOoiY+rJBoh1yuc7cVeYVge5mrl7Le4NOP9Z6AR+LO
-	ZQlgvHcxeHajZeUoHhRTf3Cxxm9HEFKKhkkGGrutbEWHRpBmb8V3K/HlffZtDS9JVq/hnk2tK07
-	C8nWnYJN1qZGw47xIMRkO3AWICxIq4CyyyLrUdHdcuo9/cv9mENF4fulOPIYqdFKruXyQ8A7mTX
-	Z1H9XJqaRc/OD1XaGDDz0SFZUq8L52J24tP/xlA/6JF9W79AXcs69WLHxXx+7NWcHLqSj/RWp4G
-	fLYlsC0o5oAK0ZeVwqoB2XIYFl8buMgVNx5Bz+QPGy13AQml7BaSFnTPGmpISIgn7bOMu5g6Kt6
-	I+CAgBNrjdqThrdQ4touZqw5RAEVnG8VjrkiijNk=
-X-Google-Smtp-Source: AGHT+IGdTLWM4u44zpOwtBDpQ2Dp43kHDYOCOmgNgAx+WJjoOXFpU3DOTXSDTQF0R6/1ZBdaFGtTJg==
-X-Received: by 2002:a05:6000:40db:b0:3b7:8154:aa36 with SMTP id ffacd0b85a97d-3bb6665cf99mr10003559f8f.7.1755527058385;
-        Mon, 18 Aug 2025 07:24:18 -0700 (PDT)
-Received: from devbig569.cln6.facebook.com ([2a03:2880:31ff:44::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3bb676c971bsm12838159f8f.32.2025.08.18.07.24.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Aug 2025 07:24:17 -0700 (PDT)
-Date: Mon, 18 Aug 2025 07:24:15 -0700
-From: Yueyang Pan <pyyjason@gmail.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Suren Baghdasaryan <surenb@google.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Usama Arif <usamaarif642@gmail.com>, Michal Hocko <mhocko@suse.com>,
-	David Rientjes <rientjes@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [RFC 1/1] Add memory allocation info for cgroup oom
-Message-ID: <aKM3j3geY7JiPGQ8@devbig569.cln6.facebook.com>
-References: <790da5ffebf18a5a1211ad8dbe4e5b4a19871408.1755190013.git.pyyjason@gmail.com>
- <20250814201114.1921580-1-joshua.hahnjy@gmail.com>
+	bh=N9XTtPIlb1beSEhqR68lpF56qfXbGpzXDW+vo24hduY=;
+	b=UDnlP/svdtrpsx1kX3BDbEGQn3Xq3EyzTtJia8GxhMoeEBbTe4gAk2rdoStKu1TF8Lormm
+	uWdQvqb1o1UfmSaKnDDOFrT987du9Cw/qYWZNI4PyOubCM6WJIyw0TlL9ytNRu18WIf+nH
+	rwRZtY88Q03gTax5XqAIH2UCw4K4ewQ=
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57I8UcmF014629;
+	Mon, 18 Aug 2025 14:26:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	N9XTtPIlb1beSEhqR68lpF56qfXbGpzXDW+vo24hduY=; b=X+/fQxfBXTRDcjyI
+	AoxW4bMMKA7nuLTn3u2JeX/TnS6zpuU5c/HqlSPO1dtlXJsgQeNigRSd4AjRocfe
+	QVOjROlbMSbiGYjOjoyCzN2FYRGD7WybBPEuoIyd27BXS4xhRPKiZiuaPX0sd8xs
+	VU4/Ic8uBniVF2Ieaw9GsLX3smQhQ5TLXZjAUAUfqVVUSgfQ+1iTHNbqGlf3Ve3Z
+	TQwrxR4WgmB+59F7/q24mKCwpoMh9mpMXu99RbS4fmXhZKMgxzmyZnK/+/LQPdCc
+	9EYs9cLkvox+RDIRGuWWQ2hmxOR4LHe2hJLDPaqA+lzqye5xqOY4SgB87mnu2HW5
+	SwzXwg==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48jh075279-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 Aug 2025 14:26:30 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 57IEQTGY017650
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 Aug 2025 14:26:29 GMT
+Received: from [10.218.24.190] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Mon, 18 Aug
+ 2025 07:26:23 -0700
+Message-ID: <ec37a541-0803-43b0-a0f6-aa3b632bcb97@quicinc.com>
+Date: Mon, 18 Aug 2025 19:56:20 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250814201114.1921580-1-joshua.hahnjy@gmail.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4D04020007
-X-Stat-Signature: wq6adiqxogezsgpojnjjezf6us1sqej4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/6] Remove XA_ZERO from error recovery of
+To: David Hildenbrand <david@redhat.com>,
+        "Liam R. Howlett"
+	<Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+CC: <maple-tree@lists.infradead.org>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+        Mike
+ Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Michal
+ Hocko <mhocko@suse.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jann Horn
+	<jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+        <shikemeng@huaweicloud.com>, <kasong@tencent.com>, <nphamcs@gmail.com>,
+        <bhe@redhat.com>, <baohua@kernel.org>, <chrisl@kernel.org>,
+        Matthew Wilcox
+	<willy@infradead.org>
+References: <20250815191031.3769540-1-Liam.Howlett@oracle.com>
+ <3970cd97-2e9e-403f-867a-3addfbe399dc@redhat.com>
+Content-Language: en-US
+From: Charan Teja Kalla <quic_charante@quicinc.com>
+In-Reply-To: <3970cd97-2e9e-403f-867a-3addfbe399dc@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: CVnTXHqcMte60tk48I5qtYhtMN12fvDh
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE2MDAyMCBTYWx0ZWRfX0OUlx77pTTnV
+ S0l6UGnrZ2CvWTs2XqQAQXAdJbV+CMBi1dZFhXoV12MyVHj/E2vxcftwtOi6bdgKGNbYHG+wIkR
+ RqsOG7k3wdTXSq0kOEOHJUpnB2/mv/Tdu6J7OPW6VdM1R0XkXeD/vjJUnAPZj+7TuXQDloN7GgY
+ gg4Edm5ztuZApPxqtlMP1r4HFS6AYOSEAuynM0RBvJM3vFeOQDum36FdqK/+SZo0O2HKmBZQLUe
+ G8tYfL7jGHVURisq1rj5Qm/Di1cd3vL0jT1IXD02SGENOkEExqnGo+SvQUX2Y70qfFPDy6oHqHE
+ zYBxFKtbaagMDevKZUeJ/UoRPfgnmsXC0ZphvKt8bcLc9VnCxpY/j/IoMeLEBVJ1Ig5cnecBb4p
+ JBUB8Vcp
+X-Authority-Analysis: v=2.4 cv=a+Mw9VSF c=1 sm=1 tr=0 ts=68a33816 cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10
+ a=XXfpJIKeY94Gd0witf0A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: CVnTXHqcMte60tk48I5qtYhtMN12fvDh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-18_05,2025-08-14_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 malwarescore=0 suspectscore=0 impostorscore=0 phishscore=0
+ adultscore=0 priorityscore=1501 clxscore=1011 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508160020
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3633F1A0012
+X-Stat-Signature: d66eifng4nmtc7b3od5pktbq3uayfxfo
 X-Rspam-User: 
-X-HE-Tag: 1755527060-99722
-X-HE-Meta: U2FsdGVkX18UMAhnB/wp3sfuBc+qB0hbowIuwZ9iXfaFvt5W/NrWZPHDwjHQXe3mqwZXb8oW9IM79xdVbUvxwyUgvIVmjEguPI+X5PnA/A5lXA0lzB76qIpiMAzRJ8Ni88XOTOIeosOlLknU6VWuvyJb37zUypQJdKWu2bpN0sCWR1aDBvkwA1KKtF/BhxSVQpCQzitE0DevwSKQRAQ4yP2E1ryJzV1yo4KuwYJ7ZN6eSIp4/EjXS/J8l/mntZhWtBKW/71h5KVpgaGjkYeAyG/eVgzRJgTlwhgG9rYNZlI3s5Ik4lQfbHcV+BAj2XRqrx4T3A7HIqBBFNd8ThQ4qrxb0nnXNyuDqj+sk8xdP2IKedWduTUvpzIzf1D09b5DiWK/z/ESgmlDsC2VFLk6IoT9VbZSrU02sXHhWL0h6B4pHXHT9c70Qf+FOB9vPcbVFtfutZWcQ2ovKwpRSQHGDGj9Ck9mhaNjyToTqt1P6vCQgIwCIf2WEIW3ofxiQbl7+y5t0lICiG3NEfpJSs03C9gPcS8f1Q9EpMZi33+gdnP+GeyitbALV4bqCDPm5yBUoRAAb3RXmRWOksz37yJ85/Pg+Smdz+kmfTz3rn91/FPZhpBHqQuz/OHJvmy9uTj+zdRRTuAufJCqokR/Je6S7w1Yevbtc1dat/75swBNCSaxYCxT39HRI2GT33lnI/NPE/tNzAOP910MmqbCNNHXtZ2KrkHt/pX0RFW5xWJkCs2Q200At3mUL4a9pLZoMty7EZ0KmZAnS9hCdsK1aLY7/d/Wx0jLlmR3LOWgU+PCTpdvIXxK7DXyX9kreo/rnW+9RClIVvTBYxVKgCf00f8Usg6WcL2yaCZXpfEfk7krGXj/1ZFXiUE0MUeErgWtwfPeTKr2anjYZmMd83B0RvjVIxxruSj0MtiZunoaYChPSDOzzSi/5HI3ylsvIEGXX8iH3Xb7Maj/tawfSTYjH7q
- iGNkYUDy
- Pb2GUmp9aj49i7EnHjH7k5t3qMYMzf/qh8cTQs5euKOtZhmalFkxw+VDmqKBXUHCCwhiWpCiFct0LrO7Nt6vncMqd1QeVfeHiMCg1SxSIs4RqSvrbwo3Z86VGUxKt2XMQJPxELV7X9fVrd1NWw3WxfIYpQsovyTn3QpoxFola7v9nS5Y6XyDkVzIQKQbL1ft50LHWC0pK50NpP+JoX7zEyJPpd2eVzHzvdweewZOtNwyJYAtaBlycZ+PNWnJqX2GwfYGqtoBNlvhIlXxRjP9GVYHc3VnD0IG0vYwZswPh/6QfX9OZGaFnEMqG9VayTHivrHRhN9K9aJgruwmUtnFDRG+Pkyj51ESxF+myoWH67+AS6YGFQ4w3xCzhQwQoSarYgwC/czCn9Q48rhJLk3v8qvK9wQviMLNHldFJByBFPkKxBWod3LeNsmh7Caa/JltVD1qLva7giHXTa7lkvSouOVTVAwcc4nvF1Izm0iYzvBYSojSqW95oUQAf9kF7NDrqHD42ZfpoNORhOazOb2tduxd6D5uOuOqHlwCq2XjftWie2va5pQELsJ1/lZccGgfNpAOtZE6+0VpjZxQIFr+WpMa5P0iGkb5dPGlU
+X-HE-Tag: 1755527214-199595
+X-HE-Meta: U2FsdGVkX1/5fiK8xkzdvOEo5DIzAiuYSs8AqpVawA+PT6JGEWlPocvf878BCN8lQGCMe2LQOPXvr0yVAkQTWXE4GraY2S+6pYnulxTbSLWLnLmZPFJLheCECbvjd60Mbfs4hRNpKR+R8Y4b0Ko8MiolhQwH9FLUtZq79C5BUTl33+E3kOnat0C3t+mkln2re5nHP2tfXwSmZLAYQ+AGdKIkqk2kK008rv+O2fI8S6C6ydC+Zv/5wtacxeoxS6EGon5xfoUI2zAleA5SGlbzYCFpRlTQ8tuSVNLTx0HNF22rQl/7epzPDvKsRWP5U/TIBaEknmxMuzZkFpj2YEX4CfqT7QP10gzkgRPjY+7VgNvG8K7XQXQoJAIN/OP+cDYdNJKhWAGNr6dfyjUN0NmA3cRKcfzbX24mqhi7Jr84zhF73FQcbc1NPeNCUtAytQTBmTTzZ4E+RHWqzYa7qEqVcy8o2bgPwy2Ry2Q5hcgJnJETuH5eZzUpLsFonguwf1N525IF+eyc4ebJ1OoEYnxL/UgGn4UwqM0elzXT1nHAsKhDRX/NyOQNMJ8hI8PP5VpJoVU++2s1OYeDl4ToSOGnMGSK1VkWYyo8cbAiO8B9d4G9COUkYhG3XkFpY17cy7LEStLhjv09NBn/+JeLa8JlQLcIp0KgHuPkA7D/RnA5KsBw1cFoSgkRz3fr3/rytnaMuwMM1NPLMFKbA0SUFh6K89CYbH13JIDw6GYd2mt6mlsmSb9Yt4QwaAWBCkjCEAMobzdQIyazO1ot30mIiYfcu6fLHn39vUwWNpnilqUty+EEiFsX6aa60LBVQlZzXtVR81QpKh31xVMdh426wVctlj7JMzB9VISXZjuawQEV/+MRDcZqbeQvTxnAz7In3wFhvCCAglnoc62FESjczgU2b5jinYV/rfs44kzHa9c79sHSDqylbtKdZ0CD19k6Xb6S6FjZrmF3HDRYytHwmEj
+ apQ0NGnF
+ g5bsd8ze1iOUnkCKuXB2LefdUz2O6m6iYsdW8xVzvP8TSQDtqKfwklUZxwD+MwdasRzhkjWznmrsi2SFdWApeAvtGAV+PYrbmPFJg0JTAeqZgiRh89JzPP7Ldfly1QnBiBdiXVBhuc+/MFjEOmQyZx6K0i4w/OXATqDfdRaQF5d38EdtKfsfmYX91aTYLlnC0rlUbPkdxexS9BGmdDZuWEZxLHEFqfEVI7EveOpK4ydHrYq2eljOrhvxA1ewePYD5I7ShVEH3RHK2Y6oMgQaOSqp8UHa7ob87MlTrrRwlYLQvGd1KfutUFuiHvz9rhIHWYgaawtxLapJv3QhA91gvq3emyqkO5hfHsjdvikKr4aU/CnHxWdTlx9EtM8EFaoUQWHFBW9z0r+KNzI+Cf6QXwgs73BRpCvQjieyd81LWiVP63sM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,77 +144,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 14, 2025 at 01:11:08PM -0700, Joshua Hahn wrote:
-> On Thu, 14 Aug 2025 10:11:57 -0700 Yueyang Pan <pyyjason@gmail.com> wrote:
-> 
-> > Enable show_mem for the cgroup oom case. We will have memory allocation 
-> > information in such case for the machine.
-> 
-> Hi Pan,
-> 
-> Thank you for your patch! This makes sense to me. As for your concerns from the
-> cover letter on whether this is too much information: personally I don't think
-> so, but perhaps other developers will have different opinions?
-> 
-> I just have a few comments / nits.
 
-Thanks for your comment, Joshua.
+On 8/18/2025 3:14 PM, David Hildenbrand wrote:
+>> Before you read on, please take a moment to acknowledge that David
+>> Hildenbrand asked for this, so I'm blaming mostly him 🙂
+> 
 
-> 
-> > Signed-off-by: Yueyang Pan <pyyjason@gmail.com>
-> > ---
-> >  mm/oom_kill.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-> > index 17650f0b516e..3ca224028396 100644
-> > --- a/mm/oom_kill.c
-> > +++ b/mm/oom_kill.c
-> > @@ -465,8 +465,10 @@ static void dump_header(struct oom_control *oc)
-> >  		pr_warn("COMPACTION is disabled!!!\n");
-> >  
-> >  	dump_stack();
-> > -	if (is_memcg_oom(oc))
-> > +	if (is_memcg_oom(oc)) {
-> >  		mem_cgroup_print_oom_meminfo(oc->memcg);
-> > +		show_mem();
-> 
-> Below, there is a direct call to __show_mem, which limits node and zone
-> filtering. I am wondering whether it would make sense to also call __show_mem
-> with the same arguments? show_mem() is just a wrapper around __show_mem with
-> default parameters (i.e. not filtering out nodes, not filtering out
-> zones).
+Just curious If we can go by the suggestion of mm unstable check just
+for the 6.12, as it is LTS.  I can't see this issue on branches earlier
+to it. As well this patchset is not getting applied cleanly on 6.12.
 
-The reason why I call show_mem here directly is because cgroup is not bound to 
-a specific zone or node (correctly me if I am wrong). Thus I simply invoke 
-show_mem to show system-wide memory info.
+> 🙂
 
-> 
-> If you think this makes sense, we can even take it out of the if-else statement
-> and call it unconditionally. But this is just my opinion, please feel free to
-> keep the unfiltered call if you believe that fits better in here.
-> 
-> > +	}
-> 
-> NIT: Should this closing brace be on the same line as the following else
-> statement, as per the kernel style guide [1]
-
-Sorry for this. I will run checkpatch for my formal patch definitely
-
-> 
-> >  	else {
-> >  		__show_mem(SHOW_MEM_FILTER_NODES, oc->nodemask, gfp_zone(oc->gfp_mask));
-> >  		if (should_dump_unreclaim_slab())
-> > -- 
-> > 2.47.3
-> 
-> Thanks again Pan, I hope you have a great day!
-> Joshua
-> 
-> [1] https://docs.kernel.org/process/coding-style.html
-> 
-> Sent using hkml (https://github.com/sjp38/hackermail)
-
-Sorry that I forgot to cc some maintainers so I added them in this reply.
-Pan
 
