@@ -2,103 +2,146 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F35BCA0EC0
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 11:45:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FDA3CA0EC0
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 12:02:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBD058E0030; Mon, 18 Aug 2025 07:45:38 -0400 (EDT)
+	id C97C26B0099; Mon, 18 Aug 2025 08:02:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E94508E0003; Mon, 18 Aug 2025 07:45:38 -0400 (EDT)
+	id C486B6B009C; Mon, 18 Aug 2025 08:02:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD1938E0030; Mon, 18 Aug 2025 07:45:38 -0400 (EDT)
+	id B37406B009D; Mon, 18 Aug 2025 08:02:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C64458E0003
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 07:45:38 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 317A61408DA
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 11:45:38 +0000 (UTC)
-X-FDA: 83789698356.20.86834A6
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 024DA180013
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 11:45:35 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Clt/vjFH";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf24.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755517536; a=rsa-sha256;
-	cv=none;
-	b=1xnHnOsRyOYIkC2AEdYfVDRcVjpId0plAa3Nx5LOAGiy/f52ZInn7wVk72+pMCtQ/qvbnD
-	Hy0v1LwprCxXkE+JzU3lBIvUxaceJWS7s1H8ejXMWwQMzMu/eCSRvEW+pvEsy2gllo3Obu
-	QhSIySyFFaafix/PPEbNK4f06RPJOWU=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Clt/vjFH";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf24.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A20B06B0099
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 08:02:50 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3400D1DE224
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 12:02:50 +0000 (UTC)
+X-FDA: 83789741700.10.C665B1C
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf10.hostedemail.com (Postfix) with ESMTP id DA0A2C000D
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 12:02:47 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JIZIkc02;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hXpd5nL3;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JIZIkc02;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hXpd5nL3;
+	spf=pass (imf10.hostedemail.com: domain of hare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=hare@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755517536;
+	s=arc-20220608; t=1755518568;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fu4mWedunRpepQK4vPdF43r3Z2WEFaYWndiALSzs5Lw=;
-	b=wrr6Mip1JgNLF0BOMpM51fFRkidXof7Ey7EiSzg05fb5HEPeYt48C6Q9AnhExaZoB8i5/l
-	ZHq3ZVLcADTSAyRNdolTsbWTBKVR+bApTMPPiJGrL9ha1Bqb6zKDI9ogd84J2QUjwaNv+e
-	WPR3tgzgfwOLQYYYhmFneXcZwDa46ck=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755517534;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Fu4mWedunRpepQK4vPdF43r3Z2WEFaYWndiALSzs5Lw=;
-	b=Clt/vjFHKw/NooW81DcAGvlp4S/VvxE62xU3W1riqSl7mIVpNZUCvBmU7UjdxKVtWCYEwd
-	H7PXAQzb01kNBo0STcMzkggxod789LxH92Kv3qmwPVDYrl/ZN5CmLWLSour2oFHC29LfGE
-	Y51a/g5Q9bf5g+tpaH2UIcrTSjXPLe8=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-17-GUL-TeqQNc2gGJcAky-ovg-1; Mon,
- 18 Aug 2025 07:45:31 -0400
-X-MC-Unique: GUL-TeqQNc2gGJcAky-ovg-1
-X-Mimecast-MFC-AGG-ID: GUL-TeqQNc2gGJcAky-ovg_1755517529
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	bh=Q+3lGak+12Vl27FVM2SSyx0kSJAGYOUNyyYt5Oy3FxA=;
+	b=5eFjRYsAy5MGyyO3AbD4h594vV7CGKhaIMLDYSnJjCTLPbLA4c0521OFHfYusHm//DAvNW
+	/OHoc98fhWui/L7hHp6u8llVJ2TNA1/GjLZmq7F4rr7VoFuI2zuTPeq6eCRF4pjG3VEATZ
+	g3t0d+wxRzNgne3gCsUilwHQe5RtEQg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755518568; a=rsa-sha256;
+	cv=none;
+	b=wE9b9K9cCP9lop+4l9Zfb1OsQYAjd9WJCWsQApSTRguVqU/Rb8PlW/FcCvrhyHaML4c6M+
+	oIaLVm6NYmFoHfVSqGFpRuBvUdxhJE/K1m8oDVkEt9dfiwKpBzaX4Yov16xGNWDVG1IYcX
+	sDRKeNKt9e017+O6GcYZBgBRDGCPUVM=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JIZIkc02;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hXpd5nL3;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JIZIkc02;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hXpd5nL3;
+	spf=pass (imf10.hostedemail.com: domain of hare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=hare@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9ADC3180044F;
-	Mon, 18 Aug 2025 11:45:28 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.44.34.24])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 48FE7180028E;
-	Mon, 18 Aug 2025 11:45:22 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Mon, 18 Aug 2025 13:44:11 +0200 (CEST)
-Date: Mon, 18 Aug 2025 13:44:05 +0200
-From: Oleg Nesterov <oleg@redhat.com>
-To: syzbot <syzbot+d1b5dace43896bc386c3@syzkaller.appspotmail.com>
-Cc: akpm@linux-foundation.org, brauner@kernel.org, dvyukov@google.com,
-	elver@google.com, glider@google.com, jack@suse.cz,
-	kasan-dev@googlegroups.com, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk,
-	willy@infradead.org
-Subject: Re: [syzbot] [fs?] [mm?] INFO: task hung in v9fs_file_fsync
-Message-ID: <20250818114404.GA18626@redhat.com>
-References: <68a2de8f.050a0220.e29e5.0097.GAE@google.com>
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 4C9FC1F387;
+	Mon, 18 Aug 2025 12:02:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1755518566; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q+3lGak+12Vl27FVM2SSyx0kSJAGYOUNyyYt5Oy3FxA=;
+	b=JIZIkc02a8dlmuExIatpt2ibFt1oHaVgpfYJlzavqpHiN63uXU3zsBHjuPYfqIMpR4mVG1
+	SJp8AbTMrdjoYyQ4qK8k1fLJwJoVyEBOG3Jsgt3171NJo8DOukjDlkf6n1TiH8+MOsCatu
+	Uzr5aUuu9imvUiEuaKTrR832xM5X4w0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1755518566;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q+3lGak+12Vl27FVM2SSyx0kSJAGYOUNyyYt5Oy3FxA=;
+	b=hXpd5nL3/MIuI8ZUT7MUGVF7scVkEDjhZHYAWXWWH9MtMDpgE5Y4CT3gVGk/sTAvpyc0ul
+	6QHbKQ9UAUUmsgDQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1755518566; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q+3lGak+12Vl27FVM2SSyx0kSJAGYOUNyyYt5Oy3FxA=;
+	b=JIZIkc02a8dlmuExIatpt2ibFt1oHaVgpfYJlzavqpHiN63uXU3zsBHjuPYfqIMpR4mVG1
+	SJp8AbTMrdjoYyQ4qK8k1fLJwJoVyEBOG3Jsgt3171NJo8DOukjDlkf6n1TiH8+MOsCatu
+	Uzr5aUuu9imvUiEuaKTrR832xM5X4w0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1755518566;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q+3lGak+12Vl27FVM2SSyx0kSJAGYOUNyyYt5Oy3FxA=;
+	b=hXpd5nL3/MIuI8ZUT7MUGVF7scVkEDjhZHYAWXWWH9MtMDpgE5Y4CT3gVGk/sTAvpyc0ul
+	6QHbKQ9UAUUmsgDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4984313A55;
+	Mon, 18 Aug 2025 12:02:41 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id RUFWB2EWo2gSbAAAD6G6ig
+	(envelope-from <hare@suse.de>); Mon, 18 Aug 2025 12:02:41 +0000
+Message-ID: <ff1dcd4b-db64-4982-bfc5-78db033f61d8@suse.de>
+Date: Mon, 18 Aug 2025 14:02:39 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <68a2de8f.050a0220.e29e5.0097.GAE@google.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Rspamd-Server: rspam03
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/5] mm: add persistent huge zero folio
+To: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
+ Suren Baghdasaryan <surenb@google.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>, Mike Rapoport <rppt@kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Michal Hocko <mhocko@suse.com>,
+ David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Nico Pache <npache@redhat.com>,
+ Dev Jain <dev.jain@arm.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Jens Axboe <axboe@kernel.dk>
+Cc: linux-kernel@vger.kernel.org, willy@infradead.org, linux-mm@kvack.org,
+ Ritesh Harjani <ritesh.list@gmail.com>, linux-block@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, "Darrick J . Wong" <djwong@kernel.org>,
+ mcgrof@kernel.org, gost.dev@samsung.com, hch@lst.de,
+ Pankaj Raghav <p.raghav@samsung.com>
+References: <20250808121141.624469-1-kernel@pankajraghav.com>
+ <20250808121141.624469-4-kernel@pankajraghav.com>
+Content-Language: en-US
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <20250808121141.624469-4-kernel@pankajraghav.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DA0A2C000D
+X-Stat-Signature: 5qsczcjik86xjwt6ibyi1s75mbu9b6q1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 024DA180013
-X-Stat-Signature: m915nmszko9deya58mrjzzxsznydmujh
-X-HE-Tag: 1755517535-521351
-X-HE-Meta: U2FsdGVkX1+X65KKOARo+n+vfvLvSb0Z8mw2VxS1/klXY40BuC0+Owwu6GF2qNwNtPPbxdnCjiOtEKTm0brqK3/73xtpozgmy5UYe/l2Ak12YVLtnclJA6PEjptW9wK+zRV0pYwz6P9Hkx38EPp6BgnBD/SDnVJQVq6AQX0Anwoz7JtK2VcQisOkv4aj2hrW8aHiuuviHk/k8+OFedALFVWbPp5VK+GdixqdhMMZ85CYtlNV6zpzYw3x1ffrDqIfaVu1fbrcwuGYQiDEoVFyGK9aUoXHda0wSzRDQizRsDo+AMBLSWnnPfOfH6aXMP0t3x8Q/8ok0U9mZ8I63MYEMLW5TXqBtKEJyXSEGDkoZJ5vFW52Wt6n/Fbz9hFoTSsWKzlVcPxH9z2wDb9kZuYaY0IY89U/rxih14wrbUb2XZndEKh7hFy54JHBLQRVA3TtgrLBESC5xEJ8H1anKoS8TQ7ALyCSVTPt+T2+RrCTtDhvOd/SjE/NCp0IM2L9GLx3NDZqEMUNQJsHfNa4sUZKgNINngK+nyV7pM04Vg3WNIERI9Tg+SiGnc9ptjFBisL3C4JiT7Slgxd1TlfT60TWxbWP6UXpP9zjhSF4uKk87pbluwMppRWAfnZkzEUF8+dXIIG3iUutgx0jCRT5f7pQ320fttQPafKsz7/M/swS97NebQNLTwRVzPKVf7lNJgcJAJEkfRhFlUEtkUnUdQUCcTQRfCHwZc9JrNhPg4TkMB/T6DC7Ls+XpaTUdzx3HBVBLrkz8cvNcoeesAQv28u0/GdF5q2mkUnmF13lYGkl1qo+j+bMRAQCXyjN7xttWneIwFzEDx0o0QEbIIMXdvoDffMi2vtAiqlK6psdQ2/kz2bwt8Qrk0BqPwuym2g6cnVtaP6p9R7nEJJ4ZpnvJArwtzI/X4ndGzo5d4F9WJqr4cfn4u0Pk7700nz/r07xE1YrTTZzg3t9Q9Ab/gK2jWR
- YLIp7CUF
- qbaW04ytuh4yHXdX+zdjWttYZ3l+vpXykqpPwZmu+nnQ6ejAaH7DhAcw7YZUZMlUYcs/ynfiV4wY9jn/ZAsNFo87W3K0YsxpcK7Th7mwOXgCe/GA3Mi8ChFAVWVRcgaGatY2vHg+ylEDH/K+3TOX8UmlSBTwyRnzC7GRmi//Q/ZLqD+7uLS1ZxFibZj6cK924FN3CwphycTDYajdY1RrlDqXoJb6Oe+HdEVtGYEnqIYq0vqluKRVi5X6K8V0ljM+kbQIoRwTrCIJ4kalglqgEaewNgZbo44U9EoKYc3hRB2Dr20N76QrMuJ3OO7sp0saSOHswBZasfVFqmLq93y94+YMKnOdGX5pVK92eCT7NgL/XNaqTR/L+0hKhlO5PuBIcAwmiq3m+OwGvqXyhoa5O5gcuBCA18HUfZcdfilAEDczZPL3SVZrxPAk6W7TtiMnlIxQ1DGJCN7ABH1kSTsJvU4NfU6iaQRQ7x/WdXlSAQzLRbpdkuqvGtRqRW9/oMzOwo3Zs
+X-HE-Tag: 1755518567-322561
+X-HE-Meta: U2FsdGVkX18ZVsovPZr0vr5FaREW+/NXTGg2hnqxVkJ3vYEKQVCOsSzVJNOxf5xWhgkIJ9Lb+M5FbKeXpHLgxmA9v6xnqs3/XCbcg4uaxt33HKvL+miRzHK9EVOuPA72N4NZWVTBsOfwAv/c2N2IKaNk3CA7lT3d584TWl9U5agmqxOzVmSUFpRotYzRKoG7JCfqgHw191GsRia7r1QrOA5/h8nw9QSXe6rkKYkxejZRIgy5v2qCpnqlnPM8cnZrmltqnuaFUeNxsDottzFms3VRODmdgrvh0zUHNuVJoo8kHYLxNhl8ALZAVn6Sw8Bao7gaOB5VOZS5Ix4HycrUuttzc2YMlqeT4yUr9F+OwU/QwwKydZbHTM+rV1sQQrVi+RphsdccqTikCEYdBcrG7jI6cTyU1j86xnh55efwLNUAqG80B5pI2+V1wGRSs84feySlc+puh4bEtjR4nMs4uy9kjYaYpM9WBWtvkJNRwDmWpg1TuA1FYrt8HCIjWUZGXsrWbnyD/hNeIZLPBtl3G2SWrMYRqDcV3m33eTt0ZPICuhtoPesgIf2vTQY0qzpPirSJkDuJeME6vAHzmTOJpFraxqQcMm5RA4tPYo32IkXnd8v8OYvPKw6aPvcDRIREKIOXNC1v/2UJxx+nesyvCyg03941P9oVfcybpe9zBHhbirRb3umAZxy2PqQKrblbQCFL9xKqch7tUHK1MwBxPIaklHnC/3sQeewyeNUY3P+q/05Fu2rwAVC0u7Reiir8QsGdpED1tstiP4FqLXbWkFe0UoFxAziC6Ll02KvjtHEM2oALJE7EVdoCDYCd1zHHv/2y/SXxRAVI/jbovPLvI5FKyhCjmgeVWJIzCGScVPHi6RNypo6sfJiwoGlmVN522GcKxSlbSFWiggnnjuXN5qoF2mqC1tp/s0VqkP8vVwVp5fWhgCljamF3XBJGOYY/irKOAIZeiaR24wEDaTf
+ ojosNa9I
+ HAOYiRSbzCDahztgkzP4TIVicYKUAIAiAkDArA6WnVHkokUfifWlPYZJbvrJew45OcB47GPwXznHZdxGNCjdhthwvhseajFIfLoJzwDNmrFN2sXX/IIIggtr2/8A0PvvExYK4oy2jqoLsqGNfzNCMCYg6OOoCaygi+k7izMFclMtENcCWGfiKKxmWu/LtZzEZKXQJvJn0LaukUt2ASCm2Jla4fIUWK++S1/dtuYo01zQ/lmf+PPyzh1hh4vv+QKvjGKaHrx4zsaWfdBsPv3VU09XfZ21IQmfk3KbLsW4Ula3UusZz2NiElUCnEQKH620A4pk2n4eLQU8ujqw+blu2pP0kJzmlRWkqjZXO6iR/wzU9l1sNXt9EG6yeKQ+mzw3xWXqqd+sDx4rctlCctp3oXVF63dBQz+bzc/x+0yVh/BgQisqlWOpruXN3F4v/6GYMOfDj+XjJBWgcy6Wq6ci3YvWZ4RkgJnqaSdgs7bUV9ws9yKEHcL5yif5jFmsMjxbrJmSfnegA+QzD3QQKCC80zvBFDw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,38 +150,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08/18, syzbot wrote:
->
-> HEAD commit:    038d61fd6422 Linux 6.16
+On 8/8/25 14:11, Pankaj Raghav (Samsung) wrote:
+> From: Pankaj Raghav <p.raghav@samsung.com>
+> 
+> Many places in the kernel need to zero out larger chunks, but the
+> maximum segment that can be zeroed out at a time by ZERO_PAGE is limited
+> by PAGE_SIZE.
+> 
+> This is especially annoying in block devices and filesystems where
+> multiple ZERO_PAGEs are attached to the bio in different bvecs. With
+> multipage bvec support in block layer, it is much more efficient to send
+> out larger zero pages as a part of single bvec.
+> 
+> This concern was raised during the review of adding Large Block Size
+> support to XFS[1][2].
+> 
+> Usually huge_zero_folio is allocated on demand, and it will be
+> deallocated by the shrinker if there are no users of it left. At moment,
+> huge_zero_folio infrastructure refcount is tied to the process lifetime
+> that created it. This might not work for bio layer as the completions
+> can be async and the process that created the huge_zero_folio might no
+> longer be alive. And, one of the main points that came up during
+> discussion is to have something bigger than zero page as a drop-in
+> replacement.
+> 
+> Add a config option PERSISTENT_HUGE_ZERO_FOLIO that will result in
+> allocating the huge zero folio during early init and never free the memory
+> by disabling the shrinker. This makes using the huge_zero_folio without
+> having to pass any mm struct and does not tie the lifetime of the zero
+> folio to anything, making it a drop-in replacement for ZERO_PAGE.
+> 
+> If PERSISTENT_HUGE_ZERO_FOLIO config option is enabled, then
+> mm_get_huge_zero_folio() will simply return the allocated page instead of
+> dynamically allocating a new PMD page.
+> 
+> Use this option carefully in resource constrained systems as it uses
+> one full PMD sized page for zeroing purposes.
+> 
+> [1] https://lore.kernel.org/linux-xfs/20231027051847.GA7885@lst.de/
+> [2] https://lore.kernel.org/linux-xfs/ZitIK5OnR7ZNY0IG@infradead.org/
+> 
+> Co-developed-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Pankaj Raghav <p.raghav@samsung.com>
+> ---
+>   include/linux/huge_mm.h | 16 ++++++++++++++++
+>   mm/Kconfig              | 16 ++++++++++++++++
+>   mm/huge_memory.c        | 40 ++++++++++++++++++++++++++++++----------
+>   3 files changed, 62 insertions(+), 10 deletions(-)
+> 
+As mentioned, I really would like to have a kernel commandline parameter
+for disabling huge zero folio.
+Otherwise:
 
-#syz test: upstream 038d61fd6422
+Reviewed-by: Hannes Reinecke <hare@suse.de>
 
-diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
-index 339ec4e54778..474fe67f72ac 100644
---- a/net/9p/trans_fd.c
-+++ b/net/9p/trans_fd.c
-@@ -666,7 +666,6 @@ static void p9_poll_mux(struct p9_conn *m)
- 
- static int p9_fd_request(struct p9_client *client, struct p9_req_t *req)
- {
--	__poll_t n;
- 	int err;
- 	struct p9_trans_fd *ts = client->trans;
- 	struct p9_conn *m = &ts->conn;
-@@ -686,13 +685,7 @@ static int p9_fd_request(struct p9_client *client, struct p9_req_t *req)
- 	list_add_tail(&req->req_list, &m->unsent_req_list);
- 	spin_unlock(&m->req_lock);
- 
--	if (test_and_clear_bit(Wpending, &m->wsched))
--		n = EPOLLOUT;
--	else
--		n = p9_fd_poll(m->client, NULL, NULL);
--
--	if (n & EPOLLOUT && !test_and_set_bit(Wworksched, &m->wsched))
--		schedule_work(&m->wq);
-+	p9_poll_mux(m);
- 
- 	return 0;
- }
+Cheers,
 
+Hannes
+-- 
+Dr. Hannes Reinecke                  Kernel Storage Architect
+hare@suse.de                                +49 911 74053 688
+SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
+HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
 
