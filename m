@@ -2,98 +2,145 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 955A3CA0ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 12:03:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 56E4CCA0ED1
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 12:04:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 238AC8E0012; Mon, 18 Aug 2025 08:03:14 -0400 (EDT)
+	id EBE368E0033; Mon, 18 Aug 2025 08:04:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20FF38E0003; Mon, 18 Aug 2025 08:03:14 -0400 (EDT)
+	id E95A08E0003; Mon, 18 Aug 2025 08:04:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14D888E0012; Mon, 18 Aug 2025 08:03:14 -0400 (EDT)
+	id DABDB8E0033; Mon, 18 Aug 2025 08:04:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 04E6D8E0003
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 08:03:14 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A06CBC08CC
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 12:03:13 +0000 (UTC)
-X-FDA: 83789742666.24.46DE1EB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id DED1B1A0010
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 12:03:11 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="M2i//Nwr";
-	spf=pass (imf19.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D07CE8E0003
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 08:04:26 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 935CD1DDE5F
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 12:04:26 +0000 (UTC)
+X-FDA: 83789745732.07.E245D12
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 57AB94000E
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 12:04:24 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=beztyR7s;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WKulBeCw;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=beztyR7s;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WKulBeCw;
+	spf=pass (imf01.hostedemail.com: domain of hare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=hare@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755518592;
+	s=arc-20220608; t=1755518664;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NBNCX6vpnoJyq43vEYOurR5ZztTp066ARnQrar3Q5Lg=;
-	b=OITunTBzmtwDt21A8JrSHuChJ8xDWNqni+6e6HRGfVdyNQd4y4OhldvAscm8K1rHWlQSIf
-	+/re6bWnQgsrwZG/zEWu612ImajskD1aPeirc2C019fKjaFnIUr7q7spE3ogKcSwOKSTNj
-	1C/yzqkIqpfFto4UTdxxsEJfSkYzvOo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755518592; a=rsa-sha256;
+	bh=rM7e3IdiwaCTEtvovImthX0CfEk5ySRhUVWdsnkbP+g=;
+	b=uuGQgIFsYCfvd/EZnHn+b9nDNvHEBN6dsP49QbCiJiObfwo5UXHx9E8hdvrS1HFa+UroDC
+	XosqXhgF28hPna2Uge5EZouNatatvhbXCm1kPCDL2a/F8jA37g7h+Amw/dpnyTWLZm3JhQ
+	VizXt9JyYc6+LDkR9mfumlGFTVOHvJw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755518664; a=rsa-sha256;
 	cv=none;
-	b=NSijB/Q9HB6l4iSH8KTOgWIop3Stle+EWOEpCakp6G6hMhbBH3rrF2vi6oTinu/dh5Qvu1
-	8s7SIoB016y6bWVdOp85YkL060hVqo6hqw7mMAhk26f7q+0MBcQYgi867UbJF26osoAlRU
-	oWAPRc7C0bF+kxAqLq+8Y6fF1kQvsVw=
+	b=CPZmEQ3czDOEFUunQOQEfWbm3Lq2pJXgRyXxqDRjt8nji06Lg8ldbqo3LXrPaCbUCr5CPN
+	x/PNP7atNiyz0r27uLIRVt8cQ3EJ7HJ7mw0PfWd4jTltA0jedmXp1fteH0H3YQBmjN+b3T
+	wboF0Li92Hv/ZjE+ZFNMwr6+G7UzgnA=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="M2i//Nwr";
-	spf=pass (imf19.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9E1BA45DFF;
-	Mon, 18 Aug 2025 12:03:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA215C4CEEB;
-	Mon, 18 Aug 2025 12:03:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755518590;
-	bh=XUJOys1V5JSAwLbQ+pbzrv6OniPyIsaE6/aIrkHotsU=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=M2i//Nwr0MQypaY5HSo8V6GCctpILdUsuP/NbH+3/aqLxFUmRxb5jOsv4eop/2Wbf
-	 KwoJGggrOTbFUZijWl5XBZZqpWFPj1e840X6wwU5U6ZMFpHgqtAuMMiSJ4Ygpl7KfN
-	 P98bE3LNU8eYH5Ax3jzHaPMIuQwIVWqw4Ln5V3QMQttbg6TYyrzr77yEpXyBWn0poc
-	 aMzeR5V4h2ZWERmWlENyaQRtrvdINMCLONyjPISCI4aPqMu7sqcIVh/aJdT9GxFdWq
-	 YT2GqLFh4u4+w04QaYp9jFbzE6EvddDvWlSuZfW7IBN855HGRuGqwAR3+B0u0DJu1g
-	 mp6UUhpmx33Cg==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 18 Aug 2025 14:03:05 +0200
-Message-Id: <DC5JEGJSBBCP.38DNGTBOVH9OB@kernel.org>
-To: "Thorsten Leemhuis" <linux@leemhuis.info>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 0/2] Take ARCH_KMALLOC_MINALIGN into account for
- build-time XArray check
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- "Matthew Wilcox" <willy@infradead.org>, "Tamir Duberstein"
- <tamird@gmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, <linux-mm@kvack.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Stephen
- Rothwell" <sfr@canb.auug.org.au>, "Linux Next Mailing List"
- <linux-next@vger.kernel.org>, "Andrew Morton" <akpm@linux-foundation.org>
-References: <20250811-align-min-allocator-v2-0-3386cc94f4fc@google.com>
- <DC38NDRET9NB.31UDI8FHB7WAY@kernel.org>
- <8aa05f08-ef6e-4dfe-9453-beaab7b3cb98@leemhuis.info>
-In-Reply-To: <8aa05f08-ef6e-4dfe-9453-beaab7b3cb98@leemhuis.info>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DED1B1A0010
-X-Stat-Signature: gfggmqa57kkryf4u756qnoywoied5ueb
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=beztyR7s;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WKulBeCw;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=beztyR7s;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WKulBeCw;
+	spf=pass (imf01.hostedemail.com: domain of hare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=hare@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id BF98C1F387;
+	Mon, 18 Aug 2025 12:04:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1755518662; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rM7e3IdiwaCTEtvovImthX0CfEk5ySRhUVWdsnkbP+g=;
+	b=beztyR7sBDGZyBm/JkHUTLHBQR+sgiZoXt7OYr0PnM1UUEnK31rzHY1r2xAsm1D7caS6ql
+	BCWupQGv3dDbKphH+UrBJhD72p3oaaZDYTDs0AEqJ15vrq3QBR7Nodscx7R1o2A2UQEEvR
+	x7Via08+M2V9275HyHH3RvC7iRlL+io=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1755518662;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rM7e3IdiwaCTEtvovImthX0CfEk5ySRhUVWdsnkbP+g=;
+	b=WKulBeCw6firgU+sJgKSzp/MVu6/f/9T6Blez64p2SqXHBsQNIQitUMNZHlMVf5L4lqP/+
+	pPxyaQde5yv9owDw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1755518662; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rM7e3IdiwaCTEtvovImthX0CfEk5ySRhUVWdsnkbP+g=;
+	b=beztyR7sBDGZyBm/JkHUTLHBQR+sgiZoXt7OYr0PnM1UUEnK31rzHY1r2xAsm1D7caS6ql
+	BCWupQGv3dDbKphH+UrBJhD72p3oaaZDYTDs0AEqJ15vrq3QBR7Nodscx7R1o2A2UQEEvR
+	x7Via08+M2V9275HyHH3RvC7iRlL+io=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1755518662;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rM7e3IdiwaCTEtvovImthX0CfEk5ySRhUVWdsnkbP+g=;
+	b=WKulBeCw6firgU+sJgKSzp/MVu6/f/9T6Blez64p2SqXHBsQNIQitUMNZHlMVf5L4lqP/+
+	pPxyaQde5yv9owDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 048BB13A55;
+	Mon, 18 Aug 2025 12:04:22 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 4nltAMYWo2iqbAAAD6G6ig
+	(envelope-from <hare@suse.de>); Mon, 18 Aug 2025 12:04:22 +0000
+Message-ID: <47277451-4220-436a-a2ef-b0a58d556c4f@suse.de>
+Date: Mon, 18 Aug 2025 14:04:21 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/5] mm: add largest_zero_folio() routine
+To: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
+ Suren Baghdasaryan <surenb@google.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>, Mike Rapoport <rppt@kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Michal Hocko <mhocko@suse.com>,
+ David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Nico Pache <npache@redhat.com>,
+ Dev Jain <dev.jain@arm.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Jens Axboe <axboe@kernel.dk>
+Cc: linux-kernel@vger.kernel.org, willy@infradead.org, linux-mm@kvack.org,
+ Ritesh Harjani <ritesh.list@gmail.com>, linux-block@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, "Darrick J . Wong" <djwong@kernel.org>,
+ mcgrof@kernel.org, gost.dev@samsung.com, hch@lst.de,
+ Pankaj Raghav <p.raghav@samsung.com>
+References: <20250808121141.624469-1-kernel@pankajraghav.com>
+ <20250808121141.624469-5-kernel@pankajraghav.com>
+Content-Language: en-US
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <20250808121141.624469-5-kernel@pankajraghav.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1755518591-311315
-X-HE-Meta: U2FsdGVkX1+6SbZtqiQvpkv+ee16iJHYNg0kC+DGmTBLYf94Q4USzhc3FeNlJ2tF5Bw78qU2TEg6vRGmmyi8W7oI5SXr3zMoct70vkGVdgllH4/HuVogTvCJQVVHonFIcmmVuw5aTwCifuwNgMONEpqRsbO0WdlY7+pwI8qPgE6nvamD1sCXckiLBi80SYQ6t7UL+yO5FIVW8K6kFvtPGEBmHOGCrPM6yqEQ6FMr3NdjTVEZCCqL4IY7W+nHaTAW2vj3y15fJ7uky7VvWzhITlmt9k+327aC3u3QBhNNs5kkU9h+W319zG0zSAjZQP5ywJ4md8oGx1vmVIc5S7+uCJsk8F7rAx7xj8apJp0B2wTu5EcHmcyIKWpOXp/w42mydI1noQLsfSqJ5rbtHsyjCARuOIjSqEc8i9j4yhXPP3iJRgmUGXImPFFpF2BxUhcZOzWFE5Hf86NfOfOY0qiNo7LDAWku8+TRk2sMJqRwoQCySFRq/kNIEmBdvyBftL4JtqfRLS8QPR3YgEiyI2vHTrZ5on6OFPB7nM1CZPduMgNugdOh6TVLVPADfLRLJZqkHV+u7OZRz6x2qAvsYuk7UiCQXDuiBLiFgUc/kLA7Vzai1XJc1PWOYkMjmqTVbPfV04KcXs+ncsiF62trDRk5TGMBtiO1MiOPgB86RVOuPcLGjQzzgkoa5fR+LHI7n3MZfVU3zPu3QGeB7P/7Hy21dL25yaiZnyZ++eUBqe6Ss7A9uLhjENJuC0M7R7CNi9gnGEm35OPVwXCMWd+6SzkfXUdVCeHgirYKLgWxWTcVGqXQXeOz9S4h7a9CqEfC54ipQ5GZGdWcM1ND6YnXwMK5L3jMwsAvA0T84G0b/j5VR547Rees6UcPszFN+zp+1ieLQy5K8/3G8oMadFU8aCviOQsstplhIFmpBHFEn0LZWvsC6kzf9/H9NWOh5PmoSbx1N1X/x635UqHDxAGmge3
- 5vEy9vdf
- 6zR1xvi8gPYbNDOeozdBKp0JDNgFLK3+0QWQWkW8tCfJKyWXH8QWEqD9oJu4zbOOHHWs5bRMA1B1yx4Wl2kL+c1wi8kDbXAOpjCehLEA2aWdoyxNIKiOs9JNqrl+LQ4S/IBYWawL6/lgm0L1S6onscYvm7qb5JmCRE/KlbvglDvrZwl55iMZVVdiesnCxeY4oSOyrvg8KMB36KWnP5D8N03LQwL+JV6zyws6nVjEk9rOM3OiSunhp/X0rm+7cv1L6EfkTqzvY0X3dCvJm1WvfKT8EDGjIPol2knEAZVaf5873XBt9oUjWLDJK1IbuaVVSEzH5dCtxejcw7j9+oZSmjRtyzsqzl9f+tVWuH6SGsY91mkeZKeVw1EsaJ9tuIxvNRtaMRAXr4822lL5s+/iLzmkB5/cS+1c6dfPOM3yQVdBv5th/oB+R7psNmQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 57AB94000E
+X-Stat-Signature: 7koft3pnfyu1gzmfqhp9k649t5pwz7s4
+X-HE-Tag: 1755518664-554014
+X-HE-Meta: U2FsdGVkX18nTGR3EN90l6HsVws8yq68r8vVoHWDVYcJ7J25II47yb51W/ITce9Hh+hTOhcCANlfwy4MKINkg8BuPqGiilVeC/00d3ibFYTgIUcAxByvZomHFFla42t/QU+Ogrd0DHxDNuFpsg4PXLZKo7Jd7sZR9NIY0WtfTVDhtyUp8mXjwNc+ciILQYswoN34mGQNv7mvvN15wnWEenHivpMWu6uD4vookW0bjgHSDHMQfUceDGmujh+sYc4AIHF8k/49t2wsGWwveLuaYrp30aEpUisP9JLldBojHpN6mbVo+0w7K77lB40uyinHxymCexAvDTpvDduEbtgoMEYNXZLAxH3Cm4Psz18QnCCsufqFI3Zww1IM180WXkQm/vXC/yM52jsD2UeyKA3pdrjc7uHFGOx/uc9TW+yW8TWI44eegiJixM1+a6wa+6ZF+7f4pTZZkmp2kJLJL+R4kwf6M9R2BeeY5OCvOuAY2OzZiPwUNvIgKEUYdV33M7Rt6b9wlsOvdhbqM4hQwVXJC7qBMdyOAOJMhMUx1r9HFZpzr0Ci8GB9Ln+j+IGo8yWlIp1CYxBMvC8eBaE1duJ/WuPmpbpP1xBLxCZRMtdmY4II+VR6HH4BawoTEOSAV+qFmZ4/MYd2FchSU/wbtChBtJ2EQWtq2poR7nQcXFJnicq8MGXiCw0TdxUCNWnpFEh0HimkCOlP/Rm7WiWhTdT2/zlhclTf/IZVY1ZKmsvTp6frAcy+NNhkLdkb+4avWI7usjZ3XCYcAAu9F2pUPVJgD8VKA0YvOo2pRsdRpGWvoqXGytOgmd9en4X+gIZ4Y6K5G2KttjP7qwoc76Kx3M6RhaLfR7Nn5ctT40bCv7UO/0+fnCi/JDU2SYwzMyhPBV1FN0u/NOmrJMj12Bwzxsn7D38TR4r2Qm3FhBqB+8BUoiLlC2uDfEYqzI3b6mi6TfMKCVDmcfgPYVOquAO1qbe
+ t8ykunM9
+ xWyLycVd8OwR/wkgYNKM54MBDUv9LRs1sPZ8fn2aZswx0oAUpsj3yf0OZnNZQRTLOc2glAx0iHZzA0Xhm8OJbEZx0hzZiOhTdAjvaF5kmQcRMBlE3WZAZkfMoY4849+mJNYx0T+QT9su3zOY2uw6T8CNtUwCE8Q7gI7l3ZhEAd2GamuaQun5qh0tWtXD8BqceM4uNYpotd/+R0IOs4l0VX62jK65ZrCGlfNiAzjjCte8JdpAgSTnV7+KNeZUO64tUAAvezoHr3i1xcWPtjsS8JJVh7s48MX6PZrPazEaicHpYkl6FA4yzys8CdE4lq22ryt63UsPpPeD+lkgYWzmJKAiAvZpIgit8IRxKdN+l5AjMWhciS+NcgEr5hjP2pz+5b+t88R48ZZv4zISGmcU2vcTtk3NgjLkxxKAzAq2LDmARg3n7/ZZg6yaSEKLJSq8fwtGuw7AfMSnN8qxPx3fFt+oDjI6RFUz1FeJjumqC5wbrCjaBmKaRtOOY9g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,35 +149,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon Aug 18, 2025 at 1:09 PM CEST, Thorsten Leemhuis wrote:
-> error[E0428]: the name `ARCH_KMALLOC_MINALIGN` is defined multiple times
->       --> /builddir/build/BUILD/kernel-6.17.0-build/kernel-next-20250818/=
-linux-6.17.0-0.0.next.20250818.423.vanilla.fc44.aarch64/rust/bindings/bindi=
-ngs_generated.rs:134545:1
->        |
-> 9622   | pub const ARCH_KMALLOC_MINALIGN: u32 =3D 8;
->        | ----------------------------------------- previous definition of=
- the value `ARCH_KMALLOC_MINALIGN` here
-> ...
-> 134545 | pub const ARCH_KMALLOC_MINALIGN: usize =3D 8;
->        | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `ARCH_KMALLOC_MINALI=
-GN` redefined here
->        |
->        =3D note: `ARCH_KMALLOC_MINALIGN` must be defined only once in the=
- value namespace of this module
->
-> error: aborting due to 1 previous error
+On 8/8/25 14:11, Pankaj Raghav (Samsung) wrote:
+> From: Pankaj Raghav <p.raghav@samsung.com>
+> 
+> The callers of mm_get_huge_zero_folio() have access to a mm struct and
+> the lifetime of the huge_zero_folio is tied to the lifetime of the mm
+> struct.
+> 
+> largest_zero_folio() will give access to huge_zero_folio when
+> PERSISTENT_HUGE_ZERO_FOLIO config option is enabled for callers that do not
+> want to tie the lifetime to a mm struct. This is very useful for
+> filesystem and block layers where the request completions can be async
+> and there is no guarantee on the mm struct lifetime.
+> 
+> This function will return a ZERO_PAGE folio if PERSISTENT_HUGE_ZERO_FOLIO
+> is disabled or if we failed to allocate a huge_zero_folio during early
+> init.
+> 
+> Co-developed-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Pankaj Raghav <p.raghav@samsung.com>
+> ---
+>   include/linux/huge_mm.h | 22 ++++++++++++++++++++++
+>   1 file changed, 22 insertions(+)
+> 
+Reviewed-by: Hannes Reinecke <hare@suse.de>
 
-Thanks for reporting, the diff below should fix it, I'll send a patch soon.
+Cheers,
 
-diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters
-index 0f96af8b9a7f..02b371b98b39 100644
---- a/rust/bindgen_parameters
-+++ b/rust/bindgen_parameters
-@@ -34,3 +34,4 @@
- # We use const helpers to aid bindgen, to avoid conflicts when constants a=
-re
- # recognized, block generation of the non-helper constants.
- --blocklist-item ARCH_SLAB_MINALIGN
-+--blocklist-item ARCH_KMALLOC_MINALIGN
+Hannes
+-- 
+Dr. Hannes Reinecke                  Kernel Storage Architect
+hare@suse.de                                +49 911 74053 688
+SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
+HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
 
