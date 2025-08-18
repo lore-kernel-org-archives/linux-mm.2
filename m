@@ -2,115 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B23C8CA0EE4
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 02:29:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C0FAACA0EE4
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 02:33:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17DB46B00AE; Sun, 17 Aug 2025 22:29:29 -0400 (EDT)
+	id 5CE066B008C; Sun, 17 Aug 2025 22:33:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 108A56B00AF; Sun, 17 Aug 2025 22:29:29 -0400 (EDT)
+	id 5A5676B0092; Sun, 17 Aug 2025 22:33:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC4C66B00B0; Sun, 17 Aug 2025 22:29:28 -0400 (EDT)
+	id 4E2966B0093; Sun, 17 Aug 2025 22:33:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C5FBC6B00AE
-	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 22:29:28 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9BD0E1A0805
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 02:29:28 +0000 (UTC)
-X-FDA: 83788296816.24.D7E0231
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C8823C0008
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 02:29:26 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=L9F9ZSnH;
-	spf=pass (imf28.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 37FD16B008C
+	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 22:33:58 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DADF21DE021
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 02:33:57 +0000 (UTC)
+X-FDA: 83788308114.02.4E9668D
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 4232C12000A
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 02:33:54 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf29.hostedemail.com: domain of yintirui@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=yintirui@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755484166;
+	s=arc-20220608; t=1755484436;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=Qwo4EvSaKVtxWlwvzyu407UTggYXnJoPLedJSXgskLw=;
-	b=0WANdn24kb15wsfbMW5i6noIbYrRWIDILNxPew3CwySjRuRWiyp/x61JbXDoo3GZaf/N1t
-	ohTbQg7pzyRIseaXlZI4Wb5zNgsiaG5P3DnIZLlbTHbOWTXkIzQ5C99CCmXHBfSeR18RPF
-	DK+4W3Jbm3lB6feu94xMl/jjG+W6MSs=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=akbS1/003+fL2YVk+wgOrjJv66AfdeSo9pqw0QG+b1E=;
+	b=q5aUlTQXK5pCQswpQhLMJ+oSsEl9WjY3kVF01AqOKDoLJZ59vxYytRu7bLLsSj/QK03vFA
+	5ND1FWX5zoYpF77E5zQVoyCW5fkmMpAESri6+1kv07+M35j6i5c09FmdqtH/WG0+dEJIWQ
+	T7f2Y8KIsdE+enHn8pqvEM784uXuEMg=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=L9F9ZSnH;
-	spf=pass (imf28.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755484166; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf29.hostedemail.com: domain of yintirui@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=yintirui@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755484436; a=rsa-sha256;
 	cv=none;
-	b=PzF+GrlLEc1Hb+hhowVmKfEtpYqmnCBvKQQaGAlvK43diVDkz6vcug2lwnZBM/zUBDn0Y0
-	UuX16RJCu6WAXZHdbyq/P8rvKXb8g+JogSeZGIAXBwTHc4aBQ3jJU+gN5uPUC818MRryo1
-	4Ihn7WUZn7uvMrPei5dCBb48cgoWZ0o=
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6197efa570eso3142392a12.1
-        for <linux-mm@kvack.org>; Sun, 17 Aug 2025 19:29:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755484165; x=1756088965; darn=kvack.org;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Qwo4EvSaKVtxWlwvzyu407UTggYXnJoPLedJSXgskLw=;
-        b=L9F9ZSnHwj4zCcx3STIqYE+CaKUC9lTv5ZXCkMyRxljQa0DtLcbkCcjenwSItH1jS5
-         jb/pMy3lxljSwxuEDfPJuCgjjjNyMFUAFeNlCBq80RszVwCA2bEFd/OZ3iyhE795+1BP
-         hyfUXbSIDxa3mKw88g/CNhLI6NByhaG9iRPATkfkkRfdaFROECtCLSND3bTJdFm2azfR
-         yKVVRoCUHw1wrjSO8rsueajNzondKL9rSwp88WIZAwatVu/8Yj62LFo/eShyB6i0Z07E
-         Um2jGVnF9jRiZU+faFUw6KFATB2blPc9nZtmdx+VcKF0DJEu74IL+UqTW4U5SJntotA2
-         zBgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755484165; x=1756088965;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qwo4EvSaKVtxWlwvzyu407UTggYXnJoPLedJSXgskLw=;
-        b=R2oLPfP+TTZQCCP+KCmMy+HEha/syl9VmPjW5SUPENdQsncPLYoF6XyuVf/2Mp+hJg
-         VyHZxi4U/J4X59k5/TCGQ6MYAUURviPfAbiiJHHSVyZsaMZ/HE3Tr/Elh9mz+L5pdTHh
-         dyUuNaHzTjzOSJ1AuuJXgKUrhpmI/nWw6qyDhHeqA0166ZQjD4q2/1VSrWDccIqAws32
-         UHLWPHbigqdNaiPt0ilDQvlaNWzfyd1aYkBnVAbOb4YV75zvGROGJs/n5/sLuejl70RC
-         b3U88JipZnrlgspEMfWkhtqgrlAvqLCjUB4ozLUKllgtYeUJyQLw6Br9UW8AOIEOcgRe
-         gqIA==
-X-Gm-Message-State: AOJu0YyISKIUEROs3fdPsQTWH7t7YCFHDkISoqRTz2PW9BeWya++WZsi
-	BIErNg9eH9Cu/qyBC5VCJSOypp6+ghlyGWRyPDkBmvp2b7sqwrJMoKj2
-X-Gm-Gg: ASbGncsWKQ/ZUkAVDUOO8MisuLr9YS37neqlalX6yTIGIPwR7aXDmeAHVGgwFCG8zHN
-	t0kVmE4qyMYqPhMz0LQwqH7y0sAaRwlfJRssQgC+LabOtBDVKSLN77MlUni8nJVFaRemyRks8mQ
-	2S7HnNTgVDY1b2NuImVLa5o5Pa61NBTY3fCT1KzbvZiDM9xu963xzZJf9wqd68C2neWnUm6cL/D
-	kOWMwYOJpbYlHbgAoOI053Um4tV1R2iF8mPkMwtgbNWFdOgxuT4LArTdMllSDpSn7UK3h6gP4d6
-	MhrN3n+mSjPnDYFzQO52I+TsAE/EaWMHzKEixe09NPh9ezD+RV8/03XJJzNe7ppqjbFWCp5zxhv
-	aYEIhz4daz6LKUx9+Of0zlw==
-X-Google-Smtp-Source: AGHT+IHVh8tue+C1eIwBRg7SjuJPzgsjaqMdL1emRsyOkClQe9r5Z04vQX1onMb5dw8yd3T+j0YkSg==
-X-Received: by 2002:a05:6402:848:b0:615:d142:70 with SMTP id 4fb4d7f45d1cf-619b707d164mr6191239a12.11.1755484165057;
-        Sun, 17 Aug 2025 19:29:25 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-618af9da5d9sm6127914a12.16.2025.08.17.19.29.23
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sun, 17 Aug 2025 19:29:24 -0700 (PDT)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	riel@surriel.com,
-	harry.yoo@oracle.com
-Cc: linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	Wei Yang <richard.weiyang@gmail.com>
-Subject: [Patch v3 2/2] selftests/mm: assert rmap behave as expected
-Date: Mon, 18 Aug 2025 02:29:05 +0000
-Message-Id: <20250818022905.15428-3-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20250818022905.15428-1-richard.weiyang@gmail.com>
-References: <20250818022905.15428-1-richard.weiyang@gmail.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C8823C0008
-X-Stat-Signature: jhheif7rs5835q69dij3skfckng7ucua
+	b=XTi6aeTIejBExQVhiOHH9TuYi6ftphAKkHPq6TLKoOQRCv2rFRALwqAADI+pFo0jHY/FoL
+	puaVZtLayFushqHf80TrBdXKz4f2uni+VjkEPRpVgbDf998iOKPSom6gFNyjl/Uk6FDiMs
+	C6iYrFRrHJF5rkGX1EWk1yflnwRGh74=
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4c4xbt58mBzvWy5;
+	Mon, 18 Aug 2025 10:33:46 +0800 (CST)
+Received: from kwepemo100001.china.huawei.com (unknown [7.202.195.173])
+	by mail.maildlp.com (Postfix) with ESMTPS id 76EE8180B5A;
+	Mon, 18 Aug 2025 10:33:49 +0800 (CST)
+Received: from [10.174.179.35] (10.174.179.35) by
+ kwepemo100001.china.huawei.com (7.202.195.173) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 18 Aug 2025 10:33:48 +0800
+Message-ID: <3098ccce-4ddc-4d64-977f-b901278d1f13@huawei.com>
+Date: Mon, 18 Aug 2025 10:33:48 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] of_numa: fix uninitialized memory nodes causing kernel
+ panic
+To: Mike Rapoport <rppt@kernel.org>
+CC: <robh@kernel.org>, <saravanak@google.com>, <dan.j.williams@intel.com>,
+	<akpm@linux-foundation.org>, <david@redhat.com>,
+	<Jonathan.Cameron@huawei.com>, <devicetree@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<wangkefeng.wang@huawei.com>, <chenjun102@huawei.com>
+References: <20250816073131.2674809-1-yintirui@huawei.com>
+ <aKF2VZ1y8OuEChmw@kernel.org>
+From: =?UTF-8?B?5Y2w5L2T6ZSQ?= <yintirui@huawei.com>
+In-Reply-To: <aKF2VZ1y8OuEChmw@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.179.35]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemo100001.china.huawei.com (7.202.195.173)
+X-Stat-Signature: twfc71wgx8q53zcmfj7c5ibc5iimadqb
 X-Rspam-User: 
-X-HE-Tag: 1755484166-363602
-X-HE-Meta: U2FsdGVkX1+MPLpdOzClnAt7nXKMa0DFOftpoGCKWzTSSixTiylqyLcGl3jB44u/TPLuBtVp47u2Nda4SHtPo2kBVatSbETXCIzlUD/74CHI9zveYr2mPNLIKHYXSMQZiVrWW4hdjjwbhy0O1Avj8hkV7bQbdin1vwlbSDAD5PmTCOL4v7p10piM8964Mc5X01NeZn+KP1N1LvTG1XysXZBcycL3ClcUe/dV9pWK4K6WollwZ3p7Z0l+VHCy39YGbNtwSkhKq55ElBqdaE1Ed3DUO38yMtrQG7Nr7mymwMuO5yCccqnvYRx+889kIhuBVEVPjWJqEx7GeV0HImlI8UaurOQQq8hxmdpDi3Wa6KeKa2QhI3aOvf/8mbZRswXagyufR6pJHpC0MRGAKm+X07fs7SjpcD8LsS82t6hUUDkdvut5tiG+e42XL/wUKNHoYzgF3jCxqh1fTMEL5t/lJxrxI9oxyPKIPDYKMO357YaI4WoFfg6gqFokMEOqowtqkw62aWGNvhUiZGt06qcSlyNKQ/EYO/jN8a4NYovBhgfZ1+/u99C1FzP+VxuRy25J4C0dhg5/lqnmnzoDonIKn4FbEzLs2zmscRhxnc4ozoPvi5mFuw70jwnK8/HKWMONz6YYx6Dt9jLmIA0kn5hXUqRxB1QsThNfRR6JYrXyx0JjF4MF6cUI7yUqzrYx8cvGBEW4kxXKL5aweDjLEO0+b/6Wy+pQ9ZyAFCpuQe4xO2HdbmSr81IHKwouPVUsdMc+CgEpDBEkLWqm2roZ6T7J95aYHtTo4noJcnRfM4plnY5C6Yz/M/sX+4+itpyr4cjt3AXenWRW377ip9RZwp5YAxD3DUq1um1f9pcTefrnAAmOs6Q9RFEUdJrPN1Z20UEiK9nLS9LRrQsXnSkloft9hTtLhRCVCIpi4HnLB6DYgu5MVRffjThXODwzs4kDJU1fgHr9OZk/1zQKwZPRZuz
- fK8lDTvW
- Auk3/ExuHwDpMlz0z9khYW2WhNSJ1OtNlQU0WupY+ijfPUpftgmmHOZnhmxBzrZVMvzUqtCQ1Fd+F7/hAti9wzaBbqwsAjTwSBkOce3b8jhQ9+jl15HFlaAK52+fKOeJJDMvQdD2z0pQx+kQVTsxRVG1cYReVJjR2McCfXLewbz+8pa+KdrvloVaKl+Bkdb916oZZ1WoKoZ6KI6NdP8O+kbtBXAAuDwHSAx4CFt4hCU56bVz2eNU7DZU/FwfS61S4OZkn71dXT+G2PUt9bRFeYmNRTQCF0OLWJBR9dhYP9x4pJ0cIXrzCSRxXeStMYEsTIoXEbG+TLDbinArvIT5Y3+sJwbKcKu9QgcUwfPhP5fYu3c+MmEIaMoEEjP6pK5xZrCASHQsk5VsiJIgHctORLrYzjnySrpQE6N+5TlkTL8MvOQsrZT0dRolcw+Ef7RLGsNQoOM/0uOTV2P9JWR2ZrmPi+IAOOPIhNa3GWAA4vTJo8JqoJhUPXjYWhLLvDlIhJ80sVQ0DPZ+KBgAW2CyHdGTYpBn7vGYa08QoQ9UTKp6XJMOhyatPyRkrcEguY0LRREOrNn4jqJ+3pn87xPo85QFZdk+XvdfnQATPD5O+C5RPxmdWKD5Bn/f85UZ+6xBb+daPs3HdSsLBTLzM5N+fvyIGPg2Y9tUBbW2CLXEasCNrlcqkUYpxeozDJA==
+X-Rspamd-Queue-Id: 4232C12000A
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755484434-104181
+X-HE-Meta: U2FsdGVkX1+9wMr2Rx4b1gOq4NmlRw46YAT+6e/3fQhpxxkcnMRGdCtE2Us2CnhZzXxd1r5sod3K0Mo/ORhgZzcaOsC/4YiMZ4p6vf/V7Lt/CK03eOeP2dr4IDD4K2gX48OEQKNUpHkhaZNDh4AosqoeByTplC3AOkzDBMZ1YU7eUuKxNyN1/I/3FEGPlyo5CbiuwZT2wJRy0+A93Hd9n4YJHat06fkiZt6KlBCY9Hd6sOsGaXyhBUTpI6CZoJCfgcxKZF3YYaddwt5XWOkD4msjBpQKxIe0o5wkQACN5UvL5vuA/1ODJNF3hqYfNXGa2LksUxzeRpxgG+piifUZFl+SAD0K9Ppq8O7czpt0Adq7c4tIcRqesbtr4TJ9XwK0JKIImIcmv0MZvOjcUMkn7TY5KS64EL+i4n2x/6uWv4vToFGSnquYc+5eB6vDN1R43cxqVE/7UXP+P8vCM8ehmGLZJ5SPwo5WN2EjZNMn6Rs8MDlEhdnKbnBX2+qROU/PUdWq2kAYXWql+Jao3L/amPUHDTkW6aXLHwlJ+iy6PBtI4H2aQEUQLTb8+3kjM+PebIXBHw8oGmWqMsjLAj7I7UfIyRJESlLO1xxhNrcPoSS3G1sagXiM5cot3YEq+IQgIb0OF/rE5FTYXZtJb7SVYBsLZnDO5q95A1s7KpBnz/aetQK1+4JgXRC9b6hwFOiRiZp3edghjjtTqu0mkUUFcV2QDVJx9gZmwVAgQwTLec7xlpDzA2a49pYMPIVKWJwgSFMdaFypCJvy8/RE3iwQ44O2DT7VvwOGglLAyQRxnUo0LtIxEnMXvtAYa84NdlCh89iPOGn30M6i79ZiyGnVk5UEmrxyEAXsx8w9hlSHNTyuxDnz2uFF1EPcF/KlhlWBLultMdNOis/Gdnq8NIvYk7G4a0O+CHtwhpp0Y9OyXJTB5irOPkhrRnCba8wHgV33QLB/Ix9j+xN0kHAaHAO
+ s/Tqktn0
+ KTbyE5kLX9Ov/jiloJ5NLLN5wymo0l7THTr3uSbz5TOjlufiqdDTEjyVZgX4jbiipKoAKDxCGf5J0WSgSVT9CEcE9G+DRZnnLi/AgW8zB0pZY8D/Nu4ySRMsuEeORypYoKOsWvzWuhUvmb0CznXmCIMn5zAj7r9RTrbwrtffPpUStLGuRofSHWuTQBKwVCHJOQCCflViVsqxD6qhCbyatEehNVy7Ehvkj982LhQ4a+zYhq3GHDYZ9qdMEwwvRieLTpisdK4p5kxWvKs0BPY91bciLyqLpHkVFMutKmiSps2hJ3lXGMymIT6kezKgKKwybpD+0oOXu2DyBUG/HsuYTzTVafz4AZt9pPgMmyxtL0V1k+/w=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,555 +94,188 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-As David suggested, currently we don't have a high level test case to
-verify the behavior of rmap. This patch introduce the verification on
-rmap by migration.
+Hi,
 
-The general idea is if migrate one shared page between processes, this
-would be reflected in all related processes. Otherwise, we have problem
-in rmap.
+在 2025/8/17 14:27, Mike Rapoport 写道:
+> Hi,
+> 
+> On Sat, Aug 16, 2025 at 03:31:31PM +0800, Yin Tirui wrote:
+>> When the number of CPUs is fewer than the number of memory nodes,
+>> some memory nodes may not be properly initialized because they are
+>> not added to numa_nodes_parsed during memory parsing.
+> 
+> Why the issue happens when there are less CPUs than nodes?
+> Does anything updates numa_nodes_parsed when there are more CPUs than
+> nodes?
+>   
+>> In of_numa_parse_memory_nodes(), after successfully adding a memory
+>> block via numa_add_memblk(), the corresponding node ID should be
+>> marked as parsed. However, the current implementation in numa_add_memblk()
+> 
+> ... current implementation of of_numa_parse_memory_nodes()?
+> 
+>> only adds the memory block to numa_meminfo but fails to update
+> 
+> maybe "... but skips updating"
+> 
 
-Currently it covers following four scenarios:
+Let me describe this in more detail:
 
-  * anonymous page
-  * shmem page
-  * pagecache page
-  * ksm page
+of_numa_init
+     of_numa_parse_cpu_nodes
+         node_set(nid, numa_nodes_parsed);
+     of_numa_parse_memory_nodes
 
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Harry Yoo <harry.yoo@oracle.com>
+In of_numa_parse_cpu_nodes, numa_nodes_parsed gets updated only for
+nodes that contain CPUs.
 
----
-v3:
-  * handle ksm failure in worker
-v2:
-  * skip instead of assert if numa not available
-  * check ksm sys file before continue
-  * use private anonymous map instead of shared map
-  * check pfn instead of content
-  * retry migrate
-  * fault in region for each process by FORCE_READ()
-  * behave -> behaves
-v1: fault in region by just accessing it instead of print it
----
- MAINTAINERS                               |   1 +
- tools/testing/selftests/mm/.gitignore     |   1 +
- tools/testing/selftests/mm/Makefile       |   3 +
- tools/testing/selftests/mm/rmap.c         | 433 ++++++++++++++++++++++
- tools/testing/selftests/mm/run_vmtests.sh |   4 +
- 5 files changed, 442 insertions(+)
- create mode 100644 tools/testing/selftests/mm/rmap.c
+A more accurate description is: When there are some nodes that contain
+only memory (no CPUs), these nodes should have been updated in
+of_numa_parse_memory_nodes, but they weren't. This is what caused the
+problem.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 390829ae9803..c0a4bda39f8e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16192,6 +16192,7 @@ S:	Maintained
- F:	include/linux/rmap.h
- F:	mm/page_vma_mapped.c
- F:	mm/rmap.c
-+F:	tools/testing/selftests/mm/rmap.c
- 
- MEMORY MANAGEMENT - SECRETMEM
- M:	Andrew Morton <akpm@linux-foundation.org>
-diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
-index e7b23a8a05fe..92af0ae0fa7f 100644
---- a/tools/testing/selftests/mm/.gitignore
-+++ b/tools/testing/selftests/mm/.gitignore
-@@ -58,3 +58,4 @@ pkey_sighandler_tests_32
- pkey_sighandler_tests_64
- guard-regions
- merge
-+rmap
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index d75f1effcb79..1a156637207f 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -102,6 +102,7 @@ TEST_GEN_FILES += hugetlb_dio
- TEST_GEN_FILES += droppable
- TEST_GEN_FILES += guard-regions
- TEST_GEN_FILES += merge
-+TEST_GEN_FILES += rmap
- 
- ifneq ($(ARCH),arm64)
- TEST_GEN_FILES += soft-dirty
-@@ -229,6 +230,8 @@ $(OUTPUT)/ksm_tests: LDLIBS += -lnuma
- 
- $(OUTPUT)/migration: LDLIBS += -lnuma
- 
-+$(OUTPUT)/rmap: LDLIBS += -lnuma
-+
- local_config.mk local_config.h: check_config.sh
- 	/bin/sh ./check_config.sh $(CC)
- 
-diff --git a/tools/testing/selftests/mm/rmap.c b/tools/testing/selftests/mm/rmap.c
-new file mode 100644
-index 000000000000..13f7bccfd0a9
---- /dev/null
-+++ b/tools/testing/selftests/mm/rmap.c
-@@ -0,0 +1,433 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * RMAP functional tests
-+ *
-+ * Author(s): Wei Yang <richard.weiyang@gmail.com>
-+ */
-+
-+#include "../kselftest_harness.h"
-+#include <strings.h>
-+#include <pthread.h>
-+#include <numa.h>
-+#include <numaif.h>
-+#include <sys/mman.h>
-+#include <sys/prctl.h>
-+#include <sys/types.h>
-+#include <signal.h>
-+#include <time.h>
-+#include <sys/sem.h>
-+#include <unistd.h>
-+#include <fcntl.h>
-+
-+#include "vm_util.h"
-+
-+#define TOTAL_LEVEL 5
-+#define MAX_CHILDREN 3
-+
-+#define FAIL_ON_CHECK	(1 << 0)
-+#define FAIL_ON_WORK	(1 << 1)
-+
-+struct sembuf sem_wait = {0, -1, 0};
-+struct sembuf sem_signal = {0, 1, 0};
-+
-+enum backend_type {
-+	ANON,
-+	SHM,
-+	NORM_FILE,
-+};
-+
-+#define PREFIX "kst_rmap"
-+#define MAX_FILENAME_LEN 256
-+const char *suffixes[] = {
-+	"",
-+	"_shm",
-+	"_file",
-+};
-+
-+struct global_data;
-+typedef int (*work_fn)(struct global_data *data);
-+typedef int (*check_fn)(struct global_data *data);
-+typedef void (*prepare_fn)(struct global_data *data);
-+
-+struct global_data {
-+	int worker_level;
-+
-+	int semid;
-+	int pipefd[2];
-+
-+	unsigned int mapsize;
-+	unsigned int rand_seed;
-+	char *region;
-+
-+	prepare_fn do_prepare;
-+	work_fn do_work;
-+	check_fn do_check;
-+
-+	enum backend_type backend;
-+	char filename[MAX_FILENAME_LEN];
-+
-+	unsigned long *expected_pfn;
-+};
-+
-+/*
-+ * Create a process tree with TOTAL_LEVEL height and at most MAX_CHILDREN
-+ * children for each.
-+ *
-+ * It will randomly select one process as 'worker' process which will
-+ * 'do_work' until all processes are created. And all other processes will
-+ * wait until 'worker' finish its work.
-+ */
-+void propagate_children(struct __test_metadata *_metadata, struct global_data *data)
-+{
-+	pid_t root_pid, pid;
-+	unsigned int num_child;
-+	int status;
-+	int ret = 0;
-+	int curr_child, worker_child;
-+	int curr_level = 1;
-+	bool is_worker = true;
-+
-+	root_pid = getpid();
-+repeat:
-+	num_child = rand_r(&data->rand_seed) % MAX_CHILDREN + 1;
-+	worker_child = is_worker ? rand_r(&data->rand_seed) % num_child : -1;
-+
-+	for (curr_child = 0; curr_child < num_child; curr_child++) {
-+		pid = fork();
-+
-+		if (pid < 0) {
-+			perror("Error: fork\n");
-+		} else if (pid == 0) {
-+			curr_level++;
-+
-+			if (curr_child != worker_child)
-+				is_worker = false;
-+
-+			if (curr_level == TOTAL_LEVEL)
-+				break;
-+
-+			data->rand_seed += curr_child;
-+			goto repeat;
-+		}
-+	}
-+
-+	if (data->do_prepare)
-+		data->do_prepare(data);
-+
-+	close(data->pipefd[1]);
-+
-+	if (is_worker && curr_level == data->worker_level) {
-+		/* This is the worker process, first wait last process created */
-+		char buf;
-+
-+		while (read(data->pipefd[0], &buf, 1) > 0)
-+			;
-+
-+		if (data->do_work)
-+			ret = data->do_work(data);
-+
-+		/* Kick others */
-+		semctl(data->semid, 0, IPC_RMID);
-+	} else {
-+		/* Wait worker finish */
-+		semop(data->semid, &sem_wait, 1);
-+		if (data->do_check)
-+			ret = data->do_check(data);
-+	}
-+
-+	/* Wait all child to quit */
-+	while (wait(&status) > 0) {
-+		if (WIFEXITED(status))
-+			ret |= WEXITSTATUS(status);
-+	}
-+
-+	if (getpid() == root_pid) {
-+		if (ret & FAIL_ON_WORK)
-+			SKIP(return, "Failed in worker");
-+
-+		ASSERT_EQ(ret, 0);
-+	} else {
-+		exit(ret);
-+	}
-+}
-+
-+FIXTURE(migrate)
-+{
-+	struct global_data data;
-+};
-+
-+FIXTURE_SETUP(migrate)
-+{
-+	struct global_data *data = &self->data;
-+
-+	if (numa_available() < 0)
-+		SKIP(return, "NUMA not available");
-+	if (numa_bitmask_weight(numa_all_nodes_ptr) <= 1)
-+		SKIP(return, "Not enough NUMA nodes available");
-+
-+	data->mapsize = getpagesize();
-+
-+	data->expected_pfn = mmap(0, sizeof(unsigned long),
-+				PROT_READ | PROT_WRITE,
-+				MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-+	ASSERT_NE(data->expected_pfn, MAP_FAILED);
-+
-+	/* Prepare semaphore */
-+	data->semid = semget(IPC_PRIVATE, 1, 0666 | IPC_CREAT);
-+	ASSERT_NE(data->semid, -1);
-+	ASSERT_NE(semctl(data->semid, 0, SETVAL, 0), -1);
-+
-+	/* Prepare pipe */
-+	ASSERT_NE(pipe(data->pipefd), -1);
-+
-+	data->rand_seed = time(NULL);
-+	srand(data->rand_seed);
-+
-+	data->worker_level = rand() % TOTAL_LEVEL + 1;
-+
-+	data->do_prepare = NULL;
-+	data->do_work = NULL;
-+	data->do_check = NULL;
-+
-+	data->backend = ANON;
-+};
-+
-+FIXTURE_TEARDOWN(migrate)
-+{
-+	struct global_data *data = &self->data;
-+
-+	if (data->region != MAP_FAILED)
-+		munmap(data->region, data->mapsize);
-+	data->region = MAP_FAILED;
-+	if (data->expected_pfn != MAP_FAILED)
-+		munmap(data->expected_pfn, sizeof(unsigned long));
-+	data->expected_pfn = MAP_FAILED;
-+	semctl(data->semid, 0, IPC_RMID);
-+	data->semid = -1;
-+
-+	close(data->pipefd[0]);
-+
-+	switch (data->backend) {
-+	case ANON:
-+		break;
-+	case SHM:
-+		shm_unlink(data->filename);
-+		break;
-+	case NORM_FILE:
-+		unlink(data->filename);
-+		break;
-+	}
-+}
-+
-+void access_region(struct global_data *data)
-+{
-+	/*
-+	 * Force read "region" to make sure page fault in.
-+	 */
-+	FORCE_READ(*data->region);
-+}
-+
-+int try_to_move_page(char *region)
-+{
-+	int ret;
-+	int node;
-+	int status = 0;
-+	int failures = 0;
-+
-+	ret = move_pages(0, 1, (void **)&region, NULL, &status, MPOL_MF_MOVE_ALL);
-+	if (ret != 0) {
-+		perror("Failed to get original numa");
-+		return FAIL_ON_WORK;
-+	}
-+
-+	/* Pick up a different target node */
-+	for (node = 0; node <= numa_max_node(); node++) {
-+		if (numa_bitmask_isbitset(numa_all_nodes_ptr, node) && node != status)
-+			break;
-+	}
-+
-+	if (node > numa_max_node()) {
-+		ksft_print_msg("Couldn't find available numa node for testing\n");
-+		return FAIL_ON_WORK;
-+	}
-+
-+	while (1) {
-+		ret = move_pages(0, 1, (void **)&region, &node, &status, MPOL_MF_MOVE_ALL);
-+
-+		/* migrate successfully */
-+		if (!ret)
-+			break;
-+
-+		/* error happened */
-+		if (ret < 0) {
-+			ksft_perror("Failed to move pages");
-+			return FAIL_ON_WORK;
-+		}
-+
-+		/* migration is best effort; try again */
-+		if (++failures >= 100)
-+			return FAIL_ON_WORK;
-+	}
-+
-+	return 0;
-+}
-+
-+int move_region(struct global_data *data)
-+{
-+	int ret;
-+	int pagemap_fd;
-+
-+	ret = try_to_move_page(data->region);
-+	if (ret != 0)
-+		return ret;
-+
-+	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
-+	if (pagemap_fd == -1)
-+		return FAIL_ON_WORK;
-+	*data->expected_pfn = pagemap_get_pfn(pagemap_fd, data->region);
-+
-+	return 0;
-+}
-+
-+int has_same_pfn(struct global_data *data)
-+{
-+	unsigned long pfn;
-+	int pagemap_fd;
-+
-+	if (data->region == MAP_FAILED)
-+		return 0;
-+
-+	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
-+	if (pagemap_fd == -1)
-+		return FAIL_ON_CHECK;
-+
-+	pfn = pagemap_get_pfn(pagemap_fd, data->region);
-+	if (pfn != *data->expected_pfn)
-+		return FAIL_ON_CHECK;
-+
-+	return 0;
-+}
-+
-+TEST_F(migrate, anon)
-+{
-+	struct global_data *data = &self->data;
-+
-+	/* Map an area and fault in */
-+	data->region = mmap(0, data->mapsize, PROT_READ | PROT_WRITE,
-+				MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	ASSERT_NE(data->region, MAP_FAILED);
-+	memset(data->region, 0xcf, data->mapsize);
-+
-+	data->do_prepare = access_region;
-+	data->do_work = move_region;
-+	data->do_check = has_same_pfn;
-+
-+	propagate_children(_metadata, data);
-+}
-+
-+TEST_F(migrate, shm)
-+{
-+	int shm_fd;
-+	struct global_data *data = &self->data;
-+
-+	snprintf(data->filename, MAX_FILENAME_LEN, "%s%s", PREFIX, suffixes[SHM]);
-+	shm_fd = shm_open(data->filename, O_CREAT | O_RDWR, 0666);
-+	ASSERT_NE(shm_fd, -1);
-+	ftruncate(shm_fd, data->mapsize);
-+	data->backend = SHM;
-+
-+	/* Map a shared area and fault in */
-+	data->region = mmap(0, data->mapsize, PROT_READ | PROT_WRITE,
-+				MAP_SHARED, shm_fd, 0);
-+	ASSERT_NE(data->region, MAP_FAILED);
-+	memset(data->region, 0xcf, data->mapsize);
-+	close(shm_fd);
-+
-+	data->do_prepare = access_region;
-+	data->do_work = move_region;
-+	data->do_check = has_same_pfn;
-+
-+	propagate_children(_metadata, data);
-+}
-+
-+TEST_F(migrate, file)
-+{
-+	int fd;
-+	struct global_data *data = &self->data;
-+
-+	snprintf(data->filename, MAX_FILENAME_LEN, "%s%s", PREFIX, suffixes[NORM_FILE]);
-+	fd = open(data->filename, O_CREAT | O_RDWR | O_EXCL, 0666);
-+	ASSERT_NE(fd, -1);
-+	ftruncate(fd, data->mapsize);
-+	data->backend = NORM_FILE;
-+
-+	/* Map a shared area and fault in */
-+	data->region = mmap(0, data->mapsize, PROT_READ | PROT_WRITE,
-+				MAP_SHARED, fd, 0);
-+	ASSERT_NE(data->region, MAP_FAILED);
-+	memset(data->region, 0xcf, data->mapsize);
-+	close(fd);
-+
-+	data->do_prepare = access_region;
-+	data->do_work = move_region;
-+	data->do_check = has_same_pfn;
-+
-+	propagate_children(_metadata, data);
-+}
-+
-+void prepare_local_region(struct global_data *data)
-+{
-+	/* Allocate range and set the same data */
-+	data->region = mmap(NULL, data->mapsize, PROT_READ|PROT_WRITE,
-+			   MAP_PRIVATE|MAP_ANON, -1, 0);
-+	if (data->region == MAP_FAILED)
-+		return;
-+
-+	memset(data->region, 0xcf, data->mapsize);
-+}
-+
-+int merge_and_migrate(struct global_data *data)
-+{
-+	int pagemap_fd;
-+	int ret = 0;
-+
-+	if (data->region == MAP_FAILED)
-+		return FAIL_ON_WORK;
-+
-+	if (ksm_start() < 0)
-+		return FAIL_ON_WORK;
-+
-+	ret = try_to_move_page(data->region);
-+
-+	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
-+	if (pagemap_fd == -1)
-+		return FAIL_ON_WORK;
-+	*data->expected_pfn = pagemap_get_pfn(pagemap_fd, data->region);
-+
-+	return ret;
-+}
-+
-+TEST_F(migrate, ksm)
-+{
-+	int ret;
-+	struct global_data *data = &self->data;
-+
-+	if (ksm_stop() < 0)
-+		SKIP(return, "accessing \"/sys/kernel/mm/ksm/run\") failed");
-+	if (ksm_get_full_scans() < 0)
-+		SKIP(return, "accessing \"/sys/kernel/mm/ksm/full_scan\") failed");
-+
-+	ret = prctl(PR_SET_MEMORY_MERGE, 1, 0, 0, 0);
-+	if (ret < 0 && errno == EINVAL)
-+		SKIP(return, "PR_SET_MEMORY_MERGE not supported");
-+	else if (ret)
-+		ksft_exit_fail_perror("PR_SET_MEMORY_MERGE=1 failed");
-+
-+	data->do_prepare = prepare_local_region;
-+	data->do_work = merge_and_migrate;
-+	data->do_check = has_same_pfn;
-+
-+	propagate_children(_metadata, data);
-+}
-+
-+TEST_HARNESS_MAIN
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index 471e539d82b8..75b94fdc915f 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -85,6 +85,8 @@ separated by spaces:
- 	test handling of page fragment allocation and freeing
- - vma_merge
- 	test VMA merge cases behave as expected
-+- rmap
-+	test rmap behaves as expected
- 
- example: ./run_vmtests.sh -t "hmm mmap ksm"
- EOF
-@@ -532,6 +534,8 @@ CATEGORY="page_frag" run_test ./test_page_frag.sh aligned
- 
- CATEGORY="page_frag" run_test ./test_page_frag.sh nonaligned
- 
-+CATEGORY="rmap" run_test ./rmap
-+
- echo "SUMMARY: PASS=${count_pass} SKIP=${count_skip} FAIL=${count_fail}" | tap_prefix
- echo "1..${count_total}" | tap_output
- 
--- 
-2.34.1
+>> numa_nodes_parsed, leaving some nodes uninitialized.
+>>
+>> During boot in a QEMU-emulated ARM64 NUMA environment, the kernel
+>> panics when free_area_init() attempts to access NODE_DATA() for
+>> memory nodes that were uninitialized.
+>>
+>> [    0.000000] Call trace:
+>> [    0.000000]  free_area_init+0x620/0x106c (P)
+>> [    0.000000]  bootmem_init+0x110/0x1dc
+>> [    0.000000]  setup_arch+0x278/0x60c
+>> [    0.000000]  start_kernel+0x70/0x748
+>> [    0.000000]  __primary_switched+0x88/0x90
+> 
+> Would have be nice to have the full crash trace here and more details how
+> qemu was run.
+> 
+
+QEMU with 1 CPU and 2 memory nodes:
+
+qemu-system-aarch64 \
+-cpu host -nographic \
+-m 4G -smp 1 \
+-machine virt,accel=kvm,gic-version=3,iommu=smmuv3 \
+-object memory-backend-ram,size=2G,id=mem0 \
+-object memory-backend-ram,size=2G,id=mem1 \
+-numa node,nodeid=0,memdev=mem0 \
+-numa node,nodeid=1,memdev=mem1 \
+-kernel $IMAGE \
+-hda $DISK \
+-append "console=ttyAMA0 root=/dev/vda rw earlycon"
+
+
+[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x481fd010]
+[    0.000000] Linux version 6.17.0-rc1-00001-gabb4b3daf18c-dirty 
+(yintirui@local) (gcc (GCC) 12.3.1, GNU ld (GNU Binutils) 2.41) #52 SMP 
+PREEMPT Mon Aug 18 09:49:40 CST 2025
+[    0.000000] KASLR enabled
+[    0.000000] random: crng init done
+[    0.000000] Machine model: linux,dummy-virt
+[    0.000000] efi: UEFI not found.
+[    0.000000] earlycon: pl11 at MMIO 0x0000000009000000 (options '')
+[    0.000000] printk: legacy bootconsole [pl11] enabled
+[    0.000000] OF: reserved mem: Reserved memory: No reserved-memory 
+node in the DT
+[    0.000000] NODE_DATA(0) allocated [mem 0xbfffd9c0-0xbfffffff]
+[    0.000000] node 1 must be removed before remove section 23
+[    0.000000] Zone ranges:
+[    0.000000]   DMA      [mem 0x0000000040000000-0x00000000ffffffff]
+[    0.000000]   DMA32    empty
+[    0.000000]   Normal   [mem 0x0000000100000000-0x000000013fffffff]
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000040000000-0x00000000bfffffff]
+[    0.000000]   node   1: [mem 0x00000000c0000000-0x000000013fffffff]
+[    0.000000] Initmem setup node 0 [mem 
+0x0000000040000000-0x00000000bfffffff]
+[    0.000000] Unable to handle kernel NULL pointer dereference at 
+virtual address 00000000000000a0
+[    0.000000] Mem abort info:
+[    0.000000]   ESR = 0x0000000096000004
+[    0.000000]   EC = 0x25: DABT (current EL), IL = 32 bits
+[    0.000000]   SET = 0, FnV = 0
+[    0.000000]   EA = 0, S1PTW = 0
+[    0.000000]   FSC = 0x04: level 0 translation fault
+[    0.000000] Data abort info:
+[    0.000000]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+[    0.000000]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[    0.000000]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[    0.000000] [00000000000000a0] user address but active_mm is swapper
+[    0.000000] Internal error: Oops: 0000000096000004 [#1]  SMP
+[    0.000000] Modules linked in:
+[    0.000000] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 
+6.17.0-rc1-00001-gabb4b3daf18c-dirty #52 PREEMPT
+[    0.000000] Hardware name: linux,dummy-virt (DT)
+[    0.000000] pstate: 800000c5 (Nzcv daIF -PAN -UAO -TCO -DIT -SSBS 
+BTYPE=--)
+[    0.000000] pc : free_area_init+0x50c/0xf9c
+[    0.000000] lr : free_area_init+0x5c0/0xf9c
+[    0.000000] sp : ffffcfb466733c00
+[    0.000000] x29: ffffcfb466733cb0 x28: 0000000000000000 x27: 
+0000000000000000
+[    0.000000] x26: 4ec4ec4ec4ec4ec5 x25: 00000000000c0000 x24: 
+00000000000c0000
+[    0.000000] x23: 0000000000040000 x22: 0000000000000000 x21: 
+ffffcfb46673b368
+[    0.000000] x20: ffffcfb466cc7b98 x19: 0000000000000000 x18: 
+0000000000000002
+[    0.000000] x17: 000000000000cacc x16: 0000000000000001 x15: 
+0000000000000001
+[    0.000000] x14: 0000000080000000 x13: 0000000000000018 x12: 
+0000000000000002
+[    0.000000] x11: ffffcfb4667d4f00 x10: ffffcfb466cbab20 x9 : 
+ffffcfb466cbab38
+[    0.000000] x8 : 00000000000c0000 x7 : 0000000000000001 x6 : 
+0000000000000002
+[    0.000000] x5 : 0000000140000000 x4 : ffffcfb466733c90 x3 : 
+ffffcfb466733ca0
+[    0.000000] x2 : ffffcfb466733c98 x1 : 0000000080000000 x0 : 
+0000000000000001
+[    0.000000] Call trace:
+[    0.000000]  free_area_init+0x50c/0xf9c (P)
+[    0.000000]  bootmem_init+0x110/0x1dc
+[    0.000000]  setup_arch+0x278/0x60c
+[    0.000000]  start_kernel+0x70/0x748
+[    0.000000]  __primary_switched+0x88/0x90
+[    0.000000] Code: d503201f b98093e0 52800016 f8607a93 (f9405260)
+[    0.000000] ---[ end trace 0000000000000000 ]---
+[    0.000000] Kernel panic - not syncing: Attempted to kill the idle task!
+[    0.000000] ---[ end Kernel panic - not syncing: Attempted to kill 
+the idle task! ]---
+
+>> Cc: stable@vger.kernel.org
+>> Fixes: 767507654c22 ("arch_numa: switch over to numa_memblks")
+>> Signed-off-by: Yin Tirui <yintirui@huawei.com>
+>>
+>> ---
+>>
+>> v2: Move the changes to the of_numa related. Correct the fixes tag.
+>> ---
+>>   drivers/of/of_numa.c | 5 ++++-
+>>   1 file changed, 4 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/of/of_numa.c b/drivers/of/of_numa.c
+>> index 230d5f628c1b..cd2dc8e825c9 100644
+>> --- a/drivers/of/of_numa.c
+>> +++ b/drivers/of/of_numa.c
+>> @@ -59,8 +59,11 @@ static int __init of_numa_parse_memory_nodes(void)
+>>   			r = -EINVAL;
+>>   		}
+>>   
+>> -		for (i = 0; !r && !of_address_to_resource(np, i, &rsrc); i++)
+>> +		for (i = 0; !r && !of_address_to_resource(np, i, &rsrc); i++) {
+>>   			r = numa_add_memblk(nid, rsrc.start, rsrc.end + 1);
+>> +			if (!r)
+>> +				node_set(nid, numa_nodes_parsed);
+>> +		}
+>>   
+>>   		if (!i || r) {
+>>   			of_node_put(np);
+>> -- 
+>> 2.43.0
+>>
+> 
 
 
