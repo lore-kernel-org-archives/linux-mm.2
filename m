@@ -2,114 +2,115 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 59BDBCA0EE4
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 06:38:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C66A9CA0EE4
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 06:39:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CA6A6B00A8; Mon, 18 Aug 2025 02:38:53 -0400 (EDT)
+	id 533FE6B00B6; Mon, 18 Aug 2025 02:39:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A2AA6B00AC; Mon, 18 Aug 2025 02:38:53 -0400 (EDT)
+	id 4E4A36B00B7; Mon, 18 Aug 2025 02:39:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B86A6B00AD; Mon, 18 Aug 2025 02:38:53 -0400 (EDT)
+	id 3ACAA6B00B8; Mon, 18 Aug 2025 02:39:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 595906B00A8
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 02:38:53 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 064A911856D
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 06:38:53 +0000 (UTC)
-X-FDA: 83788925346.12.C73F19A
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A591E140004
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 06:38:50 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=vNrZ5qvK;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=bcxpf1FF;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=XfryVcvv;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=eX8tHYxx;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf09.hostedemail.com: domain of hare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=hare@suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755499131; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2607B6B00B6
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 02:39:25 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C59731A07F9
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 06:39:24 +0000 (UTC)
+X-FDA: 83788926648.23.A002D88
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 910D620002
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 06:39:22 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=udasneBH;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=I5SpOzL4;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=udasneBH;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=I5SpOzL4;
+	spf=pass (imf13.hostedemail.com: domain of hare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=hare@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755499162; a=rsa-sha256;
 	cv=none;
-	b=AOgp2GCxcPwqYbB8chCrfjsG9gilD77Av7vdwWpPAAXuyXfU4tePE946a7HqmtR6tDw5b3
-	/0TinN0JJXP+p5uqldEF168It6PeVGr4cFMIazpd0tqv4g5nKm7pKXaoYwgsORZf6jltMD
-	JdC+rVU4o2/ZJLcfsEQx3t9sqNqpj+M=
+	b=icCRFNgwxo3rWcDZf8YJaOrHDLsRw4ihbB/QAhuJlLn1i9GCTJDSN7LptwqtxGS5JlXbTd
+	cVT5+Oy19rGbtRA1OVqbdknZ9/KrpHQhZDpWmkHqU+AajJAirSfv56HWrfkgJFDE0qQZBu
+	SQnOx8e0Tx0bo/5d4U6jsLIecc5r9ic=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=vNrZ5qvK;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=bcxpf1FF;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=XfryVcvv;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=eX8tHYxx;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf09.hostedemail.com: domain of hare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=hare@suse.de
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=udasneBH;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=I5SpOzL4;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=udasneBH;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=I5SpOzL4;
+	spf=pass (imf13.hostedemail.com: domain of hare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=hare@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755499131;
+	s=arc-20220608; t=1755499162;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+1+7D85kOQ97EVvudAvVmc/NF5mfjwf/0sAeafgfM4Y=;
-	b=WDZ6MyC6+eUtXmkprImG7/Dz3w1iXDRYNQvqrq3LgvEVzE4t1/upLHanTZ1s+5xD8OONfk
-	3mKyaxuxUhOmiz+Trn7/F4n2WET2XkW7DvU/qr93KNYRlXJ1l95qwhQ/uHEfFoRMQVLcvw
-	TLI5Yt/SdjiOlULaB4rmJ9kPuRt8hVc=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	bh=2GdNbUyDP+DT1aNEcPmDrED6jZJOeFHolY9S590GiyI=;
+	b=w6vtmq5r/p7e0xJULHzWz7K+JfyTo8jLLrVC+CJ4pA0c0SxMvZ8Z5dt79NLBMN1iBGeUFz
+	7D6fnvyZ7v/Y38MIs1f2L7FN7RkFgCNJ3s2KLiXRDoe1izE0e3e7KsSiq3UbiX+lDH7s5x
+	LWw6G/v3RiFt/zAl6Ys31qSMfIXZXWQ=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B1E49211A2;
-	Mon, 18 Aug 2025 06:38:47 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 2D1511F387;
+	Mon, 18 Aug 2025 06:39:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1755499128; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1755499161; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+1+7D85kOQ97EVvudAvVmc/NF5mfjwf/0sAeafgfM4Y=;
-	b=vNrZ5qvKXndkMLAoznbqyLSTFePX3kh6KnRZbHoB9C2zjNYPRlSZNqV1rs87VkIN/NFGA0
-	epO2K8Z7f0c9H8dsf/cWUbqIgfkSDfNRGRDND39rNvY8/xCfs/tNHRHV7tNN0+ADyD5VlJ
-	bdOli6rKzBHRDtEdMB6qsFlPXB5BZNo=
+	bh=2GdNbUyDP+DT1aNEcPmDrED6jZJOeFHolY9S590GiyI=;
+	b=udasneBHThsYZgO61XJ29x+6AH8Nf3gzF0OZ+dhXWC+vrDlhV411xqfXHbnBhjZ0VVdtEs
+	8bEy6g7xoJOAsEhft4dKEMzncAINM5XIOQaogy6oHEPgNJIVOpSjZRO1TRwnCLRp1NZ9OL
+	xU5lmcHRGHnVLEMTFtOv6bt2+H+8dKk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1755499128;
+	s=susede2_ed25519; t=1755499161;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+1+7D85kOQ97EVvudAvVmc/NF5mfjwf/0sAeafgfM4Y=;
-	b=bcxpf1FF5NsMzd0krz+WQR2MFA9E1G0HxMmkiuXlc9+WUvsPrOT8Vm8rqnMZYOF+i+Rb/N
-	aHIjWw3qaa96IUCw==
+	bh=2GdNbUyDP+DT1aNEcPmDrED6jZJOeFHolY9S590GiyI=;
+	b=I5SpOzL4fmgjUAbWRShMIpwnchYuXH92LNZHpLSs6+KAbwvbWTmkfNfbmhI2m+bPgU7cAw
+	NRzp6oBE4xCOyfCA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1755499127; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1755499161; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+1+7D85kOQ97EVvudAvVmc/NF5mfjwf/0sAeafgfM4Y=;
-	b=XfryVcvv/Xm/N5A4Mnz0Ajiv+Cf6ifBCBsKqFJtZs8dq+AT/GoxM9groiQMa4kcylxrOVz
-	/94/ult5O2fshQOyeuqzB/qaKTN9maaE/Th5IqJBkGyK8d4LsS7cE3058t21c4tAq1JhCX
-	G4TCi10TJ/pTuH29hHszkqfIeg52AYg=
+	bh=2GdNbUyDP+DT1aNEcPmDrED6jZJOeFHolY9S590GiyI=;
+	b=udasneBHThsYZgO61XJ29x+6AH8Nf3gzF0OZ+dhXWC+vrDlhV411xqfXHbnBhjZ0VVdtEs
+	8bEy6g7xoJOAsEhft4dKEMzncAINM5XIOQaogy6oHEPgNJIVOpSjZRO1TRwnCLRp1NZ9OL
+	xU5lmcHRGHnVLEMTFtOv6bt2+H+8dKk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1755499127;
+	s=susede2_ed25519; t=1755499161;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+1+7D85kOQ97EVvudAvVmc/NF5mfjwf/0sAeafgfM4Y=;
-	b=eX8tHYxxj3BHjPj961nVeOjzv++ZbhA1I1wWTvkD1AwqIaG9B5HtDESZSwNrDDdPYl9phW
-	9jBS4Iek66isxuAQ==
+	bh=2GdNbUyDP+DT1aNEcPmDrED6jZJOeFHolY9S590GiyI=;
+	b=I5SpOzL4fmgjUAbWRShMIpwnchYuXH92LNZHpLSs6+KAbwvbWTmkfNfbmhI2m+bPgU7cAw
+	NRzp6oBE4xCOyfCA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0DB6413686;
-	Mon, 18 Aug 2025 06:38:46 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 30E5E13686;
+	Mon, 18 Aug 2025 06:39:18 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id V01TAXbKomgdBAAAD6G6ig
-	(envelope-from <hare@suse.de>); Mon, 18 Aug 2025 06:38:46 +0000
-Message-ID: <bbf3759f-c337-4084-80f5-170e6f1ced34@suse.de>
-Date: Mon, 18 Aug 2025 08:38:45 +0200
+	id PbYRCJbKomhIBAAAD6G6ig
+	(envelope-from <hare@suse.de>); Mon, 18 Aug 2025 06:39:18 +0000
+Message-ID: <d7586866-5a41-45c8-88c5-ab6416d27123@suse.de>
+Date: Mon, 18 Aug 2025 08:39:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] mm: rename huge_zero_page to huge_zero_folio
+Subject: Re: [PATCH v2 2/5] mm: rename MMF_HUGE_ZERO_PAGE to
+ MMF_HUGE_ZERO_FOLIO
 To: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
  Suren Baghdasaryan <surenb@google.com>, Ryan Roberts <ryan.roberts@arm.com>,
  Baolin Wang <baolin.wang@linux.alibaba.com>, Vlastimil Babka
@@ -127,21 +128,20 @@ Cc: linux-kernel@vger.kernel.org, willy@infradead.org, linux-mm@kvack.org,
  mcgrof@kernel.org, gost.dev@samsung.com, hch@lst.de,
  Pankaj Raghav <p.raghav@samsung.com>
 References: <20250808121141.624469-1-kernel@pankajraghav.com>
- <20250808121141.624469-2-kernel@pankajraghav.com>
+ <20250808121141.624469-3-kernel@pankajraghav.com>
 Content-Language: en-US
 From: Hannes Reinecke <hare@suse.de>
-In-Reply-To: <20250808121141.624469-2-kernel@pankajraghav.com>
+In-Reply-To: <20250808121141.624469-3-kernel@pankajraghav.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: A591E140004
-X-Stat-Signature: 713mhw1afcinzrbab8t5y8jh8fcehubx
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 910D620002
+X-Stat-Signature: 6169pr1ogartqermk5h5mms3r9rjbc65
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1755499130-128850
-X-HE-Meta: U2FsdGVkX1+03HMnN+cH6KYvUkk6W8E6mwV55efWEsraJcynJEL7Bi+MI5DEBVbqXMszvun1cuMW54wsp9/AWdPSVh6zB36v+175fuFwN1xnU0breVrHfnzTJu1GXUe+FN/OPsXqYQHbiEX8r8+UV1ERdn0hIqnOGwQc6tXucau2FFryXfl44qXsJFjWJkxaf1HO8KKOwg/K0UXgyi/FuZpr9SMH+6yrlVbJHghIa1YrDNSUhsrph8t0h8q+OPDwXiLTvDKNY41aIaoQnqpPLHELoDkAJqZytGu6So6ZsmmBNlPPuMGxI86YE4K1S28OlPeIhO3lyGE6v70JQWT7NDxFYb5Dt2YHpVtSwpRgCqZxEc9p6mw+Uj9vol3VjH4rZWsOmZueiF9aWAk1sJLTzlWkbPeLzvX7gjQgqm63j/flMn9B/nqS+rtmf/pwBb8PEbDz+nqbd1/PAo/f/c0a9TYvGSPXqFY4QzVBHVMnX5CXDfHbzWFkEUSIcJQrVdJOoybVJSoNtIfqcFiqm9q3QHSwYAtMOvCqnvZZjNxXLRMK23keeXYmhkNY0JTMAjVzEf6CW56NswwNK6N8oWcBnq1hyrA71pTs1ShaiILM9mYJWuzyJ/iLrV1LvRiZMfcSgckq5gJkygBt1jebTSsrAn2usW3BF2nTfow76c89NMpQS7Kzu3+hqI2gSDAJCtUnlkEJnsnrR1b5zz9An6EDHEHjkPEM+jBY5Rba9/+T5561wXRJxJ3EpCJI0uc84r5yNu1Isi9sjdNfCxCxB0EQj5lgpRCSNLOYgA9H2lNc5iG4dGakEjDqXlVhRF/uDJ2YSr7sQE4TKfAEhB9WdqAHq9SSb9HJNViJ/WqS3JQ+i0Jpe5u7wKXM85Iz6CoRCbF6WzTDJy3auYUVVz6J0zzha8zqlRQef2OzCqW6mEDXx/MhfKXi5tIE5HTaWyQXjeTfiY8yviA54pPSbbbBODo
- 8Vq3dYA6
- njkWTxPmoUUP/ivSgJnnYD0YRFhdMVvMEUoU5/pg6wDL148IgVC9MbqXSfZmkyypFGIYK0dhlyzS3dtatZ7R2wQ86rTmNvjdDIL1TWg45FH/Mqd9vFRelcC/qMMen8uwswxTycmGKQNYkE/QWR5lAvLEKCNlNYZDw6Yy6SMo2gFq9RJSi6od9s1a9O7FAXubWDz1uB4iqywyFqHEzAIXrk+pi1EZ494asDcerzmShHskp1US3H3hxfGsBifR5q2SLgYKrwfXFAUE8sW6vr4COhIGkTMLA4OUNQu04z7KLfA+T+cxIJWlcHysCSlhQ9llsvRAjAcuKqxwKF15rTaN58ZrPkg+ekxQyisPQsgBXTRyGBhul+cYZUblQcGIVadBLnm0DGkoU05QLzYXPuC1fXX1rzD7T+dEe1jFdVUyKUp0NfZaS44SKwuj6xZXROZ6mZnLPYEr93QSn/kybO/WlZ4mGUJiIsUauMagAUaeoqyU5Dw5GXCrLFmdN9emZp5+c3aP2sQdVff3EErjKY6lQawseRlhX0ZlftyJU
+X-HE-Tag: 1755499162-400125
+X-HE-Meta: U2FsdGVkX18GDVGcLTmOb+KG+l5tM4IdlvNt3WAOEofSaeKGXut8uUZ2D4FHaVb9W0qctCYPDvJqUc8qPEsFI2FLcAiMDkyDTHNTkxfRoZ/nXeIS3uLI/4UZiH3aD7OL8uwoVIAfhHZHsPZpw/YE4n1eSLd1E1ZaDn4tsqO8b7XxPYx9fn/8g4qHoJ+pa+NJWxsTDU8uqU9on7qPklLQtq+J7wP9COBRXtD2f9o9T/Poz1f68ef0PeLVd+o3UdnT1KBckfJAMYeiakN4JK9EpmRMYmnSgglSd1IP5xSsfhh7cTQUu1vApPWQs4iLUkUQKoQ/lkNw2tISPRVLsxcJZJhjIZwAIHMrWBW06XArE9eCCOqqQ3+Xwov2L9A+/D/U9pZD/ur00pLDujvTqJ7LefnVqfMjcNqBatTH6MyL4KwVP7l2DKuDk0yxZWJGwScTb8O3mz1TIUoB7g7Cm0s5GGwPFq/rJpQbalrPWE+g4eSH9XbrKtlK+iRFkMmGCHyYq95NDcHrm5U8dKzfk5vHyImPuE02YuDNLyIwCDBZFEALpCXwrUSe2nDl+OAKuXxdzPc2LWcXmT7Gs5BTAfhgJFlErOkLWMC0nh/i61QtSxcLjpYRWi6xhTj04W4/5mWcWWSsj0JZna3SJ8OD85vTZwTZuLhsP3E+hDiNdJjzZ52Qc7X7XTsQjuvdBAcp7GlXW5vH1kvu1SrcJxiJRGUwrwbufY46SMYEzOkJS8cWkTroNKthNCX8nAtEZPR99B9lSzQynW4aHSsjllsMXUSjHzPA6Oy7rYUH7PUus+67U9iAu+kEFOopH0EivJBtNq9yMiA5zvVljV7ksEWiZTOsmM2IxHjKUBxUE4X4PcFUBONw23i0ZYDRAWLahtRbfo6kcaHEDcSKe5SvWW3tTFpuwwxwjnA5bXxcJGo0qAVpsPK6AX1UK8gfzL/dYkjS+MPjm3NHq48Wqpnjn7vHRjN
+ sj5vwjKd
+ 4liJ3HL7Md8bdX521NdEAPSPnKDLID4Oc9vx10yte+dKFFAOMudEWH6+sB8NntHIi4nqZdDDn4S0aD9hs2E+5vMMpdA7iYorYD9Eeb+7J7Zkrsi7GnqT+oc3LwEx5W9kyAlRDRnNomhn9/2ckVAVd+JKvQdpeYlxOzrD+coGEZ3YkHeGDiUi8cQddh3iBB036Rl4Xlh3z3Bql4KGtiGm/Il3RlN9GaaQd5ur0hBhY/qMvgLD8AtChjLm8py7iccu9IR+oJB048yOsaCr8kXKSX/9WXThF1Fsp4qrxzBhHRb/novx+APc8iNI+GE2glA7UYbvWpbj6N4fO/VQRyd9LoFps3/eivwI5+DwBlhiA9P9NjrAzYohZS0+pEnJNOzjVTYYmGl1KodqEdoTEH+QT8MjyPlesSCrWq5cYNfvUb+5rUSVjSyH21Bv+Sn68WEHUf39flhoRryq2/Xc1Y5EKdEH3a2mzqvI7mC210WpLi8K5Gdp7SAVwdfcuZ6x12lgQvrv36wFhWrcTSH86/znsfjiyae4+Xe/KzNfF
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -153,9 +153,8 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 8/8/25 14:11, Pankaj Raghav (Samsung) wrote:
 > From: Pankaj Raghav <p.raghav@samsung.com>
 > 
-> As the transition already happened from exposing huge_zero_page to
-> huge_zero_folio, change the name of the shrinker and the other helper
-> function to reflect that.
+> As all the helper functions has been renamed from *_page to *_folio,
+> rename the MM flag from MMF_HUGE_ZERO_PAGE to MMF_HUGE_ZERO_FOLIO.
 > 
 > No functional changes.
 > 
@@ -165,8 +164,9 @@ On 8/8/25 14:11, Pankaj Raghav (Samsung) wrote:
 > Acked-by: David Hildenbrand <david@redhat.com>
 > Signed-off-by: Pankaj Raghav <p.raghav@samsung.com>
 > ---
->   mm/huge_memory.c | 34 +++++++++++++++++-----------------
->   1 file changed, 17 insertions(+), 17 deletions(-)
+>   include/linux/mm_types.h | 2 +-
+>   mm/huge_memory.c         | 6 +++---
+>   2 files changed, 4 insertions(+), 4 deletions(-)
 > 
 Reviewed-by: Hannes Reinecke <hare@suse.de>
 
