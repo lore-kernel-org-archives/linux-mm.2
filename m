@@ -2,65 +2,65 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C40E5CA0EE4
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 06:46:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8BF0FCA0EE4
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 06:46:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 62E828E0012; Mon, 18 Aug 2025 02:46:37 -0400 (EDT)
+	id 2ACC76B00C9; Mon, 18 Aug 2025 02:46:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DE846B00C9; Mon, 18 Aug 2025 02:46:37 -0400 (EDT)
+	id 25D148E0014; Mon, 18 Aug 2025 02:46:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4CE2E8E0012; Mon, 18 Aug 2025 02:46:37 -0400 (EDT)
+	id 14BB18E0013; Mon, 18 Aug 2025 02:46:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3477D6B00C7
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 02:46:37 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D1171138FA7
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 06:46:36 +0000 (UTC)
-X-FDA: 83788944792.06.81602D6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 1E16D40002
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 06:46:34 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MHwvojO5;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id F34C26B00C9
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 02:46:40 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 49A3D138FAD
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 06:46:40 +0000 (UTC)
+X-FDA: 83788944960.29.BBC54EB
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9CFE3100006
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 06:46:38 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u0Rpyu4y;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755499595;
+	s=arc-20220608; t=1755499598;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bHxW3qwIF/Ofo5/PK92JwnfUWazELyG7oJdOM561dZY=;
-	b=jBw/BEs947b8yFHaCP8ryrXyBqtHpij8/Zt6V5jZDr92iN9GkEbcioERkBg0R9LY0jwXNP
-	fECYQwjBQyb2yu8bJlRSppBy+6YVNgOPCchQGhtJ5I4ziJ1yGlm6j8WvTpWZxA21aBzTes
-	jZG5QTzxIIzjMfI68RrZmI8I5rl2dYk=
+	bh=UeSgCA6ebvBlLvwuNlNBwToj21zEnD385dv71fuTzn8=;
+	b=5AoDJctBc6qNe4d/oVbyIcGXUFJSPOxBizgV4Sty08EhR46jU7/F/OG31vR8R00pazPKyB
+	c8ADPrHRmoKpSvUqicNJ/qv/oDtv+S60S1/1TMkieDIDy79QEiTdVvmBb+v2wtym8PBJbS
+	ZXCy9DlYDYqGgZqgFJD9lU6iPpDAxo4=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MHwvojO5;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u0Rpyu4y;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755499595; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755499598; a=rsa-sha256;
 	cv=none;
-	b=8BPdDmGHMeaFXKXyt8QrUcHUBpnjs+Cpbi5UWzhmLWjSsKh4stEHJJcUXAcHwF5nI7oiE3
-	HSR5aEvZ5EVBKtVA/w91fNUKJZVpt0KUme8UK8RBsABqcE8mSdGxmQ2Bzwdrvzi8yvz6wR
-	J5u2ZtTaKuwIdKBVQsTXoBOR8+Ecxo0=
+	b=SvB7GnEQy1Ks/1u0z0BkZ6Ekw06D69OS2fCHjeNTuuTh/sv8NbMXIyfyF/VFF67QLb4idd
+	Y+yZ8BAJfA8QPGOo7/6adK0bhc3NULBY2FNMaGqJh02s5q4EHbv7Jep+uARp7l6J/FYTWZ
+	o8DiELDZIWf3hGEIw7LiMTCseC/AzAs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2510344E63;
-	Mon, 18 Aug 2025 06:46:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96028C4CEED;
-	Mon, 18 Aug 2025 06:46:30 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 95EC85C599F;
+	Mon, 18 Aug 2025 06:46:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 325E2C4CEEB;
+	Mon, 18 Aug 2025 06:46:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755499593;
-	bh=DisL+u0A+oDt7cK+lZ4T+ubCByoMEuH39AEZRCnBWcM=;
+	s=k20201202; t=1755499597;
+	bh=mWBw2dxrn3qCb6ZjGXqIStKZeXRZV0QwSHDvWZaNzXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MHwvojO5ZNQ/vIbqTX2n+p36PC7eGEFq5CKUCZcbcf+pDLqlU5qIAkSNiv7MO9IzM
-	 PQ+YPYOTEmQ6eW0FZFl5PgCJQQZ/kBct1QG9lJweWjnLh238X+HGsXGJpWZaxA+ZAT
-	 ysCq4vtiZoiCv5ENtSwG7GMkrUD0nlaTBdMdsKdNF2YkXz4Tt0TIHQXjaqMxIgK6py
-	 D3LwtTcQRZpsR7d7rN2my9k+45XHP9FfmM3HzPbEUET+rQG1IBYvvNkkrDWZgchm7q
-	 ktz1nk2n5SFzJXxJljWaJUdV6ZUj3gw6WBkd3ccgikDjUGIGuuFIfEkDt8zXNC4ewp
-	 B63YizXPZVfYA==
+	b=u0Rpyu4y8bEUq8EbFwZHD5j3l2gjivkI8HDDJLhyxDRHEzCdCC1nxhMjOdh19vgTq
+	 l2Rzc/qXKbDwoWkF8Ma9mBNItHubHiDEcL60X2pyfsp/yozfyASpmtNvkn2ppiP6bB
+	 K6wWyhJ/w6QjVyS96IfFo28aq/M+NW61AdgJE1nl989dXsHPbfrR1fQmRp6glOM3xP
+	 5DSgy8XwoD+L7Spl9BPnUEIZbM9qVXYU7mj/i2XxngBbxSUtSsf8JKLy3qvkjxZySg
+	 d7lut5t2oHgzynTJjzf0lUc+6ZM4fT2vERwhMokUsHvgPSi31DWsxsDcw2doc3jVyJ
+	 qazIie45dnMmQ==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-mm@kvack.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -74,22 +74,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	llvm@lists.linux.dev
-Subject: [PATCH 3/4] mm/mm_init: drop deferred_init_maxorder()
-Date: Mon, 18 Aug 2025 09:46:14 +0300
-Message-ID: <20250818064615.505641-4-rppt@kernel.org>
+Subject: [PATCH 4/4] memblock: drop for_each_free_mem_pfn_range_in_zone_from()
+Date: Mon, 18 Aug 2025 09:46:15 +0300
+Message-ID: <20250818064615.505641-5-rppt@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250818064615.505641-1-rppt@kernel.org>
 References: <20250818064615.505641-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1E16D40002
+X-Rspamd-Queue-Id: 9CFE3100006
 X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: fmqcf4jtrtpmbq1q17rgkj55ynj8i5re
-X-HE-Tag: 1755499594-324499
-X-HE-Meta: U2FsdGVkX1//GiXs2BWMLOwkmMWq8QybJzc/q+vu8PfIKlfG0zG6whWf1LcQceTIhVZv/TSJpuSryY5lszRyh4JZ2wgNObusBMNIBcSU45ofK9WqcJmNAMQm/L/Fh4r0XCg/K/uKlnsmjZUqMlXMEyzgWq3k3KurCSz+IdxflYcf7r85nxdzpXMUM/aqOl/hNKGRLbOu4EJ5JqyTiZsv7OuL2L6qXYVvJUS6w5XkxSisEee26zp0ZHBOMp27GZbiqIduawVaLDN42p8xwjXY+p5fbRkQQg4GjQmgCOPPFGYayoM2IcZydecI86qFvjOJ3Gxa+uXV0y112S5Xwu5EZMsyN/brf4Yno9pVU4KOafjub8e9JyjInIkft7A1/uJ6YJYpSE6EBxV9N+4vdnr00QvyeCrb1ky5oWd4eLwIbz5LIye4J26OTLU+c5UGV0aUlUmEQ1zgCBGXJVLRej9QRsCC/AtSUzLRkzyBYwWbHGVf5AXKSH3tMLtD1bC/Oky6iSInJncGr9J3BX23AM7JO9VSHszm4kjLUzKnfJ2vSUj8GCcaOIPlWslS14W7GgTdEWh7jDiCPaxOrwMEDwina63C+Fbbdy9lcr1ANJvLHTRxfaIJlqhkEId6XOfHzZqUvqEEsW4sIFxJjAT/8AC773YMND1pJLagmvK8HO3BAkppC+IKZ5ushCHvlCi8zfTyNd7iryce7fC6AYSBnyQa9XI7mKCpk52FTqK3uI2VL1eDzI0imEWZVgR4rBps0qPSHmiRgl6w4tRv+LMcHh2qzOztvujhMNgP4ZTYAhd1Ag0ilpGAn71SGtsQyw/ER+ZNfUNunbwNWA8C0X/uU59YKo5Ae8HgAqsZGYryPSjrkf5d///EZIVNPgf2O1ObtHVUlzGoWd7b0TamZ4GyYB1mYg5VECnDJMwvcz+0+W4CsSr7U7zBMrerqKEZwQoZKbstneiOKI2L7duYjLYqP+z
- FzNEeAU2
- 15AGRsAH0O4J7C735noIIl1k8CNiohlK/qFZzYHKUy6GmUBkobGYZDHRkEpUdcZc7pBmtSI3kwrG/twz8VgU/QeRCGXuQuFS3TNRfdxJAJbb/L2Se9fkRwkC8qmosnkdwhehSdqW7H1pe0x/FumFdKl/IdvWb8okg3WL/teSi/j/Ys/SpzkDR2ooo5jB+qa0hQCTUHBZToda1heUzlptQYFe2doo2sWmIrQWLBo4SN3k0jed9GGEWmZDGWLMd8F8ASTXdYVpsfN+DGQJ0ja1f8RdMcaQJntNpInCnQlSEYGahP+Tpwf8vnXpqBhEAYjCOz+xtN9mHz34cIIsRnSe6BRNNSfRapmSncYqB387GHzviaOc=
+X-Stat-Signature: 7bmbbfzmnjhkqu5p5wcqd61ugiicjbnn
+X-HE-Tag: 1755499598-973452
+X-HE-Meta: U2FsdGVkX19Yz1ovNgcmk5A1Fvb+UlfxT+72o0yerNHeF30qNEYc7PzkfnE3XzIy/VQ25NaZjWryCfYhXuw6+YwO3tTbV82T4pe9TGN1vUolYjp7v/pngjOgm3dtqX4qGASjK0VyExhEAtMLA96UeJefouGehMkquNH78oz9WLHwl4a+1iBp6Kk4FpPBnoUTZG5BFqVeMVRMFRTpIoAOZU82gdy0hlZQf/o4bwjpMW7d3RPWAzBJltOQRk9GMIharvBbP/Z7WefYpf887rL2hesXrKDB0Z6Dyt65Qaydugbr470htJxPFUdpQZobuwIf1XMaT3mfr+ahc242FbdsF1zUzcSDFHGJDwdqUlQVdv/TTFcVW5owjo3G6tqugfJR+7nRnC+gQqfh+dyW9ZDEwKwkOb2GbYeNkVBoAsjp9Wgd/+oON53g9d+DnPoL5lv2Su/5MKr6uHU6X3sREgdeLmwdyPs1BHHTOBMeHUt2/Me2c7vdr9AJD412zZFydDAbyQQXf9F5Vugyh5Sn2791Cx04BIt4kgbbHvcfAR2LfPIFEiykaSu+/q9cmV6TcjKh/WQGWh0tfKJ8P57ob0Gq+NVVjq4U2VkvRVnDnBv2E1h5MDsJflweKw4nGdxryc5Zuf7SHq0EpgWnl+nfCCUvb+aC2N3jpnADpvrIPGuBX8NMgdER96bbD70c2E8gERxCqPMygqFojb/egvnHZCu33hSuRkN3ZXRSVBCWL4GfqqKAVx0mg7CiNy0iLVNj+ZDj78RTem6CH6EXXOQk9SMPP0R6cwelRL+58nGEwAELjnQi5XVnLT+DPkKBXUoGyz+dIc4e09Lz091RWFbZFAjWnBPN1AVGgWizJRsovBLbmXjOaXrm6Uo1gFL7yIsg2eVq54wsU0iHd8GSRCCrj9odjuXksTdvXAsSjhUSIMaCS62CsXD5fZaWmJ+GUpZ88dCeijY+ufMrfWISjqonpLr
+ /K4GOlAB
+ fAelHN+GfZObjxxqYTQOtx078wDF5J/6WlnNDSLBS4PAIjcsaBjX61oBY7ZXcFn/O/l4ZfHB5pqo7ruYLNs2JHf7EAjmtLZXDG+KwwvvT5ODJQ9+PROkoM5YVaUkshij84uELbSOmaFNS6e2dUjfhrjZQ8H4TYRPjdlkNG5glpyPkcYXi4WeZuZpfYpRXZcz3du2/QWv/98HMRTkZ0Pr+zr2W2ZIs2KvCCJZagyt4+HNDHxEhKT8UpHAVyevwH8Y1T/pUZ7i0wCHxjq/3++XfCk1hna5kouQB8ju6vndNyERlc5vTCn+8lmrVOnGEvtrKKtFy
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,176 +100,139 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-deferred_init_memmap_chunk() calls deferred_init_maxorder() to initialize
-struct pages in MAX_ORDER_NR_PAGES because according to commit 0e56acae4b4d
-("mm: initialize MAX_ORDER_NR_PAGES at a time instead of doing larger
-sections") this provides better cache locality than initializing the memory
-map in larger sections.
+for_each_free_mem_pfn_range_in_zone_from() and its "backend" implementation
+__next_mem_pfn_range_in_zone() were only used by deferred initialization of
+the memory map.
 
-The looping through free memory ranges is quite cumbersome in the current
-implementation as it is divided between deferred_init_memmap_chunk() and
-deferred_init_maxorder(). Besides, the latter has two loops, one that
-initializes struct pages and another one that frees them.
-
-There is no need in two loops because it is safe to free pages in groups
-smaller than MAX_ORDER_NR_PAGES. Even if lookup for a buddy page will
-access a struct page ahead of the pages being initialized, that page is
-guaranteed to be initialized either by memmap_init_reserved_pages() or by
-init_unavailable_range().
-
-Simplify the code by moving initialization and freeing of the pages into
-deferred_init_memmap_chunk() and dropping deferred_init_maxorder().
+Remove them as they are not used anymore.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- mm/mm_init.c | 122 ++++++++++++---------------------------------------
- 1 file changed, 29 insertions(+), 93 deletions(-)
+ .clang-format            |  1 -
+ include/linux/memblock.h | 22 --------------
+ mm/memblock.c            | 64 ----------------------------------------
+ 3 files changed, 87 deletions(-)
 
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 1ecfba98ddbe..bca05891cb16 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -2046,111 +2046,47 @@ static unsigned long __init deferred_init_pages(struct zone *zone,
+diff --git a/.clang-format b/.clang-format
+index 48405c54ef27..f371a13b4d19 100644
+--- a/.clang-format
++++ b/.clang-format
+@@ -294,7 +294,6 @@ ForEachMacros:
+   - 'for_each_fib6_node_rt_rcu'
+   - 'for_each_fib6_walker_rt'
+   - 'for_each_file_lock'
+-  - 'for_each_free_mem_pfn_range_in_zone_from'
+   - 'for_each_free_mem_range'
+   - 'for_each_free_mem_range_reverse'
+   - 'for_each_func_rsrc'
+diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+index b96746376e17..20b61e910f4d 100644
+--- a/include/linux/memblock.h
++++ b/include/linux/memblock.h
+@@ -323,28 +323,6 @@ void __next_mem_pfn_range(int *idx, int nid, unsigned long *out_start_pfn,
+ 	for (i = -1, __next_mem_pfn_range(&i, nid, p_start, p_end, p_nid); \
+ 	     i >= 0; __next_mem_pfn_range(&i, nid, p_start, p_end, p_nid))
+ 
+-#ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
+-void __next_mem_pfn_range_in_zone(u64 *idx, struct zone *zone,
+-				  unsigned long *out_spfn,
+-				  unsigned long *out_epfn);
+-
+-/**
+- * for_each_free_mem_pfn_range_in_zone_from - iterate through zone specific
+- * free memblock areas from a given point
+- * @i: u64 used as loop variable
+- * @zone: zone in which all of the memory blocks reside
+- * @p_start: ptr to phys_addr_t for start address of the range, can be %NULL
+- * @p_end: ptr to phys_addr_t for end address of the range, can be %NULL
+- *
+- * Walks over free (memory && !reserved) areas of memblock in a specific
+- * zone, continuing from current position. Available as soon as memblock is
+- * initialized.
+- */
+-#define for_each_free_mem_pfn_range_in_zone_from(i, zone, p_start, p_end) \
+-	for (; i != U64_MAX;					  \
+-	     __next_mem_pfn_range_in_zone(&i, zone, p_start, p_end))
+-
+-#endif /* CONFIG_DEFERRED_STRUCT_PAGE_INIT */
+ 
+ /**
+  * for_each_free_mem_range - iterate through free memblock areas
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 154f1d73b61f..337c025109fa 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -1438,70 +1438,6 @@ int __init_memblock memblock_set_node(phys_addr_t base, phys_addr_t size,
+ 	return 0;
  }
  
- /*
-- * This function is meant to pre-load the iterator for the zone init from
-- * a given point.
-- * Specifically it walks through the ranges starting with initial index
-- * passed to it until we are caught up to the first_init_pfn value and
-- * exits there. If we never encounter the value we return false indicating
-- * there are no valid ranges left.
+-#ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
+-/**
+- * __next_mem_pfn_range_in_zone - iterator for for_each_*_range_in_zone()
+- *
+- * @idx: pointer to u64 loop variable
+- * @zone: zone in which all of the memory blocks reside
+- * @out_spfn: ptr to ulong for start pfn of the range, can be %NULL
+- * @out_epfn: ptr to ulong for end pfn of the range, can be %NULL
+- *
+- * This function is meant to be a zone/pfn specific wrapper for the
+- * for_each_mem_range type iterators. Specifically they are used in the
+- * deferred memory init routines and as such we were duplicating much of
+- * this logic throughout the code. So instead of having it in multiple
+- * locations it seemed like it would make more sense to centralize this to
+- * one new iterator that does everything they need.
 - */
--static bool __init
--deferred_init_mem_pfn_range_in_zone(u64 *i, struct zone *zone,
--				    unsigned long *spfn, unsigned long *epfn,
--				    unsigned long first_init_pfn)
+-void __init_memblock
+-__next_mem_pfn_range_in_zone(u64 *idx, struct zone *zone,
+-			     unsigned long *out_spfn, unsigned long *out_epfn)
 -{
--	u64 j = *i;
+-	int zone_nid = zone_to_nid(zone);
+-	phys_addr_t spa, epa;
 -
--	if (j == 0)
--		__next_mem_pfn_range_in_zone(&j, zone, spfn, epfn);
+-	__next_mem_range(idx, zone_nid, MEMBLOCK_NONE,
+-			 &memblock.memory, &memblock.reserved,
+-			 &spa, &epa, NULL);
 -
--	/*
--	 * Start out by walking through the ranges in this zone that have
--	 * already been initialized. We don't need to do anything with them
--	 * so we just need to flush them out of the system.
--	 */
--	for_each_free_mem_pfn_range_in_zone_from(j, zone, spfn, epfn) {
--		if (*epfn <= first_init_pfn)
--			continue;
--		if (*spfn < first_init_pfn)
--			*spfn = first_init_pfn;
--		*i = j;
--		return true;
--	}
+-	while (*idx != U64_MAX) {
+-		unsigned long epfn = PFN_DOWN(epa);
+-		unsigned long spfn = PFN_UP(spa);
 -
--	return false;
--}
+-		/*
+-		 * Verify the end is at least past the start of the zone and
+-		 * that we have at least one PFN to initialize.
+-		 */
+-		if (zone->zone_start_pfn < epfn && spfn < epfn) {
+-			/* if we went too far just stop searching */
+-			if (zone_end_pfn(zone) <= spfn) {
+-				*idx = U64_MAX;
+-				break;
+-			}
 -
--/*
-- * Initialize and free pages. We do it in two loops: first we initialize
-- * struct page, then free to buddy allocator, because while we are
-- * freeing pages we can access pages that are ahead (computing buddy
-- * page in __free_one_page()).
-+ * Initialize and free pages.
-+ *
-+ * At this point reserved pages and struct pages that correspond to holes in
-+ * memblock.memory are already intialized so every free range has a valid
-+ * memory map around it.
-+ * This ensures that access of pages that are ahead of the range being
-+ * initialized (computing buddy page in __free_one_page()) always reads a valid
-+ * struct page.
-  *
-- * In order to try and keep some memory in the cache we have the loop
-- * broken along max page order boundaries. This way we will not cause
-- * any issues with the buddy page computation.
-+ * In order to try and improve CPU cache locality we have the loop broken along
-+ * max page order boundaries.
-  */
- static unsigned long __init
--deferred_init_maxorder(u64 *i, struct zone *zone, unsigned long *start_pfn,
--		       unsigned long *end_pfn)
-+deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
-+			   struct zone *zone)
- {
--	unsigned long mo_pfn = ALIGN(*start_pfn + 1, MAX_ORDER_NR_PAGES);
--	unsigned long spfn = *start_pfn, epfn = *end_pfn;
-+	int nid = zone_to_nid(zone);
- 	unsigned long nr_pages = 0;
--	u64 j = *i;
+-			if (out_spfn)
+-				*out_spfn = max(zone->zone_start_pfn, spfn);
+-			if (out_epfn)
+-				*out_epfn = min(zone_end_pfn(zone), epfn);
 -
--	/* First we loop through and initialize the page values */
--	for_each_free_mem_pfn_range_in_zone_from(j, zone, start_pfn, end_pfn) {
--		unsigned long t;
--
--		if (mo_pfn <= *start_pfn)
--			break;
--
--		t = min(mo_pfn, *end_pfn);
--		nr_pages += deferred_init_pages(zone, *start_pfn, t);
--
--		if (mo_pfn < *end_pfn) {
--			*start_pfn = mo_pfn;
--			break;
+-			return;
 -		}
+-
+-		__next_mem_range(idx, zone_nid, MEMBLOCK_NONE,
+-				 &memblock.memory, &memblock.reserved,
+-				 &spa, &epa, NULL);
 -	}
 -
--	/* Reset values and now loop through freeing pages as needed */
--	swap(j, *i);
--
--	for_each_free_mem_pfn_range_in_zone_from(j, zone, &spfn, &epfn) {
--		unsigned long t;
--
--		if (mo_pfn <= spfn)
--			break;
-+	phys_addr_t start, end;
-+	u64 i = 0;
- 
--		t = min(mo_pfn, epfn);
--		deferred_free_pages(spfn, t - spfn);
-+	for_each_free_mem_range(i, nid, 0, &start, &end, NULL) {
-+		unsigned long spfn = PFN_UP(start);
-+		unsigned long epfn = PFN_DOWN(end);
- 
--		if (mo_pfn <= epfn)
-+		if (spfn >= end_pfn)
- 			break;
--	}
- 
--	return nr_pages;
+-	/* signal end of iteration */
+-	if (out_spfn)
+-		*out_spfn = ULONG_MAX;
+-	if (out_epfn)
+-		*out_epfn = 0;
 -}
-+		spfn = max(spfn, start_pfn);
-+		epfn = min(epfn, end_pfn);
- 
--static unsigned long __init
--deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
--			   struct zone *zone)
--{
--	unsigned long nr_pages = 0;
--	unsigned long spfn, epfn;
--	u64 i = 0;
-+		while (spfn < epfn) {
-+			unsigned long mo_pfn = ALIGN(spfn + 1, MAX_ORDER_NR_PAGES);
-+			unsigned long chunk_end = min(mo_pfn, epfn);
- 
--	deferred_init_mem_pfn_range_in_zone(&i, zone, &spfn, &epfn, start_pfn);
-+			nr_pages += deferred_init_pages(zone, spfn, chunk_end);
-+			deferred_free_pages(spfn, chunk_end - spfn);
- 
--	/*
--	 * Initialize and free pages in MAX_PAGE_ORDER sized increments so that
--	 * we can avoid introducing any issues with the buddy allocator.
--	 */
--	while (spfn < end_pfn) {
--		nr_pages += deferred_init_maxorder(&i, zone, &spfn, &epfn);
--		cond_resched();
-+			spfn = chunk_end;
-+			cond_resched();
-+		}
- 	}
- 
- 	return nr_pages;
+-
+-#endif /* CONFIG_DEFERRED_STRUCT_PAGE_INIT */
+-
+ /**
+  * memblock_alloc_range_nid - allocate boot memory block
+  * @size: size of memory block to be allocated in bytes
 -- 
 2.50.1
 
