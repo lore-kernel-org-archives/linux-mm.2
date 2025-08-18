@@ -2,95 +2,111 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 26BCDCA0ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 18:26:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 46F4CCA0ED1
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 18:38:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA8566B00B5; Mon, 18 Aug 2025 14:26:31 -0400 (EDT)
+	id C70778E0021; Mon, 18 Aug 2025 14:38:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A80686B00B7; Mon, 18 Aug 2025 14:26:31 -0400 (EDT)
+	id C48B18E000A; Mon, 18 Aug 2025 14:38:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9BD4F6B00BA; Mon, 18 Aug 2025 14:26:31 -0400 (EDT)
+	id B85E28E0021; Mon, 18 Aug 2025 14:38:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 898D16B00B5
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 14:26:31 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 155FC5C240
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 18:26:31 +0000 (UTC)
-X-FDA: 83790708582.26.8D2D012
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 2C7FD2000F
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 18:26:28 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A7FB18E000A
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 14:38:15 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 23943C090D
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 18:38:15 +0000 (UTC)
+X-FDA: 83790738150.12.0B9502D
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 65D342000B
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 18:38:13 +0000 (UTC)
 Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=X9diEnfv;
-	spf=none (imf03.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=E1RcWwsS;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755541589;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1755542293;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O75UIUPO5Nhi6baLItc5aorQTbl3aXRmvPV/kSs4z1U=;
-	b=aXyEFJyjRWUhS35eE0qChF0x+K7vocRRCEoHPuhDfLPMnLRInphKyLM3ilPSYC+szlkbQR
-	uL0h6/I7X1JO/ytlAwm4iveFE+YOOlfe4GAGIoXusYvHflja6baXSPinaPwftU8/MIuS6i
-	K4GFCJxnPbjfmmPF+q1/JaG5+xrTUrI=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=KxwqBJkCYrqlcIrilSVqc8pbG8LIOmyCmMOU0LIr8Ms=;
+	b=ZvkJavOl5JvnZHzTj+EX+qo4jeYy8vr30GKCuKhfio14cixaGaifkBbs01SlLWpVZxds8D
+	Yvcj4oCw0kXXLBrD4286ZgL8gXrL1LyRFuHtIXubCkUe2ajLCJCqf0QgEI6S26+n0Gj2Y1
+	+6LChT1j/+BPku1KiMGiGyIiQBE0cso=
 ARC-Authentication-Results: i=1;
 	imf03.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=X9diEnfv;
-	spf=none (imf03.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755541589; a=rsa-sha256;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=E1RcWwsS;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755542293; a=rsa-sha256;
 	cv=none;
-	b=YlXdL8irW98x+EZAXNVdJ/whzHLjDCOFWuqCBMqcyVSOVNUCe82oDKCwZSwVqk+Umzs/jx
-	mKQhhX8zjHDE7jtkFa4zd4zTrqLasiSdmvpPnYhILo2abV5KcAVPARtkAoj9F8AsbByDof
-	Bqo9tFGuEeqZB6xABRFqFSeWNGtrJNM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=O75UIUPO5Nhi6baLItc5aorQTbl3aXRmvPV/kSs4z1U=; b=X9diEnfvb8vsZSK7H4Ybwyad7Z
-	VGXrBAuw2mdZ8xiMQYV7DxC1p7tKM3M5WM/UjU+XMGlCrjrjI0Mq0M2JvEz6MXJ/BXJXw3nLzU4eB
-	F31BmJj5GovtvGO5IMSUv5I5qPzczC99qT8PEQtKonLLVan26mNpujoOC6QIPU+yvJoFIl9SUOf76
-	2hseD7EdBenfHkZApwqQFF0MXHvA3024HDtRdCoDNq+Ckj524lpzzRDJl5aRZcKllFh0tupl83bby
-	fcgTywetRcz6pD8NZawdz1QNwugUBHj9I4e7ncdz+FXNc7WYaaBKRPGbtmb4pGRJIetez3cU3LH64
-	+7DImIsA==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uo4Yi-000000078b6-0d8k;
-	Mon, 18 Aug 2025 18:26:16 +0000
-Date: Mon, 18 Aug 2025 19:26:16 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: syzbot <syzbot+1ec0f904ba50d06110b1@syzkaller.appspotmail.com>
-Cc: andrii@kernel.org, ast@kernel.org, bigeasy@linutronix.de,
-	bpf@vger.kernel.org, brauner@kernel.org, daniel@iogearbox.net,
-	davem@davemloft.net, eddyz87@gmail.com, edumazet@google.com,
-	haoluo@google.com, jack@suse.cz, jiri@resnulli.us,
-	john.fastabend@gmail.com, jolsa@kernel.org,
-	kerneljasonxing@gmail.com, kpsingh@kernel.org, kuba@kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, martin.lau@linux.dev, netdev@vger.kernel.org,
-	pabeni@redhat.com, sdf@fomichev.me, song@kernel.org,
-	syzkaller-bugs@googlegroups.com, tglx@linutronix.de,
-	yonghong.song@linux.dev
-Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in sys_umount (3)
-Message-ID: <20250818182616.GB222315@ZenIV>
-References: <67555b72.050a0220.2477f.0026.GAE@google.com>
- <68a2f584.050a0220.e29e5.009d.GAE@google.com>
+	b=p79vLBsR1S9r2m+nHoxSeKHjsrYysyVUmybr/1EIVq4vt+eYF16LruO03VlWW/vk/OAGpi
+	MYuTBenLJOHfA7zXv8w6et4N9KGRrINw15znsZcpx3HwBnLI43Fb+FyWT+ro4Z5Lz2PuKK
+	/+iHn4TfS9IvhGsoEdYh13LtBpWnR5Q=
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-76e2eb9ae80so3434815b3a.3
+        for <linux-mm@kvack.org>; Mon, 18 Aug 2025 11:38:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755542292; x=1756147092; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KxwqBJkCYrqlcIrilSVqc8pbG8LIOmyCmMOU0LIr8Ms=;
+        b=E1RcWwsS+VUdxAFBB7a2JPAvD1qNpaDYnLyZMvVzUtYoV1u/yXB4rftHBeQSAZyDkX
+         nGv1Mp6v/akSEi5DGGVJABoOuMe1YQqBO/d42uV+Di8mQnQ/nhwpHFMuVDZH0ht/1wJH
+         NEWIF8U4DoZImLTGm3Tqo6H2bgVvRgN6MaHRhrqGmx9o0SPUKQ4/fq7wfnjf8kC60TMf
+         +OZXK0hVNvoFGMiGLP12XgdbQBYNdlRod1sM+rZZ5+5rzi/SNr1ieMBW3BBaqa1cpFKD
+         W83rWdWpFK/1f3/WG/6seHboudy63QXQHhl6+aAQ8NvDtpvkz5y1zSFGBiOS2/5oqttt
+         vfIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755542292; x=1756147092;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KxwqBJkCYrqlcIrilSVqc8pbG8LIOmyCmMOU0LIr8Ms=;
+        b=HrHe1/7gsstI+/E5CYOUzOH9VDZOOvqT43KDWAggTp0btAsfX4KHuCdTmRGm9KRewp
+         uBBRHYkabyCeH4Bl79nC3/pzBDSCPHPud3EKFE2vqKGc60nmvFtirjqsU+T89Qkh8kpR
+         aR3QsB7WZig4SHqU4LVsBEBeLckjqQyLcLIWMO9DRCavJUWBeJoKJ/9orXDzOsdsw0OD
+         eeGZmaKB/PS/1O5ddZ4eQ9OHNoPCkOSPhqzLpcjAdq1ln8rz5BUuTNPj0OhEqvE4TiaG
+         e/oqlQwttVVpqaI+aJe29Wex+lgTP5SOLXpyZ2o/OYwvFBywmsN1Z4BCb0LKZpRRamsP
+         7Hlg==
+X-Forwarded-Encrypted: i=1; AJvYcCXy9Y3NUP5kgWwhTwh93pVLJsQCpLCurQYttBg37BxM7crvgFMnjRPx6CDOWl2A7/oBGkvGYw4YYQ==@kvack.org
+X-Gm-Message-State: AOJu0YxSlEoLo/1a8Fba26wmGPw9FkZt7bz7/DvJmK1s34AZvtDg59ek
+	QDo2VB3sZMXxeQOgmNJa5uWKSw6yLqAFfLvfiDD2ekngg5aCKji3hWxX
+X-Gm-Gg: ASbGncvjhXPPKhKQxxRFkwuVDLO4+rVLYtasCZSkkqKBuTeZ+ZJJXdcr3YpUGwB0gmM
+	D5KkTVPbHpWKBXRILcmWZGcQQLJKIAwZwim399orA00Nngp6kI3wtmqMWu04PnuG1FLOkn0af7L
+	g8rtGPlrl3IbrCKC7gJPvbDQBQCPAQihqzfOOcNi4SKAeHMMFy42Pxs8OkoNnghXKYKOH2lxChT
+	gZG662L94fTe1edehRBrccAKSQzgUrpx8j5NJouIIo445QfJHAwUpInjjhdzu6ABWOtuXnlZmpd
+	MWNUkVjfci9OXA6BIjCOolay/CA1Z4stRNdHNrZq/Fp6EQDMzhkuwKBl2xjF9Zqik/hiR2nSRx+
+	bIUgEBJ21cFETA1DK
+X-Google-Smtp-Source: AGHT+IF21jrPOmeVtvFP4xBgTBNfDa+e87BFfHyEAdLZp40Ly+ufee667RTgqihPyTvRbODt7k8r2A==
+X-Received: by 2002:a05:6a00:2288:b0:76b:ef8f:c292 with SMTP id d2e1a72fcca58-76e7ee01fe8mr369879b3a.16.1755542291913;
+        Mon, 18 Aug 2025 11:38:11 -0700 (PDT)
+Received: from ubuntu.. ([110.9.142.4])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e7d4f76b5sm269201b3a.59.2025.08.18.11.38.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Aug 2025 11:38:11 -0700 (PDT)
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+To: sj@kernel.org,
+	honggyu.kim@sk.com
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	Sang-Heon Jeon <ekffu200098@gmail.com>
+Subject: [PATCH] mm/damon/core: set initial quota->charged_from to INITIAL_JIFFIES
+Date: Tue, 19 Aug 2025 03:38:03 +0900
+Message-ID: <20250818183803.1450539-1-ekffu200098@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <68a2f584.050a0220.e29e5.009d.GAE@google.com>
-X-Rspamd-Queue-Id: 2C7FD2000F
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 65D342000B
+X-Stat-Signature: fi4pza13f7cc1c149nw9hursamusicni
 X-Rspam-User: 
-X-Stat-Signature: ojzxwp7n4upne4trafh88xqk8ni33h7s
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1755541588-555324
-X-HE-Meta: U2FsdGVkX19Wx78t9eAB18taAVyO/ZX3Lqc0jL07Vb2T1/eZLm0QQUkHXcsdPrHWUAFmigzwDKOVkw7PS6yY1/Cx32X8obS92AizvE1fSMaOgV7ZDB2L0xTEl/hBXoSf5X9fGC4RXOnHvXEgT+saA2CIiTZ0dBNESbvG6mNd0yqiMFC6tSDW0qPiab3Q2OCWzfkTx2XvQz1HjW8fEk1xDYq4VwXKEsNwm51T2avXgsP7mXe/VltYDl8KPlf9ElP8gzsL615DeYCD4L3ozSPnr7YA0YK3JejC+6jVbp9SITwbI+G8huoWEkAPJDk6JcPRbIWd/N7s4cdWL2YngTCivUjuMc9Ps0AgF9lVeP2hiA5FVk+Ae1cTO+EKxddmBwCSwd5YzHhwtlxuEoDkzBzp9DU1mhTDTxf6UJ7M8yXrsmcXq/pQig5ENYxRZNGlXdrA5OvWYcmF2073NPR3THdrlN3kBl/bhYyfb7XYMZ1a48XHJdaaZ1lRVjDC+Pq4p7V4B4JNnb/cSyiNVMwGdjaPXm/r2FNjVi/RWmT1YPeYwu4OSIhAMwSBN6GOqqliBq4YhJpWBXYu9dkSMzJxNrwIkoAs31O37BrRHu6K4bBQwjjPruFM+twZuwXLI+xLRWqzZZhYsgmLQTZ2/jBjcc+s1EhvEYCQHOJzUMaxuFSdUaP42dPnsHPPa9US5CP9dG476DoxQQD41t/NlbizLbrDvmkQf9hETvUb0ImwofJY6XME7+43iZ1jFE2TR7X2VfrK6Ip5Vgz5CH+bTMyVIpcmBiyHFKyhNaIh4BH4zOqlQ6JyzC9YmZTGUm7k/SD0I/cCGcIIuwbAeU7UyOL3JtV7hLgaG6ZnHGx3bU6Jgrg4QnICrX/IEzk0lXJbKmblcPooV9sayZh/MNzK6T82i3XzRnLfu0JvbuaeuxH0b33Ic/P9gez8yd30N+wpjzerFHvUPxaIdazBmFSbJdsYW1b
- SoRxFBlH
- /atrDG13S5QkVvWaYN1euud+XRsiI17+lN3Pss9zHcSvwBY5XE8LtlpR5DoDlhUQF9PDIyppjXafSUcsaEDOVB8skd8if87LO22RjtfAzpwKeItaWBl4yUA0vKAtQ16J0LkXh+JMteOseBnYJAsbFw8ovdFPBvxRioH5G/kLwCA/Lqsa8Pl+sQs1RZv+xgeBAgvW4Ne4HuQt9mbjYrpeTsw5zaMPW0R7msrC6hFMl+FiDdSLZgHjPiH22xP1oQviFBsMeqYfl1WtEmj7kWWcwN/EGAaMuOeEx6X+p8v9dHkb9eBmraY8pjhdImFXd/l+Lo/zR2L073fwWy0Q5aDWfLW1neC99zDS1pH8d6/gxuKT7MAJ7U+XEosEDgcV5NaNKBJaN/hJGjaAslliUscvd/HKlulro81HY4bNJDJU9bp8z1s6MyxQPf3cJKVQ3A5C0fL9/s1Y/dV7qu1NHTtZwc/xbOl6XpIdzr8502Qc1BpvoDODJmRalk4PN1BzN35NWLaJPISoCOb1O1i1zRJVM7mkaJjNwDDDAZuPfCjx9HelL1UGr6Cx5XWzh8P6tvYQp3xcV07IaCenh6umeuMsQleEUc6sSE8q1nkkiM0Y4UJBC1N9yW6Ef9c18b+M01cN+zNWDSF6tMrx9Ht0WD5PVxehbDjfGeuH4cX53C1hEIMbCt1Mofo5OKKMjOyicP3PmtjX7UNOps6D3sI07QgZC5bsn6VHYqfz6NHXDZErgEEKhBnpcbE/WgPsEsD1HFc5dvzBm5BSaIcDYt+M36D2ToQ6eW58qFqK5gr9pdG8lTg8aTCNNJX3+CYrTuLgQc4vq1ptU9mxU1YMXTdaaB7QlzgMngIP9E3zo1bmhZy06Cit4fJT46jTA1Ec1u2O4PHEPmKKNi3ATKkdjg9SezzUsOCGOKw8cH5OVnXSOu9kt1JMMQsO3ntUi3trqY6eX1TDbd2Ug2Cy3QkHL28ES0ASseEwKEQjT
- JT0425Zh
- Z452LFAkaT06aIb3VU8gHzbV2hCmixj+cXvOsttXF4Z39jrJjp5IOiUmEhEs8sykTigLmHLD8BfMdo5ZFcMn6h/7CdK9p4AfQpc/NZ07RUNz/doENv7K2U95Uo92KBCC+TN2Q4FKf/M=
+X-HE-Tag: 1755542293-78534
+X-HE-Meta: U2FsdGVkX19YoINXaFO+ZPjZeUUow2BgoJv4S8JOxN0J42GZSPCbVRyXU3uudDkVpRYBGlRAOPmuzO52igOSDHI2WCDui1VNRdZSBnKjSsPejplznT1TQ4600mrR2A+CNo7OeWuIOenT3jQuSVGnu/tqt/w6/Zx8x2hndmVkEPoH6geTTkg/j7B1HI/a6+1PyPmit3DHoNtJVUjycTo4TIFMGFVwgDyKMTVSXki9/cQLbetnuZKw3HWbIYobyb11G5xYKz1pdmn2mS1+jooYDYhBTEQpTTFvre7+KYSRkNJ1c3M3OPIF3PErGOsqvGIWkVt49SKA+N4Kv2LjJ/xaGzgCJY3FGCtuJoMR2Pa1Ace+ovbiXOX1DY/XLoMSIzVhSU342rxm052WDrr9kZO719z4hwK+fU7la7W+T+AT7OAcbhxiA1IeYFsMN/I1CCOtgRtY9diEtijUFQryrQAsNhYOz7ZqBF5VH2tKxlkYd78EYgySKcYvjChePs3mLx/J6OwWMMPMTqCLr26rgOHN4UAa69tKAyW10R4Ri2VuJS9+EOh+DXSKsWrIPIpjw1SNw//+C3Q3KB0lT05OA5gv4US1Mk3AYUZr7Y5bcPCMlUKDlCXkQD2mpTq25AaYzTPOikplduqlXgiLY0UYPnlivamHTBW/6oLQnPUxZ9BZq1Hdxo+Bg2rzbedBucZzYcCYfuLyqiWup8Qwim9v5DSNtntOUidV7WWp3T9rdX5Dg56oEXwfn6PO8QUlM1YAwf2QRWa7VIHiQY/xr+bpmPY6D9TVQdajVQUVPLJtye+4W0M4dAZFznn7XabvkisYutnAYxgfK6XB/uY+NXY+DOKT/sOYP6rX3uFH6jgyaVlz7U/9Per0+xaloRQR6G0FtoCAA3eCxT4fX4YQxV/xFU3maSwDfG6G5bjzmkLJ6Ds2yOIz3dNoX1FZYH2JvAQuNAnqglPlmyLyiKJZO1bMQy2
+ OEjqIk57
+ c+EheBIp8XcYFRATtt/Bsh4CwaptFDhvKd1dnF/+h5TkcLzH2uWP+39h0ekxU2IZqmgSnOboppxhDW+ALfgu+XAtlVcxHlUQLoEyUWZd0/D9FoOCFbH1rIBGEDH1nRKzRu+/llX4/tWGHZRhJOU0AXKzqYeGzPD/H330OWZrmmxTZh+7lcjMWDfFWGmbCNUIIMzMBeieumHVqkvVFPFoiGG5Q17KP0+E/aTEXOQIg5Rx2ynQr5rIDrwyVR6SNxn6HKH8WiiSDH2GRgka42RfHRn0bT6QI7Zuh2I99nXD85nonwPDgKGaBJj7vz1cPoIkgGRxdE7qkKES8VWYhgAGiUVekbPsWlsV6Ez5eCo518IL4AaPZk71VObFdz9JCWzcOIpIYJQkMgfg7Hg9qbhFiuoEPeGUApp1hZyeO
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,35 +115,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 18, 2025 at 02:42:28AM -0700, syzbot wrote:
-> syzbot has found a reproducer for the following issue on:
-> 
-> HEAD commit:    8f5ae30d69d7 Linux 6.17-rc1
-> git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
-> console output: https://syzkaller.appspot.com/x/log.txt?x=1321eba2580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=8c5ac3d8b8abfcb
-> dashboard link: https://syzkaller.appspot.com/bug?extid=1ec0f904ba50d06110b1
-> compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
-> userspace arch: arm64
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10cba442580000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10a1eba2580000
-> 
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/18a2e4bd0c4a/disk-8f5ae30d.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/3b5395881b25/vmlinux-8f5ae30d.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/e875f4e3b7ff/Image-8f5ae30d.gz.xz
-> mounted in repro: https://storage.googleapis.com/syzbot-assets/43186d9e448c/mount_0.gz
->   fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=174ba442580000)
-> 
-> The issue was bisected to:
-> 
-> commit d15121be7485655129101f3960ae6add40204463
-> Author: Paolo Abeni <pabeni@redhat.com>
-> Date:   Mon May 8 06:17:44 2023 +0000
-> 
->     Revert "softirq: Let ksoftirqd do its job"
+Kernel initialize "jiffies" timer as 5 minutes below zero, as shown in
+include/linux/jiffies.h
 
-Would be interesting to see how it behaves on 
+ /*
+  * Have the 32 bit jiffies value wrap 5 minutes after boot
+  * so jiffies wrap bugs show up earlier.
+  */
+  #define INITIAL_JIFFIES ((unsigned long)(unsigned int) (-300*HZ))
 
-git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs.git #fixes (cda250b0fc83)
+In 32bit system, if quota->charged_from is initialized to 0 as it now,
+it will not adjust event if reset_interval_ms passes for the first 5
+minutes.
+
+So change initialize value of quota->charged_from to INITIAL_JIFFIES.
+This soultion has already been applied in commit 7d70e15480c0 ("writeback:
+add missing INITIAL_JIFFIES init in global_update_bandwidth()") or else.
+
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+---
+I think it would be good to add selftest of below senario. 
+
+1. Set DAMON with quota.
+2. Wait and check esz is updated well.
+3. If esz is not updated after quite long time, set test to fail.
+
+but I'm not sure that selftest can support environment handling; jiffies
+with INITIAL_JIFFIES or near there.
+
+If there is another method that i don't know. Could you please let me
+know? Or any better idea?
+
+---
+ mm/damon/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index cb41fddca78c..90317a3bcf78 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -366,7 +366,7 @@ static struct damos_quota *damos_quota_init(struct damos_quota *quota)
+ 	quota->total_charged_sz = 0;
+ 	quota->total_charged_ns = 0;
+ 	quota->charged_sz = 0;
+-	quota->charged_from = 0;
++	quota->charged_from = INITIAL_JIFFIES;
+ 	quota->charge_target_from = NULL;
+ 	quota->charge_addr_from = 0;
+ 	quota->esz_bp = 0;
+-- 
+2.43.0
+
 
