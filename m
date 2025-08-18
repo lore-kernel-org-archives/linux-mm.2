@@ -2,95 +2,107 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5CA22CA0EE4
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 12:56:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 87772CA0EE4
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 12:58:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8AEC8E0011; Mon, 18 Aug 2025 08:56:06 -0400 (EDT)
+	id DDD3A6B00B8; Mon, 18 Aug 2025 08:58:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D62078E000D; Mon, 18 Aug 2025 08:56:06 -0400 (EDT)
+	id D3FBE8E0043; Mon, 18 Aug 2025 08:58:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C78208E0011; Mon, 18 Aug 2025 08:56:06 -0400 (EDT)
+	id BDFD48E000D; Mon, 18 Aug 2025 08:58:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B2ED18E000D
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 08:56:06 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 120E25BB9E
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 12:56:06 +0000 (UTC)
-X-FDA: 83789875932.21.376BC97
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 64ECF4000B
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 12:56:04 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf17.hostedemail.com: domain of 34yKjaAkbAAIu01mcnngtcrrkf.iqqingwugteqpvgpv.eqo@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.200 as permitted sender) smtp.mailfrom=34yKjaAkbAAIu01mcnngtcrrkf.iqqingwugteqpvgpv.eqo@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A0AC96B00B8
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 08:58:05 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4645F138F57
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 12:58:05 +0000 (UTC)
+X-FDA: 83789880930.16.DE7C676
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 513DA80010
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 12:58:03 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gcy8JlzU;
+	spf=pass (imf30.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755521764;
+	s=arc-20220608; t=1755521883;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=NX93WSBTJ05Ivc6BEiIOWeOPQPiP+fK8Sz0GY/O4zc4=;
-	b=HNIIOEISFkf7tdexNvF/v8MnyR4oKNKMfvIY1Dvr88ISVcmuUF6OByC7mtQP08B0eZnRD8
-	etFlQuGzxZ1jFW1yk7DI0JCs8jpQTRpzYO9NqfygaSGHPCrircyPn7KqlddwsNWKMhbrcQ
-	QJcuLVhQlbD8U4erdbusvhUBDAF7j+Y=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=QyzL3GSkiAQfeG6g6YvIMRozhZr0+dfb72trcSazY0Y=;
+	b=5ydgiE+7wPu7zkIvg+dztSFcHL0ExkbnskH5mKLqGF1P38HR7YtqizWC8kjNwV+7A3nr31
+	0TLmZRUEUINfpdc7TyRRt9lqaTQ9MR03e2SrQhq2zf7jvtUeW2Huj2rgMGY25mihIf7r8Z
+	W98smh67sBATqV6M4V/7UqpWg7XPZ2k=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf17.hostedemail.com: domain of 34yKjaAkbAAIu01mcnngtcrrkf.iqqingwugteqpvgpv.eqo@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.200 as permitted sender) smtp.mailfrom=34yKjaAkbAAIu01mcnngtcrrkf.iqqingwugteqpvgpv.eqo@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755521764; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gcy8JlzU;
+	spf=pass (imf30.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755521883; a=rsa-sha256;
 	cv=none;
-	b=RBjhqwubgJ/cu8umr4HvNI0vVIhRLLUxlEf6W5l+xZxAaRXzvdwwMIJLmC3/gjPFXLIYrl
-	EkKa0IbCmmwRF2ZZJ7aYABitZQvRkrehbW2rhGkxhih50O0bJIPTULujP8QWXZqiRe39uK
-	RHpn1LAUb608ZEG853AAWphswOF/yew=
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3e56ff1b629so144371035ab.0
-        for <linux-mm@kvack.org>; Mon, 18 Aug 2025 05:56:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755521763; x=1756126563;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NX93WSBTJ05Ivc6BEiIOWeOPQPiP+fK8Sz0GY/O4zc4=;
-        b=cEXQwvkOLSdrVqfTus7ZBrIFfpHTFujezYq+SjOnShE9x0U/RaXvwh5Hax91ddoY7Z
-         PeQUwTtBCxplmj8a8KMwAESHf1L4IMZXnVhyZZn1HC/twzbJuNwPZCbnaNPapHtLNm8+
-         JiMo/aljErcYIzLoVTeudOG/oc21Pg0ds5lJT1Ci2ei8xvKY1CIIK8nBt60MPtvvSaas
-         SzTGcZsg9U1FQGNOGR885OJJ9hE/NBV247oMqbNYnG94+P/IoZo2d8a12f5Ft48Ki6J3
-         9pJjTSn2KeuotTPXpXznHIA692/gujxKH+SlDh3Kz3iHo6zUcWxb8GEL6I1zmyrNY5W2
-         U6Yw==
-X-Forwarded-Encrypted: i=1; AJvYcCUl6HHyBG3ITIEz4QD2RW+Y50aEQ4YO1se8wS7RY6tg1CNOI/sYtlXI5BW8FYx/5otYOaI/A+iXUg==@kvack.org
-X-Gm-Message-State: AOJu0YzlfnfCIL81+ES06w42jU9U8D4/YH1Z9td5olKAE8Q1GVZqWymW
-	hjvjN6BeSxPpPhV2N+BobI+jNaGSfG+8RQnCyOSrqZaN+29j/JuohVjsUOR3UgQ94x3OoZkwFpN
-	4YWh7oSkxZoLXbGSX5gwLFcZaOH1Ip5QkEX7Xc9HWykiix+8HTlR5Lt3XRVA=
-X-Google-Smtp-Source: AGHT+IGkuvlwu4mI8pMZwo9KW6bP24fbad2mbz6Q7pJVSKOoGc9tk+MbhdWW8H05AZ84psWblQe/qSfX+/dxZ09cnb0dwvZVIFZF
+	b=dpsEMlWOZ7H4oW+vlZqAw1Ln5Zn97L2a6/WXsxpUbxh2TgVOd4UOzl/MCopYv1c8NenWyJ
+	1Cml/ng+Zhl/O7dhsOmmUSchYd4NFbJRK0mxsy/YA4qVF0rHdsoSRmBlfy+XTSbybCS/TH
+	N556TDezw5qZqqTPq1aeJrUS0e/fSOU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755521882;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QyzL3GSkiAQfeG6g6YvIMRozhZr0+dfb72trcSazY0Y=;
+	b=gcy8JlzUKImnzwjFGUEg6rKMy8YD8k2iFbh06Iryo8bnTU0qY2bO+fnyr8R3klpfT8t08q
+	Gd0JyIR9ZNSvRoODbWl0aSeyzQy9pm6tmaxarLfOERPfCq9CSGOh5rySJW6j+Tq/CfYMkX
+	GWEMXxMj7YdaZHqaVj+SkLFqAn7w5kE=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-621-g_mIRCGpMROsggNnLgJ-Wg-1; Mon,
+ 18 Aug 2025 08:57:59 -0400
+X-MC-Unique: g_mIRCGpMROsggNnLgJ-Wg-1
+X-Mimecast-MFC-AGG-ID: g_mIRCGpMROsggNnLgJ-Wg_1755521876
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E3B3018002C2;
+	Mon, 18 Aug 2025 12:57:50 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.44.34.24])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 4136D1955F24;
+	Mon, 18 Aug 2025 12:57:43 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Mon, 18 Aug 2025 14:56:33 +0200 (CEST)
+Date: Mon, 18 Aug 2025 14:56:26 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: syzbot <syzbot+d1b5dace43896bc386c3@syzkaller.appspotmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: akpm@linux-foundation.org, brauner@kernel.org, dvyukov@google.com,
+	elver@google.com, glider@google.com, jack@suse.cz,
+	kasan-dev@googlegroups.com, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk,
+	willy@infradead.org
+Subject: Re: [syzbot] [fs?] [mm?] INFO: task hung in v9fs_file_fsync
+Message-ID: <20250818125625.GC18626@redhat.com>
+References: <20250818114404.GA18626@redhat.com>
+ <68a31e33.050a0220.e29e5.00a6.GAE@google.com>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1d8e:b0:3e5:5357:6de7 with SMTP id
- e9e14a558f8ab-3e57e82553amr232423835ab.4.1755521763496; Mon, 18 Aug 2025
- 05:56:03 -0700 (PDT)
-Date: Mon, 18 Aug 2025 05:56:03 -0700
-In-Reply-To: <6bd5ffe2-8f28-497e-9092-085e5d1cbc1f@redhat.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68a322e3.050a0220.e29e5.00a7.GAE@google.com>
-Subject: Re: [syzbot] [mm?] WARNING in move_page_tables
-From: syzbot <syzbot+4d9a13f0797c46a29e42@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, david@redhat.com, harry.yoo@oracle.com, 
-	jannh@google.com, liam.howlett@oracle.com, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, miko.lenczewski@arm.com, 
-	peterx@redhat.com, pfalcato@suse.de, ryan.roberts@arm.com, 
-	syzkaller-bugs@googlegroups.com, vbabka@suse.cz
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 64ECF4000B
-X-Stat-Signature: hthrt59g41gqrsib6c5t9whh4ksx3w9c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <68a31e33.050a0220.e29e5.00a6.GAE@google.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Rspamd-Queue-Id: 513DA80010
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1755521764-323800
-X-HE-Meta: U2FsdGVkX1/OwGqRvz3FSUxHgyNTevwxNk43RBOrqR5UhLzUHc2KNH8c0taEurMy8of3m+Ixrf1fLe7tFeqUGQ+mnf+uZKraUwZrTIKl5nwSemN4v1mk00beu7ufp27AjK1b5XfcnYe80qQ96KG5l0A7t6biXj9wlSYKduWlHSD4o26qbL+tadwL29Vc6w8elWzEEFEI4ImzlxoV1SvkMnovZskZnNZVY9S6f2UYzY9kFyvOu28dRavIzm/lUMMRdA2PhOlD2PyJxVDiSOF/uKLtpwvu0lZFLgh7aY7S0a4/lO005YhiIq/ftHMCcq7lmiArv01OIBI98+sDwHHqFJDHvidbJCX2x7rtfJ6jfPMY0ixdQOPutrc9Miy5L54GCwPSvj48Ns/h4cjF4NHLVFH1ImNmgi4cD3QrvyGJZUNHS734+TH4a7wKRckhOQ2sHr9pCwFkq9vgxW0hQT1bZ+zJXvFWU8ju8wHlP9WgBCCoIBtlmPFIhGYdn4/O06Y5gs05s7GVAa0jkhkvMo7+ME6VRz8mUh1gbG1e4O6xQPYCU3A4Fd1UTX49LBvmsPPbzZTFg/3e0jSsRRE97lpUyAsb9uFrOa9QVbu+HctrBZjVN/dAEWoKi7NzoSJFK2vM+wMCNuNAzrIZaynmcSJGSA8fZ3kCrKL0q14hnKdkkTr8o7EVofz6p6YWIoPGazthARKrkS4Z9DGvbWL7GYysxNUwnU14cu/vibpNUaANxUUaiI8gsHASDEXXHTh6/54JKHlemkaklacJyWSV8mXDcf4Ke4CQZzPqN5Ku95SO8x0y25gcvw6BFaMDr+Gg7B2oriBTEwxldKQfr7zdwbMr5IZ2vLw2edZDVOgsfL11gN7/sgfuETJPnLgLhYcmzz5y+77R+kKu8CwTJ5ALbdsAnH1Aoe7iKhVVdS8zHclEBAufA3u9DnJeT8HhKWix6wA65HJaCQ+1DdkLpW3yzew
- 9bLJDkHD
- csYoXY1s4VWhLMQY8o1jzPylETlPn/DVt2263IrzwhNYFuevYUytCq0ySNDBwP1v2e8qWmprQVIPKYY6sFo1WJE2Bv+3WKcavNIfE17P5bpNuoWCHdxMGBbnTld1XQE1RW5q6Pz+O4Vb7YyaUPKWwvI3IF0kYAT4zHAD7peqI9Dznva8silRagQ9MAdf/zRbnAIvXL6ng6qMeVwIPErossOQMXyGBeKg+hwCCetgQvyJcKiH/GbC9te8Knkih/yQrcOa7wcYEpDIDdSkCU5feombID1W4RLi2T8xJdz0+QpHY1P1QwYmrzHa90v45LNyokG1yQqFY+kPqTsJqd+bt4FTwP3fVpZyzZWVEPP3bo4GnK2xxBmvIoLUbIIt2/bqDcLZttKCIazWiIiL5wZTbQMUnV0nnF24cQn4/2DQ80ZBHeEihwkBx1gTmQPgbPW7nMDDs38YykKQ0jM17igeZ+25D1uiD+GAjymRP8OtbnHQn7MOrDQkoBeuVroaFfbiQMrm6NtYxM18JiHvSi0Rpsx/1bFmQe6I+DuWilf3aYXCJbxl1ZExRAGUxAF4wafjqnHqe2AOp0DgQoxOAKJ6VEPI4ny2Wl6b+a28oZpKnW8Y524pBH8C/eXVMHsPM8DHF1x2p8K1/+SHC3hNqOYXBP15Nc7JCXXuKz20wcHSL/xngm2emfMkOuDbrctIMTQzMy/lI3SyzWA3aVoVhQeeMUVgt1aHoJEa3X+L2IFTdIqIYBVIZv4aCPAdVjePxar3hB+u66q3/EjTLF8ch/z7kAIBPhjj7pfxO4Ct6bE1ewuIMimX86KTYDtk31l2CNOrnlFhAaSR2VhCgWkmWZJdl5bOB3wmE/iq990ikUTL5a00xRIEV38R/RKhSQrbM2wmgltpVkbAyx/wMS0d/gwIuBv076cxJQy66nOEhSd6AxWZGeU2MMP7PHEUw9lSV1Fw1TIAsKdkRzRIzuQCnXwWPucCcFV6j
- aJtPW0Rl
- mmmolv46xpUz0mE7kB2f0Bpg+MqIbd2jjJsa1DcfIbysCpUrFErj8o5+bWuL040jB6Lov4eLDfLwmny+wnzmgR2VBERmsTylYDzOLo3Ewow=
+X-Stat-Signature: scrpoy118ntiiu8dniqkbyhonhjs1xfp
+X-HE-Tag: 1755521883-692370
+X-HE-Meta: U2FsdGVkX190Si8og+gCHvuRfOFqJgjGeT9HAmpOg67KludABRDX4lesdYpLjzzQcPPyJZk8f5R7mw5QNF5O/irXB2JbeJcuQ5Vjv/JC52VllPtTZqEWNj91Bejq2Mug2skMiZ89u9vCSFc0zef1/Uewpf9dyWv6hV+y5NFIrQSLdZrK1tJMabszegcqehD0kppJHSpoyKuNFY73vEXZK36wuZ3uvG9XE6TSY3dS3QX6t1HSK0bT/VAnxVSdCZilF5cY83u/v8pJ3Zcyvt18y2eBV5Uf8fJW8RWuPdglUR9tbeMcWl+1diO8yB/7U1h5xLEGO0htKZb+XgiuuTIXqpjehAB6yxE0dX+/iVCtjCSQ7F5erZciMMr654Mtij8XwnARE3EkGxGw7tzqOSdfTYhcPxk/xpa75sdA3M0hURQCGJL4oInOVRcF5J2ZAHx9Ie0+GAnI80LfoCqxTj/NuLUFB/f8s6OIujWXpHIJsc2/r6O8p3BjBzDGWy9j2pS5RJTSrwEx4fLHAcr8DNa03A3360IFoNirlynnkLbDSYwcD1mdm6XPFgPUfmIMJ7TJ6yTTNMP3qtyh+XqOTw1GflF9/N/9T8Y6fs+wbrdyF0iucaXLG7Uyom25YszCUu6e3qv/tIiQUh4CjfnXq9c7t+qpn16aqjr7PMUzAW8kEKiU4rbqHh0652x/wgXBLYlTMZt5JoFpUqbv0HSys4MCC7QC/hWeWcO6q6m23b6mBwt01dJoMMIMXVn/XED6E0TuVUPnU9lAyrZpG099GDf6gJjhcmyyJkv7t36iOV5RU/INsQex9tT+LtqwgJnVKGJMvYhfUhj5ckME8Lb21QQztA68CNiof2YKUV5qgDHmUYVo8pGFiT+Bmdq59fUfJeLWjds7oS8z9Cd5ki1iakMLbVspqN0yz0F9O/mJwkwvmgMIJ3JVNK18lscydpK1gy/4nE+1WJnECv0QqyqdrNW
+ 6qH2VWwM
+ H/d42ICBCbQE7TIA+U4q+znFKrSH4ulonbaNx15MFZgmQaBYGHs8V8IFqLKfGRGgQxz9O8/9KLvXjfBPLybPPjINJ5fEjnErcTmUv/dnQI6hx2/fi5yhrPmIM8ZkvKahdUK1KDtxTizr6ahWwY+0iQK+6if8b3paGJikPPt8ml/CCPuYKs6n8ALA3G2QqVBXnLas0eBQiJrbE7X3OrfFxFHFisjMgD0rwsmCgSWf7rmL7uYfmaDwpOx7jZXGzIcWFUR0K3KEJLYrkwfjBWJUWyDVyvUk/FQexX+ZthJcLTlZNOMzTJD06V24JV8PvsL88Y1K8OjbeSRbypS0J8jrNTeBG6rrpeu/oMRDmG/Fgt6J2slSSzgkT062XLYpVU+vR0gCq1EdyYGG8029R5yAOKNxQ+vLX9RXki2iZInNQp6e3kWkwHl2l92l/xsLSjJSplUQO8J5yp+4uZjy0z1+Z9RrYbXxODwBs2eE5S3irrfjnSa8y7kCEJxfi6zgmbNAGKmLWINDDiThgE6wES/dySvFIBo4soPIEcAhhyNUv6aNILH1/04A3U90W+kj85+zsewU4NsSsN4uO/TsDwUA+Xy/CBTHMZS4KjqHYzPUA5WNrTeY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,24 +111,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On 08/18, syzbot wrote:
+>
+> Hello,
+>
+> syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+>
+> Reported-by: syzbot+d1b5dace43896bc386c3@syzkaller.appspotmail.com
+> Tested-by: syzbot+d1b5dace43896bc386c3@syzkaller.appspotmail.com
+>
+> Tested on:
+>
+> commit:         038d61fd Linux 6.16
 
-syzbot tried to test the proposed patch but the build/boot failed:
+And trans_fd.c wasn't changed since 038d61fd...
 
-failed to apply patch:
-checking file mm/mremap.c
-Hunk #1 FAILED at 323.
-1 out of 5 hunks FAILED
+Dominique, David,
 
+Perhaps you can reconsider the fix that Prateek and I tried to propose
+in this thread
 
+	[syzbot] [netfs?] INFO: task hung in netfs_unbuffered_write_iter
+	https://lore.kernel.org/all/67dedd2f.050a0220.31a16b.003f.GAE@google.com/
 
-Tested on:
+Oleg.
+---
 
-commit:         c17b750b Linux 6.17-rc2
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=f9319a42cfb3bf57
-dashboard link: https://syzkaller.appspot.com/bug?extid=4d9a13f0797c46a29e42
-compiler:       
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=107dbba2580000
+diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
+index 339ec4e54778..474fe67f72ac 100644
+--- a/net/9p/trans_fd.c
++++ b/net/9p/trans_fd.c
+@@ -666,7 +666,6 @@ static void p9_poll_mux(struct p9_conn *m)
+ 
+ static int p9_fd_request(struct p9_client *client, struct p9_req_t *req)
+ {
+-	__poll_t n;
+ 	int err;
+ 	struct p9_trans_fd *ts = client->trans;
+ 	struct p9_conn *m = &ts->conn;
+@@ -686,13 +685,7 @@ static int p9_fd_request(struct p9_client *client, struct p9_req_t *req)
+ 	list_add_tail(&req->req_list, &m->unsent_req_list);
+ 	spin_unlock(&m->req_lock);
+ 
+-	if (test_and_clear_bit(Wpending, &m->wsched))
+-		n = EPOLLOUT;
+-	else
+-		n = p9_fd_poll(m->client, NULL, NULL);
+-
+-	if (n & EPOLLOUT && !test_and_set_bit(Wworksched, &m->wsched))
+-		schedule_work(&m->wq);
++	p9_poll_mux(m);
+ 
+ 	return 0;
+ }
 
 
