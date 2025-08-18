@@ -2,88 +2,87 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AE664CA0EE4
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 02:41:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 651CACA0EE4
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 02:59:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51C088E0006; Sun, 17 Aug 2025 22:41:30 -0400 (EDT)
+	id D5ADD6B00AA; Sun, 17 Aug 2025 22:59:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F3F98E0001; Sun, 17 Aug 2025 22:41:30 -0400 (EDT)
+	id D0B5B6B00AC; Sun, 17 Aug 2025 22:59:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 431078E0006; Sun, 17 Aug 2025 22:41:30 -0400 (EDT)
+	id C485E6B00AD; Sun, 17 Aug 2025 22:59:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3056E8E0001
-	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 22:41:30 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D56011606A4
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 02:41:29 +0000 (UTC)
-X-FDA: 83788327098.11.DE1E900
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B28176B00AA
+	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 22:59:49 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5BA73118508
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 02:59:49 +0000 (UTC)
+X-FDA: 83788373298.19.6DB60C2
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 2664A40005
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 02:41:27 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=irwfAP3q;
-	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf01.hostedemail.com (Postfix) with ESMTP id A33CE40007
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 02:59:47 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ABn4IF1X;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755484888;
+	s=arc-20220608; t=1755485987;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fWGUmFZIiJazV+QTeUF/il937zdE4XYBcDoWf0FZ4AQ=;
-	b=qgvEfbhOy1+m9NqD2R40UBPstReGus4e/+WH0/4hHBG1MxAZfSF8KKzz9LhIoOBU3FlUhc
-	373x82W5zPPTCz0zCeJvSMoChWXX0pSQwkmVen9Pa5Xaa6UAicCFRM40RIjjv49MQkzl4N
-	jE1n6ZBsOvwZGfzvUU7CcwpvfOjkDMc=
+	bh=TSjYOw/KbH5THk45q4IZEEy9CdoMEn4xKZvrucvnRcA=;
+	b=dPiopVYwbsZpeqKv6dwRjC0f3avgK8WIPbZqBYEmyraKGBQbnTbxk1GC0jWni4hbHqqZYT
+	OKai9L0sAOoE9HRasBRxgPcWdM9Iv/iPdZ/lkOgtlsUigoR97WEU1EKM0SRGrdDULVtd9W
+	A6XBS2X7ABdjmPcYLR0tmGQ/14szLqw=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=irwfAP3q;
-	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ABn4IF1X;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755484888; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755485987; a=rsa-sha256;
 	cv=none;
-	b=a94VyLyRjrIHRvzecxJJht96ISJyqogySMeW30+90/N0eSznFAenMuNJ0CHDclh2J4Ouds
-	s4r5QaSHZHDUFXMcyQasSvdkIXHuAT6uefpyTrIukm9kcV56G600okpWwWcW2zTniFuVqZ
-	pcoTejcxAqowF7BP3Pxq8pR4YgyrAtM=
+	b=GpO92LN8MVQLeOjwl0AE8hAc8NIIk4zdwzw1p96j9SO4ntA4cWggBq6J6ARjlpePPzaqSz
+	keR4NdK+JfOIa/+r80TbX3ZUcizxbHCEqUaidDEW3bp8bH6AalMTxL92YNQE+PfEbHkBIT
+	Dh5FTcKcVh3MKN9P0S9LppI8LpfqfEo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 442BB5C0F2B;
-	Mon, 18 Aug 2025 02:41:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EF60C4CEEB;
-	Mon, 18 Aug 2025 02:41:26 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id AEA825C3A53;
+	Mon, 18 Aug 2025 02:59:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A9CCC4CEEB;
+	Mon, 18 Aug 2025 02:59:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1755484886;
-	bh=XwyAzBzkyYUsxtoUqwoehmkxeFNQI6xkaYZl2/saPrY=;
+	s=korg; t=1755485986;
+	bh=l0oGxhr69i2XgfLSJ6MBoDCtiIgjNb43saiOXd3ydlM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=irwfAP3qz5AAci8Aq0upT9TgWRluvcVPAPaXRn0dO424y2LSvfTdlD7Ny590XBTCt
-	 OVX0DbG4jariBuhxW4GWKWzNCfI8CnP+6HkbLWGJTSfTj2Ox91qSgIAfuMxi2ODrWi
-	 rwGqhFGQq7TZAS3jYsx1x5Ku4obXi8PzrMBNik84=
-Date: Sun, 17 Aug 2025 19:41:25 -0700
+	b=ABn4IF1Xfv/Bl3lM5awifjZEWeaotFjkCQOtrQ9nSX/EcHBkka5rpkEVUwg38r8lv
+	 ApR+y/Y9WX772rsaTYotCGMTZAzTftMF66j2/GnTlhD4KBbFC8yJ8WcCavRVhLaOpd
+	 EaChv3LieC1YJB8Ufznte7IOpzjPeS6ta9Eq9Xrw=
+Date: Sun, 17 Aug 2025 19:59:45 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Chi Zhiling <chizhiling@163.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Matthew
- Wilcox <willy@infradead.org>, Namjae Jeon <linkinjeon@kernel.org>, Sungjong
- Seo <sj1557.seo@samsung.com>, Yuezhang Mo <yuezhang.mo@sony.com>, Chi
- Zhiling <chizhiling@kylinos.cn>
-Subject: Re: [PATCH 1/3] mpage: terminate read-ahead on read error
-Message-Id: <20250817194125.921dd351332677e516cc3b53@linux-foundation.org>
-In-Reply-To: <20250812072225.181798-1-chizhiling@163.com>
-References: <20250812072225.181798-1-chizhiling@163.com>
+To: jane.chu@oracle.com
+Cc: lirongqing <lirongqing@baidu.com>, muchun.song@linux.dev,
+ osalvador@suse.de, david@redhat.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][v2] mm/hugetlb: early exit from
+ hugetlb_pages_alloc_boot() when max_huge_pages=0
+Message-Id: <20250817195945.a845d2f5c045e4f60b07469f@linux-foundation.org>
+In-Reply-To: <08cc4405-948a-446e-b198-5745c32f9ee1@oracle.com>
+References: <20250814102333.4428-1-lirongqing@baidu.com>
+	<08cc4405-948a-446e-b198-5745c32f9ee1@oracle.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 2664A40005
-X-Rspamd-Server: rspam04
+X-Stat-Signature: 3q69u6aated5q456t8jzocbecdf1w7mh
 X-Rspam-User: 
-X-Stat-Signature: jq5y53a8py915gj67gk3a1cdz8gdmjsk
-X-HE-Tag: 1755484887-558344
-X-HE-Meta: U2FsdGVkX1+z1DAbSSqv/tX9oU0GgSK2Uav6YNkYhCZDvAxiGnmMER2Sp4zqRC6MD/QxRLuO0h3tjlNvVO6YurqpgYGtGDBJ3VRzTFnKlbpK28thPF2m5oNPjE9kkrdJC8cgtGJVeskl9n/304auEJga2afACbTN6mZVViiXOjHS638JKQGx7AVpy61gzLEvfsG6vZw8jqcjcLRtwCxIkPUunUnKwkIDw6w3C0Vv0EHt6OT5QomgIAvIkoDDq0bVXdGfYmI8yV1bELDCCAhzxG4bb1EDGgx7p4/NfhHAKUTB49IgrtNiGTfzB1wQVLYOM9Qc7cGIsU/Svg10+G+VVQQXYvOyjJcHsckqg0foXZddOy+NCFD+aSyAzGuBx2tAA/wplMF6Pd9OFxI/UJGj/p7HwLgatTGmzxRHKGntDpQzZOhGFrJLMOgTzgQJY+UJHmlSTvDRRopEEXqlek0y6yCRaYQf8rCgO05/kT1QdkoWfn19XEaBRdqHm8Y/GRh3KxVWyfxhtwP/Z/oL69MajLKDFGacnP5GuwLw2DbVjJflW5WwxeSwD/XUoxUcce1ca89RQQSmiJjUhrQLiV0CFWMxaXW09CyDReUQZCxnhzzD7aZmvXpnROjqePPCnCR1rNpIP29HQEd6eMaMNjr30TirQODfHC+XAcepCwIi8nQXKnNb20+a9rT2LBFN3eTQ/LDpDVwe5dKc8/Vl/CLOrvmyMqST5wmlgTzQppTAch/9j3mb675kVGiG9e08BeU1oxEbBFoEhfzhRqSStcbS0l2EWzKnLqGXiuiFhmgMSJ52JCsRRaTBrT9CUgvVg560jv3tMRP88cL6SCejaseoenMfWg0coFdMndZvGB04bOOYoTwnSxxUpNRp7KnzvM0uA0U7gO8uxixPL9tkqsF48TQdl28EghAPRjSN+oHe8QM10bY0jXIggKnoutgyXTK/8gWiTapq1mcLs6r72TV
- XTda/rIG
- NiS5DziJ6ZcJyFAmmeYhGyhHL/4N9RFURVoXKHU0VWTSoSX01QnElsY/CRPgvaT/Ge8I6daWY4sGo7RmQTeg5RrTp6yS2HcOUJaEhO9nlO/b3zfbI1gqLvL0phOpfs9QL2JcgLwA3MUL+exZdTUKgjqmgdE9qEpLy0qIsW2RNuZAg++usnm5YetCsnRR/1JRpi2NPs0ztbP2oktcifNVbkjl62xxfDY/XzbJqzBWoM139PRCez78/Zqts9cs7ExhFisCr740/JyjvDXNOZv9SJWU2Nw==
+X-Rspamd-Queue-Id: A33CE40007
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755485987-177303
+X-HE-Meta: U2FsdGVkX19mr3YV2lhAKkghel99wpOX5QuGkYldxBs6IhOaIUTk4DyWh1RtKMd4MVgv0Otzw5uWQ784zswmzmplM0vMz1UaRvC2eWy73kvuG9dzOPG7MRLacPJx80nmfL8+aIuPurGhnK61O5PYqHTucy2p8ZgiSKD9YODppEErXjR9a6b+lP3BlJcM6stdQWzL89q64yk9MeNLzxPcF/k1xqXLEAt/JDjeO5m2HwPUHcWgOFbNdj0w7DdtCwqaZLLVtlufFoSENVl6q/hE1Ojg3zqRDgIN20LcL/s+FfR6fZbS73hnKB0bbvCzK9hGY3+/zO5grFNoKiBJZQqNEHdVeDdFz8q4M5C3m+RIpc5GmiQfkSjkhyDnsvzQl+4T6Ln+yveRfunv3dKwg6s7MUxXWGWXiAZsZgu02Cx+LroxgOF05SIthaaRL80AegAcza4tPLeSf6lXYPLYqbphchB/IhqSk4EapdIoGeeUXQq/+n/wbnKFCilSSVCMABaNHqGTcdP8sFvq2YGLWSMr7Z6p5T2zNBy6wYxX5mk+k3dLBO/W7KiAmm0Bru3PiMgj/CRqApT7WavLawv50yT2wuOz+2owDr5gmYjcbjmOVoHb/dlU4pLOFk7TXRftwrL0Pn57yO9qygIwQDH/la7+cD+jt1xj4BGFFBAHInG1v62AumwuH253GaFEO69IJOvrhcdIOquJh4pQbdYEXudx+xRIuQox+L1OzfarVrCf4qzzxCTSLniiYyLsHHmPeH/GVodZsVynlADsOpUU++6aEBf6T48Xpni2KwRaARW0M4h8C9hUDZ172tybUW5xpZirzLHQV/b5xA0LCfuUMNjqY7Iyg9vB7idcrO98JzSeHX2SZ8I6Rg6kMQZmAOxpTjgaOIhyR+vHpgNrl+cECkSnvOVa5DWO04WLv29zquGaBvUpPYR0LX8/nPKVqFonYCaF1a2lunqstsSCm9Bn/Kt
+ y2lu61ZG
+ 657/XyWFMmIqukFbmn9LBxqDyUkGGKXwDUCb0BBD/Zj43isC7WLbpdZLJLkLDNtDX0OEsksJr4R9ngvtAAjkv3TNN3TjF67fp78Wxxl9wkLuKwx6pvLgyW8NQxNrlzLA/hjbNxv5XbYAWqpmNsccJnrDftL0uDFTuvY0viuOXDV5jY+PoLrTJsCIH1LDha2DP70JUVlStr/EP92Gu8JPxM728ZoNrDjbiGBqcMXRNP8KlpQ5/00FjaY+waw09VvMRHUZ7na3jeiDlvXqXQWOAR94jX+YQU7RwQocl4iac9fZMbWtL44TXMsfKj2pK6rjIWSkMVkN/ZMC5UREa/xHCJpTaug==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,51 +91,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 12 Aug 2025 15:22:23 +0800 Chi Zhiling <chizhiling@163.com> wrote:
+On Sun, 17 Aug 2025 19:21:54 -0700 jane.chu@oracle.com wrote:
 
-> From: Chi Zhiling <chizhiling@kylinos.cn>
 > 
-> For exFAT filesystems with 4MB read_ahead_size, removing the storage device
-> during read operations can delay EIO error reporting by several minutes.
-> This occurs because the read-ahead implementation in mpage doesn't handle
-> errors.
+> On 8/14/2025 3:23 AM, lirongqing wrote:
+> > From: Li RongQing <lirongqing@baidu.com>
+> > 
+> > Optimize hugetlb_pages_alloc_boot() to return immediately when
+> > max_huge_pages is 0, avoiding unnecessary CPU cycles and the below
+> > log message when hugepages aren't configured in the kernel command
+> > line.
+> > [    3.702280] HugeTLB: allocation took 0ms with hugepage_allocation_threads=32
+> > 
+> > Signed-off-by: Li RongQing <lirongqing@baidu.com>
+> > ---
+> > diff with v1: adding the reduced log messages in commit header
+> > 
+> >   mm/hugetlb.c | 3 +++
+> >   1 file changed, 3 insertions(+)
+> > 
+> > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> > index 753f99b..514fab5 100644
+> > --- a/mm/hugetlb.c
+> > +++ b/mm/hugetlb.c
+> > @@ -3654,6 +3654,9 @@ static void __init hugetlb_hstate_alloc_pages(struct hstate *h)
+> >   		return;
+> >   	}
+> >   
+> > +	if (!h->max_huge_pages)
+> > +		return;
+> > +
+> >   	/* do node specific alloc */
+> >   	if (hugetlb_hstate_alloc_pages_specific_nodes(h))
+> >   		return;
 > 
-> Another reason for the delay is that the filesystem requires metadata to
-> issue file read request. When the storage device is removed, the metadata
-> buffers are invalidated, causing mpage to repeatedly attempt to fetch
-> metadata during each get_block call.
-> 
-> The original purpose of this patch is terminate read ahead when we fail
-> to get metadata, to make the patch more generic, implement it by checking
-> folio status, instead of checking the return of get_block().
-> 
-> ...
->
-> --- a/fs/mpage.c
-> +++ b/fs/mpage.c
-> @@ -369,6 +369,9 @@ void mpage_readahead(struct readahead_control *rac, get_block_t get_block)
->  		args.folio = folio;
->  		args.nr_pages = readahead_count(rac);
->  		args.bio = do_mpage_readpage(&args);
-> +		if (!folio_test_locked(folio) &&
-> +		    !folio_test_uptodate(folio))
-> +			break;
->  	}
->  	if (args.bio)
->  		mpage_bio_submit_read(args.bio);
+> Looks good.  Could you add stable: ?
 
-So...  this is what the fs does when the device is unplugged? 
-Synchronously return an unlocked !uptodate folio?  Or is this specific
-to FAT?
+Sure, I did that.
 
-I think a comment here telling readers why we're doing this would be
-helpful.  It isn't obvious that we're dealing with e removed device!
-
-Also, boy this is old code.  Basically akpm code from pre-git times. 
-It was quite innovative back then, but everybody who understood it has
-since moved on,  got senile or probably died.  Oh well.
-
-Also, that if statement didn't need a newline ;)
-
+A Fixes: would be nice, to tell the -stable maintainers how far back in
+time we need this, but the target sommit isn't obvious.
 
 
