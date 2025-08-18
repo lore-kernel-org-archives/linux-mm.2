@@ -2,61 +2,61 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E7AFDCA0EE4
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 17:02:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FCCCCA0ED1
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 17:02:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83EC56B00AD; Mon, 18 Aug 2025 13:02:10 -0400 (EDT)
+	id E0C056B00B4; Mon, 18 Aug 2025 13:02:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 815E46B00AF; Mon, 18 Aug 2025 13:02:10 -0400 (EDT)
+	id D6D596B00B7; Mon, 18 Aug 2025 13:02:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72C526B00B0; Mon, 18 Aug 2025 13:02:10 -0400 (EDT)
+	id C10026B00B5; Mon, 18 Aug 2025 13:02:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DD1B6B00AD
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 13:02:10 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2990711886B
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 17:02:10 +0000 (UTC)
-X-FDA: 83790496020.28.EBA1F5D
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 5149110000C
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 17:02:08 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="UQf/ux/y";
-	spf=pass (imf14.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AA9C86B00B2
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 13:02:14 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 425891DE532
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 17:02:14 +0000 (UTC)
+X-FDA: 83790496188.10.F1245CC
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 9E5ED180005
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 17:02:12 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cnTHBb3v;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755536532; a=rsa-sha256;
+	cv=none;
+	b=4nnXMh+TSzN9Ym8GxCy4cXTcpsBwe6bx3om8n5+k5Hp4ve/4wdGRl+dIJLA9cY8QGRw+4i
+	LhU4KU5NPEKniP9NbJRzZsOCxa/LbzBJUCqxgG7PmIdmdWiuP4umh3nckp4+KW32wgDvCN
+	Ngty9CJRPz71fmlUtHRhdH5qAbsRnww=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cnTHBb3v;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755536528;
+	s=arc-20220608; t=1755536532;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a6r+LPu0pSFsz4Xm/eQ1z/XPznLAX+8OLgc0s/PVh14=;
-	b=kdtX81dDI9weSx+MD9KPRQRhcLS7hsLLhEQsSlDBFO6z8AdD14oIwve3QxUj22nRuIJWBv
-	ZJIgfL/M5NMYW5AttZl7jvWsTj9aSL1cwmcVrSoVk/ylX+Q/I5E6JA9ZVNYx3I/jvT8SgF
-	BZxxTWuujK5a0HjbGUNuL/EM2ts5ijk=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="UQf/ux/y";
-	spf=pass (imf14.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755536528; a=rsa-sha256;
-	cv=none;
-	b=nXBRGiUoEfne577qCNFLm7eefVg17R/3fDZQzBcTDqykFlv7R6Xmo3GSubkbcNZ5nJ2Edu
-	sXU3wgKs8FWwQ2S86qQcNkCuM70WhrkEtHKUhPNW9YTLXaEtWLBMYUXVAah7x1/xAXy+2g
-	AU8+qyK7FfI4mebsf7xxippPx4+QFjM=
+	bh=EJDVBZVxsGNSev7vCHYTiVf7Gz5dWdPKYQSXDL3bVeg=;
+	b=tSSCgkwIHCjzkEDpJersPQffAFkhhs3zqt3vxrl9onwNqX1CM8hd8XE7uWtS7JyGQpDhX2
+	vPnQQD/r5LjCljCXLJQA081DA3t1l/Z8CsvawH++xbX4cl4B/7c4Uio7t50dHJXgjdeo/4
+	mVxk4C7ArK6dNPwITlqQ5dQUiievX+8=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755536526;
+	t=1755536530;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=a6r+LPu0pSFsz4Xm/eQ1z/XPznLAX+8OLgc0s/PVh14=;
-	b=UQf/ux/y+q4m6txXDXG2RhzT0g0AxXDkgQwJ8Af7N6Bmd0yDMCdgna4YuRuOSEiaZnRX4x
-	VjU4YYWKAFrW3w0CP6RuXC7F4PccfTvnLX6eStoaE9l31FapcAhFtZPb+oltmQ0qGtf75b
-	k5ugS/MCzTGdcS9vUtDiOPKu0aiQYiw=
+	bh=EJDVBZVxsGNSev7vCHYTiVf7Gz5dWdPKYQSXDL3bVeg=;
+	b=cnTHBb3vfy+2gSumXKhXWxCrMLvGYp0NrdSLAlXmGwwmwjg9bLrvJBl/jNgJ6Iwhm7LZpM
+	a/3hqIIZv1M0mFgr/n4N23F/a+OeyXEJ86Exhc2ysTnZOPo5s/raQHSr5UKsCJ7h8nPo59
+	Um5UemvfOJunakaWWZzZQkEikHuITbg=
 From: Roman Gushchin <roman.gushchin@linux.dev>
 To: linux-mm@kvack.org,
 	bpf@vger.kernel.org
@@ -71,22 +71,20 @@ Cc: Suren Baghdasaryan <surenb@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	linux-kernel@vger.kernel.org,
 	Roman Gushchin <roman.gushchin@linux.dev>
-Subject: [PATCH v1 05/14] mm: introduce bpf_get_root_mem_cgroup() bpf kfunc
-Date: Mon, 18 Aug 2025 10:01:27 -0700
-Message-ID: <20250818170136.209169-6-roman.gushchin@linux.dev>
+Subject: [PATCH v1 06/14] mm: introduce bpf_out_of_memory() bpf kfunc
+Date: Mon, 18 Aug 2025 10:01:28 -0700
+Message-ID: <20250818170136.209169-7-roman.gushchin@linux.dev>
 In-Reply-To: <20250818170136.209169-1-roman.gushchin@linux.dev>
 References: <20250818170136.209169-1-roman.gushchin@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: q8god1bssjrsboqaywesz4yk9w3i86bs
+X-Rspamd-Queue-Id: 9E5ED180005
+X-Stat-Signature: sgynt6dd5qsi581zri55krp4t5mz9j3m
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5149110000C
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1755536528-463851
-X-HE-Meta: U2FsdGVkX194+zZkVhCG8E4wQliH3MgP1u9QfiOX1pP11KFhdA6Q9x0xduwd8OvXrfqcMyxY9qt1XZlQ5qIZ+zBQrPbZO2sK/OPuh6fcpSJgRrV3hpnaOBX22SxzaFHyXnI3lL2rfOGLg0wrJg+5PHAa4mVYlLjYRO8qV4jwR6mUw4yQ8DaqAD4FFD4F0zmKYAGN/UfeZqNMvYHrfa5GWZk8paiYRJ3vaKM3l6XCg/QdCNf+AHLtBUoaKVarhrF6ap9fbfER1ZUBjmgbpZT1qIxfFguQpV2ZwNgzYMCcYptzqXyT942u6iOYKcy12S5+/qLsGuboE2sKTLgLKCkn1lypQ7YOTsm8YoEwT3kssFxTs4bET7IUUOcaSgGm/c4BhKyIX/isQqz70EpO6vw+v5NGDxslUtZ+8oJGd7B+JkwdrMG78bMzfzo00ACGna3kzQYk0w7GSrTqjBXRNMMatLaxkLFCBQfc33yCnOcn9K+Yo31JCYFDGuNmpFtXRQfG0Vh7vhTuazacHphyok+oys7A7C9Y+ImE8gWnueLXS0V1kU29hi2Akjc9froCqheGOmAv+QQDKgW75iUrFhFmLMeUMmyg+GckFDgh3MkS3I1VfxVJoDxEGWsxPZR0sEFmX58zlGrCHU/fhmdQcSJesnn0WZnmob5UedV7NB/WrQQLAzhiQq7GmuVMxHxXJ71SmopQ3T+97NG6LjBsFnSJsRvvrjE9rzUkd060mXNVmzTHOvNwxWUkEEHSd0ZChU23iDB1uqaVbU9bA4+1GblY/4xJs0umitEs+5zKrPsBqgVkv9pv4Sa9f6mYITYGdPmWAXKJo4wXf78MUgGaxMVGMcJ9DlxVi2AGQGEyYtx8hSzvQ4ijWb0icHTSFdV7smqAf5ayrtomQA6syNFKR5m+dK84ghDenOy1fkzwVjV9CdhZXoVWbAzl2kXkkwz8csrTWtctgcowKiRjCbLCxHQ
- 5UEXnuJM
- vizLoZ9kzt9vd5azg8i34/q56TNYBFfqoGsmnHfUPOapEpViLBk46gydfi8oyqZhDCyjieanjwObzMtUZ8ZQYTc06tKFeywco9vno8r9c3gJqvSOwEw1I9gnW7tQ2l/QJJatYxeDtBqL9pIqfa5ZLcRkEsmyzX9SqDJzSQvth0Lc2r8n46+TOFrMQDsdhuUxqcuJCF2p8y6rNh/M=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1755536532-916529
+X-HE-Meta: U2FsdGVkX19wGSvnntphTeT5ueE6bxmAU49RbTWBeoYSqmB+2avuiwB3WCAZ0BA7twD7j5mEZjlSQr+MySm6+Whc3fn0OW+wiShjXvmxsw+qqjhKB23q2qfJ4q7a4+fJXuS5THJa1D7vmFwd/IzRmEiMMl1niNqr6mkkZltH4Xt/UNLbYJDq/PhFTsrcJ7nOCi9bMTj+TzdrbCdBBN8gMnVCGq44cAQrrJu1RxKVYMVMfd/O6VfKpiSSj3H+3ey84tLkrCL7ySrhaz2rwpMjArVbdFiDEM4Oucu7ZcJDUT67XJywTxNnbrjyGZqsxRN9CoZcL46paG/nJFdnMXUKTD97kMYvFvYmWc9JuZZ+4VT/yU5KdInLH9cwKhiCR69g7pFQamwy722KK+C/n/pNGRM9iXahvRQelCgmz3LJmEIzxTglOIe0GfiVJbvxsyC2FWJOz/CpudEid05aYSBXuc3tw85I0ovMfxg6P95UeBSLFk3KBbVQV6CElOx2S78A7CkUTPcFvYS9KPvtUotg0Mn4xKYpV54ax/6tWzpgOqlOwqCI3pi0QR9r0O4i7Czd6DGpm7hD0Pk/wYOX5HwyTh/64Nwz48nksbhie5/znU3p5jd/MVV76Cko2pyberOfhUeNNWEeLdqIYamX8U0b5AaY0VVEt1tCpGw5m25OGESGtmk77i1sBJlfa++1c9CAum/FDLzCIMCetlHTzrVxfdIRYqR7e1sqYCVGc4T5LQ6SA7KG4AQO7bLykSPDH5kPBsBxcuIMZAYPCfSZCOwMGkQUzuwwUz2pU6TVu72WZv/P38TdirwalaLxcYPb37oCGOPn9o30CyAzQ1MOliIGakCrCmKjM6lYYkas9K0wXly8qFHcVJqj66BiN35iATHzdKFkfNx9s+RPxzg8ddN09Z5giKdD1II7v53V0TI/oFyraVGirDLmMpb3Wr6TPQgg16Q5T4Pxgvs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,59 +93,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce a bpf kfunc to get a trusted pointer to the root memory
-cgroup. It's very handy to traverse the full memcg tree, e.g.
-for handling a system-wide OOM.
+Introduce bpf_out_of_memory() bpf kfunc, which allows to declare
+an out of memory events and trigger the corresponding kernel OOM
+handling mechanism.
 
-It's possible to obtain this pointer by traversing the memcg tree
-up from any known memcg, but it's sub-optimal and makes bpf programs
-more complex and less efficient.
+It takes a trusted memcg pointer (or NULL for system-wide OOMs)
+as an argument, as well as the page order.
 
-bpf_get_root_mem_cgroup() has a KF_ACQUIRE | KF_RET_NULL semantics,
-however in reality it's not necessarily to bump the corresponding
-reference counter - root memory cgroup is immortal, reference counting
-is skipped, see css_get(). Once set, root_mem_cgroup is always a valid
-memcg pointer. It's safe to call bpf_put_mem_cgroup() for the pointer
-obtained with bpf_get_root_mem_cgroup(), it's effectively a no-op.
+If the wait_on_oom_lock argument is not set, only one OOM can be
+declared and handled in the system at once, so if the function is
+called in parallel to another OOM handling, it bails out with -EBUSY.
+This mode is suited for global OOM's: any concurrent OOMs will likely
+do the job and release some memory. In a blocking mode (which is
+suited for memcg OOMs) the execution will wait on the oom_lock mutex.
+
+The function is declared as sleepable. It guarantees that it won't
+be called from an atomic context. It's required by the OOM handling
+code, which is not guaranteed to work in a non-blocking context.
+
+Handling of a memcg OOM almost always requires taking of the
+css_set_lock spinlock. The fact that bpf_out_of_memory() is sleepable
+also guarantees that it can't be called with acquired css_set_lock,
+so the kernel can't deadlock on it.
 
 Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
 ---
- mm/bpf_memcontrol.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ mm/oom_kill.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
 
-diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
-index 66f2a359af7e..a8faa561bcba 100644
---- a/mm/bpf_memcontrol.c
-+++ b/mm/bpf_memcontrol.c
-@@ -10,6 +10,20 @@
- 
- __bpf_kfunc_start_defs();
+diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+index 25fc5e744e27..df409f0fac45 100644
+--- a/mm/oom_kill.c
++++ b/mm/oom_kill.c
+@@ -1324,10 +1324,55 @@ __bpf_kfunc int bpf_oom_kill_process(struct oom_control *oc,
+ 	return 0;
+ }
  
 +/**
-+ * bpf_get_root_mem_cgroup - Returns a pointer to the root memory cgroup
++ * bpf_out_of_memory - declare Out Of Memory state and invoke OOM killer
++ * @memcg__nullable: memcg or NULL for system-wide OOMs
++ * @order: order of page which wasn't allocated
++ * @wait_on_oom_lock: if true, block on oom_lock
++ * @constraint_text__nullable: custom constraint description for the OOM report
 + *
-+ * The function has KF_ACQUIRE semantics, even though the root memory
-+ * cgroup is never destroyed after being created and doesn't require
-+ * reference counting. And it's perfectly safe to pass it to
-+ * bpf_put_mem_cgroup()
++ * Declares the Out Of Memory state and invokes the OOM killer.
++ *
++ * OOM handlers are synchronized using the oom_lock mutex. If wait_on_oom_lock
++ * is true, the function will wait on it. Otherwise it bails out with -EBUSY
++ * if oom_lock is contended.
++ *
++ * Generally it's advised to pass wait_on_oom_lock=true for global OOMs
++ * and wait_on_oom_lock=false for memcg-scoped OOMs.
++ *
++ * Returns 1 if the forward progress was achieved and some memory was freed.
++ * Returns a negative value if an error has been occurred.
 + */
-+__bpf_kfunc struct mem_cgroup *bpf_get_root_mem_cgroup(void)
++__bpf_kfunc int bpf_out_of_memory(struct mem_cgroup *memcg__nullable,
++				  int order, bool wait_on_oom_lock)
 +{
-+	/* css_get() is not needed */
-+	return root_mem_cgroup;
++	struct oom_control oc = {
++		.memcg = memcg__nullable,
++		.order = order,
++	};
++	int ret;
++
++	if (oc.order < 0 || oc.order > MAX_PAGE_ORDER)
++		return -EINVAL;
++
++	if (wait_on_oom_lock) {
++		ret = mutex_lock_killable(&oom_lock);
++		if (ret)
++			return ret;
++	} else if (!mutex_trylock(&oom_lock))
++		return -EBUSY;
++
++	ret = out_of_memory(&oc);
++
++	mutex_unlock(&oom_lock);
++	return ret;
 +}
 +
- /**
-  * bpf_get_mem_cgroup - Get a reference to a memory cgroup
-  * @css: pointer to the css structure
-@@ -122,6 +136,7 @@ __bpf_kfunc void bpf_mem_cgroup_flush_stats(struct mem_cgroup *memcg)
  __bpf_kfunc_end_defs();
  
- BTF_KFUNCS_START(bpf_memcontrol_kfuncs)
-+BTF_ID_FLAGS(func, bpf_get_root_mem_cgroup, KF_ACQUIRE | KF_RET_NULL)
- BTF_ID_FLAGS(func, bpf_get_mem_cgroup, KF_ACQUIRE | KF_RET_NULL)
- BTF_ID_FLAGS(func, bpf_put_mem_cgroup, KF_RELEASE)
+ BTF_KFUNCS_START(bpf_oom_kfuncs)
+ BTF_ID_FLAGS(func, bpf_oom_kill_process, KF_SLEEPABLE | KF_TRUSTED_ARGS)
++BTF_ID_FLAGS(func, bpf_out_of_memory, KF_SLEEPABLE | KF_TRUSTED_ARGS)
+ BTF_KFUNCS_END(bpf_oom_kfuncs)
  
+ static const struct btf_kfunc_id_set bpf_oom_kfunc_set = {
 -- 
 2.50.1
 
