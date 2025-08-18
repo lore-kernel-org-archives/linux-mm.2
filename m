@@ -2,84 +2,88 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B0FBCCA0EE4
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 02:39:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AE664CA0EE4
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 02:41:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3DF186B00B1; Sun, 17 Aug 2025 22:39:26 -0400 (EDT)
+	id 51C088E0006; Sun, 17 Aug 2025 22:41:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 390176B00B2; Sun, 17 Aug 2025 22:39:26 -0400 (EDT)
+	id 4F3F98E0001; Sun, 17 Aug 2025 22:41:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CC936B00B3; Sun, 17 Aug 2025 22:39:26 -0400 (EDT)
+	id 431078E0006; Sun, 17 Aug 2025 22:41:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1ABDD6B00B1
-	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 22:39:26 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C3DFE1A0816
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 02:39:25 +0000 (UTC)
-X-FDA: 83788321890.27.0AEC500
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D956740004
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 02:39:23 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3056E8E0001
+	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 22:41:30 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D56011606A4
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 02:41:29 +0000 (UTC)
+X-FDA: 83788327098.11.DE1E900
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2664A40005
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 02:41:27 +0000 (UTC)
 Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=m1W8EUmg;
-	spf=pass (imf11.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=irwfAP3q;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755484764;
+	s=arc-20220608; t=1755484888;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/KGmZRweKUDZ2JbdZthO63Ztp0At0JtBfciRWpCzRtA=;
-	b=wVscHdihKthiuZyWhJtuZ/hI4v8vOtC0XGFPLQJJdw6z5BqbYKcYuxKoYrxqdyHSXJQlqW
-	6+QMBPGN4vTfIuWnReAv2jQpmNzcFwdMRmFYUahF2zLXp3KWbChLh5WWIwVd1VFQxmFVAi
-	z/v8PkSgJ+sFOWsNAdhJvavWaCLWLF4=
+	bh=fWGUmFZIiJazV+QTeUF/il937zdE4XYBcDoWf0FZ4AQ=;
+	b=qgvEfbhOy1+m9NqD2R40UBPstReGus4e/+WH0/4hHBG1MxAZfSF8KKzz9LhIoOBU3FlUhc
+	373x82W5zPPTCz0zCeJvSMoChWXX0pSQwkmVen9Pa5Xaa6UAicCFRM40RIjjv49MQkzl4N
+	jE1n6ZBsOvwZGfzvUU7CcwpvfOjkDMc=
 ARC-Authentication-Results: i=1;
 	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=m1W8EUmg;
-	spf=pass (imf11.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755484764; a=rsa-sha256;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=irwfAP3q;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755484888; a=rsa-sha256;
 	cv=none;
-	b=4yCXzZA8PqZMXvVWVfQ1V61TXqU2E1j+Ne+nc1xdP8WM6cO5qGCjemVL2y5mcrE8TAgrt5
-	7dLKUTZxLniJXewwzEUjHgv7o+1pqAiDSUWwu5eerQX5gsWecvYPTNZQU4oozhAG/rbNSB
-	faqudA02YzIRxYuESPaH2kPQkrSe6kE=
-Message-ID: <b365c8a8-efce-494d-b57d-b0aa334d73ca@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755484761;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/KGmZRweKUDZ2JbdZthO63Ztp0At0JtBfciRWpCzRtA=;
-	b=m1W8EUmgYYFK5ejswzI+sIVEQVjMaWZahYjv3dXqmBZSBnoCZ91vRWABw10wfZz9EbH/dd
-	ac+eXLjREpFMV7lHKnLY9kMv34hcXFHcZ2fx/FnacQadIjNsSnf9l1pgOkJbH/6WZZrb5U
-	V0qm9GzvjYfxliV//Yar8DDNOTp7CVs=
-Date: Mon, 18 Aug 2025 10:39:14 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH] mm:fix duplicate accounting of free pages in
- should_reclaim_retry()
-To: liuqiqi@kylinos.cn, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20250812070210.1624218-1-liuqiqi@kylinos.cn>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ye Liu <ye.liu@linux.dev>
-In-Reply-To: <20250812070210.1624218-1-liuqiqi@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: gx1x3k5njdp7kcwbw983kpkzrqecusa4
+	b=a94VyLyRjrIHRvzecxJJht96ISJyqogySMeW30+90/N0eSznFAenMuNJ0CHDclh2J4Ouds
+	s4r5QaSHZHDUFXMcyQasSvdkIXHuAT6uefpyTrIukm9kcV56G600okpWwWcW2zTniFuVqZ
+	pcoTejcxAqowF7BP3Pxq8pR4YgyrAtM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 442BB5C0F2B;
+	Mon, 18 Aug 2025 02:41:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EF60C4CEEB;
+	Mon, 18 Aug 2025 02:41:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1755484886;
+	bh=XwyAzBzkyYUsxtoUqwoehmkxeFNQI6xkaYZl2/saPrY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=irwfAP3qz5AAci8Aq0upT9TgWRluvcVPAPaXRn0dO424y2LSvfTdlD7Ny590XBTCt
+	 OVX0DbG4jariBuhxW4GWKWzNCfI8CnP+6HkbLWGJTSfTj2Ox91qSgIAfuMxi2ODrWi
+	 rwGqhFGQq7TZAS3jYsx1x5Ku4obXi8PzrMBNik84=
+Date: Sun, 17 Aug 2025 19:41:25 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Chi Zhiling <chizhiling@163.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Matthew
+ Wilcox <willy@infradead.org>, Namjae Jeon <linkinjeon@kernel.org>, Sungjong
+ Seo <sj1557.seo@samsung.com>, Yuezhang Mo <yuezhang.mo@sony.com>, Chi
+ Zhiling <chizhiling@kylinos.cn>
+Subject: Re: [PATCH 1/3] mpage: terminate read-ahead on read error
+Message-Id: <20250817194125.921dd351332677e516cc3b53@linux-foundation.org>
+In-Reply-To: <20250812072225.181798-1-chizhiling@163.com>
+References: <20250812072225.181798-1-chizhiling@163.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 2664A40005
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D956740004
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1755484763-16381
-X-HE-Meta: U2FsdGVkX19dmLSgWfyIvT21iR6n0P3fkkbuecwmFIWJ0WnyRwuHpR29wqdEI8f1o4hr+jThXlwKfhKpdC39+tASfdxQomh5FCqZ9Qbaa6eISeg2XCWm7XivXNPXQBXMqg+vGCw5h4m3PWCq/PVBlXgYAPOSzNOpRxQ37luH4Zfhx7tkjMRF70y61oFJANngXTJjKhSmZkI9KhC9/H4UE+GzNedCqzRWbiU44RFNPWvQDlSXGLvvrfjz8MF0rvn4LF1SGtsIdAkt4ce8qf+2KAI8284W8DHP1dhMRdhd82j/w8/YK4HNB8pHI7iOHmeHyUJn4hf5xFkuy6X5jlncw6rNZhqsVwFt7kX/iv10apt4v3odS0c1wRuDERT++AnpPyMqOIU4sI9IzAD8TLVyGwvVCQ8DP7VvJZHCoIG0Rdj2WpiY3xVT2L08whk6AsEg06VuQDdjdH+GdZJl7MJRTZbcyiZhpxF1pFM+NicSh3LrSTbTga/qA6adsLlPBvvzoBpi69mI/d5Bx/OiI7Bzj294I9pe7KY5dT2iyQ4A1K6GeBkq0KCmdaUgI4g1IzYC+BL4/O7SDiehT45Mm7oowdSG3HlBwcaixllTa5TmiPUe1A4R2mgJWJSaSFbXuqiiditgVcVmYGFJembQx0f8u/ZiIFZZDz4sL1Myvd2/AJC5DzMbsDvr+tCxQAQLGWgsTDDEXH94CXFI55hUNXwERC4c3awu1Fs9MtE8jwWfFORTtFFJZyiYXyd1CFr9n2vVWFIE3aWx/hbNhzE7ow5Ri/taj8iDAnheCKK1NSrdyaXRG2hAeXF5jXPXAIYQ7dR93JKSyCO1/x9/CWmlMTI0AsMvD6wG5bPLo3qsXkfXMv/IrgGvMS4gnH3/Lf5pLnFIjsFOL7YuvZ8XG9krKMQsge9TNF7fQ2VJO1QL3Qrty+EjzJlqxxkrVhFSNbhxH93kBF2SgsC2pQpzDiPmcM1
- yTmTeijs
- eNyQUQTYc492c8smjIIRoVh4GuHO9UUaybaKT9jYkTE2qWq+ScwxDbTBzeueUqCp5WthjwggjKxgqtTPaYqoqP3mglUGYHH4/ZS6muKDDDjpXeEW6ozu6Q30Ywttdw5QxZYSVDEvT98tqHkiuaJriJ06I2SRjGZLlnnSdOIlTYM0Q9StwJq8btWN+jarDWXn7zvVnkJznSbyKV3YBsZroHxCuz8AThq1bRwoHf4EHcAy/EQlHueFvBgDoMHYsvXUyvazsHZGfFUz49GgDn4/kFFw/SA==
+X-Stat-Signature: jq5y53a8py915gj67gk3a1cdz8gdmjsk
+X-HE-Tag: 1755484887-558344
+X-HE-Meta: U2FsdGVkX1+z1DAbSSqv/tX9oU0GgSK2Uav6YNkYhCZDvAxiGnmMER2Sp4zqRC6MD/QxRLuO0h3tjlNvVO6YurqpgYGtGDBJ3VRzTFnKlbpK28thPF2m5oNPjE9kkrdJC8cgtGJVeskl9n/304auEJga2afACbTN6mZVViiXOjHS638JKQGx7AVpy61gzLEvfsG6vZw8jqcjcLRtwCxIkPUunUnKwkIDw6w3C0Vv0EHt6OT5QomgIAvIkoDDq0bVXdGfYmI8yV1bELDCCAhzxG4bb1EDGgx7p4/NfhHAKUTB49IgrtNiGTfzB1wQVLYOM9Qc7cGIsU/Svg10+G+VVQQXYvOyjJcHsckqg0foXZddOy+NCFD+aSyAzGuBx2tAA/wplMF6Pd9OFxI/UJGj/p7HwLgatTGmzxRHKGntDpQzZOhGFrJLMOgTzgQJY+UJHmlSTvDRRopEEXqlek0y6yCRaYQf8rCgO05/kT1QdkoWfn19XEaBRdqHm8Y/GRh3KxVWyfxhtwP/Z/oL69MajLKDFGacnP5GuwLw2DbVjJflW5WwxeSwD/XUoxUcce1ca89RQQSmiJjUhrQLiV0CFWMxaXW09CyDReUQZCxnhzzD7aZmvXpnROjqePPCnCR1rNpIP29HQEd6eMaMNjr30TirQODfHC+XAcepCwIi8nQXKnNb20+a9rT2LBFN3eTQ/LDpDVwe5dKc8/Vl/CLOrvmyMqST5wmlgTzQppTAch/9j3mb675kVGiG9e08BeU1oxEbBFoEhfzhRqSStcbS0l2EWzKnLqGXiuiFhmgMSJ52JCsRRaTBrT9CUgvVg560jv3tMRP88cL6SCejaseoenMfWg0coFdMndZvGB04bOOYoTwnSxxUpNRp7KnzvM0uA0U7gO8uxixPL9tkqsF48TQdl28EghAPRjSN+oHe8QM10bY0jXIggKnoutgyXTK/8gWiTapq1mcLs6r72TV
+ XTda/rIG
+ NiS5DziJ6ZcJyFAmmeYhGyhHL/4N9RFURVoXKHU0VWTSoSX01QnElsY/CRPgvaT/Ge8I6daWY4sGo7RmQTeg5RrTp6yS2HcOUJaEhO9nlO/b3zfbI1gqLvL0phOpfs9QL2JcgLwA3MUL+exZdTUKgjqmgdE9qEpLy0qIsW2RNuZAg++usnm5YetCsnRR/1JRpi2NPs0ztbP2oktcifNVbkjl62xxfDY/XzbJqzBWoM139PRCez78/Zqts9cs7ExhFisCr740/JyjvDXNOZv9SJWU2Nw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,66 +92,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, 12 Aug 2025 15:22:23 +0800 Chi Zhiling <chizhiling@163.com> wrote:
 
-在 2025/8/12 15:02, liuqiqi@kylinos.cn 写道:
-> From: liuqiqi <liuqiqi@kylinos.cn>
+> From: Chi Zhiling <chizhiling@kylinos.cn>
+> 
+> For exFAT filesystems with 4MB read_ahead_size, removing the storage device
+> during read operations can delay EIO error reporting by several minutes.
+> This occurs because the read-ahead implementation in mpage doesn't handle
+> errors.
+> 
+> Another reason for the delay is that the filesystem requires metadata to
+> issue file read request. When the storage device is removed, the metadata
+> buffers are invalidated, causing mpage to repeatedly attempt to fetch
+> metadata during each get_block call.
+> 
+> The original purpose of this patch is terminate read ahead when we fail
+> to get metadata, to make the patch more generic, implement it by checking
+> folio status, instead of checking the return of get_block().
+> 
+> ...
 >
-> In the zone_reclaimable_pages() function, if the page counts for
-> NR_ZONE_INACTIVE_FILE, NR_ZONE_ACTIVE_FILE, NR_ZONE_INACTIVE_ANON,
-> and NR_ZONE_ACTIVE_ANON are all zero,
-> the function returns the number of free pages as the result.
->
-> In this case, when should_reclaim_retry() calculates reclaimable pages,
-> it will inadvertently double-count the free pages in its accounting.
->
-> static inline bool
-> should_reclaim_retry(gfp_t gfp_mask, unsigned order,
->                      struct alloc_context *ac, int alloc_flags,
->                      bool did_some_progress, int *no_progress_loops)
-> {
->         ...
->                 available = reclaimable = zone_reclaimable_pages(zone);
->                 available += zone_page_state_snapshot(zone, NR_FREE_PAGES);
-A "fixes" should be added here.                                                                                 
-Fixes: 6aaced5abd32 ("mm: vmscan: account for free pages to prevent infinite Loop in throttle_direct_reclaim()")
-Reviewed-by: Ye Liu <liuye@kylinos.cn>
-> Signed-off-by: liuqiqi <liuqiqi@kylinos.cn>
-> ---
->  mm/vmscan.c | 11 ++---------
->  1 file changed, 2 insertions(+), 9 deletions(-)
->
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 34410d24dc15..a9aaefdba7a2 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -393,14 +393,7 @@ unsigned long zone_reclaimable_pages(struct zone *zone)
->  	if (can_reclaim_anon_pages(NULL, zone_to_nid(zone), NULL))
->  		nr += zone_page_state_snapshot(zone, NR_ZONE_INACTIVE_ANON) +
->  			zone_page_state_snapshot(zone, NR_ZONE_ACTIVE_ANON);
-> -	/*
-> -	 * If there are no reclaimable file-backed or anonymous pages,
-> -	 * ensure zones with sufficient free pages are not skipped.
-> -	 * This prevents zones like DMA32 from being ignored in reclaim
-> -	 * scenarios where they can still help alleviate memory pressure.
-> -	 */
-> -	if (nr == 0)
-> -		nr = zone_page_state_snapshot(zone, NR_FREE_PAGES);
-> +
->  	return nr;
->  }
->  
-> @@ -6417,7 +6410,7 @@ static bool allow_direct_reclaim(pg_data_t *pgdat)
->  		return true;
->  
->  	for_each_managed_zone_pgdat(zone, pgdat, i, ZONE_NORMAL) {
-> -		if (!zone_reclaimable_pages(zone))
-> +		if (!zone_reclaimable_pages(zone) && zone_page_state_snapshot(zone, NR_FREE_PAGES))
->  			continue;
->  
->  		pfmemalloc_reserve += min_wmark_pages(zone);
+> --- a/fs/mpage.c
+> +++ b/fs/mpage.c
+> @@ -369,6 +369,9 @@ void mpage_readahead(struct readahead_control *rac, get_block_t get_block)
+>  		args.folio = folio;
+>  		args.nr_pages = readahead_count(rac);
+>  		args.bio = do_mpage_readpage(&args);
+> +		if (!folio_test_locked(folio) &&
+> +		    !folio_test_uptodate(folio))
+> +			break;
+>  	}
+>  	if (args.bio)
+>  		mpage_bio_submit_read(args.bio);
 
--- 
-Thanks,
-Ye Liu
+So...  this is what the fs does when the device is unplugged? 
+Synchronously return an unlocked !uptodate folio?  Or is this specific
+to FAT?
+
+I think a comment here telling readers why we're doing this would be
+helpful.  It isn't obvious that we're dealing with e removed device!
+
+Also, boy this is old code.  Basically akpm code from pre-git times. 
+It was quite innovative back then, but everybody who understood it has
+since moved on,  got senile or probably died.  Oh well.
+
+Also, that if statement didn't need a newline ;)
+
 
 
