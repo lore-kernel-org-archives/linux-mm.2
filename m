@@ -2,64 +2,64 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 461CDCA0ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 06:58:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9404ACA0ED1
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 06:58:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D9CA38E0015; Mon, 18 Aug 2025 02:58:33 -0400 (EDT)
+	id 33C888E0016; Mon, 18 Aug 2025 02:58:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D4D668E0013; Mon, 18 Aug 2025 02:58:33 -0400 (EDT)
+	id 3149E8E0013; Mon, 18 Aug 2025 02:58:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C3C4C8E0015; Mon, 18 Aug 2025 02:58:33 -0400 (EDT)
+	id 251DF8E0016; Mon, 18 Aug 2025 02:58:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AED3B8E0013
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 02:58:33 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 35CF4138FC6
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 06:58:33 +0000 (UTC)
-X-FDA: 83788974906.18.356309E
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 106DE8E0013
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 02:58:51 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 852E65B6C0
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 06:58:50 +0000 (UTC)
+X-FDA: 83788975620.02.1E6E38C
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7800080004
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 06:58:31 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="N/UFkEmL";
-	spf=none (imf30.hostedemail.com: domain of BATV+597369eda0ba97e1de7a+8030+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+597369eda0ba97e1de7a+8030+infradead.org+hch@bombadil.srs.infradead.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id F001D140009
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 06:58:48 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=QPg55rm0;
+	spf=none (imf23.hostedemail.com: domain of BATV+597369eda0ba97e1de7a+8030+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+597369eda0ba97e1de7a+8030+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755500311;
+	s=arc-20220608; t=1755500329;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Am3rhvkj1HDRHYITqQ4Yl4Zll62VZGAnL3MYltPMarQ=;
-	b=ou1yA1WjhpomwnvDUPw8cUsL2ANeo93sfrlWzkPW9vY/gkVyXVsbJvJl6DjSqvNO0rbDfA
-	vcKI8rxeFsBHraNSc+aRGeiH0dzsfOPrJcsx1sqzEBTfM2Mf/2cfmdl9HAK7PvKSuaPUxr
-	sEEBCx2Q9Lm+haIVXllC5fM0LwpPnf0=
+	bh=4J1/06gJDoy116dfpIOWW0QWPaS1Pkc+RGvAfs19vE4=;
+	b=ZwJZ6hsMP0YUL2BpmN1PcBCap2P5YvHsM1djLkovCq3DICxogAdecuRXKK8uaakhuA2a+4
+	5oJsoee33M82wE8RUTbr81aLUKBi8jfl+Mnx8fK/1KBAktneDs4kca7+/DwGILtSG9O6mw
+	U9dNsWNrE5GbHiJxvgkT4VleQgr/pAM=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="N/UFkEmL";
-	spf=none (imf30.hostedemail.com: domain of BATV+597369eda0ba97e1de7a+8030+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+597369eda0ba97e1de7a+8030+infradead.org+hch@bombadil.srs.infradead.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=QPg55rm0;
+	spf=none (imf23.hostedemail.com: domain of BATV+597369eda0ba97e1de7a+8030+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+597369eda0ba97e1de7a+8030+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755500311; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755500329; a=rsa-sha256;
 	cv=none;
-	b=XfMkWKO8zKhFg5vu57zpyFJ+fwSDsPjdgmpaWqQqzmnwwZ8wOGltAHulO+LPYuRtx6u/0n
-	wvjtRoLUKY3RK8JSVfLPozF+vZV9ckABw8cWfacPqifwOUUqjhgbWVNRwrhz/90EU1oycE
-	OKrEAQlOxSpQnafrjX1FtTK5oc6qmrc=
+	b=rvuaOpqG0kZ9G+zhU2w7bHkjJkgXPf8PFo9X0JIUtJu939IIb+tTGhmu1ICubJncX3KIOw
+	t2qg0DYzMc/fvwvvT2L+VGsU3U9fzJRmy5bxPYCi0Zh1U0okGxuXZd0JS5FJOfeHG5eBa7
+	NTRutl8lFVbleBEgIoLKD6brvGGkBj0=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=Am3rhvkj1HDRHYITqQ4Yl4Zll62VZGAnL3MYltPMarQ=; b=N/UFkEmLQcsNQvpe6Ho+xfC6EE
-	pWoPB1MlrFGGQbWL+wXmCroFBraPb7xm2tbxerHxgZmIcdiNUWpt9O+zqLGbCrX1crz4wMB9amlLW
-	z4gjt9KocV/EwpEdpl+eq+b+yCdCjfphG3qgayvm2eU5NhtuPsHTrqs9EtO8xwQF+iIcP/txGmIw8
-	bx3cVzLka9UbbuGGGvvM1Fxr7QWERlue81n5TsTfHYFhBAqIUD+nwLWLVGuI89Q/y2eeMCfJUW2ZL
-	AcSDUjnWgbXAPuuzUOYeKmeNoZD9y1e3AUfYO8q3VX/hUJ13jQDrI8UXl3WZ2lwiHjmG/Z5kMP0Ta
-	Pvkf8d1w==;
+	bh=4J1/06gJDoy116dfpIOWW0QWPaS1Pkc+RGvAfs19vE4=; b=QPg55rm0rQfK16zrN/EzN/1j5A
+	SzTVgY45blodBybCI5xGxFia2fC8Mcrgq0cJklfNWtRK9LP/dJuBDyJ9CIi16ChCjAr9oA+6X81xI
+	irIOtJq4HbEyh5O3hdxFdlGzk57fpJKfVVzz0WD1V2q2t6JdP61P+DKanTrU3annX5br8NYt7Mmba
+	4DseCVrBmxO5WbduUFYrbKKOfiZBy5ny2kqMwbqZu+ph8th9rZcmRtFq6wvB7KTZ7TT0EICzVDhfn
+	tDXdXK8Nc4HAxT7P68c+2fUT95EZXywef3KHdkpycwAzJr/OOWJ/FKBM6mJQOHQPVhajAVCwv8wBA
+	NQBX7NhA==;
 Received: from 2a02-8389-2341-5b80-d601-7564-c2e0-491c.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:d601:7564:c2e0:491c] helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1unt4b-00000006bmd-0KlO;
-	Mon, 18 Aug 2025 06:10:25 +0000
+	id 1unt4d-00000006bmt-1Vjk;
+	Mon, 18 Aug 2025 06:10:27 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Andrew Morton <akpm@linux-foundation.org>
@@ -69,23 +69,23 @@ Cc: Kent Overstreet <kent.overstreet@linux.dev>,
 	ntfs3@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 2/3] bcachefs: stop using write_cache_pages
-Date: Mon, 18 Aug 2025 08:10:09 +0200
-Message-ID: <20250818061017.1526853-3-hch@lst.de>
+Subject: [PATCH 3/3] mm: remove write_cache_pages
+Date: Mon, 18 Aug 2025 08:10:10 +0200
+Message-ID: <20250818061017.1526853-4-hch@lst.de>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250818061017.1526853-1-hch@lst.de>
 References: <20250818061017.1526853-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7800080004
-X-Stat-Signature: 71f4f7c5fg1cr8qfij84k34mnqxyk9uz
+X-Stat-Signature: n9cofqhsxuyydsf8ukjcus394m8jeuau
 X-Rspam-User: 
-X-HE-Tag: 1755500311-87569
-X-HE-Meta: U2FsdGVkX19x0nAEu+TdJhmiVu3RW/A2qTyTLNhd2f1K2Z+fDgLmIN0ad09D34l/SiQK3yzudG8c0MKm12UDxlmWtbGuw39mffxnjh2zmpVSiTsv+ey08aHfg36mvZ4cBlN2HiPq0AgrumskGF8EV88KZYTSgC/UfKlWOC48F9vd+/mfgxGHcUPpPeC0isPQhJTlCOR+Ql94SxjPY0bkZN3pL3QeuUsrDhotWP/e7XsesaCMQKCfVtfl97LBr1RtTlrsBPL3pdNPY/4uWkUsQYDp3hymVQ7p1WdETkLwobp8WZB2Y+/swlC/nw/5H0t8Sdo/RoI00GWe4X/jieJ8mF2pGn5W03qKBPcKEetJHeqgExRnwN7uGvntK9+SIgjMOfoA9gSdoBVL8BCrALB5Ato8O5LTd2p/UJXSO94e1IplbFKbwvKd9EUvTEyZ1lVAxOXbZsQnPXKthvNKK7GATPbA3rnY+demxdlVTot2R87RbbG1xfy+mUwrFzdJEc7aeRvPGV3MfMsozxFnZhLpuxlMww4352zNi8/wPbTzzpamfFKmRiCEtoonU/sJj1GmKx+hrOZPUjESTHDQggVSnFo5GeDuRUpEJQgYoiV8H4ndB8cA9Blz5sU1IjevuAgXkZbEPbC30v32OipmK8lahzY/oemt9JQFpBICxnXYMY4GGSp5RHf89JLeqeG8JS+O6snuQ3FXQ5DmDfBaef/jNopfbnwZgHOLGnNgHBzIz7D9AzNIyC4KeE6aWd1DnrszLyXs/y/2yEL2uwp7Sd17ACfVrhjerW7xDkOwwaYM8hranA2nUHRzzs6lafII3F4lTdZqETHDDbnd5WM+jO6rP++tc2UViC4cjIgSG70UUZLSytS6cN90Xg3Vur8/d1130qG4DSU8n0oiqFg3vFtAbzHDK4XKQpyWN07fzlnEBzPfTbALmB85n9S0MMDJHchrx+w3XXvckinoWL/paWS
- FiZkm1bA
- +0U8uTw9Jt0kuLX0O87cALcx83h93Jc4PVPcs9FRtS47qpHLBDL4c5J5UeIh/+3ZLITnTyU8fiC9DLwVZo7VLL657zm+Oe+TeU7nYOCvFgI18kiWvokkgAxjgvRSRe+Ph9rG0R/0Va6MJQo/5LMNzWmhh8yHVxNCrbK362i0dj9HRls1E/4FyfOpoyZa14yyRQmEiWyDOL/QU7w30AvUF+U11qawwHth8U5Jn2IUrJ1ULBfCPILJhrl0By9S34wmLh/OrlTf0pPpjtB1p1n8rWAeT+rhUd8/Uj9WBSlzCezs3RWISqku0F4UgC0FAMJhW8MZGhYfSFO/R30KGIUb/met08rJCIQyehDMi73AaxwaxkIfhDl455FiTL4p3/8oFN+Iy8JWrR6dfb44Ln4qM2uDzaTNyOj2KLwDv9VJ9OXmBGQVZFQ5NwB9wAG4lQdRA3UbViFUxvSC5X9B9Kg8BA03sDfS3fSDC5OsNp11yyE3Z4fUf+36dbc342gTVH6LO4SCfVviUwWgr6pp22uEfOSL5lSwOfK4sGu9/VuV4gHHLd8P+qD5nul1aKiUr3+0Nt/nckhp0FfxDtB8S713UI2NiXeCOVtTpzrKD
+X-Rspamd-Queue-Id: F001D140009
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755500328-67450
+X-HE-Meta: U2FsdGVkX19grQ/lKcqYMWZWQMrhFfpvnmPMnPHcrUfhTL0b73xp7Uftww3aFauktozu9eP8TvR1ULkHs9ljKDNsCny28o7224/nBaCkMLzagU7U0eHsS8qFIX85ftjQJYQdNEExO1OCRvSnmk9bN31fhXAQ4giL822Q9GHf8+tOzHInOYKvGtf644+SsWS/nwlz4a0LhG751Bz2PcNraj7qhzgBi62MSIcJzOm2gDhRGXTOqI+W1nlZx/8CT7PPc3LoMC1G1R1wl2VdT0xqvynuXRbh6NlG3xH+AUUcTdg+Eg2w4MIuofetP8Ru/UMMAvHJ3bGPhbCghNQ2zdaV6xLAg8ABKu2dv20Lumq01pYDw4tEOLxKwMlNwORdly+/FB+glQ4d4h1XaXpSYzxfovDa1jSJm2AYs5+XHiQtXykbzf38jJw3+YTQQTSYxrV/A7PeOKGLvbnpO8nqsoA6geTUIRiaNPdU904VuJZ+L7XK3x4n48/+Sft7ZMxUV7vQalzISjwqwbrRY65ElfmPT4c9n4r2H402Vo+UaRcrOxA4UL3IIjPQrogwkNfhcfvzvnX7AE/sTtANw4gnnzT9TQXxLqZhgCy4cWQUYNJ/PW6NO4BWejVO6MuMXvywQUeAz87h80z2DXzv3k3+sdHmrxPLRYGpeAa8XdTg34/4gziRS99T6Ti0vmNN17hJP5DSCJbCV6FeyMXP/LOL/JwkqN9hdwGQI8ydU1Tu2gFbySmIVCF5gqQ4S6gKKw8vtClLFdsJsicUmmkKNvSMiEecL1bcngz+9cwipsQJtxlfrsH/9pGiQuFQzcP9FFtiggJOT5C68GTaygt5VL5nvd/J8TyTco8RTjucPXmtZ7SSrZYGKcwp/x0CRZIGBlaL5zbaUIgwjZb0nKOmxPfCTWwv+IIADHd/TIbU7h98bn/kcpVeN/174guE1OrAJp2Kr3b543QGhXW/Z/AUxf56+D1
+ SlmZxuRw
+ GS50PrJXzPH8ZB0oKQwFLYBK4vVjKA/Ds+9/Jz5Ep+pzHCcl4xhT20HAbf99B25CBeCDeK8DQTE4NxLom9vIMbqCKYpbW83uJqU0Aj+5YV+jghgx4b/aMrJ+Xybp928PwxqXmtfXDgXLxA4BAJp8rPReXtu9gIhc2SozUKcUWCqsnFgxhjroqRY8o8X8qeatPv6Gx+EzDMQFNw9uJ6ayjfjMXNHI44vX5w8dMKG8OZCa5pkfzsAfgSesOxzF3EKKU9Rz4GQowCLjmaVzADYwcSkmrTsAdaDpP/fhsLhRlBVAqvEoOJNqzK+ns4ECpuOnqKH1X70AogyF2DHL9zAHfud5gKbTfKFnO56etQ1mT2MT72rGYaDHUjjobJ8N3D+5HZcNc4PHj1QTRRTjC1bTHKAiKFaTP3MTyEI5BKmCpnj5aK6oCWcrWGkHTI1W6E4LTLjkgArVMiRRI2eRRDEtgswXVnQau9qORi+07JiHOTE9UoN6bzJF8P1hnmuRkq1xSb5LIeZVcHGaw+5gLT5nwvm/LzQAD2jtzvHUdFqx+eRPPZTxaZPKw6TCRelzk2LTgoW1SlpmQRcsNqGN8nAWm7SK5hfX5jKfImJOx
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,47 +94,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Stop using the obsolete write_cache_pages and use writeback_iter
-directly.  This basically just open codes write_cache_pages
-without the indirect call, but there's probably ways to structure
-the code even nicer as a follow on.
+No users left.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- fs/bcachefs/fs-io-buffered.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ include/linux/writeback.h |  6 ------
+ mm/page-writeback.c       | 30 ------------------------------
+ 2 files changed, 36 deletions(-)
 
-diff --git a/fs/bcachefs/fs-io-buffered.c b/fs/bcachefs/fs-io-buffered.c
-index 1c54b9b5bd69..fdeaa25189f2 100644
---- a/fs/bcachefs/fs-io-buffered.c
-+++ b/fs/bcachefs/fs-io-buffered.c
-@@ -655,6 +655,17 @@ static int __bch2_writepage(struct folio *folio,
- 	return 0;
+diff --git a/include/linux/writeback.h b/include/linux/writeback.h
+index a2848d731a46..2a7e134d03ee 100644
+--- a/include/linux/writeback.h
++++ b/include/linux/writeback.h
+@@ -360,12 +360,6 @@ bool wb_over_bg_thresh(struct bdi_writeback *wb);
+ struct folio *writeback_iter(struct address_space *mapping,
+ 		struct writeback_control *wbc, struct folio *folio, int *error);
+ 
+-typedef int (*writepage_t)(struct folio *folio, struct writeback_control *wbc,
+-				void *data);
+-
+-int write_cache_pages(struct address_space *mapping,
+-		      struct writeback_control *wbc, writepage_t writepage,
+-		      void *data);
+ int do_writepages(struct address_space *mapping, struct writeback_control *wbc);
+ void writeback_set_ratelimit(void);
+ void tag_pages_for_writeback(struct address_space *mapping,
+diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+index 3e248d1c3969..7e1e798e7213 100644
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -2590,36 +2590,6 @@ struct folio *writeback_iter(struct address_space *mapping,
  }
+ EXPORT_SYMBOL_GPL(writeback_iter);
  
-+static int bch2_write_cache_pages(struct address_space *mapping,
-+		      struct writeback_control *wbc, void *data)
-+{
-+	struct folio *folio = NULL;
-+	int error;
-+
-+	while ((folio = writeback_iter(mapping, wbc, folio, &error)))
-+		error = __bch2_writepage(folio, wbc, data);
-+	return error;
-+}
-+
- int bch2_writepages(struct address_space *mapping, struct writeback_control *wbc)
+-/**
+- * write_cache_pages - walk the list of dirty pages of the given address space and write all of them.
+- * @mapping: address space structure to write
+- * @wbc: subtract the number of written pages from *@wbc->nr_to_write
+- * @writepage: function called for each page
+- * @data: data passed to writepage function
+- *
+- * Return: %0 on success, negative error code otherwise
+- *
+- * Note: please use writeback_iter() instead.
+- */
+-int write_cache_pages(struct address_space *mapping,
+-		      struct writeback_control *wbc, writepage_t writepage,
+-		      void *data)
+-{
+-	struct folio *folio = NULL;
+-	int error;
+-
+-	while ((folio = writeback_iter(mapping, wbc, folio, &error))) {
+-		error = writepage(folio, wbc, data);
+-		if (error == AOP_WRITEPAGE_ACTIVATE) {
+-			folio_unlock(folio);
+-			error = 0;
+-		}
+-	}
+-
+-	return error;
+-}
+-EXPORT_SYMBOL(write_cache_pages);
+-
+ int do_writepages(struct address_space *mapping, struct writeback_control *wbc)
  {
- 	struct bch_fs *c = mapping->host->i_sb->s_fs_info;
-@@ -663,7 +674,7 @@ int bch2_writepages(struct address_space *mapping, struct writeback_control *wbc
- 	bch2_inode_opts_get(&w->opts, c, &to_bch_ei(mapping->host)->ei_inode);
- 
- 	blk_start_plug(&w->plug);
--	int ret = write_cache_pages(mapping, wbc, __bch2_writepage, w);
-+	int ret = bch2_write_cache_pages(mapping, wbc, w);
- 	if (w->io)
- 		bch2_writepage_do_io(w);
- 	blk_finish_plug(&w->plug);
+ 	int ret;
 -- 
 2.47.2
 
