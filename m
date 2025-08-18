@@ -2,243 +2,99 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 934E2CA0ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 04:26:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1BA4FCA0ED1
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 04:35:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31DB56B00BB; Mon, 18 Aug 2025 00:26:23 -0400 (EDT)
+	id B213F6B00A1; Mon, 18 Aug 2025 00:35:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F5AD6B00BD; Mon, 18 Aug 2025 00:26:23 -0400 (EDT)
+	id AAAA26B00A2; Mon, 18 Aug 2025 00:35:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BCD56B00BE; Mon, 18 Aug 2025 00:26:23 -0400 (EDT)
+	id 9997D6B00A5; Mon, 18 Aug 2025 00:35:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 068AB6B00BB
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 00:26:23 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8B9D91184EA
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 04:26:22 +0000 (UTC)
-X-FDA: 83788591404.07.4EA3231
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 64F5640003
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 04:26:18 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=OHU++Srz;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf27.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755491179; a=rsa-sha256;
-	cv=fail;
-	b=g22zk/9BrrsLv6LdwSLHziz8ORAh59xdMZSl/HLis79tKOms8IZZVG90fMccw722jOIWlx
-	qleTFDCH22DKONTPHW8t7efSIuKrWntZfJqe37pQlg7u+m+q91nlip8sRVv5ld4xBI6nCL
-	Af2w6CVflU98E8mnjk3yvEN1AtjGM4Q=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=OHU++Srz;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf27.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755491179;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 82B3E6B00A1
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 00:35:31 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0098C5B37A
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 04:35:30 +0000 (UTC)
+X-FDA: 83788614462.19.C549B3B
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf24.hostedemail.com (Postfix) with ESMTP id D9E78180005
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 04:35:28 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="f5So7M/P";
+	spf=pass (imf24.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755491729;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BADIDDv5Fi6fSSJsaH68dY9FTVCPr/Eyq1rOQxbbSJo=;
-	b=JgkEf9zRScAWd61aCF9GFa9d7HILddREnCQY4KZM57dZ0rzkC9y5f+Mk4n0pTuxwttQ/d2
-	YSMy+NTXv51KgPOEcm+54/epbOZes4s3fjsFjwP5uxWODDTF90bAB4bsI6BWLo+AE6TJLo
-	61+wSBPtGRCAf/VDaRFgt818MORlMAk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755491179; x=1787027179;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=rKWss+1mSD9PjzoJ6wK/cqyTPKnFTVS7pPhiH0htuEc=;
-  b=OHU++SrzfXENh84+8MMutgBhNWvjMKsq2Wnq1dQ3rqjSANvvmhNqRssQ
-   2zPB+nuYqJkZp2Bq20Pt/HFZdClfgeDPWLxPBmbEbMQ7sLwbQf62pDOzE
-   lshp2H4rIvPcY/ZZXs/qgUf31+2sPlbmsrRATkUyFGbn6wxjHDkYfSvpn
-   M5o5aK8lhQIafpXLk4AEUho/gmm5M4OPmfutcoW+0Rb0M9AAtHocmanJW
-   3xAUXblad752cj4Ace4Uk9eIit+osx62dmdkeMkgqMLaDjE9FfPonMs/r
-   W5twoRzl61Y3r+PUa9avrBZ4CplbFiuk9AmlqVtgYI27ACmx03v925jyq
-   A==;
-X-CSE-ConnectionGUID: TVuW9gGNRNO0BdNB3HQx6g==
-X-CSE-MsgGUID: Pxxku07aRdyMCTBEvlhUSg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11524"; a="68797709"
-X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; 
-   d="scan'208";a="68797709"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2025 21:26:17 -0700
-X-CSE-ConnectionGUID: 6b4qvhTjSkqaCKeGR4bDeA==
-X-CSE-MsgGUID: KTT+J61jTGSl2wqWdcBC7g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; 
-   d="scan'208";a="167449412"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2025 21:26:16 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Sun, 17 Aug 2025 21:26:14 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Sun, 17 Aug 2025 21:26:14 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (40.107.94.45) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Sun, 17 Aug 2025 21:26:14 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Jxb3JQSu1ODQbcXqtqf0JhAtZ+ZmI+8D8CSCb+V8ph9LPXjfrwCHyplJJJzUZt99gCHKJhQAFpOdUdfEJ+4Vx35NqzHCv8kOZ/noc1Y9Pz0xaUgD7XdsoEEDAshChd1CZlYi3mAfjyKZ2BVR7BiIY4PWtTdOcgnBnW/IategP14CsdyY4EBtRjpYfKJ/v8dP3gzZGY1U0aCqVGLqmdk9Ti9NLXsukSjNVk9yUXCkY0RJUWKLLh1Rr9g9FFxYGHJUP93O2+8zV9pw2z8Ot+Tn+v6Tm5GTwjWJQC2x53xb1+cvhHPtQLTNsolDux4lim1XfxSJhYDpfPKWCSLvuc2sRw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=56kmjPSgiKy2l/WQHdzZAjlNCu2Uae2yrfhn6+CGtoM=;
- b=Pc+BfvpmjXFgme75YF5k4wa6HjOloPqR+6jPKCJ35nhTXmAqmi6aXWqZImFz2oZ7vx1gKg5p9wYdgaFIXfCk5/o/2xwp7xf+6R8yCGIFX5dP4Z9XjqIFNK79CkDG3yz7pOVmruejp0/agUx8mS7PxCbO3MwKAVTSjs7zMPfiaEB8aFcpXZI1zHg+AC8s0fPnIjZEqr3thvEQqc0Cvs6fc8GXkOQyvBW3UVWR3Uo7MAJSmtEgwcJfCzwxdF4ATEXELk++5rGg3xleWRtmRqg+uMpLu0U9HjIVguRsAE+a9fBEU9BILRZr4hgmhOda7fJv0Q0tR9HQZFoyetxZHJdJeg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MN2PR11MB3934.namprd11.prod.outlook.com (2603:10b6:208:152::20)
- by IA1PR11MB6419.namprd11.prod.outlook.com (2603:10b6:208:3a9::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.19; Mon, 18 Aug
- 2025 04:26:06 +0000
-Received: from MN2PR11MB3934.namprd11.prod.outlook.com
- ([fe80::45fd:d835:38c1:f5c2]) by MN2PR11MB3934.namprd11.prod.outlook.com
- ([fe80::45fd:d835:38c1:f5c2%6]) with mapi id 15.20.9031.023; Mon, 18 Aug 2025
- 04:26:06 +0000
-Date: Mon, 18 Aug 2025 06:24:44 +0200
-From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-To: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-CC: <nathan@kernel.org>, <arnd@arndb.de>, <broonie@kernel.org>,
-	<Liam.Howlett@oracle.com>, <urezki@gmail.com>, <will@kernel.org>,
-	<kaleshsingh@google.com>, <rppt@kernel.org>, <leitao@debian.org>,
-	<coxu@redhat.com>, <surenb@google.com>, <akpm@linux-foundation.org>,
-	<luto@kernel.org>, <jpoimboe@kernel.org>, <changyuanl@google.com>,
-	<hpa@zytor.com>, <dvyukov@google.com>, <kas@kernel.org>, <corbet@lwn.net>,
-	<vincenzo.frascino@arm.com>, <smostafa@google.com>,
-	<nick.desaulniers+lkml@gmail.com>, <morbo@google.com>,
-	<andreyknvl@gmail.com>, <alexander.shishkin@linux.intel.com>,
-	<thiago.bauermann@linaro.org>, <catalin.marinas@arm.com>,
-	<ryabinin.a.a@gmail.com>, <jan.kiszka@siemens.com>, <jbohac@suse.cz>,
-	<dan.j.williams@intel.com>, <joel.granados@kernel.org>, <baohua@kernel.org>,
-	<kevin.brodsky@arm.com>, <nicolas.schier@linux.dev>, <pcc@google.com>,
-	<andriy.shevchenko@linux.intel.com>, <wei.liu@kernel.org>, <bp@alien8.de>,
-	<xin@zytor.com>, <pankaj.gupta@amd.com>, <vbabka@suse.cz>,
-	<glider@google.com>, <jgross@suse.com>, <kees@kernel.org>,
-	<jhubbard@nvidia.com>, <joey.gouly@arm.com>, <ardb@kernel.org>,
-	<thuth@redhat.com>, <pasha.tatashin@soleen.com>,
-	<kristina.martsenko@arm.com>, <bigeasy@linutronix.de>,
-	<lorenzo.stoakes@oracle.com>, <jason.andryuk@amd.com>, <david@redhat.com>,
-	<graf@amazon.com>, <wangkefeng.wang@huawei.com>, <ziy@nvidia.com>,
-	<mark.rutland@arm.com>, <dave.hansen@linux.intel.com>,
-	<samuel.holland@sifive.com>, <kbingham@kernel.org>,
-	<trintaeoitogc@gmail.com>, <scott@os.amperecomputing.com>,
-	<justinstitt@google.com>, <kuan-ying.lee@canonical.com>, <maz@kernel.org>,
-	<tglx@linutronix.de>, <samitolvanen@google.com>, <mhocko@suse.com>,
-	<nunodasneves@linux.microsoft.com>, <brgerst@gmail.com>,
-	<willy@infradead.org>, <ubizjak@gmail.com>, <peterz@infradead.org>,
-	<mingo@redhat.com>, <sohil.mehta@intel.com>, <linux-mm@kvack.org>,
-	<linux-kbuild@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<x86@kernel.org>, <llvm@lists.linux.dev>, <kasan-dev@googlegroups.com>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 02/18] kasan: sw_tags: Support tag widths less than 8
- bits
-Message-ID: <g4fm3avej2ss3am377ebv5og4kl5crano4n7gwl3hwxff4gx7s@uq2hb3egscno>
-References: <cover.1755004923.git.maciej.wieczor-retman@intel.com>
- <780347f3897ea97e90968de028c9dd02f466204e.1755004923.git.maciej.wieczor-retman@intel.com>
- <cae90aa0-9fa6-4066-bbc0-ba391f908fb2@arm.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <cae90aa0-9fa6-4066-bbc0-ba391f908fb2@arm.com>
-X-ClientProxiedBy: DUZP191CA0018.EURP191.PROD.OUTLOOK.COM
- (2603:10a6:10:4f9::8) To BN6PR11MB3923.namprd11.prod.outlook.com
- (2603:10b6:405:78::34)
+	bh=8Qr7GKeY7iraK1JMYtgr9HkjBsEWy/WVlfeLC9I+VeY=;
+	b=GEVoayqVZHoFDABmIuo4LyevtYjHTXudO8gWkA97I4S12OtrrwRYzKRX+BsWvlNDYEAWTK
+	1+6qeqxnT6/8P+ra92wbWGBogsTOXWbSqw1PZj2Vzx5B9q/zNB75NMt4nqC8ZSyLGEBfBf
+	dYIpxx/E6ULOBPWKyF8giiuZuRC3nj8=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="f5So7M/P";
+	spf=pass (imf24.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755491729; a=rsa-sha256;
+	cv=none;
+	b=Su6jR9GLhvnnGy4U3i4YbC2SVyJeFUb1ylW3lpfGwfmbOH48esqtywJOARu/uWLsjWv6E2
+	hpI5uDaLdI69tL3gbbH5aI85QvueeHYmfMXfpcdTsy9kZ9qYdmzsdNZqdX5229TVSV3M2o
+	N7H1CSb2O3OUBKjOGpPTpsijHWG9d94=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755491728;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8Qr7GKeY7iraK1JMYtgr9HkjBsEWy/WVlfeLC9I+VeY=;
+	b=f5So7M/PBQXUcFwPHSZ3tE1ebkWPdyZbOtcfqaR1xQOYhwhwb3yEt+y7+gnKC6B/f6wxEx
+	2S/RSywh/ue5WtTfj8iJvgest6oYmzZqfuCiWL8uiXjDWS5uSW4FiRWuwtv/CUB0qVphpx
+	U+W1COXR/VguMtGqGMfeirCmisoox2U=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-608-oewtGDdxN-6hnhgvIdtzNQ-1; Mon,
+ 18 Aug 2025 00:35:24 -0400
+X-MC-Unique: oewtGDdxN-6hnhgvIdtzNQ-1
+X-Mimecast-MFC-AGG-ID: oewtGDdxN-6hnhgvIdtzNQ_1755491723
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4EB9C1800289;
+	Mon, 18 Aug 2025 04:35:23 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.210])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 08347180047F;
+	Mon, 18 Aug 2025 04:35:21 +0000 (UTC)
+Date: Mon, 18 Aug 2025 12:35:16 +0800
+From: Baoquan He <bhe@redhat.com>
+To: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 7/8] mm/vmalloc: Support non-blocking GFP flags in
+ __vmalloc_area_node()
+Message-ID: <aKKthIZbD4oNywY4@MiWiFi-R3L-srv>
+References: <20250807075810.358714-1-urezki@gmail.com>
+ <20250807075810.358714-8-urezki@gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN2PR11MB3934:EE_|IA1PR11MB6419:EE_
-X-MS-Office365-Filtering-Correlation-Id: aad6271b-dd35-4c10-3c82-08ddde0f5925
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?GwXtDYWN0/6A2zzfTqVA5WvFstj1NyikNtG3DXi9uXbL5s5oDPS/zZagJK?=
- =?iso-8859-1?Q?134yH/V+W2L3yHItDh7R/uRu616KzKTk3h3T1oOwokD0RqVcbuX7rOsS9u?=
- =?iso-8859-1?Q?LsFcvqgLgjH6szVRttMk6lEb/x9Oo1jaDYyfsbHsOr/c5qWaEnoRZ1SPtG?=
- =?iso-8859-1?Q?teqrWWMJiVnNcNTsh0c4dpQRcLfENDaORMjg/g1z9nR08iZe9KVXdJq84j?=
- =?iso-8859-1?Q?1o/8QDOSD5F4sp2VP7Guu9m2sKX+gTB/llqiuX90+xQWDPcMNWIszpnW6b?=
- =?iso-8859-1?Q?IB4IyT2niFdvnr5mNifFTpLYeC0R7t5nqUS55dIdtoczcrSMd6diafRHpo?=
- =?iso-8859-1?Q?qCHDt2YsnK5A0rFBAJ15PZnOglw2gYCt2lbGK6kWztBQ3/VxqVSYzF0Yuk?=
- =?iso-8859-1?Q?lA0AjzBa9HMnkpTAjYui3XyvsKWzKy6ewgd8pHOdntDTa8Oge3alHV7WsY?=
- =?iso-8859-1?Q?dsixhmRHDeQlapTkJQ0jfcduYHetQc7tyj6yVL9TzsW8eIRM/QKF88lW1b?=
- =?iso-8859-1?Q?/Zcz+RwbELimtfLoPfkNjcAnfuTeHW7YUA1uTYaFWbb8sK5kmQAI3A9fyp?=
- =?iso-8859-1?Q?2nOGkzs5FZkhj/XhPNjQauHZ1Q11pNr+bHjZGVO6sH2UfdBWJ96SaG7jkY?=
- =?iso-8859-1?Q?WJUhigPq/kyok8O0qP9mjKX2H/ZR9473ygCdeMk7GfU24JtcDLlB/PYG8A?=
- =?iso-8859-1?Q?pZi/Xq/37NSJ1bXQxVar6iszPJFp2cj+poW0OlIAoKSB2v++FdTwkGK3E1?=
- =?iso-8859-1?Q?dgrLdzj3cJtfJWr6+T8HGx6IJWB96BmLlv1Ab71XIVaJmHVvjAISIliVdV?=
- =?iso-8859-1?Q?bK7Wx+MFiazNgCBNcQOoWLCCRDgWJTQtbwfzamdqQVSba6obU9fVhj9s80?=
- =?iso-8859-1?Q?ieihFa3nKJqP2vXV6tF80exXTUQRH3tyJFaEfBYXmFx+8ePYNaPagj2IsY?=
- =?iso-8859-1?Q?ySB83PvJ2f4aLT+YkyVbBO0uvmYTUoP1P9GpTmL+KChqqNziY0S05eW3Yh?=
- =?iso-8859-1?Q?efe+Z1HIEbFC70unGMrnrVgrWgignKG8gp3h+TEzdo34bE1wfJYHAPlQlH?=
- =?iso-8859-1?Q?OoWIU1E7VSL5kccpq7lXhFwD/+pkgfpusirzVGFZ+WjYAE3iE0OqmFWOau?=
- =?iso-8859-1?Q?jTk+SagSVk/3FP9NfLpgQAAPFQqYJBNOoFmj7AxAQF2pKFo7DnathFU/pb?=
- =?iso-8859-1?Q?zzGTBTETesy6K4w4ty7RwKn2gjwakFxcrlc3KQNlqwre6EChiDk4eMNTYm?=
- =?iso-8859-1?Q?TwXs0Kz5ri5O1C8VKTF2yooyxZTfwBiACXna6DVHWUOtd40CiuBb+/7XEh?=
- =?iso-8859-1?Q?dZbDqn7iIZOOQHCjrxjn+it2i6zVnx+Cu/WoGXh0v88RHwCliMPwjhZzSA?=
- =?iso-8859-1?Q?iSUbELtWCPVdryFFe9VeaUQRDbBV4fi9L0nOITcEFaNFJt9Alm/1q80Mz0?=
- =?iso-8859-1?Q?ND9Y0uUC/mAtX4k1mzoTfTES9qYPBvUeHDvEOOo1dpME3SMrjLY0oLK9bT?=
- =?iso-8859-1?Q?M=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR11MB3934.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?rpdnBcSo+bh/nWFcoNHSMawTtYqAFDAbrnBKzFRAscpGhiIWSql8xQehWh?=
- =?iso-8859-1?Q?3TtComW9vhC7+ItLwWjPq2IOFl7Mp5TqDAFeFHywB4JCWFIh2foSYiBmJN?=
- =?iso-8859-1?Q?eRkr+kZLwyzqneRtNE5TIJ7u6Lio/Fx6H4g0kXo3aAAZZk4Q8LilyWoREW?=
- =?iso-8859-1?Q?UYblEVa3K1S7dZ+ivA3hlJCuUM+3LI6ED4Eb3TfgYdr2ThMApCl/fB5eSj?=
- =?iso-8859-1?Q?hGGVS1ZLBUN/rYG8fxYtcqVUtcxAUoyd/qnjyPwispoZW6APDcTiZ3LXrV?=
- =?iso-8859-1?Q?CFR7S+Wa5SNMwq18wCRbexfbHLpQxRw7Iev6hY+T4CDIvHTdItTlSJo/Yq?=
- =?iso-8859-1?Q?gzWD16Jqvbig52YEWQocSRtErb1QegImYqyvPzzb9OKFe5vPanYrgbesPE?=
- =?iso-8859-1?Q?2KnMpaD2ih4aKxMF36bVvFgPRwH6O+Wcx/unF938s7Y5dVv42jj/R2r2sX?=
- =?iso-8859-1?Q?VrsUIxCTzY0RcvwJoMSX8SXXPJfY6U8CColv/8AUSYvl9klTBaKy72XSj3?=
- =?iso-8859-1?Q?NkLOqWmjOsI4dhVQDIyHZyLxKIGwSxUHtsJCd/rQdxYukWCf5M8hRGKUmN?=
- =?iso-8859-1?Q?PudwmYB004OW1DC6KJAs6jR0T/DwFYhlMHX/kli61YJ4XXhCDqL8qZwKmT?=
- =?iso-8859-1?Q?J1Bbq/KzurJhr9TlPaLK+fMzNE0LSzErIcZ/EHwM4YWjzHs7LTkciHoDdU?=
- =?iso-8859-1?Q?nLQT/bvN9qmVksDLVFQYhH+ThvtxZ+MUPlHrgNhk29N4EhMMSn2aRgOKYw?=
- =?iso-8859-1?Q?reKE0NjP3EbVl5qloVOfGvwt3cULlH2Vlx2k9fqc++PYxydEEDMmUJbpWL?=
- =?iso-8859-1?Q?R3RmPyQo5K37L0JZD95d73zbFsQ8AnEQ+ir5xQmnB2yBhS7Cu+NOG2NZx5?=
- =?iso-8859-1?Q?1MOc27pRc0+xQNIGTrPgLCnei5mp4cxu7brAq23cstnVNhUBOuOlIFj+pd?=
- =?iso-8859-1?Q?N84RuNmBiz/mkA1TKdCwgPWxPD/1T9ADqi0lweO1nXEOqVQZoN3bmEnUux?=
- =?iso-8859-1?Q?eOgWjzR6IYrIsDhW0XCf0Art47Dq8pxbIHTurv1WDNjJuZmZNwj+IOTQAB?=
- =?iso-8859-1?Q?fKiFnlBsDD1PngwF5mn4G+dEM7CWHeUi41GXGBSLLSNVQrvxPghn/4Aunb?=
- =?iso-8859-1?Q?ssLJdp6uD1AbguYWErQi1yUC5SUiYDQ9pjtK6NOCavq9/bNgbFIvxaPwz9?=
- =?iso-8859-1?Q?UalNwGn3LdX7iyIQdvUXxfWxETh8l8ji3oYqAOgCGFSV/d+j89TdsWWMVC?=
- =?iso-8859-1?Q?xJAx0CFhobo2yk8UQNbIc5A8uIU4lTYzWKt/5oFRrm2aexTUsoq5qus6ef?=
- =?iso-8859-1?Q?7PaL6eyOPfQDF3C5GewZfz2S1GzeAt9ECJspxGEtuggTYMg1lh09m2S0kz?=
- =?iso-8859-1?Q?GaS/JFksUTiWDKlK3iL5lA5SachdS0EJsiL6gWy/r0LLfzCIPBOCyhtTEP?=
- =?iso-8859-1?Q?8D+VBoxarKtw5uJd6vs93bnZWUd6NA0HBkzh/SutGr366dyzbYK9qkbnH4?=
- =?iso-8859-1?Q?lVXpospx9oGA2hSWlc832P9NeEWPVzGwjcOvUWNFkzHVuZ7ZVAtmvuMA8z?=
- =?iso-8859-1?Q?wkLjuvrcm92CHLPooB0Acg2WxT6XIJkqu9taD6OCpNPmvuY7OXBm8Ob2zM?=
- =?iso-8859-1?Q?kFyiqGXjgR/EPuXDr541XSQMnNtjv/Y9j4GW2GDpJ4MMJDN8xzL1tykDyV?=
- =?iso-8859-1?Q?2COyqA6PUr/7+f3UTJ8=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: aad6271b-dd35-4c10-3c82-08ddde0f5925
-X-MS-Exchange-CrossTenant-AuthSource: BN6PR11MB3923.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2025 04:26:06.2247
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: b2G59WhXEHdomVpYxHPAKIMI+x35k0cfpH4LIEk3m5r82zBtfwNmQtv8q6ddhlKgimoyomRyC1nK5rNhHyBrfQ/VAIUTCvUu9/yGac+LnuQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6419
-X-OriginatorOrg: intel.com
-X-Rspamd-Queue-Id: 64F5640003
-X-Stat-Signature: sg1uybwm78n7343ps4b5tpfiin6shpst
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250807075810.358714-8-urezki@gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D9E78180005
+X-Stat-Signature: 54on8nnpgegtbyo5iksmqjgkac8q84y1
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1755491178-321836
-X-HE-Meta: U2FsdGVkX1/oNbwLIjIG/cbjifQJKXZ2C1Bif3YEVuLdp7ARx1N/+pSAsHu3qZMPx9AuxvEogFumspTpabKFYh5pdar+BAwa9FWDvhL3Gw6w7lpFIvg8f4ymvMD1n05vVKqU/rkfIfRLliDOZGLF0P7cqanBWNQHOccHVh5iv7Yk40girVYRUkLuGghEQuMA1fcqoj89U6HBp7VeGTwhhyHSQz8ZyRXmMmx9kkY1s9wOpDcMmzEPrJ5Nmu2yWu6xfhjsbKAS4vCwJnpuMmrc/nNJSZRJ2oiApn7FvgOedT2E4YK0bmsXT6sQbo23k/LrkrDgIK9fIYBl4DupmBASMgQWMYbNbtv0jCo6dvuzvvrdZCbJgOaPSgIfVBuMp6wAsEUZLFC8GAYDuF4FTodWH9+L8t4FhzaVTWs4t5uv8wjG+qxNXUv44O9aoh93pFGrIgg+uS6Q5Qp9evBbd+cz24DgnZ0f2Bz+01+v7a3jEqYt6P3H8MfX7+JfpJf82l8vgkMAUJVdKzAb+erNLctYXBlUab0dI2vSa2FdZ4cNf+bCq+xKAlui2K7woMfu9C1bo961rPKHVvv2yTehVQpxMSdHaZD66UtVBL75q7DzewWb0wHm98PwnViyz2zMZm6S1GkKb72IsneNO+KRUewTm+Zh4pBFiIbt0rhcMq4UYx/zQoIFuPk5BokQDy0ZSYqMyV5UNiXXZsCfNzx9NqlvxbJzjOT+xwqu6vROELNJn1FnSCr9iDQYB8qp6MxgMHQ4f/PkBpvvoie6VqcL38jrh4I14uK9+2OzDp+Bxf6e9QrFiUBy2kc3J3cH2y0XMfRGH7GueXXJZzySG3XUMJSaHFn2xRV0nIrZRHTBl7l/mjy3KzQMJTjrBuCe9w2KSTYqXzciysH5u0JqCpf742aJz6zQ6qmEEgmrKl4f2dOOSJY9ta/Z5lY0kKkMWW2rqWZlj/GshvVw8RjNoimXBtZ
- vErYTDTh
- +gz1qfEShmCT0xDhRNe54LxBFxZ3c5P+HtQtKd/IQ2NtdZMhFfB+dhE0jsQXaJs1T9XFn83UPiRnqByU+D85c2372tctM6S/jcVfpcDklZXE04HtqP0jKgb5g2MolGNCpBJ1P7dWP3wV4wMeSv7o/gZKsWpJOgphObTcr4R35Uzc3AbCaPWwJaTPjq2WnO+QfRt6f+rZvZIRPNUbpGmpf/2WeDFj+f6IUGbHT554L29/v1hSXqRDn3liDkl8zEwmn91A1dqeC+KxuroO9coPZ7+/AWoRGpDN1qeRSgeV3qyzS0AFgT/LHIiX5l1tc/c6De7GCb04e5cR7fclvP35OXcbar9QO3CDux/7aPwWU/FzO5SdlLcDz0K43p2AHuE3bf1OEMWgGVFQFmGvyY7t0r8O/i1GgfJsCmLVoevvqOx5682IBxObHdzsUU1g74F3aSq6IwsAZ5eO7JR0uHY/+lDcq4hR/AB3hL/UBaM1poxUfJLngXXzCBF9Gv7jZAcu1p9fWh8J5k2QFyPC5HQCqcfzbNyaQsqNGb30hRCpx6geAS/lzimNtGwm/W/8DET7/Dv+KodKkHy2CQ9fcDW0Y5y5z3dQ/eaWOpduOKlyTRwcC+AS6k/Q/e5ppfWtIjvhYHxO2VBNp9jPxiG6v4XB7b+bE/LBJ1epEOu/Sg5RttLNqqSrmzPgLad3gN2hMa8fj/8xXQOUi6rxOXD3DB8F3dDXbsV2PLfS3ijNdRTseq8UQBCAhLK9HWRrLcktPVotgIddsC9mUN7TpHZqHoncaR6ldEjz8ItMxkjwZmq5EGnS4TaoKR7DhX/hXFfDdpz5p2frq
+X-HE-Tag: 1755491728-262580
+X-HE-Meta: U2FsdGVkX1+h4v6qY/5YrbHvlcZyfJWJgsG5mSTMBxU/E9E4VIKcBsII0ZaLiWtIxsDajAFVqEeKqHJEqCT+xr0A9yEDW8zTusxO5xQ32Fc+vFsiZbuRpqTmx4HcnBPk8jwYoXGc4M6zV2LmlW68X4vKsM522uC3ok/kAZI8Kua7d6cZKcVkLlxxNiPZN1wQ6Z8DnXOSDkjeFJ38EmsFm7s4Vyjr0gnJzaRaLWeG13HXD0El7bFW64mvzdcohSq0RPrHXDym3TPwzqRdxmMpa2oZ8gphLJMpBjx5Yj6ddLPogYGuQyjVlRBvBge+KnNSqCTtg10Pigu2ZjskFRTNWFcrxU0DE5F0tbLyIrB1yhcNZrpO5IvfmKQpw+IfsphIOVnNDq+tr7CKAaQxSJWbWUvqHzKDgcpIeDPqZvCKq5UMj9N9o59w8+R7qlIuzTzFZMy1tzm2HlaCxOLeeCH7Y5ZvKlhtZfN+fmWMHNDlntO0WPD5L7ua3DsASHqfz4Du2O1VDCNtujK4e7Pz/1fh5HP9H2yj/CCkbhmcLkyU7rKx5WK90UmRaO+ZOJUkNt5EadMQr+A7CXz7qfV7wBiqSxbWj8hY7GqSm+mXKNuN+KzUPl2z5Rqbo8dWAi4qpVFMANgtRXjX+tFjjmNO86SZ+HU1bLR4yAq/bywGvD9RbVayQa9+fxh53d1glThwBHlu+wVNVxDfSRTrbairo3/0xlSVnjhikh35vyd1QGK78EOX9YXyKvyDjOf1TVKo7X5rX84kjCKE3nzdJtCuuvfiU43tAOXvXAU4c8uXT6aMvQeD/SO+xvpvmUF77RfLxB1aIE+vc0diq4ZCInp1go+X5GuffKvKjOcLWoddKzfz3YfYHzlRSh00W0kdnieGRPNCNudazO3J+F0OJO/4gPTW5aOn37867+RbGW4xZ6ULk5IbyC8mUY+A14I0s4jYnNUfoPDaKZXkUrmHH0eDs9O
+ TLda7Y5v
+ nDkva9zUTLdAUo3E2iZp2SniiyTFpCC6K7lVde0cib653BzPWb5TdZHG5OojcMN550immSNIhfvLZAyrmcZt62mdCoOLVX3jg6PekiDuqO/o8OO0LyZjssYW+F1C3aM8KzOj85g5v5CtqiDQ5iLa7LmoFY8KZ8NLenzgcLeT13mm+QaHZnuDv7ryK2vL7g80pUN4U0WUITjBV7WrTa0atmICrgPO5o8YjcAZr+YPo3J0y2Knjiuij5KmrYNrAj4358z0dhIjm9j3zA5RkeW2kTXXvSWQXDPveR2v4IaH9iRatbOPXaXpdigUuWMo0fuS28b0qkkXEF3fRplXmL9ewgU80V7fL1zpCC1UNLGqSJDNpOonyOXNqxmojFUTvKlZXqojJXyYrz4d4d0RGMT32X23hnO14xtet8dpMwHXQlDeR9uvIn+1iauLZTNSWkC5TRLIqdxaJi1ey3ul8KcBgoAQ26A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -247,90 +103,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, thanks for pointing it out :).
+On 08/07/25 at 09:58am, Uladzislau Rezki (Sony) wrote:
+> This patch makes __vmalloc_area_node() to correctly handle non-blocking
+> allocation requests, such as GFP_ATOMIC and GFP_NOWAIT. Main changes:
+> 
+> - Add a __GFP_HIGHMEM to gfp_mask only for blocking requests
+>   if there are no DMA constraints.
+> 
+> - vmap_page_range() is wrapped by memalloc_noreclaim_save/restore()
+>   to avoid memory reclaim related operations that could sleep during
+>   page table setup or mapping pages.
+> 
+> This is particularly important for page table allocations that
+> internally use GFP_PGTABLE_KERNEL, which may sleep unless such
+> scope restrictions are applied. For example:
+> 
+> <snip>
+> __pte_alloc_kernel()
+>     pte_alloc_one_kernel(&init_mm);
+>         pagetable_alloc_noprof(GFP_PGTABLE_KERNEL & ~__GFP_HIGHMEM, 0);
+> <snip>
+> 
+> Note: in most cases, PTE entries are established only up to the level
+> required by current vmap space usage, meaning the page tables are typically
+> fully populated during the mapping process.
+> 
+> Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+> ---
+>  mm/vmalloc.c | 20 ++++++++++++++++----
+>  1 file changed, 16 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 2424f80d524a..8a7eab810561 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -3721,12 +3721,20 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+>  	unsigned int nr_small_pages = size >> PAGE_SHIFT;
+>  	unsigned int page_order;
+>  	unsigned int flags;
+> +	bool noblock;
+>  	int ret;
+>  
+>  	array_size = (unsigned long)nr_small_pages * sizeof(struct page *);
+> +	noblock = !gfpflags_allow_blocking(gfp_mask);
+>  
+> -	if (!(gfp_mask & (GFP_DMA | GFP_DMA32)))
+> -		gfp_mask |= __GFP_HIGHMEM;
+> +	if (noblock) {
+> +		/* __GFP_NOFAIL and "noblock" flags are mutually exclusive. */
+> +		nofail = false;
+> +	} else {
+> +		/* Allow highmem allocations if there are no DMA constraints. */
+> +		if (!(gfp_mask & (GFP_DMA | GFP_DMA32)))
+> +			gfp_mask |= __GFP_HIGHMEM;
+> +	}
+>  
+>  	/* Please note that the recursion is strictly bounded. */
+>  	if (array_size > PAGE_SIZE) {
+> @@ -3790,7 +3798,9 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+>  	 * page tables allocations ignore external gfp mask, enforce it
+>  	 * by the scope API
+>  	 */
+> -	if ((gfp_mask & (__GFP_FS | __GFP_IO)) == __GFP_IO)
+> +	if (noblock)
+> +		flags = memalloc_noreclaim_save();
+> +	else if ((gfp_mask & (__GFP_FS | __GFP_IO)) == __GFP_IO)
+>  		flags = memalloc_nofs_save();
+>  	else if ((gfp_mask & (__GFP_FS | __GFP_IO)) == 0)
+>  		flags = memalloc_noio_save();
+> @@ -3802,7 +3812,9 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+>  			schedule_timeout_uninterruptible(1);
+>  	} while (nofail && (ret < 0));
+>  
+> -	if ((gfp_mask & (__GFP_FS | __GFP_IO)) == __GFP_IO)
+> +	if (noblock)
+> +		memalloc_noreclaim_restore(flags);
+> +	else if ((gfp_mask & (__GFP_FS | __GFP_IO)) == __GFP_IO)
+>  		memalloc_nofs_restore(flags);
+>  	else if ((gfp_mask & (__GFP_FS | __GFP_IO)) == 0)
+>  		memalloc_noio_restore(flags);
 
-I'll cross compile for arm64 it with different KASAN settings and fix any such
-errors. I did this a while ago and it went okay then, but there were so many
-rebases in the meantime I must have missed something.
+Can we use memalloc_flags_restore(flags) directly to replace above if
+else checking? It can reduce LOC, might be not as readable as the change
+in patch surely. Not strong opinion.
 
-Kind regards
-Maciej Wieczór-Retman
+	memalloc_flags_restore(flags);
 
-On 2025-08-13 at 15:48:32 +0100, Ada Couprie Diaz wrote:
->Hi,
->
->On 12/08/2025 14:23, Maciej Wieczor-Retman wrote:
->> From: Samuel Holland <samuel.holland@sifive.com>
->> 
->> Allow architectures to override KASAN_TAG_KERNEL in asm/kasan.h. This
->> is needed on RISC-V, which supports 57-bit virtual addresses and 7-bit
->> pointer tags. For consistency, move the arm64 MTE definition of
->> KASAN_TAG_MIN to asm/kasan.h, since it is also architecture-dependent;
->> RISC-V's equivalent extension is expected to support 7-bit hardware
->> memory tags.
->> 
->> Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
->> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
->> Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
->> ---
->>   arch/arm64/include/asm/kasan.h   |  6 ++++--
->>   arch/arm64/include/asm/uaccess.h |  1 +
->>   include/linux/kasan-tags.h       | 13 ++++++++-----
->>   3 files changed, 13 insertions(+), 7 deletions(-)
->> 
->> diff --git a/arch/arm64/include/asm/kasan.h b/arch/arm64/include/asm/kasan.h
->> index e1b57c13f8a4..4ab419df8b93 100644
->> --- a/arch/arm64/include/asm/kasan.h
->> +++ b/arch/arm64/include/asm/kasan.h
->> @@ -6,8 +6,10 @@
->>   #include <linux/linkage.h>
->>   #include <asm/memory.h>
->> -#include <asm/mte-kasan.h>
->> -#include <asm/pgtable-types.h>
->> +
->> +#ifdef CONFIG_KASAN_HW_TAGS
->> +#define KASAN_TAG_MIN			0xF0 /* minimum value for random tags */
->> +#endif
->Building CONFIG_KASAN_HW_TAGS with -Werror on arm64 fails here
->due to a warning about KASAN_TAG_MIN being redefined.
->
->On my side the error got triggered when compiling
->arch/arm64/kernel/asm-offsets.c due to the ordering of some includes :
->from <asm/processor.h>, <linux/kasan-tags.h> ends up being included
->(by <asm/cpufeatures.h> including <asm/sysreg.h>) before <asm/kasan.h>.
->(Build trace at the end for reference)
->
->Adding `#undef KASAN_TAG_MIN` before redefining the arch version
->allows building CONFIG_KASAN_HW_TAGS on arm64 without
->further issues, but I don't know if this is most appropriate fix.Thanks, Ada
->---
->
->  CC      arch/arm64/kernel/asm-offsets.s
->In file included from ./arch/arm64/include/asm/processor.h:42,
->                 from ./include/asm-generic/qrwlock.h:18,
->                 from ./arch/arm64/include/generated/asm/qrwlock.h:1,
->                 from ./arch/arm64/include/asm/spinlock.h:9,
->                 from ./include/linux/spinlock.h:95,
->                 from ./include/linux/mmzone.h:8,
->                 from ./include/linux/gfp.h:7,
->                 from ./include/linux/slab.h:16,
->                 from ./include/linux/resource_ext.h:11,
->                 from ./include/linux/acpi.h:13,
->                 from ./include/acpi/apei.h:9,
->                 from ./include/acpi/ghes.h:5,
->                 from ./include/linux/arm_sdei.h:8,
->                 from ./arch/arm64/kernel/asm-offsets.c:10:
->./arch/arm64/include/asm/kasan.h:11: error: "KASAN_TAG_MIN" redefined [-Werror]
->   11 | #define KASAN_TAG_MIN                   0xF0 /* minimum value for random tags */
->      |
->In file included from ./arch/arm64/include/asm/sysreg.h:14,
->                 from ./arch/arm64/include/asm/cputype.h:250,
->                 from ./arch/arm64/include/asm/cache.h:43,
->                 from ./include/vdso/cache.h:5,
->                 from ./include/linux/cache.h:6,
->                 from ./include/linux/slab.h:15:
->./include/linux/kasan-tags.h:23: note: this is the location of the previous definition
->   23 | #define KASAN_TAG_MIN           0x00 /* minimum value for random tags */
->      |
->
 
