@@ -2,99 +2,260 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DE1AECA0EDC
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 02:11:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 42B37CA0EE4
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 02:13:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 747D96B007B; Sun, 17 Aug 2025 22:11:45 -0400 (EDT)
+	id D3F166B009B; Sun, 17 Aug 2025 22:13:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71F9B6B0088; Sun, 17 Aug 2025 22:11:45 -0400 (EDT)
+	id D168E6B009C; Sun, 17 Aug 2025 22:13:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 604E66B009B; Sun, 17 Aug 2025 22:11:45 -0400 (EDT)
+	id BDEC86B009D; Sun, 17 Aug 2025 22:13:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D05E6B0093
-	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 22:11:45 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DFC188215F
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 02:11:43 +0000 (UTC)
-X-FDA: 83788252086.20.87EBD52
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf15.hostedemail.com (Postfix) with ESMTP id F0896A0006
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 02:11:41 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FdTTV7V5;
-	spf=pass (imf15.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755483102; a=rsa-sha256;
-	cv=none;
-	b=HYJXNfKKipkk508tsKIIzb517RMMlINUhaiWH9rB4L/Rl680WsEy9kJabgcLcGkhpxXHR2
-	W6Zx1K4siPcJlR6gZcpra1m0XmDUKIcWqdrDYqo/7XQCTkSZx6xnJi8K6tjcSJQJG0t4qp
-	qONUuesPh4UQki0qO9A2+aMdJwq6/5g=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FdTTV7V5;
-	spf=pass (imf15.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755483102;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A29136B009B
+	for <linux-mm@kvack.org>; Sun, 17 Aug 2025 22:13:47 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 27C44C0751
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 02:13:47 +0000 (UTC)
+X-FDA: 83788257294.09.80EDEC7
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf01.hostedemail.com (Postfix) with ESMTP id BA3C540005
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 02:13:43 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=hZeqlQ0J;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=AcOiCTGx;
+	spf=pass (imf01.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755483223;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6PvPEiL4l8R+WkwNrKmIb0X3D3X7fpJqzrNANmrqZWI=;
-	b=oOJnu4IFolIrn9GgcWEzIt/keAYi1sIeiFf8rdN3tdRkxSM6cFIWWFzG9kq1sPz0hve3FC
-	C0L44nDWtlw7H8nxiWn+nur284EnZ8GRfYLMETh6O9pWDOSO9OzPRyyZ7iRzztaVYvlaTh
-	NMvO3kOn9oq5Xf7hfRWqSQ5hZvPWqxM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755483101;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6PvPEiL4l8R+WkwNrKmIb0X3D3X7fpJqzrNANmrqZWI=;
-	b=FdTTV7V5HeVqubz7FO2WGyrHqGdQhHrPcJXMpJP3KERDjGQVoLN1lH5l35SrrfVVIZLOId
-	HTqXPsOFDPXf49Q3Cv0y1Ew0QBsTQpN/3V8PrmSqkG2ZVpfVL5OO42unKfAGC+asdAQvuj
-	Sh9xUa0T8V/0HqLMA0w2vt0QZ2Or+hc=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-217-eOV7kcwiMBi0eXrB3VzXhg-1; Sun,
- 17 Aug 2025 22:11:39 -0400
-X-MC-Unique: eOV7kcwiMBi0eXrB3VzXhg-1
-X-Mimecast-MFC-AGG-ID: eOV7kcwiMBi0eXrB3VzXhg_1755483098
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 383BE195608E;
-	Mon, 18 Aug 2025 02:11:38 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.210])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EE9D719560AD;
-	Mon, 18 Aug 2025 02:11:36 +0000 (UTC)
-Date: Mon, 18 Aug 2025 10:11:32 +0800
-From: Baoquan He <bhe@redhat.com>
-To: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 3/8] mm/vmalloc: Support non-blocking GFP flags in
- alloc_vmap_area()
-Message-ID: <aKKL1HFsJivaUSFE@MiWiFi-R3L-srv>
-References: <20250807075810.358714-1-urezki@gmail.com>
- <20250807075810.358714-4-urezki@gmail.com>
+	bh=6AdXyjYn/QFbSOdEeWKF+oZXC9Vp/wvgjuidu4VFayU=;
+	b=ZDp6t+utksmvFg+wNjujabK9MCA5upBTTK0m9eqExbCOwTiQMD7Lh+PW5340K9I+Aa2kPW
+	hp5Dy8092D81E8xX4o74tmx7oOwqfQLjArn6c1CyicUk6K/H/abM+ZbqUeU1Mu1GkLAOuC
+	6w1v0woqhnLiQWn58tkgDBTPAJgBwRI=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=hZeqlQ0J;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=AcOiCTGx;
+	spf=pass (imf01.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755483223; a=rsa-sha256;
+	cv=pass;
+	b=KGJYVNyPbXSdiC0FvPBTpm9jLmjrn7rMm7MmxoCKbCrBht5uES2lFwXQj6IBdCHFzWpKEt
+	0gi2l41tAtUF0djuBHxflgMe7VbDSwb+/aee5L6NcHM+u80xTSyVGN3RPxyECGyv32Tv1+
+	S76hNEPkzsQ9g5uvgTAlqCW+lXtgL4k=
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57HLj1HH004380;
+	Mon, 18 Aug 2025 02:12:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=6AdXyjYn/QFbSOdEeWKF+oZXC9Vp/wvgjuidu4VFayU=; b=
+	hZeqlQ0JFV3U4iwhg42GBthe7j8Ct+BWhGxL/4+4pS+KfQ3RaRTnsj37iFYitAn0
+	7oi/N6F37j2rFfI/24JcvKT1lSM6pclsChPvsOOiyaqpYJ7cnRBs34/koV1VO7qZ
+	rLHQqDv8Y5tgcQyF+B95ivtqY+pM0bygg/rxcA3+6S9vxeRzbLNYf/uMQLc3+Wku
+	jSD/h5eNFvUr7bYgfZxs/nF1Js+3zn3PNgfFIsk+9Fm8VKC6Td2j7/RqhvTiCVu6
+	tF2BQMhPT+t3HtpZy4uvLF4IcooAxjBxpdvqcFzFBJ9jSARK909IMs6Wz6NH5lhk
+	kkIWWgim5svp8s0cPT+t7g==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48jj1e1xwq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 18 Aug 2025 02:12:52 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57I0UoqY036815;
+	Mon, 18 Aug 2025 02:12:51 GMT
+Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10on2054.outbound.protection.outlook.com [40.107.92.54])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 48jge83jhd-3
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 18 Aug 2025 02:12:51 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OPhb0cPDKwamx8Wx6MSjn6DnFZTlX7chrPgT5+0FCZ6swqZMjAlEzTF3n+Bolz2rt2EjTfb2PBGqEArkx2NAZ1lsMjNSN2C2bDUsP83XTZAdUqz5q6njEdH+VlW9wG6DKfH/2hMNS5BmnQx1Cbe/dVJz7LtPJ4DV66ziKBee+ALdzHcuVq/tmiazKb7NfwoLwpDowNu+PzP+IKYjWUqiT1gXrTrU/oh9agfDxg/PTHTyrckZ0EFafLUbjG3Z7jpV2lyVQf0DO2WRi9DyRfdg76oqdguFVLNLQdLkn0m1h32244Q8rnGjnVfctNeC2nfVZGRGhkrhcH56tEMSJXtgOQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6AdXyjYn/QFbSOdEeWKF+oZXC9Vp/wvgjuidu4VFayU=;
+ b=C9XrQ/YjC7ZR9IlIjNY/g1Axh6WnOMhVZvQpoOqRCYD4wWWENBgscLo6KI5+Q0orlCeq2JWRYcAIRdX+y/dSsSphBcHYvRH7bzCkn09zZdiKsLozqX0dqGjWWWQ1czOdgTcjlZlf5R46MjZLFuFCCRmSU4cvLoEpPYhqLv+BkqzCWZSWHBD71pXqOhXHWTze5/rGsiOkmnqfh1i2QkQWmpSjPg63Q/qsMY4+ZYZVBqupM4FPup6uOcPtZFv+vm6EzigD/Wj5Z5hi+Qib04+BZoodyAEG7vma9gl6LGdhxF6UpFTd02j1PT81+uSIDB5RdktEgDCODi2apn1eZH/JUQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6AdXyjYn/QFbSOdEeWKF+oZXC9Vp/wvgjuidu4VFayU=;
+ b=AcOiCTGxKckzp92O7Ne6nU+XddQCD5ElktfKCemka8XoAnv4Z+e3T4d4ZtmvsTAZXzFtzSlbXPt4Bv5oz6gwI+C9khKKPjo8BcN/FlTD7iMhy2PibfUM/2mFDctkyuYm+JIf7AMK4zYgM/8ES7q7kQG6bVFpG9hDsfgkg0fIJaE=
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
+ by CO1PR10MB4690.namprd10.prod.outlook.com (2603:10b6:303:9f::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.21; Mon, 18 Aug
+ 2025 02:12:48 +0000
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::f238:6143:104c:da23]) by CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::f238:6143:104c:da23%7]) with mapi id 15.20.9031.019; Mon, 18 Aug 2025
+ 02:12:48 +0000
+From: Harry Yoo <harry.yoo@oracle.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "H . Peter Anvin" <hpa@zyccr.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+        Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+        Christoph Lameter <cl@gentwo.org>,
+        Alexander Potapenko <glider@google.com>,
+        Andrey Konovalov <andreyknvl@gmail.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Juergen Gross <jgross@suse.de>, Kevin Brodsky <kevin.brodsky@arm.com>,
+        Oscar Salvador <osalvador@suse.de>,
+        Joao Martins <joao.m.martins@oracle.com>,
+        Lorenzo Sccakes <lorenzo.stoakes@oracle.com>,
+        Jane Chu <jane.chu@oracle.com>, Alistair Popple <apopple@nvidia.com>,
+        Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@redhat.com>,
+        Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
+        "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+        Uladzislau Rezki <urezki@gmail.com>,
+        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Qi Zheng <zhengqi.arch@bytedance.com>,
+        Ard Biesheuvel <ardb@kernel.org>, Thomas Huth <thuth@redhat.com>,
+        John Hubbard <jhubbard@nvidia.com>,
+        Ryan Roberts <ryan.roberts@arm.com>, Peter Xu <peterx@redhat.com>,
+        Dev Jain <dev.jain@arm.com>, Bibo Mao <maobibo@loongson.cn>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-mm@kvack.org, Harry Yoo <harry.yoo@oracle.com>,
+        stable@vger.kernel.org, Kiryl Shutsemau <kas@kernel.org>
+Subject: [PATCH V5 mm-hotfixes 2/3] mm: introduce and use {pgd,p4d}_populate_kernel()
+Date: Mon, 18 Aug 2025 11:02:05 +0900
+Message-ID: <20250818020206.4517-3-harry.yoo@oracle.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250818020206.4517-1-harry.yoo@oracle.com>
+References: <20250818020206.4517-1-harry.yoo@oracle.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SL2P216CA0185.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:1a::9) To CH3PR10MB7329.namprd10.prod.outlook.com
+ (2603:10b6:610:12c::16)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250807075810.358714-4-urezki@gmail.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: F0896A0006
-X-Stat-Signature: popx8phb7bjh44497qa3ouz516sgq4jd
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|CO1PR10MB4690:EE_
+X-MS-Office365-Filtering-Correlation-Id: 148676ef-4665-4d9c-14ce-08ddddfcb9fb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?L9aZSYBlfToaDbU86uV2q3juR7BNIy07DpLMewfJnZrPglgt2dVQuxFeKfCT?=
+ =?us-ascii?Q?5+BTElzPQwCED16oCQh8tQKhXLzE+gHtmYlYAXAg9Uw7TLi6zD7svGDHRzzL?=
+ =?us-ascii?Q?4bYzQItNgYMtwnnBUprVNo6AW9USPgvvYltXwquSOSuh8qFvPBCH0LG7CKlA?=
+ =?us-ascii?Q?5xTZ6L3r5Be8QOfTGjuqTbtmnHzyQuCmDxo8X2QMnaXNyCkZg/SY4EEYBotz?=
+ =?us-ascii?Q?lQhdhK7BLUkBKF2Vy9yKCI/znH0lv0CUufjByy+cTx3WBZnSUCkvaamyl3iM?=
+ =?us-ascii?Q?5U396m+9cHVDXt7q3Esp0m+g2gPrzoykEzdAZSpBn4oq0v+8cYTS+BOTDHII?=
+ =?us-ascii?Q?w9Y745+TP0CSEE6Zg9+UjWcKZlRGCb5s33FD4yPRMx0qwoxrwMwuI4CWsVYS?=
+ =?us-ascii?Q?9N1AV0DrhX/72FsWJ0uBHlfDFijOcOZRqz3PTKCOEUqtqg0ImyGjp12YksSc?=
+ =?us-ascii?Q?2evQ/Q9YNVfhkAs4KMVLVATwbfhwaSZtGdkCRWVjPlSCm3jjj1g8JsmLStRG?=
+ =?us-ascii?Q?HEWdH2jDI6ZB2iCQQLoIAyisR5DCGqxnQSEc7MqaW/bS5z6dwYC3y/g21gkt?=
+ =?us-ascii?Q?VJytJSkj1KztM4UxMdprANUT3IO68tMI8iZpYi/Dd1OiEwseiPL13FkW2atN?=
+ =?us-ascii?Q?bUISWdjyEIKyV5yRyixo7quDIVi5gy3degK9mPhGV0G5pTVkIVM84Va5XRNB?=
+ =?us-ascii?Q?Jx1g6ZsrcoZUdl2vSfABLdW/mcTFcEH0LLy57aSnkzYnLbgfnPvef4QeHIH2?=
+ =?us-ascii?Q?N3yOm2o5hrHvd2mRuWzz5R/InoYDm3puKidmvLVBPPXYQoITRFaOqFRzTd46?=
+ =?us-ascii?Q?psUzs+Aen8NeMyeFPV6c2TtH+6qT4VdtZfDrku0z2mGXPnf9YQz69Ka4yy+L?=
+ =?us-ascii?Q?0X+IVG3SWUC+AX4d0xWs74fcrWAy/OaYNSK2yyQPCg1m75uB9B46MROQb7Tn?=
+ =?us-ascii?Q?PRiu9U1VwdrCSOFnY+E2CZh4J0YhmXgHM6UlDhylYftxqV25zJM9bw/nMZ1l?=
+ =?us-ascii?Q?m39QuOuXEJE0mN/giGjCgNgd/QRdGspGcI9cHhG+6mUlyPuro/Hhin9gNtIz?=
+ =?us-ascii?Q?KpAvAJt1cm3K16ugMtg7kbjNFoi5wYyemVX7nt61GLxhzGH1oCk7oA4am+Z9?=
+ =?us-ascii?Q?Onslrfq4wuu+ICtPlcRkGrwGFjLmaPA0njZfFQHJp2hq1c/E48jF8a9JIuTd?=
+ =?us-ascii?Q?yDIalPLwWQvh76O9hLTTBrsSxLEvCTlmBMaqova4QUujGKmDDUj67bOy7T+v?=
+ =?us-ascii?Q?IfLAErXph7qJZpkcbSdHWI8QwAw9prhgsYDytVux1u9AZDaK9m7IydghQunQ?=
+ =?us-ascii?Q?RV3sRjCAAURiCRYvLs12803QVr9qE5kATBkWc0v6YiYvJ6Zqv9ZxubT4OBR2?=
+ =?us-ascii?Q?6Swfi+gLFZoe1onMKaZCCzzBAL9Bl7daJ9FcgC5C1nwZwHoDZYAOd0OeWesF?=
+ =?us-ascii?Q?knsz6Z2nJhM=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?0mjVAbfraG9RQMF55m3DFe0Ce6Fcb1bBY1nts44VYSf/buLcMnY11hWnbt1O?=
+ =?us-ascii?Q?OaGCh5GAwElm+WJHUHlfAIwmEtGFfRIEdD2h4fO8Zn2b9IikDqolvDw03jGq?=
+ =?us-ascii?Q?pGMFGuSQgUbQDF9jO3Lu0h+zjky+wqyzfqkvMI7/xp1gZ0GWt005m3tITOL7?=
+ =?us-ascii?Q?67CmmkMbMYHnooQ/S2mG6wCVu+tzkQV/keT0cgSY5Q8b7IMRb2n8Uo8j369V?=
+ =?us-ascii?Q?cYFRitMrjHF0IpJHb4sD+WE6FoUuI4sxts7ULl/bREzHaMhhpL/Ju51rfNm5?=
+ =?us-ascii?Q?vRjDWiJTlwUXKc2fwEGu4gzeSaMsjGq+a6j74EjMh5q1jXpsFw3UCWqb1DMx?=
+ =?us-ascii?Q?7iBCPqSQQ64otNsAlcHrWsyk6uohaqwamktLZPmqN059UlaAvzf/W0NOC1fE?=
+ =?us-ascii?Q?KZ1VD60dMvwT4n8JM72bvMYBMKJqJcSb/zWood1kRlYhCg6JJcB36lLmoTVy?=
+ =?us-ascii?Q?tC0/caadvTrjJuF7gNO9XbrB7/wN4Ir0HXIpG1m0/TRLEBYhGgr/pA4xR08n?=
+ =?us-ascii?Q?FOTd9xqR1p4yuEjAMDTc8Ul284Ee60+BJMKddqW4jksoYmcAI7cqEc6OTJsN?=
+ =?us-ascii?Q?NhEE4jVH0iNFtzpnUx9hWmBVJBi0S0cjc4+1qTpt3nJ0FGxlyTeW7uw7Vbvo?=
+ =?us-ascii?Q?57EgfNcLSIzBT7dpuHw1nrRiatWOuUyEw6sYNqNWpRWdgE42nQXvyhWx8SuW?=
+ =?us-ascii?Q?OEu0FEss0GjG6limYtr7u78WV8pW6MMgY9j6AQHc2XOo+hFofPpoke1YWgLi?=
+ =?us-ascii?Q?FjPL/Ot1E0COaEY85u0qfc2dTPVXOEH1/wDMXfelR4Iap3E4S7CHxDBjNmwi?=
+ =?us-ascii?Q?/Tvq9w2L1NDarRiDeNMS423cLQ7GKPwibyV3+Nh18fCuCtbn9qp6rBzrqY0/?=
+ =?us-ascii?Q?Z44uq2OeXu/q3q3e7RGVhidn7QRtX2A97gKbr4yZiDMFROyyIONuJlc16uBB?=
+ =?us-ascii?Q?qbh9xZSFfwrtA52EocyhL0IUiN5gVn7y1M3fizRFnOdzH8+y8TW7b7781wNa?=
+ =?us-ascii?Q?7Ex0U0Kh2uGTL1e5hyRLfHiEiQwsNP4OZi4FXyn0RVkPwjgtuKHxd1n1QH+O?=
+ =?us-ascii?Q?R6ylWiSNXZKnqEr1Dgse3zftzqnif+OYKGjw6oXY+aw6lJcRTtrHOuLN1jHI?=
+ =?us-ascii?Q?iYT8VUOr+u4TxnItM4tZn1Yze1UaNtAIEVB2qqI7Za7u0dGSX3uuolhl6X8C?=
+ =?us-ascii?Q?rr90HnoCiwm8RpRDrsnlUarTW5ufGg+oY2G8NJXXaKKa90LmpmOH36gtpTW2?=
+ =?us-ascii?Q?/q6MTJMr0wHXRd0v75rB5S6hMvCXH6evvdAQ0zglJi6S6aub+9cz3Huu3hNv?=
+ =?us-ascii?Q?fv4ZJEcGqnvFA3YUjvVzMAakBXaT6fzWCoiQvZQe32UFkwAk9jkVZ7k+Rhmy?=
+ =?us-ascii?Q?Fen1zKYSJM0DuUNHk8beeH+Wl4dGEANp7wz9fnz9KGp0Dga/NX9SnVkgQfJF?=
+ =?us-ascii?Q?m6ZEmKsKHkMZ2qnmXUqXckJNDh0YD5ZZsKhKHmiol1VovOUc5yoWz6Rhykuu?=
+ =?us-ascii?Q?B2Ul6o28kkC7fqohQdh7WNAkLVFFAeEDAvcOzRaASUiXTgj16Vb2bjL0TZGq?=
+ =?us-ascii?Q?6MAkBsoaaD70S3f4MP6qTj/ST6ACTWy7tE55wPES?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	a1ESTDKrsZ7vFfb42VM2cPVaQKNyEkSjrvxbkJT/JBR1b1if9TgIJdhMOX0RPHZ2okQ3JKrI9W+gTo9BZw8wxSzg8EjI8KqPbXpnR6wLHGYfsBZgfV+U6P5ys9BhESXaF8ixXGsyYyxCVO/mV4Y9cokHb/V6/7+ufVnl+PgCd4zYUPbXhhXYDKTNqOHbmuJJb9TQ5k5jXWSqLzVRMP62GoociA6ViChQBOKEaW3SX8OKToNHudYSB3kPLaEEadkfWzWsggqbUO87M8znUopkxSBHurgBb7OwrqyMfFeQIHiBhwm3qhbLesMwKd7uEu9QFJouzVYoA0RPvMIOY6c0gDjLpTvxqwdygu6YF28qdswYHqUTNxFlk/cXQaXdnnz0W4HDL+LbMDLBxhWQTJmbMb2D+2kTMKBLX8GM8ovaWSpI5N7As6/ow4smtgDhDuU6yw4ul0FKA5WQsdCR9mWLShmlVrYIDHLaYuZYJVgFQPMFKCBW6m6MuB0Ogwywb9YyKUHCcaOpJ9E+0v/slW5OQi1oizDDg+Hozh9htzZlji4MgyZX8C50UAcjnDZFCG/n9PTm8UpUyz4dY1gzpipdSE8GAIaHgkXPtb6jeHfg3VI=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 148676ef-4665-4d9c-14ce-08ddddfcb9fb
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2025 02:12:48.1056
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mWrFSOwfKEMTAM6CEciOcgFPFaH8sQtbnwPFu/1HLQSYVmplpbjeSyoDi/DRJJTlQvyaORCnVRpwPZAONjTODA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR10MB4690
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-18_01,2025-08-14_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999 adultscore=0
+ spamscore=0 phishscore=0 malwarescore=0 suspectscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2507300000
+ definitions=main-2508180019
+X-Proofpoint-GUID: ftcX4-nH0cewo0ZLOTNRwvkox8HVY4O2
+X-Authority-Analysis: v=2.4 cv=dN2mmPZb c=1 sm=1 tr=0 ts=68a28c24 b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=2OwXVqhp2XgA:10
+ a=GoEa3M9JfhUA:10 a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8 a=yPCof4ZbAAAA:8
+ a=3FZ4Hy8v-MDjy2TpQZEA:9 cc=ntf awl=host:12069
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE4MDAxOSBTYWx0ZWRfX02uZd8Q/+DAu
+ wgMUBQNQZ9f4WoTb0RVDeSj8P2MIvAVDFi2MDrTTXcrRuRv7tL6fWwAHILaNIgUt6M/Z6CUhxYm
+ i2HzNnBvURKkrtm90M5UehJQIZ+cYQKcg5y/l55MsDN8VkGGJne+ZR7oLYMamNkqtMopdRo0fpW
+ c98xGvqhFpKbilLhx0t/HQ2q7kA8XnBXojg1oYaBDtiNGVnB+ZWvL4F4J6ZGXKM9xJBq4Skqcax
+ +Svd/7YtvrFqMAAsMyBiYymIYUvKjKDSZRjIiiyIS3MTvNO3LjHLyb7zHebMa+qcoMbcTgltbKr
+ c7jGxQskmDnKxThl6UJCkdutLjQio5gee7elUT+RmrOFPAHC/CFEyGEqVOnXyrrQPznpNBae4kV
+ pPwh+AhbMeqA8x90bM2mz/E+bB1FCPqVRXoS6tTMrhFMxk/oiivWyStICGGKQSf9v9WfDbWK
+X-Proofpoint-ORIG-GUID: ftcX4-nH0cewo0ZLOTNRwvkox8HVY4O2
+X-Stat-Signature: ypdjyfs1zfrkkfnr1c1rofs4amuzzu4s
 X-Rspam-User: 
-X-HE-Tag: 1755483101-526007
-X-HE-Meta: U2FsdGVkX1/6eJh8D7ZUO+SvoMKv62Dynl0eeKW7vYwBXv+hbXSDNM3n2Dk+LBBENZ3hmF7C44dkTIjAKQmBAjR/KspE3CR9/ep2fWFZbJtb4Lb/Iu3hvDDDEqbqTYDW1mCKPip8IWANPyWVyBcXXWtn5Rfamlr+t+nMuBIt48WXq/7wxwaknnAaFBZvMKeYgLk2qLME4YNR1R1+NmRsQiQD7e9CAH+z+oi9PFax+L3oYpbXM0W6H5waamNgpSOkjw+CQ1VA8E/8cC6CQZVrWLMf6wYHyz6hEcLE7tUjHerxJBxKZNGYhyLXxJ5y7Xq7WJ8u05Ubj9hAkSyAYmXagGJfYtTgrOIYCRhmFwTH/sdvt16uSiuieG11rKutcrqvi1ocav8YmZsQZeFxx3tv7it3uJwDpyCRcnTjdnrniMa9DnUPlE6RdNwS4LukGCoGwPRO37oquIxCHBn/T/Z1AQ6mGg+1uWbjaI82Nn/Co8ix/3aqgb5AoO7NlEKsMxTTsjIDCce58PIFhHgpaQ1i/ZdoXyUAYBT/f00zDA8A3m2w8BeTHoEE9lAPzpo9isppKDteKPexWtO4cQ2xRC3TFhLPCraMrXA3Hk81alQzSBhJXPIlFCv9vhEPLUZiQh2yRkBaOlqsrcDNDIbmSs56vMKSZ+bhx2EzL6kWyXa71Xr6DZVHQvz5f08thXWVF8MRWJTg4TY9a4QwFx9gh0IzeVO9bfMw04zfXpyLErOXEBNCD//liB9G2uhj3c3vX6Q75h7Q2AvpuAZyzKBEJyNx03z+h8H6tExZBohTJZ52QCAR3dVu/KW0HxpXDQjlga6rEHcctJBXpdNLkC25hrrG6ooJB9YYiRNFBC3oqdn7iuKX5PUfOb53RTxTt6omEr9JbW/fpuRYancp0rkGIxfyfwc2pYO5Q9JUKQjB0EqbNthnu9EVJdFYes1eaatm8fwYCzwl4oCfgr5iuOGaSg1
- H9nAADlQ
- 8RnUdo0e9TYiv8d4Wnej355H5jv1kqHZHtbj0JqDcggv+bYu+KPAX+/FTlAF7bIU68Ymr+k0qU674Si7VmzWI4w3Xz87LVP+B1F/F+ZBK7DAecAly20yrwYl/n2aUeA4JuGgIJhVmuV4EvP/Hynb6cc4ki8V1pj10jBm/0304b+Usresk1198uaz3zdQ2Zpu9ppJ7+tyifzVV8JVsRKTVgRPVvoPTDDCVvrG9QlvCyIoxndFAME7jV1eauhuJRp4virOMELzq4c0pDLXMnhjbiaxrnZ/AjOwoLI6NHF2B869PCnZ79dImxxP754i8tisbLZ00MAzXSOx5pn5QkicU8zbISUDXeiwMI1oXdm7RdZCkQvqZ4ttoENVLit9a/4U3B3h3i6Of8Xze8O3lbGIw2TAEGkINjlDGMvv12x3IYw9K/0NE81NrCP5Vw83jxkzwg9H0X75g0UWJRvT30iVLNHEu/19MBJ/tZv0+Br4OEMcxbWJ8i2veZL+vWw==
+X-Rspamd-Queue-Id: BA3C540005
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755483223-542496
+X-HE-Meta: U2FsdGVkX1//E7Bm/ZGFO+cJngoPBFCxg+Tv7sD7cf02kcvPkYYmxqVupaJZ6ZnqKqa4u58I1Dsz5NhqBaFkyk165unnKcr2gWfSvTYTSJOVoUTkNhhl0R7Dwl5qysyO00C2CVR29Lzwyvyk8AvFSknGIfg0EX+iyP6hhenHggUCcPJc8rm8/3SjOW1vBRFiKoTr5PBNd/1tb3nPtDP83qx2MpFvZBGCeVaCF0P+Sf9uJLTbq4v+d5hKYPOE15cZytaNIc2oXxI99bM1BaprQjP9ocRW2OtvHXA1c7Jeze4+SlX+p0GVn/W19X2tP89H3hlgbOJNemCAvO5x9LPGouZreLcZdmiTaMUZcFL7u/f9xYI0yIdT1EZ4pj9/Jd6cwwNZ4mgVa1wDDO4M8ImVkzvhtTNBWKVNyLVq6XBPTuS7oL/TOju3gyMSAIG9mZhkPHzaUdE/Y//dQL+ZsSJhgoVadSEpzbNeFyUW+70SWDtJ27xdFH8R21so93gLNgt/dSp1Xo1OsW6gnnZssPDdofiaUb8Ta0yQ47pOzZk+6T6U6P5dodG6bmF/cdrQhJn/qVvXPAHal4rUU0V35hzycadUkFMs2tSKW3FyTzzz10E+ONTXKTlpx4WMuFyYfmIVhqH6+e9P5z6i3imzmCAVD1E2BsGPUmOglgzXhWJ5E80rQ+0C8zlfiTHlKAp5BXWpQbYCEcDls6XCRao5gEFsgDy+CgKS1IXUPj71BVPIhWUQEFYgXCzwBLAflLOrtyEZ1GB93LtjeeP2xPsjw1lt+czIAlLzlocorI9iU6ymUwk5ZRYmPmiTlL6U2HHVS7m7aaV7sMNI6F/LiWuFDohZgvkwI+/bXLz3KPgZ8YpON7nvQjKDuNZYvZPaO2TKYuVJL4k7Demiw74Sxv1BgN/sU2UgpglyeEH91Szs81yBktZtJnBQjV2c4goVJULaQ4wABCOfigSAO82oeCgibPm
+ 2XdwNx2n
+ /WEUqLtQX8nSTzGu7nUIUPoJ/Nk81pDmVqMyr2bxToVsXKO1bx1c8W/gGKaTTH3ckimD8afQNI9CB6WE0YIulmx1VrBANHKJBQIhwH3w9Xo6LJSDdTqnyBobatUYRoyoN1gsGzFGTmHwe0OAEy2Lmid1Ttq1WAuNoPDRy/U345VqWFpCdrShSJfYnPRRs/vQdUUUSsmFg9r3s7yWaoe442lrQI9/wKJqX15doJIKoba6xlWrmTpDZQfE8A0ngh3vOtWV2PTymdIFABi99YGfC+dMq4W6i48GXlJQmAO/yZ1cbp+Is55hdWuo591VvUzHQY9Oo3WUtfqDAmiUwjO3ycB/+TPEhyw9ujnxyW6h2PiKEPZp2IiCd8aP8C9sTM790mmbkfmgumkwS45fSxxl6PjJ1mQikKSdB4zI/RgFEUDE6a56uVeXeY3G2fMI6kYbmtaeKz/JSsvT7JvFFJn5tMk9nuEhP/mTLYt70vGJo1NegMgu5X5gq+WTrGl1xbFIbrtVr1VieltzRTFA7rDRgmUTam386/jcdtNU2g/IWicilyUdqtgGS983LXEAC7csSfkiPJNeWK8W5slcIqgYZqWaE5zlceFicC1wS8XJoILzp/xJhECCPM+UVADDUETEFwNG25bGMU3ilWe6UrhTncgstp2gk29mfE90fk6a5NWOnaOrK/n9hE7UasmNw00JlVt9vrz63j3JP/u1aiQ5+Q4+wY8R2SE8gkvLgH8aec/+heFqN89JQCBQBQmamvETkLcQDw2hrtixQ8TXbm8SDadeRKq3g6Cf+kmn0Xxddhnq6WY9LKAeQRK0oM5Yqg52I+7xI3LG4XtAxvuJlzTtUH1nej5TKtULu1/fakTuO/4XeNwOe93DbHg4OHg7RqEnJy1maks2xNiO1ANq5svBornSOYMoMZCyOqsZu5EfnqE7UVmWC8KFk9WtoPg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,79 +264,243 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08/07/25 at 09:58am, Uladzislau Rezki (Sony) wrote:
-> alloc_vmap_area() currently assumes that sleeping is allowed during
-> allocation. This is not true for callers which pass non-blocking
-> GFP flags, such as GFP_ATOMIC or GFP_NOWAIT.
-> 
-> This patch adds logic to detect whether the given gfp_mask permits
-> blocking. It avoids invoking might_sleep() or falling back to reclaim
-> path if blocking is not allowed.
-> 
-> This makes alloc_vmap_area() safer for use in non-sleeping contexts,
-> where previously it could hit unexpected sleeps, trigger warnings.
-> 
-> Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-> ---
->  mm/vmalloc.c | 17 ++++++++++++++---
->  1 file changed, 14 insertions(+), 3 deletions(-)
+Introduce and use {pgd,p4d}_populate_kernel() in core MM code when
+populating PGD and P4D entries for the kernel address space.
+These helpers ensure proper synchronization of page tables when
+updating the kernel portion of top-level page tables.
 
-LGTM,
+Until now, the kernel has relied on each architecture to handle
+synchronization of top-level page tables in an ad-hoc manner.
+For example, see commit 9b861528a801 ("x86-64, mem: Update all PGDs for
+direct mapping and vmemmap mapping changes").
 
-Reviewed-by: Baoquan He <bhe@redhat.com>
+However, this approach has proven fragile for following reasons:
 
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 6dbcdceecae1..81b6d3bde719 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -2017,6 +2017,7 @@ static struct vmap_area *alloc_vmap_area(unsigned long size,
->  	unsigned long freed;
->  	unsigned long addr;
->  	unsigned int vn_id;
-> +	bool allow_block;
->  	int purged = 0;
->  	int ret;
->  
-> @@ -2026,7 +2027,8 @@ static struct vmap_area *alloc_vmap_area(unsigned long size,
->  	if (unlikely(!vmap_initialized))
->  		return ERR_PTR(-EBUSY);
->  
-> -	might_sleep();
-> +	allow_block = gfpflags_allow_blocking(gfp_mask);
-> +	might_sleep_if(allow_block);
->  
->  	/*
->  	 * If a VA is obtained from a global heap(if it fails here)
-> @@ -2065,8 +2067,16 @@ static struct vmap_area *alloc_vmap_area(unsigned long size,
->  	 * If an allocation fails, the error value is
->  	 * returned. Therefore trigger the overflow path.
->  	 */
-> -	if (IS_ERR_VALUE(addr))
-> -		goto overflow;
-> +	if (IS_ERR_VALUE(addr)) {
-> +		if (allow_block)
-> +			goto overflow;
-> +
-> +		/*
-> +		 * We can not trigger any reclaim logic because
-> +		 * sleeping is not allowed, thus fail an allocation.
-> +		 */
-> +		goto error;
-> +	}
->  
->  	va->va_start = addr;
->  	va->va_end = addr + size;
-> @@ -2116,6 +2126,7 @@ static struct vmap_area *alloc_vmap_area(unsigned long size,
->  		pr_warn("vmalloc_node_range for size %lu failed: Address range restricted to %#lx - %#lx\n",
->  				size, vstart, vend);
->  
-> +error:
->  	kmem_cache_free(vmap_area_cachep, va);
->  	return ERR_PTR(-EBUSY);
->  }
-> -- 
-> 2.39.5
-> 
+  1) It is easy to forget to perform the necessary page table
+     synchronization when introducing new changes.
+     For instance, commit 4917f55b4ef9 ("mm/sparse-vmemmap: improve memory
+     savings for compound devmaps") overlooked the need to synchronize
+     page tables for the vmemmap area.
+
+  2) It is also easy to overlook that the vmemmap and direct mapping areas
+     must not be accessed before explicit page table synchronization.
+     For example, commit 8d400913c231 ("x86/vmemmap: handle unpopulated
+     sub-pmd ranges")) caused crashes by accessing the vmemmap area
+     before calling sync_global_pgds().
+
+To address this, as suggested by Dave Hansen, introduce _kernel() variants
+of the page table population helpers, which invoke architecture-specific
+hooks to properly synchronize page tables. These are introduced in a new
+header file, include/linux/pgalloc.h, so they can be called from common code.
+
+They reuse existing infrastructure for vmalloc and ioremap.
+Synchronization requirements are determined by ARCH_PAGE_TABLE_SYNC_MASK,
+and the actual synchronization is performed by arch_sync_kernel_mappings().
+
+This change currently targets only x86_64, so only PGD and P4D level
+helpers are introduced. Currently, these helpers are no-ops since no
+architecture sets PGTBL_{PGD,P4D}_MODIFIED in ARCH_PAGE_TABLE_SYNC_MASK.
+
+In theory, PUD and PMD level helpers can be added later if needed by
+other architectures. For now, 32-bit architectures (x86-32 and arm) only
+handle PGTBL_PMD_MODIFIED, so p*d_populate_kernel() will never affect
+them unless we introduce a PMD level helper.
+
+Cc: <stable@vger.kernel.org>
+Fixes: 8d400913c231 ("x86/vmemmap: handle unpopulated sub-pmd ranges")
+Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Kiryl Shutsemau <kas@kernel.org>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+---
+ include/linux/pgalloc.h | 24 ++++++++++++++++++++++++
+ include/linux/pgtable.h | 13 +++++++------
+ mm/kasan/init.c         | 12 ++++++------
+ mm/percpu.c             |  6 +++---
+ mm/sparse-vmemmap.c     |  6 +++---
+ 5 files changed, 43 insertions(+), 18 deletions(-)
+ create mode 100644 include/linux/pgalloc.h
+
+diff --git a/include/linux/pgalloc.h b/include/linux/pgalloc.h
+new file mode 100644
+index 000000000000..290ab864320f
+--- /dev/null
++++ b/include/linux/pgalloc.h
+@@ -0,0 +1,24 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _LINUX_PGALLOC_H
++#define _LINUX_PGALLOC_H
++
++#include <linux/pgtable.h>
++#include <asm/pgalloc.h>
++
++static inline void pgd_populate_kernel(unsigned long addr, pgd_t *pgd,
++				       p4d_t *p4d)
++{
++	pgd_populate(&init_mm, pgd, p4d);
++	if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_PGD_MODIFIED)
++		arch_sync_kernel_mappings(addr, addr);
++}
++
++static inline void p4d_populate_kernel(unsigned long addr, p4d_t *p4d,
++				       pud_t *pud)
++{
++	p4d_populate(&init_mm, p4d, pud);
++	if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_P4D_MODIFIED)
++		arch_sync_kernel_mappings(addr, addr);
++}
++
++#endif /* _LINUX_PGALLOC_H */
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index ba699df6ef69..2b80fd456c8b 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -1469,8 +1469,8 @@ static inline void modify_prot_commit_ptes(struct vm_area_struct *vma, unsigned
+ 
+ /*
+  * Architectures can set this mask to a combination of PGTBL_P?D_MODIFIED values
+- * and let generic vmalloc and ioremap code know when arch_sync_kernel_mappings()
+- * needs to be called.
++ * and let generic vmalloc, ioremap and page table update code know when
++ * arch_sync_kernel_mappings() needs to be called.
+  */
+ #ifndef ARCH_PAGE_TABLE_SYNC_MASK
+ #define ARCH_PAGE_TABLE_SYNC_MASK 0
+@@ -1954,10 +1954,11 @@ static inline bool arch_has_pfn_modify_check(void)
+ /*
+  * Page Table Modification bits for pgtbl_mod_mask.
+  *
+- * These are used by the p?d_alloc_track*() set of functions an in the generic
+- * vmalloc/ioremap code to track at which page-table levels entries have been
+- * modified. Based on that the code can better decide when vmalloc and ioremap
+- * mapping changes need to be synchronized to other page-tables in the system.
++ * These are used by the p?d_alloc_track*() and p*d_populate_kernel()
++ * functions in the generic vmalloc, ioremap and page table update code
++ * to track at which page-table levels entries have been modified.
++ * Based on that the code can better decide when page table changes need
++ * to be synchronized to other page-tables in the system.
+  */
+ #define		__PGTBL_PGD_MODIFIED	0
+ #define		__PGTBL_P4D_MODIFIED	1
+diff --git a/mm/kasan/init.c b/mm/kasan/init.c
+index ced6b29fcf76..8fce3370c84e 100644
+--- a/mm/kasan/init.c
++++ b/mm/kasan/init.c
+@@ -13,9 +13,9 @@
+ #include <linux/mm.h>
+ #include <linux/pfn.h>
+ #include <linux/slab.h>
++#include <linux/pgalloc.h>
+ 
+ #include <asm/page.h>
+-#include <asm/pgalloc.h>
+ 
+ #include "kasan.h"
+ 
+@@ -191,7 +191,7 @@ static int __ref zero_p4d_populate(pgd_t *pgd, unsigned long addr,
+ 			pud_t *pud;
+ 			pmd_t *pmd;
+ 
+-			p4d_populate(&init_mm, p4d,
++			p4d_populate_kernel(addr, p4d,
+ 					lm_alias(kasan_early_shadow_pud));
+ 			pud = pud_offset(p4d, addr);
+ 			pud_populate(&init_mm, pud,
+@@ -212,7 +212,7 @@ static int __ref zero_p4d_populate(pgd_t *pgd, unsigned long addr,
+ 			} else {
+ 				p = early_alloc(PAGE_SIZE, NUMA_NO_NODE);
+ 				pud_init(p);
+-				p4d_populate(&init_mm, p4d, p);
++				p4d_populate_kernel(addr, p4d, p);
+ 			}
+ 		}
+ 		zero_pud_populate(p4d, addr, next);
+@@ -251,10 +251,10 @@ int __ref kasan_populate_early_shadow(const void *shadow_start,
+ 			 * puds,pmds, so pgd_populate(), pud_populate()
+ 			 * is noops.
+ 			 */
+-			pgd_populate(&init_mm, pgd,
++			pgd_populate_kernel(addr, pgd,
+ 					lm_alias(kasan_early_shadow_p4d));
+ 			p4d = p4d_offset(pgd, addr);
+-			p4d_populate(&init_mm, p4d,
++			p4d_populate_kernel(addr, p4d,
+ 					lm_alias(kasan_early_shadow_pud));
+ 			pud = pud_offset(p4d, addr);
+ 			pud_populate(&init_mm, pud,
+@@ -273,7 +273,7 @@ int __ref kasan_populate_early_shadow(const void *shadow_start,
+ 				if (!p)
+ 					return -ENOMEM;
+ 			} else {
+-				pgd_populate(&init_mm, pgd,
++				pgd_populate_kernel(addr, pgd,
+ 					early_alloc(PAGE_SIZE, NUMA_NO_NODE));
+ 			}
+ 		}
+diff --git a/mm/percpu.c b/mm/percpu.c
+index d9cbaee92b60..a56f35dcc417 100644
+--- a/mm/percpu.c
++++ b/mm/percpu.c
+@@ -3108,7 +3108,7 @@ int __init pcpu_embed_first_chunk(size_t reserved_size, size_t dyn_size,
+ #endif /* BUILD_EMBED_FIRST_CHUNK */
+ 
+ #ifdef BUILD_PAGE_FIRST_CHUNK
+-#include <asm/pgalloc.h>
++#include <linux/pgalloc.h>
+ 
+ #ifndef P4D_TABLE_SIZE
+ #define P4D_TABLE_SIZE PAGE_SIZE
+@@ -3134,13 +3134,13 @@ void __init __weak pcpu_populate_pte(unsigned long addr)
+ 
+ 	if (pgd_none(*pgd)) {
+ 		p4d = memblock_alloc_or_panic(P4D_TABLE_SIZE, P4D_TABLE_SIZE);
+-		pgd_populate(&init_mm, pgd, p4d);
++		pgd_populate_kernel(addr, pgd, p4d);
+ 	}
+ 
+ 	p4d = p4d_offset(pgd, addr);
+ 	if (p4d_none(*p4d)) {
+ 		pud = memblock_alloc_or_panic(PUD_TABLE_SIZE, PUD_TABLE_SIZE);
+-		p4d_populate(&init_mm, p4d, pud);
++		p4d_populate_kernel(addr, p4d, pud);
+ 	}
+ 
+ 	pud = pud_offset(p4d, addr);
+diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+index 41aa0493eb03..dbd8daccade2 100644
+--- a/mm/sparse-vmemmap.c
++++ b/mm/sparse-vmemmap.c
+@@ -27,9 +27,9 @@
+ #include <linux/spinlock.h>
+ #include <linux/vmalloc.h>
+ #include <linux/sched.h>
++#include <linux/pgalloc.h>
+ 
+ #include <asm/dma.h>
+-#include <asm/pgalloc.h>
+ #include <asm/tlbflush.h>
+ 
+ #include "hugetlb_vmemmap.h"
+@@ -229,7 +229,7 @@ p4d_t * __meminit vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node)
+ 		if (!p)
+ 			return NULL;
+ 		pud_init(p);
+-		p4d_populate(&init_mm, p4d, p);
++		p4d_populate_kernel(addr, p4d, p);
+ 	}
+ 	return p4d;
+ }
+@@ -241,7 +241,7 @@ pgd_t * __meminit vmemmap_pgd_populate(unsigned long addr, int node)
+ 		void *p = vmemmap_alloc_block_zero(PAGE_SIZE, node);
+ 		if (!p)
+ 			return NULL;
+-		pgd_populate(&init_mm, pgd, p);
++		pgd_populate_kernel(addr, pgd, p);
+ 	}
+ 	return pgd;
+ }
+-- 
+2.43.0
 
 
