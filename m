@@ -2,94 +2,155 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8BF0FCA0EE4
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 06:46:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0CC15CA0ED1
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 06:57:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2ACC76B00C9; Mon, 18 Aug 2025 02:46:41 -0400 (EDT)
+	id A669C8E0014; Mon, 18 Aug 2025 02:57:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25D148E0014; Mon, 18 Aug 2025 02:46:41 -0400 (EDT)
+	id A3E648E0013; Mon, 18 Aug 2025 02:57:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14BB18E0013; Mon, 18 Aug 2025 02:46:41 -0400 (EDT)
+	id 9545E8E0014; Mon, 18 Aug 2025 02:57:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id F34C26B00C9
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 02:46:40 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 49A3D138FAD
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 06:46:40 +0000 (UTC)
-X-FDA: 83788944960.29.BBC54EB
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 9CFE3100006
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 06:46:38 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u0Rpyu4y;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 821AB8E0013
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 02:57:52 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 326521185A3
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 06:57:52 +0000 (UTC)
+X-FDA: 83788973184.12.9ADD3FA
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf25.hostedemail.com (Postfix) with ESMTP id DCB35A0009
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 06:57:49 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="m2n5Pn/s";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ZQBT1OMa;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="m2n5Pn/s";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ZQBT1OMa;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf25.hostedemail.com: domain of hare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=hare@suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755500270; a=rsa-sha256;
+	cv=none;
+	b=KvQhR6B7NDoNhyYOefZr/E9cECpaejpl2w3dGooyH4rN+TRPy71vPFnUwMYVO/SH0PUeui
+	zVqqIZvthZ4qTmgkYoWFg7ab4LacHYFrQ/VfAeiLSk9bfpZQs+ADPFTNhSiaZAl6mwkG86
+	+gHOYTxl4dwt4lxtSpFvVFwKIIPPPlM=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="m2n5Pn/s";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ZQBT1OMa;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="m2n5Pn/s";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ZQBT1OMa;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf25.hostedemail.com: domain of hare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=hare@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755499598;
+	s=arc-20220608; t=1755500270;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UeSgCA6ebvBlLvwuNlNBwToj21zEnD385dv71fuTzn8=;
-	b=5AoDJctBc6qNe4d/oVbyIcGXUFJSPOxBizgV4Sty08EhR46jU7/F/OG31vR8R00pazPKyB
-	c8ADPrHRmoKpSvUqicNJ/qv/oDtv+S60S1/1TMkieDIDy79QEiTdVvmBb+v2wtym8PBJbS
-	ZXCy9DlYDYqGgZqgFJD9lU6iPpDAxo4=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u0Rpyu4y;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755499598; a=rsa-sha256;
-	cv=none;
-	b=SvB7GnEQy1Ks/1u0z0BkZ6Ekw06D69OS2fCHjeNTuuTh/sv8NbMXIyfyF/VFF67QLb4idd
-	Y+yZ8BAJfA8QPGOo7/6adK0bhc3NULBY2FNMaGqJh02s5q4EHbv7Jep+uARp7l6J/FYTWZ
-	o8DiELDZIWf3hGEIw7LiMTCseC/AzAs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 95EC85C599F;
-	Mon, 18 Aug 2025 06:46:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 325E2C4CEEB;
-	Mon, 18 Aug 2025 06:46:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755499597;
-	bh=mWBw2dxrn3qCb6ZjGXqIStKZeXRZV0QwSHDvWZaNzXg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u0Rpyu4y8bEUq8EbFwZHD5j3l2gjivkI8HDDJLhyxDRHEzCdCC1nxhMjOdh19vgTq
-	 l2Rzc/qXKbDwoWkF8Ma9mBNItHubHiDEcL60X2pyfsp/yozfyASpmtNvkn2ppiP6bB
-	 K6wWyhJ/w6QjVyS96IfFo28aq/M+NW61AdgJE1nl989dXsHPbfrR1fQmRp6glOM3xP
-	 5DSgy8XwoD+L7Spl9BPnUEIZbM9qVXYU7mj/i2XxngBbxSUtSsf8JKLy3qvkjxZySg
-	 d7lut5t2oHgzynTJjzf0lUc+6ZM4fT2vERwhMokUsHvgPSi31DWsxsDcw2doc3jVyJ
-	 qazIie45dnMmQ==
-From: Mike Rapoport <rppt@kernel.org>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Bill Wendling <morbo@google.com>,
-	Daniel Jordan <daniel.m.jordan@oracle.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH 4/4] memblock: drop for_each_free_mem_pfn_range_in_zone_from()
-Date: Mon, 18 Aug 2025 09:46:15 +0300
-Message-ID: <20250818064615.505641-5-rppt@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818064615.505641-1-rppt@kernel.org>
-References: <20250818064615.505641-1-rppt@kernel.org>
+	bh=J5NJv+yFL+xt33TWRdS3ak5apbcoiIS+C6qqfQR5hMU=;
+	b=HK96/nUnpeHFtDceWPworHA1HUwL0w0UnQXUhthVnCsIoacRzqjSk2XP875YMpOQxR5Ahz
+	uXOUyYXkmLUVPJFPioHiVmu+GxMGizTARSqrXYpZhaYSIZ+pqKhNDtGfD/oM1dhKZcK/QT
+	O6aDBoRbR66nYG75bFgZPBQLBC/7byc=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 40F982122E;
+	Mon, 18 Aug 2025 06:57:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1755500268; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J5NJv+yFL+xt33TWRdS3ak5apbcoiIS+C6qqfQR5hMU=;
+	b=m2n5Pn/swRjMcr/BL/mW3Rs9gdfHEjFiJUo43cfx+OPe7St/esbRFm66e8TgvfRnEKJ7AV
+	4ti+7xbLf833OrS8+6KIXn2yb2Dvpi1jkrOg0JF7HWXN5qMKo1HML4A/Q9NKLNv7XeMymf
+	V0H9V1V7Ayy6aaogQfT8XRfeLKZpd0U=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1755500268;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J5NJv+yFL+xt33TWRdS3ak5apbcoiIS+C6qqfQR5hMU=;
+	b=ZQBT1OMaO/NhRqw9HziHqPbvJRKepl/M6W1RDhf2Lia5W0VeG00Zv3ap7PoxgXWa8+hrOQ
+	yyKvhycPlpCD56AA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1755500268; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J5NJv+yFL+xt33TWRdS3ak5apbcoiIS+C6qqfQR5hMU=;
+	b=m2n5Pn/swRjMcr/BL/mW3Rs9gdfHEjFiJUo43cfx+OPe7St/esbRFm66e8TgvfRnEKJ7AV
+	4ti+7xbLf833OrS8+6KIXn2yb2Dvpi1jkrOg0JF7HWXN5qMKo1HML4A/Q9NKLNv7XeMymf
+	V0H9V1V7Ayy6aaogQfT8XRfeLKZpd0U=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1755500268;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J5NJv+yFL+xt33TWRdS3ak5apbcoiIS+C6qqfQR5hMU=;
+	b=ZQBT1OMaO/NhRqw9HziHqPbvJRKepl/M6W1RDhf2Lia5W0VeG00Zv3ap7PoxgXWa8+hrOQ
+	yyKvhycPlpCD56AA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CBEB413686;
+	Mon, 18 Aug 2025 06:57:46 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id awQEMOrOomiqCQAAD6G6ig
+	(envelope-from <hare@suse.de>); Mon, 18 Aug 2025 06:57:46 +0000
+Message-ID: <728b9bd5-f423-48cf-a9e0-31270d0b9506@suse.de>
+Date: Mon, 18 Aug 2025 08:57:46 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/5] add persistent huge zero folio support
+To: David Hildenbrand <david@redhat.com>,
+ Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
+ Suren Baghdasaryan <surenb@google.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>, Mike Rapoport <rppt@kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Michal Hocko <mhocko@suse.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Nico Pache <npache@redhat.com>,
+ Dev Jain <dev.jain@arm.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Jens Axboe <axboe@kernel.dk>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, willy@infradead.org,
+ Ritesh Harjani <ritesh.list@gmail.com>, linux-block@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, "Darrick J . Wong" <djwong@kernel.org>,
+ mcgrof@kernel.org, gost.dev@samsung.com, hch@lst.de,
+ Pankaj Raghav <p.raghav@samsung.com>
+References: <20250811084113.647267-1-kernel@pankajraghav.com>
+ <hzk7e52sfhfqvo5bh7btthtyyo2tf4rwe24jxtp3fqd62vxo7k@cylwrbxqj47b>
+ <dfb01243-7251-444c-8ac6-d76666742aa9@redhat.com>
+ <112b4bcd-230a-4482-ae2e-67fa22b3596f@redhat.com>
+ <rr6kkjxizlpruc46hjnx72jl5625rsw3mcpkc5h4bvtp3wbmjf@g45yhep3ogjo>
+ <b087814e-8bdf-4503-a6ba-213db4263083@lucifer.local>
+ <lkwidnuk5qtb65qz5mjkjln7k3hhc6eiixpjmh3a522drfsquu@tizjis7y467s>
+ <57bec266-97c4-4292-bd81-93baca737a3c@redhat.com>
+ <osippshkfu7ip5tg42zc5nyxegrplm2kekskhitrapzjdyps3h@hodqaqh5r26o>
+ <6afa5cab-2044-46fb-9afb-8be82fe8a39f@redhat.com>
+Content-Language: en-US
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <6afa5cab-2044-46fb-9afb-8be82fe8a39f@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9CFE3100006
-X-Rspamd-Server: rspam04
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: 7bmbbfzmnjhkqu5p5wcqd61ugiicjbnn
-X-HE-Tag: 1755499598-973452
-X-HE-Meta: U2FsdGVkX19Yz1ovNgcmk5A1Fvb+UlfxT+72o0yerNHeF30qNEYc7PzkfnE3XzIy/VQ25NaZjWryCfYhXuw6+YwO3tTbV82T4pe9TGN1vUolYjp7v/pngjOgm3dtqX4qGASjK0VyExhEAtMLA96UeJefouGehMkquNH78oz9WLHwl4a+1iBp6Kk4FpPBnoUTZG5BFqVeMVRMFRTpIoAOZU82gdy0hlZQf/o4bwjpMW7d3RPWAzBJltOQRk9GMIharvBbP/Z7WefYpf887rL2hesXrKDB0Z6Dyt65Qaydugbr470htJxPFUdpQZobuwIf1XMaT3mfr+ahc242FbdsF1zUzcSDFHGJDwdqUlQVdv/TTFcVW5owjo3G6tqugfJR+7nRnC+gQqfh+dyW9ZDEwKwkOb2GbYeNkVBoAsjp9Wgd/+oON53g9d+DnPoL5lv2Su/5MKr6uHU6X3sREgdeLmwdyPs1BHHTOBMeHUt2/Me2c7vdr9AJD412zZFydDAbyQQXf9F5Vugyh5Sn2791Cx04BIt4kgbbHvcfAR2LfPIFEiykaSu+/q9cmV6TcjKh/WQGWh0tfKJ8P57ob0Gq+NVVjq4U2VkvRVnDnBv2E1h5MDsJflweKw4nGdxryc5Zuf7SHq0EpgWnl+nfCCUvb+aC2N3jpnADpvrIPGuBX8NMgdER96bbD70c2E8gERxCqPMygqFojb/egvnHZCu33hSuRkN3ZXRSVBCWL4GfqqKAVx0mg7CiNy0iLVNj+ZDj78RTem6CH6EXXOQk9SMPP0R6cwelRL+58nGEwAELjnQi5XVnLT+DPkKBXUoGyz+dIc4e09Lz091RWFbZFAjWnBPN1AVGgWizJRsovBLbmXjOaXrm6Uo1gFL7yIsg2eVq54wsU0iHd8GSRCCrj9odjuXksTdvXAsSjhUSIMaCS62CsXD5fZaWmJ+GUpZ88dCeijY+ufMrfWISjqonpLr
- /K4GOlAB
- fAelHN+GfZObjxxqYTQOtx078wDF5J/6WlnNDSLBS4PAIjcsaBjX61oBY7ZXcFn/O/l4ZfHB5pqo7ruYLNs2JHf7EAjmtLZXDG+KwwvvT5ODJQ9+PROkoM5YVaUkshij84uELbSOmaFNS6e2dUjfhrjZQ8H4TYRPjdlkNG5glpyPkcYXi4WeZuZpfYpRXZcz3du2/QWv/98HMRTkZ0Pr+zr2W2ZIs2KvCCJZagyt4+HNDHxEhKT8UpHAVyevwH8Y1T/pUZ7i0wCHxjq/3++XfCk1hna5kouQB8ju6vndNyERlc5vTCn+8lmrVOnGEvtrKKtFy
+X-Rspamd-Queue-Id: DCB35A0009
+X-Stat-Signature: aundiom91gkmruw7wsqfrhu7fjqgnogn
+X-HE-Tag: 1755500269-778408
+X-HE-Meta: U2FsdGVkX19S8Vju7BOWI23P2/VllVsPYucHRgFpxKKyHSqcW5kSOqOSeOCd19wA1M56dr57KEPzWXHdGn0EISiQNLcupcNXr1KKLSOOu2L9SwNuWfk5C6KD8ttYQXtJhP+X5+4P1YMdlK263WEaNalahtnyGSfUUh8ZDQo+noIEE9mBmSA6su/LdHIf3524oY9GytPcI7K0T1kTt6jM28sq/Tos+mziU5prxgW9hjlHH+ufV7W6CrUQXFvn4pM4Br8x7Ep5rqkID9KgK/z3/JNG6FvPVJtZvBTzSMR+DOhxRqEjIVy2Mb+zXGiBgMH4YPcrVmu4HWJS2UB1XyMx3AS7sqK5yUdSMXdCr4PtdPp3a6g1scsz66FYAbpiPB8iL2EXDeoa+k9fRuz0KdNxolHBou20RcdoZZYmOE/T3UIuwDas7fVzfIRGJ7A74bwSJv0VRF8ZM9CjmgqcVvGIkA4ZO4W7+q4sVNoVoM6+NQOXoCGq0vL6yssn50wYBGLHy1qGTxAA6M0sVBJ1hHy1NIm7BphqPOcXBKGeIhT+sZdYa/0jWqPMRxJYAGdyMajetxxrt4fJcgWjM8dMfCPdwa3/4a8tKw1sRFrCAQ7cVJjZocenuo8kUKSqKnADGu/5rRZigi2m3Lw2/gLa9Hk37pZolARc5PJQkQVWGldxN6B5lWWV/HZAd7RIcf2UBafdsgUeFvxNonIOW381bHFp5L7BAnvwoFdnPy0DJZRe0Qsz34hOamievKP1iWi0tiedLyo46y6l9vVTJ8oHk+sjE71YdPQ2HkaNH81eUfB9mO5eAAXMfXjU1gq9/xiuqQys9i6rdBhAvM5HpQtTyNY5Ds8Z7BW8k6E0jkAe4PbRLfYPg9EakVIA9enXsm9LBuwIscaiuNUcUZw9LO+HpCKLEKvmELQ671rCIfnb1YWKxjzoCrBE65PfcMt1+l/Cj5gpCQYMOkNbiehyflCaseS
+ G/+/AQ1e
+ ZGqPTtAaEHB1vvDQ8hs3lzfgMlZzeRRbTCBwt6ohazB12CaW0/iDOgbi3jp8+XQVOqkf1LHwMshioRd3Z0tVr/ouDgThP2KV/sCFUtBKhANNqRjTdN6yULvK10bd9ylVW+UwWar9SLNruP4hVnNq2n6GSaMTqaYwcp3S5lwzZEnFkXp6Zy12T+t9cxD4rdMGbzLu9sNsvU/CX01yz3yQTBeeiroUqX2kPspaUk7VVNpWAdyZAY1m71NjUtCWjkcIfPTJLD8cyQ11hEypTHUeMAZMX7xVy8s/jhKG0aOB9zS2s9n02mdXnDUgKYimrYDvdXulEMFHeIrbGcv//Pa8wWBQxZdGgr0foaNnaWv5HV8kAKRk+ciszsib+3VumHUyypGa3slGJodgNNn0xoB4E/JSSmg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,142 +159,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+On 8/11/25 12:43, David Hildenbrand wrote:
+> On 11.08.25 12:36, Kiryl Shutsemau wrote:
+>> On Mon, Aug 11, 2025 at 12:21:23PM +0200, David Hildenbrand wrote:
+>>> On 11.08.25 12:17, Kiryl Shutsemau wrote:
+>>>> On Mon, Aug 11, 2025 at 11:09:24AM +0100, Lorenzo Stoakes wrote:
+>>>>> On Mon, Aug 11, 2025 at 11:07:48AM +0100, Kiryl Shutsemau wrote:
+>>>>>>
+>>>>>> Well, my worry is that 2M can be a high tax for smaller machines.
+>>>>>> Compile-time might be cleaner, but it has downsides.
+>>>>>>
+>>>>>> It is also not clear if these users actually need physical HZP or 
+>>>>>> virtual
+>>>>>> is enough. Virtual is cheap.
+>>>>>
+>>>>> The kernel config flag (default =N) literally says don't use unless 
+>>>>> you
+>>>>> have plenty of memory :)
+>>>>>
+>>>>> So this isn't an issue.
+>>>>
+>>>> Distros use one-config-fits-all approach. Default N doesn't help
+>>>> anything.
+>>>
+>>> You'd probably want a way to say "use the persistent huge zero folio 
+>>> if you
+>>> machine has more than X Gigs". That's all reasonable stuff that can 
+>>> be had
+>>> on top of this series.
+>>
+>> We have 'totalram_pages() < (512 << (20 - PAGE_SHIFT))' check in
+>> hugepage_init(). It can [be abstracted out and] re-used.
+> 
+> I'll note that e.g., RHEL 10 already has a minimum RAM requirement of 2 
+> GiB. I think for Fedora it's 1 GiB, with the recommendation of having at 
+> least 2 GiB.
+> 
+> What might be reasonable is having a kconfig option where one (distro) 
+> can define the minimum RAM size for the persistent huge zero folio, and 
+> then checking against totalram_pages() during boot.
+> 
+> But again, I think this is something that goes on top of this series. 
+> (it might also be interesting to allow for disabling the persistent huge 
+> zero folio through a cmdline option)
+> 
+Please make this a kernel config option and don't rely on heuristics.
+They have the nasty habit of doing exactly the wrong thing at places
+where you really don't expect them to.
+(Consider SoCs with a large CMA area for video grabbing or similar stuff
+and very little main memory ...)
+A kernel option will give distros and/or admins the flexibility they
+need without having to rebuild the kernel and also not having to
+worry about heuristics going wrong.
 
-for_each_free_mem_pfn_range_in_zone_from() and its "backend" implementation
-__next_mem_pfn_range_in_zone() were only used by deferred initialization of
-the memory map.
+Cheers,
 
-Remove them as they are not used anymore.
-
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- .clang-format            |  1 -
- include/linux/memblock.h | 22 --------------
- mm/memblock.c            | 64 ----------------------------------------
- 3 files changed, 87 deletions(-)
-
-diff --git a/.clang-format b/.clang-format
-index 48405c54ef27..f371a13b4d19 100644
---- a/.clang-format
-+++ b/.clang-format
-@@ -294,7 +294,6 @@ ForEachMacros:
-   - 'for_each_fib6_node_rt_rcu'
-   - 'for_each_fib6_walker_rt'
-   - 'for_each_file_lock'
--  - 'for_each_free_mem_pfn_range_in_zone_from'
-   - 'for_each_free_mem_range'
-   - 'for_each_free_mem_range_reverse'
-   - 'for_each_func_rsrc'
-diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index b96746376e17..20b61e910f4d 100644
---- a/include/linux/memblock.h
-+++ b/include/linux/memblock.h
-@@ -323,28 +323,6 @@ void __next_mem_pfn_range(int *idx, int nid, unsigned long *out_start_pfn,
- 	for (i = -1, __next_mem_pfn_range(&i, nid, p_start, p_end, p_nid); \
- 	     i >= 0; __next_mem_pfn_range(&i, nid, p_start, p_end, p_nid))
- 
--#ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
--void __next_mem_pfn_range_in_zone(u64 *idx, struct zone *zone,
--				  unsigned long *out_spfn,
--				  unsigned long *out_epfn);
--
--/**
-- * for_each_free_mem_pfn_range_in_zone_from - iterate through zone specific
-- * free memblock areas from a given point
-- * @i: u64 used as loop variable
-- * @zone: zone in which all of the memory blocks reside
-- * @p_start: ptr to phys_addr_t for start address of the range, can be %NULL
-- * @p_end: ptr to phys_addr_t for end address of the range, can be %NULL
-- *
-- * Walks over free (memory && !reserved) areas of memblock in a specific
-- * zone, continuing from current position. Available as soon as memblock is
-- * initialized.
-- */
--#define for_each_free_mem_pfn_range_in_zone_from(i, zone, p_start, p_end) \
--	for (; i != U64_MAX;					  \
--	     __next_mem_pfn_range_in_zone(&i, zone, p_start, p_end))
--
--#endif /* CONFIG_DEFERRED_STRUCT_PAGE_INIT */
- 
- /**
-  * for_each_free_mem_range - iterate through free memblock areas
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 154f1d73b61f..337c025109fa 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -1438,70 +1438,6 @@ int __init_memblock memblock_set_node(phys_addr_t base, phys_addr_t size,
- 	return 0;
- }
- 
--#ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
--/**
-- * __next_mem_pfn_range_in_zone - iterator for for_each_*_range_in_zone()
-- *
-- * @idx: pointer to u64 loop variable
-- * @zone: zone in which all of the memory blocks reside
-- * @out_spfn: ptr to ulong for start pfn of the range, can be %NULL
-- * @out_epfn: ptr to ulong for end pfn of the range, can be %NULL
-- *
-- * This function is meant to be a zone/pfn specific wrapper for the
-- * for_each_mem_range type iterators. Specifically they are used in the
-- * deferred memory init routines and as such we were duplicating much of
-- * this logic throughout the code. So instead of having it in multiple
-- * locations it seemed like it would make more sense to centralize this to
-- * one new iterator that does everything they need.
-- */
--void __init_memblock
--__next_mem_pfn_range_in_zone(u64 *idx, struct zone *zone,
--			     unsigned long *out_spfn, unsigned long *out_epfn)
--{
--	int zone_nid = zone_to_nid(zone);
--	phys_addr_t spa, epa;
--
--	__next_mem_range(idx, zone_nid, MEMBLOCK_NONE,
--			 &memblock.memory, &memblock.reserved,
--			 &spa, &epa, NULL);
--
--	while (*idx != U64_MAX) {
--		unsigned long epfn = PFN_DOWN(epa);
--		unsigned long spfn = PFN_UP(spa);
--
--		/*
--		 * Verify the end is at least past the start of the zone and
--		 * that we have at least one PFN to initialize.
--		 */
--		if (zone->zone_start_pfn < epfn && spfn < epfn) {
--			/* if we went too far just stop searching */
--			if (zone_end_pfn(zone) <= spfn) {
--				*idx = U64_MAX;
--				break;
--			}
--
--			if (out_spfn)
--				*out_spfn = max(zone->zone_start_pfn, spfn);
--			if (out_epfn)
--				*out_epfn = min(zone_end_pfn(zone), epfn);
--
--			return;
--		}
--
--		__next_mem_range(idx, zone_nid, MEMBLOCK_NONE,
--				 &memblock.memory, &memblock.reserved,
--				 &spa, &epa, NULL);
--	}
--
--	/* signal end of iteration */
--	if (out_spfn)
--		*out_spfn = ULONG_MAX;
--	if (out_epfn)
--		*out_epfn = 0;
--}
--
--#endif /* CONFIG_DEFERRED_STRUCT_PAGE_INIT */
--
- /**
-  * memblock_alloc_range_nid - allocate boot memory block
-  * @size: size of memory block to be allocated in bytes
+Hannes
 -- 
-2.50.1
-
+Dr. Hannes Reinecke                  Kernel Storage Architect
+hare@suse.de                                +49 911 74053 688
+SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
+HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
 
