@@ -2,117 +2,237 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B7B76CA0EE4
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 13:08:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B119CA0EE4
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 13:11:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5DE818E0044; Mon, 18 Aug 2025 09:08:30 -0400 (EDT)
+	id BB2448E0045; Mon, 18 Aug 2025 09:11:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B5EA8E000B; Mon, 18 Aug 2025 09:08:30 -0400 (EDT)
+	id B8A5C8E000B; Mon, 18 Aug 2025 09:11:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4CC038E0044; Mon, 18 Aug 2025 09:08:30 -0400 (EDT)
+	id A52128E0045; Mon, 18 Aug 2025 09:11:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BD658E000B
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 09:08:30 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D8C101187A4
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 13:08:29 +0000 (UTC)
-X-FDA: 83789907138.26.1FA1D70
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	by imf27.hostedemail.com (Postfix) with ESMTP id BEC1240011
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 13:08:27 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F3DA8E000B
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 09:11:58 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1057FBBFA7
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 13:11:58 +0000 (UTC)
+X-FDA: 83789915916.19.82DC5F1
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012054.outbound.protection.outlook.com [52.101.66.54])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 477BD4000F
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 13:11:54 +0000 (UTC)
 Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="KFapMUo/";
-	spf=pass (imf27.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755522507;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=XrBvsWWi;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=XrBvsWWi;
+	spf=pass (imf27.hostedemail.com: domain of YeoReum.Yun@arm.com designates 52.101.66.54 as permitted sender) smtp.mailfrom=YeoReum.Yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2")
+ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1755522714; a=rsa-sha256;
+	cv=pass;
+	b=xlo2G2FFyxMKoS1w5AoK0QEwKa4DOY/WTOPVpI/m/G/7lo/Zu9JgHK1MSFP22XgUnVjBJC
+	uq3UvC3D0F4AXDrIFyKYkl6mTS3LOs15ONKuW04JevbQIz9E0FwSVNIDgbHHQu14qi0RBz
+	r7+FYffMQMwWx2I0I0RYFZvdhbpIxps=
+ARC-Authentication-Results: i=3;
+	imf27.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=XrBvsWWi;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=XrBvsWWi;
+	spf=pass (imf27.hostedemail.com: domain of YeoReum.Yun@arm.com designates 52.101.66.54 as permitted sender) smtp.mailfrom=YeoReum.Yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2")
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755522714;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HyuVXrZJ7tQHSn/WZiZiqfIBmKXwsNldZJSI/ZLU+6s=;
-	b=MmkNg8GOBxXtauake4jXFFMmoeroJIYNSA8Dk8ThVqMiHNbQZfEjczjp86GzOEOcDee8VY
-	vSQqb942GVya+cNaW+Ha7J9jujoGfa2FesUUvTUv+ECe7xCLRMQ/KcPh6G/LCPFUmCq7Ra
-	BeJ4Bqyv3Q6d1ziMR2hh0n8C+diZUT8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755522507; a=rsa-sha256;
-	cv=none;
-	b=cIvYj31MZYM8XGMTmfH+YKNV49ZfuWDq9dcMCaWNAjDRntQp0Z0SdHr0pbOIGzmuAUNMiT
-	D0Mtu0dXhHfmi35zRmtvQfHKI+ik60X2rfjLPPuuKhb+8TR1EaaKTxzROpUo0Is/hci6ac
-	XDgHtIbXiBf0oRZ/gLg3qkuW3Sig4Is=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="KFapMUo/";
-	spf=pass (imf27.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-55ce526627dso4175158e87.3
-        for <linux-mm@kvack.org>; Mon, 18 Aug 2025 06:08:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755522506; x=1756127306; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=HyuVXrZJ7tQHSn/WZiZiqfIBmKXwsNldZJSI/ZLU+6s=;
-        b=KFapMUo/gKuoh7q5i6u8vOreh8tBqmVFUh40MCnq+NsigG2jGiMMxDkWqMtmhXAJrC
-         xZgfMzDtV2eVLCdW3csSnHqxtvE52NKbqnTILK7PqMI3j1EjP1prITQ1t3gXT5AwCsPG
-         VdMhYiM5jZfn9W2ovRQTXlRQZmeNSNX3IkdScvHL1s750cxS0o95L1GHxVwfUgNeISKX
-         WhfPwOQ6hOb++cZpL1cT4IDBcGc1G68S16fN7B3+4asUV8IiEc/Ef4El+IvIHsRQ5nbu
-         U0XpMaU+ebcGaGUvsJeX7aXpqFiJxWHCgOzZJU//LcBfhFSLg9ivNbVZqfgDvrkIWtmc
-         up/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755522506; x=1756127306;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HyuVXrZJ7tQHSn/WZiZiqfIBmKXwsNldZJSI/ZLU+6s=;
-        b=KzlPbiD/h6pvUilcE68UMSUH6mLT/nEObjIX6ntXgZ0Pe0K5PVpSmyH4xak2CuK0XB
-         6NamLtuMlOICaFz255r+Fty6VbC9l9ZnPnuNlk30O+zSGgMq4ojB3WwlZHYP0EajxeUl
-         NeQeXQOFRJzilwAI8dmtf0f7mw5/6a8u9YSMQzeFe2RS1fqTgiVAqTM8psdBjQd6fezI
-         uc3b0JA3D6t8Hrlp5fcBJ5MoKxB7jPoNUdzdSZUhYi0rT/voFcrmv8VjR9lj5eZd05U9
-         q4JQ7B3Ar0iCwfNv8nsLGNN2+yRuZVO3WRLJW0cjmfrMh+jHBdjaak8TNtLnws4Encqi
-         kyAg==
-X-Forwarded-Encrypted: i=1; AJvYcCVjPoPcaJvyJwm5oNMydPkf3n2g8GmWG5LNC2fyAuJ10SNbrWSpt108NHidCSRpLvcJXqaKtTHjVw==@kvack.org
-X-Gm-Message-State: AOJu0YymtyJtTMAXhjibED2oVNgeNS8x/scoBdVAE+wz6XzZ7BRqHcWS
-	AW7wikSdrIC0eNAWi0Hc5CYoMaEV3THppcz3ckbYz80Hcc1j2dB2gSOCCQYXJw==
-X-Gm-Gg: ASbGncuJicNLa33vxVY9BSIUTwCH/+Kz5wa5+5uaXsH5t51dEM8Fz11aOVMFLF/VYq9
-	yK7eomkXsiCQPfGb5Df3SoSR0XzVHGrxEjTgvdDCdsADe+ZKXIlSWZhXjQnAzGSdSu1Q1z3j+hR
-	bKjAbDTtbjVCgbBMAuP2rHnRqG1ISrtWZj41aJ3TtIoapkxWIkQjeUoTxO4gKo66Z1JhIj0SjAf
-	ZgSBZfHP5gOafsAgI5Cb6Cn5K/kle4E3OcwltKwkoynaIVBSJ1g603COckvINgtxVdholspaA92
-	ORz62e8CCBEoug9ASFbi5Wewbn0k4VZpG8F//J/XdDKf2o79TaX2fmdw3n3qnTDDFEssZS1PuQ0
-	ZfB46bMwGe1/cFRpvX8CXxM1aTm5IMUUowBKIPuSjs39P9GHBEA==
-X-Google-Smtp-Source: AGHT+IEIBUpvwsmKHbgEdF4HCrjf2IRGG5QGH8UtbpE1PIOQZSfKKpE3aMnzFvwN1+GQhKFI7y2drA==
-X-Received: by 2002:a05:6512:2906:b0:55b:827d:e377 with SMTP id 2adb3069b0e04-55cf2c82686mr1712655e87.22.1755522505558;
-        Mon, 18 Aug 2025 06:08:25 -0700 (PDT)
-Received: from pc636 (host-95-203-21-145.mobileonline.telia.com. [95.203.21.145])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55cf4d0d181sm1102471e87.57.2025.08.18.06.08.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Aug 2025 06:08:24 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Mon, 18 Aug 2025 15:08:23 +0200
-To: Baoquan He <bhe@redhat.com>
-Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>, linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 7/8] mm/vmalloc: Support non-blocking GFP flags in
- __vmalloc_area_node()
-Message-ID: <aKMlx_sATwnGsXXp@pc636>
-References: <20250807075810.358714-1-urezki@gmail.com>
- <20250807075810.358714-8-urezki@gmail.com>
- <aKKthIZbD4oNywY4@MiWiFi-R3L-srv>
-MIME-Version: 1.0
+	bh=3yLSX+HNfkM3kyN+gL4jKSVpM1YNgfoLpyH8V67D8/Y=;
+	b=T1EVqhFyP3KIcwf0WMOJjISz7823tFc5lM172KkUXo1xT3FNl7+j/sfD05GO2sfxeL6prs
+	XgtvPikNvqVn1ZNqghAOPvIPeTQJAh5FX1cb6cIsV1MiPg5YmqwbwezASUM3LgcgSt+ThM
+	YxSbjsZoXou6HKd1BFVHTS4ctds5WoM=
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=aqQnWSZ4HdCWGIs4ftaZWo6ySkPgLvp7fVlKP2jx4uvpzDUHlM/DWhiWN9lnjJ+Qp2arsrXI8EvW6PMhIJDvC9Zt6v1EIyVEaAx79XFMVLURz1shd8lbja9PFoPkN3w9iZ5+341PEknQeTi7AESMAkdB9NjLVzpP6j829+CuIJCiis+AudNVy0zFBPrgB0LaR2H5XZgWaUDsiLEQ4g1NQ7e3TB3+Qj1lHBqqvUZHMwBv2sjbTmDYCybSj5vKfQL9Oa3icMl8lkKT93OVKDedXVtKDtZ1OxuIsg0VcYIat2capSMRkiKSNj3EebxFS9ub5gJQ7nS+D8uI6xxGBxsY4g==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3yLSX+HNfkM3kyN+gL4jKSVpM1YNgfoLpyH8V67D8/Y=;
+ b=V6ramsYPNKdscnxwmV/9NUQZvzixIDfJ6iSzduzLcFerExE66ktqdlsmVtwYfkGLDNKWNxsANyMiqwB5rFo/6Io21OllfepMvI8NvsOvJqrR1S79/ZYaDjiXJ6yBL67RtF4HR7dw1MKKNPDLKBqLLCatWPDNyTXOmNjuSdBPIhvPFT32LlWAt+MH2O5MAvGGukI4hZTwzNoP9X9pAx1twYxRmGl8AZeh2El1oMcqnwp7xmcHzvkK+vsw7/HrShglR0iHBoHb0xucqCEA05vIrdOmaFr4n45o7XxGuC2iFofqcz8sBrNR/VJm/aFoSkmPFKzcLUU9A9d9mQIS5TWZyQ==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=gmail.com smtp.mailfrom=arm.com; dmarc=pass
+ (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
+ (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3yLSX+HNfkM3kyN+gL4jKSVpM1YNgfoLpyH8V67D8/Y=;
+ b=XrBvsWWi/H0Lv3R6yx+ybnRcTYxRVd9IhGMLZRBtAKr1J64vwxXPSLrSfhrzd8F1LNBTQbayudujucjvbC2/AKiMBfdtLytwAm/LYo10q1GXTjco6z7ZuwG2Sll/+Irdrdaf9uAwj/G9H95Uacj1ezMnb6t5FJKWHG88JmmVpcg=
+Received: from DUZPR01CA0078.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:46a::20) by PAWPR08MB8839.eurprd08.prod.outlook.com
+ (2603:10a6:102:338::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.24; Mon, 18 Aug
+ 2025 13:11:48 +0000
+Received: from DU2PEPF00028D11.eurprd03.prod.outlook.com
+ (2603:10a6:10:46a:cafe::16) by DUZPR01CA0078.outlook.office365.com
+ (2603:10a6:10:46a::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9031.21 via Frontend Transport; Mon,
+ 18 Aug 2025 13:11:50 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ DU2PEPF00028D11.mail.protection.outlook.com (10.167.242.25) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9052.8
+ via Frontend Transport; Mon, 18 Aug 2025 13:11:47 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HN+zCdMA4LfrULOsg/jqlkudWLIH8cG+QQvRMVUWdY2hUSickE1qPYMx/rC3FwWVW22hRYBzwPwxMm3sCVp5gQKrF4ORKS+0nqLoHaMHWtKXWYHGPGEupLmJk193XSP+vMD4crMUn1iV78/pGCj9Mp+A8b0n/s+0CDwCQ4W4gJn1L2XzOw82UQFrTBt7Ng79Gn0SCvyIWsOim4QV99P8rSpq4NWEOwFjdbfsz15ws6bZeBULqdH/yBkK/JfjpNeTScxa4qnapTZjENzHR9NjTg431D4Suf9RQA+zLmud5aPrway/GypS3pkSvLg19kJkSheWi3mGlo2iSD0LXkNF0g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3yLSX+HNfkM3kyN+gL4jKSVpM1YNgfoLpyH8V67D8/Y=;
+ b=xcGNmjUI2DSOJHNMgclIUME7+lcB20T6IKVgsjN0V77FZUTSDcr3BrWAFDw56Ly6nXSDeHyy6SBEbPLSQOqtdEoXSwWFYwjjoSBLU61d28jBHmITvKL50WX7Nx5CfCSfOQMNcdBp4+mJjzzyiiGmhJ0oTCHIcr2IRJdWzYeUFIH1CTVTmGpXaUMPyAcZswY8rjj2O+Gq87NTjp2DucXR1unxF+P1mQUN3pqz9QIldFjm1QIGWeewUSk99TL2cphskfGlbKJ9bQdjWesdHp6aeNhENu/ilXBqVU49GMPsavbUT8Yx0MLAFklqklBgMMBH4KPMxes18UE0ki3HZLEVLA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3yLSX+HNfkM3kyN+gL4jKSVpM1YNgfoLpyH8V67D8/Y=;
+ b=XrBvsWWi/H0Lv3R6yx+ybnRcTYxRVd9IhGMLZRBtAKr1J64vwxXPSLrSfhrzd8F1LNBTQbayudujucjvbC2/AKiMBfdtLytwAm/LYo10q1GXTjco6z7ZuwG2Sll/+Irdrdaf9uAwj/G9H95Uacj1ezMnb6t5FJKWHG88JmmVpcg=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
+ (2603:10a6:150:163::20) by AS8PR08MB10144.eurprd08.prod.outlook.com
+ (2603:10a6:20b:630::15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.22; Mon, 18 Aug
+ 2025 13:11:15 +0000
+Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
+ ([fe80::d430:4ef9:b30b:c739]) by GV1PR08MB10521.eurprd08.prod.outlook.com
+ ([fe80::d430:4ef9:b30b:c739%7]) with mapi id 15.20.9031.023; Mon, 18 Aug 2025
+ 13:11:15 +0000
+Date: Mon, 18 Aug 2025 14:11:12 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: ryabinin.a.a@gmail.com, glider@google.com, dvyukov@google.com,
+	vincenzo.frascino@arm.com, corbet@lwn.net, catalin.marinas@arm.com,
+	will@kernel.org, akpm@linux-foundation.org,
+	scott@os.amperecomputing.com, jhubbard@nvidia.com,
+	pankaj.gupta@amd.com, leitao@debian.org, kaleshsingh@google.com,
+	maz@kernel.org, broonie@kernel.org, oliver.upton@linux.dev,
+	james.morse@arm.com, ardb@kernel.org,
+	hardevsinh.palaniya@siliconsignals.io, david@redhat.com,
+	yang@os.amperecomputing.com, kasan-dev@googlegroups.com,
+	workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v4 1/2] kasan/hw-tags: introduce kasan.write_only option
+Message-ID: <aKMmcPR8ordnn1AG@e129823.arm.com>
+References: <20250818075051.996764-1-yeoreum.yun@arm.com>
+ <20250818075051.996764-2-yeoreum.yun@arm.com>
+ <CA+fCnZcce88Sj=oAe-cwydu7Ums=wk2Ps=JZkz0RwO-M_DjfVQ@mail.gmail.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aKKthIZbD4oNywY4@MiWiFi-R3L-srv>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BEC1240011
-X-Stat-Signature: 753cu1tihafq6k7jmd6iukptmqw835j3
+In-Reply-To: <CA+fCnZcce88Sj=oAe-cwydu7Ums=wk2Ps=JZkz0RwO-M_DjfVQ@mail.gmail.com>
+X-ClientProxiedBy: LO2P123CA0094.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:139::9) To GV1PR08MB10521.eurprd08.prod.outlook.com
+ (2603:10a6:150:163::20)
+MIME-Version: 1.0
+X-MS-TrafficTypeDiagnostic:
+	GV1PR08MB10521:EE_|AS8PR08MB10144:EE_|DU2PEPF00028D11:EE_|PAWPR08MB8839:EE_
+X-MS-Office365-Filtering-Correlation-Id: 70120f7c-81b2-42d3-3fb0-08ddde58c97f
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info-Original:
+ =?us-ascii?Q?m2Kv/vpxgEyY6lYBTE0rYGKBcnsLcMt5+w3/OVSJ7MXomC46M5tlOpTtFpnT?=
+ =?us-ascii?Q?LQC8lJGrwIi9aVfVn3XeJV+xGnHADbPpFWalP06h82pNjHilVRefLfv2E7Q2?=
+ =?us-ascii?Q?OgVfBJx4Usy4W6CLGEHFEVHJwQW0GHSJ9U8lmFBDXFuSQmzUc/7sUcG7KnJO?=
+ =?us-ascii?Q?qIVk5iBgTzejuMOvtbRjkvN/ObkhUzr4Tgk4dMEJCCznb9Z/ooarUaB9fkZX?=
+ =?us-ascii?Q?iSYFMfkCwSmy+LGX1hXbBkCBAbal2Ya41mkBOlWgHHm/RVqCb7yil5qJ+mN4?=
+ =?us-ascii?Q?8s5ayGW6tR+WB65ljpnSme7AzLe3G6PAr4nnYEyP9FROb3uQ9D2vq17+Rttk?=
+ =?us-ascii?Q?MySqkIq1uQ6s47YHmMKsIcskrI6ELRjX0NcSK9oh/IcBcEhGSJFVv99UtVQL?=
+ =?us-ascii?Q?y+dKHNNDXXBhufwlyYw+qWjJFGjppGHCMzT9qly3CAgTrTKGyGI5lFfymUEX?=
+ =?us-ascii?Q?gIOjm/Ud9gUAjmTrDpwi0U2ju1ChYoCATBWT/T+soWmbXVHI5OcGA+vX97wm?=
+ =?us-ascii?Q?lBSBxN7hP+ljAjNUFIH6+Sg1OW7MgLvoTH/JVJar3YUru9tpiQI/KEQHc3uY?=
+ =?us-ascii?Q?GZH+zRNW/vdk8zsI4x38Olf8Ec5ikeCqyVkZl7whDvZaD/o9a9hXVa6KIx4c?=
+ =?us-ascii?Q?Sg23j0XwtJS0Q2UzPAtDbH8Wgq+qR4m66T2oVZQXQ5mAi3H/ukBbMMtdzO3e?=
+ =?us-ascii?Q?Fvkx9Z1Vi33wUBMFC8TLjBoJKDpNDvUJENG5Inns2sYA84IIpwsVSK4rO7/y?=
+ =?us-ascii?Q?bn+O+fsIrYiq6fJXSRnqd4oD93I1YY5B6H+CFROc6NxmMXYDvHrOX4QtV4JD?=
+ =?us-ascii?Q?WR/6nmSHR1jiJkfsYZquqFW446uKCPpGgwX48JCrUndll1BHcg34bybKEhPE?=
+ =?us-ascii?Q?5RY6dbjHjmaqojhu3aMerpF/t5DZrduxhCXuck+Xqm76NjbNLIegbL6LGOwK?=
+ =?us-ascii?Q?hx6ua1KY30zKaGk95FtdG5y1VGaELBY39Ho5XPNyeGskQRv6ftg0G7NBjdqp?=
+ =?us-ascii?Q?S1PKdn2c84Lw5N/153I+t0sdvW278rBCtr9VpfcllkRiFYtueF0zebJxFjKN?=
+ =?us-ascii?Q?16niBVfc9iOcn8+kbgrsAAwPlWCs5DoQ6wsgLkklAsnbTdTd2UHT/xIwHe3E?=
+ =?us-ascii?Q?zxjot7FxBzJi55IV+OI95LJF0gKY978qvV2gKpLXxXLyexItz1kH7wtxmH01?=
+ =?us-ascii?Q?N1R0XIE50isld0qfewTr38LE0DDiLGr/6Mo7ttQTU1NU53C7vnYWyXwrz1Ck?=
+ =?us-ascii?Q?bqHuEA/wVjZ4YX+VcPGEyOPPHCOT+yx/Hl0PtlIBvLhvTTAPStDdUBUj+3yp?=
+ =?us-ascii?Q?sxaLuZln4DUn4yuFqFwoLglPQUx7Q/rg6oW2WPWlF98rYnz0aGGSCwNkHCt7?=
+ =?us-ascii?Q?yPIvLtsa4bH6Px/rg3fhZ4xz05rzKPBQ+azAjGU5cNlzBAP0IrGbtMao5/ck?=
+ =?us-ascii?Q?p+XzZPPcVfM=3D?=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR08MB10521.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB10144
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DU2PEPF00028D11.eurprd03.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	da1a94ab-69fc-48e9-eeb0-08ddde58b648
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|35042699022|7416014|376014|14060799003|36860700013|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?IJoODDviXApvdPto/fdEIskiJtWYh/1NOR+zXe3+VfJiDVlXKGUKzx6cWsVT?=
+ =?us-ascii?Q?qdZO2Iii49RWA/Pzfci65JdJAYTZOjGFFjwtUwQwevT3Cy/gwRe61XF39mAG?=
+ =?us-ascii?Q?WEqDIDQ7KPC2qwMu/ACW/acSZc8b9nXo8ny6MTLCaXhnnbOZrGvs+7bYrzid?=
+ =?us-ascii?Q?nDnLFTGIAILbuVB6Jdkr+O8LEwTlmaMXdNdh69Wr+lby2gFI1FCMZrCySlBl?=
+ =?us-ascii?Q?Y9xAPgM+03ocT7xUEQfFX+3sOgHflrD0liOiwgtmNuBGudL39As87PWlBj8B?=
+ =?us-ascii?Q?ev5lHPBnRHDzjMkt+tDsL2EWCt2yLcztPgGTothT0bpbvP2iYXb3ohGpz7JT?=
+ =?us-ascii?Q?JwVUC0gWfccn51Xzp31vULZ+/nAnjHCmN9t7Vtu7lHumjJ0WbVVIqVXnPyQi?=
+ =?us-ascii?Q?Q+GDCkuhQc4nI9MD8p3EV0/iD/hY+Z4aidfT4IPimc076sr230JMVAmTpBhC?=
+ =?us-ascii?Q?0GADHCVJW2hL+MTsHJkt007k6wNRVeNvSZvTXC5pWWRABFrFav64QxzbJx92?=
+ =?us-ascii?Q?jbCjhEz++/M9E0fI/GzSSpbGOyx/ipU8My0y1sulkon1JDR5YJxoF38iBc7x?=
+ =?us-ascii?Q?YT47icyJf89ZKv/k29Y5VCodqHCLPNT6X4BvKtZ+hTzIBpXdFrGPGZ3NPr1W?=
+ =?us-ascii?Q?H73sxaBEW0sMZNRJFxWfK0HRhA/vdhmYS2hCNjlQm0BCsezqPllBSjN7thqN?=
+ =?us-ascii?Q?lBaCWTSb+bRyXPNIwRxGfBaLvWZ4BhxF4WyrusBuaY2fpt/ZtsShU3mC3QP9?=
+ =?us-ascii?Q?0T6t9FVl+bcIXxZ+IW7oAboC8HADT/uDq6Re6c9mjMmt5KbhTS5v6SMn/xjq?=
+ =?us-ascii?Q?xLTIRgW8WDBB0JZ2OeSCEiBZgJXuwQGs/5qrxycNBH1rp+VieDep4v9Hhmxz?=
+ =?us-ascii?Q?cj8SUJzBpFzxU2HfrD1DMDpSuznxiBmyiOvhNius03ynzXo/EnkkzfIpmk2A?=
+ =?us-ascii?Q?2I3AqY29sdaf2jt5nq6yWW0THN5MUf3aNbeahNcRYynAVNqEKfYy3WnH+pqc?=
+ =?us-ascii?Q?tV+5L1vVTXoE8HdVdDdKd1wkTOWgBaMmaJHay0/sKL8qCepWumri5A8G3D8V?=
+ =?us-ascii?Q?MHvYzYLRVqsE838wUWc4ex7KqY8KsorhRkl4l+SOD0/NTbHBWJc5aJPrBd0J?=
+ =?us-ascii?Q?h/s/XLFqB0f2mrTzPofFNi/oi8zkn3AVlMkvD986vkOzbRX0qfLV/uKEDC5s?=
+ =?us-ascii?Q?7KHcvA+u8MdW7GNKojINq3GeEeE5ByflhQwpv/F2IAPizys7xXI5pDMj806m?=
+ =?us-ascii?Q?wOBapgEVf6Dq0un+Z3yUCkCMFl9V7u5ncDRGy5UQTZAFVWszbZou9UdIcYdg?=
+ =?us-ascii?Q?qcX5EckXO/zL8rApWXJHUAzV+dRMJCCL7hsU9XIIEm1J3HGAM5m6rCZ/e/VX?=
+ =?us-ascii?Q?+JmURH41sjFnmeBu98OFDZ5jAtR1lklvK1In5hcRcG0Rb8getkXb9QDI/PIq?=
+ =?us-ascii?Q?pgtCOJSBHAWm7cr4rcdge3J2MgjZpT+tKxFVXt2itEHhMZnCge9KTj0Ex5C5?=
+ =?us-ascii?Q?VncGdkvf0o/W/GZBQR+qE3+s2/fXAgNz3l8e?=
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(35042699022)(7416014)(376014)(14060799003)(36860700013)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2025 13:11:47.4373
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 70120f7c-81b2-42d3-3fb0-08ddde58c97f
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DU2PEPF00028D11.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR08MB8839
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 477BD4000F
+X-Stat-Signature: re3apjpp3gwapiwhoq73bymo7kam3xa6
 X-Rspam-User: 
-X-HE-Tag: 1755522507-575952
-X-HE-Meta: U2FsdGVkX18LNNxtekLq1qNBAGc0Yg/ZxZnBMZASEtnIC1ZWy1xMw57064X4Z8Rl8TE75EYNSai2D7cb7hy9Esfc7eLaz6GA4U+mFlbo6WeO3llrOuPFv/ru90tbE2lvA55EsqMgoZ3VmekgbYp7EZAoVJLdBvftkoUseVncvWWidyMnyGsANFQ370JnI0uJRK7cgzQZO+UfdI82ZfEWeCu8RbOBFJ4PwfJzbLCcihfFVuBzRRUaSD2r4uwP3UCUKfXRkOQt4zOI0yzxZe3Nut52MTDM5B57Mn3vgvlL1TSA73HRMzqdBG7/exm/WiJfkAsMa1Hosczlq3S1jRHcQzpcKN+WQwkwqnvO/Zi65bMkppb30vSx9DeNEOfOdSbXklH0AiVf1macrrgpTnB5MBlGKBr1ogRNRTJhR4rRXxRQEjmzPh29MewuNP5MPl5D5Z7ZsfNEekHuO13LmQujm4I8WG7csjFmO9tC5W887ejG0pjc1MXTM1j78Mjw55XsjteUrr9qUG1UU40os2B3eIlb69mhyDIqn2ap9HC93EOvYl49s2JxrbgpysdKBcskjnVYaWB2wLUqmlo0HDgNoeqDidDBb8o73hg+aJS7bzlAsB7eH7ntRzA+0rte08O5PlUQ9ESZ0GT+PtVoexkUzfT1rT52wA9pdIp3i8mHEzgqGv1iSK7PWtQ4CO1xSCm+vEJeTta0/RROcv+5bXGrhT036Oq+Sk5YulUVEfC52mmsSdgN7LQN89nUJwh5Vj1Y0a3g+kLFxekt1vUOHqMAdyjA5QVN45ExI6HL2Ad/zvqAxFF47ruCfS3N35XIG3RsU7EmSi0EPncfjWXMG282AvWWcPbnOasuBZ9hohdHyQbt4WKii28vH9OMK+XNosmA5jANJVTRkYxtNApTmG7dwdjasXyYB/i0KqqZn30hDi89u9vZqRuH2Y8KeT4r3D0K7WxhtQ5sDKO7KzwiJBy
- NnoG5Reh
- 5UcWtLYrdim6vDPRq8n9F5uI6FagNM2nwpE8MODzEos1e5P5LKmqzh7EZQLV3HKYacdpoHYM1w4fcmSoopweB2+XJID77sWuX3L1RHpAA4/MlRaEiGiHqFtj+NJZK/mVfGc07e46A3Iz93OPlhNiClOtLGIREEk+pVTIyhul9ymp6lBIjO+N64LvZws7Bzw5Tf1Qp6pv4RSr+ACdqh2Ua3hlWlOGiEXXspNATIElhf4QTWgf6fdTP2QOws09/iwImnIAGPe/hKUejkHHf8sHa6bMVsH6iyfLLFo0e3WPF7D/J5z7MAFVb4kZFTQfRbctpyOYQ0qsTyPjrAC/K/Zb4s2K4PZcaNtxXgXXNvsE4C1Osqrp4NGXvah3ugeEeRy69Qxa/A7glyvvH3DHijHWjFeCkp7yxg1HY4XEUOVo6JAJ7/FwUlGkFqi4oFtBhmj/qs7QhNWIavK/pOYYGhHUXVp/IgNW5EjmT9eL3GskmHUE/SaBB18YCfmhNjA==
+X-HE-Tag: 1755522714-529313
+X-HE-Meta: U2FsdGVkX1/rJc6jpx04pOHi68BOxF5UdPKmjDqxsbdWq6It+NsVhniXlSK8CmGRhoiJ+MShWiC/4I391/+BIop/UkSBldPEkHxlDqOUXV9B4AfjMwR59+txJ6LQmRgZu+ftCL+26Tpkr1SOxAaY/ssgs8dw5CzvjlRtFSzroF2zPeqDS/gF4LBshYtrLJ3gQ6Lu3682Wq9sUWrpWOHyvhbE6phqKesLLvY1twFK0Yn8Pm6pLBEZrggGAbuwIy/VjO6NMpcVG0P/JBCWvZUCc3oocdjoxwgpfK5nC7CTbiQLRaNfS6fuXjtCmBCkzqgvHDsO5xAIsrvJr73221ZaIPh/MJpH8bZ8QWM9wmiMPMn2Uj+rRtEXe+qU69dXnxbrRqj/c3Vb9exChNm2tMq3xaOt9oqLheiOK3D0Ijo9Yr+hJuGJupJglPFwSZ7Dk2uj9hqz77LLpfCjIf+ociqcV8403osatK6D7BYrz52fo08HlEE/IymYGOQGehhHr+WEBMEBnfzA55ehkuVHH15ZmYeVLtOF0lwbXibg699B8h82qt9lx5fYykSAUtIJbM9xu+VWcL/9K1y59ZuQ4c938+o2azeG68X4SZUOHyRcuvqO7w7uLymZcTNAjGGIVKCZ+j3zxjxo80lJKXkp802uuLt+SJU+eVDp6GSrji1xVVuI5d07dy+MBmU2adaBi3LB39YHIOLZ/OoNdBqjiFRjOB8ZbWwT5ZHunJT/zjd8yB5FHlxcC14TsZVJ544WHSCi15o1dVxDJUetqmYJ7ZTqYXpKRHxEgaif0YIdFpw/g6VBKcxAzvazP2j8L3vPr97XLSa48o5Kp3fDonWLaP1O2NXP9ik5yhLgMtqu0JGWGI+gXfbxJxM0Q6QQkrbooXfGkzYW0jEdUQdjpBNHYwWLS+y3TwKbr6DWRok7fnfsV3KlY9RSTKUimYOKmoUvNEBpb1BzZoo0PtdVfvF0KDO
+ yeDTP3pQ
+ jBXUQO7QcyO98qUxbu4OR+Mt8jQV5jmv6EuC+0RaBS8h4kdNVW22P4EofPglgPU7ij0EJ8uesCoD7xneWNabujoBz1s40NNgMJb4M01UJAkWx8Kc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,96 +241,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 18, 2025 at 12:35:16PM +0800, Baoquan He wrote:
-> On 08/07/25 at 09:58am, Uladzislau Rezki (Sony) wrote:
-> > This patch makes __vmalloc_area_node() to correctly handle non-blocking
-> > allocation requests, such as GFP_ATOMIC and GFP_NOWAIT. Main changes:
-> > 
-> > - Add a __GFP_HIGHMEM to gfp_mask only for blocking requests
-> >   if there are no DMA constraints.
-> > 
-> > - vmap_page_range() is wrapped by memalloc_noreclaim_save/restore()
-> >   to avoid memory reclaim related operations that could sleep during
-> >   page table setup or mapping pages.
-> > 
-> > This is particularly important for page table allocations that
-> > internally use GFP_PGTABLE_KERNEL, which may sleep unless such
-> > scope restrictions are applied. For example:
-> > 
-> > <snip>
-> > __pte_alloc_kernel()
-> >     pte_alloc_one_kernel(&init_mm);
-> >         pagetable_alloc_noprof(GFP_PGTABLE_KERNEL & ~__GFP_HIGHMEM, 0);
-> > <snip>
-> > 
-> > Note: in most cases, PTE entries are established only up to the level
-> > required by current vmap space usage, meaning the page tables are typically
-> > fully populated during the mapping process.
-> > 
-> > Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-> > ---
-> >  mm/vmalloc.c | 20 ++++++++++++++++----
-> >  1 file changed, 16 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> > index 2424f80d524a..8a7eab810561 100644
-> > --- a/mm/vmalloc.c
-> > +++ b/mm/vmalloc.c
-> > @@ -3721,12 +3721,20 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
-> >  	unsigned int nr_small_pages = size >> PAGE_SHIFT;
-> >  	unsigned int page_order;
-> >  	unsigned int flags;
-> > +	bool noblock;
-> >  	int ret;
-> >  
-> >  	array_size = (unsigned long)nr_small_pages * sizeof(struct page *);
-> > +	noblock = !gfpflags_allow_blocking(gfp_mask);
-> >  
-> > -	if (!(gfp_mask & (GFP_DMA | GFP_DMA32)))
-> > -		gfp_mask |= __GFP_HIGHMEM;
-> > +	if (noblock) {
-> > +		/* __GFP_NOFAIL and "noblock" flags are mutually exclusive. */
-> > +		nofail = false;
-> > +	} else {
-> > +		/* Allow highmem allocations if there are no DMA constraints. */
-> > +		if (!(gfp_mask & (GFP_DMA | GFP_DMA32)))
-> > +			gfp_mask |= __GFP_HIGHMEM;
-> > +	}
-> >  
-> >  	/* Please note that the recursion is strictly bounded. */
-> >  	if (array_size > PAGE_SIZE) {
-> > @@ -3790,7 +3798,9 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
-> >  	 * page tables allocations ignore external gfp mask, enforce it
-> >  	 * by the scope API
-> >  	 */
-> > -	if ((gfp_mask & (__GFP_FS | __GFP_IO)) == __GFP_IO)
-> > +	if (noblock)
-> > +		flags = memalloc_noreclaim_save();
-> > +	else if ((gfp_mask & (__GFP_FS | __GFP_IO)) == __GFP_IO)
-> >  		flags = memalloc_nofs_save();
-> >  	else if ((gfp_mask & (__GFP_FS | __GFP_IO)) == 0)
-> >  		flags = memalloc_noio_save();
-> > @@ -3802,7 +3812,9 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
-> >  			schedule_timeout_uninterruptible(1);
-> >  	} while (nofail && (ret < 0));
-> >  
-> > -	if ((gfp_mask & (__GFP_FS | __GFP_IO)) == __GFP_IO)
-> > +	if (noblock)
-> > +		memalloc_noreclaim_restore(flags);
-> > +	else if ((gfp_mask & (__GFP_FS | __GFP_IO)) == __GFP_IO)
-> >  		memalloc_nofs_restore(flags);
-> >  	else if ((gfp_mask & (__GFP_FS | __GFP_IO)) == 0)
-> >  		memalloc_noio_restore(flags);
-> 
-> Can we use memalloc_flags_restore(flags) directly to replace above if
-> else checking? It can reduce LOC, might be not as readable as the change
-> in patch surely. Not strong opinion.
-> 
-> 	memalloc_flags_restore(flags);
-> 
-I agree, those if/else cases looks ugly. Maybe adding two save/restore
-functions are worth doing specifically for vmalloc part.
+Hi Andrey,
+
+[...]
+
+> >  static inline const char *kasan_mode_info(void)
+> >  {
+> >         if (kasan_mode == KASAN_MODE_ASYNC)
+> > @@ -257,15 +283,26 @@ void __init kasan_init_hw_tags(void)
+> >                 break;
+> >         }
+> >
+> > +       switch (kasan_arg_write_only) {
+> > +       case KASAN_ARG_WRITE_ONLY_DEFAULT:
+>
+> Let's keep this part similar to the other parameters for consistency:
+>
+> /* Default is specified by kasan_flag_write_only definition. */
+> break;
+
+Okay.
+
+> > +       case KASAN_ARG_WRITE_ONLY_OFF:
+> > +               kasan_flag_write_only = false;
+> > +               break;
+> > +       case KASAN_ARG_WRITE_ONLY_ON:
+> > +               kasan_flag_write_only = true;
+> > +               break;
+> > +       }
+> > +
+> >         kasan_init_tags();
+> >
+> >         /* KASAN is now initialized, enable it. */
+> >         static_branch_enable(&kasan_flag_enabled);
+> >
+> > -       pr_info("KernelAddressSanitizer initialized (hw-tags, mode=%s, vmalloc=%s, stacktrace=%s)\n",
+> > +       pr_info("KernelAddressSanitizer initialized (hw-tags, mode=%s, vmalloc=%s, stacktrace=%s, write_only=%s\n",
+> >                 kasan_mode_info(),
+> >                 str_on_off(kasan_vmalloc_enabled()),
+> > -               str_on_off(kasan_stack_collection_enabled()));
+> > +               str_on_off(kasan_stack_collection_enabled()),
+> > +               str_on_off(kasan_arg_write_only));
+> >  }
+> >
+> >  #ifdef CONFIG_KASAN_VMALLOC
+> > @@ -392,6 +429,13 @@ void kasan_enable_hw_tags(void)
+> >                 hw_enable_tag_checks_asymm();
+> >         else
+> >                 hw_enable_tag_checks_sync();
+> > +
+> > +       if (kasan_arg_write_only == KASAN_ARG_WRITE_ONLY_ON &&
+>
+> We already set kasan_flag_write_only by this point, right? Let's check
+> that one then.
+
+Yes. if user specifies the write_only == on.
+>
+> > +           hw_enable_tag_checks_write_only()) {
+> > +               kasan_arg_write_only == KASAN_ARG_WRITE_ONLY_OFF;
+>
+> Typo in == in the line above. But also I think we can just drop the
+> line: kasan_arg_write_only is KASAN_ARG_WRITE_ONLY_ON after all, it's
+> just not supported and thus kasan_flag_write_only is set to false to
+> reflect that.
+
+Sorry :\ I've missed this fix from patch 3... this should be == to =.
+
+However, we couldn't remove kasan_arg_write_only check in condition.
+If one of cpu get failed to hw_enable_tag_checks_write_only() then
+By changing this with KASAN_ARG_WRITE_ONLY_OFF, It prevent to call
+hw_eanble_tag_checks_write_only() in other cpu.
+
+As you said, kasan_flag_write_only reflects the state.
+But like other option, I keep the condition to call the hw_enable_xxx()
+by checking the "argments" and keep the "hw enable state" with
+kasan_flag_write_only.
+
+so let me change == to = only in here.
+
+>
+> > +               kasan_flag_write_only = false;
+> > +               pr_warn_once("System doesn't support write-only option. Disable it\n");
+>
+> Let's do pr_err like the rest of KASAN code. And:
+>
+> pr_err_once("write-only mode is not supported and thus not enabled\n");
+
+Okay. Thanks for suggestion.
+
+>
+>
+>
+> > +       }
+> >  }
+> >
+> >  #if IS_ENABLED(CONFIG_KASAN_KUNIT_TEST)
+> > @@ -404,4 +448,10 @@ VISIBLE_IF_KUNIT void kasan_force_async_fault(void)
+> >  }
+> >  EXPORT_SYMBOL_IF_KUNIT(kasan_force_async_fault);
+> >
+> > +VISIBLE_IF_KUNIT bool kasan_write_only_enabled(void)
+> > +{
+> > +       return kasan_flag_write_only;
+> > +}
+> > +EXPORT_SYMBOL_IF_KUNIT(kasan_write_only_enabled);
+> > +
+> >  #endif
+> > diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
+> > index 129178be5e64..c1490136c96b 100644
+> > --- a/mm/kasan/kasan.h
+> > +++ b/mm/kasan/kasan.h
+> > @@ -428,6 +428,7 @@ static inline const void *arch_kasan_set_tag(const void *addr, u8 tag)
+> >  #define hw_enable_tag_checks_sync()            arch_enable_tag_checks_sync()
+> >  #define hw_enable_tag_checks_async()           arch_enable_tag_checks_async()
+> >  #define hw_enable_tag_checks_asymm()           arch_enable_tag_checks_asymm()
+> > +#define hw_enable_tag_checks_write_only()      arch_enable_tag_checks_write_only()
+> >  #define hw_suppress_tag_checks_start()         arch_suppress_tag_checks_start()
+> >  #define hw_suppress_tag_checks_stop()          arch_suppress_tag_checks_stop()
+> >  #define hw_force_async_tag_fault()             arch_force_async_tag_fault()
+> > @@ -437,11 +438,17 @@ static inline const void *arch_kasan_set_tag(const void *addr, u8 tag)
+> >                         arch_set_mem_tag_range((addr), (size), (tag), (init))
+> >
+> >  void kasan_enable_hw_tags(void);
+> > +bool kasan_write_only_enabled(void);
+>
+> This should go next to kasan_force_async_fault().
+>
+> >
+> >  #else /* CONFIG_KASAN_HW_TAGS */
+> >
+> >  static inline void kasan_enable_hw_tags(void) { }
+> >
+> > +static inline bool kasan_write_only_enabled(void)
+> > +{
+> > +       return false;
+> > +}
+>
+> And this too.
+
+Right. I'll move them. Thanks!
+
+Thanks!
 
 --
-Uladzislau Rezki
+Sincerely,
+Yeoreum Yun
 
