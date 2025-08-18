@@ -2,140 +2,94 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 82682CA0EE4
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 14:26:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D1F2CA0EE4
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 14:31:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A2748E0014; Mon, 18 Aug 2025 10:26:57 -0400 (EDT)
+	id 2D1378E0015; Mon, 18 Aug 2025 10:31:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07A918E0005; Mon, 18 Aug 2025 10:26:57 -0400 (EDT)
+	id 2A89A8E0005; Mon, 18 Aug 2025 10:31:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E84748E0014; Mon, 18 Aug 2025 10:26:56 -0400 (EDT)
+	id 1BE8D8E0015; Mon, 18 Aug 2025 10:31:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D0DAF8E0005
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 10:26:56 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8EA8F1DE426
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 14:26:56 +0000 (UTC)
-X-FDA: 83790104832.03.41AE4D3
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 3633F1A0012
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 14:26:54 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=quicinc.com header.s=qcppdkim1 header.b="X+/fQxfB";
-	spf=pass (imf19.hostedemail.com: domain of quic_charante@quicinc.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=quic_charante@quicinc.com;
-	dmarc=pass (policy=none) header.from=quicinc.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755527214; a=rsa-sha256;
-	cv=none;
-	b=sdMfScXSSN2lcLXmzg7MvinOQn1L/d0NsQvw7YYe155iNaeDDCobk8hHCLDPbYopMoqVPA
-	zB62RkW+q24Q7MbrnK+1N55TIo12R3acRrrhp1vcVPN7H6c77XN/j3j1HfG2zILx0XXxLE
-	JNwasWkqzd0dGclfuq419/mawmAIXZU=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=quicinc.com header.s=qcppdkim1 header.b="X+/fQxfB";
-	spf=pass (imf19.hostedemail.com: domain of quic_charante@quicinc.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=quic_charante@quicinc.com;
-	dmarc=pass (policy=none) header.from=quicinc.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BBD58E0005
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 10:31:48 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AE3221DE446
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 14:31:47 +0000 (UTC)
+X-FDA: 83790117054.20.D75730B
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 1AC7FC0009
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 14:31:45 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m3fUnSK9;
+	spf=pass (imf22.hostedemail.com: domain of will@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755527214;
+	s=arc-20220608; t=1755527506;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N9XTtPIlb1beSEhqR68lpF56qfXbGpzXDW+vo24hduY=;
-	b=UDnlP/svdtrpsx1kX3BDbEGQn3Xq3EyzTtJia8GxhMoeEBbTe4gAk2rdoStKu1TF8Lormm
-	uWdQvqb1o1UfmSaKnDDOFrT987du9Cw/qYWZNI4PyOubCM6WJIyw0TlL9ytNRu18WIf+nH
-	rwRZtY88Q03gTax5XqAIH2UCw4K4ewQ=
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57I8UcmF014629;
-	Mon, 18 Aug 2025 14:26:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	N9XTtPIlb1beSEhqR68lpF56qfXbGpzXDW+vo24hduY=; b=X+/fQxfBXTRDcjyI
-	AoxW4bMMKA7nuLTn3u2JeX/TnS6zpuU5c/HqlSPO1dtlXJsgQeNigRSd4AjRocfe
-	QVOjROlbMSbiGYjOjoyCzN2FYRGD7WybBPEuoIyd27BXS4xhRPKiZiuaPX0sd8xs
-	VU4/Ic8uBniVF2Ieaw9GsLX3smQhQ5TLXZjAUAUfqVVUSgfQ+1iTHNbqGlf3Ve3Z
-	TQwrxR4WgmB+59F7/q24mKCwpoMh9mpMXu99RbS4fmXhZKMgxzmyZnK/+/LQPdCc
-	9EYs9cLkvox+RDIRGuWWQ2hmxOR4LHe2hJLDPaqA+lzqye5xqOY4SgB87mnu2HW5
-	SwzXwg==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48jh075279-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 Aug 2025 14:26:30 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 57IEQTGY017650
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 Aug 2025 14:26:29 GMT
-Received: from [10.218.24.190] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Mon, 18 Aug
- 2025 07:26:23 -0700
-Message-ID: <ec37a541-0803-43b0-a0f6-aa3b632bcb97@quicinc.com>
-Date: Mon, 18 Aug 2025 19:56:20 +0530
+	bh=k4OgVtKKyY8bhP475l2yoggd6IOnlx4qTw6HSd+MW0M=;
+	b=V/JowEEl2UwcV7cmFRbGXMcTEeXbxwfMOnFKhrSkADz0GSdg07FBFoGp4DV6wEkFgSJVcv
+	pl65Z+ZVwEhiQALrrzJlLct9fC0glC6t3NC8hT0PcGF1cuYYrblFXm/gZ5m0osrJFcsAVe
+	YiXX6LLNX5ia0NQD9IDxBe3O76+/qyU=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m3fUnSK9;
+	spf=pass (imf22.hostedemail.com: domain of will@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755527506; a=rsa-sha256;
+	cv=none;
+	b=IhaRbDcv4P2PrU6+5lnLdSEJxAYXW5YPcDUlrDHEf5FiSdDtbIPv+osgUtXQsuxGgXNCmD
+	GsDKdR2MJefNs/Tyn1xUZ466Utm9HllmrDj5X6Q62uxMB8KZkEcozZFXqkdXUsSpvBMgEv
+	jFSxGL6T8Lyfu09/FPUgJZxNkXm65w4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 078005C5D5E;
+	Mon, 18 Aug 2025 14:31:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81AACC4CEEB;
+	Mon, 18 Aug 2025 14:31:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755527504;
+	bh=x+H/JV7qF5hNtmqo/4v7maJapNrhalBia7LwWz/dRn4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=m3fUnSK9poKsz+jssXIllY32dR75qoEJStnziXmYSQxYN+AV/WAoZkIfqBiKjP4uw
+	 /mNDHnGs/4nY+ZnoOcXonOvrZhx683jbtLojkRjZl9E34t54U9ecpKNumScoVskURW
+	 0a0Furkwne2676IxB+o+zkDiLFNFFXg3rQGdXTpJ+Rda46qLC4JFhirhllfpQxY4P8
+	 mHHYqxFuRvRdTdW+oz+sOkPQgMOO3udanWJFwaeASmgK8z7Mf/W/hCUqgc15JRvxcg
+	 vI393AhPP/1TerTvhJHU8u+RVij08+9BV1RpeUc2ADpmoCkkEhtPZg7SHciu4mhIMd
+	 2yBTYTe357y9A==
+Date: Mon, 18 Aug 2025 15:31:39 +0100
+From: Will Deacon <will@kernel.org>
+To: Hugh Dickins <hughd@google.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Keir Fraser <keirf@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	David Hildenbrand <david@redhat.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Frederick Mayle <fmayle@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Xu <peterx@redhat.com>, Rik van Riel <riel@surriel.com>,
+	Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [PATCH] mm/gup: Drain batched mlock folio processing before
+ attempting migration
+Message-ID: <aKM5S4oQYmRIbT3j@willie-the-truck>
+References: <20250815101858.24352-1-will@kernel.org>
+ <c5bac539-fd8a-4db7-c21c-cd3e457eee91@google.com>
+ <aKMrOHYbTtDhOP6O@willie-the-truck>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/6] Remove XA_ZERO from error recovery of
-To: David Hildenbrand <david@redhat.com>,
-        "Liam R. Howlett"
-	<Liam.Howlett@oracle.com>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-CC: <maple-tree@lists.infradead.org>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
-        Mike
- Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Michal
- Hocko <mhocko@suse.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jann Horn
-	<jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
-        <shikemeng@huaweicloud.com>, <kasong@tencent.com>, <nphamcs@gmail.com>,
-        <bhe@redhat.com>, <baohua@kernel.org>, <chrisl@kernel.org>,
-        Matthew Wilcox
-	<willy@infradead.org>
-References: <20250815191031.3769540-1-Liam.Howlett@oracle.com>
- <3970cd97-2e9e-403f-867a-3addfbe399dc@redhat.com>
-Content-Language: en-US
-From: Charan Teja Kalla <quic_charante@quicinc.com>
-In-Reply-To: <3970cd97-2e9e-403f-867a-3addfbe399dc@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: CVnTXHqcMte60tk48I5qtYhtMN12fvDh
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE2MDAyMCBTYWx0ZWRfX0OUlx77pTTnV
- S0l6UGnrZ2CvWTs2XqQAQXAdJbV+CMBi1dZFhXoV12MyVHj/E2vxcftwtOi6bdgKGNbYHG+wIkR
- RqsOG7k3wdTXSq0kOEOHJUpnB2/mv/Tdu6J7OPW6VdM1R0XkXeD/vjJUnAPZj+7TuXQDloN7GgY
- gg4Edm5ztuZApPxqtlMP1r4HFS6AYOSEAuynM0RBvJM3vFeOQDum36FdqK/+SZo0O2HKmBZQLUe
- G8tYfL7jGHVURisq1rj5Qm/Di1cd3vL0jT1IXD02SGENOkEExqnGo+SvQUX2Y70qfFPDy6oHqHE
- zYBxFKtbaagMDevKZUeJ/UoRPfgnmsXC0ZphvKt8bcLc9VnCxpY/j/IoMeLEBVJ1Ig5cnecBb4p
- JBUB8Vcp
-X-Authority-Analysis: v=2.4 cv=a+Mw9VSF c=1 sm=1 tr=0 ts=68a33816 cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10
- a=XXfpJIKeY94Gd0witf0A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: CVnTXHqcMte60tk48I5qtYhtMN12fvDh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-18_05,2025-08-14_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 malwarescore=0 suspectscore=0 impostorscore=0 phishscore=0
- adultscore=0 priorityscore=1501 clxscore=1011 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508160020
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3633F1A0012
-X-Stat-Signature: d66eifng4nmtc7b3od5pktbq3uayfxfo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aKMrOHYbTtDhOP6O@willie-the-truck>
+X-Stat-Signature: ihisekgefyr8jjxqny1cyq1r5gh4oomg
 X-Rspam-User: 
-X-HE-Tag: 1755527214-199595
-X-HE-Meta: U2FsdGVkX1/5fiK8xkzdvOEo5DIzAiuYSs8AqpVawA+PT6JGEWlPocvf878BCN8lQGCMe2LQOPXvr0yVAkQTWXE4GraY2S+6pYnulxTbSLWLnLmZPFJLheCECbvjd60Mbfs4hRNpKR+R8Y4b0Ko8MiolhQwH9FLUtZq79C5BUTl33+E3kOnat0C3t+mkln2re5nHP2tfXwSmZLAYQ+AGdKIkqk2kK008rv+O2fI8S6C6ydC+Zv/5wtacxeoxS6EGon5xfoUI2zAleA5SGlbzYCFpRlTQ8tuSVNLTx0HNF22rQl/7epzPDvKsRWP5U/TIBaEknmxMuzZkFpj2YEX4CfqT7QP10gzkgRPjY+7VgNvG8K7XQXQoJAIN/OP+cDYdNJKhWAGNr6dfyjUN0NmA3cRKcfzbX24mqhi7Jr84zhF73FQcbc1NPeNCUtAytQTBmTTzZ4E+RHWqzYa7qEqVcy8o2bgPwy2Ry2Q5hcgJnJETuH5eZzUpLsFonguwf1N525IF+eyc4ebJ1OoEYnxL/UgGn4UwqM0elzXT1nHAsKhDRX/NyOQNMJ8hI8PP5VpJoVU++2s1OYeDl4ToSOGnMGSK1VkWYyo8cbAiO8B9d4G9COUkYhG3XkFpY17cy7LEStLhjv09NBn/+JeLa8JlQLcIp0KgHuPkA7D/RnA5KsBw1cFoSgkRz3fr3/rytnaMuwMM1NPLMFKbA0SUFh6K89CYbH13JIDw6GYd2mt6mlsmSb9Yt4QwaAWBCkjCEAMobzdQIyazO1ot30mIiYfcu6fLHn39vUwWNpnilqUty+EEiFsX6aa60LBVQlZzXtVR81QpKh31xVMdh426wVctlj7JMzB9VISXZjuawQEV/+MRDcZqbeQvTxnAz7In3wFhvCCAglnoc62FESjczgU2b5jinYV/rfs44kzHa9c79sHSDqylbtKdZ0CD19k6Xb6S6FjZrmF3HDRYytHwmEj
- apQ0NGnF
- g5bsd8ze1iOUnkCKuXB2LefdUz2O6m6iYsdW8xVzvP8TSQDtqKfwklUZxwD+MwdasRzhkjWznmrsi2SFdWApeAvtGAV+PYrbmPFJg0JTAeqZgiRh89JzPP7Ldfly1QnBiBdiXVBhuc+/MFjEOmQyZx6K0i4w/OXATqDfdRaQF5d38EdtKfsfmYX91aTYLlnC0rlUbPkdxexS9BGmdDZuWEZxLHEFqfEVI7EveOpK4ydHrYq2eljOrhvxA1ewePYD5I7ShVEH3RHK2Y6oMgQaOSqp8UHa7ob87MlTrrRwlYLQvGd1KfutUFuiHvz9rhIHWYgaawtxLapJv3QhA91gvq3emyqkO5hfHsjdvikKr4aU/CnHxWdTlx9EtM8EFaoUQWHFBW9z0r+KNzI+Cf6QXwgs73BRpCvQjieyd81LWiVP63sM=
+X-Rspamd-Queue-Id: 1AC7FC0009
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755527505-151185
+X-HE-Meta: U2FsdGVkX19jP659kk3wCVeQaIEFoetJ/6Mfdf42tezEQ6/VGwG5lmRL0c9lsHtYQBrPcz2Y5iedsVIiPXxorwWjLVMTxKBHxoS0raitBa38xNDTWbe6WS7W/5D7u/q3GtxkPBNZWV+XPCeFKoX709hGsqqp9HCIUF29qKbRYyYPO2BHhhGUnmq21IpA2OZd7A1kMwoNC6zyKo87wLZsDDDLtAzMHcBOgF1yMgJRKnXyNR46AXA69lplI5lrxpaSj6FTOPHsBKAwcRUxB/s9JtzmMBwcgLhQBdxSgIrBVCS0BfOAM+nR9TJ85UHCKggER5aKmWiixli5tbuDZifbF6TVe0+k6X9UmF02eABXdWMAxQ9HqPi56kzsap6CAFLwQHgI7naikEnUyQ61qlnXn9ioujGK3HatgVG5gHunu13NTsl95DmpeE8iT/tW90dArTIg6j5Ht4KW6aWEMBHz8Y0Zmc+OFPhQATky019J5WXw4/gyoH5dd5bZ9JBJApdqpf4njZKUaU9ktq34t1L7X2maGW0i02Ajht2ivrxCGCQPqKHhQ2BnBTPFO374yRl1GJYYeQSSJj0HxZAqy+y+MxS9EAWSc21zlhClyB3Pf8xVkb4KFDybYFa24fQLExhXQS7zFh+7/aqzEP/eaEndFHax+IXWj5GXb7FXW2GrtFuuyOZT7z6uoXQ/PgDCGrhtMV2uC/7pcRFjXmr/ccQdYj/UFzLzNaut/N+o9axXlv0LC/iXU0DsVBWd3pBPIVxRgy5usw9B+IZEiulc6GtRU5MlunRblovaLyh49eofYvYXghyBQ7FDYEPW89BlLeL6H9pIzHMi1NPHx7qdpQbOVFLKIY8sgBVeeaz/iQitJ9s5H16yDl2cop1KAx/AXvrvCY3mTMiJNdkTcLq9ByBowejF+27wLLL6/mThWuk/DLQlHa21MECDGBna2+C8a3mcQ5yziiP2ZnmvqIWkPZ8
+ uX9f7H8x
+ pNrw5eMnjgRBW0TOYiZ1Zc5An1iCyQDUo0nKC9ywuK03JThWtIH2srRcRPAy3Dp8Yj1WgwgG0Dq8fcJPWvDoWSLS8E2jjEE1Fo0nvBqe0dN68pLc9xhiGVGPPRiFgpK8AuJjmERjrEj7evytH2N7UO1kXSTnLmF0UbOv5gEW7nEyvys7B9mAqhZOFgope8eF0O9SVRRz/yPlrWBajzY/Lic7JkcHa8rcJ8k4yxuQ0qHXYQQS+Qus4zh8zjuN9r3YzyXXe
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,16 +98,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On 8/18/2025 3:14 PM, David Hildenbrand wrote:
->> Before you read on, please take a moment to acknowledge that David
->> Hildenbrand asked for this, so I'm blaming mostly him 🙂
+On Mon, Aug 18, 2025 at 02:31:42PM +0100, Will Deacon wrote:
+> On Fri, Aug 15, 2025 at 09:14:48PM -0700, Hugh Dickins wrote:
+> > I think replace the folio_test_mlocked(folio) part of it by
+> > (folio_test_mlocked(folio) && !folio_test_unevictable(folio)).
+> > That should reduce the extra calls to a much more reasonable
+> > number, while still solving your issue.
 > 
+> Alas, I fear that the folio may be unevictable by this point (which
+> seems to coincide with the readahead fault adding it to the LRU above)
+> but I can try it out.
 
-Just curious If we can go by the suggestion of mm unstable check just
-for the 6.12, as it is LTS.  I can't see this issue on branches earlier
-to it. As well this patchset is not getting applied cleanly on 6.12.
+I gave this a spin but I still see failures with this change.
 
-> 🙂
-
+Will
 
