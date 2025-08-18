@@ -2,113 +2,120 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A2ABDCA0EE4
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 07:56:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8CC59CA0EE4
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 07:57:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 370638E001A; Mon, 18 Aug 2025 03:56:30 -0400 (EDT)
+	id 2AE608E001D; Mon, 18 Aug 2025 03:57:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3489A6B00EC; Mon, 18 Aug 2025 03:56:30 -0400 (EDT)
+	id 286806B00F9; Mon, 18 Aug 2025 03:57:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 237908E001A; Mon, 18 Aug 2025 03:56:30 -0400 (EDT)
+	id 19CEC8E001D; Mon, 18 Aug 2025 03:57:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0FBF76B00EB
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 03:56:30 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AB6701182FD
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 07:56:29 +0000 (UTC)
-X-FDA: 83789120898.17.8A3F595
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7C73940005
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 07:56:27 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="LUu9/U64";
-	spf=pass (imf12.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 08DA66B00F8
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 03:57:04 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7CDCF1606DC
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 07:57:03 +0000 (UTC)
+X-FDA: 83789122326.05.656BB68
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 34EB614000A
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 07:57:01 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pc+7F9sn;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755503821; a=rsa-sha256;
+	cv=none;
+	b=iVoQp0ia3KI8XJGCJGJQFdygd6l7ZcOD68jtrTrJFm19ExEVCRSbZ6YkacUAdAqEMFJlr4
+	UMDBDdOr2Vfo+VixDamNo3U9IrAZvVuBGvwqzoHPN3F06DMKCKGjE0MkyFtoqxqepKiMLJ
+	TkG2BjXzNeGrclLJE6RY3VpkUi6zxtc=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pc+7F9sn;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755503787;
+	s=arc-20220608; t=1755503821;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MG+P3KZK4DCofFAEgECVm3tRlJVmdNEsPB4AH15/8wI=;
-	b=q4P5p6Qlj2jDh75h5xszLEiuJ5Dg5ct2I29FCEPsMSyT9ZiYCGs9g3gCjVb5e1oMFwLk6d
-	yxXX1Ftqey/39xSp/bvVo8kQ/sm8Jm77KX6zBJe+wQTBKgK/XoP3+yFOgZgh2sTyuYnG7k
-	OqBeB3ccT9IQKkMAKE6LZJoxc7MMSwk=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="LUu9/U64";
-	spf=pass (imf12.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755503787; a=rsa-sha256;
-	cv=none;
-	b=07vpHQJkY03LGo83ATdVCZc4Z5MWxbgEevzDl1zUKfGMUINF7j6yagX0m8tRh84Qh5tPdW
-	5LrwqkcD/R+1aEjZMaGGtMLWNk7PTPsBcIrvl/jwAW/O0wF4IQ9PeN/+zBM46/4AVSlxdX
-	eYU0b2/cPPcKW7YwGpuSjYwblWWcPbQ=
+	bh=BJ/waxf7shlm26D4jZ2oS7S6MeDF1K+mmlGn6PRutyk=;
+	b=LVJJcPiyXSfn/BBbLQkdgnF+Py/RJIBu0TOeerzgEyXqQia8iUjaKCFGQGenGPciUQe9x8
+	jGVvwsvKyX1q+68OwdziGZN6KSl4flrbr1XuZU35IfqS8CM2tq4Frbfozb6FvKJSQbvvXC
+	pFAgV9auy2riicV8+9njiuOAGd0v7TY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755503786;
+	s=mimecast20190719; t=1755503820;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=MG+P3KZK4DCofFAEgECVm3tRlJVmdNEsPB4AH15/8wI=;
-	b=LUu9/U64NZtsOTZxNaSN2LdEJYYjyVG9tD2UV3WN8/tBLQcMYC+xDW5gvYe9zbz+zXXX+s
-	CY1ZDYhouUkT0vycbg0oeoxIMG0DbVowWk6NuaCi49nKpx9VurxwCKW7jHn2/iKG4oaPLY
-	LRjMvOXy9/DoyTAYgz2cFkbiLH7vF1M=
+	bh=BJ/waxf7shlm26D4jZ2oS7S6MeDF1K+mmlGn6PRutyk=;
+	b=Pc+7F9snQ3n677lAmK96+xb2JQ8KfOI5wK2sZ588Si2Z0T7NLd/QmTgYHklGIXxXLCTHns
+	KBC1arohrUYor/uI8vNwDKZkW7yn8Hng6BQr1LNwWJBFolCG9+C5cigbYboCnQRsQGSKnQ
+	J+CmSylBhfOH3Seg1tvQcfWPnlRa0jQ=
 Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
  [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-634-iBtMMKvRPMyMBxU3Z77s-Q-1; Mon, 18 Aug 2025 03:56:25 -0400
-X-MC-Unique: iBtMMKvRPMyMBxU3Z77s-Q-1
-X-Mimecast-MFC-AGG-ID: iBtMMKvRPMyMBxU3Z77s-Q_1755503784
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45a1ad21752so14802635e9.1
-        for <linux-mm@kvack.org>; Mon, 18 Aug 2025 00:56:24 -0700 (PDT)
+ us-mta-113-cG6l2zHjOpif1JE2BhGLQA-1; Mon, 18 Aug 2025 03:56:57 -0400
+X-MC-Unique: cG6l2zHjOpif1JE2BhGLQA-1
+X-Mimecast-MFC-AGG-ID: cG6l2zHjOpif1JE2BhGLQA_1755503816
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45a1b05d3c4so22918655e9.1
+        for <linux-mm@kvack.org>; Mon, 18 Aug 2025 00:56:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755503784; x=1756108584;
+        d=1e100.net; s=20230601; t=1755503816; x=1756108616;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=MG+P3KZK4DCofFAEgECVm3tRlJVmdNEsPB4AH15/8wI=;
-        b=j9maLISv7O4eiLQtVo78oraP2CGRAIN1Vj5zObbbIN6m+LcqpTDe9omKJ4zUdRz5tL
-         E5u2R8hkEqX7txb7Wpyp3ogkfIwmPiuDnMMP19gSqDbJXvYI4pFRZGoszr+V54qsc7E9
-         0yJpMyFphnpRz7g+RKiN+mPHYxGYRkiKaV/WraZph+qy2Xj7NyWofIVOVSaNt2nldetu
-         5D3G/ToNwTAwMTjaBzagrBAFleS3ImSCeH3AgGabd77pDirlWbJPF056yz2HgGRYmVCc
-         /mpiMJ1nNbq3tH65oWPGbrcFTamdd2nnsael6jAOi3cYBGByt/sg/VQBNAXmin1IY9XJ
-         VlLw==
-X-Gm-Message-State: AOJu0Yy6mVaLc/XisqE4V65v32IglgSv3hLacQaCq5fkwfBrwKGbOWWt
-	XkNUHKuGYLkvGlxiXA55g9TOJZ4HBN4dhhQNb6ws3ZWIYT3birdrkHXDzGIDBz9leesPxcxZSG7
-	UgF2nIFQTg7FYc6Hv0ytd6BiaFQ7t3Llj2qEa2uuPv11NmXcM0RNU
-X-Gm-Gg: ASbGncvJ4fVMV/hE/IJ60mS2xJW6LDubJZRwMBuk2LGYt8/KC452jTbmDg77HYQkF1M
-	sWcNOZHcA2SwJnLsThT1z9p8OryXp4P0Ky0mzQR9RzSBcYT3aNplZzwgGzx2DBDym7BgViJYycO
-	tl2RyQlTNwzF2gn8RznmTlqFJ25BabcaK0hW454QAHOPe9plGWDhbtf6l4SmPLPl6sW4iNqoDl7
-	OeBC32oSm4321pwVidqGgtUUUiKQ1nguDKKz7rrPxl0lmrPu69a2ZjeVGGnMLEDDBx7dBWMsvp4
-	pnVEK0Bvd7T60550dH/79tQO8RnPbhSfAw0KdJSyg8dUL61p+vXnKtDQvOYoxmGhL83lNU5+X0Y
-	CSz+Wzk4oQzIiU8lHGMOFUg39BNSpADhi7RBleQ9L4CTetvLxcgn4Lmxi2nF1LF23
-X-Received: by 2002:a05:600c:1ca8:b0:459:e002:8b1e with SMTP id 5b1f17b1804b1-45a1b6bf03fmr135531715e9.13.1755503783778;
-        Mon, 18 Aug 2025 00:56:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFi28hsboEh9Wu3Gf8U19Lp8pFZTMJNS3/XSgcBRFfdKS9JByMGi0h9ov3jkz1u39rS2KFugA==
-X-Received: by 2002:a05:600c:1ca8:b0:459:e002:8b1e with SMTP id 5b1f17b1804b1-45a1b6bf03fmr135531535e9.13.1755503783309;
-        Mon, 18 Aug 2025 00:56:23 -0700 (PDT)
+        bh=BJ/waxf7shlm26D4jZ2oS7S6MeDF1K+mmlGn6PRutyk=;
+        b=LPbCBEF/XaO94A09BnduYgjgZ35cvU0OVFrnuPyrXcoGOG7IceS0dy9K6xtdJL2jqz
+         b2ovFD6pFPdb+rqJX3u1NWs0/Pn7VZ5JC/zCc0K/GaWZYAIKz1853UyJc2idpvEXuxGY
+         VtCLpF2M0xi03UYxDkWmdNccsC62QT2sy6iuTBswUb6+uwrP1W60jyy0AKjS4F15Atxf
+         ts8FERvPjrnf+IYqy3EFUXXK9flNGfSXDECxDG3kp8O7vDupSJzLdbrlBhcfhgveS/rc
+         JYv0hXnSiTS5K7lzXMXsvPBCa/+mX8Pi2uPbhupF1rJR6RaOHlxLK5teQsIsX8UVofLc
+         DPsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXzkES3AKjShX5iSGbZtjlnQN4V/QGY/xn6PNJc2+01m3rhuUMbZl5CoN3QXhaAWwW+/O9m4eMgaQ==@kvack.org
+X-Gm-Message-State: AOJu0YyNdY8IhwZr3SdgOix6CFseSr7U3fMPUl4kpwBAoIf0sMeiDNm2
+	AdrsezibfG6N+0zTZfSJ3LT34cYj4sgRXE2THtWIkPngJafaYI6SejQBxs/j8YACKndnfPU+7Dl
+	Ou0g4gY2/b+aI+yA7g7Ow1c8JOiY34rZ303hT3fm3+S1xFOg76mMO
+X-Gm-Gg: ASbGncs+ilKmm9xiZjWN2GqKQaGq1WdHODmb71V91epraNuC+H/nKni7AWz7PpDjd1V
+	NCE4QzlhyZqhVmgGtGMNfVGdBrPKVTrpgEua5igG2xnoOhnKqgesfKSRKjPfb4s7280ZGO5tsNq
+	TqkRI0O+SS1fM2a4vOoeff4MJqWC6+O9zmk5XC9/0wih2UM5RVIYgN6rWz9Cl8U0rkpti3oFTeS
+	ECUSKrv8ScV0qmz6xNTX5O+vMYZHGZcjUk/XWJFNtolthCNyhQi7sPEG7ILfAhDTwUGdElW9T20
+	V8is9DtY+L+KObPuIQo9SpYv3lHyzZzGzJJeBU3RX47hajg/2EEs3Wir6SIBKalHLCfyJKBpDEN
+	tb525mSbj++wCzN97Qf7nggQegroxQXloW9WrIoqM8IQaPdwgJmepyadPJhxRa9/g
+X-Received: by 2002:a05:6000:2485:b0:3b7:99cb:16e5 with SMTP id ffacd0b85a97d-3bb68cfaedfmr8252291f8f.28.1755503816003;
+        Mon, 18 Aug 2025 00:56:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH5lIFG/pwp9cWcad1i1QkSJoxL9baJo8KcsDGdZ6bqql9vBoqBBDo9o9ETypZV9s2yLKqg8w==
+X-Received: by 2002:a05:6000:2485:b0:3b7:99cb:16e5 with SMTP id ffacd0b85a97d-3bb68cfaedfmr8252265f8f.28.1755503815615;
+        Mon, 18 Aug 2025 00:56:55 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f22:600:53c7:df43:7dc3:ae39? (p200300d82f22060053c7df437dc3ae39.dip0.t-ipconnect.de. [2003:d8:2f22:600:53c7:df43:7dc3:ae39])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a22321985sm119855405e9.17.2025.08.18.00.56.22
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3bb6863d9a4sm11799764f8f.61.2025.08.18.00.56.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Aug 2025 00:56:22 -0700 (PDT)
-Message-ID: <5f9eeb98-9881-4c46-93f9-e13419d92b61@redhat.com>
-Date: Mon, 18 Aug 2025 09:56:21 +0200
+        Mon, 18 Aug 2025 00:56:55 -0700 (PDT)
+Message-ID: <36a05826-76e4-4723-8f9a-592c745af38c@redhat.com>
+Date: Mon, 18 Aug 2025 09:56:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 1/1] selftests/mm/uffd: Refactor non-composite global
- vars into struct
-To: Ujwal Kundur <ujwal.kundur@gmail.com>, akpm@linux-foundation.org,
- peterx@redhat.com, jackmanb@google.com, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, shuah@kernel.org
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250817065211.855-1-ujwal.kundur@gmail.com>
+Subject: Re: [PATCH v4 2/5] selftests/mm: mark all functions static in
+ split_huge_page_test.c
+To: Zi Yan <ziy@nvidia.com>, Wei Yang <richard.weiyang@gmail.com>,
+ wang lian <lianux.mm@gmail.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20250815023915.1394655-1-ziy@nvidia.com>
+ <20250815023915.1394655-3-ziy@nvidia.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -154,21 +161,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20250817065211.855-1-ujwal.kundur@gmail.com>
+In-Reply-To: <20250815023915.1394655-3-ziy@nvidia.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: T9ZD0vIP1TCkEEG8xEUvWDBzibx3FaPZk2cF-ZS7kHA_1755503784
+X-Mimecast-MFC-PROC-ID: phDJrbWtPcUrAqHPJPnf7ZiJYI8N743c-DV4vJmAS9o_1755503816
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 7C73940005
-X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 34EB614000A
+X-Stat-Signature: 6c1j37k85of68cpysxxi7ake4wnytuqs
 X-Rspam-User: 
-X-Stat-Signature: zj99j63eiyf9o9a79gqp6anchrpngu7m
-X-HE-Tag: 1755503787-277317
-X-HE-Meta: U2FsdGVkX1/A/ODeCn1hti9ze6dMjGqEdwHeULR83x2dwivC7FB1MRfIJdxxGdJ0S4F4jn5q2X2NF6wdVIBpPQq2CuEjqWk+AFy0Ms0JmioqvQEX2xzyOg5yeQTFPbIGatWF7ntHYoHQHwCU4vHixNfcVKpNiaffzkG2udUI84Ra76FdzeWgxoztpIIbp8MzElVVBtnf567amEbmSRBV4Bzkl+tIlAB1Bz/U/ler56ZmM3B6SBWIsybIOwvFO5DOXjAPKCAuESFoqNT14RxHbMlSiDCRRadRb9c3ulKFeGUArYSifwJdRxvkwXA6kupQiXP+l5HJfrIjUJlQIfpdpM2v90lXppqCOuFtCd1FBs/Y6MsuFpA+8139UxX108HDJWmIi+e1H2HPnxxMM+wQAqHaTdFNbhT9+Yv8ETZKmz34bTtGk5adpLM6xMlnh0s5lTu7Uo71HugvfRoMTPV1lh2OgTUCKMbM3r0Ao8Zmqf16Qf6GfdIjPiYOotWCRzleVQeYTqbxMXJmngYCjTHB+XgVetas2ZFYWI5OdM2ufLa1y8BVCkaduNPGBhkMnZfY8u3HjTDk8JwAxjkdb0rLJU6qjAwHPGGvRiTCA8xVsPSTfBdUIvfax6SoOHu1OjqE23tsQbTxDmxbEt7338SKiYpofmSZKc+tUaMavmfxzlOezDQCPltHOWkVjoIpzg4uHb8TfsMF8zkIGUqjdlaMJfagYbHmIjYKKSx4wM78wSXqQhid6/1+PxTP3wjW4pgLOQ5U71M7Dstzh58DfoTATk0WpwJ/WhnRiV2KQFvCuT2x6uAk68XfBV0h+9A3KrRUWEnP85OEhaaftb8gWcaiJGtxwZ/i1t06msSC7G8KyOWSx/xQkUOAkuqAS2BohzVvRDSpkw0XLUXZJWmfSVN+Pd+sfhhdwCp3/R0nG9hyQZQHR3g4ZhkUei/4uo4yPvJDVNK2cvEt7aC2/6Msq0c
- npYx+ag8
- 6K4+bBpWtzE8AB+i21mcNffOrlWeZI/LEhSvfpFgm6i5gJkblrI7RCFm+hBNnkt0Ykp42gMBWe9Nrjhw90jXHFhlw8ZjTWhgef2w4RvLgyOwR8nFBVkljCA3aiw==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1755503821-492698
+X-HE-Meta: U2FsdGVkX1+HXRDPCupFmF8znm04OjULsnP86hzTNyWtvz5AKu6b4q+2grOmcSrMN8tlNdugc4yat3gu7hFvB0AjXEQcVx4r/TFW+pv2FnfDLuCdHKCu0GTNRCVJjuU2grCmgT3end8wbpzCZkBLVmJJEq0W110QdWACjbSFsinchP+aiXa8Avg+dr1VeG03jeF/kEpIxzPy39JmaeJZFaDG2dBYGSBhYK8QlP93Z7yNGMWHl2Ip92CjF1eNjPzjbphneFQHNTEzsOBJVxYzZQ+9LtCckcXmpz/UH3CG849bBmshXRxpf8ilXHjvMgxUGMLqeiibN5xsPxbsTbbWZde5KpSwZ9LDzUN0kgPiONVjooQiSGdnN/J0vVcxHqE5iE2VTduHN68gkjr8TT/qU7sYGxzoh/mX1cxOaP8pQ2+C6qw/vfMGU18FR15iryx5X8Rn3v3pSpzBtVtC8DyVG3Kk5sKXK1AX7xyomopXCbtmNR0yK6K78f2NGD3JD8/VfLu/qm1s4UFqcbIeo0hIO6Sk+zbJlk9GQQfGGzDdOSRrtP4//wDOAfDiGsnFgqXxYPDgRX+XMaO8hOFPF6FPAvCusErUDxyB65beWeDuojmxfZPLtzex7CQkYsB/ofeQsKe+fHaPecaGRBxjWOsJZK3sZZr+B19aJbCX3+Cd6AJm3Kj6ybrE2XT0/MSxoKLHCJ3exkFY22eeQwYYMwc56f666m8K8PAtwW5acjU+8QXzroTgvKa9nfFxDw6+jO62fv0n9e53u0P1lhceSa2OcFwriXW8K+qTBezfq6IX7hO9chdNDvCywG+i/eS5cwTG+XaCY3Fer9JrU7UNvU2RrckGuGKs80dE8mdY5EGE8hlLuC4U11pshqJAEPVaI+i0uH522dMo46ipU4syMjvRLMOsfs+DMdfWSzRRkX4ygXv9o7TmIKYjiFwPjpVvVdf53ND/Q2KjbN5Cv3nB3gj
+ 93GTbssk
+ LoWJbwoXXr6e8RsK8gtqJAIS/b8a4JiW3H5kR4oDvXcMbnZLC/slHiXxr94CWlzBfkeKvPln5ZHsq4BpVXHxqO3q/Kz+W59hx/SnGDNcvZVdBKfLk3GP6zNIyxLLEZmp8lDGJV6UU+yLYFPvh5TTyaLYW9gGp0kN/FQS8WBM5ZKAv/tpexy5yvEZ2YiLtypJ2DlfGrEFX2SudHfeFCHSMc07floBaivxRXbYSGyG3XD9grAnyj//f6CH8YaUvWlO/c6rXiP6yd+V5oem0sJPHC/LdP5CVsfnsJGnPqDEEFQY4MWAR+RhtGktpt8vR8TGv+ZeAZD6w6BPLPYpctwFzw3J21opf11S7sUjTmUcD3wWRDmhOR+Vt3AcygDFr8q6jHo1lEqAoZNgFur1eTylUEUPgKrcvu6a4VALy1uTjqTMzlSCynJInCwTyYEn3fleW6VHDMzpkfOo38FULMnJn2NhcO4JlPcMHZsnAZL7wP9NoeDerHd571p7QtdVeAkHAEqog0TM2vMxAbBEwSHVHRHM9bkqlrG2eKFQ8ZacAKh2spLJeoIi3jO8P6lQ+JMEDYG6S1y28U2iI8hs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -177,110 +184,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 17.08.25 08:52, Ujwal Kundur wrote:
-> Refactor macros and non-composite global variable definitions into a
-> struct that is defined at the start of a test and is passed around
-> instead of relying on global vars.
+On 15.08.25 04:39, Zi Yan wrote:
+> All functions are only used within the file.
 > 
-> Signed-off-by: Ujwal Kundur <ujwal.kundur@gmail.com>
-> Acked-by: Peter Xu <peterx@redhat.com>
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
 > ---
-> Previous versions and discussion at:
-> https://lore.kernel.org/all/20250702152057.4067-1-ujwal.kundur@gmail.com/
-> 
->   Changes since v6:
->   - rebased on 6.17-rc1 changes (cd79a1d9b08a)
->     - removes unused args and adds the __unused attribute; since change
-> 	 is cosmetic-only, carry forward Acked-by tag
->   - verified output remains unchanged using virtme-ng
->   Changes since v5:
->   - ensure uffd_global_test_opts_t instances are initialized
->   - verified output remains unchanged using virtme-ng
->   Changes since v4:
->   - define gopts as global within uffd-stress.c to retain existing
->     sigalrm handler logic
->   Changes since v3:
->   - more formatting fixes
->   Changes since v2:
->   - redo patch on mm-new branch
->   Changes since v1:
->   - indentation fixes
->   - squash into single patch to assist bisections
-> 
->   tools/testing/selftests/mm/uffd-common.c     | 275 ++++-----
->   tools/testing/selftests/mm/uffd-common.h     |  78 +--
->   tools/testing/selftests/mm/uffd-stress.c     | 228 ++++----
->   tools/testing/selftests/mm/uffd-unit-tests.c | 561 ++++++++++---------
->   tools/testing/selftests/mm/uffd-wp-mremap.c  |  23 +-
->   5 files changed, 623 insertions(+), 542 deletions(-)
 
-That's a lot of churn, but sounds reasonable. Only skimmed over it and 
-found two nits.
-
-> 
-> diff --git a/tools/testing/selftests/mm/uffd-common.c b/tools/testing/selftests/mm/uffd-common.c
-> index e309ec886fa7..f4e9a5f43e24 100644
-> --- a/tools/testing/selftests/mm/uffd-common.c
-> +++ b/tools/testing/selftests/mm/uffd-common.c
-> @@ -7,18 +7,30 @@
->   
->   #include "uffd-common.h"
->   
-> -#define BASE_PMD_ADDR ((void *)(1UL << 30))
-> -
-> -volatile bool test_uffdio_copy_eexist = true;
-> -unsigned long nr_parallel, nr_pages, nr_pages_per_cpu, page_size;
-> -char *area_src, *area_src_alias, *area_dst, *area_dst_alias, *area_remap;
-> -int uffd = -1, uffd_flags, finished, *pipefd, test_type;
-> -bool map_shared;
-> -bool test_uffdio_wp = true;
-> -unsigned long long *count_verify;
->   uffd_test_ops_t *uffd_test_ops;
->   uffd_test_case_ops_t *uffd_test_case_ops;
-> -atomic_bool ready_for_fork;
-> +
-> +#define BASE_PMD_ADDR ((void *)(1UL << 30))
-> +
-> +/* pthread_mutex_t starts at page offset 0 */
-> +pthread_mutex_t *area_mutex(char *area, unsigned long nr, uffd_global_test_opts_t *gopts)
-> +{
-> +	return (pthread_mutex_t *) (area + nr * gopts->page_size);
-> +}
-> +
-> +/*
-> + * count is placed in the page after pthread_mutex_t naturally aligned
-> + * to avoid non alignment faults on non-x86 archs.
-> + */
-> +volatile unsigned long long *area_count(
-> +		char *area, unsigned long nr,
-> +		uffd_global_test_opts_t *gopts)
-
-You can fit some parameters into the first line to make this look less 
-weird.
-
-[...]
-
->   	}
->   
-> diff --git a/tools/testing/selftests/mm/uffd-wp-mremap.c b/tools/testing/selftests/mm/uffd-wp-mremap.c
-> index b2b6116e6580..ec860625b25b 100644
-> --- a/tools/testing/selftests/mm/uffd-wp-mremap.c
-> +++ b/tools/testing/selftests/mm/uffd-wp-mremap.c
-> @@ -152,7 +152,11 @@ static bool range_is_swapped(void *addr, size_t size)
->   	return true;
->   }
->   
-> -static void test_one_folio(size_t size, bool private, bool swapout, bool hugetlb)
-> +static void test_one_folio(uffd_global_test_opts_t *gopts,
-> +			   size_t size,
-> +			   bool private,
-> +			   bool swapout,
-> +			   bool hugetlb)
-
-Please avoid that.
-
-static void test_one_folio(uffd_global_test_opts_t *gopts, size_t size,
-		bool private, bool swapout, bool hugetlb)
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Cheers
