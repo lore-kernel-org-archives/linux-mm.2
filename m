@@ -2,100 +2,124 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 79ECCCA0EC0
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 10:19:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A2B75CA0EC6
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 10:41:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E31B6B00D9; Mon, 18 Aug 2025 06:19:38 -0400 (EDT)
+	id 051658E001E; Mon, 18 Aug 2025 06:41:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 093F46B00DA; Mon, 18 Aug 2025 06:19:38 -0400 (EDT)
+	id 0293E8E0007; Mon, 18 Aug 2025 06:41:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC4DF6B00DB; Mon, 18 Aug 2025 06:19:37 -0400 (EDT)
+	id EA8508E001E; Mon, 18 Aug 2025 06:41:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CFCDA6B00D9
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 06:19:37 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8364F1DAF0A
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 10:19:37 +0000 (UTC)
-X-FDA: 83789481594.15.42D6B59
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 6D11140005
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 10:19:34 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RkXGPKzq;
-	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D919A8E0007
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 06:41:19 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4199F139162
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 10:41:19 +0000 (UTC)
+X-FDA: 83789536278.08.D480EAD
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 3E9EA100006
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 10:41:17 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CtZPwud6;
+	spf=pass (imf05.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755512375;
+	s=arc-20220608; t=1755513677;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=MTx7agaNe36/VzeL9vGYmASreOCACg/uPibdLjsm25U=;
-	b=0un70OXvMROcE7d2Ja34WpCmGp/SRfINcnf9mE7RfFYTG+tZR8QlzUFkAafwyHaMKveVbb
-	vx1hSlkHCj893CI/WcUQPaEL8Edfrdo9U8eyu5PKF/YzYp4nMltgHKr14HyJmapw+ITLt6
-	zZO/EImEgIu8kCX497EB0iBZ4NqLQZM=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BEOAZHx/EHGfD/sfEV5SJgXP8RiWdRzDUoJ3dlTfHJY=;
+	b=xXz0N01uD59sW7virGZ2T3JD4Dr8rUjMwZ0xu/clN1tuCnqEwN+lCUBfnpLIk9gBbMM6ZC
+	iDQiVp+eEXak01ayKAZGJCtuBKKANe37QNHgnl5Cwr7o41hH5SIr55l72p6S2+H4wOxZw+
+	Dpr/up4LUTo3GiiHHMZzbjyZGau8rEo=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RkXGPKzq;
-	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755512375; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CtZPwud6;
+	spf=pass (imf05.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755513677; a=rsa-sha256;
 	cv=none;
-	b=8Kkcn8NaX/TYNQpKDkCp4s6EcDWBIwQYFNT4ZIGu/57GnNShS8N15ug1alAlTrlHIMNTvr
-	0g3zQL8ZiryB8oj3WHcGY9E0NyxapGHdZvEgPAt7BPDDHGikS2XUO6JEuCLn3khcvDQnnr
-	G+UnLrFtPo+chnN6QqeMp/AO+x0fIsA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755512375; x=1787048375;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=lZiiDjhlNsl+eM7oVIh7z93U9V6yzoNAKFATgG2dY5Q=;
-  b=RkXGPKzq12qZZH5kf8RnA0A2H+A3+cdeVqWF53x8TdoRZTW2fG+c2Rne
-   ZmXwJ+IVuSZXuIsZopOhUoEHe+hX7tyhiuIdhU5Qrtsl9BIps5pfPujSV
-   oVmb7nrfAfP4gooaYEchNSip0SvRpo5m364pcqNPRYM9pGOkX1pVMQB8f
-   Jgpl2aV8OKVKVca4iWUXnj4mOn3nXEdkm6IaRfDiV6kKJAvOaWquYsI6z
-   iZ5KBHlX9On+sXWcRyedfZoAwh2LuiFVJuGPKjGBcvzMsAho9KzcaGL4V
-   TwzEBC2HFd2/TKvQ3LVIBYbLyRkhQTWUeZMR5f9s4LM8trz6lhmx5NseL
-   A==;
-X-CSE-ConnectionGUID: yD89PIYzSWCt1+FykVN6Aw==
-X-CSE-MsgGUID: EKKuJD5HQT6BqI52rXMDoA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11524"; a="80312628"
-X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; 
-   d="scan'208";a="80312628"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2025 03:19:33 -0700
-X-CSE-ConnectionGUID: gM3778k1SOyC1UpJ9uDsug==
-X-CSE-MsgGUID: uqegUku6SaaCpn2qnljGsg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; 
-   d="scan'208";a="204703381"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa001.jf.intel.com with ESMTP; 18 Aug 2025 03:19:31 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1unwxJ-000E99-1Z;
-	Mon, 18 Aug 2025 10:19:27 +0000
-Date: Mon, 18 Aug 2025 18:17:13 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: [akpm-mm:mm-new 166/188] arch/arm/mm/flush.c:307:41: error:
- incompatible pointer types passing 'memdesc_flags_t *' to parameter of type
- 'volatile unsigned long *'
-Message-ID: <202508181807.zhZF5TQ0-lkp@intel.com>
+	b=wgzDlypwNQFqcAV1NFfQYEt8dXyeR/GnIV8cUDyMd71jTM/qarEv08+VXxzmhMzbRKkNvB
+	LarQntM/vdRRU2qrQw7hqNuaNEHytJDBUcNikf3hY9iITSKuaqcZxxESbjbUKlO4BBU6TH
+	ncJZU5fH+hpkc7OLB3Nm9/cTTtLEgX8=
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3b9dc5cd4cbso2725029f8f.1
+        for <linux-mm@kvack.org>; Mon, 18 Aug 2025 03:41:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755513676; x=1756118476; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BEOAZHx/EHGfD/sfEV5SJgXP8RiWdRzDUoJ3dlTfHJY=;
+        b=CtZPwud6Udnc40Pbyk6CCNJIPsIRkZ9fEPVrQHPVvMLA+eHaB6S5EEYtU4SWs7zXxi
+         a7pMJuqLG9bs65Bqz7jB4WxwX1ozsZSHlnXwcPdZUFGAAGv2kXqdEnB5hN7PuEgE0bRA
+         d3Q9F8MxfKYihsFUaUbgcrPzZBl9S6b1AeQglyJ4lgXrJqpF+6fzJFHGbLGd0MKOrjFk
+         zVZ+bbVo5q6oy+Blxb45RRcuqiOSow3Da1p0EnjFeyvlccUXgj1Icqm9hF5vTWJkkfqq
+         SwUihInMYxEZweHLS05j4ZBubYnnbjdQgzzbaSEZbWodgXai5IlKxdPjO7EsL5u52uvE
+         gG+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755513676; x=1756118476;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BEOAZHx/EHGfD/sfEV5SJgXP8RiWdRzDUoJ3dlTfHJY=;
+        b=sxPIPAyVRB85jWU2S37hOFnpBBLXUBd7ziczggV5DAjeCkThz+BWEddgErUbzRBFBJ
+         I9xgalOp2ulVBwoEF4x94Kkq4s7sE6NPX1rA2Hi9g+1vJ0FRCx3Aum8onGbV5hdOZk5T
+         W29FNDJS/NknV5JxIWrsj5/P+0ZQbnaBpMU0iGrPINzkcLmZsMMArZMcR3wbqIq+iAcT
+         OqFhDyIfv8+FHHbWtA9nHoiKCob1vB5LH9lvXiuzrNitOBLOAZ0e63V36eDAfaxnfxEP
+         5Cj6EiNj1pB/OUtX1yVNVNkZGT1/NcEXPtpShn9uxdQO5K63NJCwcrjUQxNEtLcPQQdV
+         Iu8w==
+X-Forwarded-Encrypted: i=1; AJvYcCWnKf5/NzDaqXjaaiiq2eQivS58pKf1xSDJFLb8+t/Bd/0GVniwSlnxRSRWdGKdXPRZoT0ibikUYw==@kvack.org
+X-Gm-Message-State: AOJu0YyQ1TCcclsAYqBzv16Pnt8bcEEg3KW02cb72JtLcr4cQM58T8Wu
+	JkoIfK4EaTK5tG6yOpGrqJ5B4o4MrOkJXVx9Zit+lE+fCzu9sgG21wB+
+X-Gm-Gg: ASbGnctMcKzywnJJCCLt959RJ6C27swc6Zl+IKZspzhYWA3MuL3x4Vwe7so+woRqltd
+	X/vmZsNG6FSdpE3KwIBL4iJa8tcZzxyXS5i1mjc9J455eR0pEhHLtxgvb79rQfNVG/jvg3MSug0
+	iWi6QqBDbeLgv5wrHPkOYe+43bTPop5pDvtZtGIHKRF4a4XaOAH9XU0S6Q5LLK4asxjd1DE61BN
+	sHbCYIw5uv2P1PT5rkKwtNQvEJJUVkTLQYp2c1GvQwoIMBEJRywtGOHjQvePojkPel7OQbP+NWG
+	M1boYHVTvRubQnl+rlaImXKVKB2LIQ8SmQJ+4FVvYbsBHN7VblVUVjCbN/fY71TlvfkvZ6y/rB9
+	+yu34Xgn2KzsOmcPmxnFWzJ09R40ZhPwQnagBNOhP8GInM34NHm/vOt4qfyNT5U2viGjGl2c=
+X-Google-Smtp-Source: AGHT+IEA+CnzAZG5nqPWaucE17ppRYMiLY/83IrR6orHShs0Kok5GpAbtKiOzXR6WepIUKE8wXMAWw==
+X-Received: by 2002:a05:6000:1a8d:b0:3b9:16fb:bfe2 with SMTP id ffacd0b85a97d-3bb66f10137mr7575027f8f.18.1755513675369;
+        Mon, 18 Aug 2025 03:41:15 -0700 (PDT)
+Received: from ?IPV6:2a03:83e0:1126:4:14f1:c189:9748:5e5a? ([2620:10d:c092:500::5:7223])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3bb64758d27sm12714320f8f.9.2025.08.18.03.41.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Aug 2025 03:41:14 -0700 (PDT)
+Message-ID: <2d0ea708-ecba-4021-b6ca-e93f1413d60a@gmail.com>
+Date: Mon, 18 Aug 2025 11:41:10 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6D11140005
-X-Stat-Signature: swpo1res6gdwyubdbhpwnkupyom5g9js
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 6/7] selftests: prctl: introduce tests for disabling
+ THPs completely
+To: Andrew Morton <akpm@linux-foundation.org>, david@redhat.com,
+ linux-mm@kvack.org
+Cc: linux-fsdevel@vger.kernel.org, corbet@lwn.net, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org, baohua@kernel.org,
+ shakeel.butt@linux.dev, riel@surriel.com, ziy@nvidia.com,
+ laoar.shao@gmail.com, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ npache@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ ryan.roberts@arm.com, vbabka@suse.cz, jannh@google.com,
+ Arnd Bergmann <arnd@arndb.de>, sj@kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, kernel-team@meta.com
+References: <20250815135549.130506-1-usamaarif642@gmail.com>
+ <20250815135549.130506-7-usamaarif642@gmail.com>
+Content-Language: en-US
+From: Usama Arif <usamaarif642@gmail.com>
+In-Reply-To: <20250815135549.130506-7-usamaarif642@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 61h48sketzxtduegt5yp4yxtqukp5jum
 X-Rspam-User: 
-X-HE-Tag: 1755512374-528769
-X-HE-Meta: U2FsdGVkX18ZP5/ms8k7hRaEGnT9HcbjG6bEy+dHJ5Roly1mrdDFKPYPJiDfudGo1vVsZGMXnzj8TlkmIAFuWT6oeDYNblOQBsB6NQitLHcea8677DfOw4MzGQSTN1MrX2mhlDSt1DMnJB0Nwr7M4rP0LW9ceigzW9fdl+deuPDGR2NNbAMrcoXx2Zs1Rltk8woFiazAtPqwtN9n2+uU2Nwzqq2gw6z23P1VBaF2WOzsk6zijC45xeJWoCoaj7Med9AWK3YNOJ6xTgjrCgosp6fEjzC07M6+sbmlHCa0uqTsdQUA7G4ksPU4ONAP/Dykp7KeyfYtV+gE58tyv8dnJw8MGd+5yLBSyz8yTgp1mQEWAtL0R3BVKtC5LOcEb57zvstfQi+qBQ+uwoZXmf6bra92aNUSbm7P4JLuFMb1j/kVBeDwAsFXqUT0abXXlts3dpL8zXAgMSF3PKXKofDwD00ahWFQqO017CurwgovuQBMWW/NGZwcQRLOA3FUC6Lqj+mcm3kYP8veBFPuhC46i/NSTNepQDMfUPiQVX/S+ejYAM9JPJGRCu6ZtUDl8LtZUWjMGwmI6ZWdJxO6ZYWmxfHViiGAulaHpECNfUpP75yVPnz4vuXJgVJ/mM3/f2FeW+2yhCArkqJvBm9LkTgKvLp9eEArjIg9xnhj4mtwjE8p66RNJAaVB6m5l6vVddv+T0c/MZ+Q8neLoY9056T2IPplvsC8qKJbaEN+6MUtL4XJtEWEq+FSDu+tSHuu1UyWjJkm2IF51pquvMpH4irbjE+dog0lVIGPBEYYb/KWCrltCqChPdRPdOLcQdGirr9AQo2lQiRdVqc2oNxrIPkfVwQsPd93Uod62QjE6GMlhquEuggriUu+5Jja4g5GSWA62Y93wv8x2gHeQmLefDVoZctZU66zXd8ALQLaPH+2gp08fPwViBSu5xjZ2Q/UOHSMl3ua51DHMjRHjZ1Qvny
- dFaoYFXp
- ZJmkQzdr4orJvWHastPzrE06llAvJSmFuLsfa1xqPjnZsOYd+cgkaAGsopr9jwqagUHkwC1/qsqKDheAWwCDzRLOcL6TwoKpwF5uWxD0FfMoGKX93FRFxxbPu3h3+gASduDqO05iuer+W2BGClJSmz7qwYGFVneToBrZbekLxKRAVxmDyvcVYGaMfNQMal72GmqWhvj5Hr5U/uIxvWxyDP0OSKENIu92S0BjUHKq5FmMXpO0ALsHVcnlv3ZfHQSxQiDOB6gmVHQl9YuTwVqh2wky6BaQvTsYmnhwkObVJXEtcAmklksEW8kfCkfUushICvN9q+I6eH59bUXwpGuxZ+S4pYU/q+THSTnwrlyCoQOndvgv0Ny3ohwj/isxKDfHVeHnRCwhT2JcAHRQ5TWRGtLKSRLfgG3Qmaf+HcbzGkTgKEtslDzBi1ofBHgxYMSTozOyJOl2MoVzFa/GAd5NOqDV2f7nPgen1yIBENjAIlH+FcnqRaPOq6p4cxQ==
+X-Rspamd-Queue-Id: 3E9EA100006
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755513677-56566
+X-HE-Meta: U2FsdGVkX19RwshhnqvmwcYP92oJlbf67vZE4rUEL8mZuuiVAJAqs8KGBbHDTRP/QzqS28VbcL2zMutmt2k+34yEeF1B7d2QGMoKaWT+s0tBWIWPYera96a2eOZueleGPH/sydnh5/Hmq8/5d+BCqe2aaoS4m0dxKPmxj7yEkQC/O+W0gYIp5v3VGe6nlnPiZBaHE6FFhtjzlD54+cSfAIeV28rkxytwwBo3FlIY7yAGXGaaKm1ilP7EqW+rWv0YKwpnLRWeHpCpCZsZFxA1oJe6spm2foR711zjVHsFImf5/5q1D/sNcRcFNtuwhGanELM0RKes6poXZGVkZY6SdkYNFTvKSKY74Um69bLpngOTtMO+BrjVmw0t1iL5e8RC9SOE2tVlV+1SmJTtTgZEcZFpoLtkb9otGnw4rRQ5O6Y2+5Eh/EwdOuMELQS55IrjSjv387sbH0eLpyVY8DtmLYkmpZ1knWV/04R08IZP4BOfsNqMmdZimvd8cfLK7g81lqaBmeJilooK9119m6oYWrPRGIah9E+GrLeLGGzHLqLBTWnYvA5zP0FLYXDZgcBBCQZdxwfed3JUZBNF1zTabT28h/ek7vkS9htqRZLRYi56xKOU1sdgUJkV3we7lRDB49CmU1PrPsW9voo4TSpmex4ZtXeAF59MKm1mC2OSQiZEpVOqLVAlqWuSlXlLEE1lS5EzgZc4XjOYwQBvt7t+QuAw0zJdwJotIUHKpy7yvSwm8soifWGQhISJ7KJDrjSn7Pjom/sFci1CWNBj05i8NMampCsrw6GS6yLwZenQ5Op4OHJMOm+/JENGBHk1u5gzyYwKTPabY/xYKiVUaIXCA3oWg/e02b2nzJHQuyx3j3g8qDeNSMZPc7feeHoIxq9ozXw3kA8t9nOHgEn3WDYyUwSs9YNTxeAumu3O2fr34diLe6WyLl4TJKugTfjPb9FmrOrCUId+hPkt9vrQV6d
+ xKEUMcxs
+ oCXIUmltzrRMUz7j3PxiemPYoCEPG6l/Kuw4nMq2CXKlSav5c3tcycp6NTTZk3Z6Yke/KtpwE3r4uWxl2uLFiq3lNMhDikyAHdGKa+3VNPEpl+biBnYIwFNS13hu5Sv3bltafSk2vBnMazR7oAMwKcWMxYW6Zcsxd70kOnc1C1rXeJ3vclQVQqTExdKTI+WxHTZ5zOFpBNp/w8JIsK/J1wFEKDJLAN2AtAXu8yYoMn5veqlMD9iE+L7n4zxOQtKrKgHuAWRxDRhO4XoDeJdPY8YuCf632H+xxKog4l5EgemXmGwm/A2PH1jYh+zfYM7uh8TkpnAprg5oR/zP5CdkYO9D1ji1VLJlphiOp9dSdKt3/yQ4mDhQLb3iW9wQGinkqQPoQXgrn/lmAqGr2GyKQlwIGh/c7cNYMOaRscpEE9K7IyaJVNYektT809LWl0kHGzWegUw1eiRN9SXJYj3UMsvcC52A3SXTfeyOsxaM04JAnvrfCR0UP6ixMXNtoHe05GWGxmlDStJNqaQNRYf7tfwFsojcSzxpSB1yT3CMlv5paf5WOWDjZCMxEtdbo1dAao2QlDKFnByZj2wiJmJVdbt8IKkrah9aQ5n2f9fc1+GaEzWWF5JLeTtpiOWGAULbw/xQw
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,289 +128,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-head:   dd1510cefdfec9dc3fa2bae40e0f16f1bf825567
-commit: a2004477b3282318589bf43a786d952856adcaee [166/188] mm: introduce memdesc_flags_t
-config: arm-randconfig-002-20250818 (https://download.01.org/0day-ci/archive/20250818/202508181807.zhZF5TQ0-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 93d24b6b7b148c47a2fa228a4ef31524fa1d9f3f)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250818/202508181807.zhZF5TQ0-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508181807.zhZF5TQ0-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> arch/arm/mm/flush.c:307:41: error: incompatible pointer types passing 'memdesc_flags_t *' to parameter of type 'volatile unsigned long *' [-Werror,-Wincompatible-pointer-types]
-     307 |         if (!test_and_set_bit(PG_dcache_clean, &folio->flags))
-         |                                                ^~~~~~~~~~~~~
-   arch/arm/include/asm/bitops.h:194:66: note: expanded from macro 'test_and_set_bit'
-     194 | #define test_and_set_bit(nr,p)          ATOMIC_BITOP(test_and_set_bit,nr,p)
-         |                                                                          ^
-   arch/arm/include/asm/bitops.h:183:52: note: expanded from macro 'ATOMIC_BITOP'
-     183 |         (__builtin_constant_p(nr) ? ____atomic_##name(nr, p) : _##name(nr,p))
-         |                                                           ^
-   arch/arm/include/asm/bitops.h:73:71: note: passing argument to parameter 'p' here
-      73 | ____atomic_test_and_set_bit(unsigned int bit, volatile unsigned long *p)
-         |                                                                       ^
->> arch/arm/mm/flush.c:307:41: error: incompatible pointer types passing 'memdesc_flags_t *' to parameter of type 'volatile unsigned long *' [-Werror,-Wincompatible-pointer-types]
-     307 |         if (!test_and_set_bit(PG_dcache_clean, &folio->flags))
-         |                                                ^~~~~~~~~~~~~
-   arch/arm/include/asm/bitops.h:194:66: note: expanded from macro 'test_and_set_bit'
-     194 | #define test_and_set_bit(nr,p)          ATOMIC_BITOP(test_and_set_bit,nr,p)
-         |                                                                          ^
-   arch/arm/include/asm/bitops.h:183:68: note: expanded from macro 'ATOMIC_BITOP'
-     183 |         (__builtin_constant_p(nr) ? ____atomic_##name(nr, p) : _##name(nr,p))
-         |                                                                           ^
-   arch/arm/include/asm/bitops.h:156:63: note: passing argument to parameter 'p' here
-     156 | extern int _test_and_set_bit(int nr, volatile unsigned long * p);
-         |                                                               ^
->> arch/arm/mm/flush.c:346:33: error: incompatible pointer types passing 'memdesc_flags_t *' to parameter of type 'const volatile unsigned long *' [-Werror,-Wincompatible-pointer-types]
-     346 |                 if (test_bit(PG_dcache_clean, &folio->flags))
-         |                                               ^~~~~~~~~~~~~
-   include/linux/bitops.h:60:50: note: expanded from macro 'test_bit'
-      60 | #define test_bit(nr, addr)              bitop(_test_bit, nr, addr)
-         |                                                              ^~~~
-   include/linux/bitops.h:47:17: note: expanded from macro 'bitop'
-      47 |          const##op(nr, addr) : op(nr, addr))
-         |                        ^~~~
-   include/asm-generic/bitops/generic-non-atomic.h:166:64: note: passing argument to parameter 'addr' here
-     166 | const_test_bit(unsigned long nr, const volatile unsigned long *addr)
-         |                                                                ^
->> arch/arm/mm/flush.c:346:33: error: incompatible pointer types passing 'memdesc_flags_t *' to parameter of type 'const volatile unsigned long *' [-Werror,-Wincompatible-pointer-types]
-     346 |                 if (test_bit(PG_dcache_clean, &folio->flags))
-         |                                               ^~~~~~~~~~~~~
-   include/linux/bitops.h:60:50: note: expanded from macro 'test_bit'
-      60 | #define test_bit(nr, addr)              bitop(_test_bit, nr, addr)
-         |                                                              ^~~~
-   include/linux/bitops.h:47:32: note: expanded from macro 'bitop'
-      47 |          const##op(nr, addr) : op(nr, addr))
-         |                                       ^~~~
-   include/asm-generic/bitops/generic-non-atomic.h:121:66: note: passing argument to parameter 'addr' here
-     121 | generic_test_bit(unsigned long nr, const volatile unsigned long *addr)
-         |                                                                  ^
-   arch/arm/mm/flush.c:347:31: error: incompatible pointer types passing 'memdesc_flags_t *' to parameter of type 'volatile unsigned long *' [-Werror,-Wincompatible-pointer-types]
-     347 |                         clear_bit(PG_dcache_clean, &folio->flags);
-         |                                                    ^~~~~~~~~~~~~
-   arch/arm/include/asm/bitops.h:192:53: note: expanded from macro 'clear_bit'
-     192 | #define clear_bit(nr,p)                 ATOMIC_BITOP(clear_bit,nr,p)
-         |                                                                   ^
-   arch/arm/include/asm/bitops.h:183:52: note: expanded from macro 'ATOMIC_BITOP'
-     183 |         (__builtin_constant_p(nr) ? ____atomic_##name(nr, p) : _##name(nr,p))
-         |                                                           ^
-   arch/arm/include/asm/bitops.h:48:83: note: passing argument to parameter 'p' here
-      48 | static inline void ____atomic_clear_bit(unsigned int bit, volatile unsigned long *p)
-         |                                                                                   ^
-   arch/arm/mm/flush.c:347:31: error: incompatible pointer types passing 'memdesc_flags_t *' to parameter of type 'volatile unsigned long *' [-Werror,-Wincompatible-pointer-types]
-     347 |                         clear_bit(PG_dcache_clean, &folio->flags);
-         |                                                    ^~~~~~~~~~~~~
-   arch/arm/include/asm/bitops.h:192:53: note: expanded from macro 'clear_bit'
-     192 | #define clear_bit(nr,p)                 ATOMIC_BITOP(clear_bit,nr,p)
-         |                                                                   ^
-   arch/arm/include/asm/bitops.h:183:68: note: expanded from macro 'ATOMIC_BITOP'
-     183 |         (__builtin_constant_p(nr) ? ____atomic_##name(nr, p) : _##name(nr,p))
-         |                                                                           ^
-   arch/arm/include/asm/bitops.h:154:57: note: passing argument to parameter 'p' here
-     154 | extern void _clear_bit(int nr, volatile unsigned long * p);
-         |                                                         ^
-   arch/arm/mm/flush.c:355:30: error: incompatible pointer types passing 'memdesc_flags_t *' to parameter of type 'volatile unsigned long *' [-Werror,-Wincompatible-pointer-types]
-     355 |                 clear_bit(PG_dcache_clean, &folio->flags);
-         |                                            ^~~~~~~~~~~~~
-   arch/arm/include/asm/bitops.h:192:53: note: expanded from macro 'clear_bit'
-     192 | #define clear_bit(nr,p)                 ATOMIC_BITOP(clear_bit,nr,p)
-         |                                                                   ^
-   arch/arm/include/asm/bitops.h:183:52: note: expanded from macro 'ATOMIC_BITOP'
-     183 |         (__builtin_constant_p(nr) ? ____atomic_##name(nr, p) : _##name(nr,p))
-         |                                                           ^
-   arch/arm/include/asm/bitops.h:48:83: note: passing argument to parameter 'p' here
-      48 | static inline void ____atomic_clear_bit(unsigned int bit, volatile unsigned long *p)
-         |                                                                                   ^
-   arch/arm/mm/flush.c:355:30: error: incompatible pointer types passing 'memdesc_flags_t *' to parameter of type 'volatile unsigned long *' [-Werror,-Wincompatible-pointer-types]
-     355 |                 clear_bit(PG_dcache_clean, &folio->flags);
-         |                                            ^~~~~~~~~~~~~
-   arch/arm/include/asm/bitops.h:192:53: note: expanded from macro 'clear_bit'
-     192 | #define clear_bit(nr,p)                 ATOMIC_BITOP(clear_bit,nr,p)
-         |                                                                   ^
-   arch/arm/include/asm/bitops.h:183:68: note: expanded from macro 'ATOMIC_BITOP'
-     183 |         (__builtin_constant_p(nr) ? ____atomic_##name(nr, p) : _##name(nr,p))
-         |                                                                           ^
-   arch/arm/include/asm/bitops.h:154:57: note: passing argument to parameter 'p' here
-     154 | extern void _clear_bit(int nr, volatile unsigned long * p);
-         |                                                         ^
-   arch/arm/mm/flush.c:362:28: error: incompatible pointer types passing 'memdesc_flags_t *' to parameter of type 'volatile unsigned long *' [-Werror,-Wincompatible-pointer-types]
-     362 |                 set_bit(PG_dcache_clean, &folio->flags);
-         |                                          ^~~~~~~~~~~~~
-   arch/arm/include/asm/bitops.h:191:49: note: expanded from macro 'set_bit'
-     191 | #define set_bit(nr,p)                   ATOMIC_BITOP(set_bit,nr,p)
-         |                                                                 ^
-   arch/arm/include/asm/bitops.h:183:52: note: expanded from macro 'ATOMIC_BITOP'
-     183 |         (__builtin_constant_p(nr) ? ____atomic_##name(nr, p) : _##name(nr,p))
-         |                                                           ^
-   arch/arm/include/asm/bitops.h:36:81: note: passing argument to parameter 'p' here
-      36 | static inline void ____atomic_set_bit(unsigned int bit, volatile unsigned long *p)
-         |                                                                                 ^
-   arch/arm/mm/flush.c:362:28: error: incompatible pointer types passing 'memdesc_flags_t *' to parameter of type 'volatile unsigned long *' [-Werror,-Wincompatible-pointer-types]
-     362 |                 set_bit(PG_dcache_clean, &folio->flags);
-         |                                          ^~~~~~~~~~~~~
-   arch/arm/include/asm/bitops.h:191:49: note: expanded from macro 'set_bit'
-     191 | #define set_bit(nr,p)                   ATOMIC_BITOP(set_bit,nr,p)
-         |                                                                 ^
-   arch/arm/include/asm/bitops.h:183:68: note: expanded from macro 'ATOMIC_BITOP'
-     183 |         (__builtin_constant_p(nr) ? ____atomic_##name(nr, p) : _##name(nr,p))
-         |                                                                           ^
-   arch/arm/include/asm/bitops.h:153:55: note: passing argument to parameter 'p' here
-     153 | extern void _set_bit(int nr, volatile unsigned long * p);
-         |                                                       ^
-   10 errors generated.
---
->> arch/arm/mm/copypage-v6.c:76:41: error: incompatible pointer types passing 'memdesc_flags_t *' to parameter of type 'volatile unsigned long *' [-Werror,-Wincompatible-pointer-types]
-      76 |         if (!test_and_set_bit(PG_dcache_clean, &src->flags))
-         |                                                ^~~~~~~~~~~
-   arch/arm/include/asm/bitops.h:194:66: note: expanded from macro 'test_and_set_bit'
-     194 | #define test_and_set_bit(nr,p)          ATOMIC_BITOP(test_and_set_bit,nr,p)
-         |                                                                          ^
-   arch/arm/include/asm/bitops.h:183:52: note: expanded from macro 'ATOMIC_BITOP'
-     183 |         (__builtin_constant_p(nr) ? ____atomic_##name(nr, p) : _##name(nr,p))
-         |                                                           ^
-   arch/arm/include/asm/bitops.h:73:71: note: passing argument to parameter 'p' here
-      73 | ____atomic_test_and_set_bit(unsigned int bit, volatile unsigned long *p)
-         |                                                                       ^
->> arch/arm/mm/copypage-v6.c:76:41: error: incompatible pointer types passing 'memdesc_flags_t *' to parameter of type 'volatile unsigned long *' [-Werror,-Wincompatible-pointer-types]
-      76 |         if (!test_and_set_bit(PG_dcache_clean, &src->flags))
-         |                                                ^~~~~~~~~~~
-   arch/arm/include/asm/bitops.h:194:66: note: expanded from macro 'test_and_set_bit'
-     194 | #define test_and_set_bit(nr,p)          ATOMIC_BITOP(test_and_set_bit,nr,p)
-         |                                                                          ^
-   arch/arm/include/asm/bitops.h:183:68: note: expanded from macro 'ATOMIC_BITOP'
-     183 |         (__builtin_constant_p(nr) ? ____atomic_##name(nr, p) : _##name(nr,p))
-         |                                                                           ^
-   arch/arm/include/asm/bitops.h:156:63: note: passing argument to parameter 'p' here
-     156 | extern int _test_and_set_bit(int nr, volatile unsigned long * p);
-         |                                                               ^
-   2 errors generated.
---
->> arch/arm/mm/dma-mapping.c:721:30: error: incompatible pointer types passing 'memdesc_flags_t *' to parameter of type 'volatile unsigned long *' [-Werror,-Wincompatible-pointer-types]
-     721 |                                 set_bit(PG_dcache_clean, &folio->flags);
-         |                                                          ^~~~~~~~~~~~~
-   arch/arm/include/asm/bitops.h:191:49: note: expanded from macro 'set_bit'
-     191 | #define set_bit(nr,p)                   ATOMIC_BITOP(set_bit,nr,p)
-         |                                                                 ^
-   arch/arm/include/asm/bitops.h:183:52: note: expanded from macro 'ATOMIC_BITOP'
-     183 |         (__builtin_constant_p(nr) ? ____atomic_##name(nr, p) : _##name(nr,p))
-         |                                                           ^
-   arch/arm/include/asm/bitops.h:36:81: note: passing argument to parameter 'p' here
-      36 | static inline void ____atomic_set_bit(unsigned int bit, volatile unsigned long *p)
-         |                                                                                 ^
->> arch/arm/mm/dma-mapping.c:721:30: error: incompatible pointer types passing 'memdesc_flags_t *' to parameter of type 'volatile unsigned long *' [-Werror,-Wincompatible-pointer-types]
-     721 |                                 set_bit(PG_dcache_clean, &folio->flags);
-         |                                                          ^~~~~~~~~~~~~
-   arch/arm/include/asm/bitops.h:191:49: note: expanded from macro 'set_bit'
-     191 | #define set_bit(nr,p)                   ATOMIC_BITOP(set_bit,nr,p)
-         |                                                                 ^
-   arch/arm/include/asm/bitops.h:183:68: note: expanded from macro 'ATOMIC_BITOP'
-     183 |         (__builtin_constant_p(nr) ? ____atomic_##name(nr, p) : _##name(nr,p))
-         |                                                                           ^
-   arch/arm/include/asm/bitops.h:153:55: note: passing argument to parameter 'p' here
-     153 | extern void _set_bit(int nr, volatile unsigned long * p);
-         |                                                       ^
-   2 errors generated.
 
 
-vim +307 arch/arm/mm/flush.c
+On 15/08/2025 14:54, Usama Arif wrote:
+> The test will set the global system THP setting to never, madvise
+> or always depending on the fixture variant and the 2M setting to
+> inherit before it starts (and reset to original at teardown).
+> The fixture setup will also test if PR_SET_THP_DISABLE prctl call can
+> be made to disable all THPs and skip if it fails.
+> 
+> This tests if the process can:
+> - successfully get the policy to disable THPs completely.
+> - never get a hugepage when the THPs are completely disabled
+>   with the prctl, including with MADV_HUGE and MADV_COLLAPSE.
+> - successfully reset the policy of the process.
+> - after reset, only get hugepages with:
+>   - MADV_COLLAPSE when policy is set to never.
+>   - MADV_HUGE and MADV_COLLAPSE when policy is set to madvise.
+>   - always when policy is set to "always".
+> - never get a THP with MADV_NOHUGEPAGE.
+> - repeat the above tests in a forked process to make sure
+>   the policy is carried across forks.
+> 
+> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> ---
+>  tools/testing/selftests/mm/.gitignore         |   1 +
+>  tools/testing/selftests/mm/Makefile           |   1 +
+>  .../testing/selftests/mm/prctl_thp_disable.c  | 175 ++++++++++++++++++
+>  tools/testing/selftests/mm/thp_settings.c     |   9 +-
+>  tools/testing/selftests/mm/thp_settings.h     |   1 +
+>  5 files changed, 186 insertions(+), 1 deletion(-)
+>  create mode 100644 tools/testing/selftests/mm/prctl_thp_disable.c
+>
 
-^1da177e4c3f415 Linus Torvalds          2005-04-16  283  
-6012191aa9c6fff Catalin Marinas         2010-09-13  284  #if __LINUX_ARM_ARCH__ >= 6
-6012191aa9c6fff Catalin Marinas         2010-09-13  285  void __sync_icache_dcache(pte_t pteval)
-6012191aa9c6fff Catalin Marinas         2010-09-13  286  {
-6012191aa9c6fff Catalin Marinas         2010-09-13  287  	unsigned long pfn;
-8b5989f33337172 Matthew Wilcox (Oracle  2023-08-02  288) 	struct folio *folio;
-6012191aa9c6fff Catalin Marinas         2010-09-13  289  	struct address_space *mapping;
-6012191aa9c6fff Catalin Marinas         2010-09-13  290  
-6012191aa9c6fff Catalin Marinas         2010-09-13  291  	if (cache_is_vipt_nonaliasing() && !pte_exec(pteval))
-6012191aa9c6fff Catalin Marinas         2010-09-13  292  		/* only flush non-aliasing VIPT caches for exec mappings */
-6012191aa9c6fff Catalin Marinas         2010-09-13  293  		return;
-6012191aa9c6fff Catalin Marinas         2010-09-13  294  	pfn = pte_pfn(pteval);
-6012191aa9c6fff Catalin Marinas         2010-09-13  295  	if (!pfn_valid(pfn))
-6012191aa9c6fff Catalin Marinas         2010-09-13  296  		return;
-6012191aa9c6fff Catalin Marinas         2010-09-13  297  
-8b5989f33337172 Matthew Wilcox (Oracle  2023-08-02  298) 	folio = page_folio(pfn_to_page(pfn));
-0c66c6f4e21cb22 Yongqiang Liu           2024-03-07  299  	if (folio_test_reserved(folio))
-0c66c6f4e21cb22 Yongqiang Liu           2024-03-07  300  		return;
-0c66c6f4e21cb22 Yongqiang Liu           2024-03-07  301  
-6012191aa9c6fff Catalin Marinas         2010-09-13  302  	if (cache_is_vipt_aliasing())
-8b5989f33337172 Matthew Wilcox (Oracle  2023-08-02  303) 		mapping = folio_flush_mapping(folio);
-6012191aa9c6fff Catalin Marinas         2010-09-13  304  	else
-6012191aa9c6fff Catalin Marinas         2010-09-13  305  		mapping = NULL;
-6012191aa9c6fff Catalin Marinas         2010-09-13  306  
-8b5989f33337172 Matthew Wilcox (Oracle  2023-08-02 @307) 	if (!test_and_set_bit(PG_dcache_clean, &folio->flags))
-8b5989f33337172 Matthew Wilcox (Oracle  2023-08-02  308) 		__flush_dcache_folio(mapping, folio);
-8373dc38ca8d491 saeed bishara           2011-05-16  309  
-8373dc38ca8d491 saeed bishara           2011-05-16  310  	if (pte_exec(pteval))
-6012191aa9c6fff Catalin Marinas         2010-09-13  311  		__flush_icache_all();
-6012191aa9c6fff Catalin Marinas         2010-09-13  312  }
-6012191aa9c6fff Catalin Marinas         2010-09-13  313  #endif
-6012191aa9c6fff Catalin Marinas         2010-09-13  314  
-^1da177e4c3f415 Linus Torvalds          2005-04-16  315  /*
-^1da177e4c3f415 Linus Torvalds          2005-04-16  316   * Ensure cache coherency between kernel mapping and userspace mapping
-^1da177e4c3f415 Linus Torvalds          2005-04-16  317   * of this page.
-^1da177e4c3f415 Linus Torvalds          2005-04-16  318   *
-^1da177e4c3f415 Linus Torvalds          2005-04-16  319   * We have three cases to consider:
-^1da177e4c3f415 Linus Torvalds          2005-04-16  320   *  - VIPT non-aliasing cache: fully coherent so nothing required.
-^1da177e4c3f415 Linus Torvalds          2005-04-16  321   *  - VIVT: fully aliasing, so we need to handle every alias in our
-^1da177e4c3f415 Linus Torvalds          2005-04-16  322   *          current VM view.
-^1da177e4c3f415 Linus Torvalds          2005-04-16  323   *  - VIPT aliasing: need to handle one alias in our current VM view.
-^1da177e4c3f415 Linus Torvalds          2005-04-16  324   *
-^1da177e4c3f415 Linus Torvalds          2005-04-16  325   * If we need to handle aliasing:
-^1da177e4c3f415 Linus Torvalds          2005-04-16  326   *  If the page only exists in the page cache and there are no user
-^1da177e4c3f415 Linus Torvalds          2005-04-16  327   *  space mappings, we can be lazy and remember that we may have dirty
-^1da177e4c3f415 Linus Torvalds          2005-04-16  328   *  kernel cache lines for later.  Otherwise, we assume we have
-^1da177e4c3f415 Linus Torvalds          2005-04-16  329   *  aliasing mappings.
-df2f5e721ed36e2 Russell King            2005-11-30  330   *
-31bee4cf0e74e9c saeed bishara           2011-05-16  331   * Note that we disable the lazy flush for SMP configurations where
-31bee4cf0e74e9c saeed bishara           2011-05-16  332   * the cache maintenance operations are not automatically broadcasted.
-^1da177e4c3f415 Linus Torvalds          2005-04-16  333   */
-8b5989f33337172 Matthew Wilcox (Oracle  2023-08-02  334) void flush_dcache_folio(struct folio *folio)
-^1da177e4c3f415 Linus Torvalds          2005-04-16  335  {
-421fe93cc4b06b2 Russell King            2009-10-25  336  	struct address_space *mapping;
-421fe93cc4b06b2 Russell King            2009-10-25  337  
-421fe93cc4b06b2 Russell King            2009-10-25  338  	/*
-421fe93cc4b06b2 Russell King            2009-10-25  339  	 * The zero page is never written to, so never has any dirty
-421fe93cc4b06b2 Russell King            2009-10-25  340  	 * cache lines, and therefore never needs to be flushed.
-421fe93cc4b06b2 Russell King            2009-10-25  341  	 */
-8b5989f33337172 Matthew Wilcox (Oracle  2023-08-02  342) 	if (is_zero_pfn(folio_pfn(folio)))
-421fe93cc4b06b2 Russell King            2009-10-25  343  		return;
-421fe93cc4b06b2 Russell King            2009-10-25  344  
-00a19f3e25c0c40 Rabin Vincent           2016-11-08  345  	if (!cache_ops_need_broadcast() && cache_is_vipt_nonaliasing()) {
-8b5989f33337172 Matthew Wilcox (Oracle  2023-08-02 @346) 		if (test_bit(PG_dcache_clean, &folio->flags))
-8b5989f33337172 Matthew Wilcox (Oracle  2023-08-02  347) 			clear_bit(PG_dcache_clean, &folio->flags);
-00a19f3e25c0c40 Rabin Vincent           2016-11-08  348  		return;
-00a19f3e25c0c40 Rabin Vincent           2016-11-08  349  	}
-00a19f3e25c0c40 Rabin Vincent           2016-11-08  350  
-8b5989f33337172 Matthew Wilcox (Oracle  2023-08-02  351) 	mapping = folio_flush_mapping(folio);
-^1da177e4c3f415 Linus Torvalds          2005-04-16  352  
-85848dd7ab75fce Catalin Marinas         2010-09-13  353  	if (!cache_ops_need_broadcast() &&
-8b5989f33337172 Matthew Wilcox (Oracle  2023-08-02  354) 	    mapping && !folio_mapped(folio))
-8b5989f33337172 Matthew Wilcox (Oracle  2023-08-02  355) 		clear_bit(PG_dcache_clean, &folio->flags);
-85848dd7ab75fce Catalin Marinas         2010-09-13  356  	else {
-8b5989f33337172 Matthew Wilcox (Oracle  2023-08-02  357) 		__flush_dcache_folio(mapping, folio);
-8830f04a092b47f Russell King            2005-06-20  358  		if (mapping && cache_is_vivt())
-8b5989f33337172 Matthew Wilcox (Oracle  2023-08-02  359) 			__flush_dcache_aliases(mapping, folio);
-826cbdaff29764b Catalin Marinas         2008-06-13  360  		else if (mapping)
-826cbdaff29764b Catalin Marinas         2008-06-13  361  			__flush_icache_all();
-8b5989f33337172 Matthew Wilcox (Oracle  2023-08-02  362) 		set_bit(PG_dcache_clean, &folio->flags);
-8830f04a092b47f Russell King            2005-06-20  363  	}
-^1da177e4c3f415 Linus Torvalds          2005-04-16  364  }
-8b5989f33337172 Matthew Wilcox (Oracle  2023-08-02  365) EXPORT_SYMBOL(flush_dcache_folio);
-6020dff09252e36 Russell King            2006-12-30  366  
+Andrew, could you please apply the below fixlet on top of this patch as suggested
+by David in https://lore.kernel.org/all/a385e09f-f582-4ede-9e60-1d85cee02a3c@redhat.com/?
 
-:::::: The code at line 307 was first introduced by commit
-:::::: 8b5989f3333717273d02ab87ba8781f72a6783ab arm: implement the new page table range API
+Thanks!
 
-:::::: TO: Matthew Wilcox (Oracle) <willy@infradead.org>
-:::::: CC: Andrew Morton <akpm@linux-foundation.org>
+From db9306c06cbd6057c2a8839e5d4c1d2559b58b70 Mon Sep 17 00:00:00 2001
+From: Usama Arif <usamaarif642@gmail.com>
+Date: Mon, 18 Aug 2025 11:27:04 +0100
+Subject: [PATCH 2/4] [fixlet] selftests: prctl: return after executing test in
+ child process
 
+The next step after executing the test is a wait, but there is nothing to wait
+for in the child, so just return.
+
+Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+---
+ tools/testing/selftests/mm/prctl_thp_disable.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/tools/testing/selftests/mm/prctl_thp_disable.c b/tools/testing/selftests/mm/prctl_thp_disable.c
+index e9e519c85224c..df3cce278e10a 100644
+--- a/tools/testing/selftests/mm/prctl_thp_disable.c
++++ b/tools/testing/selftests/mm/prctl_thp_disable.c
+@@ -161,8 +161,10 @@ TEST_F(prctl_thp_disable_completely, fork)
+ 	pid = fork();
+ 	ASSERT_GE(pid, 0);
+ 
+-	if (!pid)
++	if (!pid) {
+ 		prctl_thp_disable_completely_test(_metadata, self->pmdsize, variant->thp_policy);
++		return;
++	}
+ 
+ 	wait(&ret);
+ 	if (WIFEXITED(ret))
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.47.3
+
+
 
