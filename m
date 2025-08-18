@@ -2,99 +2,194 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C1763CA0EC0
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 11:26:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A523ACA0EC6
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 11:28:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5BBA18E0032; Mon, 18 Aug 2025 07:26:02 -0400 (EDT)
+	id 411846B00EA; Mon, 18 Aug 2025 07:28:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 593298E0030; Mon, 18 Aug 2025 07:26:02 -0400 (EDT)
+	id 3E9B26B00ED; Mon, 18 Aug 2025 07:28:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D03A8E0032; Mon, 18 Aug 2025 07:26:02 -0400 (EDT)
+	id 2B1236B00EA; Mon, 18 Aug 2025 07:28:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 37F788E0030
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 07:26:02 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DD7951408CD
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 11:26:01 +0000 (UTC)
-X-FDA: 83789648922.19.5C3C1EF
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	by imf10.hostedemail.com (Postfix) with ESMTP id E16A4C0010
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 11:25:57 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=163.com header.s=s110527 header.b="m l7893N";
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf10.hostedemail.com: domain of yangshiguang1011@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=yangshiguang1011@163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755516360; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1002F6B00EC
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 07:28:32 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CC5D883ED2
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 11:28:31 +0000 (UTC)
+X-FDA: 83789655222.29.EC28D6B
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3D80B1C000C
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 11:28:29 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Z4v5ROuS;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf18.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755516509; a=rsa-sha256;
 	cv=none;
-	b=qAQezGF1rXlcnM1TdPDi9ScL5rci2uINWz0g7iFqlRjzQ58wHwh1WK2He4LKdFZctCoA3B
-	UQwvfFEI3Xwtl3It2CqpcbwGMmFt5qINNgaGD4PQJ3sfzmLEcVuAhl2V2jPiz+AlJSeh+W
-	RmrNgsBEsBXzQCGx0QrM2oHookkI8m4=
+	b=AZ+/Grb7nIi9Xm7fnbR0c6M5mZgGLO2yvqO/ekQSp6n0z0/wyNEYtL3nc+WPaBwl61ReZG
+	PX0qi9Oq6POQkLufxDDF3bz6K5dLCl0l9cFTVtyT212qMbw766u3Yq5MKM0p/Kvi9dMQk4
+	nOly/tTYlQEoautMJfYDg0FEnmbkdnI=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=163.com header.s=s110527 header.b="m l7893N";
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf10.hostedemail.com: domain of yangshiguang1011@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=yangshiguang1011@163.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Z4v5ROuS;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf18.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755516360;
+	s=arc-20220608; t=1755516509;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NU5qM1hPwsDUB0TlI5TpdzQ5o7g7W4qP0KdIbLWsI/0=;
-	b=Gt072g08HwzdHqQiMD7zhVM5A2dW1SQh3j3AyvBUm8kWC/dpE3sGxt4+nP0DorOUduCVXQ
-	RzuEXmnSQlg3hlIaO4R3QQ4+t4V4SquuxGDnKjKdIRQJHGFcz/b5Xcb2VcGiLU99d3/s2J
-	TWKNj0QJ/W5DBFCR942d9TwAwFDywf0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=CYFoPrE+uQrAWI0Bt+G6DSdcetZyuNwaeQsOIq01vzg=; b=m
-	l7893NrGH+Op8XEC/xceVmF8+rlFhpbJFdXwUV6jso03TWDUIUSoC+Mo9WMOITRN
-	DbTED71XH9UG71pBe3Sx1WY6CfHT44QZo+f+eG/LRceRqScNqHe1R2cjF4+bZvlS
-	jbGOf0FCUm2Wk2JoDrvMTptafmKf47TntY0Jtw/UVY=
-Received: from yangshiguang1011$163.com ( [1.202.162.48] ) by
- ajax-webmail-wmsvr-40-125 (Coremail) ; Mon, 18 Aug 2025 19:25:46 +0800
- (CST)
-X-Originating-IP: [1.202.162.48]
-Date: Mon, 18 Aug 2025 19:25:46 +0800 (CST)
-From: yangshiguang  <yangshiguang1011@163.com>
-To: "Harry Yoo" <harry.yoo@oracle.com>
-Cc: vbabka@suse.cz, akpm@linux-foundation.org, cl@gentwo.org,
-	rientjes@google.com, roman.gushchin@linux.dev, glittao@gmail.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, yangshiguang <yangshiguang@xiaomi.com>
-Subject: Re:Re: Re: Re: Re: [PATCH v2] mm: slub: avoid wake up kswapd in
- set_track_prepare
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20250519(9504565a)
- Copyright (c) 2002-2025 www.mailtech.cn 163com
-In-Reply-To: <aKKhUoUkRNDkFYYb@harry>
-References: <20250814111641.380629-2-yangshiguang1011@163.com>
- <aKBAdUkCd95Rg85A@harry>
- <14b4d82.262b.198b25732bb.Coremail.yangshiguang1011@163.com>
- <aKBhdAsHypo1Q3pC@harry>
- <22a353bd.1e2b.198baeeac20.Coremail.yangshiguang1011@163.com>
- <aKKObGA7TN4Vq9-W@harry>
- <29914f11.25c5.198bb06a343.Coremail.yangshiguang1011@163.com>
- <aKKhUoUkRNDkFYYb@harry>
-X-NTES-SC: AL_Qu2eB/mauUsv4CKdYOkfmUgRj+k6WsK3s/sn3oNfP5B+jAzp5hoKU3RSFHn22u60BiyHgQmGdgRV4cB7cpBCY5IBQn+R3qusseF/+szH2aYk0g==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	bh=J0poHkf7IJxzNGcjiPzQE+7iEkpA1901ZpOaMVbBkbk=;
+	b=A8tmAJKCteyLr6T3MaSr3IR46gTEZhyzWM4PNHNpeiWTitVje1pBwPc2CNiikgSLy07/Z4
+	FVgdRc0LEy318GnoiBRlPnjODWYQKk/aaIRFDgmxWEXNIXCeUUQAtRkDa7f0cLnNv0bKS0
+	noUforgDvqfyi+trX2mhrDkTj/S+c+8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755516508;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=J0poHkf7IJxzNGcjiPzQE+7iEkpA1901ZpOaMVbBkbk=;
+	b=Z4v5ROuSMIsUYsQ550OSnBuw4T3qh5Np8rkOURSaWI8sre0uWbOX9G4i8z/H19ID6pWZTL
+	IANTWBTJZQ6luFiclDuIY4F8OmsAVl5QdpWVntEJH2Y3nfucX7UW5KkYro8HS7yt93SAqw
+	E7u2mCgpJWqsAlho5H/IO+9F0cSTX2w=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-218-v9Zpnt8oMPi2j5YQHSEKuA-1; Mon, 18 Aug 2025 07:28:27 -0400
+X-MC-Unique: v9Zpnt8oMPi2j5YQHSEKuA-1
+X-Mimecast-MFC-AGG-ID: v9Zpnt8oMPi2j5YQHSEKuA_1755516506
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3b9edf41d07so2619414f8f.3
+        for <linux-mm@kvack.org>; Mon, 18 Aug 2025 04:28:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755516506; x=1756121306;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=J0poHkf7IJxzNGcjiPzQE+7iEkpA1901ZpOaMVbBkbk=;
+        b=AzIApl6Jx80V2BEm84Dt9Cv2JX6c6coQd4PrYLu7BnRz40spwAUgCMh61J5rsRq2xU
+         7pGK4Waf8gbsx0E2C/Th5fZHfgzmyVfZKjqtqOo4TvM+43TllPFhAWqsS22sYXd5FZaO
+         +t4amFPJOcHwtmlvpRuqL4Wm6becrTbCd7k66ieW60nrxHjzfdYFNHK9prxnEusitS/f
+         YjnDU0ENZh78hlnCnytxEoOB1G992G7dba0mCHkhw5nzALePKwWFYEOl+cbOFz8Fqf1f
+         oITOvMQRe0/fiEZBBAZ2XzSw0w3R/OEYqeNIQFMTJbmMXUd8rIPvfIxKFFFqvUQwFUdd
+         ktZg==
+X-Forwarded-Encrypted: i=1; AJvYcCWrOEbsoKFdlVp+tiStDRF/9RKMsiB3MvwtlXbVarkCTrQ1vU97FGx+2ZIoX3S21rQxgE9R0xMKPw==@kvack.org
+X-Gm-Message-State: AOJu0YzNCk6Lrc4gANCex4rb8WT9EAv7vQ7bQHyFOPLRjF+fc9wFqshS
+	tcwIsyPHtRqSsdr9G2vno39Us8oG1gIujFpW8sEqNHLAnPfwpZi5oigVY8OfEsX8foCsE/hOuGD
+	Ezw3a5BjlnPz11hFigddDOUqv1QhtTYtDZhTZ3fdjBK+K/RYdBSAa
+X-Gm-Gg: ASbGncuZ4pHaCz+YMsTtJX9vhUcnjhPZ7jQo7pSVj2M0Xh30eJWvoxA+LEI8gvIFd0R
+	5BLm5mSP5fg5p8Hr6l4yMBqEmUsMgNoTmVw/m8cr8HJoEa8rVI+RWoVtfWH+mWPmf2Z4pOGmA2F
+	BfwW9OLfGgShWyqd2uIQxMnWF3LrcbpDD9dOonzb7aYkjOA3E2J7aCa6etpd3BJWE9yI0VI1W/i
+	xS3qJ0j42JSc4t6rU+eJgdxrfQQknFyVO0O3Q1at/8+PRI25cQweV6eFrKX8h3IqBPb3I9KvE+e
+	KSLecYbKAGUGfZZBGBuWhygX/Zb8duNifTzdpDzmuLKfFiulOP1sXwVONGj4aU5rDLqlBw==
+X-Received: by 2002:a05:6000:2301:b0:3bb:2fb3:9c7e with SMTP id ffacd0b85a97d-3bb674db9eemr9706751f8f.21.1755516505929;
+        Mon, 18 Aug 2025 04:28:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFoJ2j4tybVSbT2mQ2UN8mZP25LV2c4F54aus7k4qiE296Q/C3YEoCeE99f3tiBsFkHDADQDg==
+X-Received: by 2002:a05:6000:2301:b0:3bb:2fb3:9c7e with SMTP id ffacd0b85a97d-3bb674db9eemr9706715f8f.21.1755516505387;
+        Mon, 18 Aug 2025 04:28:25 -0700 (PDT)
+Received: from [192.168.3.141] (p57a1a246.dip0.t-ipconnect.de. [87.161.162.70])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a22211395sm129258685e9.4.2025.08.18.04.28.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Aug 2025 04:28:24 -0700 (PDT)
+Message-ID: <3bb725f8-28d7-4aa2-b75f-af40d5cab280@redhat.com>
+Date: Mon, 18 Aug 2025 13:28:22 +0200
 MIME-Version: 1.0
-Message-ID: <5483ea6d.9684.198bced9f95.Coremail.yangshiguang1011@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:fSgvCgDnn1y6DaNowlscAA--.4129W
-X-CM-SenderInfo: 51dqw25klj3ttqjriiqr6rljoofrz/xtbBMRKt5WiijKqIkAAFsa
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
-X-Rspamd-Queue-Id: E16A4C0010
-X-Stat-Signature: ri89g3goy4u367rixfhsmz1fy3nsrnae
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/2] mm/migrate: remove MIGRATEPAGE_UNMAP
+To: Lance Yang <lance.yang@linux.dev>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, virtualization@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, linux-aio@kvack.org,
+ linux-btrfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Benjamin LaHaise <bcrl@kvack.org>, Chris Mason <clm@fb.com>,
+ Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Dave Kleikamp <shaggy@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Minchan Kim <minchan@kernel.org>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>
+References: <20250811143949.1117439-1-david@redhat.com>
+ <20250811143949.1117439-2-david@redhat.com>
+ <CABzRoyYU2yOuGQskCAG_gzKiQwR6uM9eAYqOOCoQj+Xv=r163A@mail.gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CABzRoyYU2yOuGQskCAG_gzKiQwR6uM9eAYqOOCoQj+Xv=r163A@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: GzBWrQp4jOBAJ2mG1EhpX76xQsY_DiD_wuCl4xUEV50_1755516506
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 3D80B1C000C
+X-Stat-Signature: dws8g6o3r91s6e4onjw1tis14gzekd86
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1755516357-279965
-X-HE-Meta: U2FsdGVkX1/+ER5c9AT3BO/RhqNJMdBVsMMH0pdC2zUImtAEXVpqRb76KWJY+131o0m0M5LgFoCgsG8IEVLd8a7qh7ggkzEWawmxuhq5NkAnTG+Gycnp9l+i9TiCw/ZOA3RuedSLUMY3ARo+IZpnWLeYogsUwqI7ZkUmQ8p3tFJqoAwZAfrCcjTVhzVp9E13H7uzHo5b7WEW+gB2wmYc5MOWJlpuQe9JAxmI1x8AoXg0Lh1lBgTCfO8y/WIlvgt7EcRWLHtfu1msabUBLpknMQALmnE+MBvLwr/EBvu1CeSr14j7W+1NJ8aUelp5JTIgaTx7GSYKoReAx9O1Wd/sqFlSeuqKjp5wCfQYL6OMjAtcs7F3z815YZ3bWZtNHSrkH7KGWloNrGTbiaCRXIfQiXZZejFhDZlFGkxlzZUNyZavlrL9RoxXykQqfy+ijySmYKg0CYodv44zVTRYeAwdJfxoHMoKzlkvIVv3W0uZgg/+ZZB3u+sNPE9o3HW9l0aG7hG1lEtbGd4N9blw95vOklZlb26hFSbT0+1TANIUWfWzU+btwYlyVSpivHXt+y9JfCQSmK4/LGtXH6uj+bhI4Bp0iBiJRs5NQfcZMUJDL4OzD/YMxHm3Axg4QhS63aBsgoHA+skx6xlpFovnWCrs+hE2uaPDF4dLsJfkCMBa7ReaN+5QxfCGUV4+J43kVymSrJJGrCdAFxqbFDLnL8BJKLSip6yx7JVUyQZfs94bDAhTYmQ+0xSh6cMaTgu867jkqTOz/PnDMG6uS1ORsdD4A1rhqtyP2iDNJV/rBYVVigfolMQQaWRZ0wJ9FnxJm06MY4GspIPIscw9oNmZfapANnYPEbzftTgv8ozCrlILbbn4ZehDGWFadoDCUhYuQa4XytLfDcyJc82fxaE73eMtsC9qLui/hhsMkXfC4zFz0K0yuoExfIX6b6+k3VS7h/lfadPIGG/7KD+AbXy+AX1
- F/9JlgU5
- lOXCK7HJL+WTq3HAbP3x8oIy4wWatKDfz+bK4jAachMnOUIKbYJ+zjyd4K+vdwUew/1MHp257l6J1KVoQ432xnHjkML8VdSYmD1J4XdMSSpNxxY3zbx3FQy+R8kt+2J7f+Z2U1Qxajcgqju7RSt8K4CNpMrCO9aS90H0JXoIobyi+TXDEltYsCSdrtj+eT9YvVCuKvi6Gl2gfTCYtKYXJ88C2feH1OVs85wcqazM00dCCpkhKzKxg8VpiCLmuAtzHwAUyhH4UIHzQr9+WY204Ow/MVP1PSZiQea2nL55iDQmTIJxH2HMw0FTnGNue+0oFuGcherKb8ldtux5yS8bMFWLWxMziF3iSVAAs/Qddq1tgCoEGTmayNKirI7tvujkWPQOMQcOoQ0yfuqjebOj8rRbpjxyXLrIk/tp7n60qdhXfbAphdLuLpNjL6Idq28xTB3dV/ovy2pDHYkgG8Ng0Kux3oCCOjavxfpVB4c7T9lLT3ubLHljNgz+fTV65B9T/EVwjdyE0JzALpZXBlOdVxFN5Xgu0IfvS5PddsM/W02Qs05Z0ZKSFGEoOFw3NdBHbE/ZvS7w0BAgqWqc12WZO4rjBjurR6QXzSZqQDzeZqG3LIOgW3pR75qjBOjUnx6ySZ61hojCZpPildA3KlINUYZ5rHAJpUSvSi12PB0W0hLYGLEqQu0RRNdVLEELAw5X7eW8N
+X-HE-Tag: 1755516509-479345
+X-HE-Meta: U2FsdGVkX1/WARFxSIwgwz/C4j2hvYcdG6ErFcV1cBYFbPHV/v5lYQGDYCp3ZqihpoQ9l9xX7a+fRvUkww2/V5lfrXq0itPAleX16h7L8KV2/HXMR4Tw/12F3pj+FDlIAk2OxhaEHVTRqRCZGLyHC0fAy0gVPlDKyK/s623I99XkrHbZxfiXsc7chGfT+pESCvA6XU6zKpM0qgBz4OFUM8JGIu3xu5OufdKzY2pwNTPTrjJqrqtKdjnN1hGc5bA4G5XWzAiicmri0zSD5aHyVIed7MDDgcmJQi2vcUboCYpsmSOpSucBKcWt9XFsPZ8fmFoIFPHJWURGMHpQJPbQnrsXLjeY+zH9xDEt/3FaxvxoOX+7oJPyNCYj5mPcuL1oAGHCFuSCbxZVwqUZQtZfISNCrlNYNbhExDy8LlNqqXUtB8YphKCmRqhjYekk5VXyLvwTiMiRqcCIqO70iKOrES239eGTNk5aqjFnV8RHTMGmdjelRsNRiQs4MgU2x/CdqkMdnWhJITy1P+EfVtm8yhZ4T8hpIAD5XW5/wYYrZG8lXVZj0RmyDUaF84NXfip8o08sgjJfcKCCeAfM5V1AYz3tMeBvPHvGxhFtbfSxC2esgm+ccFe0qP3HU6pXPI7DivOEg+CMc70/crLMIHX0jpTK3Ixywy1RDRcdirFKb+Bg0W3Sq8/pocVfU69/Wl3EMHT+PdAMm4nzuyDLrG5tvJJlpNL66/pHc4EjqHqfcmcvTEGjz9U+YsELlFQ0h7J/rMYHlzYXxwY6uMpGGGPxPfaUOwxPzWI7oKChtL29vOKXEa/nB/lr6o73GPdigiSQT5q8zumoqkJZI+YVsj36ItatWprZ6k4ib2tp/I/Loub0scHqiHgOGqB+W606HC9daoh0UMEOpbld4CCTkZLhKayS7uXocSsJatSAy29aOYbmyD8z9f8RhnoXBfHMpSFfbUTiV+36SQa+YnsEw+o
+ EoCRX1y+
+ Q8XF2708yjmVg2gTmhpiGgQFcWXnlol3Zrv/eCxONxPRX2GPzWZBp1uK2kVcRncXUUxFcq3SyBU54LV2CFDOcUQaR9offytp75Pp0iYXXIkEAn/94oQtmmNXGSzm1AXXaUGbZSLyLu/qc6m6AcPr9xBJ4zhGYzWQ5LjADlexh5idLY1N9JVcCYT0Q6HHFT5DNHZWmkVFaK2zqldn+kmB6FYaMG6jYsXOORQZCKM4H77Cj70N2F8m94DfLpQ1Ft+g8+/0XyQ5xxTS4Yyhf68NKGsVZ4zy7KCQErMdKtTUouX98qxi4HyYUjZzpJ75X7UEQQcYKU5mEY36AkeN5ZB+PEq0l05kvLCqxrVOmmFCpRiVMizVGkh35vzuiHAyN+ZD5gi/wbzuKio5r0/nLHebgRWR99fCoN47UzzXu9fKmETEsuLheJ+79bugm0mOe2Vv8SaQ2HQJWOFPXAl7Lh9t9dzPLDoHsQfKCD/5vf8FXaDG1VY6BmrefLWr4XXAPrDTDpyws6KcIzQe3yUIH6gZdAsFrFc7frALrMgIA+vS+So9reTI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,118 +198,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-CgpBdCAyMDI1LTA4LTE4IDExOjQzOjE0LCAiSGFycnkgWW9vIiA8aGFycnkueW9vQG9yYWNsZS5j
-b20+IHdyb3RlOgo+T24gTW9uLCBBdWcgMTgsIDIwMjUgYXQgMTA6MzM6NTFBTSArMDgwMCwgeWFu
-Z3NoaWd1YW5nIHdyb3RlOgo+PiAKPj4gCj4+IAo+PiBBdCAyMDI1LTA4LTE4IDEwOjIyOjM2LCAi
-SGFycnkgWW9vIiA8aGFycnkueW9vQG9yYWNsZS5jb20+IHdyb3RlOgo+PiAKPj4gPk9uIE1vbiwg
-QXVnIDE4LCAyMDI1IGF0IDEwOjA3OjQwQU0gKzA4MDAsIHlhbmdzaGlndWFuZyB3cm90ZToKPj4g
-Pj4gCj4+ID4+IAo+PiA+PiBBdCAyMDI1LTA4LTE2IDE4OjQ2OjEyLCAiSGFycnkgWW9vIiA8aGFy
-cnkueW9vQG9yYWNsZS5jb20+IHdyb3RlOgo+PiA+PiA+T24gU2F0LCBBdWcgMTYsIDIwMjUgYXQg
-MDY6MDU6MTVQTSArMDgwMCwgeWFuZ3NoaWd1YW5nIHdyb3RlOgo+PiA+PiA+PiAKPj4gPj4gPj4g
-Cj4+ID4+ID4+IEF0IDIwMjUtMDgtMTYgMTY6MjU6MjUsICJIYXJyeSBZb28iIDxoYXJyeS55b29A
-b3JhY2xlLmNvbT4gd3JvdGU6Cj4+ID4+ID4+ID5PbiBUaHUsIEF1ZyAxNCwgMjAyNSBhdCAwNzox
-Njo0MlBNICswODAwLCB5YW5nc2hpZ3VhbmcxMDExQDE2My5jb20gd3JvdGU6Cj4+ID4+ID4+ID4+
-IEZyb206IHlhbmdzaGlndWFuZyA8eWFuZ3NoaWd1YW5nQHhpYW9taS5jb20+Cj4+ID4+ID4+ID4+
-IAo+PiA+PiA+PiA+PiBGcm9tOiB5YW5nc2hpZ3VhbmcgPHlhbmdzaGlndWFuZ0B4aWFvbWkuY29t
-Pgo+PiA+PiA+PiA+PiAKPj4gPj4gPj4gPj4gc2V0X3RyYWNrX3ByZXBhcmUoKSBjYW4gaW5jdXIg
-bG9jayByZWN1cnNpb24uCj4+ID4+ID4+ID4+IFRoZSBpc3N1ZSBpcyB0aGF0IGl0IGlzIGNhbGxl
-ZCBmcm9tIGhydGltZXJfc3RhcnRfcmFuZ2VfbnMKPj4gPj4gPj4gPj4gaG9sZGluZyB0aGUgcGVy
-X2NwdShocnRpbWVyX2Jhc2VzKVtuXS5sb2NrLCBidXQgd2hlbiBlbmFibGVkCj4+ID4+ID4+ID4+
-IENPTkZJR19ERUJVR19PQkpFQ1RTX1RJTUVSUywgbWF5IHdha2UgdXAga3N3YXBkIGluIHNldF90
-cmFja19wcmVwYXJlLAo+PiA+PiA+PiA+PiBhbmQgdHJ5IHRvIGhvbGQgdGhlIHBlcl9jcHUoaHJ0
-aW1lcl9iYXNlcylbbl0ubG9jay4KPj4gPj4gPj4gPj4gCj4+ID4+ID4+ID4+IFNvIGF2b2lkIHdh
-a2luZyB1cCBrc3dhcGQuVGhlIG9vcHMgbG9va3Mgc29tZXRoaW5nIGxpa2U6Cj4+ID4+ID4+ID4K
-Pj4gPj4gPj4gPkhpIHlhbmdzaGlndWFuZywgCj4+ID4+ID4+ID4KPj4gPj4gPj4gPkluIHRoZSBu
-ZXh0IHJldmlzaW9uLCBjb3VsZCB5b3UgcGxlYXNlIGVsYWJvcmF0ZSB0aGUgY29tbWl0IG1lc3Nh
-Z2UKPj4gPj4gPj4gPnRvIHJlZmxlY3QgaG93IHRoaXMgY2hhbmdlIGF2b2lkcyB3YWtpbmcgdXAg
-a3N3YXBkPwo+PiA+PiA+PiA+Cj4+ID4+ID4+IAo+PiA+PiA+PiBvZiBjb3Vyc2UuIFRoYW5rcyBm
-b3IgdGhlIHJlbWluZGVyLgo+PiA+PiA+PiAKPj4gPj4gPj4gPj4gQlVHOiBzcGlubG9jayByZWN1
-cnNpb24gb24gQ1BVIzMsIHN3YXBwZXIvMy8wCj4+ID4+ID4+ID4+ICBsb2NrOiAweGZmZmZmZjhh
-NGJmMjljODAsIC5tYWdpYzogZGVhZDRlYWQsIC5vd25lcjogc3dhcHBlci8zLzAsIC5vd25lcl9j
-cHU6IDMKPj4gPj4gPj4gPj4gSGFyZHdhcmUgbmFtZTogUXVhbGNvbW0gVGVjaG5vbG9naWVzLCBJ
-bmMuIFBvcHNpY2xlIGJhc2VkIG9uIFNNODg1MCAoRFQpCj4+ID4+ID4+ID4+IENhbGwgdHJhY2U6
-Cj4+ID4+ID4+ID4+IHNwaW5fYnVnKzB4MAo+PiA+PiA+PiA+PiBfcmF3X3NwaW5fbG9ja19pcnFz
-YXZlKzB4ODAKPj4gPj4gPj4gPj4gaHJ0aW1lcl90cnlfdG9fY2FuY2VsKzB4OTQKPj4gPj4gPj4g
-Pj4gdGFza19jb250ZW5kaW5nKzB4MTBjCj4+ID4+ID4+ID4+IGVucXVldWVfZGxfZW50aXR5KzB4
-MmE0Cj4+ID4+ID4+ID4+IGRsX3NlcnZlcl9zdGFydCsweDc0Cj4+ID4+ID4+ID4+IGVucXVldWVf
-dGFza19mYWlyKzB4NTY4Cj4+ID4+ID4+ID4+IGVucXVldWVfdGFzaysweGFjCj4+ID4+ID4+ID4+
-IGRvX2FjdGl2YXRlX3Rhc2srMHgxNGMKPj4gPj4gPj4gPj4gdHR3dV9kb19hY3RpdmF0ZSsweGNj
-Cj4+ID4+ID4+ID4+IHRyeV90b193YWtlX3VwKzB4NmM4Cj4+ID4+ID4+ID4+IGRlZmF1bHRfd2Fr
-ZV9mdW5jdGlvbisweDIwCj4+ID4+ID4+ID4+IGF1dG9yZW1vdmVfd2FrZV9mdW5jdGlvbisweDFj
-Cj4+ID4+ID4+ID4+IF9fd2FrZV91cCsweGFjCj4+ID4+ID4+ID4+IHdha2V1cF9rc3dhcGQrMHgx
-OWMKPj4gPj4gPj4gPj4gd2FrZV9hbGxfa3N3YXBkcysweDc4Cj4+ID4+ID4+ID4+IF9fYWxsb2Nf
-cGFnZXNfc2xvd3BhdGgrMHgxYWMKPj4gPj4gPj4gPj4gX19hbGxvY19wYWdlc19ub3Byb2YrMHgy
-OTgKPj4gPj4gPj4gPj4gc3RhY2tfZGVwb3Rfc2F2ZV9mbGFncysweDZiMAo+PiA+PiA+PiA+PiBz
-dGFja19kZXBvdF9zYXZlKzB4MTQKPj4gPj4gPj4gPj4gc2V0X3RyYWNrX3ByZXBhcmUrMHg1Ywo+
-PiA+PiA+PiA+PiBfX19zbGFiX2FsbG9jKzB4Y2NjCj4+ID4+ID4+ID4+IF9fa21hbGxvY19jYWNo
-ZV9ub3Byb2YrMHg0NzAKPj4gPj4gPj4gPj4gX19zZXRfcGFnZV9vd25lcisweDJiYwo+PiA+PiA+
-PiA+PiBwb3N0X2FsbG9jX2hvb2tbanRdKzB4MWI4Cj4+ID4+ID4+ID4+IHByZXBfbmV3X3BhZ2Ur
-MHgyOAo+PiA+PiA+PiA+PiBnZXRfcGFnZV9mcm9tX2ZyZWVsaXN0KzB4MWVkYwo+PiA+PiA+PiA+
-PiBfX2FsbG9jX3BhZ2VzX25vcHJvZisweDEzYwo+PiA+PiA+PiA+PiBhbGxvY19zbGFiX3BhZ2Ur
-MHgyNDQKPj4gPj4gPj4gPj4gYWxsb2NhdGVfc2xhYisweDdjCj4+ID4+ID4+ID4+IF9fX3NsYWJf
-YWxsb2MrMHg4ZTgKPj4gPj4gPj4gPj4ga21lbV9jYWNoZV9hbGxvY19ub3Byb2YrMHg0NTAKPj4g
-Pj4gPj4gPj4gZGVidWdfb2JqZWN0c19maWxsX3Bvb2wrMHgyMmMKPj4gPj4gPj4gPj4gZGVidWdf
-b2JqZWN0X2FjdGl2YXRlKzB4NDAKPj4gPj4gPj4gPj4gZW5xdWV1ZV9ocnRpbWVyW2p0XSsweGRj
-Cj4+ID4+ID4+ID4+IGhydGltZXJfc3RhcnRfcmFuZ2VfbnMrMHg1ZjgKPj4gPj4gPj4gPj4gLi4u
-Cj4+ID4+ID4+ID4+IAo+PiA+PiA+PiA+PiBTaWduZWQtb2ZmLWJ5OiB5YW5nc2hpZ3VhbmcgPHlh
-bmdzaGlndWFuZ0B4aWFvbWkuY29tPgo+PiA+PiA+PiA+PiBGaXhlczogNWNmOTA5YzU1M2U5ICgi
-bW0vc2x1YjogdXNlIHN0YWNrZGVwb3QgdG8gc2F2ZSBzdGFjayB0cmFjZSBpbiBvYmplY3RzIikK
-Pj4gPj4gPj4gPj4gLS0tCj4+ID4+ID4+ID4+IHYxIC0+IHYyOgo+PiA+PiA+PiA+PiAgICAgcHJv
-cGFnYXRlIGdmcCBmbGFncyB0byBzZXRfdHJhY2tfcHJlcGFyZSgpCj4+ID4+ID4+ID4+IAo+PiA+
-PiA+PiA+PiBbMV0gaHR0cHM6Ly91cmxkZWZlbnNlLmNvbS92My9fX2h0dHBzOi8vbG9yZS5rZXJu
-ZWwub3JnL2FsbC8yMDI1MDgwMTA2NTEyMS44NzY3OTMtMS15YW5nc2hpZ3VhbmcxMDExQDE2My5j
-b21fXzshIUFDV1Y1TjlNMlJWOTloUSFKTWdFUXJ6RFMzVkFBS2RTeWozZ2VfWkxHMVFXYUVIQTdo
-SDV1TDdfSnMwNkdNNW0xc1lHVk9tSkhraVR1T2VhaUUtSWl6V3l2UE50aXd6SDI5MUZSSW9qaFBz
-JCAgCj4+ID4+ID4+ID4+IC0tLQo+PiA+PiA+PiA+PiAgbW0vc2x1Yi5jIHwgMjEgKysrKysrKysr
-KystLS0tLS0tLS0tCj4+ID4+ID4+ID4+ICAxIGZpbGUgY2hhbmdlZCwgMTEgaW5zZXJ0aW9ucygr
-KSwgMTAgZGVsZXRpb25zKC0pCj4+ID4+ID4+ID4+IAo+PiA+PiA+PiA+PiBkaWZmIC0tZ2l0IGEv
-bW0vc2x1Yi5jIGIvbW0vc2x1Yi5jCj4+ID4+ID4+ID4+IGluZGV4IDMwMDAzNzYzZDIyNC4uZGJh
-OTA1YmYxZTAzIDEwMDY0NAo+PiA+PiA+PiA+PiAtLS0gYS9tbS9zbHViLmMKPj4gPj4gPj4gPj4g
-KysrIGIvbW0vc2x1Yi5jCj4+ID4+ID4+ID4+IEBAIC05NjIsMTkgKzk2MiwyMCBAQCBzdGF0aWMg
-c3RydWN0IHRyYWNrICpnZXRfdHJhY2soc3RydWN0IGttZW1fY2FjaGUgKnMsIHZvaWQgKm9iamVj
-dCwKPj4gPj4gPj4gPj4gIH0KPj4gPj4gPj4gPj4gIAo+PiA+PiA+PiA+PiAgI2lmZGVmIENPTkZJ
-R19TVEFDS0RFUE9UCj4+ID4+ID4+ID4+IC1zdGF0aWMgbm9pbmxpbmUgZGVwb3Rfc3RhY2tfaGFu
-ZGxlX3Qgc2V0X3RyYWNrX3ByZXBhcmUodm9pZCkKPj4gPj4gPj4gPj4gK3N0YXRpYyBub2lubGlu
-ZSBkZXBvdF9zdGFja19oYW5kbGVfdCBzZXRfdHJhY2tfcHJlcGFyZShnZnBfdCBnZnBfZmxhZ3Mp
-Cj4+ID4+ID4+ID4+ICB7Cj4+ID4+ID4+ID4+ICAJZGVwb3Rfc3RhY2tfaGFuZGxlX3QgaGFuZGxl
-Owo+PiA+PiA+PiA+PiAgCXVuc2lnbmVkIGxvbmcgZW50cmllc1tUUkFDS19BRERSU19DT1VOVF07
-Cj4+ID4+ID4+ID4+ICAJdW5zaWduZWQgaW50IG5yX2VudHJpZXM7Cj4+ID4+ID4+ID4+ICsJZ2Zw
-X2ZsYWdzICY9IEdGUF9OT1dBSVQ7Cj4+ID4+ID4+ID4KPj4gPj4gPj4gPklzIHRoZXJlIGFueSBy
-ZWFzb24gdG8gZG93bmdyYWRlIGl0IHRvIEdGUF9OT1dBSVQgd2hlbiB0aGUgZ2ZwIGZsYWcgYWxs
-b3dzCj4+ID4+ID4+ID5kaXJlY3QgcmVjbGFtYXRpb24/Cj4+ID4+ID4+ID4KPj4gPj4gPj4gCj4+
-ID4+ID4+IEhpIEhhcnJ5LAo+PiA+PiA+PiAKPj4gPj4gPj4gVGhlIG9yaWdpbmFsIGFsbG9jYXRp
-b24gaXMgR0ZQX05PV0FJVC4KPj4gPj4gPj4gU28gSSB0aGluayBpdCdzIGJldHRlciBub3QgdG8g
-aW5jcmVhc2UgdGhlIGFsbG9jYXRpb24gY29zdCBoZXJlLgo+PiA+PiA+Cj4+ID4+ID5JIGRvbid0
-IHRoaW5rIHRoZSBhbGxvY2F0aW9uIGNvc3QgaXMgaW1wb3J0YW50IGhlcmUsIGJlY2F1c2UgY29s
-bGVjdGluZwo+PiA+PiA+YSBzdGFjayB0cmFjZSBmb3IgZWFjaCBhbGxvYy9mcmVlIGlzIHF1aXRl
-IHNsb3cgYW55d2F5LiBBbmQgd2UgZG9uJ3QgcmVhbGx5Cj4+ID4+ID5jYXJlIGFib3V0IHBlcmZv
-cm1hbmNlIGluIGRlYnVnIGNhY2hlcyAoaXQgaXNuJ3QgZGVzaWduZWQgdG8gYmUKPj4gPj4gPnBl
-cmZvcm1hbnQpLgo+PiA+PiA+Cj4+ID4+ID5JIHRoaW5rIGl0IHdhcyBHRlBfTk9XQUlUIGJlY2F1
-c2UgaXQgd2FzIGNvbnNpZGVyZWQgc2FmZSB3aXRob3V0Cj4+ID4+ID5yZWdhcmQgdG8gdGhlIEdG
-UCBmbGFncyBwYXNzZWQsIHJhdGhlciB0aGFuIGR1ZSB0byBwZXJmb3JtYW5jZQo+PiA+PiA+Y29u
-c2lkZXJhdGlvbnMuCj4+ID4+ID4KPj4gPj4gSGkgaGFycnksCj4+ID4+IAo+PiA+PiBJcyB0aGF0
-IHNvPwo+PiA+PiBnZnBfZmxhZ3MgJj0gKEdGUF9OT1dBSVQgfCBfX0dGUF9ESVJFQ1RfUkVDTEFJ
-TSk7Cj4+ID4KPj4gPlRoaXMgc3RpbGwgY2xlYXJzIGdmcCBmbGFncyBwYXNzZWQgYnkgdGhlIGNh
-bGxlciB0byB0aGUgYWxsb2NhdG9yLgo+PiA+V2h5IG5vdCB1c2UgZ2ZwX2ZsYWdzIGRpcmVjdGx5
-IHdpdGhvdXQgY2xlYXJpbmcgc29tZSBmbGFncz8KPj4gCj4+ID4KPj4gSGkgSGFycnksCj4+IAo+
-PiAKPj4gVGhpcyBpbnRyb2R1Y2VzIG5ldyBwcm9ibGVtcy4KPj4gCj4+IGNhbGwgc3RhY2ujugo+
-PiBkdW1wX2JhY2t0cmFjZSsweGZjLzB4MTdjCj4+IHNob3dfc3RhY2srMHgxOC8weDI4Cj4+IGR1
-bXBfc3RhY2tfbHZsKzB4NDAvMHhjMAo+PiBkdW1wX3N0YWNrKzB4MTgvMHgyNAo+PiBfX21pZ2h0
-X3Jlc2NoZWQrMHgxNjQvMHgxODQKPj4gX19taWdodF9zbGVlcCsweDM4LzB4ODQKPj4gcHJlcGFy
-ZV9hbGxvY19wYWdlcysweGMwLzB4MTdjCj4+IF9fYWxsb2NfcGFnZXNfbm9wcm9mKzB4MTMwLzB4
-M2Y4Cj4+IHN0YWNrX2RlcG90X3NhdmVfZmxhZ3MrMHg1YTgvMHg2YmMKPj4gc3RhY2tfZGVwb3Rf
-c2F2ZSsweDE0LzB4MjQKPj4gc2V0X3RyYWNrX3ByZXBhcmUrMHg2NC8weDkwCj4+IF9fX3NsYWJf
-YWxsb2MrMHhjMTQvMHhjNDgKPj4gX19rbWFsbG9jX2NhY2hlX25vcHJvZisweDM5OC8weDU2OAo+
-PiBfX2t0aHJlYWRfY3JlYXRlX29uX25vZGUrMHg4Yy8weDFmMAo+PiBrdGhyZWFkX2NyZWF0ZV9v
-bl9ub2RlKzB4NGMvMHg3NAo+PiBjcmVhdGVfd29ya2VyKzB4ZTAvMHgyOTgKPj4gd29ya3F1ZXVl
-X2luaXQrMHgyMjgvMHgzMjQKPj4ga2VybmVsX2luaXRfZnJlZWFibGUrMHgxMjQvMHgxYzgKPj4g
-a2VybmVsX2luaXQrMHgyMC8weDFhYwo+PiByZXRfZnJvbV9mb3JrKzB4MTAvMHgyMAo+Cj5Paywg
-YmVjYXVzZSBwcmVlbXB0aW9uIGlzIGRpc2FibGVkIGluIF9fX3NsYWJfYWxsb2MoKSwKPmJsb2Nr
-aW5nIGFsbG9jYXRpb25zIGFyZSBub3QgYWxsb3dlZCBldmVuIHdoZW4gZ2ZwX2ZsYWdzIGFsbG93
-cyBpdC4KPlNvIF9fR0ZQX0RJUkVDVF9SRUNMQUlNIHNob3VsZCBiZSBjbGVhcmVkLgo+Cj5TbywK
-Pgo+LyogUHJlZW1wdGlvbiBpcyBkaXNhYmxlZCBpbiBfX19zbGFiX2FsbG9jKCkgKi8KPmdmcF9m
-bGFncyAmPSB+KF9fR0ZQX0RJUkVDVF9SRUNMQUlNKTsKPgo+c2hvdWxkIHdvcms/Cgo+CgpGZWVk
-YmFjayBhZnRlciB0ZXN0aW5nIEFTQVAuCgo+PiBPZiBjb3Vyc2UgdGhlcmUgYXJlIG90aGVyIHBy
-b2JsZW1zLgo+Pgo+PiBTbyBpdCBpcyBiZXN0IHRvIGxpbWl0IGd0cCBmbGFncy4KPgo+LS0gCj5D
-aGVlcnMsCj5IYXJyeSAvIEh5ZW9uZ2dvbgo=
+On 13.08.25 07:05, Lance Yang wrote:
+> On Mon, Aug 11, 2025 at 10:47 PM David Hildenbrand <david@redhat.com> wrote:
+>>
+> [...]
+>> +++ b/mm/migrate.c
+>> @@ -1176,16 +1176,6 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
+>>          bool locked = false;
+>>          bool dst_locked = false;
+>>
+>> -       if (folio_ref_count(src) == 1) {
+>> -               /* Folio was freed from under us. So we are done. */
+>> -               folio_clear_active(src);
+>> -               folio_clear_unevictable(src);
+>> -               /* free_pages_prepare() will clear PG_isolated. */
+>> -               list_del(&src->lru);
+>> -               migrate_folio_done(src, reason);
+>> -               return MIGRATEPAGE_SUCCESS;
+>> -       }
+>> -
+>>          dst = get_new_folio(src, private);
+>>          if (!dst)
+>>                  return -ENOMEM;
+>> @@ -1275,7 +1265,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
+>>
+>>          if (unlikely(page_has_movable_ops(&src->page))) {
+>>                  __migrate_folio_record(dst, old_page_state, anon_vma);
+>> -               return MIGRATEPAGE_UNMAP;
+>> +               return 0;
+>>          }
+>>
+>>          /*
+>> @@ -1305,7 +1295,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
+>>
+>>          if (!folio_mapped(src)) {
+>>                  __migrate_folio_record(dst, old_page_state, anon_vma);
+>> -               return MIGRATEPAGE_UNMAP;
+>> +               return 0;
+>>          }
+>>
+>>   out:
+>> @@ -1848,14 +1838,28 @@ static int migrate_pages_batch(struct list_head *from,
+>>                                  continue;
+>>                          }
+>>
+>> +                       /*
+>> +                        * If we are holding the last folio reference, the folio
+>> +                        * was freed from under us, so just drop our reference.
+>> +                        */
+>> +                       if (likely(!page_has_movable_ops(&folio->page)) &&
+>> +                           folio_ref_count(folio) == 1) {
+>> +                               folio_clear_active(folio);
+>> +                               folio_clear_unevictable(folio);
+>> +                               list_del(&folio->lru);
+>> +                               migrate_folio_done(folio, reason);
+>> +                               stats->nr_succeeded += nr_pages;
+>> +                               stats->nr_thp_succeeded += is_thp;
+>> +                               continue;
+>> +                       }
+>> +
+> 
+> It seems the reason parameter is no longer used within migrate_folio_unmap()
+> after this patch.
+> 
+> Perhaps it could be removed from the function's signature ;)
+
+Thanks, well spotted, @Andrew can you squash the following?
+
+
+ From 40938bb0de20e03250c813d5abc7286aea69d835 Mon Sep 17 00:00:00 2001
+From: David Hildenbrand <david@redhat.com>
+Date: Mon, 18 Aug 2025 13:26:05 +0200
+Subject: [PATCH] fixup: mm/migrate: remove MIGRATEPAGE_UNMAP
+
+No need to pass "reason" to migrate_folio_unmap().
+
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+  mm/migrate.c | 5 ++---
+  1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 2db4974178e6a..aabc736eec022 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1166,7 +1166,7 @@ static void migrate_folio_done(struct folio *src,
+  static int migrate_folio_unmap(new_folio_t get_new_folio,
+  		free_folio_t put_new_folio, unsigned long private,
+  		struct folio *src, struct folio **dstp, enum migrate_mode mode,
+-		enum migrate_reason reason, struct list_head *ret)
++		struct list_head *ret)
+  {
+  	struct folio *dst;
+  	int rc = -EAGAIN;
+@@ -1852,8 +1852,7 @@ static int migrate_pages_batch(struct list_head *from,
+  			}
+  
+  			rc = migrate_folio_unmap(get_new_folio, put_new_folio,
+-					private, folio, &dst, mode, reason,
+-					ret_folios);
++					private, folio, &dst, mode, ret_folios);
+  			/*
+  			 * The rules are:
+  			 *	0: folio will be put on unmap_folios list,
+-- 
+2.50.1
+
+
+-- 
+Cheers
+
+David / dhildenb
+
 
