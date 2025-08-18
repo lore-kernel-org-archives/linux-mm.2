@@ -2,237 +2,202 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B062CA0ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 13:54:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 86AF4CA0ED1
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 13:55:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 70E396B00C4; Mon, 18 Aug 2025 09:54:54 -0400 (EDT)
+	id E62146B0101; Mon, 18 Aug 2025 09:55:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C4368E0006; Mon, 18 Aug 2025 09:54:54 -0400 (EDT)
+	id E127E6B0102; Mon, 18 Aug 2025 09:55:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 538666B00C7; Mon, 18 Aug 2025 09:54:54 -0400 (EDT)
+	id CDA526B0104; Mon, 18 Aug 2025 09:55:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B1BE6B00C4
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 09:54:54 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E07265BC7F
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 13:54:53 +0000 (UTC)
-X-FDA: 83790024066.07.0967FF0
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010027.outbound.protection.outlook.com [52.101.84.27])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1147340008
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 13:54:49 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=eM0th1Je;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=eM0th1Je;
-	spf=pass (imf27.hostedemail.com: domain of YeoReum.Yun@arm.com designates 52.101.84.27 as permitted sender) smtp.mailfrom=YeoReum.Yun@arm.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2");
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755525290;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B80DF6B0101
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 09:55:18 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 41A7C1187DF
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 13:55:18 +0000 (UTC)
+X-FDA: 83790025116.28.4D9C612
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2043.outbound.protection.outlook.com [40.107.96.43])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 7ABF41C000F
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 13:55:15 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=J42GqNK4;
+	spf=pass (imf18.hostedemail.com: domain of jgg@nvidia.com designates 40.107.96.43 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755525315;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ps4Wxe6/gl/mNTxvkIqWiqZO66jtFZOy6oLUAb2eNLM=;
-	b=5BtJA+koB59iET+vkxkKcnDShB/6PAhxdjd/Fju8Sj4lwcqXwfRHMM8BlEqtQ+LxGgTKkd
-	5LMSbtmPIZv41prR6wLMu8732S82ns1vpoevzQsirKkFlrlvnSDzpYOu5ehhxmobo2WHi+
-	YiWjtHwUZ3LtnNWRMyD2sZPpbm99OIU=
-ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1755525290; a=rsa-sha256;
+	bh=fXuwZHaPD8ErL4USrctAkqmnoAkbrX6RxrXIriX4VqM=;
+	b=C6UizcSmp0j/MqnNWapkewF9sr+hbVJfTfrs/Z/mb/GK4CsL8r/ZedEgu/uY8OfMuprlmL
+	vJkciefUKtYOUrekbVh0VLWVr7X9WJRVcuYo5g1KtEj9CGF4wjbO55BrdikkomElSKNWnO
+	7iEnlScacLUP5ku3ET3URSzY0GB4I0E=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=J42GqNK4;
+	spf=pass (imf18.hostedemail.com: domain of jgg@nvidia.com designates 40.107.96.43 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755525315; a=rsa-sha256;
 	cv=pass;
-	b=jd8QQnn6EhWaedZ+NYnvWAhVhm7q6EWiJT4Jmf/U4rHToWYtqCh8TrjBNS6byp7Ya1+jJK
-	/hbqnaCCX7Au7E4mjL2SwUxEDhtdNc+lOrVvfayfAfyam01URH0X7cms55CykkQkVdGrbp
-	wgXDmio25aWRHgl9RB4WOHtPLhDR0d4=
-ARC-Authentication-Results: i=3;
-	imf27.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=eM0th1Je;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=eM0th1Je;
-	spf=pass (imf27.hostedemail.com: domain of YeoReum.Yun@arm.com designates 52.101.84.27 as permitted sender) smtp.mailfrom=YeoReum.Yun@arm.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2");
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=k0OVZxlBI/JkMaRv9pZ8mPe7XBqUpKIDosLmXirAxtBrHYb+ly4SNCVl37nN+cYjcqnMcjGY6pjjbi5cXuq5caG5jFIN+0jI+riRtOto11FXEy5MhExuH/nl4CFyrJXQj7cu/1D7fdksc2oBFz0SlZnes2AxjlNAOv1vLbS4goYjv6psa9RWywKJNfZLB2JwRGRJEttyw8yZBLgDG8RDDp3hZqqrx7gl2zZIMuLw/j5y8JLo86o9SY8LAZay6LPmNhN/cXJ6LoJaB/uqFah983+FFv7YxaHJGovdeBzrm5+GTtMAPcNM0SF+lR/LBJnjupNZY9vIP53Z8lHWhXMEhg==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ps4Wxe6/gl/mNTxvkIqWiqZO66jtFZOy6oLUAb2eNLM=;
- b=xZ0XcijDtcyIJUtdqg6F9QqwGDH5ljRcGXpHkvFRXIwslaegpT5lnHEVLj51lN4dxWFS/CXT+GdsTWXWFK+l1YyjLAByxuhXZ7tJ6S6LRtXxf/YMsJSQ5KKAx3XES2v7IxuFclDYkx0NxI52VyGjjo013XG2aGJsdG+4CtxDIg4S8ppOu1NxNlcFhlJJaBUC2NVDx+QdFOp1cBVoMTrI6ZpQXihXCtZuT2xwq41MjVqnpRxslWy9fCAy9xMDm2WZT5xw0EycNHk/V/Pps51DmlRkn04mo1cpEtscwzv+9hgmPzdqX5aQ3n7owjUmEXM9zmza+s2I7FSOk4OAGDaljA==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=gmail.com smtp.mailfrom=arm.com; dmarc=pass
- (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
- (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ps4Wxe6/gl/mNTxvkIqWiqZO66jtFZOy6oLUAb2eNLM=;
- b=eM0th1JeBLv8tEcIdogZmuxucA1NTSAKrBFjwZLGkzavOpPnfPtSEoI25KZ+V6d5qkjzSoC07LTnTy6UGyZv8Y2Q+5h43agaFBQOCoZSLY5sPeYYctwEK80UPPnW7hnxfzCEQUC+JQ0pSZ7KjH7CqPDyTa6OcCm3f7meiLkyqpE=
-Received: from DU7P191CA0009.EURP191.PROD.OUTLOOK.COM (2603:10a6:10:54e::13)
- by DU0PR08MB7811.eurprd08.prod.outlook.com (2603:10a6:10:3b5::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.23; Mon, 18 Aug
- 2025 13:54:45 +0000
-Received: from DU6PEPF0000B61B.eurprd02.prod.outlook.com
- (2603:10a6:10:54e:cafe::7f) by DU7P191CA0009.outlook.office365.com
- (2603:10a6:10:54e::13) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9031.20 via Frontend Transport; Mon,
- 18 Aug 2025 13:54:45 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- DU6PEPF0000B61B.mail.protection.outlook.com (10.167.8.132) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9052.8
- via Frontend Transport; Mon, 18 Aug 2025 13:54:43 +0000
+	b=MvOzP9VCPCa9ATPDN4M9o+6qLZ+2KO+JW5QJq8Tbn/V5J/bySgowQffhpBI4augIar3Nn1
+	0qlABqCfIjefua7cLNzD4h/uVIwZtLZUgm0WsheRnSl/WaO4B/GWqW02heZjaxGRi7naVn
+	6uglE4I6FtVFP4CBbvWqruN/VN4ilFE=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jluNFGYfxiELBAbCKqflR3HL/FoIs79njYw6ti59KznDYMnXVzqJJ3QFa0UYElz0r1ZnXtj8xYWhXy064eOLDZ8JaCQLbiuqNzlnIt8WGlkuG0c3RipB1FfXE2fqUDLrbHN1PniGP1Baa5xyUs11n7dWxzDer3PJ97as0DSNROsFyW5rzNEUnMy7rKboiSUEJpwq67VVkbTfdOME7aH3mjB92gHiO7W0ANlAi76IIXAXD0v5GfFeGrvRmVBIRyy0m3PAGIZp3U9Llfq5g4pCK0EfJFi6XBfsN4uhYH96j9zpIaF+4E7lxpHzoCTwZVOD87lxF8D5z1wh1lKBIQkzZg==
+ b=GqiVcUIiWULDdDdwToFG5TePDjdMhlvu7F+2INyQnmSxpUN/pcZiSAQZTcHopMswq/G2gAx6hoQ/nDRLIvplrQAHeKrTKX0zPxsFPbJqBMhl55EOgag1Xcl5PyNHMFqDy6Zokf74ec9DK6GQ4ox2xnQbegiyLsDOjYIRgzXr2nOkE/DIc6VqdE4k4MnbiCIaYLKcZ8D9wYriubyjHWfygdhKbirnfunpWnmouqs392lnsQhXjoH0Sc0qZ74zcWqYFl4Cd9/2JS6ZIncoZaLZGrH/+LrsPY1M0exBmTZgS4LRXWcvXdiZlCpNqtUXJL4SbcLjUa/cfTlFfpLp2a4+5w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ps4Wxe6/gl/mNTxvkIqWiqZO66jtFZOy6oLUAb2eNLM=;
- b=Xn5/jZat46LIfNzpS1hxU6u9tbjA6QwkxHeHKGwk76oB9TMPInBL5UgFqlCP8Mbp5jftRHJkJBpjSw4CHWqKoaUXaqtutw4S9tuB30+USQJ+gA6XNzLpOy2HRfH+pcBdTqeZdUOHd/yp3mXrF5BDjEb40scmMDMIOn9SfFRmkKY5j7ZdRtLDhFRopeAQ+i4LGxvwn87tWCZ55CFnMcvVMQ+4wFmDp70IAnCx5VvQzYyvG/vadauTMqlVHR963sUtYgho7XFnkFvzFN0ygT6IF4VXEwLQlVxHkfaNMMzoWo3V7tg1RrZYFX7F2ypn7FPQyh7sgmgKKWSPB7cUTR4GXw==
+ bh=fXuwZHaPD8ErL4USrctAkqmnoAkbrX6RxrXIriX4VqM=;
+ b=wwOKWBEaebcrGdj9MohwcjRwK4Ib/J2okPbZB6YX9ef21DS6XwDaWvjXOs1zHcVlNzjHWfxJ0+MN6Fn7xbsUjJH3ZwlUVyz1a4KsIwoyMQt7KfI2NLX8Z+3Pa9AeTgQ3sNyaR7p14Fl3/L5aUESI+4IcojXiK/0s8LEEy48nCpNdojHo49sS7Aqu94cCbcyRUlfpcbJjGvsF70Ie9Yc8Ue+hPjl8MB/cVm3jOa6KgEexJp4rruHncr7RZ7OtfJsQuVJs4qb9zorMGJHcRo4VeJAz0xDEA6wJbZZ/mrb3hkdgZw4IYxyvWeTs1PXZWsF/UCScman4Pm0dnBFNWe2U3A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ps4Wxe6/gl/mNTxvkIqWiqZO66jtFZOy6oLUAb2eNLM=;
- b=eM0th1JeBLv8tEcIdogZmuxucA1NTSAKrBFjwZLGkzavOpPnfPtSEoI25KZ+V6d5qkjzSoC07LTnTy6UGyZv8Y2Q+5h43agaFBQOCoZSLY5sPeYYctwEK80UPPnW7hnxfzCEQUC+JQ0pSZ7KjH7CqPDyTa6OcCm3f7meiLkyqpE=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
- (2603:10a6:150:163::20) by GV1PR08MB10977.eurprd08.prod.outlook.com
- (2603:10a6:150:1f5::8) with Microsoft SMTP Server (version=TLS1_2,
+ bh=fXuwZHaPD8ErL4USrctAkqmnoAkbrX6RxrXIriX4VqM=;
+ b=J42GqNK43D6BEQwOzRb7ZDSbKzYdh4U6Fgec5aEIQnFl0L/h5pgassu/joYbB6eDT/Q7fMFCk9Bbl8t7/KpglzYXmjoGY+sBIziCPe/4yZK2xZnKXrZcjzmKd+nQWX1/SWr/aXhBRzqdZrah3YceL0hHSF1GFfjX9fxiNbDrhmgq2krZKJVqmajPtmY9sZAC3EuLq2ZW3YNz3MI8Xez9jSTruofAKrOD5Nuolh+fFJ8F9OgTuR61qY/totSdpERnGyEDt6bUy8iKxXCfIke2xpkuizk0YYZk+TR2B8ME8IGsB1HuefshSbgXK9qkjzN6b1kiC1bhDvef6I2rSd9lmQ==
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by CH3PR12MB7764.namprd12.prod.outlook.com (2603:10b6:610:14e::15) with
+ Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.24; Mon, 18 Aug
- 2025 13:54:08 +0000
-Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
- ([fe80::d430:4ef9:b30b:c739]) by GV1PR08MB10521.eurprd08.prod.outlook.com
- ([fe80::d430:4ef9:b30b:c739%7]) with mapi id 15.20.9031.023; Mon, 18 Aug 2025
- 13:54:08 +0000
-Date: Mon, 18 Aug 2025 14:54:05 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Ben Horgan <ben.horgan@arm.com>
-Cc: ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
-	dvyukov@google.com, vincenzo.frascino@arm.com, corbet@lwn.net,
-	catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org,
-	scott@os.amperecomputing.com, jhubbard@nvidia.com,
-	pankaj.gupta@amd.com, leitao@debian.org, kaleshsingh@google.com,
-	maz@kernel.org, broonie@kernel.org, oliver.upton@linux.dev,
-	james.morse@arm.com, ardb@kernel.org,
-	hardevsinh.palaniya@siliconsignals.io, david@redhat.com,
-	yang@os.amperecomputing.com, kasan-dev@googlegroups.com,
-	workflows@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v4 1/2] kasan/hw-tags: introduce kasan.write_only option
-Message-ID: <aKMwffDAbL76wwUx@e129823.arm.com>
-References: <20250818075051.996764-1-yeoreum.yun@arm.com>
- <20250818075051.996764-2-yeoreum.yun@arm.com>
- <2736fe09-ef37-408c-ba53-a8e492dcc3e8@arm.com>
+ 2025 13:55:11 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.9031.023; Mon, 18 Aug 2025
+ 13:55:11 +0000
+Date: Mon, 18 Aug 2025 10:55:09 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, pratyush@kernel.org,
+	jasonmiu@google.com, graf@amazon.com, changyuanl@google.com,
+	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
+	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
+	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
+	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
+	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
+	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
+	dan.j.williams@intel.com, david@redhat.com,
+	joel.granados@kernel.org, rostedt@goodmis.org,
+	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn,
+	linux@weissschuh.net, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-mm@kvack.org,
+	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com,
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
+	aleksander.lobakin@intel.com, ira.weiny@intel.com,
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
+	brauner@kernel.org, linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
+	ajayachandra@nvidia.com, parav@nvidia.com, leonro@nvidia.com,
+	witu@nvidia.com
+Subject: Re: [PATCH v3 07/30] kho: add interfaces to unpreserve folios and
+ physical memory ranges
+Message-ID: <20250818135509.GK802098@nvidia.com>
+References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
+ <20250807014442.3829950-8-pasha.tatashin@soleen.com>
+ <20250814132233.GB802098@nvidia.com>
+ <aJ756q-wWJV37fMm@kernel.org>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2736fe09-ef37-408c-ba53-a8e492dcc3e8@arm.com>
-X-ClientProxiedBy: LO4P123CA0116.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:192::13) To GV1PR08MB10521.eurprd08.prod.outlook.com
- (2603:10a6:150:163::20)
+In-Reply-To: <aJ756q-wWJV37fMm@kernel.org>
+X-ClientProxiedBy: BL0PR02CA0131.namprd02.prod.outlook.com
+ (2603:10b6:208:35::36) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	GV1PR08MB10521:EE_|GV1PR08MB10977:EE_|DU6PEPF0000B61B:EE_|DU0PR08MB7811:EE_
-X-MS-Office365-Filtering-Correlation-Id: cb7ccfe1-9945-4172-e61f-08ddde5ec913
-x-checkrecipientrouted: true
-NoDisclaimer: true
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|CH3PR12MB7764:EE_
+X-MS-Office365-Filtering-Correlation-Id: e2263c24-9d73-48a1-d365-08ddde5ed93c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info-Original:
- =?us-ascii?Q?7EOXn2ii+1tDYkieu+meS6MpGi++A8vJ+t5imAasOd3BBsRtAp5W1QAPdEuZ?=
- =?us-ascii?Q?faKd9j/i2RDSvLGewuY5fbvMpWlDILMd3fMaGyyYt/8tBc7whoAKaDULcGwU?=
- =?us-ascii?Q?UF4hLGlZhRk56MWw+AupdrEfksaakL7T0nPsvpkRMmXc1zKlOtjMnjkblkoM?=
- =?us-ascii?Q?v3+lDxTStkzTMpeFms71JYiHKOMEVv5R8RSDh0bBK9xqSNrFi/p2MfbimDLr?=
- =?us-ascii?Q?HGgJdXyObH6E35uBPPCLaEFpOOsuuc9dPZQ1KOT/rhdX7fMurIbqpbLMbL6m?=
- =?us-ascii?Q?vJBtqjpbkcj+ILZg2aLrmg3HQCVf2CD7wkXL8rNRWlE1KQUlsw1EKbv6Oyvv?=
- =?us-ascii?Q?BqLYFuEn/eUqh4/sIwh08hLsVKIJ5Ag2ySKpJRcv5PLpU+QnDRpkUoauj3Rr?=
- =?us-ascii?Q?yW0lEYQvRehnf42McqSuBq5g2NSqUgWtt9sgO/OQ/JBW+eMLhWTqMUTFesQo?=
- =?us-ascii?Q?so/m1aX26vYrzu3kQ5rESNvB2s3GDmg83Na2fIa8cBfb2k/JN9ZKdcAumBPF?=
- =?us-ascii?Q?MVMqqxD3+3gviPrZ75rUBTkIdOI6bf/Q+EgkZbLro1BjgYXrf5vwBTDFWYac?=
- =?us-ascii?Q?iQNxTX6lt3d3egHMgyEOKlabY/TezM3kBytKE1W3JtTaSraOcSp483xJmP2E?=
- =?us-ascii?Q?eRn0Rs0RT+CkBrhqHYLYywXfHJRaPiyD32Es4SMTIBD4dagVEeLPgUzy2LCb?=
- =?us-ascii?Q?xA0+FDi5iTdFaTeOMHAMjG/WxecZYcVhUa/T58289OQK4amMZ5Gh0tqT0L55?=
- =?us-ascii?Q?cMZGuWI3QGWjo7LQUa5osndD2eVV8n2uQkiLuIfEn0MXzWYIVE08e55mp5tG?=
- =?us-ascii?Q?oLbBycpz+oF0mBQfG5hJfad9Uvum6eXm/PxG60doiTD3lnssjFnrmSJxYEBL?=
- =?us-ascii?Q?LSU+FPnniTKGoT6Hu6ZnfHLDcZwJbPfXOtdNQj/F4ZRrrM6PuMPJXjdjii5B?=
- =?us-ascii?Q?KSFe1rAIl6+2m8zgwikClhswpns+8a3ymK51ISDNF0oJmGI4vJuvkAYHZ7pn?=
- =?us-ascii?Q?i0D48RriH9lVQ+h+sF/W+k+UjlUCrrNWkUG39xkL1YO7CReoxC+X2mZ+JvAo?=
- =?us-ascii?Q?1hMRWOv+Zdo0diVeT/qVkq534+TOGx7NtZeD5R29Ck6mbWvcCohYUQ0CTN03?=
- =?us-ascii?Q?ybu47elruEQDRVAeXRGUlRNEacC5pGNLbVewKA4UJ31lp9pGGrwjvGT2kbsL?=
- =?us-ascii?Q?0O04YVSaMN7pWEHmEyLMEoHB9jBApwqyVxyHsLVBpVp/vPyg4I2/hDuOrN9j?=
- =?us-ascii?Q?TJU/6Ke1qbgZV9j7dgoTB9YjsHuIWEixeJnaf1GVbCGxQLzjCikhZA3RJttD?=
- =?us-ascii?Q?V6m51o3MmOjxSnBIj4DARMzT8kgYCsE5C0eXeDK7ZTrPFEoLuSA6iH+3mc71?=
- =?us-ascii?Q?9vsok/xwR6Aoxlz2YOrdER/dXKUQfM5+yYF09F4RMd8zK+U60umq3uNIP/WH?=
- =?us-ascii?Q?kFHBqwe9oUE=3D?=
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR08MB10521.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR08MB10977
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- DU6PEPF0000B61B.eurprd02.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	76821c06-6816-4a63-3066-08ddde5eb3dd
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|35042699022|1800799024|36860700013|7416014|376014|82310400026|14060799003;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?B6GFFhXl26hB0aGFJM1P5E+IbdDHFpGxrPefSjVyDU2CFB/P0CRTWiE25t0y?=
- =?us-ascii?Q?xbr3lDHIQ/TUSXEmUkpAUD/dk8OQIpIPFa21Vd7HB7wfdo6rl5uOQnNFfoBT?=
- =?us-ascii?Q?QPELNPYI1kqS7TN4hU7B8KDgPPTSP/hxfYXSL1+Kre7EiM5GC3QGFdLQHsU1?=
- =?us-ascii?Q?WiEMOeIVBYd3W/P+SxzKaKmBe2UURON5EnKZ6ZFLkEFwZvwE04noafTDYilE?=
- =?us-ascii?Q?oVua5ylCthaW6dmPRM6Ye53aMgoKPlvuW2ez5ZsPjKpf+IDymx5L8LgrhQxh?=
- =?us-ascii?Q?cIxFvAYgNsl3yQIg1WGNcPw+ojJBulPinftqzYBhSvJBNxlIx7jkekXxGZwH?=
- =?us-ascii?Q?jCslB9/RdJQv3VAJbx18s+enZL7V6RHgFzmK6y6m9qqIyi35JrJETyoIYc4I?=
- =?us-ascii?Q?m+VrjTd2hHS10MebbsfaQfn1Mrkrm2hIUkfsqhlvA6qfjlK8Wdo3VX4eFM25?=
- =?us-ascii?Q?8JA9kVzXvXpJpew6dF75xupTAR3yOEe9aaPDl+X6MofOae92ZcJqrbZfIBQz?=
- =?us-ascii?Q?iIvTXJC9G7seuRQB4g1JsgPMtlsX00S0jMp3qtuQJ3K9JFRJiDMnnn0QVjrK?=
- =?us-ascii?Q?rbt/KD/BKA6z7UL5Zb3i43VgR04yobTLzPvzeRdFWhj8gyo9Ieto4+sVIeSY?=
- =?us-ascii?Q?HKuINVPNzyf9zc8IHrSW4/Fn4QWBPqEu0Y7Qm9xJH6mx3X45Kv+JxvA3+snN?=
- =?us-ascii?Q?wsXXJoPOLqNE4edhZX9+ecjOIZSuA9myOfQ5Gb/ykdQlSLZF6LNHit2QATKL?=
- =?us-ascii?Q?IjTPumB2sywvSBBfpYVT/gPSfktjcw+DHQuStidBx9G2+PZ5e1cNEKRW/6Ro?=
- =?us-ascii?Q?5bwLzL7rHbeVlM4MYlVd+DCsqdE6ToypE/HzjONp/8u7Ud46SKZsfw/HI4Tl?=
- =?us-ascii?Q?oCWuP59gOKo4qRcOXV0Vs4RxYGTSRFKU9hRBAkP1LF+edLDp6dLXI+TLiSF1?=
- =?us-ascii?Q?Z0im7BlKfJrGknMAiNTLxkR8kmp8b7zyzi1ow28YZoN303aJpHLDa5vNR8qs?=
- =?us-ascii?Q?Xb7grYIHMbAz6fVXIXf7BrrpxTa20EJNE43HTGLVkNgButWh/ihrMkyBrlEg?=
- =?us-ascii?Q?iVzahSoWqnRGrxUYmSBKvhvPAP2c8Re7mgetXyKszErq3KoLStwWveV3o9Ce?=
- =?us-ascii?Q?ACwXmdKN5xt9wAEy+HKzvSC5SU9F4emUR3KOpJLeAyc4WeBMwsdSLTsGeA/n?=
- =?us-ascii?Q?MCjfoOAgjqBaB5rYppi7BX1jDns40kK2aLRS5SyqLjaF5BQazYQUHdsMOS/4?=
- =?us-ascii?Q?xEi+Kv4HiyUCv1VBoyw+e95jvYGby5lO0zEmGo8kWUfJ1vDGEMjBtk+OHarp?=
- =?us-ascii?Q?dyN6c5WWLV5BNNJ3mghSqbJ3cLiXDwEDpuxekDKMtDYlADq9tpemYqCfoIgD?=
- =?us-ascii?Q?CI6tuB/JuA4ibTr+JEO1mf1dYWQOU1rq0yqk1t1fEpwipoRrm+6XKV61X3C+?=
- =?us-ascii?Q?n7ZZ+SmnEe8QJGTXqvYgMNe+H4Er4g0KrAeaDAOkl+wV0WcfjS6DESTTPlR5?=
- =?us-ascii?Q?XlNRB5xF8N9wmvmC6caMN0FSwTHGJCd8eg55?=
+	=?us-ascii?Q?qqlsPz2ATyqjSe2h2YUoZTApYq/48IHKPxijtHQSg9cS1vrlMiTelhuYG5m3?=
+ =?us-ascii?Q?S1PCEMoEjO0D/ZVS2TrWeriuyodAIGmDEnuAFlLAFIDgoivd9yRSw6G4IDnJ?=
+ =?us-ascii?Q?JjJ84/ZtUmx0sjP9NAJOmxuaeIM1ayuujh0hfRhtaIqjqZr/UTGW8x9wST6B?=
+ =?us-ascii?Q?xkDjIREBiaA9W/4Wk/kctAOZZ1pRfogbk0ggWL4DMd1TZw3ncuss4HI0l/Bx?=
+ =?us-ascii?Q?9jRF5MhEq4XxI+Z7HItOGGk9J0voJY2Ysw4euTaxMHaQKDAs6lo+8muU/Am6?=
+ =?us-ascii?Q?/hZBN7n+ipihCj0J0M+GOUorTvp2QjF+GNIL+JoI0eyIQsEEYymCCkNskGvN?=
+ =?us-ascii?Q?JO38L48s5qI6seBxuvlJ+Qp3bXtK3ZP0lU+tlW/RUvl1iJh1MQjlBDhFdXHJ?=
+ =?us-ascii?Q?3pNvzbVfRghHnWY/87s3B6MpppE4rxurogdx7EK6FSl12vTZXWdoZ14JdzPI?=
+ =?us-ascii?Q?5B88Hl0HqdIBRfiemtRvaSLBIJ7eHWTnHtciwDXCzmY9CNWDiamm+q/5LTSX?=
+ =?us-ascii?Q?rAuQtUG3qGPHOgLDCGfguc3tmhVEP0JQG9helWYwJre9wpa3jIC/JYOOgIUL?=
+ =?us-ascii?Q?vnxva49woPB+XN/Q4+oiR8kE0elOWzMHvK3WGGD5uuAMsxRxrq3zvc3bTxAw?=
+ =?us-ascii?Q?ppGny56raPEDM+xXTyriqmm76k0ACXij4P/4KmKVMfDZ183sBuHktgLZNQAP?=
+ =?us-ascii?Q?0fctWw1mxVB2JbwgvpTH+EKvpHR2aa0mC84yxg2iPxP4qNnznI0tQ0n/X8mY?=
+ =?us-ascii?Q?qaOTHa9jldAjwQQwE9r3qL5IsmwOgLLNVhphtYbeXPurccx9lJZrO5YlJNKq?=
+ =?us-ascii?Q?ITZ0EEP054pHopbQcISsAFhoxzoHDK9aki+u3IJh+ll1WeiOwhDXR3wW0Sgi?=
+ =?us-ascii?Q?bkZ4k1MMThellUZGKubj5NiXK2UEY/hhm4gg6prBWm2DL2GtsiykdzHBL3x4?=
+ =?us-ascii?Q?s/ZdcaEEBrCIYVg/BY7qvlE1wIqIEQ1oLJPjxPUq3rF5/h8fdCWty1FJY/7s?=
+ =?us-ascii?Q?0ig5xBTgN7sb27pkRVWaUgmQPaKoEBLAJD5IQ3bT7T+O+RE18Xw47olSyVej?=
+ =?us-ascii?Q?BSlVhXLgPRy01miyOrQiEhlmrN5YW5jftLJJTQFA48N4FA3fzFLtB+D+N63H?=
+ =?us-ascii?Q?IVuiTsx0/gp5CpL7f8KucZqzT7BEMfwFg1TT0+hpfWGJ0fCSxqKwBkdhW0mF?=
+ =?us-ascii?Q?oJjeiNjoIKTF5xd+08GPmahiqYwWKI+MnRF+eCa/+woFe+qwEuAIAT8m1J4a?=
+ =?us-ascii?Q?y/Fdmf7f37lp2s9Egkyeeect0tvjfC6qrLdqdkfMYn8mnVMB9NRmCfcdPvCa?=
+ =?us-ascii?Q?gYDBm9LWFx7Y+VMLIesZCSvnDhqS3YbigjLYWiJrB8rMVRiQo71NLs2zqIXO?=
+ =?us-ascii?Q?9Zv1KKCUBjqAJ5jrXE+fzzj0l49NnwtAKiCgPbcxXB+vlliyKQ=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(35042699022)(1800799024)(36860700013)(7416014)(376014)(82310400026)(14060799003);DIR:OUT;SFP:1101;
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2025 13:54:43.7225
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?kedtl8OYLGvsO1a5sVU03d0dlY/Fuchm8GXDD9uS6qsiMX5aSCyaaLIq4Pbh?=
+ =?us-ascii?Q?pNS+PMlrYi8toda1MQgrhJXavoauGw1ZzSiyzwOxRlYQ3I/8m+VT+jgYQbwZ?=
+ =?us-ascii?Q?y7CJAJXpaoCtcomG0Q8U/pmT+3e3AM1Q+0pUUOI+uGo3eHABhcMvpi4R1lln?=
+ =?us-ascii?Q?oLAm7lVH5ZDfCTN7vKn/NxKWjcnT5BsrAvkgEefuJEwa4AqM4jW96TfwiCrM?=
+ =?us-ascii?Q?OH/yW0CTWpwpo0DbyW8rAMRgct1vgBJNVymX30eofDsHn9HDcK0yHMYqRQnp?=
+ =?us-ascii?Q?U8/Evug+4xJzC33nFFSWocmcHb147Sux1JbMD2pUb+fJ+F48+J1VKlB+/RQz?=
+ =?us-ascii?Q?pG2jcpcIp/bL52LAte6XTIoxbNoMD8CNCkdV5uSoo3yyqPvBcHoxJCKd/8T/?=
+ =?us-ascii?Q?QIO1Trk/aSlXECLrVHx3wC19Ye36ISS9/OV0xUXbFgVzTyP7vNHsO+LF4Co2?=
+ =?us-ascii?Q?bkg4hUvWrOGciMZC3ETerfh5uhWNQVQnwaY9EZ3dnbT8GCwMEVmeZ88MJ/6i?=
+ =?us-ascii?Q?B+h1faVRq7/J6/YGwuCsIjD+8M7V/D36VDSszyAKfn1n+b3YdSEZyqwyqNac?=
+ =?us-ascii?Q?ftMsiLZkIuCvUrguHMnWA+guxG348xdJdtabAO7lFGLLMC+37V5B1+gljyK7?=
+ =?us-ascii?Q?JvPq4E560NIekXUQ14X67wDa3yTeN9GuGA2fCDhBGVu0St/8pmQzibYIfTiB?=
+ =?us-ascii?Q?hplmtXxaJ6MTyoJh8UAGI+k2267vXWk+KaxCvg5ucxuV/NA937pmPmSGpkNH?=
+ =?us-ascii?Q?WzNrgEmBP4UslTtQgZUGhRdFG6ZATQhK3LGJ6c/YfiFor7E7alMbV3CggOYS?=
+ =?us-ascii?Q?iGd11MJcpaWEBMnjzeuS7WCqLIxKkkUGGQ6sTQvcx5WrmiOtwHwRhohJsQEx?=
+ =?us-ascii?Q?TY6wuvCvERWfCLxRyrqfHXm4ejyv2g4f6Sk6goVR0Jy1Kha1yT+puatULlwQ?=
+ =?us-ascii?Q?T2ezVUazx9wu9NkdRfcrWWrwPEYYEKTbnQJseY2w7en7rXPLXan+PaLTzGRY?=
+ =?us-ascii?Q?7b3re7odAhReI28Frs6GV1MrDq6AU1WeCu2TGLVNxOlhZZ6js6jdAtRrwXJX?=
+ =?us-ascii?Q?TWfi9yZwfWOlizeITIhkdGLzLx7cS5Z7f+t/JeYWYrIHbfJBuvi6va1MiIZp?=
+ =?us-ascii?Q?xwvemJkhEL+eyLUe/L099dtKkfDX7LnPdBHXihb2HgHP7VBTifTbyuduPsPo?=
+ =?us-ascii?Q?aRoYdXHdRenrf6PLixlc9YLrulGgHJnX7Y5Hy84K1ohfR9Z8ao5abBCu6hLa?=
+ =?us-ascii?Q?LH4yaq4++C6jrRxdKnzVWZsfP8pMbKfqt7e1LGucJJVVWRi8mp6y+vD4ojqM?=
+ =?us-ascii?Q?Oh3tmjgjdAiTgzRiNC99Dxl4TfaM81jDXmDMc1ffhSUnLBPRwVeM9Gtni5H7?=
+ =?us-ascii?Q?d8mYtWP0deC/ix1Fy14EgRwHzxZcarA8NYCwe2xH6w6UdB7LzcafetQr8QsW?=
+ =?us-ascii?Q?Z/QoiyAZBmXO+lRg1KAMhwLqx8C0iFz5X9rLSvH0i2MB93aWznjpd2EdhweE?=
+ =?us-ascii?Q?ekxUcigng94UThJePzGui+M24nkJ5O2/TuPkYRRjqrLi8XDlasWgNf9+A0Qy?=
+ =?us-ascii?Q?N2tGMlIC0QeieWYZ6H9041TW9bjj+LwHKtSwvwoU?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e2263c24-9d73-48a1-d365-08ddde5ed93c
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2025 13:55:11.2925
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cb7ccfe1-9945-4172-e61f-08ddde5ec913
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DU6PEPF0000B61B.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR08MB7811
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NMoqcknRCrBdw3BXglkeAsBzzIM5xiHnuc2NMOewKC+V6bpq4JBaHcyJljexVZ46
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7764
+X-Stat-Signature: 1ree7mg794fbgsgwhyxmf7xmehamubq6
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1147340008
-X-Stat-Signature: 3azadzcnx7dd5xgmhzfur7fghrp7y57w
-X-HE-Tag: 1755525289-565931
-X-HE-Meta: U2FsdGVkX18E/SWr/5BdsYtaV0zFV5DP8XJGO/SSsjA+4s1XpSmwwVEiJLEmupWuJyCCDDu0/xGRpgF9A0+qgjgLMYm+drQISdyuyG+5U3+3wqRGHD85MtGOdYUIS1Z1dSOtcDnm9JELS1fYVk6ShbgtDGK+Zxbon5m2ALw5UCoZpmlWT79/Gebpy0Y6EqeMQsMBwMg5rKT9XjRGn2mtIKcpPCQ3xcDnaaj6NV8TBi62o6VIBEv4s2zcO3T202m5Uvu+xNEfiBMHDHhPFsKpDAxmTigxcw+rOPHYLUTRLG5l/ccF2BvW1MVA+iYsRdCaTMEzrx7EaillM0qps6Rb/R06BK7PaU7FlPN48qs7iibnYeN0KrjHQE4yiqqiYm6oOQfxquOQUxnSgW1GDlxJp7NWCSckGpcWmgfGRhpIXQhvCYSUCvqPhBA1KfUwTehT6rv4lNCMpEZM9x28qyzqKpQ/ny+JjVxHpX5EiDs1JFj6qRxrMZN/sYBqpTUeOUrSyBqRYFAOh1rbCeQIwBQMjTLQash+34C5OyH2mxHzDMdIp3LNJKWObezQFGxA9MJZnbU7mxQLOIQ/GA2uu3Ddlc8UaTCmw3dGyLGCaF4+EVjQLAt4LeOiL66S0/AqRn0dIk7LmjJfqTGQS+Afoqv2dAdP9QfTFGb9P6JBrlXc1U1r8R8i7Cv8fVJxLjb0LzSLCdS0q8PcL+FKjhe/t2ItSMwDmeVdxPSt/+lpaS0vUbL83JUg/qennuV9ypzk2zNZnEN7oK0P8wA07PPFFizoiiY/sG5opNTxihbYinocLzHpRm2VIWfQgpY2MGffu6e3117f+fFPZkx7FHBu3P56hs0/wPpxAL1hLr6HL3s6jeddJWjBvH9oh1fN9dGTYqGH7dyKNzSdGLF4DCXknZo096OXz3KVvRCvaEx9ER3tv8R6hhR0zG5yF4TA9Wo4SGtqVEH1fg7kgZHdvWzzbzM
- V5+3SXw8
- lVSMV/uiV1Fb7hDlfcJVCQ7DEPtZIxwbQetBK/NXBYQshcsk8TzCU2q3zK01vVhP93v3ma1qgGOUy6Vbwe1lWHSwsgRSwViu/FI8EqMPWsdy3TP8BBEeBUnpk1xTvyKSGGIWSoNTT+sTyyOM82bZv97QTliBMOB7c/OJ/DjWwbRbNMOZmEByDvzw3zbTHpHYepKoGy2nKkVQlFHVZ3o4misP8jKnm/RBg0CaO8mXpxrM5xcU6oMhIazOhY2lbe/rUaQWg1kgA9yREjoRLkPDjG169kkKMHSPUE7v8y1DV6yXcs/M+4wqlwN2NbCmeRQ/Bf1UUGLwt4zLaz7tU5ZpehL/jnzUoHlXwZA+s+cm0OVEsEPqwYhYGAxrPtVTYT3D2rJ1kqgCoI+n62r0w5HWdvYooUWGLAfCzA6AUqKS2uohjHV8hNdp9kL6H5QjeRsa9MiTEuVNKteoMtUg8CCetpply7wMluI66OxKsoAp5dSfTfJnLRagWxj5qDFFgfnBeOj7vlB8K11twYZReq6pdfaG+YQ3RDVincHUDgr/tiY2Net8HQNotIEeAGBvvI1gizzkXC63zJ6Yrsj1sx2SDWeHeg2prParcFPMKAGa32CF+hXXQSF0kUksVqytPevQ8/7tPN6pJ6yMnIjJWd+nQArnbjME2RwZ54Fge
+X-Rspamd-Queue-Id: 7ABF41C000F
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755525315-172176
+X-HE-Meta: U2FsdGVkX182NjxcpRl0iVz8gMWkKK5so6PybKiBXQwqL97eQueiMkyMq9KJ2tfylutEthZp+L7VcSPe+XmF1zpxohWP2xzT7ON1Px8pVpDRxlEAHWhwz6YGzUG4fjc79gqZu1O5Lpu4IilG+fZF+hk6Swokv+w39mpDwyK9Gf0GRj3wK3MjG/iQ/xY3t7lYs4L0WtVo3mj26Xba7sebH1/iD05MBbiqhZJnISaftGCWCwd2maI+yRyWeyDyAAKJNkXySPifXibp4Su78pbsdErJCNGTohv4r1AXdRkckXgGE+DdKAqZU+MjZvOHkATPHS6UnTEQXyW+CeBcL/ehkG44vmjvHN8oExVPh1iOjLMji7nNJLokwJOWcsNrqWLxTY13wyfBGvqDWHy4NqHmFCSs3YdHbyyW6v5wTMk+EinnjslDpSwQoPYYtoYgvOt4c/6PodCE/32a+sKruSTwwEHSbeu51MOlffnSL1vVw0MGylx3ycIv1bBnr9Z3kgKcHsZxqGHgmiYxmEg4XnYkKIgPNKKqqSJ6EOGo1Fi+LnUxK7SuI/Iw1Tv6gnk5WD9B7GAhY6UNkdt43dPO7aHmxETIhhvH3LhQHyS4RnShscMqZGQyHgRVlqLqkQzD2rYQIERex84SVqa+GkIVWgQiiCGFluOXFmqxmEgOqFRFFYmim6/kCx10tr84J/bNbzHP3uUs//yAmWlinlcM49VclXG4cFXBWienpkeZnvPBY+5C0UM+sqNVPLTbAtbCrJsZvLoPA0a/Y/2jxxiDQ4gazZbH5HTvpkvi1k8g3ne0EXq7L9jzmC4Xc4ZiC46H0rp3Ls7uh6OFFEiMKh3yS6x8xrSH9z1OhHAh/AOcrnOo24WcD1BO93FGUUtUcMLfv0rUItkHUSLsJ2/zCLriDswD9gk69oQgBEFD8OGtfp0KcjKS/li7ocx/fyMMJ2YeP+ZasC7x5ZoA5a+WIRqMmJy
+ kZ0k8/Av
+ 29zAm8siQTKa6WBLOuK7polZ6wBCTpTy8CYJ/3wgrM4AhAejAKt9uohmreBuG3DqtOK1IyWCcfcms3rN4FhJK34D/eloR9AoiQL+9Ud7lqy4YluGjVaCebbRwT7gsKm22jwaHwvjwu+1cwpyVD6fVI8X8YjJPIjHP6LgyrLgDXlbYo/qT5EujEUQtaxexUw5sKRiwBq3NXMhH/PiJNVJrXtLwdSuQa6xHOpAOrgW8ZcXw+hYVo+uHKKRdnK5Pw8bcug3AtyxR+fXihMOpqP5rQGNnWeVmf36NJ35B6Tt+VsK0wv5CqqezCAMO6KGkon0FflVRPc/AW3DyJ0UAF21nx4XffMnebfQiEDSx3GnJZTPfVWHWSlcM5W7OaUfZsPSVI/h08jyuhQgcA1wsPdVeKY2o8W/xObtv5aZzkQaWH8xhm00EeS9jaroC3qDRKvWj0LlURQ0tYh0uyAI30SOZmzJKESZUl+CsVpDWQsErRwyCeUuIEr+VdshByEreW+KXYvHs0FqhjbcOQKfriZunMH2qeXC1RMdx7n9sAaFs8ScNTroz510f5fqEbUmg8m4mEZJc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -241,211 +206,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ben,
+On Fri, Aug 15, 2025 at 12:12:10PM +0300, Mike Rapoport wrote:
+> > Which is perhaps another comment, if this __get_free_pages() is going
+> > to be a common pattern (and I guess it will be) then the API should be
+> > streamlined alot more:
+> > 
+> >  void *kho_alloc_preserved_memory(gfp, size);
+> >  void kho_free_preserved_memory(void *);
+> 
+> This looks backwards to me. KHO should not deal with memory allocation,
+> it's responsibility to preserve/restore memory objects it supports.
 
-[..]
+Then maybe those are luo_ helpers
 
-> > --- a/arch/arm64/kernel/cpufeature.c
-> > +++ b/arch/arm64/kernel/cpufeature.c
-> > @@ -2920,7 +2920,7 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
-> >   	{
-> >   		.desc = "Store Only MTE Tag Check",
-> >   		.capability = ARM64_MTE_STORE_ONLY,
-> > -		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
-> > +		.type = ARM64_CPUCAP_BOOT_CPU_FEATURE,
-> >   		.matches = has_cpuid_feature,
-> >   		ARM64_CPUID_FIELDS(ID_AA64PFR2_EL1, MTESTOREONLY, IMP)
-> >   	},
-> > diff --git a/arch/arm64/kernel/mte.c b/arch/arm64/kernel/mte.c
-> > index e5e773844889..cd5452eb7486 100644
-> > --- a/arch/arm64/kernel/mte.c
-> > +++ b/arch/arm64/kernel/mte.c
-> > @@ -157,6 +157,24 @@ void mte_enable_kernel_asymm(void)
-> >   		mte_enable_kernel_sync();
-> >   	}
-> >   }
-> > +
-> > +int mte_enable_kernel_store_only(void)
-> > +{
-> > +	/*
-> > +	 * If the CPU does not support MTE store only,
-> > +	 * the kernel checks all operations.
-> > +	 */
-> > +	if (!cpus_have_cap(ARM64_MTE_STORE_ONLY))
-> > +		return -EINVAL;
+But having users open code __get_free_pages() and convert to/from
+struct page, phys, etc is not a great idea.
 
-> Would it be better to make this function return void
+The use case is simply to get some memory to preserve, it should work
+in terms of void *. We don't support slab today so this has to be
+emulated with full pages, but this detail should not leak out of the
+API.
 
-This is the same point Catalin points out from patch v2.
-But for usage of kunit test, it need to keep return as int.
-
-> and add a static key in
-> the manner of mte_async_or_asymm_mode, perhaps mte_store_only_mode? This
-> information could then be used to help determine whether it is required to
-> enable and disable tco in __get_kernel_nofault() and
-> load_unaligned_zeropad().
-
-Yes. Since the mte_store_only enabled, it doesn't need to enable tco
-since load/fetch doesn't increase the TSFR.
-However This sounds like an over optimisation.
-I think it would be enough to check when mte_async_or_asymm_mode()
-otherwise in for __get_kernel_nofault() or load_unaligned_zeropad(),
-it should use like:
-  - __mte_enable_tco_async_and_store_only()
-  or
-  - __mte_enable_tco_async(op) // whether op is load or store (boolean or enum)
-
-But this seems ugly too.
-
-So I think it woule be better to remain as it is --
-without static_key for store only since there is no usage.
-
->
-> > +
-> > +	sysreg_clear_set(sctlr_el1, SCTLR_EL1_TCSO_MASK,
-> > +			 SYS_FIELD_PREP(SCTLR_EL1, TCSO, 1));
-> > +	isb();
-> > +
-> > +	pr_info_once("MTE: enabled stonly mode at EL1\n");
-> nit: stonly can be expanded to store only
-
-Thanks. I'll change it.
-
-
-> > +
-> > +	return 0;
-> > +}
-> >   #endif
-> >   #ifdef CONFIG_KASAN_HW_TAGS
-> > diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
-> > index 9a6927394b54..df67b48739b4 100644
-> > --- a/mm/kasan/hw_tags.c
-> > +++ b/mm/kasan/hw_tags.c
-> > @@ -41,9 +41,16 @@ enum kasan_arg_vmalloc {
-> >   	KASAN_ARG_VMALLOC_ON,
-> >   };
-> > +enum kasan_arg_write_only {
-> > +	KASAN_ARG_WRITE_ONLY_DEFAULT,
-> > +	KASAN_ARG_WRITE_ONLY_OFF,
-> > +	KASAN_ARG_WRITE_ONLY_ON,
-> > +};
-> > +
-> >   static enum kasan_arg kasan_arg __ro_after_init;
-> >   static enum kasan_arg_mode kasan_arg_mode __ro_after_init;
-> >   static enum kasan_arg_vmalloc kasan_arg_vmalloc __initdata;
-> > +static enum kasan_arg_write_only kasan_arg_write_only __ro_after_init;
-> >   /*
-> >    * Whether KASAN is enabled at all.
-> > @@ -67,6 +74,8 @@ DEFINE_STATIC_KEY_FALSE(kasan_flag_vmalloc);
-> >   #endif
-> >   EXPORT_SYMBOL_GPL(kasan_flag_vmalloc);
-> > +static bool kasan_flag_write_only;
-> > +
-> >   #define PAGE_ALLOC_SAMPLE_DEFAULT	1
-> >   #define PAGE_ALLOC_SAMPLE_ORDER_DEFAULT	3
-> > @@ -141,6 +150,23 @@ static int __init early_kasan_flag_vmalloc(char *arg)
-> >   }
-> >   early_param("kasan.vmalloc", early_kasan_flag_vmalloc);
-> > +/* kasan.write_only=off/on */
-> > +static int __init early_kasan_flag_write_only(char *arg)
-> > +{
-> > +	if (!arg)
-> > +		return -EINVAL;
-> > +
-> > +	if (!strcmp(arg, "off"))
-> > +		kasan_arg_write_only = KASAN_ARG_WRITE_ONLY_OFF;
-> > +	else if (!strcmp(arg, "on"))
-> > +		kasan_arg_write_only = KASAN_ARG_WRITE_ONLY_ON;
-> > +	else
-> > +		return -EINVAL;
-> > +
-> > +	return 0;
-> > +}
-> > +early_param("kasan.write_only", early_kasan_flag_write_only);
-> > +
-> >   static inline const char *kasan_mode_info(void)
-> >   {
-> >   	if (kasan_mode == KASAN_MODE_ASYNC)
-> > @@ -257,15 +283,26 @@ void __init kasan_init_hw_tags(void)
-> >   		break;
-> >   	}
-> > +	switch (kasan_arg_write_only) {
-> > +	case KASAN_ARG_WRITE_ONLY_DEFAULT:
-> > +	case KASAN_ARG_WRITE_ONLY_OFF:
-> > +		kasan_flag_write_only = false;
-> > +		break;
-> > +	case KASAN_ARG_WRITE_ONLY_ON:
-> > +		kasan_flag_write_only = true;
-> > +		break;
-> > +	}
-> > +
-> >   	kasan_init_tags();
-> >   	/* KASAN is now initialized, enable it. */
-> >   	static_branch_enable(&kasan_flag_enabled);
-> > -	pr_info("KernelAddressSanitizer initialized (hw-tags, mode=%s, vmalloc=%s, stacktrace=%s)\n",
-> > +	pr_info("KernelAddressSanitizer initialized (hw-tags, mode=%s, vmalloc=%s, stacktrace=%s, write_only=%s\n",
-> >   		kasan_mode_info(),
-> >   		str_on_off(kasan_vmalloc_enabled()),
-> > -		str_on_off(kasan_stack_collection_enabled()));
-> > +		str_on_off(kasan_stack_collection_enabled()),
-> > +		str_on_off(kasan_arg_write_only));
-> >   }
-> >   #ifdef CONFIG_KASAN_VMALLOC
-> > @@ -392,6 +429,13 @@ void kasan_enable_hw_tags(void)
-> >   		hw_enable_tag_checks_asymm();
-> >   	else
-> >   		hw_enable_tag_checks_sync();
-> > +
-> > +	if (kasan_arg_write_only == KASAN_ARG_WRITE_ONLY_ON &&
-> > +	    hw_enable_tag_checks_write_only()) {
-> > +		kasan_arg_write_only == KASAN_ARG_WRITE_ONLY_OFF;
-> > +		kasan_flag_write_only = false;
-> > +		pr_warn_once("System doesn't support write-only option. Disable it\n");
-> > +	}
-> >   }
-> >   #if IS_ENABLED(CONFIG_KASAN_KUNIT_TEST)
-> > @@ -404,4 +448,10 @@ VISIBLE_IF_KUNIT void kasan_force_async_fault(void)
-> >   }
-> >   EXPORT_SYMBOL_IF_KUNIT(kasan_force_async_fault);
-> > +VISIBLE_IF_KUNIT bool kasan_write_only_enabled(void)
-> > +{
-> > +	return kasan_flag_write_only;
-> > +}
-> > +EXPORT_SYMBOL_IF_KUNIT(kasan_write_only_enabled);
-> > +
-> >   #endif
-> > diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
-> > index 129178be5e64..c1490136c96b 100644
-> > --- a/mm/kasan/kasan.h
-> > +++ b/mm/kasan/kasan.h
-> > @@ -428,6 +428,7 @@ static inline const void *arch_kasan_set_tag(const void *addr, u8 tag)
-> >   #define hw_enable_tag_checks_sync()		arch_enable_tag_checks_sync()
-> >   #define hw_enable_tag_checks_async()		arch_enable_tag_checks_async()
-> >   #define hw_enable_tag_checks_asymm()		arch_enable_tag_checks_asymm()
-> > +#define hw_enable_tag_checks_write_only()	arch_enable_tag_checks_write_only()
-> >   #define hw_suppress_tag_checks_start()		arch_suppress_tag_checks_start()
-> >   #define hw_suppress_tag_checks_stop()		arch_suppress_tag_checks_stop()
-> >   #define hw_force_async_tag_fault()		arch_force_async_tag_fault()
-> > @@ -437,11 +438,17 @@ static inline const void *arch_kasan_set_tag(const void *addr, u8 tag)
-> >   			arch_set_mem_tag_range((addr), (size), (tag), (init))
-> >   void kasan_enable_hw_tags(void);
-> > +bool kasan_write_only_enabled(void);
-> >   #else /* CONFIG_KASAN_HW_TAGS */
-> >   static inline void kasan_enable_hw_tags(void) { }
-> > +static inline bool kasan_write_only_enabled(void)
-> > +{
-> > +	return false;
-> > +}
-> > +
-> >   #endif /* CONFIG_KASAN_HW_TAGS */
-> >   #if defined(CONFIG_KASAN_SW_TAGS) || defined(CONFIG_KASAN_HW_TAGS)
->
-> Thanks,
->
-> Ben
->
-
---
-Sincerely,
-Yeoreum Yun
+Jason
 
