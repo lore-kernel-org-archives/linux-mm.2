@@ -2,91 +2,128 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 58949CA0ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 17:02:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BFCDFCA0ED1
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 17:54:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EAB048E0053; Mon, 18 Aug 2025 13:02:43 -0400 (EDT)
+	id 0275C8E0013; Mon, 18 Aug 2025 13:54:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E58C08E0013; Mon, 18 Aug 2025 13:02:43 -0400 (EDT)
+	id F41338E000A; Mon, 18 Aug 2025 13:54:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF9D78E0053; Mon, 18 Aug 2025 13:02:43 -0400 (EDT)
+	id E2FD38E0013; Mon, 18 Aug 2025 13:54:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BBABC8E0013
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 13:02:43 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 92575BBAF3
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 17:02:43 +0000 (UTC)
-X-FDA: 83790497406.07.4B654F4
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	by imf07.hostedemail.com (Postfix) with ESMTP id DF4F84000F
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 17:02:41 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CF4468E000A
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 13:54:06 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 76B48140976
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 17:54:06 +0000 (UTC)
+X-FDA: 83790626892.08.A0546F9
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5968440003
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 17:54:04 +0000 (UTC)
 Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="G6Jd/6cP";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf07.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755536562; a=rsa-sha256;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="WT/OlNLq";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf07.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755539644; a=rsa-sha256;
 	cv=none;
-	b=aGbBF/lssW9ovbuTSVi6mkVNvOXS221xdKA3jmAJ3Kjzw8WoKqfDaBlJgROoAkQZvI5FGi
-	mjYXoOmy3tnNjU/2Yunb0vxMPWLIVhybMunC7V9VLOF0znOyhBWgJ+sHT3CtJQrRCet+OX
-	3FLzIh5CRupAxiav0DOmbBm0mlSOuts=
+	b=nAoLUwX+6Le3Y4kKbg2M7HFdIGI86QuWiowJs1ldLLkIs5xmr4dq5asXSk6vINE3wstOMn
+	OSB/PmNJYcX6bU6597ARK/y8dmw1atyLeNt7YKSB2+vr687TzG40wgfW62UODovrFP//+0
+	feg8yUWKEtwj8mBbWZt7OVzcXMAKzVg=
 ARC-Authentication-Results: i=1;
 	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="G6Jd/6cP";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf07.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="WT/OlNLq";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf07.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755536562;
+	s=arc-20220608; t=1755539644;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zWT242NgNZP3jc1GQRw8o49/i2gTFgutb9b4mEZjMpA=;
-	b=waOI5BN2COcD736kRAfOIz0gQydzkMkDK0uWzUOnfTOQ4xUTKmCUX/Qrlh6fUzvZLU94Us
-	cPbE2nbnUE6TiHm5OlDKuoegXvRSxB4SEHWP41S3o2gcv/YsJn/m4qPFBkq3mt50rxoxKZ
-	llOrXA8yuSPx2V18ecrOglERmU7JIbY=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755536560;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=89YYgFY/atKO7NXyA1yiC1oohqeWnpMbKEyE+yEL/fg=;
+	b=5E6K0Xk6Mx2B1qAl/2sBEHsQBqMI9h+BDAODq1hVCeWT0RBCp2h9/Al7zKHoxS0iLc2Y4c
+	0e9s2woItGFOIgj+NgXwF6MgULqyaQCo1VU2YehybCajMwjsayq3N9bu9/iE7tO0VKcGAw
+	kC2fYipmSY+I/XgTacnbt0C2oogX+MY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755539643;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zWT242NgNZP3jc1GQRw8o49/i2gTFgutb9b4mEZjMpA=;
-	b=G6Jd/6cPEKn36h3z3JKcou8qMKVTIQVTjk1XJJAqMSHviLXKnseiiF4s+ycNlEVF4gmEs8
-	vrd0Hjv0FBdhFuXJqncBC5vwr4nz7aXsRXeFQlIuDqRnz3Mj1mmg9zCQ3L7TRAc1Uh9ikm
-	xEoVctnSxZw0eWXBb+JWHvbr37zDzs8=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: linux-mm@kvack.org,
-	bpf@vger.kernel.org
-Cc: Suren Baghdasaryan <surenb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@suse.com>,
-	David Rientjes <rientjes@google.com>,
-	Matt Bobrowski <mattbobrowski@google.com>,
-	Song Liu <song@kernel.org>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=89YYgFY/atKO7NXyA1yiC1oohqeWnpMbKEyE+yEL/fg=;
+	b=WT/OlNLq7u77WRvkUwITbRgJbEz0KkszeVAXVLFJ53NxE4ykJxxJj2H+XkpoxPek1oiL2e
+	5Gs4qjHX3iwxptB8D1rNe9kTkmeiOVSvGfWIyKIB3GN3LOOMbtUF61yQzM3p7aI5GEj/jM
+	AHQH7pyXgBNyN/hISJDNLUjXfizME+A=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-64-DViqDiMhNQWNrD0_XjX6YA-1; Mon, 18 Aug 2025 13:54:02 -0400
+X-MC-Unique: DViqDiMhNQWNrD0_XjX6YA-1
+X-Mimecast-MFC-AGG-ID: DViqDiMhNQWNrD0_XjX6YA_1755539641
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45a15fd6b45so20509305e9.1
+        for <linux-mm@kvack.org>; Mon, 18 Aug 2025 10:54:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755539641; x=1756144441;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=89YYgFY/atKO7NXyA1yiC1oohqeWnpMbKEyE+yEL/fg=;
+        b=q3Pnfcsp5ypqTvX0TsdjKJltaGmstMlpe+B6EcQKlerQSiMW98Reu+yhaVuAeBU4Qh
+         0q/QQKL08MG8AZqyEdjgxMbt4m6xSQr9IGWEikmU+1daPs5FQWvVcGlXYW6366SRD+nV
+         1r4srEyGubNIU3/XDipFbrpnF4gt9whgw0UoLgbkBa+psP3unrSri5HLKQBtcNrxR0f8
+         B9rEo2C7JDXKV/oN71xIG3Xdep3OpMQppJVw6XAjeklTjOrNE8FYMsxhUO2m86ggY9ge
+         wVwWi8qOUoERRI40wNa//LhBK9qMYHMvZ76wix0H22VKkJ+5m9KEXkgfpccMRTLEfaZC
+         jceg==
+X-Gm-Message-State: AOJu0YzVrMugFQizILGhHG+g1BI33tU6C9jDxX4gjORsHCzeuDP6BXtp
+	BwM6Y+iTEg0bivBJIWvOO0LLXUgnaWwGsrk3lXZ3DcDOzr5AFzUGA7ZxQP9z6i6EMNUnj3G43mR
+	Ri2mOlgqDCISiQqFpjCFh55jvp8mDp4E/K0W3aXE9DrGKuRpgU53x
+X-Gm-Gg: ASbGncvENZ1nWx6hWFcE7Oj8SqD9jp7SPPfxa1vZKYlf30Vo1IccNHdA52oK6ram+wL
+	lPpYV3FBhgierwRurvau+TL7uygelGsdRxkqIFNAelxhPYi8w2rITpH+BfeK44wa8BAdwgdkBHM
+	2fZLlzAGOktxyl5hGc+eFgHmlamLlvI32szw1BlvHBSALaZM4LBaY57WKNeG2H25QX4reoD/ID4
+	eYTaSKn9VcRtS4SQfYDKt+vrIuq8LnkWP/3o0KiHWPK9gPQR1EgMtHf1ncW76Hk7YMO6lQFc32M
+	odpG4sZ5msqifoHyApuMGMJxUI76etpk7+DUJqaH0lgrMe78fs2vZxYiD5JopCf0pJBHPHJwfbS
+	XUbrOF96tfz8w3KAedslRqQ==
+X-Received: by 2002:a05:6000:1448:b0:3b7:8342:dc58 with SMTP id ffacd0b85a97d-3c089a308e2mr135476f8f.16.1755539640861;
+        Mon, 18 Aug 2025 10:54:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEZFhZbPqR5i6NEhC4IJI8iYAbzcC+PQVoWnhvOMkVOWh9OMDuG2EqkAM9pwaYapKx+zoqh+w==
+X-Received: by 2002:a05:6000:1448:b0:3b7:8342:dc58 with SMTP id ffacd0b85a97d-3c089a308e2mr135463f8f.16.1755539640439;
+        Mon, 18 Aug 2025 10:54:00 -0700 (PDT)
+Received: from localhost (p200300d82f22060053c7df437dc3ae39.dip0.t-ipconnect.de. [2003:d8:2f22:600:53c7:df43:7dc3:ae39])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3c077789106sm386191f8f.51.2025.08.18.10.53.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Aug 2025 10:53:59 -0700 (PDT)
+From: David Hildenbrand <david@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org,
+	David Hildenbrand <david@redhat.com>,
+	syzbot+4d9a13f0797c46a29e42@syzkaller.appspotmail.com,
+	stable@kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org,
-	Roman Gushchin <roman.gushchin@linux.dev>
-Subject: [PATCH v1 14/14] bpf: selftests: psi struct ops test
-Date: Mon, 18 Aug 2025 10:01:36 -0700
-Message-ID: <20250818170136.209169-15-roman.gushchin@linux.dev>
-In-Reply-To: <20250818170136.209169-1-roman.gushchin@linux.dev>
-References: <20250818170136.209169-1-roman.gushchin@linux.dev>
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Harry Yoo <harry.yoo@oracle.com>
+Subject: [PATCH v1] mm/mremap: fix WARN with uffd that has remap events disabled
+Date: Mon, 18 Aug 2025 19:53:58 +0200
+Message-ID: <20250818175358.1184757-1-david@redhat.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 0bKIeZhhwGzq4UWQIDav67cnqd6yoP7iV6JA2mHWQ-M_1755539641
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: DF4F84000F
-X-Stat-Signature: thdobhotz1x48yrpha67j5ygdbz9ukad
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1755536561-817202
-X-HE-Meta: U2FsdGVkX18Q6XmZgz4rKR4KTFP3u0hAADrBFpoR8gB+9Pc9+kETcWG3tTWjeySI13w5xLCYrGdJ2Hd3A6HdwjR3C+u/qi1Bq8u0spUdOADmwG41WvEbiyg23J2uOrB14VLy8ixnkLJUn//CUjdV5VrN0edQhtaPp99pXLE2ZneyElp06To6MRA1R01T2AZYIUx+nieZN5BSZzGB/xLZI5MCta1n4iLJn7154Ym8/ZrRdGIwW+HOZ0IvGeyOSX434eTNSy0dRPNvHYFTsYHHCu2+5cg7z5ViOA8pQ255U6h3y7zR58jgcFO4X1X6O3t/DEfT84LV+8i1GPd8OOa9Z2SeRnhgYI4S38N8xLngzzQKYQ652e/aggzY/DJkKwpqtiHeNJvl17ppPCOnUk6ZNIuqM/Nt60VgJUgKgRoSjW0td/h07iexpLa4ticY3ImZPLqaxHagUcHcigoKdyJw85cYTkB75A5nW6We6JpM8YbNAIPliM2JwNJT/SsaGWG8mQtCH9khZ5XTKEN4DDGA4cuZ83bc5SNILr6gnoRYBfF/+8q2awlLSDEmzfa89c5B1Pw/osd+L2Giksbm+1AS2roRLMvZjG0kgDg2m4AcifZeVkfcUDblCwNOpWZsZds07kKKiJOJmNPNf3nlHU3J+e+4XC5kKYyZoT6ur9flycbOLPyUl9oZWcMnDXlv5rCnDOX9caNRwkRyVtnTwpaSTLOiD7377x7YutMmwxE+2YWzokMZmM5+x1GMJHCL9HmSuQGEdWiLmhnoYx9Xaup4xn9wL5pl0keUJxgLlWeJjY6Pcvd7vRqhIEkHsfG4QZzu19VIMS1hEov5E7oNafCvcY6W+WhsAa0yjhuRlZtSK27tdZ2ATL6wee7le6CuVg2cQPt4XQ/b1xtz2BQCQ8cyTxoXH715PpN8yCt4cLKryuBy9CzUbyJREJq1QMBby1EA0YWmM9EGBv4wmVIT2uj
- 68/3FxIl
- /Ibc5AvMvG3oGI+heI4WCDzZpsMUrJ2LF3XXvtURBBEQpgfCX1/DWCCzDeAEQMSmNqoTQlaQczCEThi0D0voSE/okZLeXjSE8S/qk86XAsSEZbHtYr6E6V+njOazTNYVPlzlrKRuNF/JHMekRtTQkuw8JCoBAXv4XCkA6urztvQ54avFSXHSh5gfy11qC/P665xTfeAfI08N7Eoo=
+X-Rspamd-Queue-Id: 5968440003
+X-Stat-Signature: u3s45ixrurk99nwsbuife1q1pdkrhgfu
+X-HE-Tag: 1755539644-282387
+X-HE-Meta: U2FsdGVkX1/yI8MupdU6V7JIKRrVm21VhU73aNZH8QV+HKBbUhj88OtUI+1CRmBnAcN/2wryvxkkBBlYeNy8LF9Gl8pYSM3NT/3Rn79n98pUhE1ji8zl7jaZMl7k8sNEFYWPILUd6NPeWDrSMEC5mMsQivhf0DBjBAiTXn5KlFpKpUYV5I6YWE5gfIIo0gN1s4ZHG4WoYFe5UWmp/0yh6IE+b2qDI7vL9dz9rZonVxfByWBwojD06eOz/tC3MK10h4W7M9ZKIj3bMI4nrNjct/EhiIqSmc12dAoJ7PAPOnPPAYVdk64fZwpAp5t0s+SHmnRHPnFaTbwM7y5vdwCPFJTZ0cpr01zEJMdxihB4YxcWED5iTUefJ7nRNIzFXTLjDUnyKKKZSEfCddnpEj6X3YKnTOixV6GTh9xQdH4ZK9YWPxnxDTFmRU5tax7nXXGpzpLAX1giOpqgxKQMpwvrSgwMXKurUCP3fxEw/WYd4JXrKjth+bIbwrIGjIeDQYy04+y2xjIjt3gSTdUREgp8uZAms6pBE5/6KRKgIaUlw6aI9NvOZ9JN2EJRFMeYcAPdxq6Ocu1vp+OOKCTAQ77ZF48InLD/85nh6OyP69qbfUPx5ANvFFZuY52+92j9bM7xWPJjjQpjSZ7EYV/rz8h83+5f//E/SeyioYI31JmDnPIxxqIsqokiHluf8mcF2OC7di8uDen7F9Ys5wDjTYLsyU6j4v/sIoz7iszzodxztmUAdV84K8IeaB2kR0BgaXCqFTKLLx2ou9HNEvHJel3W+qKRbBWwy/UfKgxampmUYwGqrMgvENDpl6anDbXSBf2vTeqtwhsWqw6FYiiJ0vzmDjXZ6yg+Bg2PyOdDAPgMk480sOVVZ/YWFBkqvPPNH9BZsYxcTBAZZUn3gxp9QlJdxpkOX91cSvHjbS4+/gBvD9hkb2pEFkyZJVNmleHUBKHKAfV9frxl8g2J7D6iawd
+ 7mavSeKH
+ PfUhbHb2A4SH+TK2M3ELnxjB1nClfZQqdrzl+3QnR2f6hOJmyLJOC+vKx28XtpEMZ2veYX3Llb9f4CG9eJGD6srp6tF8ixz4w3LSarTvKtQrPpQXJx31nLHmapC5FGWjK3xvZUJTMNRKLbBz3gP3lbdJSZAc58LAzBepu/jFMO7Dgi2oxLjawfdNy6JQ/0fykTkbujPDJsXWkkLRsQWD0EzHS6G/vwNcD1Y14Et4x7cp/qdH91QfK1XB/X0txQaEqSAU48rqJbta+p7wXarx4ekkfZ9d6AiWoKwQ1+uzW6z6BvVgXK0P58CNA+VXyGGvjVcQOqD2yP3g4iTPAXs4GgTHl6gbAR9mdiJCipS2Wiq1kSlts+WrlCiGALoknd+6wjZ7TuZ4iJO/7v+a4yLWzp5a5BjVK+Euoe0QtbaEQUgC+uIhKRnp25pBqdjvLDzxL1QyYiP66P9ngsoybjiRz4tA4eVy4cGFlkuTKL51ZOGZ22DDOD9VdNGRaVEBaIunBRCLIIwD/bvpBgkIXIStkQV11WbufBccvKHhqH3yPJS+SrHmn7HjZpImalYVajbWqriiD1fjiQYDQBEpIXBIdNQi2tIUIliG+yJwlQ5N6vstV393H/NeHbCpX3B3l6NYUKx+gAt9vHBlu6sKRJcGVCwowbkWZI8lKDSED12ul2mniD93q4CtwkVLsYpkU/sQbtcQRx8i9wK+ytnCa3UWzYK+5z9sfAsHDkRe3s03HaHoX/8ZFj5HyHr4UQGyqXWHPyVjAyVnc9csLrqTb9Ca4fdxIBhPH5OijAbVX5TXnWkVzuPE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,340 +132,166 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a psi struct ops test.
+Registering userfaultd on a VMA that spans at least one PMD and then
+mremap()'ing that VMA can trigger a WARN when recovering from a failed
+page table move due to a page table allocation error.
 
-The test creates a cgroup with two child sub-cgroups, sets up
-memory.high for one of those and puts there a memory hungry
-process (initially frozen).
+The code ends up doing the right thing (recurse, avoiding moving actual
+page tables), but triggering that WARN is unpleasant:
 
-Then it creates 2 psi triggers from within a init() bpf callback and
-attaches them to these cgroups.  Then it deletes the first cgroup and
-runs the memory hungry task.  The task is creating a high memory
-pressure, which triggers the psi event. The psi bpf handler declares
-a memcg oom in the corresponding cgroup.  Finally the checks that both
-handle_cgroup_free() and handle_psi_event() handlers were executed,
-the correct process was killed and oom counters were updated.
+WARNING: CPU: 2 PID: 6133 at mm/mremap.c:357 move_normal_pmd mm/mremap.c:357 [inline]
+WARNING: CPU: 2 PID: 6133 at mm/mremap.c:357 move_pgt_entry mm/mremap.c:595 [inline]
+WARNING: CPU: 2 PID: 6133 at mm/mremap.c:357 move_page_tables+0x3832/0x44a0 mm/mremap.c:852
+Modules linked in:
+CPU: 2 UID: 0 PID: 6133 Comm: syz.0.19 Not tainted 6.17.0-rc1-syzkaller-00004-g53e760d89498 #0 PREEMPT(full)
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:move_normal_pmd mm/mremap.c:357 [inline]
+RIP: 0010:move_pgt_entry mm/mremap.c:595 [inline]
+RIP: 0010:move_page_tables+0x3832/0x44a0 mm/mremap.c:852
+Code: ...
+RSP: 0018:ffffc900037a76d8 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: 0000000032930007 RCX: ffffffff820c6645
+RDX: ffff88802e56a440 RSI: ffffffff820c7201 RDI: 0000000000000007
+RBP: ffff888037728fc0 R08: 0000000000000007 R09: 0000000000000000
+R10: 0000000032930007 R11: 0000000000000000 R12: 0000000000000000
+R13: ffffc900037a79a8 R14: 0000000000000001 R15: dffffc0000000000
+FS:  000055556316a500(0000) GS:ffff8880d68bc000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b30863fff CR3: 0000000050171000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ copy_vma_and_data+0x468/0x790 mm/mremap.c:1215
+ move_vma+0x548/0x1780 mm/mremap.c:1282
+ mremap_to+0x1b7/0x450 mm/mremap.c:1406
+ do_mremap+0xfad/0x1f80 mm/mremap.c:1921
+ __do_sys_mremap+0x119/0x170 mm/mremap.c:1977
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0x4c0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f00d0b8ebe9
+Code: ...
+RSP: 002b:00007ffe5ea5ee98 EFLAGS: 00000246 ORIG_RAX: 0000000000000019
+RAX: ffffffffffffffda RBX: 00007f00d0db5fa0 RCX: 00007f00d0b8ebe9
+RDX: 0000000000400000 RSI: 0000000000c00000 RDI: 0000200000000000
+RBP: 00007ffe5ea5eef0 R08: 0000200000c00000 R09: 0000000000000000
+R10: 0000000000000003 R11: 0000000000000246 R12: 0000000000000002
+R13: 00007f00d0db5fa0 R14: 00007f00d0db5fa0 R15: 0000000000000005
+ </TASK>
 
-Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+The underlying issue is that we recurse during the original page table
+move, but not during the recovery move.
+
+Fix it by checking for both VMAs and performing the check before the
+pmd_none() sanity check.
+
+Add a new helper where we perform+document that check for the PMD and
+PUD level.
+
+Thanks to Harry for bisecting.
+
+Reported-by: syzbot+4d9a13f0797c46a29e42@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/689bb893.050a0220.7f033.013a.GAE@google.com
+Fixes: 0cef0bb836e ("mm: clear uffd-wp PTE/PMD state on mremap()")
+Cc: <stable@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Jann Horn <jannh@google.com>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Cc: Harry Yoo <harry.yoo@oracle.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- .../selftests/bpf/prog_tests/test_psi.c       | 224 ++++++++++++++++++
- tools/testing/selftests/bpf/progs/test_psi.c  |  76 ++++++
- 2 files changed, 300 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/test_psi.c
- create mode 100644 tools/testing/selftests/bpf/progs/test_psi.c
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/test_psi.c b/tools/testing/selftests/bpf/prog_tests/test_psi.c
-new file mode 100644
-index 000000000000..4f3c91bd6606
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/test_psi.c
-@@ -0,0 +1,224 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include <test_progs.h>
-+#include <bpf/btf.h>
-+#include <bpf/bpf.h>
-+
-+#include "cgroup_helpers.h"
-+#include "test_psi.skel.h"
-+
-+enum psi_res {
-+	PSI_IO,
-+	PSI_MEM,
-+	PSI_CPU,
-+	PSI_IRQ,
-+	NR_PSI_RESOURCES,
-+};
-+
-+struct cgroup_desc {
-+	const char *path;
-+	unsigned long long id;
-+	int pid;
-+	int fd;
-+	size_t target;
-+	size_t high;
-+	bool victim;
-+};
-+
-+#define MB (1024 * 1024)
-+
-+static struct cgroup_desc cgroups[] = {
-+	{ .path = "/oom_test" },
-+	{ .path = "/oom_test/cg1" },
-+	{ .path = "/oom_test/cg2", .target = 500 * MB,
-+	  .high = 40 * MB, .victim = true },
-+};
-+
-+static int spawn_task(struct cgroup_desc *desc)
+Once this is queued, I'll send a patch to perform a
+userfaultfd_wp() check, to skip any uffd VMAs that don't mess with uffd-wp.
+
+---
+ mm/mremap.c | 41 +++++++++++++++++++++++------------------
+ 1 file changed, 23 insertions(+), 18 deletions(-)
+
+diff --git a/mm/mremap.c b/mm/mremap.c
+index 9afa8cd524f5f..87849af6682a7 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -323,6 +323,25 @@ static inline bool arch_supports_page_table_move(void)
+ }
+ #endif
+ 
++static inline bool uffd_supports_page_table_move(struct pagetable_move_control *pmc)
 +{
-+	char *ptr;
-+	int pid;
-+
-+	pid = fork();
-+	if (pid < 0)
-+		return pid;
-+
-+	if (pid > 0) {
-+		/* parent */
-+		desc->pid = pid;
-+		return 0;
-+	}
-+
-+	/* child */
-+	ptr = (char *)malloc(desc->target);
-+	if (!ptr)
-+		return -ENOMEM;
-+
-+	memset(ptr, 'a', desc->target);
-+
-+	while (1)
-+		sleep(1000);
-+
-+	return 0;
++	/*
++	 * If we are moving a VMA that has uffd-wp registered but with
++	 * remap events disabled (new VMA will not be registered with uffd), we
++	 * need to ensure that the uffd-wp state is cleared from all pgtables.
++	 * This means recursing into lower page tables in move_page_tables().
++	 *
++	 * We might get called with VMAs reversed when recovering from a
++	 * failed page table move. In that case, the
++	 * "old"-but-actually-"originally new" VMA during recovery will not have
++	 * a uffd context. Recursing into lower page tables during the original
++	 * move but not during the recovery move will cause trouble, because we
++	 * run into already-existing page tables. So check both VMAs.
++	 */
++	return !vma_has_uffd_without_event_remap(pmc->old) &&
++	       !vma_has_uffd_without_event_remap(pmc->new);
 +}
 +
-+static void setup_environment(void)
-+{
-+	int i, err;
-+
-+	err = setup_cgroup_environment();
-+	if (!ASSERT_OK(err, "setup_cgroup_environment"))
-+		goto cleanup;
-+
-+	for (i = 0; i < ARRAY_SIZE(cgroups); i++) {
-+		cgroups[i].fd = create_and_get_cgroup(cgroups[i].path);
-+		if (!ASSERT_GE(cgroups[i].fd, 0, "create_and_get_cgroup"))
-+			goto cleanup;
-+
-+		cgroups[i].id = get_cgroup_id(cgroups[i].path);
-+		if (!ASSERT_GT(cgroups[i].id, 0, "get_cgroup_id"))
-+			goto cleanup;
-+
-+		/* Freeze the top-level cgroup and enable the memory controller */
-+		if (i == 0) {
-+			err = write_cgroup_file(cgroups[i].path, "cgroup.freeze", "1");
-+			if (!ASSERT_OK(err, "freeze cgroup"))
-+				goto cleanup;
-+
-+			err = write_cgroup_file(cgroups[i].path, "cgroup.subtree_control",
-+						"+memory");
-+			if (!ASSERT_OK(err, "enable memory controller"))
-+				goto cleanup;
-+		}
-+
-+		/* Set memory.high */
-+		if (cgroups[i].high) {
-+			char buf[256];
-+
-+			snprintf(buf, sizeof(buf), "%lu", cgroups[i].high);
-+			err = write_cgroup_file(cgroups[i].path, "memory.high", buf);
-+			if (!ASSERT_OK(err, "set memory.high"))
-+				goto cleanup;
-+
-+			snprintf(buf, sizeof(buf), "0");
-+			write_cgroup_file(cgroups[i].path, "memory.swap.max", buf);
-+		}
-+
-+		/* Spawn tasks creating memory pressure */
-+		if (cgroups[i].target) {
-+			char buf[256];
-+
-+			err = spawn_task(&cgroups[i]);
-+			if (!ASSERT_OK(err, "spawn task"))
-+				goto cleanup;
-+
-+			snprintf(buf, sizeof(buf), "%d", cgroups[i].pid);
-+			err = write_cgroup_file(cgroups[i].path, "cgroup.procs", buf);
-+			if (!ASSERT_OK(err, "put child into a cgroup"))
-+				goto cleanup;
-+		}
-+	}
-+
-+	return;
-+
-+cleanup:
-+	cleanup_cgroup_environment();
-+}
-+
-+static int run_and_wait_for_oom(void)
-+{
-+	int ret = -1;
-+	bool first = true;
-+	char buf[4096] = {};
-+	size_t size;
-+
-+	/* Unfreeze the top-level cgroup */
-+	ret = write_cgroup_file(cgroups[0].path, "cgroup.freeze", "0");
-+	if (!ASSERT_OK(ret, "unfreeze cgroup"))
-+		return -1;
-+
-+	for (;;) {
-+		int i, status;
-+		pid_t pid = wait(&status);
-+
-+		if (pid == -1) {
-+			if (errno == EINTR)
-+				continue;
-+			/* ECHILD */
-+			break;
-+		}
-+
-+		if (!first)
-+			continue;
-+		first = false;
-+
-+		/* Check which process was terminated first */
-+		for (i = 0; i < ARRAY_SIZE(cgroups); i++) {
-+			if (!ASSERT_OK(cgroups[i].victim !=
-+				       (pid == cgroups[i].pid),
-+				       "correct process was killed")) {
-+				ret = -1;
-+				break;
-+			}
-+
-+			if (!cgroups[i].victim)
-+				continue;
-+
-+			/* Check the memcg oom counter */
-+			size = read_cgroup_file(cgroups[i].path, "memory.events",
-+						buf, sizeof(buf));
-+			if (!ASSERT_OK(size <= 0, "read memory.events")) {
-+				ret = -1;
-+				break;
-+			}
-+
-+			if (!ASSERT_OK(strstr(buf, "oom_kill 1") == NULL,
-+				       "oom_kill count check")) {
-+				ret = -1;
-+				break;
-+			}
-+		}
-+
-+		/* Kill all remaining tasks */
-+		for (i = 0; i < ARRAY_SIZE(cgroups); i++)
-+			if (cgroups[i].pid && cgroups[i].pid != pid)
-+				kill(cgroups[i].pid, SIGKILL);
-+	}
-+
-+	return ret;
-+}
-+
-+void test_psi(void)
-+{
-+	struct test_psi *skel;
-+	u64 freed_cgroup_id;
-+	int err;
-+
-+	setup_environment();
-+
-+	skel = test_psi__open_and_load();
-+	err = libbpf_get_error(skel);
-+	if (CHECK_FAIL(err))
-+		goto cleanup;
-+
-+	skel->bss->deleted_cgroup_id = cgroups[1].id;
-+	skel->bss->high_pressure_cgroup_id = cgroups[2].id;
-+
-+	err = test_psi__attach(skel);
-+	if (CHECK_FAIL(err))
-+		goto cleanup;
-+
-+	/* Delete the first cgroup, it should trigger handle_cgroup_free() */
-+	remove_cgroup(cgroups[1].path);
-+
-+	/* Unfreeze all child tasks and create the memory pressure */
-+	err = run_and_wait_for_oom();
-+	CHECK_FAIL(err);
-+
-+	/* Check the result of the handle_cgroup_free() handler */
-+	freed_cgroup_id = skel->bss->deleted_cgroup_id;
-+	ASSERT_EQ(freed_cgroup_id, cgroups[1].id, "freed cgroup id");
-+
-+cleanup:
-+	cleanup_cgroup_environment();
-+	test_psi__destroy(skel);
-+}
-diff --git a/tools/testing/selftests/bpf/progs/test_psi.c b/tools/testing/selftests/bpf/progs/test_psi.c
-new file mode 100644
-index 000000000000..2c36c05a3065
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/test_psi.c
-@@ -0,0 +1,76 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include "vmlinux.h"
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_tracing.h>
-+
-+char _license[] SEC("license") = "GPL";
-+
-+struct mem_cgroup *bpf_get_mem_cgroup(struct cgroup_subsys_state *css) __ksym;
-+void bpf_put_mem_cgroup(struct mem_cgroup *memcg) __ksym;
-+int bpf_out_of_memory(struct mem_cgroup *memcg, int order, bool wait_on_oom_lock,
-+		      const char *constraint_text__nullable) __ksym;
-+int bpf_psi_create_trigger(struct bpf_psi *bpf_psi, u64 cgroup_id,
-+			   u32 res, u32 threshold_us, u32 window_us) __ksym;
-+
-+#define PSI_FULL 0x80000000
-+
-+/* cgroup which will experience the high memory pressure */
-+u64 high_pressure_cgroup_id;
-+
-+/* cgroup which will be deleted */
-+u64 deleted_cgroup_id;
-+
-+/* cgroup which was actually freed */
-+u64 freed_cgroup_id;
-+
-+char constraint_name[] = "CONSTRAINT_BPF_PSI_MEM";
-+
-+SEC("struct_ops.s/init")
-+int BPF_PROG(psi_init, struct bpf_psi *bpf_psi)
-+{
-+	int ret;
-+
-+	ret = bpf_psi_create_trigger(bpf_psi, high_pressure_cgroup_id,
-+				     PSI_MEM | PSI_FULL, 100000, 1000000);
-+	if (ret)
-+		return ret;
-+
-+	return bpf_psi_create_trigger(bpf_psi, deleted_cgroup_id,
-+				      PSI_IO, 100000, 1000000);
-+}
-+
-+SEC("struct_ops.s/handle_psi_event")
-+void BPF_PROG(handle_psi_event, struct psi_trigger *t)
-+{
-+	u64 cgroup_id = t->cgroup_id;
-+	struct mem_cgroup *memcg;
-+	struct cgroup *cgroup;
-+
-+	cgroup = bpf_cgroup_from_id(cgroup_id);
-+	if (!cgroup)
-+		return;
-+
-+	memcg = bpf_get_mem_cgroup(&cgroup->self);
-+	if (!memcg) {
-+		bpf_cgroup_release(cgroup);
-+		return;
-+	}
-+
-+	bpf_out_of_memory(memcg, 0, true, constraint_name);
-+
-+	bpf_put_mem_cgroup(memcg);
-+	bpf_cgroup_release(cgroup);
-+}
-+
-+SEC("struct_ops.s/handle_cgroup_free")
-+void BPF_PROG(handle_cgroup_free, u64 cgroup_id)
-+{
-+	freed_cgroup_id = cgroup_id;
-+}
-+
-+SEC(".struct_ops.link")
-+struct bpf_psi_ops test_bpf_psi = {
-+	.init = (void *)psi_init,
-+	.handle_psi_event = (void *)handle_psi_event,
-+	.handle_cgroup_free = (void *)handle_cgroup_free,
-+};
+ #ifdef CONFIG_HAVE_MOVE_PMD
+ static bool move_normal_pmd(struct pagetable_move_control *pmc,
+ 			pmd_t *old_pmd, pmd_t *new_pmd)
+@@ -335,6 +354,8 @@ static bool move_normal_pmd(struct pagetable_move_control *pmc,
+ 
+ 	if (!arch_supports_page_table_move())
+ 		return false;
++	if (!uffd_supports_page_table_move(pmc))
++		return false;
+ 	/*
+ 	 * The destination pmd shouldn't be established, free_pgtables()
+ 	 * should have released it.
+@@ -361,15 +382,6 @@ static bool move_normal_pmd(struct pagetable_move_control *pmc,
+ 	if (WARN_ON_ONCE(!pmd_none(*new_pmd)))
+ 		return false;
+ 
+-	/* If this pmd belongs to a uffd vma with remap events disabled, we need
+-	 * to ensure that the uffd-wp state is cleared from all pgtables. This
+-	 * means recursing into lower page tables in move_page_tables(), and we
+-	 * can reuse the existing code if we simply treat the entry as "not
+-	 * moved".
+-	 */
+-	if (vma_has_uffd_without_event_remap(vma))
+-		return false;
+-
+ 	/*
+ 	 * We don't have to worry about the ordering of src and dst
+ 	 * ptlocks because exclusive mmap_lock prevents deadlock.
+@@ -418,6 +430,8 @@ static bool move_normal_pud(struct pagetable_move_control *pmc,
+ 
+ 	if (!arch_supports_page_table_move())
+ 		return false;
++	if (!uffd_supports_page_table_move(pmc))
++		return false;
+ 	/*
+ 	 * The destination pud shouldn't be established, free_pgtables()
+ 	 * should have released it.
+@@ -425,15 +439,6 @@ static bool move_normal_pud(struct pagetable_move_control *pmc,
+ 	if (WARN_ON_ONCE(!pud_none(*new_pud)))
+ 		return false;
+ 
+-	/* If this pud belongs to a uffd vma with remap events disabled, we need
+-	 * to ensure that the uffd-wp state is cleared from all pgtables. This
+-	 * means recursing into lower page tables in move_page_tables(), and we
+-	 * can reuse the existing code if we simply treat the entry as "not
+-	 * moved".
+-	 */
+-	if (vma_has_uffd_without_event_remap(vma))
+-		return false;
+-
+ 	/*
+ 	 * We don't have to worry about the ordering of src and dst
+ 	 * ptlocks because exclusive mmap_lock prevents deadlock.
+
+base-commit: dfc0f6373094dd88e1eaf76c44f2ff01b65db851
 -- 
 2.50.1
 
