@@ -2,138 +2,123 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6251CCA0ED1
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 16:39:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 36D3ACA0EE4
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 16:40:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE9DF8E004A; Mon, 18 Aug 2025 12:39:23 -0400 (EDT)
+	id CEF7F8E004B; Mon, 18 Aug 2025 12:40:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E74C38E0048; Mon, 18 Aug 2025 12:39:23 -0400 (EDT)
+	id CC76B8E0048; Mon, 18 Aug 2025 12:40:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D14458E004A; Mon, 18 Aug 2025 12:39:23 -0400 (EDT)
+	id BDD698E004B; Mon, 18 Aug 2025 12:40:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B6CB48E0048
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 12:39:23 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 815611DE4B5
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 16:39:23 +0000 (UTC)
-X-FDA: 83790438606.27.4964F42
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 04B6F40012
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 16:39:20 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=rCfYREu5;
-	spf=pass (imf27.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A8D798E0048
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 12:40:12 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 734521608DF
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 16:40:12 +0000 (UTC)
+X-FDA: 83790440664.08.FD69568
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf13.hostedemail.com (Postfix) with ESMTP id A740720013
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 16:40:10 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=GM6cE496;
+	spf=pass (imf13.hostedemail.com: domain of rientjes@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755535161;
+	s=arc-20220608; t=1755535210;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X5mWAYTt3pdVk9QL7e2JJSoH8wb3/z8g6wJ8lfORUIs=;
-	b=Fx/bPn8ZLzGeK/AbiPKP8EmnuHMyN6jwXrcUZ5yQlJRCzyl8K+O/wwQnI0g1E3vsjwajMF
-	5LNfrvKq85wNyfthotMde7bWrp4DFltAfW855cedeqourNLcECK9aTA4yfY5fDvXlwP9cX
-	Os99FQ6peMfJruNE/wHkNP+gP0J0QRk=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=nsCNc94UgjJg7jVl1vaKpXsd8gSEo/4al1GvsJSlrTA=;
+	b=KtDIEeEchR2rjk8lPZgyg/XzLzjLDGHiPmDeaZq2Yyhm/zJMursqkrIt6kwVGFWjqFbhWt
+	OWWMP/ibjmkwUnqeCQ3YjIJjCgEQTg7QEnG6YPzaxX/9JQWVYvvntu7PCh7i5Ud2tvHV46
+	j5OHQFoT8SwPObnMyPXT1Q+Jl5NigVM=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=rCfYREu5;
-	spf=pass (imf27.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755535161; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=GM6cE496;
+	spf=pass (imf13.hostedemail.com: domain of rientjes@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755535210; a=rsa-sha256;
 	cv=none;
-	b=Sno/AdMBTKzTXbJ1XoCqYO3QttmDkOp9JDv9+AOYmvQYjgCXEudVcZaVGaf2Jm6JMda0wn
-	immU0wF0xPRMu3YSeI6fS+io+XBJKG7xvpkTSpSM4QFkuKLsynzn+XNvDT5WwdB/guPJ2Q
-	836avpi9XltxG024G+z93W5on1sKerw=
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57IBDGFK004808;
-	Mon, 18 Aug 2025 16:39:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=X5mWAYTt3pdVk9QL7
-	e2JJSoH8wb3/z8g6wJ8lfORUIs=; b=rCfYREu5Qq7MyOvBAdmXJ4midpTCBCcpY
-	uVocB52FLUGPQHSCf68w/TMDltUEYSAiI/9tesBImZv05t4LFwEi3dc4ZLHtW74K
-	mYyTYg0KFB3gqraR9Gu2hGq7r3jblqAwEU8bvqlgscTGZ/FbGpeCUFIDEswI1DVl
-	sNjbupnMZVrXPfNBz89jSRB+AuTl3ugdFT0Iyeiz94P0W8xI9U6wnpqsOfKPSf9p
-	QiO7rDiPa1HKXnl6dQAXUhXjnxgNWcraEo+iUebLXn/VTgGzIKM+aRLro1/Gub3Q
-	cUurFu38xJLlu4HELRvzKKdGDTrMiBCCv6BSqxCxVvMg5gSX8ff6w==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48jhn3t382-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 Aug 2025 16:39:16 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57IGdGXI014615;
-	Mon, 18 Aug 2025 16:39:16 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48jhn3t37y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 Aug 2025 16:39:16 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57IDjfwK001479;
-	Mon, 18 Aug 2025 16:39:15 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48k4q0pry3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 Aug 2025 16:39:15 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57IGdDWN59638234
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 18 Aug 2025 16:39:13 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7A5E720043;
-	Mon, 18 Aug 2025 16:39:13 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6B30420040;
-	Mon, 18 Aug 2025 16:39:13 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 18 Aug 2025 16:39:13 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
-	id 41F13E0380; Mon, 18 Aug 2025 18:39:13 +0200 (CEST)
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Daniel Axtens <dja@axtens.net>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ryan Roberts <ryan.roberts@arm.com>
-Cc: linux-mm@kvack.org, kasan-dev@googlegroups.com,
-        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
-Subject: [PATCH 1/2] mm/kasan: fix vmalloc shadow memory (de-)population races
-Date: Mon, 18 Aug 2025 18:39:12 +0200
-Message-ID: <adb258634194593db294c0d1fb35646e894d6ead.1755528662.git.agordeev@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <cover.1755528662.git.agordeev@linux.ibm.com>
-References: <cover.1755528662.git.agordeev@linux.ibm.com>
+	b=TSKM1jJfuGE6dzbtfrQjyA/z2lL93qr0kequVHXoyVbxiGSHKPKE8jNK+KEE0Fqt2WVvP0
+	IPwvK8OctmQYViAiaTb8fYvgTbVXG7xN6MdkQSr3LCk7c6gzpvK0o/yCM0chDPBBvbHqxv
+	Cn67f7EHqi7FtvHQf/gVqr/zonulFcU=
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-242d3be6484so270515ad.1
+        for <linux-mm@kvack.org>; Mon, 18 Aug 2025 09:40:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755535209; x=1756140009; darn=kvack.org;
+        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=nsCNc94UgjJg7jVl1vaKpXsd8gSEo/4al1GvsJSlrTA=;
+        b=GM6cE496K0jJPuAoaGYMfEjBf9501pC5ZPVn8XtTvIFf+eO0m0ZNqRSv+cEMcygv36
+         GQ1I+C8HmPU3QfbNPXTNk3oJqWBd66LHNsKNzzSlb4+p8YelPGh0hUCT7zIRT7koz+AH
+         rH6XiuKi2OYgVl+GbuC8619u1XODVVsO6LZIHUGIaEJO4gOcvdTrclSdqmXazBFokJfJ
+         /Evbsn65/IuXpMhTtxiCouz3kRZE4ezHhIRwNgeeEPAAXM0RP9MLkIeihvHC9WHHg6Z7
+         FKcn1urmkT04YAAQB7+lB2Bvu+LU8nc2HvkYcw43vg9ztK9m2RvqB4L/9UO1G+j5jTLZ
+         jZHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755535209; x=1756140009;
+        h=mime-version:message-id:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nsCNc94UgjJg7jVl1vaKpXsd8gSEo/4al1GvsJSlrTA=;
+        b=FZStC5PCU63QSKjrVlaTLsIT7YbKkZRA9ocP3wIUBbSdzWi2tdDl7KJ8Z0hs8Miwbx
+         cWc5pKOs0ZfJwoTdNxhomdO93PPJQ8xFZUE5rs0EYVI3hqG0igmh4itK/RhfsgSSyf0+
+         rnDEjIwKQwahSVPubzOywQJ3qNdh6xjpFDcvymLKIf/zzgNNxouSYqSh8Tze1wVg6+dP
+         GrqDS57/epvJJbaX/y3/yyEJe9UThOH5S8ON3aG5i6lOZyZX59wLLbxT7zdbCy4NiuP7
+         lAYrvSkjWfirfOAjedhkJMg5neEJr9auLkLwIx7DkEVSJPrkS53AJBT+kqcdWgQ3J3U3
+         0OKg==
+X-Gm-Message-State: AOJu0YzonTVm4q3CTqrZMUPD+1LjFqeMJQfNtSGlYOHFpmFbnvNWS8dn
+	PZhu0UpoB35pe5SL0sKKtd7KYSWm0hQQUZGUt9nHFnM/j8XAvNsWh6DL0M+hbXQeOQ==
+X-Gm-Gg: ASbGncsZGEOrfq8ZxemknCXfv6OkOYSnFX0HrYzLHXVyrqBl3rBgfENlGEkfTc6oB9e
+	AnBO0S6vciFyYtvKNtlkdXQZPezwlOkfnEMbtj5CqFpUWs32nZhFQhFHW4ilkCKZrUay4cl+wLS
+	KecbHO0HFBJxhX/0bAm8No9xVDh7VwCWSFdspKzkyNkyVIev7iUh9Ws1/kFlcWnkrKBQZ3K5hut
+	PyZAo7cTkbxvmfO0FWutPUBQNvK0E80ljKrlknCvkPaWJAvERIZb8rBgvTe/Tn9Oty62MNz4uIs
+	dqQ44CP6hrWSvCInsLgSWz2bZPwF0lmdLyMcsnXsgXFpZ2c5hJVV1qevmgJqZMG73iw7ARuQx+l
+	0aUR+w9VR0isUfKB7vDSTqMPled51vZgeRCXbPwhbnLpJWnnRzoQJjYumFoMaIlneszigIoBo4R
+	0Ys4vnuxvkNL2jOO1DD6R7vWmsVDU=
+X-Google-Smtp-Source: AGHT+IFJMTXh76cxYP+zXDebQQvzDoMsJ6wPvyk5fQ5JdUXKXNsWSaTcj84sVwS2yzlY96E+mcZP2g==
+X-Received: by 2002:a17:902:ecd2:b0:240:2bd5:7c98 with SMTP id d9443c01a7336-2447a771ecfmr6610295ad.11.1755535209029;
+        Mon, 18 Aug 2025 09:40:09 -0700 (PDT)
+Received: from [2a00:79e0:2eb0:8:76fc:13b2:d4bc:b3ff] ([2a00:79e0:2eb0:8:76fc:13b2:d4bc:b3ff])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446d50faf2sm84863195ad.81.2025.08.18.09.40.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Aug 2025 09:40:08 -0700 (PDT)
+Date: Mon, 18 Aug 2025 09:40:07 -0700 (PDT)
+From: David Rientjes <rientjes@google.com>
+To: Amit Shah <amit@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+    Aneesh Kumar <AneeshKumar.KizhakeVeetil@arm.com>, 
+    Christoph Lameter <cl@linux.com>, Dave Hansen <dave.hansen@intel.com>, 
+    David Hildenbrand <david@redhat.com>, Davidlohr Bueso <dave@stgolabs.net>, 
+    Hugh Dickins <hughd@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+    John Hubbard <jhubbard@nvidia.com>, Kirill Shutemov <k.shutemov@gmail.com>, 
+    Matthew Wilcox <willy@infradead.org>, Mel Gorman <mel.gorman@gmail.com>, 
+    Michal Hocko <mhocko@suse.com>, Mike Rapoport <mike.rapoport@gmail.com>, 
+    Pasha Tatashin <tatashin@google.com>, Peter Xu <peterx@redhat.com>, 
+    Raghavendra K T <rkodsara@amd.com>, 
+    "Rao, Bharata Bhasker" <bharata@amd.com>, Rik van Riel <riel@surriel.com>, 
+    Roman Gushchin <roman.gushchin@linux.dev>, 
+    Shakeel Butt <shakeel.butt@linux.dev>, Shivank Garg <shivankg@amd.com>, 
+    Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>, 
+    Vlastimil Babka <vbabka@suse.cz>, Yang Shi <shy828301@gmail.com>, 
+    Zi Yan <ziy@nvidia.com>, Ackerley Tng <ackerleytng@google.com>, 
+    Frank van der Linden <fvdl@google.com>, 
+    Sean Christopherson <seanjc@google.com>, Fuad Tabba <tabba@google.com>
+cc: linux-mm@kvack.org
+Subject: [Invitation] Linux MM Alignment Session on guest_memfd for software
+ protected VMs on Wednesday
+Message-ID: <d24451c1-6ea8-4904-0661-0769bc113473@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: J4hpVGuQdfh190mNZ9y0Gf73Cqn-Cb1F
-X-Authority-Analysis: v=2.4 cv=L6wdQ/T8 c=1 sm=1 tr=0 ts=68a35734 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=dvgLwWEeUEcZKFo-wVQA:9
-X-Proofpoint-GUID: oXrSUozvY-lHD9pJTMR4C4i78JDGz4zb
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE2MDAyNyBTYWx0ZWRfX0s0pCD9PMBcw
- 9xad7hv3i/i2JIneQGgCajRHsmbtUh6aA7EKw5dA7vDqDl4aRNequOMVtoYfyewAz23njA7MkYT
- V2Z5RQ3cpgQPKLF3lIFz0wAaelOynRQ2tpr7F63lBayIJjAya5hv2gS5BRCodHBVheW3IrmqnWM
- oj9OxSvZ6JcoiKC0FJIebqTen3ZJNHnxsZ+b0C2zbal1mTJzJgb7LJZUy2QPU/s5Gr0CNohWZOY
- HuvKtCPwZVCZYRbhx7o4zuBSm7m67a3Aa/ymI3NrKcR4JZ7sZuwNYWQwI0hgio75S0zM0rqj65G
- 83zQFX6T3Isrg8d9s3/5jK5iR4imLOMy97gU1pGQzTri2xlKZxHcC5Do48Um7rwu6BdLX2boIRj
- RxfETVtZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-18_05,2025-08-14_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 spamscore=0 clxscore=1011 phishscore=0 suspectscore=0
- malwarescore=0 priorityscore=1501 bulkscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508160027
-X-Stat-Signature: prbrectg3zo1nxo4krzbwwnbnepahh1x
+Content-Type: text/plain; charset=US-ASCII
+X-Stat-Signature: e17sea8sf5rddt6u5oxfs5nfp8dpntag
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 04B6F40012
+X-Rspamd-Queue-Id: A740720013
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1755535160-911208
-X-HE-Meta: U2FsdGVkX19GlS7Oeftt70VI+0LmcMzW6rBtRfj7E9GTZDFxUxx06QUyBvWSqK4N5ZrAovemT29WwFE7/vRTkwKuJFXEfK90eQuU3NSJ7SA2qfXEHdU021GcbszQ7OxpfCX6XjB5XtzjDLvF7HwoBoZ6H9JA8FqNcxHmKufgZ89tEhQlgBo7BjIFvcb4JhkWtsR8jC0H8Hy2mOOfnUBbnoU0w58r7L5mH2XlxOeHLCLob7E1MnJ5URAOVFv+V2ArvDmQsWlYxnLnbt1OpOaoXgtoaRF2xh1xVFzGv/Hxa1G2OQTXFGln185LHQ6kICqf4HkpORpFL455PHyHlpzCG67pdy8pR3vIKXJEIDRzAY9O0rUsZIJpErSGbZoKcgyfM47S4C9B8gfvhsoDh6PtNesIAdlp751GT27iBcnNPNj1J2xuNT/Ya1M/Fp8ecbHzmMP5/qg/KTHVvt78QVZn3Qvh8QIQmJBBkYUUCVCEPhOSZTu8e76wbT1T6wdXVbwyayKQrnaqlnl10iLrIqB4YJRc/C8X2JIIaYRMEHgK25Moi6Eaq0KJW87UG4RumQrhzyIhNdhNejv6PQj5LJ148P7MyLOesr6JwcqXNuV5J3Zw2t/2XWjnz8AkijlJc/42ze15JFlh3lYyGhRfEtu0dQoyi3gF46UrxvL1gf/oH5/e0bUq3O7e2GftBvVes0VkH+eGCnAT0LrGy7yIcckU34tQ3UYpE8RPqA8ny3H1/sNstsKQtRIh6KtlG6vkcQ/cYXaQjzCrLAytPCdW6O+pdJ0SOSa561USCBoyo3S1/+8Qw339lrq0OmRVF3lw2ahT6eDvm+DxCn7HMQ5op7947zGiT02SUl8n9zXrU9JYDOVThWDKJBDhbJdTU/HemaSmaUFKy2NDxCZ66qixyOYXHsqIVxCg784HajqxQeYALz8FIiwSWD4ip0f32/2GSA+Krv0O/Jf7SaS3Zcx+CEF
- DFrUyy45
- fQMBzc+teBT53aBuQuybWvVkW6DkZ7vYvgwjp7TaF9j9NwGiTdxoPnALyIu7sVI0VSA9ydY4w2e2uJJPqIB9X32PHI0vduZNqz/T9N426GfYpciUd42vOjlnuRREmVXwP3SdMML4od7y/PcBWhnBbo/mnQFkYbtHuAr9E02u0gdaOZtK8HDyR4jDtbAc2F7/71n71OQ6mGngjHE2GMa8Aw7UFJefA0IM2XBzghFB0oWkWb4I=
+X-HE-Tag: 1755535210-874013
+X-HE-Meta: U2FsdGVkX18zGRmVjAZj27oEnzGWuKUoLXwhY0hWNsOscylGOIoh77haMVTaCvW7wBUiiE4fyr24lW/VLyXuYwegAkFhNW9uRdqorj+evKJ70GFuyewoFvo9JVgwxErwPH4KptlZtHwg8MSZD0y6GGBXMT6Rcj6urIvugsBXtHRe6dOVs/vANcL5h6enFAvosFuRxWRHSzhyms90zRZvhcC3NA5vTxxmTve0I9TW1idqnbMdCQ7gvwK0Z1wGsd+p9n0k5bBpjgFFl+6Um1MorgBraKWuGKKt8BORq1TZCZdNr7fGTk1TIKPopFWkI6DMqihH6gZ/dWY0qsM7gYbUC6d851aoAUnbSbkthLgP4ArNrFiVttUWV4tmmF/QCJQ6DvfetrOIWVPWgzvgYKYi6n8ZEvu0/4wtcVQCQLK/XsrvQ9mFPGP+BFDzcJrFg7TlZW1RJyAw/H/eIzH2tp8EVSRWHhUYnQI2JpMjPQ6CGZo5iC2OltqNqJ1muU3V69OgYvXz2iSWgCjlh7PaGVjijlIVTsADse/iildEk2wfqQ4bDbVHXFt3WYoLn0tMjyyoKf/j1alVw9p2zUpTbp/ke94YTNgjHfSYmGLlh0KKSg9EdaMwUgkRUp3/NdJvXXl/C0Mss/fXDU92O8FsLVmCCvWIamceZlNnGUYy6+DSfoLwH39/F+dzkaeFdO9oy8ulITeF3tCp40tUHyNNXyKyLx6rcaXCdlURK7ULkE+26yCb3DKZfvESb/wculLiLNv7HokbXnDL9fOxO9vLKJ3Id8HImotrHEb2OnR7l1ygu4TBJ7yXeyOcpNY+zFZW4GdiesifJnJRLooGfBxne39rlZAxUk9wEJjflniKeuYxL8e+3k1TOhFOOCOhpuaPUv8Xhw7CUa0c1UBAWyLSxN+h2xgrh6KOl3IQzBYdlzetnMxEEDbvQeVMkqFqu+v4rLXGr9YX8kwAN6c50VVUzuS
+ rMxGjvrP
+ 6yguUQY4pRCmaCYm1/GaUs3WwcEd6UZDW4azos4tMeGW88ac66W8VLnfcdc1MjjzsSnZUw+C5TSU1s5HivzPskW3hIsTfvImMe0cxvu+OisBW8hpQZStruc+Gfn8rvuAiJIgI2bE9oujNIckT9m/uoC1Kja3VMAX5bw3iIIdoPIu0VcafMGmzCorhcttQWgIQczncjgxsCqzwUs3z44f6UsjGsGJn6MU/mGjgeMiCzumKY0qDdCEctqMgyC2gI8TtqV3d2r0NyjzxGdc06OPqKq4CMR49+0kgjK684W2v90gRWCXcG2n+B0J+g++z1Fw4Ox1x0Ga0KAcEQ57rPpe29I61aMJUxdHIZo1pcZKcViwCGW29G36tIDxdMR7IkxXSEk8NMekmf7Sp+UyDJjakJb2Wu8sKTgzzhVCi7KMB/iI4UGYSTlfi5DXD/6el6G5WDKQDBC/DD1a6jLaI2XT+gDgHNPFVsLTNWhTZBEBSUBspkReqkEVW+1oZ/E2IpduxzWa/MevjAl20MLH59fWKI+pSkQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,72 +127,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When vmalloc shadow memory is established the modification of the
-corresponding page tables is not protected by any locks. Instead,
-the locking is done per-PTE. This scheme however has defects.
+Hi everybody,
 
-kasan_populate_vmalloc_pte() - while ptep_get() read is atomic the
-sequence pte_none(ptep_get()) is not. Doing that outside of the
-lock might lead to a concurrent PTE update and what could be
-seen as a shadow memory corruption as result.
+We host a biweekly series, the Linux MM Alignment Session, on Wednesdays.
+We'd like to invite MM developers to attend and will announce the topic
+for the next instance on the Monday prior to the next meeting.
 
-kasan_depopulate_vmalloc_pte() - by the time a page whose address
-was extracted from ptep_get() read and cached in a local variable
-outside of the lock is attempted to get free, could actually be
-freed already.
+Our next Linux MM Alignment Session is scheduled for Wednesday.  The
+details:
 
-To avoid these put ptep_get() itself and the code that manipulates
-the result of the read under lock. In addition, move freeing of the
-page out of the atomic context.
+Wednesday, August 20 * 9:00 - 10:00am PDT (UTC-7)
+https://meet.google.com/csb-wcds-xya
+backup: https://tel.meet/csb-wcds-xya?pin=1301132214803
 
-Fixes: 3c5c3cfb9ef4 ("kasan: support backing vmalloc space with real shadow memory")
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
----
- mm/kasan/shadow.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+This week's topic will be mapping guest_memfd backed memory at the host 
+for software protected VMs led by Fuad Tabba.
 
-diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
-index d2c70cd2afb1..4d846d146d02 100644
---- a/mm/kasan/shadow.c
-+++ b/mm/kasan/shadow.c
-@@ -305,9 +305,6 @@ static int kasan_populate_vmalloc_pte(pte_t *ptep, unsigned long addr,
- 	pte_t pte;
- 	int index;
- 
--	if (likely(!pte_none(ptep_get(ptep))))
--		return 0;
--
- 	index = PFN_DOWN(addr - data->start);
- 	page = data->pages[index];
- 	__memset(page_to_virt(page), KASAN_VMALLOC_INVALID, PAGE_SIZE);
-@@ -461,18 +458,19 @@ int kasan_populate_vmalloc(unsigned long addr, unsigned long size)
- static int kasan_depopulate_vmalloc_pte(pte_t *ptep, unsigned long addr,
- 					void *unused)
- {
--	unsigned long page;
--
--	page = (unsigned long)__va(pte_pfn(ptep_get(ptep)) << PAGE_SHIFT);
-+	pte_t pte;
-+	int none;
- 
- 	spin_lock(&init_mm.page_table_lock);
--
--	if (likely(!pte_none(ptep_get(ptep)))) {
-+	pte = ptep_get(ptep);
-+	none = pte_none(pte);
-+	if (likely(!none))
- 		pte_clear(&init_mm, addr, ptep);
--		free_page(page);
--	}
- 	spin_unlock(&init_mm.page_table_lock);
- 
-+	if (likely(!none))
-+		__free_page(pfn_to_page(pte_pfn(pte)));
-+
- 	return 0;
- }
- 
--- 
-2.48.1
+If anybody has ideas for future topics, please let me know and I'll try to 
+organize them.  We'd love to have volunteers to lead future topics as well 
+as requests for MM topics to be presented.
 
+Looking forward to seeing all of you on Wednesday!
+
+Time zones
+
+PDT (UTC-7)		9:00am
+MDT (UTC-6)		10:00am
+CDT (UTC-5)		11:00am
+EDT (UTC-4)		12:00pm
+Rio de Janeiro (UTC-3)	1:00pm
+London (UTC+1)		5:00pm
+Berlin (UTC+2)		6:00pm
+Jerusalem (UTC+3)	7:00pm
+Moscow (UTC+3)		7:00pm
+Dubai (UTC+4)		8:00pm
+Mumbai (UTC+5:30)	9:30pm
+Singapore (UTC+8)	12:00am Thursday
+Beijing (UTC+8)		12:00am Thursday
+Tokyo (UTC+9)		1:00am Thursday
+Sydney (UTC+10)		2:00am Thursday
+Auckland (UTC+12)	4:00am Thursday
 
