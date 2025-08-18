@@ -2,96 +2,91 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0DDCDCA0EE4
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 08:10:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 366FFCA0EE4
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 08:11:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C6D28E001F; Mon, 18 Aug 2025 04:10:47 -0400 (EDT)
+	id C6DFC8E0020; Mon, 18 Aug 2025 04:11:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 677408E001E; Mon, 18 Aug 2025 04:10:47 -0400 (EDT)
+	id C46228E001E; Mon, 18 Aug 2025 04:11:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 565608E001F; Mon, 18 Aug 2025 04:10:47 -0400 (EDT)
+	id B5C458E0020; Mon, 18 Aug 2025 04:11:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3852B8E001E
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 04:10:47 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D74581A0875
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 08:10:46 +0000 (UTC)
-X-FDA: 83789156892.29.526B7F5
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 26AD814000B
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 08:10:44 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 978168E001E
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 04:11:50 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7E75DC081B
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 08:04:33 +0000 (UTC)
+X-FDA: 83789141226.16.D54CB60
+Received: from mail-io1-f77.google.com (mail-io1-f77.google.com [209.85.166.77])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 06EFAA000D
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 08:04:31 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf23.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf15.hostedemail.com: domain of 3j96iaAkbACQSYZKALLERAPPID.GOOGLEUSERCONTENT.COM@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.77 as permitted sender) smtp.mailfrom=3j96iaAkbACQSYZKALLERAPPID.GOOGLEUSERCONTENT.COM@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755504645;
+	s=arc-20220608; t=1755504272;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uoiJ/lC1TK/+M9R4zevIt03hbpOpgCvsw2B5DpdaGTc=;
-	b=XTdfclOSytP2m8BEkY4qxr/aojl1A4tOJI7fi9Xa2McRFJNlA2sQSASS4eBk1gfPKfwxIo
-	jbADG1XVgBWS3uzv+JEtcbRZ49boVoj1J+otpqCG0v9OFp2VidmZgUWncC5HOBiWj9pS04
-	50r4dHqu624DEtSb9jbc2b53g7kmhxw=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=SXCnyKQ3Vm9M1IoDEuwjwfWaE/02hODwJqv40lVhlK0=;
+	b=Di8D+waut2HhN7rgUprbkEeHzVK85bJmGP+SVsGNKW2Oh2kyxjjfBUJi7z1h5anu+oaybl
+	wAlVZTckOwWoQ0AYg5nmYMxV8agiWKm0cgzJ+6ARvuu0+K3kE9ndcAbylVdOaSTF7PLj8y
+	+CI2MUwP2315BWXZ3RyynvAbe+lnPfQ=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
+	imf15.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf23.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755504645; a=rsa-sha256;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf15.hostedemail.com: domain of 3j96iaAkbACQSYZKALLERAPPID.GOOGLEUSERCONTENT.COM@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.77 as permitted sender) smtp.mailfrom=3j96iaAkbACQSYZKALLERAPPID.GOOGLEUSERCONTENT.COM@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755504272; a=rsa-sha256;
 	cv=none;
-	b=hMxhVHLNVAJiRZ1cfhYi9J9HQy9IRQ5f/fmSa4qgOL7qClArX8+9Kw5iAQcUdARO5ycBn6
-	Jwa7oqaOb5nLrV0BdnlSf/6H0ODY3CJ82QNuSBwEEiT4ETFXAIg+pmxcEgtbkX+RX18CbY
-	MDsh/SfPGPDdeyPh9ny1fAyrYZVKnHI=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1A5491596;
-	Mon, 18 Aug 2025 01:10:36 -0700 (PDT)
-Received: from [10.57.58.12] (unknown [10.57.58.12])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C2E943F63F;
-	Mon, 18 Aug 2025 01:10:38 -0700 (PDT)
-Message-ID: <c09a2a13-8571-44e5-b780-c704598df764@arm.com>
-Date: Mon, 18 Aug 2025 10:10:36 +0200
+	b=mFEm9wCw8oFxX5tYNqUijLHzuF+DcVNq6Ksg0vy+F5j4puvsjhbRWXfUKGp8qFLqjtGHtI
+	KNiUXN6wI+EFbwfl2+1Tuw46m0cuQ+4dSHESqzhEFwRsFZYezDaNqZa74hxS29KkK7bdIT
+	y74Z+DNT3e7gB1TRLrK1t9geT7eUEGQ=
+Received: by mail-io1-f77.google.com with SMTP id ca18e2360f4ac-88432d8ddb1so461804539f.1
+        for <linux-mm@kvack.org>; Mon, 18 Aug 2025 01:04:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755504271; x=1756109071;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SXCnyKQ3Vm9M1IoDEuwjwfWaE/02hODwJqv40lVhlK0=;
+        b=DkgvkaCon9rlWCHlKa5+YwPRNGVCfO91F2rPgD77DyrH9b94Dr6QR5vtm/hctGQblI
+         8IXxnB73NLRNyBruMEKHv/pYnEw0HTUWvBE4uCa85nbydA07ko3dIMWWXmxkrEbzMpAp
+         quchVcDLV0xHnAXljTbVPfuHl59UeAZq4oB2SYzR9T+QfRLJGmjWxgR5IHAKzjNLYJmz
+         tWZ+vnEmNx/wLogflwCj1mkwV7YepRJhdSInGNyjhsNDXH/cHuW6Tlescgfza6b/WzdI
+         lEob5NP59ygYtC5TKs/aRrCXmR95VU8XTzFmgHlUN4it8drGrJfixtiONeEoOAjGf73H
+         xx1A==
+X-Forwarded-Encrypted: i=1; AJvYcCXhZ7zCbNHPs/HdtDwVEtRGjfLr6UpfbfqY8ZMEhCFwXNf3umxE/EGTmxs2qtOpEWwfdIzGVg2YXQ==@kvack.org
+X-Gm-Message-State: AOJu0YxgPHpFGjEkHU7VPratFWwwGXVod/5CNX/WxNyAQrnwa6X4cLpv
+	oimJO5678CF0WeIrPv86PYD42AKfmo0vJsgefqdjSRm5ZO3b3EcfYIrIHpUI2sVEQs7sDpnNNxs
+	LSWzGVaOaH2O9WUSFCkbnYMTWXTqLXi8m4gvQ9MYiKVoBYfNCmwskUKbkbS8=
+X-Google-Smtp-Source: AGHT+IG3kt2iy1xjjQ4YX7zLb09k9beA7lbFy2HID79JSAPU010RsT/rmQ5oO/ogDnt62ofaqeiOBwbktkqzqJ3/+ro7iQksbLgp
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/8] selftests/mm: Add -Wunreachable-code and fix
- warnings
-To: Muhammad Usama Anjum <usama.anjum@collabora.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Leon Romanovsky <leon@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, Shuah Khan <shuah@kernel.org>
-Cc: kernel@collabora.com
-References: <20250731160132.1795351-1-usama.anjum@collabora.com>
- <20250731160132.1795351-2-usama.anjum@collabora.com>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <20250731160132.1795351-2-usama.anjum@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 26AD814000B
-X-Stat-Signature: a66bj3p5ap6c5wrrkz8hrnhu7xh5urpj
+X-Received: by 2002:a05:6602:15c7:b0:876:a8dc:96cc with SMTP id
+ ca18e2360f4ac-8843e39e913mr1960591339f.6.1755504271041; Mon, 18 Aug 2025
+ 01:04:31 -0700 (PDT)
+Date: Mon, 18 Aug 2025 01:04:31 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68a2de8f.050a0220.e29e5.0097.GAE@google.com>
+Subject: [syzbot] [fs?] [mm?] INFO: task hung in v9fs_file_fsync
+From: syzbot <syzbot+d1b5dace43896bc386c3@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, brauner@kernel.org, dvyukov@google.com, 
+	elver@google.com, glider@google.com, jack@suse.cz, kasan-dev@googlegroups.com, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, oleg@redhat.com, syzkaller-bugs@googlegroups.com, 
+	viro@zeniv.linux.org.uk, willy@infradead.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: szdk8gkh839qdus3rbi9e3ek8ryr5hf7
 X-Rspam-User: 
-X-HE-Tag: 1755504644-969024
-X-HE-Meta: U2FsdGVkX1/A7AfFCoTcNH6xv3Gsyoww/mrUGSBPBaOaotNYiEr9jxv6WbF4XYsjgw0DwhiOu5akuwUE8+ZW8hiY4xiIrQUATgUrsniM9KbIjm1o48rv5cX5FMC5Opqy6dRNnaL/OOVyn+3R8U+QSG5fOxbXBEEm889Yvrlq9Oafn13rEhXlt5KOVbGSE4yiCTskggT0rpkvPYLhozpbOVH+QVnvi4E76Su7QMAuGxQkmdWD4hvABmIxuVZ5r+nVVpFcRs0j0vJHmg23BlgdaGi3paKYMtY2hMayooa/8O+tz6lKozL5jq2joLkK42WgiMOaL7gWuxHNOdSen6E5SftB7Kx+8Fa2DYlZrCssc4dqJUP76FSbme+bEC02Yc921+eiixJtVlPvA/ZI1ym2BUgskriwLEoaRaK0OqDTARfSlcK57o8PEFIvL1Pzeq3iHJ2WirDNV61QcFUEL4bCpRTYiY44jOsZTyJzhdqoD8luwExA01CDEuelAEw1OcnwDMFvhxkPaoUZ3ELNuS7n9Y7kJMCObFuSeg+1feAi0jTkAc8okmeT8CJRewZC8mO5xaqzeu4DBTzdYGjcd3Z8uGOh2CZtgXCmxlVoXKYv0IxkLVtlp6XRbJGQeH+3Wy3W6iSOjoZkLQ4gxAXgWPvCGboZAhkRdkZrwAqP+IfV9uTSE44i8oPNyi0tx6OnW6FAJi6NTnHVEZcnnPIoAhavey/0Ifq7/CLwqGDt+DgdasNA7YkZhhca07uK3nA9Jr24YT37XBnfesDneY2/liatTDYChsgmSSeiWqOF6xOgYO+jtdMxQddw2tqipKptTc9zWdK7DemShfKfwp8rueKsnPI9NDQxf9R/X2BoECob4OD1RxciizCCJMYIn8FE76eaL1RXTj8gEZupJdxYxrWNAvQRqUFyl92y4EpSo8Kdo4kGHsDharEo8dUD/Azkcc9LWMQSPE5Lf9pYkZW0In6
- njx2pwnl
- t0qlX1OMQBcojF/9h/2E8kr0RDwokAnEZ9iqO97Nk2P5E+FiJBSVTQHQz0yeB3t1uzjf/yRaItLNfNGHOueIsyt3lvJpblj7uyU1Ex0zeq08QlIAFa0qVusIQ63kg3zxVA/cYauog/BnKcQg=
+X-Rspamd-Queue-Id: 06EFAA000D
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755504271-226173
+X-HE-Meta: U2FsdGVkX1+E++Ssod2jy7Q/Ila8vWVtTL8JzGr915RwCNRA+w7WYS7CoZM0TwLsj8/MT9CpHUkhuPJTpaKxe19LfMUmZyzuD/rQrjIVwfmOTKnoSGaabI+sptxnJ6ycHncyNv3oIPnINK0ncin8ToSR+49V9bGLw9yaMKeeCbg9SFx1lgU8Nl3Jxu4+lQDi9rWX1Knky+Q8+a0JaxJESuC0QHQ0LTib4ySAGFTFCkabyxarqYuiaFe8ujKfU7SQGmIwIiLcch2Krw8AXEVismySVFsAvpHbHo8vLVUm8uNa5/po3EpA8N38F4/c6xsxNSdmCIr9WzzxlnSB1J1MQWnD9+idyd6Wg9aFlG+MC9PfaXEFVsEB1ZtsCU6Gc7RQeG07t1w9PwoPDdZje8LxnalsMgjQhNRRDfXMmotFWG9+csCljJwJKTQzEUEMrF/mcOrmmup5De3hieuWYJrpdLm7hycZOi7b7iX0ppf8Tu7MP1DmFSSqJtc1I6sW4SuOKvsKHGX+a/q3Y+xhE0oIsL/uOxWZfYNmC4Oi3bR5wXyEIM4ogX8fKu8txsFFNIq5AKP+3SX+vnOjEvR5AtPgrM+hDk0kBCpHqRIzzX4PQi97V8bLuACJO2av16sFmXURNY+Nh9ez60Kg6sCP1oevkbfzvJ8UENpVDV+3XWUpGX7VYxsnEzEMy0QoCvbcks1yOCI2J3PgBnEPppmCCMwiLdYev6MvJZ2nLFDodxh9mAox+96rN5NaQQ8IkI47t010sfqIgOTQI/KFcpKqcPHvUckCMllSfdjmO1Zb7m0smh00yeuzNjfXn4Ua2TIo+lL08b9RIvZks+vQ05AZQpbvNB17DOZ2nLIi3p4XZ8pz7w5Bq20fuDCSRIxJgTVrn9PBrlSGEh6B3aHh3RSYo0kxdA8lOnlQj/2prhZvAlldyU5aYEj50Ip9O3Cvof9nc+rwQpibiRLj8Z+ILeh2eYB
+ FWaKEVfj
+ GoUKSlGz8OhTRl97622Zv37ZrkqzSHVFnZTzdU9qRafX8+Vks4BWNG7sdwKZpJo4GH5uESs/YzT6SJAQ16DJq3NXnLFOyTk3VI+753dBkAsfAEtuI9CGyWSR5Ul1g4AIv6Oz8QjvqJIcPCVzEOoOkJ1sTMy39pHTaB9d0qHMC3zqG52RBz2FCAWrLbwNKGV60tKInouMgXa3h0/0RLT6MeEB+6+53JYT4mHJdynOwSkag47qUzfMvPVEW8hzoeAzzGlZXZg84Onpw0Z+eoirff+Jrt7d5mP/zGsvW9lNH5IFZtZJocLhfi0lEQ7AY5DRFVtaOXI6hR5i7Y7q2AEJaWH8um8piq/DpCiRTR0Peo0FCP81kAwSApBKFXozSnc7ITRChGJVlkvQLGhOP6LqpJqtwO11QBU77VljePYdt2tOHMrzBAg2Z7B7+LFxkB8kYAPufzM7pb6hpH/Fodo9uREbzo0udL4QF0qVsyzR/rov7oWic2szV3YSnMPg/UmnkQpOju+VAonODW3S2fg5Ec1/2y6v5zVhxuWr2mxiFc63ZbBK+BbPmwI0Dkj8cZbFNauUr3weVFGsuCikHGBqpOYCqAmBumBuAgfARALRUlHDY0auI4HmDEuu5q0HA7yBP+gwppKF33piCXnEa8WzjuG3r73OGClKM21Q6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,46 +95,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 31/07/2025 18:01, Muhammad Usama Anjum wrote:
-> [...]
->
-> diff --git a/tools/testing/selftests/mm/pkey_sighandler_tests.c b/tools/testing/selftests/mm/pkey_sighandler_tests.c
-> index b5e076a564c95..302fef54049c8 100644
-> --- a/tools/testing/selftests/mm/pkey_sighandler_tests.c
-> +++ b/tools/testing/selftests/mm/pkey_sighandler_tests.c
-> @@ -41,7 +41,7 @@ static siginfo_t siginfo = {0};
->   * syscall will attempt to access the PLT in order to call a library function
->   * which is protected by MPK 0 which we don't have access to.
->   */
-> -static inline __always_inline
-> +static __always_inline
+Hello,
 
-Thanks for this, I had this fix locally but never got to post it!
+syzbot found the following issue on:
 
->  long syscall_raw(long n, long a1, long a2, long a3, long a4, long a5, long a6)
->  {
->  	unsigned long ret;
-> diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
-> index 05de1fc0005b7..a85b2e393e4e8 100644
-> --- a/tools/testing/selftests/mm/split_huge_page_test.c
-> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
-> @@ -296,10 +296,8 @@ void split_file_backed_thp(int order)
->  		ksft_exit_fail_msg("Unable to create a tmpfs for testing\n");
->  
->  	status = snprintf(testfile, INPUT_MAX, "%s/thp_file", tmpfs_loc);
-> -	if (status >= INPUT_MAX) {
-> +	if (status >= INPUT_MAX)
->  		ksft_exit_fail_msg("Fail to create file-backed THP split testing file\n");
-> -		goto cleanup;
+HEAD commit:    038d61fd6422 Linux 6.16
+git tree:       upstream
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=15f5a234580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=515ec0b49771bcd1
+dashboard link: https://syzkaller.appspot.com/bug?extid=d1b5dace43896bc386c3
+compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=158063a2580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1335d3a2580000
 
-At that point the mount() call has succeeded so I think we do want to
-keep the goto and just print the error message instead of calling
-replace ksft_exit_fail_msg().
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/34e894532715/disk-038d61fd.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/b6a27a46b9dc/vmlinux-038d61fd.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/f97a9c8d8216/bzImage-038d61fd.xz
 
-- Kevin
+The issue was bisected to:
 
-> -	}
->  
->  	fd = open(testfile, O_CREAT|O_RDWR, 0664);
->  	if (fd == -1) {
+commit aaec5a95d59615523db03dd53c2052f0a87beea7
+Author: Oleg Nesterov <oleg@redhat.com>
+Date:   Thu Jan 2 14:07:15 2025 +0000
+
+    pipe_read: don't wake up the writer if the pipe is still full
+
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=1498e3a2580000
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=1698e3a2580000
+console output: https://syzkaller.appspot.com/x/log.txt?x=1298e3a2580000
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+d1b5dace43896bc386c3@syzkaller.appspotmail.com
+Fixes: aaec5a95d596 ("pipe_read: don't wake up the writer if the pipe is still full")
+
+INFO: task syz-executor224:5849 blocked for more than 143 seconds.
+      Not tainted 6.16.0-syzkaller #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:syz-executor224 state:D stack:22952 pid:5849  tgid:5849  ppid:5848   task_flags:0x400140 flags:0x00004006
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5397 [inline]
+ __schedule+0x16aa/0x4c90 kernel/sched/core.c:6786
+ __schedule_loop kernel/sched/core.c:6864 [inline]
+ schedule+0x165/0x360 kernel/sched/core.c:6879
+ io_schedule+0x81/0xe0 kernel/sched/core.c:7724
+ folio_wait_bit_common+0x6b0/0xb90 mm/filemap.c:1317
+ folio_wait_writeback+0xb0/0x100 mm/page-writeback.c:3126
+ __filemap_fdatawait_range+0x147/0x230 mm/filemap.c:539
+ file_write_and_wait_range+0x275/0x330 mm/filemap.c:798
+ v9fs_file_fsync+0xcf/0x1a0 fs/9p/vfs_file.c:418
+ generic_write_sync include/linux/fs.h:3031 [inline]
+ netfs_file_write_iter+0x3d8/0x4a0 fs/netfs/buffered_write.c:494
+ new_sync_write fs/read_write.c:593 [inline]
+ vfs_write+0x54b/0xa90 fs/read_write.c:686
+ ksys_write+0x145/0x250 fs/read_write.c:738
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fb29049bef9
+RSP: 002b:00007ffeb3361588 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 0000200000000140 RCX: 00007fb29049bef9
+RDX: 0000000000007fec RSI: 0000200000000300 RDI: 0000000000000007
+RBP: 0030656c69662f2e R08: 0000000000000006 R09: 0000000000000006
+R10: 0000000000000006 R11: 0000000000000246 R12: 0000200000000180
+R13: 00007fb2904e504e R14: 0000000000000001 R15: 0000000000000001
+ </TASK>
+
+Showing all locks held in the system:
+2 locks held by kworker/u8:0/12:
+1 lock held by khungtaskd/31:
+ #0: ffffffff8e13f0e0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:331 [inline]
+ #0: ffffffff8e13f0e0 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:841 [inline]
+ #0: ffffffff8e13f0e0 (rcu_read_lock){....}-{1:3}, at: debug_show_all_locks+0x2e/0x180 kernel/locking/lockdep.c:6770
+2 locks held by kworker/u8:6/1337:
+ #0: ffff88801a489148 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3213 [inline]
+ #0: ffff88801a489148 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_scheduled_works+0x9b4/0x17b0 kernel/workqueue.c:3321
+ #1: ffffc9000451fbc0 ((work_completion)(&rreq->work)){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3214 [inline]
+ #1: ffffc9000451fbc0 ((work_completion)(&rreq->work)){+.+.}-{0:0}, at: process_scheduled_works+0x9ef/0x17b0 kernel/workqueue.c:3321
+2 locks held by getty/5596:
+ #0: ffff88803095f0a0 (&tty->ldisc_sem){++++}-{0:0}, at: tty_ldisc_ref_wait+0x25/0x70 drivers/tty/tty_ldisc.c:243
+ #1: ffffc900036cb2f0 (&ldata->atomic_read_lock){+.+.}-{4:4}, at: n_tty_read+0x43e/0x1400 drivers/tty/n_tty.c:2222
+1 lock held by syz-executor224/5849:
+ #0: ffff88807f8cc428 (sb_writers#8){.+.+}-{0:0}, at: file_start_write include/linux/fs.h:3096 [inline]
+ #0: ffff88807f8cc428 (sb_writers#8){.+.+}-{0:0}, at: vfs_write+0x211/0xa90 fs/read_write.c:682
+
+=============================================
+
+NMI backtrace for cpu 1
+CPU: 1 UID: 0 PID: 31 Comm: khungtaskd Not tainted 6.16.0-syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ nmi_cpu_backtrace+0x39e/0x3d0 lib/nmi_backtrace.c:113
+ nmi_trigger_cpumask_backtrace+0x17a/0x300 lib/nmi_backtrace.c:62
+ trigger_all_cpu_backtrace include/linux/nmi.h:158 [inline]
+ check_hung_uninterruptible_tasks kernel/hung_task.c:307 [inline]
+ watchdog+0xfee/0x1030 kernel/hung_task.c:470
+ kthread+0x70e/0x8a0 kernel/kthread.c:464
+ ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+Sending NMI from CPU 1 to CPUs 0:
+NMI backtrace for cpu 0
+CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.16.0-syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+RIP: 0010:pv_native_safe_halt+0x13/0x20 arch/x86/kernel/paravirt.c:82
+Code: 53 de 02 00 cc cc cc 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 66 90 0f 00 2d d3 ad 21 00 f3 0f 1e fa fb f4 <c3> cc cc cc cc cc cc cc cc cc cc cc cc 90 90 90 90 90 90 90 90 90
+RSP: 0018:ffffffff8de07d80 EFLAGS: 000002c2
+RAX: eefad1cde067ed00 RBX: ffffffff81976918 RCX: eefad1cde067ed00
+RDX: 0000000000000001 RSI: ffffffff8d982fba RDI: ffffffff8be1ba40
+RBP: ffffffff8de07ea8 R08: ffff8880b8632f5b R09: 1ffff110170c65eb
+R10: dffffc0000000000 R11: ffffed10170c65ec R12: ffffffff8fa0b3f0
+R13: 0000000000000000 R14: 0000000000000000 R15: 1ffffffff1bd2a50
+FS:  0000000000000000(0000) GS:ffff888125c57000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055943a295660 CR3: 000000000df38000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ arch_safe_halt arch/x86/include/asm/paravirt.h:107 [inline]
+ default_idle+0x13/0x20 arch/x86/kernel/process.c:749
+ default_idle_call+0x74/0xb0 kernel/sched/idle.c:117
+ cpuidle_idle_call kernel/sched/idle.c:185 [inline]
+ do_idle+0x1e8/0x510 kernel/sched/idle.c:325
+ cpu_startup_entry+0x44/0x60 kernel/sched/idle.c:423
+ rest_init+0x2de/0x300 init/main.c:745
+ start_kernel+0x47d/0x500 init/main.c:1102
+ x86_64_start_reservations+0x24/0x30 arch/x86/kernel/head64.c:307
+ x86_64_start_kernel+0x143/0x1c0 arch/x86/kernel/head64.c:288
+ common_startup_64+0x13e/0x147
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
