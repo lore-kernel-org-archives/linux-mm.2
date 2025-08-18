@@ -2,124 +2,229 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E3FACA0EE4
-	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 16:07:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 90610CA0ED1
+	for <linux-mm@archiver.kernel.org>; Mon, 18 Aug 2025 16:25:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9736A8E0026; Mon, 18 Aug 2025 12:07:32 -0400 (EDT)
+	id 1D6DE8E0047; Mon, 18 Aug 2025 12:25:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94B078E000F; Mon, 18 Aug 2025 12:07:32 -0400 (EDT)
+	id 189BE8E000F; Mon, 18 Aug 2025 12:25:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 860798E0026; Mon, 18 Aug 2025 12:07:32 -0400 (EDT)
+	id 024378E0047; Mon, 18 Aug 2025 12:25:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F9A38E000F
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 12:07:32 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 300E1117B3D
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 16:07:32 +0000 (UTC)
-X-FDA: 83790358344.09.7D3CB2D
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5D9581C0002
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 16:07:30 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=HhrNmbyG;
-	spf=pass (imf21.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.167.171 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755533250;
+	by kanga.kvack.org (Postfix) with ESMTP id E0A038E000F
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 12:25:36 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 977075C163
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 16:25:36 +0000 (UTC)
+X-FDA: 83790403872.20.2A4F7BD
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2D086180008
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 16:25:31 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Bo9ygWsO;
+	spf=pass (imf16.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755534333;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D6ek7I0iyYbZpN/v0UC5zzd0o0Ftoqgt1vFlNzowpm0=;
-	b=oCARIcuhNkh69VfAM83s+cYTiV51mnLaWvMhQQlmSBAb6skbGZyUYREQqntk4B4fJ0PIeH
-	uZ4Fm9k9F8CHPwo76maYJgi4TVK5JxVRLIzb49VxJoAgp3z52WGhZyGZrASqp8UI5sntrr
-	cku9+RjnppUDQ55jrNTAc6aM2Umc/MI=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=HhrNmbyG;
-	spf=pass (imf21.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.167.171 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755533250; a=rsa-sha256;
-	cv=none;
-	b=hJ/vGQpAMo4W6plKI5ouoRiK7WcBMRA8/0SuPQjJsl2Ptv6qE08uiKRn2EHmzxV/rys5K7
-	5wQbbG+9pF52zzp0r1LVydoryLDSGucP4v6VcvAHXwPcedBKx2/VRdOEvaQGox9V711HoA
-	F6tLRX4g5E20zsVQf9YpQMJMljtn+84=
-Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-435de818a74so2377540b6e.2
-        for <linux-mm@kvack.org>; Mon, 18 Aug 2025 09:07:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1755533249; x=1756138049; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=D6ek7I0iyYbZpN/v0UC5zzd0o0Ftoqgt1vFlNzowpm0=;
-        b=HhrNmbyGv+kra8zSQCzOyo5UfTkJLV9qTe3PYZwF8J9UI9y4SSgoNw3N4U3EYnQYv5
-         wIP0EYxtaRaIMGwg/WzkLJgW7CkONuyrzoVVSxNStLiriKSP7mhm5i5+6JgmCB7QHv3L
-         TFJF1abULcGdG0qgDTAFqgacuihWQF7nQTs1b9EddEWP/KOcLafrblc6ukqW2LtfrAgd
-         f1LIFisDW9Ux6MPeGg4i3g2eYK8whgVHSHi1mjusOF6sddhNKgzup+kAOG8a5n37yUo1
-         1yqf/thZtgUC7RTMmMsdwG4KWQQh0mQ927Td7MKYxDEwaf79br3uf/UsE4P+zqoJNTC8
-         R0bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755533249; x=1756138049;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=D6ek7I0iyYbZpN/v0UC5zzd0o0Ftoqgt1vFlNzowpm0=;
-        b=bnsO0jB55/bukL8md/NcO+Nfs/Xcb/HDfY0qgDPK8IEMPRp5ETCLq93iWuTzhFnwSW
-         kydjjkmyHLneJNT9wm33lzV0xuO4QQx9hOensuzWc9QaSh5S/WAuZ3SgI07Mo/f8AQba
-         /y+lbC8Kp7dQZfC/xOyGR5BWnAVoBeJ2ucWUn0ZaUPKaoRs8rCWjUoJi9jRcGUN/VT0t
-         Jk+9sF5UNdjrNPgeSFPW2vLLUIRpXPMIqESr2n0/CXV60QnHn2JEmE1tTCbyCm07mtjU
-         FZ13FZzhGOR1NeDOhY/Xf4nSrD+mDhqwed3V+wgTf9yt/zgvf9lXW/k3IQBo+czP81HG
-         i79Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVqsNUHl0QOZch2jZuispNh1mvBRVEgmi0ApP1/Hlvh44n5kpUY92/AYheSnI5svdaHzzjd/jY8xA==@kvack.org
-X-Gm-Message-State: AOJu0YyTtuqdYh5+Mf4L5tjmmor6KmMVBRprMkzTQ1ZWce13AzzxKFDl
-	Hrl1lMTe0CX7gHhUPhXobMJyp0KM9VAHmW34K+g/EhBNKZ8zm4+Poz6Rx7q/oiPsaa0=
-X-Gm-Gg: ASbGncs3SFnYgkNI2x48kFyJvT4E4st9mY80ETNsnbQeXEfklJ68UdDNhTI8MtuCn2E
-	i18uf1OfV5rCqkKGBs4UKwtVkq35ZCFIHrOAXWrpWcNIrc3vTpBTc9Bb05eir7F5JKKurgKf2EX
-	wukzC3t3TMC9IP+euVlaPMRTN58HL8+mOeR0ubzjBkptriKRJ/2UAYmnI/3hgv7nihvsdClnNmw
-	G342sAK1Sms81C4ghytJpObrE3SxjWOPc7ASA0lWMiHODZrx/62CDG/WthxbyahUMGa9mWmdzjc
-	c1Ra896RK+IuGWISaE14Owdr/9XlhGOBCBs8s/OsrWkya3NMNZ49J4bazMWR/zkZvJ4JXlJ+
-X-Google-Smtp-Source: AGHT+IHkRfCegHArKlwGfaPyx0kzz53A2FyhdpjpMnPcsXRnYC7i/30cf6RRe0zz3Qa6ICjSFo5brQ==
-X-Received: by 2002:a05:6808:3a07:b0:435:8506:2263 with SMTP id 5614622812f47-435ec487ee3mr6478173b6e.24.1755533249123;
-        Mon, 18 Aug 2025 09:07:29 -0700 (PDT)
-Received: from ziepe.ca ([130.41.10.202])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-435ed1b10bfsm1783361b6e.18.2025.08.18.09.07.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Aug 2025 09:07:27 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1uo2OM-00000004Orw-2igd;
-	Mon, 18 Aug 2025 13:07:26 -0300
-Date: Mon, 18 Aug 2025 13:07:26 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Cc: intel-xe@lists.freedesktop.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Dave Airlie <airlied@gmail.com>, dri-devel@lists.freedesktop.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Matthew Brost <matthew.brost@intel.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
+	bh=teflaDrJj4jkDgH+QCaGjSjIyCkDAOYsS+IYJZWUteQ=;
+	b=Nzaqw9Xp2lr0Ohu0bUjBduDsE8HxuEGONhN1ypFqIlsusEHZNd8cFy/opGPNV/KtcOLApe
+	Qifp/bfr+dkbcksdN+yT8dt9OVMoEvrkHVcSMic+0ClA+4CpvyYjSsN4v8RFWvvcQorIsp
+	QgrZoDfyF/KElUMSvTSqk8Slra6tT1g=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Bo9ygWsO;
+	spf=pass (imf16.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755534333; a=rsa-sha256;
+	cv=fail;
+	b=HJYaoVbHk/ERgdl6eQTlDEqz9N6VZxsFl4UwCu+fROLmlKENLkniKY7kOW0OPsCz2QPuLs
+	GhkukyBrJavt9MqaMpae9QSo7IdMK2rhnL63vbvwv2lxeISfVlhq6kEydl8jWVji2wC7Sn
+	RITzDdnyNXOQUZtHvX4VjgltGrocsKI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755534332; x=1787070332;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=dRuLjN1YcDbC9EZYfLZfASp1387En/hA9DQPIWiKQyw=;
+  b=Bo9ygWsOIm896o9oLlGGh/ZfKk5XEd647SUzr0nlwFK7jwhJhG6qI9vd
+   z+WKb7C/V4n/XXrjy1y5npxrAejqdwCCg9HSA8AEWsdo1fIj6j3owOxhz
+   /groXLgKzXRe+XgGTB8b8rECw09u/ObzHiOQLrVTOia5hkKPj1Auvmpur
+   Iw7EQgcASPH1RwFpRAGF/Xaxd/vw875OVhqq97WSjrZrJaoKwae2JTMqf
+   742RqLDIfA1M50tZ5zDr3zu+xkfIUE9RiuIGqBo7I5DpcMSJZxYjWhx4V
+   Wm3ZcoB/48+E1JHUEcAsvq4AapQUmZrs/zd0WqXfaJQxEQG5SgxKMbN0i
+   Q==;
+X-CSE-ConnectionGUID: k7FO8Ym8Tl2hqm79u9d0UQ==
+X-CSE-MsgGUID: iXn5Ro6aSYuc+yOHv+A3qA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11526"; a="61575116"
+X-IronPort-AV: E=Sophos;i="6.17,300,1747724400"; 
+   d="scan'208";a="61575116"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2025 09:25:30 -0700
+X-CSE-ConnectionGUID: Rz+F6qm0TySbQbj0t8q87A==
+X-CSE-MsgGUID: ABONQtb7TfyjHLnsyELEJQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,300,1747724400"; 
+   d="scan'208";a="167970087"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2025 09:25:30 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Mon, 18 Aug 2025 09:25:29 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17 via Frontend Transport; Mon, 18 Aug 2025 09:25:29 -0700
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (40.107.93.54) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Mon, 18 Aug 2025 09:25:29 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=m3/LRedLO0KO+yJ162VQdOsszAOQDoHGQM77lFNbTgnhoKMciukQsXIk8mM4emY1lluA7Uaveo/83mctukxR3MqMd8ZtmTWj/mTSW/ucmh6XraRECcKsHK2HoTzM9iu/MQ8agXtkkzO7JW5x8gqDZkElJixKkGec3mxyDTWXo99e2/tkXF24H6WtL94v10fobMiZ1ccBdeEKy54ITQaQ4ZZ+lwQJHcPA1ERoX8gkxSnWjOJjqKXsV24fwwlkGGndRPbh2sButyjmMeDA57bKJsQdUBwF4Zyxz+goWQe1TPzekbeHYLODX/To4ms0zH8GrdHRHGs7qVz1vD+RXdcoVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=teflaDrJj4jkDgH+QCaGjSjIyCkDAOYsS+IYJZWUteQ=;
+ b=g+TpMWlJ/vZmqQpG6BIBE8griMSqF3pd5+CCMm+d5U/cna0shoZXaVrP2y67C9aOwcgX9zqgJ40WLRZmsyka/yHP8qL2Blmkbrq/s64tFZkjGnjFJ4udkgkJPIRh13VI/9ApZ5QGjzUR7xeQKypOpn/9oKSOK7uN86WkbO+5RO5ZU5Z2HS2B+x92wWKn+SRAqfLlSqTUQXQ0GJ759kfgw7WXxjqPnmQaoaP0/Y7w5wytRVE6Bc0xQ1HkYRNx8CXQtKr477Gxw/Q4RWbyHZcrJco7Ka45I8c9q8VKPKr9w8ZglFM0V0pMUAnRBrP58EbjnYRuEE0snU3ZSLLIqFb+Sg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by IA1PR11MB6098.namprd11.prod.outlook.com (2603:10b6:208:3d6::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.23; Mon, 18 Aug
+ 2025 16:25:23 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332%7]) with mapi id 15.20.9031.023; Mon, 18 Aug 2025
+ 16:25:23 +0000
+Date: Mon, 18 Aug 2025 09:25:20 -0700
+From: Matthew Brost <matthew.brost@intel.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+CC: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	<intel-xe@lists.freedesktop.org>, Andrew Morton <akpm@linux-foundation.org>,
+	Simona Vetter <simona.vetter@ffwll.ch>, Dave Airlie <airlied@gmail.com>,
+	<dri-devel@lists.freedesktop.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, Christian =?iso-8859-1?Q?K=F6nig?=
+	<christian.koenig@amd.com>
 Subject: Re: [RFC PATCH 1/6] mm/mmu_notifier: Allow multiple struct
  mmu_interval_notifier passes
-Message-ID: <20250818160726.GH599331@ziepe.ca>
+Message-ID: <aKNT8GUu0r3i4Ikq@lstrano-desk.jf.intel.com>
 References: <20250809135137.259427-1-thomas.hellstrom@linux.intel.com>
  <20250809135137.259427-2-thomas.hellstrom@linux.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+ <20250818160726.GH599331@ziepe.ca>
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250809135137.259427-2-thomas.hellstrom@linux.intel.com>
-X-Stat-Signature: 9csjfmt73haqd5fg4schtq56ncx83et1
+In-Reply-To: <20250818160726.GH599331@ziepe.ca>
+X-ClientProxiedBy: MW4PR04CA0384.namprd04.prod.outlook.com
+ (2603:10b6:303:81::29) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|IA1PR11MB6098:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8c6c534c-7149-49a5-3a39-08ddde73d528
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?TUVKSk5nTHpESlU2YkttY09lM0g4YWRnTmlSQmt6aW14STdnYXg2cjhQNXEw?=
+ =?utf-8?B?MGJ0R0JZVmE3dmNsZUpPNGVRTDI1NFgwWnVTbEpYTUNlVWN2c0xOS3hGOFJY?=
+ =?utf-8?B?RllOVzRja3YxQ1R0NFVGLzlzRXlJSzJCVVVDUXJTaGt4UmJLMWFSR3FNT1Nt?=
+ =?utf-8?B?NFFOY3RtU3l0WFVINC9td0UzQXV3TERNT0hsV05tOXBzd3QvR3ZDSzk0ZmFW?=
+ =?utf-8?B?WUNycXladnZRZ1ovRnBoNFIrbmFWa0Z4WlpIOWtHd3dvdG1qdXdSTXVGMG1j?=
+ =?utf-8?B?cXFNQUlMZDljWDROUWNWZFNsZkpjSFc3NU1JVXVPQmVuTFJ4cUw1UUV4THBT?=
+ =?utf-8?B?R1ZzTFcxMUlheXQyMG1hNVZoVTRNektvOGZpTy8vTWswUWd0ZTN2ajJObk5B?=
+ =?utf-8?B?UmN5ZzlqdkQzNzAwK0Z1Zm51RHJWT05nalBCM3ZyMGk1R1BJZXZrMW9keEtV?=
+ =?utf-8?B?dlF5aUE3NXJnaVF1NVBhSUFXY3lmdUM3dFpsZEdleXBZQnZKWlVOcWFGeGpS?=
+ =?utf-8?B?NGc3UzRpekswTEhpUzRzaEszN0tERUxseXZFY3VXSGtaUEowMXNra1grWkxp?=
+ =?utf-8?B?NGJlSkJWWDVocDRCVURFa0lNSjNSL0syMENoTXBSZ2Y0WElYRXUzRFUvU3lR?=
+ =?utf-8?B?UDNVeTkzWlNUY0lldjQ3dzdYQ0cvelIxcEJCNW9hUUs5ekxMaGdqT1A0NXVk?=
+ =?utf-8?B?SUdrVGg0eEVRVkJmdXFnbHdhQVVzNmJxeGtrQ1A4RDFEVFJXdGhabDFycXBZ?=
+ =?utf-8?B?Y3BNeGVSaytpL05udTZEQVNXNkpmeE1CMDlZWWV5Z3lJdS9zQjRHTlJmbFY3?=
+ =?utf-8?B?eDNtd3JwcW1sdFk2UFQvYnlIRE5iN0xHMHdBTDlIT2hYcUsyVDRhUndwbWo5?=
+ =?utf-8?B?dEcwb3paMWgzZWx4RHByZE1tbXhvRzZveGtqZ1N3ekF6ejM5a2FMSURYSzdG?=
+ =?utf-8?B?OGlQTnZrcFdDTTlBUlpYWmFwTWdHeVk2SDU5Zzl2Uzcyc0hLWmJlU3VLSzhC?=
+ =?utf-8?B?RXRmRnNMT1kveno0SFJBZTczNm1Xc1RsYkUzZDVsNVhHb3VVUkhkZElqdE5P?=
+ =?utf-8?B?OG9FU1NhcnRZQ2g5ZjJtVk53OWtEVnAyZzBockZHcWhGY2F0MTkyYjBEdDcz?=
+ =?utf-8?B?TTFDeDE0QnpiV1RLamdPMC9LR09yaFRQU3NlYjNJbnhGbTdSbzhFNHIzN3hQ?=
+ =?utf-8?B?UHNaNS9RNjhXdUZvNVFkZFM1cWpYTDU1WmNnOW9EVU53R1VhMW83NTdySjd0?=
+ =?utf-8?B?a2J1ZUFJTC9wTzcwaHlRTWoxMHhnaFFnVU9JSHpYeXdLeUdiY2NRNUZWSjlj?=
+ =?utf-8?B?Z1RwVFJ6YzNyVU9oVEJEZC85UDdGaHY1QkxOSnpXcDFPQ2dZRjA2VHdFZy9M?=
+ =?utf-8?B?anpaWGdkZXQraXZxUDhTSVduNHE2ZFdIOHl3cGM1NDk1RXpQcGtqUWREcVJp?=
+ =?utf-8?B?RWswak8ySVJZdDI3cjMyWnJJTmZ2dGU4MGNZQ21OMnJhMHJvN3NJb1E0VUhL?=
+ =?utf-8?B?bGN6RHZldlJXSHNWTzU1eVVOVDRpVWhpRkd4TG5HQ2d0dVRFbVJiMTIyVnJq?=
+ =?utf-8?B?ZmdtNVo2Vjh4UERnRTdTZjNFcnB2R0hlcGRPQmo4SGpwcGJDeGUvWll6KzZT?=
+ =?utf-8?B?S1crTFM2SkpaelNkdGpZeTN2NFZrUUkyOUwxM2VyT1IvRjNjT1pTWTg2ZDZv?=
+ =?utf-8?B?RlYxb1dWTEZYbFh0bWdRZzZ3ZXpJSzJYT084MnhoZGFjRnNzbjczSmdqN01G?=
+ =?utf-8?B?VWIrMjJkeEZaK0c1akhVNXNleEFybnoveXI1N1p3OFFDRm90dTYyMmUyL0c4?=
+ =?utf-8?Q?YgQLGc7vcp20ePOdxyj/Zty4jLLvpDkPD9buo=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?M3EzTkljcXNJZGl3Sk9RckVWdXBSRnpobWwrZ29peUlPRkM0emtMdE5qWGkr?=
+ =?utf-8?B?cUJJUytLZVFsS0JhWmlSNWtBNWR3VHhlNmhFNjNrcndVS0JFWGdBSXZESmoz?=
+ =?utf-8?B?RFUreXFTTVplOGQrd2UxQTlXZ2ZWV2lsT3BEK2ZzQzB6LytQK0I0Y2dkR1dZ?=
+ =?utf-8?B?VFZ3TmRlVVFneG5sRlZEVU52MFZaZXFPMlk0NldCeG11TERVNzBMZXRObm1z?=
+ =?utf-8?B?OVBDN08waE8yN2tHZzZWdXY4Y281Kzh3NE93ZGE2dy94dVc0Z2lXa3lHOHgx?=
+ =?utf-8?B?NTdkeGlYNnVJUVZaM25TOTE4eWVzbTJ3aTZ2cGVXN21HdXlMaTM3clI2OTh5?=
+ =?utf-8?B?RGZzcW9ySk9OYW5abjFaWWZyRVNJT1ZIZUwvRlBkbk1vaTlUVVRYbWZBK0pv?=
+ =?utf-8?B?aXo0V1NZVWE4YjJxanpCZ1FzVXJsZTE4dVV0Z0dDaERRY0JKbU1yRXVSUmI5?=
+ =?utf-8?B?RSswb3UwSGF6MThNd2xKSW1WT0J4OW5aa2Z0ZzFiZU1JL29pQnNsWk4xUExw?=
+ =?utf-8?B?aXA2TTBlU01XeW9HSUxuTDdyVExIQUJFVDFSeTF4L2g4blNCaVhPRW9NZzV2?=
+ =?utf-8?B?MlFoRjB5YnV6TnhUa0p5TldhZmlBZDBmS1NIdVhvSmxBcnBvM3paTlE2ZENI?=
+ =?utf-8?B?VXhmWlZ4ZStqZC8vV2s3OWFjUnZNVDlkOUQxNHNkd2lxQWdzVzNyU1g5dS9X?=
+ =?utf-8?B?SXd5OUJNL3ZPRDVFZjAzZHJIQjJ0VUdRd3JwSlhackY5c0tCbWVIMVBCSWVt?=
+ =?utf-8?B?Ylk5R2VuVUxkbUdETEJkK2pleDBvMUhEWWtxeWpSZzJqMzhTQTdsN1ROL2Ur?=
+ =?utf-8?B?dFJFaTZRclJZSE12Ti96WUhhTzI2Wlg5U1B1UkJMVFdibFYwdHV6Y1R6T282?=
+ =?utf-8?B?YnZzV3dPeFRVaGJKUVRTbzhDMDlQS0pBZ0wrNnZaV01EZHZNdWU5Z25sSlhZ?=
+ =?utf-8?B?UWtkWVBJUVBBeUIxYXdvNjZCVlVaTHBjWS9KeVpnZEdxUFBydnh5SGxqREU4?=
+ =?utf-8?B?QzF5L3kyTFpUK2hFc1IwUWhRRWhJYnNFYlRPL1hDTm13bEJabTB6aVhNZ3Ey?=
+ =?utf-8?B?ejgzVWtMRE1ySk5oRzVWbWxUTWgxcytTM0luNDNRa2NOWk01UW56WU1YbXRZ?=
+ =?utf-8?B?SkMvbHJYTE9aUmd5ck1GTXd3d1l5bXBGaXFRVTdTRjA4eUliTllWZzJqZytz?=
+ =?utf-8?B?UU9HRmhWbWRSMjNRNk1ZVnNPUWJ3M1NNcFhCNDQ5Z3NGQUUzMG1mNjI2NG5p?=
+ =?utf-8?B?M0hvejlLUHBoQSt5V3pjV0VhcjBjNnRiOFN2b0g3UGhsMGRlYjRtbkJpMzZ0?=
+ =?utf-8?B?ZGwrVkM2bmlhb3RzOVRqa2VRaGp5UWg3WVNYUWJSTWw3WUFkQ041cTMzWTk0?=
+ =?utf-8?B?TjMvQmh5Y3k0K0tIV1ErcmtJRnJiUXlQdzhsU3l5anhZVHYxTytydmVRd2p1?=
+ =?utf-8?B?YjA1dnJQQXFBZnd0MVBqOEcxMG02QVhrb0w5dm4wY0ttb0lQTDR4dmNWUDJs?=
+ =?utf-8?B?UmpRZ2xKbzNnR1NiT0Y5M3ZyTEVYdngwVjIzWXA0bXI3NGxqajZwQTFiMEFB?=
+ =?utf-8?B?RkZIRS80aWhaSW92WE14WWRXQXdCNGc3dEZHblhSK2dtVUw2NHowRFlFZENF?=
+ =?utf-8?B?QldjNnZ0VFJQUFhLd3Q1WmZSSTcrR2svZHoyL3JKMUQ5aDVsS09odjRSVitT?=
+ =?utf-8?B?SmI2VFZHR0pNWTFyNFN6aFV3RUEwVkIva3lsOFdqTWdPaGtya0ZTckhxN0la?=
+ =?utf-8?B?VHh1OGs3YjM0SnI3S2N2MEttZFhhc2Y5aDNYdXRZTElLVGpMbXQzMlkwR0JL?=
+ =?utf-8?B?VytFSWJnUHl1VXFUK1pUVUNrRzZrREV0R3ZaYzI2Y1Zyc3V3am1wa0FJOGs2?=
+ =?utf-8?B?UW5EenBpRUlaZ1BuZ21tM1dmY2F4ZUptekl3ZmVITUVNK1FoTzQxQ2QxMTln?=
+ =?utf-8?B?b2JadjZSU2JpdmZZU3pUbnFQckpGdHRaTEtmb3BXZGIxbUFMYXFTYUpyMkh5?=
+ =?utf-8?B?VDlpYUZ3YnRnbklrZWgyQlVoNjF2MVFUa1R0MnNaanZKMWQ5L2c1b0FhWHFj?=
+ =?utf-8?B?bE9iUE03cTg2c0YzNzIyZnpxd1UreTFjOVpPSXFxUTRrYlBKaThmWVRZVTlx?=
+ =?utf-8?B?N0puVktPL25XbzBDMW1CVVNtbVA3aGplT3N0a01jUHMwSzFYaUhEWWsyT1pB?=
+ =?utf-8?B?R0E9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8c6c534c-7149-49a5-3a39-08ddde73d528
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2025 16:25:23.6459
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OIRundK+iIP+UCusIyDgwhKDYOqEob3fdzwtRHjHCYnCqWke0k4yV3NM2yIYyciumz46TUq1t6xjnNUR8liQzA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6098
+X-OriginatorOrg: intel.com
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2D086180008
+X-Stat-Signature: 7zab4k481wnebjd9bm4noqo9f1iarob4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5D9581C0002
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755533250-283292
-X-HE-Meta: U2FsdGVkX18Ai6Vj3Odh2terOidgwhCdOshHRMLg448LfSRdyaoZkejTQ5X6u1UzEj8wdlp1J/By5gFXjMfpm0t3UqBeXCrvXgluER1kNrAHGcFCGNf38wt9QRBbQzQhfl+iHwp7eoaUA//3NMKhdFBPRUcMPRZWNqXlmiBahqEjQJFOGnnA+GtGk+izErhsI97PkkKxa3Le+qeJE3V1tP129KeavHvq861+jDtL+GvNqLXlF/mioiFf/bRQoHlSe7QTsq5czD/5U2tSFrYZ7dNs2RMjBCT3tSMaofCIn9muYaTzPX+AXGyjPez33wubrXIdcHgke49EQyY7B2c9Ybb1fRaNY+ypHfJHo50v2MG/QVD+LC2d844Tv4IcZ0KeFGAbrf4THpJ6nqNXqOu8uS39wx8VNkTYdUyNPDl5IjzzZA6xO3tAmuigD10FXrOasn2RKyqNmCEKS97/pilar4gsXc8RoArgpF3rGMbtocJxr0VI74N/nnI+9RJ5iiNnesR0YyzLHCIQdQFas+WJN6V0YOO4G7olzLiJmOqsvmwVzC6dnORpxEfAGWLdur9hdorpuHGaVG6Xn/ZboOskz2iGsxVO3SiKpgn79x/7jjvQ3ojjX+Jjg2pOO8T1lUY4VNF/j4updckVNL6/I0gmX02u3jkW/VWvVx5UFgjyBjtUaXHQXWrQVZrUPmDNSJgSIoUZiXFYvwcRrfGGUw8ZLn8F/uQOgMY53Bo6ugmVcx2MwVOEDaTe5eKQD+6PaMnbQ8Lg1li2oG3pRCsR04sOmZuLwzqGMz19Cw+lwXSOrCyLzUkAjfO0dm1ZtRr2iVmlMTdV9snfjfRBYjmYZEXdS7DUZJvSYL5LvqG+sd09hh51fGxLyXEZdCzafSLSWvKt0j502Xr8vAbrdlfZ0h92iOtV86WbszMJnYfMDw4zUuehaAEfV+uUOEITAK1/CWSO5dydnuOSFm47dLOR4Ax
- Irn5Ko0e
- /hZiNI6b+Q/KXt2IinKjxBrCw7x3hBfXjn45o
+X-HE-Tag: 1755534331-133341
+X-HE-Meta: U2FsdGVkX1976yGtruBttB017mqiTk6bNfehcy3/fLLE36KamKkOkRFAKLPeynjgbNGDUSb65DwbA9IfW5A6W/hWnKDAmCyC0bNSB4wZ8ZrWtW+kYNZg3mjakd4QmjAS1D3CcXI+PqlOUyAWPFK2gOQzppUnb+n+KYsAeuonumY1cNA0phPwr+NtLcdITDoFcWKEFWHeayTqivpzMwxYCnrM+G6dn8a2N0DKp4emnkd3V93QCWaT0H+GT12RYJvTMUW/gaWducvX97Cm+KQI9l0x1uZZUh6kwLy/Mtpu8zo4Wxoj1lbuBq5thFgGDoTKYR3+fFkhKijf2HwtIHP2QAolNNKw+KzliKMoD/8TKxkWiSG8UOjtg+2Lp1EFDVCrwckFrEkDpl5Sjrb2AD5H8vx/xnkUOHbHgRh2FCY1cOyQdBv0HBD1lqtnl8UQswz/u0UqiKGQG0Ex89BN+GDdn5f97DzV0iAaIFyw0vVSlfvySRxoZQ059vL3xy8DZ56cAfvDfSXwwiNGkYZwqt0N+Pc1fnv1NgvT6UHt0Y6ERRedLyIxtE/abVYZ/crJtFDErILvKznGJ1rqBpihYjyoPgkOgavHg4ZKYk8yDvTzXbz08MEkH5XD9utYz/Nue7U6ihO80fUSqqXEufer1ncI3ORNc/m2WGkxnKAvSNJy53deUfQgdOaEp0Kvf4psj8OYgZxgMKB5njfiRG2jrDt4N20sCQfqcCIb0gVHEL9WqupXk7o/ljz6yaxlInTp3iOdYR/RzFDkY27V7rS+RZdAO73+lT7Pszm8D0abNZhEzoXJ/aK+vF5ho0M8SAdZu3dSCTwxLEzGn2s8y5q9XwudnSzvnlu7HDgrS6v3Kp60RZg1rSyQdWHQUs/MEzHRsBxxBC2uBcpMIsJE2pNPfPERGUksX7R8iYLNY+UMYMkGTiJnDvRKKHn4jR3zYElCH3ZtS+Q1vEA0pO5AqyhKuwe
+ tem8nrdX
+ sPHn47+YwfeBwZPo7EvR2Sy+z5pC+RAAQ/nmKLMbdk/B5MNA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,83 +233,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 09, 2025 at 03:51:32PM +0200, Thomas Hellström wrote:
-> GPU use-cases for mmu_interval_notifiers with hmm often involve
-> starting a gpu operation and then waiting for it to complete.
-> These operations are typically context preemption or TLB flushing.
+On Mon, Aug 18, 2025 at 01:07:26PM -0300, Jason Gunthorpe wrote:
+> On Sat, Aug 09, 2025 at 03:51:32PM +0200, Thomas Hellström wrote:
+> > GPU use-cases for mmu_interval_notifiers with hmm often involve
+> > starting a gpu operation and then waiting for it to complete.
+> > These operations are typically context preemption or TLB flushing.
+> > 
+> > With single-pass notifiers per GPU this doesn't scale in
+> > multi-gpu scenarios. In those scenarios we'd want to first start
+> > preemption- or TLB flushing on all GPUs and as a second pass wait
+> > for them to complete on all gpus.
 > 
-> With single-pass notifiers per GPU this doesn't scale in
-> multi-gpu scenarios. In those scenarios we'd want to first start
-> preemption- or TLB flushing on all GPUs and as a second pass wait
-> for them to complete on all gpus.
+> The idea seems reasonable but I'm not sure I like the naming of
+> 'multipass' or necessarily the complexity.
+> 
+> This is sort of a co-operative multithreading thing.
+> 
+> Do you really need a linked list here? At least justify the design
+> choices in the commit message..
+> 
 
-The idea seems reasonable but I'm not sure I like the naming of
-'multipass' or necessarily the complexity.
+I think this choice makes sense: it allows embedding the wait state from
+the initial notifier call into the pass structure. Patch [6] shows this
+by attaching the issued TLB invalidation fences to the pass. Since a
+single notifier may be invoked multiple times with different ranges but
+the same seqno, I think this is the correct design choice—otherwise
+there’s no unambiguous way to track per-invocation wait state. I agree
+this should be documented in both the commit message and kernel-doc.
 
-This is sort of a co-operative multithreading thing.
+Matt
 
-Do you really need a linked list here? At least justify the design
-choices in the commit message..
+[6] https://patchwork.freedesktop.org/patch/667844/?series=152725&rev=1
 
-> +struct mmu_interval_notifier_pass {
-> +	struct list_head link;
-> +	/**
-> +	 * @pass: Driver callback for additionall pass.
-> +	 * @additional_pass: Pointer to the mmu_interval_notifier_pass structure.
-> +	 * @range: The mmu_notifier_range.
-> +	 * @cur_seq: The current sequence set by the first pass.
-> +	 *
-> +	 * Return: Either a pointer to a valid mmu_interval_notifier_pass for
-> +	 * another pass to be called, or %NULL if processing is complete for this
-> +	 * notifier. There is no error reporting mechanism for additional passes.
-> +	 */
-> +	struct mmu_interval_notifier_pass *
-> +	(*pass) (struct mmu_interval_notifier_pass *additional_pass,
-> +		 const struct mmu_notifier_range *range,
-> +		 unsigned long cur_seq);
-> +};
-> +
->  /**
->   * struct mmu_interval_notifier_ops
->   * @invalidate: Upon return the caller must stop using any SPTEs within this
-> @@ -243,6 +269,10 @@ struct mmu_interval_notifier_ops {
->  	bool (*invalidate)(struct mmu_interval_notifier *interval_sub,
->  			   const struct mmu_notifier_range *range,
->  			   unsigned long cur_seq);
-> +	bool (*invalidate_multipass)(struct mmu_interval_notifier *interval_sub,
-> +				     const struct mmu_notifier_range *range,
-> +				     unsigned long cur_seq,
-> +				     struct mmu_interval_notifier_pass **pass);
-
-Couldn't this just have a pass number counter and some return code to
-indicate this notifier is done?
-
-Or do you really need more than 2 passes? Start/finish make sense
-too. Otherwise you may have issues overlapping the backgroundable
-operations between different driver types?
-
-> +static void mn_itree_additional_passes(struct list_head *additional_passes,
-> +				       const struct mmu_notifier_range *range,
-> +				       unsigned long cur_seq)
-> +{
-> +	struct mmu_interval_notifier_pass *p, *next;
-> +
-> +	while (!list_empty(additional_passes)) {
-> +		list_for_each_entry_safe(p, next, additional_passes, link) {
-> +			list_del_init(&p->link);
-> +			p = p->pass(p, range, cur_seq);
-> +			if (p)
-> +				list_add_tail(&p->link, additional_passes);
-> +		}
-> +	}
-
-Like this is very naive, if one driver has only 'prepare' and 'wait
-for device ack' passes, then it will immediately stop being concurrent
-while another device may be still working on its 3rd pass.
-
-So either this should be more complicated to properly support
-different numbers of passes per registration or we should just support
-two passes and be done with it?
-
-Jason
+> > +struct mmu_interval_notifier_pass {
+> > +	struct list_head link;
+> > +	/**
+> > +	 * @pass: Driver callback for additionall pass.
+> > +	 * @additional_pass: Pointer to the mmu_interval_notifier_pass structure.
+> > +	 * @range: The mmu_notifier_range.
+> > +	 * @cur_seq: The current sequence set by the first pass.
+> > +	 *
+> > +	 * Return: Either a pointer to a valid mmu_interval_notifier_pass for
+> > +	 * another pass to be called, or %NULL if processing is complete for this
+> > +	 * notifier. There is no error reporting mechanism for additional passes.
+> > +	 */
+> > +	struct mmu_interval_notifier_pass *
+> > +	(*pass) (struct mmu_interval_notifier_pass *additional_pass,
+> > +		 const struct mmu_notifier_range *range,
+> > +		 unsigned long cur_seq);
+> > +};
+> > +
+> >  /**
+> >   * struct mmu_interval_notifier_ops
+> >   * @invalidate: Upon return the caller must stop using any SPTEs within this
+> > @@ -243,6 +269,10 @@ struct mmu_interval_notifier_ops {
+> >  	bool (*invalidate)(struct mmu_interval_notifier *interval_sub,
+> >  			   const struct mmu_notifier_range *range,
+> >  			   unsigned long cur_seq);
+> > +	bool (*invalidate_multipass)(struct mmu_interval_notifier *interval_sub,
+> > +				     const struct mmu_notifier_range *range,
+> > +				     unsigned long cur_seq,
+> > +				     struct mmu_interval_notifier_pass **pass);
+> 
+> Couldn't this just have a pass number counter and some return code to
+> indicate this notifier is done?
+> 
+> Or do you really need more than 2 passes? Start/finish make sense
+> too. Otherwise you may have issues overlapping the backgroundable
+> operations between different driver types?
+> 
+> > +static void mn_itree_additional_passes(struct list_head *additional_passes,
+> > +				       const struct mmu_notifier_range *range,
+> > +				       unsigned long cur_seq)
+> > +{
+> > +	struct mmu_interval_notifier_pass *p, *next;
+> > +
+> > +	while (!list_empty(additional_passes)) {
+> > +		list_for_each_entry_safe(p, next, additional_passes, link) {
+> > +			list_del_init(&p->link);
+> > +			p = p->pass(p, range, cur_seq);
+> > +			if (p)
+> > +				list_add_tail(&p->link, additional_passes);
+> > +		}
+> > +	}
+> 
+> Like this is very naive, if one driver has only 'prepare' and 'wait
+> for device ack' passes, then it will immediately stop being concurrent
+> while another device may be still working on its 3rd pass.
+> 
+> So either this should be more complicated to properly support
+> different numbers of passes per registration or we should just support
+> two passes and be done with it?
+> 
+> Jason
 
