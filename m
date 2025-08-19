@@ -2,92 +2,92 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A6CBDCA0EE6
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 13:50:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 736F6CA0EEB
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 13:50:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 491766B00C6; Tue, 19 Aug 2025 09:50:28 -0400 (EDT)
+	id 10F798E0037; Tue, 19 Aug 2025 09:50:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 441A46B0128; Tue, 19 Aug 2025 09:50:28 -0400 (EDT)
+	id 0BF6A8E0007; Tue, 19 Aug 2025 09:50:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 330906B0129; Tue, 19 Aug 2025 09:50:28 -0400 (EDT)
+	id EC98B8E0037; Tue, 19 Aug 2025 09:50:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 205316B00C6
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 09:50:28 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DB646BB33F
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 13:50:27 +0000 (UTC)
-X-FDA: 83793641694.12.C5067B2
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf01.hostedemail.com (Postfix) with ESMTP id F37A140015
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 13:50:24 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Ii5siVPO;
-	spf=pass (imf01.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D59948E0007
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 09:50:32 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9C5071407BA
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 13:50:32 +0000 (UTC)
+X-FDA: 83793641904.02.0068F4D
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	by imf19.hostedemail.com (Postfix) with ESMTP id AB0D61A0002
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 13:50:30 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=c0HkI+GS;
+	spf=pass (imf19.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755611425;
+	s=arc-20220608; t=1755611430;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0fLkDwiiUZSss6sfPf8N7ZCd7V1JUEtWvKlq+l/gMKQ=;
-	b=wm7/tPMpc3NT6ywbCBc1Qhg9MNj2B/uodtrrHfwnyhhUaUQzmZtcuyK50VSDKgeBLo5Si1
-	WaajKKEgJEW/FIcEUByybHmtnWtYhFEUVn/HVdjO8pSfVk2eFpG6XJY8QpYPFH0fcIp4MF
-	90uPnBbyhhD/Kqme+mRE3hNJQ9pB0z8=
+	bh=LwTW7izUdo6CYD8//HAPF56SDtcFaT3RKPdG1y/WRl0=;
+	b=J5gtGTQmolEiYJuuWleMY9oD0mmjm2BLFANuHriojhaAd3vcHLnNUQ4j4oUmY5JijCSAXf
+	27FAI7MTwgWL9tUsq7bEwsyum8Lzdb/PKJ0/1HvIF6l78gcXVkrWORrttcGnAxtdw5Bevv
+	wCaPAO0cCxhZ2gmMiGfl9w3znguTfYI=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Ii5siVPO;
-	spf=pass (imf01.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+	imf19.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=c0HkI+GS;
+	spf=pass (imf19.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755611425; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755611430; a=rsa-sha256;
 	cv=none;
-	b=Tb4DuryxGNjFTWZNhS2e1gmxJAhQorJa12lM12dCcad7XGPkg8QGbfoNWi1jO9FTK2oDu/
-	qrmPJL2wGWy40e9vc2bSUDamJsjmuD8+20vZzEaQLo+r6FtfWJz98qomJFGtgyDgmANteK
-	eO+S1cuf94cqvcciC7ehxlYE7o0nWJc=
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-244582738b5so42525605ad.3
-        for <linux-mm@kvack.org>; Tue, 19 Aug 2025 06:50:24 -0700 (PDT)
+	b=Jrj6ZoT7M4LDjUm+rjx0zTZH1LjbMT7Uk6HhfiFsHkiqrIjmQwzoEMC9NlKKUHXSz3czLc
+	iu/LDudSjcZ0KKpf7JXd7m1NR2o4OqYr/u7fxD1Ao3jzNInQsJFRgLayj4JE2JbBBa53oA
+	ZPqVYCQyb6m0MarrxDSHwt8FUUkpCMQ=
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-b4746fd4793so1811141a12.1
+        for <linux-mm@kvack.org>; Tue, 19 Aug 2025 06:50:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1755611424; x=1756216224; darn=kvack.org;
+        d=bytedance.com; s=google; t=1755611429; x=1756216229; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0fLkDwiiUZSss6sfPf8N7ZCd7V1JUEtWvKlq+l/gMKQ=;
-        b=Ii5siVPORa9vb+D4lGra0C7CNqkEV4cvdbIx74XtJa3WVmIOT1HT2I8GiTj3BDCvCD
-         +BIehjVlxDxId1HU6lnLRViJm2IJ8L7RMI5V0vMnbG0vGhwp/7dj+MyeveeLmIiHgSL+
-         2dUCFQ/RIVO1iaLK87QyS5/ogaMJdti91r6I60GKIV+JneTL17Jn7zcoKI9DjnRuZDj7
-         X5Qvh/w+YphZXhRHB7BJYHO/NLC9TMgtnF4B9B7ike1doSXihnPXHpw2iTx7uwD+sNOA
-         UDE48bRfA4ZFAyu+Y+Pk4Odv/DUL1l6f1pa1n93GqyfUiJJ8q7NnJ35IEfT3alPTfvhE
-         5evQ==
+        bh=LwTW7izUdo6CYD8//HAPF56SDtcFaT3RKPdG1y/WRl0=;
+        b=c0HkI+GSBrJmERsqsUW4ub8k0WYhjRUi9yb94ATzLxlqM6WMLg0dEk5hSpOGiOgMxO
+         7ywFhDCjOkmJscCh/y/cSmuz3M27/alOc3TUPAVFtScOaJPI+YE2GvjFapOfOyNdl0YZ
+         1qZxz6IEs0Lq59S9+lzQb0ECnkQYeiztdKzoyM19fmT/xQdqvlNSehRDxVL7geSdydkt
+         8cge3NzM7v3YnEeg/YLZ/mXR/T8ktaa3Z5Kf2p+ULX5l2j/dxC+R3D/LEG8pG0Lw7Jyn
+         XSDA1f8Ofs4Ty2koty+t+5bldPgjTMhL8Ah6XERWyWmEzLOU3PPxoiJohJRQsSF06gvb
+         RWpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755611424; x=1756216224;
+        d=1e100.net; s=20230601; t=1755611429; x=1756216229;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=0fLkDwiiUZSss6sfPf8N7ZCd7V1JUEtWvKlq+l/gMKQ=;
-        b=A8Sol/hQWICixKFwm6ioDlR/MJib8txEAcWl/5C6X5Q0co3iH52degvbY/5VeMc8Gn
-         DAy0EoiL5krIZ8q83CSU71mvoyECJfy2l5+llD55/NVxW/ksfMjnEWWgya+jSK5im+Nc
-         bL2uxA+IwptZK770q6N9/JwfgjDgNpeDHH9nlK8nTjrFxwAEUJP/zkqwkIptMJNA8zzP
-         GzolEtljdLtkkJTo9QQEEY+P9ZXOTzu9xTfufj/iiX58rt2p3vwNpQ+qn+u3w85/95Nf
-         U1qSRYz+I1W1cq1Kz1jHNe0xsGSnHiDYxZOYlBKDRI+uLkqaT9wPsV+29fJ2S+ootohR
-         fvDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWjhs/VtXZDlpkv4UhZ5J655Li3BSKJ1Tu6r9fWMMhM2Fj7Y0YuOdkiAK73/OXGZbfbrdSm8WxfEw==@kvack.org
-X-Gm-Message-State: AOJu0YxH8ne4Z1Keqxn76CPzLFtpRufXk6XTx354jPKMKetW4lXfLbt3
-	BgYoqgw9lsz1SDlgZleC9DfNSXxPjVOi0XDdnMALjGS95MchptjsSN3H7f9iU7E/iOI=
-X-Gm-Gg: ASbGncuLJmiHrhK06H/xWXIn2MHR/lwAsIiLavXXhA7fpxtj6xq7ZgML/ayrptcHNTz
-	JBSnIdy84PZjQtq2vldU6p+3AaUzmpAuq1qa1speifl4Yf7zKzsV66kmzi8QrOeAKdlu9iWj4+h
-	5xdGWNg6Cl8qiLBlmtd1i1KKS92sj+k/G7weCCGj3dMzdttks0koEmaMnRyePCwCqOGjOQo+BeG
-	57VbS96r24IIJegEroL7ludNlh9wnOiAE0SGrz0qKJud2cWWePv0ZTGKKwUxDrUAV3Vkrr5cBt+
-	j5BIgrv3r+nawwUWN9WrjA3v8Eq3qh+ZnHV8Z7TuG4eqzQpbW+bf9/kVKnHTz3pYle+OwupI+vC
-	FpgB8w5RnPiqOUgYWyHd37Stsmytpr5dZ5j2iGrJvxJku/Ns8L+G8WAjn
-X-Google-Smtp-Source: AGHT+IESvYgemIySPSxA386V71buITJEB5A1eQjLKfmg5oq42Sd+h+mzvTGReO0QPPNPP/g2BvgHbA==
-X-Received: by 2002:a17:902:d488:b0:244:99aa:5488 with SMTP id d9443c01a7336-245e046e326mr36849155ad.30.1755611423589;
-        Tue, 19 Aug 2025 06:50:23 -0700 (PDT)
+        bh=LwTW7izUdo6CYD8//HAPF56SDtcFaT3RKPdG1y/WRl0=;
+        b=nlSV8+MXQvnJCXpyrNYDiuqbpHYLmrfavGrDr37Ax5uJD5LC7tYHFLm/+uDRFsgyBN
+         ar6suSqZqKyvQ4oowBiIZ8ALookow9V31qEG0vEYxpitHXkD4cn6/B4xq6HmpmobIMaY
+         5/uaFG8YOexVLZOvOzCMMwq2F2kFeK70ieZFv9vyqnejhruve1b9RczPVxhcgQKXQpDv
+         IRqwFN9Bv4cJkaWKE62fiDlhKdaZiFfC+IKoSTFrXYyxv0qjuAyZAFwKgdeB16aDJ/gs
+         i1KGSKRO2iwAt1OdFttQ4uYJ4MjKBkTt1eZzoK4zCa5tdduWP8gipdUfZ6VGGPmwYGYr
+         BgAg==
+X-Forwarded-Encrypted: i=1; AJvYcCUl5oBQ/eqZSvQw94aVRvsXmMQAgVEHc4RawCCCsRrB91RuFsGRkqSAes/xNTedBzJeOkSeQsqtSg==@kvack.org
+X-Gm-Message-State: AOJu0YweY0jVNsgg5JNTAP5zgCAMMLc/VMJzZGo5VpqeR8xTnAoSQYYJ
+	+z8YEhvuh/AdY3hFZpGFTZ/KG9RMMazhlN0kui2YQ+zHmRGnLIRg1zTwrO0mqKpvYEU=
+X-Gm-Gg: ASbGnctrqVMepp2GkBiFAMQGfq9fYzaMTzLoLvmCEtlFFszxMDIs2b20N3HdVAkOTeK
+	uLKMg+1ipP8ZhaU9E3XViJLPYI+gFPbJojVad9Yg7q1exVlrxWMY/Im+cV6VpdD35WLstLXZfXW
+	u4jaxn/wUPAcVAEJppHYMGfZEJqQanTnWoRulLZdADVaNLrU+YnJBgnARfVhKB6Jvho3LX/J6mf
+	WnzJpsjFlPCd86daq5wpW6dbq1RdoeowjC5exNVcU3KPQUI7d8+oBx202h2u0lSax6zzTQYsYqd
+	ScZpqPPewnP8jrYyI2w4CrlCc5K6/sjySFIxWUrNGIrbRXan/hfU6kEZMCvrKMFzU4SyUEYXUsS
+	ir+z2ccJNJXYwzgVTZtT6leJtHraH917tCcwXZDCcouTx0ImVC5Yc2CLz
+X-Google-Smtp-Source: AGHT+IG3M4152x1Qa0AohjmhQrhbPKACbweaZeZYf2EtQOf2Ag/TgiWDxzHEJsq3FzMfjcT7SEZo1A==
+X-Received: by 2002:a17:902:e545:b0:243:8f:6d7d with SMTP id d9443c01a7336-245e04e232fmr28790075ad.50.1755611429240;
+        Tue, 19 Aug 2025 06:50:29 -0700 (PDT)
 Received: from L6YN4KR4K9.bytedance.net ([61.213.176.9])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446d5533c4sm109937815ad.140.2025.08.19.06.50.18
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446d5533c4sm109937815ad.140.2025.08.19.06.50.24
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 19 Aug 2025 06:50:23 -0700 (PDT)
+        Tue, 19 Aug 2025 06:50:28 -0700 (PDT)
 From: Yunhui Cui <cuiyunhui@bytedance.com>
 To: yury.norov@gmail.com,
 	linux@rasmusvillemoes.dk,
@@ -102,22 +102,22 @@ To: yury.norov@gmail.com,
 	cl@gentwo.org,
 	linux-mm@kvack.org
 Cc: Yunhui Cui <cuiyunhui@bytedance.com>
-Subject: [PATCH 1/2] riscv: remove irqflags.h inclusion in asm/bitops.h
-Date: Tue, 19 Aug 2025 21:50:06 +0800
-Message-Id: <20250819135007.85646-2-cuiyunhui@bytedance.com>
+Subject: [PATCH 2/2] riscv: introduce percpu.h into include/asm
+Date: Tue, 19 Aug 2025 21:50:07 +0800
+Message-Id: <20250819135007.85646-3-cuiyunhui@bytedance.com>
 X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 In-Reply-To: <20250819135007.85646-1-cuiyunhui@bytedance.com>
 References: <20250819135007.85646-1-cuiyunhui@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F37A140015
-X-Stat-Signature: qd5tdpadi1d8ato8535xkoih8zfdb95j
+X-Rspamd-Queue-Id: AB0D61A0002
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1755611424-164221
-X-HE-Meta: U2FsdGVkX18lc7WyjiKkkX5TEIU3P4y0di+QJ4ugZWTjnu3Sz7SCcFXPX8daK4pCChZdcgdcZQESoenfdShQCFyrmOMZ+M/DHXcfLksGzQoJCt5D7dIzRHihhqMo6OoJ4Ip6PSG2/TuC22yYPpItlAsDTnuFuC5lmoR/lZSVMWjRsORp3eL/tf406DHFla7cseQcEvWocz7gEt+TuSnKgKvb1d8bGW1uNrhjLyAWdPAh6UD/t35wSHMCrZFlgs0gEZA+F6TSCvAauSGv+xfMsTtavQYOLGj16yNNU3G3V9r5uCVTYh5HRM6jUwmz26D3u/ZOqDZ3Ix1AqX509RMJvvkkkK1sM0p7XzUciLM+iQ2QU1gZm8ngXEDrtzq7CDFn4ZnM/zToFaV4o9zmIXTnokCzD5HQH4Tw5BzupLqB71IlXHJpwRLfhpixO38ps94DFVc7Rsjal4DYFbsVyE6LdNTfZ22/0TpB+imIAbZAJ0DBUxVnjMAquc/AX/Se/UV0X7v8LQIq8qVSTutIep3vpCDlkT99p204wKOUFO/pSha5o8DyN95G4HdNCltCWSO7THSgh9gZFc9O2z2UlhoZoLcfIVfEBeex/pTOuqRjwVfJ3SysimMpRQ3FmQM6TcMSd7soAa2MakHxvXmJ87OEiXts8J2v/sjKE82QhRU7qkEVlFPxFkW25O6l6EXBWyEdDHaptkg5pAtzM1UGX1s7xsLFVPEt6xW/khggvWSdDdG8/hNNUFy4NrvHUcCU2wrWmKt2gdRyRZgkTzzFoeuv43VbmxC8TqLeKJa4TsRsZ/REnkX+2Qu21f5MVpP0dXf8/UYZCXTbeU3WANNp07ZGjHdMXlYZh3OW7ZL3F6mtUOLE0eQj4IwxJ6MlkwwwVWtBifmNAXNCuPNnwDmOlnfIY+OiR+0nkrrMTc02bOHVtkYtaEZqYePyq4l33loewH3GemPQYaabiR9jvBy0WgK
- 7fdh7lPm
- EBfvP8w6YgzOcBkyWU2DvgIzhYFiCVT2ehuPghoTq5VIYlHX3zPg4jkitrln1CI6K5dLrFcEBlnDoFlUjVx196pvNb62/DTU5OZENzHuzj5Bf0zzoeu67MTL8MVuAXPEhmHtXeDW+iunNe5CE/j1qzsIJ7MGMVdDaT8Ap1wzO50JI64vtcDAsFkiBNpGzY9mSBP9xA5Ery4LrZKuRFitn8bxviiv+DG+cpy9oyxxF8ell6tdIfjSEbC245TLf6TsEMw3O9TnSWmEb2ZyV6OZf54ZLYWln+qPjNrzx8vFrq+uzdDARLhp6tQg5NGDIq4R556G9awaoZ16zfeWBXOqofn50qunRzeBdODCjxe4wCuuxwx4CxozuCSybd3eSgv7lu6RunDIWkfAZ8SY9WXvgvNNFDzwe9rsBKVWW8CttJTAgvaszlWkNuOPEPG++x1g2QswR
+X-Stat-Signature: wc3z9ksn6fwrojh86ui5k46u34syigw1
+X-HE-Tag: 1755611430-436810
+X-HE-Meta: U2FsdGVkX1+l7WKjXcVaEsOpveY9UMW4z9tiizwJhl6gy7qCVNY7V7BrOIT/vHC/B1x5M9Vc445z+IugEFU1qujOC+wQWMvmH5fs6jS+9q1opX07P9aAwn1kXUYsMlZnFdm0j5tmmINighrr2EKSbpyMKRMZ/B20U4faPuj+qWtoua90nOzcMtHiOzDEQds4Hp9N31G53+ITls9EsH2mxYcfcg1CZWA8THs3vq7cSqDpplFleY6Wsg3rx9yrlNu4Hn61eecI3HZ4rG3IejDYHni4h1x8fw21n4qcf8m7vsOgKPmXSL1wJQjA3XJyRkRhGCdsxNhKVeN49yh52dUcqaPtLw8I1NTlcw+I2ZWuZujZlZE8M1kgbFFOpJK3Os37Z/bCgvohZ5n4TaXdwPdG/CwwIMUjA7/jFpJu4w/okItAAEjW28OxJL0zvCKYR+NDG6Mhs858BsYkSeXoXdpfs6ieuIfYQ6q80odGcoUSHCfyzOdTWSQtgyNS6MMZyAXpXv1SaPNN4AEUVMKKaA/GJugqiVtNLGg1tMDjDrWVgInqyz7paTxMaPNOeC0gDcj7NNHLC1SnPMVFRZt8VmIAfMAtJ+I/BvCazKWntICB2ivueCrT9o6medeJQWkJtINsd8Tr8SNzu+Nmg3SgC3FTwCGSmPpYO56qoIZGOXkfq9MVgKR894l+6EGynouPwgBDpTKjZd1u0HDYn4u08d+VZZcTbCpDBmxIuVKCVpYzIaSxnJBn87FXkmxyW0KOK90HJahxMrIV1eNbPhvH07uUBuy1Eb1/hJ+WexCA0NXFcZ0mz30XhVvCX7FhtUJkrCDUgxlTDw/ksacNyx/mQakCAwkTJRPKkkcnjIQ5lcxPu8er61nwH8iIMPhKnMPF9XJAHgGWHbd2mABHk7hHR6rx/gOoNHw6+DC4S8ruby0Pk0iN8W5RrKVxZnnVyR9KncQhtmWfip9+WXtrq4TDslR
+ bR71lMOC
+ z8mx73+ADaMIDs1tDsEVPFmPjZ4OsnqKBx+L2q0AuTWm7HyNMhzwJtiWJ6mystC/349XAr7VF35F+L8FNwEw/q4qTr8a/mgzDOY7GxMs3mvTrtcct+0cWjgBnRD0m+l9EwW2DjAnJLTML8RxYLDPG21BylbuqaLWqWCIPldQk5vEgtQabB1JS/hDaAzECqH/oaJl/sEjZ1ALHz3IqkIPUs/t8SmFxjnjk+gKPuY8XQtUTITyozD7C9NI6P/Tp5wlBQH5HZosBh03W+y4GeXA8n+fzho0T7RyZpEDtu90QQqD/wgPnlkVPCpBSHL2qDmKkLOKi9HsXkMIXvvGAQuQASP4sTxABWS+QAQKlTexW+frcLfzEQfwy3KF3iTi6f23BZg1Z
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,56 +126,184 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The arch/riscv/include/asm/bitops.h does not functionally require
-including /linux/irqflags.h. Additionally, adding
-arch/riscv/include/asm/percpu.h causes a circular inclusion:
-kernel/bounds.c
-->include/linux/log2.h
-->include/linux/bitops.h
-->arch/riscv/include/asm/bitops.h
-->include/linux/irqflags.h
-->include/linux/find.h
-->return val ? __ffs(val) : size;
-->arch/riscv/include/asm/bitops.h
+Current percpu operations rely on generic implementations, where
+raw_local_irq_save() introduces substantial overhead. Optimization
+is achieved through atomic operations and preemption disabling.
 
-The compilation log is as follows:
-CC      kernel/bounds.s
-In file included from ./include/linux/bitmap.h:11,
-               from ./include/linux/cpumask.h:12,
-               from ./arch/riscv/include/asm/processor.h:55,
-               from ./arch/riscv/include/asm/thread_info.h:42,
-               from ./include/linux/thread_info.h:60,
-               from ./include/asm-generic/preempt.h:5,
-               from ./arch/riscv/include/generated/asm/preempt.h:1,
-               from ./include/linux/preempt.h:79,
-               from ./arch/riscv/include/asm/percpu.h:8,
-               from ./include/linux/irqflags.h:19,
-               from ./arch/riscv/include/asm/bitops.h:14,
-               from ./include/linux/bitops.h:68,
-               from ./include/linux/log2.h:12,
-               from kernel/bounds.c:13:
-./include/linux/find.h: In function 'find_next_bit':
-./include/linux/find.h:66:30: error: implicit declaration of function '__ffs' [-Wimplicit-function-declaration]
-   66 |                 return val ? __ffs(val) : size;
-      |                              ^~~~~
+Since RISC-V does not support lr/sc.b/h, when ZABHA is not supported,
+we need to use lr/sc.w instead, which requires some additional mask
+operations. In fact, 8/16-bit per-CPU operations are very few. The
+counts during system startup are as follows:
+Reads: 8-bit: 3, 16-bit: 3, 32-bit: 1531, 64-bit: 471
+Writes: 8-bit: 4, 16-bit: 3, 32-bit: 32, 64-bit: 238
+Adds: 8-bit: 3, 16-bit: 3, 32-bit: 31858, 64-bit: 7656
+Add-Returns: 8-bit: 0, 16-bit: 0, 32-bit: 0, 64-bit: 2
+ANDs: 8-bit: 0, 16-bit: 0, 32-bit: 0, 64-bit: 0
+ANDNOTs: 8-bit: 0, 16-bit: 0, 32-bit: 0, 64-bit: 0
+ORs: 8-bit: 0, 16-bit: 0, 32-bit: 70, 64-bit: 0
+
+hackbench -l 1000:
+Reads: 8-bit: 3, 16-bit: 3, 32-bit: 1531, 64-bit: 2522158
+Writes: 8-bit: 4, 16-bit: 3, 32-bit: 34, 64-bit: 2521522
+Adds: 8-bit: 3, 16-bit: 3, 32-bit: 47771, 64-bit: 19911
+Add-Returns: 8-bit: 0, 16-bit: 0, 32-bit: 0, 64-bit: 2
+ANDs: 8-bit: 0, 16-bit: 0, 32-bit: 0, 64-bit: 0
+ANDNOTs: 8-bit: 0, 16-bit: 0, 32-bit: 0, 64-bit: 0
+ORs: 8-bit: 0, 16-bit: 0, 32-bit: 70, 64-bit: 0
+
+Based on this, 8bit/16bit per-CPU operations can directly fall back to
+the generic implementation.
 
 Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
 ---
- arch/riscv/include/asm/bitops.h | 1 -
- 1 file changed, 1 deletion(-)
+ arch/riscv/include/asm/percpu.h | 138 ++++++++++++++++++++++++++++++++
+ 1 file changed, 138 insertions(+)
+ create mode 100644 arch/riscv/include/asm/percpu.h
 
-diff --git a/arch/riscv/include/asm/bitops.h b/arch/riscv/include/asm/bitops.h
-index d59310f74c2ba..d9837b3cf05fe 100644
---- a/arch/riscv/include/asm/bitops.h
-+++ b/arch/riscv/include/asm/bitops.h
-@@ -11,7 +11,6 @@
- #endif /* _LINUX_BITOPS_H */
- 
- #include <linux/compiler.h>
--#include <linux/irqflags.h>
- #include <asm/barrier.h>
- #include <asm/bitsperlong.h>
- 
+diff --git a/arch/riscv/include/asm/percpu.h b/arch/riscv/include/asm/percpu.h
+new file mode 100644
+index 0000000000000..5a1fdb37a8056
+--- /dev/null
++++ b/arch/riscv/include/asm/percpu.h
+@@ -0,0 +1,138 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#ifndef __ASM_PERCPU_H
++#define __ASM_PERCPU_H
++
++#include <linux/preempt.h>
++
++#define PERCPU_RW_OPS(sz)						\
++static inline unsigned long __percpu_read_##sz(void *ptr)		\
++{									\
++	return READ_ONCE(*(u##sz *)ptr);				\
++}									\
++									\
++static inline void __percpu_write_##sz(void *ptr, unsigned long val)	\
++{									\
++	WRITE_ONCE(*(u##sz *)ptr, (u##sz)val);				\
++}
++
++#define __PERCPU_AMO_OP_CASE(sfx, name, sz, amo_insn)			\
++static inline void							\
++__percpu_##name##_amo_case_##sz(void *ptr, unsigned long val)		\
++{									\
++	asm volatile (							\
++		"amo" #amo_insn #sfx " zero, %[val], %[ptr]"		\
++		: [ptr] "+A" (*(u##sz *)ptr)				\
++		: [val] "r" ((u##sz)(val))				\
++		: "memory");						\
++}
++
++#define __PERCPU_AMO_RET_OP_CASE(sfx, name, sz, amo_insn)		\
++static inline u##sz							\
++__percpu_##name##_return_amo_case_##sz(void *ptr, unsigned long val)	\
++{									\
++	register u##sz ret;						\
++									\
++	asm volatile (							\
++		"amo" #amo_insn #sfx " %[ret], %[val], %[ptr]"		\
++		: [ptr] "+A" (*(u##sz *)ptr), [ret] "=r" (ret)		\
++		: [val] "r" ((u##sz)(val))				\
++		: "memory");						\
++									\
++	return ret + val;						\
++}
++
++#define PERCPU_OP(name, amo_insn)					\
++	__PERCPU_AMO_OP_CASE(.w, name, 32, amo_insn)			\
++	__PERCPU_AMO_OP_CASE(.d, name, 64, amo_insn)
++
++#define PERCPU_RET_OP(name, amo_insn)					\
++	__PERCPU_AMO_RET_OP_CASE(.w, name, 32, amo_insn)		\
++	__PERCPU_AMO_RET_OP_CASE(.d, name, 64, amo_insn)
++
++PERCPU_RW_OPS(8)
++PERCPU_RW_OPS(16)
++PERCPU_RW_OPS(32)
++PERCPU_RW_OPS(64)
++
++PERCPU_OP(add, add)
++PERCPU_OP(andnot, and)
++PERCPU_OP(or, or)
++PERCPU_RET_OP(add, add)
++
++#undef PERCPU_RW_OPS
++#undef __PERCPU_AMO_OP_CASE
++#undef __PERCPU_AMO_RET_OP_CASE
++#undef PERCPU_OP
++#undef PERCPU_RET_OP
++
++#define _pcp_protect(op, pcp, ...)					\
++({									\
++	preempt_disable_notrace();					\
++	op(raw_cpu_ptr(&(pcp)), __VA_ARGS__);				\
++	preempt_enable_notrace();					\
++})
++
++#define _pcp_protect_return(op, pcp, args...)				\
++({									\
++	typeof(pcp) __retval;						\
++	preempt_disable_notrace();					\
++	__retval = (typeof(pcp))op(raw_cpu_ptr(&(pcp)), ##args);	\
++	preempt_enable_notrace();					\
++	__retval;							\
++})
++
++#define this_cpu_read_1(pcp)		_pcp_protect_return(__percpu_read_8, pcp)
++#define this_cpu_read_2(pcp)		_pcp_protect_return(__percpu_read_16, pcp)
++#define this_cpu_read_4(pcp)		_pcp_protect_return(__percpu_read_32, pcp)
++#define this_cpu_read_8(pcp)		_pcp_protect_return(__percpu_read_64, pcp)
++
++#define this_cpu_write_1(pcp, val)	_pcp_protect(__percpu_write_8, pcp, (unsigned long)val)
++#define this_cpu_write_2(pcp, val)	_pcp_protect(__percpu_write_16, pcp, (unsigned long)val)
++#define this_cpu_write_4(pcp, val)	_pcp_protect(__percpu_write_32, pcp, (unsigned long)val)
++#define this_cpu_write_8(pcp, val)	_pcp_protect(__percpu_write_64, pcp, (unsigned long)val)
++
++#define this_cpu_add_4(pcp, val)	_pcp_protect(__percpu_add_amo_case_32, pcp, val)
++#define this_cpu_add_8(pcp, val)	_pcp_protect(__percpu_add_amo_case_64, pcp, val)
++
++#define this_cpu_add_return_4(pcp, val)		\
++_pcp_protect_return(__percpu_add_return_amo_case_32, pcp, val)
++
++#define this_cpu_add_return_8(pcp, val)		\
++_pcp_protect_return(__percpu_add_return_amo_case_64, pcp, val)
++
++#define this_cpu_and_4(pcp, val)	_pcp_protect(__percpu_andnot_amo_case_32, pcp, ~val)
++#define this_cpu_and_8(pcp, val)	_pcp_protect(__percpu_andnot_amo_case_64, pcp, ~val)
++
++#define this_cpu_or_4(pcp, val)	_pcp_protect(__percpu_or_amo_case_32, pcp, val)
++#define this_cpu_or_8(pcp, val)	_pcp_protect(__percpu_or_amo_case_64, pcp, val)
++
++#define this_cpu_xchg_1(pcp, val)	_pcp_protect_return(xchg_relaxed, pcp, val)
++#define this_cpu_xchg_2(pcp, val)	_pcp_protect_return(xchg_relaxed, pcp, val)
++#define this_cpu_xchg_4(pcp, val)	_pcp_protect_return(xchg_relaxed, pcp, val)
++#define this_cpu_xchg_8(pcp, val)	_pcp_protect_return(xchg_relaxed, pcp, val)
++
++#define this_cpu_cmpxchg_1(pcp, o, n)	_pcp_protect_return(cmpxchg_relaxed, pcp, o, n)
++#define this_cpu_cmpxchg_2(pcp, o, n)	_pcp_protect_return(cmpxchg_relaxed, pcp, o, n)
++#define this_cpu_cmpxchg_4(pcp, o, n)	_pcp_protect_return(cmpxchg_relaxed, pcp, o, n)
++#define this_cpu_cmpxchg_8(pcp, o, n)	_pcp_protect_return(cmpxchg_relaxed, pcp, o, n)
++
++#define this_cpu_cmpxchg64(pcp, o, n)	this_cpu_cmpxchg_8(pcp, o, n)
++
++#define this_cpu_cmpxchg128(pcp, o, n)					\
++({									\
++	typedef typeof(pcp) pcp_op_T__;					\
++	u128 old__, new__, ret__;					\
++	pcp_op_T__ *ptr__;						\
++	old__ = o;							\
++	new__ = n;							\
++	preempt_disable_notrace();					\
++	ptr__ = raw_cpu_ptr(&(pcp));					\
++	ret__ = cmpxchg128_local(ptr__, old__, new__);			\
++	preempt_enable_notrace();					\
++	ret__;								\
++})
++
++#include <asm-generic/percpu.h>
++
++#endif /* __ASM_PERCPU_H */
 -- 
 2.39.5
 
