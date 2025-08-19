@@ -2,120 +2,179 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A1139CA0EE6
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 07:39:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A035ECA0EED
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 07:41:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4092B8E001B; Tue, 19 Aug 2025 03:39:47 -0400 (EDT)
+	id 286B68E001C; Tue, 19 Aug 2025 03:41:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E2308E0002; Tue, 19 Aug 2025 03:39:47 -0400 (EDT)
+	id 237828E0002; Tue, 19 Aug 2025 03:41:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F7AB8E001B; Tue, 19 Aug 2025 03:39:47 -0400 (EDT)
+	id 0B1568E001C; Tue, 19 Aug 2025 03:41:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 187F78E0002
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 03:39:47 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A38731602D0
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 07:39:46 +0000 (UTC)
-X-FDA: 83792707572.14.44253D9
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf24.hostedemail.com (Postfix) with ESMTP id A7F32180003
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 07:39:44 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="M7TFl/JU";
-	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id E80F08E0002
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 03:41:48 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9EA9FC02C3
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 07:41:48 +0000 (UTC)
+X-FDA: 83792712696.05.2E93169
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 32DF7140003
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 07:41:46 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FzPygK7Z;
+	spf=pass (imf23.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755589184;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1755589306;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JlGG0MimgPVuD1cdmYrztEX7ylcMD0YKZDmGx1Z6TgU=;
-	b=DDyRV9/05J85QzV/Hbt4O8PfvwSMxWl0rZpPdrlirP6G2RCK0xJC1CTxmyw3gEKrZpSY/H
-	qMtSOC5ndJINHYxIMfrKNG9GGRiQEsFVDVVqDlDnGogIMvpq6mUFXda1cNo3PMvbwBThup
-	ukKOUH1UOtKhaOOLU2a2Ohy1AZK9QTc=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="M7TFl/JU";
-	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755589184; a=rsa-sha256;
+	bh=KmtWPp0yQOU5JxPYnS+WOg3Vcn1uX2+BI6vYu6deLHc=;
+	b=j8ClykiVME5f1VpauEQmSLKf1O7kxr0e65JMIS8rKtOKb5zh9sgnpKQC5pSeVlP+Vjx5Is
+	g0AIhTiMxIwiNIm5oT3CX3ymO7sewxHOz+MEERY0gyvNTJR82FiKNPwX1cU/DAA8ubeig9
+	D9daIPOFhD1rFE5n8jP8qxRrhmyO1L8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755589306; a=rsa-sha256;
 	cv=none;
-	b=FRWZIdmfTEFwt5DdIDbCjpYKgVqejOwvsfXheKAz2+YXwjkHmESJDeVM6GMHR/agaFfhF8
-	SaHeWU8BCmELgdNyrG5bBUftPvMKwgXko3UNn27siNJHRh6bRds/noQoPuqrP4mWC8F+jx
-	HjpLpNYy5G02QMxt3KezDx6gdzM8xG4=
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-afcb79f659aso749020666b.2
-        for <linux-mm@kvack.org>; Tue, 19 Aug 2025 00:39:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755589183; x=1756193983; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JlGG0MimgPVuD1cdmYrztEX7ylcMD0YKZDmGx1Z6TgU=;
-        b=M7TFl/JU4TzisiGNHTp+VE2lGkz/2IQHxNDx8zR/Ey5eYrjm+eSciMpHjbK+Yw6Hd3
-         t8aYuPcnCi7x60Pxw7W03YZ6YLl+lPdsuHHqRmHZeoguojIm5l3jdSB2/SvzAJ2Rtt2T
-         kB8PUVJlYGzlarIZJX38EHJ9b7SAm7b01fpxlIK9B66bEnHUcIOAqgGGpyx5e95u6lLz
-         qgFWntz5W5kbuB+Jgfd17JB86Zeb7zunudL1Mm2tWPk2ZJ0BQWlcVKp/Q8sepMZezxqe
-         P6FME/6SZDT5ZgELJ/JyQIvj/eoOaxYqBaUmIW2x/hfrdx+yTUdi5a+vifX7heAg7/C8
-         VD1A==
+	b=UIsOYmGbO4cmxLA3kSHZEtCU/X8LjUusC10i3UTM6+F1fLpiMS8/Z1jyY0/7oh75LgH5jv
+	WyqPPEX8FvfHqaJXWhwZNUH8sNt3dl2KBrxKKDe3IOHlrxNrI+O87Ryp0ewNCxVQDCdi1/
+	AHb6Em0Cp0cKNIPTBkaccpOgCuFKeFM=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FzPygK7Z;
+	spf=pass (imf23.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755589305;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=KmtWPp0yQOU5JxPYnS+WOg3Vcn1uX2+BI6vYu6deLHc=;
+	b=FzPygK7ZwVc7gZOnIg83nOFRLxX/gs74HK6Yz/mf93UTQ4uR+2doaKma1FMaSkP3ownHDs
+	XUlft5J250p4XRGY0c2dGE0ROr/OURRbrskg5blnI35Xn9o2MvtBbrqcjX7X38dyh/iL2g
+	MF6npRUvET6TipXZNwaRg1SxswssPW0=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-205-KFZdFxlONOSLJnizjYaO8g-1; Tue, 19 Aug 2025 03:41:44 -0400
+X-MC-Unique: KFZdFxlONOSLJnizjYaO8g-1
+X-Mimecast-MFC-AGG-ID: KFZdFxlONOSLJnizjYaO8g_1755589303
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45a1b00352eso18106515e9.0
+        for <linux-mm@kvack.org>; Tue, 19 Aug 2025 00:41:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755589183; x=1756193983;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=JlGG0MimgPVuD1cdmYrztEX7ylcMD0YKZDmGx1Z6TgU=;
-        b=lAg+XdG9OAwD+zfb3g2FYGy9w1T89xsvHAvHWuvusrtIYSe42tzTFu8qENOd8waJNT
-         rHXqepb1WQJEDLxB2mTONecRmMmWGEpBYxqH5eelLkE95ahWa8RNEvWLKf+vmwNXqbMI
-         Dnzx1a7bxm0DvKvDhsTP6uzhvUuJ4eXOBk5hZeB2YfNNR4bwMnKid0Z2tw5vdounDxGy
-         cnZ44jKIgtwKhgVW8VO1N0AgQE1O1qiptDwOmuJz4epU1G/KBetxPjY19QnPjYpdZiow
-         BFezdViIAyF1bNQzrJKiUlNd+cINu2UOoNnZigDXztOKQ78ikI87TSZs06VX3MC9voHr
-         wmeA==
-X-Gm-Message-State: AOJu0YzkdRikcmj3/VWGDCciToBv0nKJ4nyP3+vqV6C7JG6cPObZTeZQ
-	xvgq+EiD9nsCFHwvdJDweA/zrE/RA6h5KpuG6eB5f4gPy+oqBjhJ/wAk
-X-Gm-Gg: ASbGnct9DseuaE7PvYeENorFHrH1n4uok6PEV30vnGaEV9KaVpWUYPboDP8LUwNMO7Z
-	MCurcrYF4o1SvRGgnUQUgj1ImsKAT75QnCmKn91BQXvchXzWY7UWlHBFmtMD8/z3efdmy+WnPj0
-	LyIHsbkzznkLWjE1lFIwNsGJqBPVH6vxITdncnPEH70lAQpswpuYLuAQH3eBDg+BUN6sLwQfQtL
-	XjaZLOgebLNwPrkP6N0aP5f98gPmik3h6TLlOJBIino2l/UURNgOingohardOBhoh2SGQQtyuu6
-	01H5EYPdqDldosZ00sg6vGX8STsbGZ1BmrMp+uh4t+IVr5b5DXTsTFqRz6XEXn7vS+ml9bKXuL+
-	/MiyBGlQIOrw4byOfRqMC1A==
-X-Google-Smtp-Source: AGHT+IFDydZFQrkosnxXfosEK8EVZgkb6qLnlT4kiVd7o1+cVB/7rTEUO0G9UdoGYY9iwV3LjvIXOQ==
-X-Received: by 2002:a17:907:3e1d:b0:afc:bcfc:b3b7 with SMTP id a640c23a62f3a-afddd0d283amr142302066b.38.1755589182644;
-        Tue, 19 Aug 2025 00:39:42 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afcdce53f2bsm973006866b.4.2025.08.19.00.39.42
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 19 Aug 2025 00:39:42 -0700 (PDT)
-Date: Tue, 19 Aug 2025 07:39:41 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Bill Wendling <morbo@google.com>,
-	Daniel Jordan <daniel.m.jordan@oracle.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH 0/4] mm/mm_init: simplify deferred init of struct pages
-Message-ID: <20250819073941.esl7z5ibqqeabunh@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250818064615.505641-1-rppt@kernel.org>
+        d=1e100.net; s=20230601; t=1755589303; x=1756194103;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KmtWPp0yQOU5JxPYnS+WOg3Vcn1uX2+BI6vYu6deLHc=;
+        b=KNPNwYe/+1S4PRra13LVCXGr8uV3d/PVwoGry/ujw458XPpA9Nmq45DcVVqtMMaBJL
+         D++7tJzk/hbdHFVPtoZ3itpePkaz9INAts3Xvpqs95olYKYeHrdUybM3dvd35oJehB6a
+         EZ9ElqOkX3gcgmbO69xU4P074ZtxQ6qaAhbMiT6h/77jDvFhscJcj8ilFf1D1bYMgHET
+         RTH5Cy65AXNENRJwyrtgY9Dn3zybvacBMOH3UBCD5SnmQnwJ0j8CYGy54LWcilpOqgqb
+         zI9/4AWSjLKXSdR0PuOoLb9q7Mfzp/W7JqVVOdACRLqxaawohluPASSKDZops3GEtLZi
+         7kkg==
+X-Forwarded-Encrypted: i=1; AJvYcCWVg9qkiiX0UP1YVBKAT9LPHpr2z/9DPg7BRdv7zD6iqkoGCMI8TB/MTtjpqANQlNrsDL7Z5f5jhg==@kvack.org
+X-Gm-Message-State: AOJu0Yx2z0YpymPQ66HjKxLerN5iyqVRGOgKbVYUThhq37SoVc/HJP+X
+	sSUqqYTKfAbUE80/jd8AmJEuwZLpSraBApo673kr9nAD2CYHHTkrvBYKmWpFTH8bk7ZfNXJ7WBM
+	vobfGK5/HRVdqDGx4Gp+Ha849gRXhno15lhPToLH2dirNRr4297zZ
+X-Gm-Gg: ASbGncsYNABkShs04roEcCR9gsCMXW1KZNvc6LWbuq+93Mxw20CbrnMKEtRSlw8SgrT
+	JFo7bJFoQankpsB0+86ZEHGzBPDOzcbWzhEhnlP+n5ehabANE4r/Ch6xQR1DqAcUGbJPl0TAqQ8
+	Qacsb34JYqnQqL+Qr95IQR+x0MvH3IYRfrC+vAtcN9x8BHvrBCOHhpgTo3WQLbj+UFO+sUUOtPz
+	SuTB0MjsWM3BspjLsqp1kHQTJ6JC/oJY07XyHPRiBbcGmp1Sqybt2bIe/V4uVV1ZvE9jXyJyNrI
+	ZthmM8wAoN+01/fIsBtbVayfvvuNiEMOLeHDmyPZKo9+7YYE/uIwbECUKuM4CGHGYDtKBkpO1Nu
+	cY3bjXyqbI7hU3pqNSLuRS9zAeDvxtws1LMhhmzPcRXhxgyt9aRttv17Wb3Punl4yefM=
+X-Received: by 2002:a05:600c:3144:b0:456:2212:46b8 with SMTP id 5b1f17b1804b1-45b43e0bfbcmr8695275e9.28.1755589302922;
+        Tue, 19 Aug 2025 00:41:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG35zJviGwvUkWVod6LeZhZp4n0OP2P4yeQ5cLqpahPhuo+I3q3qEllQ2PjejXopYNiv09LgQ==
+X-Received: by 2002:a05:600c:3144:b0:456:2212:46b8 with SMTP id 5b1f17b1804b1-45b43e0bfbcmr8695065e9.28.1755589302398;
+        Tue, 19 Aug 2025 00:41:42 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f07:8700:71be:5385:87b8:5a98? (p200300d82f07870071be538587b85a98.dip0.t-ipconnect.de. [2003:d8:2f07:8700:71be:5385:87b8:5a98])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a1c61a66esm201863575e9.0.2025.08.19.00.41.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 Aug 2025 00:41:41 -0700 (PDT)
+Message-ID: <4289fc02-8e09-4d33-a4a1-0e4b268b008c@redhat.com>
+Date: Tue, 19 Aug 2025 09:41:40 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250818064615.505641-1-rppt@kernel.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A7F32180003
-X-Stat-Signature: ziwe7iaepc6xytrmohtryd6wp1istfjb
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] arm64/mm: Update create_kpti_ng_temp_pgd() to handle
+ pgtable_alloc failure
+To: Chaitanya S Prakash <chaitanyas.prakash@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Cc: Ryan Roberts <ryan.roberts@arm.com>,
+ Yang Shi <yang@os.amperecomputing.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Kevin Brodsky <kevin.brodsky@arm.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Zhenhua Huang <quic_zhenhuah@quicinc.com>, Joey Gouly <joey.gouly@arm.com>
+References: <20250813145607.1612234-1-chaitanyas.prakash@arm.com>
+ <20250813145607.1612234-3-chaitanyas.prakash@arm.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
+ ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwZoEEwEIAEQCGwMCF4ACGQEFCwkIBwICIgIG
+ FQoJCAsCBBYCAwECHgcWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaJzangUJJlgIpAAKCRBN
+ 3hD3AP+DWhAxD/9wcL0A+2rtaAmutaKTfxhTP0b4AAp1r/eLxjrbfbCCmh4pqzBhmSX/4z11
+ opn2KqcOsueRF1t2ENLOWzQu3Roiny2HOU7DajqB4dm1BVMaXQya5ae2ghzlJN9SIoopTWlR
+ 0Af3hPj5E2PYvQhlcqeoehKlBo9rROJv/rjmr2x0yOM8qeTroH/ZzNlCtJ56AsE6Tvl+r7cW
+ 3x7/Jq5WvWeudKrhFh7/yQ7eRvHCjd9bBrZTlgAfiHmX9AnCCPRPpNGNedV9Yty2Jnxhfmbv
+ Pw37LA/jef8zlCDyUh2KCU1xVEOWqg15o1RtTyGV1nXV2O/mfuQJud5vIgzBvHhypc3p6VZJ
+ lEf8YmT+Ol5P7SfCs5/uGdWUYQEMqOlg6w9R4Pe8d+mk8KGvfE9/zTwGg0nRgKqlQXrWRERv
+ cuEwQbridlPAoQHrFWtwpgYMXx2TaZ3sihcIPo9uU5eBs0rf4mOERY75SK+Ekayv2ucTfjxr
+ Kf014py2aoRJHuvy85ee/zIyLmve5hngZTTe3Wg3TInT9UTFzTPhItam6dZ1xqdTGHZYGU0O
+ otRHcwLGt470grdiob6PfVTXoHlBvkWRadMhSuG4RORCDpq89vu5QralFNIf3EysNohoFy2A
+ LYg2/D53xbU/aa4DDzBb5b1Rkg/udO1gZocVQWrDh6I2K3+cCs7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <20250813145607.1612234-3-chaitanyas.prakash@arm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: d3C0FzPzetipQENYdq9AIR0o-MtHHW9vFx75vC75YEg_1755589303
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1755589184-960349
-X-HE-Meta: U2FsdGVkX18vO5TZk/acg4UZSqrjIib7/2hL81sIeY0Ld0OtilOoD/M8WBbfBZikDIMJ/siXnJpAaczK4ZQs2Y91g2Jhm980/YZc71UuKo0AFXLN8HOLw1XBY3bhWWE2dZXK/r349NRsqjfGtMjIHOs35k+G4GvIt+gKJySZrImooi52cr5noujBhVkYWsjRdnoNVjD7cg1ijL8WAjOk+bgH1AhU3IwjqovS/+2wQddfJXZzDnsxl3O3WR0iBFqMMtn5rbdn9myoqjPJVvDVQHIHhnb1TxHCd/YjvOwanh/tnHWrjcFfseZTIpvPjqVynN6+lSeegUIaghLEKIenu98qA67GzAJpGY3UB6FshEJ0+X6zvdqlox9VwIPWS5M7GbUP271Iej9hJ7CEhijSiBeeGrvyMBNjMLmC6B8ItroOppg0dezysQ4gYvaKwLKtHi3UEFNNpEBfImNxYdIyL+R7YLQETLE57GZLfnmChEkKSCp7izuUWeKYZJFsa+T/gGgdi8Bu+6urH0DWsbAScj+d+KFmymNy0XOKlpWZYk6dFS2/tuGnAeu7WCWp61loTkHxvw5EZGU/xVdYSpx8jVu2bvNAjuJd6vHHE0ot7PanBT+OxWkY5GlmfYMXWkGmB6q58LH1dbUpIdzwKz/b8TuNf+LP74G5cSNh1zmiQPXNRxVZmTy1zoNunqYYFtSUSpD64vbfRu+6vD7YdMbQFv6n/j6pFaWOMDmQiy/l2qZMBhJ5+qRCnWNghvdwheFQnnDEjbOf6QG9bst1BKnAdhRHpgi50CEEmcq7S8EXmhbqil8WStdTbmF1G37h2ujGv3Icm07ow+JGw7RpQ/W+kSXapP7K/5I6td9ysg6OTCxugSCZaeKFOirdT6Enm5NlojeoN3x6xQO/fnOYG2Ld3GVo5ClUW8blr1kT3IDweQGfM8euLCaFMAd1wiiUwi9KCqGMVNcx+FBr/B+vc30
- ViLAv1Dh
- GgMazoqKmq68DI04951237K9s6AIpZKiE6mvjV1ybjwBjaxA8+24GNKGHRHGwRfOvBgR7aF5dxcth4qshv32y5/LOPQrL2oKmmREZHsLaw/oupIGC2KDc9FnU+SKKoTK4wh1xRjX86mt/OvfOFkIEXRaR4inqi+zy0vzi7pg2wHcObC+vGI/4GqYZLSYxVSwPECeTZN8LPR5oSo+E5fa50XnqWS89nlYt56hiH7CuanRQIqGsC8ApIPK6quqC7zs//K7BCUEihlM2EFMmbK9tRrazTb0kO1dBKqPbGR6gfyuBRZ88qIasqZbHcD/5uIPRy5FP9Gudoc60I4qD/08D16Od70l4URSZIKI+rWHgTtYswovkYZ5Ay/vNmHTw2wnXoSVv+5SAYf//SRYoLY2Q5UQmNhuQ3DTMEfo4xFjkzrT7B1i8XRMkfq57wDLK6GQoQWzhnwvmlRgHIOEHBt+SoBLAfRHKbM50VHQ1Da0dDyB2QdK+yw4WCpKmMSnwXzCtpVCu4QToxvxXb6o/jL759ZkfvWHlZPpTe/1cOCkN+Z4ROeL8jb2vjvg0/FbROUmuAkMot99rdaym0eY1AaaRsEjjJjqFsi9iYECyQ2E7VKWFuiPD/aTBhcVTxudppZCWxKk5euai7XsvEVygM98g+SHLtaR5qQFs8kms+6azcZCgPwzV68nVsKxmoqrnjF7oa2H007K1xIFrdvvoYha8N4ad78MOTr4WjRNCvQEah9QI1nhuIU+Vhz9mN+XwMJrkc+cfxy+0YbErx+7sM9BPCLJ0VHMwgP23K3uCYGmgl/XQP7lQ2FWYbluGhA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 32DF7140003
+X-Stat-Signature: 57ofsanjkttswx56egqqme4dbh6o7pag
+X-HE-Tag: 1755589306-342397
+X-HE-Meta: U2FsdGVkX18c+KysIaN26MBfrO3ZmEovQuTyXvDB0yjuMSdI1eY+A8ZkgUmfxrV7MWD0mKlnXg0QplCTRfU8zOaLGSlEXREwNtkOdss12hlWk4Ut2FUcxm/IYPiu4zvM2HYh+AO1m8UzDwYe+Z0J907+4SLjU+g/euFenQie9RIxdzHmkGkVGU1/RrVZbhVZQn2Z1MUDqEOdQ35/7WMqGkO5yU31jIxb/DuDlOnpcx0hMT/9aFnAeUM90uEtA7+DPGh1yoACrzn2FfsF8v5c8TOG+CBz9DOC1mN9IO7Ud32evK/oV9nx1wlr/PzRkcndZW3T//lJ2QTkee1g23C05ytfr+VTmY7vdll2yYrlFYD9S1RlQsuP7CWw9ovxpw+Ef7eLXNPdwud7h0BaSkPC+/dBqPMZCGZZnLDUAZVdqtgoQd/mrsxZLm7rO5Th4dsvjNqUfRzOTkI2tRwnwA28qadaUEzpBc0plZUzrWZ5TOvZDEFh5KNFIYqB86j1ig68FPxlY+piZC8tqjsziu5uDK01LyG7ostQuY9GcRDZvcOch4+/85BC09d84SxRIZauvvva1sdgMOhAXFRrqRStZcA+tz6wYInA34jipHLFfNO+ft0CWWrHg7C4NKoa7ZD8GNDWkmgs/ZGVam6OttDiphjW23nbKl3oPtolNRYM2qvd07ZiMVW05YPO7D23BeO+g8I0cuCZXQMV3go35SCYgY7HQ8fIYFjGHlrkyzI27vFIodo/0FrXTz0KU20MngxoaNQTUrPAhnHwa1EY3yNnHZZlsFnFxtrlmK7G8B9J/PQYBMTjcdddI3lhg+LMknvQ+9QG32kHUBDzWgctW1amm0U1Tm9mB7HIcsqZi+AuDgH3lbsABh7WpVRuzv9uGt/IC/7yS2zKCcxV0ZDX41EiVTvjSWN1qQO16HVSOecfYEZj4TAsFBLpX94uEPTAkqzmOsppVvgd28MtGqum3v/
+ s5xDuW4s
+ jYS9rvQsSVrBUC2pg1HZFIIxJQy+y2voOzGMBzLirfzDRPohA9IFNLDwLsXXxrPQogacJheaRpLwnJw2Mard85DslGCSZ4fMF4HnOh3yNrRXInbSWDNAPE0E2QqzsmZPvmU341RCRfJbd8GY1SFkcg1gSX0lN+qC7FEdsnaWsiqHl/CpGxTpfjZr9Vu9dmVxQEFJRDUwH/q+k60E+i0wKS+h7uI+5He7HzxNxL0vk9FQr9TO9L9RehfARCNv0fwHv5B5wXuLsO5LL2T6ixSp55BDwdjOqlalGNMCFF/0pEQ5T7VqOlfukKQFh7fdS8dN9C7Dl/ByyB6TtOWmZJvd7xByebyclGp7hVLY3W6Q+aSgBxH70iQiEGgWxSjP5ejOsImOxLvPg1FO74Hi8HEa0RihZIc2J/rI5IxMjJsCtOwWHzoXNrDXwbhFz48lMSqYwnkbSjW73M2UrMZMGqifMbMLyVi/AKGG4pwfs
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,51 +183,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 18, 2025 at 09:46:11AM +0300, Mike Rapoport wrote:
->From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->
->Hi,
->
->These patches simplify deferred initialization of the memory map.
->
->Beside nice negative diffstat I measured 3ms reduction in the
->initialization of deferred pages on single node system with 64GiB of RAM.
+On 13.08.25 16:56, Chaitanya S Prakash wrote:
+> create_kpti_ng_temp_pgd() was created as an alias for void returning
+> __create_pgd_mapping_locked() and relied on pgtable_alloc() to BUG_ON()
+> if an allocation failure occurred. But as __create_pgd_mapping_locked()
+> has been updated as a part of the error propagation patch to return a
+> non-void value, update create_kpti_ng_temp_pgd() to act as a wrapper
+> around __create_pgd_mapping_locked() and BUG_ON() on ret being a non
+> zero value.
 
-Nice cleanup.
+If  my memory serves me right, panic() is preferred in such unexpected 
+early-boot scenarios (BUG_ON is frowned upon), where you can actually 
+print what is going wrong.
 
-For this series:
 
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-
-I guess the speed up is from "use a job per zone". So we do initialization per
-zone instead of per memblock range in the zone, right?
-
->
->I don't have access to large memory machines, so I'd really appreciate
->testing of these patches on them to make sure there's no regression there.
->
->The patches are also available at git:
->https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=deferred-memmap-init/v1
->
->Mike Rapoport (Microsoft) (4):
->  mm/mm_init: use deferred_init_memmap_chunk() in deferred_grow_zone()
->  mm/mm_init: deferred_init_memmap: use a job per zone
->  mm/mm_init: drop deferred_init_maxorder()
->  memblock: drop for_each_free_mem_pfn_range_in_zone_from()
->
-> .clang-format            |   1 -
-> include/linux/memblock.h |  22 -----
-> mm/memblock.c            |  64 -------------
-> mm/mm_init.c             | 195 +++++++++++++--------------------------
-> 4 files changed, 62 insertions(+), 220 deletions(-)
->
->
->base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
->-- 
->2.50.1
->
+Which raises the question: could create_kpti_ng_temp_pgd() be __init? 
+__kpti_install_ng_mappings(), the only caller, seems to be.
 
 -- 
-Wei Yang
-Help you, Help me
+Cheers
+
+David / dhildenb
+
 
