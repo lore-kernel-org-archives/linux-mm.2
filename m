@@ -2,94 +2,112 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E484CA0EEB
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 11:30:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 73739CA0EEB
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 11:33:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E75808E0001; Tue, 19 Aug 2025 07:30:38 -0400 (EDT)
+	id 136876B0117; Tue, 19 Aug 2025 07:33:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E25B48E002D; Tue, 19 Aug 2025 07:30:38 -0400 (EDT)
+	id 10E7E6B0118; Tue, 19 Aug 2025 07:33:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D14D78E0001; Tue, 19 Aug 2025 07:30:38 -0400 (EDT)
+	id F3EC26B0119; Tue, 19 Aug 2025 07:33:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BBC6B6B00AA
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 07:30:38 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 61BF911835C
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 11:30:38 +0000 (UTC)
-X-FDA: 83793289356.21.EABE47B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 29ACC1C000D
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 11:30:35 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RexACkbX;
-	spf=pass (imf21.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DC9E96B0117
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 07:33:49 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7F3AEC06B0
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 11:33:49 +0000 (UTC)
+X-FDA: 83793297378.30.655DA89
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	by imf01.hostedemail.com (Postfix) with ESMTP id A465140005
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 11:33:46 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=fdfrPF0L;
+	spf=none (imf01.hostedemail.com: domain of thomas.hellstrom@linux.intel.com has no SPF policy when checking 192.198.163.12) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755603036;
+	s=arc-20220608; t=1755603227;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c6B0VsfGtsf5mgI9cSxJU39nn0HxYpFSQTf8cjY9o6A=;
-	b=OOAsXpc8r7IsiSl/iAdyEhDvFp63rPYKA8L+E+QX0Aeyxod1Iz8h0KtCG5tnYfih1yopyp
-	NQcS4pf5yyMT+vzFSwB0HoIPpjV8ys88jZhx6VbX0rcnqwm05D4+bsa2Nzbk3CpJA0aNLk
-	2zg3sjW47L5bZHhD6OaFjcF1TnLjMYk=
+	bh=CIH7yJkvh3/ZYJwCY/qi2Mlqf8m99Z7mxVV0RImGheY=;
+	b=UTyI7sNI9nqSwhM7sJCAGYa/Rpg2gLes7YkxFFtEMeoaRA4fXWv6tc3gBigvSkZjSIIzDR
+	QjyVAzdD9F4HqS8RfsE+YfW0czcC28Rze/wDLeUabgL9ys05MgnMESG1Y8I6RGV3BfxUU7
+	bSGvSAtc/g57FfbXhMYZkK9kKy3INhY=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RexACkbX;
-	spf=pass (imf21.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755603036; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=fdfrPF0L;
+	spf=none (imf01.hostedemail.com: domain of thomas.hellstrom@linux.intel.com has no SPF policy when checking 192.198.163.12) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755603227; a=rsa-sha256;
 	cv=none;
-	b=j1bhsmkDwDoQPQ04n02kqrtZK6LvaAZ0l/NmrDXdSKnsrnYqIiETO5ijnBqi3XzV8bH7Dh
-	ocsw034gwPxtS8YRXOmY0fZg2G6OjNCWoR2xhHwMELwJZzxdK0XMtp6dYUGUTWboh2Mrrw
-	CTmpi0m4s1k8DYY+6gZNbXeMa9fs8N4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0709943EDF;
-	Tue, 19 Aug 2025 11:30:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1849EC116B1;
-	Tue, 19 Aug 2025 11:30:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755603034;
-	bh=Vn9psqnVgnpwY9G5jdAtFOUJ6BM/owHxclMeS/ox6iU=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=RexACkbXj17mOzIVGarK7hH2S2AeLR8/EL9ZbUF7VOTPAnzRfskLPgaYG1ZDPRZj1
-	 dMqI77G7fNGJsCWgXceF0i4H7gha7lZoSOVPcZZ89fZ93zVxrQrIe1qiLyY30J2AhJ
-	 wa/CwTXp7re/GKien7Sc8aiLHAnOx23j4FM3eSzOjDsmLo0m+/IOpFCpQndeyUZreP
-	 7MLWia0+he8a++29rVHH1UkMXIlY2gzv5IN9wSMxot9OXqIXdPvuE4X50tMrfwf+Pc
-	 UF6kZ9f7aRmQ0ZKwRNkw1GAgVAR/3KMxSrWS1bb9WhC8EpqnF2RzC5EVXTi10ZH3fk
-	 k4lM623rrHzCg==
-Mime-Version: 1.0
+	b=Z1ca3JxpKYwM1rgDPznAj4IBiF6rdvydF7T6YMCF84q2tcx4CJ+g8UHwB7qg6u28obma2E
+	Y9ZmeTjKZd2Cnqvj6DNsyrIpX3ZPs9LLpTynGfhkXVA3YLGwlVTi0gxirTBJ/iJze3cyKY
+	aL0mb+/7BpszbFmCQaGb4Rokg0KfHBs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755603226; x=1787139226;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=CIH7yJkvh3/ZYJwCY/qi2Mlqf8m99Z7mxVV0RImGheY=;
+  b=fdfrPF0L1Hj970wtgEHqnmB2DXRcsX+1rS+PpSDmcEwL9M6LApXXuUJQ
+   93xBxnStBqVvHGVwcZPKCnNjlCFPU/TtC7/dy6mpRrlpcNTPisUfCPmlI
+   yrXpcSqTxMywU4LMi/NoVUYsQ9oZ9/Tina83b3Ol8nFS+7hJ1PO3gm+v+
+   Aunm9+4TOA7cLlZ2KwdQCPlAlgATNiNWElXtRly2kZhIb8eUIJWEZYr7H
+   g6RNNFyW6+BvkHfbUG+8Fsp3XqeK+lB6MlnW8gHIt6B5kiAngWOOlIeAf
+   Z+Ha6TFwg9voh+TK6R6QwYRCghLZAq8grB23XwAHTqNKWUWnPZsbSL0te
+   Q==;
+X-CSE-ConnectionGUID: N1igxkDSSt+hnXiu34SJ/Q==
+X-CSE-MsgGUID: I7acK6irTuWeu71dHmg8vA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11526"; a="61653779"
+X-IronPort-AV: E=Sophos;i="6.17,300,1747724400"; 
+   d="scan'208";a="61653779"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 04:33:45 -0700
+X-CSE-ConnectionGUID: 9h5gT3AbRN+Hotu/iwO0Rw==
+X-CSE-MsgGUID: pw3f4t59THSX7xndiXJpeg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,300,1747724400"; 
+   d="scan'208";a="191520115"
+Received: from ncintean-mobl1.ger.corp.intel.com (HELO [10.245.244.175]) ([10.245.244.175])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 04:33:43 -0700
+Message-ID: <e96dcfd4ce7c84a5b66ff9d5f082ea209266ce48.camel@linux.intel.com>
+Subject: Re: [RFC PATCH 1/6] mm/mmu_notifier: Allow multiple struct
+ mmu_interval_notifier passes
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: Alistair Popple <apopple@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Matthew Brost <matthew.brost@intel.com>, intel-xe@lists.freedesktop.org,
+  Andrew Morton <akpm@linux-foundation.org>, Simona Vetter
+ <simona.vetter@ffwll.ch>, Dave Airlie	 <airlied@gmail.com>,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Christian =?ISO-8859-1?Q?K=F6nig?=	
+ <christian.koenig@amd.com>
+Date: Tue, 19 Aug 2025 13:33:40 +0200
+In-Reply-To: <4lsv2lcd7lssyvcjvkqe4t2foubxbhuxrt2ptzee3csymz5gg3@jwrg3xow72lm>
+References: <20250809135137.259427-1-thomas.hellstrom@linux.intel.com>
+	 <20250809135137.259427-2-thomas.hellstrom@linux.intel.com>
+	 <20250818160726.GH599331@ziepe.ca>
+	 <aKNT8GUu0r3i4Ikq@lstrano-desk.jf.intel.com>
+	 <20250818163617.GI599331@ziepe.ca>
+	 <aKNYUaPS0PiRk/yj@lstrano-desk.jf.intel.com>
+	 <20250818164655.GJ599331@ziepe.ca>
+	 <4lsv2lcd7lssyvcjvkqe4t2foubxbhuxrt2ptzee3csymz5gg3@jwrg3xow72lm>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 19 Aug 2025 13:30:30 +0200
-Message-Id: <DC6DC244ZIUL.304JSP7JFDE9Z@kernel.org>
-Subject: Re: [PATCH v2 2/5] rust: maple_tree: add MapleTree
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Andrew Ballance"
- <andrewjballance@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- <linux-kernel@vger.kernel.org>, <maple-tree@lists.infradead.org>,
- <rust-for-linux@vger.kernel.org>, <linux-mm@kvack.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250819-maple-tree-v2-0-229b48657bab@google.com>
- <20250819-maple-tree-v2-2-229b48657bab@google.com>
-In-Reply-To: <20250819-maple-tree-v2-2-229b48657bab@google.com>
-X-Rspamd-Queue-Id: 29ACC1C000D
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+MIME-Version: 1.0
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A465140005
+X-Stat-Signature: 1hsmpozr9bgr4eymaajyqwior1epxaa3
 X-Rspam-User: 
-X-Stat-Signature: x9bqqb6j4nmubhj3dhuwzagcuekcbpz9
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1755603035-861840
-X-HE-Meta: U2FsdGVkX19nizdpUuTHSRdBhAYQmlci2cs2elDvSrSEgFei+F2f4ZqfcYtFQqq+ea2/yN2vV68++W1SU5LMfU70lmX1DYzowGvUrk56pHLZC+9IkzzPDqa+SlkVoMapUV+PMPdOuUVPJ4C+WZjBcpVDzxYxGMUwDYxLiqCkbG9hIy+ZFc++XWnWTGL0hToEWv4GlFFpZwUM+bXwgI/isNvkUCYA0my1NGvlrDj6WKix8H0lM9EhCg0Iw0igGI6+Q02GNhA7cS2izzHMS4Ky4Jm4M0dmec6CGSgEmOl+jpi3tCvVc13oW31ar1I7218cPZhX44cv1A+7tnDsAmBpeNotBRicHsK7DMLon2qlvdOtQkvJlc3K84QZmhZ+NbpK54Xe4k8PKMmEZeJWtU1mUCK5mBSv27oZYJibcaKaNfPdWEPQ5O72Zy5SzOlbl+Q43b5kQaPw2ZJL9hTBxbhFpGqAlQWSGs/5i8FYKJQydk79PoDkgIiOAUHvyStM5J3j8vVD1JJKb+3R3LZAmH0rsqunRIaR+YMSJS1FOt8K1XaIVzwXNdhudHSNfkwaf/qo4p4+cMP+PpR/gVAaBUwk5OwK6RNK+fnndKwTzK1/pg3WmYdpPlqmPzaihUgONE+EJUyst6gqpgPumdunpXUVFwKnTSy9wypLWAccZC0IGRpiZmZI45rtfBGVuojvi0wj6eBpv5s1KtMc4+lZgO+LZIy6qfDGyvWU/39viMoS+gVuXbG6LJuG5HQ4UhG2yhOX7/zL0J4rxSoI5a4myM5zEDRpsUOkGMsn5RaRPtKeQBOlHdGWOBjdVPJNFFLU1HbjN/3swi+SEW9H/J+lmw7Oqdj2IPL3PAgO3W2qoZO+fAJXFhGMfd6ZcwF0Nfg13wrO8DX4kyq6+ZGjvoN0KT7djnIE1gPmIXr110idEMUzc9mXJGIpacRnfU3UDwPYLoi+VUtFolT2IghTMqBsS/x
- 5GDjzC8Z
- JiS+CDXB/Bjx9SpgE5T1NbAMkzkza8NQq507o5jsXhriBdJmGocnKZYDLsmydp1MvIpwT9xHHlVeiP7J/+M4tKWbDfTJy5wvpsyZvtdfjPBeomsfuybqIrb7D02VxZ0f3/SdRoZRr4iDLBsL37KeF4xv4yhpJ693NdxFWrVeigZH0IYBI7gOdy0bmYy8s27NXa9rQEtyPerOmOMIp+jSJtbxxEGKJEiPaUuxEfmhln2Wfp3uS5o+yDYNM8PpbyoP0Y29IgOb2G5BCY3cryN7H+XEuUvVUB1jnmUHnJ7R5Y6fHOuEp3qV2Kn0DVzZ2SXidDL8ZeGH0nsOw3HmqDo1I0F9Qz2Wgwz07TzRYRBMIqNSXY+dQ4HnxUMGtDlKLRIjYciVoUUrUIm9OzPWDNAcXoeTh7gV0qb4rQRJsLPi4cEfNtHSpgJTObS+L6TrH4f5luPtrQ9mSCm69x1a3ZeYi28M96FDIdhshhoGU5dXFIo3+eq1TBX2uikTriSTG/X0x3saK
+X-HE-Tag: 1755603226-263818
+X-HE-Meta: U2FsdGVkX1+HB4hORDzKtTUEPZa6xlcu2eU/LWgJmJravDbwqIabCA6PQO5HWzomDsrB72rIkiDq68FqSnspizwsPtFVgeL6jfVg39ZrAhVRASX+6h/ZoO5WVv8iPO9k21S/EQZRp0L4xrOwIiWvt0PSKhTRXSgXoSydmou61pPS/18esnM7tjqNgsImmYzHf+wOhnJQWziAWrv/w/VN7NxhDdrOfZdr+nulTz4KDiZbw6yyAe1MdJB6iSYGzNR+2pyBr/MVKpwNWazq4m17s3UrqQgq8dkj936XVKkHMDuH15EwC4Kpi3yqyoUne9Sgi3hkQrZJ8dfPU2r6WarTofDDsZZxrPpQ4cZrwYoIbX9Vh5GKSjL9dGdnnM3cYvZ+AlKjy3fwicCgp0QFz6ZyG1LVk+KmiL8HJFwgIoPKiZkO1HsI+K2uJdbL77//dNM+FIizhbrFJYiZkFnpqmW/CSVoehzXswtye+lrMBW9+an18pwg7+fpjj2PfMsDIb2YVpCcQon8FF4Zz/EDzmrdwL3bSSzgPG01ALslFreYM4/d0+FSUNSJ4uOaboNUesOj9OYnhYtN4egc8QNH14RXDc9Xv/RJN9ILu/xJijW+1NTl7mHSA5i2aYKG1wRdXGCGNCaTiNXU84H6/1OSBaymgsvO+kWfRgbkB6fukhUPZrQTKhbUvsqc+IImUxHdamwPQ574FvWOlxHlJodJlVaxD7lja75TKVFHHewrGlfWZGemLBqvQrrV43KRzIWDJIyTJO9B/feGhlcAufOtqS4P+eOn0BBB/7ubyL8shG8+EMuEI0nvOx2mtswhsUWX9omZE06YMPK2Ig78NiAXyXhzJJetOgeRNaFp0shGiAzElPvr+iylRmfAjPRXvww7Fo+Tn4ZzjRkgoXrND5gy20DcbdBo/vJjB3vQEgOy5eSJBrDIKN9gNkAjzvUIv+KNgZoQfFVeRbqDdSEmkUqNMg9
+ YKMIB9fe
+ LEafAvfwxz93wHmSf8gcB3jmTWF+kwLV1DV9KHgOk1A5HfSQFaaCPvyDKAU0I0M2s1Ls1XYERRB9QQ7tAIe7qVrsAAtrgoSlnV6UavjkCmCXzNbivuvfN/3iE7HH+9ULK7XZHENeNLryQ5pVaCYQkryjfiTlcGFiR6otN+q/K/C5GwGplvOjO4Wysh4XjHDrVMR8EcftPXHFgOS9G0aKNnYEpN+cyFhSKBbD2JkwWiSZSSaRJGlh5fr6Gn4GnnRXEvHvK9OSCpqa5KKLKyIXNw9uWTw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,245 +116,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue Aug 19, 2025 at 12:34 PM CEST, Alice Ryhl wrote:
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index fe168477caa45799dfe07de2f54de6d6a1ce0615..26053163fe5aed2fc4b4e39d4=
-7062c93b873ac13 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16250,7 +16250,9 @@ L:	rust-for-linux@vger.kernel.org
->  S:	Maintained
->  W:	http://www.linux-mm.org
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> +F:	rust/helpers/maple_tree.c
->  F:	rust/helpers/mm.c
-> +F:	rust/kernel/maple_tree.rs
->  F:	rust/kernel/mm.rs
->  F:	rust/kernel/mm/
+On Tue, 2025-08-19 at 19:55 +1000, Alistair Popple wrote:
+> On Mon, Aug 18, 2025 at 01:46:55PM -0300, Jason Gunthorpe wrote:
+> > On Mon, Aug 18, 2025 at 09:44:01AM -0700, Matthew Brost wrote:
+> > > On Mon, Aug 18, 2025 at 01:36:17PM -0300, Jason Gunthorpe wrote:
+> > > > On Mon, Aug 18, 2025 at 09:25:20AM -0700, Matthew Brost wrote:
+> > > > > I think this choice makes sense: it allows embedding the wait
+> > > > > state from
+> > > > > the initial notifier call into the pass structure. Patch [6]
+> > > > > shows this
+> > > > > by attaching the issued TLB invalidation fences to the pass.
+> > > > > Since a
+> > > > > single notifier may be invoked multiple times with different
+> > > > > ranges but
+> > > > > the same seqno,
+> > > >=20
+> > > > That should be explained, but also seems to be a bit of a
+> > > > different
+> > > > issue..
+> > > >=20
+> > > > If the design is really to only have two passes and this linked
+> > > > list
+> > > > is about retaining state then there should not be so much
+> > > > freedom to
+> > > > have more passes.
+> > >=20
+> > > I=E2=80=99ll let Thomas weigh in on whether we really need more than =
+two
+> > > passes;
+> > > my feeling is that two passes are likely sufficient. It=E2=80=99s als=
+o
+> > > worth
+> > > noting that the linked list has an added benefit: the notifier
+> > > tree only
+> > > needs to be walked once (a small time-complexity win).
+> >=20
+> > You may end up keeping the linked list just with no way to add a
+> > third
+> > pass.
+>=20
+> It seems to me though that linked list still adds unnecessary
+> complexity. I
+> think this would all be much easier to follow if we just added two
+> new callbacks
+> - invalidate_start() and invalidate_end() say.
 
-A later patch adds a separate entry; is this intended?
+One thing that the linked list avoids, though, is traversing the
+interval tree two times. It has O(n*log(n)) whereas the linked list
+overhead is just O(n_2pass).
 
-> diff --git a/rust/kernel/maple_tree.rs b/rust/kernel/maple_tree.rs
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..ea1bd694213b73108732aecc3=
-6da95342aeafe04
-> --- /dev/null
-> +++ b/rust/kernel/maple_tree.rs
-> @@ -0,0 +1,343 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Maple trees.
-> +//!
-> +//! C header: [`include/linux/maple_tree.h`](srctree/include/linux/maple=
-_tree.h)
-> +//!
-> +//! Reference: <https://docs.kernel.org/core-api/maple_tree.html>
-> +
-> +use core::{
-> +    marker::PhantomData,
-> +    ops::{Bound, RangeBounds},
-> +    ptr,
-> +};
-> +
-> +use kernel::{
-> +    alloc::Flags,
-> +    error::code::{EEXIST, ENOMEM},
+>=20
+> Admitedly that would still require the linked list (or something
+> similar) to
+> retain the ability to hold/pass a context between the start and end
+> callbacks.
+> Which is bit annoying, it's a pity we need to allocate memory in a
+> performance
+> sensitive path to effectively pass (at least in this case) a single
+> pointer. I
+> can't think of any obvious solutions to that though.
 
-I think they're covered by prelude already.
+One idea is for any two-pass notifier implementation to use a small
+pool. That would also to some extent mitigate the risk of out-of-memory
+with GFP_NOWAIT.
 
-> +    error::to_result,
-> +    prelude::*,
-> +    types::{ForeignOwnable, Opaque},
-> +};
-> +
-> +/// A maple tree optimized for storing non-overlapping ranges.
-> +///
-> +/// # Invariants
-> +///
-> +/// Each range in the maple tree owns an instance of `T`.
-> +#[pin_data(PinnedDrop)]
-> +#[repr(transparent)]
-> +pub struct MapleTree<T: ForeignOwnable> {
-> +    #[pin]
-> +    tree: Opaque<bindings::maple_tree>,
-> +    _p: PhantomData<T>,
-> +}
-> +
-> +/// A helper type used for navigating a [`MapleTree`].
-> +///
-> +/// # Invariants
-> +///
-> +/// For the duration of `'tree`:
-> +///
-> +/// * The `ma_state` must reference a valid `MapleTree<T>`.
+/Thomas
 
-I'd say ""`ma_state` references a valid `MapleTree<T>`", other wise it soun=
-ds
-like a requirement.
 
-> +/// * The `ma_state` has read/write access to the tree.
-> +pub struct MaState<'tree, T: ForeignOwnable> {
-> +    state: bindings::ma_state,
-> +    _phantom: PhantomData<&'tree mut MapleTree<T>>,
-> +}
-> +
-> +#[inline]
-> +fn to_maple_range(range: impl RangeBounds<usize>) -> Option<(usize, usiz=
-e)> {
-> +    let first =3D match range.start_bound() {
-> +        Bound::Included(start) =3D> *start,
-> +        Bound::Excluded(start) =3D> start.checked_add(1)?,
-> +        Bound::Unbounded =3D> 0,
-> +    };
-> +
-> +    let last =3D match range.end_bound() {
-> +        Bound::Included(end) =3D> *end,
-> +        Bound::Excluded(end) =3D> end.checked_sub(1)?,
-> +        Bound::Unbounded =3D> usize::MAX,
-> +    };
-> +
-> +    if last < first {
-> +        return None;
-> +    }
-> +
-> +    Some((first, last))
-> +}
-> +
-> +impl<T: ForeignOwnable> MapleTree<T> {
-> +    /// Create a new maple tree.
-> +    ///
-> +    /// The tree will use the regular implementation with a higher branc=
-hing factor.
+>=20
+> > Jason
+> >=20
 
-What do you mean with "regular implementation" and what is "a higher branch=
-ing
-factor" in this context?
-
-Do you mean that the maple tree has a higher branching factor than a regula=
-r RB
-tree, or something else?
-
-> +    #[inline]
-> +    pub fn new() -> impl PinInit<Self> {
-> +        pin_init!(MapleTree {
-> +            // SAFETY: This initializes a maple tree into a pinned slot.=
- The maple tree will be
-> +            // destroyed in Drop before the memory location becomes inva=
-lid.
-> +            tree <- Opaque::ffi_init(|slot| unsafe { bindings::mt_init_f=
-lags(slot, 0) }),
-> +            _p: PhantomData,
-> +        })
-> +    }
-> +
-> +    /// Insert the value at the given index.
-> +    ///
-> +    /// If the maple tree already contains a range using the given index=
-, then this call will fail.
-
-Maybe add an error section for this?
-
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// use kernel::maple_tree::{MapleTree, InsertErrorKind};
-> +    ///
-> +    /// let tree =3D KBox::pin_init(MapleTree::<KBox<i32>>::new(), GFP_K=
-ERNEL)?;
-> +    ///
-> +    /// let ten =3D KBox::new(10, GFP_KERNEL)?;
-> +    /// let twenty =3D KBox::new(20, GFP_KERNEL)?;
-> +    /// let the_answer =3D KBox::new(42, GFP_KERNEL)?;
-> +    ///
-> +    /// // These calls will succeed.
-> +    /// tree.insert(100, ten, GFP_KERNEL)?;
-> +    /// tree.insert(101, twenty, GFP_KERNEL)?;
-> +    ///
-> +    /// // This will fail because the index is already in use.
-> +    /// assert_eq!(
-> +    ///     tree.insert(100, the_answer, GFP_KERNEL).unwrap_err().cause,
-
-A lot of the examples, including the ones in subsequent patches contain var=
-iants
-of unwrap().
-
-I think we should avoid this and instead handle errors gracefully -- even i=
-f it
-bloats the examples a bit.
-
-My concern is that it otherwise creates the impression that using unwrap() =
-is a
-reasonable thing to do.
-
-Especially for people new to the kernel or Rust (or both) it might not be
-obvious that unwrap() is equivalent to
-
-	if (!ret)
-		do_something();
-	else
-		panic();
-
-or the fact that this is something we should only do as absolute last resor=
-t.
-
-> +    ///     InsertErrorKind::Occupied,
-> +    /// );
-> +    /// # Ok::<_, Error>(())
-> +    /// ```
-> +    #[inline]
-> +    pub fn insert(&self, index: usize, value: T, gfp: Flags) -> Result<(=
-), InsertError<T>> {
-> +        self.insert_range(index..=3Dindex, value, gfp)
-> +    }
-> +
-> +    /// Insert a value to the specified range, failing on overlap.
-> +    ///
-> +    /// This accepts the usual types of Rust ranges using the `..` and `=
-..=3D` syntax for exclusive
-> +    /// and inclusive ranges respectively. The range must not be empty, =
-and must not overlap with
-> +    /// any existing range.
-
-Same as above to the "failing on overlap" part.
-
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// use kernel::maple_tree::{MapleTree, InsertErrorKind};
-> +    ///
-> +    /// let tree =3D KBox::pin_init(MapleTree::<KBox<i32>>::new(), GFP_K=
-ERNEL)?;
-> +    ///
-> +    /// let ten =3D KBox::new(10, GFP_KERNEL)?;
-> +    /// let twenty =3D KBox::new(20, GFP_KERNEL)?;
-> +    /// let the_answer =3D KBox::new(42, GFP_KERNEL)?;
-> +    /// let hundred =3D KBox::new(100, GFP_KERNEL)?;
-> +    ///
-> +    /// // Insert the value 10 at the indices 100 to 499.
-> +    /// tree.insert_range(100..500, ten, GFP_KERNEL)?;
-> +    ///
-> +    /// // Insert the value 20 at the indices 500 to 1000.
-> +    /// tree.insert_range(500..=3D1000, twenty, GFP_KERNEL)?;
-> +    ///
-> +    /// // This will fail due to overlap with the previous range on inde=
-x 1000.
-> +    /// assert_eq!(
-> +    ///     tree.insert_range(1000..1200, the_answer, GFP_KERNEL).unwrap=
-_err().cause,
-> +    ///     InsertErrorKind::Occupied,
-> +    /// );
-> +    ///
-> +    /// // When using .. to specify the range, you must be careful to en=
-sure that the range is
-> +    /// // non-empty.
-> +    /// assert_eq!(
-> +    ///     tree.insert_range(72..72, hundred, GFP_KERNEL).unwrap_err().=
-cause,
-> +    ///     InsertErrorKind::InvalidRequest,
-> +    /// );
-> +    /// # Ok::<_, Error>(())
-> +    /// ```
-> +    pub fn insert_range<R>(&self, range: R, value: T, gfp: Flags) -> Res=
-ult<(), InsertError<T>>
 
