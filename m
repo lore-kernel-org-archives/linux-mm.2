@@ -2,87 +2,112 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D2140CA0EEB
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 17:15:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B124CA0EEB
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 17:23:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E78F8E0006; Tue, 19 Aug 2025 13:15:50 -0400 (EDT)
+	id 02BB86B00A4; Tue, 19 Aug 2025 13:23:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BF5E8E0005; Tue, 19 Aug 2025 13:15:50 -0400 (EDT)
+	id F1E9D6B00A6; Tue, 19 Aug 2025 13:23:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FCEB8E0006; Tue, 19 Aug 2025 13:15:50 -0400 (EDT)
+	id E5B978E0005; Tue, 19 Aug 2025 13:23:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E0B78E0005
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 13:15:50 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DB302160178
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 17:15:49 +0000 (UTC)
-X-FDA: 83794159218.28.46EAF46
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	by imf13.hostedemail.com (Postfix) with ESMTP id D100B20008
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 17:15:47 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PM0s0ghi;
-	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755623748;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CF2276B00A4
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 13:23:10 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4568BC016D
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 17:23:10 +0000 (UTC)
+X-FDA: 83794177740.18.92B5A58
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 4189B40008
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 17:23:08 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=zohomail header.b=R99CMyST;
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	spf=pass (imf01.hostedemail.com: domain of daniel.almeida@collabora.com designates 136.143.188.112 as permitted sender) smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755624188;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PiJkya2g4FSff5yfUkVXC41MIiQghloJYZcE1SJkKQ0=;
-	b=ie2em56xKiCRuhzplU20LVx2YAlDztUL+THPWslss9MlEOVnXZAEcd9ldGlocCei6YX+QN
-	H2/n3sP6jH4uI1ZKFPepTWtt0ffJS3RKKGRIKNUKSLRpHtnoPL4Z4l5YTfY0QPWNzFIrzY
-	kwdV5Vp/1/jYiUIx+6kQ5SSZvB2O1wQ=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PM0s0ghi;
-	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755623748; a=rsa-sha256;
-	cv=none;
-	b=KQJ/tC3h+Fx6DlrY27EqAPDBTNmik1sLVNK16amXH9xEq0uHRtBkC9lwFwxmDnIKz2bBoj
-	TjwgWVgXiNCI3P6J1dPdEMtw+Flfauv0gMPEtnemTPdrRw7tbkGY6gKPcwToaA7VmDAUCk
-	xKbF3gxQHSIk7Kai5HR0wQATJ3Twg1w=
-Date: Tue, 19 Aug 2025 10:15:39 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755623745;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PiJkya2g4FSff5yfUkVXC41MIiQghloJYZcE1SJkKQ0=;
-	b=PM0s0ghiradGy03X4ixMIgB1feFBiOl0LfEPp8M3JIx3pNrtNS/5jHMuSo99IfK4CmL9rL
-	ksudLu01f1It0+rLdkLKcTRguI9GVKcf3BArCXnHtENWbUHVDqWhDiffebMOI53+S9fbn/
-	XRR8xy3T+P5gUIbforqLuYGimUzOt54=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Chris Mason <clm@fb.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Suren Baghdasaryan <surenb@gogle.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH] mm/page_alloc: Occasionally relinquish zone lock in
- batch freeing
-Message-ID: <x3xp3cj6wpgxu5mjsd62fzvuzpn2mxpvlk6sau65si7bk6ncu5@dx6jbuacy42i>
-References: <20250818185804.21044-1-joshua.hahnjy@gmail.com>
- <k6fpx5adh45t4jrxgiccq7acubwcgmi746crggxi6e4oihtvpt@thks5zrn53n3>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <k6fpx5adh45t4jrxgiccq7acubwcgmi746crggxi6e4oihtvpt@thks5zrn53n3>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: obegbdxw9imrwsqqdjp55hd6suw1eqcn
+	bh=IEcw8YukMBSRSfgVR4aQ1OUUrw+SZjoWnTgXZ8LvAnk=;
+	b=F+vF+LgEMhoGbwuR8v4h/YQlISxn0fpcKOWURiIHuj/zTF8qvdHyzcAsQAICPICziGZDmv
+	iIxa6J6VpWPC1gAOMghy0WBY3B5eV7GlASzcVae7Fbi9OubdXCFOkxrVWgGl4TTXtjWO7g
+	TinSfvSjtgFaGDsuUMkoeIvx6xnIH2g=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=zohomail header.b=R99CMyST;
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	spf=pass (imf01.hostedemail.com: domain of daniel.almeida@collabora.com designates 136.143.188.112 as permitted sender) smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755624188; a=rsa-sha256;
+	cv=pass;
+	b=Xw+ILRJgXiR40wx3s7ysF7AmlsJ9fKO1IPBuJMSh48HOsHKd1+8iL18Uk0vFRkerdE+vw0
+	BRTZlk5mdYXnvMx5GGsYBVrprrouWN9P4i8777dDDfMME4b7DhABWyvCLCJEoy/8E7w3Pg
+	tWu+MlEzuuCt1BNq86vDDib+sTIUmwk=
+ARC-Seal: i=1; a=rsa-sha256; t=1755624170; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=dB17iMupUftJlAcD6wb2PYq6XfkpeMPwyMGY1qBl7HKmzi6bPP4WdbqZdDrdUqiNBPlnFm9Pl4Bx6hpzVYPSjmQJcadJsyuCBF43wmhPveoypjdIHSdU24NIxdcxf+U6JgVDIh0H+rI+5oeoSSlzoBFb6pc7CJlRIzYaoY9sTPU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1755624170; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=IEcw8YukMBSRSfgVR4aQ1OUUrw+SZjoWnTgXZ8LvAnk=; 
+	b=YF6Bk7Mt0+IE4c/6EOfrbjtV9WoESHNBs6d/lcbYDKg/5tCV3GN5oTTcLE7nLh1wtfXxYJkIK9aJa3Rck2u/0SktWBY375oS6HlFjYiXtYnRXVI+K7XzBkQnPUi+e5czCsUOYQEr40gOMgOIKQ6Ajb/Xuru6ko3O7ongv5Fpbjg=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1755624170;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=IEcw8YukMBSRSfgVR4aQ1OUUrw+SZjoWnTgXZ8LvAnk=;
+	b=R99CMySTuMb2AjbZ8UU/ldDlpGDB519kO1Tx6MgrQf2pZ6ewYD8pepJvEypBDOaC
+	I5piGs1GE+5VAntotzPQdWYwNnbpiGjtMBKyLiakrpgMwfbaaD5OEKsBfZnp74OJkIv
+	QPFbDqVLh/ZsRmcNYtTAgJd1LZWO2suYfpdJBe+M=
+Received: by mx.zohomail.com with SMTPS id 1755624168270959.8687296541492;
+	Tue, 19 Aug 2025 10:22:48 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v2 3/5] rust: maple_tree: add MapleTree::lock() and load()
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <38B2DEA2-774D-45B5-8923-C5330B975FB9@collabora.com>
+Date: Tue, 19 Aug 2025 14:22:31 -0300
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Andrew Ballance <andrewjballance@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ linux-kernel@vger.kernel.org,
+ maple-tree@lists.infradead.org,
+ rust-for-linux@vger.kernel.org,
+ linux-mm@kvack.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <2E3FBB87-EFCE-425E-8ED8-6EE0EF19C6F2@collabora.com>
+References: <20250819-maple-tree-v2-0-229b48657bab@google.com>
+ <20250819-maple-tree-v2-3-229b48657bab@google.com>
+ <38B2DEA2-774D-45B5-8923-C5330B975FB9@collabora.com>
+To: Alice Ryhl <aliceryhl@google.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4189B40008
+X-Stat-Signature: 5ux7wbw13xubnmpq8x4ur8wadfwz6if4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D100B20008
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1755623747-811835
-X-HE-Meta: U2FsdGVkX1+i8bbreIGJPsSo+UjHYsfJdiSJHS7UdWGKUNf/ckyuFovqsM/OIGXHRk1xryidiiELVAt9n6bKjQbdPjTHyrky3URM/caE1AZNszbI9IM8/WRohyYC9ag+nOFPpM5WkypndiirU2hsx1By+WZTqVmAbLvuqg0YDqM+Fq2GX6iJq3Ez45ONd6Iu45qgiPMXrF5YR8vdK0BqAVhiAuWBMnTvtcGhTzpTu52c/zP6kOJgiVQI5CuekTvdZqMIneA3Z6Uq7FBxM0gunjgex8qVgpULqfK3NZl9uEXhNtHxs8tFcuFKDuFOAz+4KgZA/d+W8GmIvevdKdqhzwcv/jzRa41aURocv5wsnhWh6FT/YWowTkjp0SsUjoE1GdEhZSHIhJ/SGziMHCU84K/0A6OrGUmuLSEyOxEZSFWtjHNfctZwUolZip5ByHPoGXF5USWvklqf9Bd4jJQzABnSPjgQs3kBo+GsauFe7fa7gJBSV9jn1MVYAOa58UDh+252ybISVheCo8YV35mQpiVQCWQzCm26mpVo2z9eByShdaenf2UoyVCyUzCCnOOd5SahRRDGXBLsquf8egD69OE/AL1E9uzt9HjVttc9i+AWb34GWOCijxLH3CJYTBaKfIBa2ayLX4vLcwOaaKTxsaEJQlkZPUnWHlYEd2Hb445YYS0uFITVcLSbo3HqdKXrGN8Pn7iFnX240By2946EFUFfHqZCDFWvdpBBq/AIXv92J792VQcMz5DPo0hPzNx4dSmJXiYYbIJDQBF/9ots+orefex5YJRAnlA5mXfRZh9bJGITa9fnT15apmvqpTQG99oORN7SXZE2I0S+5fH4lOPV5zRM2y/sqIcNcfalw9/1u/A2M70DONzWA6GnQdRC/7TvfQcaapILxSyVM9zVgXkEX2X48QJVUo7DlWEz/ZyLYiY662ZUoMLh/28m3/Tt7/FzSRX9CyvwO1zkl/w
- dCFVMuPl
- PBf3+MYbpxrOxrBeTMRXmjvU+7/oQxjctUVi8kCHFYcwX8BupF/Yz0H7RFDkjVoh6brQBgfjyd7XuIp+XOaougug8luUaf2MXVIFL0iyU98ao9QhYLfODa/UCZ2Jq0QIHA8aUDjDibG93wB2AzPoIJHJmBvcHKc7i2ooKFrXt2EZtIcmsya/9CYaIDjsG57c7s3RdK71baG3vyP4F5pT2RsuDuky2hhUnzg7PPnKtCP6Ld/5sbCn2H4oYZ36SmrU0AB43DqYG6A07wjYA54soyQEhqsXtjFWHjh2n0W0NDng8WW3/QYvK4QiTJrrpV96ym6BTvCdrrNuO2R3hqE95g1tAxaEzdh9+IiyBVkpt4ReQLHclSVDhKl1uCq2xUwQdNTQlV/YxEYCpWj4=
+X-HE-Tag: 1755624187-891559
+X-HE-Meta: U2FsdGVkX19kAkIL+0HqDfMxky3DLjwvZREJdSK20CLMRkBui9tIou9dfKkcMntxEcCpbeFULd3jGAdAr8qljVwyEZ4p1WzCJastgyfNULyeaGXdeAXIBGE91vMrp0vA3OCAoCQJ1hI8l/udtB58jwvmd3sY4jE2EHkKhA6YsxOSMjsLy1mhRt8TtXWp+SqtjVmCLauUx/kwFB0uKLp2TycvlTGeegMTLp0bdRsbrv5JsDcGBUb42x85XMc+PJ7xYm01AqETaYkoN9SO+eAEDytWICsV24weEYteyeSNbLoIOahIW+0qTaoAsDOZSsaSTyFYFew9keRb4Pg/Hdup4B18X7Uchcr464HwN/FuzyFklu0nxD/YkiNvzjNuWSetcxhnDBQDIJt869I5CIfOm76YHCeS+gm+lMDc+qpMlP1bBIpGdjnkRI9aY02OM5B3sZ+w70O7BPhBCDEunzfe72eT06KA6bAdnIxTxubK+RSfD/uuEzJPlE0jWZoVYX1nhNHvPrDpgoWCDpn5IMgSAwGchBC49wlOaxjV1qvDHYqOz/DQpb+NiiYGjjCnzPIRURq0/rBCRdLd2Zlw7+JrY8NtxpWxyFqTD2ahQbdmPgh7sHpGFnQqvBuNPAwm2vHHo/4LRqTBiXP1NRYbvGMd/GdSrqYLwoWvrypD2dbYXsMaHbwbOxeQR6sfcxVOBwyZKqJRm3Ruy6YWQ3sop+IoiXLmV3PjWEnNYJDbqlU81aczjThn5O2kFhCGLjiIdX9xWRD0dGIj8DHVyKHfbZ9IGM+HWYBN/ObO59IUwn0dwe9iRX4OpiXWLAOpN9lLq1kNO92kNB7HTCSWtpkbfSKb2kQ3p91xQnYMr3Puq5DdnchcPobgkjoXR5Lk0Y0xL/2PhF0JI4sl7k7sljKU98clokdBnR26hH4Q75cIh3JDWxbxKRaS2tnOaCVnMClrp4meszJyT8z3zXWNBDUiNqg
+ vMSj1Mys
+ +uVsbxELkCQWww9mXa6P82QZSvKcsNGNAHOuoNofzyhjvimGzXFX5dLMMGfP/nNxuJGVuciGeoRWnY3FpacaaR5xKFr2kKTb5NIgNAznbTql3X9aBPUT6BMHK/CyIWvUvuzd49HDPawahamElspxtTLQw+iBHGAX/z13NIr2srvWdNj7P+4LQvzb2nnJsHajKUAhStCp2NRPSXjxLLRMHV8uEoZsutCx8i8+EJgITH34Wl+y/fhEqrEOj1HfYYNCD82WB2HHlU8WHs2mb2/ZorAuiliIUzbDS1ZiQNy5LSrWz7D9/z7cC/NCay3GWA2CQ7StnAY+xoHvGKuxfWiPw9vs2i0jGviDf0RLuHrrLF8Lh1SfMLzvD4UnWVTO0aaCWpgAXmYSXJ9mWYisZLW38A2eQlsPiM7jIsBSJ13OFwZrrRZP77MZCQY2Mx+jTCt8D7autFBiEM2qzUUJDGku89P8D265GQBbsy7fqBBhxDMVd3L0Fpnqt5wNy9sbwP2Th/EO99+8RD87QTeDU8KH3g1osAw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,137 +116,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 19, 2025 at 10:15:13AM +0100, Kiryl Shutsemau wrote:
-> On Mon, Aug 18, 2025 at 11:58:03AM -0700, Joshua Hahn wrote:
-> > While testing workloads with high sustained memory pressure on large machines
-> > (1TB memory, 316 CPUs), we saw an unexpectedly high number of softlockups.
-> > Further investigation showed that the lock in free_pcppages_bulk was being held
-> > for a long time, even being held while 2k+ pages were being freed.
-> > 
-> > Instead of holding the lock for the entirety of the freeing, check to see if
-> > the zone lock is contended every pcp->batch pages. If there is contention,
-> > relinquish the lock so that other processors have a change to grab the lock
-> > and perform critical work.
-> 
-> Hm. It doesn't necessary to be contention on the lock, but just that you
-> holding the lock for too long so the CPU is not available for the scheduler.
-> 
-> > In our fleet, we have seen that performing batched lock freeing has led to
-> > significantly lower rates of softlockups, while incurring relatively small
-> > regressions (relative to the workload and relative to the variation).
-> > 
-> > The following are a few synthetic benchmarks:
-> > 
-> > Test 1: Small machine (30G RAM, 36 CPUs)
-> > 
-> > stress-ng --vm 30 --vm-bytes 1G -M -t 100
-> > +----------------------+---------------+-----------+
-> > |        Metric        | Variation (%) | Delta (%) |
-> > +----------------------+---------------+-----------+
-> > | bogo ops             |        0.0076 |   -0.0183 |
-> > | bogo ops/s (real)    |        0.0064 |   -0.0207 |
-> > | bogo ops/s (usr+sys) |        0.3151 |   +0.4141 |
-> > +----------------------+---------------+-----------+
-> > 
-> > stress-ng --vm 20 --vm-bytes 3G -M -t 100
-> > +----------------------+---------------+-----------+
-> > |        Metric        | Variation (%) | Delta (%) |
-> > +----------------------+---------------+-----------+
-> > | bogo ops             |        0.0295 |   -0.0078 |
-> > | bogo ops/s (real)    |        0.0267 |   -0.0177 |
-> > | bogo ops/s (usr+sys) |        1.7079 |   -0.0096 |
-> > +----------------------+---------------+-----------+
-> > 
-> > Test 2: Big machine (250G RAM, 176 CPUs)
-> > 
-> > stress-ng --vm 50 --vm-bytes 5G -M -t 100
-> > +----------------------+---------------+-----------+
-> > |        Metric        | Variation (%) | Delta (%) |
-> > +----------------------+---------------+-----------+
-> > | bogo ops             |        0.0362 |   -0.0187 |
-> > | bogo ops/s (real)    |        0.0391 |   -0.0220 |
-> > | bogo ops/s (usr+sys) |        2.9603 |   +1.3758 |
-> > +----------------------+---------------+-----------+
-> > 
-> > stress-ng --vm 10 --vm-bytes 30G -M -t 100
-> > +----------------------+---------------+-----------+
-> > |        Metric        | Variation (%) | Delta (%) |
-> > +----------------------+---------------+-----------+
-> > | bogo ops             |        2.3130 |   -0.0754 |
-> > | bogo ops/s (real)    |        3.3069 |   -0.8579 |
-> > | bogo ops/s (usr+sys) |        4.0369 |   -1.1985 |
-> > +----------------------+---------------+-----------+
-> > 
-> > Suggested-by: Chris Mason <clm@fb.com>
-> > Co-developed-by: Johannes Weiner <hannes@cmpxchg.org>
-> > Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-> > 
-> > ---
-> >  mm/page_alloc.c | 15 ++++++++++++++-
-> >  1 file changed, 14 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> > index a8a84c3b5fe5..bd7a8da3e159 100644
-> > --- a/mm/page_alloc.c
-> > +++ b/mm/page_alloc.c
-> > @@ -1238,6 +1238,8 @@ static void free_pcppages_bulk(struct zone *zone, int count,
-> >  	 * below while (list_empty(list)) loop.
-> >  	 */
-> >  	count = min(pcp->count, count);
-> > +	if (!count)
-> > +		return;
-> >  
-> >  	/* Ensure requested pindex is drained first. */
-> >  	pindex = pindex - 1;
-> > @@ -1247,6 +1249,7 @@ static void free_pcppages_bulk(struct zone *zone, int count,
-> >  	while (count > 0) {
-> >  		struct list_head *list;
-> >  		int nr_pages;
-> > +		int batch = min(count, pcp->batch);
-> >  
-> >  		/* Remove pages from lists in a round-robin fashion. */
-> >  		do {
-> > @@ -1267,12 +1270,22 @@ static void free_pcppages_bulk(struct zone *zone, int count,
-> >  
-> >  			/* must delete to avoid corrupting pcp list */
-> >  			list_del(&page->pcp_list);
-> > +			batch -= nr_pages;
-> >  			count -= nr_pages;
-> >  			pcp->count -= nr_pages;
-> >  
-> >  			__free_one_page(page, pfn, zone, order, mt, FPI_NONE);
-> >  			trace_mm_page_pcpu_drain(page, order, mt);
-> > -		} while (count > 0 && !list_empty(list));
-> > +		} while (batch > 0 && !list_empty(list));
-> > +
-> > +		/*
-> > +		 * Prevent starving the lock for other users; every pcp->batch
-> > +		 * pages freed, relinquish the zone lock if it is contended.
-> > +		 */
-> > +		if (count && spin_is_contended(&zone->lock)) {
-> 
-> I would rather drop the count thing and do something like this:
-> 
-> 		if (need_resched() || spin_needbreak(&zone->lock) {
-> 			spin_unlock_irqrestore(&zone->lock, flags);
-> 			cond_resched();
+Ah, something else,
 
-Can this function be called from non-sleepable context?
+[=E2=80=A6]
 
-> 			spin_lock_irqsave(&zone->lock, flags);
-> 		}
-> 
-> > +			spin_unlock_irqrestore(&zone->lock, flags);
-> > +			spin_lock_irqsave(&zone->lock, flags);
-> > +		}
-> >  	}
-> >  
-> >  	spin_unlock_irqrestore(&zone->lock, flags);
-> > 
-> > base-commit: 137a6423b60fe0785aada403679d3b086bb83062
-> > -- 
-> > 2.47.3
-> 
-> -- 
->   Kiryl Shutsemau / Kirill A. Shutemov
+>> +    /// Load the value at the given index.
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// Read the value while holding the spinlock.
+>> +    ///
+>> +    /// ```
+>> +    /// use kernel::maple_tree::{MapleTree, InsertErrorKind};
+>> +    ///
+>> +    /// let tree =3D KBox::pin_init(MapleTree::<KBox<i32>>::new(), =
+GFP_KERNEL)?;
+>> +    ///
+>> +    /// let ten =3D KBox::new(10, GFP_KERNEL)?;
+>> +    /// let twenty =3D KBox::new(20, GFP_KERNEL)?;
+>> +    /// tree.insert(100, ten, GFP_KERNEL)?;
+>> +    /// tree.insert(200, twenty, GFP_KERNEL)?;
+>> +    ///
+>> +    /// let mut lock =3D tree.lock();
+>> +    /// assert_eq!(lock.load(100), Some(&mut 10));
+>> +    /// assert_eq!(lock.load(200), Some(&mut 20));
+>> +    /// assert_eq!(lock.load(300), None);
+>> +    /// # Ok::<_, Error>(())
+>> +    /// ```
+>> +    ///
+>> +    /// Increment refcount while holding spinlock and read =
+afterwards.
+
+This sentence can be improved.
+
 
