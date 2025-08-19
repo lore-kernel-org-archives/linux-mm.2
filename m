@@ -2,112 +2,116 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 73739CA0EEB
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 11:33:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B004CA0EEB
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 11:33:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 136876B0117; Tue, 19 Aug 2025 07:33:50 -0400 (EDT)
+	id A85736B00AF; Tue, 19 Aug 2025 07:33:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10E7E6B0118; Tue, 19 Aug 2025 07:33:50 -0400 (EDT)
+	id A5E066B0119; Tue, 19 Aug 2025 07:33:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3EC26B0119; Tue, 19 Aug 2025 07:33:49 -0400 (EDT)
+	id 8886F6B011A; Tue, 19 Aug 2025 07:33:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DC9E96B0117
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 07:33:49 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7F3AEC06B0
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 11:33:49 +0000 (UTC)
-X-FDA: 83793297378.30.655DA89
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A465140005
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 11:33:46 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=fdfrPF0L;
-	spf=none (imf01.hostedemail.com: domain of thomas.hellstrom@linux.intel.com has no SPF policy when checking 192.198.163.12) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 732816B00AF
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 07:33:52 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2249358F91
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 11:33:52 +0000 (UTC)
+X-FDA: 83793297504.08.C3AA091
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 40F6720007
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 11:33:50 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZiKkdPpW;
+	spf=pass (imf03.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755603230; a=rsa-sha256;
+	cv=none;
+	b=geaDYmUjSlTaHaq3/J4vyMBFtjqHLQpLxnJGnJnLNnT+ucor9Vw/seDqKlClQBIJOGQ1T6
+	eCyonrxewkTZAp8avXdpKYojdx4HqpGJBX5+AkgtXmhi66Z9wBSszY4PqT9YwGZhOB5Zfm
+	BG+UxWFDZ30h+MPwq7bXw8ENALrIG+k=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZiKkdPpW;
+	spf=pass (imf03.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755603227;
+	s=arc-20220608; t=1755603230;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CIH7yJkvh3/ZYJwCY/qi2Mlqf8m99Z7mxVV0RImGheY=;
-	b=UTyI7sNI9nqSwhM7sJCAGYa/Rpg2gLes7YkxFFtEMeoaRA4fXWv6tc3gBigvSkZjSIIzDR
-	QjyVAzdD9F4HqS8RfsE+YfW0czcC28Rze/wDLeUabgL9ys05MgnMESG1Y8I6RGV3BfxUU7
-	bSGvSAtc/g57FfbXhMYZkK9kKy3INhY=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=fdfrPF0L;
-	spf=none (imf01.hostedemail.com: domain of thomas.hellstrom@linux.intel.com has no SPF policy when checking 192.198.163.12) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755603227; a=rsa-sha256;
-	cv=none;
-	b=Z1ca3JxpKYwM1rgDPznAj4IBiF6rdvydF7T6YMCF84q2tcx4CJ+g8UHwB7qg6u28obma2E
-	Y9ZmeTjKZd2Cnqvj6DNsyrIpX3ZPs9LLpTynGfhkXVA3YLGwlVTi0gxirTBJ/iJze3cyKY
-	aL0mb+/7BpszbFmCQaGb4Rokg0KfHBs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755603226; x=1787139226;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=CIH7yJkvh3/ZYJwCY/qi2Mlqf8m99Z7mxVV0RImGheY=;
-  b=fdfrPF0L1Hj970wtgEHqnmB2DXRcsX+1rS+PpSDmcEwL9M6LApXXuUJQ
-   93xBxnStBqVvHGVwcZPKCnNjlCFPU/TtC7/dy6mpRrlpcNTPisUfCPmlI
-   yrXpcSqTxMywU4LMi/NoVUYsQ9oZ9/Tina83b3Ol8nFS+7hJ1PO3gm+v+
-   Aunm9+4TOA7cLlZ2KwdQCPlAlgATNiNWElXtRly2kZhIb8eUIJWEZYr7H
-   g6RNNFyW6+BvkHfbUG+8Fsp3XqeK+lB6MlnW8gHIt6B5kiAngWOOlIeAf
-   Z+Ha6TFwg9voh+TK6R6QwYRCghLZAq8grB23XwAHTqNKWUWnPZsbSL0te
-   Q==;
-X-CSE-ConnectionGUID: N1igxkDSSt+hnXiu34SJ/Q==
-X-CSE-MsgGUID: I7acK6irTuWeu71dHmg8vA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11526"; a="61653779"
-X-IronPort-AV: E=Sophos;i="6.17,300,1747724400"; 
-   d="scan'208";a="61653779"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 04:33:45 -0700
-X-CSE-ConnectionGUID: 9h5gT3AbRN+Hotu/iwO0Rw==
-X-CSE-MsgGUID: pw3f4t59THSX7xndiXJpeg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,300,1747724400"; 
-   d="scan'208";a="191520115"
-Received: from ncintean-mobl1.ger.corp.intel.com (HELO [10.245.244.175]) ([10.245.244.175])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 04:33:43 -0700
-Message-ID: <e96dcfd4ce7c84a5b66ff9d5f082ea209266ce48.camel@linux.intel.com>
-Subject: Re: [RFC PATCH 1/6] mm/mmu_notifier: Allow multiple struct
- mmu_interval_notifier passes
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: Alistair Popple <apopple@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Matthew Brost <matthew.brost@intel.com>, intel-xe@lists.freedesktop.org,
-  Andrew Morton <akpm@linux-foundation.org>, Simona Vetter
- <simona.vetter@ffwll.ch>, Dave Airlie	 <airlied@gmail.com>,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Christian =?ISO-8859-1?Q?K=F6nig?=	
- <christian.koenig@amd.com>
-Date: Tue, 19 Aug 2025 13:33:40 +0200
-In-Reply-To: <4lsv2lcd7lssyvcjvkqe4t2foubxbhuxrt2ptzee3csymz5gg3@jwrg3xow72lm>
-References: <20250809135137.259427-1-thomas.hellstrom@linux.intel.com>
-	 <20250809135137.259427-2-thomas.hellstrom@linux.intel.com>
-	 <20250818160726.GH599331@ziepe.ca>
-	 <aKNT8GUu0r3i4Ikq@lstrano-desk.jf.intel.com>
-	 <20250818163617.GI599331@ziepe.ca>
-	 <aKNYUaPS0PiRk/yj@lstrano-desk.jf.intel.com>
-	 <20250818164655.GJ599331@ziepe.ca>
-	 <4lsv2lcd7lssyvcjvkqe4t2foubxbhuxrt2ptzee3csymz5gg3@jwrg3xow72lm>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
+	bh=LE8KPxqLGvnqGcrCFM6DCzdu/oxztkK6aiFoXUkpgIY=;
+	b=WONLdidA7VITPu1fHK8eCbhRrZ1B/+8m3iRTXs+y9lPh1F5fW6ROhlSgcranw+c9afNXMN
+	yQ+i5vRQ1+aZ2kEYrf/jIdWuyCkAJve7IHskFoA2ciYLQBR8vQPGFpOJf0GXTb2RamYl27
+	46lHVrn/Xy0jxi+yOJZAnw8XtKFVCfU=
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7e9f7c46edbso21733985a.0
+        for <linux-mm@kvack.org>; Tue, 19 Aug 2025 04:33:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755603229; x=1756208029; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LE8KPxqLGvnqGcrCFM6DCzdu/oxztkK6aiFoXUkpgIY=;
+        b=ZiKkdPpWshF+Xhyjw76oJtR+3CI9LoDgr9Nvop/isYAXi+zZQ4F7Qv3mao4KeKYgd+
+         RdXog5Y2nhWgx2Mw6V0eOlzybPKTjmpWXiQsTUgQb1iwL4RspFuVPaLr0COnb2+jAeym
+         5KJf7Yl7S4DI6xyjHv6HdDpSXY8sV7z6H2UijRcw8YTNrnDhX9nBkq7FG9UYTHvcPGck
+         SA7TI89TqsFTZwzt9hOX8McBRs8dE3MChXuTrtJAweg6qKWUxcU/wTGI9bCjcBJPEypM
+         9usjM9IYwekBRQyo30aFWcjaLvP1oRdJMx1jpetdiRpiQX3m9ME6l9QrKONtb3jPYS2P
+         sZSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755603229; x=1756208029;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LE8KPxqLGvnqGcrCFM6DCzdu/oxztkK6aiFoXUkpgIY=;
+        b=salV3Gd4O50EbUllgbcZn0xIqWMiVou+80NvfcRFyScHxOKjoYsVFZwWT9Va+XPREC
+         8oRiPecOBohWitI9IA6m7/WoZSPzFtKzPmcVIqdfQn5fvZQ9Y34H6JKhJcgcasI7rNjQ
+         utdaG5H7jyaXWtbxTiAP41HRuC0ocJLV4JLPxLcPzTdnbbZ3e0WLaC2c5s867Ia2+sOE
+         yPYCnHCx/gvRJSfjyzF8L+PJfkw57zHeF9V25WagYzq4lMSE07SobLCvP/J+e94UFJld
+         4ty0WqK3KVrIDZhHbPhmKgXl49hDRvNUJOQ8ddc02U8DGnWev3gAEo8Ro5GsxglVdbqZ
+         nOkg==
+X-Forwarded-Encrypted: i=1; AJvYcCWA4e5IsadfHJ2nDLttAr+vnjWTkHxTTPhrZCBjHrXy/yJV7M/MHcn9PUjh80Z0AGUgfgvC+AuqDQ==@kvack.org
+X-Gm-Message-State: AOJu0YwIJ1N7zz8cp4ha6kIjDtAE7t89SMqoXjCYE9ypgVL+h4B359kO
+	tAAsagrKfd16BXzUu+vIE4N7gm8VeGhMHYLEWdVLvGffdUQLomScnGWDHyU4qd5DdNBdlFhAk8m
+	FTHPXNXToAjNvPrYAlCG2Elasngye6Gs=
+X-Gm-Gg: ASbGncsQBrVDHMIJRd9lRlR/hR8m7rrc/TxLiEHks8m9mneaAtVwBPdmYcqaLF7pRIl
+	007FCFTxi2FvA983rDDX/vVTPDHpxHk8vkI4jpYnm0j9opbopkJq/7Jqkfvabjix3fiHAxWqyRr
+	EIOi5AU9V2RFnGfFeNUGqwCJLCQzXmByAYjZQWtVN1TxgdO8riHDvT033Bg+C9id5KA85IT2fJh
+	Xxk3PKL
+X-Google-Smtp-Source: AGHT+IHP7AvP95cDuz1oKXtouBgiB+1zSwnea+kSTjGWrEhHxsS7Ly0bT2odjaHfGCwlt9g6a8siFEX8QjU853O+P/Q=
+X-Received: by 2002:a05:620a:472a:b0:7e8:71b:96ac with SMTP id
+ af79cd13be357-7e9f442a1camr228046485a.11.1755603229147; Tue, 19 Aug 2025
+ 04:33:49 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250818055510.968-1-laoar.shao@gmail.com> <36c97fc6-eaa9-44dd-a52f-0b6bf5a001d9@gmail.com>
+ <CALOAHbAQ=51mfszBN+Bvb9z+ZDyTBuCW_s0EKi+5rDghFvRZzg@mail.gmail.com> <a24d632d-4b11-4c88-9ed0-26fa12a0fce4@gmail.com>
+In-Reply-To: <a24d632d-4b11-4c88-9ed0-26fa12a0fce4@gmail.com>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Tue, 19 Aug 2025 19:33:12 +0800
+X-Gm-Features: Ac12FXw_UblIdxEg390DBWAF0j7IE39u3YBW_XLxywfHkQQXh4zP9W5l1I0XRPY
+Message-ID: <CALOAHbA9tUVarpOnMVMViwY+1uYOFRuD6A0fDPqeqhS=LdJmhw@mail.gmail.com>
+Subject: Re: [RFC PATCH v5 mm-new 0/5] mm, bpf: BPF based THP order selection
+To: Usama Arif <usamaarif642@gmail.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, hannes@cmpxchg.org, gutierrez.asier@huawei-partners.com, 
+	willy@infradead.org, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
+	ameryhung@gmail.com, rientjes@google.com, bpf@vger.kernel.org, 
+	linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
-MIME-Version: 1.0
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A465140005
-X-Stat-Signature: 1hsmpozr9bgr4eymaajyqwior1epxaa3
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 40F6720007
+X-Stat-Signature: oko6hybxosjpeyjht81kyzkqcxosnudu
 X-Rspam-User: 
-X-HE-Tag: 1755603226-263818
-X-HE-Meta: U2FsdGVkX1+HB4hORDzKtTUEPZa6xlcu2eU/LWgJmJravDbwqIabCA6PQO5HWzomDsrB72rIkiDq68FqSnspizwsPtFVgeL6jfVg39ZrAhVRASX+6h/ZoO5WVv8iPO9k21S/EQZRp0L4xrOwIiWvt0PSKhTRXSgXoSydmou61pPS/18esnM7tjqNgsImmYzHf+wOhnJQWziAWrv/w/VN7NxhDdrOfZdr+nulTz4KDiZbw6yyAe1MdJB6iSYGzNR+2pyBr/MVKpwNWazq4m17s3UrqQgq8dkj936XVKkHMDuH15EwC4Kpi3yqyoUne9Sgi3hkQrZJ8dfPU2r6WarTofDDsZZxrPpQ4cZrwYoIbX9Vh5GKSjL9dGdnnM3cYvZ+AlKjy3fwicCgp0QFz6ZyG1LVk+KmiL8HJFwgIoPKiZkO1HsI+K2uJdbL77//dNM+FIizhbrFJYiZkFnpqmW/CSVoehzXswtye+lrMBW9+an18pwg7+fpjj2PfMsDIb2YVpCcQon8FF4Zz/EDzmrdwL3bSSzgPG01ALslFreYM4/d0+FSUNSJ4uOaboNUesOj9OYnhYtN4egc8QNH14RXDc9Xv/RJN9ILu/xJijW+1NTl7mHSA5i2aYKG1wRdXGCGNCaTiNXU84H6/1OSBaymgsvO+kWfRgbkB6fukhUPZrQTKhbUvsqc+IImUxHdamwPQ574FvWOlxHlJodJlVaxD7lja75TKVFHHewrGlfWZGemLBqvQrrV43KRzIWDJIyTJO9B/feGhlcAufOtqS4P+eOn0BBB/7ubyL8shG8+EMuEI0nvOx2mtswhsUWX9omZE06YMPK2Ig78NiAXyXhzJJetOgeRNaFp0shGiAzElPvr+iylRmfAjPRXvww7Fo+Tn4ZzjRkgoXrND5gy20DcbdBo/vJjB3vQEgOy5eSJBrDIKN9gNkAjzvUIv+KNgZoQfFVeRbqDdSEmkUqNMg9
- YKMIB9fe
- LEafAvfwxz93wHmSf8gcB3jmTWF+kwLV1DV9KHgOk1A5HfSQFaaCPvyDKAU0I0M2s1Ls1XYERRB9QQ7tAIe7qVrsAAtrgoSlnV6UavjkCmCXzNbivuvfN/3iE7HH+9ULK7XZHENeNLryQ5pVaCYQkryjfiTlcGFiR6otN+q/K/C5GwGplvOjO4Wysh4XjHDrVMR8EcftPXHFgOS9G0aKNnYEpN+cyFhSKBbD2JkwWiSZSSaRJGlh5fr6Gn4GnnRXEvHvK9OSCpqa5KKLKyIXNw9uWTw==
+X-HE-Tag: 1755603230-390387
+X-HE-Meta: U2FsdGVkX18EH52H/4HtSbTEC7XAry8595EwoTKS6YmMgXgg5S8DJbwDBBuW2OHPH698sgbiYFyY1mn7c6YFUnz5KQRtS+tZnfQIpjGJiKEfKnzrUJqzI4V3Y1QH2KRd8hE5MvKf+0i6JMfaFVl7SyojHlTmSL++z6Cm5qtqU6Cflf/9CAB/PXhsbZmI102fcGtSGMaulv4nLX+7Y5KsS8vbaNpk7r2080jeEhjbtHrGBs9JwyX7qt/MdrCtgWEyT7SHH/87pP7AXxx7gG/JkeHC/CUGSO4t6JcSjkeMqdOa6WH8EXxpQPW9OVwMecXL1A1tjXfi1Dep2GgowANoryc89PJQE61bB45V+TIa8QO1eZB4Dc8/49c6PLURwWk6wuHJrazdUSzqW+jtfMV5kpvWNGaIw5ZeoQU0qNXk4VDQHpVt6kCUlh99iublMld9rVAMOpdcuyrsOZ0D8mGc5DnRQXTPzNGMnWlOl9hpywXlAQOMfFqjXMsuZwe0QdbZEcUkW29lIMXFERnpaK3cu8jS6t1LKlMnxfNSFwzNGJ5urjQAo9wyovhr+7SvHHm+vt85wTD8ZdzE/plFD2NVZUSV5PkTu/mQg3sINbFm9G58oMU3rGEY6QAD+fC/rjyZhTWunscIo7u9XAYv7lJCg+zrwxwnyoSAmlYe7weyPlGR7+hi4QM3v2JGv7LTFZOlI3KNp2CVMN89jzxmZQG18LIUH/vQSbhyFnemoqb+yPLPjCJzLSuY4oSgid6Wt0I01tbiQL5+tmhe2iBRHK6Bz0trXvEQxErPxaZPkJmdqn9vETFAb3/9VU1LFBnYxPY6pg8R1A7MEid76klWsWPuhx8pfMuviJcZOBQULI0Dn0smfXZI05WmmRQLuXc0B9qCRfHk2NKnJKwirUCtYeDXDrkPigRu6WfFpOaBNX0ubtxYy7rfa8L/KnGV7o0a7As9s1E+wo5tt3dPApmATJq
+ lSmg/p2m
+ Twpa0JWEZRcsyaNokxnVU3hLRpwFrTRiKLtOgF1zPAbkwmX5hc8VOezt0pKmK4dSO3vx5Jw4li6+yjtY+SUxiZ5a+ZNy21hMw/G4jUVusJ8kr2uxRXIcnylxW+ZxGZw7T3k+Ir9SKn1El6sgqJU4DH9Ow4GQaHlP+WJpUxmyMFEZUnSSau8Q/+5BIU5DF/GVo4RaKRWr9qQAI5QfVOXn0QxgKTZWJgwuDoCjW5g0uVQXmeBMPww3dBE7+NMHFZk3+MmDXp+zGH2CJAUvTdoRXaJg/+nAJaEQMIJOKhStM5KdsnOApGLAQ2b6h9qAz2mh8b2Yt9xQLm6YBfeq/51tbI3PEqEImtaT9uE/vrMauMsDu6ccf+OvpDEZJtarpB6L26G2Yd5vCcHuTAIUsS7S+WgOKDtC+Zto96Qtm
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,75 +120,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 2025-08-19 at 19:55 +1000, Alistair Popple wrote:
-> On Mon, Aug 18, 2025 at 01:46:55PM -0300, Jason Gunthorpe wrote:
-> > On Mon, Aug 18, 2025 at 09:44:01AM -0700, Matthew Brost wrote:
-> > > On Mon, Aug 18, 2025 at 01:36:17PM -0300, Jason Gunthorpe wrote:
-> > > > On Mon, Aug 18, 2025 at 09:25:20AM -0700, Matthew Brost wrote:
-> > > > > I think this choice makes sense: it allows embedding the wait
-> > > > > state from
-> > > > > the initial notifier call into the pass structure. Patch [6]
-> > > > > shows this
-> > > > > by attaching the issued TLB invalidation fences to the pass.
-> > > > > Since a
-> > > > > single notifier may be invoked multiple times with different
-> > > > > ranges but
-> > > > > the same seqno,
-> > > >=20
-> > > > That should be explained, but also seems to be a bit of a
-> > > > different
-> > > > issue..
-> > > >=20
-> > > > If the design is really to only have two passes and this linked
-> > > > list
-> > > > is about retaining state then there should not be so much
-> > > > freedom to
-> > > > have more passes.
-> > >=20
-> > > I=E2=80=99ll let Thomas weigh in on whether we really need more than =
-two
-> > > passes;
-> > > my feeling is that two passes are likely sufficient. It=E2=80=99s als=
-o
-> > > worth
-> > > noting that the linked list has an added benefit: the notifier
-> > > tree only
-> > > needs to be walked once (a small time-complexity win).
-> >=20
-> > You may end up keeping the linked list just with no way to add a
-> > third
-> > pass.
->=20
-> It seems to me though that linked list still adds unnecessary
-> complexity. I
-> think this would all be much easier to follow if we just added two
-> new callbacks
-> - invalidate_start() and invalidate_end() say.
+On Tue, Aug 19, 2025 at 6:44=E2=80=AFPM Usama Arif <usamaarif642@gmail.com>=
+ wrote:
+>
+>
+>
+> On 19/08/2025 03:41, Yafang Shao wrote:
+> > On Mon, Aug 18, 2025 at 10:35=E2=80=AFPM Usama Arif <usamaarif642@gmail=
+.com> wrote:
+> >>
+> >>
+> >>
+> >> On 18/08/2025 06:55, Yafang Shao wrote:
+> >>> Background
+> >>> ----------
+> >>>
+> >>> Our production servers consistently configure THP to "never" due to
+> >>> historical incidents caused by its behavior. Key issues include:
+> >>> - Increased Memory Consumption
+> >>>   THP significantly raises overall memory usage, reducing available m=
+emory
+> >>>   for workloads.
+> >>>
+> >>> - Latency Spikes
+> >>>   Random latency spikes occur due to frequent memory compaction trigg=
+ered
+> >>>   by THP.
+> >>>
+> >>> - Lack of Fine-Grained Control
+> >>>   THP tuning is globally configured, making it unsuitable for contain=
+erized
+> >>>   environments. When multiple workloads share a host, enabling THP wi=
+thout
+> >>>   per-workload control leads to unpredictable behavior.
+> >>>
+> >>> Due to these issues, administrators avoid switching to madvise or alw=
+ays
+> >>> modes=E2=80=94unless per-workload THP control is implemented.
+> >>>
+> >>> To address this, we propose BPF-based THP policy for flexible adjustm=
+ent.
+> >>> Additionally, as David mentioned [0], this mechanism can also serve a=
+s a
+> >>> policy prototyping tool (test policies via BPF before upstreaming the=
+m).
+> >>
+> >> Hi Yafang,
+> >>
+> >> A few points:
+> >>
+> >> The link [0] is mentioned a couple of times in the coverletter, but it=
+ doesnt seem
+> >> to be anywhere in the coverletter.
+> >
+> > Oops, my bad.
+> >
+> >>
+> >> I am probably missing something over here, but the current version won=
+'t accomplish
+> >> the usecase you have described at the start of the coverletter and are=
+ aiming for, right?
+> >> i.e. THP global policy "never", but get hugepages on an madvise or alw=
+ays basis.
+> >
+> > In "never" mode, THP allocation is entirely disabled (except via
+> > MADV_COLLAPSE). However, we can achieve the same behavior=E2=80=94and
+> > more=E2=80=94using a BPF program, even in "madvise" or "always" mode. I=
+nstead
+> > of introducing a new THP mode, we dynamically enforce policy via BPF.
+> >
+> > Deployment Steps in our production servers:
+> >
+> > 1. Initial Setup:
+> > - Set THP mode to "never" (disabling THP by default).
+> > - Attach the BPF program and pin the BPF maps and links.
+> > - Pinning ensures persistence (like a kernel module), preventing
+> > disruption under system pressure.
+> > - A THP whitelist map tracks allowed cgroups (initially empty =E2=86=92=
+ no THP
+> > allocations).
+> >
+> > 2. Enable THP Control:
+> > - Switch THP mode to "always" or "madvise" (BPF now governs actual allo=
+cations).
+>
+>
+> Ah ok, so I was missing this part. With this solution you will still have=
+ to change
+> the system policy to madvise or always, and then basically disable THP fo=
+r everyone apart
+> from the cgroups that want it?
 
-One thing that the linked list avoids, though, is traversing the
-interval tree two times. It has O(n*log(n)) whereas the linked list
-overhead is just O(n_2pass).
+Right.
 
->=20
-> Admitedly that would still require the linked list (or something
-> similar) to
-> retain the ability to hold/pass a context between the start and end
-> callbacks.
-> Which is bit annoying, it's a pity we need to allocate memory in a
-> performance
-> sensitive path to effectively pass (at least in this case) a single
-> pointer. I
-> can't think of any obvious solutions to that though.
+>
+> >
+> > 3. Dynamic Management:
+> > - To permit THP for a cgroup, add its ID to the whitelist map.
+> > - To revoke permission, remove the cgroup ID from the map.
+> > - The BPF program can be updated live (policy adjustments require no
+> > task interruption).
+> >
+> >> I think there was a new THP mode introduced in some earlier revision w=
+here you can switch to it
+> >> from "never" and then you can use bpf programs with it, but its not in=
+ this revision?
+> >> It might be useful to add your specific usecase as a selftest.
+> >>
+> >> Do we have some numbers on what the overhead of calling the bpf progra=
+m is in the
+> >> pagefault path as its a critical path?
+> >
+> > In our current implementation, THP allocation occurs during the page
+> > fault path. As such, I have not yet evaluated performance for this
+> > specific case.
+> > The overhead is expected to be workload-dependent, primarily influenced=
+ by:
+> > - Memory availability: The presence (or absence) of higher-order free p=
+ages
+> > - System pressure: Contention for memory compaction, NUMA balancing,
+> > or direct reclaim
+> >
+>
+> Yes, I think might be worth seeing if perf indicates that you are spendin=
+g more time
+> in __handle_mm_fault with this series + bpf program attached compared to =
+without?
 
-One idea is for any two-pass notifier implementation to use a small
-pool. That would also to some extent mitigate the risk of out-of-memory
-with GFP_NOWAIT.
+I will test it.
 
-/Thomas
-
-
->=20
-> > Jason
-> >=20
-
+--=20
+Regards
+Yafang
 
