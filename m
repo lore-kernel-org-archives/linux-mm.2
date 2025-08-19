@@ -2,136 +2,117 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5AB91CA0EE6
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 13:46:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 69757CA0EEB
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 13:48:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE6F28E004A; Tue, 19 Aug 2025 09:46:31 -0400 (EDT)
+	id 0E25D6B00D3; Tue, 19 Aug 2025 09:48:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBE2C8E0007; Tue, 19 Aug 2025 09:46:31 -0400 (EDT)
+	id 094316B00D4; Tue, 19 Aug 2025 09:48:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DACD18E004A; Tue, 19 Aug 2025 09:46:31 -0400 (EDT)
+	id EEB236B00D5; Tue, 19 Aug 2025 09:48:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C6E698E0007
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 09:46:31 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9273F139064
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 13:46:31 +0000 (UTC)
-X-FDA: 83793631782.05.A9F6EB0
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf09.hostedemail.com (Postfix) with ESMTP id CA730140010
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 13:46:29 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Jw5ZsdQr;
-	spf=pass (imf09.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DC14C6B00D3
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 09:48:28 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9E89DC0801
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 13:48:28 +0000 (UTC)
+X-FDA: 83793636696.23.FDBAFCF
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	by imf24.hostedemail.com (Postfix) with ESMTP id D543C180002
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 13:48:26 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TC+ZmUoS;
+	spf=pass (imf24.hostedemail.com: domain of gxxa03070307@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=gxxa03070307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755611189;
+	s=arc-20220608; t=1755611306;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nTgdfYjH9mbf6+JVSypR+R05kCmlws5kd8OCk6LcGFs=;
-	b=eCIJeClv+drjAydSWaLaJgA7vtl69S4C5Tr6fweBnfzYj9TbZgceeWqBWr7sRL671p2iPP
-	JA835YFg3tVrCgzSHuS4rNyjg+50pdBPTZkXoAY47rTmGyNbCN4ftp5C0RhYjJ+GlmApe2
-	v2Z6hsScAtxrWqsRhzN90qYkizqE01s=
+	 in-reply-to:references:dkim-signature;
+	bh=vr68yBZi3TFfbnXKqi+esYUOPsHcYPZ3pVlLEo5gGLw=;
+	b=L9OJgnmI73ZAMUmsCNWjyaFI9KpEcKQK+9pTsrOFdXIp4N25RZRPTY9MNfNGqTei8PJMIg
+	UthihX3Ew4cC15lH+uquUF2gpcNSvJZX/zLFHoXrFCDSkKCj+TW9wuzrQeK5w8RjLJH2YO
+	o+HJsGCwONmbvT2vHBqqPBCCURZyadY=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Jw5ZsdQr;
-	spf=pass (imf09.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755611189; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TC+ZmUoS;
+	spf=pass (imf24.hostedemail.com: domain of gxxa03070307@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=gxxa03070307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755611306; a=rsa-sha256;
 	cv=none;
-	b=O3hVJG5WSWbGqKnGXxB+bSzgKeM5RFQiplS8SL+eB0FUVAtxTayHI/XkWGIx7fnT9/BUo/
-	X560VA2MU7Gg17eACLuRvh71Os96pV8FXxYnSNBGh1w0NZSuthf7O66VkgR7oQ0GOBk9Eo
-	iI6Q3lbtPovpdGBBMY98vll8YTB3W2k=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755611189;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nTgdfYjH9mbf6+JVSypR+R05kCmlws5kd8OCk6LcGFs=;
-	b=Jw5ZsdQrWIn6tnCNT7LRp2uYGsobJGUvBdndwb11r5lXkKgQQWUUlHbeK2TvyD3GWMie/z
-	XVfMzPUqegqjgskj6RPC1SsoY/FQ9Wg1bYaxPBu9sunR217lgXSLVaDPIV3iqTDrZD7p83
-	jOGS5O4jIE1Jj2tU63OQat2/hwwRmG4=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-578-q1pcZ4KyN4G2YDVS6oxUJA-1; Tue,
- 19 Aug 2025 09:46:26 -0400
-X-MC-Unique: q1pcZ4KyN4G2YDVS6oxUJA-1
-X-Mimecast-MFC-AGG-ID: q1pcZ4KyN4G2YDVS6oxUJA_1755611182
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AD6D31954194;
-	Tue, 19 Aug 2025 13:46:21 +0000 (UTC)
-Received: from h1.redhat.com (unknown [10.22.64.137])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 05F3C19560AB;
-	Tue, 19 Aug 2025 13:46:03 +0000 (UTC)
-From: Nico Pache <npache@redhat.com>
-To: linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Cc: david@redhat.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	lorenzo.stoakes@oracle.com,
+	b=ZSTx5X1A33z5v0eqp1NZZ+wB7sHwuntk7HJDiTWyM9Iv2KHidWk/7Q7xgjj8vAERUQDHl1
+	C4yjUB+SagONSF8UCHO+AfO7GlMKwjfx1SEgLN9lQh525JQ360EKE2KgRGDFlJSALEWsN6
+	CtualXNxZ0hswVFOvCa+bvLbR+x9Ew0=
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-321cf75482fso5777464a91.0
+        for <linux-mm@kvack.org>; Tue, 19 Aug 2025 06:48:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755611305; x=1756216105; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vr68yBZi3TFfbnXKqi+esYUOPsHcYPZ3pVlLEo5gGLw=;
+        b=TC+ZmUoSZ5JUIRY4L5OhwcVybt0nEhQAZOBuigVCIJLB6ryDbPMklojEKuvdOgcx4b
+         zXByUUMJDOLJ/qlQB9HRSS0SqqUMfTkDJwsjJOUarG8Qaz2hAnnDnGj1ERRwQYDMle0+
+         5lrCpZ7lo5snI6qug7kQnmew/9KrdPV2VWceoLT1OWn+reo1GfD3jJQ+LEP+cgm5mgeT
+         bjL4my8vyA6Jyp/i5QTy7DUNU/XbXg+/jU42vRLEuNbFvQ1O1Q82LiWH/DGg14ibR+Lq
+         EtLvMTHy3agMgu/HUlUElnnEjAd6pzXF1snWHX+g0uJPQKetol50OSdrBg/1cuAcwvVH
+         v4zA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755611305; x=1756216105;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vr68yBZi3TFfbnXKqi+esYUOPsHcYPZ3pVlLEo5gGLw=;
+        b=gGdhjxumu+PkNgLQflfFviaCcImwewbC6Kl/aFnbsDX7VbY9myIcV+IksZC0ZktvOq
+         OrtS47uafH0Rdf7WbtR5dyo3SmGuMZnS7cg7b27u6vTlycE8bBEJ4QxdVvBbRB6hefYi
+         dW3U0uaJdpipqxFB6Jv8ZPfywdRR7CbY7c9ebNIpOniu+kG6UYPeXCqku+WaNzDtRuDk
+         UiltxUfAWnLZDha8lCzdEI/VZUzvnIseGGU7DDKT9qASrp/2+Mb5rKflgctP+XMRuy0q
+         dmfAW1Tgqt4zdAmFWEnpbOazwxjTDlIQoO3gSq9bXKwYINReEvf1hHS8rUOEff5tNeHJ
+         0uOg==
+X-Forwarded-Encrypted: i=1; AJvYcCW1vqEFfE60aSHds3SEPJKuoQ8lvBoCg/lQesR0gbzusAkYYetfzJNSfSJkDpx4OKvQMEFJIFsQXg==@kvack.org
+X-Gm-Message-State: AOJu0YzAO917aLjF2CsZ34fRyXqrl9Yq+Jh6zEUn8WNjLb9hPKvWNaSB
+	SDTHo1lNEipUKqCOe43NC2uEfeLN5z0kES/OVF7CAdxiYuHm5/12iqE7
+X-Gm-Gg: ASbGncsBKdrmFIReZa9e/TMiww20Nd7sdjJ5aCZaj5FxfuR1kkbhKIWtUGWVCjhpFLl
+	Vre61kqA2s3IXI+SMGysmHDofyArh01DxQkn8Q4JulRGX9GJxL0833J5w6OtOjrt5GCqdnjUJpE
+	Wp2U6CpmJSRTeKddP7EEPAxQnAOpTMkWpwb5dMhQOhEXL57ba76OTU37mSQQP149YW4wMgjtj5H
+	FWt34EFHzbpfZXgB2rv36GoMWvtlxJcepSdpYV92TDx7b+IS6N1mbbJrq3/KMOE2PmP6BP3gy1M
+	3kNn1d5SIoUWCLlr6nE8PzuUKpDVJep/X6ZyjpjOL02zWXcrHyPEmaNof4KVPlWBCvpIL2Beb4C
+	ndwgO41Tqgtlzrw5WGbsGc4En2BiTXmAx
+X-Google-Smtp-Source: AGHT+IFmyQHU0KuB7WvcyotnFbvRy12e45ykFdU1u5ZoWix/rIQxSCTZPZ3xcSSDMU+wjxXxseQ9Pw==
+X-Received: by 2002:a17:90a:da87:b0:321:3715:9a3 with SMTP id 98e67ed59e1d1-324d37ea418mr3137717a91.17.1755611305484;
+        Tue, 19 Aug 2025 06:48:25 -0700 (PDT)
+Received: from xiao.mioffice.cn ([43.224.245.230])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b472d5ad0f7sm10719364a12.2.2025.08.19.06.48.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Aug 2025 06:48:24 -0700 (PDT)
+From: Xiang Gao <gxxa03070307@gmail.com>
+To: akpm@linux-foundation.org,
+	david@redhat.com
+Cc: lorenzo.stoakes@oracle.com,
 	Liam.Howlett@oracle.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	corbet@lwn.net,
-	rostedt@goodmis.org,
-	mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com,
-	akpm@linux-foundation.org,
-	baohua@kernel.org,
-	willy@infradead.org,
-	peterx@redhat.com,
-	wangkefeng.wang@huawei.com,
-	usamaarif642@gmail.com,
-	sunnanyong@huawei.com,
-	vishal.moola@gmail.com,
-	thomas.hellstrom@linux.intel.com,
-	yang@os.amperecomputing.com,
-	kirill.shutemov@linux.intel.com,
-	aarcange@redhat.com,
-	raquini@redhat.com,
-	anshuman.khandual@arm.com,
-	catalin.marinas@arm.com,
-	tiwai@suse.de,
-	will@kernel.org,
-	dave.hansen@linux.intel.com,
-	jack@suse.cz,
-	cl@gentwo.org,
-	jglisse@google.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
 	surenb@google.com,
-	zokeefe@google.com,
-	hannes@cmpxchg.org,
-	rientjes@google.com,
 	mhocko@suse.com,
-	rdunlap@infradead.org,
-	hughd@google.com
-Subject: [PATCH v10 11/13] khugepaged: improve tracepoints for mTHP orders
-Date: Tue, 19 Aug 2025 07:42:03 -0600
-Message-ID: <20250819134205.622806-12-npache@redhat.com>
-In-Reply-To: <20250819134205.622806-1-npache@redhat.com>
-References: <20250819134205.622806-1-npache@redhat.com>
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	gaoxiang17 <gaoxiang17@xiaomi.com>
+Subject: [PATCH] mm/cma: add 'available count' and 'total count' to trace_cma_alloc_start
+Date: Tue, 19 Aug 2025 21:48:17 +0800
+Message-Id: <20250819134817.247495-1-gxxa03070307@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Stat-Signature: 9cw79314zjrwodp5kz44rajn447aetdj
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D543C180002
+X-Stat-Signature: joy9wzpiw81pdjo7fd4b5b5n3sa9aos7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CA730140010
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1755611189-250151
-X-HE-Meta: U2FsdGVkX1/I+u86aFsaA5fkn9cXe5ge7MaREqim1PmBlc+dqYFBKFh6XmD22t8+PuZYt2vTbZZIczPVLxuuQMjj/3aAXBIl9bQIM2bIHaCilBLFkhhTsUmNRzSNO/xX0utiKI/N4Chwaw4D2fJW8wkEeRFA1/eZG1TwnCCz6qquynvMeb2ysPEa/JG+W7Ow7V/WnQ0yrEZ7fVcUtN9PLKDs/o7gItPTGrRyJ4O1hUTZqqK+rVRexvPhYfrSwIM1xpK9iweY6UQDZotfx/fTNqp0D+ksd26PNIspH4rYuXFv1CkxAWHmc0IG3FP14vQRSbx2DEj/7NbpeJiWvKC9X9b1l6/R8oxC67kqdPPXbm66//YYmYAv+z8NCGQkFpysp3EjBB85auyPNCYuT+/T1/HhyBHWotbM03z8tDkbp2j4xsQJKQE/LgJZjCLbA0zFox4J4GdpUs3yvIjXAcrDSqCo6Kmp+VQ979oH8WSh/Xii2MLC5bATouvWLYss75J3Qk7yGfnxtg0E6HgtBp+vlML4nuYpO/KaHgqrs/qO40v66VuDXYJe2hXCBnU093yncFxyFEB2Wsz+WCsGOSASzpkXoBHrxZHSGaw2qAJ6pyoPdVWtPw1v4svxDC1+P9vaQMiUxwIl2f3E4fXkoEF/RXUxH7EKxtphGozFkNnr7ijrwMFtqG+SjncEB8V3IPFTHVB8739NeZ5PSSSG5kTvc9aa/GHeXuXHDhKznjd/11PuDVQEI8B5+bbivBShDly8zCDsXLJ3q7iRPU5VZ650OqX6QWP2v1PA3PJhXbaLIsRjuJTNnsTNqKL6sFr2dGDK1v/VhEoWuROqdz70ptF+PEYVh0sa69RWVzZBWclh6H6YkYBJPI0/AJOn7k5bGgiZcRiTXi9P8lXuCMsACl2sb1wy+zSLDNtrjAtBL5SUmgzmR97L4oUa4aVVsiVmgeGPYPta0X3VCwUTUZHsX51
- 5P47UrsB
- RcI7GuJyTW/0/ecLZMKHXv3pwslQEl+m+l1bgXc4gea/K1SMaXkgq2YLf0MM401fbskFNb0Riq7T6MZaURcuTNyEFb6U4GkkeATEYGJ8Wr9RKZdfZHbxrEFERYk0gTjRi30EDKg1PBLfpGmnoEfXGllgNLpn6Cnxwm7FH5KaBZzqTZ7Q9fnRhGdqilPGcYKQLfYy0+bA5X/rkRFFUUf+0TPLkHJ2ODoUD9GEl6/ofYpAlFrQi+BfsuKg0bfRxl02I+aJZRd1wQnWpAhSlvFzhZxKkzvFaMu+omxsTfvj1RwS5W2j/UMXiRxIcn+hXOBT2rXwi0ZYfmsj1TBWMKA1tvAmHCnuc+300J7qrjEYxNvS12rgIIo7YxqZ+OT4xp7Mn9bhDlHx5nfWwVVeppxNHaK4KHtvAK/mJ3wXbB8B50h5oDCI=
+X-HE-Tag: 1755611306-970864
+X-HE-Meta: U2FsdGVkX1+EQNV1PzyOhRXfS2+UXFgGQQPHBnCnzdoUpFnr0tjqEd/fb3YnTO7Fi++Mt+Z6eL706TIE0sbp7Bx5Nr8iZh/0yBZDCIObNmfNZV5OELWUuz0+gOn1MLns1TTvl+LcGeLU1vj4QA5hqhoXBPL1v/z1kOAMkcsYcHpAap/+6JI7tswBFw77LsNqD8jjt9nJBjyJPSddbQutsR99jWQuNpl1W+fzpkx3g6F78YMSsK1+a4QMryT4MnmobhfQ06V4LxbNf+7B+IyjNsfONuAkK9ikXgxCFy5yrjVRV88WeYi4bY4qZE1XurQBJpLTTPwVkxgJUBfTPm2pyzlzGHSjFOTbj5qwPmAe5tM1dyYc+AuJTD7gRjSc+0i/1RYQj/GyQql0Hxxqm/PNQvWMr0v8if3zuvTVhg3/BdSMhzWi310sGEALDo0Yrm/AfCNf4ymy1AiGvn4u2INv0e7E0JvtR1aTTL+7yCNcamPNcf9rSo3nwvsZKctR9rlFJ/s3AYT0RfBEhOxA0EJERZ99xtdJUK+3T+qjnAcQPRvgfXnn/MPkIbwT2oZEFzpGbvzoakbEYXLFWKZgW9rOZGKjgbhoTpezBnMHs0X1LXB1gbPqgRnbgKliAfdaof9PhDVBokQl2ZfzSVtkNn15K5Jjdx1pv4xx9WkpZLx721VkwxkcCbwdFOm5JpsS6CFscddgdfxjwcdSAfvf79BWjlnCA2fB45N2sI/HL4jpQzCBX01pOM3IV4Y4Ki67oi0w+DJFKAfyZ3upR9PDIrMjT4RvLXPlZF7YPg7gklOc0c4WWbenbYuILaaabTUWEjKI/J+gz+BtZY1VSIE588WkIOAP/7QN0I7AVu1chieJYRpDCkph0lhh1wM4apX78zXB+P8fhmlyw+pRzSOjtYe4utw+ztELP6cAWzQYAFEBvPqvnwjHuDk1R0LI76lr3DTy+sLoC6E0rJ8MugV+m9Y
+ B1TE1SIv
+ rt6c118mqZCClIRH4ZAJYLfwdrZoiLd87I4aN44yhTX4DCXxxg1EZv3v57qIal3SN0tnpiyAJPfMWoG4Fws9YdbweOu9UZZDBx8ILuhoFZ1Y1c3Fha2QyJOCVsb/0Cck5/QRTIaLPwn+2uxiMErZM18l9D5e6XRMLJQswcJj7A9zEd3Zv8Je67z/gsbG/kgJg6YmqCeVzeGKw8AqzPWW27qLxvH5sKoteJ9qMSI/YmyMHj0hG4VbFM5cVg1BLFB0/CwcRtV5l+84O8b9fmhveEGNE1P+UIbAAy09hPYiRAyAfaQEhszOhxaiqNEyO1vVjt07V3kNA85vebdfsrlvGVul+gkgBV+sApTq/KtDQm+2Uo30jBI7Tx9gWU4xB0h4iAfO2oqkZMZnVrdkoe8e1WWErsWFSrtUtEOHcyxfeGmhNJgK1OhiU2LSov4J9i3TQt4HuNJY2vLLr204=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,168 +121,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add the order to the tracepoints to give better insight into what order
-is being operated at for khugepaged.
+From: gaoxiang17 <gaoxiang17@xiaomi.com>
 
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Signed-off-by: Nico Pache <npache@redhat.com>
+This makes cma info more intuitive during debugging.
+
+Signed-off-by: gaoxiang17 <gaoxiang17@xiaomi.com>
 ---
- include/trace/events/huge_memory.h | 34 +++++++++++++++++++-----------
- mm/khugepaged.c                    | 10 +++++----
- 2 files changed, 28 insertions(+), 16 deletions(-)
+ include/trace/events/cma.h | 17 ++++++++++++-----
+ mm/cma.c                   |  2 +-
+ 2 files changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
-index 2305df6cb485..56aa8c3b011b 100644
---- a/include/trace/events/huge_memory.h
-+++ b/include/trace/events/huge_memory.h
-@@ -92,34 +92,37 @@ TRACE_EVENT(mm_khugepaged_scan_pmd,
+diff --git a/include/trace/events/cma.h b/include/trace/events/cma.h
+index 383c09f583ac..fbe70008ffc7 100644
+--- a/include/trace/events/cma.h
++++ b/include/trace/events/cma.h
+@@ -38,25 +38,32 @@ TRACE_EVENT(cma_release,
  
- TRACE_EVENT(mm_collapse_huge_page,
+ TRACE_EVENT(cma_alloc_start,
  
--	TP_PROTO(struct mm_struct *mm, int isolated, int status),
-+	TP_PROTO(struct mm_struct *mm, int isolated, int status, unsigned int order),
+-	TP_PROTO(const char *name, unsigned long count, unsigned int align),
++	TP_PROTO(const char *name, unsigned long request_count, unsigned long available_count,
++		unsigned long total_count, unsigned int align),
  
--	TP_ARGS(mm, isolated, status),
-+	TP_ARGS(mm, isolated, status, order),
+-	TP_ARGS(name, count, align),
++	TP_ARGS(name, request_count, available_count, total_count, align),
  
  	TP_STRUCT__entry(
- 		__field(struct mm_struct *, mm)
- 		__field(int, isolated)
- 		__field(int, status)
-+		__field(unsigned int, order)
+ 		__string(name, name)
+-		__field(unsigned long, count)
++		__field(unsigned long, request_count)
++		__field(unsigned long, available_count)
++		__field(unsigned long, total_count)
+ 		__field(unsigned int, align)
  	),
  
  	TP_fast_assign(
- 		__entry->mm = mm;
- 		__entry->isolated = isolated;
- 		__entry->status = status;
-+		__entry->order = order;
+ 		__assign_str(name);
+-		__entry->count = count;
++		__entry->count = request_count;
++		__entry->available_count = available_count;
++		__entry->total_count = total_count;
+ 		__entry->align = align;
  	),
  
--	TP_printk("mm=%p, isolated=%d, status=%s",
-+	TP_printk("mm=%p, isolated=%d, status=%s order=%u",
- 		__entry->mm,
- 		__entry->isolated,
--		__print_symbolic(__entry->status, SCAN_STATUS))
-+		__print_symbolic(__entry->status, SCAN_STATUS),
-+		__entry->order)
+ 	TP_printk("name=%s count=%lu align=%u",
+ 		  __get_str(name),
+-		  __entry->count,
++		  __entry->request_count,
++		  __entry->available_count,
++		  __entry->total_count,
+ 		  __entry->align)
  );
  
- TRACE_EVENT(mm_collapse_huge_page_isolate,
+diff --git a/mm/cma.c b/mm/cma.c
+index 2ffa4befb99a..e56ec64d0567 100644
+--- a/mm/cma.c
++++ b/mm/cma.c
+@@ -864,7 +864,7 @@ static struct page *__cma_alloc(struct cma *cma, unsigned long count,
+ 	if (!count)
+ 		return page;
  
- 	TP_PROTO(struct folio *folio, int none_or_zero,
--		 int referenced, bool  writable, int status),
-+		 int referenced, bool  writable, int status, unsigned int order),
+-	trace_cma_alloc_start(name, count, align);
++	trace_cma_alloc_start(name, count, cma->available_count, cma->count, align);
  
--	TP_ARGS(folio, none_or_zero, referenced, writable, status),
-+	TP_ARGS(folio, none_or_zero, referenced, writable, status, order),
- 
- 	TP_STRUCT__entry(
- 		__field(unsigned long, pfn)
-@@ -127,6 +130,7 @@ TRACE_EVENT(mm_collapse_huge_page_isolate,
- 		__field(int, referenced)
- 		__field(bool, writable)
- 		__field(int, status)
-+		__field(unsigned int, order)
- 	),
- 
- 	TP_fast_assign(
-@@ -135,27 +139,31 @@ TRACE_EVENT(mm_collapse_huge_page_isolate,
- 		__entry->referenced = referenced;
- 		__entry->writable = writable;
- 		__entry->status = status;
-+		__entry->order = order;
- 	),
- 
--	TP_printk("scan_pfn=0x%lx, none_or_zero=%d, referenced=%d, writable=%d, status=%s",
-+	TP_printk("scan_pfn=0x%lx, none_or_zero=%d, referenced=%d, writable=%d, status=%s order=%u",
- 		__entry->pfn,
- 		__entry->none_or_zero,
- 		__entry->referenced,
- 		__entry->writable,
--		__print_symbolic(__entry->status, SCAN_STATUS))
-+		__print_symbolic(__entry->status, SCAN_STATUS),
-+		__entry->order)
- );
- 
- TRACE_EVENT(mm_collapse_huge_page_swapin,
- 
--	TP_PROTO(struct mm_struct *mm, int swapped_in, int referenced, int ret),
-+	TP_PROTO(struct mm_struct *mm, int swapped_in, int referenced, int ret,
-+		 unsigned int order),
- 
--	TP_ARGS(mm, swapped_in, referenced, ret),
-+	TP_ARGS(mm, swapped_in, referenced, ret, order),
- 
- 	TP_STRUCT__entry(
- 		__field(struct mm_struct *, mm)
- 		__field(int, swapped_in)
- 		__field(int, referenced)
- 		__field(int, ret)
-+		__field(unsigned int, order)
- 	),
- 
- 	TP_fast_assign(
-@@ -163,13 +171,15 @@ TRACE_EVENT(mm_collapse_huge_page_swapin,
- 		__entry->swapped_in = swapped_in;
- 		__entry->referenced = referenced;
- 		__entry->ret = ret;
-+		__entry->order = order;
- 	),
- 
--	TP_printk("mm=%p, swapped_in=%d, referenced=%d, ret=%d",
-+	TP_printk("mm=%p, swapped_in=%d, referenced=%d, ret=%d, order=%u",
- 		__entry->mm,
- 		__entry->swapped_in,
- 		__entry->referenced,
--		__entry->ret)
-+		__entry->ret,
-+		__entry->order)
- );
- 
- TRACE_EVENT(mm_khugepaged_scan_file,
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 81d2ffd56ab9..c13bc583a368 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -721,13 +721,14 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
- 	} else {
- 		result = SCAN_SUCCEED;
- 		trace_mm_collapse_huge_page_isolate(folio, none_or_zero,
--						    referenced, writable, result);
-+						    referenced, writable, result,
-+						    order);
- 		return result;
- 	}
- out:
- 	release_pte_pages(pte, _pte, compound_pagelist);
- 	trace_mm_collapse_huge_page_isolate(folio, none_or_zero,
--					    referenced, writable, result);
-+					    referenced, writable, result, order);
- 	return result;
- }
- 
-@@ -1123,7 +1124,8 @@ static int __collapse_huge_page_swapin(struct mm_struct *mm,
- 
- 	result = SCAN_SUCCEED;
- out:
--	trace_mm_collapse_huge_page_swapin(mm, swapped_in, referenced, result);
-+	trace_mm_collapse_huge_page_swapin(mm, swapped_in, referenced, result,
-+					   order);
- 	return result;
- }
- 
-@@ -1348,7 +1350,7 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
- 	*mmap_locked = false;
- 	if (folio)
- 		folio_put(folio);
--	trace_mm_collapse_huge_page(mm, result == SCAN_SUCCEED, result);
-+	trace_mm_collapse_huge_page(mm, result == SCAN_SUCCEED, result, order);
- 	return result;
- }
- 
+ 	for (r = 0; r < cma->nranges; r++) {
+ 		page = NULL;
 -- 
-2.50.1
+2.34.1
 
 
