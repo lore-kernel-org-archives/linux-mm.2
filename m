@@ -2,131 +2,119 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 16D71CA0EED
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 09:15:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3FE99CA0EF5
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 09:20:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A842E8E0024; Tue, 19 Aug 2025 05:15:21 -0400 (EDT)
+	id 6E6CC8E0025; Tue, 19 Aug 2025 05:20:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A35028E0002; Tue, 19 Aug 2025 05:15:21 -0400 (EDT)
+	id 697DA8E0002; Tue, 19 Aug 2025 05:20:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 924C78E0024; Tue, 19 Aug 2025 05:15:21 -0400 (EDT)
+	id 5AD6E8E0025; Tue, 19 Aug 2025 05:20:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E2778E0002
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 05:15:21 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2E31E83CEA
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 09:15:21 +0000 (UTC)
-X-FDA: 83792948442.09.DD6CEEA
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 28FC710000D
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 09:15:19 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="g IDVPsX";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=joa3cD8D;
-	spf=pass (imf05.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.154 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 472818E0002
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 05:20:51 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EED4A1A02B0
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 09:20:50 +0000 (UTC)
+X-FDA: 83792962260.04.F0A4647
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	by imf18.hostedemail.com (Postfix) with ESMTP id E50F11C0003
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 09:20:48 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OLrs9gUc;
+	spf=pass (imf18.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755594919;
+	s=arc-20220608; t=1755595249;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dgchzZYWazF9bA9Qn52CgjOynPGZcFtDF4chSUl865s=;
-	b=5xnyquLb5A3FSAU6h+Q6On2XQUPXrqVR6+INwcrH2I5mDBq06OVEL1Gl89sJHNhyu5LSaj
-	DBPPRCP9iXbJr34XbLiI0ONHmN1Jhlde3fon8GgQ2+LjqFt6Z6oMN2oXklLXPhBJbzKWrx
-	S+rpDl70pEZXuT0dzCMkSwkGUyYB2fs=
+	bh=VEkCJ0gLjfLsaSogQOFyJQAfkvjUuZ4XqQ+SkU//zU0=;
+	b=sRiDSQPLDa+cJ7w+zpAcKMBFq42HfCNc1GRiiHFyTKXtMEs7hTG11SGpUbaQj6F1AW32D1
+	ofxyLv3v2RWz1k+AGGXpQw6iWKKhIaTZdKBPord5Bt38lr9qkzBVe2O59mujrezwxyotsX
+	dfZsjJFhrbelT+15+sRWrMaQEtIoHSg=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="g IDVPsX";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=joa3cD8D;
-	spf=pass (imf05.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.154 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755594919; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OLrs9gUc;
+	spf=pass (imf18.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755595249; a=rsa-sha256;
 	cv=none;
-	b=rAqeqVcUmehIy/NT1mfKmX+mXxUgotf6b39ZvWUnK+700vUizkFblxn5lex2EkJkPRfb7s
-	JAqyIs7R0hfjuWS6Bh1u4aqNC0vKZJsB6s3RQ9fWLLxivUvJuhPrOPVEoGXnmVeTKEpB7v
-	IoIbSMlmuT4mbZKNDbpkSMjd/sCaogA=
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id CA2897A0283;
-	Tue, 19 Aug 2025 05:15:17 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Tue, 19 Aug 2025 05:15:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1755594917; x=
-	1755681317; bh=dgchzZYWazF9bA9Qn52CgjOynPGZcFtDF4chSUl865s=; b=g
-	IDVPsX8nnuo+iurEbpVYwhbWa/H1TFhJ+sVs4d4JHnwCzY6H6nJGgVkDi5mcUqia
-	d11i6PpNCYYcrV1K4QVQpRrRqcsun7m1LnYVGPeh5nGHZA+6Dwl3AtpR67HZLgqV
-	EUS2t66QYqCRk9Xdf9OVAcsHA1Ov77Lvqz/87+lTDthHodo9TPRMmLrYAcrIMWKN
-	qqdY/9qqcdAAZy4s66v/rPbcRplDbNEIj/fymYCZxABIvwZ59NaHupu8ljWs9DGz
-	KmlGomFt3fzFkm5YFmzR9Ks0uyMBqpISm6+/SZX8ZgxPKGy+gyUJG18ggV91JBUA
-	OdwWqlsRazXYBpypq+uhw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1755594917; x=1755681317; bh=dgchzZYWazF9bA9Qn52CgjOynPGZcFtDF4c
-	hSUl865s=; b=joa3cD8Dt9gEW3M5zysw7Lc89OexCKunQ+G/jXuzP1GDr3kviNa
-	4Q/U3ysayzCpw/kF8lDkgXdC6aaNlLEYSUZlvasJQVOSoXr6dDKi4OYkEwIReoFW
-	hGtKa1UZSlmtM9/ncLBPxn8pYBF3CP19GpTNRJUxL4CM6+WGUa4XRoaluCJ2R22I
-	/eSRYGRs1tne3t3VP+9UuRAerKE0ko1ya7wofTrRSZYweO9lD+CZ6kTowPDm5cmG
-	b4A/pK2x95ExE88QJLdzK7UvFs9LrQ8ljwOpb6YkHGa2piUam2MGA6pHfwTeOXnZ
-	ey6dvFDD5V0qkOsVfIRQW8AfXwMwKRt1NaA==
-X-ME-Sender: <xms:pECkaCbIZh3fDJ0gogqRxojcCyoWjLTQer_PIES9LduTvUwGH2mifQ>
-    <xme:pECkaBEsQGBBXD2UbGZzju2z3d4BgNhl_aUl4lAqA4xdpyKOmIqtOtX7LvxfRD1YS
-    i3NZL6KzqkYbXRusp0>
-X-ME-Received: <xmr:pECkaHpi3pwuD9Kc7PAzKM0_1wQmiIoUSTArWgwV3hVKoSKL_ePtaZGjMQqI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduheehudduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
-    ftrfgrthhtvghrnhepjeehueefuddvgfejkeeivdejvdegjefgfeeiteevfffhtddvtdel
-    udfhfeefffdunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
-    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopedv
-    gedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepjhhoshhhuhgrrdhhrghhnhhjhi
-    esghhmrghilhdrtghomhdprhgtphhtthhopehhrghnnhgvshestghmphigtghhghdrohhr
-    ghdprhgtphhtthhopegtlhhmsehfsgdrtghomhdprhgtphhtthhopegrkhhpmheslhhinh
-    hugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepvhgsrggskhgrsehsuhhs
-    vgdrtgiipdhrtghpthhtohepshhurhgvnhgssehgohhglhgvrdgtohhmpdhrtghpthhtoh
-    epmhhhohgtkhhosehsuhhsvgdrtghomhdprhgtphhtthhopehjrggtkhhmrghnsgesghho
-    ohhglhgvrdgtohhmpdhrtghpthhtohepiihihiesnhhvihguihgrrdgtohhm
-X-ME-Proxy: <xmx:pECkaFnRy_k1BUFjyXLYFT6Ko9xfMd02hv5QZFvKfJjtSREh50UgrQ>
-    <xmx:pECkaMtYp-5RQJ5tcyakOdcVcXqRMCiRAU6vzuctwVIFOuLHOIJmsg>
-    <xmx:pECkaEdBB0564ee_gKFqhU1-i4VfJghTmmhUp5WGT2_FvxXxVKlXuQ>
-    <xmx:pECkaObn-EvuSUMyxAhRt0Hm_4SmVnJjghRZwh-PpHtNz73s9knTbw>
-    <xmx:pUCkaGaUG8N80olSqYgicV5NIk9jbsDuPQkrgdxuR0gj3iFjpsMgPzv2>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 19 Aug 2025 05:15:15 -0400 (EDT)
-Date: Tue, 19 Aug 2025 10:15:13 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Chris Mason <clm@fb.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Suren Baghdasaryan <surenb@gogle.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH] mm/page_alloc: Occasionally relinquish zone lock in
- batch freeing
-Message-ID: <k6fpx5adh45t4jrxgiccq7acubwcgmi746crggxi6e4oihtvpt@thks5zrn53n3>
-References: <20250818185804.21044-1-joshua.hahnjy@gmail.com>
+	b=oGK+Vg4f8yXXQrZ9ga0kYKH8a63ROkhYIaqt5Fs6X4PBV/epEDHsFyPoHbYEve4UaFg2hU
+	AmhKMTyfq9cTAeJ6PT32ml5RW/cxtN200xprWAo7z1ezlPK4O85ajSrYbXFG4hv8/G8LLU
+	PwQZG0/VcqcxYM2SiampdO1/g1cZKDw=
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-55ce526627dso5148369e87.3
+        for <linux-mm@kvack.org>; Tue, 19 Aug 2025 02:20:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755595247; x=1756200047; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VEkCJ0gLjfLsaSogQOFyJQAfkvjUuZ4XqQ+SkU//zU0=;
+        b=OLrs9gUcr1nM43BDJ4LJLtUfbnjh9rGKyBE4pkcy36SF5xELfE/0YGU2J7hB6+rCR6
+         keWNS50qhKNIqzSYUIaIiTow3M99ABCCvFYpjDhMHuIHRsmcvBUiFK4X/9pADMezkBq7
+         FWgevZeNurBUtRbrMv973shuozweERqkD5+ofokzFkjbeOakegufbpz2WhUss59u+bwO
+         SbTFgg7RU97Uavf9B2WwkhRzJT6lrs5FkOL4H4gRBkRKA1mYX+2aaMasv9OpoZ6yvMHk
+         pkcYfcA6X6SwWD+wruPofu40vZBeIxQ+dGtbQwoHVkHthFi6qoLPclKJ2BxM5k+jhBew
+         0thA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755595247; x=1756200047;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VEkCJ0gLjfLsaSogQOFyJQAfkvjUuZ4XqQ+SkU//zU0=;
+        b=Iq8TCQVHBXX7dYDmeYUd1K6L0nw8Ohi+2jPjkBBERNe2pvK4Rhs9TKwU+0x3b54cEK
+         mDoSVVy3bT0tG0688tBx0I1V2xRxpjydEoLIUGrKE9/kFdaFeRIqdcyQ6rVLiSwcSfa8
+         ZUWwh9AJIck4NVprQvekcOdfBMHaQxm6zUM1pIE50Cfbw8SmKhgU2Eqr3gEKYRRfgj9t
+         6GvfMGDxZQnea5LPmh7kZaVac+oiNZwEwnEPcvBHxSbpevRAolSeWdltb4H+kFM+AGIa
+         hxROuP2PyW79+AvDWeA0ySvnlugnoK1P041mAmYWvR9GSZdSLSD2bRCKhR79yfOdrkcS
+         TK2g==
+X-Forwarded-Encrypted: i=1; AJvYcCXwVx29nNKXFvw+hd9PBhAS7G7acgm1F9pn90dRtdufxtp8URKzH2oB4NtOAGtORMFzYoGwdExivA==@kvack.org
+X-Gm-Message-State: AOJu0YyoJqXwC86Lh+tjOpPcdcMzz60xYIJXemBuYrW3WX9inTscND+A
+	5n8st6WGA7cpzbQVfi7tMQaaWF708QK5Y7lZjOkODU9347MCq8eYd1bO
+X-Gm-Gg: ASbGncvpSaOSmfh8Aig4fDZd4F+DaDmTdx0UVAwB7nofsiWgghl47XQfoOYhmTt+kKX
+	Fb4uOz8sZ1D3XXsQbdG35V722trs/f3NmPJXp3UhYPKxY/7jk9enwCoYLA/X15HWj7iKJVzNFJ+
+	y0pu4vpyQPvVcQRwY9Uv3Aa6VqF+N6S6jiw/AzGUXG2kSpcBa0nbVbH5pohu8pyBN6OT2HpPF1H
+	iLKPJkJJeRZ+qQB/A4mGqtgbq0tbcB0fCOBexhg8NSdKm/c86cz1Elb31Tf9NPpQBwqac88SXT5
+	4kSl4gixvt4IfuanrpP03xUv2vQSmkxKzYmiAFGugXQ9mhS2lvBg/lt7HPa1Udnj/uD5VSw44b0
+	LSi2vUhnSO+LncLu/UwAoG/gpPPgBb8Chh76xnK23It4ojiwGsQ==
+X-Google-Smtp-Source: AGHT+IGDpm17FTp2jgQoAPGgKW0MpOUHKhiVhhQj6NkOKyY/3ejMthbZqvf940McsZft3+q3S9XyMw==
+X-Received: by 2002:a05:6512:3b20:b0:553:2311:e1f6 with SMTP id 2adb3069b0e04-55e00864624mr518355e87.49.1755595246570;
+        Tue, 19 Aug 2025 02:20:46 -0700 (PDT)
+Received: from pc636 (host-95-203-27-238.mobileonline.telia.com. [95.203.27.238])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55cef3516dfsm2030389e87.8.2025.08.19.02.20.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Aug 2025 02:20:45 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Tue, 19 Aug 2025 11:20:43 +0200
+To: Baoquan He <bhe@redhat.com>
+Cc: Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 6/8] mm/vmalloc: Defer freeing partly initialized
+ vm_struct
+Message-ID: <aKRB6xmFHYp8pnYs@pc636>
+References: <20250807075810.358714-1-urezki@gmail.com>
+ <20250807075810.358714-7-urezki@gmail.com>
+ <aKKqOzepmIkOJi3i@MiWiFi-R3L-srv>
+ <aKMkgbZqOqyGVF1C@pc636>
+ <aKQ8OY04a0ACqZ2O@MiWiFi-R3L-srv>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250818185804.21044-1-joshua.hahnjy@gmail.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 28FC710000D
-X-Stat-Signature: r9ns1kfwdwbq553ao31z7ykngtna8eec
+In-Reply-To: <aKQ8OY04a0ACqZ2O@MiWiFi-R3L-srv>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E50F11C0003
+X-Stat-Signature: po9x9t4dobf5pwai5nch7y3i3jwy7zyd
 X-Rspam-User: 
-X-HE-Tag: 1755594919-851618
-X-HE-Meta: U2FsdGVkX195AcS6JedAfKbjbnPEWVTSsbVqtzcp+7AcYJnh5WLdOMiGKUqemQo9EitLvBroLe1T6CNB0smUsKfhXCsUghEsUqhZLbpFxZ7jp9USBeEMJNPxQHsrl9iiiApWDHOb4XzmXqSKa4D9Ki6ZKBuumBmbox7uD4fIu9ulojs9u/I2HVMmZDqvjrZytl9WKl0BrkKuu+BThGxix4mPRfTLbmfTT5wradwJKMdSKBXWQe0n2e5WIhXadbDgXj/FOlR3Welt5agQHVhGMaP/1Pv4Iy3IFd6B7f+SfuPsfAujs+nIFvWAl6bCcZAFdf6GkC+Q4W6DJ7tqqQsZWv2d+/2MTtN49I6TL9Dp0/OYBDpECxJr8wEfj1AU5axhi9wuoxHnpr4w7gdgWoIvSZMElU4G+IhyEgpFjT3H3JSiW1XzSsEQdS0XsxHhVnXzbNAsPU/kcZZzl9O2B4kzjg4O0JETKsPSxgoj64WvOMQSWjn5Fmyvz+ouE+Z4GoOYIdBbBXkSqsx0oeBj775VkFx8xsKu4xqvzyB/vzzxKBEDA7vnIpGj9hLi78J9kM+BsLqHs8vfSNo75WEm0cDlAjgxbLoL27u77/zPVrgO2nh4rGnD9I3HeCnO9bbp7p7wZrN4BraIIpZlBGJPfv+SfV6qF9w+Xsd7OU5ThRlDIWOTZwV86esQ5ZJkmGUd5YuTQ6UWAB3GhcdUBZ87e+kd46iIlq8UldFFtLovF4+FWTUhUWoDxH6ecmZ2ttcG9vHSZz19hWeoB18tflgtRN6WsH7bfD0yswz6ph1lQVG1BGOKTMh3CNltpIdcX7dKXK7gUfXos859FwMsvOgDWyTWtBseMUnWBiMpHdzUZ1CpQao36Va6Feqdeq0oOudIqBk9OGbAavoUAV1xku2dC7W4fjDJQ3uGx+83WXMq3zadlxbYXkbmqthpMmaWrSmCel/z39XDu1rSSMRra20eol8
- 9qDjfqle
- aw0NhZYYL2mm6fCbFjTLxvy/3whwwDC6pSOgAGujxDm+jPK/2Yp6uWucbh6vVm3pqMJnwVb7rcjJp17WIHVOWFk4C6Rd5QA3OiFK3M5H1K7Q02WWeqAlK9KRU3b7AwZMJ4HZ10KAn507WzJI6SLBuuQjAK+Szhy0erIGUGeroQr1rGyiawRAiV6Bu2NtAPaXPQ3tP664EFA33jButVRIvaeM1LwhNfxDRIgCPXDt5pV0FOZU2ANbhf6bC5TFCV0YDYz57+JbDBOBMy1F16kEyGDFoi2GFoKR6MJaBTf1rWNR13kqbNSd+Ra/VDLrSWnoax8SoBasjvvMqJSUCmh87USWS+sx18pQrXUpG3MmII1UfsHcihlIz2JM9h3pMhH5aLcwSiQ5sbMcDMz+qKf3axyeFWJcdIDOU7ZPu3gbzp6ijhDN/EMjxAJE3BvAQbuVtK4o3RZpHWDYRwsFaICuEEaeH6NPdoasaSyVIYaHJMuwiUM/IkaUnvuEzpMvfvxrXvVnOpG+S2SigimGReWsuoxhpm/fBwSXtA08LUz/YwuT0IRmBv6yhFLZJxNgnQvR0jDjGw0WThEDYHVVZtKKyvJqlNw==
+X-HE-Tag: 1755595248-435652
+X-HE-Meta: U2FsdGVkX18aQsfEUmvkNgqq6HklRheDd8PNmUkiUaTQoukq8v8vx2dxHSOOp/GhqjCIgetgW3qXpmZzBDmjqBFM41rf/pTXTFwRJ0paI4LnVsajWHW/ywlR7E0a8QCr9MTxbWtS7mpdWB0njRUkwGK2+RKkrRYYjF8614PL7tZfIP9S9J4Z7Sw3hdmrNy1IsSW4BLje8aaXShkIDQKrKPvuHjNLziQPFIAquNDL0LGM4Oy7R9sX7XwMtkq7cSPfN+AdGivCNEnms8/ETVIfJTMpHnGo2Wt752q8v5Gkg6aoO02qroChLJ1zRvlGrlEKEifr33AntFM/aA0jknsKapKm6bMRZhYwEE8JYtelPuhkLN7jGAGQUHZ9k3c83os+MGntCVMNqsluii31yRLLSZe1KCYZ/wGeuefYrBvgmpfO5IxQZ0S4E2j1PpYE7NLWw7RD80HPW/+xobwImAWdh5A9qtNoP0tfcxJiSRcjnHCT7Gc1sbTBt/s8Otd/7Sq6qpMo+qUh6WgXUZuziXAFsA/a+U6d3WHi2g92h47fK3IdwuDzr8zOHCH0Uv607W0SnB6Edyyfxgg3tqmCEUuvZinKH6ACHI9wyd2oCm5pJz9tf+iqw8C5uAfuauxAMRZDwGaDsaNYYB6IgxqgxaOtjbSRoD3AuRX/NJUjmCuijT+SyonfOcI8+3/1fiVvn/XTQUg9RIT1Qnt0HGzZaU/yRi1IFSbLF+d0uO7y4Mjqf0MFItsKLUmX3wkhNLsnyLKk/xNYojgT4LfSsftU1pFPUc1aOxgd/kynMmRCW+Pd40ruItUYovkpJ7h83bkk1bqxHDIhv+etVuDcyUrNP2/lSnSgVW2/zEXOYxD4zC1/Nf/vAXe2AG6MClK66BUCdBzlW4MgZ+NEoWTDgKAjdURTYRC/c7QEf9tV+8BIAarV95/ZjCqo9ms+8ZSLYImFp+48U4f8nRCJzSQ6W85pRMI
+ jRaABOpJ
+ MQwiexZJGz2FPa47qtLZH6CibNI2WGEOG1F6w3YW6HwnDj1IziQ+C/MFrDOVKdxS+3t46ZFkxabXrgT4qEfJtaLFAqV6xou28ZK7Fw26L4huUCLRSzCbPoIQSRQeiOggHjrMxD17kK9UhWG/gFyUXdyOuC1acIs7YwukaHG6Eb2O2n3+uOzSdJ0Oau3a54eGh+Mtkl18XgzfxFEZHAhollvpn5GbAJMBRNGAV7CeownspuSrv+trx3pOlTa5tB2zaUNTBexImUvzoYUlkF26+HS4tF/n400qi0rNSDolWUBVqUOqId7E1agYbJuyNyj/wr/KnJ+qw0JaSCQgCDny0sud218aTDBzeBsjcpALYwymLg/Ec3ZSqLClbXlFsHyaDKExgFKi16q36HXDGiWc5a4znk3Rs3c58rpTiFEAdt6cncQDTPLee4paCefwhs3JvycSTFhzQTAEC7jCIiwtteWRay7g/5cftm1pT1c8W0YpwubKQHAm0F+ODVG9BcUDb5M8Lo8cAr52oejGbnEES2ymz3TfPidKDU5zi
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,133 +123,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 18, 2025 at 11:58:03AM -0700, Joshua Hahn wrote:
-> While testing workloads with high sustained memory pressure on large machines
-> (1TB memory, 316 CPUs), we saw an unexpectedly high number of softlockups.
-> Further investigation showed that the lock in free_pcppages_bulk was being held
-> for a long time, even being held while 2k+ pages were being freed.
+On Tue, Aug 19, 2025 at 04:56:25PM +0800, Baoquan He wrote:
+> On 08/18/25 at 03:02pm, Uladzislau Rezki wrote:
+> > On Mon, Aug 18, 2025 at 12:21:15PM +0800, Baoquan He wrote:
+> > > On 08/07/25 at 09:58am, Uladzislau Rezki (Sony) wrote:
+> > > > __vmalloc_area_node() may call free_vmap_area() or vfree() on
+> > > > error paths, both of which can sleep. This becomes problematic
+> > > > if the function is invoked from an atomic context, such as when
+> > > > GFP_ATOMIC or GFP_NOWAIT is passed via gfp_mask.
+> > > > 
+> > > > To fix this, unify error paths and defer the cleanup of partly
+> > > > initialized vm_struct objects to a workqueue. This ensures that
+> > > > freeing happens in a process context and avoids invalid sleeps
+> > > > in atomic regions.
+> > > > 
+> > > > Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+> > > > ---
+> > > >  include/linux/vmalloc.h |  6 +++++-
+> > > >  mm/vmalloc.c            | 34 +++++++++++++++++++++++++++++++---
+> > > >  2 files changed, 36 insertions(+), 4 deletions(-)
+> > > > 
+> > > > diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+> > > > index fdc9aeb74a44..b1425fae8cbf 100644
+> > > > --- a/include/linux/vmalloc.h
+> > > > +++ b/include/linux/vmalloc.h
+> > > > @@ -50,7 +50,11 @@ struct iov_iter;		/* in uio.h */
+> > > >  #endif
+> > > >  
+> > > >  struct vm_struct {
+> > > > -	struct vm_struct	*next;
+> > > > +	union {
+> > > > +		struct vm_struct *next;	  /* Early registration of vm_areas. */
+> > > > +		struct llist_node llnode; /* Asynchronous freeing on error paths. */
+> > > > +	};
+> > > > +
+> > > >  	void			*addr;
+> > > >  	unsigned long		size;
+> > > >  	unsigned long		flags;
+> > > > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> > > > index 7f48a54ec108..2424f80d524a 100644
+> > > > --- a/mm/vmalloc.c
+> > > > +++ b/mm/vmalloc.c
+> > > > @@ -3680,6 +3680,35 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+> > > >  	return nr_allocated;
+> > > >  }
+> > > >  
+> > > > +static LLIST_HEAD(pending_vm_area_cleanup);
+> > > > +static void cleanup_vm_area_work(struct work_struct *work)
+> > > > +{
+> > > > +	struct vm_struct *area, *tmp;
+> > > > +	struct llist_node *head;
+> > > > +
+> > > > +	head = llist_del_all(&pending_vm_area_cleanup);
+> > > > +	if (!head)
+> > > > +		return;
+> > > > +
+> > > > +	llist_for_each_entry_safe(area, tmp, head, llnode) {
+> > > > +		if (!area->pages)
+> > > > +			free_vm_area(area);
+> > > > +		else
+> > > > +			vfree(area->addr);
+> > > > +	}
+> > > > +}
+> > > > +
+> > > > +/*
+> > > > + * Helper for __vmalloc_area_node() to defer cleanup
+> > > > + * of partially initialized vm_struct in error paths.
+> > > > + */
+> > > > +static DECLARE_WORK(cleanup_vm_area, cleanup_vm_area_work);
+> > > > +static void defer_vm_area_cleanup(struct vm_struct *area)
+> > > > +{
+> > > > +	if (llist_add(&area->llnode, &pending_vm_area_cleanup))
+> > > > +		schedule_work(&cleanup_vm_area);
+> > > > +}
+> > > 
+> > > Wondering why here we need call schudule_work() when
+> > > pending_vm_area_cleanup was empty before adding new entry. Shouldn't
+> > > it be as below to schedule the job? Not sure if I miss anything.
+> > > 
+> > > 	if (!llist_add(&area->llnode, &pending_vm_area_cleanup))
+> > > 		schedule_work(&cleanup_vm_area);
+> > > 
+> > > =====
+> > > /**
+> > >  * llist_add - add a new entry
+> > >  * @new:        new entry to be added
+> > >  * @head:       the head for your lock-less list
+> > >  *
+> > >  * Returns true if the list was empty prior to adding this entry.
+> > >  */
+> > > static inline bool llist_add(struct llist_node *new, struct llist_head *head)
+> > > {
+> > >         return llist_add_batch(new, new, head);
+> > > }
+> > > =====
+> > > 
+> > But then you will not schedule. If the list is empty, we add one element
+> > llist_add() returns 1, but your condition expects 0.
+> > 
+> > How it works:
+> > 
+> > If someone keeps adding to the llist and it is not empty we should not
+> > trigger a new work, because a current work is in flight(it will cover new comers),
+> > i.e. it has been scheduled but it has not yet completed llist_del_all() on
+> > the head.
+> > 
+> > Once it is done, a new comer will trigger a work again only if it sees NULL,
+> > i.e. when the list is empty.
 > 
-> Instead of holding the lock for the entirety of the freeing, check to see if
-> the zone lock is contended every pcp->batch pages. If there is contention,
-> relinquish the lock so that other processors have a change to grab the lock
-> and perform critical work.
+> Fair enough. I thought it's a deferring work, in fact it's aiming to put the
+> error handling in a workqueue, but not the current atomic context.
+> Thanks for the explanation.
+> 
+You are welcome!
 
-Hm. It doesn't necessary to be contention on the lock, but just that you
-holding the lock for too long so the CPU is not available for the scheduler.
-
-> In our fleet, we have seen that performing batched lock freeing has led to
-> significantly lower rates of softlockups, while incurring relatively small
-> regressions (relative to the workload and relative to the variation).
-> 
-> The following are a few synthetic benchmarks:
-> 
-> Test 1: Small machine (30G RAM, 36 CPUs)
-> 
-> stress-ng --vm 30 --vm-bytes 1G -M -t 100
-> +----------------------+---------------+-----------+
-> |        Metric        | Variation (%) | Delta (%) |
-> +----------------------+---------------+-----------+
-> | bogo ops             |        0.0076 |   -0.0183 |
-> | bogo ops/s (real)    |        0.0064 |   -0.0207 |
-> | bogo ops/s (usr+sys) |        0.3151 |   +0.4141 |
-> +----------------------+---------------+-----------+
-> 
-> stress-ng --vm 20 --vm-bytes 3G -M -t 100
-> +----------------------+---------------+-----------+
-> |        Metric        | Variation (%) | Delta (%) |
-> +----------------------+---------------+-----------+
-> | bogo ops             |        0.0295 |   -0.0078 |
-> | bogo ops/s (real)    |        0.0267 |   -0.0177 |
-> | bogo ops/s (usr+sys) |        1.7079 |   -0.0096 |
-> +----------------------+---------------+-----------+
-> 
-> Test 2: Big machine (250G RAM, 176 CPUs)
-> 
-> stress-ng --vm 50 --vm-bytes 5G -M -t 100
-> +----------------------+---------------+-----------+
-> |        Metric        | Variation (%) | Delta (%) |
-> +----------------------+---------------+-----------+
-> | bogo ops             |        0.0362 |   -0.0187 |
-> | bogo ops/s (real)    |        0.0391 |   -0.0220 |
-> | bogo ops/s (usr+sys) |        2.9603 |   +1.3758 |
-> +----------------------+---------------+-----------+
-> 
-> stress-ng --vm 10 --vm-bytes 30G -M -t 100
-> +----------------------+---------------+-----------+
-> |        Metric        | Variation (%) | Delta (%) |
-> +----------------------+---------------+-----------+
-> | bogo ops             |        2.3130 |   -0.0754 |
-> | bogo ops/s (real)    |        3.3069 |   -0.8579 |
-> | bogo ops/s (usr+sys) |        4.0369 |   -1.1985 |
-> +----------------------+---------------+-----------+
-> 
-> Suggested-by: Chris Mason <clm@fb.com>
-> Co-developed-by: Johannes Weiner <hannes@cmpxchg.org>
-> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-> 
-> ---
->  mm/page_alloc.c | 15 ++++++++++++++-
->  1 file changed, 14 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index a8a84c3b5fe5..bd7a8da3e159 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -1238,6 +1238,8 @@ static void free_pcppages_bulk(struct zone *zone, int count,
->  	 * below while (list_empty(list)) loop.
->  	 */
->  	count = min(pcp->count, count);
-> +	if (!count)
-> +		return;
->  
->  	/* Ensure requested pindex is drained first. */
->  	pindex = pindex - 1;
-> @@ -1247,6 +1249,7 @@ static void free_pcppages_bulk(struct zone *zone, int count,
->  	while (count > 0) {
->  		struct list_head *list;
->  		int nr_pages;
-> +		int batch = min(count, pcp->batch);
->  
->  		/* Remove pages from lists in a round-robin fashion. */
->  		do {
-> @@ -1267,12 +1270,22 @@ static void free_pcppages_bulk(struct zone *zone, int count,
->  
->  			/* must delete to avoid corrupting pcp list */
->  			list_del(&page->pcp_list);
-> +			batch -= nr_pages;
->  			count -= nr_pages;
->  			pcp->count -= nr_pages;
->  
->  			__free_one_page(page, pfn, zone, order, mt, FPI_NONE);
->  			trace_mm_page_pcpu_drain(page, order, mt);
-> -		} while (count > 0 && !list_empty(list));
-> +		} while (batch > 0 && !list_empty(list));
-> +
-> +		/*
-> +		 * Prevent starving the lock for other users; every pcp->batch
-> +		 * pages freed, relinquish the zone lock if it is contended.
-> +		 */
-> +		if (count && spin_is_contended(&zone->lock)) {
-
-I would rather drop the count thing and do something like this:
-
-		if (need_resched() || spin_needbreak(&zone->lock) {
-			spin_unlock_irqrestore(&zone->lock, flags);
-			cond_resched();
-			spin_lock_irqsave(&zone->lock, flags);
-		}
-
-> +			spin_unlock_irqrestore(&zone->lock, flags);
-> +			spin_lock_irqsave(&zone->lock, flags);
-> +		}
->  	}
->  
->  	spin_unlock_irqrestore(&zone->lock, flags);
-> 
-> base-commit: 137a6423b60fe0785aada403679d3b086bb83062
-> -- 
-> 2.47.3
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+--
+Uladzislau Rezki
 
