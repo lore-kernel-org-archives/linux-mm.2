@@ -2,101 +2,77 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CA95ECA0EED
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 08:56:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B8E6CA0EED
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 08:58:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 504E38E0020; Tue, 19 Aug 2025 04:56:42 -0400 (EDT)
+	id DBA7A8E0022; Tue, 19 Aug 2025 04:58:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B5738E0002; Tue, 19 Aug 2025 04:56:42 -0400 (EDT)
+	id D6ACE8E0002; Tue, 19 Aug 2025 04:58:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F2B78E0020; Tue, 19 Aug 2025 04:56:42 -0400 (EDT)
+	id C81628E0022; Tue, 19 Aug 2025 04:58:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A1948E0002
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 04:56:42 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B00D18E0002
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 04:58:09 -0400 (EDT)
 Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A927DBA743
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 08:56:41 +0000 (UTC)
-X-FDA: 83792901402.18.8988A54
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D417440005
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 08:56:39 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="R5ZUXA/f";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf01.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5E863C06CD
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 08:58:09 +0000 (UTC)
+X-FDA: 83792905098.18.F942DB8
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 70152C000B
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 08:58:06 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lst.de;
+	spf=pass (imf28.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755593799;
+	s=arc-20220608; t=1755593887;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+ibUK4q/Rvy3c7fBEbcTRGpKubTCINpqdPqllT/qlSY=;
-	b=zc8LVZ330lwzVXulMqhL5VRqaqIQhEQ4/igStMDmKW9PmGJd+pHltiUc4aF6qrU7wULhZQ
-	7dGDlXamaAhDSvYlfFtuvLTHz2riR/0kLkKFuhqCIJwLAQ7MSIzo0T2z1UWFBtFCn7cc9G
-	JYmQl2SypI9N15laRAUAQSAidHg/Xgo=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="R5ZUXA/f";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf01.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755593799; a=rsa-sha256;
-	cv=none;
-	b=6dXkdxIJoEjxzDGltq7kDH+tq6GPd78RDAq57KglE7dUP2qyG8YDv3JZDdzLd6JEZIbkR3
-	FPeoe8QzL3OVxgZhQmM09kIR9VYKD5JrFuP++YGOY3hklRvnrDE1rqypu7KR0BNU9AzWft
-	9gRUX8/NWlA0+AaoRHLwjSCeS1yvK4o=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755593799;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+ibUK4q/Rvy3c7fBEbcTRGpKubTCINpqdPqllT/qlSY=;
-	b=R5ZUXA/fiNxYBsauMyL34+hWZOop05s2otmWc7tYqdOSdbhycdVgAfTaeMCyVnVqymRd24
-	QtcW4mrsFiMayBrmp/zdn03Pi2Qw/0QyytQAcT8LUMWVZyI6UkuaxEegO3sMKDvRc+jCV3
-	elr7wShVdx1KW594Phg2dR+Rd7BIE18=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-79-1ws7qeZ_Mk-k-aFR6OJIpA-1; Tue,
- 19 Aug 2025 04:56:33 -0400
-X-MC-Unique: 1ws7qeZ_Mk-k-aFR6OJIpA-1
-X-Mimecast-MFC-AGG-ID: 1ws7qeZ_Mk-k-aFR6OJIpA_1755593791
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AB162180048E;
-	Tue, 19 Aug 2025 08:56:31 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.239])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9C2291800280;
-	Tue, 19 Aug 2025 08:56:29 +0000 (UTC)
-Date: Tue, 19 Aug 2025 16:56:25 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 6/8] mm/vmalloc: Defer freeing partly initialized
- vm_struct
-Message-ID: <aKQ8OY04a0ACqZ2O@MiWiFi-R3L-srv>
-References: <20250807075810.358714-1-urezki@gmail.com>
- <20250807075810.358714-7-urezki@gmail.com>
- <aKKqOzepmIkOJi3i@MiWiFi-R3L-srv>
- <aKMkgbZqOqyGVF1C@pc636>
+	bh=lI4U7DxrSZnVFh0827A0UBRYCW4TCF5FN0K+Rzz9OAk=;
+	b=GXRCWlgTfsdN2KyRkDe3u729ZNeOT/hAStrZwm6RlhD45SBMY5U2O3bw7tAT0/lVnMP2LT
+	4VuZvLIEYytDtQkIzwaW2GHMNDlD6rShXOipcebL2TRoecIxROBqqYd/EZHuL8/T6YmqbZ
+	52hqYaUsipMgpIB5Fik30GNCLhnQgTA=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lst.de;
+	spf=pass (imf28.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755593887; a=rsa-sha256;
+	cv=none;
+	b=Vlupt1x/9IkI6bB02HyweRU2jBwHqMwvMAy0/VMF+kYV5Y7I3co0KInen9T/HfiQHghnbQ
+	44/mRpWp+Td458R/dFcyon08ymCctUBTBRN+RCNL7U4f2Du95c+v4ntrOgfYyGXZgsS6Mx
+	27wtI0vO3Jz39XnN8yDXL7F0pgI8Xao=
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 12A5467373; Tue, 19 Aug 2025 10:57:52 +0200 (CEST)
+Date: Tue, 19 Aug 2025 10:57:51 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Christoph Hellwig <hch@lst.de>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	linux-bcachefs@vger.kernel.org, ntfs3@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 2/3] bcachefs: stop using write_cache_pages
+Message-ID: <20250819085751.GA4283@lst.de>
+References: <20250818061017.1526853-1-hch@lst.de> <20250818061017.1526853-3-hch@lst.de> <3zji6rc56egwqvy2gy63aj2wjfo5pyeuq2iikhgudcttdcif2m@dphqqiozruka>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aKMkgbZqOqyGVF1C@pc636>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D417440005
-X-Stat-Signature: opiowfybpdzgna8zo5h7qhuoyjja4pso
+In-Reply-To: <3zji6rc56egwqvy2gy63aj2wjfo5pyeuq2iikhgudcttdcif2m@dphqqiozruka>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Stat-Signature: pchaxr7osqy7hb1pn5wsqut9k3zwoiyf
 X-Rspam-User: 
-X-HE-Tag: 1755593799-82453
-X-HE-Meta: U2FsdGVkX18Pvdvzp8gsifWBB0yja7lVhx1NcLwSlfVHrHoUQE3V5f3IRqS4c5U7a7M2ZlYMPI1gTArPk2p26vWbMLskHuq52k7SyVYDBlE42cRtiiSP42Aq47zqTYLy20okHdSTeEPj2GJcddytAwG5DsqPyJSZGEv9gdR59bbj0U5pWO3Cv3+Z+5C1OOeEqIFwK0FGh3iD0xXv52xbKslYOmDGffGRbo0vYwOewuOPU4xBK5FaLrJ0fv+GiIIvcBa//mGtGUoruQbt7+FQBUTZbA8qzsNYDPLvSsbp1/pAK/YgfzRNNlHa6xMFmGhFhPkGl6H49ibhQ2syPEjgGsWceK5I0LG+uvVYOFBuPj9XtBLVTT4JYNdmzXXq1vmRzB8KcyBHwjmuN9p7x7/lF4sosnmdCIhIldo8XU9cQL9i3hlycuGtC1nV2totQAHN2QALq5pBmAWw4i+eLdXRyW7SIXj1qIkpaNyKpmhm0lpvVdHFBCK1dB4Q3Fkn5JyBxDfJRKTturjNFKWY44lG1GwlDa2bnJHldbIEXrBdNaiLuf+1/KstRzdj2zifcj01NQADbS+WTzsZygpY02T3bcB/Lz4PA79qiYXUx7ifEv970wjytaz6M/aLtv7AXvyR5SEDn8kXRr6gDibmomKlo6t5EJeMD6+psyfotrq11eg4bMicZ8FY4vToX3nxcFF9Se/I/JmFs1bMD1F94ZVyQkZBz/wCCcuna06O3PJ5OiSn+c/iAk72GmG+Cl7piCtLU7n4kkF9Vrl1rWEQpNDBaW+ErEHKVXW3but267BOrCq3tP9/BRxBebuOPfZzQobzEEL1s+Hq6lUoctWDYym36X2s8wDLWEiCqrpgp63eecrkZE6d0f6YSu6gfLxrBq/aEc0qEMBI0jXOCBJKDyRrpTzqfE3108iAFLfnwA/mJmnGUwoGvCIGdy0cbS/ttTDedWcQYx5dpADUisfHbnS
- oKSOjWfC
- DJi1poMfbT9iVvwhmYj+7XlL1TIdGf8pK9Ii0U+mYE3IhGavps63MruG2UJ4eVsjl6EYlN5FZycAL1+3OH6qnoosWn+lSnCkPXtp3G3090Q782HtIthuMGSOGxua1QHc5KOBewvtIGdpOvQJilnifCef3jhDNJYtkhuhItIM0V14Y7V7MBLPx2fnX6voERRJ4jlWdNlynuLaPojlT0tXWVEHkYGvPe5UCxTRRcupWBbDWVcKLngVh4NYRnGMhkQICX0L1vfV0idT2nVa1Uds4uj44pztUo7XQ0ugOBTNm+PUO/Ww3XtnuheF/wTFn0vCg/4Hh55WyOWL3AyVtauytCAlkV0EYsKg/qSzjy9ONmYLDhkIJF6Peip6wRC+1R4Sif6oQQVm9jlLZTsbs7aLPue2MxMpO3ywRKHqbABQ9T1vodK6IzJiA5lRmxmmvaamxJXiSseiI7XLfgeAimcU+Xb/V7rZzqOLIwdPc3NC+OlpKeWaTzsqQYBHGD3frT7ctv4LC
+X-Rspamd-Queue-Id: 70152C000B
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755593886-968698
+X-HE-Meta: U2FsdGVkX19y95RrSmnsFYH7gdFlLLfe6S3cAhXIcbivVti/0N/3+Ntsh/Ps2k9nLd5OeK8EDyTBKassAIAvN7/yT/0WhFoLN9yTscTVBWZXTeXCFZW18wnpQ91Yx5A7uOXZubE4gamtThhonXDR4sxD0a67lPAuY01EOLIlANUcfSwnQ+CgWuCAyHN956eF7x4GTZ0xX5CUVsJvpMgtbe4r9aQuTrN2sGX2uC6Q+puY2SL2l4iPl6MrrSYQvo4hfIwnzr9mgkvUBuj2mVQgAuDB53/0uoIE4lIjYzMQWor/1+ViAsBdMkPxA2/w/4JnUfZu3vlB52p3FGvI/XM9twPJSNzJGAHTASgQ+i+fqNZy/Uandxmgg8YnlsK9lx1unKxQ1l/v/dY8U20od/IYI7+1LCvvTunlQi2BSwuWclnu89UFqwazvdqBzgRCA05xE489qQ9Y5OI4rwYPIT+ew8KjNb6YtAi/wkf6zgOBNbUD++lOB4jp8Cp5ofOYvZIi5WGDY73FwWSlsm1WVUkoyokLnlH5zyPOh7r144aHp9xHr9B+aRlHqxLWXqic7x1tT9+mw1Nq7mnhRZs/O//Z67lYBEkteAtEvKYSbZ4ttSK7oxnDHBdNcg+0uu1sp55mVIZF2AAGqtdDfWmOX+eRP1kQ3s+1b3uNRTfaSIIiZf5+RVMr9bJwPCpnHDeRWI5W+6TKrC5XJz1GudcVFLzS7OnFDtq+vXRZIZucCTyetqxWaG13jorYnXTCsQY15rJsMgv2fIc//UDpp3OdTCm3wjo73zFlJ//AoD9OtlFd7xNnTNHUxHHbgzfQRH5clnzoDGJ13P1ZqMHXLJyi+QnkPCcAAtvk0q1Idenf+igohYmx5MhuP6VyF4rmKiDY5YnVDL4kwl99JFlWk1l3Cyp9D3LdvgSUCyLuv4Pj8l/LEKaEinvVk9bxnm46XdX0tIGTXt5nDwLO6ykiMnAG2cp
+ +QWhQ7s8
+ 0yhPhq31mdS6snpUNE1agU8RAOxomwLIMSKrB0fy6Hk6BUK1XxkD1heazgqGMcaPAGpZJ5e2aeqv61oEXJZ9EXXA/aiK6tH/XTTXHTvukR6ujf2o4IlQPGw6CiXZkG8GKyxn4Wz+4WXk0s8I=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,115 +81,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08/18/25 at 03:02pm, Uladzislau Rezki wrote:
-> On Mon, Aug 18, 2025 at 12:21:15PM +0800, Baoquan He wrote:
-> > On 08/07/25 at 09:58am, Uladzislau Rezki (Sony) wrote:
-> > > __vmalloc_area_node() may call free_vmap_area() or vfree() on
-> > > error paths, both of which can sleep. This becomes problematic
-> > > if the function is invoked from an atomic context, such as when
-> > > GFP_ATOMIC or GFP_NOWAIT is passed via gfp_mask.
-> > > 
-> > > To fix this, unify error paths and defer the cleanup of partly
-> > > initialized vm_struct objects to a workqueue. This ensures that
-> > > freeing happens in a process context and avoids invalid sleeps
-> > > in atomic regions.
-> > > 
-> > > Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-> > > ---
-> > >  include/linux/vmalloc.h |  6 +++++-
-> > >  mm/vmalloc.c            | 34 +++++++++++++++++++++++++++++++---
-> > >  2 files changed, 36 insertions(+), 4 deletions(-)
-> > > 
-> > > diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
-> > > index fdc9aeb74a44..b1425fae8cbf 100644
-> > > --- a/include/linux/vmalloc.h
-> > > +++ b/include/linux/vmalloc.h
-> > > @@ -50,7 +50,11 @@ struct iov_iter;		/* in uio.h */
-> > >  #endif
-> > >  
-> > >  struct vm_struct {
-> > > -	struct vm_struct	*next;
-> > > +	union {
-> > > +		struct vm_struct *next;	  /* Early registration of vm_areas. */
-> > > +		struct llist_node llnode; /* Asynchronous freeing on error paths. */
-> > > +	};
-> > > +
-> > >  	void			*addr;
-> > >  	unsigned long		size;
-> > >  	unsigned long		flags;
-> > > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> > > index 7f48a54ec108..2424f80d524a 100644
-> > > --- a/mm/vmalloc.c
-> > > +++ b/mm/vmalloc.c
-> > > @@ -3680,6 +3680,35 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
-> > >  	return nr_allocated;
-> > >  }
-> > >  
-> > > +static LLIST_HEAD(pending_vm_area_cleanup);
-> > > +static void cleanup_vm_area_work(struct work_struct *work)
-> > > +{
-> > > +	struct vm_struct *area, *tmp;
-> > > +	struct llist_node *head;
-> > > +
-> > > +	head = llist_del_all(&pending_vm_area_cleanup);
-> > > +	if (!head)
-> > > +		return;
-> > > +
-> > > +	llist_for_each_entry_safe(area, tmp, head, llnode) {
-> > > +		if (!area->pages)
-> > > +			free_vm_area(area);
-> > > +		else
-> > > +			vfree(area->addr);
-> > > +	}
-> > > +}
-> > > +
-> > > +/*
-> > > + * Helper for __vmalloc_area_node() to defer cleanup
-> > > + * of partially initialized vm_struct in error paths.
-> > > + */
-> > > +static DECLARE_WORK(cleanup_vm_area, cleanup_vm_area_work);
-> > > +static void defer_vm_area_cleanup(struct vm_struct *area)
-> > > +{
-> > > +	if (llist_add(&area->llnode, &pending_vm_area_cleanup))
-> > > +		schedule_work(&cleanup_vm_area);
-> > > +}
-> > 
-> > Wondering why here we need call schudule_work() when
-> > pending_vm_area_cleanup was empty before adding new entry. Shouldn't
-> > it be as below to schedule the job? Not sure if I miss anything.
-> > 
-> > 	if (!llist_add(&area->llnode, &pending_vm_area_cleanup))
-> > 		schedule_work(&cleanup_vm_area);
-> > 
-> > =====
-> > /**
-> >  * llist_add - add a new entry
-> >  * @new:        new entry to be added
-> >  * @head:       the head for your lock-less list
-> >  *
-> >  * Returns true if the list was empty prior to adding this entry.
-> >  */
-> > static inline bool llist_add(struct llist_node *new, struct llist_head *head)
-> > {
-> >         return llist_add_batch(new, new, head);
-> > }
-> > =====
-> > 
-> But then you will not schedule. If the list is empty, we add one element
-> llist_add() returns 1, but your condition expects 0.
+On Mon, Aug 18, 2025 at 07:17:15AM -0400, Kent Overstreet wrote:
+> On Mon, Aug 18, 2025 at 08:10:09AM +0200, Christoph Hellwig wrote:
+> > Stop using the obsolete write_cache_pages and use writeback_iter
+> > directly.  This basically just open codes write_cache_pages
+> > without the indirect call, but there's probably ways to structure
+> > the code even nicer as a follow on.
 > 
-> How it works:
-> 
-> If someone keeps adding to the llist and it is not empty we should not
-> trigger a new work, because a current work is in flight(it will cover new comers),
-> i.e. it has been scheduled but it has not yet completed llist_del_all() on
-> the head.
-> 
-> Once it is done, a new comer will trigger a work again only if it sees NULL,
-> i.e. when the list is empty.
+> Wouldn't inlining write_cache_pages() achieve the same thing?
 
-Fair enough. I thought it's a deferring work, in fact it's aiming to put the
-error handling in a workqueue, but not the current atomic context.
-Thanks for the explanation.
+It might eliminate the indirect calls with the right compiler or
+options, but not archieve any of the other goals, and leave us
+with a helper implementing a pointless callback pattern for 1 user.
 
+> > +
+> > +	while ((folio = writeback_iter(mapping, wbc, folio, &error)))
+> > +		error = __bch2_writepage(folio, wbc, data);
+> > +	return error;
+> > +}
+> > +
+> >  int bch2_writepages(struct address_space *mapping, struct writeback_control *wbc)
+> >  {
+> >  	struct bch_fs *c = mapping->host->i_sb->s_fs_info;
+> > @@ -663,7 +674,7 @@ int bch2_writepages(struct address_space *mapping, struct writeback_control *wbc
+> >  	bch2_inode_opts_get(&w->opts, c, &to_bch_ei(mapping->host)->ei_inode);
+> >  
+> >  	blk_start_plug(&w->plug);
+> > -	int ret = write_cache_pages(mapping, wbc, __bch2_writepage, w);
+> > +	int ret = bch2_write_cache_pages(mapping, wbc, w);
+> >  	if (w->io)
+> >  		bch2_writepage_do_io(w);
+> >  	blk_finish_plug(&w->plug);
+> > -- 
+> > 2.47.2
+> > 
+---end quoted text---
 
