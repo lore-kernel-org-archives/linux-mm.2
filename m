@@ -2,202 +2,183 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 49F89CA0EED
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 09:55:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A8999CA0EF8
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 10:03:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C17338E0029; Tue, 19 Aug 2025 05:55:49 -0400 (EDT)
+	id 4D5008E000D; Tue, 19 Aug 2025 06:03:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCDCD8E0002; Tue, 19 Aug 2025 05:55:49 -0400 (EDT)
+	id 4AD1E8E0002; Tue, 19 Aug 2025 06:03:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB6F88E0029; Tue, 19 Aug 2025 05:55:49 -0400 (EDT)
+	id 375118E000D; Tue, 19 Aug 2025 06:03:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9735C8E0002
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 05:55:49 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 38033140506
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 09:55:49 +0000 (UTC)
-X-FDA: 83793050418.25.3796E40
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2077.outbound.protection.outlook.com [40.107.237.77])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 62B18160007
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 09:55:46 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Wv6vqF3+;
-	spf=pass (imf08.hostedemail.com: domain of apopple@nvidia.com designates 40.107.237.77 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 22E8A8E0002
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 06:03:21 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9246CC074F
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 10:03:20 +0000 (UTC)
+X-FDA: 83793069360.27.C0FA94B
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2086.outbound.protection.outlook.com [40.107.94.86])
+	by imf29.hostedemail.com (Postfix) with ESMTP id A7DB0120014
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 10:03:17 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=Nvidia.com header.s=selector2 header.b=hOByNF2u;
+	spf=pass (imf29.hostedemail.com: domain of apopple@nvidia.com designates 40.107.94.86 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	dmarc=pass (policy=reject) header.from=nvidia.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755597346;
+	s=arc-20220608; t=1755597797;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nAHgzqJsB8zqAoS5we1uOaCG9WI4RTtOircvBVOb7P8=;
-	b=TgfdO9T7wfHVz5SNdLCXyBt0chT2IITFODjrB3He9yYvYW5wVCLbDF6Clwzo7ZPmrGv4Ba
-	C41EbNEYCCicq1hHLuPBsoxqquJHsUp9glRzdrwY7c2Rbm7hVvW544aLhZN1QtOzTB2PWe
-	4tX4orqdvpxxMBIQ8+smmgHATDVd1a0=
+	bh=SMIRFWkHLyrI9I6o9zQ2M19UBmOo2E4Bw1/ACsE1H48=;
+	b=mXVuanoFD90By+BHgNqg8pVG/Jr8fBOVaIPxjpm15AgrTBh3Zuz6J59keoa3AttGP8gmzn
+	UwrpZkT792zW/K7Bro9u6vWeAZUIJOjG5j4G+rFfLpUEiimpeZoZjszV+dDEBqONhW7nH8
+	fGYONmVb1E7yadbvgpE3WDjQ+hzBaVc=
 ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Wv6vqF3+;
-	spf=pass (imf08.hostedemail.com: domain of apopple@nvidia.com designates 40.107.237.77 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755597346; a=rsa-sha256;
-	cv=pass;
-	b=te2eQjBvtpixq2ZOVrAtSBp7oBwkThZHWtM7wLU1OiCkiJy5m/kD/vCctI9VXEsfUzs9va
-	xs0AEnd33w5WEVKcuIHjVGFoxakFNnmWqYq9/IQFUrnlDoaNEu1+o6IQa1dhibWS7ELOS7
-	CpyQROCkSq2SXiGJ7DL5ahl0QCSSabg=
+	imf29.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=Nvidia.com header.s=selector2 header.b=hOByNF2u;
+	spf=pass (imf29.hostedemail.com: domain of apopple@nvidia.com designates 40.107.94.86 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755597797; a=rsa-sha256;
+	cv=fail;
+	b=NRaHvkHYn1agJJ7VcSpxjM80kRoetGPHSePYKfScdO4xjCRa8aThpdzhw3ajM3dW+8MNcR
+	e4KFqd+B+0LMQGD6lphPl07U0yE/sR4rIRsC4jl46hAhV2jWAGZUIQWbFEV5ztEaOv5xUs
+	tPpJCdGutp8FkUpM5yoYTdFzD7qV+6w=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Qg2UqUoOq47gRhDyI8FlXbPcw9YCJJ1NiluDhjbvTF0HBJHJs2VXj/2hJs0Qt9wk8zvSBK6TKgP1McJfHhHbLMxNVBJwW2zcbo7yKVCSS7eRZ0uenDplYNZYSUPbnmldbiBq6IytwfAhSv+KtWWIUXUKZk19GP6a43nD5PveXukSceH2FKMflJsyy/xOzhKe23tLqECLgh9SW2H2qqdYa6lHS5QjxMEEh70BLxQawc9HIGGigCm0RG2E3vxS9uDwfoHdm+gD+bLViOXPUW4ufLPMRbER7nTaZfYLLxbR8kfwWe26cSCW/zGAsOxaX1NPXRiBETreDF/IVFB1iJN+VA==
+ b=QUNSCFRBhurTU/CNM/z/1AaFNFmpveR7SJNbRXb8nkYQCpt4RQ/PVj4RgoZAWklRvVdD4a95WV8LUcrfmVIOOFUGoyxZqheVonWhcfzgzqIc0FoVexGmqY5tL5P9TzcyhpHRHgPgKQu5CsUIjBx68Mt0MJOhj7fHB6Su2zOKtcYbtgWNrwICcxTSnOQzTHNRKk12WloSL6UV8ZbSE7L5Bd1AmbaISwDbYJ+YbV6Az6q+FUfoptq06Do9XRweEk+6DZl8YniyEI2ajwJzoKIrQ3gdAqYzGX/vEN8JgsQzPq0WCprnx6PLGSm6BARprUYOsB5y6aIunR5N/SpGySJpXg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nAHgzqJsB8zqAoS5we1uOaCG9WI4RTtOircvBVOb7P8=;
- b=idSPsRfDn0E4aO+/A1hrRNTkDK9+db2m1aPTQ+0psatZuVqgzbN8SeCLfCCoF8EJRWgecfW4cCIZmpxqjrqD7JnddGQ843fkfDypZ4bsUpdEU7ZL2hGAVLrk8x+nxYdSk/skNkLOt/soyQUor62TtIwcMpVSHB9MzK6fpbXgwpx9ylx0Y2OmO3ty27aouDeVoYZU4s314F6r9m0IE75lHNjVfHQbQe9Ik0+QvT0ztz1iMk628zF62XKXMeBszMDkWGPHDCw1vzjrHeB4cm4GJcGUpbmFioF/g9cs+CDrIKhowq2gjEtCB/avLlEDfkenbj+Qt0e9mQpjBG05XuupBg==
+ bh=SumC/VSzvpwE1LHGvoFyRPRuH37QUOL8/IN8OMRO4P4=;
+ b=CKx0SXLUx7FwkvMDasIym93sWoyXSpEeQw5YGV+Q8qb7Tu0WZO6YJWaIBTeGs23KCSCChF/SOeEQdKe1uEwvxOsWYQ1kUAU24wfQ3NiPe0DBQxWEafVhgWLNvy8ptvvXvhEOE3oDZVqfR7vepovWQMVSKNdePYsWEYqLHxXrwL3joPwjj7shZspze/ESIDrqnMnMMv80GwhzQgRS1b8Dwyt+lNemvCQLnwqHN7IbbVnhyTfKvo3ZRjx5pfS4sO+FwUnYfjUwyy4VZ3rRZ0xfBdipZqCEEUmfeb/LbI51bfpk9lCyKqUwvkSvZbMTTJ99bbjzcaqLYi5Xa0dpKjJaqg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nAHgzqJsB8zqAoS5we1uOaCG9WI4RTtOircvBVOb7P8=;
- b=Wv6vqF3+kV2FrMWBHIGWjxCuDe4HwT1Qe4pGM37ysmveN8DLI51TTW/VuLiErYx3omDaBtqPUE9+fdcKMyjwwrHlVt32VqgPqqCv3zm1DIpj1/b5/Glf05wmGjJYN5KGGYbRKwHCZZOXUdVLlAmH4PsnHsbEUAHf8CwBnwL/TIuG32CWU8tSnY6PxABfSVgxHh+grR5rMqBFjv22ua9uTLTTv/ckh08lFMu/J0b17rOH0K9mD6Za2sFxrrY5WI5ymk7LGH+w2O3Nk43P2s1kkc9yVpLDHVwwgIaY0G/6hHZdBB1kqUe9UnZCMMeo2c5Zr3RBY5MouB5SpfBI5znXKA==
+ bh=SumC/VSzvpwE1LHGvoFyRPRuH37QUOL8/IN8OMRO4P4=;
+ b=hOByNF2uqa3vAtJk2Qmxb8M0uufZYfwDrbcfMjr64E6C7ialrJfz7o4JxajQNvSjlLETo9kn73QVXaL7udsR/NLiTKAv/klddOm/+LDAN16Q8l+uhP6+Lm1wK0sREPzHMxAV/YYf6MsXQzkDIFPWjQjytF2dHGCbabVNVgA3/hWV4CBRr7+MKjtXj+lhDSNUgxPrD9cHMlWiB/Hq/vq+0uzcd2EoIxs+aHFqpapQyczyrhvFbHCG/aeAKGGmSyGi2nHJ6rAyGtRI3Cr4ziBqCing6uVEoghtykTN4xvif46S0EzAekoruW+SStdaTQbkGLcFBN0UnFKAs++NtDFjqA==
 Received: from CY8PR12MB7705.namprd12.prod.outlook.com (2603:10b6:930:84::9)
- by DS7PR12MB6141.namprd12.prod.outlook.com (2603:10b6:8:9b::15) with
+ by IA0PR12MB8207.namprd12.prod.outlook.com (2603:10b6:208:401::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.24; Tue, 19 Aug
- 2025 09:55:43 +0000
+ 2025 10:03:13 +0000
 Received: from CY8PR12MB7705.namprd12.prod.outlook.com
  ([fe80::4b06:5351:3db4:95f6]) by CY8PR12MB7705.namprd12.prod.outlook.com
  ([fe80::4b06:5351:3db4:95f6%7]) with mapi id 15.20.9009.017; Tue, 19 Aug 2025
- 09:55:43 +0000
-Date: Tue, 19 Aug 2025 19:55:39 +1000
+ 10:03:13 +0000
+Date: Tue, 19 Aug 2025 20:03:08 +1000
 From: Alistair Popple <apopple@nvidia.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Matthew Brost <matthew.brost@intel.com>, 
-	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, intel-xe@lists.freedesktop.org, 
+To: Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Cc: intel-xe@lists.freedesktop.org, Jason Gunthorpe <jgg@ziepe.ca>, 
 	Andrew Morton <akpm@linux-foundation.org>, Simona Vetter <simona.vetter@ffwll.ch>, 
 	Dave Airlie <airlied@gmail.com>, dri-devel@lists.freedesktop.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
+	linux-kernel@vger.kernel.org, Matthew Brost <matthew.brost@intel.com>, 
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
 Subject: Re: [RFC PATCH 1/6] mm/mmu_notifier: Allow multiple struct
  mmu_interval_notifier passes
-Message-ID: <4lsv2lcd7lssyvcjvkqe4t2foubxbhuxrt2ptzee3csymz5gg3@jwrg3xow72lm>
+Message-ID: <yzgn3nbaeftrthqwddwt3gap4uni4api2r2uik2gxoimnpdiy7@hty77udv6un2>
 References: <20250809135137.259427-1-thomas.hellstrom@linux.intel.com>
  <20250809135137.259427-2-thomas.hellstrom@linux.intel.com>
- <20250818160726.GH599331@ziepe.ca>
- <aKNT8GUu0r3i4Ikq@lstrano-desk.jf.intel.com>
- <20250818163617.GI599331@ziepe.ca>
- <aKNYUaPS0PiRk/yj@lstrano-desk.jf.intel.com>
- <20250818164655.GJ599331@ziepe.ca>
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250818164655.GJ599331@ziepe.ca>
-X-ClientProxiedBy: SY5PR01CA0055.ausprd01.prod.outlook.com
- (2603:10c6:10:1fc::15) To CY8PR12MB7705.namprd12.prod.outlook.com
+In-Reply-To: <20250809135137.259427-2-thomas.hellstrom@linux.intel.com>
+X-ClientProxiedBy: MEVP282CA0068.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:220:202::12) To CY8PR12MB7705.namprd12.prod.outlook.com
  (2603:10b6:930:84::9)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR12MB7705:EE_|DS7PR12MB6141:EE_
-X-MS-Office365-Filtering-Correlation-Id: caac88eb-e507-4a12-31cc-08dddf068fd8
+X-MS-TrafficTypeDiagnostic: CY8PR12MB7705:EE_|IA0PR12MB8207:EE_
+X-MS-Office365-Filtering-Correlation-Id: c29403ce-3ca0-4eca-38f4-08dddf079c3a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZWlWRVBMRk4reGx2TjA4cjNDRmF1QVp4L2ZFbDlGdVlSNTh6T0pyOC9zQitS?=
- =?utf-8?B?Rm9LL0lqcDBPL3JpdXZxdlVMUlo5UkVRUjZaR1JkT08xN3lRcVlYVGN5MXht?=
- =?utf-8?B?ZGdjcHJMK2pWOTNrWFZ5Tlo0cHUyT0txb0Y1bFNpWVZjbFBuL29PQ1pNWjFn?=
- =?utf-8?B?T3FzemgvbUJOTU4xTkdyNjBibXRhdEc3b09oQjlyTkZtVWkzQjNESGpwZmZk?=
- =?utf-8?B?dFhxcjBwRWl5OWhGSks2Q3U2bVRQMk41cTVFQ0g2YWR2UUdxUSs4VXJydmVK?=
- =?utf-8?B?NklGbXVRSXEyNitNMXNXdmxBY1RKODNPRzJZYVZwSGdRYmkxQUNCVUEzL2tH?=
- =?utf-8?B?RkJONU0wV2VVWE5KWnQxT244UWJ4dEJ2MFkwZ1BqQzZrMjhJREpVUmQ0SHZR?=
- =?utf-8?B?L3E5Mm5ZV0NLMW9zK1ZEZzRGUEJrSkRGK1VhTTYyTmprYzdlUUo4RitTdjJl?=
- =?utf-8?B?OGN3ZkJkOG1WcFFVQjVDNG5acGNlU3gvbS9DMjdTSmNCdEdsS2dwWFBncGpq?=
- =?utf-8?B?aVhFRlV0L1VWR2d1bHFIcWxLSlNnNzdzYTVqNlI2R0JXZHhhRWpmNURRSDVy?=
- =?utf-8?B?TXJ2R21OWnZUNjUrUFZlRXR2d0s0RkRmcU9MZ0FlSUNFQ2pkcEJHa3FCblVn?=
- =?utf-8?B?b2o4U041Z1VES1k1eUk0RVM5UERmSGRieTNKZTBvRkhPd0p2ZVI4VlBxaUVW?=
- =?utf-8?B?QXRyL2VWSHpuWndxa01OaHlqc0RDTFJQNGxVd3ZUV2ZNY1EyMlYza2xSRHUx?=
- =?utf-8?B?S3NVdkJwOFJHdzVYcUM1bUh2aVRUTUVxeitNMWhiTWwxeC9MT0krYXdFeVFV?=
- =?utf-8?B?RGNOYWVxeTFKVFdIZXFldlhlYlRXS0NtK2hKdlZqWjZuWGVINllDUHJIbFZR?=
- =?utf-8?B?RFhBWFp1MWVDMXVlRXhtZ0xSTFhXODJUTm9MS09idkhIWmdYMkNkNzl2aTFJ?=
- =?utf-8?B?OERyTENjU0VrZ2FydGJSTzBXTmVEVnhYcFk2dFFXNUhqZDBLc2FHUDZldUpl?=
- =?utf-8?B?MGVNbi81V25mSlY2eHZ2Yk9DRitDRmE3NnJmSVVlMzNkWktwZXRFYWdlUnc2?=
- =?utf-8?B?djFKU2wxTThZelVGSjRYOE9TTXRpcXZPWDhXRjJXVUJqN250dVBOYjR5SXln?=
- =?utf-8?B?SjgzRllmV3E3TE1VUGVwNnM4QUUwcTNvNmVYZzdQaXlzbHhuREFKMXV1VWZG?=
- =?utf-8?B?TlgyRFlTdG5UYTdlTGMvZzZjRVZOVUtHWFU3d3lsK3V0SXEyOEJRekhNTFJU?=
- =?utf-8?B?RzBPTlRma2t0T1pLZlFSMSs4T3hxQndaR01LL2tEVURiQmtrdlNwLytORUtE?=
- =?utf-8?B?Yzl0QnRoazllL0I3Ny9adzhSMWZVRVJ5UG41VFRDZXpLTktJYzdMZzNjT1NV?=
- =?utf-8?B?T2VzbmdveWRvMHA2MktOeEgwQzVnOW1wTWZ6SDVKSmw1cXlPN0M4UTJXbXRo?=
- =?utf-8?B?aGpocGxlOFZBSnBaWmNrS29oTWJ4dGNVNGJjQ3Vrd0VMYkVGREFJOTgydnoy?=
- =?utf-8?B?VjRJdFJlYTV0YjAwVzlHdCt3U1JYMDZ5SXQ2WS92QmJWanpMNk1LeDNJcVp0?=
- =?utf-8?B?MjNIdE9lOVUvY0VWUnU2MFRRNm8zRW5FN2d3SWtuc0RaK1J4dVRrMktxbHhP?=
- =?utf-8?B?SXNqazMzMVZYZVhTNTgzdnNPNnZlTjBxR09LZUtiVzFkakxndmNBUlljNWZC?=
- =?utf-8?B?V2k4bHNycFFWb3Vxb1ZPS1U1SnhlSExXeS9oSkd1YlU5RVJaY0swc1k4c0Ru?=
- =?utf-8?B?dFBjMjJxc0ZhMUEwZmgvNndVdXZGUFJidGpuZjVXbjlRMU5ha1BrSUhtc3A4?=
- =?utf-8?B?OXpKVlVKbklxZlZ1bFYzNG9pd1NVT1lvZVNQL3ZLcENPdG1pTjlzVFAzc01U?=
- =?utf-8?B?a2cwTFpSVEVGR1FwYlBjcnhlMWtQaHNDblQ3blk5aUtTbDhSNmxhK21iWVBY?=
- =?utf-8?Q?JxdZM+HAojk=3D?=
+	=?iso-8859-1?Q?Q/ezvpKl1oTp6BYtuQc7sRsXChLhCoJLGYSuhJo5eaAHNdtPlA7MwB2Shp?=
+ =?iso-8859-1?Q?cv0oFrIAyk37CmANdXAWIfMXdya8HcLQUCpvaKy0RXLkO1KEydYMtNMmRx?=
+ =?iso-8859-1?Q?wlL/u5sqDmR+AC9z3wtSgHAapTzTMDTWlbm/RX3bYAUY6Co0vyCUjMovhw?=
+ =?iso-8859-1?Q?n9s+f2okXOVzEHfUZxmTz3az3A4GU0n2i2ZcDDoffFOpsvBaJY4XVpXhc2?=
+ =?iso-8859-1?Q?s4sv+z0FSXVQuYg5L9RVuV6GR6DUNCX1lv6Rd4kUOsRxvGLq2wvb87E8yw?=
+ =?iso-8859-1?Q?Uh8aEOA6iKpaiAchTb7aR4CdtyS4P4AfWVb2AbMFEH0Dliqln1uWkoP5Bo?=
+ =?iso-8859-1?Q?cEXgD5LsWcCpIl5LKRgpDm/Adjcb5HMyB9OvVt2+BPHeWp5lxIrkefqeGY?=
+ =?iso-8859-1?Q?vxYtRnG+92FMKF7Cjl1IKA5xj23Zenux3cu2YRcQCNbHs1f7efxG9lknNL?=
+ =?iso-8859-1?Q?CNtDZ/xc91xyuz56Mx3+FyK9JZaMHPC9f1tfmQkXIGfvlL1p6PvVM7DY4S?=
+ =?iso-8859-1?Q?SAq50gJJA8N49cBKDK8jbNMfKzQfKBCKXJSzs0U/IutTLx0/DmhnUpui+2?=
+ =?iso-8859-1?Q?hXZ7axQwjXT+Pp0hcbVlDguMZc6VvC6Xe091h9KetK44aX20QcB8+WOY1s?=
+ =?iso-8859-1?Q?Zx5RUOhxmOviEfknalJQrF0/PvP/GHkQ1+ByytEOFMh9IFrJ13G3XZoEoj?=
+ =?iso-8859-1?Q?sKO9U/MT3OPoxJA7siNi3waGqp/fn0AhFJ1TQp2nKSb60fnwa62sIHGIbr?=
+ =?iso-8859-1?Q?Aryyi/6nmxFPZzALaurGoq6RFN33nsWJl9+TULk4IpIE/IU0XRdHBYAcx0?=
+ =?iso-8859-1?Q?tBJCiACrj8kylxUxuHTCKtCRlthN1sqUrjPZ3aXgEHIkwK59qtUc+VhBmD?=
+ =?iso-8859-1?Q?lQ2HpwE5rWWH4DAUqItyL84U3qegj3NObKZsb8Cqi4gD+HnrUVVy54geRT?=
+ =?iso-8859-1?Q?rx7yBjr7wASMSOhNSl7DFBYcMGKZrV1LtrCMKLt9cbnVfuNMCDBzWLidd4?=
+ =?iso-8859-1?Q?5L+SZNtEwiPP4NVs1XNuzjTTt8eOc8SVfldpjTTv/i6vAUVGbBBtgpm7xv?=
+ =?iso-8859-1?Q?1ZnklEytSKvbzUklIcozyRJhrolZdXuaCHfyM8Dug6taNjZmoqjRbdKHh5?=
+ =?iso-8859-1?Q?oOeIFWWcWLrlQYri0ooH/oeDO+7LUXQS8n1CVWV1xKzjsrr3o74SLW5JhJ?=
+ =?iso-8859-1?Q?LvNsQ+ssmHNmrMhNgBhgmasHJ5eYSo2nXk/tdtelr89MQJGNbF/9L/SCfO?=
+ =?iso-8859-1?Q?Ypwe2UrqW85ssdKl4HHKR6lMtvhqw47Mr+ioSaFVGEPTx10B8hoxVcyNAD?=
+ =?iso-8859-1?Q?G0QmKh0tuw+hNyAQvgqMSIHctFfA3DyYl3VqT7vI29INTgzF/RmOnt9nwm?=
+ =?iso-8859-1?Q?QCydp0rMmVsnmCnqPs1t+WaZsxXnclqymCzNLl51fV5ulWYfxmyiwd/lRB?=
+ =?iso-8859-1?Q?B5Z3zNjuTjfZOhAZjV0GjLTaVCS7XVlrEcQuESPEQGF47/WYwANXF0RRV8?=
+ =?iso-8859-1?Q?E=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB7705.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB7705.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dHpLK1pzVjlVRUpOQ2xyQ1VSUGpVcG80S3B6RXIwV28wTzBRRkoyQTErb09J?=
- =?utf-8?B?UVZoeDNSbTNvOW9SNkVFaVpwZ3o2c2ptOW9BaUdBOWh6YzFlQ0pqaVBrSCtF?=
- =?utf-8?B?MW00NEFudkpGMXpuTXEyV2x5ZlRFR05QZXVsMEwwdGlVekZXT1VRZXFmZ0xq?=
- =?utf-8?B?djAzS3Y5ZmtCUmVGME5sR0JtQzlCMEJMMFVMeXZ6bjc1R3duaGtIblkxYVRp?=
- =?utf-8?B?N2tNN3hWeE9HTzdxcC81c1E2UzMyT3Zlakw4RkVpc3Rkem5CaTFLTGs0VE4w?=
- =?utf-8?B?Z3Q5VndzdzlVUTdzVUk1QzhrL2g0TjZManRMQ0ordlBIRWt0amMzaGZhM1dY?=
- =?utf-8?B?NUcwSHRkNVNhWmp2bU9ZK1Q0TnFzNWczZkpOZzU4UWdiSjkvVzlLTUt5eTdH?=
- =?utf-8?B?aWg3ZGd5VjdzalRHL21WTE0rTkJjVGZJakxSSndjc1J5KzBVTDhiYXBqbUVz?=
- =?utf-8?B?ZjFhYlNBYWdhT2l6THpIOFM0MFY3a2RLcm55VnpMb1I3eW1CQmRDYTRVRVlY?=
- =?utf-8?B?dGlBckNPb3NXUk5tbnBIMFl0MW00T2xzaFNUZUxoV0xQUDJ3TWRUbXZXeVFR?=
- =?utf-8?B?RGdqU2xNOUlMT1dBMzdNV2h4eENMZFhPM3pFTGlZcGZxSUtEOFBQWElObkU3?=
- =?utf-8?B?ZUhkMkNQUlJiWDJtazZOSDQvdktXOUE1VSs4OHo1QmpYdHZITCs5U1ZuVEh6?=
- =?utf-8?B?ZFpmU2V6dlFZbG1ac2tzQlBjR216ZEpGMTI1eWR0MGlEUnpRSDZCZVFhcHp2?=
- =?utf-8?B?dCtpY2g3a1pYNFJDRXdrUkhPR1JtNGxkbFdsYjd1QWQzL0lNV1ZqSVhNdkF2?=
- =?utf-8?B?NXVzWHZqdlJ0OXlpTHV0ZDl0WVNHRHhGWmVGaVcrQUd3UGFicmJxaVBJbEZR?=
- =?utf-8?B?STk2TTFtR1p1VE9KVmxkWVlnTFUybzAzeGR6OWE2bVZkWjBOczVwN0N1VnFw?=
- =?utf-8?B?Z3UyNzRmd2loYzlDNUxxR0dNMVlKNFRyWmp3eTV2U0lITXRZeGtuQ0dvZzJI?=
- =?utf-8?B?UkhxYXNqSEtOY1NRSk0wTHBoeVJTNzdWYjVicnZZMjJwUHdYbjBjdHUvMFIx?=
- =?utf-8?B?Ylh2QWRPVUVOSjZLaFZWRGpESld2WUNwN05NcldybnNLeTJ0V2tyZ3ZxakdI?=
- =?utf-8?B?NUhsampPaXhaekZIdkplN1Z6MTZjYVlGZnhUMjZ0VWlxd0VEZHJ5TzVPM052?=
- =?utf-8?B?MlhFcWlBMkxoNXNKMExmT1dscHlQdVYybVE1YlRNTmVwSWozZ0FsMThBVzZQ?=
- =?utf-8?B?N0g3cGVPY0RGWDJDbmd2UGxDakhPeHdBQ3NkTG9mT3pGcHNJNWZTMmlrd3do?=
- =?utf-8?B?UHhsM2xLaFdwTThjemlWQ3NCL3hHMjlOYW5zazRFK0RHbzJtSzYxcVdqNnZR?=
- =?utf-8?B?M1k0cktVUkxRTDVxOG5jZ1NGOUYydjM0ZXJXSm1MY0I2dUdkRUMvNlNUcEVv?=
- =?utf-8?B?R0crUDZRSVU3Ulh5TXUxV1JMTDltQ1BDamJoeEV4Wm5XNE0yWmJXNnpSdG10?=
- =?utf-8?B?WW9YOFBWazZxeWd3eHArZHgzNW9NUmk5UmVMYWgzZVZIMW9ycllXbEJ6YXJp?=
- =?utf-8?B?YmVCWGlpZHBZQTlrQWowZ1VCLy9KWXpDenFGNkJrSlJVRVZTN3BIYzcvb1hC?=
- =?utf-8?B?YzJ5QTI4MmVlSVZKZHRLbFE2U2Y3WWJSR2ZFbmhtVDFISTB4VElGYnZNN2J6?=
- =?utf-8?B?dFNjTVAyYTloZ2JqZ1gvUHFtMHI1TnZxQjFLbWtvenZPVlJTVm5VbW5VeTVW?=
- =?utf-8?B?QjZ1V2tjcUNHcUpaMjFZdmp6a0lvMFFwY01Lc1ZxYjBHdHpjUEZiWGZqd3E5?=
- =?utf-8?B?MGNsSjBQY2lnNWk5N2RObWVuTHpqY1Y1eSticXlIYmYyU0MvbXE3cVdzWlRr?=
- =?utf-8?B?TUJ0dEdDYitsL2xlZ0dHcXhhTlVkc3ltOVBoSERzUGg2a3FnMzRWdCtsckRD?=
- =?utf-8?B?ODBUdWs2UldCNHBudFhMd3RRV1dhd2JuWEUrSW95WUVobm9uUzU5TDIxdDlo?=
- =?utf-8?B?UnlzMGIyNlQrZXZWR0xjNUlrak45azlSNFJvSDlQamsvUWpBRFZNcmppN0FV?=
- =?utf-8?B?cmlKNkZlcFAvb1VoUmcvMk54b05QblA2d2o3b2JLLytyTk5iMVFCZzNWVUs1?=
- =?utf-8?Q?wUCaB7IVfjt1qLXS00RCNJdyQ?=
+	=?iso-8859-1?Q?xdxL5euI9JcKZFG0W2hICIpyif9S4SaDFzuM09y33QvWOHlzZQ9JuRVsOk?=
+ =?iso-8859-1?Q?YjSJbfYf8oan48VPvPo5rb5GlU18OiN3C5EbzhizUxz4No2z9OS5aPEaR7?=
+ =?iso-8859-1?Q?cJ3qKNsXvPVVvC3XQ12BcmjgQTm92BupMPNnnOuY95TZkQcmHg2XX87RF6?=
+ =?iso-8859-1?Q?UeZXf0IyBhMebzsLJM30OYXZHO1pTDfWnGBHOJYh+Z0hWcQu+FEtDaH4a+?=
+ =?iso-8859-1?Q?PYDmJB1v4I4HO4ISCznuhoBstFsKxPJCa9PFj5/g5AMVggroHnIRHJWeoi?=
+ =?iso-8859-1?Q?DgMhdr5MvhosIlCbhkjok5pjfZWefbGV1zyyy9/nEUUYJ5IM19Qwz23eO7?=
+ =?iso-8859-1?Q?M7Jbw+v0SJrrJl+6Ud5anpbcJRL+JwHnnmOXqN0u2ATwBDZKTNjZYSC+qR?=
+ =?iso-8859-1?Q?HBKjtw/GHuH75wkbB1i+sHtJT3U21RHJu9OREpesp2EfoU/62ZkynZhjWw?=
+ =?iso-8859-1?Q?WW+QQ4VsSLKfOEDyIdxqDfYi+5Y5EoDdEyNw895sh+ZsfkGfd+sx9u0Ojp?=
+ =?iso-8859-1?Q?fW17bOVvcmgaDLCwrsU7p6iC1AB8YgoyGax2seZTevWcRiHEU4Rih8Qm0r?=
+ =?iso-8859-1?Q?rn4JjXKsBAHI5xqfkf4A0kQu0SL0tbtIy3CRv7tYyFGihaMuew0gegmo3b?=
+ =?iso-8859-1?Q?AhN8MiCpv52ZwJCCA5BNvExq+KvyY/luMim0Z6O/7GZXiNwysr+uPp45Xx?=
+ =?iso-8859-1?Q?IQRl2idP6yOpLDZCLs82Fu3Fwww49d4gLYVaBXK17xqBViwnADxs1JW0FX?=
+ =?iso-8859-1?Q?ftRiorA0ts55xyKM2QZsl2h/fNHS3f9Kd3Qv2mv3jdgPH06FjKghJJJSCN?=
+ =?iso-8859-1?Q?Dw6Di3OLIA/In49qEhEEVRkVxUWSopm695Gk72LyCJHHtmFyH5b1FDkIwj?=
+ =?iso-8859-1?Q?3O2k6Bhwi77Na/D8ZLtL4nW6lhpqhvt6UudkDE7krChVsOvEyj90ZMzgHq?=
+ =?iso-8859-1?Q?Hb74dO6I86AdqtUXU/VcuRXJhLPub6gIPQial95an4BBISh8u8i7rqA23M?=
+ =?iso-8859-1?Q?CDG8swnwCW7z4uB5F2Z0Ova8TZWgAs7zg5AlZT1IpdJ+jgXlnFabLVbPnY?=
+ =?iso-8859-1?Q?1297PMxWxPhp9UCiIqsMrEzMNSZw8LSngQGhnaHbb6td0KrnaLUMYv8j+1?=
+ =?iso-8859-1?Q?Sr2+h0MBPTVKkoC6TLV2YeRZBlbotOU56baDP+/A9pU/IXJf8n/KIxXxBD?=
+ =?iso-8859-1?Q?8e6ZAKJta+hgqcdLTFDzlApBNcVkKsaXfAyyYzvU2lA94fRwG4kwjsTOEv?=
+ =?iso-8859-1?Q?IyyloUCZABJsLDbikBTAn0xSmcB6kkpy5aFi2UrKJ2S1tsvLwWfmmYPoF3?=
+ =?iso-8859-1?Q?2Mv7AvpSEAqHG0masEM9n34R0TPW3EZ1TJUJOmp8iCYIWM9nZCXPZuNwS5?=
+ =?iso-8859-1?Q?fIsAUBnLAJBNqqfKZul5XbHj1oQGD28ja+H0Y3weGANbPN8G3f1wA2GOpX?=
+ =?iso-8859-1?Q?e+MC/MsHp9iRhNbDMvw+uKf1Kn77xMo4d4Ru0ozF7TbioXyHXjW7t4xDfK?=
+ =?iso-8859-1?Q?gggfz568FKkImDBtS7ELn/rTaBdXAZSblY4dsxzmJD0Lf935lW0WZIRn8Q?=
+ =?iso-8859-1?Q?w5TMlc1PVq0od6fJXgAaUClPlRCcHAgintpvZ4k55wu35eZUtNmQ2kdiD5?=
+ =?iso-8859-1?Q?UHRRHHCousM8PC82QT+cDBoSJqzKB7Zom0?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: caac88eb-e507-4a12-31cc-08dddf068fd8
+X-MS-Exchange-CrossTenant-Network-Message-Id: c29403ce-3ca0-4eca-38f4-08dddf079c3a
 X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB7705.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2025 09:55:43.4263
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2025 10:03:13.8027
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uOPhQFlWMa1dxMETtwtgtkZuwp/d2OR87ls/o8Decw0E05DvJV/9rDETrYAKB+clPu8i+iiNgsBssagwVL8kLg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6141
-X-Stat-Signature: zjnnygyub5io55uxk8tchk3tgqtmaggq
+X-MS-Exchange-CrossTenant-UserPrincipalName: R8p83f+86GxI1M7F2+w6ciD0ljRF1/peipv5s1keX37zkmxfYgpfdRIxg+YQzqOFOztnK7LBfkl/qtdf7zvS+w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8207
+X-Stat-Signature: jcksw9pubt76jthm6en4648xfa8g3fbd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 62B18160007
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755597346-684928
-X-HE-Meta: U2FsdGVkX19tuaF+HFVtmx/s4ZkgNMOThmo8s+vptQoB0xL5pG32Xb3tZ+b1l2V3oq5ttR/qDeZFIM3/pRs5NClr23Kf6PigUSvqqyIqjS+aRUMxyceJHs6Ojg6TsvUV4TLVoFGWBjn1c4wcVOMYxmTFSxKh/fQvageG6OGVeTDh8DQ+pw6m/y4MLasMrZEclHLLS6CpO9otkiTdBf57tNGdrcduEwgmPQNVSUmu31hbBNMAsQYl2HZLllvqXEKHp8IsSKzpBb53O+MmrsfGS8+5AXBkR1VFTELOdaXIYTw34/wxEh1btRrCp6U7EIZZU1ReRDYo9p4vbF8XulYQJ2ZSSJ82b1QpBwIsfsa6DQLlojmULGFm+hwU6BqBupPEN5DCLsqpIieIRWUh8pTGUZEZdqfiukUwYo8LqaOZD8zoLXFVxA4iqcgScwqJJpWNekl/0v6IwJ6UtdWjtD6+A1ufrAaUHwP3XtcGmeQ1htkUYiVcvCev2tnyB4r0h+TsO5oo0wHXQYURMugYCGGigXHzOl2NiyWnPhEsQfsaL4viitZBTlk4wANcnjMEv+I6VypXPf89aALge91qHdWT9gpa817/C8GUOhDDox5iaI6ZMJGdzhitF1Xvfmlt4RnukbEG3Va73wBNPoMlgK8xNU+H2kT2OvNnu9UFMNcVTfCB0EHt5Nc1siEwW+mLnj5moMgVnnO6SKVe+VjqzIteP+10yVb0PwxFIgo84QVBwpP414qq8vqy5xOX6HvpNkGIJwUL91hLjYlmd+B58XW7Em8KH7JP/1F1VcPykhL+SRWafBQw6EISLg/8DjlzfkixwlcMy8C5Do0gro5vJ0r3lEqdbyK4kBTREmpSqtwlgpyK4ALREtCOyMw0lr9Hw0YDS5JGw0eOn3MMtluF/bdfjcXCHclP7tP0Cg8CqlnQLVPF3qP5Ql7uqO4JL7abcKavbliII4Gf3pIQCbUa1J1
- tx2KeBjN
- KFtjXdl+APq+YA5BFpCUWyoeFV9J2w0jsyKa8MEfZbBs1PylFMe9BCFQi9dMiJ/6cdauKLhnk8OE6zqx4RLEondgAr2PkZlnunyl3HtXbqC/bL0fbVluRHo+qCMKqaRPMxVqoaYGSe3PT0tDYgfmI7ULocd2nmFEnlB8CwCZV1bnsgSmfmrDI4KX/PzfOmbYmR28nlUQBAfx1qj7MAXHuZNRxcnmAeUoJltZmni4QGlShuH1C3R1GYUbUDmMnYXro7XRUB+sBndBrSDU7bGBqbbVFYSNuGWLleA6t1F10a+gkim4P26/ik/xmXocx6n15S03jkgH238ERZ7nrl4g5lCHs4u3SE73b3HtuqPByCIX/lksHr1eLXwhswHo8mmxTW88ywlCBXYAt8BJGdeXfH2g3w3JOPV/07MPHT7nlqWtGFuTwJhCqQ1FG9XmCzcwA707H3tLVHiXfcnuxfxiWfcBbbORVBJ+wse1n5LVCj+uRoTgJa04hvLDV4Yshk5IipRmjZ3av6Oji6vnl9tv35yC27Lkh02qFA7GSqXNzg/f5XCS6THBO1JeAUMUUARuRa2AC
+X-Rspamd-Queue-Id: A7DB0120014
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755597797-545831
+X-HE-Meta: U2FsdGVkX1/7m9HSNPpjJwAtzY4CejDWbqXGYZrg6EG+suFkY2bKbn9yskQxt6FzBO5rvGxU1/E1w9nHqgMtJfzi8uffu51bTwYfafUDY45yEaixdx1tBCPTKcC/VxpwO0/U8iRnmMqcNW5klS/9or0zw0Pa3LipUsimIla96Gx+5WdHuCdlTDdgcmzPz0ZDiJXJdl4A1qyOWiaXcKHyr0DOXYRv5RotoF8JyfLj5b8TtyXwaqOOtDse1MQznEy+PkL3CWez2roJcS3mX2+6xYpgl89+w4OA/Dx/ixAPJvhUu8NFyn2ChAvLVQ7QHSmK2NcRP8X1Yg7XwvdQd1cxb90oV6uuM0745up8asGt/L25pjYX77Mm9MY/1QDYMqvtCkvgdhU2wxahOSmnAtpl4mmCxCXczAMETjRwjEyWLSzfR8Goq4ozCajZ2Y7OPbhkQ5BouyTI4ZcRHNHD+1uav8sj0VMXo4x9ywQMSmyMzvXxNhrm2/rsnCO3uA8vC6SrCQF9isL2aX6ZBZjHUeAs0wR0GDEQAtpG8VjAhM3qNtUUaPjqzwxxQUYsyBG1PoRnOYguXGB7eZ375tidENNj43ZbvHl0Et/lwMnx8HWXf93b1A0YBOgQtSCbdJfcMkSQKBw4D5tjGN+7MXIjn7NL8GxAlYfc6OxO+/mIXmvz01IuFeNRJLF//g8YYT/1TQGJekoKtzSOssvzB7zJTbjOXRWnVsdv6o8Pv1hTnCGadag2GSLDMdfjqavdkCIEKzqfoIocNS+x2IyBIOQD8A/h8hRWxv1lMwyWqxSlSZCBl7BiTPeJlR/EzoPpXEmbYqsMZR9eNqDnoI86swKvVTVB9YwGNRnpJJjN5ZYPs4M0/LWm4nWnx76ptwY03zcExozTxwk9MHYYh2XHxQd4h4lST1QpdpNOIrbu2YS+cDUp8e+GmtIYq6ngT1oMOg9119YHfBoYDoYuoil2kzrWenN
+ dRMb/DIq
+ b+tcfOO7vX5vv2UP2NZyb0jlYBOJS0UA03OJSJzPmiRK+JFgwkaYe/dyomm1j6z/TMpPlVLvHljV8FJeS9EWxuc6yXFNeatIPxOZHQyhJqc97J6bPVYOrS1SoX+weVVzcQRrOLEG5OITvx/kNgt4XKtFXYlxj5JzT9KuuOwgdYfbssRA7Ct/fMKRqWA0qrBLj4qlYjiuNiUlzPT5lzk/H3TBDveSoDQ59F9NwmlpObXU+6srQSCXCnZtamzts+kEJDnrkNK0Uwq8cgMXhblLUHA5wTZwiQxY+g0vkj9U+6Ei8LfIPJAoskA3qg47wgdCk5JUKjDyhFjBeXh1UjHgFPhGZ47QxHZB0WRNcwPHI6g5r/DL8b2Kk6xvUwp11NMn2JgGegK4fN+PYN++75h+Wi/T2Ie1lDQWaj3AyT5CE0ZNaJuntLfwXSDGkQV+5Nc0SbJDD4xeb2Kl5yA7DrRjz4eAPWIHHsl1eGTdQy2Um1Yrs0XSLo4FXqfrR+pDSukk4E2iIibdF9SggkM3C6ttTAbw7AAGUGcKjPyBLIjZNXi2u0AwRVuCGJ9jzUEntex83cQ0p98JH9zv1Da8mOTbWGymuLFyrjGntPoVlFRblCIo+sEdaX7gkz4Y6ZatKgv/pQHMWD3K/HgQ7UsKQQQusHEMFLLY6E3vO/89QOzEh6uvNCqf1JGqw61m1BzFRvVdyxgKMBnym/3aeWTl5v8SB6cRKfbOuQuwi2uFMZjrxEY9t7Q1Jxa5hv9GzxVT6I5dsqvAUm1nLNnqBjgJ/lXfuuqyv6UOxPNAq2JSOUJur7Q3gHYjsNujaX0qgX1bSjc9WV96ZDraACVlylyw0urtg0dPUSZkrgxqBmz/005dKXVe15dwFiGJSqTd2hNc5okb1yOS6cXVxo8YtaXFuHjt6gsQFEtanYCGuqOYQQbsAjqDVwmTwuPmAPqSUh2BACPrk97ln+QDjxuTyThhn/WMVEcogMw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -206,41 +187,218 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 18, 2025 at 01:46:55PM -0300, Jason Gunthorpe wrote:
-> On Mon, Aug 18, 2025 at 09:44:01AM -0700, Matthew Brost wrote:
-> > On Mon, Aug 18, 2025 at 01:36:17PM -0300, Jason Gunthorpe wrote:
-> > > On Mon, Aug 18, 2025 at 09:25:20AM -0700, Matthew Brost wrote:
-> > > > I think this choice makes sense: it allows embedding the wait state from
-> > > > the initial notifier call into the pass structure. Patch [6] shows this
-> > > > by attaching the issued TLB invalidation fences to the pass. Since a
-> > > > single notifier may be invoked multiple times with different ranges but
-> > > > the same seqno,
-> > > 
-> > > That should be explained, but also seems to be a bit of a different
-> > > issue..
-> > > 
-> > > If the design is really to only have two passes and this linked list
-> > > is about retaining state then there should not be so much freedom to
-> > > have more passes.
-> > 
-> > Iâ€™ll let Thomas weigh in on whether we really need more than two passes;
-> > my feeling is that two passes are likely sufficient. Itâ€™s also worth
-> > noting that the linked list has an added benefit: the notifier tree only
-> > needs to be walked once (a small time-complexity win).
+On Sat, Aug 09, 2025 at 03:51:32PM +0200, Thomas Hellström wrote:
+> GPU use-cases for mmu_interval_notifiers with hmm often involve
+> starting a gpu operation and then waiting for it to complete.
+> These operations are typically context preemption or TLB flushing.
 > 
-> You may end up keeping the linked list just with no way to add a third
-> pass.
+> With single-pass notifiers per GPU this doesn't scale in
+> multi-gpu scenarios. In those scenarios we'd want to first start
+> preemption- or TLB flushing on all GPUs and as a second pass wait
+> for them to complete on all gpus.
+> 
+> One can do this on per-driver basis multiplexing per-driver
+> notifiers but that would mean sharing the notifier "user" lock
+> across all GPUs and that doesn't scale well either, so adding support
+> for multi-pass in the core appears like the right choice.
+> 
+> Implement multi-pass capability in the mmu_interval_notifier. Use a
+> linked list for the additional passes to minimize the impact for
+> use-cases that don't need the multi-pass functionality.
+> 
+> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Simona Vetter <simona.vetter@ffwll.ch>
+> Cc: Dave Airlie <airlied@gmail.com>
+> Cc: <dri-devel@lists.freedesktop.org>
+> Cc: <linux-mm@kvack.org>
+> Cc: <linux-kernel@vger.kernel.org>
+> 
+> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> ---
+>  include/linux/mmu_notifier.h | 30 ++++++++++++++++
+>  mm/mmu_notifier.c            | 67 +++++++++++++++++++++++++++++++-----
+>  2 files changed, 88 insertions(+), 9 deletions(-)
+> 
+> diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
+> index d1094c2d5fb6..1107a8eafd8a 100644
+> --- a/include/linux/mmu_notifier.h
+> +++ b/include/linux/mmu_notifier.h
+> @@ -233,6 +233,32 @@ struct mmu_notifier {
+>  	unsigned int users;
+>  };
+>  
+> +/**
+> + * struct mmu_interval_notifier_pass - mmu_interval_notifier multi-pass abstraction
+> + * @link: List link for the notifiers pending pass list
+> + *
+> + * Allocate, typically using GFP_NOWAIT in the interval notifier's first pass.
+> + * If allocation fails (which is not unlikely under memory pressure), fall back
+> + * to single-pass operation.
+> + */
+> +struct mmu_interval_notifier_pass {
 
-It seems to me though that linked list still adds unnecessary complexity. I
-think this would all be much easier to follow if we just added two new callbacks
-- invalidate_start() and invalidate_end() say.
+If we limit the number of passes to two maybe call this
+`mmu_interval_notifier_finish()`? ...
 
-Admitedly that would still require the linked list (or something similar) to
-retain the ability to hold/pass a context between the start and end callbacks.
-Which is bit annoying, it's a pity we need to allocate memory in a performance
-sensitive path to effectively pass (at least in this case) a single pointer. I
-can't think of any obvious solutions to that though.
+> +	struct list_head link;
+> +	/**
+> +	 * @pass: Driver callback for additionall pass.
+> +	 * @additional_pass: Pointer to the mmu_interval_notifier_pass structure.
+> +	 * @range: The mmu_notifier_range.
+> +	 * @cur_seq: The current sequence set by the first pass.
+> +	 *
+> +	 * Return: Either a pointer to a valid mmu_interval_notifier_pass for
+> +	 * another pass to be called, or %NULL if processing is complete for this
+> +	 * notifier. There is no error reporting mechanism for additional passes.
+> +	 */
+> +	struct mmu_interval_notifier_pass *
+> +	(*pass) (struct mmu_interval_notifier_pass *additional_pass,
 
-> Jason
+... and call this `finish()` ...
+
+> +		 const struct mmu_notifier_range *range,
+> +		 unsigned long cur_seq);
+> +};
+> +
+>  /**
+>   * struct mmu_interval_notifier_ops
+>   * @invalidate: Upon return the caller must stop using any SPTEs within this
+> @@ -243,6 +269,10 @@ struct mmu_interval_notifier_ops {
+>  	bool (*invalidate)(struct mmu_interval_notifier *interval_sub,
+>  			   const struct mmu_notifier_range *range,
+>  			   unsigned long cur_seq);
+> +	bool (*invalidate_multipass)(struct mmu_interval_notifier *interval_sub,
+
+... and then this could be called `invalidate_start()`. That might address some
+of the concerns with naming.
+
+> +				     const struct mmu_notifier_range *range,
+> +				     unsigned long cur_seq,
+> +				     struct mmu_interval_notifier_pass **pass);
+>  };
+>  
+>  struct mmu_interval_notifier {
+> diff --git a/mm/mmu_notifier.c b/mm/mmu_notifier.c
+> index 8e0125dc0522..dd6af87db103 100644
+> --- a/mm/mmu_notifier.c
+> +++ b/mm/mmu_notifier.c
+> @@ -260,6 +260,22 @@ mmu_interval_read_begin(struct mmu_interval_notifier *interval_sub)
+>  }
+>  EXPORT_SYMBOL_GPL(mmu_interval_read_begin);
+>  
+> +static void mn_itree_additional_passes(struct list_head *additional_passes,
+> +				       const struct mmu_notifier_range *range,
+> +				       unsigned long cur_seq)
+> +{
+> +	struct mmu_interval_notifier_pass *p, *next;
+> +
+> +	while (!list_empty(additional_passes)) {
+> +		list_for_each_entry_safe(p, next, additional_passes, link) {
+> +			list_del_init(&p->link);
+> +			p = p->pass(p, range, cur_seq);
+> +			if (p)
+> +				list_add_tail(&p->link, additional_passes);
+> +		}
+> +	}
+> +}
+> +
+>  static void mn_itree_release(struct mmu_notifier_subscriptions *subscriptions,
+>  			     struct mm_struct *mm)
+>  {
+> @@ -272,17 +288,32 @@ static void mn_itree_release(struct mmu_notifier_subscriptions *subscriptions,
+>  	};
+>  	struct mmu_interval_notifier *interval_sub;
+>  	unsigned long cur_seq;
+> +	LIST_HEAD(additional_passes);
+>  	bool ret;
+>  
+>  	for (interval_sub =
+>  		     mn_itree_inv_start_range(subscriptions, &range, &cur_seq);
+>  	     interval_sub;
+>  	     interval_sub = mn_itree_inv_next(interval_sub, &range)) {
+> -		ret = interval_sub->ops->invalidate(interval_sub, &range,
+> -						    cur_seq);
+> +		if (interval_sub->ops->invalidate_multipass) {
+> +			struct mmu_interval_notifier_pass *second = NULL;
+> +
+> +			ret = interval_sub->ops->invalidate_multipass(interval_sub,
+> +								      &range,
+> +								      cur_seq,
+> +								      &second);
+> +			if (ret && second)
+> +				list_add_tail(&second->link, &additional_passes);
+> +
+> +		} else {
+> +			ret = interval_sub->ops->invalidate(interval_sub,
+> +							    &range,
+> +							    cur_seq);
+> +		}
+>  		WARN_ON(!ret);
+>  	}
+>  
+> +	mn_itree_additional_passes(&additional_passes, &range, cur_seq);
+>  	mn_itree_inv_end(subscriptions);
+>  }
+>  
+> @@ -431,6 +462,8 @@ static int mn_itree_invalidate(struct mmu_notifier_subscriptions *subscriptions,
+>  {
+>  	struct mmu_interval_notifier *interval_sub;
+>  	unsigned long cur_seq;
+> +	LIST_HEAD(additional_passes);
+> +	int err = 0;
+>  
+>  	for (interval_sub =
+>  		     mn_itree_inv_start_range(subscriptions, range, &cur_seq);
+> @@ -438,23 +471,39 @@ static int mn_itree_invalidate(struct mmu_notifier_subscriptions *subscriptions,
+>  	     interval_sub = mn_itree_inv_next(interval_sub, range)) {
+>  		bool ret;
+>  
+> -		ret = interval_sub->ops->invalidate(interval_sub, range,
+> -						    cur_seq);
+> +		if (interval_sub->ops->invalidate_multipass) {
+> +			struct mmu_interval_notifier_pass *second = NULL;
+> +
+> +			ret = interval_sub->ops->invalidate_multipass(interval_sub,
+> +								      range,
+> +								      cur_seq,
+> +								      &second);
+> +			if (ret && second)
+> +				list_add_tail(&second->link, &additional_passes);
+> +
+> +		} else {
+> +			ret = interval_sub->ops->invalidate(interval_sub,
+> +							    range,
+> +							    cur_seq);
+> +		}
+>  		if (!ret) {
+>  			if (WARN_ON(mmu_notifier_range_blockable(range)))
+>  				continue;
+> -			goto out_would_block;
+> +			err = -EAGAIN;
+> +			break;
+>  		}
+>  	}
+> -	return 0;
+>  
+> -out_would_block:
+> +	mn_itree_additional_passes(&additional_passes, range, cur_seq);
+> +
+>  	/*
+>  	 * On -EAGAIN the non-blocking caller is not allowed to call
+>  	 * invalidate_range_end()
+>  	 */
+> -	mn_itree_inv_end(subscriptions);
+> -	return -EAGAIN;
+> +	if (err)
+> +		mn_itree_inv_end(subscriptions);
+> +
+> +	return err;
+>  }
+>  
+>  static int mn_hlist_invalidate_range_start(
+> -- 
+> 2.50.1
+> 
 > 
 
