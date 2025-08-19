@@ -2,81 +2,92 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B2CC2CA0EE6
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 15:52:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D8C23CA0EEB
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 15:54:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 310186B00B0; Tue, 19 Aug 2025 11:52:28 -0400 (EDT)
+	id 66F8C8E0007; Tue, 19 Aug 2025 11:54:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29A556B00B1; Tue, 19 Aug 2025 11:52:28 -0400 (EDT)
+	id 5F9138E0005; Tue, 19 Aug 2025 11:54:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B0A56B00B2; Tue, 19 Aug 2025 11:52:28 -0400 (EDT)
+	id 50F038E0007; Tue, 19 Aug 2025 11:54:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 034876B00B0
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 11:52:28 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DA5A3B363D
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 15:52:26 +0000 (UTC)
-X-FDA: 83793949092.04.610E0BE
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 03DD78000F
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 15:52:22 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=tuUo7puu
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C07F8E0005
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 11:54:04 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E95061A00C5
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 15:54:03 +0000 (UTC)
+X-FDA: 83793953166.11.74BA3E6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 4EB6C180009
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 15:54:02 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GnzJjy6Q;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755618745;
+	s=arc-20220608; t=1755618842;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uUyQZ0m8A6iLfxmAVdslQ43LODUJGixdQfETEo6Xkas=;
-	b=UCo/WL3XmHg9/4ia9c5QEDCcFPu1hcefY75HWIApiJ+wVOm07qDglCWNGCW2J2A1VADbhG
-	8lyNscXY2JE4HjXMomT1auqab5qTZdJqW9lI2ssIju1Y3DBlhXfgkNldnxiB+aLXN6uWZa
-	Awz1kDEnmMms1hlIxrH4oBXTbdPXTSk=
+	bh=svXj0SlEmaSH5m2mL/kn37o4jiiv4bl0XEF7tAKg5ns=;
+	b=nHtktHelwdI/843IZn7hQdoPXWsiOn4DfHhCIDMMsG0KQOtc3oOxTkOUSHsCOedL+Cygnx
+	bjtw0SFqSa0hc7TtTefDUJ6KWNMFZ8h2qrQ6AxEWTYvESREJnq+GqDVLcGTgwlQ3TAALnE
+	8tv+biXaes1zVEY37KZvRzHF7j7DEGk=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=tuUo7puu;
-	dmarc=none;
-	spf=none (imf02.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755618745; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GnzJjy6Q;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755618842; a=rsa-sha256;
 	cv=none;
-	b=f2ynvUFoBXxXF8oVzMUav5mHQ5qcjVx83x+Srw+W/I9yxxK7Vuf02fxBVm5cqYqo/UGEMf
-	rnIprD1bIYh0MbD5Iwm25o7fYz8jLiXMjvPVXX8dK9O027gu/RsVNoR4HznXqfBwKPDnYP
-	9l8j6ycIxc9fVO9iC9BN9V9kIUxI7Ck=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=uUyQZ0m8A6iLfxmAVdslQ43LODUJGixdQfETEo6Xkas=; b=tuUo7puu4ksjcET55wZXSooC2Q
-	HAaT7944dHXz6b7j2nwC9awn3TQn2t8p+kAnU31weAq+3FuhuwiSzTDnFC391ptyaxRiDzjbwZpHt
-	PmERAR4bQzCLZL/tfCreYq8nlYvXlUELIgCwZY1goY0wBotDUiC7O69gP2T8qcGx4OOS7qu7f7cxd
-	wp6W+CSFJGJbVf0CQhm5NuWpcYyHRrBzRd5ESDOIPdae2pYHes2UBGrqhoI9amaXn0gpMwAFvMp4p
-	xTvrCIX6M7vpc3Rw0Etecp5yzOnIw+cc2yaWLR9bL83VMhTuGOiCqixP7s+PBB6qmfgdKJknmqco0
-	r9bcdotA==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uoOdF-00000007smZ-03QH;
-	Tue, 19 Aug 2025 15:52:17 +0000
-Date: Tue, 19 Aug 2025 16:52:16 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: fengwei.yin@intel.com, akpm@linux-foundation.org, david@redhat.com,
-	linux-mm@kvack.org, wangkefeng.wang@huawei.com
-Subject: Re: [PATCH] filemap: optimize order0 folio in filemap_map_pages
-Message-ID: <aKSdsH_yk69EvkMX@casper.infradead.org>
-References: <20250819140653.3229136-1-tujinjiang@huawei.com>
+	b=lb3GUgnXdP9UEYNIYBHzRJR6u3yWzW8lWzEAdLLe+HKk5TSPlIcnVUZCz99y08OiqU4Uh5
+	0Y6avcmmEOPNbfA+EF7ftvEPa0dGi1DKl1e3NkvdFLBmO7yeXGYZmL1nRHATNisu4LfX1P
+	hkDSxn1ChpwlspIl6+9SqXvwSNSefeI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 48D4E60209;
+	Tue, 19 Aug 2025 15:54:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D213AC4CEF1;
+	Tue, 19 Aug 2025 15:54:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755618841;
+	bh=OJWuAh0cap69AqsWPSY5ghpUh2pe62oNjD5LFhuobQs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=GnzJjy6QJWEZMcqby76tjDwiD6TbLu/1cmOXBgrzC0q684ceWOturm4HEC9W4q9O+
+	 eL8cIXDtDmn55LNEpztTHGJyofjA22PgPnIMOhgvwtvDhGUSXNFTkyWN9b2b5Zf29H
+	 IQr+05neVBTXHf/2wG2Ga2p+GjFf17ct5LpEjb0rta9ZWr6vbkn/lCRgaMyoNjEfub
+	 949w5E2c4ifMZW4eAjTl9OoLiM6uOuCFkfKasWYpNl2ekDBb27ncF/xR4HkVjY26rg
+	 WE4F+NGbJSc3VIRWtnAvn1LX/q40a9LD7hCUyQyKYL+doxSFseRnKD2ZFLWWaWXZJ2
+	 qFgU2PtLocDqQ==
+From: SeongJae Park <sj@kernel.org>
+To: Quanmin Yan <yanquanmin1@huawei.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	wangkefeng.wang@huawei.com,
+	zuoze1@huawei.com
+Subject: Re: [RFC PATCH -next 03/16] mm/damon/paddr: support addr_unit for DAMOS_PAGEOUT
+Date: Tue, 19 Aug 2025 08:53:58 -0700
+Message-Id: <20250819155358.43711-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <6b9baf0c-fdc2-4f16-84f7-c4ada507f8f1@huawei.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250819140653.3229136-1-tujinjiang@huawei.com>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 03DD78000F
-X-Stat-Signature: fyk7guugcncai4szko1zckose6ajhx3n
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4EB6C180009
 X-Rspam-User: 
-X-HE-Tag: 1755618742-378984
-X-HE-Meta: U2FsdGVkX18DkktgYvQwno5hJAwSqECu0M+JC5JDO3gd9WVGmxV7L2mYhd+gKXPSVITLieCYj7TSzCgZqyFWHQLSGCzuitjT0DrRmHJQZcbyeLE+cnOwtqXDThj2As2tjr5oSfViabROMYhjfjczvg7PuIDLJ9uiCFxm+/2GrBuIBTrsvsCmam06GPEW2o4Jm4hbcEFLVAvTWKWUES/mzXOW/1erudh9HDfxbSjXBL3DssA/aZg8rqJCPSfArcH5ZxHEx88+yR58YgwxUxbqRFvYpa6COp14eb4BHVEnPqJzjjFB50h0nTy/0mCQYxoJxVmEkTxFs4aULw+zltY7wMvooLJZf7rSTeJ9ul+j2vEbs7bL/sLunFSIXVi9XXMnbPXk+kINATwtLISdA36TiFLM1qQdxDs81nEgJsyXVHaC2INqsEzD+t+g8Yb0OOSaVh9YIVK/5y7nJyN4/88yKsICDJAIy884ieiRIcPqiuVh84Q619j4XoIJtcrRP1v8Akm7bWNKaMvQWnNCaspPfhNCb+cE0bK1Cmva9hXSJE6rvhwqWQanEVa8dj15/UKEb+HcqJxZ33big0J33JbvHyoBFwbFVgzbIcsPGM8938tCRHBwTL/9p+WbJR5gyaJkWBtkMkLapEyzDlLcD8VAMi2LpUUTyhDHt6JxPgGHu/vuyNtT2ZWl9+U3nXr8udNWjJ1I30+/ySHK+k+CsQygIfSAbG9hpDP7sveBqYE94czQnGotumSs5uI+8A/IcdJE24G6qtRbnUV99b0NdJhJHZFP9zcqWtE7oclmESKJJxLHVpLLgcBfBkaU1ehoqhH29QWLys1z4y3wpksiJmNKCKep2WNdTYaS7vg9jDC2KNFwVtiM9J3HxyIAXQOYJEgFjKgSgqKQlhQxRaybyW3Uawa4blNkWaad/iVMxAmuHbNojiOVaO3syAgYh3zWPWN+RFnr1hq2JFYlBEkLSQp
- oKzFaPE7
- GsNTnRDktaNvKQ0Fv34hgTz+dQx6X56V2xCP8x0OaSIkFOwwaTYOisUzQl+K1+mUmk1jTn/IBhJ2+YL3xiIKjf5M5DOgQnpfYe7JPrvrlfu1li648Is96QZ4DVo2LKlIFOk05oEsoxis3fJO8Ahy4XrnAiopoyPiSUJR6j7P8Ulh0LNxG/S36JnMne3H6IWEC/q2XAY+a6sG2PDr2iL1thf1Z5cBtGWihWgibg2UxLPpbiosVmiU/FQqwYw==
+X-Stat-Signature: dhea4ko6h3pox49waoartegu3r46m3xz
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1755618842-618786
+X-HE-Meta: U2FsdGVkX1+Y/zdxSMFxKzwpOXbcmE4SxMW5bvi1bOU48Qse0GilqrRnOZaFtig2roncTMsiFFOAUcDbPRA6nHVZRxKKpu34L58STjOxZAjWuxGlMUKy0prhkh3aDW1JBLYDwAO5v+K7ptVtdw299cv7sIpaWofB4LQqGKHNyF3TWkyMRuq03IUTyzVpanABPQ+rqs8/gBpDuZ2tu7NUn7+X0KWX5StEZvKJAiChAb3x5kwthLXg/0I+bECclnHrgzmkftaQa3Mu35t8oYrcN9+S6NLYhuHNt6wmDy8tSHFcIj+mGfYi1WIi51YGcb2EmJ+hMv3vyUebDXiz5ssU/oGo5SCVOVOJZ+FPq8pkS1RZplvW5OwSlFYhhEQdjSIrlOmMdj/vi8IiVLfkfCcyj13lCl9+y2Ofg7XIByTIoP2AztVspjLuAs35hINoZ52XkoAXITTw3GDuEk7fYXYhB6Av12e7xz/8ixedg3BVq7G9ZmtB7nlSEAcPmDqRhFXmUmbMbDsBK6/ktEMiY01o7tnCHugENg4ZW8BshyQ7YluhaiJx6DFh+rekl8Orj8tOI3N9xFlpN8RvPJ8POYRpFfkrmZ0FRaQKY7WThRAJV7z+r71FVKp4N0xNTC26NWWefoOHw0v4Ivs78SSiuDmv6yoIqcptkNkYfqBaZbtHT38Dnmz3Ru16JpU6Kb0q8jG4Z1fEOZLq3k3sliS9INNDAtPJ/YzDJ7cGx4qvXFA2LkV5ZHGFs3oBvLUrJoBGr5r5z8GZ86QzpiTUmpAGWYCo92/YK37K8S0K3YvN1MAADHT/hxyPdXGSEYUBsPf8xEbMzvQ4jXa/2/UsBXHGvp/QVRhCLrAKawhZs3kKkyfRfRiccr1Zx4+h2eUlNGbHu99Z8V/qfVmbPLacxdgoGWUW94oBhbXKBqTb0vjxh416ytOj6XUBDbJgbSquD5hIF3lNplysavnltwzjj09QJSZ
+ PlsiwajR
+ BjPAhwAdFxM5+oKoR6t/pMKvx9NH0S2C06SsVD55oh2rMj70GYQ+JpqWn760qGezR7cG0SyRM9Zz08e+QUkd3eSqiyd9siJ/0sER5lNe08jGbWs/0pE/xhlDvxx9j69CyWu8MrKZworVHUWHay3ZppXXc8QfDqDKMTeHr6QUoQEymRsvdTxnpcnrFfxBEGIFIcEn95mPTFCTzInaS4hyvzg6lL2sbfP5FlziK6o6E1ma3uVAH/FN7kbicvJgHzVgKK89i25fj6Na1Tpm2jJY9y6TNhN3xSPe7ezHPGKXpBeT75AJx01LcdZhwTSD/2Y5QrWZy5r2QTagaUYyR3FLhR8iDtKM0xYe7kqKmt3aR8FbWG0U=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -85,79 +96,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 19, 2025 at 10:06:53PM +0800, Jinjiang Tu wrote:
-> There are two meaningless folio refcount update for order0 folio in
-> filemap_map_pages(). First, filemap_map_order0_folio() adds folio refcount
-> after the folio is mapped to pte. And then, filemap_map_pages() drops a
-> refcount grabbed by next_uptodate_folio(). We could remain the refcount
-> unchanged in this case.
-> 
-> With this patch, we can get 8% performance gain for lmbench testcase
-> 'lat_pagefault -P 1 file', the size of file is 512M.
+On Tue, 19 Aug 2025 22:18:06 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
 
-You don't explain why you move the folio_unlock() call
+> Hi SJ,
+> 
+> 在 2025/8/19 14:26, SeongJae Park 写道:
+> > Sorry for the above wrong link.  Plese use
+> > https://lore.kernel.org/20250813170806.6251-1-sj@kernel.org instead.
+> 
+> Okay, I've merged the corresponding changes into the original patches. So now we have v2 versions
+> for patches 3, 4, 5, and 6. I'll send out the patches later. That understanding is correct, right?
 
-> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-> ---
->  mm/filemap.c | 15 +++++++++------
->  1 file changed, 9 insertions(+), 6 deletions(-)
-> 
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 751838ef05e5..5de52deab138 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -3693,6 +3693,8 @@ static vm_fault_t filemap_map_folio_range(struct vm_fault *vmf,
->  	}
->  
->  	vmf->pte = old_ptep;
-> +	folio_unlock(folio);
-> +	folio_put(folio);
->  
->  	return ret;
->  }
-> @@ -3705,7 +3707,7 @@ static vm_fault_t filemap_map_order0_folio(struct vm_fault *vmf,
->  	struct page *page = &folio->page;
->  
->  	if (PageHWPoison(page))
-> -		return ret;
-> +		goto out;
->  
->  	/* See comment of filemap_map_folio_range() */
->  	if (!folio_test_workingset(folio))
-> @@ -3717,15 +3719,19 @@ static vm_fault_t filemap_map_order0_folio(struct vm_fault *vmf,
->  	 * the fault-around logic.
->  	 */
->  	if (!pte_none(ptep_get(vmf->pte)))
-> -		return ret;
-> +		goto out;
->  
->  	if (vmf->address == addr)
->  		ret = VM_FAULT_NOPAGE;
->  
->  	set_pte_range(vmf, folio, page, 1, addr);
->  	(*rss)++;
-> -	folio_ref_inc(folio);
-> +	folio_unlock(folio);
-> +	return ret;
->  
-> +out:
-> +	folio_unlock(folio);
-> +	folio_put(folio);
->  	return ret;
->  }
->  
-> @@ -3783,9 +3789,6 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
->  			ret |= filemap_map_folio_range(vmf, folio,
->  					xas.xa_index - folio->index, addr,
->  					nr_pages, &rss, &mmap_miss);
-> -
-> -		folio_unlock(folio);
-> -		folio_put(folio);
->  	} while ((folio = next_uptodate_folio(&xas, mapping, end_pgoff)) != NULL);
->  	add_mm_counter(vma->vm_mm, folio_type, rss);
->  	pte_unmap_unlock(vmf->pte, vmf->ptl);
-> -- 
-> 2.43.0
-> 
-> 
+You're right :)
+
+
+Thanks,
+SJ
+
+[...]
 
