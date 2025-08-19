@@ -2,137 +2,119 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 13F96CA0EE6
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 13:49:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 880DECA0EEB
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 13:50:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA8DA6B011D; Tue, 19 Aug 2025 09:49:31 -0400 (EDT)
+	id 295126B0111; Tue, 19 Aug 2025 09:50:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A80E16B011E; Tue, 19 Aug 2025 09:49:31 -0400 (EDT)
+	id 26C7D6B0127; Tue, 19 Aug 2025 09:50:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 996D96B011F; Tue, 19 Aug 2025 09:49:31 -0400 (EDT)
+	id 182DF6B0128; Tue, 19 Aug 2025 09:50:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 892766B011D
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 09:49:31 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3CDD1C07F7
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 13:49:31 +0000 (UTC)
-X-FDA: 83793639342.14.C2313B6
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 79F7912001A
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 13:49:29 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hZ85hNU6;
-	spf=pass (imf29.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 078B56B0111
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 09:50:23 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B205A5A230
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 13:50:22 +0000 (UTC)
+X-FDA: 83793641484.02.3656448
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 4D7CD1C0008
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 13:50:19 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=N09qe7qf;
+	spf=pass (imf20.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755611369;
+	s=arc-20220608; t=1755611420;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KQ5SyoE/MYPNZDWioj0kryq2voWpDfBzmzGzBWhm6as=;
-	b=kqlYkM/LY1QRSK2Qx9/fuEYdHTuNtWILpispj148b5KKRBaFUFCn+IaRdQuiKPY1QiSluF
-	HpyjrzEcDJMCj60c5NeMNq9RN7Vq32txqpzgFoh+NdVV+rFm9harW5/piCIdsc+SRefGpI
-	oU8idwZSRMH2ad2NWYz18ks/fhW6fnU=
+	 in-reply-to:references:dkim-signature;
+	bh=i9TJ4yjgH6QJU6NhC4uJmmFxWtgzYAcw2NPkZcqPt60=;
+	b=YFmNy78Ks8PU9X243ef4HYRkl7M9vJlcvJJ/UEurSEtLxYEqxFPHI6umXF75m0Cr6hk4Xy
+	Rs/GYclpEY4E6gOpL3QrHtGLhxbjbZ8Im4ZZxHbhy2tapE6F91pspBGYKCFD26NHVl+cZt
+	uaMqN8/tpYEqM5+6XzJH4uqdy/L86uE=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hZ85hNU6;
-	spf=pass (imf29.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755611369; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=N09qe7qf;
+	spf=pass (imf20.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755611420; a=rsa-sha256;
 	cv=none;
-	b=CW381oykBI+NJyRR+jbzt0FBVys/Qpy/a+x9XNbRZNhRdjTEmeqBtIFDbhi5c+gl18Cshx
-	nJCLDdfFBstUOPG5uE+NG2TR04w8fDf8F2Auu3m9YZ5ujE6m/gcU+VaPvVz2778dUKMu5+
-	SeVrG+xEip2cAR/R8P9o60QOupfIoak=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755611368;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KQ5SyoE/MYPNZDWioj0kryq2voWpDfBzmzGzBWhm6as=;
-	b=hZ85hNU6+h8jhUVdeg8/NJkIT4u45o6560CuPYaaF7xTmdPyEYLblGb2ENmFA9vJ9ejuqu
-	L7iYNWpwY+BIGwo6RjOThJJG6dNRatm3INGURfedKriX/DxDs3zxJ0bLikaurgMrSWlVxU
-	3U29VgABXQ03aMcOQTWRpdC+LXC2Pnw=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-322-uSjnhtN9NuKn8IW582EbqA-1; Tue,
- 19 Aug 2025 09:49:25 -0400
-X-MC-Unique: uSjnhtN9NuKn8IW582EbqA-1
-X-Mimecast-MFC-AGG-ID: uSjnhtN9NuKn8IW582EbqA_1755611360
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1CB27180029C;
-	Tue, 19 Aug 2025 13:49:20 +0000 (UTC)
-Received: from h1.redhat.com (unknown [10.22.64.137])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DE3E0195419F;
-	Tue, 19 Aug 2025 13:49:01 +0000 (UTC)
-From: Nico Pache <npache@redhat.com>
-To: linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
+	b=8IVY3jjonjAsZ4/Uux5437Wl7SA3N3y8LRjYvzYRpqlsab6TsdLfV1MGXZn3qquIcfCIw5
+	e+7t3jex5+22wpQ/SusykTxG6ixPPtQYpHIUmiancum+urZXxnfLjDsu7W3POJTbkW8nVZ
+	4uPSSG9AJjijkTVNHy8T0xUwIOsIiXI=
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2445827be70so58663825ad.3
+        for <linux-mm@kvack.org>; Tue, 19 Aug 2025 06:50:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1755611418; x=1756216218; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=i9TJ4yjgH6QJU6NhC4uJmmFxWtgzYAcw2NPkZcqPt60=;
+        b=N09qe7qfhQaMXTBnjXVlJIL/BXg0PV1bdu6JGsbJpSt7phnRFsUDY5JQIp9k9sgOiM
+         rLGfLBt6nYGyC9XuPPe9C5KQFgOZwyiEI3UGmR9rfBdGh4I2/46txWvMcErvEUctDYpX
+         KNZUxHaiw6D0S4s6LeTWSbR0o2FaAiIUCTJzAINaOuDzOpxfWPctAr861bOHJITArEfQ
+         ufGT9LecLOKBgzbjBrOLclJq+Uxc5l7udRV/LrgklDyZVJc8lNnuUjjGBBYKGEyXe7Kd
+         wxtOoYt+0xsuXlXm9iNEt2FnkS/GcBxfbNVA+pd88lrZDNdQ1sxxTZ13kg8Ea/B92rcK
+         gd0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755611418; x=1756216218;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=i9TJ4yjgH6QJU6NhC4uJmmFxWtgzYAcw2NPkZcqPt60=;
+        b=LNfkwjaWDerSFevmDxyNOqS7NPSA++WUj5yqrCVgQsoDIw0l7hIUS/WvHLLUbYKZTC
+         X/q6mFeDCdDf2TA4PoL+fiAlyaa7I1ftT5D6kBFsyfqha8eT20jjSmq0W/lvcnm2jK7L
+         nQ/VUQqEoZMm2+iqtpSSTSGpuQuvNHLIK4sPpYSfmlanIi5CpWkSbZD1byLKg83AnFmL
+         FqFFbSNuz0mliSdFAQh07sTAMqHELAXecNT+sO8SY41rebLJB4BMg1gx882vrqEYZGUH
+         W8tjVLb1wQRs7fFQpBefG9ixSfkGIbD3z7PvqN/KWu2TfHw2tO6jlLTZ3XR5QShm5bSL
+         Qi7g==
+X-Forwarded-Encrypted: i=1; AJvYcCXSE6+9sTJqJneuBEgYJKp/7s0NOLHqtIlWc9tQXkwuE4LeIudGIgvM92n9JGBe+9p/AYql4Iouqw==@kvack.org
+X-Gm-Message-State: AOJu0YyS4PEscbiQkC4LdWdzZs2XfTPJIsTlqUnevMFr40DCf1ko+Ma5
+	ZUJh90evwfGWiYrhbv6wI0eBN8X+6rg7xL2vds7V76Ef7Y5985+dXkjWS7cJ/soYACc=
+X-Gm-Gg: ASbGnct3ZzJiCFbLBTWNZY3hvdggfUikILgap+HeU0MZM10MIpFzl5ZvYAOx9jP2YV4
+	zznkD8G1i0j0K9Vxk8km9vm4QbFTO1ABqrSXyv3yA3yBxAF12IN+dltiCIwLNArp2T26cxQTQj0
+	IgVTuXkj7uuSgHcW76oyu2F8RvZKC9qmkMV1ABiKnFCb/xd2qzfJEPUrfXCKlsw9yG8hY7ky8WC
+	CHZFf8DAKXs2nTW1eWmqh9GaehGu0e/XClM10NqLUJz9Pzx91pFPB/utSBaVaT49LLu0sxxwkC+
+	42JmnNpPRgo86IVcHfbVkDUVyGqG5KxER9iJVIXweKDB49C5J0dD4KHgFp90P9ZAEs+02Kv0sGd
+	OP0JRVk7smbqOzCSOGdSj81ZinEB5uv6SU2g0eThIX8pWfh4/0uwiRCua
+X-Google-Smtp-Source: AGHT+IHZy0Y4108SytN6YUHUMh4gN5FYzipiyPM05e4guHvSQuE82DjG6I5AZlKeM5wR3Grwk8hS5w==
+X-Received: by 2002:a17:903:2282:b0:240:a504:cb84 with SMTP id d9443c01a7336-245e047bbe2mr35948055ad.30.1755611417766;
+        Tue, 19 Aug 2025 06:50:17 -0700 (PDT)
+Received: from L6YN4KR4K9.bytedance.net ([61.213.176.9])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446d5533c4sm109937815ad.140.2025.08.19.06.50.12
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 19 Aug 2025 06:50:17 -0700 (PDT)
+From: Yunhui Cui <cuiyunhui@bytedance.com>
+To: yury.norov@gmail.com,
+	linux@rasmusvillemoes.dk,
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	linux-riscv@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Cc: david@redhat.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	corbet@lwn.net,
-	rostedt@goodmis.org,
-	mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com,
-	akpm@linux-foundation.org,
-	baohua@kernel.org,
-	willy@infradead.org,
-	peterx@redhat.com,
-	wangkefeng.wang@huawei.com,
-	usamaarif642@gmail.com,
-	sunnanyong@huawei.com,
-	vishal.moola@gmail.com,
-	thomas.hellstrom@linux.intel.com,
-	yang@os.amperecomputing.com,
-	kirill.shutemov@linux.intel.com,
-	aarcange@redhat.com,
-	raquini@redhat.com,
-	anshuman.khandual@arm.com,
-	catalin.marinas@arm.com,
-	tiwai@suse.de,
-	will@kernel.org,
-	dave.hansen@linux.intel.com,
-	jack@suse.cz,
+	dennis@kernel.org,
+	tj@kernel.org,
 	cl@gentwo.org,
-	jglisse@google.com,
-	surenb@google.com,
-	zokeefe@google.com,
-	hannes@cmpxchg.org,
-	rientjes@google.com,
-	mhocko@suse.com,
-	rdunlap@infradead.org,
-	hughd@google.com,
-	Bagas Sanjaya <bagasdotme@gmail.com>
-Subject: [PATCH v10 13/13] Documentation: mm: update the admin guide for mTHP collapse
-Date: Tue, 19 Aug 2025 07:48:24 -0600
-Message-ID: <20250819134824.623535-2-npache@redhat.com>
-In-Reply-To: <20250819134824.623535-1-npache@redhat.com>
-References: <20250819134824.623535-1-npache@redhat.com>
+	linux-mm@kvack.org
+Cc: Yunhui Cui <cuiyunhui@bytedance.com>
+Subject: [PATCH 0/2] riscv: introduce percpu.h
+Date: Tue, 19 Aug 2025 21:50:05 +0800
+Message-Id: <20250819135007.85646-1-cuiyunhui@bytedance.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Stat-Signature: 5ph8ftnpbfbm7mjgmb5wx9fyigywbj9y
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4D7CD1C0008
+X-Stat-Signature: 9pa9d99exwqx75ga9dmyqfkr1wijt8we
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 79F7912001A
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1755611369-317584
-X-HE-Meta: U2FsdGVkX18ct87oOjEvV1n9RBH7KJ5ZniBt1NeORz5bEDNPOFXr0CfVy1cMthQZSCfvdnQ8dpd+nHvr6ONaxqHsbwFiNOXFv7icKqmZuxIvi5o6OwEvvDfZr/y+vzaewZcAfloKdi7r+twdAhLWt9cfVEwLQ+r61FwwrvwIl1xQFshiaXM1F+YjJZuKS5X7+RcTIcFRQOreKLqkt4BXZZ62HiwQ7s7iDYfvQFWms05FOL7I1cLWx47g34J9IOKOBOg5GLrMnZwICaX1ySq7EHROhrLTPSHyL9QCxlNi0ZEIOS6XJRT/lrcoLXOip480nY4T9hkW95dSjufLtEl7aflh/6PV8I+hArWWaQF5eX04sl1p9FxQv5Z4AiTGNcR8C904+7WLbqJXRcmU6alfktg3Mhua9Ilf+pVLq7uiErQpdOJgeoSwA8Fxf3/Xaooc5kwqTNs4XQzrSTJbW45ywDrTv+f2ZrZgqh5TpifAKxUgYQQeUrwvIppUXY6QUPhp9p/UUPAuTpMvywMktef8ZJhiH1aHLdlTEn64khg9haSXiFGOmUgXo3S5RL64Eb+1u1Dn9dFNE8wLSbbsVspi2lHuNkD+SyBxj98bB3Phgp0NE9O/Y+8tPBSHkXX2LxQYbc2rCdkPxRJWkN3mXIqVEpYoXkBybvPkHhot9O7/UPPjYfz7ul5nBIUckBY2rowsji7W30EVz4+q/sAPPDJ4eBDispn1naROzzF2PHUhQayNO8X1CkA5otQXHNMtepqaGjEvDC0v379OdKyjvhGxu5qMJYaT3V8x5eg7VIYFALI0URSsV8dIzMnS9s08K1j+KeEEpBzBmRoqRTNLThIWMFsxCGUNwof84iJrHTbcTLkK4bKjcP3kKJJvpsiOiGKYbpShcL6udvkPWhKPb7cJgoZTMleWFFG4j8HzRf1dKdjDKk73cwQQJcQWkWQtTE2kstlP3EtWnyn6NKPwW+q
- 2f3lS3ig
- 2eh/lNHDPTHn2ryqgvqYTyL5Ivx41qzSXLr4yfucbvyXGpZMuhBLl8V1NlphE9nzPhS50l54alFx5QftQqGgv+i5tMR73XtMr1Zj4v2spDjD37hOTtQ2owgrtgIm3Wy2RXcYP2nWTEQyRciavg+uu//g/1lmdP/g7Se2IffodYkBZ5gKipQY2cz3d4HTOD2ltofSbccN6eoifa9gdqF0lIUPwi9vJG6tJbSNnna4hbCmND52TgECd+i/VlGdGiOKwC1hhftu3qJ3yNAPeKfjdx3afQZCFaTGsCQBaUwW39ls2VtCaC+BwXJcA0gJi6kYmVp4JZWAPzuODd/nuB5DnxR43g6nDQcwqfXLt5c3csVieTXORQG/V6SlHtzjE22v7Jl4rKdDj7VTyMxrtMnRUtKoYVyPmxvInYeg2TIVKS2kL5s4=
+X-HE-Tag: 1755611419-489651
+X-HE-Meta: U2FsdGVkX1+1eSr9Xu1pUZpzHptC0LrhNur4JQXc8OIMNbP57DJ9mnGHNVsRuunRVxejWTTLB930pXUJMN68QCnp9O2cXEfnu0pFb89GN+z4hljgcQZtEhYtgp/jwfDMwmKyikt372jEJEGXbmBSDxgsZShGqyJnAtWNEeyRXa8e1Uyq/5I4uFy1ROkpHBydNZwQ6vBUJUzOMXv7/qJ99dPOgW/wBXUNWxv4q+8XSD9L6a9sksa5Drm4qSjLvlPnZBztKDg5aqD+vVgt3KAjdGwZ8/zQIPLk2CnI8POpjLltXF2P9CU0EU1KD7Dv9I8/Go7R31zEtVjjwD6kApgcwfiQeG4JWtYRA2Nh5wKrC8OGhl12RF0JmX3fKtbIb+ju5/lEIkSV1JSZGwgkfBq5abjKhQJ2okzMkHlXUqZOUFyjEiUwca5UsJYYo9QTbduPdKDiJR9uLAgnATWxrkRu3Qf1fJiGPN/vb/wb9UKPzrif0DMHWMWisuy8xb2+oYdWtcbnyb68eO8lwPKpZZwaMAfyyPqCFRZb4SmQyLb0Fo2gvATuycYhf+kVtCGahmFzHqQRB9EtfNODz4pcL6HI8Xp0JvaJC50+HYl0KuRhQmSvDhtQF7wV0r5vmzm68zx2J/RTRdcY8KSHvS3URYyUEoTZsKk1N5q498A/zbgrjCT6Mvw41u0E91KyQYVEqJtiOVBsw8v3GKT0gDkTSyZSJCKwdHPso/20oB+zKHiiLVpNqK819ne7jnMojGsNHzwFFsEaUnixM7pvXz25aCv+nh3Yos1y7My9hZh/XtLxHCyzD43gZIS3MVNIW4NHDtzZIzgHBYV9/upCjNb0dvfpntHOwkNDzv86h6dwjvzlJ8zMjKqi0+q3kL2qJWwmBpQTSFF7vZf4J9nImghAxxm5Z+nPLPTodprGnTmFodPhfxfggNceu//IFVoQbbFJAk/icKUJhNqeZGrGaDUAquD
+ S2BhkOCQ
+ XAFVFdi/0mBV+V7cH8T3AkVfglbZymoeHGsB6tTf189DhVYhYg1l86PIYrhLZ8HWBmp5SDtEXhkeEEa5wYQMSUR0GWjuCLa/hjiuTQjCUdk49l/g96y2xqHn/4vBa7XIdM/p5KcXffYWXyY/GX9lKcuk6zSSlHFT+meZ2lbQwO2bjtjV3f72v8sf6+EJ85Eqcs78cB24QpaS1Xmu+vDSC1Rv9NbmgYn3a5xMR8ydZ9smDaWJeXNU0KblIjBAXSqEAstKYWHYtzql/wvxJdUAlhnQBkyQvQG3TJC/xZ4cFCBj/PjgeyatRTNMZf7Sz/HppPexjyU48+uafsit0b3zTTgH0lhKSEwemjoxC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,60 +123,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now that we can collapse to mTHPs lets update the admin guide to
-reflect these changes and provide proper guidence on how to utilize it.
+Current per-CPU operations rely on generic code using raw_local_irq_save(),
+which incurs significant overhead. This patch optimizes 32/64-bit paths with
+RISC-V atomic instructions, reducing overhead.
 
-Reviewed-by: Bagas Sanjaya <bagasdotme@gmail.com>
-Signed-off-by: Nico Pache <npache@redhat.com>
----
- Documentation/admin-guide/mm/transhuge.rst | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+RISC-V lacks lr/sc.b/h support; without ZABHA, emulating 8/16-bit operations
+via lr/sc.w would require complex mask logic. However, data shows 8/16-bit
+per-CPU operations are extremely rare (single-digit counts in boot and
+hackbench tests). Thus, we let 8/16-bit ops fall back to the generic
+implementation, avoiding unnecessary complexity. 32/64-bit ops use direct
+atomic instructions for performance.
 
-diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
-index b85547ac4fe9..1f9e6a32052c 100644
---- a/Documentation/admin-guide/mm/transhuge.rst
-+++ b/Documentation/admin-guide/mm/transhuge.rst
-@@ -63,7 +63,7 @@ often.
- THP can be enabled system wide or restricted to certain tasks or even
- memory ranges inside task's address space. Unless THP is completely
- disabled, there is ``khugepaged`` daemon that scans memory and
--collapses sequences of basic pages into PMD-sized huge pages.
-+collapses sequences of basic pages into huge pages.
- 
- The THP behaviour is controlled via :ref:`sysfs <thp_sysfs>`
- interface and using madvise(2) and prctl(2) system calls.
-@@ -149,6 +149,18 @@ hugepage sizes have enabled="never". If enabling multiple hugepage
- sizes, the kernel will select the most appropriate enabled size for a
- given allocation.
- 
-+khugepaged uses max_ptes_none scaled to the order of the enabled mTHP size
-+to determine collapses. When using mTHPs it's recommended to set
-+max_ptes_none low-- ideally less than HPAGE_PMD_NR / 2 (255 on 4k page
-+size). This will prevent undesired "creep" behavior that leads to
-+continuously collapsing to the largest mTHP size; when we collapse, we are
-+bringing in new non-zero pages that will, on a subsequent scan, cause the
-+max_ptes_none check of the +1 order to always be satisfied. By limiting
-+this to less than half the current order, we make sure we don't cause this
-+feedback loop. max_ptes_shared and max_ptes_swap have no effect when
-+collapsing to a mTHP, and mTHP collapse will fail on shared or swapped out
-+pages.
-+
- It's also possible to limit defrag efforts in the VM to generate
- anonymous hugepages in case they're not immediately free to madvise
- regions or to never try to defrag memory and simply fallback to regular
-@@ -264,11 +276,6 @@ support the following arguments::
- Khugepaged controls
- -------------------
- 
--.. note::
--   khugepaged currently only searches for opportunities to collapse to
--   PMD-sized THP and no attempt is made to collapse to other THP
--   sizes.
--
- khugepaged runs usually at low frequency so while one may not want to
- invoke defrag algorithms synchronously during the page faults, it
- should be worth invoking defrag at least in khugepaged. However it's
+Yunhui Cui (2):
+  riscv: remove irqflags.h inclusion in asm/bitops.h
+  riscv: introduce percpu.h into include/asm
+
+ arch/riscv/include/asm/bitops.h |   1 -
+ arch/riscv/include/asm/percpu.h | 138 ++++++++++++++++++++++++++++++++
+ 2 files changed, 138 insertions(+), 1 deletion(-)
+ create mode 100644 arch/riscv/include/asm/percpu.h
+
 -- 
-2.50.1
+2.39.5
 
 
