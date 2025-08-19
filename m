@@ -2,96 +2,96 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 98723CA0EE6
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 04:08:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5A689CA0EE6
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 04:09:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A2856B00DD; Tue, 19 Aug 2025 00:08:43 -0400 (EDT)
+	id D52B16B0093; Tue, 19 Aug 2025 00:09:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 27A696B00E7; Tue, 19 Aug 2025 00:08:43 -0400 (EDT)
+	id D2A2D6B00E9; Tue, 19 Aug 2025 00:09:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 190736B00E8; Tue, 19 Aug 2025 00:08:43 -0400 (EDT)
+	id C40A56B00EA; Tue, 19 Aug 2025 00:09:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 07FE46B00DD
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 00:08:43 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8F70A137E15
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 04:08:42 +0000 (UTC)
-X-FDA: 83792175684.29.DD3BB01
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf14.hostedemail.com (Postfix) with ESMTP id E53F4100003
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 04:08:40 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=rneKP4IZ;
+	by kanga.kvack.org (Postfix) with ESMTP id AE7E66B0093
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 00:09:27 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7AEDB57998
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 04:09:27 +0000 (UTC)
+X-FDA: 83792177574.06.F345FD2
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	by imf11.hostedemail.com (Postfix) with ESMTP id AF20A40004
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 04:09:25 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=eGVFA9YX;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf14.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755576520; a=rsa-sha256;
+	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755576565; a=rsa-sha256;
 	cv=none;
-	b=W/OoVIVq1Rue4rcR3UW5kHX3IG+e5O1S5WI5kRSC1FtwcdHDNux/TWxU5LapE104CPBtsj
-	LJpoI6yF2qDCINFXkHF0QoJv8G1ftKfg9fgHkQMqkL3tamXNoBu+A3QNRji5LGL1lDjXzx
-	uoDoAKneks8V2qS4YoC6DgXUau5nhZ4=
+	b=QYhb1KhMzpeQHz41PhbrHyXrvhePDhOLHIIFQF0JqWnqSqZVdPf+5rdmr6XL4wHlHySFQX
+	9lT8H2v2BWN57I8HIG4gfos16SJSXqRZt4ceafb9LFH6cLiC990LlIw9ILM3TjC6fnPpZo
+	4FIyKiZoY5vrTtsuxx5yM8FSHr/wJgw=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=rneKP4IZ;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=eGVFA9YX;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf14.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com
+	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755576520;
+	s=arc-20220608; t=1755576565;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kNqSNNC+ZFCES/MshdQXARqO1gw350ZAtbqLST4gBOI=;
-	b=YNI0pZVE6Fsh2AnKcE1RxUH35J2/gWBib7lfLUJ/B46OQb1DCFkUT1AqR0UpCUu2S75PNV
-	S80Ux/ncSKpctEHvl8Z3xzEqv7ynMcCzpegP+VecsxkrvSuyVbItugrsEY3x2COCnJqtK4
-	EY/KZXP9+ZzyzpUJEs/ieQp4suJHxnA=
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4b12b123e48so145151cf.0
-        for <linux-mm@kvack.org>; Mon, 18 Aug 2025 21:08:40 -0700 (PDT)
+	bh=f3dUCMV2/nAhvemdCojMd8kJyRCWZtkbIKeHpEaqiNA=;
+	b=1YA7IXVQsgFXaH4T3VasjXqsql0M0V8D5KqJOsjJuy8fqT0S4Ra44swPiyxBLLqLgVIpMa
+	f0fS6Orkt8tDPCt4GVVJ138hgOxgN/ekLb6aRLew9cekuV50n+Tth7R1QcRby1lQPrHSqw
+	+WaRiFr4uzCj6njsL8hBRsQfEWkYLO8=
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4b0bf08551cso170181cf.1
+        for <linux-mm@kvack.org>; Mon, 18 Aug 2025 21:09:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755576520; x=1756181320; darn=kvack.org;
+        d=google.com; s=20230601; t=1755576565; x=1756181365; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kNqSNNC+ZFCES/MshdQXARqO1gw350ZAtbqLST4gBOI=;
-        b=rneKP4IZ2FHeNTN2qtSwiKLFaeM4koL2g0KPaXXWaMgwLbaW2COmDj/MKfmLSypz8M
-         rUW5LT3v4z6xPd4Ul12A/zcy9tHVjAkzHED1UXCxozrKIQyJ9OgZ/86bOciQzGV/x8Bz
-         U/gc7tpsq+1x0qrmPavlCJhgAvEfZWyDQUO9gxckea9ZXT+pNupZHoC0t6zbTzd/LCV2
-         eDU+1FtXkXFqvzfyFZVFZUMTny4TvAqTrH0F5ltFasfk1cN9gK/P2devoOi90TYOlIUN
-         snSadCIzu37VB+x/g3iNyNHv0rd6U7q8cA9IeIsVHs5m7MbPSHRBgwixHZKignH0OGxb
-         MxRQ==
+        bh=f3dUCMV2/nAhvemdCojMd8kJyRCWZtkbIKeHpEaqiNA=;
+        b=eGVFA9YXVe8NwTHaFi9rG1sCVqvEAvH3KOpxkf3eFSp1R8KgcrfXlq69k1ceqn6ouz
+         33iRkJzFh2tmQVyzseWW52XTCgdgfDrNc8GASJ3N4nqeUKwz+0O6UO2U0kiNoxxO+/wF
+         j20m+I31a5XBEhhP9BuREfIg2TivMA7EuYtz8U5efmXyyF1C9T13q1n1izWqYHoePgD6
+         YU9eJ6OqXPxuZpJ7TXSTZnin2d2N67JO39q+z9kISfJasaiG/nbtqY510TmdP1e+MDws
+         lcCFiAIozNGQ2N8eqzfkEuDKYSZEMeO0DeYWAEx2pACLSKvE7vObe2Ul0LqdCYdghlYB
+         5ftQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755576520; x=1756181320;
+        d=1e100.net; s=20230601; t=1755576565; x=1756181365;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kNqSNNC+ZFCES/MshdQXARqO1gw350ZAtbqLST4gBOI=;
-        b=VX6jHTBwyGXAFL3jybkG61cnoIVJ4MM7yXTiCZ7G3HCwiGjYPHpLdW0/c7EBWJ0mRl
-         zGR3Xhh4DMhMA1zqJRZEox3fkGm3oz4rUA1Yl98fA0lqbklUeIgbyIaoYunew/TbfNGq
-         oKVhM1GgBbDxPqWzQoLHtwlSjsvNQBoa8kOeRohfvc2skuoIcLErDZHwcWl0hjU29Hcx
-         2HIHfuHUzyGmIMoRom2q8ocERL6Dn4zwaKSFKUsBYqliseOwLgN94cLlYfz0AGeGWJFq
-         prUoAEbc61A98pjxEOD/Kyv6UL7DQcmvaorYlKFbf29QAqxO4ogmSBFmBuYMZWioXnsS
-         CTVA==
-X-Gm-Message-State: AOJu0YzINH4q/3CHN/QPfilIAVUZG1uNgaKTrCDyCPDHl/8ANRvB7YuG
-	m7EDZnIW2mk2gBvBDapQb3Ua1CoW14iIRUImVpvicoANZJy4EZRyHjvSYGRR+xMAsih20GGz6JM
-	0JWae874W6au/QXedM5geXiH2rW4QxrDu2Yi2Vn6n
-X-Gm-Gg: ASbGncu3IuXilcVOS6WPQueDV+tOsVMFj2e5eWn8g2GrHv7kSqdtHLLoJhPxy1iIpq5
-	UfMpEMIU9YKHLNoYcF2SWWwZxrajaxWB+SBfVhSH2Xt/KP0dwBgwCBi/31KQalRIx0E592XgBWr
-	ntc4nlEdglVtW9bqXbw5jCkae0p6yjfnb3t9FTcTg/iyyH1rfBbMCgBn75Bitog8wLHsqqg17ER
-	txmO2L4W5Cd63/lhgRkq+k=
-X-Google-Smtp-Source: AGHT+IFbOGhUADqzf95dASxlMKGD6EvhrQL79SeIVQlkcYOfoGLJstTR7NEg3Eq1GC78cXJ92MVmgcUXRVtBajn4l6U=
-X-Received: by 2002:a05:622a:20e:b0:4a6:907e:61ca with SMTP id
- d75a77b69052e-4b286426f44mr2557321cf.12.1755576519480; Mon, 18 Aug 2025
- 21:08:39 -0700 (PDT)
+        bh=f3dUCMV2/nAhvemdCojMd8kJyRCWZtkbIKeHpEaqiNA=;
+        b=LHTRlNSAH6t6iEpX+pqipTYaKZWCraJ6MGnh/pFIfvxCoI/l1OpG7LJDTypFMHbE3y
+         vX9HTgtj52nU+9tQRhsdt3vGX2Jlb8WaDOCWPKVyQZdI86m6KcMDmX7VXYDItUh+4LEE
+         3GHH+kDQnwGxh3LGdcVm4zADXOCzupR+YAFghtriquDf0xxijmFCSCB5g1v/+QkwLg7d
+         8yIi2VVo9qmAgTNzjQlStvcA5GEkXq4O2iGrdT5jeKc1kWMno/QtFgBco1MCrjPfoRNt
+         K2sKAlXjFRW+QnJnC2ZNoEVhN87ew4WzmHYoA0JEl3OwyfjNFizoLTEnH9h9JiyWyxYp
+         FH1Q==
+X-Gm-Message-State: AOJu0YwcFOaeoCHLJvIvn9sPwA5WbLbasmeAFOvcoMNqhsr0cZ+jbuAC
+	FyMVKNRLo+IzA3NiOyI/hQlJ8ux7mFBSjeeXf3CMKNsCMjnA811amDB2MxifSyaPqXODM8i/Rjx
+	8f5AdP7fq0ZbLDrnViG6NxtbQhkbCfbR3DykVRNky
+X-Gm-Gg: ASbGnctrnzOx8fOMYJwtYFaa5MOjmdBP2QsiPkKmSja4cAESZxKe13cDOJbvvWV3BPo
+	Ut3jVfcgMzpZVxP6HlDyeC+qRwkPMnu5e1Rn8CWC/A6Ez+zIPNd1MxSEpWJ8FaX9ckPdj1IQaxy
+	Dstsgj5ua1uNWXq3PgHchLcXG4MJEchjUd08MDzhsOZbq55dTtQe5oTN1ULw0dgnwaDMc3eGfvQ
+	YA2ckt/uRjs1yk7F1Fa4p8=
+X-Google-Smtp-Source: AGHT+IEXVXKEfHXfycn4KnNeZVZfnSb9NhcC+5+HRSfkOw++08Ddm1Rdv+hEz3lRMSSxCNgbz8/C3hLjkPWapN9Lyys=
+X-Received: by 2002:a05:622a:1309:b0:4a6:f525:e35a with SMTP id
+ d75a77b69052e-4b286db8cecmr2005261cf.9.1755576564251; Mon, 18 Aug 2025
+ 21:09:24 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250818170136.209169-1-roman.gushchin@linux.dev>
-In-Reply-To: <20250818170136.209169-1-roman.gushchin@linux.dev>
+References: <20250818170136.209169-1-roman.gushchin@linux.dev> <20250818170136.209169-2-roman.gushchin@linux.dev>
+In-Reply-To: <20250818170136.209169-2-roman.gushchin@linux.dev>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 18 Aug 2025 21:08:27 -0700
-X-Gm-Features: Ac12FXx5DzlOVZAr-jbHhyctpcejdOKxZN_ofbcE7rl2HgLn0PJM0Trumx_iDt8
-Message-ID: <CAJuCfpG1+bnFwpc4bxut_5tFtFc-s7+u2YF-suefoXq2-NijJw@mail.gmail.com>
-Subject: Re: [PATCH v1 00/14] mm: BPF OOM
+Date: Mon, 18 Aug 2025 21:09:12 -0700
+X-Gm-Features: Ac12FXy56yWlGoJq9cRPelkuwpXUpi9_s6Qr7A14WtXyHs4ZdQYEwR0F_Fms8VY
+Message-ID: <CAJuCfpF2akVnbZgPoDAXea2joJ1DWvBTHC7wGzEJcYX9xF9dSA@mail.gmail.com>
+Subject: Re: [PATCH v1 01/14] mm: introduce bpf struct ops for OOM handling
 To: Roman Gushchin <roman.gushchin@linux.dev>
 Cc: linux-mm@kvack.org, bpf@vger.kernel.org, 
 	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@suse.com>, 
@@ -100,12 +100,14 @@ Cc: linux-mm@kvack.org, bpf@vger.kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: E53F4100003
-X-Stat-Signature: ga81pm9q36kb9adypun8zi66xy6889s3
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1755576520-451977
-X-HE-Meta: U2FsdGVkX1/k2RgNe+2sXEF285Ty6jgh8TQ8mMzl3Wp+D2Iz/zZA2xrYMSuH4nNrIVCktK7ugSK1gbmvlj6VXXBdbdgkf70TaViaRJQkhmI7fmvHTuhLIv9b0UfkeKaPyl+7feul1I2FMX1uDyCjN1ZYArRST2W+E9db5HT2TFYxlQCrXwaog0NULSnPfClOlOZFLOQPBa5VdHbAxUYsaxh1nlv/JBbZaz43wzAINVcAM5HKN5UEa1OvrQSOnxnVyGM8FlmMO+LI02X8CUVbGMJrF01/IuZ/tfW+6A9ms+yBKcG+AlWW6QCKv+7W6u+xpp8ty0c6O9EEzeD9jM5h+yh6dD+BaDZhi59KAXfHLgHs//dq6o5clGPI7DlBn5wtc3XNPR9WAwbQvIkeHcMcXaAHkW8icUpKyv4qjlaYYw0174OVeMH0aOM10xgjun+KvnZ9KTcRSociTvC8Yvpaj1wLwtPSZLv7NxCT42EUyuHYnZNZjBXUVHxofTvjgvsv/uE3neLlbdRp3iwWREcwMw5ethFHs6FhfzvdUkyM1cGkXmB9/UBI0w6if8jlxaDn+GsBG21Qph5ikeW9OchdzQu9ZVNsE4x/sjIEBTcKj0MO7ySk4Gi5nPvBFy3gd/Fzrzg2brF4Hiu/zt5YTEU+N7xdxeQk7cgnEGga7uaQIQasBrIFHLMBOURBkE1PE5CCpVLBDJAWTOpO7CFcdgQEVOc8BHKRH2vI6nlAMfAaE3jO10T2oqq8O/rjzu2m+k1fVkysvfny5rfu1njDBFaI7zUjeebJvuMWCxgvAFw6preCDuZuXPuGKQFxoZbsz51vkMlWTF4sloiHB8dCTUHARbgf7GAfH7YdMAxuBSWolklQvWXr7w/FuIU9UuASCPYSRngMkhCILws6W+aQkZ3M8qECkJehYeWy
+X-Rspamd-Queue-Id: AF20A40004
+X-Stat-Signature: tze9qya4frcmi9kau63gy5pcap5uphyk
+X-HE-Tag: 1755576565-604730
+X-HE-Meta: U2FsdGVkX1/o4nJ9W7XsZ+Tp6tuXcd+pEpo6iXRo1STUpZnFCz6/kF0st8CtzBzErneQknBGsWe4tNgHdSbUoEy0IXT5qdK/KqogOaqvsuH4ZgpH0yUmCZv2LpgqJ8ZSWK3ZcqD8gnpdQBrbv8lPPUOzMzu0VaL2pK4Jin26sTKjLfZSp20plmc/IDNF1nF/KRZoNuahQ5WM2xz06ZGcvgWyXYyv0SsUZygAoG6fzwW8zCq460ldlvT4ly5ITPNzL/6bEkRomJsWkJ1hmn1ka3Mge1AiUZM+831xr/ALMI2L2h6NGJMLS5IrbepBt3/XxCpnQQ8p79ucizsR3nAV35ooff3G3bH9orZjSOYJJqPfUYD2YwrQJx7usyaSgGJ9XP1O525N89xVC4mT6CCUbgwmCofSEiC5ZGkly86dNfSKFms+ejd2NQ05dN2pCCIcyV2lw2NsZuE2JKM2F0AfBh2lIhI0bGK9fJqbA2020C4/JZQi/eBkVFzJ7Nb+P+3ivYxxBKlsgRyU2bPVSYRLlhpffqIW6gO5ZIHIrciKyoid45Z3YhNiON8lia4ecTO+4ucfuYHRcBqN/Oj67MEBExHaDFcL0BeqWRnShdBEXTrIBhvzlnk/sQuIWJWhpG0HVgqS+JTgsKf8vqLARQgUjbSJMaK0cstzEqy0BCSGuKaLpc2ZiOSTncC9g0ESA23UqBS+dkOIuO9Y61S/LJeAcHRMmBEpNcMGM+J+WzAWAx6lSjG7Hy9hByebWNbv0qp8iS0qm7P3EwoHD+MOseUzuUmH7ztN7jb7uB2bir8tLmsgbbzDgmUYNe9vSY6EvVWtyA8PSJzcdkrwr3OEsFJgKTmsjhZxJsqviqWkcIJJbckWeHvo2SvunzpQA9cOd2fhjQ3OqQ3NP0vSs2bEELyu4A00Rv4g5wpXd4vToLxiX/gVFsm2PkqfSKdWTzdveyjI5gotrOul4kRYd6eIETz
+ hESXBPvW
+ gpvFrfoID7+YkYbcfdz/RBkWdA1oU9bC9FEWezMHIk/V6NNhZGPo4xC1eoSCOcFg+E55lVPCagAj8TWIc9yNxhMxf1AN51+htz+ja3/MIPsdtNkKrHgX7ObkNB9QROb3OE/WDH/DeJ0XgYAyrCQ61x0LTxDfehe1hyF4KFbaSmNGzk4INDEzKHX93yA1OtObIXHq9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,130 +119,420 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Mon, Aug 18, 2025 at 10:01=E2=80=AFAM Roman Gushchin
 <roman.gushchin@linux.dev> wrote:
 >
-> This patchset adds an ability to customize the out of memory
-> handling using bpf.
+> Introduce a bpf struct ops for implementing custom OOM handling policies.
 >
-> It focuses on two parts:
-> 1) OOM handling policy,
-> 2) PSI-based OOM invocation.
+> The struct ops provides the bpf_handle_out_of_memory() callback,
+> which expected to return 1 if it was able to free some memory and 0
+> otherwise.
 >
-> The idea to use bpf for customizing the OOM handling is not new, but
-> unlike the previous proposal [1], which augmented the existing task
-> ranking policy, this one tries to be as generic as possible and
-> leverage the full power of the modern bpf.
+> In the latter case it's guaranteed that the in-kernel OOM killer will
+> be invoked. Otherwise the kernel also checks the bpf_memory_freed
+> field of the oom_control structure, which is expected to be set by
+> kfuncs suitable for releasing memory. It's a safety mechanism which
+> prevents a bpf program to claim forward progress without actually
+> releasing memory. The callback program is sleepable to enable using
+> iterators, e.g. cgroup iterators.
 >
-> It provides a generic interface which is called before the existing OOM
-> killer code and allows implementing any policy, e.g. picking a victim
-> task or memory cgroup or potentially even releasing memory in other
-> ways, e.g. deleting tmpfs files (the last one might require some
-> additional but relatively simple changes).
+> The callback receives struct oom_control as an argument, so it can
+> easily filter out OOM's it doesn't want to handle, e.g. global vs
+> memcg OOM's.
 >
-> The past attempt to implement memory-cgroup aware policy [2] showed
-> that there are multiple opinions on what the best policy is.  As it's
-> highly workload-dependent and specific to a concrete way of organizing
-> workloads, the structure of the cgroup tree etc, a customizable
-> bpf-based implementation is preferable over a in-kernel implementation
-> with a dozen on sysctls.
-
-s/on/of ?
-
-
+> The callback is executed just before the kernel victim task selection
+> algorithm, so all heuristics and sysctls like panic on oom,
+> sysctl_oom_kill_allocating_task and sysctl_oom_kill_allocating_task
+> are respected.
 >
-> The second part is related to the fundamental question on when to
-> declare the OOM event. It's a trade-off between the risk of
-> unnecessary OOM kills and associated work losses and the risk of
-> infinite trashing and effective soft lockups.  In the last few years
-> several PSI-based userspace solutions were developed (e.g. OOMd [3] or
-> systemd-OOMd [4]). The common idea was to use userspace daemons to
-> implement custom OOM logic as well as rely on PSI monitoring to avoid
-> stalls. In this scenario the userspace daemon was supposed to handle
-> the majority of OOMs, while the in-kernel OOM killer worked as the
-> last resort measure to guarantee that the system would never deadlock
-> on the memory. But this approach creates additional infrastructure
-> churn: userspace OOM daemon is a separate entity which needs to be
-> deployed, updated, monitored. A completely different pipeline needs to
-> be built to monitor both types of OOM events and collect associated
-> logs. A userspace daemon is more restricted in terms on what data is
-> available to it. Implementing a daemon which can work reliably under a
-> heavy memory pressure in the system is also tricky.
+> The struct ops also has the name field, which allows to define a
+> custom name for the implemented policy. It's printed in the OOM report
+> in the oom_policy=3D<policy> format. "default" is printed if bpf is not
+> used or policy name is not specified.
 >
-> [1]: https://lwn.net/ml/linux-kernel/20230810081319.65668-1-zhouchuyi@byt=
-edance.com/
-> [2]: https://lore.kernel.org/lkml/20171130152824.1591-1-guro@fb.com/
-> [3]: https://github.com/facebookincubator/oomd
-> [4]: https://www.freedesktop.org/software/systemd/man/latest/systemd-oomd=
-.service.html
+> [  112.696676] test_progs invoked oom-killer: gfp_mask=3D0xcc0(GFP_KERNEL=
+), order=3D0, oom_score_adj=3D0
+>                oom_policy=3Dbpf_test_policy
+> [  112.698160] CPU: 1 UID: 0 PID: 660 Comm: test_progs Not tainted 6.16.0=
+-00015-gf09eb0d6badc #102 PREEMPT(full)
+> [  112.698165] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIO=
+S 1.17.0-5.fc42 04/01/2014
+> [  112.698167] Call Trace:
+> [  112.698177]  <TASK>
+> [  112.698182]  dump_stack_lvl+0x4d/0x70
+> [  112.698192]  dump_header+0x59/0x1c6
+> [  112.698199]  oom_kill_process.cold+0x8/0xef
+> [  112.698206]  bpf_oom_kill_process+0x59/0xb0
+> [  112.698216]  bpf_prog_7ecad0f36a167fd7_test_out_of_memory+0x2be/0x313
+> [  112.698229]  bpf__bpf_oom_ops_handle_out_of_memory+0x47/0xaf
+> [  112.698236]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [  112.698240]  bpf_handle_oom+0x11a/0x1e0
+> [  112.698250]  out_of_memory+0xab/0x5c0
+> [  112.698258]  mem_cgroup_out_of_memory+0xbc/0x110
+> [  112.698274]  try_charge_memcg+0x4b5/0x7e0
+> [  112.698288]  charge_memcg+0x2f/0xc0
+> [  112.698293]  __mem_cgroup_charge+0x30/0xc0
+> [  112.698299]  do_anonymous_page+0x40f/0xa50
+> [  112.698311]  __handle_mm_fault+0xbba/0x1140
+> [  112.698317]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [  112.698335]  handle_mm_fault+0xe6/0x370
+> [  112.698343]  do_user_addr_fault+0x211/0x6a0
+> [  112.698354]  exc_page_fault+0x75/0x1d0
+> [  112.698363]  asm_exc_page_fault+0x26/0x30
+> [  112.698366] RIP: 0033:0x7fa97236db00
 >
-> ----
+> It's possible to load multiple bpf struct programs. In the case of
+> oom, they will be executed one by one in the same order they been
+> loaded until one of them returns 1 and bpf_memory_freed is set to 1
+> - an indication that the memory was freed. This allows to have
+> multiple bpf programs to focus on different types of OOM's - e.g.
+> one program can only handle memcg OOM's in one memory cgroup.
+> But the filtering is done in bpf - so it's fully flexible.
 >
-> v1:
->   1) Both OOM and PSI parts are now implemented using bpf struct ops,
->      providing a path the future extensions (suggested by Kumar Kartikeya=
- Dwivedi,
->      Song Liu and Matt Bobrowski)
->   2) It's possible to create PSI triggers from BPF, no need for an additi=
-onal
->      userspace agent. (suggested by Suren Baghdasaryan)
->      Also there is now a callback for the cgroup release event.
->   3) Added an ability to block on oom_lock instead of bailing out (sugges=
-ted by Michal Hocko)
->   4) Added bpf_task_is_oom_victim (suggested by Michal Hocko)
->   5) PSI callbacks are scheduled using a separate workqueue (suggested by=
- Suren Baghdasaryan)
->
-> RFC:
->   https://lwn.net/ml/all/20250428033617.3797686-1-roman.gushchin@linux.de=
-v/
->
->
-> Roman Gushchin (14):
->   mm: introduce bpf struct ops for OOM handling
->   bpf: mark struct oom_control's memcg field as TRUSTED_OR_NULL
->   mm: introduce bpf_oom_kill_process() bpf kfunc
->   mm: introduce bpf kfuncs to deal with memcg pointers
->   mm: introduce bpf_get_root_mem_cgroup() bpf kfunc
->   mm: introduce bpf_out_of_memory() bpf kfunc
->   mm: allow specifying custom oom constraint for bpf triggers
->   mm: introduce bpf_task_is_oom_victim() kfunc
->   bpf: selftests: introduce read_cgroup_file() helper
->   bpf: selftests: bpf OOM handler test
->   sched: psi: refactor psi_trigger_create()
->   sched: psi: implement psi trigger handling using bpf
->   sched: psi: implement bpf_psi_create_trigger() kfunc
->   bpf: selftests: psi struct ops test
->
->  include/linux/bpf_oom.h                       |  49 +++
->  include/linux/bpf_psi.h                       |  71 ++++
->  include/linux/memcontrol.h                    |   2 +
->  include/linux/oom.h                           |  12 +
->  include/linux/psi.h                           |  15 +-
->  include/linux/psi_types.h                     |  72 +++-
->  kernel/bpf/verifier.c                         |   5 +
->  kernel/cgroup/cgroup.c                        |  14 +-
->  kernel/sched/bpf_psi.c                        | 337 ++++++++++++++++++
->  kernel/sched/build_utility.c                  |   4 +
->  kernel/sched/psi.c                            | 130 +++++--
->  mm/Makefile                                   |   4 +
->  mm/bpf_memcontrol.c                           | 166 +++++++++
->  mm/bpf_oom.c                                  | 157 ++++++++
->  mm/oom_kill.c                                 | 182 +++++++++-
->  tools/testing/selftests/bpf/cgroup_helpers.c  |  39 ++
->  tools/testing/selftests/bpf/cgroup_helpers.h  |   2 +
->  .../selftests/bpf/prog_tests/test_oom.c       | 229 ++++++++++++
->  .../selftests/bpf/prog_tests/test_psi.c       | 224 ++++++++++++
->  tools/testing/selftests/bpf/progs/test_oom.c  | 108 ++++++
->  tools/testing/selftests/bpf/progs/test_psi.c  |  76 ++++
->  21 files changed, 1845 insertions(+), 53 deletions(-)
+> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+> ---
+>  include/linux/bpf_oom.h |  49 +++++++++++++
+>  include/linux/oom.h     |   8 ++
+>  mm/Makefile             |   3 +
+>  mm/bpf_oom.c            | 157 ++++++++++++++++++++++++++++++++++++++++
+>  mm/oom_kill.c           |  22 +++++-
+>  5 files changed, 237 insertions(+), 2 deletions(-)
 >  create mode 100644 include/linux/bpf_oom.h
->  create mode 100644 include/linux/bpf_psi.h
->  create mode 100644 kernel/sched/bpf_psi.c
->  create mode 100644 mm/bpf_memcontrol.c
 >  create mode 100644 mm/bpf_oom.c
->  create mode 100644 tools/testing/selftests/bpf/prog_tests/test_oom.c
->  create mode 100644 tools/testing/selftests/bpf/prog_tests/test_psi.c
->  create mode 100644 tools/testing/selftests/bpf/progs/test_oom.c
->  create mode 100644 tools/testing/selftests/bpf/progs/test_psi.c
 >
+> diff --git a/include/linux/bpf_oom.h b/include/linux/bpf_oom.h
+> new file mode 100644
+> index 000000000000..29cb5ea41d97
+> --- /dev/null
+> +++ b/include/linux/bpf_oom.h
+> @@ -0,0 +1,49 @@
+> +/* SPDX-License-Identifier: GPL-2.0+ */
+> +
+> +#ifndef __BPF_OOM_H
+> +#define __BPF_OOM_H
+> +
+> +struct bpf_oom;
+> +struct oom_control;
+> +
+> +#define BPF_OOM_NAME_MAX_LEN 64
+> +
+> +struct bpf_oom_ops {
+> +       /**
+> +        * @handle_out_of_memory: Out of memory bpf handler, called befor=
+e
+> +        * the in-kernel OOM killer.
+> +        * @oc: OOM control structure
+> +        *
+> +        * Should return 1 if some memory was freed up, otherwise
+> +        * the in-kernel OOM killer is invoked.
+> +        */
+> +       int (*handle_out_of_memory)(struct oom_control *oc);
+> +
+> +       /**
+> +        * @name: BPF OOM policy name
+> +        */
+> +       char name[BPF_OOM_NAME_MAX_LEN];
+
+Why should the name be a part of ops structure? IMO it's not an
+attribute of the operations but rather of the oom handler which is
+represented by bpf_oom here.
+
+> +
+> +       /* Private */
+> +       struct bpf_oom *bpf_oom;
+> +};
+> +
+> +#ifdef CONFIG_BPF_SYSCALL
+> +/**
+> + * @bpf_handle_oom: handle out of memory using bpf programs
+> + * @oc: OOM control structure
+> + *
+> + * Returns true if a bpf oom program was executed, returned 1
+> + * and some memory was actually freed.
+
+The above comment is unclear, please clarify.
+
+> + */
+> +bool bpf_handle_oom(struct oom_control *oc);
+> +
+> +#else /* CONFIG_BPF_SYSCALL */
+> +static inline bool bpf_handle_oom(struct oom_control *oc)
+> +{
+> +       return false;
+> +}
+> +
+> +#endif /* CONFIG_BPF_SYSCALL */
+> +
+> +#endif /* __BPF_OOM_H */
+> diff --git a/include/linux/oom.h b/include/linux/oom.h
+> index 1e0fc6931ce9..ef453309b7ea 100644
+> --- a/include/linux/oom.h
+> +++ b/include/linux/oom.h
+> @@ -51,6 +51,14 @@ struct oom_control {
+>
+>         /* Used to print the constraint info. */
+>         enum oom_constraint constraint;
+> +
+> +#ifdef CONFIG_BPF_SYSCALL
+> +       /* Used by the bpf oom implementation to mark the forward progres=
+s */
+> +       bool bpf_memory_freed;
+> +
+> +       /* Policy name */
+> +       const char *bpf_policy_name;
+> +#endif
+>  };
+>
+>  extern struct mutex oom_lock;
+> diff --git a/mm/Makefile b/mm/Makefile
+> index 1a7a11d4933d..a714aba03759 100644
+> --- a/mm/Makefile
+> +++ b/mm/Makefile
+> @@ -105,6 +105,9 @@ obj-$(CONFIG_MEMCG) +=3D memcontrol.o vmpressure.o
+>  ifdef CONFIG_SWAP
+>  obj-$(CONFIG_MEMCG) +=3D swap_cgroup.o
+>  endif
+> +ifdef CONFIG_BPF_SYSCALL
+> +obj-y +=3D bpf_oom.o
+> +endif
+>  obj-$(CONFIG_CGROUP_HUGETLB) +=3D hugetlb_cgroup.o
+>  obj-$(CONFIG_GUP_TEST) +=3D gup_test.o
+>  obj-$(CONFIG_DMAPOOL_TEST) +=3D dmapool_test.o
+> diff --git a/mm/bpf_oom.c b/mm/bpf_oom.c
+> new file mode 100644
+> index 000000000000..47633046819c
+> --- /dev/null
+> +++ b/mm/bpf_oom.c
+> @@ -0,0 +1,157 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * BPF-driven OOM killer customization
+> + *
+> + * Author: Roman Gushchin <roman.gushchin@linux.dev>
+> + */
+> +
+> +#include <linux/bpf.h>
+> +#include <linux/oom.h>
+> +#include <linux/bpf_oom.h>
+> +#include <linux/srcu.h>
+> +
+> +DEFINE_STATIC_SRCU(bpf_oom_srcu);
+> +static DEFINE_SPINLOCK(bpf_oom_lock);
+> +static LIST_HEAD(bpf_oom_handlers);
+> +
+> +struct bpf_oom {
+
+Perhaps bpf_oom_handler ? Then bpf_oom_ops->bpf_oom could be called
+bpf_oom_ops->handler.
+
+
+> +       struct bpf_oom_ops *ops;
+> +       struct list_head node;
+> +       struct srcu_struct srcu;
+> +};
+> +
+> +bool bpf_handle_oom(struct oom_control *oc)
+> +{
+> +       struct bpf_oom_ops *ops;
+> +       struct bpf_oom *bpf_oom;
+> +       int list_idx, idx, ret =3D 0;
+> +
+> +       oc->bpf_memory_freed =3D false;
+> +
+> +       list_idx =3D srcu_read_lock(&bpf_oom_srcu);
+> +       list_for_each_entry_srcu(bpf_oom, &bpf_oom_handlers, node, false)=
+ {
+> +               ops =3D READ_ONCE(bpf_oom->ops);
+> +               if (!ops || !ops->handle_out_of_memory)
+> +                       continue;
+> +               idx =3D srcu_read_lock(&bpf_oom->srcu);
+> +               oc->bpf_policy_name =3D ops->name[0] ? &ops->name[0] :
+> +                       "bpf_defined_policy";
+> +               ret =3D ops->handle_out_of_memory(oc);
+> +               oc->bpf_policy_name =3D NULL;
+> +               srcu_read_unlock(&bpf_oom->srcu, idx);
+> +
+> +               if (ret && oc->bpf_memory_freed)
+
+IIUC ret and oc->bpf_memory_freed seem to reflect the same state:
+handler successfully freed some memory. Could you please clarify when
+they differ?
+
+
+
+> +                       break;
+> +       }
+> +       srcu_read_unlock(&bpf_oom_srcu, list_idx);
+> +
+> +       return ret && oc->bpf_memory_freed;
+> +}
+> +
+> +static int __handle_out_of_memory(struct oom_control *oc)
+> +{
+> +       return 0;
+> +}
+> +
+> +static struct bpf_oom_ops __bpf_oom_ops =3D {
+> +       .handle_out_of_memory =3D __handle_out_of_memory,
+> +};
+> +
+> +static const struct bpf_func_proto *
+> +bpf_oom_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog=
+)
+> +{
+> +       return tracing_prog_func_proto(func_id, prog);
+> +}
+> +
+> +static bool bpf_oom_ops_is_valid_access(int off, int size,
+> +                                       enum bpf_access_type type,
+> +                                       const struct bpf_prog *prog,
+> +                                       struct bpf_insn_access_aux *info)
+> +{
+> +       return bpf_tracing_btf_ctx_access(off, size, type, prog, info);
+> +}
+> +
+> +static const struct bpf_verifier_ops bpf_oom_verifier_ops =3D {
+> +       .get_func_proto =3D bpf_oom_func_proto,
+> +       .is_valid_access =3D bpf_oom_ops_is_valid_access,
+> +};
+> +
+> +static int bpf_oom_ops_reg(void *kdata, struct bpf_link *link)
+> +{
+> +       struct bpf_oom_ops *ops =3D kdata;
+> +       struct bpf_oom *bpf_oom;
+> +       int ret;
+> +
+> +       bpf_oom =3D kmalloc(sizeof(*bpf_oom), GFP_KERNEL_ACCOUNT);
+> +       if (!bpf_oom)
+> +               return -ENOMEM;
+> +
+> +       ret =3D init_srcu_struct(&bpf_oom->srcu);
+> +       if (ret) {
+> +               kfree(bpf_oom);
+> +               return ret;
+> +       }
+> +
+> +       WRITE_ONCE(bpf_oom->ops, ops);
+> +       ops->bpf_oom =3D bpf_oom;
+> +
+> +       spin_lock(&bpf_oom_lock);
+> +       list_add_rcu(&bpf_oom->node, &bpf_oom_handlers);
+> +       spin_unlock(&bpf_oom_lock);
+> +
+> +       return 0;
+> +}
+> +
+> +static void bpf_oom_ops_unreg(void *kdata, struct bpf_link *link)
+> +{
+> +       struct bpf_oom_ops *ops =3D kdata;
+> +       struct bpf_oom *bpf_oom =3D ops->bpf_oom;
+> +
+> +       WRITE_ONCE(bpf_oom->ops, NULL);
+> +
+> +       spin_lock(&bpf_oom_lock);
+> +       list_del_rcu(&bpf_oom->node);
+> +       spin_unlock(&bpf_oom_lock);
+> +
+> +       synchronize_srcu(&bpf_oom->srcu);
+> +
+> +       kfree(bpf_oom);
+> +}
+> +
+> +static int bpf_oom_ops_init_member(const struct btf_type *t,
+> +                                  const struct btf_member *member,
+> +                                  void *kdata, const void *udata)
+> +{
+> +       const struct bpf_oom_ops *uops =3D (const struct bpf_oom_ops *)ud=
+ata;
+> +       struct bpf_oom_ops *ops =3D (struct bpf_oom_ops *)kdata;
+> +       u32 moff =3D __btf_member_bit_offset(t, member) / 8;
+> +
+> +       switch (moff) {
+> +       case offsetof(struct bpf_oom_ops, name):
+> +               strscpy_pad(ops->name, uops->name, sizeof(ops->name));
+> +               return 1;
+> +       }
+> +       return 0;
+> +}
+> +
+> +static int bpf_oom_ops_init(struct btf *btf)
+> +{
+> +       return 0;
+> +}
+> +
+> +static struct bpf_struct_ops bpf_oom_bpf_ops =3D {
+> +       .verifier_ops =3D &bpf_oom_verifier_ops,
+> +       .reg =3D bpf_oom_ops_reg,
+> +       .unreg =3D bpf_oom_ops_unreg,
+> +       .init_member =3D bpf_oom_ops_init_member,
+> +       .init =3D bpf_oom_ops_init,
+> +       .name =3D "bpf_oom_ops",
+> +       .owner =3D THIS_MODULE,
+> +       .cfi_stubs =3D &__bpf_oom_ops
+> +};
+> +
+> +static int __init bpf_oom_struct_ops_init(void)
+> +{
+> +       return register_bpf_struct_ops(&bpf_oom_bpf_ops, bpf_oom_ops);
+> +}
+> +late_initcall(bpf_oom_struct_ops_init);
+> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+> index 25923cfec9c6..ad7bd65061d6 100644
+> --- a/mm/oom_kill.c
+> +++ b/mm/oom_kill.c
+> @@ -45,6 +45,7 @@
+>  #include <linux/mmu_notifier.h>
+>  #include <linux/cred.h>
+>  #include <linux/nmi.h>
+> +#include <linux/bpf_oom.h>
+>
+>  #include <asm/tlb.h>
+>  #include "internal.h"
+> @@ -246,6 +247,15 @@ static const char * const oom_constraint_text[] =3D =
+{
+>         [CONSTRAINT_MEMCG] =3D "CONSTRAINT_MEMCG",
+>  };
+>
+> +static const char *oom_policy_name(struct oom_control *oc)
+> +{
+> +#ifdef CONFIG_BPF_SYSCALL
+> +       if (oc->bpf_policy_name)
+> +               return oc->bpf_policy_name;
+> +#endif
+> +       return "default";
+> +}
+> +
+>  /*
+>   * Determine the type of allocation constraint.
+>   */
+> @@ -458,9 +468,10 @@ static void dump_oom_victim(struct oom_control *oc, =
+struct task_struct *victim)
+>
+>  static void dump_header(struct oom_control *oc)
+>  {
+> -       pr_warn("%s invoked oom-killer: gfp_mask=3D%#x(%pGg), order=3D%d,=
+ oom_score_adj=3D%hd\n",
+> +       pr_warn("%s invoked oom-killer: gfp_mask=3D%#x(%pGg), order=3D%d,=
+ oom_score_adj=3D%hd\noom_policy=3D%s\n",
+>                 current->comm, oc->gfp_mask, &oc->gfp_mask, oc->order,
+> -                       current->signal->oom_score_adj);
+> +               current->signal->oom_score_adj,
+> +               oom_policy_name(oc));
+>         if (!IS_ENABLED(CONFIG_COMPACTION) && oc->order)
+>                 pr_warn("COMPACTION is disabled!!!\n");
+>
+> @@ -1161,6 +1172,13 @@ bool out_of_memory(struct oom_control *oc)
+>                 return true;
+>         }
+>
+> +       /*
+> +        * Let bpf handle the OOM first. If it was able to free up some m=
+emory,
+> +        * bail out. Otherwise fall back to the kernel OOM killer.
+> +        */
+> +       if (bpf_handle_oom(oc))
+> +               return true;
+> +
+>         select_bad_process(oc);
+>         /* Found nothing?!?! */
+>         if (!oc->chosen) {
 > --
 > 2.50.1
 >
