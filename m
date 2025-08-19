@@ -2,90 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 26427CA0EEB
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 12:45:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 96859CA0EEB
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 12:47:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC33D6B0124; Tue, 19 Aug 2025 08:45:44 -0400 (EDT)
+	id 3620E8E002F; Tue, 19 Aug 2025 08:47:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9B176B0125; Tue, 19 Aug 2025 08:45:44 -0400 (EDT)
+	id 2F2BB8E000B; Tue, 19 Aug 2025 08:47:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD7BD6B0126; Tue, 19 Aug 2025 08:45:44 -0400 (EDT)
+	id 1DA668E002F; Tue, 19 Aug 2025 08:47:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D4F36B0124
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 08:45:44 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 464321A04C9
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 12:45:44 +0000 (UTC)
-X-FDA: 83793478608.12.BCE9996
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6972440011
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 12:45:42 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="R7gQ/qs9";
-	spf=pass (imf12.hostedemail.com: domain of 39HGkaAkKCLUVgdXZmtcgbjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=39HGkaAkKCLUVgdXZmtcgbjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--aliceryhl.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 086DF8E000B
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 08:47:24 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9E09F1DCDC6
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 12:47:23 +0000 (UTC)
+X-FDA: 83793482766.23.648FBF1
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+	by imf21.hostedemail.com (Postfix) with ESMTP id B7D7B1C0002
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 12:47:21 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=utizinmC;
+	spf=pass (imf21.hostedemail.com: domain of 3V3KkaAkKCBo0B824HO7B6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--aliceryhl.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3V3KkaAkKCBo0B824HO7B6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--aliceryhl.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755607542;
+	s=arc-20220608; t=1755607641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=skXDTS7YtkP3PtgVwdRJaBi3aX6SDOh3FcH34RHXW94=;
-	b=40kyaZ7CXiYruAq+iHcALJuVrTnpVJNyZyYGxFkNT3bVhvxLvfZNFu8tWqbNKRUFjKyuRL
-	1fVL9KKMIMF9SsXPWpO11/hfsb3UlRe9wp+glwt1LjhrDckEA3B+R7lXuP21IuNzOuISOU
-	QsR/K/Zvcvuzsj7uR4iZYoCxWVAQyMc=
+	bh=yCP3mARRCmGSyA8SjIJ4WFibLoFzgkIzQLXkcV/592w=;
+	b=5iKrPddTKixkwKohC+EARPRGYWzqDYCl1usgrEPpubW1OhgF5l2vh56cRdxwTAsMqwLqUj
+	s1uZWGz+XFOA/Q6O20t1N7Gxf2Q4sgV4quJPpnrtXwmS2KLebW1CsQ0On0k4ncMxuc3K+2
+	jxhiGe6Falu8mXvQyJ+XhJR6nxHTzwE=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="R7gQ/qs9";
-	spf=pass (imf12.hostedemail.com: domain of 39HGkaAkKCLUVgdXZmtcgbjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=39HGkaAkKCLUVgdXZmtcgbjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--aliceryhl.bounces.google.com;
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=utizinmC;
+	spf=pass (imf21.hostedemail.com: domain of 3V3KkaAkKCBo0B824HO7B6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--aliceryhl.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3V3KkaAkKCBo0B824HO7B6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--aliceryhl.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755607542; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755607641; a=rsa-sha256;
 	cv=none;
-	b=L5uZgcyscPOblKzpHkSE1LUykqE+2R2PH97ZRuIdCay0tQ76EE5kWE8Dqj2GyjW8KD/9Bk
-	6eS3hHpbs6xbyLjp62jbp6G+PUO5oBdnzX9rvMmaxs57Wm5jfxlgsjr/R00m6ARDHAU/uI
-	XNgamLojxSU3nDIKaaugRBneKnBUoCA=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-45a1b05d8d0so32523735e9.1
-        for <linux-mm@kvack.org>; Tue, 19 Aug 2025 05:45:42 -0700 (PDT)
+	b=i1S0NJGZ9ZXOjWGR7Ff76f/S0P7458hj5aij+PyLyWUS9uTue06Pb/NMoavINaR3fCpyQt
+	Z2IYXYU02kRo+bReOHPdotJPZZAO9NuLlNYBMbKPFY7xfu+kWIhIycME6ziwdF1oK7VqAm
+	I7JhAuvQ5YmDoATZwwDk2s69DGGmGt8=
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-618b3c75161so3289554a12.1
+        for <linux-mm@kvack.org>; Tue, 19 Aug 2025 05:47:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755607541; x=1756212341; darn=kvack.org;
+        d=google.com; s=20230601; t=1755607640; x=1756212440; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=skXDTS7YtkP3PtgVwdRJaBi3aX6SDOh3FcH34RHXW94=;
-        b=R7gQ/qs9zH9Z5yCCJCgUMDVaA0ESoAsG+S3N2WN2QswoYG9E8I7MlGQVbIidBez/dC
-         hqomlEU+wxyv8ZSj/BjHQhP7mgilj3QMaghkl2LTx/U3RIPmNRj9w4IBHWa4Wflp8x+b
-         hfYpkQn+HRrctqzCxCqis+LLhrKXdE2hfCjiS1rnRLY6KxS1wh9cmPbP6nCl+SrVSwof
-         Y5IahLa/9V/2PXo+Tq4jxoCrvgP1LAH8KQ7uqaK6jInu654y7o3Ut6rARAEQGNhawsiD
-         r0sDRTkVg8nCaIDpP0bQ8YKVxKX2L1abiarVF9+7xZQYLXbx3i6jAyTDMmhKrZ9DxRoO
-         TUQw==
+        bh=yCP3mARRCmGSyA8SjIJ4WFibLoFzgkIzQLXkcV/592w=;
+        b=utizinmCNyKpa+OaNNW6Dkg+KyyNuepqwVhR5reNYnnBV8UJXF9C60UOsl7eSaK6y/
+         cZO4aMGpawCWKmg2gnq5FhOHM2f4Wt/MPV4uPEMXKXylsVBoraHhtazmBKZUx0+hMlCu
+         arE2GLSY5UUepjLiNt397+/hGC+CCTabUEZyFeHsld3QHjsFbUX67Cko7Ak0Pxx2oiCo
+         MVRginvqPDPuF4nyaAW7X2f2eaGnoMjwLuragjzepzyaVhuoIno/SO91r1SrcoPbi983
+         FnJXt9UOSBbzkw7h3JADHE4G00+7R8iSAXxVC2/MecESUrgreYZt8JRkx/V0dEsfx1Eo
+         JZsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755607541; x=1756212341;
+        d=1e100.net; s=20230601; t=1755607640; x=1756212440;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=skXDTS7YtkP3PtgVwdRJaBi3aX6SDOh3FcH34RHXW94=;
-        b=SrbKrp/ZhH2uApIdc8LnFji3fnv9VcokH/H4j7wRfC23tkT72Fi7oEE4Qfrf2Aj0Lx
-         N3+Thkuubl+IDZl5whGYN0nIQbOiKZ9HF+jtEfi+id8KXueIfV9BtEdfTEIODrngHWYo
-         B+OYgQKPFBFE4eGLufqKAOQOONjVbUYVNxEsPyTwAp4V3KSjhtiw/qxHNbK9OlfuGC0D
-         JBEa4oTX6E39nzAaBTTEh/L9FvwnttP+rye/2T4l9vyovOtRhfy+silrJWP174L7X/kq
-         rIg7Nd0JI6XoF/GqugkJd9x1RbROhQerS8RVS2lDcTq30vLSY0W4sfju3KwQhJ1sfwTg
-         cxdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXSM5QtjhmliAvutpfIidmWTL8t6V460SbuMM3czY+fJHA/0J5XH+d7K+gUknLWoJdSQgo1n+KyDw==@kvack.org
-X-Gm-Message-State: AOJu0YysG1BTb3P7IZKLK2G4vrmt7WwnKJvK4+J69V3Z+PJ9KjszZXvh
-	SLTpP/IrvxvLa5C+hJUVfHhVJ3ZApnVAbrvPcMh5rTdU6WH+jJSdI9AIEWZ+mYze0ZqafSqBogi
-	fx97nK6lXAq17OD1wYQ==
-X-Google-Smtp-Source: AGHT+IGIDBx+bC32aprn8tj9w03RjuRfJ6vo2Z3jPtuwKYnkQLN4JvNoi90LWbeGxOCwVfKIUq28TPReZBsoQd0=
-X-Received: from wrob15.prod.google.com ([2002:adf:ee8f:0:b0:3b7:838b:2a7d])
+        bh=yCP3mARRCmGSyA8SjIJ4WFibLoFzgkIzQLXkcV/592w=;
+        b=QaZZ5ZJSW0k0rDujWtBGioZ0em+aDK7HEW51J3lFXGkisLfmSnXKm2dHdhMnRK2oh7
+         026Qy7SzmLRBxSdmOZcXmweCK3rTO82NJ9xMx/MO8tNTaoCu7lhdpOHQ9tJhEuEXp08C
+         B37lboxuXlj5I8b0l2VEcbwyBfJ7DoeKbeKBzkHXrRykknLwDdctUvwFbMdtJFN8c6UL
+         Y5F5HL4oTVrIl8RQWWMdMyGZlnCVUS3D7gPEU7YHzXJybTO7CyewuY8jHhhCSz/0zwnG
+         oQA5TCWnMjqaYyLQIVP/qAqNASZEmxvTDOwwuGH4Uj2AdDHiq6bUlHWwTxFmCOlc5d74
+         5u0A==
+X-Forwarded-Encrypted: i=1; AJvYcCVlNwY8BUiZ33/LhzjIqb4gJlNx+d1OsrNxT3Bkhjom1FxJzoI3ncWsk18Y/y0OUGhnH0pgoOc32w==@kvack.org
+X-Gm-Message-State: AOJu0Yz/Lv6zsMKRpwzcrNB7GcaNCGlrDixHHNEH0F8BZsoWOBhkykvs
+	8PV38FJB7lU1lC59doQZeQqByeDcO8gnAWnYjwtPD6oURPG9KcGV/+lw0NTah9pmChhfuIzm+vc
+	2UW0LqjdeRtRKB5Gvtg==
+X-Google-Smtp-Source: AGHT+IEm3E+YxF6ba6FVTvvJ2UxOIsdLdFxvx7w0w2FiBNMNteR5h1lV12gqN201Yr/4E2dtrSkazbFRx81rp1Y=
+X-Received: from edah9.prod.google.com ([2002:a05:6402:e89:b0:615:3b67:8aaa])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:18a8:b0:3b9:55a:9d0c with SMTP id ffacd0b85a97d-3c0e00a1623mr1805506f8f.3.1755607540947;
- Tue, 19 Aug 2025 05:45:40 -0700 (PDT)
-Date: Tue, 19 Aug 2025 12:45:39 +0000
-In-Reply-To: <DC6DC244ZIUL.304JSP7JFDE9Z@kernel.org>
+ 2002:a05:6402:2351:b0:606:ebd9:c58b with SMTP id 4fb4d7f45d1cf-61a7e6dd3femr1764482a12.1.1755607639860;
+ Tue, 19 Aug 2025 05:47:19 -0700 (PDT)
+Date: Tue, 19 Aug 2025 12:47:19 +0000
+In-Reply-To: <DC6DQKE6LVNQ.3BBD8WF8XGROO@kernel.org>
 Mime-Version: 1.0
 References: <20250819-maple-tree-v2-0-229b48657bab@google.com>
- <20250819-maple-tree-v2-2-229b48657bab@google.com> <DC6DC244ZIUL.304JSP7JFDE9Z@kernel.org>
-Message-ID: <aKRx8xsY8CpzbeEm@google.com>
-Subject: Re: [PATCH v2 2/5] rust: maple_tree: add MapleTree
+ <20250819-maple-tree-v2-5-229b48657bab@google.com> <DC6DQKE6LVNQ.3BBD8WF8XGROO@kernel.org>
+Message-ID: <aKRyVwfwnn5_MuB4@google.com>
+Subject: Re: [PATCH v2 5/5] rust: maple_tree: add MAINTAINERS entry
 From: Alice Ryhl <aliceryhl@google.com>
 To: Danilo Krummrich <dakr@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
@@ -97,14 +97,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@o
 	maple-tree@lists.infradead.org, rust-for-linux@vger.kernel.org, 
 	linux-mm@kvack.org
 Content-Type: text/plain; charset="utf-8"
-X-Stat-Signature: n8mttm4d7h39sp7mjna8jjznro7x4e7b
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B7D7B1C0002
+X-Stat-Signature: qw3erjimryidpf5fpqnz96r4znzum8ki
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6972440011
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1755607542-988479
-X-HE-Meta: U2FsdGVkX19P1OAtCxYtmzBLooNn7vHzXqjvWPxKdh/pWJpqt57uFF1JHB5gYzytq4Q2dyd8+thymow4QvrpKYJKITdUisD/q1AwmDwbSBwqYCytMLwst1seak/vc5+m5lm6BbanOs/D37rHPl8FJABV91W5e3KwxFJ9nBkFJMx8WMsgfYthwguzqefp26fSwsmFP5XWRbnx/mgJTt4JhLaPhVzVWDoOQ2/LbaqyjNJw9/koRxB72gxsynR6MOvEL1bwHMGkMYZ/sGULeV0uoPgt7IQQd3XTET3AOCA9mDZ7MS8rHq1HPC2sYSOmuQ6R6a/YyXE6fg0WyylbLTXtDnoOCpAfKBOgiXYOUOEMi2QcUAcid4QuTvHAMCDTeQ1m9m06Gwi2acRLrm9mUS9CsU6nttRldKLcZHj9UYJwQCZkwnWTd3kjdlwybv5QWc+TnBlHmgmh6RYNMf4RXDsrgfyE138K1wuO23O66FwQkolXCNg1OCS5ATM5EwZZ+7HcTF/Mz2d/y4P49ENuzxH44YMBNT8zO1isCag4hXWaeAZpSgnq54QnBAY3YVwYqFtcg6sw/hC4go32pZqweBQSexjoU1J1UsaKdE/a0CA74SAo/MTi0G8TwL69hPmGNq77g1AWDt7042/4Z67BH8PKLAZI47GYxVGiWScLZ623bLPHflnPJ73u9QKSyRj3bGAlsPusclALZgBj5KbNIpKF1b6g7C7AryGYav76OfoXaUzhOxiwOyknyrc+A/o7z93ztddfhAGp8ux2GEQIJT/nQ/WvN0mWOb/l7TGzmgcL2uychPpkQ0AOQMAOAjJU68EtSnEQBid9SzYLM67K5OIlEUCj8poIlZ5aKLgVT52FtmH4EjlXRHUiLkbcxxRzVAkdWSU0hnNqJMmUh82G7pVSblKqWTpYH5L+tcdg7j642Xm+vcmcF8J1cK3eeGDuV9dKEtP8T8ZvlWInwCCmzx3
- 505YJCqO
- WjuVIRaIh7zUnfvZtzDrBr8FjySvdApNR9Q6ZnTmL+1OiZd46JafeBXMsTYj+C7x27k7GH7L75+t0nsRyyZBcfRt81K5XIwB+sgnWGmKJUVLXHBX6/LEhWqZuxwwqQl4HDp08HYVxTJHtU9GDieguc+5bb8/S3imq587pcphN19J2zvL7a4q3w8l8TT2HGVvGlq61Kj9juaGeUrWvpHHhrQ297Yplf20uAkufePtcEWaJmHmOJYBKuHC7vd4j0oUWkx4ClJ8/+isKN6ZQDjp6BzzG4oWSxAE0cf4AaisLWUqx2KofHdOVrGSmc/aP1hGg6UiqCLnRC7uTq1f3fm9Sm/qbnqyotaL1GRcSEBaUUG2I+dLUtjvpxNuz7mGuPcw5N55lSm2j65iMLWjMn12bTL6qa4FsvWJXZW6mcKO9fIYupWVEJDOF11G6SpflDiQcJAwlpWUpacWhmYppYSaD6qhIXLYycFyM6huWivM7zIX+K9oWOXw7DO0VM6Bj/bhyGQJ8rGtjA42kuwt9xyPmfZSeiGGN4VXDqrDWI1bfDNX86azhwlEgJBfiCuJs3+1b1HrglRQwqbRpCE9CugUrxemZ73g9f/mtngYGA/CBSCgWJMVaLD98aGV7U44SximX1MEF0xhwdjTCxz94KlgraE2xeTi2pPHOT4DcijvL7oun36VH2LxdO96zEGED7xpIehsejzzOak9V1RxFfvL7zx6mrQ0j89Flpxs6sh5JVHZKz2fhIeFWyplEAL2mqTt7aLwVGXuB5qWSostwV9DB59blovrAMG6LxVjfbMUyzmB97Z+CofLgyplJyQ==
+X-HE-Tag: 1755607641-750198
+X-HE-Meta: U2FsdGVkX1/RbT97xtbmoflAEASExNwAilFLcs7Tcg4t1s9sLj96b527pvZ+XiLjvJIDH7DNO7vqnjFECRAEvSHshm7F8gA79m1IjjVURHkPka2BIpDSgsvfHni7kJR58HmzM6QH5mgxDSMGmtqK5pxBpH7tDC1B4XkLk/FukaL00+wv1g0Dfjo9GYlXCQA2NUHAxW34LbOpm0dMXxmkvhXLgJdSqlwhk0Ey9Xfr6mZSIDUMn2J0s/TCHV3GJJPwIts4uWzw+B+y2BgLoUAFolF4TdC8PmbsusbF68kF0fXbc5ugiwo72fRYgnc8WRLsft+l/KjWmuo5i0VdNS1I35w1t90h/F19Zpw1KsKvF575yD/0ojhckZSok98l8GqL8jKvLRQmjbrqZ5pcbAHkNsMJbCaFitPwQqY8WkDqALTEJhGnH8ozfAY5h0RqaVvRDpOPAdMKs9ze8eKYKGS23TMsFTikLwD+cx27az0E72oaJ15UPoOQNCUaOB47vETOqbQvAnLwMyxkirQzwViRJGB8S93cU3DJdB61wyt75laptN3WRYEHh0avuBB7nrY8uWT+7q9M0/kOplLBVP3E+BMpwm/zuf5n5I3cfSsE89OGkKliY12/JXDJO7w+gCluQlnoyjUJbTS+qwF5L1+mG/9hCEH6bpGmVhHoeeRJumYfejZRMXobCWFicKqMNwtfHRDWk5OCYJ/rwWWLPPR4Hn32u7BoC+L+uAfZPkXlaBvepV8YG1Nu5tYdj3HjQTlNFen7Bolvtr+NMjs9R5MCLSDVQIVm/S9EyQSWHJbC6aLl0Da7It+xqdfwB8rnWgH0EdUhVOjz8DoJhO0IvliqNmyPfR+wLmnoGawPWFNzud5a2hPfT/g40HBJQu8hAHj/5sRrfGzDA8p9TLwnBzdGwVBVuXp6WhxRVTrADBgqo+LLusEY7s/quvTbfbEMdmbTzun+QaZTgcR7JvWuL0j
+ yHrCIE7c
+ K5dImRi+NDY50X40YUir8O5yuw0bjOpIggzcifn5RDx/jf+hp9kKkaazjSIe0+oAl14HcwPw+N3yEWVU8CvwYn/dOos51GwsvIdkiTJF1aNfNeKSe8JvdIcxrje+4ZWHTTpRETogOiR3pMc8PeW/GguQKq63kUT47cxemWHStAcXBL58dIK1Yx1I+RXGeHsNnrhT46AJ7168JVHO1vhc4llo6llIJWFdvijLQA0Vpl0c5nb6Dda/bu/YgAuHfF14m2TPfir++K347wNdWPrtOspZ9X1raa713PIpf76Is/cPNGjnNNmbtOEmH0Zn5ejDCjmxXYay64MDmK93TQzmmm+EUYw1lqfWcO0xhPGXr98ANZ3ctWyTTSb/vOq4A3W8T2Optz8WRWjuhei+nWLD6IduYoDwfTsL628/bw7SXvE4esdkHddlDqI27Sv7VmkXOLM2YBd5BvipVxIhzzjxMnd2v5yt3lEUQbG5pZ8GbnAYNe6nbaAVQy2+MMeb8/67UBuR7OF0NDzmK+ZnOBnS8YrbZY+EsTXI/FbQKrAE3vFFnBYoy9jNjq+iY3eWwdroGeYzFDohxhmX8Y5mQekaLWyYdDMLdQh8ZXpQrmjYFacWu+jpXlbi4aVPcMQCXubp6iL1CxxQiSQWzY1CcM/IN3vyeDbUjq2RpLbPYEE4BTQAfqOD4tbdE5rgMgkElo1/5/JUQjXBnRxJUhSuYqmjzPInVCQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,97 +113,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 19, 2025 at 01:30:30PM +0200, Danilo Krummrich wrote:
+On Tue, Aug 19, 2025 at 01:49:27PM +0200, Danilo Krummrich wrote:
 > On Tue Aug 19, 2025 at 12:34 PM CEST, Alice Ryhl wrote:
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index fe168477caa45799dfe07de2f54de6d6a1ce0615..26053163fe5aed2fc4b4e39d47062c93b873ac13 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -16250,7 +16250,9 @@ L:	rust-for-linux@vger.kernel.org
-> >  S:	Maintained
-> >  W:	http://www.linux-mm.org
-> >  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> > +F:	rust/helpers/maple_tree.c
-> >  F:	rust/helpers/mm.c
-> > +F:	rust/kernel/maple_tree.rs
-> >  F:	rust/kernel/mm.rs
-> >  F:	rust/kernel/mm/
+> > Similar to and just below the existing MAPLE TREE entry.
+> >
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> > Liam: I'm not sure what you prefer for the MAINTAINERS entry, so let me
+> > know if you want anything changed. There are also a few other options,
+> > for example, I could just add the files under the existing MAPLE TREE
+> > entry? The get_maintainers script should still send any relevant patches
+> > my way because they also match the RUST entry that has a wildcard on the
+> > rust/ directory.
 > 
-> A later patch adds a separate entry; is this intended?
+> From v1 [1]:
+> 
+> 	>> We should have another section for the maple tree, since it's not just
+> 	>> used for mm.  Your stated plan is to use it for GPU allocations and the
+> 	>> code doesn't live in mm/, wdyt?
+> 	
+> 	> Sure, I can add a new section if you prefer that.
+> 
+> Maple tree is already used outside of mm, e.g. for regmap stuff and I also use
+> it in nouveau. Hence, I read this as moving maple tree to e.g. lib/ adjusting
+> the existing entry.
 
-Ah, no, this isn't intended.
+It's already in lib/ ?
 
-> > +impl<T: ForeignOwnable> MapleTree<T> {
-> > +    /// Create a new maple tree.
-> > +    ///
-> > +    /// The tree will use the regular implementation with a higher branching factor.
+> I personally think that - of course unless the affected people prefer otherwise
+> - it is usually best to keep a single maintainers entry for the C and the Rust
+> code. Maybe Alice can simply be added to the existing maintainers entry?
 > 
-> What do you mean with "regular implementation" and what is "a higher branching
-> factor" in this context?
-> 
-> Do you mean that the maple tree has a higher branching factor than a regular RB
-> tree, or something else?
+> What do you think?
 
-This is compared to the alloc variant of the maple tree from the last
-patch in this series.
-
-> > +    #[inline]
-> > +    pub fn new() -> impl PinInit<Self> {
-> > +        pin_init!(MapleTree {
-> > +            // SAFETY: This initializes a maple tree into a pinned slot. The maple tree will be
-> > +            // destroyed in Drop before the memory location becomes invalid.
-> > +            tree <- Opaque::ffi_init(|slot| unsafe { bindings::mt_init_flags(slot, 0) }),
-> > +            _p: PhantomData,
-> > +        })
-> > +    }
-> > +
-> > +    /// Insert the value at the given index.
-> > +    ///
-> > +    /// If the maple tree already contains a range using the given index, then this call will fail.
-> 
-> Maybe add an error section for this?
-> 
-> > +    ///
-> > +    /// # Examples
-> > +    ///
-> > +    /// ```
-> > +    /// use kernel::maple_tree::{MapleTree, InsertErrorKind};
-> > +    ///
-> > +    /// let tree = KBox::pin_init(MapleTree::<KBox<i32>>::new(), GFP_KERNEL)?;
-> > +    ///
-> > +    /// let ten = KBox::new(10, GFP_KERNEL)?;
-> > +    /// let twenty = KBox::new(20, GFP_KERNEL)?;
-> > +    /// let the_answer = KBox::new(42, GFP_KERNEL)?;
-> > +    ///
-> > +    /// // These calls will succeed.
-> > +    /// tree.insert(100, ten, GFP_KERNEL)?;
-> > +    /// tree.insert(101, twenty, GFP_KERNEL)?;
-> > +    ///
-> > +    /// // This will fail because the index is already in use.
-> > +    /// assert_eq!(
-> > +    ///     tree.insert(100, the_answer, GFP_KERNEL).unwrap_err().cause,
-> 
-> A lot of the examples, including the ones in subsequent patches contain variants
-> of unwrap().
-> 
-> I think we should avoid this and instead handle errors gracefully -- even if it
-> bloats the examples a bit.
-> 
-> My concern is that it otherwise creates the impression that using unwrap() is a
-> reasonable thing to do.
-> 
-> Especially for people new to the kernel or Rust (or both) it might not be
-> obvious that unwrap() is equivalent to
-> 
-> 	if (!ret)
-> 		do_something();
-> 	else
-> 		panic();
-> 
-> or the fact that this is something we should only do as absolute last resort.
-
-How would you write it? The way you write it in normal code is an
-if/else where you handle both cases, but that doesn't map nicely.
+That works for me too.
 
 Alice
 
