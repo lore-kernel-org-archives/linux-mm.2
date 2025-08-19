@@ -2,62 +2,62 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EE71BCA0EEB
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 20:16:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 97BE7CA0EEB
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 20:28:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BB246B00D9; Tue, 19 Aug 2025 16:16:45 -0400 (EDT)
+	id EEBD68E000A; Tue, 19 Aug 2025 16:28:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66BEE6B00DA; Tue, 19 Aug 2025 16:16:45 -0400 (EDT)
+	id E9CB78E0002; Tue, 19 Aug 2025 16:28:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55A7C6B00DB; Tue, 19 Aug 2025 16:16:45 -0400 (EDT)
+	id DDA098E000A; Tue, 19 Aug 2025 16:28:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EDE86B00D9
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 16:16:45 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D698D1401F6
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 20:16:44 +0000 (UTC)
-X-FDA: 83794615128.18.9305F6A
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf22.hostedemail.com (Postfix) with ESMTP id EB95CC0002
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 20:16:42 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jc6p9mvm;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755634603; a=rsa-sha256;
-	cv=none;
-	b=l6faSeudhrrjj+EI0Rrq1GHNw+Dnc2c3uFbvk3LdztL+BYj0f/UZBIm75rLNbwuYP1ibUz
-	aPL5Mx1gJ4mBHsSbi06clvMEmYOJMO2fLyKIPmhgKX/xe7HBp+9qUAein1N3E8yt0HKrEF
-	CPA7RYOgHQO/VN97bYAcmQSJUDAZN+I=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jc6p9mvm;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id CC4768E0002
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 16:28:47 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 747BA160212
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 20:28:47 +0000 (UTC)
+X-FDA: 83794645494.19.CB31C33
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf15.hostedemail.com (Postfix) with ESMTP id A77A4A0005
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 20:28:45 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="A280hM+/";
+	spf=pass (imf15.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755634603;
+	s=arc-20220608; t=1755635326;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JqbB3H+IOvqAzvYEg/c7+VdVr8vD6PumH4PG2on0onk=;
-	b=Ezad9KE1i91Gakv+oijYak1f3DHMK5lalR6XXCfQObFRsj/yVSh3BI5t3a4M5i3o/K42fI
-	7XQLEPr4R4jX/c0nuiFrzFrAjqSmuic+qd0bm0gwH3NVi2QzVpbikZL//54SX9SRgXQ5NY
-	W60einoh77PSVFLoddGF/A87KcUnJ40=
+	bh=MAopiF8dZ3zuj1vhkZjH8oqB8pGFDZFe8uogKHTUOSA=;
+	b=QRYM8osYGnYLsuzsErHpjLKTArMWa+QK6ySw2g3gTrBKthsAPPIkQ/Y6rfCTl6lwbo77vE
+	xtt7InQZH74EHpB6u+zHBKpmHYaKHYTbAkgxHTtLRDytxPNOtioCTybRaqKC0qffB4kEeQ
+	UbwIWOwA5UEILtRJ2c5NRgZvFIqdplA=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="A280hM+/";
+	spf=pass (imf15.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755635326; a=rsa-sha256;
+	cv=none;
+	b=4iuRQQ4l7wesf/yI1xKAdKyi3UDGK+WhAI7q1ZCNr4dfR4rJ2l2k+gmoslJyXKUotevfw4
+	Hoon+qXtwTZP/xF0Zc36W+IHUwKVZTmCE8cTLDGlERRxXddj/idZ0qnUzlyB0U5ViQhlmZ
+	aFMwbjkUB8dtNZOV9d5VzsaA89eEw74=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755634601;
+	t=1755635321;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JqbB3H+IOvqAzvYEg/c7+VdVr8vD6PumH4PG2on0onk=;
-	b=jc6p9mvmzAAxtUOk1Rl3nqhHXLTv28gZeOudhcu3Cs/7o0QHDQm830galIumRVJf11TdYU
-	MpQhTSYtWIW+fwvpqjeo2YRTOsNkduSprMPk+w3CEXSIF5COP9hRD5+OmtHii7bR32eviT
-	BwLcrgjM/id8VJCcmz0+hNbNwbK51GY=
+	bh=MAopiF8dZ3zuj1vhkZjH8oqB8pGFDZFe8uogKHTUOSA=;
+	b=A280hM+/+Cp5IvWAcBP03DyjcxMnbwLk/dosmmaVKAzGKWQw3VIfAiDwFrHyaZRqkFdMDi
+	buMBmtbkF2TzTr5bAJUuuGfKGlVhbnoRobmHoUI+sb2RSKmu0to8P1klPJKkRrb2EW8TYO
+	zTcPtGpx3eTw0hDcSoKFH9pOHbgjuaQ=
 From: Roman Gushchin <roman.gushchin@linux.dev>
 To: Suren Baghdasaryan <surenb@google.com>
 Cc: linux-mm@kvack.org,  bpf@vger.kernel.org,  Johannes Weiner
@@ -66,26 +66,26 @@ Cc: linux-mm@kvack.org,  bpf@vger.kernel.org,  Johannes Weiner
  Liu <song@kernel.org>,  Kumar Kartikeya Dwivedi <memxor@gmail.com>,
   Alexei Starovoitov <ast@kernel.org>,  Andrew Morton
  <akpm@linux-foundation.org>,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 06/14] mm: introduce bpf_out_of_memory() bpf kfunc
-In-Reply-To: <CAJuCfpHTtLQR0NpsbFytaOdEc0KqNv6PxVpxNetYD6Ce4sY9UQ@mail.gmail.com>
-	(Suren Baghdasaryan's message of "Mon, 18 Aug 2025 21:09:24 -0700")
+Subject: Re: [PATCH v1 11/14] sched: psi: refactor psi_trigger_create()
+In-Reply-To: <CAJuCfpH5cSDGmwBfEmiXkShxxdTEuoRXrTKndNwTMMDUzX8f3A@mail.gmail.com>
+	(Suren Baghdasaryan's message of "Mon, 18 Aug 2025 21:09:51 -0700")
 References: <20250818170136.209169-1-roman.gushchin@linux.dev>
-	<20250818170136.209169-7-roman.gushchin@linux.dev>
-	<CAJuCfpHTtLQR0NpsbFytaOdEc0KqNv6PxVpxNetYD6Ce4sY9UQ@mail.gmail.com>
-Date: Tue, 19 Aug 2025 13:16:30 -0700
-Message-ID: <87wm6zysm9.fsf@linux.dev>
+	<20250818170136.209169-12-roman.gushchin@linux.dev>
+	<CAJuCfpH5cSDGmwBfEmiXkShxxdTEuoRXrTKndNwTMMDUzX8f3A@mail.gmail.com>
+Date: Tue, 19 Aug 2025 13:28:31 -0700
+Message-ID: <87ikijys28.fsf@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A77A4A0005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EB95CC0002
-X-Stat-Signature: dg3kynhhr8qb8t59ppmah3cwzppzc8kc
-X-HE-Tag: 1755634602-87239
-X-HE-Meta: U2FsdGVkX194wh0tq+b5jNEHTRuf/hI1S6/Sxaz6RNHeeicckYCK5qb2PuxH0SeOx8HBZKn2/mdbZOZBTHJ8bfizMLN++LHf55RsymQM4W01PXrg/Lf+aCWaFLe646hWBMR2eUWZcTaeUzospGXOVdS1dUGD0l2l74dl8eiKXBcEgtPIOwugirbnkkWshKVsVZ8OFBItm+Rwl+/n7AetzWxVRVMx4HJiXaAqZZQ3OxVnwIiuVHL4f/tsVHOMD3Rwc+vFNDhb9hcnFX/HLlsqpSub/QoTfeKblLJHWdvOpfQe3Ra3LbmJXPXXNZNZw5EUV+aBsGJI1ZPUyzdwj13k6/Byq23qUqJLFsgAVjeLTkrZm49pYy4wApUOFccvpBR5PuXGjpK0wHe857xxFSFCe34iVpgzRkXMVSL2wm1VfpT0thwwXgkm8KPjoLrg0fIDPp6QXbkmJqYtxPs2V1Tb22DLAu+bWNihmyuEc+tr0/dLdk1wJAobt8cIQQ+Xh0pI18brCjc9OYegfaZS+qpmSBE7CeBAtQoP5X9dVYq32Ew1eocGPUo3XbSOfcthw+UEwyyf24JckoOeUt0Y8j8yjrXjvpjMx4fqwww2BVWqChTJUCg5aMmjmNFHVgGn8qANTR9R7ugoiuDwtkfH5OldUxv/hjkInny7P/Aq0F8WteGWwS3tAZ/yK0DH09h5yCdt6QzzzYYuzbRMMIc7NiKXts3n5LVh3Qy1Lz228zZbwzbGDeUIVcP3N+dQln5MD56azWIi+i6Q5YoRUD1CmxYh4nuOEbEmm7ZUCY/ZvtnNB7nIXtiJAJIRKTxRUWuTKhK4pVYCRv0lCAdi1e2wd7T/2+KJQHpyd8dNSxIguDTfm3kjsBgDa1g4iAdb29vnZ3sA+Id99P7s8AK9zB3YdkIeSdM567iKVYCdXSfF/F3trzGH22xDNaZf4eeccxhJq4cMYM3N31wekUZrzoOvnth
- ZPO7lP7h
- tnh+xwydle214+J39DiM1MQ8ZOGJo/4x7lU1A3RE+QeXm+2CqzsL/WVLX5cobvsH9AziTdpwk3jw1dNBiCnhDQF+7d0Td4tRC2iNaD6jCCEL/gMmOayRXlZxzftx6A5JpS+nZGGAyuKt/dB5viDgbNmmfm9tveTgoVtd+y/ylrNgyR+xM9oOMpFAOe0xDX5e31ir3A90gzstKK31M7vagkDZEoR1ja+AGpKDpO1G8vVUvijL9dnJqHJ1a0wJd19E5V6Z8ks+Pc89a64vQDqcL3VCxTg==
+X-Stat-Signature: pz1fq46n7xi7duj1at51ktmrgcopere5
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1755635325-764342
+X-HE-Meta: U2FsdGVkX1/B8WJkbGhHbk0adYUn0e1ukUdYIcsChv+rtr1O7DrFAcWiOykXje9WtdZD+w7j6z2Ni6Dzcxy+WqWr+zA0PiAU4weTdY0aLn5TlTnPzkq3OG6Xlfm7zg84n3gcu1OZfg3q7gQ1fszkEmhRh/Wa+YIQfqrt0lTgMDuTu1CqatBxnShJjvNIKAvn8iKL6JPYul/NW56Jm1W5+r3ckUFIsok5VXVm3aESas78KRqG6yJZqDwWsMVyvQjVD/19X0q03VllV40lRxROwKQH0BAIv2T6wOMTTN4OcP+pCKrqvinxtx1bCqi1H4L6Xrj/29uRBdqqX0urL6W+RM/mKhyICQW2hP40LdBDKtxtWAYWhaZRWiLQd9qTlTO9VBwxDId4SehMT2lhV4qZW7dLYx0n/Y2hoRDHhWcB5NKyw0Cqsh+Ues2c27Vc3g8CIk75fen13YjzGSowVcNX2XeaX2ngdD3dtnLQ7o3SOdCADAKXjl4YvjGZYwWTY/ThIMlncS8GACJthX/C2uSg9f00JywdedqnJFERNNc0gIOJzoTqI1x6S97XsW6Zg82haLTlsQCs7qU3mo2Jx/QNdcUzSdF8bn9sN+FRDTArm+PCsd7hr8vmSSZ+QvFgUeio8IWDf+p9LxmnLVwqvSkgRxNGvDsxJ8x87Q+UivxpXHC8A6mJoKsTkDAu/Hcp36PIIiJMdLMd7pdRFYgBqabfKXvJCvjVt4doDqvahkOfmHB+/CSbUq4xSpcG10j7RctjPi800xGjVxKL9t1nCgR45W6n0TNPu/z4rUuuMeyk/RYyy6o6rg75dDStay9d43tamn2kShTJCHT/iNfWhwT4pIKcXBxAEiOvISfaJZPZxBiP7GPuu3FnaEAqCwXt6XJ94gd1ZcEwLFg6iEkrH3Is7KDJwVgauPFeQqEcjdtvtefLsJXxBPZp8nwEoL3nY6qdwGy6Wyv8NWvHs4txRrX
+ E6HJ6Bu2
+ F4mnZyXyd/3vI0T5bfosND6nSZXqwDpnIRRnJoluc8+kFiu8aRDsVzWWJet7H1vkKv9+RqeMpVbjVud+IgsDuuisL27wLehSM+6m8zAx8GmrQP+SEGd2aqXbw65tfXtS5dJ1/QVTrYtY7OE0NAaLG591yqYBU2h33ylb6Gykp5U5szQj92OdD66me0mGbFJxYCEWn2P924L0VNpxjYutofBhqtlJedG6ywTqyQcTJ2seEGSWhybcqh6vp8GvE/A/mHPjSEq8sNtwwzYsKFJNFvoOqFNzQ4Rs6DsLRXPOXGIxVd3bf66bPHLTHWxG0IShW5jno8BaQMe9Ge++0G3A46EOmbRWsGoOySpue
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,78 +99,132 @@ Suren Baghdasaryan <surenb@google.com> writes:
 > On Mon, Aug 18, 2025 at 10:02=E2=80=AFAM Roman Gushchin
 > <roman.gushchin@linux.dev> wrote:
 >>
->> Introduce bpf_out_of_memory() bpf kfunc, which allows to declare
->> an out of memory events and trigger the corresponding kernel OOM
->> handling mechanism.
+>> Currently psi_trigger_create() does a lot of things:
+>> parses the user text input, allocates and initializes
+>> the psi_trigger structure and turns on the trigger.
+>> It does it slightly different for two existing types
+>> of psi_triggers: system-wide and cgroup-wide.
 >>
->> It takes a trusted memcg pointer (or NULL for system-wide OOMs)
->> as an argument, as well as the page order.
+>> In order to support a new type of psi triggers, which
+>> will be owned by a bpf program and won't have a user's
+>> text description, let's refactor psi_trigger_create().
 >>
->> If the wait_on_oom_lock argument is not set, only one OOM can be
->> declared and handled in the system at once, so if the function is
->> called in parallel to another OOM handling, it bails out with -EBUSY.
->> This mode is suited for global OOM's: any concurrent OOMs will likely
->> do the job and release some memory. In a blocking mode (which is
->> suited for memcg OOMs) the execution will wait on the oom_lock mutex.
->>
->> The function is declared as sleepable. It guarantees that it won't
->> be called from an atomic context. It's required by the OOM handling
->> code, which is not guaranteed to work in a non-blocking context.
->>
->> Handling of a memcg OOM almost always requires taking of the
->> css_set_lock spinlock. The fact that bpf_out_of_memory() is sleepable
->> also guarantees that it can't be called with acquired css_set_lock,
->> so the kernel can't deadlock on it.
+>> 1. Introduce psi_trigger_type enum:
+>>    currently PSI_SYSTEM and PSI_CGROUP are valid values.
+>> 2. Introduce psi_trigger_params structure to avoid passing
+>>    a large number of parameters to psi_trigger_create().
+>> 3. Move out the user's input parsing into the new
+>>    psi_trigger_parse() helper.
+>> 4. Move out the capabilities check into the new
+>>    psi_file_privileged() helper.
+>> 5. Stop relying on t->of for detecting trigger type.
+>
+> It's worth noting that this is a pure core refactoring without any
+> functional change (hopefully :))
+
+Added this to the commit log.
+
+>
 >>
 >> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
 >> ---
->>  mm/oom_kill.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
->>  1 file changed, 45 insertions(+)
+>>  include/linux/psi.h       | 15 +++++--
+>>  include/linux/psi_types.h | 33 ++++++++++++++-
+>>  kernel/cgroup/cgroup.c    | 14 ++++++-
+>>  kernel/sched/psi.c        | 87 +++++++++++++++++++++++++--------------
+>>  4 files changed, 112 insertions(+), 37 deletions(-)
 >>
->> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
->> index 25fc5e744e27..df409f0fac45 100644
->> --- a/mm/oom_kill.c
->> +++ b/mm/oom_kill.c
->> @@ -1324,10 +1324,55 @@ __bpf_kfunc int bpf_oom_kill_process(struct oom_=
-control *oc,
->>         return 0;
->>  }
+>> diff --git a/include/linux/psi.h b/include/linux/psi.h
+>> index e0745873e3f2..8178e998d94b 100644
+>> --- a/include/linux/psi.h
+>> +++ b/include/linux/psi.h
+>> @@ -23,14 +23,23 @@ void psi_memstall_enter(unsigned long *flags);
+>>  void psi_memstall_leave(unsigned long *flags);
 >>
->> +/**
->> + * bpf_out_of_memory - declare Out Of Memory state and invoke OOM killer
->> + * @memcg__nullable: memcg or NULL for system-wide OOMs
->> + * @order: order of page which wasn't allocated
->> + * @wait_on_oom_lock: if true, block on oom_lock
->> + * @constraint_text__nullable: custom constraint description for the OO=
-M report
->> + *
->> + * Declares the Out Of Memory state and invokes the OOM killer.
->> + *
->> + * OOM handlers are synchronized using the oom_lock mutex. If wait_on_o=
-om_lock
->> + * is true, the function will wait on it. Otherwise it bails out with -=
-EBUSY
->> + * if oom_lock is contended.
->> + *
->> + * Generally it's advised to pass wait_on_oom_lock=3Dtrue for global OO=
-Ms
->> + * and wait_on_oom_lock=3Dfalse for memcg-scoped OOMs.
+>>  int psi_show(struct seq_file *s, struct psi_group *group, enum psi_res =
+res);
+>> -struct psi_trigger *psi_trigger_create(struct psi_group *group, char *b=
+uf,
+>> -                                      enum psi_res res, struct file *fi=
+le,
+>> -                                      struct kernfs_open_file *of);
+>> +int psi_trigger_parse(struct psi_trigger_params *params, const char *bu=
+f);
+>> +struct psi_trigger *psi_trigger_create(struct psi_group *group,
+>> +                               const struct psi_trigger_params *param);
+>>  void psi_trigger_destroy(struct psi_trigger *t);
+>>
+>>  __poll_t psi_trigger_poll(void **trigger_ptr, struct file *file,
+>>                         poll_table *wait);
+>>
+>> +static inline bool psi_file_privileged(struct file *file)
+>> +{
+>> +       /*
+>> +        * Checking the privilege here on file->f_cred implies that a pr=
+ivileged user
+>> +        * could open the file and delegate the write to an unprivileged=
+ one.
+>> +        */
+>> +       return cap_raised(file->f_cred->cap_effective, CAP_SYS_RESOURCE);
+>> +}
+>> +
+>>  #ifdef CONFIG_CGROUPS
+>>  static inline struct psi_group *cgroup_psi(struct cgroup *cgrp)
+>>  {
+>> diff --git a/include/linux/psi_types.h b/include/linux/psi_types.h
+>> index f1fd3a8044e0..cea54121d9b9 100644
+>> --- a/include/linux/psi_types.h
+>> +++ b/include/linux/psi_types.h
+>> @@ -121,7 +121,38 @@ struct psi_window {
+>>         u64 prev_growth;
+>>  };
+>>
+>> +enum psi_trigger_type {
+>> +       PSI_SYSTEM,
+>> +       PSI_CGROUP,
+>> +};
+>> +
+>> +struct psi_trigger_params {
+>> +       /* Trigger type */
+>> +       enum psi_trigger_type type;
+>> +
+>> +       /* Resources that workloads could be stalled on */
 >
-> From the changelog description I was under impression that it's vice
-> versa, for global OOMs you would not block (wait_on_oom_lock=3Dfalse),
-> for memcg ones you would (wait_on_oom_lock=3Dtrue).
+> I would describe this as "Resource to be monitored"
 
-Good catch, fixed.
+Fixed.
 
 >
->> + *
->> + * Returns 1 if the forward progress was achieved and some memory was f=
-reed.
->> + * Returns a negative value if an error has been occurred.
+>> +       enum psi_res res;
+>> +
+>> +       /* True if all threads should be stalled to trigger */
+>> +       bool full;
+>> +
+>> +       /* Threshold in us */
+>> +       u32 threshold_us;
+>> +
+>> +       /* Window in us */
+>> +       u32 window_us;
+>> +
+>> +       /* Privileged triggers are treated differently */
+>> +       bool privileged;
+>> +
+>> +       /* Link to kernfs open file, only for PSI_CGROUP */
+>> +       struct kernfs_open_file *of;
+...
+>>         t->event =3D 0;
+>>         t->last_event_time =3D 0;
+>> -       t->of =3D of;
+>> -       if (!of)
+>> +
+>> +       switch (params->type) {
+>> +       case PSI_SYSTEM:
+>>                 init_waitqueue_head(&t->event_wait);
 >
-> s/has been occurred/has occurred or occured
+> I think t->of will be left uninitialized here. Let's set it to NULL
+> please.
 
-Same here.
+Ack.
 
 Thanks!
 
