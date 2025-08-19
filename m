@@ -2,65 +2,65 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2DE10CA0EEB
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 17:38:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 81DE7CA0EEB
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 17:38:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 77B8F8E0005; Tue, 19 Aug 2025 13:38:45 -0400 (EDT)
+	id AFE1A8E0052; Tue, 19 Aug 2025 13:38:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 704618E0045; Tue, 19 Aug 2025 13:38:45 -0400 (EDT)
+	id A115F8E0051; Tue, 19 Aug 2025 13:38:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5CCAA8E0005; Tue, 19 Aug 2025 13:38:45 -0400 (EDT)
+	id 83CEC8E0050; Tue, 19 Aug 2025 13:38:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 40DCC8E0045
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 13:38:45 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0FA6814019B
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 17:38:45 +0000 (UTC)
-X-FDA: 83794217010.24.81AACDB
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A9DA8E0045
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 13:38:51 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 35C15160180
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 17:38:51 +0000 (UTC)
+X-FDA: 83794217262.23.6609500
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 7854720002
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 17:38:42 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mqPmNYet;
-	spf=pass (imf13.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9D8541C0011
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 17:38:49 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bp6IjwCK;
+	spf=pass (imf20.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755625122;
+	s=arc-20220608; t=1755625129;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Py7VOBxcd4HwAc7HHDB+PTMRXMSLHO8b88vcAnVEU6A=;
-	b=LK7IQOi86WF6FgqhQNiBIfTLy7oNmqQqB5VKZoBJzI8nSi+PkKf950/oyLjhVERADRFAaI
-	uaiB1QTkr8FhcBzX1oEjWtuJj4oFdqYqeLKDqLCd84gicngeprVSSnf49xkqCzqW2ql53X
-	96qfpyPh80CGlaDeIiZq4dXi/0h8mzY=
+	bh=D4SM6zHJ9Q6ObBfi9kz8op3wvjKvHEZA6J8C6N7vBkM=;
+	b=pAYWFyZRIAMOZ4o4cL2lf4pa8TGlWOGrCcho78gLmKEqaeIeAag5FUaSWMcj4mUh/GBTh2
+	kosEqmdp25mLfl/4mP4B/QDfmorgu68QgztvlIVdDrg8VzI8+EA3B85llmitTLYe+FXI3o
+	Ihs+hyG4wqBUESyyCqIjYm7UPW06emI=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mqPmNYet;
-	spf=pass (imf13.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bp6IjwCK;
+	spf=pass (imf20.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755625122; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755625129; a=rsa-sha256;
 	cv=none;
-	b=YfQrSI+MDA6wXMY+JTDXBop63jTY3xIhTSSvWjQT93AVEz2dzpZi5ePN7QQU94VTJR3+TP
-	Ybc+UlvWwXpOV5nJmhGKW8ag3kuV/0xW/rzlxGGCEGNT7ihJ1OkqvA0j+uka/y8PTUtrhn
-	K4DudF2Gnm4KqENlHqzXqQ7/zmNwEV0=
+	b=UAnVxI3w3slTLt9g5+0IZC1sOiLG1tRdBLwTYTEwkeuD8fy+QjyvFxI6LTrtLTLcVcWlOB
+	W8b0QrrUi0/vS8LYTDvhkWO2Uv1IUwXzwXG9dNWxBst4krsG+L9g/RUUOdNNeWaIKahrUF
+	nzQjtpwAW1b9BbpgO/1nKYqnGjG9JK0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D42D360209;
-	Tue, 19 Aug 2025 17:38:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55B1EC4CEF4;
-	Tue, 19 Aug 2025 17:38:28 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1387861430;
+	Tue, 19 Aug 2025 17:38:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B8E5C4CEF4;
+	Tue, 19 Aug 2025 17:38:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755625109;
-	bh=0mJoy+46tPnckyRiCMrZ6rM11HgiRAqoXhfeDURewQs=;
+	s=k20201202; t=1755625128;
+	bh=5GnXky7X8jRP4E4M761xyU7kxSqR5w3y9HvcAnisW/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mqPmNYet1sH32wQnvqz+VvZ80hlj8hmAn5LZc210nMHXG8bXYuHHo6lQnpRQ7wdDm
-	 AVkPPjVfSjLNW0DehbYvlIM2mXfpwOQAjPxs6e3RlPIo73ds9O4X7lgEElc8ORAi/f
-	 C/x1WmcQqUdWnZImWQk08xqztT32jxKdhvXMOS9p8adbr0qesEwjEYXcIE7Gr89B9V
-	 D5kxqWCfk0RMLfyN34FLwGfWViKqrxfYSCkMcFA4I+yentRF7/d5qM2RviS+FzeTgP
-	 DNhrTd61vuyUNS97sahLp3RYlTbC6p901YEbBgWhZmWbk3sGcF6U+DBlT0qK2dJfvC
-	 h1+6GBB7poGFg==
+	b=Bp6IjwCK6iikZBNKRNzlwQSTkIdVOg07zMkHxMwHx2bN8ViJPSPzqSH/QAyq4vh06
+	 wQO6Ewlb0QQbKPmgYqrA9uKQ5ZlVlzrl395y0zlmmQVZo3cmxr2dce8aTWrEgEuVvU
+	 PK81BrhFBj0Sb03L1mOYr5A5QlqVfAMBpJE1psdYb9zwXYegwG/tfmrm5FOWTNfeE8
+	 iY+rPNAKXFYUB6cprmGsa0u1KrjeSM4hl6Yb32H9zVNhuHEbrWVA9oc/K4UQWl86vA
+	 0GIK4Y52fniR/iFJCHHd5h1oBGaE5KSvHvvy9rnqAMrstqGlP8VTJe6ApXPe+l+dK9
+	 yBb54yNAL7EtQ==
 From: Leon Romanovsky <leon@kernel.org>
 To: Marek Szyprowski <m.szyprowski@samsung.com>
 Cc: Leon Romanovsky <leonro@nvidia.com>,
@@ -99,22 +99,22 @@ Cc: Leon Romanovsky <leonro@nvidia.com>,
 	virtualization@lists.linux.dev,
 	Will Deacon <will@kernel.org>,
 	xen-devel@lists.xenproject.org
-Subject: [PATCH v4 10/16] xen: swiotlb: Open code map_resource callback
-Date: Tue, 19 Aug 2025 20:36:54 +0300
-Message-ID: <babeeb62fcfbafa39f352da1040a5dfa9d2a2719.1755624249.git.leon@kernel.org>
+Subject: [PATCH v4 13/16] mm/hmm: properly take MMIO path
+Date: Tue, 19 Aug 2025 20:36:57 +0300
+Message-ID: <4b929da0b2dec4bccf489f35ee06098b437053b2.1755624249.git.leon@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1755624249.git.leon@kernel.org>
 References: <cover.1755624249.git.leon@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7854720002
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 9D8541C0011
+X-Stat-Signature: 8dygnfekcjxbtfbmzrkh5crt934hbxqz
 X-Rspam-User: 
-X-Stat-Signature: s3xez56rozt3jke7wgzrp9qy5udbujnu
-X-HE-Tag: 1755625122-848642
-X-HE-Meta: U2FsdGVkX1+tL16EExhKJdHJYx8Tj199uHp9eMuiUcgXsYfoN9I8Q4FWsZtudN46g9QMCnzNN8I9DFvlEOuOWYm36LExLQlS/9x6nwud/SZZjiT5p+1n1RA42gBJzxwipBJmeuzEt7znhIhvav6as2ZlM2lpLD8g7qTTFs4fJL4dzCTe2ocC1OWRYLnoHvEeah2N17g0efsYEfs7d3GIwBNO2MRJXkQuOv1Co5J5YGJeOmKdQw97eq2WugrkldU7pV9r0WBcV+V0VqACkMXJLw5PktaPIFPtUTXMHy9yxNipkndqpilbl4oeOFXALfXAWrJ0ZbmsZ+V48WTkn8IjItG1rsk61zCA4qCnaKgHjKw0ZUboHs0Vfnxm0mhmHmeKcmuX1WfrhXXctWUEICcjVHSHngrHKhmeg45K0j7ylB7cXnMlNXXpsZb7fngMVl9Iocq4NV5tyBnlAaWQ5fUwp5611pQOQtr2f+UkZuYq3gGkg4kvfBB2YwEC82/pIwI/PcaYd5tSbf5sLgwuPpaj9IfVVH6YjTONk23iRqTGlJAwKdhVq3rolIT12s8JjL5bbU7NdnCK5Zxj8e1hTlFcCb0hSKG3Bgxrp5icDYq6Zike6p+EuM1k5UOmZbycMkHvKrsULXYvRcosV3BivqduYbPxTZiqkovDXd+EPZd+7VdZaaCNXi3P4IBeDXVBfOxfD2TM1kUzf1JZnXbRpZu/S5Fbk1q5aJ+NFqXsSEeGPN1WFAm4JhUJm5JCx3DTkSv1NHNWGARyMITY3sDzP5MFZyfdahTwudq1MOLQVjwB/qnhAEv6T0HOpBx7l74FPsEG5BK6mAYpY/URCZifrxVNWq9anU63x2+SO3bQXQI8iMz089J8MiDfON08Wo0jeM/m2C9+h8lJTc2u1ZmXMADjVzusvWy1ntblzzVYra9w9aeoh3PAdsMP2exInM7yVobpx7UKURDBs914CH5KJ27
- 2s9rbrsv
- MNE+BrKXm1OumJJXH9TlO2zn84SJWm8AmMf1KqIckCyhOCfJKOJqcz7ckv+EHVkFMHDAbJXXm+fcu3e3ZClwgKu50rIVbT2VuJ13ISVeqRTOaR2QvpbwVGIUn4bwv+cd3NHun96i9yDGEMyJW8gHPdhxuNqUZONsEKhNSdVgj1BWqpjQB+9/dnud0lXHbwf1BTGZ3D5zeKJTIGY8CmT+4mA5sqW48KpdzQU3U6nXSQqa4UbZ17R6rToscvOF9l9NGNBulP7Dl1iFoedSqHrbtxLnQEStx2RG/r1HEEbpTw0x+PIlKh4uSO4sKbNkGEUJhPzbLwyN1fciDnMHl9y7w1r37AazIyj4CBOBKRZBkBm11avZcUTF/IiB5Y5x+Mbm/WF4RiEtSR94Y/XE/rgY4ZuwUwQ==
+X-HE-Tag: 1755625129-319916
+X-HE-Meta: U2FsdGVkX1+FhJQ5loUhDrbsQ197Tg2hlHgGjp08cAqP3uCqlQUj0RI0mY2iGWDxciOA+dNGw9D7PRaz2/nfeCOpVYKKZ/h6t7npwiXg8wKjq/e5TUCRD2HVHmRxcFo+ro6r/icLS1QE6bbaffbu/qXSdHjZIRSf5KVPYGe2zpyND5pEIFr7L0Q21isM80rZdi8lCLWTivLV2Q7x6cO0XXki4/la39J4TS31BnvsMC8dUBxeFdW9GcFlUqANm1yNWLvwY0ix0dYNL4jZmwMKnFn6NGcLUOB8RZj4clCbMsw26Lurl3wyF60m6GW6I9yd8vIdYy4AS94pyvkCH9VQdLCYYd+jbQ92hjzJXU5aXdlJvagPGW3dfQ7v5KPOsESrTc0FrsnyG+862nVTsANPPDe4YnyUr8ebt42VXW3ZtgWIYfX0Etcj0K9roDXlKcv3VLLKVfNDlmF9yEKG986qhi9SIBBKo+vUNlg80mA1rzRU6Oa4TPB3BZRizWWibmVtDPeLiLeupCfSQ5M5GMS1TxXBE8T9ct/ALpb5Pf5/9gDyitSVOPVe+hq2l+8t9E2UJyKRRnlyCbMoQ4fvpNyD+EVgcfyKz9VW36GKHeZGu3RJv+SoqxrK/WZhNdflwCWaesJCrjwQYDlQj32XSgo6MrqZzpXqGzOyjL+fMxR4SpA0q3NXkpGCh86+ekTPrUKL+dVG9M4k/i8HMdXNn5feOdzywlKv3m3rgiJgcJ4iHKhUnLO2mBZRYbNDoxKj7XpR/qUpnk+lZ3axJYQlNu7E88ABrgv6TZ66B6Yd3/A+GVRncgcgO7erzJrFeyI1+rVUxv7Fyl6jUI6MfywFyh7+dGn4LUEGS5u4XDO2isUP6lEbU5tKt7LO9km0I8RZtPq6REgE3FKVVYzYM2u20Il98Jf1x0WC171ZO8/Rm7g+X9CVIxeGlSuKIOGxMaIy5NMFeb2sy5/I4mk0+fyusvl
+ pkty5x9p
+ x2Uw43aEEEpIhnLEeMVU4UeX6tPWtsYzADzOsOglJLmy5ArNiC3ac/cunlVm7BSKIuy1AlFydCJBWP3bmykJSgdJJHbnU7g9D8BhbVj/EFYKg0cnfvvltKb1vyRtxwOPVnKMjJ4MPJwLwOCMMlYMtkkaD29hbrESLmAUBEEGSaND49wYKOvedM6CpwZxMNvJ593DARRrkDQ5s2u6c1e98ZFT/6RogJtLv8xK6Mz1e17xOLFH+y2r4I9fiiOlF+4fFMTinvHvNqCvS6YTN0Lcp0+KxwOzty/IRVX35NsyOFyvzjIQ6V0L6r80rjQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,52 +125,67 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Leon Romanovsky <leonro@nvidia.com>
 
-General dma_direct_map_resource() is going to be removed
-in next patch, so simply open-code it in xen driver.
+In case peer-to-peer transaction traverses through host bridge,
+the IOMMU needs to have IOMMU_MMIO flag, together with skip of
+CPU sync.
 
-Reviewed-by: Juergen Gross <jgross@suse.com>
+The latter was handled by provided DMA_ATTR_SKIP_CPU_SYNC flag,
+but IOMMU flag was missed, due to assumption that such memory
+can be treated as regular one.
+
+Reuse newly introduced DMA attribute to properly take MMIO path.
+
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
- drivers/xen/swiotlb-xen.c | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ mm/hmm.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
-index da1a7d3d377c..dd7747a2de87 100644
---- a/drivers/xen/swiotlb-xen.c
-+++ b/drivers/xen/swiotlb-xen.c
-@@ -392,6 +392,25 @@ xen_swiotlb_sync_sg_for_device(struct device *dev, struct scatterlist *sgl,
- 	}
- }
+diff --git a/mm/hmm.c b/mm/hmm.c
+index 015ab243f081..6556c0e074ba 100644
+--- a/mm/hmm.c
++++ b/mm/hmm.c
+@@ -746,7 +746,7 @@ dma_addr_t hmm_dma_map_pfn(struct device *dev, struct hmm_dma_map *map,
+ 	case PCI_P2PDMA_MAP_NONE:
+ 		break;
+ 	case PCI_P2PDMA_MAP_THRU_HOST_BRIDGE:
+-		attrs |= DMA_ATTR_SKIP_CPU_SYNC;
++		attrs |= DMA_ATTR_MMIO;
+ 		pfns[idx] |= HMM_PFN_P2PDMA;
+ 		break;
+ 	case PCI_P2PDMA_MAP_BUS_ADDR:
+@@ -776,7 +776,7 @@ dma_addr_t hmm_dma_map_pfn(struct device *dev, struct hmm_dma_map *map,
+ 			goto error;
  
-+static dma_addr_t xen_swiotlb_direct_map_resource(struct device *dev,
-+						  phys_addr_t paddr,
-+						  size_t size,
-+						  enum dma_data_direction dir,
-+						  unsigned long attrs)
-+{
-+	dma_addr_t dma_addr = paddr;
+ 		dma_addr = dma_map_phys(dev, paddr, map->dma_entry_size,
+-					DMA_BIDIRECTIONAL, 0);
++					DMA_BIDIRECTIONAL, attrs);
+ 		if (dma_mapping_error(dev, dma_addr))
+ 			goto error;
+ 
+@@ -811,16 +811,17 @@ bool hmm_dma_unmap_pfn(struct device *dev, struct hmm_dma_map *map, size_t idx)
+ 	if ((pfns[idx] & valid_dma) != valid_dma)
+ 		return false;
+ 
++	if (pfns[idx] & HMM_PFN_P2PDMA)
++		attrs |= DMA_ATTR_MMIO;
 +
-+	if (unlikely(!dma_capable(dev, dma_addr, size, false))) {
-+		dev_err_once(dev,
-+			     "DMA addr %pad+%zu overflow (mask %llx, bus limit %llx).\n",
-+			     &dma_addr, size, *dev->dma_mask, dev->bus_dma_limit);
-+		WARN_ON_ONCE(1);
-+		return DMA_MAPPING_ERROR;
-+	}
-+
-+	return dma_addr;
-+}
-+
- /*
-  * Return whether the given device DMA address mask can be supported
-  * properly.  For example, if your device can only drive the low 24-bits
-@@ -426,5 +445,5 @@ const struct dma_map_ops xen_swiotlb_dma_ops = {
- 	.alloc_pages_op = dma_common_alloc_pages,
- 	.free_pages = dma_common_free_pages,
- 	.max_mapping_size = swiotlb_max_mapping_size,
--	.map_resource = dma_direct_map_resource,
-+	.map_resource = xen_swiotlb_direct_map_resource,
- };
+ 	if (pfns[idx] & HMM_PFN_P2PDMA_BUS)
+ 		; /* no need to unmap bus address P2P mappings */
+-	else if (dma_use_iova(state)) {
+-		if (pfns[idx] & HMM_PFN_P2PDMA)
+-			attrs |= DMA_ATTR_SKIP_CPU_SYNC;
++	else if (dma_use_iova(state))
+ 		dma_iova_unlink(dev, state, idx * map->dma_entry_size,
+ 				map->dma_entry_size, DMA_BIDIRECTIONAL, attrs);
+-	} else if (dma_need_unmap(dev))
++	else if (dma_need_unmap(dev))
+ 		dma_unmap_phys(dev, dma_addrs[idx], map->dma_entry_size,
+-			       DMA_BIDIRECTIONAL, 0);
++			       DMA_BIDIRECTIONAL, attrs);
+ 
+ 	pfns[idx] &=
+ 		~(HMM_PFN_DMA_MAPPED | HMM_PFN_P2PDMA | HMM_PFN_P2PDMA_BUS);
 -- 
 2.50.1
 
