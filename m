@@ -2,90 +2,96 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 58B03CA0EE6
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 06:26:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D7B5CA0EE6
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 06:26:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5F758E0013; Tue, 19 Aug 2025 02:26:19 -0400 (EDT)
+	id 1DD698E0014; Tue, 19 Aug 2025 02:26:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E37888E0006; Tue, 19 Aug 2025 02:26:19 -0400 (EDT)
+	id 18E1C8E0006; Tue, 19 Aug 2025 02:26:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4D998E0013; Tue, 19 Aug 2025 02:26:19 -0400 (EDT)
+	id 0CB438E0014; Tue, 19 Aug 2025 02:26:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C3DFE8E0006
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 02:26:19 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 62BCFC029B
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 06:26:19 +0000 (UTC)
-X-FDA: 83792522478.18.3177F92
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf20.hostedemail.com (Postfix) with ESMTP id B918A1C0005
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 06:26:17 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oJNMRDKj;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EF95E8E0006
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 02:26:38 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 962E61DBEB0
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 06:26:38 +0000 (UTC)
+X-FDA: 83792523276.15.3D6C950
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 6B3AA1A0004
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 06:26:33 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	spf=pass (imf19.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755584777;
+	s=arc-20220608; t=1755584797;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zWGqKczX6nqpvnjx9BbzIUjm7AHsAuAiynKXkFFZHoQ=;
-	b=takGQz7kd2IL9145yPHTCGQSoQzW/wqJ9zmz2w77Vv2Z3X2QDdXGFuyPwXlNzQK9+o6XqY
-	QEQge2AznA1oN1+lLFnCiV63c+9YXmpK3zymPpHmBfKhCEJwNy99jshgH2ey2xyqo+iZfE
-	UAxyD9+NhOhUkQuQRscX4GJ2ft8vnko=
+	 in-reply-to:references; bh=7ebYDPUsrbIZ16/i5esiPWzgTMM/z3yALMG/2V1DHY0=;
+	b=U4GlgPwYf8RMLT2ZIxgk1HFLW6wK+CzEQbdx9EZNWdVq0oo1J8B7J72wK/vrI0w5UFY5ui
+	BWB73lteGxA2cTFywcXccgpRa5OZgCz8orUzBg1as/A/pB/qJFIhhKGgcauoMjMHidScGF
+	3MO2J1SSUiwrJaqy5kFbkU4wYfSmkUw=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oJNMRDKj;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755584777; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755584797; a=rsa-sha256;
 	cv=none;
-	b=d7OgteztBXMME0IxPul8ArTPzwXb1KUwaf4jjWCWE7HPfwxNY9OZNfH3lGN48XXW9Yamp5
-	ohqfM32pJBaAu4dSlDEbip7P4yfbN8qvG1VhxQM8LrAI7kUKhdZ0KilD0SPIz28kl2yMdz
-	W3fhQX5YAiOWEi6h1RVJU57FIsKJ8cs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id A218C5C5A2A;
-	Tue, 19 Aug 2025 06:26:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DBFC113CF;
-	Tue, 19 Aug 2025 06:26:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755584776;
-	bh=cobszW34dvhWuWQ5UgCda75bpk87ATDQHb9EveDVexo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oJNMRDKjqIPcBLA4OJc9bVjpJvDuF+hYI4GdaqqyG/t/HDJSwR/kqY4RMJlW/v4Xv
-	 UzceS7s2HWXan00E7JtVqPDOLgzr4ewOrSzYfuN7w3TAQGiSUpUzs38mW9jRRZ6iiX
-	 9gC9dCT+O2gjrH+g8zyT9RBoDFJOnPxUqBInvA/2pmsCWnuNxoDbE3egdyY6lIhnjo
-	 eSOIkHCRewbbBCd53T2Op5MWKi/XKgDBRO+hDRv1b9QKAAdZnOdf2RXupUHzXcBDZm
-	 X0hT7nmATPI67fwQaupufQSbKAPv5Un0ujdOl0KBd6XUIcV8Hn7Y7t1ZxBSmukYxsY
-	 NOCeDW/3F6p9A==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Quanmin Yan <yanquanmin1@huawei.com>,
+	b=W1vL+7tMloxgoEJQp6z2EVlFriuGgXESvENYunmWy9+bDMn73BlEQVDH7wUE+ePhqa4wie
+	FMU99CLgf5GpxNKUmi8YT50Y/f5QpRPTewkziPimw0QuD1UOg/wUFf5UH8ZMCGs3OTShyR
+	pZnzxQsJXlVfLAhsp6Q23a0xYy11gEw=
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4c5fjv2vT1zKHMS5
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 14:26:27 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id CF9E91A1B94
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 14:26:26 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.175.104.67])
+	by APP4 (Coremail) with SMTP id gCh0CgBHwhIQGaRoz8C9EA--.57459S4;
+	Tue, 19 Aug 2025 14:26:26 +0800 (CST)
+From: libaokun@huaweicloud.com
+To: linux-mm@kvack.org
+Cc: hughd@google.com,
+	baolin.wang@linux.alibaba.com,
 	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
+	jlayton@kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	wangkefeng.wang@huawei.com,
-	zuoze1@huawei.com
-Subject: Re: [RFC PATCH -next 03/16] mm/damon/paddr: support addr_unit for DAMOS_PAGEOUT
-Date: Mon, 18 Aug 2025 23:26:13 -0700
-Message-Id: <20250819062613.39988-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250819061826.39289-1-sj@kernel.org>
-References: 
+	Baokun Li <libaokun1@huawei.com>
+Subject: [PATCH] tmpfs: preserve SB_I_VERSION on remount
+Date: Tue, 19 Aug 2025 14:18:03 +0800
+Message-Id: <20250819061803.1496443-1-libaokun@huaweicloud.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B918A1C0005
-X-Stat-Signature: h4hdi1rfm7kgt4x85xttzwjtbng3wz78
+X-CM-TRANSID:gCh0CgBHwhIQGaRoz8C9EA--.57459S4
+X-Coremail-Antispam: 1UD129KBjvJXoW7try8KrW8JrWxCw13ArW5Jrb_yoW8GFW8pF
+	Z8C348Kr18XFyIvaykXay8W34ayrZ7CFyrKrWfu345Xa4qyw1DKrZ7KryYvFWfuFWfJr4S
+	vF40k3W3CF1UArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvKb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4kE6xkIj40Ew7xC0wCY1x0262kKe7AKxVWU
+	AVWUtwCY1x0264kExVAvwVAq07x20xyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7
+	v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF
+	1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIx
+	AIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI
+	42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxh
+	VjvjDU0xZFpf9x07jo_M3UUUUU=
+X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAQAFBWii1fNJdgABsT
+X-Rspamd-Queue-Id: 6B3AA1A0004
 X-Rspam-User: 
-X-HE-Tag: 1755584777-314988
-X-HE-Meta: U2FsdGVkX1/BZnc0SwdNV79sVNWbFU6vUgvHLE3GJ8bgUHmLGo1n4/M+jj6o5UdsMT8jk31g4FZH8V20sXnvO0+M9KglEniwaJrahpx6O2WGF1bO8cjhmINu6noAJOpZUKQ++MkCaTb5G0Zq6dTH00+3MfuF53iDL/0XuhNRltXW9maAQp3HWzMGnUiuk5qItCCZ87++ORJzyils1xAxnTooGrYrT9unlVMIB8wNfJW68+jDUwxyVmjDBF/xDaNiP4yC3H/O3c8gQML5WV2+bbaq6NCdfp2OKeyL9IqGRbpp24oBocnGh0wkBALdQdUrCQjCdbcOaxZ6ngzu6p/rgsAz0IOk8V3UZCenyagfy1pB0Qx6v0EYXtMcrM+RqR6rszuYEy7fKcdAIXmRYUNCoCU7JevuS2zS11snhbB2WghrikCOfh6zTxI8U/hMvJmrVhWykIH5guWtMewP+tBjf1JJPqGp8CoY6JwmAg5vD5XcwJRebubgd5z0FwhnTXxh7KRfWErW04C5eUeI/Lw1GfBXkqKcvX2oksVyA9tawhxhep3h3gTYUnvsyxFfeJSOBVDiK643eM3etg1SAjKqAE7VxxMV6A1ghVpa6mrtk/yCG2q7gOWTKaNiJ+oBjYNnGwl+jc32yAiQFhD9QJaXG7eU8uQ0T+5Q5FI7KVTF+yIXIlRk/MxY72I+kiQYy8NOimbBDPKSPvW7pdFN1CCoRBqhKGzyifB+DOJ+1g80sSup1slgs2DsXKSwe5v8SxyXh7A6jvrkhTE82cpln/jG2SBnm91fai7cJPfvusP7cphis4tWtDlOy0Wf7F6rMaXQpYDVrTb7XEltWxV+8ZUnIYXTCg6pPwGAAj6vEoBqTbUa3wURVHD5YtEw9K9ZbqEAg9OH9gv88mq2pUgfzJS36yTbx7BXBD5wNs2C6hDHvyGGY88hWm28gbfVbKT7tKJkQrJlH9JqW1acpbmX42k
- JotgmeXW
- Nt0vcMpdky96CbJQZOtd8BqciDjXlgmAhSvcwQ32YS3QIKJhYTz4h4McRDAP1de+ve4rmsI6j2SRkvf7gPl42NRUM5uiS2TDjcf4US00dW4458inRYvUaKRmj2Ks8sxq5r9/jag+9As7XOkulz7ZSrJCQxqA2Mc/cciELS/e2dUp/D1rcQm+4J2LjM5TD7yHvsS9qO0bA1ou4q2XFrLevyXIMW+1FaklEDukeuvzZb2zGiqadZ4XKlaTlnwklM8TzDYYARr5YdOgUBz8=
+X-Stat-Signature: xu847ujbaf7qnmjneg5bg8xpkzz5so3n
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1755584793-579756
+X-HE-Meta: U2FsdGVkX18sBcsfg3HXZBQSdPlYZmBqNZ5zmTq6aFDgP0db/cxtoef4Q20KanOOqH5BdYBcT8K2WouhMnmbjhP455HPtvVRuzr0KDe1bPKPi9nmMyo94H69vl+hLoCueCsSHMTdjci3dSH8Gs194cuvkgtl07YSgOnQaqqr/VvkX3UJ0p1Qv9EchuvcVzeWZPh0/zdaZ/izxoBNk6H8vpBw3/dFnyZYdTaDRsee6U58a9uIUtaDhRMeOL1Herlj+EXKgUrL4gNhJvFifkYlkRCkaZyD0ex55WvTMnzrxupWxr/aFrufIdQzODDZovv0yToiQYPXOVx9rv3P55qCMlKxEV4CT5JCVv5EbRK5f+rlvqsH1xZ2QbA2jhf13/qpy+3FT/goOxKH7tUDRmib+k3H+jmANMXb6zXJz+TgzQwVoZSBiVDbnpPqwQmS0wlkEGZ8lHbh71SZEW6E+7f4Gjxbud6ggotTrpmGZ2AuaNZc+dVmutr15CM8F/3RylWUsY8dpnspdDBcqmZ0KD+UV6j1JEeH6bJCgHzy4FU8CAAIGqNE+yl6QYqwEe2FJx9JTtlug6+m40sZkMrCnvgXy13e8SGGJO3lfPscCEIKpIaZM69hzkkMAjJAcsNV7VTZkAacl/B0SyVg/FkxVqTAjSbsLJ3YuT9rCqe+WYZ8v+yEPDu51S+Zx+3/BeTKGvwCbAxRKYCeXkr+rr6BKtVfDVDPn5PPaISpkt7a6cHIk2mdIfrbEmQ2uwfhb2O0+4FARCTBq3zWoCWKVTzHG+iWu/y2hO261xdAibYHSjK5uuE7DOSThHkxMZ4SC7v96H+LaOXsP2GAeD++DWA5ffG4lKt00NuvMYPlCiGNlx88NKKq8CESWkKs0eTmduV/4OGCyz6c6wN1w7JKfK4uPiXrDO61Yh2k2FZvuBOHVO5g6cZrNyPesoaTGUkJQOJf04j9m+dvwOre1hITMh50edY
+ 1xt/pCh4
+ fowEiLVdzGttFEzSg8Xq+44a1KuADVD78uNRu8M/EV/y1p+L+5ndZXHCcCRxebm5cZT8BxfQ3PGZLrzfSLZx5k70AzwyYvBysTZIEOE1S8MrE5swsriQDveQHYkVMR3184zQau3CdSyTYMKU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,82 +100,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 18 Aug 2025 23:18:26 -0700 SeongJae Park <sj@kernel.org> wrote:
+From: Baokun Li <libaokun1@huawei.com>
 
-> Hi Quanmin,
-> 
-> 
-> 
-> On Wed, 13 Aug 2025 13:06:53 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
-> 
-> > From: SeongJae Park <sj@kernel.org>
-> > 
-> > Add support of addr_unit for DAMOS_PAGEOUT action handling from the
-> > DAMOS operation implementation for the physical address space.
-> 
-> As I suggested on another reply[1], please squash attaching patch to this one
-> when you post next version of this series.
-> 
-> [1] https://lore.kernel.org/0001-mm-damon-paddr-set-DAMOS_PAGEOUT-stat-in-core-addres.patch
+Now tmpfs enables i_version by default and tmpfs does not modify it. But
+SB_I_VERSION can also be modified via sb_flags, and reconfigure_super()
+always overwrites the existing flags with the latest ones. This means that
+if tmpfs is remounted without specifying iversion, the default i_version
+will be unexpectedly disabled.
 
-Sorry for the above wrong link.  Plese use
-https://lore.kernel.org/20250813170806.6251-1-sj@kernel.org instead.
+To ensure iversion remains enabled, SB_I_VERSION is now always set for
+fc->sb_flags in shmem_init_fs_context(), instead of for sb->s_flags in
+shmem_fill_super().
 
-> 
-> [...]
-> 
-> 
-> Thanks,
-> SJ
-> 
-> ==== Attachment 0 (0001-mm-damon-paddr-set-DAMOS_PAGEOUT-stat-in-core-addres.patch) ====
-> >From 525b3d1d9dd53f4ca6b4d2254e5cc7f99c8eae0d Mon Sep 17 00:00:00 2001
-> From: SeongJae Park <sj@kernel.org>
-> Date: Wed, 13 Aug 2025 21:24:35 -0700
-> Subject: [PATCH] mm/damon/paddr: set DAMOS_PAGEOUT stat in core address unit
-> 
-> Operations layer should set DAMOS stat in core layer address unit, but
-> paddr is returning that for PAGEOUT in paddr address unit.  Fix it.
-> 
-> Signed-off-by: SeongJae Park <sj@kernel.org>
-> ---
->  mm/damon/paddr.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-> index 98cb6930c183..826c2064dbfd 100644
-> --- a/mm/damon/paddr.c
-> +++ b/mm/damon/paddr.c
-> @@ -139,8 +139,7 @@ static unsigned long damon_pa_pageout(struct damon_region *r,
->  		unsigned long addr_unit, struct damos *s,
->  		unsigned long *sz_filter_passed)
->  {
-> -	phys_addr_t addr;
-> -	unsigned long applied;
-> +	phys_addr_t addr, applied;
->  	LIST_HEAD(folio_list);
->  	bool install_young_filter = true;
->  	struct damos_filter *filter;
-> @@ -172,7 +171,7 @@ static unsigned long damon_pa_pageout(struct damon_region *r,
->  		if (damos_pa_filter_out(s, folio))
->  			goto put_folio;
->  		else
-> -			*sz_filter_passed += folio_size(folio);
-> +			*sz_filter_passed += folio_size(folio) / addr_unit;
->  
->  		folio_clear_referenced(folio);
->  		folio_test_clear_young(folio);
-> @@ -191,7 +190,7 @@ static unsigned long damon_pa_pageout(struct damon_region *r,
->  	applied = reclaim_pages(&folio_list);
->  	cond_resched();
->  	s->last_applied = folio;
-> -	return applied * PAGE_SIZE;
-> +	return applied * PAGE_SIZE / addr_unit;
->  }
->  
->  static inline unsigned long damon_pa_mark_accessed_or_deactivate(
-> -- 
-> 2.39.5
-> 
-> 
+Fixes: 36f05cab0a2c ("tmpfs: add support for an i_version counter")
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+---
+ mm/shmem.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/mm/shmem.c b/mm/shmem.c
+index e2c76a30802b..eebe12ff5bc6 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -5081,7 +5081,7 @@ static int shmem_fill_super(struct super_block *sb, struct fs_context *fc)
+ 		sb->s_flags |= SB_NOUSER;
+ 	}
+ 	sb->s_export_op = &shmem_export_ops;
+-	sb->s_flags |= SB_NOSEC | SB_I_VERSION;
++	sb->s_flags |= SB_NOSEC;
+ 
+ #if IS_ENABLED(CONFIG_UNICODE)
+ 	if (!ctx->encoding && ctx->strict_encoding) {
+@@ -5385,6 +5385,9 @@ int shmem_init_fs_context(struct fs_context *fc)
+ 
+ 	fc->fs_private = ctx;
+ 	fc->ops = &shmem_fs_context_ops;
++#ifdef CONFIG_TMPFS
++	fc->sb_flags |= SB_I_VERSION;
++#endif
+ 	return 0;
+ }
+ 
+-- 
+2.39.2
+
 
