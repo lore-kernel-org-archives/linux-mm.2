@@ -2,68 +2,69 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ADDABCA0EEB
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 17:37:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A5B1CA0EF7
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 17:37:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B8F48E0024; Tue, 19 Aug 2025 13:37:37 -0400 (EDT)
+	id 1F9D08E0025; Tue, 19 Aug 2025 13:37:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 469C18E0005; Tue, 19 Aug 2025 13:37:37 -0400 (EDT)
+	id 15E908E0005; Tue, 19 Aug 2025 13:37:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 309E78E0024; Tue, 19 Aug 2025 13:37:37 -0400 (EDT)
+	id E54498E0025; Tue, 19 Aug 2025 13:37:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 162698E0005
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C86288E0005
 	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 13:37:37 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id ADC15826A7
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 17:37:36 +0000 (UTC)
-X-FDA: 83794214112.23.BEFF83E
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 665C01A018A
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 17:37:37 +0000 (UTC)
+X-FDA: 83794214154.30.C376576
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 003141A0003
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 17:37:34 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nt8pdRow;
+	by imf28.hostedemail.com (Postfix) with ESMTP id B8A62C0007
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 17:37:35 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nRK2iAcw;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of leon@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=leon@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755625055; a=rsa-sha256;
-	cv=none;
-	b=0wiyqo7NEgg4EkHhUAx3Yy0ufE0dbNDkkMpkY1imOZYosgmbEU3kHndsVXv6Fff7vH/pmy
-	LPpRfSj0MRe5aJtLmtMPx0Ec4PFLLd+JHGhiugkvgBS1+NBx1/vWEQLsdn68X0DXUxQ8Tc
-	MccF8eX9eAeV9Xq4Ej2s41Cjlqq6i2g=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nt8pdRow;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of leon@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=leon@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of leon@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=leon@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1755625055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=V7lyGHPVpToHBO4xk7veSlctoonDh3C6qltAZuVkH4M=;
-	b=M3IDGHRxQaOPiGsgWPNKfDk1LGI6QtuovuR75FBGbuwuIfI7EHAIY3kY88V849/WvM1Su7
-	GoPK6DnSOWGsVf+wcz0idGLPXh7TRNptjFDC4t4LWWBgRwEQS54ZS/f/cWHk6haR+nWLEV
-	Y+HBtIenz9wJhCfFz4aA+roFXDaaXy4=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=XfxLLKvH/DpVc2NbZowrmc3+FoU4H0K6l6sYGFFyH/0=;
+	b=YKavnqDie/7Q+zCGtaChrXrI+RumALQ7cOqoIWhf7Q9qoU8qGIoK4XlxhRE/247Ipmeuoc
+	fqOkD9QHPPk2M+u+5a++nVLKLMMKg2eiypEjxNUTGS+IHeFhc405EPWZ0gHlx5gQoaahiv
+	zhVSnXnykCt1zIquZrbd3PUnPnSW9J8=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nRK2iAcw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of leon@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=leon@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755625055; a=rsa-sha256;
+	cv=none;
+	b=6CRMsD+tGSw9xILh2Whvc6oDY6vOKsjl14yKbihkZyd/Xg12Lpeb5BSBsR2yXBPEDjVQ4+
+	gi0Lcbh/RUv6y17C4fKWjsPfE1+9JQS/h725JCtfgMJuMmsohe8ut91frm9f7uz33/KrP2
+	EB/EQ9hRLdGC/9rkxqMoWWju0C5X1FI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 176855C64A7;
+	by dfw.source.kernel.org (Postfix) with ESMTP id A6B125C647F;
 	Tue, 19 Aug 2025 17:37:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C7B6C113D0;
-	Tue, 19 Aug 2025 17:37:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EBFAC4CEF4;
+	Tue, 19 Aug 2025 17:37:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755625042;
-	bh=PY9smWWJ4JNRFUAjSvtMNJOBqFCsxBLYO5QlYdxwbLE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=nt8pdRowHseoXvExKasdI0tEDbHSrgizbMB2qlH1aCU/xuu2CZSaOV8+REt27f9GO
-	 87AyElpEj/wX92YaeYkB2ZUeSYzFX7ugQoGONRfzj6gLwHZfXjbZvX+XecnRMSzKxt
-	 XWFXqQ7FRrUCmWN75OAdzO2Bw50CvLG0hQxnk0yj1TPViX5VQGWTcqYi++OUdBQ/MI
-	 77ZymbBVIJT1fBt6mwrJPXADDaD1SHQ2OEMF2BgRWv5a+KqnO7FRcxsxJl834mNp8D
-	 2IaJ0ZC7YC5w/kVg1P0H0R1EvS8ZJSRiF91vJogJyrKxdQR7Akp5/4TKu+iWzc343Q
-	 0jqutLlV5YsRQ==
+	s=k20201202; t=1755625054;
+	bh=+6SuvKk/7U//cW4wXi0ADVlYqazqjfxTWHubS42t1as=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=nRK2iAcw9naXxqVCwrZYTg0L0tJVO6Z8uYDGDwR7RfbMKGUm6C1t5jhQLddy+0Enj
+	 nh3J3isWu7Zd6NLSnDbBHV9WCIoJ+nc0jxpVf8VSDaWdIXAnmpF5ICK0WXbRS5d8cv
+	 8Vrlhstq8V9i+QaI/1n0oXTMXFX0BmUBAQxY2YwE9ujB5cQHDGmVxVpwXuHElC5fEa
+	 Y5GtQScvK8ImAhambk4WLChGvqvr9FrlV8TMmlZ4IwV6koBzxY/i+8uGhj3kbJs4Gu
+	 KVpki2bklNgxb/LEU2SZVxE1nNnUsBg4ZjpcimliacFY+BJFISpyvgWuUeq0efkjN9
+	 BVZdeXsQkCpzQ==
 From: Leon Romanovsky <leon@kernel.org>
 To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>,
+Cc: Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
 	Alexander Potapenko <glider@google.com>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
@@ -98,20 +99,22 @@ Cc: Jason Gunthorpe <jgg@nvidia.com>,
 	virtualization@lists.linux.dev,
 	Will Deacon <will@kernel.org>,
 	xen-devel@lists.xenproject.org
-Subject: [PATCH v4 00/16] dma-mapping: migrate to physical address-based API
-Date: Tue, 19 Aug 2025 20:36:44 +0300
-Message-ID: <cover.1755624249.git.leon@kernel.org>
+Subject: [PATCH v4 03/16] dma-debug: refactor to use physical addresses for page mapping
+Date: Tue, 19 Aug 2025 20:36:47 +0300
+Message-ID: <478d5b7135008b3c82f100faa9d3830839fc6562.1755624249.git.leon@kernel.org>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <cover.1755624249.git.leon@kernel.org>
+References: <cover.1755624249.git.leon@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 003141A0003
-X-Stat-Signature: 83tgwhs5tecer1rh4rg5u59eqrirpsry
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B8A62C0007
+X-Stat-Signature: mc5nz46tchhktzfswa4p5itbgad4hwrr
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1755625054-554435
-X-HE-Meta: U2FsdGVkX1/4r6IVt8bT40HDmNk2RAwV0Ortf0DYwI6OyOJrfEFZBqREEyJrjAee/k6XZXz1tOw4N3mPBPhSGYY3IHBJjDPVidSRcRtYJ6RGvMcsgDU9MxaaCvvID7p/CXokLbM//b++N4/dcKpQ8QKnFTxSmjPZaZv1kzxlxdkJalOg1tmRS5wE9t7d86n6h7WMnIqZ7OIvFhi4hSggrMCITduArFvnns5SQjuOmbzitrGpB7EE7JyZFVLh1TE+cND0hyOwxca4Pr70UZ9Ih3YB24eSzmiEpc20T0sNbl92J4cu2kFI0JFyrFt+T+NUYHU5tjUFcGtahB5pn5KTz57g3BS6+/R4jzjn+hzAZCxSbEZYCN+aRd8CWE9pDcx6tvxzznp0PDYW6fsm95H0tzslKvqDaIbojBvylH//YLgL25TX4nHo3VEAMymaYvYFYbSg4RsQLYywy29sR1gYoqCoVrHB0PKE5Pct9jiuyMh7iHCJu9+CRTCMWFg9Jbp7rMjwK/9Xa8ZzOC1JB8wpaz26Y/jsLTFq+YXZQc6cdL6SeUaO7qMfoSJiyWLbCerw7755Tq09hyHJ3oHPvoRm/nbGjuclmA3gr5IRM2/mDsZE+OkeF7noq7D7mWOyPXUQMDFetxgW3tI/NyX8COl61LQCyp2MB6rgqPpQsiU0hke3XDOfNhFCMn+4nkCmTdTGx3wUTbTb+Yn+SAONdWEUM7Nq8TLTiwQUFlpj1qhytu5uBbWiwDDVQUglZhR3zcpk5Vp6vBAk50Wgm7Gi+zbBzIVzbd3udCcl27qSzc8K7lcbR5O5cK/5Jxak1m4vmBGLWGVW/g05ZPMwpHFpqstgaM80PXMpsHy5fiVdag5VrqnCHEIW8BP5LbLL4D0EI8TEOXCJO92arIDl/2DXT4ssXDhFplNzVeiIOEKVcy8nP9pmPRXGoWKkriMnoP0m5M79L9ze2MbKJW7nbBeUxsG
- fBOdVO+e
- PTgHjsl3zEg0C4qnhhICiHdFVtospdD8E3a4tlNI+odW+KhYMLwsdhA49akkda6Brh1ZVUKEuiUIDQNuTCv5/KGOCIt4vMrBn22m/X37SX+Wh0O0pp+hT+jgGvpzxGPSRXnYTwxYI9xRSRnm6gCKmFo7uw6tHIiO8RSXI+Nyu6t1G68Ubdv4ibvatZcBjtGG13JW4F1xYL73MAIiqW4bfMJ/BYwoIPTwLF/H13G0AFGR69dj8l76AAEsLKadVTe0QdwswgP/sT5icK463LtbXoGzk3421IvJ8rJpidTIh/gA8cgP7ELn6pxD3sA==
+X-HE-Tag: 1755625055-860484
+X-HE-Meta: U2FsdGVkX19kAFFHZwvmFjGX1bQkaj4pweJpXRjo4f+X826tvhnrDhv5HSZqnPmah05KP6MVDcLFYuie4DsffAdShl+HBLXJ6Pwu6vntO3i+1KkkS9RXrogTkeLI9+qhWgJEwSn+JFu7af8moktlFBPDQM9oQJMYC/UI8ReiyILYHovSUGBN3qu6hy/7G6D+Z/XvXqPpMmM5e22M64yjklDwk/XfXxSZ9gnxdgGrmBNDyc5eDnFFqxFnujzGvNM3xS7HWCtjo12EQp0MxyDQVmvPPu2BnNCMlNqyMcKD+kYb0ipX1wI9pvt1hP9pLCxzQjet4odoI+JJgtoMCgZxjvJ5AxEpQZvhEEXCZbUh24LxKUeJJyll7HoGR49c45crroUdtCwp2U/rK8L52zUHkMlO8qeWYj8KsX4V79UjTrjsQGd+up9esNM7Z0tFYQ6+vrE64XNxJ0sXDUOB5EVTe9XmztQ1Uve8+sivUzkXC8Kcd49ax5laMAk6qZX7KW1Bvv00hfBKYwNWVLozC2M7BxbDAOKWj6Y4cPjD254z2EvvIJvZFTWYH2ClH6WxMg0Aqt5I3pSda4yZERMJ5Zg/ebG5C3s2283lXWKsOqsUF/U/ZC7E9k7If7q6eYImZGALHephk2QVI0HB7lmTa7Xe8ihYOqRHtu+erZNUQO/JkoYfDFO6A2toK3mRwlVjYWXAN2N16jTHFo7CF2kyhRQYjksx99DOkVtDUoF/HecdEZnp68SBoamTkmTYn5igL2JnZExxhYblyFlwwVVWQ584i41XbzNAJuWOpQossXD0jRVjitHLjO2uZsET4XptWEP+5uxu/AlpH/Gjfe/NK0nhGrDTnjC/xGAUg0Zz61qehYAMuyZL6aIhR5PtyoX1Y5UbykJ9tOvzs7j6Z0mTB1bJ8v6AJBP4USnj4x8jn8lUATCljB0ml0PcJhyj8OTLrTdWGo6hBesK5WIot3hgbtf
+ FX5OpBjn
+ nUyWqWbSzKmJzRGwtMY9NFNeemmyxV2VKVHxuIhmQpCAxadQXL3cD/VgzIg/nfBNPortt0RAscfaiZZAbbTvOAwLYHDYm+ToBbMRVcTKE6RVWTiLNXMdS0qwt5Z28Hi2rQDq0TVv3k/Yl11UO3bdK+ta3hk9BRxsnYVrUdljsARAR5YNkzfqvWOR6mgOC3tHiGFpPm48zLlYgA+kGV4NJGKKbPD/o98A4SeWP5lsoeY2XSV8o4ycskt+YyGQza3DY7qvHN7mUpg1Aqyanmm2QkG91AxxgxgNIjOMLWDZC01LX03BuWRMvNH+UcQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,140 +123,230 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Changelog:
-v4:
- * Fixed kbuild error with mismatch in kmsan function declaration due to
-   rebase error.
-v3: https://lore.kernel.org/all/cover.1755193625.git.leon@kernel.org
- * Fixed typo in "cacheable" word
- * Simplified kmsan patch a lot to be simple argument refactoring
-v2: https://lore.kernel.org/all/cover.1755153054.git.leon@kernel.org
- * Used commit messages and cover letter from Jason
- * Moved setting IOMMU_MMIO flag to dma_info_to_prot function
- * Micro-optimized the code
- * Rebased code on v6.17-rc1
-v1: https://lore.kernel.org/all/cover.1754292567.git.leon@kernel.org
- * Added new DMA_ATTR_MMIO attribute to indicate
-   PCI_P2PDMA_MAP_THRU_HOST_BRIDGE path.
- * Rewrote dma_map_* functions to use thus new attribute
-v0: https://lore.kernel.org/all/cover.1750854543.git.leon@kernel.org/
-------------------------------------------------------------------------
+From: Leon Romanovsky <leonro@nvidia.com>
 
-This series refactors the DMA mapping to use physical addresses
-as the primary interface instead of page+offset parameters. This
-change aligns the DMA API with the underlying hardware reality where
-DMA operations work with physical addresses, not page structures.
+Convert the DMA debug infrastructure from page-based to physical address-based
+mapping as a preparation to rely on physical address for DMA mapping routines.
 
-The series maintains export symbol backward compatibility by keeping
-the old page-based API as wrapper functions around the new physical
-address-based implementations.
+The refactoring renames debug_dma_map_page() to debug_dma_map_phys() and
+changes its signature to accept a phys_addr_t parameter instead of struct page
+and offset. Similarly, debug_dma_unmap_page() becomes debug_dma_unmap_phys().
+A new dma_debug_phy type is introduced to distinguish physical address mappings
+from other debug entry types. All callers throughout the codebase are updated
+to pass physical addresses directly, eliminating the need for page-to-physical
+conversion in the debug layer.
 
-This series refactors the DMA mapping API to provide a phys_addr_t
-based, and struct-page free, external API that can handle all the
-mapping cases we want in modern systems:
+This refactoring eliminates the need to convert between page pointers and
+physical addresses in the debug layer, making the code more efficient and
+consistent with the DMA mapping API's physical address focus.
 
- - struct page based cachable DRAM
- - struct page MEMORY_DEVICE_PCI_P2PDMA PCI peer to peer non-cachable
-   MMIO
- - struct page-less PCI peer to peer non-cachable MMIO
- - struct page-less "resource" MMIO
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+---
+ Documentation/core-api/dma-api.rst |  4 ++--
+ kernel/dma/debug.c                 | 28 +++++++++++++++++-----------
+ kernel/dma/debug.h                 | 16 +++++++---------
+ kernel/dma/mapping.c               | 15 ++++++++-------
+ 4 files changed, 34 insertions(+), 29 deletions(-)
 
-Overall this gets much closer to Matthew's long term wish for
-struct-pageless IO to cachable DRAM. The remaining primary work would
-be in the mm side to allow kmap_local_pfn()/phys_to_virt() to work on
-phys_addr_t without a struct page.
-
-The general design is to remove struct page usage entirely from the
-DMA API inner layers. For flows that need to have a KVA for the
-physical address they can use kmap_local_pfn() or phys_to_virt(). This
-isolates the struct page requirements to MM code only. Long term all
-removals of struct page usage are supporting Matthew's memdesc
-project which seeks to substantially transform how struct page works.
-
-Instead make the DMA API internals work on phys_addr_t. Internally
-there are still dedicated 'page' and 'resource' flows, except they are
-now distinguished by a new DMA_ATTR_MMIO instead of by callchain. Both
-flows use the same phys_addr_t.
-
-When DMA_ATTR_MMIO is specified things work similar to the existing
-'resource' flow. kmap_local_pfn(), phys_to_virt(), phys_to_page(),
-pfn_valid(), etc are never called on the phys_addr_t. This requires
-rejecting any configuration that would need swiotlb. CPU cache
-flushing is not required, and avoided, as ATTR_MMIO also indicates the
-address have no cachable mappings. This effectively removes any
-DMA API side requirement to have struct page when DMA_ATTR_MMIO is
-used.
-
-In the !DMA_ATTR_MMIO mode things work similarly to the 'page' flow,
-except on the common path of no cache flush, no swiotlb it never
-touches a struct page. When cache flushing or swiotlb copying
-kmap_local_pfn()/phys_to_virt() are used to get a KVA for CPU
-usage. This was already the case on the unmap side, now the map side
-is symmetric.
-
-Callers are adjusted to set DMA_ATTR_MMIO. Existing 'resource' users
-must set it. The existing struct page based MEMORY_DEVICE_PCI_P2PDMA
-path must also set it. This corrects some existing bugs where iommu
-mappings for P2P MMIO were improperly marked IOMMU_CACHE.
-
-Since ATTR_MMIO is made to work with all the existing DMA map entry
-points, particularly dma_iova_link(), this finally allows a way to use
-the new DMA API to map PCI P2P MMIO without creating struct page. The
-VFIO DMABUF series demonstrates how this works. This is intended to
-replace the incorrect driver use of dma_map_resource() on PCI BAR
-addresses.
-
-This series does the core code and modern flows. A followup series
-will give the same treatment to the legacy dma_ops implementation.
-
-Thanks
-
-Leon Romanovsky (16):
-  dma-mapping: introduce new DMA attribute to indicate MMIO memory
-  iommu/dma: implement DMA_ATTR_MMIO for dma_iova_link().
-  dma-debug: refactor to use physical addresses for page mapping
-  dma-mapping: rename trace_dma_*map_page to trace_dma_*map_phys
-  iommu/dma: rename iommu_dma_*map_page to iommu_dma_*map_phys
-  iommu/dma: extend iommu_dma_*map_phys API to handle MMIO memory
-  dma-mapping: convert dma_direct_*map_page to be phys_addr_t based
-  kmsan: convert kmsan_handle_dma to use physical addresses
-  dma-mapping: handle MMIO flow in dma_map|unmap_page
-  xen: swiotlb: Open code map_resource callback
-  dma-mapping: export new dma_*map_phys() interface
-  mm/hmm: migrate to physical address-based DMA mapping API
-  mm/hmm: properly take MMIO path
-  block-dma: migrate to dma_map_phys instead of map_page
-  block-dma: properly take MMIO path
-  nvme-pci: unmap MMIO pages with appropriate interface
-
- Documentation/core-api/dma-api.rst        |   4 +-
- Documentation/core-api/dma-attributes.rst |  18 ++++
- arch/powerpc/kernel/dma-iommu.c           |   4 +-
- block/blk-mq-dma.c                        |  15 ++-
- drivers/iommu/dma-iommu.c                 |  61 +++++------
- drivers/nvme/host/pci.c                   |  18 +++-
- drivers/virtio/virtio_ring.c              |   4 +-
- drivers/xen/swiotlb-xen.c                 |  21 +++-
- include/linux/blk-mq-dma.h                |   6 +-
- include/linux/blk_types.h                 |   2 +
- include/linux/dma-direct.h                |   2 -
- include/linux/dma-map-ops.h               |   8 +-
- include/linux/dma-mapping.h               |  33 ++++++
- include/linux/iommu-dma.h                 |  11 +-
- include/linux/kmsan.h                     |   9 +-
- include/trace/events/dma.h                |   9 +-
- kernel/dma/debug.c                        |  71 ++++---------
- kernel/dma/debug.h                        |  37 ++-----
- kernel/dma/direct.c                       |  22 +---
- kernel/dma/direct.h                       |  52 ++++++----
- kernel/dma/mapping.c                      | 117 +++++++++++++---------
- kernel/dma/ops_helpers.c                  |   6 +-
- mm/hmm.c                                  |  19 ++--
- mm/kmsan/hooks.c                          |   5 +-
- rust/kernel/dma.rs                        |   3 +
- tools/virtio/linux/kmsan.h                |   2 +-
- 26 files changed, 305 insertions(+), 254 deletions(-)
-
+diff --git a/Documentation/core-api/dma-api.rst b/Documentation/core-api/dma-api.rst
+index 3087bea715ed..ca75b3541679 100644
+--- a/Documentation/core-api/dma-api.rst
++++ b/Documentation/core-api/dma-api.rst
+@@ -761,7 +761,7 @@ example warning message may look like this::
+ 	[<ffffffff80235177>] find_busiest_group+0x207/0x8a0
+ 	[<ffffffff8064784f>] _spin_lock_irqsave+0x1f/0x50
+ 	[<ffffffff803c7ea3>] check_unmap+0x203/0x490
+-	[<ffffffff803c8259>] debug_dma_unmap_page+0x49/0x50
++	[<ffffffff803c8259>] debug_dma_unmap_phys+0x49/0x50
+ 	[<ffffffff80485f26>] nv_tx_done_optimized+0xc6/0x2c0
+ 	[<ffffffff80486c13>] nv_nic_irq_optimized+0x73/0x2b0
+ 	[<ffffffff8026df84>] handle_IRQ_event+0x34/0x70
+@@ -855,7 +855,7 @@ that a driver may be leaking mappings.
+ dma-debug interface debug_dma_mapping_error() to debug drivers that fail
+ to check DMA mapping errors on addresses returned by dma_map_single() and
+ dma_map_page() interfaces. This interface clears a flag set by
+-debug_dma_map_page() to indicate that dma_mapping_error() has been called by
++debug_dma_map_phys() to indicate that dma_mapping_error() has been called by
+ the driver. When driver does unmap, debug_dma_unmap() checks the flag and if
+ this flag is still set, prints warning message that includes call trace that
+ leads up to the unmap. This interface can be called from dma_mapping_error()
+diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
+index e43c6de2bce4..da6734e3a4ce 100644
+--- a/kernel/dma/debug.c
++++ b/kernel/dma/debug.c
+@@ -39,6 +39,7 @@ enum {
+ 	dma_debug_sg,
+ 	dma_debug_coherent,
+ 	dma_debug_resource,
++	dma_debug_phy,
+ };
+ 
+ enum map_err_types {
+@@ -141,6 +142,7 @@ static const char *type2name[] = {
+ 	[dma_debug_sg] = "scatter-gather",
+ 	[dma_debug_coherent] = "coherent",
+ 	[dma_debug_resource] = "resource",
++	[dma_debug_phy] = "phy",
+ };
+ 
+ static const char *dir2name[] = {
+@@ -1201,9 +1203,8 @@ void debug_dma_map_single(struct device *dev, const void *addr,
+ }
+ EXPORT_SYMBOL(debug_dma_map_single);
+ 
+-void debug_dma_map_page(struct device *dev, struct page *page, size_t offset,
+-			size_t size, int direction, dma_addr_t dma_addr,
+-			unsigned long attrs)
++void debug_dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
++		int direction, dma_addr_t dma_addr, unsigned long attrs)
+ {
+ 	struct dma_debug_entry *entry;
+ 
+@@ -1218,19 +1219,24 @@ void debug_dma_map_page(struct device *dev, struct page *page, size_t offset,
+ 		return;
+ 
+ 	entry->dev       = dev;
+-	entry->type      = dma_debug_single;
+-	entry->paddr	 = page_to_phys(page) + offset;
++	entry->type      = dma_debug_phy;
++	entry->paddr	 = phys;
+ 	entry->dev_addr  = dma_addr;
+ 	entry->size      = size;
+ 	entry->direction = direction;
+ 	entry->map_err_type = MAP_ERR_NOT_CHECKED;
+ 
+-	check_for_stack(dev, page, offset);
++	if (!(attrs & DMA_ATTR_MMIO)) {
++		struct page *page = phys_to_page(phys);
++		size_t offset = offset_in_page(page);
+ 
+-	if (!PageHighMem(page)) {
+-		void *addr = page_address(page) + offset;
++		check_for_stack(dev, page, offset);
+ 
+-		check_for_illegal_area(dev, addr, size);
++		if (!PageHighMem(page)) {
++			void *addr = page_address(page) + offset;
++
++			check_for_illegal_area(dev, addr, size);
++		}
+ 	}
+ 
+ 	add_dma_entry(entry, attrs);
+@@ -1274,11 +1280,11 @@ void debug_dma_mapping_error(struct device *dev, dma_addr_t dma_addr)
+ }
+ EXPORT_SYMBOL(debug_dma_mapping_error);
+ 
+-void debug_dma_unmap_page(struct device *dev, dma_addr_t dma_addr,
++void debug_dma_unmap_phys(struct device *dev, dma_addr_t dma_addr,
+ 			  size_t size, int direction)
+ {
+ 	struct dma_debug_entry ref = {
+-		.type           = dma_debug_single,
++		.type           = dma_debug_phy,
+ 		.dev            = dev,
+ 		.dev_addr       = dma_addr,
+ 		.size           = size,
+diff --git a/kernel/dma/debug.h b/kernel/dma/debug.h
+index f525197d3cae..76adb42bffd5 100644
+--- a/kernel/dma/debug.h
++++ b/kernel/dma/debug.h
+@@ -9,12 +9,11 @@
+ #define _KERNEL_DMA_DEBUG_H
+ 
+ #ifdef CONFIG_DMA_API_DEBUG
+-extern void debug_dma_map_page(struct device *dev, struct page *page,
+-			       size_t offset, size_t size,
+-			       int direction, dma_addr_t dma_addr,
++extern void debug_dma_map_phys(struct device *dev, phys_addr_t phys,
++			       size_t size, int direction, dma_addr_t dma_addr,
+ 			       unsigned long attrs);
+ 
+-extern void debug_dma_unmap_page(struct device *dev, dma_addr_t addr,
++extern void debug_dma_unmap_phys(struct device *dev, dma_addr_t addr,
+ 				 size_t size, int direction);
+ 
+ extern void debug_dma_map_sg(struct device *dev, struct scatterlist *sg,
+@@ -55,14 +54,13 @@ extern void debug_dma_sync_sg_for_device(struct device *dev,
+ 					 struct scatterlist *sg,
+ 					 int nelems, int direction);
+ #else /* CONFIG_DMA_API_DEBUG */
+-static inline void debug_dma_map_page(struct device *dev, struct page *page,
+-				      size_t offset, size_t size,
+-				      int direction, dma_addr_t dma_addr,
+-				      unsigned long attrs)
++static inline void debug_dma_map_phys(struct device *dev, phys_addr_t phys,
++				      size_t size, int direction,
++				      dma_addr_t dma_addr, unsigned long attrs)
+ {
+ }
+ 
+-static inline void debug_dma_unmap_page(struct device *dev, dma_addr_t addr,
++static inline void debug_dma_unmap_phys(struct device *dev, dma_addr_t addr,
+ 					size_t size, int direction)
+ {
+ }
+diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
+index 107e4a4d251d..4c1dfbabb8ae 100644
+--- a/kernel/dma/mapping.c
++++ b/kernel/dma/mapping.c
+@@ -157,6 +157,7 @@ dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
+ 		unsigned long attrs)
+ {
+ 	const struct dma_map_ops *ops = get_dma_ops(dev);
++	phys_addr_t phys = page_to_phys(page) + offset;
+ 	dma_addr_t addr;
+ 
+ 	BUG_ON(!valid_dma_direction(dir));
+@@ -165,16 +166,15 @@ dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
+ 		return DMA_MAPPING_ERROR;
+ 
+ 	if (dma_map_direct(dev, ops) ||
+-	    arch_dma_map_page_direct(dev, page_to_phys(page) + offset + size))
++	    arch_dma_map_page_direct(dev, phys + size))
+ 		addr = dma_direct_map_page(dev, page, offset, size, dir, attrs);
+ 	else if (use_dma_iommu(dev))
+ 		addr = iommu_dma_map_page(dev, page, offset, size, dir, attrs);
+ 	else
+ 		addr = ops->map_page(dev, page, offset, size, dir, attrs);
+ 	kmsan_handle_dma(page, offset, size, dir);
+-	trace_dma_map_page(dev, page_to_phys(page) + offset, addr, size, dir,
+-			   attrs);
+-	debug_dma_map_page(dev, page, offset, size, dir, addr, attrs);
++	trace_dma_map_page(dev, phys, addr, size, dir, attrs);
++	debug_dma_map_phys(dev, phys, size, dir, addr, attrs);
+ 
+ 	return addr;
+ }
+@@ -194,7 +194,7 @@ void dma_unmap_page_attrs(struct device *dev, dma_addr_t addr, size_t size,
+ 	else
+ 		ops->unmap_page(dev, addr, size, dir, attrs);
+ 	trace_dma_unmap_page(dev, addr, size, dir, attrs);
+-	debug_dma_unmap_page(dev, addr, size, dir);
++	debug_dma_unmap_phys(dev, addr, size, dir);
+ }
+ EXPORT_SYMBOL(dma_unmap_page_attrs);
+ 
+@@ -712,7 +712,8 @@ struct page *dma_alloc_pages(struct device *dev, size_t size,
+ 	if (page) {
+ 		trace_dma_alloc_pages(dev, page_to_virt(page), *dma_handle,
+ 				      size, dir, gfp, 0);
+-		debug_dma_map_page(dev, page, 0, size, dir, *dma_handle, 0);
++		debug_dma_map_phys(dev, page_to_phys(page), size, dir,
++				   *dma_handle, 0);
+ 	} else {
+ 		trace_dma_alloc_pages(dev, NULL, 0, size, dir, gfp, 0);
+ 	}
+@@ -738,7 +739,7 @@ void dma_free_pages(struct device *dev, size_t size, struct page *page,
+ 		dma_addr_t dma_handle, enum dma_data_direction dir)
+ {
+ 	trace_dma_free_pages(dev, page_to_virt(page), dma_handle, size, dir, 0);
+-	debug_dma_unmap_page(dev, dma_handle, size, dir);
++	debug_dma_unmap_phys(dev, dma_handle, size, dir);
+ 	__dma_free_pages(dev, size, page, dma_handle, dir);
+ }
+ EXPORT_SYMBOL_GPL(dma_free_pages);
 -- 
 2.50.1
 
