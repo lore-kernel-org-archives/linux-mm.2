@@ -2,126 +2,88 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 414C2CA0EE9
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 04:36:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2ABACCA0EE6
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 05:20:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C2FEC6B00B8; Tue, 19 Aug 2025 00:36:31 -0400 (EDT)
+	id 58CFC8E000B; Tue, 19 Aug 2025 01:20:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C077A6B00BA; Tue, 19 Aug 2025 00:36:31 -0400 (EDT)
+	id 564F88E0006; Tue, 19 Aug 2025 01:20:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF6C28E0006; Tue, 19 Aug 2025 00:36:31 -0400 (EDT)
+	id 453CB8E000B; Tue, 19 Aug 2025 01:20:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B3C86B00B8
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 00:36:31 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 630A2137E65
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 04:36:31 +0000 (UTC)
-X-FDA: 83792245782.03.77D4BAD
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 9A3D240015
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 04:36:29 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UP8v1DiL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of kees@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=kees@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755578189; a=rsa-sha256;
-	cv=none;
-	b=EfVrkdpK4pTXEfMgvvf+Si3ssBtHfltpc7yjwNermpDpmP7ga7wryFdEJLbkLmUWXSfwKu
-	CQoEGok/xjDsZrG0BH12ZFnpM9Zdx3u5OM+sJw0/ViCIZkgbKVtdaBw6jtK1H+xK7bw1aF
-	KNjx/mppvlVyYLyAFR+i3e4JlcTGTj0=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UP8v1DiL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of kees@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=kees@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D4C28E0006
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 01:20:15 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6AEA5C0297
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 05:20:14 +0000 (UTC)
+X-FDA: 83792355948.04.2AC072B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B0C02A000B
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 05:20:12 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XMNHGDun;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755578189;
+	s=arc-20220608; t=1755580812;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L+DY5wGNJvYSCbXNrLUN7i9v470dScXYo4zDAweCLEM=;
-	b=R/LtKqXRTQmEG5QrrllrBI+T4RhXSvevvjtuL+g5O8I+YjlcMpgPK5j5Ear1upz5UXphpK
-	C1k6SrWXL09/7O/HQwuJjsh4CVWghtITg3T5j+mBAXKZrG+gZXCtrQbzj5WVenSZisAtDM
-	XBiX9jRAar+YVbiB9ozJ4q//3/ZVVHM=
+	bh=7mSHHKkoWdlpf1tlPQ1om7QWkC8Mo4mgIb3moNHcDws=;
+	b=jVwrMNmYriMigsbnhEsc6YIhcxGwvDIZC6DbS8VEBxtyRvsqr4AvAr0G9spnfwZ9RgCxiQ
+	0tiGLuk1owtrfL6kNSPGf4a07ufAwnLtZLgblO/8MlVDZ3J8aFjvSvHtxptedX+AM4c7fW
+	CqDzzXzu783Y+/yVYpv6NIk90Rh0SAU=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XMNHGDun;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755580812; a=rsa-sha256;
+	cv=none;
+	b=FoPrWyFFq52jYF6PBkv6p9OFR72jIaMAbCXv/4wbew8rHvDViH1a18AQzojuB9bip+tukn
+	eyGefPvIeee1m2sP1x1zpRLhvU0QFyWnwzX/P4KniK2bLQaSdsWbMk8dTntr5BSXkUzGjV
+	kWUO7WjgRO46JuJlPLhZ+G2QXNt0UrA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 4097C5C4D43;
-	Tue, 19 Aug 2025 04:36:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF514C4CEF4;
-	Tue, 19 Aug 2025 04:36:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755578187;
-	bh=1oIKRJK5HTQsWAX91rizsH6S8xP04JRAB50afAWQCJ0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UP8v1DiL3tOnE7Ki4JlzVuvxNqtSh46rTWE91G7TcgWW5o/+TA49SmxnQ0MspeEeO
-	 aRxWTXriwFR1zScWgVM9tAUTbClB1NbFcbGNHShr11ZdTKsHAPlXT1vZdtL2cT2Mkw
-	 xQaYeC8Teia1Id6A3SjoeKa81IDKHXtTwp1BqrSOwzekFY8BHdZzNwgPG1QtKn+G/8
-	 hfrTmBIWnxvnTJTQbj2/W4EeVLkPM2oefuohIup06aoi6nw7NMVnm8XYYGjwCLURII
-	 XoI0M6Xtlst1glypt8p7qBiOOlMVa8TiJl9Ln7i6CY3rLzo02bs4WVDdhQhjVBuFSH
-	 iK2FWi6K41M+Q==
-Date: Mon, 18 Aug 2025 21:36:27 -0700
-From: Kees Cook <kees@kernel.org>
-To: Bernd Edlinger <bernd.edlinger@hotmail.de>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Andy Lutomirski <luto@amacapital.net>,
-	Will Drewry <wad@chromium.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@suse.com>, Serge Hallyn <serge@hallyn.com>,
-	James Morris <jamorris@linux.microsoft.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Yafang Shao <laoar.shao@gmail.com>, Helge Deller <deller@gmx.de>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	Adrian Reber <areber@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>, Jens Axboe <axboe@kernel.dk>,
-	Alexei Starovoitov <ast@kernel.org>,
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	tiozhang <tiozhang@didiglobal.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	YueHaibing <yuehaibing@huawei.com>,
-	Paul Moore <paul@paul-moore.com>, Aleksa Sarai <cyphar@cyphar.com>,
-	Stefan Roesch <shr@devkernel.io>, Chao Yu <chao@kernel.org>,
-	xu xin <xu.xin16@zte.com.cn>, Jeff Layton <jlayton@kernel.org>,
-	Jan Kara <jack@suse.cz>, David Hildenbrand <david@redhat.com>,
-	Dave Chinner <dchinner@redhat.com>, Shuah Khan <shuah@kernel.org>,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	David Windsor <dwindsor@gmail.com>,
-	Mateusz Guzik <mjguzik@gmail.com>, Ard Biesheuvel <ardb@kernel.org>,
-	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Hans Liljestrand <ishkamiel@gmail.com>
-Subject: Re: [PATCH v16] exec: Fix dead-lock in de_thread with ptrace_attach
-Message-ID: <202508182113.63CF4DA866@keescook>
-References: <AM8PR10MB470801D01A0CF24BC32C25E7E40E9@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
- <AM8PR10MB470875B22B4C08BEAEC3F77FE4169@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
- <AS8P193MB1285DF698D7524EDE22ABFA1E4A1A@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <AS8P193MB12851AC1F862B97FCE9B3F4FE4AAA@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <AS8P193MB1285FF445694F149B70B21D0E46C2@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <AS8P193MB1285937F9831CECAF2A9EEE2E4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <GV2PPF74270EBEEEDE0B9742310DE91E9A7E431A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <GV2PPF74270EBEEEDE0B9742310DE91E9A7E431A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
-X-Rspamd-Queue-Id: 9A3D240015
-X-Stat-Signature: jagpxrscsprg61u8smt3r1bunaah5cn9
+	by tor.source.kernel.org (Postfix) with ESMTP id A547E613AA;
+	Tue, 19 Aug 2025 05:20:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD00C4CEF4;
+	Tue, 19 Aug 2025 05:20:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1755580810;
+	bh=sxJcUwVN/CsHyd67+5zfW7soLBfQ8ItPLkDXT2omVZ4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=XMNHGDunAL2ROl6ZH05LV6ePww0er0HEGB6KXTCa1LSzaqIHkg2w+DYblTi6A4w64
+	 nM19hkZyotNbVnUHaU4uIMKNwmgobuGOn/yFD+MCyZoQyBbVOSqYrT1Eac5WGaESfX
+	 E/VAseYRw6+B61BDDRGmni0hh5vQKFQa5OLvan1Y=
+Date: Mon, 18 Aug 2025 22:20:09 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Boris Burkov <boris@bur.io>, linux-btrfs@vger.kernel.org,
+ linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, kernel-team@fb.com,
+ shakeel.butt@linux.dev, wqu@suse.com, mhocko@kernel.org,
+ muchun.song@linux.dev, roman.gushchin@linux.dev, hannes@cmpxchg.org
+Subject: Re: [PATCH v3 4/4] memcg: remove warning from folio_lruvec
+Message-Id: <20250818222009.7f03b557e6e1b58cb0a100ef@linux-foundation.org>
+In-Reply-To: <aKPkWv77HMOQwyVi@casper.infradead.org>
+References: <cover.1755562487.git.boris@bur.io>
+	<0cf22669a203b8671b6774408bfa4864ba3dbf60.1755562487.git.boris@bur.io>
+	<aKPkWv77HMOQwyVi@casper.infradead.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B0C02A000B
+X-Stat-Signature: 55qk9emwyh3zg5ynkj5bumwfazgh6obg
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1755578189-358064
-X-HE-Meta: U2FsdGVkX19cgK8qgj0LAxCtAFA5kFcXxg8y++lt00cO4vzehgSdybdaz64HFW+wFC2qGVUPKhyzP53KTV3SYr0uBnItzQasxVUYRNQhsNc63AI9UhYWH595xl2OK0usnrARz6odZOUKao/XDC+NHO+ZdMqX1eeVmXVS0Vvyl+GPUi+cxdv9UZ7Fut8UZkUyZ9Vq7IX8kbGpEQEdXM1JKQO6Uk6ojAchJ3a0volxYmj49Egq8+VNkwDu/MVYu3xKKmmN55B+fEgXP0EE9ddUfN1Prt0iuzZ1DJ6y8USp/yK6iOgOMJ/ETGNK9nab6mkMDE44MiF51NmS8LMMrDwMeYASutxZnj57WXCmshAZ7tE0EzT9myOMz9i3oWZzaaNiNhww/Pv5ZTYu2VGOmoKGU8bCdbSaWDpv0x9m0zxPSkU3DmtOvoJoy4a/i+rCJjRiEPWC4Jdau8HvIoIRzdSR2M5CshI2CumnT/2QXAZmOw874u7fEN/2TdyhXAoVUsfpBvfBp0fKnIos7la94yGzjwGF2n1sZiPg8CA6jShkA293/yuNUd+SgSjzsGf5cY9Y3byUc5VwQFcm87Jo1FE2JaXTiQa4F/VqUUGpeJldF0+3ou8hSLHNzvD4F5ysYHwRp8CYk25a57Hg8VljX3DH+4VBqMqDjslQTUkddZwvk8xc3Mg+1QMS2Ba+QE47BG8VvKN3/PTnx/Q5DgNygLhgAmp+DaigmgOOrEw/FeWDYCcz3mvlxgEpNzLm5Z5byow5RQme03Tj4xK68gtq/yaGnSow5YbuR8mtGvAG6zo3ONVIJHKQS7ANR4ycKnyUrrI5fp49WybIeMA6dIO2ezxa3KHqZsoVVgzgIygscLaL20MGYyaQpGnYwdU3THfmuBW2K35IAJP3XfjjeCqi/AJC+h4LGC/61glNHv84KVJuU2yDfYSAl3wuOlbWj2XWcBgjlxgGUKba2WmJtbZFwXr
- 4DDHzvvf
- YM+OIz/IzY/iy2edmvLXw3wEm/9uHxD+Y8EuF5EwzHQHmaQCVwZFBU3pDpgyWmtzsFrMUVPbf4UZTV4YjE3X6VZ7mtfWH/xQ7ZTgz0IlHeOiRHU5RpQv0FWeS/LcNmdZ75zEX9i+Y4yQpPeWLYB53aP23r3e/qhF4mgdkyeqOf06MRZmMAMBjWwgvYxEmJ8HNtWUTqV/Av3zYDcoI/HqQe+astULEqp9OIWQslv2sBA1ryPR/a8zTcZyxaMIj41xUEdZMYUfd4EwzS+x0Px2NwEsJ9PnTVCDY+mq8T4Pr3rPcw/5+sX6MRId5xRXMNsHx5ElL9pCaFR7Rp1Xwdvg6nT4x+a+6REMswqxdLpoC2TqsO9qL7C+ydeVdd55qd6EAzaOeN/MrPYem8W4=
+X-HE-Tag: 1755580812-627591
+X-HE-Meta: U2FsdGVkX1+f+ECd79gCAs4Su+Di0ue2MfPbzvgQlqowKlElivioq40jBAAFAmx29WFaNFHe7FCuddfzxqhQX8DVk7EP5yt6YfQTIbvte6eAcu/1bygkA1d9oVXn+7X7A1MnAeLg7nWLDJX53khrBi4GJz7GWXtIidBlv+yJXqmlVdDHysHfU70ifK937VRC4TaQqRxVj9EZHlL1giJtx95aef7wO8sTE5PE764vdjrpZk5T4MIQeBpmcuYdEXebrPak5cDjuahNtnDQ5Y5U4V+7SPFGqkVBAuJzAxGSah1Rqi++lzwdGYH3CwM07E4C4Z0Bpp6uasASKyOlEnKxYX0IeUtTfuKCYtsH5agAkx79xvAICD80pZWL73VLq4VVqXIlMPOt/kCxyZeHobCksPLPCRMx9qNUfBXN79AeG7GJ+uuq2tfF2JIS4frEgA06RjGcTy54mZ0OlP+k+WZIIb68g9DHRu5GwS0oUIogNpdei+KE1n9h+2O3bb0E3/jnRZvTuNvqwl+S6I6lRs5G3xxuDEeohVuN/qmfzr4ImbZT9b/oy4jjDvQr4xa1Gte208ZMHBxJ9AceaPdydHUxoT8rE1nEQ6MRYup9FPSJabd9744A9zOi7SDVly/1whfZH4i25tck0xrMEtILRN3BFU2hIS/B7KkOcSE3Lz52MA6Man093bnp8XN8uZ4eehlbJQtH48sYm+v+cRIzs4+UUWKcBpPR+PUMlB79lmWfLzLW3FvBzJ3JUZr+t/1tGOEwMR/uRM9SNCyqqwWacvfvqAsiTm3OwxajOt3hw3PTz+8ZmPy3D+gOM2wHRc7kStalVMxyaNpKj4mN/1bVbed8d0lVO+7y3+giEx/UoWVRNwq1PDZBDvig+2eVWl9XQ8AJflU7oXuytv2+RPJ+wbnY4hquu9678NjE7f8Lpu2RgOi9w/hNg931LiQ5HXlJilWzHFVxGDG6eEaFnpFlgsm
+ fPnSRYWM
+ GqO1nClZrkPikKfg5og6gLW3sCLFbFfd72Rmge5+uTiaeQCgWZKYqdDVS7TZ06bRq+bIEBbGu3mRTnKf35iylQv4t21/KtmFwI2SseGmohO7LAHTPBGcjbLM9aGO7NBVOBb9ESNG18lWp0ESIUnYL3X18sMSSZ+a++F/f3zXQQILuuU6epW3Gb/yVNfUm5XPU5j3j65X1FMfpXOJ2RTfPuQap5sl71K+Dx4xor5EvHQpe45SUalHoJ62WRlAI4eRuJ+vr5w9bthr4XWmOc80dFFoQLgBslt+OM8JXAlFLdTgDFyu3e19n3T5VD4MlmvtP7qYwt+65+hKVZkeR4VkNXZccI1uuKKxa2LL6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,651 +92,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 18, 2025 at 10:53:43PM +0200, Bernd Edlinger wrote:
-> This introduces signal->exec_bprm, which is used to
-> fix the case when at least one of the sibling threads
-> is traced, and therefore the trace process may dead-lock
-> in ptrace_attach, but de_thread will need to wait for the
-> tracer to continue execution.
+On Tue, 19 Aug 2025 03:41:30 +0100 Matthew Wilcox <willy@infradead.org> wrote:
+
+> On Mon, Aug 18, 2025 at 05:36:56PM -0700, Boris Burkov wrote:
+> > Commit a4055888629bc ("mm/memcg: warning on !memcg after readahead page
+> > charged") added the warning in folio_lruvec (older name was
+> > mem_cgroup_page_lruvec) for !memcg when charging of readahead pages were
+> > added to the kernel. Basically lru pages on a memcg enabled system were
+> > always expected to be charged to a memcg.
+> > 
+> > However a recent functionality to allow metadata of btrfs, which is in
+> > page cache, to be uncharged is added to the kernel. We can either change
+> > the condition to only check anon pages or file pages which does not have
+> > AS_UNCHARGED in their mapping. Instead of such complicated check, let's
+> > just remove the warning as it is not really helpful anymore.
 > 
-> The problem happens when a tracer tries to ptrace_attach
-> to a multi-threaded process, that does an execve in one of
-> the threads at the same time, without doing that in a forked
-> sub-process.  That means: There is a race condition, when one
-> or more of the threads are already ptraced, but the thread
-> that invoked the execve is not yet traced.  Now in this
-> case the execve locks the cred_guard_mutex and waits for
-> de_thread to complete.  But that waits for the traced
-> sibling threads to exit, and those have to wait for the
-> tracer to receive the exit signal, but the tracer cannot
-> call wait right now, because it is waiting for the ptrace
-> call to complete, and this never does not happen.
-> The traced process and the tracer are now in a deadlock
-> situation, and can only be killed by a fatal signal.
-> 
-> The solution is to detect this situation and allow
-> ptrace_attach to continue by temporarily releasing the
-> cred_guard_mutex, while de_thread() is still waiting for
-> traced zombies to be eventually released by the tracer.
-> In the case of the thread group leader we only have to wait
-> for the thread to become a zombie, which may also need
-> co-operation from the tracer due to PTRACE_O_TRACEEXIT.
-> 
-> When a tracer wants to ptrace_attach a task that already
-> is in execve, we simply retry the ptrace_may_access
-> check while temporarily installing the new credentials
-> and dumpability which are about to be used after execve
-> completes.  If the ptrace_attach happens on a thread that
-> is a sibling-thread of the thread doing execve, it is
-> sufficient to check against the old credentials, as this
-> thread will be waited for, before the new credentials are
-> installed.
-> 
-> Other threads die quickly since the cred_guard_mutex is
-> released, but a deadly signal is already pending.  In case
-> the mutex_lock_killable misses the signal, the non-zero
-> current->signal->exec_bprm makes sure they release the
-> mutex immediately and return with -ERESTARTNOINTR.
-> 
-> This means there is no API change, unlike the previous
-> version of this patch which was discussed here:
-> 
-> https://lore.kernel.org/lkml/b6537ae6-31b1-5c50-f32b-8b8332ace882@hotmail.de/
-> 
-> See tools/testing/selftests/ptrace/vmaccess.c
-> for a test case that gets fixed by this change.
-> 
-> Note that since the test case was originally designed to
-> test the ptrace_attach returning an error in this situation,
-> the test expectation needed to be adjusted, to allow the
-> API to succeed at the first attempt.
-> 
-> Signed-off-by: Bernd Edlinger <bernd.edlinger@hotmail.de>
-> ---
->  fs/exec.c                                 |  69 ++++++++---
->  fs/proc/base.c                            |   6 +
->  include/linux/cred.h                      |   1 +
->  include/linux/sched/signal.h              |  18 +++
->  kernel/cred.c                             |  30 ++++-
->  kernel/ptrace.c                           |  31 +++++
->  kernel/seccomp.c                          |  12 +-
->  tools/testing/selftests/ptrace/vmaccess.c | 135 ++++++++++++++++++++--
->  8 files changed, 265 insertions(+), 37 deletions(-)
-> 
-> diff --git a/fs/exec.c b/fs/exec.c
-> index 2a1e5e4042a1..31c6ceaa5f69 100644
-> --- a/fs/exec.c
-> +++ b/fs/exec.c
-> @@ -905,11 +905,13 @@ static int exec_mmap(struct mm_struct *mm)
->  	return 0;
->  }
->  
-> -static int de_thread(struct task_struct *tsk)
-> +static int de_thread(struct task_struct *tsk, struct linux_binprm *bprm)
->  {
->  	struct signal_struct *sig = tsk->signal;
->  	struct sighand_struct *oldsighand = tsk->sighand;
->  	spinlock_t *lock = &oldsighand->siglock;
-> +	struct task_struct *t;
-> +	bool unsafe_execve_in_progress = false;
->  
->  	if (thread_group_empty(tsk))
->  		goto no_thread_group;
-> @@ -932,6 +934,19 @@ static int de_thread(struct task_struct *tsk)
->  	if (!thread_group_leader(tsk))
->  		sig->notify_count--;
->  
-> +	for_other_threads(tsk, t) {
-> +		if (unlikely(t->ptrace)
-> +		    && (t != tsk->group_leader || !t->exit_state))
-> +			unsafe_execve_in_progress = true;
-> +	}
-> +
-> +	if (unlikely(unsafe_execve_in_progress)) {
-> +		spin_unlock_irq(lock);
-> +		sig->exec_bprm = bprm;
-> +		mutex_unlock(&sig->cred_guard_mutex);
-> +		spin_lock_irq(lock);
-> +	}
-> +
+> This has to go before patch 3 (and I'd put it before patch 1) in order
+> to preserve bisectability..
 
-cred_guard_mutex has a comment about it being deprecated and shouldn't
-be used in "new code"... Regardless, what cred_guard_mutex is trying to
-protect is changing to credentials.
+Thanks, I'll move it to [2/4]
 
-But what we want to stop is having new threads appear, which
-spin_lock_irq(lock) should stop, yes?
+?  That requires changing the tenses in the
+> commit message, but that's perfectly acceptable.
 
->  	while (sig->notify_count) {
->  		__set_current_state(TASK_KILLABLE);
->  		spin_unlock_irq(lock);
-> @@ -1021,6 +1036,11 @@ static int de_thread(struct task_struct *tsk)
->  		release_task(leader);
->  	}
->  
-> +	if (unlikely(unsafe_execve_in_progress)) {
-> +		mutex_lock(&sig->cred_guard_mutex);
-> +		sig->exec_bprm = NULL;
-> +	}
-> +
->  	sig->group_exec_task = NULL;
->  	sig->notify_count = 0;
->  
-> @@ -1032,6 +1052,11 @@ static int de_thread(struct task_struct *tsk)
->  	return 0;
->  
->  killed:
-> +	if (unlikely(unsafe_execve_in_progress)) {
-> +		mutex_lock(&sig->cred_guard_mutex);
-> +		sig->exec_bprm = NULL;
-> +	}
+I'm not spottig this.  a4055888629bc was added in 2020 and the btrfs
+change is in a preceding series.  I'll describe that by name, so
 
-I think we need to document that cred_guard_mutex now protects
-sig->exec_bprm.
+: Commit a4055888629bc ("mm/memcg: warning on !memcg after readahead page
+: charged") added the warning in folio_lruvec (older name was
+: mem_cgroup_page_lruvec) for !memcg when charging of readahead pages were
+: added to the kernel.  Basically lru pages on a memcg enabled system were
+: always expected to be charged to a memcg.
+: 
+: However a recent functionality to allow metadata of btrfs, which is in
+: page cache, to be uncharged was added to the kernel
+: ("btrfs-set-as_uncharged-on-the-btree_inode.patch").  We can either change
+: the condition to only check anon pages or file pages which does not have
+: AS_UNCHARGED in their mapping.  Instead of such complicated check, let's
+: just remove the warning as it is not really helpful anymore.
 
-> +
->  	/* protects against exit_notify() and __exit_signal() */
->  	read_lock(&tasklist_lock);
->  	sig->group_exec_task = NULL;
-> @@ -1114,13 +1139,31 @@ int begin_new_exec(struct linux_binprm * bprm)
->  	 */
->  	trace_sched_prepare_exec(current, bprm);
->  
-> +	/* If the binary is not readable then enforce mm->dumpable=0 */
-> +	would_dump(bprm, bprm->file);
-> +	if (bprm->have_execfd)
-> +		would_dump(bprm, bprm->executable);
-> +
-> +	/*
-> +	 * Figure out dumpability. Note that this checking only of current
-> +	 * is wrong, but userspace depends on it. This should be testing
-> +	 * bprm->secureexec instead.
-> +	 */
-> +	if (bprm->interp_flags & BINPRM_FLAGS_ENFORCE_NONDUMP ||
-> +	    is_dumpability_changed(current_cred(), bprm->cred) ||
-> +	    !(uid_eq(current_euid(), current_uid()) &&
-> +	      gid_eq(current_egid(), current_gid())))
-> +		set_dumpable(bprm->mm, suid_dumpable);
-> +	else
-> +		set_dumpable(bprm->mm, SUID_DUMP_USER);
-> +
-
-Why is this move needed? While it's writing to bprm, I see it's reading
-from "current". Is this safe to do before de_thread() has happened?
-Can't a sibling thread manipulate things here? What lock am I missing?
-
->  	/*
->  	 * Ensure all future errors are fatal.
->  	 */
->  	bprm->point_of_no_return = true;
->  
->  	/* Make this the only thread in the thread group */
-> -	retval = de_thread(me);
-> +	retval = de_thread(me, bprm);
->  	if (retval)
->  		goto out;
->  	/* see the comment in check_unsafe_exec() */
-> @@ -1144,11 +1187,6 @@ int begin_new_exec(struct linux_binprm * bprm)
->  	if (retval)
->  		goto out;
->  
-> -	/* If the binary is not readable then enforce mm->dumpable=0 */
-> -	would_dump(bprm, bprm->file);
-> -	if (bprm->have_execfd)
-> -		would_dump(bprm, bprm->executable);
-> -
->  	/*
->  	 * Release all of the old mmap stuff
->  	 */
-> @@ -1210,18 +1248,6 @@ int begin_new_exec(struct linux_binprm * bprm)
->  
->  	me->sas_ss_sp = me->sas_ss_size = 0;
->  
-> -	/*
-> -	 * Figure out dumpability. Note that this checking only of current
-> -	 * is wrong, but userspace depends on it. This should be testing
-> -	 * bprm->secureexec instead.
-> -	 */
-> -	if (bprm->interp_flags & BINPRM_FLAGS_ENFORCE_NONDUMP ||
-> -	    !(uid_eq(current_euid(), current_uid()) &&
-> -	      gid_eq(current_egid(), current_gid())))
-> -		set_dumpable(current->mm, suid_dumpable);
-> -	else
-> -		set_dumpable(current->mm, SUID_DUMP_USER);
-> -
->  	perf_event_exec();
->  
->  	/*
-> @@ -1361,6 +1387,11 @@ static int prepare_bprm_creds(struct linux_binprm *bprm)
->  	if (mutex_lock_interruptible(&current->signal->cred_guard_mutex))
->  		return -ERESTARTNOINTR;
->  
-> +	if (unlikely(current->signal->exec_bprm)) {
-> +		mutex_unlock(&current->signal->cred_guard_mutex);
-> +		return -ERESTARTNOINTR;
-> +	}
-> +
->  	bprm->cred = prepare_exec_creds();
->  	if (likely(bprm->cred))
->  		return 0;
-> diff --git a/fs/proc/base.c b/fs/proc/base.c
-> index 62d35631ba8c..e5bcf812cee0 100644
-> --- a/fs/proc/base.c
-> +++ b/fs/proc/base.c
-> @@ -2838,6 +2838,12 @@ static ssize_t proc_pid_attr_write(struct file * file, const char __user * buf,
->  	if (rv < 0)
->  		goto out_free;
->  
-> +	if (unlikely(current->signal->exec_bprm)) {
-> +		mutex_unlock(&current->signal->cred_guard_mutex);
-> +		rv = -ERESTARTNOINTR;
-> +		goto out_free;
-> +	}
-> +
->  	rv = security_setprocattr(PROC_I(inode)->op.lsmid,
->  				  file->f_path.dentry->d_name.name, page,
->  				  count);
-> diff --git a/include/linux/cred.h b/include/linux/cred.h
-> index a102a10f833f..fb0361911489 100644
-> --- a/include/linux/cred.h
-> +++ b/include/linux/cred.h
-> @@ -153,6 +153,7 @@ extern const struct cred *get_task_cred(struct task_struct *);
->  extern struct cred *cred_alloc_blank(void);
->  extern struct cred *prepare_creds(void);
->  extern struct cred *prepare_exec_creds(void);
-> +extern bool is_dumpability_changed(const struct cred *, const struct cred *);
->  extern int commit_creds(struct cred *);
->  extern void abort_creds(struct cred *);
->  extern struct cred *prepare_kernel_cred(struct task_struct *);
-> diff --git a/include/linux/sched/signal.h b/include/linux/sched/signal.h
-> index 1ef1edbaaf79..3c47d8b55863 100644
-> --- a/include/linux/sched/signal.h
-> +++ b/include/linux/sched/signal.h
-> @@ -237,9 +237,27 @@ struct signal_struct {
->  	struct mm_struct *oom_mm;	/* recorded mm when the thread group got
->  					 * killed by the oom killer */
->  
-> +	struct linux_binprm *exec_bprm;	/* Used to check ptrace_may_access
-> +					 * against new credentials while
-> +					 * de_thread is waiting for other
-> +					 * traced threads to terminate.
-> +					 * Set while de_thread is executing.
-> +					 * The cred_guard_mutex is released
-> +					 * after de_thread() has called
-> +					 * zap_other_threads(), therefore
-> +					 * a fatal signal is guaranteed to be
-> +					 * already pending in the unlikely
-> +					 * event, that
-> +					 * current->signal->exec_bprm happens
-> +					 * to be non-zero after the
-> +					 * cred_guard_mutex was acquired.
-> +					 */
-> +
->  	struct mutex cred_guard_mutex;	/* guard against foreign influences on
->  					 * credential calculations
->  					 * (notably. ptrace)
-> +					 * Held while execve runs, except when
-> +					 * a sibling thread is being traced.
->  					 * Deprecated do not use in new code.
->  					 * Use exec_update_lock instead.
->  					 */
-> diff --git a/kernel/cred.c b/kernel/cred.c
-> index 9676965c0981..0b2822c762df 100644
-> --- a/kernel/cred.c
-> +++ b/kernel/cred.c
-> @@ -375,6 +375,30 @@ static bool cred_cap_issubset(const struct cred *set, const struct cred *subset)
->  	return false;
->  }
->  
-> +/**
-> + * is_dumpability_changed - Will changing creds affect dumpability?
-> + * @old: The old credentials.
-> + * @new: The new credentials.
-> + *
-> + * If the @new credentials have no elevated privileges compared to the
-> + * @old credentials, the task may remain dumpable.  Otherwise we have
-> + * to mark the task as undumpable to avoid information leaks from higher
-> + * to lower privilege domains.
-> + *
-> + * Return: True if the task will become undumpable.
-> + */
-> +bool is_dumpability_changed(const struct cred *old, const struct cred *new)
-
-This should be "static", I think?
-
-> +{
-> +	if (!uid_eq(old->euid, new->euid) ||
-> +	    !gid_eq(old->egid, new->egid) ||
-> +	    !uid_eq(old->fsuid, new->fsuid) ||
-> +	    !gid_eq(old->fsgid, new->fsgid) ||
-> +	    !cred_cap_issubset(old, new))
-> +		return true;
-> +
-> +	return false;
-> +}
-> +
->  /**
->   * commit_creds - Install new credentials upon the current task
->   * @new: The credentials to be assigned
-> @@ -403,11 +427,7 @@ int commit_creds(struct cred *new)
->  	get_cred(new); /* we will require a ref for the subj creds too */
->  
->  	/* dumpability changes */
-> -	if (!uid_eq(old->euid, new->euid) ||
-> -	    !gid_eq(old->egid, new->egid) ||
-> -	    !uid_eq(old->fsuid, new->fsuid) ||
-> -	    !gid_eq(old->fsgid, new->fsgid) ||
-> -	    !cred_cap_issubset(old, new)) {
-> +	if (is_dumpability_changed(old, new)) {
->  		if (task->mm)
->  			set_dumpable(task->mm, suid_dumpable);
->  		task->pdeath_signal = 0;
-> diff --git a/kernel/ptrace.c b/kernel/ptrace.c
-> index 75a84efad40f..deacdf133f8b 100644
-> --- a/kernel/ptrace.c
-> +++ b/kernel/ptrace.c
-> @@ -20,6 +20,7 @@
->  #include <linux/pagemap.h>
->  #include <linux/ptrace.h>
->  #include <linux/security.h>
-> +#include <linux/binfmts.h>
->  #include <linux/signal.h>
->  #include <linux/uio.h>
->  #include <linux/audit.h>
-> @@ -453,6 +454,27 @@ static int ptrace_attach(struct task_struct *task, long request,
->  				return retval;
->  		}
->  
-> +		if (unlikely(task->in_execve)) {
-
-Urgh, we're trying to get rid of this bit too.
-https://lore.kernel.org/all/72da7003-a115-4162-b235-53cd3da8a90e@I-love.SAKURA.ne.jp/
-
-Can we find a better indicator?
-
-> +			retval = down_write_killable(&task->signal->exec_update_lock);
-> +			if (retval)
-> +				return retval;
-> +
-> +			scoped_guard (task_lock, task) {
-> +				struct linux_binprm *bprm = task->signal->exec_bprm;
-> +				const struct cred __rcu *old_cred = task->real_cred;
-> +				struct mm_struct *old_mm = task->mm;
-> +				rcu_assign_pointer(task->real_cred, bprm->cred);
-> +				task->mm = bprm->mm;
-> +				retval = __ptrace_may_access(task, PTRACE_MODE_ATTACH_REALCREDS);
-> +				rcu_assign_pointer(task->real_cred, old_cred);
-> +				task->mm = old_mm;
-> +			}
-> +
-> +			up_write(&task->signal->exec_update_lock);
-> +			if (retval)
-> +				return retval;
-> +		}
-> +
->  		scoped_guard (write_lock_irq, &tasklist_lock) {
->  			if (unlikely(task->exit_state))
->  				return -EPERM;
-> @@ -488,6 +510,14 @@ static int ptrace_traceme(void)
->  {
->  	int ret = -EPERM;
->  
-> +	if (mutex_lock_interruptible(&current->signal->cred_guard_mutex))
-> +		return -ERESTARTNOINTR;
-> +
-> +	if (unlikely(current->signal->exec_bprm)) {
-> +		mutex_unlock(&current->signal->cred_guard_mutex);
-> +		return -ERESTARTNOINTR;
-> +	}
-
-I mention this hunk below...
-
-> +
->  	write_lock_irq(&tasklist_lock);
->  	/* Are we already being traced? */
->  	if (!current->ptrace) {
-> @@ -503,6 +533,7 @@ static int ptrace_traceme(void)
->  		}
->  	}
->  	write_unlock_irq(&tasklist_lock);
-> +	mutex_unlock(&current->signal->cred_guard_mutex);
->  
->  	return ret;
->  }
-> diff --git a/kernel/seccomp.c b/kernel/seccomp.c
-> index 41aa761c7738..d61fc275235a 100644
-> --- a/kernel/seccomp.c
-> +++ b/kernel/seccomp.c
-> @@ -1994,9 +1994,15 @@ static long seccomp_set_mode_filter(unsigned int flags,
->  	 * Make sure we cannot change seccomp or nnp state via TSYNC
->  	 * while another thread is in the middle of calling exec.
->  	 */
-> -	if (flags & SECCOMP_FILTER_FLAG_TSYNC &&
-> -	    mutex_lock_killable(&current->signal->cred_guard_mutex))
-> -		goto out_put_fd;
-> +	if (flags & SECCOMP_FILTER_FLAG_TSYNC) {
-> +		if (mutex_lock_killable(&current->signal->cred_guard_mutex))
-> +			goto out_put_fd;
-> +
-> +		if (unlikely(current->signal->exec_bprm)) {
-> +			mutex_unlock(&current->signal->cred_guard_mutex);
-> +			goto out_put_fd;
-> +		}
-
-This updated test and the hunk noted above are _almost_ identical
-(interruptible vs killable). Could a helper with a descriptive name be
-used here instead? (And does the former hunk need interruptible, or
-could it use killable?) I'd just like to avoid having repeated dependent
-logic created ("we have to get the lock AND check for exec_bprm") when
-something better named than "lock_if_not_racing_exec(...)" could be
-used.
-
-> +	}
->  
->  	spin_lock_irq(&current->sighand->siglock);
->  
-> diff --git a/tools/testing/selftests/ptrace/vmaccess.c b/tools/testing/selftests/ptrace/vmaccess.c
-> index 4db327b44586..5d4a65eb5a8d 100644
-> --- a/tools/testing/selftests/ptrace/vmaccess.c
-> +++ b/tools/testing/selftests/ptrace/vmaccess.c
-> @@ -14,6 +14,7 @@
->  #include <signal.h>
->  #include <unistd.h>
->  #include <sys/ptrace.h>
-> +#include <sys/syscall.h>
->  
->  static void *thread(void *arg)
->  {
-> @@ -23,7 +24,7 @@ static void *thread(void *arg)
->  
->  TEST(vmaccess)
->  {
-> -	int f, pid = fork();
-> +	int s, f, pid = fork();
->  	char mm[64];
->  
->  	if (!pid) {
-> @@ -31,19 +32,42 @@ TEST(vmaccess)
->  
->  		pthread_create(&pt, NULL, thread, NULL);
->  		pthread_join(pt, NULL);
-> -		execlp("true", "true", NULL);
-> +		execlp("false", "false", NULL);
-> +		return;
->  	}
->  
->  	sleep(1);
->  	sprintf(mm, "/proc/%d/mem", pid);
-> +	/* deadlock did happen here */
->  	f = open(mm, O_RDONLY);
->  	ASSERT_GE(f, 0);
->  	close(f);
-> -	f = kill(pid, SIGCONT);
-> -	ASSERT_EQ(f, 0);
-> +	f = waitpid(-1, &s, WNOHANG);
-> +	ASSERT_NE(f, -1);
-> +	ASSERT_NE(f, 0);
-> +	ASSERT_NE(f, pid);
-> +	ASSERT_EQ(WIFEXITED(s), 1);
-> +	ASSERT_EQ(WEXITSTATUS(s), 0);
-> +	f = waitpid(-1, &s, 0);
-> +	ASSERT_EQ(f, pid);
-> +	ASSERT_EQ(WIFEXITED(s), 1);
-> +	ASSERT_EQ(WEXITSTATUS(s), 1);
-> +	f = waitpid(-1, NULL, 0);
-> +	ASSERT_EQ(f, -1);
-> +	ASSERT_EQ(errno, ECHILD);
->  }
->  
-> -TEST(attach)
-> +/*
-> + * Same test as previous, except that
-> + * we try to ptrace the group leader,
-> + * which is about to call execve,
-> + * when the other thread is already ptraced.
-> + * This exercises the code in de_thread
-> + * where it is waiting inside the
-> + * while (sig->notify_count) {
-> + * loop.
-> + */
-> +TEST(attach1)
->  {
->  	int s, k, pid = fork();
->  
-> @@ -52,19 +76,76 @@ TEST(attach)
->  
->  		pthread_create(&pt, NULL, thread, NULL);
->  		pthread_join(pt, NULL);
-> -		execlp("sleep", "sleep", "2", NULL);
-> +		execlp("false", "false", NULL);
-> +		return;
->  	}
->  
->  	sleep(1);
-> +	/* deadlock may happen here */
->  	k = ptrace(PTRACE_ATTACH, pid, 0L, 0L);
-> -	ASSERT_EQ(errno, EAGAIN);
-> -	ASSERT_EQ(k, -1);
-> +	ASSERT_EQ(k, 0);
->  	k = waitpid(-1, &s, WNOHANG);
->  	ASSERT_NE(k, -1);
->  	ASSERT_NE(k, 0);
->  	ASSERT_NE(k, pid);
->  	ASSERT_EQ(WIFEXITED(s), 1);
->  	ASSERT_EQ(WEXITSTATUS(s), 0);
-> +	k = waitpid(-1, &s, 0);
-> +	ASSERT_EQ(k, pid);
-> +	ASSERT_EQ(WIFSTOPPED(s), 1);
-> +	ASSERT_EQ(WSTOPSIG(s), SIGTRAP);
-> +	k = waitpid(-1, &s, WNOHANG);
-> +	ASSERT_EQ(k, 0);
-> +	k = ptrace(PTRACE_CONT, pid, 0L, 0L);
-> +	ASSERT_EQ(k, 0);
-> +	k = waitpid(-1, &s, 0);
-> +	ASSERT_EQ(k, pid);
-> +	ASSERT_EQ(WIFSTOPPED(s), 1);
-> +	ASSERT_EQ(WSTOPSIG(s), SIGSTOP);
-> +	k = waitpid(-1, &s, WNOHANG);
-> +	ASSERT_EQ(k, 0);
-> +	k = ptrace(PTRACE_CONT, pid, 0L, 0L);
-> +	ASSERT_EQ(k, 0);
-> +	k = waitpid(-1, &s, 0);
-> +	ASSERT_EQ(k, pid);
-> +	ASSERT_EQ(WIFEXITED(s), 1);
-> +	ASSERT_EQ(WEXITSTATUS(s), 1);
-> +	k = waitpid(-1, NULL, 0);
-> +	ASSERT_EQ(k, -1);
-> +	ASSERT_EQ(errno, ECHILD);
-> +}
-> +
-> +/*
-> + * Same test as previous, except that
-> + * the group leader is ptraced first,
-> + * but this time with PTRACE_O_TRACEEXIT,
-> + * and the thread that does execve is
-> + * not yet ptraced.  This exercises the
-> + * code block in de_thread where the
-> + * if (!thread_group_leader(tsk)) {
-> + * is executed and enters a wait state.
-> + */
-> +static long thread2_tid;
-> +static void *thread2(void *arg)
-> +{
-> +	thread2_tid = syscall(__NR_gettid);
-> +	sleep(2);
-> +	execlp("false", "false", NULL);
-> +	return NULL;
-> +}
-> +
-> +TEST(attach2)
-> +{
-> +	int s, k, pid = fork();
-> +
-> +	if (!pid) {
-> +		pthread_t pt;
-> +
-> +		pthread_create(&pt, NULL, thread2, NULL);
-> +		pthread_join(pt, NULL);
-> +		return;
-> +	}
-> +
->  	sleep(1);
->  	k = ptrace(PTRACE_ATTACH, pid, 0L, 0L);
->  	ASSERT_EQ(k, 0);
-> @@ -72,12 +153,46 @@ TEST(attach)
->  	ASSERT_EQ(k, pid);
->  	ASSERT_EQ(WIFSTOPPED(s), 1);
->  	ASSERT_EQ(WSTOPSIG(s), SIGSTOP);
-> -	k = ptrace(PTRACE_DETACH, pid, 0L, 0L);
-> +	k = ptrace(PTRACE_SETOPTIONS, pid, 0L, PTRACE_O_TRACEEXIT);
-> +	ASSERT_EQ(k, 0);
-> +	thread2_tid = ptrace(PTRACE_PEEKDATA, pid, &thread2_tid, 0L);
-> +	ASSERT_NE(thread2_tid, -1);
-> +	ASSERT_NE(thread2_tid, 0);
-> +	ASSERT_NE(thread2_tid, pid);
-> +	k = waitpid(-1, &s, WNOHANG);
-> +	ASSERT_EQ(k, 0);
-> +	sleep(2);
-> +	/* deadlock may happen here */
-> +	k = ptrace(PTRACE_ATTACH, thread2_tid, 0L, 0L);
-> +	ASSERT_EQ(k, 0);
-> +	k = waitpid(-1, &s, WNOHANG);
-> +	ASSERT_EQ(k, pid);
-> +	ASSERT_EQ(WIFSTOPPED(s), 1);
-> +	ASSERT_EQ(WSTOPSIG(s), SIGTRAP);
-> +	k = waitpid(-1, &s, WNOHANG);
-> +	ASSERT_EQ(k, 0);
-> +	k = ptrace(PTRACE_CONT, pid, 0L, 0L);
-> +	ASSERT_EQ(k, 0);
-> +	k = waitpid(-1, &s, 0);
-> +	ASSERT_EQ(k, pid);
-> +	ASSERT_EQ(WIFSTOPPED(s), 1);
-> +	ASSERT_EQ(WSTOPSIG(s), SIGTRAP);
-> +	k = waitpid(-1, &s, WNOHANG);
-> +	ASSERT_EQ(k, 0);
-> +	k = ptrace(PTRACE_CONT, pid, 0L, 0L);
-> +	ASSERT_EQ(k, 0);
-> +	k = waitpid(-1, &s, 0);
-> +	ASSERT_EQ(k, pid);
-> +	ASSERT_EQ(WIFSTOPPED(s), 1);
-> +	ASSERT_EQ(WSTOPSIG(s), SIGSTOP);
-> +	k = waitpid(-1, &s, WNOHANG);
-> +	ASSERT_EQ(k, 0);
-> +	k = ptrace(PTRACE_CONT, pid, 0L, 0L);
->  	ASSERT_EQ(k, 0);
->  	k = waitpid(-1, &s, 0);
->  	ASSERT_EQ(k, pid);
->  	ASSERT_EQ(WIFEXITED(s), 1);
-> -	ASSERT_EQ(WEXITSTATUS(s), 0);
-> +	ASSERT_EQ(WEXITSTATUS(s), 1);
->  	k = waitpid(-1, NULL, 0);
->  	ASSERT_EQ(k, -1);
->  	ASSERT_EQ(errno, ECHILD);
-
-Thank you for adding tests! This will be a nice deadlock to get fixed.
-
--Kees
-
--- 
-Kees Cook
 
