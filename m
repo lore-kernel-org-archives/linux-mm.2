@@ -2,138 +2,102 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 96FC9CA0EF5
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 00:36:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 74A6DCA0EE4
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 00:55:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A9D78E000D; Mon, 18 Aug 2025 20:36:32 -0400 (EDT)
+	id DEFB66B00B2; Mon, 18 Aug 2025 20:55:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75A916B00FB; Mon, 18 Aug 2025 20:36:32 -0400 (EDT)
+	id DA0E96B00B3; Mon, 18 Aug 2025 20:55:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5AD798E000D; Mon, 18 Aug 2025 20:36:32 -0400 (EDT)
+	id C40FB6B00B6; Mon, 18 Aug 2025 20:55:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4481E6B00FA
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 20:36:32 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1B9141A01D1
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 00:36:32 +0000 (UTC)
-X-FDA: 83791641024.16.E54B4DB
-Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 27FE31C0006
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 00:36:30 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=bur.io header.s=fm1 header.b="s 0qb2bI";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=eAtlw1AA;
-	spf=pass (imf21.hostedemail.com: domain of boris@bur.io designates 103.168.172.145 as permitted sender) smtp.mailfrom=boris@bur.io;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A99636B00B2
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 20:55:54 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1A5471A01E9
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 00:55:54 +0000 (UTC)
+X-FDA: 83791689828.01.BD125DE
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 825B920005
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 00:55:50 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf03.hostedemail.com: domain of zhangqilong3@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=zhangqilong3@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755563790;
+	s=arc-20220608; t=1755564952;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u4jbtDWlH4fW3RgHZtpgw2FYUwY1QFj6S1833X5dCgc=;
-	b=gZ21UaONQJ2lKCzZ3M1EYs3NBizHJAUYIooKTS/fAvygIGoYZIxPU+f9mHWOkKpg7NoJog
-	KEcj4BYGR78lWPN8+MhrNWzotfdxcM21yCEfdyxreTHnneXFibbAR3W6WM6bYjJihhb0md
-	o9iL9ItaGr5wroQqUxN+uGDXX/plxoI=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=qOEUW9LYh1VnRQ1Vc6GRkmqAqpFqgoxQ+i+jp40/RGA=;
+	b=zawS2AlfCCHo3/5Ue8UZJXAk2iaVuv547TOUaifFs7/PCGq9mYX+L8JpzOEM6cgOdbXkUk
+	ie7yoLh4gFg1WOfYHN6BJoK6X/uGtVkIp9LSF8Zz8yJuJBFTV3XHbxS/IkGcNJ+e4c/eiR
+	NrpdlA0Hfevjle40k1zzyKbhVRHIKwU=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=bur.io header.s=fm1 header.b="s 0qb2bI";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=eAtlw1AA;
-	spf=pass (imf21.hostedemail.com: domain of boris@bur.io designates 103.168.172.145 as permitted sender) smtp.mailfrom=boris@bur.io;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755563790; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf03.hostedemail.com: domain of zhangqilong3@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=zhangqilong3@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755564952; a=rsa-sha256;
 	cv=none;
-	b=xIX6NwZAnBOYnVOhYmU2U5Q5RP2uAxv3f23V3iYfIkVUV0pgTtEXNH7Gq9LOI9YLFDhFdh
-	qKTqN1euiT/r16f+tReJkd8AvOjMLKTERBVWWifu/S5H2lEowcsaRVnNvDY8FOvWqnDL5A
-	cx9t4xN38XoE2VsLt2Z6Mjw/OBMVgIA=
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfout.phl.internal (Postfix) with ESMTP id 8C0D5EC0853;
-	Mon, 18 Aug 2025 20:36:29 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Mon, 18 Aug 2025 20:36:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bur.io; h=cc:cc
-	:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1755563789; x=
-	1755650189; bh=u4jbtDWlH4fW3RgHZtpgw2FYUwY1QFj6S1833X5dCgc=; b=s
-	0qb2bIhJA+VfL4JxcGIFVoMcrlZfSYd+t0NtSAktMy6vA0kg1lhAQ+t14CErYEZN
-	UV+bvoEWZjEA0Q5Wn7m8NbI57fap1X7+3IFWyvQUTR3TNv4uWfJ3xn1RG6wBC2WD
-	4VapbYL5RxbeX6F4SNyoO+yWHGUPrylCs1YxJDN6j1f1M0kGwH9lsvIrpGKOpUOw
-	+l7HZiB/rVxDWT3E0M2pVhjw2RKRbEVUwQJwZEFyHz5qdY66myu3WiH7oODZF+Ds
-	7PxT1yHpBM/Cx0A5I76HwIwXk/fexwOq85wm/Q2W5toYBP6JjOYDMYHi/GTlYEWo
-	POyFWc1TCrf3uBC6VgBRA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1755563789; x=1755650189; bh=u
-	4jbtDWlH4fW3RgHZtpgw2FYUwY1QFj6S1833X5dCgc=; b=eAtlw1AAcna6a2w7y
-	0Vw2NScfDCuCheV0l1m72WiwrXMFWqzLqAco40cz4Xx+sVMQ2jc4FneCdoMFbOzi
-	X9NWg/5WDDhz7DHq41ykVM6kqXfV5ZKT0Z5F49z2CUJEttfol72dlpdv/CuDHOI5
-	FwsEd4vP2BWYfqJWos1JtzGOusxYsNK9LwG2bs8y1BnpJPihaUaClm4hGJUur8Sl
-	H5e8BnFKHbf0G++1Nd95q+CAFwh8M9fEk2VteABaUow8RnEiKwbwe0TJIaJw4LU3
-	LrxcezqChGjPz/f2bWv0VmSJpvwKXSm5AnPMvx3IsK8TUnYNsccmcNWpa0VvzdX4
-	5MJPg==
-X-ME-Sender: <xms:DcejaN7qPpOSkCLo_Dq-y_9dJW26on58-EVvVqnLC9W82hY1D_cpHQ>
-    <xme:DcejaAYLAIgTCjIltDtFaOJedbt2_KrCmVqGjH1uyUIm2WSgQsgcjYJTGZwTlwxKE
-    mSo1D4XWeiZPGrAJK8>
-X-ME-Received: <xmr:DcejaDjncnolvloFZXC6gZcBS9S34KRYCJoYtHzickaSB44YULF_bOrTX7oE4gt8mFMQFfb9p3FFhezRusmKXHIzNjY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduheegtdejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucenucfjughrpefhvfevufffkffojghfggfgsedtkeertd
-    ertddtnecuhfhrohhmpeeuohhrihhsuceuuhhrkhhovhcuoegsohhrihhssegsuhhrrdhi
-    oheqnecuggftrfgrthhtvghrnhepueekhfeuleegtdevudeggfethfdvgfehteejuddugf
-    ejffekueefudelieeuleevnecuffhomhgrihhnpehshiiisghothdrohhrghenucevlhhu
-    shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhrihhssegsuh
-    hrrdhiohdpnhgspghrtghpthhtohepuddvpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoh
-    eplhhinhhugidqsghtrhhfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthho
-    pehlihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgtphhtthhopehlihhnuhigqdhfsh
-    guvghvvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhgvrhhnvghl
-    qdhtvggrmhesfhgsrdgtohhmpdhrtghpthhtohepshhhrghkvggvlhdrsghuthhtsehlih
-    hnuhigrdguvghvpdhrtghpthhtohepfihquhesshhushgvrdgtohhmpdhrtghpthhtohep
-    fihilhhlhiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehmhhhotghkoheskh
-    gvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:DcejaKfQ4d8rLqZYBEsJpLYGUsBMxtScHd0Z366wZdkbI_bZ27kqew>
-    <xmx:DcejaKlf-rLNhJjqlbmhjzn7nyLqqZDzZEn12TuJZvHesXOqOnJylg>
-    <xmx:DcejaHyySGEK2eX4qeaQ4Fr-HbJ7PSW_BmlZF_jH1qEEg2oh0PTbzA>
-    <xmx:DcejaFwGDTTdP1r1vfm6hFPe4kTE6PlyB9mOP0mPnlkTyx1iMaDHLw>
-    <xmx:DcejaJLkwITDUFaiDXM_USMOTo9Dq7Nc8tYvh4MxnTpcG60Nen2wEYWb>
-Feedback-ID: i083147f8:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 18 Aug 2025 20:36:28 -0400 (EDT)
-From: Boris Burkov <boris@bur.io>
-To: akpm@linux-foundation.org
-Cc: linux-btrfs@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	kernel-team@fb.com,
-	shakeel.butt@linux.dev,
-	wqu@suse.com,
-	willy@infradead.org,
-	mhocko@kernel.org,
-	muchun.song@linux.dev,
-	roman.gushchin@linux.dev,
-	hannes@cmpxchg.org
-Subject: [PATCH v3 4/4] memcg: remove warning from folio_lruvec
-Date: Mon, 18 Aug 2025 17:36:56 -0700
-Message-ID: <0cf22669a203b8671b6774408bfa4864ba3dbf60.1755562487.git.boris@bur.io>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1755562487.git.boris@bur.io>
-References: <cover.1755562487.git.boris@bur.io>
+	b=NfcGMrNPvKSeHDEWjvy7Zwg6t+J+4L2KRz5GwwtP1rh49TDZT56fwW/lcbRkartdpMAl6K
+	hS0FcWnfTB0Uo4s9OlhByBZUHt2Orv4UCz5YnJYkNsHvQ5HYnKJcQwY8UcEHtyaOSKCnZb
+	HQGacJAoyjBr4glbqwkJx83MuzTBu68=
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4c5WNG50K0z14MZj;
+	Tue, 19 Aug 2025 08:55:42 +0800 (CST)
+Received: from dggpemf100010.china.huawei.com (unknown [7.185.36.136])
+	by mail.maildlp.com (Postfix) with ESMTPS id D52681400D4;
+	Tue, 19 Aug 2025 08:55:45 +0800 (CST)
+Received: from dggpemf500012.china.huawei.com (7.185.36.8) by
+ dggpemf100010.china.huawei.com (7.185.36.136) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 19 Aug 2025 08:55:45 +0800
+Received: from dggpemf500012.china.huawei.com ([7.185.36.8]) by
+ dggpemf500012.china.huawei.com ([7.185.36.8]) with mapi id 15.02.1544.011;
+ Tue, 19 Aug 2025 08:55:45 +0800
+From: zhangqilong <zhangqilong3@huawei.com>
+To: Vernon Yang <vernon2gm@gmail.com>, "akpm@linux-foundation.org"
+	<akpm@linux-foundation.org>, "david@redhat.com" <david@redhat.com>,
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, "ziy@nvidia.com"
+	<ziy@nvidia.com>, "baolin.wang@linux.alibaba.com"
+	<baolin.wang@linux.alibaba.com>, "Liam.Howlett@oracle.com"
+	<Liam.Howlett@oracle.com>, "npache@redhat.com" <npache@redhat.com>,
+	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "dev.jain@arm.com"
+	<dev.jain@arm.com>, "baohua@kernel.org" <baohua@kernel.org>,
+	"glider@google.com" <glider@google.com>, "elver@google.com"
+	<elver@google.com>, "dvyukov@google.com" <dvyukov@google.com>,
+	"vbabka@suse.cz" <vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>,
+	"surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>,
+	"muchun.song@linux.dev" <muchun.song@linux.dev>, "osalvador@suse.de"
+	<osalvador@suse.de>, "shuah@kernel.org" <shuah@kernel.org>,
+	"richardcochran@gmail.com" <richardcochran@gmail.com>
+CC: "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.or"
+	<linux-kernel@vger.kernel.or>
+Subject: Re: [RFC PATCH 0/7] add mTHP support for wp
+Thread-Topic: [RFC PATCH 0/7] add mTHP support for wp
+Thread-Index: AdwQo349CifFP6AVSnqbpVCLzlI4Ig==
+Date: Tue, 19 Aug 2025 00:55:45 +0000
+Message-ID: <cca76935cc9f480d969340c914a44f3b@huawei.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.174.177.115]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ougbceqm7eycxw9prnxqzs4oyccbcb7t
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 825B920005
+X-Stat-Signature: etozinzdm4huxcpytqo4xekkprz5unfo
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 27FE31C0006
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1755563790-262145
-X-HE-Meta: U2FsdGVkX19VoDEDQ91q5RqvuZ7VOSEFQiWtNyYmngDYxB+/hjq2C6rKgKxh9ZD7A9RSDpNdF9F3JP6dhaDxYLvH1J8Yz1WimMW/wAIkKmsOI5P7AwrbZ/3ljzgQbMU147TMJ4J1CZXHHFiUZTnbissQ9K9EsmIgx3oiePHXB7INTRzm4cYOGjqyWrwEIXRdT4DUHFMTsVimfOQNYFxCQtQq+cAlElisc3wAVJKK8sbW+3Z2bUTN3i07/GbPUNyJnSpAwt6bIE0a4G6JdOlxNMGmhpZMWZzagJwe0YwBKFxw+djdlcOzzz6vj9jp4bX866JHQGx+EUd87cxi8T2kuH8Li3a5LRjzl+EAofkJvZFIIMFqKXsguKkJT5tv0itywNJo13XXHs2KhiauUtQPZhyF95+Zo8aKk3ZFmA+S7z0RpOyzLxtDcCAJvYcvbEzt3sAVz8smWChxoyH5M5w/KqG/32sVe0RRRzKwliVSZnHvzJ5VVMq0sYb5h8QhkQ9LN4nKHLmy/Oay/7cQiobv5DWO0bjCsWjaJAg+6YNIaSEmD7m4H2StrEligsvFOBiLLVllrtgOhRwLrE1ZFCmbUDlNVOLoh3pOvLz6EfrUJzQuL/DokNBrsVaGkkMSUVhp5zMYFisbyQBtrqxONAthExk0hBj0TQkiA/BQ84LDVMuiVeRbyWAWzaqdIojv/C+EiOQoRuteHXEdEwuk8oMpNa32U9w7jmcBAI3vC42hQFPC9p5UN3+UQ9h4uYA6nMXfkYgJPMqv27LwmmZrOa07UdSiUL8X30+97rz1YauvKcn76QakHifmzxsdIzexgRIoWZWwpTrSt+uxrZVxf03vLJiTwMWS9ZYMW6+IC6k7Ti04M5nRUhhLYNm9u3UFbHUCy0i/Qg7E+lULgWMLHYCwqba9nTOpLVENAM5wVe1iLffQRG8/UaRMNCt1tmZ0AYoftwnIwtkIrNh4rAkXZf1
- GmwDMpDi
- sBHRYpu8Ht9ykTi1dzqBmkY8RomxbNqSB4XqXsllhuLUk822CT4uWc12ZdQs0IoslLgJ/z/iHbGqD5tH96BO4Z6lgY73115ZzYVv7Q4zkWhrAuXN++nrsUn0fydaJ+gppFrsJeFshhh1VG/YQEpJeVsh9LE+WEW9B7aqdJXnP+VOe4vuqyyvdC6WluBmmYW39l+92Dp6DY2Ke4+1vjlXXgjAY6uuSLCw8dP3jdtqPDx7ty1KpI4kx62tzoYuOEn/wCgcZ1Br3RXnsukCc5Cq/6I1RXDEcZV9xh11nXInaMWGGeSPWnOmQ9BM0Hjnk/5vOjGGPSlB6EatBbLkaBW9rTOd/v40XjWWpuqh5a2NaHrbr6tV7VUy4eckR0ZYkMzqZe1Jg
+X-HE-Tag: 1755564950-169274
+X-HE-Meta: U2FsdGVkX19VSIlCvm9DB9LMz4oZ4cELQiRes26aN+AOdzjaZ4r80c+wnf/PLc4QYi9sG5Su6EbJTrOeooMYsrYNRzqtVNExEvmBx2tl/GoiVPM3J/xIoj6fxEpjfyc2VS11pUdm2ygxjH53QMlIerbGUMLGh7D78ppLYpGZYKO9cXFKFGRk36rd4T7I7K5aFvv3nYoG9cWZaQoydnxJjQbUxwRaArrEHM8imIQjadBvv8sUsq7X4DoT+Gb1CEghKHkWlooGWQNDRa4/iBzstYOV+Nw/kb6QR3sFFn+RJoiVvA+i8idpA/aRMNEmPHCclLxQP5UQL71dg4+YQGulDmoFMgC/Gg8iyUcxNS8rf9quWiwzm0Xe4w5uRseYMLPtNYBuFlDZsMiy8faT9jgzkjJ7wLWb6kSUvxpBjaCSXtK6o0S9I3egQx5X1T2pyhjKdZwFZrvSu2J9U0bnLuBTXOUvtwVyYhZn4QI2+7bt3kYVc1Vs/SC22NqVzqCLWq3Hxn05AV2+LdqeLz+EZduhbEDGNkNdXDltTanooeaVVheKfTX8A+1I4U8U8c4XSfn6q83XHkrKq21bD6wuf0lwDeSxEI3m6z5sn/FfNl8A02pFwDiV+pDY28FNKwmvekfhyMgQROIdEXBJLZf/KnVMclitlSeJ+1JFynCViYjjJDKMQerYOVj0CYG265iurKi5u1qVK672SJoT81zOv+lQCWXpolJr9RoIHVHzX+vsvWnfbxKBl0pVbeb3Xba8ZRFW4uHxbIn5ZnikjcOhuDvnN/YnxWrlUSFBypsQWZKupk2+SsqswirD5gggJJ8tImUNB26DcVfn5jEuYc/Npn1WuC683Bw43B/glwPYv8JOF/p/LLUpiBvCEGbF+0PWjgo9j+ljDOU443xJPTgv6tPRA632QrJBnHAhXiUfURek46+MQunGEh12oUQVI0Mja1PG3GyZ416L7AEijy8MjQo
+ 1WSk81Nb
+ fSyyEeDqTUe/ZevCGFJ2wYZqBuJ13RDVH75TOtU1yD24ReB1YpnytY9nCcEJtbg37kUKgxfqlpj3tWkG7Cj41mo1a9m6o9Sq23p0x35oZs+DlqWbadbqA6t9HmXSZpoDDAOV1Ws6GsaVOQAX4Igm4QZTSMcs6/L1SxXbp25kM/S+nYh1u4vRm61tehO0XWKtI57s4ddRl0XJFs18r8UvnwJvB436veR0T6aTNMeUdQm2CbxyUADxiZmUYV+4SRCww1A91xtatH1zlZ3BHDYmX1JaW3UzvAh9gRloOWPBD+Dlb4Z6JpCCQcUL4b6+mTuR6rEiAispN0EGBhV0qUTebTN+7obAyKF+6IPGEMV21QMDT9azBlZlZHILbt0E2nUWDJWNrTtGkQsmiJgNRKaUW6xv9qZzl2/Rt+H3P
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,43 +106,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Shakeel Butt <shakeel.butt@linux.dev>
+>=20
+> Hi all,
+>=20
+> This patchset is introduced to make pagefault write-protect copy support
+> mthp, with this series, pagefault write-protect copy will have a 9-14%
+> performance improvement.
+>=20
+> Currently pagefaults on anonymous pages support mthp [1], and hardware
+> features (such as arm64 contpte) can be used to store multiple ptes in on=
+e
+> TLB entry, reducing the probability of TLB misses. However, when the
+> process is forked and the cow is triggered again, the above optimization
+> effect is lost, and only 4KB is requested once at a time.
+>=20
+> Therefore, make pagefault write-protect copy support mthp to maintain the
+> optimization effect of TLB and improve the efficiency of cow pagefault.
+>=20
+> vm-scalability usemem shows a great improvement, test using: usemem -n
+> 32 --prealloc --prefault 249062617 (result unit is KB/s, bigger is better=
+)
+>=20
+> |    size     | w/o patch | w/ patch  |  delta  |
+> |-------------|-----------|-----------|---------|
+> | baseline 4K | 723041.63 | 717643.21 | -0.75%  |
+> | mthp 16K    | 732871.14 | 799513.18 | +9.09%  |
+> | mthp 32K    | 746060.91 | 836261.83 | +12.09% |
+> | mthp 64K    | 747333.18 | 855570.43 | +14.48% |
+>=20
+> This series is based on Linux v6.16 (038d61fd6422).
+>=20
+> Thanks,
+> Vernon
+>=20
+> [1] https://lore.kernel.org/all/20231207161211.2374093-1-
+> ryan.roberts@arm.com/
+>=20
+> Vernon Yang (7):
+>   mm: memory: replace single-operation with multi-operation in wp
+>   mm: memory: add ptep_clear_flush_range function
+>   mm: memory: add kmsan_copy_pages_meta function
+>   mm: memory: add offset to start copy for copy_user_gigantic_page
+>   mm: memory: improve wp_page_copy readability
+>   mm: memory: add mTHP support for wp
 
-Commit a4055888629bc ("mm/memcg: warning on !memcg after readahead page
-charged") added the warning in folio_lruvec (older name was
-mem_cgroup_page_lruvec) for !memcg when charging of readahead pages were
-added to the kernel. Basically lru pages on a memcg enabled system were
-always expected to be charged to a memcg.
+Oh, we are also doing similar optimizations, but only for the code segment.=
+ :)
 
-However a recent functionality to allow metadata of btrfs, which is in
-page cache, to be uncharged is added to the kernel. We can either change
-the condition to only check anon pages or file pages which does not have
-AS_UNCHARGED in their mapping. Instead of such complicated check, let's
-just remove the warning as it is not really helpful anymore.
-
-Closes: https://ci.syzbot.org/series/15fd2538-1138-43c0-b4d6-6d7f53b0be69
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
----
- include/linux/memcontrol.h | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
-
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 9fa3afc90dd5..fae105a9cb46 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -729,10 +729,7 @@ static inline struct lruvec *mem_cgroup_lruvec(struct mem_cgroup *memcg,
-  */
- static inline struct lruvec *folio_lruvec(struct folio *folio)
- {
--	struct mem_cgroup *memcg = folio_memcg(folio);
--
--	VM_WARN_ON_ONCE_FOLIO(!memcg && !mem_cgroup_disabled(), folio);
--	return mem_cgroup_lruvec(memcg, folio_pgdat(folio));
-+	return mem_cgroup_lruvec(folio_memcg(folio), folio_pgdat(folio));
- }
- 
- struct mem_cgroup *mem_cgroup_from_task(struct task_struct *p);
--- 
-2.50.1
+>   selftests: mm: support wp mTHP collapse testing
+>=20
+>  include/linux/huge_mm.h                 |   3 +
+>  include/linux/kmsan.h                   |  13 +-
+>  include/linux/mm.h                      |   8 +
+>  include/linux/pgtable.h                 |   3 +
+>  mm/hugetlb.c                            |   6 +-
+>  mm/kmsan/shadow.c                       |  26 +-
+>  mm/memory.c                             | 309 ++++++++++++++++++------
+>  mm/pgtable-generic.c                    |  20 ++
+>  tools/testing/selftests/mm/khugepaged.c |   5 +-
+>  9 files changed, 302 insertions(+), 91 deletions(-)
+>=20
+> --
+> 2.50.1
+>=20
 
 
