@@ -2,146 +2,85 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 43BACCA0EF5
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 07:57:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7790BCA0EF5
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 08:01:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCEC18E0005; Tue, 19 Aug 2025 03:57:43 -0400 (EDT)
+	id F363E6B00B5; Tue, 19 Aug 2025 04:01:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D57E48E0002; Tue, 19 Aug 2025 03:57:43 -0400 (EDT)
+	id EE6CC6B0106; Tue, 19 Aug 2025 04:01:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C1F4E8E0005; Tue, 19 Aug 2025 03:57:43 -0400 (EDT)
+	id DD59A6B0107; Tue, 19 Aug 2025 04:01:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AB61A8E0002
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 03:57:43 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5AAFC1A02B9
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 07:57:43 +0000 (UTC)
-X-FDA: 83792752806.02.7D036C6
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf13.hostedemail.com (Postfix) with ESMTP id CE18C20002
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 07:57:40 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Kq0pIQv9;
-	spf=pass (imf13.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C746B6B00B5
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 04:01:19 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 74FDD1380B8
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 08:01:19 +0000 (UTC)
+X-FDA: 83792761878.16.0192A35
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 9152B4000C
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 08:01:15 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=none;
+	spf=pass (imf07.hostedemail.com: domain of yintirui@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755590261;
+	s=arc-20220608; t=1755590477;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lkLhLr/fJDzFBos0ozmWujsjFAp3g6noJWKQ4OpXxSI=;
-	b=BiuYVLSzulpiVCYAJuLBKenMLJKZyYQobIhfKBkW/b29sbXkrdSHoLLDjdd/0xdh38PtuV
-	UntQnQsw5MvN22JAadgSrxOxJeIs714HpIaSbl4FJZ1Faf8nQRxTHRDeeM2SMft+wByiK3
-	q+vQuZrq1PYDz+ztzmhVy8bGsJsJQu0=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=1AicBB0r8yeNJ3bXaHmABMtMcb1aAChoUbacMbHzHfc=;
+	b=neDGYSouyN1H1B1X+It6HoWtTmVdPe6gkmpqoWemQ+bAF23+SEGwtUyTUD119uxwgefAp2
+	/j8sgIjgbef7PkfgRFO+v+tXBIOokPu1pR6O/+azJ7zmQ3y4y4pXjcR0qygjVFRpfiyf8B
+	fsKQxEvc+/MW8O6Xo5SuUfbgFceFEik=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Kq0pIQv9;
-	spf=pass (imf13.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755590261; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=none;
+	spf=pass (imf07.hostedemail.com: domain of yintirui@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755590477; a=rsa-sha256;
 	cv=none;
-	b=d5jkMpQlw66neLMyaBGX3J5fUp9P+vRclnveKTpFslCopiauaaaOUD0gbg4WO5+THNq0vb
-	h6OQ/hKXIEDShr29MAeJQO5Nngh7V8TvkGjqbHzGbF3f1jxQOFK3XMaVa8gxMw3o1f4Etd
-	t74FD+hMMgfUu1ThH8j+v7llnrsM/W0=
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57IKJOo4016893;
-	Tue, 19 Aug 2025 07:57:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=lkLhLr
-	/fJDzFBos0ozmWujsjFAp3g6noJWKQ4OpXxSI=; b=Kq0pIQv94uxnDw/EVbFwpN
-	A3j+9lPv3YZCA5NB9xANZXopiG55w4fnsNBMqrO42MWqBv6zdlOhQSB6D1m3QXLd
-	j5+p2AcjRfxxOP62Lz6ulrxNhm4Lwv9cN2nGWY2xuVnI9Q4Mrhgo5JrMwjv5GOJ3
-	j5nuYhUS5poK8ybU1frD+J0t49DIFBAj3NBmBVDrOercvoRHqBRCOSqZgwwGHrl6
-	n8bFwppUifzrC9+Pk0/BYeDfN86VdeyO1XkCmidQBk7ENsK2wqNtnzSpR27imo2M
-	zKDB/HVdvQniQrAD6pvsvvV/N2gD3Lg8BaHw2eex3pBSreRK3kxqlUW+ZIf7+9pw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48k60g2f5w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 Aug 2025 07:57:35 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57J7V2ad005076;
-	Tue, 19 Aug 2025 07:57:34 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48k60g2f5s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 Aug 2025 07:57:34 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57J6WVmF002381;
-	Tue, 19 Aug 2025 07:57:33 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 48k71311a2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 Aug 2025 07:57:33 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57J7vVNY51970316
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 19 Aug 2025 07:57:32 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CA9AB20043;
-	Tue, 19 Aug 2025 07:57:31 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E141420040;
-	Tue, 19 Aug 2025 07:57:21 +0000 (GMT)
-Received: from aboo.ibm.com (unknown [9.150.8.232])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 19 Aug 2025 07:57:21 +0000 (GMT)
-Message-ID: <588d7bc1af412052da01ada1e316dc3452e35435.camel@linux.ibm.com>
-Subject: Re: [PATCH v4 4/7] mm/selftests: Fix split_huge_page_test failure
- on systems with 64KB page size
-From: Aboorva Devarajan <aboorvad@linux.ibm.com>
-To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org
-Cc: Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com, shuah@kernel.org,
-        pfalcato@suse.de, david@redhat.com, ziy@nvidia.com,
-        baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
-        dev.jain@arm.com, baohua@kernel.org, linux-mm@kvack.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-        donettom@linux.ibm.com, ritesh.list@gmail.com
-Date: Tue, 19 Aug 2025 13:27:19 +0530
-In-Reply-To: <20250816143129.u2rdwpwvfhsdptvx@master>
-References: <20250816040113.760010-1-aboorvad@linux.ibm.com>
-	 <20250816040113.760010-5-aboorvad@linux.ibm.com>
-	 <20250816143129.u2rdwpwvfhsdptvx@master>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	b=w+85A7UNBYXoKd1fjViLiazFN8rs2/PABSvIysMj5ox0u7mOmjgG7yCa4HPjTh6KwxpZfe
+	pY/mnf16fhUT8p4wC/wuoeBsm1uV01rTl5vGYhhHRzZQ+ZREPepyUVU8W4xlRa11OoO2Gx
+	zknOWfo9RqGayB6/8wJYhB6I/JdYQGo=
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4c5hk73CTwz2CgJd;
+	Tue, 19 Aug 2025 15:56:47 +0800 (CST)
+Received: from kwepemo100001.china.huawei.com (unknown [7.202.195.173])
+	by mail.maildlp.com (Postfix) with ESMTPS id B15DB1400D4;
+	Tue, 19 Aug 2025 16:01:09 +0800 (CST)
+Received: from huawei.com (10.175.101.6) by kwepemo100001.china.huawei.com
+ (7.202.195.173) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 19 Aug
+ 2025 16:01:08 +0800
+From: Yin Tirui <yintirui@huawei.com>
+To: <robh@kernel.org>, <saravanak@google.com>, <dan.j.williams@intel.com>,
+	<akpm@linux-foundation.org>, <david@redhat.com>, <rppt@kernel.org>,
+	<Jonathan.Cameron@huawei.com>, <devicetree@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+CC: <wangkefeng.wang@huawei.com>, <chenjun102@huawei.com>,
+	<yintirui@huawei.com>
+Subject: [PATCH v3] of_numa: fix uninitialized memory nodes causing kernel panic
+Date: Tue, 19 Aug 2025 15:55:10 +0800
+Message-ID: <20250819075510.2079961-1-yintirui@huawei.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Xxo-rqbc7cebc1fPmjZ5ElzwCajbrHcg
-X-Authority-Analysis: v=2.4 cv=coObk04i c=1 sm=1 tr=0 ts=68a42e6f cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=7CQSdrXTAAAA:8 a=Ikd4Dj_1AAAA:8 a=pGLkceISAAAA:8 a=tHhU2u7-ekzRu8kCQfcA:9
- a=QEXdDO2ut3YA:10 a=a-qgeE7W1pNrGK8U0ZQC:22
-X-Proofpoint-GUID: oTFYm-c-N6_cjxhC8XgowrRG4DRYlYYk
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE3MDAxNiBTYWx0ZWRfX67xGcB4BeSH8
- ulN8vqwFzYGzs6y1LNSMP/C7lfl3OLCfi//7f+YmKUot8z40fD4S8avAa0B8vmyJMIH8R0nDm2/
- 6qG7Vx5lr9bEfoK1Iz9UyiAyGDIlKhFyaOyuUTTbq2zpE5YjvEflIW4VHK6gMYpiXVTcgTZKqtu
- LomJoBCnKMG1rPYDMaNG6hAAYbedGJ9WK2tfVkFdS3ID4tSaIOmWQtU8VAplxV8EpktvNBqTxgY
- 4Z72ecj+PFZi4ZTJr7m5wly0c724RS2PMlpthVoUYyzKP06tywNEVG+mb5nmfVydNFy1XOWi0Nv
- PmeI2wnnut/LuotJYkau1yVhnUHAJGLlAVCqne+HOBtcmKfcmAas2dmuJI19jjm7dyVCETmrCVO
- dmEP5L6N
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-19_01,2025-08-14_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 suspectscore=0 bulkscore=0 clxscore=1015 malwarescore=0
- priorityscore=1501 adultscore=0 impostorscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508170016
-X-Stat-Signature: jh9ajxgwz8ucs8xqzkzuyr8uhmeuz566
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.175.101.6]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemo100001.china.huawei.com (7.202.195.173)
+X-Rspamd-Queue-Id: 9152B4000C
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CE18C20002
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755590260-645560
-X-HE-Meta: U2FsdGVkX18jDOtUuii6og3TATtqx1bD1JbP1qWc3rhE2z7nWMZofa38HB/qXv/uiqqjEIoQgcu0ituj+kJKiLCqQj+hmKmRLx0p31vHj2EcEbBcf/vxchABYkMWBYDQS2V3RDSO3/oSpWh+Kuaavz9SiYgwjJuqtNhLcxqtGhHZ9fRU/DbboHYqLGJAyTfSCRXIDpSW2+9OHxgNpfXmp78bZ2tqBOjsVcl3r/+1UG7znMymU21OILUwz6mSGn+smXdIztkQEznguRX1PaORC82qY3IE+sCAzTBhGy64zbfnTGTneiGZPDYZ9/QocWbFnUMVaCj2f7XM0Tqf6owXGwG8k+Mw8rrz2Gge4EQPkHyIZ4pXDPWDEiAmDbO3vhvItorh2oFJIzQz9Du47IC3J5FpAl0zbuCjyy1edEnCw5VA42rEfp817oDwIDMYoyg1LvZL9JQ9HTECgK9UMvTYM3OtAJpSDVpm1NISrPierRS3dRwI5K2+7rQ1zqv/fht0c1C7A/klhN0orgO42US3AlfZa1+ijN2xLo5JQGjJfspLb2p25WXqSCzBOxp9g6RiieU3iUm4S4uQkmowjH64hGjVAn3w+TqQLCgKUqgmZV2jBdIZrZy8HDJXoD/wThVR71DZX/jnKLV2DxOhV7/QNVoGS1b41bjClbvrhVwE3M2LT0T6YzKh2yNp4E+1xytQKiYBdeEm8KtqWBHBfT1hWVmmKJaA5Y5/We2fx96jUe1DI8eN8wj/ihohy2tLq0zinBVYtGXDuyLkZSC0/R6kbOKDYfSpxGRvHxhAFMP8SY1NeMA1J0YmY5aveNmC5YWIRdpx9GucsecD1lfc+t2UP2nXuZz74S02X1JKp1PC9+2rDvKjsvadM/1Xw8YG06b2oAZYoYXvFXrqkVAyAu0ACmidkF639iUEVc3ZEFBTH23w8BuR31+VMkG5hm3rHi9JJbiEHlM2LdAOk9l06Lb
- eJuyR7Gg
- shdp0vPEV3uKTfvSW+uqHc/SijKz3F28kNyVbZ/pBDTqoPtZrjQof3RZRW30xKMq2e3AD7QC6qYnjtfdTkhNj0umxDcUbx9zmSdICHCJgG3/P5E9S7A7PobDDlT+iHHbAyeO6FDePYRQpK2R2AIC8V7tihqnf7vlcUnbQQUevCFFN2ksn6WZONLm93noLmBs7M6Te8cfEnCCH6r5g8dqVb96ikQ7oGRZLiNk+xUqKQrdshg/Uxln/XfNUdAZ4UhreqpWzdv++LICj5Mcy3e8/SvjhHkMYAcu+MmZjpK+OUdHTx8bEhFqm6AVMhPq/JreSuVPhaZ3rcFPF2QMAN2VEW4w5OifugplQUQfUvbdVHjZEKzxeWyPOW5OfVPPzXtj1zZ87JRYiFr9Pgtmz2KYysThBmO1WJfuVZCwF/U7z6YH9bhJnvnJkadITWOTP0Tnxzfifcxaa5VRho1QqTHSCpxBSBSM7ocjxz2XWVYPgAkq42Fh61opPPYggUvY8/LE8yYGMoOQ0b5lOcxW5hBG+a7vD+BhLH//692mOi1O9x0mat7Ip9Pcn91FzGWeIa/6x5H7RPbeLoerqnAY=
+X-Stat-Signature: p3am8scjezo34m7f3h8ky5qecjue67rw
+X-HE-Tag: 1755590475-137106
+X-HE-Meta: U2FsdGVkX18KopzfS7xOfD3uKh52ZRQXuen+/hFPLW4EDRBOd4WYhSBIZchRto8cUmmcyWuuG4cv0BWWPvzdYEzbQlbScsstIUwz6y+SaMwQSwyRNrLtnKRS+LJLtkc/Btj/pgsvYceFIpn7LxX2UbeQ/t9rZoBQBxkDmtjNbPTyUhzYmsugm0p7kY0P8LJfTwoeo/2+QvDQtZg6cs07MdatJvDXXFt5dDCDJiisbWazHxb3/fqCNEQVEDp38CzjU2S4Pbsw5sJuTOwVezuBxzbpku04Y4n5k+raZoitOSAeR2ksJXZ3HkwAJ+LAd+nRgs8wvwc0YMLBRehWpyk+JEL7dWxlWqD3YRvS6rZcywPpFnEVmVR3AZNmJ1CS5N0ZTDApYkfUhLpiS6XbZQ7A0FejJDYwQ/qD5yEhyLl9sHAnWccgd43YsW66XuN0NfU97tgznY0HSEMACR3S7oUV8Hp9Dfii4Di75pQW8I1X085fOOJzQEKINFSkgZxksJq0vrr9ijY8dIU3jHUoSnFvxerHuv2MTFdYX8rdS0+oGdvWIMeTF5PWvzXoFW1q80gy1/Iq97TevgJMhMqtmrZopgwn18mVvbN14nBwpPLj2rpl3tVYszY2gWTb76qmnXGJ6dO1VjkojGYfvlYAzN00ov1FtpQ3PPVj3gqIbuTWU0w/j+Cf37X+GTKYaUdy/XJPiU3g+qVJ5WuJ+Sb+SvulZcAifUSyje7/VvyKEoEf0EgrSICCqz1XMq4nsolKqo5nMEUOBWROeKAh+grkjdQxRSOy4qlfjQ5b6/jLmso+ER0afQ7Ev8ya1ehi63+RjLYfkTscj4x06KOTFSsXbNrM4xqrPbTsMN/nId8r+ItIbDhI2M/5Ip2KwIiX2pLqtViwhHSLEwlfillCxYOr448KQETGlS2c9YTvZgzpQ2XSmtkqtVqcOjlnx+25Mfqktg0bUuLz8jtA98l+4XCDTXu
+ bjF17ZZg
+ rmAKE6g10b3cXzBipdizbsBZYaIgGUYMCmy+BJXN17EI+VVCEeKkZRit8ZXuzwmbwvozxqg+Z3/3zcpw9FFLceXBaMDahvoJmgqCDktLz8McCEKj3WiYR/+1m8jQA7OQJENEsGYiain+aKPlN1WxoJsHBSmidX21MdeZ+eQi+sxMcx9sr0d9fFu7Ir/qk5+I+l0gukiBpVRHEWUI0aTeVdsW1d1QQpAubjC22oG/WWEub9LTpCGW8VFAz92u6GVlvA+xs/bTWwBxllBr42XRuHRqai+fa6PqmT2Wp
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,124 +89,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 2025-08-16 at 14:31 +0000, Wei Yang wrote:
-> On Sat, Aug 16, 2025 at 09:31:10AM +0530, Aboorva Devarajan wrote:
-> > From: Donet Tom <donettom@linux.ibm.com>
-> >=20
-> > The split_huge_page_test fails on systems with a 64KB base page
-> > size.
-> > This is because the order of a 2MB huge page is different:
-> >=20
-> > On 64KB systems, the order is 5.
-> >=20
-> > On 4KB systems, it's 9.
-> >=20
-> > The test currently assumes a maximum huge page order of 9, which is
-> > only
-> > valid for 4KB base page systems. On systems with 64KB pages,
-> > attempting
-> > to split huge pages beyond their actual order (5) causes the test
-> > to fail.
-> >=20
-> > In this patch, we calculate the huge page order based on the
-> > system's base
-> > page size. With this change, the tests now run successfully on both
-> > 64KB
-> > and 4KB page size systems.
-> >=20
-> > Fixes: fa6c02315f745 ("mm: huge_memory: a new debugfs interface for
-> > splitting THP tests")
-> > Co-developed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-> > Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-> > Reviewed-by: Dev Jain <dev.jain@arm.com>
-> > Reviewed-by: Zi Yan <ziy@nvidia.com>
-> > Signed-off-by: Donet Tom <donettom@linux.ibm.com>
->=20
-> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
->=20
-> Nit below:
->=20
-> > ---
-> > tools/testing/selftests/mm/cow.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 5 -----
-> > .../selftests/mm/split_huge_page_test.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 | 22 ++++++++++++----
-> > ---
-> > tools/testing/selftests/mm/uffd-wp-mremap.c=C2=A0=C2=A0 |=C2=A0 5 -----
-> > tools/testing/selftests/mm/vm_util.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 5 +++++
-> > 4 files changed, 19 insertions(+), 18 deletions(-)
-> >=20
-> > diff --git a/tools/testing/selftests/mm/cow.c
-> > b/tools/testing/selftests/mm/cow.c
-> > index 90ee5779662f..e742d9313798 100644
-> > --- a/tools/testing/selftests/mm/cow.c
-> > +++ b/tools/testing/selftests/mm/cow.c
-> > @@ -41,11 +41,6 @@ static size_t hugetlbsizes[10];
-> > static int gup_fd;
-> > static bool has_huge_zeropage;
-> >=20
-> > -static int sz2ord(size_t size)
-> > -{
-> > -	return __builtin_ctzll(size / pagesize);
-> > -}
-> > -
-> > static int detect_thp_sizes(size_t sizes[], int max)
-> > {
-> > 	int count =3D 0;
-> > diff --git a/tools/testing/selftests/mm/split_huge_page_test.c
-> > b/tools/testing/selftests/mm/split_huge_page_test.c
-> > index eadbeb820d71..7cbeaebc9d71 100644
-> > --- a/tools/testing/selftests/mm/split_huge_page_test.c
-> > +++ b/tools/testing/selftests/mm/split_huge_page_test.c
-> > @@ -523,6 +523,9 @@ int main(int argc, char **argv)
-> > 	const char *fs_loc;
-> > 	bool created_tmp;
-> > 	int offset;
-> > +	unsigned int max_order;
-> > +	unsigned int nr_pages;
-> > +	unsigned int tests;
-> >=20
-> > 	ksft_print_header();
-> >=20
-> > @@ -534,35 +537,38 @@ int main(int argc, char **argv)
-> > 	if (argc > 1)
-> > 		optional_xfs_path =3D argv[1];
-> >=20
-> > -	ksft_set_plan(1+8+1+9+9+8*4+2);
-> > -
-> > 	pagesize =3D getpagesize();
-> > 	pageshift =3D ffs(pagesize) - 1;
-> > 	pmd_pagesize =3D read_pmd_pagesize();
-> > 	if (!pmd_pagesize)
-> > 		ksft_exit_fail_msg("Reading PMD pagesize
-> > failed\n");
-> >=20
-> > +	nr_pages =3D pmd_pagesize / pagesize;
-> > +	max_order =3D=C2=A0 sz2ord(pmd_pagesize);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^
-> 		=C2=A0=C2=A0=C2=A0 extra space here
+When there are memory-only nodes (nodes without CPUs), these nodes
+are not properly initialized, causing kernel panic during boot.
 
-Hi Wei,
+of_numa_init
+	of_numa_parse_cpu_nodes
+		node_set(nid, numa_nodes_parsed);
+	of_numa_parse_memory_nodes
 
-Thanks for the review. I=E2=80=99ve sent a fixup patch for this:
-https://lore.kernel.org/all/20250819041239.167537-1-aboorvad@linux.ibm.com/
+In of_numa_parse_cpu_nodes, numa_nodes_parsed gets updated only for
+nodes containing CPUs. Memory-only nodes should have been updated in
+of_numa_parse_memory_nodes, but they weren't.
 
-Andrew,=C2=A0
+Subsequently, when free_area_init() attempts to access NODE_DATA()
+for these uninitialized memory nodes, the kernel panics due to NULL
+pointer dereference.
 
-Could you please apply the above fixup patch?
+This can be reproduced on ARM64 QEMU with 1 CPU and 2 memory nodes:
 
-Regards,
-Aboorva
+qemu-system-aarch64 \
+-cpu host -nographic \
+-m 4G -smp 1 \
+-machine virt,accel=kvm,gic-version=3,iommu=smmuv3 \
+-object memory-backend-ram,size=2G,id=mem0 \
+-object memory-backend-ram,size=2G,id=mem1 \
+-numa node,nodeid=0,memdev=mem0 \
+-numa node,nodeid=1,memdev=mem1 \
+-kernel $IMAGE \
+-hda $DISK \
+-append "console=ttyAMA0 root=/dev/vda rw earlycon"
 
->=20
-> > +	tests =3D 2 + (max_order - 1) + (2 * max_order) + (max_order
-> > - 1) * 4 + 2;
-> > +	ksft_set_plan(tests);
-> > +
-> > 	fd_size =3D 2 * pmd_pagesize;
-> >=20
-> > 	split_pmd_zero_pages();
-> >=20
+[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x481fd010]
+[    0.000000] Linux version 6.17.0-rc1-00001-gabb4b3daf18c-dirty (yintirui@local) (gcc (GCC) 12.3.1, GNU ld (GNU Binutils) 2.41) #52 SMP PREEMPT Mon Aug 18 09:49:40 CST 2025
+[    0.000000] KASLR enabled
+[    0.000000] random: crng init done
+[    0.000000] Machine model: linux,dummy-virt
+[    0.000000] efi: UEFI not found.
+[    0.000000] earlycon: pl11 at MMIO 0x0000000009000000 (options '')
+[    0.000000] printk: legacy bootconsole [pl11] enabled
+[    0.000000] OF: reserved mem: Reserved memory: No reserved-memory node in the DT
+[    0.000000] NODE_DATA(0) allocated [mem 0xbfffd9c0-0xbfffffff]
+[    0.000000] node 1 must be removed before remove section 23
+[    0.000000] Zone ranges:
+[    0.000000]   DMA      [mem 0x0000000040000000-0x00000000ffffffff]
+[    0.000000]   DMA32    empty
+[    0.000000]   Normal   [mem 0x0000000100000000-0x000000013fffffff]
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000040000000-0x00000000bfffffff]
+[    0.000000]   node   1: [mem 0x00000000c0000000-0x000000013fffffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000040000000-0x00000000bfffffff]
+[    0.000000] Unable to handle kernel NULL pointer dereference at virtual address 00000000000000a0
+[    0.000000] Mem abort info:
+[    0.000000]   ESR = 0x0000000096000004
+[    0.000000]   EC = 0x25: DABT (current EL), IL = 32 bits
+[    0.000000]   SET = 0, FnV = 0
+[    0.000000]   EA = 0, S1PTW = 0
+[    0.000000]   FSC = 0x04: level 0 translation fault
+[    0.000000] Data abort info:
+[    0.000000]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+[    0.000000]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[    0.000000]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[    0.000000] [00000000000000a0] user address but active_mm is swapper
+[    0.000000] Internal error: Oops: 0000000096000004 [#1]  SMP
+[    0.000000] Modules linked in:
+[    0.000000] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.17.0-rc1-00001-g760c6dabf762-dirty #54 PREEMPT
+[    0.000000] Hardware name: linux,dummy-virt (DT)
+[    0.000000] pstate: 800000c5 (Nzcv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[    0.000000] pc : free_area_init+0x50c/0xf9c
+[    0.000000] lr : free_area_init+0x5c0/0xf9c
+[    0.000000] sp : ffffa02ca0f33c00
+[    0.000000] x29: ffffa02ca0f33cb0 x28: 0000000000000000 x27: 0000000000000000
+[    0.000000] x26: 4ec4ec4ec4ec4ec5 x25: 00000000000c0000 x24: 00000000000c0000
+[    0.000000] x23: 0000000000040000 x22: 0000000000000000 x21: ffffa02ca0f3b368
+[    0.000000] x20: ffffa02ca14c7b98 x19: 0000000000000000 x18: 0000000000000002
+[    0.000000] x17: 000000000000cacc x16: 0000000000000001 x15: 0000000000000001
+[    0.000000] x14: 0000000080000000 x13: 0000000000000018 x12: 0000000000000002
+[    0.000000] x11: ffffa02ca0fd4f00 x10: ffffa02ca14bab20 x9 : ffffa02ca14bab38
+[    0.000000] x8 : 00000000000c0000 x7 : 0000000000000001 x6 : 0000000000000002
+[    0.000000] x5 : 0000000140000000 x4 : ffffa02ca0f33c90 x3 : ffffa02ca0f33ca0
+[    0.000000] x2 : ffffa02ca0f33c98 x1 : 0000000080000000 x0 : 0000000000000001
+[    0.000000] Call trace:
+[    0.000000]  free_area_init+0x50c/0xf9c (P)
+[    0.000000]  bootmem_init+0x110/0x1dc
+[    0.000000]  setup_arch+0x278/0x60c
+[    0.000000]  start_kernel+0x70/0x748
+[    0.000000]  __primary_switched+0x88/0x90
+[    0.000000] Code: d503201f b98093e0 52800016 f8607a93 (f9405260)
+[    0.000000] ---[ end trace 0000000000000000 ]---
+[    0.000000] Kernel panic - not syncing: Attempted to kill the idle task!
+[    0.000000] ---[ end Kernel panic - not syncing: Attempted to kill the idle task! ]---
+
+v2: Move the changes to the of_numa related. Correct the fixes tag.
+v3: Only amend commit message with no code changes.
+
+Cc: stable@vger.kernel.org
+Fixes: 767507654c22 ("arch_numa: switch over to numa_memblks")
+Signed-off-by: Yin Tirui <yintirui@huawei.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+---
+ drivers/of/of_numa.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/of/of_numa.c b/drivers/of/of_numa.c
+index 230d5f628c1b..cd2dc8e825c9 100644
+--- a/drivers/of/of_numa.c
++++ b/drivers/of/of_numa.c
+@@ -59,8 +59,11 @@ static int __init of_numa_parse_memory_nodes(void)
+ 			r = -EINVAL;
+ 		}
+ 
+-		for (i = 0; !r && !of_address_to_resource(np, i, &rsrc); i++)
++		for (i = 0; !r && !of_address_to_resource(np, i, &rsrc); i++) {
+ 			r = numa_add_memblk(nid, rsrc.start, rsrc.end + 1);
++			if (!r)
++				node_set(nid, numa_nodes_parsed);
++		}
+ 
+ 		if (!i || r) {
+ 			of_node_put(np);
+-- 
+2.43.0
+
 
