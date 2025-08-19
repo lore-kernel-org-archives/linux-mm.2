@@ -2,92 +2,87 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BB974CA0EE6
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 23:32:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A303ACA0EEB
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 23:46:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA5AF6B00A4; Tue, 19 Aug 2025 19:31:59 -0400 (EDT)
+	id 254FC8E0008; Tue, 19 Aug 2025 19:46:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7D726B00A5; Tue, 19 Aug 2025 19:31:59 -0400 (EDT)
+	id 22CF98E0001; Tue, 19 Aug 2025 19:46:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBA2E6B00A6; Tue, 19 Aug 2025 19:31:59 -0400 (EDT)
+	id 190C38E0008; Tue, 19 Aug 2025 19:46:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BB41A6B00A4
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 19:31:59 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 82EFB116A83
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 23:31:59 +0000 (UTC)
-X-FDA: 83795107158.10.1079A67
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8E82C14000A
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 23:31:57 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LTRdl8Q8;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BB798E0001
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 19:46:51 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 49E4C56FB8
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 23:46:50 +0000 (UTC)
+X-FDA: 83795144580.22.935C514
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf03.hostedemail.com (Postfix) with ESMTP id EE7F220007
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 23:46:47 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="aS/up6TF"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755646318;
+	s=arc-20220608; t=1755647208;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gTcaclbQ96B+bDuBdiEL8ARlJKH5hHL3AxN4AB69H20=;
-	b=pZF/PKd5Kdl0ypbbmmsrFEwyLxBmaaC+E5MU/AD6SH6n3VFGNpjiygR9E0x6A7in9L/CaO
-	aF6mN2A+l3q2gxh9TDaOH19+vpwsl9+hv6s7rUl/7Wgw2qVJBKIlbBecA0FtWE1rk79ZY0
-	QRflvwXAtq5p05Gzsij6sXgXsS4smsA=
+	bh=HEUPIQNacF5PxxegBqbsUnaXiJZQ0xuzwBbC1vo0iYE=;
+	b=GfYehdw0oFYNawUPXbr+Az27sdX5vGdCngxTk4QGAQ81y7y7yu3RFZrM0I7wA4yq19Vq9x
+	kerPBRUbuG/XrKffGalU7GKUztA8GtN1LiDcK7ukGaAVkK2UJj32OwByYF1Rndmikpt5ko
+	LTWi2KqPhR9YyB0UAhiUaR6sEFqXLSw=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LTRdl8Q8;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755646318; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="aS/up6TF";
+	spf=none (imf03.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755647208; a=rsa-sha256;
 	cv=none;
-	b=ywbtjkErDLpkP1SM0886I/EWO1Xetsj9lzgDG0rIDaRv4b4uudOB+R7q1/QDlLJj/ArRwN
-	L3V+kTN/0fqIdexkXURs+rFNtPY1npn8FHaCL38tlM+Cw5c408wh9uTIdX92Kv9MjTeqD+
-	8h+7lytlm4swtKC4yviMmg97/k0yTnI=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755646315;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gTcaclbQ96B+bDuBdiEL8ARlJKH5hHL3AxN4AB69H20=;
-	b=LTRdl8Q8BJzAwYcj49uLQDdPuiA4IbEhrwThhy3zCP+J/PfKqPZxPiKjiXbPvT1KZYtAZD
-	ZHryLZDWX1GYdOQAh9ymUnZudKtpRCEv9aeYuUCTdc+SWe+Z90XJSSdbQK7kVmg8OPjtBz
-	cLwcYOtaXcz9h0M0vfYrwMunlb4GRUQ=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: linux-mm@kvack.org,  bpf@vger.kernel.org,  Johannes Weiner
- <hannes@cmpxchg.org>,  Michal Hocko <mhocko@suse.com>,  David Rientjes
- <rientjes@google.com>,  Matt Bobrowski <mattbobrowski@google.com>,  Song
- Liu <song@kernel.org>,  Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-  Alexei Starovoitov <ast@kernel.org>,  Andrew Morton
- <akpm@linux-foundation.org>,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 12/14] sched: psi: implement psi trigger handling
- using bpf
-In-Reply-To: <87tt23vt8u.fsf@linux.dev> (Roman Gushchin's message of "Tue, 19
-	Aug 2025 15:31:13 -0700")
-References: <20250818170136.209169-1-roman.gushchin@linux.dev>
-	<20250818170136.209169-13-roman.gushchin@linux.dev>
-	<CAJuCfpHUDSJ_yLEqtfmU0rykUGYM6tXR+rgVv1i3QjJz+2JU1A@mail.gmail.com>
-	<87tt23vt8u.fsf@linux.dev>
-Date: Tue, 19 Aug 2025 16:31:43 -0700
-Message-ID: <87cy8qx50g.fsf@linux.dev>
+	b=RJZw4RJJnCwNBNzLUG6H3CSpwuIGrdjDJAp6IXNB9aqBgABBZ/avSFC2IUaZP33/VTX8Ab
+	nuaNCb3KuFyp7w+Tgo8uE1DI11oGk8l4IdG3E7he0IWsA2uoIJKeEqWh6ND+uFv7tC2Vf+
+	Ix7Q3kymhtnkntcb4SDiDQL0+Jxv+To=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=HEUPIQNacF5PxxegBqbsUnaXiJZQ0xuzwBbC1vo0iYE=; b=aS/up6TFfUES39twyNhHcGUqhQ
+	2LbOzNknbl7g1/yUUQZydAWqxAyuy2e9u5wgiuF4bjCY5NA2/4SremYME0vfgd0N0ze1tyaYjwkmQ
+	PopQ7jcFhndtS2D6BklWFz8raGWRRvXKNF24dDrLnvmFCPxqvUdmRf1i9yu1iy62WI0nmEjdJhYQk
+	SSou+oZF1u9gKQG5RBnIvp80YXgpVpdvR0BkpJH9/uqV3CGBpcI1Q6B0A1WYcxQRlCDSoUkkLy6jh
+	powKvt5Y8cun2DJP82W2jBsIud7NAnejHd4nmDHQbkTeTmNWxIBZYmAB1/LXwPtc7PjdfBkjsqj0M
+	5zaqkVWA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uoW2N-0000000E9dY-1uMv;
+	Tue, 19 Aug 2025 23:46:43 +0000
+Date: Wed, 20 Aug 2025 00:46:43 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Boris Burkov <boris@bur.io>, akpm@linux-foundation.org,
+	linux-btrfs@vger.kernel.org, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org, kernel-team@fb.com, wqu@suse.com,
+	mhocko@kernel.org, muchun.song@linux.dev, roman.gushchin@linux.dev,
+	hannes@cmpxchg.org
+Subject: Re: [PATCH v3 2/4] mm: add vmstat for cgroup uncharged pages
+Message-ID: <aKUM49I-4D24MmwZ@casper.infradead.org>
+References: <cover.1755562487.git.boris@bur.io>
+ <04b3a5c9944d79072d752c85dac1294ca9bee183.1755562487.git.boris@bur.io>
+ <aKPmiWAwDPNdNBUA@casper.infradead.org>
+ <tw5qydmgv35v63lhqgl7zbjmgwxm2cujqdjq3deicdz2k26ymh@mnxhz43e6jwl>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 8E82C14000A
-X-Stat-Signature: ywzgz5tnub9nqrdjjkcts83t37zr9bu3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <tw5qydmgv35v63lhqgl7zbjmgwxm2cujqdjq3deicdz2k26ymh@mnxhz43e6jwl>
+X-Stat-Signature: qa59tca1ed1yfzpzzoracfagowsp5wpr
 X-Rspam-User: 
-X-HE-Tag: 1755646317-613462
-X-HE-Meta: U2FsdGVkX19VXYichG/8GLy0E+vuHtbsJ3wW5feOFDKqSZOn510nh4qo4WuBVJT4WHWo9T+5snUyBNozPpScv9DhsMbbn8r3JPG4poq5wmmJmhMyf7UQXzfidAS4WWw5rHfZQD8/TSlq8Gkyxsurazk8rJyIeNA4f+8xwU+lyTeldXfsXT6GM8z1N0iYWWsimFtlwO306v9Hr/OlRMXaMzOJt6ilbHtCIa4hXvOWtFsxGursn++GP42nNitAlICVkRTbjj1xBjVJcnv2ppC8RuD8PQa9n7DRK+3YBtcom4k3/dHKM9U9O0syvGqQs7GgYvpKKvqLGU7iwJzGEB17OndCJPiEtfCguOZuo9sgy2n5YSos8z/7g1SkDp2km1Iz4u0qtYe3mQUeuxF7rZmuxze3VnkCNTm/QrKXvhQr4ZSI63Q3UA2lYdwgmHESzPfi5+w1z6+bbV8LOomSMzx7hdY845Wr34opsr7hda6BdAZU609OiWmCFVGq2asWoA4SemKrgJC5hZIDNZ5mPHI4wF3t3kUHorQLoyAuTcd5yhHDrwICccgVIFLZURYG9cOy1Wml5ZpyrSVFtnHWeeIIFrtGwweqswMLUpxdQMnbadJg0sgGi+ff6PV+ayVyzwlH/M/S9UTIUe4SB2Kh0sen8JNXIHI+4kVVh1bXS+KoO7r6Dk8k2wEDNHldjOW2CpM1Gxtl+vxe6aBe4N0uMRcdd1aAE59NG48Ko7GxgYXCCk2ow+QnXf/CEkTLGj3TozCdhbSjuZx4bqqcNK9QAJ34mh0iYbpswmRZ1+oRbvZwo8DvhiN9iGBxy5kZnwwRu7bOCYcqANOTJrFBkTb9WJO3aFZRNf5ROHZUnFli1nvP1Gb0FGaB8oKd8GiDSPbGfZvg4Z58JooDsFvkjiZztDsk7ytf0fY8pfZyUN2Ic0Z6ZnQZ+YhvYwEcUC1BO0G2uX3J3LL5ehWNKACq6+3IsyH
- JsDdaTQz
- TsZfJjX8mfGfQfkd8UIMGUv+CF2hkJW3Mf4jz416DF20Q0Ma8oKwfIAnR/iWzLR1xVnSRHFe3HDhoO/nemZX5QX42hLCyfnQ2xLleRCSfxsKUO38rWjKrhP+FTL6fXndtU93nbryo5/tmfueebieCzlYXT5WZVmQzatDBMoDTM7B8MBEe1b3xwqFMKeC7tQ6kDPauK6m8uQh4iq1PZqRPpyhI27KCT2pPbcPSrLiVJ4LOHbY=
+X-Rspamd-Queue-Id: EE7F220007
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755647207-6751
+X-HE-Meta: U2FsdGVkX1/aSDKb0ZpF7zvqCCyWavriS/Y5GrTZAARCTHaXRYZq2J52gFhtNNN0x+pW2D3djCRgIU4myJYeaa7OajrERK1ImMOm3WUI8faKjiIptPmSKAwndTmQkMxwdzmaMZcDYdsahTutLaTd1o8xGmtc3vGSrcsXrZsgY6++UyXL2mUNYhtidsV9F35IKaiE8BEFrc0cJykYJHwlnANq8bGuPXhHB6kQhERya+chcnC3+5810KViXRF8XEmfoqtqyWbeq+G+sMZc4Oq+nz/nX5gUHNcAOhDazyWvGdOwldtF5Gw+mZISizLe5N4INja4vfOt7SZvfDqPFi7oEpe134p4fO2i3kvIpG78nxYjRgXcuddF+K6YbstAu7dV2EMxd0h/4bvpqYAMRVcVdkhH4bNgr3P4B2iJbTGCeteuxbY0BcVVwrCL59PrbIstcl2ZMts1rYpG8SwvWt+xi5PNmCrisEWjypU2kp3R3aXeTDnq0VbpBvG7VIGERPh/CDlvpoE0Bi+mxEf15HGC+dXNfT8Jjs4hPeVjn2hCf6jvqjyxxrIJeWJ5hFKyI1aB9cg5y9X1VdPPQ9sJwldOG9ceSkh0i1oxU+qgKynXjrQBtY/Qk7wpf1Hr6Aw7iPMNYrgqzM94NHurSjDCne/W8nrWoLfNsF5hCdpV6unemIbiOrCTEKOgBL2i9Eu3+rcjo2kAecDZkXGvIejOhlnoF19pmGlSHk41d5D0TnXHEbbhg1hc5UePOLCMTIwqJcF/A6UIL84TLeTALeTeZ4ggLv/yfG5f6A/Aj8+Z8xKK8nQvEI0uDYQQfXlMGHE3a1DRsbJgGsEHs93CfYAqCfKQ1IV/xsFJ2PyYmuA2bfzQkx+YTLTzpodDvsojwDp+bHLh/cc7MN7bqWIIHdWFkZYE0YXx3j0G6fZWJwwYfKWM2FG33CNRKAKpfmdkAKkquzErnOgqUdiJxWouoChjOaV
+ tUN2opZ6
+ x59tAnEocRii41L+uuaxkkAoykFD9jqc8dlwFmizKJvG0glNreqZRV9CD9pxRr1w7/pdy7B2Ysw2D49hubSpbyy26UIHGQJRKtr6KYk8V3SQEdYy7vMqlDwgLsVR9zoN6bJM6naEMCLnw5IFq3Y0YElh8NtlsKVm3ihD7Jd85gjKd0BsNLTDP1Xe8SQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,33 +91,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Roman Gushchin <roman.gushchin@linux.dev> writes:
+On Tue, Aug 19, 2025 at 08:53:59AM -0700, Shakeel Butt wrote:
+> My initial thinking was based on Qu's original proposal which was using
+> root memcg where there will not be any difference between accounted
+> file pages and system wide file pages. However with Boris's change, we
+> can actually get the estimate, as you pointed out, by subtracting the
+> number of accounted file pages from system wide number of file pages.
+> 
+> However I still think we should keep this new metric because of
+> performance reason. To get accounted file pages, we need to read
+> memory.stat of the root memcg which can be very expensive. Basically it
+> may have to flush the rstat update trees on all the CPUs on the system.
+> Since this new metric will be used to calculate system overhead, the
+> high cost will limit how frequently a user can query the latest stat.
 
-> Suren Baghdasaryan <surenb@google.com> writes:
->
->> On Mon, Aug 18, 2025 at 10:02=E2=80=AFAM Roman Gushchin
->> <roman.gushchin@linux.dev> wrote:
->
->>
->>> +
->>> +       /* Cgroup Id */
->>> +       u64 cgroup_id;
->>
->> This cgroup_id field is weird. It's not initialized and not used here,
->> then it gets initialized in the next patch and used in the last patch
->> from a selftest. This is quite confusing. Also logically I don't think
->> a cgroup attribute really belongs to psi_trigger... Can we at least
->> move it into bpf_psi where it might fit a bit better?
->
-> I can't move it to bpf_psi, because a single bpf_psi might own multiple
-> triggers with different cgroup_id's.
-> For sure I can move it to the next patch, if it's preferred.
->
-> If you really don't like it here, other option is to replace it with
-> a new bpf helper (kfunc) which calculates the cgroup_id by walking the
-> trigger->group->cgroup->cgroup_id path each time.
-
-Actually there is no easy path from psi_group to cgroup, so there is
-no such option available, unfortunately. Or we need a back-link from
-the psi_group to cgroup.
+OK, but couldn't we make that argument for anything else?  Like slab,
+say.  Why's "file" memory different?
 
