@@ -2,87 +2,137 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 22943CA0EEB
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 14:18:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F981CA0EED
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 14:18:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B62646B00AB; Tue, 19 Aug 2025 10:18:25 -0400 (EDT)
+	id BFED66B012C; Tue, 19 Aug 2025 10:18:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9C5B6B00AC; Tue, 19 Aug 2025 10:18:25 -0400 (EDT)
+	id BAF456B012E; Tue, 19 Aug 2025 10:18:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D99F6B00B2; Tue, 19 Aug 2025 10:18:25 -0400 (EDT)
+	id A7B806B012C; Tue, 19 Aug 2025 10:18:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BA716B00AB
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 10:18:25 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 349EA1A0423
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 14:18:25 +0000 (UTC)
-X-FDA: 83793712170.08.2FB93B5
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B735118000A
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 14:18:21 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf24.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id 93D026B012C
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 10:18:26 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 530CC58370
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 14:18:26 +0000 (UTC)
+X-FDA: 83793712212.26.D662349
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 61A421C0008
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 14:18:24 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PgFjKqMd;
+	spf=pass (imf20.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755613103;
+	s=arc-20220608; t=1755613104;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=KQ5SyoE/MYPNZDWioj0kryq2voWpDfBzmzGzBWhm6as=;
+	b=1rOFdUmRlV/SiDdr6xmzMpu9xrwi6dK8kpz1kr/pdQLyyTvPurikun1zVuvd+BMMw1pFk6
+	Al3H5QhoN3o+4iODiZRJmrGOzGooENgU4nIpKrX5i8/iRrDg/j27YQTtkNqKc7jWU6Hf51
+	9C8/sFkyE/7UGpeqX2ZuE/dIBimHI/E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755613104; a=rsa-sha256;
+	cv=none;
+	b=0WVV/kSAiYvw3BnIHQdrGTJkomxHeCP/yCPmqqfGm3sAe+Z3u4zeQUfNlE2MyU6n/Jum7y
+	0sQ1byWH//qMxx4J2/C+y/gUpBPL4QprhyIn1Pa6QKLtxYT1W55WJnTO4EKJG8nANUHBtI
+	K1wgFCAeoHPhPhaL6uTfE7M8v5sHuG8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PgFjKqMd;
+	spf=pass (imf20.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755613103;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=smkfy8Ud89SAAYk5zqCqdxT/mtVR3MAt1Cih26ndZao=;
-	b=3B3kUQ8aukbrDX2gg+lPF8oF6iocBQ9e9+Ex5KR8gDHoqsov/EAThRXxQMy6KCz8t50Xk9
-	ajj++GBo4W0rkO+oHkDsKWoRvsoYsc3sTaIObItQLAqGB3KJXQZCPZIMEEd+rJaTByyAmW
-	vEf2pCup4B93y9CKyIgsUIDJ806Ba5Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755613103; a=rsa-sha256;
-	cv=none;
-	b=Sayqw36K7rD7RLy3VgtY6jANCYPFHSOFLiuEQwRKNJxOYkCftZ0skCsQoB5ur2MuF4BdOM
-	69YIEPN/2MfFFVqIX5I1ZWd3VYw1bk2cQCiu8hS4caiB+5k1yUW4W4hLcnkXmKVON0WQAz
-	07yGFddvQV4E1KfZ+nDlhw0TGDk5Qgw=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf24.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4c5s6q3Kjwz2gLBM;
-	Tue, 19 Aug 2025 22:15:15 +0800 (CST)
-Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
-	by mail.maildlp.com (Postfix) with ESMTPS id 36E1E140120;
-	Tue, 19 Aug 2025 22:18:08 +0800 (CST)
-Received: from [10.174.176.250] (10.174.176.250) by
- dggpemf200018.china.huawei.com (7.185.36.31) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 19 Aug 2025 22:18:07 +0800
-Message-ID: <6b9baf0c-fdc2-4f16-84f7-c4ada507f8f1@huawei.com>
-Date: Tue, 19 Aug 2025 22:18:06 +0800
+	bh=KQ5SyoE/MYPNZDWioj0kryq2voWpDfBzmzGzBWhm6as=;
+	b=PgFjKqMdmuH82lmSahnqaGalKTh786HJihW+//jf6oo/QaBQCWfFe+Y52HfCseoH2Yp1bz
+	lfNmH4mGNl087BKIyhIxqVEIfsFUa6Khx/tMV6LGIqxCeNlajGj6UlmeoxDVboXdLBfvG/
+	eE17oGWFOTbym3LIXPLeM61UieufsEI=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-175-Tt6NCjBUM0KnyyV-_L6s1A-1; Tue,
+ 19 Aug 2025 10:18:18 -0400
+X-MC-Unique: Tt6NCjBUM0KnyyV-_L6s1A-1
+X-Mimecast-MFC-AGG-ID: Tt6NCjBUM0KnyyV-_L6s1A_1755613094
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E835F19775AD;
+	Tue, 19 Aug 2025 14:18:12 +0000 (UTC)
+Received: from h1.redhat.com (unknown [10.22.64.137])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0D8AD180028A;
+	Tue, 19 Aug 2025 14:17:53 +0000 (UTC)
+From: Nico Pache <npache@redhat.com>
+To: linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org
+Cc: david@redhat.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	corbet@lwn.net,
+	rostedt@goodmis.org,
+	mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com,
+	akpm@linux-foundation.org,
+	baohua@kernel.org,
+	willy@infradead.org,
+	peterx@redhat.com,
+	wangkefeng.wang@huawei.com,
+	usamaarif642@gmail.com,
+	sunnanyong@huawei.com,
+	vishal.moola@gmail.com,
+	thomas.hellstrom@linux.intel.com,
+	yang@os.amperecomputing.com,
+	kirill.shutemov@linux.intel.com,
+	aarcange@redhat.com,
+	raquini@redhat.com,
+	anshuman.khandual@arm.com,
+	catalin.marinas@arm.com,
+	tiwai@suse.de,
+	will@kernel.org,
+	dave.hansen@linux.intel.com,
+	jack@suse.cz,
+	cl@gentwo.org,
+	jglisse@google.com,
+	surenb@google.com,
+	zokeefe@google.com,
+	hannes@cmpxchg.org,
+	rientjes@google.com,
+	mhocko@suse.com,
+	rdunlap@infradead.org,
+	hughd@google.com,
+	Bagas Sanjaya <bagasdotme@gmail.com>
+Subject: [PATCH v10 13/13] Documentation: mm: update the admin guide for mTHP collapse
+Date: Tue, 19 Aug 2025 08:17:42 -0600
+Message-ID: <20250819141742.626517-1-npache@redhat.com>
+In-Reply-To: <20250819134205.622806-1-npache@redhat.com>
+References: <20250819134205.622806-1-npache@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH -next 03/16] mm/damon/paddr: support addr_unit for
- DAMOS_PAGEOUT
-To: SeongJae Park <sj@kernel.org>
-CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<wangkefeng.wang@huawei.com>, <zuoze1@huawei.com>
-References: <20250819062613.39988-1-sj@kernel.org>
-From: Quanmin Yan <yanquanmin1@huawei.com>
-In-Reply-To: <20250819062613.39988-1-sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.176.250]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- dggpemf200018.china.huawei.com (7.185.36.31)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B735118000A
-X-Stat-Signature: 844ifq1m6cgumzmzxgfxabyqthizrc8h
-X-HE-Tag: 1755613101-959849
-X-HE-Meta: U2FsdGVkX1+XNAjA/jnTOcgqRNoK8KdPt096iiM6q4cr9DJeYb0oVsQO+4L9h66JOYADX37IXZCf4vUcYUpF08xt3zZTyKgjRj8GKDQG9hu0OfLb3klD8RKXkFkOTABsbkF9kxusxFd5lIHylDv0Znl0zbeYJzwmTnXH7ORYI1Z6ek9j9GFNBHErxSyCj1aU6dymn4AULm9tQIXv5+4oUTAVeNUNGEZCK5Q1cy1ncCQ7mYKzdR9ailrMP9aVcMzN5D5NUhSxkRV7RqGzyoHpKvyDUMpjKRcTOlUHChzm/gZVflbX9XZ3V9ATGu1LfmvwfmJ89htfYE0QjCbBNiS2r9IKbXDWz6UHvVwXeLcPasjlAoqn6yAkrxrYipDr8OB2VQpplPixO7UEwBBXM12ajtDy2gc1sakmCtikautEfOJWupeEzjTZdq1/o1v9a0siluP8QBXsY+VpTb+sHKT+vGbnKN5qw4aUy5Gi5eev/yIk1S6RHUZsBVgn7GBLiMH/ojcuQDGgW5Oo0O66eUdrWbMdt1oBUVJSCl3Z8yn8K/Ofyw9P7KrIsv/sAOr07m4EAew39yiu3UHgaYbbWvHPSZPGY7N5r5ciP1Yc66icDD42+XNQq9H8uYD4GOJsFTCMMXuvhTE+7swGl5uuPbUpWtOVmA+uGk/40B2ZkbJAZ23gbUjSCdaH5IIfNWBuMOxndIybUE8DWY4foX+fdua3+o/duRLLCjwKQ0QDwdtnKibItYsKxmx1cEuQhmFzMT2mW9Xw4AchdA96r9D0gWC4KW7t9VW9tIIDCKIixd7Vy2URp/v5Crhvb8PWSzOtnnOSpV3Cfo70g0I7ZRM21PIG3Z3W5v1nKO0AkqskeSAjpWde65fZD9ka2GWzzLb1n3J26lpfXfwqBUWEd6NDpPuITIyfY4qN+rSyI4jZC/2GHeFtWMZ4Na3fVIQbyz9WNHuzW/biXQwySb8HSMMFOfe
- zY42rHgs
- MZnnegUboSXrYdOxkaDQo884PY8R9wT+J7nI/Orbdqyq5FrHJ6ZeGSAFZWpLeDVgKUU4Hs4Vld+6ZITANdPfW6J5djVJGxAihN6bmT6aE+jsjgkMG8/AJwwaWg3PZXdM5GsA0Gh44xu7K+DU0IH4vpJ9repwX8o7lRZVIKjfQkJp4TMGf291U3KbHex1vrU2JtNQJMIGpuEmXJbE/xS2W3OMZ0VKfRyDBKQZGx177wLqjPMAzNMg37LTzK3jBpUfB5Kd40wq5cf84rWWXE9a8G3d04IHAwTuDFml+2poLjW0xx6Crayc8zox3WntvxsiahGJ5ujRcgPlDGFY=
+X-Rspamd-Queue-Id: 61A421C0008
+X-Stat-Signature: 953t8nhq3jfnrt333bt1z8e7hapu75fo
+X-HE-Tag: 1755613104-456635
+X-HE-Meta: U2FsdGVkX18zelJumu3fWKl0tQ8SVpkbhlrITy7dQgnAkTHDXmQiQk9Fk7iN5QkbbDUkKoRaumUU+/J2MM5HfNWby+H312kgZ4CYWRCOa4Tt3F7EVRMHeLfZREtHdFVQXYosaz6J8sX8P0YYcqenKXIiOeSi3rYUf8Ka5FTvzMB1K86zZ3jilBj9SUlqSuRaZT7dVcKIDDaqss765CHoXp3w8k5ypHhdedQK9duFAD3bcEoYzAmcJx6o/emA/p1WN+x16bAkpzPfNAKdxdux/M+wrLHDPtoAyrb2JjyOUAQDoyDT6Gx4COO7Dk68K5Eyv//eOZVLKAMNLnGTDbAEL84hMFcc38cgY+3j3NB2pxmTx82uDS4a7hRCg0cSdMIDcxQ0uhZywRwZaOnIPPVuB4O1N2tBtG2O7I5O/5lUyhX7U+erGhZkWd9GpHnyo/tlPIUylkU1rM/CHBAtWE6yyTMRtPrQwJ4NIV8ZiwTJ/sF+jVinl+0UpET3bIxKMFXGBrkCPcYN4nbbvMlc3gAq3lNIWv9x03uWhb0ScrJ9YLgupJMY0Ox0vN6eHO3Tzx1VU05DLHHkADNpOR3XOXpX5sUXy0N6P3YeysTaqff9dY6EvDbRZ79ZWJ8pkn372J+z5BKO0S3eO+Hl9ZxkLzp2GBG/DihApQA1DE6i0YSmXFPA7ZlnP56k8NbmHtv/qXgEzTIUBNqqAd++5ojmA+zFYQQerMijA264GzG+2eZDJ6eV5PmMpp9lFbrJn2xcTTOb1kxKujRdY/JpPRSstYBFZEelYNv2L3KYfkp5Fh33Hw2FDEgOAyPvZdScxC0ZmFRVuvF5mYcuOWk2ieZM4KCwx8NIMCB/fW/48U5uPH5ta7kn4St+oNx8iMWs/174x+52lUZDXtzQqeugXCOgFxEqfo8EJEmqdYDltKzYFotnEwOVTI8r5KH2xrCVhZKKpbNyV4+LHJsepUcW1WfJBmi
+ 2rXj2hxk
+ MGVd2eqPjEyP6Di2yw13AJhJaAtJmWxA+Tny7RExHoaeS+tNBeOG8Ijme/ocdGiyZdHjTaQuZH7tQXZVT3txB+uAgxWWJdE3HdR836uOYMgEd8iHJqrSYRPZObnMTALDwt2KHaaodLcxPUolV4rgz9LNuyjtgb4dvkW++l7pKSfqwBTk7Y5cwZdyuJxwD6xgPbd3tHQhaKv4sYq/W2Na6bVahHHr7pMSJaFfU77kYB1lOV+Vg/ZQ/qgRNM0nZdPC6S6nqTQR58DpW4NGHLVBlTgcXXBIgYAtpiId5tESkYaGA7SB9BCH4JGUZN2IY9+bO/LY0H/P1Ilv5Bu6tkJquvgNc1ZPc2HE53yuj09lfcO/H8gsvSLQnb0gAs0vZroUyB4ZEbiP+Itqe0bybwvS+kZQM0SWp6BCe/10VzJWbFoQypc4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,16 +141,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SJ,
+Now that we can collapse to mTHPs lets update the admin guide to
+reflect these changes and provide proper guidence on how to utilize it.
 
-在 2025/8/19 14:26, SeongJae Park 写道:
-> Sorry for the above wrong link.  Plese use
-> https://lore.kernel.org/20250813170806.6251-1-sj@kernel.org instead.
+Reviewed-by: Bagas Sanjaya <bagasdotme@gmail.com>
+Signed-off-by: Nico Pache <npache@redhat.com>
+---
+ Documentation/admin-guide/mm/transhuge.rst | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-Okay, I've merged the corresponding changes into the original patches. So now we have v2 versions
-for patches 3, 4, 5, and 6. I'll send out the patches later. That understanding is correct, right?
-
-Thanks,
-Quanmin Yan
+diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
+index b85547ac4fe9..1f9e6a32052c 100644
+--- a/Documentation/admin-guide/mm/transhuge.rst
++++ b/Documentation/admin-guide/mm/transhuge.rst
+@@ -63,7 +63,7 @@ often.
+ THP can be enabled system wide or restricted to certain tasks or even
+ memory ranges inside task's address space. Unless THP is completely
+ disabled, there is ``khugepaged`` daemon that scans memory and
+-collapses sequences of basic pages into PMD-sized huge pages.
++collapses sequences of basic pages into huge pages.
+ 
+ The THP behaviour is controlled via :ref:`sysfs <thp_sysfs>`
+ interface and using madvise(2) and prctl(2) system calls.
+@@ -149,6 +149,18 @@ hugepage sizes have enabled="never". If enabling multiple hugepage
+ sizes, the kernel will select the most appropriate enabled size for a
+ given allocation.
+ 
++khugepaged uses max_ptes_none scaled to the order of the enabled mTHP size
++to determine collapses. When using mTHPs it's recommended to set
++max_ptes_none low-- ideally less than HPAGE_PMD_NR / 2 (255 on 4k page
++size). This will prevent undesired "creep" behavior that leads to
++continuously collapsing to the largest mTHP size; when we collapse, we are
++bringing in new non-zero pages that will, on a subsequent scan, cause the
++max_ptes_none check of the +1 order to always be satisfied. By limiting
++this to less than half the current order, we make sure we don't cause this
++feedback loop. max_ptes_shared and max_ptes_swap have no effect when
++collapsing to a mTHP, and mTHP collapse will fail on shared or swapped out
++pages.
++
+ It's also possible to limit defrag efforts in the VM to generate
+ anonymous hugepages in case they're not immediately free to madvise
+ regions or to never try to defrag memory and simply fallback to regular
+@@ -264,11 +276,6 @@ support the following arguments::
+ Khugepaged controls
+ -------------------
+ 
+-.. note::
+-   khugepaged currently only searches for opportunities to collapse to
+-   PMD-sized THP and no attempt is made to collapse to other THP
+-   sizes.
+-
+ khugepaged runs usually at low frequency so while one may not want to
+ invoke defrag algorithms synchronously during the page faults, it
+ should be worth invoking defrag at least in khugepaged. However it's
+-- 
+2.50.1
 
 
