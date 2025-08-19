@@ -2,83 +2,83 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E5529CA0EEB
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 23:24:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BD9C2CA0EE6
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 23:26:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A2768E0005; Tue, 19 Aug 2025 19:24:54 -0400 (EDT)
+	id 646238E0006; Tue, 19 Aug 2025 19:26:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 752E88E0001; Tue, 19 Aug 2025 19:24:54 -0400 (EDT)
+	id 61DBB8E0001; Tue, 19 Aug 2025 19:26:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61B048E0005; Tue, 19 Aug 2025 19:24:54 -0400 (EDT)
+	id 533E78E0006; Tue, 19 Aug 2025 19:26:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4997A8E0001
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 19:24:54 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C5CD8B7E32
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 23:24:53 +0000 (UTC)
-X-FDA: 83795089266.29.536CD71
-Received: from pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.155.198.111])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9D89040012
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 23:24:51 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=D7PbGt0H;
-	spf=pass (imf27.hostedemail.com: domain of "prvs=31909943d=epetron@amazon.de" designates 35.155.198.111 as permitted sender) smtp.mailfrom="prvs=31909943d=epetron@amazon.de";
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 429C68E0001
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 19:26:13 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1A398C0224
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 23:26:13 +0000 (UTC)
+X-FDA: 83795092626.15.092DB57
+Received: from pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.77.92])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D5DE7140003
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 23:26:10 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=KnpbVD6f;
+	spf=pass (imf23.hostedemail.com: domain of "prvs=31909943d=epetron@amazon.de" designates 44.246.77.92 as permitted sender) smtp.mailfrom="prvs=31909943d=epetron@amazon.de";
 	dmarc=pass (policy=quarantine) header.from=amazon.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755645891;
+	s=arc-20220608; t=1755645971;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tF++dyX6f56vFwu3NGpYE/r8N67nbsIdg66sRFyfopY=;
-	b=LWWRkOzX/birPDfU/6qTyZIp/gQ4vPOF7ZHAwmZ0HrxrNskeDhL+fmwWPRTk4hwLenmwJl
-	pqzurgTHs1kjjyq1zI/QdbuK3rNYV3HkGFOUJzvLKUAcWdrOw+m1+bE/Um2l/SV7h44uLe
-	Gy9VcVaQE86V/Qy6Hx9vcWfiK7h2U0Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755645891; a=rsa-sha256;
-	cv=none;
-	b=Rn75Z3F0IMMtk2ipw3LArvj6tCxR7xhShkBzLSEUyqXzMM1FvNACXD1cL9KknF7UjYDKN3
-	X6jplToDisvl5Yir4c5dwt2FZtdEx+KxTBm78o4A74YIForLIn549fRaZ6tXzkgkQVRHWI
-	bjsDSzwWAvFvPbfOs5Ew5Zf4BeCW6ok=
+	bh=cd20LjcxPOsEg21zYy/cmh2I9QA1AIBt6CLKTzRjH7g=;
+	b=Cx6Q4FHRtwQ7IV6rD4aEzjJUd4J5HjD+K6PhGUW5vYhCLSPiE/QFFfFFGCjY2NeWazbVsx
+	bKaFsIBfF0L32R8zPruSVhXVBqLaV4F+26NlTuVnWJFAA1IZGzf5PBMX4AgTO5hbJ2KysQ
+	Y0rlkN9wPgFWpZKAUQLO+f6e7ACs1mw=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=D7PbGt0H;
-	spf=pass (imf27.hostedemail.com: domain of "prvs=31909943d=epetron@amazon.de" designates 35.155.198.111 as permitted sender) smtp.mailfrom="prvs=31909943d=epetron@amazon.de";
+	imf23.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=KnpbVD6f;
+	spf=pass (imf23.hostedemail.com: domain of "prvs=31909943d=epetron@amazon.de" designates 44.246.77.92 as permitted sender) smtp.mailfrom="prvs=31909943d=epetron@amazon.de";
 	dmarc=pass (policy=quarantine) header.from=amazon.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755645971; a=rsa-sha256;
+	cv=none;
+	b=HiCf00tsKsyZl2R7JeFOnxXA3drd3hK6Bn+Un+FtzMadu9JoPk3/2012f4RUFrjt900MNY
+	7X8D8KHuFw7PvhYyv0aeikJqmVwC0PATjXXjIpjIzoDk5CQEN+0OpxbyGH7mPs61JtshIa
+	bP8wdBTGVVkl6uXTG5+aD0RRMcBpcTo=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1755645891; x=1787181891;
+  t=1755645970; x=1787181970;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=tF++dyX6f56vFwu3NGpYE/r8N67nbsIdg66sRFyfopY=;
-  b=D7PbGt0HtxHakCjAVtiKLt5wjmTCDuAXa4f7uotA0Ra8U4D5DJ/xCuAp
-   pgw/rTrksS963rBSe+4Yf223LSLHTuFR0eotJt7H9+lL0ZHyks3vRIpWw
-   3LMTU9ejAf51R/NTcqkIIurgC0lcOpDAPoKyi60E0nCIZElUogxnRboan
-   hQGw8sjhNC2gAm0Sxpzq7veDLa8pIMyeDDsmbSKGo8lmpxqlYtt2H8m2m
-   VDfQdCwNIUfjNVG/V3JiCjW1zW425bJw4YG/P8Xtr6EGn40IbG5+bXyGS
-   Z1AIdjixh9C72tfIqfjIliurepxnZv8XCD+dS6PpCtQW+g8am00/+Awp5
-   g==;
-X-CSE-ConnectionGUID: HB4nEjqHQxipsnhSvM8fbw==
-X-CSE-MsgGUID: 8RszvGG1R/2We4GiosIQLg==
+  bh=cd20LjcxPOsEg21zYy/cmh2I9QA1AIBt6CLKTzRjH7g=;
+  b=KnpbVD6fOmEb3c4Q++WgGYpalpbQNfLt2KP3eB6dkv1VCYEed7bVE22f
+   nK62bNOl8TmvNNt9gKu0eRckdBOWKRETsfeDC/TT2hACWb15bmWPuCg8u
+   2izG2Jn/6DOJvn6jCWK1vaTJ830FNqW4zexp/VmvdEvWqrgpXVoARG4sz
+   qmQBfuWGt5CtheUisrfN1P8lLr9u4w+As210ncUuylN9xPmz4Nyx2Gme1
+   V6/3Kiz1QA/iKbhgWUkHN9neX6BMBdn5owXE3xfaM8SBfyji9A6hmoOCS
+   vGBhW0X5Dy8Hw3RMvUyBZFGb2MOtObGspFCwcg2mUsdef7ytnevzEuwSC
+   w==;
+X-CSE-ConnectionGUID: vgDJ3wGLRkyBdDWeMGCc+w==
+X-CSE-MsgGUID: znqb36LARvCDQs2S0Xz73Q==
 X-IronPort-AV: E=Sophos;i="6.17,302,1747699200"; 
-   d="scan'208";a="1284831"
-Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
-  by internal-pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 23:24:48 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:36246]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.29.152:2525] with esmtp (Farcaster)
- id 54c19edc-accf-4bc3-a6cd-bccc3df96575; Tue, 19 Aug 2025 23:24:48 +0000 (UTC)
-X-Farcaster-Flow-ID: 54c19edc-accf-4bc3-a6cd-bccc3df96575
+   d="scan'208";a="1403455"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 23:26:08 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [10.0.21.151:8848]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.29.170:2525] with esmtp (Farcaster)
+ id 1f517b9c-a5d9-4ed2-9cc8-20113cac2a08; Tue, 19 Aug 2025 23:26:07 +0000 (UTC)
+X-Farcaster-Flow-ID: 1f517b9c-a5d9-4ed2-9cc8-20113cac2a08
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
- Tue, 19 Aug 2025 23:24:48 +0000
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Tue, 19 Aug 2025 23:26:07 +0000
 Received: from dev-dsk-epetron-1c-1d4d9719.eu-west-1.amazon.com
  (10.253.109.105) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17; Tue, 19 Aug 2025
- 23:24:46 +0000
+ 23:26:05 +0000
 From: Evangelos Petrongonas <epetron@amazon.de>
 To: Ard Biesheuvel <ardb@kernel.org>, Mike Rapoport <rppt@kernel.org>
 CC: Evangelos Petrongonas <epetron@amazon.de>, Alexander Graf
@@ -87,9 +87,9 @@ CC: Evangelos Petrongonas <epetron@amazon.de>, Alexander Graf
 	<kexec@lists.infradead.org>, <linux-mm@kvack.org>,
 	<linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<nh-open-source@amazon.com>
-Subject: [PATCH v2 1/2] kexec: introduce is_kho_boot()
-Date: Tue, 19 Aug 2025 23:22:45 +0000
-Message-ID: <7043f4da31390c58bb7721a3774c30998997df44.1755643201.git.epetron@amazon.de>
+Subject: [PATCH v2 2/2] efi: Support booting with kexec handover (KHO)
+Date: Tue, 19 Aug 2025 23:22:46 +0000
+Message-ID: <9e80381d4fafc71d6e0c64d69a8b3ac9c8949865.1755643201.git.epetron@amazon.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1755643201.git.epetron@amazon.de>
 References: <cover.1755643201.git.epetron@amazon.de>
@@ -99,14 +99,14 @@ X-ClientProxiedBy: EX19D038UWC003.ant.amazon.com (10.13.139.209) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: uaejgkzm5j98e98ydxx4nufeq9kd3x3f
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9D89040012
-X-Stat-Signature: 15ds5o8j4e677zcht93r54zy93rhqibm
-X-HE-Tag: 1755645891-969362
-X-HE-Meta: U2FsdGVkX1/fPaAMeCfcQnwGIerbroBSJ43KIdsk4OjJ96e/doBv8B+z6kaVgxs7gtUdsPXbM0lOAtszq4vcjm67mFRGnAfJOB9BXfw6727VTFaOQcSf3SFKZsDxt0zD/1Wp9uXLE5re5mEbOIiaNLo32CwXQ0g62C+W01pNskxypARAAh5LZiM5yf02FE4I84jzM3cj4KOLAi4MhNrFc3Dde47kDxCXE9k6DELgimfH/AGU0eE+1LnOSn7TattdIb9v5+V4ItxHHlEVSeqMDVYHrhO/N8/T9Fqarko7qb5UX0Gqs8g2RSs3VTZHWQ52XgsvBXPLl/zCONulEEyNJJRP/AjxBxkMHGoYMuDptpH6ecMCXTBEFLN8ZUfoBoh8Jlzz/Uzlk/DFnn+I6eGbZ0IE0vVSeTZ0MqyrlsUhA3jWENiGLpBhFW7V0dLLwXhzyG6macjg8R1CEd/Ylc9xcJ8tKCsDmMmZhaV8Zrxk56aRu/Zguzqq2o1RiObDcWGgZ2PBJvrpmWLW0bFUftqnTllcDBH+un7Y1+fD+x/HR46ORhHNNG1wmZlJh2PCLd+Ar4+67GanasVtr2HG57N1qvL1HTMXpgtQL3KR6Lp6C/fuq6lYpudxsQnmxygoJWmM1882KY37lpMIGQvHU+NdrtQVyiWh0+eQenZTCufXZXEbDThNXAA7ivIEuP//PRA0dtBu7uSlSPU8sFycSlwF+4SixeWIc2PFENDkh++JVqO7sz2TswOeM/uF7QpXkV687aW3ocWQkywcWOxi8x2VpHkpoIgtWqmEnaLOflKv4ytkBiS8a23gAbPZOox3hiltxwBSmfXtXVRqL49n2lj/lO11fh6n9GbFRyM8p6s5kdfLzji3uzDkJnNQq/I0MLq8Rs/oOO0kHov1QN3Q3/VqfTMfhWMOpao42oAmthMV4+WWT2KJNKs0OX7Sj7xeYI8XfqidGnt50k3+MK9v9C1
- Wm9qEc2t
- XxZ3CAxgMO3nuEwmT3J5strrKhaPpEdMwrg0Oc3QE63G/o6PlLFfTgtAamIiQa3ROq4yknqo0f8uQJn00GLlFRVMw3JyBMowKR32GW9Gj3lyUBKWat8e7d/bPGBhJQmx2zkkxBYS3+JHIoHLhYM4hkNJJ8a3RRDVSiT77QJmhPdqRPlDX484ZOPabKeSTjngaP8Fr9dLwmIQRSxAVKXHQo98EXSmoRjc3GtsTS3mJo23qds6WskE1acH/LESU6GOkf+t+pdzXgDEryx1bDPTLgEAf9fSo/H2gE5dmlSyabYkj2Uxg0VNWhac8E0BEGbJfZJwMV/PvhCMTPW17KFp7VRGtahkwd0P+P3DYlIwUHR6R5Vfu24Bmy7uOWxpqXyAwwcrIJnbtYGzPedXUBOVROzD+6C2xeZ3p6ClmIqFM07wARmSbHvyxmSLrmW616kt2dmL1EyP6snHjBS8Om/57QtcKoZVu4/EZ8I0skemCo+RbtKnULmC4UpedOGWlEBQzqECC3gSAheCNm/u2StKmfOHeBgDfmGYfJH3I31a5BB2anHzqqsdJ7dRIzw==
+X-Rspamd-Queue-Id: D5DE7140003
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755645970-541765
+X-HE-Meta: U2FsdGVkX18zHK6IVEtXz1rVR5qr1V3xS2Lrlzg+4GsQZzRJ4ZtOWu1ZZ91E7U0mfJYYb8Rqfz89sD1GqqUmUtTcy6zFNzlzLwT6+7bjrjz2iwUF4XNvayLDXUk/A1PCsChuakJlggPuKHaR+StXDoCFtW136QG/lKCByU8Mo+GfE98rNuMVGB36Iyx78m8KUlmAFibKB/S0VzibtYVVMetPJ7NxSmvvFtbWIlxALuQMl/z0s9w3tDjJVVhbd7/OSMzq2pl8tghR0EZzuSFIb0is25bYIR7+Ia1QNcWhzx5hH8wOWTsL8/vXR7+tJb4qMtsRAJgXsYWWFtOz1rbY+qDjVsb7zDexoVUsVAisCVpBU0wQNfSIrbCipbIR56X05fzGBwsBbTFltDiXguwwKLBZWMwyjd2/08zd6nzfa5aXAGTISGK98Dk7OjBRqvw/6jXGRfhFv/u+hWRV+bwl8XkIGtjn2kMAAihu62UNCeKF7/Q+9IEiw7+Ozcd4lJwKiNyC5KZ08zWjs/oxshRwY1rzupfP77vUfH64dQNDhdmomayDFdJWP0Nz38ooueaeiQyAyZnBA9MabIH4zXuaXYDDTbK5Aak033MrQXzdiTsP5pEDeYCECXQMGtMQNa1R1A+CL1l69eCnzglejn5KXb1B1WNVDqMuVolTOGXvlIp3Q1bWJrudGuNCpqOabj77lCrHklkbpdLnDvrGiRkPJ3NxErNTQZKUd7excCO3Oudj/NaSTuv2f1PFlO9Y/6+m2rJ0QwgJJQpbB7q+SIwDxb4zEo9asb+NerqAM23M38M/d6nJE61GMeZlWWWy3OVotOrnWWlcDO7Y8F3KQFdAuzddc0ROOtEPcZ3phU/YUmq/fejF7pzevC7lD2ZuPb5l+3H7D3fPkW6m7UgCq6g6078lpCV2eaFSFdHg7cjjZiCTZgTh1RfFhyGZUhMibTzb3Jmat+b3RNrmby1Hm8u
+ 3nPRxrwE
+ dl/LTsfwL21FWCEGTG7xiOgLYH76jH0M+R+w3ptKUVMx3iFv+7Tt5x3efBWYoJN6RAx0TpahZTSFkDfYUpXFD4JmrUixS7qVtZD1KknYS19pLzUxa+Qn2zYr3wFrxQAIkg3LwSSwU+qDp4zCRUvOZHqnl3/qjAEZeQNtgotWtgz/uJKCg/ELZ8/3bLFHUalF/sV1XXbY9x6NeI1Cb9VnoPxuSGP9AT5gNP3bSIZLGukx0fTFOOfTA3TWo/5TEuUtA1eVx5+U24IsKHoLcJjYkjlX8a1wyNRZC4PTLaqYowVnN2bhJNMQnkZxMl+TCIdkdO6tLIXZffeK5a/SI8rgDN7bSHVWNMvl6XBEsYVE9ZK1Qwip61RM0CAPPnUz4T3LoQPIsh2SwB7Jd085hflve3IA3kZRrktmOIRELjoTfpbeCa/o/iQLGj4TNhs4bByKVoW6RhgBZsGL+JHvqmP8LpMjaX0mYyFOzd2R40PLgmftmsbV3jXUwY6u81HaaJeaYPcvC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,75 +115,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-During early initialisation, after a kexec, other components, like EFI
-need to know if a KHO enabled kexec is performed. The `kho_is_enabled`
-function is not enough as in the early stages, it only reflects
-whether the cmdline has KHO enabled, not if an actual KHO FDT exists.
+When KHO (Kexec HandOver) is enabled, it sets up scratch memory regions
+early during device tree scanning. After kexec, the new kernel
+exclusively uses this region for memory allocations during boot up to
+the initialization of the page allocator
 
-Extend the KHO API with `is_kho_boot()` to provide a way for components
-to check if a KHO enabled kexec is performed.
+However, when booting with EFI, EFI's reserve_regions() uses
+memblock_remove(0, PHYS_ADDR_MAX) to clear all memory regions before
+rebuilding them from EFI data. This destroys KHO scratch regions and
+their flags, thus causing a kernel panic, as there are no scratch
+memory regions.
+
+Instead of wholesale removal, iterate through memory regions and only
+remove non-KHO ones. This preserves KHO scratch regions, which are
+good known memory, while still allowing EFI to rebuild its memory map.
 
 Signed-off-by: Evangelos Petrongonas <epetron@amazon.de>
 ---
- include/linux/kexec_handover.h |  6 ++++++
- kernel/kexec_handover.c        | 20 ++++++++++++++++++++
- 2 files changed, 26 insertions(+)
+Changes in v2:
+	- Replaced the for loop with for_each_mem_region
+	- Fixed comment indentation
+	- Amended commit message to specify that scratch regions
+	are known good regions
 
-diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
-index 348844cffb13..559d13a3bc44 100644
---- a/include/linux/kexec_handover.h
-+++ b/include/linux/kexec_handover.h
-@@ -40,6 +40,7 @@ struct kho_serialization;
+ drivers/firmware/efi/efi-init.c | 28 ++++++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/firmware/efi/efi-init.c b/drivers/firmware/efi/efi-init.c
+index a00e07b853f2..99f7eecc320f 100644
+--- a/drivers/firmware/efi/efi-init.c
++++ b/drivers/firmware/efi/efi-init.c
+@@ -12,6 +12,7 @@
+ #include <linux/efi.h>
+ #include <linux/fwnode.h>
+ #include <linux/init.h>
++#include <linux/kexec_handover.h>
+ #include <linux/memblock.h>
+ #include <linux/mm_types.h>
+ #include <linux/of.h>
+@@ -164,12 +165,31 @@ static __init void reserve_regions(void)
+ 		pr_info("Processing EFI memory map:\n");
  
- #ifdef CONFIG_KEXEC_HANDOVER
- bool kho_is_enabled(void);
-+bool is_kho_boot(void);
- 
- int kho_preserve_folio(struct folio *folio);
- int kho_preserve_phys(phys_addr_t phys, size_t size);
-@@ -60,6 +61,11 @@ static inline bool kho_is_enabled(void)
- 	return false;
- }
- 
-+static inline bool is_kho_boot(void)
-+{
-+	return false;
-+}
+ 	/*
+-	 * Discard memblocks discovered so far: if there are any at this
+-	 * point, they originate from memory nodes in the DT, and UEFI
+-	 * uses its own memory map instead.
++	 * Discard memblocks discovered so far except for KHO scratch
++	 * regions. Most memblocks at this point originate from memory nodes
++	 * in the DT and UEFI uses its own memory map instead. However, if
++	 * KHO is enabled, scratch regions must be preserved.
+ 	 */
+ 	memblock_dump_all();
+-	memblock_remove(0, PHYS_ADDR_MAX);
 +
- static inline int kho_preserve_folio(struct folio *folio)
- {
- 	return -EOPNOTSUPP;
-diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
-index 69b953551677..a1a4e76e0ff1 100644
---- a/kernel/kexec_handover.c
-+++ b/kernel/kexec_handover.c
-@@ -925,6 +925,26 @@ static const void *kho_get_fdt(void)
- 	return kho_in.fdt_phys ? phys_to_virt(kho_in.fdt_phys) : NULL;
- }
- 
-+/**
-+ * is_kho_boot - check if current kernel was booted via KHO-enabled
-+ * kexec
-+ *
-+ * This function checks if the current kernel was loaded through a kexec
-+ * operation with KHO enabled, by verifying both that KHO is enabled via
-+ * cmdline AND that a valid KHO FDT was passed.
-+ *
-+ * Note: This function returns reliable results only after
-+ * kho_populate() has been called during early boot. Before that,
-+ * it may return false even if KHO data is present.
-+ *
-+ * Return: true if booted via KHO-enabled kexec, false otherwise
-+ */
-+bool is_kho_boot(void)
-+{
-+	return !!kho_get_fdt() && kho_enable;
-+}
-+EXPORT_SYMBOL_GPL(is_kho_boot);
++	if (is_kho_boot()) {
++		struct memblock_region *r;
 +
- /**
-  * kho_retrieve_subtree - retrieve a preserved sub FDT by its name.
-  * @name: the name of the sub FDT passed to kho_add_subtree().
++		/* Remove all non-KHO regions */
++		for_each_mem_region(r) {
++			if (!memblock_is_kho_scratch(r)) {
++				memblock_remove(r->base, r->size);
++				r--;
++			}
++		}
++	} else {
++		/*
++		 * KHO is disabled. Discard memblocks discovered so far:
++		 * if there are any at this point, they originate from memory
++		 * nodes in the DT, and UEFI uses its own memory map instead.
++		 */
++		memblock_remove(0, PHYS_ADDR_MAX);
++	}
+ 
+ 	for_each_efi_memory_desc(md) {
+ 		paddr = md->phys_addr;
 -- 
 2.47.3
 
