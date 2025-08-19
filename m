@@ -2,95 +2,131 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 27502CA0EEB
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 12:58:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ED00ECA0EE6
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 13:02:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AA4B8E000B; Tue, 19 Aug 2025 08:58:29 -0400 (EDT)
+	id 77A888E0031; Tue, 19 Aug 2025 09:02:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85BA38E0009; Tue, 19 Aug 2025 08:58:29 -0400 (EDT)
+	id 7520E8E0009; Tue, 19 Aug 2025 09:02:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 798AA8E000B; Tue, 19 Aug 2025 08:58:29 -0400 (EDT)
+	id 668088E0031; Tue, 19 Aug 2025 09:02:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F47E8E0009
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 08:58:29 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DA50D1A0700
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 12:58:28 +0000 (UTC)
-X-FDA: 83793510696.10.C16522C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 5301E18000C
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 12:58:27 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dx8gHTLS;
-	spf=pass (imf16.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 513A48E0009
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 09:02:03 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 164DB1172F9
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 13:02:03 +0000 (UTC)
+X-FDA: 83793519726.26.52C4DBA
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 04230120017
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 13:02:00 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=P6PXGCxy;
+	spf=pass (imf29.hostedemail.com: domain of linus.walleij@linaro.org designates 209.85.208.170 as permitted sender) smtp.mailfrom=linus.walleij@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755608307;
+	s=arc-20220608; t=1755608521;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jazjw7kkxYam+upD0MYMsEqu4g3xvEwq6K8sABONJMQ=;
-	b=8MYgD/Nq6DjDHjXlj6cQYKDekpHwXxviPee4/luIiO5QhwylrWSwM7yhABCB1P9iHqfqlz
-	pSzMMb4BtJ1adIwSOmX4Y17ytWcZPXbSqYPqYsBTUimyiIrOy58e8efnLtQRWd2xJaD1tW
-	z1uvr7MWhXtUgwlfmRYlMyjXMNDv3KQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755608307; a=rsa-sha256;
-	cv=none;
-	b=h+dPGxzboY7mEMXFxpeMKLly4HHHV8dbvPcwcCI2bpZAXdcpdACgxcqQnzhSCeewux4las
-	AA5dgjUBLfq6fPuF6xXWFDXdWAXU4DU1K/DBwq0cM3pR7cjpoqrDhJrwDC7fR1SAvjy0dw
-	uJGeQKzczV8PmZj2RgA0Tg6kOdifYOc=
+	bh=qxb1RM5Ht9n1r5SEfzEp8KCVi3ssjTbIBjJD7cNdVUs=;
+	b=q/bnVpqCog8Esk5gPb0kFGPJwXnNNoI7m3rqaSYmvWBK/IRF0E6eKhNJjAwlJENU9iHd39
+	CQ4Rl10Unfap1xKZYIISnRpeIFQtqVV6jZzWxgNf2VP+IJKb0vi45LsnEj8n0mIDGm3VhX
+	bhhr5Fv5v7WJEjjMeTr4tgmDIjm2Hww=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dx8gHTLS;
-	spf=pass (imf16.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4D1AE61431;
-	Tue, 19 Aug 2025 12:58:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242C1C113D0;
-	Tue, 19 Aug 2025 12:58:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755608306;
-	bh=4DO3dYAOM5pTDmnI1hLhVydMIin2dEAMrChEU5JifQg=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=dx8gHTLSmdApS+hHpltE88MUhCsHHt1MRH532v/ggxPXGNIWWPmnn/3FfBveGOq6f
-	 JNIkdDaQIkQsMJi2L69hCyXyNHHN8R9TDex52yYrRJXhJdMZhAVyjs44KO41Uoe8SK
-	 8iQee498MjVKFcn9D1BfY2h0vS3w+Ar1QPSHP4C9qbXOaL4gEOkj+cSd8O4ZEUH6qL
-	 WAodkhxeNDPDG8QfzZlB3YpxYg7f8dQCBSis9kxUWCGoxdxZ6PF9uhJDxjrcp1vvj5
-	 Jx4D6THiLj0HdWuh3yV1AWKjldwyz6Ucb6daPp0csYFXX/cwOFID+p3qGED2qE7CGX
-	 lLmEip0Lu/Cug==
-Mime-Version: 1.0
+	imf29.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=P6PXGCxy;
+	spf=pass (imf29.hostedemail.com: domain of linus.walleij@linaro.org designates 209.85.208.170 as permitted sender) smtp.mailfrom=linus.walleij@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755608521; a=rsa-sha256;
+	cv=none;
+	b=PjZTmnwrhDV9sZFA1pIlVjgmukP1EkGKXdnFZcXdltC52FRK2JnUNoykgP6J3oU5nmvqwz
+	Mw2MD45urprr1PzFpS+jl182Q7I7rCSSf0iX+3LaCjKkLqhASZf90vQ9sKzjcvaB2GpY8T
+	zXMPR6RAaR/TZkr6C+WmH3N7jvXPXYc=
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-335360f9b6aso2887781fa.0
+        for <linux-mm@kvack.org>; Tue, 19 Aug 2025 06:02:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1755608519; x=1756213319; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qxb1RM5Ht9n1r5SEfzEp8KCVi3ssjTbIBjJD7cNdVUs=;
+        b=P6PXGCxyG0cto7eupl2WnalTfIIYt9VM7oR7UvbGvsyCmooZhQjUjDBM5bg6j+ed4C
+         +e1N1pABDaBrwt6LQtD3HxzUh8Bfw6VmG0hZwPrqmG1KAyV4DPnqxFtrWfUqusB6Fo8o
+         dI1kU9iYsrWFDHqksSCcAbgBo6XqhHQTF6jlqX7RbDH8DGBduiLAiyeIHDkvWiz7G/Oy
+         pk+lz2XwZ++tVAHCTHZbkkbaoXn/HAnmumoB2Aw5+Bkz6bpICZu2/2qQMzQWOS9IdigK
+         nP+RkdCE/YTsZhzIFztzY/tnlO0cm5D8bS1UNVsRYC9VCj1Fv1ceeLMmd6CeylfjWv4E
+         JSBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755608519; x=1756213319;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qxb1RM5Ht9n1r5SEfzEp8KCVi3ssjTbIBjJD7cNdVUs=;
+        b=iNnPa3UOFlO0jBM97meREZmj2lqA5eGHj6n2Ps3UjRXiAs+jIpAvWfbJYox5XRJOk6
+         uyeU7nhw+4bKBrcb5AHg/9GgaGz+PpllqNzj0FZ9otENr3mIEfF7bHMymlX186XV3S5a
+         i4g2iN28acGeYHDdzDPIYgQWw+DlHZPDa5O9qqCcnnXNDZHXqILT9x3L1YI/B6KnBVbJ
+         /G6pQMxnq/p8c4OXiAclcTXbe62JOp0KjSTUqml2xAXjELnAP/mI6+tXASeKePOvoyK0
+         qSsX+Hy5Dgf9kgvILcm2PA1VA8m5jNQkbHOV++jKhzO977tpszEgb0eY1Hj/csI9HqL3
+         3aKA==
+X-Forwarded-Encrypted: i=1; AJvYcCW0yDMPYbJh+haejn2C2x2Yba7+vNBGGRNmrFVt9Fxa+PJmtC36IWcbY6ynXPaimWrcgumkqtZ0Zw==@kvack.org
+X-Gm-Message-State: AOJu0YwbtwvFEHvGW0zildhFz5BlkHYFbb9/BjutWYlZUX0oc6hUfjqc
+	jxemk8F/v5ZOM6OAq+Sz1kPbg6f2c+bzhVTSdjUNQkaAyKwaRw8UdcdTgIwDfxkfOkNIi0dGSky
+	NKoT0bhFXB9ogp1k2z7km6uF+N6N1Ezywse/qssI5jw==
+X-Gm-Gg: ASbGncsRTWeetQ9TrFbMp2nYL6xQrB99hUQ/uU6OcexsRJgWzh4WPGkka6jiKqOwG3q
+	jdEXu/+8ndZ5Y7FRs5F3nh2nNAlP48zFA1EgnCZ5px2dTD7lTBHpNDbsqK9JN/OqD+pztZUjWrq
+	wQDdduJr//UjkpXbmJ8n/XW3X94GlchFAzVBr4Ckr+8CixqQIdZfioqLDQosg246LUN1gLW3YIY
+	Tuqxio=
+X-Google-Smtp-Source: AGHT+IE7bjsIxvb3/p90/iX8lbM0JfYfSlfdYQ83gKcwpD46fl2MWv7BXJs8CRajKFvUVpb0cf1UMxfJ5zwUc8D1bZs=
+X-Received: by 2002:a2e:a490:0:b0:332:20c7:2820 with SMTP id
+ 38308e7fff4ca-33531348988mr4833881fa.5.1755608518741; Tue, 19 Aug 2025
+ 06:01:58 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250815-pinctrl-gpio-pinfuncs-v5-0-955de9fd91db@linaro.org>
+In-Reply-To: <20250815-pinctrl-gpio-pinfuncs-v5-0-955de9fd91db@linaro.org>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Tue, 19 Aug 2025 15:01:47 +0200
+X-Gm-Features: Ac12FXyC72fjsmfBKj8qknXL2IcZGnP7oQB_by_QmlQnlUNrEkhpI-BF0K24mIM
+Message-ID: <CACRpkdaDGmdhaik+1saRv7Ts4myQ+tg1aQqGU3xQyT7ma8dJFw@mail.gmail.com>
+Subject: Re: [PATCH v5 00/15] pinctrl: introduce the concept of a GPIO pin
+ function category
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Alexey Klimov <alexey.klimov@linaro.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
+	Sean Wang <sean.wang@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
+	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
+	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
+	linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
+	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Chen-Yu Tsai <wenst@chromium.org>, 
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 19 Aug 2025 14:58:21 +0200
-Message-Id: <DC6F7BN2L19O.1APQU9KWZV7H5@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 2/5] rust: maple_tree: add MapleTree
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Andrew Ballance"
- <andrewjballance@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- <linux-kernel@vger.kernel.org>, <maple-tree@lists.infradead.org>,
- <rust-for-linux@vger.kernel.org>, <linux-mm@kvack.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-References: <20250819-maple-tree-v2-0-229b48657bab@google.com>
- <20250819-maple-tree-v2-2-229b48657bab@google.com>
- <DC6DC244ZIUL.304JSP7JFDE9Z@kernel.org> <aKRx8xsY8CpzbeEm@google.com>
-In-Reply-To: <aKRx8xsY8CpzbeEm@google.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 04230120017
+X-Stat-Signature: dy43fdxnxsg8gct61rctyf1js44nzejo
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5301E18000C
-X-Stat-Signature: txkbdpaznz4gyhthawkt7ey1yhrftxf5
-X-HE-Tag: 1755608307-9661
-X-HE-Meta: U2FsdGVkX18NWWM+CZz9vXI6MdxI7TTbLU2LwAg7hqizZQZRXHNbcvf1W/II65CefLSoU12WXS4Lm/kg/YsA+QxiRD7PU15GhQbHPzCyWllr74JDG9A/BlTz5CRqD30M+alASfON/CDmeVCyluaJWW28VCl88uIQ3T0movhvQlXbPuZ9sOSPJgRWc4A+zi+RGYt6WjbSa5YWiS3qTVm4jFf8VIkClhwExQpbpGnKWo0WP+hvxXqH6pMsz9EJxkLm+64Cnlkb2O07rW5AVRg3wrjylGQtWODHDaqwHL5hC7P3fQjtt3GNf08wnlt79bzPU9U4KAswja3rGvlyx9JTQpCI08pC4DjWRV4CEEVlRQp13mMsO9aLmqQRa2cRudJUwhSm0N1yKO3n8neblCn/W+Og18kzpNH4bTc5XaemcDoTNPrZ8Ugzmi/Spdp7uEilMr30HwK+31/tVQMOE7O3qbWRLZmBn6eYPlI6LSadcknpUqGDiX1CAbOu/tZpzCv1s7v1ylA53/ro/St37ZSJvSF94j0QPYy0QzOlaoF6wY2joTUPHyP69u6iCOaRRs7LxmVqxd2caYH6a5A7xIlU8Dh1uNJh7NTc5KhgnfdqGI1ZKr8C9zj7EhdG56E/i2Ub9zbtsndpjorBVA6iS24oKQx1LSkw5Ebrl88TfNEf48dY5jaCXLCkH7UXBfiPtHNgKCeirX5oANrQ10TfF5YKQTsZmTfcOQNM9bkFs8RPv6hf09XVdGg1vfPYkP9ZLYu9ircq07Gtg87URHIlkfChKzhfYAYna1uZN4vmaPAkMzeRPIA6vKiYrBTZByqanqxM9UsuXvK+MDrRc0QAWwT+nTQ/LstnO114jCdm9b9SR/GTJUSzVOKD4irPisb1um6Q3sOQnHE/VuJ7QUBSyzQG/SEawtbJ7//v3xpUTFp1nqvecZ85rfC20mx6gvKhFHlVrnGbfX5AzbZOf1uGnw4
- Ewl+hVd0
- EGyhOUbNuh8R7GWOqCGF4v3g47eBJL+/xQF4EnF0kJ1w7m3D+bC0Df+VYJ7E577mkVOOBS3QJMXP18Mu+/uUDUW+i0RO3IllmXrKxeGL9o8/wYRJyVOLM6r2p/0w6euV63kHPR+zu3ipCL136nF6iGDvL+G4eiP226KZD8kNGpeZSVA5XX6aW8ViUfNY05T0Kf9lb5OcbqrTwNIrJHxrSN1bNG5yspwRSKm+f4fbmoORjDxgnNCVj0Ga5nzSICg8uX90HJTTToVeY0DRRW23CdRkcy+i7A85nyQy2PpBph1CQ68h+jSgLvzicxOtaGQjHr3+t3k0oBtfFd0dj+cvK68G2i9a1nmuRlIEM0Ds5CfFPfRkBbxWUoVtI59EVIMFep4rUU2fvApINbmG1gnYtGBstRuR1Dfi7/znwB8jDnN4T4YeT2r1BMS2BbaA7UjkPoWmcI3UawIqcdK6UnjwPeD0iqQ7mTJiSRA1f
+X-HE-Tag: 1755608520-171975
+X-HE-Meta: U2FsdGVkX1+bwNj+r8O6iop+rsRw2OAZ/yKGZA7mHIyMyruO727Hm2B4HEjR3Y29YGa/14Hrxy3kmH6MvhzRv/KGIgOiDmJ+aG1DGWxJhgUZdAoqmpjLY52f6g2PIliOnaLHyNBkvM4QpRZg/x6hbVYXs9ZE94A3Me/nPAyb19vcdg7bGF9NgRUy/FfPQUxZ/J6UaAC/PYnwHVYBa9Bw84JX78SLmbCgrMhpQxPFkDqWxhzGfds9Ll7Z4tlzPw1p9TiflH702MdyMHm98aSdyxX7pyPcGlQzrDvoMM2qjrucKwElJCQ7O5PfEmZmG0TgLKQdey3zfVQFDTnsF4V127JV6YDedWLzkcmS9fMuHJmN3pmAhqzHfvraDnC+LoRoZbgTAMKlrPF2YhJgCfgk3qWjdS1ODlhZEjpNqRuNcjwOBnzbO9KoUhouvCROwPUQhQCq+nm0eXEu2tsPc2Kz38T35sI04rhJNqrzIG9V1/mwDkDa2zdmUF1ri/6LjA0d7W0RACF1lQ+mzERoVpCReBeAMcnQyaoy8EPDBOolCfXL6peKwkuMZa09Sho8AvxIpZ11GR3d53ST3kV6espLFL6ucJ5K4eIwPcIrVhxbaJ45Rf7kKVcTfTtUIegtRzah+bHAo2832Y0Dw1/AmCPmCWIRv2SjINsGywrjaWMlBY3pEicQlU3O9gYgOSjJUtHSz//9a9KSzcE4A1WeUfjinXgA4EBhJW3cp/YgVxV8je9qPAMB/rx7vFxBBdVvsFADFtiV8JDTgi+esOO6tnfDWpyYPHSuiIii5SenvOwuAxoJg7XFpd1aoU/JuzB10TOkupu3SD/UpxI5f2WBW032B4hbC6COcGH1ENW6U7W15555gPJhAGcNhLdLo7EHlI3Toy6n6IEvf0IOszcOKd0eJ0k7Zn4vz63WcvAQed5vl9YHRhKBUrkJjg4Hny6LHkQJCa1aNELUcK8zJ+4EVNM
+ CZSnctqj
+ BAg4HutSKCkEkcdiAmwcXfiwuAiFBiXxhxYvBxTdQ8pHnuyBe6y7NbS4IzmjBgKJnxHUlBmlvCY/MWQ2v1/4xeZCa0M8xicqbfPvVUJDdljzhFEbAsYs0FfhQIFygRXbsi5jPD32n/zE8utDOIPzNFFcF5FSj+N+6ZB0SLX1IactaSyLUV/oQKn9JD1YOPwcnybzRt7AB0/YLBV+WQVo6I4A16yEXzrivIkrqID0jrghvrL2G1Zz0uUSPUK3e4cyEyLKB0FFLyI+1HIuDjSK0Q/GlTbqjcOoQ0QXpr9YAhJIZ1xTW4eZthoNik0TyXyphuh2Lfv0kvijzU/A=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,131 +135,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue Aug 19, 2025 at 2:45 PM CEST, Alice Ryhl wrote:
-> On Tue, Aug 19, 2025 at 01:30:30PM +0200, Danilo Krummrich wrote:
->> On Tue Aug 19, 2025 at 12:34 PM CEST, Alice Ryhl wrote:
->> > diff --git a/MAINTAINERS b/MAINTAINERS
->> > index fe168477caa45799dfe07de2f54de6d6a1ce0615..26053163fe5aed2fc4b4e3=
-9d47062c93b873ac13 100644
->> > --- a/MAINTAINERS
->> > +++ b/MAINTAINERS
->> > @@ -16250,7 +16250,9 @@ L:	rust-for-linux@vger.kernel.org
->> >  S:	Maintained
->> >  W:	http://www.linux-mm.org
->> >  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
->> > +F:	rust/helpers/maple_tree.c
->> >  F:	rust/helpers/mm.c
->> > +F:	rust/kernel/maple_tree.rs
->> >  F:	rust/kernel/mm.rs
->> >  F:	rust/kernel/mm/
->>=20
->> A later patch adds a separate entry; is this intended?
+On Fri, Aug 15, 2025 at 11:09=E2=80=AFAM Bartosz Golaszewski <brgl@bgdev.pl=
+> wrote:
+
+> Problem: when pinctrl core binds pins to a consumer device and the
+> pinmux ops of the underlying driver are marked as strict, the pin in
+> question can no longer be requested as a GPIO using the GPIO descriptor
+> API. It will result in the following error:
 >
-> Ah, no, this isn't intended.
+> [    5.095688] sc8280xp-tlmm f100000.pinctrl: pin GPIO_25 already request=
+ed by regulator-edp-3p3; cannot claim for f100000.pinctrl:570
+> [    5.107822] sc8280xp-tlmm f100000.pinctrl: error -EINVAL: pin-25 (f100=
+000.pinctrl:570)
 >
->> > +impl<T: ForeignOwnable> MapleTree<T> {
->> > +    /// Create a new maple tree.
->> > +    ///
->> > +    /// The tree will use the regular implementation with a higher br=
-anching factor.
->>=20
->> What do you mean with "regular implementation" and what is "a higher bra=
-nching
->> factor" in this context?
->>=20
->> Do you mean that the maple tree has a higher branching factor than a reg=
-ular RB
->> tree, or something else?
+> This typically makes sense except when the pins are muxed to a function
+> that actually says "GPIO". Of course, the function name is just a string
+> so it has no meaning to the pinctrl subsystem.
 >
-> This is compared to the alloc variant of the maple tree from the last
-> patch in this series.
-
-I think it'd be good to mention this. You could add the corresponding comme=
-nt
-and link when you introduce the type in the subsequent patch.
-
->> > +    #[inline]
->> > +    pub fn new() -> impl PinInit<Self> {
->> > +        pin_init!(MapleTree {
->> > +            // SAFETY: This initializes a maple tree into a pinned sl=
-ot. The maple tree will be
->> > +            // destroyed in Drop before the memory location becomes i=
-nvalid.
->> > +            tree <- Opaque::ffi_init(|slot| unsafe { bindings::mt_ini=
-t_flags(slot, 0) }),
->> > +            _p: PhantomData,
->> > +        })
->> > +    }
->> > +
->> > +    /// Insert the value at the given index.
->> > +    ///
->> > +    /// If the maple tree already contains a range using the given in=
-dex, then this call will fail.
->>=20
->> Maybe add an error section for this?
->>=20
->> > +    ///
->> > +    /// # Examples
->> > +    ///
->> > +    /// ```
->> > +    /// use kernel::maple_tree::{MapleTree, InsertErrorKind};
->> > +    ///
->> > +    /// let tree =3D KBox::pin_init(MapleTree::<KBox<i32>>::new(), GF=
-P_KERNEL)?;
->> > +    ///
->> > +    /// let ten =3D KBox::new(10, GFP_KERNEL)?;
->> > +    /// let twenty =3D KBox::new(20, GFP_KERNEL)?;
->> > +    /// let the_answer =3D KBox::new(42, GFP_KERNEL)?;
->> > +    ///
->> > +    /// // These calls will succeed.
->> > +    /// tree.insert(100, ten, GFP_KERNEL)?;
->> > +    /// tree.insert(101, twenty, GFP_KERNEL)?;
->> > +    ///
->> > +    /// // This will fail because the index is already in use.
->> > +    /// assert_eq!(
->> > +    ///     tree.insert(100, the_answer, GFP_KERNEL).unwrap_err().cau=
-se,
->>=20
->> A lot of the examples, including the ones in subsequent patches contain =
-variants
->> of unwrap().
->>=20
->> I think we should avoid this and instead handle errors gracefully -- eve=
-n if it
->> bloats the examples a bit.
->>=20
->> My concern is that it otherwise creates the impression that using unwrap=
-() is a
->> reasonable thing to do.
->>=20
->> Especially for people new to the kernel or Rust (or both) it might not b=
-e
->> obvious that unwrap() is equivalent to
->>=20
->> 	if (!ret)
->> 		do_something();
->> 	else
->> 		panic();
->>=20
->> or the fact that this is something we should only do as absolute last re=
-sort.
+> We have many Qualcomm SoCs (and I can imagine it's a common pattern in
+> other platforms as well) where we mux a pin to "gpio" function using the
+> `pinctrl-X` property in order to configure bias or drive-strength and
+> then access it using the gpiod API. This makes it impossible to mark the
+> pin controller module as "strict".
 >
-> How would you write it? The way you write it in normal code is an
-> if/else where you handle both cases, but that doesn't map nicely.
+> This series proposes to introduce a concept of a sub-category of
+> pinfunctions: GPIO functions where the above is not true and the pin
+> muxed as a GPIO can still be accessed via the GPIO consumer API even for
+> strict pinmuxers.
+>
+> To that end: we first clean up the drivers that use struct function_desc
+> and make them use the smaller struct pinfunction instead - which is the
+> correct structure for drivers to describe their pin functions with. We
+> also rework pinmux core to not duplicate memory used to store the
+> pinfunctions unless they're allocated dynamically.
+>
+> First: provide the kmemdup_const() helper which only duplicates memory
+> if it's not in the .rodata section. Then rework all pinctrl drivers that
+> instantiate objects of type struct function_desc as they should only be
+> created by pinmux core. Next constify the return value of the accessor
+> used to expose these structures to users and finally convert the
+> pinfunction object within struct function_desc to a pointer and use
+> kmemdup_const() to assign it. With this done proceed to add
+> infrastructure for the GPIO pin function category and use it in Qualcomm
+> drivers. At the very end: make the Qualcomm pinmuxer strict.
+>
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+(...)
+> Bartosz Golaszewski (15):
+>       devres: provide devm_kmemdup_const()
+>       pinctrl: ingenic: use struct pinfunction instead of struct function=
+_desc
+>       pinctrl: airoha: replace struct function_desc with struct pinfuncti=
+on
+>       pinctrl: mediatek: mt7988: use PINCTRL_PIN_FUNCTION()
+>       pinctrl: mediatek: moore: replace struct function_desc with struct =
+pinfunction
+>       pinctrl: imx: don't access the pin function radix tree directly
+>       pinctrl: keembay: release allocated memory in detach path
+>       pinctrl: keembay: use a dedicated structure for the pinfunction des=
+cription
+>       pinctrl: constify pinmux_generic_get_function()
+>       pinctrl: make struct pinfunction a pointer in struct function_desc
+>       pinctrl: qcom: use generic pin function helpers
+>       pinctrl: allow to mark pin functions as requestable GPIOs
 
-I'd just
+I applied these 12 patches as a starter so they can
+stabilize in linux-next.
 
-	assert!(tree.insert(100, the_answer, GFP_KERNEL).is_err());
+>       pinctrl: qcom: add infrastructure for marking pin functions as GPIO=
+s
+>       pinctrl: qcom: mark the `gpio` and `egpio` pins function as non-str=
+ict functions
+>       pinctrl: qcom: make the pinmuxing strict
 
-and if you want to test that the error you'd expect is actually returned, I=
-'d
-suggest a regular kunit test, rather than a doc-test.
+Neil reports of regressions on qcom platforms so I assume it's something
+in the last three patches that's causing it and I hold these three off
+until you have time to look at it (and focus at just the final qcom pieces)=
+.
 
-I think doc-tests should mostly illustrate idiomatic usage, especially now =
-that
-we have good and easily accessible kunit support.
-
-I say "mostly" because I think tests to the degree of where they stay withi=
-n
-reasonable bounds of illustrating idiomatic usage are fine of course.
+Yours,
+Linus Walleij
 
