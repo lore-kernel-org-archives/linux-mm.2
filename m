@@ -2,110 +2,89 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BDA7CA0EE6
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 18:03:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 26DB3CA0EEB
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 18:03:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1F7C8E0057; Tue, 19 Aug 2025 14:03:45 -0400 (EDT)
+	id B0DE88E0058; Tue, 19 Aug 2025 14:03:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD0588E000F; Tue, 19 Aug 2025 14:03:45 -0400 (EDT)
+	id A70C98E000F; Tue, 19 Aug 2025 14:03:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC0068E0057; Tue, 19 Aug 2025 14:03:45 -0400 (EDT)
+	id 960298E0058; Tue, 19 Aug 2025 14:03:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 94F628E000F
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 14:03:45 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4468C56C56
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 18:03:45 +0000 (UTC)
-X-FDA: 83794280010.30.E13A47E
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 3CC0440007
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 18:03:42 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MPDU9NFv;
-	spf=pass (imf01.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755626623; a=rsa-sha256;
-	cv=none;
-	b=WLMKIYj0JvODqJP2GbN5Bbi7pHVHlPmZLC4P51t7AuRr3QQJ/vBIa3FQEwJVBTVynERJne
-	MXLTnvoiKl4a3zT3FEGIzSJzr7gKMOTVhj5MNMgo77cl6AjzFHnRiWYrLy3jwJepnJbxw/
-	m9fRV74oIh5atbxmxzMeoAjMtZT0NFw=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MPDU9NFv;
-	spf=pass (imf01.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C01D8E000F
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 14:03:52 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3E2F481FD4
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 18:03:52 +0000 (UTC)
+X-FDA: 83794280304.07.60E768D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6AEDF1C000F
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 18:03:50 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rdp41m9x;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755626623;
+	s=arc-20220608; t=1755626630;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GhwQzM4cXgt++GF3ZN5iSCu2rPgPoTUttLSOF1VLntM=;
-	b=H8kWt6/IQMaUAVSA8IW6I8v+n3PtvbtL23l5gocx+g5uIyQFl+bhogalI2oJJYpDRiBF5O
-	NFrom/D3aNSSWzCEIwXimNmYUOmq1uEl7PAGSj+Swgw966fb+2Gci89MtjvaaLMkCQ3zfM
-	vylgCllm9LUDqXSmNis6ykGkKu6BI6Y=
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-55ce526627dso5705962e87.3
-        for <linux-mm@kvack.org>; Tue, 19 Aug 2025 11:03:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755626621; x=1756231421; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GhwQzM4cXgt++GF3ZN5iSCu2rPgPoTUttLSOF1VLntM=;
-        b=MPDU9NFve5N2UTszrxRF6UkYKWRqQQhbiVBD0SnbP4I4G5FEZRm3VNngih6OISmQdR
-         ySB6G6pV/LDAmjp0aLdvfZ4pvcU0Mf4hxfBAVPZS2vDSA7GTYgkvpzKAU3wduBBAt7cG
-         0pyA24jFGzOcTGSye8EfYMNmcverg5kr+orIGwRNrpqZPCrPlvKay7lo9V2dqDyYYstV
-         LR30Eb/btQkcxvSRqwuPOamQ78SSKG7kJ6uwKDHDp6vMIIF4NXtzroQabZ6H2Babvlm3
-         wFvNo5esSkRqrPBfs7wm6MKWNBIZ3/88pHtKxORp8hdrK5Eb8twn4ZbBnOTyOVUSEzcm
-         Yw5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755626621; x=1756231421;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GhwQzM4cXgt++GF3ZN5iSCu2rPgPoTUttLSOF1VLntM=;
-        b=rmFL3c2t0aHWqS0gO2Mr1j66I9V/OnJ2rcBe43MSxPe6LHmQ/lI46ffJyMzv2E/tzK
-         8Iq8FPOYBWRLLywMKjBy6LuM4TiLXUkgKxCgraWqCRBOgXgjGq/z5cu/bc/+QoUQAUKv
-         ItJs+M0AH/0bxBnz7lCdcguVJ3SszMuoZbIRdsNZ8Dta258EWLbKy6iDiDCYOCNs2wqq
-         sDZ/Q2Y7CJXbkmYTPgy6s31Eipiu5eTVetf2zSB+KXnsThgzmeVz4W19eFtS+CGl1ZtW
-         9XmT+bXfRiP+QrYWRuG4jbnEg+WbjKE/9JHR3l5NUth7R/e8J6kwWg5VA2ln32jIk/pw
-         lrkA==
-X-Forwarded-Encrypted: i=1; AJvYcCW+BfAbE9325OsyHRKknLUr+BctmXjGxwUtkyFKkMMIJJwBIz+rTB2F7cxNSCx6x2hQ+lvQTj3/fA==@kvack.org
-X-Gm-Message-State: AOJu0YyqEkPE+wVIBDxMJIVNxE1bW/zbB+wPLDg+QNVZzSztqI1i2gpM
-	A+l2mFUMy3XPJ8mfODuX1b0MpV5xAuNzKNz1sNA36WD/6QXspp1socXKV6psvHYjqAMElLVMh6B
-	oSBU1H+n1RJ4RW9QUoNy08du/ftQHnCY=
-X-Gm-Gg: ASbGncs7+/yJabEK0oJg086nYC0XtwcoRJiF29t/tojgm3pnN/tke9qKhtUqdeA+gsS
-	QPvfYFIksaH0ptb/FpvKirlmFNIlCUvs7l2LN/P/vfULN9JU+VQo8VWjpYUkIVXx/fHEICTyyOq
-	p5Eioe7CjkrcowpxIPlRQQ6Obv44ttYcU3HS55W7OrgWl8/knOms40qdiSmsPS/6xUdOp9ISPj9
-	vI08Qw=
-X-Google-Smtp-Source: AGHT+IFxdUlbLO4HNpt5l+2YcbYsbBU0mbvzO4XJ72fAO9uBg5cvJYcUkDL5cRzlXoduYtPRjqqasZFC6D43xjbaogs=
-X-Received: by 2002:a2e:8a93:0:b0:332:5ce1:1fbd with SMTP id
- 38308e7fff4ca-3353be4c4a6mr23211fa.31.1755626620874; Tue, 19 Aug 2025
- 11:03:40 -0700 (PDT)
+	bh=u4yW/YbySh4tQ1C6hmLrN8qxsXiAjFwbt8uLVEK+Bi0=;
+	b=WhSjIwSM12HGrFHEiLN2HEbkdwvMQlBMQIx1p+/P5EMPiXJGX0VaVpv2m7pnra1MeADNfO
+	QChPdFfT6giOqlE/eTf0wCHMD7awhMRs9Uz3/6IxcBo5tM6ZHVZ76GcKzEZ1zXFswT+zoJ
+	fkhJnUUgBKAJ7RZUYCQCKzV8jX37Ah0=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rdp41m9x;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755626630; a=rsa-sha256;
+	cv=none;
+	b=c/rfXGVkdbt6iVTF1l/HmeX/ffzYGBFjS/4udrgwsAi+O73EqIAOHY9SRb+CW+N56l4LZP
+	QfUQfCvC6EA7ZyznxRfIeBXAkeiD7Ry3957Ep9FZFyhf1As/eUxURpu+6Xuuq6uDhRxGkP
+	Fp6E2x3gDTmkUyUkay/laSDp2V/PeuE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5B02F456D7;
+	Tue, 19 Aug 2025 18:03:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E74BC113D0;
+	Tue, 19 Aug 2025 18:03:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755626629;
+	bh=F62FyC88y55IwNEaGhr59itkIJTjmWaqtjD2Xo8S9lI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Rdp41m9xY68OPmiEA18fXO3+3gQXycbZPO3QBmePtHJd7L58Ni8M61MHwsNsqYJAE
+	 lib0wPl5tF8kqZg1KPIf3fxorIBfxQife5TwhP7iYapUteD2gvZ2sDRRPNSIzg9LBW
+	 J8Y59flPHO/IpqQI5+0KBtoMwumtp4UsviYXEAHNSx8Czscwa9hkw9sWxkbVzwerTx
+	 gybQY4WiaxS7E1izEveajYzoh0vbGvkkXzTUYij0NUKxC6K3do2rdlv7AWUbvEU579
+	 mFWof+W1KmeXYPIhPndXexMSynRAFnOZyOy/08g6iOnQCuMMHe2WRDS1f4OETqw+uA
+	 AR9hlhJ2Ffyfw==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Sang-Heon Jeon <ekffu200098@gmail.com>,
+	honggyu.kim@sk.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v2] mm/damon/core: set quota->charged_from to jiffies at first charge window
+Date: Tue, 19 Aug 2025 11:03:47 -0700
+Message-Id: <20250819180347.45187-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250819172718.44530-1-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-References: <20250805172307.1302730-1-willy@infradead.org> <20250805172307.1302730-2-willy@infradead.org>
- <CAMgjq7DA6Y3vY=dfKCk4WvNA_AtH1uHmXo15UYipPgOXYw80VA@mail.gmail.com> <aKS7PRUfJRKWKnt4@casper.infradead.org>
-In-Reply-To: <aKS7PRUfJRKWKnt4@casper.infradead.org>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Wed, 20 Aug 2025 02:03:04 +0800
-X-Gm-Features: Ac12FXynGEtdrcGMntWqBpvWmKwNEWyKZy8PFzA2IOONF6OWNFigg0xIjYMX4cE
-Message-ID: <CAMgjq7BZG4G3carSB6oEDk7griL_3yBqGGrPQ4ZcwBPYSVoYxg@mail.gmail.com>
-Subject: Re: [PATCH 01/11] mm: Introduce memdesc_flags_t
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3CC0440007
-X-Stat-Signature: 118x8z83p146ez4p3ix7tbxbycpft5g4
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: dtp7szmcwroe7yb5wgukcak8z6cfu4dd
 X-Rspam-User: 
-X-HE-Tag: 1755626622-926374
-X-HE-Meta: U2FsdGVkX1/JS8QymDrR2JXQTFqf7NMH4jFcZM/PUJT/opOKbMlAvsqksvPA1BrKHhlYb5qU09fkG+YkYOWjf7x1xjtsdyRuIwLVX76ZeJKflkzlwUHJHbcI0XRLh3cv11Vs9C4zcvp+uJ5XULdA6q6xmlTmHU9UI5deHoButluheV6BGbcTXBSD242UF9QPtL5BExYsqidJotM3C0GoJmFkf57VtBjaN6DVxdRywEEFKFqRaLV8NhDg5CCEYdnWZfIXSjKtoavJXVKpNqTWeC2/AfUh8PmVaL2Cfp33GviQvVIzgtw5qHU0lbnjitky2WymYbIUC9GSxZ4TBjH9j8IMqw7MLvDzgf4lOm6bF+K0dQh2V0ZPsKRx5WLZpkfk25w9Lm3QhVeMkh9qkHf7RVtcn6lE6pYBnCFY0YXgRoXPmqQgwAkDX4vrZmoy9fUgTu+jhi2hdzz8dCgP/dW3fqWayVaxx3B+cqXNliFaPqtrFvxvOHDM36s2GszSdT61r4ZUKE/dFZmKeJCQSepbL39XJdEhheQFy5upPV8JxSobF2mPe4UYpDrPuRLB/CCFbxwiLyPLq6+e+5TFrZWjzzIp7JKR7OCs5EigcX2tjhgnEcYXsl6lq40YNyRyuJ3PTZwgOcWLFaOMxrNIgp74uE3P2zjhBhQu6GiE6SHA3+f7b2vtCniVFWmeMpAzdk9prgkhaeZN2SdZbT5JzNXj0MGNEfFMxvuK2RVfFzcUgUar70G66v2eJbUJjGk3VS1EthMBmQJ5fH53J6QvEDWngNjjLaUkVaS/eWSdJzxrTdUjvuiUUB/FCR94PW0rPa40FnGgO6j8YGA6Oz9kwZI2Zf/VaDSq4TM9kz6ttnSKn6VXAG0iIpmCFvwTkYfnL/87jEuWEBepVgGELckjhEljPhH7zZ20XYtTQBrvf0rL8r3vKWfiO4O5+ALPzd4Sx1rokaIIzDbKgRdEHQcFDaz
- cclmANNS
- AAIv2hg9xfUq+6WOCGebWFIsx1WfxDwAEX4+J/kixRIgo0q8uIEYANPAMRkZFiNY0mcINDD6MIQYafn75tLki6y1uFEWCR0gpVs/LpwDdw1HLcmqxx+Am/k21RJ+J16ey+Nr5V9IYw2U6p1EvL9PcpvXe33OB2jZ5kS3HVlFXbbgD58LQrUNSnO3ttLbviSTQV/TxHn+aESi/apYk/YQfyfAHXVwrPfWuF4Svv0vyrY7RRMkA7ndewIlkPd3dksy7x63+FSbQ7yno/1wzV+hOTc1EYXhp+lfXAmp6RIshrjbtPuVqhFec+pnXmtMXNS5X642lgjIhkhSbz1Z7IQhWM5kFzrEq3WocGtgY8ZYukmxV74llBZxOt8fI7vhnpg+ruN6fFoMCdr4fhsRAcakEC/sg76/UJptiXW87eSeSGXzttDDdqMJG/dCs+22C+9jHUV+LN1Ni9RjEyGSDkbSIBa6NGhQpgxapRVM24azlC1k7yMA=
+X-Rspamd-Queue-Id: 6AEDF1C000F
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755626630-665769
+X-HE-Meta: U2FsdGVkX19wdi9VMIlagQARySm3IE4Psn+LK6PGtQQNH7rF2m7zCO/QbuzDcTZjXhntRLVcmqYQ5oHqtSUMGmVxUTGQ8ALQvkQpw/8EN92ePbmonQ0SHtHYf31HMMCCUpRxE6k2Q1JusUiZiFD//ciDtMH5IC4W2oiresju9Gx1bWmxOeVYfGASA+WVb12doJVXubLTM0tA2xZEtANVmwMDHuXX+AblfGPrjroOqE7kT5W8c3zYrKP5udemv6UogDQpkRDYbKGgggTeclYo7rIWmUQu3Jfe71dvrrj2Z6+SvRz90q+CUiL8RLR9alJ4r4lcR5HZ2YjHun6SYg3obg8b4JI+NzDuWp3amczBu6q9Pd2/h+eHpI0ETQOdySdRzIBFPI58LUbs5+GTLdLDpjhDdWaUdtlKsRNZu1hUIcfuOIQTnH1OYf6e6wB1sjqD3PWRJEjNcCC1Ms7/c4iSBW+KVacLClSVO4xoMFP//ZnJx6EVQ3oISKHsmdBGDVOXKq/wPGudwFFX1WJBc40EW8NJAJ1Jd1qZSMuLT2BJ1n4Zq1O7ANyJh4TGY+0+KITlt8j/wajS1PgllK3y23B634Xq4afyWeq/O8D4oByQKaSM8U2zbKt/y9QwhqWg1C6zHSayM6R3KDruggdybgtGcolMFolGuFtnMSNQPrPHnH1xnOUtsNGicPzmXdmot+ETmBJUAtCPFHsXGhxJM2OQsVx9jv856mK6lxBh3VQPkiMWkOxXrQ5pGnsn0I6t91/kGduc6DZAAUyl1pVmpr4ziJyVivxgT15peEAQTMg0Ih+ZewOHX8vOHKQD+mG6i7SIEwN5tUBtY0+kdlBzMogVRIAU/KpSC787EaGAXHNqcBdPjaNdWl1ByOcViSEDTZqZjN9d0Lx2PI88senlXlUHTf4wo2sYT7AoKy+ZjVAI2xCEPCqgRac69Rkqc0hzeC6WndyRAsxTnfjpDqV5HDL
+ P1U2kNGE
+ m4jXe2iTdZEttcdEZNpn7N2fabm1DbprcRXfCW8MDF6nKiffdFO4d0DEiQFh2enZP0+hI7Hi4xunS/OwxvxejmoeDkCrN2oXiXDCjlnM/xBzomHuthgJlxvHTakKNgYSOzo1ruUB+4yb8RoGLxjy6HbNfkLsi1IMeKQ/wMS56gxdJMtzoBgDBF5OcFBywsUR9ATcgnFbs5mshfs+zJSSKJ9cHmw9zEPtRMCaB/xW7x9roxD28XkzYzkzBYcFsD81p/RnDiBiGK1cRm33bJTcDp8JtEESmCcuoUicCeuXt6yzbhbw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,22 +93,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 20, 2025 at 1:58=E2=80=AFAM Matthew Wilcox <willy@infradead.org=
-> wrote:
->
-> On Wed, Aug 20, 2025 at 01:49:54AM +0800, Kairui Song wrote:
-> > On Wed, Aug 6, 2025 at 2:20=E2=80=AFAM Matthew Wilcox (Oracle)
-> > <willy@infradead.org> wrote:
->
-> [you really didn't need to quote the entire 900 lines of patch]
++ Andrew
 
-Sorry, forgot to truncate that.
+On Tue, 19 Aug 2025 10:27:18 -0700 SeongJae Park <sj@kernel.org> wrote:
 
->
-> > I'm rebasing on mm-new, and seeing below build error after this patch:
->
-> See https://lore.kernel.org/linux-mm/aKMgPRLD-WnkPxYm@casper.infradead.or=
-g/
-
-Thanks, this worked for me.
+> On Wed, 20 Aug 2025 00:01:23 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
+> 
+> > Kernel initialize "jiffies" timer as 5 minutes below zero, as shown in
+> > include/linux/jiffies.h
+> > 
+> > /*
+> >  * Have the 32 bit jiffies value wrap 5 minutes after boot
+> >  * so jiffies wrap bugs show up earlier.
+> >  */
+> >  #define INITIAL_JIFFIES ((unsigned long)(unsigned int) (-300*HZ))
+> > 
+> > And they cast unsigned value to signed to cover wraparound
+> 
+> "they" sounds bit vague.  I think "jiffies comparison helper functions" would
+> be better.
+> 
+> > 
+> >  #define time_after_eq(a,b) \
+> >   (typecheck(unsigned long, a) && \
+> >   typecheck(unsigned long, b) && \
+> >   ((long)((a) - (b)) >= 0))
+> > 
+> > In 64bit system, these might not be a problem because wrapround occurs
+> > 300 million years after the boot, assuming HZ value is 1000.
+> > 
+> > With same assuming, In 32bit system, wraparound occurs 5 minutues after
+> > the initial boot and every 49 days after the first wraparound. And about
+> > 25 days after first wraparound, it continues quota charging window up to
+> > next 25 days.
+> 
+> It would be nice if you can further explain what real user impacts that could
+> make.  To my understanding the impact is that, when the unexpected extension of
+> the charging window is happened, the scheme will work until the quota is full,
+> but then stops working until the unexpectedly extended window is over.
+> 
+> The after-boot issue is really bad since there is no way to work around other
+> than reboot the machine.
+> 
+> > 
+> > Example 1: initial boot
+> > jiffies=0xFFFB6C20, charged_from+interval=0x000003E8
+> > time_after_eq(jiffies, charged_from+interval)=(long)0xFFFB6838; In
+> > signed values, it is considered negative so it is false.
+> 
+> The above part is using hex numbers and look like psuedo-code.  This is
+> unnecessarily difficult to read.  To me, this feels like your personal note
+> rather than a nice commit message that written for others.  I think you could
+> write this in a much better way.
+> 
+> > 
+> > Example 2: after about 25 days first wraparound
+> > jiffies=0x800004E8, charged_from+interval=0x000003E8
+> > time_after_eq(jiffies, charged_from+interval)=(long)0x80000100; In
+> > signed values, it is considered negative so it is false
+> 
+> Ditto.
+> 
+> > 
+> > So, change quota->charged_from to jiffies at damos_adjust_quota() when
+> > it is consider first charge window.
+> > 
+> > In theory; but almost impossible; quota->total_charged_sz and
+> > qutoa->charged_from should be both zero even if it is not in first
+> 
+> s/should/could/ ?
+> 
+> Also, explaining when that "could" happen will be nice.
+> 
+> > charge window. But It will only delay one reset_interval, So it is not
+> > big problem.
+> > 
+> > Fixes: 2b8a248d5873 ("mm/damon/schemes: implement size quota for schemes application speed control") # 5.16
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> 
+> I think the commit message could be much be improved, but the code change seems
+> right.
+> 
+> Reviewed-by: SeongJae Park <sj@kernel.org>
+> 
+> > ---
+> > Changes from v1 [1]
+> > - not change current default value of quota->charged_from
+> > - set quota->charged_from when it is consider first charge below
+> > - add more description of jiffies and wraparound example to commit
+> >   messages
+> > 
+> > SeongJae, please re-check Fixes commit is valid. Thank you.
+> 
+> I think it is valid.  Thank you for addressing my comments!
+> 
+> 
+> Thanks,
+> SJ
+> 
+> [...]
 
