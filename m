@@ -2,106 +2,110 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 18D54CA0EEB
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 18:03:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BDA7CA0EE6
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 18:03:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABF418E0056; Tue, 19 Aug 2025 14:03:31 -0400 (EDT)
+	id C1F7C8E0057; Tue, 19 Aug 2025 14:03:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A70398E000F; Tue, 19 Aug 2025 14:03:31 -0400 (EDT)
+	id BD0588E000F; Tue, 19 Aug 2025 14:03:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 986AA8E0056; Tue, 19 Aug 2025 14:03:31 -0400 (EDT)
+	id AC0068E0057; Tue, 19 Aug 2025 14:03:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8733C8E000F
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 14:03:31 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3415156B7B
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 18:03:31 +0000 (UTC)
-X-FDA: 83794279422.04.EC1E94C
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3F225A0016
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 18:03:29 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=iyLyhwdM;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf15.hostedemail.com: domain of 3b7ykaAgKCMYvmowymzns00sxq.o0yxuz69-yyw7mow.03s@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3b7ykaAgKCMYvmowymzns00sxq.o0yxuz69-yyw7mow.03s@flex--jackmanb.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755626609; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 94F628E000F
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 14:03:45 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4468C56C56
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 18:03:45 +0000 (UTC)
+X-FDA: 83794280010.30.E13A47E
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 3CC0440007
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 18:03:42 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MPDU9NFv;
+	spf=pass (imf01.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755626623; a=rsa-sha256;
 	cv=none;
-	b=yP0WDZgMhsXK1T0apdz9yhEn0vTxmuSPSL2cOgWx9RlsjWJ58CepcBJZHNQG/4vMz1UGQK
-	M1oCSCrzqY/tEhu487erEJvmiiugpWfXgR+RYvKbVtRVOt8DbjUtgIg+e5VmO49gvrO61S
-	E1x7GMieHhapKzBnU/KYqh4yKLrABEo=
+	b=WLMKIYj0JvODqJP2GbN5Bbi7pHVHlPmZLC4P51t7AuRr3QQJ/vBIa3FQEwJVBTVynERJne
+	MXLTnvoiKl4a3zT3FEGIzSJzr7gKMOTVhj5MNMgo77cl6AjzFHnRiWYrLy3jwJepnJbxw/
+	m9fRV74oIh5atbxmxzMeoAjMtZT0NFw=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=iyLyhwdM;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf15.hostedemail.com: domain of 3b7ykaAgKCMYvmowymzns00sxq.o0yxuz69-yyw7mow.03s@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3b7ykaAgKCMYvmowymzns00sxq.o0yxuz69-yyw7mow.03s@flex--jackmanb.bounces.google.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MPDU9NFv;
+	spf=pass (imf01.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755626609;
+	s=arc-20220608; t=1755626623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KF6Ep2y33XCgTx+h8iRawRIyytqbsVvE9Zs0AVU//wM=;
-	b=RSaxgbmzVq7q+v/pZHDDERxzyKc09ebCZurZrlb5D4+f8BDMi9N8nhHPQGkmwo93nVXD4O
-	CDhDkEaHPtwGYlrMhRCioE49D7i9TOhqi7LpJkAV62p4zyxY+IGRL8p+qu58Gm6iX9lbkd
-	i+xRrZJosYtwjEnhSsFCdWQZbnkAU2o=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-45a1b0d221aso23759555e9.3
-        for <linux-mm@kvack.org>; Tue, 19 Aug 2025 11:03:28 -0700 (PDT)
+	bh=GhwQzM4cXgt++GF3ZN5iSCu2rPgPoTUttLSOF1VLntM=;
+	b=H8kWt6/IQMaUAVSA8IW6I8v+n3PtvbtL23l5gocx+g5uIyQFl+bhogalI2oJJYpDRiBF5O
+	NFrom/D3aNSSWzCEIwXimNmYUOmq1uEl7PAGSj+Swgw966fb+2Gci89MtjvaaLMkCQ3zfM
+	vylgCllm9LUDqXSmNis6ykGkKu6BI6Y=
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-55ce526627dso5705962e87.3
+        for <linux-mm@kvack.org>; Tue, 19 Aug 2025 11:03:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755626607; x=1756231407; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KF6Ep2y33XCgTx+h8iRawRIyytqbsVvE9Zs0AVU//wM=;
-        b=iyLyhwdMDWI271Ch5MXF1KOjO+IYkiyKmuG4moPxgs612SQHW+zWNPlydqdRiuYsIv
-         iTel6T1EWoDCQDA1gp/xjUWGlARU9f5QB2DONYb5hFNuqYhr6i5tUaCNJMvp2DsCHs8N
-         2VEYS8+UQk9v7Db2D3Kqv/jwgFZ8iw5Q9j6m/IMyCNyaOiW7cKSp/SKaATIB5v9BxsPp
-         dGRC32U5TsTtkPy7BlOPFg+/SMqxlOwRnDp4EltGHqv6SlZ5Yxhm0aDb9gcwNB5gsMgF
-         coZKTJWAzdvrZ8xs653Pn0So8MKz9xSkULPFILuDSula5AK+qCcV8PaShcJXOpytIBLK
-         kj6w==
+        d=gmail.com; s=20230601; t=1755626621; x=1756231421; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GhwQzM4cXgt++GF3ZN5iSCu2rPgPoTUttLSOF1VLntM=;
+        b=MPDU9NFve5N2UTszrxRF6UkYKWRqQQhbiVBD0SnbP4I4G5FEZRm3VNngih6OISmQdR
+         ySB6G6pV/LDAmjp0aLdvfZ4pvcU0Mf4hxfBAVPZS2vDSA7GTYgkvpzKAU3wduBBAt7cG
+         0pyA24jFGzOcTGSye8EfYMNmcverg5kr+orIGwRNrpqZPCrPlvKay7lo9V2dqDyYYstV
+         LR30Eb/btQkcxvSRqwuPOamQ78SSKG7kJ6uwKDHDp6vMIIF4NXtzroQabZ6H2Babvlm3
+         wFvNo5esSkRqrPBfs7wm6MKWNBIZ3/88pHtKxORp8hdrK5Eb8twn4ZbBnOTyOVUSEzcm
+         Yw5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755626607; x=1756231407;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KF6Ep2y33XCgTx+h8iRawRIyytqbsVvE9Zs0AVU//wM=;
-        b=NO8k5/HA7yT1hHvY7ZW71+1Zlc0et2OBHlNBH1CAO/rqtvJKxlOADAGAc4cXA6uozi
-         IdaCNJYvsyjYHBImdE3WEfifrih58k1KYuf0y5NKQWdQob9vO2pqpBqv5rGjxnwlKnKx
-         GbuLo+k0BE+Vg3QvUdCmxnCm6aejzhVb+oqlUdxTffYB1lNAQRY5Rql901EADmxapLCv
-         vt2FRKQLXRbSCYXvwKHxOlRRBpHj6lm6KibUz7tznorWVUlf7uWsSeW5EysNSwNMGt5M
-         0baD1y0v5LawKNC7JGwYVP2ZZ+pUfxHhFZZETZU35wPzhav3CTqVLCcFtcra3EzclFgP
-         vwJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWer91sH59rLx0SROSPk91Z6LFXSNycqKA8wG7rfsm6KmHsOnP+PI5hlj/K/8rzEx/r9p2wmu6g+w==@kvack.org
-X-Gm-Message-State: AOJu0YxLnFgH9sem7rUpQ7O3LWIdJqyPgBLW+0BsTZuLaNttwi1NwU9+
-	2xKt1MR+5EoOjtrlojONzk7fM+A5NJmE0H0RAQdpW+gpMJV777y2s3xuLNMx5NxvY1pSkx+aNyn
-	91Z7Ff9b0D+wEvw==
-X-Google-Smtp-Source: AGHT+IGAP/5kOUw2xl88tGIMUg+2rJWqwENGYoQPUjN+xF7n1jDCKhH55XKAw9uS4xoVCgiwisZ9ko0ZaQaaQg==
-X-Received: from wmqa17.prod.google.com ([2002:a05:600c:3491:b0:459:7c15:15b9])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:474e:b0:453:5a04:b60e with SMTP id 5b1f17b1804b1-45b43e0eed4mr28241025e9.26.1755626607329;
- Tue, 19 Aug 2025 11:03:27 -0700 (PDT)
-Date: Tue, 19 Aug 2025 18:03:26 +0000
-In-Reply-To: <20250812173109.295750-1-jackmanb@google.com>
-Mime-Version: 1.0
-References: <20250812173109.295750-1-jackmanb@google.com>
-X-Mailer: aerc 0.20.1
-Message-ID: <DC6LOWXFIPGQ.1RKZL23ZW0J73@google.com>
-Subject: Re: [Discuss] First steps for ASI (ASI is fast again)
-From: Brendan Jackman <jackmanb@google.com>
-To: Brendan Jackman <jackmanb@google.com>, <peterz@infradead.org>, <bp@alien8.de>, 
-	<dave.hansen@linux.intel.com>, <mingo@redhat.com>, <tglx@linutronix.de>
-Cc: <akpm@linux-foundation.org>, <david@redhat.com>, <derkling@google.com>, 
-	<junaids@google.com>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
-	<reijiw@google.com>, <rientjes@google.com>, <rppt@kernel.org>, 
-	<vbabka@suse.cz>, <x86@kernel.org>, <yosry.ahmed@linux.dev>
+        d=1e100.net; s=20230601; t=1755626621; x=1756231421;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GhwQzM4cXgt++GF3ZN5iSCu2rPgPoTUttLSOF1VLntM=;
+        b=rmFL3c2t0aHWqS0gO2Mr1j66I9V/OnJ2rcBe43MSxPe6LHmQ/lI46ffJyMzv2E/tzK
+         8Iq8FPOYBWRLLywMKjBy6LuM4TiLXUkgKxCgraWqCRBOgXgjGq/z5cu/bc/+QoUQAUKv
+         ItJs+M0AH/0bxBnz7lCdcguVJ3SszMuoZbIRdsNZ8Dta258EWLbKy6iDiDCYOCNs2wqq
+         sDZ/Q2Y7CJXbkmYTPgy6s31Eipiu5eTVetf2zSB+KXnsThgzmeVz4W19eFtS+CGl1ZtW
+         9XmT+bXfRiP+QrYWRuG4jbnEg+WbjKE/9JHR3l5NUth7R/e8J6kwWg5VA2ln32jIk/pw
+         lrkA==
+X-Forwarded-Encrypted: i=1; AJvYcCW+BfAbE9325OsyHRKknLUr+BctmXjGxwUtkyFKkMMIJJwBIz+rTB2F7cxNSCx6x2hQ+lvQTj3/fA==@kvack.org
+X-Gm-Message-State: AOJu0YyqEkPE+wVIBDxMJIVNxE1bW/zbB+wPLDg+QNVZzSztqI1i2gpM
+	A+l2mFUMy3XPJ8mfODuX1b0MpV5xAuNzKNz1sNA36WD/6QXspp1socXKV6psvHYjqAMElLVMh6B
+	oSBU1H+n1RJ4RW9QUoNy08du/ftQHnCY=
+X-Gm-Gg: ASbGncs7+/yJabEK0oJg086nYC0XtwcoRJiF29t/tojgm3pnN/tke9qKhtUqdeA+gsS
+	QPvfYFIksaH0ptb/FpvKirlmFNIlCUvs7l2LN/P/vfULN9JU+VQo8VWjpYUkIVXx/fHEICTyyOq
+	p5Eioe7CjkrcowpxIPlRQQ6Obv44ttYcU3HS55W7OrgWl8/knOms40qdiSmsPS/6xUdOp9ISPj9
+	vI08Qw=
+X-Google-Smtp-Source: AGHT+IFxdUlbLO4HNpt5l+2YcbYsbBU0mbvzO4XJ72fAO9uBg5cvJYcUkDL5cRzlXoduYtPRjqqasZFC6D43xjbaogs=
+X-Received: by 2002:a2e:8a93:0:b0:332:5ce1:1fbd with SMTP id
+ 38308e7fff4ca-3353be4c4a6mr23211fa.31.1755626620874; Tue, 19 Aug 2025
+ 11:03:40 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250805172307.1302730-1-willy@infradead.org> <20250805172307.1302730-2-willy@infradead.org>
+ <CAMgjq7DA6Y3vY=dfKCk4WvNA_AtH1uHmXo15UYipPgOXYw80VA@mail.gmail.com> <aKS7PRUfJRKWKnt4@casper.infradead.org>
+In-Reply-To: <aKS7PRUfJRKWKnt4@casper.infradead.org>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Wed, 20 Aug 2025 02:03:04 +0800
+X-Gm-Features: Ac12FXynGEtdrcGMntWqBpvWmKwNEWyKZy8PFzA2IOONF6OWNFigg0xIjYMX4cE
+Message-ID: <CAMgjq7BZG4G3carSB6oEDk7griL_3yBqGGrPQ4ZcwBPYSVoYxg@mail.gmail.com>
+Subject: Re: [PATCH 01/11] mm: Introduce memdesc_flags_t
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam03
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3CC0440007
+X-Stat-Signature: 118x8z83p146ez4p3ix7tbxbycpft5g4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3F225A0016
-X-Stat-Signature: oxmkeakgm13gteyrrj8ukwruy341ffti
-X-HE-Tag: 1755626609-122108
-X-HE-Meta: U2FsdGVkX1+TDFO6ysm9t2xWHAdnYeihBEdtsyf5axaH5ygh7wGkypXWISJn2JLTbyyyNanA5yVqXyC9l8Q2ztBaPavUfEOHCaA5ZEqYwQh4LqxKS6WrL18ke+YIUgYAscnf2/atJdatv0vyCtBFfZneW9/ZqI7fDYM3h4knRR3ofxjvKUjlDMM3wKwUzt5D4/Tm0Q6mt2aRH5SW/fnqdVLv+8tU6P8GLJX0YNUhAqP0n8Lux4aatQZmNa2bPVM7pbK7b/W0v/4HPxVoNCIs1GWlzEBYv9aH+kLsBBLGYe0NVdFqXNGb63QzCs64msG2DyiYtT4iWUkJT2udvkBnjxIo4J7GyXtUJEK+BrL/QXVyJ3oNct6ehZCM1jwRJLZRzWawN9gJwBJwIM6T2RdnoocJp/N9SCu2RlWbRisYLMUEpLJRO3vXQ5nolcdZTJmuRbtdP0uqvjomhUAsdks7ZPnqPJRNwUZXn/ZnPATOrO6ooUfqv5JybRUIqNbe6W8hoipVgu53QN43h1xbAksyrI3MXIWsMTQO2bdFYuYkklZBjwqeS8yuZmmGmg9PaS+SjoUwa8vtag/uk7y/Br3fOE8zYCtX/mdmpPRtjTnz9Frc4tnRPfk79qpR2OCZRHtvEZTdGIQ6jOUHJc7YOv2YfzCb4ZRj6lmRdz4dYzjE903sA9OewgvE8t5a2G2KxRRjFuehjTNlpHLW+Y6PMzfi10ftyEGmZwpqiat1Q/jzGhxpiKxgOnYfNcKZP6s47xTBshDMSnU+jrqgOfb/xzsQTC7SW1MFB1GtKArSJwW0VhDgRp3RII6qCwcZbErUwSRNzvbENBsnw+Q77sQCD3bNxBcyj6czZsJKYFhfeWK2vdIsT/QToDov2PZa3s1jP5rtYQU5AVOwjiRX4HMZd9Istt45bFrGhTybjM+n7110NkG9B59dI3KEowMZfInO10bjw9fDCpnoybz2Zkvz3oq
- V3Hqjq8M
- saFygJ9I+D46BB/EawLA4D4rfB7vFp6YQPsuKcT4WOdiXYjkISS29kPHSIBfR7dNhXpVwUFPTjqBJ7NfdmJKALFLPemVZoXI2S7K38XI63JbhacnrTutc10mKqhYLpf2XginUiGaOICo7sHe1QUEja1NWx4tfbSKJpf9ed2JTran+BaDcyrZ21zulCAO2rZn8Fuvfu5HyU7KSf6xom8YgnqyiutoRlwuk6dMk9wBmklbXSr62JD3PEihH9CFfCZ8YK+BDEiYE4i01pV95cnW0hkc3DSFjzfyuHhdFyPqLuvu8j3ERqjElj6f+SyIQyaTn46G9AGxsHQKuTazJcF04XugZlyvSlDshk/OAkHWJp5bcvghnA8j1nB0/tUwJxoQpVNeoORTCitqHetipS0fMIgQRZNFsM0CxkBEkhuTHQlif59Fx/3aGppO6onJL3Rp4Wp02RQPQOOjTdMYtTkBb+cjLAwXieZGYyj4gjKYGneRd77gyFIpP0BIEHOsRAnPlrSjk2S9CJpsRB4PsiC1AoCsJu3GZpcVoOfSi9Vm2jSfNyS7Yo+uHGvhEh+D7HOjVg+yb
+X-HE-Tag: 1755626622-926374
+X-HE-Meta: U2FsdGVkX1/JS8QymDrR2JXQTFqf7NMH4jFcZM/PUJT/opOKbMlAvsqksvPA1BrKHhlYb5qU09fkG+YkYOWjf7x1xjtsdyRuIwLVX76ZeJKflkzlwUHJHbcI0XRLh3cv11Vs9C4zcvp+uJ5XULdA6q6xmlTmHU9UI5deHoButluheV6BGbcTXBSD242UF9QPtL5BExYsqidJotM3C0GoJmFkf57VtBjaN6DVxdRywEEFKFqRaLV8NhDg5CCEYdnWZfIXSjKtoavJXVKpNqTWeC2/AfUh8PmVaL2Cfp33GviQvVIzgtw5qHU0lbnjitky2WymYbIUC9GSxZ4TBjH9j8IMqw7MLvDzgf4lOm6bF+K0dQh2V0ZPsKRx5WLZpkfk25w9Lm3QhVeMkh9qkHf7RVtcn6lE6pYBnCFY0YXgRoXPmqQgwAkDX4vrZmoy9fUgTu+jhi2hdzz8dCgP/dW3fqWayVaxx3B+cqXNliFaPqtrFvxvOHDM36s2GszSdT61r4ZUKE/dFZmKeJCQSepbL39XJdEhheQFy5upPV8JxSobF2mPe4UYpDrPuRLB/CCFbxwiLyPLq6+e+5TFrZWjzzIp7JKR7OCs5EigcX2tjhgnEcYXsl6lq40YNyRyuJ3PTZwgOcWLFaOMxrNIgp74uE3P2zjhBhQu6GiE6SHA3+f7b2vtCniVFWmeMpAzdk9prgkhaeZN2SdZbT5JzNXj0MGNEfFMxvuK2RVfFzcUgUar70G66v2eJbUJjGk3VS1EthMBmQJ5fH53J6QvEDWngNjjLaUkVaS/eWSdJzxrTdUjvuiUUB/FCR94PW0rPa40FnGgO6j8YGA6Oz9kwZI2Zf/VaDSq4TM9kz6ttnSKn6VXAG0iIpmCFvwTkYfnL/87jEuWEBepVgGELckjhEljPhH7zZ20XYtTQBrvf0rL8r3vKWfiO4O5+ALPzd4Sx1rokaIIzDbKgRdEHQcFDaz
+ cclmANNS
+ AAIv2hg9xfUq+6WOCGebWFIsx1WfxDwAEX4+J/kixRIgo0q8uIEYANPAMRkZFiNY0mcINDD6MIQYafn75tLki6y1uFEWCR0gpVs/LpwDdw1HLcmqxx+Am/k21RJ+J16ey+Nr5V9IYw2U6p1EvL9PcpvXe33OB2jZ5kS3HVlFXbbgD58LQrUNSnO3ttLbviSTQV/TxHn+aESi/apYk/YQfyfAHXVwrPfWuF4Svv0vyrY7RRMkA7ndewIlkPd3dksy7x63+FSbQ7yno/1wzV+hOTc1EYXhp+lfXAmp6RIshrjbtPuVqhFec+pnXmtMXNS5X642lgjIhkhSbz1Z7IQhWM5kFzrEq3WocGtgY8ZYukmxV74llBZxOt8fI7vhnpg+ruN6fFoMCdr4fhsRAcakEC/sg76/UJptiXW87eSeSGXzttDDdqMJG/dCs+22C+9jHUV+LN1Ni9RjEyGSDkbSIBa6NGhQpgxapRVM24azlC1k7yMA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,59 +114,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue Aug 12, 2025 at 5:31 PM UTC, Brendan Jackman wrote:
-> .:: Performance
-
-> Native FIO randread IOPS on tmpfs (this is where the 70% perf degradation was):
-> +---------+---------+-----------+---------+-----------+---------------+
-> | variant | samples |      mean |     min |       max | delta mean    |
-> +---------+---------+-----------+---------+-----------+---------------+
-> | asi-off |      10 | 1,003,102 | 981,813 | 1,036,142 |               |
-> | asi-on  |      10 |   871,928 | 848,362 |   885,622 | -13.1%        |
-> +---------+---------+-----------+---------+-----------+---------------+
+On Wed, Aug 20, 2025 at 1:58=E2=80=AFAM Matthew Wilcox <willy@infradead.org=
+> wrote:
 >
-> Native kernel compilation time:
-> +---------+---------+--------+--------+--------+-------------+
-> | variant | samples |   mean |    min |    max | delta mean  |
-> +---------+---------+--------+--------+--------+-------------+
-> | asi-off |       3 | 34.84s | 34.42s | 35.31s |             |
-> | asi-on  |       3 | 37.50s | 37.39s | 37.58s | 7.6%        |
-> +---------+---------+--------+--------+--------+-------------+
+> On Wed, Aug 20, 2025 at 01:49:54AM +0800, Kairui Song wrote:
+> > On Wed, Aug 6, 2025 at 2:20=E2=80=AFAM Matthew Wilcox (Oracle)
+> > <willy@infradead.org> wrote:
 >
-> Kernel compilation in a guest VM:
-> +---------+---------+--------+--------+--------+-------------+
-> | variant | samples |   mean |    min |    max | delta mean  |
-> +---------+---------+--------+--------+--------+-------------+
-> | asi-off |       3 | 52.73s | 52.41s | 53.15s |             |
-> | asi-on  |       3 | 55.80s | 55.51s | 56.06s | 5.8%        |
-> +---------+---------+--------+--------+--------+-------------+
+> [you really didn't need to quote the entire 900 lines of patch]
+
+Sorry, forgot to truncate that.
+
 >
-> Despite my title these numbers are kinda disappointing to be honest, it's not
-> where I wanted to be by now, but it's still an order-of-magnitude better than
-> where we were for native FIO a few months ago. 
+> > I'm rebasing on mm-new, and seeing below build error after this patch:
+>
+> See https://lore.kernel.org/linux-mm/aKMgPRLD-WnkPxYm@casper.infradead.or=
+g/
 
-Some people have pointed out that I'm treating ASI pretty harshly, I'm
-comparing mitigations=off vs ASI, while the "real" alternative to ASI is
-whatever the kernel would do by default if we knew about the vulns on
-this CPU.
-
-We don't know about that so I can't do the exact comparison, but I can
-at least repeat my compilation experiment on Skylake, without ASI,
-comparing mitigations=off vs the default:
-
-+-----------------+---------+--------+--------+--------+------------+
-| variant         | samples |   mean |    min |    max | delta mean |
-+-----------------+---------+--------+--------+--------+------------+
-| baseline        |       6 | 54.15s | 53.94s | 54.36s |            |
-| mitigations-off |       6 | 46.53s | 46.37s | 46.71s | -14.2%     |
-+-----------------+---------+--------+--------+--------+------------+
-
-So that's pretty comparable to my ASI results above.
-
-(I'd love to just run ASI on Skylake and show you those numbers and go
-"look, it's faster than the default", but the implementation I've posted
-doesn't actually secure a Skylake box, we'll need to add more flushes
-and stuff. So that would be unfair in the other direction).
-
-Anyway, I'm gonna crack on with preparing a [PATCH] series now...
+Thanks, this worked for me.
 
