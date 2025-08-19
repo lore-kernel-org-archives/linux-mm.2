@@ -2,96 +2,97 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 02EDBCA0EEB
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 15:18:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C675CCA0EE6
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 15:28:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 869E08E0017; Tue, 19 Aug 2025 11:18:52 -0400 (EDT)
+	id 54C808E001F; Tue, 19 Aug 2025 11:28:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81A1C8E0007; Tue, 19 Aug 2025 11:18:52 -0400 (EDT)
+	id 4D78E8E0007; Tue, 19 Aug 2025 11:28:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E2178E0017; Tue, 19 Aug 2025 11:18:52 -0400 (EDT)
+	id 3C5898E001F; Tue, 19 Aug 2025 11:28:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5332A8E0007
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 11:18:52 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1EA1116026A
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 15:18:52 +0000 (UTC)
-X-FDA: 83793864504.30.429C94E
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 3B2DB40007
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 15:18:50 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="auvCV/gT";
-	spf=pass (imf01.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2740A8E0007
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 11:28:58 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CF9A1B4825
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 15:28:57 +0000 (UTC)
+X-FDA: 83793889914.01.F538397
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 090881A0003
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 15:28:55 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VggrpuRC;
+	spf=pass (imf19.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755616730;
+	s=arc-20220608; t=1755617336;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FRUc9LqkxwQZjbHD55dqvmWmLwFK/B3FIfNgwPcTxZ0=;
-	b=BtcArAgVaFZxY9EfA758blxxIAyByV5Vr8duer34rW6Yurjjmp9BIEEtDLpqgv+KCPnw2r
-	PpS7BjVTp0bDjkDXy1LtRj6kNJ2iCWTSVtji2ULuln3Gdfpud94rQsk2JXwgNAOshq4yIo
-	DXU8LB7hZ7PbeuRMy1XlV4z+91lTH7g=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="auvCV/gT";
-	spf=pass (imf01.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755616730; a=rsa-sha256;
+	bh=PUjpFijA0j4k1JtqfgmhrWzqVw3LyNcsCEew0K6S8qI=;
+	b=yqJOXmG9Q8X1YTQPsC5/l4/tRVP2pAPJTZEiJfCgTrzaILtaKsFwkeqSrgxkLtwrdDgFAe
+	fxPPwqccKgdwg06vTVRNZrLXTFqsMdRcFIPP4n+MM/636OQuHabFel2vw2JdbwDashhzqF
+	YehStZbQawMaawf2Hm72aA10x3UATa8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755617336; a=rsa-sha256;
 	cv=none;
-	b=tH8UUU6NeEQXiJdaTpPW+5VXffLZDdvBc5U+rNBHu+hDL8OH/pAyAwpny0BGAioQm7CDPO
-	f/z5MXQMVpMvl8huwpLGq4HeVNO0o58fdYtv1UMVuXnmBsfZqimPfMfDGCj5lipTOnPAQv
-	YIOgpK+wRPgzJQ+4lXamU2DSWivDLOE=
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-71e6eb6494eso32586007b3.3
-        for <linux-mm@kvack.org>; Tue, 19 Aug 2025 08:18:50 -0700 (PDT)
+	b=VjN21zqH8KesrK1MAsdZCEgY0H3H62eCgP4u59dAcOYSTa0Ef0n0/IMyYjahiHDepAhqq/
+	1YRkGKDNu7nqAT7Jd9nUOOpcnlckSll/wlXqI5EB8Yf17d/LAn/qfT95LZsNtIBK/02FEO
+	nVtxRfIST05ta5RdjhXN+TQnDXx0R/8=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VggrpuRC;
+	spf=pass (imf19.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-71d6059f490so46960557b3.3
+        for <linux-mm@kvack.org>; Tue, 19 Aug 2025 08:28:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755616729; x=1756221529; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1755617335; x=1756222135; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FRUc9LqkxwQZjbHD55dqvmWmLwFK/B3FIfNgwPcTxZ0=;
-        b=auvCV/gTc2QZxNGxCSHRdNZa9v4NGEwjcpxMSsPe6+1aCbiuuLfwoJrDsI1Q7tWdrU
-         H/AtFXjQbKFRhug4JTW1wRwXkIfHSmqpD8I0xGHnB+rvol5fUPIQ5cVnteqoIzmGVPye
-         f0SHly9ZJi25o1T46W12AUQO1XEn8btCKK9+VtzVgTyzigdF3it6J5ztM6+ER6bUeiZz
-         XIdetkZKAz8RpOoVw3ZapbgE/2bcdbmMJ7BpfLVtGS96OyD3K6zeMioP35H442ghXb4n
-         r/DjRJw298Y1X7sT2z4jilo6A69R4LYKnYlfvj2LfhFD34p3FT1pgklOt1iiMmE6DU+D
-         O9kA==
+        bh=PUjpFijA0j4k1JtqfgmhrWzqVw3LyNcsCEew0K6S8qI=;
+        b=VggrpuRCEhQO42CXb8oT9N1HqlcIMI1cNWMpmBBZ56H63EAbuPvS0KzdGD90kcAbBa
+         /DJ1ThI1RHZTq0ucJaSxJ6Il7M3juH3tckC+mu650kH3J40PMAvsQKfpDzPWN1AIHGS4
+         zPU5TPXJtdTR4g/2+aJRzzYzZRTsjias4zojWDdZICIy3xuLjSqNYM82SMNCN6x4A/fJ
+         ks59QxgqloG+kEvdVQdaTKgetLmhrHspHkBZzLhtg9GxANW5cd14gr+EPRgDlgtUDb53
+         4MW3ob3JD8Ow917b8C5xo/Ngz2/h8sbm0K57wxyRcUxtDy8YGIWfU54AoOqqpdk361qi
+         mEjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755616729; x=1756221529;
+        d=1e100.net; s=20230601; t=1755617335; x=1756222135;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FRUc9LqkxwQZjbHD55dqvmWmLwFK/B3FIfNgwPcTxZ0=;
-        b=E/1hYMpazyR8VmnYQT55L4uiHsekZN8YPGPMwO+QfNN78Ybj2hLa46klso7x5hLtnT
-         M5dyGYH147a04flRA4MVUkl9WLc1RsyD+WzzuUzdZ6wWNjMdnFJlcMZs723irVbw8gj6
-         K9MqWMVNPfweAFogNnxoBeoD1Fv+ESzxpXlQpqdcn1Rw2pWXsuMKtkM+FhYhBPzVO7AO
-         w3m2H6mCmSLanZvLcTI4611VV5NJvPwdsZN7ddh4DC2zAxcNDGwA/x0KP8w+t6pSu8yJ
-         uqUh/4TJ5/UJkmIo2zQzFk9j2ccFzETMJPnh84mGWk2HOOcLCcor2C7zctwdJ0Y7tpv6
-         3i5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWODJHHTWB7MwTE65GIXyT6EQ/Z4aZfcFnsgVMh9GJa62J85+8XTIKWDabIBatkxUeFcNRc+md/PA==@kvack.org
-X-Gm-Message-State: AOJu0Yy88AryEARoGdplZRPC1L2L1xnfTvXl17BX2thr7aHFiSuXYqPL
-	/Qy6eFg/4qYQNllGjV4GldQujQUk1uVGOmkhtZTlaUP3BGcAQ65JvstV
-X-Gm-Gg: ASbGncuJNjL9bLtj9IydEXRI6IVmzIMSRZuCszNgJmNK8Weymvgk8zneQxvOBHPqfDz
-	2VlT2VvV9htf4xG30X3nvaA/g5QE5VtwRNrxI8Q3wtVzJ2jq7S0jaWW/2oetnatKLwHqsdINHe+
-	Bn11BVB34KemdBeYiYqwsVEJD0+kokhhpriurWPaE28JC16nUkjq72WfCHhr5gD7eONCes/tkCL
-	UdUr3Vt1BGq9mdMq+BMAcdUwC7Wwamj0MJBgnSNtgjg/ZuhXuAAcCjYC9FwVjzNs5Hr94x3ZIF7
-	ySd9qLrah86B9QptQOW+w+NxzaiAz6/VHsDBc61F5BGhFviGpgVuOoGn7GlrKyq7T567xZfauhW
-	vj7o99VrUBbBWDFXYDUJ9Qw==
-X-Google-Smtp-Source: AGHT+IEAYZG8JniwtwZmiJmxa46+aZaPP8w2nEYVSmlPFm/lWVH6z5++okUzfhixnHaV5qO9RKd7HQ==
-X-Received: by 2002:a05:690c:7489:b0:719:fafe:e822 with SMTP id 00721157ae682-71f9d61cc08mr32926187b3.21.1755616728908;
-        Tue, 19 Aug 2025 08:18:48 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:5a::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-71f96ec62cfsm7947127b3.22.2025.08.19.08.18.48
+        bh=PUjpFijA0j4k1JtqfgmhrWzqVw3LyNcsCEew0K6S8qI=;
+        b=qSzd8rW8N/z54bS2eoj/AybOnl3GShAAxgw4pr9Z7qPGLk91JuWw94mNZFuVB8SqEI
+         FOAS+BgDXOTbnT/aUsDeH7QlDiRxvjXc4X40ypvgvmD6lchUbbo8olRMT3PTtWiB5VSk
+         D+x0c22vwCtRYYSfuOnYMHoCkDpfJhA+y2DANAwALN4lIXx8gOMBnmPhXoAojjAYbfpT
+         jxdQeFU+gZNd3oQYHlzKG+kZ5t5Cva9bpQLGVtXKgi6RqW6bLSfFmTQbFqs3ddyTvV48
+         g/nc2pxN9yGul+y1skyat4CoJDFKs5oBL9iqjjVbAamsYNNTWEBgZtKCcl1zervrREcY
+         1Z+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUTHWYftjSjyDGDl8F1AIt5eO3zPaeMLurCeA68AXZ+29J3S8txwafHr/tGJTKrSdGYs62W+5RqeA==@kvack.org
+X-Gm-Message-State: AOJu0Yyw032J/2iiAcCYJGpes/dMNV8c4JtxSxA9TzSgf4kdMyRgzcGT
+	MOQe02hzXRMusKwwEGzBikSGFit746pvfXmrSVA7bPUezyvWyxMrRzMw
+X-Gm-Gg: ASbGncsu8RCr3wogaMkR+ObhAf8NfwY3j4xVlnDRPKjXtnYQPEH7RZpQBm94ofjvtFy
+	Q+hofiQBo2hnmuv6z4lZzxp1dyKH6GTEOQnR199WcblHe+H0Ti1T2lzs/wlSqJXsLETb5QJf4lj
+	GGhdrDgYyti4MnLGNZuFyqI4ZHew/RVrZbyMgxMzqb7+kTBaoU8dix/HGdjHQqtAuewdDrfrMqa
+	pz5MUn8Y9vBWBgovI/rrD++geG9i2XPNdc6d7XbTaIs68R6bzNhtj5hyOXN7lOO8yu6LnVVCoWN
+	6prET+y8LB11W11pv+Vp/Agb3b+WrRSyNdzDnQmhp0blPG6kQjrffnx4Mlwf+Z8gWwpf8AKsyJ6
+	16ns5cS3HgaisKxov0IhUSA==
+X-Google-Smtp-Source: AGHT+IHvvrVwro7ray1QAZTpQIjyhwo8QR0jcpyTSwSpXqLp+chsKKcafMt+YNVzW4XMcgHOHgC8DQ==
+X-Received: by 2002:a05:690c:6512:b0:71b:fe47:a1de with SMTP id 00721157ae682-71f9d64d65cmr38206667b3.24.1755617334957;
+        Tue, 19 Aug 2025 08:28:54 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:45::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-71fab5bdc20sm2010877b3.8.2025.08.19.08.28.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Aug 2025 08:18:48 -0700 (PDT)
+        Tue, 19 Aug 2025 08:28:54 -0700 (PDT)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
+To: Kiryl Shutsemau <kirill@shutemov.name>
 Cc: Johannes Weiner <hannes@cmpxchg.org>,
 	Chris Mason <clm@fb.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Vlastimil Babka <vbabka@suse.cz>,
 	Suren Baghdasaryan <surenb@gogle.com>,
 	Michal Hocko <mhocko@suse.com>,
@@ -101,21 +102,21 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>,
 	linux-kernel@vger.kernel.org,
 	kernel-team@meta.com
 Subject: Re: [PATCH] mm/page_alloc: Occasionally relinquish zone lock in batch freeing
-Date: Tue, 19 Aug 2025 08:18:45 -0700
-Message-ID: <20250819151846.2000539-1-joshua.hahnjy@gmail.com>
+Date: Tue, 19 Aug 2025 08:28:52 -0700
+Message-ID: <20250819152853.2055256-1-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20250818171340.2f4ce3356f1cda59acecab57@linux-foundation.org>
+In-Reply-To: <k6fpx5adh45t4jrxgiccq7acubwcgmi746crggxi6e4oihtvpt@thks5zrn53n3>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: wfyiuocwisxrb95ntrtp57dhs9xehgjg
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 090881A0003
+X-Stat-Signature: 5crkwot8go7998hjw54cwcqkks8patrw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3B2DB40007
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755616730-87023
-X-HE-Meta: U2FsdGVkX19qixc/yIiKzszm4lLLaS8HZhEThUk5+vb1JpyOY3QwmAKuTtEc/cmCcP9XjG3cquyNKYx4S3yXjquzR7zBjx11y++kzMVSF5OfxpcDTkK3pjhg1KIXfPL9REUiVzwQ5tMlII/KTPuObdmiHSTkOPwqthhsQ9IDb0Lbs9gSJ4SQCbfMT6YwcLxDFZcm0knIPH/b8LJKAA82kbVK9In7jrkRzmC//lRWYc5z84Hk/q7CtEnKSRhGGXbvy9MMDJq3pMzK8X12i1fjVxEdYv7ftGxOlkdRQbS3SY7i9rGWPOq76JDMe5pgjjrqRyeTOjWUZndIlSeRvkD6YQysYujIuc2UBNTVvMisnaHvV7gE6C+T2qCJ2nmY0BYgNHA0VXFgX0X+llSCz0uW+ZSEAO2skc/lx8bhi1JXdotxsnZjOIJQomYJM63pcgDcGTQbkzAaTZbct0nI5hRBolc+zOME9LBFv2F590Mm7bmZQGhR3ty0E6nyVCNIxw7o2Zs4ZYDQLj+KMvg0FEvrtxlVVelwUBKim8dibe3sWx7DTUD+XTh4hoRQDvK5z0UmuoQteza+94SQMoPIE4C6AFn0vJ49QF7qPTwd/ePjXijKazb0hr4DfkAS6h16IyujCRBsr2wgYqO4i92D9iCcPH5vgfBhfFXMMutUo1+E5dD6XtNxtEoisT4ROxYOk4KlMbkrHMFcChqnuWymxLE62hgADiBPqEiR7/7nIEtTuG8xAgXjr+95/2+jddslyskDLSZEM3vXYFo6Z2Zx8wFDpRX2Rh1lRVXUAcwEdl1V7VN5e1l1VcCfuCC6xLGb/dcb5MFTiop0FadiF5jnoBdlv5h9wvior92iQObKqf1ET3Hh7yDnNvrk2I1E3tX/leOL8GfP5+01yyWGwnaBq8axP1z73pI/XmhcsQROkGKrfqSxca/LKEU0ED6cKTW1jGuRqfS+t0phnz0Z4Nb2Tcx
- bPSSo8KD
- Eij6biNOBupxgBmpitJFTwtiOUq6k16KPfwdiuj7xBOqMg9Q+BG1GaAY+Zs9VIHXA6t35t4el4oKpHezuBIvdr9J1XSSm0cDVF73AeBzf9RRJHjGoyRqf7r4uU4oC0GKNTBgsBaS/rqsflnK3uI9g4R08+OLlJQRZ+M72yJRsXLPm+i+MX+ITIMKN1HqCTP8PjTX3DjEBcPhmeorolIe92VONZckA8NaXZ6ESxb2vdAxEP5xXXolRgSwxUHAy4Q2MiIWcleYZV523gOeJ9bLvJPV9VmXw0/o++0ZreL9o1rAd2qKgc2jWaSlKa+/5SwJrKCU2ZfcmV0mE9ZFnIWh1Hr0c0FUGqMoSq4IujMn9PQo2qzKtmOAlXXBSb0YMlZOJVif/Acrg+eCLyWL5M9BGigroamjysMhtKiDKVUtp0zd0XF8XG7c/0kixs1pROf5LZYDwf9qPuga6c4GPYnNlags5sVrcJiHSmx/N3jtneSLS5iWcHFXhR6hGAjFzdB79k5k6ho6FL1RBp7tr/S6oNDWifBUpTCMqfotzg56rzT7hpJ9gc5vhuCPlVuUo+dVfuXlRaYXsrVwIihkGElwx0i6N/OwU39btmYoFDP/9eh0ouE9q1SCGY9egWm90sFnnKUsZHaWBeol9IFk=
+X-HE-Tag: 1755617335-283764
+X-HE-Meta: U2FsdGVkX1/D3Pyt7q3LKjaGG9Phqi+sOVY8Z8huOVxiEX8KDwRmdOXcPam6V5BFarE9TqFPt/H3EgUoOWIqcBft7sNA8HyDDdperf5vIyqJ9mDJtb7ft3Cdi1BLLYXTAswl8kA9JvuXEc1TtLOrd9CWI7F4Kd0MtvkHcqOluBAiTVS8SMyxIaKLqEFtqV1yKVc0WCi85sQu4Pe7zhfCvrUCRSQg/sB/yyU55JYgdG5yzpc2Tb6RxxJjWp8BsTaxLs/6vO/FLQr/jb0nLpp5ETwlXo9kYO/+Cuda88x+BsZibWdP/vTlP9ii4wOEjjgeSjyLI94sDp9CChSFXMt6ZHoCCgsbQ5JczMjp1HNsNYg0J39yVibiSF9mzW8S3Umdu5a+anmmZZIl1T4kVlHkiGrYPiYl5oVNBGTJa9Mb3iig7zOCeCRvZ9IgcEvkzOhqLZop+/CgMQssZkZJZwMJ3YIqHfbgIDmUDIVjDmuULlEcsQjGQtdW1p8ZWm5u0XwqFHz+UqVD5BJGfX8h+P2hvDEUNarIgXE8koXeweMLjjTjBaha6GjeTDzaYoPrkF3/2/huojAyHGmIvuODPqX3jqrVzbQB4G1H0CnUrYK4/vWPXujTVGQZnfV8Tils3eJ70Moza3UXIqNx8/oLF3Lq5mmxv92J7H37ggN8xYpLFPtIw/jw1ltJg8uUnigFi3YdHidUPBqk6/YMyxySXFJhwmrWRAa/5tIMDQreH0a7MjXm8vcSj98LBFACSyWEbncCX10OzHjfb6tLP8DeEWe1u+0pyHZEjcZ2Gt5v3hUEeYu0VOoBe4mLZjguRHrJ0m2Hs5U6PD4fF9I18aZbHm8c1cUwJBJCfj+rZOI7yPzZSjejjHjbuMcjONom/NkmgJ7/HoXju8OoHFbtnbhkQ7V7SGNpoSdXr/oSzB/XRry3Vuytz08yBz+8MP6+AlzeYidP61geRISPrma16lWw73E
+ 2SfmeIhU
+ z9JVU5YfCgsvyH4U0aEg2zZDdRrS5j3sMO0jveGgqxog8xFlfquModB0wMyyT65gn/pa9oIo1TkMyiPIXimRW5QXOMxikv4iHzdRYRhbnQ6Y9goQ6pVf43+nLQwSsl+9CDJ/CcDAgNdbjq2FQ6al3OueZ4a5rWfnNIIqgfRuAFv9/NSOj7xrlQkUidvcRLC2mUTPb4aegyMuVljtkVnBmrUdLiKYSUrTh7O+bYZf9oKQrok8TMR8MUVs9Skrlk3AI51GVH3Im6tndL5XCn4U+tnQ7WaHIEU6GIHKVtARYKBvYUcO4h9AtXDw1airog+Ze1vYtpn4b9kIi4AMAQ3QsQF7IzosH+8eVk3sU6Oe5S+tVdkNfEpzxnpUOa7voFck1tCQZ0bHbMonZrjukIIxOu6alnUICjYGWP8eNoVjQoRcVcbWd4hKRc0y0slitrSPTzgMlGZnZZ6IBTYwawMg38kMpBEWUPWARCT2zezhnkMUOEQKnWgmbJel1Cf9CtSH5nH8/TKYyQ1kP9OZcqschQy23SjgDh5Wa+PTZCzghdYo4ozIgjb6kFii7Lg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,14 +125,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 18 Aug 2025 17:13:40 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+On Tue, 19 Aug 2025 10:15:13 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
 
-Hello Andrew,
+Hello Kiryl,
 
-Thank you for your time & feedback, as always!
+Thank you for your review!
 
-> On Mon, 18 Aug 2025 11:58:03 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-> 
+> On Mon, Aug 18, 2025 at 11:58:03AM -0700, Joshua Hahn wrote:
 > > While testing workloads with high sustained memory pressure on large machines
 > > (1TB memory, 316 CPUs), we saw an unexpectedly high number of softlockups.
 > > Further investigation showed that the lock in free_pcppages_bulk was being held
@@ -141,14 +141,47 @@ Thank you for your time & feedback, as always!
 > > the zone lock is contended every pcp->batch pages. If there is contention,
 > > relinquish the lock so that other processors have a change to grab the lock
 > > and perform critical work.
-> > 
-> > In our fleet,
 > 
-> who is "our"?
+> Hm. It doesn't necessary to be contention on the lock, but just that you
+> holding the lock for too long so the CPU is not available for the scheduler.
 
-Sorry for the ambiguity -- I work for Meta, so I was referring to their
-machines. I'll make this clearer in the next version.
+I see, I think that also makes sense. So you are suggesting that it is not
+lock contention that is the issue, but rather, that the CPU is not being used
+to perform more critical work?
 
+I can definitely test this idea, and let you know what I see. With my very
+limited understanding, I wonder though if 1 busy CPU will make a big difference
+on a machine with 316 CPUs. That is, my instinct tells me that the zone lock is
+a more hotly contended resource than the CPU is -- but I will try to run some
+tests to figure out which of these is more heavily contended.
+
+[...snip...]
+
+> > ---
+> >  mm/page_alloc.c | 15 ++++++++++++++-
+> >  1 file changed, 14 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> > index a8a84c3b5fe5..bd7a8da3e159 100644
+> > --- a/mm/page_alloc.c
+> > +++ b/mm/page_alloc.c
+> > @@ -1238,6 +1238,8 @@ static void free_pcppages_bulk(struct zone *zone, int count,
+> >  	 * below while (list_empty(list)) loop.
+> >  	 */
+> >  	count = min(pcp->count, count);
+> > +	if (!count)
+> > +		return;
+> >  
+> >  	/* Ensure requested pindex is drained first. */
+> >  	pindex = pindex - 1;
+> > @@ -1247,6 +1249,7 @@ static void free_pcppages_bulk(struct zone *zone, int count,
+> >  	while (count > 0) {
+> >  		struct list_head *list;
+> >  		int nr_pages;
+> > +		int batch = min(count, pcp->batch);
+> >  
+> >  		/* Remove pages from lists in a round-robin fashion. */
+> >  		do {
 > > @@ -1267,12 +1270,22 @@ static void free_pcppages_bulk(struct zone *zone, int count,
 > >  
 > >  			/* must delete to avoid corrupting pcp list */
@@ -167,23 +200,26 @@ machines. I'll make this clearer in the next version.
 > > +		 * pages freed, relinquish the zone lock if it is contended.
 > > +		 */
 > > +		if (count && spin_is_contended(&zone->lock)) {
-> > +			spin_unlock_irqrestore(&zone->lock, flags);
-> > +			spin_lock_irqsave(&zone->lock, flags);
-> > +		}
-> >  	}
 > 
-> Pretty this isn't.
+> I would rather drop the count thing and do something like this:
 > 
-> Sigh, we do so much stuff here and in __free_one_page().
-> 
-> What sort of guarantee do we have that the contending task will be able
-> to get in and grab the spinlock in that tiny time window?
+> 		if (need_resched() || spin_needbreak(&zone->lock) {
+> 			spin_unlock_irqrestore(&zone->lock, flags);
+> 			cond_resched();
+> 			spin_lock_irqsave(&zone->lock, flags);
+> 		}
 
-Thank you for pointing this out -- I don't think there is any guarantee.
-Kiryl suggested that I put a cond_resched() here, in order to guarantee that
-the contending tasks will be able to grab the spinlock. I think that's a great
-idea -- I'll make this change in v2.
+Thank you for this idea, Kiryl. I think adding the cond_resched() is absolutely
+necessary here, as Andrew has also kindly pointed out in his response. I also
+like the idea of adding the need_resched() and spin_needbreak() checks here.
 
-Thank you for your feedback, have a great day!
+I still think having the if (count) check is important here, since I don't
+think we want to stall the exit of this function if there are no more pages
+remaining to be freed, we can simply spin_unlock_irqrestore() and exit the
+function. So maybe something like this?
+
+		if (count && (need_resched() || spin_needbreak(&zone->lock))
+
+Thank you again for your review, Kiryl! I hope you have a great day : -)
 Joshua
 
