@@ -2,62 +2,62 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 60F42CA0EEB
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 02:46:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A9746CA0EEB
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 02:50:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F335F6B00E5; Mon, 18 Aug 2025 22:46:47 -0400 (EDT)
+	id 4DB488E0008; Mon, 18 Aug 2025 22:50:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0AF16B00E7; Mon, 18 Aug 2025 22:46:47 -0400 (EDT)
+	id 48C968E0006; Mon, 18 Aug 2025 22:50:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E47936B00E9; Mon, 18 Aug 2025 22:46:47 -0400 (EDT)
+	id 3C9958E0008; Mon, 18 Aug 2025 22:50:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D23636B00E5
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 22:46:47 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 776F0C0224
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 02:46:47 +0000 (UTC)
-X-FDA: 83791969254.09.D38B6DC
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B92F8E0006
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 22:50:54 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 96AAB1401FD
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 02:50:53 +0000 (UTC)
+X-FDA: 83791979586.19.8D77B74
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf04.hostedemail.com (Postfix) with ESMTP id D98DB40008
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 02:46:45 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="wEqEC/Ki"
+	by imf11.hostedemail.com (Postfix) with ESMTP id 01AAA40002
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 02:50:51 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=me7CRAgI
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755571606;
+	s=arc-20220608; t=1755571852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bRcfDxQN0Y07fq+oKJMThMYIDH4cn5ueNFH/T0aHZsU=;
-	b=vqR2XtJlMqlsx7Qp6Uou3hkhBRc9y3rroHpR/eFMeuj3hjfQzUvoNvrDQX7erMzgGBuid9
-	XuEtnT7L/wxq/Qhi+Pf+Lbat+gcnXrWvw9K3YSRzHeTsM3Lu4kXTg3ngPUTHgGpvjtf7rK
-	SSAssg/EWtTqBNKQK9cIGEyeqV7Q9Gc=
+	bh=/gNl5UMTbOEoKpJ5CDqWNUpbWwrnu+YVi+0gNZI2EBM=;
+	b=LDRnI9LdLqE6tavLg121xx8R3/OLcK0mJbSVB7pighhzD5uhw/zDgDtpyVTOtTJGpnspyV
+	g6uACT1KR2io2qNP/1bKLKTQd4bT6dd0VBq6EAWkKq4JDTA464Ay0+KJbJSEgU3Fi0cfMW
+	fQ3l6skfNjzCCkdWDuCbX05xxBytPVY=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="wEqEC/Ki";
-	spf=none (imf04.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=me7CRAgI;
+	spf=none (imf11.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755571606; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755571852; a=rsa-sha256;
 	cv=none;
-	b=gHWHOxuI26gMej0fYKeWiQ0a1sf3bNKnbySVQaoBwCpftOMUlzqqXyPSLf1PhZ/9CpkLyc
-	V9vcDnv0jdrfUPRuux42ZNX5FUmMl9lv0T8pa3orcrckm+8R4sBMxtC4ZefYWSnVtR1rYJ
-	Xq4/VT/ubkDEMp58iVL9OItUScUqADM=
+	b=zkU4ixuiVdYSHA0XiGIVkE0ZLzqF2LBTaSqYtj5hVe58iRgAvpQKBIzDQIcx15vqe7qBOH
+	fxO2SSoUVz0cKwBXgSV6I34YJiMWKU6/kJrkUZRo9HzhXrLzBiTfHOiSXxlw6GiiGhrKmt
+	QlO2CseURSUZcGT/aGJxulZzY1EB/Sg=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=bRcfDxQN0Y07fq+oKJMThMYIDH4cn5ueNFH/T0aHZsU=; b=wEqEC/KiXklf7eS2WgGEIgkIYR
-	iZZbLkZJsJ6RbCIrjJhSKwyqix5agvMYN81rEa6KzpC6MKKmqt9fgxVx5Ie6dRtaFt+rk7rUnIL02
-	dXKTthU7DqTnf9+W+v48hPboU7vjjfL02caVhyAH5/LQBpXjta5TJzZKfeE6SRgeubbqHnMgMtGfV
-	ylLkPlHSB0DV4FJpfmxw2d9rXDdUmGsPy3ZG0vOdfBWvyFQm0jiLpvlcZ+99B40/zUaFM8bhGMjQr
-	r3sIm24nHwWQmbBW9KhByQhoLc1NyKKXMTk0rPYbsLqkD950r+d+301vQTqWLUZiwEv0oAr2ZPt+I
-	Igr4Kyww==;
+	bh=/gNl5UMTbOEoKpJ5CDqWNUpbWwrnu+YVi+0gNZI2EBM=; b=me7CRAgIMphqXVElePHnpdxF3/
+	CkZT/+pEf8QMTK7z7b/52AbVyTENK/3LfZAsQjSbECcluP0aSgcQyUYYnxvpccuKWGFVDdQCuGgiN
+	CetMk3HG/k0ucOYmXKqsETGV8ndvr1+wYFLiedep5gYB8PvCM0iPAC/Sgh0Q5AbZP6tonhDbrAHNj
+	mlJiMevsXi6vlHr/HUBO1yaiBGmi73qJbkLLN3mA70a9E7EOlP2OOOWBabos+SvJu11CXxX/4IL7Y
+	CW6rMIz00mAKo/tIZ4gCbh+C9+EevzUlDou4gH7xIwYKe4ddWXjr6aiBRNyqOiyor3MGDanXJuXth
+	hNG9h5GQ==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uoCN1-0000000F0kr-0WSI;
-	Tue, 19 Aug 2025 02:46:43 +0000
-Date: Tue, 19 Aug 2025 03:46:42 +0100
+	id 1uoCR0-0000000F3wS-00PC;
+	Tue, 19 Aug 2025 02:50:50 +0000
+Date: Tue, 19 Aug 2025 03:50:49 +0100
 From: Matthew Wilcox <willy@infradead.org>
 To: Boris Burkov <boris@bur.io>
 Cc: akpm@linux-foundation.org, linux-btrfs@vger.kernel.org,
@@ -65,22 +65,22 @@ Cc: akpm@linux-foundation.org, linux-btrfs@vger.kernel.org,
 	kernel-team@fb.com, shakeel.butt@linux.dev, wqu@suse.com,
 	mhocko@kernel.org, muchun.song@linux.dev, roman.gushchin@linux.dev,
 	hannes@cmpxchg.org
-Subject: Re: [PATCH v3 1/4] mm/filemap: add AS_UNCHARGED
-Message-ID: <aKPlkhXY9CON4x9v@casper.infradead.org>
+Subject: Re: [PATCH v3 2/4] mm: add vmstat for cgroup uncharged pages
+Message-ID: <aKPmiWAwDPNdNBUA@casper.infradead.org>
 References: <cover.1755562487.git.boris@bur.io>
- <43fed53d45910cd4fa7a71d2e92913e53eb28774.1755562487.git.boris@bur.io>
+ <04b3a5c9944d79072d752c85dac1294ca9bee183.1755562487.git.boris@bur.io>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <43fed53d45910cd4fa7a71d2e92913e53eb28774.1755562487.git.boris@bur.io>
-X-Stat-Signature: q4nse4otfaai5wea7ysamtnddz8cgxoe
+In-Reply-To: <04b3a5c9944d79072d752c85dac1294ca9bee183.1755562487.git.boris@bur.io>
+X-Stat-Signature: ssw1473148pt4fokrg9wrhzwnnf3sdo8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D98DB40008
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755571605-753306
-X-HE-Meta: U2FsdGVkX185VNetdAptg5sa0C++s+osZz23oMZK/J0NuzYQiF6mJbY0YtYHU7EhLgXPigBLeLe5W9P5gz3XsU+gDxXwLAjYems2/ClJOGhSE3YECJv2t+hfr+EfGs5Lt8trGOGoflClM0Ke2K/HooUDscchrCcjE7HQy4DMK7LG7GC393mxbxklaQHoH/srkNmvYH4QPMklAPQqJbyS+yj8F/8zuwdHj8dgamDUSx4Sn3skjWEhKrrlqxXFiShTfPMQ82BYI7oeMLqFLfu22YzEGNPRodcWzyruldYxQec3QoA3rgu5OEq1jVhbczuooU1IO5Ka/SxANZ0QSMSMJio9inabETEu1mjBtGSQy1y3PU74kdTM51yBPw4QmBfgQ6O2NM0y6Zd2R2IWjqJzL5Gjv36Y2KaY3Wfxe7Cuh144kn3bwdRglEdNKUPf/yhlK8jxD52k9gsqgI9fXAOZoPmccE0D2ETIK6trOIdNSjOAhRfNJt+jjWboYLFp5c7VrsnLMOmUg8Aizv0SyVcn7qJYyq9TvtYrgf4lTTzeGNjWKWNTutVMJyEM1PGZf4gs7/gKhRuOIt50kZaeidJycvp78hJJ7zEdKwNHdN/depzuxFiYFvni5B8A35UF0pCXgy9LKig9sSDXQrE7EDkQWmkTfi5VUZZEtzvXwVMv/UmQokNcQ4vqvD0eBmzjbyBCwbLTslQiYMBMFbfmAnRdj//1DRSJyLRk6ChzTyt2ZDAkkvd2BRzGC6ARDibXlMitvFaypXQ6GC0Gc4Cc4U3b5ksxHU+pFdlnqJH7WR+HvfBGnwRVGn1pcNhrYITaLzNfNnSVMTj9zeyNac63hVLmR2jR+sZI8jTTnTn3scK5bvCB/P3J/ivyl7ICSvhDF0cJfiqR3u+HouvCrMICGOb/Z2EDVsz/6q/yqbyIILUrFf1XuWEs2A2p1FGUBSAu0x5A4wOZfQFecjZYEdiOSkX
- B8qnowk8
- bCbdh6CA7kwd37ux99W9Mzhz73jzp3aBL02Vsj6oH/bWxxrFrdxty7IpuOs7HwIDR+WtHJGp73Fh9Fh7FgXcxKZVqHvczV4xb31tuhuKq8u4+NM3hHuLvJR2ja5Jq38fnnE2F7SQvqRaZSuaXPhyeB2+/A6jnaSgJc2qGt+Z7AuDCzeDbuqvZ8X85GPl9F3QyWVcHj85RB1kqcdOYczXzcJUJ0GRbxTXZslV0
+X-Rspamd-Queue-Id: 01AAA40002
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755571851-889566
+X-HE-Meta: U2FsdGVkX18pi48f0L2vXLO8AfeCINgQWpsSrNMbuQH5TO4HkXFivv7XW0pjFcY0h/YicW7hUG94UDizWl9kIpumos9uVww2CvbhBQ5SVCG1OLEvPo1TwCcOnnqUsHkmECi42kVJn30DTjbCf/t1np5tOSrAEtUfWAtF0ZK5lQu2eST1xqBEUyXwNU6cruVHejlXiniwBZcKfANogZ16BS5pnDFGgQoxtFWNxtRp2A3cCRTTCqxWO0iv6loXnum0gqp5QxwPAQJaR6bFMSAfSNqniDUgf47jLnoiKXju2d7gKs9gzOVIhpKqv4h+kTX1WlW3AKs0i1bc18zpcpvzDiPQncrfjgHV3D5Jpk0eUW+VrFS8gB8cKF5DJ8Do96H0ugCZuzhWffOpnS2O33/VjEt7OcOy9Oi5qSbiemtaIf8kGEtfpjKcrPBrcAfE+QIrQ7MqRVWm89xwkvM10Dtt3ALi9Qr/CalFqnbWWuAS/VZc9diuD4bJL7j4UFaMQOcIOp3LPU1Hyn9pqQzXz2hFa/J3aL7O3KKYK1nSILsaCPzs/CmTah2QbSOOVjlC+AYIBfc7v/S+7MzTDlHdTNFHYzzV6LNpdsPIJrl34DDHvDESPZ6ZuDfglK3egFQWJ76nysoNJ0l2Uy35ZFvrfzYBblnSQaZmEX4Uxc5DOt+ltYk4NpybeL4RVV8AOZJTdVd6vYmynz3Af566eRIjE12U4OBaiGySq/J4bj3lqbZlmmaKnU9/S4T4iDl8FAZwfVUFBvsPHsgLJB6V+RS8Ex/Pgw6FQmzoVq1snRVPRt22T90XnIu8FwkThVTuyWEW8I+d4J3UG7KNIDNhr1TVMP7DddowEMRyPK3A1QAOL3zTsOteaxCOCAiJcPqZYyTU6Cb0rL+5OHp/GiSUsTUR/w2ifus0AB0Wy9D6SW2FRc6V/EDM3C+zQCOLiHBdHHCcf53bj+WkVJgKkg+zcpyAWqk
+ TWSCjD2f
+ 80H8I7/HZ4E/ZG2Sh6iKYKKTpy65Qi1haJE3a5OBSNVaumCIVKTdA+Mq4W1ccjI0iNx5CJQHxNgqtb779ppYzmXFDTcHxDiEEbgqWXcNZCtPfxMQZj6AbPmEPmjC3+5+wXlSjULe7Rb3nvOqfdA0BLqCvinS9agz0u9+rB95LcBslcNpKoXI3HKb9DA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,37 +89,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 18, 2025 at 05:36:53PM -0700, Boris Burkov wrote:
-> +++ b/mm/filemap.c
-> @@ -960,15 +960,19 @@ int filemap_add_folio(struct address_space *mapping, struct folio *folio,
->  {
->  	void *shadow = NULL;
->  	int ret;
-> +	bool charge_mem_cgroup = !test_bit(AS_UNCHARGED, &mapping->flags);
->  
-> -	ret = mem_cgroup_charge(folio, NULL, gfp);
-> -	if (ret)
-> -		return ret;
-> +	if (charge_mem_cgroup) {
-> +		ret = mem_cgroup_charge(folio, NULL, gfp);
-> +		if (ret)
-> +			return ret;
-> +	}
->  
->  	__folio_set_locked(folio);
->  	ret = __filemap_add_folio(mapping, folio, index, gfp, &shadow);
->  	if (unlikely(ret)) {
-> -		mem_cgroup_uncharge(folio);
-> +		if (charge_mem_cgroup)
-> +			mem_cgroup_uncharge(folio);
->  		__folio_clear_locked(folio);
+On Mon, Aug 18, 2025 at 05:36:54PM -0700, Boris Burkov wrote:
+> Uncharged pages are tricky to track by their essential "uncharged"
+> nature. To maintain good accounting, introduce a vmstat counter tracking
+> all uncharged pages. Since this is only meaningful when cgroups are
+> configured, only expose the counter when CONFIG_MEMCG is set.
 
-This is unnecessarily complex; mem_cgroup_uncharge() is a no-op if
-the folio is not charged.  Sure, it's a wasted function call, but
-this is a rare error path, so minimising size is more important than
-minimising time.
+I don't understand why this is needed.  Maybe Shakeel had better
+reasoning that wasn't captured in the commit message.
 
-So you can drop the 'bool' as well:
-
-+	if (!test_bit(AS_UNCHARGED, &mapping->flags)) {
+If they're unaccounted, then you can get a good estimate of them
+just by subtracting the number of accounted pages from the number of
+file pages.  Sure there's a small race between the two numbers being
+updated, so you migth be off by a bit.
 
