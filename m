@@ -2,186 +2,98 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B51FCA0EEB
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 16:50:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EF50FCA0EE6
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 16:54:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D04036B00E4; Tue, 19 Aug 2025 12:50:25 -0400 (EDT)
+	id 914EE6B0095; Tue, 19 Aug 2025 12:54:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDB8A6B00E6; Tue, 19 Aug 2025 12:50:25 -0400 (EDT)
+	id 8EC646B0098; Tue, 19 Aug 2025 12:54:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCA706B00E8; Tue, 19 Aug 2025 12:50:25 -0400 (EDT)
+	id 829586B0099; Tue, 19 Aug 2025 12:54:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A49896B00E4
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 12:50:25 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3742756200
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 16:50:25 +0000 (UTC)
-X-FDA: 83794095210.20.63C8B93
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2083.outbound.protection.outlook.com [40.107.237.83])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 67C53140005
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 16:50:22 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ku+TfVbw;
-	spf=pass (imf23.hostedemail.com: domain of ziy@nvidia.com designates 40.107.237.83 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755622222;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E1876B0095
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 12:54:29 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 146AE82258
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 16:54:29 +0000 (UTC)
+X-FDA: 83794105458.17.BFE0B37
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5B89A4000F
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 16:54:26 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=none;
+	spf=pass (imf01.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755622467; a=rsa-sha256;
+	cv=none;
+	b=xs9ORzBbCU24KBoule1t+OX1kcKO42SkC0MMzziKtxDALIiPWSms9fCB9Bw6I/2FTSXB0o
+	9YcGLSGztKTefk7vceA1qrxzq7KtGBlD+8hpiGcwysbndzy2gx0LiaCSMFUfBeIAxN4+Y2
+	E4g0S+31JqXb9uwyXc9gGVYheHpGy28=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=none;
+	spf=pass (imf01.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755622467;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ptzlT3jakUHu5a4CfkCLYXyMg1O90uPR+yEpgp2emHw=;
-	b=cSyyXQ5joCHISe2YzW2gBDryIn2A8JF6B4xbidhvviUC7Sj3DBsXMrkc2J08wbedpugpGy
-	Bkx5py1ZtC8Yxca9JB4seogJCf57mishphgBXSw40oYW5bqJ8Gm0E7ozKopad7I1Nyyyyv
-	HhTuuU49s7RNyelRuTn66LTJLgg0RVc=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ku+TfVbw;
-	spf=pass (imf23.hostedemail.com: domain of ziy@nvidia.com designates 40.107.237.83 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755622222; a=rsa-sha256;
-	cv=pass;
-	b=pz2TUWaZHPI05jbYgsD9Qbvcgdh6Q5bqmrMttaWoRaqr/wZM4W5em6sUWcfjqnRyDHyoPP
-	VprIMb+cYLmLGIq6stDf5QuT3N7Lxc/RiDU2VMg5R5Dd16JP/Rpqq4Q08q2IY523JsehUW
-	CY3hAMutRotTJukjnIa01s4NKwDUVyk=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rkwrlXGhFeUgDlWQi539VohC8PiaHlXIf14jCaR1yqQ9xT0uUK+adjoj+drbG3azVVhfOKp+LigR+AmE9lEliSTJ77nyltWIPI9Cjfu+lLCCxv2O5l0sz0D8AP4dJF42AANYOfXHe5RmJwUwmQKnnSUeVNCh1jM74BTZqLNcGjYumD7l/CvenJJQeNMr+nFf02ZLVGz3yS8yEVusEJbLJdb9dthkvsANTmcbIS2RM8oMShN/+S/iVPykywoUdMzXCl5gvRpTRhrhfrFuxErMY/5mxYHqS0I8Z8FbH6lqWd2Owh4xEHiLIQf8FViAGzSoliG3NM9s/93O5IPKaS8Y+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ptzlT3jakUHu5a4CfkCLYXyMg1O90uPR+yEpgp2emHw=;
- b=cf/Sb8NyPycR6ge8b55THVK4N0mLv4jl8ihdQA6ApU9mnIerNmQMy07033j+wKgYZb0XvWSMQM/lqCyAg1FbkVgyNgGiUU8Fa15jWzymbxCmt0o7ezuYEWadUEeEU/6QO0rxkGvFVbRZcpnVXtUUYMFH05Q5N8H+Xg4tNHnL0Z99XTDc1aExj5C8N8AtK9+du1pF/SvEf3PcsEk8y1+QryEKHfcz2WmeJrCI7Br7XQXTjJ57fE/LVZpVVBxtcRr+hwNSj13TfIFNdUaI9ahAbMDxNRwQFXPDy3KyczCi5Ter5r0T+MbiJ2Cs9HX4Jz2lAOLtj/UqhMQ1EEqj7ivTOg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ptzlT3jakUHu5a4CfkCLYXyMg1O90uPR+yEpgp2emHw=;
- b=ku+TfVbw5ZMSSWO6RSQtcgoQJnM/U8CcoxPxtQ6lGE34aldRGz+AC4xcl7lbQPwbLAIA4GSca6vlggsOEIFHyWB57Bz/i6A5ADaaFMNIVwMCXpWmYS2oB0Su/opfoUxA7+vpR5NZJHCaUG+vlbFxJFvyvljMu/9QeL9qoBzPKpCu2B3lJUogXv3ykCkigryAJKvum0I21SHdhoTIBSzy5MlL9JozlDiLwX3STssad1IHL30HTHDYQFQrwaSfdxP0qEhD31U+Vx+m5pliWd1b7lAlrdaqxsTmoKulFURx/S7vSPyz0kAADhu9leyTmrldFTPCdP5VNlRh6D9HUy27KQ==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- SA1PR12MB7295.namprd12.prod.outlook.com (2603:10b6:806:2b6::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.24; Tue, 19 Aug
- 2025 16:50:18 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%6]) with mapi id 15.20.9031.014; Tue, 19 Aug 2025
- 16:50:18 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, wang lian <lianux.mm@gmail.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v5 3/5] selftests/mm: reimplement is_backed_by_thp() with
- more precise check
-Date: Tue, 19 Aug 2025 12:50:15 -0400
-X-Mailer: MailMate (2.0r6272)
-Message-ID: <B8ADCDEA-DB05-4843-983E-A66DE78AD1D6@nvidia.com>
-In-Reply-To: <268d9c9b-4c48-449c-97c7-33534fb23fa3@redhat.com>
-References: <20250818184622.1521620-1-ziy@nvidia.com>
- <20250818184622.1521620-4-ziy@nvidia.com>
- <268d9c9b-4c48-449c-97c7-33534fb23fa3@redhat.com>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BN9PR03CA0422.namprd03.prod.outlook.com
- (2603:10b6:408:113::7) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	 in-reply-to:in-reply-to:references:references;
+	bh=XXQj/HccKCGNHywgKK4+dHg6ukp8mpGdH3uFFgSC6ss=;
+	b=vORZ1ixJupVSU+u6xSQ5XCGp7bYECLzvde69X9mfYr+lgfcH7TCLR+L1/RhEKfdvsqdt2I
+	0zwT9MBBuOmH2a4TfbLrdfrJZ4zA7i31RbizAE9INOoMvDJZ+r0gCRSAKbGJDvqN/Bv7Wx
+	ua7J4OzycMzx/LiDYuhIv6jN6FCyN2k=
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4c5wZy4t9jz6L5BV;
+	Wed, 20 Aug 2025 00:51:22 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3FAA61402F2;
+	Wed, 20 Aug 2025 00:54:23 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 19 Aug
+ 2025 18:54:21 +0200
+Date: Tue, 19 Aug 2025 17:54:20 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: <shiju.jose@huawei.com>
+CC: <rafael@kernel.org>, <bp@alien8.de>, <akpm@linux-foundation.org>,
+	<rppt@kernel.org>, <dferguson@amperecomputing.com>,
+	<linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-doc@vger.kernel.org>, <tony.luck@intel.com>,
+	<lenb@kernel.org>, <leo.duran@amd.com>, <Yazen.Ghannam@amd.com>,
+	<mchehab@kernel.org>, <linuxarm@huawei.com>, <rientjes@google.com>,
+	<jiaqiyan@google.com>, <Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
+	<naoya.horiguchi@nec.com>, <james.morse@arm.com>, <jthoughton@google.com>,
+	<somasundaram.a@hpe.com>, <erdemaktas@google.com>, <pgonda@google.com>,
+	<duenwen@google.com>, <gthelen@google.com>, <wschwartz@amperecomputing.com>,
+	<wbs@os.amperecomputing.com>, <nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>,
+	<prime.zeng@hisilicon.com>, <roberto.sassu@huawei.com>,
+	<kangkang.shen@futurewei.com>, <wanghuiqiang@huawei.com>
+Subject: Re: [PATCH v11 1/3] mm: Add support to retrieve physical address
+ range of memory from the node ID
+Message-ID: <20250819175420.00007ce6@huawei.com>
+In-Reply-To: <20250812142616.2330-2-shiju.jose@huawei.com>
+References: <20250812142616.2330-1-shiju.jose@huawei.com>
+	<20250812142616.2330-2-shiju.jose@huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|SA1PR12MB7295:EE_
-X-MS-Office365-Filtering-Correlation-Id: f79e0e69-bd01-4814-670c-08dddf407ac2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?G75zKlIrm0Ms/V1mesgVgctDULu1fQFbrRY56GHsqdAdxOju+oFMFSGsxJjV?=
- =?us-ascii?Q?J3uSaUr5fUrNxnwwWrCFS16CWBRADoikv7upnd4s1t1eNyrih/A/x5PHtvId?=
- =?us-ascii?Q?jMVwA4noXNdVTt68dBhmb2zkG62WUMOlBc+5PCrJ/N2igAeakbqJsER6nU86?=
- =?us-ascii?Q?tVHBqP2vTzHfzplnLihFQEkJ63m9wSHSfWDjEoHroslf5EejRXoXglbnVS45?=
- =?us-ascii?Q?mpIdYOv65/EfMMhquwOyiIVHRNyA8Yj9AqLoSFE1Dkmyko8ujhLPKCn5IZOy?=
- =?us-ascii?Q?5sKRX7wWpa6DOgoaTps1xhUHjZrkSFuK8nXEVSAuZ7OG8XU586gZvDqRAPUT?=
- =?us-ascii?Q?fbjPKXOk7djjRuarVPOYUKLPxQxegbp3nMmSZmyxCmhesnZ8uD8CtvxvmWcl?=
- =?us-ascii?Q?QVV9SwlhNAjZMBJZMpUoqbbjVbaqR88/fM5emFRLAbwyh2a54Xx7Obmh6C5f?=
- =?us-ascii?Q?WlW4VLAxBX0yjULAA0UDILXXRxNZMYeimXaqhNivg4v1+JBGq0SRRNuDjkV9?=
- =?us-ascii?Q?0dWzYZQ6OTOY7ZlS4S2ez45wR7A3WHks6EJSAFB7N6w5QhKTk9oIgEUtlVpi?=
- =?us-ascii?Q?GSHLZg12/+DdrUWYL2XTGggK4Win5C5nqKKZLWMOxdpvVNnnittQZKhWimEg?=
- =?us-ascii?Q?apvQ6KJ+9in/Sg/lZ5desAOdaS52p7DGGIyFCgT6O56oaf6VxUev68hYjJKy?=
- =?us-ascii?Q?519XwerYDwliOt7KzKAJgA2ByfuK0/EKpybkKVMLylJtDRTdb35v+nEh9cdl?=
- =?us-ascii?Q?6HZKMBaXxW8MXmzuukol8Jerykorv5IbGuhmjx1fyie7NCkcbEi9eQS1AnGP?=
- =?us-ascii?Q?RUgg3xEgHIIG981HqQHLpBJ459pQaH8gwq/pjV+xzhfLVDKp0jnsa6he4wI8?=
- =?us-ascii?Q?eaoFD7BKGTlyM9Fp7AmxI3BtAtBKagmK/dN659pkSR7rUeJ6/0gWQy+a+mlj?=
- =?us-ascii?Q?205xVvMyLRFaobDUIoi3IqeSoCUNaEPNtjkxzuxNVPwfXZCAbiFPTUb2Y0xN?=
- =?us-ascii?Q?CogyysigLQ6mG4pc7kl5smCxG/o3oquAfwOoyp91X1/dJ3W44TM6GzZIfKup?=
- =?us-ascii?Q?W2x1gxsPPtMLNyOiJhiXY9JiOly9Cqj4ho8kSW/klqP5Zys+ONLfYAS0RdK7?=
- =?us-ascii?Q?JsUNe7pRxrtrKO39RohajGk5HvNZqPOoAI1q3DHaVQaUhmmHxVnmGiTE4tUr?=
- =?us-ascii?Q?R4c7lpZ/8qw5AYm7DgLPMwt2N3nLtYy5Aokz8lieZUgjwTFn5axYHdFQ8GCj?=
- =?us-ascii?Q?Jp+v98X6yGA+ltZiIISLiMObwwuEnpoppAjIuTU0JjoGWRRd+/WJTHbdXZSn?=
- =?us-ascii?Q?2XjWG0VL/fZ+0JhgWHE98iI2LNIlHmTFVQdIMyYaFY+1F44NwbvhUJcG+xNS?=
- =?us-ascii?Q?oQKXSadqyVR3Vl2x9g5U0EiXki937f4da7mZ0vPlpPWjMvjKRyhiYUu0c5Wq?=
- =?us-ascii?Q?uhKMGAjX4mE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?DLRp+8m+Y5EVNaeDOZR8GgSY9+/t/eBmR/wdW5CAJZlG+dD4xoQK4hFmLqms?=
- =?us-ascii?Q?zf816dAi+zfyztcVn1XqqkdsslVR07tyVE3P4fLVREfLTuihSHihd0KCnbV1?=
- =?us-ascii?Q?eDub+iA7to3RAlCYwSqCJuFREEBE1DQ9uStnsFvyJBUR+bKs3GgIrmIpn7Gf?=
- =?us-ascii?Q?t4zkb0zqZRGEZ3Sqsy1CPHfumHqDc4lErs+s2s2mqPbtjVUFrIKc9LXNc89q?=
- =?us-ascii?Q?1yJgXytLyNTZ4d7XicwZUtaqDYrAIpFnt3hLV+WiEL5CIbxYy/5sRLKoJ5a+?=
- =?us-ascii?Q?V3nxTAIw42OoR7VNKOCzXzqQqmBJ+a/5f/tKkjAegdAISJuRVcZXwWUl4ORI?=
- =?us-ascii?Q?lrWA8GxV0xWldL9KJ/JLdiN0TxM+67abTBY+lMqI3dqi/8UFonIV6mOUpnRY?=
- =?us-ascii?Q?JSu4hxshVgKLQ4JvYVJS3to+/GZwS4JXagYvBrybRzkC6Q6TloWeNGyOULdh?=
- =?us-ascii?Q?308NtOfmllQERz7T3wzzYc+XKk7ixyjljdMlYRQ5ahf0BIcAO9TiZmftI3mn?=
- =?us-ascii?Q?xbo1Pl/uM7AP1ZKl6StohdqG+UE6VEuM56ewjcImzWgdeHFl0/DnZs3wOXiY?=
- =?us-ascii?Q?GBQxKA1CSLO/Mprmtvh6QfUt0OAmFeOD0DmyH0QcVF3JfkBT4y+9TaVAhbTt?=
- =?us-ascii?Q?v7Hxepnfx3WfMN0FM+nLreZ2Y4x4QC+bJL6kL/elMeLCXeOkBBDqzsGKhuIh?=
- =?us-ascii?Q?UUZFpaOBi+DtFW2QF3gzMkHcDuLbSP8KxfnBlGUCIN63TwXjHR8q6w4I5Dwg?=
- =?us-ascii?Q?KJY6pTGpUM+jOcvvuQSDxNrLVQaY77Fj7YmJisl/nyS3D5ib6ZzMZYFXHPlT?=
- =?us-ascii?Q?5ICVV34Hc7DkEoRN9qOO9hCeuFMl3Sx7TKwsh2OPF3KJEQyTkFSseBwMacmM?=
- =?us-ascii?Q?MAwYZHhtLIMKbfR3zCERfGVyxnUwnevZX9L/UqYVfT37osrV0qlK2Af5gQxc?=
- =?us-ascii?Q?rWD3cokPXD0Nm6b3pir03EsyXvtajMf9JQq/2yEwEReTpOKvu+haw4HueaLg?=
- =?us-ascii?Q?PFHMX/kB6lTwIrqc+ACw7EtQpps82QAZKBf6jHMNQW1niAmvaBJJgE6Thigq?=
- =?us-ascii?Q?dLS9v9fUGRXCqN24DYxL7GWkz/q+KtOmBz5PgHytQlSRIWFA8DrSzOtyugSO?=
- =?us-ascii?Q?M8m+yEF664F8yz99k3Xl55bnqXm2lgqvizuoCPM32G9gC962tCQ/xsH7YeFv?=
- =?us-ascii?Q?VzmJEjKDSU0RaLvGM4+5iGzL6Vf2r1jAipk4S1QJxOX+U+4DY3zHwudx3lG3?=
- =?us-ascii?Q?py+pl342whxZAKu4PlVeRHAvxr9FOS0TlGhhGlLazur75E92dANe485zNkp2?=
- =?us-ascii?Q?XSMHtmRYbWQwKWZGFeNU95deWue/ALO5mnYBzoaL2u9zWozs9gau6d1ygpQD?=
- =?us-ascii?Q?Z+BF9FcQLg0qRaz8Rp0n4BralIM+XNs1qbDFeEVn1Jce4Uw/9ryiv/x2mUll?=
- =?us-ascii?Q?iZTt6JL9z2GxsA8lPSbTRblwIfZnhGd6uGZGNJVFGfkmdKlqD93Tl6Jntw6D?=
- =?us-ascii?Q?hr5IzernT9zKnONPefZdBRb/GVaY7S4VHwpVVBEqYSJRLO3iEn7gYdytz2lp?=
- =?us-ascii?Q?/YgrGiWJi/0q7W5OKSv6qxNR3lixOXHL22MtBY54?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f79e0e69-bd01-4814-670c-08dddf407ac2
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2025 16:50:18.8199
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pnOdPZtrqdPaZTfj3ygaSJAAH1uaKoXnduPnofGYpDqBIgsCbpXI76mqN1TH4BEI
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7295
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 67C53140005
-X-Stat-Signature: xt56bueiapsu88fr8tyrpns6hk8qxjz4
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.66]
+X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+X-Rspamd-Queue-Id: 5B89A4000F
+X-Stat-Signature: jb3j64d3rrtbukckqu7cqzxu5dzgbeop
 X-Rspam-User: 
-X-HE-Tag: 1755622222-687913
-X-HE-Meta: U2FsdGVkX1+Z6WacW/sNF0iIncaDbGT7inxTbwy7bpjhKoUwc3Na6mJ/FyWBeQlekHuQ4640tnfqF2K8+Dg4VxIUw7N0NoUDSLgMWzL3UYAtUOPBzL8Gshve/atmw8BD7ln+voT7yOfJV0emjdMGDdkAnxPSHXt1skf6OUcQ3p+/cNyDWvsHp3YPZhlb/cR+9fQziI0tW7tgJV9HvOsBzf1S8+yOfsRi7+Yuk7+PqfXCt+Meid2eWmhERDmRZi+0bg5Jd+wG1U48LaITSO5uz2lOkjkmWDbm/jULbMvx+05agW6UbHocFEqt7xiWmwRMd0h+rEvynOK3eEw3zHUHpIfV6nSwZFxJ4JTfb9gyP13FNc2urQFknOJLZEFDtBK8Djl1jGkqa19k2+aEDfdnKvXzQ9SqP+3C9OD1jSoE4AeX0b7XTUfA9OGHABA4g164hWDlIWbVFLcUIAzsRwulZ1ZlQqQQdfZwWctTXacDo3tapfzidKghTy/ZtCzdtP7boIvlIE375/XzZgRe1WM/2l/Dett6tJRRFsy/2u6Xrq5rTbxS5srAdTIgCTRNeHXcu12Iqk8BjyH7wDu2c3qpPRWl1XWSnem/NnF26ZxW34ZqpSQJQY43w3ZTNVUMNli/zowfyI2IjfL2g/VZe4a7iB+PjAjqclg5UYL1bxXjQLedOQIGTSmLJhzHFciphb6rNOsUV+JhmAxUf1XZlx3hGBdtA05rUprbdI9iDqcbFy2x2LGZlpGXjMCAGS9GDcbZw+oOZhHlWq2bR61UpHQllQNNwBU4WJ3l7KVhd9UFuHFGruywI0TYCGF9trYLBIulmWKOvudchu49ZE+s8O1Cjxb0fGNUt+u5PT8EGwSZJs2M9m0rVsi/kTVxICh9xc2vP4CmU/iblhfujURnwrx9VvlnvxSOCJ/tH2ADeHtJ4hLoTFFPMQRxl368wF7CEfaT786qpqWRuO34luCVpII
- pDGPxSy6
- FcaXFz7kdJDF3dpPtfvUHL1Ykwkb6SE7rXz8b+kLXbldyWCL3pAHJ7myNDtI+yr2dAYBuujVovfmD7kkBf+PZZGSGG2lIlG218Eilrn67MU0nHw2NMc+ew9E02D53g/yo13Zct8UVbExaufWZDIo6wywDaAOISPICs0qgJ0NwblFo9yupaJq0DrO3ImCIzmcHb+QWBUT95RqWgzuvU8yJz/1qXtkMKY4tzo3rnRNxaFR4/9v2xldJZydZRUuC0mcH2HKhz66PQvM6IXBbmRElMaPXA5ofCRVOa2sR21uhj1rBWUUhhqkkJ4wV4DTYdk32utB5O6SITmiS0tPx7KT9FnSmeSnZQ8Rtkw4AhcSRLMU5Z0KQKuH2kFsqdx2FGYjpxYf/L6QC/GGbjwAzpBFWb2OTsRmkvo7SRr5fpKP4udKuj1CYFR9qSFcwYE7zL0DS+BoNvPWw4VI/UZP4uNnEIfJA0UbdsEAPttuLoLCwqIB/mF35nBiOw6EQAMB9mr13rAXaT427ixAkxDh+/8oCwEyYr2wE78OwyFRoMWfhRp//Wo3hXvysKXZoeBs0LRocr1oTkKMbhbuyF/jzwVSK1KVeLu42KWUhtIPzfFmGs/SPHhT9829ykJRLuupj4CDU6S5u2wS1QBGBD3Q=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1755622466-201205
+X-HE-Meta: U2FsdGVkX19r2O1i0fu6ZbrHcnG3bmAtsDsTQCuhnzZTDqe/fArUjAgy/a8pkYZAXx2DDeeIFqylen5oTdvbauyuxO/gwyeb8vm+VI5uj8iDVJhBzkKuHLpzuKqeGXYY9T1U0eKTjxFzo5oOkzMTs+gR469BatV7XNlIdtW8LcjGipPuusgWHtNwnplguha7uKLZFhdsnXdG/8wrQTHCtFfEOKCTg+goDEGFQEmA3EbqNZ72/cbuHzYQL5juiB7t9hiZfuMnBhmQGYce0R5+EQ4MosxcVhfGaZM7ira575eALutyD4I0oHuBybLFT0x6MR2pmyuPO59uyyHjjynCNJJLGPkAO1Iex/r/qpX82Pi1va4H6GrIQjCx0btTAYYvbX/XIWfknhaAW/SOzke8QOYTx+RuESzWK7XIDmoXqND8laAYTipGN12pVXyowHdKGwjO6TGS1smwS4FlgWtUnAhrzlYQn2enD+V5WgxVV6j2hp+CoR3FQhkXq85VEhG6r7GtOSXBmBvcg6xjYuqZyYnSr9ZMijLCf/BWkOzzmi1FOjvAwhGN804L4EJB+ZCn2aAUMnTTZNFc9C17mBipVm7BDLBg0NIjlA7KevMVpAtO3JY57XQsa3Ye1Qqh1RJwcZ80qAqsEU0VJQWAY+fmiZh4s5fmC3sRcvLUNUJL8nK+1TsKzhrc/Hfz9G1wlg56rzOZZZpC5/md5j/SCDt67rEDRc4dQu2QdxL1Zrl4gxpszqmoNIpIxZfnw0ZnOZyAGTsMP22lbuZRDSm08S1qsX8InJlfPgMWtXqmvWkTphFJnv156W6dWHekUGOLktul6FgxTols9WieNRv/YUfGvf0MUAEDtgX8ejiNUkjy1pw+VgZBqj7sFzDxdFMVB1+TrG+WrAmEHKNsWMcZ8kB/aADIsWVdlYMo6OxniU4Ve3BKNGjaVAhA81y67H13dgoHce+ljxuM7CnNgUmo+m+
+ JYm00e9D
+ E547oOpivABJAC1orxt9+DDpxUIPWiIUX2bWX2eFySq7+HcsSRf8G5Wo3F/n5j8iLeNwpgSJDxxPlMXV/n0mCYAf5m5rY/6EyQ5QpnP4zb5fjTzRt0t31z3UbBO1EA8+J6nrK75HIoXXkoWB9uY4R2kC4XkxHhVqQTNOEMBNoN1rXVmDzm4JZ4nfqjBr0APXKkLcCja07u93Ox7SiBCfePC/lBLRhuat+3/cIHVKnt1+Nno1XPG3HRQtBn4JPtRWo8lwil5n/5gbHVD8aNQKtJBoZSzMm40qIJ8uQXmC3d0T51h8nWCUbKyOdnM7nm4Qgy2WpbJBAMaU9fkblz3j54pnm3yhEEhNHqVzMZ9Um4voANJ3Ogf6NZEctZ9pogYpJQN7C
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -190,78 +102,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 19 Aug 2025, at 4:54, David Hildenbrand wrote:
+On Tue, 12 Aug 2025 15:26:13 +0100
+<shiju.jose@huawei.com> wrote:
 
-> On 18.08.25 20:46, Zi Yan wrote:
->> and rename it to is_backed_by_folio().
->>
->> is_backed_by_folio() checks if the given vaddr is backed a folio with
->> a given order. It does so by:
->> 1. getting the pfn of the vaddr;
->> 2. checking kpageflags of the pfn;
->>
->> if order is greater than 0:
->> 3. checking kpageflags of the head pfn;
->> 4. checking kpageflags of all tail pfns.
->>
->> pmd_order is added to split_huge_page_test.c and replaces max_order.
->>
->> Signed-off-by: Zi Yan <ziy@nvidia.com>
->> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
->> Reviewed-by: wang lian <lianux.mm@gmail.com>
->> ---
->>   .../selftests/mm/split_huge_page_test.c       | 88 ++++++++++++++---=
---
->>   tools/testing/selftests/mm/vm_util.c          | 13 +++
->>   tools/testing/selftests/mm/vm_util.h          |  4 +
->>   3 files changed, 81 insertions(+), 24 deletions(-)
->>
->> diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools=
-/testing/selftests/mm/split_huge_page_test.c
->> index 089e146efeab..56d1eaf9a860 100644
->> --- a/tools/testing/selftests/mm/split_huge_page_test.c
->> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
->> @@ -25,6 +25,7 @@
->>   uint64_t pagesize;
->>   unsigned int pageshift;
->>   uint64_t pmd_pagesize;
->> +unsigned int pmd_order;
->>    #define SPLIT_DEBUGFS "/sys/kernel/debug/split_huge_pages"
->>   #define SMAP_PATH "/proc/self/smaps"
->> @@ -34,26 +35,66 @@ uint64_t pmd_pagesize;
->>   #define PID_FMT_OFFSET "%d,0x%lx,0x%lx,%d,%d"
->>   #define PATH_FMT "%s,0x%lx,0x%lx,%d"
->>  -#define PFN_MASK     ((1UL<<55)-1)
->> -#define KPF_THP      (1UL<<22)
->> -
->> -static int is_backed_by_thp(char *vaddr, int pagemap_file, int kpagef=
-lags_file)
->> +static bool is_backed_by_folio(char *vaddr, int order, int pagemap_fd=
-,
->> +		int kpageflags_fd)
->>   {
->> -	uint64_t paddr;
->> -	uint64_t page_flags;
->> +	unsigned long pfn_head;
->> +	uint64_t pfn_flags;
->> +	unsigned long pfn;
->> +	unsigned long i;
->
-> Final nit (sorry!) :)
->
-> const unsigned long nr_pages =3D 1ul << order;
->
-> so you can make some of the code below easier to read.
+> From: Shiju Jose <shiju.jose@huawei.com>
+> 
+> In the numa_memblks, a lookup facility is required to retrieve the
+> physical address range of memory in a NUMA node. ACPI RAS2 memory
+> features are among the use cases.
+> 
+> Suggested-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
 
-Sure. Will send a fixup.
+Looks fine to me.  Mike, what do you think?
 
->
-> Acked-by: David Hildenbrand <david@redhat.com>
->
-Thanks.
+One passing comment inline.
 
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
---
-Best Regards,
-Yan, Zi
+> ---
+>  include/linux/numa.h         |  9 +++++++++
+>  include/linux/numa_memblks.h |  2 ++
+>  mm/numa.c                    | 10 ++++++++++
+>  mm/numa_memblks.c            | 37 ++++++++++++++++++++++++++++++++++++
+>  4 files changed, 58 insertions(+)
+> 
+> diff --git a/include/linux/numa.h b/include/linux/numa.h
+> index e6baaf6051bc..1d1aabebd26b 100644
+> --- a/include/linux/numa.h
+> +++ b/include/linux/numa.h
+> @@ -41,6 +41,10 @@ int memory_add_physaddr_to_nid(u64 start);
+>  int phys_to_target_node(u64 start);
+>  #endif
+>  
+> +#ifndef nid_get_mem_physaddr_range
+> +int nid_get_mem_physaddr_range(int nid, u64 *start, u64 *end);
+> +#endif
+> +
+>  int numa_fill_memblks(u64 start, u64 end);
+>  
+>  #else /* !CONFIG_NUMA */
+> @@ -63,6 +67,11 @@ static inline int phys_to_target_node(u64 start)
+>  	return 0;
+>  }
+>  
+> +static inline int nid_get_mem_physaddr_range(int nid, u64 *start, u64 *end)
+> +{
+> +	return 0;
+> +}
+> +
+>  static inline void alloc_offline_node_data(int nid) {}
+>  #endif
+>  
+> diff --git a/include/linux/numa_memblks.h b/include/linux/numa_memblks.h
+> index 991076cba7c5..7b32d96d0134 100644
+> --- a/include/linux/numa_memblks.h
+> +++ b/include/linux/numa_memblks.h
+> @@ -55,6 +55,8 @@ extern int phys_to_target_node(u64 start);
+>  #define phys_to_target_node phys_to_target_node
+>  extern int memory_add_physaddr_to_nid(u64 start);
+>  #define memory_add_physaddr_to_nid memory_add_physaddr_to_nid
+> +extern int nid_get_mem_physaddr_range(int nid, u64 *start, u64 *end);
+> +#define nid_get_mem_physaddr_range nid_get_mem_physaddr_range
+>  #endif /* CONFIG_NUMA_KEEP_MEMINFO */
+>  
+>  #endif /* CONFIG_NUMA_MEMBLKS */
+> diff --git a/mm/numa.c b/mm/numa.c
+> index 7d5e06fe5bd4..5335af1fefee 100644
+> --- a/mm/numa.c
+> +++ b/mm/numa.c
+> @@ -59,3 +59,13 @@ int phys_to_target_node(u64 start)
+>  }
+>  EXPORT_SYMBOL_GPL(phys_to_target_node);
+>  #endif
+> +
+> +#ifndef nid_get_mem_physaddr_range
+> +int nid_get_mem_physaddr_range(int nid, u64 *start, u64 *end)
+> +{
+> +	pr_info_once("Unknown target phys addr range for node=%d\n", nid);
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(nid_get_mem_physaddr_range);
+> +#endif
+> diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
+> index 541a99c4071a..e1e56b7a3499 100644
+> --- a/mm/numa_memblks.c
+> +++ b/mm/numa_memblks.c
+> @@ -590,4 +590,41 @@ int memory_add_physaddr_to_nid(u64 start)
+>  }
+>  EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
+>  
+> +/**
+> + * nid_get_mem_physaddr_range - Get the physical address range
+> + *				of the memblk in the NUMA node.
+> + * @nid: NUMA node ID of the memblk
+> + * @start: Start address of the memblk
+> + * @end: End address of the memblk
+> + *
+> + * Find the lowest contiguous physical memory address range of the memblk
+> + * in the NUMA node with the given nid and return the start and end
+> + * addresses.
+> + *
+> + * RETURNS:
+> + * 0 on success, -errno on failure.
+> + */
+> +int nid_get_mem_physaddr_range(int nid, u64 *start, u64 *end)
+> +{
+> +	struct numa_meminfo *mi = &numa_meminfo;
+> +	int i;
+> +
+> +	if (!numa_valid_node(nid))
+> +		return -EINVAL;
+> +
+> +	for (i = 0; i < mi->nr_blks; i++) {
+> +		if (mi->blk[i].nid == nid) {
+> +			*start = mi->blk[i].start;
+> +			/*
+> +			 * Assumption: mi->blk[i].end is the last address
+> +			 * in the range + 1.
+
+This was my fault for asking on internal review if this was documented
+anywhere. It's kind of implicitly obvious when reading numa_memblk.c
+because there are a bunch of end - 1 prints.
+So can probably drop this comment.
+
+> +			 */
+> +			*end = mi->blk[i].end;
+> +			return 0;
+> +		}
+> +	}
+> +
+> +	return -ENODEV;
+> +}
+> +EXPORT_SYMBOL_GPL(nid_get_mem_physaddr_range);
+>  #endif /* CONFIG_NUMA_KEEP_MEMINFO */
+
 
