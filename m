@@ -2,80 +2,126 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EEFA5CA0EED
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 08:37:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A4F1CA0EED
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 08:44:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17E2A8E000C; Tue, 19 Aug 2025 04:37:06 -0400 (EDT)
+	id 1DBAA8E001D; Tue, 19 Aug 2025 04:44:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12F098E0002; Tue, 19 Aug 2025 04:37:06 -0400 (EDT)
+	id 1B39E8E0002; Tue, 19 Aug 2025 04:44:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01CC98E000C; Tue, 19 Aug 2025 04:37:05 -0400 (EDT)
+	id 0F2028E001D; Tue, 19 Aug 2025 04:44:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DC7168E0002
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 04:37:05 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 850A71A05B6
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 08:37:05 +0000 (UTC)
-X-FDA: 83792852010.15.9C4DE64
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
-	by imf07.hostedemail.com (Postfix) with ESMTP id BC06C40003
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 08:37:01 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Ee3Ss2q+;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id F091B8E0002
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 04:44:15 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 715EF16065A
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 08:44:15 +0000 (UTC)
+X-FDA: 83792870070.21.FD6C683
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 9F573180004
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 08:44:13 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KuD1iEpc;
+	spf=pass (imf16.hostedemail.com: domain of giorgitchankvetadze1997@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=giorgitchankvetadze1997@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755592623;
+	s=arc-20220608; t=1755593053;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hv85OKdbUVLLicGnLiBJxS9oGC/z4oA0d2NpFuy29Yc=;
-	b=xntQthr4B9VCAFQ/rm9Y4LiD8ob8HdAusDGvYgrKbgEPa3UAcv3GaVW6vkmZxJeoIW3mr+
-	3Q8LX0Df/2z2fZB2/5xB7MAeONL0QXBpmIkwCohFzMKt2uqxrx7HvIYxBTeCgqdpMx5XUc
-	XmVRmQl82nzUPibF3cTfP/VB0TyKzbE=
+	bh=oFC11YRDk3hLW4PFqQxAfzM0vOushhRghFk3Gc6p2xU=;
+	b=vCtihhiH0tdgpk3y3FVBMZ+y4ay4pWqpg/chAi4iszjVPt+PeYC2K7uNI+TkaHhtnxMjn+
+	VKRmB2JBfypYT9sE7UnDLa7ZJbYnz/80aZWfcz8VrQolP6lFmX4YMUNjUPxWHbRcyqq776
+	ma96oGO2PaB1ejP04ei6nGuovRIhUVc=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Ee3Ss2q+;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755592623; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KuD1iEpc;
+	spf=pass (imf16.hostedemail.com: domain of giorgitchankvetadze1997@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=giorgitchankvetadze1997@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755593053; a=rsa-sha256;
 	cv=none;
-	b=mk9wDRMrVd2hNMFPewyhXE6x9kWFeTrf23zvfXnEmZkAGUuhSHGp1CyS23a2IjK8jWGuxG
-	1mKvObn5JXzp36NTPAuGxXyTjIMfmeRLC1/drpebscDN/OMc6vs52ZUkJq+2RsExHJdhaU
-	AnoOAmyZCoz82NF/YagZMtgsIcZZfdM=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1755592618; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=hv85OKdbUVLLicGnLiBJxS9oGC/z4oA0d2NpFuy29Yc=;
-	b=Ee3Ss2q+sWa3I+ApMtS4vPsdmjXyu8I0vBcoxsNvppyzrByxJ0Mtpo/5kd9EZ9pZPIglboGdQpV/sWs+5fkwqC1x8DG21VI9CZFWmIIZLhJiWmH/JMWcoQGPXN/48gUQtRstcxDeGv0upipd/Mkj6nuqG5pbcKHqHQtZmxyvJ4A=
-Received: from 30.74.144.109(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wm6eUSR_1755592616 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 19 Aug 2025 16:36:57 +0800
-Message-ID: <f26426c0-3ce6-498c-9090-397e93b74d05@linux.alibaba.com>
-Date: Tue, 19 Aug 2025 16:36:56 +0800
+	b=OIGMFRvFnNv0hU85uDQfOsxsdb6hMUAd0R7ncoFD6LUPaW12QaURvM4sDUSUnKRIYbgMiH
+	rfQ2oSKLtOA4js5S1yk8Pc9qfT1ktkRkgW2fBY2imGOrC+XpfLKDiIyCNDjqKCfnW7vY+i
+	BOAFbEf/R1cMcnamU11rB8KYKTYIyYw=
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3b9e411f79dso380700f8f.1
+        for <linux-mm@kvack.org>; Tue, 19 Aug 2025 01:44:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755593052; x=1756197852; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oFC11YRDk3hLW4PFqQxAfzM0vOushhRghFk3Gc6p2xU=;
+        b=KuD1iEpc4BXodMVZ4FVU/VUaUSVK/IDaDcNugqaVooIsIukmQ+Dfsp92WufI64bkRK
+         sTk5iHx785Wr595BWgDxWGTaiLoyxs4/705dYb9vfGmswV9DFIbv5jFPgLxwy3wqVVpQ
+         rceotW+s/oHIwthRGjuxNZo3ar+DID0K74eUiveZpUnY6YyGBdgXKepw1cDo/EN1yGRv
+         jtYb7CzAsA1vhbHMCbUNBr3SKA8r/vzHodJyApHquiyy1gLDkk6lWUioTWPiStQD23aX
+         smvkpm3HHTYUdMOhcIMoRuvLZs/vyV2AX9WPA6F+2I16emYbRTEJkt6fzgiEJZ2KqDVt
+         0CfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755593052; x=1756197852;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oFC11YRDk3hLW4PFqQxAfzM0vOushhRghFk3Gc6p2xU=;
+        b=Qt3lflDAHtfffTTBFdlTIsUIVomXiBkC1bs6M96GadqlyehIfVcz6VkH5GP8na9/q3
+         80jMMU5RAda0ZikAkC0pTQQR6fgR6V5kjpx/Py3NM+J8ETHcqCWUlh7qorn11fqGDDHn
+         aXrYWNhzxoo8fbZFGkQ2Cp7UziuaNfNi5rijYZRCQOCDlq/uujzW00Edv4YMu17HinKJ
+         jZ1Kmb8P0WWaZBuxClQT7HdJ9Et+SgH0NzizmaMwfapDN3JV6aTMqTeksjtySkUhulr/
+         fcB9lz5I2C04cWthgRz/nplqlp14pZfr5zgzXXJIxsCZMvQp/4YNbeWspNiPwmRRuFH+
+         JfLg==
+X-Forwarded-Encrypted: i=1; AJvYcCUzD1Kh+MkzVQhetqkeelBS77bzBjpqQB0MKFUq0KfTe1DMGRfgUsa4txT+Ijbe5f+b017r4+G3HA==@kvack.org
+X-Gm-Message-State: AOJu0YwdM6y74PLRmZI0igdULUTj1EqkZlRNsxgSLsaAa6uKcqwlkEnK
+	Pkljonmohiy+zvt/DaCqTkcFtX7E5BPu9FivVPeUHiOtdHNAdehrFbms
+X-Gm-Gg: ASbGncvADquh9jEFi1K5Y1CTr9LYWCb0zgGnUQKSW9mzBRC+QLiPTDZ+cY4I5oz3qm0
+	hQx+LLJZEDT4SBv/uD9Set585BwLG5YSa63+v7shVVQKfvGV1ZIIwcvCQ6IocGq/Jt9izKGKLty
+	oGFDchmmsHe+nlp1SFvCPU8K8ge4uRojMDHbiYQctzOOHOcBcx1EWpGX32c0N4n/3mNxIryoXOn
+	2LSd2Ju8WAI620sBNnQfwbSp7HW6M/LWn7T6wiB3qYvZE6x1OrSRzULs2ZbqakYy1Ekx2oFw3Yc
+	gadk4alpsHoQxYo62oR+om9KkUFUFqS1/NHPLB605ZyZ44ES6+xivFlMZYIoRJZVs2Um2b9n2dJ
+	pmb1Lw9p1k4jnQ32Q27CtDl2osypTTCbz03t3hczEdTFy0ZRvc/te
+X-Google-Smtp-Source: AGHT+IHofOdCeurN0rfQapxXw3T6dAf9uK8p0WB3BrcvzYJ1fUnpaHB4/Gv3aeR19imEmN6Xr0Vjbg==
+X-Received: by 2002:a05:6000:2884:b0:3b7:78c8:f23e with SMTP id ffacd0b85a97d-3c0ebfa85b3mr546045f8f.7.1755593051742;
+        Tue, 19 Aug 2025 01:44:11 -0700 (PDT)
+Received: from [192.168.100.5] ([149.3.87.76])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c074d43987sm2789350f8f.16.2025.08.19.01.44.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 Aug 2025 01:44:11 -0700 (PDT)
+Message-ID: <17e83e3c-1314-4198-82eb-ffc18454e344@gmail.com>
+Date: Tue, 19 Aug 2025 12:44:09 +0400
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tmpfs: preserve SB_I_VERSION on remount
-To: libaokun@huaweicloud.com, linux-mm@kvack.org
-Cc: hughd@google.com, akpm@linux-foundation.org, jlayton@kernel.org,
- linux-kernel@vger.kernel.org, Baokun Li <libaokun1@huawei.com>
-References: <20250819061803.1496443-1-libaokun@huaweicloud.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20250819061803.1496443-1-libaokun@huaweicloud.com>
+Subject: Re: [PATCH 2/2] arm64/mm: Update create_kpti_ng_temp_pgd() to handle
+ pgtable_alloc failure
+To: David Hildenbrand <david@redhat.com>,
+ Chaitanya S Prakash <chaitanyas.prakash@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Cc: Ryan Roberts <ryan.roberts@arm.com>,
+ Yang Shi <yang@os.amperecomputing.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Kevin Brodsky <kevin.brodsky@arm.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Zhenhua Huang <quic_zhenhuah@quicinc.com>, Joey Gouly <joey.gouly@arm.com>
+References: <20250813145607.1612234-1-chaitanyas.prakash@arm.com>
+ <20250813145607.1612234-3-chaitanyas.prakash@arm.com>
+ <4289fc02-8e09-4d33-a4a1-0e4b268b008c@redhat.com>
+Content-Language: en-US
+From: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
+In-Reply-To: <4289fc02-8e09-4d33-a4a1-0e4b268b008c@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: BC06C40003
-X-Stat-Signature: 1g3buafbgd67uakyh15ibh6j9s4zc78k
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 9F573180004
+X-Stat-Signature: corojphcpz78uzhf7zwem5dyjdy9eurr
 X-Rspam-User: 
-X-HE-Tag: 1755592621-354773
-X-HE-Meta: U2FsdGVkX1+cEjeszW2JzFSe7gQUoT1bmrHCsZV7oZgHBVMR0OYTxdkCU98lXQUOMcQ7e2PYdqCEEsh2HWHv//JiZp9fW+wTJ3aFwOGNlFIHcR+swYg6DQs+AfS+MA9lb1BVosvObQXJfastPVieIAbzuvepBPhL+CzGG49F3vbSRFzcEW6FLhRKQB7UwHp7QfUV10fLElI9P5DNrP099YL24iK5ELrgjS63KGhbiZi8J/YOJK5IGTJSeAn/c81gLNZvVL6bDvXeSGuEWY0N/9d+nrzRDTHQw6rfv8Cqdc2z++9Hz9OpDTxgSJgBF/fMfXdGo4D2Yn10LZc2fQ9Vriz9ctW1lb60v1eHSi85RFXmeYtw35ocUKfLkOIP1WbLkKvnEJKyGL9oH3HSctTk/lSP62NrrVNz65yS5QFJV8mHmUy0M6Wv2+4Ck/HKjUR7R94JghVNYepAOz9J0AkNU+blIe6zA31k7wTOsmLnHvvhalabzeJuFoYv55nQGdI73dW0k93RX9BueX1kqjt2RgoSogXDRMlDbuRbKZUEwppnAEx09J9X8zsj1rPh3/XMv27h1EG+67PksMaQmUNEnv/wcNi+4ijShBTK+C6oED/6MGQU0bJyjwyPdn8UVoczU0WlnLc8I5BlLTJIIHxq1vylG/oWzzWbaQRmwovur7rVpA/MmaMMKj/gRof+nauo9U5MLULxqOIl/BUroOa9547RDujRZrqcecN99ir+tXqxcxAxk9olLMIZBwe+i8ncjInPOO+JXu+YrBORLZ5gKBH7xlsDoKm5S+BABAUVZU82ZLwLu7U00usAlu5KNm44nyEL+sjxk3sAvoQ0JS9PkELYSfTjxeycK7xCzZafp3I3Mmxp0c+tPktcqwHg7dEaxpB2nixtDgdmJw66u3pUnFzwI6lNtP66y8i+M02ICZCfB+0M5ViB58/tUd1ZTGwP2pflGtcabYXnfybV70b
- zDTRgyNa
- Kfar/Rw6oyn2lq7+a2yzyykwJwpffxBnRP0GADQjY5OmOO8NkXhrHu0nsoU7UdHzk0DAhBbMoVtHazSzXedssqXXYVQHaPZ/J4SQV6yzO0d3/QLljeW/ABOnwWV8T8NnDnkBnakCcWy/VLZd2hZ0h3Qkuz1jId9Ag+PAptlacOBUAVdCwTSZXb+ZUlOkL8TXjJBaE1uZaMWoJS20qt8GRqAnQ5DAlNpFuQQEa+ndA5akctsyFrDdxFz9fYaxObjiyQex0dtEFFRsyoYZe0kdq7T/CG84KHF+rQsM7xppjz/R5b4SYKP9OhMTMjQWqUPrF1jacnbu0i2OjQEhv/CoaLbwQMtgN6MKzITl3NwTp901IL+DFoKqNGTeI3OG2DiHPT53mlbFb6VAhPA8=
+X-HE-Tag: 1755593053-830379
+X-HE-Meta: U2FsdGVkX18L2VAaHEvBUqbf6Y5O0SD8Ond9nV9P/VwtzFokrHviRyvdTsqp/gW0GMkBk/ERwiYqfFb3/t+maB+GnS3PNjaK8BFeKdoPuDacEWHkm1FEVPBajYsacZTutlMNnGnwPeDtGSpjG+P7wgw0QGAY+wTpF6VMJsfz92sQrbmt028a4hPG978y9udDguL9Y3hI8YzKnz0yhCA7DCy7a4BFKdHk5NPiyueZKv9ankmMdFg6o0kXriv9Xg6Nr6iJYgPIXaE8PIdoYyuNvsKy/yY86PYiW+odPJjmCrX3ozVUNA5BmifZ9v1WIqssYdluceOQ12u+0ZwZjvBGO//E9/48TgROgxEHo6nNYJyQ3JH7mlJTZZNoYnL8uha2fCwv+lqSmxn1ZfMl3ziIukFy40aOmI9rKxoBvc2kgjPLk7EMaPbYX9dMPSXMFIQ2kljbTzZxg3JBnNPQ+NGpQYFrLtq+0JdpcepJbUds9+Z5sK7TL+WiVBIyDzz48+lqqVLLok5tlIOi+18XyQMLqzUWjhGe860TxJxS1O/zvWTg7KPGJuBfBR9/CcT96PSGznx6Y42pS5jKX6eLm1PyGEd8VTMVet9Tt6ZkWOyOdqJbHbZQQAlMFp6TegQad1hVINa+r286aLwLHFlLntN4sqP32C0KKVImuTnC9hIy9SUq4h/exlNBvpHoiyvIitP2Eg87bxTh7bAgbsGPWq73KPoeC90NjqTIAx5DjsL2VcfO5Ip8aoNYiwofFHtuUzjMAkBObBIScf4ti/yMmYplJy9Jzc0MFygTo+yt8MdtbJp4JmFab93Go7yrU3NYYqd9zw4wJqvmx6/QUKNyANiF2KGyTnY1c7ocWAOTlmm4tENj6kaCGmdAwv7vlhelgRivrED/IoHWdfYki1rzze3RLvsMUlxaskyGFraFQJ0G9fr57aK9WuWHOM4lmjYblV6PkFnPNLNJExqPAI/qaDn
+ ryAWG0mn
+ hXRgGx4H0k6s4sQG7fRKBDb30w9pRNiSPGRvFZQJ6c76VsRPAjLMS5MEjVMT6kp2rCo2etJHF1+0CjKwdiFKTCJD7aJ7Te9V41n9N6hIY78MtO2U=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -84,54 +130,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Smart! BUG_ON() ends up in the generic “kernel bug” path, which on many 
+distros is configured to continue after printing the back-trace (e.g. 
+panic_on_oops=0).
+Since a memory-allocation failure in early boot is unrecoverable , we 
+must force a halt.
 
-
-On 2025/8/19 14:18, libaokun@huaweicloud.com wrote:
-> From: Baokun Li <libaokun1@huawei.com>
+On 8/19/2025 11:41 AM, David Hildenbrand wrote:
+> On 13.08.25 16:56, Chaitanya S Prakash wrote:
+>> create_kpti_ng_temp_pgd() was created as an alias for void returning
+>> __create_pgd_mapping_locked() and relied on pgtable_alloc() to BUG_ON()
+>> if an allocation failure occurred. But as __create_pgd_mapping_locked()
+>> has been updated as a part of the error propagation patch to return a
+>> non-void value, update create_kpti_ng_temp_pgd() to act as a wrapper
+>> around __create_pgd_mapping_locked() and BUG_ON() on ret being a non
+>> zero value.
 > 
-> Now tmpfs enables i_version by default and tmpfs does not modify it. But
-> SB_I_VERSION can also be modified via sb_flags, and reconfigure_super()
-> always overwrites the existing flags with the latest ones. This means that
-> if tmpfs is remounted without specifying iversion, the default i_version
-> will be unexpectedly disabled.
-> 
-> To ensure iversion remains enabled, SB_I_VERSION is now always set for
-> fc->sb_flags in shmem_init_fs_context(), instead of for sb->s_flags in
-> shmem_fill_super().
-> 
-> Fixes: 36f05cab0a2c ("tmpfs: add support for an i_version counter")
-> Signed-off-by: Baokun Li <libaokun1@huawei.com>
-> ---
-
-Looks reasonable to me.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-
->   mm/shmem.c | 5 ++++-
->   1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index e2c76a30802b..eebe12ff5bc6 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -5081,7 +5081,7 @@ static int shmem_fill_super(struct super_block *sb, struct fs_context *fc)
->   		sb->s_flags |= SB_NOUSER;
->   	}
->   	sb->s_export_op = &shmem_export_ops;
-> -	sb->s_flags |= SB_NOSEC | SB_I_VERSION;
-> +	sb->s_flags |= SB_NOSEC;
->   
->   #if IS_ENABLED(CONFIG_UNICODE)
->   	if (!ctx->encoding && ctx->strict_encoding) {
-> @@ -5385,6 +5385,9 @@ int shmem_init_fs_context(struct fs_context *fc)
->   
->   	fc->fs_private = ctx;
->   	fc->ops = &shmem_fs_context_ops;
-> +#ifdef CONFIG_TMPFS
-> +	fc->sb_flags |= SB_I_VERSION;
-> +#endif
->   	return 0;
->   }
->   
-
+> If  my memory serves me right, panic() is preferred in such unexpected 
+> early-boot scenarios (BUG_ON is frowned upon), where you can actually 
+> print what is going wrong.
 
