@@ -2,97 +2,99 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 973A4CA0EEB
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 03:08:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E87BCA0EEB
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 03:10:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BDD88E000A; Mon, 18 Aug 2025 23:08:52 -0400 (EDT)
+	id B21618E000F; Mon, 18 Aug 2025 23:10:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06DEF8E0006; Mon, 18 Aug 2025 23:08:52 -0400 (EDT)
+	id AF8E88E0006; Mon, 18 Aug 2025 23:10:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9E818E000A; Mon, 18 Aug 2025 23:08:51 -0400 (EDT)
+	id A0EAF8E000F; Mon, 18 Aug 2025 23:10:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D176A8E0006
-	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 23:08:51 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 19F05140201
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 03:08:51 +0000 (UTC)
-X-FDA: 83792024862.23.390C77B
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 3D966C0012
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 03:08:49 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nrwJgG+n;
-	spf=pass (imf28.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.42 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DB4E8E0006
+	for <linux-mm@kvack.org>; Mon, 18 Aug 2025 23:10:31 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 37DEF137B18
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 03:10:31 +0000 (UTC)
+X-FDA: 83792029062.28.FA528DC
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 527F716000F
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 03:10:29 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lXzMJXJ5;
+	spf=pass (imf08.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755572929;
+	s=arc-20220608; t=1755573029;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bVQ3txuqhXptMPW0m70Tse+67oS8ipM+vDOvy7EJnh0=;
-	b=OKelKnrMop/pCYjmAtRPQmIBbRjwYQNh1yKOQqvnlxTPN1ZHNWm77SmJs9ALtdD55kYQyg
-	sv+j/fv1XJl39ESEXQRQXLtSDP+YlBk1VN5dLZcoXDkGEz2a7RJIl4NJg5X2srjo+Epvnk
-	wBgUFIkZ5JKIRH5liC14yPOP4CUnFA4=
+	bh=nlF8oOFw6XxGZWbqs616E6b8Wbjg0aG0kr/OcFVHWbk=;
+	b=OauB3IgV69aD7NYxFXwVk7Qv6//2ouTdwEyfewc3c4wwp1WbvEq7PovLD/iVNn4/8q/yla
+	jBv5yMkh+2oXIXe6boQG2qNpn6s82nJ4noGFbW3slS1hzvD5rueb9RBGHG1A6eEXUiJ9wc
+	RI5N1kR604whxmkjehVfgOdGqzxLD7o=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nrwJgG+n;
-	spf=pass (imf28.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.42 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lXzMJXJ5;
+	spf=pass (imf08.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755572929; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755573029; a=rsa-sha256;
 	cv=none;
-	b=vNLUq7XRxYKJxqQAsJh/Jpf8/rpRlGGUemRvipIrCwdf7aAH+RDl/MpMGcI4hYsPqwBmMb
-	fzZEWPQwgm8eH0FLetYJQFZvVHuNoRTYTaL+YjEgnCKRrk3juQBUv8iGtcMYGN6l3hIT7Z
-	jihQrzj90XIO2Kbfbg4JtVlFAp4v/sI=
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-70a88dd062eso42221296d6.0
-        for <linux-mm@kvack.org>; Mon, 18 Aug 2025 20:08:49 -0700 (PDT)
+	b=KcFv3SkDreDq9M2rz8yE5jBF7tReJWBZw13hizekVOVFjQDtH+Q8y93GGAmQfdQC+FBX9a
+	D7Dgi3s7BW0q41MvjCWsdesyJ8q+O4U4Nuuo+AVEMX73sr2DcAaymjrp8CCTj0xtMWofyu
+	SKbt8fauwGqT4cdaW5ufiSlGnQL3sCM=
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-70a88ddb1a2so46852536d6.0
+        for <linux-mm@kvack.org>; Mon, 18 Aug 2025 20:10:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755572928; x=1756177728; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=bVQ3txuqhXptMPW0m70Tse+67oS8ipM+vDOvy7EJnh0=;
-        b=nrwJgG+nbEGAkWqslRehs/KggapboAMLJAHCNgVVLNUea/xTCrUCUpI+dGPWyHuVvR
-         Go2ox4kOCtndUAs1aWHF6CSSQgpzXuRD9qHLswNiNYLkhHR8qLzp9pDkK006cQJNhgff
-         8GTBf9HznPQ24h0EG63ndAUoHGmW9zpsEJ9BH2XMHhA3S9sc62LQWEGeXtio/gCTr2Xq
-         MpdVMIydMO7lJh+/VbwirCh8Hs41MJDEUOrLnP+fPVE7C8oPuFC0ZwEzKdl8h/2c6hbt
-         F30LoYBhz6yI1fpT6ONqLc1aYzL53VHf+JlRCD3tn4NFy51FC7s8yjg6AsYoA2bwIpmg
-         tMPg==
+        d=gmail.com; s=20230601; t=1755573028; x=1756177828; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nlF8oOFw6XxGZWbqs616E6b8Wbjg0aG0kr/OcFVHWbk=;
+        b=lXzMJXJ53sTHKCdCaaeqipIf6agZZfDnQk3CKO6btygoEFgI/EBrDaXOHIKa/lG1FN
+         rz3HdzgLA8ULhoXdeCr0qKaDnvIzk+MVzIscvSfhMgHUQD+QdlOE5ONt0y4IvEczd2dJ
+         XS301S8eBDfjxzx/QVdTUcTDiXhp/UZbI2Gutq1St5neA12nfu8h4PdN+yZkPRA0uPgm
+         HFrkfSkFPzgS52Xz24qB/sasz/NYdMVZD4YOq3MFaFF/1pefx+AFU9Zc6FyYc2+nHkgI
+         gTcckZ9VOAk/BQd+aAqo3dn5i8Cnx7SgjPHOsE3L3Cm18XD2CafBa/mgtdJLi6HX9+mg
+         RhJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755572928; x=1756177728;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bVQ3txuqhXptMPW0m70Tse+67oS8ipM+vDOvy7EJnh0=;
-        b=eeGqeVux7wAniv6qn612p8VtyNZBE6LzJLziEQJjOj1FcgEtJaIj3v8bKCe/vMKE0A
-         AB4Xstv31ds/NdQNyZ7aDENy7ignZru+UpH/ay6zO3ilb6cdN470Ifk1ovrpTSt9CX06
-         hJjtjgQWrU+9sPW4ebiwjB1uIVlaH1UVd4cZMjaJ9vWKnNHpm4deNEVTpnYFTmDgcLCF
-         PXQiaG3Tns2gRJG8JbzQp/adYK633oldBjLQ/f2hCVXDsOO+S25dDU+2HvwXiVUbMrjB
-         BGLTcrCyKhmWKEMuXY9D+B/BHCxQ8A3FBf+48q8OsdWmr2fWvcjnggT2kmCWBkE/gokE
-         6zOA==
-X-Forwarded-Encrypted: i=1; AJvYcCWzozdaYWUtqS1ukpQ3Gxg/tHPOmFPebdBxWHwUtKHjrIyqpP24wRcBdaBntsFCviCNm0BT1wYFbg==@kvack.org
-X-Gm-Message-State: AOJu0YyMCpAVaByWEHUOWr1dNQxNqqY5/3c5/Y/mflc3ZRbs2lRIi3XY
-	y7CAjLMaY5hmj9OmpoyMlCUhGOcdMLnZUo00YRJhLAbgMkFTBOAo5gWDObL3WQB7YrSXX5tVTZT
-	IaM6L160i0dtSpJVA5T88pffvfVZpYug=
-X-Gm-Gg: ASbGncsEQyYFmY6di9lXBhspG59Why11vG+1uuCxpX/yC6pz6IMahEb8q6DCZLGSFAt
-	b78lxzwcJKQ5FpkqI+hArUn5A20y1wUDa2p/M5vsxjn5VlpbfrV6qIl8x68KyAwzHJDjFZ8H5vM
-	u7bK2AcASgmygSjkYm0v1OiWufYqGR2oEanpybN7AXdt7c4Ozc2JX9zW9LQaMjsd9oFslKnY2aI
-	q+bucYXvq3MYcIB7Xo/SCoUXLDZiA==
-X-Google-Smtp-Source: AGHT+IG4d+j08Ahd6e0IGmLpLjVQywBiVWxr/oNbqn/B7jFk/v+8Z5OpkOO0eFgFAIrZiT4AXFJQ9Ow8ACyQoIj9cbM=
-X-Received: by 2002:a05:6214:2529:b0:704:c686:3f54 with SMTP id
- 6a1803df08f44-70c35b75de4mr11175206d6.15.1755572928192; Mon, 18 Aug 2025
- 20:08:48 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1755573028; x=1756177828;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nlF8oOFw6XxGZWbqs616E6b8Wbjg0aG0kr/OcFVHWbk=;
+        b=CK/+5J3xIHAlfa+VKV3qfApIfvrCkNj4MYJ/MB36wa6veVucgfHJEb5D3CA2dtjwV+
+         kOOwJYwiQbqIAqpGNGtPv4V6PlZ3pxyzukKjsXvefxKczFYXao6nxyxCJxnP9FcFJteI
+         Gm5Jj+X9LinONbaKg9PrDEckPiwWy6i87AFYzYmOYmzMJJK3rAzdngLS1/zlIU6mpJAy
+         qL0VFtKE7BR73JDgQVhtmXrCl3bUKXWnVWBu/Ppb0Zb2XA4+n70DWf5yC0dJeFGt9qeI
+         wsfm6lxZNPptErl7LLLsRqPyAUX4cfIazbe4xHMS3ngO00QRxDo+ZPzk1zgig78n+fbt
+         ipbw==
+X-Forwarded-Encrypted: i=1; AJvYcCXRKHz1xJ4OR2Hns85kJueyHJ0Xn6FU1fuskHHGB9ss8dWwQaQiBGUW21yE+4N8sQIhdCpTS3riWA==@kvack.org
+X-Gm-Message-State: AOJu0YyemMkgRU7TvIu6A5FKc1YIzWZPgCUkxh73liaVn65ktFbbgWsj
+	bWf7uv5i8BM+QEWiBvc5UGaySQO65qbVid3oBTGHxBole/4fh8SMBh9yJIo0Al1Svem7Xbyz5Dd
+	fv0yYouQf/bD9jbXqsxhF5C68PdC84N8=
+X-Gm-Gg: ASbGncuOg4KMGwpLxWHQ75BVUwmnMpa3Bh4Ez91WDi0r60M/fSrVZDAc8ThJZf0D2wg
+	7THp4WOitDpbwy94O37cDtXms0kv1qgDGlC6ngtFmBQWinnHPS6sAMCY4IKcbRqf5+sYeZmmNle
+	0QDVWrG+ef098P/8fQ5LZqsArEtMXORRBXWpoGN1VJXyVmUYNBESMnOogwrMgIWi5z03mbC4zFV
+	LZNLrDiBa+hHUpS3SQ=
+X-Google-Smtp-Source: AGHT+IEjssY9TNgGBYwnGqAIFrlBD7U7+PHQXDd3di0Id42cdDzL0pUiM51hDPDptU10GrTwCxGXlg0VYTykSF0vkHQ=
+X-Received: by 2002:ad4:5def:0:b0:704:85af:1973 with SMTP id
+ 6a1803df08f44-70c7f5589femr8632396d6.12.1755573028438; Mon, 18 Aug 2025
+ 20:10:28 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250818055510.968-1-laoar.shao@gmail.com> <20250818055510.968-2-laoar.shao@gmail.com>
- <0caf3e46-2b80-4e7c-91aa-9d7ed5fe4db9@gmail.com>
-In-Reply-To: <0caf3e46-2b80-4e7c-91aa-9d7ed5fe4db9@gmail.com>
+References: <20250818055510.968-1-laoar.shao@gmail.com> <20250818055510.968-6-laoar.shao@gmail.com>
+ <8e1ed2ae-bc2b-4ffc-81cd-61ad6878ad0d@gmail.com>
+In-Reply-To: <8e1ed2ae-bc2b-4ffc-81cd-61ad6878ad0d@gmail.com>
 From: Yafang Shao <laoar.shao@gmail.com>
-Date: Tue, 19 Aug 2025 11:08:11 +0800
-X-Gm-Features: Ac12FXyGdjs74vIigEErSMFXUxLnN6Z-FmbRaiTyFNQo0NxSWMWlqri9y3uiYyo
-Message-ID: <CALOAHbAzQmqxcJ7HU+gsdX4+iEj0U=E5mS8nXF8OYW9QxuXSLA@mail.gmail.com>
-Subject: Re: [RFC PATCH v5 mm-new 1/5] mm: thp: add support for BPF based THP
- order selection
+Date: Tue, 19 Aug 2025 11:09:51 +0800
+X-Gm-Features: Ac12FXzRz22-_pmy1O8cYb4B3Gq0gNgmyf9HCpPLwxhFVkyv90Hkfo4odtuh_e4
+Message-ID: <CALOAHbCnBBOC_YVGNEEdYrLOBhAqOddA8WKDU88p8uZQStqSbQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v5 mm-new 5/5] selftest/bpf: add selftest for BPF
+ based THP order seletection
 To: Usama Arif <usamaarif642@gmail.com>
 Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com, 
 	baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com, 
@@ -102,14 +104,15 @@ Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com,
 	ameryhung@gmail.com, rientjes@google.com, bpf@vger.kernel.org, 
 	linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 3D966C0012
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 527F716000F
 X-Rspam-User: 
-X-Stat-Signature: r4qmuk1nbjhhbpphpojasbokj9sggizb
+X-Stat-Signature: 3snmt1ur7omry3pkpr8zh486h8pbjz9i
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1755572929-218813
-X-HE-Meta: U2FsdGVkX18jAuy75r4JrWWBTqk0pRP1ICI66Zll7giWFyq0HR4bRSttLE7zEXiDoZyWOrL4ZFT+q9DQOvany196pUnM3ZTbzZF+Rx5FD8RUElOmDiaDsnsR0ioJGNNzz2RIsx/f1g+v/6AGrOVWA5FNZQiByGj7hvzLXD6Zz+3hvodNcawlQUcd298zjc+7+XjgExU/g1mE/Lo4vUNKDJmLz3oaU2qoNmMLcAxk1Wagt9HfKqVEGI1tJqPslJRX12t6kBS3lkWLO82XPfBWTQ/bDaimj6A2XVYh12Fb+z1VqClSKT63tGLXAlVZxpeB3zl4+QD759OrOUqtXc+spqRITujWtO2+oW/Rc11Le26hLHqTqNEDnfU2NXZoQQW70FDbMZNVUsX5Vl0dVahtip0HQ/H3e7Ofoy/ZanZ5fykLdka/IBg5s9MFfvW8DaQxEzVsmc0DV/VQdBdMyOcN0z0DndBSOZPkLpnCZgPICS67GejjCTXSWrpndVP/47nHS/Bo4PLCLhh3qS8+Onew1bJooDUKcevZsl/P0D65hVeXBxee3VyYNSCFBRCmOfm3+lqRHpT+VBIVbtQ2MHSKgXk8pZqgjcxSWQqAYIeRITSmh8rVee3amarNhN8OUEPP5E4WCLiFin2eXyXhvjd8SDeuO+yjzMoBpUkzaNL3eBnlcQyDlEfo1oep689vZWyiFOyqiFBlIFr4h4oJ2vE+qs7Db17TjTv5JG+SMgZxPXhwrA0ExKzzxDa9eJf2uwlfVaYNmXrfRtdsK2aHTo2z7/F0+NZ+OyrngvN9L7nr6zNpFNbtxx4vFoSiXie8jiRqjQC6/WOn/fiPDrf+KDkjDl48cv+fXwv/xxhsSRuEO+RqORE7tGS5X0jzDyCZXmKnmUwrk4Um9tkFnpXTSGsCuX7MWozcdOq7kQK3m4CVwTTRoGWQdOz/ZRPqbE7jumm8hrU5kRiS2Tj64QOq/Zk
- AouebvX4
- qv4EQ0fLBbnHE/uHxKsgh6eNkcvutshCJSRiWjOS/JW82ovQGXm6oU5fwgMwABchl5+hSA1OORLt/LzdEgrrQ4TATp/lZ+t5gJrodon/5q5lVxnQzjI8rWAARyrsHtIqnM0VNSnfF+A9C0y2mDmmUqLHE/y/7GszldEsUSrPgj8S6MNECYkCHfKxKzLPNx7YRP8j1LBD6XFZh64haWuqpq70w0vI78Xyig6HBGbuoHdazXDedUC5/2FN6bWu683RemCNrEYn/UCPCnfNuh0nVRO8uxmaQhygscg9UtfuZwOlZUUmfkPQEsQcfU4y3+7Gr5IJJzjv+KcHcaBSYIKYvKL7NFiTAOZC6W/jHRrEEZO7+Hi8jYtPhM92onxA7gFnjNYzqCQUQscbaF0HMHrV0/9YVgNLXyeURgYfjJ0fO7nk5+U8=
+X-HE-Tag: 1755573029-694847
+X-HE-Meta: U2FsdGVkX18GvmwnoGGZx9C1oSZQ/7eKdPq/TEY3T11PHFrTIX1mxklPnz/UDhkOiAi4Bitgl6BiL+B/eObakwZkXlh4iRZcZZ3G98e70NxZ1unQAkR81npg1eZZEMb0CHOMEDC7zS5UlVkBe3MnWo2v8vea9r19MIeyAWRoG3gfedaLLLv0TXJuykZdP7LCYDcyDoSbDuLaCJbGVlfrEL4RP1npZsnZjJwJnowPZ5+o3NeN9oWH4qR0bjNq2Lwkf5lohKEyYo6/hJdq+RbUUCEIXbzIBaSUGAdUJJiML5sZ42mfTm/KK+OJVaizm0RiKNEXmis+F//d4xylqyRHngAxpTTSJOLGJdk3UmHbhecqMo/LAeKdzJlV3nMWwuTVRJDX6CJBm4Az6eAbcGJobIcLPK+ITs3WDoouEFZgtT3Zk1HKvLwUhMvCSbHn7DBrGj1BHsoJP3UwxpBLIapdFik4LYbWctmDNkuGrPiNK3zk1m0nK01hB4WAASjNkifjpQAbVE/KVYMSjMk2FEjPLyoIEJ9A6KcfFQsBDJN6yZ0QFko6nDrKC0Zsn3K1x642mXHcEv+y5hgetx+2bgaw6crXooR7FzPAxR8nBAlRVei8mMQ5GAJ+L2yVe9H3jkUh1obLNqQlA2FtcuJebO7Ny3HsrtG01AezPWyyOJf4EMtiom7JciKHgytn+CZg+u5YvX0+rtlbeyH3tPbGdzBAMP7d2xzjMveTBkopwl2DxIbugJrs3Uz7MYEQFXpJVIzrfK8g6UzJlmlkA1JNeAHzlNJQzafU1eBfWEAaoalBfUCafSpwH6B6ncpEUHTLctoDwAzx5TtQlk39ttu2W+yGyBaaQg7zdwRa322pa2CyAXIM6eHe4wawoPKKb1thC6/RfRvJoebMNV3I/YBmRrSzowbKnj4KQpwG7eYVUVn0Z0ojZsD1YMSQTfrkfOzy1vOBfgIcZ9xTv6rTT2dj6c1
+ jUnhdber
+ Xu6z76NXJ8sb+A6M3QFdM+tgETOmU1WkAsaJauu/xr1FLFu07FLNCH+D4dyfvMzZXilULtSnQtNNCV5bEAOxMyIexU716SE3GXEJys4gV7l7vgwrkTZxNxYaITZW550uY4RFq+Wen6ml+5PYGjczlA9PTO2dqRHd2zxv64W9A14O7nvWu69ffUsTDkYEwkvDctWiiHlig35rx+2KgdevHOsxopiLtlYCVDD/YMXsFvuiHComQnnB7HCJ9SA2CetIFcCCfZEjRmaLqKVSE5GihwHymmDT4WYCcdLm3HcOxbAgbgwT41aV7TsTAw1CYj58KlJlNLrO4CZjFGCZnNWY50374s+kyurg4pNvmJKnIhqCOVqrcr7p+cah613VnUZhOzdSFG/8HyPUM7YOJ5EWEvJS73/AoYUwv4CQD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,273 +121,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Hi Yafang,
->
-> From the coverletter, one of the potential usecases you are trying to solve for is if global policy
-> is "never", but the workload want THPs (either always or on madvise basis). But over here,
-> MMF_VM_HUGEPAGE will never be set so in that case mm_flags_test(MMF_VM_HUGEPAGE, oldmm) will
-> always evaluate to false and the get_sugested_order call doesnt matter?
-
-See the replyment in another thread.
-
+On Mon, Aug 18, 2025 at 10:00=E2=80=AFPM Usama Arif <usamaarif642@gmail.com=
+> wrote:
 >
 >
 >
-> >               __khugepaged_enter(mm);
-> >  }
+> On 18/08/2025 06:55, Yafang Shao wrote:
+> > This self-test verifies that PMD-mapped THP allocation is restricted in
+> > page faults for tasks within a specific cgroup, while still permitting
+> > THP allocation via khugepaged.
 > >
-> > diff --git a/mm/Kconfig b/mm/Kconfig
-> > index 4108bcd96784..d10089e3f181 100644
-> > --- a/mm/Kconfig
-> > +++ b/mm/Kconfig
-> > @@ -924,6 +924,18 @@ config NO_PAGE_MAPCOUNT
+> > Since THP allocation depends on various factors (e.g., system memory
+> > pressure), using the actual allocated THP size for validation is
+> > unreliable. Instead, we check the return value of get_suggested_order()=
+,
+> > which indicates whether the system intends to allocate a THP, regardles=
+s of
+> > whether the allocation ultimately succeeds.
 > >
-> >         EXPERIMENTAL because the impact of some changes is still unclear.
+> > Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+> > ---
+> >  tools/testing/selftests/bpf/config            |   3 +
+> >  .../selftests/bpf/prog_tests/thp_adjust.c     | 224 ++++++++++++++++++
+> >  .../selftests/bpf/progs/test_thp_adjust.c     |  76 ++++++
+> >  .../bpf/progs/test_thp_adjust_failure.c       |  25 ++
+> >  4 files changed, 328 insertions(+)
+> >  create mode 100644 tools/testing/selftests/bpf/prog_tests/thp_adjust.c
+> >  create mode 100644 tools/testing/selftests/bpf/progs/test_thp_adjust.c
+> >  create mode 100644 tools/testing/selftests/bpf/progs/test_thp_adjust_f=
+ailure.c
 > >
-> > +config EXPERIMENTAL_BPF_ORDER_SELECTION
-> > +     bool "BPF-based THP order selection (EXPERIMENTAL)"
-> > +     depends on TRANSPARENT_HUGEPAGE && BPF_SYSCALL
-> > +
-> > +     help
-> > +       Enable dynamic THP order selection using BPF programs. This
-> > +       experimental feature allows custom BPF logic to determine optimal
-> > +       transparent hugepage allocation sizes at runtime.
-> > +
-> > +       Warning: This feature is unstable and may change in future kernel
-> > +       versions.
-> > +
 >
->
-> I know there was a discussion on this earlier, but my opinion is that putting all of this
-> as experiment with warnings is not great. No one will be able to deploy this in production
-> if its going to be removed, and I believe thats where the real usage is.
+> I think would be good to add selftests to make sure the bpf programs are =
+working
+> after fork/exec as intended.
 
-See the replyment in another thread.
+Good suggestion. I will add a self test for it.
 
->
-> >  endif # TRANSPARENT_HUGEPAGE
-> >
-> >  # simple helper to make the code a bit easier to read
-> > diff --git a/mm/Makefile b/mm/Makefile
-> > index ef54aa615d9d..cb55d1509be1 100644
-> > --- a/mm/Makefile
-> > +++ b/mm/Makefile
-> > @@ -99,6 +99,7 @@ obj-$(CONFIG_MIGRATION) += migrate.o
-> >  obj-$(CONFIG_NUMA) += memory-tiers.o
-> >  obj-$(CONFIG_DEVICE_MIGRATION) += migrate_device.o
-> >  obj-$(CONFIG_TRANSPARENT_HUGEPAGE) += huge_memory.o khugepaged.o
-> > +obj-$(CONFIG_EXPERIMENTAL_BPF_ORDER_SELECTION) += bpf_thp.o
-> >  obj-$(CONFIG_PAGE_COUNTER) += page_counter.o
-> >  obj-$(CONFIG_MEMCG_V1) += memcontrol-v1.o
-> >  obj-$(CONFIG_MEMCG) += memcontrol.o vmpressure.o
-> > diff --git a/mm/bpf_thp.c b/mm/bpf_thp.c
-> > new file mode 100644
-> > index 000000000000..2b03539452d1
-> > --- /dev/null
-> > +++ b/mm/bpf_thp.c
-> > @@ -0,0 +1,186 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +#include <linux/bpf.h>
-> > +#include <linux/btf.h>
-> > +#include <linux/huge_mm.h>
-> > +#include <linux/khugepaged.h>
-> > +
-> > +struct bpf_thp_ops {
-> > +     /**
-> > +      * @get_suggested_order: Get the suggested THP orders for allocation
-> > +      * @mm: mm_struct associated with the THP allocation
-> > +      * @vma__nullable: vm_area_struct associated with the THP allocation (may be NULL)
-> > +      *                 When NULL, the decision should be based on @mm (i.e., when
-> > +      *                 triggered from an mm-scope hook rather than a VMA-specific
-> > +      *                 context).
-> > +      *                 Must belong to @mm (guaranteed by the caller).
-> > +      * @vma_flags: use these vm_flags instead of @vma->vm_flags (0 if @vma is NULL)
-> > +      * @tva_flags: TVA flags for current @vma (-1 if @vma is NULL)
-> > +      * @orders: Bitmask of requested THP orders for this allocation
-> > +      *          - PMD-mapped allocation if PMD_ORDER is set
-> > +      *          - mTHP allocation otherwise
-> > +      *
-> > +      * Rerurn: Bitmask of suggested THP orders for allocation. The highest
-> > +      *         suggested order will not exceed the highest requested order
-> > +      *         in @orders.
->
-> If we want to make this generic enough so that it doesnt change, should we allow suggested order to
-> exceed highest requested order?
-
-The maximum requested order is determined by the callsite. For example:
-- PMD-mapped THP uses PMD_ORDER
-- mTHP uses (PMD_ORDER - 1)
-
-We must respect this upper bound to avoid undefined behavior.
-
->
-> > +      */
-> > +     int (*get_suggested_order)(struct mm_struct *mm, struct vm_area_struct *vma__nullable,
-> > +                                u64 vma_flags, enum tva_type tva_flags, int orders) __rcu;
-> > +};
-> > +
-> > +static struct bpf_thp_ops bpf_thp;
-> > +static DEFINE_SPINLOCK(thp_ops_lock);
-> > +
-> > +int get_suggested_order(struct mm_struct *mm, struct vm_area_struct *vma__nullable,
-> > +                     u64 vma_flags, enum tva_type tva_flags, int orders)
-> > +{
-> > +     int (*bpf_suggested_order)(struct mm_struct *mm, struct vm_area_struct *vma__nullable,
-> > +                                u64 vma_flags, enum tva_type tva_flags, int orders);
-> > +     int suggested_orders = orders;
-> > +
-> > +     /* No BPF program is attached */
-> > +     if (!test_bit(TRANSPARENT_HUGEPAGE_BPF_ATTACHED,
-> > +                   &transparent_hugepage_flags))
-> > +             return suggested_orders;
-> > +
-> > +     rcu_read_lock();
-> > +     bpf_suggested_order = rcu_dereference(bpf_thp.get_suggested_order);
-> > +     if (!bpf_suggested_order)
-> > +             goto out;
->
->
-> My rcu API knowledge is not the best, but maybe we could do:
->
-> if (!rcu_access_pointer(bpf_thp.get_suggested_order))
->         return suggested_orders;
->
-
-There might be a race here.  The current rcu_access_pointer() check
-occurs outside the RCU read-side critical section, meaning the
-protected pointer could be freed between the check and use.
-Therefore, we must perform the NULL check within the RCU read critical
-section when dereferencing the pointer:
-
-> rcu_read_lock();
-> bpf_suggested_order = rcu_dereference(bpf_thp.get_suggested_order);
-
- if (!bpf_suggested_order)
-     goto out;
-
->
-> I believe this might be better as you dont acquire the rcu_read_lock and avoid
-> the lockdep checks when you do rcu_access_pointer, but I might be wrong
-> and hope you or someone on the mailing list corrects me if thats the case :)
->
-> > +
-> > +     suggested_orders = bpf_suggested_order(mm, vma__nullable, vma_flags, tva_flags, orders);
-> > +     if (highest_order(suggested_orders) > highest_order(orders))
-> > +             suggested_orders = orders;
-> > +
->
-> Maybe we should allow suggested_order to be greater than order if we want this to be truly generic?
-> Not a suggestion to change, just to have a discussion.
-
-As replied above, the upper bound is a limitation.
-
->
-> > +out:
-> > +     rcu_read_unlock();
-> > +     return suggested_orders;
-> > +}
-> > +
-> > +static bool bpf_thp_ops_is_valid_access(int off, int size,
-> > +                                     enum bpf_access_type type,
-> > +                                     const struct bpf_prog *prog,
-> > +                                     struct bpf_insn_access_aux *info)
-> > +{
-> > +     return bpf_tracing_btf_ctx_access(off, size, type, prog, info);
-> > +}
-> > +
-> > +static const struct bpf_func_proto *
-> > +bpf_thp_get_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
-> > +{
-> > +     return bpf_base_func_proto(func_id, prog);
-> > +}
-> > +
-> > +static const struct bpf_verifier_ops thp_bpf_verifier_ops = {
-> > +     .get_func_proto = bpf_thp_get_func_proto,
-> > +     .is_valid_access = bpf_thp_ops_is_valid_access,
-> > +};
-> > +
-> > +static int bpf_thp_init(struct btf *btf)
-> > +{
-> > +     return 0;
-> > +}
-> > +
-> > +static int bpf_thp_init_member(const struct btf_type *t,
-> > +                            const struct btf_member *member,
-> > +                            void *kdata, const void *udata)
-> > +{
-> > +     return 0;
-> > +}
-> > +
-> > +static int bpf_thp_reg(void *kdata, struct bpf_link *link)
-> > +{
-> > +     struct bpf_thp_ops *ops = kdata;
-> > +
-> > +     spin_lock(&thp_ops_lock);
-> > +     if (test_and_set_bit(TRANSPARENT_HUGEPAGE_BPF_ATTACHED,
-> > +             &transparent_hugepage_flags)) {
-> > +             spin_unlock(&thp_ops_lock);
-> > +             return -EBUSY;
-> > +     }
-> > +     WARN_ON_ONCE(bpf_thp.get_suggested_order);
->
-> Should it be WARN_ON_ONCE(rcu_access_pointer(bpf_thp.get_suggested_order)) ?
-
-Nice catch.  I'll make that change
-
->
-> > +     WRITE_ONCE(bpf_thp.get_suggested_order, ops->get_suggested_order);
->
-> Should it be rcu_assign_pointer instead of WRITE_ONCE?
-
-will change it.
-
->
-> > +     spin_unlock(&thp_ops_lock);
-> > +     return 0;
-> > +}
-> > +
-> > +static void bpf_thp_unreg(void *kdata, struct bpf_link *link)
-> > +{
-> > +     spin_lock(&thp_ops_lock);
-> > +     clear_bit(TRANSPARENT_HUGEPAGE_BPF_ATTACHED, &transparent_hugepage_flags);
-> > +     WARN_ON_ONCE(!bpf_thp.get_suggested_order);
->
-> Maybe need to use use rcu_access_pointer here in the warning?
-
-Agreed, will change it.
-
->
-> > +     rcu_replace_pointer(bpf_thp.get_suggested_order, NULL, lockdep_is_held(&thp_ops_lock));
-> > +     spin_unlock(&thp_ops_lock);
-> > +
-> > +     synchronize_rcu();
-> > +}
-> > +
-> > +static int bpf_thp_update(void *kdata, void *old_kdata, struct bpf_link *link)
-> > +{
-> > +     struct bpf_thp_ops *ops = kdata;
-> > +     struct bpf_thp_ops *old = old_kdata;
-> > +     int ret = 0;
-> > +
-> > +     if (!ops || !old)
-> > +             return -EINVAL;
-> > +
-> > +     spin_lock(&thp_ops_lock);
-> > +     /* The prog has aleady been removed. */
-> > +     if (!test_bit(TRANSPARENT_HUGEPAGE_BPF_ATTACHED, &transparent_hugepage_flags)) {
-> > +             ret = -ENOENT;
-> > +             goto out;
-> > +     }
-> > +     WARN_ON_ONCE(!bpf_thp.get_suggested_order);
->
-> As above about using rcu_access_pointer.
-
-will change it.
-
-Thanks for your review!
-
--- 
+--=20
 Regards
 Yafang
 
