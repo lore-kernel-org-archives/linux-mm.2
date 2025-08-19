@@ -2,86 +2,87 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 38919CA0EE6
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 14:41:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 25584CA0EEB
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 14:46:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5AB48E0011; Tue, 19 Aug 2025 10:41:29 -0400 (EDT)
+	id BA2F86B00A5; Tue, 19 Aug 2025 10:46:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0BAC8E0007; Tue, 19 Aug 2025 10:41:29 -0400 (EDT)
+	id B536B6B00A6; Tue, 19 Aug 2025 10:46:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B49658E0011; Tue, 19 Aug 2025 10:41:29 -0400 (EDT)
+	id A69076B00A7; Tue, 19 Aug 2025 10:46:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A2BAE8E0007
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 10:41:29 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4CEE4C03DE
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 14:41:29 +0000 (UTC)
-X-FDA: 83793770298.07.2804A11
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9EE8840013
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 14:41:27 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PCfMjn7s;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755614487; a=rsa-sha256;
-	cv=none;
-	b=DxpfBXMzLXDxc4vP5WMtlNxZFQKVlLNKqCu4/NFc+AiR9wi7H7AlP58ZBwq0i03TCh5g8L
-	R9KNgan9zmrS8yy286119MGv5fPHcRLnd6cHKP21Dnb2LByusd9aOvZrn/6evNk2hJUsnM
-	AJm+wxPCv7TXs6gmp5rpCIowHX7FPTk=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PCfMjn7s;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 95B836B00A5
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 10:46:12 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 88E0783ECD
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 14:46:11 +0000 (UTC)
+X-FDA: 83793782142.30.88BB9ED
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 69C5640010
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 14:46:08 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf11.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.189 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755614487;
+	s=arc-20220608; t=1755614769;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D/WMqbvOUJI+xe6AMk+UAl+Uf6YreFTZfpexn/uz7Rw=;
-	b=ANtV5s8Hw6e9zqDHe3XlVno2hevoPo+KvOhYj8NrVDkjhBYQ9yf0i8j5o54YDBM1LtLIw2
-	h90bz1LU/yYOw8ycDA50rL7njMgYQmzOJm0rOZlyPXdNYzZ9pOostJzHx2Lsj+w40L8GuH
-	6ozf7SX3eg1ovYBu3j6hvfd6kqntsmY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AFA0560209;
-	Tue, 19 Aug 2025 14:41:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE949C113CF;
-	Tue, 19 Aug 2025 14:41:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755614486;
-	bh=3X8zskgg23YAXa6oY8662gl/iTxu3eC1dGiEIV+n4s8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PCfMjn7s4k/a8u+2sH91mo7APwnnaq4c+tiHUj9PTg+ebiFwcY1wovT5m1yG4o137
-	 YqC5RbMH4I5oABysVVgDVTqVYI0T4ZFLh2Yea71cyqndBAUKrKlbwT9boPUjqZT8nv
-	 lDzoRsqW1wNB6/QdBOwXFDu1Df6L5PlFR24403b/Hvcsi0nbC0Pdr2vqiaG9TatPhs
-	 LL2u3u5WsfLoO7AZ7mdXM7VnnUWYg613D/+y0POq2BKmiARB0CszpH/ueagejOqsxQ
-	 fzze3HqsaAKmAqRDk9CuXR1t99o6SYvXh1t1MOy5zSdvmETYsbNDN4RM3vcn5ooUFM
-	 9+djfdNDkPFXw==
-Date: Tue, 19 Aug 2025 17:41:20 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: pratyush.brahma@oss.qualcomm.com
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/numa_memblks: Use SZ_1M macro to denote bytes to MB
- conversion
-Message-ID: <aKSNED01R-AaclOT@kernel.org>
-References: <20250819-numa-memblks-refac-v1-1-936b4fd35000@oss.qualcomm.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4cNaQ0fBoqXOclbVMfjs7KIIF3KZCWAaPaFJoz0S3LQ=;
+	b=m5J8RTjEj8zGZGjfBKK4OMJMlqr1Lc+/DdnF1F5v+4/47Vc8V3rTPKjmWFa9XV156cg2VR
+	YvHk4A8SzfCzv36cAfR6vsCOxCB8KeUHhH8aM5lAG5TE84nbnnnAE7AYP/1azFc9JH+AaP
+	8yzOjvaGUuRNX/1jnI8TAD64QT3WHyw=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf11.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.189 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755614769; a=rsa-sha256;
+	cv=none;
+	b=ZIQwymgXECL/9ZXZS6KjGuslGEVc/1I+bV4QZg5o71/qmdKzeKk3qU7S3CuaEotx4nFnJL
+	Z74Dm6YBbwLW2ghqIa4Ya0PqiTW+XEZJqtNVkp0WYvhXPzk/gSXEEnSE7TkI7bjRlf6JRm
+	+1ZTQvz8kqA+sWYefms5ymYsc4yGcOc=
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4c5sjF42PpzdcS1;
+	Tue, 19 Aug 2025 22:41:37 +0800 (CST)
+Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
+	by mail.maildlp.com (Postfix) with ESMTPS id 396D218007F;
+	Tue, 19 Aug 2025 22:46:00 +0800 (CST)
+Received: from [10.174.176.250] (10.174.176.250) by
+ dggpemf200018.china.huawei.com (7.185.36.31) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 19 Aug 2025 22:45:59 +0800
+Message-ID: <c3050ee1-a3f6-4f3f-8cd3-a5d67dcdcacc@huawei.com>
+Date: Tue, 19 Aug 2025 22:45:58 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250819-numa-memblks-refac-v1-1-936b4fd35000@oss.qualcomm.com>
-X-Rspamd-Server: rspam03
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH -next 07/16] mm/damon/sysfs: implement addr_unit file
+ under context dir
+To: SeongJae Park <sj@kernel.org>
+CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<wangkefeng.wang@huawei.com>, <zuoze1@huawei.com>
+References: <20250819062452.39889-1-sj@kernel.org>
+From: Quanmin Yan <yanquanmin1@huawei.com>
+In-Reply-To: <20250819062452.39889-1-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.176.250]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ dggpemf200018.china.huawei.com (7.185.36.31)
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 69C5640010
+X-Stat-Signature: s6che1549dko4kd8ey4xiexm114dhm7r
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9EE8840013
-X-Stat-Signature: 5r8xg1sar3eb9z4ndia3rcxtjfbcg79c
-X-HE-Tag: 1755614487-820736
-X-HE-Meta: U2FsdGVkX193hG5RnYyCaZoeOXoRLibogG+YhC3yjWUfVeAKWmxDlqDvYtoYYXFmihHnt4sIFRt0w/BC4QTniJhcyGSCtieOY+3BZg3ZGAKUF3utFxDdNjtHp7XVwZMCnAJlFQri2ZyeC6Xw69ogFhPIC/nQGlqhhWss7IOAMbEui4Mujgz01vJr4bZN/EoMyv/TujjN+mVvUsODkK/qj4tgrb5rMbH1bMnO5Ib+fkkDen/HeRH3vE3hp6t618ppQ/higLv1ey1nTUxtZ3kMAkKoj7Sq+SBFBDjQRGx4mM9flx8bP4dwfMTFTov91oefiHRHZLYQSwQMXNHySXPgwCsJn5UJJ73IzVAloIXsLcwXpF1hHRDiUvrgSw/mq3fMxsXLS1dWvv9EMy7q1jk6hbQn6GHJuhKg7fkBOC0UoQG5CjUpVJVQ8ilJHavfmVnSZ7xS/XzzBfj3kBeuuwnJIcn8o4aWW8YxDANr08XjTZJoqUbYcFeEbvPTMzVRLAZSjMAALo7Qm3qcjphzIpRdER+ODxwNJUBB145hkmHzC4X6PWi2IsWnbBTvR0A12rpNJ24NWP2Yn8c78QZxjM3s41pn65S13l4CVrT8+jIIpNXjcGoFszXbD+yj6iP1d+GUPPSOQFmpx4S/UL1+LxC8yVRIQMQcy+W12irkTmsLVbTk8tYepLBBoXoUuGi3qzvhC5OpdxSkklOvGHw8QjxPemH11Yjhn/qTvvUMPCWUHJn4WIIyt1B7JCCmT+/UKEVYoKjNBNz4qwRKT6qTV445rdiRKdnLWMyEbbyuge/JwGAcM+Cs6BSd9M76+jJuvsQJTfRnVNd1SZ2gr59AW1s3ZFq2J9Y2ObCiu9E6mtAiyPcNOkdCvdsK6oiAWILXOSSamdmAeGiRgN+vyT5Wt142oRdX1b9JXJAfaFcLHKUtWczFqulJQSKpEhHjqj9ZPJdFt6T1PXswy0jNKZAqf42
- SAq41qU2
- VLs29yi32wxlCDJUKHuLO4CK3+AOCaKQz6KQ6CDb8nYFONL2tCgKI0waRtjCsdN3Mc9BVuYPIfwqLFos9vv7UPDxSchZWtQRgAB3Mp6OUzpgiOxIpQtj9IglhLMPqxeDRrHs70w9IVYciEVwxrtUmbvWkquRF8wRlFc/I4jAXh0/Hi1wj62Nqm9bqU25VSebx8ifviPmRWL+4FM8mscAvXopqjT/aUVTWKkzrO8prri2pswBnlsbXIaqx+WP38+xcAWtpQ3cVtwPOX/k4P7JBQLxQbmsVKy10b7HnBa1u1gUluiNjlFA9oOPk1PGbINkeVK6r
+X-HE-Tag: 1755614768-591784
+X-HE-Meta: U2FsdGVkX1/2TdJQZOMbLy1VarKKIKhjyZb0vKpULyw46joxfg76DkwRyIJDQFP50pXIHJfKVqKdrDDo7beOhC3d1ea95709WnLPEA4VS2uPRGqi5WCHyn8u797PBNC0sKbkBrAMz+8lBKCgOXe+cFIfUVloEghjzbuAlbj/yqll4d6YwOURjOqG57UlUbKg2Tk4muo6FJZdpPSYxiz8pzBygb5CYdGaRyWrAtd1zcpZ2hXqG2Q3veTdJAeLsR2qMzKgzNzC/2pgz6U39FW/sDW+82CRYvG7YWaCFvOqTZAKC3o6GeA1XATS3Oh5T53Li2PkY5zEY/KGQNE5dfyHk8An80t63aGpmvFnn7qOlXKRD0Xd5I+E2iioZa0/BcJAUx44QfUZ/gO02JMo9p8r5Mzp26EzS3rP0ziSB2Y/lq8ff7b1Gb9NUcm0+B2RYhmcwmmBpWX+Ni5UaAsSOD2YvhPDH/nXAlTpXkw6FV+Wj2BsyHDGHN+cxWexZSZS+Ari/NOVq/tQoC55BzyUxaAICPrrl1zK06FLwDFH5M09QQbTYIag5mB8J5s9xeaMjs5SocNdZiHGU8Ngx56XFN7oLEDFN5ifHGSYHj0dG+SGnk7UqPmQft+l0yKmDuFx48ZKnqnPwPvHw3TtmVrdhoPx+GQZRy0c3oSMs6dLXdzeMaIS2nybBaoZQae314OcZv3tM50M+XnUHXkvTXwblN7swjZzTBBHf5AsSoWDkpeB4t3O5pm3+iBV1OCp6y7cxiwH4AzY76qFIe+zYr62cLXkYC/2dJGZ81Tc1cr5jroIHykhkdK/vF8lzuh7+BCLFvfppbVBLFRU0oxZOb7Br7x1Kd39psgeI1RK3XL7U9OaUGhE9wQMvvzEP+Xf3qIMLsFHQqms4xt6VxPOzoSxwSB+7uszg2w6TGH+J7OisErg3g0J2RAAo7pIf6eDu3ww4LqCf5GRPU2weFeZSf7h8UR
+ OFcq6Kts
+ kDxsgY13HU6HDzMuAXQF+6ZVyEI+LalZwFWMORvc8kKAdvrxu3LDT/uQB2RohC5/UMx00K5i4QhU0lfmRM1usiJzyNzjEGRuFM8PCjf5l/+q+4BykTimW9x73ZITggDU1a9dQQU9Y28ENt47uc8Y7kpPPsp73BK4YCKXeO1LbBrs01miXmF7IhH7nFpgKcLp8q/wUXuRU7urYDs5lRVDgXuXoV/8hu77vHE05XbJBR4cwxp9f/sv73Wpq9/Mr9TwRZfDgn0lnMCv77hPOqSBlzV8Hdy6n5mX3Jy4mRgoKHaFn1aGyxIy1qpceJA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,55 +91,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 19, 2025 at 02:21:44PM +0530, pratyush.brahma@oss.qualcomm.com wrote:
-> From: Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
-> 
-> Replace the manual bitwise conversion of bytes to MB with
-> SZ_1M macro, a standard macro used within the mm subsystem,
-> to improve readability.
+Hi SJ,
 
-There are few others:
-
-$ git grep '>> 20' mm/
-mm/memblock.c:          mem_size_mb = memblock_phys_mem_size() >> 20;
-mm/memblock.c:                 (nr_pages << PAGE_SHIFT) >> 20, mem_size_mb);
-mm/numa_emulation.c:           nid, eb->start, eb->end - 1, (eb->end - eb->start) >> 20);
-mm/numa_emulation.c:                    size >> 20, min_size >> 20);
-
-It makes sense to replace all of them in one patch.
- 
-> Signed-off-by: Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
+在 2025/8/19 14:24, SeongJae Park 写道:
+> Hi Quanmin,
+>
+> As I suggested on another reply[1], please squash attaching patch to this one
+> when you post next version of this series.
+>
+> [1] https://lore.kernel.org/20250813170224.6128-1-sj@kernel.org
+>
+> [...]
+>
+>
+> Thanks,
+> SJ
+>
+> ==== Attachment 0 (0001-mm-damon-sysfs-return-EINVAL-for-zero-addr_unit.patch) ====
+>  From e0a5aa5e571ecd0f58b0914f8fc8562a60014ae8 Mon Sep 17 00:00:00 2001
+> From: SeongJae Park <sj@kernel.org>
+> Date: Wed, 13 Aug 2025 21:17:03 -0700
+> Subject: [PATCH] mm/damon/sysfs: return -EINVAL for zero addr_unit
+>
+> Signed-off-by: SeongJae Park <sj@kernel.org>
 > ---
->  mm/numa_memblks.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
-> index 541a99c4071a67e5b0ef66f4136dee268a880003..a47aa262a33366337c38ccc7c7064da818523dd2 100644
-> --- a/mm/numa_memblks.c
-> +++ b/mm/numa_memblks.c
-> @@ -427,9 +427,9 @@ static int __init numa_register_meminfo(struct numa_meminfo *mi)
->  		unsigned long pfn_align = node_map_pfn_alignment();
->  
->  		if (pfn_align && pfn_align < PAGES_PER_SECTION) {
-> -			unsigned long node_align_mb = PFN_PHYS(pfn_align) >> 20;
-> +			unsigned long node_align_mb = PFN_PHYS(pfn_align) / SZ_1M;
->  
-> -			unsigned long sect_align_mb = PFN_PHYS(PAGES_PER_SECTION) >> 20;
-> +			unsigned long sect_align_mb = PFN_PHYS(PAGES_PER_SECTION) / SZ_1M;
->  
->  			pr_warn("Node alignment %luMB < min %luMB, rejecting NUMA config\n",
->  				node_align_mb, sect_align_mb);
-> 
-> ---
-> base-commit: c17b750b3ad9f45f2b6f7e6f7f4679844244f0b9
-> change-id: 20250819-numa-memblks-refac-7b4b5017b598
-> 
-> Best regards,
-> -- 
-> Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
-> 
+>   mm/damon/sysfs.c | 2 ++
+>   1 file changed, 2 insertions(+)
+>
+> diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+> index bea782b0a711..eb4269383bae 100644
+> --- a/mm/damon/sysfs.c
+> +++ b/mm/damon/sysfs.c
+> @@ -1422,6 +1422,8 @@ static int damon_sysfs_apply_inputs(struct damon_ctx *ctx,
+>   	err = damon_select_ops(ctx, sys_ctx->ops_id);
+>   	if (err)
+>   		return err;
+> +	if (!sys_ctx->addr_unit)
+> +		return -EINVAL;
+>   	ctx->addr_unit = sys_ctx->addr_unit;
+>   	err = damon_sysfs_set_attrs(ctx, sys_ctx->attrs);
+>   	if (err)
 
--- 
-Sincerely yours,
-Mike.
+Aha, returning -EINVAL when sys_ctx->addr_unit is 0 makes sense, but I wonder if it
+might be better to prevent users from inputting 0 at the source instead? I've attempted
+to modify patch 7 by adding a check in addr_unit_store. I'll send out the v2 version
+of patch 7 later (PS: I am performing a comprehensive validation of the v2 patch series),
+and we can discuss it then.
+
+Thanks,
+Quanmin Yan
+
 
