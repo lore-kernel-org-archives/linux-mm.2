@@ -2,122 +2,116 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 29879CA0EE6
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 11:41:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 67038CA0EEB
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 11:43:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0ADE6B00FD; Tue, 19 Aug 2025 07:41:16 -0400 (EDT)
+	id 0B0596B0108; Tue, 19 Aug 2025 07:43:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE2986B00FF; Tue, 19 Aug 2025 07:41:16 -0400 (EDT)
+	id 0617A6B011F; Tue, 19 Aug 2025 07:43:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F85D6B0100; Tue, 19 Aug 2025 07:41:16 -0400 (EDT)
+	id EB8F46B0120; Tue, 19 Aug 2025 07:43:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FB046B00FD
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 07:41:16 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 288F1160699
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 11:41:16 +0000 (UTC)
-X-FDA: 83793316152.25.A5C0BE6
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 302364000E
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 11:41:13 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=cloudflare.com header.s=google09082023 header.b=MUqxMNc9;
-	spf=pass (imf01.hostedemail.com: domain of ignat@cloudflare.com designates 209.85.208.178 as permitted sender) smtp.mailfrom=ignat@cloudflare.com;
-	dmarc=pass (policy=reject) header.from=cloudflare.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D96BD6B0108
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 07:43:46 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 683F6BA913
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 11:43:46 +0000 (UTC)
+X-FDA: 83793322452.08.AC5B2EC
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 7E4EA4000F
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 11:43:44 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=R7NLieVF;
+	spf=pass (imf11.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755603674;
+	s=arc-20220608; t=1755603824;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Tuib0sswv+oZbbdQrooeXCEG/zbTBeXmUDDIjBMwhc4=;
-	b=VhqZCS3hvspBEtJRc4FWzV7yYfJcjyq2uUIbWPwWSJD7UbouHIadCXY39tLul6vuI0RYi/
-	Zc9qeZhSQ4jQZEJyMgfhNJ3KeD0qA5ZygwfgjUzvpc2xh87Hgrsh3ZvPKMk8qdpA35A3XS
-	bE+bH0vMFNi+YEx85t9z/5gh5Ixt08k=
+	bh=XDRl7pKGEPhnsDQ32deXqvH+LFVXgPlPNsW5Pg/4+Lw=;
+	b=aWrQdigFhSdJuBVEmEHyLqPkHjr208xF9XSuT3N0ErLDXuzXp9P7SxuUiCQByuXqLw6s+3
+	dN2dxjRlsrYJWVLc5GHb1Id3sJT53VSiPDnlIjFg/BV/Rc7Z2IuDoquvJb0N/FpNU7Ergy
+	pfDz747p505AKeMq7isrtQlhLWgnkV4=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=cloudflare.com header.s=google09082023 header.b=MUqxMNc9;
-	spf=pass (imf01.hostedemail.com: domain of ignat@cloudflare.com designates 209.85.208.178 as permitted sender) smtp.mailfrom=ignat@cloudflare.com;
-	dmarc=pass (policy=reject) header.from=cloudflare.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755603674; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=R7NLieVF;
+	spf=pass (imf11.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755603824; a=rsa-sha256;
 	cv=none;
-	b=DJHH6rll4QaqtLH4GcNHCxhhhBQEjy+9EN5Apa8LyOXkpMix5xCPG+r8O1bJOszBauheIY
-	H9Vfatp82tAXYh8y4LJ21gEqqEu6hKKuZ+aUcDuBlHEWe6TcKlVgT8x6MTOL6d0Fp9D+EA
-	oogEbi6EByVHahQK5Lu2HsTjN0c5o7k=
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-333f8d3be05so35797201fa.0
-        for <linux-mm@kvack.org>; Tue, 19 Aug 2025 04:41:13 -0700 (PDT)
+	b=wBreu77gUrucg5Uo0wlJW9JgcmZP6ejWWnsoRD6xiWBHfCE/WSGIg/JyCFN3lBoNv36RQG
+	MO64Aq8YtpCezP4T0aN+u7SSw+r4fBpt7y9JTty/ahh7esliqnbpiD+zK6hYmQ9M+5ndaB
+	yBGPzoiHvekOr0PEsxDxyFM8oCgfCpw=
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-70ba7aa1300so28000676d6.1
+        for <linux-mm@kvack.org>; Tue, 19 Aug 2025 04:43:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1755603672; x=1756208472; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1755603823; x=1756208623; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Tuib0sswv+oZbbdQrooeXCEG/zbTBeXmUDDIjBMwhc4=;
-        b=MUqxMNc9YWjddu8POyylO7nhObRGgnlgk5IkYjJV+muG7hfm1yehYNQ0WfWL151m1c
-         0VFnygqpaISCnbsMz54EavWe/aFTDpFEKqSY4s6tbkHabqsbFKw03f3NwvoGM7173mWv
-         0RPrUE6mIXb4uMOOhmDV8sewUGZMRP7rvj8MmIG7RuZbr7lkpscBv4W9cMoPdsKtPaw+
-         HAvKczLeCkcUrr/T8/CQXlqy2+u2x0M0UkL6TAIZXxcQFKC+NEwIkY14svQyL2KnR8qi
-         i3QE8V3RLaw1f5MY8HrF1XFQTMtJmJYdqOSs4lOAqzfewOLDy4oHpSlaR15Ca4BybYXt
-         9vjw==
+        bh=XDRl7pKGEPhnsDQ32deXqvH+LFVXgPlPNsW5Pg/4+Lw=;
+        b=R7NLieVFfMP+RiKkmvN4NVJXxZ7TQvjNTYzsvkeFLDV4yCXZRIlLW79v6iOwD+rbYc
+         lqV4KeZCb45OSswjpHYDeSWzrsOSWcQpEneJ7MxdhN0Cc798YfhrT6r4FXmGhhHiHsx6
+         ePDjhSWk4ECstOxj3IRElVly+gY18BfvqQ2sCQLXptiUes1AougXSNXT9H2uv2GDgN3f
+         81JjhDHi2dEil7ovHigCx+WJshfc8UoxwBZpwRrzuzismptsyyLQ9qdtzsA0lLedEbnl
+         pzvmBBIAmfjY4RbLXdSOSaKF8DUEq49fuH+BEGHh7Zw5CXE7DDhR0VFyIEWh/u0wawOl
+         w/Pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755603672; x=1756208472;
+        d=1e100.net; s=20230601; t=1755603823; x=1756208623;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Tuib0sswv+oZbbdQrooeXCEG/zbTBeXmUDDIjBMwhc4=;
-        b=c8x+l75iOLbSWekVIynjgS7wQHyJqyf9OB2YM7fUKtoT4TQQsj17YcLwXsHvngtpCN
-         j0p7Eq1WTWtaMuwlxD5IWIumCMp2swGnZtWGEM9dyFgHHMFOUGW14M6LQf+KYAepY4GZ
-         DrbDNx4KTRb3HTB3qfGz1APhcdYCemMzQeitK0jOJKWm0CdhCd/Fd9/booJ5F8Fideeu
-         AGxA5vCpDs6KYspepUaIrsEpFggnNW4s/UEI2fs3Su1nRbdhUT3+ReRN27gb+HQh5VLp
-         bH2Ghh70Tf1QMtriQ9Y+xMRwnQQQ2nx/0KC8ZgLh22kuVHlc6l4/MOc0VxBF4TNRXFOm
-         mLLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXrSSqwL2DNE5dcZZ4H22AF/rKj7Q5ZBg3DF1cisTeIldMeYqtXyvvc55nB4y4l5KqHHupcCVfMIA==@kvack.org
-X-Gm-Message-State: AOJu0Yz/Y+nsgvU0PciGh71i2QPc2tSqq22ffnXWdE+IgLo/Kv/KIQmB
-	/+8B4bieNzHsYOwY+Q9+mCy+AbBPwk2HiZDhBMXLGGtnlKEDTnYSvJydF2gmM+JnooTFRARR9Xv
-	1rEaD+dYQBkzHSvqnOxQAG+tDCAXXA57S8VHsSNH24Q==
-X-Gm-Gg: ASbGnct8/2nDT09bSwvpXDDu04lRtoYURSmSOMG62brPu0wUjL2DGSGObal4S+lY9AO
-	ly4DgEAw9bLTGwCTF/Ol8cmWPuAjNNZWM0QBGyN4+6bAr8q+M99K+BebRs7Wo5jdHBDwEidCT75
-	PVFNJok9/G5ov6gclnczmqGdQle9TkoErAaUr6l2kNiEqqTojsWPa3Ioship4TRzSpKOyI/7FEQ
-	NzPjMnV3S22inKv2DHM5Gxnag==
-X-Google-Smtp-Source: AGHT+IGg10HeIEFBkgRlEcrjp/4T0XRDRw8xEDhjciR9L/zoe5JsrLo73GKK91+2b6uQCDMymTwKOwp13xMAHOXQleo=
-X-Received: by 2002:a2e:a98f:0:b0:333:9b93:357f with SMTP id
- 38308e7fff4ca-3353078bda5mr5810661fa.38.1755603672094; Tue, 19 Aug 2025
- 04:41:12 -0700 (PDT)
+        bh=XDRl7pKGEPhnsDQ32deXqvH+LFVXgPlPNsW5Pg/4+Lw=;
+        b=HBKRxjgskwA+XuW1vraczV2IrHPk8BTtpSHZJT2vKvjrZPIIotx07qSX1o0sCABpCA
+         2e17YsrQc923+qzJoMF9Q/1yyESm92BMWQSX6kjINREOnTmCQBRMUvnTkzaXeRaDjexB
+         RPFgifj6BHVtxvrsDGcmTGkLSgjwxQXFL8Qu+8EYi8J9bivRy92zORAdesZaddxxUu5g
+         BvY60qminz+yCCahaUzGXdEM8EFJKGT9olrH13CvLsMYU3MFl9o4e2a0wEXJhp4LVf28
+         3T5leRq4Dak9OSC/qkMp6/ijtus7bji8I4U6BA7wdAvjoeb06vDQeYPtbJqzIV2MHg9g
+         LqnA==
+X-Forwarded-Encrypted: i=1; AJvYcCUHgp1QMO+1ZbOVp/77MrERbmXrZ4WeNUI+N6fB//uzI+tHpnWBMs8zuHaLTMTTlpqcyguok6hU7A==@kvack.org
+X-Gm-Message-State: AOJu0YxGFV3dpk4vVUndGrZIkZTpQXPMIBPf7SB1MDGkV87d0QagGZKz
+	V7XzI6cEJM8T9kVofsorCnpjv18fJ7K3dx/ssKOA4cm7jN6CpJdPYwxEGvKv+hpyV+L8Q5lQ1w6
+	YS/3S99q+vFHC5zF/IXSk5S4/uvBWCmI=
+X-Gm-Gg: ASbGncvzvHbLrHGWuiGgJOAV/Z09tCqXEr4elFpTNTsmAgIu7ls32xlbCePIcv3BdaA
+	hSHn8ST7+AHvL7VyF0kqbo3xtjaOPZEwM1rkIF1DqWVCFGv0crK2ykeNSpCwzhjqT7Q/prPz1PU
+	5zb06T1Y1sKl29khT2mAi6/BrTwOKkHawp1Z/RiVvSV4tnFcM190qht3MvTnjXn6+OkmuHp6uma
+	IxpJVjX
+X-Google-Smtp-Source: AGHT+IEQRWZETfw6TaV/Y1cUt7is0ycsbkU7AHy2XqNr3gdTaWPTaHfu5jkl9lEXDNCudr183a6YgCdHfI6RtNDb1ok=
+X-Received: by 2002:ad4:5dc6:0:b0:709:ded9:5b1a with SMTP id
+ 6a1803df08f44-70c35c4334dmr22879126d6.46.1755603823087; Tue, 19 Aug 2025
+ 04:43:43 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250813133812.926145-1-ethan.w.s.graham@gmail.com>
- <20250813133812.926145-7-ethan.w.s.graham@gmail.com> <CANpmjNMXnXf879XZc-skhbv17sjppwzr0VGYPrrWokCejfOT1A@mail.gmail.com>
- <CALrw=nFKv9ORN=w26UZB1qEi904DP1V5oqDsQv7mt8QGVhPW1A@mail.gmail.com>
- <20250815011744.GB1302@sol> <CALrw=nHcpDNwOV6ROGsXq8TtaPNGC4kGf_5YDTfVs2U1+wjRhg@mail.gmail.com>
- <CANpmjNOdq9iwuS9u6NhCrZ+AsM+_pAfZXZsTmpXMPacjRjV80g@mail.gmail.com>
-In-Reply-To: <CANpmjNOdq9iwuS9u6NhCrZ+AsM+_pAfZXZsTmpXMPacjRjV80g@mail.gmail.com>
-From: Ignat Korchagin <ignat@cloudflare.com>
-Date: Tue, 19 Aug 2025 12:41:00 +0100
-X-Gm-Features: Ac12FXy2y5KT1jl8o7nCrDwuS7gusbjmLZ1TSw-6nmPiK4uS84cdgeiBBwhyLx0
-Message-ID: <CALrw=nGo5CfZseNwM88uqoTDwfmuD7BgXaijpCU-7qefx8+BZA@mail.gmail.com>
-Subject: Re: [PATCH v1 RFC 6/6] crypto: implement KFuzzTest targets for PKCS7
- and RSA parsing
-To: Marco Elver <elver@google.com>
-Cc: Eric Biggers <ebiggers@kernel.org>, Ethan Graham <ethan.w.s.graham@gmail.com>, 
-	ethangraham@google.com, glider@google.com, andreyknvl@gmail.com, 
-	brendan.higgins@linux.dev, davidgow@google.com, dvyukov@google.com, 
-	jannh@google.com, rmoar@google.com, shuah@kernel.org, tarasmadan@google.com, 
-	kasan-dev@googlegroups.com, kunit-dev@googlegroups.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	David Howells <dhowells@redhat.com>, Lukas Wunner <lukas@wunner.de>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
-	"open list:HARDWARE RANDOM NUMBER GENERATOR CORE" <linux-crypto@vger.kernel.org>
+References: <20250818055510.968-1-laoar.shao@gmail.com> <20250818055510.968-2-laoar.shao@gmail.com>
+ <0caf3e46-2b80-4e7c-91aa-9d7ed5fe4db9@gmail.com> <7d458b5a-6920-472a-a83c-764c0f00c156@huawei-partners.com>
+In-Reply-To: <7d458b5a-6920-472a-a83c-764c0f00c156@huawei-partners.com>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Tue, 19 Aug 2025 19:43:06 +0800
+X-Gm-Features: Ac12FXzk9DmQtD2Uz1DTnkhYCjCO22SJ0c7s_qBMz0mjC82X5cx-i_o2T2iAogU
+Message-ID: <CALOAHbA9nWKE1QWxxMyXyAPqMr=43MmNw9=K37PXF9tJMS1rpA@mail.gmail.com>
+Subject: Re: [RFC PATCH v5 mm-new 1/5] mm: thp: add support for BPF based THP
+ order selection
+To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+Cc: Usama Arif <usamaarif642@gmail.com>, akpm@linux-foundation.org, david@redhat.com, 
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, hannes@cmpxchg.org, willy@infradead.org, ast@kernel.org, 
+	daniel@iogearbox.net, andrii@kernel.org, ameryhung@gmail.com, 
+	rientjes@google.com, bpf@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: eiqzus7myjkefnwdks713mfox8tc3n81
+X-Stat-Signature: p3cdhdcidgct78ati8sgebup5ptzkjt9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 302364000E
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1755603673-436597
-X-HE-Meta: U2FsdGVkX19vbCrPNiwbND2kNzMrWRS5Rbk4OlwGyOqIaCDvyuPZA6T1j/ueoOmbU06hJ+FDZSR5pKNqURGJ8yjspfOhFiyoI4EXd22y+4/UdUDTBqJ3EJLaMkseJKY/ywb6U562S3O2rOFw0E7OwtFhCCbOlLcI72G4TX/qMASNHUWRaYDdQvl3EPF6UL8HDU5kvNNjQV/Ii+S3V7QHA1RlEr0C3Obi4MSMadJQFALGQR7cb5Nyo+/GajHtigqtr7AWgd8FkgBI81V/2rjq6lnUm8LL5OJ6etD1oaX5VV2oXEUJ4OyoTAVZtjul9UHBKv7qApeHKK/61njxFCjylOVof7pWCcex2N1iQbyKvNgBmlJB9egs/EPJbR9LyoXMVu03KFLlHUpks9ofESIZ9QyvOimUQOxQezZOhgkcnhxOY6Fpapfv2V6uL9sT0m4Os8TWiF9YBhH6ItwaWjiIOY5X5EfHhBYjJqQz+NBERgAScoDxnc30eAS9COdy7ew6YX3I2Mkr3rLUj6dGEavN1ipCuTTyjNlZkJhGJ9aHjsCpW/DUwiBl9iPz7upe2oU4OBQYp/Y6D3pobkmM9Gc2nCEJF59aN6ubkWEz9odfDkWdfCe57aNkIrP7x+Noddwy4LLEVTqTavEfO4fFj0nOwpahwYKNbko3o4hc8FmCQ39nrzlbuVarrwbk2LVZ4g8HPm60S+1IfGrk00NEyMyc18/ggrCpxvhD9FEVRpBJdOjxniF0Mo7j2hAW5OEAquZetY8d4Vu/o8aKBYv5pgv+5NurSkl/iE7+orRZJqBg01rBoeJ2yKJfXsEQ18wfU2w6Zut93S1uCi4PoputW5n1IUi/Tgm0A78FRBmT+K1ejLMJWLPaFrZgPUEImIJBjVb9z+imsxjYFE4YimwxYKrenYMYzZUCFviYTK3RQKZGuG5n3jqZI23eBAhIR5NqOUtekxAI49W+7+DjAsSKd+R
- VeJFH32P
- 0S/LntKqssOooH7ORxpEoQJh4e8in13gzK+iL6YEArYDzy/GuYsDhcROmdV2iaXQihGnpb70nD5VbIcVGpci8bNFhtGERRltYbBwo8LWyN0JeNi8rRMKsgwQp1QJOOe5/aYvKFyL03r9EifCuqWt6SCj1bIr7p9QbURWZFvC7wcDs4GI7qa55hIydEzMPVYAKWKjpkgOIv8cAzBbgvPjt5mg2F1jYh9sCcvT2IWVM97xS9tSDPska3nLvOfDi5S+TCkXx25XWKGhW8J15jXljuzoVxVSVcNXp4fJ7z0ZtjxuFo/RzMNwBpovWObXlx8Yio7R69Ca/UTLuagxReb2FEpwO20jHtRluMVgAaNaxBWg0AIE=
+X-Rspamd-Queue-Id: 7E4EA4000F
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755603824-660624
+X-HE-Meta: U2FsdGVkX1814+HnO8pgXw7PlTjbe4ODr52WxkjRsD2vPAm755779DiUAslBMx1z9zBrEgqTGgHBIQHTKpLlvVTTt2LL/E0KdZesoczEHME8bFY09IEbHv3Mgr5eXWswUDPPlC7lMkjUmcE1P6Rgp34+7wBaWl4tEqpzkWUF5kUmrDpNzO6RzhbSh5pPTMGCnE9dpC++pq6cPsARJLRE+0XJVj+78X1FhRr1ys2V5vB4Zezg9Z/rQI+KjF4pWICcoM1kkHeGhdHK2MEeUpTgz8NNIFdFafKkqzMvQ98Rdg1P/OxC2ocXrRfZ4nSgT3n16Lifs3OCg1iTdwQgfvxSXz3wZPVhpauyBYxof5owVtZfVNd64iwO0H8KeQDdTBZgiCLgfQQjgPkNKd5rv7p5J3xRxbD1GdSMFfNmcPWX/umpIuvpmRA9syarHi+1MAeIsBQKzWsBR7TJvPVDqTk2AYzEmI2jQOjL4fS95ORbyQM9XakcoAoyE7+gyDqpDmsZBa76JnBBA2f5A+YtDF/WT3P6SyISaDXbYN/Tnf0jKFhijSEcZWwFQTTMSMdCqzliZycHHjf7oQ9yjYMAW156RYQYgNrmFif7hJRmm5WbC5byH/1/AU2Cbv4uMiAsgm+fQQxwL7qd+raTOtwOzORDzZ12xQu6Q4RoR3JjyE4WijSzhG3rNKP4sTT+NmiQMwn6eWN/+yKctDXB/6Lq/RQsaCF81/OSwdY/CNRxJgli1zOAxy41Dz+6jBkf6vLe/gkvpmd4i6znKH9iKlxPfhvxRJ5dIRqk+aZNHHESRRFnR8WbiVNT43MBlUUNICiPZ6PEtpOOKLKglf41oX7i13m78J1m9Nrv+T1tEF37HMpXxzWRi1TFgKxTmwuuvySMd3isiVXxksExsynOyZRwgp/8Jtid9qOR8zfwQnmpgIIHH6AhPa/AG75LWMCIX9d9k3dBlsBXcIocHp3p/7It54u
+ 3n0xdDkC
+ mQp6Cfb6BIHY6s/Np98oLVApTM1LugrPxWmJLfj55qj0TtpA+3YWgjP+v38VgWZUSj8raGja0g2yah8990CS/fiY+R2KT/tXpGnycl3sN16eLA4YqeJtLFnoJwhJFLz8Xv5lvuKmoAjyw8tu44m5Imp9mvkx/HgucuTSb1NbVI2+Iaz8mSd/DsQPkpkf16xbMlvP4uLqcdrg8Or9wi7gZGd2eVk6uH+4uYj23uLHwipXj7oMP3Nsd21jlFcb4CEiNEhbL6Lc8pA6oGoxt3M7CYkQDFMcrRYJlFnzEZXypHqGA+BC6kJO21Ux8rF5F2Qk4IRD5fPZg95xCU9YedJDxf+Acbob4rIKffM8/nsYlRflKj3assVXilo6qMsOqoptnewgms4Q5endw5f0wbhd3Udusu5/xFT1hsK2IDtX43dSOuCxTIfBqo01DH37ZpyvidrEw8QM3o70CBY9inpu4J1JNbpBuHljO04akUa727+OeigeytntSX2veEc6DaSJl5XDKolbPgSAwLtF5OdqooaKHI4Y1nSlX6jJQ6Th6jtPTjblZdCJLAQDRB9gUMl8z6H+BbObzkceHYvOy403chuDHYtJ/TxAS7NZb
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,78 +120,219 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 19, 2025 at 11:08=E2=80=AFAM Marco Elver <elver@google.com> wro=
-te:
+On Tue, Aug 19, 2025 at 7:11=E2=80=AFPM Gutierrez Asier
+<gutierrez.asier@huawei-partners.com> wrote:
 >
-> On Fri, 15 Aug 2025 at 15:00, Ignat Korchagin <ignat@cloudflare.com> wrot=
-e:
-> >
-> > On Fri, Aug 15, 2025 at 2:18=E2=80=AFAM Eric Biggers <ebiggers@kernel.o=
-rg> wrote:
-> > >
-> > > On Thu, Aug 14, 2025 at 04:28:13PM +0100, Ignat Korchagin wrote:
-> > > > Not sure if it has been mentioned elsewhere, but one thing I alread=
-y
-> > > > don't like about it is that these definitions "pollute" the actual
-> > > > source files. Might not be such a big deal here, but kernel source
-> > > > files for core subsystems tend to become quite large and complex
-> > > > already, so not a great idea to make them even larger and harder to
-> > > > follow with fuzz definitions.
-> > > >
-> > > > As far as I'm aware, for the same reason KUnit [1] is not that popu=
-lar
-> > > > (or at least less popular than other approaches, like selftests [2]=
-).
-> > > > Is it possible to make it that these definitions live in separate
-> > > > files or even closer to selftests?
-> > >
-> > > That's not the impression I get.  KUnit suites are normally defined i=
-n
-> > > separate files, and KUnit seems to be increasing in popularity.
-> >
-> > Great! Either I was wrong from the start or it changed and I haven't
-> > looked there recently.
-> >
-> > > KFuzzTest can use separate files too, it looks like?
-> > >
-> > > Would it make any sense for fuzz tests to be a special type of KUnit
-> > > test, instead of a separate framework?
-> >
-> > I think so, if possible. There is always some hurdles adopting new
-> > framework, but if it would be a new feature of an existing one (either
-> > KUnit or selftests - whatever fits better semantically), the existing
-> > users of that framework are more likely to pick it up.
+> Hi,
 >
-> The dependency would be in name only (i.e. "branding"). Right now it's
-> possible to use KFuzzTest without the KUnit dependency. So there is
-> technical merit to decouple.
+> On 8/18/2025 4:17 PM, Usama Arif wrote:
+> >
+> >
+> > On 18/08/2025 06:55, Yafang Shao wrote:
+> >> This patch introduces a new BPF struct_ops called bpf_thp_ops for dyna=
+mic
+> >> THP tuning. It includes a hook get_suggested_order() [0], allowing BPF
+> >> programs to influence THP order selection based on factors such as:
+> >> - Workload identity
+> >>   For example, workloads running in specific containers or cgroups.
+> >> - Allocation context
+> >>   Whether the allocation occurs during a page fault, khugepaged, or ot=
+her
+> >>   paths.
+> >> - System memory pressure
+> >>   (May require new BPF helpers to accurately assess memory pressure.)
+> >>
+> >> Key Details:
+> >> - Only one BPF program can be attached at a time, but it can be update=
+d
+> >>   dynamically to adjust the policy.
+> >> - Supports automatic mTHP order selection and per-workload THP policie=
+s.
+> >> - Only functional when THP is set to madise or always.
+> >>
+> >> It requires CONFIG_EXPERIMENTAL_BPF_ORDER_SELECTION to enable. [1]
+> >> This feature is unstable and may evolve in future kernel versions.
+> >>
+> >> Link: https://lwn.net/ml/all/9bc57721-5287-416c-aa30-46932d605f63@redh=
+at.com/ [0]
+> >> Link: https://lwn.net/ml/all/dda67ea5-2943-497c-a8e5-d81f0733047d@luci=
+fer.local/ [1]
+> >>
+> >> Suggested-by: David Hildenbrand <david@redhat.com>
+> >> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> >> Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+> >> ---
+> >>  include/linux/huge_mm.h    |  15 +++
+> >>  include/linux/khugepaged.h |  12 ++-
+> >>  mm/Kconfig                 |  12 +++
+> >>  mm/Makefile                |   1 +
+> >>  mm/bpf_thp.c               | 186 ++++++++++++++++++++++++++++++++++++=
++
+> >>  mm/huge_memory.c           |  10 ++
+> >>  mm/khugepaged.c            |  26 +++++-
+> >>  mm/memory.c                |  18 +++-
+> >>  8 files changed, 273 insertions(+), 7 deletions(-)
+> >>  create mode 100644 mm/bpf_thp.c
+> >>
+> >> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+> >> index 1ac0d06fb3c1..f0c91d7bd267 100644
+> >> --- a/include/linux/huge_mm.h
+> >> +++ b/include/linux/huge_mm.h
+> >> @@ -6,6 +6,8 @@
+> >>
+> >>  #include <linux/fs.h> /* only for vma_is_dax() */
+> >>  #include <linux/kobject.h>
+> >> +#include <linux/pgtable.h>
+> >> +#include <linux/mm.h>
+> >>
+> >>  vm_fault_t do_huge_pmd_anonymous_page(struct vm_fault *vmf);
+> >>  int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
+> >> @@ -56,6 +58,7 @@ enum transparent_hugepage_flag {
+> >>      TRANSPARENT_HUGEPAGE_DEFRAG_REQ_MADV_FLAG,
+> >>      TRANSPARENT_HUGEPAGE_DEFRAG_KHUGEPAGED_FLAG,
+> >>      TRANSPARENT_HUGEPAGE_USE_ZERO_PAGE_FLAG,
+> >> +    TRANSPARENT_HUGEPAGE_BPF_ATTACHED,      /* BPF prog is attached *=
+/
+> >>  };
+> >>
+> >>  struct kobject;
+> >> @@ -195,6 +198,18 @@ static inline bool hugepage_global_always(void)
+> >>                      (1<<TRANSPARENT_HUGEPAGE_FLAG);
+> >>  }
+> >>
+> >> +#ifdef CONFIG_EXPERIMENTAL_BPF_ORDER_SELECTION
+> >> +int get_suggested_order(struct mm_struct *mm, struct vm_area_struct *=
+vma__nullable,
+> >> +                    u64 vma_flags, enum tva_type tva_flags, int order=
+s);
+> >> +#else
+> >> +static inline int
+> >> +get_suggested_order(struct mm_struct *mm, struct vm_area_struct *vma_=
+_nullable,
+> >> +                u64 vma_flags, enum tva_type tva_flags, int orders)
+> >> +{
+> >> +    return orders;
+> >> +}
+> >> +#endif
+> >> +
+> >>  static inline int highest_order(unsigned long orders)
+> >>  {
+> >>      return fls_long(orders) - 1;
+> >> diff --git a/include/linux/khugepaged.h b/include/linux/khugepaged.h
+> >> index eb1946a70cff..d81c1228a21f 100644
+> >> --- a/include/linux/khugepaged.h
+> >> +++ b/include/linux/khugepaged.h
+> >> @@ -4,6 +4,8 @@
+> >>
+> >>  #include <linux/mm.h>
+> >>
+> >> +#include <linux/huge_mm.h>
+> >> +
+> >>  extern unsigned int khugepaged_max_ptes_none __read_mostly;
+> >>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> >>  extern struct attribute_group khugepaged_attr_group;
+> >> @@ -22,7 +24,15 @@ extern int collapse_pte_mapped_thp(struct mm_struct=
+ *mm, unsigned long addr,
+> >>
+> >>  static inline void khugepaged_fork(struct mm_struct *mm, struct mm_st=
+ruct *oldmm)
+> >>  {
+> >> -    if (mm_flags_test(MMF_VM_HUGEPAGE, oldmm))
+> >> +    /*
+> >> +     * THP allocation policy can be dynamically modified via BPF. Eve=
+n if a
+> >> +     * task was allowed to allocate THPs, BPF can decide whether its =
+forked
+> >> +     * child can allocate THPs.
+> >> +     *
+> >> +     * The MMF_VM_HUGEPAGE flag will be cleared by khugepaged.
+> >> +     */
+> >> +    if (mm_flags_test(MMF_VM_HUGEPAGE, oldmm) &&
+> >> +            get_suggested_order(mm, NULL, 0, -1, BIT(PMD_ORDER)))
+> >
+> > Hi Yafang,
+> >
+> > From the coverletter, one of the potential usecases you are trying to s=
+olve for is if global policy
+> > is "never", but the workload want THPs (either always or on madvise bas=
+is). But over here,
+> > MMF_VM_HUGEPAGE will never be set so in that case mm_flags_test(MMF_VM_=
+HUGEPAGE, oldmm) will
+> > always evaluate to false and the get_sugested_order call doesnt matter?
+> >
+> >
+> >
+> >>              __khugepaged_enter(mm);
+> >>  }
+> >>
+> >> diff --git a/mm/Kconfig b/mm/Kconfig
+> >> index 4108bcd96784..d10089e3f181 100644
+> >> --- a/mm/Kconfig
+> >> +++ b/mm/Kconfig
+> >> @@ -924,6 +924,18 @@ config NO_PAGE_MAPCOUNT
+> >>
+> >>        EXPERIMENTAL because the impact of some changes is still unclea=
+r.
+> >>
+> >> +config EXPERIMENTAL_BPF_ORDER_SELECTION
+> >> +    bool "BPF-based THP order selection (EXPERIMENTAL)"
+> >> +    depends on TRANSPARENT_HUGEPAGE && BPF_SYSCALL
+> >> +
+> >> +    help
+> >> +      Enable dynamic THP order selection using BPF programs. This
+> >> +      experimental feature allows custom BPF logic to determine optim=
+al
+> >> +      transparent hugepage allocation sizes at runtime.
+> >> +
+> >> +      Warning: This feature is unstable and may change in future kern=
+el
+> >> +      versions.
+> >> +
+> >
+> >
+> > I know there was a discussion on this earlier, but my opinion is that p=
+utting all of this
+> > as experiment with warnings is not great. No one will be able to deploy=
+ this in production
+> > if its going to be removed, and I believe thats where the real usage is=
+.
+> >
+> If the goal is to deploy it in Kubernetes, I believe eBPF is the wrong wa=
+y to do it. Right
+> now eBPF is used mainly for networking (CNI).
 
-Probably strong (Kbuild) dependency is not what I was thinking about,
-rather just semantical similarity. That is, if I "learned" KUnit -
-KFuzzTest is easy to pick up for me.
+As I recall, I've already shared the Kubernetes deployment procedure
+with you. [0]
+If you=E2=80=99re using k8s, you should definitely check this out.
+JFYI, we have already deployed this in our Kubernetes production environmen=
+t.
 
-> Would sufficient documentation, and perhaps suggesting separate files
-> to be the canonical way of defining KFuzzTests, improve the situation?
+[0] https://lore.kernel.org/linux-mm/CALOAHbDJPP499ZDitUYqThAJ_BmpeWN_NVR-w=
+m=3D8XBe3X7Wxkw@mail.gmail.com/
 
-Probably.
+>
+> Kubernetes currently has something called Dynamic Resource Allocation (DR=
+A), which is already
+> in alpha version. It's main use is to share GPU and TPU among many pods. =
+Still, we should
+> take into account how likely the user space is going to use eBPF for cont=
+rolling resources and
+> how it integrates with the mechanisms currently available for resource co=
+ntrol by the user
+> space.
 
-> For example something like:
-> For subsystem foo.c, define a KFuzzTest in foo_kfuzz.c, and then in
-> the Makfile add "obj-$(CONFIG_KFUZZTEST) +=3D foo_kfuzz.o".
-> Alternatively, to test internal static functions, place the KFuzzTest
-> harness in a file foo_kfuzz.h, and include at the bottom of foo.c.
+This is unrelated to the current feature.
 
-Having includes at the bottom of the file feels weird and "leaks"
-kfuzz tests into the sources. Perhaps we can somehow rely on the fact
-that kernel is a flat address space and you can always get the address
-of a symbol (even if static - similar to how eBPF kprobes do it)? Or
-have a bit more complex Kbuild configuration: for example
-"foo_kfuzz.c" would include "foo.c" (although including .c files also
-feels weird). If CONFIG_KFUZZTEST is disabled, Kbuild just includes
-"foo.o", if enabled we include "foo_kfuzz.o" (which includes foo.c as
-a source).
+>
+> There is another scenario, when you you have a number of pods and a limit=
+ of huge pages you
+> want to use among them. Something similar to HugeTLBfs. Could this be ach=
+ieved with your
+> ebpf implementation?
 
-Ignat
+This feature focuses on policy adjustment rather than resource control.
 
-> Alex, Ethan, and KUnit folks: What's your preference?
+--=20
+Regards
+Yafang
 
