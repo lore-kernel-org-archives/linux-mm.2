@@ -2,88 +2,87 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D563CA0EEB
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 22:43:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 364DDCA0EE6
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 22:49:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 128756B0095; Tue, 19 Aug 2025 18:43:02 -0400 (EDT)
+	id C81CC6B0098; Tue, 19 Aug 2025 18:49:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D9996B0096; Tue, 19 Aug 2025 18:43:02 -0400 (EDT)
+	id C320E6B0099; Tue, 19 Aug 2025 18:49:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 015CD6B0098; Tue, 19 Aug 2025 18:43:01 -0400 (EDT)
+	id B479C6B009A; Tue, 19 Aug 2025 18:49:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E5A456B0095
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 18:43:01 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7B610116DE9
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 22:43:01 +0000 (UTC)
-X-FDA: 83794983762.01.4F9E645
-Received: from relay.hostedemail.com (unirelay04 [10.200.18.67])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B699F180003
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 22:42:59 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A06436B0098
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 18:49:17 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 25350B70ED
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 22:49:17 +0000 (UTC)
+X-FDA: 83794999554.16.0ADFE4A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 8091D1C0004
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 22:49:15 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fX0VJvHp;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755643755; a=rsa-sha256;
+	cv=none;
+	b=G1BtJT/aFRK3kLF1Br202SHdExNH5qVtoUetHJThuo2oML2U5NTH15GJQlo75wNPHPjQ7O
+	wGoNokoLALcJGN4xTRkT8BL430J8LieowxMgQtSH0v8ixfJkri0KhLPwePLdpxt1V9yCfq
+	aMBZLml+UdKJm3PfILLcbu0fyvFDhFU=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fX0VJvHp;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755643379;
+	s=arc-20220608; t=1755643755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SLtw4j7faHwHkE8VurEjGE3psV1wZ+7kipZfQicP7SM=;
-	b=nRNAYeizeoRbZGzmWRpGZ/Cy/EdPBw3sBgW6Kpi4zyzq4DrjRmObcQMaFPXcSQwlzH4RFD
-	GwPXESTgh6IbtQ82x4mtkgo90BpjTb3HDXRHQMiEEHoot3YswsBsMnoJWaUNbI9yjuL1Rg
-	KfHywK6yqXf6J0U5Kkpl2OlMkJqojIU=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755643379; a=rsa-sha256;
-	cv=none;
-	b=5hSE0BYNTrM5WXv6DL/1Brdkxk3dGPfxzdqg5KQebwfn3yyn8l8kxs3LlTNBA+f8EhBtQQ
-	V9Z3AG/OyqV+t6elLnOY+IS3ZrGdcRXUXiF5K5JgRwxP6ZT09P3CjmsH9JOLWgL20k95Z/
-	860cKPl7/8Pk4fQ16Ig2Xq2VB3DbqC0=
-Received: from omf12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 125551A0258;
-	Tue, 19 Aug 2025 22:42:58 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf12.hostedemail.com (Postfix) with ESMTPA id 0F88017;
-	Tue, 19 Aug 2025 22:42:54 +0000 (UTC)
-Date: Tue, 19 Aug 2025 18:42:55 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@redhat.com>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, LKML <linux-kernel@vger.kernel.org>, Linux
- trace kernel <linux-trace-kernel@vger.kernel.org>, linux-mm@kvack.org,
- x86@kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Dave Hansen
- <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, Thomas
- Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
- Borislav Petkov <bp@alien8.de>
-Subject: Re: [PATCH] mm, x86/mm: Move creating the tlb_flush event back to
- x86 code
-Message-ID: <20250819184255.74307764@gandalf.local.home>
-In-Reply-To: <20250616161735.26785bf45d765345b89ad0c8@linux-foundation.org>
-References: <20250612100313.3b9a8b80@batman.local.home>
-	<65bb272d-b2d4-4d2a-9c7f-d3d5d2eba23d@lucifer.local>
-	<20250616150942.789c791a@batman.local.home>
-	<32c85c56-063a-40ea-b6ea-e49304447ad6@redhat.com>
-	<20250616161735.26785bf45d765345b89ad0c8@linux-foundation.org>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=TawZes0ZleCKFMu5qumdIUeVbC/7GSzCYgIOYITpUns=;
+	b=V3pti8c/jTQLeJ8mE5KjrS7a95acbTv6DY1o16sFb7PEsRi85kzw0tA/Sob7ydYP1abFOh
+	48iMIfIu+ERdZIfglFsjNEo/y/5aSysI46KobYuEjtUetdYUibGozFPrEhm8gJRMkW6SBC
+	slwjdReie240UM35UwqclRRuZ2Czt3Y=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B7984613EF;
+	Tue, 19 Aug 2025 22:49:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E865C4CEF1;
+	Tue, 19 Aug 2025 22:49:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1755643753;
+	bh=xoFiK4rxFUIRRw1ywG9Sjg1y2W8RvmUgV7KXFN1o+3s=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=fX0VJvHpX3zu2ROg1lqiKzEizuel6NvNX6/Wtmm0ZKaCqMVDJp1D7BCvZAQTN+rn7
+	 aXayhYqu8BNYqwF+FQePFye/I3lOe5f1HVyTbqWPGRozBFYJ/oZ1Z5dsX9wyyEcmCp
+	 yd9JcwJu0EHuwRMDyLMGsWvp3HNsAmNAMVDdiZCU=
+Date: Tue, 19 Aug 2025 15:49:12 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Gu Bowen <gubowen5@huawei.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, stable@vger.kernel.org, linux-mm@kvack.org,
+ Waiman Long <llong@redhat.com>, Breno Leitao <leitao@debian.org>, John
+ Ogness <john.ogness@linutronix.de>, Lu Jialin <lujialin4@huawei.com>
+Subject: Re: [PATCH v4] mm: Fix possible deadlock in kmemleak
+Message-Id: <20250819154912.f6599afb4d7f1c2d5a39890e@linux-foundation.org>
+In-Reply-To: <aKSYq17EUrXRGFPO@arm.com>
+References: <20250818090945.1003644-1-gubowen5@huawei.com>
+	<aKSYq17EUrXRGFPO@arm.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX18mWXyQu4Tn6IbBk4CIsgvZXl26siHqgvk=
-X-HE-Meta: U2FsdGVkX1+XndIv08WfvOQd4OZSE8G4SatZ6QNgHrKoQ9zOhRvDzdKX12BhM8tq/bTPj5QEFZZ1F9RABD0EBaHPj1Nnic3VyWpt4i141OrIyjHebhrDW5+Psoct2mFgNkGvHAwKuOVd9foy60hKP5P51BQo01itiwQ89ELlUE9LTSVPRUikxLHdNvNqR9PStiWct9sWgOcDqre5nwRUUkYoNR/i908naDSVk+TJ4jtFQEBBce1hoaBqAXm2rufGsuwGDKtFyryKpxKHPjnfuk2g0SRDNXDaNgKnz4F+Rm6N/8v3pNNJHYqJW7ZblvXbAlj/n+1lM8h4fCYI3g0y/RP5V3LJCdqTI2roayC7ZP6oUIBYkGOYNVV9V7gUDNE5GTPLRAeGuI69kLFlv0QCKrNsfUVYH7P4chWHYwb2cgkOn8U9ln0Sl8ji+Zc5f9gEa7PXovzU8PjGaRuLTugxVL4moSZORbxUNdXTJd8066w=
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B699F180003
-X-Stat-Signature: i7oyefsqr63gfx4sqsubj64pjz3cojhk
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag-Orig: 1755643374-223974
-X-HE-Tag: 1755643379-872934
-X-HE-Meta: U2FsdGVkX18jFjyttHZWAowlsMffBQasNqxxUjwhT0Kd14hTbCOAwcw0hr55K7y0qGFlm6zT/bVv78Sa/Ih4NwXiWnu44wvsDW7RJwLRdNZE0GG6kvFkLipz7J/eaQDtRgwpRSXbYa4X5TzlWg85Nwq4AKh/uypww/x0L4ITp4hYL+LqMdWSM31+Tn6RVxwxEEjUAgdmFC2RWH6TPfFB1yVCG0oBQ+BS9mtbGWEqk67v7PAbkw/UTwScQFAxKubrAytgbEb2MVs/ACmsIFSEk0engFJ4vKHXFhGHwKe8Jz+bnM/OzF17uev/NINYSsYfbqKtgdTycS50Ze97kOfhL33tBBE2l5MBJ+BSia308eOy72RmWByMtkVoL7FTkymGhwYEdKanvlCDzCmsBvdWHBZhvqhNxJvg06NYjFhNOAO/2yLgwyWGzxK8c5IROvg816S1xZZztHqbBotohGglF/5o8p5wqzDYldU6vMxMDqnTrAVQL/4Q2VFdxMPmh0PPWl9KhmRme23FggQNCQSNTIoj98Z51rZCpk/NGvTKSz4Ash6IhHr3lWLQSRUilB9fb4EXU1IllLWUi+nLC/cMpfjFJ34GtpSYfdF7UP7dNKn3IB1XxBiH5D4++8fRmy9LySOqwn9KlPSqSwkRPFtYkkARPkGGJrK6+l/UUy44ZBkryq1HpJk6y1vKw14wjs7XueSHY99jh7P6rna+IR4NxAszw0M986oa7mvoP42bRq05jkl06PU753x0er9pWKEUlx2790eNwC0IL9CrzArafDQ4jbkjRIefdB+xLpytdTM5Ql5/OeOKEkBxSNhnnfhTBcsQWFW/1wdi93KfEiJN8qQ38HESS2lk2tlxZZMH+w//6r8j3vURbrjGC0cabmjAeG06OTlu82/jDRwkwvcPBTB8YTwHVjGoZpvJOx+o03jSFJmvpYs/RwDtFVUX2F2BFQf+dA6jFmUhgN54rL0
- en9pMpCh
- eRCSwzQQhhLrk36s5fO5/2ZvhDX5UvLELK87Y4GmsYpierlbnG+6ClqGEBUGcenPfQnMnLHDH+Ki9Ea2I6JvRGRKuGISU4TjXiziAlmemexbS7mTeIj0jnJpNf3xuNji2coP3FYcgZDfM3abohpqjh4Kccw==
+X-Rspamd-Queue-Id: 8091D1C0004
+X-Stat-Signature: t8r96hrbc6m9yk86ggdryqbbgzo6qjej
+X-HE-Tag: 1755643755-980744
+X-HE-Meta: U2FsdGVkX18tJfI2dZxlW2Zsjp8hgjr1aERDG5b+lUAF6nvHoVnlJixWIDEuu+RfpZDC2w7XFq1eMDsd3LPb/la04gpBESU4ihLp4BVyq23+SLicVc0ugSln4fXvVD7w1yecOy27ZNZI/hrFmpWppYqQ6GEy1x6qQL+LFFpx9VKj/C4PRICnJX6OjK/vR6obTVcDxXu+o4h8a/fc3HxBum6GEAafCI2wnXkpqr9HL8gRKlcUviCOYZ+YEZ+vE91xZSA5jI10AwskiDrAoMtcPXYdedyOq0Fw3MAqYJbM1xJDifQH2ih+KGgyuHTiDqwKY3Q95qw5CShbldrbwAKKH8+2xT7lRRuSm+fimN6GKp/YMCeBPibAfkx1F4/Cn+f95VhcYxU4Ez8Xey1GHfrbNU9fGFFGQbBaCbikDi+TwBtufWo6wA2vksBR1G6ExWLfQK6745OmMwzagDVmhuxrsbTF2XDBGV4GhnmSoN0isYVLy9woYD/za2xTyWefkkrje2o9ZXGXTk5b0kiWBBjcL+VJ8bdvjBah3JZKZafhAJPNIr9XacTsWabfwre/bZf3Uni2dSQm1w1SBRVFKW+vTJKd4X7NXspC7Y+0akjBb2FNhkdmGZg0RcIGsnrlzDEaepWYArNE+b9vvxyXNMUvglyXsq/OAYu474s69KsqJLMrnRXEOGPyTgB/agVZWwdnXljNA2JAo9OoIV8iTZk7luNd4QdenSZHCllhZ0XyAeql2ZvdUNVS8200XTueFLZivDe2Yrv/jrCKets4qNhF9Z2BJUHsygzMN/+UkxUaCWSAc+houhdw7j3zSj8WF7glXr+a9pHI6DjXXuYHPwaGriz+QRCKP70HcFb/GApSJWIUEENfGiCUbDFfHOKUQuTEerNMz4eh1J/3qTA/u/SasKAqOWZk+gPUYOcsSabwWywVErBNj1/ftMXA7maWygioacRw9QmJh/cUMjCBBJQ
+ PW7m03Xs
+ BRIqBAvfOeP6r/Xnq+QuByF8C9GNgLVqdG9qNk0zcv3cIfpTIVZt+cnPQloRVt9E4KJ35RZvfhEuma9NQkRJRSTbeV6jvZaGCJqggo1MrhOi/e2YX8nDPBUZhz/jKKl4Aapm05XrdIu8Lvz9sza2qQ1AprvHtPcmKo1GnPg4whOWf1/tG5p+t2AiBhZhmC5WjwyZwkvU89ozaRCwOg21vgurgcdCYebypWXxMR+8zellxrlcCz3zp6g1xUu3xFgVwXluxTo+egN9WXVZAtRmK0d5BusO/168HvtJT4orxD9KsP93ANt3NClmU/mlUBc06yHrjp704yVPXEOQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,28 +91,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 16 Jun 2025 16:17:35 -0700
-Andrew Morton <akpm@linux-foundation.org> wrote:
+On Tue, 19 Aug 2025 16:30:51 +0100 Catalin Marinas <catalin.marinas@arm.com> wrote:
 
-> On Mon, 16 Jun 2025 21:19:18 +0200 David Hildenbrand <david@redhat.com> wrote:
-> 
-> > >>> Fixes: 4cc79b3303f22 ("mm/migration: add trace events for base page and HugeTLB migrations")
-> > >>> Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>  
-> > >>
-> > >> LGTM so:
-> > >>
-> > >> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>  
-> > > 
-> > > Thanks.
-> > > 
-> > > Should I take this or should this go through the mm tree?  
 > > 
-> > I suspect this can go through your tree. (@Andrew)
-> >   
+> > Signed-off-by: Gu Bowen <gubowen5@huawei.com>
+> > ---
 > 
-> Sure.
+> I suggest you add the 5.10 mention here if you want, text after "---" is
+> normally stripped (well, not sure with Andrew's scripts).
 
-Did this fall through the cracks?
+Yes, I strip it.  Although there's often useful stuff down there so
+I'll paste that into the changelog.
 
--- Steve
+> Otherwise the patch looks fine.
+> 
+> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+
+Thanks, I'll queue it for testing and add a note that a v5 is expected.
 
