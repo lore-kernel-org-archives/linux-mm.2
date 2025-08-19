@@ -2,123 +2,89 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E885BCA0EE6
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 20:53:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ECDFFCA0EEB
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 21:44:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69A0F6B002B; Tue, 19 Aug 2025 16:53:24 -0400 (EDT)
+	id 315466B0093; Tue, 19 Aug 2025 17:44:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D39C6B002E; Tue, 19 Aug 2025 16:53:24 -0400 (EDT)
+	id 2ED336B0095; Tue, 19 Aug 2025 17:44:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49BA86B002B; Tue, 19 Aug 2025 16:53:24 -0400 (EDT)
+	id 203436B0096; Tue, 19 Aug 2025 17:44:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 368686B0029
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 16:53:24 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CAC3F140227
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 20:53:23 +0000 (UTC)
-X-FDA: 83794707486.13.C46910E
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D2487A0011
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 20:53:21 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Zzg8fiTr;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of andrewjballance@gmail.com designates 209.85.167.181 as permitted sender) smtp.mailfrom=andrewjballance@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BA446B0093
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 17:44:26 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A2D09137C07
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 21:44:25 +0000 (UTC)
+X-FDA: 83794836090.05.2881307
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id EF379A0009
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 21:44:23 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Nzq4eupN;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755636801;
+	s=arc-20220608; t=1755639864;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cccifdKxwgVIxGkwbmtQ1TWALCMGZnlgxiuGwopgW2o=;
-	b=xUsHl7/Ce7Mware8YAyPedbzW8NAikHC5QpE26TiyfvlzSjUeqA9rw5OQ+xXxcD4Q4C1Bh
-	qDzPbCxJfaJdV3l0oIGXMGm1A0oBniU0PVeaqb1GA7sW7NWbu4RR8kdtpuCsUk4dVdw+qq
-	vi0lwAxiUvM7FVrlnjsbqLGdx4EMIHM=
+	bh=Q3tmkDlrICWWPhi/9f8l+WQQLxDQ2eOp2YTEXLnh+14=;
+	b=tHyyRdF6cLc+KX8flc0VUXIQ2D2+KMeVPketyBREkCbljeZE5uVA2oq3RpF3G6OQKEZfsm
+	gB2sSN/of7EQZnj6Xu+7v3VLEbxfo8veJh4q7AdN6bhT4og8mWOe1jKqIKy/IGha+8Hte6
+	IlUwW6jj0i7PflPe51MXCLkv8V/Idg0=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Zzg8fiTr;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of andrewjballance@gmail.com designates 209.85.167.181 as permitted sender) smtp.mailfrom=andrewjballance@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755636801; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Nzq4eupN;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755639864; a=rsa-sha256;
 	cv=none;
-	b=czJeYCBAx5hHQtIhGqFTWN0EDKKUZzUcgW0eCKvE1g04f1OhY+OjhljhPOgz0yJP8WS2f7
-	lfNVQOXU8VZAx81HBhLc9W9NBDof6cnyll/VY5xshDl9Il26QfH4BrUmWOXOivqTPuMdWe
-	sxjGD1IrIfen1GH+mrZxoPMfVbCoJCA=
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-435de801abeso2123711b6e.3
-        for <linux-mm@kvack.org>; Tue, 19 Aug 2025 13:53:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755636801; x=1756241601; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cccifdKxwgVIxGkwbmtQ1TWALCMGZnlgxiuGwopgW2o=;
-        b=Zzg8fiTr5VRgDHsoynZIaDfir8kSZWtOtffekw/3VHtqX80qnnuD1HOJE1zdP8X1Ob
-         Qc9w0DBBPPJ1o7IDHzZDeEa41rW6hnrDc4WsXj3ryh04OzNnK9rlEHld1WnP7jEQiP1l
-         DJCejUCYluOumN/HNYMHi8i83R/gksPgfKaUtBHdF9i6rf9Qys7gIPlGcchSG8rFjQYf
-         v5JV6p2SDTbb1DJVwTdKmXHgtBSxvOoxM5cea62QGmPFLgrqICObfiuSnFLKyyDeIxiJ
-         RBkMCw4ceWrHvERbFejQdC+cE9AMSAS6884XlXr0wHPuFMJDHqd+pTETXPmtFnYjbvhx
-         i7Sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755636801; x=1756241601;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cccifdKxwgVIxGkwbmtQ1TWALCMGZnlgxiuGwopgW2o=;
-        b=wQzI0xpDLTDWnJVYzbtUcXpbMhNt/VmR7g1LmqnvXBysOSJFydMsh44Np4Wwhtonny
-         ufJUIVDfj2DnkGsbZkWzB3NrEi4Xp7+aoK7afnrSWRO91neZ3bT9rlhxTTNrfqzc7z6v
-         fHckKweHkF9yVcRwK9aFG55NV1H5hkfse8FM0poLoDJKRpW6sbqWEHztO3WRm+KWZ0K/
-         4tfBQpHLUHe9irSYqwiE9e1EJBjxShsAVnDtsEAmubGuJTSy/vOA6gw25Tly1qo5Je4S
-         niG2v2a4gjv7l9BhZVyiItmao08VaPvC16CYBQCUkJtLPa8nqLyD2QDtjNSZdI1leR9i
-         YP5w==
-X-Forwarded-Encrypted: i=1; AJvYcCXXYFGa8965JKJwTVYzePTA7OpT2Q+5wu1L6jvELxNLbi0vpDesyVP5UZnacDQmTGzmsEA3UrIdwA==@kvack.org
-X-Gm-Message-State: AOJu0YySCBVWmsICiIx+PfQU6NKsZ2DikT29YbT+fd79zPnwma+4okw6
-	aey749ujUsTJ88kpLBeYgLBZxcCso0wSErd8lRTND9kyuTvZuaU0K+Ka
-X-Gm-Gg: ASbGncs1ZrgO/B/+gobVyzESsQoQNi6A4LKpCiN/ujgA7I61S3yPTA6WPjkbwCScqxg
-	w/O4onEcmfbwBLAoltL5udNZk6wne2TCc9Z0RIWajqFcLQCECOanozUO1Fcs4OcsxxDBvy7+aJC
-	39OAytAnjHom90Km3nCMcXdJTpVBbrCXBA+GF75t/bB0fPwS7LUVoUpnLe39NZHIHwtV+lMsoOB
-	8js1RQWUXPtg2qYU5qpjIvPeeedFYx87TUb+mb4HssciwAy5cgniuKzz5j6KvDw08ZEXf3WgSIA
-	gXIWZRw4oywpsdWMbMRkmoviwtfnfnWQUka1kUxGBG3CZE0zczRxzpQL0fbuchNIwyd+Qt5ISeB
-	dBTDdGweKLpZAseOkPwPaNMD5a8TTf79olUsV/I4S+f/wmsPiD3eXyqVq1v1aSx2getu/Nw==
-X-Google-Smtp-Source: AGHT+IFQLVe/eYDYQgpfKh6ZkPeTyExiDauVdsWHpI+hmDZYMy7Hx6bM1cNBtQ69VAPnx0ro0riEjw==
-X-Received: by 2002:a05:6808:190a:b0:40c:7996:73e3 with SMTP id 5614622812f47-437720d8318mr245421b6e.28.1755636800587;
-        Tue, 19 Aug 2025 13:53:20 -0700 (PDT)
-Received: from [192.168.86.39] (c-73-76-29-249.hsd1.tx.comcast.net. [73.76.29.249])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-435ed0fd6b5sm2480745b6e.5.2025.08.19.13.53.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 Aug 2025 13:53:20 -0700 (PDT)
-Message-ID: <0d4bd6c7-4611-4b7a-bc07-8b18336e74ab@gmail.com>
-Date: Tue, 19 Aug 2025 15:53:15 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/5] rust: maple_tree: add MAINTAINERS entry
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org,
- rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-References: <20250819-maple-tree-v2-0-229b48657bab@google.com>
- <20250819-maple-tree-v2-5-229b48657bab@google.com>
-Content-Language: en-US
-From: Andrew Ballance <andrewjballance@gmail.com>
-In-Reply-To: <20250819-maple-tree-v2-5-229b48657bab@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+	b=hkFp6dwD+18RJrKFN0Kpq631vzxbeFwA0U0z9m/z8T4Z75a3/JplKgYumjhSRD2+Dj9c50
+	HicV4AkZK+IbKNKFaYG6cEfCCWC1973NeONdxtNxvWStGU5dVt3R2GfA6oeUICi9OLAiEP
+	+l3JaskBRmgP+QBQ1wkaX66MykQUSgk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 82DE341A5E;
+	Tue, 19 Aug 2025 21:44:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1373AC113CF;
+	Tue, 19 Aug 2025 21:44:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1755639862;
+	bh=YoRn5U1VviMeI3wYCjAuBp0BdntdvHwrqbroxon/FX0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Nzq4eupNgvz92fewkLIpqxc5BwUVOOhFj0A0MVATwtTXWA5HqVFL1X/JzYc3af3rV
+	 ivAeFhClNP+bIy43i6zyq84+b4v10g8FXKYE7Bqm4/ZiRO0ZGpFDfj+EhSSg+DuzIo
+	 ZgcEGh5X5zsM3y96jwX0YFH3MJ/iTDU15bCj/XY4=
+Date: Tue, 19 Aug 2025 14:44:21 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Chris Mason <clm@fb.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@gogle.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, Zi
+ Yan <ziy@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kernel-team@meta.com
+Subject: Re: [PATCH] mm/page_alloc: Occasionally relinquish zone lock in
+ batch freeing
+Message-Id: <20250819144421.7a52f8df3f0fe5c315f90aa2@linux-foundation.org>
+In-Reply-To: <20250819151846.2000539-1-joshua.hahnjy@gmail.com>
+References: <20250818171340.2f4ce3356f1cda59acecab57@linux-foundation.org>
+	<20250819151846.2000539-1-joshua.hahnjy@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D2487A0011
-X-Stat-Signature: 3rzkzyoq6u1qi4z6kom6t65adyhas69t
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: EF379A0009
+X-Stat-Signature: 9orfnefkh6mkrb4ou3j1quwidi95nfz5
 X-Rspam-User: 
-X-HE-Tag: 1755636801-194793
-X-HE-Meta: U2FsdGVkX19nd46Vutnrv2TqCee4+4WDagUua+oZDa8qriguf7WtiPsvbmpLJ9/anj3oXtNXveynU8gjhYiDTbU1UxVIu0QUFEqVjX8x9ksQTtyYKd18VtmydUwzMuUyLSQ9q35ZY83bTSP/ll13XR+P207G+sH8KUxgC7tbdFFLUhWM4AmJjAiEnbEZ8293u39p4UaRg6gzLB5RSCxohk8uTokwXvifQqTKrvv36aG2uyccRy5aDHy7GCV+DXCHGCL4YqMApI+LnrN7w3pI2kbnN0hB/FjP6a3YqxkXFAKtPPTik5yJA4YvVfOXh3JD1pxOJvOUEtvPfEQUuvTPJQw3n4h8jAOZ9yjBciuM500GwwK7ntORresq9AceHlwB47eeodSzUcd8xs2VHaDg8pzI9KwgaGmn8akC4oLczOWzMOBHgZnjPXQu1FCl5BJqKMwAjMM0redNZYXFSq3M/eGNNRcC80gVXNfRkGA1Xi/tyNMd+2F71EEA7H7sovgP7vzHEhne5N6R8JSN9HA4GKelCg+8GCYBmGArk1D+m62CnS6+zVhvA1txhZWe92CI2vKfO6dqLEySBNihdc1LEfonx052F7aFI2dH5wadMY+IBlfTInTqwnkKKCuvqQIdWO8xbIaSl7eZ4UrVIwxuVUYIwD9o3BOnqf2I2fz+05bIr2//l3t6jUMX1zl0p1kzT33fwKLzdSlpp6QsNy1y7JcrsZv15O2Dxe+dlL3ogp8e52ltttKF155DA/NDEm0mdjkBHZ1cEmCAzZB4vkJvxsKrVupp9mAIl+yYYyoTFob7c4k81gN3RS3QpJ0ReHtQMs5ZaW6nCT3UiO381ug70VkAlxADBO4iE2nNa6nxF//MhX5un/exL06D3GUQQzYieW9rN4FDZSIpXXtt1OEFeLyDFO7Zob/Z8ihBzAglAeOBi9KGOC+dHy+u75BPnkm7uWQKGls5NZYzXZOcDHy
- JdOs3KnH
- KtilkHZrxeGLbzmzuzisnjNuUQ1BKkwmnVdw7Imq4US8/3LVMjRWgbQl5fX7rwB1bIjSKrnqjq6E3wXYsxHa5m3CoqeIP7D0p/l2cxpQf15Zi6o2m4jzM2s22T1otpEzU07MXi9BbaGJBXGeDLU0r09j19TtbgtwOXu8C3zc4aaGHRlmTTqxGr3hDYXIed+9PTObPRfChC6AvpIzcdFLhvytBbuYxrZvysUAPG8bbAjpgWmLjwim6pfZ4xpWneAOl380O0EBPd1he7+wNswmeUGBCYu2E+6RnGl6f8rTuTrajkVjdfpH9eDUB15txSi+gqZRrDCJywtDiO8i77JqJS/R/ljeE81DdPWD9YP0SwpUYiHAIPbJJuyAvxuBV1lol96ooRCfxgbqATUGX68xangKwtDUgNModFuPIlt6C+RCTxFK95i4ynRkigZVncRbZ42aMkxAKbobUcoBYLPQ8KPYGmC4Nxd+bUrhuC520wSYupPCw/awUSgmc3QJe2MhxV16aZAZgcUhZ0iHAX05NN8O3WijI50sXb0wnYFsMpUVx3AjMQ0HmyNNFF/Emyk11fm2uHKe4ODst7yifwC98+Yc6mBEsqEjc9o6BTrO41XxdgeF8PyvqiL/j4zBl/LcvdYMeQr3i7pBZgUhZYQYzTYdp3NZ6vcFTWT2PI844/hYAsFe235PJTYHqgHU3LNEA8JFyN5rRC4SDBmzsVWWcZ0P58oZHo6C4xZF1kOEeH3B6ht+AGA+4VkOyvFhHNa6omZ6CReTV+ZDELVw=
+X-HE-Tag: 1755639863-678255
+X-HE-Meta: U2FsdGVkX182q7KmVF/z6yTf8y0RcrPuHpBcjaOgLiXIirRbLBCDv9p0WDT2vPQ9ko0mzKKsXktcfw2BHeNCYUj6DgrNMDfF3S0ZQ3BwWHXESRC/G9EmxSnL/QvxdS9KkcqYI905gXAtGZFKUdMUq8YUIwCz9Efgm8mrWbFFdPeR4FMw6hknFn6hzstO6ua+L1RsXIWl2tJx2CmoKaGnTp/ab+s9IijfJCVCkaSuZZ9P6+vLWyftGxA57NGUgXt1hi41EpqxA1fL+z9tYx9Z76Y8P9ONY72/DHVqJWhtpFA3FX6ShwvkZQiNmVR9qb81btOQ3OmcQzmjBmhiZqkKajF7VkDK7uBqo6NpznEKoI/TZNUJx5stpvWFuGje6Qf+UBP0LEyrgTzdiVeXkLJMRer15BkrJFiYxFVa+I+vlAmzpaJMraJCiOc1SgR3P4xK5XnUd29TJ1ENhQyVoVusH14EXDjoh1QUW+ZSzhUz6ezVYBnxWi3y4BCXcyUoXcnofLDP7q8GTfi/QPzZRr6ei1bkTE4G5HlSf96K7Qoko2Yybbm2FTbUQcT5EXB3dN8xHZpOYGc7clV25W+DAmV3tO+m3IYjSO8kFKlik7//gUkxbVI/4Jo4my8ZQv7mR9eu59oOL9oe+UySvS81KegLkJl3wBD559MCt0DVh4FmOHLIM11i5zjpIOudMfGnidWLaBdZ7rV7PcCuoVSp6SZKPj/iu/zdG2voUW/0SFwEiY3U+63H+SyNzm1i9CTIpnZTQAsJhX9IvgdMZQkE6wRSp011F1I4y/UhX0l82e/ms3qoHoa9blnncdddOiWvEApr1EruRwR9o6/b2Y4acOIp77xW44vp6FY7S9eekOh9jOCPPD5E5CD7RXEVAMXPLjXuRG2oibgOuFbrQfE4w9WESvzxH0W9ozyqWTwQgsM09M2WmrUVtpinxsud3Pj1JkEdXsKmS4/qb/XtVbfNSJ4
+ +SYGK8uv
+ HmZQivf0HDg+iRhOnIr1HhIND1opRA24Cp8Uy+UZx5ShbOoZYCNVBkJECmSNJRSTJEA63
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,57 +93,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/19/25 5:34 AM, Alice Ryhl wrote:
-> Similar to and just below the existing MAPLE TREE entry.
-> 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-> Liam: I'm not sure what you prefer for the MAINTAINERS entry, so let me
-> know if you want anything changed. There are also a few other options,
-> for example, I could just add the files under the existing MAPLE TREE
-> entry? The get_maintainers script should still send any relevant patches
-> my way because they also match the RUST entry that has a wildcard on the
-> rust/ directory.
-> 
-> Which tree does maple tree patches usually land through?
-> 
-> Andrew Ballance: You mentioned being interested in being listed here as
-> well?
+On Tue, 19 Aug 2025 08:18:45 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
 
-Yes, please add me as a maintainer.
-
-In regards to the discussion about the maintainers entry,
-personally I would prefer that the entries for the rust and
-c were separate, just like the version in this patch.
-
-> ---
->   MAINTAINERS | 10 ++++++++++
->   1 file changed, 10 insertions(+)
+> > Pretty this isn't.
+> > 
+> > Sigh, we do so much stuff here and in __free_one_page().
+> > 
+> > What sort of guarantee do we have that the contending task will be able
+> > to get in and grab the spinlock in that tiny time window?
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 26053163fe5aed2fc4b4e39d47062c93b873ac13..4a52d884e36eafe1c819227207123c51caf02ee5 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -14674,6 +14674,16 @@ F:	lib/test_maple_tree.c
->   F:	tools/testing/radix-tree/maple.c
->   F:	tools/testing/shared/linux/maple_tree.h
->   
-> +MAPLE TREE [RUST]
-> +M:	Liam R. Howlett <Liam.Howlett@oracle.com>
-> +M:	Alice Ryhl <aliceryhl@google.com>
-> +L:	maple-tree@lists.infradead.org
-> +L:	linux-mm@kvack.org
-> +L:	rust-for-linux@vger.kernel.org
-> +S:	Supported
-> +F:	rust/helpers/maple_tree.c
-> +F:	rust/kernel/maple_tree.rs
-> +
->   MARDUK (CREATOR CI40) DEVICE TREE SUPPORT
->   M:	Rahul Bedarkar <rahulbedarkar89@gmail.com>
->   L:	linux-mips@vger.kernel.org
-> 
+> Thank you for pointing this out -- I don't think there is any guarantee.
+> Kiryl suggested that I put a cond_resched() here, in order to guarantee that
+> the contending tasks will be able to grab the spinlock. I think that's a great
+> idea -- I'll make this change in v2.
 
-Best Regards,
-Andrew Ballance
+cond_resched() might help because it takes more CPU cycles and expands
+the window. A udelay() would of course do this more nicely.
 
+But the contending task is already in state TASK_RUNNING so a
+cond_resched() won't have any effect on it?
+
+Also, callers hold pcp->lock, so cond_resched() cannot be called.
+
+Sigh, I dunno, it's all very nasty.  I have vague memories of there
+being a way of relinquishing a lock to some other task which is
+spinning on that lock.  Or at least, a proposal.  Or I dreamed it. 
+peterz would be a good person to ask.
 
