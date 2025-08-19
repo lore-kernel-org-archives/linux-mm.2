@@ -2,90 +2,206 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 15FBECA0EE6
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 20:06:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B82ECA0EEB
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 20:12:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9892A8E000D; Tue, 19 Aug 2025 16:06:33 -0400 (EDT)
+	id 10B778E0026; Tue, 19 Aug 2025 16:12:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 939EB8E000A; Tue, 19 Aug 2025 16:06:33 -0400 (EDT)
+	id 0E3A88E000A; Tue, 19 Aug 2025 16:12:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84F9E8E000D; Tue, 19 Aug 2025 16:06:33 -0400 (EDT)
+	id F14358E0026; Tue, 19 Aug 2025 16:12:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F1FA8E000A
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 16:06:33 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 099A2137A6E
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 20:06:33 +0000 (UTC)
-X-FDA: 83794589466.02.8F67FEF
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 397A2A000F
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 20:06:29 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=uNscfs2t;
-	spf=pass (imf25.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755633991;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DF0FA8E000A
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 16:12:29 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6A7401401FC
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 20:12:29 +0000 (UTC)
+X-FDA: 83794604418.28.1DBB0A8
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11021097.outbound.protection.outlook.com [52.101.62.97])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 7741120008
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 20:12:26 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b=BkhF0sjs;
+	spf=pass (imf13.hostedemail.com: domain of danielf@os.amperecomputing.com designates 52.101.62.97 as permitted sender) smtp.mailfrom=danielf@os.amperecomputing.com;
+	dmarc=pass (policy=quarantine) header.from=amperecomputing.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755634346;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UXfIhm/hFIhEPYTHFHNiLCBG8N/RRSHXsj3ucUlrP30=;
-	b=L4PFK9LAEzS+qSiDdpnZQqLyEUyjIyxaHC8ZQ/lBaQljbbgoayQjqbNaWR7g2d9hxDghKp
-	Iv5v3XMRMBXGLFPFHWBoHWBdNvvQYtf9B2BUfPEmYsdbVKyGyUiyWbGeGaTLsMs3496D4v
-	m2A4FpzZ6Rhz1tA9qKZ1T2K5cqdp4oY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755633991; a=rsa-sha256;
-	cv=none;
-	b=Y3ncYR4dDUF5WT6MptAcEfz8CeQh1S0yoQO+FeYSj/JZHOrt8chwylLKK2ZA8/kHQSEwZF
-	qX/GFBZgIB0hwE9DEG4c5B/Ep4XstkKdH+DDNSp1fTXWKye3UcGNZfuIHtCc8OhESlePC7
-	DLY3Ux4XDT7T3NbRMgIoI/ltmq3+p58=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=uNscfs2t;
-	spf=pass (imf25.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755633984;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UXfIhm/hFIhEPYTHFHNiLCBG8N/RRSHXsj3ucUlrP30=;
-	b=uNscfs2tWZgwPR5KJ9uACyOxYqyI8cYOMmrh33u61mgc5NcdRc3I6XMtikRHVeTicTXgsD
-	30tfDjZufvQ3Xk1VQn44lIJs9X0maP99QBY56ofonxLD2owBiLa9R4yk+Orn8AgqzwnVu5
-	B6jNS4DNc6Z7/7U6szfmYgngRRD4YwA=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: linux-mm@kvack.org,  bpf@vger.kernel.org,  Johannes Weiner
- <hannes@cmpxchg.org>,  Michal Hocko <mhocko@suse.com>,  David Rientjes
- <rientjes@google.com>,  Matt Bobrowski <mattbobrowski@google.com>,  Song
- Liu <song@kernel.org>,  Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-  Alexei Starovoitov <ast@kernel.org>,  Andrew Morton
- <akpm@linux-foundation.org>,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 01/14] mm: introduce bpf struct ops for OOM handling
-In-Reply-To: <CAJuCfpF2akVnbZgPoDAXea2joJ1DWvBTHC7wGzEJcYX9xF9dSA@mail.gmail.com>
-	(Suren Baghdasaryan's message of "Mon, 18 Aug 2025 21:09:12 -0700")
-References: <20250818170136.209169-1-roman.gushchin@linux.dev>
-	<20250818170136.209169-2-roman.gushchin@linux.dev>
-	<CAJuCfpF2akVnbZgPoDAXea2joJ1DWvBTHC7wGzEJcYX9xF9dSA@mail.gmail.com>
-Date: Tue, 19 Aug 2025 13:06:06 -0700
-Message-ID: <878qjf13gx.fsf@linux.dev>
+	bh=dMy9q8E0IfDEhqqoMEFRpjweTfHECoXnBUjxN2QYpN4=;
+	b=flJJqHoyVVV5deswtOHHJCrs8C8ZYiT7BKQoz1E1NMxx8VXpZhI75gRCkzfanKcfxs6qjO
+	wyeOZYxPsNAYWpze/2icY+7W94qpwzq5nhXYYK5rCHjwBZ5Nzba11TJlKK9JuPSpQdTRRS
+	/SGN29ijlftb5Us7dKDoQZWJi253POk=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b=BkhF0sjs;
+	spf=pass (imf13.hostedemail.com: domain of danielf@os.amperecomputing.com designates 52.101.62.97 as permitted sender) smtp.mailfrom=danielf@os.amperecomputing.com;
+	dmarc=pass (policy=quarantine) header.from=amperecomputing.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755634346; a=rsa-sha256;
+	cv=pass;
+	b=AB44yqw2tAzjNqgIQ0fRxKUdzORTqAdrUdpJQTWdJV8/Ds4TBN8YDF++qShOANG6eUW1Tn
+	guDBeoNlLTGSPd/8WuMKTJoU2T/BdPJb/9s9tFdPPEtc5Yd+f2f2XJSz8jPYWNJwZqMDOE
+	pKlASNXhMFIWDwcoyoSkJHd8+ToQAzM=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cQ2GA1yoSAffzZLnMV+IfYJd7mvmDmKa1ptZR5AzdDbAcQu53iQ/IenBADLEVtHH4fdEHKikXACLn61hLFhimNbdF4huhu6SdQZ0dzLPOfUiFVqDiTcH2KWMJ0hMk/AVVey1korf8oZ3H+pzHc0S2OTPRsVZPkHueehaVXZrsK2TL/YI+aoKAyduPyNcheQgTbE/WDzOqiAO2qvwRU2TMzvnbg85dxhmSv2c9adnYNtvHdACwJzRwdT21T/T8khuLmFv6xLok/TRuZ/1Vy2OCB981t595DaAE54yQy2CU/vvxY3UBs6qm2+FLvhC/qsDEhbmEBZ+BUEUthpbVH8CHQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dMy9q8E0IfDEhqqoMEFRpjweTfHECoXnBUjxN2QYpN4=;
+ b=AEpRxNjOfdfyBMWvB1fT6bZfPgKEdhXcvu33SMPN4TcpNy0kVbIszazJu0Z7wVTDtGynuId8P8VhLNoqnwbag9PBhFcf4NAlPo1xY45DqIs1qkBUqhhcyB8mghaBVqic8sPpM56fMRCUaKrLUR3sbyOnYE/+raM3Z/uVhwUNsV07zmxmbgexUbYkveBRxkfhv6YQ3hrl4nHb1aaDLpU57UeE7AQlu3CwxTeQ7fs1eIRGGIUFcE3Dakit6mGQ3q3kAohwL76Ksvd5pIsMY9EpiHELLJD4HStA5PBFZ/MViwzGNY+mCwiC7j7XyXL3qmDwp7XFMDIS/k9Uqbn4cYqDRg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=os.amperecomputing.com; dkim=pass
+ header.d=os.amperecomputing.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=os.amperecomputing.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dMy9q8E0IfDEhqqoMEFRpjweTfHECoXnBUjxN2QYpN4=;
+ b=BkhF0sjs5oVa0G7He+jBnsi2yscL0mIxFvZDdp/uj/6paGvuhmUJy5JNzphmtyeI+P9cAWNcO0kCkJ9+hYIYtQ2xHy2fK83Yvx29nkyQh2VWHP+YKQvD5BH9ZHt/5UfE4UDfPbJ2PAnMueqDoUffc09t/2DxxUUS7zDCGS6bAxo=
+Received: from SA3PR01MB8473.prod.exchangelabs.com (2603:10b6:806:397::12) by
+ CH1PR01MB9358.prod.exchangelabs.com (2603:10b6:610:2b2::20) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9031.25; Tue, 19 Aug 2025 20:12:23 +0000
+Received: from SA3PR01MB8473.prod.exchangelabs.com
+ ([fe80::46d7:1d3a:dc9c:69c3]) by SA3PR01MB8473.prod.exchangelabs.com
+ ([fe80::46d7:1d3a:dc9c:69c3%6]) with mapi id 15.20.9031.023; Tue, 19 Aug 2025
+ 20:12:22 +0000
+Message-ID: <7dcff61b-55c1-4242-9ae5-ca965fd4c8c1@os.amperecomputing.com>
+Date: Tue, 19 Aug 2025 13:12:17 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 0/3] ACPI: Add support for ACPI RAS2 feature table
+To: shiju.jose@huawei.com, rafael@kernel.org, bp@alien8.de,
+ akpm@linux-foundation.org, rppt@kernel.org, dferguson@amperecomputing.com,
+ linux-edac@vger.kernel.org, linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, tony.luck@intel.com, lenb@kernel.org,
+ leo.duran@amd.com, Yazen.Ghannam@amd.com, mchehab@kernel.org
+Cc: jonathan.cameron@huawei.com, linuxarm@huawei.com, rientjes@google.com,
+ jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
+ naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
+ somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
+ duenwen@google.com, gthelen@google.com, wschwartz@amperecomputing.com,
+ wbs@os.amperecomputing.com, nifan.cxl@gmail.com, tanxiaofei@huawei.com,
+ prime.zeng@hisilicon.com, roberto.sassu@huawei.com,
+ kangkang.shen@futurewei.com, wanghuiqiang@huawei.com
+References: <20250812142616.2330-1-shiju.jose@huawei.com>
+Content-Language: en-US
+From: Daniel Ferguson <danielf@os.amperecomputing.com>
+In-Reply-To: <20250812142616.2330-1-shiju.jose@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR04CA0167.namprd04.prod.outlook.com
+ (2603:10b6:303:85::22) To SA3PR01MB8473.prod.exchangelabs.com
+ (2603:10b6:806:397::12)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 397A2A000F
-X-Stat-Signature: 6ypzfz1o4j3y54fa4nim5fhsjbkny6r8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR01MB8473:EE_|CH1PR01MB9358:EE_
+X-MS-Office365-Filtering-Correlation-Id: d789ecaf-3786-43ad-4b75-08dddf5cb4ff
+X-MS-Exchange-AtpMessageProperties: SA
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|52116014|7416014|1800799024|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?dFZ2SHRIeHcyY0xKRW0xS3N3M0dkeUNHbGlRL3dIQUwyUWo5bTVlVU9TUkpp?=
+ =?utf-8?B?eEsweFR2Mm16SlpoeTZCRThFR0thYVB3TDVCeXZLQzhpcENvN3hxOUxuMzdq?=
+ =?utf-8?B?anRKR01mMWV5L0F3MDNVdHFEdkVTTHh0UGlLL2tzK1k1VXVLVGx3RkhoNU56?=
+ =?utf-8?B?dnVKdXhJb0hhVVcyRUEvNG5pZTk5bE9YT3c5LzNZam1XZktmK3hFbHZHUjFH?=
+ =?utf-8?B?ZDBwbmRmQ3puRFZjdWY5VFJHcXdER0FjTVhMcHFHekxGOTlwWFFQa3hDR2VC?=
+ =?utf-8?B?YjVteFdod1k4Z2pwKzIzSEVkbStSY0VhalNkdEdjUW9oSFVvWWUrZTBBRDZS?=
+ =?utf-8?B?V3pwaGlDY0ZHcXJySEVsNk1QcE8rZGdRS05KSndVNEFYc1d2RUNFTkFWd2hi?=
+ =?utf-8?B?N3dUOGZTejJRKzlBVUxYTnhTMFNxdjduWXI3ckx6aE9IcGdwQjcwSmN5RGpi?=
+ =?utf-8?B?QnEyY3NnRmh3dVloRXIybUM4aXNKT0IvRVBLemJ6cnV6NG1aMEpLSk54ejZG?=
+ =?utf-8?B?K2t2ajVZM0E3dyt0YjNpWU9iaGxTaHY2aG5NdndJRGVablJ6T3BmQVFydWlj?=
+ =?utf-8?B?N3JyYXR3ZHRMNHBWbzEyLzZSVC8vVlI0U2N5MEVMaHA5V3lOUDJjaXlCM05I?=
+ =?utf-8?B?OFlWczNxOHFoL3NCNWV1SlhXcUZlYnFudGFZcHVySTk0ZnliVDR2RmtBUUs0?=
+ =?utf-8?B?bFovNFQ0Q21GTkRWekRHK3d4SXozWnZMMlI3Q0htOFZPbndmM1pvbS84T1lJ?=
+ =?utf-8?B?VnF4NGFRc1prSS9vaUdlSVhaejE0SGhJZjhmcFpCUVFsQjh0c2NiMmF0NHBq?=
+ =?utf-8?B?Sk5EVlFkRTNmRG9UcHVGSDZFaFA0cHNSYjN2S0dZU05OZmN1cGI4S0Ixdmww?=
+ =?utf-8?B?dlQxN0FjRDU4YUNicnEwWUtvVWF6ZXFkT1c3emtIRmlRa1F2UllDQXppcHFT?=
+ =?utf-8?B?WEJabXg4T1NOUTZ2QWdCdnorNEo4K3pKcHo1VlR1L2UrOThRMkJzSkRCbjAz?=
+ =?utf-8?B?NFplM3V0NHZmZ0JXVWtYd05yRmVRUHZWcEUzd2xDaS84b3lZQkw5V0kreUZO?=
+ =?utf-8?B?bFhsbllWMXJaLzBnaWNHUDR1RGtJQkhrUVQrQktvVGFiOHE2REFzWXRIMzFL?=
+ =?utf-8?B?ZkpBQjhKdWZ2REFFUUNVdjBycVpLNmtzRE9IbVlhWlJjM3hBR2toYnBMQ0dr?=
+ =?utf-8?B?WnZjeEpxZ3BYU2V6MnFZV1J0dGFJemJYM2VON2FTZU05TkN2Y2g4ZGh4QTBZ?=
+ =?utf-8?B?NDZSOFpxWUNrcXVvci9tS2pHZVdnc2lxbzNQZkhFWTFDTWgwOGQ4QXZ5ajBv?=
+ =?utf-8?B?c1I5Z2ZVNGlzenZ3eWhHVFJaN2k5TVZvcHJabHJubXNiVng2MEN3TW56TFFq?=
+ =?utf-8?B?d3pHdm1qblc5eHpIbEdZai9oMW1meUxFQmg5WHF1Z3BmbVFoK1RaOGxDNEhX?=
+ =?utf-8?B?UzFpbXAraHpJT200NGdxVDlmSEJKaE51TTRSbXU4a0Z4M1VPRlUvQ0lTK0Nn?=
+ =?utf-8?B?NXdxVFN4dTNGT3Z2Mk1FcW5mNzRCYVpjU3FhTmF4OUF0NmNMdDh4dDhpVkxr?=
+ =?utf-8?B?VkEyWitpZzd2MVNDWmMrRHdLMC9ibHhlcUtNcUUxZWk4eWJCVGxiVks1cHhn?=
+ =?utf-8?B?dEJZYVJMLy9JRVFwaFRiOGJ1cHVEa1FhZHZ4M0tGZUpKNXVpaG1IZ0ZVRyto?=
+ =?utf-8?B?VmlhMSs5azRtRGY4dTRsdDlHOWh4TSt4SWdKa0Z0OW5lcm5XR3BuTWRqN3F4?=
+ =?utf-8?B?emRueHpaR0tQd2t0dWFOa3NscEt5MmlYWXVBSjNmZ1pGekFJMklzN2M3ZlYy?=
+ =?utf-8?B?b3lVTDBBcjBBcmFaYVJXMjE2Slh4Sjd4M2l4c1grTDk3Nkh5UXM4YUhRMkEw?=
+ =?utf-8?B?S3p2S3Rtck1tZGNGcndOejhUOW9TTXNKNVdyRFhJUXJKS2x6ZU9OTkZrV1Fz?=
+ =?utf-8?Q?QLWnn5KZvFd4DF6KRVrvCCyLj0uAKbQR?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR01MB8473.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(52116014)(7416014)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UklrWklrenhxSGxGUTJMRnFRZlJydVg1YnNXOEt2M3hJWVZjRWE1cURQcE5Z?=
+ =?utf-8?B?TjZ0NCtCbjBNOFgxQVdIZFJ2ZUtWZE5OTXo5SlFEUHF5eW94anJsVE1HSUc1?=
+ =?utf-8?B?WS9RKzhkUmtQYXY3eVdyQW9ldkhMV0ZTTnd2bmx5d24rTUxHMFR2UUI3clRM?=
+ =?utf-8?B?OUNmZHBLVVVlYk52N1Q1b2lDVUtRd0pSTGd0T0JvcDlYOVYxdk9EK1VlRmRu?=
+ =?utf-8?B?ZXR0RXdjaklFM3hmRVB2K3Q0RWZjUThNTGIwbmFMa2ZmRzdLTWJOeDZHUEFF?=
+ =?utf-8?B?MlM2YmhFcjNLVnE0WVlTM1ZxMDdVTFhsWWJER1ArWGVXL2RGbzRhaE5lUysz?=
+ =?utf-8?B?RnJReVIzR3YwRyszVXJHR2RPMWI3Sm9KQXZjMGpnOGhia29ZcUE3ZlpXSkg3?=
+ =?utf-8?B?K0w4cXRZNVhuSWhMKzFSa1NnQUd4WisyRG52MGNTTzFJK3E0V0NxZ0dRU1d4?=
+ =?utf-8?B?TzgydmZBQnk0SnJITWVCT1VqaEJOYlJrRWdMU0dSa1lSa2tJWUQ5NEtKTnZJ?=
+ =?utf-8?B?b01vMURScnkxcVMwZDlkTWx3SU4ySTAvYVFZV0xIWXpHVU9mV3VJTTV6MUhG?=
+ =?utf-8?B?VjQyZWNWNnFpMzlzOE5CY2lSZXVwN3N4d2hiWGFyUEhJL2pSYkhCVXhiSy9R?=
+ =?utf-8?B?bVh4M3BVOWZoemcvTTZUdFJOUzB1LzloelhDajdtamJ2ZHB2cWtSR1MzeGJK?=
+ =?utf-8?B?TGFHQVRsajl4cW9IbC9yd0wrRFYza3ZoUGZQRkN4TXB4NHVFR3VZNU5tVG0y?=
+ =?utf-8?B?OCtUTXQ0T2VwU2dJSFppSXViNEVBMlhvRDc1b21lWC9FcVh5MVk3Uys4V1JC?=
+ =?utf-8?B?ME1rYTBkZ2RCKytVbHFKTFVkY0U0ejZpSkRXeGVVSzhKUk93cHZuYnFRNXZ0?=
+ =?utf-8?B?T0puQTdSbEFGVS8vQzlRRU01WVJUQU92N3JOaFBNUVNRa3NhaXhNdWdhSTJa?=
+ =?utf-8?B?akkzTXBsNlgrVW0vaFRCSmRrME5wVzI5R1R6R0ZNeUxDaC9OMXhwNnJ3NVZo?=
+ =?utf-8?B?NFAvNEZxZVJVbk11Yi9RVG4vTjF5U3J1SVNUczUvVTVtSEF0Z2V6VVh1cHIv?=
+ =?utf-8?B?bzFtcENwRnZXV0lzbExqeUs5elczRk1JRmtQQ0dXOTdUV2xYY1BtbjBYOE1O?=
+ =?utf-8?B?MFVmNW1sb2xnbDdLSEZMWGlRZDNDNWN6RGl5QkJ3Ym5xdVJKTGx2Mjd2NElX?=
+ =?utf-8?B?RjJ2Uk9uTXVreWp4VGp5VUpJaWVlSkltSUhvRUZEN0FiZ3UwdThHSnlqaDNs?=
+ =?utf-8?B?d3JiblY3TG8yNkFsV0h4ZExhV0FYVmhwOXFiaGU3YUN1MHM2Z3NaYmJkbUhr?=
+ =?utf-8?B?dzcvWE93blpOTG1BamFyMGRBcmhrczNyQkw0NFJUeGhDL29sZERZRzcrWVRj?=
+ =?utf-8?B?dWFOMUZ5QXlSaHNUckdDMitWMHZaUGdXN2xMWEF5T3ErZHkydlRCNnRqSnBI?=
+ =?utf-8?B?bk1MUU9yeWkzSi90b09pYXFXMlBlTVVVNVVTTldUSDBpVFVzaVdFWVhVUUJU?=
+ =?utf-8?B?MGhLR29LOEtWajlFVUhpZE00N1lrY3JiaGRkcUtid293WnVyaVE4ekppYlMx?=
+ =?utf-8?B?cVpLVTRoYUc2eVduclhIa016NENqN2lPV3NQMjBXVzJEaVhvTnpBaElKemJY?=
+ =?utf-8?B?TUxycXBuMysxTlN0YUtzbTRyZjVFK0NuTElJblhMQWIyV2JzMTNhVW02TTJr?=
+ =?utf-8?B?Q01NVXBuSlhvTmEzR0E3cExwWStxTkNXZWtlY0U1L1ZkUGd5UEVnTHQrYWYr?=
+ =?utf-8?B?T0lqZDBiTXB5Nkg5Y2tpTnJuVTBIVUxuMTFZNVAzTmRGMi9Za0RLOFM2L3J1?=
+ =?utf-8?B?aG5MUmtERzRFMnM4ZnlDaTd0WXRFaGNnWTZzQTNLd0ErLzJvRWQvUHRjMEhq?=
+ =?utf-8?B?cThabDFIVU5SMjhVVENxVTkwK0U2QUVWc21NMmVJcmdvZit5Q0xRUkM0ZXp2?=
+ =?utf-8?B?Z3Q1NFIwRTJHazkxdXdTUHR6YS9LZTVZbGpMbThxeGJlWW1EOE5XS0xMRXpP?=
+ =?utf-8?B?bjYwM1JxSkpMRkxINlYrY0FKRFhlUkYwa1BHT1hJZ1dCSUk3R2pGeENKYmxi?=
+ =?utf-8?B?OVVaQ2syWlhUcEtrVnh2dFoxSllidEJmOE53cGNkK1Q2TWJPOWJMUHVBcFRZ?=
+ =?utf-8?B?bUxMbGdDcDBPb1ozWFVIYVN6bm5BWXRLSkJ6N1kvSjRnTTk3YjAzNHVKL0dz?=
+ =?utf-8?Q?uu2pYDzPikM38GqC+a15LAI=3D?=
+X-OriginatorOrg: os.amperecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d789ecaf-3786-43ad-4b75-08dddf5cb4ff
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR01MB8473.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2025 20:12:22.7276
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: t0VzpG/6nxSdboEvn7SRD8TTZ7cYFoH/stBv2hUWz0yPbBZo0A/Gmd7Wo/NUJfaWzE3j0syRfhAfwxYjyyA9OILo1brP+CgIZN+OmVYeSDx7y+qUOIRn+63/I/+Paxp1
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PR01MB9358
+X-Rspamd-Queue-Id: 7741120008
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1755633989-433767
-X-HE-Meta: U2FsdGVkX19km/lqLtcCF7JWby1Z7wA9xViweImapSGDtYp7WxgyxBjqA8qhyFQvkN+EjvXdOmL7j/G5YSo+rCDJgvdHweroxnnNhSou++srFB5NQVuxVSalB8Rs6aljL3jSzyPB3z/Nq24svSw8difWsUMvoj8N1xmU6ZQ7JSKhYWFQIwoKONG41/IdzVX8wLrV9+cnaJ8B8cqQ6Zmqka/HqIKoV1fg0T287CCyXKRuqRO2XQyv/LQ4da3WlcZe64SkxelyimmmjbAjZYMd33kLlZBfLvtsrVDLVa/kBc3ZZPEvwYeiyA4EI/qnHOoc7Cg4wrOqHNmC8+kjZagfCHgHTyyT2OEj821lS06dDmlmTHcqhoHMTQZE4/eoHxPTm8FfreotHTV4P79UcHbeSLOEi6guotP2nGYGpLOcxwlCNJaPOhnf/+zjWeSQI6MuKgblzAXU6k0AuSBZ9XYxSmudp8/QQv/Yurp8p/Sdfgzc9JHlKOX2yQmFAmIFr2q2Ua2sUFAEKu62UGVSK9Z0/BqJLLtYfRpQ+2/oC0TcBv5AbcHet1b7rjUb+My5XVQ4op8YcALvIAWgZlJQqA7TYoEv0LoALYkes1QUmu8i1T3O3UQCzvEhmuGY+GN2MM9/VJ495F8F0oUAp/uBkdAWGv6LIV4aPVJ+wOd4UiWqmXJBC7ynXmF8xY6BYV4T4TI4HDX2gvRztfZoO6KR6rRJxpkdPRD2Fzh2YStb71gRZad4Rpp5Oc2AWyjP1EY8XIH0L+aGkzBFNL8U2hSsWHi5u4JmpJGvnaNU9UldudYsjShxQPtqU3/QdiDspq9xeKo+B4GJDHNZshVKoVNaBJeAnIZbUXRKBucUwq8iCCR5uMgURWV7iBaFPcASxq+j0lDjuSa/UYh8CaiguXYRpXN29qKCWg9HTSwq7bPSizQJvm2X6cQKOODGa2DpIaDb6d3Js9slaiyj/SQhpD8jRff
- JhEN7NIU
- OBhQfgtu3k8EY6AwlrFo0VAxn0tHQwmE509bh4sbRh3oooNuJPwLEs0r44yEnGVhCn3OhWaItO1TKNfikgZPCma7I8QK6+0aJec1s/vNnhGc0MVXOctner4fGTHrzwKW1EtWhLrGzhuHRA0iM9Ac3NulTQVS3P15lPu1YdiWlabUtGtrWnuhG7/t+UILsBbWdAaCcoXZ6HxRKDrw7q/5bxOYrmCezKv3Q9GU5Ei29jFBffiA=
+X-Stat-Signature: jm1jcq3mj8wpruehncw88y3eizo8414q
+X-HE-Tag: 1755634346-226996
+X-HE-Meta: U2FsdGVkX1/hPMw4EKPTlMNLQOjYPuTaJJEhHRXL0IMSh0GXmiMWoP3mLjjxw5PHAP723iBwUojApM7mQKulPoU+lADGDX2KLP9UZVISxJji0eCteq9kJJLrPAHgyWv1crr667zXJBCq7wBbhqjw2nSpkSsqET+nutGzkCYthUNcoPq50hz36xMAf1SY3lgganFVIL55eg3VDRU78w3hncZ0A5tIJ66P6qgJ9oroFWBRSRxBAF1wrY7HrrAcJF1bxirHpASFQXLCOFiWyUiYJw9dP0MUBrzO1Tc1So/HUq0UYUEiecFJM0YOaA/ORIdi9ulfNh8EBsIkjupCyedxigmnDklqxApik4DieYmd67LNqAB/VABKHzVJDXjB8wYoIQgJmjsXyihO6Zzp8kRDWglq+b1Lt+FXW9LCOARNiU5n82h/YwIwVOk+TvzLjzVSDvbMXabWwP57BY5Afcpjz1y74Wkx6jqDhv7Dgm+imoSaNcpdipTnt5tjJPgnDes+j2TlJCBrVArVmqVm0vyUP4NpNPmXM0XATvZXEjaXeradJW2ES8HOYtZr1AhjOw87YD5ctpW4+TFOjFc7mHeB9YZFJ/Pyb3V2FY/GNyEGF5srECjNM3gChURLO9b2nYDa+wALwQoqRUch2k9YKM2C21L385TiNZr3h4Bub2paGlOCVtxKzDX5PCToXa7b7rSTtsHXqOn7v/wxgYomzP+WnAdkUU5FKvzt4UjvDNaWAQBWOzlULdi2HSHcdJRBkh+ndTUszmuvivb6fkZdGlUCQKM98JQVupAtpe4HQChOp6Kv1T6xzlouSNtjVhk1FTIUuLSiEAMDVfBlPPn9XSLuEhWsnq8nIYZMteg+O5UgSrAndEdASKcaAk+je4ZaPaeCjwJ5AcTjRokOpsGxSvAnoVpsqo68JjeSeIu3oYjZ8qkRrDJ+bmv9ZfA2qy6Gnejnm7rI0Zg6JoQaqEQFPu1
+ mQREL3Gl
+ bAqkud19ZcMsz8j0wV85KLirBSmsVVdVbh24iuT0vfRNGGBnzKQ5/ew8ioPT/CBLiCdikW1ZgmmhcbpQDVyDi/ATQvCWIoGKx/lG90cpgNmTRXuOkCjDSy7ZNUjMFTFGgJL3DEPIBgTEBkFTJV4DXdRP5DUcJlMrwjDd0QIy7b6jkQ6W/wR04AxKwagQVvtdpyz8sJ+f4fvRPvhqte1aeQus1f1CrFDdBu+E6wi+Qlx7cJ57o2L7xFa988gGDotnBcH4Q9KETAZXbZxuN8u5teMs4UvuvnT9mim/z4Q5aaKNgXf8Z5J0iEIVSvY/2VHTc+lwEMBKNtZfbTUGDCgloKsHRRTS3ZXOitiKcbbtKZKaOU9mT7g+iA8Kc8969AMRa8OyVicVT7W9BGGLm8lEZVCCnrAdaYlcgo9dmUTDr4ZnO5qU0s7ntFIET2vV31PFnvSYwmiq+p9/5gB8C/fTx7I7JkLrXdoX47HXXThCYhlSG/qFhxxu2Hazmg0Ih4mXcSsOKy7mQJVNaky3cvEMZs1+qmBG3Vuts+eA1wCvZOsxxbB3JTC3ygRXvPqE9k3qgzJXlJKIJfpy6+MmmOU8nW3vn9hSGCwH25cfV02rmfiaNVF7UbYXzuZdiR/hdwfFHGjYIUxTGo+RqAuwnRRSts/Y0SiCflfvKYHejdHBrV0mw7WoXG39nd5+ysvhqsS52i1pGhXkF2JOBFvcx1vdOlI3DJ662qxVmRVIv7gVSkZ9HfqTvW7EhY82tlw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,278 +210,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Suren Baghdasaryan <surenb@google.com> writes:
+> Changes
+> =======
+> v10 -> v11:
+> 1. Simplified code by removing workarounds previously added to support
+>    non-compliant case of single PCC channel shared across all proximity
+>    domains (which is no longer required). 
+>    https://lore.kernel.org/all/f5b28977-0b80-4c39-929b-cf02ab1efb97@os.amperecomputing.com/
 
-> On Mon, Aug 18, 2025 at 10:01=E2=80=AFAM Roman Gushchin
-> <roman.gushchin@linux.dev> wrote:
->>
->> Introduce a bpf struct ops for implementing custom OOM handling policies.
->>
->> The struct ops provides the bpf_handle_out_of_memory() callback,
->> which expected to return 1 if it was able to free some memory and 0
->> otherwise.
->>
->> In the latter case it's guaranteed that the in-kernel OOM killer will
->> be invoked. Otherwise the kernel also checks the bpf_memory_freed
->> field of the oom_control structure, which is expected to be set by
->> kfuncs suitable for releasing memory. It's a safety mechanism which
->> prevents a bpf program to claim forward progress without actually
->> releasing memory. The callback program is sleepable to enable using
->> iterators, e.g. cgroup iterators.
->>
->> The callback receives struct oom_control as an argument, so it can
->> easily filter out OOM's it doesn't want to handle, e.g. global vs
->> memcg OOM's.
->>
->> The callback is executed just before the kernel victim task selection
->> algorithm, so all heuristics and sysctls like panic on oom,
->> sysctl_oom_kill_allocating_task and sysctl_oom_kill_allocating_task
->> are respected.
->>
->> The struct ops also has the name field, which allows to define a
->> custom name for the implemented policy. It's printed in the OOM report
->> in the oom_policy=3D<policy> format. "default" is printed if bpf is not
->> used or policy name is not specified.
->>
->> [  112.696676] test_progs invoked oom-killer: gfp_mask=3D0xcc0(GFP_KERNE=
-L), order=3D0, oom_score_adj=3D0
->>                oom_policy=3Dbpf_test_policy
->> [  112.698160] CPU: 1 UID: 0 PID: 660 Comm: test_progs Not tainted 6.16.=
-0-00015-gf09eb0d6badc #102 PREEMPT(full)
->> [  112.698165] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BI=
-OS 1.17.0-5.fc42 04/01/2014
->> [  112.698167] Call Trace:
->> [  112.698177]  <TASK>
->> [  112.698182]  dump_stack_lvl+0x4d/0x70
->> [  112.698192]  dump_header+0x59/0x1c6
->> [  112.698199]  oom_kill_process.cold+0x8/0xef
->> [  112.698206]  bpf_oom_kill_process+0x59/0xb0
->> [  112.698216]  bpf_prog_7ecad0f36a167fd7_test_out_of_memory+0x2be/0x313
->> [  112.698229]  bpf__bpf_oom_ops_handle_out_of_memory+0x47/0xaf
->> [  112.698236]  ? srso_alias_return_thunk+0x5/0xfbef5
->> [  112.698240]  bpf_handle_oom+0x11a/0x1e0
->> [  112.698250]  out_of_memory+0xab/0x5c0
->> [  112.698258]  mem_cgroup_out_of_memory+0xbc/0x110
->> [  112.698274]  try_charge_memcg+0x4b5/0x7e0
->> [  112.698288]  charge_memcg+0x2f/0xc0
->> [  112.698293]  __mem_cgroup_charge+0x30/0xc0
->> [  112.698299]  do_anonymous_page+0x40f/0xa50
->> [  112.698311]  __handle_mm_fault+0xbba/0x1140
->> [  112.698317]  ? srso_alias_return_thunk+0x5/0xfbef5
->> [  112.698335]  handle_mm_fault+0xe6/0x370
->> [  112.698343]  do_user_addr_fault+0x211/0x6a0
->> [  112.698354]  exc_page_fault+0x75/0x1d0
->> [  112.698363]  asm_exc_page_fault+0x26/0x30
->> [  112.698366] RIP: 0033:0x7fa97236db00
->>
->> It's possible to load multiple bpf struct programs. In the case of
->> oom, they will be executed one by one in the same order they been
->> loaded until one of them returns 1 and bpf_memory_freed is set to 1
->> - an indication that the memory was freed. This allows to have
->> multiple bpf programs to focus on different types of OOM's - e.g.
->> one program can only handle memcg OOM's in one memory cgroup.
->> But the filtering is done in bpf - so it's fully flexible.
->>
->> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
->> ---
->>  include/linux/bpf_oom.h |  49 +++++++++++++
->>  include/linux/oom.h     |   8 ++
->>  mm/Makefile             |   3 +
->>  mm/bpf_oom.c            | 157 ++++++++++++++++++++++++++++++++++++++++
->>  mm/oom_kill.c           |  22 +++++-
->>  5 files changed, 237 insertions(+), 2 deletions(-)
->>  create mode 100644 include/linux/bpf_oom.h
->>  create mode 100644 mm/bpf_oom.c
->>
->> diff --git a/include/linux/bpf_oom.h b/include/linux/bpf_oom.h
->> new file mode 100644
->> index 000000000000..29cb5ea41d97
->> --- /dev/null
->> +++ b/include/linux/bpf_oom.h
->> @@ -0,0 +1,49 @@
->> +/* SPDX-License-Identifier: GPL-2.0+ */
->> +
->> +#ifndef __BPF_OOM_H
->> +#define __BPF_OOM_H
->> +
->> +struct bpf_oom;
->> +struct oom_control;
->> +
->> +#define BPF_OOM_NAME_MAX_LEN 64
->> +
->> +struct bpf_oom_ops {
->> +       /**
->> +        * @handle_out_of_memory: Out of memory bpf handler, called befo=
-re
->> +        * the in-kernel OOM killer.
->> +        * @oc: OOM control structure
->> +        *
->> +        * Should return 1 if some memory was freed up, otherwise
->> +        * the in-kernel OOM killer is invoked.
->> +        */
->> +       int (*handle_out_of_memory)(struct oom_control *oc);
->> +
->> +       /**
->> +        * @name: BPF OOM policy name
->> +        */
->> +       char name[BPF_OOM_NAME_MAX_LEN];
->
-> Why should the name be a part of ops structure? IMO it's not an
-> attribute of the operations but rather of the oom handler which is
-> represented by bpf_oom here.
+I've tested everything again, and it works.
 
-The ops structure describes a user-defined oom policy. Currently
-it's just one handler and the policy name. Later additional handlers
-can be added, e.g. a handler to control the dmesg output.
-
-bpf_oom is an implementation detail: it's basically an extension
-to struct bpf_oom_ops which contains "private" fields required
-for the internal machinery.
-
->
->> +
->> +       /* Private */
->> +       struct bpf_oom *bpf_oom;
->> +};
->> +
->> +#ifdef CONFIG_BPF_SYSCALL
->> +/**
->> + * @bpf_handle_oom: handle out of memory using bpf programs
->> + * @oc: OOM control structure
->> + *
->> + * Returns true if a bpf oom program was executed, returned 1
->> + * and some memory was actually freed.
->
-> The above comment is unclear, please clarify.
-
-Fixed, thanks.
-
-/**
- * @bpf_handle_oom: handle out of memory condition using bpf
- * @oc: OOM control structure
- *
- * Returns true if some memory was freed.
- */
-bool bpf_handle_oom(struct oom_control *oc);
-
-
->
->> + */
->> +bool bpf_handle_oom(struct oom_control *oc);
->> +
->> +#else /* CONFIG_BPF_SYSCALL */
->> +static inline bool bpf_handle_oom(struct oom_control *oc)
->> +{
->> +       return false;
->> +}
->> +
->> +#endif /* CONFIG_BPF_SYSCALL */
->> +
->> +#endif /* __BPF_OOM_H */
->> diff --git a/include/linux/oom.h b/include/linux/oom.h
->> index 1e0fc6931ce9..ef453309b7ea 100644
->> --- a/include/linux/oom.h
->> +++ b/include/linux/oom.h
->> @@ -51,6 +51,14 @@ struct oom_control {
->>
->>         /* Used to print the constraint info. */
->>         enum oom_constraint constraint;
->> +
->> +#ifdef CONFIG_BPF_SYSCALL
->> +       /* Used by the bpf oom implementation to mark the forward progre=
-ss */
->> +       bool bpf_memory_freed;
->> +
->> +       /* Policy name */
->> +       const char *bpf_policy_name;
->> +#endif
->>  };
->>
->>  extern struct mutex oom_lock;
->> diff --git a/mm/Makefile b/mm/Makefile
->> index 1a7a11d4933d..a714aba03759 100644
->> --- a/mm/Makefile
->> +++ b/mm/Makefile
->> @@ -105,6 +105,9 @@ obj-$(CONFIG_MEMCG) +=3D memcontrol.o vmpressure.o
->>  ifdef CONFIG_SWAP
->>  obj-$(CONFIG_MEMCG) +=3D swap_cgroup.o
->>  endif
->> +ifdef CONFIG_BPF_SYSCALL
->> +obj-y +=3D bpf_oom.o
->> +endif
->>  obj-$(CONFIG_CGROUP_HUGETLB) +=3D hugetlb_cgroup.o
->>  obj-$(CONFIG_GUP_TEST) +=3D gup_test.o
->>  obj-$(CONFIG_DMAPOOL_TEST) +=3D dmapool_test.o
->> diff --git a/mm/bpf_oom.c b/mm/bpf_oom.c
->> new file mode 100644
->> index 000000000000..47633046819c
->> --- /dev/null
->> +++ b/mm/bpf_oom.c
->> @@ -0,0 +1,157 @@
->> +// SPDX-License-Identifier: GPL-2.0-or-later
->> +/*
->> + * BPF-driven OOM killer customization
->> + *
->> + * Author: Roman Gushchin <roman.gushchin@linux.dev>
->> + */
->> +
->> +#include <linux/bpf.h>
->> +#include <linux/oom.h>
->> +#include <linux/bpf_oom.h>
->> +#include <linux/srcu.h>
->> +
->> +DEFINE_STATIC_SRCU(bpf_oom_srcu);
->> +static DEFINE_SPINLOCK(bpf_oom_lock);
->> +static LIST_HEAD(bpf_oom_handlers);
->> +
->> +struct bpf_oom {
->
-> Perhaps bpf_oom_handler ? Then bpf_oom_ops->bpf_oom could be called
-> bpf_oom_ops->handler.
-
-I don't think it's a handler, it's more like a private part
-of bpf_oom_ops. Maybe bpf_oom_impl? Idk
-
->
->
->> +       struct bpf_oom_ops *ops;
->> +       struct list_head node;
->> +       struct srcu_struct srcu;
->> +};
->> +
->> +bool bpf_handle_oom(struct oom_control *oc)
->> +{
->> +       struct bpf_oom_ops *ops;
->> +       struct bpf_oom *bpf_oom;
->> +       int list_idx, idx, ret =3D 0;
->> +
->> +       oc->bpf_memory_freed =3D false;
->> +
->> +       list_idx =3D srcu_read_lock(&bpf_oom_srcu);
->> +       list_for_each_entry_srcu(bpf_oom, &bpf_oom_handlers, node, false=
-) {
->> +               ops =3D READ_ONCE(bpf_oom->ops);
->> +               if (!ops || !ops->handle_out_of_memory)
->> +                       continue;
->> +               idx =3D srcu_read_lock(&bpf_oom->srcu);
->> +               oc->bpf_policy_name =3D ops->name[0] ? &ops->name[0] :
->> +                       "bpf_defined_policy";
->> +               ret =3D ops->handle_out_of_memory(oc);
->> +               oc->bpf_policy_name =3D NULL;
->> +               srcu_read_unlock(&bpf_oom->srcu, idx);
->> +
->> +               if (ret && oc->bpf_memory_freed)
->
-> IIUC ret and oc->bpf_memory_freed seem to reflect the same state:
-> handler successfully freed some memory. Could you please clarify when
-> they differ?
-
-The idea here is to provide an additional safety measure:
-if the bpf program simple returns 1 without doing anything,
-the system won't deadlock.
-
-oc->bpf_memory_freed is set by the bpf_oom_kill_process() helper
-(and potentially some other helpers in the future, e.g.
-bpf_oom_rm_tmpfs_file()) and can't be modified by the bpf
-program directly.
+Thanks,
+Daniel
 
