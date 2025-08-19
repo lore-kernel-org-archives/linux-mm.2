@@ -2,116 +2,107 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B004CA0EEB
-	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 11:33:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 31109CA0EEB
+	for <linux-mm@archiver.kernel.org>; Tue, 19 Aug 2025 11:36:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A85736B00AF; Tue, 19 Aug 2025 07:33:52 -0400 (EDT)
+	id AFF548E0038; Tue, 19 Aug 2025 07:36:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5E066B0119; Tue, 19 Aug 2025 07:33:52 -0400 (EDT)
+	id AD7208E002D; Tue, 19 Aug 2025 07:36:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8886F6B011A; Tue, 19 Aug 2025 07:33:52 -0400 (EDT)
+	id 9ECC48E0038; Tue, 19 Aug 2025 07:36:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 732816B00AF
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 07:33:52 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2249358F91
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 11:33:52 +0000 (UTC)
-X-FDA: 83793297504.08.C3AA091
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 40F6720007
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 11:33:50 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZiKkdPpW;
-	spf=pass (imf03.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755603230; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B14C8E002D
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 07:36:05 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 239551A061C
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 11:36:05 +0000 (UTC)
+X-FDA: 83793303090.07.DB38ADF
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	by imf10.hostedemail.com (Postfix) with ESMTP id CFC13C0009
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 11:36:02 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=nJtBahJ+;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=none (imf10.hostedemail.com: domain of thomas.hellstrom@linux.intel.com has no SPF policy when checking 198.175.65.18) smtp.mailfrom=thomas.hellstrom@linux.intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755603363; a=rsa-sha256;
 	cv=none;
-	b=geaDYmUjSlTaHaq3/J4vyMBFtjqHLQpLxnJGnJnLNnT+ucor9Vw/seDqKlClQBIJOGQ1T6
-	eCyonrxewkTZAp8avXdpKYojdx4HqpGJBX5+AkgtXmhi66Z9wBSszY4PqT9YwGZhOB5Zfm
-	BG+UxWFDZ30h+MPwq7bXw8ENALrIG+k=
+	b=0xQZPvy+l7+GX1EwMR7EKbGVVmxqztHtHEFigBVmFd884jnSXfRjZQzlcryM1bKq+YqDXS
+	I/LXLHr5YalqQka1H25JW5xr3SLPNACrsxq1OWinlob8ikhg8Tycc6hzbdRUpxw3ENFS3U
+	jLLNbYndpxVGp2OYpuQNEucoK1oiQdI=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZiKkdPpW;
-	spf=pass (imf03.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=nJtBahJ+;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=none (imf10.hostedemail.com: domain of thomas.hellstrom@linux.intel.com has no SPF policy when checking 198.175.65.18) smtp.mailfrom=thomas.hellstrom@linux.intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755603230;
+	s=arc-20220608; t=1755603363;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LE8KPxqLGvnqGcrCFM6DCzdu/oxztkK6aiFoXUkpgIY=;
-	b=WONLdidA7VITPu1fHK8eCbhRrZ1B/+8m3iRTXs+y9lPh1F5fW6ROhlSgcranw+c9afNXMN
-	yQ+i5vRQ1+aZ2kEYrf/jIdWuyCkAJve7IHskFoA2ciYLQBR8vQPGFpOJf0GXTb2RamYl27
-	46lHVrn/Xy0jxi+yOJZAnw8XtKFVCfU=
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7e9f7c46edbso21733985a.0
-        for <linux-mm@kvack.org>; Tue, 19 Aug 2025 04:33:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755603229; x=1756208029; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LE8KPxqLGvnqGcrCFM6DCzdu/oxztkK6aiFoXUkpgIY=;
-        b=ZiKkdPpWshF+Xhyjw76oJtR+3CI9LoDgr9Nvop/isYAXi+zZQ4F7Qv3mao4KeKYgd+
-         RdXog5Y2nhWgx2Mw6V0eOlzybPKTjmpWXiQsTUgQb1iwL4RspFuVPaLr0COnb2+jAeym
-         5KJf7Yl7S4DI6xyjHv6HdDpSXY8sV7z6H2UijRcw8YTNrnDhX9nBkq7FG9UYTHvcPGck
-         SA7TI89TqsFTZwzt9hOX8McBRs8dE3MChXuTrtJAweg6qKWUxcU/wTGI9bCjcBJPEypM
-         9usjM9IYwekBRQyo30aFWcjaLvP1oRdJMx1jpetdiRpiQX3m9ME6l9QrKONtb3jPYS2P
-         sZSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755603229; x=1756208029;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LE8KPxqLGvnqGcrCFM6DCzdu/oxztkK6aiFoXUkpgIY=;
-        b=salV3Gd4O50EbUllgbcZn0xIqWMiVou+80NvfcRFyScHxOKjoYsVFZwWT9Va+XPREC
-         8oRiPecOBohWitI9IA6m7/WoZSPzFtKzPmcVIqdfQn5fvZQ9Y34H6JKhJcgcasI7rNjQ
-         utdaG5H7jyaXWtbxTiAP41HRuC0ocJLV4JLPxLcPzTdnbbZ3e0WLaC2c5s867Ia2+sOE
-         yPYCnHCx/gvRJSfjyzF8L+PJfkw57zHeF9V25WagYzq4lMSE07SobLCvP/J+e94UFJld
-         4ty0WqK3KVrIDZhHbPhmKgXl49hDRvNUJOQ8ddc02U8DGnWev3gAEo8Ro5GsxglVdbqZ
-         nOkg==
-X-Forwarded-Encrypted: i=1; AJvYcCWA4e5IsadfHJ2nDLttAr+vnjWTkHxTTPhrZCBjHrXy/yJV7M/MHcn9PUjh80Z0AGUgfgvC+AuqDQ==@kvack.org
-X-Gm-Message-State: AOJu0YwIJ1N7zz8cp4ha6kIjDtAE7t89SMqoXjCYE9ypgVL+h4B359kO
-	tAAsagrKfd16BXzUu+vIE4N7gm8VeGhMHYLEWdVLvGffdUQLomScnGWDHyU4qd5DdNBdlFhAk8m
-	FTHPXNXToAjNvPrYAlCG2Elasngye6Gs=
-X-Gm-Gg: ASbGncsQBrVDHMIJRd9lRlR/hR8m7rrc/TxLiEHks8m9mneaAtVwBPdmYcqaLF7pRIl
-	007FCFTxi2FvA983rDDX/vVTPDHpxHk8vkI4jpYnm0j9opbopkJq/7Jqkfvabjix3fiHAxWqyRr
-	EIOi5AU9V2RFnGfFeNUGqwCJLCQzXmByAYjZQWtVN1TxgdO8riHDvT033Bg+C9id5KA85IT2fJh
-	Xxk3PKL
-X-Google-Smtp-Source: AGHT+IHP7AvP95cDuz1oKXtouBgiB+1zSwnea+kSTjGWrEhHxsS7Ly0bT2odjaHfGCwlt9g6a8siFEX8QjU853O+P/Q=
-X-Received: by 2002:a05:620a:472a:b0:7e8:71b:96ac with SMTP id
- af79cd13be357-7e9f442a1camr228046485a.11.1755603229147; Tue, 19 Aug 2025
- 04:33:49 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250818055510.968-1-laoar.shao@gmail.com> <36c97fc6-eaa9-44dd-a52f-0b6bf5a001d9@gmail.com>
- <CALOAHbAQ=51mfszBN+Bvb9z+ZDyTBuCW_s0EKi+5rDghFvRZzg@mail.gmail.com> <a24d632d-4b11-4c88-9ed0-26fa12a0fce4@gmail.com>
-In-Reply-To: <a24d632d-4b11-4c88-9ed0-26fa12a0fce4@gmail.com>
-From: Yafang Shao <laoar.shao@gmail.com>
-Date: Tue, 19 Aug 2025 19:33:12 +0800
-X-Gm-Features: Ac12FXw_UblIdxEg390DBWAF0j7IE39u3YBW_XLxywfHkQQXh4zP9W5l1I0XRPY
-Message-ID: <CALOAHbA9tUVarpOnMVMViwY+1uYOFRuD6A0fDPqeqhS=LdJmhw@mail.gmail.com>
-Subject: Re: [RFC PATCH v5 mm-new 0/5] mm, bpf: BPF based THP order selection
-To: Usama Arif <usamaarif642@gmail.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, hannes@cmpxchg.org, gutierrez.asier@huawei-partners.com, 
-	willy@infradead.org, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
-	ameryhung@gmail.com, rientjes@google.com, bpf@vger.kernel.org, 
-	linux-mm@kvack.org
+	bh=pPkHWBTrljspUAxcE5QA49CKvraBc0ehxdSRzqNbN1E=;
+	b=QmXeTmg3NgBIeIJrRpw5z7wISvI73eY7hP7ZDNUpDLyG/X5Ch8Tz4K8F0COpok4BZLgWLM
+	0XtFYmZV4Nz7G0SWnxtOKKQ4sYueqDUV3IoEP5MyAoAudx6HWMgV48AexiRX1geCx+fPr+
+	mUslKrEx9tkf0uD0eyiayfPjOuY1kWE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755603363; x=1787139363;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=X1c185vBC7zQgj386+/kF62TICuFR+WWxJ/wPp8NWAg=;
+  b=nJtBahJ+neBcFVcU6IWdBKSM5npNH9iU8OsmuNIish47jFmuzUHiZNQE
+   DuaVWwZy4Ldhip38+y63EghAvnf7qBJr6+/PWMrWUJuom6LOuu+BTAnms
+   aZwAEtprYPtXZuyEY4BB+Yg84askCikCOdorRs2OEklrbaaqujqnKVn3s
+   /yCjizffK0Qz8+MFtOEGu4cGaSVO/8rb6RC/aGzec5XT3/G/g9EhlN6bz
+   5+OKdJK1/KG3u+imr+VBLyu7Y+SG6Wp06KWZpnctypccAJHjze+4jtAy4
+   wCCQuMqUuuL4jrGtW8BzNF6B4FpStOK3NsNRmwc8hoBtClI/yuyd9rbno
+   A==;
+X-CSE-ConnectionGUID: PpfjTRJyTR6OLZAM1aTLdg==
+X-CSE-MsgGUID: GuQ4aot1REuINtof1KXBTA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11526"; a="57911958"
+X-IronPort-AV: E=Sophos;i="6.17,300,1747724400"; 
+   d="scan'208";a="57911958"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 04:36:02 -0700
+X-CSE-ConnectionGUID: IX16e6KpTAGkOepuMfSyMQ==
+X-CSE-MsgGUID: P6LfZn5KSCyshVEKZaKc+g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,300,1747724400"; 
+   d="scan'208";a="167010154"
+Received: from ncintean-mobl1.ger.corp.intel.com (HELO [10.245.244.175]) ([10.245.244.175])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 04:35:59 -0700
+Message-ID: <680b87587664165439fea47c5275aef930f7ac49.camel@linux.intel.com>
+Subject: Re: [RFC PATCH 1/6] mm/mmu_notifier: Allow multiple struct
+ mmu_interval_notifier passes
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: Alistair Popple <apopple@nvidia.com>
+Cc: intel-xe@lists.freedesktop.org, Jason Gunthorpe <jgg@ziepe.ca>, Andrew
+ Morton <akpm@linux-foundation.org>, Simona Vetter <simona.vetter@ffwll.ch>,
+ Dave Airlie	 <airlied@gmail.com>, dri-devel@lists.freedesktop.org,
+ linux-mm@kvack.org, 	linux-kernel@vger.kernel.org, Matthew Brost
+ <matthew.brost@intel.com>,  Christian =?ISO-8859-1?Q?K=F6nig?=	
+ <christian.koenig@amd.com>
+Date: Tue, 19 Aug 2025 13:35:56 +0200
+In-Reply-To: <yzgn3nbaeftrthqwddwt3gap4uni4api2r2uik2gxoimnpdiy7@hty77udv6un2>
+References: <20250809135137.259427-1-thomas.hellstrom@linux.intel.com>
+	 <20250809135137.259427-2-thomas.hellstrom@linux.intel.com>
+	 <yzgn3nbaeftrthqwddwt3gap4uni4api2r2uik2gxoimnpdiy7@hty77udv6un2>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 40F6720007
-X-Stat-Signature: oko6hybxosjpeyjht81kyzkqcxosnudu
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+MIME-Version: 1.0
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1755603230-390387
-X-HE-Meta: U2FsdGVkX18EH52H/4HtSbTEC7XAry8595EwoTKS6YmMgXgg5S8DJbwDBBuW2OHPH698sgbiYFyY1mn7c6YFUnz5KQRtS+tZnfQIpjGJiKEfKnzrUJqzI4V3Y1QH2KRd8hE5MvKf+0i6JMfaFVl7SyojHlTmSL++z6Cm5qtqU6Cflf/9CAB/PXhsbZmI102fcGtSGMaulv4nLX+7Y5KsS8vbaNpk7r2080jeEhjbtHrGBs9JwyX7qt/MdrCtgWEyT7SHH/87pP7AXxx7gG/JkeHC/CUGSO4t6JcSjkeMqdOa6WH8EXxpQPW9OVwMecXL1A1tjXfi1Dep2GgowANoryc89PJQE61bB45V+TIa8QO1eZB4Dc8/49c6PLURwWk6wuHJrazdUSzqW+jtfMV5kpvWNGaIw5ZeoQU0qNXk4VDQHpVt6kCUlh99iublMld9rVAMOpdcuyrsOZ0D8mGc5DnRQXTPzNGMnWlOl9hpywXlAQOMfFqjXMsuZwe0QdbZEcUkW29lIMXFERnpaK3cu8jS6t1LKlMnxfNSFwzNGJ5urjQAo9wyovhr+7SvHHm+vt85wTD8ZdzE/plFD2NVZUSV5PkTu/mQg3sINbFm9G58oMU3rGEY6QAD+fC/rjyZhTWunscIo7u9XAYv7lJCg+zrwxwnyoSAmlYe7weyPlGR7+hi4QM3v2JGv7LTFZOlI3KNp2CVMN89jzxmZQG18LIUH/vQSbhyFnemoqb+yPLPjCJzLSuY4oSgid6Wt0I01tbiQL5+tmhe2iBRHK6Bz0trXvEQxErPxaZPkJmdqn9vETFAb3/9VU1LFBnYxPY6pg8R1A7MEid76klWsWPuhx8pfMuviJcZOBQULI0Dn0smfXZI05WmmRQLuXc0B9qCRfHk2NKnJKwirUCtYeDXDrkPigRu6WfFpOaBNX0ubtxYy7rfa8L/KnGV7o0a7As9s1E+wo5tt3dPApmATJq
- lSmg/p2m
- Twpa0JWEZRcsyaNokxnVU3hLRpwFrTRiKLtOgF1zPAbkwmX5hc8VOezt0pKmK4dSO3vx5Jw4li6+yjtY+SUxiZ5a+ZNy21hMw/G4jUVusJ8kr2uxRXIcnylxW+ZxGZw7T3k+Ir9SKn1El6sgqJU4DH9Ow4GQaHlP+WJpUxmyMFEZUnSSau8Q/+5BIU5DF/GVo4RaKRWr9qQAI5QfVOXn0QxgKTZWJgwuDoCjW5g0uVQXmeBMPww3dBE7+NMHFZk3+MmDXp+zGH2CJAUvTdoRXaJg/+nAJaEQMIJOKhStM5KdsnOApGLAQ2b6h9qAz2mh8b2Yt9xQLm6YBfeq/51tbI3PEqEImtaT9uE/vrMauMsDu6ccf+OvpDEZJtarpB6L26G2Yd5vCcHuTAIUsS7S+WgOKDtC+Zto96Qtm
+X-Rspamd-Queue-Id: CFC13C0009
+X-Stat-Signature: ku3yjmsz5jphpmz5jb1dsbgybiocjikx
+X-HE-Tag: 1755603362-73082
+X-HE-Meta: U2FsdGVkX1/Q4OWn+i57Ap5VbIsnSyY+H10cWluW4TFVfe+I4NBOBVxzEzacLVI3Il4kkwnpSwdWCuWINDmi+NBNPyyXLMI4+/dtKV7pywTU/spf0Ot3QgI2QpCXNF+gxUV8oHRMkV5TyallverpcSU9Pd+/E4bEom2n32GFEKqNg2Yfh6kWhGwfTYPpWRR8o7f6PMAxPXWSw5wjPuo9lhDx6QGG/UpEwBplykOhL6aK9h6wpJMj+bP8w6gn9xyZLu4JYbP8XsvBooZ6d2OYkj6hkWEtd/0fc4/pJyIGLNlW3ESTXqKiNIvlDpnbjQm8U70s9+4Xpmodn69xpAG9n4aV0ZgJzGgOhOIRvgvLBil6X0nvXBKw92CDOwplTgdkpW0mkzLaA8lMvodoYraYdDPueDJh3zuEJqNbXpR0ukb3cCLMV8FWXFyepviSqMPYm46tTfSRAqOuzsmPvYEs50S7134Q7AIF7VOGmI8hwYA93NrGfWzmWB7DfOCKTO2iJbi3GnbAV9PHvzk9Z+Ytgds6h07rM/1NOQ18ujrQYINf1Hg2Sd4ENtwZvubwDj85O92RYuk67Yz9i9vWIjOlVF+TlcaX1ry6qr2kMtX5Aiz18ZFEVaNULGA4qPFFwQhHkntMKrwHsS/460YrIwNZM+4AmVfHK3UQ473yNhPMsW/Pu26fKwdX7paF8qwtscm5AROf0voWJXhbvLKEd9fpqpJjvU07KbbFNyKCQVN1LOnAKEctTepLvj1TTu3U/Sk8m+FVSz0XeyEtSowK/zvFXKqRvDJoTALDdJezRpp6M7988f607LUNoTlKVmgFu4n5ipvsFvYB2dyEmAxuQP3tiNiS35f1tm8NvX4Y4M+G9mQ4mPqGykpyH2bhLacyPHiMB2rUzoozpo+Ctn5PiBvU8F+C53oHsWE2MrMeGS3ww+ZbwK65LeJYlHtLyzMePNKBUoejGw1huoS+/awnW2f
+ qNAu8A5B
+ pWnBRn8X+vE/Ce5W3QRaIqLLn03BYVTOTOZRaG8TBvEos6bzf8ntlBYRz4idzDG1JaAmbdLeZ07PCAVR9nDkA/WkUb/An35n/4cSZLCwklBgCahJH4vbWY4oxmEfNIGJ+2XM1h9g9DM6witXdjxpVKMCpi+fCnTZLZo2djUaIc+JzTMmZBbUP59ShonvdFpFTlAI2rpjv43P/Z19rTafddF4kb/2dj+IwZssaem5xglL3+SaCbsGZ7sbdUOsnt3G6SYrSMn/hE741pqBmgqQP9WBtJTujfYQRTCOdwGyE+mptFJb94BIFeIxGdas5lCV3S6e1QBk4NHlyJfdePq4LlJ/svHEMIkKwrg050FfvZLmTVgivyRg/WTt3yxFo4/lv2gi1CDnMuFna40HMO/QNBA6uQwvGdll3w89EHIrdqzeJlh/ZVvg9E5XLOHQwbrV8niWptPUOi4NeOul3109OaqlGceXo9jpDMcuBHQmTd/wrO3HJehPyz2ZcnXDJucWTfqqvcVJZ9kWVSVSiDUezKsTb0eflEplhemrCU9PMEiYmVodxAtRsOxH4URMq5LlerokkjRojG94t+eWTiFfUfugdRQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,136 +111,284 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 19, 2025 at 6:44=E2=80=AFPM Usama Arif <usamaarif642@gmail.com>=
- wrote:
->
->
->
-> On 19/08/2025 03:41, Yafang Shao wrote:
-> > On Mon, Aug 18, 2025 at 10:35=E2=80=AFPM Usama Arif <usamaarif642@gmail=
-.com> wrote:
-> >>
-> >>
-> >>
-> >> On 18/08/2025 06:55, Yafang Shao wrote:
-> >>> Background
-> >>> ----------
-> >>>
-> >>> Our production servers consistently configure THP to "never" due to
-> >>> historical incidents caused by its behavior. Key issues include:
-> >>> - Increased Memory Consumption
-> >>>   THP significantly raises overall memory usage, reducing available m=
-emory
-> >>>   for workloads.
-> >>>
-> >>> - Latency Spikes
-> >>>   Random latency spikes occur due to frequent memory compaction trigg=
-ered
-> >>>   by THP.
-> >>>
-> >>> - Lack of Fine-Grained Control
-> >>>   THP tuning is globally configured, making it unsuitable for contain=
-erized
-> >>>   environments. When multiple workloads share a host, enabling THP wi=
-thout
-> >>>   per-workload control leads to unpredictable behavior.
-> >>>
-> >>> Due to these issues, administrators avoid switching to madvise or alw=
-ays
-> >>> modes=E2=80=94unless per-workload THP control is implemented.
-> >>>
-> >>> To address this, we propose BPF-based THP policy for flexible adjustm=
-ent.
-> >>> Additionally, as David mentioned [0], this mechanism can also serve a=
-s a
-> >>> policy prototyping tool (test policies via BPF before upstreaming the=
-m).
-> >>
-> >> Hi Yafang,
-> >>
-> >> A few points:
-> >>
-> >> The link [0] is mentioned a couple of times in the coverletter, but it=
- doesnt seem
-> >> to be anywhere in the coverletter.
-> >
-> > Oops, my bad.
-> >
-> >>
-> >> I am probably missing something over here, but the current version won=
-'t accomplish
-> >> the usecase you have described at the start of the coverletter and are=
- aiming for, right?
-> >> i.e. THP global policy "never", but get hugepages on an madvise or alw=
-ays basis.
-> >
-> > In "never" mode, THP allocation is entirely disabled (except via
-> > MADV_COLLAPSE). However, we can achieve the same behavior=E2=80=94and
-> > more=E2=80=94using a BPF program, even in "madvise" or "always" mode. I=
-nstead
-> > of introducing a new THP mode, we dynamically enforce policy via BPF.
-> >
-> > Deployment Steps in our production servers:
-> >
-> > 1. Initial Setup:
-> > - Set THP mode to "never" (disabling THP by default).
-> > - Attach the BPF program and pin the BPF maps and links.
-> > - Pinning ensures persistence (like a kernel module), preventing
-> > disruption under system pressure.
-> > - A THP whitelist map tracks allowed cgroups (initially empty =E2=86=92=
- no THP
-> > allocations).
-> >
-> > 2. Enable THP Control:
-> > - Switch THP mode to "always" or "madvise" (BPF now governs actual allo=
-cations).
->
->
-> Ah ok, so I was missing this part. With this solution you will still have=
- to change
-> the system policy to madvise or always, and then basically disable THP fo=
-r everyone apart
-> from the cgroups that want it?
+On Tue, 2025-08-19 at 20:03 +1000, Alistair Popple wrote:
+> On Sat, Aug 09, 2025 at 03:51:32PM +0200, Thomas Hellstr=C3=B6m wrote:
+> > GPU use-cases for mmu_interval_notifiers with hmm often involve
+> > starting a gpu operation and then waiting for it to complete.
+> > These operations are typically context preemption or TLB flushing.
+> >=20
+> > With single-pass notifiers per GPU this doesn't scale in
+> > multi-gpu scenarios. In those scenarios we'd want to first start
+> > preemption- or TLB flushing on all GPUs and as a second pass wait
+> > for them to complete on all gpus.
+> >=20
+> > One can do this on per-driver basis multiplexing per-driver
+> > notifiers but that would mean sharing the notifier "user" lock
+> > across all GPUs and that doesn't scale well either, so adding
+> > support
+> > for multi-pass in the core appears like the right choice.
+> >=20
+> > Implement multi-pass capability in the mmu_interval_notifier. Use a
+> > linked list for the additional passes to minimize the impact for
+> > use-cases that don't need the multi-pass functionality.
+> >=20
+> > Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > Cc: Simona Vetter <simona.vetter@ffwll.ch>
+> > Cc: Dave Airlie <airlied@gmail.com>
+> > Cc: <dri-devel@lists.freedesktop.org>
+> > Cc: <linux-mm@kvack.org>
+> > Cc: <linux-kernel@vger.kernel.org>
+> >=20
+> > Signed-off-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+> > ---
+> > =C2=A0include/linux/mmu_notifier.h | 30 ++++++++++++++++
+> > =C2=A0mm/mmu_notifier.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 | 67 +++++++++++++++++++++++++++++++-
+> > ----
+> > =C2=A02 files changed, 88 insertions(+), 9 deletions(-)
+> >=20
+> > diff --git a/include/linux/mmu_notifier.h
+> > b/include/linux/mmu_notifier.h
+> > index d1094c2d5fb6..1107a8eafd8a 100644
+> > --- a/include/linux/mmu_notifier.h
+> > +++ b/include/linux/mmu_notifier.h
+> > @@ -233,6 +233,32 @@ struct mmu_notifier {
+> > =C2=A0	unsigned int users;
+> > =C2=A0};
+> > =C2=A0
+> > +/**
+> > + * struct mmu_interval_notifier_pass - mmu_interval_notifier
+> > multi-pass abstraction
+> > + * @link: List link for the notifiers pending pass list
+> > + *
+> > + * Allocate, typically using GFP_NOWAIT in the interval notifier's
+> > first pass.
+> > + * If allocation fails (which is not unlikely under memory
+> > pressure), fall back
+> > + * to single-pass operation.
+> > + */
+> > +struct mmu_interval_notifier_pass {
+>=20
+> If we limit the number of passes to two maybe call this
+> `mmu_interval_notifier_finish()`? ...
+>=20
+> > +	struct list_head link;
+> > +	/**
+> > +	 * @pass: Driver callback for additionall pass.
+> > +	 * @additional_pass: Pointer to the
+> > mmu_interval_notifier_pass structure.
+> > +	 * @range: The mmu_notifier_range.
+> > +	 * @cur_seq: The current sequence set by the first pass.
+> > +	 *
+> > +	 * Return: Either a pointer to a valid
+> > mmu_interval_notifier_pass for
+> > +	 * another pass to be called, or %NULL if processing is
+> > complete for this
+> > +	 * notifier. There is no error reporting mechanism for
+> > additional passes.
+> > +	 */
+> > +	struct mmu_interval_notifier_pass *
+> > +	(*pass) (struct mmu_interval_notifier_pass
+> > *additional_pass,
+>=20
 
-Right.
+>=20
+> > +		 const struct mmu_notifier_range *range,
+> > +		 unsigned long cur_seq);
+> > +};
+> > +
+> > =C2=A0/**
+> > =C2=A0 * struct mmu_interval_notifier_ops
+> > =C2=A0 * @invalidate: Upon return the caller must stop using any SPTEs
+> > within this
+> > @@ -243,6 +269,10 @@ struct mmu_interval_notifier_ops {
+> > =C2=A0	bool (*invalidate)(struct mmu_interval_notifier
+> > *interval_sub,
+> > =C2=A0			=C2=A0=C2=A0 const struct mmu_notifier_range *range,
+> > =C2=A0			=C2=A0=C2=A0 unsigned long cur_seq);
+> > +	bool (*invalidate_multipass)(struct mmu_interval_notifier
+> > *interval_sub,
+>=20
+> ... and then this could be called `invalidate_start()`. That might
+> address some
+> of the concerns with naming.
 
->
-> >
-> > 3. Dynamic Management:
-> > - To permit THP for a cgroup, add its ID to the whitelist map.
-> > - To revoke permission, remove the cgroup ID from the map.
-> > - The BPF program can be updated live (policy adjustments require no
-> > task interruption).
-> >
-> >> I think there was a new THP mode introduced in some earlier revision w=
-here you can switch to it
-> >> from "never" and then you can use bpf programs with it, but its not in=
- this revision?
-> >> It might be useful to add your specific usecase as a selftest.
-> >>
-> >> Do we have some numbers on what the overhead of calling the bpf progra=
-m is in the
-> >> pagefault path as its a critical path?
-> >
-> > In our current implementation, THP allocation occurs during the page
-> > fault path. As such, I have not yet evaluated performance for this
-> > specific case.
-> > The overhead is expected to be workload-dependent, primarily influenced=
- by:
-> > - Memory availability: The presence (or absence) of higher-order free p=
-ages
-> > - System pressure: Contention for memory compaction, NUMA balancing,
-> > or direct reclaim
-> >
->
-> Yes, I think might be worth seeing if perf indicates that you are spendin=
-g more time
-> in __handle_mm_fault with this series + bpf program attached compared to =
-without?
+Makes sense. I'll have a look at that.
 
-I will test it.
+/Thomas
 
---=20
-Regards
-Yafang
+
+>=20
+> > +				=C2=A0=C2=A0=C2=A0=C2=A0 const struct
+> > mmu_notifier_range *range,
+> > +				=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long cur_seq,
+> > +				=C2=A0=C2=A0=C2=A0=C2=A0 struct
+> > mmu_interval_notifier_pass **pass);
+> > =C2=A0};
+> > =C2=A0
+> > =C2=A0struct mmu_interval_notifier {
+> > diff --git a/mm/mmu_notifier.c b/mm/mmu_notifier.c
+> > index 8e0125dc0522..dd6af87db103 100644
+> > --- a/mm/mmu_notifier.c
+> > +++ b/mm/mmu_notifier.c
+> > @@ -260,6 +260,22 @@ mmu_interval_read_begin(struct
+> > mmu_interval_notifier *interval_sub)
+> > =C2=A0}
+> > =C2=A0EXPORT_SYMBOL_GPL(mmu_interval_read_begin);
+> > =C2=A0
+> > +static void mn_itree_additional_passes(struct list_head
+> > *additional_passes,
+> > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const struct
+> > mmu_notifier_range *range,
+> > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long cur_seq)
+> > +{
+> > +	struct mmu_interval_notifier_pass *p, *next;
+> > +
+> > +	while (!list_empty(additional_passes)) {
+> > +		list_for_each_entry_safe(p, next,
+> > additional_passes, link) {
+> > +			list_del_init(&p->link);
+> > +			p =3D p->pass(p, range, cur_seq);
+> > +			if (p)
+> > +				list_add_tail(&p->link,
+> > additional_passes);
+> > +		}
+> > +	}
+> > +}
+> > +
+> > =C2=A0static void mn_itree_release(struct mmu_notifier_subscriptions
+> > *subscriptions,
+> > =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0 struct mm_struct *mm)
+> > =C2=A0{
+> > @@ -272,17 +288,32 @@ static void mn_itree_release(struct
+> > mmu_notifier_subscriptions *subscriptions,
+> > =C2=A0	};
+> > =C2=A0	struct mmu_interval_notifier *interval_sub;
+> > =C2=A0	unsigned long cur_seq;
+> > +	LIST_HEAD(additional_passes);
+> > =C2=A0	bool ret;
+> > =C2=A0
+> > =C2=A0	for (interval_sub =3D
+> > =C2=A0		=C2=A0=C2=A0=C2=A0=C2=A0 mn_itree_inv_start_range(subscriptions=
+,
+> > &range, &cur_seq);
+> > =C2=A0	=C2=A0=C2=A0=C2=A0=C2=A0 interval_sub;
+> > =C2=A0	=C2=A0=C2=A0=C2=A0=C2=A0 interval_sub =3D mn_itree_inv_next(inte=
+rval_sub,
+> > &range)) {
+> > -		ret =3D interval_sub->ops->invalidate(interval_sub,
+> > &range,
+> > -						=C2=A0=C2=A0=C2=A0 cur_seq);
+> > +		if (interval_sub->ops->invalidate_multipass) {
+> > +			struct mmu_interval_notifier_pass *second
+> > =3D NULL;
+> > +
+> > +			ret =3D interval_sub->ops-
+> > >invalidate_multipass(interval_sub,
+> > +								=C2=A0=C2=A0
+> > =C2=A0=C2=A0=C2=A0 &range,
+> > +								=C2=A0=C2=A0
+> > =C2=A0=C2=A0=C2=A0 cur_seq,
+> > +								=C2=A0=C2=A0
+> > =C2=A0=C2=A0=C2=A0 &second);
+> > +			if (ret && second)
+> > +				list_add_tail(&second->link,
+> > &additional_passes);
+> > +
+> > +		} else {
+> > +			ret =3D interval_sub->ops-
+> > >invalidate(interval_sub,
+> > +							=C2=A0=C2=A0=C2=A0
+> > &range,
+> > +							=C2=A0=C2=A0=C2=A0
+> > cur_seq);
+> > +		}
+> > =C2=A0		WARN_ON(!ret);
+> > =C2=A0	}
+> > =C2=A0
+> > +	mn_itree_additional_passes(&additional_passes, &range,
+> > cur_seq);
+> > =C2=A0	mn_itree_inv_end(subscriptions);
+> > =C2=A0}
+> > =C2=A0
+> > @@ -431,6 +462,8 @@ static int mn_itree_invalidate(struct
+> > mmu_notifier_subscriptions *subscriptions,
+> > =C2=A0{
+> > =C2=A0	struct mmu_interval_notifier *interval_sub;
+> > =C2=A0	unsigned long cur_seq;
+> > +	LIST_HEAD(additional_passes);
+> > +	int err =3D 0;
+> > =C2=A0
+> > =C2=A0	for (interval_sub =3D
+> > =C2=A0		=C2=A0=C2=A0=C2=A0=C2=A0 mn_itree_inv_start_range(subscriptions=
+,
+> > range, &cur_seq);
+> > @@ -438,23 +471,39 @@ static int mn_itree_invalidate(struct
+> > mmu_notifier_subscriptions *subscriptions,
+> > =C2=A0	=C2=A0=C2=A0=C2=A0=C2=A0 interval_sub =3D mn_itree_inv_next(inte=
+rval_sub,
+> > range)) {
+> > =C2=A0		bool ret;
+> > =C2=A0
+> > -		ret =3D interval_sub->ops->invalidate(interval_sub,
+> > range,
+> > -						=C2=A0=C2=A0=C2=A0 cur_seq);
+> > +		if (interval_sub->ops->invalidate_multipass) {
+> > +			struct mmu_interval_notifier_pass *second
+> > =3D NULL;
+> > +
+> > +			ret =3D interval_sub->ops-
+> > >invalidate_multipass(interval_sub,
+> > +								=C2=A0=C2=A0
+> > =C2=A0=C2=A0=C2=A0 range,
+> > +								=C2=A0=C2=A0
+> > =C2=A0=C2=A0=C2=A0 cur_seq,
+> > +								=C2=A0=C2=A0
+> > =C2=A0=C2=A0=C2=A0 &second);
+> > +			if (ret && second)
+> > +				list_add_tail(&second->link,
+> > &additional_passes);
+> > +
+> > +		} else {
+> > +			ret =3D interval_sub->ops-
+> > >invalidate(interval_sub,
+> > +							=C2=A0=C2=A0=C2=A0 range,
+> > +							=C2=A0=C2=A0=C2=A0
+> > cur_seq);
+> > +		}
+> > =C2=A0		if (!ret) {
+> > =C2=A0			if
+> > (WARN_ON(mmu_notifier_range_blockable(range)))
+> > =C2=A0				continue;
+> > -			goto out_would_block;
+> > +			err =3D -EAGAIN;
+> > +			break;
+> > =C2=A0		}
+> > =C2=A0	}
+> > -	return 0;
+> > =C2=A0
+> > -out_would_block:
+> > +	mn_itree_additional_passes(&additional_passes, range,
+> > cur_seq);
+> > +
+> > =C2=A0	/*
+> > =C2=A0	 * On -EAGAIN the non-blocking caller is not allowed to
+> > call
+> > =C2=A0	 * invalidate_range_end()
+> > =C2=A0	 */
+> > -	mn_itree_inv_end(subscriptions);
+> > -	return -EAGAIN;
+> > +	if (err)
+> > +		mn_itree_inv_end(subscriptions);
+> > +
+> > +	return err;
+> > =C2=A0}
+> > =C2=A0
+> > =C2=A0static int mn_hlist_invalidate_range_start(
+> > --=20
+> > 2.50.1
+> >=20
+> >=20
+
 
