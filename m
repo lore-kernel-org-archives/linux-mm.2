@@ -2,105 +2,109 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D1FBBCA0EE4
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 19:03:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A297CA0EE4
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 19:03:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 464C96B0006; Wed, 20 Aug 2025 15:03:16 -0400 (EDT)
+	id 21BEA6B00AF; Wed, 20 Aug 2025 15:03:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43C096B0008; Wed, 20 Aug 2025 15:03:16 -0400 (EDT)
+	id 1A52F8E0022; Wed, 20 Aug 2025 15:03:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3796D6B0007; Wed, 20 Aug 2025 15:03:16 -0400 (EDT)
+	id 094F76B00AF; Wed, 20 Aug 2025 15:03:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2601A6B010B
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 15:03:16 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A6300116D6D
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 19:03:15 +0000 (UTC)
-X-FDA: 83798058750.02.BEF0779
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 050641C0007
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 19:03:13 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G7m+UaI6;
-	spf=pass (imf18.hostedemail.com: domain of tj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E8DD46B00A9
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 15:03:23 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7950B117FDE
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 19:03:23 +0000 (UTC)
+X-FDA: 83798059086.09.FEFDB87
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 03EEBA000F
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 19:03:20 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=mLVYAWAt;
+	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755716594;
+	s=arc-20220608; t=1755716601;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yhzGRBDX5Ee/XCrPKF8cKe/pIT82Tf6sC9Zyj17a6UU=;
-	b=pTyuFltmyH8KjKM61dpGY/af/JDmR++30jYAMVOqo+8/nCmNlbF0n7qeE96fEOsWab/ne+
-	lOkN7a7kn8biFAeFhpkb7551ezRnGXAUvESQj+btW8W+IIA0nGQGRcK0NIG7lp1MGHBL2Z
-	6E2J6WvhSDLqtcBYUo2NccLwy0wzB0A=
+	bh=nLBsH/YIejPlJTdrf80v1UtSZK9GJ7uL4JX14pYsht8=;
+	b=oJXFnXnZVSsB6ayvsuX/bq+hTmKx9FRNyptwZpVshyFiECyYz81PA2eXqFR3YoE79xjzn7
+	KcVbmWNIkvxfORgdkDlngECfLTEKsqOjWv4rdrCo1N/OrQqgD+hVlPhozVcgqje4w5JNC4
+	vkXa5/iwzGemb8avGw/+juofTpPN80Y=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G7m+UaI6;
-	spf=pass (imf18.hostedemail.com: domain of tj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755716594; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=mLVYAWAt;
+	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755716601; a=rsa-sha256;
 	cv=none;
-	b=31qMlPJ5d3LIIAet/6DYeagPaLRvKl5NnWdXJY2aHYkYTmsdpUtcjQOw06gpfqRiRl8XZU
-	29Ut5ZFg98qhlp1r6OFTEHKA/7UNf0/zInali+xZWcQPgT5R/6mA+lw+Vb5nzsgHdCF6I2
-	5EuIbWHvMHouk1dnpmpq02dPNwIlhTw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 043C45C6ADA;
-	Wed, 20 Aug 2025 19:03:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C1DFC4CEE7;
-	Wed, 20 Aug 2025 19:03:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755716592;
-	bh=odD/T6EvPgMd2KV47i6OxxVsN3PY9jzhXcMSyoj+vRI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=G7m+UaI6oQeP8JYab2Nf7jH0X0EUH+aTaZTSQYheGVQir/3UPwdBnPR0Bi2Od8h+B
-	 GEiLUDa9C0mMvdd20fFORMnVJYc3IqniQscqwRZnbMJprKVo2wXyAOmQ3JJrxifxHI
-	 O651V2hk5sXJvrbhwUnFoVkN+ayXQg3ayzhUOH4Bk+5VD+NMDf42qmOu13N1xQSUYr
-	 nj8/BMtaEWq3vR3NmZ3ur5ybBoiWyT/MiW0IAULG0xgffiEWL/eKnQjJcK8kd2YJi4
-	 IuW3P9pG58TpLKY9juUccPaAl5SByEag2HNibrU3+BAnnkiwbEcZfE4RfFhlkNTcvn
-	 x0brddGhUzNig==
-Date: Wed, 20 Aug 2025 09:03:11 -1000
-From: Tejun Heo <tj@kernel.org>
-To: Matyas Hurtik <matyas.hurtik@cdn77.com>
-Cc: Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Daniel Sedlak <daniel.sedlak@cdn77.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org,
-	netdev@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org
-Subject: Re: [PATCH v4] memcg: expose socket memory pressure in a cgroup
-Message-ID: <aKYb7_xshbtFbXjb@slm.duckdns.org>
-References: <20250805064429.77876-1-daniel.sedlak@cdn77.com>
- <aJeUNqwzRuc8N08y@slm.duckdns.org>
- <gqeq3trayjsylgylrl5wdcrrp7r5yorvfxc6puzuplzfvrqwjg@j4rr5vl5dnak>
- <aJzTeyRTu_sfm-9R@slm.duckdns.org>
- <e65222c1-83f9-4d23-b9af-16db7e6e8a42@cdn77.com>
+	b=25hTeRQZA7F1hVpc798HCQ+I3+kAbEYhP0ddOXkz5HOGf36At7vHOJge1iU0MEPwyb97Og
+	fwszKaNxHENCvW8YUU3ivhZiLeiCTjo7Q1d3w6vG/AOzPid018hN+oALVi6DAh3JBECX2V
+	EyIIFERMECSwpKWrPMySBnoIkyKYvKA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755716601; x=1787252601;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5GfvpmvDEwt7/WHZ41ArcJBD9qOfspQN8odDWzwdDho=;
+  b=mLVYAWAt7YIAtYuhUQUtjQmpCHaHBZvx269jehVWvuTwtcEldysJgReg
+   lVQ8BWXMvaha6qaONx27R+x61v4LzmlSH0+SxmJFRRr4geHXjVGXry4de
+   zpww6sp4uhfKUX8oFbFmW/l4blKposDhRE+oMB8/KjVX6HxsKxXYG1N6w
+   uQhwppgIdpMBujBh6SWoWVdnzpEzUXDisu57atrn7QvO6f+7XSfE/odL+
+   Z3558n232odVq/5BLYdhJihnOB8o0SpNbRwayYHvs3YdxVZoCVluqSZlo
+   TsPgljLzpKaPU0FVMrJu0tPrksPmw8QSg+H5E9tOob4hbVwxvT7EvVced
+   A==;
+X-CSE-ConnectionGUID: mLmCHEtqRLO24lSzQCgFJg==
+X-CSE-MsgGUID: drEjMdXMTxil4GAlDfStZQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="58064874"
+X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
+   d="scan'208";a="58064874"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2025 12:03:19 -0700
+X-CSE-ConnectionGUID: XsAQ5YMoRIiHW1uiss991A==
+X-CSE-MsgGUID: 474uIyjeSk+QHWasyB2kSw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
+   d="scan'208";a="199075421"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by fmviesa001.fm.intel.com with ESMTP; 20 Aug 2025 12:03:12 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uoo5R-000Jbr-1r;
+	Wed, 20 Aug 2025 19:03:07 +0000
+Date: Thu, 21 Aug 2025 03:02:57 +0800
+From: kernel test robot <lkp@intel.com>
+To: Anthony Yznaga <anthony.yznaga@oracle.com>, linux-mm@kvack.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	akpm@linux-foundation.org, andreyknvl@gmail.com, arnd@arndb.de,
+	bp@alien8.de, brauner@kernel.org, bsegall@google.com,
+	corbet@lwn.net, dave.hansen@linux.intel.com, david@redhat.com,
+	dietmar.eggemann@arm.com, ebiederm@xmission.com, hpa@zytor.com,
+	jakub.wartak@mailbox.org, jannh@google.com, juri.lelli@redhat.com,
+	khalid@kernel.org, liam.howlett@oracle.com,
+	linyongting@bytedance.com, lorenzo.stoakes@oracle.com,
+	luto@kernel.org, markhemm@googlemail.com, maz@kernel.org,
+	mhiramat@kernel.org, mgorman@suse.de, mhocko@suse.com,
+	mingo@redhat.com, muchun.song@linux.dev, neilb@suse.de,
+	osalvador@suse.de
+Subject: Re: [PATCH v3 07/22] mm/mshare: Add mmap support
+Message-ID: <202508210230.0Zc3YDIy-lkp@intel.com>
+References: <20250820010415.699353-8-anthony.yznaga@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e65222c1-83f9-4d23-b9af-16db7e6e8a42@cdn77.com>
-X-Rspamd-Queue-Id: 050641C0007
+In-Reply-To: <20250820010415.699353-8-anthony.yznaga@oracle.com>
+X-Rspamd-Queue-Id: 03EEBA000F
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: jjfeew4pi4b117ds6og59ttkh4gfgd8r
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1755716593-520565
-X-HE-Meta: U2FsdGVkX1+JNeomTagg8JYWXt4Ngugu272Y6K2EqluypHHehSitC4dZmIvXjYvp1qdfPHT3mEWm8HB0UzPi0Xsnq8UaEQhF855dFPerVFwKbeGAayvtU93S3kDR26iLbbAbKiQz7o6QB7kDKPd/Eazq7M3vTlxHoHRjzImyyh+Zw6zxiIkTbB1nF1zVvgJtE4kZ6+wohbwC7l6qtKctY+vJ9uoaAdIvnISmM4Yy3Kcu1D2AogAu0GxIo1jnBpZRyiROtJ0dH2mGkC9qwlFCpGaRvugysCgI9LqN61hvQYWlHhNplfeD8Ftne3xf4YzKI5r6WnqVlrVBVEJG7nWKMAy8Yz2x1Ua7+09r2LYuCKxcoMWR2nwJ4W0cBPk5UAvgX2ZtyyLfX5cW1jpWvCP0lfHutmeyQa7gHrL+RI7XiV4HRn13OLcRzlH7gcJjLYP9Ehx6jNG7XSQ7ESBlvucpVSD+bRkdzOwuYJf0sDHlRIdI+bu8rPIuMTYdEpJDEDBDC3fYPkDUIeWsmGgtlk3VQL/po8ZFVRBtjQGb/+NL02RSrL6GCxx4e90+R/NdWZLHeo5G00fpHOCJOW+EBpiQwXJStLKoSv9fhHbI44qDRKV7zK9WBH9bb8GlJAdSgvyPR/+6vLB0WHwxoTmEojHgkaUqvYOWrnf40sT9HqugyW7FuWYr00ZllN8KUJXqxDbkjQ+n2k8NkpsgxAFT6bne4FV3P4JFtqpt9FjqpyfKs5/5JVATXzqc+QlrCzBo4893aGjz7vTCWVbX60tCPDYARYr65rWEbKT/CEhKwvkPpE1CMKIdxnlrxUNH1fsdKj5209zB0Qqr+jUDLni/2pwURgMmtYlFF4nBmV+LJnWBWRzLpYTEBLWrP/9jK9T/0ntYHM78sMSW4n4l8NS7uuqNWvwi3UF228XUjLvglP1T5btQlqdFMzwIGKNsV/qNZEJalpPqf+LCKbxSLuBF0bO
- oJ57NELf
- 4hmVWpCpG4vhwPJNTMvDWID8FPrq3dN5bBV/TIFotA/nV297BWBDyopOFl1ASsFMZ6ewfEyCCAzPGzvY4umN2q3q9t/dPeVJLaD/TtsMhxxeajcX1CDdzMx7r0mOCCGyF0ADnNtHzCAyVIuw7G+CzF5vZPvoGwRc+IFah77d3bN4R8q4/77K/m1ELmvf3NdUJaXq/4DUnKavi1khfwnc+tSSlLRCQPAz0FL/TqG1PZQXAR8E=
+X-Stat-Signature: chz5xu4kst9t4hge4ejqtmrmmpwwgh1c
+X-HE-Tag: 1755716600-708225
+X-HE-Meta: U2FsdGVkX1+L/czzqcnvQ+MYKMXHkYAVJqbaebxidboOv+vx8HjRYICx7TDK47byKzYvMyvhS1IeXwlbryHoI1wcnM+zfCOGKtsAUok5xNMStxxQ2dTSW+ZrKjnGv7UuvOr0DL4sL9+WXuFJSkNj5xxU1ajiwCv/7EtSelwVJsvchDqYNa3oQoEV9Q0Pfi4hwzLErfjg6mPfrQczhc5k2NB3QkkPE3j3mZaMmE0zpOCZNMxbLaOgrUeuNWsiBrYhy7SpkLmOmZUa7wyaYJVju1nykm812oRuN23UwMFpPlwSUg41se2yRPOxRn6NNCq4Av/b08azNRZTwlPFF9PZH3OIlByP0G9qSlb1Fna5ImLeQnzkrxgOOuC6FzwjB66aDNE3kBPWrXgx62S9uaNV4VxguKgbQbrwkIRRh+h9aoDf6k/jW2hi6O/y/M20u/8nCGvpK2zP9IlvOxXXp0NnIhuz767P01iz+7RhktGSJbhKCov+rkxqdf3PmB94yxeDdFyxWnu20nTg+g0oyEV9c4m/dta2LyBAG7J9l7JBPhsPeloukM4XQSuk5p3FMmLOHfuwLP2RR+KPjuFQpM0X9HvjJxLd8VLsYL+6SBt0HoECbOrJKK+S2KVsHL1q9a3TdAYyQyyRSppbx8oxRPWyhCKjcStmGMsRtZyDUdgA12jMmMocCteqUlHXsg6+QDiFnRv3TvBhVuCncH1Y1RJw70M7rYI0KlqFZRAbtsoDS2/QRutFZtc+Z9i1hTA/As5HHfNoRQv0ghaGC+A26Nr9z+dnZQ0sZwEnhUvuSah+c4ZyrWdO9em2VDJ0+KQ8cqlfBnPtTY9DfJzyo0el9mw1vYYsSxHAVZDqnJWpykuZt7VaxVtLagmWeo0K4YXmUAo8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,21 +113,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+Hi Anthony,
 
-On Wed, Aug 20, 2025 at 06:51:07PM +0200, Matyas Hurtik wrote:
-...
-> And the read side:
->   total_duration = 0;
->   for (; !mem_cgroup_is_root(memcg); memcg = parent_mem_cgroup(memcg))
->     total_duration += atomic_long_read(&memcg->socket_pressure_duration);
-> Would that work?
+kernel test robot noticed the following build warnings:
 
-This doesn't make sense to me. Why would a child report the numbers from its
-ancestors?
+[auto build test WARNING on akpm-mm/mm-everything]
+[also build test WARNING on tip/sched/core trace/for-next tip/x86/core tip/x86/mm kees/for-next/execve linus/master v6.17-rc2 next-20250820]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Thanks.
+url:    https://github.com/intel-lab-lkp/linux/commits/Anthony-Yznaga/mm-Add-msharefs-filesystem/20250820-091021
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20250820010415.699353-8-anthony.yznaga%40oracle.com
+patch subject: [PATCH v3 07/22] mm/mshare: Add mmap support
+config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20250821/202508210230.0Zc3YDIy-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250821/202508210230.0Zc3YDIy-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508210230.0Zc3YDIy-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> mm/mshare.c:121:16: warning: variable 'mshare_start' set but not used [-Wunused-but-set-variable]
+     121 |         unsigned long mshare_start, mshare_size;
+         |                       ^
+   1 warning generated.
+
+
+vim +/mshare_start +121 mm/mshare.c
+
+   113	
+   114	static unsigned long
+   115	msharefs_get_unmapped_area(struct file *file, unsigned long addr,
+   116			unsigned long len, unsigned long pgoff, unsigned long flags)
+   117	{
+   118		struct mshare_data *m_data = file->private_data;
+   119		struct mm_struct *mm = current->mm;
+   120		struct vm_area_struct *vma, *prev;
+ > 121		unsigned long mshare_start, mshare_size;
+   122		const unsigned long mmap_end = arch_get_mmap_end(addr, len, flags);
+   123	
+   124		mmap_assert_write_locked(mm);
+   125	
+   126		if ((flags & MAP_TYPE) == MAP_PRIVATE)
+   127			return -EINVAL;
+   128	
+   129		if (!mshare_is_initialized(m_data))
+   130			return -EINVAL;
+   131	
+   132		mshare_start = m_data->start;
+   133		mshare_size = m_data->size;
+   134	
+   135		if (len != mshare_size)
+   136			return -EINVAL;
+   137	
+   138		if (len > mmap_end - mmap_min_addr)
+   139			return -ENOMEM;
+   140	
+   141		if (flags & MAP_FIXED) {
+   142			if (!IS_ALIGNED(addr, mshare_align))
+   143				return -EINVAL;
+   144			return addr;
+   145		}
+   146	
+   147		if (addr) {
+   148			addr = ALIGN(addr, mshare_align);
+   149			vma = find_vma_prev(mm, addr, &prev);
+   150			if (mmap_end - len >= addr && addr >= mmap_min_addr &&
+   151			    (!vma || addr + len <= vm_start_gap(vma)) &&
+   152			    (!prev || addr >= vm_end_gap(prev)))
+   153				return addr;
+   154		}
+   155	
+   156		if (!mm_flags_test(MMF_TOPDOWN, mm))
+   157			return msharefs_get_unmapped_area_bottomup(file, addr, len,
+   158					pgoff, flags);
+   159		else
+   160			return msharefs_get_unmapped_area_topdown(file, addr, len,
+   161					pgoff, flags);
+   162	}
+   163	
 
 -- 
-tejun
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
