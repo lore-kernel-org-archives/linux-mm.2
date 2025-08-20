@@ -2,116 +2,99 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 61CCECA0EDC
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 17:33:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CC82CCA0EE4
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 17:44:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F37FE8E001D; Wed, 20 Aug 2025 13:33:06 -0400 (EDT)
+	id 3DD598E0023; Wed, 20 Aug 2025 13:44:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0DA68E000B; Wed, 20 Aug 2025 13:33:06 -0400 (EDT)
+	id 3B4C88E000B; Wed, 20 Aug 2025 13:44:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E23498E001D; Wed, 20 Aug 2025 13:33:06 -0400 (EDT)
+	id 2F19A8E0023; Wed, 20 Aug 2025 13:44:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CAE948E000B
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 13:33:06 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 508451DD8C1
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 17:33:06 +0000 (UTC)
-X-FDA: 83797831572.29.DDC2B6B
-Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 6C3D7180009
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 17:33:04 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nh4kn7NG;
-	spf=pass (imf24.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1EBD78E000B
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 13:44:25 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B8E7EC05FF
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 17:44:24 +0000 (UTC)
+X-FDA: 83797860048.01.548179F
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E29A380005
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 17:44:22 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=0bnL8T2y
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755711863; a=rsa-sha256;
+	cv=none;
+	b=stW0nrfOjUtQIMOj2/5pDy1z+2F3EWacM8WDzTPkFJXE6JZww6Hfp+OZ3SIizgJQP/Ax9l
+	c+vDN0B3KxobJlhkXZ3gk47Xhcio3dH4AAT+cwsTP/BSjIjSQaSOC8N23OkPjWrXaDMgMT
+	CujYFXvpo8KEA0jyxfGtSRTQnbrKS4U=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=0bnL8T2y;
+	dmarc=none;
+	spf=none (imf02.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755711184;
+	s=arc-20220608; t=1755711863;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ThfuItRzO5dAi8yX67yobCtdK1/gMRrLN7ssTg7iVaw=;
-	b=q63n5w1Tz69D4wlT5Amzt31tnsdLhSatv87yWxKESh+f1xTjF6Zqbdc4H2bmUMM+liqdus
-	qTIV/WWicn+ONmPu5fFKup8yZasKHwQVfI3d9Nz3rMaA9xkskivSz0BfxdshkvGnzSgfwt
-	VWpk7UX3JiaZTWLzmNTW3EdvulzbV1E=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nh4kn7NG;
-	spf=pass (imf24.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755711184; a=rsa-sha256;
-	cv=none;
-	b=IqUoa+gj6gSqeMTvk42Ye/tPl0u8HDc9GF1W4u0MCDKg3QBry8hQOmo9dxjk9uYAsdvpmY
-	+c1Ij47oLOJs0OrEyU/9xB1XULM9u7xxE+mvO23MV1NmjSXMluj73zazhWcJ6PQIp9dTSe
-	5ODfm6Qau/mC9ZkbXQGxYBXe5nqcLgM=
-Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-88432cbf3fbso4169539f.0
-        for <linux-mm@kvack.org>; Wed, 20 Aug 2025 10:33:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755711183; x=1756315983; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ThfuItRzO5dAi8yX67yobCtdK1/gMRrLN7ssTg7iVaw=;
-        b=nh4kn7NGOqMxJ3r4qrj+tH7b1QR6hjM9c2Dl09h35ej43GTyG26CC2hfoA9/FbIBbV
-         mN6hVXsmU1ZmtaPN8wRVJqTO4rRCX0jZxtQgJZ7JgZ8ng+8YgAKuK95UXPyFn2BqQ0bL
-         ZkyxOTHgX9pdVFOsvhPTzQ8UPhiN+o/08mh1g98uVVJjCCwB15cgmx2YwG4KYaz7fyOt
-         7A94RmcX2M3BEWLc7M0jYHXUz4u/EqZKutUNCCmSHx+nayiTr/YjHQS5a/54GcOT6oVE
-         d/01HxwzKaoc48n39jSAQhw9UhUJgxjZya1a2B9fcd1FiXBrGk07q/cwOksS0TnTIu8A
-         LAdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755711183; x=1756315983;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ThfuItRzO5dAi8yX67yobCtdK1/gMRrLN7ssTg7iVaw=;
-        b=d3njRmm4/cLx7KwYdTRqxVmNLGNs/5NdiShvrN6/CjzR3xCgNWp1ZVhNhTgglTSlNK
-         9UuOmp0tElSeMM/utRPphDXptHWL057vWGhM8NkYUhkmOez6jHI445fuO+7/PLsGHiKB
-         Zw+Z6tLRRYDTvS1VI2odqeFOdFIj7IsYyv7u3HM7HBwebHR2h6jQPLN7nOUoEyMW2Yt0
-         SAaqHoDjl6lLORWCFAElyEvRDyRyQt9FrmSrTS8kgSHHsmeVff/11OTf1YSioag8Y2hQ
-         nUFDofQGz0fqNOX/C6OlvDU05XIoVZ6z4v/YWw5cmhVyYDGiwDYeVK+a+Klrkfs5Z5Y9
-         kEUg==
-X-Forwarded-Encrypted: i=1; AJvYcCWaq4msQOWAIkNgTmt3WoESwn+ujQWODHwUUMLPAHnLE5yt+bunN4DtK3kAuo+xpQrY2gPouNfd7w==@kvack.org
-X-Gm-Message-State: AOJu0YwgHsGOEXFlxU6xWWgwi5sjKYNhwVBfUi/X+0ZtJI0eiHvZLv49
-	EVigVrywBRrydGRvO4BYbcRFWf4Kds6SgaUyn2pWcLnT3q2BdZfGSqxoEzfi4vj0+YMmEHNFPJn
-	lTXDku2Ry8/5XXqFpAIt23hwjvb6C12c=
-X-Gm-Gg: ASbGncv5Vn2fwucwq8Rl/T7FMp9yiszYHrqAxVBP84s9yJb+eCJD9rAnP6Yq7dx0k9q
-	VtwG5pt7cQZVm8KXJO4dfgzOtSUhDv9fxpHnE+YHOgGmoKGta+tZejCK1LgZJfuz43lt44hO15j
-	SXBipx7BtZUbZ3reGz3T6lRMUgn5oCCKPVT0bug9vY91WKMhtXq1SbhSZOzex7hwZuAI/UBvrIb
-	lco
-X-Google-Smtp-Source: AGHT+IHo3KxAA012zFqs6RhvbLPpLx+6J7o9tijiKGSWLorPFqpg2/Omsh8aBWipT8mtpeYGOMKEzTXUFSLSaOXuzxQ=
-X-Received: by 2002:a05:6e02:380b:b0:3e6:7981:1fdc with SMTP id
- e9e14a558f8ab-3e67ca4983emr72265165ab.21.1755711183165; Wed, 20 Aug 2025
- 10:33:03 -0700 (PDT)
+	bh=YxAG2wevlF9hvSfOpG1gi4gKf2kHDvkSjadttXruPpE=;
+	b=6DslC4cIXipL7vO8bTNjejFf9KJidXPVUzlNHVm6UL6I9I8FP37Ew/cWsFASW1uWK1qYQt
+	Ve1Qzp+mE/zmEyI+PJwMNhSytxyz3QT9NHL8h61hsl/7K8bProW1jmUAJK6Y+pDoRh1BiD
+	32fVYB2V7QHDB2Ywrih1XRKfsCs589M=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=YxAG2wevlF9hvSfOpG1gi4gKf2kHDvkSjadttXruPpE=; b=0bnL8T2ybDOrHa+Py3KB+20XsQ
+	krFSkRJ/lGSHI9KlQ0qlkdhK+qS23YBluLAvVOyoBvbJO/SbTCQXDRBwJo0tZ+Cp1m4DSS1z7XGDT
+	bq75CSkTotCMGqtD4tBJ7i8YIpE632ix5UOtckpT48GQey1yMweypKEPi1eouIUYb+w6RTQ0TeOYI
+	wwoHU5dIl+eMuf1/t1xis+rSnKTjBKynLeo+mDeoVyVPXnDdZUOyF4W1BgoI2zlm/SJELWzpgpvX9
+	8tvSWxDqv45x4EHLAoK02HGSqLAaZNADQVCvJUVy3JC9HhNc1ybuyAFZufFH2NHAbbXOxL6igBxc6
+	4N59ti0g==;
+Received: from [50.53.25.54] (helo=[192.168.254.17])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uomrD-0000000Eaag-3xcU;
+	Wed, 20 Aug 2025 17:44:20 +0000
+Message-ID: <a68bf620-14b5-4500-8cb9-26a7b28af058@infradead.org>
+Date: Wed, 20 Aug 2025 10:44:18 -0700
 MIME-Version: 1.0
-References: <20250819193404.46680-1-sj@kernel.org> <CAGsJ_4ygTv1tCJeuF43NhRR4E0kiMLpk6i8c+UHoUMt6LXykww@mail.gmail.com>
- <aKUi7hvcaK0h0oMg@gondor.apana.org.au> <CAGsJ_4z6YvQULrEmNjFjLNrJ4RK6w0+d9uF2-7v06gOYirrYRw@mail.gmail.com>
- <aKUmyl5gUFCdXGn-@gondor.apana.org.au>
-In-Reply-To: <aKUmyl5gUFCdXGn-@gondor.apana.org.au>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Wed, 20 Aug 2025 10:32:51 -0700
-X-Gm-Features: Ac12FXwLFWidn2lw5_reaDVdpK_8xLH_KQmd5o4JTROLVpqWQ-9XKmGxaOyFOcM
-Message-ID: <CAKEwX=P9T315JcOBOBGK21Zk8XyDruMTv_XEPa0CuD=oAN2QYQ@mail.gmail.com>
-Subject: Re: [PATCH v4] mm/zswap: store <PAGE_SIZE compression failed page as-is
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Barry Song <21cnbao@gmail.com>, SeongJae Park <sj@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, kernel-team@meta.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Takero Funaki <flintglass@gmail.com>, David Hildenbrand <david@redhat.com>, Baoquan He <bhe@redhat.com>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: qchofywdtg3b8poneb6kz4qz5zwbh4ht
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/8] lib: Support
+ ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, james.morse@arm.com,
+ linux-cxl@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ Will Deacon <will@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
+ Davidlohr Bueso <dave@stgolabs.net>, "H . Peter Anvin" <hpa@zytor.com>,
+ Peter Zijlstra <peterz@infradead.org>
+Cc: Yicong Yang <yangyicong@huawei.com>, linuxarm@huawei.com,
+ Yushan Wang <wangyushan12@huawei.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ Andy Lutomirski <luto@kernel.org>
+References: <20250820102950.175065-1-Jonathan.Cameron@huawei.com>
+ <20250820102950.175065-4-Jonathan.Cameron@huawei.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20250820102950.175065-4-Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: E29A380005
+X-Stat-Signature: 365u65jo1noi1e3rk3ynmzhronqzgq3w
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6C3D7180009
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755711184-498717
-X-HE-Meta: U2FsdGVkX1+BtQHuQgRuQbVPouPCVrJhvXwDFoK7N2tIiAhP9FyfvEfeJFTvnKJnaPmm4xMixRUSQ/2TZho2engL5/lXNv4Wlfy6UZnp6tfZokX1UHLpBY0vPpoQLxW+mflwvRDquz3M4K9bPtHIU+KXGSjd4xcOlWwXATnjSboiyqfpR1P4/8CSp8EpvyNhqc0oWLMUMu3Hveo67ey+aLHdPIkTG2piMhGxYhOg4yGa8LbYWnRl40NfWCFPmgIJBHTES2912MGrvE3SHgzk+/Lsl1OgAxXtJAOiLvt7cwH8B8MUg4KwtSuDBO/UAiuhS24kVaMk51qm6b6MA12sQjTzXT4NGQCxmj4oUc8cYKugLyrSQ61LavYVcs0w+EEb+fFP/boJjGW82IA/odrsn2L2Msi5Z6XmcbkIAarrj1zWEowqXHhz78j+IfByQUGutcRZ4Zy1VNH8tCOKuJAuibrrvD8ud1RZ5LLGvA6nBNY74jCSLNSz7zfDVtciBX9H6LaaNXp0HVgmfi/BsBtpjpI8deNBfixIiFil/N7TKroSfWUi40g+khIgBMVB4F88P4nV+WoTY4qbuI8RKm5VtGv5cLCNVwSYEXbSf2fxIJAhSKITZR3SMj4pBebGTCTFoSp1D/KPVpcioseArFzRMqflYqq5O21dZUYhFz/zitTL8YJqRr9+jl93GVNjt6fjIjXYXakM+Of51ow264y5N0JPWRLQiiA5Eb4367SY98uAcUdWYyxQqOw7JhXi1ueuQOvAl9/IBmvaK2tMwuOgFK6kXIuwHHfY5RxQQJjdPP5XHCd4+MZlp+QxTnDObZmfd7j63uFPUXhCf7XfV9HwWeXhauZp7gO3VtsPhVqlS98dmzRj3NDt+y5xNR4ciAp+H6OsEuqJtUWsAYBorWehCvgeH/Em4APc4MGImMnIXqrwUHF6seZqyTRBDIBGvylUV4E/XLbS/N0FLGtxIjc
- Xv7m3JAP
- ltu6HCcdhUEBWQjzVbzkbEicm12oAgriUDPiStTZq4Ni+3wjEKbk08eh0RCj6s/hLU2mcN2kWyBfs9+LzM3QXjYRZuYyztRpXCIPsVH+H2qSKnCavLoCZtDGzeCbXO194+twPGeIvqm3quiL6FyvfLSwaBsyAwNZhvXfu0K4anc6tKVjCZuvTLbOUR3nKb3Ehz+W8gxyKXi2Ws2ts9kY+2dQnV7nWblICw2bylGiMv2cs/lJILDXpxrFxien5xWu0cxbjleXCSBgH6IO0hKU8PJbONW9Seya0C8tfSu9BfClm8dngBldEcOg6gIHh9aBkhCETcHURjZZ4bUKkpodOlraF4nmTOR7RD98UIKHg3RzwO5mP/8CMxLKkzUZfmzmSPX4sCtSo2YelCNK2UgjW+x6T8ff5C0aORxHwPZdk9wLapl9LLDZbGxP74IhfzBvY1vIkrWy01kTJIfwJ/iXUWlasK7lJmdyuyLfL
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1755711862-187456
+X-HE-Meta: U2FsdGVkX1+30sglEbejROau7qjvxN9+ff66UAryhi59H/PUwR33NLTFKj3ze2e9vXHuZ1LevE3qjXvyJzXeFh0IHOBFKIBEmZszoT3JIBjpPkasiyeSjc2ti3Aeygidtw5lH0YrMl6ERBCOmOOCN2qWhh3jMe22GA6yVllQs8XCDob7xMP6pBbsXrVTGR1Aex1wOxjxJ8bcJeQzOBnsSbpwTk1wGV6tGLZOHhbEOFXARjVgV7i/M/WT8bpXWifd5sm5W067LYdA63ubKKAvi3/Yrltk2zgYSvOrtrCVRsOQacnt4TT94I4TeAmS22RD7pB2NQLp8ZBLK1UE0AmUQZy50tOowyc9l2m5vtDwgFcgs6a8ofWlZHdhyoUuPeq532npkXZaj0L4s6kFYgeoYFYGuKu8qPduU2qJI8+gbokrLmdHRowNtQvcbotjKJ+a0OQdo81nU324M57tDJ8ahGNxh95GE7Dv3C8IT12rY9LrExXJq7ENrgEfb9giVXhu/7w5rfiiwsx6b0jXtvEFs5Iok5/3PY1wJJX/FVpxp0dE62PszBSDk9KJyvWre1kcj+zMQiY1FldFkRXEXNytC+Dvq3cTXs40NIkDf1JkW+Cy5t2X0E9PaBhaOO91gZNgVgwFWqHLa42Ph/pV7/P+xDwfulkwoGHMpfqz2JLWCsqrXNXNJwjODaEQcNbTiBKatYoqorSEnk+T3JpxpmFMsB+1Q8qAISRCxXWXNWLK+8MoEpWi3aFVyDw2zWaDfwVj7l5Y+6zjSyQCqNMxYaSSE2GVwJ5ITJYVDoPSFhB92AM9OEl9VcSutTEjo8ZBuxYWSs8aS5x6QnqtOkHCuEZ/VL09ZrGimqIePxd6sFADCvewoCk5nWjFrgdrM5GULBicSPpVDiSw6b2w9evN6by46R58I+y5wpHuO1VTtyukHNXvVoOcFyBe+Se77X7GSG40WdCMXgHX1VEzdd1vFrH
+ 7j6yNnNW
+ g55FJzm/vDAw/Bv6LC6skfQGpaHQClFAK7eW903T/+xMnK5GcYEginrR1TGMud0CuNoNILOPyVZV2w7yQCncXVtRD/kiY2ZzvVwgdGYCrMFeR4Gd/XxaGEPC5d8FEULpkQ4Ck0Lq2Gj7zsQcDyJw2PzpaHtqrgpnO+Jq/dL4M07PyUqzj0zF59HpgaECr2isdtUaFe3EbMRNcpbK+Wb03q3Hn15sKCu8u1cYnecWB0DBQJSNoerabEvQyy7gYkpTPTmV/RuVLPiApZ40=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,27 +103,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 19, 2025 at 6:37=E2=80=AFPM Herbert Xu <herbert@gondor.apana.or=
-g.au> wrote:
->
-> On Wed, Aug 20, 2025 at 01:34:01PM +1200, Barry Song wrote:
-> >
-> > We might want to revisit the old thread to check whether it is now safe=
- for us
-> > to move to PAGE_SIZE in zswap now.
->
-> It's perfectly safe as LZO was fixed months ago.
 
-Perfect. Then I'll revive Chengming's patch (see [1]) to reduce the
-compression buffer :)
 
-[1]: https://lore.kernel.org/linux-mm/20231213-zswap-dstmem-v4-1-f228b059dd=
-89@bytedance.com/
+On 8/20/25 3:29 AM, Jonathan Cameron wrote:
+> +struct cache_coherency_device *
+> +_cache_coherency_device_alloc(const struct coherency_ops *ops, size_t size);
+> +/**
+> + * cache_coherency_device_alloc - Allocate a cache coherency device
+> + * @ops: Cache maintenance operations
+> + * @drv_struct: structure that contains the struct cache_coherency_device
+> + * @member: Name of the struct cache_coherency_device member in @drv_struct.
+> + *
+> + * This allocates and initializes the cache_coherency_device embedded in the
+> + * drv_struct. Upon success the pointer must be freed via
+> + * cache_coherency_device_free().
+> + *
+> + * Returns a 'drv_struct \*' on success, NULL on error.
 
->
-> Cheers,
-> --
-> Email: Herbert Xu <herbert@gondor.apana.org.au>
-> Home Page: http://gondor.apana.org.au/~herbert/
-> PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Preferably:
+
+ * Returns: a &drv_struct * on success, %NULL on error.
+
+
+> + */
+> +#define cache_coherency_device_alloc(ops, drv_struct, member)	    \
+> +	({								    \
+> +		static_assert(__same_type(struct cache_coherency_device,    \
+> +					  ((drv_struct *)NULL)->member));   \
+> +		static_assert(offsetof(drv_struct, member) == 0);	    \
+> +		(drv_struct *)_cache_coherency_device_alloc(ops,	    \
+> +			sizeof(drv_struct));				    \
+> +	})
+> +void cache_coherency_device_free(struct cache_coherency_device *ccd);
+> +
+> +#endif
+
+-- 
+~Randy
+
 
