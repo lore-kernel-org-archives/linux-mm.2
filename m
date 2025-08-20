@@ -2,87 +2,88 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7EA3BCA0EDC
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 04:49:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A803CA0EDC
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 04:55:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F6188E001D; Wed, 20 Aug 2025 00:49:37 -0400 (EDT)
+	id 09E4F6B002B; Wed, 20 Aug 2025 00:55:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CE508E0011; Wed, 20 Aug 2025 00:49:37 -0400 (EDT)
+	id 04FA06B00D6; Wed, 20 Aug 2025 00:55:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80A258E001D; Wed, 20 Aug 2025 00:49:37 -0400 (EDT)
+	id ECEF26B00D7; Wed, 20 Aug 2025 00:55:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 707BD8E0011
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 00:49:37 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B32CAB8D4A
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 04:49:36 +0000 (UTC)
-X-FDA: 83795907552.06.272F164
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id AFF08140004
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 04:49:34 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QOrzfHuo;
-	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id DC8636B00D5
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 00:55:38 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 894BD1A038B
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 04:55:38 +0000 (UTC)
+X-FDA: 83795922756.02.F29C9DA
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 9C3A8140009
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 04:55:36 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HHcMRMXW;
+	spf=pass (imf26.hostedemail.com: domain of chrisl@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755665374;
+	s=arc-20220608; t=1755665736;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HhAj4XXy0tM9jv1kyPq+fVO2FoKk8jyT12ucKiLnDhc=;
-	b=tALK3hKEzp1/fBlH5rEWkcdv8l2+YbHNJUFH07U7oNBXK+e0xOgnSv88OpxwjIRvjhAg4C
-	W2sfzEUySZlyHTr3+8eL3B16bb+e7YutSgGRa0VTU9jqC9oWVBJw7QS6PM+OU0ZBul8UKX
-	y7cUkt5frq9XHdP6sHfwOxnwC4XyiWU=
+	bh=a3QLAOJYZDBzu1Z4/ZnA/ZtodhCvpRb/hpriExXSF6o=;
+	b=z/wGmBcpdAVRdczogdGLHN6qNe+Musmkevc6mQxqJO2Q/JLjdnIRcUocuzgtAjnyfhyLs9
+	O58+Sl62PG8FiYtQ3F1jsmPWnTUnYv5fLWmbVWCW80AFf//jdTntSACgR/0gC5BPkdiBj5
+	TF0Yo0UQqSPgBLscfPmh23f0Ft+PrII=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QOrzfHuo;
-	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HHcMRMXW;
+	spf=pass (imf26.hostedemail.com: domain of chrisl@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755665374; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755665736; a=rsa-sha256;
 	cv=none;
-	b=bpK7d1OeHRtByuUwEasvp/+f6Qp1wvQxZTUOBBirJk8Z8j013t8TJHIceUlKtw5cK72jq6
-	pWZYPiJWab79t0/5C2sT916EwMvYUrODS9VYycw6xOtBUziXDjBkgZdF9llAQRw7m16cUl
-	ba9Dc+wMEV+L3Eq7U45tmzpwJQUCdZY=
+	b=iOxkvJcblEO96/KbCezWIeQ2GENK3hSsOnpwro5MvYjOn4TLeI0CFJ0fMSfrl74UIzyeqy
+	8YBelD8YjIPjaZ48NJxHJHK2O2Ik2Cuyk6c82mYPqPQgWz1biIMsGcDZpCTAibWy3PQK3T
+	X+RgZRtUDcjYium5opxwgsIG/HlffxI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A4BBF61432
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 04:49:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C128C4CEEB
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 04:49:33 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 951595C62E5
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 04:55:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19F8C19421
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 04:55:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755665373;
-	bh=P4OZPdJzjtMd9WS2zQ1ChyG8f5e6hQg5Pc1tc9hQJyc=;
+	s=k20201202; t=1755665734;
+	bh=8/ecel6coNf4uRcsoSjGxroeWHJANhH34L20ONLZsCk=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=QOrzfHuoxKtlOSwqlv+bO5TZbkjL2fOmmPykviKXKLcMVLJVK0QmzaMreKsN1Ui/O
-	 ULwduBlATxd9LryNI8x+8m8CyXz/oIp7mgygYXkSKHYHldCEAtXrTnM6CHCQ58/8Yg
-	 tyr75d4llJJHTyKuPHSxVaY3B2bEK/Z6Lxx8kxXGzZVzXvcOzKK5AjrsoJ+97Wr3RG
-	 pbWLl58UzaeF3qFyH1LNpaeQE0drthQn3jobMhx8kpIPvMvSyesCQgECwthMSBL9VZ
-	 uDTPXMks2eCxc2DCjXhB4azIWM4ju7nnOzQnS1EdxNsxQIs/h4G+m8Wk1byHemQJyk
-	 svCGGgderZCwQ==
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-459fc779bc3so27955e9.1
-        for <linux-mm@kvack.org>; Tue, 19 Aug 2025 21:49:33 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVQA4NQ8M0sR4Jok5buRY5zYCQE+NSunx2RdEsIxy3txOt9+5Y8fg3s2rjSc+wpqUec42kpONLECQ==@kvack.org
-X-Gm-Message-State: AOJu0YzyN78TdLb038YwN0YaNlOIPtK8ZK1tAuJgZDCUYKOSPqxEsZN4
-	WhyqGG7NrmyEHMOtdXk/7T2/MXz2wVNdo1/qMtk8nggR6BvciDusWqjyBMp9pen1lZRCgtFDN7i
-	8whe/t6TuNS81F5qFXYSu6MX0eghdvLg5SClYzNxg
-X-Google-Smtp-Source: AGHT+IFCBaA1civFtdIb6102WgW1wwKDHrQ40ZAiA8MIqsnpCc72+2FUaZhCf8KxfJEP3xFxhcGRE4HbOsCbAWY3ri0=
-X-Received: by 2002:a05:600c:c106:b0:459:efb0:6687 with SMTP id
- 5b1f17b1804b1-45b4777c108mr750575e9.6.1755665372081; Tue, 19 Aug 2025
- 21:49:32 -0700 (PDT)
+	b=HHcMRMXW09/ZHyIxyuflpZFRa/kqPw11/gYcz4wcRrp5d1E6ukRIcnY/W1BOTf4Ts
+	 R00ZicZxyE548miv72/wSIom/Auvros2Xcrb8smZqQ8d9wRQGQXz18FWSTavAeLN24
+	 UcwI/UhOuTfpdg6MhNm4mtBjpZA4i5UN7C+5N4ljAhD/PWp5w1mBuNG4mAyClzh/fU
+	 WfBgABzKtakxQGQjWdBTogrmZprn1NyYFkSMnyOG47FrZuCbomnCut+hFktcnSpYUw
+	 ZBo04sgSDDzYQ7nrMthHMjq+w2mZWBSknCEwZXeVZAYc97H1OMnhXjOi6PcO5FE0UK
+	 BwIh60gamPclQ==
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-459fc675d11so28285e9.1
+        for <linux-mm@kvack.org>; Tue, 19 Aug 2025 21:55:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUCMXdSv2mqZPi0Wa2mFzvvvJPDdqN8eGOMqZd9ICXGf8DGxG65zBlrPYYsE/oHKjOUD/zas293Kg==@kvack.org
+X-Gm-Message-State: AOJu0YzQYpwB1E1G6GfblSN3nkeu+KolV+cO1AJ5vdxfD9vceXyc2GCO
+	52z7+xSR2xncDUubYzIos2X7HQ8oCDKSeXu2ynPtU5r/4MmLYiko+pDF8JdJpf1Wdsk8o501SS0
+	OnrziiNWskXNcIF1v0uQuhN1ulXQ+QIibT4R4xa2X
+X-Google-Smtp-Source: AGHT+IH024zqFBB0pYMG9UnGJoj/rOLVe3ZmOB5UPOMDvOAWoOoyAtRYfd2BCsDsJM3UbRe0N84oso0UFp3FJ7C0dAc=
+X-Received: by 2002:a05:600c:46d3:b0:453:672b:5b64 with SMTP id
+ 5b1f17b1804b1-45b47743f88mr1123885e9.2.1755665733534; Tue, 19 Aug 2025
+ 21:55:33 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250819193404.46680-1-sj@kernel.org> <CAGsJ_4ygTv1tCJeuF43NhRR4E0kiMLpk6i8c+UHoUMt6LXykww@mail.gmail.com>
-In-Reply-To: <CAGsJ_4ygTv1tCJeuF43NhRR4E0kiMLpk6i8c+UHoUMt6LXykww@mail.gmail.com>
+ <aKUi7hvcaK0h0oMg@gondor.apana.org.au>
+In-Reply-To: <aKUi7hvcaK0h0oMg@gondor.apana.org.au>
 From: Chris Li <chrisl@kernel.org>
-Date: Tue, 19 Aug 2025 21:49:20 -0700
-X-Gmail-Original-Message-ID: <CAF8kJuPNjZc39xHx4NEiymzO29HkLfk9dFYXSu1vZ3tu9VeDvA@mail.gmail.com>
-X-Gm-Features: Ac12FXwEsBGmmhpKRLWis8jHILZsWH0UuSzOgykLKT2AqKDYJihra3lilyoboK4
-Message-ID: <CAF8kJuPNjZc39xHx4NEiymzO29HkLfk9dFYXSu1vZ3tu9VeDvA@mail.gmail.com>
+Date: Tue, 19 Aug 2025 21:55:22 -0700
+X-Gmail-Original-Message-ID: <CAF8kJuMepN=-HPp3xqvzNxfrtHZp_2DwLp-b=rMRpsJ=mgKSJw@mail.gmail.com>
+X-Gm-Features: Ac12FXwHHeNsRxjdjpScCgLpGAs7xED92MNZ42-dt7hDOrZgQ0ynOsyqaYsS7XQ
+Message-ID: <CAF8kJuMepN=-HPp3xqvzNxfrtHZp_2DwLp-b=rMRpsJ=mgKSJw@mail.gmail.com>
 Subject: Re: [PATCH v4] mm/zswap: store <PAGE_SIZE compression failed page as-is
-To: Barry Song <21cnbao@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, 
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Barry Song <21cnbao@gmail.com>, SeongJae Park <sj@kernel.org>, 
 	Andrew Morton <akpm@linux-foundation.org>, Chengming Zhou <chengming.zhou@linux.dev>, 
 	Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
 	Yosry Ahmed <yosry.ahmed@linux.dev>, kernel-team@meta.com, linux-kernel@vger.kernel.org, 
@@ -90,14 +91,14 @@ Cc: SeongJae Park <sj@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>,
 	David Hildenbrand <david@redhat.com>, Baoquan He <bhe@redhat.com>, Kairui Song <kasong@tencent.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: AFF08140004
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 9C3A8140009
+X-Stat-Signature: f6iq6d4e44z3jgopito67edj7nqmdun6
 X-Rspam-User: 
-X-Stat-Signature: fss9poje9tds6gqwas3ejaj89bmooyxg
-X-HE-Tag: 1755665374-670799
-X-HE-Meta: U2FsdGVkX18wLjy1D089wC7hC1VC0JSUYKFgCVJCaPOptPssGN2qEQ1MDY5zjsNzKKQogmW/1QjIK/9kyKtasOsNLwelQH5gL0RQ68v6O8zbwJ0XDSvpc37c/CDD8jF2rPc0lHW7oHgzXtz2MmaPpGfjEEl9Z7lP7+CplJV7vDgSbhvkudj5CKAafKzP9XraCyGQ/I2h2fFkIW9DOdKMsPP/5PhZqSmzJyDHqqTRuiR8SPMAuqgD1k6A2IElcHDBFwXg6tkxkfEqqnv5dMHFZHGkslZ3smIcYOMK0akyB+bIw7eKSPqVqeVyk/NzNX2GXMyPuAnkY+4NyXWl3FJ9shHUy89vH7zanv1J08KAuAvp8twWnjgFiQxrj/tmw37Is3MU4J74Zjyg7vNUB1sSzxpc9y5LHiRlwpxIPyUnRIHvko2fZbQ5WZ298ub6PNoj7tR/uMUMfPiZCFTJYZg2gidMX9amXVSaCxMZExZDKpNUQimairlU0RfuDJkDVgmv5ExQdSzBq1p7EZ+cWklijhzfberH3Xo/VpHBCcObeC33AlovTHvYPniYbN9Sh1Zwq8xnL/S0YDapJJ+k8r8UNHmpfJCURPzt5/tD5AHSPtyeOeh3x7JCe+BUGgKaer4ImJq1rhFsRmt9twoTZGQJ29BwZRZa3Bmpt5LsYvMXYwyw+93Y2Y40ai0wInrtDfCtT/ZxeSjUCB341/cf0vjrp1lzdYTZr9xHtqSkkEV2pZxQVGSLq7Z12tm8131/DveCJPMgKavdzOxLR9+OuBVV4HclLaHHb/xFrFzmN5F8rPnd6oz9Qk/S1KbfMOslFIqyJesHyyi/QXA7fOQ5is51zEjyLF/IpZDltTfd3MfrOEo3lPX0Yt4xRNQgqdM6BNFC9wzY2bSMhZHhUZcGs6I4SoC5mveEMub95iPt/1V7eX41NjAa+bYmUvlJfqHGgciodVJAkn5z9MH6h1Rl0Ul
- rwrj42bW
- cDxRqQQoZc3IhJD/xvMsyLfrepVsWk+LP1b+I7eYNS+8vvNnUvjG3w/2eSMy0vsS5WfqqwS1mj//T7yN5gwL0/UDLUBSFjfi/P8Z9PozQpotnUwwL4IITYwKFSZsbIuW3EAHo2nsdLxFGkDL0mxGcSHiCkSFsDCg6qORIcE5KSE2D5263IQA0ZJlE1SHs8UtxMFkOW1D1XbiooidDdxkCUzd6dItonplB+Na7MsNBy3KMRnXFGyCxL+J5MrfZG7bzWfAnr+zQ8AUG9O7AWSN9sd6mjNzSRcyEDuPVNfkyF96RBtVKWQXf+18Ntl7WfOat+ScGmClbSEMhklogctaQ93GjqmDkFML0DjqTFAY/sNaU89JjNM7KFH/VHYHsfYal9njYJDnGlaj/x3gAhXAynh3F0A==
+X-HE-Tag: 1755665736-803549
+X-HE-Meta: U2FsdGVkX19NVSCtUUSmq61oGl1VKa42k++7BJcejogSyX0hBvk/0eTKiynV+p+rHpttDA0C9Oh0ap4OgO9r66VCwgtrd3TrHujezoVOcXJrtM6h/8N3c7+AxvJSbnz0ZHYuRVqkp/jeN8AWTwcHpRDEAalbWjguYSaszAC9t2QoVy7pUIrDmUREg9apn8AVYOFNTOWEDJGt3ZqTHnlM127Tnol094AdpAJLpPjB66gYqG8/aKpdApBuuXbjBdxbR8wMw+o02jvWUMNqnjzMsI3kC0hjko2KfxT7qGE/ySaLQuSfIiRW1vO778jmFjtKYObMlLfnc8xm8LtTtj2iUUedvYnNCdguEAMGUYfSjERuAKwOb06CGKd9jarK5nWuqcoCSqdZzNaijEpuncaspLEJW7yA9JNaB41fQAhsMfmhz3EXtbx9dyRyAMf2iwsBZInj1U87DRK9OqjEU9800eop1a+wQYzhuucNQf9Oyqie2cfe7DayjZkYr8JByQEHn0cvDtVQzXuVvR2sXhtfcuFMn94uEYR0VtLm5/DItw+DKg3oak1rt7Q13IV7I8Be/NiEV/pDK3O4EaoYzYskqfcbHfQHwlcVxauBA7vA+uSPZIMIDmsAyPOAm7RlirYrZp/ri6GZvMotLsk1EBGEKHII2lePnyB5kbcLSzeP2abh1FCVyOPAiSSkGez2Oc2XMGiJM4/fbxRM5lCQhVxYgbEQ+xN5IJYu7o7b4VwnVyDErQv/DlEZAwv9yieka/FIyjdsJ8wSnapq8o8xt5GxsVuwXIRPxJ+uwpG7am4C6CyTokx3hTmpC5rfcUXXOEgeaF1dIMlwG/C2Wdsm0Xp7R57TxecoqxoItlkiHsETgObxcSiLGVXqCeMKOj8QgD0HHHoglbFxD6yqEf+pISeNEZ95ihYLWAzMNGY5eZIseSKAlViILYwtRKI+DKHIISO+92bFZ70JJIMmAjbm3aj
+ JAED6B/Z
+ nIBfPuYw7gpFxhc2sVHEfsbh/SkOv/UEwgl1q2Er9nRBJXhP+d96Mu16esOnqYxO/k5mQQ2WbEZ0n+Yb0V03u//rsRTPcWMFKqkvaOe81+TOQl9Rka5vzA98tNXJr5ZXfHnId8s2LL6oipB4zVu7tn/hzvzlBFaxZvzGS7SWNpAbROIu1d6YaW+xQZ3h7HxnHSc0Fre61WN0kGJoc3LgFOc73FWlK6XU26/tBvfFjwMAwzQVb8ziPUAhIusGGxCi8yQWq0Uv5K64SomhtpVN19I+1DZytlljYOq93rflTPXv2lYTMu3gl4/th2nKycoJFpg/XG6bfVylvrAW/tRbz/drYfMiv5CkT+Z+gFPWXxIPWdriK8xzK+hiUK2Uzy5x1vnS8x/an+lHHYto=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,66 +107,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 19, 2025 at 6:13=E2=80=AFPM Barry Song <21cnbao@gmail.com> wrot=
-e:
+On Tue, Aug 19, 2025 at 6:21=E2=80=AFPM Herbert Xu <herbert@gondor.apana.or=
+g.au> wrote:
 >
-> [...]
-> > +
-> > +       /*
-> > +        * If a page cannot be compressed into a size smaller than PAGE=
-_SIZE,
-> > +        * save the content as is without a compression, to keep the LR=
-U order
-> > +        * of writebacks.  If writeback is disabled, reject the page si=
-nce it
-> > +        * only adds metadata overhead.  swap_writeout() will put the p=
-age back
-> > +        * to the active LRU list in the case.
-> > +        */
-> > +       if (comp_ret || !dlen) {
-> > +               zswap_crypto_compress_fail++;
-> > +               dlen =3D PAGE_SIZE;
-> > +       }
+> On Wed, Aug 20, 2025 at 01:13:13PM +1200, Barry Song wrote:
+> >
+> > Let=E2=80=99s sync with Herbert: have we reached the stage where all dr=
+ivers
+> > reliably return -ENOSPC when dst_buf is PAGE_SIZE but the compressed
+> > size would exceed it?
 >
-> I=E2=80=99m not entirely sure about this. As long as we pass 2*PAGE_SIZE =
-as
-> dst_buf, any error returned by crypto drivers should indicate a bug in
-> the driver that needs to be fixed.
-
-That is what I have in mind for that counter, if that counter is not
-zero it is something with the crypto has gone wrong. If we are sure
-that it can never fail, maybe we shouldn't check the error return?
-
-> There have also been attempts to unify crypto drivers so they consistentl=
-y
-> return -ENOSPC when the destination buffer would overflow. If that has
-> been achieved, we might be able to reduce the buffer from 2*PAGE_SIZE to
-> just PAGE_SIZE in zswap. There was a long discussion on this here:
-> https://lore.kernel.org/linux-mm/Z7dnPh4tPxLO1UEo@google.com/
+> It doesn't matter.  Software compression should never fail, and
+> if it does fail due to a bug, that's not something that the user
+> of the API should worry about.
 >
-> I=E2=80=99m not sure of the current status =E2=80=94 do all crypto driver=
-s now return a
-> consistent -ENOSPC when the compressed size exceeds PAGE_SIZE? From
-> what I recall during that discussion, most drivers already behaved this
-> way, but Sergey Senozhatsky pointed out one or two exceptions.
+> Hardware compression should always fall back to software compression
+> in case of failure.
 >
-> Let=E2=80=99s sync with Herbert: have we reached the stage where all driv=
-ers
-> reliably return -ENOSPC when dst_buf is PAGE_SIZE but the compressed
-> size would exceed it?
+> IOW all compression errors should be treated as incompressible
+> data.
 
-I agree -ENOSPC should treat the compression ratio the same too low.
-However, is the crypto library able to return any error other than
--ENOSPC? I am tempted to do something like BUG_ON() or WARN_ONCE() if
-other errors we think are never possible. However even the BUG_ON and
-WARN are discouraged in the kernel so we should handle the error. The
-one error is we can log it and monitor it to make sure it never
-happens.
+In that case, you seem to suggest that the crypto library can NEVER
+return an error other than the dst buffer is too small. In that case I
+would suggest the crypto library remove that free form error return
+code. Just return true for success compression or false on failure.
 
-If we are absolutely sure the other error should not happen. We should
-remove the free form error from the interface to reflect that. Make
-the function should just return bool success or failure as a buffer
-too small.
+It is also strange to return a freeform error code and declare the
+caller shouldn't check on it. Ideally the caller shouldn't warn or bug
+on it, so it should handle the possible error other than -ENOSPC.
 
 Chris
 
