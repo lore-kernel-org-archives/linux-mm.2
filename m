@@ -2,80 +2,80 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C9751CA0EEB
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 01:05:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5CE01CA0EE6
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 01:06:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E26A56B00D0; Tue, 19 Aug 2025 21:05:38 -0400 (EDT)
+	id 4D7E16B00D2; Tue, 19 Aug 2025 21:05:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD7A56B00D2; Tue, 19 Aug 2025 21:05:38 -0400 (EDT)
+	id 488676B00D3; Tue, 19 Aug 2025 21:05:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C78D26B00D3; Tue, 19 Aug 2025 21:05:38 -0400 (EDT)
+	id 3514D6B00D4; Tue, 19 Aug 2025 21:05:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B12A86B00D0
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 21:05:38 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 826AC1A02D0
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:05:38 +0000 (UTC)
-X-FDA: 83795343156.29.93A8D84
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 207916B00D2
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 21:05:40 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E1BFF1DC66C
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:05:39 +0000 (UTC)
+X-FDA: 83795343198.08.FAFDEB7
 Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6E18BA0009
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:05:36 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ozxUXBvo;
-	spf=pass (imf25.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
+	by imf30.hostedemail.com (Postfix) with ESMTP id C51B08000E
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:05:37 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=kqZ1Qy60;
+	spf=pass (imf30.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
 	dmarc=pass (policy=reject) header.from=oracle.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755651936;
+	s=arc-20220608; t=1755651937;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eSh7Z5LIKWQz5MJlTe0n+mPXy6c+OfFvOssfN/OYZ+U=;
-	b=j4O5hHiBAMEnW7RaPgeAiFcnLYI42AgpYzRDspQdeN5fUC8v4wtuzFVhHr1iFFvVCTh0Cm
-	IC/O8Vs14W+1zv1k3fOsaplbltwO/sBilTqY598Vpx0nnGvpGiRxK+uIiHLn+LOfxgn5dt
-	e3D6g38UQTltUPDWNF0aqdBMBk4fsc8=
+	bh=GNBhoc+YcWSTKbxc9VAOMiT6S5zpt8f2lVNd6yhPsGs=;
+	b=JAfb1uaDym0+9I81zBC4uc/Sa5ZMKqYfh0X0+vSFjDosaIcL9uraKPa/ofU2Bmr9cez+DI
+	jUcE3QkqVQzTQlQ0bHfKRMoVhYY0l5+68B4SxnXSCY3SYXSam48wWm89Y9NQOwRwsBNMDr
+	afa2dK1eJbEK9wM04SbLejDA7VdfEMI=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ozxUXBvo;
-	spf=pass (imf25.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
+	imf30.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=kqZ1Qy60;
+	spf=pass (imf30.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
 	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755651936; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755651937; a=rsa-sha256;
 	cv=none;
-	b=jxxk832LJYUR6N+wz8C/Ln7BYyyORebhV7MpDkpxsZNgmTkD6mu1jQAYMghDoNs+5pIKeX
-	OL4o62dN0DNBJDywfKWhzaAuwS7wMRvih7gW9aWm3AKg0azZAJWGc6X44aZbca+SF5SFxu
-	LL20tHs7zmnbTnlplxnCVvaGMwp9nBQ=
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57JLBn4r002950;
-	Wed, 20 Aug 2025 01:05:01 GMT
+	b=2hwgczfCRsMSH4d/iaPtU7SdQyrXLuKcCTOZIobJiRdhpBfU9AJkv15FgpkF2/JwGmE6S2
+	vp9Vn3g8GhcjMJ2UysAYGT15vZd6cwzWRS9yGsn4V+IkrG0iGkF6K2XfoIY07p69eyCAoy
+	nODRVnkjyRHE7Y/3RORvou9ts8lJsM8=
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57JLC7Jg006874;
+	Wed, 20 Aug 2025 01:05:13 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2025-04-25; bh=eSh7Z
-	5LIKWQz5MJlTe0n+mPXy6c+OfFvOssfN/OYZ+U=; b=ozxUXBvoCo7n4QRzMHRtg
-	UA1ZigpOutCYZOWM0/c6crdoHv7J/n0fMq7pTwoPWLSFgpKjs32ExntMFlSDSPCH
-	FJGJkqpf0gykyDCAk9f1WI/EHg1pdQlF99pRjAQqd7+reRjWy+P48UVSixluV9YK
-	dChXTluN+NvHeG9ihbKo3I2aRHc3vl7vIx/JPEn3+sDAb575drdnIWuKyIoz5RvG
-	CQtBImFZmJ7kbhlvEQJ9mhkLwGsitk7CbLlTOSIddvapixy7cHrdANhFR3PWs2ip
-	umepQlFnkNWhNMmFgYrlysUCSG0hu5U19bA2Ph3Cec+CjezFaQrN5jFrD7w3KquU
+	:mime-version:references:subject:to; s=corp-2025-04-25; bh=GNBho
+	c+YcWSTKbxc9VAOMiT6S5zpt8f2lVNd6yhPsGs=; b=kqZ1Qy60fgqJijj34CYnH
+	mnn8DCBFkvJ8aDaasVhFhShGR4dHPh1Mvx0KesTuKOA2zROjrhn71WJedww8WxtX
+	kbAMmdurLhcCwKbBYCoNL9FCaQHEtlDSWT8kKmpKo1GgdJTnfRJr1qOQbo34pLpn
+	/n6XScPHYwTjF+qgLWoJRJuvZcga1Fl921ChfcT84r6WYs95cyRB8QO3vPgYlL1k
+	s7yTn7DvGY8GvFVh1hvj68p23sOdR3JBMhzlV9GYw066Qcp3T3ko0d6mBIZELu6h
+	9e3rG1m1+hxRxPe9W0jMNKE0g/R539B3BzxjhFEorfGEWrBGvz9Qvq1z7ZASPo0E
 	w==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48n0tr0866-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48n0tsr854-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 20 Aug 2025 01:05:00 +0000 (GMT)
+	Wed, 20 Aug 2025 01:05:13 +0000 (GMT)
 Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57JN39ek007104;
-	Wed, 20 Aug 2025 01:04:59 GMT
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57JNwUoL007361;
+	Wed, 20 Aug 2025 01:05:12 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48my3q2a12-1
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48my3q2a6x-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 20 Aug 2025 01:04:59 +0000
+	Wed, 20 Aug 2025 01:05:12 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 57K14NdU011685;
-	Wed, 20 Aug 2025 01:04:58 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 57K14Nde011685;
+	Wed, 20 Aug 2025 01:05:11 GMT
 Received: from localhost.localdomain (ca-dev60.us.oracle.com [10.129.136.27])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 48my3q29gw-14;
-	Wed, 20 Aug 2025 01:04:57 +0000
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 48my3q29gw-19;
+	Wed, 20 Aug 2025 01:05:10 +0000
 From: Anthony Yznaga <anthony.yznaga@oracle.com>
 To: linux-mm@kvack.org
 Cc: akpm@linux-foundation.org, andreyknvl@gmail.com, arnd@arndb.de,
@@ -94,9 +94,9 @@ Cc: akpm@linux-foundation.org, andreyknvl@gmail.com, arnd@arndb.de,
         viro@zeniv.linux.org.uk, vschneid@redhat.com, willy@infradead.org,
         x86@kernel.org, xhao@linux.alibaba.com, linux-doc@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
-Subject: [PATCH v3 13/22] mm/mshare: prepare for page table sharing support
-Date: Tue, 19 Aug 2025 18:04:06 -0700
-Message-ID: <20250820010415.699353-14-anthony.yznaga@oracle.com>
+Subject: [PATCH v3 18/22] mm/mshare: Add an ioctl for mapping objects in an mshare region
+Date: Tue, 19 Aug 2025 18:04:11 -0700
+Message-ID: <20250820010415.699353-19-anthony.yznaga@oracle.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250820010415.699353-1-anthony.yznaga@oracle.com>
 References: <20250820010415.699353-1-anthony.yznaga@oracle.com>
@@ -109,28 +109,29 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malw
  phishscore=0 bulkscore=0 spamscore=0 suspectscore=0 mlxlogscore=999
  mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2508110000 definitions=main-2508200007
-X-Proofpoint-GUID: DdG8eFm3x5GuGQmLEDIxP2XBUph5-Pkq
-X-Authority-Analysis: v=2.4 cv=FY1uBJ+6 c=1 sm=1 tr=0 ts=68a51f3d cx=c_pps
+X-Proofpoint-GUID: 6KYLXE3TpaFgkOXiCEvekb2ffu_D24DL
+X-Authority-Analysis: v=2.4 cv=S6eAAIsP c=1 sm=1 tr=0 ts=68a51f49 cx=c_pps
  a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=JfrnYn6hAAAA:8 a=yPCof4ZbAAAA:8
- a=8yVM5d_fee57hvELVi4A:9 a=1CNFftbPRP8L7MoqJWF3:22 a=UhEZJTgQB8St2RibIkdl:22
+ a=2OwXVqhp2XgA:10 a=EF7ItLl7AAAA:8 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
+ a=JfrnYn6hAAAA:8 a=gkfpIXjfDrXi2JZSh4AA:9 a=lqcHg5cX4UMA:10
+ a=KzV_IjdM9kfMg8rc9Rf7:22 a=1CNFftbPRP8L7MoqJWF3:22 a=UhEZJTgQB8St2RibIkdl:22
  a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=QOGEsqRv6VhmHaoFNykA:22
-X-Proofpoint-ORIG-GUID: DdG8eFm3x5GuGQmLEDIxP2XBUph5-Pkq
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE5MDE5NyBTYWx0ZWRfX7eSvXIMaq74g
- MSb6UQgPEncgspwK4IRk8qKGWMQzI4JGbGk4BatH1QQHsui22yLkpZPVPBPQfjqtQTiN0ep2k6W
- M6BQcIe2fbncW7jvgeClOtolBvWg36AkdzmHVCZYxHoIabcTkTuW5C00CavuIKXOupPDyPuylCr
- 0kVj3XXcYjB6JzrYMH+I34DsiHKFx4AQk2Smv4j0zuzMYBCPByTBDYitjZMeGOCn01VjXUmt3E0
- xFS7/qzSGje+Ru7jKI4IycPp70kZ/cyneEKFc3X1S+M7iCY4UitPa9HOLiOFM1MvWl2jgKpMid+
- X79yW5wkWL+tSEg21KdHvEWTIEV8J7ysVSTqAkR4juZFr/8D/XZXASSoXq4vXEaeQq/PjzyMAyJ
- kybryL6bfrryWTcTA9aJsKRB/ZQeIw==
-X-Rspamd-Queue-Id: 6E18BA0009
-X-Rspamd-Server: rspam04
+X-Proofpoint-ORIG-GUID: 6KYLXE3TpaFgkOXiCEvekb2ffu_D24DL
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE5MDE5NyBTYWx0ZWRfX+xKyLrwWzz+S
+ DkBTmG7J0OyaAKxYPFlj+zmqZqkYUQsJBWCr0l7NpA6HStjKdLnelBOuauFwZHNl1KMK+FU2aag
+ IM7UTYQSxuaqF3XoTGeLQWlhJGBQgQz+ig1fvMNqUKl/J7JUpydagUZP53hbjErCPC/UKuUiF6r
+ 6xnSMQXe6fknnuIH8H6FGDxT5cQbuEc0iyQDzDpJyyezoy9e9QbZ6QBz5YsqjKmoppIYUgk1cmS
+ SjobAvchPfXIfHnRH8+RlCJNOo4S1vP2WwLhTFufqvycrf78FhGwXTA0jemhAtJq79rNimtwz/I
+ ntyHr4mrdVf0gPiNjA+gTolI5/s5/ZJ4fHYQ0WINLUy30aueKHUIPqg8fzIXTekxzHzgjRzTfwW
+ CmUog9/8KoeuRkB/tzd7fpYBWjP66A==
+X-Rspamd-Queue-Id: C51B08000E
 X-Rspam-User: 
-X-Stat-Signature: nqnim3pj4ra8wwkrerh7txzt4t7sz5ii
-X-HE-Tag: 1755651936-622385
-X-HE-Meta: U2FsdGVkX19Or2j6hgWxn7dYHM/mLMVjeKHXFJICIOe3dv9WwTnHVWYD52bH0sjScRAdCtmDLhhHZjPEjQ/TKB8bEMT+zN9MCVNfhj3DO38uNGug6A6yjZ/w43QnFJ83WGxy5nHGKlfyn6lgwvPnaSv5XfWv61H7mVqs41WGnAb+T1WAIT1pzTfIbmRlKcuf2loUoOeA8Wlf8fJC9JEKSqfQsklr4FWFJ3Ge12akjLeU3zHYYPkI0C5eMCgIYyWjEYdM50WPtWKVO2ni5DFKQvzeveMCW+uiPGWE8dk4Kkt2qh8rR95pYuQLj9+gdMXK+FlMMlXn9zHt+KXqc3VWZImODSG20ioQYU0B002oQXBvbzYieFqzlFrJ+7HRYAc7LpVYUJUqBB4twhHCyzMcZeFIYrxADlP6itBAsMwuexJh1bAKIdrU+T4Na1cibKQep6JoaXJPher1FPOJrEKZbuAZlXuyg9UY4gs35sVc6pugLJeNJ5Y9dEodPouzTtOcPUe+msorEOD/PSJTkxzw/O0+vcJOMfQYu7JlMRYLUlo9EVvDj2j57JPO+xS4KWyXYogKdrelNvp2tK1Rrv4CBKw5bRnEJevrqgTuN6OL1+IVBBtvXe7BqRE26X4mG7IZumdAoa/w1UBIdb+zVfdg1nMbnPeYKfQcTFuzeUTMZOlrvI7gxRbhaA8KI7vG6/r4eIn5hOComLDlLY8HT1IAC1tgOyNcyorKv8h9AkjKZ8PkHpSZUJTop4pjr4sueIsHS5cib5u75IS/mkVXF3zYNRZBa3oUgw4k7hVarOLINSgISbbGO/frfZqD4f10jYqgv0csHP4QXoXw4wL/X/9YpDWp9tOnLIenNmG5gQ6JNCnRGixL9Ajmo3UYlQUfOTpQ5MfLpG5K5O6gd0Xq+IyXqQO4JmgWkfX7GVxNbNhjgHW97buFyxQRJ4g8P9sqPzyLUE9/ZqODXgyGL8yH+Ha
- h5qCJP0f
- LwLzf5NTrNo0opmrFnfGse0PyKVcFwqGRvTTyxF/LkMU6cy8mbZgZH54DlwYc0HT2s9ZqcwKElq5XUUWnfk2GQEDn8pOLTpL4bMbWWtIqWCaTOMKCN8Kakzt0W13nSMG7KgIY9bztkxwQK2adA0d8dKlMbFNFo0cCDO8kA9wUelX4i2ePsTuNvZ+CQHAdGyaZ+2CdYtWf5sRDRd7pSEH3AjZ4JqjfQjkS6CQ250yUMGZpXLdkY6m8xu2fkt1E4pU9MmNibul4eMlupw2FluiCJH+NRE9UdMPTIdM1ohUGj0iiqEjUSC6fj0Za1geMVbX7f+NDf1zO0RsXZ7FD/4g9GKzIC/K+BmnvWdbz
+X-Stat-Signature: uz76zsjoyp4nn8yq4zp7drtnr3eig6kg
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1755651937-464420
+X-HE-Meta: U2FsdGVkX19wd8LCn09PId0az47ReMXp+kfBdPatC9bMFKblb/5VXnyIIDHNcxUSqXNyMUangOnRiYmBeKf+lb6ffNvhjAM+96ydSbh2460UgjMGM7G5XuQjg83ujWtW8H902HrC3MWuOfXohCne3v75X8NN0tcJ+NL7eiJ9sJ+/gD3pW4ust8FF6cOhwWb1vN1Evam9IY50sPf9oCiMrDU2QwRiis5TUkwRwszEZaxJ0aipshbgATnz4gRMBgbsgW7XyvAHVg5vpz6KomqWzLaiNa6JmYwRo0z+B+6DLvbxHA9OgrT7QlbqJTOD78lPSJYkdxMfVyTYw9H4/sWC7eJAWqwBBcj0f7KgM3SwEDN6TmL5yTzmoWWRbkr+QnlnP+uvXu9XQX1f07Tfnno8/U1qGPnoYSDusVDcMu/1SNmuCCfUQN9ZWfHBVzalh82ZFUZFDOtNAF5MQ+E99XCVNbmqSYdwbpD7q49bRs1zPvSJ8wZZPLFjSgJMqc+2AZiM+yAltu5aTdKemikURisGLGT9Zsns0vD+sGFoWhF3VSvw9Z/hUqnE/+ULIE08z/9cMJDLpAfe6VYG6PCHrM1U4L3a/QqFRD83WDEgd0KXhLLYgwOdTwW70upexHIKHQopIo3rhLz60gTvAu6M1NVcLsKOL6FaKKMOeKuTAhtvodqRZ/Gsn4fd0gC0qi4x/TRXQCxk6m9/MdCoa3xbItUIKrZD3uF8IMiO6DDpT2a5swkbp4v6k2ccG0IlB7UUMsRfcRO7inAUSGR/H+Q54hEM/IuT/qrdBNcup5yg4c4ydktb2UbCMI/wjmu+WnCOgdkj9mfm8OEMcvioIt3o9x1xJTyrbltAn6dI8HJFBDLSi4RPwIbg86rnrTNzLB1FJ8TZH29mHy6jmk7bM8PBDTitLmP9HtHwP5hYkpDHdSVOAG75DgoQot4pNDSqKM9pPn+TRuSK/1o+x9gWsEnz+Ix
+ xC6kaNSz
+ XpR2Kf3XlSoGbUuG6VlAABKg84aNgJ+6EQUt6DHnaEeDzR9sqTe9uPsLlJ09GVkUMyqbwU7bEib3Evlv/MiLbFEG1h6Vcm7CjrR1DxcZ95667z+fqjqsC3S+haTalqreLVC0h562sz9FxfKlVpsaYIaEozPjKoleZ868ung1Unlfolw4bBw5UW4ZuZmDdbTU/TGUKOPHUH9IEYbsdeCmvYSXB0hZADVeFK8JNxuY46Pn+v1kSPuo9A9PlUH4G9RqcgAXPmR2EusCbH08pgpioWqBvMQcfavaRCSo9qY2Z0fdmhdTJKWMpjtysCof2rB8lIejHASQLbplxGaBgcATVaYMw0UU6royWhZleAyKsUmHzWYk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,196 +142,186 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Khalid Aziz <khalid@kernel.org>
 
-In preparation for enabling the handling of page faults in an mshare
-region provide a way to link an mshare shared page table to a process
-page table and otherwise find the actual vma in order to handle a page
-fault. Implement an unmap_page_range vm_ops function for msharefs VMAs
-to unlink shared page tables when a process exits or an mshare region
-is explicitly unmapped.
+Reserve a range of ioctls for msharefs and add an ioctl for mapping
+objects within an mshare region. The arguments are the same as mmap()
+except that the start of the mapping is specified as an offset into
+the mshare region instead of as an address. System-selected addresses
+are not supported so MAP_FIXED must be specified. Only shared anonymous
+memory is supported initially.
 
 Signed-off-by: Khalid Aziz <khalid@kernel.org>
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
 ---
- include/linux/mm.h |   6 +++
- mm/memory.c        |   6 +++
- mm/mshare.c        | 107 +++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 119 insertions(+)
+ .../userspace-api/ioctl/ioctl-number.rst      |  1 +
+ include/uapi/linux/msharefs.h                 | 31 ++++++++
+ mm/mshare.c                                   | 76 ++++++++++++++++++-
+ 3 files changed, 107 insertions(+), 1 deletion(-)
+ create mode 100644 include/uapi/linux/msharefs.h
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index c8dfa5c6e7d4..3a8dddb5925a 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1009,11 +1009,17 @@ static inline bool vma_is_anon_shmem(struct vm_area_struct *vma) { return false;
- int vma_is_stack_for_current(struct vm_area_struct *vma);
- 
- #ifdef CONFIG_MSHARE
-+vm_fault_t find_shared_vma(struct vm_area_struct **vma, unsigned long *addrp);
- static inline bool vma_is_mshare(const struct vm_area_struct *vma)
- {
- 	return vma->vm_flags & VM_MSHARE;
- }
- #else
-+static inline vm_fault_t find_shared_vma(struct vm_area_struct **vma, unsigned long *addrp)
-+{
-+	WARN_ON_ONCE(1);
-+	return VM_FAULT_SIGBUS;
-+}
- static inline bool vma_is_mshare(const struct vm_area_struct *vma)
- {
- 	return false;
-diff --git a/mm/memory.c b/mm/memory.c
-index 4e3bb49b95e2..177eb53475cb 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -6475,6 +6475,12 @@ vm_fault_t handle_mm_fault(struct vm_area_struct *vma, unsigned long address,
- 	if (ret)
- 		goto out;
- 
-+	if (unlikely(vma_is_mshare(vma))) {
-+		WARN_ON_ONCE(1);
-+		ret = VM_FAULT_SIGBUS;
-+		goto out;
-+	}
+diff --git a/Documentation/userspace-api/ioctl/ioctl-number.rst b/Documentation/userspace-api/ioctl/ioctl-number.rst
+index 406a9f4d0869..cb7377f40696 100644
+--- a/Documentation/userspace-api/ioctl/ioctl-number.rst
++++ b/Documentation/userspace-api/ioctl/ioctl-number.rst
+@@ -308,6 +308,7 @@ Code  Seq#    Include File                                             Comments
+ 'v'   20-27  arch/powerpc/include/uapi/asm/vas-api.h                   VAS API
+ 'v'   C0-FF  linux/meye.h                                              conflict!
+ 'w'   all                                                              CERN SCI driver
++'x'   00-1F  linux/msharefs.h                                          msharefs filesystem
+ 'y'   00-1F                                                            packet based user level communications
+                                                                        <mailto:zapman@interlan.net>
+ 'z'   00-3F                                                            CAN bus card conflict!
+diff --git a/include/uapi/linux/msharefs.h b/include/uapi/linux/msharefs.h
+new file mode 100644
+index 000000000000..ad129beeef62
+--- /dev/null
++++ b/include/uapi/linux/msharefs.h
+@@ -0,0 +1,31 @@
++/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
++/*
++ * msharefs defines a memory region that is shared across processes.
++ * ioctl is used on files created under msharefs to set various
++ * attributes on these shared memory regions
++ *
++ *
++ * Copyright (C) 2024 Oracle Corp. All rights reserved.
++ * Author:	Khalid Aziz <khalid@kernel.org>
++ */
 +
- 	if (!arch_vma_access_permitted(vma, flags & FAULT_FLAG_WRITE,
- 					    flags & FAULT_FLAG_INSTRUCTION,
- 					    flags & FAULT_FLAG_REMOTE)) {
++#ifndef _UAPI_LINUX_MSHAREFS_H
++#define _UAPI_LINUX_MSHAREFS_H
++
++#include <linux/ioctl.h>
++#include <linux/types.h>
++
++/*
++ * msharefs specific ioctl commands
++ */
++#define MSHAREFS_CREATE_MAPPING	_IOW('x', 0,  struct mshare_create)
++
++struct mshare_create {
++	__u64 region_offset;
++	__u64 size;
++	__u64 offset;
++	__u32 prot;
++	__u32 flags;
++	__u32 fd;
++};
++#endif
 diff --git a/mm/mshare.c b/mm/mshare.c
-index be7cae739225..f7b7904f0405 100644
+index 8a23b391fa11..ebec51e655e4 100644
 --- a/mm/mshare.c
 +++ b/mm/mshare.c
-@@ -21,6 +21,8 @@
+@@ -10,6 +10,7 @@
+  *
+  * Copyright (C) 2024 Oracle Corp. All rights reserved.
+  * Author:	Khalid Aziz <khalid@kernel.org>
++ * Author:	Matthew Wilcox <willy@infradead.org>
+  *
+  */
+ 
+@@ -19,6 +20,7 @@
+ #include <linux/mmu_notifier.h>
+ #include <linux/mshare.h>
+ #include <uapi/linux/magic.h>
++#include <uapi/linux/msharefs.h>
  #include <linux/falloc.h>
  #include <asm/tlbflush.h>
  
-+#include <asm/tlb.h>
-+
- const unsigned long mshare_align = P4D_SIZE;
- const unsigned long mshare_base = mshare_align;
+@@ -308,7 +310,7 @@ msharefs_get_unmapped_area(struct file *file, unsigned long addr,
+ 	if ((flags & MAP_TYPE) == MAP_PRIVATE)
+ 		return -EINVAL;
  
-@@ -50,6 +52,66 @@ static const struct mmu_notifier_ops mshare_mmu_ops = {
- 	.arch_invalidate_secondary_tlbs = mshare_invalidate_tlbs,
- };
+-	if (!mshare_is_initialized(m_data))
++	if (!mshare_is_initialized(m_data) || !mshare_has_owner(m_data))
+ 		return -EINVAL;
  
-+static p4d_t *walk_to_p4d(struct mm_struct *mm, unsigned long addr)
-+{
-+	pgd_t *pgd;
-+	p4d_t *p4d;
-+
-+	pgd = pgd_offset(mm, addr);
-+	p4d = p4d_alloc(mm, pgd, addr);
-+	if (!p4d)
-+		return NULL;
-+
-+	return p4d;
-+}
-+
-+/* Returns holding the host mm's lock for read.  Caller must release. */
-+vm_fault_t
-+find_shared_vma(struct vm_area_struct **vmap, unsigned long *addrp)
-+{
-+	struct vm_area_struct *vma, *guest = *vmap;
-+	struct mshare_data *m_data = guest->vm_private_data;
-+	struct mm_struct *host_mm = m_data->mm;
-+	unsigned long host_addr;
-+	p4d_t *p4d, *guest_p4d;
-+
-+	mmap_read_lock_nested(host_mm, SINGLE_DEPTH_NESTING);
-+	host_addr = *addrp - guest->vm_start + host_mm->mmap_base;
-+	p4d = walk_to_p4d(host_mm, host_addr);
-+	guest_p4d = walk_to_p4d(guest->vm_mm, *addrp);
-+	if (!p4d_same(*guest_p4d, *p4d)) {
-+		spinlock_t *guest_ptl = &guest->vm_mm->page_table_lock;
-+
-+		spin_lock(guest_ptl);
-+		if (!p4d_same(*guest_p4d, *p4d)) {
-+			pud_t *pud = p4d_pgtable(*p4d);
-+
-+			ptdesc_pud_pts_inc(virt_to_ptdesc(pud));
-+			set_p4d(guest_p4d, *p4d);
-+			spin_unlock(guest_ptl);
-+			mmap_read_unlock(host_mm);
-+			return VM_FAULT_NOPAGE;
-+		}
-+		spin_unlock(guest_ptl);
-+	}
-+
-+	*addrp = host_addr;
-+	vma = find_vma(host_mm, host_addr);
-+
-+	/* XXX: expand stack? */
-+	if (vma && vma->vm_start > host_addr)
-+		vma = NULL;
-+
-+	*vmap = vma;
-+
-+	/*
-+	 * release host mm lock unless a matching vma is found
-+	 */
-+	if (!vma)
-+		mmap_read_unlock(host_mm);
-+	return 0;
-+}
-+
- static int mshare_vm_op_split(struct vm_area_struct *vma, unsigned long addr)
- {
- 	return -EINVAL;
-@@ -61,9 +123,54 @@ static int mshare_vm_op_mprotect(struct vm_area_struct *vma, unsigned long start
- 	return -EINVAL;
+ 	mshare_start = m_data->start;
+@@ -343,6 +345,77 @@ msharefs_get_unmapped_area(struct file *file, unsigned long addr,
+ 				pgoff, flags);
  }
  
-+/*
-+ * Unlink any shared page tables in the range and ensure TLBs are flushed.
-+ * Pages in the mshare region itself are not unmapped.
-+ */
-+static void mshare_vm_op_unshare_page_range(struct mmu_gather *tlb,
-+				struct vm_area_struct *vma,
-+				unsigned long addr, unsigned long end,
-+				struct zap_details *details)
++static long
++msharefs_create_mapping(struct mshare_data *m_data, struct mshare_create *mcreate)
 +{
-+	struct mm_struct *mm = vma->vm_mm;
-+	spinlock_t *ptl = &mm->page_table_lock;
-+	unsigned long sz = mshare_align;
-+	pgd_t *pgd;
-+	p4d_t *p4d;
-+	pud_t *pud;
++	struct mm_struct *host_mm = m_data->mm;
++	unsigned long mshare_start, mshare_end;
++	unsigned long region_offset = mcreate->region_offset;
++	unsigned long size = mcreate->size;
++	unsigned int fd = mcreate->fd;
++	int flags = mcreate->flags;
++	int prot = mcreate->prot;
++	unsigned long populate = 0;
++	unsigned long mapped_addr;
++	unsigned long addr;
++	vm_flags_t vm_flags;
++	int error = -EINVAL;
 +
-+	WARN_ON(!vma_is_mshare(vma));
++	mshare_start = m_data->start;
++	mshare_end = mshare_start + m_data->size;
++	addr = mshare_start + region_offset;
 +
-+	tlb_start_vma(tlb, vma);
++	if ((addr < mshare_start) || (addr >= mshare_end) ||
++	    (addr + size > mshare_end))
++		goto out;
 +
-+	for (; addr < end ; addr += sz) {
-+		spin_lock(ptl);
++	/*
++	 * Only anonymous shared memory at fixed addresses is allowed for now.
++	 */
++	if ((flags & (MAP_SHARED | MAP_FIXED)) != (MAP_SHARED | MAP_FIXED))
++		goto out;
++	if (fd != -1)
++		goto out;
 +
-+		pgd = pgd_offset(mm, addr);
-+		if (!pgd_present(*pgd)) {
-+			spin_unlock(ptl);
-+			continue;
-+		}
-+		p4d = p4d_offset(pgd, addr);
-+		if (!p4d_present(*p4d)) {
-+			spin_unlock(ptl);
-+			continue;
-+		}
-+		pud = p4d_pgtable(*p4d);
-+		ptdesc_pud_pts_dec(virt_to_ptdesc(pud));
-+
-+		p4d_clear(p4d);
-+		spin_unlock(ptl);
-+		tlb_flush_p4d_range(tlb, addr, sz);
++	if (mmap_write_lock_killable(host_mm)) {
++		error = -EINTR;
++		goto out;
 +	}
 +
-+	tlb_end_vma(tlb, vma);
++	error = 0;
++	mapped_addr = __do_mmap(NULL, addr, size, prot, flags, vm_flags,
++				0, &populate, NULL, host_mm);
++
++	if (IS_ERR_VALUE(mapped_addr))
++		error = (long)mapped_addr;
++
++	mmap_write_unlock(host_mm);
++out:
++	return error;
 +}
 +
- static const struct vm_operations_struct msharefs_vm_ops = {
- 	.may_split = mshare_vm_op_split,
- 	.mprotect = mshare_vm_op_mprotect,
-+	.unmap_page_range = mshare_vm_op_unshare_page_range,
++static long
++msharefs_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
++{
++	struct mshare_data *m_data = filp->private_data;
++	struct mshare_create mcreate;
++
++	if (!mshare_is_initialized(m_data))
++		return -EINVAL;
++
++	switch (cmd) {
++	case MSHAREFS_CREATE_MAPPING:
++		if (copy_from_user(&mcreate, (struct mshare_create __user *)arg,
++			sizeof(mcreate)))
++			return -EFAULT;
++
++		return msharefs_create_mapping(m_data, &mcreate);
++
++	default:
++		return -ENOTTY;
++	}
++}
++
+ static int msharefs_set_size(struct mshare_data *m_data, unsigned long size)
+ {
+ 	int error = -EINVAL;
+@@ -398,6 +471,7 @@ static const struct file_operations msharefs_file_operations = {
+ 	.open			= simple_open,
+ 	.mmap			= msharefs_mmap,
+ 	.get_unmapped_area	= msharefs_get_unmapped_area,
++	.unlocked_ioctl		= msharefs_ioctl,
+ 	.fallocate		= msharefs_fallocate,
  };
  
- /*
 -- 
 2.47.1
 
