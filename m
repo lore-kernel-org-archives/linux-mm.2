@@ -2,106 +2,112 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 02227CA0EDC
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 22:53:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 79FC2CA0EDC
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 22:56:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9729C8E003B; Wed, 20 Aug 2025 18:53:12 -0400 (EDT)
+	id 18BE58E003C; Wed, 20 Aug 2025 18:56:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 923B08E0031; Wed, 20 Aug 2025 18:53:12 -0400 (EDT)
+	id 13CCD8E0031; Wed, 20 Aug 2025 18:56:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8397D8E003B; Wed, 20 Aug 2025 18:53:12 -0400 (EDT)
+	id 058638E003C; Wed, 20 Aug 2025 18:56:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 716618E0031
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 18:53:12 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2E50214017B
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 22:53:12 +0000 (UTC)
-X-FDA: 83798638224.23.1E5CAC7
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5EAA240009
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 22:53:09 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=a1alIB4u;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id E92308E0031
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 18:56:55 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 98A6C1A01A5
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 22:56:55 +0000 (UTC)
+X-FDA: 83798647590.17.75E4570
+Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
+	by imf14.hostedemail.com (Postfix) with ESMTP id E754F100005
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 22:56:53 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="BrqXoA/W";
+	spf=pass (imf14.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.176 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755730390;
+	s=arc-20220608; t=1755730613;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qo2QWyMh3oShR0B9sbXL7LgAv6ZIpYD1+kX131e5C+k=;
-	b=VRTMHuHWArZpqPUTwoUniGY/e0/SDTB7gtNnGmFFZSFAq/6VgQHCQLOVDp+/iIJaoR+yyg
-	QIBrnIl0BFjuHjkuN69iTOWCL+3sceqV9Ay3NKegWIsMwmFjXlaf8vaKhSDIoLwfcoEl+H
-	m1TKyIp2pV5UUqZk5rI/PdUP6Da3MZw=
+	bh=SqijktqL5QSVl4d9uRAFgyOKB/qUtj5ueyBzLO6jfXw=;
+	b=eG2jUVJo8tUa/JC2TaQjY04MgKUAOibyRCJUXdUwc3a+tH9sWWNTjtUHhZ3hOcjK9CL8Rm
+	cGDXceZuNuPWX68lYSul1syuMiXT6+O+vx+6z4lpeFr5sp/2Xtq5NvOEQzkykFHe+It2ta
+	4TEU+4TgprfW3OeTAMryudOl9aiD+Wg=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=a1alIB4u;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755730390; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="BrqXoA/W";
+	spf=pass (imf14.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.176 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755730614; a=rsa-sha256;
 	cv=none;
-	b=uUeyLHBq+JmZNJB9JScp85VjQCJbV/sFJ9ssYo4NjQD335LSq1um88c4tKWFO6zvPiuQp0
-	sLhqE6Dk5d8Hw1XIOS+NnXSH/ObQ2Q5KhXzFVljo+rEQMHpW2KSMjPWkY1pNrnd0ceNDP3
-	b8GH2TXtVolh446S9UGHdvScD98qqoE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755730389; x=1787266389;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xDRP95yA4J3OJjOVL49YPRpnANZi0tgCgOIZTfJwTVw=;
-  b=a1alIB4ufMU9k1/AkTSeJJKFuHyX2b/w3YG2JPgzyrc/jbLvi+6P0a3X
-   wifpUswKVG3QyRahGeb1qfJfJT67CaX3kBgbY7cxbiOx4i9ZMy54e0qZn
-   NORdJYAQdBJj3GDbhXdbnOivVQTslvXBCkBNcp0isBffu/wsxaPh4XVgo
-   49mix9yXzT3GFU3gHoqx6fQdGcUyO44AuC2LjgdDCFiH6HHso7XYr7sXW
-   W7c+aBxMsUcZPAL1Qw4hb9MPHAiT4qC5lSJ8AjRljZttLJf1NpcTWFXqM
-   JytxLjFaQOZnfbFu1eO4gGSefMf/dfb0On6it5GfVhLOWrZF6w9QYVTzc
-   Q==;
-X-CSE-ConnectionGUID: /28OeSdjSC6yKXWpaFS47w==
-X-CSE-MsgGUID: 9vFEG9xqSxKsfF0vnbxX8Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="58079343"
-X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
-   d="scan'208";a="58079343"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2025 15:53:05 -0700
-X-CSE-ConnectionGUID: xft/3dHuSQ2BVAfciI/AKw==
-X-CSE-MsgGUID: mT6JVZh0TluWdr+Zal7KOA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
-   d="scan'208";a="172674938"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa004.jf.intel.com with ESMTP; 20 Aug 2025 15:53:02 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uorfv-000Jip-1I;
-	Wed, 20 Aug 2025 22:52:59 +0000
-Date: Thu, 21 Aug 2025 06:52:26 +0800
-From: kernel test robot <lkp@intel.com>
-To: Xiang Gao <gxxa03070307@gmail.com>, akpm@linux-foundation.org,
-	david@redhat.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	gaoxiang17 <gaoxiang17@xiaomi.com>
-Subject: Re: [PATCH v2 1/1] mm/cma: add 'available count' and 'total count'
- to trace_cma_alloc_start
-Message-ID: <202508210642.kUloVYxD-lkp@intel.com>
-References: <d30f91137e3a296152463ea65474e1ca56f4eda3.1755654367.git.gaoxiang17@xiaomi.com>
+	b=ONIOG/yqY/k/UZVuKaCJ5rlTpl/8iMxcQTRVnKRJmr4vUaFLeb5RGoyz1jvCBr0Xfj3rKR
+	TlTwmhOtLRWfqcqsInkxSWQaEmBG1FIqVlk1teaEIdEP1hSoU4GEP0hntP6POZ6ZilLq8w
+	NOyvk4b1FtZ25CuMfvNl+Ylp3SxoKZQ=
+Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-3e584a51a3fso1805175ab.2
+        for <linux-mm@kvack.org>; Wed, 20 Aug 2025 15:56:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755730613; x=1756335413; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SqijktqL5QSVl4d9uRAFgyOKB/qUtj5ueyBzLO6jfXw=;
+        b=BrqXoA/W+C4WZTjkJNIdxKE70FJVyp4sssUBbGtgjVynklcmJtZxy7dKKr4E8F1qVS
+         YuOjR4lsYkQjsLGh6blkvFiRSNdYTnTgF+6PrQnubRAKw1LQ/W/hluGmPoypr+83FWM+
+         pYczu72vaOFxbfxh6JO00L40MrdzUMoJ6/n3UFtZ1bjmz6n6SM+migvOf4Ovc3AxgxLQ
+         8PVEPa4ygJeqGhCNzG7yCePp6qqkNsUjJh/T76Ty+nWbKI+TO46um+LxZgdEDh6J5CzT
+         dNgFGSaYC7JKfPSK53pVWF+js49l8+pEWWxTjtFzDPhjLTeUfDAek9oYqeBdlqS2gHm8
+         6gyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755730613; x=1756335413;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SqijktqL5QSVl4d9uRAFgyOKB/qUtj5ueyBzLO6jfXw=;
+        b=fVqOwTi+K7XstkWqxy7j67hcuJfogELRnI1JoRTS1PHgFS35eAiu0yj75VxREeBHmo
+         Yk9trzqezkXcTs9MndjsU6GIGRgkmbiQwf+Evg1xkxs01y2bjN9Mt9mwtXC1lhIWabmI
+         RiKMEVCzp7Rud4iNjEIHQ3Mk6ERzzdyNxhC16Yn8s2uf4aLjgoD2tQbMW+OQ4b55eVU8
+         z7mLQhUGng9+IjnTEmisjLgAY0y6dwmX5hA3mQ6euu+2cEHc2ha+1KvSjE8F/pEY4u2V
+         O4nLb6ve3yJprkSOMz/nyub2qHZP9Y/6KUMGgItmxNdKKJZHKwId5g1RNBZl6O4S0BTT
+         a+hw==
+X-Forwarded-Encrypted: i=1; AJvYcCWRjWfSzpOFfQ2FX/RC0HxhmPi/YCIYgeP2dgY6INn+HgYUm4jTbEKH53i78nuwnDUDBYV/ViQhWQ==@kvack.org
+X-Gm-Message-State: AOJu0YzLU6x5XOwPmwn2iYgK5BA2+lWUbx9t5HrSNDLSHZEmyGlM+Cxr
+	CUFkL9MIMbtqbR/efXBeVpy2JYQuRzT8GWFWzBJye5OZLL2Czg5GHL5ZGUR5KBhAIEC3E/FctaK
+	lnNaolZc9f2Oum/cpdeNBgKGgyjPqKvQ=
+X-Gm-Gg: ASbGnctSLJ3qwyAympid+dYp1QHALhqqW9+6i1lsMXlrUmkAP9+9CBFDSdftpDE1ose
+	P5++7RTTGlGLZgBEv6xhaxXidYGQ2P+Ig/nB8i6Gyr5xKYoMCGaKEm5/nb/RZUn/UHOAYUN5NPd
+	Rhb2mLlQ3WVk22MrypoPPWNVsMDSN0cNX29b/AsBxlb0zXJssOchw2Jb8JHuZiWg2F9JFlpewQB
+	GI4eI17r4l7dY3I8LcoIHI=
+X-Google-Smtp-Source: AGHT+IHqhFqF0ldEvreg/zhfn5bJC9zhoDj5P0JECW0SBkkVMdAh6s8W9uc7MbYxkPrmre9Wg9hXsJZ9FhvxeMhipnQ=
+X-Received: by 2002:a05:6e02:1609:b0:3e6:65d5:2278 with SMTP id
+ e9e14a558f8ab-3e6d3b83b12mr5701655ab.5.1755730612828; Wed, 20 Aug 2025
+ 15:56:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d30f91137e3a296152463ea65474e1ca56f4eda3.1755654367.git.gaoxiang17@xiaomi.com>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5EAA240009
-X-Stat-Signature: 6d65urxno7bhjneyw9zwnjkuugurs6jt
+References: <20250820181547.3794167-1-nphamcs@gmail.com> <20250820224659.88528-1-sj@kernel.org>
+In-Reply-To: <20250820224659.88528-1-sj@kernel.org>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Wed, 20 Aug 2025 15:56:41 -0700
+X-Gm-Features: Ac12FXxvh5FV2ONZgUx83BQVRwVMK28b4ENt2qAqzERkh1Pfrd5_5j4HG2TtHZo
+Message-ID: <CAKEwX=NLvQyZTqv15kACZP2wErO9hyv9W+0j-BWrgOh5ZX1LJA@mail.gmail.com>
+Subject: Re: [PATCH] mm/zswap: reduce the size of the compression buffer to a
+ single page
+To: SeongJae Park <sj@kernel.org>
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, yosry.ahmed@linux.dev, 
+	chengming.zhou@linux.dev, herbert@gondor.apana.org.au, linux-mm@kvack.org, 
+	kernel-team@meta.com, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: E754F100005
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1755730389-916519
-X-HE-Meta: U2FsdGVkX1+llCou5T9U0XUcW+xXSCE+773IHnuLprEGCoqCg5cdHfsVpZNdtKVrEDaX4vIq9A25cXEIyIn7tAlZRYFq7XlSlToN9EP0mlEFKVX0Gi+ZOvmt/KSpnWfMm/NAjzGSui9c9uEceqr6Uz1l7K2DI/VRxH8vyYpqktPDBT6YKz6Zf4FRoxCaABXLSmEtxo3WqztA70Bw4lliXluvjcaLWP+CevNhn6TZUhfBRb3z2M7NY4V2nv6tvBIKtGHurkAYNhiezJQ1OH7DPgir8zjuXtXNBz2A+vvMYHyICXwiuIeZ4lo5dXYPokALjfrjZQYf1DXb46QILgpK/xLdUYYz7RBkaYU7fGJiOp5tltK0AJZXdq+QnfVc1K1jOSCAlUZ2NO8Ik6IyaxwbN7pcL3tzlHEPjcoxCZdOMSkurwcHfzae4vDpiC6SVYSsKNixB2xdvKqOmaowlUtgVNnLsBWvIXG5VHnf+7jEIQVV/ekOR/n8Ea15Tw4eEmbFEHAICbHHNf5fcbq3mh4Qoxweb0pOSw4TDbkXU1NMKsp4Z6LBF1OzAFkTYx8kVn4u7YfgUlF3/1gmQ3keMBQvKUFIRu06nzH3oKpNaZqHA4Mic6Sq8h7jEMeQz8LIvVhnJUU3RcetVdppDt9a2EYVwaBQXRXJYrVTx+fepZFuhNQyFSrgl29aXK4nM4AG4tsoGB9ZVmXNveISamJvokjz9bB/svRvgWtuZVuCOuNuxp8dxJmzfIilRGmf5HvTEjcBi2rdx2TBcuegE6DmfayI9uJROcSf0Awi3qeN7CMN2yqDcYTjCVBJtC4OvEgJaoeTVgBosMRVDQfTkGFkF+KMMTONKzV9nwDvShHsAaxCFrmZEe8iLnK9QuISI29JLBH/ObLjnaZxviyqyBk9+588U4aZzAN8odI00fPZoUC6dtHjaD+LWtS1sLxIz3CSbzH6GIYwGkeH5NBhE9RLXW7
- X+1ddKpU
- adiTikyE9IYm51j3HPIlE6+dhQhA3+jIjTWxdqlxZEITl4+DDbfFeF9l9NaOD9NE+GBjy4tfeddki1GDLt/QnX54F6uzbQz9ew5dezD2mlViciSNAJKGVglc91OCckK53mi2BWKHXJV7DfiLHz6gmB0Y51OyQVGso/nCMzebMj9Qwjb6nt6Nzc5yxFH4Uogi6a1juv9jdA78JECgzagRDIk3sa7oTlkbcUpoemrEftPKQ6Ao563VYoj2AWqEWCh0ZLTA89Em7Krnl5qb8MdKU2n8uXyUQBY7RC/Ew+rsXrU34pRPAsn0rR66pO3IdaaZXhhP7iqpdPVNBh6b6Oyd+nTmCix14EVrLWo7OpEiObxHQZzyuNBH++GKHjWQRupvhlvayJSUkrsH1V3GG/oQ6PO+VFw==
+X-Stat-Signature: ws5trohzrihpjrjafa565n155hbijq5n
+X-HE-Tag: 1755730613-737887
+X-HE-Meta: U2FsdGVkX18trMSRN+fjY/JPm7ig30aXf2lW6/r6uBfgmJFWBX1xcVbD4csVGgfLxLyMtUG4XbESkvTsX0iKxThrkDWrA0ruf0uxaH/YxGSDlK/tf6ztzyDasBZcloZHJn1udlbl7EneycUOcHc7NtNM+A/UrydKhqdqkduDocjlwc5kBQorZiji2I+S+y33d+Joq3wBFcinpk/LzgF+QZOJc6B/9ieQ2+PGKBJkGZ8wTk8eyTOaRJoG89fqEClIfxgOwuUcg5SZrqCP1YHwVGNFMlo5Rgol+QCSPDVSFcK395Cg8Nkr716jt0cEKLDeSIHOCmH1n73GpAdex5DztdNI9EuJze9Jk8HfzPc9i+2viK6E+KgYg9W6k+bWrRaWwE07zXYa2UiMnwNBuTFxwO9svJfNmOomiewtonmL8owY97oV90TAXCaAy5ocWJ7oDhcuWbCYJVp17oqna26LrAXOC7bSA4OdF6TCduxaBQf93AGOJWaukwr6yN63GO96Ec+zBnWw/MhGUeXgLvxQ7Fg/FutvO7y16TgWyKRtnWhyXt4kO4BOQdDTwBP/bFmTqRFKvLYE9mS9qwiihEqPLhz26eBY4Mr5A+F2/p8OIm/4viZunhGkMzDaOVQ1/5OgqFoRcK9c9C5rNulf0Muwj0ni5/afmaX2koKkDexj4TAmlalU8HKBIS7/ZaMTqvU+f0EpQa9COwWsNuFT+qkbFK3J5XSkViBDAs2fQQO8JBVc9I789Snaax3Xagq1X3oqyWJTSmmOdpV3sNrPUD0/oRFZF2Oy+agWiKuumgzPfQzUTLb+YsrPD11dmvGmPJiXsbPT0f2MXrV/23uclDPpxuMniXgFq3xLb/x+BtTeoLO3q7zFDRGV/GYbn1kuQzQYufLwX6swFxAOsfLZ6IggQtNlc40+gVbbWz2Wgak944wZV//kxXn08WpqVaV06aZyqTpc0/K95qMY0y71/yR
+ y5EguxxM
+ QlKaRLHjAU76yQt4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,116 +116,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Xiang,
+On Wed, Aug 20, 2025 at 3:47=E2=80=AFPM SeongJae Park <sj@kernel.org> wrote=
+:
+>
+> On Wed, 20 Aug 2025 11:15:47 -0700 Nhat Pham <nphamcs@gmail.com> wrote:
+>
+> > Reduce the compression buffer size from 2 * PAGE_SIZE to only one page,
+> > as the compression output (in the success case) should not exceed the
+> > length of the input.
+> >
+> > In the past, Chengming tried to reduce the compression buffer size, but
 
-kernel test robot noticed the following build errors:
+Yeah, this should include the reference below. My bad. So it should be:
 
-[auto build test ERROR on akpm-mm/mm-everything]
+In the past, Chengming tried to reduce the compression buffer size
+(see [1]), but
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Xiang-Gao/mm-cma-add-available-count-and-total-count-to-trace_cma_alloc_start/20250820-105438
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/d30f91137e3a296152463ea65474e1ca56f4eda3.1755654367.git.gaoxiang17%40xiaomi.com
-patch subject: [PATCH v2 1/1] mm/cma: add 'available count' and 'total count' to trace_cma_alloc_start
-config: x86_64-kexec (https://download.01.org/0day-ci/archive/20250821/202508210642.kUloVYxD-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250821/202508210642.kUloVYxD-lkp@intel.com/reproduce)
+Andrew, would it be OK if you fix it for me when you put this patch in
+your tree :) Or I can also send a new version if that's better. Thank
+you!
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508210642.kUloVYxD-lkp@intel.com/
+> > ran into issues with the LZO algorithm (see [2]). Herbert Xu reported
+> > that the issue has been fixed (see [3]). Now we should have the
+> > guarantee that compressors' output should not exceed one page in the
+> > success case, and the algorithm will just report failure otherwise.
+> >
+> > With this patch, we save one page per cpu (per compression algorithm).
+> >
+> > [1]: https://lore.kernel.org/linux-mm/20231213-zswap-dstmem-v4-1-f228b0=
+59dd89@bytedance.com/
+>
+> This is not mentioned anywhere.  Probably you added this as a reference f=
+or the
+> past work from Chengming?
 
-All errors (new ones prefixed by >>):
+Thanks for taking a look, SJ!
 
-   In file included from mm/cma.c:31:
-   In file included from include/trace/events/cma.h:138:
-   In file included from include/trace/define_trace.h:132:
-   In file included from include/trace/trace_events.h:468:
->> include/trace/events/cma.h:56:12: error: no member named 'count' in 'struct trace_event_raw_cma_alloc_start'
-      56 |                 __entry->count = request_count;
-         |                 ~~~~~~~  ^
-   include/trace/stages/stage6_event_callback.h:133:33: note: expanded from macro 'TP_fast_assign'
-     133 | #define TP_fast_assign(args...) args
-         |                                 ^~~~
-   include/trace/trace_events.h:44:16: note: expanded from macro 'TRACE_EVENT'
-      44 |                              PARAMS(assign),                   \
-         |                                     ^~~~~~
-   include/linux/tracepoint.h:139:25: note: expanded from macro 'PARAMS'
-     139 | #define PARAMS(args...) args
-         |                         ^~~~
-   include/trace/trace_events.h:435:16: note: expanded from macro 'DECLARE_EVENT_CLASS'
-     435 |                       PARAMS(assign), PARAMS(print))                    \
-         |                              ^~~~~~
-   include/linux/tracepoint.h:139:25: note: expanded from macro 'PARAMS'
-     139 | #define PARAMS(args...) args
-         |                         ^~~~
-   include/trace/trace_events.h:427:4: note: expanded from macro '\
-   __DECLARE_EVENT_CLASS'
-     427 |         { assign; }                                                     \
-         |           ^~~~~~
-   In file included from mm/cma.c:31:
-   In file included from include/trace/events/cma.h:138:
-   In file included from include/trace/define_trace.h:133:
-   In file included from include/trace/perf.h:110:
->> include/trace/events/cma.h:56:12: error: no member named 'count' in 'struct trace_event_raw_cma_alloc_start'
-      56 |                 __entry->count = request_count;
-         |                 ~~~~~~~  ^
-   include/trace/stages/stage6_event_callback.h:133:33: note: expanded from macro 'TP_fast_assign'
-     133 | #define TP_fast_assign(args...) args
-         |                                 ^~~~
-   include/trace/trace_events.h:44:16: note: expanded from macro 'TRACE_EVENT'
-      44 |                              PARAMS(assign),                   \
-         |                                     ^~~~~~
-   include/linux/tracepoint.h:139:25: note: expanded from macro 'PARAMS'
-     139 | #define PARAMS(args...) args
-         |                         ^~~~
-   include/trace/perf.h:67:16: note: expanded from macro 'DECLARE_EVENT_CLASS'
-      67 |                       PARAMS(assign), PARAMS(print))                    \
-         |                              ^~~~~~
-   include/linux/tracepoint.h:139:25: note: expanded from macro 'PARAMS'
-     139 | #define PARAMS(args...) args
-         |                         ^~~~
-   include/trace/perf.h:51:4: note: expanded from macro '\
-   __DECLARE_EVENT_CLASS'
-      51 |         { assign; }                                                     \
-         |           ^~~~~~
-   2 errors generated.
-
-
-vim +56 include/trace/events/cma.h
-
-    40	
-    41		TP_PROTO(const char *name, unsigned long request_count, unsigned long available_count,
-    42			unsigned long total_count, unsigned int align),
-    43	
-    44		TP_ARGS(name, request_count, available_count, total_count, align),
-    45	
-    46		TP_STRUCT__entry(
-    47			__string(name, name)
-    48			__field(unsigned long, request_count)
-    49			__field(unsigned long, available_count)
-    50			__field(unsigned long, total_count)
-    51			__field(unsigned int, align)
-    52		),
-    53	
-    54		TP_fast_assign(
-    55			__assign_str(name);
-  > 56			__entry->count = request_count;
-    57			__entry->available_count = available_count;
-    58			__entry->total_count = total_count;
-    59			__entry->align = align;
-    60		),
-    61	
-    62		TP_printk("name=%s count=%lu request_count=%lu total_count=%lu align=%u",
-    63			  __get_str(name),
-    64			  __entry->request_count,
-    65			  __entry->available_count,
-    66			  __entry->total_count,
-    67			  __entry->align)
-    68	);
-    69	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>
+> > [2]: https://lore.kernel.org/lkml/0000000000000b05cd060d6b5511@google.c=
+om/
+> > [3]: https://lore.kernel.org/linux-mm/aKUmyl5gUFCdXGn-@gondor.apana.org=
+.au/
+> >
+> > Co-developed-by: Chengming Zhou <chengming.zhou@linux.dev>
+> > Signed-off-by: Chengming Zhou <chengming.zhou@linux.dev>
+> > Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+>
+> Acked-by: SeongJae Park <sj@kernel.org>
 
