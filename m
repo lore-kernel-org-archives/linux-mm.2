@@ -2,98 +2,89 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 06063CA0EF8
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 01:21:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A41FDCA0EEB
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 01:23:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F29D8E0012; Tue, 19 Aug 2025 21:21:12 -0400 (EDT)
+	id 4B1CE8E0013; Tue, 19 Aug 2025 21:23:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CA4B8E0011; Tue, 19 Aug 2025 21:21:12 -0400 (EDT)
+	id 462A48E0011; Tue, 19 Aug 2025 21:23:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8073A8E0012; Tue, 19 Aug 2025 21:21:12 -0400 (EDT)
+	id 39F928E0013; Tue, 19 Aug 2025 21:23:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CE5A8E0011
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 21:21:12 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 22A00B8218
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:21:12 +0000 (UTC)
-X-FDA: 83795382384.07.064AE74
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 76B3740003
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:21:08 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=hmeau.com header.s=formenos header.b=Nq5l+gI1;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au;
-	spf=pass (imf04.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755652870; a=rsa-sha256;
-	cv=none;
-	b=KH3if21YO5EZJfyFeZzf6ujWpvHfNtGnbBYwF4Ymzk96nFDPjz78fuSvae6N4+Dt6pbEl+
-	sA6yPOjNM4L9JP4858q/0RfKz5STB9u3luaW5KxRYhzKfCmmbQHaWD5l5MhZizjY+9YyE6
-	Y8tKTtgigPIt071O7XtN0MkfsRrW+U8=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=hmeau.com header.s=formenos header.b=Nq5l+gI1;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au;
-	spf=pass (imf04.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 297D98E0011
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 21:23:35 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4606A1402CC
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:23:34 +0000 (UTC)
+X-FDA: 83795388348.29.0A827EA
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4CD0380008
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:23:30 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf02.hostedemail.com: domain of gubowen5@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=gubowen5@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755652870;
+	s=arc-20220608; t=1755653012;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QZMvR5QVzbNn1ZOikn+6fLVoCGoDcvmbRo5dA3O2AFA=;
-	b=gABpz7DY74M3BSA1Z6jnLYI5QDdlArEpMagn2UzQS3It1PC86a6K/mdF/f/WGowyi5W/fI
-	6SCtrCrBWBRJTYltTNS7TaBy/cUUCs3ze+S4l/YK4JSpIKfXu7nrVKz0eqmWvGX5gF6BX7
-	68slH2v8t20GtodC4HoaWfAeG9d37ig=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=QZMvR5QVzbNn1ZOikn+6fLVoCGoDcvmbRo5dA3O2AFA=; b=Nq5l+gI1HtFSguosgBSX/Fylrt
-	KaHEcYe2NywPqF5xFCA0fmbq8xdoJn5wfzv384L0LKwUiREJ5hB4YkFixTpf95tVvwcH2Dc8w3Lrg
-	m3eVFjbzZPCNu8aqZqq6C67EMMkok7/7ozw2Hq74t6l7XthKRToiow8WQDUtK/x7lI7DWk07Do06f
-	fCUNjke6lwuNclHxpNR/A6fu0zrvxKnAyIhsNm6e8H9o4t/q9gHi9TqeFN75IwnRHXcwyG5+fzCZL
-	Um7JL4strIP7r3fxNQRUbkaRrhd0fCz+VKrqXq7meXH0f+w5NI5QHyYv3xKI0C+7RV2keS0HVTjxh
-	70F8Ozeg==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1uoXFx-00FfnT-2n;
-	Wed, 20 Aug 2025 09:20:47 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Wed, 20 Aug 2025 09:20:46 +0800
-Date: Wed, 20 Aug 2025 09:20:46 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Barry Song <21cnbao@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>, kernel-team@meta.com,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	Takero Funaki <flintglass@gmail.com>,
-	David Hildenbrand <david@redhat.com>, Baoquan He <bhe@redhat.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>
-Subject: Re: [PATCH v4] mm/zswap: store <PAGE_SIZE compression failed page
- as-is
-Message-ID: <aKUi7hvcaK0h0oMg@gondor.apana.org.au>
-References: <20250819193404.46680-1-sj@kernel.org>
- <CAGsJ_4ygTv1tCJeuF43NhRR4E0kiMLpk6i8c+UHoUMt6LXykww@mail.gmail.com>
+	 in-reply-to:in-reply-to:references:references;
+	bh=zbZ5GU0VLxCc/J1wKxnJ3GKYSTXHR9AnUt7blRGunNA=;
+	b=DqeqNBu69a38BHY1POy7nxzPVQH+iG9S+B0DkP5E67/l352bwok5A6ghTM7sYKEkMNUQ5u
+	HMmqbh5NSwxs1PajuEXbqo3vHmq+ler0S46Z5fJqFRQd3O6wS870DC+hhy4pDce/O39Tp8
+	cfLkfd4parXjNd7I3TMzxRa4oWYSQHU=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf02.hostedemail.com: domain of gubowen5@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=gubowen5@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755653012; a=rsa-sha256;
+	cv=none;
+	b=3WWbWfd+XdF/GyKBAB0JLuscEph/0gm82D9NTW2qXQiAhlW4vHMVWkOKDQX6yGPpW0jdd9
+	MBivOt3xiYWGpBsPwEV4sCphy2RqLfQp60wO4Y/6NH+pm0ORVIVFp9nVolN5MNw39Fe7lm
+	hTO9FedtEK3eHIpnqyTtVWaaEDzZliU=
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4c67z43SRvz27jJ5;
+	Wed, 20 Aug 2025 09:24:32 +0800 (CST)
+Received: from kwepemh100007.china.huawei.com (unknown [7.202.181.92])
+	by mail.maildlp.com (Postfix) with ESMTPS id 37C4A1A016C;
+	Wed, 20 Aug 2025 09:23:27 +0800 (CST)
+Received: from [10.67.111.31] (10.67.111.31) by kwepemh100007.china.huawei.com
+ (7.202.181.92) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 20 Aug
+ 2025 09:23:26 +0800
+Message-ID: <a7829822-42dc-499a-b092-b9003a0e156b@huawei.com>
+Date: Wed, 20 Aug 2025 09:23:26 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4ygTv1tCJeuF43NhRR4E0kiMLpk6i8c+UHoUMt6LXykww@mail.gmail.com>
-X-Rspamd-Server: rspam03
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] mm: Fix possible deadlock in kmemleak
+To: Catalin Marinas <catalin.marinas@arm.com>
+CC: Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, <stable@vger.kernel.org>, <linux-mm@kvack.org>,
+	Waiman Long <llong@redhat.com>, Breno Leitao <leitao@debian.org>, John Ogness
+	<john.ogness@linutronix.de>, Lu Jialin <lujialin4@huawei.com>
+References: <20250818090945.1003644-1-gubowen5@huawei.com>
+ <aKSYq17EUrXRGFPO@arm.com>
+Content-Language: en-US
+From: Gu Bowen <gubowen5@huawei.com>
+In-Reply-To: <aKSYq17EUrXRGFPO@arm.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.111.31]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemh100007.china.huawei.com (7.202.181.92)
+X-Stat-Signature: 18xkqgdacpemkdnaoruq876r8r53zg5b
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 76B3740003
-X-Stat-Signature: qnx7uuzppc7phngrn3jksk6jq5hofuy5
-X-HE-Tag: 1755652868-407405
-X-HE-Meta: U2FsdGVkX19R8B6cw12bHiDXJuf+fot0nFGUO6nYllGPaD4s+JulRFrTEUdNNarfvjCB94UXgxYaZJeuRp/hcFKaE+o5PLvFygnm+KmyMvlTuD9gwrBVVNF0oZfD+yRWn/d5D7vTpTOeArSNPI9z8mJLU8s4f8hVQICdmYBifEM2BCUAOALzF8mBlUAgKLpaegDonhjBcUWnONFuJF/hzTV39/FUoIqkbhltxWDVLX+RkCQLyNsIwFc0JNF/szuvdLhm2hUgnYX49dlcI9dndiLLCfseJUaVy+2UazM91dYyv2gRBBARZzk8An13zp5RzTS3qzHf9YWJ8msbr4JZu78UiJS/72RW1VFu82bLmDe8Dee/TiBUAdg8f8CitRmYwnJhJIBUYqUsJL6zzPMct5tLB0bj3dZjjXO694O5AuqopzJEiP2LKiLAlpY/mMIRzOsACV4syqdPNeNDxMl3ARnrnMjIHWg9yYKdjp0JrjU+3YK+Xb2U09r8zTeBW3Mk6N/eM30yKkJJEFEhDtMYbjSdFscloT8tBBWcWZAjxxPo62mP43G0tWRriHKRe4sdkKcLmJQA07gSogO+eeg4ATpOFJQTWvzsn2vidSaJpvReW4tLNqtQ0etaNWQctu1GbrxfZ5+msbTfp6LpqhQ0VbdmRFaz3p13QAutHA0g8RUbhy/iPqTwNnuziH2EJTCBmg/OGYwmV7ch0bKIKNSU7PCEYiHtJYqlKXyYPdQLpNfq6l9OnvxhWtWRQku7DT3H8+4T1sHEgQ8UOSxzSvAi/LvtIImU4D+fNtEHZSzcu6hCBTiq59tq5Cw0zlv454QJv4BixPfGOfM5a9lYutOw8eLb2J5av71QDf0eu7T/9/frTQaTFcLIBtan9KEJHl3lrnwO5RmiPSA04YxG7hPaPnxW0Bc/6V72kV7BSww2Px0mDg93v/5VCmsQf9X7N5kA/orI5RIzUbgq4tYTM/m
- AY3vuEfb
- ElRk6n2SXga8bJgp6wi9lYvJqUxddK2GzimWg0vFPbppHyUHTIVaqin0B8Htk+OMENw2VdsTU41zO6NaJRPY37t/i7q/cW2yF/ImAwJXO8s6sQhl+I4VlIoEJ+Yk26jMgrj26MNn30U3RKotuPDlFN07qztpNhJr8el3+0KF9XpUg7zxXy+BpVTRcdr++4C7qMg3G2+kpeOS7fqI64qggiGkbYoZfBN04JEMkilQ+QDMq3jVGGu+GbkBYswm7OESlgmgBbg0PbJc5D4APzyalv7lAgrPEurp/BNn+kbQ5fQlokVhlItTNHM60xzlJXiPEqOMmznDbCaGHke9VRymStDMg4g==
+X-Rspamd-Queue-Id: 4CD0380008
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755653010-172321
+X-HE-Meta: U2FsdGVkX19+Jq2yGimXU2KzK1lRqiIYKLh+TZTH5OfptIT0nLW1xFy+dxkZCV103xFTIZmDyAB84QOMyqTaoBwbckjaJyvXqWWMCFlR05uWmqo27cuqhzPQEBm+LkU+A8hqjjN04K1ABdLj5Awne1bkhnSWC4IUkYwPhWgOL5gOFlql9VXTSZzMHFsyIBC2q9BXmUzItRT3yyP5M6N0uWPRgXU1PS8r/YhBPDFrOJrqObRIS04WiN9HcEFEBAvagJ6zS9hSUPOgyldxmeRHuyEMJd0DFrkVs8USEpBJOv4EIAZb+iju5x5gv4ljCdHiInFAJHGMDJnNWt2XlZ8DrnXm4nPih0MLFPuV9Yp+Z+GnmCWEarfc6FnXSeGrKFsD8XAvQ9EOhC2PR7tY7F+w9OaV9ZqKesQNWHb4IE+T5nII8Jl9McbFBkC1fvGtbF/DkV+wSUkJQgX9Ac+gf0r5d5fNcbZEw7ronDze8wp/fOKrjkXxqxjtMhlEyxvKwYnCYWEYnquj0g0MhavWYCn//RYiX21JgQvKBzxje30eCdzRmVM7DyQMDq2StNpviC5H9NjtmRc3SnN99hLcUZ3vxd00sZVwQu7Mt+g+xOBP/RcppYoHNgp9qfnAMtk0ah/Ml4ly4UV9RUvAUJbGpUQgfV+Cj8SM4mcUYpkMlZyYVa/41FzDR6en9qsevr/qqQkE4TTwCRRmG5Xuj7+TO8lpyrMS5TKIjGGYJj/W0746cw4VNTrNVXCGWpMr/TzQagorOlJdlqpggvYnf5SZr/SDyDsbgFydkafRpUe0cOhSLhHnQNpofg4W6kwUcvGZbx51c3MuBlT0ohf+NDpf/ZExl/PrHsfxzF6E6ab+ChDvV42g78D0zP1ZCB9A2uWTBcdWZfmXe/mozyuGzL9pnyuKMOQGmInaDz7gxxY6QOkxTLVOJO/eZB3P61IHcToYrfMwKIlVHuqqpP81L5aOVaM
+ FxfQ14pI
+ TRSYWQmBDPDbIMHt0Feeh8P4/BZEF7NrV9EYz3LMXPyKX0enQOSvY401X/qaAVR9kgaKfw9Nx3/eKIeCwp+aA3rDfsj8podV5LqN1Jly5uybgPiLLj0ENg5N/0Y+t9L/vJmVDF9e3LhCfZSQeDvwv77WAu5F3Xdyk7W9r2a+pG6uaobQE2vO15uud2pd0vK5f+M1ErQX5FE+/Tfg4hDpA5dFxZYqCJ1oUcgTted+ne49YW03jfCWe5glmWYz70AsvWuZ6w5cQDJt8FtUwRmdutCsLX1e69KjbRmWM6BxexFEB6EfSku7YTaDCZw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,25 +93,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 20, 2025 at 01:13:13PM +1200, Barry Song wrote:
->
-> Let’s sync with Herbert: have we reached the stage where all drivers
-> reliably return -ENOSPC when dst_buf is PAGE_SIZE but the compressed
-> size would exceed it?
+On 8/19/2025 11:30 PM, Catalin Marinas wrote:
+> On Mon, Aug 18, 2025 at 05:09:44PM +0800, Gu Bowen wrote:
+>> Our syztester report the lockdep WARNING [1], which was identified in
+>> stable kernel version 5.10. However, this deadlock path no longer exists
+>> due to the refactoring of console_lock in v6.2-rc1 [2]. Coincidentally,
+>> there are two types of deadlocks that we have found here. One is the ABBA
+>> deadlock, as mentioned above [1], and the other is the AA deadlock was
+>> reported by Breno [3]. The latter's deadlock issue persists.
+> 
+> It's better to include the lockdep warning here rather than linking to
+> other threads. Also since we are targeting upstream with this patch,
+> I don't think we should mention lockdep warnings for 5.10.
+> 
+>> To solve this problem, switch to printk_safe mode before printing warning
+>> message, this will redirect all printk()-s to a special per-CPU buffer,
+>> which will be flushed later from a safe context (irq work), and this
+>> deadlock problem can be avoided. The proper API to use should be
+>> printk_deferred_enter()/printk_deferred_exit() [4].
+>>
+>> [1]
+>> https://lore.kernel.org/all/20250730094914.566582-1-gubowen5@huawei.com/
+>> [2]
+>> https://lore.kernel.org/all/20221116162152.193147-1-john.ogness@linutronix.de/
+>> [3]
+>> https://lore.kernel.org/all/20250731-kmemleak_lock-v1-1-728fd470198f@debian.org/#t
+>> [4]
+>> https://lore.kernel.org/all/5ca375cd-4a20-4807-b897-68b289626550@redhat.com/
+>> ====================
+>>
+> 
+> I suggest you add the 5.10 mention here if you want, text after "---" is
+> normally stripped (well, not sure with Andrew's scripts).
+> 
+> Otherwise the patch looks fine.
+> 
 
-It doesn't matter.  Software compression should never fail, and
-if it does fail due to a bug, that's not something that the user
-of the API should worry about.
+Thank you for your advice, I will pay attention to these points in the 
+future.
 
-Hardware compression should always fall back to software compression
-in case of failure.
-
-IOW all compression errors should be treated as incompressible
-data.
-
-Cheers,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Best Regards,
+Guber
 
