@@ -2,95 +2,164 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 402E7CA0EE4
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 14:39:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D3948CA0EE4
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 14:50:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB2B08E000F; Wed, 20 Aug 2025 10:39:48 -0400 (EDT)
+	id 514748E001E; Wed, 20 Aug 2025 10:50:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8B7C8E0003; Wed, 20 Aug 2025 10:39:48 -0400 (EDT)
+	id 4C57E8E0003; Wed, 20 Aug 2025 10:50:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC7AD8E000F; Wed, 20 Aug 2025 10:39:48 -0400 (EDT)
+	id 38D018E001E; Wed, 20 Aug 2025 10:50:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 99FEC8E0003
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 10:39:48 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1E6ED1DD997
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 14:39:48 +0000 (UTC)
-X-FDA: 83797394856.23.9397CB3
-Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 0D02840006
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 14:39:44 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf04.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755700786;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r81hz8befqiC+4VsYBhU9UOh03FIPUo0qPSRYBUSw2Q=;
-	b=dLSn3Phgcq33q+y1QTKN1KP099Cw0Z3Xz4HXm+n2BCgUB644+FNdujPuFl8s7RkCVQ+9w5
-	+2HGH5Z7orIHrvL70XssjIVahtEZTgZPs1U1dKlXqrYEXvxKiTmerpSFzXI4ORUeUaqIIX
-	SoILbNzoTB3Q1FIJ+0P/s7F33YcK0Uk=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf04.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755700786; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 21F1F8E0003
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 10:50:23 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BA02F8361F
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 14:50:22 +0000 (UTC)
+X-FDA: 83797421484.26.F453CFE
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 528614001A
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 14:50:20 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="OnirXp4/";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755701420; a=rsa-sha256;
 	cv=none;
-	b=iGgnrTm1D+TrcCERJs88xPYiFey+cZw142mqs9KVvIFCC6mgEaCXk8Oq7qhHALdIld3qh9
-	oAD2IGwEVd7kk8nCiwIIuIXVfOey+tjlpXLP4JuQcEtoM5DxOWLd9OlvnM7yQWV+tRRfY0
-	YMYzpOom3nB4P8dOZ7oZPXO2O/Afpyo=
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 20 Aug 2025 23:39:40 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Wed, 20 Aug 2025 23:39:40 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Chris Li <chrisl@kernel.org>
-Cc: Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, shikemeng@huaweicloud.com,
-	kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com,
-	baohua@kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, gunho.lee@lge.com,
-	iamjoonsoo.kim@lge.com, taejoon.song@lge.com,
-	Matthew Wilcox <willy@infradead.org>,
-	David Hildenbrand <david@redhat.com>,
-	Kairui Song <ryncsn@gmail.com>
-Subject: Re: [PATCH 1/4] mm/swap, memcg: Introduce infrastructure for
- cgroup-based swap priority
-Message-ID: <aKXeLCr9DgQ2YfCq@yjaykim-PowerEdge-T330>
-References: <20250716202006.3640584-2-youngjun.park@lge.com>
- <jrkh2jy2pkoxgsxgsstpmijyhbzzyige6ubltvmvwl6fwkp3s7@kzc24pj2tcko>
- <aH+apAbBCmkMGPlO@yjaykim-PowerEdge-T330>
- <aH/baxIgrBI3Z1Hl@yjaykim-PowerEdge-T330>
- <uyxkdmnmvjipxuf7gagu2okw7afvzlclomfmc6wb6tygc3mhv6@736m7xs6gn5q>
- <CAF8kJuMo3yNKOZL9n5UkHx_O5cTZts287HOnQOu=KqQcnbrMdg@mail.gmail.com>
- <aKC+EU3I/qm6TcjG@yjaykim-PowerEdge-T330>
- <CAF8kJuNuNuxxTbtkCb3Opsjfy-or7E+0AwPDi7L-EgqoraQ3Qg@mail.gmail.com>
- <aKROKZ9+z2oGUJ7K@yjaykim-PowerEdge-T330>
- <CAF8kJuPUouN4c6V-CaG7_WQUAvRxBg02WRxsMtL56_YTdTh1Jg@mail.gmail.com>
+	b=wBbdU3VL6dKjUOxSHeKCXrui0frqB1PYVrKrv99PgERXZXT5mAYLE5HISH58+ot21NGFuW
+	yVE+4mS06zegnbDKjuymSUC5lvd31fAhA0QIG/XAmUciyjk1cq1BOFY5OHlEOgsa/Ftt6k
+	g22XHgDYf3xdpZcDQ1LkjP9IRBJTS7U=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="OnirXp4/";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755701420;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=UVDesp2YzkDiQhPhj3wNDxcGmY+ZKVXe2qM+mIpLJuQ=;
+	b=GodP2VdGfj7yKyBYYCmnwrZfJ/ZKcvUKce3E1bqcOyrZrpQAcpabiNIMIduIL+EiwPbbxG
+	O3Hoh8Eb80xNrWbwR2OoLGEX6SW5G898XLP2z1H++L+o8s33kRlcbE0mZkFmdXzjOCAuW4
+	Tnv/yt7pj8bVQjjCH+G09CZSZgqaRyY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755701419;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+	bh=UVDesp2YzkDiQhPhj3wNDxcGmY+ZKVXe2qM+mIpLJuQ=;
+	b=OnirXp4/P0tQc6JBHr7lK1CC64n4RwVf65ecHshxvN1DzR1yT1InZ7A4usSD68oyNPAEXw
+	40q9um5S2fGn/H1h2emfgSIPkuWg35WgdP3TKxRiMFkhrgnCFzDU6zL/7mjYPV0pqQLRWu
+	vLuwU07VmI5oCr3KePYYh2mi4yrZVO8=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-577-ucsaDhMSPXiTNQEo2ml4rw-1; Wed, 20 Aug 2025 10:50:18 -0400
+X-MC-Unique: ucsaDhMSPXiTNQEo2ml4rw-1
+X-Mimecast-MFC-AGG-ID: ucsaDhMSPXiTNQEo2ml4rw_1755701417
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3b9edf2d82dso3315468f8f.2
+        for <linux-mm@kvack.org>; Wed, 20 Aug 2025 07:50:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755701417; x=1756306217;
+        h=content-transfer-encoding:autocrypt:subject:to:content-language
+         :from:user-agent:mime-version:date:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UVDesp2YzkDiQhPhj3wNDxcGmY+ZKVXe2qM+mIpLJuQ=;
+        b=Ghxt3vDl/5mEWhq7qNVhUPzCWMogLiyZqOl8KM/h63vTCzffSWQ1XbPq9p5ZG42Kqf
+         pEriA/YB8kFeGNbZqMsqgmSs7xM57xRrv/ppi2OYzwnW/YQzJAACsr1klJPB+s0iEPyr
+         3zAV209Qeq2L5/W9UXPL3VcyWaANU78qvOgmwnqPFAut87iNYnuTTKu/2lrT3kVBEODw
+         LRGA4YOdeSK7e6JlMGyDvpBtOH9Xcx2mcaJ8mI5mREh53Y4XJKBU6v6T371HlOm48xXb
+         G7WFX3x85qhB6Kajk8kM9dt/8Bl7j/A616NEs77s9hj1fRDLu1tKoZUuooBJvLTJbwU2
+         cMaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVjeDypzQhn9JCBmxz18Z33vaLMoSLPTn3D87Jel8jesZlAFZBMJFcCRtJXPmIMsGq8GoyQxd4vaQ==@kvack.org
+X-Gm-Message-State: AOJu0YzRRPfdFBOyrRwZgnzmqv++9KhCB7syEMhLzsvnrHdI0eRJ4FVn
+	8CSl2CVo9vyY/VXcphKAdqghpNFZGg82X+GZzeAK0cC8vynfJmzf9uZX9gea2Ek0XQh06fXKX1F
+	WzFcu999g6jlqLyvbxEnbb6c6i79XtL/o77bLlJB4nKrOwzWJw+8W
+X-Gm-Gg: ASbGnctoUzxcP8+M+VdvTq9Yi8xVgJZ7DU1GG3xBn6JG/rh/HGsyOCGWe6CemYoL6Qp
+	Qf/oHPuvmTO+qReBs7eY4sZtfqtvG+zTjaRrTikWc11I5MVXZ6S38PX9hArY9AOmxNizQRrTlnZ
+	TShMhyXHtKNKbDh4MNA+UoffwjLLVmeU8l0QkDZ+B7dO7011nwrUSpFS67bLLKPjnZ94m3TKi1J
+	cfI49Np3rt/lXF6kMts7eWVWf5pCGrHoqwLZSoY5dRQsrJo2Af4HBSYWi6URsobaHBN1EA12GXb
+	fbIMHtvFww//toDgROPt/R5oPA549z38ewQ/ItYoxryMiGCUcwv8ZULM+0wS/ceKZc+2n5CERHh
+	BIxfQA+BvBXDfTvp12hbeV+g5iFs5XJvSRvBwHWTVOAR4Shf1UDeO4341bfwcJr1Q
+X-Received: by 2002:a05:6000:2282:b0:3b5:dafc:1525 with SMTP id ffacd0b85a97d-3c32f664611mr2236150f8f.33.1755701416911;
+        Wed, 20 Aug 2025 07:50:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEMpI9AfBVahnq7+dVkf+h2VoKoGyjqGXGgZgTRtEbKx9O3Qm4CSoB+Kss7RoTy7Q+a4bVu1g==
+X-Received: by 2002:a05:6000:2282:b0:3b5:dafc:1525 with SMTP id ffacd0b85a97d-3c32f664611mr2236098f8f.33.1755701416229;
+        Wed, 20 Aug 2025 07:50:16 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f13:de00:e9f1:62b4:5bb:5d83? (p200300d82f13de00e9f162b405bb5d83.dip0.t-ipconnect.de. [2003:d8:2f13:de00:e9f1:62b4:5bb:5d83])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c07487978bsm7822833f8f.7.2025.08.20.07.50.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 20 Aug 2025 07:50:15 -0700 (PDT)
+Message-ID: <2255e387-857c-4b5c-b27b-f7f2a6bcaccd@redhat.com>
+Date: Wed, 20 Aug 2025 16:50:14 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAF8kJuPUouN4c6V-CaG7_WQUAvRxBg02WRxsMtL56_YTdTh1Jg@mail.gmail.com>
-X-Stat-Signature: w1qb3yda5sz5ugs5kt7xaapb1d17suih
+User-Agent: Mozilla Thunderbird
+From: David Hildenbrand <david@redhat.com>
+To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
+Subject: [Invitation] bi-weekly guest_memfd upstream call on 2025-08-21
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: uxKH8EzTpxticTsjExj0i3j_v73zO0CBGIk9l0ldLQU_1755701417
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 528614001A
+X-Stat-Signature: qbny79y5ujxbrth8bb97d1rkucddibep
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0D02840006
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1755700784-421272
-X-HE-Meta: U2FsdGVkX1/TVufGF5u1vmemlGXXsRkyL6/WxdU2MVQpCp8FKzZsTZ7Aqcgpcc6eNRIP7991MYag/G2yDd9KBv+XNvKO+PGEEFqhq0DNXtCPP2a6hIR517dTqVei39zISrjAmeHgUeXRKljT5QoB1USx8HYhCm/55GORRvWPOI0iXmarsYjB/ftlr0M4TWj6iojzpyeeac9axq38ca6i2TObAn1cWZp3ZcJZI7tZtWMUslTnYeuPFQU/LP/KnQBzQeQMH+6tchJzZE/XtumPZ+nM/jpq08WdzIH51gPFiZsvhUQeNDfi1xqZxdiHRjkWlrj84olVtpIHgVrzXgmltRoKHStuwC27rloVOAX82kkXcSFogXmwWO32KQXYPRW0QOl1Az024FzDYOVcLoVKZXnNX1oD5vzArYlSnQyeBSbolrX3WGC/oHcGJfCb9z99Vn5Tw/LjAYDRQOrzyKNgNXSpl3g7s76WocjJXAR7DbwONwoDocvoacbHuof7W/x2nJGlAGKo7jt2L+ixqvbPhl3uF1Ac2l4LYtXX/dJ95Wz5JTXPYzN4BSGLlgZu9pn9f/Vybqr0rc6saxhej5KFIbWuuNRw1V2SIEyUkQtOQUYBlfwCro3J9UqMNY2Xqz0RQqXnF/n37gfm9ee5//JCNwmEfVlr93NBAbgU4ovztXlilZPd1Z9lQfQ5H3KF26cDiDJAWjYDE/C/bAKgMUElTL+KlV6cjsQTGE+8O7yl402pRM+WR8N+mCrcfPTnq7cvlpqKJiQ5+ISwuwg0Gg1Mfd5LgSrRtcaCw24fZFrceqnYcEg+mFMVfFcT9ibVM86KjZxXBN/i/aQlJgCXoCyk5IVKIfQnRyT2yt6L6LFYO/JuWe1QvaA/PCBc4JbBVoMfNtfPVtBnYUEC+iFZn+yiKcArpEsb40emPLaYgSQ+ygAPbFN1QdV/tkDfwBSrAGyPnY5wVzjcRLdebCXugoz
- gRY3eNLC
- 6oq+I0fk8jBjifimt4s6lJ7OvGlQs9QwT+NY4Fq0bBzskrkR+aRpVifLbCN510XP4eiWnurpWR0g8uQixNTgtO3fkQo5cKDfSoTx5NHLgbr5c7N9uJf0tdSpWPkWjTRdlot2QmADVuMEyXmSRkTjI1BiS+0aI/9FruiNdxv7MNZD2bP0yzIw2PXr0Wriwjj86xWUF4SEBtz8mz+RAITchBGslELuUq6QJRI9u497S8406xNTAnChyjujuvHom4hkJSIQD16HOwfeMMCyFq2IlYWAFt6jaZoqTK9/v
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1755701420-975514
+X-HE-Meta: U2FsdGVkX1/PTUKvzQ51z3Siav5PcRcmocXlXFgqK2N1nQNa5jEsj2wXD1Gi9OmxFpCQc7ErhPugCjyUqLGPuVUAPsHNJ6Ea/jWyb4o+Xhsbmfy3BuHQFXusjIYw41euKmdJlNLvkz6mS4JWnyRPfxOGA7lV5ewf1GvtE9Z/DMpYLqoPTBkxaf7SpMBWTh5HnImUnOfFT9slu9CRC9oq1hofhghtKVyrsAp9N3zKlEZyt4So3NjSSLFxcDMwf6t3JVwdhP+eswF5emh2CF4qtx4s7OkdJ85lWAvexFKpKrbg/VkzEX4mBnlXWC6kM/kDbprMCIQyVrrXuwlh30XmgnnShx45MwxvxzsjXW36fujEA8RRTiYxBTgM77BJiDUNapz6ezCgZaq5t55kxAXjoLHjFI6lUUQXeeCMWPpVBB14et/brhPfp86rkEfjHeNrkNupIhOshiDHePkyQhTl2mKCP/dcPeBJYzS2oz9XML4oEtxZRpzSglHZfKARZjirKM5yVG+KvmGGXDxWskvZ1sbjnOMCNi6JFk1Ef9pjcDvZDc1Ic6YrfFRZz21goy7g/PvDqyOrNOrTDZCOq0R+6g5jt5pZ0i3y94oLKNyoIdEBx2rr7+tq7Ic+N69AxUc6/TfP37vNc6bvYoYgEadj2D5PVPWTpvBouUvwIhk2jvAK2sE3kHaq4IOG+IB3IMDT5nnQnYCvU6P7HKHKIqVaM7m8esxk3Rgyy4dmldreVsX0LgjOuXaEGxUOgRYmuzJzQ9BxB3zOGRQOMFQZr+T7pEz6fO7xpz2nCV1Y1Ho2MctHsZFfPQ7b8datw5B44kVqVsYYa2Mzr6MUTaboMuROdJ/gZzIzKPD7/Fmm+lXOY+GtX8vwBCc6hruNY8K9mOK87sCE2wsdfJaY+O0Rs3/ZAhUrLOzpsOxV1MjHyU2qmpNcAvRkHYM4h50aymBWrb8/zk88aNVTtcAHIO/rnOl
+ 8NHghurJ
+ 74QH6OhuI0HX75R7bTXELbA0EntDg8THNhhIMH71c1lci5fUNZW4/g4umQxXvxiGRNL4i0yrR26ktSFPsv017qN3ydH+CS5OhAjADjaeE68o1u7xurzhii9yPSyQa54oHyywihDCu/CejLJHbGt/OdLr+GngNQp0oZu78gtUeJ8/yjwzLAOeseDrB6VEo/4Yz3YXhX+ZEzrVRdhARqMoNKbddZ9L8HU/7JTvepoc/neX/6pZwB0UUF9TjX0GNW7PUvL/Q1/3bT3oTKwykX8ZfL2Oy+O8XqdCDNAblHlsAAy8VxopgUme+m5z9O/cVzXYo66BonDlrnHf6RlyPcRiYG/cuExa47Xe4NEPnBg4619EwxSHwmiLw2nPm51rTtcTpb00MwLBC3abK4oGsqMsr6mbSF82YjMybYQpLeOZmH3m0s/jzH3rDTIrq/IiHDiuJxdDfhXn67EYgxiR0OK+w6yzzUSaUUAnUEE+QEZMJr40O5FQsP2MK6Fpp/2yiOUyqrIy4um8Eyab/c4rJQek2kHM0bD9fyq1as5/VaOEQ12K1/rvYOcX7jZyYqg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,151 +168,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > inclusion/exclusion semantics at the cgroup level. The reason I decided not to
-> > go with it is because it lacks flexibility — it cannot express arbitrary     
-> > ordering. As noted above, it is impossible to represent arbitrary orderings, 
-> > which is why I chose a per-device priority strategy instead.                 
->                                                                                
-> As said, arbitrary orders violate the swap entry LRU orders. You still         
-> haven't given me a detailed technical reason why you need arbitrary            
-> orders other than "I want a pony".
+Hi everybody,
 
-I believe the examples I provided for arbitrary ordering can be considered
-a detailed technical reason.
-(You responded with Option 1 and Option 2.)
+Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
+2025-08-21 at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
 
-> > The `swap.tier` concept also requires mapping priorities to tiers, creating  
-> > per-cgroup tier objects, and so forth. That means a number of supporting     
-> > structures are needed as well. While I agree it is conceptually well-defined,
-> > I don’t necessarily find it simpler than the per-device priority model.      
->                                                                                
-> You haven't embraced the swap.tiers ideas to the full extent. I do see         
-> it can be simpler if you follow my suggestion. You are imaging a               
-> version using swap file priority data struct to implement the swap             
-> tiers. 
+We'll be using the following Google meet:
+http://meet.google.com/wxp-wtju-jzw
 
-Thank you for the detailed explanation. I think I understood the core points of this concept
-What I wrote was simply my interpretation — that it can be
-viewed as a well-defined extension of maintaining equal priority dependency
-together with inclusion/exclusion semantics. Nothing more and nothing less.
+The meeting notes can be found at [1], where we also link recordings and
+collect current guest_memfd upstream proposals. If you want an google
+calendar invitation that also covers all future meetings, just write me
+a mail.
 
-> That is not what I have in mind. The tiers can be just one             
-> integer to represent the set of tiers it enrolls and the default. If           
-> you follow my suggestion and the design you will have a simpler series         
-> in the end.                                                                    
+For now, nothing "big" on the agenda yet, so we'll see whatever pops up 
+(I suspect discussions around huge page support :) ).
 
-Through this discussion my intention is to arrive at the best solution,
-and I appreciate that you pointed out areas I should reconsider. If you,
-and other reviewers(If somebody gives opions of it, then it will be helpful)
-generally conclude that the tier concept is the right path,
-I have a clear willingness to re-propose an RFC and patches
-based on your idea. In that case, since arbitrary ordering would not be
-allowed, I fully agree that the main swap selection logic would become
-simpler than my current implementation.
-                                                                    
-> The problem is that you pollute your fast tier with very cold swap              
-> entry data, that is to your disadvantage, because you will need to             
-> swap back more from the slower tier.                                           
->                                                                                
-> e.g. you have two pages. Swap entry A will get 2 swap faults, the swap         
-> entry B will get 20 swap faults in the next 2 hours. B is hotter than          
-> A. Let's say you have to store them one in zswap and the other in hdd.         
-> Which one should you store in faster zswap? Obvious swap entry B.              
->                                                                                
-> It will cause more problems when you flush the data to the lower tier.         
-> You want to flush the coldest data first. Please read about the                
-> history of zswap write back and what LRU problem it encountered. The           
-> most recent zswap storing the incompressible pages series in the mail          
-> list precisely driven by preserving the swap entry LRU order reason.           
->                                                                                
-> You really should consider the effect on swap entry LRU ordering               
-> before you design the per cgroup swap priority.                                
+To put something to discuss onto the agenda, reply to this mail or add
+them to the "Topics/questions for next meeting(s)" section in the
+meeting notes as a comment.
 
-Then I would like to ask a fundamental question about priority. Priority is
-a user interface, and the user has the choice. From the beginning, when the
-user sets priorities, there could be a scenario where the slower swap is
-given a higher priority and the faster swap is given a lower one. That is
-possible. For example, if the faster device has a short lifetime, a real
-use case might be to consume the slower swap first for endurance, and only
-use the faster swap when unavoidable.
+[1]
+https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
 
-In this case, logically from the LRU perspective there is no inversion of
-priority order, but in practice the slower device is filled first. That
-looks like degradation from a performance perspective — but it is exactly
-what the user intended.
+--
+Cheers,
 
-The swap tier concept appears to map priority semantics directly to service
-speed, so that higher priority always means faster service. This looks like
-it enforces the choice on the user(but it is opend).
+David
 
-Even with swap tiers, under the semantics you suggested, it is possible for
-a given cgroup to use only the slower tier. From that cgroup’s view there
-is no LRU inversion, but since the fast swap exists and is left unused, it
-could still be seen as an "inverse" in terms of usage.
-
-In summary, what I struggle to understand is that if the major assumption
-is that swap operation must always align with service speed, then even swap
-tiers can contradict it (since users may deliberately prefer the lower
-tier). In that case, wouldn’t the whole concept of letting users select swap
-devices by priority itself also become a problem?
-
-> > I mentioned already on this mail: what swap tiers cannot do is arbitrary     
-> > ordering. If ordering is fixed globally by tiers, some workloads that want to
-> > consume slower swap devices first (and reserve faster devices as a safety    
-> > backend to minimize swap failures) cannot be expressed. This kind of policy  
-> > requires arbitrary ordering flexibility, which is possible with per-device   
-> > priorities but not with fixed tiers.                                         
->                                                                                
-> Let's say you have fast tier A and slow tier B.                                
->                                                                                
-> Option 1) All swap entries go through the fast tier A first. As time           
-> goes on, the colder swap entry will move to the end of the tier A LRU,         
-> because there is no swap fault happening to those colder entries. If           
-> you run out of space of  A, then you flush the end of the A to B. If           
-> the swap fault does happen in the relative short period of time, it            
-> will serve by the faster tier of A.                                            
->                                                                                
-> That is a win compared to your proposal you want directly to go to B,          
-> with more swap faults will be served by B compared to option 1).               
->                                                                                
-> option 2) Just disable fast tier A in the beginning, only use B until          
-> B is full. At some point B is full, you want to enable fast tier A.            
-> Then it should move the head LRU from B into A. That way it still              
-> maintains the LRU order.                                                       
->                                                                                
-> option 1) seems better than 2) because it serves more swap faults from         
-> faster tier A.                                                                 
-
-Option 1 does not really align with the usage scenario I had in mind,
-since it starts from the fast swap. Option 2 fits partially, but requires
-controlling when to enable the fast tier once full, and handling LRU
-movement — which adds complexity.
-
-Your final suggestion of Option 1 seems consistent with your original
-objection: that the system design should fundamentally aim at performance
-improvement by making use of the fast swap first.
-
-> > And vswap possible usage: if we must consider vswap (assume we can select it 
-> > like an individual swap device), where should it be mapped in the tier model?
-> > (see https://lore.kernel.org/linux-mm/CAMgjq7BA_2-5iCvS-vp9ZEoG=1DwHWYuVZOuH8DWH9wzdoC00g@mail.gmail.com/)
->                                                                                
-> The swap tires do not depend on vswap, you don't need to worry about that now. 
-
-I initially understood vswap could also be treated as an
-identity selectable in the unified swap framework. If that were the case, I
-thought it would be hard to map vswap into the tier concept. Was that my
-misinterpretation?
-
-> The per cgroup swap tiers integer bitmask is simpler than maintaining          
-> a per cgroup order list. It might be the same complexity in your mind,         
-> I do see swap tiers as the simpler one.                                        
-
-I agree that from the perspective of implementing the main swap selection
-logic, tiers are simpler. Since arbitrary ordering is not allowed, a large
-part of the implementation complexity can indeed be reduced.
-
-Once again, thank you for your thoughtful comments and constructive feedback.
-
-Best Regards,
-Youngjun Park 
 
