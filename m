@@ -2,114 +2,91 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 59B74CA0EF8
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 22:06:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 58BCFCA0EDC
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 22:16:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 92FF98E0009; Wed, 20 Aug 2025 18:06:48 -0400 (EDT)
+	id EC46B8E0019; Wed, 20 Aug 2025 18:16:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 907966B0010; Wed, 20 Aug 2025 18:06:48 -0400 (EDT)
+	id E9C758E0011; Wed, 20 Aug 2025 18:16:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 81E0C8E0009; Wed, 20 Aug 2025 18:06:48 -0400 (EDT)
+	id DD9A78E0019; Wed, 20 Aug 2025 18:16:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DE566B000D
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 18:06:48 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AA2CD160178
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 22:06:47 +0000 (UTC)
-X-FDA: 83798521254.13.EBD037B
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 89B0440011
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 22:06:45 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VKTKtYXQ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of klarasmodin@gmail.com designates 209.85.208.174 as permitted sender) smtp.mailfrom=klarasmodin@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CEC338E0011
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 18:16:40 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 507B21D8BE6
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 22:16:40 +0000 (UTC)
+X-FDA: 83798546160.08.F89CA5C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id B12AD18000D
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 22:16:38 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VbA1UGh1;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755727605;
+	s=arc-20220608; t=1755728198;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2NMBndnzKPT1NoZpmX7E2y1iqzOsAWdhRbNpoiP8UFI=;
-	b=eyjfoRg8SdgxUeIsonns59B7ONy+wDHsaYIPMi+eNFeALjf61kmGAqWLKRhYQjPdpQ+Ybc
-	M+Kd6ib49OG0W82NbzTVBcluyKgaRg10j8Pd+/9mzRgh5cpAcEBIA5SrniOP3QoTycUDu/
-	o98efCMUlqag1DquDsuE9kwpMi+KoQc=
+	bh=tPDurou6bSdrKeGurqaqhGBttU7jigBrsnUWkI5zSd0=;
+	b=dGQXNMFltedhHfjU5A678AIDkbpfbfzMC+sdNm29DcnGqVbWgmTw1+MvNGuCj/liYbrPbn
+	HHcFLujVPZGd9IAfXGEh5SyI7IC6HmTA9qDREykbF+bEV/GcU8yGF4xyBMbP4jeLmTlHOP
+	s70jJCrKto0m8ND6WElAUS/a+qAGKpE=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VKTKtYXQ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of klarasmodin@gmail.com designates 209.85.208.174 as permitted sender) smtp.mailfrom=klarasmodin@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755727605; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VbA1UGh1;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755728198; a=rsa-sha256;
 	cv=none;
-	b=kEJzfEGugROjAFds1KLwtVtKJoGO6XrPvE/4KqmBdjRI1eKQJ1c0kFTJu962QacZ7AHVwV
-	GL2j+dTEx+FbyxqX4UXmC90sljNp5+NWe3cFzYShakHAMGXu5No6Y0mymICkQ6AAtibBG7
-	pmZa69KJptk9pHm5jn/hvcCgHzXqmAw=
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-333f8f2d6c2so3246921fa.1
-        for <linux-mm@kvack.org>; Wed, 20 Aug 2025 15:06:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755727604; x=1756332404; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2NMBndnzKPT1NoZpmX7E2y1iqzOsAWdhRbNpoiP8UFI=;
-        b=VKTKtYXQzUqGKEPLQGczXFf1+BdyH1cOjMHXKc7w2jGAA/b2ewWaIrYYmcyKhIOtQ4
-         SgSq3Cje9AMzMNpGS3f6pwPcWIJ8utdiHV9ubaNa1N1LN9TV9lYdCB2Dx/DWWqWUHmSu
-         HezkaUCPHd2sl4clbS2n/Fwndlwp3w/M854PQJeYr5drfN4M7f3l3mEiqlKEa3Wpc2PM
-         35n+2z6sUWVDMwknYxgKrKAEOJAefxA5+n4bKRVoQJI5h5n1eUrcRXBztAPwHleMEfl6
-         VlG7CpxqNANAVOB5umbxNrv+5b3g+TPImW6KfTragwqcb8P+2xm/5Bnk/mB8kJcZ/Ttk
-         OlGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755727604; x=1756332404;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2NMBndnzKPT1NoZpmX7E2y1iqzOsAWdhRbNpoiP8UFI=;
-        b=mo5vP890uG3jGJu7yh6IUxvb1oO0qW65ZatJrDuAXT5c+3699Z6QCaYe2EI4+hKuxn
-         nmVg5stSsopxjYBFDKEf5+Jgovex6Y6Dtvh/6fJnYycg/GI8SCMXBFH6nECDvMQ6k5v4
-         6sj84JNf3fwI8BxLrZwYolGy/L7BEvGAcY7GT/gyZzNAZ1tpTFTRj74ANbdWaymOzW1w
-         Vdlpd04KuwTbMMf1NIdjNX709ZDvqVqUgmuhCRc8UFumzek4CplWvEGEEuIXIB6IsuAT
-         YGMLynQ2GcCU1/HzAKX8EmHrzY0AD/pMYz/w7f83cFsTjNtzJ/zWHRECQFtkpufRxmBB
-         nMPA==
-X-Forwarded-Encrypted: i=1; AJvYcCXc3oOJWrVnOrn/ZbxuL/SuGMVycq9k3ULGUxx+4zeSUBegB0njI3Abi5eM3/UbDp5y/VduhpdRfA==@kvack.org
-X-Gm-Message-State: AOJu0YyPc50KCGNcv+0vAdF23N081VsfqMjMgf/2KlhRqq0xVKM5BBKq
-	5ncOK3a+jR+IEvIOzQhJR7M8NYGApxRpSpTQYCFrDQAa5pimPyn+wN5E
-X-Gm-Gg: ASbGncvnBaSp4Ri2CpLg/K3O0tJqeFjOxChGTBYltcu/mALjIWKtZ7sJn8A1eG1rsEC
-	QbG5cutXnpbpax7BlVQCISiB05HxjACUBftEFKGD8V4xc9R5CsT+TJm39FKoEWvdbCAGpgd1EWy
-	vno01OprmNE2bAFcFaSN+RwCEgh943a42E1dtWbJRYQalPi51+qytdcw6EDdKf3IfrisCQYMFaj
-	Sr6VPovHKpCR3GhU+9SIOIxJn3bM7e8PPkXE/wZBnl1+riMv8/fRW/uxdXxpP8MA/DmW+hbZt4d
-	OJbv6heupJSqVtju1tHsmN6OGjigNfBAwxo8LqwBK+S0cb/02xcUghTmpbwrCV4nW5fHavIvjo2
-	3IZosLqAzIw5RGN14PNoReB/+7G3mMStkTfiVSgfsCgj2q8s=
-X-Google-Smtp-Source: AGHT+IF8q3EOilMMZn6w1YadAvZXVrqgXu54pbYwks8gwAO14G9NBCldCXVPQPbBOIbj8OfT6v70GQ==
-X-Received: by 2002:a05:651c:19a0:b0:332:3562:9734 with SMTP id 38308e7fff4ca-33549e15f16mr507791fa.8.1755727603283;
-        Wed, 20 Aug 2025 15:06:43 -0700 (PDT)
-Received: from localhost (soda.int.kasm.eu. [2001:678:a5c:1202:4fb5:f16a:579c:6dcb])
-        by smtp.gmail.com with UTF8SMTPSA id 38308e7fff4ca-3340a41d588sm31320351fa.3.2025.08.20.15.06.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Aug 2025 15:06:42 -0700 (PDT)
-Date: Thu, 21 Aug 2025 00:06:42 +0200
-From: Klara Modin <klarasmodin@gmail.com>
-To: Boris Burkov <boris@bur.io>
-Cc: akpm@linux-foundation.org, linux-btrfs@vger.kernel.org, 
-	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, kernel-team@fb.com, 
-	shakeel.butt@linux.dev, wqu@suse.com, willy@infradead.org, mhocko@kernel.org, 
-	muchun.song@linux.dev, roman.gushchin@linux.dev, hannes@cmpxchg.org
-Subject: Re: [PATCH v3 1/4] mm/filemap: add AS_UNCHARGED
-Message-ID: <hbdekl37pkdsvdvzgsz5prg5nlmyr67zrkqgucq3gdtepqjilh@ovc6untybhbg>
-References: <cover.1755562487.git.boris@bur.io>
- <43fed53d45910cd4fa7a71d2e92913e53eb28774.1755562487.git.boris@bur.io>
+	b=JUmF9iUlbZ3BVJP58Vh9CWxGU1OKHaalg7DEFJl1gsyEfY+luHHeV6gb2HfWQAE+e2GwjE
+	aypv71LGfUuM/8u45w22Bkl8A5YaMQgwHh2uqmtNroYAzj8AV+RAOT/rlR1VPPcfqKEzLO
+	igJEzX43EGMPtcUc8/LztBM2tJhbPfQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id EADB261444;
+	Wed, 20 Aug 2025 22:16:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F6BC4CEE7;
+	Wed, 20 Aug 2025 22:16:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755728197;
+	bh=t+tWnrOdC52ng2PKCMOPQ3dU0wAXmGRrWg903Lm9s5k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=VbA1UGh1nC3YLNxH36lmr0c4YOCpU6zi5divlNm5Vp7tVUEfHKWIjwqb3342Ktgu+
+	 dLDHwCayCyjiEeOWEf+EhacAOsU2xhK4a55nMVPYy30hDWPGs3zwiT/rI+Majx8b05
+	 XJp0xB1FwXZKAdOgSNjrg50hRj7tg2ppob0usfMC7Tz1EZecNieJgmhZQ+dMRbGLv6
+	 WAivW2gaszIZrtJTOv5XhfsX8KCmEVEXErinhfqGp4fZQjXCbd8vB8UDOTXk+jkd5Y
+	 JmeA4Av2AJiPd9enh172qDGMN7I343+BAUoJrCM0U2ifoLh3z+eZxAg4sqt7OFV7zX
+	 bxfNH3+Cosa7g==
+From: SeongJae Park <sj@kernel.org>
+To: Quanmin Yan <yanquanmin1@huawei.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	wangkefeng.wang@huawei.com,
+	zuoze1@huawei.com,
+	Andrew Paniakin <apanyaki@amazon.com>
+Subject: Re: [RFC PATCH mm-next v2 12/12] mm/damon/core: prevent unnecessary overflow in damos_set_effective_quota()
+Date: Wed, 20 Aug 2025 15:16:33 -0700
+Message-Id: <20250820221633.87243-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250820080623.3799131-13-yanquanmin1@huawei.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <43fed53d45910cd4fa7a71d2e92913e53eb28774.1755562487.git.boris@bur.io>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 89B0440011
-X-Stat-Signature: hfqyaxii6i47p9mucsryt4yn3fsqsqxt
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: rpf5e7tkqp7a8kks8zh5h6fadoem4bob
 X-Rspam-User: 
-X-HE-Tag: 1755727605-57006
-X-HE-Meta: U2FsdGVkX18y7faYvKijPpt6dA5G8uix+iH5sFhIFzm7b3gRtSY0Q3+dFNOhViFoY+1ysFaoUqJCC3g4qAATrfRY9ahrXLSmVDgLJTy83FSLpF99k3FX4yEFx4ChpAh1LPQfYa5GJimRp/A13XXgn4n2FCL5soNw9cd4kwDR54cssS4v6xXwGd2fQ+Tc4olIuHMATPFuMcSYoIC2V3BTWUZlMejgeFEdoK+6tgudXfRWl3WPUeXK1SgR9QdkHhz7FvZYOfqRkO5rmAcMeeY9ofdPVaP/h+6JnoSfuYgTiBAtPyKhCX0ymuemX2lwX+8e2xRbvDT9+LzLZujxof/6NeZXtc9z+Rxkvq+oHSjyr7Iwor9KOD6kqHwa8TU3y3O0JVmPAby1s59S3aApCIYKXh9NcRUaNJmsYB6SNX9PRBicE5lAky9+i/4lJiCFD3yjG1BuY0B9BLjxyC/FDJNv/41IAA6ssi+G5/36fEzlgI2Xv8fdEgli68LVaNcLWPmvof+z++GD67lX2QGSCvOrVx77EO1hF8QNmAXiJmLwv76o6RNfKdF18sjmCe8sYoASpRvbb3Qm4htEAoiirlpzJZoU/pilydf5iJrodn5A8K9vF6dq+Pp4tryMRPFoQZZnAUsMm3uAxjpRpwa050v/EOmVvZQzvIfTL48M0/GmclecZmvXVDiP0IqlMarASrVdMsnm02AIDnJlqcivxYReR75dupfu7Fz/5djUY7pxvj95Z2C7q0URTz+Oi6i44IrgU82lxsjG9IHLLC8GwiHUbJroX4/B2KpfNaBCN9LdmbSGBmAkAIOYDKvcNVIYmJSqhJ/VNfdqLUHxtI9I1w5y4vfON7/zgE2cvIjGximkXqAulorgDGZZmTFpPStd5Q5qThDIpOdF4Gg6h/jLRZrvwY80b+OYPDOWD6NIhIFVN0Dxm9XdK4/JMjLkmM4HI7Cey1ptTfRHzjSy+I1K6Si
- f627TCYr
- /hdR96RjWvlQGHnDOzzWuVntJaYISO1Sv1uNC7i99lqrQWYSzJiW8I9IBHEDwOB8sipFjuRgG7ZyXUXu1tnJGZPtpDLR5KyxQXypymyLaN1xZoQHbmQd6TK0ycjpvznqqrNfn7PuOPpnmtZonlYJx88XOWJhs5+uc1FG8IoSXNKNgaASkrA2JukCltkE0bt5Fox5cn1/0lZ+AERNuwwrnJYVjI+vHCOsF5lX3lYM81IgLGcn6wfvigFWn+ph8Y5HB8M8MiO8/XJDlslEXif9xf6ZPAEkafIxS7ePmnquAUsO9F0oHnyn34Q9hEA4GRbwBmrFysBUQ/IAssBpNJBgfoMSb040cNQc3poD4N/O94D5pF7GZ4j8aQrj2qQ9930Nxps0FxuNucXOimT+ed/Pt+2GAd3NdcDH7KhqDibFR22h0miTnI9s2AUQkL7PSsKK9BkZS4z5AAZd3UbJCUSSx+14oV/rvFWNplAPrr57xrDs/jabNirzSuy0KSHKk2WD46i7tKWS9MXyWn3vrA9dOqiQeVyUeFHGjoBSOQlyJ/2+7AfyhTUPSmKvTz8SJHwVWWgK5a2jupJRhAUlPFY3KnNf7T/1DcBa5pQohrTKIHTKUaxDVY+5zq5Jqb6VJjkFychC9m5l4SVijK4oBMobTamwod5tJdmqHe+sZnQIjwi33GhACSVRkhfnv260liRD0x6d4KUcWqvQnlUg=
+X-Rspamd-Queue-Id: B12AD18000D
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755728198-206104
+X-HE-Meta: U2FsdGVkX1+2k9IjjDUrnGIapdIyd8Iw5NFWI9NeBz1QDkfcUZjbdJju88+Vc4yBlWYPVRaTzq0IJeb25NK39PQSNVyChgocA+8phWzVOwhOnIn7cv8Bee3f54GN8G+0MYTIyO0hFXgMqWyHNMXYvOoV0HKDYN/O10VB61qFopuodnxVFcYwK4ztuvBb7H9WMvLvN508TjYN5xKa2bh4HWAjUTjSwhIIBAR6pkUZHC+1kT5cYEVOgmmvz4/QPL2FT5M0vPgtFkYCSoZsSjPv+HRchOGXC8giz3AQzkKpovfpDnYIVZhdcgfP74WzzJFTqEx1Dq+bx11J58yV+G6+MnUg95Hl1uCQEbOA8iqwbc2Lc8g36l00HZ02NK4KbdVcbjhxsFdNVmqZQrFJJae4/aAjxgS88X3ivtf/egYRL2ue/nYjk/Id9k7oKKFaqE8hZsuKym+rd0FWw29ljCtEUWqoBIeL3vAcy9KosUX/9cPk3L/U+00fGn65T/lDKVrT5hX2wwYrl/ZsUPERMOhuJJaovE26TEY/Q9LvB9YJ0AYhm1CkIQ0jRCVk5L6ozNUMsCtlBdfG5vEa7XT85daufrVuNH0taZZXRjFbDYAV2p9HY9LMB5r3OyIPwk/noJlwhjODmzUmLVPLpOb5vXV6uAxiI+zd5QTykzGfdyp4PNHaDTrYKQo+fpbmQjdAWhAJcRnc7IZh9eF+Ihn4+Cw1vOluwTBLnbV+y1wzgUmi8V0u4lKO8KPMvC/HizQk9MRyMWQUQiZGkipTB/jej10KbNzGGt5/ISXrAjVA22RTdmslSTBRNCtWq7u2Yf9zYqOhYIy+vFoenAJ18MCupiVtBcR1HjJ1WkQ6MrChCmPi5NAX2DKbSQTImC0XJRqiqtvKJSapWRq+T5sVQtghr6gTuisRY7wpwW/pojp+5YLWZQ6pwLXbOiZaa+6bEcYeB5HzMTHho/HAuXqyslfC3tC
+ Qus9tqFB
+ xcfF3uMaSfb4q2cyt3OeO28Iyhv5yym8b9j4EebWTs3OuH9NHpLBSOMqwb1AR26+8j+EWRKhg8z+22XF3jZblr2ddKUDInbbojcPLpeUov9aewUewTNcbGZSlEE57aoiIucnQd5/LwXfk2fSt2GumBKDzD05uFnLixI565cXgsep018yvO+6xicE/wFPO4p+t0tIC3geSkRLN8/GQhKfpEzadrpMwmj9UR6TNWGyZrU/olZTrWgIohrRp2vBdfWc5GR7PoWQqBSSL4GgiydLRKTwDLfSwjoQGtkI3
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,192 +95,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
++ Andrew
 
-On 2025-08-18 17:36:53 -0700, Boris Burkov wrote:
-> Btrfs currently tracks its metadata pages in the page cache, using a
-> fake inode (fs_info->btree_inode) with offsets corresponding to where
-> the metadata is stored in the filesystem's full logical address space.
+On Wed, 20 Aug 2025 16:06:22 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
+
+> On 32-bit systems, the throughput calculation in function
+> damos_set_effective_quota() is prone to unnecessary
+> multiplication overflow. Using mult_frac() to fix it.
+
+Andrew Paniakin also recently found and privately reported this issue, on 64
+bit systems.  This can also happen on 64-bit systems, once the charged size
+exceeds ~17 TiB.  On systems running for long time in production, this issue
+can actually happen.
+
+More specifically, when a DAMOS scheme having the time quota runs for long
+time, throughput calculation can overflow and set esz too small.  As a result,
+speed of the scheme get unexpectedly slow.
+
+Quanmin, could you please add the above paragraph on the commit message?  Also,
+I think this fix deserves Cc: stable@ and has no reason to be a part of this
+patch series.  Could you please add appripriate tags like below and post again
+separately?
+
+    Fixes: 1cd243030059 ("mm/damon/schemes: implement time quota")
+    Reported-by: Andrew Paniakin <apanyaki@amazon.com>
+    Closes: N/A # privately reported
+    Cc: <stable@vger.kernel.org> # 5.16.x
+
 > 
-> A consequence of this is that when btrfs uses filemap_add_folio(), this
-> usage is charged to the cgroup of whichever task happens to be running
-> at the time. These folios don't belong to any particular user cgroup, so
-> I don't think it makes much sense for them to be charged in that way.
-> Some negative consequences as a result:
-> - A task can be holding some important btrfs locks, then need to lookup
->   some metadata and go into reclaim, extending the duration it holds
->   that lock for, and unfairly pushing its own reclaim pain onto other
->   cgroups.
-> - If that cgroup goes into reclaim, it might reclaim these folios a
->   different non-reclaiming cgroup might need soon. This is naturally
->   offset by LRU reclaim, but still.
-> 
-> A very similar proposal to use the root cgroup was previously made by
-> Qu, where he eventually proposed the idea of setting it per
-> address_space. This makes good sense for the btrfs use case, as the
-> uncharged behavior should apply to all use of the address_space, not
-> select allocations. I.e., if someone adds another filemap_add_folio()
-> call using btrfs's btree_inode, we would almost certainly want the
-> uncharged behavior.
-> 
-> Link: https://lore.kernel.org/linux-mm/b5fef5372ae454a7b6da4f2f75c427aeab6a07d6.1727498749.git.wqu@suse.com/
-> Suggested-by: Qu Wenruo <wqu@suse.com>
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Tested-by: syzbot@syzkaller.appspotmail.com
-> Signed-off-by: Boris Burkov <boris@bur.io>
-
-I bisected the following null-dereference to 3f31e0d9912d ("btrfs: set
-AS_UNCHARGED on the btree_inode") in mm-new but I believe it's a result of
-this patch:
-
- Oops [#1]
- CPU: 4 UID: 0 PID: 87 Comm: kswapd0 Not tainted 6.17.0-rc2-next-20250820-00349-gd6ecef4f9566 #511 PREEMPTLAZY
- Hardware name: Banana Pi BPI-F3 (DT)
- epc : workingset_eviction (include/linux/memcontrol.h:815 mm/workingset.c:257 mm/workingset.c:394) 
- ra : __remove_mapping (mm/vmscan.c:805) 
- epc : ffffffff802e6de8 ra : ffffffff802b4114 sp : ffffffc6006c3670
-  gp : ffffffff8227dad8 tp : ffffffd701a2cb00 t0 : ffffffff80027d00
-  t1 : 0000000000000000 t2 : 0000000000000001 s0 : ffffffc6006c3680
-  s1 : ffffffc50415a540 a0 : 0000000000000001 a1 : ffffffd700b70048
-  a2 : 0000000000000000 a3 : 0000000000000000 a4 : 00000000000003f0
-  a5 : ffffffd700b70430 a6 : 0000000000000000 a7 : ffffffd77ffd1dc0
-  s2 : ffffffd705a483d8 s3 : ffffffd705a483e0 s4 : 0000000000000001
-  s5 : 0000000000000000 s6 : 0000000000000000 s7 : 0000000000000001
-  s8 : ffffffd705a483d8 s9 : ffffffc6006c3760 s10: ffffffc50415a548
-  s11: ffffffff81e000e0 t3 : 0000000000000000 t4 : 0000000000000001
-  t5 : 0000000000000003 t6 : 0000000000000003
- status: 0000000200000100 badaddr: 00000000000000d0 cause: 000000000000000d
- workingset_eviction (include/linux/memcontrol.h:815 mm/workingset.c:257 mm/workingset.c:394) 
- __remove_mapping (mm/vmscan.c:805) 
- shrink_folio_list (mm/vmscan.c:1545 (discriminator 2)) 
- evict_folios (mm/vmscan.c:4738) 
- try_to_shrink_lruvec (mm/vmscan.c:4901) 
- shrink_one (mm/vmscan.c:4947) 
- shrink_node (include/asm-generic/preempt.h:54 (discriminator 1) include/linux/rcupdate.h:93 (discriminator 1) include/linux/rcupdate.h:839 (discriminator 1) mm/vmscan.c:5010 (discriminator 1) mm/vmscan.c:5086 (discriminator 1) mm/vmscan.c:6073 (discriminator 1)) 
- balance_pgdat (mm/vmscan.c:6942 mm/vmscan.c:7116) 
- kswapd (mm/vmscan.c:7381) 
- kthread (kernel/kthread.c:463) 
- ret_from_fork_kernel (include/linux/entry-common.h:155 (discriminator 4) include/linux/entry-common.h:210 (discriminator 4) arch/riscv/kernel/process.c:216 (discriminator 4)) 
- ret_from_fork_kernel_asm (arch/riscv/kernel/entry.S:328) 
- Code: 0987 060a 6633 01c6 97ba b02f 01d7 0001 0013 0000 (5503) 0d08
- All code
- ========
-    0:	060a0987          	.insn	4, 0x060a0987
-    4:	01c66633          	or	a2,a2,t3
-    8:	97ba                	.insn	2, 0x97ba
-    a:	01d7b02f          	amoadd.d	zero,t4,(a5)
-    e:	0001                	.insn	2, 0x0001
-   10:	00000013          	addi	zero,zero,0
-   14:*	0d085503          	lhu	a0,208(a6)		<-- trapping instruction
- 
- Code starting with the faulting instruction
- ===========================================
-    0:	0d085503          	lhu	a0,208(a6)
- ---[ end trace 0000000000000000 ]---
- note: kswapd0[87] exited with irqs disabled
- note: kswapd0[87] exited with preempt_count 2
-
+> Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
 > ---
->  include/linux/pagemap.h |  1 +
->  mm/filemap.c            | 12 ++++++++----
->  2 files changed, 9 insertions(+), 4 deletions(-)
+>  mm/damon/core.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> index c9ba69e02e3e..06dc3fae8124 100644
-> --- a/include/linux/pagemap.h
-> +++ b/include/linux/pagemap.h
-> @@ -211,6 +211,7 @@ enum mapping_flags {
->  				   folio contents */
->  	AS_INACCESSIBLE = 8,	/* Do not attempt direct R/W access to the mapping */
->  	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
-> +	AS_UNCHARGED = 10,	/* Do not charge usage to a cgroup */
->  	/* Bits 16-25 are used for FOLIO_ORDER */
->  	AS_FOLIO_ORDER_BITS = 5,
->  	AS_FOLIO_ORDER_MIN = 16,
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index e4a5a46db89b..5004a2cfa0cc 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -960,15 +960,19 @@ int filemap_add_folio(struct address_space *mapping, struct folio *folio,
->  {
->  	void *shadow = NULL;
->  	int ret;
-> +	bool charge_mem_cgroup = !test_bit(AS_UNCHARGED, &mapping->flags);
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index 980e271e42e9..38b5f842ef30 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -2102,8 +2102,8 @@ static void damos_set_effective_quota(struct damos_quota *quota)
 >  
-> -	ret = mem_cgroup_charge(folio, NULL, gfp);
-> -	if (ret)
-> -		return ret;
-> +	if (charge_mem_cgroup) {
-> +		ret = mem_cgroup_charge(folio, NULL, gfp);
-> +		if (ret)
-> +			return ret;
-> +	}
->  
->  	__folio_set_locked(folio);
->  	ret = __filemap_add_folio(mapping, folio, index, gfp, &shadow);
->  	if (unlikely(ret)) {
-> -		mem_cgroup_uncharge(folio);
-> +		if (charge_mem_cgroup)
-> +			mem_cgroup_uncharge(folio);
->  		__folio_clear_locked(folio);
->  	} else {
->  		/*
+>  	if (quota->ms) {
+>  		if (quota->total_charged_ns)
+> -			throughput = quota->total_charged_sz * 1000000 /
+> -				quota->total_charged_ns;
+> +			throughput = mult_frac(quota->total_charged_sz, 1000000,
+> +							quota->total_charged_ns);
+>  		else
+>  			throughput = PAGE_SIZE * 1024;
+>  		esz = min(throughput * quota->ms, esz);
 > -- 
-> 2.50.1
-> 
+> 2.43.0
 
-This means that not all folios will have a memcg attached also when
-memcg is enabled. In lru_gen_eviction() mem_cgroup_id() is called
-without a NULL check which then leads to the null-dereference.
 
-The following diff resolves the issue for me:
-
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index fae105a9cb46..c70e789201fc 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -809,7 +809,7 @@ void mem_cgroup_scan_tasks(struct mem_cgroup *memcg,
- 
- static inline unsigned short mem_cgroup_id(struct mem_cgroup *memcg)
- {
--	if (mem_cgroup_disabled())
-+	if (mem_cgroup_disabled() || !memcg)
- 		return 0;
- 
- 	return memcg->id.id;
-
-However, it's mentioned in folio_memcg() that it can return NULL so this
-might be an existing bug which this patch just makes more obvious.
-
-There's also workingset_eviction() which instead gets the memcg from
-lruvec. Doing that in lru_gen_eviction() also resolves the issue for me:
-
-diff --git a/mm/workingset.c b/mm/workingset.c
-index 68a76a91111f..e805eadf0ec7 100644
---- a/mm/workingset.c
-+++ b/mm/workingset.c
-@@ -243,6 +243,7 @@ static void *lru_gen_eviction(struct folio *folio)
- 	int tier = lru_tier_from_refs(refs, workingset);
- 	struct mem_cgroup *memcg = folio_memcg(folio);
- 	struct pglist_data *pgdat = folio_pgdat(folio);
-+	int memcgid;
- 
- 	BUILD_BUG_ON(LRU_GEN_WIDTH + LRU_REFS_WIDTH > BITS_PER_LONG - EVICTION_SHIFT);
- 
-@@ -254,7 +255,9 @@ static void *lru_gen_eviction(struct folio *folio)
- 	hist = lru_hist_from_seq(min_seq);
- 	atomic_long_add(delta, &lrugen->evicted[hist][type][tier]);
- 
--	return pack_shadow(mem_cgroup_id(memcg), pgdat, token, workingset);
-+	memcgid = mem_cgroup_id(lruvec_memcg(lruvec));
-+
-+	return pack_shadow(memcgid, pgdat, token, workingset);
- }
- 
- /*
-
-I don't really know what I'm doing here, though.
-
-Regards,
-Klara Modin
+Thanks,
+SJ
 
