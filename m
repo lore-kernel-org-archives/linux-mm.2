@@ -2,124 +2,87 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 21984CA0EF8
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 09:40:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 228F5CA0EED
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 09:54:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BCF946B0031; Wed, 20 Aug 2025 05:40:38 -0400 (EDT)
+	id 86D0D8E004B; Wed, 20 Aug 2025 05:54:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA7726B0062; Wed, 20 Aug 2025 05:40:38 -0400 (EDT)
+	id 844E08E0003; Wed, 20 Aug 2025 05:54:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A96006B0089; Wed, 20 Aug 2025 05:40:38 -0400 (EDT)
+	id 759FF8E004B; Wed, 20 Aug 2025 05:54:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 94D6B6B0031
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 05:40:38 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 391471179B7
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 09:40:38 +0000 (UTC)
-X-FDA: 83796640956.18.A0F1921
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 443D71C0006
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 09:40:36 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=CPnVRW+s;
-	spf=pass (imf20.hostedemail.com: domain of pmladek@suse.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=pmladek@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755682836; a=rsa-sha256;
-	cv=none;
-	b=eMMqIfVcaEi18gcUr9DsNjIASkW7/wbpWqF5/sd33kSpe1xMx+LKTOLYMNKRstJlkOIKrD
-	+M15DfbGHx+3ZxhLgpqE2JDRuzek3/BhvpyX0yAf4aedPRqPopAAIEgr5MgabUN+ED63/4
-	7zdeo1Cw1UQEnmZyN5kSbVzoIR4Fpig=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=CPnVRW+s;
-	spf=pass (imf20.hostedemail.com: domain of pmladek@suse.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=pmladek@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 604088E0003
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 05:54:42 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1281AB9877
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 09:54:42 +0000 (UTC)
+X-FDA: 83796676404.03.2653301
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 8F6EB40009
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 09:54:38 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf27.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755682836;
+	s=arc-20220608; t=1755683680;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NM0fyXJdFVsVnU/yS6K0gQI6XozNG1TCaWkFW+vAlK8=;
-	b=nf/fYaMo4Rx2bQ6IRa44xjb7CVKPz3F1O67cgLzkuG3r86/aAClnUNRbqNkk5pYM0fYEcL
-	bgH8NtE/pbI9sQrsZHyonixM2G9nmH8kDm4BIgysX1EfSmVJzEvF514QjKBlaRf2Swaf0H
-	8f6Sdn05xwRoaNxGDE/mnJQMNTDUYkw=
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-afcb79f659aso949904366b.2
-        for <linux-mm@kvack.org>; Wed, 20 Aug 2025 02:40:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1755682834; x=1756287634; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NM0fyXJdFVsVnU/yS6K0gQI6XozNG1TCaWkFW+vAlK8=;
-        b=CPnVRW+shj7O208p/RgPT7E1ai/RB76yesgNpyrM6mfE+V1p4jvZ2gPMuys/KGGplq
-         cQvN5LWOBxTviXI9Y63mr7F7QE/+2TFcCLO8kVmfGiu8cuWrMROu9ct7BMPjVsbjewNY
-         WlOkUUSc4I7lCWDn56LtWUBrZDQPFOMqt+mk2N8kbMN/ShMCtp2M5N9A/ges+SKbYkUo
-         D8eUZqjX0a1mJ8WB33Hnuokf085orM444sW75Aqnh6alkIn/YplDnqLT2Jqj0dvuegoA
-         xswJ7fKK+YSQhaEXf1Bvl+TseMMreP0Vt1oZr/VM14Zm86cV14+uVarOjzrFiIvjkurq
-         uDRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755682834; x=1756287634;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NM0fyXJdFVsVnU/yS6K0gQI6XozNG1TCaWkFW+vAlK8=;
-        b=RHAg61boftYGCGxnIZ+qhSZhapO6yC1C/LGaNYSit2J61QbT7h9bOwDxO9cDysrTdX
-         5qd3XTYw66uv0XzhZhagb6Hh0Xe+RhZpcS3xs1JpnM4rW2ol1jzbqSUs8ge/YPJIlShb
-         fUaBacwDkk3DSdpRBieffPo7Q54DL2RrC65z1Yqehqt3QvSZyR2//SuI3QrVFBCsgChC
-         7+a2lVWlYIIHNBRWjO8mGqpctPG9i5N7qs87gtS+A0aWAqz1fuNrPyaCM6s9euNVrS4k
-         aSRMKXRGcHgFGjJqWO9mEr2wgAm0DKb/u0tRT1Pwv+oenKOjYPOA84Kokx9i7hpI3TUK
-         6lxw==
-X-Forwarded-Encrypted: i=1; AJvYcCXM9XGuZ/sp4DQhsU7610ISNvmK37ZQ57eakYFcfI7NzxxHQkovFSF38m8v04fOS3Eme34b6s/9/Q==@kvack.org
-X-Gm-Message-State: AOJu0YyB53vED6CHCvZcUstMZyI12Z8wdR0rjWl5OIYY+JdTT99Himd2
-	XAL2mO35fj+eQ2XwBzn8YQJ2SpXxPgGxP4Pmz4Aoubc5v/Ek+PJhpEa6wpwEmY3Zn9/AZly0zna
-	Ixc+9
-X-Gm-Gg: ASbGnctw/R9VP9Yz1ntsWR/OXzGX04XCjx1wKz3hqCYONbI6lGQXCaLkVG9zKL20k5u
-	I9o3JtNTJdQ0fSmcfesbudcpO9g/pTRXfGedCFEc3BFQ7hAjFYvWAfNkYTuluGbJnYNinTVEs41
-	UqfCyrFeM17XMis77aCcWMiXo+zsLKq/ztWMBqfUDQ7auuMtrEXNwhCWEGk2ENpATdX3C1lQWFR
-	nRYJBWFLEhJANdgVCQYTY68BPFytetQC9smvsJYGUpM7mO7K50MC/SfHl+IB8xFI9ndnMShgwmS
-	z0kJaC5ln99JnlSsDIM6f3Pbk6wcpnSmT2mKP8/lZU9Wi1SyYgI/c769lGM4vrfyXnHidla0rIg
-	DLKjinP6ZgQZetC4YtQ05QExYHg==
-X-Google-Smtp-Source: AGHT+IEL5yizeK4oP3hcKNDpDCbogCgeCUIgrsK+feZZ6+ybN7ZuuNRbKKwxk5Z77sh2bbe8+uaS7Q==
-X-Received: by 2002:a17:907:3c8b:b0:ad8:9645:798c with SMTP id a640c23a62f3a-afdf0209598mr168513766b.51.1755682834470;
-        Wed, 20 Aug 2025 02:40:34 -0700 (PDT)
-Received: from pathway.suse.cz ([176.114.240.130])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afded478a14sm148404966b.76.2025.08.20.02.40.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Aug 2025 02:40:34 -0700 (PDT)
-Date: Wed, 20 Aug 2025 11:40:32 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: Lance Yang <lance.yang@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
-	paulmck@kernel.org, john.ogness@linutronix.de,
-	kernel test robot <lkp@intel.com>,
-	Feng Tang <feng.tang@linux.alibaba.com>
-Subject: [PATCH v2] panic: Clean up message about deprecated 'panic_print'
- parameter
-Message-ID: <aKWYELPjbhC7R8NO@pathway.suse.cz>
-References: <aKRJKZHgcxyNF3y7@pathway.suse.cz>
- <202508200907.PsZ3geub-lkp@intel.com>
- <ae9bb2ea-c6e5-4a4b-ae25-aea1d6fe084d@linux.dev>
- <33a897b4-7d9a-4641-9c7a-07c19bb9cb6f@linux.dev>
- <7a34da58-874d-4271-9dbb-7991468d58ff@linux.dev>
- <aKWWcPOf9qPIoCe4@pathway.suse.cz>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ehBlk8Qn9EuFTlLGgEIJq6F671GfcXdZ8P8Go/RVf68=;
+	b=Yx4c7zZ2Cs7PybKDQgG6MZbYdX2EBpwspS/0L/+7rs3EDY4Udzxb7sW9JACAq5dcrrn504
+	WAHlamBE++SNMSG1gFFqt45RIL0tK8xTyajPUN8D8r3Q9V85uMc3TbgUkfTuZpaNbh43ro
+	IyEkkOdu3FsM0n0MvkrC9T4+anSO8CM=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf27.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755683680; a=rsa-sha256;
+	cv=none;
+	b=p4EIqw7sd/O7fXsaCg3Yy0DpFNqdlO++bhUGqVyTBjoo/kZBrLnRPvXiv+ZF+A7LzGzery
+	DNSbF3YuKvLdY4uXitlYePZraCb5lhZTyvlsaL3euatgvJrxiR1MTFXzpiOnW1TT+OgIDv
+	n2BSHvjUfZm6gHQ3PcFd3QR6fLpUggE=
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4c6MBG4XsmzPqXb;
+	Wed, 20 Aug 2025 17:49:58 +0800 (CST)
+Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8271F14011A;
+	Wed, 20 Aug 2025 17:54:34 +0800 (CST)
+Received: from [10.174.176.250] (10.174.176.250) by
+ dggpemf200018.china.huawei.com (7.185.36.31) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 20 Aug 2025 17:54:33 +0800
+Message-ID: <3b5a37a7-af37-4108-a0c5-bc147bb77842@huawei.com>
+Date: Wed, 20 Aug 2025 17:54:32 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aKWWcPOf9qPIoCe4@pathway.suse.cz>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 443D71C0006
-X-Stat-Signature: n7bcqgifphkn8xfm5w5w7d343nbg5mhd
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH -next 15/16] mm/damon: the byte statistics data type
+ in damos_stat uses unsigned long long
+To: SeongJae Park <sj@kernel.org>
+CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<wangkefeng.wang@huawei.com>, <zuoze1@huawei.com>
+References: <20250813171000.6345-1-sj@kernel.org>
+From: Quanmin Yan <yanquanmin1@huawei.com>
+In-Reply-To: <20250813171000.6345-1-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.176.250]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ dggpemf200018.china.huawei.com (7.185.36.31)
+X-Stat-Signature: w8ihb37jknwii8qdmur51zd4orsz44fa
 X-Rspam-User: 
-X-HE-Tag: 1755682836-44659
-X-HE-Meta: U2FsdGVkX19n8YSZ5YfiC80kTrOZp0btHr5owOlxVS2I67Mc1QPjl3KwpfNQsBVaWCYfkyeDhWFBJnT0UUFvL62QEd7jkgh3UCqTW4k6dNcXCDGRsRynPZ1FUsQmFPrSkvZ1GZ+aocC1MyEvkw2zXcvnf4f1AH5lrIoTa8AF8zxxiUlx4Ub1KK1FYrVdvoRyTzw6Sd6Zc6iM6Z9r/15YUe+iv+nhHqdsbP2ZRdu3a9M9uwuehyev55Yyxe2oC69PgZ40OWezEpQpx96lTyKtKnTk4ie0RpkfYNGcoStkMNx3GRv+hQ+ZApw8hwR8bIXyooq8ypdlKOTi1oOZG/pUeRYyLSSGXZ2gUtdu2HjAC7mISUZehT91PkkJElmDI8gr1haH9YGsQ7R1eBb/AD9DQ26zJlIgXeGp9KhJNBdeDmBtShmFPtaDeA5DvGc27U/g0cj2oB6G/5d2QEf7ISZFyH8Fc4YlB428XqTcvzhAiN2pKzpwft2F+m1U4nqlFR5lt8FnAqIbDjRPnWh9hNxelpFCL10QmXbXN+BBgg9B5frdOsC12G+Ge/gAFsFhHR0YDnXY9VMUXLR6TM6thrkkXZUvaVxqCybJN2ipXOskpqgRIPxDUudpjLgcAVcJbAMYgHOixI1LZWzq/z1M+FqlawZFXJMGSbCyaeTBlrWWI7UoXjyGyWl3j8umixR76v5qtr008OuOOCBKx0DUxgI2fB3kbnf2LzhYc5Bn4QIhcHlQRdQqgmiOGLqr11gVJxPfCdcGvc7m087ztKYKBCz+nFw6+Bo1lqiCwOM3JUnxIGR7zV5sl5yp5Mv1C4qLRNEYQ4mEua1vdxJszlV2ucN7b/EnL3pLcMVdKbUTJfpFG1TvexXhI8e7VKSBmTPTthlEJATWynxiqD8zfRYnyqwu9EVkQg+J9jrrve5x5crizRX+I83S4ShEh+4CkoKIP6cfuAwBbpEf3nceILeXXAx
- XvrxXLSP
- nF2jNI1gZ/4fQ3I6WR864fq2fNp9AwCe9xwSyijeLscRYOTTmgWAWt0s6vrVdxOKPE0jNIseTQ+1rrG8hHN4XS2eZ60ECGWlrRB3OgiffVJXKrFszKv41eVV9dZJ79jGgkwKP22Dd8GZGs9ps0Hp2TZLxuoWsWeCm2O1QFGaWN+h3vRQOW/c9/YrNSTmBne93L4/VL0eEL3F5ovJ0u6BBgxRnBX9ZVkumN/xXq2/ATpgYh8bw/STGzLSbnzdNK3scaPiWoNBfzeiVskYpC+gr36jeAix9DpszfuVL5OnDcF0dwWPlOJ4VLYXo3aZ06iy4QrVggBqSJ77tCAZVp9r5GXwa6V+LmOX/im7feoRiHZqeEud8LS9LgEeIkKDrDsG5w6h/RF6wptt41XA3kU+2kl4msA==
+X-Rspamd-Queue-Id: 8F6EB40009
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755683678-135543
+X-HE-Meta: U2FsdGVkX1+RM3FKXbYSuF6dyW6Q6VfbO2HoUmjV74w/ZoXkFkM6m/FF4vtOYQzLRC5uioiQ9Ea8mKIs1cOcRmrQa/3C7EpvQym1w2JoTUzL0J0tAS0XkU/AOdSJzwXM8RlDpKRYl4is53r9tyYUJE99GrlrKf9tcmx0S32RGtnaGmrsQMW+4T+PmtCcu8Ku8ZIIrsEQfEUBav0Sxyyr+TpgocaNlHvUO0RB0aexZiyZhx0aFLS8MEmPb7YcyteZhGSovC5ioKtojfKiTJmF52euFEQdOiUTWpgRybCOONY/djpNm1ZLol2ElgR4z3F/uCrQJSZs0LBMOMzG7vYtFygjExFtb1v8lUBWI92AFwgAe3ZAll0Z8FLo4K/h2+1OMaJyWsi7H9pjQWbgDT/axdyAEdjrIsPQiDNsnrg4u+KOGkqeDAPB/D47d1Q861/PqdDOQD95UFF9YW+CueiegIVWz3hw0K6iQN5ETiqxcx6HhLNQJqyh7lIFgYxebSKAGWKyP/Ic0qMqRMk4yNfW+D+l3aT+4YcFEUe5aQL6IA5UUnXoIhMjDvd0+61wS7/vfVe/kWa36eERhUh6GBDYTFhS9fiZd/RIXZPWS3V8aCuGo49G+Q4kfzrp9J5FCexACC0b+NGdyCiWHN+CozK9fvCFuayXUa5nBltFDREFqzkaV37Gsr/XNYtJp6BfNuyfEdzeVQspcZqkSnveQIDHfk4iqx4NFKla+yLK9x6q6HZNaKJJUPILEIDtEk6DYSk2XiQzAHehIFt2Bc5QILs5J4YNQMqTonVdMpGpuIUX36hE7/JecYT1+CiC4Ig492boTo/QaM2TQB+6mMIPEa/pNUmZtQHVTXJK4gva4vgkY0hMRyTdTn1nEfgtUiw+zFcd2Ya4x3Ny4HnJcpNGSD3dFalDZbkoqgks9ia0VImMK6HMXFJR2f2Xw9v1CBcMLgpgifD/3Sd26KDBDe8Sh0A
+ E/RqUllC
+ Y3N8Hczet7HeFW7bN3kLav3Lb4DuW98jcBrWGmMge51/tpgCPZWfik0JxPm98J5zLtkgU1WgWYZPHbt0I3JRjzDawLf2UuOMhcEdxTCNwr7r1AefQUrO4VfrhbCDh8Vmws6DeRzms8SvtGtoprhB8P516lIyZXOOjDD1ByzN9PkTBcSIvKPD0rge7m6ZRanIQ+9L1w3AyWNiL74agnxuTcuv1sRr8EpazClvErQJGDzL7qEK/v22fV+deWiNdx6stTZgQZM5vGBykfocNaVsl2VNFzjMFpN2Ao0s/W02YOWU8ntLz1pvMAPtEiQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,67 +91,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Remove duplication of the message about deprecated 'panic_print'
-parameter.
+Hi SJ,
 
-Also make the wording more direct. Make it clear that the new
-parameters already exist and should be used instead.
+在 2025/8/14 1:10, SeongJae Park 写道:
+> On Wed, 13 Aug 2025 13:07:05 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
+>
+>> For 32-bit systems, damos_stat now uses unsigned long long for byte
+>> statistics data to avoid integer overflow risks inherent in the
+>> previous design.
+> I suggested using the core-layer address unit on stat, and ask users to
+> multiply the addr_unit value to stat values if they want bytes value.  If we
+> agree on it, I think this patch wouldn't really be required.
 
-Signed-off-by: Petr Mladek <pmladek@suse.com>
----
-Changes since v1:
+Thank you for the guidance, I agree with your perspective. However, this patch doesn't actually belong in the addr_unit series, my apologies
+for the confusion. It is actually intended to address potential overflow issues
+in statistical data on 32-bit systems, and it is not directly related to addr_unit.
+This patch has been dropped from the v2 series.
 
-  - fixed compilation with CONFIG_SYSCTL disabled (kernel test
-    robot <lkp@intel.com>)
+After introducing addr_unit, if it is set to a larger value, it can help mitigate
+the overflow issue. However, under the default setting of addr_unit=1, statistical
+data may still overflow after a sufficiently long runtime, for example, when sz_tried
+exceeds 4GB.
 
-Thanks Lance Yang <lance.yang@linux.dev> for debugging the compilation
-error reported by the test robot.
+Besides, please allow me to mention one point in advance: if addr is extended for
+use in modules(e.g. DAMON_RECLAIM, LRU_SORT) in the future, the term "bytes" in
+module_param_named(bytes_##try_name...), although multiplied by addr would yield
+the actual byte count, might cause confusion due to its seemingly direct naming.
 
- kernel/panic.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+Overall, this patch isn’t critically important at the moment, nor does it offer a
+sufficiently robust solution, but I’d still appreciate hearing your perspective on
+the matter — I’m all ears.
 
-diff --git a/kernel/panic.c b/kernel/panic.c
-index 12a10e17ab4a..24bca263f896 100644
---- a/kernel/panic.c
-+++ b/kernel/panic.c
-@@ -77,6 +77,11 @@ ATOMIC_NOTIFIER_HEAD(panic_notifier_list);
- 
- EXPORT_SYMBOL(panic_notifier_list);
- 
-+static void panic_print_deprecated(void)
-+{
-+	pr_info_once("Kernel: The 'panic_print' parameter is now deprecated. Please use 'panic_sys_info' and 'panic_console_replay' instead.\n");
-+}
-+
- #ifdef CONFIG_SYSCTL
- 
- /*
-@@ -125,7 +130,7 @@ static int proc_taint(const struct ctl_table *table, int write,
- static int sysctl_panic_print_handler(const struct ctl_table *table, int write,
- 			   void *buffer, size_t *lenp, loff_t *ppos)
- {
--	pr_info_once("Kernel: 'panic_print' sysctl interface will be obsoleted by both 'panic_sys_info' and 'panic_console_replay'\n");
-+	panic_print_deprecated();
- 	return proc_doulongvec_minmax(table, write, buffer, lenp, ppos);
- }
- 
-@@ -944,13 +949,13 @@ core_param(panic_console_replay, panic_console_replay, bool, 0644);
- 
- static int panic_print_set(const char *val, const struct kernel_param *kp)
- {
--	pr_info_once("Kernel: 'panic_print' parameter will be obsoleted by both 'panic_sys_info' and 'panic_console_replay'\n");
-+	panic_print_deprecated();
- 	return  param_set_ulong(val, kp);
- }
- 
- static int panic_print_get(char *val, const struct kernel_param *kp)
- {
--	pr_info_once("Kernel: 'panic_print' parameter will be obsoleted by both 'panic_sys_info' and 'panic_console_replay'\n");
-+	panic_print_deprecated();
- 	return  param_get_ulong(val, kp);
- }
- 
--- 
-2.50.1
+Thanks,
+Quanmin Yan
 
+>> Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
+>> ---
+>>   include/linux/damon.h     |  6 +++---
+>>   mm/damon/modules-common.h |  4 ++--
+>>   mm/damon/sysfs-schemes.c  | 12 ++++++------
+>>   3 files changed, 11 insertions(+), 11 deletions(-)
+>>
+>> diff --git a/include/linux/damon.h b/include/linux/damon.h
+>> index aa045dcb5b5d..d85850cf06c5 100644
+>> --- a/include/linux/damon.h
+>> +++ b/include/linux/damon.h
+>> @@ -333,10 +333,10 @@ struct damos_watermarks {
+>>    */
+>>   struct damos_stat {
+>>   	unsigned long nr_tried;
+>> -	unsigned long sz_tried;
+>> +	unsigned long long sz_tried;
+>>   	unsigned long nr_applied;
+>> -	unsigned long sz_applied;
+>> -	unsigned long sz_ops_filter_passed;
+>> +	unsigned long long sz_applied;
+>> +	unsigned long long sz_ops_filter_passed;
+>>   	unsigned long qt_exceeds;
+>>   };
+>>   
+>> diff --git a/mm/damon/modules-common.h b/mm/damon/modules-common.h
+>> index c7048a449321..ae45d0eb960e 100644
+>> --- a/mm/damon/modules-common.h
+>> +++ b/mm/damon/modules-common.h
+>> @@ -36,11 +36,11 @@
+>>   #define DEFINE_DAMON_MODULES_DAMOS_STATS_PARAMS(stat, try_name,		\
+>>   		succ_name, qt_exceed_name)				\
+>>   	module_param_named(nr_##try_name, stat.nr_tried, ulong, 0400);	\
+>> -	module_param_named(bytes_##try_name, stat.sz_tried, ulong,	\
+>> +	module_param_named(bytes_##try_name, stat.sz_tried, ullong,	\
+>>   			0400);						\
+>>   	module_param_named(nr_##succ_name, stat.nr_applied, ulong,	\
+>>   			0400);						\
+>> -	module_param_named(bytes_##succ_name, stat.sz_applied, ulong,	\
+>> +	module_param_named(bytes_##succ_name, stat.sz_applied, ullong,	\
+>>   			0400);						\
+>>   	module_param_named(nr_##qt_exceed_name, stat.qt_exceeds, ulong,	\
+>>   			0400);
+>> diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+>> index 74056bcd6a2c..3c4882549a28 100644
+>> --- a/mm/damon/sysfs-schemes.c
+>> +++ b/mm/damon/sysfs-schemes.c
+>> @@ -199,10 +199,10 @@ static const struct kobj_type damon_sysfs_scheme_regions_ktype = {
+>>   struct damon_sysfs_stats {
+>>   	struct kobject kobj;
+>>   	unsigned long nr_tried;
+>> -	unsigned long sz_tried;
+>> +	unsigned long long sz_tried;
+>>   	unsigned long nr_applied;
+>> -	unsigned long sz_applied;
+>> -	unsigned long sz_ops_filter_passed;
+>> +	unsigned long long sz_applied;
+>> +	unsigned long long sz_ops_filter_passed;
+>>   	unsigned long qt_exceeds;
+>>   };
+>>   
+>> @@ -226,7 +226,7 @@ static ssize_t sz_tried_show(struct kobject *kobj, struct kobj_attribute *attr,
+>>   	struct damon_sysfs_stats *stats = container_of(kobj,
+>>   			struct damon_sysfs_stats, kobj);
+>>   
+>> -	return sysfs_emit(buf, "%lu\n", stats->sz_tried);
+>> +	return sysfs_emit(buf, "%llu\n", stats->sz_tried);
+>>   }
+>>   
+>>   static ssize_t nr_applied_show(struct kobject *kobj,
+>> @@ -244,7 +244,7 @@ static ssize_t sz_applied_show(struct kobject *kobj,
+>>   	struct damon_sysfs_stats *stats = container_of(kobj,
+>>   			struct damon_sysfs_stats, kobj);
+>>   
+>> -	return sysfs_emit(buf, "%lu\n", stats->sz_applied);
+>> +	return sysfs_emit(buf, "%llu\n", stats->sz_applied);
+>>   }
+>>   
+>>   static ssize_t sz_ops_filter_passed_show(struct kobject *kobj,
+>> @@ -253,7 +253,7 @@ static ssize_t sz_ops_filter_passed_show(struct kobject *kobj,
+>>   	struct damon_sysfs_stats *stats = container_of(kobj,
+>>   			struct damon_sysfs_stats, kobj);
+>>   
+>> -	return sysfs_emit(buf, "%lu\n", stats->sz_ops_filter_passed);
+>> +	return sysfs_emit(buf, "%llu\n", stats->sz_ops_filter_passed);
+>>   }
+>>   
+>>   static ssize_t qt_exceeds_show(struct kobject *kobj,
+>> -- 
+>> 2.34.1
 
