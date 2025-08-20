@@ -2,112 +2,112 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DF7C8CA0EE4
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 20:31:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D991CCA0EE4
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 20:37:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BC4F8E0024; Wed, 20 Aug 2025 16:31:01 -0400 (EDT)
+	id 581106B00FE; Wed, 20 Aug 2025 16:37:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76C328E0010; Wed, 20 Aug 2025 16:31:01 -0400 (EDT)
+	id 558616B0100; Wed, 20 Aug 2025 16:37:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65AF88E0024; Wed, 20 Aug 2025 16:31:01 -0400 (EDT)
+	id 46EA26B0103; Wed, 20 Aug 2025 16:37:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5033D8E0010
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 16:31:01 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1CD38136A19
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 20:31:01 +0000 (UTC)
-X-FDA: 83798279922.27.39685B3
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 44219A000D
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 20:30:59 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DoLQV2FB;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755721859; a=rsa-sha256;
-	cv=none;
-	b=RJFVEe3zuZxyFZ61oYjYdh+dx9+FwDWNANB4RPEqjgGaqkRY+jsvr8OD6ieAxzcZW37Yhh
-	W91vdZWgBdgpwPhSfKOwtEV1g8+jjm9DhmzFLoWROFTK+7HnMwbl9fDL5e1ybJYuG/F6fg
-	iwb5ClyAJnBg96CpOSD1T32DktYgiJE=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DoLQV2FB;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2EF6E6B00FE
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 16:37:52 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D6FB1160119
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 20:37:51 +0000 (UTC)
+X-FDA: 83798297142.21.F19B0CC
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 47204140015
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 20:37:48 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=nlOpZdpM;
+	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755721859;
+	s=arc-20220608; t=1755722269;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=haFKTAbs5Tny8Vs6O0gC3BA+knNAjGzusbJ6lTT10ho=;
-	b=nUpyjdSbrrzi68aQEKLa14BooXPKnxDrjrKlr4s/GotxDdGcRi0MHMYgw6urZLtHeH0B4m
-	xTpvwrc1rv8nquZQ7sD+fIP9LrJR4dRmr+oz4cbkcByea/LSrpUiC/STGVQwZBXxvPhC4y
-	PLDXu3R0JvLlTqKsvhMUT3nx5n/Gnac=
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-76e2e88c6a6so319411b3a.1
-        for <linux-mm@kvack.org>; Wed, 20 Aug 2025 13:30:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755721858; x=1756326658; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=haFKTAbs5Tny8Vs6O0gC3BA+knNAjGzusbJ6lTT10ho=;
-        b=DoLQV2FBcBeXkCVFB6K0gc9cRl01r6w08ElSRebeJp0XR+n1MHqhOBVZIYG0lzzocu
-         lDrgUqDjZxyUeNIIkkolbuc/bKJAfH5TrvBKWTvfSL1Y3e51lkOVAQ8SG6CYvgyCIN/R
-         /PkKzCrbs74523kvFiZyyrXx9wrgQ+RNI8Xt2BwChrR8PzPolbLqJ3CdjYJoWsgpyNu1
-         JLecuGkgpDryS+Vbni+hAXJkFyIZfnfdtbZ+/NT+CSVJ+o8VYeCLOcq7010/E5gp7Mx2
-         I4EW+xFHMff2w1fP0bRgW3nMB9LQ9qsWKWQ8RwYFGi8oqitpwH8cJ7RiNdR0OxABCVJG
-         8MfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755721858; x=1756326658;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=haFKTAbs5Tny8Vs6O0gC3BA+knNAjGzusbJ6lTT10ho=;
-        b=axPDbagdf2TarnMSwPqKMkpaXnNz5roLKYkwDrX8LiqNoIGwDWNHbZANOEswXSJ0Fs
-         O8irpOJq7hfxlrw07Os1rLwfrLl+PGARxtKMAyb8GncC7popopl6Y8koM5hCMPescM2x
-         lSKn2BNXe8IJ7Leui6vgGPUxL1KMgQeeXfg9TKidsD3rKWURQK44VPZwSJEyfagNBqMA
-         GkH/YmZOZUFYGLjDRx6pa0I+fo8r76fl4T3CvWArAVbagXhF3tKCj8ljpXm3zFC67CNk
-         DdwEvFe8as7ZXntOSdHn4znls0513tWi/RNQBq1xa2JjBT0OVy2TjGdGMfQMBKvcYkF3
-         e5Lg==
-X-Gm-Message-State: AOJu0Ywlj2UqWxJcFuHdIQ6qPTXMt/PTnk3PmBbwdcRXGpbpykWxgNve
-	9zk7mBVNZza1FLEc19bzCHDhVg5icpMU9VAQ5zgFjKPZLk4PTMgybWx28n0ejKtLOaOvvybw0lV
-	fF41QVwB/dE7qIs58pkMLO8qB7/75xEc=
-X-Gm-Gg: ASbGncuLGNfOdfr/1IDDLIAetUKEUhI2D/Qhw4yOP8nAJqWOOdHZ8expLBt2B+CsRUN
-	y2ak/JqCJkNlzYA6yuoHPmYj8uVGVypXoVIS2tPVUqD7IfhcnzLB8yTZzsHvEz+mea0c/Kvth2k
-	cULumHVVLKvQ1Lpln9jkvNXw7CxrgfmvPodiTk94Rqvlg/MqHEP6QeUnEP7WFAp2n37H4SFHsUb
-	joyxeNSEQWnZrJI+lFrwSo=
-X-Google-Smtp-Source: AGHT+IE5n0Bns28zygXbHS8e9bH4xWdkCx6MVM26q5cQEoplrKB/d0AEPiEfdzeB2dk2vflhRIZy7tPOCzcSq/xzovI=
-X-Received: by 2002:a05:6a20:734d:b0:240:1b13:459f with SMTP id
- adf61e73a8af0-2431b7e8471mr5955796637.7.1755721857967; Wed, 20 Aug 2025
- 13:30:57 -0700 (PDT)
+	bh=1XP9WNbNBHWy0UN59Uy/ifL6ppdS4q3FL1zyaJ0Tq04=;
+	b=PGOzwIDqEHNtCPThXn5yvnC/WwVhekCTpkkud//CMDJxOYUKrQC3vaPrdRYK0vhSheKpZ7
+	upu9FPtB7SsyZKNPp5yAadJA5avp5EmLPEdPqD/ISwrpfSHNRRr/yMklHiL7mbg2qEf2qN
+	WDNaMcs4o5AJBLIgMkwt69U7nJNA0H8=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=nlOpZdpM;
+	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755722269; a=rsa-sha256;
+	cv=none;
+	b=ENZG3nGBIaqFBxE+u2XUeJgoMQhIzCaROrEGc+yStOOLT8RKo1111oxfvh/X4+3OfH6Wa+
+	HfIVs83QJpGk6Tjkj1/+bkdJn3LHNjfRmwJRuneuDhAztuS+6lyliswlB1NTW0/9+yR7HC
+	7jAnCQqZ6GRGe8Txiwa0tCtM1qrvpzs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755722269; x=1787258269;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=8QcGfN5TdHUtbZS2m0Ej+NCFDQ9y4qlsX6+iyfch6dY=;
+  b=nlOpZdpMov5QiHrccE6YsYGUC125ISvLbB0XMHjcBw5MACIVhO/+aM/f
+   r4st0J7G5dZKrOPfhe+JLPV49/Emgy8Vfzk6jgaHWf844cA4IrEMMhMei
+   JlBPbTxE2Z0i3cN6WB3rwQmwc7Z5FYPa8BtjrjijVvCR3q+//DMLSMMw4
+   06lYJG0Phu3InIBFkdToeI6gSGDl4uMuRb1N/U8oZLunEkwv4JWSQaVdj
+   WOIOh5bK0AZVDKHXF9UCueM4FW77gZvj9yBcbwdSyJPlBLuJvMELeAz9D
+   hXQRyTNhgAy4OsUwtAVADhVppezKTcCu25q+n636TlIgE0TlL3r4c6+2R
+   A==;
+X-CSE-ConnectionGUID: Igs4w93qRgaL183PT1Ddgw==
+X-CSE-MsgGUID: ZSMuUSfBRU+nhBFOgkjn1w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="75450440"
+X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
+   d="scan'208";a="75450440"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2025 13:37:46 -0700
+X-CSE-ConnectionGUID: Qx5SML5/Rcq4Dz+k+Q3cHA==
+X-CSE-MsgGUID: WmwMD/4fTSGku8VThrHu1w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
+   d="scan'208";a="173481976"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by fmviesa004.fm.intel.com with ESMTP; 20 Aug 2025 13:37:39 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uopYu-000JfX-35;
+	Wed, 20 Aug 2025 20:37:36 +0000
+Date: Thu, 21 Aug 2025 04:36:46 +0800
+From: kernel test robot <lkp@intel.com>
+To: Anthony Yznaga <anthony.yznaga@oracle.com>, linux-mm@kvack.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	akpm@linux-foundation.org, andreyknvl@gmail.com, arnd@arndb.de,
+	bp@alien8.de, brauner@kernel.org, bsegall@google.com,
+	corbet@lwn.net, dave.hansen@linux.intel.com, david@redhat.com,
+	dietmar.eggemann@arm.com, ebiederm@xmission.com, hpa@zytor.com,
+	jakub.wartak@mailbox.org, jannh@google.com, juri.lelli@redhat.com,
+	khalid@kernel.org, liam.howlett@oracle.com,
+	linyongting@bytedance.com, lorenzo.stoakes@oracle.com,
+	luto@kernel.org, markhemm@googlemail.com, maz@kernel.org,
+	mhiramat@kernel.org, mgorman@suse.de, mhocko@suse.com,
+	mingo@redhat.com, muchun.song@linux.dev, neilb@suse.de,
+	osalvador@suse.de
+Subject: Re: [PATCH v3 18/22] mm/mshare: Add an ioctl for mapping objects in
+ an mshare region
+Message-ID: <202508210437.BXbf4eok-lkp@intel.com>
+References: <20250820010415.699353-19-anthony.yznaga@oracle.com>
 MIME-Version: 1.0
-References: <20250818170136.209169-1-roman.gushchin@linux.dev> <20250818170136.209169-14-roman.gushchin@linux.dev>
-In-Reply-To: <20250818170136.209169-14-roman.gushchin@linux.dev>
-From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Wed, 20 Aug 2025 13:30:43 -0700
-X-Gm-Features: Ac12FXxN7EsA0M3L5RyQZ7vnsZhxapdSolyvYSTeykW7JzyuK6Qpizpy4PpCg1M
-Message-ID: <CAEf4BzaSLWB1xpCjX35oxg2ySvvgRvEmQ01PtXv+xEz-Zkz07w@mail.gmail.com>
-Subject: Re: [PATCH v1 13/14] sched: psi: implement bpf_psi_create_trigger() kfunc
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: linux-mm@kvack.org, bpf@vger.kernel.org, 
-	Suren Baghdasaryan <surenb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@suse.com>, 
-	David Rientjes <rientjes@google.com>, Matt Bobrowski <mattbobrowski@google.com>, 
-	Song Liu <song@kernel.org>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 44219A000D
-X-Stat-Signature: a8xd1c6pazu9b995jmutkpnfupewa54a
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250820010415.699353-19-anthony.yznaga@oracle.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 47204140015
+X-Stat-Signature: fugtxji4r75ukou6hoessg4jq8ahoaz9
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1755721859-580056
-X-HE-Meta: U2FsdGVkX1/iB6bAmRnCYHYXXQ92znhJyQQ5PAKkVqB0Txm6PhDUUpuU+RyJEfG7EXtJdBzgM82IQwQdbIwyOvzVpaefObVY9WhzJT6jsvFv1TcYvjqdt2CP39CypGNw11yFO2YoTXtAtw2qlzjIqfJlEw5hzTssYlJUOOxiC+lZ4XD3lbI8upj6VGIgbRqu8VYEcBcUJZgAMYSagN3C4NUi3A+KeJDiHiK+L44taRAoNStz1QRUvod2W2+dvRTZj9PdJnGud/iRXIOmzY7vK4GcYVO9oBee9PL7QPtkOkNVr6FUgENkGCYsFi3rz5be4UfS/DvgP2ktdfHGvpgqkTGrG0vKVhHvXMBg8rd08DDg5OHAkYrr7fNjGxWeFlTnELqrr8ucggMMWcNMOmsRhrpUNI6329pOiTLPMYziIHuxEXmdyAfHfiESrex++tJPVYjgSbfPtxXMD2f35ukrzX6+HyzWSZpKQs6HiZLSfn69f96kjeYU4YsRZtWbnqGmXoUfapAmIrQkBR0nkH0FrVKI0AZvqgjownsyFk/9Si3mHYq6+WTXnCku1ZdQLqKZQG/hJ6gA48STECvWmM18ZMlpzKKaOPwD2LX2bNjlByOI1aDkg/pnvfnFjgWJ9rfsbnN1dcNx4mW4ycUxUSfVKBhUYBN0SNZx/f2/lA6zGdIp6Ypqq/w6J3FtVxREVtlm5u/XsPsfB0ECr6QTedEBcCr9U5Z35cY5I71/VvljcbvCldOrX69Y38DkdhairbvzJx4qRo8SXiF8skIdwsKobQ/xZjwtXav1o0gYx6ocymeVLtszKzlSXFHGGIJ9TBxFTlSGqBYewfEmU/UWQkY74LJAdFEZP+eiojsGnaYU6zs1bL3idSS6y7pQwIzm8YX+94we5bPOEmg5rTFQNzBAYs0gK7cZF1CkecmBB0AJbedLPgVq42yzlmDcnLtLyFGTSCY5Xg+RuUD6BD16Udg
- wn98BviK
- jNgoCgK6ZHD99cybx3tRpF+2u0BK80a8PQqlffzHL/j7Y2TqMkGyCnYaDcbMqos1jDKqP4iZIhf9y3W3zoATFD8pfG0RtiI3txu5jGrTuZIlU2matzZs55DLmqGBXGVKwQPuOQKJtNpOUZT7YvyASzwPhXUtuC9GKfkaAKQCzxor66j8tj0hZx/a6b1QSYHMmI26V83mxAa5epkv2zpoGcCXM7We/B8dcfpl6r/DM+O1aDyA2PXGILZAak14lgYNZ+vzUFmGrSdia4WxMlC1a2KsKLfz4O1hHuqzGfjSVnMSw1joruWxZskLXviEyt2ibqx7IboWMB5+P/g+pEG6O7fU32LFFL1ju72+34rF6zvBvnAMZ8dAkBVu5dK+ecy/vWE7jfttR1VWIHVSbgttUorC6sKTuxCuTqxXpta/0ieYj1YrVMLuXvyosCA==
+X-HE-Tag: 1755722268-545570
+X-HE-Meta: U2FsdGVkX19khOjvINRnFaTGq6IDu8IAdhRoaSgbEeMAS9eQ/trZjw71IYxihxnv1HKSkE8dSLj+Z4h6CCiGYklWsi6G7hNJYl55A1/XWKtNS4neGmAx90yDv4mS7AX4MSyhQkHw+2rebUy8/PXgmE+VPrid7jWkEUCkgZfYNxFRsJjqoobioFgEbXPUrrPQWqAJXpaATyjQpXGHMx+kmgv9iTFRAes6Axi/S7jh1fjB9uJN369fWZZaH69/8VeblVdAPjS2wG4BAKsaW5G5X5MZtzIe+xtJcCgMTkr1InYpzQSx8MvCNd/IFCBSa/QWa5SS/qrrb+ZhjteJ+rS3leHBOMxiqf8OAymErkj6foq+L35dMX4QimarjzMXMwnPgqOQ87t0AO9cDXvZkXozf0MQ7/5652luxSFSsXeI30Vsphgim2pE0vXAOKZd+GUJmllcPLrCf7CEFy4ErBfs2Vc8YisE/xuVHwiKQyU9VwwsGTwXvxLMt1FG+N/dOX74Gis+H9ULENzQCi0Fx9Meeojf+T4pD3MamRbY3bgTRdAke2+2HaCDBdpnUd7NRMfb0mua3ievkOr1DMw0afSTgj7nmxyHx580y5d6uv+5gR9vaCy7MaNr/DQv0ukbefi12koyWA6D2EY7NcyZ+PR/oGpfS9IKSKHNAJY0DNjhws7igLXtYU6TdteP6blQXB4k1twA7favzzcVBaCFar2T1dKsfbIPEbJsBoBJMHYUTDbfO59Ibz5GBhu/0wlipE07I2PJ5U67MEquCiWGQem4epDWze8J7a0ZjmkUp3wkkgLbBavpAp/LD0dH0tW/+rDzCE+RU+lzvoV1AEjD6fadmBnXli8HsCfAhHCsstq7jy0a+grvMcr8i7/sHma4f/3ZnlvgBaalfUXg9RcQUmZUHTDyw76lHkKSxWdqARODkOd8Xz97Miz+JvkWWwUW/DRf/QnjVj5iCcsMf8rVEXW
+ RZuxRZt4
+ ThGZvIDrI5kLvGE/pHFPjGx+Am1mtla1QPTySs3uA3DHjHDFI1ee2/tF4G8OTOQ7rOZAiK2tnpUus6bS/urP2qf7qbG9WVNI1WJ9upi2UFz1XJnm1H8JK/7v/NMpS2eYmyfNFZM2SP1YM5Pl9qvDwynufEHWkNfYb6Jt292ik7PA6wnjCF8yWpacDShkEi0ROUmr1iz/+RZKyvXdPMZ7T8dUCwjUP6tJswWRlPObNvi3o1IQ/X94N7fnaMEW8h4AWBVKmIDYYUerm/Us89SjdUYZfvybNWWksr+mCbJm3nwps0PTNSlQqv1EZ4Zgb742CkY0Eh3SYQO7kcKbM8GLvpBH2OAjEyaAFDYzWa5+7sfc8JUBm+StH6puhNw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,140 +116,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 18, 2025 at 10:06=E2=80=AFAM Roman Gushchin
-<roman.gushchin@linux.dev> wrote:
->
-> Implement a new bpf_psi_create_trigger() bpf kfunc, which allows
-> to create new psi triggers and attach them to cgroups or be
-> system-wide.
->
-> Created triggers will exist until the struct ops is loaded and
-> if they are attached to a cgroup until the cgroup exists.
->
-> Due to a limitation of 5 arguments, the resource type and the "full"
-> bit are squeezed into a single u32.
->
-> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-> ---
->  kernel/sched/bpf_psi.c | 84 ++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 84 insertions(+)
->
-> diff --git a/kernel/sched/bpf_psi.c b/kernel/sched/bpf_psi.c
-> index 2ea9d7276b21..94b684221708 100644
-> --- a/kernel/sched/bpf_psi.c
-> +++ b/kernel/sched/bpf_psi.c
-> @@ -156,6 +156,83 @@ static const struct bpf_verifier_ops bpf_psi_verifie=
-r_ops =3D {
->         .is_valid_access =3D bpf_psi_ops_is_valid_access,
->  };
->
-> +__bpf_kfunc_start_defs();
-> +
-> +/**
-> + * bpf_psi_create_trigger - Create a PSI trigger
-> + * @bpf_psi: bpf_psi struct to attach the trigger to
-> + * @cgroup_id: cgroup Id to attach the trigger; 0 for system-wide scope
-> + * @resource: resource to monitor (PSI_MEM, PSI_IO, etc) and the full bi=
-t.
-> + * @threshold_us: threshold in us
-> + * @window_us: window in us
-> + *
-> + * Creates a PSI trigger and attached is to bpf_psi. The trigger will be
-> + * active unless bpf struct ops is unloaded or the corresponding cgroup
-> + * is deleted.
-> + *
-> + * Resource's most significant bit encodes whether "some" or "full"
-> + * PSI state should be tracked.
-> + *
-> + * Returns 0 on success and the error code on failure.
-> + */
-> +__bpf_kfunc int bpf_psi_create_trigger(struct bpf_psi *bpf_psi,
-> +                                      u64 cgroup_id, u32 resource,
-> +                                      u32 threshold_us, u32 window_us)
-> +{
-> +       enum psi_res res =3D resource & ~BPF_PSI_FULL;
-> +       bool full =3D resource & BPF_PSI_FULL;
-> +       struct psi_trigger_params params;
-> +       struct cgroup *cgroup __maybe_unused =3D NULL;
-> +       struct psi_group *group;
-> +       struct psi_trigger *t;
-> +       int ret =3D 0;
-> +
-> +       if (res >=3D NR_PSI_RESOURCES)
-> +               return -EINVAL;
-> +
-> +#ifdef CONFIG_CGROUPS
-> +       if (cgroup_id) {
-> +               cgroup =3D cgroup_get_from_id(cgroup_id);
-> +               if (IS_ERR_OR_NULL(cgroup))
-> +                       return PTR_ERR(cgroup);
-> +
-> +               group =3D cgroup_psi(cgroup);
-> +       } else
-> +#endif
-> +               group =3D &psi_system;
+Hi Anthony,
 
-just a drive-by comment while skimming through the patch set: can't
-you use IS_ENABLED(CONFIG_CGROUPS) and have a proper if/else with
-proper {} ?
+kernel test robot noticed the following build warnings:
 
-> +
-> +       params.type =3D PSI_BPF;
-> +       params.bpf_psi =3D bpf_psi;
-> +       params.privileged =3D capable(CAP_SYS_RESOURCE);
-> +       params.res =3D res;
-> +       params.full =3D full;
-> +       params.threshold_us =3D threshold_us;
-> +       params.window_us =3D window_us;
-> +
-> +       t =3D psi_trigger_create(group, &params);
-> +       if (IS_ERR(t))
-> +               ret =3D PTR_ERR(t);
-> +       else
-> +               t->cgroup_id =3D cgroup_id;
-> +
-> +#ifdef CONFIG_CGROUPS
-> +       if (cgroup)
-> +               cgroup_put(cgroup);
-> +#endif
-> +
-> +       return ret;
-> +}
-> +__bpf_kfunc_end_defs();
-> +
-> +BTF_KFUNCS_START(bpf_psi_kfuncs)
-> +BTF_ID_FLAGS(func, bpf_psi_create_trigger, KF_TRUSTED_ARGS)
-> +BTF_KFUNCS_END(bpf_psi_kfuncs)
-> +
-> +static const struct btf_kfunc_id_set bpf_psi_kfunc_set =3D {
-> +       .owner          =3D THIS_MODULE,
-> +       .set            =3D &bpf_psi_kfuncs,
-> +};
-> +
->  static int bpf_psi_ops_reg(void *kdata, struct bpf_link *link)
->  {
->         struct bpf_psi_ops *ops =3D kdata;
-> @@ -238,6 +315,13 @@ static int __init bpf_psi_struct_ops_init(void)
->         if (!bpf_psi_wq)
->                 return -ENOMEM;
->
-> +       err =3D register_btf_kfunc_id_set(BPF_PROG_TYPE_STRUCT_OPS,
-> +                                       &bpf_psi_kfunc_set);
+[auto build test WARNING on akpm-mm/mm-everything]
+[also build test WARNING on next-20250820]
+[cannot apply to tip/sched/core trace/for-next tip/x86/core tip/x86/mm kees/for-next/execve linus/master v6.17-rc2]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-would this make kfunc callable from any struct_ops, not just this psi one?
+url:    https://github.com/intel-lab-lkp/linux/commits/Anthony-Yznaga/mm-Add-msharefs-filesystem/20250820-091021
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20250820010415.699353-19-anthony.yznaga%40oracle.com
+patch subject: [PATCH v3 18/22] mm/mshare: Add an ioctl for mapping objects in an mshare region
+config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20250821/202508210437.BXbf4eok-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250821/202508210437.BXbf4eok-lkp@intel.com/reproduce)
 
-> +       if (err) {
-> +               pr_warn("error while registering bpf psi kfuncs: %d", err=
-);
-> +               goto err;
-> +       }
-> +
->         err =3D register_bpf_struct_ops(&bpf_psi_bpf_ops, bpf_psi_ops);
->         if (err) {
->                 pr_warn("error while registering bpf psi struct ops: %d",=
- err);
-> --
-> 2.50.1
->
->
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508210437.BXbf4eok-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   mm/mshare.c:305:16: warning: variable 'mshare_start' set but not used [-Wunused-but-set-variable]
+     305 |         unsigned long mshare_start, mshare_size;
+         |                       ^
+>> mm/mshare.c:386:57: warning: variable 'vm_flags' is uninitialized when used here [-Wuninitialized]
+     386 |         mapped_addr = __do_mmap(NULL, addr, size, prot, flags, vm_flags,
+         |                                                                ^~~~~~~~
+   mm/mshare.c:361:21: note: initialize the variable 'vm_flags' to silence this warning
+     361 |         vm_flags_t vm_flags;
+         |                            ^
+         |                             = 0
+   2 warnings generated.
+
+
+vim +/vm_flags +386 mm/mshare.c
+
+   297	
+   298	static unsigned long
+   299	msharefs_get_unmapped_area(struct file *file, unsigned long addr,
+   300			unsigned long len, unsigned long pgoff, unsigned long flags)
+   301	{
+   302		struct mshare_data *m_data = file->private_data;
+   303		struct mm_struct *mm = current->mm;
+   304		struct vm_area_struct *vma, *prev;
+ > 305		unsigned long mshare_start, mshare_size;
+   306		const unsigned long mmap_end = arch_get_mmap_end(addr, len, flags);
+   307	
+   308		mmap_assert_write_locked(mm);
+   309	
+   310		if ((flags & MAP_TYPE) == MAP_PRIVATE)
+   311			return -EINVAL;
+   312	
+   313		if (!mshare_is_initialized(m_data) || !mshare_has_owner(m_data))
+   314			return -EINVAL;
+   315	
+   316		mshare_start = m_data->start;
+   317		mshare_size = m_data->size;
+   318	
+   319		if (len != mshare_size)
+   320			return -EINVAL;
+   321	
+   322		if (len > mmap_end - mmap_min_addr)
+   323			return -ENOMEM;
+   324	
+   325		if (flags & MAP_FIXED) {
+   326			if (!IS_ALIGNED(addr, mshare_align))
+   327				return -EINVAL;
+   328			return addr;
+   329		}
+   330	
+   331		if (addr) {
+   332			addr = ALIGN(addr, mshare_align);
+   333			vma = find_vma_prev(mm, addr, &prev);
+   334			if (mmap_end - len >= addr && addr >= mmap_min_addr &&
+   335			    (!vma || addr + len <= vm_start_gap(vma)) &&
+   336			    (!prev || addr >= vm_end_gap(prev)))
+   337				return addr;
+   338		}
+   339	
+   340		if (!mm_flags_test(MMF_TOPDOWN, mm))
+   341			return msharefs_get_unmapped_area_bottomup(file, addr, len,
+   342					pgoff, flags);
+   343		else
+   344			return msharefs_get_unmapped_area_topdown(file, addr, len,
+   345					pgoff, flags);
+   346	}
+   347	
+   348	static long
+   349	msharefs_create_mapping(struct mshare_data *m_data, struct mshare_create *mcreate)
+   350	{
+   351		struct mm_struct *host_mm = m_data->mm;
+   352		unsigned long mshare_start, mshare_end;
+   353		unsigned long region_offset = mcreate->region_offset;
+   354		unsigned long size = mcreate->size;
+   355		unsigned int fd = mcreate->fd;
+   356		int flags = mcreate->flags;
+   357		int prot = mcreate->prot;
+   358		unsigned long populate = 0;
+   359		unsigned long mapped_addr;
+   360		unsigned long addr;
+   361		vm_flags_t vm_flags;
+   362		int error = -EINVAL;
+   363	
+   364		mshare_start = m_data->start;
+   365		mshare_end = mshare_start + m_data->size;
+   366		addr = mshare_start + region_offset;
+   367	
+   368		if ((addr < mshare_start) || (addr >= mshare_end) ||
+   369		    (addr + size > mshare_end))
+   370			goto out;
+   371	
+   372		/*
+   373		 * Only anonymous shared memory at fixed addresses is allowed for now.
+   374		 */
+   375		if ((flags & (MAP_SHARED | MAP_FIXED)) != (MAP_SHARED | MAP_FIXED))
+   376			goto out;
+   377		if (fd != -1)
+   378			goto out;
+   379	
+   380		if (mmap_write_lock_killable(host_mm)) {
+   381			error = -EINTR;
+   382			goto out;
+   383		}
+   384	
+   385		error = 0;
+ > 386		mapped_addr = __do_mmap(NULL, addr, size, prot, flags, vm_flags,
+   387					0, &populate, NULL, host_mm);
+   388	
+   389		if (IS_ERR_VALUE(mapped_addr))
+   390			error = (long)mapped_addr;
+   391	
+   392		mmap_write_unlock(host_mm);
+   393	out:
+   394		return error;
+   395	}
+   396	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
