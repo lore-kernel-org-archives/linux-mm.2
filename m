@@ -2,87 +2,93 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EE267CA0EEB
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 01:25:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AEA13CA0EF8
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 01:28:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AE8D8E0014; Tue, 19 Aug 2025 21:25:46 -0400 (EDT)
+	id 4E4A18E0015; Tue, 19 Aug 2025 21:28:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85E918E0011; Tue, 19 Aug 2025 21:25:46 -0400 (EDT)
+	id 4BC418E0011; Tue, 19 Aug 2025 21:28:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 775038E0014; Tue, 19 Aug 2025 21:25:46 -0400 (EDT)
+	id 3F9298E0015; Tue, 19 Aug 2025 21:28:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6427F8E0011
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 21:25:46 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1B2561602DD
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:25:46 +0000 (UTC)
-X-FDA: 83795393892.26.4AE09A9
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 2CCA716000D
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:25:43 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Gg9GIEH9;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755653144; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F3E28E0011
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 21:28:57 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D6018117437
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:28:56 +0000 (UTC)
+X-FDA: 83795401872.29.DF307DB
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 255A7A000E
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:28:54 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="BI/zpu6D";
+	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755653335; a=rsa-sha256;
 	cv=none;
-	b=FJq3WxcNhStE8O8flVlPI/VsqLVjDPcVvMQnVEEh0BwEEo/BKcu5XgAP/UmxDFeccrHlmN
-	i24T8BUPRf7gSyp1gnGKT4GlZRyPtnbP6mI1Mnkz/BaPDvjxyRlczZSufI0MpTtxsx7hQg
-	zxWxwcArHUU4Jehh8VDaS/bxrnC2e2c=
+	b=Kt3Cr6ktrIXCMUa2ywJshIhbss6be3tN54O3CjcDs/s67Z2leFAGWNkieMTf7px+fyZxEx
+	l4NbLOO9w6Lrzpj87RLLRxp3WZnqghBwlwMTN6Gaoz/U+FRHsWBCa1Ty4F6HPz+ljli1vS
+	bDOcgHMBXaPtGHPtIWg6g8XseAUff1M=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Gg9GIEH9;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="BI/zpu6D";
+	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755653144;
+	s=arc-20220608; t=1755653335;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DkCULZqBLybzeAKmdXAlETYe7ipFpeIMTG5c5FRzUbI=;
-	b=49tUg6A/eAjTUQpnRWS3P7tB3QkDj789wbleqZqWD1MEVFLoKZiPXq2SYye6tKzTakVi5h
-	5EUHlXDYUtyqA3GVJXa0T2wWdcxd+JXj0hRaLPia/dP9bDPTOkxXylIwM0rt98MRaO8nEL
-	H3bRal27ioeo1/bU5JNVn32EdV4z7Fw=
-Date: Tue, 19 Aug 2025 18:25:36 -0700
+	bh=6ddgBw3mCPWmcVg5SkIp/yrU07evHNFdC+LuzP4v9Gc=;
+	b=DmD3m4NN+w9gbBnxMHuNwgauNNAVA+PKXTJsqRe38Td/bj5TbvmvkUcKFetgol+lFDzlxV
+	bDZl8lIcobJ2nws+8NNIU+O6+Gsi9qrAXl/CsTMVA8KvMe1B6ESV/gXVkSO56llH1qjg9Z
+	aPs9XeozFKVyhahWqdWwhBIm4Em7rMw=
+Date: Tue, 19 Aug 2025 18:28:42 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755653141;
+	t=1755653333;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DkCULZqBLybzeAKmdXAlETYe7ipFpeIMTG5c5FRzUbI=;
-	b=Gg9GIEH9q0a7IsSCOvI6pgjSSlTFw/gjrCNDmj7tWlpKN4PIdTswdIvd+cUZlvJuG7GQr9
-	OFSMilzzKNRMpGI63hXW+N3n18A1v+sA6c7rXhdjxwYhObCMeWB6fhbvXzCX007PY8FYOq
-	ULwmU12vfOoJej8VZFbJtEil+/3KH4s=
+	bh=6ddgBw3mCPWmcVg5SkIp/yrU07evHNFdC+LuzP4v9Gc=;
+	b=BI/zpu6DhZSKL3XzZ/VJbPaPs+hvb9svdPgDr5znV2PbyuEuBNzKNER2kvRp/123+Q1Pna
+	MDIzeU1CeYqyXkeEanv26zU+d7IrsDT9Mv1E1HDnm+3Q3i3jgem3C7LaBfh1oSE+n/H3Y3
+	gWkzqIMzE5KOtXr9pGq8XCn4BsDVUP0=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Boris Burkov <boris@bur.io>, akpm@linux-foundation.org, 
-	linux-btrfs@vger.kernel.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	kernel-team@fb.com, wqu@suse.com, mhocko@kernel.org, muchun.song@linux.dev, 
-	roman.gushchin@linux.dev, hannes@cmpxchg.org
-Subject: Re: [PATCH v3 2/4] mm: add vmstat for cgroup uncharged pages
-Message-ID: <i4hg4g75ywbera643uhtshkj6xrriqi4mi5dg3oga5os3tp6m5@u2dcv2snbiqs>
-References: <cover.1755562487.git.boris@bur.io>
- <04b3a5c9944d79072d752c85dac1294ca9bee183.1755562487.git.boris@bur.io>
- <aKPmiWAwDPNdNBUA@casper.infradead.org>
- <tw5qydmgv35v63lhqgl7zbjmgwxm2cujqdjq3deicdz2k26ymh@mnxhz43e6jwl>
- <aKUM49I-4D24MmwZ@casper.infradead.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, Matthieu Baerts <matttbe@kernel.org>, 
+	Mat Martineau <martineau@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Tejun Heo <tj@kernel.org>, Simon Horman <horms@kernel.org>, 
+	Geliang Tang <geliang@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Mina Almasry <almasrymina@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v5 net-next 09/10] net-memcg: Pass struct sock to
+ mem_cgroup_sk_under_memory_pressure().
+Message-ID: <2v2te3knj66aszw6chn6m2u7chtje7r5ayrtufwop5c4vftx7o@kbf2ry2bgo3r>
+References: <20250815201712.1745332-1-kuniyu@google.com>
+ <20250815201712.1745332-10-kuniyu@google.com>
+ <20250819182356.75aa4996@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aKUM49I-4D24MmwZ@casper.infradead.org>
+In-Reply-To: <20250819182356.75aa4996@kernel.org>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam03
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 255A7A000E
+X-Stat-Signature: 6a184ynueij839uerpeoxgrryebeohsa
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2CCA716000D
-X-Stat-Signature: 86wxkge543tmsk8qmoi8tihzr5hiixqb
-X-HE-Tag: 1755653143-589607
-X-HE-Meta: U2FsdGVkX1/4mPP5Kh5iUaN6n6qfra0F8g1BGOdOdBGbTNc+PAnnFE+Zg8hYfv50azGcyqCazyDbu8bxa8dAN3wzLqmgjpgp10qUmyL5qqC4v3q1KqQG3xHejPsEJm4A/zqHzKufgT7c4SbbUwI12LABEwR3BMrYtl1PcKVUiLBPylkqOKTxp+J8WWxTn4jYu7/QMTowQfJ+aW+lK6lOiAxLmhHT+1gDnQ0Y/3zc0ksaevz5apJtOraH33jBUrcPb9N2yq+dYxgzQkvxBz+WaPetiO/iKICGQRA1L2taxVrp65adoEaqAXlrQ0o6/c6EwtlywGRPgdTkx7TSD18EOfoaQgL/lE+998Hm91K/DXoKcRUh+d0I2dPpI2Hwo65I1aleoQ904bSft5pDLeDN3w9YpUIhYc3Ssry6xPv8VvFL2HW3TlQbgIupPOl7JjeprSDlQMMwI1K+as9x/nvmBC/evUErCi3Cpf/IhVSs1/E15rbEzszZFjBOzinFjsVWYcnr44zKXjqw/ZleD/X4VUqqRQzT7qoAQVGhRVWoxh+gdpKMIlIb6bz8357sRT0fcAWKCzKtEO/U7AlaQol5fbQDI0onNLGejNJpjE4SwPrI3y7uVVh+yj5BOrtwCzvlKI5nFTYF2ngk9j8M3Ul/29SDUTcp986KLtf05GjcPW3q0hGNYG2C8Qe1QXdHSKjYO2x52FGAWTHhMYXWydcvuHThjmcxxnv8suCCFCOoKOfVZwhrYWGXoSBiFt8AqoVbMkc/kH4Iy+aeLuMfwhHVVdfP8Kc00FbIBIgriUtZmpWueySNQRFJCp2G25bRue+SvadB4MDERpnJkTsKMDE372gTvJS68GyDWWXyqip2ac2J/KDi88UgJmPjnuaQMdM9HPatIVjxLwHx2sl044BnG9rWu2VwnPRYWzGPWUoQvJekyqsDx9XJD0oDxOw7OPL1dmP0u2xjUGw/w2Z0t52
- uev8au4V
- I8OedfiKnFjfrOBri9Elb0SGGMLZycdeVWIQldw+Ei+wiTTR7tg4IvnXcpMuEKjuGs0yBxn6ZfJM/kyEFtINUh+0x5V/rYVwXAyzOaTaHl63JNZ6VHM8eP39elCE3xh0vAjM2pzfVEMludDKM4+ZzSSgJl6Cu/Qw59KewTGMG/7G+fL1RgeO0u9Tz+jxr1Zr7vd/QVJUZ199OfTN+08cxzCWgSw==
+X-HE-Tag: 1755653334-806642
+X-HE-Meta: U2FsdGVkX1/M4KddoQz4g/VOMt8tz/jxMKuopWefRm+b97hYXBHYJ5JMxc9vrM83WY2OT3scK8d/2MR5d25J5yjb4Hu2M8Y8ZhY85YIZhrZVwq+rd3QOMn5hO5xH5OsdA3Y1p9pxNxbKY6QhYMWMWk4s8GlEgc1K0Wn2Oywv9NLB2nBvczz4J6uv3rR38+ruBe69/9aB/wiRrnUlWnhLP0Tz//Oq3bB80T2SNsTeEaq2p0a5pSM6fQfH8s9wUIiSSVieE+x4rXFxemY/EOv4XsYZVbU47KfSv1HRYkrpRxMbmrM1LnCEF7WMcURTnJG4YzbWZImxU8PZ+RHoBTk1UUiTLZIjNrApijussG+rVam68DdoiIBRiTiU1WwarUh0aA6kmsUNuqw5e/xksZs2HojGtu8YUmWbKAQ38yyQFpOKKmOyBxzRkK3+R0gZNzB95HLPPEvYp0tMrgmSD9IoUQLmCkJgx9IOjQL1v8BwSuDHvq2Y/WMbWCwVqDwaKu/qaIY5qttlS8P4vvlkLFN7WeoYKtzM8Wn+q/XrKYatEETbTnNsYk/9ePRKl5/7U6q+oWloA3bYMg3WV7zCF4xc2rBUr2huJBVrRy9dfVlNK4/fduEZMkF8jJmYBskcssX5LYmkLw78P90tXATOciVMofdhd7FOTTcGHMMH9f2xrAzY0vFSPiI1zpeMYC/bHdrtIi3Xk9BiP9xRlFXpbq3zuovQMXescXQMQTvlkUKnvbixDC6wdsOszNremg28oWDxse7BcEIMOBGN7fcEWQyJnFE5MRKzgwuG3EoCu7hDAaij01LCmK6i+HxMXGWDAPWZi6wV4HhXwT6j3pnRB75EijnNCNZ2xE+LrElQiiS+Qc+VS3JnHjNs0vghfgKSM6cie1p7vOE6OVwNqycVUmuCzGl4jVnnLm0lRvJXPjwKTNTqrOeNWiyp7cH0BBNZNeO2TJLQSbP3calXW6Iajw6
+ pYp0T/ZF
+ nyDKT9YKG056RF8jWsO+05w5yLIMg91zFm9VAFi+Z20k2t5660zPL9ZowNB9eK4r5rzb4y64O7lCkek0cLLAL9YgCeqG0uxq3OXODMrpj6LHR5+TT0Faed815kbjDLCfARrgn9aF4WaMMnkR0a4l7UqotopYBNC4crCgCtr20XExWNBxqs9bKNv4esypyffia/oSMTGdHlTV93FoNRZ1V7MU8GqixIfi1qzdIFRKGODjInmVbc8R1iGC6fsCHs9vxGRPt93mvoWPjSuo/x+Yy77oCWAPiaJ6rD9xkvO0UX+iqc77MEyjtGIvHm6Vsr4Sgz2GF
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,28 +97,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 20, 2025 at 12:46:43AM +0100, Matthew Wilcox wrote:
-> On Tue, Aug 19, 2025 at 08:53:59AM -0700, Shakeel Butt wrote:
-> > My initial thinking was based on Qu's original proposal which was using
-> > root memcg where there will not be any difference between accounted
-> > file pages and system wide file pages. However with Boris's change, we
-> > can actually get the estimate, as you pointed out, by subtracting the
-> > number of accounted file pages from system wide number of file pages.
+On Tue, Aug 19, 2025 at 06:23:56PM -0700, Jakub Kicinski wrote:
+> On Fri, 15 Aug 2025 20:16:17 +0000 Kuniyuki Iwashima wrote:
+> > We will store a flag in the lowest bit of sk->sk_memcg.
 > > 
-> > However I still think we should keep this new metric because of
-> > performance reason. To get accounted file pages, we need to read
-> > memory.stat of the root memcg which can be very expensive. Basically it
-> > may have to flush the rstat update trees on all the CPUs on the system.
-> > Since this new metric will be used to calculate system overhead, the
-> > high cost will limit how frequently a user can query the latest stat.
+> > Then, we cannot pass the raw pointer to mem_cgroup_under_socket_pressure().
+> > 
+> > Let's pass struct sock to it and rename the function to match other
+> > functions starting with mem_cgroup_sk_.
+> > 
+> > Note that the helper is moved to sock.h to use mem_cgroup_from_sk().
+> > 
+> > Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> > Reviewed-by: Eric Dumazet <edumazet@google.com>
+> > Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
 > 
-> OK, but couldn't we make that argument for anything else?  Like slab,
-> say.  Why's "file" memory different?
+> Hi Shakeel, looks like you acked every single patch here but this one.
+> Is this intentional? :)
 
-Good point and I think it does apply to other memory types too. I would
-call "file" memory to be more important as it is one of the largest
-consumer of DRAM on, at least, Meta infra. Slab needs a bit more thought.
-At the system level (i.e. /proc/meminfo), we account at the page (or
-slab) level while for memcg, we account per-object (plus obj_cgroup
-pointer).
+Nopes, sorry I missed it somehow. Please add:
+
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
