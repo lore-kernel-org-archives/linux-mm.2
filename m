@@ -2,80 +2,80 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F8DFCA0EE6
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 01:05:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 12F99CA0EEB
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 01:05:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2DBC56B00C2; Tue, 19 Aug 2025 21:05:24 -0400 (EDT)
+	id 96CCC6B00C5; Tue, 19 Aug 2025 21:05:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28E328E0001; Tue, 19 Aug 2025 21:05:24 -0400 (EDT)
+	id 91BF36B00C7; Tue, 19 Aug 2025 21:05:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 153D96B00C4; Tue, 19 Aug 2025 21:05:24 -0400 (EDT)
+	id 7E4676B00C8; Tue, 19 Aug 2025 21:05:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id F276E6B00C2
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 21:05:23 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B80ACC0309
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:05:23 +0000 (UTC)
-X-FDA: 83795342526.22.3692C33
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf04.hostedemail.com (Postfix) with ESMTP id A51F04000A
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:05:21 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="OQOU23n/";
-	spf=pass (imf04.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CF0B6B00C5
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 21:05:28 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2C5481602C2
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:05:28 +0000 (UTC)
+X-FDA: 83795342736.30.CAAAF7C
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1DC8940006
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:05:25 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=sgpRAyWw;
+	spf=pass (imf11.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
 	dmarc=pass (policy=reject) header.from=oracle.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755651921;
+	s=arc-20220608; t=1755651926;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aTCOKZ54R6TXOK6l3PvLQlmdTpFS20mjQ2epoOBlYkw=;
-	b=DVBjtH68a7m13/VBllQgXUzQT3Zwj1UJbzlt3F5BpGzQHwGgDV7IvM81ZBV8DeZgo4x0bU
-	eDWlxGf62Yxn6FPEGSIcawbD24I1bUHWKhsrktY+YcewJy1kvyqJd8oUsS3yOlbPrJSH2P
-	0duZ7EHQfY8opnnmj3yH5Ie2Qq37j74=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755651921; a=rsa-sha256;
+	bh=9L4mKjeGA5OyWK8/K1NWQvE53M9E3W4TNz8fycuQ5CQ=;
+	b=Q4K8I230mTTW8I3TFnzR/E5Wk31Naxzk+pmWnXcklT0LwwlMWPZqu/ENuhDx+LUe/vLMEP
+	EiKAh74ofsJCZXKFREDWWjkse57GOijXRlyOctAw81WphWOoE86YDLV0GZaVGkk/Ab+i2w
+	cJEU2bLhAcZ/fqAAUaiTk3nEeAIVyV8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755651926; a=rsa-sha256;
 	cv=none;
-	b=STlvnPJPeWKvb3xKIk+7TsOjnnfx0p3jTC5ZsEA1HCG2WwtDBM1vWpHZX393Cxv05Pl1LR
-	3rGG9x6XziMeDrK2E//AfGVkGIWh0FVdG7UDB/v7BiuJxDQU1JzVNEkyjFRJjNx3abu/NB
-	nDV+G6jh9jRdAWhnTroUknTSH7H21Ps=
+	b=hTrcwQLS/TaLDYRkHhf6chmcLH5mTu3ZBWT5Xt2fQcW0QXA325Lkx4ATXcN3rjsYpe0IXB
+	77YFFRRaguc5nT40b7piYnuYMBIBUOePYp0RvVpWL++tXDM81yRau7H+/tqBiJLkVKkK7m
+	b6H25sisGcsrHlJEAD3MohXiO8YV8Eo=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="OQOU23n/";
-	spf=pass (imf04.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
+	imf11.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=sgpRAyWw;
+	spf=pass (imf11.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
 	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57JLBrL3005739;
-	Wed, 20 Aug 2025 01:04:58 GMT
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57JLCHQM028221;
+	Wed, 20 Aug 2025 01:04:48 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2025-04-25; bh=aTCOK
-	Z54R6TXOK6l3PvLQlmdTpFS20mjQ2epoOBlYkw=; b=OQOU23n/RfYRKc5h5GRAy
-	yIy6JJ62m9PD4vdEPNvz8l1uBz0Y/6ULoHuZL38fTG/icIZqnxv9Ln+UrHJhhM0E
-	WQND59BPxaOIXfFJ0oR72Fb3HU9JxVhiEXs8KRbGO3BS95LSxVwWNaCu0eLkc36y
-	wJY89Kcp5fQXWgjg6tTgxWg/nqCpViyPKVxBAQOnWOZXhGrB0XIru7+2TA+PvE7u
-	CH+4Odzha0ejI2gVYDGQwac9RrW3XvTlpyfITZWlkxLq5sIHDYm1dpfztSEYgI2x
-	fz/bpktBJ0s3TyAqhkOuD2Iw0NHtPuhl1jOKrl049bFem3b0W3+q47h4De9VDUn8
+	:mime-version:references:subject:to; s=corp-2025-04-25; bh=9L4mK
+	jeGA5OyWK8/K1NWQvE53M9E3W4TNz8fycuQ5CQ=; b=sgpRAyWwR+4TxZS77Pv5L
+	tgfjsj36FrQShtOvaWE1EKMDedetv9gjtQb2i/mDPxzLObU9kSms/jiMJPoHxgyc
+	/gj6FAco0ZyI8fwy+IlkiFbctnFoEXApIwVg38Y6P7DBLLLkNpH8LkOq2bsS8ARJ
+	IMMkNpLqo/ZKVsQmoDRu37awClhkyxdLpqznfi8WePpokF7EMaNfdqs8HcWGQfsZ
+	NjBHTmb6YEhhdgTdsHgBj1btzELw5YvMemlqmBAnguxDeOkRT09yUwKlGTR2a7zD
+	g40KsVeOUhbo84S4FRxPjZ48XJbOY5mR+fs1UmNHZJEI4afelYI5AviWgvMQgJvG
 	g==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48n0tsr84s-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48n0tt08bp-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 20 Aug 2025 01:04:58 +0000 (GMT)
+	Wed, 20 Aug 2025 01:04:47 +0000 (GMT)
 Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57K02PP9007367;
-	Wed, 20 Aug 2025 01:04:56 GMT
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57JNWIUI007267;
+	Wed, 20 Aug 2025 01:04:47 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48my3q2a06-1
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48my3q29v9-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 20 Aug 2025 01:04:56 +0000
+	Wed, 20 Aug 2025 01:04:46 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 57K14NdS011685;
-	Wed, 20 Aug 2025 01:04:55 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 57K14NdK011685;
+	Wed, 20 Aug 2025 01:04:45 GMT
 Received: from localhost.localdomain (ca-dev60.us.oracle.com [10.129.136.27])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 48my3q29gw-13;
-	Wed, 20 Aug 2025 01:04:55 +0000
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 48my3q29gw-9;
+	Wed, 20 Aug 2025 01:04:45 +0000
 From: Anthony Yznaga <anthony.yznaga@oracle.com>
 To: linux-mm@kvack.org
 Cc: akpm@linux-foundation.org, andreyknvl@gmail.com, arnd@arndb.de,
@@ -94,9 +94,9 @@ Cc: akpm@linux-foundation.org, andreyknvl@gmail.com, arnd@arndb.de,
         viro@zeniv.linux.org.uk, vschneid@redhat.com, willy@infradead.org,
         x86@kernel.org, xhao@linux.alibaba.com, linux-doc@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
-Subject: [PATCH v3 12/22] mm: introduce PUD page table shared count
-Date: Tue, 19 Aug 2025 18:04:05 -0700
-Message-ID: <20250820010415.699353-13-anthony.yznaga@oracle.com>
+Subject: [PATCH v3 08/22] mm/mshare: flush all TLBs when updating PTEs in an mshare range
+Date: Tue, 19 Aug 2025 18:04:01 -0700
+Message-ID: <20250820010415.699353-9-anthony.yznaga@oracle.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250820010415.699353-1-anthony.yznaga@oracle.com>
 References: <20250820010415.699353-1-anthony.yznaga@oracle.com>
@@ -109,27 +109,25 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malw
  phishscore=0 bulkscore=0 spamscore=0 suspectscore=0 mlxlogscore=999
  mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2508110000 definitions=main-2508200007
-X-Proofpoint-GUID: XkiUDz7QrV9JQbSS0E3iydrFNOELU_g0
-X-Authority-Analysis: v=2.4 cv=S6eAAIsP c=1 sm=1 tr=0 ts=68a51f3a cx=c_pps
+X-Authority-Analysis: v=2.4 cv=YvRWh4YX c=1 sm=1 tr=0 ts=68a51f2f cx=c_pps
  a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=2OwXVqhp2XgA:10 a=yPCof4ZbAAAA:8 a=wzGCPD0JsuPSr4ClS-4A:9
+ a=2OwXVqhp2XgA:10 a=yPCof4ZbAAAA:8 a=0InV0jWQfKTt0iU26UwA:9
  a=UhEZJTgQB8St2RibIkdl:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=QOGEsqRv6VhmHaoFNykA:22
-X-Proofpoint-ORIG-GUID: XkiUDz7QrV9JQbSS0E3iydrFNOELU_g0
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE5MDE5NyBTYWx0ZWRfXx8FqyQ7+B2ay
- bCJ7q/WZ++K45BiFIwOb/XZv2xR9mK6HAjlKdLED4YAI/qTI9Ep/xzvpUby2QFmqlCwg2Yrc1bp
- BUvAhvVnxG92Fem7MaInikH2sff8NGy4WUGgxQ0VHAw2QIA2ZyFdzLYJ7OOulgShQ53V9VJL/t1
- uMLaUU7CWk3PP6SnYn41CBbRMGKVQ1W2Fs3f0JuFktIRBWAywc3UG5d1xNRI/WhDLMxz0xBYvBA
- Wg+PFdmM/0qQ2YzRoYfYXXwmrwoeskpyp0Zc9xXU31k2s6MyI/cIYgRREwlabHwG9MMTFVEQJQf
- hworEMdy8ev8UiL4eTxOjFd9j4pcI6GIV/ebogIUMER5uhGHB+4cka2iwavhfZAOfT729ed7g6c
- dYqaS4HXlwwAt9q8kyQOCBOoIxFsmg==
+X-Proofpoint-GUID: tBA8mk8grAxjezx5ksHcHYHuEzgvJI8t
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE5MDE5NiBTYWx0ZWRfXzCjnlAcKDkxl
+ M/W3GCTi3Cck0tQGb9R4qooCLskGa3VkpOpP1pf05OmPWvaJ4/I3KFOr2i+jRYpiUjl9h2+I7Zm
+ r+MHQ41Jz7B3jRarYNRwg1IS1+nXFLIinc7PIhYtdbe8cvHEXjrMrbNdaHNXdHc31hYsW0MVJJP
+ aYitiektuIMWnkwGeXWhA2XJYGQ1OW47P3nMNmgGH+93OqRxBzEZEMjKx6Z17oOiLCRSX891ssA
+ fVkubZUw/W3QdfS064dz2uCg5T34F/+oC4JjhtEKFsd3pklDXl3GTfV79URq/kRGVpfpQgl/A8R
+ Vxv7SsSsXg7ynDPsmQ3t9pHRH5fI+tcrfSK0jLh3Un6YRPiyhs1vrU/5En5Q2lE1bqoPSqWlv+8
+ Oa6w1RHw3jA0PIujvZ5D7VWqENudvw==
+X-Proofpoint-ORIG-GUID: tBA8mk8grAxjezx5ksHcHYHuEzgvJI8t
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A51F04000A
-X-Stat-Signature: rnjtruakncfkpi849z6y7gmanfjjp9bi
+X-Rspamd-Queue-Id: 1DC8940006
+X-Stat-Signature: gkmzj6f4ekfjwaiddbezza7ubyytaysg
 X-Rspam-User: 
-X-HE-Tag: 1755651921-963872
-X-HE-Meta: U2FsdGVkX1+41/dbKICBlJFH1Eg67tx6hfpBfSvxAjEQNxfmZZdukCLzCvOvcYlbcDDUi7YjqyH3sNhb0yyeD0iX8xXyvhb35T3lLG/mfTIAfja1Vk87605QjS12sy36w+Ki0mZXVZvrDamHobQANCTZZcBjxzujc3YqgIkpOUFUR7M6Qp8CWqC19LZ8qmDTbmsdn0jRjLH1HyrvKMbsHW5UphOIN6RZV6DTVp0Bwhmkvdyw8jjzY9ZcOhscTfQnYqw3XUNyBlgMX4WvGufLCXE6Cd76d0/v9nxBLEJrnONoPx/pZ0Zpg7CHE/txou/QBqqyT684Ab8/pQZbP2wi/NkrBjCA+vIPMmdD/k3nbkshkX5VjQSBHucNmbiQ5mDHifQg5LDzg663LnJ+wTTL4wwZcvtGI9DUdasU3hI5biXFYUa6AzwBs1zeMcYWPLIXkzwmBbipbz1reefHcXOL2QB7FzL9UG8AImqB1YKbv8PfbB/BNNCcX4SHdU7INLv4igJhp2tqvRez4qljW9TjnD6JBUlR5h5KlWxlkBoSopEwKDgZDfayB1Hi/s/kQttmxy1S1r4lOwi0MLddokIYcfn3cT26Byaq5UYLKKhIMad1V+Yt+sX/i2S+51zG1q8A/I2WeGxO5PGRN1lg8nr4B0rEp71OvktE5VnGv+jzXxiC+fkP9L9sFBqTAUuQWLKFg0yJT4qU4ZV33J+wIwKHMyEEM6bKd68AI0WZ7do7TgTtzcL0ynA2Z0maVzG8Ap0PO4V7oscml2B3Fg8wTxc5811FK8ogRHAg/LMJfz2tJU0rIB4qbOEzWaf0E56hPPwGvHrOeFRsy37HgXxh0sosTrzOXGdiYnUeyDoE1LIYp3JRN/QRkW6gnxElNntSPRR7ztjkuGvp7nNxWUMR6rC5r2kee2RLXCdzd87YakmdqMHB4UxjyWuscu95XOYHLkVFw1AVDYkVj0ZxtJHYdob
- Wgx1l/gh
- IBao2O/zxoAv6rW7ggF/LKH0CrvvwIfKSpJwl8ke7oSLtikf+sOwex38svKbrZXTtJfksVNn+Z8n2eX8j4rmXk06RbcYsm1zYSx6Y4fW3xqhLCAXBbZtF7UVGCHUQAIWwA4UfnvXgNiAYEUxxfMV2jvWnmX821bhVTTHoxYgLVIq6l2GDnaegGBPdMY6Q29v/gWX5ZPLKLGkbID60kud99W9umb484SYXD1Bvvv3kLFeSOiY0e+Wj/abrkVKX0pj9PvJIEDEJVL2doco=
+X-HE-Tag: 1755651925-106418
+X-HE-Meta: U2FsdGVkX192ErGW3REZhTj18ZOoiWYQBZzv3xNT1CYnfWrugWPE/to0zKgJK9B5R0ISxNSAG1+Qkb/pFLCc4M5FaVAEQpfs9qOb1Vb4SA6jb6KHg3YmvhPyl6QL0DHWsb7qLOqUIBVLsTA4fNZOEKO+LQoGz2fGEt82Oc9jkjV0rQMKlmlV73Y46bDnswRIGMWw4Qq8ArM/K1a5koe7de3g8eQnzAX3oMPE/4VcaNmQhUwzEmR09UkgT18kYYwxB3qzfcrfe5U+W0E6YuplXSMc93fEWWY/A+jV2vM3IvkKU1vIuLQLuCCx4ZNPef+0lY2M4W7A0LoXL4LXepQJQymX31V08BFhZhZ6Mad1mt+vuzv5+TZwKv3ItvC0yS51APyuzTcee24ppLMFXp14OUz3YuZPBoesejgFd5n/dSTkXG3HL5jmrJfIJFVXU80i+ApyLme0iZVA5WF0PTfjsl8KsPKW6coW+Ci5xa6rr9S40FddTZam10T19ETQOn61JN2J7cHo+mzmaWVHgn6dy9avY65cnQ6iB7HUkRAKzPE5hHOTL0ObR/ou71Qm1ece3UDKpeTptOI4PaGYNCMNGXZmEOn3vxqCkX2Yl7J+44DN5ZhldVpokG4vW/Ghyu6iQK6ZQyejuJ/4tvF1jNs9PO0+6Lze9S8YdhymRss0BFZrpD0xUBU05DLBrj63g2A3DZai281HJgwWle+GswezOMZW1QkJC9oG6Df3n8keeerId6REitW0lQyv0npCUwGqc9nAaQORpFR6/Yd1yQv6Rruu3ObQB1aw5+tOd2ja5q1Jvh8VZyZrXU7f71Z8c3cluTlv90Kyy76PpOfQjY0s+69HfvuPDGeOUauDJjBguI8RK4wttA4EgHenBxHKS9HGmPTrBX65YLObaJ4+iBjNFZYDcwzoznIGupe8DRmlM1ZPe6+xuwwJsA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,154 +136,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Once an mshare shared page table has been linked with one or more
-process page tables it becomes necessary to ensure that the shared
-page table is not completely freed when objects in it are unmapped
-in order to avoid a potential UAF bug. To do this, introduce and
-use a reference count for PUD pages.
+Unlike the mm of a task, an mshare host mm is not updated on context
+switch. In particular this means that mm_cpumask is never updated
+which results in TLB flushes for updates to mshare PTEs only being
+done on the local CPU. To ensure entries are flushed for non-local
+TLBs, set up an mmu notifier on the mshare mm and use the
+.arch_invalidate_secondary_tlbs callback to flush all TLBs.
+arch_invalidate_secondary_tlbs guarantees that TLB entries will be
+flushed before pages are freed when unmapping pages in an mshare region.
 
 Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
 ---
- include/linux/mm.h       |  1 +
- include/linux/mm_types.h | 36 ++++++++++++++++++++++++++++++++++--
- mm/memory.c              | 21 +++++++++++++++++++--
- 3 files changed, 54 insertions(+), 4 deletions(-)
+ mm/mshare.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 96440082a633..c8dfa5c6e7d4 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3217,6 +3217,7 @@ static inline spinlock_t *pud_lock(struct mm_struct *mm, pud_t *pud)
+diff --git a/mm/mshare.c b/mm/mshare.c
+index e0dc42602f7f..be7cae739225 100644
+--- a/mm/mshare.c
++++ b/mm/mshare.c
+@@ -16,8 +16,10 @@
+ #include <linux/fs.h>
+ #include <linux/fs_context.h>
+ #include <linux/mman.h>
++#include <linux/mmu_notifier.h>
+ #include <uapi/linux/magic.h>
+ #include <linux/falloc.h>
++#include <asm/tlbflush.h>
  
- static inline void pagetable_pud_ctor(struct ptdesc *ptdesc)
- {
-+	ptdesc_pud_pts_init(ptdesc);
- 	__pagetable_ctor(ptdesc);
- }
- 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index c8f4d2a2c60b..da5a7a31a81d 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -537,7 +537,7 @@ FOLIO_MATCH(compound_head, _head_3);
-  * @pt_index:         Used for s390 gmap.
-  * @pt_mm:            Used for x86 pgds.
-  * @pt_frag_refcount: For fragmented page table tracking. Powerpc only.
-- * @pt_share_count:   Used for HugeTLB PMD page table share count.
-+ * @pt_share_count:   Used for HugeTLB PMD or Mshare PUD page table share count.
-  * @_pt_pad_2:        Padding to ensure proper alignment.
-  * @ptl:              Lock for the page table.
-  * @__page_type:      Same as page->page_type. Unused for page tables.
-@@ -564,7 +564,7 @@ struct ptdesc {
- 		pgoff_t pt_index;
- 		struct mm_struct *pt_mm;
- 		atomic_t pt_frag_refcount;
--#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
-+#if defined(CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING) || defined(CONFIG_MSHARE)
- 		atomic_t pt_share_count;
- #endif
- 	};
-@@ -638,6 +638,38 @@ static inline void ptdesc_pmd_pts_init(struct ptdesc *ptdesc)
- }
- #endif
- 
-+#ifdef CONFIG_MSHARE
-+static inline void ptdesc_pud_pts_init(struct ptdesc *ptdesc)
-+{
-+	atomic_set(&ptdesc->pt_share_count, 0);
-+}
-+
-+static inline void ptdesc_pud_pts_inc(struct ptdesc *ptdesc)
-+{
-+	atomic_inc(&ptdesc->pt_share_count);
-+}
-+
-+static inline void ptdesc_pud_pts_dec(struct ptdesc *ptdesc)
-+{
-+	atomic_dec(&ptdesc->pt_share_count);
-+}
-+
-+static inline int ptdesc_pud_pts_count(struct ptdesc *ptdesc)
-+{
-+	return atomic_read(&ptdesc->pt_share_count);
-+}
-+#else
-+static inline void ptdesc_pud_pts_init(struct ptdesc *ptdesc)
-+{
-+}
-+
-+static inline int ptdesc_pud_pts_count(struct ptdesc *ptdesc)
-+{
-+	return 0;
-+}
-+#endif
-+
-+
- /*
-  * Used for sizing the vmemmap region on some architectures
-  */
-diff --git a/mm/memory.c b/mm/memory.c
-index dbc299aa82c2..4e3bb49b95e2 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -228,9 +228,18 @@ static inline void free_pmd_range(struct mmu_gather *tlb, pud_t *pud,
- 	mm_dec_nr_pmds(tlb->mm);
- }
- 
-+static inline bool pud_range_is_shared(pud_t *pud)
-+{
-+	if (ptdesc_pud_pts_count(virt_to_ptdesc(pud)))
-+		return true;
-+
-+	return false;
-+}
-+
- static inline void free_pud_range(struct mmu_gather *tlb, p4d_t *p4d,
- 				unsigned long addr, unsigned long end,
--				unsigned long floor, unsigned long ceiling)
-+				unsigned long floor, unsigned long ceiling,
-+				bool *pud_is_shared)
- {
- 	pud_t *pud;
- 	unsigned long next;
-@@ -257,6 +266,10 @@ static inline void free_pud_range(struct mmu_gather *tlb, p4d_t *p4d,
- 		return;
- 
- 	pud = pud_offset(p4d, start);
-+	if (unlikely(pud_range_is_shared(pud))) {
-+		*pud_is_shared = true;
-+		return;
-+	}
- 	p4d_clear(p4d);
- 	pud_free_tlb(tlb, pud, start);
- 	mm_dec_nr_puds(tlb->mm);
-@@ -269,6 +282,7 @@ static inline void free_p4d_range(struct mmu_gather *tlb, pgd_t *pgd,
- 	p4d_t *p4d;
- 	unsigned long next;
+ const unsigned long mshare_align = P4D_SIZE;
+ const unsigned long mshare_base = mshare_align;
+@@ -30,6 +32,7 @@ struct mshare_data {
  	unsigned long start;
-+	bool pud_is_shared = false;
+ 	unsigned long size;
+ 	unsigned long flags;
++	struct mmu_notifier mn;
+ };
  
- 	start = addr;
- 	p4d = p4d_offset(pgd, addr);
-@@ -276,7 +290,8 @@ static inline void free_p4d_range(struct mmu_gather *tlb, pgd_t *pgd,
- 		next = p4d_addr_end(addr, end);
- 		if (p4d_none_or_clear_bad(p4d))
- 			continue;
--		free_pud_range(tlb, p4d, addr, next, floor, ceiling);
-+		free_pud_range(tlb, p4d, addr, next, floor, ceiling,
-+				&pud_is_shared);
- 	} while (p4d++, addr = next, addr != end);
+ static inline bool mshare_is_initialized(struct mshare_data *m_data)
+@@ -37,6 +40,16 @@ static inline bool mshare_is_initialized(struct mshare_data *m_data)
+ 	return test_bit(MSHARE_INITIALIZED, &m_data->flags);
+ }
  
- 	start &= PGDIR_MASK;
-@@ -290,6 +305,8 @@ static inline void free_p4d_range(struct mmu_gather *tlb, pgd_t *pgd,
- 	if (end - 1 > ceiling - 1)
- 		return;
++static void mshare_invalidate_tlbs(struct mmu_notifier *mn, struct mm_struct *mm,
++				   unsigned long start, unsigned long end)
++{
++	flush_tlb_all();
++}
++
++static const struct mmu_notifier_ops mshare_mmu_ops = {
++	.arch_invalidate_secondary_tlbs = mshare_invalidate_tlbs,
++};
++
+ static int mshare_vm_op_split(struct vm_area_struct *vma, unsigned long addr)
+ {
+ 	return -EINVAL;
+@@ -238,6 +251,10 @@ msharefs_fill_mm(struct inode *inode)
+ 		goto err_free;
+ 	m_data->mm = mm;
+ 	m_data->start = mshare_base;
++	m_data->mn.ops = &mshare_mmu_ops;
++	ret = mmu_notifier_register(&m_data->mn, mm);
++	if (ret)
++		goto err_free;
  
-+	if (unlikely(pud_is_shared))
-+		return;
- 	p4d = p4d_offset(pgd, start);
- 	pgd_clear(pgd);
- 	p4d_free_tlb(tlb, p4d, start);
+ 	refcount_set(&m_data->ref, 1);
+ 	inode->i_private = m_data;
 -- 
 2.47.1
 
