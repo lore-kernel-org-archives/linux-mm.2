@@ -2,90 +2,181 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CD32CCA0EED
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 09:27:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D3A2FCA0EED
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 09:31:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D0996B00DA; Wed, 20 Aug 2025 05:27:47 -0400 (EDT)
+	id 63BE18E0049; Wed, 20 Aug 2025 05:31:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 681216B00DD; Wed, 20 Aug 2025 05:27:47 -0400 (EDT)
+	id 5ECCA8E0002; Wed, 20 Aug 2025 05:31:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56FCC6B00DE; Wed, 20 Aug 2025 05:27:47 -0400 (EDT)
+	id 4B4018E0049; Wed, 20 Aug 2025 05:31:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 41C746B00DA
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 05:27:47 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BAF30834D1
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 09:27:46 +0000 (UTC)
-X-FDA: 83796608532.04.5BF8086
-Received: from outboundhk.mxmail.xiaomi.com (outboundhk.mxmail.xiaomi.com [207.226.244.123])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 2570216000D
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 09:27:42 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 352F88E0002
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 05:31:05 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CF3D21387A6
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 09:31:04 +0000 (UTC)
+X-FDA: 83796616848.24.82854F0
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 5E271160008
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 09:31:02 +0000 (UTC)
 Authentication-Results: imf08.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=xiaomi.com;
-	spf=pass (imf08.hostedemail.com: domain of gaoxiang17@xiaomi.com designates 207.226.244.123 as permitted sender) smtp.mailfrom=gaoxiang17@xiaomi.com
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BCxwUjIi;
+	spf=pass (imf08.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755682064;
+	s=arc-20220608; t=1755682262;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I56lJZ0EEXeSnngQms6yeWfHVeTKrWebLNbxxVTwlJM=;
-	b=IZr8dkra6KPig6c219GCrzb44ajz9XGkv58xN2W5UFy+Qdi3AEqOtKNZBA4wIa+eZVNLoh
-	IbFmo5iRC7KJm7edVabQscaoEI4az0ZZKhYMkFwMRV7LhbL+ztVsx/Y9F9/D5i+HnMcsas
-	ZZACl1u69uF+JaBg8nnkX952q/XPeYs=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Iss6PFQZzwJgBsaDesf5Jptp2Rl0G9Hey47fwUvN4aA=;
+	b=sPA97QNNhYTEc2P5BVlHxtXzM63hxSQSSF2JlKKlyuQ/v4DJDGr95/uOIFUgcDbaPXNCbZ
+	l8yWQgkiteYlCFTIGS+68Q7HwwbiD4guwY239ONWZU4Bg6ZDTH1d+4wjnBs3ZFF+Koz03o
+	rKNknQpjKaN3Z0Ouk0VuIKhy8tfAsf0=
 ARC-Authentication-Results: i=1;
 	imf08.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=xiaomi.com;
-	spf=pass (imf08.hostedemail.com: domain of gaoxiang17@xiaomi.com designates 207.226.244.123 as permitted sender) smtp.mailfrom=gaoxiang17@xiaomi.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755682064; a=rsa-sha256;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BCxwUjIi;
+	spf=pass (imf08.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755682262; a=rsa-sha256;
 	cv=none;
-	b=hdcXhmlEF59RbXVik5y7vFwK10E9Iq+xzwgcUZ9fAJUHD8DJdK3Grk/RXO8DFWKoj7pT6i
-	p6GVbiAzPpxm0Edn4QIv4uNfQ4/OR0nnWPyMi6+2JJJBs5o161pYN+a1BJEslVVhVNXmZZ
-	gdJj2KUAEmkAMwIrdchGzMmEkgjQx8A=
-X-CSE-ConnectionGUID: sH/JJ5ZVT9OIWXXMtXMoSg==
-X-CSE-MsgGUID: XV6mO3LwSkiSTMkmi+tEiw==
-X-IronPort-AV: E=Sophos;i="6.17,302,1747670400"; 
-   d="scan'208,217";a="149798575"
-From: =?gb2312?B?uN/P6A==?= <gaoxiang17@xiaomi.com>
-To: David Hildenbrand <david@redhat.com>, Xiang Gao <gxxa03070307@gmail.com>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>
-CC: "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
-	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "vbabka@suse.cz"
-	<vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com"
-	<surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: =?gb2312?B?tPC4tDogW0V4dGVybmFsIE1haWxdUmU6IFtQQVRDSCB2MiAxLzFdIG1tL2Nt?=
- =?gb2312?B?YTogYWRkICdhdmFpbGFibGUgY291bnQnIGFuZCAndG90YWwgY291bnQnIHRv?=
- =?gb2312?B?IHRyYWNlX2NtYV9hbGxvY19zdGFydA==?=
-Thread-Topic: [External Mail]Re: [PATCH v2 1/1] mm/cma: add 'available count'
- and 'total count' to trace_cma_alloc_start
-Thread-Index: AQHcEbLPpvTY2nX9Vk+zuVP60tUoN7RrRXDq
-Date: Wed, 20 Aug 2025 09:27:37 +0000
-Message-ID: <d54bb3a5e5924dbc87cdf63e22ac7d00@xiaomi.com>
-References: <cover.1755654367.git.gaoxiang17@xiaomi.com>
- <d30f91137e3a296152463ea65474e1ca56f4eda3.1755654367.git.gaoxiang17@xiaomi.com>,<24ed0c41-6ec3-47ba-8f63-94c521df995b@redhat.com>
-In-Reply-To: <24ed0c41-6ec3-47ba-8f63-94c521df995b@redhat.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [10.237.8.163]
-Content-Type: multipart/alternative;
-	boundary="_000_d54bb3a5e5924dbc87cdf63e22ac7d00xiaomicom_"
+	b=4CAjO0Q2IKkwoz+MhkWXmj33X/ggTLPPXtLV0jl0TZ1xfgxU9RwQy9+bqWWcJ7J1QHXP8U
+	6x0jU+wtnnTn+5be39n5kNrfeAJYRUL1PQa0QfahsvBRNHWSLiw0auWiDjMKOgoXFyG9NB
+	kwsL5MydFx83Lgqa0PUh0fPut0iTA9U=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755682261;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Iss6PFQZzwJgBsaDesf5Jptp2Rl0G9Hey47fwUvN4aA=;
+	b=BCxwUjIiEpLVDOZNMpxGjXcMa76HZ6nuMfbqjtuFulOBW5TTZdnMGEUvl3ew3oDoEHy4km
+	0W96UWzAokyVKqS8gAgev2I8H0hxcUQivq00BCpnkx3yBWlQ3IW2ojrdDbHok+wHLkZ1mn
+	3L0NyYAKU8rCby7RBXwwOXoTCoKhipc=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-195-519SD6zWMVCBWjU2uO0_PQ-1; Wed, 20 Aug 2025 05:31:00 -0400
+X-MC-Unique: 519SD6zWMVCBWjU2uO0_PQ-1
+X-Mimecast-MFC-AGG-ID: 519SD6zWMVCBWjU2uO0_PQ_1755682259
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3c3b22f45eeso239661f8f.1
+        for <linux-mm@kvack.org>; Wed, 20 Aug 2025 02:30:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755682259; x=1756287059;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Iss6PFQZzwJgBsaDesf5Jptp2Rl0G9Hey47fwUvN4aA=;
+        b=pKvQdiS5m4xt9Th3QHwt3EmefsnoLUVEPxLSozvQuVKiDXh5O4YupMSArOM/K3uapj
+         iJBeOQ3M+y5UGC1jja3BNI7aXQV/hgj1SJPPitgXTm+TTN51pSR5tXGd4OXPqDhLcpgj
+         RW0V0Nwzqk2D7V1V28sUDKs5pn2obtYFdsp8YrKV3x82ZglwiviMgpqVhxDWVdV2zNCM
+         xbgLa0c3y97LcyICNv/ME/PgfgVmeEBikR4/qSp72Owz4tggt+tXY6PyyJtRu777bul2
+         bASX8Rybhe+xG5aMSuvJHBXor6UvXyp2GajG6iw/ju1sGMXN2urS27Kq6sW/6oI3NILO
+         VIwg==
+X-Forwarded-Encrypted: i=1; AJvYcCWVvT5zP9yJkmDHXShemvdBrvhWrsf5F7tfMPomtHWYE3O7fc7KbVqtdGELesnA+137WuOl8o6vdw==@kvack.org
+X-Gm-Message-State: AOJu0YxEpPXbjDUDTMxGYIlFimkaYkZEv14oxN3k1LIo76YciZxFBwyM
+	PjDAtSC8uCxNg3a018HDtU+fNXYHkG8jhqW54vxH2pOerVKh6ozplCJ+GqsnrilAlvH+ToVCkbG
+	aPIqPXybJRiP9A1wg/3yAeXU8L3kcxRsIRUwvulp/p+2Ia5gspe8L
+X-Gm-Gg: ASbGncvGAiJ5rwH1uN7d/YdopKvDDoXQtIF37OZqMQ9CSbw8j/GWD3zJs6lH4/jy3xx
+	DKAPE18+o7Iducnuw8I5JKO8pBofpigxIr0Z2qAYIHkYZuqy/4ptWF9JGbrpNACC12LoSP65jrr
+	rkSwM1mXp8TbzprKjt8q3rpqitZMvMrRQRM787NV/6G5uZ5MUlmRKkEX9MpuIrBdoGD46ag7R4D
+	Lzwuouxwqog8G9qpn16pIXQGttO9NRy/RBZXf1Rs/qVUuiZ8H1DcTamnM3QRaQNm41j1aqx4O7C
+	FZdL0mLMxtc9eTVRVCan+HRlogtK/flc6yV6TAUBUD5dhVQIwXiJh1UTwEtwgSr4LEb6Ue57Vjc
+	fppoc4W8HvtPXHiNC74ZIQ0fRNS/Qr4nrDsipt78f9PCb8eIX0jRGsCvyLLs0gA8G
+X-Received: by 2002:a5d:5f81:0:b0:3b8:d79a:6a7d with SMTP id ffacd0b85a97d-3c32c2471f2mr1367507f8f.13.1755682258812;
+        Wed, 20 Aug 2025 02:30:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFloYRsbWBWgN5EVMfsNqMt4OjjEvbW66aX8dU78SJDiDZe5AHMWMACsZ9FO4A6ZXMcYgAIZQ==
+X-Received: by 2002:a5d:5f81:0:b0:3b8:d79a:6a7d with SMTP id ffacd0b85a97d-3c32c2471f2mr1367482f8f.13.1755682258377;
+        Wed, 20 Aug 2025 02:30:58 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f13:de00:e9f1:62b4:5bb:5d83? (p200300d82f13de00e9f162b405bb5d83.dip0.t-ipconnect.de. [2003:d8:2f13:de00:e9f1:62b4:5bb:5d83])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b47bb2431sm24742335e9.0.2025.08.20.02.30.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 20 Aug 2025 02:30:57 -0700 (PDT)
+Message-ID: <2c669a58-1741-4b22-8fa5-752501a6e128@redhat.com>
+Date: Wed, 20 Aug 2025 11:30:57 +0200
 MIME-Version: 1.0
-X-Stat-Signature: yymd4o7p6d6itkuytzg3r1w3z3xgob14
+User-Agent: Mozilla Thunderbird
+Subject: =?UTF-8?B?UmU6IOetlOWkjTogW0V4dGVybmFsIE1haWxdUmU6IFtQQVRDSCB2MiAx?=
+ =?UTF-8?Q?/1=5D_mm/cma=3A_add_=27available_count=27_and_=27total_count=27_t?=
+ =?UTF-8?Q?o_trace=5Fcma=5Falloc=5Fstart?=
+To: =?UTF-8?B?6auY57+U?= <gaoxiang17@xiaomi.com>,
+ Xiang Gao <gxxa03070307@gmail.com>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>
+Cc: "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+ "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
+ "vbabka@suse.cz" <vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>,
+ "surenb@google.com" <surenb@google.com>, "mhocko@suse.com"
+ <mhocko@suse.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <cover.1755654367.git.gaoxiang17@xiaomi.com>
+ <d30f91137e3a296152463ea65474e1ca56f4eda3.1755654367.git.gaoxiang17@xiaomi.com>
+ <24ed0c41-6ec3-47ba-8f63-94c521df995b@redhat.com>
+ <d54bb3a5e5924dbc87cdf63e22ac7d00@xiaomi.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <d54bb3a5e5924dbc87cdf63e22ac7d00@xiaomi.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: iYiBas2YiCr7uGc-7FuXvE7vpD9mhdvXzKMraImJs84_1755682259
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 5E271160008
+X-Stat-Signature: o4hry7kcnzbf1xff6sp9t4cktkq3jwkr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2570216000D
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755682062-6660
-X-HE-Meta: U2FsdGVkX18dnVIz/mcqpw8eJVn+u0wrSpSGU6l/UBPHtcqQzDF4x0zw9U0DsibHnqvl9Os6GdWkk1PUoJayoHaMKI9pXr13uFedooW3HkN2K0kPQunRetqrW9lBB6tDujTC0OHji8eS+hQoXlqquoua3d2fkjyZZnaUFcy2bqF3WTSrhut5fvFaYd6vDEQ+37kfMNTJD0KjkWwHpCDVBaewPFaC2aH0MNktcWMOwSjSKnsxKmuHSoe5xKeHbMIcGREvaHT/AG5rJeOP4ajhi/bWinuTE8oowqxQs/vFCmq0OJXjxAxAAqi1zJmo/8XIt37qCi+l872v4qxaoadyd3X8+MLFZS2j5Ybjgf6mHr8hWlrixcQzq5cv7zQ5buC557cYOHDvtx8/6yLabWaHsfslCwsNobvAygKCq8TJJhBUESJdn5seuDdStSl5I2dwd1vUTbPMB8Bx0Jv/iBTD9yI4EZne2JkUDQYIwb/ntMamhORL/ucTxkChAVwbXwE1ZwdeKBxOr1AQQqsRw0qsS4AiqBYXBoFqDu0LkJqCnydz3fF0ztYvHOEiE6wvSxsQnRyfJNOVZmvE8XYtGnjzF5GROErXnMNoFixo1TMO0i0czrdW5LOFk6FYqLBx/6r5DE5lLf9m+VKusAKdtK4bZ6hGLuk7J6H7HZ2ik4b4Zb/3nAojvjYnJsR2PqabJOmy/wuhRi/U15+MaLhfMTKMh4KT6X85B8IWloM+/Y2imnMV4LkNRpDtLD5/diaA4mprTxZiSdDXujY7IszCy810Yt3Qk5fVDiV44QjQXLc1L/wiZou7FxzJhlhE3ybVLZHHVxByxp+dU6prVEnsmXxS+2fK7nfzN/GTfG9O4ppLgI+wjqpc4/M7XKlHpruuZ8lUtP3IjC4/6c+eSBBIgaowt56jsdS5pj8YA8faDyQeHEhEzStJRQccxIBaE4KOA7W6Nlqbf/nrx5f64xdMlNk
- rIu2JIwA
- coFKfnoFVVAQcXIYFWQGIJqLBJeZx0mPgCLEw6TmdKiY98atLlCbILomJr08QkaEsD8dFr+7cGrZ0BexwM6hp90hghM2vQuMDy9x/lQW1b7C/K/bOlWlO5NKKxB7PsIil2YxrX4Wvl/ITGTsdljJogMofIftKzHvFg1kgNH9Vbdeg0GVYFW++4YrS+IICuxcWPy27et/zLQhL1auial2Kc2WjmY8O0ZawksmB1c8O4Yq8u+lL+bfPtRXIdYFeikn5Y5bTP03LnSeA56S7pmhS/4DnV76LPFipfD0neEQEOPr93eQBoMgKYek7rE67Z3qv0dGNcyGnzkHrGHwZ0nThEbqSyfGDmElNuqcDf3JzYMcXK2OfbuUB1oqLirG6sjDzQICDiPv+bP58Kyn9eLMZnxEPfD8/kFNHZr1USjzHSSbgN2uTo79qMgLLN8dOvOhZljPwlCxMYGlpxar4kY1+jpTk6Ls6cMn+10zO8zMlTy2IDNXIbBeGC1nAGPgP7R2uLNKCmAW+RK+qQIMpw9Py+IOHTdCYFmkPVOwQ8DphN8vvZghr8OtAWoke0P4qra0qznhBSdcGSEtOydqdoNFcbFdcweOzEOJ7nzDZvCMl1pjWJ5Z6mQDl2xtmFQA3LZZF4PxvVrBxnIBdqKy5wG1a4O9o+t1Q63pP3sQht0JOhQCgeXFXoCl/J8LNw7P7h6UPEor884nBNz97xCm9nbJQP3ERNQ==
+X-HE-Tag: 1755682262-446056
+X-HE-Meta: U2FsdGVkX1/295EwzG/fyAhuuuoMNGvcKYAuOoM0xFLlt1sjuuj2dYCk2pVWCho3Lzlc2wQoJfbB9xuWFyJupUXuxTWMStyq4TOhb79F0OjlYO0ShHWTmfXNit5h3qYW7SNw4Nn7wFn3NN3KrlhM/U3GRLksuoEj7cA+5gBNrQ712kW+bqbeMbtJcomIR7Db0eEtdPkHEIi54pup7/6mp2Rjds3NzXHZTVKHcohhxc57s0tE8yI4aGmjbFcMzieeOVpxxHZlWUAPIzp9a1ragDqdVOx6vzKSYwr2Zue3s94cjzRxQruLRtgfIYHNdax+XC3JK79ykf2kCc64ZIli/2qnfAVThqkqgmGMkPJseyzs85g3nq8thbhTdSNqo4U7k3dwc06PLNq+09bCMCQlmFaQrnAD0rlqew9RC4lA7MXmvTHbODT23r0NLFI3Q4ATpIA/d9lxH6r2khTGFCH0oty15n5jHniW7vcMmsp+nsDBtzNHRkHgLBbW1bWRLHyjx2oSYaVOySKpRS+f8xhoFtoS+1Q6gxc0qp/dkfrlF39ry4uOSoQrCzVZt0GVswrbJ7iuWng3+pcVCxW9uMsnVtu19qmC+JReC1ZlXq72/BJaVPzDeBjFoY03vgdFSYN4soknbpNCauNldD9oxDrswVAm+3qO4oex3cp+O8zINJbD60jBva0h/vRqRi4G1bJ8QvVsgWwEVfMfPlVyOlUmCeI9KKkZeB/uXb3Pq8kYzgy5A4JwnTT19EHwA0kSuJIA+R07RqIsdmrIusJ+Y+65ub7h5dy81gjbfeGAfRwjfOLg+Q24dnTmtYAPjRtthJNOgJTK2Eh7M3nAEGTQI+P/cebRge6sE4osAV5MWTu72MMUyMBx3ws2lnbzuoAtfyrBOkztenTXA6uK/MyVOeGyc/uuGa+Khb5mUpfmbqXT23Zf5bYv9F5zAWBrACj6ooGt5fRSNJMdQN3v5ZQAEq9
+ r1LRaX6I
+ 3jxojbq4z28VeqS+e4FzASQnbxmQUu9kHWZPNv9s5jsqE4dgEHyOp9s+wjTiTZdeoxV73YSBnEBQtYJF0b3T/ufqBjO/0TU4WTZx/rj/9mWnQpY6SMT5MTOi3JMPVkvLKR0u2u+jPpf3H00ZiF/PzNtDfeDHuOMzFuxG0D++amoaVRn6HAjvvh1WUPVg3vC01tW4eZ9faMNrzDHbSrdXdVYfVTJ6yVt7yHd3c9KK5w5VdMBqL9Z/mBzD8xroOJ/HbittTS9VP2gQ/8biCpqEjMkE01UTtfLzqtwYO7/Xl9IeVIdZWj09DfOdgwl2ch2v2FSfK1Jnwi8UP+F5buSAdrQzOq2Nu4HHDmEdctkg57Hm8hi7tS0/jT1vLRk8JcdHo7cCKT8BYzmDCP+eUqx7WJre6fjWdSlGst5Amv8PSsM/Tca6CVy9pOmxlEELfnjZiFxhKiGykV+qlxttvPQA1wMeur0Wk3bCZhPTalZvvKxoL6isxeiRYiLFsUhXI7FbPBa/ww/55PoUcmA0YGNYrXc+0yfOJcoWkq5APt2qzTTx4Tz6McCdF1H+0IQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,187 +185,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---_000_d54bb3a5e5924dbc87cdf63e22ac7d00xiaomicom_
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+On 20.08.25 11:27, 高翔 wrote:
+> Is "request count" also written in the title? The previous "count" was 
+> changed to "request_count"
 
-SXMgInJlcXVlc3QgY291bnQiIGFsc28gd3JpdHRlbiBpbiB0aGUgdGl0bGU/IFRoZSBwcmV2aW91
-cyAiY291bnQiIHdhcyBjaGFuZ2VkIHRvICJyZXF1ZXN0X2NvdW50Ig0KDQoNCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fDQq3orz+yMs6IERhdmlkIEhpbGRlbmJyYW5kIDxkYXZpZEBy
-ZWRoYXQuY29tPg0Kt6LLzcqxvOQ6IDIwMjXE6jjUwjIwyNUgMTc6MTQ6MTANCsrVvP7IyzogWGlh
-bmcgR2FvOyBha3BtQGxpbnV4LWZvdW5kYXRpb24ub3JnDQqzrcvNOiBsb3JlbnpvLnN0b2FrZXNA
-b3JhY2xlLmNvbTsgTGlhbS5Ib3dsZXR0QG9yYWNsZS5jb207IHZiYWJrYUBzdXNlLmN6OyBycHB0
-QGtlcm5lbC5vcmc7IHN1cmVuYkBnb29nbGUuY29tOyBtaG9ja29Ac3VzZS5jb207IGxpbnV4LW1t
-QGt2YWNrLm9yZzsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsguN/P6A0K1vfM4jogW0V4
-dGVybmFsIE1haWxdUmU6IFtQQVRDSCB2MiAxLzFdIG1tL2NtYTogYWRkICdhdmFpbGFibGUgY291
-bnQnIGFuZCAndG90YWwgY291bnQnIHRvIHRyYWNlX2NtYV9hbGxvY19zdGFydA0KDQpbzeKyv9PK
-vP5dILTL08q8/sC01LTT2tChw9e5q8u+zeKyv6Osx+u998n3tKbA7aGjyPS21NPKvP6wssir0NS0
-5tLJo6zH672r08q8/teqt6K4+G1pc2VjQHhpYW9taS5jb229+NDQt7TAoQ0KDQpPbiAyMC4wOC4y
-NSAwMzo1MywgWGlhbmcgR2FvIHdyb3RlOg0KPiBGcm9tOiBnYW94aWFuZzE3IDxnYW94aWFuZzE3
-QHhpYW9taS5jb20+DQo+DQo+IFRoaXMgbWFrZXMgY21hIGluZm8gbW9yZSBpbnR1aXRpdmUgZHVy
-aW5nIGRlYnVnZ2luZy4NCj4NCj4gU2lnbmVkLW9mZi1ieTogZ2FveGlhbmcxNyA8Z2FveGlhbmcx
-N0B4aWFvbWkuY29tPg0KPiAtLS0NCj4gICBpbmNsdWRlL3RyYWNlL2V2ZW50cy9jbWEuaCB8IDE5
-ICsrKysrKysrKysrKystLS0tLS0NCj4gICBtbS9jbWEuYyAgICAgICAgICAgICAgICAgICB8ICAy
-ICstDQo+ICAgMiBmaWxlcyBjaGFuZ2VkLCAxNCBpbnNlcnRpb25zKCspLCA3IGRlbGV0aW9ucygt
-KQ0KPg0KPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS90cmFjZS9ldmVudHMvY21hLmggYi9pbmNsdWRl
-L3RyYWNlL2V2ZW50cy9jbWEuaA0KPiBpbmRleCAzODNjMDlmNTgzYWMuLjU2NTVhYzUyMWZiNSAx
-MDA2NDQNCj4gLS0tIGEvaW5jbHVkZS90cmFjZS9ldmVudHMvY21hLmgNCj4gKysrIGIvaW5jbHVk
-ZS90cmFjZS9ldmVudHMvY21hLmgNCj4gQEAgLTM4LDI1ICszOCwzMiBAQCBUUkFDRV9FVkVOVChj
-bWFfcmVsZWFzZSwNCj4NCj4gICBUUkFDRV9FVkVOVChjbWFfYWxsb2Nfc3RhcnQsDQo+DQo+IC0g
-ICAgIFRQX1BST1RPKGNvbnN0IGNoYXIgKm5hbWUsIHVuc2lnbmVkIGxvbmcgY291bnQsIHVuc2ln
-bmVkIGludCBhbGlnbiksDQo+ICsgICAgIFRQX1BST1RPKGNvbnN0IGNoYXIgKm5hbWUsIHVuc2ln
-bmVkIGxvbmcgcmVxdWVzdF9jb3VudCwgdW5zaWduZWQgbG9uZyBhdmFpbGFibGVfY291bnQsDQo+
-ICsgICAgICAgICAgICAgdW5zaWduZWQgbG9uZyB0b3RhbF9jb3VudCwgdW5zaWduZWQgaW50IGFs
-aWduKSwNCj4NCj4gLSAgICAgVFBfQVJHUyhuYW1lLCBjb3VudCwgYWxpZ24pLA0KPiArICAgICBU
-UF9BUkdTKG5hbWUsIHJlcXVlc3RfY291bnQsIGF2YWlsYWJsZV9jb3VudCwgdG90YWxfY291bnQs
-IGFsaWduKSwNCj4NCj4gICAgICAgVFBfU1RSVUNUX19lbnRyeSgNCj4gICAgICAgICAgICAgICBf
-X3N0cmluZyhuYW1lLCBuYW1lKQ0KPiAtICAgICAgICAgICAgIF9fZmllbGQodW5zaWduZWQgbG9u
-ZywgY291bnQpDQo+ICsgICAgICAgICAgICAgX19maWVsZCh1bnNpZ25lZCBsb25nLCByZXF1ZXN0
-X2NvdW50KQ0KPiArICAgICAgICAgICAgIF9fZmllbGQodW5zaWduZWQgbG9uZywgYXZhaWxhYmxl
-X2NvdW50KQ0KPiArICAgICAgICAgICAgIF9fZmllbGQodW5zaWduZWQgbG9uZywgdG90YWxfY291
-bnQpDQo+ICAgICAgICAgICAgICAgX19maWVsZCh1bnNpZ25lZCBpbnQsIGFsaWduKQ0KPiAgICAg
-ICApLA0KPg0KPiAgICAgICBUUF9mYXN0X2Fzc2lnbigNCj4gICAgICAgICAgICAgICBfX2Fzc2ln
-bl9zdHIobmFtZSk7DQo+IC0gICAgICAgICAgICAgX19lbnRyeS0+Y291bnQgPSBjb3VudDsNCj4g
-KyAgICAgICAgICAgICBfX2VudHJ5LT5jb3VudCA9IHJlcXVlc3RfY291bnQ7DQo+ICsgICAgICAg
-ICAgICAgX19lbnRyeS0+YXZhaWxhYmxlX2NvdW50ID0gYXZhaWxhYmxlX2NvdW50Ow0KPiArICAg
-ICAgICAgICAgIF9fZW50cnktPnRvdGFsX2NvdW50ID0gdG90YWxfY291bnQ7DQo+ICAgICAgICAg
-ICAgICAgX19lbnRyeS0+YWxpZ24gPSBhbGlnbjsNCj4gICAgICAgKSwNCj4NCj4gLSAgICAgVFBf
-cHJpbnRrKCJuYW1lPSVzIGNvdW50PSVsdSBhbGlnbj0ldSIsDQo+ICsgICAgIFRQX3ByaW50aygi
-bmFtZT0lcyBjb3VudD0lbHUgcmVxdWVzdF9jb3VudD0lbHUgdG90YWxfY291bnQ9JWx1IGFsaWdu
-PSV1IiwNCg0KInJlcXVlc3RlZF9jb3VudCIgPw0KDQotLQ0KQ2hlZXJzDQoNCkRhdmlkIC8gZGhp
-bGRlbmINCg0K
+Right, "cma->available_count" gets translated to "request_count". Maybe 
+that's the issue here?
 
---_000_d54bb3a5e5924dbc87cdf63e22ac7d00xiaomicom_
-Content-Type: text/html; charset="gb2312"
-Content-Transfer-Encoding: quoted-printable
+PLEASE
 
-<html>
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dgb2312">
-<meta name=3D"Generator" content=3D"Microsoft Exchange Server">
-<!-- converted from text --><style><!-- .EmailQuote { margin-left: 1pt; pad=
-ding-left: 4pt; border-left: #800000 2px solid; } --></style>
-</head>
-<body>
-<meta content=3D"text/html; charset=3DUTF-8">
-<style type=3D"text/css" style=3D"">
-<!--
-p
-	{margin-top:0;
-	margin-bottom:0}
--->
-</style>
-<div dir=3D"ltr">
-<div id=3D"x_divtagdefaultwrapper" dir=3D"ltr" style=3D"font-size:12pt; col=
-or:#000000; font-family:Calibri,Helvetica,sans-serif">
-<p></p>
-<div>Is &quot;request count&quot; also written in the title?&nbsp;<span sty=
-le=3D"font-size:12pt">The previous &quot;count&quot; was changed to &quot;r=
-equest_count&quot;</span></div>
-<br>
-<p></p>
-</div>
-<hr tabindex=3D"-1" style=3D"display:inline-block; width:98%">
-<div id=3D"x_divRplyFwdMsg" dir=3D"ltr"><font face=3D"Calibri, sans-serif" =
-color=3D"#000000" style=3D"font-size:11pt"><b>=B7=A2=BC=FE=C8=CB:</b> David=
- Hildenbrand &lt;david@redhat.com&gt;<br>
-<b>=B7=A2=CB=CD=CA=B1=BC=E4:</b> 2025=C4=EA8=D4=C220=C8=D5 17:14:10<br>
-<b>=CA=D5=BC=FE=C8=CB:</b> Xiang Gao; akpm@linux-foundation.org<br>
-<b>=B3=AD=CB=CD:</b> lorenzo.stoakes@oracle.com; Liam.Howlett@oracle.com; v=
-babka@suse.cz; rppt@kernel.org; surenb@google.com; mhocko@suse.com; linux-m=
-m@kvack.org; linux-kernel@vger.kernel.org; =B8=DF=CF=E8<br>
-<b>=D6=F7=CC=E2:</b> [External Mail]Re: [PATCH v2 1/1] mm/cma: add 'availab=
-le count' and 'total count' to trace_cma_alloc_start</font>
-<div>&nbsp;</div>
-</div>
-</div>
-<font size=3D"2"><span style=3D"font-size:10pt;">
-<div class=3D"PlainText">[=CD=E2=B2=BF=D3=CA=BC=FE] =B4=CB=D3=CA=BC=FE=C0=
-=B4=D4=B4=D3=DA=D0=A1=C3=D7=B9=AB=CB=BE=CD=E2=B2=BF=A3=AC=C7=EB=BD=F7=C9=F7=
-=B4=A6=C0=ED=A1=A3=C8=F4=B6=D4=D3=CA=BC=FE=B0=B2=C8=AB=D0=D4=B4=E6=D2=C9=A3=
-=AC=C7=EB=BD=AB=D3=CA=BC=FE=D7=AA=B7=A2=B8=F8misec@xiaomi.com=BD=F8=D0=D0=
-=B7=B4=C0=A1<br>
-<br>
-On 20.08.25 03:53, Xiang Gao wrote:<br>
-&gt; From: gaoxiang17 &lt;gaoxiang17@xiaomi.com&gt;<br>
-&gt;<br>
-&gt; This makes cma info more intuitive during debugging.<br>
-&gt;<br>
-&gt; Signed-off-by: gaoxiang17 &lt;gaoxiang17@xiaomi.com&gt;<br>
-&gt; ---<br>
-&gt;&nbsp;&nbsp; include/trace/events/cma.h | 19 &#43;&#43;&#43;&#43;&#43;&=
-#43;&#43;&#43;&#43;&#43;&#43;&#43;&#43;------<br>
-&gt;&nbsp;&nbsp; mm/cma.c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp; 2 &#43;-=
-<br>
-&gt;&nbsp;&nbsp; 2 files changed, 14 insertions(&#43;), 7 deletions(-)<br>
-&gt;<br>
-&gt; diff --git a/include/trace/events/cma.h b/include/trace/events/cma.h<b=
-r>
-&gt; index 383c09f583ac..5655ac521fb5 100644<br>
-&gt; --- a/include/trace/events/cma.h<br>
-&gt; &#43;&#43;&#43; b/include/trace/events/cma.h<br>
-&gt; @@ -38,25 &#43;38,32 @@ TRACE_EVENT(cma_release,<br>
-&gt;<br>
-&gt;&nbsp;&nbsp; TRACE_EVENT(cma_alloc_start,<br>
-&gt;<br>
-&gt; -&nbsp;&nbsp;&nbsp;&nbsp; TP_PROTO(const char *name, unsigned long cou=
-nt, unsigned int align),<br>
-&gt; &#43;&nbsp;&nbsp;&nbsp;&nbsp; TP_PROTO(const char *name, unsigned long=
- request_count, unsigned long available_count,<br>
-&gt; &#43;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp; unsigned long total_count, unsigned int align),<br>
-&gt;<br>
-&gt; -&nbsp;&nbsp;&nbsp;&nbsp; TP_ARGS(name, count, align),<br>
-&gt; &#43;&nbsp;&nbsp;&nbsp;&nbsp; TP_ARGS(name, request_count, available_c=
-ount, total_count, align),<br>
-&gt;<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TP_STRUCT__entry(<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp; __string(name, name)<br>
-&gt; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; __field(unsigned long, count)<br>
-&gt; &#43;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp; __field(unsigned long, request_count)<br>
-&gt; &#43;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp; __field(unsigned long, available_count)<br>
-&gt; &#43;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp; __field(unsigned long, total_count)<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp; __field(unsigned int, align)<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ),<br>
-&gt;<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TP_fast_assign(<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp; __assign_str(name);<br>
-&gt; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; __entry-&gt;count =3D count;<br>
-&gt; &#43;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp; __entry-&gt;count =3D request_count;<br>
-&gt; &#43;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp; __entry-&gt;available_count =3D available_count;<br>
-&gt; &#43;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp; __entry-&gt;total_count =3D total_count;<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp; __entry-&gt;align =3D align;<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ),<br>
-&gt;<br>
-&gt; -&nbsp;&nbsp;&nbsp;&nbsp; TP_printk(&quot;name=3D%s count=3D%lu align=
-=3D%u&quot;,<br>
-&gt; &#43;&nbsp;&nbsp;&nbsp;&nbsp; TP_printk(&quot;name=3D%s count=3D%lu re=
-quest_count=3D%lu total_count=3D%lu align=3D%u&quot;,<br>
-<br>
-&quot;requested_count&quot; ?<br>
-<br>
---<br>
-Cheers<br>
-<br>
-David / dhildenb<br>
-<br>
-</div>
-</span></font>
-</body>
-</html>
+Can you (Xiang Gao) test the patch before sending it?
 
---_000_d54bb3a5e5924dbc87cdf63e22ac7d00xiaomicom_--
+Nobody has the capacity here to go through 20 iterations of such a 
+trivial change.
+
+-- 
+Cheers
+
+David / dhildenb
+
 
