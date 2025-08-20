@@ -2,98 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A6CF5CA0EF8
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 21:34:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B5ACCA0EF8
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 21:37:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 194878E0010; Wed, 20 Aug 2025 17:34:44 -0400 (EDT)
+	id 877F58E002D; Wed, 20 Aug 2025 17:37:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16C2A8E0009; Wed, 20 Aug 2025 17:34:44 -0400 (EDT)
+	id 829FC8E0009; Wed, 20 Aug 2025 17:37:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 082658E0010; Wed, 20 Aug 2025 17:34:44 -0400 (EDT)
+	id 7656D8E002D; Wed, 20 Aug 2025 17:37:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E99318E0009
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 17:34:43 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8F42C1A0162
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 21:34:43 +0000 (UTC)
-X-FDA: 83798440446.30.F079DC4
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 9F24E140004
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 21:34:41 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NNQ05Mdu;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755725682; a=rsa-sha256;
-	cv=none;
-	b=DUIi6BoxRxsRxxrBzLvDg/T0TF+Xq0YFrXndlwzAQma8wuwLl3qnvM5xTqOcel5RrUTlCd
-	lCFVsPo70c9UTXwrC8W6G5LkEBG4hgTCFgQZhrrljzSINBlG9Tx9kgKwYEtKy65MUVmX6Q
-	M4qc5a4HxI9m4zG+hyv0gsj+UlxNnkI=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NNQ05Mdu;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 65CAE8E0009
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 17:37:11 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0758881C5A
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 21:37:11 +0000 (UTC)
+X-FDA: 83798446662.08.8848DA4
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf09.hostedemail.com (Postfix) with ESMTP id EC92D14000F
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 21:37:08 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="dHWF/04D";
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755725682;
+	s=arc-20220608; t=1755725829;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PM4zc6JuUjs9DXSdg1cZOgc0LHF7QtVILQ3VPU4Ih/8=;
-	b=F0EK1A56y3Q4B37cvbYhXQTey0/w5nzG1nWgtnDwj4Qr9BQgPmPid/J1sm7aRHunFQjxfb
-	cVIfYiW3720+q76yPuTuNHHxryoYvQE+8jSQLspbLT5ZKIxGTqSCF0X682F3pqrvuXbSWa
-	a/cjcx4FI1Z8+YjytuHrreALcUJC+uQ=
-Date: Wed, 20 Aug 2025 14:34:29 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755725679;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PM4zc6JuUjs9DXSdg1cZOgc0LHF7QtVILQ3VPU4Ih/8=;
-	b=NNQ05MduTzCaRYI9uiMb7owIrlzEL1YD/MvexojLbiozG6JxgMI58P+bKk4ZGymiCm0Cp0
-	UcJ3Lmrcrf7o5ltnSE+CU1DdPSXFMbdsWQ1/9NtCpn1//ftaB4Gc3fByz0lVo+9Dgs0Fp8
-	a2Lf4TnQry6HsMT23aHSrgSHvx+V3oM=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Matyas Hurtik <matyas.hurtik@cdn77.com>
-Cc: Tejun Heo <tj@kernel.org>, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Daniel Sedlak <daniel.sedlak@cdn77.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Neal Cardwell <ncardwell@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, David Ahern <dsahern@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org, 
-	netdev@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org
-Subject: Re: [PATCH v4] memcg: expose socket memory pressure in a cgroup
-Message-ID: <kyy6mxg4g6aer2mht3xawiq56ytveg7vllg7o6f7dgivkoh52z@ccinqivomtyl>
-References: <20250805064429.77876-1-daniel.sedlak@cdn77.com>
- <aJeUNqwzRuc8N08y@slm.duckdns.org>
- <gqeq3trayjsylgylrl5wdcrrp7r5yorvfxc6puzuplzfvrqwjg@j4rr5vl5dnak>
- <aJzTeyRTu_sfm-9R@slm.duckdns.org>
- <e65222c1-83f9-4d23-b9af-16db7e6e8a42@cdn77.com>
- <aKYb7_xshbtFbXjb@slm.duckdns.org>
- <fa039702-3d60-4dc0-803a-b094b41fd2b9@cdn77.com>
+	bh=X6q9ilDeVFJS9UaiGkkkobEHmTsjH1m25NBi5lI7CKQ=;
+	b=aspnTusONEn+/yHhmcL6gBouSh4b8t0YiYmPpFGTFTYEeneJnFH7GxGy/H9YZGVZi7a9kO
+	U5OZmFkGi7lo/Cd18L1V1/WjMFhbNRDowETsMjCzsHhkOE6YUIEP7eMAkh/YZ1jUkqctZZ
+	0VxcTHzE8TGBXubl5xwIpGRYftD0Xus=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="dHWF/04D";
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755725829; a=rsa-sha256;
+	cv=none;
+	b=FhGvXgfSiUKUAumYIk7zKv4MPxj8etJmCziJSjp8oXxgEsge6M5dIkaJ69gUrjCyEZHnHZ
+	BQ3mNikCC2YL231HHYqZ0DYinoxYhPsxg4At46wJzqcirJk8e/hGeP9rfD6ebI5BDgrXwG
+	GEGSQWc8ggv3/yLLdgGlrdqSIW1sIfg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id CAB985C6B7D;
+	Wed, 20 Aug 2025 21:37:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E5AC4CEE7;
+	Wed, 20 Aug 2025 21:37:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755725827;
+	bh=G1jauyIK0PJiSZSgp++rufvWeHOToe2iJQ3gQ4t5BWk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=dHWF/04DWRL3ZlfG0omdacyWLaFYIBj1NcBtMWJhQ05HqjA24Lka6fwTsJiSgH1PY
+	 GSt/JEYHuJ1BhubzteAHYbc+M58e2Tiy2YaraFzznRLsTi0Um38NZcjjrE6yrFMCI5
+	 QyO9EJbptaImVQKe1CJuhlDNhkYDldwJj7aQh1kI6fpQe81rF8r4inuoZ6bUVRKWG8
+	 vp/VYBfgGwVqs66hrsKenAGZ3nsMJwDant45O9PkntvTrwPGRxkMms7dIkgqBcGQYd
+	 V8q12GK431i2YLIjEvHC4Sdbh5B+8pSBgYTVyXF1rYtJsBkJqfWaG6mD3c6Sq/YPPw
+	 0JsvzThfE+mYA==
+From: SeongJae Park <sj@kernel.org>
+To: Quanmin Yan <yanquanmin1@huawei.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	wangkefeng.wang@huawei.com,
+	zuoze1@huawei.com
+Subject: Re: [RFC PATCH mm-next v2 10/12] Docs/ABI/damon: document addr_unit file
+Date: Wed, 20 Aug 2025 14:37:04 -0700
+Message-Id: <20250820213704.86407-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250820080623.3799131-11-yanquanmin1@huawei.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <fa039702-3d60-4dc0-803a-b094b41fd2b9@cdn77.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 9F24E140004
-X-Stat-Signature: hwctpkwx15ixgkjr41sunj1dwjcgkwf4
+X-Stat-Signature: ktiw7fuxcsx4yb79cwza38wzoznyjzhu
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1755725681-433554
-X-HE-Meta: U2FsdGVkX18WTIc8v21oe0gFaxk4e+25gD4uz50CIkQoZgFZ6B5RVMrRvElvMMGiC3ju38kfWWxrNodYQYylKqdCaDbUacjRC027wsjRzFqlE0W7cwGRFS4cQApWclKSaV4yp+6j84fV1rzvOKJzYG9uDa/jWkDmJ7IWVHWXnpVGLouACcRT2vk7sd+pdhPkWSwKWEGoRST/X80x8q3x2FJdnjMXuuqsNTq8adsv3oNQDokmX+WlSqbOU4UFgTsucrAqzs8pH+lECdjhqNb+5MnbxMOG74tzLfy/yT+DH9S5PNALN7mDb9L+LuKdwperyD9Y8YZKjLItPyyIa9RT1fQibD3+/AlSHfBHiKWCySCJzi/uehyb5ohct053EN1Hp1YkyGJBdQNWVpKQq4xudeJPkM+IgBZWnCheJ8YJMajYuhK4t1I8rMB0sDbDqguQ9H6iNqRIZHG8M8M0ZgvKhoPHmmU+mcvY1tDGCiUv8VdJpxdT06g/wd4zbiRw2q+EWhRozPWkDzE1hyoQ8yuHA6vDVGJlD4rzzUh7gEtpiLlDk6QG0cxExMF4joxWl5hooxKfhqYOS/YzFsGwbVtHukl6O2tcS3/BSbefE3m2zh9JGg0gr0Er5d0Kxv87GZZfA5yaws8yRzBhMg+ZqQ02SxgJntPmp/d0o7fyKC6PxqxEJT6D4vCR19fyVCp7ES8XL+nC9rVjaH+0NCThe8cB2eX/jF7poKiIzQG9mzKMlN+AKaV9dUzyHVn4kzB0gNGi+kJ/xeqNoZFBw8lL+wr+7AzeCUXiX+bPhjhVpSpwxuxk6uF68xGe6OYynQ61TarP/bkfBeKhV5hJxrqTl4fT3jVeyE98DDf7/0HT4QmD5ZzvF7SGY1pVQmtfcWR+elLXlQPkLJSPViHtfHlPZj/iQwb5V8F6/Pe2ekrs1x0GNhOctWnmJ004k4hD2Bm5j2EzUIRmwoxGhjbVoRvB/Pm
- DaDU8i9I
- A+gxVGFWbPzoUYBnBrWMkFEOhaG67nD11SdzWVOP+i03/0fn/B41BLj8gTwxGrx8DFpQ0U/dN9s/21q/nNcOVLfEz9i3a87VuXuD0VeJukaJVeNCfZ1jUChECUO5Cqo+FC0SpmQlNKhFyv2i7KtXWSYRanvi6Ilv8LNAMDCiQCF2dFeXXBNynAZ/7GsykQ9CZ8Yiqf2XtSAqO2KFMkhCeljy5MUYoLD7kwx6WSripVPFRj6Y=
+X-Rspamd-Queue-Id: EC92D14000F
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755725828-614219
+X-HE-Meta: U2FsdGVkX1/qvJbvv+2kQj9kVbZ+K4ocxIJP5yEX+T01fpYzv8QKN2X30NL285l1Q2t9NUI/Zbmpsm+e8rszrfSO2Sby/Y0++HVfkjUBfAPSwr/HbE92ITBMXSc8brH+MSX5v/sbIW1UK4q6HloWb5hcIUMeqYiEjeVWaG0ke6KmsBWi8XI7xfZsJQJ4zno25G2h1WJxcpDLG1GqerBWC1m7dBS1Lb0QaSAaykYOqe7dXF1HSvMDhpEXXGBWtwRvurwWanb5GQhbJsxyOZuDwWqEZGAhRcldN+HDHyrZE0xyABjpD7CtSr5PrQTrJwnJKPvZiVhagKlWClaGpU81pNZ9mQKTOMIzIhheMAA9eIezCqaOmwp/b5mHdfGuVtr8sTo/FoD/L5b6RXz7HGFrgB4/7Pj7bFFd2jrB/3WFV8GFz3ShcWFfhoiio9SaTCB0QdCVGHBdHcxyvOvoa+oW6/9N1WvhiXiQmMFDehsjF0LxI8sxLRwhRFKTG+8YlXgeRX1sV2C8cCSBL3Kxc6IWKHd2ozs5agtCIoGIjBOImyWvauXaz42oCONuGhKJ5QOgnIPu58njpQlNAcWCq+kDg45nYIk3SXuMOVoFbJaWJdnyiIzFmVI7OH5g/cXnS8vC2Dt1BGDo0g48E5d9v2GMZIMN7nLZUdcJmZ340BCCpJDdZVTPrGv4KL4wiX0iD3aw83trS5WDZzaDl2t56Ifojj8O2ddYdmsilA98d2NXOq8vta78fGL6OHb5wH9N8/kNiobGZ4uUlfiwBVJAHRdIi8HvoXX5HiyFqBuSsMzm/valU8+WHUvkZDxSf+6Isbn2ZHC3HEhmMfRJhOhZVTwWMWl+1q2FTOP9RUXq9Vw+0MfSVfOnk+smVGY17JyoA3bspv9k+6JCdqd2CmATwRXvW7h24GGrDOv2xf33b00ene0YDvTyOeBIBs6zYFhVZK4od0Ydc0EVGY7plU/HIiI
+ SDcKJWjx
+ Xus9LpN5stDimMb+ihcQMT0jc3hx3gMW7bU+bCrdSq6tw3FvmFYjFD00PMzvNFKHwVM/wTkuZ3QYPV1HY19PD3KgcXniui0Enn04CbltdWtXGWcUJlD7a90mP87g7e1f4fl6zJQzsjSqfgGXt7Fh8qrWajIP+03VVcWh3G5SstnpqHz1ayAODy2yhbzTj/6gw8d99VCPOqNU9wmzGh/vycME+LCejt73frvfNP+ln+7deSm79M6gLf5+fjmoioIM4apaG+bz9iw/Zfg6Xng9FwGV4yuVHuZ2zCE6jFvi2wnrui0c=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,32 +94,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 20, 2025 at 10:37:49PM +0200, Matyas Hurtik wrote:
-> Hello,
-> 
-> On 8/20/25 9:03 PM, Tejun Heo wrote:
-> > On Wed, Aug 20, 2025 at 06:51:07PM +0200, Matyas Hurtik wrote:
-> > > And the read side:   total_duration = 0;   for (;
-> > > !mem_cgroup_is_root(memcg); memcg = parent_mem_cgroup(memcg))    
-> > > total_duration +=
-> > > atomic_long_read(&memcg->socket_pressure_duration); Would that work?
-> > This doesn't make sense to me. Why would a child report the numbers from
-> > its ancestors?
-> 
-> Result of mem_cgroup_under_socket_pressure() depends on
-> whether self or any ancestors have had socket_pressure set.
-> 
-> So any duration of an ancestor being throttled would also
-> mean the child was being throttled.
-> 
-> By summing our and our ancestors socket_pressure_duration
-> we should get our total time being throttled
-> (possibly more because of overlaps).
+On Wed, 20 Aug 2025 16:06:20 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
 
-This is not how memcg stats (and their semantics) work and maybe that is
-not what you want. In the memcg stats semactics for a given memcg the
-socket_pressure_duration metric is not the stall duration faced by
-sockets in memcg but instead it will be stall duration caused by the
-memcg and its descendants. If that is not what we want, we need to do
-something different and orthogonal to memcg stats.
+> From: SeongJae Park <sj@kernel.org>
+> 
+> Document addr_unit DAMON sysfs file on DAMON ABI document.
+> 
+> Signed-off-by: SeongJae Park <sj@kernel.org>
+> Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
+> ---
+>  Documentation/ABI/testing/sysfs-kernel-mm-damon | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-kernel-mm-damon b/Documentation/ABI/testing/sysfs-kernel-mm-damon
+> index 6791d879759e..cf4d66bd119d 100644
+> --- a/Documentation/ABI/testing/sysfs-kernel-mm-damon
+> +++ b/Documentation/ABI/testing/sysfs-kernel-mm-damon
+> @@ -77,6 +77,13 @@ Description:	Writing a keyword for a monitoring operations set ('vaddr' for
+>  		Note that only the operations sets that listed in
+>  		'avail_operations' file are valid inputs.
+>  
+> +What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/addr_unit
+> +Date:		Apr 2025
+
+Please update above date.
+
+> +Contact:	SeongJae Park <sj@kernel.org>
+> +Description:	Writing an integer to this file sets the 'address unit'
+> +		parameter of the given operations set of the context.  Reading
+> +		the file returns the last-written 'address unit' value.
+> +
+>  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/monitoring_attrs/intervals/sample_us
+>  Date:		Mar 2022
+>  Contact:	SeongJae Park <sj@kernel.org>
+> -- 
+> 2.43.0
+
+
+Thanks,
+SJ
 
