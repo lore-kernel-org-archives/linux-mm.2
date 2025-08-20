@@ -2,58 +2,58 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 39A75CA0EF8
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 09:07:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E669CA0EF8
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 09:07:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 060878E003D; Wed, 20 Aug 2025 05:07:42 -0400 (EDT)
+	id C6F068E0040; Wed, 20 Aug 2025 05:07:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 010C78E0009; Wed, 20 Aug 2025 05:07:41 -0400 (EDT)
+	id BAA298E003E; Wed, 20 Aug 2025 05:07:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E41B38E003D; Wed, 20 Aug 2025 05:07:41 -0400 (EDT)
+	id A4ADF8E003F; Wed, 20 Aug 2025 05:07:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D0AF28E0009
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 05:07:41 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9DCFE1403F9
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 873EA8E0009
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 05:07:44 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1373BB97FA
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 09:07:44 +0000 (UTC)
+X-FDA: 83796558048.23.69409A4
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 1D8BE1C0006
 	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 09:07:41 +0000 (UTC)
-X-FDA: 83796557922.09.7052BA6
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B8400140007
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 09:07:38 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=sctbnQck;
-	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=xrpJYgPT;
+	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755680859;
+	s=arc-20220608; t=1755680862;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=LaVLdCXndmYsJn6b1HROP2zqjNIw7pnHQe3ZO2d5Rxg=;
-	b=I5XIhtVF9ycsUWRXvGA2f6dYjkT2oZwy3cwOLPNGXJpcYMv9N7Rj6mK9Hs01SNNqGL3jZG
-	Mjp813M+6nPOXVKt7ff8yODFW0/wFJ21qxNOTttI6PUQLU7iZ+bFP2w80IyBBSAELUYYjZ
-	LDEZgz2eGnvbep7Pz3EX8qDAnc0z6jg=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=sctbnQck;
-	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755680859; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Ei9u2YF++6MO0lYBeBOSJFHTc0M7jUeUTkqRnIOPTM8=;
+	b=CGwFz3yEo1Su5Jc/gQ68xTWn94dCCjDGxyURCQ+mc9WvkySvVEd8SaHx/pcSVawQlVr1lJ
+	/wQCasBfWVEI5eQFPrDhqJgaupxeZAf0JqSO5dkhHK3MWovUB9WoNCtP4d0HXu+W9jpavK
+	20GQxYBz7lbPnaqpMZYrNUO4gQyfCJk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755680862; a=rsa-sha256;
 	cv=none;
-	b=f0MiD0zZshRPlsv1luwRGhWuD99f10+2u4302dB8e6JRvUPCUTtjdvSPCHsVNu0y6o0faa
-	EgwLIEjrPAzpBouViWAYyfouzQT/0KCXiRBk4C6TQLwmMf7AOejfvtKzLfAHpcaiCKd1iM
-	+7gg7J5paCsWRlu6Ra1eQaIurj9fel0=
+	b=Y3Wg/JeETqto3HSe3leP4xk/20x6CzF7fc3XUTK42pRrMyXboGa31tYG+ELoAOpdCDoouz
+	cZMsiAOKVzqr1+A+d4cBpvKQmLoUKaoFL2BUf4I5We6CudA5ZeC/fkgv/YNm8F/KpSYydt
+	ZAEh6/GkQZPdwRP49HIzytcqCVysJ4Y=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=xrpJYgPT;
+	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1755680854; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=LaVLdCXndmYsJn6b1HROP2zqjNIw7pnHQe3ZO2d5Rxg=;
-	b=sctbnQck7eY2YTsBmp2e4jccanarGUxQa963gK3qMN6uK5b3tHG2sWFpusVwh6nIxqXjDIE2KggufBxGmc6Sk9nIZ8dvXvT/ZMQ77tZQtGekJ+5axpnMQjXx3XpZ/4yX+aRTU18cGOBo1DdGYVLaVdj+Ginp2S+3WnYDX33NOas=
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WmBXj3i_1755680852 cluster:ay36)
+	t=1755680856; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=Ei9u2YF++6MO0lYBeBOSJFHTc0M7jUeUTkqRnIOPTM8=;
+	b=xrpJYgPTaQo7Q6rDSbM1KZX3XDCmznbywwzdc8gJemvJJieGYkBUWmtgKEagR/oJh0IDHQXvYNPS0olbDJ2Al17Q39RIYRQsth4Kkv3bpsdGoZw8I9JfF5fvFV4IkEZ6bb3LFhzhM/5Y9JLooiKBXz7yAsHlgdKBuiSh+bO+CVs=
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WmBICrd_1755680855 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Wed, 20 Aug 2025 17:07:32 +0800
+          Wed, 20 Aug 2025 17:07:35 +0800
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
 To: akpm@linux-foundation.org,
 	hughd@google.com,
@@ -68,20 +68,22 @@ Cc: ziy@nvidia.com,
 	baolin.wang@linux.alibaba.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 00/11] add shmem mTHP collapse support
-Date: Wed, 20 Aug 2025 17:07:11 +0800
-Message-ID: <cover.1755677674.git.baolin.wang@linux.alibaba.com>
+Subject: [RFC PATCH 02/11] mm: khugepaged: generalize collapse_file for mTHP support
+Date: Wed, 20 Aug 2025 17:07:13 +0800
+Message-ID: <6a2f28b4541bbbc56ea9e07f24b67cef87899a50.1755677674.git.baolin.wang@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.5
+In-Reply-To: <cover.1755677674.git.baolin.wang@linux.alibaba.com>
+References: <cover.1755677674.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B8400140007
-X-Stat-Signature: uje7c161fntjab7f49odz6wbt1ioeww5
 X-Rspam-User: 
-X-HE-Tag: 1755680858-320454
-X-HE-Meta: U2FsdGVkX19NpfPoNRm8PjOMzspjKd1A/UgpFsPsVVjBdBupkIGqf/zBfIOMdBe67lS120Ttnn5M0rItVpn754xao+9AskHh4bupBnkq1pl8HJImp1z/GSGn6Aw7jYdIWc9mA2BgEgdtPBFb3lX1yCXdxWrx/ZnWbQtJWdarimLmbvPkXHFVdf6TILgS5FiqwvTX0gzADTDk1V6ckiwEetq9UEKZfVX3iNaOcl1+/70olzExnV7MSgqcDJgFQA6PwwDPFa6yqRbnTe19n28PsqloWs1hBkXPmR8Wj9ye0CmrFjSb7R2g/VOD5zXRntwZBwDXJnezYz4dpOMZ4upKUQlRnZSzHNDRGCh8Z6p+1jzxr68HOpPbOCRAYEx2XQQoa5NSBPIGzqBwbP+9WDpBx12SvQq74vmC5/1Sx4Mrj3NqjPvKB20/LSxcN+USqg55Bo8iWbAcvsnfR0KnYzko+D1T7VjycJrB5FPNe0LO+cqm6lb68AZVFFCZR57S/Zw5FZ5e0TC7C1UiwOraZY6cNtzKqkAGlzBtdRmXjhyedemhbR0a6GndkXNerSLhgGkgaIKeXN05PfMNVZHx/GNAl6SK0prGgGstjv3vKhmytsotCXsg+oTzw6Q8/RGkUGR73zX8z2VoWoPOoaNkyLrGX4l5b23DQgFuqNj2zuFqGdWKVfNzqJ9Yx1hdKjnHkF65Yi7pNa9Fsd1yQZxIcOEOMjzlhU6DoABF4+gHUl2EtWj9yOFRnCjzfr3MBYVQrXa/Jlw/LPs035Xht7gIQ/2pmm56kWLwE9QP3Q2/iCa69B84pXnyuQlMEEXunP9LUoLjz3FRDhoOacFNE27amed4Gtm51w0NSriHJedHFdq7ySOYe9pOx9wL1HQ+xFRpZFpdbWD6O7rlqR95mDnsyjeNWVgYtLM6fXon3Lax4J22IpCbXtnbw5NXjDy/tjLzJMzjlNPXtTYqQT8gEjnhcWq
- ww0bVge5
- DrkSC1co3G+fUV69uDY0qsUR6763f+0s2yk2VCvI5+vQGsk4vMyDNlDWWpAQPBTGG8GlxvylPyEM331LVHhTe5w5jSy/zD4ZIjxCQNMu/XhFGRhOse7OFfMFW/2od9JMW9DKn1IjZV7Kdh5opXviMmdIS+ijESDBf2L9kGnSn/U8UedtQjcTNUSnv1yoFr6WHNj0WLkDaxwRgpG4zRMtj5cTcKq5ZaPAc3o5Evne3nVuxBZC9PxJhJqWzCUYxpJWaNKO8a3XW7XINb4a/cTZHJoY7D1Uf8d7nsscBiJIM+VWN6mg6iDFnvrKv0w==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1D8BE1C0006
+X-Stat-Signature: tyz4z8eoojb13ntycedsexzdp8rnagrf
+X-HE-Tag: 1755680861-223561
+X-HE-Meta: U2FsdGVkX1+PfqvlQTyNKE23m86KFekXcTtWJngr2pKvZ0wKwgREK3ezc7Rxy28vEn/ZcaQhapJOLUjEMc//5eah7m1dY2pqYtAOwmRmcfLHQFH1RQfgzFmKDpWs9HxMa7N6kC0IiaxfSQKItpkNoUl91b0lFH+o6Tyg77a88g5zp/vlVQdIr6gVMN2xECUTIotvjZSbuP7pLq07OF1TdFUlwcFkgeOnpGE0Qj/9fo6MMQHLcXaQXeXzGadR5gAiX+9PivFJbIZK0a7ohfRoBwMrcz8mJIZsLS3pFvDrTKeIGIq7uAcqzOrovMvEq/dGwAwKJH4GCrKWe3vdCuRx6sDigiyIjdWcja5UkHWGW9Z0X7Rjcho51BCbmvPtw/m6zOoxV3seFMraiP0u5ILT1gxezWmvD8O0QkifFBGiisJdnfnku40A0z5vesR4YoWXqT/BT3v+dHO607OV4Fp39ozJNK5vVwkoS0vOUFeIGcajfRC1sL/Emp8/hqrErC+NYPjuTPdqElKhsxgF7W6UZRX03zumSdb7XvjYd2/B9/doVfDLnBxSGlIR+JAq90uk0DnZuYelrj0dPiW86tbWiA5hlL5OTXFpUgQAJH8a+8n8EitqLNwr9C/zjeZWgCHStMZtDuJxE8Tzx+xoErcCinMFvPCGT4VYMkUmTSqOpwr/8vThyfioWo1xcEd4Sc9tH3jG3p0oNPo0xqAZn24Q6KlUgS1SgFT+Ps3++RZDvrsT0WMmfObi5lzScOieVA9FzoIL6fFh+mUaR98NgWpzWE+ry5vQtXki3KHmwmqIcQifNmF3PH1nmXEOu0RknYCneBtH1OoHFuDeFWpr0D/MsJeE4MboJA0YHwHbQR4uIe7IyW5xqh3S89jh5ZiwiyVaBCcuPpAc3Ccjf8s1+xIxHtIsSaM8053n99c5aUmyv8SI5zPaJ7U7jobPiN90d6yLJDnKiuvxcJZFLBmWCW/
+ ZcMs18tP
+ eoUBsbph3rx/sT9wz5kwlwXd0NMKXzo2Q3GOIcZ8BPO/ypauwgBrKog8Iu6q/ZFphtRqAAkq+jCe0JegYLWVB1UeTC8CGs1R210TDJhyLVodHGvtzD7fkYIKIc3SxB/owCT8zXXAPsX3Tz7QEI4XQxB5i8i6I2AV/lczw+OaMlKKLMYClUtR0cdDDvF6z0qqCPNOVj6dJgPMyS6F7dRNBP6qo4U+QFiyyHx0kPgwBWGWEl6EV/8J80pR3bdLiVMSfm/m3awZ80SiI0E4qZjDvjN+qnrhJwuzSqb52L1fm56BEgYkMeeU0e2Ni8ktih7ceR7dF9GcHUrbp2vg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,66 +92,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Based on mm/mm-new from today.
+Generalize the order of the collapse_file() function to support future
+file/shmem mTHP collapse.
 
-This is a follow-up patchset for mTHP collapse to support shmem (or file pages)
-mTHP collapse, which is based on Nico's patchset [1].
+No functional changes in this patch.
 
-The strategy for shmem/file mTHP collapse follows the anonymous mTHP collapse,
-which is, quoting from Nico:
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+---
+ mm/khugepaged.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-"while scanning PMD ranges for potential collapse candidates, keep
-track of pages in KHUGEPAGED_MIN_MTHP_ORDER chunks via a bitmap. Each bit
-represents a utilized region of order KHUGEPAGED_MIN_MTHP_ORDER PTEs.
-
-After the scan is complete, we will perform binary recursion on the bitmap
-to determine which mTHP size would be most efficient to collapse to. The
-'max_ptes_none' will be scaled by the attempted collapse order to determine
-how full a THP must be to be eligible.
-"
-
-Moreover, to facilitate the scanning of shmem/file folios, extend the
-'cc->mthp_bitmap_temp' bitmap to record whether each index within the
-PMD range corresponds to a present page, and then this temp bitmap is used
-to determine whether each chunk should be marked as present for mTHP
-collapse.
-
-Currently, the collapse_pte_mapped_thp() does not build the mapping for mTHP.
-Cause we still expect to establish the mTHP mapping via refault under the
-control of fault_around. So collapse_pte_mapped_thp() remains responsible
-only for building the mapping for PMD-sized THP, which is reasonable and
-makes life easier.
-
-In addition, I have added mTHP collapse selftests, and now all khugepaged
-test cases can pass.
-
-[1] https://lore.kernel.org/all/20250819134205.622806-1-npache@redhat.com/
-
-Baolin Wang (11):
-  mm: khugepaged: add khugepaged_max_ptes_none check in collapse_file()
-  mm: khugepaged: generalize collapse_file for mTHP support
-  mm: khugepaged: add an order check for THP statistics
-  mm: khugepaged: add shmem/file mTHP collapse support
-  mm: shmem: kick khugepaged for enabling none-PMD-sized shmem mTHPs
-  mm: khugepaged: allow khugepaged to check all shmem/file large orders
-  mm: khugepaged: skip large folios that don't need to be collapsed
-  selftests:mm: extend the check_huge() to support mTHP check
-  selftests: mm: move gather_after_split_folio_orders() into vm_util.c
-    file
-  selftests: mm: implement the mTHP hugepage check helper
-  selftests: mm: add mTHP collapse test cases
-
- include/linux/shmem_fs.h                      |   4 +-
- mm/khugepaged.c                               | 177 +++++++++++++----
- mm/shmem.c                                    |  10 +-
- tools/testing/selftests/mm/khugepaged.c       | 162 ++++++++++++----
- tools/testing/selftests/mm/run_vmtests.sh     |   4 +
- .../selftests/mm/split_huge_page_test.c       | 135 +------------
- tools/testing/selftests/mm/uffd-common.c      |   4 +-
- tools/testing/selftests/mm/vm_util.c          | 179 +++++++++++++++++-
- tools/testing/selftests/mm/vm_util.h          |   6 +-
- 9 files changed, 455 insertions(+), 226 deletions(-)
-
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 5d4493b77f3c..e64ed86d28ca 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -2064,21 +2064,23 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
+  */
+ static int collapse_file(struct mm_struct *mm, unsigned long addr,
+ 			 struct file *file, pgoff_t start,
+-			 struct collapse_control *cc)
++			 struct collapse_control *cc,
++			 int order)
+ {
+ 	struct address_space *mapping = file->f_mapping;
+ 	struct page *dst;
+ 	struct folio *folio, *tmp, *new_folio;
+-	pgoff_t index = 0, end = start + HPAGE_PMD_NR;
++	int nr_pages = 1 << order;
++	pgoff_t index = 0, end = start + nr_pages;
+ 	LIST_HEAD(pagelist);
+-	XA_STATE_ORDER(xas, &mapping->i_pages, start, HPAGE_PMD_ORDER);
++	XA_STATE_ORDER(xas, &mapping->i_pages, start, order);
+ 	int nr_none = 0, result = SCAN_SUCCEED;
+ 	bool is_shmem = shmem_file(file);
+ 
+ 	VM_BUG_ON(!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && !is_shmem);
+-	VM_BUG_ON(start & (HPAGE_PMD_NR - 1));
++	VM_BUG_ON(start & (nr_pages - 1));
+ 
+-	result = alloc_charge_folio(&new_folio, mm, cc, HPAGE_PMD_ORDER);
++	result = alloc_charge_folio(&new_folio, mm, cc, order);
+ 	if (result != SCAN_SUCCEED)
+ 		goto out;
+ 
+@@ -2426,14 +2428,14 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
+ 	 * unwritten page.
+ 	 */
+ 	folio_mark_uptodate(new_folio);
+-	folio_ref_add(new_folio, HPAGE_PMD_NR - 1);
++	folio_ref_add(new_folio, nr_pages - 1);
+ 
+ 	if (is_shmem)
+ 		folio_mark_dirty(new_folio);
+ 	folio_add_lru(new_folio);
+ 
+ 	/* Join all the small entries into a single multi-index entry. */
+-	xas_set_order(&xas, start, HPAGE_PMD_ORDER);
++	xas_set_order(&xas, start, order);
+ 	xas_store(&xas, new_folio);
+ 	WARN_ON_ONCE(xas_error(&xas));
+ 	xas_unlock_irq(&xas);
+@@ -2496,7 +2498,7 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
+ 	folio_put(new_folio);
+ out:
+ 	VM_BUG_ON(!list_empty(&pagelist));
+-	trace_mm_khugepaged_collapse_file(mm, new_folio, index, addr, is_shmem, file, HPAGE_PMD_NR, result);
++	trace_mm_khugepaged_collapse_file(mm, new_folio, index, addr, is_shmem, file, nr_pages, result);
+ 	return result;
+ }
+ 
+@@ -2599,7 +2601,7 @@ static int collapse_scan_file(struct mm_struct *mm, unsigned long addr,
+ 			result = SCAN_EXCEED_NONE_PTE;
+ 			count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
+ 		} else {
+-			result = collapse_file(mm, addr, file, start, cc);
++			result = collapse_file(mm, addr, file, start, cc, HPAGE_PMD_ORDER);
+ 		}
+ 	}
+ 
 -- 
 2.43.5
 
