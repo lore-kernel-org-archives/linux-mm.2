@@ -2,94 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E6A59CA0EE4
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 20:37:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CC505CA0EF8
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 20:58:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 867446B0103; Wed, 20 Aug 2025 16:37:58 -0400 (EDT)
+	id 4C4528E002A; Wed, 20 Aug 2025 16:58:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 819056B0104; Wed, 20 Aug 2025 16:37:58 -0400 (EDT)
+	id 475728E0010; Wed, 20 Aug 2025 16:58:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72E246B0105; Wed, 20 Aug 2025 16:37:58 -0400 (EDT)
+	id 38B1C8E002A; Wed, 20 Aug 2025 16:58:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DF806B0103
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 16:37:58 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D43091157B5
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 20:37:57 +0000 (UTC)
-X-FDA: 83798297394.22.9412989
-Received: from mail-internal.sh.cz (mail-internal.sh.cz [95.168.196.40])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 9A3F78000F
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 20:37:55 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=cdn77.com header.s=dkim2019 header.b=3mmZCMJ4;
-	spf=pass (imf02.hostedemail.com: domain of matyas.hurtik@cdn77.com designates 95.168.196.40 as permitted sender) smtp.mailfrom=matyas.hurtik@cdn77.com;
-	dmarc=pass (policy=quarantine) header.from=cdn77.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 23BFF8E0010
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 16:58:38 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CA2C714014D
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 20:58:37 +0000 (UTC)
+X-FDA: 83798349474.27.1160F2C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 380A514000D
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 20:58:36 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Nnk9QIhB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755723516; a=rsa-sha256;
+	cv=none;
+	b=Tn9bF3jqTqlLfTC4CRFdv47+kfAe90w0joC5da8EQkMz9m+JvLCgZ9TQP1b/DGvXk55tJX
+	kk3zadcJKtVJqSQk3Am6to6EJ+oUjfE0SV6roDaddQ/ilFasUWKZxB/6FU7GrGAqKPUWOf
+	pvySA3E6J+AzatHz8GXs2g/KFtClfQE=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Nnk9QIhB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755722276;
+	s=arc-20220608; t=1755723516;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rVaPb/FC4PHKTD/XuKegsQ+CXxMYcycndmhjeELweqg=;
-	b=B6q9VcEMONsR1/f+c9vSZTIBizOA3JMXH8XTVg6BNtIF0CYI9jtsOELJZFaHU3hazeANtJ
-	qbldLBdZmTJy3+McK7xqbBb+lIOl3+jbj68UkE2kle35brVu26A7rciACp9Au9MSYpEAd7
-	2loQ/0QaXXZ/3zl4/LQupjJERE3fxZ8=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=cdn77.com header.s=dkim2019 header.b=3mmZCMJ4;
-	spf=pass (imf02.hostedemail.com: domain of matyas.hurtik@cdn77.com designates 95.168.196.40 as permitted sender) smtp.mailfrom=matyas.hurtik@cdn77.com;
-	dmarc=pass (policy=quarantine) header.from=cdn77.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755722276; a=rsa-sha256;
-	cv=none;
-	b=c5/WGXDm/5AF2qDV9pqEhev+UNaDDUBAC/YPw5aDcO8YOlgu7w+8LX/envZuy18rOJlZZu
-	cR6xYdoa9WpIhXwgwQugki1Q2WhQijOcTSLZreVhtqvhkAtwnuAbfIKLQohHvr9/bk6FtT
-	fSPPNPN5ZP78VrlOjqemi6ANfUSDINg=
-DKIM-Signature: a=rsa-sha256; t=1755722273; x=1756327073; s=dkim2019; d=cdn77.com; c=relaxed/relaxed; v=1; bh=rVaPb/FC4PHKTD/XuKegsQ+CXxMYcycndmhjeELweqg=; h=From:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:References;
-   b=3mmZCMJ4umanZdA6PxqH/ZZlzjZl6Hr2mtn5c6R7MuYhwg/XAG2QoM7qHXQFRDPtBdrOUvXSjXK7yaBA2gWzRNnJUdSzHEs1dvIDIqVNxS1oZ2pVwNRF6geOPaJRDQ/tiek2GIWsc2ccpfjIc1PclkXH/C0vqyedMpAjBmjUzSM=
-Received: from [192.168.0.206] ([78.44.198.142])
-        by mail.sh.cz (14.1.0 build 16 ) with ASMTP (SSL) id 202508202237494479;
-        Wed, 20 Aug 2025 22:37:49 +0200
-Message-ID: <fa039702-3d60-4dc0-803a-b094b41fd2b9@cdn77.com>
-Date: Wed, 20 Aug 2025 22:37:49 +0200
+	bh=Z6FJys3l78Ida0BYuqx/TVV4BkqEWiZArZgFRb8oI9g=;
+	b=Nw516lduV+2xYqnRH19H8hAjLDyLT3nuu9IKvcLb+31Q0D0RhO/+Cu9Q9re1XfGroQ0c4J
+	uM00jATcOP0Oa8wz9HrdyC3i2O5MnGhEIh7YSomdeTH4KVAQz7KFAgWGqWltKhK3ohIrOs
+	8M8S1Z3dV3LbL5tlDWXBULciqi85HYE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7E12B601EA;
+	Wed, 20 Aug 2025 20:58:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C8E8C4CEE7;
+	Wed, 20 Aug 2025 20:58:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755723515;
+	bh=2LIlV6jZV84iq2Ygc/m4ROJTKmC2fI48srPWv9QJ338=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Nnk9QIhBnunV2dusAtIYAOEhwvRBZyAphZf+rtRSzXmJSWWPbKeBm3PLl4iA8Qn/S
+	 jLHsDOtIWncKkY+QQpPBCNotmtZNXKOrBoxYcLtmCmhGpcueAWX/kdiXitgzL+SRai
+	 lQ9EdWw4kelLR8kUHZFf0RZKwLdghw2g3H3TeGNo9AuMQ8Nai4cJXllnoSM1A7yZr9
+	 KSTvl+vujY46+GQ8TokMD+2+cFexCY675+8WYcW5lfEEYLnNPbAaJHnHKeFOezwquD
+	 b2ENPWE54KW6Go5aJl/h8F7X+VRlrRRXstz0GZEuOSJxVQrxyiVxrZJmchoBPGmDUn
+	 rT9qIQbg9SavQ==
+Date: Wed, 20 Aug 2025 10:58:34 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Julian Sun <sunjunchao@bytedance.com>
+Cc: linux-fsdevel@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, viro@zeniv.linux.org.uk, brauner@kernel.org,
+	jack@suse.cz, hannes@cmpxchg.org, mhocko@kernel.org,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, axboe@kernel.dk
+Subject: Re: [PATCH] memcg: Don't wait writeback completion when release
+ memcg.
+Message-ID: <aKY2-sTc5qQmdea4@slm.duckdns.org>
+References: <20250820111940.4105766-1-sunjunchao@bytedance.com>
+ <20250820111940.4105766-4-sunjunchao@bytedance.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] memcg: expose socket memory pressure in a cgroup
-To: Tejun Heo <tj@kernel.org>
-Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Daniel Sedlak <daniel.sedlak@cdn77.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- David Ahern <dsahern@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry.ahmed@linux.dev>,
- linux-mm@kvack.org, netdev@vger.kernel.org,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org
-References: <20250805064429.77876-1-daniel.sedlak@cdn77.com>
- <aJeUNqwzRuc8N08y@slm.duckdns.org>
- <gqeq3trayjsylgylrl5wdcrrp7r5yorvfxc6puzuplzfvrqwjg@j4rr5vl5dnak>
- <aJzTeyRTu_sfm-9R@slm.duckdns.org>
- <e65222c1-83f9-4d23-b9af-16db7e6e8a42@cdn77.com>
- <aKYb7_xshbtFbXjb@slm.duckdns.org>
-Content-Language: en-US, cs
-From: Matyas Hurtik <matyas.hurtik@cdn77.com>
-In-Reply-To: <aKYb7_xshbtFbXjb@slm.duckdns.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CTCH: RefID="str=0001.0A002118.68A631CC.007B,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0"; Spam="Unknown"; VOD="Unknown"
-X-Rspamd-Queue-Id: 9A3F78000F
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250820111940.4105766-4-sunjunchao@bytedance.com>
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: ypix17kcpbzg3xrigb6hnr8wxy9a644r
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1755722275-785053
-X-HE-Meta: U2FsdGVkX1/1LSQtlJijIwbq29MirmemjTSWq1X4WWYLU4sKszqtofOdC5xfeMZQUqDL7Yj33iU3jhNAgg5B9xNyQm7xvScKgufto2OyXJDnfSDwI3QYZdR8ajHY82yNGE+N/tzDgXH4EnS76A1t/gZrkM9SYuTWRqejlyC34aeWHdzVUwrOTo6nhi7cCzqV9tH3GISaWNFS2ujQxo6kZvLTGDws1GW1s+i9YZ6I39sUDFHDwqkWW5rp0RHQ5iJj4d9N4nJhtUwz7tPgYvCeb3btwliP5sOW4KAnF4bdqpJGyJchCCqX1wGEd9ljyGWu/NyqbSjRA1kOLMnIkLKBV7FGVDwga8K1y0u+fWw9NB4NTDvNbAFIuvpsPakIpRvJTOqDVoFVRg8yk0r9FC6rS+md9cDWk8itKXNTJrURrXCOdLXe0t2iuZTcpOeJb+y0nq3HQjHtJaPOeKy6sZAOU9SDc0eDwBM3A33veMri83DYdE3buZ5Un/FsvS0Vzep13Gyu4cnyNp/wJzsDp4VnRxbjswUmZ/3VudIzqFpm9gFsX8K8SJ8M3j3kE7RmAXBN3uRzYNFux+ewwsa1EETMjARr7jNqI1l3Zd3Ics4puV6b0dkEhkbG2drf1W35BGd4Pey4wSCBp22fiQAQo052JPR+abzAuqrEJZXq65LUlbni4vTGd/FVeT2hRoGSnV4NOi1khNaQguh/2dSrdlMtkH+R7RS+d2Z/20V0ZzjUaw3r3BUmch/BdO58RO2ceyCDhqeQkgMnqaotcIKXWbMTMAvT4nc1T/kVwj8Pvcm/ETG2TP0zM9CU7flhIVCGVUcsfp0VecdhxLTno0HxMr2eQ57YxyPrPgbAkuFS4zrR2hHWqLDgsJXVB3EuMQYAMUCegRF+kvlmmPiI0q45F3f7+yTNGhabs64mU02skUoBjX2KeDwOXL40PFqu5aQlsjkGW0WlbA3KFX41+DER6Ul
- PfUpwe3x
- obCFlawRVewj44N5/SIP+IaPifi3Jap2Au3zHK5nBQ2KrAPwUAtbWpM6hfD9R8tvWQr7WhMLzGwgQCU6EmyYHlDpanhFYm8Ii0ZsdQRoIGWE6q9OeYqakTLIl9AidTi7oURkBTIoaf6HKsEQjJrEkQx9sVt4YLsk6X+Z52YLv0dkkGQ9T2ZOas3SZpeMfQk/lWPn5P/MWI9yS0xxk9FzVxVamNq+TzRcgGYmXwRzFOH+lJok=
+X-Rspamd-Queue-Id: 380A514000D
+X-Stat-Signature: 9dbkgbwqf3bjgum49npfgi1ih417x8ak
+X-HE-Tag: 1755723516-202247
+X-HE-Meta: U2FsdGVkX1+SDbVeemC84zRQ5mfFE663T4Ei8xiMoIWAomlWYpZpyBN6O3BOyp6kv9CK6VYjmgr7GQsP3nH7gdFUxLXEb00B3Nyncutn0DVL5Y7SOTcnQD/psDEPP2POHH9irud5MNx5xRQFVNIz4V6UG7y40B29B0FMzoZYONtEqYozi4ToS/61YdqpQYf+Sh3XjWe/lvzVCez3h21pTUf7mspoq2mZQ4O/C4ow6L/5uCmLNTADpQE7Aw8PRgHXh77AFjlOuNi3M5UXOL8OVCVjNUDvoFwTZHg1chPG65wjym3CVeIcfDJ4DBTFJLhq/c39fXBbhaQznwL2YMaX4rtCMqixraSjFiTiiqiwYsSNuuiHuRMA1qIcynJZGaO2oWuHA+Su+wcgR7FqWnJOifARQRkKW7lDG+1UF1xrGdOvAT9CRDeTnDtQLcr3X9+KngoIfQlPnut7Jm/ABYjMCj/qmwhKPXy3qjSmlhP6OlXcNQJ2FxEMY29dGq4ycnWXZbxXcUuDHrDmAThe0JI+cf23Q6q8Y7AmZbRNQvYwYR9pbQxhDFOEBPVhXZs27lBQZgnxzh36qjGD0NV4XMGNzHovb2gWULa8lsoqk43xr2q6L3bLgz6+Zz/1SgdtqLmSaartiVRDeo3riU7ZCGibEq35EFWnrD7hlcA4wnw3mILKkHP8mMRMH9i89eh4d1ZyDnrWHcQQTlvh35U6/3/AzbsRmUBnQ3tcuuitVq9kxSAnNbPYmw3b7JILDl2GjtafzoFZPvWjdN5W10GwTCwMqsgWx9rfFxdrY3Cu6neO4s+zLOlKxGJ1PB5s3T/MN/P7sMCtMT585/lM9uvkGmcuT931z7sylyN+CPwZIupKbRypuZer+VcEZsdjnl/nyGWHv38Kx20OLJShnJwMCxwwyfV69n38eNx3B2wJstdbeQs9nzQEQZr0/d8qE49YGzIBw8KjSUt91V4fuK9Aiv7
+ fZu86H9V
+ 7FLamXLJ9OIK7TUoM5VXNW3l3QNYis2TFwZsrhppT3ChxHNEFnnUIGy2auRMQcoblejUrQNNfgUZmaY6Ku+sQ6OyvYyaV4j7ZT/N4YEFo6wGBDQtIZjrcOMynmdisBJlYH4aI+slUmtdvBwzSZcK8+1M+rX00Sk8ksqyA4+HswfikBKRSahmZ7ewUbPZMoImr0QFSTbyJc8Ym+InExACSMFsFig==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,27 +94,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Wed, Aug 20, 2025 at 07:19:40PM +0800, Julian Sun wrote:
+> @@ -3912,8 +3921,12 @@ static void mem_cgroup_css_free(struct cgroup_subsys_state *css)
+>  	int __maybe_unused i;
+>  
+>  #ifdef CONFIG_CGROUP_WRITEBACK
+> -	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++)
+> -		wb_wait_for_completion(&memcg->cgwb_frn[i].done);
+> +	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++) {
+> +		struct wb_completion *done = memcg->cgwb_frn[i].done;
+> +
+> +		if (atomic_dec_and_test(&done->cnt))
+> +			kfree(done);
+> +	}
+>  #endif
 
-On 8/20/25 9:03 PM, Tejun Heo wrote:
-> On Wed, Aug 20, 2025 at 06:51:07PM +0200, Matyas Hurtik wrote:
->> And the read side:   total_duration = 0;   for (; 
->> !mem_cgroup_is_root(memcg); memcg = parent_mem_cgroup(memcg))     
->> total_duration += atomic_long_read(&memcg->socket_pressure_duration); 
->> Would that work? 
-> This doesn't make sense to me. Why would a child report the numbers 
-> from its ancestors?
+Can't you just remove done? I don't think it's doing anything after your
+changes anyway.
 
-Result of mem_cgroup_under_socket_pressure() depends on
-whether self or any ancestors have had socket_pressure set.
+Thanks.
 
-So any duration of an ancestor being throttled would also
-mean the child was being throttled.
-
-By summing our and our ancestors socket_pressure_duration
-we should get our total time being throttled
-(possibly more because of overlaps).
-
-Thanks,
-Matyas
+-- 
+tejun
 
