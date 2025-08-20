@@ -2,87 +2,87 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E4D41CA0EED
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 10:06:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C6D6ACA0EED
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 10:10:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 700858E004C; Wed, 20 Aug 2025 06:06:32 -0400 (EDT)
+	id 5AB238E004D; Wed, 20 Aug 2025 06:10:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D8DD8E0003; Wed, 20 Aug 2025 06:06:32 -0400 (EDT)
+	id 582A68E0003; Wed, 20 Aug 2025 06:10:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6155F8E004C; Wed, 20 Aug 2025 06:06:32 -0400 (EDT)
+	id 4BF3C8E004D; Wed, 20 Aug 2025 06:10:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C9278E0003
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 06:06:32 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CF034C049F
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 10:06:31 +0000 (UTC)
-X-FDA: 83796706182.29.0BD16D5
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
-	by imf25.hostedemail.com (Postfix) with ESMTP id AF10BA0014
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 10:06:28 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C5348E0003
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 06:10:35 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EEFF0B98A2
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 10:10:34 +0000 (UTC)
+X-FDA: 83796716388.27.0885F00
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+	by imf21.hostedemail.com (Postfix) with ESMTP id A85271C0004
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 10:10:32 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf25.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
+	spf=pass (imf21.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755684390;
+	s=arc-20220608; t=1755684633;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mT1KpX+qBzrr9j7IhtfheFOCHVRO5UKV8878fxDZ3KY=;
-	b=IV2tSqr5XvPNk7tCOjE+qAipQ0D2rCHNWyV089clK5n5nXjaRLFvrWlxWJt8BfoSSNweNR
-	mB0Nw625QHJg0H1idUxyEMdm2+n5chc1XeoCB/oB51X+HKFonBrgko/GWAlMo1tKyTO8nW
-	bORuqyAFdKEdEbw1IRrNgb3lIji6u+M=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755684390; a=rsa-sha256;
-	cv=none;
-	b=XHhb5aXMkB6r8RcQUTkF4Dkn0gfs5rHPVgnCrPBpy2p1fXA6YBEj7OuOy3tFWk5uL4Lr1Y
-	rgogNWoq8S5cJHrGvyWfAlDVw9VSEMDxxjn3PAaPrlrqM95qD+PkAr3MlCMsWXVXGT4L8n
-	WaoB10ZcrxuXHBBx29NYVV1GXgYx764=
+	bh=PjAMikHfWrpHiEzgFZIdUflBvcI9deDkg9SZqTvLmIA=;
+	b=BqJtXNgTwV75qfm6b05trkyslyWbcnTYuyOHJ0FtD0In4RIwcNGFcxPyH2n6b1sWa8g1Of
+	q2m/Dp2skqShkMEUg9GIe/arEbQb/TS5Pmjo+C0ngBsOkOdNYbZojAu5maQybKGYQq3TGi
+	BdcU7P++U7CCdiYglbFqQOsrMcpOr7M=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
+	imf21.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf25.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4c6MTt6gyNz2gLJt;
-	Wed, 20 Aug 2025 18:03:30 +0800 (CST)
+	spf=pass (imf21.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755684633; a=rsa-sha256;
+	cv=none;
+	b=gz6bBWzIg5I6QPkj5zRBn70MugtzN9vLGZ3unM5kEn1fJQl5mk5j6AnyXV7VY/vgqxv8eL
+	qt4Tw/MCAYEKmDySzPYmwPq0vBK7mbi9WWw5v6VlD4qaPtpXWhoncmwfSvNb8bv0WrYNce
+	1yUM/DzMPUa4bJfIfSu6pYoYpvMKBes=
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4c6Mg92sFlz27jPT;
+	Wed, 20 Aug 2025 18:11:33 +0800 (CST)
 Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
-	by mail.maildlp.com (Postfix) with ESMTPS id 118B81A0171;
-	Wed, 20 Aug 2025 18:06:24 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 15F441A0188;
+	Wed, 20 Aug 2025 18:10:28 +0800 (CST)
 Received: from [10.174.176.250] (10.174.176.250) by
  dggpemf200018.china.huawei.com (7.185.36.31) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 20 Aug 2025 18:06:23 +0800
-Message-ID: <43c2ce03-04ac-4da4-a9e2-7f1393939d14@huawei.com>
-Date: Wed, 20 Aug 2025 18:06:22 +0800
+ 15.2.1544.11; Wed, 20 Aug 2025 18:10:27 +0800
+Message-ID: <688958ee-4db6-4c33-8640-df69e5d87e9b@huawei.com>
+Date: Wed, 20 Aug 2025 18:10:26 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH -next 16/16] mm/damon/core: handle quota->esz overflow
- issues
+Subject: Re: [RFC PATCH -next 14/16] mm/damon/core: convert sz to byte units
+ when updating state
 To: SeongJae Park <sj@kernel.org>
 CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
 	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
 	<wangkefeng.wang@huawei.com>, <zuoze1@huawei.com>
-References: <20250813171521.6482-1-sj@kernel.org>
+References: <20250813170806.6251-1-sj@kernel.org>
 From: Quanmin Yan <yanquanmin1@huawei.com>
-In-Reply-To: <20250813171521.6482-1-sj@kernel.org>
+In-Reply-To: <20250813170806.6251-1-sj@kernel.org>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Originating-IP: [10.174.176.250]
 X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
  dggpemf200018.china.huawei.com (7.185.36.31)
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: AF10BA0014
-X-Stat-Signature: jub8cwyz8ta7fzii1r75a81sj8cywtsm
+X-Stat-Signature: ob5c5zgar6dqrxzsz6r5fbx1ob7hzokp
 X-Rspam-User: 
-X-HE-Tag: 1755684388-424735
-X-HE-Meta: U2FsdGVkX18n4F5+x4olXu5ScL9gD9atCf6z6lH/xYASVpql2e9B571JqpVRTxI7JMc5om+esa1FE5kKjuxjTHqXlSolmx1xh0nMjCR/ArpqyjJNTt6SwPYfA89paQtbePGykwpGO6ifcmo+QDupr8xn1Xluekvt+2Ch0Mdo0ZnRBIzI8a06IqbIKst14eRkVqtjxU7BJEjzW8AwOCKwct3TL7v1UFYp2qeCdqKUMDfYTVf2ZbWXsPkaA9GMvw/o81qwfA0VkjxkDgvoPRA0+bQkd3SdJSI2VJN4uYME/rKqBs94L7bA+tP6iuaUGh1ftogM0i/f+oWMoklcJbdseWsmpCO11SikMm/8QJVxSsQ6xiIbSmkrLMQf9lioPbq7zgr5twTzTz5jDgfacOFAKUC6F8L+0Y4nCVdUmmQdPaDVYJ5mZkt1M4U9TVx8gvK328/Ar4RjFA9iP0rh1tChmEkC5k/oinfQvPsPkMZpc/iTLtb/iNkYl+fsHrxLvO3l8yMyJOCOdtiPEvdWycynpbk5af2MCwnFSpLF+nWD1OQ5Pb2EB+zeZojgUlex4g8NZh1lefc5doX4K8GTa+JI5Fxaj6I7n0DP8LxwBGOWfWaNFCA41v+FKxtjfSO5GiGPGhO2sUKr+GJn8l1Hu/aXaxIWZgvPk/yo2sq2tmS2lHOZ+w1f42riXcXU0v2r6U3vCW5BWuRGX59WkQN7MmvVHSSnRG2nozjlHbDzfMhRKFE+XrnLuDsAuG+hO86d9HDbqkfaRiJ8dIbht1yPxQQmk91S42yN7su8lu3iVfSvjacaGhFfgC68QEMW+545DsoiButhqJXM16kMOKe80wkHJS3oUXfzSzAOlMLUBvcKP+7CZhDadKKcdbM0Kav5M6/e4/XtosUBeMVLQFTG9RVNfhYkH9Cq1YOgKgSVYFH1qBlQcnAdoucpyFM4L1LsE1DRrSJNWfTvOvE47JnQkgy
- wNm6Sz4u
- HoY4LD+ghIqaMV6oxDKQUrixT7BaAAjkmuQvX2Bvzjqez3QhMgFPFVbYQkiwkbZyEuL+UXMXqtO9v7jD2qHq2Jrd4izw5YWfvsfFDCY5ixZyWyDmxnl+MnFrPhe0MxWYRpqTRTLli5rqOQZ2+BCwrOYPB2pPYRw6alhsreGKD9WoHEWHT4Hl3ThbHETVfBywqYDEYQm21b9v3z+Y4PogfY+YB5br81do6R8MqY/Jn7lvwVVpfu1YMDUhRpg==
+X-Rspamd-Queue-Id: A85271C0004
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755684632-395862
+X-HE-Meta: U2FsdGVkX19zk2buJnujmIgb6YDavEqkkprOyWpMhLPqyQPGcFmPPm4Csfgr3fdxetGuugi8FU0t5b4WaSFWUJ+b6Po7GGCAjD6Xi//BWgJsdYjB2anO8a9eLdf3NWTJGbpq1bDKXIZ/uTawXKKEQ+jvGrB7mwwtW21Z/F35LHKsRztZwqyBtY+czUfT89IduENSutzpzac9YH6+PBTVPB0GwCd/5ydaGreI+FP4fYDfWr/tA8PvWOrJptsIHeE4Tb8Gu7WSbGdVtB/QxhJM+XF6pceVAbSzIu0qxk8moMG0ysUgl20pDB1pNPfriK0vmbqPW7YfNLAzujR5WcR+4tXa6B3SKm2QUyF18+CgS2MHKvOKyxlvLM19xbyUM/pDfiby/iiI65HDTVQEIKQVBzlZaHLQClX05mpTxz5hiBDUHHrtXTFL70khpcmqkSKwI4J0UpCg961T5OOoPiONSq+RzexQLFbo/1rb44L5iKW7ta2Qcv/bGUWD2bNcWNx1SvzQVh8yBDBPyfNfiulFhnE/6vIqNDu/7Ya5lC5JTBDSuwRhtVN2mhGAy3Fvehz3BqVri7K2gfJ8n8rVpLfslZPhcJRYo2rfD6BhEgbUr/RbFSNjsSo+2Fjyq8NyRYUp1TITc4ln8BcmKRRyjLI9IBFN7shphzZsnsWMe4O4QLoacYKh3wFIbZ7U1ONSTEFB9EyuJNc1pLKMvt5IYFM/YuwPcqpqVnLYETsggqnBuza5pgP9Kocr+EQwVvYvC6A0RjL65QsDRCZe/9KgJOXvaBIdyfegv4XzRnZtlDyt8mRo1D2hPoS2Oj5DTa5IIHxprdM81BCfuE+ISXGLZmy6h42ZqN2W3tvX0CViLNlyPsF7g4/4AMF4uZlmze3DXUXavfwtL4RWUMSO9YOLX1vPm+2iYDSBtdqSoKZEqyNcbaMGVFUkUIU+2kL55wgPK5n8kKH2om11V2yJQgWQDO3
+ sd/mtoYC
+ JYOHR680redX4a1142YvGPTbym4GVMaZrzu8eEH+9FcCfzdMljvbT/2RaF8mtCR4zPRlylc7F8bzBJxFrceYm0FQ0u2Qs7vMs71BrOopND2UHiT+ozXyd+L4MM/2rl2zUM20JZmtByp/bEo12gpueqs9tFUZRdVC6Qq8ei0LWa2WQf6/7JnU1jrY3dye8Fxrpl9g03BBjx93fV8m9qZHotdvYoiaaMrmYJ0vCDNotOmvYpZCpMF6P0a4reTnjHLOthXK9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,39 +93,24 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Hi SJ,
 
-在 2025/8/14 1:15, SeongJae Park 写道:
-> On Wed, 13 Aug 2025 13:07:06 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
+在 2025/8/14 1:08, SeongJae Park 写道:
+> On Wed, 13 Aug 2025 13:07:04 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
 >
->> In the original quota enforcement implementation, the traffic
->> calculation multiplied A by 1000000 due to time unit conversion,
->> making it highly prone to overflow on 32-bit systems:
->>
->> damos_set_effective_quota
->>    if (quota->total_charged_ns)
->>      throughput = quota->total_charged_sz * 1000000 /
->> 		quota->total_charged_ns;
->>
->> Requiring total_charged_sz to be less than 4GB/1000000 is unreasonable.
->> Additionally, when overflow occurs and causes quota->esz to become
->> extremely small, the subsequent damos_apply_scheme logic permanently
->> sets sz to 0, while quota stop updating, ultimately leading to complete
->> functional failure:
->>
->> damos_apply_scheme
->>    if (quota->esz && quota->charged_sz + sz > quota->esz)
->>      sz = ALIGN_DOWN(quota->esz - quota->charged_sz, DAMON_MIN_REGION);
->>
->> Total charged stats use the unsigned long long data type to reduce
->> overflow risk, with data reset capability after overflow occurs.
-> Thank you for finding this issue!  I don't want to change the data type if
-> possible, though.  Could replacing the easily-overflowing throughput
-> calculation with mult_frac() fix the issue?
+>> After introducing ctx->addr_unit, the unit of sz might not
+>> be in bytes. However, sz_applied is returned in bytes after
+>> processing by paddr.
+> This is not an intended behavior, but a bug of my code.  Let's update patches
+> 3-6 of this series to return sz_applied as core-layer address unit, instead of
+> bytes.
+>
+>> To maintain external consistency, sz
+>> is converted to byte units when updating the state.
+> Users could keep the consistency by multiplying the addr_unit, which they set
+> themselves.
 
-Thank you for your guidance, it does work effectively. The relevant changes
-have been included in patch #12 of the v2 series[1].
+Thanks for the clarification! this patch has been dropped from the v2 series.
 
-[1] https://lore.kernel.org/all/20250820080623.3799131-13-yanquanmin1@huawei.com/
-
-Thanks, Quanmin Yan
+Thanks,
+Quanmin Yan
 
 
