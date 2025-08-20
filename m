@@ -2,185 +2,105 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 69B54CA0EED
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 06:29:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B7990CA0EED
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 06:45:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93C058E0025; Wed, 20 Aug 2025 02:29:35 -0400 (EDT)
+	id 4CC548E0026; Wed, 20 Aug 2025 02:45:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9139C8E0011; Wed, 20 Aug 2025 02:29:35 -0400 (EDT)
+	id 4A4058E0011; Wed, 20 Aug 2025 02:45:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DAF78E0025; Wed, 20 Aug 2025 02:29:35 -0400 (EDT)
+	id 3BA2C8E0026; Wed, 20 Aug 2025 02:45:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 661CD8E0011
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 02:29:35 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E600658C83
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 06:29:34 +0000 (UTC)
-X-FDA: 83796159468.30.9C6B934
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2086.outbound.protection.outlook.com [40.107.94.86])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D2F4D40010
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 06:29:31 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=J6DcNBuW;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf01.hostedemail.com: domain of KPrateek.Nayak@amd.com designates 40.107.94.86 as permitted sender) smtp.mailfrom=KPrateek.Nayak@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755671372; a=rsa-sha256;
-	cv=pass;
-	b=GlGeMpiQI6CwgbN9Iy0dLALUukdpggCl4/DmZSmXsPzyuoiUBonMR2c3sDYLMQHkBv6ODE
-	k0K5o+S4SoQefWz1yUGt837NMCgzkQy1iIpSfGtJBNkE2cSJLHtvpIeQdr+G7887G+PzqC
-	ch2mrLxN4CRhJdYcSevY93fUdEwBbek=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=J6DcNBuW;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf01.hostedemail.com: domain of KPrateek.Nayak@amd.com designates 40.107.94.86 as permitted sender) smtp.mailfrom=KPrateek.Nayak@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755671372;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2BAA88E0011
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 02:45:41 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A26A5160398
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 06:45:40 +0000 (UTC)
+X-FDA: 83796200040.29.80FA4BA
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	by imf04.hostedemail.com (Postfix) with ESMTP id E3E1440003
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 06:45:37 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=UQusCr5X;
+	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755672338;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jbeOWknQtUjT2jERZLYHtz1GtCyHPp8LAy6RMmhUW8I=;
-	b=BIM2IN6egCo1BVA5VCA9GTDWXiirhprNugd//r7hnjPmClFBchQBWq7FuUwFgW4q+q6BRe
-	3l/Z4s8/a+D33UnKB3eBGqkfUIZ+Hbq6SVf7F1LK2rZSxbkkOEyk//Ul5JDJz/IqvJQPyE
-	exwGfopIgK7TJWqcBgdtCbwHJ6875W0=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Q5vP6+tijtudj2ifFaxqxEYA8TuiN1xavzONznivru2/SNc8ERkH7bXt/CaYN4ZL6QN2MNQFKp2K+baCIQl9GzJBDSme86wYX/6YhLqxBxxrtx5KOVtQJ+Cz/VoCGTfbtPvzbABnOgvelt6L1g5oAkia3ggzJiBzxC95BBjIbWabQx7T1VXjLD3RcVyrEXjpFR1lVrcyMLfUQ2peTRJ7ev9Kkwl9TXemBFfnX5XZ6UVEiY+nmpw3u1BrO/oaPlbE/tlQyK/gkhO+jxRbUxSVeBXUK93ZhB6mOONO9GGcylOKI/OqjJO30cfVfnSl7j1ceQigf+NAxEMR+H2SfgI2AQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jbeOWknQtUjT2jERZLYHtz1GtCyHPp8LAy6RMmhUW8I=;
- b=fV76GgPasV8SZOa+e8SdwdYQQC3HifG7TP9VN2fV0eVzXRsTJomHc1cKLquQnf3fSu/Mudj8XPsou5vn83olE5uvs8c49iHTptvSWo055mPrCT/cP34jY5/svLMjenPEB8kFiTFORgHjQZxqnwDrkcgv0B0sizZfBhMpAil0i/B0/VP9VYkm/laOKGTXXtttcg1pl4PC1KmgMJ+OTtMgGdGOw7q/uLqMii4+TpVxpLUsnGXyL8Uq1nRgKVqbI6LAmZu76u3fYdHwYWdiF7U6/mT/xjG3C4u/jXdAJ+6JnkVyh7zlkgnuEPAA8Zu+P1W8D/3YvBvEG+f5XGodaxcEeA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jbeOWknQtUjT2jERZLYHtz1GtCyHPp8LAy6RMmhUW8I=;
- b=J6DcNBuWeyhVbNZfGJq7WXZATTCk9d/+aJjZMDeTdwi9Dd16ftt1PyFH2cwqeFj6JMvt/whFKf7bDjpPCFqbu1Bpoua4lhQZjhjldvBvFUg7uC91Mu4l1+ZguS2H4wKJ/30gqk5ZYyUO9kotcapdAM2USY/OEtjMZRf+eTQO4Mw=
-Received: from BN0PR10CA0017.namprd10.prod.outlook.com (2603:10b6:408:143::26)
- by DS0PR12MB7849.namprd12.prod.outlook.com (2603:10b6:8:141::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.24; Wed, 20 Aug
- 2025 06:29:27 +0000
-Received: from BL6PEPF0001AB73.namprd02.prod.outlook.com
- (2603:10b6:408:143:cafe::5f) by BN0PR10CA0017.outlook.office365.com
- (2603:10b6:408:143::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9052.13 via Frontend Transport; Wed,
- 20 Aug 2025 06:29:27 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- BL6PEPF0001AB73.mail.protection.outlook.com (10.167.242.166) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.9052.8 via Frontend Transport; Wed, 20 Aug 2025 06:29:27 +0000
-Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 20 Aug
- 2025 01:29:26 -0500
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB06.amd.com
- (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 20 Aug
- 2025 01:29:26 -0500
-Received: from [10.136.47.145] (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Wed, 20 Aug 2025 01:29:22 -0500
-Message-ID: <f8e85fe1-87e6-4b31-9e87-f48fd7b8e3f6@amd.com>
-Date: Wed, 20 Aug 2025 11:59:20 +0530
+	bh=vdkxXjlv65lpFHAFG1mydo3rEC/6GC2gUDCT1Hlfmos=;
+	b=MxrARJSWxL/qDNOuRC6bbTcZmE0IauABbFmzPBIE0iwKS9n9rvt36eJHZWN6XCgDyx5w9a
+	OAu+F1kA8zLZbFqIp3/xT75h5i5v8AF4zHBIMWc1eN7j99GzdxMSSb77kiUptFkZULYqjD
+	4sRzWnwWC0GssdnFBN0d04sXaL6/osc=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=UQusCr5X;
+	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755672338; a=rsa-sha256;
+	cv=none;
+	b=ifntChGk3GV2HGkIQzLdufz9k2phJ27s+YKYfa8lS2lx4t6NQN9w7inITIX6E6DfVprGTm
+	pi2xoF/AXl85Sun7F8teddfNW5jzgW4oC6sibWQxqbWlMxo1snmthopLaypIaRZxv+wFct
+	9dkiR/ElGgzNJu+YSb0HJCSay8RJDQQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755672338; x=1787208338;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Aks18XLnFJDywmToiC/hQRBj84tcW/vcMhMm0McgHP4=;
+  b=UQusCr5X/cZ+aOyeXs87B3bRlV4tqKD6+YQXDRXC51GddjyjVLyCr72e
+   K1276mDrlW9pCczOzKpu+SWcsr5mwfGGLP7rzKmGK8P+CCoPaTUtrkDaV
+   2wDGxgdNMW8oxStUenXJySucx0zGtqa44xhmxIe5u0+u1xJpwY1mXExMV
+   iRn8/HsiGy4QYAQ62WeBhOvK2HbUF5Knyl9BPiVR8md1W2lenyTfKlF9q
+   EhMZfcxAITZPOPf6JYU6v/sMWqw1CkcA/RHO2AoVGcUi2z4gOfFyaOQ2W
+   LUHzCQZWyMf+WOKE1N0Ic6OzPiT/zZP1fZpXTw5Y3E+jJTtpwklBtgo8C
+   A==;
+X-CSE-ConnectionGUID: rzvAwDYVSlaUcqqsJysaXQ==
+X-CSE-MsgGUID: X3BzJWbPRd6ohNH/O0AHLA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="61745336"
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
+   d="scan'208";a="61745336"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 23:45:36 -0700
+X-CSE-ConnectionGUID: oZu6t+lTTiuD65z9o2thYw==
+X-CSE-MsgGUID: BZwrqRZbQTWCzxT/CDtEsg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
+   d="scan'208";a="168851444"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by fmviesa010.fm.intel.com with ESMTP; 19 Aug 2025 23:45:32 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uocZd-000IJH-2r;
+	Wed, 20 Aug 2025 06:45:29 +0000
+Date: Wed, 20 Aug 2025 14:44:54 +0800
+From: kernel test robot <lkp@intel.com>
+To: Yunhui Cui <cuiyunhui@bytedance.com>, yury.norov@gmail.com,
+	linux@rasmusvillemoes.dk, paul.walmsley@sifive.com,
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+	dennis@kernel.org, tj@kernel.org, cl@gentwo.org, linux-mm@kvack.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Yunhui Cui <cuiyunhui@bytedance.com>
+Subject: Re: [PATCH 2/2] riscv: introduce percpu.h into include/asm
+Message-ID: <202508201452.ciEgfhNO-lkp@intel.com>
+References: <20250819135007.85646-3-cuiyunhui@bytedance.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] 9p/trans_fd: p9_fd_request: kick rx thread if EPOLLIN
-To: Oleg Nesterov <oleg@redhat.com>, Dominique Martinet
-	<asmadeus@codewreck.org>, syzbot
-	<syzbot+d1b5dace43896bc386c3@syzkaller.appspotmail.com>
-CC: <akpm@linux-foundation.org>, <brauner@kernel.org>, <dvyukov@google.com>,
-	<elver@google.com>, <glider@google.com>, <jack@suse.cz>,
-	<kasan-dev@googlegroups.com>, <linux-fsdevel@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<syzkaller-bugs@googlegroups.com>, <viro@zeniv.linux.org.uk>,
-	<willy@infradead.org>, <v9fs@lists.linux.dev>, David Howells
-	<dhowells@redhat.com>
-References: <68a2de8f.050a0220.e29e5.0097.GAE@google.com>
- <20250819161013.GB11345@redhat.com>
-Content-Language: en-US
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-In-Reply-To: <20250819161013.GB11345@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB73:EE_|DS0PR12MB7849:EE_
-X-MS-Office365-Filtering-Correlation-Id: d677bd3c-c09a-417b-6937-08dddfb2e987
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|7416014|376014|30052699003|1800799024|82310400026|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?RUdLYkRrN0RYU3poOUJ5YlJodnFEdThMVC81Y2t2c0IzYmVDR1FUMEp5ZUVR?=
- =?utf-8?B?R1J1dVY2dVE4bGVDcG1JelA2ZEZzeWpiUDBRN3NSRjNqWFJabFlHVTRhR0pa?=
- =?utf-8?B?NUVHb2lJYktobTkrME9RWmZVL2dNTHBXb2xNSitmNS96MFBQYm9MY3Y5QStT?=
- =?utf-8?B?Rzh1M2pXRWNxekRsaC9ObUxTcDZNWlh2U093RVlTWlpRM3ZKNzZhUFhUZzN5?=
- =?utf-8?B?SlhlVDhSdWdodXFNOFhFVnUxRElkY2VEMisyb21mU09iaEZCTTRJcWFlZDEz?=
- =?utf-8?B?cnRvTjYwNDFLOHBEV0p5c1pMZ0hGSGFoeDErV3I0ZjR5bmhITTlYUDB4d1ZQ?=
- =?utf-8?B?NkJVSHFRbENJN0tIQTNUc3V5TVhrOWg3MVlMT0NncFVVMWhReFc4eEd0TDNV?=
- =?utf-8?B?SlRUUzBFQUltOVhiNXcrNjUzby9GVEV5RVVMVFJzUHE4Y2tYbE5rZXk4UkVi?=
- =?utf-8?B?Q0hhRGlaWXA4WnlOcHUzcTN4YUw2R085UDVWWi9uZFZ6bUpLZm9sUy8wQUpO?=
- =?utf-8?B?VHpJN3NPNVlFYzVybiswVVpUZkxsV1l5VDN2VFhobXpnaGdGNFlCSGVqTWZ4?=
- =?utf-8?B?cVE5Wk9vSG5kdVh0VERpSGZFUkovVzR4V0pXMlVDeVV3dmE3RUNtN3JHcklj?=
- =?utf-8?B?TXc1cTAzZHkvdVBjSU9PelRGNU5jZnhoUHFCRVlkRnZlcmNGNW0rbVc0dWVU?=
- =?utf-8?B?Mlo3VEhnSXExUTVhODQrQVh6SHUzY08wZHFONzJpSkVYNmxGeVpjOEtaTGg5?=
- =?utf-8?B?NC8rRi9NbzJQSCtBNzhnSUllQTVFUXl2QWN1RXZJMVJmQXB2alJ3SmNlaHBw?=
- =?utf-8?B?MHZRK05ick9IR0E0SWZuUnhLZ3FZc1U4MHBZUHdjSktvRStVWmlUcnF5eGNM?=
- =?utf-8?B?Z0psTEtydk5LNjQ0S1kxUHZVNEZCZk1Db0hXWTYyVjhZeHhiRnRTdG1ZVjcv?=
- =?utf-8?B?WndKaHlNYmJlR1JIZHQ3QkJTN2QwREw2UmxwbStZM2NmOCtPb1JrWFFCWnEv?=
- =?utf-8?B?K09meHJmZk04Vk9hcFBqNU5DbUNmMTJoZlZkVWIzaG5tTTFCUGg4MEdUMnlT?=
- =?utf-8?B?b0pmY3YrUU1nakpJU3BNb21CQmFaV1BubmEwRWVtMVlwWVZuL1BkSDRUa1Jt?=
- =?utf-8?B?U2FDOUdkOG0rSThWWUlWeUNFdVpyZ3ZYRkt5NktHZExGdnMxNklvM21lbE5M?=
- =?utf-8?B?WTRlTDVwQ3pxY1oyVUFsVzRGcTRpZWMzcVAwcmNDdFo4NXNrUTFNNy9ETmJS?=
- =?utf-8?B?Sjc1NC9kZ3NjS21FM04zaXV0QXlFZFFCa2V6QngyUWdGSGthd29JdlFTRHN6?=
- =?utf-8?B?RjU3RmJ3bythWHNMeFdTNnBnbkk1STFUMythSmhZZFdneE5PUSt6OGFnUmZZ?=
- =?utf-8?B?QXIxbUVZRlJYcTl6WFF1V1VuZU1HZElsKzBsZFg1MHBqQnJVR0ZPcFl2eCtn?=
- =?utf-8?B?TkJOZHgrYWdQeFFQaG9tWGZabjdlLzUrRjhsL3lzdGMwK0UyclMrZytBQU4r?=
- =?utf-8?B?V1FmSkVHTnkzMWtndkRrY1lYcnBKVjJzU1NkdWdTLzVFNkRnOHRvZzVJOXlJ?=
- =?utf-8?B?VVVhaGxZR1lFdHUzTUpOb0lBeW9uR1JyeG5nZ09PWmhqUjBlQWpubU9kc1pY?=
- =?utf-8?B?cFhIZHhnandlZ1h1amh5K1VSSTBlVkdhbHpHdEhhcXRlMmJieGRTN2ZMS3dN?=
- =?utf-8?B?c1l4WkhDcUViOWx4ZjZZRFZpYVRlMUVWenA1Q2JsaEcvS2pFdjFJMDBOT0tL?=
- =?utf-8?B?eEYwcWtsL3ZBREpQSW9PN0E0SEh2YkxrMXI2TjdaNUloZm5TcitsMlFPUjA4?=
- =?utf-8?B?NkFOc05td1ZYODVkejdvZ3RwQU5iTDdCaGlKSVRpcEt3cUk0MEpadXhVOG1P?=
- =?utf-8?B?dUEvSDBFZ1RKVk1GUit6SXNuaTYvQmNISGc5T1phZmNyYlZzc2tVcm5xWFhU?=
- =?utf-8?B?Y3pRMDFNUW84L3pmcXlTRko0SnhFY1VBY3g2RTVCWlM5RW40bDdlQUtqYWdF?=
- =?utf-8?Q?6iJAcPy789pHcq8xKch/bixqMuDwig=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(7416014)(376014)(30052699003)(1800799024)(82310400026)(13003099007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2025 06:29:27.0699
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d677bd3c-c09a-417b-6937-08dddfb2e987
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0001AB73.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7849
-X-Rspamd-Queue-Id: D2F4D40010
-X-Stat-Signature: wypjan9i9d73d3njoixf9ncooy3fpf7h
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250819135007.85646-3-cuiyunhui@bytedance.com>
+X-Stat-Signature: x9ye75us41w7kwt5g9jnngy9nzs6ah4f
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1755671371-350322
-X-HE-Meta: U2FsdGVkX1+y9hencV/2FAWl3wq30S9GAPOBTv/xqkSYUkZBBNERrij/GlKHCMFXwhY9tMIrpXiTLrBTH722UtWdjp8u2cBUOTyfMgNbAmXNlssv97AgatPiiOLtkSdYC4UD7ELJR7cIrXbqYzp8xYA0yjEUJYiXXLHlFROYJePBtacFJYN2oNLXyGXpKj0SS2u6mSBeSiKzvF8gglbPZqyH1fM9QtokMSP5FoYpl2q+f7ul4N8VjCbP/roHFP2Q6dqc2daurvMDtfsxrGdibIBE/GRplMnzv8jLz1vj/SHoJ64J0ZW8NuDen4CdfAM9HusxKFcqN13iOhOo6+o5j030xLqK5VuQfjtkqmAV0cq62vXNNNRKVFnhNrYYNMLtOOia4zDjiduH9WKQblPeDQlTylwYgWnBBI4PtIAc2d7bro/d4qql/ScTUz0TRGYU+AiywBSKZOAhfQQyf6t8iaLWamLVqbQf2Ihy7l4HmTe/I6SzpjEQ3wEIl2NtewEus/VqVkQm+ehzymyS2Sq0y6v5VhCSx6AGYKnN3mqgARgmcnl5ScNBazz7xM+vNGPrDe4cxHPKNBgo8Er4ziPmpzmG6J2BhLfsozBl5J175+XbwwiKdAA9Kj6J+hfxbYk/USJdnAUgaRL8pxYZnW9959GDDe4xM+WBvsHBylw3tHzfP7bl2MIQh/IvEmOo4RVIrrGLocVhbH5G/p0/G4mjaXRWBmDmaoil0Cjux7q3dozGbe32RZ++m/HTBipx7N+6yRIx+hmo7kOd5HFO0gvn7A3CyBTaL1nu1fiXzWEG5crdR54AyLWzdTo2pcuFfBdwMSSOekPku9tdSqD1Z+hx6wkXObqFoRfeDa+iWNWk84wfu90g9eIMoTIvt2GG7+gpqDlUVGFaX/SGrIMi8PIIm2hcGTrb7a/BX0j5fYzU37okLIRnmeSkT2DNLeTIM/LNKolu8HTf9oFRSubxoX1
- vwQOl5aA
- Q32gAhwZ8PrDwX6tJxHbmyJkjKNRUue/k+dKusi1EyE7g+wQMIiBxOkN2lecF2iAVdH60OwoPRg8wYu2hEQqg0l7iBOoab12TrboYCZnsVy0Mc05x3nfMnNJ01AuNsqJCqLBYgmg0YzjZ+SUrq4PL1BfTouGkVxClXRPONkU4vPfC5po+8zxgQt428+vvDwM/PVAbr6XOAweIAPzgBlbUokzOAG1EoAusTyO82Ok6owpweT0NYwx1Ojvldri/91AvdwIUT9UZj7FQl54zheJmgdZhg6zFsHe7CzWVdV4C3ONIWvZZTzYDjtrr+IQuxw92yfsaKKrHpOI+Ps4pDCIRImCleTth/YLx2iAx24zWUtu4BI0poB9bCgTSBQpaV8E/hp3R8ionMPVmhDWP1kLndhpXJ4t/aH9ZZZlGfBL8eguYaBDhvmluI2hflauFUUO0hsqlcZeAYlIQiv/UbeeIRPV09tsT4kAiGbwRYXzB5cche0IUuC7NZ1yc92927AQA5NR50sQFpzdo67aelhzBnQFP6rYmCyvHCVHc43H4vzey+zWmmse9Zt2dqdNpOB4mCcqwN1WSNLVvYIyaZlrdnQK4SrkhpIOid93Pxa3C3zQNE7LUEjG4yKgRxaoM1b8EUjNLxaGstRK5fZLmE20YWBP1wHjqzkclv2a3+Kvh8i3+tE44tFsQYeBSq5Z0GhGcdls/qBmCvLGh2ubYxHj5/Khxbd+TEbxzUbhHhk7pfcbbAwKqtSOEPcX1Ic7z5UChQyhM2P5zsPT5QImQMivvtKfF5rvobiTSvLL1PbMStFsgb6Lm1zQGiOjOlQ==
+X-Rspamd-Queue-Id: E3E1440003
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755672337-612057
+X-HE-Meta: U2FsdGVkX188+iwZHVGXhO20bSEyD8QT9GqtYttEkr5VwYUMrruJ12lyH84hu2CRRezaYzfhT1GXYAqnvBaiUS2a22WLRVeyFQaWLCowrY3k+fjaUIXpA95Fn8lVDPyr+jWIPtq7iUqKUhRaufbI+BSktYqBT8KVOe6dvSi59rD6BLgmTBusloASaq4HjuSRgM574cO8SZy07gY3fQNbvJTryt5Aysz+l7NJtXvVn1MYweXAaDoEiNHO7v3KJfSaACUd02x4TuOjeGWt0EeW9Kaq2Th/N8yJh1V9s1QWC1nLrb/cnkf2YTdVITqpta+tyCQyEW9ikRf2BSctzYcuEJ3cjOQAwda7awXIR8XXuwqHRx5ONPQ8qb/4x1k08v5mKi4Oz0NHQgHGBNtyU1i6m65f3ej4VXDg89Wr8t2DOEyMQ8ADqh+rc9aNBu2VMQDaIaoXsycWVnqebcJRR3Kg290GQAdwhseUhdI7NpGLzt6pLAJhlo3lEMg05VGjl4lQIHsZBYbg0du0aKMG3eA4q9zaJc2kdVnpaikTnB5cB9aBa6F5wLbyGNznkQoS33gfY3D/Dg/yqzkg0YTsL2Xbm+CxY0ptyVVZ72C3UnzaRVozY08IedD8sUfOPNuvNPqczK+m/dzgUSy/uF5frXzPHTf7wH/2T8ALw0p4pEfv0DbnVVjKhKB/38wIbPG/jciDlJrC3Z/c0JVYS463zrERBdcQvxDDAxsKf7i4djdZ9dm7cpPC0veFZIHiRkabcbwLn20Gj1C6MUHqE2hNIvekH7B6/6vK9O+c96HXU0DnR44O87fo9qd1wABVlwHZ/qE93211wnzXG6koxvwiZiQWRtVRSUP+FabSvA6FfXrxLYTQDBYj72H0GNUw9WqGCN/kDHgBVX4buIjbPOkiLnvJlBTVNzvo118D7TSMZejcKzHPdeeT4It/k1rm8eEF72Tzw5E9DiGuudKztKil4WP
+ 0qEI60dx
+ Gz1+BgY2psZeZq+torPoP+tRNsbAVzTbH8tpbv+96u10KqYWYppq6/g2T+uqQq/c0eV0KN+eVxT/icbnm4liAcABriECMqJezVDN4f8CFgJyzFIfpKmzCsfPrzSNWtNJvBo6nmmtkma7fTX0ueWeGieFqDHTup0tuSLhiA7jpE56zl2eIZGJjfFpZUNcbB1sBdjgum76krnrKbBtIAucM3zScN+l41JbGTyPubxnOFa+FYhmNUQKeH4e0CcFfOo8ut8+Cs6e3xZShqvqgw/a663s/tr8r1/k09RSYxsoJCRwu6Nmegpi0zmiIuKNj/4xS8Dbq6ZLNwthfIZNI1X/IoU4YMPCNO098Sg6OdEDlqQBdr2isPaIu0HbQoXM0f29DJHoI1xrtvC4XGTe1FcVLJe0CkUr2XxR7uXBItZEFmpjqos1Z2QU1P34UBXDxGDGYQeTKs6ZCw5hB4pVGHA/rEBm0zZDwMSw0tdnINUu37e+z2bA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -189,113 +109,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Oleg,
+Hi Yunhui,
 
-On 8/19/2025 9:40 PM, Oleg Nesterov wrote:
-> p9_read_work() doesn't set Rworksched and doesn't do schedule_work(m->rq)
-> if list_empty(&m->req_list).
-> 
-> However, if the pipe is full, we need to read more data and this used to
-> work prior to commit aaec5a95d59615 ("pipe_read: don't wake up the writer
-> if the pipe is still full").
-> 
-> p9_read_work() does p9_fd_read() -> ... -> anon_pipe_read() which (before
-> the commit above) triggered the unnecessary wakeup. This wakeup calls
-> p9_pollwake() which kicks p9_poll_workfn() -> p9_poll_mux(), p9_poll_mux()
-> will notice EPOLLIN and schedule_work(&m->rq).
-> 
-> This no longer happens after the optimization above, change p9_fd_request()
-> to use p9_poll_mux() instead of only checking for EPOLLOUT.
-> 
-> Reported-by: syzbot+d1b5dace43896bc386c3@syzkaller.appspotmail.com
-> Tested-by: syzbot+d1b5dace43896bc386c3@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/all/68a2de8f.050a0220.e29e5.0097.GAE@google.com/
-> Link: https://lore.kernel.org/all/67dedd2f.050a0220.31a16b.003f.GAE@google.com/
-> Co-developed-by: K Prateek Nayak <kprateek.nayak@amd.com>
-> Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+kernel test robot noticed the following build warnings:
 
-A "Debugged-by:" or equivalent would have been fine too since you did
-most of the heavy lifting by finding p9_poll_mux() but I don't mind
-standing behind this since it is doing the right thing :)
+[auto build test WARNING on linus/master]
+[also build test WARNING on dennis-percpu/for-next v6.17-rc2 next-20250819]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-I tested this on top of v6.17-rc2 and the upstream runs into a hang
-instantly with the syzbot's reproducer. The dmesg logs:
+url:    https://github.com/intel-lab-lkp/linux/commits/Yunhui-Cui/riscv-remove-irqflags-h-inclusion-in-asm-bitops-h/20250819-215256
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20250819135007.85646-3-cuiyunhui%40bytedance.com
+patch subject: [PATCH 2/2] riscv: introduce percpu.h into include/asm
+config: riscv-randconfig-002-20250820 (https://download.01.org/0day-ci/archive/20250820/202508201452.ciEgfhNO-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 93d24b6b7b148c47a2fa228a4ef31524fa1d9f3f)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250820/202508201452.ciEgfhNO-lkp@intel.com/reproduce)
 
-    INFO: task repro:4150 blocked for more than 120 seconds.
-          Not tainted 6.17.0-rc2-upstream #34
-    "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-    task:repro           state:D stack:0     pid:4150  tgid:4150  ppid:1      task_flags:0x400140 flags:0x00004006
-    Call Trace:
-     <TASK>
-     __schedule+0x474/0x1620
-     ? __wb_update_bandwidth+0x37/0x1d0
-     schedule+0x27/0xd0
-     io_schedule+0x46/0x70
-     folio_wait_bit_common+0x112/0x300
-     ? filemap_get_folios_tag+0x232/0x2a0
-     ? __pfx_wake_page_function+0x10/0x10
-     folio_wait_writeback+0x2b/0x80
-     __filemap_fdatawait_range+0x7c/0xe0
-     file_write_and_wait_range+0x89/0xb0
-     v9fs_file_fsync+0x2d/0x90 [9p]
-     netfs_file_write_iter+0xec/0x120 [netfs]
-     vfs_write+0x305/0x420
-     ksys_write+0x65/0xe0
-     do_syscall_64+0x85/0xb30
-     ? do_syscall_64+0x223/0xb30
-     ? count_memcg_events+0xd9/0x1c0
-     ? handle_mm_fault+0x1af/0x290
-     ? do_user_addr_fault+0x2d0/0x8c0
-     entry_SYSCALL_64_after_hwframe+0x76/0x7e
-    RIP: 0033:0x7f3b26d1e88d
-    RSP: 002b:00007ffe581fa348 EFLAGS: 00000213 ORIG_RAX: 0000000000000001
-    RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f3b26d1e88d
-    RDX: 0000000000007fec RSI: 0000200000000300 RDI: 0000000000000007
-    RBP: 00007ffe581fa360 R08: 00007ffe581fa360 R09: 00007ffe581fa360
-    R10: 00007ffe581fa360 R11: 0000000000000213 R12: 00007ffe581fa4b8
-    R13: 0000558168a6de12 R14: 0000558168a6fd10 R15: 00007f3b26f03040
-     </TASK>
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508201452.ciEgfhNO-lkp@intel.com/
 
-With this patch applied on top, I haven't seen a hang yet and I've been
-running it for 30min now so feel free to also include:
+All warnings (new ones prefixed by >>):
 
-Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
+   In file included from arch/riscv/kernel/asm-offsets.c:8:
+   In file included from include/linux/mm.h:7:
+   In file included from include/linux/gfp.h:7:
+   In file included from include/linux/mmzone.h:22:
+   In file included from include/linux/mm_types.h:19:
+   In file included from include/linux/workqueue.h:9:
+>> include/linux/alloc_tag.h:219:2: warning: implicit conversion from 'typeof (tag->counters->calls)' (aka 'unsigned long long') to 'unsigned long' changes value from 18446744073709551615 to 4294967295 [-Wconstant-conversion]
+     219 |         this_cpu_dec(tag->counters->calls);
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/percpu-defs.h:512:28: note: expanded from macro 'this_cpu_dec'
+     512 | #define this_cpu_dec(pcp)               this_cpu_sub(pcp, 1)
+         |                                         ^~~~~~~~~~~~~~~~~~~~
+   include/linux/percpu-defs.h:510:51: note: expanded from macro 'this_cpu_sub'
+     510 | #define this_cpu_sub(pcp, val)          this_cpu_add(pcp, -(typeof(pcp))(val))
+         |                                         ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~
+   include/linux/percpu-defs.h:501:70: note: expanded from macro 'this_cpu_add'
+     501 | #define this_cpu_add(pcp, val)          __pcpu_size_call(this_cpu_add_, pcp, val)
+         |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
+   include/linux/percpu-defs.h:372:29: note: expanded from macro '__pcpu_size_call'
+     372 |                 case 8: stem##8(variable, __VA_ARGS__);break;           \
+         |                         ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~
+   arch/riscv/include/asm/percpu.h:96:78: note: expanded from macro 'this_cpu_add_8'
+      96 | #define this_cpu_add_8(pcp, val)        _pcp_protect(__percpu_add_amo_case_64, pcp, val)
+         |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
+   arch/riscv/include/asm/percpu.h:72:26: note: expanded from macro '_pcp_protect'
+      72 |         op(raw_cpu_ptr(&(pcp)), __VA_ARGS__);                           \
+         |         ~~                      ^~~~~~~~~~~
+   1 warning generated.
+--
+   In file included from arch/riscv/errata/sifive/errata.c:7:
+   In file included from include/linux/memory.h:19:
+   In file included from include/linux/node.h:18:
+   In file included from include/linux/device.h:16:
+   In file included from include/linux/energy_model.h:7:
+   In file included from include/linux/kobject.h:20:
+   In file included from include/linux/sysfs.h:16:
+   In file included from include/linux/kernfs.h:12:
+   In file included from include/linux/idr.h:15:
+   In file included from include/linux/radix-tree.h:16:
+   In file included from include/linux/percpu.h:5:
+>> include/linux/alloc_tag.h:219:2: warning: implicit conversion from 'typeof (tag->counters->calls)' (aka 'unsigned long long') to 'unsigned long' changes value from 18446744073709551615 to 4294967295 [-Wconstant-conversion]
+     219 |         this_cpu_dec(tag->counters->calls);
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/percpu-defs.h:512:28: note: expanded from macro 'this_cpu_dec'
+     512 | #define this_cpu_dec(pcp)               this_cpu_sub(pcp, 1)
+         |                                         ^~~~~~~~~~~~~~~~~~~~
+   include/linux/percpu-defs.h:510:51: note: expanded from macro 'this_cpu_sub'
+     510 | #define this_cpu_sub(pcp, val)          this_cpu_add(pcp, -(typeof(pcp))(val))
+         |                                         ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~
+   include/linux/percpu-defs.h:501:70: note: expanded from macro 'this_cpu_add'
+     501 | #define this_cpu_add(pcp, val)          __pcpu_size_call(this_cpu_add_, pcp, val)
+         |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
+   include/linux/percpu-defs.h:372:29: note: expanded from macro '__pcpu_size_call'
+     372 |                 case 8: stem##8(variable, __VA_ARGS__);break;           \
+         |                         ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~
+   arch/riscv/include/asm/percpu.h:96:78: note: expanded from macro 'this_cpu_add_8'
+      96 | #define this_cpu_add_8(pcp, val)        _pcp_protect(__percpu_add_amo_case_64, pcp, val)
+         |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
+   arch/riscv/include/asm/percpu.h:72:26: note: expanded from macro '_pcp_protect'
+      72 |         op(raw_cpu_ptr(&(pcp)), __VA_ARGS__);                           \
+         |         ~~                      ^~~~~~~~~~~
+   arch/riscv/errata/sifive/errata.c:29:14: warning: result of comparison of constant 9223372036854775815 with expression of type 'unsigned long' is always true [-Wtautological-constant-out-of-range-compare]
+      29 |         if (arch_id != 0x8000000000000007 ||
+         |             ~~~~~~~ ^  ~~~~~~~~~~~~~~~~~~
+   arch/riscv/errata/sifive/errata.c:42:14: warning: result of comparison of constant 9223372036854775815 with expression of type 'unsigned long' is always true [-Wtautological-constant-out-of-range-compare]
+      42 |         if (arch_id != 0x8000000000000007 && arch_id != 0x1)
+         |             ~~~~~~~ ^  ~~~~~~~~~~~~~~~~~~
+   3 warnings generated.
+--
+   In file included from arch/riscv/kernel/asm-offsets.c:8:
+   In file included from include/linux/mm.h:7:
+   In file included from include/linux/gfp.h:7:
+   In file included from include/linux/mmzone.h:22:
+   In file included from include/linux/mm_types.h:19:
+   In file included from include/linux/workqueue.h:9:
+>> include/linux/alloc_tag.h:219:2: warning: implicit conversion from 'typeof (tag->counters->calls)' (aka 'unsigned long long') to 'unsigned long' changes value from 18446744073709551615 to 4294967295 [-Wconstant-conversion]
+     219 |         this_cpu_dec(tag->counters->calls);
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/percpu-defs.h:512:28: note: expanded from macro 'this_cpu_dec'
+     512 | #define this_cpu_dec(pcp)               this_cpu_sub(pcp, 1)
+         |                                         ^~~~~~~~~~~~~~~~~~~~
+   include/linux/percpu-defs.h:510:51: note: expanded from macro 'this_cpu_sub'
+     510 | #define this_cpu_sub(pcp, val)          this_cpu_add(pcp, -(typeof(pcp))(val))
+         |                                         ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~
+   include/linux/percpu-defs.h:501:70: note: expanded from macro 'this_cpu_add'
+     501 | #define this_cpu_add(pcp, val)          __pcpu_size_call(this_cpu_add_, pcp, val)
+         |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
+   include/linux/percpu-defs.h:372:29: note: expanded from macro '__pcpu_size_call'
+     372 |                 case 8: stem##8(variable, __VA_ARGS__);break;           \
+         |                         ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~
+   arch/riscv/include/asm/percpu.h:96:78: note: expanded from macro 'this_cpu_add_8'
+      96 | #define this_cpu_add_8(pcp, val)        _pcp_protect(__percpu_add_amo_case_64, pcp, val)
+         |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
+   arch/riscv/include/asm/percpu.h:72:26: note: expanded from macro '_pcp_protect'
+      72 |         op(raw_cpu_ptr(&(pcp)), __VA_ARGS__);                           \
+         |         ~~                      ^~~~~~~~~~~
+   1 warning generated.
 
-> Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-> ---
->  net/9p/trans_fd.c | 9 +--------
->  1 file changed, 1 insertion(+), 8 deletions(-)
-> 
-> diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
-> index 339ec4e54778..474fe67f72ac 100644
-> --- a/net/9p/trans_fd.c
-> +++ b/net/9p/trans_fd.c
-> @@ -666,7 +666,6 @@ static void p9_poll_mux(struct p9_conn *m)
->  
->  static int p9_fd_request(struct p9_client *client, struct p9_req_t *req)
->  {
-> -	__poll_t n;
->  	int err;
->  	struct p9_trans_fd *ts = client->trans;
->  	struct p9_conn *m = &ts->conn;
-> @@ -686,13 +685,7 @@ static int p9_fd_request(struct p9_client *client, struct p9_req_t *req)
->  	list_add_tail(&req->req_list, &m->unsent_req_list);
->  	spin_unlock(&m->req_lock);
->  
-> -	if (test_and_clear_bit(Wpending, &m->wsched))
-> -		n = EPOLLOUT;
-> -	else
-> -		n = p9_fd_poll(m->client, NULL, NULL);
-> -
-> -	if (n & EPOLLOUT && !test_and_set_bit(Wworksched, &m->wsched))
-> -		schedule_work(&m->wq);
-> +	p9_poll_mux(m);
->  
->  	return 0;
->  }
+
+vim +219 include/linux/alloc_tag.h
+
+22d407b164ff79 Suren Baghdasaryan 2024-03-21  202  
+22d407b164ff79 Suren Baghdasaryan 2024-03-21  203  static inline void alloc_tag_sub(union codetag_ref *ref, size_t bytes)
+22d407b164ff79 Suren Baghdasaryan 2024-03-21  204  {
+22d407b164ff79 Suren Baghdasaryan 2024-03-21  205  	struct alloc_tag *tag;
+22d407b164ff79 Suren Baghdasaryan 2024-03-21  206  
+22d407b164ff79 Suren Baghdasaryan 2024-03-21  207  	alloc_tag_sub_check(ref);
+22d407b164ff79 Suren Baghdasaryan 2024-03-21  208  	if (!ref || !ref->ct)
+22d407b164ff79 Suren Baghdasaryan 2024-03-21  209  		return;
+22d407b164ff79 Suren Baghdasaryan 2024-03-21  210  
+239d6c96d86f8a Suren Baghdasaryan 2024-03-21  211  	if (is_codetag_empty(ref)) {
+239d6c96d86f8a Suren Baghdasaryan 2024-03-21  212  		ref->ct = NULL;
+239d6c96d86f8a Suren Baghdasaryan 2024-03-21  213  		return;
+239d6c96d86f8a Suren Baghdasaryan 2024-03-21  214  	}
+239d6c96d86f8a Suren Baghdasaryan 2024-03-21  215  
+22d407b164ff79 Suren Baghdasaryan 2024-03-21  216  	tag = ct_to_alloc_tag(ref->ct);
+22d407b164ff79 Suren Baghdasaryan 2024-03-21  217  
+22d407b164ff79 Suren Baghdasaryan 2024-03-21  218  	this_cpu_sub(tag->counters->bytes, bytes);
+22d407b164ff79 Suren Baghdasaryan 2024-03-21 @219  	this_cpu_dec(tag->counters->calls);
+22d407b164ff79 Suren Baghdasaryan 2024-03-21  220  
+22d407b164ff79 Suren Baghdasaryan 2024-03-21  221  	ref->ct = NULL;
+22d407b164ff79 Suren Baghdasaryan 2024-03-21  222  }
+22d407b164ff79 Suren Baghdasaryan 2024-03-21  223  
 
 -- 
-Thanks and Regards,
-Prateek
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
