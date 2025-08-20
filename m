@@ -2,105 +2,99 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B7990CA0EED
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 06:45:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5BA40CA0EDC
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 07:12:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4CC548E0026; Wed, 20 Aug 2025 02:45:41 -0400 (EDT)
+	id 8B3108E0027; Wed, 20 Aug 2025 03:12:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A4058E0011; Wed, 20 Aug 2025 02:45:41 -0400 (EDT)
+	id 8643F8E0011; Wed, 20 Aug 2025 03:12:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3BA2C8E0026; Wed, 20 Aug 2025 02:45:41 -0400 (EDT)
+	id 779E18E0027; Wed, 20 Aug 2025 03:12:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BAA88E0011
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 02:45:41 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A26A5160398
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 06:45:40 +0000 (UTC)
-X-FDA: 83796200040.29.80FA4BA
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E3E1440003
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 06:45:37 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=UQusCr5X;
-	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 668A78E0011
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 03:12:52 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 01D661384F8
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 07:12:51 +0000 (UTC)
+X-FDA: 83796268584.12.35A854F
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf27.hostedemail.com (Postfix) with ESMTP id E6BFD40013
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 07:12:49 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf27.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755673970; a=rsa-sha256;
+	cv=none;
+	b=ALxOEdX/AiLM50kRbzEdrSkXrQzE2bIzwvXDktbPDYjfq8fRuRk8jWvtGvClHeI7ukYsnp
+	viaDTZHV7JeyPIJMqa79QmGnD6+p92w5vELDiYtBn9TS3kjGt7vTxwKqN+m/DE4zNFtcXm
+	srqKJ0Mrufzj6WKZaLo6vvJ0QBWqhSQ=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf27.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755672338;
+	s=arc-20220608; t=1755673970;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vdkxXjlv65lpFHAFG1mydo3rEC/6GC2gUDCT1Hlfmos=;
-	b=MxrARJSWxL/qDNOuRC6bbTcZmE0IauABbFmzPBIE0iwKS9n9rvt36eJHZWN6XCgDyx5w9a
-	OAu+F1kA8zLZbFqIp3/xT75h5i5v8AF4zHBIMWc1eN7j99GzdxMSSb77kiUptFkZULYqjD
-	4sRzWnwWC0GssdnFBN0d04sXaL6/osc=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=UQusCr5X;
-	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755672338; a=rsa-sha256;
-	cv=none;
-	b=ifntChGk3GV2HGkIQzLdufz9k2phJ27s+YKYfa8lS2lx4t6NQN9w7inITIX6E6DfVprGTm
-	pi2xoF/AXl85Sun7F8teddfNW5jzgW4oC6sibWQxqbWlMxo1snmthopLaypIaRZxv+wFct
-	9dkiR/ElGgzNJu+YSb0HJCSay8RJDQQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755672338; x=1787208338;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Aks18XLnFJDywmToiC/hQRBj84tcW/vcMhMm0McgHP4=;
-  b=UQusCr5X/cZ+aOyeXs87B3bRlV4tqKD6+YQXDRXC51GddjyjVLyCr72e
-   K1276mDrlW9pCczOzKpu+SWcsr5mwfGGLP7rzKmGK8P+CCoPaTUtrkDaV
-   2wDGxgdNMW8oxStUenXJySucx0zGtqa44xhmxIe5u0+u1xJpwY1mXExMV
-   iRn8/HsiGy4QYAQ62WeBhOvK2HbUF5Knyl9BPiVR8md1W2lenyTfKlF9q
-   EhMZfcxAITZPOPf6JYU6v/sMWqw1CkcA/RHO2AoVGcUi2z4gOfFyaOQ2W
-   LUHzCQZWyMf+WOKE1N0Ic6OzPiT/zZP1fZpXTw5Y3E+jJTtpwklBtgo8C
-   A==;
-X-CSE-ConnectionGUID: rzvAwDYVSlaUcqqsJysaXQ==
-X-CSE-MsgGUID: X3BzJWbPRd6ohNH/O0AHLA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="61745336"
-X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
-   d="scan'208";a="61745336"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 23:45:36 -0700
-X-CSE-ConnectionGUID: oZu6t+lTTiuD65z9o2thYw==
-X-CSE-MsgGUID: BZwrqRZbQTWCzxT/CDtEsg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
-   d="scan'208";a="168851444"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by fmviesa010.fm.intel.com with ESMTP; 19 Aug 2025 23:45:32 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uocZd-000IJH-2r;
-	Wed, 20 Aug 2025 06:45:29 +0000
-Date: Wed, 20 Aug 2025 14:44:54 +0800
-From: kernel test robot <lkp@intel.com>
-To: Yunhui Cui <cuiyunhui@bytedance.com>, yury.norov@gmail.com,
-	linux@rasmusvillemoes.dk, paul.walmsley@sifive.com,
-	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-	dennis@kernel.org, tj@kernel.org, cl@gentwo.org, linux-mm@kvack.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Yunhui Cui <cuiyunhui@bytedance.com>
-Subject: Re: [PATCH 2/2] riscv: introduce percpu.h into include/asm
-Message-ID: <202508201452.ciEgfhNO-lkp@intel.com>
-References: <20250819135007.85646-3-cuiyunhui@bytedance.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=85/+YiMW/jNPE6Ecxn705UrLwZ8ZaKSJ5XDM52Fxyfs=;
+	b=Dm3XHZEwjdU2eUbF+rd1vp7pWSbGajVTSfKTfelsejB4Hd4yD1DajfRw6xF8Sj06DiT6+y
+	sf2YdXlWZjh+TFn1M/cJdBI9ODFxrsY1xVoErdqXmWri1XmukBuGFnoubzHRAKcAwD7imM
+	S3M2tnD8Chkl0lDmLmSKjr7hvyYiBRU=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C3F94106F;
+	Wed, 20 Aug 2025 00:12:40 -0700 (PDT)
+Received: from e129823.cambridge.arm.com (e129823.arm.com [10.1.197.6])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 19E3F3F58B;
+	Wed, 20 Aug 2025 00:12:44 -0700 (PDT)
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: ryabinin.a.a@gmail.com,
+	glider@google.com,
+	andreyknvl@gmail.com,
+	dvyukov@google.com,
+	vincenzo.frascino@arm.com,
+	corbet@lwn.net,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	akpm@linux-foundation.org,
+	scott@os.amperecomputing.com,
+	jhubbard@nvidia.com,
+	pankaj.gupta@amd.com,
+	leitao@debian.org,
+	kaleshsingh@google.com,
+	maz@kernel.org,
+	broonie@kernel.org,
+	oliver.upton@linux.dev,
+	james.morse@arm.com,
+	ardb@kernel.org,
+	hardevsinh.palaniya@siliconsignals.io,
+	david@redhat.com,
+	yang@os.amperecomputing.com
+Cc: kasan-dev@googlegroups.com,
+	workflows@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org,
+	Yeoreum Yun <yeoreum.yun@arm.com>
+Subject: [PATCH v5 0/2] introduce kasan.write_only option in hw-tags
+Date: Wed, 20 Aug 2025 08:12:41 +0100
+Message-Id: <20250820071243.1567338-1-yeoreum.yun@arm.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250819135007.85646-3-cuiyunhui@bytedance.com>
-X-Stat-Signature: x9ye75us41w7kwt5g9jnngy9nzs6ah4f
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E3E1440003
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755672337-612057
-X-HE-Meta: U2FsdGVkX188+iwZHVGXhO20bSEyD8QT9GqtYttEkr5VwYUMrruJ12lyH84hu2CRRezaYzfhT1GXYAqnvBaiUS2a22WLRVeyFQaWLCowrY3k+fjaUIXpA95Fn8lVDPyr+jWIPtq7iUqKUhRaufbI+BSktYqBT8KVOe6dvSi59rD6BLgmTBusloASaq4HjuSRgM574cO8SZy07gY3fQNbvJTryt5Aysz+l7NJtXvVn1MYweXAaDoEiNHO7v3KJfSaACUd02x4TuOjeGWt0EeW9Kaq2Th/N8yJh1V9s1QWC1nLrb/cnkf2YTdVITqpta+tyCQyEW9ikRf2BSctzYcuEJ3cjOQAwda7awXIR8XXuwqHRx5ONPQ8qb/4x1k08v5mKi4Oz0NHQgHGBNtyU1i6m65f3ej4VXDg89Wr8t2DOEyMQ8ADqh+rc9aNBu2VMQDaIaoXsycWVnqebcJRR3Kg290GQAdwhseUhdI7NpGLzt6pLAJhlo3lEMg05VGjl4lQIHsZBYbg0du0aKMG3eA4q9zaJc2kdVnpaikTnB5cB9aBa6F5wLbyGNznkQoS33gfY3D/Dg/yqzkg0YTsL2Xbm+CxY0ptyVVZ72C3UnzaRVozY08IedD8sUfOPNuvNPqczK+m/dzgUSy/uF5frXzPHTf7wH/2T8ALw0p4pEfv0DbnVVjKhKB/38wIbPG/jciDlJrC3Z/c0JVYS463zrERBdcQvxDDAxsKf7i4djdZ9dm7cpPC0veFZIHiRkabcbwLn20Gj1C6MUHqE2hNIvekH7B6/6vK9O+c96HXU0DnR44O87fo9qd1wABVlwHZ/qE93211wnzXG6koxvwiZiQWRtVRSUP+FabSvA6FfXrxLYTQDBYj72H0GNUw9WqGCN/kDHgBVX4buIjbPOkiLnvJlBTVNzvo118D7TSMZejcKzHPdeeT4It/k1rm8eEF72Tzw5E9DiGuudKztKil4WP
- 0qEI60dx
- Gz1+BgY2psZeZq+torPoP+tRNsbAVzTbH8tpbv+96u10KqYWYppq6/g2T+uqQq/c0eV0KN+eVxT/icbnm4liAcABriECMqJezVDN4f8CFgJyzFIfpKmzCsfPrzSNWtNJvBo6nmmtkma7fTX0ueWeGieFqDHTup0tuSLhiA7jpE56zl2eIZGJjfFpZUNcbB1sBdjgum76krnrKbBtIAucM3zScN+l41JbGTyPubxnOFa+FYhmNUQKeH4e0CcFfOo8ut8+Cs6e3xZShqvqgw/a663s/tr8r1/k09RSYxsoJCRwu6Nmegpi0zmiIuKNj/4xS8Dbq6ZLNwthfIZNI1X/IoU4YMPCNO098Sg6OdEDlqQBdr2isPaIu0HbQoXM0f29DJHoI1xrtvC4XGTe1FcVLJe0CkUr2XxR7uXBItZEFmpjqos1Z2QU1P34UBXDxGDGYQeTKs6ZCw5hB4pVGHA/rEBm0zZDwMSw0tdnINUu37e+z2bA=
+X-Rspamd-Queue-Id: E6BFD40013
+X-Stat-Signature: r4ycwjphb1rafuue65yd4xpj1octkkq4
+X-HE-Tag: 1755673969-929699
+X-HE-Meta: U2FsdGVkX19R9222kHCOdvWMvEoCglLWoEMUMxpj5B9bcF4RME7jBRwFBMC39lOICvlCr7nJl9uizr4LabDtQs4QA5AKZikib5tPh/aJlbZaviDPLgil2WfHuRZVBJPlzxFUAS6NbPGQrfpzhuSe7UdgQ0AorIPOM6RI2mLhzdNvPLGq0W7XDbR6spxu52nP4fr+ucAATidVMLycRxGtO4crSdRe6SsU8gHbV5pJWtd8YtbtfaCCvRrxWf0yp89sYoUN7y0rMrdXF9OdjbyoONAHx1PTletLb3qbWzv0U6dq5js+jUVGml4B0AuSlforHzEjX0UqzH6L5ErR7AnT4YMGR3Iv1seHLDwPrv5lS9FigNJ8+yGyNpjY5mqHZLD3ythoDgglaYaHPl4AjhHkrIDFZTHJVMKuSsRjJ6FXuIDNvkOYX4t/bc1yl1ZEKSfxFqMGru9P1hiwSR+ZlPYbUO+nQ3llT5Mwmuzyr0DWDu0uRCrmzNiHIeiuaquvaj7NA++9Mb4jZivZlHN18YcrIN7BwiWdBvH7UhZQl4fzr91ZLaOyJVigNSLclUee3W3sENwRpAwynf3T7qZmatWZ+IAcQn9mHa9AnFdl/yisRlGfJGoUtDPEYCiQ1bO/AIoTei7jvGx4t4nVwhL2sJ5DkyU2n7WQywDs098st4BU/9NkCXPYZySWcf5Cj7jJbHg5EIuuf4YjP+ZfRPLzJfHABZOyKQ1xZQHmqLTGDc+bZFaVEHMbl3D4ZLp5FL8UlhHlyZsWtjnUJpUPR07qXqwJGQkS6SoUXK2jOiad15Z+J3Cww79BGaKLshCnB9oDiKbkiw589Un1AzWBVEEYooRW+B6Yb/s+Uesh1Mp6stzPDhhO2PxEg4pvWNk7uPuK1b3Sv2IYg0fp7AkO43xr/u3047b22hVOqQ5mOesuRiopMQ0fNBu8vHAXCpzSUk+AiRw4nMsH9IY6hDhqanCQDeB
+ T3PskUli
+ X0IUmv3u82c4tY9yJUzAzSEt1+r1jd364eA9+QGyRIf8XbqC09pdqCQxkokcNLFSTpR3IAwJaSPYwNo45q+PUGqYgaiqLHTCjnnG63i/4Lb3dr5kNaqS3D7TPPU4nNBrPWl14czgXBsQZwMdPWWGxPOXwzWIhBjkLpU8VvkyAxnD/ZLlJs0JO6NVGuWLBMcm2Nh6fs8IHGDrNDpKuDgPhOG9HocfVACbYYzuFRzG1ilSL07EZ7uVCurwxtGz69/x9w/yIP9U0Tkpbk2uVZTXLkKkMyzc3EnkS+wMdtD0ZynQRugo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,156 +103,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Yunhui,
+Hardware tag based KASAN is implemented using the Memory Tagging Extension
+(MTE) feature.
 
-kernel test robot noticed the following build warnings:
+MTE is built on top of the ARMv8.0 virtual address tagging TBI
+(Top Byte Ignore) feature and allows software to access a 4-bit
+allocation tag for each 16-byte granule in the physical address space.
+A logical tag is derived from bits 59-56 of the virtual
+address used for the memory access. A CPU with MTE enabled will compare
+the logical tag against the allocation tag and potentially raise an
+tag check fault on mismatch, subject to system registers configuration.
 
-[auto build test WARNING on linus/master]
-[also build test WARNING on dennis-percpu/for-next v6.17-rc2 next-20250819]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Since ARMv8.9, FEAT_MTE_STORE_ONLY can be used to restrict raise of tag
+check fault on store operation only.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Yunhui-Cui/riscv-remove-irqflags-h-inclusion-in-asm-bitops-h/20250819-215256
-base:   linus/master
-patch link:    https://lore.kernel.org/r/20250819135007.85646-3-cuiyunhui%40bytedance.com
-patch subject: [PATCH 2/2] riscv: introduce percpu.h into include/asm
-config: riscv-randconfig-002-20250820 (https://download.01.org/0day-ci/archive/20250820/202508201452.ciEgfhNO-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 93d24b6b7b148c47a2fa228a4ef31524fa1d9f3f)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250820/202508201452.ciEgfhNO-lkp@intel.com/reproduce)
+Using this feature (FEAT_MTE_STORE_ONLY), introduce KASAN write-only mode
+which restricts KASAN check write (store) operation only.
+This mode omits KASAN check for read (fetch/load) operation.
+Therefore, it might be used not only debugging purpose but also in
+normal environment.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508201452.ciEgfhNO-lkp@intel.com/
+This patch is based on v6.17-rc1.
 
-All warnings (new ones prefixed by >>):
+Patch History
+=============
+from v4 to v5:
+  - fix wrong allocation
+  - add small comments
+  - https://lore.kernel.org/all/20250818075051.996764-1-yeoreum.yun@arm.com/
 
-   In file included from arch/riscv/kernel/asm-offsets.c:8:
-   In file included from include/linux/mm.h:7:
-   In file included from include/linux/gfp.h:7:
-   In file included from include/linux/mmzone.h:22:
-   In file included from include/linux/mm_types.h:19:
-   In file included from include/linux/workqueue.h:9:
->> include/linux/alloc_tag.h:219:2: warning: implicit conversion from 'typeof (tag->counters->calls)' (aka 'unsigned long long') to 'unsigned long' changes value from 18446744073709551615 to 4294967295 [-Wconstant-conversion]
-     219 |         this_cpu_dec(tag->counters->calls);
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/percpu-defs.h:512:28: note: expanded from macro 'this_cpu_dec'
-     512 | #define this_cpu_dec(pcp)               this_cpu_sub(pcp, 1)
-         |                                         ^~~~~~~~~~~~~~~~~~~~
-   include/linux/percpu-defs.h:510:51: note: expanded from macro 'this_cpu_sub'
-     510 | #define this_cpu_sub(pcp, val)          this_cpu_add(pcp, -(typeof(pcp))(val))
-         |                                         ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~
-   include/linux/percpu-defs.h:501:70: note: expanded from macro 'this_cpu_add'
-     501 | #define this_cpu_add(pcp, val)          __pcpu_size_call(this_cpu_add_, pcp, val)
-         |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
-   include/linux/percpu-defs.h:372:29: note: expanded from macro '__pcpu_size_call'
-     372 |                 case 8: stem##8(variable, __VA_ARGS__);break;           \
-         |                         ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~
-   arch/riscv/include/asm/percpu.h:96:78: note: expanded from macro 'this_cpu_add_8'
-      96 | #define this_cpu_add_8(pcp, val)        _pcp_protect(__percpu_add_amo_case_64, pcp, val)
-         |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
-   arch/riscv/include/asm/percpu.h:72:26: note: expanded from macro '_pcp_protect'
-      72 |         op(raw_cpu_ptr(&(pcp)), __VA_ARGS__);                           \
-         |         ~~                      ^~~~~~~~~~~
-   1 warning generated.
+from v3 to v4:
+  - fix wrong condition
+  - https://lore.kernel.org/all/20250816110018.4055617-1-yeoreum.yun@arm.com/
+
+from v2 to v3:
+  - change MET_STORE_ONLY feature as BOOT_CPU_FEATURE
+  - change store_only to write_only
+  - move write_only setup into the place other option's setup place
+  - change static key of kasan_flag_write_only to static boolean.
+  - change macro KUNIT_EXPECT_KASAN_SUCCESS to KUNIT_EXPECT_KASAN_FAIL_READ.
+  - https://lore.kernel.org/all/20250813175335.3980268-1-yeoreum.yun@arm.com/
+
+from v1 to v2:
+  - change cryptic name -- stonly to store_only
+  - remove some TCF check with store which can make memory courruption.
+  - https://lore.kernel.org/all/20250811173626.1878783-1-yeoreum.yun@arm.com/
+
+
+Yeoreum Yun (2):
+  kasan/hw-tags: introduce kasan.write_only option
+  kasan: apply write-only mode in kasan kunit testcases
+
+ Documentation/dev-tools/kasan.rst  |   3 +
+ arch/arm64/include/asm/memory.h    |   1 +
+ arch/arm64/include/asm/mte-kasan.h |   6 +
+ arch/arm64/kernel/cpufeature.c     |   2 +-
+ arch/arm64/kernel/mte.c            |  18 +++
+ mm/kasan/hw_tags.c                 |  70 ++++++++-
+ mm/kasan/kasan.h                   |   7 +
+ mm/kasan/kasan_test_c.c            | 237 ++++++++++++++++++++---------
+ 8 files changed, 266 insertions(+), 78 deletions(-)
+
+
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
 --
-   In file included from arch/riscv/errata/sifive/errata.c:7:
-   In file included from include/linux/memory.h:19:
-   In file included from include/linux/node.h:18:
-   In file included from include/linux/device.h:16:
-   In file included from include/linux/energy_model.h:7:
-   In file included from include/linux/kobject.h:20:
-   In file included from include/linux/sysfs.h:16:
-   In file included from include/linux/kernfs.h:12:
-   In file included from include/linux/idr.h:15:
-   In file included from include/linux/radix-tree.h:16:
-   In file included from include/linux/percpu.h:5:
->> include/linux/alloc_tag.h:219:2: warning: implicit conversion from 'typeof (tag->counters->calls)' (aka 'unsigned long long') to 'unsigned long' changes value from 18446744073709551615 to 4294967295 [-Wconstant-conversion]
-     219 |         this_cpu_dec(tag->counters->calls);
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/percpu-defs.h:512:28: note: expanded from macro 'this_cpu_dec'
-     512 | #define this_cpu_dec(pcp)               this_cpu_sub(pcp, 1)
-         |                                         ^~~~~~~~~~~~~~~~~~~~
-   include/linux/percpu-defs.h:510:51: note: expanded from macro 'this_cpu_sub'
-     510 | #define this_cpu_sub(pcp, val)          this_cpu_add(pcp, -(typeof(pcp))(val))
-         |                                         ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~
-   include/linux/percpu-defs.h:501:70: note: expanded from macro 'this_cpu_add'
-     501 | #define this_cpu_add(pcp, val)          __pcpu_size_call(this_cpu_add_, pcp, val)
-         |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
-   include/linux/percpu-defs.h:372:29: note: expanded from macro '__pcpu_size_call'
-     372 |                 case 8: stem##8(variable, __VA_ARGS__);break;           \
-         |                         ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~
-   arch/riscv/include/asm/percpu.h:96:78: note: expanded from macro 'this_cpu_add_8'
-      96 | #define this_cpu_add_8(pcp, val)        _pcp_protect(__percpu_add_amo_case_64, pcp, val)
-         |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
-   arch/riscv/include/asm/percpu.h:72:26: note: expanded from macro '_pcp_protect'
-      72 |         op(raw_cpu_ptr(&(pcp)), __VA_ARGS__);                           \
-         |         ~~                      ^~~~~~~~~~~
-   arch/riscv/errata/sifive/errata.c:29:14: warning: result of comparison of constant 9223372036854775815 with expression of type 'unsigned long' is always true [-Wtautological-constant-out-of-range-compare]
-      29 |         if (arch_id != 0x8000000000000007 ||
-         |             ~~~~~~~ ^  ~~~~~~~~~~~~~~~~~~
-   arch/riscv/errata/sifive/errata.c:42:14: warning: result of comparison of constant 9223372036854775815 with expression of type 'unsigned long' is always true [-Wtautological-constant-out-of-range-compare]
-      42 |         if (arch_id != 0x8000000000000007 && arch_id != 0x1)
-         |             ~~~~~~~ ^  ~~~~~~~~~~~~~~~~~~
-   3 warnings generated.
---
-   In file included from arch/riscv/kernel/asm-offsets.c:8:
-   In file included from include/linux/mm.h:7:
-   In file included from include/linux/gfp.h:7:
-   In file included from include/linux/mmzone.h:22:
-   In file included from include/linux/mm_types.h:19:
-   In file included from include/linux/workqueue.h:9:
->> include/linux/alloc_tag.h:219:2: warning: implicit conversion from 'typeof (tag->counters->calls)' (aka 'unsigned long long') to 'unsigned long' changes value from 18446744073709551615 to 4294967295 [-Wconstant-conversion]
-     219 |         this_cpu_dec(tag->counters->calls);
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/percpu-defs.h:512:28: note: expanded from macro 'this_cpu_dec'
-     512 | #define this_cpu_dec(pcp)               this_cpu_sub(pcp, 1)
-         |                                         ^~~~~~~~~~~~~~~~~~~~
-   include/linux/percpu-defs.h:510:51: note: expanded from macro 'this_cpu_sub'
-     510 | #define this_cpu_sub(pcp, val)          this_cpu_add(pcp, -(typeof(pcp))(val))
-         |                                         ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~
-   include/linux/percpu-defs.h:501:70: note: expanded from macro 'this_cpu_add'
-     501 | #define this_cpu_add(pcp, val)          __pcpu_size_call(this_cpu_add_, pcp, val)
-         |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
-   include/linux/percpu-defs.h:372:29: note: expanded from macro '__pcpu_size_call'
-     372 |                 case 8: stem##8(variable, __VA_ARGS__);break;           \
-         |                         ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~
-   arch/riscv/include/asm/percpu.h:96:78: note: expanded from macro 'this_cpu_add_8'
-      96 | #define this_cpu_add_8(pcp, val)        _pcp_protect(__percpu_add_amo_case_64, pcp, val)
-         |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
-   arch/riscv/include/asm/percpu.h:72:26: note: expanded from macro '_pcp_protect'
-      72 |         op(raw_cpu_ptr(&(pcp)), __VA_ARGS__);                           \
-         |         ~~                      ^~~~~~~~~~~
-   1 warning generated.
+LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
 
-
-vim +219 include/linux/alloc_tag.h
-
-22d407b164ff79 Suren Baghdasaryan 2024-03-21  202  
-22d407b164ff79 Suren Baghdasaryan 2024-03-21  203  static inline void alloc_tag_sub(union codetag_ref *ref, size_t bytes)
-22d407b164ff79 Suren Baghdasaryan 2024-03-21  204  {
-22d407b164ff79 Suren Baghdasaryan 2024-03-21  205  	struct alloc_tag *tag;
-22d407b164ff79 Suren Baghdasaryan 2024-03-21  206  
-22d407b164ff79 Suren Baghdasaryan 2024-03-21  207  	alloc_tag_sub_check(ref);
-22d407b164ff79 Suren Baghdasaryan 2024-03-21  208  	if (!ref || !ref->ct)
-22d407b164ff79 Suren Baghdasaryan 2024-03-21  209  		return;
-22d407b164ff79 Suren Baghdasaryan 2024-03-21  210  
-239d6c96d86f8a Suren Baghdasaryan 2024-03-21  211  	if (is_codetag_empty(ref)) {
-239d6c96d86f8a Suren Baghdasaryan 2024-03-21  212  		ref->ct = NULL;
-239d6c96d86f8a Suren Baghdasaryan 2024-03-21  213  		return;
-239d6c96d86f8a Suren Baghdasaryan 2024-03-21  214  	}
-239d6c96d86f8a Suren Baghdasaryan 2024-03-21  215  
-22d407b164ff79 Suren Baghdasaryan 2024-03-21  216  	tag = ct_to_alloc_tag(ref->ct);
-22d407b164ff79 Suren Baghdasaryan 2024-03-21  217  
-22d407b164ff79 Suren Baghdasaryan 2024-03-21  218  	this_cpu_sub(tag->counters->bytes, bytes);
-22d407b164ff79 Suren Baghdasaryan 2024-03-21 @219  	this_cpu_dec(tag->counters->calls);
-22d407b164ff79 Suren Baghdasaryan 2024-03-21  220  
-22d407b164ff79 Suren Baghdasaryan 2024-03-21  221  	ref->ct = NULL;
-22d407b164ff79 Suren Baghdasaryan 2024-03-21  222  }
-22d407b164ff79 Suren Baghdasaryan 2024-03-21  223  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
