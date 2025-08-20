@@ -2,111 +2,152 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CA47ECA0EE6
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 00:52:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BB424CA0EEB
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 00:59:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E0908E000A; Tue, 19 Aug 2025 20:52:58 -0400 (EDT)
+	id 603328E000B; Tue, 19 Aug 2025 20:59:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 491A38E0001; Tue, 19 Aug 2025 20:52:58 -0400 (EDT)
+	id 5B3CF8E0001; Tue, 19 Aug 2025 20:59:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 380238E000A; Tue, 19 Aug 2025 20:52:58 -0400 (EDT)
+	id 4A2538E000B; Tue, 19 Aug 2025 20:59:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 243F08E0001
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 20:52:58 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 50C3D58346
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 00:52:57 +0000 (UTC)
-X-FDA: 83795311194.10.497092B
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 5B50540012
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 00:52:55 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XE7oQhcE;
-	spf=pass (imf27.hostedemail.com: domain of chrisl@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 38A6C8E0001
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 20:59:44 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A9EBE137C3F
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 00:59:43 +0000 (UTC)
+X-FDA: 83795328246.05.5DBE332
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 3CF202000B
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 00:59:41 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=c5FdaI3t;
+	spf=pass (imf03.hostedemail.com: domain of pratyush.brahma@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=pratyush.brahma@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755651175;
+	s=arc-20220608; t=1755651581;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3wqjiTbnui9R4RROocBaspgqTtoXSzq+trJI68vlYIE=;
-	b=a9kGeSKJIJphIf5udnzuSYH8BxkVyFcglmw1sod+A1MXeqGiO3WUKu61FzlkZedyeCnj5O
-	DgSzDvAHWIFzrGdnrxJeOeeSstbGnMUvIaT+QmZzm1KCr55PhmgHK4eJTZVNb1tOpRmr6E
-	qeGGutFlackpZDo9VtWtGAAVJLebWSI=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XE7oQhcE;
-	spf=pass (imf27.hostedemail.com: domain of chrisl@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755651175; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=tgqDeb/Wu59YCnXn+qrsSc3XFwle/PbP09h/hojDfwc=;
+	b=G17MjwLW/JMhrdJaxdemlBY3AvZ1nipGrFNz/NjK9Nv+uRG9F9v0yHNloDfqLaUycNWhHo
+	rBpIMkj46Y4Zfh/LJo+zfkw1S7IG+yGSp62soDavnHuxQLjKUOXz8vxsbIqcww42aF8x/z
+	wbifjXVsWjlEM5o5melxbR6DIDRxoMk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755651581; a=rsa-sha256;
 	cv=none;
-	b=IoxghaCHYqMkCIuz3NcDGYOpkMH+IPt2aFehC7BjpgVgPXIXuE5qTl2T7xycrBt+C3KFzD
-	nrL747MYBRsdRqEWukIPQkbCs21vf11X86MhS59JHCjLsALtJUSW83/o7vEZfBJdmxwYwL
-	aQGH0rkZ9+CHtd8bmUvNBpvNN0m99Z8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 2424C5C3062
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 00:52:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE3A3C113CF
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 00:52:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755651173;
-	bh=gyxDw6RJLZ4nHOW//7O/dOWyMikXlHhdl9FS8tozaIA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=XE7oQhcEh14/9LRdxfeo8vG2f3N8WNF/IBLtdZST5PUMjsW50RkIefAPXy0MER1lS
-	 8aHmvBknBQaXz1xZ93bEhCk0zuFrji4S5DlZh6YjDet2ARQh4Gp6R5wGT71f0oBDYN
-	 D7KaTVRxOpm9aHKXbYD2JbM+YRCaCTCAOplwIfc7a0K1UBrDrfj/TcweN9T5qs3RGX
-	 +mIpbprlsbvB8Xx+y7Jt+FJgl6zcHzHKCAVMFMCCeMjrY6wBtArtDvoXIJbZFT2rbN
-	 thVyBSb+7lnhWTGMvo3XRyzMEM80OM9SQ8pj0Y7qfG6OQtECBOIMwbvJK9C7iq1M6f
-	 6fhu4w+O7bl0A==
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-459fbca0c95so33275e9.0
-        for <linux-mm@kvack.org>; Tue, 19 Aug 2025 17:52:53 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVSb6p8xExjyVn5NI2f5fQAtWlBde2KJ37j8n7mvqUt/aTjNpplUaq5Hu/LZzW/p9gQykvWoFvw9A==@kvack.org
-X-Gm-Message-State: AOJu0YwwAo0eAhCwfYuLrHzLUk2x5b/cFgQzKohC5DotfPs4q7nG1sP2
-	KD/+XsysKRsciJp8IyNVBaBWVKZ+bTz+G0okbdr6Xzx5flta+plbVXHYNJq2/qpOv4eSmPlj5xl
-	AVwHFJFKrNzetim9otjWU7PKTWsLoURPJNyQ1lRYX
-X-Google-Smtp-Source: AGHT+IFQ0lLQ7LStOuv6ZrlcBR1b2jECtuFF2XmQzgGif7AkQw7+tIT3lA4q2BnzLBkSF3gaXH8SoEg9aL563Wg43Lc=
-X-Received: by 2002:a05:600c:35c2:b0:45a:207a:eb7c with SMTP id
- 5b1f17b1804b1-45b476d7e09mr701005e9.0.1755651172251; Tue, 19 Aug 2025
- 17:52:52 -0700 (PDT)
+	b=5d4xAlFTMlHfwaAzr95QkAkkTpCLVAFq6pMJxB+V8/enlMhbiDKHl2WECATd3Nde03aq0s
+	koTQFPgdX3xlkTdWoKBvSS+S2Q4hNY/Gv7OktPrf/uroh1uUnx+O+n3SeRxMuZS+tzyPuE
+	OQtonbJLZRIC9aPD3ci2dPWNTM3FQXY=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=c5FdaI3t;
+	spf=pass (imf03.hostedemail.com: domain of pratyush.brahma@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=pratyush.brahma@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57JL0jx5026216
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 00:59:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=tgqDeb/Wu59YCnXn+qrsSc
+	3XFwle/PbP09h/hojDfwc=; b=c5FdaI3tig5aZpOsKzPIRXdUSoffMADGS0I6Jy
+	gS52HXa8CuYbg6u1u5WAk4wA1KL6gvVucbLhPy+0uh/bUtM598ZjVIE0s7oLMqA9
+	OcYwIcRPVpjSqNaMi4x4X1haOqq+grMRj9Fk0ikqWe3f1jCFaTwhvWv24/PAoq/0
+	/Ul5SUBN7wjVUF+bmuxaQ1UWc5hUMCQKND4RuayrtLE9gyw9EUcIQALEzxjXMJSX
+	TkpVfXY0/eQfgVTvL9GEl2kV1feLesfcIpoL0U/bmmkJ1FaVlEap4vRj3C0xeSzC
+	qXJGQnQwHbFXUYfslhLabm8lPuRjAGFDINCJwrM3B1JgtuoQ==
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48n0te8em5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 00:59:39 +0000 (GMT)
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-76e2eab5baaso4981636b3a.2
+        for <linux-mm@kvack.org>; Tue, 19 Aug 2025 17:59:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755651579; x=1756256379;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tgqDeb/Wu59YCnXn+qrsSc3XFwle/PbP09h/hojDfwc=;
+        b=XHzlDmakHR90BhGi0k543rZhnU6fgoPJxTVxBz2vsXS+uwjytzTNSg9mM5Cu5Ta6lp
+         C7zqltLc+JfbKyF/MKGAcoN2ekdIQorZv0V/3MuxLfquNUsk97e44wP9w56bdfvKXxnp
+         GHMJyQPtSxx+XMvtx5wk4PVhijxmauxox4gK28Xe8LUpYoPkCxPGQEUfbsnJFzFcJMfj
+         kl0AulgMkzouVIvFKYEShWZ2F5b15kgye7CJYMtOSP1oZuPffLdiwII1zOGzy2wG4BWW
+         HFT2LEcoFslI2gjLOYxHrFK3gYIPrQndLBnYYoOytGHc+IJRD1hDMbY2k55Pyr6nC38z
+         Tppg==
+X-Gm-Message-State: AOJu0YyLdKd6tUKuk/fxM/gjqtd/Blq7vY/mS/UJPwFCQDFXnqd0fbL8
+	8kZCHT0eKWcMrxbTAouHYTkZ2ULS28bfO0b0hB6fIH2ySIRe+tG00C1i+AZ0r0KCEZUt31je7Ko
+	DTyps4NvQeGA98oIqsrQdcvj/7ly16sjnqy3vZSAZyzhJw3rjUkEMNQ==
+X-Gm-Gg: ASbGncsT3nK8tve0Lnu6eYLESbjmNp4TP7LQMVEEI5x8MLVomIXUiR6IpgaoHAwHsUL
+	+Rfm2/dg0+cP1KMN06ULMH4zIt0SVdOQeIqd2CM1ymzgtfeR73C0wTSGC8xWo4iz2+Msyd7VOSc
+	zw1EkwHmQyXEVuJcJZMJR4pxNSKKi6SYvE8vxmH4STFk/oWehkxrzICZdfe3f9UGL9VtfTb+i+D
+	WYFW1bSRaM8VoitOBns6f3Ul1T7Sjgvb96xMO35tiV0fYwZpCdQXiLpc4TWwdpunf8OT96hRZWN
+	t07DB/HZ9k/PbMn3qCpalpWpmBgRKNBiCrvnAdjA2Ac=
+X-Received: by 2002:a05:6a00:2189:b0:746:27fc:fea9 with SMTP id d2e1a72fcca58-76e8dc8e43dmr1156671b3a.11.1755651578774;
+        Tue, 19 Aug 2025 17:59:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFwzabe7LAJIehOSscjgzyy6m4bK1mT4ViKPJGUPmEHGsbnZsBoCP7RnGxjujuJSMr6FkASjw==
+X-Received: by 2002:a05:6a00:2189:b0:746:27fc:fea9 with SMTP id d2e1a72fcca58-76e8dc8e43dmr1156653b3a.11.1755651578242;
+        Tue, 19 Aug 2025 17:59:38 -0700 (PDT)
+Received: from hu-pbrahma-hyd.qualcomm.com ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e7d13ebdcsm3672630b3a.47.2025.08.19.17.59.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Aug 2025 17:59:37 -0700 (PDT)
+From: pratyush.brahma@oss.qualcomm.com
+X-Google-Original-From: Pratyush
+Date: Wed, 20 Aug 2025 06:29:34 +0530
+Subject: [PATCH v2] mm/numa: Use SZ_1M macro to denote bytes to MB
+ conversion
 MIME-Version: 1.0
-References: <20250716202006.3640584-1-youngjun.park@lge.com>
- <20250716202006.3640584-2-youngjun.park@lge.com> <jrkh2jy2pkoxgsxgsstpmijyhbzzyige6ubltvmvwl6fwkp3s7@kzc24pj2tcko>
- <aH+apAbBCmkMGPlO@yjaykim-PowerEdge-T330> <aH/baxIgrBI3Z1Hl@yjaykim-PowerEdge-T330>
- <uyxkdmnmvjipxuf7gagu2okw7afvzlclomfmc6wb6tygc3mhv6@736m7xs6gn5q>
- <CAF8kJuMo3yNKOZL9n5UkHx_O5cTZts287HOnQOu=KqQcnbrMdg@mail.gmail.com>
- <aKC+EU3I/qm6TcjG@yjaykim-PowerEdge-T330> <CAF8kJuNuNuxxTbtkCb3Opsjfy-or7E+0AwPDi7L-EgqoraQ3Qg@mail.gmail.com>
- <aKROKZ9+z2oGUJ7K@yjaykim-PowerEdge-T330>
-In-Reply-To: <aKROKZ9+z2oGUJ7K@yjaykim-PowerEdge-T330>
-From: Chris Li <chrisl@kernel.org>
-Date: Tue, 19 Aug 2025 17:52:39 -0700
-X-Gmail-Original-Message-ID: <CAF8kJuPUouN4c6V-CaG7_WQUAvRxBg02WRxsMtL56_YTdTh1Jg@mail.gmail.com>
-X-Gm-Features: Ac12FXx_nPLaGsHvIhpZPPFVTK0BSLVMR7dAaEP08V7iOUT0TsBblzZbq7PhYug
-Message-ID: <CAF8kJuPUouN4c6V-CaG7_WQUAvRxBg02WRxsMtL56_YTdTh1Jg@mail.gmail.com>
-Subject: Re: [PATCH 1/4] mm/swap, memcg: Introduce infrastructure for
- cgroup-based swap priority
-To: YoungJun Park <youngjun.park@lge.com>
-Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, 
-	shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com, 
-	bhe@redhat.com, baohua@kernel.org, cgroups@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, gunho.lee@lge.com, 
-	iamjoonsoo.kim@lge.com, taejoon.song@lge.com, 
-	Matthew Wilcox <willy@infradead.org>, David Hildenbrand <david@redhat.com>, Kairui Song <ryncsn@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5B50540012
-X-Stat-Signature: i38bm6z8ayueprgh1i6q1f8nuz964qaw
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250820-numa-memblks-refac-v2-1-43bf1af02acd@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIAPUdpWgC/32NQQ6CMBREr0L+2k9aoEJZeQ/Doi1FGinVfiEaw
+ t2tHMDNJG+SebMB2egsQZttEO3qyIU5QXHKwIxqvll0fWIoWCFYwyXOi1fordfTnTDaQRmsdaU
+ F47UWsoE0fKTavQ/ptUs8OnqF+Dk+Vv5r/+pWjhxledbV0JeCMXYJRPlzUZMJ3ucpoNv3/QswN
+ VIFuwAAAA==
+X-Change-ID: 20250819-numa-memblks-refac-7b4b5017b598
+To: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755651575; l=3166;
+ i=pratyush.brahma@oss.qualcomm.com; s=20250808; h=from:subject:message-id;
+ bh=uwvqx/6wxYcvRMmIDLsR1doIm7asXVLwPd2C3ZczI0c=;
+ b=PHXOrHcYNJJO1gn2TEWd5zvXmQtC4s5LF+0wXgcRYMqipgGP/S5XHb9W8hBQxrK5qgw1ZmAsJ
+ xuz2jfc62OdCv9yYSX6sG6gv7u49KUzTbNd4VrJJve/HoOW9iiM8ANL
+X-Developer-Key: i=pratyush.brahma@oss.qualcomm.com; a=ed25519;
+ pk=ZeXF1N8hxU6j3G/ajMI+du/TVXMZQaXDwnJyznB69ms=
+X-Proofpoint-ORIG-GUID: KnctMLq5PaYMwDeJ2tuPwwdKB8F7nE51
+X-Authority-Analysis: v=2.4 cv=Kr8UGWWN c=1 sm=1 tr=0 ts=68a51dfb cx=c_pps
+ a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=zDO9BBgFI2vZD2P_t4cA:9 a=QEXdDO2ut3YA:10 a=zc0IvFSfCIW2DFIPzwfm:22
+X-Proofpoint-GUID: KnctMLq5PaYMwDeJ2tuPwwdKB8F7nE51
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE5MDE5NiBTYWx0ZWRfXzdEXkR1CnxRH
+ KgtOYC+/fB/cyQUGlugtt5wiKmMe0tL0282vwU5isyk4zqQElJHqQHwABWbgRUwa3gr6xCV3iot
+ eI8CEsl+wYT2vLMI1f/SgZ0MZNQLgcJqL/5caeLB0OHeQWubuWTnN5SuWY9b4aASUvOL5U9eNJt
+ IoXjVwDRJvyU3hTzmQHJlQ0NK1BFMnPuVsgdE9ci7Ckyd5Zn546E3slRUiPSmsGCVUpW0UpU8dg
+ hJBzLtcUd+oeB1pJ15rELdgIZVGzKIiZ5JiXE7I6SEzLTQxUDDbzi2TWWcyyx7E9YsDNeOstOrh
+ q/o1UuYtqyrbu00bdHWKSn7ld+1gLGft/nSzzKdJKVFlzpGrRvdsb0yxS+jsa+HSYltqZAn1LVC
+ 8PYqYorDMbI8o82pQcsVY59X+DX1iw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-19_04,2025-08-14_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 suspectscore=0 phishscore=0 impostorscore=0 adultscore=0
+ clxscore=1015 priorityscore=1501 lowpriorityscore=0 spamscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2508110000
+ definitions=main-2508190196
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3CF202000B
+X-Stat-Signature: etmk5yx4kmxno1w7nyomzts3z4zi5gxj
 X-Rspam-User: 
-X-HE-Tag: 1755651175-541807
-X-HE-Meta: U2FsdGVkX19RV9lqpDIEpNWhNRXfO+ZyKi+hYCNFBaslRt+90DXUYus2jmYH4AHWgEwyF/2HDMsEcJmIDTwNjy1S/r+P5IuCVBvdp8CORiNQUzOtqnoBjMKeJX3VwRdVub510waS1mD+0YoILli2OLfPuHuJVop9KxX6/MkUf2cwKmk1efvwnAbYgFrPZ+RWgzjjZim3/g+hzBZj4E2lt9U/aVdOmowuqqUOIijQytRghJ9CFEHqATL7b6ml8m6lCcFpGR6Swi9Mv/rHwUIyDW1/yh52JPVIqgrK5oH1IQAlgVuC34F2GLTCL4M+HhP7fD8jOferyzvWIGRq+R0YDOB+Vzj/IVoklzwqUOb6Dkk44MTbFn6aeFGRQ/hWHNCXtDQNr7SRPr5YDkfH8ogg9qYsmz7ajTz5uMEP+YG78tkjG8KiwkHWaEWqhKjIsirmdCLt2SVG1lXDBuKtwCwDsSMd2+5efFs7wWeOmC0xkORzJxBPEkeJQ8ZOnG2IWbyKlOxi26uJnqvfgdi5p7f7FfbBJOKB50vGbuf5qYyytkrE3lgiEVcJWbTHakxCXYJFEDnqTmUVeWDBZ3ZDaSCGsv9bC+ijUKrGpXv2FxClrvcdKTd+WDv13ZKuHXaQruZ7GJs0bGzS1Ric/m6EPfAYMq8d0lebw78Ca1+8TXmoibF+ZBQHqyKzUyU5WIMwV8Ki9GLXXRmZQ71zlQSp6JY4CHQD+5NIUExz3eIk+5M54NcBnWtrB4KN+XBdeCJOa4toLTSZSAuz1Pbi2QOciROlOFD7qcIL22CYzugdJEUTPYToEKRjvLcFdmZqtC0s5AZnYhSBTb8s9Yr2N6wpfsg2igTPM9a8NQQdXFnL2E7YCN9cj+mXKriyGMB0JBb/c+XoKAFMlD1vz+rf8AvWehSmZqeZoXAEwJ1ft0kFZKTxOcAXzSXgvU4T+9aRbT6L9BDoaygizo6W2001yt0Ct39
- fFfvg7GP
- BK3KIAVqS2+j29rx/zrhS+Y854+QWaYbudtuCUQfMyxWpdRgnUMqpfXUxhnOfbjgip6nzjXAFLBMR1/JfHu/C0Beuh0Fijwu1/ECu0onygK9QlG0qGCCVxaUstJWBWJM0BL1Wy7OcpdQelXlKsQiJeCF4Z7k62DaK74UMcYo3kcZ/qs0uaINv6BOrumpZUgPcqkJ/MzD0cd7ElUMNlsL8GVKif83UArlDqF0kLoSfch/oFK3nFBaNoU0MscFmgqg808PO4FQ1PyueX60jJpGT4O6h+hqsl7DTuUBcu8bZue/UmWew7ZCZzo4j+xiCJlNj/yaDV/f68zXLfKNY7Vre2casUMT8WFXpomD1LKrjcPp+61s=
+X-HE-Tag: 1755651581-839287
+X-HE-Meta: U2FsdGVkX1+yxMYLicDyA+hEGdHPWrFrJZdy+HMSL8ouQpqkrgVfEnQuIMr5VDqJCqxjcSy2g6qBIA8BngBxHvn4hCfgHKIhFaQsCR0dkNmuNiwqLRN2uhHnDFcNht5S2cEb6xpp+0tYN0e9Stypk3X2eyDePa2B1fb3Vv7A2g9vzNm82QQdFFv0d5a1zMpKSA3CexhFeuZZR+xQnKJXcXYijxboJFnSHeGJe1n6JrtWJiNkt8yolbvvhE7MTptb3HbHMwMcR1VeuqRJgaas3SwBW03ZEduO3nH1xHFDru4ax2iV2u80Refex7/Dx4vvxIex1H0su6Kx/bfKkz62ZDTFr+SglrFDsPcxHkSwFjouy+hBgANji7D9sd1o0WLMhdf8gnwxk8+BtpWC1mNSaDgDjheqkbL2HgterY63fsGfZTYatKy+XI8WmMsQvef4N/tRmYxCBqYZ9aYYjFPBHcLAE4q7eWRUxXRk9GNITBuyEWy1NVxY47G8cbavrb51uQ2m1NVJ/7T7/oIaY37rPCeLvIJ3sw3flACx90osYiOQkH0sxyZ79OD0yf11amjntq2PRUscnrMDtzYpyYS1olRsF1SG4yUF6qC1SN0mxqWhwdAnM/WUxMHOKzi/KVQFwOlnc/u4RmC/XSFg+wTW62xDAxbUQ9fo3aftLxj7ZL8c5buMftzZIwdG1kSntoSHQ9LklXRqmsQyTCqNJDQr7axR6gnRXjCUpykOFIMWaS9Qfa5YlEv0gE3/UcopwUz9D8AQ6kw73VNxCag9RcMfsYzApxdwcIqqrCkNFihlkkt7jBIDrcXg7uOM8xigMH7MnC2XhLC0Ym0W10inzU+ttujJW+NaI8qw6QQbbKjm/+pIBuOtEWA909WogWw6PAjd4qqTug4nSjxSyNgI9W6YrJq4gXEqapOnL7fNPksFIrwY6gj/s7mVz039XDaWKhMme/ZlRL1RRv9cyLfO7QE
+ RD/9jaqT
+ 8i0rM4J+H0k1EsFTuu8IZAQwp0VEGmnF9SNnoxVSL28XTqulBogvSl1PmLLjhMotuUH/fPBzYrojEsOH1uQFO39hXX5hT6lknftThQuHxaskDQlDTPApXODIAxcRkNLrqu7bO
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,249 +156,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 19, 2025 at 3:13=E2=80=AFAM YoungJun Park <youngjun.park@lge.co=
-m> wrote:
->
-> On Sat, Aug 16, 2025 at 12:15:43PM -0700, Chris Li wrote:
->
-> At first, Thank you for detailed and fast feedback!
->
-> > I have not questioned the approach you can achieve with your goal. The
-> > real question is, is this the best approach to consider to merge into
->
-> Yes, I believe this could be the best approach.
-> I have compared several possible approaches before making this proposal. =
-These
-> are the alternatives I reviewed in the RFC:
-> (https://lore.kernel.org/linux-mm/20250612103743.3385842-1-youngjun.park@=
-lge.com/)
-> The part I mentions are as belows
->
-> > Evaluated Alternatives
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > 1. **Per-cgroup dedicated swap devices**
-> >    - Previously proposed upstream [1]
-> >    - Challenges in managing global vs per-cgroup swap state
-> >    - Difficult to integrate with existing memory.limit / swap.max seman=
-tics
-> > 2. **Multi-backend swap device with cgroup-aware routing**
-> >    - Considered sort of layering violation (block device cgroup awarene=
-ss)
-> >    - Swap devices are commonly meant to be physical block devices.
-> >    - Similar idea mentioned in [2]
-> > 3. **Per-cgroup swap device enable/disable with swap usage contorl**
-> >    - Expand swap.max with zswap.writeback usage
-> >    - Discussed in context of zswap writeback [3]
-> >    - Cannot express arbitrary priority orderings
-> >      (e.g. swap priority A-B-C on cgroup C-A-B impossible)
-> >    - Less flexible than per-device priority approach
-> > 4. **Per-namespace swap priority configuration**
-> >    - In short, make swap namespace for swap device priority
-> >    - Overly complex for our use case
-> >    - Cgroups are the natural scope for this mechanism
->
-> In my view, the `swap.tier` proposal aligns quite well with alternative (=
-3) that
-> I reviewed. That approach keeps the global priority assignment while addi=
-ng
+From: Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
 
-Not the same as option 3. swap.tier has one level in direction for the
-tier class. It does not directly operate on swap files. That level of
-indirection allows swap files to rotate within the same tier. I expect
-it to have very few tires so all the swap tires can fit a simple
-bitmask, e.g. one 32 bit integer per cgroup is good enough. Assume we
-allow 31 tiers. We can have less than 32 swap files, 31 tiers should
-be more than enough.
+Replace the manual bitwise conversion of bytes to MB with
+SZ_1M macro, a standard macro used within the mm subsystem,
+to improve readability.
 
-> inclusion/exclusion semantics at the cgroup level. The reason I decided n=
-ot to
-> go with it is because it lacks flexibility =E2=80=94 it cannot express ar=
-bitrary
-> ordering. As noted above, it is impossible to represent arbitrary orderin=
-gs,
-> which is why I chose a per-device priority strategy instead.
+Signed-off-by: Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
+---
+Changes in v2:
+- Replaced the implementations in numa_emulation.c and memblock.c as
+  well as per Mike's recommendation.
+- Link to v1: https://lore.kernel.org/r/20250819-numa-memblks-refac-v1-1-936b4fd35000@oss.qualcomm.com
+---
+ mm/memblock.c       | 4 ++--
+ mm/numa_emulation.c | 4 ++--
+ mm/numa_memblks.c   | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-As said, arbitrary orders violate the swap entry LRU orders. You still
-haven't given me a detailed technical reason why you need arbitrary
-orders other than "I want a pony".
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 154f1d73b61f2234efe61c5cce5105be160d0041..8a0ed3074af4b4dacb87e45f3fecaeb6b3222fcf 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -780,9 +780,9 @@ bool __init_memblock memblock_validate_numa_coverage(unsigned long threshold_byt
+ 	}
+ 
+ 	if ((nr_pages << PAGE_SHIFT) > threshold_bytes) {
+-		mem_size_mb = memblock_phys_mem_size() >> 20;
++		mem_size_mb = memblock_phys_mem_size() / SZ_1M;
+ 		pr_err("NUMA: no nodes coverage for %luMB of %luMB RAM\n",
+-		       (nr_pages << PAGE_SHIFT) >> 20, mem_size_mb);
++		       (nr_pages << PAGE_SHIFT) / SZ_1M, mem_size_mb);
+ 		return false;
+ 	}
+ 
+diff --git a/mm/numa_emulation.c b/mm/numa_emulation.c
+index 9d55679d99ceea9807d41840cf097eb449afaf8e..703c8fa05048019317bc2a011d7b928884ddc934 100644
+--- a/mm/numa_emulation.c
++++ b/mm/numa_emulation.c
+@@ -73,7 +73,7 @@ static int __init emu_setup_memblk(struct numa_meminfo *ei,
+ 	}
+ 
+ 	printk(KERN_INFO "Faking node %d at [mem %#018Lx-%#018Lx] (%LuMB)\n",
+-	       nid, eb->start, eb->end - 1, (eb->end - eb->start) >> 20);
++	       nid, eb->start, eb->end - 1, (eb->end - eb->start) / SZ_1M);
+ 	return 0;
+ }
+ 
+@@ -264,7 +264,7 @@ static int __init split_nodes_size_interleave_uniform(struct numa_meminfo *ei,
+ 	min_size = ALIGN(max(min_size, FAKE_NODE_MIN_SIZE), FAKE_NODE_MIN_SIZE);
+ 	if (size < min_size) {
+ 		pr_err("Fake node size %LuMB too small, increasing to %LuMB\n",
+-			size >> 20, min_size >> 20);
++			size / SZ_1M, min_size / SZ_1M);
+ 		size = min_size;
+ 	}
+ 	size = ALIGN_DOWN(size, FAKE_NODE_MIN_SIZE);
+diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
+index 541a99c4071a67e5b0ef66f4136dee268a880003..a47aa262a33366337c38ccc7c7064da818523dd2 100644
+--- a/mm/numa_memblks.c
++++ b/mm/numa_memblks.c
+@@ -427,9 +427,9 @@ static int __init numa_register_meminfo(struct numa_meminfo *mi)
+ 		unsigned long pfn_align = node_map_pfn_alignment();
+ 
+ 		if (pfn_align && pfn_align < PAGES_PER_SECTION) {
+-			unsigned long node_align_mb = PFN_PHYS(pfn_align) >> 20;
++			unsigned long node_align_mb = PFN_PHYS(pfn_align) / SZ_1M;
+ 
+-			unsigned long sect_align_mb = PFN_PHYS(PAGES_PER_SECTION) >> 20;
++			unsigned long sect_align_mb = PFN_PHYS(PAGES_PER_SECTION) / SZ_1M;
+ 
+ 			pr_warn("Node alignment %luMB < min %luMB, rejecting NUMA config\n",
+ 				node_align_mb, sect_align_mb);
 
-> > the main line Linux kernel. Merging into the main line kernel has a
-> > very high bar. How is it compared to other alternative approaches in
-> > terms of technical merit and complexity trade offs.
->
-> Since you seem most concerned about complexity, I have been thinking more=
- about
-> this point.
->
-> 1. **Conceptual complexity**
->    The idea is simply to add a swap priority list per cgroup. This is
->    straightforward to understand. The more complicated part is NUMA prior=
-ity
->    handling =E2=80=94 but if that turns out to be too complex, we can dro=
-p it entirely
->    or adjust its semantics to reduce the complexity.
+---
+base-commit: c17b750b3ad9f45f2b6f7e6f7f4679844244f0b9
+change-id: 20250819-numa-memblks-refac-7b4b5017b598
 
-The swap priority list is a list. The swap tiers is just a set less
-than32 total tiers. Can be expressed in one integer bitmask.
+Best regards,
+-- 
+Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
 
-> 2. **Implementation complexity**
->    Could you clarify from which perspective you see implementation comple=
-xity as
->    problematic? I would like to know more specifically what part worries =
-you.
-
-Your 4 patch series total lines of code? I expect the swap tiers can
-be much shorter, because it does not deal with arbitrate orders.
-
-> The `swap.tier` concept also requires mapping priorities to tiers, creati=
-ng
-> per-cgroup tier objects, and so forth. That means a number of supporting
-> structures are needed as well. While I agree it is conceptually well-defi=
-ned,
-> I don=E2=80=99t necessarily find it simpler than the per-device priority =
-model.
-
-You haven't embraced the swap.tiers ideas to the full extent. I do see
-it can be simpler if you follow my suggestion. You are imaging a
-version using swap file priority data struct to implement the swap
-tiers. That is not what I have in mind. The tiers can be just one
-integer to represent the set of tiers it enrolls and the default. If
-you follow my suggestion and the design you will have a simpler series
-in the end.
-
-> > Why would I trade a cleaner less complex approach for a more complex
-> > approach with technical deficiency not able to address (inverting swap
-> > entry LRU ordering)?
->
-> Could you elaborate on what exactly you mean by =E2=80=9Cinverting swap e=
-ntry LRU order=E2=80=9D?
-> Do you mean that because of per-cgroup priority differences, entries on t=
-he
-> global swap LRU list could become inconsistent when viewed from different
-> cgroups?
-
-Exactly.
-
->If that is the case, could you explain more concretely what problems
-> such inconsistencies would cause? That would help me understand the conce=
-rn
-
-The problem is that you pollute your fast tier with very cold swap
-entry data, that is to your disadvantage, because you will need to
-swap back more from the slower tier.
-
-e.g. you have two pages. Swap entry A will get 2 swap faults, the swap
-entry B will get 20 swap faults in the next 2 hours. B is hotter than
-A. Let's say you have to store them one in zswap and the other in hdd.
-Which one should you store in faster zswap? Obvious swap entry B.
-
-It will cause more problems when you flush the data to the lower tier.
-You want to flush the coldest data first. Please read about the
-history of zswap write back and what LRU problem it encountered. The
-most recent zswap storing the incompressible pages series in the mail
-list precisely driven by preserving the swap entry LRU order reason.
-
-You really should consider the effect on swap entry LRU ordering
-before you design the per cgroup swap priority.
-
-> > From the swap file point of view, when it needs to flush some data to
-> > the lower tiers, it is very hard if possible for swap file to maintain
-> > per cgroup LRU order within a swap file.
->
-> Could you explain in more detail why the flush operation is difficult in =
-that
-> case? I would like to understand what the concrete difficulty is.
->
-> > It is much easier if all the swap entries in a swap file are in the
-> > same LRU order tier.
->
-> This is related to the same question above =E2=80=94 I would appreciate a=
- more
-> detailed explanation because it is not yet clear to me. Why is it easy?
-
-Because I don't need to alter the list ording. When it enumerates the
-same list of swap files, it just needs to check if the current swap
-file is excluded by the swap.tiers integer bitmask. Each swap file can
-cache a bit which tier it is belonging to, for example.
-
->
-> > The swap.tiers idea is not a compromise, it is a straight win. Can you
-> > describe what per cgroup per swap file can do while swap.tiers can
-> > not?
->
-> I mentioned already on this mail: what swap tiers cannot do is arbitrary
-> ordering. If ordering is fixed globally by tiers, some workloads that wan=
-t to
-> consume slower swap devices first (and reserve faster devices as a safety
-> backend to minimize swap failures) cannot be expressed. This kind of poli=
-cy
-> requires arbitrary ordering flexibility, which is possible with per-devic=
-e
-> priorities but not with fixed tiers.
-
-Let's say you have fast tier A and slow tier B.
-
-Option 1) All swap entries go through the fast tier A first. As time
-goes on, the colder swap entry will move to the end of the tier A LRU,
-because there is no swap fault happening to those colder entries. If
-you run out of space of  A, then you flush the end of the A to B. If
-the swap fault does happen in the relative short period of time, it
-will serve by the faster tier of A.
-
-That is a win compared to your proposal you want directly to go to B,
-with more swap faults will be served by B compared to option 1).
-
-option 2) Just disable fast tier A in the beginning, only use B until
-B is full. At some point B is full, you want to enable fast tier A.
-Then it should move the head LRU from B into A. That way it still
-maintains the LRU order.
-
-option 1) seems better than 2) because it serves more swap faults from
-faster tier A.
-
-> And vswap possible usage: if we must consider vswap (assume we can select=
- it
-> like an individual swap device), where should it be mapped in the tier mo=
-del?
-> (see https://lore.kernel.org/linux-mm/CAMgjq7BA_2-5iCvS-vp9ZEoG=3D1DwHWYu=
-VZOuH8DWH9wzdoC00g@mail.gmail.com/)
-
-The swap tires do not depend on vswap, you don't need to worry about that n=
-ow.
-
-> In my opinion, it cannot be mapped purely by service speed.
-> There are indeed situations where tiering by service speed is beneficial,
-> but I also believe priority-based ordering can capture the same intention
-> while also covering exceptional use cases.
-
-The above two options should be able to cover what you want.
-
-> So, I see the per-device priority approach as more general: it can repres=
-ent
-> tier-based usage, but also more flexible policies that tiers alone cannot=
- cover.
-
-Not worth while to break the swap entry LRU order. We can do it in a
-way keeping the LRU order. You will be serving the more swap fault
-from the fast tier which is an overall win.
-
-> > It obviously will introduce new complexity. I want to understand the
-> > reason to justify the additional complexity before I consider such an
-> > approach.
->
-> I think that any new concept adds complexity, whether it is =E2=80=9Cswap=
-.tier=E2=80=9D or
-> per-device priority. If you could clarify more precisely what kind of
-> complexity you are most concerned about, I would be happy to give my deta=
-iled
-> thoughts in that direction.
-
-I see no real justification to break the swap entry LRU order yet.
-Will my solution 1) or 2) work for you in your example?
-
-The per cgroup swap tiers integer bitmask is simpler than maintaining
-a per cgroup order list. It might be the same complexity in your mind,
-I do see swap tiers as the simpler one.
-
-Chris
 
