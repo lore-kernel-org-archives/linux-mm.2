@@ -2,100 +2,91 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3252CCA0EF8
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 08:54:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 21B89CA0EF8
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 08:58:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B17FE8E003B; Wed, 20 Aug 2025 04:54:22 -0400 (EDT)
+	id B6E2E8E003C; Wed, 20 Aug 2025 04:58:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF1928E0037; Wed, 20 Aug 2025 04:54:22 -0400 (EDT)
+	id B460F8E0037; Wed, 20 Aug 2025 04:58:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2CF98E003B; Wed, 20 Aug 2025 04:54:22 -0400 (EDT)
+	id A82E28E003C; Wed, 20 Aug 2025 04:58:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 91BC78E0037
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 04:54:22 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5A789160409
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 08:54:22 +0000 (UTC)
-X-FDA: 83796524364.17.52F1A04
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E959540003
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 08:54:19 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf07.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 94AD58E0037
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 04:58:03 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 36D9B83120
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 08:58:03 +0000 (UTC)
+X-FDA: 83796533646.18.0798EDC
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 34F61120008
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 08:58:00 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qUMW6Hbj;
+	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755680060;
+	s=arc-20220608; t=1755680281;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Y94xWgJkWzyiG2PFh43lADMURu7tuZZhBa0gZwmOVXo=;
-	b=oBD2D3N4FSDfhC5fRp1ZORdWythsnXgrCGjUIzmF445GNNjTQkPtN/aVQPPS6/vD3IpzJX
-	yZI1PfTxkZMpK7HoHM78O9Kq5oeZebS1NqKeOh9O069PUgw12ijMzK6xxcU3x4a1YN9dwl
-	R0O5Iy70ncz/t//DvyZUs7VC+sV2H3c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755680060; a=rsa-sha256;
-	cv=none;
-	b=ipx6Frm50nKkWBLoTkckityQO6d5eiRiXkjcvIHQG1zoFHMdVhtJskKEO17BOPt2HXrKh6
-	nEteqnA4BtmVt0dauN02FVXMDNNwsnPEkn8DrIVzMaqO9Wuqqq0RG+HNDF9xST8z0whItk
-	OXebSkPF3OvXqLVc5M2ZaNL8r70nhtI=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IEEqRTpCY494Z2w/6UzF2GroDTGA/QgdLl+vHg5gpWM=;
+	b=ubA2vy1IXFajVtrfuJw8rQQfWEycq1S8cxwmvtkqhCdnlXjMeMDy2vEWn5BtXt0m0fuVMm
+	R+hAiAcvE8FF/vMMY2oM3ROSSLwj5deajP6kHTrM7ckET1mO/eCwZSZknktjsY2VecdMDj
+	4uFqC0yhe0OlYXH/DJVdTiVbNYFytG0=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf07.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4c6KtT2CW1z6FHD3;
-	Wed, 20 Aug 2025 16:51:13 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 07A5D1402FB;
-	Wed, 20 Aug 2025 16:54:16 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 20 Aug
- 2025 10:54:14 +0200
-Date: Wed, 20 Aug 2025 09:54:13 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Mike Rapoport <rppt@kernel.org>
-CC: <shiju.jose@huawei.com>, <rafael@kernel.org>, <bp@alien8.de>,
-	<akpm@linux-foundation.org>, <dferguson@amperecomputing.com>,
-	<linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux-doc@vger.kernel.org>, <tony.luck@intel.com>,
-	<lenb@kernel.org>, <leo.duran@amd.com>, <Yazen.Ghannam@amd.com>,
-	<mchehab@kernel.org>, <linuxarm@huawei.com>, <rientjes@google.com>,
-	<jiaqiyan@google.com>, <Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
-	<naoya.horiguchi@nec.com>, <james.morse@arm.com>, <jthoughton@google.com>,
-	<somasundaram.a@hpe.com>, <erdemaktas@google.com>, <pgonda@google.com>,
-	<duenwen@google.com>, <gthelen@google.com>, <wschwartz@amperecomputing.com>,
-	<wbs@os.amperecomputing.com>, <nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>,
-	<prime.zeng@hisilicon.com>, <roberto.sassu@huawei.com>,
-	<kangkang.shen@futurewei.com>, <wanghuiqiang@huawei.com>
-Subject: Re: [PATCH v11 1/3] mm: Add support to retrieve physical address
- range of memory from the node ID
-Message-ID: <20250820095413.00003bd7@huawei.com>
-In-Reply-To: <aKV6dVkPiBPw595T@kernel.org>
-References: <20250812142616.2330-1-shiju.jose@huawei.com>
-	<20250812142616.2330-2-shiju.jose@huawei.com>
-	<20250819175420.00007ce6@huawei.com>
-	<aKV6dVkPiBPw595T@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qUMW6Hbj;
+	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755680281; a=rsa-sha256;
+	cv=none;
+	b=W9SWLzi7F+AKTL4vb/ucA+9tWJlZFjwdUtqbrIbWPzAF9Z81jUobdAF6CfLErB8+lVoq0s
+	qutY2xkHSlFZRR8sywQe5nGk2Gzp/KPtSh5CSQ+nQCmB2qZGjswJN3FFS7ewKG+HqH34bf
+	Bmh01a/mv32bEuwPTzhfV2RuyAvywh8=
+Message-ID: <7a34da58-874d-4271-9dbb-7991468d58ff@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1755680278;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IEEqRTpCY494Z2w/6UzF2GroDTGA/QgdLl+vHg5gpWM=;
+	b=qUMW6Hbj6XpyGTTHVacRcB0VNDElfP38acQxvpCBCvZDxpr6JIaa3vx9DWfjqG/5FKivrI
+	RqR+lXLDft931IhrqBn0p+7Efk3WT0rnTMqj5MN7gHgyl9Dj+Zr/LghS3hdDZjK5bD9hLn
+	eJCXsIae2gMiusK3+gUaUwmHUD5vdag=
+Date: Wed, 20 Aug 2025 16:57:48 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Subject: Re: [PATCH] panic: Clean up message about deprecated 'panic_print'
+ parameter
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>, Petr Mladek <pmladek@suse.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-kernel@vger.kernel.org, paulmck@kernel.org, john.ogness@linutronix.de,
+ kernel test robot <lkp@intel.com>, Feng Tang <feng.tang@linux.alibaba.com>
+References: <aKRJKZHgcxyNF3y7@pathway.suse.cz>
+ <202508200907.PsZ3geub-lkp@intel.com>
+ <ae9bb2ea-c6e5-4a4b-ae25-aea1d6fe084d@linux.dev>
+ <33a897b4-7d9a-4641-9c7a-07c19bb9cb6f@linux.dev>
+In-Reply-To: <33a897b4-7d9a-4641-9c7a-07c19bb9cb6f@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: dzc6bconm5fj7rt4udhqun9hfsg3hx33
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E959540003
-X-Stat-Signature: zh9tedayeyiuqdqepuwds1djauna6sfe
-X-HE-Tag: 1755680059-830761
-X-HE-Meta: U2FsdGVkX18NuwAN6fIOYG8TEJAw9pCwBJ5V/+y79bO9L2Y7wNuJOdRat03zFKzp1Vz5rDHhZYkG5jm1xOQXSLxQn88PabjTdDvJvjgxXtkaA6ifV26+4OJrYXdcSQVHp4o3NhV3I6o6mpDThPMso5FWCe3iDSdPsH31h31Tsk/Ra1qZhtSqVGbJV08vjHHO8IizBcNuYenKsB9n9BSKthV5NVdb6NU5alvGWLRgI6Sn4jzZ0zlF8KpqioJYgXpNBUDZ3Tot+ePIaojnUq9E9qrG/wJZq710X9ji6pIVi/K5hTNgjJeMLOy3P3f6HmjJRnvqndPNvLNC4mogPhSSttBwbiyP72ZJGDz+uLbYnYQXlKHxdV0f8BFnZyfHLymHws8gyP+/p/3pKJfDWS/BU3U1dSa1MhrcRlAjA2nVpkIivdEuARN8zZ9GAi/C2kaNh07D+tE5kRxDW6l3OyRkCaWHy1id2q6QbxfCU9EEydZWGA4xXPo6lcb+oLonZxAT3AMTbfimad7UykN39avwKYqAJc4KluCpDF/bNpSwI/ehirz3KE7+vcQpsKup42qOj3sorsbd7gRGbqBUtoAi42pDAPAQ9R4flALI7OqyLbiIQ88TWTUaC1aJOJGA7WU4Nceg9Z3URneTiDfo2ngeRJrxlHE/TKEv/9YTH139En7njda3cLeSN1XOW9PvxAx94SV73jCu2tk3FqwRWxYO5ASzAM5b0QD2Fa1ceQtYsZZpXdncGRzqbLvNFaHFBg0upIuxFSYoOa3Qr53Y3kg6HgYgg0UfnYRS5gMoHWqJNvPMzUhBAB5Iz1ivRToWnwgrML0C0Qt8gGyGSM3dw1RuzYVm6BPJ58SNtOZLBOtaFeLjR/AmhvqywWwwIEk73KFZzE514TrAwx+6HbktpEXWkbZoKwQs08Gp8modCzoRlMqWd+psVyd9YHZLZG5S+njQ0mKXDSFqGNEgpKmSCcV
- xKZ4Y6/x
- xb3WU+VEVLj1CsIUAoIBu3QzRN7lmZCaYMHnbVQNWNGK1CAl0mfjcx61SEN+mjLwTmNxJaR22k/vfJn8cU4tkB0i+djExehoOw8av1suyZiRiL6GXlwq3gxdlN08Vl8yuahhpu5pItJzO1gvLCpk3QLinRMFcSDpaU8XaToF5pEhpIh6CJUA6ut3o8+0fBf18INcEQRTVBTncxf0iMfhM5bRhRNg4XjO0O6wpaFPrbbvmr1kYlMZ5h0ufQx4OFxU5DHfxT2rJruWsc/pnYHLBCawMQPKQnxX3NVAnvc67Rhinjh4=
+X-Rspamd-Queue-Id: 34F61120008
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755680280-570778
+X-HE-Meta: U2FsdGVkX1+l1lXnT0rx5yJNIsguFVLk/tH9m69oL3Xdvf/0bbVI7HUDEEK9ddfBrzzrFwISbzo1jCULFaGnhaKYfAFtOJQdDoN0zAqDxs09wDBskVZc+XI9pCtzA7AsZp8+Mf3JAwIq86GV4/qFHkXUJ+W8WMAdbTrQm5sLrynaX/mpgfBqzTFdw5MG3VfdJVVYkL56uKUScuCiOR35BYm9McLtLeAKuAjYdjDX5hGXuZnANDCVzlP4yxh7j40/E+BiKMubF73JJYdMeGLYFZsjlyIiNyCuS3qu8FA2xgbZDrsdhek11igsu6ZCf/rBOwMxykx7k7B1IP4d/3BA/42oJf0VoZWc5ypb67hFDGx9D7pYmxo4fD8Fi/0aUNWiSI8dWW0IFeCBb2rq9rnyo3TiP712ZQdC/LPcfEPCvViKo2YosITOPVAu5z5EAvVuTnDcLR6X2SMEGvQuDKHBqr5BS1ELasbw/KNFC42s+x5vAkkm8eYLUPKdfn8crLz/pWEHGA0mzl3SNg0gp6KRLnWKJbfjHsDjtjNMk5xrOQjEFMV6G26nO+31BevCBnM0ky9P3c7OobOOv/k+w2sL+yt/vBFpLbqqA8aHKnWl9g0DOrg6UiJfjbH6gbmeoD7TfKY7Oyc7+SVjSHIqAw81DJMZcpkIiK3yJDcb1jYfeEQb84+KoQyGxzk/T5KLEUYgYon5JOUh9p1NnpcbmyT525ULBdKIOctYb+JOtDhKJKKtAYAZoUa2SYqJuXuVgVROZPEq63JH8TvADR1xZxCWKrNHb4O1TkbdEF/lJXicDaoX0Hbehj4Few4j9V0v0W9qufxS5vn/kPTEDjv/M+g1xMZ6RiY+bjMfwarE5iLAF701vZqHiuUI6Ry09thHsIxp/zHhhOsuahQS9qlHgfGIiQ1cLeUA+gsDp3saMqrspMBt2d1mHv/ZQGt83fy0RvsySwi1SKINP9F4vm/Pf4o
+ VzBXG5D/
+ sINNjCxBXQ8WQ2IKJ4Cf9TuiCRXo4fbY7qAzr+bMRcVh2YBV5Xlo3Z70myRe+Bt7wyrvu3naQVF4wP2dNeVeLQosC/Dq66AzXKx9QLD0/lp0QMPFRabD9Z/jEAzJarkCXvZPR5YkYguuENTx1lZF4muNes/GxYm9jO3WAuwAmmVZrREwkE69x4TUJsCGx7KzJT7wUkyZz721fzrmu4MQWGerOROBMj5En9951w2Hz/ie20qXOvxFOvKpNqcNz5yc+AYjs2mP6qPd+b8QLt2bA7C3oD5Cm5XSst4a+LPN6s6ZgylR5sL4KO3NMCikbA6PM1KwPptskLyOUgUV4xu5nHAePOFBWuHjv9uxmSogm9k9i2eUz8d04smUblPFt2EKeqJr+ddjpVP/ExRG7bCKmxhBU6o0++njL/y9KuR1P9eFDfLlgXRaXlIIHPeP7FKZeDwXtEje7gnyvbFRVxOc0cEa4aXroJ3p/+JN5wyst7fPPHpk5Jy6En9ijW/4J6+t0GxnHbcZJjhxYOK47WEw+oNTjBA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,169 +95,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 20 Aug 2025 10:34:13 +0300
-Mike Rapoport <rppt@kernel.org> wrote:
 
-> On Tue, Aug 19, 2025 at 05:54:20PM +0100, Jonathan Cameron wrote:
-> > On Tue, 12 Aug 2025 15:26:13 +0100
-> > <shiju.jose@huawei.com> wrote:
-> >   
-> > > From: Shiju Jose <shiju.jose@huawei.com>
-> > > 
-> > > In the numa_memblks, a lookup facility is required to retrieve the
-> > > physical address range of memory in a NUMA node. ACPI RAS2 memory
-> > > features are among the use cases.
-> > > 
-> > > Suggested-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> > > Signed-off-by: Shiju Jose <shiju.jose@huawei.com>  
-> > 
-> > Looks fine to me.  Mike, what do you think?  
+
+On 2025/8/20 09:56, Lance Yang wrote:
 > 
-> I still don't see why we can't use existing functions like
-> get_pfn_range_for_nid() or memblock_search_pfn_nid().
 > 
-> Or even node_start_pfn() and node_spanned_pages().
-
-Good point.  No reason anyone would scrub this on memory that hasn't
-been hotplugged yet, so no need to use numa-memblk to get the info.
-I guess I was thinking of the wrong hammer :)
-
-I'm not sure node_spanned_pages() works though as we need not to include
-ranges that might be on another node as we'd give a wrong impression of
-what was being scrubbed.
-
-Should be able to use some combination of node_start_pfn() and maybe
-memblock_search_pfn_nid() to get it though (that also gets the nid
-we already know but meh, no ral harm in that.)
-
-Jonathan
-
-
-
-
->
-> > One passing comment inline.
-> > 
-> > Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> >   
-> > > ---
-> > >  include/linux/numa.h         |  9 +++++++++
-> > >  include/linux/numa_memblks.h |  2 ++
-> > >  mm/numa.c                    | 10 ++++++++++
-> > >  mm/numa_memblks.c            | 37 ++++++++++++++++++++++++++++++++++++
-> > >  4 files changed, 58 insertions(+)
-> > > 
-> > > diff --git a/include/linux/numa.h b/include/linux/numa.h
-> > > index e6baaf6051bc..1d1aabebd26b 100644
-> > > --- a/include/linux/numa.h
-> > > +++ b/include/linux/numa.h
-> > > @@ -41,6 +41,10 @@ int memory_add_physaddr_to_nid(u64 start);
-> > >  int phys_to_target_node(u64 start);
-> > >  #endif
-> > >  
-> > > +#ifndef nid_get_mem_physaddr_range
-> > > +int nid_get_mem_physaddr_range(int nid, u64 *start, u64 *end);
-> > > +#endif
-> > > +
-> > >  int numa_fill_memblks(u64 start, u64 end);
-> > >  
-> > >  #else /* !CONFIG_NUMA */
-> > > @@ -63,6 +67,11 @@ static inline int phys_to_target_node(u64 start)
-> > >  	return 0;
-> > >  }
-> > >  
-> > > +static inline int nid_get_mem_physaddr_range(int nid, u64 *start, u64 *end)
-> > > +{
-> > > +	return 0;
-> > > +}
-> > > +
-> > >  static inline void alloc_offline_node_data(int nid) {}
-> > >  #endif
-> > >  
-> > > diff --git a/include/linux/numa_memblks.h b/include/linux/numa_memblks.h
-> > > index 991076cba7c5..7b32d96d0134 100644
-> > > --- a/include/linux/numa_memblks.h
-> > > +++ b/include/linux/numa_memblks.h
-> > > @@ -55,6 +55,8 @@ extern int phys_to_target_node(u64 start);
-> > >  #define phys_to_target_node phys_to_target_node
-> > >  extern int memory_add_physaddr_to_nid(u64 start);
-> > >  #define memory_add_physaddr_to_nid memory_add_physaddr_to_nid
-> > > +extern int nid_get_mem_physaddr_range(int nid, u64 *start, u64 *end);
-> > > +#define nid_get_mem_physaddr_range nid_get_mem_physaddr_range
-> > >  #endif /* CONFIG_NUMA_KEEP_MEMINFO */
-> > >  
-> > >  #endif /* CONFIG_NUMA_MEMBLKS */
-> > > diff --git a/mm/numa.c b/mm/numa.c
-> > > index 7d5e06fe5bd4..5335af1fefee 100644
-> > > --- a/mm/numa.c
-> > > +++ b/mm/numa.c
-> > > @@ -59,3 +59,13 @@ int phys_to_target_node(u64 start)
-> > >  }
-> > >  EXPORT_SYMBOL_GPL(phys_to_target_node);
-> > >  #endif
-> > > +
-> > > +#ifndef nid_get_mem_physaddr_range
-> > > +int nid_get_mem_physaddr_range(int nid, u64 *start, u64 *end)
-> > > +{
-> > > +	pr_info_once("Unknown target phys addr range for node=%d\n", nid);
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +EXPORT_SYMBOL_GPL(nid_get_mem_physaddr_range);
-> > > +#endif
-> > > diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
-> > > index 541a99c4071a..e1e56b7a3499 100644
-> > > --- a/mm/numa_memblks.c
-> > > +++ b/mm/numa_memblks.c
-> > > @@ -590,4 +590,41 @@ int memory_add_physaddr_to_nid(u64 start)
-> > >  }
-> > >  EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
-> > >  
-> > > +/**
-> > > + * nid_get_mem_physaddr_range - Get the physical address range
-> > > + *				of the memblk in the NUMA node.
-> > > + * @nid: NUMA node ID of the memblk
-> > > + * @start: Start address of the memblk
-> > > + * @end: End address of the memblk
-> > > + *
-> > > + * Find the lowest contiguous physical memory address range of the memblk
-> > > + * in the NUMA node with the given nid and return the start and end
-> > > + * addresses.
-> > > + *
-> > > + * RETURNS:
-> > > + * 0 on success, -errno on failure.
-> > > + */
-> > > +int nid_get_mem_physaddr_range(int nid, u64 *start, u64 *end)
-> > > +{
-> > > +	struct numa_meminfo *mi = &numa_meminfo;
-> > > +	int i;
-> > > +
-> > > +	if (!numa_valid_node(nid))
-> > > +		return -EINVAL;
-> > > +
-> > > +	for (i = 0; i < mi->nr_blks; i++) {
-> > > +		if (mi->blk[i].nid == nid) {
-> > > +			*start = mi->blk[i].start;
-> > > +			/*
-> > > +			 * Assumption: mi->blk[i].end is the last address
-> > > +			 * in the range + 1.  
-> > 
-> > This was my fault for asking on internal review if this was documented
-> > anywhere. It's kind of implicitly obvious when reading numa_memblk.c
-> > because there are a bunch of end - 1 prints.
-> > So can probably drop this comment.
-> >   
-> > > +			 */
-> > > +			*end = mi->blk[i].end;
-> > > +			return 0;
-> > > +		}
-> > > +	}
-> > > +
-> > > +	return -ENODEV;
-> > > +}
-> > > +EXPORT_SYMBOL_GPL(nid_get_mem_physaddr_range);
-> > >  #endif /* CONFIG_NUMA_KEEP_MEMINFO */  
-> >   
+> On 2025/8/20 09:54, Lance Yang wrote:
+>>
+>>
+>> On 2025/8/20 09:31, kernel test robot wrote:
+>>> Hi Petr,
+>>>
+>>> kernel test robot noticed the following build errors:
+>>>
+>>>
+>>>
+>>> url:    https://github.com/intel-lab-lkp/linux/commits/ 
+>>> UPDATE-20250819-180717/Feng-Tang/lib-sys_info-handle-sys_info_mask-0- 
+>>> case/20250815-152131
+>>> base:   the 3th patch of https://lore.kernel.org/ 
+>>> r/20250815071428.98041-4-feng.tang%40linux.alibaba.com
+>>> patch link:    https://lore.kernel.org/r/ 
+>>> aKRJKZHgcxyNF3y7%40pathway.suse.cz
+>>> patch subject: [PATCH] panic: Clean up message about deprecated 
+>>> 'panic_print' parameter
+>>> config: i386-buildonly-randconfig-004-20250820 (https:// 
+>>> download.01.org/0day-ci/archive/20250820/202508200907.PsZ3geub- 
+>>> lkp@intel.com/config)
+>>> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 
+>>> 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+>>> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/ 
+>>> archive/20250820/202508200907.PsZ3geub-lkp@intel.com/reproduce)
+>>>
+>>> If you fix the issue in a separate patch/commit (i.e. not just a new 
+>>> version of
+>>> the same patch/commit), kindly add following tags
+>>> | Reported-by: kernel test robot <lkp@intel.com>
+>>> | Closes: https://lore.kernel.org/oe-kbuild- 
+>>> all/202508200907.PsZ3geub- lkp@intel.com/
+>>>
+>>> All errors (new ones prefixed by >>):
+>>>
+>>>>> kernel/panic.c:952:2: error: call to undeclared function 
+>>>>> 'panic_print_deprecated'; ISO C99 and later do not support implicit 
+>>>>> function declarations [-Wimplicit-function-declaration]
+>>>       952 |         panic_print_deprecated();
+>>>           |         ^
+>>>     kernel/panic.c:958:2: error: call to undeclared function 
+>>> 'panic_print_deprecated'; ISO C99 and later do not support implicit 
+>>> function declarations [-Wimplicit-function-declaration]
+>>>       958 |         panic_print_deprecated();
+>>>           |         ^
+>>>     2 errors generated.
+>>
+>>
+>> Oops, panic_print_deprecated() is defined within the #ifdef
+>> CONFIG_PROC_SYSCTL block, but it's also called from panic_print_set()
 > 
+> Correction:
+> 
+> CONFIG_SYSCTL block - sorry ;(
+> 
+>> and panic_print_get(), which are outside of that block.
+>>
+>> So, we need to move the definition out of the block to a common
+>> scope where all its callers can see it. @Petr wdyt?
+>>
+
+If Petr is cool, @Andrew could you squash the following?
+
+---
+Subject: [PATCH 1/1] fixup: panic: clean up message about deprecated
+  'panic_print' parameter
+
+From: Lance Yang <lance.yang@linux.dev>
+
+Moving the definition out of the CONFIG_SYSCTL block to a common scope
+where all its callers can see it.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: 
+https://lore.kernel.org/oe-kbuild-all/202508200907.PsZ3geub-lkp@intel.com/
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
+---
+  kernel/panic.c | 10 +++++-----
+  1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/kernel/panic.c b/kernel/panic.c
+index d3907fd95d72..24bca263f896 100644
+--- a/kernel/panic.c
++++ b/kernel/panic.c
+@@ -77,6 +77,11 @@ ATOMIC_NOTIFIER_HEAD(panic_notifier_list);
+
+  EXPORT_SYMBOL(panic_notifier_list);
+
++static void panic_print_deprecated(void)
++{
++	pr_info_once("Kernel: The 'panic_print' parameter is now deprecated. 
+Please use 'panic_sys_info' and 'panic_console_replay' instead.\n");
++}
++
+  #ifdef CONFIG_SYSCTL
+
+  /*
+@@ -122,11 +127,6 @@ static int proc_taint(const struct ctl_table 
+*table, int write,
+  	return err;
+  }
+
+-static void panic_print_deprecated(void)
+-{
+-	pr_info_once("Kernel: The 'panic_print' parameter is now deprecated. 
+Please use 'panic_sys_info' and 'panic_console_replay' instead.\n");
+-}
+-
+  static int sysctl_panic_print_handler(const struct ctl_table *table, 
+int write,
+  			   void *buffer, size_t *lenp, loff_t *ppos)
+  {
+--
+2.49.0
 
 
