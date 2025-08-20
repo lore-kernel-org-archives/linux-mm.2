@@ -2,91 +2,132 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E2CDDCA0EEB
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 01:56:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A0FECA0EF8
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 01:57:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 87E1C8E001B; Tue, 19 Aug 2025 21:56:13 -0400 (EDT)
+	id AF1648E001C; Tue, 19 Aug 2025 21:57:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 855EC8E0011; Tue, 19 Aug 2025 21:56:13 -0400 (EDT)
+	id ACB4B8E0011; Tue, 19 Aug 2025 21:57:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 792AB8E001B; Tue, 19 Aug 2025 21:56:13 -0400 (EDT)
+	id 9DF608E001C; Tue, 19 Aug 2025 21:57:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 699BC8E0011
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 21:56:13 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 37B221402BF
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:56:13 +0000 (UTC)
-X-FDA: 83795470626.12.F815914
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 536DD14000A
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:56:11 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B0778E0011
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 21:57:22 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 38DB7C030F
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:57:22 +0000 (UTC)
+X-FDA: 83795473524.04.31AD709
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 0C1EA140009
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:57:19 +0000 (UTC)
 Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kwbjZqVD;
-	spf=pass (imf26.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=d+OVceRi;
+	spf=pass (imf26.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755654971;
+	s=arc-20220608; t=1755655040;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T+sb60WMq9s+elk6LLcRRaUDEvLIfQYZTGy2RixZQEM=;
-	b=a6ahVDBElla49vDLiADMFJ9uhCB6KI8N/fbatb+ZEgLPE92iSHSLFhL4cIKDQBo8W39yL+
-	lQjL8orj7PFTMmV0H3l1rHolW4N6MNyCwNYS2G14LADxuWtVYrAO8NEr5fQcAfcuRNMhMb
-	H+ucMVrJKegsuc5efp+wby9+croGTKI=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=yOxEwT+T1uqOenKkiLLGcZTLlycG8JzdJvAh7LNRZAo=;
+	b=MPjWErZVO8U/4h0P8B14xE5Q+x2/Bov0nVBUh4pGwNyIA4UYwi8JJTiGD+P/zOkbcR8Qkf
+	3CuSqHbFuHhN/4+18/DE6CEAtSJS1hLjgGHJvBbnqsNP8FcNw7svux0nTmp0t3VvTHgd4f
+	fyix3UOL9t5K23PP7+Mg8rQO6F/dDRg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755655040; a=rsa-sha256;
+	cv=none;
+	b=DVe/9OU4Izr1+xx765HclE86b3SY6JGpNB60LU1i+0G9hxr1VkDly2OVThm5l2fNZEQe3M
+	89Ebk6q5dVgqdyWG8cpiiBVvsCO8HvdNDGRH52v3ZW6gAYtX7hTL9JNHZdC6y1QKJurNDf
+	dlBua6Tzp5ayOaNuadqExi6xMAr8XN4=
 ARC-Authentication-Results: i=1;
 	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kwbjZqVD;
-	spf=pass (imf26.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755654971; a=rsa-sha256;
-	cv=none;
-	b=yjZhjHwMbsYBf7scbt31gxfrO/xj9m1QvHfgTHE4GWJOiVUu3TRU6enkCVR2iw/uL+k9px
-	NjbEj2OFZzsJ1mR1kExZz/HmusOHZdxdGMr1Jj+K/Y7e//jcn5ksgxvdj7RFfjXQX9+w9p
-	cZGvviqCjTTZeqszQtvAPmiBF1gGd64=
-Message-ID: <33a897b4-7d9a-4641-9c7a-07c19bb9cb6f@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755654969;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T+sb60WMq9s+elk6LLcRRaUDEvLIfQYZTGy2RixZQEM=;
-	b=kwbjZqVDNzhxhfdfPer2yb389B+y86OOTxcjkR3Z5WdIxZK5hxajSVjDJ6DOZKC+gG1Vaw
-	74SgsC1UPpikSliYOCg9ZZBnKIM984GAx1V4aMf1ks2uDUlsh0gjdgLwbSGJFjILDvSgN9
-	p52u73u9TPzDj9GN5/1Td8o5eilfKMc=
-Date: Wed, 20 Aug 2025 09:56:05 +0800
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=d+OVceRi;
+	spf=pass (imf26.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57JLCuZS018276;
+	Wed, 20 Aug 2025 01:04:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=yOxEwT+T1uqOenKkiLLGcZTLlycG8
+	JzdJvAh7LNRZAo=; b=d+OVceRi8FoTPSnr+nZurx+xT0P5n2i3EBibLN9opc5Nz
+	PDD7EEvHzXoOI/HUgqfP8VRGasRtQiY+LqS4+tDxlw/jvUsH4uN+TOtvvpy89ZYA
+	vdaXzSQl2DUvXRBDqy1xdZHl+TlGIeykt3ZXlqWIHQ4o5hg1t411w+/i9olWAfac
+	VyXtBw5RyTk17aeHpDnXCFxL+LF3rl1qB4Ky1QOPh7xPZ7HUD1Kx7EkO4NXZSXW8
+	CH4dUQKPe+R4eP7OG8wPt1tCxCJBdXI1PxxZR1NYVAlFOa1Mxm26HPPca+LjwgMZ
+	ABjqfjJkzCKb/LEEMVKHZR34mc6U2Cpabo65iYpuQ==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48n0ttg8bq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 20 Aug 2025 01:04:25 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57JNbsob007234;
+	Wed, 20 Aug 2025 01:04:24 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48my3q29m6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 20 Aug 2025 01:04:24 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 57K14Nd4011685;
+	Wed, 20 Aug 2025 01:04:23 GMT
+Received: from localhost.localdomain (ca-dev60.us.oracle.com [10.129.136.27])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 48my3q29gw-1;
+	Wed, 20 Aug 2025 01:04:23 +0000
+From: Anthony Yznaga <anthony.yznaga@oracle.com>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org, andreyknvl@gmail.com, arnd@arndb.de,
+        bp@alien8.de, brauner@kernel.org, bsegall@google.com, corbet@lwn.net,
+        dave.hansen@linux.intel.com, david@redhat.com,
+        dietmar.eggemann@arm.com, ebiederm@xmission.com, hpa@zytor.com,
+        jakub.wartak@mailbox.org, jannh@google.com, juri.lelli@redhat.com,
+        khalid@kernel.org, liam.howlett@oracle.com, linyongting@bytedance.com,
+        lorenzo.stoakes@oracle.com, luto@kernel.org, markhemm@googlemail.com,
+        maz@kernel.org, mhiramat@kernel.org, mgorman@suse.de, mhocko@suse.com,
+        mingo@redhat.com, muchun.song@linux.dev, neilb@suse.de,
+        osalvador@suse.de, pcc@google.com, peterz@infradead.org,
+        pfalcato@suse.de, rostedt@goodmis.org, rppt@kernel.org,
+        shakeel.butt@linux.dev, surenb@google.com, tglx@linutronix.de,
+        vasily.averin@linux.dev, vbabka@suse.cz, vincent.guittot@linaro.org,
+        viro@zeniv.linux.org.uk, vschneid@redhat.com, willy@infradead.org,
+        x86@kernel.org, xhao@linux.alibaba.com, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
+Subject: [PATCH v3 00/22] Add support for shared PTEs across processes
+Date: Tue, 19 Aug 2025 18:03:53 -0700
+Message-ID: <20250820010415.699353-1-anthony.yznaga@oracle.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Subject: Re: [PATCH] panic: Clean up message about deprecated 'panic_print'
- parameter
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-To: kernel test robot <lkp@intel.com>, Petr Mladek <pmladek@suse.com>,
- Feng Tang <feng.tang@linux.alibaba.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Steven Rostedt <rostedt@goodmis.org>, Jonathan Corbet <corbet@lwn.net>,
- linux-kernel@vger.kernel.org, paulmck@kernel.org, john.ogness@linutronix.de
-References: <aKRJKZHgcxyNF3y7@pathway.suse.cz>
- <202508200907.PsZ3geub-lkp@intel.com>
- <ae9bb2ea-c6e5-4a4b-ae25-aea1d6fe084d@linux.dev>
-In-Reply-To: <ae9bb2ea-c6e5-4a4b-ae25-aea1d6fe084d@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 536DD14000A
-X-Stat-Signature: wpnnsmwu78poqudhcdbndsdcmkusabax
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-19_04,2025-08-14_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 suspectscore=0 mlxlogscore=999
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2508110000 definitions=main-2508200007
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE5MDE5NyBTYWx0ZWRfX+SEU8RDqteOz
+ XUMpaVaMowy1Tb6w4TIC5QCSee2MKsZ0fkxpxNj4ZSSJL3dZTdOEbW4H9XnR5H8tXRttDHaC3O/
+ 99gbLxvusWcbJv3R8Nap1CR7bVt6hxVEmxwHCP/ZHLMS9FMRh/VQzcPVYg85Oxnm4Hr48z9inLs
+ 5xsD3c5+VEhEcNtHivpn9iyx6Ydi+BS5JMecHCAeAWJYIx+VvmtQHTe0D5MeXXwdXMvs4rk/rTH
+ dQ9pDsUMRluHA5/5ljIymUKg6ktUIXtYJVo0abr5XydoAAz/2a/jUmjWEbz2q84zCbW1TMZ/S0X
+ VYoUVyY5oLPcL3ZCLbutpuO4PgBjKiQNvK0070Hu0HrvFnovQmQfad88GsY64tVpurjw2zNkUYx
+ 7ZweZavRfXuN4x8Y8gRvnaxw0mSBjw==
+X-Proofpoint-GUID: zMqsmGIGkx_DvU6VbeGf39ZlkMNr0VZB
+X-Proofpoint-ORIG-GUID: zMqsmGIGkx_DvU6VbeGf39ZlkMNr0VZB
+X-Authority-Analysis: v=2.4 cv=V94kEeni c=1 sm=1 tr=0 ts=68a51f19 cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=zf8HbCBmOu6KmpLAX5MA:9
+ a=3tvOSNxEL8ccU_JU:21 a=UhEZJTgQB8St2RibIkdl:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22
+ a=QOGEsqRv6VhmHaoFNykA:22
 X-Rspam-User: 
-X-HE-Tag: 1755654971-420591
-X-HE-Meta: U2FsdGVkX19GDwm5KpjYmnXHlzy/q0ye5yTYorNyHJZvahGvNnwxmD1S/g9MeAUJZUYu9Z4yCowr1rpZdbb3XEL3vkVAZ050alH3DpFbCGusAtFfVO0PNdLzEccWWx2OmE69I3gprdiYVJ8sn00DC0v2SNaeXJ1hOnVoqoEFYcCR5TtBzL9ixsIPanLyBDWoy1ernxrqFL+mMDcb0XDMpznYt+GA3aGWD1xVi35KPRAeV3POxEuEAbzVexrKsrTOAw/Bfce0ViWUG/xgIzptd4gF7Ly+aGJDmrmv9MLwHjpt28aOLT7X3Ftoryd9V7UU/i2au1gTmVNohUZdW7dOWL6NakVjtjAa0A+ojtvM4zPmwrS4ru31zHhuQT/kt1GbWpwSR2VaiRdhrXY91iXMWjYOVj+K1MPICLwwMXpN8UcPU9mdQ7TssSaXJnFrsrwg0ZGMG/PKc1UI4l9Umtrls2Jp16mMjVX5uu8ggorLsmLf/w3u18NtguNvvSoE0L6P4Y7mYgpKflgaFxSiu80/yRlns7PgXLh0H/fU1IsdYbeuH6qlefosj4v8ARfzBdPdpyW9GcY85KKNt+sjlhan8j/Er76fikGcZ4BW+4NpW4z1s9XTyaCZcA7IFvpV8PEgWj0R3/yEk+2KCWOiHY4dJ1JCDD24VRhTRdblzcri0Ewhlic+89XfaIS0aMx5o4B5lPjQG/ypGrhM8JI0+uoDKmvj/k/0JieJpXDAkInx9hxVzAQcnWvkq/WLQArm7BxN6jEtNxCqnesCNwpDN91/2uoV4VKfo6a9iOTsBexB/9orxzUmMXA3F3Ikf3Ocnc8Z7oHZWSitZfA7I6Jahrnc6WOgl4Sd7u/XyQwadsvCde18lctOTxer3NxxrxKONYo5Bn9cYD+mdIoy1GMqY5A40ViwmWTO+ujrX21hmoylh4OusIz6QIudx0vwkX58YUUply2zicoIVU+fzTam3rM
- VuRuHYJo
- 4t4QUb0DvIdZdo0p+Apo7ny+kFzFMFIPD2DoTDbQYhty4YeEUf3OcuyfRB19Vci77tuWfqyr2wocjgVGlZG+C6Pw4x5MBv+wihR48LN4Os8lQUr8KlnRuckn+ld5kcxe9n8kkOxrKeryWNLmfjdN3Nw0ZCtU88Yb3PmUi/sNQLcwg/xKR5Cab409CECTd0UWUcR6KoTbyb6DbR4BOKqMan9Wv8yuYNj8Fgdf9/hRwU0q78NIAFnlpFmGWTYufKjKO69K+lSJvWx6IuZn5kT2Gv/etwLKtuPJR37Y3AGrOCn2BwfonNvQr1scybFGnhl62aCOx+eq499MDDp8EqCNO2WRa3d0L7MVT/fzo+IGvj2nXraA04EB6nr+kMYaHwWU1Lyn2EY6pycxTr+TvqilI5FpTelBaQvXm17InWfXEXMgtkcrgtgkkouMDAMx7uUaiGRwu1nAZvqczZ65GA/lX08lzer2H8Q/V6qR9KWKMdQxZ6kZp5jIORaUCgG1kT15SAYbmFjItO//5XwaK/J+7HUCdPQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0C1EA140009
+X-Stat-Signature: 8emcsp5uie5df771keudo5p9eh7eeeq3
+X-HE-Tag: 1755655039-994539
+X-HE-Meta: U2FsdGVkX18my4+4c2ANegIedmo9Av2yOw55uefvNjByuMpVCw++XMOqzmZfkViEZ6tICAkYIvuYyuHw7AdsE+41neYd3Gpu8XwAV7v3dpVsX9oWQ9u1kA4LYUGDbzd7UXlOq6rhlo96ITsoFfcJ7iV2aEsx54/LsWgYggek0MeOJVKkc00AGhkEjTHGTs+A9usiUriYrn/gyih2+lfnKEMxi4nDMmRlWkIotdNt4CpApjakg1Pe/kc1sXIUKXAO1NFn875asHKA9RTbI6vp7keN2xVjJm55YePz9cQ3PHRLHncq5FF6Hr14rGwk3zJMeBUQt8OB0/grIHLgaSI4eBcoSMEI7TpBA/HAV3DaFLeOSXjyt5Y4VBrApRZiAudV7hMiQpIinRu5hNTzppQsVeXRhNq/OFMbpV9iifVU1y+ZljdruyulldElTeoXizx9REleTDd9Kjjyts0F23+C2x168/9h6ZcuT2hwBHCV2PejwdbutmNWIdIFI5YaCgxo3pxXpi3plnSf/FSDuWV9D5swMb9sOY/NzU7nnVsQSaEBobb5tO7KrrOZYsdakmGK7OwqjMonVKVODdojvXkjy75xPyJZCZAU7WEHSphuTyNcoilYeONv/ZyGfv9ON8e/Hil4JB6dYxlFGssm2HCn7f2Is61e597bcWpMG9fOTXL2ENSMYD/KxDUcBR/x12eLOqI4FF9U/U7/IZkD6E9cwZnDOridIbqKkJQ16MPmsodqV98uI8DLZmZfPJm4FbLzfHeh2Kgkv+IWBRxhJ927bD8GKdP6tyW3pDeFMcEJ3pt4uODSvKRLh97nlg1dVb/CAAfdaA2uPgimKa6WuO0N2qWkA/ro7a4qTwviFMWDiaT03utsw3CXdWRh3NnxnT4/Glv/qPp46N0INjtt0tT4/XDhyt3iy5gKxe/s6zdPYcK+bhKZEdHAF5erji4eaU5zGztjHqJLx9e6zcFazzy
+ VcDzxqoz
+ pzVkprvTUNtAUbe1VTUG8c4uXXNkBVQSqgtAGb1i/jnrvvsFePUii7vnnNRKD4FCDZsU0psmNqVE3xiVc/b4xv/FU0til/ktln1DYZ9r3C6fouYSlT1oVCVFM88LL7xLrGGDhgZpB6qfF9ed79pItBz3fojzBGltNWHtSNUR0HA6wr3397WvDRUarukklfpYw/LvvS8ecRmVH0z/UpK0uDKZhQUaayaV0iZYZKJEAn5T0/8FqJ3uL8wJiRnCc4HxT3PfIaB4bLNHJ//dt/+ETP2F22SoAoKw3JgOG
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,85 +136,315 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Memory pages shared between processes require page table entries
+(PTEs) for each process. Each of these PTEs consume some of
+the memory and as long as the number of mappings being maintained
+is small enough, this space consumed by page tables is not
+objectionable. When very few memory pages are shared between
+processes, the number of PTEs to maintain is mostly constrained by
+the number of pages of memory on the system. As the number of shared
+pages and the number of times pages are shared goes up, amount of
+memory consumed by page tables starts to become significant. This
+issue does not apply to threads. Any number of threads can share the
+same pages inside a process while sharing the same PTEs. Extending
+this same model to sharing pages across processes can eliminate this
+issue for sharing across processes as well.
+
+Some of the field deployments commonly see memory pages shared
+across 1000s of processes. On x86_64, each page requires a PTE that
+is 8 bytes long which is very small compared to the 4K page
+size. When 2000 processes map the same page in their address space,
+each one of them requires 8 bytes for its PTE and together that adds
+up to 8K of memory just to hold the PTEs for one 4K page. On a
+database server with 300GB SGA, a system crash was seen with
+out-of-memory condition when 1500+ clients tried to share this SGA
+even though the system had 512GB of memory. On this server, in the
+worst case scenario of all 1500 processes mapping every page from
+SGA would have required 878GB+ for just the PTEs. If these PTEs
+could be shared, the a substantial amount of memory saved.
+
+This patch series implements a mechanism that allows userspace
+processes to opt into sharing PTEs. It adds a new in-memory
+filesystem - msharefs. A file created on msharefs represents a
+shared region where all processes mapping that region will map
+objects within it with shared PTEs. When the file is created,
+a new host mm struct is created to hold the shared page tables
+and vmas for objects later mapped into the shared region. This
+host mm struct is associated with the file and not with a task.
+When a process mmap's the shared region, a vm flag VM_MSHARE
+is added to the vma. On page fault the vma is checked for the
+presence of the VM_MSHARE flag. If found, the host mm is
+searched for a vma that covers the fault address. Fault handling
+then continues using that host vma which establishes PTEs in the
+host mm. Fault handling in a shared region also links the shared
+page table to the process page table if the shared page table
+already exists.
+
+Ioctls are used to map and unmap objects in the shared region and
+to (eventually) perform other operations on the shared objects such
+as changing protections.
+
+API
+===
+
+The steps to use this feature are:
+
+1. Mount msharefs on /sys/fs/mshare -
+        mount -t msharefs msharefs /sys/fs/mshare
+
+2. mshare regions have alignment and size requirements. The start
+   address for the region must be aligned to an address boundary and
+   be a multiple of fixed size. This alignment and size requirement
+   can be obtained by reading the file /sys/fs/mshare/mshare_info
+   which returns a number in text format. mshare regions must be
+   aligned to this boundary and be a multiple of this size.
+
+3. For the process creating an mshare region:
+        a. Create a file on /sys/fs/mshare, for example -
+                fd = open("/sys/fs/mshare/shareme",
+                                O_RDWR|O_CREAT|O_EXCL, 0600);
+
+        b. Establish the size of the region
+                ftruncate(fd, BUFFER_SIZE);
+
+        c. Map some memory in the region
+                struct mshare_create mcreate;
+
+                mcreate.region_offset = 0;
+                mcreate.size = BUFFER_SIZE;
+                mcreate.offset = 0;
+                mcreate.prot = PROT_READ | PROT_WRITE;
+                mcreate.flags = MAP_ANONYMOUS | MAP_SHARED | MAP_FIXED;
+                mcreate.fd = -1;
+
+                ioctl(fd, MSHAREFS_CREATE_MAPPING, &mcreate)
+
+        d. Map the mshare region into the process
+                mmap((void *)TB(2), BUFFER_SIZE, PROT_READ | PROT_WRITE,
+                        MAP_FIXED | MAP_SHARED, fd, 0);
+
+        e. Write and read to mshared region normally.
+
+4. For processes attaching an mshare region:
+        a. Open the file on msharefs, for example -
+                fd = open("/sys/fs/mshare/shareme", O_RDWR);
+
+        b. Get information about mshare'd region from the file:
+                struct stat sb;
+
+                fstat(fd, &sb);
+                mshare_size = sb.st_size;
+
+        c. Map the mshare'd region into the process
+                mmap((void *)TB(2), mshare_size, PROT_READ | PROT_WRITE,
+                        MAP_FIXED | MAP_SHARED, fd, 0);
+
+5. To delete the mshare region -
+                unlink("/sys/fs/mshare/shareme");
 
 
-On 2025/8/20 09:54, Lance Yang wrote:
-> 
-> 
-> On 2025/8/20 09:31, kernel test robot wrote:
->> Hi Petr,
->>
->> kernel test robot noticed the following build errors:
->>
->>
->>
->> url:    https://github.com/intel-lab-lkp/linux/commits/ 
->> UPDATE-20250819-180717/Feng-Tang/lib-sys_info-handle-sys_info_mask-0- 
->> case/20250815-152131
->> base:   the 3th patch of https://lore.kernel.org/ 
->> r/20250815071428.98041-4-feng.tang%40linux.alibaba.com
->> patch link:    https://lore.kernel.org/r/ 
->> aKRJKZHgcxyNF3y7%40pathway.suse.cz
->> patch subject: [PATCH] panic: Clean up message about deprecated 
->> 'panic_print' parameter
->> config: i386-buildonly-randconfig-004-20250820 (https:// 
->> download.01.org/0day-ci/archive/20250820/202508200907.PsZ3geub- 
->> lkp@intel.com/config)
->> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 
->> 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
->> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/ 
->> archive/20250820/202508200907.PsZ3geub-lkp@intel.com/reproduce)
->>
->> If you fix the issue in a separate patch/commit (i.e. not just a new 
->> version of
->> the same patch/commit), kindly add following tags
->> | Reported-by: kernel test robot <lkp@intel.com>
->> | Closes: https://lore.kernel.org/oe-kbuild-all/202508200907.PsZ3geub- 
->> lkp@intel.com/
->>
->> All errors (new ones prefixed by >>):
->>
->>>> kernel/panic.c:952:2: error: call to undeclared function 
->>>> 'panic_print_deprecated'; ISO C99 and later do not support implicit 
->>>> function declarations [-Wimplicit-function-declaration]
->>       952 |         panic_print_deprecated();
->>           |         ^
->>     kernel/panic.c:958:2: error: call to undeclared function 
->> 'panic_print_deprecated'; ISO C99 and later do not support implicit 
->> function declarations [-Wimplicit-function-declaration]
->>       958 |         panic_print_deprecated();
->>           |         ^
->>     2 errors generated.
-> 
-> 
-> Oops, panic_print_deprecated() is defined within the #ifdef
-> CONFIG_PROC_SYSCTL block, but it's also called from panic_print_set()
 
-Correction:
+Example Code
+============
 
-CONFIG_SYSCTL block - sorry ;(
+Snippet of the code that a donor process would run looks like below:
 
-> and panic_print_get(), which are outside of that block.
-> 
-> So, we need to move the definition out of the block to a common
-> scope where all its callers can see it. @Petr wdyt?
-> 
-> Thanks,
-> Lance
-> 
->>
->>
->> vim +/panic_print_deprecated +952 kernel/panic.c
->>
->>     949
->>     950    static int panic_print_set(const char *val, const struct 
->> kernel_param *kp)
->>     951    {
->>   > 952        panic_print_deprecated();
->>     953        return  param_set_ulong(val, kp);
->>     954    }
->>     955
->>
-> 
+-----------------
+        struct mshare_create mcreate;
+
+        fd = open("/sys/fs/mshare/mshare_info", O_RDONLY);
+        read(fd, req, 128);
+        alignsize = atoi(req);
+        close(fd);
+        fd = open("/sys/fs/mshare/shareme", O_RDWR|O_CREAT|O_EXCL, 0600);
+        start = alignsize * 4;
+        size = alignsize * 2;
+
+        ftruncate(fd, size);
+
+        mcreate.region_offset = 0;
+        mcreate.size = size;
+        mcreate.offset = 0;
+        mcreate.prot = PROT_READ | PROT_WRITE;
+        mcreate.flags = MAP_ANONYMOUS | MAP_SHARED | MAP_FIXED;
+        mcreate.fd = -1;
+        ret = ioctl(fd, MSHAREFS_CREATE_MAPPING, &mcreate);
+        if (ret < 0)
+                perror("ERROR: MSHAREFS_CREATE_MAPPING");
+
+        addr = mmap((void *)start, size, PROT_READ | PROT_WRITE,
+                        MAP_FIXED | MAP_SHARED, fd, 0);
+        if (addr == MAP_FAILED)
+                perror("ERROR: mmap failed");
+
+        strncpy(addr, "Some random shared text",
+                        sizeof("Some random shared text"));
+-----------------
+
+Snippet of code that a consumer process would execute looks like:
+
+-----------------
+        fd = open("/sys/fs/mshare/shareme", O_RDONLY);
+
+        fstat(fd, &sb);
+        size = sb.st_size;
+
+        if (!size)
+                perror("ERROR: mshare region not init'd");
+
+        addr = mmap(0, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+
+        printf("Guest mmap at %px:\n", addr);
+        printf("%s\n", addr);
+        printf("\nDone\n");
+
+-----------------
+
+v3:
+  - Based on mm-new as of 2025-08-15
+  - (Fix) When unmapping an msharefs VMA, unlink the shared page tables
+    from the process page table using the new unmap_page_range vm_ops hook
+    rather than having free_pgtables() skip mshare VMAs (Jann Horn).
+  - (Fix) Keep a reference count on shared PUD pages to prevent UAF when
+    the unmap of objects in the mshare region also frees shared page
+    tables.
+  - (New) Support mapping files and anonymous hugetlb memory in an mshare
+    region.
+  - (New) Implement ownership of mshare regions. The process that
+    creates an mshare region is assigned as the owner. See the patch for
+    details.
+  - (Changed) Undid previous attempt at cgroup support. Cgroup accounting
+    is now directed to the owner process.
+  - (TBD) Support for mmu notifiers is not yet implemented. There are some
+    hurdles to be overcome. Mentioned here because it came up in comments
+    on the v2 series (Jann Horn).
+
+v2:
+  (https://lore.kernel.org/all/20250404021902.48863-1-anthony.yznaga@oracle.com/)
+  - Based on mm-unstable as of 2025-04-03 (8ff02705ba8f)
+  - Set mshare size via fallocate or ftruncate instead of MSHAREFS_SET_SIZE.
+    Removed MSHAREFS_SET_SIZE/MSHAREFS_GET_SIZE ioctls. Use stat to get size.
+    (David H)
+  - Remove spinlock from mshare_data. Initializing the size is protected by
+    the inode lock.
+  - Support mapping a single mshare region at different virtual addresses.
+  - Support system selection of the start address when mmap'ing an mshare
+    region.
+  - Changed MSHAREFS_CREATE_MAPPING and MSHAREFS_UNMAP to use a byte offset
+    to specify the start of a mapping.
+  - Updated documentation.
+
+v1:
+  (https://lore.kernel.org/linux-mm/20250124235454.84587-1-anthony.yznaga@oracle.com/)
+  - Based on mm-unstable mm-hotfixes-stable-2025-01-16-21-11
+  - Use mshare size instead of start address to check if mshare region
+    has been initialized.
+  - Share page tables at PUD level instead of PGD.
+  - Rename vma_is_shared() to vma_is_mshare() (James H / David H)
+  - Introduce and use mmap_read_lock_nested() (Kirill)
+  - Use an mmu notifier to flush all TLBs when updating shared pagetable
+    mappings. (Dave Hansen)
+  - Move logic for finding the shared vma to use to handle a fault from
+    handle_mm_fault() to do_user_addr_fault() because the arch-specific
+    fault handling checks vma flags for access permissions.
+  - Add CONFIG_MSHARE / ARCH_SUPPORTS_MSHARE
+  - Add msharefs_get_unmapped_area()
+  - Implemented vm_ops->unmap_page_range (Kirill)
+  - Update free_pgtables/free_pgd_range to free process pagetable levels
+    but not shared pagetable levels.
+  - A first take at cgroup support
+
+RFC v2 -> v3:
+  - Now based on 6.11-rc5
+  - Addressed many comments from v2.
+  - Simplified filesystem code. Removed refcounting of the
+    shared mm_struct allocated for an mshare file. The mm_struct
+    and the pagetables and mappings it contains are freed when
+    the inode is evicted.
+  - Switched to an ioctl-based interface. Ioctls implemented
+    are used to set and get the start address and size of an
+    mshare region and to map objects into an mshare region
+    (only anon shared memory is supported in this series).
+  - Updated example code
+
+[1] v2: https://lore.kernel.org/linux-mm/cover.1656531090.git.khalid.aziz@oracle.com/
+
+RFC v1 -> v2:
+  - Eliminated mshare and mshare_unlink system calls and
+    replaced API with standard mmap and unlink (Based upon
+    v1 patch discussions and LSF/MM discussions)
+  - All fd based API (based upon feedback and suggestions from
+    Andy Lutomirski, Eric Biederman, Kirill and others)
+  - Added a file /sys/fs/mshare/mshare_info to provide
+    alignment and size requirement info (based upon feedback
+    from Dave Hansen, Mark Hemment and discussions at LSF/MM)
+  - Addressed TODOs in v1
+  - Added support for directories in msharefs
+  - Added locks around any time vma is touched (Dave Hansen)
+  - Eliminated the need to point vm_mm in original vmas to the
+    newly synthesized mshare mm
+  - Ensured mmap_read_unlock is called for correct mm in
+    handle_mm_fault (Dave Hansen)
+
+Anthony Yznaga (15):
+  mm/mshare: allocate an mm_struct for msharefs files
+  mm/mshare: add ways to set the size of an mshare region
+  mm/mshare: flush all TLBs when updating PTEs in an mshare range
+  sched/numa: do not scan msharefs vmas
+  mm: add mmap_read_lock_killable_nested()
+  mm: add and use unmap_page_range vm_ops hook
+  mm: introduce PUD page table shared count
+  x86/mm: enable page table sharing
+  mm: create __do_mmap() to take an mm_struct * arg
+  mm: pass the mm in vma_munmap_struct
+  sched/mshare: mshare ownership
+  mm/mshare: Add an ioctl for unmapping objects in an mshare region
+  mm/mshare: support mapping files and anon hugetlb in an mshare region
+  mm/mshare: provide a way to identify an mm as an mshare host mm
+  mm/mshare: charge fault handling allocations to the mshare owner
+
+Khalid Aziz (7):
+  mm: Add msharefs filesystem
+  mm/mshare: pre-populate msharefs with information file
+  mm/mshare: make msharefs writable and support directories
+  mm/mshare: Add a vma flag to indicate an mshare region
+  mm/mshare: Add mmap support
+  mm/mshare: prepare for page table sharing support
+  mm/mshare: Add an ioctl for mapping objects in an mshare region
+
+ Documentation/filesystems/index.rst           |   1 +
+ Documentation/filesystems/msharefs.rst        |  96 ++
+ .../userspace-api/ioctl/ioctl-number.rst      |   1 +
+ arch/Kconfig                                  |   3 +
+ arch/x86/Kconfig                              |   1 +
+ arch/x86/mm/fault.c                           |  40 +-
+ include/linux/mm.h                            |  52 +
+ include/linux/mm_types.h                      |  38 +-
+ include/linux/mmap_lock.h                     |   7 +
+ include/linux/mshare.h                        |  25 +
+ include/linux/sched.h                         |   5 +
+ include/trace/events/mmflags.h                |   7 +
+ include/uapi/linux/magic.h                    |   1 +
+ include/uapi/linux/msharefs.h                 |  38 +
+ ipc/shm.c                                     |  17 +
+ kernel/exit.c                                 |   1 +
+ kernel/fork.c                                 |   1 +
+ kernel/sched/fair.c                           |   3 +-
+ mm/Kconfig                                    |  11 +
+ mm/Makefile                                   |   4 +
+ mm/hugetlb.c                                  |  25 +
+ mm/memory.c                                   |  76 +-
+ mm/mmap.c                                     |  10 +-
+ mm/mshare.c                                   | 942 ++++++++++++++++++
+ mm/vma.c                                      |  22 +-
+ mm/vma.h                                      |   3 +-
+ 26 files changed, 1385 insertions(+), 45 deletions(-)
+ create mode 100644 Documentation/filesystems/msharefs.rst
+ create mode 100644 include/linux/mshare.h
+ create mode 100644 include/uapi/linux/msharefs.h
+ create mode 100644 mm/mshare.c
+
+-- 
+2.47.1
 
 
