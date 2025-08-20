@@ -2,90 +2,81 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 79B80CA0EED
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 08:10:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CB057CA0EDC
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 08:20:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA2578E0011; Wed, 20 Aug 2025 04:10:04 -0400 (EDT)
+	id 1A4E88E002C; Wed, 20 Aug 2025 04:20:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B790F8E0007; Wed, 20 Aug 2025 04:10:04 -0400 (EDT)
+	id 17C858E0007; Wed, 20 Aug 2025 04:20:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8E338E0011; Wed, 20 Aug 2025 04:10:04 -0400 (EDT)
+	id 0934E8E002C; Wed, 20 Aug 2025 04:20:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 95EAC8E0007
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 04:10:04 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 442A58349F
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 08:10:04 +0000 (UTC)
-X-FDA: 83796412728.18.67CD7D0
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 99D6D1C0003
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 08:10:02 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nTvKw6Iu;
-	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EB7508E0007
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 04:20:10 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BBEA7B97FA
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 08:20:10 +0000 (UTC)
+X-FDA: 83796438180.05.3F40A4E
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	by imf06.hostedemail.com (Postfix) with ESMTP id C9210180010
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 08:20:07 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf06.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755677402;
+	s=arc-20220608; t=1755678009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2kU53JEnSe0Nw++617VLP4wrlRSYwLUGWBZDBSJ3y4E=;
-	b=Vc9FabcZUDTOJ5lgW+XQIFkOv5MH58dCTqFxJuBMC7MN5K9BIXD3W5Z2RCyjLN+tltxYx2
-	zL9As31lPs/rM3fdRKQmIxQc6otL50aGnV5H3fGGjUxwW2pqnvli3SPAA6E4eQg5kAuV+5
-	GATdJnmvKcUZz6rFXnSIWAnbeO7cyGE=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nTvKw6Iu;
-	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755677402; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=4CySYQEnlCLZNwwJN+u33fZIeXZhWD5+G7+t52BRZmM=;
+	b=IDI87gjyOEl+QJ+ICxj2aLXRNDBILx3RPikPaFMhwZQLz+aRvLf8P7qFlQfu1lpK0F3MWV
+	vVbwUwsClIUsaKUrCE+w+UPpEI2Du3OB8imbvsAiE/F/6F0SyLgmlmbcH976P4mI3OehGX
+	hEEkLCTzMv8IPePGXhF9tbMuUVWg7og=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755678009; a=rsa-sha256;
 	cv=none;
-	b=E0Ny5c3xevylz57NpVbWPwyZuj8KetZHnVHM1lkxaVv+x/5ecBdoO+X1eWZBzdGlwlTeo5
-	BBZP4IsZ+JzsNi7Q54K/XTSrmBeC2+PClnCiI/3YCXBdHwfsgOCVq7WTFgudMPDgBIu5fO
-	UbyyzJnwCIKZRKV6t5Ehlh0ft0jDp6E=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 7D8A15C5FDE;
-	Wed, 20 Aug 2025 08:10:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 762BDC113D0;
-	Wed, 20 Aug 2025 08:09:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755677401;
-	bh=ZwBIaVwfHe/T7WlfARZdRvpXDhB+IehKv0D+1cs2k44=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nTvKw6IuGKUCM074ZO6HCTXEBhK8E5DzlI1NkU+TKjtyZQ9NfmN5Jc00uTv6/kKXa
-	 hWwxb3f4bADolcJPjWJGnr7BlVGitV9WGRgHoVDov0n0e81rrltgT7ztXG6CCOadAR
-	 A/9LHOmnMv4XoTm46Wi6wryYMO+yr1ndcmZ7Z4+cM94l/e5t+Tfq4j7t3XSGLaYVJe
-	 hdsr2Cqlnz6j/nkCAU/SqzZhmd/08f79LP5yPzmavyUjM0kJD/Dz7lE6I9jr9jrSuU
-	 BqR8XE6QJRoOvke2raPIVYoNu93YDKztyJOOABw4QkrKbpYxFS6kv6Yy/F9OwC7Q8C
-	 AdL744Lg9k08Q==
-Date: Wed, 20 Aug 2025 11:09:53 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Evangelos Petrongonas <epetron@amazon.de>
-Cc: Ard Biesheuvel <ardb@kernel.org>, Alexander Graf <graf@amazon.com>,
-	Changyuan Lyu <changyuanl@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>, kexec@lists.infradead.org,
-	linux-mm@kvack.org, linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, nh-open-source@amazon.com
-Subject: Re: [PATCH v2 2/2] efi: Support booting with kexec handover (KHO)
-Message-ID: <aKWC0c3kliee8gtu@kernel.org>
-References: <cover.1755643201.git.epetron@amazon.de>
- <9e80381d4fafc71d6e0c64d69a8b3ac9c8949865.1755643201.git.epetron@amazon.de>
+	b=5rlvyaP2X6/p1FfvOexLjEcyvyPUIQtudWC5uSPc0rRc+3Di7Nz3SyAW2lvHgabh7RVodK
+	vw3Zl30pdnmXI3JValT1OQOW04oJ/ZaMAO3WC43TQRHmL/t3mH2b8j7yYcmYmYmUvQCC+z
+	ZaDmkgjaThSfIq2hD1/yha1hspJO788=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf06.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4c6K7B0ZWgz2gLG9;
+	Wed, 20 Aug 2025 16:17:10 +0800 (CST)
+Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
+	by mail.maildlp.com (Postfix) with ESMTPS id 2C0FE1402CD;
+	Wed, 20 Aug 2025 16:20:03 +0800 (CST)
+Received: from huawei.com (10.50.85.135) by dggpemf200018.china.huawei.com
+ (7.185.36.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 20 Aug
+ 2025 16:20:02 +0800
+From: Quanmin Yan <yanquanmin1@huawei.com>
+To: <sj@kernel.org>
+CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<yanquanmin1@huawei.com>, <wangkefeng.wang@huawei.com>, <zuoze1@huawei.com>
+Subject: [RFC PATCH mm-next v2 00/12] mm/damon: support ARM32 with LPAE
+Date: Wed, 20 Aug 2025 16:06:10 +0800
+Message-ID: <20250820080623.3799131-1-yanquanmin1@huawei.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9e80381d4fafc71d6e0c64d69a8b3ac9c8949865.1755643201.git.epetron@amazon.de>
-X-Stat-Signature: n4nntmep39dbc6tjpa7m1coc9ocry3ay
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.85.135]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ dggpemf200018.china.huawei.com (7.185.36.31)
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C9210180010
+X-Stat-Signature: h9zxhbqx11saonis3zi1d74nporhuxid
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 99D6D1C0003
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1755677402-329238
-X-HE-Meta: U2FsdGVkX1+ykaHAAE0fd5LDXAIkOLltSgKpAS+12Bh2jJxeXfWzcs4qWcQS7mimdv9SpyK6/ZJ8oxHdAFKTu8TJMe+k/2FLUefd33WkUD/tUU99D69xciXx1U1wH2h/62Wgq5FV0i23+k6YPHlTwl2qM6rpjxnnIJrfgMx1pB+LcBETFdlC7xc59b3xVBYXof+LTAGAQ11rx5zMro5TqFLbQndEljY1O2iFPhfc+qhgpE7/8O95umWvWcXOBaNlKQQ0PchN4ZsCeSvAvfIpYZ1wSsgiSI/7HMdsHaBdeV3oLDb/HvlwXUAOcvz8Daxi4j4g1DGFUVxHnQjogSaVCbRKcEsaHhPXitKcKGgRabeqMvzDTqDglnsFtHtRGpMJIOm3Q/0pHT8l6SoC/zxumB3WNAgDzB+6lTS+GGPPkzp/bzANrTE54DqtmnAw+98lso4/Nt0dcgTgHqb7+Fm1myeAN2Bxi7JbegObPvimvF146+XI20if4UBF8CxmQCaUymw3eq+THfLZM86hYg9lBDYj5VLApvlWCODxFSrnQXiGDRaXK9fbo1JYRNMb/x+lU6RfxN1A/NmzPLRD+1C1Jm1q5dkK5rp30g9gyu95zKNzaDmc7nJFlreAj0j9UaSEX4/SowmhAHBm8BC6Qm3AUf0Q2T+BePCZrvctztjHabolPXCPxaxBHP7OKQH7tmAuIa4WEqsn8jEPztQLhj4sKjSczwLI7W43fvzjSb4qNKm+E8OkPZmzg2IgHUpJlRmxhGI0ECnQIiirQkBghnK1F8URpBZolxCls+/If9lcYE1EHoCvu9PJGnVgQ5tQMUritMSsJLd7IIdX4E0NgD2uxjpm6pwmHGfT+jls1YJyiAE11HOeOv0ashVhqjBlo1JwFG6DIK25tZCF3P/2r8vndXTjy1RI3s8aZVR0f/Da6yE19YWBc7viee3LotM1o5LZ8+DcxXvWgaNCfXKxd29
- 09WmWpMZ
- S8Lb9T2JeReQNUZEhOonrkZG4i8WGh0dRTw4uYdL13f2Hrob91jTUG4taP1RNiw1V657C+YV+aJrUfK5XYhbVON/TtOZc1SgN4+GKIszEJnzjcxDVtmhUo2mbSR8zBbJjV42Fn5mn2c2J5SyLdS9YzUj8dAmAb4Mn4oaqIfUNbHYK8rb9MKLoWyq38QMmKHwhiTof1C937S+VnpleTbh/fj321yatOpy24lVxEMbGH2fqu3+sSI3Zt69m5+GRHZJ664O2P+gSfv+tvLAqJ6IqRlime9MLh8lQi+CJFUtUEN2Fryt+FLHDLR6Zrg==
+X-HE-Tag: 1755678007-216209
+X-HE-Meta: U2FsdGVkX1+PNRUhcCgBY7epYl0fyaZcq3oiWYe7YQCmWCUO4Foo/6togYQTHc9K7AUUGevXjjPDjNxW8wavSPvmbKwoLqPtSLhmukT1FsG0HbOxkjcoUciMda9qan/ERdF17chWPfNwvtwZlkDsjel+zpmzjDPvJbyqYKtpJVkV7WOBuLafCChJ6lMeMniqBF2UFQtFAyUu4xaUfquaeWSWwYBfpEgqLA/rf5PiqH/876WMUcCc8TBRunlQXFrBTZeivmSalsnjkqvRYFlghRWz8aIbIHP7hg9USLlyPtoS2lEBt2v77oiSkvdG1i1roai6DlOHnPimr+8M1S6bupJg2xcIeByLspMqsLfazQURaqERxKlE0KkjvNyzUVI9bJ/BW8ULKILYvrrZQX5ToPybr5qmDnkOHAqJ2Q8fT3BC06rYyw6IPGMAp0Hw6Qjuy3mBW4h567+01Q7pSmvmA8o1gWVQoQlEbLrehaZAkIYaRjPDaee194a8c9vtaFMBcS/NIRO5qpEJ4OxsJ6+GDwVNkTwtHGJCxGmPRegLeH906PYicXvjN8YPXCIOlN739p4U6Nk4gnIT+64pbUal4+38AcvCneVQNoOIb/fx0i82s3RF9C2th/HdQUu6cibzLFf3PhI7vuuHlPsybBB8+MnRmmFD5vvXSc/jn7Osonh1UZ2ZVuEyBpJv+m1ZmCENN2AGwpYoNfNjcIwgv8RrAn2oPo0mzKCEPMR68mhzE/D92PeAg6sHtpYQ01CHH2ynfac+BJzXq+SLe5nKjjOknfkYV7hdtpq4C/Gm602FruYXv6SOAolIcYffQzBKdzl2gKuzhdHFCMiBrXOA2V7rN/S7ClLLzXYrz6qFkNwuS0yAXev+nJ1lRK/CxOZJf5Kt5qrSwK9Ygzc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,91 +85,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 19, 2025 at 11:22:46PM +0000, Evangelos Petrongonas wrote:
-> When KHO (Kexec HandOver) is enabled, it sets up scratch memory regions
-> early during device tree scanning. After kexec, the new kernel
-> exclusively uses this region for memory allocations during boot up to
-> the initialization of the page allocator
-> 
-> However, when booting with EFI, EFI's reserve_regions() uses
-> memblock_remove(0, PHYS_ADDR_MAX) to clear all memory regions before
-> rebuilding them from EFI data. This destroys KHO scratch regions and
-> their flags, thus causing a kernel panic, as there are no scratch
-> memory regions.
-> 
-> Instead of wholesale removal, iterate through memory regions and only
-> remove non-KHO ones. This preserves KHO scratch regions, which are
-> good known memory, while still allowing EFI to rebuild its memory map.
-> 
-> Signed-off-by: Evangelos Petrongonas <epetron@amazon.de>
-> ---
-> Changes in v2:
-> 	- Replaced the for loop with for_each_mem_region
-> 	- Fixed comment indentation
-> 	- Amended commit message to specify that scratch regions
-> 	are known good regions
-> 
->  drivers/firmware/efi/efi-init.c | 28 ++++++++++++++++++++++++----
->  1 file changed, 24 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/firmware/efi/efi-init.c b/drivers/firmware/efi/efi-init.c
-> index a00e07b853f2..99f7eecc320f 100644
-> --- a/drivers/firmware/efi/efi-init.c
-> +++ b/drivers/firmware/efi/efi-init.c
-> @@ -12,6 +12,7 @@
->  #include <linux/efi.h>
->  #include <linux/fwnode.h>
->  #include <linux/init.h>
-> +#include <linux/kexec_handover.h>
->  #include <linux/memblock.h>
->  #include <linux/mm_types.h>
->  #include <linux/of.h>
-> @@ -164,12 +165,31 @@ static __init void reserve_regions(void)
->  		pr_info("Processing EFI memory map:\n");
->  
->  	/*
-> -	 * Discard memblocks discovered so far: if there are any at this
-> -	 * point, they originate from memory nodes in the DT, and UEFI
-> -	 * uses its own memory map instead.
-> +	 * Discard memblocks discovered so far except for KHO scratch
-> +	 * regions. Most memblocks at this point originate from memory nodes
-> +	 * in the DT and UEFI uses its own memory map instead. However, if
-> +	 * KHO is enabled, scratch regions must be preserved.
+Previously, DAMON's physical address space monitoring only supported
+memory ranges below 4GB on LPAE-enabled systems. This was due to
+the use of 'unsigned long' in 'struct damon_addr_range', which is
+32-bit on ARM32 even with LPAE enabled[1].
 
-I'd add that KHO scratch regions are good know memory here as well. With
-that
+To add DAMON support for ARM32 with LPAE enabled, a new core layer
+parameter called 'addr_unit' was introduced[2]. Operations set layer
+can translate a core layer address to the real address by multiplying
+the parameter value to the core layer address. Support of the parameter
+is up to each operations layer implementation, though. For example,
+operations set implementations for virtual address space can simply
+ignore the parameter. Add the support on paddr, which is the DAMON
+operations set implementation for the physical address space, as we have
+a clear use case for that.
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+[1]https://lore.kernel.org/all/20250408075553.959388-1-zuoze1@huawei.com/
+[2]https://lore.kernel.org/all/20250416042551.158131-1-sj@kernel.org/
 
->  	 */
->  	memblock_dump_all();
-> -	memblock_remove(0, PHYS_ADDR_MAX);
-> +
-> +	if (is_kho_boot()) {
-> +		struct memblock_region *r;
-> +
-> +		/* Remove all non-KHO regions */
-> +		for_each_mem_region(r) {
-> +			if (!memblock_is_kho_scratch(r)) {
-> +				memblock_remove(r->base, r->size);
-> +				r--;
-> +			}
-> +		}
-> +	} else {
-> +		/*
-> +		 * KHO is disabled. Discard memblocks discovered so far:
-> +		 * if there are any at this point, they originate from memory
-> +		 * nodes in the DT, and UEFI uses its own memory map instead.
-> +		 */
-> +		memblock_remove(0, PHYS_ADDR_MAX);
-> +	}
->  
->  	for_each_efi_memory_desc(md) {
->  		paddr = md->phys_addr;
-> -- 
-> 2.47.3
+Changes in v2:
+- set DAMOS_PAGEOUT, DAMOS_LRU_[DE]PRIO, DAMOS_MIGRATE_{HOT,COLD} and
+  DAMOS_STAT stat in core address unit.
+- pass ctx->min_region value to replace the original synchronization.
+- drop the DAMOS stats type changes, keep them as 'unsigned long' type.
+- separate add addr_unit support for DAMON_RECLAIM and LRU_SORT from
+  this patch series.
+
+Quanmin Yan (2):
+  mm/damon: add damon_ctx->min_region
+  mm/damon/core: prevent unnecessary overflow in
+    damos_set_effective_quota()
+
+SeongJae Park (10):
+  mm/damon/core: add damon_ctx->addr_unit
+  mm/damon/paddr: support addr_unit for access monitoring
+  mm/damon/paddr: support addr_unit for DAMOS_PAGEOUT
+  mm/damon/paddr: support addr_unit for DAMOS_LRU_[DE]PRIO
+  mm/damon/paddr: support addr_unit for MIGRATE_{HOT,COLD}
+  mm/damon/paddr: support addr_unit for DAMOS_STAT
+  mm/damon/sysfs: implement addr_unit file under context dir
+  Docs/mm/damon/design: document 'address unit' parameter
+  Docs/admin-guide/mm/damon/usage: document addr_unit file
+  Docs/ABI/damon: document addr_unit file
+
+ .../ABI/testing/sysfs-kernel-mm-damon         |   7 ++
+ Documentation/admin-guide/mm/damon/usage.rst  |  11 +-
+ Documentation/mm/damon/design.rst             |  16 ++-
+ include/linux/damon.h                         |   7 +-
+ mm/damon/core.c                               |  75 +++++++------
+ mm/damon/paddr.c                              | 106 +++++++++++-------
+ mm/damon/sysfs.c                              |  41 ++++++-
+ mm/damon/tests/core-kunit.h                   |  16 +--
+ mm/damon/tests/vaddr-kunit.h                  |   2 +-
+ mm/damon/vaddr.c                              |   2 +-
+ 10 files changed, 188 insertions(+), 95 deletions(-)
 
 -- 
-Sincerely yours,
-Mike.
+2.43.0
+
 
