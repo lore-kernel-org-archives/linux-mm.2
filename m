@@ -2,80 +2,80 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 635C5CA0EEB
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 01:05:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3BE14CA0EEB
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 01:05:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB4696B00B3; Tue, 19 Aug 2025 21:05:08 -0400 (EDT)
+	id A2E3D6B00B5; Tue, 19 Aug 2025 21:05:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8CD26B00B4; Tue, 19 Aug 2025 21:05:08 -0400 (EDT)
+	id A05F16B00B6; Tue, 19 Aug 2025 21:05:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A545A6B00B5; Tue, 19 Aug 2025 21:05:08 -0400 (EDT)
+	id 91B7D6B00B7; Tue, 19 Aug 2025 21:05:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 806F66B00B3
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 21:05:08 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 49873C02ED
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:05:08 +0000 (UTC)
-X-FDA: 83795341896.12.E218B8F
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8151D6B00B5
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 21:05:10 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 31683B817E
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:05:10 +0000 (UTC)
+X-FDA: 83795341980.28.1C9804A
 Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 1532210000B
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:05:05 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=R6Ykf47M;
-	spf=pass (imf05.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
+	by imf27.hostedemail.com (Postfix) with ESMTP id F1EF740004
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:05:07 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=TsJWzzK4;
+	spf=pass (imf27.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
 	dmarc=pass (policy=reject) header.from=oracle.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755651906;
+	s=arc-20220608; t=1755651908;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x+H+sA2wbapk0bAi60LM8rU+Rifb31fILDaW1a9nREQ=;
-	b=OhVopUdKxcP2RkDDTpfi+a1KwcX9In+jU9rDpb657BGRYYcmaFhrX8vJerinwyiGvMnAF3
-	TE/5SR1lGB8h9Wc78OoTSbB1Z8pUSGUbX8RXdJNZyNxz/Qk1KF9GN1By5Aey1bp5OAFB0d
-	SMJ32wX+9fFJGOL5gtrQd/bPYe90kcs=
+	bh=joAKDyFfJF1Jn1BV6nqdFRNo25EhXa7oaKvhAKhAMM0=;
+	b=lR6DMdJQOVLxfHStzFMr3FcRc/F1MbJ8bm1pzWaAtmWZ4QGiKtmBwMY8DhF/DDoEjx8/Rj
+	iT8kCIR3lNM4zeYLP3fLk1047u2ICpYdCBsHvVPVwxZ9wWfwrSdSKe6G1iOkm1/gZqydaa
+	tE9Sbn5pbewyGuij61cPisxNPl3tN/I=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=R6Ykf47M;
-	spf=pass (imf05.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
+	imf27.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=TsJWzzK4;
+	spf=pass (imf27.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
 	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755651906; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755651908; a=rsa-sha256;
 	cv=none;
-	b=Vaj2SsrH4Hae5uXI9xbrGJPe7UJUHvRdSdmVlM0fhsdnBWijiiHXvdFs26KYpbBovg7vr6
-	bWSJOyPqhDxDSjVs4qLaQVCRHdT9MZ0ty7DlZbBzpxXUb2E8ysx9scgB1xAxAhx57WWw2l
-	zCoxRyCKEcR4o7xCHl1k1SGX7WvHVLI=
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57JLCEq1012242;
-	Wed, 20 Aug 2025 01:04:39 GMT
+	b=4wTKjPz/5uOjh8/SKNtL4j0/qA9Qcat91mse9UdHCMD69e9R0I4rQ2QTUjnWiHId1JnX22
+	GZIiQx/kY1fcywyi6CimIsM5kLu/FAq/vwOZo1F6JZvJvs/UopF/cyvlhV27P0QFsd6GfQ
+	Du5gL5TxzrUww1FrKZNyi1PRfL7bHLI=
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57JLE2AZ008324;
+	Wed, 20 Aug 2025 01:04:42 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2025-04-25; bh=x+H+s
-	A2wbapk0bAi60LM8rU+Rifb31fILDaW1a9nREQ=; b=R6Ykf47MjXhvjC985/OeR
-	XVQkGZBP3q1CQ9WiaQXraupQua32LyA7cZULB8GPAWTmTSwLS/qCk3YMf3nP/45M
-	pjVR4W74u+wlnNz2O0D0Z7sbGmtLyw6gh0ZFvQRoWFLs3SmKGGmy5vHHCGbAiPww
-	SetDygntZgUFHaqH9mFwG6ukU915Us+9e8ro+95jFBh3IQKcwB8Q4Iujl276LowT
-	xXfZpbZ7bC6pPv6J1uNa1QKFuzxNCrN+6gH9eRdQpetPz5dBGB+DmlaVl9bh3e1n
-	KE/RDgiMpk/TM839b0GUCVQDr3PecQjKbl7pG9Ftk8lMyqx+GR+ps5gDClnaJGQF
-	w==
+	:mime-version:references:subject:to; s=corp-2025-04-25; bh=joAKD
+	yFfJF1Jn1BV6nqdFRNo25EhXa7oaKvhAKhAMM0=; b=TsJWzzK4uQdbD4trS9KNN
+	X16/3jlvecQFlDTBLFpdvb5rsHhyjEBfgmBtqFSntlhbHzv1ujIlgxOGHSgfRX3i
+	creZoVStTuzJ3HziYH6vx/BVhtO9NKH1DbpczR9BWElg5q6Ae9Sk6d2SOuTZO6HJ
+	gIVbhOjPM7h+EnmcL+tf2Hvr9UCuclAkBaBYMLIoymlYMdiPt7jKeuLQp7wcKvQK
+	4+wVwuqW0lCF8uhtocdZqRsyriOfe7m6GeqFvZfKmhw4lnUi4fL3lmG3BAAAgik6
+	UjudOQxFfryrBGIoaD5SsbLBZeBIKREoedUtnC8WomhzK8DzMAllaEqsRw2Wi8rm
+	A==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48n0trr8dt-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48n0ts88gd-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 20 Aug 2025 01:04:39 +0000 (GMT)
+	Wed, 20 Aug 2025 01:04:42 +0000 (GMT)
 Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57JNXLM8007358;
-	Wed, 20 Aug 2025 01:04:38 GMT
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57K04sUS007394;
+	Wed, 20 Aug 2025 01:04:41 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48my3q29sf-1
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48my3q29tf-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 20 Aug 2025 01:04:38 +0000
+	Wed, 20 Aug 2025 01:04:41 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 57K14NdE011685;
-	Wed, 20 Aug 2025 01:04:37 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 57K14NdG011685;
+	Wed, 20 Aug 2025 01:04:40 GMT
 Received: from localhost.localdomain (ca-dev60.us.oracle.com [10.129.136.27])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 48my3q29gw-6;
-	Wed, 20 Aug 2025 01:04:37 +0000
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 48my3q29gw-7;
+	Wed, 20 Aug 2025 01:04:39 +0000
 From: Anthony Yznaga <anthony.yznaga@oracle.com>
 To: linux-mm@kvack.org
 Cc: akpm@linux-foundation.org, andreyknvl@gmail.com, arnd@arndb.de,
@@ -94,9 +94,9 @@ Cc: akpm@linux-foundation.org, andreyknvl@gmail.com, arnd@arndb.de,
         viro@zeniv.linux.org.uk, vschneid@redhat.com, willy@infradead.org,
         x86@kernel.org, xhao@linux.alibaba.com, linux-doc@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
-Subject: [PATCH v3 05/22] mm/mshare: add ways to set the size of an mshare region
-Date: Tue, 19 Aug 2025 18:03:58 -0700
-Message-ID: <20250820010415.699353-6-anthony.yznaga@oracle.com>
+Subject: [PATCH v3 06/22] mm/mshare: Add a vma flag to indicate an mshare region
+Date: Tue, 19 Aug 2025 18:03:59 -0700
+Message-ID: <20250820010415.699353-7-anthony.yznaga@oracle.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250820010415.699353-1-anthony.yznaga@oracle.com>
 References: <20250820010415.699353-1-anthony.yznaga@oracle.com>
@@ -106,31 +106,31 @@ X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-19_04,2025-08-14_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 suspectscore=0 mlxlogscore=920
+ phishscore=0 bulkscore=0 spamscore=0 suspectscore=0 mlxlogscore=999
  mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2508110000 definitions=main-2508200007
-X-Proofpoint-ORIG-GUID: LHUwwBAlFDOKUZ1C5Oa7Uw7vETmGP-xi
-X-Proofpoint-GUID: LHUwwBAlFDOKUZ1C5Oa7Uw7vETmGP-xi
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE5MDE5NyBTYWx0ZWRfXx3Dliz+VYorm
- 6jh3wb507jjHEcFE0clu3pt9XherMgo3M8okFWpuLKVV3v18+WVZ9MrDLbAbNSh/rBYC+oeCTEi
- mUV7mFEwJlu7igr87w1/qX5BoID8gLdojVVlJQTiCuEQHuXK9NokfAKVqP6lQGfewsWqZLgDOZ2
- rAd9lsgKVUgfAoXSXYHf8xUSyADucGmPpyt1Y5Kacq+MuA6gZ7ajiyxcJX2n9r2UYE6StbhnxeQ
- bkLJTtYhBQ33OksTNqeY5QvhgeI4HBqrDcSuRdnPIeiAIEtcoek17PrwPPFoG+lYv8qK6suKaru
- MYgTMkAoC+5KcYgWUMAG3AlNEhb0EO4Sud42kXQuLcCNXsfk9xXsmwS2kXMAhqzbOvcwSxvNVr/
- 7WtJTJSbNs4sxi3ttoA9MzxGJtmOlA==
-X-Authority-Analysis: v=2.4 cv=Qp4HHVyd c=1 sm=1 tr=0 ts=68a51f27 cx=c_pps
+X-Proofpoint-GUID: dwMicK_aXrOx3OW1u1XRTV9-Cn-ar4zW
+X-Proofpoint-ORIG-GUID: dwMicK_aXrOx3OW1u1XRTV9-Cn-ar4zW
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE5MDE5NyBTYWx0ZWRfX7Z/OUNiXSfdU
+ sA6bstIT3iMsz8KRti2mg1l475gtdbbJ2FZvfqVhon8SqobWqbpI70WnKKusDCOzlTP+zksE0Im
+ 1GtwLD5XlOd8WU3IivD71koutCzR4dpDFAymxfQpdpN+XK84G+zSIbCDP3XqTw0edCbcwdsIyo7
+ XHPOyoznkVMf/2cNQdtNyYC6KBgmt26xdKHBvgLOtlTOufy0shalNVxZ+E7mn2l9TQ8gNwG++0K
+ aTobhHT8iI3wYywQOQfG50/xH66YiNV0FZQc80kLfDdQAIgt30n10SH7wdhWgb5cars1PV12n9F
+ r8/TrvjKas0wGsX5ix7cFZji371+VVBtst2UjCa30/ha0QPs0rsLPjwbvEpP9ilQq58b5BEYOBP
+ 1iUldN1J0zsi5WsdxY3gUGWdT/1z5A==
+X-Authority-Analysis: v=2.4 cv=HKOa1otv c=1 sm=1 tr=0 ts=68a51f2a cx=c_pps
  a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=RpjSixA7iQhGN-bV:21 a=2OwXVqhp2XgA:10 a=yPCof4ZbAAAA:8
- a=HTk2KgwdMEbdErbPyz8A:9 a=UhEZJTgQB8St2RibIkdl:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22
- a=QOGEsqRv6VhmHaoFNykA:22
-X-Rspamd-Queue-Id: 1532210000B
+ a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=JfrnYn6hAAAA:8 a=yPCof4ZbAAAA:8
+ a=sWrvqzRc1c8b1S7DXhEA:9 a=1CNFftbPRP8L7MoqJWF3:22 a=UhEZJTgQB8St2RibIkdl:22
+ a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=QOGEsqRv6VhmHaoFNykA:22
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: F1EF740004
+X-Stat-Signature: djash1ysxeqi3uqd734w49nyycmwxkir
 X-Rspam-User: 
-X-Stat-Signature: wfftjw6mizddhwghjt1rq71ru7xwsyd5
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1755651905-162394
-X-HE-Meta: U2FsdGVkX190Y7TxLO98v/tjYWcqss8DqoJZSmRkkiWetM8RSzC/M1iq7Ke3t1M1R1FTg5WKY+sE2N+gTITLqhQF+MWlhkcVn/ffB3rvxySU2jz0S7WA91ksrBFdzst4ItQTpB3lPCBuBp0sW5wrVjJIVSi/EoHggOsw0rHwyDTZlDPI5i+0Hg2Nk8JiwSY6XoWlRbd7Y90yZsQwPDhDIaDfGF43aWszcbj1f1ojlIohZeRmP8O/v4xvm2ct3KmfnzfLghpruKBSHInWeWnE13TqqgGh5qMuVBwUGoW+iz6t6ZrIEfN/kc1ynXwx81DSBLWRhUYv5YUdaf3otgFBbt+dTtHWyxQtj1xGkKoyMD8C/sntYIOxrDKp7w6WCfSEmB6iN2b06jiYF4f1gfjI+SxlLanHOZxfDg37rlNe42v9NQQW1Au+1UBLrR+PWbbDCX3C/VBKxUulvzTDwKxyBkE1LuW1EX5pDRnhrvF6gx9LYv6c6v66oz5z+W2OYVqfSMjFeMQGFwLeJs/19SgzIutkXbGYalfOCySoGKsmpLHxCkmBFY7OkYvZ1q8X03Ldmtd6i9F9GFdRGdYB3qAdIANvXPRQEXu1/X8xvCce+lTmdFRgTmihsMwzRqi3yypiH8lWu02b8JoNJF/GDdJQeqIxtKkLfAmC8ew9cbIddeWQXlHpTPgeMVIAa71QeYKJX/Zh8gxS/YYjStgfJi4M1Fym4Ylxs/uov3xJIIBQAiM0AYwMRA24lZR/qaG2VeIbvxmDER+3qwXtv+ztn1iJ96BozaTmmAjZilwJ9s8ryxMg/InBo30EEUdb304EBxsG1hiw9JcWfTbcPcyUsZfhUwPvVGjm/g9+Mu/NkV2sEHMEDpxYP0/OWpUkHlqhBA0AO5kIIOfhjqu1hRA7B8nEzaBGW2NMFOyTKmDzOJ7yekljJRoxuCuFEhX81qp41TTfYd4owMKrL/XE9uLi1wX
- QAiplXQX
- Tt0P8eOB5Pk1oZF6VuxBNE1o1LDyGUrmGm+q6CmZZIhfkyMRg+sS0ChE49zbM1pRrlPeGFFL4/oEuPFRYsopPnTE1mY5/8BY3cbVMzvWV5acps99ZrASJX0IwH6P8k0RCemTcaxTBKGA4w+I63QWDuE9A7yY5AmCVrcpoODrpKgKJuxNjPPSrKnTa6mXXx6ICZ9JwuiOH4MgaynceA+s9PWCgzYuI9dyyEO48y9rfvAGRVR7Y898Sa8jvVxq66LeUKOpy
+X-HE-Tag: 1755651907-248738
+X-HE-Meta: U2FsdGVkX18NIrUoa4ma9Nsn6zTjgPg1lHLRyPwAAsoIxpPsSfmutzChh57J2T5Z0Qp2rbGjedZUq1yE7krnkE0dfH+QhKF/Bui+mOC1psxrhJu+g7nbZdfkzt44/y/B0/yg+HuidzOwT0V+LuNVLRUAQVWFUteRr8I6uSEonMGTWAQUWStJd0ugZ/ZFCAgIJ1FBMDol1tIhYBrMNVfefuSq2gTgkjlRxUzpxcPy+uLqu4HUu6dUyiHvKCgOSa0iUzIZ/s7wiMODiNA68slriBLYYoAsYnTTxuRCYZaBYCsuEEvDvtR4TPhdvTJmbZRbLLdExaC3g3ywKAnrae4ttJt/lsDnYt29Bp6CDGf7Q0Nv4LgzkdFuDnQiXFWh0W26HDrXGwkFzVAYUq2ZSwev5RVZYP+qKLSbmHFmyPICNVajpls2WXhKk6QkqKtl7NSHbJqK4xDj8ZsmKuohAcjqvq8IYk2ldI/KQTcpFtlAjZDKF7TcTh0i/O9Smr/l2PWBtCAc5/qjQXTKd24DcjhdQoCYQDmcX0a0kUBzrBGGG3HGM644LuUMINEtTgSmhyVOeUfVOSeT/r0icwPWkI9+QlILa+tZnetxtacsv08mCPjho2lZH1Idlfdp7IV4Xmi7V5Vjz4lN/JsSrA5XoMADb8WzZ4EU4BqBHKPUR/Po4Q5gMucjT+IJeC1wWhdv3MdwVkgXTn83qMIgpovUnactiYy7cJkM5lZ75/Hn/rS98MWMOx8wKfco4/zwgR9TDSdMCHnU6r0IbTkdqqkIQrK61yLvOZmSWpdzqD3fN/U8WyqmHfbLdslFdtfrBtL/9UZhPgOL/XZU0/29XB+3/3w6ePgK3OlDIvmTNnNKKP0n+lBowlL/qG/v5RXOy6p73O9lGy3yid0t71QShfAwuJHVJVAP4N7lWn03stKudDj5bIicSyXSXgWZTjaoIlA+Eft8u7uTwzH7Zu7EXEAPA/C
+ aeNfy24x
+ SkQpn4eZvM7i7NHdAk8c2BWdJWsaQCT3DQPH3FIDe6FVSKBOcrG8XapdPFRWMprlSJ3tzDyvZgEQ1/u9zT4BAK/j6DvolpuhH5eDnTPaWMKvf+LaokVTrmInwvi35ZTPsnSCZTHnm+5Rwaw1AdvHoPigVcP9kU0XTVstLsCO5RY0CUrtuiMHblpR2LGPWJlp2UkK85Ye/nf5ZRH1PIvsCYMVPS3KJHXv2+FSxSqHSwJSjQ4uzLdtrKwnbTSVGEu6MoqLgU/Xcor5Nqe1uDpiXAfyajTz7mdwXK1jyIlMzfmgxx7CtzCTlO2dLWIlfmAN4aTEOwykgm5VI1eH1M57iH/AcJnpNUaOGLiDR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,139 +139,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add file and inode operations to allow the size of an mshare region
-to be set fallocate() or ftruncate().
+From: Khalid Aziz <khalid@kernel.org>
 
+An mshare region contains zero or more actual vmas that map objects
+in the mshare range with shared page tables.
+
+Signed-off-by: Khalid Aziz <khalid@kernel.org>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
 ---
- mm/mshare.c | 87 ++++++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 86 insertions(+), 1 deletion(-)
+ include/linux/mm.h             | 19 +++++++++++++++++++
+ include/trace/events/mmflags.h |  7 +++++++
+ 2 files changed, 26 insertions(+)
 
-diff --git a/mm/mshare.c b/mm/mshare.c
-index 400f198c0791..bf859b176e09 100644
---- a/mm/mshare.c
-+++ b/mm/mshare.c
-@@ -16,19 +16,78 @@
- #include <linux/fs.h>
- #include <linux/fs_context.h>
- #include <uapi/linux/magic.h>
-+#include <linux/falloc.h>
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 76ee2bfaa8bd..aca853b4c5dc 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -431,6 +431,13 @@ extern unsigned int kobjsize(const void *objp);
+ #define VM_SEALED	VM_NONE
+ #endif
  
- const unsigned long mshare_align = P4D_SIZE;
- 
-+#define MSHARE_INITIALIZED	0x1
++#ifdef CONFIG_MSHARE
++#define VM_MSHARE_BIT	43
++#define VM_MSHARE	BIT(VM_MSHARE_BIT)
++#else
++#define VM_MSHARE	VM_NONE
++#endif
 +
- struct mshare_data {
- 	struct mm_struct *mm;
- 	refcount_t ref;
-+	unsigned long size;
-+	unsigned long flags;
- };
+ /* Bits set in the VMA until the stack is in its final location */
+ #define VM_STACK_INCOMPLETE_SETUP (VM_RAND_READ | VM_SEQ_READ | VM_STACK_EARLY)
  
-+static inline bool mshare_is_initialized(struct mshare_data *m_data)
+@@ -991,6 +998,18 @@ static inline bool vma_is_anon_shmem(struct vm_area_struct *vma) { return false;
+ 
+ int vma_is_stack_for_current(struct vm_area_struct *vma);
+ 
++#ifdef CONFIG_MSHARE
++static inline bool vma_is_mshare(const struct vm_area_struct *vma)
 +{
-+	return test_bit(MSHARE_INITIALIZED, &m_data->flags);
++	return vma->vm_flags & VM_MSHARE;
 +}
-+
-+static int msharefs_set_size(struct mshare_data *m_data, unsigned long size)
++#else
++static inline bool vma_is_mshare(const struct vm_area_struct *vma)
 +{
-+	int error = -EINVAL;
-+
-+	if (mshare_is_initialized(m_data))
-+		goto out;
-+
-+	if (m_data->size || (size & (mshare_align - 1)))
-+		goto out;
-+
-+	m_data->mm->task_size = m_data->size = size;
-+
-+	set_bit(MSHARE_INITIALIZED, &m_data->flags);
-+	error = 0;
-+out:
-+	return error;
++	return false;
 +}
++#endif
 +
-+static long msharefs_fallocate(struct file *file, int mode, loff_t offset,
-+				loff_t len)
-+{
-+	struct inode *inode = file_inode(file);
-+	struct mshare_data *m_data = inode->i_private;
-+	int error;
-+
-+	if (mode != FALLOC_FL_ALLOCATE_RANGE)
-+		return -EOPNOTSUPP;
-+
-+	if (offset)
-+		return -EINVAL;
-+
-+	inode_lock(inode);
-+
-+	error = inode_newsize_ok(inode, len);
-+	if (error)
-+		goto out;
-+
-+	error = msharefs_set_size(m_data, len);
-+	if (error)
-+		goto out;
-+
-+	i_size_write(inode, len);
-+out:
-+	inode_unlock(inode);
-+
-+	return error;
-+}
-+
- static const struct inode_operations msharefs_dir_inode_ops;
- static const struct inode_operations msharefs_file_inode_ops;
+ /* flush_tlb_range() takes a vma, not a mm, and can care about flags */
+ #define TLB_FLUSH_VMA(mm,flags) { .vm_mm = (mm), .vm_flags = (flags) }
  
- static const struct file_operations msharefs_file_operations = {
- 	.open			= simple_open,
-+	.fallocate		= msharefs_fallocate,
- };
+diff --git a/include/trace/events/mmflags.h b/include/trace/events/mmflags.h
+index aa441f593e9a..a9b13a8513d0 100644
+--- a/include/trace/events/mmflags.h
++++ b/include/trace/events/mmflags.h
+@@ -200,6 +200,12 @@ IF_HAVE_PG_ARCH_3(arch_3)
+ # define IF_HAVE_VM_DROPPABLE(flag, name)
+ #endif
  
- static int
-@@ -128,6 +187,32 @@ msharefs_mknod(struct mnt_idmap *idmap, struct inode *dir,
- 	return 0;
- }
++#ifdef CONFIG_MSHARE
++# define IF_HAVE_VM_MSHARE(flag, name) {flag, name},
++#else
++# define IF_HAVE_VM_MSHARE(flag, name)
++#endif
++
+ #define __def_vmaflag_names						\
+ 	{VM_READ,			"read"		},		\
+ 	{VM_WRITE,			"write"		},		\
+@@ -233,6 +239,7 @@ IF_HAVE_VM_SOFTDIRTY(VM_SOFTDIRTY,	"softdirty"	)		\
+ 	{VM_HUGEPAGE,			"hugepage"	},		\
+ 	{VM_NOHUGEPAGE,			"nohugepage"	},		\
+ IF_HAVE_VM_DROPPABLE(VM_DROPPABLE,	"droppable"	)		\
++IF_HAVE_VM_MSHARE(VM_MSHARE,		"mshare"	)		\
+ 	{VM_MERGEABLE,			"mergeable"	}		\
  
-+static int msharefs_setattr(struct mnt_idmap *idmap,
-+			    struct dentry *dentry, struct iattr *attr)
-+{
-+	struct inode *inode = d_inode(dentry);
-+	struct mshare_data *m_data = inode->i_private;
-+	unsigned int ia_valid = attr->ia_valid;
-+	int error;
-+
-+	error = setattr_prepare(idmap, dentry, attr);
-+	if (error)
-+		return error;
-+
-+	if (ia_valid & ATTR_SIZE) {
-+		loff_t newsize = attr->ia_size;
-+
-+		error = msharefs_set_size(m_data, newsize);
-+		if (error)
-+			return error;
-+
-+		i_size_write(inode, newsize);
-+	}
-+
-+	setattr_copy(idmap, inode, attr);
-+	return 0;
-+}
-+
- static int
- msharefs_create(struct mnt_idmap *idmap, struct inode *dir,
- 		struct dentry *dentry, umode_t mode, bool excl)
-@@ -182,7 +267,7 @@ msharefs_unlink(struct inode *dir, struct dentry *dentry)
- }
- 
- static const struct inode_operations msharefs_file_inode_ops = {
--	.setattr	= simple_setattr,
-+	.setattr	= msharefs_setattr,
- };
- 
- static const struct inode_operations msharefs_dir_inode_ops = {
+ #define show_vma_flags(flags)						\
 -- 
 2.47.1
 
