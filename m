@@ -2,111 +2,88 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 03E90CA0EED
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 05:37:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B0A8CA0EDC
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 05:41:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9892C8E0024; Wed, 20 Aug 2025 01:37:11 -0400 (EDT)
+	id 8A7946B00B4; Wed, 20 Aug 2025 01:41:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9392E8E0011; Wed, 20 Aug 2025 01:37:11 -0400 (EDT)
+	id 87F486B00B6; Wed, 20 Aug 2025 01:41:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8284F8E0024; Wed, 20 Aug 2025 01:37:11 -0400 (EDT)
+	id 7BC2A6B00B7; Wed, 20 Aug 2025 01:41:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D8C78E0011
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:37:11 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 309141382B8
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 05:37:11 +0000 (UTC)
-X-FDA: 83796027462.25.C470546
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 6DBCB1A0003
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 05:37:09 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Sm5nir1T;
-	spf=pass (imf19.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A13C6B00B4
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:41:15 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 26DB91DC431
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 05:41:15 +0000 (UTC)
+X-FDA: 83796037710.23.B7AD353
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5CB18100008
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 05:41:13 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1JkOaB6i;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755668229;
+	s=arc-20220608; t=1755668473;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n2YWNQ1R3q2yuyqJw9ejU5xCE0/f1sakMXwMmNRUMe4=;
-	b=Gsf0jSYBtrJAOO8m6r2RAfrgDiABY5Fxwz5dJAKmZK6Lp1VKsJj5Ly62ehSaLlHv7Ji8MI
-	MO76UEeByxW2oVeN50Qw+fP7R1+7fQEFTsGkc2g6h4LBo6q2cIh/ZxapnRii5vMozSCZfj
-	G+6BxM+ufm61LjzgHhV6PfOnjLjR7Ls=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755668229; a=rsa-sha256;
+	bh=XyauN4RXiriguN4yWhoJLLR51Coqdmv0ARugHvu5X8M=;
+	b=vcaG5DHAzD/Ivl5U3cc86LnbZPYNzEEhXOoXDMifwGlhKqBVwgisrRNHgAB2ifp8HrJmVc
+	Vjif+yjL63RgE+W1a8zLYTrJ0Gsds/wU11PCKqBviJgPupSM1YT4hYSXj7ibU8cN9z+3f8
+	ahqggTghuQG1RlOR5K1GGfBWBGEMvjE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755668473; a=rsa-sha256;
 	cv=none;
-	b=wPpVGk2zHDqs1tEaK9Igon6J3BBgQsFWmhn8sbVPSbXXF3KaM0EOz7nZjChdpt6ZD50xdQ
-	hu5X5f6Ptg77KkolQity9mPYyn8znbbiCh5CNKN8s8BJAsfyPdDWvJ/cHOY9EIo9iYW1dP
-	IrMPbMWRoRQ1/bhezk2zIMi6WttqomE=
+	b=rLUikApaHZ+yH5+OoEOwgPCMGE/3caOI1dy/x53AHDN4dUeHsQ2QKCNB3jOdorOowKnhzf
+	rZGzvMMz90gbIgWqJGnuavb62sE5iZS7Gc56En2A/gIu2VzGBbWygJlhVfcSJfmRJTCTL5
+	YsNQUdxUAsp1u3bOOruQmXF2xUpmuCo=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Sm5nir1T;
-	spf=pass (imf19.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755668228;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n2YWNQ1R3q2yuyqJw9ejU5xCE0/f1sakMXwMmNRUMe4=;
-	b=Sm5nir1T/ujZc6uuPgEtOtk9Ch6R7WrsZ/CMjDacOb5FMpRVRx90L8raCa/9sXKYAB3RKK
-	a3ZDze1AD3VkgxaovQPZYmCXHAMP86NESheytU6dw6INm/gsUcAB4k7NvkdxE+cmTIarv1
-	Of6CWJWl32KTppDTmUCtEURAGUPuJYA=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-590-SD3MvwL6PoWLgsvGYJ6o_w-1; Wed,
- 20 Aug 2025 01:37:05 -0400
-X-MC-Unique: SD3MvwL6PoWLgsvGYJ6o_w-1
-X-Mimecast-MFC-AGG-ID: SD3MvwL6PoWLgsvGYJ6o_w_1755668223
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 54F0C1956079;
-	Wed, 20 Aug 2025 05:37:03 +0000 (UTC)
-Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.112.99])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2ED4819560B0;
-	Wed, 20 Aug 2025 05:36:54 +0000 (UTC)
-From: Baoquan He <bhe@redhat.com>
-To: linux-mm@kvack.org
-Cc: ryabinin.a.a@gmail.com,
-	andreyknvl@gmail.com,
-	glider@google.com,
-	dvyukov@google.com,
-	vincenzo.frascino@arm.com,
-	akpm@linux-foundation.org,
-	kasan-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org,
-	sj@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	elver@google.com,
-	snovitoll@gmail.com,
-	christophe.leroy@csgroup.eu,
-	Baoquan He <bhe@redhat.com>
-Subject: [PATCH v3 12/12] mm/kasan: make kasan=on|off take effect for all three modes
-Date: Wed, 20 Aug 2025 13:34:59 +0800
-Message-ID: <20250820053459.164825-13-bhe@redhat.com>
-In-Reply-To: <20250820053459.164825-1-bhe@redhat.com>
-References: <20250820053459.164825-1-bhe@redhat.com>
-MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1JkOaB6i;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 557474184C;
+	Wed, 20 Aug 2025 05:41:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE618C4CEEB;
+	Wed, 20 Aug 2025 05:41:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1755668472;
+	bh=sJbRMZ3dzMihdohhvVLrwvHrGo59fz+haIPct8foZ4Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=1JkOaB6ia1UgG2tx2yeCD5I6d69KDl5YYU8TGj8hJLynPffr2A2fqGrt4v/GUIkTb
+	 UDUItDtyJVtxG/Q5n/egJnaDiez4L9MDZrI12FAhYWS9mzqaHKek0MAq0ahDtwaRx+
+	 /Z0cnDDhMFSmJrwf8P3LgXR6mMjKM9ey/BGPXiw4=
+Date: Tue, 19 Aug 2025 22:41:11 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Chris Mason <clm@fb.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@gogle.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, Zi
+ Yan <ziy@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kernel-team@meta.com
+Subject: Re: [PATCH] mm/page_alloc: Occasionally relinquish zone lock in
+ batch freeing
+Message-Id: <20250819224111.e710eab683b7c7f941c7d1a7@linux-foundation.org>
+In-Reply-To: <20250818185804.21044-1-joshua.hahnjy@gmail.com>
+References: <20250818185804.21044-1-joshua.hahnjy@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5CB18100008
+X-Stat-Signature: 9n6snruepqdra5mn8k5z3bibahqwn4b4
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6DBCB1A0003
-X-Stat-Signature: 4qjugrxonet6uwb71q9t4iybmeofpskh
-X-HE-Tag: 1755668229-985967
-X-HE-Meta: U2FsdGVkX1+ciqwikdFSy5Imv/Z6bTqmInRnGYhS4uc5KTvetrmQeGCBKVURGGhJtuOunz/mj+UgcLrG6EE9+P0l2rx8AGc6mbin9F37YvZMqF1dNO3bJdRN/ior/wjBqJKZl/Ty73OlOYEu8N8ex4XNJiu7Mio1AcHcwargJ7V6ZWRDNCdXUKA4/0BNwVuRJszuJ4fe7DHYfZbSo+//rA5d26kq+y0imwXOMpkANE/HVipzIJh/8KWXOqag2gTR8eoXTlOmvP6WiKlBeKP98t8OKO5Ub43noB6SjYZMXzkWpLcqJIiaIyRTr/nbwlu0U32dCBOu06XTQBDgOcbs9MRsqRoQjWLpAwwUp1o4qC0pI/Rj76fOpZH38Y0xIMyM59gl5Vl1FIPRZmFM0FeqrVFKVxlKSKRpC7ZcA9aGBTRj4IAZ56HodFDP/zxqSYEt7baKtmQv5J4JxEmJlzckFTK0Goi5JHleBvRso/Zjptb76uAK7U7YrqzMS5FFHDbPhk98UHPFHy6uobdNPkn1iczYdcn+pCm0Alw/BJjGwdvNd52G2nICLsECtaE8+j7W6cAT0rSfhAEH/grMQaYwslhHBi8CalO1dZWsuJS6Ynyk7wkwFqdxb9gLsW35iyzKhZqnSV8K6j1lh38m78bmdJr+7Q1ChLz3SWDKikO84XpPdTaNTo97QdmuUBnsJS9VU2PyuIqAdvwjnzxbC557IibVNGdv2IkoCzFC507GC3IvwUC8hA5OHnMASiI89PwKhdayXp0RJbo6zK9gogubS0CQJAZyHp2NbiSNrE9xYDTx2jQOdM+3upq7VdVJ7vZOGDq1E/0F55urNrjzXAZ4ED+bvYnrScPypjcWsTTDlnU+ZG98u/JuscRzmHe62UZnvSy15oYvbZvdxTtjLOracUF5cqQaFaipptwimcftxOy7/sYN+tb/lxVpw0/7mHJiovxeIjB8oPrcAFf6ZCh
- RlRgEwcq
- MaWDjw/w9cDwHNdtMq77kgNIdeCLg5vxX9MDQJm1XJopURYjxt17ImKOBOr5PJ/KBHmhNOJzOExhfYTPgjv/TZM3uhQHaSn/TT3kz4kKPIyLLC34HHspyZ8AbTDoz8XzM/ju8xY2osUUM120gKbOGkID0Nk8BT5tRZYx8JeheuhCgZcuC/GxxSKZ7L7YmoLur+Q0H0N3OSPuGE+rCJMYfxVhKl33fxRy7ZPf12qHV3nMiMNuia7zXo+Gi5xrjQhZKrwLo+bRnsJ8BiipN2zYe5QWno2X5wrRcpX5R5Q+6v9u9UebTrSuBaylEI/CKdVKfn4kFDNGf76C8Ds10PfSuzdvNxYi62ahyMebTsEeZlVtq5f5bSRONhW/Q9/mKtP9qtV6MkfoAUNRksGoYwTaDXj7Kbw==
+X-HE-Tag: 1755668473-616013
+X-HE-Meta: U2FsdGVkX1/daBpd7tySsT1KLNFCTHDthE1lWO8WeFqiDEURxOpt0Mlon9OrQZVv1ZN5b+5nmKo3ClZcPgxdoiIO6PD9lD4FeN7REX7pgdiTm85QGJfmEOFfMvbFeSWXydeL8TlSCkzVdnR/Dz+v+ZcN388Ed7HHepGhGOFNsHK0hYp0oM/k+04cz1gk3WASfuOqGyS2Tnd/M24Mw0SQKRc6ydsRlxXsGjdZmefpHi9YRoUm6w4R56rcgHBxqjBZmvEOidzJIHkBCGocctUoRMgJ0JpIGodfTqNgmpc1XlIWfstNlHuQbSvdz7SwkhUYJBvYpQgoUisw1Rb2f9FF6JYD8xctQi7VAkf0/rBXVBOrZxkvcWhb/Chfs4Qw/r6YaSA3lPPkbN64+twzo7usKma+cJPdgCAHNaQSlZ4dILxe/Uhieqx+C1GrCLo5/HAKJT8l/InzslR0/5kGDvbofLM9xivIUGWGXn1kWlQTbXNeplPQpzCzf5xLHk/S591q4c30431l9a5bVsHxIKhl86NLEcQ/VrpLdYREjcmOVKvcpAhEDXogpb0g0l1k4ECAUVgVerI+4RtO1Cs+MXf4d87tL9j0HdNEzVmHTlQdScReRciBFnP09Tmi0gVzxieFiAh9jEBV0zxRoaAFlRQffyc8S1hjJzwCHG5AGfBKi8YWdBVh6hvRWDYC9Kr7ycgrcYObyBHxJlqMxb0geD3XGyn9Q+SPs+n3AWeKNmxM9THjXu14YrXzg9W4cY/sbEZYpaRSTne5yGi8TQF5U7b5ZdcGIo5TFOyfSJHVo/YHM1pt6V2AUPDjWMBc9YT8154rQ1w6ffHjUpvOT3eAUuCMnC4Xw7K1J6bIBKZ8qp1SxWWoJQH/v5FSlJYw+6ecP5u1VFBKH9ToDiuaiwNI+vCpFqBfYh2kmg1AL0k1On3GYEuCjmmXPbODUKmI+BGX7EcWEXufQLRxmdhRjGz1wAU
+ dK02hiU1
+ y6Xm0+wFkqb2+U/DnnEEhbHc575UBhkEeJs9wluOvjg5GhN8rKtpPGpMnB79G+giyuGym1/jiDDMm+qXQG9+o6EhMb5M4RgdMHx+qiuZQorbnHrPYWRfXMruZPEjhxbzjVyYkQb6YdH/gTn1ZLa3kTdJp6Z25+vHCngHTtostlZjMYKQbJTK432WLk/XoryHYXAUYKLDMOEI0+lgBmght+I038UEjKPGmQDGPjnbADIinTRxvOCnJHKTbn6785LFe8gFVX/NTVJ6ouACjL0eLfOg4wIQFl08biqgkJnqvL9UQnKt+j8JfBwxO6I/v+qeCdQ6l2lmUokGMmz3JG2CyjnAeKZK91iwfwsDXJJnmXdFkXRdTuP0JZf7OKaEA2lZWQjUj8oqViVwvFMxLyJk6Rybm+sg4OjdrEo0l9clYyuz7maE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,62 +92,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now everything is ready, set kasan=off can disable kasan for all
-three modes.
+On Mon, 18 Aug 2025 11:58:03 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
 
-Signed-off-by: Baoquan He <bhe@redhat.com>
----
- include/linux/kasan-enabled.h | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+> While testing workloads with high sustained memory pressure on large machines
+> (1TB memory, 316 CPUs), we saw an unexpectedly high number of softlockups.
+> Further investigation showed that the lock in free_pcppages_bulk was being held
+> for a long time, even being held while 2k+ pages were being freed.
 
-diff --git a/include/linux/kasan-enabled.h b/include/linux/kasan-enabled.h
-index 32f2d19f599f..21b6233f829c 100644
---- a/include/linux/kasan-enabled.h
-+++ b/include/linux/kasan-enabled.h
-@@ -4,34 +4,32 @@
- 
- #include <linux/static_key.h>
- 
-+#ifdef CONFIG_KASAN
- extern bool kasan_arg_disabled;
- 
- DECLARE_STATIC_KEY_FALSE(kasan_flag_enabled);
- 
--#ifdef CONFIG_KASAN_HW_TAGS
--
- static __always_inline bool kasan_enabled(void)
- {
- 	return static_branch_likely(&kasan_flag_enabled);
- }
-+#else /* CONFIG_KASAN */
-+static inline bool kasan_enabled(void)
-+{
-+	return false;
-+}
-+#endif
- 
-+#ifdef CONFIG_KASAN_HW_TAGS
- static inline bool kasan_hw_tags_enabled(void)
- {
- 	return kasan_enabled();
- }
--
- #else /* CONFIG_KASAN_HW_TAGS */
--
--static inline bool kasan_enabled(void)
--{
--	return IS_ENABLED(CONFIG_KASAN);
--}
--
- static inline bool kasan_hw_tags_enabled(void)
- {
- 	return false;
- }
--
- #endif /* CONFIG_KASAN_HW_TAGS */
- 
- #endif /* LINUX_KASAN_ENABLED_H */
--- 
-2.41.0
+It would be interesting to share some of those softlockup traces.
+
+We have this CONFIG_PCP_BATCH_SCALE_MAX which appears to exist to
+address precisely this issue.  But only about half of the
+free_pcppages_bulk() callers actually honor it.
+
+So perhaps the fix is to fix the callers which forgot to implement this?
+
+- decay_pcp_high() tried to implement CONFIG_PCP_BATCH_SCALE_MAX, but
+  that code hurts my brain.
+
+- drain_pages_zone() implements it but, regrettably, doesn't use it
+  to periodically release pcp->lock.  Room for improvement there.
+
 
 
