@@ -2,61 +2,61 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1EA9BCA0EDC
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 10:32:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A532DCA0EDC
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 10:32:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A21EA8E0052; Wed, 20 Aug 2025 06:32:01 -0400 (EDT)
+	id 47CDB8E0053; Wed, 20 Aug 2025 06:32:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D1C28E0003; Wed, 20 Aug 2025 06:32:01 -0400 (EDT)
+	id 454838E0003; Wed, 20 Aug 2025 06:32:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90EF08E0052; Wed, 20 Aug 2025 06:32:01 -0400 (EDT)
+	id 391F58E0053; Wed, 20 Aug 2025 06:32:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DB228E0003
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 06:32:01 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1EE1D80553
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 10:32:01 +0000 (UTC)
-X-FDA: 83796770442.17.A5BFB22
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 24FA68E0003
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 06:32:33 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DAA2714039D
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 10:32:32 +0000 (UTC)
+X-FDA: 83796771744.18.036FFB5
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5F2DE40005
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 10:31:59 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0B0B3120010
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 10:32:30 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
 	dkim=none;
-	spf=pass (imf12.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755685919; a=rsa-sha256;
-	cv=none;
-	b=pB0SbKEA23JYfwxfAadwp5orX15QGIBgdcTU4LlcixXP9MOiXEA430fgiKILJ0S6WfvpRH
-	ixTszixh2cxfjXYQI3I80OopqkgM9GqgeBrlL4UYCOwm8rIB7bcDh3lcMvPUp+KVigWIM+
-	fk1P5mHzf5Nr+Bj8OAxWP11vSqqOEKM=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	spf=pass (imf12.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf29.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755685919;
+	s=arc-20220608; t=1755685951;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=b2DcBI1bMgoVInefU/iXVbUVgVuOWez0fkUcdSx3JFY=;
-	b=HMoCeum2j+Yn+U5eCVMpJfbKpvtO8CZOhE/bkB9vYxOLDIkVPBDryzuXF44Uem3BUnyUFb
-	LcVPu9gqob4nHRPDsHKBEYrgPA7M8TLPoIRfqemtiouOgYqNZZfYUC5Mtk1k4rp4kzRv7s
-	oa66rM2sDSOuZAKsZiMDf2SuEVHeMjs=
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4c6N4G31SBz6M4q9;
-	Wed, 20 Aug 2025 18:29:50 +0800 (CST)
+	bh=4SLF8njMGx+hMY0EzSzRQAV2g0lPdEnnpMoXSDXffQc=;
+	b=nhliaEPaFfjaZVN86zmOeQPIh20le4LQY9smznvIScj+L2SWhJMTR4nJjjzPyioeekxcDX
+	afrni0/ZHCL0qrbLAKn3l+O2MuhW1DOUDDctS5FrTXl3ID+DALgF8OcwgZ2XIcIFW8fH8G
+	+BVWA/cmTCtKS7YkiMNS7Ysv0/BIems=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755685951; a=rsa-sha256;
+	cv=none;
+	b=KmPpI1TKwrGizrO2q4Hc1g+pddn+h2m44X7nj8NUOdq2UWQtWlZqdmkD0AXTD+EJKMv+u3
+	uvHcl/dtF8vTEM8CYZ1C3WZB8QFyT4XaN68agXwHMNM35+dIjCro0Leb32dUCIaZnO4NjO
+	BxewsBLTnZwVxnVj0PtuAkr14PVT9no=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf29.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4c6N3p27HCz6L5wF;
+	Wed, 20 Aug 2025 18:29:26 +0800 (CST)
 Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id C69FB1402FB;
-	Wed, 20 Aug 2025 18:31:57 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 36A9A1402DA;
+	Wed, 20 Aug 2025 18:32:29 +0800 (CST)
 Received: from SecurePC-101-06.huawei.com (10.122.19.247) by
  frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 20 Aug 2025 12:31:56 +0200
+ 15.1.2507.39; Wed, 20 Aug 2025 12:32:28 +0200
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 To: Catalin Marinas <catalin.marinas@arm.com>, <james.morse@arm.com>,
 	<linux-cxl@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
@@ -70,9 +70,9 @@ CC: Yicong Yang <yangyicong@huawei.com>, <linuxarm@huawei.com>, Yushan Wang
 	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>, <x86@kernel.org>, Andy Lutomirski
 	<luto@kernel.org>
-Subject: [PATCH v3 4/8] MAINTAINERS: Add Jonathan Cameron to drivers/cache
-Date: Wed, 20 Aug 2025 11:29:46 +0100
-Message-ID: <20250820102950.175065-5-Jonathan.Cameron@huawei.com>
+Subject: [PATCH v3 5/8] arm64: Select GENERIC_CPU_CACHE_MAINTENANCE and ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
+Date: Wed, 20 Aug 2025 11:29:47 +0100
+Message-ID: <20250820102950.175065-6-Jonathan.Cameron@huawei.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250820102950.175065-1-Jonathan.Cameron@huawei.com>
 References: <20250820102950.175065-1-Jonathan.Cameron@huawei.com>
@@ -82,12 +82,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.122.19.247]
 X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
  frapeml500008.china.huawei.com (7.182.85.71)
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5F2DE40005
-X-Stat-Signature: jbn9togkm186boyc7oibbzhwe4h4y9sr
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0B0B3120010
+X-Stat-Signature: ye75mfdow3yfwd77nb8urfsqnhtgkwa7
 X-Rspam-User: 
-X-HE-Tag: 1755685919-59497
-X-HE-Meta: U2FsdGVkX186rJScgrsSY3Iz7XNLL2jsUpRR0gOZvN8ZO/RTTwGdja/J2OjpXpgKbxfCPE8Ixi8KGjInfAAcZH3xSkYMt57YsNar0kzWw6ENUhq5dsAU4UfBs7s7G+gMdrKy/xuZTr17u3mMxapoxP4rNj8Pkn+GatpNPkkERfNAKrVdkuiD/NpSbUKMx3F/4ZrQ4zNHD0+4wBpcpd540MJprpQKTI4OUIrgyJr4y6yc5MCDc1giUNDKnw2ashwAdpThxKZg2QeByGxn7x8wT189hfBX2Rtqb1yreLIzRp1KLArGcV9F8zJ8kM8SR/d9tGwCxh1E/RljDMwaoloxMCtPu0QFeTWtPdVQw08mOP/AV66zcyzx9JRsxKvq7bP6tnTJw64loo4x/iUE7hjxqgA14WBMKumFhdKaua+ZUVBS8vdbx9F17DfSWoLd8Z8pCHYNXMS3nuyCVd5tXgVNZlxkde2a4YUYZSgp1KjAo0IEGIN7qzU1RWd4878WbQXjaEvw4CfLIMHBi3MQZh1G4ahRD5EGlh1BtD5si0tUCna5iBForvrdkDhR+L9oMS4z5vOFlckJT+Tx7w4RgyUj29/aU41EdSr6+Ib019qdMk/YtADoGIF99VSmcj7alxccIySM3JFhfcNRA4eInECU8poWJJ1FajkDV+JigvKGgYcqwva61XatzbxX/TRksayBSym8J1XVinsBOZiZQ41+vJ8v4fyNzNGVQLP46lFHTG12Ub8bNFzMR/WV/Xy5sCouvbCpLjKuJsRM34KF/ggfC88GY8+qJIVgJlJaVsaVkY/UAzPTm0QMgP5AN4D4X1IpnbRPGytKO94Ylr6UiRd/V2yMYb7ElKq1FMq2DCAUNmYpvOFiv926pCHIRrGsGpITpSVOY7Z025g=
+X-HE-Tag: 1755685950-459419
+X-HE-Meta: U2FsdGVkX19JabmMO+8zzC8HsJyNR+qQCUXehZq2Hyp/IrzBmp3pYHN9BnL165tvoeN+oe2x2oGUpCB5+d3aNembSRl5RTw+RRmPvVHDfQvGtbn4vWK0eGGV7s1thArYalRc9Sve1Pgyuzbnfib5sRYgDcm8WWdXzkcAM9HwKYxsQKlqlQZIohH1UgdqZNbS8xitAgvo5N/269PKAZInSNMl0+A7qaIkWtbOsoRUr/drUikfurkwizOPgsL9pNYUqGXrarW86agZqiG4xfNan5Y3R7IHqOXDEQf/PDuwLA/OqwcV2QXoEkSc/Ovxbip+h9JxNe5IOHnyb2sdM+U9Cc/Fq9jK1/m9fQUNH3Cdyt0Oid6yrhjAobQ4kz9mitOjZeaGvJZEbTmZXY8xv3jH3xM7NsbyPQ41iPd8cojrVolxXlTxIgJjR9gVWAgWsmvNCCQqqR2OY0IdaBbqgWTc2U0df81VTp4if6zbu77WQuOh9NBY+goYRBxVwwrANvm9+2uOPAVRS8spZnQ7JwjPJk2NEisx/mPscY/u44eRq1POarRZACLYqHHxSJ6xCz4DQVcgI9ZQ3067eaMZ8jwM5tG6C8nCXtyEsknBoU/ReUS3NGBHVhsS/MjGdy9dan9isnvPqeCv2Bd/KKj9kO15PlsiRss7gXeqVJ3ndI3jgSmpplCKxteU+svjwKyiDakfYIMwDxmuoUu3Z5Xh07vcYmvdNPUZVM+rC3/xV29y+p3Qd5VSyLNZXTp3OX2JSemzkpta46rjiH7XXacl0DeIZSVaKWy5oUjfGFJEaQ5ZJe5JQHKlIy0Bd9z5+OkVUWEhCzWJoyuYQZrCiMoFVQD9DIIetYaTifWoTtkNM8cylkc2i9AlgkRQNJjnMbyeGqLzv2QEjQzmAIDoo7xy7pMNrCknwZEh0mwgKcCBFMLijt6Sd0pZPH00oJEbNBct70HYl6knaYGVkf01QUJOucc
+ 0ecOZlSW
+ tRuWI5adMoBPOxO0THHl5c/bbyxeBZ5FA0IH/5KCmDcxkkORN41jbFXthufdXO5cLb2dDv0umqfQagyf8OwX7h2190m7OyXUFu/nhSUY3SVedfwCdKfZFjiXG1+mlapc4k11y16XQ4YBJ/MDeutnAbI41h/EcVYjQsqH/fhs+V/mJzkzBoh4QMVEVAGspf8MkJJ4jm6zUvUKY9DlprjngE2hHAYXzAilHSEj2EYu2OHAU1ck=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,36 +98,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Seems unfair to inflict the cache-coherency drivers on Conor with out
-also stepping up as a second maintainer for drivers/cache.
+Ensure the hooks that the generic cache maintenance framework uses are
+available on ARM64 by selecting ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION.
+
+The generic CPU cache maintenance framework provides a way to register
+drivers for devices implementing the underlying support for
+cpu_cache_has_invalidate_memregion().
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
-v3: Add lib/cache_maint.c and include/cache_coherency.h
-    Conor, do you mind those two being in this entry? Seems silly to spin
-    another MAINTAINERS entry for a few 10s of lines of simple code.
----
- MAINTAINERS | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index fe168477caa4..039d10ded9e9 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -23967,10 +23967,13 @@ F:	drivers/staging/
- 
- STANDALONE CACHE CONTROLLER DRIVERS
- M:	Conor Dooley <conor@kernel.org>
-+M:	Jonathan Cameron <jonathan.cameron@huawei.com>
- S:	Maintained
- T:	git https://git.kernel.org/pub/scm/linux/kernel/git/conor/linux.git/
- F:	Documentation/devicetree/bindings/cache/
- F:	drivers/cache
-+F:	include/cache_coherency.h
-+F:	lib/cache_maint.c
- 
- STARFIRE/DURALAN NETWORK DRIVER
- M:	Ion Badulescu <ionut@badula.org>
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index e9bbfacc35a6..15bf429b3f59 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -21,6 +21,7 @@ config ARM64
+ 	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
+ 	select ARCH_HAS_CACHE_LINE_SIZE
+ 	select ARCH_HAS_CC_PLATFORM
++	select ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
+ 	select ARCH_HAS_CURRENT_STACK_POINTER
+ 	select ARCH_HAS_DEBUG_VIRTUAL
+ 	select ARCH_HAS_DEBUG_VM_PGTABLE
+@@ -146,6 +147,7 @@ config ARM64
+ 	select GENERIC_ARCH_TOPOLOGY
+ 	select GENERIC_CLOCKEVENTS_BROADCAST
+ 	select GENERIC_CPU_AUTOPROBE
++	select GENERIC_CPU_CACHE_MAINTENANCE
+ 	select GENERIC_CPU_DEVICES
+ 	select GENERIC_CPU_VULNERABILITIES
+ 	select GENERIC_EARLY_IOREMAP
 -- 
 2.48.1
 
