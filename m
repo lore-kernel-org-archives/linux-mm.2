@@ -2,87 +2,107 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2149ACA0EEB
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 01:29:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B31D4CA0EF8
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 01:31:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B758A8E0016; Tue, 19 Aug 2025 21:29:20 -0400 (EDT)
+	id 38B688E0017; Tue, 19 Aug 2025 21:31:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B25DD8E0011; Tue, 19 Aug 2025 21:29:20 -0400 (EDT)
+	id 363488E0011; Tue, 19 Aug 2025 21:31:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3BF98E0016; Tue, 19 Aug 2025 21:29:20 -0400 (EDT)
+	id 2A0568E0017; Tue, 19 Aug 2025 21:31:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F3968E0011
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 21:29:20 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 30CFF14021C
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:29:20 +0000 (UTC)
-X-FDA: 83795402880.25.BB12387
-Received: from r3-11.sinamail.sina.com.cn (r3-11.sinamail.sina.com.cn [202.108.3.11])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 600C2120008
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:29:17 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=sina.com header.s=201208 header.b=k12cfg6k;
-	spf=pass (imf29.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.11 as permitted sender) smtp.mailfrom=hdanton@sina.com;
-	dmarc=pass (policy=none) header.from=sina.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BD8E8E0011
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 21:31:47 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B151982C3C
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:31:46 +0000 (UTC)
+X-FDA: 83795409012.06.EA0E273
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	by imf03.hostedemail.com (Postfix) with ESMTP id E744220005
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:31:43 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=FwSsAWz8;
+	spf=pass (imf03.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755653504; a=rsa-sha256;
+	cv=none;
+	b=6uOEPv2bKiLPqQjxaHfnPeEK7gcFBITNyXiuJWJaLcwRjzxD+mlAfsvtvbXFTrHmRLkhFo
+	et5Fe3iZXFAPuZrDCwLqdI9B/dPVlJMw1jXB5C2OEaCYNS++4jppa/dwVE847ieWri6hsN
+	pe9Q3Sl+F/yf3zaGmQpphEwk6v//i1c=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=FwSsAWz8;
+	spf=pass (imf03.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755653358;
+	s=arc-20220608; t=1755653504;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IDafkYWgS7KusKN99KHqr7eNp5lhr4MsE3lDHCQLm5I=;
-	b=FpMm87vCdTJ3lxOZw7gBQ0yWrxjwe/wk8MwB8/na9sgpQxh5l6iP6J1SYR8UmYqPoLERYE
-	eWVG6C62O06yj9GnrBxOT/sn0nlwUA7TefkD3gr1TWseE1ZovNb8/9lEejHrIC4ru7GE8M
-	qZoMsAYluYHxSTQBE/EmMvF58i4W5qU=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=sina.com header.s=201208 header.b=k12cfg6k;
-	spf=pass (imf29.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.11 as permitted sender) smtp.mailfrom=hdanton@sina.com;
-	dmarc=pass (policy=none) header.from=sina.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755653358; a=rsa-sha256;
-	cv=none;
-	b=khcyrnBV5pnSjADY4As9iaikHUdgXdg/f2xjm82DtmxYGMZ/nS54XFHEIOGzzdU59AOeAf
-	xCjQxA+iQYYz6nThPns2TE+osV7YqFYNTQV1nuBRvnfJuRfk1apTy5pjcHEytyqCA0quPq
-	yIt41zYFxMDbDgBDNIlyobQq4WtLhTc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1755653357;
-	bh=IDafkYWgS7KusKN99KHqr7eNp5lhr4MsE3lDHCQLm5I=;
-	h=From:Subject:Date:Message-ID;
-	b=k12cfg6kjMPe+0+5F7dChaSlmiuKNx/A/cfUfXmI3Hob3ooOKmtQTJ3Biimk9GcBR
-	 UnXT5TAPIFmsqOBw9Mw4x6ISU39P66toBQ078iIzNLrGNUgLoW5sXaCz+LejAldPQk
-	 OgKiZs0isfk8nurjprq610V+0VpWoMYH10uEeW/c=
-X-SMAIL-HELO: localhost.localdomain
-Received: from unknown (HELO localhost.localdomain)([114.249.58.236])
-	by sina.com (10.54.253.34) with ESMTP
-	id 68A524E600007DD3; Wed, 20 Aug 2025 09:29:13 +0800 (CST)
-X-Sender: hdanton@sina.com
-X-Auth-ID: hdanton@sina.com
-X-SMAIL-MID: 894876291954
-X-SMAIL-UIID: 7B0216A86C964D598B3BEA84EA01C3B9-20250820-092913-1
-From: Hillf Danton <hdanton@sina.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Chris Mason <clm@fb.com>,
-	Michal Hocko <mhocko@suse.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/page_alloc: Occasionally relinquish zone lock in batch freeing
-Date: Wed, 20 Aug 2025 09:29:00 +0800
-Message-ID: <20250820012901.5083-1-hdanton@sina.com>
-In-Reply-To: <20250818185804.21044-1-joshua.hahnjy@gmail.com>
-References: <20250818185804.21044-1-joshua.hahnjy@gmail.com>
+	bh=ET7U36Bc/vJtjM2aHXKzynfonxv2vKxDCOKJFp/unjY=;
+	b=AQ7/TtP48JT+96qRNNQSKzfh4x0SRCp/DJo8PWb2AkSoxLb+eCp8Xd7n+C79R1xHNw8fjH
+	lO79mVK36+MmmsPajFBxNSumE1ptr2EqOA+R+TgG41HfBsn/4H/JIwPmUHFO2G4WJZJugJ
+	KYTnYy/uTvTzulNMDsjuKv83QXD2AIE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755653504; x=1787189504;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=bDraBxH4NicgEf6kVukT6KH9Et8ZUGYmcruJwbCxmCU=;
+  b=FwSsAWz8X4rqZrKsjjRgZk4stTDQ9xkblRy97qW9IN2Ft+6DBVigaxLG
+   gUNaTSAqwv1pRR4a8dtS18OOkG1MHOp1qmoEfMd2veTycxrbyvfNCJsy5
+   pI1bG0/lHRzsR+d97V6dCAPkG2Vu70jOsqRIKyBUEdxbyNzx5ZjnE+1o0
+   SvFpJvZ5HrSA7kanyQOJF/OCc/VTbIcQZXtTnPLJqAQWfuc3juv0f004S
+   V/69Q0wUpr+qXQBRggI20x/XoG+rO24PLT9IbmWqU2o3UT4pjGEsL91os
+   g088XpilL3yNeb15tCf3JTlhBMKoB3ZqdB7So0j5/SNTo5UT5GnI/6oTG
+   g==;
+X-CSE-ConnectionGUID: rgZMMapiQIC66cGyKprulg==
+X-CSE-MsgGUID: apr38vR7R466CAK2ZDIiKw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="56939099"
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
+   d="scan'208";a="56939099"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 18:31:42 -0700
+X-CSE-ConnectionGUID: xSEaJLclRUqA9AJspn/PjA==
+X-CSE-MsgGUID: LZytxw7tSqeSLdstNlMJ8Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
+   d="scan'208";a="168338351"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by fmviesa008.fm.intel.com with ESMTP; 19 Aug 2025 18:31:39 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uoXft-000Hvn-1G;
+	Wed, 20 Aug 2025 01:31:37 +0000
+Date: Wed, 20 Aug 2025 09:31:05 +0800
+From: kernel test robot <lkp@intel.com>
+To: Petr Mladek <pmladek@suse.com>, Feng Tang <feng.tang@linux.alibaba.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Lance Yang <lance.yang@linux.dev>, Jonathan Corbet <corbet@lwn.net>,
+	linux-kernel@vger.kernel.org, paulmck@kernel.org,
+	john.ogness@linutronix.de
+Subject: Re: [PATCH] panic: Clean up message about deprecated 'panic_print'
+ parameter
+Message-ID: <202508200907.PsZ3geub-lkp@intel.com>
+References: <aKRJKZHgcxyNF3y7@pathway.suse.cz>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 8htwk7e5behu99m8bjwi3mrfaoeoutbr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aKRJKZHgcxyNF3y7@pathway.suse.cz>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E744220005
+X-Stat-Signature: b4qfrqxdi4yubnesukwsbrijqos9wc9r
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 600C2120008
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1755653357-654891
-X-HE-Meta: U2FsdGVkX1/uVh/5HgTouSdiSdZnT5NjuiHvuZ0QZFNnDea8FdBZG2xa8sFeHk66ELujCsapIH7CNY6GFhdb1U7aA1veyIyRUMSFlpsxW9UV/mTvBl5hOGR0vMaXUCLpM6Pxw/XgHueyS/FLbfBkRCjnCaNv8yPIuAXX8rY7lKYJ6Eb8M2V7v4ESivRLitjatG0BFWY1Yx7ilG8Slx5Co4PTmmvVsR7ycWgUaBKhT2hbo6+qB/gyTQ8PAcdNkH1bsFM9Bh7l953rtbBagttb/lJZWq0tGpEz3UYTTP3d7so0iNbdZVFHtQvVegvy5D9H7IxQu1acJbpQESHHuBl6UZzTPjpDUtuzzg3N+34aNbuT88hNBSwE4RyKaSO0Vpp8hOwKtnwftW0sG1pLWSHwsF63qC2TNEzfsv7FbmTYfEc5/y9ye/y92AMHlmZoWII9/pd5YlOCCBIHOO7tLDDSfCHmR8BDouQ9qmUszRIDH6cQXFJ4K67TUSOwrdZYnE6hrfvrTIoTrQRxBswWjjX8+Fosz0pcEdvPHI5PazQVDfOhefDehvQMttyV6qn2zcEWPk1nG5JCdTfXrJSu1gc381sf5pvGmWkwcDHTigkavvC24nz/G/hLZmqDF02Q1jm2wXl3uxAS3fqmRz+lfxGAg1JHH1hLooYZTn5s0Wi8MMaqGudUY04IzhmWN/B4JOQmBw/tBNd7ZGsL42P8AbNNKrDFVr+D5otVCDBNPzBmeAd63o5MTDg5StE9N4GMv11ytZsEmDFjcoIUqETpp520AnS4dUtAjzIU7OGYDgVPY8vPsrsQ9MAhmsrfwu/CGmxODCrka66ThlaIh+bK37yos7ZsrfrGZdcc4vMKJM9/jIRUxCeBN2e+1e3iyYg9nu0TxZOLiBxo5R+YObfEvSnic9t4GGMmE6c6qWWvICyWc8znQovr4SZZ6QizcZEPNsrkLaB1jwl5r7i1c7XxEQW
- FNgpVCsr
- aO/+8cV2Fr0mP0wg3Nui038eiTBzORu5nBvYltXEeRFvXtMEsjT9dm36wO3VRM88qYS+jJ4B96pJOTiKqC1QqzugDVW5fJWEBqUZQeaBBCAEYs/oufQDt+BoJLgK/qSPnfJPg2N6KEeFl0IhVDVUVUvjJqsWZKe2+rOClqAA3OZtJnHpxA+wZy34HU7O/iUzdYnRxFn5ZsJaXwSMWLyvAx546Jc5tSPU0teqwDUBUV6uLO/HVW1wqhOuNQla44cOvYBi5tHq6B4CRADpM+VxiMwD15DwV6/xkeYveCRceVCAsKTsutSo81NnDMWAQAnrZkOmVdScQ1+SrXLiNhpl54FBr7XMti85oR/s1e+wGfCDFmw0c3mTQf5Cizx85RkKky93cJiuUR0uHSTQ=
+X-HE-Tag: 1755653503-896736
+X-HE-Meta: U2FsdGVkX19k/tupvuxZHPOTeYbLSQRZuEMBYSA3pV47tH+vva7LqD38UPkPoqONE9q2Cw4HUVWy4zk+bl0y8Zd3XF1FQEY9NWrZrYzgsm6Cg+jX9spBKRwNVwspsixDZ3IU103MAKFw00y/RoN7FHhAi8ZiLmGIxh8jUfJrdQMnVaxLTGAjVi/4dp3JKtcuAjnXC1487IUKOD26vv1bL5waX8pKb67KSCTKi5yShP4e2I2rw+XtMqGBWx9oIH0qW5lOc8sghNwNGdW3TGO79ACe6tOOsYYPlm1zm2dY42wNx2t2DghqxtM1nXOS3tNS6WIzeKwK3hYRHc+CBNNb1aufOT3LW30bX6zdx2ufphfs99nQqXsbFuyF4kuXOAAivcnb8x0Jv14vgP62uo6vho1+6n9t1HxHdSEBAqn0jKT/9PDnl+YPIXiW87/C3prIKxDuT8u6GJaKbw4s8XS+hF/M1FluZyS4xMrPxHNJsSo0pAZeQzBI1UiuuJPkXqrRexWWsHugX7TIPeTWp4fRbDEeyFXuhsKi6tJ4XICJuRqo/aCn/h8lR5kvkky7QjJquJdfkH0HgYO9MKVDSKbbgwKl45VY/Tsi/D9N/XYYATK51etnSScCefOeRewupGeS6NV3LCYFF4bLtgvCP7RVNxYy3/2rws3GN+XuyN6UXjoJIX1lGLOPh+yhxntrA1rq1knrO8h5H9DHxMAg7ZCcihPmFEJHyzxJfDfvH6yPYq0YvCpv4gG5HwgASs86bY5DlSz1cc6g4jaa4pX3vHiqo/nu1wMHIZwX0cOGW4ureXyIE07DPi8K0CCE39FF9u7HSP0enej+jsspXJlu1xGrqoESGOZEl7xXtCXFK5xErjmpByZ+02c5OScvzWR6sCnRluftI4dNj9T3+Ll4ORXBFXCgMx/mHIGl1k3XSyEd45ntFFTThxD0/EqaZRxC2TorDWYOWBAja0r56xQoECA
+ 27b6Xpmg
+ GBlSduBk0cMZSEwHWgHlrajXHz3UH2jyxjXb7Bmt/KnzTayCdTbhy3qBDY61t9Xo/rDof1A6xRQRcR+1ACOJ57/zBrvWvs7M45hlLbjIP8SlV5F4i0VhFC4ZWt68wrbTIej4lJlmxFXwunHuLJSH+g5ItMgfDnr2xFC8xi8Ro5XvKe7FlN3oicQlQ6Irz7l8M2qCLklrZfLTC67/EedVpfDdRtFzaT346qBsHBFu1Ky+EWfpZA69+fYpRUqtiEI7Y0eu8Zdtt6/iScDvCForP2tWjx60eey/Z0oYJP5ZFxvar6tNzzRL84wpRKkhcLJugKi34d4N46cAA/eBcb8WOAPYK7hI3hpIGWm44AGY/2+CJTBcTg4y9f3OPsRz4ozE43S4vI3KBjDEx3WElhdMt/j//+Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,19 +111,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 18 Aug 2025 11:58:03 -0700 Joshua Hahn wrote:
-> 
-> While testing workloads with high sustained memory pressure on large machines
-> (1TB memory, 316 CPUs), we saw an unexpectedly high number of softlockups.
-> Further investigation showed that the lock in free_pcppages_bulk was being held
-> for a long time, even being held while 2k+ pages were being freed.
-> 
-> Instead of holding the lock for the entirety of the freeing, check to see if
-> the zone lock is contended every pcp->batch pages. If there is contention,
-> relinquish the lock so that other processors have a change to grab the lock
-> and perform critical work.
-> 
-Instead of the unlock/lock game, simply return with the rest left to workqueue
-in case of lock contension. But workqueue is still unable to kill soft lockup
-if the number of contending CPUs is large enough.
+Hi Petr,
+
+kernel test robot noticed the following build errors:
+
+
+
+url:    https://github.com/intel-lab-lkp/linux/commits/UPDATE-20250819-180717/Feng-Tang/lib-sys_info-handle-sys_info_mask-0-case/20250815-152131
+base:   the 3th patch of https://lore.kernel.org/r/20250815071428.98041-4-feng.tang%40linux.alibaba.com
+patch link:    https://lore.kernel.org/r/aKRJKZHgcxyNF3y7%40pathway.suse.cz
+patch subject: [PATCH] panic: Clean up message about deprecated 'panic_print' parameter
+config: i386-buildonly-randconfig-004-20250820 (https://download.01.org/0day-ci/archive/20250820/202508200907.PsZ3geub-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250820/202508200907.PsZ3geub-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508200907.PsZ3geub-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> kernel/panic.c:952:2: error: call to undeclared function 'panic_print_deprecated'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     952 |         panic_print_deprecated();
+         |         ^
+   kernel/panic.c:958:2: error: call to undeclared function 'panic_print_deprecated'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     958 |         panic_print_deprecated();
+         |         ^
+   2 errors generated.
+
+
+vim +/panic_print_deprecated +952 kernel/panic.c
+
+   949	
+   950	static int panic_print_set(const char *val, const struct kernel_param *kp)
+   951	{
+ > 952		panic_print_deprecated();
+   953		return  param_set_ulong(val, kp);
+   954	}
+   955	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
