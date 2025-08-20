@@ -2,116 +2,132 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 74823CA0EDC
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 15:13:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B165CCA0EE4
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 15:41:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 018AF6B0025; Wed, 20 Aug 2025 11:13:13 -0400 (EDT)
+	id CECE48E0012; Wed, 20 Aug 2025 11:41:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0B676B0026; Wed, 20 Aug 2025 11:13:12 -0400 (EDT)
+	id C8BCC8E0003; Wed, 20 Aug 2025 11:41:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E490C6B0027; Wed, 20 Aug 2025 11:13:12 -0400 (EDT)
+	id B7A358E0012; Wed, 20 Aug 2025 11:41:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D6D5E6B0025
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 11:13:12 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8E668138B8F
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 15:13:12 +0000 (UTC)
-X-FDA: 83797479024.05.4E05B0A
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B92A61C0006
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 15:13:10 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=l0sCDOuB;
-	spf=pass (imf21.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.219.178 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755702790; a=rsa-sha256;
-	cv=none;
-	b=6DVpGSsGKmMGar1oEbqQu5x4hMPmsFtvp4axbKRLZFX1doPIzWBnnCkcikAIRXFyzMbltX
-	pZ9nvJMTCKbCZPQucWvsWVc3uiMGwX/X5+x4O2/PZhLDH1V8IzujFnfnrjw9igUlronLHD
-	HjPNKCjyPgN/BAWf5qLzvCmi8r+cWiM=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=l0sCDOuB;
-	spf=pass (imf21.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.219.178 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FB3A8E0003
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 11:41:12 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2029F1DC396
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 15:41:12 +0000 (UTC)
+X-FDA: 83797549584.07.5653479
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf02.hostedemail.com (Postfix) with ESMTP id DF65C8000E
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 15:41:09 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VJrhIgTx;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf02.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755702790;
+	s=arc-20220608; t=1755704470;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LFUStKMRHDPj6JYBVxnbw6Z9AEEYTWrR4Fi5aFJ1Z90=;
-	b=OUE4rTbH56OoXSR6xfBB6iL9LvPgtc8UsVC508Rkz7YDjkfKoRaVkC1N5nAdFHP/iI9WNw
-	1JaGrQdZ98xK0igbmaiqcBt8Dd4SyG3PwPXLzaA5qaaheC0CJWQ184+2vvQuk3jBK6EgK6
-	+S0d2qTP8seoi7CiKzUXLBDFQpruUeg=
-Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e94dfbf7ba1so2439640276.3
-        for <linux-mm@kvack.org>; Wed, 20 Aug 2025 08:13:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755702790; x=1756307590; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LFUStKMRHDPj6JYBVxnbw6Z9AEEYTWrR4Fi5aFJ1Z90=;
-        b=l0sCDOuBO86MXvOpF/AP92U3/m389SwGL3BmF4IbXcJm9cWUcZiEcZkHcQSSnIBITI
-         J5isyxw34Hk5LDtH7cn0e65MY8LaHewxsc/8HvfWUAL7jAhCIsm8B1sZRHpyov8Rt7G4
-         ADZoISMjUkHvW8/62Faci3ogA4PEjbutUlsBn22JQFkeC48MEbubzpEqeuw/uUBypyh2
-         iBtt4vxlj1/gLI1b5EUH0H5he6BT/pT11abuT6agdti5O+miu/BGo3nc7CH9DF/HKUcz
-         CGedH1e5TWRTAWEtWXBFrMajlDlFmSl4yJheT4LUU1u5c6TcRLBx+oEnjiXb32Z3283j
-         +H6Q==
+	bh=UYSofwZAlBuy0oyzsu8d75QQkZFfweO09q+8sQkHcvo=;
+	b=GHPzbtSJ6BiAkbe2HebuoV5b9p2XqLmRrAc8NuUZeHPTTgITZjC/ziX+wnQGw1HKLOZoVH
+	0ZNPR+ujPRa/S8KTT7W9jzaaUw7UlVOOtS6czOw8fDn7IYogCCADHODpyhauomnLh71t20
+	fAUvcLHXAOVHCqli8TS3FFjSlh6xycE=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VJrhIgTx;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf02.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755704470; a=rsa-sha256;
+	cv=none;
+	b=j2Ekn4Qds1gBvldL35hrcL2os9LLajNZJwKa48J/FUcU5Xie5FzBSBHUwabrT1i6zRWHXF
+	NSfop4FYN7Rhw/xPh3B0S1NaFc75p0059dTNaKnqHWY4LBQZrCoRoLKkaZr0jLUUqBZtoC
+	HCwKpBzOly/WXofC1+GzBm3avcFdfN8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755704469;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UYSofwZAlBuy0oyzsu8d75QQkZFfweO09q+8sQkHcvo=;
+	b=VJrhIgTxaKnHGn6SuA3yMtKCSbV3OFEFjot6akqx56EB5kZdI3V+PSe/o2gPejjtQssWrx
+	JV8OXESnhrXsAktm4G2Bk94sIXl6sTXEHpLeKIcXYyaBUmk1qB1dGvs2F/dLEsYWjaHAXJ
+	6lpAcCVXamLUWpmwAKB6+GO16gjR2Jw=
+Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
+ [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-612-mcpI3qwsMCGWt6UjB1uDoQ-1; Wed, 20 Aug 2025 11:41:08 -0400
+X-MC-Unique: mcpI3qwsMCGWt6UjB1uDoQ-1
+X-Mimecast-MFC-AGG-ID: mcpI3qwsMCGWt6UjB1uDoQ_1755704468
+Received: by mail-yb1-f197.google.com with SMTP id 3f1490d57ef6-e934e7eda88so4616063276.3
+        for <linux-mm@kvack.org>; Wed, 20 Aug 2025 08:41:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755702790; x=1756307590;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1755704467; x=1756309267;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=LFUStKMRHDPj6JYBVxnbw6Z9AEEYTWrR4Fi5aFJ1Z90=;
-        b=N/2VOKPTj04slHkGzx59L1Z2OrbPDIdziYCdGlKP+zPmgmWHA44+VLSyiYbFokdiot
-         ptRev1v8AtGd28gzv5mXy3A8WxfI5tkGWuX1n6cSSKnudZvgq+DxWP16yDumWgdhTAMP
-         305AZzQ3G2+lOaSIyK+ciTa9e9GVfFItPGTs/EpzYv8FjkcpWmw3CCCvZ0/AbBsXGbKF
-         JHcLassSk9bwZATfEW3n3bNcyhEHxApENK1RYRX2Be2BniKi4sdwn0G4XHU39m55+pdD
-         T486t7rTY36w58ZBee6uZfw2XkcEnfJeY2UKSwIPfBpdOp50E43BOQq8d+aZPlawhrv2
-         LV3A==
-X-Forwarded-Encrypted: i=1; AJvYcCX1UPB3jCJgdrrqgdEjsUEUN05DEeCyIdNWh/X58Wdenhy1GH+Oz+6m/tbPLIZulLDUTpRzdsoUzA==@kvack.org
-X-Gm-Message-State: AOJu0YyzswUK/cI0D5cWfgFL4fyTkzXd626j2i6py/K/nqlZyEgc1YBw
-	bdWhW2nKabMBIwNiX/uOe0OYTIWvkU5F1gf3675Q8lyttYbLvsLULW0I
-X-Gm-Gg: ASbGnctNLrWaKlMgWPjJ/pDujbznO8FrWNf4lz63vyijX+i6cyYB6FtVbTON4usInGD
-	MowQT/WboME3ocrRV912vLzL0XaqHMZ1jF3PLMghWAG/d3NG04/bFP2rg8qkIPSR0y5WV5rhUhC
-	Oy09LS4V+Tppp0QCdmvwareeEZJsbfWi9Dxlxc1oPRQDaEXkNjlAp7jDV79+zgtvJnOUmRBPB/S
-	Da3jMSIvbrZy8BEWtTkqpUjnOMMFp6WCHpE8OaySFmGy+GWsPqLY6uKXWIRv7R2k8W0uq1oCFBK
-	AXZeg0rwOs+b5/HTA8wsJujfHj4lQKSYLMq+6rS3tYHd28yk9VQY1EUYz5dv4E5BQ3AWN4Z6PFc
-	wCpt2FL7yZEnmDfW6tR9q
-X-Google-Smtp-Source: AGHT+IGBD2iZAT2VlXMJEW/2T3OnRW/5IceBSHatfF1swKy5WFUb7kGAyVXVwSLkF/TyCFnIK2I5cA==
-X-Received: by 2002:a05:6902:6c15:b0:e93:4a06:96cb with SMTP id 3f1490d57ef6-e94f64c9f8bmr3251284276.2.1755702789638;
-        Wed, 20 Aug 2025 08:13:09 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:8::])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e933264aabcsm5146211276.9.2025.08.20.08.13.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Aug 2025 08:13:09 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Hillf Danton <hdanton@sina.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Chris Mason <clm@fb.com>,
-	Michal Hocko <mhocko@suse.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/page_alloc: Occasionally relinquish zone lock in batch freeing
-Date: Wed, 20 Aug 2025 08:13:07 -0700
-Message-ID: <20250820151307.1821686-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20250820012901.5083-1-hdanton@sina.com>
-References: 
+        bh=UYSofwZAlBuy0oyzsu8d75QQkZFfweO09q+8sQkHcvo=;
+        b=HhbXfMacKBNHA7aMI1oRl/+sFudYFyIZQJ3y27zTkzLpTVea4zg79gPYujv2O6ttFO
+         +vOfoGySymFcE7VnbLUMADuJcT7raEv+3Frx6weeuSOhy1F7r6nhvxRCpZe0/qGYF22y
+         +pnm+hvjyCxSf3JlB/IgzoMSgYMW6kEYtwg0OHCq3EszZNC/MhCrfxzUaoruDxf1yDi3
+         KSTvxP0l4lHgHzGdDl8d1aP+aJU4QKJgxlVESMgEK7wAmivTTxjYSqH79bxQ3ymb1I/0
+         CVIu3nWtSeyCwO9pRTuKOkH+GSfXudfiTSrztb+qke1L0CMK/fYsTb0TSH2QbFvl+2P+
+         P8Cg==
+X-Gm-Message-State: AOJu0Yx17oAehG7KdLUVYiUCIVSRCEkzc4sTbzJD0VCrOB5GMiqE0fPy
+	QeFgekawitXbZ1CO+hcrFlSq0NqQPYGaU5WvnTieY4bt/HxdNSs8UoZJbVYC7uz6BwWYlgotgM0
+	iPkIaRRcNfXjdwlH6ZwUO79cWbTQqh0IHJZQD1FmOiSf+8cFHy1evI4+9PSh8tmn88yyB1tLFtn
+	kREp1Z6vEUak2pbaptieJBPeZj8io=
+X-Gm-Gg: ASbGncuZgxqf78MauTxpXyyeeO+j09JEtDcA7Mf6/HB2bTudCLV+Uj4J05EVkNezSje
+	BqLuFDfWta9vbe3l/t/pfEFzVxg/YJs1C6ygGjxdG/xI4ZtH5+KwX/ZKpccJDUSYwdNKX0frqUo
+	azbyKqoW9BuqxdnusAaK8ddq0=
+X-Received: by 2002:a05:6902:4a84:b0:e94:25a2:f8f5 with SMTP id 3f1490d57ef6-e94f6539a69mr3281678276.3.1755704467454;
+        Wed, 20 Aug 2025 08:41:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHOTBrpkhP4lXt+J3rPPABO3gkD8lKSX5VfjJLDUErExXxnxu+nUSNzUqoP1cAU7FTl4VV3oeWsS3Y6s5hhVS4=
+X-Received: by 2002:a05:6902:4a84:b0:e94:25a2:f8f5 with SMTP id
+ 3f1490d57ef6-e94f6539a69mr3281610276.3.1755704466967; Wed, 20 Aug 2025
+ 08:41:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B92A61C0006
-X-Stat-Signature: a75ecxk7m4hxw1boyugjpfkyi8nmdzns
+References: <20250819134205.622806-1-npache@redhat.com> <20250819134205.622806-4-npache@redhat.com>
+ <cd4dd743-679f-4c55-9635-6d32e6fa5ff7@lucifer.local>
+In-Reply-To: <cd4dd743-679f-4c55-9635-6d32e6fa5ff7@lucifer.local>
+From: Nico Pache <npache@redhat.com>
+Date: Wed, 20 Aug 2025 09:40:40 -0600
+X-Gm-Features: Ac12FXzD1K71b8kZ8iPzUj6lIyXHh5PjcoNqYYPU597Q2ZwJYp0jVWP2zrGYIjI
+Message-ID: <CAA1CXcDORXqm4JoHn4ZSEhT3ajsuY2MAPwefMXk3+YMXcpvqkw@mail.gmail.com>
+Subject: Re: [PATCH v10 03/13] khugepaged: generalize hugepage_vma_revalidate
+ for mTHP support
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	david@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
+	Liam.Howlett@oracle.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org, 
+	mathieu.desnoyers@efficios.com, akpm@linux-foundation.org, baohua@kernel.org, 
+	willy@infradead.org, peterx@redhat.com, wangkefeng.wang@huawei.com, 
+	usamaarif642@gmail.com, sunnanyong@huawei.com, vishal.moola@gmail.com, 
+	thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com, 
+	kirill.shutemov@linux.intel.com, aarcange@redhat.com, raquini@redhat.com, 
+	anshuman.khandual@arm.com, catalin.marinas@arm.com, tiwai@suse.de, 
+	will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org, 
+	jglisse@google.com, surenb@google.com, zokeefe@google.com, hannes@cmpxchg.org, 
+	rientjes@google.com, mhocko@suse.com, rdunlap@infradead.org, hughd@google.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 6CVaNtsGiwiZtNAiSHT8yzBWKS1aWAbtiNdasA8zxfo_1755704468
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: DF65C8000E
+X-Stat-Signature: s1rxf13j4fsr8t97ze4qwbuhbu4yxnsg
 X-Rspam-User: 
-X-HE-Tag: 1755702790-336858
-X-HE-Meta: U2FsdGVkX1/EG5d8Ai3nSgoMrMZoSQuXZqiNOtWM8xgmtC7Zplv67gi94EP5t1yVbG5sgGLxxddv9jH2t5D5d7lY/bvfYGGUrvFFW2RyWmySTCOlsdSMqCtkw0xQcECRMfXtkOEbMZnuu3Esz6/oJCrQPipjzJGmwv7AHmGoZ8lqPOOYo+DKOOxiL4LvS4BtUydRpqUsVWKMoe6pztfrrO2wR2Ir5+ML75T1ESJ1yLY50M6HZ7AFTlEbmviHmrlexUhxI5ESfz/OZW1Q3UDCHpUM85T7ovchxmifxPGFRToYQ/QxYBGjxHBMaemfYyYfiFFOksBXGE8T350FOMsowuuP0b3bKh8tfIOvOS+yNk9pts/Dx/0mzCUAirOqD761AtwRKCiS264mB69OIa6rFoQhIATnR5wvlhqjYkBXQ9SSR6qIojbGUVe2J1td4soaoLgQ+ntf4MRxKlGzj1oElcegXxDpwTpZ11N42XXCcn+SG+Na1GM7u6WaIKpxIqzkIQJ7tl38r2Qq1Ox9qq1d9imE/dYLdkia/cRWlARE175iEJecUt62gAuPB+T5+MY0KYEWLBaH4n4tST4PFcZAXb79d2+7VzyvG7rPQH3AyHMywLgWueO35J/MjrH2im4Uoja7kaivEho2yq/Z+P4tyElwJBr4nJ+f4QGMrUnUQK4QGZS9QyjLg1hh18Zcr3IgAozFbw5NNMM/g+lG/mlYRTTvgQ1pjTkrBm/3uwCLIu+V/675VSzwAVHtRPt87J1bsv0k3pdd8f25zVHvxakRNcRclzHfkYqqH/s1ge/7k8AbvEljrrqvGFH4VqhrR2h0LwlV9LfqNqefop0rLAHKUKkJwRKFY8LVzIAJ4gHPvDmSavJOe3p5+0FLAq83PUa3/bWBtmdJ7s/er2jAKkBOR/+lSwEA4642M/S7pAPSxI9LdNxMeMN8C5J4Hz+mRyVf/UFMl9NdRbvUXmN/TQb
- Zd76mCej
- ETBuQ83UHkWu3+NEByKkxL6VIila28XGOQpPVMilns38S1FXZsFMDDsxwEujNJNCDHdjFWBtsUSUGYVyLFDVX6qpVrjOSCg4Q3Dbzd8sUogc07oIWWMM/mvJaKwQ89lC/GP8jpx8EJ5DtE/2tfqlz0M81uYiba3yKe63e3w5lyJFnf69QRVarVIbRe/0B05xhnwPZezcWvWsCfwM4GCBrJtqoYv4qQkA+lxp8D/QEZQdFWidxNGhh2H5SJLzXsrsbhIfSqyCfYZehiyj5+FkBuEtl983XtKuJwin+LwXLd9ciurhNtBcmVRONyfw2SASJbBMv4biqJZ+qCJgy3jQZULKNajCfYmUqBjz3B/f0W8FbzOZ8+/ytnrUPCYIt4sgIrqC4cn/MDA0ohzGW0C5K+/9piBWgSabdlSAWhUaZ2qZBkJ00jvgYUoYP1HUA7iphp/aNOUIJFYAalSPskwGv0fR9QX37qpLCplxH5cKt/v9Z4aQEdtgJ1VRP4BSI052/LhnDgD0nPg+Rcs4ymqJ1GvbjM/0XI3MMVmHW
+X-HE-Tag: 1755704469-671016
+X-HE-Meta: U2FsdGVkX1+KdzGQh7zOwCgspbF8pw4geN4JHD+otkY9SnMTc56o6zEb6xsEvwm0r72lihVbotLDTqhNZP39HmPTPTSbK8oDtdzXVeer9VCSprz1w9lv3Z7enPRbKz68XActT1deWsJPsw/teBggsVSCqbYSHSoaU8D+r5ErCghsikME1DLJh2Y27oW3Vm9m/t/vtOgFcDJ5687Mq9kv1Knp+e4LQic/q5xFzdlBazDxHde3SmOPaqaOIe9r8HHb/wKtxPXGAcDbBLaHZ0hGaOfm2vB38f/Z81Ex9Hp51YY2CRM6HwhKY7BXyVvUZ3w0MZ9gsNy0EPREmAUG4t+B6queK3lziK09G1hALjfWi3pqmUVhiS10YLstg46B2TNMX0Q8T3dQdIOIB4c8OEgu71yoTqd5dHUWpN1yT5nM7jbJPppP/Ea779FIHBUboEo5uc26ylMtjs9hj8INbwYZDQT7323qfIjYZ8O1Q10JreuvWmzL614A6TQvtFYArQ8jYXPiOdmpicwmY/TcjHle74URE9xVoyV0+s10gGhfVz/1D0IG7wwXDFSRIhCeRUbxuL+8Ay5iD4mgRCADsD1W9uM2ZYUl1oTEeYLoCVYk2VUsIBWbtRq7Q0p31wy6z+cIQFLd9+I61fXXRQAZwr5llnt8ykCs/g/f+/QeitpOuamoVY66MomKhsY9P4ZTjsMVD/ZMRv9+2kz3i1Mm+Mc2FWm3OD7/HLqunpRi1tw+xJ95WOxVKqk0gY2WdLNB23YIMozd4RnKlooN5L2xoTqb6z4p+Cw6Qgp4NAokbqRUn55UZMNxZCrIFqDC8BUHUTybOPeJMPHGsKNMl4VppSHMfTJU0PPGe+4rT9uQYupdbm4p6c7MnwwZAXYmGKiPd4zRgf4MO6PHR6iJuYPoQcsqmVWnm2iQi10XgZ9cuMBBjjjGMS4VwFgAjyoyHySN68cAv1Ku/L6dffZoe1WTff8
+ oFWFqyM0
+ 59s71gV5gq+/eNHM/vF6+6rpHp3y/80c29tQu9UQEHr9EcUrDJtQUHddcAWFQyNZchPNeHS1jJQq65NkYCfA8JqB7GV1MdHDLt+6UQYnpHV8pT3xvZayDeWdcFeYzqhfgiqimNeb8u84u37NcSZj/2fecgefbZxpiRAFR6pQWCkhDZAsImoOvsjYb9c2z5SHQxGWqmgrPufz5BDn/Xl6Q2sNm/fGIDfWmBvFoA2sVo9+xf9ISAwnj+06NgoSBzJYM4SPDUWb5nTDRbfDbZTdBtJTjXFLSilxiwubUIFcocaj3H7LOOEPFeEzcJ79Oclcsql6iH8xxeZsmA8k33WV1psSzzTRNA3fgLR6z3hYEMeSn64cFQbheKfv5yoLJKfym2XDD+RQhkQNQiRJrmjC0itLffX3IwwfV5VxmHcvVfFAfgwcyfkH3dzOVZolmKEB9TPIsREhqXke3orZ9UO+A6f/yCdRWaWOKiX7fP5pv98TOPITyzjFKoKJmMgb8QZIZbWQ/wjvroV5WzZ2KMxr93jtygluZ7ezn3LE2
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,38 +136,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 20 Aug 2025 09:29:00 +0800 Hillf Danton <hdanton@sina.com> wrote:
+On Wed, Aug 20, 2025 at 7:25=E2=80=AFAM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+> On Tue, Aug 19, 2025 at 07:41:55AM -0600, Nico Pache wrote:
+> > For khugepaged to support different mTHP orders, we must generalize thi=
+s
+> > to check if the PMD is not shared by another VMA and the order is enabl=
+ed.
+> >
+> > To ensure madvise_collapse can support working on mTHP orders without t=
+he
+> > PMD order enabled, we need to convert hugepage_vma_revalidate to take a
+> > bitmap of orders.
+> >
+> > No functional change in this patch.
+> >
+> > Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> > Acked-by: David Hildenbrand <david@redhat.com>
+> > Co-developed-by: Dev Jain <dev.jain@arm.com>
+> > Signed-off-by: Dev Jain <dev.jain@arm.com>
+> > Signed-off-by: Nico Pache <npache@redhat.com>
+>
+> LGTM (modulo nit/query below) so:
+>
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Thanks :)
+>
+> > ---
+> >  mm/khugepaged.c | 13 ++++++++-----
+> >  1 file changed, 8 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> > index b7b98aebb670..2d192ec961d2 100644
+> > --- a/mm/khugepaged.c
+> > +++ b/mm/khugepaged.c
+> > @@ -917,7 +917,7 @@ static int collapse_find_target_node(struct collaps=
+e_control *cc)
+> >  static int hugepage_vma_revalidate(struct mm_struct *mm, unsigned long=
+ address,
+> >                                  bool expect_anon,
+> >                                  struct vm_area_struct **vmap,
+> > -                                struct collapse_control *cc)
+> > +                                struct collapse_control *cc, unsigned =
+long orders)
+> >  {
+> >       struct vm_area_struct *vma;
+> >       enum tva_type type =3D cc->is_khugepaged ? TVA_KHUGEPAGED :
+> > @@ -930,9 +930,10 @@ static int hugepage_vma_revalidate(struct mm_struc=
+t *mm, unsigned long address,
+> >       if (!vma)
+> >               return SCAN_VMA_NULL;
+> >
+> > +     /* Always check the PMD order to insure its not shared by another=
+ VMA */
+>
+> NIT: ensure not insure.
+ack, ill fix that!
+>
+> >       if (!thp_vma_suitable_order(vma, address, PMD_ORDER))
+> >               return SCAN_ADDRESS_RANGE;
+> > -     if (!thp_vma_allowable_order(vma, vma->vm_flags, type, PMD_ORDER)=
+)
+> > +     if (!thp_vma_allowable_orders(vma, vma->vm_flags, type, orders))
+> >               return SCAN_VMA_CHECK;
+> >       /*
+> >        * Anon VMA expected, the address may be unmapped then
+> > @@ -1134,7 +1135,8 @@ static int collapse_huge_page(struct mm_struct *m=
+m, unsigned long address,
+> >               goto out_nolock;
+> >
+> >       mmap_read_lock(mm);
+> > -     result =3D hugepage_vma_revalidate(mm, address, true, &vma, cc);
+> > +     result =3D hugepage_vma_revalidate(mm, address, true, &vma, cc,
+> > +                                      BIT(HPAGE_PMD_ORDER));
+>
+> Shouldn't this be PMD order? Seems equivalent.
+Yeah i'm actually not sure why we have both... they seem to be the
+same thing, but perhaps there is some reason for having two...
+>
+> >       if (result !=3D SCAN_SUCCEED) {
+> >               mmap_read_unlock(mm);
+> >               goto out_nolock;
+> > @@ -1168,7 +1170,8 @@ static int collapse_huge_page(struct mm_struct *m=
+m, unsigned long address,
+> >        * mmap_lock.
+> >        */
+> >       mmap_write_lock(mm);
+> > -     result =3D hugepage_vma_revalidate(mm, address, true, &vma, cc);
+> > +     result =3D hugepage_vma_revalidate(mm, address, true, &vma, cc,
+> > +                                      BIT(HPAGE_PMD_ORDER));
+> >       if (result !=3D SCAN_SUCCEED)
+> >               goto out_up_write;
+> >       /* check if the pmd is still valid */
+> > @@ -2807,7 +2810,7 @@ int madvise_collapse(struct vm_area_struct *vma, =
+unsigned long start,
+> >                       mmap_read_lock(mm);
+> >                       mmap_locked =3D true;
+> >                       result =3D hugepage_vma_revalidate(mm, addr, fals=
+e, &vma,
+> > -                                                      cc);
+> > +                                                      cc, BIT(HPAGE_PM=
+D_ORDER));
+> >                       if (result  !=3D SCAN_SUCCEED) {
+> >                               last_fail =3D result;
+> >                               goto out_nolock;
+> > --
+> > 2.50.1
+> >
+>
 
-Hello Hillf, thank you for your review!
-
-> On Mon, 18 Aug 2025 11:58:03 -0700 Joshua Hahn wrote:
-> > 
-> > While testing workloads with high sustained memory pressure on large machines
-> > (1TB memory, 316 CPUs), we saw an unexpectedly high number of softlockups.
-> > Further investigation showed that the lock in free_pcppages_bulk was being held
-> > for a long time, even being held while 2k+ pages were being freed.
-> > 
-> > Instead of holding the lock for the entirety of the freeing, check to see if
-> > the zone lock is contended every pcp->batch pages. If there is contention,
-> > relinquish the lock so that other processors have a change to grab the lock
-> > and perform critical work.
-> > 
-> Instead of the unlock/lock game, simply return with the rest left to workqueue
-> in case of lock contension. But workqueue is still unable to kill soft lockup
-> if the number of contending CPUs is large enough.
-
-Thank you for the idea. One concern that I have is that sometimes, we do expect
-free_pcppages_bulk to actually free all of the pages that it has promised to
-do. One example is when it is called from drain_zone_pages. Of course, we can
-have a while loop that would call free_pcppages_bulk until it returns 0, but
-I think that would be reduced to unlocking / locking over and over again.
-
-As for the number of contending CPUs -- I'm not really sure what the number
-looks like. In my testing, I have just done some spot checks to see that the
-zone lock is indeed contended, but I'm not entirely sure how hotly it is
-contended. I can run some tests before sending out the next version to see if
-it is higher / lower than expected.
-
-Thank you, I hope you have a great day!
-Joshua
 
