@@ -2,88 +2,132 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E0D1CA0EF8
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 22:50:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 39825CA0EF8
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 22:51:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B19E98E0039; Wed, 20 Aug 2025 18:50:05 -0400 (EDT)
+	id D196D8E003A; Wed, 20 Aug 2025 18:51:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ACA498E0031; Wed, 20 Aug 2025 18:50:05 -0400 (EDT)
+	id CF1408E0031; Wed, 20 Aug 2025 18:51:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B8CC8E0039; Wed, 20 Aug 2025 18:50:05 -0400 (EDT)
+	id C075A8E003A; Wed, 20 Aug 2025 18:51:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 86C408E0031
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 18:50:05 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4536EC015B
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 22:50:05 +0000 (UTC)
-X-FDA: 83798630370.12.C73C184
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 00E2140011
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 22:50:01 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nB9asYOT;
-	spf=pass (imf01.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id ACB098E0031
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 18:51:54 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 57FA65692D
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 22:51:54 +0000 (UTC)
+X-FDA: 83798634948.05.F12256F
+Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 2DE414000A
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 22:51:51 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=bur.io header.s=fm1 header.b=cP0Bgbwz;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="Ce//kq7w";
+	spf=pass (imf12.hostedemail.com: domain of boris@bur.io designates 103.168.172.149 as permitted sender) smtp.mailfrom=boris@bur.io;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755730202;
+	s=arc-20220608; t=1755730312;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UsdDNWT0aPaFWkXNVMSJrwjwzzlXY8/IesqRJaJrUFg=;
-	b=tbJk2b1QK5riCLb2EXOM6z4LQE50NJ9xr4I/0MfNf6tImFiAQDcbimGOfxr7IIku1FfnXo
-	S1msyyAiADjEngmbVDgiRZQ8wrPz5rSDeHESw83w+1P4SU5NK07Tsomk5Efd7+H8v05euS
-	JxdLGJIuQzmC2m+KbDUrfd/Tomhfk8Q=
+	bh=GYELK3sLAem5w454Cp/0n0CLOcN6EiAn4tEXPGWU5nI=;
+	b=3vP7dCZn3O46HDbtkBbFyaEtdhGnNFF9hZHfEBkMBzA9rC0VZYIyIMAN2X+7qjeC4eDr67
+	ecibXY7cM0q4ll9zEjAD5NDahpNRTxRtoADHe8MrocwF2KJIaPgp4e/YoAXy+9w9xzoFiZ
+	o+i2XlSIl7mB9/na6LjzjRXDzXtPwOA=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nB9asYOT;
-	spf=pass (imf01.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755730202; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=bur.io header.s=fm1 header.b=cP0Bgbwz;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="Ce//kq7w";
+	spf=pass (imf12.hostedemail.com: domain of boris@bur.io designates 103.168.172.149 as permitted sender) smtp.mailfrom=boris@bur.io;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755730312; a=rsa-sha256;
 	cv=none;
-	b=r0kKeIcvKNqDj9ra/y9Fm2BHwkSSz+rUOwDf5LLdQq3kKN0LDeUmzNQMm9t3hfGd0d57Ho
-	MrNL/ybqa3IPF2q40954aaLCIg7ca2RuSDNmOmO7h+AQADZ+05j3cjr1mdcapVe1yLlhwf
-	zu1o29BuHOb0fbFB7aAuvw0Spj65W8A=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755730200;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UsdDNWT0aPaFWkXNVMSJrwjwzzlXY8/IesqRJaJrUFg=;
-	b=nB9asYOTay3SplClMlGUjqJrUlNm40iBpD5ePjlHlcko7ltyfZdyC8gCY3jD40zA+3I/ZU
-	UINeNtc0dBEbM/WktZuxCAHr4Af/b1uEbFb0lAqxvpNyZU8B1+B1tmnxpcRHvi2ZRfyOR/
-	NZWzYbGQCeZ/LrkD4Df+fjs3Ag8mOic=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Cc: linux-mm@kvack.org,  bpf@vger.kernel.org,  Suren Baghdasaryan
- <surenb@google.com>,  Johannes Weiner <hannes@cmpxchg.org>,  Michal Hocko
- <mhocko@suse.com>,  David Rientjes <rientjes@google.com>,  Matt Bobrowski
- <mattbobrowski@google.com>,  Song Liu <song@kernel.org>,  Alexei
- Starovoitov <ast@kernel.org>,  Andrew Morton <akpm@linux-foundation.org>,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 10/14] bpf: selftests: bpf OOM handler test
-In-Reply-To: <CAP01T75_ArZiy9AB6TwNZCxKJKw+2yg58xz1ubTGZr4ynVt+Mg@mail.gmail.com>
-	(Kumar Kartikeya Dwivedi's message of "Wed, 20 Aug 2025 11:33:42
-	+0200")
-References: <20250818170136.209169-1-roman.gushchin@linux.dev>
-	<20250818170136.209169-11-roman.gushchin@linux.dev>
-	<CAP01T75_ArZiy9AB6TwNZCxKJKw+2yg58xz1ubTGZr4ynVt+Mg@mail.gmail.com>
-Date: Wed, 20 Aug 2025 15:49:53 -0700
-Message-ID: <878qjdobfy.fsf@linux.dev>
+	b=nPVbjxmZ5Z1QjvvelN24/UDBJmT0L0OXz9+I5nIwxzo5gOaLimNlbgBD1wn3svBTNTLjNj
+	jAqAiydQl1kjmXrV5eexbOE/MIi7kuD1hlHA5lXdZaUfku8JeEVTySImQ9nkYnv1XU3chX
+	93dZnVyBpzi56L7X1qzvKy8DgAcg4g0=
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfout.phl.internal (Postfix) with ESMTP id 68C65EC00EA;
+	Wed, 20 Aug 2025 18:51:51 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Wed, 20 Aug 2025 18:51:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bur.io; h=cc:cc
+	:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1755730311; x=1755816711; bh=GYELK3sLAe
+	m5w454Cp/0n0CLOcN6EiAn4tEXPGWU5nI=; b=cP0Bgbwzu3+6hwtQG48A2+dYdx
+	YJjsh+zmOTPVpqLe9Nx13lCpp9THO8DfEln2+TNmHfhWv00HAARfrY0qvnZgHFqK
+	fIcxwgt4PsOaQ8wRFq/wxB1zE583sAgKSq7GLF2+jDXplzQ0voSqeV/jDwDM0HYf
+	vjakcQFa8kiHauzQTBe9sfKNYsPAQCtMUOgkakw3Xl4cHCIFybW00eiloWdggEnI
+	2QtTemCdoyn14jEFbwoPgQ5hvlwTdTX0V5dOhzXhJdds3mbDgFyvZNI1k1B3aQcB
+	9hr1JlJn6X66uwvzlS27CXdg49qCAhQXlFq0p1FFlruFsPfgf1qmYTEfTRMg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1755730311; x=1755816711; bh=GYELK3sLAem5w454Cp/0n0CLOcN6EiAn4tE
+	XPGWU5nI=; b=Ce//kq7wQq8mydfRtrd6xPATHXC0CaxTSBGcIDS3GshZCkX0AVn
+	XcmB0UpPK0JllH4S7LXYwX5CphbzZTKy9pB/Abh+HvJIjfN3OpSyXR3CjKArw7Z0
+	J9ftBUuVFncUyWpR5P9ADZxZXDR6UPW9OhGcPatgHwxMXt5dYo6TR7BQf6rzO+jp
+	jKWzguCbu7+ox5qQec5fMoDDqwFBp6HyN+NQsmzDUmc+Qdcl0kT6bPzdqPTqfg9j
+	fIzRPMEnGPIWnju+yojqwz+unIPctmoqdEd4Zk67O6Yc7YqFIoMcPObWSQwBPUJ3
+	FMAbEnLHCppAqQtKwKkHkDJwjBqANE8r+tw==
+X-ME-Sender: <xms:hlGmaKSxGC3FYSS7H6W9_aydyJs2D3UGfYa39fP45BBtvxKPa1ShQw>
+    <xme:hlGmaJ0FN_f3OaVw7U4LzQNvDx9lSTR4wdxvOaVwwwOB5v_VSAWoz37boaToGsDZF
+    qpDAqcDhFJ_AmxlDNg>
+X-ME-Received: <xmr:hlGmaMy93hHk98iqNWaZilbwJwpTqYWqEbrwzS46a7Wtop2n0l1xewxlD_ZkpqWRUkGnhVVL9IhHurS7tVH1KENVsrM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduheeliedtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehorhhishcu
+    uehurhhkohhvuceosghorhhishessghurhdrihhoqeenucggtffrrghtthgvrhhnpeehtd
+    fhvefghfdtvefghfelhffgueeugedtveduieehieehteelgeehvdefgeefgeenucffohhm
+    rghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepsghorhhishessghurhdrihhopdhnsggprhgtphhtthhopedu
+    fedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepkhhlrghrrghsmhhoughinhesgh
+    hmrghilhdrtghomhdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhi
+    ohhnrdhorhhgpdhrtghpthhtoheplhhinhhugidqsghtrhhfshesvhhgvghrrdhkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgt
+    phhtthhopehlihhnuhigqdhfshguvghvvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtohepkhgvrhhnvghlqdhtvggrmhesfhgsrdgtohhmpdhrtghpthhtohepshhh
+    rghkvggvlhdrsghuthhtsehlihhnuhigrdguvghvpdhrtghpthhtohepfihquhesshhush
+    gvrdgtohhmpdhrtghpthhtohepfihilhhlhiesihhnfhhrrgguvggrugdrohhrgh
+X-ME-Proxy: <xmx:hlGmaNz6WRSWIAhCgO8woQrsZB9VtDwzmr9ooW4fa1mN0e4iZS8G_w>
+    <xmx:hlGmaA9rRyrPI6FzNszrm3M4ohbKIm0TalcxKZvEBhczSOdX6G97hQ>
+    <xmx:hlGmaP9c46Xza_41e5AHbtATa74vqczDVDazFo4au5xcjufUn9ljTw>
+    <xmx:hlGmaA767_SLPq0-lEMAritrualcYWUA3zRC2UptXgPA1Vvpyg--zQ>
+    <xmx:h1GmaN2ANOqIQNNYqhAAY2z3M40RsXB-fVZPduHqyqHxg2k_n6kEu6TT>
+Feedback-ID: i083147f8:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 20 Aug 2025 18:51:50 -0400 (EDT)
+Date: Wed, 20 Aug 2025 15:52:22 -0700
+From: Boris Burkov <boris@bur.io>
+To: Klara Modin <klarasmodin@gmail.com>
+Cc: akpm@linux-foundation.org, linux-btrfs@vger.kernel.org,
+	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+	kernel-team@fb.com, shakeel.butt@linux.dev, wqu@suse.com,
+	willy@infradead.org, mhocko@kernel.org, muchun.song@linux.dev,
+	roman.gushchin@linux.dev, hannes@cmpxchg.org
+Subject: Re: [PATCH v3 1/4] mm/filemap: add AS_UNCHARGED
+Message-ID: <20250820225222.GA4100662@zen.localdomain>
+References: <cover.1755562487.git.boris@bur.io>
+ <43fed53d45910cd4fa7a71d2e92913e53eb28774.1755562487.git.boris@bur.io>
+ <hbdekl37pkdsvdvzgsz5prg5nlmyr67zrkqgucq3gdtepqjilh@ovc6untybhbg>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 1mxo9giosd619uyb3x665som7d3bedcc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <hbdekl37pkdsvdvzgsz5prg5nlmyr67zrkqgucq3gdtepqjilh@ovc6untybhbg>
+X-Stat-Signature: 6t5e749rm93qijnf5uzaq3rc7fk5ih6k
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 00E2140011
+X-Rspamd-Queue-Id: 2DE414000A
 X-Rspamd-Server: rspam05
-X-HE-Tag: 1755730201-16995
-X-HE-Meta: U2FsdGVkX1+X2VRMoy1G73tXHNeHTFTfgbRYHISOxRjalemDai+8hg1/l0V0QHGbgHmJAsslkjxBsIEe7QxtN3AHXPPSynX/2gqnbA3ofFRMSR3qziYPxOBk6rRfO905WH0pe1In1MGeOeNzIXRTB7xZOQE4EeanWESkN+3HYtmot59RCpVJbWw3f3AHCYtlGMcry+zhcpIniiEVJ/dkcNwfWzsU76sR+6FTrRbEOYU41bA9LuewKoJAPopdUmuZHMJhJBsvAG/ajR4dmhToC+Gzdh3T5Eg6iEvpq66n5G3jJcXM0mYftHpljxmeWpTul7R5m+3d9APhXniFGh6ODKJkKHbmqQ/HAI0NEJujj5TdPHE4k7lJICaDXgVEryKSgLaotJUg/pgfpeVBnndpKF2Ks2rop9BukcArXNc1p+AQQ7kL/uiltVe+Tp+aaZdwb9HI+lLYpMxjpmMBA2ogJ1be/B0sc2BtrBD8VpBO1rH/LnPzmnTSGOSwe3LHf0SHENXDx/rmxSj8XYMeihaGVLeK742N3akHY3Wg4+//SAcZnDB5izMxHUNQ79u6s7r4JC7m7l5oXHDpIp8CwDlVsScJp/32t7t2NKlvndafZ1knOks2lXjEkkQ13M2RGorh74qM6s3zvFiS8JqXZShIU4Ii//B96OxwQuPpTjazDdi7LEBZ3q0MgXMWV0nEU9eFD7cBH1bmQQ0k/ca+N9OPCml1DfPXluEnVBeGwbuDPmxBxrMw65CQIUL9V/IMBVnb4APYWDiYHfI3YZx5Kb352ddC07sD3JCXEqETXfJIS6vYBHaJoLKFuuO1cn57ldToGJ9CbGHX9Xi/d+KhfalunHPdMXKacMZQzdlU9AWxjTiBWvf4bHCkjw9x3O7VFBh2Nm1UsTeySKm1nyLvFqWi1nHd5I1D5NBsQ3fxmqO6o5jN5xUoxU87m39Lfy4jSr1t/9YvcRBfiZ7MPRUSViT
- R2fZZNTB
- KvXsSW7FBbklHn705WPBSREA/L68y88Nvx7ll9ET7xhWVzMEfybgcshqlX3T2FPDggIIDuGro0IrliYpi/A/kwrG4abSm8ptyFUqF3W4w59t5Ub80pCEYJ3At4taSAEkYz3iQ8Eunh3//v/ztzUfva6aubay/3HK9na/t/uQiEiymHBgtTtdfjiSlbw==
+X-HE-Tag: 1755730311-302976
+X-HE-Meta: U2FsdGVkX18eTWxKiFysSJs8Ot3+fbRLOTaYyLCL52l5G3ut44nT8/UvJQomDAMqc+ZcHLg0I1XtZkZmUSb7x/VocA0g1b8mIO+fqvEi66s/z2l6KU8ULe8Ti9tGTmww+YL74WE/o1JSuQFXX0KMMagrcCopqD3q41f7TnDtUdTqhkGaknKi4EFETP6tTKDTgA2sSJXIKJFk+7cus79IJG9Rc2O0fSw4Iilo66qp/CLhoYoh662hz28+eoQ7i8Sy+rHHTrA/3gETY+ALsobfI5htfSg2d0etfNGUiOjnKe0molO8seHPwwk4guUMKqK3+gkFESNhVsqc2l0UuN6A/m42g6J4vRf2WGVuBDkxOBN2iq8jhIzzI3qYP4QqKMjzbuyXHnyRyfApb2GEkygglqeO0XYLoo1qSmCmpPsG5sQKq3HSMZwx7IH1Hw8VmQdXTHliHzIKdbsVEfLLZjutlUYXtwoy2e8WvQAD9zqw+nWoZH8cnJ4oUfzmf+BCxd5fOoVONUTvHb9Sas3yqCod24vZbIQ8oWxgoi66YH6jfMjbR/EGU2A2DLQF2p4Kxt6xOH3eW8eZB9w1xi7sDK4hDA7dpm4EB5CewpH9RU8+yFTDh85lfYsC2ye9bfhdqRFy+R4vYAjuu032KxPyCETLk00ns0i1H+KbV5mhuCzIMgnKBUSf87e6xyD2+2coymzzlDWACum5N8bt6GWmGAVWOq7WXozK1msByAAMdeXFCv+GU+2JE0S1afaiF1lI0NSMTmqZd1IDmQ0/R7iaX2sYBg565eSiiuUS0DDZiQw9yUDpU9V7uJaBBU3/7mw2KnasQGo2DeyP0oHTe2Bi2d3pgkunVm5RW3gFTKKcWC/ayiVoxqXkoj/eNJRDf26KfTY92MtYvuLHyOGhXqfo10dNiNfid9w5PjKqYzd7i/zbxiBHRcqoLr8s8NF8n7DuPhgYy7owz9i9/kXVi5UXt7T
+ yMMOxs7a
+ z32t1Vbk2A3jrBFbEQ+GwXioDDGHy2WNjsMXAiXDbwJucfhjfBne3OLEqgl4ReOjD8mfsLNIIg8tIoQbbK6e9gNaLTkVYpe6cQdoeJ5V/iCBGe8tuOnGMwhmQm2zZrDa17o20DmU8XvFhUdB+zZiuhJ+TvZVBqTALvon7tcgdi8I7j2Z1JWfzAuyQT62fC8IO+sdGR/a24vV/qGPw4rZd3TVh7UtQxjhb1t5ciz2DqI/gkbG/N3xDTy8FvJMV5l71H0yHjvOO437aFq90Z2RTkbZ6sySD1xTVUDvgaug6oM525b9bEmaJ3csEADegFPbFf6GpemuDbDWs35JCev8Panb+M6EQDsZBQ2JPMbDzVtq56WTIKsh7+MZx+Nb9B3pywXY6/EriHpmdiJKOIBqhU81hKvYjZOOSQUZ+4hhc1Dr6fFU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,95 +136,211 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Kumar Kartikeya Dwivedi <memxor@gmail.com> writes:
+On Thu, Aug 21, 2025 at 12:06:42AM +0200, Klara Modin wrote:
+> Hi,
+> 
+> On 2025-08-18 17:36:53 -0700, Boris Burkov wrote:
+> > Btrfs currently tracks its metadata pages in the page cache, using a
+> > fake inode (fs_info->btree_inode) with offsets corresponding to where
+> > the metadata is stored in the filesystem's full logical address space.
+> > 
+> > A consequence of this is that when btrfs uses filemap_add_folio(), this
+> > usage is charged to the cgroup of whichever task happens to be running
+> > at the time. These folios don't belong to any particular user cgroup, so
+> > I don't think it makes much sense for them to be charged in that way.
+> > Some negative consequences as a result:
+> > - A task can be holding some important btrfs locks, then need to lookup
+> >   some metadata and go into reclaim, extending the duration it holds
+> >   that lock for, and unfairly pushing its own reclaim pain onto other
+> >   cgroups.
+> > - If that cgroup goes into reclaim, it might reclaim these folios a
+> >   different non-reclaiming cgroup might need soon. This is naturally
+> >   offset by LRU reclaim, but still.
+> > 
+> > A very similar proposal to use the root cgroup was previously made by
+> > Qu, where he eventually proposed the idea of setting it per
+> > address_space. This makes good sense for the btrfs use case, as the
+> > uncharged behavior should apply to all use of the address_space, not
+> > select allocations. I.e., if someone adds another filemap_add_folio()
+> > call using btrfs's btree_inode, we would almost certainly want the
+> > uncharged behavior.
+> > 
+> > Link: https://lore.kernel.org/linux-mm/b5fef5372ae454a7b6da4f2f75c427aeab6a07d6.1727498749.git.wqu@suse.com/
+> > Suggested-by: Qu Wenruo <wqu@suse.com>
+> > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> > Tested-by: syzbot@syzkaller.appspotmail.com
+> > Signed-off-by: Boris Burkov <boris@bur.io>
+> 
+> I bisected the following null-dereference to 3f31e0d9912d ("btrfs: set
+> AS_UNCHARGED on the btree_inode") in mm-new but I believe it's a result of
+> this patch:
+> 
+>  Oops [#1]
+>  CPU: 4 UID: 0 PID: 87 Comm: kswapd0 Not tainted 6.17.0-rc2-next-20250820-00349-gd6ecef4f9566 #511 PREEMPTLAZY
+>  Hardware name: Banana Pi BPI-F3 (DT)
+>  epc : workingset_eviction (include/linux/memcontrol.h:815 mm/workingset.c:257 mm/workingset.c:394) 
+>  ra : __remove_mapping (mm/vmscan.c:805) 
+>  epc : ffffffff802e6de8 ra : ffffffff802b4114 sp : ffffffc6006c3670
+>   gp : ffffffff8227dad8 tp : ffffffd701a2cb00 t0 : ffffffff80027d00
+>   t1 : 0000000000000000 t2 : 0000000000000001 s0 : ffffffc6006c3680
+>   s1 : ffffffc50415a540 a0 : 0000000000000001 a1 : ffffffd700b70048
+>   a2 : 0000000000000000 a3 : 0000000000000000 a4 : 00000000000003f0
+>   a5 : ffffffd700b70430 a6 : 0000000000000000 a7 : ffffffd77ffd1dc0
+>   s2 : ffffffd705a483d8 s3 : ffffffd705a483e0 s4 : 0000000000000001
+>   s5 : 0000000000000000 s6 : 0000000000000000 s7 : 0000000000000001
+>   s8 : ffffffd705a483d8 s9 : ffffffc6006c3760 s10: ffffffc50415a548
+>   s11: ffffffff81e000e0 t3 : 0000000000000000 t4 : 0000000000000001
+>   t5 : 0000000000000003 t6 : 0000000000000003
+>  status: 0000000200000100 badaddr: 00000000000000d0 cause: 000000000000000d
+>  workingset_eviction (include/linux/memcontrol.h:815 mm/workingset.c:257 mm/workingset.c:394) 
+>  __remove_mapping (mm/vmscan.c:805) 
+>  shrink_folio_list (mm/vmscan.c:1545 (discriminator 2)) 
+>  evict_folios (mm/vmscan.c:4738) 
+>  try_to_shrink_lruvec (mm/vmscan.c:4901) 
+>  shrink_one (mm/vmscan.c:4947) 
+>  shrink_node (include/asm-generic/preempt.h:54 (discriminator 1) include/linux/rcupdate.h:93 (discriminator 1) include/linux/rcupdate.h:839 (discriminator 1) mm/vmscan.c:5010 (discriminator 1) mm/vmscan.c:5086 (discriminator 1) mm/vmscan.c:6073 (discriminator 1)) 
+>  balance_pgdat (mm/vmscan.c:6942 mm/vmscan.c:7116) 
+>  kswapd (mm/vmscan.c:7381) 
+>  kthread (kernel/kthread.c:463) 
+>  ret_from_fork_kernel (include/linux/entry-common.h:155 (discriminator 4) include/linux/entry-common.h:210 (discriminator 4) arch/riscv/kernel/process.c:216 (discriminator 4)) 
+>  ret_from_fork_kernel_asm (arch/riscv/kernel/entry.S:328) 
+>  Code: 0987 060a 6633 01c6 97ba b02f 01d7 0001 0013 0000 (5503) 0d08
+>  All code
+>  ========
+>     0:	060a0987          	.insn	4, 0x060a0987
+>     4:	01c66633          	or	a2,a2,t3
+>     8:	97ba                	.insn	2, 0x97ba
+>     a:	01d7b02f          	amoadd.d	zero,t4,(a5)
+>     e:	0001                	.insn	2, 0x0001
+>    10:	00000013          	addi	zero,zero,0
+>    14:*	0d085503          	lhu	a0,208(a6)		<-- trapping instruction
+>  
+>  Code starting with the faulting instruction
+>  ===========================================
+>     0:	0d085503          	lhu	a0,208(a6)
+>  ---[ end trace 0000000000000000 ]---
+>  note: kswapd0[87] exited with irqs disabled
+>  note: kswapd0[87] exited with preempt_count 2
+> 
+> > ---
+> >  include/linux/pagemap.h |  1 +
+> >  mm/filemap.c            | 12 ++++++++----
+> >  2 files changed, 9 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+> > index c9ba69e02e3e..06dc3fae8124 100644
+> > --- a/include/linux/pagemap.h
+> > +++ b/include/linux/pagemap.h
+> > @@ -211,6 +211,7 @@ enum mapping_flags {
+> >  				   folio contents */
+> >  	AS_INACCESSIBLE = 8,	/* Do not attempt direct R/W access to the mapping */
+> >  	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
+> > +	AS_UNCHARGED = 10,	/* Do not charge usage to a cgroup */
+> >  	/* Bits 16-25 are used for FOLIO_ORDER */
+> >  	AS_FOLIO_ORDER_BITS = 5,
+> >  	AS_FOLIO_ORDER_MIN = 16,
+> > diff --git a/mm/filemap.c b/mm/filemap.c
+> > index e4a5a46db89b..5004a2cfa0cc 100644
+> > --- a/mm/filemap.c
+> > +++ b/mm/filemap.c
+> > @@ -960,15 +960,19 @@ int filemap_add_folio(struct address_space *mapping, struct folio *folio,
+> >  {
+> >  	void *shadow = NULL;
+> >  	int ret;
+> > +	bool charge_mem_cgroup = !test_bit(AS_UNCHARGED, &mapping->flags);
+> >  
+> > -	ret = mem_cgroup_charge(folio, NULL, gfp);
+> > -	if (ret)
+> > -		return ret;
+> > +	if (charge_mem_cgroup) {
+> > +		ret = mem_cgroup_charge(folio, NULL, gfp);
+> > +		if (ret)
+> > +			return ret;
+> > +	}
+> >  
+> >  	__folio_set_locked(folio);
+> >  	ret = __filemap_add_folio(mapping, folio, index, gfp, &shadow);
+> >  	if (unlikely(ret)) {
+> > -		mem_cgroup_uncharge(folio);
+> > +		if (charge_mem_cgroup)
+> > +			mem_cgroup_uncharge(folio);
+> >  		__folio_clear_locked(folio);
+> >  	} else {
+> >  		/*
+> > -- 
+> > 2.50.1
+> > 
+> 
+> This means that not all folios will have a memcg attached also when
+> memcg is enabled. In lru_gen_eviction() mem_cgroup_id() is called
+> without a NULL check which then leads to the null-dereference.
+> 
+> The following diff resolves the issue for me:
+> 
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index fae105a9cb46..c70e789201fc 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -809,7 +809,7 @@ void mem_cgroup_scan_tasks(struct mem_cgroup *memcg,
+>  
+>  static inline unsigned short mem_cgroup_id(struct mem_cgroup *memcg)
+>  {
+> -	if (mem_cgroup_disabled())
+> +	if (mem_cgroup_disabled() || !memcg)
+>  		return 0;
+>  
+>  	return memcg->id.id;
+> 
+> However, it's mentioned in folio_memcg() that it can return NULL so this
+> might be an existing bug which this patch just makes more obvious.
+> 
+> There's also workingset_eviction() which instead gets the memcg from
+> lruvec. Doing that in lru_gen_eviction() also resolves the issue for me:
+> 
+> diff --git a/mm/workingset.c b/mm/workingset.c
+> index 68a76a91111f..e805eadf0ec7 100644
+> --- a/mm/workingset.c
+> +++ b/mm/workingset.c
+> @@ -243,6 +243,7 @@ static void *lru_gen_eviction(struct folio *folio)
+>  	int tier = lru_tier_from_refs(refs, workingset);
+>  	struct mem_cgroup *memcg = folio_memcg(folio);
+>  	struct pglist_data *pgdat = folio_pgdat(folio);
+> +	int memcgid;
+>  
+>  	BUILD_BUG_ON(LRU_GEN_WIDTH + LRU_REFS_WIDTH > BITS_PER_LONG - EVICTION_SHIFT);
+>  
+> @@ -254,7 +255,9 @@ static void *lru_gen_eviction(struct folio *folio)
+>  	hist = lru_hist_from_seq(min_seq);
+>  	atomic_long_add(delta, &lrugen->evicted[hist][type][tier]);
+>  
+> -	return pack_shadow(mem_cgroup_id(memcg), pgdat, token, workingset);
+> +	memcgid = mem_cgroup_id(lruvec_memcg(lruvec));
+> +
+> +	return pack_shadow(memcgid, pgdat, token, workingset);
+>  }
+>  
+>  /*
+> 
+> I don't really know what I'm doing here, though.
 
-> On Mon, 18 Aug 2025 at 19:02, Roman Gushchin <roman.gushchin@linux.dev> wrote:
->>
->> Implement a pseudo-realistic test for the OOM handling
->> functionality.
->>
->> The OOM handling policy which is implemented in bpf is to
->> kill all tasks belonging to the biggest leaf cgroup, which
->> doesn't contain unkillable tasks (tasks with oom_score_adj
->> set to -1000). Pagecache size is excluded from the accounting.
->>
->> The test creates a hierarchy of memory cgroups, causes an
->> OOM at the top level, checks that the expected process will be
->> killed and checks memcg's oom statistics.
->>
->> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
->> ---
->>  [...]
->> +
->> +/*
->> + * Find the largest leaf cgroup (ignoring page cache) without unkillable tasks
->> + * and kill all belonging tasks.
->> + */
->> +SEC("struct_ops.s/handle_out_of_memory")
->> +int BPF_PROG(test_out_of_memory, struct oom_control *oc)
->> +{
->> +       struct task_struct *task;
->> +       struct mem_cgroup *root_memcg = oc->memcg;
->> +       struct mem_cgroup *memcg, *victim = NULL;
->> +       struct cgroup_subsys_state *css_pos;
->> +       unsigned long usage, max_usage = 0;
->> +       unsigned long pagecache = 0;
->> +       int ret = 0;
->> +
->> +       if (root_memcg)
->> +               root_memcg = bpf_get_mem_cgroup(&root_memcg->css);
->> +       else
->> +               root_memcg = bpf_get_root_mem_cgroup();
->> +
->> +       if (!root_memcg)
->> +               return 0;
->> +
->> +       bpf_rcu_read_lock();
->> +       bpf_for_each(css, css_pos, &root_memcg->css, BPF_CGROUP_ITER_DESCENDANTS_POST) {
->> +               if (css_pos->cgroup->nr_descendants + css_pos->cgroup->nr_dying_descendants)
->> +                       continue;
->> +
->> +               memcg = bpf_get_mem_cgroup(css_pos);
->> +               if (!memcg)
->> +                       continue;
->> +
->> +               usage = bpf_mem_cgroup_usage(memcg);
->> +               pagecache = bpf_mem_cgroup_page_state(memcg, NR_FILE_PAGES);
->> +
->> +               if (usage > pagecache)
->> +                       usage -= pagecache;
->> +               else
->> +                       usage = 0;
->> +
->> +               if ((usage > max_usage) && mem_cgroup_killable(memcg)) {
->> +                       max_usage = usage;
->> +                       if (victim)
->> +                               bpf_put_mem_cgroup(victim);
->> +                       victim = bpf_get_mem_cgroup(&memcg->css);
->> +               }
->> +
->> +               bpf_put_mem_cgroup(memcg);
->> +       }
->> +       bpf_rcu_read_unlock();
->> +
->> +       if (!victim)
->> +               goto exit;
->> +
->> +       bpf_for_each(css_task, task, &victim->css, CSS_TASK_ITER_PROCS) {
->> +               struct task_struct *t = bpf_task_acquire(task);
->> +
->> +               if (t) {
->> +                       if (!bpf_task_is_oom_victim(task))
->> +                               bpf_oom_kill_process(oc, task, "bpf oom test");
->
-> Is there a scenario where we want to invoke bpf_oom_kill_process when
-> the task is not an oom victim?
+Me neither, clearly :)
 
-Not really, but...
+Thanks so much for the report and fix! I fear there might be some other
+paths that try to get memcg from lruvec or folio or whatever without
+checking it. I feel like in this exact case, I would want to go to the
+first sign of trouble and fix it at lruvec_memcg(). But then who knows
+what else we've missed.
 
-> Would it be better to subsume this check in the kfunc itself?
+May I ask what you were running to trigger this? My fstests run (clearly
+not exercising enough interesting memory paths) did not hit it.
 
-bpf_task_is_oom_victim() is useful by itself, because if we see
-a task which is about to be killed, we can likely simple bail out.
-Let me adjust the test to reflect it.
+This does make me wonder if the superior approach to the original patch
+isn't just to go back to the very first thing Qu did and account these
+to the root cgroup rather than do the whole uncharged thing.
+
+Boris
+
+> 
+> Regards,
+> Klara Modin
 
