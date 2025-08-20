@@ -2,95 +2,86 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E691DCA0EDC
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 10:16:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D5CF0CA0EF8
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 10:20:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B4028E004E; Wed, 20 Aug 2025 06:16:28 -0400 (EDT)
+	id 65C426B00E9; Wed, 20 Aug 2025 06:20:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78BD98E0003; Wed, 20 Aug 2025 06:16:28 -0400 (EDT)
+	id 6347F6B00EA; Wed, 20 Aug 2025 06:20:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C86E8E004E; Wed, 20 Aug 2025 06:16:28 -0400 (EDT)
+	id 570CF6B00EB; Wed, 20 Aug 2025 06:20:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5AE9E8E0003
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 06:16:28 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D623C117A21
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 10:16:27 +0000 (UTC)
-X-FDA: 83796731214.26.7A1A418
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 4A876100006
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 10:16:26 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DhaTPXI8;
-	spf=pass (imf05.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 45A106B00E9
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 06:20:05 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E7D9B16042D
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 10:20:04 +0000 (UTC)
+X-FDA: 83796740328.03.5AF4D6B
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A701E1A0006
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 10:20:01 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf19.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755684986;
+	s=arc-20220608; t=1755685203;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B6XpIDmRuqCNJaOVpSIBkkEEDY3NPmRbhE/AxafAF5M=;
-	b=6yOg1kr5rPHi2H06PQWHNww8yAuanhrTm4TY32KG/RqcBL4ZzW1SU23V9bwISzi8CaQO+2
-	ornet1bYz90gd321EgUqXEIaZnrvVkYjxw0pgnMxaa4ceWNjdmy1NqHpLQYHNVBQQV44vI
-	kh+ExUa92LWKrrGcnh7VdBJLKuWM5Xw=
+	 in-reply-to:in-reply-to:references:references;
+	bh=mVfSSDsx3oIfacPYoX9crb2bkb3QiBdGbwuRL5XY7Bk=;
+	b=JxFxIyCKX0f0DExKXGdlD58F0U1YGs9Tz3GJI1azMFGyAfRnuMmmXAM6KD6TynXdC5FkxP
+	Zjzi5Ld0V+qZgZ16rHcUvbIA9vtHUp/gQ2JtrJHlflvOyodJLgwbHMAFrvlHqMKEpV1k8J
+	pD0cXRGoI4Al0vwp92MMDGRlmmw+7pE=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DhaTPXI8;
-	spf=pass (imf05.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755684986; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf19.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755685203; a=rsa-sha256;
 	cv=none;
-	b=BgpAJoB2Ch+29yIPoXZwQFWarJRhr4t1ZCL/ub3Z3JohBBk0DxdWxajTV0xlbE1PG7VmXM
-	A9Ycru4HrWTMabqBeLLYDy5/eqWfODC9dufcUUNDH1/wSKw6S0gYRp/aRD2KBspjo/2zPM
-	9IhFL9D7NJqj81XULQ1WIj1i3U1YY+8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7F7E961415;
-	Wed, 20 Aug 2025 10:16:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49561C4CEEB;
-	Wed, 20 Aug 2025 10:16:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755684985;
-	bh=XzpGJTqPVcOFUMqIMIlLu/4sIUSnKk+XD+8t8pnJ85U=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=DhaTPXI8AFgELTg78k1LUty/cXh66N97H/gR9L42Ak9QJ29mB3qnyWoZycO/twy4R
-	 NcLenIqirpvssRdFKaoZRuQCjcr9HyPd206BovO//gZhThDSPgmoXlNAWN1OMhGAfE
-	 utJK7wnAjwA3WPcx26TVP8ZcDJF3Nv4IBpfVeZ3j5mhOmBNAYkPD9wfSCs8R9VlHJJ
-	 h+Fyjdwo6VYSRZZ0hhUaZGjWBguhA3nQjdeWV3B3+6HCTv29vKpxRX2DrvR6gddoC5
-	 nllKvmYOeH1bvHZTL6kR2yJd6TpEY0Sxdhiuhp30QsrzvonqtBruOrJyYvsjxE8c7J
-	 qrPR5q1lovOnw==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 20 Aug 2025 12:16:19 +0200
-Message-Id: <DC76DSYUY978.3NR8S2K13I9RX@kernel.org>
-Subject: Re: [PATCH] rust: zpool: add abstraction for zpool drivers
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- "Uladzislau Rezki" <urezki@gmail.com>, "Alice Ryhl" <aliceryhl@google.com>,
- "Vlastimil Babka" <vbabka@suse.cz>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, "Bjorn
- Roy Baron" <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor Gross"
- <tmgross@umich.edu>, "Johannes Weiner" <hannes@cmpxchg.org>, "Yosry Ahmed"
- <yosry.ahmed@linux.dev>, "Nhat Pham" <nphamcs@gmail.com>,
- <linux-mm@kvack.org>
-To: "Vitaly Wool" <vitaly.wool@konsulko.se>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250820091543.4165305-1-vitaly.wool@konsulko.se>
-In-Reply-To: <20250820091543.4165305-1-vitaly.wool@konsulko.se>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 4A876100006
-X-Stat-Signature: a9ad3afoexenk991o1tknjouxgdkeyxw
+	b=zrd2ghKEm6Fz52Xjv4qK5zG6c/jkiLROJGxehi9lPx5WQTbrYMeMSpzVLTo+yt6zlTpxcC
+	3zeAm36kqx0TIKFAYFC4zoO4M+fkZZywUAg3cyWyO7Rj6aME957Co9MtZFZWEWf1sE7VLV
+	eD8SPJ6FnqLFPrpsKvl9hd9tBKz8GyQ=
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4c6Mqk1B1zztT9v;
+	Wed, 20 Aug 2025 18:18:58 +0800 (CST)
+Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1B2AD180485;
+	Wed, 20 Aug 2025 18:19:57 +0800 (CST)
+Received: from [10.174.176.250] (10.174.176.250) by
+ dggpemf200018.china.huawei.com (7.185.36.31) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 20 Aug 2025 18:19:56 +0800
+Message-ID: <3a894ee7-0d07-496a-bbb8-abcc431b849b@huawei.com>
+Date: Wed, 20 Aug 2025 18:19:55 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH -next 00/16] mm/damon: support ARM32 with LPAE
+To: SeongJae Park <sj@kernel.org>
+CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<wangkefeng.wang@huawei.com>, <zuoze1@huawei.com>
+References: <20250814160429.67476-1-sj@kernel.org>
+From: Quanmin Yan <yanquanmin1@huawei.com>
+In-Reply-To: <20250814160429.67476-1-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.176.250]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ dggpemf200018.china.huawei.com (7.185.36.31)
+X-Stat-Signature: sh1bss1ouq93fx73tk6wfouhw4q9eqfq
 X-Rspam-User: 
-X-HE-Tag: 1755684986-681911
-X-HE-Meta: U2FsdGVkX1/WpyD4mGSo3eyp3HwldftpPnfFINw6f8JwkMYgrwmUmfRcsvmnF7OIzHS59mjESy7++jvgOJ6KjHNr3P6KltZj57a6bYJVavjQUBrJOXSLz92lCll2NVMniOzWrjQosli/kXTRcj34TpnspM6UqMQrcmNkgiPQOe2kR8OdfVdHX3V/b7jGZnC/Qb8OaYkg5BlSBJY3vkLbPa/YgKKqhMMzlfFTOfWewkRuf7ugkJjY8m22GOiZmdZ678DM3f0CS7iKe1Ha9RAPujmMkrZdN6n62WexJGr4wODSUW9Pu1RAtvrGc8zzaoDNv/dDYNnEbsxk9LMwHV+NtyXX61v1Uw8Nw82QOu0ridlV4QBdbEIKh0+ndJMKztOA+jvGYLsGVnOwEn3V983KBY9tT1yX4Sdc2aUbUD3bPBB6VqHjtEI5/i03dzWadfkVkah+uYAxLmIflIaZYKHN79RhtYbJ5qN1GbEgAKOEX2Qn8Xtyx1QYXArvGpqk0Kf9xH+hXB/za7n3/Vc0xXtJcK1oHf4h/WArUZD2tV6boKGzXPQSyhhVVGvH4QTudicnFlzQwv4EsTKp13Dt9pFj1qFD2hXgbvPk87kB2YWnO7MEDcRme2+VJjdPR1vdOH/i9FIIUsxeszezILid6QTfriduqunluKxF85IPGNCO+Fk4LFhSP/oRG57KynPN1KacqwM1cYdacfLnqQg571PDuOqGr0S+PNc/5uaL7LS+jm7v9yaLpZqlt236QG8TieEqdYPxXBZZF/DwIxk1gOv7ceRANt7c7VEYldzI+h/o56FU1Y0AyKBWpH/53/R6EWK5XP53XrqRnpsecQ4BjRsL+uW9vUZzcgmMw0tSQohzlPZUnXHQyykznr0pP8owKf43IUZxBaqxO/fLdMKjFnQC41jfkBFLBurBHxRdxFXev0MKCMYZIxeJSZpwOMvQjbTUpwSxIAeWd4uEDczHmzL
- o1i87cSE
- S0Alg2sM4yNMpwY9pwcRLU9TeTAVJ/D9HplOdU5W7zppWC5wCnAT5TP+ZEZaZalZVjRyR3VbHBcmNsQ/zXaGykUIkyYw4mix++ACRMLQHOeb1d60Sy4JIp4X30XHjsVo5AErHv95NESwTnp/Nr1fNpYrhXj9Ft1nCEclrOiaaK4vG2f6apg0d7SOclu6e8xbqIlmLnKMVfw6C7zzM/a04UuO4heGKu9Nj0nNHz2ms83KDh+UhL1y8hKZQ4xeQwAPUJ0R7zXyLfLE98OD99Ym7DwQ52RIHl8iTOW14F6S3ZgubwCDLlivmhUaHu/Ur1wH/A7n5bdL1Qp11HYwnEIJvFSqB4VEYYV8CNYveuGKbP74JO9bTnfEJ4Uitfg==
+X-Rspamd-Queue-Id: A701E1A0006
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755685201-347757
+X-HE-Meta: U2FsdGVkX18Jx0m+Wv/6OabZ/SF6KjF7u5td8u8rCnHrdruEMTnCxDjgB+qK44yvZxSmCY8rdk17O8pJJiMZiLbprSKzsUftsPvBgUwupgekz8ppjKPz1FdcIKLmZ0fcrhj0kX35WK/0OqyqVehRyl9U+/lfdIoL/d22Nn/+hshX0o/RBxcfb4AUvW9G+PvbaSHsJtlo6wn0PsDCUAiwyn+cmxYWgTFLbCz7s59WlUdXVoH1BdgrOsHvT4llz2FDIAQbdg21BxIeLfit2Jpu3W6zwQ9JvcKa46JbhmeWFWBFxeyL05wgHpoywU4u9/gScbepe765IVg+20wJyeDb4j7P6uqIIWck24+y5G6k/HgWMvKvinD+FcGE2rtvL0JbX+rTNRncdwz96VjPLzNte4Jq0sWslPHesb/dBUBvJEQyOP8+NzZWmym2Xs4tcEBdLyurV7MRq7hj16SmgHSN3eVNE6jwUi7Ywjld3g42eSDsKU7kMAiZhxI4r8kS02kbsZZRyf8nIGON7Lz/hoK+cSDdqo5scH3COiVsmqjws3EhwM2WKC3tzzSKwV3uX1Y/sXRzZZWPIeWb6YgyNv+8Ob2L6aPhXT3dFhUheEcAYSWofcGOYqva2CJQOO7jgQ4UpDcEvlm6ej1XNpOlAnQOO2DGCtbb2meKXW/33MjKB5Tw2nWW17MaUzO7dBmT730jaSPjTmPFoNbfQtB2kIB0etjIJD7gN2hPUZ7TiRFs/GsqP6NWBRayKpUDt5OtgXqkvZ3IJQp86NIffZyyON3Com3LTiIAVD0cfIyAuqHJq8ns+cW+1EQoksVLAQXYRaAIRkkY371zbr3tyPii2Dhm5BMNCLYzrydK2SBciKmQM+g2Q9X/rhF9EHjWcT1FfcgssFuZfzin1VvXJ7RpDtVmSKE2ESl08sluNHyrPV2iv1u//97whyHJZxyUyjecJsciBxMIh8YD2McLhJw9wlo
+ 8um0P8IY
+ jJNpKnHHXLaRVKA5IoqNktFTOHLdX5gWvdk5eLA4lpLWo7Bc5HW5ZuTKmWRhJ5BvDACMp+Gids68JhdHOGROUWgnkGn4lkwlJZcLdRihLU0HIbC0MunLNM4O/Pnk30TIP7jVDYOME0AVQXIJTdJr5ZgzYINpWUlHQgB5HPTihIIdkD/0K0l2PFBA9lYdHbcp0tfhaNRfi6t/KBO2JkCYYIGVd5uL/BJUztTnqUSFtaubZ5Kcy5u9E2MG4ozfrv6P2rFtrBF/tymvTuUa2FpxgwaA9E3MXuUWQrkI/1pjMR4coP53+/bMfKKsnUQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,229 +90,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed Aug 20, 2025 at 11:15 AM CEST, Vitaly Wool wrote:
-> Zpool is a common frontend for memory storage pool implementations.
-> These pools are typically used to store compressed memory objects,
-> e. g. for Zswap, the lightweight compressed cache for swap pages.
+Hi SJ,
+
+在 2025/8/15 0:04, SeongJae Park 写道:
+> On Thu, 14 Aug 2025 22:07:12 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
 >
-> This patch provides the interface to use Zpool in Rust kernel code,
-> thus enabling Rust implementations of Zpool allocators for Zswap.
+>> Hi SJ,
+>>
+>> Thank you for your detailed suggestions on the patch series. Please allow me
+>> some time to thoroughly review each of your recommendations.
+> No worry, please take your time :)
+>
+>> I haven’t responded
+>> to every point immediately because I’d like to first attempt updating the patches
+>> accordingly. If I encounter any questions or issues during the process, I’ll promptly
+>> reach out to discuss them with you, very appreciate your patience and guidance.
+> Sounds good.
+>
+>> By the way, this patch series is based on linux-next(commit:2674d1eadaa2).
+> Thank you for sharing this.  From the next time, please use mm-new[1] as a
+> baseline for DAMON patches if there is no reason to not do so.
+>
+> [1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
 
-Do you work on such a user? Do you have code using this API already?
+I've prepared the v2 patch set based on the mm-new branch[1]. Your valuable
+feedback would be greatly appreciated!
 
-More specifically, do you plan to re-implement Zswap in Rust?
+[1] https://lore.kernel.org/all/20250820080623.3799131-1-yanquanmin1@huawei.com/
 
-> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Thanks,
+Quanmin Yan
 
-If Alice contributed to the patch you may want to add a Co-developed-by: ta=
-g,
-otherwise this doesn't need her SoB.
-
-> +/// zpool API
-
-It would be nice to have some more documentation on this trait, including a
-doc-test illustrating some example usage.
-
-> +pub trait Zpool {
-> +    /// Opaque Rust representation of `struct zpool`.
-> +    type Pool: ForeignOwnable;
-
-Something that embedds a struct zpool, such as struct zswap_pool? If so, is=
-n't
-this type simply Self?
-
-> +
-> +    /// Create a pool.
-> +    fn create(name: *const c_uchar, gfp: Flags) -> Result<Self::Pool>;
-
-This shouldn't be a raw pointer, but rather &CStr.
-
-> +
-> +    /// Destroy the pool.
-> +    fn destroy(pool: Self::Pool);
-> +
-> +    /// Allocate an object of size `size` using GFP flags `gfp` from the=
- pool `pool`, wuth the
-> +    /// preferred NUMA node `nid`. If the allocation is successful, an o=
-paque handle is returned.
-> +    fn malloc(
-> +        pool: <Self::Pool as ForeignOwnable>::BorrowedMut<'_>,
-> +        size: usize,
-> +        gfp: Flags,
-> +        nid: NumaNode,
-> +    ) -> Result<usize>;
-> +
-> +    /// Free a previously allocated from the `pool` object, represented =
-by `handle`.
-> +    fn free(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>, handle: =
-usize);
-> +
-> +    /// Make all the necessary preparations for the caller to be able to=
- read from the object
-> +    /// represented by `handle` and return a valid pointer to the `handl=
-e` memory to be read.
-> +    fn read_begin(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>, ha=
-ndle: usize)
-> +        -> *mut c_void;
-
-Why does this return a raw pointer? I think this needs a proper type
-representation.
-
-> +
-> +    /// Finish reading from a previously allocated `handle`. `handle_mem=
-` must be the pointer
-> +    /// previously returned by `read_begin`.
-> +    fn read_end(
-> +        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
-> +        handle: usize,
-> +        handle_mem: *mut c_void,
-> +    );
-
-Same here...
-
-> +
-> +    /// Write to the object represented by a previously allocated `handl=
-e`. `handle_mem` points
-> +    /// to the memory to copy data from, and `mem_len` defines the lengt=
-h of the data block to
-> +    /// be copied.
-> +    fn write(
-> +        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
-> +        handle: usize,
-> +        handle_mem: *mut c_void,
-
-...and here.
-
-> +        mem_len: usize,
-> +    );
-> +
-> +    /// Get the number of pages used by the `pool`.
-> +    fn total_pages(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>) -=
-> u64;
-> +}
-> +
-> +/// Zpool driver registration trait.
-> +pub trait Registration {
-
-I think you should use the kernel::driver::Registration instead, it's
-specifically for the purpose you defined this trait and ZpoolDriver for.
-
-As for the C callbacks, they should go into the Adapter type (which impleme=
-nts
-kernel::driver::RegistrationOps) directly, they don't need to be in a trait=
-.
-
-This way a new Zpool Registration is created with:
-
-	driver::Registration<zpool::Adapter>::new()
-
-This also allows you to take advantage of the module_driver!() macro to pro=
-vide
-your own module_zpool_driver!() macro.
-
-> +    /// Register a zpool driver.
-> +    fn register(&self, name: &'static CStr, module: &'static ThisModule)=
- -> Result;
-> +
-> +    /// Pool creation callback.
-> +    extern "C" fn _create(name: *const c_uchar, gfp: u32) -> *mut c_void=
-;
-> +
-> +    /// Pool destruction callback.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The caller must ensure that `pool` is a valid pointer to `struct=
- zpool`.
-> +    unsafe extern "C" fn _destroy(pool: *mut c_void);
-> +
-> +    /// Callback for object allocation in the pool.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The caller must ensure that `pool` is a valid pointer to `struct=
- zpool` and that `handle`
-> +    /// is a valid pointer to usize.
-> +    unsafe extern "C" fn _malloc(
-> +        pool: *mut c_void,
-> +        size: usize,
-> +        gfp: u32,
-> +        handle: *mut usize,
-> +        nid: c_int,
-> +    ) -> c_int;
-> +
-> +    /// Callback for object release.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The caller must ensure that `pool` is a valid pointer to `struct=
- zpool`.
-> +    unsafe extern "C" fn _free(pool: *mut c_void, handle: usize);
-> +
-> +    /// Callback to prepare the object for reading.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The caller must ensure that `pool` is a valid pointer to `struct=
- zpool`.
-> +    unsafe extern "C" fn _obj_read_begin(
-> +        pool: *mut c_void,
-> +        handle: usize,
-> +        local_copy: *mut c_void,
-> +    ) -> *mut c_void;
-> +
-> +    /// Callback to signal the end of reading from an object.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The caller must ensure that `pool` is a valid pointer to `struct=
- zpool`.
-> +    unsafe extern "C" fn _obj_read_end(pool: *mut c_void, handle: usize,=
- handle_mem: *mut c_void);
-> +
-> +    /// Callback for writing to an object.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The caller must ensure that `pool` is a valid pointer to `struct=
- zpool`.
-> +    unsafe extern "C" fn _obj_write(
-> +        pool: *mut c_void,
-> +        handle: usize,
-> +        handle_mem: *mut c_void,
-> +        mem_len: usize,
-> +    );
-> +
-> +    /// Callback to return the number of pages in the pool.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The caller must ensure that `pool` is a valid pointer to `struct=
- zpool`.
-> +    unsafe extern "C" fn _total_pages(pool: *mut c_void) -> u64;
-> +}
-> +
-> +/// Zpool driver structure.
-> +pub struct ZpoolDriver<T: Zpool> {
-> +    inner: Opaque<bindings::zpool_driver>,
-
-I think this needs pin-init, another reason to use kernel::driver::Registra=
-tion
-instead. :)
-
-> +
-> +    /// Zpool callback functions that a zpool driver must provide
-> +    pub callbacks: T,
-> +}
-> +
-> +impl<T: Zpool> Clone for ZpoolDriver<T> {
-> +    fn clone(&self) -> Self {
-> +        todo!()
-> +    }
-> +}
-
-Cloning the driver structure? Why? Please also consider that struct zpool_d=
-river
-needs to be pinned.
 
