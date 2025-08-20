@@ -2,87 +2,134 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 228F5CA0EED
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 09:54:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D166DCA0EDC
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 09:59:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 86D0D8E004B; Wed, 20 Aug 2025 05:54:42 -0400 (EDT)
+	id 5921D6B00B1; Wed, 20 Aug 2025 05:59:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 844E08E0003; Wed, 20 Aug 2025 05:54:42 -0400 (EDT)
+	id 542B46B00B6; Wed, 20 Aug 2025 05:59:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 759FF8E004B; Wed, 20 Aug 2025 05:54:42 -0400 (EDT)
+	id 431566B00B7; Wed, 20 Aug 2025 05:59:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 604088E0003
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 05:54:42 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1281AB9877
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 09:54:42 +0000 (UTC)
-X-FDA: 83796676404.03.2653301
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8F6EB40009
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 09:54:38 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf27.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id 2C55E6B00B1
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 05:59:42 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CEAE858FAD
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 09:59:41 +0000 (UTC)
+X-FDA: 83796688962.30.8DD63B6
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 0DF031A0002
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 09:59:39 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lMrU+tds;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755683680;
+	s=arc-20220608; t=1755683980;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ehBlk8Qn9EuFTlLGgEIJq6F671GfcXdZ8P8Go/RVf68=;
-	b=Yx4c7zZ2Cs7PybKDQgG6MZbYdX2EBpwspS/0L/+7rs3EDY4Udzxb7sW9JACAq5dcrrn504
-	WAHlamBE++SNMSG1gFFqt45RIL0tK8xTyajPUN8D8r3Q9V85uMc3TbgUkfTuZpaNbh43ro
-	IyEkkOdu3FsM0n0MvkrC9T4+anSO8CM=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pPSwHXJiuPboMvGmzdZl86YoheXT2JJemMGGCNbTXh4=;
+	b=NJoE3uo7JcmD5jfaA9PHF3cKpt/+p/S2dYd8GtUVdsscbd/QBtFiZsr7dHZTkvLPYyrRdM
+	dMKA/rrRTixZh9HY/HNFw5xKInj62yZC4Bdy8QdNTi9HhXQgzOGQUXOc/BpPcAfOKP2T/z
+	/k1qdJ2+Yk5ktwRM/eXKM2EhePWnfGA=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf27.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755683680; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lMrU+tds;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755683980; a=rsa-sha256;
 	cv=none;
-	b=p4EIqw7sd/O7fXsaCg3Yy0DpFNqdlO++bhUGqVyTBjoo/kZBrLnRPvXiv+ZF+A7LzGzery
-	DNSbF3YuKvLdY4uXitlYePZraCb5lhZTyvlsaL3euatgvJrxiR1MTFXzpiOnW1TT+OgIDv
-	n2BSHvjUfZm6gHQ3PcFd3QR6fLpUggE=
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4c6MBG4XsmzPqXb;
-	Wed, 20 Aug 2025 17:49:58 +0800 (CST)
-Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8271F14011A;
-	Wed, 20 Aug 2025 17:54:34 +0800 (CST)
-Received: from [10.174.176.250] (10.174.176.250) by
- dggpemf200018.china.huawei.com (7.185.36.31) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 20 Aug 2025 17:54:33 +0800
-Message-ID: <3b5a37a7-af37-4108-a0c5-bc147bb77842@huawei.com>
-Date: Wed, 20 Aug 2025 17:54:32 +0800
+	b=nT9fgjttcpx5yn9XHcNnySjUuxL/ndPWaKqSh3N105n8oXAjW3NOUXbbq31AIR1lZ3jLw+
+	GYUDskqWNT7oBdWdhzpwQ2jxPlEFTfROD3FDZkrvYpXJ48M8voGagfFs/3dvCBf7gAOROy
+	lDx36dFuhghhXG1Hv3FDrtnwjA+i3Ko=
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-afcb72d5409so947738366b.0
+        for <linux-mm@kvack.org>; Wed, 20 Aug 2025 02:59:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755683978; x=1756288778; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pPSwHXJiuPboMvGmzdZl86YoheXT2JJemMGGCNbTXh4=;
+        b=lMrU+tds0HF48gbVqjdcSBuZ7CMolhLbc03+I5LHZYVD3oXqRv2NFKlqBhbaGdGeuT
+         e6EvLotkXf2b0NGFQBOrBEzUnVFLmCwFch3HHCUMppuog+m6Z4hN2KUoKco4OeKBx/jO
+         H9P7ycHVcpMPo2ddLt+slYZBF5dzEcltGMivempVYryL0KzuQ6Ch0WqAyfL69YrlTNuW
+         hdt3usTtsyv4oD/wZwLtu8G0JXfkXz2svvxoFkLFQbie9MSkjudKoLQKWBRckUjMyGk6
+         SaUBDGrajpzTABmi1fQxRHkTzfoFe2Tc/3Rkt8+LDKi1hX+v2WKlRf2O9q4RoKZqdO8m
+         //ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755683978; x=1756288778;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pPSwHXJiuPboMvGmzdZl86YoheXT2JJemMGGCNbTXh4=;
+        b=Uon2y6SP7OMOLbUHaoQ+ANn9pT7vmO6pH9k1D4Ylqs63DAzF93fco5X8fix4Y0HIlc
+         CDjq575OENoxkWlZe4j/VxHcgWmDfo6Svk+Zu/NjDWJ2VStVuOd8ay0VntJvi2GPqxb1
+         joA9MLMiTZhQ091YDQyUN7UtUXKIS4Lk6RTTX1krH1lKclzOVusvnBb7p+rj/2JEGmog
+         N+bXkHoPcP/YJplgRoe386eC96c9XJpLF1xYaO9NnYgIneKjX+fwECHqkoMP5nO4VUaI
+         mhuGicO/6YaeeJkaGmmY2k5VIZ0ZPIyXdOGUyykTGKjmhiusto+ODKgSa9lR0/LlPNEp
+         ByGg==
+X-Forwarded-Encrypted: i=1; AJvYcCWA8wDiloHnGbqFOFL9kP5Pbh+0yEEkvhn3Pw1tAAYDCCtnpIGtLnP0tKu2pjgq9me3U6Lw1APeeg==@kvack.org
+X-Gm-Message-State: AOJu0YwCWF/fG2zF40E2tDCLbZE9ZL5fuDO2Mq61hpfTRKucKs3pVZRC
+	VAHIlMvv2sSHsV5Jc3Dr0SfjEsCMzXG8wMOXCksxGK98qvJm31sO7tI75H0UWHBXvvhqDK3u6Yy
+	/CgA3WAKH4GndEmpg1P1IgVI5xSup7e0=
+X-Gm-Gg: ASbGncvWiF6zUHBOBdVjs16lf5yifHu4z2Ms54Qxi/fciN6VQ8IumGOp7QjRYwixhKZ
+	Y6TGjOuH1FHvUvJdsSjgana72jdcz0Q9qMoWFEj42Rbb0RyJhWYE0WPG2OKSRcHDTk6t3AY5CfK
+	yhNgkLjGcZMgQTG77h4rhU2i2sQlEFEPLxdBg1Hl66ywoI8LQQAwJC4Ek9AnEtQH+hlWo/6EBqw
+	T3fyGXeow==
+X-Google-Smtp-Source: AGHT+IFLILsumUxXGG8Le22U8VXLfiB3UImn/sKCUBHCwulcrWRoCPLLCjJAWxmPAx6D8QUNkGdtQmpTps7zJUlvWzY=
+X-Received: by 2002:a17:906:fe01:b0:ae8:fd2d:44b8 with SMTP id
+ a640c23a62f3a-afdf00e1d0amr167565066b.29.1755683978222; Wed, 20 Aug 2025
+ 02:59:38 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH -next 15/16] mm/damon: the byte statistics data type
- in damos_stat uses unsigned long long
-To: SeongJae Park <sj@kernel.org>
-CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<wangkefeng.wang@huawei.com>, <zuoze1@huawei.com>
-References: <20250813171000.6345-1-sj@kernel.org>
-From: Quanmin Yan <yanquanmin1@huawei.com>
-In-Reply-To: <20250813171000.6345-1-sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.176.250]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- dggpemf200018.china.huawei.com (7.185.36.31)
-X-Stat-Signature: w8ihb37jknwii8qdmur51zd4orsz44fa
+References: <20250815-pinctrl-gpio-pinfuncs-v5-0-955de9fd91db@linaro.org>
+ <CACRpkdaDGmdhaik+1saRv7Ts4myQ+tg1aQqGU3xQyT7ma8dJFw@mail.gmail.com>
+ <CAHp75VephepLq61HrVy=PX2oKUQd5NK2qS-vOC5h_NR65td3Uw@mail.gmail.com> <CACRpkda4soRCLF5=W=6R4wnwT3pjk743j022XfJxjTTQzuarAA@mail.gmail.com>
+In-Reply-To: <CACRpkda4soRCLF5=W=6R4wnwT3pjk743j022XfJxjTTQzuarAA@mail.gmail.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Wed, 20 Aug 2025 12:59:01 +0300
+X-Gm-Features: Ac12FXycXziPzAbLNx1s7hMXfLqQ2mmNzJaOepqBGK1kK3uBfF-tyE-7OZscDUk
+Message-ID: <CAHp75VfNhBrukJ46ahY77La5Ywkeu1xiC_eUbUj99ZQcderHbw@mail.gmail.com>
+Subject: Re: [PATCH v5 00/15] pinctrl: introduce the concept of a GPIO pin
+ function category
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
+	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
+	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
+	linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
+	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Chen-Yu Tsai <wenst@chromium.org>, 
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0DF031A0002
+X-Stat-Signature: 55y6gutsbcda5a4a6wdz98utnsysay4a
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8F6EB40009
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1755683678-135543
-X-HE-Meta: U2FsdGVkX1+RM3FKXbYSuF6dyW6Q6VfbO2HoUmjV74w/ZoXkFkM6m/FF4vtOYQzLRC5uioiQ9Ea8mKIs1cOcRmrQa/3C7EpvQym1w2JoTUzL0J0tAS0XkU/AOdSJzwXM8RlDpKRYl4is53r9tyYUJE99GrlrKf9tcmx0S32RGtnaGmrsQMW+4T+PmtCcu8Ku8ZIIrsEQfEUBav0Sxyyr+TpgocaNlHvUO0RB0aexZiyZhx0aFLS8MEmPb7YcyteZhGSovC5ioKtojfKiTJmF52euFEQdOiUTWpgRybCOONY/djpNm1ZLol2ElgR4z3F/uCrQJSZs0LBMOMzG7vYtFygjExFtb1v8lUBWI92AFwgAe3ZAll0Z8FLo4K/h2+1OMaJyWsi7H9pjQWbgDT/axdyAEdjrIsPQiDNsnrg4u+KOGkqeDAPB/D47d1Q861/PqdDOQD95UFF9YW+CueiegIVWz3hw0K6iQN5ETiqxcx6HhLNQJqyh7lIFgYxebSKAGWKyP/Ic0qMqRMk4yNfW+D+l3aT+4YcFEUe5aQL6IA5UUnXoIhMjDvd0+61wS7/vfVe/kWa36eERhUh6GBDYTFhS9fiZd/RIXZPWS3V8aCuGo49G+Q4kfzrp9J5FCexACC0b+NGdyCiWHN+CozK9fvCFuayXUa5nBltFDREFqzkaV37Gsr/XNYtJp6BfNuyfEdzeVQspcZqkSnveQIDHfk4iqx4NFKla+yLK9x6q6HZNaKJJUPILEIDtEk6DYSk2XiQzAHehIFt2Bc5QILs5J4YNQMqTonVdMpGpuIUX36hE7/JecYT1+CiC4Ig492boTo/QaM2TQB+6mMIPEa/pNUmZtQHVTXJK4gva4vgkY0hMRyTdTn1nEfgtUiw+zFcd2Ya4x3Ny4HnJcpNGSD3dFalDZbkoqgks9ia0VImMK6HMXFJR2f2Xw9v1CBcMLgpgifD/3Sd26KDBDe8Sh0A
- E/RqUllC
- Y3N8Hczet7HeFW7bN3kLav3Lb4DuW98jcBrWGmMge51/tpgCPZWfik0JxPm98J5zLtkgU1WgWYZPHbt0I3JRjzDawLf2UuOMhcEdxTCNwr7r1AefQUrO4VfrhbCDh8Vmws6DeRzms8SvtGtoprhB8P516lIyZXOOjDD1ByzN9PkTBcSIvKPD0rge7m6ZRanIQ+9L1w3AyWNiL74agnxuTcuv1sRr8EpazClvErQJGDzL7qEK/v22fV+deWiNdx6stTZgQZM5vGBykfocNaVsl2VNFzjMFpN2Ao0s/W02YOWU8ntLz1pvMAPtEiQ==
+X-HE-Tag: 1755683979-123487
+X-HE-Meta: U2FsdGVkX1+vJPRNkoDUidZZKjXYZBz/zsOeNgltYo2uoIINyqyhSH7o/wlxiRroqMtiojJmW7h3neCwO2Ve/nQew72850WveVLzpiDgDmL/6LNRbxvzLLsnjr7kB0M4vnyaaoTonJRHFZom7oLyZvyavSQOGMPrao9GOYjeQBIlCtWuZ79d3DdIPtEzDU+7yQaQV40WCjOunr3k4d4ccwRScRZqAs7mb0B1ecq+9jxhfEEuzKuf9oujs972W76n3Kn5hOiEGxtSSNFeVnc+URza+CgQnREAfCndAsFbBi/ffuS/Z7SRAlTjBO7i15hCvmllAY/iJVs2eZWTfHkYSYznhlG+SJ6PCcz0SQhgzhf20hzlVbZq4USrYJSQQi3NmKi+XRc2nCp87dLyk9/JHdlz7tQG62Va/wkmvTuV6s39KzZtMt/8a1T+gIC2UTwLVpV/6RPJc1nulBMyzvj6SjsLeDCJG5TaRXKTZcyAuHnwv9JBlyzXIJbtagIBmPaEUVVPhjxIKGPkKetydz8gbHGJ/I9mEOtK2bG7/I3xHZb8FbuO1fDfnuJeM4fkrOYpkzLtz02wGkzq4D8tfuLyoATVKVwkGgovCV+qFCTy1ixXT8xDDjDKqK/3tv2FZIXAvQ7xQkFp7Me1cZANMM3TK/HPlNcWKutI/xSVVh9sHyBfMJSTIAfi0cDrV0qVETzq0nd66EPNUT0LXl06UYt39cFxCflCbfcBVJSfjuW8vi+XC2jyz9zwecQFnBKe9JNIsL/iR7s0vJ5jnwW9tBS/MMX0PeXQXNt55XVkJHyCWUiUgDEGWthHnP2S+mKA6yMO5fzBw0OwK6PHzujp8Vg6CI0kR+eR4faOPV3yrqfMuuW3sk/ZX8x6S0ONPGF1s8JN4zAwe3fB1Sleh3dSGuWOVgYd2yDRXzFxJ4Gkx78jiw+muGDEGyL8lyF8BLH7e5GzWF0FkIO9nrFJDncxfkC
+ MRrr41Qa
+ SeDSso2xXwaFTKSZnE8eHvwvmAyORyVuaps3up9eabwRnahKbs1FAUAOe47jaaRfdhKmmleUsbsL3uWv4q2/rkMrc6VRN7+RZE4rKLmRu5qwznVXkmS8CojmwjiCEUOSCGFvt
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,128 +138,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SJ,
+On Wed, Aug 20, 2025 at 10:13=E2=80=AFAM Linus Walleij <linus.walleij@linar=
+o.org> wrote:
+> On Tue, Aug 19, 2025 at 8:31=E2=80=AFPM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
+> > On Tue, Aug 19, 2025 at 4:02=E2=80=AFPM Linus Walleij <linus.walleij@li=
+naro.org> wrote:
+> > > On Fri, Aug 15, 2025 at 11:09=E2=80=AFAM Bartosz Golaszewski <brgl@bg=
+dev.pl> wrote:
 
-在 2025/8/14 1:10, SeongJae Park 写道:
-> On Wed, 13 Aug 2025 13:07:05 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
+...
+
+> > > >       devres: provide devm_kmemdup_const()
+> > > >       pinctrl: ingenic: use struct pinfunction instead of struct fu=
+nction_desc
+> > > >       pinctrl: airoha: replace struct function_desc with struct pin=
+function
+> > > >       pinctrl: mediatek: mt7988: use PINCTRL_PIN_FUNCTION()
+> > > >       pinctrl: mediatek: moore: replace struct function_desc with s=
+truct pinfunction
+> > > >       pinctrl: imx: don't access the pin function radix tree direct=
+ly
+> > > >       pinctrl: keembay: release allocated memory in detach path
+> > > >       pinctrl: keembay: use a dedicated structure for the pinfuncti=
+on description
+> > > >       pinctrl: constify pinmux_generic_get_function()
+
+At least the above I'm pretty much okay with. Can you still have them
+being applied?
+
+> > > >       pinctrl: make struct pinfunction a pointer in struct function=
+_desc
+> > > >       pinctrl: qcom: use generic pin function helpers
+> > > >       pinctrl: allow to mark pin functions as requestable GPIOs
+> > >
+> > > I applied these 12 patches as a starter so they can
+> > > stabilize in linux-next.
+> >
+> > Hmm... I'm still sure that we don't need to have a separate flags
+> > field, but since I am on vacation and will be able to look at this
+> > closer next week, I can't look closer to it.
 >
->> For 32-bit systems, damos_stat now uses unsigned long long for byte
->> statistics data to avoid integer overflow risks inherent in the
->> previous design.
-> I suggested using the core-layer address unit on stat, and ask users to
-> multiply the addr_unit value to stat values if they want bytes value.  If we
-> agree on it, I think this patch wouldn't really be required.
+> The qualcomm 32bit platforms fail in next anyway so I dropped the patches
+> for now.
+>
+> Both you and Bartosz are on vacation so let's let it rest for a week or t=
+wo.
 
-Thank you for the guidance, I agree with your perspective. However, this patch doesn't actually belong in the addr_unit series, my apologies
-for the confusion. It is actually intended to address potential overflow issues
-in statistical data on 32-bit systems, and it is not directly related to addr_unit.
-This patch has been dropped from the v2 series.
+I will be available fully next week.
 
-After introducing addr_unit, if it is set to a larger value, it can help mitigate
-the overflow issue. However, under the default setting of addr_unit=1, statistical
-data may still overflow after a sufficiently long runtime, for example, when sz_tried
-exceeds 4GB.
-
-Besides, please allow me to mention one point in advance: if addr is extended for
-use in modules(e.g. DAMON_RECLAIM, LRU_SORT) in the future, the term "bytes" in
-module_param_named(bytes_##try_name...), although multiplied by addr would yield
-the actual byte count, might cause confusion due to its seemingly direct naming.
-
-Overall, this patch isn’t critically important at the moment, nor does it offer a
-sufficiently robust solution, but I’d still appreciate hearing your perspective on
-the matter — I’m all ears.
-
-Thanks,
-Quanmin Yan
-
->> Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
->> ---
->>   include/linux/damon.h     |  6 +++---
->>   mm/damon/modules-common.h |  4 ++--
->>   mm/damon/sysfs-schemes.c  | 12 ++++++------
->>   3 files changed, 11 insertions(+), 11 deletions(-)
->>
->> diff --git a/include/linux/damon.h b/include/linux/damon.h
->> index aa045dcb5b5d..d85850cf06c5 100644
->> --- a/include/linux/damon.h
->> +++ b/include/linux/damon.h
->> @@ -333,10 +333,10 @@ struct damos_watermarks {
->>    */
->>   struct damos_stat {
->>   	unsigned long nr_tried;
->> -	unsigned long sz_tried;
->> +	unsigned long long sz_tried;
->>   	unsigned long nr_applied;
->> -	unsigned long sz_applied;
->> -	unsigned long sz_ops_filter_passed;
->> +	unsigned long long sz_applied;
->> +	unsigned long long sz_ops_filter_passed;
->>   	unsigned long qt_exceeds;
->>   };
->>   
->> diff --git a/mm/damon/modules-common.h b/mm/damon/modules-common.h
->> index c7048a449321..ae45d0eb960e 100644
->> --- a/mm/damon/modules-common.h
->> +++ b/mm/damon/modules-common.h
->> @@ -36,11 +36,11 @@
->>   #define DEFINE_DAMON_MODULES_DAMOS_STATS_PARAMS(stat, try_name,		\
->>   		succ_name, qt_exceed_name)				\
->>   	module_param_named(nr_##try_name, stat.nr_tried, ulong, 0400);	\
->> -	module_param_named(bytes_##try_name, stat.sz_tried, ulong,	\
->> +	module_param_named(bytes_##try_name, stat.sz_tried, ullong,	\
->>   			0400);						\
->>   	module_param_named(nr_##succ_name, stat.nr_applied, ulong,	\
->>   			0400);						\
->> -	module_param_named(bytes_##succ_name, stat.sz_applied, ulong,	\
->> +	module_param_named(bytes_##succ_name, stat.sz_applied, ullong,	\
->>   			0400);						\
->>   	module_param_named(nr_##qt_exceed_name, stat.qt_exceeds, ulong,	\
->>   			0400);
->> diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
->> index 74056bcd6a2c..3c4882549a28 100644
->> --- a/mm/damon/sysfs-schemes.c
->> +++ b/mm/damon/sysfs-schemes.c
->> @@ -199,10 +199,10 @@ static const struct kobj_type damon_sysfs_scheme_regions_ktype = {
->>   struct damon_sysfs_stats {
->>   	struct kobject kobj;
->>   	unsigned long nr_tried;
->> -	unsigned long sz_tried;
->> +	unsigned long long sz_tried;
->>   	unsigned long nr_applied;
->> -	unsigned long sz_applied;
->> -	unsigned long sz_ops_filter_passed;
->> +	unsigned long long sz_applied;
->> +	unsigned long long sz_ops_filter_passed;
->>   	unsigned long qt_exceeds;
->>   };
->>   
->> @@ -226,7 +226,7 @@ static ssize_t sz_tried_show(struct kobject *kobj, struct kobj_attribute *attr,
->>   	struct damon_sysfs_stats *stats = container_of(kobj,
->>   			struct damon_sysfs_stats, kobj);
->>   
->> -	return sysfs_emit(buf, "%lu\n", stats->sz_tried);
->> +	return sysfs_emit(buf, "%llu\n", stats->sz_tried);
->>   }
->>   
->>   static ssize_t nr_applied_show(struct kobject *kobj,
->> @@ -244,7 +244,7 @@ static ssize_t sz_applied_show(struct kobject *kobj,
->>   	struct damon_sysfs_stats *stats = container_of(kobj,
->>   			struct damon_sysfs_stats, kobj);
->>   
->> -	return sysfs_emit(buf, "%lu\n", stats->sz_applied);
->> +	return sysfs_emit(buf, "%llu\n", stats->sz_applied);
->>   }
->>   
->>   static ssize_t sz_ops_filter_passed_show(struct kobject *kobj,
->> @@ -253,7 +253,7 @@ static ssize_t sz_ops_filter_passed_show(struct kobject *kobj,
->>   	struct damon_sysfs_stats *stats = container_of(kobj,
->>   			struct damon_sysfs_stats, kobj);
->>   
->> -	return sysfs_emit(buf, "%lu\n", stats->sz_ops_filter_passed);
->> +	return sysfs_emit(buf, "%llu\n", stats->sz_ops_filter_passed);
->>   }
->>   
->>   static ssize_t qt_exceeds_show(struct kobject *kobj,
->> -- 
->> 2.34.1
+--=20
+With Best Regards,
+Andy Shevchenko
 
