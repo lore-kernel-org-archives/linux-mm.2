@@ -2,69 +2,69 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7FB64CA0EED
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 08:20:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8270FCA0EED
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 08:20:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C04AD8E0032; Wed, 20 Aug 2025 04:20:12 -0400 (EDT)
+	id 945DF8E0033; Wed, 20 Aug 2025 04:20:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDCE48E002D; Wed, 20 Aug 2025 04:20:12 -0400 (EDT)
+	id 8F6548E002D; Wed, 20 Aug 2025 04:20:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF3128E0032; Wed, 20 Aug 2025 04:20:12 -0400 (EDT)
+	id 80E648E0033; Wed, 20 Aug 2025 04:20:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9DAF08E002D
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 04:20:12 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 694241384DA
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 08:20:12 +0000 (UTC)
-X-FDA: 83796438264.03.E5AE526
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7853E80008
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A3478E002D
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 04:20:13 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 34A4E1403D3
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 08:20:13 +0000 (UTC)
+X-FDA: 83796438306.26.3593828
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 04E6AC0007
 	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 08:20:10 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
+Authentication-Results: imf28.hostedemail.com;
 	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755678010; a=rsa-sha256;
-	cv=none;
-	b=IYHEDs/b11JOhT3rXnHb3Wxaj14oNUdHAYRHDr97S+PQj6VbrqL+IinlVDy8kofHdHtWUx
-	QgOhGk/h9Q9j0UDkJiaKeeTtQ/RASy90KGd0nMGCjvVgVmDi5JEQpuJOCBfmzPMNApeAQL
-	wKmduZ1WXsZU+bWlTX1dKHLvxdT4nmY=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf28.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755678010;
+	s=arc-20220608; t=1755678011;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aGHtYMG+xT81XnTJ8iAPYPR6rQe/EN13tUJDqCnc1WA=;
-	b=G1UjWWZB2AG53V5OjyuIKh3JcsvtNw7URun7vzjScaGHYGVPrPACFP+Ea78ZwBwbHLqKyt
-	LYc5TUp4U/LDfoBhgIxLc8dvAmLG/lpG6vnwoLBYrhLI+RiLzgfizdPSLKDcKIdP69aKhk
-	Ibv1punMX9vVfqGc3DYFXbJaD54IA2k=
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4c6KBW05Dgz14MQG;
-	Wed, 20 Aug 2025 16:20:03 +0800 (CST)
+	bh=mX++GZdmc6UWUYIFpTUepiEZ7h0iUQtlSO7KiQSQJrs=;
+	b=alZ4A4Wyl85qd40Lxm12uTxUc8ThYdiobVzltS2P3uF+HVW9lITPu36mk32x/QRb54+oQB
+	mUfXomzdrsfeRPIqN7N0WWP469fSf52f9OgGcubD0lUTYAlzF8eihAykZdIhrlqvkjp5JM
+	6vTZlcT39DuYxcP59bg+OQz+WWoWZ1I=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf28.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755678011; a=rsa-sha256;
+	cv=none;
+	b=pubwTlYyyciOzbvvVtsDKa1/989LMSNAZDYTligYGXM0dn2W0kapbo8POgcduBFNzusEcW
+	UMK/pgJA6bFMLji+CVYBJ1M4VG6Rvgq8IEWV+yuEZlqtn9JZL33ZxhFJklMGRZ2WnoeYh0
+	f/62NYMqn/PSMlH8rwqeA347bNMFftM=
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4c6K5J0YcCzPqYd;
+	Wed, 20 Aug 2025 16:15:32 +0800 (CST)
 Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
-	by mail.maildlp.com (Postfix) with ESMTPS id C53A318048F;
-	Wed, 20 Aug 2025 16:20:06 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id EE2B4140123;
+	Wed, 20 Aug 2025 16:20:07 +0800 (CST)
 Received: from huawei.com (10.50.85.135) by dggpemf200018.china.huawei.com
  (7.185.36.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 20 Aug
- 2025 16:20:06 +0800
+ 2025 16:20:07 +0800
 From: Quanmin Yan <yanquanmin1@huawei.com>
 To: <sj@kernel.org>
 CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
 	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
 	<yanquanmin1@huawei.com>, <wangkefeng.wang@huawei.com>, <zuoze1@huawei.com>
-Subject: [RFC PATCH mm-next v2 06/12] mm/damon/paddr: support addr_unit for DAMOS_STAT
-Date: Wed, 20 Aug 2025 16:06:16 +0800
-Message-ID: <20250820080623.3799131-7-yanquanmin1@huawei.com>
+Subject: [RFC PATCH mm-next v2 08/12] Docs/mm/damon/design: document 'address unit' parameter
+Date: Wed, 20 Aug 2025 16:06:18 +0800
+Message-ID: <20250820080623.3799131-9-yanquanmin1@huawei.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250820080623.3799131-1-yanquanmin1@huawei.com>
 References: <20250820080623.3799131-1-yanquanmin1@huawei.com>
@@ -74,14 +74,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.50.85.135]
 X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
  dggpemf200018.china.huawei.com (7.185.36.31)
-X-Rspamd-Queue-Id: 7853E80008
-X-Stat-Signature: kgjxwdwbjdcarxfkhjkq37uo1wtbd3tg
+X-Stat-Signature: 1eg1rehz9mko4rnamfhe5iu8uma11b4k
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1755678010-526256
-X-HE-Meta: U2FsdGVkX18ARVtMRtqs871MsH64XVaTVdy2WOCJmlORIRzhglOZOVQJFkm44Sd24+QnHS9wobprRwZOMGPOtnDGMeNHeyv+s1s377b2UtitHOz8AnLS3ZAhFPAkat/qW2+1jKRr6xJgd6R6zSw44DkbQhsjpHzauGns+TbzXQNdF4shrkEjlnvhsMVIj7YBjHyoX64tS4e8is8ERR887Hywm7PMaGjoJGiPuRN+Ni9RwhlkR/We9SGlsi34qdrjBL37jZcVLyxtqh+gQ1egy2DZJg0Y03J8n8rJmLzh122st0HPmFub1fF1xpJuo2zr8xLcqRl1fIoEMoZ2bOkfonnAzHoa+W7izLhGyfUta5LTsb9pEsuH//QXWjBG7rI3e61XcKruwIEc5cDsNr8EL9el+242WJY5+apiS+U1RG8AHGF9CwcPkPoQbNWB+9aUrF0xYZKyxz7AIHZSVrcxGBlhR3cjHyVs1VomIvuS6BdpX0xXzATgW3LvOANRE8ws9O3eL4yxaLCK88z+0gY6SjPDDUZlDyuTKceUuseFijKH/bdf3nvHBeQqT7RggaQSigSvQMlxawEbUdJfD8wlVnnLJSSJeRyCLjPHdSdN2SNjzUQReV8sx7u6qLPFfnNom7vrIE4dzgTfnj64lbgGK6rkshIZVd4sUTH6k/XMk0FYydfEEVKi0XnDXxAFjHUQl3tviOBZwnIi8NV8sv6PgQxy+ZxvGyqjmple1MNoNjLQ7yAmZN5UmxYhckVC5utAhQliXtQD4/x/0MfvOePbF4QuT3Q3JjsQyR0gnSuMjHsw50FhL8+isa30OwbxrfIo6jnnCqMUofZLeTaH7D+e82+yRr1yGYY9GLwi1xmMqMalyoOu/dKVo95hANJI/U5Xy90uOagYDW3n9UimAKao+x3HGDlsfMxJACuAa6iAiJCN3dImeQ5DA75R7frZgtHQSTG+88UTcorfbgJMf2D
- /IAPyRqf
- SkDKR
+X-Rspamd-Queue-Id: 04E6AC0007
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755678010-343248
+X-HE-Meta: U2FsdGVkX1/HF2Qh6U2qJZOcB1jD53+bfIGkdl8o6J1n7faXyfIFMV5ypuI1fjFIaGL6Z8uucgN0qwcjoqL2j4z1KVcr6II+a68Eg9Bdv0OoOBS3w0JYp4RRYF9D68dRnflpRUGwHILzul0S9PtalU1vO5TSmEV1EPmSfVG36bpX78ovi0/hV+Vee8YxJjQt3f5u3pWLdQufwXhkIPY+LG394V32D4cOLBtIh8m39V0PEh01uYEcOC17Z4R3J7LMD3S/BHbxjo7yipnHNcL4VpGYmp7vXzihUrt+W+2Dkq1IUbtQTt1jztSlI+vFMzZPMCqVufF9thZWnEkzMoSQKwSITyyopiRHk0QQgyHYV5r/QRHqufJgnwfXfwCRG9WJsZ6ikRH9oB8J2uKkj4aZachvc/ls4T3iJekHV2ErWflO5Za6GyTGRkKm3YcOUHPBop2dAVx7tgAgvGnU+vKj8YXmM/H4loe3KLQO6/ExobZk7Zkf7RGS4KGIzw3I1WErsbsG1HGHFwepkJD5INhY9btZZLTBgFULVs+hfMlGq/eMnfh0kB/8PrepC6ONUT9+wBo1bS5fgrabdekSl5/8P1OYFgarb549Gr70gUZFazG6TQrqQhYk7cv7u/4dBP1+cAwzuc8W6jtPwyB5DJqgIlLwocWoGW+h7OkwfbnS4i29AVY3mMO82oIZlju53dHnfmBkl2I3NA+3O7Id9iLfAXBCq2wXmx8MFF+j1WgSmZmUBN6CQItOPeQmYq4TyQLx+CwxWcYyjjJYvxMmPC7lw7wg1HDoeZjoOQzKQsK2W9E3X9x1DzTy4Aq/KmdINvAK13Fb57eB+urbk1MviotMd4dWzh+PAZquVcuy34alC0F9nNYaxMavytSpFCZ35slgM8nOqpj9CE8R4Yu2CjFHVqDA5aF0gPYZMV+HTznE/ayvcCBvkbbfABUOsUBYGsjNnogUqCB98Wxh1PYn8lM
+ FyaS2UjC
+ X6Awe7DwmPG82ALWcM9CFIJlHSiBWzEHLVXTvWc3CsKRcXykbOD+Ei60tZbl4C5K6IWWtSWgCKRbx1f2FIfNLbbhRjVZstP4dmMyeBakdwA/0xdOYBkL/iyplO7gzhhbEcJYRy7GX2wnCW16A83C8bMnb55wOw1nriqqGRgII4AmBaLluhYSKrui98fvYQQuoxqGkRtZv9w9ZzMywnjsTczhthA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,60 +92,46 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: SeongJae Park <sj@kernel.org>
 
-Add support of addr_unit for DAMOS_STAT action handling from the DAMOS
-operation implementation for the physical address space.
+Add 'addr_unit' parameter description on DAMON design document.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
 ---
- mm/damon/paddr.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ Documentation/mm/damon/design.rst | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-index 0305e59818da..5fad2f9a99a0 100644
---- a/mm/damon/paddr.c
-+++ b/mm/damon/paddr.c
-@@ -277,17 +277,18 @@ static unsigned long damon_pa_migrate(struct damon_region *r,
- 	return applied * PAGE_SIZE / addr_unit;
- }
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index 2f6ba5c7f4c7..d9d5baa1ec87 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -67,7 +67,7 @@ processes, NUMA nodes, files, and backing memory devices would be supportable.
+ Also, if some architectures or devices support special optimized access check
+ features, those will be easily configurable.
  
--static unsigned long damon_pa_stat(struct damon_region *r, struct damos *s,
-+static unsigned long damon_pa_stat(struct damon_region *r,
-+		unsigned long addr_unit, struct damos *s,
- 		unsigned long *sz_filter_passed)
- {
--	unsigned long addr;
-+	phys_addr_t addr;
- 	struct folio *folio;
+-DAMON currently provides below three operation sets.  Below two subsections
++DAMON currently provides below three operation sets.  Below three subsections
+ describe how those work.
  
- 	if (!damos_ops_has_filter(s))
- 		return 0;
+  - vaddr: Monitor virtual address spaces of specific processes
+@@ -135,6 +135,18 @@ the interference is the responsibility of sysadmins.  However, it solves the
+ conflict with the reclaim logic using ``PG_idle`` and ``PG_young`` page flags,
+ as Idle page tracking does.
  
--	addr = r->ar.start;
--	while (addr < r->ar.end) {
-+	addr = damon_pa_phys_addr(r->ar.start, addr_unit);
-+	while (addr < damon_pa_phys_addr(r->ar.end, addr_unit)) {
- 		folio = damon_get_folio(PHYS_PFN(addr));
- 		if (damon_pa_invalid_damos_folio(folio, s)) {
- 			addr += PAGE_SIZE;
-@@ -295,7 +296,7 @@ static unsigned long damon_pa_stat(struct damon_region *r, struct damos *s,
- 		}
++Address Unit
++------------
++
++DAMON core layer uses ``unsinged long`` type for monitoring target address
++ranges.  In some cases, the address space for a given operations set could be
++too large to be handled with the type.  ARM (32-bit) with large physical
++address extension is an example.  For such cases, a per-operations set
++parameter called ``address unit`` is provided.  It represents the scale factor
++that need to be multiplied to the core layer's address for calculating real
++address on the given address space.  Support of ``address unit`` parameter is
++up to each operations set implementation.  ``paddr`` is the only operations set
++implementation that supports the parameter.
  
- 		if (!damos_pa_filter_out(s, folio))
--			*sz_filter_passed += folio_size(folio);
-+			*sz_filter_passed += folio_size(folio) / addr_unit;
- 		addr += folio_size(folio);
- 		folio_put(folio);
- 	}
-@@ -322,7 +323,7 @@ static unsigned long damon_pa_apply_scheme(struct damon_ctx *ctx,
- 	case DAMOS_MIGRATE_COLD:
- 		return damon_pa_migrate(r, aunit, scheme, sz_filter_passed);
- 	case DAMOS_STAT:
--		return damon_pa_stat(r, scheme, sz_filter_passed);
-+		return damon_pa_stat(r, aunit, scheme, sz_filter_passed);
- 	default:
- 		/* DAMOS actions that not yet supported by 'paddr'. */
- 		break;
+ .. _damon_core_logic:
+ 
 -- 
 2.43.0
 
