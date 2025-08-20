@@ -2,91 +2,88 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 21B89CA0EF8
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 08:58:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A5FFCA0EDC
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 09:07:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6E2E8E003C; Wed, 20 Aug 2025 04:58:03 -0400 (EDT)
+	id B83738E0037; Wed, 20 Aug 2025 05:07:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B460F8E0037; Wed, 20 Aug 2025 04:58:03 -0400 (EDT)
+	id B5BA18E0009; Wed, 20 Aug 2025 05:07:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A82E28E003C; Wed, 20 Aug 2025 04:58:03 -0400 (EDT)
+	id A98298E0037; Wed, 20 Aug 2025 05:07:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 94AD58E0037
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 04:58:03 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 36D9B83120
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 08:58:03 +0000 (UTC)
-X-FDA: 83796533646.18.0798EDC
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 34F61120008
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 08:58:00 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qUMW6Hbj;
-	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 92A978E0009
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 05:07:41 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4402B1403F7
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 09:07:41 +0000 (UTC)
+X-FDA: 83796557922.27.DF8D6FB
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 58D5D40003
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 09:07:37 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ty5nONvq;
+	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755680859; a=rsa-sha256;
+	cv=none;
+	b=hYkIc9CZ99dZ5AchomFUSFs5+66QeuAs2OJuBR8wfa6/S2TlCeHj5XIvzGHfW226Zyf6Uj
+	Um84tzydx+6ymOlyO4Qlw6jVm5vr5bXayIzNqFNwfZYjJrm4sfKMo2ZSLJJCND5QttdG9g
+	HWZELha1nKVfApF3JOy3sKN/5qpbXUk=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ty5nONvq;
+	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755680281;
+	s=arc-20220608; t=1755680859;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IEEqRTpCY494Z2w/6UzF2GroDTGA/QgdLl+vHg5gpWM=;
-	b=ubA2vy1IXFajVtrfuJw8rQQfWEycq1S8cxwmvtkqhCdnlXjMeMDy2vEWn5BtXt0m0fuVMm
-	R+hAiAcvE8FF/vMMY2oM3ROSSLwj5deajP6kHTrM7ckET1mO/eCwZSZknktjsY2VecdMDj
-	4uFqC0yhe0OlYXH/DJVdTiVbNYFytG0=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qUMW6Hbj;
-	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755680281; a=rsa-sha256;
-	cv=none;
-	b=W9SWLzi7F+AKTL4vb/ucA+9tWJlZFjwdUtqbrIbWPzAF9Z81jUobdAF6CfLErB8+lVoq0s
-	qutY2xkHSlFZRR8sywQe5nGk2Gzp/KPtSh5CSQ+nQCmB2qZGjswJN3FFS7ewKG+HqH34bf
-	Bmh01a/mv32bEuwPTzhfV2RuyAvywh8=
-Message-ID: <7a34da58-874d-4271-9dbb-7991468d58ff@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755680278;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IEEqRTpCY494Z2w/6UzF2GroDTGA/QgdLl+vHg5gpWM=;
-	b=qUMW6Hbj6XpyGTTHVacRcB0VNDElfP38acQxvpCBCvZDxpr6JIaa3vx9DWfjqG/5FKivrI
-	RqR+lXLDft931IhrqBn0p+7Efk3WT0rnTMqj5MN7gHgyl9Dj+Zr/LghS3hdDZjK5bD9hLn
-	eJCXsIae2gMiusK3+gUaUwmHUD5vdag=
-Date: Wed, 20 Aug 2025 16:57:48 +0800
+	bh=yzdqgUo48S+1eTljuJiSw1fVT7iNeD7IfBQzpt10nJg=;
+	b=TrY8S/fAekTsUvNaBHZ8EwnrmleQmXP9E3k6yqAC0mvjmIZaZhtFR0lcGLCRGPYIamekJf
+	IRGxT+I99nQg9oJa8QxHvziN2sadqLV5Kknk+KzGPTqX+1ZELuEAkQUjvZxRgI+hxPgY4+
+	FFEkAyPAdyiluE6GiTUgVoM0u5NEa74=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1755680855; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=yzdqgUo48S+1eTljuJiSw1fVT7iNeD7IfBQzpt10nJg=;
+	b=ty5nONvq900RRY9wraDoVI23Z3TgP4+UhHdnvMIIRkr29CTcoJv6OCxDApUbWqunmZmD995FjTy1IynjJiuxdVA0IXS2Mt/bYEte1igbwkyFSNVz/tJx+WWfpqZVYzkWXJawq9n/Ryjw0P+hVHPT2m3t9YBNDadpXR06XEp/Drs=
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WmBYTxE_1755680853 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 20 Aug 2025 17:07:34 +0800
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+To: akpm@linux-foundation.org,
+	hughd@google.com,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com
+Cc: ziy@nvidia.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 01/11] mm: khugepaged: add khugepaged_max_ptes_none check in collapse_file()
+Date: Wed, 20 Aug 2025 17:07:12 +0800
+Message-ID: <aa2db6af6bb2124ef59ad5665951e47806c00a6e.1755677674.git.baolin.wang@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <cover.1755677674.git.baolin.wang@linux.alibaba.com>
+References: <cover.1755677674.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH] panic: Clean up message about deprecated 'panic_print'
- parameter
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>, Petr Mladek <pmladek@suse.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
- Linux Memory Management List <linux-mm@kvack.org>,
- Steven Rostedt <rostedt@goodmis.org>, Jonathan Corbet <corbet@lwn.net>,
- linux-kernel@vger.kernel.org, paulmck@kernel.org, john.ogness@linutronix.de,
- kernel test robot <lkp@intel.com>, Feng Tang <feng.tang@linux.alibaba.com>
-References: <aKRJKZHgcxyNF3y7@pathway.suse.cz>
- <202508200907.PsZ3geub-lkp@intel.com>
- <ae9bb2ea-c6e5-4a4b-ae25-aea1d6fe084d@linux.dev>
- <33a897b4-7d9a-4641-9c7a-07c19bb9cb6f@linux.dev>
-In-Reply-To: <33a897b4-7d9a-4641-9c7a-07c19bb9cb6f@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: dzc6bconm5fj7rt4udhqun9hfsg3hx33
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 58D5D40003
+X-Stat-Signature: h7a1jmq981zgnnzatwcz38f766ii3nom
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 34F61120008
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755680280-570778
-X-HE-Meta: U2FsdGVkX1+l1lXnT0rx5yJNIsguFVLk/tH9m69oL3Xdvf/0bbVI7HUDEEK9ddfBrzzrFwISbzo1jCULFaGnhaKYfAFtOJQdDoN0zAqDxs09wDBskVZc+XI9pCtzA7AsZp8+Mf3JAwIq86GV4/qFHkXUJ+W8WMAdbTrQm5sLrynaX/mpgfBqzTFdw5MG3VfdJVVYkL56uKUScuCiOR35BYm9McLtLeAKuAjYdjDX5hGXuZnANDCVzlP4yxh7j40/E+BiKMubF73JJYdMeGLYFZsjlyIiNyCuS3qu8FA2xgbZDrsdhek11igsu6ZCf/rBOwMxykx7k7B1IP4d/3BA/42oJf0VoZWc5ypb67hFDGx9D7pYmxo4fD8Fi/0aUNWiSI8dWW0IFeCBb2rq9rnyo3TiP712ZQdC/LPcfEPCvViKo2YosITOPVAu5z5EAvVuTnDcLR6X2SMEGvQuDKHBqr5BS1ELasbw/KNFC42s+x5vAkkm8eYLUPKdfn8crLz/pWEHGA0mzl3SNg0gp6KRLnWKJbfjHsDjtjNMk5xrOQjEFMV6G26nO+31BevCBnM0ky9P3c7OobOOv/k+w2sL+yt/vBFpLbqqA8aHKnWl9g0DOrg6UiJfjbH6gbmeoD7TfKY7Oyc7+SVjSHIqAw81DJMZcpkIiK3yJDcb1jYfeEQb84+KoQyGxzk/T5KLEUYgYon5JOUh9p1NnpcbmyT525ULBdKIOctYb+JOtDhKJKKtAYAZoUa2SYqJuXuVgVROZPEq63JH8TvADR1xZxCWKrNHb4O1TkbdEF/lJXicDaoX0Hbehj4Few4j9V0v0W9qufxS5vn/kPTEDjv/M+g1xMZ6RiY+bjMfwarE5iLAF701vZqHiuUI6Ry09thHsIxp/zHhhOsuahQS9qlHgfGIiQ1cLeUA+gsDp3saMqrspMBt2d1mHv/ZQGt83fy0RvsySwi1SKINP9F4vm/Pf4o
- VzBXG5D/
- sINNjCxBXQ8WQ2IKJ4Cf9TuiCRXo4fbY7qAzr+bMRcVh2YBV5Xlo3Z70myRe+Bt7wyrvu3naQVF4wP2dNeVeLQosC/Dq66AzXKx9QLD0/lp0QMPFRabD9Z/jEAzJarkCXvZPR5YkYguuENTx1lZF4muNes/GxYm9jO3WAuwAmmVZrREwkE69x4TUJsCGx7KzJT7wUkyZz721fzrmu4MQWGerOROBMj5En9951w2Hz/ie20qXOvxFOvKpNqcNz5yc+AYjs2mP6qPd+b8QLt2bA7C3oD5Cm5XSst4a+LPN6s6ZgylR5sL4KO3NMCikbA6PM1KwPptskLyOUgUV4xu5nHAePOFBWuHjv9uxmSogm9k9i2eUz8d04smUblPFt2EKeqJr+ddjpVP/ExRG7bCKmxhBU6o0++njL/y9KuR1P9eFDfLlgXRaXlIIHPeP7FKZeDwXtEje7gnyvbFRVxOc0cEa4aXroJ3p/+JN5wyst7fPPHpk5Jy6En9ijW/4J6+t0GxnHbcZJjhxYOK47WEw+oNTjBA==
+X-HE-Tag: 1755680857-579820
+X-HE-Meta: U2FsdGVkX18WN/PT/LdJL27hXuYhE+IU39HGcF/mIjgCwcLI/oSyeZSb7+uMJMrtN4rHlDUvmzcTwiruf3pcbbXD05j5F1toUsN2C4OdxTdPmixl5XTiih8J3+8OtG70XHKJOKZAXucnz3rlwL8BDzOszTqu1hZ/DpDwn8bEYegabpb5WuvI2NjAR5l29Qr3pUCS7zKzDUdL/dY4eAQHp0ZTre/VE6tIkN2sXh4ugA0h8+IC2PtW/93aZ9AH5I3Wn6PBANBnYHnJcij7LoCM7LD2uyb6ebpUw2GeRHBFi3xvXik80SEY/2CSYcFoSjZ5L57BVvqe8sxGhIiunOPEWCfCIcIadSQEK95X6xe5phKgaQzi+ICKpE/Tuy2ZPOnmkOKZovIfiHD5/IfgeGiOD87vPaRWDXUucfDHZDb4vZEpqgWOVGx34HXuRF35sVmEBjMeKhNr8sU7t8C3jl4f5EA0AdJF182rEBF2XItq9avzDA+kHhF9lmAW+MYla55BtD0M+0LWAjHaBFpLdEixcKjvH8Y9fAe6mj6lZZRmb+G7c4VYV/BXudcUihXxadkR3wTp4njazrqJDovQ1pKYZX5n89SDDLHgS+bwDM3Vu5KHgbzZVw1inJ/d+SHOtzZ7LEv8d9PHzwciOpilCMt6r+5KPNCa7UcqTC/t1H/cI+ewC3pf1EnMemFj9A8k2KL/sLX6kKweQfVduLiEsNCh4k/YSwn+cMHxZQoalShgDy1NyvB37c5VJQN29xdFuxlAVp5KJFq4nw5liLtpcC01ZvjOFSQlNwFLG0SjkHrIBjU/Mof5lGVwBB8wSoZVJYTD6RcAG3lO1FuqaVBJKkHTHvirjkCluZLanySsnrK8jUwkw67jzuKI8dA4Mufjzew7Cyzo916CR9ZO+vOhdFg6AXwVcEQu3RT9CiVo8QQkI8YTDuION0PVbffWCLjFAxapSqpjTMtmLGz1vsjCZqK
+ yuw+6YeS
+ IzWH53rKXICKyjMHIOK0dQAbrWEPjvHlx6tLU2TXEMEyWpjSoS9hS2B3hlMkkIRdyRWSOm5H1nhMbkItB0z8vnY9JsVVw0voMAnfzuujI19vaFrMR1aok+ZHT0YPCQEWOgcBtvi5ZaC+iqsfSpPKXNhqi3QOtYKGpcJIFCqI56Wr86LjmipNIdOe+bVFgbubWcs2Wut9cRH4nVIfNR01MvKJJjzS11THoBVG4Cck8jw0SLaVgVrSjbW0OHXxiNZsOwGHeBoUPIt7zJAugR+QYJ15g9Rtt5ulKmL0QDtv+ielF5g0iyVlVvlbnFIj1Q7v/9lN8XShHWKKbdSE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,125 +92,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Similar to the anonymous folios collapse, we should also check the 'khugepaged_max_ptes_none'
+when trying to collapse shmem/file folios.
 
-
-On 2025/8/20 09:56, Lance Yang wrote:
-> 
-> 
-> On 2025/8/20 09:54, Lance Yang wrote:
->>
->>
->> On 2025/8/20 09:31, kernel test robot wrote:
->>> Hi Petr,
->>>
->>> kernel test robot noticed the following build errors:
->>>
->>>
->>>
->>> url:    https://github.com/intel-lab-lkp/linux/commits/ 
->>> UPDATE-20250819-180717/Feng-Tang/lib-sys_info-handle-sys_info_mask-0- 
->>> case/20250815-152131
->>> base:   the 3th patch of https://lore.kernel.org/ 
->>> r/20250815071428.98041-4-feng.tang%40linux.alibaba.com
->>> patch link:    https://lore.kernel.org/r/ 
->>> aKRJKZHgcxyNF3y7%40pathway.suse.cz
->>> patch subject: [PATCH] panic: Clean up message about deprecated 
->>> 'panic_print' parameter
->>> config: i386-buildonly-randconfig-004-20250820 (https:// 
->>> download.01.org/0day-ci/archive/20250820/202508200907.PsZ3geub- 
->>> lkp@intel.com/config)
->>> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 
->>> 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
->>> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/ 
->>> archive/20250820/202508200907.PsZ3geub-lkp@intel.com/reproduce)
->>>
->>> If you fix the issue in a separate patch/commit (i.e. not just a new 
->>> version of
->>> the same patch/commit), kindly add following tags
->>> | Reported-by: kernel test robot <lkp@intel.com>
->>> | Closes: https://lore.kernel.org/oe-kbuild- 
->>> all/202508200907.PsZ3geub- lkp@intel.com/
->>>
->>> All errors (new ones prefixed by >>):
->>>
->>>>> kernel/panic.c:952:2: error: call to undeclared function 
->>>>> 'panic_print_deprecated'; ISO C99 and later do not support implicit 
->>>>> function declarations [-Wimplicit-function-declaration]
->>>       952 |         panic_print_deprecated();
->>>           |         ^
->>>     kernel/panic.c:958:2: error: call to undeclared function 
->>> 'panic_print_deprecated'; ISO C99 and later do not support implicit 
->>> function declarations [-Wimplicit-function-declaration]
->>>       958 |         panic_print_deprecated();
->>>           |         ^
->>>     2 errors generated.
->>
->>
->> Oops, panic_print_deprecated() is defined within the #ifdef
->> CONFIG_PROC_SYSCTL block, but it's also called from panic_print_set()
-> 
-> Correction:
-> 
-> CONFIG_SYSCTL block - sorry ;(
-> 
->> and panic_print_get(), which are outside of that block.
->>
->> So, we need to move the definition out of the block to a common
->> scope where all its callers can see it. @Petr wdyt?
->>
-
-If Petr is cool, @Andrew could you squash the following?
-
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 ---
-Subject: [PATCH 1/1] fixup: panic: clean up message about deprecated
-  'panic_print' parameter
+ mm/khugepaged.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-From: Lance Yang <lance.yang@linux.dev>
-
-Moving the definition out of the CONFIG_SYSCTL block to a common scope
-where all its callers can see it.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: 
-https://lore.kernel.org/oe-kbuild-all/202508200907.PsZ3geub-lkp@intel.com/
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
----
-  kernel/panic.c | 10 +++++-----
-  1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/kernel/panic.c b/kernel/panic.c
-index d3907fd95d72..24bca263f896 100644
---- a/kernel/panic.c
-+++ b/kernel/panic.c
-@@ -77,6 +77,11 @@ ATOMIC_NOTIFIER_HEAD(panic_notifier_list);
-
-  EXPORT_SYMBOL(panic_notifier_list);
-
-+static void panic_print_deprecated(void)
-+{
-+	pr_info_once("Kernel: The 'panic_print' parameter is now deprecated. 
-Please use 'panic_sys_info' and 'panic_console_replay' instead.\n");
-+}
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 5a3386043f39..5d4493b77f3c 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -2125,6 +2125,13 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
+ 					}
+ 				}
+ 				nr_none++;
 +
-  #ifdef CONFIG_SYSCTL
-
-  /*
-@@ -122,11 +127,6 @@ static int proc_taint(const struct ctl_table 
-*table, int write,
-  	return err;
-  }
-
--static void panic_print_deprecated(void)
--{
--	pr_info_once("Kernel: The 'panic_print' parameter is now deprecated. 
-Please use 'panic_sys_info' and 'panic_console_replay' instead.\n");
--}
--
-  static int sysctl_panic_print_handler(const struct ctl_table *table, 
-int write,
-  			   void *buffer, size_t *lenp, loff_t *ppos)
-  {
---
-2.49.0
++				if (cc->is_khugepaged && nr_none > khugepaged_max_ptes_none) {
++					result = SCAN_EXCEED_NONE_PTE;
++					count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
++					goto xa_locked;
++				}
++
+ 				index++;
+ 				continue;
+ 			}
+-- 
+2.43.5
 
 
