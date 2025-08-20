@@ -2,95 +2,252 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E7F22CA0EE4
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 16:01:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0244CCA0EDC
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 16:18:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 715FC6B00DD; Wed, 20 Aug 2025 12:01:36 -0400 (EDT)
+	id 789AD6B011E; Wed, 20 Aug 2025 12:18:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6EDBC6B00DE; Wed, 20 Aug 2025 12:01:36 -0400 (EDT)
+	id 7618C6B011F; Wed, 20 Aug 2025 12:18:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62A326B00E0; Wed, 20 Aug 2025 12:01:36 -0400 (EDT)
+	id 62E906B0120; Wed, 20 Aug 2025 12:18:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 518F76B00DD
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 12:01:36 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 07CC51DDA7F
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 16:01:36 +0000 (UTC)
-X-FDA: 83797600992.19.A035C98
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 0E760C0011
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 16:01:33 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf10.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755705694;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C20E6B011E
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 12:18:35 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 96307160589
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 16:18:34 +0000 (UTC)
+X-FDA: 83797643748.06.ECC4B10
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	by imf28.hostedemail.com (Postfix) with ESMTP id B4BFEC0008
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 16:18:29 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=WQeSk7RO;
+	spf=pass (imf28.hostedemail.com: domain of rick.p.edgecombe@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=rick.p.edgecombe@intel.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755706711;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H/FJ9n7A8QZNerxuSCWLoELDNn+Q9C4H3j3KkmEflbc=;
-	b=xgi8qRdKnXQKs2yig9zNrgl1Bgqxy52N7IjQVVshB5MHZqoqV0PujGEUcvzlI4pUMjBazh
-	vBUmBTuyV1wVj4s9sgueCI+8sg92oqGHq2n4auo6jzSl5wsoXtAII/dTCfu0aGneqjxbT5
-	HFoTJywDzUXsE8iy8/n9vPqRGlkJRSw=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf10.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755705694; a=rsa-sha256;
-	cv=none;
-	b=si8DDrfD1ybhZGqJyt/0KaXDybXmt13psiGIIioXVsakb/U27DG+/nHiMK+N+2FQsyxTtq
-	N0IMdo6E1NmVfxSrTNtflpduPe3HZ7pu8lz3z8kHKAtxR8FxbY6J9i1loPtm6iN/xiyMYS
-	SiMTOtIE8pi1tZhYLpo3PSyOSvP9hZ0=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C10B51424;
-	Wed, 20 Aug 2025 09:01:24 -0700 (PDT)
-Received: from [10.57.90.209] (unknown [10.57.90.209])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AE9AB3F63F;
-	Wed, 20 Aug 2025 09:01:26 -0700 (PDT)
-Message-ID: <5b5455eb-e649-4b20-8aad-6d7f5576a84a@arm.com>
-Date: Wed, 20 Aug 2025 18:01:24 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=54MiAa2Ugm8Fk0oHwAkyS2LeoIivs3eQmFcKyrSUKEE=;
+	b=HCS0Httldau5g4QGfHTvOb3QDUgxCCbbvpA7Klt0/6sarNwUD+2ev0VZd0a5vZ2KPyyCrC
+	DXPT3KLt9MLL+ptts3+M0l/jpQuRPaG7fbphjxNfXSZgo1hA2YxKP2n+SfpyWvbFSb64AN
+	dNk/CUXynb0N+uLH5fsqHJcxbZpSOt8=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755706711; a=rsa-sha256;
+	cv=pass;
+	b=dxRh7TCRc4d5vdo9P8z4PvGQZodChDIAo/S/boTFFPr81fsF5cVBgj73HY/gz38wJZZ7gm
+	Z9nDmu/VhmNSJnT7NaVGdKUv91UfzfEF5XOYhf8WegOBUjoLKGLnR8gB2X/kpAlDfoeurf
+	2Ae9sTmV+1GQ1GYMw/INlXy5ie/0tCo=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=WQeSk7RO;
+	spf=pass (imf28.hostedemail.com: domain of rick.p.edgecombe@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=rick.p.edgecombe@intel.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755706710; x=1787242710;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=54MiAa2Ugm8Fk0oHwAkyS2LeoIivs3eQmFcKyrSUKEE=;
+  b=WQeSk7RODJ5bNVcebxSy2RPHUDZyrokUAtVMJ6D1OAn755ZOVaM2zsXZ
+   aT3KLu2BRQQOec1ww6g8zpt0TdBFC7KKe0gktfq0+cTRRjNpCohDbZCu7
+   SRLTiFeIPUu5mLliXjKpXhdHUBf76yz7IXPKkfqvhEUpq0cekr1TUffW8
+   81Ta8YM+h7tkpS+fZNdFaLCIPh6ADsLIVvlGkpC0XM+Zt8Qc9SKpJn9e7
+   r0gbnjoOZWU0/A10BSYLRKwIjZyDIhubMzzowp6oS+gD02eaFM3wzY6+l
+   Xe8Cra/5mCWE49eYmhOwZF8hDdtF4MxIVZPsHuRt5Usv1ZsFJgsNM9efr
+   g==;
+X-CSE-ConnectionGUID: w1CbubQ7SySyhjqzA6KU+w==
+X-CSE-MsgGUID: u49sgg5RSXawR6rujMmG+g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="57895563"
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
+   d="scan'208";a="57895563"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2025 09:18:27 -0700
+X-CSE-ConnectionGUID: ZUFmn6vWThSZQ493+QlMhA==
+X-CSE-MsgGUID: BMINejUuQJ6KRK7SrjQq4g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
+   d="scan'208";a="173422303"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2025 09:18:27 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Wed, 20 Aug 2025 09:18:26 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17 via Frontend Transport; Wed, 20 Aug 2025 09:18:26 -0700
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (40.107.102.61)
+ by edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Wed, 20 Aug 2025 09:18:26 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=G6befs9zPetmsw8vQ/wq0Y9LO97hU4VaJU8/Kfb49r/JyOqi3J/sdKl7CI+LQj8QsMXFDn92btFkA8EkcxhntABlVwjF0G7dsPHyplfniJpgqBQDhdIYHYlyj1/Sds54uTvyriNE04E6YeQbKYwhyl+1PqHbdftDXqJoR5RRTDQHecJLxpHMC0M8XumnlzPGxxzZctFHhWHBDMygzFYVPvLsbEXx9DuyptS80V5lXQdaiCYjfTxnmZwAlq1jhOXkF9gtu7RsH+oZ1hA3+P2JrPPw9roes6I4KVK0MnobzcHNjNV123DR+AUNKWoW54vJUNgvgGJ45sC5pvtwmLjdmA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=54MiAa2Ugm8Fk0oHwAkyS2LeoIivs3eQmFcKyrSUKEE=;
+ b=ZjmtqEHKvp3gA9Kef61bLkw9S/nWgRKJkWp2bxRuyF9/qbn7gtJ90jXKW/61BtALrEZMcZH78ivtub1bsajGI91xe579Pn9iYmk+dHYgc4pHF3UlRw9o/Giv9Ef/xG4zss/yK5ucz99rOuPoxraEITJwaHovyfDdaHrtojOaMfFv8tI1M3/qGHVHKJ1nClVjWnxAiTHFKtr1yBtNuSHaIiDwTAQ+MSJXePVxC4aWSJLOpG0RjCxxc53Jqp1OVDKiPcxUeNd+rZAEgavXqdQk6tSxlsvtiVeCjzNe9DGp5vdmtYUOfgRkQkekgAe7Gxttrt2Bed/NviuHQdFF4aKR0A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MN0PR11MB5963.namprd11.prod.outlook.com (2603:10b6:208:372::10)
+ by MW4PR11MB6910.namprd11.prod.outlook.com (2603:10b6:303:225::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.24; Wed, 20 Aug
+ 2025 16:18:19 +0000
+Received: from MN0PR11MB5963.namprd11.prod.outlook.com
+ ([fe80::edb2:a242:e0b8:5ac9]) by MN0PR11MB5963.namprd11.prod.outlook.com
+ ([fe80::edb2:a242:e0b8:5ac9%5]) with mapi id 15.20.9031.023; Wed, 20 Aug 2025
+ 16:18:19 +0000
+From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To: "kevin.brodsky@arm.com" <kevin.brodsky@arm.com>,
+	"linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>
+CC: "maz@kernel.org" <maz@kernel.org>, "luto@kernel.org" <luto@kernel.org>,
+	"willy@infradead.org" <willy@infradead.org>, "mbland@motorola.com"
+	<mbland@motorola.com>, "david@redhat.com" <david@redhat.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"rppt@kernel.org" <rppt@kernel.org>, "joey.gouly@arm.com"
+	<joey.gouly@arm.com>, "akpm@linux-foundation.org"
+	<akpm@linux-foundation.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "catalin.marinas@arm.com"
+	<catalin.marinas@arm.com>, "Weiny, Ira" <ira.weiny@intel.com>,
+	"vbabka@suse.cz" <vbabka@suse.cz>, "pierre.langlois@arm.com"
+	<pierre.langlois@arm.com>, "jeffxu@chromium.org" <jeffxu@chromium.org>,
+	"linus.walleij@linaro.org" <linus.walleij@linaro.org>,
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, "kees@kernel.org"
+	<kees@kernel.org>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
+	"tglx@linutronix.de" <tglx@linutronix.de>, "jannh@google.com"
+	<jannh@google.com>, "peterz@infradead.org" <peterz@infradead.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "will@kernel.org" <will@kernel.org>,
+	"qperret@google.com" <qperret@google.com>, "linux-mm@kvack.org"
+	<linux-mm@kvack.org>, "broonie@kernel.org" <broonie@kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>
 Subject: Re: [RFC PATCH v5 00/18] pkeys-based page table hardening
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-To: linux-hardening@vger.kernel.org,
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Andy Lutomirski <luto@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@redhat.com>, Ira Weiny <ira.weiny@intel.com>,
- Jann Horn <jannh@google.com>, Jeff Xu <jeffxu@chromium.org>,
- Joey Gouly <joey.gouly@arm.com>, Kees Cook <kees@kernel.org>,
- Linus Walleij <linus.walleij@linaro.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Marc Zyngier <maz@kernel.org>,
- Mark Brown <broonie@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Maxwell Bland <mbland@motorola.com>, "Mike Rapoport (IBM)"
- <rppt@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Pierre Langlois <pierre.langlois@arm.com>,
- Quentin Perret <qperret@google.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org, x86@kernel.org
+Thread-Topic: [RFC PATCH v5 00/18] pkeys-based page table hardening
+Thread-Index: AQHcDcJlv4XRCffEXEeGrdGfSH4E3LRrub6AgAACGACAAAS4AA==
+Date: Wed, 20 Aug 2025 16:18:19 +0000
+Message-ID: <3c18d1f1e94d3491410168e37cdf67e9e471649e.camel@intel.com>
 References: <20250815085512.2182322-1-kevin.brodsky@arm.com>
- <4a828975-d412-4a4b-975e-4702572315da@arm.com>
-Content-Language: en-GB
-In-Reply-To: <4a828975-d412-4a4b-975e-4702572315da@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0E760C0011
-X-Stat-Signature: s3nmyqeuk9wya96rqpaadferfebq7oxw
+	 <4a828975-d412-4a4b-975e-4702572315da@arm.com>
+	 <5b5455eb-e649-4b20-8aad-6d7f5576a84a@arm.com>
+In-Reply-To: <5b5455eb-e649-4b20-8aad-6d7f5576a84a@arm.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.44.4-0ubuntu2 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN0PR11MB5963:EE_|MW4PR11MB6910:EE_
+x-ms-office365-filtering-correlation-id: 04045c70-4497-4967-f209-08dde0052d46
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016|38070700018;
+x-microsoft-antispam-message-info: =?utf-8?B?STVQZWFqd0RxeXRzM0s4SEx1RDYwcTF5NWVrZm85MlhmQ0J2RHAvdVJIa0dt?=
+ =?utf-8?B?NE9SSS9CY2lDWVpaT25wd00vZmJ3OTkzaUFXWFd1RjJ2RW5taXk1VHhLeW1G?=
+ =?utf-8?B?US90bXZiZVEwZmI2bzZkNDdWbUtjSDRsSmlIbVJlNEdiTXloSTF4K2ZuZlJY?=
+ =?utf-8?B?STJXYjh3dGdQYi9BVHZlUmlINldudkJReENrazQwaU00YkFXU1RJekQxRjZn?=
+ =?utf-8?B?SVlMN1M0N0diejN5MUd0eWhmV1d1ZzVpdFdIRWYwdFNyZWdWbSsxOUZ3T1U2?=
+ =?utf-8?B?cnBma0k3cFlwUkFwZmxHYWo0MHRzOThsWXNjSmI3Q0gxVVZ0blhkYWpmZGU2?=
+ =?utf-8?B?Uk8zcEh2QnRIaUpldXlqSHoyVWp5MkhQd2NMRWQzd2k1M1V0dGNxaG05WlNs?=
+ =?utf-8?B?cTVJb0xqYVV4UXluS3RpV2x1MzdIbkM4Qk1QRlFGRjZaeHc0SXFJck5KRjla?=
+ =?utf-8?B?WG1UQlUwbXlNbGJWS0xlWjk0T3VOSmRnYmhZMTdhVUNZNWFoVkE1dUdnVktJ?=
+ =?utf-8?B?UTA2YldYbEpkMlRyVDVGbUVFVzFsOVkwTnRBbWJ4c0RiVlhSekY1WmhKOS9y?=
+ =?utf-8?B?S0hnU2JhcE5pZk1yZUZrSGJNREltOWp2Rlk2WFhiQ1NYQlFYTVJVT1o4UTUz?=
+ =?utf-8?B?ZElJMWg5bWk4R21EZXRPTFJZdE1TUUZmYjBwcU5ycmUzdkhtVmFvSUo4KzFv?=
+ =?utf-8?B?WGJ3M3dYdHFLSG0vMjRXem9vT2xWMDRLOE1lTXJpdTNmZ0pBZVVNRU5QWWkx?=
+ =?utf-8?B?OVlUTjhXc3ZrZlRhRWN4OFlGZGhVQ25LSHFhd0ZWZkY0Z2hpSHJTdlZNaEF2?=
+ =?utf-8?B?KzR4WS9iWjFDVnMyWWE4MWordlh2WC9PYk55MTh0YVkraithd1k1NndzbEZR?=
+ =?utf-8?B?dlFRU0ZRT1VGazFSSDJUMGlRbGZEbWplWUFYMlJuVjh3WXc2YjdCb2JyUEsw?=
+ =?utf-8?B?akFtTVpnMWVtVUFRWW1pWHJOYnN0NE4yQ3piT0pKZnIrQ25zeG80aUg3YzlJ?=
+ =?utf-8?B?SWtMdER5bnNoOHpYa2xWamtkNjdlaXdwM3h1bEoxeHdGRVBjMklZazhxTVE0?=
+ =?utf-8?B?UnJmRE9veDFWYnVQaVhkV09rcTdOTkp2MGhhajhheUh0QWtUZVhQVXZ3TUVv?=
+ =?utf-8?B?dkpXWTBza3dpaThsejRha0UvcmlVVGdUN1R5Rnc0OXhYK0NNc29WdndsVjI5?=
+ =?utf-8?B?bXlnS2hoRTM0NkdRUnlZa2lSSmYrMHFVYmZ3OW9wci9LTm53WG1hOEhFYXdY?=
+ =?utf-8?B?OUxqZkJHZUlkMnhVYmNtWlFSZkpYQ2ppWEtiZ29mQnZ5a2lCR0RhQ1EraHFv?=
+ =?utf-8?B?WHJSNGZUQ1ZmNEpZK1ZWajhrZmRid2pDVHdjQ0ZVb0kyb0E4dDhORERVb1Y2?=
+ =?utf-8?B?aDNxb2wvR3hGbHF2TGJ3ZHBDdVBpMUNOMmwyS2x1aWdNbk12ajJ1WVVwYy96?=
+ =?utf-8?B?K1NTcW8yMGQvMHBxcmNQTnNRT2Z4SUlOK3ZhM3ZVQXNFRnJZNGNNOWxscWtS?=
+ =?utf-8?B?ZkppTnpzWGU2bi9IVkNQRlFMNUNOaWhsZGdMQzFaREZIN0ZMeHIzS2tLY3Z3?=
+ =?utf-8?B?QStBTFNXUndaV0Z6MTRpKzNlTHhIT0EvTmN3SjM4SWVuNldoRW15aTFMbFRG?=
+ =?utf-8?B?VlJudWNsd1ZNa0dpUmpCMU4rbDkzc3plM0ZmcDNxaWNtQS9GcU5xVEZVdEN1?=
+ =?utf-8?B?cGtjM0ZQZkJDWlNPSWY2R1VRZGdYYUh5UGliNStKTCtKRTl6YlF3MmZFZU9q?=
+ =?utf-8?B?eVBEbVV2ZXZqRW4yMWVORU9hQVNXcHF2ZkxEU0hSOXJrY1Z0Z29Tb05DYWlS?=
+ =?utf-8?B?UUdrVGlLVnByMVRSSVA0aFBRdUZoS3Qzc2dBR2JpQTUwdDd5cEhZcC9zZ2JK?=
+ =?utf-8?B?WnRqVXBneVhUTG44MTNwZC9RcWUwN0xPNTZzSzBQNnNlbXpIdzN5UDJiZjZL?=
+ =?utf-8?B?MDR5N0dCUlJRbmRncHRQVm1TQ0NXZ0YyaTNtSUFER3JvdnFaZ0ZiRjdhWWFr?=
+ =?utf-8?B?TDNOdDhWa0lRPT0=?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB5963.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dmNTREFvQWtHOFZ5WXNZWTlBMlB4UmJIR2dScEdHRk4yUVZ0cjdGMkFPVk5a?=
+ =?utf-8?B?SExqbkZ0M1ZBdjhJQ01ZdHRReVVKb0tUY0pNeFVUTlIxdDNNdWRFR1Jxc2xx?=
+ =?utf-8?B?aEFmNnpkYVJLR2dHUTZLSG51WVpTWG5oRzdqZ2JLeGxRU2IvcDRuOUJxdVZ4?=
+ =?utf-8?B?dmMwTzc0V1E5NFVwY2twUEg1Q1QxTXRwdGNXdkNlQmhsSWVTUFBacDVieG9v?=
+ =?utf-8?B?MUovL1YwbEtFNGhPeEV4dG5tS1c1UC9sbDd4YjU3UUVHbGYwYWxXN3NZYmpP?=
+ =?utf-8?B?bmp2a1NvVjE4cHFOQzk4WVdpc3U2dWFUaDc1Z1pBTlRicWYxelhIVUh0c2ty?=
+ =?utf-8?B?bXBPeFdCNENqaHU1Q0RseWNoV3Qva1lhNjBQdEtOY25lamZrQytYSVRvMFFx?=
+ =?utf-8?B?YnZWaEg5U2JpQ1FUNUh2TGpFeDRnczlveWN5NU5NR0pPSGxLSm5BYnpjUzB5?=
+ =?utf-8?B?bmJEeG1GaVg1cFU4SVdjeitvYXJVUFloZUZJREJ4emZxaDRER0duUzhCMFVF?=
+ =?utf-8?B?aWpEZ3Z3M2VtNGxVcHVHcFdjSFVvY0lRSmlOd1Rkc3hkekc1MEEzVUd1anJI?=
+ =?utf-8?B?ZmpqV1Y2amUrc1FBRlVWRmJxcmhoQlcxZ2NQSCtjYTIrNDlkTHpWRENCVWdS?=
+ =?utf-8?B?L0ltZ1c2N056NmFEV2RoTzRja1cyQnRoMkIwRkhMc0g4R3FDMGU1UjJNWTJT?=
+ =?utf-8?B?dTNHeEpoOGF3RE5pRHgrNE83dmdzUlpHMlNPV2o1TkhhTW1tQUNoL25IcGhV?=
+ =?utf-8?B?bUpFV0JUdFRIaDdsa2pWOHdRWmZPRHUxQ2xDZ3hNaWRCWmdjdVA0SjQzWldR?=
+ =?utf-8?B?dkdnMlFxb1gvaWRVcDM3VG96YUVCanc0Y2ZZZUFnRjhWc3ZPeUFLTnpuLzdh?=
+ =?utf-8?B?VkcrSFRzbkdPUFpJL3Z3bzFoaUFFQnpuam5QODk3eXlnRHRyQjJPcjdlbm1h?=
+ =?utf-8?B?UWFJRXRyWnA5RUhRazZJWS9Mb3lPN21JRk1pWm1zRmNmbDRGK052T1ppaTI3?=
+ =?utf-8?B?VElRQzdpYnVMMkxFQlZaVmMxdmVXREt5YzhKNkVyczRSTDFhdE1nZGV2U0RB?=
+ =?utf-8?B?Z290d1JjVGh3dllWYzlYQzRYMmlROEIzV2EvT2l0VGl3SXBaaTg0QnNvdVVm?=
+ =?utf-8?B?QndzSERYWFovcTE2WXRtMmY3MGswRm1oSlpqVzBMMW16OWd6NHErUWJqN1VU?=
+ =?utf-8?B?am92NDNRem1QSlFza2E4UGY0aCtVclM1dUYzQ0x1a3NKaHdveHNpZHR3RG1Z?=
+ =?utf-8?B?MVFqUURRK2VBeTFQYVNvdjEvK0FSclcrK3o3RDdDYVBvdC9IYlRIcjVFcnl6?=
+ =?utf-8?B?c0ZmLys1Q0JDVzJ3MkM3SU1oY3VvaTdjRmVsZzRrWmdIOGdQS0ljUTFONE1Q?=
+ =?utf-8?B?ekVmbXJ2TExMSzJ6K1lNaFFKNERCRzM0UExIbUxISWNpMU4zcG90Q1lMdnZk?=
+ =?utf-8?B?aVQrbk1aYzE1V2FlQkFYMkZQbmtRRTdveWY1aGdWNlg0Nkx0RnBkbEk1U05I?=
+ =?utf-8?B?b2RJTzkzMDNzS25VbHZkMlkyWXNpRUVDMFF0VHg3cHc1VWJ2L05zSUlRam12?=
+ =?utf-8?B?SGNVYTVaSlRLZldlV3VjVnYrNERBNVFOZ2V1c3NjY3RIajh3WGFKT2FKN0NK?=
+ =?utf-8?B?SDZjdGNBUTBrODRHVTJFT2krK2Q2Kys5NEsxcU5jK3hsQit3emp0Wk9OWnhU?=
+ =?utf-8?B?UzdwOHlSUTJMRDdKb3ZzSmJQbGREd1lybUpmQjhEMUh5MkRKckdsVTlQck81?=
+ =?utf-8?B?UDVVWWhTaVZ6QnFhbUpaRTcyN3pkNGpXWWIxemVqRFZWQlI0Y25wMVJxRWlP?=
+ =?utf-8?B?NVVSTVNuUGJ3L2dGYWN1TjZwTkVyN3ZPWHUyd0hnN01TSnZqVU5OZE92SWlj?=
+ =?utf-8?B?Z3JQWGdqZi8rZURvb1BMQmhQRXFwOUpqcmFrVWllaStHMytZVEZqMDNZYVNN?=
+ =?utf-8?B?YVdpTjRnNzNubGtNVjkybGNHSnpIalE2RHArSlQyT3ZaOG9LelBZUGNqTjVo?=
+ =?utf-8?B?YnYyaW9rS0hYcmdFeWJLVnRPRXFYTS9WSzdseHFYazZyOHU0aWRjblZjWm9E?=
+ =?utf-8?B?WTBXS043TGJnQmxRWlRQbGVwSlprMXNzZXhJTFFEazdxc1ZoRSthOGtlOEM3?=
+ =?utf-8?B?eXNJK2tBWlFTdFZHRmsrRElZcDlWRUU2ODZQemdHTU5VcXFsT3lLd2NCYlJ5?=
+ =?utf-8?B?Rmc9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <0BB6EE39A51F9640B85DBED65A555BBE@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB5963.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 04045c70-4497-4967-f209-08dde0052d46
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Aug 2025 16:18:19.5537
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: TLaIAy4lpTEEioc+LjMi3xYMqTkSy5pauPIZE6LO6ahWuOJ/TGbe01jUf7LO0+LO46gcGKIDr+52H2op8nweBkI8WTFVvlFPnXDZISpao5A=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB6910
+X-OriginatorOrg: intel.com
 X-Rspam-User: 
-X-HE-Tag: 1755705693-299079
-X-HE-Meta: U2FsdGVkX1/0COk1cofip988OiYURPdiaeZVHJugGFRENDb8d1fPSCwOU5AijSqXzz/kSGX0qxX+EvUZHTiqrRwSffIoK/G80amdkro8ZaTWmXg5JtBUNiWEzezd7ZJbF9faVwW1/OKVufWwVSBvDpuZr4J/o+UrdHG9OpoagbRp2VTuMBFPZN7iDKhMXvdTi+4oQmfUtlMJSc8exgHtVcQua8OVyxvyWHOY4ICh5kM1/63RvtiQBY0n0ZT09BfYgO95vH0NgXZWsMsPmKqsodcCu41gcC0WWsMfqHCEBWaYu0If3cunY4zhfVEohA1miEmzpza4fSz9ZSkSPPvn2GFvkdnukmXGHGomIdKCSS4JlXs+/jFI1gUntdLaod9D3q+gcgZ3VvXnGhPgXpm1URRbLmvysrl5JT0ei9ymNWTO/VmKH4mEJ0IY9evW5unDHo4+C+wbG5EoBdXpyo0R16dHYoEfOLmmWgUl+MisS3E4Q+nH7MbOClWRjsqpSWdIFfPCBrORBjhpGINFnEuSWQOUTkLzi7ZTLKOPwcMtlVi3p+Oa9NxEWSSAe7W+VvrpVRe+F+1TvO5kltjHzeG1vyYkGJG5Z/kQ3xNTru20pc9su9vxXHDiou7Vvoovw6jSzwzHWi/Ngm5N5ipCz8WyQtV9drXPiMMEWW8aEWmncD/9qBvoWfDHeIC6dLUlUmjnxTA5DAdvu05/S9RXaPyU5zrAFHQ3pRVqEE2BJrSrC60mVe2L2XrEe9mjgnNRrCpXWPg7mjB9Od0D+vHlWup2RW1b0hoYZE63+SUfJtZtgza7v89gfPu8Y4V0+qbOJrr06NivnitFGLJ7fJBmYLKCcdy+J0iMglJ3LBSpl0ImdyVdhYW23KpuUi24rt7qHtVzO7x6MR/bENAA4PUsxziCobaka3T1e5dHqpUdVetfQeLuUbS10/k2iAUQm1lRNsMbqjA2kPf6en2qLfMVXv/
- RXUzZQ45
- okm2jwABLFbYv/l7TN9go4rR6XsA05EGLi1q45s9Z12R5U7MdUKMl7XHar5ZeMJdlI77i00uV+PrM+/LrECvj785GIquJxTEWtKCrzMutSMouAhWfoYOTJO0QpdXdS21tZpvG
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B4BFEC0008
+X-Stat-Signature: ydf7ebn5jmzj8qgynkjxa4acrsfzxga3
+X-HE-Tag: 1755706709-404179
+X-HE-Meta: U2FsdGVkX19Qg5FTp7OP08DlSP87HwBPY6TcC9+FC7iN0mIJFNOiuIbmA+ISXhvUmf9CY+2h959njPAAnwN1oJTRRlfBsdJgJ0g3hopQ7piz4Ba9UyGBPfstIdBet3h1vHTAEiUJhyh8VH5nL8wBr1XpPyJh1eb4nw4Epy2BqdUJDyr+BUQ059QSqJG28pIIE3lO6a3HHcv8vRQ97FbLYLgDd+yqg3HdQZApH296AK52BcjHun4FbtH6cCu6u7P4Bol6UUiBSUdtVWGXeTuZdzmtaqHvGXF5QaAjps5QSLOX1vjIfR1Xz+FRy7Gv5rpMwMpUW02feHnlL+Za6HGlQv8uTh/03YnRM5mUdlZyRi0AtSpRQIpBZrV98UdWwR92fLzAWRLZGc2iQRvWez7pihsGAxps60ubHT0PVLWqY8WlJVJbPCgSBLA4EsOzkOmOqEFZyr+8MvTnrjijxmyu3OgiZMZgHm5rHnRr5gh8jhCGmeSGKdHKoj7CFTK9HTSiFbYt0wlwCL6xbXXF2x9okcq/2i5c+udpAZE2XBpGJZLGmMKSJVhPtvNfcYyOHisddl/nfLvZ5IM6pTcWdaCmTaRiyJPRSySFcz2jsispUFQ0pqJ55ncrpJGdCNdzDRJnhzSrNCnS2fQPIIAG/I60EY+qbdTtZj9dgF6fOhXRSawzorXc4zvGtSneZMIjrC7Q+UDBxS4/Y40PiuznxOcsBaG1gL+f1n5ebus/7/KT3v1kXMIMoCHt7Zw2tJ6OpCC/sVZpSxCoaS9jkIYK960zGeSt7cTV9a+xZbpPwZFU237VUIuRCav/4W67hH9ri5kjnq7s3dYctYP0xoT0eP6qzbI/PJTNy86VMFPH1DCfu7LGN9eV7cR6eJC8FIjvDwWq57HaLeYH6HKSqU/LOvCD8OWwQmbBJQlHH5+PIjFI6gE9XODKNg1lWlF74FMYPCFYd7VCppQnlHEomorH8hy
+ nCPiCN02
+ C09zfQAAmpiC1nd27GmH+ZpI87B2SQw6eKBpT3mXsBPJeBpTJKjmV+SrIK0HmBElhZzpd99J6OPsDEIPhbJ/FGRQDnwcMrodEZ6WhYLBBLf341aBqhDph66fr1V75TfAQvvDQxP2auyisIeabmHX/N2xfipKiEzO45w5dHXxD+pyOTiZdF+T4aZDf1p6WvKtGdB1h3qsbak5W2cA4ACNGWGWScmmnDBP79O/J09QAcuVgjRugKHra3HXt8FA7Y/NNm7bgYKdcDQlHapub13+5DgGcsco94474y9gSi9qIX2Nuc8CRwTCWtOtV+zIlXHR6V25QJfwnDqlp3eFvYuhFd6992hDdbZflucdMnFUptKoihFLiQ/34X7y0buj/uI8uYpg2qJCCOauD+QT/RYUUE0kt4Nf6m0K/ZasFzfnJUpVKrTIdMTKDk3SNGbi0D59K9nredP1yE6YgMFlcF0Jr1y8bkBPGw2r8G0yDghNo96wWs1GpGfeiWXLUufSO3eakkrf6SCwWHL0fUeQG2wALZSJ38whoVHULVFjxniTD2jV+AC5e36nWc3snFA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,207 +256,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 20/08/2025 17:53, Kevin Brodsky wrote:
-> On 15/08/2025 10:54, Kevin Brodsky wrote:
->> [...]
->>
->> Performance
->> ===========
->>
->> No arm64 hardware currently implements POE. To estimate the performance
->> impact of kpkeys_hardened_pgtables, a mock implementation of kpkeys has
->> been used, replacing accesses to the POR_EL1 register with accesses to
->> another system register that is otherwise unused (CONTEXTIDR_EL1), and
->> leaving everything else unchanged. Most of the kpkeys overhead is
->> expected to originate from the barrier (ISB) that is required after
->> writing to POR_EL1, and from setting the POIndex (pkey) in page tables;
->> both of these are done exactly in the same way in the mock
->> implementation.
-> It turns out this wasn't the case regarding the pkey setting - because
-> patch 6 gates set_memory_pkey() on system_supports_poe() and not
-> arch_kpkeys_enabled(), the mock implementation turned set_memory_pkey()
-> into a no-op. Many thanks to Rick Edgecombe for highlighting that the
-> overheads were suspiciously low for some benchmarks!
->
->> The original implementation of kpkeys_hardened_pgtables is very
->> inefficient when many PTEs are changed at once, as the kpkeys level is
->> switched twice for every PTE (two ISBs per PTE). Patch 18 introduces
->> an optimisation that makes use of the lazy_mmu mode to batch those
->> switches: 1. switch to KPKEYS_LVL_PGTABLES on arch_enter_lazy_mmu_mode(),
->> 2. skip any kpkeys switch while in that section, and 3. restore the
->> kpkeys level on arch_leave_lazy_mmu_mode(). When that last function
->> already issues an ISB (when updating kernel page tables), we get a
->> further optimisation as we can skip the ISB when restoring the kpkeys
->> level.
->>
->> Both implementations (without and with batching) were evaluated on an
->> Amazon EC2 M7g instance (Graviton3), using a variety of benchmarks that
->> involve heavy page table manipulations. The results shown below are
->> relative to the baseline for this series, which is 6.17-rc1. The
->> branches used for all three sets of results (baseline, with/without
->> batching) are available in a repository, see next section.
->>
->> Caveat: these numbers should be seen as a lower bound for the overhead
->> of a real POE-based protection. The hardware checks added by POE are
->> however not expected to incur significant extra overhead.
->>
->> Reading example: for the fix_size_alloc_test benchmark, using 1 page per
->> iteration (no hugepage), kpkeys_hardened_pgtables incurs 17.35% overhead
->> without batching, and 14.62% overhead with batching. Both results are
->> considered statistically significant (95% confidence interval),
->> indicated by "(R)".
->>
->> +-------------------+----------------------------------+------------------+---------------+
->> | Benchmark         | Result Class                     | Without batching | With batching |
->> +===================+==================================+==================+===============+
->> | mmtests/kernbench | real time                        |            0.30% |         0.11% |
->> |                   | system time                      |        (R) 3.97% |     (R) 2.17% |
->> |                   | user time                        |            0.12% |         0.02% |
->> +-------------------+----------------------------------+------------------+---------------+
->> | micromm/fork      | fork: h:0                        |      (R) 217.31% |        -0.97% |
->> |                   | fork: h:1                        |      (R) 275.25% |     (R) 2.25% |
->> +-------------------+----------------------------------+------------------+---------------+
->> | micromm/munmap    | munmap: h:0                      |       (R) 15.57% |        -1.95% |
->> |                   | munmap: h:1                      |      (R) 169.53% |     (R) 6.53% |
->> +-------------------+----------------------------------+------------------+---------------+
->> | micromm/vmalloc   | fix_size_alloc_test: p:1, h:0    |       (R) 17.35% |    (R) 14.62% |
->> |                   | fix_size_alloc_test: p:4, h:0    |       (R) 37.54% |     (R) 9.35% |
->> |                   | fix_size_alloc_test: p:16, h:0   |       (R) 66.08% |     (R) 3.15% |
->> |                   | fix_size_alloc_test: p:64, h:0   |       (R) 82.94% |        -0.39% |
->> |                   | fix_size_alloc_test: p:256, h:0  |       (R) 87.85% |        -1.67% |
->> |                   | fix_size_alloc_test: p:16, h:1   |       (R) 50.31% |         3.00% |
->> |                   | fix_size_alloc_test: p:64, h:1   |       (R) 59.73% |         2.23% |
->> |                   | fix_size_alloc_test: p:256, h:1  |       (R) 62.14% |         1.51% |
->> |                   | random_size_alloc_test: p:1, h:0 |       (R) 77.82% |        -0.21% |
->> |                   | vm_map_ram_test: p:1, h:0        |       (R) 30.66% |    (R) 27.30% |
->> +-------------------+----------------------------------+------------------+---------------+
-> These numbers therefore correspond to set_memory_pkey() being a no-op,
-> in other words they represent the overhead of switching the pkey
-> register only.
->
-> I have amended the mock implementation so that set_memory_pkey() is run
-> as it would on a real POE implementation (i.e. actually setting the PTE
-> bits). Here are the new results, representing the overhead of both pkey
-> register switching and setting the pkey of page table pages (PTPs) on
-> alloc/free:
->
-> +-------------------+----------------------------------+------------------+---------------+
-> | Benchmark         | Result Class                     | Without
-> batching | With batching |
-> +===================+==================================+==================+===============+
-> | mmtests/kernbench | real time                        |           
-> 0.32% |         0.35% |
-> |                   | system time                      |        (R)
-> 4.18% |     (R) 3.18% |
-> |                   | user time                        |           
-> 0.08% |         0.20% |
-> +-------------------+----------------------------------+------------------+---------------+
-> | micromm/fork      | fork: h:0                        |      (R)
-> 221.39% |     (R) 3.35% |
-> |                   | fork: h:1                        |      (R)
-> 282.89% |     (R) 6.99% |
-> +-------------------+----------------------------------+------------------+---------------+
-> | micromm/munmap    | munmap: h:0                      |       (R)
-> 17.37% |        -0.28% |
-> |                   | munmap: h:1                      |      (R)
-> 172.61% |     (R) 8.08% |
-> +-------------------+----------------------------------+------------------+---------------+
-> | micromm/vmalloc   | fix_size_alloc_test: p:1, h:0    |       (R)
-> 15.54% |    (R) 12.57% |
-> |                   | fix_size_alloc_test: p:4, h:0    |       (R)
-> 39.18% |     (R) 9.13% |
-> |                   | fix_size_alloc_test: p:16, h:0   |       (R)
-> 65.81% |         2.97% |
-> |                   | fix_size_alloc_test: p:64, h:0   |       (R)
-> 83.39% |        -0.49% |
-> |                   | fix_size_alloc_test: p:256, h:0  |       (R)
-> 87.85% |    (I) -2.04% |
-> |                   | fix_size_alloc_test: p:16, h:1   |       (R)
-> 51.21% |         3.77% |
-> |                   | fix_size_alloc_test: p:64, h:1   |       (R)
-> 60.02% |         0.99% |
-> |                   | fix_size_alloc_test: p:256, h:1  |       (R)
-> 63.82% |         1.16% |
-> |                   | random_size_alloc_test: p:1, h:0 |       (R)
-> 77.79% |        -0.51% |
-> |                   | vm_map_ram_test: p:1, h:0        |       (R)
-> 30.67% |    (R) 27.09% |
-> +-------------------+----------------------------------+------------------+---------------+
-
-Apologies, Thunderbird helpfully decided to wrap around that table...
-Here's the unmangled table:
-
-+-------------------+----------------------------------+------------------+---------------+
-| Benchmark         | Result Class                     | Without batching | With batching |
-+===================+==================================+==================+===============+
-| mmtests/kernbench | real time                        |            0.32% |         0.35% |
-|                   | system time                      |        (R) 4.18% |     (R) 3.18% |
-|                   | user time                        |            0.08% |         0.20% |
-+-------------------+----------------------------------+------------------+---------------+
-| micromm/fork      | fork: h:0                        |      (R) 221.39% |     (R) 3.35% |
-|                   | fork: h:1                        |      (R) 282.89% |     (R) 6.99% |
-+-------------------+----------------------------------+------------------+---------------+
-| micromm/munmap    | munmap: h:0                      |       (R) 17.37% |        -0.28% |
-|                   | munmap: h:1                      |      (R) 172.61% |     (R) 8.08% |
-+-------------------+----------------------------------+------------------+---------------+
-| micromm/vmalloc   | fix_size_alloc_test: p:1, h:0    |       (R) 15.54% |    (R) 12.57% |
-|                   | fix_size_alloc_test: p:4, h:0    |       (R) 39.18% |     (R) 9.13% |
-|                   | fix_size_alloc_test: p:16, h:0   |       (R) 65.81% |         2.97% |
-|                   | fix_size_alloc_test: p:64, h:0   |       (R) 83.39% |        -0.49% |
-|                   | fix_size_alloc_test: p:256, h:0  |       (R) 87.85% |    (I) -2.04% |
-|                   | fix_size_alloc_test: p:16, h:1   |       (R) 51.21% |         3.77% |
-|                   | fix_size_alloc_test: p:64, h:1   |       (R) 60.02% |         0.99% |
-|                   | fix_size_alloc_test: p:256, h:1  |       (R) 63.82% |         1.16% |
-|                   | random_size_alloc_test: p:1, h:0 |       (R) 77.79% |        -0.51% |
-|                   | vm_map_ram_test: p:1, h:0        |       (R) 30.67% |    (R) 27.09% |
-+-------------------+----------------------------------+------------------+---------------+
-
-> Those results are overall very similar to the original ones.
-> micromm/fork is however clearly impacted - around 4% additional overhead
-> from set_memory_pkey(); it makes sense considering that forking requires
-> duplicating (and therefore allocating) a full set of page tables.
-> kernbench is also a fork-heavy workload and it gets a 1% hit in system
-> time (with batching).
->
-> It seems fair to conclude that, on arm64, setting the pkey whenever a
-> PTP is allocated/freed is not particularly expensive. The situation may
-> well be different on x86 as Rick pointed out, and it may also change on
-> newer arm64 systems as I noted further down. Allocating/freeing PTPs in
-> bulk should help if setting the pkey in the pgtable ctor/dtor proves too
-> expensive.
->
-> - Kevin
->
->> Benchmarks:
->> - mmtests/kernbench: running kernbench (kernel build) [4].
->> - micromm/{fork,munmap}: from David Hildenbrand's benchmark suite. A
->>   1 GB mapping is created and then fork/unmap is called. The mapping is
->>   created using either page-sized (h:0) or hugepage folios (h:1); in all
->>   cases the memory is PTE-mapped.
->> - micromm/vmalloc: from test_vmalloc.ko, varying the number of pages
->>   (p:) and whether huge pages are used (h:).
->>
->> On a "real-world" and fork-heavy workload like kernbench, the estimated
->> overhead of kpkeys_hardened_pgtables is reasonable: 4% system time
->> overhead without batching, and about half that figure (2.2%) with
->> batching. The real time overhead is negligible.
->>
->> Microbenchmarks show large overheads without batching, which increase
->> with the number of pages being manipulated. Batching drastically reduces
->> that overhead, almost negating it for micromm/fork. Because all PTEs in
->> the mapping are modified in the same lazy_mmu section, the kpkeys level
->> is changed just twice regardless of the mapping size; as a result the
->> relative overhead actually decreases as the size increases for
->> fix_size_alloc_test.
->>
->> Note: the performance impact of set_memory_pkey() is likely to be
->> relatively low on arm64 because the linear mapping uses PTE-level
->> descriptors only. This means that set_memory_pkey() simply changes the
->> attributes of some PTE descriptors. However, some systems may be able to
->> use higher-level descriptors in the future [5], meaning that
->> set_memory_pkey() may have to split mappings. Allocating page tables
->> from a contiguous cache of pages could help minimise the overhead, as
->> proposed for x86 in [1].
->>
->> [...]
+T24gV2VkLCAyMDI1LTA4LTIwIGF0IDE4OjAxICswMjAwLCBLZXZpbiBCcm9kc2t5IHdyb3RlOgo+
+IEFwb2xvZ2llcywgVGh1bmRlcmJpcmQgaGVscGZ1bGx5IGRlY2lkZWQgdG8gd3JhcCBhcm91bmQg
+dGhhdCB0YWJsZS4uLgo+IEhlcmUncyB0aGUgdW5tYW5nbGVkIHRhYmxlOgo+IAo+ICstLS0tLS0t
+LS0tLS0tLS0tLS0tKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0rLS0tLS0tLS0t
+LS0tLS0tLS0tKy0tLS0tLS0tLS0tLS0tLSsKPiA+IEJlbmNobWFya8KgIMKgIMKgIMKgIMKgfCBS
+ZXN1bHQgQ2xhc3PCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoHwgV2l0aG91dCBiYXRj
+aGluZyB8IFdpdGggYmF0Y2hpbmcgfAo+ICs9PT09PT09PT09PT09PT09PT09Kz09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT0rPT09PT09PT09PT09PT09PT09Kz09PT09PT09PT09PT09
+PSsKPiA+IG1tdGVzdHMva2VybmJlbmNoIHwgcmVhbCB0aW1lwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgfMKgIMKgIMKgIMKgIMKgIMKgIDAuMzIlIHzCoCDCoCDCoCDCoCDCoDAu
+MzUlIHwKPiA+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgfCBzeXN0ZW0gdGltZcKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHzCoCDCoCDCoCDCoCAoUikgNC4xOCUgfMKgIMKg
+IMKgKFIpIDMuMTglIHwKPiA+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgfCB1c2VyIHRp
+bWXCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCB8wqAgwqAgwqAgwqAgwqAgwqAg
+MC4wOCUgfMKgIMKgIMKgIMKgIMKgMC4yMCUgfAo+ICstLS0tLS0tLS0tLS0tLS0tLS0tKy0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0rLS0tLS0tLS0tLS0tLS0tLS0tKy0tLS0tLS0t
+LS0tLS0tLSsKPiA+IG1pY3JvbW0vZm9ya8KgIMKgIMKgIHwgZm9yazogaDowwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgfMKgIMKgIMKgIChSKSAyMjEuMzklIHzCoCDCoCDCoChS
+KSAzLjM1JSB8Cj4gPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoHwgZm9yazogaDoxwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgfMKgIMKgIMKgIChSKSAyODIuODklIHzC
+oCDCoCDCoChSKSA2Ljk5JSB8Cj4gKy0tLS0tLS0tLS0tLS0tLS0tLS0rLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLSstLS0tLS0tLS0tLS0tLS0tLS0rLS0tLS0tLS0tLS0tLS0tKwo+
+ID4gbWljcm9tbS9tdW5tYXDCoCDCoCB8IG11bm1hcDogaDowwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgfMKgIMKgIMKgIMKgKFIpIDE3LjM3JSB8wqAgwqAgwqAgwqAgLTAuMjglIHwK
+PiA+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgfCBtdW5tYXA6IGg6McKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIHzCoCDCoCDCoCAoUikgMTcyLjYxJSB8wqAgwqAgwqAoUikg
+OC4wOCUgfAo+ICstLS0tLS0tLS0tLS0tLS0tLS0tKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0rLS0tLS0tLS0tLS0tLS0tLS0tKy0tLS0tLS0tLS0tLS0tLSsKPiA+IG1pY3JvbW0v
+dm1hbGxvY8KgIMKgfCBmaXhfc2l6ZV9hbGxvY190ZXN0OiBwOjEsIGg6MMKgIMKgIHzCoCDCoCDC
+oCDCoChSKSAxNS41NCUgfMKgIMKgIChSKSAxMi41NyUgfAoKQm90aCB0aGlzIGFuZCB0aGUgcHJl
+dmlvdXMgb25lIGhhdmUgdGhlIDk1JSBjb25maWRlbmNlIGludGVydmFsLiBTbyBpdCBzYXcgYSAx
+NiUKc3BlZWQgdXAgd2l0aCBkaXJlY3QgbWFwIG1vZGlmaWNhdGlvbi4gUG9zc2libGU/Cgo+ID4g
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB8IGZpeF9zaXplX2FsbG9jX3Rlc3Q6IHA6NCwg
+aDowwqAgwqAgfMKgIMKgIMKgIMKgKFIpIDM5LjE4JSB8wqAgwqAgwqAoUikgOS4xMyUgfAo+ID4g
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB8IGZpeF9zaXplX2FsbG9jX3Rlc3Q6IHA6MTYs
+IGg6MMKgIMKgfMKgIMKgIMKgIMKgKFIpIDY1LjgxJSB8wqAgwqAgwqAgwqAgwqAyLjk3JSB8Cj4g
+PiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoHwgZml4X3NpemVfYWxsb2NfdGVzdDogcDo2
+NCwgaDowwqAgwqB8wqAgwqAgwqAgwqAoUikgODMuMzklIHzCoCDCoCDCoCDCoCAtMC40OSUgfAo+
+ID4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB8IGZpeF9zaXplX2FsbG9jX3Rlc3Q6IHA6
+MjU2LCBoOjDCoCB8wqAgwqAgwqAgwqAoUikgODcuODUlIHzCoCDCoCAoSSkgLTIuMDQlIHwKPiA+
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgfCBmaXhfc2l6ZV9hbGxvY190ZXN0OiBwOjE2
+LCBoOjHCoCDCoHzCoCDCoCDCoCDCoChSKSA1MS4yMSUgfMKgIMKgIMKgIMKgIMKgMy43NyUgfAo+
+ID4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB8IGZpeF9zaXplX2FsbG9jX3Rlc3Q6IHA6
+NjQsIGg6McKgIMKgfMKgIMKgIMKgIMKgKFIpIDYwLjAyJSB8wqAgwqAgwqAgwqAgwqAwLjk5JSB8
+Cj4gPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoHwgZml4X3NpemVfYWxsb2NfdGVzdDog
+cDoyNTYsIGg6McKgIHzCoCDCoCDCoCDCoChSKSA2My44MiUgfMKgIMKgIMKgIMKgIMKgMS4xNiUg
+fAo+ID4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB8IHJhbmRvbV9zaXplX2FsbG9jX3Rl
+c3Q6IHA6MSwgaDowIHzCoCDCoCDCoCDCoChSKSA3Ny43OSUgfMKgIMKgIMKgIMKgIC0wLjUxJSB8
+Cj4gPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoHwgdm1fbWFwX3JhbV90ZXN0OiBwOjEs
+IGg6MMKgIMKgIMKgIMKgIHzCoCDCoCDCoCDCoChSKSAzMC42NyUgfMKgIMKgIChSKSAyNy4wOSUg
+fAo+ICstLS0tLS0tLS0tLS0tLS0tLS0tKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0rLS0tLS0tLS0tLS0tLS0tLS0tKy0tLS0tLS0tLS0tLS0tLSsKCkhtbSwgc3RpbGwgc3VycHJp
+c2luZ2x5IGxvdyB0byBtZSwgYnV0IG9rLiBJdCB3b3VsZCBiZSBnb29kIGhhdmUgeDg2IGFuZCBh
+cm0Kd29yayB0aGUgc2FtZSwgYnV0IEkgZG9uJ3QgdGhpbmsgd2UgaGF2ZSBsaW5lIG9mIHNpZ2h0
+IHRvIHg4NiBjdXJyZW50bHkuIEFuZCBJCmFjdHVhbGx5IG5ldmVyIGRpZCByZWFsIGJlbmNobWFy
+a3MuCg==
 
