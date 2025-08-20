@@ -2,109 +2,124 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5EAA3CA0EED
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 09:35:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 21984CA0EF8
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 09:40:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 003CB8E004A; Wed, 20 Aug 2025 05:35:20 -0400 (EDT)
+	id BCF946B0031; Wed, 20 Aug 2025 05:40:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF6C06B0124; Wed, 20 Aug 2025 05:35:19 -0400 (EDT)
+	id BA7726B0062; Wed, 20 Aug 2025 05:40:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0CD78E004A; Wed, 20 Aug 2025 05:35:19 -0400 (EDT)
+	id A96006B0089; Wed, 20 Aug 2025 05:40:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CCDB16B0123
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 05:35:19 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9F74B1179D6
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 09:35:19 +0000 (UTC)
-X-FDA: 83796627558.08.5A75C8A
-Received: from mail-ed1-f66.google.com (mail-ed1-f66.google.com [209.85.208.66])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A9C061A0009
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 09:35:17 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RWwQKJES;
-	spf=pass (imf19.hostedemail.com: domain of memxor@gmail.com designates 209.85.208.66 as permitted sender) smtp.mailfrom=memxor@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 94D6B6B0031
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 05:40:38 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 391471179B7
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 09:40:38 +0000 (UTC)
+X-FDA: 83796640956.18.A0F1921
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 443D71C0006
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 09:40:36 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=CPnVRW+s;
+	spf=pass (imf20.hostedemail.com: domain of pmladek@suse.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=pmladek@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755682836; a=rsa-sha256;
+	cv=none;
+	b=eMMqIfVcaEi18gcUr9DsNjIASkW7/wbpWqF5/sd33kSpe1xMx+LKTOLYMNKRstJlkOIKrD
+	+M15DfbGHx+3ZxhLgpqE2JDRuzek3/BhvpyX0yAf4aedPRqPopAAIEgr5MgabUN+ED63/4
+	7zdeo1Cw1UQEnmZyN5kSbVzoIR4Fpig=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=CPnVRW+s;
+	spf=pass (imf20.hostedemail.com: domain of pmladek@suse.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=pmladek@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755682517;
+	s=arc-20220608; t=1755682836;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wNVeEm5XhdBpT7eUdLFg7DGJnmMc3Txy3EfKiydyTJk=;
-	b=JgjjnX6R97R1qDwDPIID1tX5Y5p/OAUV3J1MuWtqFVzYnIvG/HMIyFasqj3Iie91n0xq+m
-	SIu+fBb8Lsax0O/Zzn55IE3YlFf8sk6kKOnq/BJZvxIsdZw1DZiTLAMwduk4qkKkbW8CpH
-	S6pa96todupyYx9jWSCN9chKMP9eHOU=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RWwQKJES;
-	spf=pass (imf19.hostedemail.com: domain of memxor@gmail.com designates 209.85.208.66 as permitted sender) smtp.mailfrom=memxor@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755682517; a=rsa-sha256;
-	cv=none;
-	b=b4Etb3lQj79dwXbs04uw1e0NiPkoQ5uhguVNiF1X31osglz/H9EVKCpJfsbPRp8CGIuCMy
-	1jzwdU8ljyeqtEaHNhCvmAovaNYVAETX3euqgiT1+VIH0OphyrM/l1Ju3hsu2W+YB5m1hq
-	l75AWfGhkW7ad/AKLblLv75Nks2DZEI=
-Received: by mail-ed1-f66.google.com with SMTP id 4fb4d7f45d1cf-61a2a5b0689so6324780a12.1
-        for <linux-mm@kvack.org>; Wed, 20 Aug 2025 02:35:17 -0700 (PDT)
+	bh=NM0fyXJdFVsVnU/yS6K0gQI6XozNG1TCaWkFW+vAlK8=;
+	b=nf/fYaMo4Rx2bQ6IRa44xjb7CVKPz3F1O67cgLzkuG3r86/aAClnUNRbqNkk5pYM0fYEcL
+	bgH8NtE/pbI9sQrsZHyonixM2G9nmH8kDm4BIgysX1EfSmVJzEvF514QjKBlaRf2Swaf0H
+	8f6Sdn05xwRoaNxGDE/mnJQMNTDUYkw=
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-afcb79f659aso949904366b.2
+        for <linux-mm@kvack.org>; Wed, 20 Aug 2025 02:40:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755682516; x=1756287316; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=wNVeEm5XhdBpT7eUdLFg7DGJnmMc3Txy3EfKiydyTJk=;
-        b=RWwQKJES+i5iL+zIN6jekq7KBhQrootJJkdAlaqAZj69TQSEfG2tRe5BWi5DXnKV/A
-         C2Pnhi493ZjN0QC2L0ciDtZCQG7K2pnaIMlThhHeSDUSncapqUSEX24L83e+RMQIw/H+
-         K35ZJGW56OMtKM+1xXdkOYK5BXY0zY/YRnuv09z8HZQdCdi9AGEv1WvSVjnXr6c3Jahu
-         cioUxN4Dd9P3aIDKbr+d6zEdQ7zAfQeTP3L6VKbvl4QjTK+12Gybu1uJiW3Q4Oll30FS
-         NFiM6KpYIwOGD43IkODAsAKpuaNO95CWA67CpZ3k+8VOcJdOaOpPSt9AHrneNuEJJvMX
-         XfHw==
+        d=suse.com; s=google; t=1755682834; x=1756287634; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NM0fyXJdFVsVnU/yS6K0gQI6XozNG1TCaWkFW+vAlK8=;
+        b=CPnVRW+shj7O208p/RgPT7E1ai/RB76yesgNpyrM6mfE+V1p4jvZ2gPMuys/KGGplq
+         cQvN5LWOBxTviXI9Y63mr7F7QE/+2TFcCLO8kVmfGiu8cuWrMROu9ct7BMPjVsbjewNY
+         WlOkUUSc4I7lCWDn56LtWUBrZDQPFOMqt+mk2N8kbMN/ShMCtp2M5N9A/ges+SKbYkUo
+         D8eUZqjX0a1mJ8WB33Hnuokf085orM444sW75Aqnh6alkIn/YplDnqLT2Jqj0dvuegoA
+         xswJ7fKK+YSQhaEXf1Bvl+TseMMreP0Vt1oZr/VM14Zm86cV14+uVarOjzrFiIvjkurq
+         uDRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755682516; x=1756287316;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wNVeEm5XhdBpT7eUdLFg7DGJnmMc3Txy3EfKiydyTJk=;
-        b=sci4187gRtiTIrfGp86jZ/4EcscXHuZZxCeOx1PU8EMjca6ZCH3EiREKyLM9bwIjSA
-         bDExl2os7KU9llycdHmki3LnbeY682as6i5fjtRKzn69ZhgSUfsZWN3IKalxMsi3CN7u
-         Yqx/AxNVbOZyZL5P/t071+2qAlH8MBdD/VTwSSmErMmRl/XtOzD0U1f4QgUbq6rZoV45
-         RhIJTx3i/bodSyc+Lkrykk254ibDX6Sz2h+p0lY+drlKNvqrWOlNjTEHoRDCBoVgYJLQ
-         iYO00LURKXJytdgx7T6EyTRLUTJyCl8pqEhn8pkWap8ko00Ez88uUkIif+eL0ednQdIO
-         45gg==
-X-Gm-Message-State: AOJu0Yy/13MKsbR3sJ6vTNoB9KXS9bxVb3LpluFPNNFq7xkFZ6EKQhYZ
-	R6JokpIVcyDh5YcC8SUY4Dp/ByyHL7McVyZMkdiBrDUJuJ7dunfxltT81ZiV6s7wyNbbQXe8KTi
-	RAX0xlvXpLLD8DYz8vU1V30HeDkVGkzw=
-X-Gm-Gg: ASbGncvevFAT/zzGwHHdZoNYMvOfq40APSih2O8zHQH0XNlFH9JFGkGQZSQKkxm4+fI
-	BJDIi3r6SxIHuy3tKYNlH9zeU5xXyv+T8RyJBL5uqgMJBc0LuPgJKdWoeLFBLr4gGR48aJ7sM9/
-	9C6CGq5golM9WEgujrPoINykiNN5uP7f2qjR7rkEDDTaIir4FbKku2D3FU4RvkMMwSJ8a0TEx4y
-	pZUlXmd2LhVI0VfOz7n
-X-Google-Smtp-Source: AGHT+IHBth0y2AoBjyW+FSstnXpJk7GFg8YiBsBpirEqa2CurHSrua29TJ4cbd0mGJpW+ZWyp820YdytDUDw2fC5XFs=
-X-Received: by 2002:a05:6402:524c:b0:615:274e:6509 with SMTP id
- 4fb4d7f45d1cf-61a9754e59emr1633953a12.9.1755682516017; Wed, 20 Aug 2025
- 02:35:16 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1755682834; x=1756287634;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NM0fyXJdFVsVnU/yS6K0gQI6XozNG1TCaWkFW+vAlK8=;
+        b=RHAg61boftYGCGxnIZ+qhSZhapO6yC1C/LGaNYSit2J61QbT7h9bOwDxO9cDysrTdX
+         5qd3XTYw66uv0XzhZhagb6Hh0Xe+RhZpcS3xs1JpnM4rW2ol1jzbqSUs8ge/YPJIlShb
+         fUaBacwDkk3DSdpRBieffPo7Q54DL2RrC65z1Yqehqt3QvSZyR2//SuI3QrVFBCsgChC
+         7+a2lVWlYIIHNBRWjO8mGqpctPG9i5N7qs87gtS+A0aWAqz1fuNrPyaCM6s9euNVrS4k
+         aSRMKXRGcHgFGjJqWO9mEr2wgAm0DKb/u0tRT1Pwv+oenKOjYPOA84Kokx9i7hpI3TUK
+         6lxw==
+X-Forwarded-Encrypted: i=1; AJvYcCXM9XGuZ/sp4DQhsU7610ISNvmK37ZQ57eakYFcfI7NzxxHQkovFSF38m8v04fOS3Eme34b6s/9/Q==@kvack.org
+X-Gm-Message-State: AOJu0YyB53vED6CHCvZcUstMZyI12Z8wdR0rjWl5OIYY+JdTT99Himd2
+	XAL2mO35fj+eQ2XwBzn8YQJ2SpXxPgGxP4Pmz4Aoubc5v/Ek+PJhpEa6wpwEmY3Zn9/AZly0zna
+	Ixc+9
+X-Gm-Gg: ASbGnctw/R9VP9Yz1ntsWR/OXzGX04XCjx1wKz3hqCYONbI6lGQXCaLkVG9zKL20k5u
+	I9o3JtNTJdQ0fSmcfesbudcpO9g/pTRXfGedCFEc3BFQ7hAjFYvWAfNkYTuluGbJnYNinTVEs41
+	UqfCyrFeM17XMis77aCcWMiXo+zsLKq/ztWMBqfUDQ7auuMtrEXNwhCWEGk2ENpATdX3C1lQWFR
+	nRYJBWFLEhJANdgVCQYTY68BPFytetQC9smvsJYGUpM7mO7K50MC/SfHl+IB8xFI9ndnMShgwmS
+	z0kJaC5ln99JnlSsDIM6f3Pbk6wcpnSmT2mKP8/lZU9Wi1SyYgI/c769lGM4vrfyXnHidla0rIg
+	DLKjinP6ZgQZetC4YtQ05QExYHg==
+X-Google-Smtp-Source: AGHT+IEL5yizeK4oP3hcKNDpDCbogCgeCUIgrsK+feZZ6+ybN7ZuuNRbKKwxk5Z77sh2bbe8+uaS7Q==
+X-Received: by 2002:a17:907:3c8b:b0:ad8:9645:798c with SMTP id a640c23a62f3a-afdf0209598mr168513766b.51.1755682834470;
+        Wed, 20 Aug 2025 02:40:34 -0700 (PDT)
+Received: from pathway.suse.cz ([176.114.240.130])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afded478a14sm148404966b.76.2025.08.20.02.40.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Aug 2025 02:40:34 -0700 (PDT)
+Date: Wed, 20 Aug 2025 11:40:32 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Lance Yang <lance.yang@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
+	paulmck@kernel.org, john.ogness@linutronix.de,
+	kernel test robot <lkp@intel.com>,
+	Feng Tang <feng.tang@linux.alibaba.com>
+Subject: [PATCH v2] panic: Clean up message about deprecated 'panic_print'
+ parameter
+Message-ID: <aKWYELPjbhC7R8NO@pathway.suse.cz>
+References: <aKRJKZHgcxyNF3y7@pathway.suse.cz>
+ <202508200907.PsZ3geub-lkp@intel.com>
+ <ae9bb2ea-c6e5-4a4b-ae25-aea1d6fe084d@linux.dev>
+ <33a897b4-7d9a-4641-9c7a-07c19bb9cb6f@linux.dev>
+ <7a34da58-874d-4271-9dbb-7991468d58ff@linux.dev>
+ <aKWWcPOf9qPIoCe4@pathway.suse.cz>
 MIME-Version: 1.0
-References: <20250818170136.209169-1-roman.gushchin@linux.dev> <20250818170136.209169-7-roman.gushchin@linux.dev>
-In-Reply-To: <20250818170136.209169-7-roman.gushchin@linux.dev>
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Date: Wed, 20 Aug 2025 11:34:39 +0200
-X-Gm-Features: Ac12FXxn2NcyTwhNtOzVYKNCNtBqfk-dMrPX2NDgw7posh_y0GfGmoA2HZDRcuA
-Message-ID: <CAP01T777JF7wvHDaQ-Bz-Vp_dFM=NXvpAK0RY7kLjs2amEd85Q@mail.gmail.com>
-Subject: Re: [PATCH v1 06/14] mm: introduce bpf_out_of_memory() bpf kfunc
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: linux-mm@kvack.org, bpf@vger.kernel.org, 
-	Suren Baghdasaryan <surenb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@suse.com>, 
-	David Rientjes <rientjes@google.com>, Matt Bobrowski <mattbobrowski@google.com>, 
-	Song Liu <song@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: sxgndiitsm9brb8ypp5p94ndncjihgru
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aKWWcPOf9qPIoCe4@pathway.suse.cz>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 443D71C0006
+X-Stat-Signature: n7bcqgifphkn8xfm5w5w7d343nbg5mhd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A9C061A0009
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755682517-931878
-X-HE-Meta: U2FsdGVkX19AfE6SQp1zFxpDrAgf8eDhwyTD7rDW7bIk/9/dfgHrjqGVz+sHjnyeDG4JGbet+JDWJWZLR4i1ryDfgd94meWEO7/IoWvZpAva1gUR7GGBNeQ1oTV5VcdhGw7mfQpRgbSiJVUZt+MQNJjc2dzJQwKW7VSXlZ+QJIXSQE4EJsCc52LpHLPBteKwWiu8gyrWiMquhPJFH1NS3KaUhWj7HFIilhtaO8gkgBb8XUSRuHkMnh370QL1BbxTGouQMW6tY7Sq/NFtKnNyImfv2rV16XEId40IbOgDQ3C2IWdcGnS3+um9fUIGXn9Mi8nYj+Z9rF18Ww8ko3J3E4JwZOQY1j/ottO2tj78imUqYeV4WtBd51UuJsv+P40TZ6qJkNjirFuI66oerFTSttAFx4JTOZDZxBsBb0MLMqSlo9dvstCKde5AXreWtDlZ48cdhqVOQOdVhHm6LvFaConA2+p3bvIY6vOh0jNMKnx3FgfM9zA13UaC56T236O6GgbWUP8adKDFQTQNvwBylbKo8tCA4ReVgBIIpnqLnecpFpfz0M4giXP7T+eYA7KzwD8aJpwp2eBUh4mlmOSXOFt29gBTFGek8o/X5s5Ymm9ySojyR4vlNZDtkgdlDayba4MqZY0bzulUIwq+dzXhC5FABqXPP0AS5DmbrNRbQXrxv9+eao0aSe79qzPzIT9hBIDrugYp0eZYYk44puodFLNiAMhvWHRvfGs4hHr28z7UvrcbDKKMcnz0nlH4ck3U55tdhgjrWkzWte0py+74sbMXffFnqu2+hxrQ/Els65FWnWmaWz0cV3tdMU77BXAHgpglRbROSZjGDvNMz3Zz7BJYJQngY3MrBnnA0DYCsf8o3pyrvWYOQUKBoesuC3kdFG21iEcxeJ4CMOeb5N3JqwKVB68dwve7I80JJ1TCsH0oBypXVfbzSJCjeB6w2ITPvBfk5/AXCbQxtc2GGAo
- Rynhyx4M
- 2hAzm+dBSYJWJZsixNnDIIyuo8NALVN33GNRcJFOSYYwPp/oJjtB8v8n8Onp2o2c8nUce1XzrI/yjevbeowGEFUPXt/PfmJ+bb2yc/X2Jyo67NhYRUVQK/lIYumw5z98LQj5jcm0A2SacmIPbRn1DLV7nxp/He5gdwMSFvqBqP1Y6AYn8y4tfozXi+gR1pfBkA+wXQlJawk2XWaIhjL48ORXTlY2BJi+oJUkeoZf6JHzUpfm7nb4X82j/Lc/DhravGNVvQEOi8zmRJxl2wU0fBOx0NKNT13eOyVUhu43tLA8Rdr1Yv+fyXFwVwvXuZ4zmq3RhKrgm7OVsqc1gA09z3gtiO5kY3KKrXBpJpHcK/y9jNwBZHx9rpjvLUD+lZEflHML+4esZ+ZVKioo9CRF1UN1X2DuYwyZ+ntAPX/mIyYqKYgXnJjO0Q5TmfCP0I9tpVNH+uwD9GjuMTNlUy1ssOYNCBRfCLSBpsySzorU4Gc4hZfWNULvcV6GbkW6ny3o0zAasLbgGhQN2E3c=
+X-HE-Tag: 1755682836-44659
+X-HE-Meta: U2FsdGVkX19n8YSZ5YfiC80kTrOZp0btHr5owOlxVS2I67Mc1QPjl3KwpfNQsBVaWCYfkyeDhWFBJnT0UUFvL62QEd7jkgh3UCqTW4k6dNcXCDGRsRynPZ1FUsQmFPrSkvZ1GZ+aocC1MyEvkw2zXcvnf4f1AH5lrIoTa8AF8zxxiUlx4Ub1KK1FYrVdvoRyTzw6Sd6Zc6iM6Z9r/15YUe+iv+nhHqdsbP2ZRdu3a9M9uwuehyev55Yyxe2oC69PgZ40OWezEpQpx96lTyKtKnTk4ie0RpkfYNGcoStkMNx3GRv+hQ+ZApw8hwR8bIXyooq8ypdlKOTi1oOZG/pUeRYyLSSGXZ2gUtdu2HjAC7mISUZehT91PkkJElmDI8gr1haH9YGsQ7R1eBb/AD9DQ26zJlIgXeGp9KhJNBdeDmBtShmFPtaDeA5DvGc27U/g0cj2oB6G/5d2QEf7ISZFyH8Fc4YlB428XqTcvzhAiN2pKzpwft2F+m1U4nqlFR5lt8FnAqIbDjRPnWh9hNxelpFCL10QmXbXN+BBgg9B5frdOsC12G+Ge/gAFsFhHR0YDnXY9VMUXLR6TM6thrkkXZUvaVxqCybJN2ipXOskpqgRIPxDUudpjLgcAVcJbAMYgHOixI1LZWzq/z1M+FqlawZFXJMGSbCyaeTBlrWWI7UoXjyGyWl3j8umixR76v5qtr008OuOOCBKx0DUxgI2fB3kbnf2LzhYc5Bn4QIhcHlQRdQqgmiOGLqr11gVJxPfCdcGvc7m087ztKYKBCz+nFw6+Bo1lqiCwOM3JUnxIGR7zV5sl5yp5Mv1C4qLRNEYQ4mEua1vdxJszlV2ucN7b/EnL3pLcMVdKbUTJfpFG1TvexXhI8e7VKSBmTPTthlEJATWynxiqD8zfRYnyqwu9EVkQg+J9jrrve5x5crizRX+I83S4ShEh+4CkoKIP6cfuAwBbpEf3nceILeXXAx
+ XvrxXLSP
+ nF2jNI1gZ/4fQ3I6WR864fq2fNp9AwCe9xwSyijeLscRYOTTmgWAWt0s6vrVdxOKPE0jNIseTQ+1rrG8hHN4XS2eZ60ECGWlrRB3OgiffVJXKrFszKv41eVV9dZJ79jGgkwKP22Dd8GZGs9ps0Hp2TZLxuoWsWeCm2O1QFGaWN+h3vRQOW/c9/YrNSTmBne93L4/VL0eEL3F5ovJ0u6BBgxRnBX9ZVkumN/xXq2/ATpgYh8bw/STGzLSbnzdNK3scaPiWoNBfzeiVskYpC+gr36jeAix9DpszfuVL5OnDcF0dwWPlOJ4VLYXo3aZ06iy4QrVggBqSJ77tCAZVp9r5GXwa6V+LmOX/im7feoRiHZqeEud8LS9LgEeIkKDrDsG5w6h/RF6wptt41XA3kU+2kl4msA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,101 +128,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 18 Aug 2025 at 19:02, Roman Gushchin <roman.gushchin@linux.dev> wrote:
->
-> Introduce bpf_out_of_memory() bpf kfunc, which allows to declare
-> an out of memory events and trigger the corresponding kernel OOM
-> handling mechanism.
->
-> It takes a trusted memcg pointer (or NULL for system-wide OOMs)
-> as an argument, as well as the page order.
->
-> If the wait_on_oom_lock argument is not set, only one OOM can be
-> declared and handled in the system at once, so if the function is
-> called in parallel to another OOM handling, it bails out with -EBUSY.
-> This mode is suited for global OOM's: any concurrent OOMs will likely
-> do the job and release some memory. In a blocking mode (which is
-> suited for memcg OOMs) the execution will wait on the oom_lock mutex.
->
-> The function is declared as sleepable. It guarantees that it won't
-> be called from an atomic context. It's required by the OOM handling
-> code, which is not guaranteed to work in a non-blocking context.
->
-> Handling of a memcg OOM almost always requires taking of the
-> css_set_lock spinlock. The fact that bpf_out_of_memory() is sleepable
-> also guarantees that it can't be called with acquired css_set_lock,
-> so the kernel can't deadlock on it.
->
-> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-> ---
->  mm/oom_kill.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 45 insertions(+)
->
-> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-> index 25fc5e744e27..df409f0fac45 100644
-> --- a/mm/oom_kill.c
-> +++ b/mm/oom_kill.c
-> @@ -1324,10 +1324,55 @@ __bpf_kfunc int bpf_oom_kill_process(struct oom_control *oc,
->         return 0;
->  }
->
-> +/**
-> + * bpf_out_of_memory - declare Out Of Memory state and invoke OOM killer
-> + * @memcg__nullable: memcg or NULL for system-wide OOMs
-> + * @order: order of page which wasn't allocated
-> + * @wait_on_oom_lock: if true, block on oom_lock
-> + * @constraint_text__nullable: custom constraint description for the OOM report
-> + *
-> + * Declares the Out Of Memory state and invokes the OOM killer.
-> + *
-> + * OOM handlers are synchronized using the oom_lock mutex. If wait_on_oom_lock
-> + * is true, the function will wait on it. Otherwise it bails out with -EBUSY
-> + * if oom_lock is contended.
-> + *
-> + * Generally it's advised to pass wait_on_oom_lock=true for global OOMs
-> + * and wait_on_oom_lock=false for memcg-scoped OOMs.
-> + *
-> + * Returns 1 if the forward progress was achieved and some memory was freed.
-> + * Returns a negative value if an error has been occurred.
-> + */
-> +__bpf_kfunc int bpf_out_of_memory(struct mem_cgroup *memcg__nullable,
-> +                                 int order, bool wait_on_oom_lock)
+Remove duplication of the message about deprecated 'panic_print'
+parameter.
 
-I think this bool should be a u64 flags instead, just to make it
-easier to extend behavior in the future.
+Also make the wording more direct. Make it clear that the new
+parameters already exist and should be used instead.
 
-> +{
-> +       struct oom_control oc = {
-> +               .memcg = memcg__nullable,
-> +               .order = order,
-> +       };
-> +       int ret;
-> +
-> +       if (oc.order < 0 || oc.order > MAX_PAGE_ORDER)
-> +               return -EINVAL;
-> +
-> +       if (wait_on_oom_lock) {
-> +               ret = mutex_lock_killable(&oom_lock);
-> +               if (ret)
-> +                       return ret;
-> +       } else if (!mutex_trylock(&oom_lock))
-> +               return -EBUSY;
-> +
-> +       ret = out_of_memory(&oc);
-> +
-> +       mutex_unlock(&oom_lock);
-> +       return ret;
-> +}
-> +
->  __bpf_kfunc_end_defs();
->
->  BTF_KFUNCS_START(bpf_oom_kfuncs)
->  BTF_ID_FLAGS(func, bpf_oom_kill_process, KF_SLEEPABLE | KF_TRUSTED_ARGS)
-> +BTF_ID_FLAGS(func, bpf_out_of_memory, KF_SLEEPABLE | KF_TRUSTED_ARGS)
->  BTF_KFUNCS_END(bpf_oom_kfuncs)
->
->  static const struct btf_kfunc_id_set bpf_oom_kfunc_set = {
-> --
-> 2.50.1
->
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+---
+Changes since v1:
+
+  - fixed compilation with CONFIG_SYSCTL disabled (kernel test
+    robot <lkp@intel.com>)
+
+Thanks Lance Yang <lance.yang@linux.dev> for debugging the compilation
+error reported by the test robot.
+
+ kernel/panic.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/kernel/panic.c b/kernel/panic.c
+index 12a10e17ab4a..24bca263f896 100644
+--- a/kernel/panic.c
++++ b/kernel/panic.c
+@@ -77,6 +77,11 @@ ATOMIC_NOTIFIER_HEAD(panic_notifier_list);
+ 
+ EXPORT_SYMBOL(panic_notifier_list);
+ 
++static void panic_print_deprecated(void)
++{
++	pr_info_once("Kernel: The 'panic_print' parameter is now deprecated. Please use 'panic_sys_info' and 'panic_console_replay' instead.\n");
++}
++
+ #ifdef CONFIG_SYSCTL
+ 
+ /*
+@@ -125,7 +130,7 @@ static int proc_taint(const struct ctl_table *table, int write,
+ static int sysctl_panic_print_handler(const struct ctl_table *table, int write,
+ 			   void *buffer, size_t *lenp, loff_t *ppos)
+ {
+-	pr_info_once("Kernel: 'panic_print' sysctl interface will be obsoleted by both 'panic_sys_info' and 'panic_console_replay'\n");
++	panic_print_deprecated();
+ 	return proc_doulongvec_minmax(table, write, buffer, lenp, ppos);
+ }
+ 
+@@ -944,13 +949,13 @@ core_param(panic_console_replay, panic_console_replay, bool, 0644);
+ 
+ static int panic_print_set(const char *val, const struct kernel_param *kp)
+ {
+-	pr_info_once("Kernel: 'panic_print' parameter will be obsoleted by both 'panic_sys_info' and 'panic_console_replay'\n");
++	panic_print_deprecated();
+ 	return  param_set_ulong(val, kp);
+ }
+ 
+ static int panic_print_get(char *val, const struct kernel_param *kp)
+ {
+-	pr_info_once("Kernel: 'panic_print' parameter will be obsoleted by both 'panic_sys_info' and 'panic_console_replay'\n");
++	panic_print_deprecated();
+ 	return  param_get_ulong(val, kp);
+ }
+ 
+-- 
+2.50.1
+
 
