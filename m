@@ -2,132 +2,146 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D9AECA0EE6
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 02:18:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B0A2CA0EE6
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 02:53:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2F826B0088; Tue, 19 Aug 2025 22:18:10 -0400 (EDT)
+	id 900EC6B002D; Tue, 19 Aug 2025 22:53:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E06366B0089; Tue, 19 Aug 2025 22:18:10 -0400 (EDT)
+	id 8B1E16B002E; Tue, 19 Aug 2025 22:53:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1BFF8E0011; Tue, 19 Aug 2025 22:18:10 -0400 (EDT)
+	id 779066B002F; Tue, 19 Aug 2025 22:53:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C086A6B0088
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 22:18:10 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 15AEBC0302
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 02:18:10 +0000 (UTC)
-X-FDA: 83795525940.27.EC8DA13
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 03EDF1C0004
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 02:18:07 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=eWQsvBL0;
-	spf=pass (imf21.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755656288;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 657126B002D
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 22:53:17 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CF7E31402FC
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 02:53:16 +0000 (UTC)
+X-FDA: 83795614392.19.BF74FFB
+Received: from siberian.tulip.relay.mailchannels.net (siberian.tulip.relay.mailchannels.net [23.83.218.246])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 541ACC000B
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 02:53:14 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=stgolabs.net header.s=dreamhost header.b=jtrroeHd;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of dave@stgolabs.net designates 23.83.218.246 as permitted sender) smtp.mailfrom=dave@stgolabs.net;
+	arc=pass ("mailchannels.net:s=arc-2022:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755658394; a=rsa-sha256;
+	cv=pass;
+	b=KzKjpL/H8ue6OzFRDCP7eebDGhDy3cWm3TALi4v/ZCYwNZFnRcqDme4komsME5ytk1uSRX
+	2GXXDxegB2kCKR+qQI/v6bnUXaEPl5yXn1947tTXrk0CVD7Rk4bhH6hqAoR0wZTE0fq5Mb
+	Wjrjwbe+Dfqn2yHkzHjQYy/PX0jlW2U=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=stgolabs.net header.s=dreamhost header.b=jtrroeHd;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of dave@stgolabs.net designates 23.83.218.246 as permitted sender) smtp.mailfrom=dave@stgolabs.net;
+	arc=pass ("mailchannels.net:s=arc-2022:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755658394;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vzGmxD04TI1mSj9V+t8aruaidXWI36zruInJlfX4dNY=;
-	b=oVg3fRUxUv2miraqucklbPkjHKmyWm+u7aCZCeR3EouYJPBILM+nJY/Mg29oRxNa3p1Nrm
-	B1kg8Dlywz1QxpOLNLRjwo40etQ4v9dyy2B631nZLZ/CbrsCAEv/LwIF9ahDv0MzR/HLUJ
-	nyIxnFgqaAQFfTh79+CSQWxRlECECvs=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=eWQsvBL0;
-	spf=pass (imf21.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755656288; a=rsa-sha256;
+	bh=iZir/QKK5JTqAfdGmgVb/hXLInesr/tGQLazPkNll88=;
+	b=5Ja1dMrFON9vLW9I8wJQO3sSib6tQcFe7Vu+awFltdt5cA4thSEUKimXb0CL8P5Dx1lyv+
+	MwIXjxDE/vTGloniKQs0n3dPXdAwhjxPaRv4ZayCNfA2tfLOtLtLDg0itLAiC25oPkRJzz
+	SQo3HWmbL8EtppP97oix2rZWt3vyijQ=
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id EE20D8A5ED9;
+	Wed, 20 Aug 2025 02:53:12 +0000 (UTC)
+Received: from pdx1-sub0-mail-a247.dreamhost.com (trex-blue-2.trex.outbound.svc.cluster.local [100.96.24.204])
+	(Authenticated sender: dreamhost)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 6EF568A5E79;
+	Wed, 20 Aug 2025 02:53:12 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1755658392; a=rsa-sha256;
 	cv=none;
-	b=rDvHTa4T6cnEKZANCRxONxTC72MGWVAWm0MBCuQOET90iFdQ96oOMpbC7AQJHzcYa4DsgM
-	RQ4epi/3j+kzg9TL9aqhlmS0dy5t5fe9WiIMRC0ePA1zcOURKvV9G/9VOUsFIlGiJpvEju
-	8/FaXPI0NFS7Y/1fWas1puly1U3jOUM=
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57JLCUxL017628;
-	Wed, 20 Aug 2025 01:04:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2025-04-25; bh=vzGmx
-	D04TI1mSj9V+t8aruaidXWI36zruInJlfX4dNY=; b=eWQsvBL0w0HGsmRYPf6QJ
-	nKgKCB0Ak6IKgVB31Cwbq4ZFRGACcRwkED1X9KA/yjb8SIGcNRrk5Dzeb4hf2GbE
-	SJF78ULl3t8V1t4EdUl4TsrZ3viw4H3AjsYtAkWPv6QcEjwFs6JurtluZbJnqgZG
-	w7NeF3RniN/YQ4PI4XWF6FtIv/2XVU1pvkAyxso3d15RgS4wYHQsM7bZN/N4Ert+
-	nh8Zw2rAdvM0v7eLENDcFtuw+EmcCr/SYIiUaSFtKbiNz+gzrje+YuVvlTKPpk79
-	9D8Tc0gN9RCjcSKvZaFiNv+HatM6FUqK8SoX0Fa9uA8gXFVIibcD71jtER1ETWmg
-	g==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48n0ttg8bu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 20 Aug 2025 01:04:34 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57JNsqtx007279;
-	Wed, 20 Aug 2025 01:04:33 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48my3q29qj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 20 Aug 2025 01:04:33 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 57K14NdA011685;
-	Wed, 20 Aug 2025 01:04:32 GMT
-Received: from localhost.localdomain (ca-dev60.us.oracle.com [10.129.136.27])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 48my3q29gw-4;
-	Wed, 20 Aug 2025 01:04:31 +0000
-From: Anthony Yznaga <anthony.yznaga@oracle.com>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org, andreyknvl@gmail.com, arnd@arndb.de,
-        bp@alien8.de, brauner@kernel.org, bsegall@google.com, corbet@lwn.net,
-        dave.hansen@linux.intel.com, david@redhat.com,
-        dietmar.eggemann@arm.com, ebiederm@xmission.com, hpa@zytor.com,
-        jakub.wartak@mailbox.org, jannh@google.com, juri.lelli@redhat.com,
-        khalid@kernel.org, liam.howlett@oracle.com, linyongting@bytedance.com,
-        lorenzo.stoakes@oracle.com, luto@kernel.org, markhemm@googlemail.com,
-        maz@kernel.org, mhiramat@kernel.org, mgorman@suse.de, mhocko@suse.com,
-        mingo@redhat.com, muchun.song@linux.dev, neilb@suse.de,
-        osalvador@suse.de, pcc@google.com, peterz@infradead.org,
-        pfalcato@suse.de, rostedt@goodmis.org, rppt@kernel.org,
-        shakeel.butt@linux.dev, surenb@google.com, tglx@linutronix.de,
-        vasily.averin@linux.dev, vbabka@suse.cz, vincent.guittot@linaro.org,
-        viro@zeniv.linux.org.uk, vschneid@redhat.com, willy@infradead.org,
-        x86@kernel.org, xhao@linux.alibaba.com, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
-Subject: [PATCH v3 03/22] mm/mshare: make msharefs writable and support directories
-Date: Tue, 19 Aug 2025 18:03:56 -0700
-Message-ID: <20250820010415.699353-4-anthony.yznaga@oracle.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20250820010415.699353-1-anthony.yznaga@oracle.com>
-References: <20250820010415.699353-1-anthony.yznaga@oracle.com>
+	b=XM2faQq9OTuEJNEwo04eH/6Axi/dDX1xJkrb4oZd18HuWF/dAX7RdXuxBUajph4KMjxTcG
+	ui9p8wnRxnxtw+r/exFpowMerR9Ebos7KUM28IGGCnoXpAfUBS5IfkzKRx+4ctRrveBsXB
+	mJPzRgNZT+ZC7SjixaChUPNuqNhZcdNM1J8XYDWTd09m/aoZc9BOnDZ3fscnPW+rDnGF10
+	DcNzJhauhnxBPLh7SLmFD170HEydxeReyuLQZo8jd34vK4GnibIb83uj21q+JdSgPLjZVJ
+	5G2K3tT8VGS59WnUJPnT6Ld0fqtze0rcQJABG+ha/0DRZZJqHcFHZBqzlfERXA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1755658392;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=iZir/QKK5JTqAfdGmgVb/hXLInesr/tGQLazPkNll88=;
+	b=R6IWtoToKQz1gB8/I4CawnjzuMUDAbmbUdZypQY7XQHBFp60oc8E4Y7P/dlMmi3PHZ+5MI
+	92ZuRDoRsrj860fBbnbrs3klsmqo6OsDHQABapRV3iTt9PKQXGXiwnzmpXwCWTceghI/dS
+	7txFbg/Iv6546g1H925RGBSHGkHaTDivEGEe7oeQh7lVTRHcZD7V3Z5x5iHNnj/ZetsTvQ
+	tlKqD6TKDpHOq3Qn2pDeRWALg5L5110kWXH1AX68vApbcRshK1nq12Y5IhcII7e46G/6Yv
+	sk9YutHO+/VhxjqMW15l0FTfzxEVv7fIwQ1JDST6NLJOYtIIe3EowNQDEJvq0g==
+ARC-Authentication-Results: i=1;
+	rspamd-7dcc9cf4b4-dlnc4;
+	auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
+X-MailChannels-Auth-Id: dreamhost
+X-Skirt-Bitter: 24cbe2cf071be96f_1755658392800_1249402012
+X-MC-Loop-Signature: 1755658392800:1048781
+X-MC-Ingress-Time: 1755658392800
+Received: from pdx1-sub0-mail-a247.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.96.24.204 (trex/7.1.3);
+	Wed, 20 Aug 2025 02:53:12 +0000
+Received: from offworld (syn-076-167-199-067.res.spectrum.com [76.167.199.67])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: dave@stgolabs.net)
+	by pdx1-sub0-mail-a247.dreamhost.com (Postfix) with ESMTPSA id 4c69xM30YWzFG;
+	Tue, 19 Aug 2025 19:53:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
+	s=dreamhost; t=1755658392;
+	bh=iZir/QKK5JTqAfdGmgVb/hXLInesr/tGQLazPkNll88=;
+	h=Date:From:To:Cc:Subject:Content-Type;
+	b=jtrroeHdkHuJtsqb5l11kvf1MI9vMHXSmzA44PUngxs/RwGTt4cGZSAvff5GR+dvm
+	 qhNeuI0ZNVn0oimGsMDmMMHhTd9hIHDPomPJjVHJFLe8MdtSSMIRhS7OiAW8SN4eGP
+	 DsqRBGt6MtWDWPc7dGFjAO1exLJ4MBOy2SB9POuEBvqkpdFRKIQlRjQ9QfBRiJYPDX
+	 ghHEi85tmIyqQK5NbHDoRbgVJYNaCIXho3a+xjphr1Z1S86DbPx0D70+9fVj73zujo
+	 e5jwSxu81ikpAoBx7AT9kUcMcFRAsY3WXPhGjHeva9aw9mCv3QuAtdEcIgiKY5olGR
+	 sovbvoUeJ/wPQ==
+Date: Tue, 19 Aug 2025 19:53:08 -0700
+From: Davidlohr Bueso <dave@stgolabs.net>
+To: Michal Hocko <mhocko@suse.com>
+Cc: zhongjinji <zhongjinji@honor.com>, akpm@linux-foundation.org,
+	andrealmeid@igalia.com, dvhart@infradead.org, feng.han@honor.com,
+	liam.howlett@oracle.com, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, liulu.liu@honor.com, mingo@redhat.com,
+	npache@redhat.com, peterz@infradead.org, rientjes@google.com,
+	shakeel.butt@linux.dev, tglx@linutronix.de
+Subject: Re: [PATCH v4 2/3] mm/oom_kill: Only delay OOM reaper for processes
+ using robust futexes
+Message-ID: <20250820025308.rkqlvauh4dz42oic@offworld>
+Mail-Followup-To: Michal Hocko <mhocko@suse.com>,
+	zhongjinji <zhongjinji@honor.com>, akpm@linux-foundation.org,
+	andrealmeid@igalia.com, dvhart@infradead.org, feng.han@honor.com,
+	liam.howlett@oracle.com, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, liulu.liu@honor.com, mingo@redhat.com,
+	npache@redhat.com, peterz@infradead.org, rientjes@google.com,
+	shakeel.butt@linux.dev, tglx@linutronix.de
+References: <aKIvd4ZCdWUEpBT_@tiehlicka>
+ <20250818120819.26709-1-zhongjinji@honor.com>
+ <aKRWtjRhE_HgFlp2@tiehlicka>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-19_04,2025-08-14_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 suspectscore=0 mlxlogscore=999
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2508110000 definitions=main-2508200007
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE5MDE5NyBTYWx0ZWRfX6nrVr8GQuiM2
- KpjmSaQeCD+L4Xo8HZem/Sq+wiCbpltxbCytOR+N8x61m38VYPq6poGPjOnGit/hsZYn8ivdRgF
- bY5K+BX2GWQk6V1LjuiSqrdzBsKYtKOb44Uf/vAL/OjS4aY5Ilq4yLEEacafLde7CuWUTVvqH2P
- 1furpmQ6sPJr71xRnjQ8XqEY8N8V18arQD7y6SGMZlQBkspOKSx1nTanvVEWmXMfxt9ZddnzjW+
- KMKf8+WjGcVZnYnNDFAys09xbO0fKtzCWwU151mf1HZDyB90k3kE0aaCrgqKvFTlqpbJAa9LzKI
- exHqAx/dG6oABfEE2CBw+NrYTwuadPkrDFv2YqrZawWDcEsiHyp79EuoAsCQb33VofrnXTWMjYc
- EGpUw5V/ABbuV5d98GU7IUMv7B8dOQ==
-X-Proofpoint-GUID: wwEvDZgrz76BuuzQ800K3COTnMBSVo6E
-X-Proofpoint-ORIG-GUID: wwEvDZgrz76BuuzQ800K3COTnMBSVo6E
-X-Authority-Analysis: v=2.4 cv=V94kEeni c=1 sm=1 tr=0 ts=68a51f22 cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=-pbL9rYvnyYrJvq5bQ8A:9
- a=UhEZJTgQB8St2RibIkdl:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=QOGEsqRv6VhmHaoFNykA:22
-X-Rspamd-Queue-Id: 03EDF1C0004
-X-Rspamd-Server: rspam04
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <aKRWtjRhE_HgFlp2@tiehlicka>
+User-Agent: NeoMutt/20220429
+X-Rspamd-Queue-Id: 541ACC000B
+X-Stat-Signature: aw4fa88c1e9dmyuuksadjq6uhyixt6ii
 X-Rspam-User: 
-X-Stat-Signature: ze1mrexc44f8j3attcyi5ow8u7yow5e8
-X-HE-Tag: 1755656287-288013
-X-HE-Meta: U2FsdGVkX1+fe2iGoBcVRDIdbKnp9Il1CPt250wlHDPP7S03yWmD9gy+ATAkclIK+FgIQLXDYxnZ7sI7e9w+B7EGHRFQRWh60Ju/2V8QDjgx+d/m7Cx4N38yUjCmtnlEq56rBRxpbDZ01MfL3JMXmj9QryN0Xjo3Fdb9Y/ok0SJ7PH8/PAiV8SDe4jMu/UV9sEMoAds9mR0IbSMH8TkC4sBOR/L5xzVieEiLxqCUfFKuRuf1M279HIE0V72FYaKx1B7fCi10EP8F8WrhXExH4udQQewxOfd1H5uX04n2Jp17FOEsKArKej1UTefxYKH3yPGmpYG53parrvi90TUGmyScl0AIz9F2cfGzx4b8kXMB84C9S5OCaL6BfachRYmxdc4Yjzh6chJdS2gKV5dXq8gdMNJlmiCi2DzDDH3E7dJE0oZpke3tE+3bVRin1JQdDH6+XrlTg2wx3TrCZSc1uJAva94+feiNfk0nHK2ZvTJUz8uY6hQ26kP9DePchb31Ng7CPZMQVvK0Ts3frVpLAGAWyLGyY8zP9TuFH524yxu8uWvRiyfPYbK5ax9uzuhwjgkS0pJ0yEom4qpDg59t9SBRiNJPKGuRRuP9gnTGNghAXUnOtxbrDJPEC4Q5ORfWFK9R/2rB5AL3cTCtqiA9md+c2NfQA9t7uFiCt9EWXwf1aaOu5mprbuSEMFV5M4hjSOY3WdihT4+oWcxFv+0vy+jNXthvtFHbJZZzysZirK9x1R5A09Ait0+6G7q+TnSnHXd1/Wt7ajdw2xgJKfq2E0jgFDfgT1cHI+fSYPNY915P6A95iG4f0TXBe3nuDPiYVa59ycHK9VFPHYIkINTEUlT0Xsf5f3Y7rZ4U/8RoPom3qL5S/gUtp1O7ixyte26NtRN2FSFlAAgz+6aOq+99IQ==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1755658394-193940
+X-HE-Meta: U2FsdGVkX1/lDCYCp/daoMWzAmpLHAP2hKSRLTjXB3GhRzqc8I3Y1V5eBABEQnzQnil+aRxXOemFeje/aoY1YtaAtFWzpLV+W+EUgDoHlnqNmSx+1Xfig9Pp73v82QVZ8y/DJj65tq/PY8esxrysaHDm6CwulNaw63a9MzDcFC9y0vWKk3L0e+ZUqhNzaf30qQs/pdkbalKt6uMsYXkRE5DN3qAxT4PUtJym5ZkOMd2JgxUeKr6fUwcyVnO2sB+voMXp7QwiO/lA5XAaZ9dyF0tBsIan+lTWVJ0OdDJp42sEQ0ozk45sfEFJcr7RYBCxcEJRp4GUFW0EIVhP+JQdTHdjqjZ16a2kZ4QQoKCyv3610gvYhZ9+TEvzC46Q8V9pEmZg8+90bAoNJ07m8vBiBPAlFdl44QRdG/Xck62Whv+8VAubLVbtwX3Ew8mVnlB8Jgiw/btnIF+XX4YK5c1R6ii4P5I4nnLYtAcIGrbXW9VNZz3hnEL34lwctFZb4HLVdpe7aidlF09eyPdoDXR2lob4yw/F9GW5M62kYj1dyAyRBgCQiBC9wlW4+M8WNrsTobztBB1ORImaLKQ5BWFN1p8DnVhH0VbmCUXUPG7GxlKjwDDI8gxgY39VK4UmXFvNxlN4NisbZkcL5tJVt+ZBgjNk2O/Ej5QaYAW2Gr2rNELnrU3sBA8kEqes3FLvYFr5O8hDkHkROKLdrb0WZDytrXyFmZkN804xef/tiL5Gs2HtvRbo+Si8UXxRQdwGiPYxCPF7orS5MEggOEIPebgL5ZF0hoOEHwVxV89riJjckfxpQhW/okUqVlE1s3U52vHCYlJiivXF0hdrY7C0I+K0mb5Nvu8ewg92FGGpLwN/ZEEGzEFUmkbH/Xox0f6VuJgmn30NTk0b3cMi1wMsgDMaXPMdVhHBv5HaaaEGz4LpYzS62u6iGDAoRFyTW/BBNjSqfQzRLRsPuKU+IE7I5za
+ MkSbcYm2
+ ab2wRTqQqXZj49RYY1EeZSz1JfywDqiPfOYJL2gtfBhyHyRUVXa92HjC4489M1X9MtHclDCSFKTi3UCDW/zZFEks6GyQf+U0qdSp5ulJfImPUSbyW4WqucgK7kVsh1VxEcb/8hg6BpRILVSnFAXtUl4H7KB+jUes6aPg2zGQamRtfL76GT6eYiwFkztryt3MGWmBnF5qs/lkgyD3YiTD2yUezTfova/0zPCqqI+BXsQYaPV865gxzoCam5OoQhadK7b+uo7ZkFdCWmAt+2tW1vG9PNwatyTgVhnPIktJOScyCyp9EMJO/jGnng5yldhi2nbF6bHF+s152yckDQpkP42/jGw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,161 +150,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Khalid Aziz <khalid@kernel.org>
+On Tue, 19 Aug 2025, Michal Hocko wrote:
 
-Make msharefs filesystem writable and allow creating directories
-to support better access control to mshare'd regions defined in
-msharefs.
+>On Mon 18-08-25 20:08:19, zhongjinji wrote:
+>> If a process holding robust futexes gets frozen, robust futexes might be reaped before
+>> futex_cleanup() runs when an OOM occurs. I am not sure if this will actually happen.
+>
+>Yes, and 2s delay will never rule that out. Especially for frozen tasks
+>which could be frozen undefinitely. That is not the point I have tried
+>to make. I was suggesting not treating futex specially because no matter
+>what we do this will always be racy and a hack to reduce the risk. We
+>simply cannot deal with that case more gracefully without a major
+>surgery to the futex implementation which is not desirable for this
+>specific reason.
 
-Signed-off-by: Khalid Aziz <khalid@kernel.org>
-Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
----
- mm/mshare.c | 116 +++++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 115 insertions(+), 1 deletion(-)
+Yeah, relying on time as a fix is never a good idea. I was going to suggest
+skipping the reaping for tasks with a robust list, but that still requires
+the racy check, and your suggested workaround seems more practical.
 
-diff --git a/mm/mshare.c b/mm/mshare.c
-index d666471bc94b..c43b53a7323a 100644
---- a/mm/mshare.c
-+++ b/mm/mshare.c
-@@ -19,14 +19,128 @@
- 
- const unsigned long mshare_align = P4D_SIZE;
- 
-+static const struct inode_operations msharefs_dir_inode_ops;
-+static const struct inode_operations msharefs_file_inode_ops;
-+
- static const struct file_operations msharefs_file_operations = {
- 	.open			= simple_open,
- };
- 
-+static struct inode
-+*msharefs_get_inode(struct mnt_idmap *idmap, struct super_block *sb,
-+			const struct inode *dir, umode_t mode)
-+{
-+	struct inode *inode = new_inode(sb);
-+
-+	if (!inode)
-+		return ERR_PTR(-ENOMEM);
-+
-+	inode->i_ino = get_next_ino();
-+	inode_init_owner(&nop_mnt_idmap, inode, dir, mode);
-+	simple_inode_init_ts(inode);
-+
-+	switch (mode & S_IFMT) {
-+	case S_IFREG:
-+		inode->i_op = &msharefs_file_inode_ops;
-+		inode->i_fop = &msharefs_file_operations;
-+		break;
-+	case S_IFDIR:
-+		inode->i_op = &msharefs_dir_inode_ops;
-+		inode->i_fop = &simple_dir_operations;
-+		inc_nlink(inode);
-+		break;
-+	default:
-+		iput(inode);
-+		return ERR_PTR(-EINVAL);
-+	}
-+
-+	return inode;
-+}
-+
-+static int
-+msharefs_mknod(struct mnt_idmap *idmap, struct inode *dir,
-+		struct dentry *dentry, umode_t mode)
-+{
-+	struct inode *inode;
-+
-+	inode = msharefs_get_inode(idmap, dir->i_sb, dir, mode);
-+	if (IS_ERR(inode))
-+		return PTR_ERR(inode);
-+
-+	d_instantiate(dentry, inode);
-+	dget(dentry);
-+	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
-+
-+	return 0;
-+}
-+
-+static int
-+msharefs_create(struct mnt_idmap *idmap, struct inode *dir,
-+		struct dentry *dentry, umode_t mode, bool excl)
-+{
-+	return msharefs_mknod(idmap, dir, dentry, mode | S_IFREG);
-+}
-+
-+static struct dentry *
-+msharefs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
-+		struct dentry *dentry, umode_t mode)
-+{
-+	int ret = msharefs_mknod(idmap, dir, dentry, mode | S_IFDIR);
-+
-+	if (!ret)
-+		inc_nlink(dir);
-+	return ERR_PTR(ret);
-+}
-+
- struct msharefs_info {
- 	struct dentry *info_dentry;
- };
- 
-+static inline bool
-+is_msharefs_info_file(const struct dentry *dentry)
-+{
-+	struct msharefs_info *info = dentry->d_sb->s_fs_info;
-+
-+	return info->info_dentry == dentry;
-+}
-+
-+static int
-+msharefs_rename(struct mnt_idmap *idmap,
-+		struct inode *old_dir, struct dentry *old_dentry,
-+		struct inode *new_dir, struct dentry *new_dentry,
-+		unsigned int flags)
-+{
-+	if (is_msharefs_info_file(old_dentry) ||
-+	    is_msharefs_info_file(new_dentry))
-+		return -EPERM;
-+
-+	return simple_rename(idmap, old_dir, old_dentry, new_dir,
-+			     new_dentry, flags);
-+}
-+
-+static int
-+msharefs_unlink(struct inode *dir, struct dentry *dentry)
-+{
-+	if (is_msharefs_info_file(dentry))
-+		return -EPERM;
-+
-+	return simple_unlink(dir, dentry);
-+}
-+
-+static const struct inode_operations msharefs_file_inode_ops = {
-+	.setattr	= simple_setattr,
-+};
-+
-+static const struct inode_operations msharefs_dir_inode_ops = {
-+	.create		= msharefs_create,
-+	.lookup		= simple_lookup,
-+	.link		= simple_link,
-+	.unlink		= msharefs_unlink,
-+	.mkdir		= msharefs_mkdir,
-+	.rmdir		= simple_rmdir,
-+	.rename		= msharefs_rename,
-+};
-+
- static ssize_t
- mshare_info_read(struct file *file, char __user *buf, size_t nbytes,
- 		loff_t *ppos)
-@@ -106,7 +220,7 @@ msharefs_fill_super(struct super_block *sb, struct fs_context *fc)
- 	inode->i_ino = 1;
- 	inode->i_mode = S_IFDIR | 0777;
- 	simple_inode_init_ts(inode);
--	inode->i_op = &simple_dir_inode_operations;
-+	inode->i_op = &msharefs_dir_inode_ops;
- 	inode->i_fop = &simple_dir_operations;
- 	set_nlink(inode, 2);
- 
--- 
-2.47.1
-
+Thanks,
+Davidlohr
 
