@@ -2,92 +2,93 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E204CA0EDC
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 10:34:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4465BCA0EDC
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 10:39:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 432578E0056; Wed, 20 Aug 2025 06:34:07 -0400 (EDT)
+	id CCA2D6B0122; Wed, 20 Aug 2025 06:39:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40A348E0003; Wed, 20 Aug 2025 06:34:07 -0400 (EDT)
+	id CA2166B0123; Wed, 20 Aug 2025 06:39:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3475F8E0056; Wed, 20 Aug 2025 06:34:07 -0400 (EDT)
+	id BDECB6B0124; Wed, 20 Aug 2025 06:39:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 26D138E0003
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 06:34:07 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E91C61DD575
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 10:34:06 +0000 (UTC)
-X-FDA: 83796775692.14.A9F74F1
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4532A160008
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 10:34:04 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=none;
-	spf=pass (imf08.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AC8166B0122
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 06:39:33 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 527061DC316
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 10:39:33 +0000 (UTC)
+X-FDA: 83796789426.26.B533CBC
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 5BED7100005
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 10:39:31 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eci2odmY;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755686371; a=rsa-sha256;
+	cv=none;
+	b=IHnfeqfaJjkhNnbB/XhO596NHtLn7DCOWUL8vL6kK22VozSk0MDHd+N+1qJ6wdO1Hodz0e
+	9ApRZU1BKSbog1UKhrlG2oz19T41HSBPVNf2Abvr4qbO+1/8NVtfY8CNRKC1z7w+WiV1KH
+	VYTvWLn9W6u9xpwqFPu/scB1lulJhMA=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eci2odmY;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755686045;
+	s=arc-20220608; t=1755686371;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0JEL0qQNPV6M/qOGIsQOAetnYYV4YPCbvB8NI4rcmrw=;
+	b=oYCzadacgivQHR+xLAkD3soenxVg/wPZ+NDhCGcAKXDQxMhLk/bj+XaCPCBy4xPPVj2pjL
+	YLOaOSh5S/YUUODkTU41C+O3bvUEWIomL+BL+GNOmpwPI3Pu0RfetHeiAvOjWghjzI6yTP
+	82IZyKUpKnFPkBfo6xjwNaFIDLtzJdE=
+Message-ID: <d9510f7c-c9a0-4ebe-87d5-19ad6a783121@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1755686369;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AsjZMMtaBbupc4oGzIo3XvAEclb3sb0eigWneHj5NVQ=;
-	b=DR/tdLrdyCv//yKvA7TvnfDnGEJ83kOINBVgZGHRVqX/LY53wYN82KJmGXRgftUaDiFPJX
-	O1mpaX6hrNwGDubzfJqCedExAUyi4JN5WaehKx5YGxYv1EFqnNLvtVcUc+0Ykhq/UOjP5H
-	N2YAJs8wzoJo5Wl+V7103Hg3yA7AmTQ=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=none;
-	spf=pass (imf08.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755686045; a=rsa-sha256;
-	cv=none;
-	b=I+8fDedcr+tDnY9ZTd/rOQgdCdwJymNXGQzm8eeM4sskAeVFPhmZ3pfzJkctc1SiZcfAGj
-	mSoEHVifKEigP2LwqkR/pi1RXNw7oKyg8paJ7ly5ckV9gE/r2dmVI2BLXZJykx02KHgvO+
-	YMQdvbJAxPQri1T8H1K+2JG9YFguIDA=
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4c6N6g74knz6M4qN;
-	Wed, 20 Aug 2025 18:31:55 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5B24F140119;
-	Wed, 20 Aug 2025 18:34:03 +0800 (CST)
-Received: from SecurePC-101-06.huawei.com (10.122.19.247) by
- frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 20 Aug 2025 12:34:02 +0200
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Catalin Marinas <catalin.marinas@arm.com>, <james.morse@arm.com>,
-	<linux-cxl@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-acpi@vger.kernel.org>, <linux-arch@vger.kernel.org>,
-	<linux-mm@kvack.org>, Will Deacon <will@kernel.org>, Dan Williams
-	<dan.j.williams@intel.com>, Davidlohr Bueso <dave@stgolabs.net>, "H . Peter
- Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>
-CC: Yicong Yang <yangyicong@huawei.com>, <linuxarm@huawei.com>, Yushan Wang
-	<wangyushan12@huawei.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Mark
- Rutland <mark.rutland@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, <x86@kernel.org>, Andy Lutomirski
-	<luto@kernel.org>
-Subject: [PATCH v3 8/8] Hack: Pretend we have PSCI 1.2
-Date: Wed, 20 Aug 2025 11:29:50 +0100
-Message-ID: <20250820102950.175065-9-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250820102950.175065-1-Jonathan.Cameron@huawei.com>
-References: <20250820102950.175065-1-Jonathan.Cameron@huawei.com>
+	bh=0JEL0qQNPV6M/qOGIsQOAetnYYV4YPCbvB8NI4rcmrw=;
+	b=eci2odmY5AvMvqAXli7nCNec0jkbmwDAhyukUUGK62nOaIEuwrgywZPdZcyNRvpAebM5+I
+	9TJEGKYFlNJXi9+sIRDBTSFavKfrP3vtRrMG+Jz4nyHtAT3Bb+fexCktTxAKI5kHRGhm8H
+	5OxSh3bIArxMHr6twIFrcXSObG+juGM=
+Date: Wed, 20 Aug 2025 18:39:21 +0800
 MIME-Version: 1.0
+Subject: Re: [PATCH] panic: Clean up message about deprecated 'panic_print'
+ parameter
+Content-Language: en-US
+To: Petr Mladek <pmladek@suse.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-kernel@vger.kernel.org, paulmck@kernel.org, john.ogness@linutronix.de,
+ kernel test robot <lkp@intel.com>, Feng Tang <feng.tang@linux.alibaba.com>
+References: <aKRJKZHgcxyNF3y7@pathway.suse.cz>
+ <202508200907.PsZ3geub-lkp@intel.com>
+ <ae9bb2ea-c6e5-4a4b-ae25-aea1d6fe084d@linux.dev>
+ <33a897b4-7d9a-4641-9c7a-07c19bb9cb6f@linux.dev>
+ <7a34da58-874d-4271-9dbb-7991468d58ff@linux.dev>
+ <aKWWcPOf9qPIoCe4@pathway.suse.cz>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <aKWWcPOf9qPIoCe4@pathway.suse.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.122.19.247]
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- frapeml500008.china.huawei.com (7.182.85.71)
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4532A160008
-X-Stat-Signature: t5yhibc5qg9qjxj85sqx5ja71p3ae1os
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 5BED7100005
+X-Stat-Signature: ahwebjdqxkkfqjy67p6ot3zqu4qsg1ng
 X-Rspam-User: 
-X-HE-Tag: 1755686044-44924
-X-HE-Meta: U2FsdGVkX19j7hrtgJrOoQficyBofMxP0Qsxw7IK/DzYBF0SsTo7ezgbMaqnKL4AIKw1SPTA7/7+PCsOutcN7wqqt8PpyRDNCFf8XDCkiSEI3Pav26ZVzNe41AtgXJt4d1+L26JeSwCn9WuSr5u7/NiiGDXl8uNtV03d6d6OCKOrS+YGSCuNNfkLfKRppT/oZ6NbdpAguda8PkzPIPHT1NNaXOhXXYQhJM/X6+J4qjK31N5YxOw9kl/u2He4zx7Y3wLA8bRQZWcGGqJuM0Sop3iWSVkQOYHVt7ZyLhmrQQQW0SxRnwD7tRhT+Ry6HSJl2JAbi/bjGjaPMjWfPQTeNFlAsqd7E8oQ+9Z4faSym1gYZBv+qj6F8OBZoEMV+YCpm9jrEovrtivLbOpHlpA+HD2zZ+RfAt0MnmPVPJGzhvSO9QbWY5lAE/OKHRCUvabH8LLvWtg9ehJIw+xvbOjP/tAeIUpRffKiokdYtvfJApimtVkDa49MOzMJoX3vPZkGj7vFuF5nteKkMI0wAEoSeKA14ZAuYamxJ91QixuI1OsrwuLP2KTzBwX8VHoKiNg/oUwMfvy07X0SbsDYvPrW9vpyzYAZcWyhu47lfTIMJegCueE6uqI4B7rLGGomcaqFU3hcbnWNeNDyCjxztIIr17Od/0bbIT1NFzmhYfnP9XWfssbhrXxuBzrdXlESBXCtZMYXzjGl8rp/7hEG80S5hfep+9t7DMg+ofG2jewRYQpGle2uxOER3pYMpWQCWUZA8mz1oSHYRVpMVnDquaZLAnB5yAK5Lc8FLEBB+Zwry1gqupkrtrsHhF/Q6ZfTI1BEqPdL6nYltwvxTEMCGgtlg0Uvv3UnNFDcwEBDtHIpMsC1EvNoI7gYYlfh6KkiYJeUSp6XwJi1KAA=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1755686371-193503
+X-HE-Meta: U2FsdGVkX1/yxEMlXh79sACYPcQgNX94LzJrlX3yfWjWNJdL7Cbkb9ODzXEGAdOHJFr3gv4nIj6O0XzqXXhlGcwQdXBMoILnILavJAOEsB5QcREv9kxBOsemo9zKViAs+cA4IGG9GXSpCSuZW2u4+vGgcwCoTqqjzbY7AnqMC4I24das9uY+3fn9DfaXel+jR7ozSIJGVBMjKX6q4zpKuY6s5LwlhTwTJh4aHs23AYvNedKzvSLpFUsCP/zvumBw5kruUiiooxD88jvN3rOcKL+5Lh5lJzDBqbOIacWX15g1eNPUHSM/1ggNvV2bMUgw7suUnGkOjlpqsfJwDt4Vb8XKbNxDAx86dYWYL0yPVweG8m5e9DkGY2IxksyQH5iRVLCLBYsuuno/4wWdXSIkSP9ebIgIPVo5mmYToMZKBnm9I+yGdRruwsf2WmiVcl0hpHqlAToWtNljli/YttTA+RF91pOUPcCycaPOUNTbRlxf6Mb7MWaN1f+vmsj5lvHpKZoCOffFtslEsFBvZixvAk2csH9cpfMkFC55oDFub6aH5j4mVrHPB6fHrh0n5ExBxWbFLZ5WCJI8RLlCEELUb+T8sj4YBHIY2MHnc3nq4GKL6luNDpkLtVDX4dZx6JmyDa/b7Yrxk0vg1mHRcj9VfcKnwo/UPmoUwdDefF5OXAGvEPhrn9HuZiBimN+DDhgBGZpa7mU4CF5iyFQWPSaddGpgnVUg6ybE3wo21otv6xAoa8ijrhj5ZOlCZ+Zjv76sAFxly4ePJoYFsrwluZgtgdGY/P4vMx41Ik7FsUmgjA9k9WhGdVyNOkPAqzbBuuRgu9cHMx4OrLB9ZzRrmMf5dBB4bvoc7+AH/7hPGTqzRhheBhtb8q4N/tjrAhcQJ2wmfSsXV1ihR2UklH8vn/MClo7mCzsegADyu2BOp9BOLL14HYeneiqt5bUilMvT3AXRtxC59arCXnDNwPZ0VFj
+ iHYowtLR
+ WakS8f4KP5gfjbIFCrNjKWD6wvbuXIiz06Ee4wLAAbX4JlB9o/wIhdfU5yTCcCV1//Sz5UoTYVpC3sK47bYCpdNAaBTPoB96D+wqTRZNPx/G8SysJDP/gMozcHUxQNB91MDbqjrBqbgPhdj4cWO/V5yX1AgE7AmAiYrzyjflk8cTG4JtXmd5CQ3d9kHZvk9ORw7rwhtf0orGpFESY7wdf8lOOeS4ItzhZ2znBE32HuCJhnH6DbZAwwe9qon8ATYeiqy9aInhb/lpm9Eg0mUm335sNKg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,28 +97,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Need to update QEMU to PSCI 1.2. In meantime lie.
-This is just here to aid testing, not for review!
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/firmware/psci/psci.c | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/firmware/psci/psci.c b/drivers/firmware/psci/psci.c
-index 38ca190d4a22..804b0d7cda4b 100644
---- a/drivers/firmware/psci/psci.c
-+++ b/drivers/firmware/psci/psci.c
-@@ -646,6 +646,8 @@ static void __init psci_init_smccc(void)
- 		}
- 	}
- 
-+	/* Hack until qemu version stuff updated */
-+	arm_smccc_version_init(ARM_SMCCC_VERSION_1_2, psci_conduit);
- 	/*
- 	 * Conveniently, the SMCCC and PSCI versions are encoded the
- 	 * same way. No, this isn't accidental.
--- 
-2.48.1
+On 2025/8/20 17:33, Petr Mladek wrote:
+> On Wed 2025-08-20 16:57:48, Lance Yang wrote:
+>> On 2025/8/20 09:56, Lance Yang wrote:
+>>> On 2025/8/20 09:54, Lance Yang wrote:
+>>>> On 2025/8/20 09:31, kernel test robot wrote:
+>>>>> All errors (new ones prefixed by >>):
+>>>>>
+>>>>>>> kernel/panic.c:952:2: error: call to undeclared function
+>>>>>>> 'panic_print_deprecated'; ISO C99 and later do not
+>>>>>>> support implicit function declarations
+>>>>>>> [-Wimplicit-function-declaration]
+>>>>>        952 |         panic_print_deprecated();
+>>>>>            |         ^
+>>>>>      kernel/panic.c:958:2: error: call to undeclared function
+>>>>> 'panic_print_deprecated'; ISO C99 and later do not support
+>>>>> implicit function declarations [-Wimplicit-function-declaration]
+>>>>>        958 |         panic_print_deprecated();
+>>>>>            |         ^
+>>>>>      2 errors generated.
+>>>>
+>>>>
+>>>> Oops, panic_print_deprecated() is defined within the #ifdef
+>>>> CONFIG_PROC_SYSCTL block, but it's also called from panic_print_set()
+>>>
+>>
+>> If Petr is cool, @Andrew could you squash the following?
+>>
+>> ---
+>> Subject: [PATCH 1/1] fixup: panic: clean up message about deprecated
+>>   'panic_print' parameter
+> 
+> The patch was malformed probably by your mail client.
+> Below is the fixed and revied variant.
 
+Yes. My client messed up the formatting - git send-email it is ;)
+
+Thanks,
+Lance
 
