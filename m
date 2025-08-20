@@ -2,89 +2,98 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A41FDCA0EEB
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 01:23:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 45A67CA0EEB
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 01:24:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B1CE8E0013; Tue, 19 Aug 2025 21:23:35 -0400 (EDT)
+	id CC93D6B000E; Tue, 19 Aug 2025 21:24:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 462A48E0011; Tue, 19 Aug 2025 21:23:35 -0400 (EDT)
+	id CA0E86B0012; Tue, 19 Aug 2025 21:24:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39F928E0013; Tue, 19 Aug 2025 21:23:35 -0400 (EDT)
+	id BB6D26B0022; Tue, 19 Aug 2025 21:24:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 297D98E0011
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 21:23:35 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4606A1402CC
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:23:34 +0000 (UTC)
-X-FDA: 83795388348.29.0A827EA
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4CD0380008
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:23:30 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf02.hostedemail.com: domain of gubowen5@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=gubowen5@huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A80656B000E
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 21:24:00 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 797461A02E2
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:24:00 +0000 (UTC)
+X-FDA: 83795389440.01.F723070
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 02ED91C0002
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:23:58 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WZaPJdoc;
+	spf=pass (imf21.hostedemail.com: domain of kuba@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kuba@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755653039; a=rsa-sha256;
+	cv=none;
+	b=t0WOFpPIYAoJpS/K4PdUVbN+v4R9PqlAdJuY6GnXNkFbhA10Hrf2VLqZTX4smmo+a+Z0nu
+	/a7dJb1INF2UGw3eAZ2oIO4O3Giaez9dmSauS+XhwKBl80tV/JYcrQ/BlckytshXVtj0h2
+	UiwfnnwnlUjT+jk+yv9q3Z38qSqsYys=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WZaPJdoc;
+	spf=pass (imf21.hostedemail.com: domain of kuba@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kuba@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755653012;
+	s=arc-20220608; t=1755653039;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zbZ5GU0VLxCc/J1wKxnJ3GKYSTXHR9AnUt7blRGunNA=;
-	b=DqeqNBu69a38BHY1POy7nxzPVQH+iG9S+B0DkP5E67/l352bwok5A6ghTM7sYKEkMNUQ5u
-	HMmqbh5NSwxs1PajuEXbqo3vHmq+ler0S46Z5fJqFRQd3O6wS870DC+hhy4pDce/O39Tp8
-	cfLkfd4parXjNd7I3TMzxRa4oWYSQHU=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf02.hostedemail.com: domain of gubowen5@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=gubowen5@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755653012; a=rsa-sha256;
-	cv=none;
-	b=3WWbWfd+XdF/GyKBAB0JLuscEph/0gm82D9NTW2qXQiAhlW4vHMVWkOKDQX6yGPpW0jdd9
-	MBivOt3xiYWGpBsPwEV4sCphy2RqLfQp60wO4Y/6NH+pm0ORVIVFp9nVolN5MNw39Fe7lm
-	hTO9FedtEK3eHIpnqyTtVWaaEDzZliU=
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4c67z43SRvz27jJ5;
-	Wed, 20 Aug 2025 09:24:32 +0800 (CST)
-Received: from kwepemh100007.china.huawei.com (unknown [7.202.181.92])
-	by mail.maildlp.com (Postfix) with ESMTPS id 37C4A1A016C;
-	Wed, 20 Aug 2025 09:23:27 +0800 (CST)
-Received: from [10.67.111.31] (10.67.111.31) by kwepemh100007.china.huawei.com
- (7.202.181.92) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 20 Aug
- 2025 09:23:26 +0800
-Message-ID: <a7829822-42dc-499a-b092-b9003a0e156b@huawei.com>
-Date: Wed, 20 Aug 2025 09:23:26 +0800
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1yGSbP5Zb472QC8qsZ0DjUb92uQAZgaivzP+otV/ahQ=;
+	b=wnpsYhwZ1bXyWV3ph/z38C7anRva4uKW10FW1vm2zHTT0QS9AgFjkafwbEix4YC9/9K3Hu
+	yi375R7X1FkizHlCYjm75FRqYj7My1roSNFjnqK91R5R4OE2SG8j0IPH0xnI2hgfe+tmDI
+	ndLs67XzTIK4nCRYZXBjjpN6jlfxAyg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B4A9643F32;
+	Wed, 20 Aug 2025 01:23:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBFDAC4CEF1;
+	Wed, 20 Aug 2025 01:23:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755653037;
+	bh=C+2GTR0YI18RQg7u25sMTQABBcMAstNJVqtMhULRkOc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=WZaPJdocCn479Xgj8B3WHfL6XEbteMRp4spYbJHrKRBsvPTNdt82w7J0ckf1sbZ3K
+	 v9NLjjrNm03pfouKO9pYrOz5WmbXxn0zgnY7eQhSHLKFALzAzd7gGxDXbAXO7ggY6S
+	 ZP6KuZGPuipzXROF92MMdH1DF++mTr9xnzIbQoqfGyqa/LtMo511gtA0Z8HjzXSyf8
+	 pykXVleVygK3hxM9bwoYGzDKOB33L3M0EUgvmgNfV3iFTsKEryFnjpp7f+S77kWBbj
+	 1i7g6Qf9xMxQ2SjhotyTIT4+ebodrg5TiFSBQ/AiC1u7MxNG8D99SIZ6KKZSBUxKmP
+	 009BVg9fIAqzg==
+Date: Tue, 19 Aug 2025 18:23:56 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Neal Cardwell
+ <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn
+ <willemb@google.com>, Matthieu Baerts <matttbe@kernel.org>, Mat Martineau
+ <martineau@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko
+ <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, Andrew
+ Morton <akpm@linux-foundation.org>, "Michal =?UTF-8?B?S291dG7DvQ==?="
+ <mkoutny@suse.com>, Tejun Heo <tj@kernel.org>, Simon Horman
+ <horms@kernel.org>, Geliang Tang <geliang@kernel.org>, Muchun Song
+ <muchun.song@linux.dev>, Mina Almasry <almasrymina@google.com>, Kuniyuki
+ Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org,
+ mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v5 net-next 09/10] net-memcg: Pass struct sock to
+ mem_cgroup_sk_under_memory_pressure().
+Message-ID: <20250819182356.75aa4996@kernel.org>
+In-Reply-To: <20250815201712.1745332-10-kuniyu@google.com>
+References: <20250815201712.1745332-1-kuniyu@google.com>
+	<20250815201712.1745332-10-kuniyu@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm: Fix possible deadlock in kmemleak
-To: Catalin Marinas <catalin.marinas@arm.com>
-CC: Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, <stable@vger.kernel.org>, <linux-mm@kvack.org>,
-	Waiman Long <llong@redhat.com>, Breno Leitao <leitao@debian.org>, John Ogness
-	<john.ogness@linutronix.de>, Lu Jialin <lujialin4@huawei.com>
-References: <20250818090945.1003644-1-gubowen5@huawei.com>
- <aKSYq17EUrXRGFPO@arm.com>
-Content-Language: en-US
-From: Gu Bowen <gubowen5@huawei.com>
-In-Reply-To: <aKSYq17EUrXRGFPO@arm.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.111.31]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemh100007.china.huawei.com (7.202.181.92)
-X-Stat-Signature: 18xkqgdacpemkdnaoruq876r8r53zg5b
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 02ED91C0002
+X-Stat-Signature: zt7kcoad8k7y7cqg8x18ru5gnp7xhb7b
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4CD0380008
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755653010-172321
-X-HE-Meta: U2FsdGVkX19+Jq2yGimXU2KzK1lRqiIYKLh+TZTH5OfptIT0nLW1xFy+dxkZCV103xFTIZmDyAB84QOMyqTaoBwbckjaJyvXqWWMCFlR05uWmqo27cuqhzPQEBm+LkU+A8hqjjN04K1ABdLj5Awne1bkhnSWC4IUkYwPhWgOL5gOFlql9VXTSZzMHFsyIBC2q9BXmUzItRT3yyP5M6N0uWPRgXU1PS8r/YhBPDFrOJrqObRIS04WiN9HcEFEBAvagJ6zS9hSUPOgyldxmeRHuyEMJd0DFrkVs8USEpBJOv4EIAZb+iju5x5gv4ljCdHiInFAJHGMDJnNWt2XlZ8DrnXm4nPih0MLFPuV9Yp+Z+GnmCWEarfc6FnXSeGrKFsD8XAvQ9EOhC2PR7tY7F+w9OaV9ZqKesQNWHb4IE+T5nII8Jl9McbFBkC1fvGtbF/DkV+wSUkJQgX9Ac+gf0r5d5fNcbZEw7ronDze8wp/fOKrjkXxqxjtMhlEyxvKwYnCYWEYnquj0g0MhavWYCn//RYiX21JgQvKBzxje30eCdzRmVM7DyQMDq2StNpviC5H9NjtmRc3SnN99hLcUZ3vxd00sZVwQu7Mt+g+xOBP/RcppYoHNgp9qfnAMtk0ah/Ml4ly4UV9RUvAUJbGpUQgfV+Cj8SM4mcUYpkMlZyYVa/41FzDR6en9qsevr/qqQkE4TTwCRRmG5Xuj7+TO8lpyrMS5TKIjGGYJj/W0746cw4VNTrNVXCGWpMr/TzQagorOlJdlqpggvYnf5SZr/SDyDsbgFydkafRpUe0cOhSLhHnQNpofg4W6kwUcvGZbx51c3MuBlT0ohf+NDpf/ZExl/PrHsfxzF6E6ab+ChDvV42g78D0zP1ZCB9A2uWTBcdWZfmXe/mozyuGzL9pnyuKMOQGmInaDz7gxxY6QOkxTLVOJO/eZB3P61IHcToYrfMwKIlVHuqqpP81L5aOVaM
- FxfQ14pI
- TRSYWQmBDPDbIMHt0Feeh8P4/BZEF7NrV9EYz3LMXPyKX0enQOSvY401X/qaAVR9kgaKfw9Nx3/eKIeCwp+aA3rDfsj8podV5LqN1Jly5uybgPiLLj0ENg5N/0Y+t9L/vJmVDF9e3LhCfZSQeDvwv77WAu5F3Xdyk7W9r2a+pG6uaobQE2vO15uud2pd0vK5f+M1ErQX5FE+/Tfg4hDpA5dFxZYqCJ1oUcgTted+ne49YW03jfCWe5glmWYz70AsvWuZ6w5cQDJt8FtUwRmdutCsLX1e69KjbRmWM6BxexFEB6EfSku7YTaDCZw==
+X-HE-Tag: 1755653038-886739
+X-HE-Meta: U2FsdGVkX1+cWSSpmWd22dlSrmDE+NYL1iJhzE5irl2ZHtFEqraYO4gXsgTn7zCKChOTba+4OFVXHJg5jUwAGE++bAAyZVBEwgb6KAyvlsdk6l2BRJesPBlF7y0irH6ENWD8lsi3CeoT3bZQbF7oRk31p5eHYXFhOhlC8hTmDmhbyUGSbI1ggW08LZoi1Fka24QyJh8vat3TI298Mamml3M7V0eIODBtXOFsavr0KWdobPvCH5YzAy4fUwyZTiPQD+GVRBPu3Xs318gKEVsmkQ9CtpqkQxa7eHNPLSLn0Hw6OU8UwsFx8nMozUE6IWp1zon/E2efyUt/qec9KtTzUMMaY0n7SdezXy9AhUrL5nGalr4viAN5bBw/g/wIZQ6MLYcZdDo84PpdmO/djJgkfDlkkpXsPd/rI/NFUC+sK5XLaQmWrTgQ3qnzrdQ/MwRdfaOG42ZuJz5XpG9i2J+Hdhnk4Wwwbd8W+WwrCC3BB1/JPLP6Tul3oGXkhy2if2qxLTppNt4IqJNiIPQ6pPUzbemnsK2jTh9YS3V6Za67VPK1mtJjRUUYy0IYt1iHz8Oyw3y9MeP1A1LXm72FeZ1pPQz9B7bSJPUtfoLsLwQsdGlEo7UxxVI0TnchTsAsCduLIbA+WE9rL6V5CGTk/I92aK4RGlq70IkI83pnuh7zASfEodTqxloRrDEpccrDBIh2O9qmKBSDfF7nSU2qlMNQr6Kx0QWAM7V8c7UQD/W7k+FNVFVVqBYr7oMILq9GowNAHzBlMlHG9HiHhJ6Tyr7TQEeC+GwY0ZQeoRkvMp3yQiEJq2iFDonu/jDi5P1O2kkdg0t8jeLTYZC4hZQUBzVTKRiVW6KpzKLn+bzpECuEElaav81Z/1L+o+SNjmGYp2HqSQfBsNZbQHtto+yTyOBwQ+tJe2Z7KWCnSu/oGwSSyaAjb3lkiiAsLM92NILz1WI06hlG4Ozmqxmn5761nAW
+ ymco4o0S
+ 9sO8L
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,45 +102,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/19/2025 11:30 PM, Catalin Marinas wrote:
-> On Mon, Aug 18, 2025 at 05:09:44PM +0800, Gu Bowen wrote:
->> Our syztester report the lockdep WARNING [1], which was identified in
->> stable kernel version 5.10. However, this deadlock path no longer exists
->> due to the refactoring of console_lock in v6.2-rc1 [2]. Coincidentally,
->> there are two types of deadlocks that we have found here. One is the ABBA
->> deadlock, as mentioned above [1], and the other is the AA deadlock was
->> reported by Breno [3]. The latter's deadlock issue persists.
+On Fri, 15 Aug 2025 20:16:17 +0000 Kuniyuki Iwashima wrote:
+> We will store a flag in the lowest bit of sk->sk_memcg.
 > 
-> It's better to include the lockdep warning here rather than linking to
-> other threads. Also since we are targeting upstream with this patch,
-> I don't think we should mention lockdep warnings for 5.10.
+> Then, we cannot pass the raw pointer to mem_cgroup_under_socket_pressure().
 > 
->> To solve this problem, switch to printk_safe mode before printing warning
->> message, this will redirect all printk()-s to a special per-CPU buffer,
->> which will be flushed later from a safe context (irq work), and this
->> deadlock problem can be avoided. The proper API to use should be
->> printk_deferred_enter()/printk_deferred_exit() [4].
->>
->> [1]
->> https://lore.kernel.org/all/20250730094914.566582-1-gubowen5@huawei.com/
->> [2]
->> https://lore.kernel.org/all/20221116162152.193147-1-john.ogness@linutronix.de/
->> [3]
->> https://lore.kernel.org/all/20250731-kmemleak_lock-v1-1-728fd470198f@debian.org/#t
->> [4]
->> https://lore.kernel.org/all/5ca375cd-4a20-4807-b897-68b289626550@redhat.com/
->> ====================
->>
+> Let's pass struct sock to it and rename the function to match other
+> functions starting with mem_cgroup_sk_.
 > 
-> I suggest you add the 5.10 mention here if you want, text after "---" is
-> normally stripped (well, not sure with Andrew's scripts).
+> Note that the helper is moved to sock.h to use mem_cgroup_from_sk().
 > 
-> Otherwise the patch looks fine.
-> 
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> Reviewed-by: Eric Dumazet <edumazet@google.com>
+> Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
 
-Thank you for your advice, I will pay attention to these points in the 
-future.
-
-Best Regards,
-Guber
+Hi Shakeel, looks like you acked every single patch here but this one.
+Is this intentional? :)
 
