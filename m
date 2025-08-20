@@ -2,93 +2,87 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AEA13CA0EF8
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 01:28:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2149ACA0EEB
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 01:29:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E4A18E0015; Tue, 19 Aug 2025 21:28:57 -0400 (EDT)
+	id B758A8E0016; Tue, 19 Aug 2025 21:29:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BC418E0011; Tue, 19 Aug 2025 21:28:57 -0400 (EDT)
+	id B25DD8E0011; Tue, 19 Aug 2025 21:29:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F9298E0015; Tue, 19 Aug 2025 21:28:57 -0400 (EDT)
+	id A3BF98E0016; Tue, 19 Aug 2025 21:29:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F3E28E0011
-	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 21:28:57 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D6018117437
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:28:56 +0000 (UTC)
-X-FDA: 83795401872.29.DF307DB
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 255A7A000E
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:28:54 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="BI/zpu6D";
-	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755653335; a=rsa-sha256;
-	cv=none;
-	b=Kt3Cr6ktrIXCMUa2ywJshIhbss6be3tN54O3CjcDs/s67Z2leFAGWNkieMTf7px+fyZxEx
-	l4NbLOO9w6Lrzpj87RLLRxp3WZnqghBwlwMTN6Gaoz/U+FRHsWBCa1Ty4F6HPz+ljli1vS
-	bDOcgHMBXaPtGHPtIWg6g8XseAUff1M=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="BI/zpu6D";
-	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F3968E0011
+	for <linux-mm@kvack.org>; Tue, 19 Aug 2025 21:29:20 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 30CFF14021C
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:29:20 +0000 (UTC)
+X-FDA: 83795402880.25.BB12387
+Received: from r3-11.sinamail.sina.com.cn (r3-11.sinamail.sina.com.cn [202.108.3.11])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 600C2120008
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 01:29:17 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=k12cfg6k;
+	spf=pass (imf29.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.11 as permitted sender) smtp.mailfrom=hdanton@sina.com;
+	dmarc=pass (policy=none) header.from=sina.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755653335;
+	s=arc-20220608; t=1755653358;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6ddgBw3mCPWmcVg5SkIp/yrU07evHNFdC+LuzP4v9Gc=;
-	b=DmD3m4NN+w9gbBnxMHuNwgauNNAVA+PKXTJsqRe38Td/bj5TbvmvkUcKFetgol+lFDzlxV
-	bDZl8lIcobJ2nws+8NNIU+O6+Gsi9qrAXl/CsTMVA8KvMe1B6ESV/gXVkSO56llH1qjg9Z
-	aPs9XeozFKVyhahWqdWwhBIm4Em7rMw=
-Date: Tue, 19 Aug 2025 18:28:42 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755653333;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6ddgBw3mCPWmcVg5SkIp/yrU07evHNFdC+LuzP4v9Gc=;
-	b=BI/zpu6DhZSKL3XzZ/VJbPaPs+hvb9svdPgDr5znV2PbyuEuBNzKNER2kvRp/123+Q1Pna
-	MDIzeU1CeYqyXkeEanv26zU+d7IrsDT9Mv1E1HDnm+3Q3i3jgem3C7LaBfh1oSE+n/H3Y3
-	gWkzqIMzE5KOtXr9pGq8XCn4BsDVUP0=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, Matthieu Baerts <matttbe@kernel.org>, 
-	Mat Martineau <martineau@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Tejun Heo <tj@kernel.org>, Simon Horman <horms@kernel.org>, 
-	Geliang Tang <geliang@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Mina Almasry <almasrymina@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
-	mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v5 net-next 09/10] net-memcg: Pass struct sock to
- mem_cgroup_sk_under_memory_pressure().
-Message-ID: <2v2te3knj66aszw6chn6m2u7chtje7r5ayrtufwop5c4vftx7o@kbf2ry2bgo3r>
-References: <20250815201712.1745332-1-kuniyu@google.com>
- <20250815201712.1745332-10-kuniyu@google.com>
- <20250819182356.75aa4996@kernel.org>
+	bh=IDafkYWgS7KusKN99KHqr7eNp5lhr4MsE3lDHCQLm5I=;
+	b=FpMm87vCdTJ3lxOZw7gBQ0yWrxjwe/wk8MwB8/na9sgpQxh5l6iP6J1SYR8UmYqPoLERYE
+	eWVG6C62O06yj9GnrBxOT/sn0nlwUA7TefkD3gr1TWseE1ZovNb8/9lEejHrIC4ru7GE8M
+	qZoMsAYluYHxSTQBE/EmMvF58i4W5qU=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=k12cfg6k;
+	spf=pass (imf29.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.11 as permitted sender) smtp.mailfrom=hdanton@sina.com;
+	dmarc=pass (policy=none) header.from=sina.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755653358; a=rsa-sha256;
+	cv=none;
+	b=khcyrnBV5pnSjADY4As9iaikHUdgXdg/f2xjm82DtmxYGMZ/nS54XFHEIOGzzdU59AOeAf
+	xCjQxA+iQYYz6nThPns2TE+osV7YqFYNTQV1nuBRvnfJuRfk1apTy5pjcHEytyqCA0quPq
+	yIt41zYFxMDbDgBDNIlyobQq4WtLhTc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1755653357;
+	bh=IDafkYWgS7KusKN99KHqr7eNp5lhr4MsE3lDHCQLm5I=;
+	h=From:Subject:Date:Message-ID;
+	b=k12cfg6kjMPe+0+5F7dChaSlmiuKNx/A/cfUfXmI3Hob3ooOKmtQTJ3Biimk9GcBR
+	 UnXT5TAPIFmsqOBw9Mw4x6ISU39P66toBQ078iIzNLrGNUgLoW5sXaCz+LejAldPQk
+	 OgKiZs0isfk8nurjprq610V+0VpWoMYH10uEeW/c=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([114.249.58.236])
+	by sina.com (10.54.253.34) with ESMTP
+	id 68A524E600007DD3; Wed, 20 Aug 2025 09:29:13 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+X-SMAIL-MID: 894876291954
+X-SMAIL-UIID: 7B0216A86C964D598B3BEA84EA01C3B9-20250820-092913-1
+From: Hillf Danton <hdanton@sina.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Chris Mason <clm@fb.com>,
+	Michal Hocko <mhocko@suse.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/page_alloc: Occasionally relinquish zone lock in batch freeing
+Date: Wed, 20 Aug 2025 09:29:00 +0800
+Message-ID: <20250820012901.5083-1-hdanton@sina.com>
+In-Reply-To: <20250818185804.21044-1-joshua.hahnjy@gmail.com>
+References: <20250818185804.21044-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250819182356.75aa4996@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 255A7A000E
-X-Stat-Signature: 6a184ynueij839uerpeoxgrryebeohsa
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 8htwk7e5behu99m8bjwi3mrfaoeoutbr
 X-Rspam-User: 
-X-HE-Tag: 1755653334-806642
-X-HE-Meta: U2FsdGVkX1/M4KddoQz4g/VOMt8tz/jxMKuopWefRm+b97hYXBHYJ5JMxc9vrM83WY2OT3scK8d/2MR5d25J5yjb4Hu2M8Y8ZhY85YIZhrZVwq+rd3QOMn5hO5xH5OsdA3Y1p9pxNxbKY6QhYMWMWk4s8GlEgc1K0Wn2Oywv9NLB2nBvczz4J6uv3rR38+ruBe69/9aB/wiRrnUlWnhLP0Tz//Oq3bB80T2SNsTeEaq2p0a5pSM6fQfH8s9wUIiSSVieE+x4rXFxemY/EOv4XsYZVbU47KfSv1HRYkrpRxMbmrM1LnCEF7WMcURTnJG4YzbWZImxU8PZ+RHoBTk1UUiTLZIjNrApijussG+rVam68DdoiIBRiTiU1WwarUh0aA6kmsUNuqw5e/xksZs2HojGtu8YUmWbKAQ38yyQFpOKKmOyBxzRkK3+R0gZNzB95HLPPEvYp0tMrgmSD9IoUQLmCkJgx9IOjQL1v8BwSuDHvq2Y/WMbWCwVqDwaKu/qaIY5qttlS8P4vvlkLFN7WeoYKtzM8Wn+q/XrKYatEETbTnNsYk/9ePRKl5/7U6q+oWloA3bYMg3WV7zCF4xc2rBUr2huJBVrRy9dfVlNK4/fduEZMkF8jJmYBskcssX5LYmkLw78P90tXATOciVMofdhd7FOTTcGHMMH9f2xrAzY0vFSPiI1zpeMYC/bHdrtIi3Xk9BiP9xRlFXpbq3zuovQMXescXQMQTvlkUKnvbixDC6wdsOszNremg28oWDxse7BcEIMOBGN7fcEWQyJnFE5MRKzgwuG3EoCu7hDAaij01LCmK6i+HxMXGWDAPWZi6wV4HhXwT6j3pnRB75EijnNCNZ2xE+LrElQiiS+Qc+VS3JnHjNs0vghfgKSM6cie1p7vOE6OVwNqycVUmuCzGl4jVnnLm0lRvJXPjwKTNTqrOeNWiyp7cH0BBNZNeO2TJLQSbP3calXW6Iajw6
- pYp0T/ZF
- nyDKT9YKG056RF8jWsO+05w5yLIMg91zFm9VAFi+Z20k2t5660zPL9ZowNB9eK4r5rzb4y64O7lCkek0cLLAL9YgCeqG0uxq3OXODMrpj6LHR5+TT0Faed815kbjDLCfARrgn9aF4WaMMnkR0a4l7UqotopYBNC4crCgCtr20XExWNBxqs9bKNv4esypyffia/oSMTGdHlTV93FoNRZ1V7MU8GqixIfi1qzdIFRKGODjInmVbc8R1iGC6fsCHs9vxGRPt93mvoWPjSuo/x+Yy77oCWAPiaJ6rD9xkvO0UX+iqc77MEyjtGIvHm6Vsr4Sgz2GF
+X-Rspamd-Queue-Id: 600C2120008
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755653357-654891
+X-HE-Meta: U2FsdGVkX1/uVh/5HgTouSdiSdZnT5NjuiHvuZ0QZFNnDea8FdBZG2xa8sFeHk66ELujCsapIH7CNY6GFhdb1U7aA1veyIyRUMSFlpsxW9UV/mTvBl5hOGR0vMaXUCLpM6Pxw/XgHueyS/FLbfBkRCjnCaNv8yPIuAXX8rY7lKYJ6Eb8M2V7v4ESivRLitjatG0BFWY1Yx7ilG8Slx5Co4PTmmvVsR7ycWgUaBKhT2hbo6+qB/gyTQ8PAcdNkH1bsFM9Bh7l953rtbBagttb/lJZWq0tGpEz3UYTTP3d7so0iNbdZVFHtQvVegvy5D9H7IxQu1acJbpQESHHuBl6UZzTPjpDUtuzzg3N+34aNbuT88hNBSwE4RyKaSO0Vpp8hOwKtnwftW0sG1pLWSHwsF63qC2TNEzfsv7FbmTYfEc5/y9ye/y92AMHlmZoWII9/pd5YlOCCBIHOO7tLDDSfCHmR8BDouQ9qmUszRIDH6cQXFJ4K67TUSOwrdZYnE6hrfvrTIoTrQRxBswWjjX8+Fosz0pcEdvPHI5PazQVDfOhefDehvQMttyV6qn2zcEWPk1nG5JCdTfXrJSu1gc381sf5pvGmWkwcDHTigkavvC24nz/G/hLZmqDF02Q1jm2wXl3uxAS3fqmRz+lfxGAg1JHH1hLooYZTn5s0Wi8MMaqGudUY04IzhmWN/B4JOQmBw/tBNd7ZGsL42P8AbNNKrDFVr+D5otVCDBNPzBmeAd63o5MTDg5StE9N4GMv11ytZsEmDFjcoIUqETpp520AnS4dUtAjzIU7OGYDgVPY8vPsrsQ9MAhmsrfwu/CGmxODCrka66ThlaIh+bK37yos7ZsrfrGZdcc4vMKJM9/jIRUxCeBN2e+1e3iyYg9nu0TxZOLiBxo5R+YObfEvSnic9t4GGMmE6c6qWWvICyWc8znQovr4SZZ6QizcZEPNsrkLaB1jwl5r7i1c7XxEQW
+ FNgpVCsr
+ aO/+8cV2Fr0mP0wg3Nui038eiTBzORu5nBvYltXEeRFvXtMEsjT9dm36wO3VRM88qYS+jJ4B96pJOTiKqC1QqzugDVW5fJWEBqUZQeaBBCAEYs/oufQDt+BoJLgK/qSPnfJPg2N6KEeFl0IhVDVUVUvjJqsWZKe2+rOClqAA3OZtJnHpxA+wZy34HU7O/iUzdYnRxFn5ZsJaXwSMWLyvAx546Jc5tSPU0teqwDUBUV6uLO/HVW1wqhOuNQla44cOvYBi5tHq6B4CRADpM+VxiMwD15DwV6/xkeYveCRceVCAsKTsutSo81NnDMWAQAnrZkOmVdScQ1+SrXLiNhpl54FBr7XMti85oR/s1e+wGfCDFmw0c3mTQf5Cizx85RkKky93cJiuUR0uHSTQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,25 +91,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 19, 2025 at 06:23:56PM -0700, Jakub Kicinski wrote:
-> On Fri, 15 Aug 2025 20:16:17 +0000 Kuniyuki Iwashima wrote:
-> > We will store a flag in the lowest bit of sk->sk_memcg.
-> > 
-> > Then, we cannot pass the raw pointer to mem_cgroup_under_socket_pressure().
-> > 
-> > Let's pass struct sock to it and rename the function to match other
-> > functions starting with mem_cgroup_sk_.
-> > 
-> > Note that the helper is moved to sock.h to use mem_cgroup_from_sk().
-> > 
-> > Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> > Reviewed-by: Eric Dumazet <edumazet@google.com>
-> > Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
+On Mon, 18 Aug 2025 11:58:03 -0700 Joshua Hahn wrote:
 > 
-> Hi Shakeel, looks like you acked every single patch here but this one.
-> Is this intentional? :)
-
-Nopes, sorry I missed it somehow. Please add:
-
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> While testing workloads with high sustained memory pressure on large machines
+> (1TB memory, 316 CPUs), we saw an unexpectedly high number of softlockups.
+> Further investigation showed that the lock in free_pcppages_bulk was being held
+> for a long time, even being held while 2k+ pages were being freed.
+> 
+> Instead of holding the lock for the entirety of the freeing, check to see if
+> the zone lock is contended every pcp->batch pages. If there is contention,
+> relinquish the lock so that other processors have a change to grab the lock
+> and perform critical work.
+> 
+Instead of the unlock/lock game, simply return with the rest left to workqueue
+in case of lock contension. But workqueue is still unable to kill soft lockup
+if the number of contending CPUs is large enough.
 
