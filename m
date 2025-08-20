@@ -2,91 +2,83 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 58BCFCA0EDC
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 22:16:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 78D86CA0EDC
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 22:22:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC46B8E0019; Wed, 20 Aug 2025 18:16:40 -0400 (EDT)
+	id 0C88F8E002E; Wed, 20 Aug 2025 18:22:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9C758E0011; Wed, 20 Aug 2025 18:16:40 -0400 (EDT)
+	id 0A06D8E0011; Wed, 20 Aug 2025 18:22:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD9A78E0019; Wed, 20 Aug 2025 18:16:40 -0400 (EDT)
+	id F1F558E002E; Wed, 20 Aug 2025 18:22:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CEC338E0011
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 18:16:40 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 507B21D8BE6
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 22:16:40 +0000 (UTC)
-X-FDA: 83798546160.08.F89CA5C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B12AD18000D
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 22:16:38 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DD6138E0011
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 18:22:31 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6C96B1D9DD7
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 22:22:31 +0000 (UTC)
+X-FDA: 83798560902.20.5D9042A
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A834418000D
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 22:22:29 +0000 (UTC)
 Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VbA1UGh1;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=linux.dev header.s=key1 header.b="eeXW/WML";
+	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755728198;
+	s=arc-20220608; t=1755728550;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tPDurou6bSdrKeGurqaqhGBttU7jigBrsnUWkI5zSd0=;
-	b=dGQXNMFltedhHfjU5A678AIDkbpfbfzMC+sdNm29DcnGqVbWgmTw1+MvNGuCj/liYbrPbn
-	HHcFLujVPZGd9IAfXGEh5SyI7IC6HmTA9qDREykbF+bEV/GcU8yGF4xyBMbP4jeLmTlHOP
-	s70jJCrKto0m8ND6WElAUS/a+qAGKpE=
+	bh=LKna9+pTrNiSBtEO552scEDaUumI8ZqvDqHtxxkqIFM=;
+	b=Nez8FQKFE46/LaiXxrfvfE7yxDPwsOtNsleHv3w5qfhZR3kb+LgK6SMc5HS+aDulXxxSRe
+	UTdRc443AZDixOkTCH/9LHv1dV2BunU09OLYwgvCdJ/V7u62iSQF+i9c7F4NhdRic+qO1y
+	XDo0iPiSFchK4IlDKsdW5mwA4a8RYI0=
 ARC-Authentication-Results: i=1;
 	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VbA1UGh1;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755728198; a=rsa-sha256;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="eeXW/WML";
+	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755728550; a=rsa-sha256;
 	cv=none;
-	b=JUmF9iUlbZ3BVJP58Vh9CWxGU1OKHaalg7DEFJl1gsyEfY+luHHeV6gb2HfWQAE+e2GwjE
-	aypv71LGfUuM/8u45w22Bkl8A5YaMQgwHh2uqmtNroYAzj8AV+RAOT/rlR1VPPcfqKEzLO
-	igJEzX43EGMPtcUc8/LztBM2tJhbPfQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id EADB261444;
-	Wed, 20 Aug 2025 22:16:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F6BC4CEE7;
-	Wed, 20 Aug 2025 22:16:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755728197;
-	bh=t+tWnrOdC52ng2PKCMOPQ3dU0wAXmGRrWg903Lm9s5k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VbA1UGh1nC3YLNxH36lmr0c4YOCpU6zi5divlNm5Vp7tVUEfHKWIjwqb3342Ktgu+
-	 dLDHwCayCyjiEeOWEf+EhacAOsU2xhK4a55nMVPYy30hDWPGs3zwiT/rI+Majx8b05
-	 XJp0xB1FwXZKAdOgSNjrg50hRj7tg2ppob0usfMC7Tz1EZecNieJgmhZQ+dMRbGLv6
-	 WAivW2gaszIZrtJTOv5XhfsX8KCmEVEXErinhfqGp4fZQjXCbd8vB8UDOTXk+jkd5Y
-	 JmeA4Av2AJiPd9enh172qDGMN7I343+BAUoJrCM0U2ifoLh3z+eZxAg4sqt7OFV7zX
-	 bxfNH3+Cosa7g==
-From: SeongJae Park <sj@kernel.org>
-To: Quanmin Yan <yanquanmin1@huawei.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	wangkefeng.wang@huawei.com,
-	zuoze1@huawei.com,
-	Andrew Paniakin <apanyaki@amazon.com>
-Subject: Re: [RFC PATCH mm-next v2 12/12] mm/damon/core: prevent unnecessary overflow in damos_set_effective_quota()
-Date: Wed, 20 Aug 2025 15:16:33 -0700
-Message-Id: <20250820221633.87243-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250820080623.3799131-13-yanquanmin1@huawei.com>
-References: 
+	b=OMzb5Rts4jWvxvthqYkWvhvbwcjygkGP8yk/vCAl8faDEuBnytAY3LsflFjCNhTrqk0B0W
+	TW+9RBFvo2XvKHR1/DpHXLkDr2F9LgHlRdhLdAN+/ZPrytKJiLMDDoeUzsJH+vVZztvJCy
+	3l1Wx09B3giTOF3tU5y571t7Qft67pI=
+Date: Wed, 20 Aug 2025 15:22:21 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1755728547;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LKna9+pTrNiSBtEO552scEDaUumI8ZqvDqHtxxkqIFM=;
+	b=eeXW/WMLq4obqxrBljin+eptqDeBv8yMznDNcxfiysjlI9wnD6ctl0ywYp5rkjziOAfyQ0
+	/1c4DMMJf4OXjjdefa0/hTbmG4ZUACQKWj2bxTSqKUCg5ew9NYGuUxGeUcHhwlmXYEDFNd
+	KNvQa5xnWbTUZx58x+ts+rGLw7/mLes=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Klara Modin <klarasmodin@gmail.com>
+Cc: Boris Burkov <boris@bur.io>, akpm@linux-foundation.org, 
+	linux-btrfs@vger.kernel.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+	kernel-team@fb.com, wqu@suse.com, willy@infradead.org, mhocko@kernel.org, 
+	muchun.song@linux.dev, roman.gushchin@linux.dev, hannes@cmpxchg.org
+Subject: Re: [PATCH v3 1/4] mm/filemap: add AS_UNCHARGED
+Message-ID: <hdxyep67zjudwbawdyasxhe4xeu7ckua35wo7whwy3zkjaa5ie@tibviq22ndhf>
+References: <cover.1755562487.git.boris@bur.io>
+ <43fed53d45910cd4fa7a71d2e92913e53eb28774.1755562487.git.boris@bur.io>
+ <hbdekl37pkdsvdvzgsz5prg5nlmyr67zrkqgucq3gdtepqjilh@ovc6untybhbg>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rpf5e7tkqp7a8kks8zh5h6fadoem4bob
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <hbdekl37pkdsvdvzgsz5prg5nlmyr67zrkqgucq3gdtepqjilh@ovc6untybhbg>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: A834418000D
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B12AD18000D
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755728198-206104
-X-HE-Meta: U2FsdGVkX1+2k9IjjDUrnGIapdIyd8Iw5NFWI9NeBz1QDkfcUZjbdJju88+Vc4yBlWYPVRaTzq0IJeb25NK39PQSNVyChgocA+8phWzVOwhOnIn7cv8Bee3f54GN8G+0MYTIyO0hFXgMqWyHNMXYvOoV0HKDYN/O10VB61qFopuodnxVFcYwK4ztuvBb7H9WMvLvN508TjYN5xKa2bh4HWAjUTjSwhIIBAR6pkUZHC+1kT5cYEVOgmmvz4/QPL2FT5M0vPgtFkYCSoZsSjPv+HRchOGXC8giz3AQzkKpovfpDnYIVZhdcgfP74WzzJFTqEx1Dq+bx11J58yV+G6+MnUg95Hl1uCQEbOA8iqwbc2Lc8g36l00HZ02NK4KbdVcbjhxsFdNVmqZQrFJJae4/aAjxgS88X3ivtf/egYRL2ue/nYjk/Id9k7oKKFaqE8hZsuKym+rd0FWw29ljCtEUWqoBIeL3vAcy9KosUX/9cPk3L/U+00fGn65T/lDKVrT5hX2wwYrl/ZsUPERMOhuJJaovE26TEY/Q9LvB9YJ0AYhm1CkIQ0jRCVk5L6ozNUMsCtlBdfG5vEa7XT85daufrVuNH0taZZXRjFbDYAV2p9HY9LMB5r3OyIPwk/noJlwhjODmzUmLVPLpOb5vXV6uAxiI+zd5QTykzGfdyp4PNHaDTrYKQo+fpbmQjdAWhAJcRnc7IZh9eF+Ihn4+Cw1vOluwTBLnbV+y1wzgUmi8V0u4lKO8KPMvC/HizQk9MRyMWQUQiZGkipTB/jej10KbNzGGt5/ISXrAjVA22RTdmslSTBRNCtWq7u2Yf9zYqOhYIy+vFoenAJ18MCupiVtBcR1HjJ1WkQ6MrChCmPi5NAX2DKbSQTImC0XJRqiqtvKJSapWRq+T5sVQtghr6gTuisRY7wpwW/pojp+5YLWZQ6pwLXbOiZaa+6bEcYeB5HzMTHho/HAuXqyslfC3tC
- Qus9tqFB
- xcfF3uMaSfb4q2cyt3OeO28Iyhv5yym8b9j4EebWTs3OuH9NHpLBSOMqwb1AR26+8j+EWRKhg8z+22XF3jZblr2ddKUDInbbojcPLpeUov9aewUewTNcbGZSlEE57aoiIucnQd5/LwXfk2fSt2GumBKDzD05uFnLixI565cXgsep018yvO+6xicE/wFPO4p+t0tIC3geSkRLN8/GQhKfpEzadrpMwmj9UR6TNWGyZrU/olZTrWgIohrRp2vBdfWc5GR7PoWQqBSSL4GgiydLRKTwDLfSwjoQGtkI3
+X-Stat-Signature: o74nwrapd6pnb1963epqdkxinsu7acc1
+X-HE-Tag: 1755728549-259615
+X-HE-Meta: U2FsdGVkX1+Jd5oWhMVGoTQ3Iv2HYMwJXYU5LOAPbYDv4a+V2q/FXjX821OPZ5hbQNC7eOCGKdANUfAwnDkaJEGRm+xEbZKhoTECJsJ/ZbCN7w6/fw/CFRD49KFc7cZGwjb34h7xHpRYrC3SU4MqrKSTALiPvBDo5JdEllpLzsOSbrrWAb+2+hzhHYhUar/ggBBLl0UH1J0zOiiiMhFJx3BlX7Vyn6yC5RANIMs0zk36AWXWzZzG8UQ8pDtGqulu5gYkas8JQaRLFgs9pfB8B1U/yhYgOvnfIRRC0nHkNtNgxQhRP1OD7ibYhADoGtK5G45Hd70ebWAcXPNNzKHNn2p+FDerTG8KMx/K6m1fO2j/y+V8130Be7YwtepXxmlDCuSMDSB2pK1TgVzmBrqo5aJT/FEojQB0i7NDItmgL1QGiOrQ8Sbx5X/ESoZZ40Jmw6N4+J+nhlTqCQSAs2fD9uOGWhxn7NIa4/kdiYUbPZlmGellfXMRdrBzeJ7cdqKgN38jIZgs6ZiFeITNFUw8qtHY9iigoJYckbzw0qwTL7czq7bkXuqq9O4eB10L48yA48DNMzUO1vz9fFtEbZMrs6ab8VKfnQT+ww8gN8fCPqyTtEbLW/7Z77HKlpncSIThcg4mHwLR1PxTS8iEFlmLMaG7uYlsMe92kr648XOscBZXIvXnAEkRZbBxO/NUXo1F15VfkS3PQ+9EXjo987R4B8e39IF2gqlPsU9QRCZ/KcvxoGVlHwgRlO5dzzf/gSmtOaRc54FqpopuaoUNdb3BkWftd9SvHXv/pXwIoZqyvdxRQsBhjXqnmUXhFeGiSSH41dwcRTPlNYxR126+RFWuXthY2WMykqT10Jl8DFDvRie93suBTA5Oemm5UiOK8Xom+WqvcC8EWKS5PZDuTRpJZvpSpQQPBQyurM1rn2ykG9NA9Fxde3G7pdOuqzqRI4h/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,58 +87,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+ Andrew
-
-On Wed, 20 Aug 2025 16:06:22 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
-
-> On 32-bit systems, the throughput calculation in function
-> damos_set_effective_quota() is prone to unnecessary
-> multiplication overflow. Using mult_frac() to fix it.
-
-Andrew Paniakin also recently found and privately reported this issue, on 64
-bit systems.  This can also happen on 64-bit systems, once the charged size
-exceeds ~17 TiB.  On systems running for long time in production, this issue
-can actually happen.
-
-More specifically, when a DAMOS scheme having the time quota runs for long
-time, throughput calculation can overflow and set esz too small.  As a result,
-speed of the scheme get unexpectedly slow.
-
-Quanmin, could you please add the above paragraph on the commit message?  Also,
-I think this fix deserves Cc: stable@ and has no reason to be a part of this
-patch series.  Could you please add appripriate tags like below and post again
-separately?
-
-    Fixes: 1cd243030059 ("mm/damon/schemes: implement time quota")
-    Reported-by: Andrew Paniakin <apanyaki@amazon.com>
-    Closes: N/A # privately reported
-    Cc: <stable@vger.kernel.org> # 5.16.x
-
+On Thu, Aug 21, 2025 at 12:06:42AM +0200, Klara Modin wrote:
+[...]
 > 
-> Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
-> ---
->  mm/damon/core.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> The following diff resolves the issue for me:
 > 
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index 980e271e42e9..38b5f842ef30 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -2102,8 +2102,8 @@ static void damos_set_effective_quota(struct damos_quota *quota)
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index fae105a9cb46..c70e789201fc 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -809,7 +809,7 @@ void mem_cgroup_scan_tasks(struct mem_cgroup *memcg,
 >  
->  	if (quota->ms) {
->  		if (quota->total_charged_ns)
-> -			throughput = quota->total_charged_sz * 1000000 /
-> -				quota->total_charged_ns;
-> +			throughput = mult_frac(quota->total_charged_sz, 1000000,
-> +							quota->total_charged_ns);
->  		else
->  			throughput = PAGE_SIZE * 1024;
->  		esz = min(throughput * quota->ms, esz);
-> -- 
-> 2.43.0
+>  static inline unsigned short mem_cgroup_id(struct mem_cgroup *memcg)
+>  {
+> -	if (mem_cgroup_disabled())
+> +	if (mem_cgroup_disabled() || !memcg)
+>  		return 0;
+>  
+>  	return memcg->id.id;
+> 
+> However, it's mentioned in folio_memcg() that it can return NULL so this
+> might be an existing bug which this patch just makes more obvious.
+> 
+> There's also workingset_eviction() which instead gets the memcg from
+> lruvec. Doing that in lru_gen_eviction() also resolves the issue for me:
+> 
+> diff --git a/mm/workingset.c b/mm/workingset.c
+> index 68a76a91111f..e805eadf0ec7 100644
+> --- a/mm/workingset.c
+> +++ b/mm/workingset.c
+> @@ -243,6 +243,7 @@ static void *lru_gen_eviction(struct folio *folio)
+>  	int tier = lru_tier_from_refs(refs, workingset);
+>  	struct mem_cgroup *memcg = folio_memcg(folio);
+>  	struct pglist_data *pgdat = folio_pgdat(folio);
+> +	int memcgid;
+>  
+>  	BUILD_BUG_ON(LRU_GEN_WIDTH + LRU_REFS_WIDTH > BITS_PER_LONG - EVICTION_SHIFT);
+>  
+> @@ -254,7 +255,9 @@ static void *lru_gen_eviction(struct folio *folio)
+>  	hist = lru_hist_from_seq(min_seq);
+>  	atomic_long_add(delta, &lrugen->evicted[hist][type][tier]);
+>  
+> -	return pack_shadow(mem_cgroup_id(memcg), pgdat, token, workingset);
+> +	memcgid = mem_cgroup_id(lruvec_memcg(lruvec));
+> +
+> +	return pack_shadow(memcgid, pgdat, token, workingset);
+>  }
+>  
+>  /*
+> 
+> I don't really know what I'm doing here, though.
 
-
-Thanks,
-SJ
+Thanks a lot for the report and I think we will prefer your second
+approach which makes lru_gen_eviction() similar to
+workingset_eviction(). Can you please send a formal patch and Boris can
+add that patch in his series?
 
