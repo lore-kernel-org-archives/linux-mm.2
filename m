@@ -2,120 +2,92 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E1D9CA0EDC
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 15:49:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BF9DDCA0EE4
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 15:54:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A3AE6B00E7; Wed, 20 Aug 2025 11:49:01 -0400 (EDT)
+	id 335C28E0018; Wed, 20 Aug 2025 11:54:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17A886B00E8; Wed, 20 Aug 2025 11:49:01 -0400 (EDT)
+	id 30C168E0003; Wed, 20 Aug 2025 11:54:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 068D96B00EA; Wed, 20 Aug 2025 11:49:01 -0400 (EDT)
+	id 248B08E0018; Wed, 20 Aug 2025 11:54:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E4E7D6B00E7
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 11:49:00 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 711B0C0537
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 15:49:00 +0000 (UTC)
-X-FDA: 83797569240.22.9BD4ADF
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8B2A180012
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 15:48:58 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="gPgQdYL/";
-	spf=pass (imf02.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1002A8E0003
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 11:54:08 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D4DB8C05BC
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 15:54:07 +0000 (UTC)
+X-FDA: 83797582134.13.B107E7A
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf23.hostedemail.com (Postfix) with ESMTP id BB302140009
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 15:54:05 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=none;
+	spf=pass (imf23.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755704938;
+	s=arc-20220608; t=1755705246;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YapFlZLhDO6WeQ4sTaP804rPtqfECGySrXHAqDQV/uc=;
-	b=8i88VB83SC4EoilRiW2NO1UY6FJdGccq7TBbZHUv3xLQuHLKSsI+fSz/BALZa8rS2kgCoE
-	7rY/gTbeMQxL4W/DM07nU8FohH/WG2L7V2lvl9705x9xZ2mICpIM4Dcs0ec8JoDqINYtFN
-	rIUp3EYiVrP+9O/cb30riTqr2Ds5xRE=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=M28Gme2cYTbw9Uxdc5Tf1T7+KmnA+5ymqjm+7PgofnY=;
+	b=BUTipYaOiniNJK8oA4pHVcZEO+fXkHo1rLnozrCgyQr9jrehawRYBwvTWpdEzql3C0zHZq
+	6SdkOHJ+eYmYsSHU4U9KfaNhjBkpbDExqfuHuRkaYg5/r+hQNbTtHX/nMRkc8m1cUqG6UL
+	5Y96pzP/gJx+pi1SfEUBaz2QsruHvS4=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="gPgQdYL/";
-	spf=pass (imf02.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755704938; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=none;
+	spf=pass (imf23.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755705246; a=rsa-sha256;
 	cv=none;
-	b=WGHSVnkalbPLXckwAj/xo6KitZmcFEsdwxO6J8PINeWkHdIfhQXqXnmDgpCqKcMRmPeMbP
-	yKPKKxMmz2hTW5GfLdOIgDgkCaodkBWlq6r0G2twepDqJrIMMR9VBHEQBEkdbZUQHiiRGx
-	EPdul+h6rCBtdzFjFjKB/A2+oqTv1OY=
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-71d605a70bdso50990607b3.3
-        for <linux-mm@kvack.org>; Wed, 20 Aug 2025 08:48:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755704937; x=1756309737; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YapFlZLhDO6WeQ4sTaP804rPtqfECGySrXHAqDQV/uc=;
-        b=gPgQdYL/1gFcfodHG79XUa/zLGjqhNf0yBatNKdiun2Q0wCCBdtKLcJZFhMVYBgoqs
-         f5qTvCW8WKXoShFU3ASyPQ9eYhOxBU1TcHlO5CJHMtiJ+EtjAThjXhvI0aRfmAq+QhYA
-         d4qCi8v3Y1dP99m9jSNJWQFG5MCVhTEK9F35IQI/wakAQLJnsDqZj1s4Uz8OFtzqUgfK
-         80fwuwRZxTAkGLt82ShqbEELUAGhaLXeBZGCTSqbvNYafqveZZDkWswAa11HwgBVj0vc
-         FW2CtFg3LBvFSsudDstC3uA57d1mK98d1mdI65CVYe/UvV/gePELoPQX0bhpE1FnnZ/K
-         mGRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755704937; x=1756309737;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YapFlZLhDO6WeQ4sTaP804rPtqfECGySrXHAqDQV/uc=;
-        b=azS9jFsa7JHXR5fb/lytzFvYwSKP315d7jdW9WA5DA2jJf8vd4lCkUqR8clvvg7vC2
-         fd57tSaxf4IQlFkwI7ZI3FE1z6MRwsnFj/MvPFcfX33RvfIVVGmjmVw3VBX2IinA39ns
-         NTmldAqXglKqnffIGc0RjHX+8mk8IzzYgrKHxQLd7AWqFCQzYwSxDoTzZuTJ3iMNbi5A
-         tFrPyA71mT9PivKIKyNWcyc8tHGnRZYOqF3hqKho+d9+5erg9PoHdddnISmuGr2h0TPK
-         s0oqsQDSQSvPfP2h/yZs83Aua3S3OQv6eGhrU6rEXNIQVnnh7wD7odFVJiJ2FXxZmyGv
-         pu5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCX8/1lqEoos4/AbbnOfq9wO7/UKuS3glG8WGcNTXfL/8zMCpDklUr59Tz1oz70lUbYYvo+zEe1i1w==@kvack.org
-X-Gm-Message-State: AOJu0YzfQLRV8jHcBUFXozr+lOUhNNad4YYtAhh6YtX9JMD/m6zExZcf
-	+gfvyr68qBWGGtGS9CQeaiWr3Eus6v1/q0qxF7ITqaVCS35UNmcX/cpN
-X-Gm-Gg: ASbGnctprYgGbl/JF5DU/Z9ZglLS/MhzJhB8PpKqoTAeGnUjpdvdf/37tq3DgH4acQr
-	Mm5ksO0Rl7rjsJr/lLCW9axwENNuXtMiKgCnSWD0tx1/zQqEoMIgFkKqS8eB7BDShea781gM7P/
-	6zAigeePOUB0Wxoq/0CbBV5Wi7tcQce4eoT+KzeIWWouJNv3yn+uE9ABXMb/C50BBxUuxJEtrHE
-	CJoI+cY9VnkvauxmwbTgJtp43XHOprPRN1a3KaS4znvoriPmrVG3WHxHYqFNXWXMsHrEvY0Z8KA
-	82Qbei8AZ8IdtrModhCPK7ToNi3PyjYFmXYrEzUxzmCzb+zrbFXSkJqoQQPEOPRTWYwILtHJ9+S
-	ioLs3wZyJ9cq4UPWe9YXfNg==
-X-Google-Smtp-Source: AGHT+IFnBectO9j5CKIBEIOyjSzsK1xF+OQVRcvut6PzymCeGy0chKH+uklouHbhduerRNsx19yK+g==
-X-Received: by 2002:a05:690c:6e13:b0:71f:9a36:d33a with SMTP id 00721157ae682-71fb322d649mr33501547b3.44.1755704937493;
-        Wed, 20 Aug 2025 08:48:57 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:4d::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-71e6e068f64sm37561437b3.40.2025.08.20.08.48.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Aug 2025 08:48:57 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Chris Mason <clm@fb.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH] mm/page_alloc: Occasionally relinquish zone lock in batch freeing
-Date: Wed, 20 Aug 2025 08:48:54 -0700
-Message-ID: <20250820154855.2002698-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20250819224111.e710eab683b7c7f941c7d1a7@linux-foundation.org>
-References: 
+	b=lArL7FNNetvGnjS/JeFl92LikcTSJGysXfTBS4XVmGIZhWynqRrdqeGOsugze5GVZ0MExY
+	GtkpFzxScxlaTa2cu+cIoWr/Mg4AlICWTVSrw/Ord4+dI3uj3u+AWHiOVxaPFreiH6uVZ/
+	7BXdEA7KsCF8hmjd48v98Nv9OcNJ99o=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3412D1D31;
+	Wed, 20 Aug 2025 08:53:56 -0700 (PDT)
+Received: from [10.57.90.209] (unknown [10.57.90.209])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2F5FE3F63F;
+	Wed, 20 Aug 2025 08:53:57 -0700 (PDT)
+Message-ID: <4a828975-d412-4a4b-975e-4702572315da@arm.com>
+Date: Wed, 20 Aug 2025 17:53:55 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v5 00/18] pkeys-based page table hardening
+To: linux-hardening@vger.kernel.org,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Andy Lutomirski <luto@kernel.org>, Catalin Marinas
+ <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, Ira Weiny <ira.weiny@intel.com>,
+ Jann Horn <jannh@google.com>, Jeff Xu <jeffxu@chromium.org>,
+ Joey Gouly <joey.gouly@arm.com>, Kees Cook <kees@kernel.org>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Marc Zyngier <maz@kernel.org>,
+ Mark Brown <broonie@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Maxwell Bland <mbland@motorola.com>, "Mike Rapoport (IBM)"
+ <rppt@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Pierre Langlois <pierre.langlois@arm.com>,
+ Quentin Perret <qperret@google.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ linux-mm@kvack.org, x86@kernel.org
+References: <20250815085512.2182322-1-kevin.brodsky@arm.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <20250815085512.2182322-1-kevin.brodsky@arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8B2A180012
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: BB302140009
+X-Stat-Signature: mbuuooncqxyhbp1aocb8s8nxgn66ej8j
 X-Rspam-User: 
-X-Stat-Signature: 6j66xfox1ixip1p3yr3ecyu74xdypiyh
-X-HE-Tag: 1755704938-802906
-X-HE-Meta: U2FsdGVkX1/ukcrtR4Z+dK5XwkJRb9E/h5ShLRetHB/uzFYV/fqbqTQ9ZO4Xc+32HEQz7+RsY1VpE4ZB+xC17lAG+rLy2as7uDJgvPQHu/+aVkySm8wya+QbrT30qkN8PfHzZ3Vw/ooPJFWwkEW2gSyrNt/TrYV2uUWgxOJ8oxuJJK3qi3nFNjjtSccQTxiDiTnrS1mFpi/aIIgymu+p7RX6r6Kk3FsRdehenzU+uAChRvAd5KB+7JhrIerUEoznRReb07529mdYNqNbgJtU6xa/9bbAhUIdP/PIIuejS7B7Cw1EnFJ/hkDY483/maE5z68LaOaj6kKpEqStaKuFWO5oOpOw+d3cEycdWvclNnPSzCneMFYuqnxXByDZZw6nOC+C3enAZQYD0+EU2y/6wuc93Lbz7vmPOPnftasUqw4f7XB71N0hvt9BVrIYKjspxiqN3N4xnbdZHFmpImj9qUi6Ev0+qGhRrlNxX85gtu2DrYOclQMAkSJw5jWUbSC7H8RycfbehQSMSMJYVsHQcdGLmKjkBmN/WzUt4jlnHECMtUHMACXg/thQm7jqeDJYwhPPwl4VFg1IkqhDLvJJHOLqHSeN6lp436yGtZFMAn2FjY7CqFTwDfq87UrLrwSmUHJB8239chzMjUMZXcBl3BlUga5KBbYtOt/50PMc0UZkbcmjguliosSCDd85R9QcwavuUKv1oWMJKrCTLgkz7c9HBpUHIPNx2yY9PKG7W4JbGoqvOUxnb2TrdAFssfOqNkMQu7TrI2mzBqUUy9SGIpxbcBjODdVajSTtwAT4/xKuKJ2ld4MlMD4QJb1Dl8y+Co2ZrFhd5DaIcdva9fxRTJqOGgz/Qq1X8ljQLX2kBFv+DDHWYx24QuDFhnl5grZRqyGsmDb9s3SGDxni5GaAizzbz54bRZnpBD0DNVbmTVQrtJXXww9mjPAF3eAW0TN8XHhV9Uc6piSli7J9rrG
- axrsd6UW
- nV55V8LKX7q18rfzpPif5npikVj0QS/za6i3A/meyNKb9AlFThw2wkjHNCfqWgHgjHvhQDLEMCiOLMZ9Scx7gjQ5DS334DqKMco8YKzKdJWNaqml1nG8GG7wx913V8dSa3eA6HVZ5OW8BsdJh53EQF53hxbkR0uVqPalRK+6O814VlnljiwwXbz3Qky67RlP/hPj5pcD7wCa/UZn34d6rfDUf7nDCsRcfXtxSwEXzm6eiSaBpfyo4p/m4NnrnSitmi5baln3zLH1CHy4I1ENBYPOeisP8lUWKGcZ0WqME8TLBU3tLEnJTmxJQR/BDglrD7Nup3hKs4y/dxjFFtaaGr5PwG4WUIvIJGN6IM5kiOIvuBjC9Q58fDmNSVVuAoktuJXpYHtZaLJN5oDZ4hB0kDVfKwssBh2PcvCJo4veRoK3OLMcOzebTpJMcHHpTDZgS3mROtYGkwsRHVNRckJfuJlAoKh9lujfwP7onX0msQpejeo2vc+GmZLaQZEFygFErPtHNaJZD3u1E2s+qbk2H1EmML7r0miBoCUudkeiRpUYSbtVu4gMxgUHlV0toapU6aBvCzXCyYKAdpVZHn4F8evx9HpYlvUcFGr/QS977k13b3zYOtvbmmNDeKw==
+X-HE-Tag: 1755705245-236320
+X-HE-Meta: U2FsdGVkX1858deWuKae986C70xoSAE/yue+WqxRk3dKA+1QC6lZfug/nWMwwgQMQAs9sP5A+QR4r2Cr0fp2qduSWHuYwtkpI6MaSdEX2elMRAY2/DFACEJaY9v3PeCp8n48V/K0qBTBAmSS0h0NIzAX/qHWBG7+qblpU/eGPT5RYZIqCF2VwkGVq9KlGXEoluOIRtXVQbr1k7AKLizXZKOzSASi050p2OrM8JQHY+XUirfO2+AjuPolrdOEaa8k3qwR2xEnsH/8nwEhA1eLbzAzjq2742twEL8tXCoQPU15WfOxqje3bfIY3JEXJyoTX1NEQ7dqwThO25rnI6VA8bfmCwouja0rSbQUOKsZrl3zEasIUEWml3kZ10P8AMjS7ZbLgXcasepnvQTIgoCw7EgJ8Il2M2dPBnZHb6qBaAz73Ht1twOXXSBk41+zej5jOlXBv1AzMTY+Wg5M+6SegrQgjbHCzpG54Opc+67clGnnJ/AoWWapz3beqxFj2JBcQd+6OlAJC71KKJ0egSmEdyE8/KGwC4vsQ8T7hpfCjjyQVSpPnZZVk4r4+HdjIU+B7EbEg6P4B0aw5Bx7f0tlpf+oLCNbirL51uylYbesdgG2yWs+OQlPnCpHfwf0P/QAGAHII5TWV/Ea7wBFIiDwn0laMJLy/V4hktFNHOtydeeQBcZ3XoTzgscKLy+sQEaY3dFWDJqGy03IHH/NPSRyLFyitC6xWxkRiCAGqFWt4EZVH4i7OVd6mXXvxaC1mRvVxAoq8MEIhaHG2jd+EoBjGEGDIyXA0f0VSKhDpF1jR1b+5kMMlfCOLw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,104 +96,180 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 19 Aug 2025 22:41:11 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+On 15/08/2025 10:54, Kevin Brodsky wrote:
+> [...]
+>
+> Performance
+> ===========
+>
+> No arm64 hardware currently implements POE. To estimate the performance
+> impact of kpkeys_hardened_pgtables, a mock implementation of kpkeys has
+> been used, replacing accesses to the POR_EL1 register with accesses to
+> another system register that is otherwise unused (CONTEXTIDR_EL1), and
+> leaving everything else unchanged. Most of the kpkeys overhead is
+> expected to originate from the barrier (ISB) that is required after
+> writing to POR_EL1, and from setting the POIndex (pkey) in page tables;
+> both of these are done exactly in the same way in the mock
+> implementation.
 
-Hello Andrew, thank you again for your input : -)
+It turns out this wasn't the case regarding the pkey setting - because
+patch 6 gates set_memory_pkey() on system_supports_poe() and not
+arch_kpkeys_enabled(), the mock implementation turned set_memory_pkey()
+into a no-op. Many thanks to Rick Edgecombe for highlighting that the
+overheads were suspiciously low for some benchmarks!
 
-> On Mon, 18 Aug 2025 11:58:03 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-> 
-> > While testing workloads with high sustained memory pressure on large machines
-> > (1TB memory, 316 CPUs), we saw an unexpectedly high number of softlockups.
-> > Further investigation showed that the lock in free_pcppages_bulk was being held
-> > for a long time, even being held while 2k+ pages were being freed.
-> 
-> It would be interesting to share some of those softlockup traces.
+> The original implementation of kpkeys_hardened_pgtables is very
+> inefficient when many PTEs are changed at once, as the kpkeys level is
+> switched twice for every PTE (two ISBs per PTE). Patch 18 introduces
+> an optimisation that makes use of the lazy_mmu mode to batch those
+> switches: 1. switch to KPKEYS_LVL_PGTABLES on arch_enter_lazy_mmu_mode(),
+> 2. skip any kpkeys switch while in that section, and 3. restore the
+> kpkeys level on arch_leave_lazy_mmu_mode(). When that last function
+> already issues an ISB (when updating kernel page tables), we get a
+> further optimisation as we can skip the ISB when restoring the kpkeys
+> level.
+>
+> Both implementations (without and with batching) were evaluated on an
+> Amazon EC2 M7g instance (Graviton3), using a variety of benchmarks that
+> involve heavy page table manipulations. The results shown below are
+> relative to the baseline for this series, which is 6.17-rc1. The
+> branches used for all three sets of results (baseline, with/without
+> batching) are available in a repository, see next section.
+>
+> Caveat: these numbers should be seen as a lower bound for the overhead
+> of a real POE-based protection. The hardware checks added by POE are
+> however not expected to incur significant extra overhead.
+>
+> Reading example: for the fix_size_alloc_test benchmark, using 1 page per
+> iteration (no hugepage), kpkeys_hardened_pgtables incurs 17.35% overhead
+> without batching, and 14.62% overhead with batching. Both results are
+> considered statistically significant (95% confidence interval),
+> indicated by "(R)".
+>
+> +-------------------+----------------------------------+------------------+---------------+
+> | Benchmark         | Result Class                     | Without batching | With batching |
+> +===================+==================================+==================+===============+
+> | mmtests/kernbench | real time                        |            0.30% |         0.11% |
+> |                   | system time                      |        (R) 3.97% |     (R) 2.17% |
+> |                   | user time                        |            0.12% |         0.02% |
+> +-------------------+----------------------------------+------------------+---------------+
+> | micromm/fork      | fork: h:0                        |      (R) 217.31% |        -0.97% |
+> |                   | fork: h:1                        |      (R) 275.25% |     (R) 2.25% |
+> +-------------------+----------------------------------+------------------+---------------+
+> | micromm/munmap    | munmap: h:0                      |       (R) 15.57% |        -1.95% |
+> |                   | munmap: h:1                      |      (R) 169.53% |     (R) 6.53% |
+> +-------------------+----------------------------------+------------------+---------------+
+> | micromm/vmalloc   | fix_size_alloc_test: p:1, h:0    |       (R) 17.35% |    (R) 14.62% |
+> |                   | fix_size_alloc_test: p:4, h:0    |       (R) 37.54% |     (R) 9.35% |
+> |                   | fix_size_alloc_test: p:16, h:0   |       (R) 66.08% |     (R) 3.15% |
+> |                   | fix_size_alloc_test: p:64, h:0   |       (R) 82.94% |        -0.39% |
+> |                   | fix_size_alloc_test: p:256, h:0  |       (R) 87.85% |        -1.67% |
+> |                   | fix_size_alloc_test: p:16, h:1   |       (R) 50.31% |         3.00% |
+> |                   | fix_size_alloc_test: p:64, h:1   |       (R) 59.73% |         2.23% |
+> |                   | fix_size_alloc_test: p:256, h:1  |       (R) 62.14% |         1.51% |
+> |                   | random_size_alloc_test: p:1, h:0 |       (R) 77.82% |        -0.21% |
+> |                   | vm_map_ram_test: p:1, h:0        |       (R) 30.66% |    (R) 27.30% |
+> +-------------------+----------------------------------+------------------+---------------+
 
-Unfortunately it has been a long time since these softlockups have been detected
-on our fleet, so the records of them have disappeared : -(
+These numbers therefore correspond to set_memory_pkey() being a no-op,
+in other words they represent the overhead of switching the pkey
+register only.
 
-What I do have is an example trace of a rcu stall warning:
+I have amended the mock implementation so that set_memory_pkey() is run
+as it would on a real POE implementation (i.e. actually setting the PTE
+bits). Here are the new results, representing the overhead of both pkey
+register switching and setting the pkey of page table pages (PTPs) on
+alloc/free:
 
-[ 4512.591979] rcu: INFO: rcu_sched self-detected stall on CPU
-[ 4512.604370] rcu: 	20-....: (9312 ticks this GP) idle=a654/1/0x4000000000000000 softirq=309340/309344 fqs=5426
-[ 4512.626401] rcu: 	         hardirqs   softirqs   csw/system
-[ 4512.638793] rcu: 	 number:        0        145            0
-[ 4512.651177] rcu: 	cputime:       30      10410          174   ==> 10558(ms)
-[ 4512.666657] rcu: 	(t=21077 jiffies g=783665 q=1242213 ncpus=316)
++-------------------+----------------------------------+------------------+---------------+
+| Benchmark         | Result Class                     | Without
+batching | With batching |
++===================+==================================+==================+===============+
+| mmtests/kernbench | real time                        |           
+0.32% |         0.35% |
+|                   | system time                      |        (R)
+4.18% |     (R) 3.18% |
+|                   | user time                        |           
+0.08% |         0.20% |
++-------------------+----------------------------------+------------------+---------------+
+| micromm/fork      | fork: h:0                        |      (R)
+221.39% |     (R) 3.35% |
+|                   | fork: h:1                        |      (R)
+282.89% |     (R) 6.99% |
++-------------------+----------------------------------+------------------+---------------+
+| micromm/munmap    | munmap: h:0                      |       (R)
+17.37% |        -0.28% |
+|                   | munmap: h:1                      |      (R)
+172.61% |     (R) 8.08% |
++-------------------+----------------------------------+------------------+---------------+
+| micromm/vmalloc   | fix_size_alloc_test: p:1, h:0    |       (R)
+15.54% |    (R) 12.57% |
+|                   | fix_size_alloc_test: p:4, h:0    |       (R)
+39.18% |     (R) 9.13% |
+|                   | fix_size_alloc_test: p:16, h:0   |       (R)
+65.81% |         2.97% |
+|                   | fix_size_alloc_test: p:64, h:0   |       (R)
+83.39% |        -0.49% |
+|                   | fix_size_alloc_test: p:256, h:0  |       (R)
+87.85% |    (I) -2.04% |
+|                   | fix_size_alloc_test: p:16, h:1   |       (R)
+51.21% |         3.77% |
+|                   | fix_size_alloc_test: p:64, h:1   |       (R)
+60.02% |         0.99% |
+|                   | fix_size_alloc_test: p:256, h:1  |       (R)
+63.82% |         1.16% |
+|                   | random_size_alloc_test: p:1, h:0 |       (R)
+77.79% |        -0.51% |
+|                   | vm_map_ram_test: p:1, h:0        |       (R)
+30.67% |    (R) 27.09% |
++-------------------+----------------------------------+------------------+---------------+
 
-And here is the trace that accompanies it:
+Those results are overall very similar to the original ones.
+micromm/fork is however clearly impacted - around 4% additional overhead
+from set_memory_pkey(); it makes sense considering that forking requires
+duplicating (and therefore allocating) a full set of page tables.
+kernbench is also a fork-heavy workload and it gets a 1% hit in system
+time (with batching).
 
-[ 4512.666815] RIP: 0010:free_unref_folios+0x47d/0xd80
-[ 4512.666818] Code: 00 00 31 ff 40 80 ce 01 41 88 76 18 e9 a8 fe ff ff 40 84 ff 0f 84 d6 00 00 00 39 f0 0f 4c f0 4c 89 ff 4c 89 f2 e8 13 f2 fe ff <49> f7 87 88 05 00 00 04 00 00 00 0f 84 00 ff ff ff 49 8b 47 20 49
-[ 4512.666820] RSP: 0018:ffffc900a62f3878 EFLAGS: 00000206
-[ 4512.666822] RAX: 000000000005ae80 RBX: 000000000000087a RCX: 0000000000000001
-[ 4512.666824] RDX: 000000000000007d RSI: 0000000000000282 RDI: ffff89404c8ba310
-[ 4512.666825] RBP: 0000000000000001 R08: ffff89404c8b9d80 R09: 0000000000000001
-[ 4512.666826] R10: 0000000000000010 R11: 00000000000130de R12: ffff89404c8b9d80
-[ 4512.666827] R13: ffffea01cf3c0000 R14: ffff893d3ac5aec0 R15: ffff89404c8b9d80
-[ 4512.666833]  ? free_unref_folios+0x47d/0xd80
-[ 4512.666836]  free_pages_and_swap_cache+0xcd/0x1a0
-[ 4512.666847]  tlb_finish_mmu+0x11c/0x350
-[ 4512.666850]  vms_clear_ptes+0xf9/0x120
-[ 4512.666855]  __mmap_region+0x29a/0xc00
-[ 4512.666867]  do_mmap+0x34e/0x910
-[ 4512.666873]  vm_mmap_pgoff+0xbb/0x200
-[ 4512.666877]  ? hrtimer_interrupt+0x337/0x5c0
-[ 4512.666879]  ? sched_clock+0x5/0x10
-[ 4512.666882]  ? sched_clock_cpu+0xc/0x170
-[ 4512.666885]  ? irqtime_account_irq+0x2b/0xa0
-[ 4512.666888]  do_syscall_64+0x68/0x130
-[ 4512.666892]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-[ 4512.666896] RIP: 0033:0x7f1afe9257e2
+It seems fair to conclude that, on arm64, setting the pkey whenever a
+PTP is allocated/freed is not particularly expensive. The situation may
+well be different on x86 as Rick pointed out, and it may also change on
+newer arm64 systems as I noted further down. Allocating/freeing PTPs in
+bulk should help if setting the pkey in the pgtable ctor/dtor proves too
+expensive.
 
-> We have this CONFIG_PCP_BATCH_SCALE_MAX which appears to exist to
-> address precisely this issue.  But only about half of the
-> free_pcppages_bulk() callers actually honor it.
+- Kevin
 
-I see. I think this makes sense, and I also agree that there should probably be
-some guardrails from the callers of this function, especially since free
-pcppages bulk is unaware of how the pcp lock is acquired / freed.
-
-Functions like drain_zone_pages, which explicitly enforce this by setting
-"to_drain" to be min(pcp->batch, pcp->count) seem like a smart way to do this.
-
-> So perhaps the fix is to fix the callers which forgot to implement this?
-> 
-> - decay_pcp_high() tried to implement CONFIG_PCP_BATCH_SCALE_MAX, but
->   that code hurts my brain.
-
-To be honest, I don't fully understand decay_pcp_high() as well : -)
-From what I can tell, it seems like CONFIG_PCP_BATCH_SCALE_MAX doesn't directly
-pass in a value that limits how many pages are freed at once for the bulk
-freer, but rather tunes the parameters pcp->high. (Except for drain_pages_zone,
-which you have pointed out below).
-
-> - drain_pages_zone() implements it but, regrettably, doesn't use it
->   to periodically release pcp->lock.  Room for improvement there.
-
-From what I can see, it seems like drain_pages_zone() does release pcp->lock
-every pcp->batch << CONFIG_PCP_BATCH_SCALE_MAX (simplified pseudocode below)
-
-do {
-	spin_lock(&pcp->lock);
-	to_drain = min(count, pcp->batch << CONFIG_PCP_BATCH_SCALE_MAX);
-	free_pcppages_bulk(zone, to_drain, ...);
-	spin_unlock(&pcp->lock);
-} while (count);
-
-Although, the concern you raised earlier of whether another thread can
-reasonably grab pcp->lock during the short check between the unlock and lock
-is still valid here (which means the concern is also relieved if the machine is
-x86, arm64, or any other arch that defaults spin locks to be queued).
-
-With all of this said, I think adding the periodic unlocking / locking of the
-zone lock within free_pcppages_bulk still makes sense; if the caller enforces
-count to be <= pcp->batch, then the check is essentially a no-op; otherwise, we
-create some locking safety, whihc would protect it in case there are any new
-callers in the future, which forget to add the check as well.
-
-Thank you for your thoughtful review, Andrew. I hope you have a great day!
-Joshua
-
-Sent using hkml (https://github.com/sjp38/hackermail)
+> Benchmarks:
+> - mmtests/kernbench: running kernbench (kernel build) [4].
+> - micromm/{fork,munmap}: from David Hildenbrand's benchmark suite. A
+>   1 GB mapping is created and then fork/unmap is called. The mapping is
+>   created using either page-sized (h:0) or hugepage folios (h:1); in all
+>   cases the memory is PTE-mapped.
+> - micromm/vmalloc: from test_vmalloc.ko, varying the number of pages
+>   (p:) and whether huge pages are used (h:).
+>
+> On a "real-world" and fork-heavy workload like kernbench, the estimated
+> overhead of kpkeys_hardened_pgtables is reasonable: 4% system time
+> overhead without batching, and about half that figure (2.2%) with
+> batching. The real time overhead is negligible.
+>
+> Microbenchmarks show large overheads without batching, which increase
+> with the number of pages being manipulated. Batching drastically reduces
+> that overhead, almost negating it for micromm/fork. Because all PTEs in
+> the mapping are modified in the same lazy_mmu section, the kpkeys level
+> is changed just twice regardless of the mapping size; as a result the
+> relative overhead actually decreases as the size increases for
+> fix_size_alloc_test.
+>
+> Note: the performance impact of set_memory_pkey() is likely to be
+> relatively low on arm64 because the linear mapping uses PTE-level
+> descriptors only. This means that set_memory_pkey() simply changes the
+> attributes of some PTE descriptors. However, some systems may be able to
+> use higher-level descriptors in the future [5], meaning that
+> set_memory_pkey() may have to split mappings. Allocating page tables
+> from a contiguous cache of pages could help minimise the overhead, as
+> proposed for x86 in [1].
+>
+> [...]
 
