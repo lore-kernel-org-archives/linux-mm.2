@@ -2,91 +2,92 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 43076CA0EDC
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 11:19:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3BBFFCA0EDC
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 11:19:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A186F8E005A; Wed, 20 Aug 2025 07:19:48 -0400 (EDT)
+	id CFECE8E005B; Wed, 20 Aug 2025 07:19:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9EFE48E0003; Wed, 20 Aug 2025 07:19:48 -0400 (EDT)
+	id CAEEE8E0003; Wed, 20 Aug 2025 07:19:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DEE68E005A; Wed, 20 Aug 2025 07:19:48 -0400 (EDT)
+	id B28E78E005B; Wed, 20 Aug 2025 07:19:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 764948E0003
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 07:19:48 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1BB015901D
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 11:19:48 +0000 (UTC)
-X-FDA: 83796890856.27.18BE55D
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 50F38C0008
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 11:19:45 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b="OJVB5/KP";
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf28.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755688786; a=rsa-sha256;
-	cv=none;
-	b=5tGkcXwMlYhW1/ZQDldzeN1t+0MeGkIXLT9VyffVr39+/0i+lfDvzNRLhXhHM7WZuWfowK
-	RNmLd2amkOLy5u3ZWLpVPMUFDvwReUYKWaspPlgNgigq5tBrtRq1O2sA6nK+f89whZe5x7
-	LESVOm7qoZIiXdWZj0XF47LkBebSD74=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b="OJVB5/KP";
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf28.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B1848E0003
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 07:19:51 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 41A461DD0E6
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 11:19:51 +0000 (UTC)
+X-FDA: 83796890982.13.F506E84
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5B8B414000A
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 11:19:49 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b="WD0/tQgw";
+	spf=pass (imf23.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755688786;
+	s=arc-20220608; t=1755688789;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=8nzxfwrJ7tgF8TbO628wBC8gRICp1yIHaSa6RvJ5d0k=;
-	b=SAQu0P+uzP4pUygIhNi9t5A5hC9rZ3D/20CqMYhTUHYrN3VcC0TWyyVmY9Vq/IbrvABaeO
-	WFvT1sqYBGgoVJ/o5abT+sYZRg0GVmOBHcre8pucPIrGde/3CbhPMVhLCztvExchfuO37A
-	y3IEqWMIyzQ78rW7Ri4W9ZT745Pm358=
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-32326e66dbaso4424257a91.3
-        for <linux-mm@kvack.org>; Wed, 20 Aug 2025 04:19:44 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nmUl5kz80SYgDggauq/gcrY9lNJu+BoyJNt4pf6QvUk=;
+	b=0pn3MyhUaOHAIg0hFuhXWbORdWj/H6HZllzS0KqjWr9ysftcv02vgqcmlFMTDpXsTb05Y6
+	C06f2g9AoT/VQ1bIhfzLv/evmzbVoFB2h+YnBOdYyJLVl+m/rHaUgqcydzIcgJbau5cpPi
+	2CEr3z31J2EZB6hF+WZBFn7/KX9bwfI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755688789; a=rsa-sha256;
+	cv=none;
+	b=Bkh21XrhdMWpQKYpWBIjMDno7di7fOwWe+YCzyDQEXDjkEcKskCCaA2rPw99fxIQf/AYrm
+	j1ztYcEvTWaI7m3LWICdYs10pM/KPaKa+CQWzihENyJbQpnulM4YIe3isOwDW81INAk+Cn
+	FtuChdEgQvD7alJs1f/tnPO2bg7gWhI=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b="WD0/tQgw";
+	spf=pass (imf23.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b4716fa7706so4282681a12.0
+        for <linux-mm@kvack.org>; Wed, 20 Aug 2025 04:19:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1755688784; x=1756293584; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8nzxfwrJ7tgF8TbO628wBC8gRICp1yIHaSa6RvJ5d0k=;
-        b=OJVB5/KPk0AoW6j+4ckGSDZipRcF+j9LD/r05mmaXZdeyOjrtkal7i3oTt9CUWJYeY
-         61Xi88XAMZevCuK+V7oSG/pb/bXz5z2mZaRvGmXdn7kXl2aQ5c9tSbqDobfX8cJ5vMrc
-         e85xZJTema+e1t7aedL9f5Qp2Sc/faCbp1W/xXeofSYk8dVgW9f58UenAItDMTSfTLZ/
-         i03qzyLZlgEhUie3A+nfQv60sGfDTU3bR+gWm2LiGZg9UXc12LrQHjSp9UIhgp7k3KQ2
-         +LaicKOOLPaDRVivhaSfbI/OlCE9tTRpCx2Ue23LmXtpAzEc+xjZPQOHwtDNecvW1Tfg
-         5aiQ==
+        d=bytedance.com; s=google; t=1755688788; x=1756293588; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nmUl5kz80SYgDggauq/gcrY9lNJu+BoyJNt4pf6QvUk=;
+        b=WD0/tQgw9eDQDuJ1qq2y7hDUnuYpSXc2iyintmXjl2ArDFW6fIbFTsdU2H8qeN3neD
+         dCtqCD8uenYtgkpy2Y//8cuWQSspe2+HItkf+BQ2IzTd86Vcekcy4NzOH4Iz5ptE0Fek
+         VNRjVvRiztjs+O7GAB+FZGhov0h5L/StY2ENIiJIldzXXbMPS3Jb28lcfo1wqD6qW0j8
+         aktiRFc8uxjzfTjf9JcaOy5xuXnoRyLKNF/a4vwbsZdl5d2c27RF0rRgcL85zWhgooQo
+         1j64Rq5Y2bYFC87XD++zwmas1W5kEZmr7mOj1tCR1i0ReDCxqVV0hIMxa2wCoL4IEBAF
+         NJAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755688784; x=1756293584;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8nzxfwrJ7tgF8TbO628wBC8gRICp1yIHaSa6RvJ5d0k=;
-        b=uVmCwwrS3wiOsNjB2z4xKepVTJkEuW1xtPUpaQ9Fqay79m3PHn5KkzwdZCSqSZP5lk
-         py7EYIIFuc6fun9NyZ8cacVYlArUloLKOkq66WL+TG9OyDYI92AavazurB1FaTKsASWh
-         fA9kEjI/USG24/Om1majA+OPT5FesENue1AU18r/bWPGD8cUtcTPrMznvTYtAjNqNgcS
-         n5PPgSTApafMh4ykr4uhg3TyXMCgaToIK3sUpb5EY13QdqU7ycXcK8G5zC68H8IVQ+C8
-         xoay53pygHUUcJ3F6LQwYOniwWa65y8U9OabEebBh8mSgiC3Mk2SX1vqbQaFY9CVML1f
-         uvnA==
-X-Forwarded-Encrypted: i=1; AJvYcCVafQ8AJUvdpQLM5QKMQRNW48eSLIeRNjrcn8a8nFbiRBJ3SvKWzoBMzD4wA3Bkca79VMmRzGKbCg==@kvack.org
-X-Gm-Message-State: AOJu0YyKSqfHjuLE1MMg7w5u6l+1I6piBP9TbKG7ItSMfjyaTZWTVXVE
-	pxgsKJcWV2ykZMFlIJBxHH87gh2vDjBn4TaqwFsqL+TFA6Z47bD66YBWoi9mRBChBmQ=
-X-Gm-Gg: ASbGncvOuKuUcsNP6RZ2ZDKpjunNuqiKtUJqzNe//X8iQOVEnY0lESg4i7YJgvK8NIZ
-	LxWmOX6fRsP/SR8F+vzFzPwONDC3SsNSa0sN4ynVSjEnCZW6bGdc2Q3PrUjrJCexvr4gr8zNM9W
-	l0hycYg8xvkfoLDaxYnBB4Iig5P9ca9T8tlHegW2h/SqcMkBJlsO0RLGa4th03naRtHBDLP0ZMp
-	/Zpo9KzVYfKK1ixZKCI9m0Ja74D47omU9p45cNfEUws4qGA1MmpARHuL/XtCQpSW24JjNDI/ZIT
-	wgK/pL2dqMSYut1jqqLWmJ0vo4kajSrDk9YJJZFUTN/UUTNM5N3DPhoeDEY+I5WnXbJf/pppZUb
-	drp8W5iuIFx1JSlShw+fNoFBR6x5/6QIiNENY+HCI2g==
-X-Google-Smtp-Source: AGHT+IFDp+oQlv/0Q/A7/4baOQAwYfujcstAPbmMtif5cwe4FhwyrJsEGhnc01bdJasIBQ+A45Febw==
-X-Received: by 2002:a17:90b:5187:b0:323:7e80:881a with SMTP id 98e67ed59e1d1-324e1489895mr3679710a91.37.1755688783865;
-        Wed, 20 Aug 2025 04:19:43 -0700 (PDT)
-Received: from localhost ([106.38.226.108])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-324422a8bb2sm2827379a91.0.2025.08.20.04.19.42
+        d=1e100.net; s=20230601; t=1755688788; x=1756293588;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nmUl5kz80SYgDggauq/gcrY9lNJu+BoyJNt4pf6QvUk=;
+        b=ok1x/p63fQPZEi9W5iOQ1Y5fK9feC11uHrsqETKre5lsr64XgKO2mWL24db2b1Ce94
+         SDJ6dHmJ3G9fK0hfYU/DN1fSsIpntRY9nZAf8blaIsRpJM6jZKrK85+55tEiFXlyuQ6f
+         gEgXN/pgzSXVRSKQDGVeVyw7HT5U5i99JVF14M3Jdny657agPHNMmFa7BdHG+qCvRFCm
+         iVONYREDOOy/Wfa2PiFBhuX0DNFojg17OtlK6na0jGPycCvz+uJ6hsj9lyUCFANhy//Z
+         U8ZcmbBJtGXUEX0AG8Izu/FCiaRXXnudRAABOk2wy7a5utl1TNS8tWZ++h5yK1UwmZBW
+         V4Ag==
+X-Forwarded-Encrypted: i=1; AJvYcCUSd4t6IOdGZ/OUK/y5KMk29TFAugSbjVCp+y/S+QAYDGiCTlNShE6lEkg5NvdsL+LMCQNiwVQGlg==@kvack.org
+X-Gm-Message-State: AOJu0YxPXl+DMGom0eCaN+Se34jmGllJPiSkw61SDkUjt133U7k82Nl/
+	3cpqWf61ryV5y/W7t8AH8SV8jBvRp+o0WAuHybLXMuNMpdi+sxr7eIzEnZFavb0UVKE=
+X-Gm-Gg: ASbGncstKEp30xisVXd2PiihQ+EmUcHi86vJC5BetDddwPdYKDAYyHYz80IamseBjmv
+	52iUXoHrk67g4um8+mgKyReclCuz2+ecS4YThADEyANpRVQfvxZo7f5ekoM+EbfWwhvq0J/Ehra
+	KQ45nMSQrwU3WHGMiBXQ/GQrBZzn7d1c4XpWG+VWw/5ZKpWCmr9J8L4d74bjwW2ECeFJLj2OmN/
+	g+fwzDKaax0EV88Y8Mn6pcBWICHXetqzLNJQNovrwQCwZYn+Ub2bDEgL/R/fQJGDbF5tSXSJzVM
+	YOhKJqeA80huMlpsFKHkbJlPFRsFnvjGDZVbgraU8tyJjWIEGE+sLmJYzb8ybS4KusLhXJTzzW+
+	T9AWK46Th0T3FIGRNupg9wFp/jvZNkyI=
+X-Google-Smtp-Source: AGHT+IGXmQtILlfaeO0KNXbpv61Pi7GHyLtGfxlkUeNc5eSE1p9UKZu8WVkmKp1RbNxVnH2+bLRYDQ==
+X-Received: by 2002:a17:902:d548:b0:244:6c39:3361 with SMTP id d9443c01a7336-245ef238c60mr29969545ad.44.1755688787898;
+        Wed, 20 Aug 2025 04:19:47 -0700 (PDT)
+Received: from localhost ([106.38.226.178])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-245ed359300sm24062325ad.39.2025.08.20.04.19.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Aug 2025 04:19:43 -0700 (PDT)
+        Wed, 20 Aug 2025 04:19:47 -0700 (PDT)
 From: Julian Sun <sunjunchao@bytedance.com>
 To: linux-fsdevel@vger.kernel.org,
 	cgroups@vger.kernel.org,
@@ -101,21 +102,22 @@ Cc: viro@zeniv.linux.org.uk,
 	muchun.song@linux.dev,
 	axboe@kernel.dk,
 	tj@kernel.org
-Subject: [PATCH 0/3] memcg, writeback: Don't wait writeback completion
-Date: Wed, 20 Aug 2025 19:19:37 +0800
-Message-Id: <20250820111940.4105766-1-sunjunchao@bytedance.com>
+Subject: [PATCH 1/3] writeback: Rename wb_writeback_work->auto_free to free_work.
+Date: Wed, 20 Aug 2025 19:19:38 +0800
+Message-Id: <20250820111940.4105766-2-sunjunchao@bytedance.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20250820111940.4105766-1-sunjunchao@bytedance.com>
+References: <20250820111940.4105766-1-sunjunchao@bytedance.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5B8B414000A
+X-Stat-Signature: o4rb176r1j41pfamrra1occdxe8m9nh1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 50F38C0008
-X-Stat-Signature: afqdgu1agkfnji5d8nwwyghi5beogwxd
-X-HE-Tag: 1755688785-289725
-X-HE-Meta: U2FsdGVkX1/xhuLmzyLJAfYJ5TyTDpAY5BSn3+wZ2i/DmXcin31h8cZIYvBx1JS5U0/Af+/b/0p3il/rHWfkKnB/J6NqAcpdPLc2/ovOPRbirKq6dOl4qP9XPuyIt0xBWGgM5K1bfGqbNCKrY0Xw2urt+cBgES7qoBqX1lnOwAsyEdnZ1UdLqq3g3qlF/jszL7HmOkAwRsHlX93jDNP7hshc6BbK7I4AaTlN6G1JibSyEzmD4a0/Jr8Qkmdx6tfMjJrXt/LZy4Wkggq8pnXcZsxkVAaShOm03v+RQVUJLHb3NVY7H5BQKrpmYCQL+bCivRZltTv2heKaelUDdqXO4sCCGAc0EtoYmhLXsdziWHYRJm2omrJCw+aCEntzQpMDwWfS/RgRBWhBzZ5IlBnwzknc2d1rcfljOHK0P+9iGlDoMMOIEhv7dnpUVMb27awbPa/wMnoGuvaB6Otd6jsWDTB73Hq7C45KH8s9tFrjfqWTmx8dJa0qjHTa+t/Btd5DquYmTPCl4f/Bkg9mQW3dMearBXVdp+18t/haIWU+2K62lzigoQj6BUHcglaR28TGh4kSMidxcNsdm8Q5xAATOGOZM55YDBgtyw7WmDlXQ6v3uDVcwhf1qDz3ap0HRblF8PaHYyxkguomDqitEowVEVUsSZWvghmmwZwyRmbiCx1D8MMCVXCpR+wbJDAcaT8iQCH4TPEGMRmDVCPbMcEH3kEIbot54lFNPD8yYn7EE/S+Ril0LvqWlJlkJo1iWv9UmA78cD1iJ39iLvawusmwPQ369PNsSCZpOSqCnsyw7mk5PXnG5/zC7JWK5qEFs7+gSeG1q8acrFIPzSzgJGf0T1bYi0Ab1bCDeWZ0tPMbDCNDyjNgFxHD2HQWhr8XS2kdQvaw1e/FOj4LAJoWs9+Gmd/BNfHBz4n7xYGJhW9cxzrvmIvBYWfu+oFYbTfC2hLjbcgLVcOdzvxDLcbMFZk
- 6m6BrB7k
- qV+/8VZaqENfz6cZHh/oXbCXZXPo+zkQA23PQ8T2G1ZL2r9UzEs543KIzh0NWHAGDXZGBdI7aCN+FzvSYePJi5FqVN6lAkt+RJXAUWxcNdSsgQiZLtBk+S3qNOlKbMe9/R5WgVayO2XpYxgbscGGVmXs4625nKT81fu/S1OKRNWsm2kLp/n/L5ye/RxzeNL9IgYYbLv6jheJIRPQ0TwxYdWVufRrRWddLjf8KYdQwY/HacGdepW0MBAIownilDF/8Wea74koBOr7lTPIVWmJ77i7nTeIEjXqriBLEyp+SO7aOoUvJn8JkQyoWSNLjL28d9MwWAGjsaGzMUOT9UgTA/qTgpxe+SYadVMNVenR+OKf44Tqe1zcY3y+pKg==
+X-HE-Tag: 1755688789-162691
+X-HE-Meta: U2FsdGVkX1/pTcJa+rWlZS/kZMS4oA7NYem9P9LvZA0LPaWJJOz2SdNm73fz5MWuhClPkhZw7xm1WNsiFS+uFOVmeq1AZMlLNt7I3it51Kn5Rtcr5i0VCeZnq0iVgxk2MLZMWksvbti89yLU8ikuSqtNuHYZRaYjlHgR48TJYApI9e40FkE+pTPNgT767WWcje20MedAawth2rCBJlFF6/uUU9/+xu9yh/vghCtg+qdlWkp6xzuM3m4akTugivGbqDYfteDaLwMZ2PB2KqmSLnKA/+oT6/8kzehMVpOlauxJvIPwyAIIdHjwaC7qXKet1toBmM2Z9tp7VjvpATpUJij5GRP5mwMpHlaZA4KLf0ezO8Bp0Ex7afqZvfQEdc+enJo/6/Yb0kWt8H2h4MQbTHpnd6LpywqB6BS7JRcXOfyxhWWUKSDUBUA8zBcaI+P6AZiw76WRCoVrw24Xa1c35+++gm8GihbvNezWxyM5gu3SVnnz4zxvIC0LenV26HSDEZpiTjtYjf0m7+fIXyGWJEB/4HUn5JO8RKWjSM0Aal7b2Zgbu+/NB93tIzfDr9JVe114mQzkmLsLFAIPwT8K/f7gWRyZfswDSE62P93tldhj2JVAdrKlEiBNvEX6SRslYXuENLMd430k57+h+dYuhqFEQLacCmNq0z3hWgI4M/Qa9+Wqn1rtUuDxC+f3lKfTns+lQBCnFBpXQncbywwdnm3P2zbkMmOgroUx3xrz9CyogN/ax8sh+zE2Y5c4IFMYsMwanxxCBCk2ond29FK5QGmB1uFNruC64lxzLM7inLNrssxHgi3+XGkncRdXKo6eIHwE5XRU0WfsVv9sozG1+1SxhYlaJD4TgySqreWpTZg/zV/4uuEuTmzour2jwEeltvX3VGN46l1jj/rp9pppHS8tgkxbTa/hBNyo5QyysDO/tmkDlIz+OJ7W+O/WUD+cPYPWS0gpe8TwKT9IwsH
+ ECDMWKs0
+ DThwFn9f1kbcF+ruY4GYsginJcFUzvbf33pNp55bRcrCI+CQhnsXfuOEAa9+KJIJtubMBwlPWs3LkRzuUSzzwwbRq+/MfJcZERAAx1j5tTkrllq1FjR60GN5njX6ndi9IIiRCH/JEY3vM8FQ+wBDtAUGtVDROlgw6YhjFSMRRpUbGZFNofhU9GAAOqrfciHLSbKOgCFwCbnFF9xnZjx0E3OqHu9D3DQ4SL5QG7R1EZz5uSG2qhgYwNRfCUaLL11b3WGsEY2Zp49d65SJNRWBC9qyzcuoLOCwhqfKcv7aWJqMfsveCJwb3TmTBYrleB51AecwwIrhsGCpYVTEQg8Kb88oPGN6by2bCcfMUb9v9oCzwybZSutsAME/duQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,29 +126,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch series aims to eliminate task hangs in mem_cgroup_css_free() 
-caused by calling wb_wait_for_completion(). 
-This is because there may be a large number of writeback tasks in the 
-foreign memcg, involving millions of pages, and the situation is 
-exacerbated by WBT rate limiting—potentially leading to task hangs 
-lasting several hours.
+This patch is to prepare for subsequent patches. It only does
+'s/auto_free/free_work' with no functional changes.
 
-Patch 1 is preparatory work and involves no functional changes.
-Patch 2 implements the automatic release of wb_completion.
-Patch 3 removes wb_wait_for_completion() from mem_cgroup_css_free().
+Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
+---
+ fs/fs-writeback.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-
-Julian Sun (3):
-  writeback: Rename wb_writeback_work->auto_free to free_work.
-  writeback: Add wb_writeback_work->free_done
-  memcg: Don't wait writeback completion when release memcg.
-
- fs/fs-writeback.c                | 22 ++++++++++++++--------
- include/linux/backing-dev-defs.h |  6 ++++++
- include/linux/memcontrol.h       |  2 +-
- mm/memcontrol.c                  | 29 ++++++++++++++++++++---------
- 4 files changed, 41 insertions(+), 18 deletions(-)
-
+diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+index cc57367fb641..4a6c22df5649 100644
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -48,7 +48,7 @@ struct wb_writeback_work {
+ 	unsigned int range_cyclic:1;
+ 	unsigned int for_background:1;
+ 	unsigned int for_sync:1;	/* sync(2) WB_SYNC_ALL writeback */
+-	unsigned int auto_free:1;	/* free on completion */
++	unsigned int free_work:1;	/* free work on completion */
+ 	enum wb_reason reason;		/* why was writeback initiated? */
+ 
+ 	struct list_head list;		/* pending work list */
+@@ -170,7 +170,7 @@ static void finish_writeback_work(struct wb_writeback_work *work)
+ {
+ 	struct wb_completion *done = work->done;
+ 
+-	if (work->auto_free)
++	if (work->free_work)
+ 		kfree(work);
+ 	if (done) {
+ 		wait_queue_head_t *waitq = done->waitq;
+@@ -1029,7 +1029,7 @@ static void bdi_split_work_to_wbs(struct backing_dev_info *bdi,
+ 		if (work) {
+ 			*work = *base_work;
+ 			work->nr_pages = nr_pages;
+-			work->auto_free = 1;
++			work->free_work = 1;
+ 			wb_queue_work(wb, work);
+ 			continue;
+ 		}
+@@ -1048,7 +1048,7 @@ static void bdi_split_work_to_wbs(struct backing_dev_info *bdi,
+ 		work = &fallback_work;
+ 		*work = *base_work;
+ 		work->nr_pages = nr_pages;
+-		work->auto_free = 0;
++		work->free_work = 0;
+ 		work->done = &fallback_work_done;
+ 
+ 		wb_queue_work(wb, work);
+@@ -1130,7 +1130,7 @@ int cgroup_writeback_by_id(u64 bdi_id, int memcg_id,
+ 		work->range_cyclic = 1;
+ 		work->reason = reason;
+ 		work->done = done;
+-		work->auto_free = 1;
++		work->free_work = 1;
+ 		wb_queue_work(wb, work);
+ 		ret = 0;
+ 	} else {
+@@ -1237,7 +1237,7 @@ static void bdi_split_work_to_wbs(struct backing_dev_info *bdi,
+ 	might_sleep();
+ 
+ 	if (!skip_if_busy || !writeback_in_progress(&bdi->wb)) {
+-		base_work->auto_free = 0;
++		base_work->free_work = 0;
+ 		wb_queue_work(&bdi->wb, base_work);
+ 	}
+ }
 -- 
 2.20.1
 
