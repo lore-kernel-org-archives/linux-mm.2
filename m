@@ -2,58 +2,58 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 33E77CA0EF8
-	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 09:07:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6CE09CA0EF8
+	for <linux-mm@archiver.kernel.org>; Wed, 20 Aug 2025 09:08:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE79D8E0042; Wed, 20 Aug 2025 05:07:48 -0400 (EDT)
+	id 3209C8E0043; Wed, 20 Aug 2025 05:07:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A985E8E003E; Wed, 20 Aug 2025 05:07:48 -0400 (EDT)
+	id 2D19A8E003E; Wed, 20 Aug 2025 05:07:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93A0A8E0042; Wed, 20 Aug 2025 05:07:48 -0400 (EDT)
+	id 1BF058E0043; Wed, 20 Aug 2025 05:07:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C4698E003E
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 05:07:48 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 22AD21178C4
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 05E8A8E003E
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 05:07:51 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C7B35834D8
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 09:07:50 +0000 (UTC)
+X-FDA: 83796558300.30.505A8F7
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 7C4BD180007
 	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 09:07:48 +0000 (UTC)
-X-FDA: 83796558216.15.685BF20
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 214FEC0006
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 09:07:45 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=rSszCfJ7;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755680866; a=rsa-sha256;
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=eDWwwc0Y;
+	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755680869; a=rsa-sha256;
 	cv=none;
-	b=m7+5oyn9ImvP3ltAoiQtmXgnWrZuzIiQY5oge0uqHvwHomQV2x2rABeMIAyHip1V0rtX8m
-	MgMTl0mvTE5iINoegqarcs9x0W7MMj/QJ8DTwBnNlnad8Gb8+8JVGltdUyb3ijpXK04ldT
-	8ykGsu2QU4e+TNXL02NxIeONC+CHIWA=
+	b=0rsFCFTQfuwmng76Dtp3jZw3GC6fEwFEa7JZc6zJvK3zssVit0Ztguyd5ojjOag/kA3t7S
+	MH+eZuTrRsOzcTwgvoLI8ztq5rkSABIWEodKcA515nN3itfHlu9LaPFiZxS8qlMkrl1x5l
+	jCyGEnEsi9GwZQ7yZ4kXM8VrZmjpFsw=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=rSszCfJ7;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=eDWwwc0Y;
+	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755680866;
+	s=arc-20220608; t=1755680869;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kaAWoBis1OZYy09ndtQ4e2rlen5KUPlGbetwvB7igCU=;
-	b=fc4Pi/pzicgQSyCq38UMOgP1fhPvJtUafnoHwl0+tb3TvehILXopttTvZAQ40NeGhRW8Vm
-	GkLTzptDevEhXSOjdGxwM3/6PYATrlRMX6AGdjwLBUwIKORaVCsYtuaqRpJUDtezbhv4uy
-	GXvy7PIJVfhhniItEWmLBZumY2NkRHY=
+	bh=EjISQWqO9y1RYDSZTblYyeGwhEoGNvkdz3hoHgtvBm0=;
+	b=c6xHurvAv8OD8US2DdPdeOHfwj7o4bJ/q7zEO5v+Iw1hiku3wszTj4ed6u8PoBC2CkEWmz
+	3x4sfgBdHCTbBxmBH/l9FD8SywRDaU9dmBJTTDjN0r9UiLWNl5RGg5eohoAT+FSgqmTzsv
+	mfevqfsscU/wmZsEoS1pA9BEyEG3qus=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1755680862; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=kaAWoBis1OZYy09ndtQ4e2rlen5KUPlGbetwvB7igCU=;
-	b=rSszCfJ7w1qr54KhnJDBYzPRhFg46idvrmPZHnCGp7gMZMzncCJVCm/4vKD+YqarD4hww44IfQflnCog9UhXu0+r9zrgrWblUsrE7wnV/+7Ot7QTfCIPGzADII8jkzwqJkSLpHatsvcsEIZmrQARByUZ9VNXhBGmLDqpOqEQOVw=
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WmBY56L_1755680859 cluster:ay36)
+	t=1755680863; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=EjISQWqO9y1RYDSZTblYyeGwhEoGNvkdz3hoHgtvBm0=;
+	b=eDWwwc0Y9ODZ1cQfgcKhueuOazvdOE7ix5maBqTHoNTfNKt8CXo/YBYNjnfPnEyttzrY/yNs3eOyi5idIH4cYLk+SiqqsdWULGOfA+KJQDet7UkRjXfccc+AdrlY0+qKfoKvQyoZFa1vHoCsA7lc2+x64fsdQ6QshFYooz5dTfE=
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WmBICuO_1755680862 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Wed, 20 Aug 2025 17:07:39 +0800
+          Wed, 20 Aug 2025 17:07:42 +0800
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
 To: akpm@linux-foundation.org,
 	hughd@google.com,
@@ -68,22 +68,22 @@ Cc: ziy@nvidia.com,
 	baolin.wang@linux.alibaba.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 05/11] mm: shmem: kick khugepaged for enabling none-PMD-sized shmem mTHPs
-Date: Wed, 20 Aug 2025 17:07:16 +0800
-Message-ID: <7c8ee99eb146a9e8abd20d110cb591d33fa1ebae.1755677674.git.baolin.wang@linux.alibaba.com>
+Subject: [RFC PATCH 07/11] mm: khugepaged: skip large folios that don't need to be collapsed
+Date: Wed, 20 Aug 2025 17:07:18 +0800
+Message-ID: <27aa3e9657958cf17d0f42a725155c05b21806e5.1755677674.git.baolin.wang@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <cover.1755677674.git.baolin.wang@linux.alibaba.com>
 References: <cover.1755677674.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7C4BD180007
+X-Stat-Signature: i9pmxy358ro13i7geskdkandh9pk98ha
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 214FEC0006
-X-Stat-Signature: k5d7bq387h6dhsq973mrnm58cdo1m58u
-X-HE-Tag: 1755680865-862390
-X-HE-Meta: U2FsdGVkX18Wc2coBXhrpXLhs7aJa7uN8BTVky6Ae01Dn5VvNQ9JLcsKPxxb0mpXfhfqHzvl/fCVdDbMr7zFiu9ACuRZrcilbyUQK8oMvKd4Nj4BBNutih+F8eEVREGxWHoOIY1MNQ1nBcgjh7Pq+DH0yXbOdByrcWwWAVWUv6q50hi1MDp9o3STfUFIRUUyIwwnRHiBMeocVmeeW7wEW4UVdrP0gty6cr1xqrift167F+Zbd6mxBUm3cFjdwSexGTJQLeQkiYXHQMyjh//6sN2rs7EwsfXC6mLioXA1M9RdRdLCqjtav5UwmZPCRKY6ELl9lmF414VYsPjQq2veN3IMRM3dD9lHDwLDK3u9YkmNIWArbtVWdJX8BquTrh4DfeduLjBpr1oh8EExr0Q1Nx3tVan0II/PhqkUbh+Umf62V1CoYSW7biGmYd8yFsfA3TMB/dBOfsirpHrrd0KDHgVgja0Nk+tXxxdk9tfZ8OYRiRipSnghqeqqEjSP5IxZ3kqUKpQR6JfepgCahq8pes4crZlGjSLmvRyRmH2y0GFZPS8iKb5I2cyL9KCvOD2ojXtf+xoaqnC8FjPt2IBufSGe5pVoj7sEfbLXoYZR6hQvJqlCVhOTgb4a3CqE9mMnmBH33GJJypsZThovmd2d5G2BGEV0AqSyyXOm02Nmrb0QXAcrxL1GHU+DJ71xiy0qK7d3wMEJxfLS0m0sZ1g0xDWzDQWA/XNwDju4HyhAlcJXXDF2md3iUuQmyyCLMaSSpg6GUVJZsHAlGr5Q5sgPKV2zWEI2wW3flwhNsvpYwk+k+9GiC0Is/2Hid2z5u0rSG5+qu2cO0CFqGlrvxMumcPMpVI/yWrHynqtvmOFxTACwllgRMyFIsMuM4BpVXiNSuY2HQ1zKT9MIJUoDL/4fppPM94Oluy8cPkhhARdSnnTj6NZUSxzWJ9y3tJ/OntZG+FvKn+WptTKp5F/tpO1
- OVzniK77
- 9/pbdbf96cVCHg1nE7rPS4S0gTUQ5sZo/w0QOeFKOG/7p3kG52Pdd4dzKnl/U1bM/V8stAIY0Bmv7JACvttHBpLikddNkOMgUws0IcGjfHqWr94RLw6K90QhASos6r+sZm3LDaPIlXNvaWInKVPxzZeXwyaongOioIyjew4D5kD+yz1ccguYBidYxT/LasUsg8y+nmVzcScD5+XWjfTlP6SpTd8L0VxeqfHo4P+qS0AyVeb7MUge62yp2vyi+4VYGOCIrlw0zyyouLza0wkBsEwY+Bte6zlCJ7Tpz
+X-HE-Tag: 1755680868-894446
+X-HE-Meta: U2FsdGVkX1/KkwlfW8j+6wjYLCilz5U6rP9SGnIDWrBlagMKgmXI9uqYvRHZdSFX+oaV7xRl7rM8Yb1dLSRlfqSC2/WRLTbp0Td90P8Ntl15wM04myYvW3+JoHKB33CZltys7g4n8n3ppW57xKFkjcwibsGp2rgMJ1uedPOXcIN8E7AAmEUXF5dcBowcl5NRy4/daQIB/XxFZ7hH3voNuZENaNR4wAlB2vtH3f020dqVHVdsgx3E6F8iMhA9mndJmhAlCfsjHFe1QBpUHGxgHCmubyTnqEC81J1xZfYelywhxGSIP/chlR76z4JIOey9LeMHGBb3oON3qZm2sAwy3WP3A5uNL8Saa1ANVIv5QLVAEGg5SEGA41pUJOrZ5AA6ITrFU3dX0HW5jrC24YfnvTgZ1elNBq6sFNRxtRZ5TmpMyuxOk9gChcmq25nIJhTJHdWrFQQytbBvlZcBmALV8vW7WIMiHpmZpgbM05K/0KACYEVMsOESHrpKTiVfVvPOlf6sZeOLM62ECHni5ju96Z09gf8y0aOLf1Up8Pn5kz2ZZdaG4ZD9JQu/MQTnf2uMu1T8Gub5lcpfd6WaijJ6jBYoOPK8ReGJswumEwLEFi/POtN5cNIpckmU4kKbu6c8vC+clXVN87iNOo9G8R+Vtc5hoESbVHD3bB88L+Ja1Zwg+wYzf0BRdyOXIVFWelKS5pWriNDYEEjvgUFna5mTwCi2QHDeiTzU4skSx6BIyHQmfStgZQe9Sn7PzcFd6Sd7VoIStp/EOkcc14QRWRKPEZ5JFg56Ag0vg75bFegWH+JK5jcRUFNl8ubHB83Z1UNvoBET0lLaHjfhyCNdKqQU9rspZju+QCRbTs5wzdCP7+i6XKg9uUfSR5czQ6fUyGBp+FenlqGOm7FtQK/u0aqMxMrw/8SCeer41f3/cxchbJ/UtoRR+4CHwkU5fa9kgjk2+Q7hPbV6JhO7uu8IdIo
+ kweIywC6
+ TJuIxhrTkXF463VM0fMVSIr0/b90owopxmc+HueppxmUV9lwufE87RoCSKRKw79dMuv3RV0MTkuT2D/V0hv+ATLxxYFB+bKQtp2IMHCz8rKK8H67jw8l/MmJzN8fH9remfpSgicdPtlbSwzNB3CR10wuVSFL3W/xtQ3YPFydQiHPXYbXUtEL7ETIbkb1yyzpj9eo7zoEkZqkhV1HGSx4O0QOcQl4Pg4QZoUWM19pLUDQz6NlvnvbaxgQX7fto5KYWzayqW9uALTZyVtokcruI5BjpeD8B3T1mfmjT
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,81 +92,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When only non-PMD-sized mTHP is enabled (such as only 64K mTHP enabled),
-we should also allow kicking khugepaged to attempt scanning and collapsing
-64K shmem mTHP. Modify shmem_hpage_pmd_enabled() to support shmem mTHP
-collapse, and while we are at it, rename it to make the function name
-more clear.
+If a VMA has already created a mapping of large folios after a successful
+mTHP collapse, we can skip those folios that exceed the 'highest_enabled_order'
+when scanning the VMA range again, as they can no longer be collapsed further.
+This helps prevent wasting CPU cycles.
 
 Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 ---
- include/linux/shmem_fs.h |  4 ++--
- mm/khugepaged.c          |  2 +-
- mm/shmem.c               | 10 +++++-----
- 3 files changed, 8 insertions(+), 8 deletions(-)
+ mm/khugepaged.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
-index 6d0f9c599ff7..cbe46e0c8bce 100644
---- a/include/linux/shmem_fs.h
-+++ b/include/linux/shmem_fs.h
-@@ -118,7 +118,7 @@ int shmem_unuse(unsigned int type);
- unsigned long shmem_allowable_huge_orders(struct inode *inode,
- 				struct vm_area_struct *vma, pgoff_t index,
- 				loff_t write_end, bool shmem_huge_force);
--bool shmem_hpage_pmd_enabled(void);
-+bool shmem_hpage_enabled(void);
- #else
- static inline unsigned long shmem_allowable_huge_orders(struct inode *inode,
- 				struct vm_area_struct *vma, pgoff_t index,
-@@ -127,7 +127,7 @@ static inline unsigned long shmem_allowable_huge_orders(struct inode *inode,
- 	return 0;
- }
- 
--static inline bool shmem_hpage_pmd_enabled(void)
-+static inline bool shmem_hpage_enabled(void)
- {
- 	return false;
- }
 diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 53ca7bb72fbc..eb0b433d6ccb 100644
+index d5ae2e6c4107..c25b68b13402 100644
 --- a/mm/khugepaged.c
 +++ b/mm/khugepaged.c
-@@ -453,7 +453,7 @@ static bool hugepage_enabled(void)
- 	if (READ_ONCE(huge_anon_orders_inherit) &&
- 	    hugepage_global_enabled())
- 		return true;
--	if (IS_ENABLED(CONFIG_SHMEM) && shmem_hpage_pmd_enabled())
-+	if (IS_ENABLED(CONFIG_SHMEM) && shmem_hpage_enabled())
- 		return true;
- 	return false;
- }
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 13cc51df3893..a360738ab732 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1791,17 +1791,17 @@ static gfp_t limit_gfp_mask(gfp_t huge_gfp, gfp_t limit_gfp)
- }
+@@ -2537,6 +2537,7 @@ static int collapse_scan_file(struct mm_struct *mm, struct vm_area_struct *vma,
+ 	struct folio *folio = NULL;
+ 	struct address_space *mapping = file->f_mapping;
+ 	XA_STATE(xas, &mapping->i_pages, start);
++	unsigned int highest_enabled_order;
+ 	int present, swap, nr_pages;
+ 	unsigned long enabled_orders;
+ 	int node = NUMA_NO_NODE;
+@@ -2556,6 +2557,7 @@ static int collapse_scan_file(struct mm_struct *mm, struct vm_area_struct *vma,
+ 	else
+ 		enabled_orders = BIT(HPAGE_PMD_ORDER);
+ 	is_pmd_only = (enabled_orders == (1 << HPAGE_PMD_ORDER));
++	highest_enabled_order = highest_order(enabled_orders);
  
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
--bool shmem_hpage_pmd_enabled(void)
-+bool shmem_hpage_enabled(void)
- {
- 	if (shmem_huge == SHMEM_HUGE_DENY)
- 		return false;
--	if (test_bit(HPAGE_PMD_ORDER, &huge_shmem_orders_always))
-+	if (READ_ONCE(huge_shmem_orders_always))
- 		return true;
--	if (test_bit(HPAGE_PMD_ORDER, &huge_shmem_orders_madvise))
-+	if (READ_ONCE(huge_shmem_orders_madvise))
- 		return true;
--	if (test_bit(HPAGE_PMD_ORDER, &huge_shmem_orders_within_size))
-+	if (READ_ONCE(huge_shmem_orders_within_size))
- 		return true;
--	if (test_bit(HPAGE_PMD_ORDER, &huge_shmem_orders_inherit) &&
-+	if (READ_ONCE(huge_shmem_orders_inherit) &&
- 	    shmem_huge != SHMEM_HUGE_NEVER)
- 		return true;
+ 	rcu_read_lock();
+ 	xas_for_each(&xas, folio, start + HPAGE_PMD_NR - 1) {
+@@ -2631,8 +2633,11 @@ static int collapse_scan_file(struct mm_struct *mm, struct vm_area_struct *vma,
+ 		/*
+ 		 * If there are folios present, keep track of it in the bitmap
+ 		 * for file/shmem mTHP collapse.
++		 * Skip those folios whose order has already exceeded the
++		 * 'highest_enabled_order', meaning they cannot be collapsed
++		 * into larger order folios.
+ 		 */
+-		if (!is_pmd_only) {
++		if (!is_pmd_only && folio_order(folio) < highest_enabled_order) {
+ 			pgoff_t pgoff = max_t(pgoff_t, start, folio->index) - start;
  
+ 			nr_pages = min_t(int, HPAGE_PMD_NR - pgoff, nr_pages);
 -- 
 2.43.5
 
