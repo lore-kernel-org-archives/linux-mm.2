@@ -4,96 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B558DCA0EEB
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 16:51:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57C78CA0EEB
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 16:54:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 079DC6B009F; Thu, 21 Aug 2025 12:51:51 -0400 (EDT)
+	id A1DCA6B00D7; Thu, 21 Aug 2025 12:54:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02A8B6B00A2; Thu, 21 Aug 2025 12:51:50 -0400 (EDT)
+	id 9F5BB6B00D8; Thu, 21 Aug 2025 12:54:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E82976B00A3; Thu, 21 Aug 2025 12:51:50 -0400 (EDT)
+	id 932546B00D9; Thu, 21 Aug 2025 12:54:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D48706B009F
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 12:51:50 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E4E46B00D7
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 12:54:58 -0400 (EDT)
 Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6B7C5C0485
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:51:50 +0000 (UTC)
-X-FDA: 83801356380.12.1A5222B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id D095F100009
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:51:48 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EP4thFQH;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 295E1117C81
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:54:58 +0000 (UTC)
+X-FDA: 83801364276.12.A2F4E51
+Received: from relay.hostedemail.com (unirelay10 [10.200.18.73])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 688E3140002
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:54:56 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755795109;
+	s=arc-20220608; t=1755795296;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8W+GTt+fPIsw1oYSaDSYIx+UBDLWvIQSAwrsYLyrpa8=;
-	b=WTkV2F0maHSDKPhj+rng06HkxVFZ67f/qRxwbsvEn08BKsGmsgr1JulRaUg3N/75xZdiTK
-	PnZpemleu8JfB0WXDB9rCxLd3/zdt5nrdxDc2iEftlrOwvPM7JvrJzjWp96mjRkxLxsm1c
-	SsUnQliUG/B2RYINHDzhsb+Tb4rEV7c=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bqbFSeag5rsbNDhSYotEQkQKqGJ8k60o0/WUvEhP/fs=;
+	b=bj6xQuGcXzESoJhly16V5SYHVe49VKRTZ2ofXbIFB9UHyDwoj3l5vO+AqImwbWpAbvGfHK
+	SHZXm3c0v27MIAxVeOJ3aeXOnKwBnauyA0rmi6KP0WAQcs4uUjxJ7zCgu3x51Eq2lxFNu4
+	WXkTWiNFyD5TWE4mKexlcLcyAokMcOk=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EP4thFQH;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755795109; a=rsa-sha256;
+	imf23.hostedemail.com;
+	none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755795296; a=rsa-sha256;
 	cv=none;
-	b=2Ieltmy+vXjWF4Sgqc72uym4tby7/eQQpjbAMZDGjz4EGBe6OV83mbv+TLGR5fCHGd2CIK
-	tTIMwKjCgzvwBri4fspQ0oyScI3+53c8d4u7Vf3iiCUDGNPRIa7ZzEIalSJZf3ttKPxTPp
-	dGdc67oP5kn428ehTmTyPTn4I5rUXfU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7F484419AC;
-	Thu, 21 Aug 2025 16:51:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3706BC4CEEB;
-	Thu, 21 Aug 2025 16:51:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755795107;
-	bh=NiOlFmdevKS6VWgKWMk0VHghGAr9+/QG4GrazUo/thY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EP4thFQH0VsRbjF7HLHpYini3V97AaDZfOUIcT04U8+ld+l3E8sggPMXbWSIP9r0R
-	 ThbIPdcEiNi/Ifd7TM96NklAuB5ucjYBPigKg44+R3JzIsM/wQYGa1OJ/Z39FhTdKq
-	 b2JOWoGvrqsmrHZNrQqXiLjAV9QdmfDPDv1MitEqFgNSnnmTG4YNBfku1JtB+ur0XW
-	 MusChySB/U2nkgcnu7tzGjRoMCZYIh3xFZce+sXmNJsvNmjHlwYd/Fe4CMNbPaW3qh
-	 WQAbgpjRXD6AEuBhp1aosnXBOqOegWubbORtVFUML7TaQm4w3cVjfO8rbq9j2EMMv/
-	 MuX/KzUijO1Kw==
-From: SeongJae Park <sj@kernel.org>
-To: Usama Arif <usamaarif642@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	linux-mm@kvack.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH] mm/huge_memory: remove enforce_sysfs from __thp_vma_allowable_orders
-Date: Thu, 21 Aug 2025 09:51:45 -0700
-Message-Id: <20250821165145.78779-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250821150038.2025521-1-usamaarif642@gmail.com>
-References: 
+	b=AbkruYcNOcup/2TopKywy0+cMrkChYXio2b452cgwKz6JfaMCVRseWddhgSwOHjZRJRiH8
+	GbfGMFvaEpGtkj/fbXpgT3Od7P8gn6tMyLgdC/uoCXtFC2D2+FfkUPvjakE85bDwGKhqFv
+	9DtkvhL+CMF9U1XucQsmRwMmLS3PLQY=
+Received: from omf16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 06922C0485;
+	Thu, 21 Aug 2025 16:54:51 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf16.hostedemail.com (Postfix) with ESMTPA id 40E0120018;
+	Thu, 21 Aug 2025 16:54:41 +0000 (UTC)
+Date: Thu, 21 Aug 2025 12:54:45 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Nico Pache <npache@redhat.com>, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, david@redhat.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, corbet@lwn.net,
+ mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
+ akpm@linux-foundation.org, baohua@kernel.org, willy@infradead.org,
+ peterx@redhat.com, wangkefeng.wang@huawei.com, usamaarif642@gmail.com,
+ sunnanyong@huawei.com, vishal.moola@gmail.com,
+ thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com,
+ kirill.shutemov@linux.intel.com, aarcange@redhat.com, raquini@redhat.com,
+ anshuman.khandual@arm.com, catalin.marinas@arm.com, tiwai@suse.de,
+ will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org,
+ jglisse@google.com, surenb@google.com, zokeefe@google.com,
+ hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
+ rdunlap@infradead.org, hughd@google.com
+Subject: Re: [PATCH v10 07/13] khugepaged: skip collapsing mTHP to smaller
+ orders
+Message-ID: <20250821125445.5fb61e90@gandalf.local.home>
+In-Reply-To: <b6ebe641-0a0b-40b2-a34b-07393f883985@lucifer.local>
+References: <20250819134205.622806-1-npache@redhat.com>
+	<20250819134205.622806-8-npache@redhat.com>
+	<b6ebe641-0a0b-40b2-a34b-07393f883985@lucifer.local>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1/b6eVfnCtrADYpbZkvhr6irAR8DA0EUBs=
+X-HE-Meta: U2FsdGVkX19Wf7TImvNRKkdHzzdV7rkvIZhG+KmuYqaxLydUul5FOaS3X4td4dGtT9hZEXmh4L+Dk8si1hh/hVBWR74FiuUmhfbXmOOdNsDbKjyxYi57fiY6knL4h00MpaMfUIRDYdx3ziQrdIsPCvPgRRHrclGadS48nN02wTZ6PBrjY2LCI4Cx6XQvgzeBaGI9oL4ltMiwZnPR2Yi0mXZPr7egX1qPLgUYcMX9zTYFyPwQ7S8+0OCclKm2BNIeOnyiIs/374my40vMRvHjeexxt6cc3ZwRILylZC8aFqZhZnXFnIGB5uFwg43P3fQzfHePcSZ5aET9TTEaSV2JJ2QzqHIoYI0P
+X-HE-Tag-Orig: 1755795281-660595
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D095F100009
-X-Stat-Signature: rtr8hqcaaao6e15brqd9qmqok197k8sh
+X-Rspamd-Queue-Id: 688E3140002
+X-Stat-Signature: qibcagcc111tgj47qy51jo96stw8z185
 X-Rspam-User: 
-X-HE-Tag: 1755795108-466994
-X-HE-Meta: U2FsdGVkX19delP/luDGElj/dm86EVJzJm0DC6j0Ujx2DG9MiPEPOClqKzkPVSXOeio7V7mPIa9Ym6lILlKoP0/rmtPyXvzAz0rE95KIZdjAMcyIyi8ACPQEoVLmxFtnfv3n5vgfWM9TIrz8voAJOnHx7rCZpzClzVF98JbPR+b7xXv+5GUCwK7+iUiy6NgARvyjfQ60mGz/m6XIyW/vCwMHOJzXzJ5gIdkKLHK96GfRjsOn3+WHVEOnYAma1DBrSvsRXUzczYsenY0wwrKDk8VujCBejX4Kn8CU4RJ/+FQDBntW/Uvec2YkiNWwbE/Uwb2eir2YAQaAZdj6ZL2dKlQYOZTCIZLOimiXORBxeD6jRci8lZq3Jfx11vM3or5cZHhfCkpjNaPXb2iYOgrK6NrMYzv6/GgUrZHRICQEaRodj/09Rjz3hpp6UfBuF1QN1J1ndELTxM5xaUhK0Yfov0SkciXpis4rn7k1fbPQlNe4vpGZ5/xpX7o9bkYu3N2fRmFI9F1cOlCnQjuUe9uQ/55qb+d0270tHpkG4kYJJj87R7IaWuwWX2hIzmglWxt4V4VhRApnFt5ve01eqth7D++qzq1WJ6xCPdat3upg7bB3UOrxKfiMvrBmqVzZv84TjfFv74jgDO70UYzFfgazZwEszMy9+qh+3KQxjBqTxZlSqr5dfeE7enGlc+O+yWersMfKKI/QmoVdj9BwcHdHEjGhSrI5CnHqJffXRbzw8M5R6SbYssdz2WAwAhlGJkLJGQ2DDChJMyv6DbfapBtZMpFTWRHsKy0LjD9PnaSMZqKIQDGJ18y+J+eSX+jl2NGXWxfRlwr5bYfSJuW7t3mRNRRa/qXuSimkZB/+1WBwvChpSnvyTPHXKpI5PAoBz4v7bfSF5Vtw4F3dvK4ZFudxMneJI+W68vp06IGboFgif8hYQbFUJtKNBkhnponr7sahy6Vq3bV0xRpuRAN0a7V
- MqSGZ+9i
- CLCYGNELDykgoA08GH4Kegisko1ioZX8fHuaHVuSFXAGx7tc=
+X-HE-Tag: 1755795296-414539
+X-HE-Meta: U2FsdGVkX182PbpqGWc8RHS0/Lq1Pml5Lme7tIrTvS8ZPsuBpnHFgkneb3fssD+giln+c/8tVT7pALyYmMp0j9b1kWLqUopwJqfkOfvSjyWvPlw17yGqN0i0BJLFoIEUJct7/Tm5MDlGfNe+s7SccQgJWPnqhvUiNka6Q9OJ6smKm6xbA+whJkIznsiJXbgJ0Zn29h6kIkB/BbNKfr2MERUVc1xhGvT/82WiI7yM/1+QRJxrzOagikx68IaolbV0pQFkMSLH7FcRgJG6aXW0J8byu0/12axiKoODy6a2EzHP+Kkn6ZC6Sko+z1HCvLT3iP/SRvhnKGxRRyKNsrz90pHFmmOdwt+cyUGnIodBqZXxIR6WpegsiJqO6Fml3mroLeiJacCdjSuHW5e+5ZbmIK2beAC4XDbYLp+6Hw1sI7DKkgX2wAjPivLHkRue6SJC63+J2D5wEiGeomlkGLkyqRHcn+I6sHe4jrRI2eadrFUMkLo6C/0oaKUSxAkHHA1qqYG3xUbIIZ2mypgb/uL0MRvKHwovlU26NckvbLPSF8/zBizvbkEDo8/4pWVekJlEizsC/fZeZZUSij0jcIGszvY2mkRar6ylZ9rs4tETN10eL5cdIqtm0f5JAeCk+FNqNiAotlYawXx2PgN4pyiRmyGLqssmk5xH7ee++EnWOVLTmh18lBzu5/jn8HOX5vg7WQO51rJq+AoR8vxrExMTlQUIwirdWuUZhvld+TfYfAsAdeuyX+5iTbYarvBYfZHvseJVZ9oA3ncs9GYRGhdxNSlUygKJSe0g/KP/CXOsIzfE2cSPzotIL96FnqySNKJ1vM23knXvyqmUOzZGzIkRnZErFSArfmOoWQmxsb/7Lskfz5Sgc97VBG/MSPpLqC5XaGwWj+qth2BhuZ36eJVgDuYpqqime/F+iGLnQG/5ipHsCL+IR4KdZeAOagld9zZBBoutH/HfTQ2+tKLCPgU
+ FRw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,21 +99,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 21 Aug 2025 16:00:38 +0100 Usama Arif <usamaarif642@gmail.com> wrote:
+On Thu, 21 Aug 2025 13:05:42 +0100
+Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
 
-> Using forced_collapse directly is clearer and enforce_sysfs is not
-> really needed.
-
-Nice cleanup!
-
+> > +		/*
+> > +		 * TODO: In some cases of partially-mapped folios, we'd actually
+> > +		 * want to collapse.
+> > +		 */  
 > 
-> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+> Not a fan of adding todo's in code, they have a habit of being left forever.
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
+It's a way to make the developer more depressed by reminding them that they
+will never be able to complete their TODO list :-p
 
+Personally, I enjoy the torture of these comments in the code ;-)
 
-Thanks,
-SJ
-
-[...]
+-- Steve
 
