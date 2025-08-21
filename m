@@ -4,130 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D26CCA0EEB
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 16:20:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB214CA0EFC
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 16:32:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E7068E000C; Thu, 21 Aug 2025 12:20:00 -0400 (EDT)
+	id EF5F16B00BE; Thu, 21 Aug 2025 12:32:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8962C8E0001; Thu, 21 Aug 2025 12:20:00 -0400 (EDT)
+	id EA7126B00C0; Thu, 21 Aug 2025 12:32:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D3208E000C; Thu, 21 Aug 2025 12:20:00 -0400 (EDT)
+	id D959F6B00C1; Thu, 21 Aug 2025 12:32:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CDCF8E0001
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 12:20:00 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C7E4E6B00BE
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 12:32:51 -0400 (EDT)
 Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2A0EF1DD6B2
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:20:00 +0000 (UTC)
-X-FDA: 83801276160.12.3EC33EE
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 6D45440008
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:19:58 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=redhat.com (policy=quarantine);
-	spf=pass (imf27.hostedemail.com: domain of "SRS0=upZg=3B=redhat.com=david@kernel.org" designates 147.75.193.91 as permitted sender) smtp.mailfrom="SRS0=upZg=3B=redhat.com=david@kernel.org"
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 77EB6B9895
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:32:51 +0000 (UTC)
+X-FDA: 83801308542.12.1D13EC1
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 7060020014
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:32:49 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b="w1JMf/3G";
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf03.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.181 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755793198;
+	s=arc-20220608; t=1755793969;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l73kjzY3ZAMDBMjTpy8HUP02H/3wG+BXP6fxZxluQ5k=;
-	b=eQLZmt9yfjYdLaXi77l0UOIDCQJnIohvP5qstjm+jmBMN4THR8x3Ckp5SmisX7e4MjO2Ts
-	PTHxhDM5NGbs/acdYrDz0cYzvfouDPCpHSvKRw2pI2S22IPtx08OTbEa8HubKSsQ1TBRiz
-	Xbtx4B1d0tYXhkXxxCGaaqE4uPAOoUc=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=AJBIccdGfoJ7TBGZwMZmL6UTufIbSb7K8pHwnbZxKm8=;
+	b=nKlDeYN7hRC0e0liJG3DmZIfRO6SJpDk8zxQSY+BxER90CpP3gElzupyJjHJBJCN99Isg/
+	X33A71+7gkad4P7w6r7olN/S5AfdoyMbeQMNW3OEUvAMEv1BDIGzrezBk2Fj3JK+6ByNY0
+	FUZC7idZVE03hbNHlCtct8jXvRhebks=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=redhat.com (policy=quarantine);
-	spf=pass (imf27.hostedemail.com: domain of "SRS0=upZg=3B=redhat.com=david@kernel.org" designates 147.75.193.91 as permitted sender) smtp.mailfrom="SRS0=upZg=3B=redhat.com=david@kernel.org"
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755793198; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b="w1JMf/3G";
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf03.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.181 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755793969; a=rsa-sha256;
 	cv=none;
-	b=IIJE1aJnICVyzInFlacGBSOExkhJxJYGaBpifY3nJRG28j7i6myfIZS7m64ZWcojVr09tZ
-	bXGUqUImZAwcX2bvEv5fcW5u1RTZWxGoQWFz9TN7Ptl8xcbogILbMyYY0Z1Fab6K8F50rY
-	nwrnQN8PLGZBXwPkjUbLfQkkMAevruA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id E38BBA58172;
-	Thu, 21 Aug 2025 16:19:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09403C4CEEB;
-	Thu, 21 Aug 2025 16:19:54 +0000 (UTC)
-Message-ID: <443d3d83-2b1b-4def-99c4-1b09ddc9879b@redhat.com>
-Date: Thu, 21 Aug 2025 18:19:52 +0200
+	b=Gs6CeBynjsAn7Gve/LAtpbLr2QdZ1wUDLQSe466m915tFvNPxES6m5iAlKaxZnByCWBHOI
+	+jelSuUQq1BZ6FCuzloI5vK+vWjIv5C/Cp8uIfbm7wCojY92NlPsopj5XyIgrazfLQ71Ws
+	o34hHk4QLKVIQNWGdle1Y4OjiNNX1s4=
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4b109c4af9eso10141971cf.3
+        for <linux-mm@kvack.org>; Thu, 21 Aug 2025 09:32:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1755793968; x=1756398768; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=AJBIccdGfoJ7TBGZwMZmL6UTufIbSb7K8pHwnbZxKm8=;
+        b=w1JMf/3G0lbBybrBbSKaDdurylD8UIHbofNw0gTiB1Ah7JfhjTalIS408+pH4vVRqr
+         uNXo2854gjajiC5nlnqCBOggMt07h751dENg2wUjVCBC0fHl+RztdbY/LH3rMHOffDsG
+         68s/gpaFea2d5Gcvl6z9eFiPeoNVqGm9ShvT6HIwiYoWlZdjVa6hATGVS5DV4WihN2Mn
+         fmIenp9aKLkd2y1NfyI7i7oVCxIlhmWaqwLfwPqLQjuoYjYfnEhuYPeLiI6ry2suRhfK
+         Z+oIoYW++1FTN2CnDWpXzexg8GpaoOdNw8/gFh2QKXHi8zsomakHj9dXoqmb0E99XjRU
+         4KTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755793968; x=1756398768;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AJBIccdGfoJ7TBGZwMZmL6UTufIbSb7K8pHwnbZxKm8=;
+        b=VdFMkIl9OIjnbt3s8Ifvl3QSCPyqXiig7MCPDYeIiTv3kQgRvkDNzEeT4XleI72wCO
+         7szNJ48prBqp+Yj/BMdoqKyGI28JqOt9vetvlz57qkxUzpcer5Nr9+ToNbzXb0UV6MzX
+         FrroUm4vwciqP9cMGylGutJWpaAe1NlWsApGUN/zUdRNk3aWyBA03ViKuoAB7NNYa82l
+         N0J8BY1GoeujiJbGRaoCgJzu9OPsOGZ7AOtvQdSJ0N9RK8B+BTOFNF+cvgNXYSHmzwe3
+         H19ThJyUKx2d2BOEEXpx5n9Eb431GbdP68UVCKgrmrsdYlxeo+x8Bl8oz16XXplRQPj9
+         myRw==
+X-Forwarded-Encrypted: i=1; AJvYcCUKuHjLI3Hd2u6obAkA76QyYO8D/RNuLMGH2uY01xdPpsSItFQ174grOfxoolxd5AhWzYDMclYcmw==@kvack.org
+X-Gm-Message-State: AOJu0Yy37SlreGSLLfyokZ7wejO/TET97USU70k/xzkpdgt+aQ6iHoA2
+	iNT8/mez22RNrnfxm5xoxsxFXG6joIvdltKYAy7if3AfZ+CSr9FHXXC0B5/brmacsHo=
+X-Gm-Gg: ASbGncuwxR8l7fdKuY2bdmKi1Cj/Sx8HTtDhY6+Q6FOxCOdLKZMiOzsfq80laXYlhMI
+	ocV3PKyRbGUYVUJWoEIL80/x/Cve59IHO8pMo5AIHs6viuJsqJmpuYieDt10emhXi+IaKQnA3gT
+	d1kxntRy5R/W1cc6cvya28xtxF44cMi50BMHuKkFihJlxuoH+9N+qc4x4+r+u6kepVj3jcJu8nd
+	Nl6PozC75zSxHfbII6EQNLmU4/sUrIuYo+L8MrixOMQ46nKurVeq0wojxRfDYefEMmyLOPz7sbs
+	SNwsOh4QWvOnHuJXL9/1KtXbWIKFn1Xo4M2hrbnNdvSKQhquMqoIwFvCqWV7LatziDBvRjSMYmd
+	Ilo34rG9X9JHFvIVm9rP0jg==
+X-Google-Smtp-Source: AGHT+IGzFmxFGgD1qjjvDRMkuysEk61zJdizJHSCops/dSlcfNFa5m9ubk3r2HMYPciXBSNmvq0umg==
+X-Received: by 2002:a05:622a:2:b0:4b1:fa5:c5f6 with SMTP id d75a77b69052e-4b29fa3c13fmr31056661cf.25.1755793968196;
+        Thu, 21 Aug 2025 09:32:48 -0700 (PDT)
+Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
+        by smtp.gmail.com with UTF8SMTPSA id d75a77b69052e-4b11dc584cfsm100798581cf.14.2025.08.21.09.32.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Aug 2025 09:32:47 -0700 (PDT)
+Date: Thu, 21 Aug 2025 12:32:46 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: Remove is_migrate_highatomic()
+Message-ID: <20250821163246.GA133370@cmpxchg.org>
+References: <20250821-is-migrate-highatomic-v1-1-ddb6e5d7c566@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory: remove enforce_sysfs from
- __thp_vma_allowable_orders
-To: Usama Arif <usamaarif642@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, lorenzo.stoakes@oracle.com,
- linux-mm@kvack.org
-Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
- npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, kernel-team@meta.com
-References: <20250821150038.2025521-1-usamaarif642@gmail.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20250821150038.2025521-1-usamaarif642@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: stjiodxhjortp1redpnu9o6h7ax5o4te
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250821-is-migrate-highatomic-v1-1-ddb6e5d7c566@google.com>
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 7060020014
+X-Stat-Signature: xt6rnmprjhuap5xn4jk9asy99n89nsit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6D45440008
-X-Rspamd-Pre-Result: action=add header;
-	module=dmarc;
-	Action set by DMARC
-X-Rspamd-Server: rspam05
-X-Rspam: Yes
-X-HE-Tag: 1755793198-349801
-X-HE-Meta: U2FsdGVkX18R8FMK79KCMkizWXl0+hQCbuIlxub/+dWtGKAZybaD51zK5H6BvfrfWcMt49xhne/hax4I1bQ+Zj7KTrC7/2P3aC0jqzhJTTVApLj4PhQ2RD6ySBulbs00oR1HxdcOaKncHbWLeQMibsaFhDr+DLOiF+wk2mvGmCCxhCMsGWyo5rHyxeiP4VYbHnQDpRfY0+MHvfU0Js2rWl1BEHQe1udaRQ8iumPIGhH5JQAnGgQ/Z0ejDrHIugaST5ORJaNUT+d19LSkqIK8SIv8FpCB5v+e07KSrL8hSopjvTkVqZHDg4Vl3+oWMFTs8c/BU6zY7DmHRU/PaX6hktIY272QS45ty3UcgdA6I2hAaCXGeJxM/0LtE60mmnVmX4DwQK/b6AP7h+NHuncvJoJEdoCXZzYWm+94kUI72fy4F5IjMUPzrcpvM0og1dzn8t3tbj7LPTKbjTuesL2bz0hHO43y667LhAK5BTHk70bo7X3upxqB7TaZ4Ti752yRQtQgLzNdPJl2kcqDcBnAgiswW350g2nETiJ+waAxsB+Y2MebA73Tr+6Dec7aNuqy1qgpppN8xdWU57o+ufh6dD2PE1+cR25cG46w3OWUcwb7W/d0EGzo1nsjMCXcP74SKZq9pwZKcspBTQJ9TpOKJN9FYtJwCmNsezfssIrz9+khKMAfRUk1cLsF52VVOBuyh8g8n8+Y9xfxwkddZkNGL4WDMZyfls/c48v1FGfKQVmqHGUuR/tU33YlBJmJ/2E7L59S0ks+q+RqustFtyCVzQmrcG9kjb1YZQplyyMmPiuK8GNoaJgUJpailCosIM7zPEnlT22CIDA4Em2ACUmI0fpzmQSIayb6SPc9TdTagrpRh1oDeiGkYWVlRsCh3yVjdGIXNvYBDAhxahY8a4UJZpIw1ZO6FzXV6uG/fQuyijLGnQYl21zQj2ROrms/GL6GEOZb0EuJZv9PEWMnoCj
- rBWSfTa5
- huLpSkoTYeRCAFLgT+mi10LqgTv/HR6W2eDImUlbuew2gT+PdsiII6ya3Y6cI9u2DV6SuZm0S8MDSyvXpMrhQfTyBzmhflRbX5gLrTS1i+rcclKXaCYfRgIX7YWVSq2CLWsaFstVFnqwb0aH0ztmBXQle+lc+oefaNZPmr7rUu7qtHYHt0ZmYJYlMXlaENRXI+rwpCSFZd2gZH/eTVFp/+psKXkrP3LkhI5nMG5s3hMYyvHyccdtJRG4WQhFTQC2BikN6cCr8FdykjDcAIiac4Zzy8qfNvk5Quv05FfA8juUSXpEAoGwuXqQz7JUmdgkMDxGD0Q0sfPvYliHFkBLXyr8PgseWnkB5xKi0xdmIEKuip/uYVrT1hoXyZScJIhmCVCTmtH0KDAVupC3jDxtlU4oFw+o0NQgzMPTqGZMKx8wuRzQUJKv4T+hONN1+R1VGjl+5ZnLL9UMcLoM96YBn0Aj4nmmvRrJLRT5H
+X-HE-Tag: 1755793969-456117
+X-HE-Meta: U2FsdGVkX18HzeTzKRIHzNJMHvZ1iS0lYaQVXC8LzqLj8cGbjP5abt4y2//JcPcfUPWKN8LWH1NkVf4qVCXdKIswsSofkvqkBbSapOSw0LX8h5DR1Sd5mxiivNPD+sZsRnOzP6RKhM4obqvAi4HOyZNsRi4XUJg2MB4srSBnUz4QAxgMOzwpeEjIg+I2y6PjYfh5XN4qEQM1EmgHr6R6SV/KGVYzD42+FBa6tD4sUdCW3U9iD6fxIYa78GMbwEOYuL8mGrwOJSZjKlLVmEPtm78Sl4ZvX0HAItijSR4jbQeMO3S5jSFfJzahrQtYz/cYCfZKyQ8xOFiUICmDDdFVWmXxR/Mi0ZhsOu8pXvbt516g9epclF9JaMV6Nnb0gKC5OgaIVFQP/3bJoUTRSU+shItkgAgR0udNgj3ohwB4I2JBURYKgUaM16SEr7iyVQnWpnh/JEehUYrv2g0I2HHoGCe+ngo8qJUSbo4sFL9kbZ73QDMlxKCDFZGmIMoT2NT6l3xvcAMrO7BkDlhRcxpaRtumkTdWuu4TxRPIzhfjLW7rHuqMr0UblM/sSX9/Gpv+yDeRQLrzXjjQ4tAaoKqUMZGLwgFjALtC3nmztDOUodizLrjuH4G5p7HcVwovCYafUbsP7vM7pBXlvXtAClzM8kxsWHTwUDKiSr5aSXScKt2tD47l3Vv0CvRtWYa+eM2taKxXvJSKI5ZcCs4BRr+5HOmEZdBxdEnZO9PEVYfCkuojG4pdZCyen9rEYUSFWhNF3tUXiSsg3RTJrd77lmVccs3p2KkdIJs47eZWI1TPZhH9o+Q8UMo0FJLHRgTq7vZ1UQtkaWQGFYH+B7C73xsUkexQILek5Ez9w9d87010gK7E6n8EteMhlf9EM0gjB6FQvKDWEaBl/2x6y1grcy9m0IlSsXKPht+TqQhucMrp//ihOcwAp9voYcoL6auJw9ZY02x4iR4tBxcHc+We2mQ
+ RMJaWmj9
+ /sqGSznN+gwSAF3a7YoRkXaBYuiMRczkhcy8eRX/0bgwo4QgCUxooWdyV0t9AitH5f/IU83NnLpwxnVWwGBX4sAVYSPBj3KFQLjZLEu3PgmSWeCYWoDmC4zIhBEvBpVCrev7KVmX7P76XpmvsjubpS8IiBtCTRL8+Dyuv/IbTbcZjEw6z1e0ZVI3i+SawuzN13FcfQ8Yj8L96nmYAjfTPOzewd/9ptGM+xVwdeh4a1+Z/zRLqMPWpCygOL5BwTyd3h0mEwYeLHCVkLlZr3TvTwOywrhHb3pXbtF1JcOrF+IpXMsEFb/HgzAgh+mG7M7vIcBybh2XPEl9xgLMF9mI/Y7PJW8Nk5dchvO4/xAYQ+2zZexPHDoUzryYdiXzia1VpkCOfkABu2lXjVWtb6Zj3DY0MAp4XRi0QsKAOJLu11htgHp5nxnmSnxZjvzFxTD5jt2pJflY6keNWH2gaH6NA4xYEOQyQ8GD5VyMuBxc9njSe1yuaaZo7BpbA0CoPrQ2yiF/3JZgwezFBM411w2AmOgRtpBXD9oz+CfZcRIPkHOO+wkcuw7TghaUe1OKpNkprdOsxnPveWjyK40w0mcGm/PMQSQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,17 +123,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 21.08.25 17:00, Usama Arif wrote:
-> Using forced_collapse directly is clearer and enforce_sysfs is not
-> really needed.
+On Thu, Aug 21, 2025 at 01:29:47PM +0000, Brendan Jackman wrote:
+> There are 3 potential reasons for is_migrate_*() helpers:
 > 
-> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
-> ---
+> 1. They represent higher-level attributes of migratetypes, like
+>    is_migrate_movable()
+> 
+> 2. They are ifdef'd, like is_migrate_isolate().
+> 
+> 3. For consistency with an is_migrate_*_page() helper, also like
+>    is_migrate_isolate().
+> 
+> It looks like is_migrate_highatomic() was for case 3, but that was
+> removed in commit e0932b6c1f94 ("mm: page_alloc: consolidate free page
+> accounting").
+> 
+> So remove the indirection and go back to a simple comparison.
+> 
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
 
-Acked-by: David Hildenbrand <david@redhat.com>
+Oops! Thanks.
 
--- 
-Cheers
-
-David / dhildenb
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
