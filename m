@@ -2,83 +2,86 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3100BCA0EDC
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 11:05:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8988BCA0EF8
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 11:06:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B2BAB8E0017; Thu, 21 Aug 2025 07:05:54 -0400 (EDT)
+	id 279576B0010; Thu, 21 Aug 2025 07:06:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB5898E0003; Thu, 21 Aug 2025 07:05:54 -0400 (EDT)
+	id 229AD6B0011; Thu, 21 Aug 2025 07:06:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CB608E0017; Thu, 21 Aug 2025 07:05:54 -0400 (EDT)
+	id 119F86B0012; Thu, 21 Aug 2025 07:06:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 876508E0003
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 07:05:54 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4F6011A039E
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:05:54 +0000 (UTC)
-X-FDA: 83800484628.11.8608C1F
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EE65A6B0010
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 07:06:01 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AFF0B16035E
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:06:01 +0000 (UTC)
+X-FDA: 83800484922.14.1B12B40
 Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 2E85AA0019
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:05:50 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 8D4981C000C
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:05:59 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
 	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf18.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755774352;
+	s=arc-20220608; t=1755774360;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=sTLiLiZEEEAtWfxlgsbKPguJNBXVeLx26ch4OcP4+68=;
-	b=29rGC94ZOjeWb18ZE/LuGvBMDh4j+LcjBBV4xu9Xu2SOMtRcXLNbN7T5NYCntBMuuxF8ZK
-	GfmBCmyyaAZ0u9IR8LzZGTuxxvosp/ZVMqXTr2RN8s3JxeHBQAQBSIN8rpcQGTY30YPhQS
-	LZtJ0L2vmL8O1ANipkfcYuXyEiyCV1g=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mX++GZdmc6UWUYIFpTUepiEZ7h0iUQtlSO7KiQSQJrs=;
+	b=IEf0T4830KTV+Y4XxS6YcSZsAOrsOoQ45tdl7D2znsGDsMeOAp4rCc8xBwva8spZ3ev2Vb
+	c4u3RfJ3FZaLVqpUOcydQtAHtE+8YXp1rrbjreK4ekJOC699x5e+POK7AZwRS3VfVo3S8o
+	KL9pApqBTm7kxE9SNCL8fYnv/K6BSrI=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
+	imf18.hostedemail.com;
 	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755774352; a=rsa-sha256;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf18.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755774360; a=rsa-sha256;
 	cv=none;
-	b=R/92hip/9UfG51UtVv+IA+oKNuz7u/8a7Uf05cV3Q4Wpr+UXUCuoSyv7pnz8CPBitRE6cd
-	Ccvnjbbi/YBovFVdNFPmSYyfu/n7kMULNEqEhyh6ywPdmsahhoUQ5DUj8A/e9mKCYzapf0
-	bf422JJF978pTpltCsb8Zh2sOhns+20=
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4c70jt6QFJzPqd8;
-	Thu, 21 Aug 2025 19:01:06 +0800 (CST)
+	b=ulAh/4WeYLxdejT8Xo8LT6NuAZMTrBeVzMguIR8K9srq8lJ7BRc2NeAcFlGgGn3i3jtDnN
+	ASJCSBc2p8VgINKpHLrL0CdYHQ7VMmrD21aGcWsaADm0GwLxa1ISw54GjpOK8+Ej2wk47l
+	Rjt29QlpcUaO1OxI2I8t7Brrfc82Uec=
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4c70p93RxnztTSd;
+	Thu, 21 Aug 2025 19:04:49 +0800 (CST)
 Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
-	by mail.maildlp.com (Postfix) with ESMTPS id D13E218048D;
-	Thu, 21 Aug 2025 19:05:42 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 3AD90180B57;
+	Thu, 21 Aug 2025 19:05:48 +0800 (CST)
 Received: from huawei.com (10.50.85.135) by dggpemf200018.china.huawei.com
  (7.185.36.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 21 Aug
- 2025 19:05:42 +0800
+ 2025 19:05:47 +0800
 From: Quanmin Yan <yanquanmin1@huawei.com>
 To: <sj@kernel.org>
 CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
 	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
 	<yanquanmin1@huawei.com>, <wangkefeng.wang@huawei.com>, <zuoze1@huawei.com>
-Subject: [PATCH 00/11] mm/damon: support ARM32 with LPAE
-Date: Thu, 21 Aug 2025 18:51:48 +0800
-Message-ID: <20250821105159.2503894-1-yanquanmin1@huawei.com>
+Subject: [PATCH 08/11] Docs/mm/damon/design: document 'address unit' parameter
+Date: Thu, 21 Aug 2025 18:51:56 +0800
+Message-ID: <20250821105159.2503894-9-yanquanmin1@huawei.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250821105159.2503894-1-yanquanmin1@huawei.com>
+References: <20250821105159.2503894-1-yanquanmin1@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [10.50.85.135]
 X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
  dggpemf200018.china.huawei.com (7.185.36.31)
-X-Rspamd-Queue-Id: 2E85AA0019
+X-Stat-Signature: tkqxgzaeidfoods96gwp8bqot4mp6stn
 X-Rspam-User: 
-X-Stat-Signature: oxyxt6trnp3izp4mkjgec5xdb38e4qg8
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1755774350-531111
-X-HE-Meta: U2FsdGVkX1+Vt1m7V0k+DvEnPrx6blQdo49+UH/p89b3eY/hyz/OALiku50CMB7CRSrgB1keySwCOF7AmuKjuo9sCiZxPgoCwmiRAM9V3psAkr//75MV9CRDfonJFXI+d/S24NhDRHVPedMqd6JiHoo2/JvfdHgxqq4eXTO/9M185JX61Alig+vyweznQ/gryuH0ZdN6OJn94onWvpjQHheFsfvJYrcdBIDyz1qUzPRJ/m/H0D0U/PqmWbjmPYJngVuzB67Ytvb2ymZiWXEi/gpen7sUY56+cAjjox01QEBdggXvAxvhKrslltXeLPpE8nAX0MEmNSfU0R7um6Wd8IBZrJ06rduYHD3+6nRK6TzwZnAe14amkX30xsmSoKCwE0EtL0NbzjyXsacLbMpQIu3lY8b1luVHNIRdLKs8jeS521we6UIJcK+41oS5P56YzKFznXFYprWIR5W+6VmZ/VObBqscPMTUW4WL7mB+zg9QD9TH1K9Yt+qWVpv46MbPoxF8mH0q9wXPqS7Ztdh4jCE/hr+O0JxN9ZTBGkhqox5er2xmNKk/S24pWYYViVDBNDtJR7+js5eAvC+IWC44SXJeKwmTX9BW7bVEx73pkZSg4eNvjAq+ylSMRX82PyxiMgPsIgeNE65tWg8tRS+NzeYD190D4SuUVZYChUvYYTHrVs2RPVbU/TaPt1TLgigMmYjzD00zcvuPk/g6ChYkyXdCkuc0+KhMFsdqBdY4EmaMgGNASbE9azaFMIdD7RdMIry0/ZcmOEjWwWTNAg1ZCJefLlx96oMuhA36myIDz1liibKb3tGk1sInkqlcY+KXeXUgoIBwYjj4rgXDQwmN3VxSfJJlelRfO8aWObPHQIW8izmEzmNLliNMcZLefA5X8guKwzG1V5YrwwHKYWXfTuPwj7uFD3cNe0twbvQ4yUv5YplOJvJ9qd4vuiJKvP2d/OvrUUoSmiAfPsto407
- zCvoGrXu
- MRhX9mvE/yaV2IjGYGZVaRL7y1jdMic1dNEvc77lZ9FS5rNohSMHrAp4GFtQa++GrMgP5LFtdf3rNByVtVhk75QRao3NFuGmPzNeGmXJXTCCaTukSxptd0BlHp3BYVi1Ha6JnwB0z+cxGJKs5Nvx5JDFryOlPmrCv/ce0kpVw33drDgwpzoEjzzRiHeqhn7/ItLQaNx5uSzBX4zc6+i2iM049TA==
+X-Rspamd-Queue-Id: 8D4981C000C
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755774359-239701
+X-HE-Meta: U2FsdGVkX1+UeKPowNaDWUHclZ350IYRMBcQ4x9BaWw6h9ah59Ir+b3dKFllExrkG5GjZu8xwKi2+1FT5kqco5ocSaDxPjbzcJ0N0MLdHuotXMhjXQ17b4yPTnhEJYPH1RA7P8wUGzI3xa+eQ7T983B8QWbAj8ilZlC8pGUhPlo/i4jjQOCECmVmVk4WNXCfhhWESDq2xu18TAbkzqcI020YaNUVLBzbYhY80ORpoynkVjgIWa/4QFodPaFxH5JAAS4guq0x7hXlgw4DzyuKSndlGe9FaZIN32P8+c4jdrp9vbdNl+LmybJZN+zIbQetQGy+bHTEIq+CKmJ2CM0ZVHaw8T898g6ZoLhD4RWUAVdjsxdg/DJqaEH6EKUDuBzsR3QrH0Y3f2LoIBR9hh3hnMVK6uBxlwpOnS+69UJObsIPP4ji576wp+6S9G/22Dm5adKqn7y8gpUTp3RwGGo/k2aWx7f9wxDku8ttW+jZjNn7N1yL7b1tyYbfE3fA1btbZXL8lybj/Y1gdRm8hMs0aRktpaMMYMrZ3mXocwCvxFuI4ubh7l+gYz8dacE+l7ntE2zg0736NyL/oq4TXqMyV28AwdA2BcIHNaQ3o8iX0ioAbMHYzWuRInSZyY0ECJfl95SXzXcxzgaTNd30N+3m5yGsJuTgTD6GpoFGpyRQWaYpfeiJH4YP737kozY8hyjIqmWn7rk/L6cM4Z132g26USdBzIE2B3QmIOMXRSOphk1sg12Kgmw+wUspa2QC31GD1xMEAIQyu/HXzudnMYcnE5ikFmLXOO/r9c+crH+BKUhSGKzxeuhuFCEcPdXtMY7BM9p6VtpgoZrpUaerwJ3XjsRJsg1dTdd1iaLz2f3NAL9jr7xD5Fix3XYDX/YQtaLP7bQOO08c8GhiWhAMSgGZS58vD34RBmM553/Qn2y2OZ34A2krnlFPiuvZ03aiOpoEc5/h5b8o9dl3ChThzZk
+ 8gQQe2/0
+ wZ0oyEM29eQlsJFlps6u8OMPSQgfO7o1MtDP5Ldd2sT8W2hkYRyQgPwx25+J/WCPkmLQthiWJjHTAixg1sud8CxYO5GzSH67kFkFkwwJUhG+s5Y1kkiKw4NCJR9Lidq2jEVOFNX5UBdjfKQ0v6dC0fqapxEJDzQ3p7eQtpkc8XEnN/JRARx/+5+AOdF+Mb8R0ULZIk27OmIt9bqKxZAiaG1pTGQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -87,67 +90,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Previously, DAMON's physical address space monitoring only supported
-memory ranges below 4GB on LPAE-enabled systems. This was due to
-the use of 'unsigned long' in 'struct damon_addr_range', which is
-32-bit on ARM32 even with LPAE enabled[1].
+From: SeongJae Park <sj@kernel.org>
 
-To add DAMON support for ARM32 with LPAE enabled, a new core layer
-parameter called 'addr_unit' was introduced[2]. Operations set layer
-can translate a core layer address to the real address by multiplying
-the parameter value to the core layer address. Support of the parameter
-is up to each operations layer implementation, though. For example,
-operations set implementations for virtual address space can simply
-ignore the parameter. Add the support on paddr, which is the DAMON
-operations set implementation for the physical address space, as we have
-a clear use case for that.
+Add 'addr_unit' parameter description on DAMON design document.
 
-[1]https://lore.kernel.org/all/20250408075553.959388-1-zuoze1@huawei.com/
-[2]https://lore.kernel.org/all/20250416042551.158131-1-sj@kernel.org/
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
+---
+ Documentation/mm/damon/design.rst | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-Changes from RFC v2
-(https://lore.kernel.org/all/20250820080623.3799131-1-yanquanmin1@huawei.com/)
-- Rename 'min_region' to 'min_sz_region'.
-- Separate the overflow prevention in damos_set_effective_quota() from
-  this series.
-- Drop RFC tag.
-
-Changes from RFC v1
-(https://lore.kernel.org/all/20250813050706.1564229-1-yanquanmin1@huawei.com/)
-- Set DAMOS_PAGEOUT, DAMOS_LRU_[DE]PRIO, DAMOS_MIGRATE_{HOT,COLD} and
-  DAMOS_STAT stat in core address unit.
-- Pass ctx->min_region value to replace the original synchronization.
-- Drop the DAMOS stats type changes, keep them as 'unsigned long' type.
-- Separate add addr_unit support for DAMON_RECLAIM and LRU_SORT from
-  this patch series.
-
-Quanmin Yan (1):
-  mm/damon: add damon_ctx->min_region
-
-SeongJae Park (10):
-  mm/damon/core: add damon_ctx->addr_unit
-  mm/damon/paddr: support addr_unit for access monitoring
-  mm/damon/paddr: support addr_unit for DAMOS_PAGEOUT
-  mm/damon/paddr: support addr_unit for DAMOS_LRU_[DE]PRIO
-  mm/damon/paddr: support addr_unit for MIGRATE_{HOT,COLD}
-  mm/damon/paddr: support addr_unit for DAMOS_STAT
-  mm/damon/sysfs: implement addr_unit file under context dir
-  Docs/mm/damon/design: document 'address unit' parameter
-  Docs/admin-guide/mm/damon/usage: document addr_unit file
-  Docs/ABI/damon: document addr_unit file
-
- .../ABI/testing/sysfs-kernel-mm-damon         |   7 ++
- Documentation/admin-guide/mm/damon/usage.rst  |  11 +-
- Documentation/mm/damon/design.rst             |  16 ++-
- include/linux/damon.h                         |   7 +-
- mm/damon/core.c                               |  70 +++++++-----
- mm/damon/paddr.c                              | 106 +++++++++++-------
- mm/damon/sysfs.c                              |  41 ++++++-
- mm/damon/tests/core-kunit.h                   |  21 ++--
- mm/damon/tests/vaddr-kunit.h                  |   2 +-
- mm/damon/vaddr.c                              |   2 +-
- 10 files changed, 191 insertions(+), 92 deletions(-)
-
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index 2f6ba5c7f4c7..d9d5baa1ec87 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -67,7 +67,7 @@ processes, NUMA nodes, files, and backing memory devices would be supportable.
+ Also, if some architectures or devices support special optimized access check
+ features, those will be easily configurable.
+ 
+-DAMON currently provides below three operation sets.  Below two subsections
++DAMON currently provides below three operation sets.  Below three subsections
+ describe how those work.
+ 
+  - vaddr: Monitor virtual address spaces of specific processes
+@@ -135,6 +135,18 @@ the interference is the responsibility of sysadmins.  However, it solves the
+ conflict with the reclaim logic using ``PG_idle`` and ``PG_young`` page flags,
+ as Idle page tracking does.
+ 
++Address Unit
++------------
++
++DAMON core layer uses ``unsinged long`` type for monitoring target address
++ranges.  In some cases, the address space for a given operations set could be
++too large to be handled with the type.  ARM (32-bit) with large physical
++address extension is an example.  For such cases, a per-operations set
++parameter called ``address unit`` is provided.  It represents the scale factor
++that need to be multiplied to the core layer's address for calculating real
++address on the given address space.  Support of ``address unit`` parameter is
++up to each operations set implementation.  ``paddr`` is the only operations set
++implementation that supports the parameter.
+ 
+ .. _damon_core_logic:
+ 
 -- 
 2.43.0
 
