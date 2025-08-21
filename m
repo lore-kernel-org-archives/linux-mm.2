@@ -2,29 +2,29 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C5D76CA0EF8
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 11:27:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EFE52CA0EF8
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 11:27:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0A8E8E0041; Thu, 21 Aug 2025 07:27:48 -0400 (EDT)
+	id EB5438E0013; Thu, 21 Aug 2025 07:27:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE2C38E0013; Thu, 21 Aug 2025 07:27:48 -0400 (EDT)
+	id DF4268E0043; Thu, 21 Aug 2025 07:27:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD1908E0041; Thu, 21 Aug 2025 07:27:48 -0400 (EDT)
+	id C45EA8E002F; Thu, 21 Aug 2025 07:27:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AB5578E002F
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AB0718E0013
 	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 07:27:48 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 49F3C588F5
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6C9391D8E40
 	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:27:48 +0000 (UTC)
-X-FDA: 83800539816.27.EDB8A50
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 61C764000E
+X-FDA: 83800539816.18.6FF7D36
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 85DF8140003
 	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:27:46 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uaHLmxt2;
-	spf=pass (imf17.hostedemail.com: domain of devnull+schuster.simon.siemens-energy.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+schuster.simon.siemens-energy.com@kernel.org;
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N2fFVzfk;
+	spf=pass (imf23.hostedemail.com: domain of devnull+schuster.simon.siemens-energy.com@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=devnull+schuster.simon.siemens-energy.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1755775666;
@@ -33,46 +33,46 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JzD7omX0u9H3GC7jMcYIsrU7Gs9oUbqzoWe14sLXB5U=;
-	b=T1o8oAE9NxC09DQhEC/mnlAMQoX3l2i8+aw9CKrPSpgCdN7QpnQFrczsse8y+pjgnV8T2x
-	hSBtmWWjndBBBWDVhQ5gOSYKx21MBn4PeO6Jh6QIQfaSAhjb+Vpn9YlIx38edEDp8C8sAa
-	zy0bUkdKbm86pk7bQHvkGkU4tpiznsE=
+	bh=jzPG0pNN8PrqX+g+rIANbw0E+JSl1sgNPdf1iFp1sjk=;
+	b=2RWdJ9N3zrcRFPsFVQctJJwWekV78cGQRrgcnVy5jKeAjKqGnGoKJd6VEqq0ALj7Tzmk43
+	ayma7Qb8AyDhnR3nInBha01K9r23L5NBCecDM5q208OhbZI5BvNSjbSxGdIlQDnfzg0Cjh
+	ohX/N8XgrpZhHfQRfzF/LdxxyBpFJOU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uaHLmxt2;
-	spf=pass (imf17.hostedemail.com: domain of devnull+schuster.simon.siemens-energy.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+schuster.simon.siemens-energy.com@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N2fFVzfk;
+	spf=pass (imf23.hostedemail.com: domain of devnull+schuster.simon.siemens-energy.com@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=devnull+schuster.simon.siemens-energy.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755775666; a=rsa-sha256;
 	cv=none;
-	b=qIvgzq1Rpsa10hZh5ZAJC8czd1I5+e1Skz3Hcnf/4l6oQvRKKqk526iUoIAVWttglmylY+
-	R85jItrEhiyhPTMuDdow76yDE6cKUywWE1z9JMvyO/bxdJU6zD4Pc86WK01ul+Usklcx4N
-	U9Hv9pkVSUPlr4d6batJHhhQ3VPEI6g=
+	b=uZymu3bUxLcdwUTMo/nh2+rnhvfalL5NVdhm/5JI8n42XC4JxW9A2EGpTnueZe5Fbi232J
+	GANRG2rAyDRljAstJs2WYbC4IRzfH1I1w2Xf4s358k90BkBaT2wrGfYXXUUxwRrtSocwRi
+	0TXQgikRIOgBzKR5BVHSRlFTPUTOVvY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BA7D761152;
+	by nyc.source.kernel.org (Postfix) with ESMTP id C2790A58204;
 	Thu, 21 Aug 2025 11:27:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3263AC4AF0D;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 20A16C4CEED;
 	Thu, 21 Aug 2025 11:27:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1755775665;
-	bh=TeLiY9rWYgwluzznmA5sBvokJ7kYB4xX6yAp004tkOU=;
+	bh=1M9j+PL0n2Y6NH2XjNF7fuQwEwS11EOrVMi3fRSifwo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=uaHLmxt2ngLqc4XdyTaJFkv9X9g0lcA5Z9u5bJc2CKTFebgLtws/IxWUVYTB4/he7
-	 KwHF8rvP2jP7Cszdmgi0gpDM0++ZDDp2wv3LAZ8X1Bf2O3/8yDbPNg7xpCYsA49fC2
-	 yJ+TFi4wXMdPFswab+cKObwNqr/QBh/LBi73aYWIoxAQ29Giyw1b1I/aN2rdCYyjK4
-	 mEcrKGwlrqCgGTqQnZkS9GVJ1yF7awn2q6FB2HEFtDboM/pQgj959x8aZRXyPSvOc2
-	 V//jTV3J5SdSAiwWV/w4IK5NZ86BduJ2huSiJ3wsVCmjkykQ8pmWKRyeztfGpCP5/Z
-	 nlaOOZwUWPtpQ==
+	b=N2fFVzfkdDB7GMIspdbWMZpvAcU3dGmdaTj3qgZjchgPgc7MOdWR66qfxpyBUFtIv
+	 WeJeOURS2BKBKpwbv/wsi8sDD8adH+9QDYfKgF0gLfk8K0AOLYAofZaCWrAdopQfnH
+	 F1SKnzqV4xr//+T+3MDtIHQ73Tj7DW/QaKCtOjqdotBsBfIUGmfeiSg7qeBGloF5bF
+	 Qqwac79x3Sw693koPMtmL9i5TME7cQA8fAtkD4GVsCwon1z0Rcezt8ibjUgyilblna
+	 tzHbmh9HyLlPBhL7aK5xEn9ofyGWqBoNncOfB2uNwojLVJ333lO/l4N5ucUqVJpU9D
+	 7RaCAwyOReXvQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 22A42CA0EF8;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C5BCCA0EFF;
 	Thu, 21 Aug 2025 11:27:45 +0000 (UTC)
 From: Simon Schuster via B4 Relay <devnull+schuster.simon.siemens-energy.com@kernel.org>
-Date: Thu, 21 Aug 2025 13:27:38 +0200
-Subject: [PATCH 2/2] nios2: implement architecture-specific portion of
- sys_clone3
+Date: Thu, 21 Aug 2025 13:27:37 +0200
+Subject: [PATCH 1/2] copy_process: Handle architectures where
+ sizeof(unsigned long) < sizeof(u64)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250821-nios2-implement-clone3-v1-2-1bb24017376a@siemens-energy.com>
+Message-Id: <20250821-nios2-implement-clone3-v1-1-1bb24017376a@siemens-energy.com>
 References: <20250821-nios2-implement-clone3-v1-0-1bb24017376a@siemens-energy.com>
 In-Reply-To: <20250821-nios2-implement-clone3-v1-0-1bb24017376a@siemens-energy.com>
 To: Dinh Nguyen <dinguyen@kernel.org>, 
@@ -93,26 +93,26 @@ To: Dinh Nguyen <dinguyen@kernel.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  Simon Schuster <schuster.simon@siemens-energy.com>
 X-Mailer: b4 0.14.3-dev-2ce6c
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755775663; l=2259;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755775663; l=2756;
  i=schuster.simon@siemens-energy.com; s=20250818;
  h=from:subject:message-id;
- bh=ZGFd7PEXdNZQ3XvGm96hBqrgf0z3Sn12r48TmNzThTY=;
- b=F2nKl2igsmfyyDF/eUV0oYb5mlZJyimIpk0NXRJVrpnKfItiOUjRR+lvhtzDMtKjVJKvuPs+u
- 3hz69QALEOGCg5dAKDF1klwR3WkvjnC1lV0TyZQ2blO79aj8xnAMWyK
+ bh=fATaBcMTm8PaXx+wvHRntwDrs2IKs0+IzRTpuUxyYa4=;
+ b=y7/IgnYV/3SkSNwCoqgDE/+S2MUsRejhrdpl2L+U7VnPzMzgttiqeo7QuevGlQKo7aBzvBcQ5
+ 485HV4aRh6JBpSGlbRD35ZZAmT8+Yb7t7dbqgXJf0B1MkEE0oKL4n0t
 X-Developer-Key: i=schuster.simon@siemens-energy.com; a=ed25519;
  pk=PUhOMiSp43aSeRE1H41KApxYOluamBFFiMfKlBjocvo=
 X-Endpoint-Received: by B4 Relay for
  schuster.simon@siemens-energy.com/20250818 with auth_id=495
 X-Original-From: Simon Schuster <schuster.simon@siemens-energy.com>
 Reply-To: schuster.simon@siemens-energy.com
-X-Stat-Signature: 6wewjdyyq1jgk8414kdzr84nsbchox9w
+X-Stat-Signature: spfea1foyqp1i3qy9by6eknno6ogb9yw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 61C764000E
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1755775666-796855
-X-HE-Meta: U2FsdGVkX1/LVBhFFy/ieFTqOTbMyl6oZtpWbFNvVS/x4dCjEtm7gt5StnTcInR9SVRSWjPJ5wFyxa98ss+lLyTcLsikdEozi2VZiY2P4d67xctwkI5rdXRCjqkHPyaiBbJ23FhDNGI1pmg28FIB0CpZaENMeHvddVshQdjzFjde/0R4mWNNHo8QNoAJ8+xNo5RVtFSbWp3aapZWWaYIcIG1XBDwWskRC9kcQKLM8EyIWWjUwEz6Nc0q5h4NBgBxKimDeIlIDCrKThAQKaTI7YirsdjSiNTZBApJivbCdvDouvw46lu3HEN3hiL+3dTcgQWslwtOjwPvzyHzYAGsOVMlP6KeOYXhy92v2uFuzQozPS+yT6tksvyI5mlsmmFwOEdc1nMapNUVyr1VN9hdfH18LOkGGrx6aycOyyiYGtA8NBlnkZGqxPEz9Sw/vaV2PerQRkzVUsYQAcRrAcya6APwPo528cKWmm9KZTHVGp0ooNlkzJKhpgRRz9ma9XKIf1dt14Rp05Ot10OCOrXoWNIoQ0fPQo3YuOJS3tB5z943QFknNWjE/0j3I3UPKic8qB1nzN0MZaDHqxFHbKtaoZa2w4HUH9iaP4wr7QoDE5FYbWMquSp3tOCWR9+AhVZ0N+caLddYucYhtRYafD1yWpAjqqgv3R5enSzKaoyh2lcqlzge7gvG0PD8mKuZ6Huv5EgDcFbjAHhtDHnocdbm0ZoKMc+JViKo7RhjT7VAUktqUB/tnTitCtgMIyupdkTzZKfMn2Ersx6mQ+SV4hLLxajUhNo0DBHQYyeDtCRSoEV5Q6aWbIFBE4j61Ke/yxX8OG62NTpJusqDqAhbgQ/pyzaqlmkiq8No4CFtA85M51kgiYSHaCjlSwVNabM0kuOjszGs5bogdzpwkKDuD8z2S9vG5564HJn+3jVwgLdsqn7uvdvcF4pWiiSijeXGPwmICMm8rbRf5JWSGPs+Fo6
- EYG/skJk
- ZuizAFjkuzXDW/WYPqKsuvYFFvNpgFw3NyDN8ZRb2yr0QGHgLpfjHh2qaxa8mrKiZXpOhTiBMc4OrinToxT97IG360a8HqaNO108s+S2K5OP8dIIUuiZk+7AExdFN8bQ4HV2dVjI7gX+siT5kJ7UidZCDnEvhMRbcyaU66o/bkFPC6JLFMsoeKKMPpj+mR/QvgTxPmfWMlp/AYpw0/Z/9TCMyTrhOYf7/1UX4ehmBrKuh/2yAw23HNTsH1X6YS6DcrTIWpACyPjdCAb8xLisd1PSUHklY2bg6Zz76yFvQSRktUC04uMZBjiaBwKcpz3KMRrAGeUfUA9bBSMPEPb9JevKZXth2+zYhtXGFYaC01Y0tvI6tUOUvV6iBCAtmSNRqT9jgWY00hD2Rcy37ICGSqLLocLHkeKbT01F7gxBuwxnYnEfH2R/WAK64fRcOU/hX2G7JVzdTnzyVnP5pb+HqxOXReIk55HjQ6lAg74rIKs38tm1lKxgJzPP9w12eoCZinWOeheCz5IYsg1YAX4n/YsDfSA==
+X-Rspamd-Queue-Id: 85DF8140003
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755775666-745918
+X-HE-Meta: U2FsdGVkX1/W4rpbuSXg7y+HPn0UZ/+5krv5AIcDTvRshwkSCrmBD5vVzrL+N7LxEq5NOxeGS8RDTMg5X1OT/UiUqvdoX7Osjtoali6E+KELKqXpkHNo+kqksq+F9FgttZgdbUwM7kjTGZ8Hh1/YNjkcUS/nfZatu+syiQHGV5HvtcEbpPk0I4WM0ulTQvAfwZyc4mn+CkRy+NT8Z803OXHwKrojgtcAR+lCA/9wIvZXTOelyEXM0FjWw92JeyzuHY3lj+cDVnK+h8mJjBw5s7Ld75L6EPPr9Zh4/YgeyIXP4lCf4O9dQSzMlaaWDRvMGyvXf64W0ccF6IQybsMV/Wd2xWnQtOQSHTE2BLJPv4Wj3MJRelbW1FmtXSO48ITaNj6KKA0pCppUBhRzx6BdvjDvGpc/h62b10Tv/WI0YPensPorT0ELUtRORUDP6V3aQdjyhxanXzJesaeva8P1IfNDqEVuYnofMN3umoreDXdKY+yyG9akLcimlVGLDnGk1b4IrNiBzj0sZ5cLr2uUkS5Qu/tOXfNDPRrqPmuViLW4tEnI7TUyqnbkrRAt7iiuzmyHpuDW9jB+Dmy/DIqwGvLCZL0prs7v1rPNUABLrvRb/cYl6H96078ZFiAEx1OM6Lv9ueCBoXbUk1Vt9U+/gIq3fZ136ietcjR/t3iirZ97ZjFMD8e7eX8Ve+SL56o85l1eWe6HEbZYhL3z16p4LzZhM6AofS3rgvCLkF5tLg3MHwLIP1f7U26pp8kN5X0VTR0FFsRlRoDxil/h/jPeXFXem24SH3MJO+yTUeAeftWjdVScaKDw6DVev+szeVbBx2VltAOAT42b0LVrWdfGvwMQ4KTt42IrUys7TE6rV7H+GDdTyTflJcxH4NUXMtvS1YpBQjLH+gCPKSiXl5n2IDZo41/tQAatIGbIExyWwlscjrDb0tXUWKOErmaRN57AnWQBBUDbeeOMy451wmq
+ I5t9oFM3
+ k42OGSuDi7I1/c/o2QdigcJKXnt46NxJTX7dVjaH1EIdHOOc1L1QOvGO6A9y72WRpZymJmyo/EXBONi6OAJsXik9nXOtj1/VK30XtFdjW2H6VGWIcQv0moeqdCuIMK4DrGA+2Tw6YhP8RVGjKaHjvg170YvYoVXAHJDuM5wQUKTOKnRHU0bXQj4RMOYWVZXO32EtHDHIoibKRX+cvSJ13kggp4zvrvDEmWpN018qJYEGhMmhN1G9Y+msWtjRB2FyoQxXOU/kCFTqxg1a4b55+ch8ov7d5hvVdfRV+uLjR6DONwPtqJTp1rocl5e6IJNo7bt599BeJ1nMhcvJhPYxxCVcEnFKQnfbetS8gCH7y67d/o5rxdgplWUU0lAKReD4+fEW7XWxTyEmhZQ4gaK++SlfPiY8TfbhHj292+8rDrRrdjoInDDhrF8wbfTG9qins8LTgYIvvfravunboe3fCK9/QmuO07QR4Be8PO/hC4Rw5azlXXJ/jprYEPzvXDlS4nh2/hr7PzbITRZM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,71 +123,80 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Simon Schuster <schuster.simon@siemens-energy.com>
 
-This commit adds the sys_clone3 entrypoint for nios2. An
-architecture-specific wrapper (__sys_clone3) is required to save and
-restore additional registers to the kernel stack via SAVE_SWITCH_STACK
-and RESTORE_SWITCH_STACK.
+With the introduction of clone3 in commit 7f192e3cd316 ("fork: add
+clone3") the effective bit width of clone_flags on all architectures was
+increased from 32bit to 64bit. However, the signature of the copy_*
+helper functions (e.g., copy_sighand) used by copy_process was not
+adapted, as such, they potentially truncate the flags on architectures
+such as nios2, where unsigned long is a 32bit unsigned integer type.
+
+This can, for instance, be observed via failures of kernel selftest
+clone3_clear_sighand, which attempts to trigger the conditional
+
+	if (clone_flags & CLONE_CLEAR_SIGHAND)
+
+in function copy_sighand within fork.c that will always fail given:
+
+	unsigned long /* == uint32_t */ clone_flags
+	#define CLONE_CLEAR_SIGHAND 0x100000000ULL
+
+This commit fixes the bug by always passing clone_flags via their
+declared u64 type, invariant of architecture-dependent integer sizes.
 
 Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
 ---
- arch/nios2/include/asm/syscalls.h | 1 +
- arch/nios2/include/asm/unistd.h   | 2 --
- arch/nios2/kernel/entry.S         | 6 ++++++
- arch/nios2/kernel/syscall_table.c | 1 +
- 4 files changed, 8 insertions(+), 2 deletions(-)
+ kernel/fork.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/nios2/include/asm/syscalls.h b/arch/nios2/include/asm/syscalls.h
-index b4d4ed3bf9c8..0e214b0a0ac8 100644
---- a/arch/nios2/include/asm/syscalls.h
-+++ b/arch/nios2/include/asm/syscalls.h
-@@ -7,6 +7,7 @@
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 5115be549234..0e9b2dd6c365 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -1510,7 +1510,7 @@ static struct mm_struct *dup_mm(struct task_struct *tsk,
+ 	return NULL;
+ }
  
- int sys_cacheflush(unsigned long addr, unsigned long len,
- 				unsigned int op);
-+asmlinkage long __sys_clone3(struct clone_args __user *uargs, size_t size);
+-static int copy_mm(unsigned long clone_flags, struct task_struct *tsk)
++static int copy_mm(u64 clone_flags, struct task_struct *tsk)
+ {
+ 	struct mm_struct *mm, *oldmm;
  
- #include <asm-generic/syscalls.h>
+@@ -1548,7 +1548,7 @@ static int copy_mm(unsigned long clone_flags, struct task_struct *tsk)
+ 	return 0;
+ }
  
-diff --git a/arch/nios2/include/asm/unistd.h b/arch/nios2/include/asm/unistd.h
-index 1146e56473c5..213f6de3cf7b 100644
---- a/arch/nios2/include/asm/unistd.h
-+++ b/arch/nios2/include/asm/unistd.h
-@@ -7,6 +7,4 @@
- #define __ARCH_WANT_STAT64
- #define __ARCH_WANT_SET_GET_RLIMIT
+-static int copy_fs(unsigned long clone_flags, struct task_struct *tsk)
++static int copy_fs(u64 clone_flags, struct task_struct *tsk)
+ {
+ 	struct fs_struct *fs = current->fs;
+ 	if (clone_flags & CLONE_FS) {
+@@ -1569,7 +1569,7 @@ static int copy_fs(unsigned long clone_flags, struct task_struct *tsk)
+ 	return 0;
+ }
  
--#define __ARCH_BROKEN_SYS_CLONE3
--
- #endif
-diff --git a/arch/nios2/kernel/entry.S b/arch/nios2/kernel/entry.S
-index 99f0a65e6234..dd40dfd908e5 100644
---- a/arch/nios2/kernel/entry.S
-+++ b/arch/nios2/kernel/entry.S
-@@ -403,6 +403,12 @@ ENTRY(sys_clone)
- 	addi    sp, sp, 4
- 	RESTORE_SWITCH_STACK
- 	ret
-+/* long syscall(SYS_clone3, struct clone_args *cl_args, size_t size); */
-+ENTRY(__sys_clone3)
-+	SAVE_SWITCH_STACK
-+	call	sys_clone3
-+	RESTORE_SWITCH_STACK
-+	ret
+-static int copy_files(unsigned long clone_flags, struct task_struct *tsk,
++static int copy_files(u64 clone_flags, struct task_struct *tsk,
+ 		      int no_files)
+ {
+ 	struct files_struct *oldf, *newf;
+@@ -1599,7 +1599,7 @@ static int copy_files(unsigned long clone_flags, struct task_struct *tsk,
+ 	return 0;
+ }
  
- ENTRY(sys_rt_sigreturn)
- 	SAVE_SWITCH_STACK
-diff --git a/arch/nios2/kernel/syscall_table.c b/arch/nios2/kernel/syscall_table.c
-index 434694067d8f..c99818aac9e1 100644
---- a/arch/nios2/kernel/syscall_table.c
-+++ b/arch/nios2/kernel/syscall_table.c
-@@ -13,6 +13,7 @@
- #define __SYSCALL_WITH_COMPAT(nr, native, compat)        __SYSCALL(nr, native)
+-static int copy_sighand(unsigned long clone_flags, struct task_struct *tsk)
++static int copy_sighand(u64 clone_flags, struct task_struct *tsk)
+ {
+ 	struct sighand_struct *sig;
  
- #define sys_mmap2 sys_mmap_pgoff
-+#define sys_clone3 __sys_clone3
+@@ -1648,7 +1648,7 @@ static void posix_cpu_timers_init_group(struct signal_struct *sig)
+ 	posix_cputimers_group_init(pct, cpu_limit);
+ }
  
- void *sys_call_table[__NR_syscalls] = {
- 	[0 ... __NR_syscalls-1] = sys_ni_syscall,
+-static int copy_signal(unsigned long clone_flags, struct task_struct *tsk)
++static int copy_signal(u64 clone_flags, struct task_struct *tsk)
+ {
+ 	struct signal_struct *sig;
+ 
 
 -- 
 2.39.5
