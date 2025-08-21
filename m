@@ -2,89 +2,84 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 92274CA0EF8
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 13:02:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 36F6ACA0EEB
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 13:09:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1AABA8E0008; Thu, 21 Aug 2025 09:02:15 -0400 (EDT)
+	id A71948E000A; Thu, 21 Aug 2025 09:09:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15B4C8E0005; Thu, 21 Aug 2025 09:02:15 -0400 (EDT)
+	id 9F88E8E0005; Thu, 21 Aug 2025 09:09:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 022E78E0008; Thu, 21 Aug 2025 09:02:14 -0400 (EDT)
+	id 8C00A8E000A; Thu, 21 Aug 2025 09:09:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DD9D68E0005
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 09:02:14 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5E1E458B09
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 13:02:14 +0000 (UTC)
-X-FDA: 83800777788.18.6597CC5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8C9BB140012
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 13:02:12 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nLjdZUQr;
-	spf=pass (imf23.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 798A68E0005
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 09:09:47 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 20F0FB920D
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 13:09:47 +0000 (UTC)
+X-FDA: 83800796814.11.8A56623
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 62E10C000D
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 13:09:43 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755781332;
+	s=arc-20220608; t=1755781785;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0C160FFCWRXvcqeCUBEGZ6UKWpWBE07aah4F5zpxARg=;
-	b=XeNFKuOzUzp6BYrjBl9c8NwB8SMKTEhCQagitJoKLTP2vIH51oOnnMWxKJbE7jZH8aMgzd
-	zwZgO44HlGJT4H6aqZ1BeW9F/HGZfAckqfjMWyi6j4XDVC1JPtj6eQU1ngjFR82NWfn5Ok
-	ZD0SDK3yFLczMvJoBC4mLsGHD/Xxlvg=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=Un+1KyDLKQZyInpFHFLPkNx4F8ENY+oiYHQEYy6p2F8=;
+	b=WtUjKUakG5OYWTJmvrvEmoUPDZdXWV2MdWb2L8JYHJAHOdx4dI+nyNZ6Ue4/SOws6xpIDv
+	qVXdKKbDIXm9tiLNmZ7Khhyd2fSj8BAn4HyxdBIyzX/FVgD5toKXxfUDu8zu2bJOKC9hzN
+	GEsA5lqtokyxtlclJ79ilYG98bsYp6U=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nLjdZUQr;
-	spf=pass (imf23.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755781332; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755781785; a=rsa-sha256;
 	cv=none;
-	b=fBQ7uzq/ngnoM/xSBrufATZy/sE2fIBFN0XbBURnUKr7p+UJpPiRf6oqbKMcvwal3bKkeT
-	orO8h1V8SEt3VCZDaRs2DPyYFWBDPG/QI31kby/AtfkQfW07gfrycm2g7xW3PEQx3VKcTs
-	XEaQs9Q0OXXGYTEA8l6GQ6Vy1LBB7Xs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8A29544AD6;
-	Thu, 21 Aug 2025 13:02:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40EA3C4CEEB;
-	Thu, 21 Aug 2025 13:02:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755781331;
-	bh=HNHiZLThPQ887txOD81b+D+T9uJUF8eSiY2C4Hx0+CM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nLjdZUQrco0yrBsfgTjmkII/EchFrBZc3oUnkgzCbhO9PiSuT3OJHBPNnOmZU/qcm
-	 W8vSazTpvJGQ56zyEZcwal9IKlGpIMiBSAUQNh1nbU/Fgt5M6/X2HfsBYi9Ybl1qc0
-	 NbgexLJbd+TEdcLzM/VVHiY956Fk0Fw5O9k2IjmURetxJcXVRk0tDyZpYJOSXuVuTT
-	 HhRAAHWu42OkPojnJYm+GyOszaNXb5xGvT/Wi6yQlg3rRxO0cjwc08lXmyAQjSNsD5
-	 jMueGfHlncQvGJfTVm9vGi2NizVzLpE9Hyl0kFnSGhn88LekF/R6ScFKoKrN6IF1be
-	 hWX9ZG06deOtQ==
-Date: Thu, 21 Aug 2025 09:02:10 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: david@redhat.com, surenb@google.com, aarcange@redhat.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/userfaultfd: fix kmap_local LIFO ordering for
- CONFIG_HIGHPTE
-Message-ID: <aKcY0ocUDHnLJv12@laps>
-References: <20250731144431.773923-1-sashal@kernel.org>
- <20250801141101.9f3555a172609cb64fde7f71@linux-foundation.org>
- <aI04CQZZzgCDO2A5@lappy>
- <20250820212423.fbac2b17eb4f6a9667a8c979@linux-foundation.org>
+	b=jAQeRCsPnoCOjWfbvAQ7ygbLg573K5wLb9w5tHOKEUnCc5LUIvG9x8Xhk3jkmpVBi2djjP
+	XGfTA6LvOLWEWET+m6lSUhWzQxaN1J+Y6fg3Lv3ADG7+mgyy2i1/+azCvYvb0brdx3VGNi
+	BcCmSgeyo5B2i8ig8irX6GZEwUC25wU=
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4c73T74K8Yz2CgDF;
+	Thu, 21 Aug 2025 21:05:15 +0800 (CST)
+Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
+	by mail.maildlp.com (Postfix) with ESMTPS id DCE4C1A0188;
+	Thu, 21 Aug 2025 21:09:38 +0800 (CST)
+Received: from huawei.com (10.50.85.135) by dggpemf200018.china.huawei.com
+ (7.185.36.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 21 Aug
+ 2025 21:09:38 +0800
+From: Quanmin Yan <yanquanmin1@huawei.com>
+To: <sj@kernel.org>
+CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<yanquanmin1@huawei.com>, <wangkefeng.wang@huawei.com>, <zuoze1@huawei.com>,
+	<apanyaki@amazon.com>
+Subject: [PATCH] mm/damon/core: prevent unnecessary overflow in damos_set_effective_quota()
+Date: Thu, 21 Aug 2025 20:55:55 +0800
+Message-ID: <20250821125555.3020951-1-yanquanmin1@huawei.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20250820212423.fbac2b17eb4f6a9667a8c979@linux-foundation.org>
-X-Rspamd-Queue-Id: 8C9BB140012
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.85.135]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ dggpemf200018.china.huawei.com (7.185.36.31)
+X-Rspamd-Queue-Id: 62E10C000D
 X-Rspam-User: 
-X-Stat-Signature: za9da4qt96rdkq9sjuw95d3q64x374nt
+X-Stat-Signature: pmwskfczu97txx5km9psrzm3xsgqz6rm
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1755781332-336691
-X-HE-Meta: U2FsdGVkX1/nvdLFZ5O1k7/khBBfyIWni3Evt0CFnPsv6oXr9nWeqrK5cPakviZNPV7LlfdQH9kwcLcx/3ya/HvLa+a560YXRAw+BBsVdWmyeA8tGU64W4FHSPE/W6Xg8S4Q9pE5zG8Ry8cb/NUTsJK+OKGxx+JaixvOL0lygWWI0NuUDuOeGvlKTpNzVq2GWfkWHkaiKkb5CzAgsF+qeKsmTsqrchAw6T1VtDlXubLW6doI7kdv6ghk5tkuAlgBQuPcD/XXmygq7u4YUOq8LSq78e0fxi5u+6fS7w1M5YtbTDzEaDa8CgGkgYHtDcjmOT1I3cSbhLiAgYxrw428klLGHYZ5YqC0OJi/+urlwsiQicqOHbhVBGNJUhuRn6YT5cxYB5dXc080VSd4/UKSSEu7hrOIYY7kIeeZSvtO77b3LHToiABUHpVELJLdrn5n9iBOn6W9Obz/o6HxEkxRTEMClTUgZDy/zQdz9BCACVwQx0B7nHO5dAbLRVNColGhY5HEic73RBWzUcLvaU2PCjNvDonkHoopJ8HmaWVnxNSwEOsUekPP3p3Sxqyy/5+cU5pq6aIZ1GPOIvsaJ/pA4XYGnnFkqOz06qSoZvpGAW4ft+tJjlHkjlSVqq5nGhlitOk0uwtlyQ8Be1UGZO0zAmmYsBFuaUx4hfrUIApaxfuVywDITEEsAvmbjpYpZWck4rh04KNhyFEJ3AH+ANJ/A4JjDhh+DGwVqH+Lg2uD1jK3qo6N1SUPm9s4a4C4wjoKkK+tHm944Xm+Uxbbvg4puU1GdXN5LdFOzeg1oZ9T4BIf7Zrm/IIooK+ktb119koZWMqqB6uS7kqI/DSFY3heg9rsf18yF+DRVy9aEv84i6sU9PN+bzPVj+f1h/hBGaXP4KWatI0/KfmMkOYMEKAoZgi8r90E5MSLVH9TYxr7Y3pqvRLeqvxld1Ecdpiu4YIETVufKo+IOjf8bQh1rs4
- WbKcl9Ik
- ilhKcq9BI997ZLLAnhScrjuP3n1l1pESYpjdnWVOkpBjsdED45u8lJed23McCDp8rvpT3lOC/wUJKHz3rA4JsiTq6ip/LIHKFjOihzR3gkMmwP1/JRXDie3+0gZvrze9H/iAVFWq7Ivp0C1NzyuIDOgd3hNmUkd7Ytm5fDkOFjPzxXpYPF7Ewb0cU7Ob4UmctHwqW8hIG+vg9oOAUsBP/QX5LQnsfOv43Q9p5FxkU3EW/9FPUuWZ+Nlsdcuioonh2eNqotNuNgZQ1ZK5lWNmZ68346GLr/zn9G9dmyoeVGKKyRfWv/ME3SfhST1So7dOLNx0NFmnX+t7Zclcroya8skUc7pEp8AObhhPVxg6vlq7mT35mcVV8uUJfou7C7Ks04Ul2
+X-HE-Tag: 1755781783-207495
+X-HE-Meta: U2FsdGVkX1+Lu4kO7wVZLdQfS/dON+P5GsqzHKNdIFj++8gGYpeIPTTasxQssf5al3b+GLdw/uZz+SQeDXe8KzuXoQOUVEjwWqxEAE5CB59ItJLmCFc+0VTb2cYmyE30D68sHzlpS/zm4iiiqzBH1GGrYvAEeBWWm1lrISylSnpO0f7t13Zyeb6zHe8xuBPrV4ZDTI2BN2Ap/G5kW3x3dHwARWgmNoypoFzlpN2/p2Rz02tCd3t7Ec80VnKbR6uGLrgx8wYRnvyz/fz/8tUJXjwh19Crn7qcu1bmMavDBn3qp1kRosCYN3p0cLhAgmc/G1I/hrYVtytrkkm06yRzHZ0C3vMJJR9JDEXP+gcoFncFePSPAWdj9sDkrqXFlrcuZNI8SfT8gSJsoJ3XJhZ4/c1cSC3s4r+X0wj7qi+hMPjaJXPomlfHejPOD6Izl0Jtg/YsxzOPXcjU9r8lasjHs975UJz0D2jBXMebHUzewIypYcxe59qf6yXkrG7IQ4wfqRevKbu78RCVAN5jTw+8urJMbuaxtjBm5ZSiTa1QV6u76rtx2mEeZM59CxrwCQTrfQD2MUTjvS1r4mJhqKwHXhYLy4nKsU+jrF/SMxf0L95BNmG5ZWOrW6jK7+H+BtSo0a/hXfy7t8FkSyAL/RpcxCTBsILFW4D0ntu7asZnZm3I3Y1/8RfbOZakkRE0QMNYm3N+tSBQLvAe2MXD37JiwkbTfbr5KbdmpyogvLHFlZT6AlKf02EPzUXSOa9ENt9iNixrMEYA81k0F1z5TbL9OASCv6/++u8+twYtNwxsZC7fbWIQ4Enf6915HLD8g7hRs7Emdge9pCrM6kgEVsSfmZB58I8z6MpKuVU3wv4X49jn/3fLZ5PswFrMtti6k/NjWWqNHYrC43lKL+OiKwaqjAQNTaHgJGerwTUDXljNEkPy+xz4T785TptRVyLeHbCfwRdhznE7XpVRjw9qws7
+ 2sraByq5
+ dH/I5fVN9BnXLEpWBQpsBhNVeLFcIUdXUoPExWeDUjZzT1SP8dgZ/eg2zSc9Kw/q+cyEtK3HuO7KcG1qoGNSrBETQKHaLqCM0lHhyq2WTkck+VUkg+fL0SuOzXliEDhpP/uoRLr+Rv29YVkbpKML0H61F3yPdXKu6zZS89GHezMyN2948zYJ/AR34BSOkcMEmPlELxRewkissCh9bDH5SL4+ptZtgDNj64J+TPlx4BJG+Nm+XD1xMqig8zg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,36 +88,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 20, 2025 at 09:24:23PM -0700, Andrew Morton wrote:
->On Fri, 1 Aug 2025 17:56:25 -0400 Sasha Levin <sashal@kernel.org> wrote:
->
->> >> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
->> >> Co-developed-by: Claude claude-opus-4-20250514
->> >
->> >Well this is innovative.  I doubt if Co-developed-by: is appropriate
->> >for this (where's Claude's Signed-off-by:?)
->>
->> Claude (or any other AI) can't legally sign off on code :)
->>
->> >I'd support creating a new changelog tag for this case.
->>
->> This is in the context of a proposal on workflows@:
->> https://lore.kernel.org/workflows/20250728105634.GF787@pendragon.ideasonboard.com/T/#t
->>
->> The Co-developed-by: usage wasn't my proposal, but it looked like the
->> majority of folks were okay with it.
->>
->
->I need to do something about this and the discussion over on
->ksummit@lists.linux.dev has been as beer-addled as one would expect.
->
->Oh well.  I guess for now we can welcome Claude to the kernel
->development team.
+On 32-bit systems, the throughput calculation in function
+damos_set_effective_quota() is prone to unnecessary multiplication
+overflow. Using mult_frac() to fix it.
 
-FWIW, I've switched the new RFC to use Assisted-by: as suggested by yourself
-and David. If you'd prefer, I can resend it with the Assisted-by tag instead.
+Andrew Paniakin also recently found and privately reported this
+issue, on 64 bit systems. This can also happen on 64-bit systems,
+once the charged size exceeds ~17 TiB. On systems running for long
+time in production, this issue can actually happen.
 
+More specifically, when a DAMOS scheme having the time quota run
+for longtime, throughput calculation can overflow and set esz too
+small. As a result, speed of the scheme get unexpectedly slow.
+
+Fixes: 1cd243030059 ("mm/damon/schemes: implement time quota")
+Cc: <stable@vger.kernel.org> # 5.16.x
+Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
+Reported-by: Andrew Paniakin <apanyaki@amazon.com>
+Closes: N/A # privately reported
+---
+ mm/damon/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 831a9afc6cf6..fe1c19307ddd 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2103,8 +2103,8 @@ static void damos_set_effective_quota(struct damos_quota *quota)
+ 
+ 	if (quota->ms) {
+ 		if (quota->total_charged_ns)
+-			throughput = quota->total_charged_sz * 1000000 /
+-				quota->total_charged_ns;
++			throughput = mult_frac(quota->total_charged_sz, 1000000,
++							quota->total_charged_ns);
+ 		else
+ 			throughput = PAGE_SIZE * 1024;
+ 		esz = min(throughput * quota->ms, esz);
 -- 
-Thanks,
-Sasha
+2.43.0
+
 
