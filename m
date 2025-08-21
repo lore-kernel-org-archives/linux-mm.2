@@ -2,117 +2,92 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EFE52CA0EF8
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 11:27:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9FA91CA0EF8
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 11:41:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB5438E0013; Thu, 21 Aug 2025 07:27:48 -0400 (EDT)
+	id 3188C8E0043; Thu, 21 Aug 2025 07:41:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF4268E0043; Thu, 21 Aug 2025 07:27:48 -0400 (EDT)
+	id 2EFCE8E002F; Thu, 21 Aug 2025 07:41:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C45EA8E002F; Thu, 21 Aug 2025 07:27:48 -0400 (EDT)
+	id 22D7C8E0043; Thu, 21 Aug 2025 07:41:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AB0718E0013
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 07:27:48 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6C9391D8E40
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:27:48 +0000 (UTC)
-X-FDA: 83800539816.18.6FF7D36
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 85DF8140003
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:27:46 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N2fFVzfk;
-	spf=pass (imf23.hostedemail.com: domain of devnull+schuster.simon.siemens-energy.com@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=devnull+schuster.simon.siemens-energy.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E61D8E002F
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 07:41:58 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AF4491DCD02
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:41:57 +0000 (UTC)
+X-FDA: 83800575474.15.FC290D7
+Received: from lankhorst.se (lankhorst.se [141.105.120.124])
+	by imf02.hostedemail.com (Postfix) with ESMTP id A5BFC80005
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:41:54 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=none;
+	spf=pass (imf02.hostedemail.com: domain of dev@lankhorst.se designates 141.105.120.124 as permitted sender) smtp.mailfrom=dev@lankhorst.se;
+	dmarc=pass (policy=none) header.from=lankhorst.se
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755775666;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1755776515;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jzPG0pNN8PrqX+g+rIANbw0E+JSl1sgNPdf1iFp1sjk=;
-	b=2RWdJ9N3zrcRFPsFVQctJJwWekV78cGQRrgcnVy5jKeAjKqGnGoKJd6VEqq0ALj7Tzmk43
-	ayma7Qb8AyDhnR3nInBha01K9r23L5NBCecDM5q208OhbZI5BvNSjbSxGdIlQDnfzg0Cjh
-	ohX/N8XgrpZhHfQRfzF/LdxxyBpFJOU=
+	 in-reply-to:in-reply-to:references:references;
+	bh=pYeLiE1cDg+D1GpDNMOOqlSU3+LbDZ6UjOlVUZlZse0=;
+	b=Hda6Z9S/jZW1Q4hC799oK+DX/GkRI1+sqcVXW0w70SBSrjVje8zOALLvRJRtILJvYMnj3U
+	9J0JZPJCmBDckaWcxM1FK3cZV/npeVJ7vzUTGyc2ZxODAKJJId45dXXkxsipQKjzhcI0qm
+	9pziGnnxU05q/9swQnwMjf/0xvb+WMM=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N2fFVzfk;
-	spf=pass (imf23.hostedemail.com: domain of devnull+schuster.simon.siemens-energy.com@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=devnull+schuster.simon.siemens-energy.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755775666; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=none;
+	spf=pass (imf02.hostedemail.com: domain of dev@lankhorst.se designates 141.105.120.124 as permitted sender) smtp.mailfrom=dev@lankhorst.se;
+	dmarc=pass (policy=none) header.from=lankhorst.se
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755776515; a=rsa-sha256;
 	cv=none;
-	b=uZymu3bUxLcdwUTMo/nh2+rnhvfalL5NVdhm/5JI8n42XC4JxW9A2EGpTnueZe5Fbi232J
-	GANRG2rAyDRljAstJs2WYbC4IRzfH1I1w2Xf4s358k90BkBaT2wrGfYXXUUxwRrtSocwRi
-	0TXQgikRIOgBzKR5BVHSRlFTPUTOVvY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id C2790A58204;
-	Thu, 21 Aug 2025 11:27:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 20A16C4CEED;
-	Thu, 21 Aug 2025 11:27:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755775665;
-	bh=1M9j+PL0n2Y6NH2XjNF7fuQwEwS11EOrVMi3fRSifwo=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=N2fFVzfkdDB7GMIspdbWMZpvAcU3dGmdaTj3qgZjchgPgc7MOdWR66qfxpyBUFtIv
-	 WeJeOURS2BKBKpwbv/wsi8sDD8adH+9QDYfKgF0gLfk8K0AOLYAofZaCWrAdopQfnH
-	 F1SKnzqV4xr//+T+3MDtIHQ73Tj7DW/QaKCtOjqdotBsBfIUGmfeiSg7qeBGloF5bF
-	 Qqwac79x3Sw693koPMtmL9i5TME7cQA8fAtkD4GVsCwon1z0Rcezt8ibjUgyilblna
-	 tzHbmh9HyLlPBhL7aK5xEn9ofyGWqBoNncOfB2uNwojLVJ333lO/l4N5ucUqVJpU9D
-	 7RaCAwyOReXvQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C5BCCA0EFF;
-	Thu, 21 Aug 2025 11:27:45 +0000 (UTC)
-From: Simon Schuster via B4 Relay <devnull+schuster.simon.siemens-energy.com@kernel.org>
-Date: Thu, 21 Aug 2025 13:27:37 +0200
-Subject: [PATCH 1/2] copy_process: Handle architectures where
- sizeof(unsigned long) < sizeof(u64)
+	b=UwZ882B+ZrZ/7+fg4MXNKMZoDlK75X+eDrJthNoyan2P6bOk/YSwLLpO89w1bfm8TrYoCC
+	eXT/w+NvYu7NJdaym6pvhBafK2WcxeAzDHHXmhcQjfFNat57EBAq7CpM4PFRt6xiy0NwMN
+	ZjZ87Eq+hHK51DvOuKRgUVIBkJoVGpA=
+Message-ID: <533447a9-098a-4509-9014-631af83e0e5a@lankhorst.se>
+Date: Thu, 21 Aug 2025 13:41:49 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250821-nios2-implement-clone3-v1-1-1bb24017376a@siemens-energy.com>
-References: <20250821-nios2-implement-clone3-v1-0-1bb24017376a@siemens-energy.com>
-In-Reply-To: <20250821-nios2-implement-clone3-v1-0-1bb24017376a@siemens-energy.com>
-To: Dinh Nguyen <dinguyen@kernel.org>, 
- Christian Brauner <brauner@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@redhat.com>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
- Juri Lelli <juri.lelli@redhat.com>, 
- Vincent Guittot <vincent.guittot@linaro.org>, 
- Dietmar Eggemann <dietmar.eggemann@arm.com>, 
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, 
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, 
- Kees Cook <kees@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Simon Schuster <schuster.simon@siemens-energy.com>
-X-Mailer: b4 0.14.3-dev-2ce6c
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755775663; l=2756;
- i=schuster.simon@siemens-energy.com; s=20250818;
- h=from:subject:message-id;
- bh=fATaBcMTm8PaXx+wvHRntwDrs2IKs0+IzRTpuUxyYa4=;
- b=y7/IgnYV/3SkSNwCoqgDE/+S2MUsRejhrdpl2L+U7VnPzMzgttiqeo7QuevGlQKo7aBzvBcQ5
- 485HV4aRh6JBpSGlbRD35ZZAmT8+Yb7t7dbqgXJf0B1MkEE0oKL4n0t
-X-Developer-Key: i=schuster.simon@siemens-energy.com; a=ed25519;
- pk=PUhOMiSp43aSeRE1H41KApxYOluamBFFiMfKlBjocvo=
-X-Endpoint-Received: by B4 Relay for
- schuster.simon@siemens-energy.com/20250818 with auth_id=495
-X-Original-From: Simon Schuster <schuster.simon@siemens-energy.com>
-Reply-To: schuster.simon@siemens-energy.com
-X-Stat-Signature: spfea1foyqp1i3qy9by6eknno6ogb9yw
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 3/3] drm/xe: Add DRM_XE_GEM_CREATE_FLAG_PINNED flag and
+ implementation
+To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Maxime Ripard <mripard@kernel.org>,
+ Natalie Vock <natalie.vock@gmx.de>, Tejun Heo <tj@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, =?UTF-8?Q?=27Michal_Koutn=C3=BD=27?=
+ <mkoutny@suse.com>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "'Liam R . Howlett'" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Michal Hocko <mhocko@suse.com>, intel-xe@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, linux-mm@kvack.org
+References: <20250819114932.597600-5-dev@lankhorst.se>
+ <20250819114932.597600-8-dev@lankhorst.se>
+ <a781f7781a9bf510c3707a5c9a235e1dab785617.camel@linux.intel.com>
+Content-Language: en-US
+From: Maarten Lankhorst <dev@lankhorst.se>
+In-Reply-To: <a781f7781a9bf510c3707a5c9a235e1dab785617.camel@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A5BFC80005
+X-Stat-Signature: azifiimjnjbmwemjsyi19me7fdgz1zn7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 85DF8140003
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755775666-745918
-X-HE-Meta: U2FsdGVkX1/W4rpbuSXg7y+HPn0UZ/+5krv5AIcDTvRshwkSCrmBD5vVzrL+N7LxEq5NOxeGS8RDTMg5X1OT/UiUqvdoX7Osjtoali6E+KELKqXpkHNo+kqksq+F9FgttZgdbUwM7kjTGZ8Hh1/YNjkcUS/nfZatu+syiQHGV5HvtcEbpPk0I4WM0ulTQvAfwZyc4mn+CkRy+NT8Z803OXHwKrojgtcAR+lCA/9wIvZXTOelyEXM0FjWw92JeyzuHY3lj+cDVnK+h8mJjBw5s7Ld75L6EPPr9Zh4/YgeyIXP4lCf4O9dQSzMlaaWDRvMGyvXf64W0ccF6IQybsMV/Wd2xWnQtOQSHTE2BLJPv4Wj3MJRelbW1FmtXSO48ITaNj6KKA0pCppUBhRzx6BdvjDvGpc/h62b10Tv/WI0YPensPorT0ELUtRORUDP6V3aQdjyhxanXzJesaeva8P1IfNDqEVuYnofMN3umoreDXdKY+yyG9akLcimlVGLDnGk1b4IrNiBzj0sZ5cLr2uUkS5Qu/tOXfNDPRrqPmuViLW4tEnI7TUyqnbkrRAt7iiuzmyHpuDW9jB+Dmy/DIqwGvLCZL0prs7v1rPNUABLrvRb/cYl6H96078ZFiAEx1OM6Lv9ueCBoXbUk1Vt9U+/gIq3fZ136ietcjR/t3iirZ97ZjFMD8e7eX8Ve+SL56o85l1eWe6HEbZYhL3z16p4LzZhM6AofS3rgvCLkF5tLg3MHwLIP1f7U26pp8kN5X0VTR0FFsRlRoDxil/h/jPeXFXem24SH3MJO+yTUeAeftWjdVScaKDw6DVev+szeVbBx2VltAOAT42b0LVrWdfGvwMQ4KTt42IrUys7TE6rV7H+GDdTyTflJcxH4NUXMtvS1YpBQjLH+gCPKSiXl5n2IDZo41/tQAatIGbIExyWwlscjrDb0tXUWKOErmaRN57AnWQBBUDbeeOMy451wmq
- I5t9oFM3
- k42OGSuDi7I1/c/o2QdigcJKXnt46NxJTX7dVjaH1EIdHOOc1L1QOvGO6A9y72WRpZymJmyo/EXBONi6OAJsXik9nXOtj1/VK30XtFdjW2H6VGWIcQv0moeqdCuIMK4DrGA+2Tw6YhP8RVGjKaHjvg170YvYoVXAHJDuM5wQUKTOKnRHU0bXQj4RMOYWVZXO32EtHDHIoibKRX+cvSJ13kggp4zvrvDEmWpN018qJYEGhMmhN1G9Y+msWtjRB2FyoQxXOU/kCFTqxg1a4b55+ch8ov7d5hvVdfRV+uLjR6DONwPtqJTp1rocl5e6IJNo7bt599BeJ1nMhcvJhPYxxCVcEnFKQnfbetS8gCH7y67d/o5rxdgplWUU0lAKReD4+fEW7XWxTyEmhZQ4gaK++SlfPiY8TfbhHj292+8rDrRrdjoInDDhrF8wbfTG9qins8LTgYIvvfravunboe3fCK9/QmuO07QR4Be8PO/hC4Rw5azlXXJ/jprYEPzvXDlS4nh2/hr7PzbITRZM=
+X-HE-Tag: 1755776514-381686
+X-HE-Meta: U2FsdGVkX1//uHlt3lh+33lB3WUZ1FMg5ydLg6MVDnws4fuBF9h4qlVlxdXvguQ3p+5fAHZvXAbNvd2PyuZvyOVuJIJhFRiYHl8ZUp0N1rtAQzgDM22wr8fT5WjogwbIEnznIbD0VwjJwHgkU5XfYVQw0unVejyg21GxDm7bYuLVVwTCvUfjfUPOJMFDLXxZm4X2uGy7l/YD0S1nOoBxlva2iqCGuF1KTHUixxnml7+4LuF4bDHW7K96+i8lnEFW2bYlrQzLFImRu2ZQLBhc7tJgDU3tDWmwzJAAuh0UwJ5x5jR5jfNmarXqRK74QVAFEA+pGw25xDL9X0+mq5Vuj2uveEiZz+vNdZmyBZ+j0KX3GjqVBGbR3xBrt8DzKMo/0PwlbDnxy0xe4937499cSv7idpBapSp9n8VBNtlp8q07HgIkWo/OSA0rPHtE3XjtHv9F7/bcOtYYvKvV2Ta68aSJbmGub1YZHBaKFpFgD1qQgsK1SEC4v50F0yR/B7g2St9l1Y79lvSt+ZTdpdj3nCpARA6ax6woOYexv1e4HQUy/J87QN2FmhuVRvW25OQheokxB3Hq7/uOu45h/5SnCiCT5puGQwZwcLeTQJM+FEZoghFm6z/Wc7FOkEcN9+iDCXANNWDWCjMTEPRQDz5WmH+15yaAuplJQgS6sR/TaZbRVHuZ1M+dezA9yccqEHHNIgKT1jI6UcQ8ZssJHqkCYFR+/A+6biyqSsYQM2tJFIJg3uW22NjgBSTAIucHg0jfeR87dtGF9ROgjahlESOp1MSVyw87ujC7HZB8MS/AtrB1J/IwEcMcUbOnfQCjESQhd0qWSNPKNxcs/agBUJ5slzmyJ53V8iERYBM/SrJDKBlxfHf8k4pm0uFwvVsL1cyvYCqqBC4lc1RvaCQsYH5t8/mcdhW82qOIzZUNc7CTAnhL4k7bnP6qpmFp+F7fG2OIqRcnd5ZMLxcxigN71fS
+ Q5WFQkL2
+ +NT7LyY9siANGrGZ6fCvVVp95EeAdVy+HA3LnSMUFgGlexAMCnV23dNYSV1KMJjz+n6YoTnT5G43u+8/iJfohGVoV+IY2/XKsLXVh/C3dPiAXhPq+VSmiOlh1vaWmw8+Li/DH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,85 +96,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Simon Schuster <schuster.simon@siemens-energy.com>
+Hey,
 
-With the introduction of clone3 in commit 7f192e3cd316 ("fork: add
-clone3") the effective bit width of clone_flags on all architectures was
-increased from 32bit to 64bit. However, the signature of the copy_*
-helper functions (e.g., copy_sighand) used by copy_process was not
-adapted, as such, they potentially truncate the flags on architectures
-such as nios2, where unsigned long is a 32bit unsigned integer type.
+Den 2025-08-19 kl. 18:22, skrev Thomas Hellström:
+> Hi, Maarten,
+> 
+> On Tue, 2025-08-19 at 13:49 +0200, Maarten Lankhorst wrote:
+>> Add an option to pin memory through the science of cgroup accounting.
+>> A bo will be pinned for its entire lifetime, and this allows buffers
+>> that are pinned for dma-buf export without requiring the pinning to
+>> be
+>> done at the dma-buf layer for all devices.
+>>
+>> For now only implement VRAM pinning. Dave Airlie has a series to
+>> implement
+>> memcg accounting for the GPU but that is not ready yet.
+> 
+> Previous discussions around this have favoured a UAPI where we pin a
+> gpu-vm range, with a pin at mapping time, or dma-buf pin time where
+> required, this allows for dynamic pinning and unpinning, and would
+> avoid having separate pinning interfaces for bos and userptr.
+> 
+> In particular if we don't know at bo creation time which buffer objects
+> will be exported with a method requiring pinning, how would UMD deduce
+> what buffer objects to pin?
+> 
+> Thanks,
+> Thomas
+> For discussion purposes, it seems compute preferred pinning at allocation time,
+so I wanted to propose that solution since it's easiest to implement.
 
-This can, for instance, be observed via failures of kernel selftest
-clone3_clear_sighand, which attempts to trigger the conditional
+I will change it for the next version, but I'm very interested in feedback
+on the adjustments I made in cgroups. Those are the ones that will have the
+most impact, and changes how effective min/low is calculated when memory
+pinned is involved.
 
-	if (clone_flags & CLONE_CLEAR_SIGHAND)
-
-in function copy_sighand within fork.c that will always fail given:
-
-	unsigned long /* == uint32_t */ clone_flags
-	#define CLONE_CLEAR_SIGHAND 0x100000000ULL
-
-This commit fixes the bug by always passing clone_flags via their
-declared u64 type, invariant of architecture-dependent integer sizes.
-
-Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
----
- kernel/fork.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 5115be549234..0e9b2dd6c365 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -1510,7 +1510,7 @@ static struct mm_struct *dup_mm(struct task_struct *tsk,
- 	return NULL;
- }
- 
--static int copy_mm(unsigned long clone_flags, struct task_struct *tsk)
-+static int copy_mm(u64 clone_flags, struct task_struct *tsk)
- {
- 	struct mm_struct *mm, *oldmm;
- 
-@@ -1548,7 +1548,7 @@ static int copy_mm(unsigned long clone_flags, struct task_struct *tsk)
- 	return 0;
- }
- 
--static int copy_fs(unsigned long clone_flags, struct task_struct *tsk)
-+static int copy_fs(u64 clone_flags, struct task_struct *tsk)
- {
- 	struct fs_struct *fs = current->fs;
- 	if (clone_flags & CLONE_FS) {
-@@ -1569,7 +1569,7 @@ static int copy_fs(unsigned long clone_flags, struct task_struct *tsk)
- 	return 0;
- }
- 
--static int copy_files(unsigned long clone_flags, struct task_struct *tsk,
-+static int copy_files(u64 clone_flags, struct task_struct *tsk,
- 		      int no_files)
- {
- 	struct files_struct *oldf, *newf;
-@@ -1599,7 +1599,7 @@ static int copy_files(unsigned long clone_flags, struct task_struct *tsk,
- 	return 0;
- }
- 
--static int copy_sighand(unsigned long clone_flags, struct task_struct *tsk)
-+static int copy_sighand(u64 clone_flags, struct task_struct *tsk)
- {
- 	struct sighand_struct *sig;
- 
-@@ -1648,7 +1648,7 @@ static void posix_cpu_timers_init_group(struct signal_struct *sig)
- 	posix_cputimers_group_init(pct, cpu_limit);
- }
- 
--static int copy_signal(unsigned long clone_flags, struct task_struct *tsk)
-+static int copy_signal(u64 clone_flags, struct task_struct *tsk)
- {
- 	struct signal_struct *sig;
- 
-
--- 
-2.39.5
-
-
+Kind regards,
+~Maarten
 
