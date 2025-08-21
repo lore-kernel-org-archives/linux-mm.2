@@ -2,66 +2,66 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D69CCA0EEB
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 10:22:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E7103CA0EF8
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 10:22:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7945A6B00D3; Thu, 21 Aug 2025 06:22:20 -0400 (EDT)
+	id 831038E0002; Thu, 21 Aug 2025 06:22:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 745F66B00D4; Thu, 21 Aug 2025 06:22:20 -0400 (EDT)
+	id 808318E0003; Thu, 21 Aug 2025 06:22:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60D8C6B00D5; Thu, 21 Aug 2025 06:22:20 -0400 (EDT)
+	id 6FD0C8E0002; Thu, 21 Aug 2025 06:22:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AC416B00D3
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 06:22:20 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0DFEC16037D
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 10:22:20 +0000 (UTC)
-X-FDA: 83800374840.21.977E0A9
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 576BE8E0002
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 06:22:27 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id F03D21DC104
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 10:22:26 +0000 (UTC)
+X-FDA: 83800375092.19.55C9CF6
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 64B9FC000A
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 10:22:18 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=BMWp8pD7;
-	dmarc=pass (policy=none) header.from=igalia.com;
-	spf=pass (imf10.hostedemail.com: domain of bhupesh@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=bhupesh@igalia.com
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0E3EE80005
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 10:22:24 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=n9HPLkDi;
+	spf=pass (imf02.hostedemail.com: domain of bhupesh@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=bhupesh@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755771738;
+	s=arc-20220608; t=1755771745;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SqG59QcNd5zcgM/48bgbCRG/bObN6shwfOiwsu1X8jM=;
-	b=V5JJmlOdmH75tFTFmz5CdEeDEDG+PCC8y4rmILGlzzNj1asBcXZUEY5VkUXcX6wJkrrVjd
-	J3nbBHTCwKNQTgJZEEIrOhreaKVwNjrh8NdSyBroxXoWrSe2CvvDzMcr/lhJxkZnw7OEfL
-	UvqN/ZtHcicYrYynUOsxqT8If5W2Hog=
+	bh=GAEyZkelqAOAawrlKIjrCAL0su4aVASycJItIz/u0K0=;
+	b=5IAh6UirRjlpy+g3K2NmYFYurRGlyrE84SwwbKyYx6mWWO8QIEm5b2PFRFNyDuXPRU8kM6
+	7MMGXaFcRRXldirmY8TX5yQVWRSb6hdE/0uQFElyXxFGQJr9nuEmB23Qz/c65KLtnvQcKD
+	F6+gUY1FQ2T++pK8/MPI3yxuRNCtFlc=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=BMWp8pD7;
-	dmarc=pass (policy=none) header.from=igalia.com;
-	spf=pass (imf10.hostedemail.com: domain of bhupesh@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=bhupesh@igalia.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755771738; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=n9HPLkDi;
+	spf=pass (imf02.hostedemail.com: domain of bhupesh@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=bhupesh@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755771745; a=rsa-sha256;
 	cv=none;
-	b=V4ERS6vv2saL19yJUbV2mBXvSV+/s16t/iPu1vs3Bk4mO1iPTHnZC/SkwGteHZ3vIZwbxk
-	/8LIfF1tR1/HzXXWY7Lvpcv6YtokCvQAKCfeSB+kEzcSYe5bnDYEnXCAG9i8YdL5ufQaRO
-	SXw9iuii000JIQDNIGNh4DdcdQXGgXg=
+	b=I2puklisXcj9/4nWlj7Amv/eujXlrW+BE7Vqoo8tfTY4mz5zJlb+5goKURhuLU4xy4Ds2a
+	f9G0FJdnwCwkvc6RkbPMz1uYkVqHBHC62UbpvV3aBoj9B8ONvPfKpL7F0ozQYj6qjcI9dh
+	OU3HcckzkInHVypaz/u9OCiNI0ONQpw=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
 	s=20170329; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=SqG59QcNd5zcgM/48bgbCRG/bObN6shwfOiwsu1X8jM=; b=BMWp8pD7b9GiEYM/tFJo1TnmAV
-	Vc9hHbhfmKolOyJCKbBRqSIC4CjK59oqtpEVzZ4TBBJ+lNf628BnUHtepubkcq1W7FdVmQaqxOrOo
-	PDKmL9ueul+Azb2iulfgVVYyI0CboZGmrTszyAHcAKXbqXbFT50OhNwmgj4GcgQHDN6uweDRRdyLw
-	z22GvTK7IQ09Rxx/TLpaVz4ESQDBCwAD5X+iWk2IG2oachNyc4j5/Pci41Yuv9C+QqHjhJJskWOdT
-	iqGC5p78QFQI7QoaWRX8QAUCbNSpR4TOKMkOFqmNW/+oTxc/f8Y6YiCGeDzSW5LZChJhAvWpkLhjB
-	wmokEYVQ==;
+	bh=GAEyZkelqAOAawrlKIjrCAL0su4aVASycJItIz/u0K0=; b=n9HPLkDikLdWRySIMzui9PAS8w
+	6Hc5uVOa2c444JCSw2dTBwMYLPjQWrABmjprdnX5hV47eKvX7RTNW5hR0Vy5ZWoFiZmDXJvZzpi9v
+	L0alS82MArv0Q6g/tsT7RJ1XBVx+cEwGKgBB6pP0D7w5n7LO3dbVyaWR7KeK2YsmcROlKIaOGov/v
+	51jkoeo80lL7N582wvTsaXAGsTzJQF/3uZbRGJErJpq8kt42JraYdBs13+JIeD4eC9sGptYmzGDMz
+	pi19gOGNIb25VB9Xi/Y5mY3vvm8cHwS34rJhCEuF2Kfo9B7lMH3dsWZ8niEjd9rLpE7VpesujJCJN
+	8gdEtxeA==;
 Received: from [223.233.68.152] (helo=localhost.localdomain)
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1up2Qv-00HBmV-UT; Thu, 21 Aug 2025 12:22:14 +0200
+	id 1up2R1-00HBmV-Pc; Thu, 21 Aug 2025 12:22:20 +0200
 From: Bhupesh <bhupesh@igalia.com>
 To: akpm@linux-foundation.org
 Cc: bhupesh@igalia.com,
@@ -97,22 +97,22 @@ Cc: bhupesh@igalia.com,
 	linux-trace-kernel@vger.kernel.org,
 	kees@kernel.org,
 	torvalds@linux-foundation.org
-Subject: [PATCH v8 2/5] include: Set tsk->comm length to 64 bytes
-Date: Thu, 21 Aug 2025 15:51:49 +0530
-Message-Id: <20250821102152.323367-3-bhupesh@igalia.com>
+Subject: [PATCH v8 3/5] treewide: Replace 'get_task_comm()' with 'strscpy_pad()'
+Date: Thu, 21 Aug 2025 15:51:50 +0530
+Message-Id: <20250821102152.323367-4-bhupesh@igalia.com>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20250821102152.323367-1-bhupesh@igalia.com>
 References: <20250821102152.323367-1-bhupesh@igalia.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 64B9FC000A
-X-Stat-Signature: ddkf3sktt5nhjrb3tub6k1duohek9mpo
+X-Stat-Signature: aznft31hxc7iyhqp6nyufidc79u7qhxd
 X-Rspam-User: 
-X-HE-Tag: 1755771738-339688
-X-HE-Meta: U2FsdGVkX18xwQIRZWJriOUdFCwVqeIDXaio8vLs2CsIkgD7MAb2qIYbmJifFv5V+oQNJhbCTAI0viU9EnljDYOPrN/sHPHlCMl1lpREJNCW64lYKD560mA+vRgKfo5obX2rL8xSWMOgk3pwfx5tCtA5X+EafCaOKMBpJWu/KvLmxT+aR9kKHvIOvBa1RtuHlN01Yd0fpxmzyIgXbK04sx9pJiLgH7S9T2znkrzazTmCDQkpkzRz6e2fhAV9mDNJt3h2xZv7UD+FKQd581oBrgyrp3MsF8EtPlG8ycMBXSoM/c8JVTY3WlYhqHqV0WmUMdI38B0bBL1EWhs2MKZAkbRHss4KxlRPYYaadco/0JBeEzTdKGw98M69tmAdF88g2aF0wpbVRqLM448N+Ow8SyxpOAdnL8J/OVA3OWm3hGhY8GOBoQm+Cf5ptH8Mf7CYxk3uJ6YM5yKfph81LH0iwwJK9mt1Wf7OwKt2Wk1Nv6gdmQoURJWm+Ss7C7IV/DooHMeiaF/YjN5IYv0FU8G7VYbcYbXX4Z1ZJZKSGzhH3PVM4fimb5Gd65OwGw9R656nwV85Hx/wNT+C6rSdD/97WJsZZC3i0d+FR+FiZJQzDJbgR6nGLo+SDNmJr7NsrK3ua0c07DbBxUK1LY3iVIt8h7nE6bSH2tEpUOcqcW+uKBiwjB4IV+f3DT6EQ6u6kv3dtBR5YIntCuZrVRG1EExb/nrfOWgQtH6q5OJEZuG5FAbu+ExiRxLXeCxq9lfZRn4lXW7x3IWwphAXp+k3zItnI6UIFBkocV7ae/GP2P3GyomNZuvrug2JPZP4DkdJH2pzex6zGK+lhP0S+Rj0ZQAtX5dlOd+Nmtt2o103Zm0xfCw3cBEV8dPL0xen7n/wduKbYR0BrteaSLbLzkmZcsxnG8VcgQKfacJuBnXaS4cHyyXhEY7RFEla/2kJOaxPsYWSFZa1BV8yjBwR85XF0Np
- 1LpcBmX+
- B9eh8Sci9RknXRkNVG5JKfUhM/WvA2Y/FbxT75k205KJ1ujZPqldzWDhnUBFVehaQxp4OzK8ry2bOaxIgbkbTp+T9UCyzJaPgtBxa2bC5FpOl2hBLcqTI7MyL2GaO5EANOIlh21XI8UVfNaeYRnhSQPoc3bEmf8cGQ0u/5e8rsNsinouEkaBNGUEozl+hjT6orP6lJxlbPTlt4UsZQ61tM0SAsvrvXBufbIsZ2qTqmnZk6azKFbsMbOp+1FRR8/HGpA0vgYIdgPGZe6ltCXpP/6IuvKcXpWLzCwGnfPyUnuCrQb5GYPdYb1m8dAj15SExMGg11Q2Y1F0ZYA0h0r+6gXhTFSQD4lRkajdWdQ8Rj5+FnNzcm1JCmXHjFo2IcR90yvvV
+X-Rspamd-Queue-Id: 0E3EE80005
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755771744-596800
+X-HE-Meta: U2FsdGVkX1+KVM3RxrfEs+QC8YoI2T56YYHsdX+fZE7hfzl62CzyZ1A/5wblgQ+f8XbLVnCB3jwHiTauXeN1hELTF7c/OeJbmcblFH6aWnRqaq2Mk1zPGjgs5m9l9BhkON5H6Dpecwc8x7yskbmX0ozcqvVq2vYVcSsGl28dXvQFr0gHPpNkAIYapfjum8lbgc7GbvkEMtHAFpMH+moUzlY93d++12dchgUqOKy0pFO2PPmSNMBYFjPZoI4tk2TRnu9SJJll2nhoqtnMfuAhaiTZ9/2O6AN7BQCa4014F5cFoJoy3SP4TMbqLjx0rrN8BGYrNyZSXRjbURM5MrH70m9arqJvzad8jruJdzwYmH0hUrpW0F/uzO9iyiGLoabkSvLXZ10nBv9s37F5uPMuV9nmW3grFQQQ4/XcXCDz9XKWJ8Ad6vzlX8/P9Cw+2TYTA/l44AfPRseqmVOaFqgNSrLTGoWjJWmK0ptBs0YrxHvZeiveLIb6Lgm0ktESonQzDpkZjej5nj+uBQjmTcmpn5ctU/zqZqGGl9HGOGtc3rx5IMTL1d5VcaM5mSlsMPd1bhG61Z1ANPIRpWoR39JXhkySdn/14Ns31jNHEQLScZ59SPyg/QdI/PvqbDJZE4ONYJnYYB4PaFsBR8048dlPddqijmW4EptOkVTUV8tN5SkQhi/8TwHt3dxVfv/0i74BndteZjlczC7y6Mlwt2cFuc9eB+ePZtdz42CO+xbdEcf+qPy6fTRDIS/o40zg5ECQskWnQiOpnpS4N2rKzJH6u6CiArIYjuUGKUgZuVYour5U4vxUx8IgwXgXn08AKPgSGmMIUtVUMiua0w8FUuC1993SvhqNb5IgrgN/vvc4xt0bNAuxpvMk5gJrXq0USuRF2xv6aOhvjqDE2IywDF6nYzY5qXiEwswORNPBKTveyfwYjMCPs/3gT7/FgAnDJahLQBWCyQYld2AGBSDWhAA
+ wPbaFRyg
+ a+02Oz5qwLxsYbOhfBDlO8F6TLEkLFLdlFGNl9EeV8Z9Ub2aDVLZuQx0V8ynb6ytnzDqhZyJEPu6zaFdaJXQSYhmqSNlHuKSzFWC90UsmTpQs/4PiphuOq8XLxf5rLf/gpiWvsfq8txARg8a/e7M9PysECsuAF2A/QyrkQgeH0v5zp1f/o0hxbSGJxdU6Xa3AixQ1d3mx8xUHi+TiIaiBeKwVISIe4NEXlztL8fwryBXgcCxgR0k+eWJARomVhusAFXGF/awZF5HVL0i7JNERiqY3Crhj/ABy36giarHzCRYa1GiHXJeNL0aQIsaVPgDS/zjSH5TFE1GpO1X0TL8/ZnWO2T4VgGCpGkKOAY8KcoXui1jgn2BkCUny9WYzCkmAyGRsr/IcYBta7eq/ORn5jrxI30SWu57UelsXAx9rHFvUsnIMl3HRbK024w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,58 +121,504 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Historically due to the 16-byte length of TASK_COMM_LEN, the
-users of 'tsk->comm' are restricted to use a fixed-size target
-buffer also of TASK_COMM_LEN for 'memcpy()' like use-cases.
+As Linus mentioned in [1], we should get rid of 'get_task_comm()'
+entirely and replace it with 'strscpy_pad()' implementation.
 
-To fix the same, we now use a 64-byte TASK_COMM_EXT_LEN and
-set the comm element inside 'task_struct' to the same length:
-       struct task_struct {
-	       .....
-               char    comm[TASK_COMM_EXT_LEN];
-	       .....
-       };
+'strscpy_pad()' will already make sure comm is NUL-terminated, so
+we won't need the explicit final byte termination done in
+'get_task_comm()'.
 
-       where TASK_COMM_EXT_LEN is 64-bytes.
+The relevant 'get_task_comm()' users were identified using the
+following search pattern:
+ $ git grep 'get_task_comm*'
 
-Note, that the existing users have not been modified to migrate to
-'TASK_COMM_EXT_LEN', in case they have hard-coded expectations of
-dealing with only a 'TASK_COMM_LEN' long 'tsk->comm'.
+Link: https://lore.kernel.org/all/CAHk-=wi5c=_-FBGo_88CowJd_F-Gi6Ud9d=TALm65ReN7YjrMw@mail.gmail.com/ #1
 
 Signed-off-by: Bhupesh <bhupesh@igalia.com>
 ---
- include/linux/sched.h | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/connector/cn_proc.c                   |  2 +-
+ drivers/dma-buf/sw_sync.c                     |  2 +-
+ .../gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c  |  2 +-
+ .../drm/amd/amdgpu/amdgpu_eviction_fence.c    |  2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c       |  2 +-
+ .../gpu/drm/amd/amdgpu/amdgpu_userq_fence.c   |  2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c        |  4 ++--
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c  |  2 +-
+ drivers/gpu/drm/lima/lima_ctx.c               |  2 +-
+ drivers/gpu/drm/panfrost/panfrost_gem.c       |  2 +-
+ drivers/gpu/drm/panthor/panthor_gem.c         |  2 +-
+ drivers/gpu/drm/virtio/virtgpu_ioctl.c        |  2 +-
+ drivers/hwtracing/stm/core.c                  |  2 +-
+ drivers/tty/tty_audit.c                       |  2 +-
+ fs/bcachefs/thread_with_file.c                |  2 +-
+ fs/binfmt_elf.c                               |  2 +-
+ fs/binfmt_elf_fdpic.c                         |  2 +-
+ fs/ocfs2/cluster/netdebug.c                   |  1 -
+ fs/proc/array.c                               |  2 +-
+ include/linux/sched.h                         | 19 -------------------
+ kernel/audit.c                                |  6 ++++--
+ kernel/auditsc.c                              |  6 ++++--
+ kernel/sys.c                                  |  2 +-
+ mm/kmemleak.c                                 |  6 ------
+ net/bluetooth/hci_sock.c                      |  2 +-
+ net/netfilter/nf_tables_api.c                 |  2 +-
+ security/integrity/integrity_audit.c          |  3 ++-
+ security/ipe/audit.c                          |  2 +-
+ security/landlock/domain.c                    |  2 +-
+ security/lsm_audit.c                          |  7 ++++---
+ 30 files changed, 38 insertions(+), 58 deletions(-)
 
+diff --git a/drivers/connector/cn_proc.c b/drivers/connector/cn_proc.c
+index 44b19e696176..3c1b07198e10 100644
+--- a/drivers/connector/cn_proc.c
++++ b/drivers/connector/cn_proc.c
+@@ -278,7 +278,7 @@ void proc_comm_connector(struct task_struct *task)
+ 	ev->what = PROC_EVENT_COMM;
+ 	ev->event_data.comm.process_pid  = task->pid;
+ 	ev->event_data.comm.process_tgid = task->tgid;
+-	get_task_comm(ev->event_data.comm.comm, task);
++	strscpy_pad(ev->event_data.comm.comm, task->comm);
+ 
+ 	memcpy(&msg->id, &cn_proc_event_id, sizeof(msg->id));
+ 	msg->ack = 0; /* not used */
+diff --git a/drivers/dma-buf/sw_sync.c b/drivers/dma-buf/sw_sync.c
+index 3c20f1d31cf5..1f2ddf00799b 100644
+--- a/drivers/dma-buf/sw_sync.c
++++ b/drivers/dma-buf/sw_sync.c
+@@ -311,7 +311,7 @@ static int sw_sync_debugfs_open(struct inode *inode, struct file *file)
+ 	struct sync_timeline *obj;
+ 	char task_comm[TASK_COMM_LEN];
+ 
+-	get_task_comm(task_comm, current);
++	strscpy_pad(task_comm, current->comm);
+ 
+ 	obj = sync_timeline_create(task_comm);
+ 	if (!obj)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c
+index 1ef758ac5076..ea2b99fde425 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c
+@@ -73,7 +73,7 @@ struct amdgpu_amdkfd_fence *amdgpu_amdkfd_fence_create(u64 context,
+ 	/* This reference gets released in amdkfd_fence_release */
+ 	mmgrab(mm);
+ 	fence->mm = mm;
+-	get_task_comm(fence->timeline_name, current);
++	strscpy_pad(fence->timeline_name, current->comm);
+ 	spin_lock_init(&fence->lock);
+ 	fence->svm_bo = svm_bo;
+ 	dma_fence_init(&fence->base, &amdkfd_fence_ops, &fence->lock,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_eviction_fence.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_eviction_fence.c
+index 23d7d0b0d625..3e2ad72cafc4 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_eviction_fence.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_eviction_fence.c
+@@ -166,7 +166,7 @@ amdgpu_eviction_fence_create(struct amdgpu_eviction_fence_mgr *evf_mgr)
+ 		return NULL;
+ 
+ 	ev_fence->evf_mgr = evf_mgr;
+-	get_task_comm(ev_fence->timeline_name, current);
++	strscpy_pad(ev_fence->timeline_name, current->comm);
+ 	spin_lock_init(&ev_fence->lock);
+ 	dma_fence_init64(&ev_fence->base, &amdgpu_eviction_fence_ops,
+ 			 &ev_fence->lock, evf_mgr->ev_fence_ctx,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+index 25bade9a5e95..8a4a4c03bbcd 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+@@ -4169,7 +4169,7 @@ int amdgpu_ras_init(struct amdgpu_device *adev)
+ 	}
+ 
+ 	con->init_task_pid = task_pid_nr(current);
+-	get_task_comm(con->init_task_comm, current);
++	strscpy_pad(con->init_task_comm, current->comm);
+ 
+ 	mutex_init(&con->critical_region_lock);
+ 	INIT_LIST_HEAD(&con->critical_region_head);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
+index c2a983ff23c9..73aa37f65e0b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
+@@ -92,7 +92,7 @@ int amdgpu_userq_fence_driver_alloc(struct amdgpu_device *adev,
+ 
+ 	fence_drv->adev = adev;
+ 	fence_drv->context = dma_fence_context_alloc(1);
+-	get_task_comm(fence_drv->timeline_name, current);
++	strscpy_pad(fence_drv->timeline_name, current->comm);
+ 
+ 	xa_lock_irqsave(&adev->userq_xa, flags);
+ 	r = xa_err(__xa_store(&adev->userq_xa, userq->doorbell_index,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+index c3d4bf0767e0..20b83441951b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -2523,13 +2523,13 @@ void amdgpu_vm_set_task_info(struct amdgpu_vm *vm)
+ 		return;
+ 
+ 	vm->task_info->task.pid = current->pid;
+-	get_task_comm(vm->task_info->task.comm, current);
++	strscpy_pad(vm->task_info->task.comm, current->comm);
+ 
+ 	if (current->group_leader->mm != current->mm)
+ 		return;
+ 
+ 	vm->task_info->tgid = current->group_leader->pid;
+-	get_task_comm(vm->task_info->process_name, current->group_leader);
++	strscpy_pad(vm->task_info->process_name, current->group_leader->comm);
+ }
+ 
+ /**
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+index e69db0a93378..7d7c9ff940d7 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+@@ -598,7 +598,7 @@ static int amdgpu_vram_mgr_new(struct ttm_resource_manager *man,
+ 	}
+ 
+ 	vres->task.pid = task_pid_nr(current);
+-	get_task_comm(vres->task.comm, current);
++	strscpy_pad(vres->task.comm, current->comm);
+ 	list_add_tail(&vres->vres_node, &mgr->allocated_vres_list);
+ 
+ 	if (bo->flags & AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS && adjust_dcc_size) {
+diff --git a/drivers/gpu/drm/lima/lima_ctx.c b/drivers/gpu/drm/lima/lima_ctx.c
+index 0e668fc1e0f9..7536288ec93b 100644
+--- a/drivers/gpu/drm/lima/lima_ctx.c
++++ b/drivers/gpu/drm/lima/lima_ctx.c
+@@ -29,7 +29,7 @@ int lima_ctx_create(struct lima_device *dev, struct lima_ctx_mgr *mgr, u32 *id)
+ 		goto err_out0;
+ 
+ 	ctx->pid = task_pid_nr(current);
+-	get_task_comm(ctx->pname, current);
++	strscpy_pad(ctx->pname, current->comm);
+ 
+ 	return 0;
+ 
+diff --git a/drivers/gpu/drm/panfrost/panfrost_gem.c b/drivers/gpu/drm/panfrost/panfrost_gem.c
+index 85d6289a6eda..75d927020560 100644
+--- a/drivers/gpu/drm/panfrost/panfrost_gem.c
++++ b/drivers/gpu/drm/panfrost/panfrost_gem.c
+@@ -17,7 +17,7 @@ static void panfrost_gem_debugfs_bo_add(struct panfrost_device *pfdev,
+ 					struct panfrost_gem_object *bo)
+ {
+ 	bo->debugfs.creator.tgid = current->group_leader->pid;
+-	get_task_comm(bo->debugfs.creator.process_name, current->group_leader);
++	strscpy_pad(bo->debugfs.creator.process_name, current->group_leader->comm);
+ 
+ 	mutex_lock(&pfdev->debugfs.gems_lock);
+ 	list_add_tail(&bo->debugfs.node, &pfdev->debugfs.gems_list);
+diff --git a/drivers/gpu/drm/panthor/panthor_gem.c b/drivers/gpu/drm/panthor/panthor_gem.c
+index a123bc740ba1..ba2b80c760c9 100644
+--- a/drivers/gpu/drm/panthor/panthor_gem.c
++++ b/drivers/gpu/drm/panthor/panthor_gem.c
+@@ -27,7 +27,7 @@ static void panthor_gem_debugfs_bo_add(struct panthor_gem_object *bo)
+ 						    struct panthor_device, base);
+ 
+ 	bo->debugfs.creator.tgid = current->group_leader->pid;
+-	get_task_comm(bo->debugfs.creator.process_name, current->group_leader);
++	strscpy_pad(bo->debugfs.creator.process_name, current->group_leader->comm);
+ 
+ 	mutex_lock(&ptdev->gems.lock);
+ 	list_add_tail(&bo->debugfs.node, &ptdev->gems.node);
+diff --git a/drivers/gpu/drm/virtio/virtgpu_ioctl.c b/drivers/gpu/drm/virtio/virtgpu_ioctl.c
+index c33c057365f8..d2bf221e8f01 100644
+--- a/drivers/gpu/drm/virtio/virtgpu_ioctl.c
++++ b/drivers/gpu/drm/virtio/virtgpu_ioctl.c
+@@ -50,7 +50,7 @@ static void virtio_gpu_create_context_locked(struct virtio_gpu_device *vgdev,
+ 	} else {
+ 		char dbgname[TASK_COMM_LEN];
+ 
+-		get_task_comm(dbgname, current);
++		strscpy_pad(dbgname, current->comm);
+ 		virtio_gpu_cmd_context_create(vgdev, vfpriv->ctx_id,
+ 					      vfpriv->context_init, strlen(dbgname),
+ 					      dbgname);
+diff --git a/drivers/hwtracing/stm/core.c b/drivers/hwtracing/stm/core.c
+index cdba4e875b28..f07784c8751c 100644
+--- a/drivers/hwtracing/stm/core.c
++++ b/drivers/hwtracing/stm/core.c
+@@ -634,7 +634,7 @@ static ssize_t stm_char_write(struct file *file, const char __user *buf,
+ 		char comm[sizeof(current->comm)];
+ 		char *ids[] = { comm, "default", NULL };
+ 
+-		get_task_comm(comm, current);
++		strscpy_pad(comm, current->comm);
+ 
+ 		err = stm_assign_first_policy(stmf->stm, &stmf->output, ids, 1);
+ 		/*
+diff --git a/drivers/tty/tty_audit.c b/drivers/tty/tty_audit.c
+index 75542333c54a..2724341edda0 100644
+--- a/drivers/tty/tty_audit.c
++++ b/drivers/tty/tty_audit.c
+@@ -77,7 +77,7 @@ static void tty_audit_log(const char *description, dev_t dev,
+ 	audit_log_format(ab, "%s pid=%u uid=%u auid=%u ses=%u major=%d minor=%d comm=",
+ 			 description, pid, uid, loginuid, sessionid,
+ 			 MAJOR(dev), MINOR(dev));
+-	get_task_comm(name, current);
++	strscpy_pad(name, current->comm);
+ 	audit_log_untrustedstring(ab, name);
+ 	audit_log_format(ab, " data=");
+ 	audit_log_n_hex(ab, data, size);
+diff --git a/fs/bcachefs/thread_with_file.c b/fs/bcachefs/thread_with_file.c
+index c2eae0ab7765..eda1b6b5e3b7 100644
+--- a/fs/bcachefs/thread_with_file.c
++++ b/fs/bcachefs/thread_with_file.c
+@@ -35,7 +35,7 @@ int bch2_run_thread_with_file(struct thread_with_file *thr,
+ 		fd_flags |= O_WRONLY;
+ 
+ 	char name[TASK_COMM_LEN];
+-	get_task_comm(name, current);
++	strscpy_pad(name, current->comm);
+ 
+ 	thr->ret = 0;
+ 	thr->task = kthread_create(fn, thr, "%s", name);
+diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+index 264fba0d44bd..6ea946656403 100644
+--- a/fs/binfmt_elf.c
++++ b/fs/binfmt_elf.c
+@@ -1540,7 +1540,7 @@ static int fill_psinfo(struct elf_prpsinfo *psinfo, struct task_struct *p,
+ 	SET_UID(psinfo->pr_uid, from_kuid_munged(cred->user_ns, cred->uid));
+ 	SET_GID(psinfo->pr_gid, from_kgid_munged(cred->user_ns, cred->gid));
+ 	rcu_read_unlock();
+-	get_task_comm(psinfo->pr_fname, p);
++	strscpy_pad(psinfo->pr_fname, p->comm);
+ 
+ 	return 0;
+ }
+diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
+index 48fd2de3bca0..605d09d3c36f 100644
+--- a/fs/binfmt_elf_fdpic.c
++++ b/fs/binfmt_elf_fdpic.c
+@@ -1365,7 +1365,7 @@ static int fill_psinfo(struct elf_prpsinfo *psinfo, struct task_struct *p,
+ 	SET_UID(psinfo->pr_uid, from_kuid_munged(cred->user_ns, cred->uid));
+ 	SET_GID(psinfo->pr_gid, from_kgid_munged(cred->user_ns, cred->gid));
+ 	rcu_read_unlock();
+-	get_task_comm(psinfo->pr_fname, p);
++	strscpy_pad(psinfo->pr_fname, p->comm);
+ 
+ 	return 0;
+ }
+diff --git a/fs/ocfs2/cluster/netdebug.c b/fs/ocfs2/cluster/netdebug.c
+index bc27301eab6d..ab94ab55111e 100644
+--- a/fs/ocfs2/cluster/netdebug.c
++++ b/fs/ocfs2/cluster/netdebug.c
+@@ -122,7 +122,6 @@ static int nst_seq_show(struct seq_file *seq, void *v)
+ 	send = ktime_to_us(ktime_sub(now, nst->st_send_time));
+ 	status = ktime_to_us(ktime_sub(now, nst->st_status_time));
+ 
+-	/* get_task_comm isn't exported.  oh well. */
+ 	seq_printf(seq, "%p:\n"
+ 		   "  pid:          %lu\n"
+ 		   "  tgid:         %lu\n"
+diff --git a/fs/proc/array.c b/fs/proc/array.c
+index a0a97606c8f6..eefc6b365b3d 100644
+--- a/fs/proc/array.c
++++ b/fs/proc/array.c
+@@ -109,7 +109,7 @@ void proc_task_name(struct seq_file *m, struct task_struct *p, bool escape)
+ 	else if (p->flags & PF_KTHREAD)
+ 		get_kthread_comm(tcomm, sizeof(tcomm), p);
+ 	else
+-		get_task_comm(tcomm, p);
++		strscpy_pad(tcomm, p->comm);
+ 
+ 	if (escape)
+ 		seq_escape_str(m, tcomm, ESCAPE_SPACE | ESCAPE_SPECIAL, "\n\\");
 diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 24216259cda4..bcebc5622e07 100644
+index bcebc5622e07..5a58c1270474 100644
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -318,6 +318,7 @@ struct user_event_mm;
-  */
- enum {
- 	TASK_COMM_LEN = 16,
-+	TASK_COMM_EXT_LEN = 64,
- };
- 
- extern void sched_tick(void);
-@@ -1162,7 +1163,7 @@ struct task_struct {
- 	 *   - logic inside set_task_comm() will ensure it is always NUL-terminated and
- 	 *     zero-padded
- 	 */
--	char				comm[TASK_COMM_LEN];
-+	char				comm[TASK_COMM_EXT_LEN];
- 
- 	struct nameidata		*nameidata;
- 
-@@ -1961,7 +1962,7 @@ extern void kick_process(struct task_struct *tsk);
- 
- extern void __set_task_comm(struct task_struct *tsk, const char *from, bool exec);
- #define set_task_comm(tsk, from) ({			\
--	BUILD_BUG_ON(sizeof(from) != TASK_COMM_LEN);	\
-+	BUILD_BUG_ON(sizeof(from) < TASK_COMM_LEN);	\
+@@ -1966,25 +1966,6 @@ extern void __set_task_comm(struct task_struct *tsk, const char *from, bool exec
  	__set_task_comm(tsk, from, false);		\
  })
+ 
+-/*
+- * - Why not use task_lock()?
+- *   User space can randomly change their names anyway, so locking for readers
+- *   doesn't make sense. For writers, locking is probably necessary, as a race
+- *   condition could lead to long-term mixed results.
+- *   The logic inside __set_task_comm() should ensure that the task comm is
+- *   always NUL-terminated and zero-padded. Therefore the race condition between
+- *   reader and writer is not an issue.
+- *
+- * - BUILD_BUG_ON() can help prevent the buf from being truncated.
+- *   Since the callers don't perform any return value checks, this safeguard is
+- *   necessary.
+- */
+-#define get_task_comm(buf, tsk) ({			\
+-	BUILD_BUG_ON(sizeof(buf) < TASK_COMM_LEN);	\
+-	strscpy_pad(buf, (tsk)->comm);			\
+-	buf;						\
+-})
+-
+ static __always_inline void scheduler_ipi(void)
+ {
+ 	/*
+diff --git a/kernel/audit.c b/kernel/audit.c
+index 61b5744d0bb6..64623f186fc6 100644
+--- a/kernel/audit.c
++++ b/kernel/audit.c
+@@ -1621,7 +1621,8 @@ static void audit_log_multicast(int group, const char *op, int err)
+ 	audit_put_tty(tty);
+ 	audit_log_task_context(ab); /* subj= */
+ 	audit_log_format(ab, " comm=");
+-	audit_log_untrustedstring(ab, get_task_comm(comm, current));
++	strscpy_pad(comm, current->comm);
++	audit_log_untrustedstring(ab, comm);
+ 	audit_log_d_path_exe(ab, current->mm); /* exe= */
+ 	audit_log_format(ab, " nl-mcgrp=%d op=%s res=%d", group, op, !err);
+ 	audit_log_end(ab);
+@@ -2270,7 +2271,8 @@ void audit_log_task_info(struct audit_buffer *ab)
+ 			 audit_get_sessionid(current));
+ 	audit_put_tty(tty);
+ 	audit_log_format(ab, " comm=");
+-	audit_log_untrustedstring(ab, get_task_comm(comm, current));
++	strscpy_pad(comm, current->comm);
++	audit_log_untrustedstring(ab, comm);
+ 	audit_log_d_path_exe(ab, current->mm);
+ 	audit_log_task_context(ab);
+ }
+diff --git a/kernel/auditsc.c b/kernel/auditsc.c
+index 497bda0043fb..801f261d9891 100644
+--- a/kernel/auditsc.c
++++ b/kernel/auditsc.c
+@@ -2931,7 +2931,8 @@ void __audit_log_nfcfg(const char *name, u8 af, unsigned int nentries,
+ 	audit_log_format(ab, " pid=%u", task_tgid_nr(current));
+ 	audit_log_task_context(ab); /* subj= */
+ 	audit_log_format(ab, " comm=");
+-	audit_log_untrustedstring(ab, get_task_comm(comm, current));
++	strscpy_pad(comm, current->comm);
++	audit_log_untrustedstring(ab, comm);
+ 	audit_log_end(ab);
+ }
+ EXPORT_SYMBOL_GPL(__audit_log_nfcfg);
+@@ -2954,7 +2955,8 @@ static void audit_log_task(struct audit_buffer *ab)
+ 			 sessionid);
+ 	audit_log_task_context(ab);
+ 	audit_log_format(ab, " pid=%d comm=", task_tgid_nr(current));
+-	audit_log_untrustedstring(ab, get_task_comm(comm, current));
++	strscpy_pad(comm, current->comm);
++	audit_log_untrustedstring(ab, comm);
+ 	audit_log_d_path_exe(ab, current->mm);
+ }
+ 
+diff --git a/kernel/sys.c b/kernel/sys.c
+index 605f7fe9a143..b139f3fe7539 100644
+--- a/kernel/sys.c
++++ b/kernel/sys.c
+@@ -2520,7 +2520,7 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
+ 		proc_comm_connector(me);
+ 		break;
+ 	case PR_GET_NAME:
+-		get_task_comm(comm, me);
++		strscpy_pad(comm, me->comm);
+ 		if (copy_to_user((char __user *)arg2, comm, sizeof(comm)))
+ 			return -EFAULT;
+ 		break;
+diff --git a/mm/kmemleak.c b/mm/kmemleak.c
+index 84265983f239..42e67c03cb7d 100644
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -682,12 +682,6 @@ static struct kmemleak_object *__alloc_object(gfp_t gfp)
+ 		strscpy(object->comm, "softirq");
+ 	} else {
+ 		object->pid = current->pid;
+-		/*
+-		 * There is a small chance of a race with set_task_comm(),
+-		 * however using get_task_comm() here may cause locking
+-		 * dependency issues with current->alloc_lock. In the worst
+-		 * case, the command line is not correct.
+-		 */
+ 		strscpy(object->comm, current->comm);
+ 	}
+ 
+diff --git a/net/bluetooth/hci_sock.c b/net/bluetooth/hci_sock.c
+index fc866759910d..759a508024be 100644
+--- a/net/bluetooth/hci_sock.c
++++ b/net/bluetooth/hci_sock.c
+@@ -106,7 +106,7 @@ static bool hci_sock_gen_cookie(struct sock *sk)
+ 			id = 0xffffffff;
+ 
+ 		hci_pi(sk)->cookie = id;
+-		get_task_comm(hci_pi(sk)->comm, current);
++		strscpy_pad(hci_pi(sk)->comm, current->comm);
+ 		return true;
+ 	}
+ 
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 58c5425d61c2..cdd5195547b5 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -9688,7 +9688,7 @@ static int nf_tables_fill_gen_info(struct sk_buff *skb, struct net *net,
+ 
+ 	if (nla_put_be32(skb, NFTA_GEN_ID, htonl(nft_net->base_seq)) ||
+ 	    nla_put_be32(skb, NFTA_GEN_PROC_PID, htonl(task_pid_nr(current))) ||
+-	    nla_put_string(skb, NFTA_GEN_PROC_NAME, get_task_comm(buf, current)))
++	    nla_put_string(skb, NFTA_GEN_PROC_NAME, strscpy_pad(buf, current->comm)))
+ 		goto nla_put_failure;
+ 
+ 	nlmsg_end(skb, nlh);
+diff --git a/security/integrity/integrity_audit.c b/security/integrity/integrity_audit.c
+index 0ec5e4c22cb2..28c203f0cdb7 100644
+--- a/security/integrity/integrity_audit.c
++++ b/security/integrity/integrity_audit.c
+@@ -54,7 +54,8 @@ void integrity_audit_message(int audit_msgno, struct inode *inode,
+ 			 audit_get_sessionid(current));
+ 	audit_log_task_context(ab);
+ 	audit_log_format(ab, " op=%s cause=%s comm=", op, cause);
+-	audit_log_untrustedstring(ab, get_task_comm(name, current));
++	strscpy_pad(name, current->comm);
++	audit_log_untrustedstring(ab, name);
+ 	if (fname) {
+ 		audit_log_format(ab, " name=");
+ 		audit_log_untrustedstring(ab, fname);
+diff --git a/security/ipe/audit.c b/security/ipe/audit.c
+index de5fed62592e..b4318988c65d 100644
+--- a/security/ipe/audit.c
++++ b/security/ipe/audit.c
+@@ -144,7 +144,7 @@ void ipe_audit_match(const struct ipe_eval_ctx *const ctx,
+ 	audit_log_format(ab, "ipe_op=%s ipe_hook=%s enforcing=%d pid=%d comm=",
+ 			 op, audit_hook_names[ctx->hook], READ_ONCE(enforce),
+ 			 task_tgid_nr(current));
+-	audit_log_untrustedstring(ab, get_task_comm(comm, current));
++	audit_log_untrustedstring(ab, strscpy_pad(comm, current->comm));
+ 
+ 	if (ctx->file) {
+ 		audit_log_d_path(ab, " path=", &ctx->file->f_path);
+diff --git a/security/landlock/domain.c b/security/landlock/domain.c
+index a647b68e8d06..77b678f0f469 100644
+--- a/security/landlock/domain.c
++++ b/security/landlock/domain.c
+@@ -102,7 +102,7 @@ static struct landlock_details *get_current_details(void)
+ 	memcpy(details->exe_path, path_str, path_size);
+ 	details->pid = get_pid(task_tgid(current));
+ 	details->uid = from_kuid(&init_user_ns, current_uid());
+-	get_task_comm(details->comm, current);
++	strscpy_pad(details->comm, current->comm);
+ 	return details;
+ }
+ 
+diff --git a/security/lsm_audit.c b/security/lsm_audit.c
+index 7d623b00495c..b4d3b8a69cfe 100644
+--- a/security/lsm_audit.c
++++ b/security/lsm_audit.c
+@@ -276,8 +276,8 @@ void audit_log_lsm_data(struct audit_buffer *ab,
+ 			if (pid) {
+ 				char tskcomm[sizeof(tsk->comm)];
+ 				audit_log_format(ab, " opid=%d ocomm=", pid);
+-				audit_log_untrustedstring(ab,
+-				    get_task_comm(tskcomm, tsk));
++				strscpy_pad(tskcomm, tsk->comm);
++				audit_log_untrustedstring(ab, tskcomm);
+ 			}
+ 		}
+ 		break;
+@@ -417,7 +417,8 @@ static void dump_common_audit_data(struct audit_buffer *ab,
+ 	char comm[sizeof(current->comm)];
+ 
+ 	audit_log_format(ab, " pid=%d comm=", task_tgid_nr(current));
+-	audit_log_untrustedstring(ab, get_task_comm(comm, current));
++	strscpy_pad(comm, current->comm);
++	audit_log_untrustedstring(ab, comm);
+ 	audit_log_lsm_data(ab, a);
+ }
  
 -- 
 2.38.1
