@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1492CA0EEB
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 17:21:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5956CA0EFA
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 17:23:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2429D6B00DB; Thu, 21 Aug 2025 13:21:21 -0400 (EDT)
+	id 024026B00E2; Thu, 21 Aug 2025 13:23:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F37B6B00DC; Thu, 21 Aug 2025 13:21:21 -0400 (EDT)
+	id F3E186B00E3; Thu, 21 Aug 2025 13:23:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 109D26B00DD; Thu, 21 Aug 2025 13:21:21 -0400 (EDT)
+	id E7B446B00E4; Thu, 21 Aug 2025 13:23:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EFA596B00DB
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 13:21:20 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D3FF96B00E2
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 13:23:00 -0400 (EDT)
 Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9C69E160499
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 17:21:20 +0000 (UTC)
-X-FDA: 83801430720.10.794790A
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2A25940015
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 17:21:19 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="kWEdl3J/";
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8E35114048C
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 17:23:00 +0000 (UTC)
+X-FDA: 83801434920.10.2E9B896
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf30.hostedemail.com (Postfix) with ESMTP id EB60A80010
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 17:22:58 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X3UYJcBY;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755796879;
+	s=arc-20220608; t=1755796979;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wkq32fAU23ciZUPuGi6RSggEntFj7+0FH/YpcY90xxE=;
-	b=ySSdHG9vORu4fQssmFMUBs4wMDWEl31x0znp94I165nrttrdAPV8lyCH/ftDmiz4ZzNDML
-	lnO1IqSWJaVORvjELUi/32l9D41lW/4wIXnhxKZUL1/ddtn0cDuqa0rCjbBcHwmKC4rG5r
-	k6C2MdlD03THs4jm/BLfzWbu5p5IZy0=
+	bh=ohNK1oVk0vN8EdxMjASq/WXoxyMJMQFN7vfZaIH/nfo=;
+	b=ilTHI7nf8caVtXnKEHA28ikmFUnuf4fI7rl6hRoyuE+e3b1meSrRJ+kVw0cLpO2yYD1i4U
+	WJRp0+/iz8NxUNokNdiwMhRDDSrEUMDJNOnz1lJBiW7Urso12v0rkbrfY0K/yqtdt5IGle
+	DugB1phyuWPs84taJN70zkUAB+uIRdI=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="kWEdl3J/";
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X3UYJcBY;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755796879; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755796979; a=rsa-sha256;
 	cv=none;
-	b=wQxnpoVc2MusB1jJwcwWCTu8wcNqhwctqRuxo2OqF2cCf8su0GEBbCC8NQbFo+EYmW0mCg
-	oyyKXbHAbwp5QvXqp8I42f3nlJZmA9gxAhI5sE8yTzEUZYM5TSj64aQ+2U5rbpEE6OlHTS
-	Kv5sdDeTphAbZTpZOlR2X+6txO+drlQ=
+	b=gIbtXcK+2tyTy98lIgjK/9+O9ltaZA+HrxEghPbDNGv4SNDWenkAhsPj+4hwtEH8456Gzt
+	6x7WgC/KjDTExV8JEe4HalO7HBPcPVngMppDLJU0DdvjQGJkrdteDKjqPSx4dxI58b4dbG
+	93Cn5dS8s6jWaqL+8vC4Y9uSnqqMddY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 980E2A5851A;
-	Thu, 21 Aug 2025 17:21:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF06C4CEEB;
-	Thu, 21 Aug 2025 17:21:18 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 37F385C0F2E;
+	Thu, 21 Aug 2025 17:22:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C2EC4CEEB;
+	Thu, 21 Aug 2025 17:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755796878;
-	bh=E0Vi5c30Cu76scUs3f6qRf07u3YDzAxATcvA54H/SEw=;
+	s=k20201202; t=1755796977;
+	bh=WuobrIU/w6/7bz5ni6T/FPagEIkFDuKLi573JKcu5So=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kWEdl3J/4HQ/3zf7JFAOxyl3zZr5zyt+S3YX1p3Ek05mayg5h2D/s0p7KDr+elgTY
-	 MFjqIetJAZzCX4IXTkazMAjfdZ259eu09S7YikFd2uo3nu4d6WOXrhlkCbsWTjfzr2
-	 tN0fRHX+bSZ3BSu5exh4uKfm0UM3PymAmBAwn5IDpCZp7QczbDpYrlnn/RzQyCCut2
-	 jB9woZbso6K9hC1oXV9hRSrvwjzAMWa6hNpADjkAbdJzshdVsY1ALp9qItmjg6TNvQ
-	 +dpUc/58xk70M2dQiAx2fS2WqdKl50O5XuPhk57vekOnFqOyEsbpe/CdG9hH93WJxt
-	 mi6+253ErSXLQ==
+	b=X3UYJcBYfqTdzeM3cc/mYqxGLnz8jpW9wKntxSB4wmbbb9AgsT9Jct8PBoGimkWkp
+	 QBgqkbhp3bDdBN7fbjlveapRaJ6olz4W/Ivm1kDLDT+p8jDLoFIPEHYu4gmdTPtr++
+	 iRn65sm4sjM9EHezl5vJx9O2guQC6TKTHEcPpa9AzzhE61OUQVycZfhvIT/Ke6RoUp
+	 01WMJR4bmnhle7lJsNX9cPNM9obyf2sY9shacoICXvT/itLLneJ+7ESGoO5aTTRbAy
+	 3JBtanM47mXL7e6lgKyP7572uBakPkTFh2oP3cxkMPMxUL2E6LCDR5jrQ/t31ls1rQ
+	 mUWkbdD3BycWA==
 From: SeongJae Park <sj@kernel.org>
 To: Quanmin Yan <yanquanmin1@huawei.com>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -72,22 +72,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-mm@kvack.org,
 	wangkefeng.wang@huawei.com,
 	zuoze1@huawei.com
-Subject: Re: [PATCH 07/11] mm/damon/sysfs: implement addr_unit file under context dir
-Date: Thu, 21 Aug 2025 10:21:16 -0700
-Message-Id: <20250821172116.82165-1-sj@kernel.org>
+Subject: Re: [PATCH 08/11] Docs/mm/damon/design: document 'address unit' parameter
+Date: Thu, 21 Aug 2025 10:22:56 -0700
+Message-Id: <20250821172256.82263-1-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250821105159.2503894-8-yanquanmin1@huawei.com>
+In-Reply-To: <20250821105159.2503894-9-yanquanmin1@huawei.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2A25940015
-X-Rspamd-Server: rspam04
+X-Stat-Signature: 67h7sgpb3eejibgzo517bcceu81gkmfz
 X-Rspam-User: 
-X-Stat-Signature: iyorissd19c9nn4y1r9c88ds31mbx39x
-X-HE-Tag: 1755796879-243926
-X-HE-Meta: U2FsdGVkX196fh9OjEVjPfzBKhLujk7Iz0HGaz1ie2rvqXqXh6QYQhNY2L1Opaj8rpo7VOIkCT1IxpeXUk+vZgTqPMZuBP69hfVCdGTVf81cJCXGmb3xEcMkUpYRxTXtfnLBgKEfTZR77ygWuZl8ZrlfJp4eIDD2AsEIlZID6YHZDzCfY1TFTXsNliezgTarLeeafOfhv5vA+MaHXY00oYkdtei/Shx1BxLPIkPF1YlcaexJM+Xx+Tr92f4v+S619LwnDxyw+AJ/QRh583WQwwNbrenau7Hfbmr6ivNBsu6U1NcRzmNs6QyBBGtd7IUlvnYD4y98YDjdYqyq88HFR0uJx196Be4/Ev/Ke6xqR0IJWKCM6SvIeoBRdzthztNnr5hDXvUfHRfffmzMoB8l6aMXfF3bd52hHYrHRvDFRCskTVSWwlfzwANmwnatsWM6JRDVVu4uG1TzvlJ3I1gTKt0b1EYoTpE+wsBw4NlByK1DGAI5faMP7/S+bh8QwkbsUD/Zvi6KvXM24pbMTlLEg9ViJttwudI6wFo9+rwgAaUxjfNXqXzJ63SBj6I8THJMfKXUrgOKPaxCFPQOfjeeIaaQ9MO2C3rgQeugjJIiP9T1XoWoLoNalIob1mk4Vr4tzzjdoSyj/nET+fVnka8NJ84ltI3WLiqybnlXuuKBSVq7owJI2dr4/0jJsRvUFctBCg8FbGig1jWaaNI4DLPSDe1p1LsL5CLfKg1ZPmxCpc+DiBsgEoYMu1A1AdlsSwk1umkwCOJviGFsLaGtY6rXpvD0sSpRtAGrhqoe8H1ZEg8oT2b5LJubAOH9SzrTUHhpChbS+eKufpYqG5SMa1EHTybFg41kUw4cFTnu0aWqHoSDcknIYSJjw6qcnCP5sFzisW0yKQy/iO5O3YRO1vNc5/K+7nstN+1cOB9f7oMRTuAkrs4qHfRp1Aj29NdOf3TDkF2blyUT22hrV5Ao4KU
- BCccfSYP
- xJcL1
+X-Rspamd-Queue-Id: EB60A80010
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755796978-412011
+X-HE-Meta: U2FsdGVkX183bjxS3q5PNhm1EpVdUkQ2kqYqD4Hf1Tg1/FSG7k/Sjv6gYUvkte1puwWp0mIL9Z529DLnNYeg/Noynoc7W3sY7XuOHvPpDPEyAzAmjkUdllCP+kYlEAACOZD4ot1X3uB9lkUJHQRGtmtUoQY5iISDaaaiURZeoNScTwlLXEYVOimSp7IdNKMvtsWZKVYaH7RM/p18bxC8feFMo0Sww6R/I/R38BbSgngEEKJSXE/LbvDlhc1I8oYn+ty2yKC981j/qwRXz6vpVjPMc3IPRphp74c6ZlIpfgGtRI8sh++GJKV2NpR6zFg8q7ZFCBJj9Ola5LRWfnaoYLZU/4xldNs5ZpPwpr9Q7LqEmOZGToJVaq3FGhRkNkzNy/75UgOmHYKJSRIGkdmDCNHDMN+TnjJFXzauRqEB6vwOPetYTAWfz57PjQeGtWa1K2dDLZNYvN29r2pc/4m9EDoJVWRx6jQEjyRGwI9ankePvggZgiRTfU+R2fMoNAKji336nWParwSPy+nsmqVQpQ1s/NrdiIa2fFcrKUUIU4g3Spoy0J6O8Wm0foHPZvhj7BOSGQ27c6wKs/iVgssnNjz1L6V2lFdrebssD+HP6RuucUsiY/jHtSohpmil7ic+TVkdemG7Gx214ThNe2B/+YkVtpwJLPrS3xWwWs18GI1MAzXfbQLZzVQV2srFAmGE5FNfL/p3e9AiROuZxCoJw7OeipibcIYz5bbKcC1lpwDIY0NSnbnzCNj6SPgNDjLlj6Dm+rKBkUg6MpxnFnphXHNda8tZf7Tjdn3webWHLOlL5uBqkjtgd+0EMfInI+s5mzYpvdqEE/l3EIShS8mQK5KHhkk0q00P/xKL0VZSoQbYeom0GhxRe5Avqtt00ZQyix0ZFQEEQSxfyxU3v/2JVdYc90SniDkmuGxpP/0EPPMXmNh8+OOdkVCdfoZtuYlTaY9SaX+zD3VViTZOO3D
+ qNg8EY/Z
+ 4iNSQXVvJeJ0RuM+A9v+vQ7xqP4ppvpkMOk1cpmXtkKv/Wv7hCpEGQ9VoKkOLruTcMUB2Xj8nR8qZ2HsdWD630GG7UbgXfeIu6dwV9vww/Ghi0LiOmqyoilYxf3PliJ43ENuo6r6rmFm1z826C4sbT5H8JMtGvLVPYpSOdt9akgXIueXWLlIQhbe7LPEzRsUwdPfSvsmALsWtnCyXJBVhv4K4R1LWaYy9+RVS1UPBWVFVmemHRQkM3zDCslz9cGxXlOln
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,14 +96,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 21 Aug 2025 18:51:55 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
+On Thu, 21 Aug 2025 18:51:56 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
 
 > From: SeongJae Park <sj@kernel.org>
 > 
-> Only DAMON kernel API callers can use addr_unit parameter.  Implement a
-> sysfs file to let DAMON sysfs ABI users use it.
-> 
-> Additionally, addr_unit must be set to a non-zero value.
+> Add 'addr_unit' parameter description on DAMON design document.
 > 
 > Signed-off-by: SeongJae Park <sj@kernel.org>
 > Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
