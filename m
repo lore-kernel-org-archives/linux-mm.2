@@ -4,113 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93455CA0EFA
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 18:00:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2314FCA0EFA
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 18:11:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D96A98E001D; Thu, 21 Aug 2025 14:00:25 -0400 (EDT)
+	id 721F56B00C1; Thu, 21 Aug 2025 14:11:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D47CE8E0001; Thu, 21 Aug 2025 14:00:25 -0400 (EDT)
+	id 6F8846B00C2; Thu, 21 Aug 2025 14:11:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C35C08E001D; Thu, 21 Aug 2025 14:00:25 -0400 (EDT)
+	id 5E6D76B00C3; Thu, 21 Aug 2025 14:11:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B1F738E0001
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 14:00:25 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 860C31DBF10
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 18:00:25 +0000 (UTC)
-X-FDA: 83801529210.26.7F8203C
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
-	by imf10.hostedemail.com (Postfix) with ESMTP id E2587C0014
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 18:00:22 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=RVHrmDBx;
-	spf=pass (imf10.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.219.176 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4818A6B00C1
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 14:11:53 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BBDF21389D0
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 18:11:52 +0000 (UTC)
+X-FDA: 83801558064.03.CE07519
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
+	by imf24.hostedemail.com (Postfix) with ESMTP id C0641180011
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 18:11:50 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=HthMCG+7;
+	spf=pass (imf24.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.161.43 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755799223;
+	s=arc-20220608; t=1755799910;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y0lia9zAzQkMkj0u6l/RsjUG2VG0X8+ajRHGScPdguQ=;
-	b=xhfyYR01RKQJciPEociUBeLqj0SmLKKrnCmof9cnPdf7l6BeMPJ/S+QPvoqLnBgpeMIU3S
-	nsdwqvQXwPODKHRqS7ZIvT5zmLrsx7j4nELMWqoDsZQAS6cDfs6VDjr3Nu35a4bLy4lirh
-	jKk2eDs+bvJj+NoHn+WSjjR9b1JPgiA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755799223; a=rsa-sha256;
+	bh=uQkE0seXAq/T3Nrv5ePjrAqrwGHMqBbMT9R5vFioxIk=;
+	b=Ob3fkLTwpdd/+5M25EU6t+SeUnFSetw8JuF5k3YttyaOI8ADnx8LSks57EUX5GMgbroLre
+	74xIOsB/As/wVIBGWPT6jdHZIPprzs/lhRWJGFsPR0NiJwRaqmbv4j3FiPS+3VUlrLML6c
+	ou6kfBeegIdJ+YscpqgHEqrEgfKTlf0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755799910; a=rsa-sha256;
 	cv=none;
-	b=2uxPhyN9lS4Nn1LV7vt7UlxfX+shdgvLChmxvb7JFSnqpgThLbQ5jwtlYiV69Dk3SIWNVN
-	AVBvj8sshTtPxs2Tu4bP7FFbbiXfA3A1fK5sF32LDUULlFX5Akd6e4V1xKRK2Qy9vxonZh
-	2U7tURiVZnxYd1dq8LxoP3NnYO4X15Y=
+	b=HGC66sVE8ZTz8DI6iYGBL+2GsUZdU1FJODsbZSEy5KwUmZljNs4nyRzkrubm80pPdcF+zc
+	TUxZfTLpQBtWRd0A1+Zw+gVUfptLwwRvhwPc7a7szD15I9khoRXlEvFeIgq/gl/6Z944qt
+	75Us87wZ/18GR1wA1BlKo53MF074xtI=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=RVHrmDBx;
-	spf=pass (imf10.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.219.176 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e9505d08ca2so1061672276.3
-        for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:00:22 -0700 (PDT)
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=HthMCG+7;
+	spf=pass (imf24.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.161.43 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-61bf1542ecbso921636eaf.1
+        for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:11:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1755799222; x=1756404022; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1755799910; x=1756404710; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Y0lia9zAzQkMkj0u6l/RsjUG2VG0X8+ajRHGScPdguQ=;
-        b=RVHrmDBxED0XdHIOOIhmPJLUE1PuVWFCDOYvlHzOQj5EsUoH++xTzEeAVNTyjAq7SP
-         U/gNl4vmtYi0JG2fslhbAeqTs3eNEGGSpdCpyRfo9S2+22O3fLK5X9LVK4BNHIvMWfN6
-         BFElZUBwrJ3yPdlRlTpuT9dtQ8R7WasGys8ftY/StYlfrgV+Mh2nFGxlZJFetWBaQ8Mt
-         qV5Hk9lYxek+QSKIjqg5CtOX/NeyLl8uDxcv3qXEwYXsi6KM8LKeW58V4qlpaJBYDv7f
-         WaLPdFmOygz+03qsPyOE9GDX7Qm6yx6dXvWlLfeAWinWFAkNVqs0CFVrXUda7NxTlPn3
-         N4wQ==
+        bh=uQkE0seXAq/T3Nrv5ePjrAqrwGHMqBbMT9R5vFioxIk=;
+        b=HthMCG+7Iu8blYyc5X1oQfa752pgNpn0MTBDIBjZLOwYA2cQTQHq/rQYjQEHnLK9dp
+         U3SClFrSZ91H8oYL++NpCXdMoBcf3ptKSrrXMAOs8EsaQAObimhDtn1vhv437F8NVKUC
+         /7WBU4aoek6EuU4qSdfjFYXtzf5Ch/FuPPJF3L6Vww1n2nejTA7EVNJovINIn7YaKqkZ
+         JW881ZKfTJB3Ak6kvAWuY99Ge1TGtiqXqiFNsN8hIu4KWkJrkG+0imUi7+aCukAa3VM+
+         qvOm+i2+0+RKRRnXJfANclueEyn+upFmMw4hYKAl197FGvyVln5xnTvY2TrcEZE/CddJ
+         0HkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755799222; x=1756404022;
+        d=1e100.net; s=20230601; t=1755799910; x=1756404710;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Y0lia9zAzQkMkj0u6l/RsjUG2VG0X8+ajRHGScPdguQ=;
-        b=UdkJ/AaAkID32I4uRxjmEqRjmrCZGUfOC3kAwGZabC8qytHoE9KwyHvlV2GChFFa6G
-         y4tW9MpMf/j2yCNZpT8UZHcC8zfFc9fGGwjuX+Qm6OzwDyv/Xgi9nB6mCxXQ7P+FQO3G
-         mvY5S7CD4bIEuAZx0Zxaevko5hcWlXYAdcawRbtBt44CylcQPGemvHqt91qgLQNy+QKN
-         kS5lf5M3AiPoQWRqiHgXmU9x1Pf/5pbl2LwaAbopuw/i96Xr/JFvwZ8JQDLgm6LzUmrs
-         pDwXQe8d5wRHcrKqmnPTbvZTeUwbo52FdO5sMeSfmCBgD2TrxfaDvmZei/+QwcpYEcY9
-         fGTA==
-X-Forwarded-Encrypted: i=1; AJvYcCXIzDL0UPggLJVaxzhssQ1DZBDRx2pz4ju0V7ESyu9GT97jP8OwLkLGWpbgbJTHpI6Dmco91yiNSA==@kvack.org
-X-Gm-Message-State: AOJu0Yzjyd1dA2eG+hdScr2jWxxnX/g46vP7M0Cbc3AGCr68RwBd7Qfs
-	fbxl0otDEhdSjlUiYnCf1bnIuYSVyrkndZFMjjsCSDC9oR48/udzgS/hnGF/kzA0NIyKHJ64R3Y
-	mUeEivfafaVDq37NjRQ/705hqN1+FNV3giGEcS4zlJQ==
-X-Gm-Gg: ASbGncvWT5We0o1vb5sIVMnjU8/QkDf7QIQ99yu9dSbxkaUh8ayxOnyfwdASkHNEDHi
-	EMBLjWeQwWNUM5UvERu1pAZBFjYNWiUELjV0yhN5tdj5OrHFIgRWe8K00w5H4d8fEwYJj3STvH5
-	g9/WWFtXbgNWTOSh9XTERES2XDMukapyjSBTlkQt1SEfjfeVC96+ntPdfKeZIsB0y+BYBvJzFBp
-	3nM/NtwPfsD
-X-Google-Smtp-Source: AGHT+IHZiFSlHaDYSx8oxyHmCj/KbihWFMT9IF+j+/jr/Ilj6ZzdxoI20FyXRZA9RZCJDjjSM6r7mSJmwQpFWryxS5s=
-X-Received: by 2002:a05:6902:3411:b0:e90:6c6c:dc3a with SMTP id
- 3f1490d57ef6-e951c33207dmr490273276.34.1755799221387; Thu, 21 Aug 2025
- 11:00:21 -0700 (PDT)
+        bh=uQkE0seXAq/T3Nrv5ePjrAqrwGHMqBbMT9R5vFioxIk=;
+        b=ZwYJjEdyDpz1COp4ojo8XtjZTMWXoJS3mfQXbzZybsCYChJlzCvlQDqcC1AcGP08sq
+         +PA5qfay5GTuQNOM+m1X1HPPuqJnUAmc9TifJHH5DkU+bq8EQxzIF8pQMIb4l0r36AEz
+         l64BWP7ISUoJF9n+sRtNnW2MT22mFohBweKSy1c0iS73MrZZOBKtYHR2hv/+4WRiM2eu
+         6Kos50rhu73xp/Su4/DzbIzwJJeeWBh4bICKUFm4CtKsP3rlr9gyXngPYr1mNXyI2fMP
+         9txht43uvzXL21xSGFjEzFgdp0oh4fwP3m/GFHv8cpeirJWWAjxj1sxjk2Jhm+oVhSZr
+         pVyA==
+X-Forwarded-Encrypted: i=1; AJvYcCU4MmhM3tPe8jnEet9Oh76xVBTv/GWg+AgY2LEYtdOB0zXQ8p1LXeF4gjyXktXWOmgUSxsgcvLNQw==@kvack.org
+X-Gm-Message-State: AOJu0YwyqGe6M7De+giizR7njfwcvfViJtDzml7NS4rDtR9PCvx2quUx
+	Rw+lsUOgNWuELy4uACIlTvUCvpiCahZEvz60xEwicXpAlk/PUMBsI8ahRZn1q26nM1fJPbBW7Wp
+	gICF8fc2E6bJVdHauXHXie6NoNqshBlw=
+X-Gm-Gg: ASbGncsbahuDMtjuY7Db6yR8Hr3h4ZuLqtnh/WHALLynXIRNLj5FsWNyzt882mPwA08
+	ebo/SjhK/XewlBZkkSLKu9Rqgg9e3AGyJ/rmezxEqTDqr6PY02LPqUyFvsL/c3aqnWl4RsE5Cme
+	XFsppETxNnqkAY4RpTwVSzdBZNcvsHiJoDolKsUsyvR73/7NiuTxmmrAinON2FJKudPOkTltP6V
+	EX+
+X-Google-Smtp-Source: AGHT+IH5cYePY4LWF+yUbkxUmI19KRzSY9VkjyJnD/MWSa1UbpylRasKtorNCTewDJ8FF3suBgFD7LYcg9l9HBkHfr0=
+X-Received: by 2002:a05:6871:54b:b0:2e9:42a9:be4a with SMTP id
+ 586e51a60fabf-314dd38b1e9mr45823fac.2.1755799909600; Thu, 21 Aug 2025
+ 11:11:49 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250820111940.4105766-1-sunjunchao@bytedance.com>
- <20250820111940.4105766-4-sunjunchao@bytedance.com> <aKY2-sTc5qQmdea4@slm.duckdns.org>
- <CAHSKhtf--qn3TH3LFMrwqb-Nng2ABwV2gOX0PyAerd7h612X5Q@mail.gmail.com> <aKdQgIvZcVCJWMXl@slm.duckdns.org>
-In-Reply-To: <aKdQgIvZcVCJWMXl@slm.duckdns.org>
-From: Julian Sun <sunjunchao@bytedance.com>
-Date: Fri, 22 Aug 2025 02:00:10 +0800
-X-Gm-Features: Ac12FXwQ52FAG0PW2wUzBrp0izeD42MUA03rmCmMwjxx7EXlVIqi8U_EajVPCpg
-Message-ID: <CAHSKhtdhj-AuApc8yw+wDNNHMRH-XNMVD=8G7Mk_=1o2FQASQg@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH] memcg: Don't wait writeback completion
- when release memcg.
-To: Tejun Heo <tj@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, hannes@cmpxchg.org, 
-	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
-	muchun.song@linux.dev, axboe@kernel.dk
+References: <20250821163346.1690784-1-ekffu200098@gmail.com> <20250821175307.82928-1-sj@kernel.org>
+In-Reply-To: <20250821175307.82928-1-sj@kernel.org>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Fri, 22 Aug 2025 03:11:38 +0900
+X-Gm-Features: Ac12FXyjW6YGm8vBrKSBZJTi676GRJ_lE4WNPgVhsOLOvxK4NT6otMlFppJi6xE
+Message-ID: <CABFDxMFk3TbzOcZd8tgLJtQTav0+7=BV98f9=YVYfea9ngCsEA@mail.gmail.com>
+Subject: Re: [PATCH v3] mm/damon/core: set quota->charged_from to jiffies at
+ first charge window
+To: SeongJae Park <sj@kernel.org>
+Cc: honggyu.kim@sk.com, damon@lists.linux.dev, linux-mm@kvack.org, 
+	akpm@linux-foundation.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E2587C0014
-X-Stat-Signature: 3aik9mkx4ta8w39jksw1aqtbqe1oyfon
 X-Rspam-User: 
-X-HE-Tag: 1755799222-776896
-X-HE-Meta: U2FsdGVkX1+Hv+8sSu+s3ZGjT/oTvhDVP04d40C5arkvkpgH+q+W7+AQ2OtzSX8LoslVVfdBwxudmj0raaMMpw354N8vMzLddY9WeDaIM8tV9qjYIBMpOW1gmHOhPurOO4C3pvMahM7jS2cx1kg/lsPGlMvssZHYrAS21Nx515Onx1wRliOSU/LuIkkwoj7kcdY+2wls63YYrlWLyQ9WV+le+UrQnrZDyHDYllNVt6jCGeeDIz0ia20m3D8WQbX+CTyzk9qC7uCxfGfozpM/SP8Q+MgTt7mkaIAmedUj2JS+ksvziImv4+vB2Ufbl49ttwPb5kapPHSe8rjvk91FTZKo4sBDSPSJLR+M+FUUbmlBm7Bb/tY7jsnyNdEOOzeOggqftvsolnUqf0ARc1uRj7y/nridT2lqmXVwYm6ezqVyBFjZ3NTxusl3dQWgrqwXTz3Lf9YPULkDZVp/j5TawjLaY6XsbFyjhzxvQc8gB+5EW2iNIRjTTzufY3D9Bv11gUCGeffdYLjazS5ay8SHwF5/d7EMYNkf4NqpDy2Nuc2M8QC9Kav42o541O244c72FQesQGc6CIU2has2Df+1zgBps1RvsEd/mtBWh8vuean5rA81YZiwWJRmNMbxeuGe3Nnl9VRYqqhItR8GZSp/FmuVybdGq8RmWgSYX8EJOqz7JImF07eAMcb4avywhJpf1hp4sanpTcv6+mjzlLDsB6NHY5wdiZVc3X5QFFDIKA8J8dXh88dNxSs5stNY6QJtIrH2dW1lNSEsVHzMqQZDftSYas4ln25BbANHrvM7g3NhWlnOF00KnaILccF5o98Qf/3WVutDsJNPMNLmNlC6Fy408PBHv9T0BbPzvxV9aOkVV7YyChBcrl4MNNbv+XpBbZw4jCqMTIq6nZHxV1hS9z6oBJbMiY//fcEkQpjbAP4=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C0641180011
+X-Stat-Signature: ouj6brtn1jg7cdwrxeukwucw3jj1bzdp
+X-HE-Tag: 1755799910-243351
+X-HE-Meta: U2FsdGVkX1+iJTe6MMSdMEbnCQumOL6Klw8hxTqJB26k3vYHLjYgegauxpmJZoJFNg3NCHfNYGdpZgV29V+cAg4SsNyp78uO58AZlVMCoTX+HFSXNl+Nz+lMkbARq+v3f/kN3XSNNrzHYY7xM9zgzhtudLgVdyHJFK4cb8Vdm11iQt5aGUjQ57Cl0iF6wy2zdsic2YiQrVA3lpetsyWvOMFZKukzVuCrbHRsU+qd58dRYnuRXH2Um+bUTRmhES92wwp/oFBLhw5r9f6FOdVHVvj+w+mBWvINNY2+1mr14khayS4PBEeIeDM9hapvMx36VSEeYZUZpNvNzkZ5DzCUezFD3rLXZHeSh7J15cvvK7RJhaUQDbzRUR3RN4GP7TKBWnWry5sSfwrsX6GYkuwQagFEcOoOQ7DhP1bBvqsWGySKzDQ0cNKZacN708bW8QMFPxKIyWS3M4lFHxEPPyLfToDttRYnbeINqCWeWFzg88I0U2F03Mfi9CJj/o1Etga3USFK/ReJxeHk6EJajjZwIQNK6BL81AyqJFRZ8UyXoEFC71wHLHKD78BOcRaqRL379aYua8vnDFMSJAOg2KxtGx6IJ0w1GQ5X+OvefTDvTnxKLlgcvTSy32Y5UVYkdKPo2HHfAUJoIqTTX7Kij7EHDcMkhr8Huuv/wdcZWyrSADPm1RVYx/UkzRLCz0pr9igqHtLra8Afm53zF7lWWL36+v0rEs/kWLB8+6L4xYw3GSOMXqxQF1b4jvjRDG+EebRJDJ1CvElHpMvYRrXE+5pe4vOLoeBNq8cRO9NF576T4epfdf8h/jl73LD62LVIQcPMGLgU9lJBNp2l1iDjQXNCjMYNm+5KYfYtqhQxvwjO/gADStnAjpmDaQC23XeDRz+IzsZb+6ErLSQ7k87KwuQb56ClGtGMfw7JnSioge5jEq9b6+Z7TkfvVGTelfANKPjAb5VZ/S2+Xlm8xf/wJUF
+ m3icZdxH
+ 7QhPi5N5pWzFicmF04TbKwMv1RWZeAZbUaE/YbyzrYWw0lttfRFTlu1fQVkvMZORs43J0TzmmIoSzMetWkbJs4nQvGEQmnTPrMHVAbdVXmxLVCYJmCJnFVcYp6S7I8q7aDqMbv852E6h8uWpBiIAxG/04r91aGGZYdfrq1mhZ1fbaam0c4HiCw1BJ1fIFhcFyQcLDLnBTD4wkampZPk2pe8uBQk4DS+w/EZ3FRhssgms1LdFzsCovwWRYRsFAwgP5cyo3tjAw5IHHwi7hxSWJQ8/Q4DrzsdaHXnzFZ1VFEoqpQbKWhqWmujSbU49d3wBA2vq0KK87TnyOTdDGe7gpyrfePN0D1kMW1/v7YUD1ud6klpdR21tRqq+/JfkHQ2XuxOsoCE6sPzJZUdzmgK9K1yRFOYmbrXFzH+x5uSUL23Qqa9+aSboiv5fWEpxQG/tWqlgg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,80 +117,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
-
-On Fri, Aug 22, 2025 at 12:59=E2=80=AFAM Tejun Heo <tj@kernel.org> wrote:
->
-> Hello,
->
-> On Thu, Aug 21, 2025 at 10:30:30AM +0800, Julian Sun wrote:
-> > On Thu, Aug 21, 2025 at 4:58=E2=80=AFAM Tejun Heo <tj@kernel.org> wrote=
+On Fri, Aug 22, 2025 at 2:53=E2=80=AFAM SeongJae Park <sj@kernel.org> wrote=
 :
-> > >
-> > > On Wed, Aug 20, 2025 at 07:19:40PM +0800, Julian Sun wrote:
-> > > > @@ -3912,8 +3921,12 @@ static void mem_cgroup_css_free(struct cgrou=
-p_subsys_state *css)
-> > > >       int __maybe_unused i;
-> > > >
-> > > >  #ifdef CONFIG_CGROUP_WRITEBACK
-> > > > -     for (i =3D 0; i < MEMCG_CGWB_FRN_CNT; i++)
-> > > > -             wb_wait_for_completion(&memcg->cgwb_frn[i].done);
-> > > > +     for (i =3D 0; i < MEMCG_CGWB_FRN_CNT; i++) {
-> > > > +             struct wb_completion *done =3D memcg->cgwb_frn[i].don=
-e;
-> > > > +
-> > > > +             if (atomic_dec_and_test(&done->cnt))
-> > > > +                     kfree(done);
-> > > > +     }
-> > > >  #endif
-> > >
-> > > Can't you just remove done? I don't think it's doing anything after y=
-our
-> > > changes anyway.
-> >
-> > Thanks for your review.
-> >
-> > AFAICT done is also used to track free slots in
-> > mem_cgroup_track_foreign_dirty_slowpath() and
-> > mem_cgroup_flush_foreign(), otherwise we have no method to know which
-> > one is free and might flush more than what MEMCG_CGWB_FRN_CNT allow.
-> >
-> > Am I missing something?
 >
-> No, I missed that. I don't think we need to add extra mechanisms in wb fo=
-r
-> this tho. How about shifting wb_wait_for_completion() and kfree(memcg) in=
-to
-> a separate function and punt those to a separate work item? That's going =
-to
-> be a small self-contained change in memcg.
+> On Fri, 22 Aug 2025 01:33:46 +0900 Sang-Heon Jeon <ekffu200098@gmail.com>=
+ wrote:
+>
+> > Kernel initialize "jiffies" timer as 5 minutes below zero, as shown in
+> > include/linux/jiffies.h
+> >
+> > /*
+> > * Have the 32 bit jiffies value wrap 5 minutes after boot
+> > * so jiffies wrap bugs show up earlier.
+> > */
+> > #define INITIAL_JIFFIES ((unsigned long)(unsigned int) (-300*HZ))
+> >
+> > And jiffies comparison help functions cast unsigned value to signed to
+> > cover wraparound
+> >
+> > #define time_after_eq(a,b) \
+> >  (typecheck(unsigned long, a) && \
+> >  typecheck(unsigned long, b) && \
+> >  ((long)((a) - (b)) >=3D 0))
+> >
+> > When quota->charged_from is initialized to 0, time_after_eq() can incor=
+rectly
+> > return FALSE even after reset_interval has elapsed. This occurs when
+> > (jiffies - reset_interval) produces a value with MSB=3D1, which is inte=
+rpreted
+> > as negative in signed arithmetic.
+> >
+> > This issue primarily affects 32-bit systems because:
+> > On 64-bit systems: MSB=3D1 values occur after ~292 million years from b=
+oot
+> > (assuming HZ=3D1000), almost impossible.
+> >
+> > On 32-bit systems: MSB=3D1 values occur during the first 5 minutes afte=
+r boot,
+> > and the second half of every jiffies wraparound cycle, starting from da=
+y 25
+> > (assuming HZ=3D1000)
+> >
+> > When above unexpected FALSE return from time_after_eq() occurs, the
+> > charging window will not reset. The user impact depends on esz value
+> > at that time.
+> >
+> > If esz is 0, scheme ignores configured quotas and runs without any
+> > limits.
+> >
+> > If esz is not 0, scheme stops working once the quota is exhausted. It
+> > remains until the charging window finally resets.
+> >
+> > So, change quota->charged_from to jiffies at damos_adjust_quota() when
+> > it is considered as the first charge window. By this change, we can avo=
+id
+> > unexpected FALSE return from time_after_eq()
+>
+> Thank you for this patch, Sang-Heon!  But, checkpatch.pl raises below thr=
+ee
+> warnings.  Could you please fix those and send yet another version?
+>
+>     WARNING: Commit log lines starting with '#' are dropped by git as com=
+ments
+>     #16:
+>     #define INITIAL_JIFFIES ((unsigned long)(unsigned int) (-300*HZ))
+>
+>     WARNING: Commit log lines starting with '#' are dropped by git as com=
+ments
+>     #21:
+>     #define time_after_eq(a,b) \
+>
+>     WARNING: Prefer a maximum 75 chars per line (possible unwrapped commi=
+t description?)
+>     #26:
+>     When quota->charged_from is initialized to 0, time_after_eq() can inc=
+orrectly
 >
 
-Do you mean logic like this?
+I will fix it. Also, I came up with a way to prevent these minor
+mistakes. Thank you so much.
 
-    for (i =3D 0; i < MEMCG_CGWB_FRN_CNT; i++)
-        wb_wait_for_completion(&memcg->cgwb_frn[i].done);
-    kfree(memcg);
-
-But there still exist task hang issues as long as
-wb_wait_for_completion() exists.
-I think the scope of impact of the current changes should be
-manageable. I have checked all the other places where wb_queue_work()
-is called, and their free_done values are all 0, and I also tested
-this patch with the reproducer in [1] with kasan and kmemleak enabled.
-The test result looks fine, so this should not have a significant
-impact.
-What do you think?
-
-[1]: https://lore.kernel.org/all/20190821210235.GN2263813@devbig004.ftw2.fa=
-cebook.com/
-> Thanks.
+> Thanks,
+> SJ
 >
-> --
-> tejun
+> [...]
 
-
-Thanks,
---=20
-Julian Sun <sunjunchao@bytedance.com>
+Best Regards.
+Sang-Heon Jeon
 
