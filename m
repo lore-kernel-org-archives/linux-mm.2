@@ -2,107 +2,106 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 28924CA0EDC
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 06:29:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6BB98CA0EDC
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 07:23:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7BB08E0025; Thu, 21 Aug 2025 02:29:10 -0400 (EDT)
+	id 90FFB8E0018; Thu, 21 Aug 2025 03:23:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B538A8E0002; Thu, 21 Aug 2025 02:29:10 -0400 (EDT)
+	id 8E7CD8E0002; Thu, 21 Aug 2025 03:23:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A912E8E0025; Thu, 21 Aug 2025 02:29:10 -0400 (EDT)
+	id 824F48E0018; Thu, 21 Aug 2025 03:23:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 968DD8E0002
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 02:29:10 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3BEDFC02B3
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 06:29:10 +0000 (UTC)
-X-FDA: 83799787260.26.9A69C8F
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 63E0A40006
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 06:29:08 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=f6Y2cmZR;
-	spf=pass (imf04.hostedemail.com: domain of usama.anjum@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 72D948E0002
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 03:23:55 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 165F71162D2
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 07:23:55 +0000 (UTC)
+X-FDA: 83799925230.04.20A93D4
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0F0231C0003
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 07:23:52 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755761033; a=rsa-sha256;
+	cv=none;
+	b=CHor2zmyHRKiw+jOPhsBmoU/kUWVR9N/5vtKSomBpI7jk0txCJjYU1O9YXfKpTx1PONgya
+	VvGztcqLnx48fd+GFTBH+9Hzdd/CI18aKGITIVc86zJO6ZwgfDBI0qqkRWzjyeqFMTMh3p
+	CMoz0+bcToJA6+8Uv0Lqfrtoe9iCu9k=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755757748;
+	s=arc-20220608; t=1755761033;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G8iArFIfxqGzUj6hXNEgyhSWl99z+xDKYDgIsnWW4qQ=;
-	b=jDH1jl+8vb1u7htTBRKMHsCxtBYuLLBtd3B73IEXNfag6N4zq4JwAgJB2+MjAOGOiV2cGI
-	7e1A4BGIneVC7loCGtxWbSCjS4Cg/qGgSpClT0b4dOacv/fMiWBXE9QREkv7ypDANKSVXs
-	qDsXTOfl2aSEr3AQi3qKd80//qj+/L4=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=f6Y2cmZR;
-	spf=pass (imf04.hostedemail.com: domain of usama.anjum@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755757748; a=rsa-sha256;
-	cv=none;
-	b=PpxgGLOg00CmCE/qXar0m6/66cWZHCwX5x7pcxXppFeIsv6dUCrjbEew3oFREomhzp7Jio
-	qCyEaCJeIBrHlUY6jbu9JGekR7GpjIpQ+A0AuS3JmcmFZmSCmnMCB+xp/ZBmVcRq2PzlrX
-	A/CbuidXG+uEEv0hTswqBNar3p5y7w8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1755757745;
-	bh=oScGVxYxElRoNaNscAJZx59aF4CUHiYp5n6VK4Ekqhc=;
-	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-	b=f6Y2cmZRdX0cSOHMuO4FqsOTJux5OXhWeAM7PKzyf/AvbVdC/hR0Ut2G60gnCOcLd
-	 WHkFIy04wlGPbqrVNOkRtzxXuwp40/FsjB5F/cNFoo0snKjrhjXDL9OvJ4gakMBvSe
-	 EFxgn7j03S8bcHquAEPPCMNw0oIORItPyMCa7OF+/3w7YQRe8xSzOLp8XNNNs6ED6L
-	 ktwquup+Hbdil2LZuNAafnNmwFe6WUmXd2bgLQGsXEYuQlB3Ieay6kKworuFEzSyUy
-	 8RRpiEKY53Rq1mxHbMxoafLh4lvtLODu2WQT4ROM/v31gkqyjUlCzhRh22bEKigAsr
-	 p4ja4/QcAy+YQ==
-Received: from [192.168.100.175] (unknown [103.151.43.82])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	(Authenticated sender: usama.anjum)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id A1EA517E0458;
-	Thu, 21 Aug 2025 08:29:00 +0200 (CEST)
-Message-ID: <8e9d7c59-46b4-4e1b-8a55-1898302f5080@collabora.com>
-Date: Thu, 21 Aug 2025 11:28:59 +0500
+	 in-reply-to:in-reply-to:references:references;
+	bh=X64IdBmjHXhS6gvtudLgoG6tBJL+bVjtjgEiJHPyTrg=;
+	b=FU4CC+J7l8Ghk95hyfdIgsDtqMK32+jZrtl7xD2gisbK3IZeSnZILFHlEtPQYUEQ6oBoi1
+	fjBLvHiTbM58TItHp6OZlkASSg+9geUJkftvbw8LCrUx4HHiKIxv4MFADSOyXYJpL8BbP9
+	s+764PCPyomvEU0gnmFPJklF9Jwja24=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8A871168F;
+	Thu, 21 Aug 2025 00:23:43 -0700 (PDT)
+Received: from [10.57.91.165] (unknown [10.57.91.165])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5C45A3F58B;
+	Thu, 21 Aug 2025 00:23:45 -0700 (PDT)
+Message-ID: <09873338-574e-43e4-a6ff-590a3c9a9e87@arm.com>
+Date: Thu, 21 Aug 2025 09:23:42 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: usama.anjum@collabora.com, kernel@collabora.com
-Subject: Re: [PATCH v2 4/8] selftests/mm: Add -Wunused family of flags
-To: Kevin Brodsky <kevin.brodsky@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Leon Romanovsky <leon@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, Shuah Khan <shuah@kernel.org>
-References: <20250731160132.1795351-1-usama.anjum@collabora.com>
- <20250731160132.1795351-5-usama.anjum@collabora.com>
- <57c816d6-a9ba-47c9-8f40-3978580b7f67@arm.com>
-Content-Language: en-US
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
-In-Reply-To: <57c816d6-a9ba-47c9-8f40-3978580b7f67@arm.com>
+Subject: Re: [RFC PATCH v5 00/18] pkeys-based page table hardening
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>
+Cc: "maz@kernel.org" <maz@kernel.org>, "luto@kernel.org" <luto@kernel.org>,
+ "willy@infradead.org" <willy@infradead.org>,
+ "mbland@motorola.com" <mbland@motorola.com>,
+ "david@redhat.com" <david@redhat.com>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "rppt@kernel.org" <rppt@kernel.org>, "joey.gouly@arm.com"
+ <joey.gouly@arm.com>, "akpm@linux-foundation.org"
+ <akpm@linux-foundation.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+ "Weiny, Ira" <ira.weiny@intel.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
+ "pierre.langlois@arm.com" <pierre.langlois@arm.com>,
+ "jeffxu@chromium.org" <jeffxu@chromium.org>,
+ "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
+ "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+ "kees@kernel.org" <kees@kernel.org>,
+ "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
+ "tglx@linutronix.de" <tglx@linutronix.de>,
+ "jannh@google.com" <jannh@google.com>,
+ "peterz@infradead.org" <peterz@infradead.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, "will@kernel.org" <will@kernel.org>,
+ "qperret@google.com" <qperret@google.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "broonie@kernel.org" <broonie@kernel.org>, "x86@kernel.org" <x86@kernel.org>
+References: <20250815085512.2182322-1-kevin.brodsky@arm.com>
+ <4a828975-d412-4a4b-975e-4702572315da@arm.com>
+ <5b5455eb-e649-4b20-8aad-6d7f5576a84a@arm.com>
+ <3c18d1f1e94d3491410168e37cdf67e9e471649e.camel@intel.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <3c18d1f1e94d3491410168e37cdf67e9e471649e.camel@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 63E0A40006
-X-Stat-Signature: ctha53fgn59444gz557iapw3881q4qxi
+X-Rspamd-Queue-Id: 0F0231C0003
+X-Stat-Signature: yx1tn8q58b8rfbmy7b43u6d5amfxy4yu
 X-Rspam-User: 
-X-HE-Tag: 1755757748-934329
-X-HE-Meta: U2FsdGVkX18p/ISsGPXvQ+EeP05kRP0oxxiot779zInKCKCScE73rJNmlzOVTJuB35HyAHZmmSiyEjNzfIrc6ag92hYojw+vNYQHOifATco+YvQ5c9uRAB8dCWYUq1fAhE8+wP5K+skRuk7cPdFr/OHxPl/UVro3sQNiAavbiwvH3un1MG8zTl1/JNaswn3vxKXHvzNYQ8epi69jMiZIOKgCJsJk1FEKsMXOg0lKlgUkiHBP70MO9ZxV4oTFEWIQiLXPG7Zr2UBFyIA8P9VG51ldDdVbqZucrYKpteUk+DbEsD42wm/FNS/+4V4wJ0oFModziHzIH7sTXKvOP6sTA9nSS9CZV9YrQolakURAgnvuC9NGtElVa0yvL6XY4Thb75bmphoXcvkugH5L7hx5u+/duVgnnnTSGs9Y8HIOMxqQSMIm4OUNWrVeJucbo+VLP0maTKzSo1HTZlpqou5ohXnv6HKk0W0ivJgUL9KanysUaHRKZF5v07E+ayQV8ekZelEzDFI4OdUCjCozp3P/XVrHWVVhMZDE7H6/CmpqklyU0JCeKvVbMPVL10e9KXHwEEsZFK/o8XAH3LWMRiCZoRMbLpBvnhru0pNke6yQReM79UeTv/8Yz5qlHSyGJdffXPLfmIMEs1MKNWV3tZho4Vsa/W0ZreYyzqlwGVlIsaTonTUQBnIQceu35KOlx+UnCfyNQIL6CgtPg9MNAZaxqwbSIdLrTlEYjeVxD5SWinlCHHfGAS3jZd2ORc7RRvRRgru8uJgUmKXBZxG2wFv7gmdi3EklsfvV819lt/g3FRR7tLCbi8jbwAfQMBJA9v6R5NrIjns4CSyR62JwZOnz4YQt0GFGxhOZ/PaL1yjDCVCy9XPzgwSGG88XKTuKQjDQITF4rl/3yslCB02Z1Dj24Z0Vq4HK0NhQIcvt9h9bjg6hVYxWKZb4aWIk7fR0crXM+Goy1mvWX6q6+ZhyXik
- zCiwfmHj
- pACw2dd47wMY9kn7ce63xSwU7vMUY0wDriL8iFdKa/r/LLVhqrGCasWSIHQYTGkL1rVj5CluqPR9qWniUqvup5yPKMbbbNVmsmS5nk4y20vdSeohkjYEWdY8p+oOwFsM0F1ity14wdhNRlzquOAs2Y9zw4uleFnt0T6ZoFdq94MEnOY/t+y0o5dhYJs4WYvRatwDmMGbryPWb3E+/kuBV3Rtp2D8OjQK8iOMZOjymQHn5Nf4hxygld7Thv4VLTzKqb5dTO5UDn3+Cp4aUz9owYYQHRQ/P8j4iyeIEnQEm4K9UG5ShD04TX2IX/V5whsMIAWv0
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1755761032-148766
+X-HE-Meta: U2FsdGVkX191rClPCWauQ8L5wytoJhP8ePcv88iwPDB5QfYw4D9cWstVOcKb14e61KRpzNH0IL9WhDDpwpHviJzqNorTu1z8ihL1F9EcgkZfJsROeAYT41LjiAw9pHLZCjjAwOA4JNAsmzX2XBMGVlviOk/9t9jSZXN+GNac1sAx+WCGXAB3y/waWLQsPQO8rMZphxmcC8fQSG12qr+8M3G8LJjB9tWC89YS3YY5ZC5pokJZXMiGsj8WfBYtZUcZq6VJqhxHPuZYA+WVoUJg0LKO4Nt2wSHh/E6Qy3sC0ppAn4+PTsHZbfEaK9exgse+shuPRucZslqkVQ/ScY5X/N4ZeCAILJ2vYVwDHZ/9zkrZLZ3S5jOIJi2bm2028zURQVnxq0bhu8wjlr6ZxHNe6Y4gP9p/KJVWJ+PhUGV/azvQEZBtWcPY+JtcfVyXbRq6ukgmTemIIjbE8ImYRcKDCLZ+HXnDQ8wdl4OORfSfktgSJ2fEYrDfewthr1BU06HFabtOLmDZoBMIqqHhnBZQ8hA+RCaJoAlcRqvZn56mR98FI6YxOrXGhgScdAdvYRz5uB+JPYWp4QNUrjzkU34iqbLW/f/HbW6xYeDpq7y10qB5NNvWqzN+ti1X6erkUp37EfqsRNF0qPEHFeKykEPALRVIIiQdXBYPZlCtLqaVQBoeH/loEfvDS56HPYgBytdlbxmNSZ1CDbiTIl4DJ2YX6AIIx6JbTtWEgVFenyTFcocE2gp5wwXvvrc7UwIEJ7NttMo26TVBZeBTTWB133IBlEmWsELc4/F/dVQ+fnfd8c3S27aAvPqE8u9FpoZo8OQZrj/1yC8DYtmWKpNZrlG1W03tPEjlpI3qJe3ly+9qRwFnkvxVizVzhNHyrozfxRmSo7WOyGAvi1OUnFcyY6O2qDgEvlgNEs77CYJBL3q2KOObPmBF2VtfLQSGz8qTpWXsq0Y4SWzAEkz3Epss5mi
+ VrYwylE4
+ KljRYJfmJ2ILsUSaaUJglhQi5P6iy9EcKNiMQ4TE2XRfIHLCuTF0wBrUl6NwkG6w9AFrCAZEZ6l0BYNnx1ap9VsrO34sngVGgrW5C22G8LjU/b5NtjYL7JvGVrEi59r5LSK8lfxt/53gtpXVHjnnTHBCgpEBzboPS8f480ujOrkEQnYA8a3BJoyfFrgsazwAnL3pnlLVZ2vsfDkkNR99r+Y5YGw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,60 +110,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/18/25 1:16 PM, Kevin Brodsky wrote:
-> On 31/07/2025 18:01, Muhammad Usama Anjum wrote:
->> [...]
+On 20/08/2025 18:18, Edgecombe, Rick P wrote:
+> On Wed, 2025-08-20 at 18:01 +0200, Kevin Brodsky wrote:
+>> Apologies, Thunderbird helpfully decided to wrap around that table...
+>> Here's the unmangled table:
 >>
->> diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
->> index 23d4bf6215465..d75f1effcb791 100644
->> --- a/tools/testing/selftests/mm/Makefile
->> +++ b/tools/testing/selftests/mm/Makefile
->> @@ -20,7 +20,6 @@ endif
->>  # thus tricking Make (and you!) into believing that All Is Well, in subsequent
->>  # make invocations:
->>  .DELETE_ON_ERROR:
->> -
->>  # Avoid accidental wrong builds, due to built-in rules working just a little
->>  # bit too well--but not quite as well as required for our situation here.
->>  #
->> @@ -35,6 +34,7 @@ MAKEFLAGS += --no-builtin-rules
->>  
->>  CFLAGS = -Wall -O2 -I $(top_srcdir) $(EXTRA_CFLAGS) $(KHDR_INCLUDES) $(TOOLS_INCLUDES)
->>  CFLAGS += -Wunreachable-code
->> +CFLAGS += -Wunused  -Wunused-parameter -Wunused-function -Wunused-label -Wunused-variable -Wunused-value
-> 
-> -Wall implies all of these except -Wunused-parameter (at least according
-> to gcc(1)).
-I'll remove others in separate patch.
+>> +-------------------+----------------------------------+------------------+---------------+
+>>> Benchmark         | Result Class                     | Without batching | With batching |
+>> +===================+==================================+==================+===============+
+>>> mmtests/kernbench | real time                        |            0.32% |         0.35% |
+>>>                    | system time                      |        (R) 4.18% |     (R) 3.18% |
+>>>                    | user time                        |            0.08% |         0.20% |
+>> +-------------------+----------------------------------+------------------+---------------+
+>>> micromm/fork      | fork: h:0                        |      (R) 221.39% |     (R) 3.35% |
+>>>                    | fork: h:1                        |      (R) 282.89% |     (R) 6.99% |
+>> +-------------------+----------------------------------+------------------+---------------+
+>>> micromm/munmap    | munmap: h:0                      |       (R) 17.37% |        -0.28% |
+>>>                    | munmap: h:1                      |      (R) 172.61% |     (R) 8.08% |
+>> +-------------------+----------------------------------+------------------+---------------+
+>>> micromm/vmalloc   | fix_size_alloc_test: p:1, h:0    |       (R) 15.54% |    (R) 12.57% |
+> Both this and the previous one have the 95% confidence interval. So it saw a 16%
+> speed up with direct map modification. Possible?
 
-> 
-> As to -Wunused-parameter I am frankly not convinced it's worth the
-> hassle. We're getting 90 lines changed in patch 6-8 just to mark
-> parameters as unused, in other words noise to keep the compiler happy.
-> It is not enabled by default in the kernel proper precisely because it
-> is so noisy when callbacks are involved.
-> 
-> Patch 5 is clearly an improvement, but I'd rather take it without
-> actually enabling -Wunused-parameter. The rest of this patch isn't that
-> useful either IMHO.
-Patch 5 removes genuinely unused parameters flagged by the compiler. If we
-drop the -Wunused-parameter option, however, new unused parameters will
-continue to creep in with future patches. The goal of enabling this warning
-is to surface such issues early so developers can address them during
-development, rather than later during review or debugging.
+Positive numbers mean performance degradation ("(R)" actually stands for
+regression), so in that case the protection is adding a 16%/13%
+overhead. Here this is mainly due to the added pkey register switching
+(+ barrier) happening on every call to vmalloc() and vfree(), which has
+a large relative impact since only one page is being allocated/freed.
 
-Long term, I’d like us to rely more on compiler and static analysis just like
-kernel to catch these kinds of problems proactively, instead of waiting until
-they’re reported or someone fixes them later. While it may feel like noise
-initially, this is largely a one-time cleanup—once done, developers will
-simply fix warnings as they arise, keeping the codebase cleaner going forward.
+>>>                    | fix_size_alloc_test: p:4, h:0    |       (R) 39.18% |     (R) 9.13% |
+>>>                    | fix_size_alloc_test: p:16, h:0   |       (R) 65.81% |         2.97% |
+>>>                    | fix_size_alloc_test: p:64, h:0   |       (R) 83.39% |        -0.49% |
+>>>                    | fix_size_alloc_test: p:256, h:0  |       (R) 87.85% |    (I) -2.04% |
+>>>                    | fix_size_alloc_test: p:16, h:1   |       (R) 51.21% |         3.77% |
+>>>                    | fix_size_alloc_test: p:64, h:1   |       (R) 60.02% |         0.99% |
+>>>                    | fix_size_alloc_test: p:256, h:1  |       (R) 63.82% |         1.16% |
+>>>                    | random_size_alloc_test: p:1, h:0 |       (R) 77.79% |        -0.51% |
+>>>                    | vm_map_ram_test: p:1, h:0        |       (R) 30.67% |    (R) 27.09% |
+>> +-------------------+----------------------------------+------------------+---------------+
+> Hmm, still surprisingly low to me, but ok. It would be good have x86 and arm
+> work the same, but I don't think we have line of sight to x86 currently. And I
+> actually never did real benchmarks.
 
-> 
-> - Kevin
+It would certainly be good to get numbers on x86 as well - I'm hoping
+that someone with a better understanding of x86 than myself could
+implement kpkeys on x86 at some point, so that we can run the same
+benchmarks there.
 
-
--- 
----
-Thanks,
-Usama
+- Kevin
 
