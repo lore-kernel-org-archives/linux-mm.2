@@ -2,87 +2,112 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 01CA6CA0EEB
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 04:24:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E1761CA0EE6
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 04:29:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C0B36B00D7; Thu, 21 Aug 2025 00:24:28 -0400 (EDT)
+	id 67E9B6B00A2; Thu, 21 Aug 2025 00:29:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1690D6B00D8; Thu, 21 Aug 2025 00:24:28 -0400 (EDT)
+	id 62F156B00A3; Thu, 21 Aug 2025 00:29:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 07F6A6B00D9; Thu, 21 Aug 2025 00:24:28 -0400 (EDT)
+	id 51DC36B00A4; Thu, 21 Aug 2025 00:29:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E8A406B00D7
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 00:24:27 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 53AFE116FF9
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 04:24:27 +0000 (UTC)
-X-FDA: 83799472974.07.EF0ADBB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 7A9D81C0006
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 04:24:25 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=f8fCfwFh;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E1726B00A2
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 00:29:19 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C00DF11701A
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 04:29:18 +0000 (UTC)
+X-FDA: 83799485196.02.C5064F8
+Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
+	by imf23.hostedemail.com (Postfix) with ESMTP id DC960140009
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 04:29:16 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kVUbISOi;
+	spf=pass (imf23.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.161.46 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755750265;
+	s=arc-20220608; t=1755750556;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8rnmsPSWmxS4qqEi5T5wWykmcbV6Cb4nyfG8QckWqeo=;
-	b=IBAG8KFuGvrAIxy1bMVkaT+QwmFXhafTHz55sxOjSFKdgx1BXWnsgxJLziTSq3RHSGFyVP
-	yKeTcY7qwqTwpSxpCpuAYbdbnSlQVFujUEZYAsVNhIAi2D0BUpn+2k0dvcU4oyA+SjPj/w
-	dXGCYRSRXW9OOath4Ro2rdlLo3P9DQg=
+	bh=8A9C6Y9ZJgiMsi/J5YHom1KPP5jSn1ZRQFc25n88ZJs=;
+	b=h3NEv4ehWQppW6tSuT5XCpesuEighqSzu+eAFoER6JqFO42+DpR5o9LUsHIsfeKBqR5ouE
+	SaM2+0jyhxCsn2jmAKpd6+8SFDorCna7Cal0cKCva2OZZdTB9DWE3YN+3NUH2Z1A96NGAn
+	AzZ39HxkAaLqQoJEgbzGYJ6iClK3Y4A=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=f8fCfwFh;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755750265; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kVUbISOi;
+	spf=pass (imf23.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.161.46 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755750556; a=rsa-sha256;
 	cv=none;
-	b=x8z669LGy8XGVMWmtplfuiOLZS3qvaql7H/txoDW8FRKM7+XJfTZe1Z4KCGsCVoBRr9twX
-	k5n0H4K/yp+VdkTGPxJJWN6kwDxwJnPntCeiFeA33a+3Db5hCDnHSB1p9pqto0rqr+kXiB
-	iUhDE9By8ONcI4htadrx3gNdj2hHjfs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2DE1143BC2;
-	Thu, 21 Aug 2025 04:24:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D09BEC113CF;
-	Thu, 21 Aug 2025 04:24:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1755750264;
-	bh=yEbxrMCEYmcIooCbdM8kiby0WKYLYX/mSci3aAy4yVM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=f8fCfwFh4Z1og95qFf//8M53G5+NpB0yLPawo58P+nEJ33AB0QDoMmwRNquGqfk1S
-	 tsu4nuflWvmc2k2+b/tD4Yo2VUE6pT7IUR7ZuBev1amEvdmaRaGakAhitSeYTBEzes
-	 Yn3DvWs4xjELaW3Hr13oWRpJRwYQUcg2i4cxPTps=
-Date: Wed, 20 Aug 2025 21:24:23 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: david@redhat.com, surenb@google.com, aarcange@redhat.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/userfaultfd: fix kmap_local LIFO ordering for
- CONFIG_HIGHPTE
-Message-Id: <20250820212423.fbac2b17eb4f6a9667a8c979@linux-foundation.org>
-In-Reply-To: <aI04CQZZzgCDO2A5@lappy>
-References: <20250731144431.773923-1-sashal@kernel.org>
-	<20250801141101.9f3555a172609cb64fde7f71@linux-foundation.org>
-	<aI04CQZZzgCDO2A5@lappy>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: i9ixmsmz1uunz5uic39gyswuk6dr66kf
+	b=APQqhuUYb6/yyPaHEg27VbcjQCyxo//nRtjHVoqvFWyHIBgQJPkgDuXqSouAqSiMJavzS3
+	AkydLQjYzwHnLazzXYO+u7kyG3SvNqtF19Xo80jK9XkygnTpYROGUayHIb/SYGlkcRU1TT
+	9qdy95Lq6L+co01ly/KU21Sga04ofV4=
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-61beb53bc95so262338eaf.0
+        for <linux-mm@kvack.org>; Wed, 20 Aug 2025 21:29:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755750556; x=1756355356; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8A9C6Y9ZJgiMsi/J5YHom1KPP5jSn1ZRQFc25n88ZJs=;
+        b=kVUbISOitXj6i2nZCatwcwIDbRAA5/EwnrgUZMiKDrJaBc74gIpsmqSGhONuiVOrB5
+         k1PKoFxNbtGUWKS4NAcKkwK80cy7KBBW2SPIiaAlbCBab/Z8XV0qMexyPTuMMvJd9vei
+         xtkBOzV32amxgwpvxcar2JfH1wopVyhorueiMkHVPkJEf9Z4NlYdc58uyo2F+cd9NURW
+         bm/mzTqT3Zsowyq71FA2EJOMVoaGHQ1XXGRxvgevkKO3E7UfTH3K7FvxJECOtUzIffhD
+         k4jU1Z9pFc4wAfLl9ezFyR8EolU5BanBT/WUzzmm94Xm2dpM/zBRta9GlJBGfIBYAcEq
+         pURg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755750556; x=1756355356;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8A9C6Y9ZJgiMsi/J5YHom1KPP5jSn1ZRQFc25n88ZJs=;
+        b=pX8sUOsOTkQvbyrDJD8J4pnnc2xVW9KGY91xPwDHr5zXmhmkcpI0+PF1EukWlnWFWY
+         TTipxnD9hq5ht8N1LHAxCFS7O5VdakLpjDuZXmSYRZMuvaZUr4NVKxqBaxs/fraZc6FH
+         QNaogh30KRtVHm0f62agGO5WQsFcO4DNsoWG+LZ8LUdCY7qybSLS3ENf1BgYYCjs1WBO
+         hew701A65ps5Mt4VbZJx05NLVA9wUNYSJg2tt897TzoX4muYXy9YqanUmANHl5ZMPQsF
+         oApfXaWTLuXCqzFtQgpbBFm6rLhN/4G9kKbuSD3yz6SRFSzUcSY5cE9ix5HK87VTReL4
+         gRiw==
+X-Forwarded-Encrypted: i=1; AJvYcCW0rf4v0r8Q7rvJYsNbscBjmp/HAiiWa2+2R4aNRsGvaVoIhs5ELsCpNP4M5f2cTPoKewRQpDIJXw==@kvack.org
+X-Gm-Message-State: AOJu0YyRINWD3BWdlqWODf6K/8sewV1OLnj4BDrQyyPuoJPCIpCK/zDX
+	TTbcUbxfCM3KObPeXevtCoIZLZsygYiOS+2uc2ha+4RzRMnIztNJYAW3Aus239wHAn5a6Xu0CuP
+	OIoRFBTKVVVZnVjrlRwua6JleD5fFWXA=
+X-Gm-Gg: ASbGncuUt+0T8hRGPCXHUPWYpIq1ULSez1+bkM3JSR6zqHIRlvtAFz5csMge2nk23Aw
+	ajLYqB4uT/rnD92CK07542P3P+rhPUjkFGP9nki1Ux8ofC8xyATd6qUKecxu4pc46FjbKaOr7JH
+	opFLbyXvIQLVb/0hN8qRS3arGrgQuhkRsztgUZ/W2wNDvn/4Leau0+YcdpZxG+LI28KAXwYfFDN
+	nIcUyJHQEWlYfs=
+X-Google-Smtp-Source: AGHT+IFDjBecc8GcRKMiu+HH3tdyg2aCQxSoKPoBmiKjiHISG5ASpJZTZMSnkG+iLjHlpiuFK45BniXIU9XuY1I+13I=
+X-Received: by 2002:a05:6820:620:b0:61c:648:5f96 with SMTP id
+ 006d021491bc7-61dab2967d9mr478856eaf.0.1755750555517; Wed, 20 Aug 2025
+ 21:29:15 -0700 (PDT)
+MIME-Version: 1.0
+References: <CABFDxMGmVgswVoZFgBz=7xqA59M7fMt0jw2QHqWjm-W9tZktWg@mail.gmail.com>
+ <20250821025423.90825-1-sj@kernel.org>
+In-Reply-To: <20250821025423.90825-1-sj@kernel.org>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Thu, 21 Aug 2025 13:29:04 +0900
+X-Gm-Features: Ac12FXxwmBhLAYwhb250Nr3Mb1TYmrDdE6eHzv4fHnin_s3-I2GxsKQVwH7Y8BI
+Message-ID: <CABFDxME5ZEAn+6=0GRWybTi-xBzbhhz7U38pMni3SdKjA+Aj-A@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/damon/core: set quota->charged_from to jiffies at
+ first charge window
+To: SeongJae Park <sj@kernel.org>
+Cc: honggyu.kim@sk.com, damon@lists.linux.dev, linux-mm@kvack.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: bpas8tm8gjk1xzgdm8gbobz3x7dcxt8m
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7A9D81C0006
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755750265-987369
-X-HE-Meta: U2FsdGVkX182t9cib/ekamod5TWSbDZJ54YdcLQ4maN1a25nRzEJL2BCVaygA9kEMSgpX4jH3ma/yg+9db7YKkMcOSwDX/6W4F3ZY8L/mGKaEPsKuOH3GWBvzAvWib0O5OhrbISo9o1bVP2A7fm16tBiIxNoNcWUVQxXJmgA+QJb2DUUxUzoFirDf9rcohCRpBdD4R+0R3CCVMy9EXBOc8dY+NR1vjH0ms5mVUVvo6SQGo8/n/0cnpK4s7S7aSNUg3dm7ypbWIsYh+tskYCihbHenyiPJGnGjX4k6kebiC2eTJXcXppxZQ4Y6KIo4saWWmW9ThaKqZhBhy2TvH9Tz0ifQmA+lNwEguHrxY47Ebs73JjGu1nZgYqLuaTjLGdo57UJI94QKGRA9aDtMGTnoZyuxi7YPRrAzfer14f+muL2/Ca0h4xDdUkNQnV1t2y0sBS74Gt3cGyretJ+yGE9TnFxYvsx9YV8IsfUjipOVx3aVSdAZAXGcRpIeS6lve0odbUd0nPpq6DBQTQxX+D/5HS6cKNbE6FrLopsbdu+K5e0YxQ+XWyYef94h/CoLkkPKhjJUrEmxvPzBPFawyn9iMVDpB+iCY/kC+6MpprE0dGFSW1FZrig7qqzZhN1UYfG+O9brISWB2tIwSNo1L0KZ10BM4cjJLPMDColQPXEmPLr02u9seR7y0LUjPZWii6JzGhyWFW3vAEs/R99l/3st0fqG4wP+mkDbrDOPDFZXJDz7QLwAiOvX60qkeUcX+yAVB6BtJH7wQW2orKn0iMhzeLrfcKVE5P+FQlvzJm6Eeo2tVptYn6NhXXXlxN1U/XPj27d3AmHNXXNM3scDe9pEYoRRqXSiCuYvToYIC1MRbQ81YKKBZrsYvaXCTa9/q7W5OSjPLLhaNfIeoCd/wgNIIfemBNvAWOb5CNy/3vRLiSe6OOspRI9jW6Zsk6mhcQvyHVuuhdMZXHTAaGJIF9
- Pt/pbsZK
- Jq4TztPH586nooSUoJW+2RbJDZf8NNx/UShM6JCdoYDLsX97b5E7uDlP3T8pep0AfGptt26tOgVPvhmgbG/lFBcLOeOm1xzjKcT0AW9+/CJtqJh88Go8X3ys5SBD194GAef7ZGG9E5d8XBNDE2eZL4PNQ6+yGFg0UpAcVooSBlNR6dgqaIoEJCDuYFugOsvldelfJCh8mdoxTiAtDTG/yhVHRsw0dmOe8qL6g5o1A8y+P/lglMFvEBRl8yzYDkC8DMPsap5UpujoO9R/8r2qTEhqNIqyZ0Ds3wQ5pz3jR9tzqDGHcrtrb0icKhxztOLK3XwL0tQxsGDsfFEFb0MZsBd3YUA==
+X-Rspamd-Queue-Id: DC960140009
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755750556-647745
+X-HE-Meta: U2FsdGVkX1/qBFx8OLisRLgMqgxlZHTLNsJwkXxoL10xdQKmfIJNnr7CUUuYKGaTnvbBwkaoe6aCcDc4uklVAKL485U4yyFdcY33EPRdfudC0S8DgUgSbFiBr98/iV5869Dj/vDgRj+QJOmN1k8UCi53U/2pEKRck42POEqljce93vRyEFMdhfNoHSxZ9HxFgb46yiRZ6eMrsZTOJr45aAf12iHWt/XEeWfsc3IMvARvPXzPHTer34HbLohQ3qkHFv+dIQ/s3xQHKMBbXinpZHER0LNcTzHahj8qjpewXkiGpgPlntG65s2G//RG6QUR/CUzH6GBHvSHd19KIOJBlelN4Rd6UUimO22c76G6e/tzbjHkQKea54HX3d2PUtCfvP0xVPnI3DArLjek62F1Hf56Ny8wXDeNAzwL/RAQ/I3edC9OTBW8S/De/r9bg8JLGVVTusBpE7ykN3LRzJa/9oiZj/pfunOW9zGgPiouI5P64pO1h36osIxpd3DtDaqbuk8pmh6VF2MVxydzSr08n4VpqO0AKG0uuW/aZp+U9PynhmJHUVGr9eVdBsMdgz9+jrvI5A1rhowlJ6X9Isg8QXiKt1IpFVfTnorXcOGfiv07O0vLMMKhK49S+Gq3tIIpEMT6gDUqE7nUWjHg11tkNSX4sEYCwO4s2iMe3eXKydFY4T7qSU/hokp5pzPSfb3NaskS453Sg10Nm9dAr0/wiO/zOOJPeS9DmS05ts8LdvO51Ru+iNhQxBQ2jeAy9HCmztC4XfmgtinFZjNiXRPRt1uRsX0aLzg574mtNzIRpACf3MgqIRTve5a8IfmxF2PG72im55GjyjOK8htX3HSCKCYZtiUmPPQ2d5Xj+cFIohlTPwfAyrzGDk0zyFE2ioPiFTQ/wXSyT2eyEjNC5dGp6etMYlU+y/0tAZEC/1oWlPSvY3zVvMwWqraXb3qKXrVkkSXg9WW9A6S6OVFlSsL
+ 7/q/pQNI
+ Dz+aVq9vUCT/YJ1YV2dCfYBXFZ4ED+Ugt4KN7UGruYF0Qn06kSGiNk6XtATF8sxsNVu0Si3bUAkj7r7Vyo5h1axlEF1NarTbHRT3t+wsjpqxGnHhFRL1/+ZLLKJKG+GQMJxApuQ12fcAUsB1khM43XiAf+O+AAhgKOL6AIt/Ci7nevNbCUjXUp8+3kTXVSidYHRrShhlX/8U1QT13Gqph9d2OhBepjaIZ1v0n1ACRe93f+dzv4Pil1R1giW5edB+TQHuGaFD5yGrGOT+pYzV3lkC9Bc5/4l8b+nzw61JrMmHP0TWpKhX1DyfA4LSmy3Sd/NyEHQ+Jc4tZ+WgdVINRUYgA3Ma2URZAHL7kYIwqROx+uC/cXKSglJg2xbqfa0QSPJg9Kn6Kl7EaBorAcj+CsNRfv73mjKYRiisOE0FPYOKlZZ46EWRqKEio7agNJ6ACIQzO
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,29 +116,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 1 Aug 2025 17:56:25 -0400 Sasha Levin <sashal@kernel.org> wrote:
-
-> >> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-> >> Co-developed-by: Claude claude-opus-4-20250514
+On Thu, Aug 21, 2025 at 11:54=E2=80=AFAM SeongJae Park <sj@kernel.org> wrot=
+e:
+>
+> On Thu, 21 Aug 2025 10:08:03 +0900 Sang-Heon Jeon <ekffu200098@gmail.com>=
+ wrote:
+>
+> > On Thu, Aug 21, 2025 at 3:27=E2=80=AFAM SeongJae Park <sj@kernel.org> w=
+rote:
+> > >
+> > > On Wed, 20 Aug 2025 22:18:53 +0900 Sang-Heon Jeon <ekffu200098@gmail.=
+com> wrote:
+> > >
+> > > > Hello, SeongJae
+> > > >
+> > > > On Wed, Aug 20, 2025 at 2:27=E2=80=AFAM SeongJae Park <sj@kernel.or=
+g> wrote:
+> > > > >
+> > > > > On Wed, 20 Aug 2025 00:01:23 +0900 Sang-Heon Jeon <ekffu200098@gm=
+ail.com> wrote:
+> [...]
+> > I think that I checked about user impact already but it should be
+> > insufficient. As you said, I should discuss it first. Anyway, the
+> > whole thing is my mistake. I'm really so sorry.
+>
+> Everyone makes mistakes.  You don't need to apologize.
+>
 > >
-> >Well this is innovative.  I doubt if Co-developed-by: is appropriate
-> >for this (where's Claude's Signed-off-by:?)
-> 
-> Claude (or any other AI) can't legally sign off on code :)
-> 
-> >I'd support creating a new changelog tag for this case.
-> 
-> This is in the context of a proposal on workflows@:
-> https://lore.kernel.org/workflows/20250728105634.GF787@pendragon.ideasonboard.com/T/#t
-> 
-> The Co-developed-by: usage wasn't my proposal, but it looked like the
-> majority of folks were okay with it.
-> 
+> > So, Would it be better to send an RFC patch even now, instead of
+> > asking on this email thread? (I'll make next v3 patch with RFC tag,
+> > it's not question of v3 direction and just about remained question on
+> > this email thread)
+>
+> If you unsure something and there is no reason to send a patch without a
+> discussion for the point, please discuss first.  To be honest I don't
+> understand the above question at all.
 
-I need to do something about this and the discussion over on
-ksummit@lists.linux.dev has been as beer-addled as one would expect.
+Ah, I just mean that I need to make a new RFC patch instead of
+replying to this email thread. I'll just keep asking about previous
+comments on this email thread.
 
-Oh well.  I guess for now we can welcome Claude to the kernel
-development team.
+> >
+> > > >
+> > > > In the logic before this patch is applied, I think
+> > > > time_after_eq(jiffies, ...) should only evaluate to false when the =
+MSB
+> > > > of jiffies is 1 and charged_from is 0. because if charging has
+> > > > occurred, it changes charge_from to jiffies at that time.
+> > >
+> > > It is not the only case that time_after_eq() can be evaluated to fals=
+e.  Maybe
+> > > you're saying only about the just-after-boot running case?  If so, pl=
+ease
+> > > clarify.  You and I know the context, but others may not.  I hope the=
+ commit
+> > > message be nicer for them.
+> >
+> > I think it is not just-after-boot running case also whole and only
+> > case, because charging changes charged_from to jiffies. if it is not
+> > the only case, could you please describe the specific case?
+>
+> I don't understand the first sentence.  But...
+>
+> I mean, time_after_eq() can return false for many cases including just wh=
+en the
+> time is before.  Suppose a case that the first and the second arguments a=
+re,
+> say, 5000 and 7000.
 
+I think my previous explanation is not enough. I just want to say,
+time_after_eq return false, but user expected true case; And I think
+that's the point we want to fix.
+
+Maybe I can change my previous question like this, "Is there any
+situation, that charged_from has been updated before and even though
+reset_interval has passed but time_after_equal() returns false".
+
+I asked this question because I think that kind of situation can't
+exist and minimum version of Fixes patch(5.16) uses esz in the same
+way as it is now. So I think that we shouldn't use "stop working" in
+the commit message.
+
+As I was writing this, I thought about your comments deeply again.
+Since you describe the current state of esz as a bug, I think you
+might want to write "stop working" to comments, because I think you're
+thinking that some fixes patch could change esz initialized value
+(also reasonable, I agree)
+
+I think adding an explanation of the above knowledge is good to help
+newcomers to understand DAMON well. Also, Could you please check the
+above question for a more detailed commit message?
+
+> >
+> > > > Therefore,
+> > > > esz should also be zero because it is initialized with charged_from=
+.
+> > > > So I think the real user impact is that "quota is not applied", rat=
+her
+> > > > than "stops working". If my understanding is wrong, please let me k=
+now
+> > > > what point is wrong.
+> > >
+> > > Thank you for clarifying your view.  The code is behaving in the way =
+you
+> > > described above.  It is because damon_set_effective_quota(), which se=
+ts the
+> > > esz, is called only when the time_after_eq() call returns true.
+> > >
+> > > However, this is a bug rather than an intended behavior.  The current=
+ behavior
+> > > is making the first charging window just be wasted without doing noth=
+ing.
+> > >
+> > > Probably the bug was introduced by the commit that introduced esz.
+> >
+> > Thanks for your explanation. I'll try to cover this point in the next
+> > patch as well.
+>
+> If you gonna send a patch for fixing this bug, make it as a separate one,
+> please.
+
+I didn't mean newer code changes, just commit messge. As you said code
+change should be created with another patch, if it has another
+intension; Also, i didn't have any plan yet. I'm trying to resolve
+this patch first
+
+> [...]
+> > > So what I'm saying is that I tink this patch's commit message can be =
+more nice
+> > > to readers.
+> >
+> > You're right. I'll try to make the commit message more clear. I'm
+> > really sorry for bothering you.
+>
+> Again, you don't need to apologize.
+
+Maybe, I just want to express my gratitude :)
+
+>
+> Thanks,
+> SJ
+>
+> [...]
+
+Best Regards
+Sang-Heon Jeon
 
