@@ -2,240 +2,132 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 49B59CA0EF8
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 10:11:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E18DDCA0EEB
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 10:12:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 66A616B00BB; Thu, 21 Aug 2025 06:11:28 -0400 (EDT)
+	id 756656B00BE; Thu, 21 Aug 2025 06:12:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 61AFF6B00BC; Thu, 21 Aug 2025 06:11:28 -0400 (EDT)
+	id 706F06B00C4; Thu, 21 Aug 2025 06:12:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BC306B00BD; Thu, 21 Aug 2025 06:11:28 -0400 (EDT)
+	id 5F6356B00C5; Thu, 21 Aug 2025 06:12:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 374096B00BB
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 06:11:28 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 83759138338
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 10:11:27 +0000 (UTC)
-X-FDA: 83800347414.03.85ABCAB
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C3986C000D
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 10:11:23 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="oBkG/C74";
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=ZcjR1DiB;
-	spf=pass (imf28.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755771084;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 48CC56B00BE
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 06:12:15 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B9FF05888E
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 10:12:14 +0000 (UTC)
+X-FDA: 83800349388.19.1E841FE
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	by imf15.hostedemail.com (Postfix) with ESMTP id DA4CCA0011
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 10:12:12 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lUm1pgFs;
+	spf=pass (imf15.hostedemail.com: domain of reddybalavignesh9979@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=reddybalavignesh9979@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755771132;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ltVPbZUqF27tRJTFatIuyPYlZy/6JNv0tswp7kIGsZo=;
-	b=IUzql4mtc6nHwiqVXHC2q/3/mMKJzMB1kdQzUBNJmyxfDUXeP0gZlFH/oqeRK/2/QHNI+2
-	0S+5B0YVzcf12B6pOaM5oP5IxiDhZV1oTFqw+1cwNKn0dl9o05tD5726MQQ7kGD/mKejt+
-	yOR7naEII+tJFhncfqKcDBrw7/XpNt4=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755771084; a=rsa-sha256;
-	cv=pass;
-	b=AHbrU78ek5B7iJUN+C2ptTiJLpN/VRhSXkcATcnY7aQqEp0Mr8Itgen0klhuIUubfCMTyX
-	21D87liQk+zICiQCXCSey/sq1xobqPl3OReN2LWgCzhLxFf5AJIF/uH7vRAoy9IAyYmVTX
-	Q4L6QOmtRSVBeXd83S6R9ZN5rfyDFIc=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="oBkG/C74";
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=ZcjR1DiB;
-	spf=pass (imf28.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57L8VlaR031458;
-	Thu, 21 Aug 2025 10:10:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=ltVPbZUqF27tRJTFat
-	IuyPYlZy/6JNv0tswp7kIGsZo=; b=oBkG/C74QwZiCjxVl+bhJ/CfTd/FZRT3e7
-	IbrjYYsk57d/OnWXUVlpjvRzXkXbyqMc5Wftv4XwhIFCX1Vsw6EVCUNrNkR46DS/
-	L+0BC7WOl8YEy4ulHBEoe4f4dvtvlgi/l7VUiuuCA0FeS4awVXZmbqOzOBZuO8uW
-	HAZstwoIxk44Wh39Oq8m1S0bXUvrOUOcrVCBhUsjlroxJZ7KzcLdQ2nirxEZzkqV
-	63tE0zIPJ41rgkMVdvbr0YUrbxJTqmCsOfV28bEx0H9DS+ThfkEOtPe3n1BNS0TP
-	PsUOrZ5yXtko04gV6MEYjR+CfXM4KigVKOevlFQgCkdCBmIS/lvQ==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48n0tru6gk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 21 Aug 2025 10:10:48 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57L9HVrx030481;
-	Thu, 21 Aug 2025 10:10:46 GMT
-Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10on2076.outbound.protection.outlook.com [40.107.94.76])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 48my3v6cs0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 21 Aug 2025 10:10:46 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UHaeODQK8z+BKIS2LOijOVLkT45NutcPVgobtRJC9Ur0BiG2MfDiSZpjpyjMugElNrtRI5jc+pcqUck5DVvNq7ezmRASDk56Uye93XCRy0tpt/fgYUX5v6UsRDHzIKstIpkyLh3JNOpPOF18QTvHOtZLlRXructof4DTAtRYw+yl7rVOInBkON9AI0etsnr1mS9zIAlkGSofNu6rsEtjI9VuRooqLeUx5v+JE5ZG9pVFo0wk28QLubq504vuR8Po2F3hQY5phqljUAvgQF6nhOknhRe5OniaToTCkdGemvlrzEQySnYy8jnl56M+q++pHqRO90KJI96Y1ZgocLVKiA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ltVPbZUqF27tRJTFatIuyPYlZy/6JNv0tswp7kIGsZo=;
- b=nxAuIgmWRQYxVauxgJ2c2bvK3lx9aaEd1VH6zlVj8ap+TRB/m5+qiXe8J7HGaXW00Y/We7/ZNIgSYoWi6qXzH7NfkjbSLhZ4GMUrEYs62SdyHyFLKycrz1sPmmNosu5dTZY6bUSirecspdoCr25Nq6ThckdHFkHYpH5fkedPGog/elf0Vkohim3+VhFKJk/D7M8IlfEeZjC78lalKilUROe7WF2pfpjX52DFK6l/Mhq/PwqOrMsL1OuuZ+6URG3OeMAoCXHCwBDekHhvU5FNY/vxPi9JzFLyvBHnjD2JsVOiBqrUsTmUsf5L6ij+tRIVpdnITegXsYw5wwtXyXwMAA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=jOIaU+ivLyUInrFo1z4/NdrgXjFotuRBDXDYangsfLc=;
+	b=d33ostUz2HU03ThoZ7ZTHZ5Ganvdk/VwmD79uUStqtKfZre65X0hLkH0ZsBU8HJviNs3an
+	hQ3iMofkcHyU2QTZqzM859cxladPglyxmv8SNMK9ASNnp0if6y47HVBjp+VZCLchHXUVDr
+	UXv3o5G7iCC/ntFF1bOXdLlrUVYcAfk=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lUm1pgFs;
+	spf=pass (imf15.hostedemail.com: domain of reddybalavignesh9979@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=reddybalavignesh9979@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755771132; a=rsa-sha256;
+	cv=none;
+	b=ZvawC8npQIIg5FFxVnvC8Ed0ZjTCT90RVkdzZVL+eCgyChr57+Hk0t6UGOQNgEeqLMXz++
+	fydp8HUK+jF7oyy54RYVn/9twxKZqTDEGKK6k3KAugfRSagHfwJFMzMjvXfowAsVioYCp3
+	18KOz62mqpN8dppoAa4kiOlUPpA4GZU=
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-323267b7dfcso791881a91.1
+        for <linux-mm@kvack.org>; Thu, 21 Aug 2025 03:12:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ltVPbZUqF27tRJTFatIuyPYlZy/6JNv0tswp7kIGsZo=;
- b=ZcjR1DiBGjiqWhIzcmeMeSYAK1WgdOjDTKp58w3sf7MSa0bJwLG/fVDcWHIEDJu4oC3HtsiGmETTpab+DlnWcSKyI0cf2/95mtkHEVvPl2ne+Ep2q526EAq9jJxlnRibe+mXpNO0CfjyuF2FByaWCa3D9WIRzh4R7Ifp7rp4oOI=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by PH8PR10MB6339.namprd10.prod.outlook.com (2603:10b6:510:1ce::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.24; Thu, 21 Aug
- 2025 10:10:43 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9031.024; Thu, 21 Aug 2025
- 10:10:43 +0000
-Date: Thu, 21 Aug 2025 11:10:39 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, andreyknvl@gmail.com,
-        aneesh.kumar@linux.ibm.com, anshuman.khandual@arm.com,
-        apopple@nvidia.com, ardb@kernel.org, arnd@arndb.de, bp@alien8.de,
-        cl@gentwo.org, dave.hansen@linux.intel.com, david@redhat.com,
-        dennis@kernel.org, dev.jain@arm.com, dvyukov@google.com,
-        glider@google.com, gwan-gyeong.mun@intel.com, hpa@zyccr.com,
-        jane.chu@oracle.com, jgross@suse.de, jhubbard@nvidia.com,
-        joao.m.martins@oracle.com, joro@8bytes.org, kas@kernel.org,
-        kevin.brodsky@arm.com, linux-arch@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org, luto@kernel.org,
-        maobibo@loongson.cn, mhocko@suse.com, mingo@redhat.com,
-        osalvador@suse.de, peterx@redhat.com, peterz@infradead.org,
-        rppt@kernel.org, ryabinin.a.a@gmail.com, ryan.roberts@arm.com,
-        stable@vger.kernel.org, surenb@google.com, tglx@linutronix.de,
-        thuth@redhat.com, tj@kernel.org, urezki@gmail.com, vbabka@suse.cz,
-        vincenzo.frascino@arm.com, x86@kernel.org, zhengqi.arch@bytedance.com
-Subject: Re: [PATCH] mm: fix KASAN build error due to p*d_populate_kernel()
-Message-ID: <60f006dd-3bdc-4418-b996-e1d31ec0eded@lucifer.local>
-References: <20250818020206.4517-3-harry.yoo@oracle.com>
- <20250821093542.37844-1-harry.yoo@oracle.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250821093542.37844-1-harry.yoo@oracle.com>
-X-ClientProxiedBy: MM0P280CA0009.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:190:a::24) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+        d=gmail.com; s=20230601; t=1755771132; x=1756375932; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jOIaU+ivLyUInrFo1z4/NdrgXjFotuRBDXDYangsfLc=;
+        b=lUm1pgFsbRXRXyZaLMN2VkhPI5N0RfjDaCWXuQqr4699xQRml1v2iCXzDM2DLvLgOl
+         NkZIErR6z1q8G9G5Aaqfuvq09NqZRoKqZ3Ba/oWv5xOl9h1gDoB7b7uKINtcd1Cr6RzQ
+         XyojvbUokaBwoVhnX8it0KMjYF0NEI29rrVSrUdAku9mCqys19XA6IWQs09YvG5C/bB1
+         SDYFqJ3YCVW3bFqaUCnVOAdMKMzY24+vyWba/q1cPFHPb0n6zLlpGvCsD/rOmlQcMa/9
+         KgycSYR765N7Mh3479t66qv4goTb/b5kh/O9zbLm/nHQ+qlMo9+SkQCS+uyLuv5hFMvm
+         Mh/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755771132; x=1756375932;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jOIaU+ivLyUInrFo1z4/NdrgXjFotuRBDXDYangsfLc=;
+        b=t96A0czMsFByE+xueJ01oTD/HSVdFH74ChA8N6tVJHwGFB85Pyn/+Ur1GDI9fOWilm
+         ON9HPQB3B/mORdoG3Yu6pWHgb8GuumB1JggLN+fgK0IU+u5XjZbRuUzxeJr8vrsi+aSA
+         lJoXZ7fFityfo+8miN3FGpMvBi7W8huW/WyORaYv4X/TBxq6P3Sd36F7hS/ZtLKnawpn
+         YtLx8bq6m+hLrNPBs6/ZV0mpEi/fc0DEsdIvN1EeeeLpTEMjyesUqBwu5LVwL90RUKnp
+         l+1Vs0CgH78h8YqWt5YTuTWcfwPuicCNTR2Vd++xzTZwK0Xf3lIBn+tBUIGQaDW254v4
+         pzWg==
+X-Forwarded-Encrypted: i=1; AJvYcCXNm/peluWswwXxneccobkwM2mzce9bZsDc9WYdOgKPCbaoeofsmqwkxglkLywlBzdjpRElZj3OWQ==@kvack.org
+X-Gm-Message-State: AOJu0Yypv/vyU3jRUSSx/HJ9L2KZy9nFZjNp8BjH8bqeMdfYpj2Kfhgb
+	bPBPb6DqR/wfCw2TA6vVgTd+e4oAySBPjuw7VpoKLm6M9i8Zb4R5DA/Q
+X-Gm-Gg: ASbGncujYvYzN9injLfoWbR1GLTGwpaKo73vAYl3qdzP/wLXy78VK/QtXRMQvJ1EO0f
+	IHkNXqlWN2Deg3cr9tAmJsSkA+w8xAeo1Y33JZPo7Hi4edatnvkRgberdRprfmikmKlkmVlq4BV
+	kYKDMXDynqzQski4Gf+SwyPjCdhClZ1NuRSBJBshUfcC4pFiTizUgcmkOKszy3ts9V2cjjcXu1v
+	fwtaCAVXUnpppjTythaP4T4dSrVJlB6bXSFvUiT7YMW3jgGROtA6dkeIDun0DvqYRKSp6dEd6CU
+	1NcnI5aquqFEvc8I82bpDj/cgSocY9vzqhdZzJIxA31mDQflMOHma5NvQEvKM4HFsyoZLKwBZtH
+	UjxoJMnxG0bZUnTHo0CmNDu65DFOtgz9MeA==
+X-Google-Smtp-Source: AGHT+IGyEK2exr+k/V0w8XXUmSIzv3Ytbu6vvsSe7eRwRcTsYn2OH5a5icQQPi/utnU7cQhUneD/0w==
+X-Received: by 2002:a17:90b:224e:b0:323:7e80:8819 with SMTP id 98e67ed59e1d1-324ed15d2c5mr2462627a91.36.1755771131489;
+        Thu, 21 Aug 2025 03:12:11 -0700 (PDT)
+Received: from server.. ([103.250.145.167])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e7ccfa8d1sm7835815b3a.0.2025.08.21.03.12.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Aug 2025 03:12:10 -0700 (PDT)
+From: Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>
+To: akpm@linux-foundation.org,
+	shuah@kernel.org
+Cc: mic@digikod.net,
+	gnoack@google.com,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	ming.lei@redhat.com,
+	skhan@linuxfoundation.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-mm@kvack.org,
+	netdev@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	reddybalavignesh9979@gmail.com
+Subject: [PATCH] selftests: centralise maybe-unused definition in kselftest.h
+Date: Thu, 21 Aug 2025 15:41:59 +0530
+Message-ID: <20250821101159.2238-1-reddybalavignesh9979@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|PH8PR10MB6339:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8116dd69-e966-4245-1b79-08dde09afcec
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?COf1ixv7zZ+BHXwoST0irT0A17AeiSf8U4QVlx1Kf8R1qXWBBdN+f+u5GDO+?=
- =?us-ascii?Q?ZqWgWc+1avp81LA1MFLdssWK358Iun7uizeESdQG8x3o6HEXJ0g6gkgclp7C?=
- =?us-ascii?Q?h8uaAKq2Dkz2whf9E0VX1c6pcaUwckCrbKXYJk7Ufz28s5CarD5CdTTFyBj2?=
- =?us-ascii?Q?fKtc2i+qAx+NsMCI30OvK7m6GV8EAMch06NMDBd7PIVndaYP5HMey0dLkU3I?=
- =?us-ascii?Q?/5FkJ7/JUiwhV0vib18UhtCbfP923krqDYeLkQdJxKkf3nW/XZaaxUXTo2je?=
- =?us-ascii?Q?DYftY+0xeNi1IKLLyvYmt1xNqGRDcznn0NHa8Pq2bGWBTPRMh2xuNl/NWLzX?=
- =?us-ascii?Q?uov93q13zoke0fyfV81va5v8eJ3uoD5NxTbv3utisdilQ9Q7/ckC4eH8aoGr?=
- =?us-ascii?Q?qjF1WtPp1VpgEORA6x+ydgZemcB0UG489Y3wpaYR+wxK2LOUCMe+/JBn1VyU?=
- =?us-ascii?Q?vAM+e96n/dKM8ygLCEkzkMDEVNTstk0kYT0sYOygzw7kvZUs/yIYy2MKTBli?=
- =?us-ascii?Q?U3D3M/rwJo12nyJ60xAbFL57MC96TISt6rUk1u7ZtXkPbaIoSf4dVnsJtO7l?=
- =?us-ascii?Q?EdvQL7j8gBw0rwe4ub56yU24TVFMno7Q0OQFihpGbIMfb3oyF2TPucRYPDIk?=
- =?us-ascii?Q?5Og7z7T9xIPNbhIG2a+4XyaP0Xx9jGhN6ylD1uOxQd+zEG9zki49HqfFlQ/E?=
- =?us-ascii?Q?0JrmqOHapdOv+0CB+WrclN5+kVyR/+8g0F3NNhAq4WS+NVlZpBd7PiRcSwTR?=
- =?us-ascii?Q?5wh39dajUfGY4A5cpVc3cgvhdk9tysjpfplnZ3dgKDUq3N+Y/3oZ1BgaKRX9?=
- =?us-ascii?Q?3H2c8pmZm+SKy+BNuNp1M/Psn0nzPOTDeE8kLY8wbYWfY5D4saoPAhBmsysP?=
- =?us-ascii?Q?PbKsPtpt1JFQwehzj8f7xpnF1FDChdAyQBupBqvygNUonarQuEil0O6qGwU9?=
- =?us-ascii?Q?cNesGKuoSbj8eg4VZpB8KjpHntlIs+kW4c8y7CIS4V/ijAWvcdVTcg/s3jyL?=
- =?us-ascii?Q?lYcE7vm3g0bKvOwcwxFazuWFB35/RDSMeRUtXvFWIq9ZZcbjKqbj2R7z1ed3?=
- =?us-ascii?Q?pnHLzAeUao9kiWAXwtqyDduwrGeIbIZJ9aIqCnNqQxS6DDMjfRlKI2gbuGnr?=
- =?us-ascii?Q?8WG0yiss/SxBYq7pl5bi3VQEUE7HqwNRhc4LmKjGzFmD2EOAPLcACSt3Kq6+?=
- =?us-ascii?Q?S+qsaR9tBW2nhJSia9rOdtnaxnU0NdCaiSbhQ2zbE8ERe8fkUqnCUg6SknEO?=
- =?us-ascii?Q?uclExnFRnQdwPdHAb2lj1BBu1H40z7zr5w7/XUHev1iyQJprpBogRch2Vj0/?=
- =?us-ascii?Q?lwLWGT2wmuDtU4T6hq9x32vb5GX484nZUxaXPwF7alscPP8S0uYy3rBGbtl5?=
- =?us-ascii?Q?ydj74MM1aiBfXyIEgVhRyX5DhOF5hFvWqcwtvB4PvUrb2JtqLQAvrXG3hmwz?=
- =?us-ascii?Q?1v94CUXjCSs=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?b2C6PRphTqRimSAMn+8VI4uGWFmCUfTTiQwtyUn+dSvO9SknjK9MsJJ5cmm0?=
- =?us-ascii?Q?+JdiU26LokBV2phS25Xc5Pds7z//exCuylMT9N9p8mQCFvRo9rvI5JHb9eBt?=
- =?us-ascii?Q?/yH/LeHdmpw4tRFhxAfkzTlT2TibRv6Sl6XP/q1dG4wyJvJM6q8a5kC4scju?=
- =?us-ascii?Q?9a3xZg7b4y0QnHaGm+scQJ0U+d+64/4MCcoGYNfzgEUgu7zykLMfoGB2okhP?=
- =?us-ascii?Q?QVlyHW1LylSvxK5WfxPsQRpavuvwXFdFhCX0rypMmQou7Q3887ZTbinudYqJ?=
- =?us-ascii?Q?2j5IDg1RmBf/FfzussuJAWoo9XvwsY/26a6VxWG+aNUU1N0aS/5KNsp9+ztw?=
- =?us-ascii?Q?AOskrgAKdDbjRrGMoWVUfUInMe5jWSVle/nT2PADb63vqAEruTbJbzv4ih4j?=
- =?us-ascii?Q?MLwAQk5WqcMooxDPHh5V4Kq9zSRBzm71CyGQdgtSw8WwvO3r1EcBVNLdMSP4?=
- =?us-ascii?Q?mnF+gMvK4B+EaEmM2Kpe9M+LN4pVy6vcYLgA3RTRcwZ2ImAFeGdwZPR+BYcs?=
- =?us-ascii?Q?kfhWuXk8WyuNBb1mKsDnQXB8sm3KWz2g7/bA5VBgOMCV7pSu0A2v5J2Fhh4X?=
- =?us-ascii?Q?WawIeaC5TtifD67FFbGODrcCvQLezPa9mhCGpxn410fCx6UmWx4Vw9ZPXKY4?=
- =?us-ascii?Q?jjXWgxSTnuX+SmWgaId5tP4P9EmJTGo54ZxEv6DkTmwxTjZLejKxqRvXdO7g?=
- =?us-ascii?Q?8PwwOSxRouO+UpxL24BLpc4OvuSbF37bA6RYolO2qCG+5ytHUuJF3VIv0CSQ?=
- =?us-ascii?Q?TI6LjvY/6O8blmzKnwd0khFSetXj06L/HITRiU+djgQofTDLVB6Ms8zyview?=
- =?us-ascii?Q?/Q0lkDnA+Z2kn3GedEFvZhpo0j2ncJW7KrXM+PBMrP170BrsvuvjIoSvIq/R?=
- =?us-ascii?Q?eK8xGoAkWGI3SiFn5/GVxZDdkED+0B5nQ5fxoJe9ZSLo7cYrEwkD21l1SmoD?=
- =?us-ascii?Q?DZn2lfuhGLETLpzEp0Ho4cVTCjFjjdKI7yHuCB9RieW2l9rlkSdB9yONl0/0?=
- =?us-ascii?Q?VcVGc3zWcpYdYS27WUkAW5JmpUB2Uqt01mh7diDfORXpt0fTF0qjHSrCBDnB?=
- =?us-ascii?Q?imus6tyVHlXEQT/90whePDkHcUvVlg+RPexB17oDdsDh6au3cBN+jyO0PmGG?=
- =?us-ascii?Q?wupD2P23W/kX+nw/3QYjbQdyxJSeyPqJOMBmsTHi+Wtzknokyl+TqJcOup/I?=
- =?us-ascii?Q?O3v2bGw3NgiOFEFtLNNtAqjNmCIrK2jVdV59I3DQIjs01Ia/Ot8FNMmPvCkO?=
- =?us-ascii?Q?vHkeSWWHcSE2u508ldWqm/9ThKX8XBm2/iY9L/NL33dXhM9clUBvbw3IDcs/?=
- =?us-ascii?Q?YYUjzw7SKrjlKAERRhJrJqNjlT6yXf6nUHo5+I/CBFNG6YUEjIogeWPoaLyp?=
- =?us-ascii?Q?IDairDQqVkaZUXGmia+nAF4nxkrsMdTxZuyjwVlpQLqm+Ngi5tjXroPCB8Vn?=
- =?us-ascii?Q?sF8+q7kOdRsbRnNK3x+LEP9AzND9xOkb7diuO4LWpP/+ZY7z+Yd7QHGHuxeT?=
- =?us-ascii?Q?AK4v5ghi8QhBFSeLTyAzhy2BdD3/5zmv5Y4TKS/qC4mI1l4iSaUd3RiEFvye?=
- =?us-ascii?Q?JSmOzzRlvWWsUANmEUxzDl6oH/65G5SW+fkkrEyD7QfweCz5iF63nvIWo5Ot?=
- =?us-ascii?Q?6g=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	JDiHA9MfoBUdFlEQ03zyFr5RyBIz0yO56K0BH/VxuOfnM7cPHXN8r8Gcjgda8nULaK4MVF54s5HAbgSSzXwj5TrQXuTr1QofJ6dEjCkoY3B1drGwLkcW2lnqXvvbbfFbbs1J2CqBR6BtOF4EHTsBRfSywRFPklixxygog5UU3K6Y9ynLLV2guQKDid/kKe51mUm6LXjoWJVTulFmX29NIzmCh5cNCMFAx/Yd0KCBdjTdf3UoQGn8I4ptyB0klgBlm1D4Zy+6JS6ZNlmSiik+0L3XYAH44zeiTB7Y7deF7nIKHYMJc96pLRYUYgX54+XDb0r8GVG+5dILhWpKC13aQbu/ZzuaolEtrEK1LlhWml8/Nua7aa2vXgrylVDqC+P4fACRM/HomqQZ5aa/LTt6I+gJ2RBDByIeCF0sXQaojmKkjosFco8jdjuiAKZ9adk4V/55WmM8/VYpI95xOjEwJkqZjgXkX1R1YplBTh9K0A0jvrBQHJPrPYamqF0r1fsLQJF6mSaOAvt+WXCS2ewtb/Nkq28DoV9ZGy1EMpgKnkFMmhwDnEFuUBlaZerYJXalRXslINhFYNp5EXzj8D+nEIVvJWrRA5YIutnRq696f/g=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8116dd69-e966-4245-1b79-08dde09afcec
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2025 10:10:43.0082
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XxZIgZ+f4JzekLPCNI/C9a5Nm3F4jtrwT3HGRL9Fi6Mjn5z6vtudRWvGig6WboTwIOmJEx13QS1ieIMsL/cz8e4ubRzfWndfdRQykyRGH4E=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR10MB6339
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-21_02,2025-08-20_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0 phishscore=0
- mlxscore=0 adultscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
- definitions=main-2508210080
-X-Proofpoint-ORIG-GUID: N6Wdq8V9RGWz-TLLr8I5n7KNxbWDH-EL
-X-Proofpoint-GUID: N6Wdq8V9RGWz-TLLr8I5n7KNxbWDH-EL
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE5MDE5NyBTYWx0ZWRfX+GtFvjQMWrYh
- l9sqPeJlcdbujwVuTqtqzmAboOSonab3CDpHBToDouV4YoVfm6Hl+GvEf7ldVBnoLWYl16I6IX7
- RuNsfhOlAzC743wir/IXlQpJR4FHfy9rug4BQJ05EENcKY2ryJ6xPD9ZTzJJXuL43KdUljrDxeF
- c4GzyxLXMJIkO5fh3K5FyuwfMPTVcyHNXzRif/7AtNJe1d+43xwoFdeKLRGer/6THEZg5rSHtg2
- inMlizt6Ln3nh8H9HfqY8vWr/IvxH2Js/0ovul/c1XD9Y/DmdeHsPMdL3pxcIyFVFlsrmbGoMtF
- U02d9DY6hbOQI+btiWi4h5nzBVKMeoT4rZqtlva+2LIkM9CCmSZjxvONt/QRzesvCefBRJta9vp
- zwSNI+6mpeIkkUA9uyWzLmlIkZwjcoCeUgpCcKUqbfjdTvldXJw=
-X-Authority-Analysis: v=2.4 cv=Qp4HHVyd c=1 sm=1 tr=0 ts=68a6f0a8 b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
- a=EE_DJVtAWmZg0WeozEIA:9 a=CjuIK1q_8ugA:10 cc=ntf awl=host:13600
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: DA4CCA0011
+X-Stat-Signature: cfjaeo5epqhpi4u7d4u5qw8cuwicamwu
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C3986C000D
-X-Stat-Signature: 3s8cnwkpr6rs1q34zdhg7xjy8nar7t9d
-X-HE-Tag: 1755771083-416655
-X-HE-Meta: U2FsdGVkX18W+fYeXqg7hGLOUBxDMiKX/Gwy4AG9WpkY6Tj/A3kMZIDY5dWelvJ8fjNhSghrVSYPwD5Dvfd3VY2SCMz4DmjwR9hxKz6WBGcitECy8aZ+GA0ICzgR//rPbitYv6A+DA3HmiM7u5ty5cVXqKeMKnocZH9Gt9F9IZ++8gD5rifmH1EAZq4B/kD6CuP/NkdMLpAFYnmt7iMfcnsgfiY0YroEXcLsKmTLeJnhdTciH+ILueO4ssOHDoU4VRpej2sNkzmZI6TELRwK8b1EIgZINyCWFzl+/z3GQmOUBemWb/AdV3XL962xh6eKnTiewgGJXlN7s8CV/fdpYw1Tm1jyPB+hP+guQPJ1rVp9WeV/gbkBFxmayhdSInlWQKEpYYeXj4p7M/AiS3VtkmUaKTZL4hG5bOpZFdDtSuyQdRk4H+gReo3ohQ4Drkgv+aX+MASXKFtfMk6aLVkiDun5Yl8RytS3B3HfyY6X4ybq7js/9P1R/Vl4unXPtzkoOh5+ufAcwCAJeeYgl/6CHuA3qpLUhTBzpM4KumEARXcBEgzZRGB4baXCrKLMoBlScWiXQq9oaWu1lXcXPTgXeV7laJknVPUMN0uU8Eiy+yqeoVxezKF1Ek6cgba6m2L5waTUUcVa2Ge49zHoBdMlOFiieI7r4GpVmVrGGRUtivMsZcM4mGiy1F4F52g2whAzFJ664Dj+kae4BTrawvY47pT71iUnq+c7Ze5FxnHItZjT7HcCF1cA5/1e0xMisKji4sBNrSDV4GIZIkJp0IGx7QmYit0FzjfTAQmoF23tFSWXFb0wBJmyauKzbJYEXsw/gZU03XHT+nFUtuT0sC8/qYPUk+tKgBPLQjTHY4Vzj3UmVWnOamwGypeWJK60cSLd/KGiMYZTJ9gO/UJNpRX9iP6bh+baChQILPOq3K8cFvripKETSVVOLJUbnYnASNGhmXH4+N34jjzI8iz85O8
- hbNgv3Tl
- CEi8f3CJrH3XhAriZTyboztFhUfKPELIHotwFwZNOhurufjWSVKSEt3iM5L8qzuXIbEzrO9/cN8AN0SMzNtjEoYae+zVYrU/el1lqpl7ujUmuH68QdlQ74qXyRLAAV5GDFvDIGOpb3/qfmcpETFrkrcFn9nbSdvM7gBkap8qKk/S8PuISbCaTYtUS0PYZ416uBDUInIaQxW13jjqykYeUd4N2qbrG/FIC+mi9TLcfelstX+8FPhI/I3PlydbnY1CL0qUj5JhmWRGiR1DL3OXZLgoJ3wJfuT/fSn8Hx5FdJqErA6S1io8J+AW3NBIa/8DSNkoOzFIEzqb3IGJR6huuhocMHIYyb4q+Y9dh4A8Axpi1aISzqRqWd3S8U14mfJpTWsMK53YqT6qGJNM2S1VjSw1QENAzlXS6srJ+FFkkAZkbuVNj7CgWhAcwWjstCTG3duMaa7QI2R1HNfsVSfw5trDavp0VuMSqrLje1HqXHTqj5zoiGThJuLq9priIZD+TWJeKQv/Nq5CpKURkO9KW20HLkRehzGBwxtUkHJwUVR9hHeRHhu8+v7uFyOqGh0+mhIkmjHr7nsMC216Xgg1tBQbDiBBvWXY8SMFnNHcw+k331ZOYVa0Ih6Ytd6UZc/Hc1a3rrC82pvfSvOie4dpvtXt90PjtsVElC9o5Nwgl5i92NeoLrVGY117FW+UiG+ku9OiZb8apsmT7A7kKjM7AoX548ACwP4AS8/+xxIZDdArVl3gbk33Iyb1SSxsYdePBzQ+KlSvNy0w1nAUutOI1UvUOVXnh+wNMZu4x16ijRNdIDyhMBnSY1Q3ddY59O6WUTMNbwVaDkaSLrgcRdHaILAhEcw==
+X-HE-Tag: 1755771132-420073
+X-HE-Meta: U2FsdGVkX19cPBjpKVueK5MPkt+B0p1B6vjuAmN4jtg2JnNR6pSQLHi49rNgCIM6LvnBtJxtWStU7avvVWw2XPNQSC3KZAQJqLnl6E5nW3eDhfjPPXhyAmcKIkE4wQr1pkiKG6x7SimgTdAAw67wnnhZ88gtuR5MX0Eh5WBJ2LgIHzzMMZ148U3tBRmQofuhTb0GxFV1hhRwoZcp6yPt122zbCz9/CjfuzK7SNEB5S1+k4RvFdE0s0WBplQWolv3LWiFkn+Rs9G8fApjvoRInnih7ftKxZa1cNbnN6qIGS+h8xno3+45zVr8ubxkpX9MXalKnUHxNxZQ1E1si6qERk1r2IJzY3/BjbP3mY2FDq8ogm5WRnH/DQ+180bj/BI7w3P1jxyuzZyv+VyhHFgdxoDgKQdTIueSVsu2vHbUVYMfb7wDyQ4KUBh1DvfLllU5lAjSOXyj5qtbeO04CZW54L5hW7oooGQFGjCsf1OoM+8GU4q+Xkkv1mqCeqTKLHgc61f6poH26KxZ1csfKVBGkPX4i5RrglM2ulyHfsI3DtDkm9zq2tI9fZ0tbiGZ3FqLjzbdmbdb+1uAk4BZYnKrZMj666fntTG7lwLr+kUxxM0ntRjHFetP3uGXI+hC9PogURLkbzIdhcx8xVXhsEPrB2/xONfj+7oBJMyMTGh01LAv3xeFx4rSppo9wkjZ0fGyazNBBw9jtw+d7iLXs8Ksv+ThgVWEh0CZ1weBOtAXn/gY85wkt9pvuesGu6wGacPV3TO/gdimVyVaIPdzdPu3AWlnAygeqv3H7P1F/Xd8jyYkE8fRM1bxmEzdoApMmOb3wMqxGagmMVj576r0BLenbajpHIe+OgGq8Os4P6mLRSrWsFJh3RvVNPD2Z/KVRaGAJ5IKikS/RdTHtwClnRKfC1w1BGZ3lLJNZJV5OxYHw0HgYaUg1LR+/VXaDkj4hiEm1FEgxSliUrE0i2+0hyv
+ aIIkU53f
+ aeMR73uX2itfVPxd/psTHIULy7epxs+D+6iZUqgZzLQgyvMKx/z8JIxv39BN89NOWGu6J30NaWtVBBB/m1joXLYYvEqBQA5oU720RIiVAvBlr2Wisno09meVazIZOvVwWVmywqyzmjcZn0KAUlEYrXy7xdOczaaSCQKEgIQtOhOZDFcOgKuwEuueL/W1YaNFcAu95l15hcO/tk/RFh6aVD0oDirWuru2VBJwBqcreWGY2oDpEpxdk2hXipiak10WDdPHOQWV0uFNjJvUi8ZlXlYlvpmOc+IHAPfZEh1xjKcxMmi+bk1aRVqAbkuhSuZg27zV/0xZwov4fesB6niW+f1kgrukNOIBhTyw64ALDkxWk95FNnbPMIuJU1TSugPTvulC8/cbrGcV7U51Y55q0uGbGP0u1GrsKKjluSwXJyWMR0+hc39Ghr3ooYgEegBYPIjWKVJvxIZ9bwK0MZykVjd/x/s+erItoeIhYKTJ2OKCpNX88lv33NqQzFQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -244,104 +136,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 21, 2025 at 06:35:42PM +0900, Harry Yoo wrote:
-> KASAN unconditionally references kasan_early_shadow_{p4d,pud}.
-> However, these global variables may not exist depending on the number of
-> page table levels. For example, if CONFIG_PGTABLE_LEVELS=3, both
-> variables do not exist. Although KASAN may refernce non-existent
-> variables, it didn't break builds because calls to {pgd,p4d}_populate()
-> are optimized away at compile time.
->
-> However, {pgd,p4d}_populate_kernel() is defined as a function regardless
-> of the number of page table levels, so the compiler may not optimize
-> them away. In this case, the following linker error occurs:
->
-> ld.lld: error: undefined symbol: kasan_early_shadow_p4d
-> >>> referenced by init.c:260 (/home/hyeyoo/mm-new/mm/kasan/init.c:260)
-> >>>               mm/kasan/init.o:(kasan_populate_early_shadow) in archive vmlinux.a
-> >>> referenced by init.c:260 (/home/hyeyoo/mm-new/mm/kasan/init.c:260)
-> >>>               mm/kasan/init.o:(kasan_populate_early_shadow) in archive vmlinux.a
-> >>> did you mean: kasan_early_shadow_pmd
-> >>> defined in: vmlinux.a(mm/kasan/init.o)
->
-> ld.lld: error: undefined symbol: kasan_early_shadow_pud
-> >>> referenced by init.c:263 (/home/hyeyoo/mm-new/mm/kasan/init.c:263)
-> >>>               mm/kasan/init.o:(kasan_populate_early_shadow) in archive vmlinux.a
-> >>> referenced by init.c:263 (/home/hyeyoo/mm-new/mm/kasan/init.c:263)
-> >>>               mm/kasan/init.o:(kasan_populate_early_shadow) in archive vmlinux.a
-> >>> referenced by init.c:200 (/home/hyeyoo/mm-new/mm/kasan/init.c:200)
-> >>>               mm/kasan/init.o:(zero_p4d_populate) in archive vmlinux.a
-> >>> referenced 1 more times
->
-> Therefore, to allow calls to {pgd,p4d}_populate_kernel() to be optimized
-> out at compile time, define {pgd,p4d}_populate_kernel() as macros.
-> This way, when pgd_populate() or p4d_populate() are simply empty macros,
-> the corresponding *_populate_kernel() functions can also be optimized
-> away.
->
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+Several selftests subdirectories duplicated the define __maybe_unused,
+leading to redundant code. Moved to kselftest.h header and removed
+other definition.
 
-This looks good, other than the nit below re: a comment, I think when we
-are doing this kind of thing it's necessary to spell out plainly why
-exactly we're doing it because it's not obvious at first glance.
+This addresses the duplication noted in the proc-pid-vm warning fix
 
-Anyway have checked locally and all good and LGTM code-wise so aside from
-above:
+Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+Link:https://lore.kernel.org/lkml/20250820143954.33d95635e504e94df01930d0@linux-foundation.org/
 
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Signed-off-by: Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>
+---
+ tools/testing/selftests/kselftest.h                    | 4 ++++
+ tools/testing/selftests/landlock/audit.h               | 6 ++----
+ tools/testing/selftests/landlock/common.h              | 4 ----
+ tools/testing/selftests/mm/pkey-helpers.h              | 3 ---
+ tools/testing/selftests/net/psock_lib.h                | 4 ----
+ tools/testing/selftests/perf_events/watermark_signal.c | 2 --
+ tools/testing/selftests/proc/proc-pid-vm.c             | 4 ----
+ tools/testing/selftests/ublk/utils.h                   | 2 --
+ 8 files changed, 6 insertions(+), 23 deletions(-)
 
-> ---
->
-> While the description is quite verbose, it is intended to be fold-merged
-> into patch [1] of the page table sync series V5.
->
-> [1] https://lore.kernel.org/linux-mm/20250818020206.4517-3-harry.yoo@oracle.com/
->
->  include/linux/pgalloc.h | 26 ++++++++++++--------------
->  1 file changed, 12 insertions(+), 14 deletions(-)
->
-> diff --git a/include/linux/pgalloc.h b/include/linux/pgalloc.h
-> index 290ab864320f..8812f842978f 100644
-> --- a/include/linux/pgalloc.h
-> +++ b/include/linux/pgalloc.h
-> @@ -5,20 +5,18 @@
->  #include <linux/pgtable.h>
->  #include <asm/pgalloc.h>
->
-> -static inline void pgd_populate_kernel(unsigned long addr, pgd_t *pgd,
-> -				       p4d_t *p4d)
-> -{
-> -	pgd_populate(&init_mm, pgd, p4d);
-> -	if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_PGD_MODIFIED)
-> -		arch_sync_kernel_mappings(addr, addr);
-> -}
-> +#define pgd_populate_kernel(addr, pgd, p4d)				\
-> +	do {								\
-> +		pgd_populate(&init_mm, pgd, p4d);			\
-> +		if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_PGD_MODIFIED)	\
-> +			arch_sync_kernel_mappings(addr, addr);		\
-> +	} while (0)
->
-> -static inline void p4d_populate_kernel(unsigned long addr, p4d_t *p4d,
-> -				       pud_t *pud)
-> -{
-> -	p4d_populate(&init_mm, p4d, pud);
-> -	if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_P4D_MODIFIED)
-> -		arch_sync_kernel_mappings(addr, addr);
-> -}
-> +#define p4d_populate_kernel(addr, p4d, pud)				\
-> +	do {								\
-> +		p4d_populate(&init_mm, p4d, pud);			\
-> +		if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_P4D_MODIFIED)	\
-> +			arch_sync_kernel_mappings(addr, addr);		\
-> +	} while (0)
->
+diff --git a/tools/testing/selftests/kselftest.h b/tools/testing/selftests/kselftest.h
+index c3b6d2604b1e..661d31c4b558 100644
+--- a/tools/testing/selftests/kselftest.h
++++ b/tools/testing/selftests/kselftest.h
+@@ -92,6 +92,10 @@
+ #endif
+ #define __printf(a, b)   __attribute__((format(printf, a, b)))
+ 
++#ifndef __maybe_unused
++#define __maybe_unused __attribute__((__unused__))
++#endif
++
+ /* counters */
+ struct ksft_count {
+ 	unsigned int ksft_pass;
+diff --git a/tools/testing/selftests/landlock/audit.h b/tools/testing/selftests/landlock/audit.h
+index b16986aa6442..02fd1393947a 100644
+--- a/tools/testing/selftests/landlock/audit.h
++++ b/tools/testing/selftests/landlock/audit.h
+@@ -20,14 +20,12 @@
+ #include <sys/time.h>
+ #include <unistd.h>
+ 
++#include "../kselftest.h"
++
+ #ifndef ARRAY_SIZE
+ #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
+ #endif
+ 
+-#ifndef __maybe_unused
+-#define __maybe_unused __attribute__((__unused__))
+-#endif
+-
+ #define REGEX_LANDLOCK_PREFIX "^audit([0-9.:]\\+): domain=\\([0-9a-f]\\+\\)"
+ 
+ struct audit_filter {
+diff --git a/tools/testing/selftests/landlock/common.h b/tools/testing/selftests/landlock/common.h
+index 88a3c78f5d98..9acecae36f51 100644
+--- a/tools/testing/selftests/landlock/common.h
++++ b/tools/testing/selftests/landlock/common.h
+@@ -22,10 +22,6 @@
+ 
+ #define TMP_DIR "tmp"
+ 
+-#ifndef __maybe_unused
+-#define __maybe_unused __attribute__((__unused__))
+-#endif
+-
+ /* TEST_F_FORK() should not be used for new tests. */
+ #define TEST_F_FORK(fixture_name, test_name) TEST_F(fixture_name, test_name)
+ 
+diff --git a/tools/testing/selftests/mm/pkey-helpers.h b/tools/testing/selftests/mm/pkey-helpers.h
+index ea404f80e6cb..fa15f006fa68 100644
+--- a/tools/testing/selftests/mm/pkey-helpers.h
++++ b/tools/testing/selftests/mm/pkey-helpers.h
+@@ -84,9 +84,6 @@ extern void abort_hooks(void);
+ #ifndef noinline
+ # define noinline __attribute__((noinline))
+ #endif
+-#ifndef __maybe_unused
+-# define __maybe_unused __attribute__((__unused__))
+-#endif
+ 
+ int sys_pkey_alloc(unsigned long flags, unsigned long init_val);
+ int sys_pkey_free(unsigned long pkey);
+diff --git a/tools/testing/selftests/net/psock_lib.h b/tools/testing/selftests/net/psock_lib.h
+index 6e4fef560873..067265b0a554 100644
+--- a/tools/testing/selftests/net/psock_lib.h
++++ b/tools/testing/selftests/net/psock_lib.h
+@@ -22,10 +22,6 @@
+ 
+ #define PORT_BASE			8000
+ 
+-#ifndef __maybe_unused
+-# define __maybe_unused		__attribute__ ((__unused__))
+-#endif
+-
+ static __maybe_unused void pair_udp_setfilter(int fd)
+ {
+ 	/* the filter below checks for all of the following conditions that
+diff --git a/tools/testing/selftests/perf_events/watermark_signal.c b/tools/testing/selftests/perf_events/watermark_signal.c
+index e03fe1b9bba2..b3a72f0ac522 100644
+--- a/tools/testing/selftests/perf_events/watermark_signal.c
++++ b/tools/testing/selftests/perf_events/watermark_signal.c
+@@ -17,8 +17,6 @@
+ 
+ #include "../kselftest_harness.h"
+ 
+-#define __maybe_unused __attribute__((__unused__))
+-
+ static int sigio_count;
+ 
+ static void handle_sigio(int signum __maybe_unused,
+diff --git a/tools/testing/selftests/proc/proc-pid-vm.c b/tools/testing/selftests/proc/proc-pid-vm.c
+index 978cbcb3eb11..2a72d37ad008 100644
+--- a/tools/testing/selftests/proc/proc-pid-vm.c
++++ b/tools/testing/selftests/proc/proc-pid-vm.c
+@@ -47,10 +47,6 @@
+ #include <sys/resource.h>
+ #include <linux/fs.h>
+ 
+-#ifndef __maybe_unused
+-#define __maybe_unused __attribute__((__unused__))
+-#endif
+-
+ #include "../kselftest.h"
+ 
+ static inline long sys_execveat(int dirfd, const char *pathname, char **argv, char **envp, int flags)
+diff --git a/tools/testing/selftests/ublk/utils.h b/tools/testing/selftests/ublk/utils.h
+index 36545d1567f1..a852e0b7153e 100644
+--- a/tools/testing/selftests/ublk/utils.h
++++ b/tools/testing/selftests/ublk/utils.h
+@@ -2,8 +2,6 @@
+ #ifndef KUBLK_UTILS_H
+ #define KUBLK_UTILS_H
+ 
+-#define __maybe_unused __attribute__((unused))
+-
+ #ifndef min
+ #define min(a, b) ((a) < (b) ? (a) : (b))
+ #endif
+-- 
+2.43.0
 
-Can we have a quick comment above these explaining why they have to be
-macros? Thanks!
-
->  #endif /* _LINUX_PGALLOC_H */
-> --
-> 2.43.0
->
 
