@@ -4,90 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA6B0CA0EFF
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 20:29:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 835BFCA0FE2
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 20:32:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40ED38E004C; Thu, 21 Aug 2025 16:29:59 -0400 (EDT)
+	id CEED98E004D; Thu, 21 Aug 2025 16:32:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BF8B8E0048; Thu, 21 Aug 2025 16:29:59 -0400 (EDT)
+	id CC69B8E0048; Thu, 21 Aug 2025 16:32:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2AE158E004C; Thu, 21 Aug 2025 16:29:59 -0400 (EDT)
+	id BDC738E004D; Thu, 21 Aug 2025 16:32:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 192038E0048
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:29:59 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A88298E0048
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:32:46 -0400 (EDT)
 Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BF2DB160520
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 20:29:58 +0000 (UTC)
-X-FDA: 83801906076.13.17B87AB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D86BD140004
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 20:29:56 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5A47E138C2C
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 20:32:46 +0000 (UTC)
+X-FDA: 83801913132.13.3EA56FE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 99E931A0003
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 20:32:44 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
 	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=redhat.com (policy=quarantine);
-	spf=pass (imf23.hostedemail.com: domain of "SRS0=upZg=3B=redhat.com=david@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=upZg=3B=redhat.com=david@kernel.org"
+	spf=pass (imf19.hostedemail.com: domain of "SRS0=upZg=3B=redhat.com=david@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=upZg=3B=redhat.com=david@kernel.org";
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=redhat.com (policy=quarantine)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755808197;
+	s=arc-20220608; t=1755808364;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4yLFBFPucSphBvh8G1wo9pC+YhZFsib1p8DH3Ndsgg8=;
-	b=eHtHxhd6gu2dpyYR+1a9JsjQG5wfIqX7y65CFH2lEG3XrxoxWtp/xG9ppZtTnXhXbsylT8
-	NO254THxoseSwUvVr9DSF7vyiX6CV+CTlmW9a6CekCNmvyDcancF0OQlwySLEwpggJrcLd
-	TgxRazjOfj2TtkPLRllmQgyMwYuZzmk=
+	bh=6cYPmh3HQgcyfvWz/UYplifrNr+DYa+NwnJTcdL0h7M=;
+	b=LhbJk41gfRPdHKAOBt28Y2ZzXToSYjWz39HLbaVObmXFNVx8O989VOcfFOmTTcpApKjm75
+	/r/ZF0jCBJy1dfucsYft3soYIDg95QQ7XStt4EkZDl/LwM1JNvEKiUkJNzwWMVXImfLwJv
+	cF0fTcmaE+J58Y4QcOiO7v1tFEVg+XU=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
+	imf19.hostedemail.com;
 	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=redhat.com (policy=quarantine);
-	spf=pass (imf23.hostedemail.com: domain of "SRS0=upZg=3B=redhat.com=david@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=upZg=3B=redhat.com=david@kernel.org"
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755808197; a=rsa-sha256;
+	spf=pass (imf19.hostedemail.com: domain of "SRS0=upZg=3B=redhat.com=david@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=upZg=3B=redhat.com=david@kernel.org";
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=redhat.com (policy=quarantine)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755808364; a=rsa-sha256;
 	cv=none;
-	b=CKkMHWxmBVgYmjFCNQj7/B1dIeBoyHv6g0LNdS5437wa9Q9Kgk4iEmX+CU4l1CjBGrLbFH
-	1X3NO/YW7WLGg4gVVHh80uSYh3/kikrYqXXPd7obwas/wvF6gA7T5nCBOBQMA1P1L8uQ7F
-	RcmAkEhlt90eS56234/R9yD3bEslin0=
+	b=gLYNCOsKfct5iI6Ewnzly3oObRjfDEizdeA7A7EkHxiTl6IJR73iodfZiz8vbpCWjHxTx/
+	rFBuY+LBfpj2Gwj/zTLpxw33M8NbDD6c/YmqCkm6ErBXkaIl6KjIZbaLz/zAgDDfYqcTZi
+	zLKfFZPDzWR801JVo2KTFu+tLmXRLUU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8F9F5449B7;
-	Thu, 21 Aug 2025 20:29:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AC82C4CEF4;
-	Thu, 21 Aug 2025 20:29:43 +0000 (UTC)
-Message-ID: <2926d7d9-b44e-40c0-b05d-8c42e99c511d@redhat.com>
-Date: Thu, 21 Aug 2025 22:29:41 +0200
+	by tor.source.kernel.org (Postfix) with ESMTP id 92481601F8;
+	Thu, 21 Aug 2025 20:32:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9632BC4CEEB;
+	Thu, 21 Aug 2025 20:32:31 +0000 (UTC)
+Message-ID: <1a13a5cb-4312-4c01-827b-fa8a029df0f1@redhat.com>
+Date: Thu, 21 Aug 2025 22:32:29 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 31/35] crypto: remove nth_page() usage within SG entry
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>,
- Alexander Potapenko <glider@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
- Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
+Subject: Re: [PATCH RFC 33/35] kfence: drop nth_page() usage
+To: linux-kernel@vger.kernel.org
+Cc: Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Brendan Jackman <jackmanb@google.com>,
+ Christoph Lameter <cl@gentwo.org>, Dennis Zhou <dennis@kernel.org>,
  dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
  iommu@lists.linux.dev, io-uring@vger.kernel.org,
  Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
  Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
  kasan-dev@googlegroups.com, kvm@vger.kernel.org,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-arm-kernel@axis.com,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
  linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
  linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
  linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
  linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
  linux-scsi@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Marco Elver <elver@google.com>, Marek Szyprowski <m.szyprowski@samsung.com>,
- Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, netdev@vger.kernel.org,
- Oscar Salvador <osalvador@suse.de>, Peter Xu <peterx@redhat.com>,
- Robin Murphy <robin.murphy@arm.com>, Suren Baghdasaryan <surenb@google.com>,
- Tejun Heo <tj@kernel.org>, virtualization@lists.linux.dev,
- Vlastimil Babka <vbabka@suse.cz>, wireguard@lists.zx2c4.com, x86@kernel.org,
- Zi Yan <ziy@nvidia.com>
+ Marek Szyprowski <m.szyprowski@samsung.com>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
+ Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+ virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
+ wireguard@lists.zx2c4.com, x86@kernel.org, Zi Yan <ziy@nvidia.com>
 References: <20250821200701.1329277-1-david@redhat.com>
- <20250821200701.1329277-32-david@redhat.com>
- <CAHk-=wjGzyGPgqKDNXM6_2Puf7OJ+DQAXMg5NgtSASN8De1roQ@mail.gmail.com>
+ <20250821200701.1329277-34-david@redhat.com>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -134,21 +131,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAHk-=wjGzyGPgqKDNXM6_2Puf7OJ+DQAXMg5NgtSASN8De1roQ@mail.gmail.com>
+In-Reply-To: <20250821200701.1329277-34-david@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: njs7ew9gdana1kyypybmnsr4ihm3zfii
+X-Rspamd-Queue-Id: 99E931A0003
+X-Stat-Signature: fzkq77wnf317g77gj9tywr9eo6yytp4p
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D86BD140004
 X-Rspamd-Pre-Result: action=add header;
 	module=dmarc;
 	Action set by DMARC
-X-Rspamd-Server: rspam05
 X-Rspam: Yes
-X-HE-Tag: 1755808196-290368
-X-HE-Meta: U2FsdGVkX18LuZ9ciJ8EuE0pLr/pZ336UOp7B+1UuZnHcVUS3CBXVbnm3uPM6Wo730B3HyGEtib/e+KBR6xuzx1AgmCeLLhIDGWbgto/MMnxpyYG4oMwb7TQKkViwAadSyTTtvSQ5poym3tgXTWMETLjBflYjk9uUm6mXi7ACWpEvOWqLjY2Or0tsO/YJ1/fHi4NvJvryVv0TqTd+/biQ6S3bFmDAe0cue76DVyut6yqIxhugxcS9qoA5mS15OlX4BGDaaRm4pOocwKVVjhqvC4/+tael5SYlnMEGIIfMQtC5W7C/GKFTJyBpcKbU504upu6qU9pI7To3WtZz0Fjey5xlNH/Dt+p+VNtfat6t31GJ+UzHIjFErYScLf56BZo0zvKtMCDvKUkTAm2nu3nXRNlyTYyQuivm3KujainZZEJsbQ9+hLepFlNJb+76p5jIuYfhLX/LEm5PWUjAbdH+jOpP6F3VFp0iTeDdL1JeBStZZPilES+Ge8/37i4nSgZrD2uIwBo81rnYjRZB2khMkOAvRthnhHzELdfnFFa8RkvKo5GGS6IoXitEhKMS4av2Mmj5riICrGmQrVnntHty2U7Junbkx/YbxQlrtnyy/x36aGMWxq9z69LSQQTNGEwXRs9CjljKOyNBPVfPXqNE3efd8rlxvyMbQgN047oAIilhEOXNv9xyhjya085m1fl9vb5S5WP+ge752/6NT/GLHNfVIorfLQaOHM4TxJ+lmgkcc9mhl93RTKwA1cqk9MLZMOJ2/tNRBffCiQV1CDC8Mi3QRJeLMPk0yN8orjnFTRKXGsUrmyO4dc9TAY7GYLfGT5iFwjHsHnBkJmZYMfcbdKmlgX0CBub/+SSzqqOYGjyfPyIPE5rBKY/W0IEaPb9o8OtzjSounSMzuDjIHa9Fw9nV5jCzAJUsHk0lrH96Nrll3MAxgc4GZnEI44BpHo+nUf1xO4UQ1+3I5TsvWM
- i6we0y1Z
- 54ZEqmpDay9VEmLwBTrsfkKQ/ZAX58G0GAuy83Ki9ZO8l7MJZX66KslwXvD9PQk6uh595ANPzCqrcgl2X3IBE9Q/o5+PdXK+IlweGHGdhdCdn/iaMBhq+TFhLh8FD9HGuiT4geRR8i/xxT8TLzT4POLvGOfqMzRC2t3I0/HvIkU3G1gcAyie1+mVCHI36z84EQ4jSu1vLJojHGKym3cKektlkNCF2jvLrC8U6JDTzFvG17P8DBjyKphsiIPsZ2REDlqljR0C0p+oP9r+I4iIX2F/AV1PBSE6SMkFb9CEq/xFadCHwWMma4TMVBd+6bULxRsysXVSjs5PMu3fPPzSA41gcQtn4ROXQrsJOFhbk1tyKlqd2+hg9w7DBBVZAcV5Ce5yuueTtcDqR2KV3H2EQH2XTFEsGDcWcMt6HH52a5WNb3w2y8i/SHS/E0BRpmikNrUr1tJj+odGyxAzX7n84s3UCChHVWbUAOc2H
+X-HE-Tag: 1755808364-858794
+X-HE-Meta: U2FsdGVkX19oL7RGqYoXO/ZPK7M/cA2YeiQmeelfbI5plDt/3LgUJZmHnD/9h7hfnaqCONZ4CDAcYfTxMzQMZ4c4YPosCw0Qmf2J9P7qGoYSwtBXMszsyst9Bagap5Th55KRoz8U8AmW5WbZ3b6UlqHJ9gtEXjD5eLftXO4U9bVBuUcOTuHvvs4bBSaTpLmEXEF4z8HJeOkMc9FO/MyJpYkUFv2y3LjqErWqllGMMvfa4M3vEpcLbQ/CoyHGcqzqT5rDo6w9zUngu1L4v+nD+LmQyhWttmyA71E4UEpxtwVehZjlV1qJXKe5WoTFcss28pwQtCDWselqG/KiXxJsWVvP/jIRHrLuLOKsucJkZfAA1WMmxqODzQl5WmKUOyH7U7jbnu8vjJPEBKiPdNnkjXrML9np9eygdxds5eQU3DNCQAk3Km0DJfBvKdiiV7Lb2slzTjmKFcBnSpIgNkQ8jccjXewH/k5FbpQJDxmQLYLixX5Jt+6rk9ooNn6PTI+9lTKu1U3PiYUfsUx0h0/Bd01jUqcHmWhWE0tFLmcccRdnlRa/akwBtnHb7kHlvSt1+jP2vsCFbrKwHF/tf2d/0NQ2QnDrRgf9aFGIwEwKvj60tSQM+MENL1CYQ35RWjzecw+aYwyeDy5pRlCLWXHwHWZiMou24+IyhOIBUdaIcVUUX98U5uy2tRxH3onfxnPMwih8vY8XNecbteSV1QR6/CPnIds+vYM5q8q1qew5gX/fm0xAfcDT0ceprgBOU4npa/JuHNRQ9P5kp7KP24HS+nEIO8pi7ci84W6S+ufgG5utTGWmSNYIoclKbnbIRK9AudO8OcC4koHzu58BrwDcXvQvfRGp84DYXmkhTFA8nF9d1TCbQjIu80xR/V00aAyiLWySlG3CdMsIdlV235kbK+0w4rVlaSEILEB91Ft/91Ps5lNQ+asluWAHXbIsLxYKcsFCtKnZSlSQjr3Q3Io
+ 5h6YIhkw
+ b7VoqZP/rVRe2cbk2/3jSqI4jCB/XVvB+NZXKSLwzLtVokgOjju9AbTYPPalttdxDygUR2dx//RgXMrr668WR5yHmKM2aqtI3OuRsoyvOb/A8c8tKOuY6++JTYmehY9pPZ7nGSKS4OIQS5pd7ddTNL/m5+mlq02sbQop9VAittZv07r1nuj5WkVsgjG4dt0zl+nse6EDm824PI0jw3Qd5H04sAkIO6P6vrq3wlVzryEVKCO2pV0WgkFcSU+lKlSQ4Xw5Uewyli4P/WkhDYUzSnpvakhkKjAVwTJvbYdBO1ia9RLcpNO/UDlwz4pI4D7+UuivFARRJ/Y3GU4pWHGGTR1y9oT5aWhJ9H8eCLg4OXMUERllXfyaUftYJwii4JCIpXmcaOJ/HpPv8iPm5srdnFHJYG184kzH3zMnqusAXuMuPam5IXBw5Zli456uysi4sMYqE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -157,43 +154,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 21.08.25 22:24, Linus Torvalds wrote:
-> On Thu, 21 Aug 2025 at 16:08, David Hildenbrand <david@redhat.com> wrote:
->>
->> -       page = nth_page(page, offset >> PAGE_SHIFT);
->> +       page += offset / PAGE_SIZE;
+On 21.08.25 22:06, David Hildenbrand wrote:
+> We want to get rid of nth_page(), and kfence init code is the last user.
 > 
-> Please keep the " >> PAGE_SHIFT" form.
-
-No strong opinion.
-
-I was primarily doing it to get rid of (in other cases) the parentheses.
-
-Like in patch #29
-
--	/* Assumption: contiguous pages can be accessed as "page + i" */
--	page = nth_page(sg_page(sg), (*offset >> PAGE_SHIFT));
-+	page = sg_page(sg) + *offset / PAGE_SIZE;
-
+> Unfortunately, we might actually walk a PFN range where the pages are
+> not contiguous, because we might be allocating an area from memblock
+> that could span memory sections in problematic kernel configs (SPARSEMEM
+> without SPARSEMEM_VMEMMAP).
 > 
-> Is "offset" unsigned? Yes it is, But I had to look at the source code
-> to make sure, because it wasn't locally obvious from the patch. And
-> I'd rather we keep a pattern that is "safe", in that it doesn't
-> generate strange code if the value might be a 's64' (eg loff_t) on
-> 32-bit architectures.
+> We could check whether the page range is contiguous
+> using page_range_contiguous() and failing kfence init, or making kfence
+> incompatible these problemtic kernel configs.
 > 
-> Because doing a 64-bit shift on x86-32 is like three cycles. Doing a
-> 64-bit signed division by a simple constant is something like ten
-> strange instructions even if the end result is only 32-bit.
-
-I would have thought that the compiler is smart enough to optimize that? 
-PAGE_SIZE is a constant.
-
+> Let's keep it simple and simply use pfn_to_page() by iterating PFNs.
 > 
-> And again - not the case *here*, but just a general "let's keep to one
-> pattern", and the shift pattern is simply the better choice.
 
-It's a wild mixture, but I can keep doing what we already do in these cases.
+Fortunately this series is RFC due to lack of detailed testing :P
+
+Something gives me a NULL-pointer pointer here (maybe the virt_to_phys()).
+
+Will look into that tomorrow.
 
 -- 
 Cheers
