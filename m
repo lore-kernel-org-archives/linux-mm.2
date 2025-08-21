@@ -2,104 +2,108 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D5200CA0EDC
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 06:12:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E1B2CA0EF8
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 06:19:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33DD38E000C; Thu, 21 Aug 2025 02:12:01 -0400 (EDT)
+	id CA02A8E0015; Thu, 21 Aug 2025 02:19:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EF928E0002; Thu, 21 Aug 2025 02:12:01 -0400 (EDT)
+	id C76488E0002; Thu, 21 Aug 2025 02:19:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 205698E000C; Thu, 21 Aug 2025 02:12:01 -0400 (EDT)
+	id B8C1E8E0015; Thu, 21 Aug 2025 02:19:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 114FB8E0002
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 02:12:01 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8005682D5D
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 06:12:00 +0000 (UTC)
-X-FDA: 83799744000.24.5C1AEF5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C4C0C80010
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 06:11:58 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qP+aS7CD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755756719; a=rsa-sha256;
-	cv=none;
-	b=BGrOVP6tY/fbiadn2nbM2/MXBSa1hLwg9nHv/EBHXt74fDqHsVjyS37yHbMOCc78d2LKTs
-	/c87gQocS+NQThVtTlSluUxmyzUCdz4pRID1RMAtLgoW4+jz/QRzKoj9zP4nILdtOyhGVQ
-	aH66PcSxQaCW+SoMjf8UHsZpHrTleBY=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qP+aS7CD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A59DD8E0002
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 02:19:31 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2BEAA1DBE88
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 06:19:31 +0000 (UTC)
+X-FDA: 83799762942.13.4B2BCB9
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 41313180005
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 06:19:28 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=qJYDM3g5;
+	spf=pass (imf24.hostedemail.com: domain of usama.anjum@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755756719;
+	s=arc-20220608; t=1755757169;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=44grnMZ+lfm7bRh7/NW89Mb44lGvvNMD/U+BuxtC924=;
-	b=i78XR8Y9hfdHlp0AjE5vbVmLNjx3JogIFrx8tJeTyWf4djayKfUQ+ehpxLTIPsRfhNhaf8
-	7MPMKaJ3WGwuRGeGZxLHI/1MfEXW4CzYmEj5CD7zz20Rxb02H0LMA1LoVhsi676FAXUBA7
-	t5epdvS54Lbc7W5L1xmFRr72wiz5NTI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5FF9644A34;
-	Thu, 21 Aug 2025 06:11:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D8EFC4CEED;
-	Thu, 21 Aug 2025 06:11:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755756717;
-	bh=+PhorBsR6XMQ86wn4MXz/aLDVw7PeqDWpjqLZ/xx6is=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qP+aS7CDTcx3AaSCB8aROP8Z3j5y7rpn2d+cQ4/5rom6GopCD2X8201ocHvfjnbPq
-	 o/Cqmum51WzIu7FGUPN30V/Q1n6m5dy0uwtUrdhJW1EV/uJuj/LsDDJ2sDRmKQqJo2
-	 CDMaQEuOQUOPifZxG8sSL97Jjg1Azpr1lNncNe8HEw0UAEVpeN7hHxCIuv8ABSHBtf
-	 ah/5gVJtO3HEOHaOFnydT/vSubHbRhIUY++u+Vr8YnV3gnCseqsBygmFo/gYGa45bo
-	 T7HdPJpFfC9C6URSWpKF+U5IQlLjeZifbgPzsNweYN9q2OxnY1BS8BTLpZ4uV/EAXI
-	 AaBmI9I71YYBw==
-Date: Thu, 21 Aug 2025 09:11:46 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Yann Ylavic <ylavic.dev@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-modules@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH v3 8/8] x86/ftrace: enable EXECMEM_ROX_CACHE for ftrace
- allocations
-Message-ID: <aKa4otIF6AbhD2X3@kernel.org>
-References: <20250713071730.4117334-1-rppt@kernel.org>
- <20250713071730.4117334-9-rppt@kernel.org>
- <20250820184743.0302a8b5@gandalf.local.home>
+	bh=hlCimOWmVNcNutaMxR1L4yVEDOntt3HAB7gKbGV25Fw=;
+	b=n/cVpJYbM+TtLpWLkVCocYkaMSDkfPrvTkU3Zh84EfbaWY1n0V8ijIkcKRfr8WtGM7/DeT
+	rdmWNDfbx7SqywQ8GgNr8ZhKMc8Z4xXPoonpN9RJ4rHttD7sIpfky5HooOMgrtUYbV3h4U
+	IaO3biBQinhRnO7vXuWJzskwQ1v7i5I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755757169; a=rsa-sha256;
+	cv=none;
+	b=G5/cIrXPlGfe6V8Z3mMg3IOzfUFHVuFJximjI2MhC4O0NhP6cpnKykdODC4meAgFut92AB
+	mBB0ieQI2jWO7mKF3zWQbSDBW78PKbm4muuPMoZoOBq/+ReYhUvyADjN/n2z/tn2dnnySp
+	5wner5UrQ0ZN7rjtePijwJELxdkablQ=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=qJYDM3g5;
+	spf=pass (imf24.hostedemail.com: domain of usama.anjum@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1755757166;
+	bh=I4zrmHfo3KUrLNPHF7/jdsoSqAbmt4bHTj4T59OIe/w=;
+	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
+	b=qJYDM3g5NXoL0QCYPIMItwhZAY7s/w47WqfLvieaC0s4EC2hPZ+XScMGvi1G6NxWM
+	 FYEDZeHOND36YeFiwA08wY/hu3sM6Zgpau/MZloXBUJAKXmJCNsgX9/CAgjiu9cn2q
+	 Z7aN1qLnPUFlGy3CMcCZaoIslFGSiLmrwRXyqxK+RFUdcs6CkOKY4C50XGlqbbn8CC
+	 nG8K9/SakCWfA3yyKOcw9CoAAR6HHfO9giUxaXK+uK+qgHezpIO6LfsyMR7/1E9I0C
+	 9zoSuhJnacA1Idu3dDuyeSxJ03mlbh7AijE75W3/Ik9J+zXsSuKLjYhMz5oVjqpR6B
+	 64EbxkdmLlX9Q==
+Received: from [192.168.100.175] (unknown [103.151.43.82])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: usama.anjum)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 845C617E0071;
+	Thu, 21 Aug 2025 08:19:21 +0200 (CEST)
+Message-ID: <46dce2ac-adb5-4a6b-8847-fe214c1599a7@collabora.com>
+Date: Thu, 21 Aug 2025 11:19:20 +0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250820184743.0302a8b5@gandalf.local.home>
-X-Rspamd-Server: rspam03
+User-Agent: Mozilla Thunderbird
+Cc: usama.anjum@collabora.com, kernel@collabora.com
+Subject: Re: [PATCH v2 1/8] selftests/mm: Add -Wunreachable-code and fix
+ warnings
+To: Kevin Brodsky <kevin.brodsky@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Leon Romanovsky <leon@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, Shuah Khan <shuah@kernel.org>
+References: <20250731160132.1795351-1-usama.anjum@collabora.com>
+ <20250731160132.1795351-2-usama.anjum@collabora.com>
+ <c09a2a13-8571-44e5-b780-c704598df764@arm.com>
+Content-Language: en-US
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+In-Reply-To: <c09a2a13-8571-44e5-b780-c704598df764@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C4C0C80010
-X-Stat-Signature: p7gudaeb4o764mdnymrbpitwzhaee8ec
-X-HE-Tag: 1755756718-446761
-X-HE-Meta: U2FsdGVkX1+FwTE6ESuW+vMfiV5oPf39AMZTb+vk3z8xtx1qFMEMfeJ1Eprqa2Tys26eCRU5xG79TwMFNDbOMxlbrWSmYzKJUfOUvVWLxaeZknAfo9PGehxgxyTFWBjFeHUEevkbO0oEMJvf87CSkbPeQtNvC1ywPJT/pvdoZMvF5zf/mPHG/N2dtOUxhF+sdpWk/Ln7GbIhNDuGcg2BTrCNCjGAlhufkQ0K4OZ5gQsG2lHIAcEZWXwGuOfbtYWl04ESrbAxkSg7sHp4xaf4C6FHJa+hmx1CdIEnK7A1epB47ugxwCdA/0RcLYnf4PzqbTmOAaVtX9+pne7gdzws97r8aIc5+m8mBmxHoW7hgxwL8VY9boIS8KjJ9JSd9i9uRpZtgDc/75U4Rm+oSPvcSGkAN8186UiuGBI9IHfDC2ezafUD9ixgxWvOD7f+TI++mnZCHWxgyCX0FrZo4YVha8mFJdB6eQRtdjRombK9m/4TKJcCVK9/iIePS6BPXsfedSAgJ3yfLLFdql3WoMoDu1KR6C/Atz0VT60fZ52XZO1+MwbZlsZth9SQaCnxt21pv73xns+krS1aA/3Ct9y2Hn2X+McRX/SBPNBWd8ChKKr3S3JhvUgQqmuaaP9d6pToZmy4pzLvmjrjpIff26tT7D2pDUmx7/kLfoqkzLjjo07EdRLFuzRykPQtQuHC64rT+fz8N5y2O8uESSazSvQ94gX+8aXjwcGU8VrI3q+bllAE+NqHaXQp2VT0gtGi/szdpm/ijaoaSr5ctf+6PuL6rrhM5rFEbk0p8R0BLcfBsPpwVOXCSr1oCt6S/K/mi2WF+sYxgwqDANj/M6d6aCDE5mE1yHSbv/UPx9svLtAQ5rAvEFfOT5lSA/e1UjPK3oxXdJmi9IncPh2PbaQwMU+ZjSnLOgNkuEwGknzddXYu2+vIMA1iJJIywEOtIfZTBnEtkKY0DudBKE6ZPIZ5ih8
- ZsIV1tRQ
- RQ+4vO7WRIf/p/6tZnDi2QMr3QzlQZlNWQSq3sZmHTchUTFGGkxjvIV9Zm4NIfurSqB35V6p0cIt3U5jup6TW2sLcIRnP0Jlyq+a5HDeXPuBFfP8VcoGOPPfGTZROzjH1jdiMTl1Y0dp3MH3cnsdjTjbduqFten924kRMbYy2BoOf82egY9VLuBv4Xf7SsXNIbIJkFpwydLUHlD7WqRI2BQCWOHatHxIWhXATEdP+p+4sPxsebhxi7ghnJZKnVjH27afqwIs8W90pVmp30PV4OyLaey//hYPCadDdxQMEcCTv7Qnt+fY9y+IVqtGoVmMq5TfXkQV33U8GRo48Lxg84yt79/slov4gRRMyv5OYmFl/XdB6HXWrAUrHh9b3jmw5odwxJsHM65HpufnYXr6dY5prhK04JpgAbZ9Jp73Et6bldRBzD5M+TIVqpHCNnpSGiGH1d3sYSzymtl0=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 41313180005
+X-Stat-Signature: zr4cj4xmp777egse44gxcw1c56st5kiq
+X-HE-Tag: 1755757168-601327
+X-HE-Meta: U2FsdGVkX18ByCai+hMTTjzvJyhb5znItbTZcOY0Uq/OkoiRSYNErw3YplXs83n9NRwoZqzMMwo6uyeu9JdY4Uvu0+FQWHLRyj0mNpGiI6ozxXVL4OdIKfjv80gyUUDgD2O1a8KP8UvRNDmXGett6bB49AwF1QNwi+7/mbaGI/gdECvtXc9fPYiwk/HySz8/R0K+eYLyNjVL6ZiFJ3x02avOcI36N1MLmIqP2NJA9kY9ZcEl6zB7qjRQy1Bi65lpv6iZCLGGseFOhBUJW02qb3jKQtOvebtvMjDwXSrPIvnDyWtP8qOJDN1a3CuwKiauhICLRZoBNH0GYCQfPE7jbvJmgJq9tQh+ZsgniL0KyE/YZSDwRLaL6r51Lwnr8bX4OH2bfsoIuOvTIMOsymMmu61ty63/6rxN6UJzJo5GVOt94s91nYEprGYouytbEcLsb8uxEdpNy2nu8yCXRkL6ku59YLEzYGJiDpEAbIQoD3fx1bspiS8gUpv9RQ1CsBJbRPm0yFamjnWDe5eZwr1wfb2AKiNEPZI0f8okQSrjxHaOPXEdHqqRlndqlFypz+WQ43nJlfT7FwKkGutsY4MLbBT9NdVHR2FIVC+Fv6QGYDcXk+0F6U2tRrmIgrHOI+9nli+LJlzlTFHMdaS8gdHtd9APqKFYiFALyivRhKqJazMoR5bxJZDT628OVS+BjEjr3nLZKxYIMnAvktZxViM1m1S+hmJR8H1XRnvr4vk69SsArhgf7lqgf2Ez0wYgqgzS62oRB1mSW+gnpYrYDca3T4MSRMKruFLn9u+8X++Lt4mi2ac4kL12KbkdDTn9LYJIewuN1qvA4qa/gboVaw2DwSBWhHmOw6gZG2GNTy+BQ5pyr7rmyti+O5JySnFpqaw6JIv4q//hvS3UqHRpVpk92gJF9bu2mY40UEGNdVQrS9Kuet/bFuue7N1OD/yox90Qb1xAJgWrCu6rMor/rn4
+ vYe0LyND
+ g1pfYv0fIMpy4PrNRlKZl2VQH4neYih+4qmtPodZU952BljxajJs8SqxE7ViK+OBhOrxxNvrHhkTXZjkqyyJTIeXW3ANRKYXC9WdF8hvOYWCfCTpd7FdM2JT0B47csK89ItfEZm/Kdo0WhuNQBvA6rOc2IzLSNIl2JAsRiTCKnVbBHYDdG7osIA/0P+CSgVuGS6azfXw18FmDW1V+fh2Srzt9YMkTWqHakY8HlCyDmwgVGaxr8CQQsJjoX69jysARfJZb5Q+KNbzePNfs2W7DI11UJ+ui1F4r3hDWSo6IL3Fi9f0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,95 +112,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 20, 2025 at 06:47:43PM -0400, Steven Rostedt wrote:
-> On Sun, 13 Jul 2025 10:17:30 +0300
-> Mike Rapoport <rppt@kernel.org> wrote:
+On 8/18/25 1:10 PM, Kevin Brodsky wrote:
+> On 31/07/2025 18:01, Muhammad Usama Anjum wrote:
+>> [...]
+>>
+>> diff --git a/tools/testing/selftests/mm/pkey_sighandler_tests.c b/tools/testing/selftests/mm/pkey_sighandler_tests.c
+>> index b5e076a564c95..302fef54049c8 100644
+>> --- a/tools/testing/selftests/mm/pkey_sighandler_tests.c
+>> +++ b/tools/testing/selftests/mm/pkey_sighandler_tests.c
+>> @@ -41,7 +41,7 @@ static siginfo_t siginfo = {0};
+>>   * syscall will attempt to access the PLT in order to call a library function
+>>   * which is protected by MPK 0 which we don't have access to.
+>>   */
+>> -static inline __always_inline
+>> +static __always_inline
 > 
-> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> > 
-> > For the most part ftrace uses text poking and can handle ROX memory.
-> > The only place that requires writable memory is create_trampoline() that
-> > updates the allocated memory and in the end makes it ROX.
-> > 
-> > Use execmem_alloc_rw() in x86::ftrace::alloc_tramp() and enable ROX cache
-> > for EXECMEM_FTRACE when configuration and CPU features allow that.
-> > 
-> > Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > ---
+> Thanks for this, I had this fix locally but never got to post it!
 > 
-> The "ftrace=function" kernel command line started crashing with v6.17-rc1,
-> and I bisected it down to this commit:
+>>  long syscall_raw(long n, long a1, long a2, long a3, long a4, long a5, long a6)
+>>  {
+>>  	unsigned long ret;
+>> diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+>> index 05de1fc0005b7..a85b2e393e4e8 100644
+>> --- a/tools/testing/selftests/mm/split_huge_page_test.c
+>> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
+>> @@ -296,10 +296,8 @@ void split_file_backed_thp(int order)
+>>  		ksft_exit_fail_msg("Unable to create a tmpfs for testing\n");
+>>  
+>>  	status = snprintf(testfile, INPUT_MAX, "%s/thp_file", tmpfs_loc);
+>> -	if (status >= INPUT_MAX) {
+>> +	if (status >= INPUT_MAX)
+>>  		ksft_exit_fail_msg("Fail to create file-backed THP split testing file\n");
+>> -		goto cleanup;
 > 
->  5d79c2be5081 ("x86/ftrace: enable EXECMEM_ROX_CACHE for ftrace allocations")
-> 
-> On boot I hit this:
-> 
-> [    0.159269] BUG: kernel NULL pointer dereference, address: 000000000000001c
-> [    0.160254] #PF: supervisor read access in kernel mode
-> [    0.160975] #PF: error_code(0x0000) - not-present page
-> [    0.161697] PGD 0 P4D 0
-> [    0.162055] Oops: Oops: 0000 [#1] SMP PTI
-> [    0.162619] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.17.0-rc2-test-00006-g48d06e78b7cb-dirty #9 PREEMPT(undef)
-> [    0.164141] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-> [    0.165439] RIP: 0010:kmem_cache_alloc_noprof (mm/slub.c:4237) 
-> [    0.177483] Call Trace:
-> [    0.177828]  <TASK>
-> [    0.178123] mas_alloc_nodes (lib/maple_tree.c:176 (discriminator 2) lib/maple_tree.c:1255 (discriminator 2)) 
-> [    0.178692] mas_store_gfp (lib/maple_tree.c:5468) 
-> [    0.179223] execmem_cache_add_locked (mm/execmem.c:207) 
-> [    0.179870] execmem_alloc (mm/execmem.c:213 mm/execmem.c:313 mm/execmem.c:335 mm/execmem.c:475) 
-> [    0.180397] ? ftrace_caller (arch/x86/kernel/ftrace_64.S:169) 
-> [    0.180922] ? __pfx_ftrace_caller (arch/x86/kernel/ftrace_64.S:158) 
-> [    0.181517] execmem_alloc_rw (mm/execmem.c:487) 
-> [    0.182052] arch_ftrace_update_trampoline (arch/x86/kernel/ftrace.c:266 arch/x86/kernel/ftrace.c:344 arch/x86/kernel/ftrace.c:474) 
-> [    0.182778] ? ftrace_caller_op_ptr (arch/x86/kernel/ftrace_64.S:182) 
-> [    0.183388] ftrace_update_trampoline (kernel/trace/ftrace.c:7947) 
-> [    0.184024] __register_ftrace_function (kernel/trace/ftrace.c:368) 
-> [    0.184682] ftrace_startup (kernel/trace/ftrace.c:3048) 
-> [    0.185205] ? __pfx_function_trace_call (kernel/trace/trace_functions.c:210) 
-> [    0.185877] register_ftrace_function_nolock (kernel/trace/ftrace.c:8717) 
-> [    0.186595] register_ftrace_function (kernel/trace/ftrace.c:8745) 
-> [    0.187254] ? __pfx_function_trace_call (kernel/trace/trace_functions.c:210) 
-> [    0.187924] function_trace_init (kernel/trace/trace_functions.c:170) 
-> [    0.188499] tracing_set_tracer (kernel/trace/trace.c:5916 kernel/trace/trace.c:6349) 
-> [    0.189088] register_tracer (kernel/trace/trace.c:2391) 
-> [    0.189642] early_trace_init (kernel/trace/trace.c:11075 kernel/trace/trace.c:11149) 
-> [    0.190204] start_kernel (init/main.c:970) 
-> [    0.190732] x86_64_start_reservations (arch/x86/kernel/head64.c:307) 
-> [    0.191381] x86_64_start_kernel (??:?) 
-> [    0.191955] common_startup_64 (arch/x86/kernel/head_64.S:419) 
-> [    0.192534]  </TASK>
-> [    0.192839] Modules linked in:
-> [    0.193267] CR2: 000000000000001c
-> [    0.193730] ---[ end trace 0000000000000000 ]---
+> At that point the mount() call has succeeded so I think we do want to
+> keep the goto and just print the error message instead of calling
+> replace ksft_exit_fail_msg().
+The cleanup tag does cleanup and then calls ksft_exit_fail_msg() without printing the
+actual reason of failure. So current flow seems good where information about the error
+is being printed.
 
-maple tree is initialized after ftrace, so the patch below should fix it:
+> 
+> - Kevin
+> 
+>> -	}
+>>  
+>>  	fd = open(testfile, O_CREAT|O_RDWR, 0664);
+>>  	if (fd == -1) {
 
-diff --git a/init/main.c b/init/main.c
-index 0ee0ee7b7c2c..5753e9539ae6 100644
---- a/init/main.c
-+++ b/init/main.c
-@@ -956,6 +956,7 @@ void start_kernel(void)
- 	sort_main_extable();
- 	trap_init();
- 	mm_core_init();
-+	maple_tree_init();
- 	poking_init();
- 	ftrace_init();
- 
-@@ -973,7 +974,6 @@ void start_kernel(void)
- 		 "Interrupts were enabled *very* early, fixing it\n"))
- 		local_irq_disable();
- 	radix_tree_init();
--	maple_tree_init();
- 
- 	/*
- 	 * Set up housekeeping before setting up workqueues to allow the unbound
- 
-> -- Steve
 
 -- 
-Sincerely yours,
-Mike.
+---
+Thanks,
+Usama
 
