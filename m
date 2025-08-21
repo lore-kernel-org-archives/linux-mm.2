@@ -2,77 +2,77 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B266CA0EEB
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 11:46:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0AC1DCA0EEB
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 11:47:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82CBC8E0049; Thu, 21 Aug 2025 07:46:58 -0400 (EDT)
+	id A29288E004A; Thu, 21 Aug 2025 07:47:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DD858E0048; Thu, 21 Aug 2025 07:46:58 -0400 (EDT)
+	id 9D8FE8E0048; Thu, 21 Aug 2025 07:47:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CC8D8E0049; Thu, 21 Aug 2025 07:46:58 -0400 (EDT)
+	id 8A1F18E004A; Thu, 21 Aug 2025 07:47:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 58E308E0048
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 07:46:58 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 220E913807C
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:46:58 +0000 (UTC)
-X-FDA: 83800588116.01.2EE33A8
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 77E268E0048
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 07:47:02 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 183E682E82
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:47:02 +0000 (UTC)
+X-FDA: 83800588284.24.18BD939
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E2C2740004
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:46:55 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="P6p/ayHK";
-	spf=none (imf27.hostedemail.com: domain of thomas.hellstrom@linux.intel.com has no SPF policy when checking 192.198.163.17) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by imf24.hostedemail.com (Postfix) with ESMTP id D87A9180003
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:46:59 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=TdrKzpNJ;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=none (imf24.hostedemail.com: domain of thomas.hellstrom@linux.intel.com has no SPF policy when checking 192.198.163.17) smtp.mailfrom=thomas.hellstrom@linux.intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755776820; a=rsa-sha256;
+	cv=none;
+	b=0+sfe7FcFRr639kv04zzhytxqASDNloSHfxAprNRha9zif4Wvx+4qahSSKD4NyKs9tRx3g
+	+7taSkpsV/0+TX5RPyre20r0TuhBc47PjiMS2s0Po2zjUgudHCz79AmfL1d1+tlMpQNz4p
+	1VnFzbf57Qp3FNo26poQrkCLF6eFYqQ=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=TdrKzpNJ;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=none (imf24.hostedemail.com: domain of thomas.hellstrom@linux.intel.com has no SPF policy when checking 192.198.163.17) smtp.mailfrom=thomas.hellstrom@linux.intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755776816;
+	s=arc-20220608; t=1755776820;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eFIiyMprlR2MmnJeRX4zDdHUb7dx4/70XTTETptWuPA=;
-	b=5VJEkkGbaEsFwDR7IqONxl559Q2i+oRgnGl/gQ8+ErBsKeRszQEYpAb4GHUSYaG+Jc+SxB
-	QWw/neqfRL1gYWigqrtK5nU88DX+5JI2RcD84v9YDwoEV3O51m8Qj5zOgmigbxn5mkyb1/
-	rxjqCVw7fG1ueB0BAW4dmwkDtxfPCx8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755776816; a=rsa-sha256;
-	cv=none;
-	b=UoHOTYRROh5wJO9NkEoTwnBxDuowVbZ821NxhXV5TIXSCW6Zsp43nBu6Ru7xUa36D+XrBj
-	M6/9S4QrksrojAmX8wJb8Vq8qBMLg0L9GGvly4jzyq8iKcZ5PfLYsfai/dgGWd9LsXlFSW
-	Tm0He22HotWTfpx9dfwE0+r4hDs/kiY=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="P6p/ayHK";
-	spf=none (imf27.hostedemail.com: domain of thomas.hellstrom@linux.intel.com has no SPF policy when checking 192.198.163.17) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	bh=LmZF+PGGpQ7BonPjN535BzGIL3gxAEu1Lf4M3+fywrM=;
+	b=3rVnNSZ6FJHkL20+CW6x0JvWwRE0Rjb8Kcx5TGO+5pO6ghMk5btwX2SzDlyF3H6QrJekEo
+	XEo58xwqOIdFdA0miBIFcPqh3UeyQCoYDGm1rvF4ozHYYeBtyML6V/IL07qaPqCt3ayP0Z
+	Q4G8MjxIWvZKuiKn9ch3LsAtY3OZoWE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755776816; x=1787312816;
+  t=1755776820; x=1787312820;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=zG9D5IJGziXZh5X5/ZDBlNBPklZZ3+iRqN2cmyda1XA=;
-  b=P6p/ayHKWIOsGsiiZs0/jFO2i9hCmWlVCsaeIntVpBXoa7S3o+a79Zmn
-   2mJjvtrl560bx2HKyxrFRB40lVhg95KMXQSIgwof4sbPkUG1M95OyujdR
-   67ltos0SwsFipaU5ysVHlv0eYafPSdpMqImT/JLrtr44NzICKx9G/xJRL
-   v171mt1K+NH4+lKthwBaTgyXTwiT/H+MAKbxbS4grAulke83nTJXRWDAa
-   7Gw7cII3AUHQik6yNXN4QnE7ep/GcVmh0UAUEN6K4lDQaT4gh1OPrF3+m
-   27CHbTMYe+GzFVnrQ/r8molb6gAuFk6rQm7Aopuvlr8sJrDa/xgUeBGQl
+  bh=iX+aI4EV6aIpB48ENfwpl4TWhZJPqVgs0W+CzzXlU1w=;
+  b=TdrKzpNJSigHjDrH1lZk4qnK7JP+PR5V9Mw/vJANCBjhjHwORXYtdDBH
+   VAzxRd05YWcevkAt6hHFCkq2Nuot1xloNd0yc6zUrtdsEIfurZ7/uQpm/
+   ZHJvLEcJ45UpkBCOYHfYzEMeNL5XDkDHpo8fAveDV/EjJSXfYTBK7nt6F
+   jTpWn1AQIWcKOC8WAtit24FFVdBNMTr2nNyerh/dqyxkOdPMmKXKTVzDW
+   MFABmZ76xtO/jqlWNf/a/UZgEWRJb65L93197vJh1NYMf3iYC5CFsHAu/
+   cTCyg/0sv+Tj46Nb2T/9BcGTR85BCBJ7mwykwMjTWjbY2ZoFPyuUdO8oW
    Q==;
-X-CSE-ConnectionGUID: BTv8+0P8QO+3oJr56DuZ+A==
-X-CSE-MsgGUID: RyQmtu22TTyYuzx/T7calA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="57989462"
+X-CSE-ConnectionGUID: DEcWG6qPQSSUf4lU0VHbJA==
+X-CSE-MsgGUID: s6hGJRevTiq/0u8SwQksfw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="57989473"
 X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
-   d="scan'208";a="57989462"
+   d="scan'208";a="57989473"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 04:46:56 -0700
-X-CSE-ConnectionGUID: qdZ++VWhTXucPh8rN3toAg==
-X-CSE-MsgGUID: 4lMvbybTQVaYaBlBGfqb/w==
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 04:46:59 -0700
+X-CSE-ConnectionGUID: 2aESyLHIQ3yVR5zRt1Vzfw==
+X-CSE-MsgGUID: F6OSijqkS1qWmYbSMZkCTw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
-   d="scan'208";a="172613641"
+   d="scan'208";a="172613648"
 Received: from johunt-mobl9.ger.corp.intel.com (HELO fedora) ([10.245.245.201])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 04:46:53 -0700
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 04:46:56 -0700
 From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
 To: intel-xe@lists.freedesktop.org
 Cc: Matthew Brost <matthew.brost@intel.com>,
@@ -85,22 +85,22 @@ Cc: Matthew Brost <matthew.brost@intel.com>,
 	Alistair Popple <apopple@nvidia.com>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/6] drm/gpusvm: Add drm_gpusvm_in_notifier_* helpers
-Date: Thu, 21 Aug 2025 13:46:23 +0200
-Message-ID: <20250821114626.89818-4-thomas.hellstrom@linux.intel.com>
+Subject: [PATCH 4/6] drm/xe: Skip waiting on unarmed fences in xe_gt_tlb_invalidation_fence_wait
+Date: Thu, 21 Aug 2025 13:46:24 +0200
+Message-ID: <20250821114626.89818-5-thomas.hellstrom@linux.intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250821114626.89818-1-thomas.hellstrom@linux.intel.com>
 References: <20250821114626.89818-1-thomas.hellstrom@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: D87A9180003
+X-Stat-Signature: yn66k9e67y78ms6rpaa5huqpmbud1sdh
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E2C2740004
-X-Stat-Signature: b1pydr4m7nt5db9ad8yce4ptinjusequ
-X-HE-Tag: 1755776815-519226
-X-HE-Meta: U2FsdGVkX1/udhyHTAZm72RlJtsBJBtpEhfXv9q8LcRhwLCFyBPgWyCSyMwRfcHsQQsGy8SOQnGuCgUP39QSWMK29umI5KL40Z3oU4TnynDCfa4G8oZFbfU+v8crNOtbJvZcYZpcOnUir4QjQQt2MX1PSAsdE1voZNAPls37SM7KXMfxZZAgxOxY0DwCm6CJwM6jWlN7zgGVU9G3z3aXflI+wODzHuHDaGCZVxO6M2na3XDFWlwUyDRfCUtQKSAnna1GtWNOVPiGOvTspu3bT0qCnW944sBdtn2M28FiDGrP72z0LBaXhSWd64/rPbvwlOLT1O8wBrN5uREtG4bmp2bFtwKaaIB/LnsPCA4KeA96ZgmA0Ykll7eWMGqzV1/qJI9G6AonJWaNwD3DPdCOJ/POt9AVUABw5pyLECHrlD4tuQ/cU09knZtslL0uxRO5sSWAeKZWAGXdZrkOW3BSptJyrGsxAt8cmyrEJ24xcrxWAnjLCsaHg1y9fW/LKC+eLNS0fmYL3LqINKM/cWkILlBKUw0boVgeQP1taBdW0FE0pSl084pAae/SYd6348+wtyC8GRB58RrAanMd+OiNdiYVtUOKe0GztKeqOIfNWqlwX0O4ye/IDXZt6E2HJuJfJ8Yyf4IIB1ESVqAMhoPnF/LjjjqSxD0afDYGspSsJ4J57BjMqi2RdSEgIOlSZasQSanp1A2t/ZTcRBeE79Ju9Nxg/uAX5c9/VxDH5Aympz2E1Hn22rueuOXcUtpPYuz9Z6EmsfiQmcSXlQKS+CBmNktuQRp7apnTT0Ii2vDTsCnIWzObaiHxJpDqupeo0qHRujQEJcRAqps/Mf2mLQj9yVxPwV+Cx+Z/rjP/XWuWI4AQVY7TlFLgA4otmbMeHoCzETCgN+wqtO4CmDZ3RJ7ayD4C4qXXYI5LbBwLk86Q+TyvuDhMHPdm3S3nWU3n6utDfxJ7l/xBpMGFSt19tS1
- qeELpanq
- K8IydYTtRUKUfjKnqPyupNxwZ3rSdC+uVs7kfk7nU9b06r7LCR4yVVCgiFBE7YJjTJOc6ThqnxScsclQdJBb7f8aBxZ+E+pkekkpWi4VIS34jKFqzZCFqwGMRThPikgzEpt+Ry8hLp6z54zKDjGNto4AOImDwAJwBbuJRWeQK3VaFHa2EVMcJyihcugTOYWj0TKOGb7SYtrXAmIyiNDEkcyQLpUUVOHLsvIAxSa+iLfvpiouFkRIeEaeovPgrGROoJnQa+m2hdGFampEPcuSTpIsMegs/Do5Iq4EDh2LeC1usGjsyuRvtDhI03t7jN4nw20LWN9TXG54b+oS+JPnDZoyZ3mIBs2mE3yvPxNXXZbgU9Ps2Ozodu7UKpg==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1755776819-739497
+X-HE-Meta: U2FsdGVkX19Nl2Vh0w88xrLSAWXJIPOdKPn2HuROirdsjX2PBXNEH9WkFYLjcUulBsX4Ugc8+t2wr7xytEVWV0AA6Y9g5/n6gUx0eUlij8/gwvdA4ZxnqDnA1C4gahtZw6ww3UAObe61KnqcNPleg54KgVZyIFmX9vCH+tiXRL/4E2FlT7VEYjNbMXm+jUmlZxLj8TE7OO6vA1UH5Vwy4BPxG6vVpAHFy0mgtYKa2ZDsi2tkQZxa3OM2lU1VmAXVIdBZ5fV1U/5zJ6us3mJBC18PkW23N6i7IE6abniTpU6JW4XbMRoR0W6/ywjOx7NLhUljYYXOQTvg2YACfWkzpqZGAfyIpeBoyWZdCODZkaM9+iO9IsB9/P4JcT5brkcpK4iUqq/bNehbNTjLZEbV2j1DyXnkdKJjb+H+ERTSA1drT+P9nzTuX2X84fPz54a8lLQIRPMDhmHBnoU6jTulHGDsBmBJzAKgL9Gc+5b0GKkRc9AqbJlzOubithMdQI7sKeiqUzOvvy91CoKxo3nCMOGmXzYeIuaMfbag183+Vfw7SZP23e+cF+5ijKUxPldHSD3BPTXEAp7oUC8+iAgCh0IQurQNk6qfT5e772rj8PIE635cgz7/e14aoyuxOjauRBuRZViQ/VkSOjXbamdBrASB+BJBj2WSzUbb93co1KQ3wKuK199FmFv4Kt67UTm9JNbsQufLTqGv+4d4E2IcjBysPWCm+MQmtUhxG2+egZ2dEUHG7GA38DIIiKReol6WgGFd0aqF1l1vOqHqj7ctHcWQIyy+Z4mgiB1m3atKX0EEf+KuGXYlP3Xd37lgZX8efjkaBIs43y86AQLRSOAO5MXXtaRi6kWv418vXmnY3HG1m7vyJYH8tE5ZtS59DxHTsuNb/1PTPQ7k4cbPPaHHtDJ/xIIdekDjEybXLI0kA7HtD6F+IKnqYdn8+2WuGtffHej4bPV7Xu/YjKI5bQ5
+ TEgjUU0S
+ Au91iCWLuUvUMC4M8uxZChYGlxw6fDwFOJH40ykbx4MZkE5hKHLhJ5RsRfHy20qdGdUFABJMx1G1kfkQKbNU7Ixktyn7aZjE8TxzfTR/13STCV7EYyPs8upxHxDtuT3C1wBBt10KDm9cCIIt9sPC7b0U0QBNBjqHrcHc0JvsdexvFEk5SlmzMWce41WPv1YtIr7ShiNzK+FU1kTHVw7P1eselKFNOYf/49HFyjr8LsGNPGaEhkgVAPuSRcL9AjWbaxvq0HnwQbmKLM2MtImYSNgZAh8q6u0xfLzJLHrlpVDr01q56oc8cdEaO3vEd6sLhNnCWXYXPoZYu6rt8iKIzw7Eq3ltB3aoD71ua58BQ95zzo3e2HJseu/VcVA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,61 +111,29 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Matthew Brost <matthew.brost@intel.com>
 
-Abstract drm_gpusvm_in_notifier_lock/unlock with helpers. Intended usage
-is a client side 2nd pass of a MMU notifier.
+Avoids unnecessary waits when the TLB invalidation fence has not been
+armed, simplifying caller logic in cases where the fence status is
+uncertain.
 
 Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 ---
- include/drm/drm_gpusvm.h | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/drm/drm_gpusvm.h b/include/drm/drm_gpusvm.h
-index 48b90c44849b..eb3f5f9396e2 100644
---- a/include/drm/drm_gpusvm.h
-+++ b/include/drm/drm_gpusvm.h
-@@ -313,7 +313,7 @@ void drm_gpusvm_range_set_unmapped(struct drm_gpusvm_range *range,
- #endif
+diff --git a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h
+index f7f0f2eaf4b5..c6d4398d3429 100644
+--- a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h
++++ b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h
+@@ -34,7 +34,8 @@ void xe_gt_tlb_invalidation_fence_signal(struct xe_gt_tlb_invalidation_fence *fe
+ static inline void
+ xe_gt_tlb_invalidation_fence_wait(struct xe_gt_tlb_invalidation_fence *fence)
+ {
+-	dma_fence_wait(&fence->base, false);
++	if (fence->seqno)
++		dma_fence_wait(&fence->base, false);
+ }
  
- /**
-- * drm_gpusvm_notifier_lock() - Lock GPU SVM notifier
-+ * drm_gpusvm_notifier_lock() - Lock GPU SVM notifier, client side
-  * @gpusvm__: Pointer to the GPU SVM structure.
-  *
-  * Abstract client usage GPU SVM notifier lock, take lock
-@@ -322,7 +322,7 @@ void drm_gpusvm_range_set_unmapped(struct drm_gpusvm_range *range,
- 	down_read(&(gpusvm__)->notifier_lock)
- 
- /**
-- * drm_gpusvm_notifier_unlock() - Unlock GPU SVM notifier
-+ * drm_gpusvm_notifier_unlock() - Unlock GPU SVM notifier, client side
-  * @gpusvm__: Pointer to the GPU SVM structure.
-  *
-  * Abstract client usage GPU SVM notifier lock, drop lock
-@@ -330,6 +330,24 @@ void drm_gpusvm_range_set_unmapped(struct drm_gpusvm_range *range,
- #define drm_gpusvm_notifier_unlock(gpusvm__)	\
- 	up_read(&(gpusvm__)->notifier_lock)
- 
-+/**
-+ * drm_gpusvm_in_notifier_lock() - Lock GPU SVM notifier, in notifier
-+ * @gpusvm__: Pointer to the GPU SVM structure.
-+ *
-+ * Abstract in notifier (2nd pass) usage GPU SVM notifier lock, take lock
-+ */
-+#define drm_gpusvm_in_notifier_lock(gpusvm__)	\
-+	down_write(&(gpusvm__)->notifier_lock)
-+
-+/**
-+ * drm_gpusvm_in_notifier_unlock() - Unlock GPU SVM notifier, in notifier
-+ * @gpusvm__: Pointer to the GPU SVM structure.
-+ *
-+ * Abstract in notifier (2nd pass) GPU SVM notifier lock, drop lock
-+ */
-+#define drm_gpusvm_in_notifier_unlock(gpusvm__)	\
-+	up_write(&(gpusvm__)->notifier_lock)
-+
- /**
-  * drm_gpusvm_range_start() - GPU SVM range start address
-  * @range: Pointer to the GPU SVM range
+ #endif	/* _XE_GT_TLB_INVALIDATION_ */
 -- 
 2.50.1
 
