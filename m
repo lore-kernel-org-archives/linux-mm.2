@@ -4,114 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 456CACA0EEB
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 15:54:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D0D1CA0EFC
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 15:58:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F0F96B00BF; Thu, 21 Aug 2025 11:54:21 -0400 (EDT)
+	id C5F3B6B00BB; Thu, 21 Aug 2025 11:58:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A1DF6B00C0; Thu, 21 Aug 2025 11:54:21 -0400 (EDT)
+	id BE9A56B00BC; Thu, 21 Aug 2025 11:58:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DEA16B00C1; Thu, 21 Aug 2025 11:54:21 -0400 (EDT)
+	id B25D76B00BD; Thu, 21 Aug 2025 11:58:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AF3A6B00BF
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:54:21 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CA4018363E
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 15:54:20 +0000 (UTC)
-X-FDA: 83801211480.09.90389D6
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 16265140004
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 15:54:18 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=qeVMHno8;
-	spf=pass (imf09.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F0766B00BB
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:58:38 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 49C1116045A
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 15:58:38 +0000 (UTC)
+X-FDA: 83801222316.23.CA47A1C
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf18.hostedemail.com (Postfix) with ESMTP id A248A1C000C
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 15:58:36 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CA9HLcNd;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755791659;
+	s=arc-20220608; t=1755791916;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fN8fFqbbfxw/oj3xUy2dOVhcytSJepW36qzZ5F62/r0=;
-	b=cKjtNliZLMaVp2Z0K7wXYIRPppkIw1R6XbbIQwOQMe9nJNzLCtgsb5NhidNmScVuqyeh1w
-	R+nCknJD2LwpPV43nHwOueSW7U7d6GvT7lbX6T/UUaDx57Z7Mx24T8gqNXBKPZH5704Iwx
-	EMM8fki00rk10M+ZR7ppSblBNcYTvs4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755791659; a=rsa-sha256;
-	cv=none;
-	b=3acSENYYR9CoC0Ozkd3YAdITeQe+TrDr4tFCOU9MuE0Pd5h6+1P4FTeRY1l8srZq2sk1la
-	cu3gduaiFicyHY7Qa0P1rB6Hmz5X0vVcOSTIEb/kfmdI7MuQtzu1PUiEoMPLB0/bUu1CKq
-	y6otZaAbpDXVYuzK12Vw1ICiOzRNh8s=
+	bh=CB0LpMCPOYaWwGiNMIOXNIT+kz7RGrjl98q4AqLw3v8=;
+	b=y3QLINDTPaobZ6t/nhvikIMQCQ1eiZTgdPZQu2GrFEN1UQBOOYLliKDpuT+Aqjh/kTwx5E
+	bvB0LxVLziDDgYfNb9zQ7QUDH06bue3WwEGofNj3Ymw5kVhAX9DQ+wBHX4dD9OiS+nMxUq
+	9zQT9bjQSXsDaIeDoeLktg45rzadjo8=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=qeVMHno8;
-	spf=pass (imf09.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4b29b714f8cso320001cf.1
-        for <linux-mm@kvack.org>; Thu, 21 Aug 2025 08:54:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755791658; x=1756396458; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fN8fFqbbfxw/oj3xUy2dOVhcytSJepW36qzZ5F62/r0=;
-        b=qeVMHno8XqSzMV57VlJpPp4PL3gSIR6lYiTXM+aVg+yTsNG+oEHnKmn6LFEQ4Ueoqo
-         RoQmw21Xs4WYZbXXB7sG5DuMNEWk4/jfg2yh5VJWwz7IIYvgh96d93okiFf5dgrkbG8B
-         tqprOsGvOxsCJvAZqpl0iO14RGs6h1CYTGeaxyZnGVqg2zpokdZjc3fsxEAgCTrPO10a
-         beCiey+txKBkO4wkRogpVG13YIPQdHKob84UTfe3tH1yC/LX/2L1EC1ft5Gyx9hOeTt+
-         78Cs+DGSiIwpLMy7POfaGeTfViNI6oIcRNmta2BZUFXJpu8JZE9q+Kz/WycdR9gtr/Nh
-         FSzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755791658; x=1756396458;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fN8fFqbbfxw/oj3xUy2dOVhcytSJepW36qzZ5F62/r0=;
-        b=FNolHCRkEbQNu5JKznCVKOndAIgj9rzUgD4Kv0uTClW4ajbUBmUliX3G+haxEEXs0A
-         Suj9zAOgV7Ew+j5utnl3WH5kG2WS2TdSVQOunuPtmStIbEBhgEcl5IWMqcZfV/GSTUNG
-         UbVUjkU7JHdIqBjQqSwPXY5JsQTOURtGFhChR6r/dOS4d6Ow37f/wmEOZ4bN+Ppi+eg7
-         qAUQ+PJJSyPTA7bKUi5bzBKz5jWK1anco4EIJIjEs1gq6/N67c8ILPNfQcyMFPrlXXce
-         XOHbTeablQ3QdqB4bhfkaOB/TlIvMOgOXZkktfDnEarv1t4EThJtTCMIYa8Cm1eKpPma
-         HolA==
-X-Forwarded-Encrypted: i=1; AJvYcCXFEj6jb3qCyF+AMggYtqrr/dOnt46EKDQSvQi4dyuAtsxJ7R7+i9fBtn/ckqW0H9RwKUG8sGC/Bw==@kvack.org
-X-Gm-Message-State: AOJu0Yxx8/2SYqQXXg59EysVIr4Lzav2RBi9wrfiJKsrNiulPzBSYdBN
-	AEOv8Y1AJTIflGFW47sU50h5wC10t1ipZw+8z0d60GHVTXCZaLA5mwnYPJ2yomISiKLXRz/A+kw
-	qGGhaLQoEVOwiPVPUJNtXc2sC48HM+fVgtpeHMqI3
-X-Gm-Gg: ASbGncsz1uAXv9wHIbVpsuwMwN27lz0XWbtK5gEzGUQUsF/Kk8GyaJKqu+WkQOuGm5s
-	rE2QN7TxaGodUO7BkQfJq1JEHQil4WrkkfpV2/NtaF6JzozK6Rc5TAnU+iaXGqg5PcBKSiCosIB
-	nM+G6oBdcwKBblVwrY3FGWkg9VhTUCSxxelADQ8TVrke2tqrBOrFHdbCvv6kdsSsqFMGuJMy+zi
-	PyfbFWE0RxYr2TPdQ0ABsn8vuld5kLuFRB+imchzWda2asGL3TjWeo=
-X-Google-Smtp-Source: AGHT+IF7ftkzBG+sErHG0PyIKhN56o5QPEdRNCi+vPkHmyiE5ovuaHVbNMUd5SO4AajLAnQHLFuy1cPHbgz3xOWbu6o=
-X-Received: by 2002:a05:622a:1aa0:b0:4a5:a83d:f50d with SMTP id
- d75a77b69052e-4b29fa06aadmr5250511cf.11.1755791657570; Thu, 21 Aug 2025
- 08:54:17 -0700 (PDT)
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CA9HLcNd;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755791916; a=rsa-sha256;
+	cv=none;
+	b=4ecBJzRW3h0HHTXoTlUy0rmlE8qYo0hoEDso0ylALSQZVwuUUjylhNNp0zOUy9UzZr/3zU
+	6XntJ9T6RHDTl+8WvOqQCY0TD/RuwHbmdlXXL6s3hR5kvE26vtVMGKA/gUFE5TtpGGkT95
+	8sXMz5mznhA3J1x59GkvfTQSwCc+AkU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id D492AA584B8;
+	Thu, 21 Aug 2025 15:58:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B0C3C4CEEB;
+	Thu, 21 Aug 2025 15:58:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755791915;
+	bh=bP/JIPfZE0+HTDUGADbV9HkxcIqfv0r/PjlTY88pRt4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=CA9HLcNdWGreQdR/bOKT3h4J4RPEjFT6PqTpNQ6bviQdIcRNWjWLo/eM/I6Wbzt+W
+	 I4iQoqeqT/fgPPvvVT83BIJQrD4Jd71Gjcsam6nIYIi2ilknP2dzeft4n2M25gCV6D
+	 kNTtDeFKxvNUMG7PJbtDNWIiFEU1jjkD94Ekwh1CYrbpW0f1RxAeblY3Cgj7utlatV
+	 85lQuSJcenxUUCH0IjE0HPaTMC5/atOlWMe348626sZ5mrCtyw/iTV84KVhmHBpK3y
+	 DCHeamXOEuXVodv0UUUzZTCspCSVHOZTD6qF4hemf4zWNyz8/oqUikz/Wezlml1s0K
+	 GRXyIzLNRnw4w==
+From: SeongJae Park <sj@kernel.org>
+To: Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	honggyu.kim@sk.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v2] mm/damon/core: set quota->charged_from to jiffies at first charge window
+Date: Thu, 21 Aug 2025 08:58:33 -0700
+Message-Id: <20250821155833.57597-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <CABFDxMHgOPt5zx3q=KRxGGfp86R4V0AgO+FrHDftqLYoG20BWw@mail.gmail.com>
+References: 
 MIME-Version: 1.0
-References: <20250818170136.209169-1-roman.gushchin@linux.dev>
- <20250818170136.209169-2-roman.gushchin@linux.dev> <CAP01T76AUkN_v425s5DjCyOg_xxFGQ=P1jGBDv6XkbL5wwetHA@mail.gmail.com>
- <87ms7tldwo.fsf@linux.dev> <CAP01T76xFkhsQKCtCynnHR4t6KyciQ4=VW2jhF8mcZEVBjsF1w@mail.gmail.com>
- <875xehh0rc.fsf@linux.dev>
-In-Reply-To: <875xehh0rc.fsf@linux.dev>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 21 Aug 2025 08:54:06 -0700
-X-Gm-Features: Ac12FXwQnszAXbgUOsvMFTdZCWPF5sLUrZJo15MDmJrYfWcN3MOe0juq7mH91Ms
-Message-ID: <CAJuCfpGTBvwv9vZ1T60ejk+uDVrTLbCDvhP0hMiT-Cr7to6yEw@mail.gmail.com>
-Subject: Re: [PATCH v1 01/14] mm: introduce bpf struct ops for OOM handling
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Kumar Kartikeya Dwivedi <memxor@gmail.com>, linux-mm@kvack.org, bpf@vger.kernel.org, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@suse.com>, 
-	David Rientjes <rientjes@google.com>, Matt Bobrowski <mattbobrowski@google.com>, 
-	Song Liu <song@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 16265140004
-X-Stat-Signature: wqcc4purhbkdpggnommg5t6pinhmz6cq
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 3xbzh4fd6byza5awbiee7axedhyho5t4
 X-Rspam-User: 
-X-HE-Tag: 1755791658-521163
-X-HE-Meta: U2FsdGVkX1+WmHZJohpl8C/6pjeH7ycQt0qQjdNmcnp1AZRmVAdJAlBlso0+A3sBK9sxU0P81F6LTsZEzeXqAA1fpgrLHr3eSGrk13Q46FwUKOwIU8h1w2QtFxswfSDe0LvHkllnN6LL/RbTSoAjQMxbuZcljvCmBuId6lA/mk8VFB3VHV3Ugfu1rGswTlLSv/QodR/jSLCgAlOCTn8knX5uAsGeI/i4ZllVUZqfliJb8T6TNytF253U5vXOiIhvkO+g8kHB1h1OaTX0Z2zd4qYX1CnKkU5WOtgV9zdcB3Bx+EJD6k3UTZB1eMG2BUJtTM0NFyPW0q1DI6uTcjijZzLS4QtUzxHH7YyGm4I0KuHPXID83Q0+uj8tBgLd44jrwGrTrq6IYxNltXsTPREztoMa45UOpUHO3PKb4xO2pqcxwSqLB56V55E9ApPKdTFaSdWYSu6nZJl3yYlzmsZbfovJkFk1K2b7h+29cfsRYvWnPPVQ5oveGD6y0jzV+wZfDm290B17Vnr0Ct6Oi6/97jt7jSODNuJMp3Am8ncbue80uSp11IAliIEmbfzxOZN5SfKF926LH+tzX5h/wnr5Ik3vhF5m5mrYL5GgtLU4eK7Bpq1s3gw02whCP2MXWd3T4LbZ/Ef3a4lP3nh+9vmVy25VenNKYhPyodrXjkRfEW8agTpLvK467WfrNppBwQzcEXTH2LxlLylOizTqLBKgC+RiXsDsuFQpFYcrEsLGsPENpfo4cJ1ZZs8RYva7fiPYSR+F4R6aHgG88PYjsvcnSY7w/DSyUmbVx8sjiRZBXz93chYZFsc8Z7NrKOB/VwujNzBy+h14xsHhGw4nnp1qHDLnYu+ja7tCgBNfTccZ73CjlyYSSLY5LNtqDCGsA3TxTplaMkqTwgemR4B6VO90fV7UIOTsC2Je
+X-Rspamd-Queue-Id: A248A1C000C
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755791916-366895
+X-HE-Meta: U2FsdGVkX1/LiFWX65j7cL2Sagg524V7A8ZQE82KyLVjH5AerXxF+mopGaPT+sLamDaS8yLY2gQdIK3Dmgr0OWRgAyX5kEuPWOZyew3NnUYr/KgBT0H2/2ShKEKCplTADZD2MUQ/I2Spx7WsBwRCVbmQIMyxM5rUpFVGbw4Vh+tnagkgHHSps6bo1zFsMZ86h2UrMBt5y62MS01gqlWUhXZJYaxtFBMygaWS7BOiXQhGhi0rKqL/BFLTKAekC7tMofbv4d4piCFQrpKmsNDG4Qar4gUDe+3n5R+cVbdT52vYfnBo2iKCsBkYdaeWb+/V5hrEQP887bOOE0XfyEbLF74cVQHOfV1jBhYhVtkddnMD0gRE12kReM/h2sdzJrICxR4Xnyzu/uwmJW2v8hgd2MejVcTJpJl0EtUQ7gYQp3n/8ijt8s0ken3feCZUDD6h3Sh06a4V196KDZQ8bCAatk8LyJl5dIYmj4w0J0R4YZbBDspExB+ze90cA1lnwCfRV4cmqAGr9+rTkQQPxa1UhxLzVhIGbi5p4FhM+s2YUDqoDfBz9V6B0+GZPjwxG96lMirkA0SygSaiYCDbKZm3bh6wuWAvTDy+vpP0Fh6LEJSLmafQwxHU+c/JZCCbnTW/ONgah2oPpPIAXu0s7DW/OlXzQsxyocZ6TrFQWqrOgl5z5FwVcRsd4TvCRX2EOaqujpqCkipALqxhGXv+3ksR24YBZaTq2Mwzm0W2imRW0YyiXR04udyY7N3mcZ1RDfou+FNGvXPrq70XbCE3v0jkYfLl5niAJEY83AXwrS/5OswiFpLsza4INf48FpGkzPomPGb1kHdR21CVt/wsvaMI++ER7AOLrRY0rjSDt1ZbvYjm3mShahLaCFEa6B8qoNgXAvBAh7X98kRxnZNS3zBEBuEZzxIoP6ptsf5wdJdGRgiapSWE7s2RHmnjaRxpV+t+VFBpacjoSBLAvNoYTEU
+ cBSmEkc0
+ jTb0Ueqy33P9WPLmtA9CMo+Rg0NswhQkSpQ2ws0T6SfRLPSD3GF24IAUx/BRLYsfY36tOYVEsCnnELKso9nbug7v9C+XD+m9jD9Zv/di3cwdkkIPjehUxQATCX2OMDvYgsp2tlB3iyx3G3fMiuHCu5HSNo49GBJc7mROA8kMBWegyBfWySTm/Bpjs1vsp0cwSZmCuRXOBn7qclVX/DC2SzaQNzXy7RnuSIBLhvdIWpmdFP3P7bwZlSdjWyHQ5pwcAkd6dI9ZuEdXMCeRU4q1ueajOPOsPEY16bxhRb16AR4Dd93sO2z+PpIWvMxCYKt4XP64KOcLceC2RLrd1BPmFIzJ1uQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,117 +97,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 20, 2025 at 7:22=E2=80=AFPM Roman Gushchin <roman.gushchin@linu=
-x.dev> wrote:
->
-> Kumar Kartikeya Dwivedi <memxor@gmail.com> writes:
->
-> > On Thu, 21 Aug 2025 at 02:25, Roman Gushchin <roman.gushchin@linux.dev>=
- wrote:
-> >>
-> >> Kumar Kartikeya Dwivedi <memxor@gmail.com> writes:
-> >>
-> >> > On Mon, 18 Aug 2025 at 19:01, Roman Gushchin <roman.gushchin@linux.d=
-ev> wrote:
-> >> >>
-> >> >> Introduce a bpf struct ops for implementing custom OOM handling pol=
-icies.
-> >> >>
-> >> >> The struct ops provides the bpf_handle_out_of_memory() callback,
-> >> >> which expected to return 1 if it was able to free some memory and 0
-> >> >> otherwise.
-> >> >>
-> >> >> In the latter case it's guaranteed that the in-kernel OOM killer wi=
-ll
-> >> >> be invoked. Otherwise the kernel also checks the bpf_memory_freed
-> >> >> field of the oom_control structure, which is expected to be set by
-> >> >> kfuncs suitable for releasing memory. It's a safety mechanism which
-> >> >> prevents a bpf program to claim forward progress without actually
-> >> >> releasing memory. The callback program is sleepable to enable using
-> >> >> iterators, e.g. cgroup iterators.
-> >> >>
-> >> >> The callback receives struct oom_control as an argument, so it can
-> >> >> easily filter out OOM's it doesn't want to handle, e.g. global vs
-> >> >> memcg OOM's.
-> >> >>
-> >> >> The callback is executed just before the kernel victim task selecti=
-on
-> >> >> algorithm, so all heuristics and sysctls like panic on oom,
-> >> >> sysctl_oom_kill_allocating_task and sysctl_oom_kill_allocating_task
-> >> >> are respected.
-> >> >>
-> >> >> The struct ops also has the name field, which allows to define a
-> >> >> custom name for the implemented policy. It's printed in the OOM rep=
-ort
-> >> >> in the oom_policy=3D<policy> format. "default" is printed if bpf is=
- not
-> >> >> used or policy name is not specified.
-> >> >>
-> >> >> [  112.696676] test_progs invoked oom-killer: gfp_mask=3D0xcc0(GFP_=
-KERNEL), order=3D0, oom_score_adj=3D0
-> >> >>                oom_policy=3Dbpf_test_policy
-> >> >> [  112.698160] CPU: 1 UID: 0 PID: 660 Comm: test_progs Not tainted =
-6.16.0-00015-gf09eb0d6badc #102 PREEMPT(full)
-> >> >> [  112.698165] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996=
-), BIOS 1.17.0-5.fc42 04/01/2014
-> >> >> [  112.698167] Call Trace:
-> >> >> [  112.698177]  <TASK>
-> >> >> [  112.698182]  dump_stack_lvl+0x4d/0x70
-> >> >> [  112.698192]  dump_header+0x59/0x1c6
-> >> >> [  112.698199]  oom_kill_process.cold+0x8/0xef
-> >> >> [  112.698206]  bpf_oom_kill_process+0x59/0xb0
-> >> >> [  112.698216]  bpf_prog_7ecad0f36a167fd7_test_out_of_memory+0x2be/=
-0x313
-> >> >> [  112.698229]  bpf__bpf_oom_ops_handle_out_of_memory+0x47/0xaf
-> >> >> [  112.698236]  ? srso_alias_return_thunk+0x5/0xfbef5
-> >> >> [  112.698240]  bpf_handle_oom+0x11a/0x1e0
-> >> >> [  112.698250]  out_of_memory+0xab/0x5c0
-> >> >> [  112.698258]  mem_cgroup_out_of_memory+0xbc/0x110
-> >> >> [  112.698274]  try_charge_memcg+0x4b5/0x7e0
-> >> >> [  112.698288]  charge_memcg+0x2f/0xc0
-> >> >> [  112.698293]  __mem_cgroup_charge+0x30/0xc0
-> >> >> [  112.698299]  do_anonymous_page+0x40f/0xa50
-> >> >> [  112.698311]  __handle_mm_fault+0xbba/0x1140
-> >> >> [  112.698317]  ? srso_alias_return_thunk+0x5/0xfbef5
-> >> >> [  112.698335]  handle_mm_fault+0xe6/0x370
-> >> >> [  112.698343]  do_user_addr_fault+0x211/0x6a0
-> >> >> [  112.698354]  exc_page_fault+0x75/0x1d0
-> >> >> [  112.698363]  asm_exc_page_fault+0x26/0x30
-> >> >> [  112.698366] RIP: 0033:0x7fa97236db00
-> >> >>
-> >> >> It's possible to load multiple bpf struct programs. In the case of
-> >> >> oom, they will be executed one by one in the same order they been
-> >> >> loaded until one of them returns 1 and bpf_memory_freed is set to 1
-> >> >> - an indication that the memory was freed. This allows to have
-> >> >> multiple bpf programs to focus on different types of OOM's - e.g.
-> >> >> one program can only handle memcg OOM's in one memory cgroup.
-> >> >> But the filtering is done in bpf - so it's fully flexible.
-> >> >
-> >> > I think a natural question here is ordering. Is this ability to have
-> >> > multiple OOM programs critical right now?
-> >>
-> >> Good question. Initially I had only supported a single bpf policy.
-> >> But then I realized that likely people would want to have different
-> >> policies handling different parts of the cgroup tree.
-> >> E.g. a global policy and several policies handling OOMs only
-> >> in some memory cgroups.
-> >> So having just a single policy is likely a no go.
+On Thu, 21 Aug 2025 20:06:58 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
+
+> On Thu, Aug 21, 2025 at 2:41 PM SeongJae Park <sj@kernel.org> wrote:
+[...]
+> > Let's restart.  Could you please rewrite the commit log for this patch and send
+> > the draft as a reply to this?
 > >
-> > If the ordering is more to facilitate scoping, would it then be better
-> > to support attaching the policy to specific memcg/cgroup?
->
-> Well, it has some advantages and disadvantages. First, it will require
-> way more infrastructure on the memcg side. Second, the interface is not
-> super clear: we don't want to have a struct ops per cgroup, I guess.
-> And in many case a single policy for all memcgs is just fine, so asking
-> the user to attach it to all memcgs is just adding a toil and creating
-> all kinds of races.
-> So I see your point, but I'm not yet convinced, to be honest.
+> > We can further discuss on the new draft if it has more things to improve.  And
+> > once the discussion is finalized, you can post v4 of this patch with the
+> > updated commit message.
+> 
+> Good Idea. This is the draft for commit message. Also, Thank you for
+> your patience and understanding.
 
-I would suggest keeping it simple until we know there is a need to
-prioritize between multiple oom-killers.
+Thank you for accepting my humble suggestion.
 
->
-> Thanks!
->
+> 
+> Kernel initialize "jiffies" timer as 5 minutes below zero, as shown in
+> include/linux/jiffies.h
+> 
+> /*
+>  * Have the 32 bit jiffies value wrap 5 minutes after boot
+>  * so jiffies wrap bugs show up earlier.
+>  */
+>  #define INITIAL_JIFFIES ((unsigned long)(unsigned int) (-300*HZ))
+> 
+> And jiffies comparison help functions cast unsigned value to signed to
+> cover wraparound
+> 
+>  #define time_after_eq(a,b) \
+>   (typecheck(unsigned long, a) && \
+>   typecheck(unsigned long, b) && \
+>   ((long)((a) - (b)) >= 0))
+> 
+> When quota->charged_from is initialized to 0, time_after_eq() can incorrectly
+> return FALSE even after reset_interval has elapsed. This occurs when
+> (jiffies - reset_interval) produces a value with MSB=1, which is interpreted
+> as negative in signed arithmetic.
+> 
+> This issue primarily affects 32-bit systems because:
+> On 64-bit systems: MSB=1 values occur after ~292 million years from boot
+> (assuming HZ=1000), almost impossible.
+> 
+> On 32-bit systems: MSB=1 values occur during the first 5 minutes after boot,
+> and the second half of every jiffies wraparound cycle, starting from day 25
+> (assuming HZ=1000)
+> 
+> When above unexpected FALSE return from time_after_eq() occurs, the
+> charging window will not reset. The user impact depends on esz value
+> at that time.
+> 
+> If esz is 0, scheme ignores configured quotas and runs without any
+> limits.
+> 
+> If esz is not 0, scheme stops working once the quota is exhausted. It
+> remains until the charging window finally resets.
+> 
+> So, change quota->charged_from to jiffies at damos_adjust_quota() when
+> it is considered as the first charge window. By this change, we can avoid
+> unexpected FALSE return from time_after_eq()
+
+This new draft looks good to me.  I find nothing to further modify.  Could you
+please send v3 of this patch with the above commit log?
+
+
+Thanks,
+SJ
+
+[...]
 
