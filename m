@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0440BCA0EEB
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 21:55:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70993CA0EEB
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 21:55:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4676E8E0066; Thu, 21 Aug 2025 17:55:17 -0400 (EDT)
+	id A52C18E0067; Thu, 21 Aug 2025 17:55:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4103D8E0056; Thu, 21 Aug 2025 17:55:17 -0400 (EDT)
+	id A03098E0056; Thu, 21 Aug 2025 17:55:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23C078E0066; Thu, 21 Aug 2025 17:55:17 -0400 (EDT)
+	id 8F2228E0067; Thu, 21 Aug 2025 17:55:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0DA698E0056
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 17:55:17 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AE433140530
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 21:55:16 +0000 (UTC)
-X-FDA: 83802121032.30.F492C7A
-Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
-	by imf05.hostedemail.com (Postfix) with ESMTP id BA8EB100013
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 21:55:14 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=bur.io header.s=fm1 header.b="Z liUIqZ";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="MyQ/SECt";
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of boris@bur.io designates 202.12.124.159 as permitted sender) smtp.mailfrom=boris@bur.io
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755813314; a=rsa-sha256;
-	cv=none;
-	b=ZjsvxVLMF2u26hNcz2NGKN4z/KvgOuOl7bCvoBThpuA0bJhTv7jtOnp+Vr+JbmrxPKVNAS
-	T59izUNpvm8vwesmdVjoZFa0A0goFXFcxqCmkh9mdsvW1OTIqsJs2qV76ok2u+drtttC/c
-	+R/nIj9XOgD6TeKG5mJCYYjfFJUW3AQ=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=bur.io header.s=fm1 header.b="Z liUIqZ";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="MyQ/SECt";
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of boris@bur.io designates 202.12.124.159 as permitted sender) smtp.mailfrom=boris@bur.io
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 797F88E0056
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 17:55:19 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EC0A61DDA7A
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 21:55:18 +0000 (UTC)
+X-FDA: 83802121116.29.E1B0B2F
+Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 32436140008
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 21:55:17 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=bur.io header.s=fm1 header.b="k espNPe";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=LXqRumNz;
+	spf=pass (imf26.hostedemail.com: domain of boris@bur.io designates 202.12.124.148 as permitted sender) smtp.mailfrom=boris@bur.io;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755813314;
+	s=arc-20220608; t=1755813317;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nqjmOG7AetCjXRm+3fjXeKcj0uJWknxrBI8B7x2fxgY=;
-	b=UUUSawuXGQFEvazfpYfsoQiXYK5NFFeMQgdnhYboCGJZvQdcfK83QDeqzwISHatB48PDP8
-	Wj3kmIpPaPNznFyO3Rs7Y57GMcvOdXESOb9iPUS3MPoqB1LVpRfNPEg4u3kvPqY/i/TQaf
-	5waHDOjhpE2hbJbWkr3We9QpxOTzLpo=
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id CE3157A0119;
-	Thu, 21 Aug 2025 17:55:13 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Thu, 21 Aug 2025 17:55:14 -0400
+	bh=+Y/NEyt7ymKiMS/llOk2P8t/dM0OZDpztKj3DY9zQ/I=;
+	b=iJrNoU2N5gi9Zm0elc6QCTUf/6v5z1mAdb5Whh9pM6OQCJyZqBEyGbI12qCVQpgKtCwCzW
+	hb+4VW1P+fqtxoQJwhHgItYVTyDdxxaP+91hTwPKQ7zU15jyN6P0btP5IOuZxGGc7naKYA
+	F3uOCumI+LexeYulOYvqTe4gFu5Fwhg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755813317; a=rsa-sha256;
+	cv=none;
+	b=x7XZpg4gQUCXcBh4VGRyyKqB98wSLb+JCHv4OdTq8heMQOJeaPsvRgEeU0jcxsxoyjBN2j
+	PQkiF4SQ71VOe6rBId2iAOgCPnsa6nOPKDMuGYdujLywA/KEMqKMBJdibcKzZLp34tevjF
+	8c7ndxTfV+irD1DSLnXquKUUBegb0Nc=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=bur.io header.s=fm1 header.b="k espNPe";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=LXqRumNz;
+	spf=pass (imf26.hostedemail.com: domain of boris@bur.io designates 202.12.124.148 as permitted sender) smtp.mailfrom=boris@bur.io;
+	dmarc=none
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.stl.internal (Postfix) with ESMTP id 2C6B41D001B1;
+	Thu, 21 Aug 2025 17:55:16 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Thu, 21 Aug 2025 17:55:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bur.io; h=cc:cc
 	:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1755813313; x=
-	1755899713; bh=nqjmOG7AetCjXRm+3fjXeKcj0uJWknxrBI8B7x2fxgY=; b=Z
-	liUIqZz6ANVuxcMBevSJ7rGSbuVR8NeCuoYlPCyegwFHmgm3kyQwH08bhhh74a/u
-	1E/OyFkduL2OKm8oms3pSwAmfngxhora6yLBNS6gbRSYtEFPKU9ytpLKzUvOIINg
-	htwv89LSHXgwMWJ0XLmvXuL9NAZfQi1Q/NLtU1O7Y5C52/iBkblcnAv41ZFX8c+U
-	FHgDaIS4G7oHPAvOCgl40SaEl1VugPEqRpQOnrlZzSeNuHaPo1tm+cTyDffO3KTf
-	gVBnBs/rjR+xk57H0c4KBmFiTGm2uVwJfnwsvAZG21Xd6K6lc/ICXT2btwA5HulQ
-	vmO1Y6aG+zDUFF9vd4Ypg==
+	:reply-to:subject:subject:to:to; s=fm1; t=1755813316; x=
+	1755899716; bh=+Y/NEyt7ymKiMS/llOk2P8t/dM0OZDpztKj3DY9zQ/I=; b=k
+	espNPe33CZp4MkiZnmymRTInr4O6gVX21JVIX1LVEVkUhxfFhoYJvp+U8leobhuy
+	R6E09ZhM1ZjyTOusns3MH1OSHwyP8VTPim1WYX8v1axHRpyI08XFB/tGGF+lOsQv
+	Sft5VVU66aTU6yln9IFyVYbcqp8RREEnPRLYY/w6qohIW3U43udueydOIl3j76l8
+	C85cKMmcl4nG2v0uq57h5E15aVJxjx25nkHpI1oT9nAPeUJI2vp5x2NAsCuGsn10
+	jnIlkix+ctQxFV4rritS08Qn6vWV38F2qYorWGR0QJOcWfdGuY7y9ImkZqgprSYD
+	vbaFVQUIE+BO86z3Isaqg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1755813313; x=1755899713; bh=n
-	qjmOG7AetCjXRm+3fjXeKcj0uJWknxrBI8B7x2fxgY=; b=MyQ/SECt4H3X6baiB
-	2xd7fQp2eTClIWp1ptcXQO/GHsEw0t4K47oeYSfXrSDLv4diOpT9W1jsqW7RRO0B
-	WNKFJSOke2goC68FvvRgab3CqTdGuFYz7/z7V4LV1sk0R12N2IUgRTe+3AXRXN8T
-	w1JGGECerAePtCFtQzelCSP6Rw067vu3QnH7od/SLsszvQt6fNLOnEoUHWw2wyAU
-	OKlSdQHeferfT8vrznXZnkUNjbLHai3sdHO189ukGfEZ9NtHipmGuTimRhO2cpB/
-	/j1OMaeTV8zD4mOwa5fcK4W2Z9MmPQDXlX0Bm/Tid1HjQ7y2DNgz1BxOZ2sAOoR2
-	3ulTA==
-X-ME-Sender: <xms:wZWnaM0qvTgSNrGpqMZBJm_7UW7zhkUzB1Xt1lwtEjcbo9pYgICJ7A>
-    <xme:wZWnaMn9hZ7Bo7M78Bssk7Ho3Y9DESaJq9iEJ8zCywNs0CQRgLL0_UR24AsQTmXam
-    21K44YFjjdSr7lAYnQ>
-X-ME-Received: <xmr:wZWnaD92Wk_0xAhRBtLH6n0-Y76E_or2eEo4bZwR7sD6KhZZO1fJoz0V5u9l1qHZMXo8yrD6QTbrLDGCmj1erQf8qEw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduiedvvdejucetufdoteggodetrf
+	:x-me-sender:x-sasl-enc; s=fm3; t=1755813316; x=1755899716; bh=+
+	Y/NEyt7ymKiMS/llOk2P8t/dM0OZDpztKj3DY9zQ/I=; b=LXqRumNzkuckFJRPU
+	qzJzpfdM3cJvj/6k1ZvGr8VujS1ssmvl0/lqX3wXPAKFpwgq+uux87v9gAQC112C
+	13o6qTbGWrOH/CHenhofd5rtvJ9m+PmAEtX2rVOGMxNlW9R9Lin7tGh9jdlxLCGy
+	5zeH00caQdwQQbCr0lZWZxnt5fG2+ub5upJHT655RNjEVc1SZLZMdAIr6Foj5jGq
+	RSm7j1PaqzrbK4uTLmPeRs+lsSo7Tt7lR+RyaWuStO7iQcaqpDbPtRYNDsh6b7xv
+	9ceiGJbBBy0YLcWUsG3UINEr5m0JjHpnwHYy26wNnfnOZxDTSYCPZaPz8XvCk8XM
+	Ghbqw==
+X-ME-Sender: <xms:w5WnaIOrFOU2YEFkx1D2A_4I5uHbHGUeZ4TGoQFg-9Iq6l3AMe3i_g>
+    <xme:w5WnaEdPMxnFe_OpZ9pIZAu-lF6rjj2KH7b_rGulYkNuaBKDnr4AaWa-BL32X5Okm
+    V1uZG84YwIOsmuov_k>
+X-ME-Received: <xmr:w5WnaOVchaYxyB6SOx34RF8E9yaTODM3UwCHPwnXzdv9_5zch_vLxxoBloJNfgHJGRszNFcqOtqhppw-r2e9LZrgt-I>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduiedvvdekucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucenucfjughrpefhvfevufffkffojghfggfgsedtkeertd
     ertddtnecuhfhrohhmpeeuohhrihhsuceuuhhrkhhovhcuoegsohhrihhssegsuhhrrdhi
@@ -98,14 +98,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduiedvvdejucetufdote
     pehshhgrkhgvvghlrdgsuhhttheslhhinhhugidruggvvhdprhgtphhtthhopeifqhhuse
     hsuhhsvgdrtghomhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhg
     pdhrtghpthhtohepmhhhohgtkhhosehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:wZWnaKIAbn2E68OZAUwx6keXs5Rr_kJepx0AO6ObYGNPS4Sm-v690w>
-    <xmx:wZWnaIhPKqADRjDWWp4pozZa8UsRVGTBYnkYu8vlP53Wnfxkkw_iXg>
-    <xmx:wZWnaG8uyPNuWlGt1BlKS_XE7oV1ZZ4pr1wu9s6KOyi4RmIiUZ9ecQ>
-    <xmx:wZWnaNMetRvX1GvB9K22w0MTxhUtuu2qhCX642k4DKHNEUSMY2oOFg>
-    <xmx:wZWnaDwPub9bf9ZF2lj6heYwwlKWvbm59hn9YYaONVNkH4_tVkmGF48M>
+X-ME-Proxy: <xmx:w5WnaFBZ87pqek2e3ZxXTRUAJDqKID1CS-K8Bc56OJ0YJm-xhOq37w>
+    <xmx:w5WnaJ5lBUTYVO2YthjeG7VrYUHlmRUog3LkfSQt6SjS98znEkcakw>
+    <xmx:w5WnaM1ZMP7_c16eUIAJgJFNMu_L0d2prMs_BP7QiBZniUl-SLaIkA>
+    <xmx:w5WnaNkJrp9i4GxudzhYN7rhxrbaAVwFAOMHzpG3GMV2t7RkxO9tVg>
+    <xmx:xJWnaPJuxooOsIZzeuAG1Ob2seij3jbCgPxyx0XS6M0Hdjso4YcSM1Px>
 Feedback-ID: i083147f8:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 21 Aug 2025 17:55:13 -0400 (EDT)
+ 21 Aug 2025 17:55:15 -0400 (EDT)
 From: Boris Burkov <boris@bur.io>
 To: akpm@linux-foundation.org
 Cc: linux-btrfs@vger.kernel.org,
@@ -119,22 +119,22 @@ Cc: linux-btrfs@vger.kernel.org,
 	muchun.song@linux.dev,
 	roman.gushchin@linux.dev,
 	hannes@cmpxchg.org
-Subject: [PATCH v4 2/3] mm: add vmstat for kernel_file pages
-Date: Thu, 21 Aug 2025 14:55:36 -0700
-Message-ID: <08ff633e3a005ed5f7691bfd9f58a5df8e474339.1755812945.git.boris@bur.io>
+Subject: [PATCH v4 3/3] btrfs: set AS_KERNEL_FILE on the btree_inode
+Date: Thu, 21 Aug 2025 14:55:37 -0700
+Message-ID: <2ee99832619a3fdfe80bf4dc9760278662d2d746.1755812945.git.boris@bur.io>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1755812945.git.boris@bur.io>
 References: <cover.1755812945.git.boris@bur.io>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BA8EB100013
-X-Stat-Signature: xqtf7w6373usa58neqq8suyjartueyge
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 32436140008
+X-Stat-Signature: 9tq58gertt3u56yx4jzdhmpw7unhq5dg
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1755813314-995377
-X-HE-Meta: U2FsdGVkX19Qj9FwnfAq6It2KJs5DLMafTPNK9CZYB/3DYb/fA5ozq71/J1Jf9jKXkaRdHlOAcugs+OBnI1hEEjqoYTI7zK2Pc6YdrAAoYjtuL5w1r11JDcPpVbDpwF8B9xwWZYdc4wB+ujD1hTzijHjfFkkNOdioBgk/jOrWrDxp1cgKE2CsGpFomC1fbJyT12F9O7p1Ywf3zE3OMcWnA4639Pi+MfqxYkelXhi9NeyYOS4ryocOvS2OHQWpft+lsQqCvmWl2lBk/snytxklpmoVFPqf75uTwif20rOXLa5lmktR5bEr8gqBCInwyJJ51EewFF3BxhxOlnkc+/qocsvk+bsMDBWGLr4aLZf2PIB57bOQQ1dOwgidjKsU59hesZX0mOxNan/b5uQdqrR8wkHcjdb6NSM3tRW7eoZHvneboA0rb/71qbghlgr627u/d5RDhJ1YvJd4BFKN/rUMcvbHX1Q04NLFwC3VbZUaSoHWeCkLDKw9efO0GwVSowR/1ESdm/XOhQVtwg7+5QTGLRf/h8eSKwzRCdtDucyN1dO1JOuEdFDyH2fP9uiPBdYb71MtwoT4FYw7uMOR82362LcG5WYm7B8nWlGYOknvPij0EugnL+vhzShFjkgtis7bYEwNZEq8jTvkA8CQ4Z8UgF1t0hR5iQbzBDiltFBWiINYuMgYFZUaw1g8DIX0Grnw9VyM9vymAdp05vh10Cb9ja9CiXMQmfb9lLsk+7ca75lQwC1QjSnDjEWZMDjlKl8OS8aJT69L+eYMXsm6Mx8VEzIgyNcPBtQd41CXlyHI0EfaJH/SZpUo24HVPqLH6SaplEngirka03TvRzG+oTB768qG9VI+T3P2yBfEdXdWNbUzUzKIQNngSYZnrnstf7Pq6tbOhR3IALtag2vx9XykbB+qJS8WCa+KQN2gMmvC5CnMMMq2Mq5+BJmxEzvCKpw9DLEfPudBGlNUsycafD
- OUiKdc5R
- f0V+YOezz1KVsixL/GU2uzzG7fA638NRJ/OrF1M8Cp2TxQDOz7KD66O7Yl9hxZ2zmG83288cOowKtmUaoRyGaMOUvEQyZ9rX1CSDcw7MttxRYmOu4vmNAePIvSlDecev6xy4SQYjz4d70uWAE7P0dVQKVdcNrBWHfFEQoLOIam+BoHsA2SvwOF4czUdg01ndGd6CrNqkAQ3f8VJ6CId5/GiIqX+ldUh1lVu9M8lsIzvewJiTYqIeBFdAP+UI1kNc0v25aVJihFh77FL/KSwIrOCP8xETC671OxfD1Bdd6lMFLot64/7HIuAJwFcgOlTQv301wT7+F8miO/laRw8MxCFomoUQRvnJdM/E+J2sJGKU1ab78Fl1lNa50P05Lg1INZNykhKKttoYDf6lRVkbbiVjI5wKQnA54Jsmt
+X-HE-Tag: 1755813317-70951
+X-HE-Meta: U2FsdGVkX1+ivQ9Bm6ALL1A47CGHoHXX7NNXrrp1WgVOhN7KmmRaDwgfR/JGL8C/WHBvVLXJs55pAekqyMQOUR6egxOlWEghMuNNCZpSFB1u+GTddhx5tLKyCYTMzJ+CgEK5aS9QvieTOJ+unSjNyAxb8+gN9PZfuqTZowJtZwQWWZM/5qr4Qb8Aijm/CpIJtt8daf/745+VkUk0+88nrVXg872QB0na3jJEZC0qZO3BtJ0L2G7zo2kxhnrZeFuBnIQN+CquxDcaj7A0HBMeP39XXweTMC4HETYBIOLc6X3RLxDWJbivyopN6F3WFnC3D14Wynra8nobDJzMdhiN+qUNp5/Wdz6Q7GCOi/AoCJumkYjdlAu8Z2YMx7q8F4EiGXOkNgodtlsF+Pq0FotFiLjQH6AXPvHlo9odhPbEDCxx3anr+0i1zqnfGbo0U5CxZMWnvy5QcwD0w7Axx5J5r7UnkIn/yWB1oLfjnoty6gqlMvbqGbZpTn0/37CE/TUitqM44ysfwczrJWG8oHPkKSvApdo0WXAjoL7BLzY3FUU1MCYCeaSD60ueBzUPeIUN69Zz+rjGPEdtPr7deRQnWNR0I60ieASEIQursbw5gpiYISex/7+ylWwORfjBJVzxuttK8vdeBZb4NkpDoXK5wVSp3FAhrapJu1MlEImpHktTyIj4/ShmJUQhDZx4wu7suWKkk+Z0yaZ37IPNXgf2p2oHtj9l+1835yrtOVSmC0+ysPaStwMGw+NXGjdXpl6TW3J5kvzfnhmHGxj/8EILTEEYGF3fdDXvJEProb4KwsXvC9jXSgBHZ/54sh4xNPJUxTUiIQeA5BnjZ3xccR6nH9v1NvnpU+I5yBPF0fqk3EjJzeV3NB3eD9iSwedDFl0lbjhUe0kIvmfr2dg5ntB89o51OU/va/J3Jj00rNrN3uAljV2vaPmsIcESvFMZAEmxQDxJ3gj79lTnZu5XDFH
+ qGBXbBnv
+ wg0J1jR15kroxtEPLXjx10dEoFA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,76 +143,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Kernel file pages are tricky to track because they are indistinguishable
-from files whose usage is accounted to the root cgroup.
+extent_buffers are global and shared so their pages should not belong to
+any particular cgroup (currently whichever cgroups happens to allocate
+the extent_buffer).
 
-To maintain good accounting, introduce a vmstat counter tracking kernel
-file pages.
+Btrfs tree operations should not arbitrarily block on cgroup reclaim or
+have the shared extent_buffer pages on a cgroup's reclaim lists.
 
-Confirmed that these work as expected at a high level by mounting a
-btrfs using AS_KERNEL_FILE for metadata pages, and seeing the counter
-rise with fs usage then go back to a minimal level after drop_caches and
-finally down to 0 after unmounting the fs.
-
-Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
 Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 Tested-by: syzbot@syzkaller.appspotmail.com
 Signed-off-by: Boris Burkov <boris@bur.io>
 ---
- include/linux/mmzone.h | 1 +
- mm/filemap.c           | 7 +++++++
- mm/vmstat.c            | 1 +
- 3 files changed, 9 insertions(+)
+ fs/btrfs/disk-io.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index fe13ad175fed..f3272ef5131b 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -259,6 +259,7 @@ enum node_stat_item {
- 	NR_HUGETLB,
- #endif
- 	NR_BALLOON_PAGES,
-+	NR_KERNEL_FILE_PAGES,
- 	NR_VM_NODE_STAT_ITEMS
- };
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 70fc4e7cc5a0..7fab5057cf8e 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -1930,6 +1930,7 @@ static int btrfs_init_btree_inode(struct super_block *sb)
+ 	BTRFS_I(inode)->root = btrfs_grab_root(fs_info->tree_root);
+ 	set_bit(BTRFS_INODE_DUMMY, &BTRFS_I(inode)->runtime_flags);
+ 	__insert_inode_hash(inode, hash);
++	set_bit(AS_KERNEL_FILE, &inode->i_mapping->flags);
+ 	fs_info->btree_inode = inode;
  
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 05c1384bd611..344ab106c21c 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -190,6 +190,9 @@ static void filemap_unaccount_folio(struct address_space *mapping,
- 		__lruvec_stat_mod_folio(folio, NR_FILE_THPS, -nr);
- 		filemap_nr_thps_dec(mapping);
- 	}
-+	if (test_bit(AS_KERNEL_FILE, &folio->mapping->flags))
-+		mod_node_page_state(folio_pgdat(folio),
-+				    NR_KERNEL_FILE_PAGES, -nr);
- 
- 	/*
- 	 * At this point folio must be either written or cleaned by
-@@ -989,6 +992,10 @@ int filemap_add_folio(struct address_space *mapping, struct folio *folio,
- 		if (!(gfp & __GFP_WRITE) && shadow)
- 			workingset_refault(folio, shadow);
- 		folio_add_lru(folio);
-+		if (kernel_file)
-+			mod_node_page_state(folio_pgdat(folio),
-+					    NR_KERNEL_FILE_PAGES,
-+					    folio_nr_pages(folio));
- 	}
- 	return ret;
- }
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index e74f0b2a1021..e522decf6a72 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -1290,6 +1290,7 @@ const char * const vmstat_text[] = {
- 	[I(NR_HUGETLB)]				= "nr_hugetlb",
- #endif
- 	[I(NR_BALLOON_PAGES)]			= "nr_balloon_pages",
-+	[I(NR_KERNEL_FILE_PAGES)]		= "nr_kernel_file_pages",
- #undef I
- 
- 	/* system-wide enum vm_stat_item counters */
+ 	return 0;
 -- 
 2.50.1
 
