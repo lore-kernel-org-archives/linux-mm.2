@@ -4,98 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA2BCCA0EF8
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 14:32:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBD19CA0EF8
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 14:46:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E0136B000A; Thu, 21 Aug 2025 10:32:48 -0400 (EDT)
+	id BC2096B0024; Thu, 21 Aug 2025 10:46:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B7B96B000C; Thu, 21 Aug 2025 10:32:48 -0400 (EDT)
+	id B9AC66B0026; Thu, 21 Aug 2025 10:46:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F4936B000D; Thu, 21 Aug 2025 10:32:48 -0400 (EDT)
+	id AAF3A6B009E; Thu, 21 Aug 2025 10:46:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 027F36B000A
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 10:32:47 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AAD431A043B
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 14:32:47 +0000 (UTC)
-X-FDA: 83801005974.19.4AD882C
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 12DD980015
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 14:32:45 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LC7F2tmG;
-	spf=pass (imf02.hostedemail.com: domain of dakr@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 967536B0024
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 10:46:17 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E7309138713
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 14:46:16 +0000 (UTC)
+X-FDA: 83801039952.23.777EBF3
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E8D85A0005
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 14:46:14 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=GKZywSEt;
+	spf=pass (imf15.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755786766;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1755787575;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lt/7OW4Wkxdu2HOD2pSmNfQC+quFLTa8XcJH2OMogZY=;
-	b=itQtdvpJVACSDhsnBfVk0Px4cfyXpAf1ZrWmtByu+JEn6PUhy5JUD4NDL+qrxuLAyJmGPn
-	qgSkEqQ2u3mGqCt6i17w02FCFOSiJXSPYyYp8+CZKxuoSL21NHBro7ruMz7KX7Xu+g8jfg
-	I/EMExZBBhkbNxsmEpmsw07ROfUoYCU=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LC7F2tmG;
-	spf=pass (imf02.hostedemail.com: domain of dakr@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755786766; a=rsa-sha256;
+	bh=JIG+w3J97fChnrmJiRIedihpzfaTzFXkYAGxoj1msbc=;
+	b=Qx4y7226XZN1yu+eAcnSzwe5IknUZw1RAaCKhIlzqFz/WmkEgYBbog5wN0NjepzXelwM0e
+	gUcijYNjGkfZqaC7UOzhYoGJ3ru2aCVuB5VjAV+wKgR2X6ua7OxWKSeXCaiedvnbjIYBYi
+	Fu2kdwdjV7OLZuAF+X7PaktFgq2kh/Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755787575; a=rsa-sha256;
 	cv=none;
-	b=TYpCCVsMayPsQkdbwVNUIvf9bJT/h0ENeU2n5uWgRHvGUxq618rnzA/QGIRYayG3inW8AF
-	QezEpf4k/foBXoD8Yx6KwmSND9RtswtRX43T7Ir1ithsAz4W4bayx6oWN7F214JKUwK9uE
-	TLA1mnqBVH/G51dzEuUFz+qgmVZDecg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 4C508A5847E;
-	Thu, 21 Aug 2025 14:32:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E21C4CEEB;
-	Thu, 21 Aug 2025 14:32:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755786765;
-	bh=OcH92vAjTX0+vo5BSHLDcFy1Wdx4BKrILtb6alAg2ws=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=LC7F2tmGYn/sJkAKGyEaQ5akRdZS8hmzcoB1z+V8Vy3Jduel7MgAM8YiuTjwxVA5c
-	 UL5w/1VDFi2AKRlgnhbg6yCU3QjbhkyBLyr1SnkWut2usA3FoKIBHZZoELQdeyIbDf
-	 x/9x1HboPymNqvzNvkLb5wZ/Dof8lPnv9+9orc+CuKq2PJya+0wDaxS+viBn0vzZm4
-	 ZtGTBTVbg4EF3m8LhVwTNnb2YebjfTtfV4WguUOHJ0IADl/6VQ7moTcSb3Sqx4oN4Y
-	 QTOpO4MYs6ikMQcxsc9F032OYRrRZi+OBJl1gs3JcKQmhPyMB66pW9Pf89C/0QhJij
-	 lpkKytxdldIcw==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 21 Aug 2025 16:32:39 +0200
-Message-Id: <DC86GM7VK8PH.QYLPP2SLYM3M@kernel.org>
-Subject: Re: [PATCH v2] rust: zpool: add abstraction for zpool drivers
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- "Uladzislau Rezki" <urezki@gmail.com>, "Alice Ryhl" <aliceryhl@google.com>,
- "Vlastimil Babka" <vbabka@suse.cz>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, "Bjorn
- Roy Baron" <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor Gross"
- <tmgross@umich.edu>, "Johannes Weiner" <hannes@cmpxchg.org>, "Yosry Ahmed"
- <yosry.ahmed@linux.dev>, "Nhat Pham" <nphamcs@gmail.com>,
- <linux-mm@kvack.org>
-To: "Vitaly Wool" <vitaly.wool@konsulko.se>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250821111718.512936-1-vitaly.wool@konsulko.se>
- <DC83A2M3G8EH.12FRM3C05ABCR@kernel.org>
- <DC83WSYHY3K1.1D3XEES0BIKGS@kernel.org>
- <27139676-8470-4067-b259-f01022751bbc@konsulko.se>
-In-Reply-To: <27139676-8470-4067-b259-f01022751bbc@konsulko.se>
-X-Stat-Signature: 65he7k8srqxjgjzuhztfhxz69ejebrcg
+	b=FKqSsen3MSxPX7eDP05nGD1DzJ9e15FwKLDxFA4vjDjM6+her9cf2cVep7PSRHnlBhOhWD
+	CI1fLMnRfw49+DfzT4O9lKNm5uyhHwMfA+MyPHxf/nye7vz1b90aMrdYQnTUlEEDoxCPy9
+	fA8QgmuL+5LzatLD1W/WaK3HeTxJA4s=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=GKZywSEt;
+	spf=pass (imf15.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-afcb78fb04cso146794166b.1
+        for <linux-mm@kvack.org>; Thu, 21 Aug 2025 07:46:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755787573; x=1756392373; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JIG+w3J97fChnrmJiRIedihpzfaTzFXkYAGxoj1msbc=;
+        b=GKZywSEt67ehSBT312YZZ9kcSaeodW48jjcpMTEyMOD5RFHXhuuNNPBtSU+uGLsQXH
+         GYXogNQC/RQf9YYl55R0UwSBfU87NwvOU1KKb55gIea08YQh3sy6NSju8vf2nyQlxeqd
+         D3MCtgOFzg31HNeUbUBRpJr/yP6s5iKBRrIOtsFSeEli4vY7CkP8jNvatdKzc0aQmJWX
+         0FnNebR6G/antCHMX9XWmrnP6lgQz5oqVsXikRxXHyTTL4l5p0tP2BcHD1XkosaSQcFa
+         ip1yeO2swohGu1+snHi5pD0WnPVSw2UTGkORsCxVCvkHYaA2tvruzECFGuG7T+9JzuIf
+         MbsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755787573; x=1756392373;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=JIG+w3J97fChnrmJiRIedihpzfaTzFXkYAGxoj1msbc=;
+        b=oJyN3g1xgDOOa3Ioz1jAPxHj87rGpKx2NmUtqSiS9ODWJdMy1D0PaZcKxFSnvwlQwI
+         N41xjPJTSkN9dUR76KiHadownzAdoBHRouuPFEMy6+XVx2kFqUauttJWtpJYGYFIuHph
+         /D+s8MdYhLHpycJnte/f0tuvU2AEn/Qaa+/X3Rc6B63roZ0of+gE2ecfeFX6W/s3SoHB
+         3hgGlumwY/gvXTJlvX78CwQqm3tTzEeduYEDNR17xKoWpiAopPihP/reQyxlxPMB2rx1
+         cUJYOiqXdi5Yppq1UwsEtGi6h2DPW/GbKiqLEBBn38uFckVyKHaTca9mf8muG/JGZAuv
+         bzkA==
+X-Forwarded-Encrypted: i=1; AJvYcCU0PbOChZnRo6FCnzj1YOmNNofRShOSPhuhCQoQS6jpQdcZvyj6quDy4WqGa8WUtaioy+eiGOYEkA==@kvack.org
+X-Gm-Message-State: AOJu0YxzwSvXVcykFrEbEMPO3YTbBnEiC00AxfcBVd7NHX9DQOXMixm/
+	EJRuxK+XG6gPsSHEvU1Ma5PpjribTyvHVUUPljVEzGhgYJRMUknFGB+a
+X-Gm-Gg: ASbGncsF291Hgu+G5mIvzFl5y5zdclEMQUsYwBOMEUbDedoY55SAJn7Naw+KMrUMl+m
+	vzEBq+Us/nqTly5iRmMave9yJMfYFrGwh0ranEFL/V5xsN2DbS5ri6karyWhxy5RrUEc1BkcEjy
+	XLgfrDjwo+0XThZGLsmlGFO/ypQMGU3Qfdl/i8GYjEG462JUNfxZyBmVp/6JqGsDxexRbyDPZCJ
+	AYjOKBzAU9kG7lYvEUT4jO8qAr1/fo/vnYyAe0jlis138/7cIsMkuNmWWRP5Ju5c3BR5KkzWeRk
+	ZY1/lH5sUrJzgOOKSrwDXJEm1BfTdWek1c7+hBmH+S88omLyeIX6zCl7Iyi9zHk78DwyPgUBP4R
+	QZtPQC/hzADXVheTaeT6541Lkk1H2QRfD
+X-Google-Smtp-Source: AGHT+IGLVuYVD4/5frXWAQs5H5qLefX8r3lwrN7PcOc+bxumtnjbgdiK8HV2S0+1muwsZBsiec73zw==
+X-Received: by 2002:a17:907:1c17:b0:ad8:9997:aa76 with SMTP id a640c23a62f3a-afe07b96fcemr266557066b.37.1755787573131;
+        Thu, 21 Aug 2025 07:46:13 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afdfa887a90sm289060966b.11.2025.08.21.07.46.12
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 21 Aug 2025 07:46:12 -0700 (PDT)
+Date: Thu, 21 Aug 2025 14:46:12 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>
+Cc: akpm@linux-foundation.org, shuah@kernel.org, mic@digikod.net,
+	gnoack@google.com, david@redhat.com, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, ming.lei@redhat.com, skhan@linuxfoundation.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-security-module@vger.kernel.org, linux-mm@kvack.org,
+	netdev@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-block@vger.kernel.org
+Subject: Re: [PATCH] selftests: centralise maybe-unused definition in
+ kselftest.h
+Message-ID: <20250821144612.a26otz2yriqb5gdq@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250821101159.2238-1-reddybalavignesh9979@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250821101159.2238-1-reddybalavignesh9979@gmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E8D85A0005
+X-Stat-Signature: u9ijgjozttnp98q8fea4oo9a8yfrmcsr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 12DD980015
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755786765-224780
-X-HE-Meta: U2FsdGVkX18L+oRIe7st2uoM2hLJ5YSAk/4xumkqNORjJwj/cvbqz+UxlBmcUdVwjMNGKGE6Pc8QI6eI21PUkrhUUt+4KOuLR0B844yJ0MoQwm2Bbv5f4dOs/K2uyc5AzwtU+hMw5ONUyCK2rsVQn3AHwqwpQyW0oPj98N7qRHB7WtlpTRYg69rJIwWmh0tb91dVq4tVJEjumJ39jg5t+KebxZTazdSULSbcY/qUqHFoQIF6Wx/xtrqQr14ZuNACKdPLogPBmyGm6FfqgXeCIW75iHiT/tG5fihRgyWtjI8pjzKa7RHk2X+HdxpeCZMnqAfyTwSe/YgxaQFz9Ykxpgrzk2wk4P7C4f0ccv6v1EmwMS0vlemDB4aL6JYgAFLPlyslEr9Gu0IVLlpuD3/sG18mn9fztEEBCEiHyXOf0cnX2A0fWehMRLQjLEA7dQ54T558bjm6sWfNaN/CdQ4AvKvgYV4qo/kv2Wqpf/PP2mI8yWfaTsgEphK3EwXUQu1l5q8DYrXLEkZVJ6Zwb4AA80q9YAlT8A+VF9IZ9kumfQmDgSx/5d5HfDg3MOEzJnM1b8W6PkCy5pDIDNm5bYZbqFN+XMms8ejplNVh9uhksOMMTSXfvQYmu4x81TvQ/Y2b640fb4F449JSWqHpZ7mS3oZbuIN8hmgCcXnNxz79qVObC3MHjmvgWfC2gafBboxmnqjw5MEjkH+p23WwUEHGx2kiq/1SIJjchNxrjtZRuk3PGkEzyGx9B3SXNOY6kkfRhYt3V2Rnml7rqJcoP6adl3MVDoaKsq4YHakr7qNsZgZkkxjK5ic9QOTeKBkZWghomu12fREnUFKvCx7mLfL0u6w/kUqS4OKfNC/G8tTWSM8OZSn3cU9AHiAgIFQ9HfDwRZRCVsvF93n61S7acPO8cJ0AlSFjUVadNkpdj5SP/wFViHRAhHTpPJ2kVcOx9SFUl6B9JP0heb8K76Pw9+e
- 8DvddHe0
- yDkRVZi3oOGjqvzbICS5/9SKa7YYB2gDR4pXkFkRbaXOE1V4NJ8VuPROQhNN/NeYXC2pWV7MPaHaEbRlg0CS4fdfy9ytKa8dgjqhrxhMM+d9tmxvIHIZZDYmnf6m3PIn5qB93vnjzCMtuunMQ7Cjos86kXKL1OrcXHiO8S+jXmEE7nUzPo2T/wIo+GQCiAo4xGjH65dV0o/1gp4vPg3RCdwmdYL9fpSUwKgkUu6kMqaV0h/Mtd9HshnAS4vY/1UUGh8KnTae+rVfwgGrm2XO42TUla9dBHEYAEoQZAY0aNdYOpX9fClqHB+lTg302A07HqJCsyaaOilL1xPJSGQijXAqc0zBczoLoOLmt
+X-HE-Tag: 1755787574-963432
+X-HE-Meta: U2FsdGVkX18keaTHSIaxKqSTZtoL+4g55ECVd47LHofNxPz7bQtuzYRalWKVSGwGXWaZom9QdivhlG2mO9xtLugXAocSamxuHJuFseJOlNOsKS0EnZOLsUcg+na26KujYQIbVwUdz+M3KZwKguleeO8wPwUVAjBaSrM8Wor0HKk1SZC8Asctz2H4Yf3K447SpOErht6j4ZdooSOvn+BXUN/cVHOAikNlTivTFBuNW2L+BTqRFok2PRDxTQahQ4Wqi0rWFlTDqaBgB5owQcSpxEC81QSrkXrxDFZ8MWnjAwhygaID44i/ZlINF5qj3U/cLo4FNspYhNJqBHvVyVTfQ3hfqcGbRdNA4aPV44V7whZBFJuPAhi9a0ChfIRS542gsLwhFrbfIaCJ4y3ytySBUd3wf2pFpeJutmXk/zSqO6q/y6Fmun69G3sFKaHAPVD9nN8jAldqbOi5wRwfKohTMUJpDP+YhjK09lko5VY8Se1hyy9ZCJ3y4ojhO3t1i8pirvPYhaniIXR1Nvy12/U829p0jZxiHJw8c5TdDnCdmA+f9jLAS6Bkf8QjqWfTvjey6qusMwONhJ4q+j2xX1Z9D2DVNG02NhlEFGzlvA4TLYReNpoZYxfxhBEw3RO1lXGUq2sQb5rNdF5cpr72YR3vWIijg6xIzzrqUfy6v98oJsrfh0m6JDvcY0wzKDJAaIkKGjQqlliRNJ6v2HEZf4PiweoIO0wiqGgqAf85iUfMvYRI9+ZiAAv46mLiBHFMrnvArWkGkSPPfxvaSRkV5PEiYAJjqksuAs1HCiqYmxXxE7BtSA8MBCcxF68RLg7M3stvAiKAlKe5/1UbNLRMdrW0yUBRvb/LiGyRANxfSi1uogoq3BBdDjJ30V6tlpJx+wes1F4+LtB3ZJKotZNu0iI5GMwkux1YFwGwrc2f0g349YDzC6CLzcLpQiMuq6xCUl/Bl8232sMqfYopBDRecbR
+ gsYmYnRw
+ umqxbIdo9Aec74K35S/S9GyDeAZspO6jNoFrJJiUmJdpHYBq4X9J0kDHdOTMSnJ1Rv2c7WcBKrRI+vVJDWi8wTWqcr6jjjqFogAwxLcI8EldI/rBhzsqWD5HDMgr8nSrl9ZThqVmX0d23OML5W4Q5Abcaktv7RZmGJv9l4BE6IpLhnCO7Wko9CogDbqx2Okyrz91JH/wczl1XRS6Rm3QSKV9HV+g8373pgySTFoGk/LZYFstNewedoRqKRP1y15t5bAk+OgWpZQ4JZbi++ZW8VayDQ3ZSDXmbmElPFLijp1AefnLJQQ42yxeNXH2ouLsAAMAA6dWSdJ64105mKywrYUYNcm53htea6f2O5oUy3PWlIXfxfClJQsi5zxRYdvIS8/V9U4/SKdQCkHIyIZ2NF+HSBc5hx8XMos5WyxUgQZqJUHqSpy0ut5EfyhXJgJQ1rCEWapGiNFERxdxBfLXBIlUNUEu1TloIykTP+GSk7tcM1HIeiOSHXI7GhiwknHtF9zbreKkqW95uCQGTpvrI/7+2JpNFaYpSqZ0rmeCgEkWOaeaADAuelri7t6soUlFj6Mvb+U1NVAxIxAUYnr+4KKHQGIeTLeTjYWcUEBEIHYoZFmSmsE+hZBGCdPrMK6YS3Cq+AhsSOJxC2QUwR19Qokk2NgOhAqxg0bkfn6VKNb34e5qrROLkcEJ9wCW4cKhLvZfA0+tNZBK7SM2oAHZ3gIHUjx9o+ox3ejmX4i80PUpLSw2IKzIqQHXEfA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,49 +129,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Aug 21, 2025 at 4:15 PM CEST, Vitaly Wool wrote:
+On Thu, Aug 21, 2025 at 03:41:59PM +0530, Bala-Vignesh-Reddy wrote:
+>Several selftests subdirectories duplicated the define __maybe_unused,
+>leading to redundant code. Moved to kselftest.h header and removed
+>other definition.
 >
+>This addresses the duplication noted in the proc-pid-vm warning fix
 >
-> On 8/21/25 14:32, Danilo Krummrich wrote:
->> On Thu Aug 21, 2025 at 2:03 PM CEST, Danilo Krummrich wrote:
->>> On Thu Aug 21, 2025 at 1:17 PM CEST, Vitaly Wool wrote:
->>>> +    /// preferred NUMA node `nid`. If the allocation is successful, a=
-n opaque handle is returned.
->>>> +    fn malloc(
->>>> +        pool: <Self::Pool as ForeignOwnable>::BorrowedMut<'_>,
->>>> +        size: usize,
->>>> +        gfp: Flags,
->>>> +        nid: NumaNode,
->>>> +    ) -> Result<usize>;
->>>
->>> I still think we need a proper type representation of a zpool handle th=
-at
->>> guarantees validity and manages its lifetime.
->>>
->>> For instance, what prevents a caller from calling write() with a random=
- handle?
->>>
->>> Looking at zsmalloc(), if I call write() with a random number, I will m=
-ost
->>> likely oops the kernel. This is not acceptable for safe APIs.
->>>
->>> Alternatively, all those trait functions have to be unsafe, which would=
- be very
->>> unfortunate.
->>=20
->> I just noticed that I confused something here. :)
->>=20
->> So, for the backend driver this trait is obviously fine, since you have =
-to implement
->> the C ops -- sorry for the confusion.
->>=20
->> However, you still have to mark all functions except alloc() and total_p=
-ages()
->> as unsafe and document and justify the corresponding safety requirements=
-.
+>Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+>Link:https://lore.kernel.org/lkml/20250820143954.33d95635e504e94df01930d0@linux-foundation.org/
 >
-> How is destroy() different from alloc() in terms of safety? I believe=20
-> it's only free, read_{begin|end}, write that should be marked as unsafe.
+>Signed-off-by: Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>
 
-destroy() should be fine.
+Looks reasonable.
+
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+
+-- 
+Wei Yang
+Help you, Help me
 
