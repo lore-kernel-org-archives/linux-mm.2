@@ -4,130 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80BE8CA0EFA
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 19:36:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BDADCA0EFA
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 19:37:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C98466B0111; Thu, 21 Aug 2025 15:36:53 -0400 (EDT)
+	id B895F8E0024; Thu, 21 Aug 2025 15:37:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C49116B0112; Thu, 21 Aug 2025 15:36:53 -0400 (EDT)
+	id B61258E0023; Thu, 21 Aug 2025 15:37:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B38DB6B0113; Thu, 21 Aug 2025 15:36:53 -0400 (EDT)
+	id A9EA98E0024; Thu, 21 Aug 2025 15:37:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9DFA46B0111
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 15:36:53 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 68D76C02E4
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 19:36:53 +0000 (UTC)
-X-FDA: 83801772306.26.D1F60CE
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 1900E100008
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 19:36:50 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=hpe.com header.s=pps0720 header.b=pN+Cg84+;
-	spf=pass (imf05.hostedemail.com: domain of kyle.meyer@hpe.com designates 148.163.147.86 as permitted sender) smtp.mailfrom=kyle.meyer@hpe.com;
-	dmarc=pass (policy=reject) header.from=hpe.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9842C8E0023
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 15:37:45 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1A126594CD
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 19:37:45 +0000 (UTC)
+X-FDA: 83801774490.04.534A230
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 2EDFFC0005
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 19:37:42 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=f6lHv4Ea;
+	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755805011;
+	s=arc-20220608; t=1755805063;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Wa8/iqYdFpX8MJDTCXt3R7g1KRe65oEz4/7rMZKRdyY=;
-	b=FYajWS6SWkQKV5TY/70Yksg0/gn+9j3Is7bm43UGtuyD8wQ3JRwU91FXde4ztHIIJ5Cqs8
-	VQPwKN6cOcU9lrkk5SWuel+hufE3sA+w2UtU+Qv2sRCeJFXkqi5m7JuVDX2MQ/b3BlAa8m
-	ptJ/xKQ8IdCGkar4uCNSbkHhb4Y+JSY=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=hpe.com header.s=pps0720 header.b=pN+Cg84+;
-	spf=pass (imf05.hostedemail.com: domain of kyle.meyer@hpe.com designates 148.163.147.86 as permitted sender) smtp.mailfrom=kyle.meyer@hpe.com;
-	dmarc=pass (policy=reject) header.from=hpe.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755805011; a=rsa-sha256;
+	bh=qbcsp/HYAITfGuo2SXY/LG2h8CV6ti2SdCWAHkmo3yU=;
+	b=CN06mfdEfUUMkYyA0fuHxs2kRKCpTDjjg8z91UOKT/FDFua1UExJnW9x9jLXIDIBTxoQLR
+	A94R5uYIMz9YQPGzD6ksZX2Ii3L5N/2cvFc5Od4j6r/97hp9QHiXFQ/hFtK7r4MjGHMDLr
+	zNeGpa59LDQhv+d8GblKCAZcajBxnTg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755805063; a=rsa-sha256;
 	cv=none;
-	b=drbFyU3Je99ZVvQkpX7O+5qkPJN89aupvy6fCr+WxBG62ClKwnc+jjlWIlsD5zfTkMpekD
-	ovNbH80nI+6hI72m7fzvWf0sSOsNOyfYlcGZEVVfSGBxS3EOp4bZEsK4mEum4ibXyOn5Qm
-	J5nsBbjFbIYxJygX+fCqiGBVsw0sqB0=
-Received: from pps.filterd (m0134420.ppops.net [127.0.0.1])
-	by mx0b-002e3701.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57LIGo25019507;
-	Thu, 21 Aug 2025 19:36:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps0720; bh=Wa
-	8/iqYdFpX8MJDTCXt3R7g1KRe65oEz4/7rMZKRdyY=; b=pN+Cg84+5+u0N6DOIP
-	GwTc5IaeL20gcPm4Ev/zqIkEXIDgWfypgqcHEpGHguLRySZ2ai05WIte7Cm++yqh
-	vpIFFvYthn5gDIdOQ5SHR95CpedzAiun25h3cmskmsF6nBwdvZ033979gXTLSzkF
-	LLXpCgRTnw7KDD6orr6ThDI+TqyELXCzwYb5dlOkXExlAZnJPdSAZf91U6EBPIz8
-	wNuVIGFJr+ccz30mXqMPOvBkabXM+M2cEOhb1UO3ArSNHinbvI0hXBu3KbIdz/Ue
-	/3Dwdot56ix6hKYb5qJorfQ7SA318hqNcVm5EIzLpjy3LWZ+WC6RaHUCr6tD+8Mw
-	6ZDA==
-Received: from p1lg14881.it.hpe.com ([16.230.97.202])
-	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 48p10evsb0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 Aug 2025 19:36:17 +0000 (GMT)
-Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by p1lg14881.it.hpe.com (Postfix) with ESMTPS id 3B86B805E18;
-	Thu, 21 Aug 2025 19:36:16 +0000 (UTC)
-Received: from HPE-5CG20646DK.localdomain (unknown [16.231.227.36])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTPS id 67945805E5B;
-	Thu, 21 Aug 2025 19:36:13 +0000 (UTC)
-Date: Thu, 21 Aug 2025 14:36:11 -0500
-From: Kyle Meyer <kyle.meyer@hpe.com>
-To: Jiaqi Yan <jiaqiyan@google.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, tony.luck@intel.com,
-        bp@alien8.de, linmiaohe@huawei.com, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
-        lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-        rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-        nao.horiguchi@gmail.com, jane.chu@oracle.com, osalvador@suse.de
-Subject: Re: [PATCH] mm/memory-failure: Do not call action_result() on
- already poisoned pages
-Message-ID: <aKd1K3ueTacGTf1W@hpe.com>
-References: <20250821164445.14467-1-kyle.meyer@hpe.com>
- <CACw3F53KmKRJyH+ajicyDUgGbPZT=U3VE4n+Jt3E62BxEiiCGA@mail.gmail.com>
+	b=m9rFb4DPbNpWehSXzmpWAXqlOFIT9cBwq5LHPUkSf9r07fLsvv3eiEnXv4ifooS3wjIZsJ
+	+VCf8yvUI9CJohCrYUgHjPxyrB5dXgO1PvK8wnAdkeXX68GoJEif5g8O3SXj/HZOZxcoFy
+	lkrHW4Ca1DnNczP6uQgrxGBsPXRIlsc=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=f6lHv4Ea;
+	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Thu, 21 Aug 2025 12:37:34 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1755805060;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qbcsp/HYAITfGuo2SXY/LG2h8CV6ti2SdCWAHkmo3yU=;
+	b=f6lHv4Eaw6bRrMmsg1ePkmBAFmqMjou73pU0z8ovbs+rKATqeaaDENg7sZDADG5f9XhQ21
+	8xgKJTX3fZM44T8tqukNb1IG45fTEJ2evsqB8Ms8WH2STndSR3678yyHb1ASpWqe/3KJBO
+	ZEfQWqDlyKUcXnTDtlQy6c/p7mFdDSg=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Boris Burkov <boris@bur.io>
+Cc: Klara Modin <klarasmodin@gmail.com>, akpm@linux-foundation.org, 
+	linux-btrfs@vger.kernel.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+	kernel-team@fb.com, wqu@suse.com, willy@infradead.org, mhocko@kernel.org, 
+	muchun.song@linux.dev, roman.gushchin@linux.dev, hannes@cmpxchg.org
+Subject: Re: [PATCH v3 1/4] mm/filemap: add AS_UNCHARGED
+Message-ID: <jewggm6jdhjmd2hlnxr4qgaqelst5ue4hviza6v6hgiivkxmiz@eiyng4pg2ilk>
+References: <cover.1755562487.git.boris@bur.io>
+ <43fed53d45910cd4fa7a71d2e92913e53eb28774.1755562487.git.boris@bur.io>
+ <hbdekl37pkdsvdvzgsz5prg5nlmyr67zrkqgucq3gdtepqjilh@ovc6untybhbg>
+ <20250820225222.GA4100662@zen.localdomain>
+ <p7uqfmtrl5duh4zekgtf3vtl4jsstbdefar5nramp4aflcn25t@7pmvft4zmsid>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACw3F53KmKRJyH+ajicyDUgGbPZT=U3VE4n+Jt3E62BxEiiCGA@mail.gmail.com>
-X-Proofpoint-GUID: ZsbMeJ8F2AyD1J_S0CWBl-FkjT0scDay
-X-Proofpoint-ORIG-GUID: ZsbMeJ8F2AyD1J_S0CWBl-FkjT0scDay
-X-Authority-Analysis: v=2.4 cv=X9oL6GTe c=1 sm=1 tr=0 ts=68a77531 cx=c_pps
- a=FAnPgvRYq/vnBSvlTDCQOQ==:117 a=FAnPgvRYq/vnBSvlTDCQOQ==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=MvuuwTCpAAAA:8 a=yW6kyvSLy8IxsXRRQqMA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIxMDE2NSBTYWx0ZWRfXweS0z0IijUjv
- TR5xEPl57yRTGITviQj7VxIoB/dhthyPhn3Caj5YbwX+GC6OYnvX99pN+Moi+jnFIzqflNUfAx1
- nVVN0mYFsxaB7/FmjOe9Hyr9suVi+Yj7m+ihVNQtmcQKRBzuV3OnqTQrvxRAXD4nuJQqvJhat2S
- Dt6Wwq87akgo5EK9miGGi7t9ISMpoNqKz30QF14/qO7CHBIckrso9IVUly3vGzZVwnie5WFG/1C
- 1TrUwSNZVHF1Ep7Hox1jV/J4B9pDqIh6cez5UOUKzn1B0Uv0uxFngbIGUzkzCn2DnPHQViY3CGb
- lmKRjiW1lq4gyiSCP6/YbV1cAc/Xoq69zgAifbVWB5pC/13+GLevXr77zpCKqHz8UF56PKl7N/P
- nhFW2WU1zPAaa05SsRivOpoC0k2xRJtnqaU4a4cztznNj/ZXP7k7Fgd0p+hbZfSocDjOo0HI
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-21_03,2025-08-20_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 phishscore=0 lowpriorityscore=0 bulkscore=0 mlxlogscore=999
- spamscore=0 adultscore=0 priorityscore=1501 malwarescore=0 impostorscore=0
- suspectscore=0 clxscore=1011 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2508110000
- definitions=main-2508210165
-X-Stat-Signature: jioynnbq144ya3s7pz1mpj1613cg91q3
+In-Reply-To: <p7uqfmtrl5duh4zekgtf3vtl4jsstbdefar5nramp4aflcn25t@7pmvft4zmsid>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2EDFFC0005
+X-Stat-Signature: z1ec9kq5ypmyihcojn3g18u1443ewao6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1900E100008
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755805010-365070
-X-HE-Meta: U2FsdGVkX1+SUrKjvWdhGscRJ7G4pofF0VgrygNiULPpBGUZkTumaCkqzlaby63vRi/lfGub+Qubu4a9TfVup+AEVAgbJi53aNKp5vl4oTMfW6YhEaeYj015T+DmwecgdGZMF4tYjuUEdEusBZpRYcL3FvIUxiUV15pC4PREHUbxvToG4y4poGDOuxsKJjixz2U5ouxwmwxINbURuEvAfl5TJYuJg/WfMPftv/4aOXNjXI/S0MddfPTMq6YcP7o434jN4qtxqUfIfLsImWq4W5hPccC43yRf6Zv0nmWgeWPpxZxBQmWiAknBIQLsAN4oiu8rc7nPN9BTh2pnE9QfzhIl4Rl/TbkfQ4gMgh8Y1G22W3XRW5r6Ral09YwVS9L45weqTt1S4i4mR0BQPpduSXGBelEq6BowG1jkXxP+EotrTaU1MLVoRgBMTZ6gFE2EfioRGyCFpm2vHe9sLO5TFUo7clcoaRt1Hoivso8+Ttad0sn66R4q4sd+x12In5/sEk2N9c5K7QX9KjADUOFVtSkLopWUuqxSo/ZVVIedPQuyJxO6pcFpehKomluL+iq/pG1DqVg5mMYLwsVKiEfOqakFqmEEHQw26L1dvEuaUEY9S/nPI6eC2V3N4B7W/VtXy4fUGPOWY5hlYOohO4AQXi8DFgNkHhp8OdThjkLjUK++yepokrnKDlrwlytRaMG6NFYwcBtJ03nJPyCljqbRUj/tNkZQc3jyghXtlCeFVHqHSS8PL2kolbHg8fwrTvDpyT9kK89T2AL6f6SBeMpZLnHCvIBYuHzNfuSh6JLCr54jogl9oWzoP9k7ZscFRdiwzI7/DHyxkQ63SjDQtw6h2g5RJf0k0XPzTG2IlMYp705YnODGnxqwGdTulIhdGnMYyTv6P5miJoKiuIPn4cy5UFqXSfucwPg+/D0/TrehVd3mIyfrWUtSeEN5d8Yc6kHT5BlRBwzfufTqkUPSd4U
- oJLbaI5n
- E8RvFrMgi6yj81eTj7oft32KoHzZuQGmV2uJ8rMRGxgOGlTJVMmta/caKmfzV4IB8h0YWcWVuBYLKKXwWBVAy1oPpRkTnlwaTj7JvFnJ7cZnKL+EgXGT3vrYOGvLaW0ZRZ1pouFsJs0DzmHHqhheRNVZ5CnReqty3HxsFzjEhuNG4/hEq/3CSwJnST8+MO16BK71gWyhhbHH+21cTQd4HzuqC7jmvlAzzY1V03Ic+8BqjircpZdFiwePfiRMR1w8aVh4sPgCbrxSxrqAmSUmUdMawAvCjyC/y783VFF0MpBvoYtVaBewngRxaXOFnRxJc3SYZA2HfYFRsBbPsAERTjWc9QZTlce8KS4shHavKMjI1HpaB8YAowZpyCmBW39HrestQSShu3cBdwoX0BAISztkiUQ==
+X-HE-Tag: 1755805062-65550
+X-HE-Meta: U2FsdGVkX19ZZaQELaLbLJckPrSzMkqoGBhvscuy+8yGH4QaXk1N8Qb0XFDFU1GSnv/kiGVwnY+BADKiuF4IkU08lMZ3D3igyeoLYqAVMTYW4Q3D5LYMwY7KFlNYQif9EgsqYWdd3jQpw8ZAkh7KMwoWhvqMQF3Oq17CFELwMX8yYUvFC+8LhAtesxHghqQ5xXpJJc/pb+wshnjR+Rq+z05+ZNkz39DlR/qWh3fSymQdokgVlp1GjZfwD8DE1kIn46mkAqOw5NdL4Lnv6LqjmxFdRHgWRio4m7pinqRYc1GUk4t99bUzHAMOc1r64GkbrllObf7dKso2fR63/djDGz/doom4tlE2HsIovzasIwofjB5o4BZEINA/5cOEYdIj5pzmYgAu3VdFOyScPW9aq1lraya6DjfsqN1w2ZEGK1OY8ZqR308Q4l3l0fkjmWipyWRH7z4NeMsNoDKMf3QfC3PSPBH7vmMKNSkj41mAVxqb3kp9edkDUCMoR/MixcMjjnFFYFdN53ZsYYXPac2kl6yQxXQaZZxzW75JCsY4Bhn3gp1+QkOBKs88ZSB3e2NzuUllgxM4rqA/Y1bsgO0hbGcKAn86eUa4E3J8W/2E8qmMnxQeF2xnR5UbVcSpAhPCyImlExr86I6V1qWsIjd/ISoqlj0O+e2+7Ag0Y0E5uXARkkzfsD1ZH+bRIopVXBrKZ9pJJ3zpxFaAlfEbXRGR0fI1RK3Ou72Ubh4O0dP6IybYWj8Mh9YWArkBOLqMlJIbRmn+qL5zajdCTqA4UQQieGATzhRTO6IYgeb+jO6rPmAXsSgqoa8do4OhWidz47ilh1eYGyNJVGVYP5QGp8bXSEu/3uOkC6b2da30DkZQUUqOFuWWs4DlZytPl7vhqddcTYsD920Yn3gzUG0OHr98bizlPgVywc4flbXe6CyE6RKa6XGyYJ4UGYh5ZNLyoSEqmCu/Uoooxw0dQS2A3c1
+ /MNolNEO
+ r07bY8giS0RJIcjeD8cWbU+/cTn+K3GmTjRPGPMRyt37NogzvpNy0oPp+iAiWaraRuw41lF8EmlAYXKzwADNdE9MEJa1sifgZ1bgtiTMPUGUsYa0AxJjOTLq3MQ9+Q0urojTe2pLs6zD74YqMLGMQcIMzwN/ME09dYwOesQCDwD+ui5iUjvBOUXYTEPtQGgbYFaQnzSnqNhCdBqGQxVhs2bHVWvx0r2jFzkQcZg4mxXUy4LvyNfVlOQodWZmLKNJZthVq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,111 +93,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 21, 2025 at 11:23:48AM -0700, Jiaqi Yan wrote:
-> On Thu, Aug 21, 2025 at 9:46 AM Kyle Meyer <kyle.meyer@hpe.com> wrote:
-> >
-> > Calling action_result() on already poisoned pages causes issues:
-> >
-> > * The amount of hardware corrupted memory is incorrectly incremented.
-> > * NUMA node memory failure statistics are incorrectly updated.
-> > * Redundant "already poisoned" messages are printed.
+On Wed, Aug 20, 2025 at 04:53:08PM -0700, Shakeel Butt wrote:
+> On Wed, Aug 20, 2025 at 03:52:22PM -0700, Boris Burkov wrote:
+> [...]
+> > 
+> > Thanks so much for the report and fix! I fear there might be some other
+> > paths that try to get memcg from lruvec or folio or whatever without
+> > checking it. I feel like in this exact case, I would want to go to the
+> > first sign of trouble and fix it at lruvec_memcg(). But then who knows
+> > what else we've missed.
 > 
-> All agreed.
+> lruvec_memcg() is not an issue but folio_memcg() can be. I found
+> following instances of folio_memcg() which are problematic (on
+> next-20250819):
 > 
-> >
-> > Do not call action_result() on already poisoned pages and drop unused
-> > MF_MSG_ALREADY_POISONED.
+> mm/memcontrol.c:3246:   css_get_many(&__folio_memcg(folio)->css, new_refs);
 > 
-> Hi Kyle,
+> include/trace/events/writeback.h:269:           __entry->page_cgroup_ino = cgroup_ino(folio_memcg(folio)->css.cgroup);
 > 
-> Patch looks great to me, just one thought...
+> mm/workingset.c:244:    struct mem_cgroup *memcg = folio_memcg(folio);
 > 
-> Alternatively, have you thought about keeping MF_MSG_ALREADY_POISONED
-> but changing action_result for MF_MSG_ALREADY_POISONED?
-> - don't num_poisoned_pages_inc(pfn)
-> - don't update_per_node_mf_stats(pfn, result)
-> - still pr_err("%#lx: recovery action for %s: %s\n", ...)
-> - meanwhile remove "pr_err("%#lx: already hardware poisoned\n", pfn)"
-> in memory_failure and try_memory_failure_hugetlb
+> mm/huge_memory.c:4020:  WARN_ON_ONCE(!mem_cgroup_disabled() && !folio_memcg(folio));
+> 
+> > 
+> > May I ask what you were running to trigger this? My fstests run (clearly
+> > not exercising enough interesting memory paths) did not hit it.
+> > 
+> > This does make me wonder if the superior approach to the original patch
+> > isn't just to go back to the very first thing Qu did and account these
+> > to the root cgroup rather than do the whole uncharged thing.
+> 
+> I don't have any strong preference one way or the other.
 
-I did consider that approach but I was concerned about passing
-MF_MSG_ALREADY_POISONED to action_result() with MF_FAILED. The message is a
-bit misleading.
-
-How about introducing a new MF action result? Maybe MF_NONE? The message could
-look something like:
-
-Memory failure: 0xXXXXXXXX: recovery action for already poisoned page: None
-
-> This way, all the MF recovery result kernel logs out will be sitting
-> in one place, action_result, instead of scattering around all over the
-> place.
-
-That sounds better to me.
- 
-> >
-> > Fixes: b8b9488d50b7 ("mm/memory-failure: improve memory failure action_result messages")
-> > Signed-off-by: Kyle Meyer <kyle.meyer@hpe.com>
-> > ---
-> >  include/linux/mm.h      | 1 -
-> >  include/ras/ras_event.h | 1 -
-> >  mm/memory-failure.c     | 3 ---
-> >  3 files changed, 5 deletions(-)
-> >
-> > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > index 1ae97a0b8ec7..09ce81ef7afc 100644
-> > --- a/include/linux/mm.h
-> > +++ b/include/linux/mm.h
-> > @@ -4005,7 +4005,6 @@ enum mf_action_page_type {
-> >         MF_MSG_BUDDY,
-> >         MF_MSG_DAX,
-> >         MF_MSG_UNSPLIT_THP,
-> > -       MF_MSG_ALREADY_POISONED,
-> >         MF_MSG_UNKNOWN,
-> >  };
-> >
-> > diff --git a/include/ras/ras_event.h b/include/ras/ras_event.h
-> > index c8cd0f00c845..f62a52f5bd81 100644
-> > --- a/include/ras/ras_event.h
-> > +++ b/include/ras/ras_event.h
-> > @@ -374,7 +374,6 @@ TRACE_EVENT(aer_event,
-> >         EM ( MF_MSG_BUDDY, "free buddy page" )                          \
-> >         EM ( MF_MSG_DAX, "dax page" )                                   \
-> >         EM ( MF_MSG_UNSPLIT_THP, "unsplit thp" )                        \
-> > -       EM ( MF_MSG_ALREADY_POISONED, "already poisoned" )              \
-> >         EMe ( MF_MSG_UNKNOWN, "unknown page" )
-> >
-> >  /*
-> > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> > index e2e685b971bb..7839ec83bc1d 100644
-> > --- a/mm/memory-failure.c
-> > +++ b/mm/memory-failure.c
-> > @@ -948,7 +948,6 @@ static const char * const action_page_types[] = {
-> >         [MF_MSG_BUDDY]                  = "free buddy page",
-> >         [MF_MSG_DAX]                    = "dax page",
-> >         [MF_MSG_UNSPLIT_THP]            = "unsplit thp",
-> > -       [MF_MSG_ALREADY_POISONED]       = "already poisoned",
-> >         [MF_MSG_UNKNOWN]                = "unknown page",
-> >  };
-> >
-> > @@ -2090,7 +2089,6 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
-> >                 if (flags & MF_ACTION_REQUIRED) {
-> >                         folio = page_folio(p);
-> >                         res = kill_accessing_process(current, folio_pfn(folio), flags);
-> > -                       action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
-> >                 }
-> >                 return res;
-> >         } else if (res == -EBUSY) {
-> > @@ -2283,7 +2281,6 @@ int memory_failure(unsigned long pfn, int flags)
-> >                         res = kill_accessing_process(current, pfn, flags);
-> >                 if (flags & MF_COUNT_INCREASED)
-> >                         put_page(p);
-> > -               action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
-> >                 goto unlock_mutex;
-> >         }
-> >
-> > --
-> > 2.50.1
-> >
-> >
+After thinking a bit more, I think root memcg approach by Qu should be
+preferred. Using that we will avoid this unnecessary code churn for NULL
+memcg checks and I am pretty sure I might have missed some places I
+listed above.
 
