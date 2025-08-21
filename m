@@ -2,86 +2,112 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C3E4CA0EF8
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 11:06:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3FBBCCA0EF8
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 11:07:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 190848E003A; Thu, 21 Aug 2025 07:06:38 -0400 (EDT)
+	id D79368E003B; Thu, 21 Aug 2025 07:07:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 141708E002A; Thu, 21 Aug 2025 07:06:38 -0400 (EDT)
+	id D02298E002A; Thu, 21 Aug 2025 07:07:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 009678E003A; Thu, 21 Aug 2025 07:06:37 -0400 (EDT)
+	id BCA1F8E003B; Thu, 21 Aug 2025 07:07:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DC51D8E002A
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 07:06:37 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AAEAE588A9
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:06:37 +0000 (UTC)
-X-FDA: 83800486434.22.4D88233
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2091320014
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:06:34 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A47B38E002A
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 07:07:12 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 60E5B13843F
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:07:12 +0000 (UTC)
+X-FDA: 83800487904.24.6506AE9
+Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 81C4818000A
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:07:10 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YaAs2I7c;
+	spf=pass (imf06.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.161.47 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755774396;
+	s=arc-20220608; t=1755774430;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dTmcDIyBJc+bqCz44LOpOdC1TcOX9TmMrPnJLQDuJpg=;
-	b=oCaFB3CTZTTMyg9EQ2NOc1+dNopBkEMdq5WSOdMDZcm2qFdWNX9UqFoW83+G+mf4p3hVuv
-	G+rwRoqaKUJOW4Xeem8fX5zmpZybwRrbjiNNpw8Oxa5Tnfhuh/Lb/Tw3xvmJIiK8d1ycZo
-	u3yxzdS7cchjlBLKAka6t5PBcHowYBc=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hiIZ6lQmGLvY+69EJfMpz5tBA2tanpZN8rHbO7rGKac=;
+	b=E28punajbKM5Hjs/6t1X6ZHW8brfB4OBNKFivwW/6jZpDhx/d03wl/O+r3kuzJtpG9oiTK
+	DJA+14Qq+wrSZfhoV3IsPwtQc2Lx9AIyvEs3XAEODL9p6dnZQ5XvSnQscaH6FbnBZVqF1X
+	sChp3X5KwvWtQnZHUgPmqOBy/ZcvJdQ=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755774396; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YaAs2I7c;
+	spf=pass (imf06.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.161.47 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755774430; a=rsa-sha256;
 	cv=none;
-	b=Svnv3mUsPNJFP7Jr2Gyq3Kvu4JQbUqQzWHq95c/VznXD9znhoUYg4VdvXkvzhM+Pv9oks3
-	+YLXwbSyJwl3kGvMOPh3e3YKAi1JHi36eJZNQW+97/sbzzV62VqXjvQTSnNUtoTeahTm8M
-	aUCIkrw92ARV51mD2F306sz6Eh3wE78=
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4c70m41ydqz2Dc37;
-	Thu, 21 Aug 2025 19:03:00 +0800 (CST)
-Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4960F1A016C;
-	Thu, 21 Aug 2025 19:05:50 +0800 (CST)
-Received: from huawei.com (10.50.85.135) by dggpemf200018.china.huawei.com
- (7.185.36.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 21 Aug
- 2025 19:05:49 +0800
-From: Quanmin Yan <yanquanmin1@huawei.com>
-To: <sj@kernel.org>
-CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<yanquanmin1@huawei.com>, <wangkefeng.wang@huawei.com>, <zuoze1@huawei.com>
-Subject: [PATCH 11/11] mm/damon: add damon_ctx->min_region
-Date: Thu, 21 Aug 2025 18:51:59 +0800
-Message-ID: <20250821105159.2503894-12-yanquanmin1@huawei.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250821105159.2503894-1-yanquanmin1@huawei.com>
-References: <20250821105159.2503894-1-yanquanmin1@huawei.com>
+	b=FWQm47bcdnjM/9UWAixY1n7bGN4FJnwtHOVtYc9jhRzePbU/FkXVdfNxACsENbIwopM2+j
+	N5FJyRyF6Dp3oZnP3OaC21WAbiyNb6FkENnSTrvo39YJsFBZNZQGJrFqVLJAqkqP7f+WhH
+	134lr2IlK6BjLa8U/N34YnJxNa96ftY=
+Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-61da3cf98efso186871eaf.1
+        for <linux-mm@kvack.org>; Thu, 21 Aug 2025 04:07:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755774429; x=1756379229; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hiIZ6lQmGLvY+69EJfMpz5tBA2tanpZN8rHbO7rGKac=;
+        b=YaAs2I7ccXoIV3YWTULRkldpKzyVbUKOZyiBWMkf2SSpIodO8Sl5TfqL6QTj4UYeuW
+         TuO7SZf64XDdtV5GHepMa5peoIhMVl6oG1p9zQX0SGZV9IL8Wl5pmKYZMmLTpdC6FlKC
+         qGbuHc8VBkNl+qGKBIrZjqnMsr6hFnO1VzOgOYRQR0Jp7r7UEn+xNoKsmbYmT/G95/6R
+         XMGFSGWXgcNApOFFnG3jbbwRGPr5XYh2GRNc4qSJ+z6YrZqcl8wlEeobC6lIEOel4wd9
+         skaaFgysAcJotUr9dhfhaap1s4SEFyu43YVjVhk5NZUvPeOzID1wOel26RIKdEKpkITv
+         ZvZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755774429; x=1756379229;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hiIZ6lQmGLvY+69EJfMpz5tBA2tanpZN8rHbO7rGKac=;
+        b=le+cYsd7rjTrQbxsTpJQu51pXLg4f3e3mTUI/hpMOg4e/tmLjsen8Upoo3PS/G3+OE
+         DNNcFex347EVWCjbxuzQhBxNFlEVP+Wwp22wxFe9jKu589bXpfGsCz3nWmso/N+3OcBD
+         jFbQQE8Boo4ERXAkClnhbx51PZ0M3sL/RczF5K0Fc5kTkq0FFDJXYvLC3Tp9w8Qla4E3
+         cOTTXKlYV4N9M6qyJss9j1y5lNCCP/wW0p1OBoMdKe+Y2PrH5BfPh8ldjmMtn3Cwbb9U
+         XWioutklo4jBzSnStS98T+0hIJGTUX9wGBeAbRydB4nIO36JLQ9CG7947m34zso5N6gh
+         cFCg==
+X-Forwarded-Encrypted: i=1; AJvYcCX7HH/9cXGc9flIdBFuWZfdfDufSs0C+yS2mY+f3/N8a4Eu0mfLyrQzB12ADRvLIJzLG9EDCbN/Cw==@kvack.org
+X-Gm-Message-State: AOJu0YxXFuzYe19BdGDcklZoKJS7K8aaUDIuPSCHp3W5NulHZnQCw2F6
+	cDfkbGWVqMHuDsjZV/1smA8zva3zJwSOpfziXooUTa2jmSvn+2Op2LLALFeV37LgciTVZ0PrsFQ
+	2lpzGI5uiA83EsiwMB4X1JnYgCfA2e/Q=
+X-Gm-Gg: ASbGnctREVjO5+efeU6F+Q3P0Rpo4BPo47lutt0E0k94ncL9BPJcRMyRSEVly0yJN6j
+	me1rVEiwMeplb7HmTVuFuSZG//zkUZoYWs/LhFbf0Q8nXhnjofi3GeHACcmp9MojDIKYXnFPVWH
+	9rWhWe4GwG7xqfAWR0LIt8hxehkfQGtm6mKo1585tX+gedBvrL5BnB+2LrCTQMWfjrXXxpkS0B1
+	3eQOr+LdMOprSs=
+X-Google-Smtp-Source: AGHT+IHDLck68A4uwh4SnafV/XdhO0tvddlIcwAPIaIuldKdKV8FYfx8DQctiAAl9nm4vwx0UEGSyaMl0wGd0sRiAZE=
+X-Received: by 2002:a05:6820:60f:b0:61d:95ee:b387 with SMTP id
+ 006d021491bc7-61dab39122amr828362eaf.8.1755774429258; Thu, 21 Aug 2025
+ 04:07:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.85.135]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- dggpemf200018.china.huawei.com (7.185.36.31)
-X-Rspamd-Queue-Id: 2091320014
-X-Rspamd-Server: rspam04
+References: <CABFDxME5ZEAn+6=0GRWybTi-xBzbhhz7U38pMni3SdKjA+Aj-A@mail.gmail.com>
+ <20250821054148.53746-1-sj@kernel.org>
+In-Reply-To: <20250821054148.53746-1-sj@kernel.org>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Thu, 21 Aug 2025 20:06:58 +0900
+X-Gm-Features: Ac12FXwihon6gThYHt62W99b3GivzmKJ4uU22wv-CFXcXYs_nLemAr_4GPQ0U3U
+Message-ID: <CABFDxMHgOPt5zx3q=KRxGGfp86R4V0AgO+FrHDftqLYoG20BWw@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/damon/core: set quota->charged_from to jiffies at
+ first charge window
+To: SeongJae Park <sj@kernel.org>
+Cc: honggyu.kim@sk.com, damon@lists.linux.dev, linux-mm@kvack.org, 
+	stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: wukaytkwu5du4ist4atry3hzh1sj9dzc
 X-Rspam-User: 
-X-Stat-Signature: pqi1t161gazciajnko1f41r379jkkfaw
-X-HE-Tag: 1755774394-30191
-X-HE-Meta: U2FsdGVkX1/gBn+21zehNo0T46ycBYNz9k8kWt/oN63cOpkDBrrLBVzvn9V3okS+Qrg1qg8M2LVll/UustUO/eCL4M00ANgIzNnprThNEBVA+h81RONig1E5NquyfUSlK4NlnsnHHLL/RetEGZnVOiMsRYmIrjrC01YGhlpuaMZMiLDfqminkSHXSkdSwOr7wCITt37i+jQxu8A283PQPWc6L6pQDh8JRUux9s9GKeXfSIuZy1O4pDMRwXRm5duR+AhnNTy0KriekI8P06111rZhlMZZQQ4L+J/UlEmswWjhxiDVGFx1h2hAvwezd4DJfMJ43ABW0Jsb/9B+NeMlsn6IFYUyhJLn/uuW5O9BV1qeeFFPg2SfvSLPg46o14DGvWymSj+8q99u9GGjZh9WnDFVxJ4QqhP1UbqeMtnlwBtIxtWl4ISyT/mp13t5QgKeSCeB7XxkFtqXSVx7EQ19peNlqWGRXDCEyIhgkih1/hV0R9dNoeV/mXWQyg6V8Gz6jSqXXojnnMN4zP1GPMFgZmm/HHSfN2v662BqSt1TJEs/33elGMoe05+Y+3dj6qy26KcXCFFZriW231+y4/ahj0snW+rDytCAFpXJo4eOi/pOnfLJ01FWnfMJZyuC8ViycZWLgaXGk30DbL0F3H/j/sSiZTYyOiVMKZw/MmxPZ5QG/XLVUYw32lqOeTM5ZkKx2+R66AjFVbzB/TGtP+92Ab0jaLB0uAOrMwFo3EuEtplHw7/lan+fzyHedCg6Y7gXys3dIrWAtA0CIzbC5aXaiwxjCwU1O5XU18+zuPLamJBlJp1PWQF0vTgB5QH2U/ZuwNn5NTS6FvhK8ALItOh8ym0SwBFVjxYr4amtzGWklGTLykQd0SCTegL5GL2TYLoXe6hVZ98JEwj6R846WqNhYbeIfNq9MzBVJP8n+VlepAc1OR/dkCrqFpEZZsbslovHEpu5UaKos/VbSx3fkoP
- Na/C7ADT
- KE+bVKJEarLXX9i3tGhqSw0KAbIaViYcIpwfC6fP4MMSJOOcRprEPJa3fUKddUrNK7xpO9d1DxeoDDNhDTInekpX26ZnbD0nmVFpXIcQI+O9UKqy4TuOJwCFMlwaxX38T4lR077aiQU2xCKV2nIuIWAMPVoXNvPuT/oKaQOIF6gaq8mGL2pOHe4lqLafBtrPxq8agUZ1DXVbP4+pLN34RcmV1jf4vd7kaDrx6UtA6fdn2+08mIv/yk3yt4Q==
+X-Rspamd-Queue-Id: 81C4818000A
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755774430-334462
+X-HE-Meta: U2FsdGVkX18RYa8LcTzS0g8DwsCL2Z0e1jVi1H/u5MUYrwaYOmYu0gtWJdNGiKA0/z5S9kA8A41R9lM9T55VC7zKyd/4UsvZ8mdjDnE71GZtTW8vEsplfMFyl/vvPn97IPITQli7K0gadL3fCInKjKHA1g6AJ+gqEpuERTkRrlYWIovQHEE9cpwKfuWyOmXbRF6SwTJihdJk2226LzOdKl0zmsQfyThS7azhJeY9Ivto3nX1lE43o8jgt1VPGwZDLRvFzT9dW8X0z3CwTegc62foMkfMXjpksdDndyB22Dqfo0CufpPBhX2HXr4nKr1wDSayUjKC+VF7EWb4Zctq04Gx7k8moWcb8RRmRWgUNBQv7MRhH4Cn4kTQpw2qLJ8AxhktkEmAC3GR9o5hkLyVOb6u+Ir0N27Oktyoxf+eWG4KaFk0xInrN/EN9tJxwgYVfe3tSin6dliSQ6LagMfgn8U+U+jUBsLwp4MB39Ds/j7NdZsUKdrCrDn7+8AV1MpmdhmtkShj5BcX2z9830HoZ0BV4TVAQiukRjYMi5i4nqUBR/d35E2fJhK5GRJsm1Zi44b12xalv+nvF4CQ5ee+Z1YCUlhRvtBmW12lAdVf9vFnp2g4ULcEuKUjL6VBRBm2CfmwZNQnbxxB97EkAsVxAejcvNBOZmPjY6Ent2F4gJns3tzv0mXt0N7ZElCAWYwTIIHaJVKYZ41y+jn6bCV0xIYdl/sqV+tlbruV6sRb8HVeWxNsSCTTWgA1UgbDC26OAJO0QgF4ZXD9hJxUpTh2/wq5qkbXw6mbEnziI6s6D/gkR1FxW6dcwifSTcXjYSJzrpqbtnmmRsir+AZDvPMcFTTpTsVFZ4PNM0nmrzMYNxu/Q90d2oMq8XqvNinZE8DneYdfo+xXdGnzq3EPzAfUmdAQe6qcRZNhChn1bpGAWqfDAR3QBAO5d8XXv6OLocpeP11MYyvFroIaorzQP5m
+ FlT4OPuP
+ /On6QjVoCN8ZviLwFXxOzBxnph6NVYPP3Y18895h7o0YrAMkUuTK0NQ0d2fR3oVGLGArCftAWW2xFmW/WUn1aU8sTJ4ladkXL4gMn8JBDWuFWlk8itU4/jB+pXG1h1NuKs9YMpf/CiyGU4b+xBsa0jp8jpHCjR3RwuaOrFpHht6NeADp9Mb9OFV3KbsDoSt4D0OBL8Nd90L9WoH1I/A+MxACsnAhc7paYhE3eDEJYFocnJy1soBviZRNBg7ka7YQKv/IZ4XLMnUR1mjMD8fzsh/LyzGsBC1u2X5FqFlULtfLXCcce/p1l6y4F6zn4xW6UCW/HSjmGHUqryPNTXgaXVcU0+zF8DJF7imYUlahHAuj+3OcAzow/mbBev8r7KOEgc54otUhNdKFf1JejRsYnazSIhJX+uSnv5m8g/hN8kgAwVMYc9JJ0fVB3UQpzb9du1vjq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,441 +116,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Adopting addr_unit would make DAMON_MINREGION 'addr_unit * 4096'
-bytes and cause data alignment issues[1].
+On Thu, Aug 21, 2025 at 2:41=E2=80=AFPM SeongJae Park <sj@kernel.org> wrote=
+:
+>
+> On Thu, 21 Aug 2025 13:29:04 +0900 Sang-Heon Jeon <ekffu200098@gmail.com>=
+ wrote:
+>
+> > On Thu, Aug 21, 2025 at 11:54=E2=80=AFAM SeongJae Park <sj@kernel.org> =
+wrote:
+> > >
+> > > On Thu, 21 Aug 2025 10:08:03 +0900 Sang-Heon Jeon <ekffu200098@gmail.=
+com> wrote:
+> > >
+> > > > On Thu, Aug 21, 2025 at 3:27=E2=80=AFAM SeongJae Park <sj@kernel.or=
+g> wrote:
+> > > > >
+> > > > > On Wed, 20 Aug 2025 22:18:53 +0900 Sang-Heon Jeon <ekffu200098@gm=
+ail.com> wrote:
+> > > > >
+> > > > > > Hello, SeongJae
+> > > > > >
+> > > > > > On Wed, Aug 20, 2025 at 2:27=E2=80=AFAM SeongJae Park <sj@kerne=
+l.org> wrote:
+> > > > > > >
+> > > > > > > On Wed, 20 Aug 2025 00:01:23 +0900 Sang-Heon Jeon <ekffu20009=
+8@gmail.com> wrote:
+> > > [...]
+> > > > I think that I checked about user impact already but it should be
+> > > > insufficient. As you said, I should discuss it first. Anyway, the
+> > > > whole thing is my mistake. I'm really so sorry.
+> > >
+> > > Everyone makes mistakes.  You don't need to apologize.
+> > >
+> > > >
+> > > > So, Would it be better to send an RFC patch even now, instead of
+> > > > asking on this email thread? (I'll make next v3 patch with RFC tag,
+> > > > it's not question of v3 direction and just about remained question =
+on
+> > > > this email thread)
+> > >
+> > > If you unsure something and there is no reason to send a patch withou=
+t a
+> > > discussion for the point, please discuss first.  To be honest I don't
+> > > understand the above question at all.
+> >
+> > Ah, I just mean that I need to make a new RFC patch instead of
+> > replying to this email thread.
+>
+> Why?
+>
+> > I'll just keep asking about previous
+> > comments on this email thread.
+>
+> You said you will send a new patch instead of replying here, and then now=
+ you
+> are saying you will keep aking to this thread.
+>
+> I'm confused.
 
-Add damon_ctx->min_region to change DAMON_MIN_REGION from a global
-macro value to per-context variable.
+I think I miscommunicated something. I'll just follow your suggestion
+below. it's the same as my first thought (discussion here, new patch
+after discussion finished)
 
-[1] https://lore.kernel.org/all/527714dd-0e33-43ab-bbbd-d89670ba79e7@huawei.com
+> [...]
+>
+> Ok, I think this discussion is going unnecessarily deep and only wasting =
+our
+> time at clarifying intention of past sentence.  Meanwhile apparently you
+> understood my major points.  To repeat, please clarify what is the proble=
+m and
+> user impacts, when and how it happens, and why the solution solves it.
+>
+> Let's restart.  Could you please rewrite the commit log for this patch an=
+d send
+> the draft as a reply to this?
+>
+> We can further discuss on the new draft if it has more things to improve.=
+  And
+> once the discussion is finalized, you can post v4 of this patch with the
+> updated commit message.
 
-Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
----
- include/linux/damon.h        |  4 ++-
- mm/damon/core.c              | 67 ++++++++++++++++++++----------------
- mm/damon/sysfs.c             |  8 +++--
- mm/damon/tests/core-kunit.h  | 21 ++++++-----
- mm/damon/tests/vaddr-kunit.h |  2 +-
- mm/damon/vaddr.c             |  2 +-
- 6 files changed, 61 insertions(+), 43 deletions(-)
+Good Idea. This is the draft for commit message. Also, Thank you for
+your patience and understanding.
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 6fa52f7495d9..ec8716292c09 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -747,6 +747,7 @@ struct damon_attrs {
-  *
-  * @ops:	Set of monitoring operations for given use cases.
-  * @addr_unit:	Scale factor for core to ops address conversion.
-+ * @min_sz_region:		Minimum region size.
-  * @adaptive_targets:	Head of monitoring targets (&damon_target) list.
-  * @schemes:		Head of schemes (&damos) list.
-  */
-@@ -789,6 +790,7 @@ struct damon_ctx {
- 
- 	struct damon_operations ops;
- 	unsigned long addr_unit;
-+	unsigned long min_sz_region;
- 
- 	struct list_head adaptive_targets;
- 	struct list_head schemes;
-@@ -877,7 +879,7 @@ static inline void damon_insert_region(struct damon_region *r,
- void damon_add_region(struct damon_region *r, struct damon_target *t);
- void damon_destroy_region(struct damon_region *r, struct damon_target *t);
- int damon_set_regions(struct damon_target *t, struct damon_addr_range *ranges,
--		unsigned int nr_ranges);
-+		unsigned int nr_ranges, unsigned long min_sz_region);
- void damon_update_region_access_rate(struct damon_region *r, bool accessed,
- 		struct damon_attrs *attrs);
- 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 8f8aa84953ac..831a9afc6cf6 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -201,6 +201,7 @@ static int damon_fill_regions_holes(struct damon_region *first,
-  * @t:		the given target.
-  * @ranges:	array of new monitoring target ranges.
-  * @nr_ranges:	length of @ranges.
-+ * @min_sz_region:	minimum region size.
-  *
-  * This function adds new regions to, or modify existing regions of a
-  * monitoring target to fit in specific ranges.
-@@ -208,7 +209,7 @@ static int damon_fill_regions_holes(struct damon_region *first,
-  * Return: 0 if success, or negative error code otherwise.
-  */
- int damon_set_regions(struct damon_target *t, struct damon_addr_range *ranges,
--		unsigned int nr_ranges)
-+		unsigned int nr_ranges, unsigned long min_sz_region)
- {
- 	struct damon_region *r, *next;
- 	unsigned int i;
-@@ -245,16 +246,16 @@ int damon_set_regions(struct damon_target *t, struct damon_addr_range *ranges,
- 			/* no region intersects with this range */
- 			newr = damon_new_region(
- 					ALIGN_DOWN(range->start,
--						DAMON_MIN_REGION),
--					ALIGN(range->end, DAMON_MIN_REGION));
-+						min_sz_region),
-+					ALIGN(range->end, min_sz_region));
- 			if (!newr)
- 				return -ENOMEM;
- 			damon_insert_region(newr, damon_prev_region(r), r, t);
- 		} else {
- 			/* resize intersecting regions to fit in this range */
- 			first->ar.start = ALIGN_DOWN(range->start,
--					DAMON_MIN_REGION);
--			last->ar.end = ALIGN(range->end, DAMON_MIN_REGION);
-+					min_sz_region);
-+			last->ar.end = ALIGN(range->end, min_sz_region);
- 
- 			/* fill possible holes in the range */
- 			err = damon_fill_regions_holes(first, last, t);
-@@ -545,6 +546,7 @@ struct damon_ctx *damon_new_ctx(void)
- 	ctx->attrs.max_nr_regions = 1000;
- 
- 	ctx->addr_unit = 1;
-+	ctx->min_sz_region = DAMON_MIN_REGION;
- 
- 	INIT_LIST_HEAD(&ctx->adaptive_targets);
- 	INIT_LIST_HEAD(&ctx->schemes);
-@@ -1127,8 +1129,8 @@ static struct damon_target *damon_nth_target(int n, struct damon_ctx *ctx)
-  *
-  * If @src has no region, @dst keeps current regions.
-  */
--static int damon_commit_target_regions(
--		struct damon_target *dst, struct damon_target *src)
-+static int damon_commit_target_regions(struct damon_target *dst,
-+		struct damon_target *src, unsigned long src_min_sz_region)
- {
- 	struct damon_region *src_region;
- 	struct damon_addr_range *ranges;
-@@ -1145,18 +1147,19 @@ static int damon_commit_target_regions(
- 	i = 0;
- 	damon_for_each_region(src_region, src)
- 		ranges[i++] = src_region->ar;
--	err = damon_set_regions(dst, ranges, i);
-+	err = damon_set_regions(dst, ranges, i, src_min_sz_region);
- 	kfree(ranges);
- 	return err;
- }
- 
- static int damon_commit_target(
- 		struct damon_target *dst, bool dst_has_pid,
--		struct damon_target *src, bool src_has_pid)
-+		struct damon_target *src, bool src_has_pid,
-+		unsigned long src_min_sz_region)
- {
- 	int err;
- 
--	err = damon_commit_target_regions(dst, src);
-+	err = damon_commit_target_regions(dst, src, src_min_sz_region);
- 	if (err)
- 		return err;
- 	if (dst_has_pid)
-@@ -1178,7 +1181,8 @@ static int damon_commit_targets(
- 		if (src_target) {
- 			err = damon_commit_target(
- 					dst_target, damon_target_has_pid(dst),
--					src_target, damon_target_has_pid(src));
-+					src_target, damon_target_has_pid(src),
-+					src->min_sz_region);
- 			if (err)
- 				return err;
- 		} else {
-@@ -1201,7 +1205,8 @@ static int damon_commit_targets(
- 		if (!new_target)
- 			return -ENOMEM;
- 		err = damon_commit_target(new_target, false,
--				src_target, damon_target_has_pid(src));
-+				src_target, damon_target_has_pid(src),
-+				src->min_sz_region);
- 		if (err) {
- 			damon_destroy_target(new_target, NULL);
- 			return err;
-@@ -1248,6 +1253,7 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
- 	}
- 	dst->ops = src->ops;
- 	dst->addr_unit = src->addr_unit;
-+	dst->min_sz_region = max(DAMON_MIN_REGION / src->addr_unit, 1);
- 
- 	return 0;
- }
-@@ -1280,8 +1286,8 @@ static unsigned long damon_region_sz_limit(struct damon_ctx *ctx)
- 
- 	if (ctx->attrs.min_nr_regions)
- 		sz /= ctx->attrs.min_nr_regions;
--	if (sz < DAMON_MIN_REGION)
--		sz = DAMON_MIN_REGION;
-+	if (sz < ctx->min_sz_region)
-+		sz = ctx->min_sz_region;
- 
- 	return sz;
- }
-@@ -1625,6 +1631,7 @@ static bool damos_valid_target(struct damon_ctx *c, struct damon_target *t,
-  * @t:	The target of the region.
-  * @rp:	The pointer to the region.
-  * @s:	The scheme to be applied.
-+ * @min_sz_region:	minimum region size.
-  *
-  * If a quota of a scheme has exceeded in a quota charge window, the scheme's
-  * action would applied to only a part of the target access pattern fulfilling
-@@ -1642,7 +1649,7 @@ static bool damos_valid_target(struct damon_ctx *c, struct damon_target *t,
-  * Return: true if the region should be entirely skipped, false otherwise.
-  */
- static bool damos_skip_charged_region(struct damon_target *t,
--		struct damon_region **rp, struct damos *s)
-+		struct damon_region **rp, struct damos *s, unsigned long min_sz_region)
- {
- 	struct damon_region *r = *rp;
- 	struct damos_quota *quota = &s->quota;
-@@ -1664,11 +1671,11 @@ static bool damos_skip_charged_region(struct damon_target *t,
- 		if (quota->charge_addr_from && r->ar.start <
- 				quota->charge_addr_from) {
- 			sz_to_skip = ALIGN_DOWN(quota->charge_addr_from -
--					r->ar.start, DAMON_MIN_REGION);
-+					r->ar.start, min_sz_region);
- 			if (!sz_to_skip) {
--				if (damon_sz_region(r) <= DAMON_MIN_REGION)
-+				if (damon_sz_region(r) <= min_sz_region)
- 					return true;
--				sz_to_skip = DAMON_MIN_REGION;
-+				sz_to_skip = min_sz_region;
- 			}
- 			damon_split_region_at(t, r, sz_to_skip);
- 			r = damon_next_region(r);
-@@ -1693,7 +1700,8 @@ static void damos_update_stat(struct damos *s,
- }
- 
- static bool damos_filter_match(struct damon_ctx *ctx, struct damon_target *t,
--		struct damon_region *r, struct damos_filter *filter)
-+		struct damon_region *r, struct damos_filter *filter,
-+		unsigned long min_sz_region)
- {
- 	bool matched = false;
- 	struct damon_target *ti;
-@@ -1710,8 +1718,8 @@ static bool damos_filter_match(struct damon_ctx *ctx, struct damon_target *t,
- 		matched = target_idx == filter->target_idx;
- 		break;
- 	case DAMOS_FILTER_TYPE_ADDR:
--		start = ALIGN_DOWN(filter->addr_range.start, DAMON_MIN_REGION);
--		end = ALIGN_DOWN(filter->addr_range.end, DAMON_MIN_REGION);
-+		start = ALIGN_DOWN(filter->addr_range.start, min_sz_region);
-+		end = ALIGN_DOWN(filter->addr_range.end, min_sz_region);
- 
- 		/* inside the range */
- 		if (start <= r->ar.start && r->ar.end <= end) {
-@@ -1747,7 +1755,7 @@ static bool damos_filter_out(struct damon_ctx *ctx, struct damon_target *t,
- 
- 	s->core_filters_allowed = false;
- 	damos_for_each_filter(filter, s) {
--		if (damos_filter_match(ctx, t, r, filter)) {
-+		if (damos_filter_match(ctx, t, r, filter, ctx->min_sz_region)) {
- 			if (filter->allow)
- 				s->core_filters_allowed = true;
- 			return !filter->allow;
-@@ -1882,7 +1890,7 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
- 	if (c->ops.apply_scheme) {
- 		if (quota->esz && quota->charged_sz + sz > quota->esz) {
- 			sz = ALIGN_DOWN(quota->esz - quota->charged_sz,
--					DAMON_MIN_REGION);
-+					c->min_sz_region);
- 			if (!sz)
- 				goto update_stat;
- 			damon_split_region_at(t, r, sz);
-@@ -1930,7 +1938,7 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
- 		if (quota->esz && quota->charged_sz >= quota->esz)
- 			continue;
- 
--		if (damos_skip_charged_region(t, &r, s))
-+		if (damos_skip_charged_region(t, &r, s, c->min_sz_region))
- 			continue;
- 
- 		if (!damos_valid_target(c, t, r, s))
-@@ -2324,7 +2332,8 @@ static void damon_split_region_at(struct damon_target *t,
- }
- 
- /* Split every region in the given target into 'nr_subs' regions */
--static void damon_split_regions_of(struct damon_target *t, int nr_subs)
-+static void damon_split_regions_of(struct damon_target *t, int nr_subs,
-+				  unsigned long min_sz_region)
- {
- 	struct damon_region *r, *next;
- 	unsigned long sz_region, sz_sub = 0;
-@@ -2334,13 +2343,13 @@ static void damon_split_regions_of(struct damon_target *t, int nr_subs)
- 		sz_region = damon_sz_region(r);
- 
- 		for (i = 0; i < nr_subs - 1 &&
--				sz_region > 2 * DAMON_MIN_REGION; i++) {
-+				sz_region > 2 * min_sz_region; i++) {
- 			/*
- 			 * Randomly select size of left sub-region to be at
- 			 * least 10 percent and at most 90% of original region
- 			 */
- 			sz_sub = ALIGN_DOWN(damon_rand(1, 10) *
--					sz_region / 10, DAMON_MIN_REGION);
-+					sz_region / 10, min_sz_region);
- 			/* Do not allow blank region */
- 			if (sz_sub == 0 || sz_sub >= sz_region)
- 				continue;
-@@ -2380,7 +2389,7 @@ static void kdamond_split_regions(struct damon_ctx *ctx)
- 		nr_subregions = 3;
- 
- 	damon_for_each_target(t, ctx)
--		damon_split_regions_of(t, nr_subregions);
-+		damon_split_regions_of(t, nr_subregions, ctx->min_sz_region);
- 
- 	last_nr_regions = nr_regions;
- }
-@@ -2769,7 +2778,7 @@ int damon_set_region_biggest_system_ram_default(struct damon_target *t,
- 
- 	addr_range.start = *start;
- 	addr_range.end = *end;
--	return damon_set_regions(t, &addr_range, 1);
-+	return damon_set_regions(t, &addr_range, 1, DAMON_MIN_REGION);
- }
- 
- /*
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 98bf15d403b2..0ed404c89f80 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1329,7 +1329,8 @@ static int damon_sysfs_set_attrs(struct damon_ctx *ctx,
- }
- 
- static int damon_sysfs_set_regions(struct damon_target *t,
--		struct damon_sysfs_regions *sysfs_regions)
-+		struct damon_sysfs_regions *sysfs_regions,
-+		unsigned long min_sz_region)
- {
- 	struct damon_addr_range *ranges = kmalloc_array(sysfs_regions->nr,
- 			sizeof(*ranges), GFP_KERNEL | __GFP_NOWARN);
-@@ -1351,7 +1352,7 @@ static int damon_sysfs_set_regions(struct damon_target *t,
- 		if (ranges[i - 1].end > ranges[i].start)
- 			goto out;
- 	}
--	err = damon_set_regions(t, ranges, sysfs_regions->nr);
-+	err = damon_set_regions(t, ranges, sysfs_regions->nr, min_sz_region);
- out:
- 	kfree(ranges);
- 	return err;
-@@ -1372,7 +1373,7 @@ static int damon_sysfs_add_target(struct damon_sysfs_target *sys_target,
- 			/* caller will destroy targets */
- 			return -EINVAL;
- 	}
--	return damon_sysfs_set_regions(t, sys_target->regions);
-+	return damon_sysfs_set_regions(t, sys_target->regions, ctx->min_sz_region);
- }
- 
- static int damon_sysfs_add_targets(struct damon_ctx *ctx,
-@@ -1430,6 +1431,7 @@ static int damon_sysfs_apply_inputs(struct damon_ctx *ctx,
- 	if (err)
- 		return err;
- 	ctx->addr_unit = sys_ctx->addr_unit;
-+	ctx->min_sz_region = max(DAMON_MIN_REGION / sys_ctx->addr_unit, 1);
- 	err = damon_sysfs_set_attrs(ctx, sys_ctx->attrs);
- 	if (err)
- 		return err;
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 5f5dc9db2e90..51369e35298b 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -230,14 +230,14 @@ static void damon_test_split_regions_of(struct kunit *test)
- 	t = damon_new_target();
- 	r = damon_new_region(0, 22);
- 	damon_add_region(r, t);
--	damon_split_regions_of(t, 2);
-+	damon_split_regions_of(t, 2, DAMON_MIN_REGION);
- 	KUNIT_EXPECT_LE(test, damon_nr_regions(t), 2u);
- 	damon_free_target(t);
- 
- 	t = damon_new_target();
- 	r = damon_new_region(0, 220);
- 	damon_add_region(r, t);
--	damon_split_regions_of(t, 4);
-+	damon_split_regions_of(t, 4, DAMON_MIN_REGION);
- 	KUNIT_EXPECT_LE(test, damon_nr_regions(t), 4u);
- 	damon_free_target(t);
- 	damon_destroy_ctx(c);
-@@ -303,7 +303,7 @@ static void damon_test_set_regions(struct kunit *test)
- 
- 	damon_add_region(r1, t);
- 	damon_add_region(r2, t);
--	damon_set_regions(t, &range, 1);
-+	damon_set_regions(t, &range, 1, DAMON_MIN_REGION);
- 
- 	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 3);
- 	damon_for_each_region(r, t) {
-@@ -450,25 +450,29 @@ static void damos_test_filter_out(struct kunit *test)
- 	damon_add_region(r, t);
- 
- 	/* region in the range */
--	KUNIT_EXPECT_TRUE(test, damos_filter_match(NULL, t, r, f));
-+	KUNIT_EXPECT_TRUE(test,
-+			damos_filter_match(NULL, t, r, f, DAMON_MIN_REGION));
- 	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 1);
- 
- 	/* region before the range */
- 	r->ar.start = DAMON_MIN_REGION * 1;
- 	r->ar.end = DAMON_MIN_REGION * 2;
--	KUNIT_EXPECT_FALSE(test, damos_filter_match(NULL, t, r, f));
-+	KUNIT_EXPECT_FALSE(test,
-+			damos_filter_match(NULL, t, r, f, DAMON_MIN_REGION));
- 	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 1);
- 
- 	/* region after the range */
- 	r->ar.start = DAMON_MIN_REGION * 6;
- 	r->ar.end = DAMON_MIN_REGION * 8;
--	KUNIT_EXPECT_FALSE(test, damos_filter_match(NULL, t, r, f));
-+	KUNIT_EXPECT_FALSE(test,
-+			damos_filter_match(NULL, t, r, f, DAMON_MIN_REGION));
- 	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 1);
- 
- 	/* region started before the range */
- 	r->ar.start = DAMON_MIN_REGION * 1;
- 	r->ar.end = DAMON_MIN_REGION * 4;
--	KUNIT_EXPECT_FALSE(test, damos_filter_match(NULL, t, r, f));
-+	KUNIT_EXPECT_FALSE(test,
-+			damos_filter_match(NULL, t, r, f, DAMON_MIN_REGION));
- 	/* filter should have split the region */
- 	KUNIT_EXPECT_EQ(test, r->ar.start, DAMON_MIN_REGION * 1);
- 	KUNIT_EXPECT_EQ(test, r->ar.end, DAMON_MIN_REGION * 2);
-@@ -481,7 +485,8 @@ static void damos_test_filter_out(struct kunit *test)
- 	/* region started in the range */
- 	r->ar.start = DAMON_MIN_REGION * 2;
- 	r->ar.end = DAMON_MIN_REGION * 8;
--	KUNIT_EXPECT_TRUE(test, damos_filter_match(NULL, t, r, f));
-+	KUNIT_EXPECT_TRUE(test,
-+			damos_filter_match(NULL, t, r, f, DAMON_MIN_REGION));
- 	/* filter should have split the region */
- 	KUNIT_EXPECT_EQ(test, r->ar.start, DAMON_MIN_REGION * 2);
- 	KUNIT_EXPECT_EQ(test, r->ar.end, DAMON_MIN_REGION * 6);
-diff --git a/mm/damon/tests/vaddr-kunit.h b/mm/damon/tests/vaddr-kunit.h
-index d2b37ccf2cc0..fce38dd53cf8 100644
---- a/mm/damon/tests/vaddr-kunit.h
-+++ b/mm/damon/tests/vaddr-kunit.h
-@@ -141,7 +141,7 @@ static void damon_do_test_apply_three_regions(struct kunit *test,
- 		damon_add_region(r, t);
- 	}
- 
--	damon_set_regions(t, three_regions, 3);
-+	damon_set_regions(t, three_regions, 3, DAMON_MIN_REGION);
- 
- 	for (i = 0; i < nr_expected / 2; i++) {
- 		r = __nth_region_of(t, i);
-diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index 66ef9869eafe..8c048f9b129e 100644
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -299,7 +299,7 @@ static void damon_va_update(struct damon_ctx *ctx)
- 	damon_for_each_target(t, ctx) {
- 		if (damon_va_three_regions(t, three_regions))
- 			continue;
--		damon_set_regions(t, three_regions, 3);
-+		damon_set_regions(t, three_regions, 3, DAMON_MIN_REGION);
- 	}
- }
- 
--- 
-2.43.0
+Kernel initialize "jiffies" timer as 5 minutes below zero, as shown in
+include/linux/jiffies.h
 
+/*
+ * Have the 32 bit jiffies value wrap 5 minutes after boot
+ * so jiffies wrap bugs show up earlier.
+ */
+ #define INITIAL_JIFFIES ((unsigned long)(unsigned int) (-300*HZ))
+
+And jiffies comparison help functions cast unsigned value to signed to
+cover wraparound
+
+ #define time_after_eq(a,b) \
+  (typecheck(unsigned long, a) && \
+  typecheck(unsigned long, b) && \
+  ((long)((a) - (b)) >=3D 0))
+
+When quota->charged_from is initialized to 0, time_after_eq() can incorrect=
+ly
+return FALSE even after reset_interval has elapsed. This occurs when
+(jiffies - reset_interval) produces a value with MSB=3D1, which is interpre=
+ted
+as negative in signed arithmetic.
+
+This issue primarily affects 32-bit systems because:
+On 64-bit systems: MSB=3D1 values occur after ~292 million years from boot
+(assuming HZ=3D1000), almost impossible.
+
+On 32-bit systems: MSB=3D1 values occur during the first 5 minutes after bo=
+ot,
+and the second half of every jiffies wraparound cycle, starting from day 25
+(assuming HZ=3D1000)
+
+When above unexpected FALSE return from time_after_eq() occurs, the
+charging window will not reset. The user impact depends on esz value
+at that time.
+
+If esz is 0, scheme ignores configured quotas and runs without any
+limits.
+
+If esz is not 0, scheme stops working once the quota is exhausted. It
+remains until the charging window finally resets.
+
+So, change quota->charged_from to jiffies at damos_adjust_quota() when
+it is considered as the first charge window. By this change, we can avoid
+unexpected FALSE return from time_after_eq()
+
+
+>
+> Thanks,
+> SJ
+
+Best Regards
+Sang-Heon Jeon
 
