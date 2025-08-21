@@ -4,133 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30E5ECA0EEB
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 20:08:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29270CA0EFA
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 20:08:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C91CF8E003D; Thu, 21 Aug 2025 16:08:29 -0400 (EDT)
+	id 121998E0042; Thu, 21 Aug 2025 16:08:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C445E8E0041; Thu, 21 Aug 2025 16:08:29 -0400 (EDT)
+	id 032358E0041; Thu, 21 Aug 2025 16:08:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE2908E003D; Thu, 21 Aug 2025 16:08:29 -0400 (EDT)
+	id CDFCD8E0042; Thu, 21 Aug 2025 16:08:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8250A8E0041
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:08:29 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4D7AB1DA034
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 20:08:29 +0000 (UTC)
-X-FDA: 83801851938.29.D212E77
-Received: from relay.hostedemail.com (unirelay01 [10.200.18.64])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A2C8C40002
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 20:08:26 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755806906;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5m4ogAvLOK+AKMqlHwhkjmyVbS/4gGgmBykcdwEFmjg=;
-	b=waajRnSWjl/ABxn4y1Kvk9O5HP2R3g6nJcmnR5EmGf7u0ePA98HTSVUm7T2b4zhhZa9E5y
-	AFGtM3mLxBh6xSdM57T6bsmOukZoX7mNI4wva8FC8RefzZVBHBDsxsfA+FH66gI1mDKfpC
-	Agdos9UCM4AfEfx6hQ7CxObhO3wYQM4=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755806906; a=rsa-sha256;
-	cv=pass;
-	b=bM6vrE+6/Szzz7DT9ypEvrOC4L0oRsJEl1XcnYtCOTz1dFG0paOzSjgmogqnRV1SSXBt50
-	PvnvGJPnoe1u9T0dHsvUSYs952/2DFppSfcxGzIJTs+d2atAS/qJKSLnSxAlP8DbivvmHj
-	zquyI755AnPeI3hyChXtXt/fbB5HYTk=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
-Received: from relay.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 317681DB8D1
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 20:08:26 +0000 (UTC)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0D2A3C0570
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 20:08:26 +0000 (UTC)
-X-FDA: 83801851812.20.B0A76DA
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 9EFB2180006
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 20:08:23 +0000 (UTC)
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755806903;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5m4ogAvLOK+AKMqlHwhkjmyVbS/4gGgmBykcdwEFmjg=;
-	b=y7TzP8YAqeL9HsTHfDIhGfz2b+fBscC2xM9yBmHOHyDdUGEKSDQPCXJV7yRhXaDL+qiWtv
-	2EZ+sL2C6hljysVK5JCv7zA/sh9wldmlFG7u+wMTD7FmgjUBbozaH3M3/H1N5PZseZllxo
-	agU5sruEn/vuesgwmJga69BzRfD9Xd4=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=M5eIkUTN;
-	spf=pass (imf16.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755806903; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B07318E0041
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:08:32 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8652D117D77
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 20:08:32 +0000 (UTC)
+X-FDA: 83801852064.07.C8E16E1
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 292EA140005
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 20:08:30 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NWRarvld;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf23.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755806910; a=rsa-sha256;
 	cv=none;
-	b=4QXB9VAmvbTNFpe8yIb4hxaqbtSKX+VUugEirCgm4JKF8FBYcc607IUSQhs9PMX62ltoXQ
-	zsKDP1kvYmNIJflpAiOrW5Q42GYZZfdDlSQFulun+RhBzNr/aeQKqGq3ksVEgJH76ysLzr
-	3wlKasXJ87rx52EdF3m/GavA/92pWlQ=
+	b=HVCruhZopdUkrU9SnaYEV7MaDUDikZ9aDrqgXffdUdxVa479ViBqjRK6HND24aaFiCYHsq
+	xfyhJDQf0Ls7SeIa6+phO3OL0vGtZX7/yehnct0uY8Hw/c0kXYSp5JJSCZ1BWAdPGABuqH
+	nwsvIO1ju0283KoM79chE106y//2L+Q=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NWRarvld;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf23.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755806910;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=yKmA6ti8X8/YIeKKq4I8EEiHVsObQn302mzSXytdc/A=;
+	b=Z0CIr6ISyx5t9hVUxPwI47GpCt8csmnDctL+enM8AFVYUjyQ5tACyt+1HBtNvK1jIB4QC7
+	eBIRnPWJfHU/RTLY7kuJGh+ljTIJqXIuHWIm++OKWJOMqh9c9KeDtXtaIf53FOhaI9W9nn
+	ciPxpqcjdYwabAKLHWoiPccJfe9BFmU=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755806903;
+	s=mimecast20190719; t=1755806909;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5m4ogAvLOK+AKMqlHwhkjmyVbS/4gGgmBykcdwEFmjg=;
-	b=M5eIkUTNOfZAbO1HhqbvK8RSCTkC+xAMYuzo1rzYrLAiykPHIn9lv2D7YmsNWuK+auNtW9
-	7N/xoysrIBK1RHpxBqWGbrNnt4lj4AfcHUWHUIgQIyZ9wk2VIpl9iXubDpi//Zhf/jHKKX
-	2SBbugQ5LFxqtQ24PpWJWqhhPJ9qqn4=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=yKmA6ti8X8/YIeKKq4I8EEiHVsObQn302mzSXytdc/A=;
+	b=NWRarvldeoVMzkJGr7qTulzroZufCxwLHAjJbaWSD6NrW962U05dnJDV7gALcriLv8LryD
+	/Qcd5hFcdDBwe21HYYTFZMi21CGvvsu5whVAu4qE5qqakMjJxMbvzGu7D/ay+5nAluO7tY
+	D1BRN2inxycA6NonNm0YrWn08CixTPM=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-632-yxlgtk_yOZed5sED4hJuag-1; Thu, 21 Aug 2025 16:08:21 -0400
-X-MC-Unique: yxlgtk_yOZed5sED4hJuag-1
-X-Mimecast-MFC-AGG-ID: yxlgtk_yOZed5sED4hJuag_1755806900
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45a1b0b2b5cso10141355e9.2
-        for <linux-mm@kvack.org>; Thu, 21 Aug 2025 13:08:21 -0700 (PDT)
+ us-mta-511-ugToPI7CPNSBte5dpF0u3A-1; Thu, 21 Aug 2025 16:08:28 -0400
+X-MC-Unique: ugToPI7CPNSBte5dpF0u3A-1
+X-Mimecast-MFC-AGG-ID: ugToPI7CPNSBte5dpF0u3A_1755806907
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3b9edf332faso441385f8f.3
+        for <linux-mm@kvack.org>; Thu, 21 Aug 2025 13:08:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755806900; x=1756411700;
+        d=1e100.net; s=20230601; t=1755806907; x=1756411707;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5m4ogAvLOK+AKMqlHwhkjmyVbS/4gGgmBykcdwEFmjg=;
-        b=KHrefs/DxId3ReAlbTFqzbnHs8Apm93aG9db56BUv1qCe428v1LlepSdeybIFWCmyg
-         AO6cqIU4knKJafetaywoWRfEndBnR66+rTT1NHXNSF3Bj3geU3Y+c/88FqRfpNKfugNs
-         FMQZ7xyeuBVoTHiNc6Clp9J84X3SO3EiDUQEaj1FOdUjKzmzr09I5F5cQwmgPHdb3chc
-         uXmMQ2VNTY+uLyQR7kD1ZNkhmDROzJa9AsXFhcL+7aHHQZBuGCBgMEbMY5rCa/K5eVf5
-         mYZD4vcJsbUeHHezIoNNZ11n+soNgxLKUxXuOPGbbnLLUfEaPLUdv/+s9SuFCiecC6lQ
-         FYIg==
-X-Forwarded-Encrypted: i=1; AJvYcCWxzqv/XXrMDTrKsVacJKiwXBQOinmI3Pq4FUuWpKL8t+x77Wi7aLyeFCbWh1vB+u80gcb6q46Z+A==@kvack.org
-X-Gm-Message-State: AOJu0YypyWTfgOfW9AFt7mfHV2o5qzGD6aFfgTWqMXchtaUFL6VU8h36
-	RASBAfSac5vTAnntF/vZnsyX3yMuwey2RRBWTR5knQFQfLlOpCzaG7XPJyIBGWZkuIAQTgVTkYi
-	f0UVbdu6YOfvUA/TN+uAVe4xqUlECiWqILexdL5MzENdC0vs6LJYQ
-X-Gm-Gg: ASbGnctc6eLVvmQ5c09qEEQGq9nPMFaehohDgtKTMi52GbhLgBhXTsMgIe82670X3Zx
-	Ikh6T1mQgOQDC+AYUwvvCOFaDFoBPrOlTdKzyLFqG7gLpJo1Ij3jVrxSlr/b9efn40BlgK7LO21
-	A4yAKlQomaRts9Yxg9fnxquSFu6ROhuh3DiNSjTUd1uEGNxFFO+GOBI76FyWTfvTV+Q8Ok7fSxR
-	FSLX1tHdkrVWl0QtnY1k3SRMg3dpL8sdgU9O6P4mq7ZlJ8iwGlaYn+TviIxWHQyzXwybm8t/4WI
-	fBv5gj/DFovIwgNvWqIScA7SrycwxTVdyXSo+ybMNZ2MBaGN+oGWB72lOMamJl7iBLCK8mnWexb
-	/e11lPLV7EN+ZcOI8ZiS+iA==
-X-Received: by 2002:a05:600d:15a:10b0:458:bc3f:6a77 with SMTP id 5b1f17b1804b1-45b51f2fe8dmr510475e9.2.1755806900316;
-        Thu, 21 Aug 2025 13:08:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGpV2b3uhR/IYbmrTMgtg0gx1wkF4+JdBDenNBBSMhYf9nynPUCNMa8PTADPxo4/liFiw6TqA==
-X-Received: by 2002:a05:600d:15a:10b0:458:bc3f:6a77 with SMTP id 5b1f17b1804b1-45b51f2fe8dmr509915e9.2.1755806899756;
-        Thu, 21 Aug 2025 13:08:19 -0700 (PDT)
+        bh=yKmA6ti8X8/YIeKKq4I8EEiHVsObQn302mzSXytdc/A=;
+        b=Cu/Z0HVoqZQnpb0uQD6WVHNVcWAYec0DOGVGWme1mylJADv0vU7XmP54lrY989XxZ4
+         pbrXO6IHoGlEbeSslalCCv/wsIHpd1FkwerVkXQeNLQn8E6DLxrMYOo3dLkxwysiFPLC
+         qLqKO7K6+GsvHfwzBCXILVxvP+Q1v0paPxRivSEmIDMYM2UnaNjPwblt3OjNio36ks+C
+         hZ7mq96yUeAV+v5PJky2roMJtTq57HOSiiFBrweL8jXRqbi6ZXMMMbFgn03F61mQ2UU8
+         m+aq3Qr7zG9e0KWMOrFTLgOzIpELUfDvvQnyG1snq4uczm7h4Cup5QFRaq2PIi8kU7wW
+         PY7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXcWYxXdFNDGZp8WAzldXSbhZbPNTQCbfWbnToZnfEpkaGm2QZgzbZAktzhF6sPeOv8vyq62wbIEA==@kvack.org
+X-Gm-Message-State: AOJu0YxK6rv9hDzrZZIKMk8Uk/PbEAPQjy74f6+SmU7QkDWzvYTIQaNG
+	yi11V95033WOq8satfbVlTOZS6JSafVb6Myqqu3eCC8dUKTZqPrdcbjz3A2rEZCATKXlLTJsxq0
+	klTD4hLGbDfPXn2lSMrfUmphngrRt2tCO9zHrvUknadEDK7pFCatH
+X-Gm-Gg: ASbGnctUwyOO807lKeCAzxPnK1zI9FTK3sl3oFeDXxDAyX8EmwdJzXWif7Zhwve0z7V
+	LCOtsxc2RdW1CYhV1hZMRk0DjKLk8vT+W2iDC+3upHGObwIDfF7K2PPTB6dlRUn4Ep2yFK3aCy4
+	4l72mj9QnVyBae/W6lYO01pAUeiIrNKOlO7+kpWFnMTW0a8foMMmhTmU60sB+NULCqNXzm9QG92
+	XngI5GBYzmpU+wtipOQsQtKZRoR8RY9aYVayoLRmUgnc4Bzcq7G/An6p9CffvWg5XyYNeQcj46s
+	2ea6OfscSo98/KoKXThDSMa/8/b696VQzG4UqW2NJRVIi0+6o5Ljhu+T/6QJYJ044jaiUIIKgER
+	MeSmW+Em3Bw8QOqjmBRhkpw==
+X-Received: by 2002:a05:6000:288a:b0:3c3:f134:28ba with SMTP id ffacd0b85a97d-3c5db2dcc73mr210124f8f.28.1755806906750;
+        Thu, 21 Aug 2025 13:08:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFquQDwTQ7641wc0kBtooMvxSzqNfE3+XbhkCNDvunKpGE2abRVQ6uRBkb0Dc/grDWRh0uIiA==
+X-Received: by 2002:a05:6000:288a:b0:3c3:f134:28ba with SMTP id ffacd0b85a97d-3c5db2dcc73mr210077f8f.28.1755806906301;
+        Thu, 21 Aug 2025 13:08:26 -0700 (PDT)
 Received: from localhost (p200300d82f26ba0008036ec5991806fd.dip0.t-ipconnect.de. [2003:d8:2f26:ba00:803:6ec5:9918:6fd])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3c07487986fsm13999227f8f.1.2025.08.21.13.08.17
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3c077789d12sm12702699f8f.54.2025.08.21.13.08.23
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Aug 2025 13:08:19 -0700 (PDT)
+        Thu, 21 Aug 2025 13:08:25 -0700 (PDT)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: David Hildenbrand <david@redhat.com>,
-	Maxim Levitsky <maximlevitsky@gmail.com>,
 	Alex Dubov <oakad@yahoo.com>,
 	Ulf Hansson <ulf.hansson@linaro.org>,
+	Jesper Nilsson <jesper.nilsson@axis.com>,
+	Lars Persson <lars.persson@axis.com>,
 	Alexander Potapenko <glider@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Brendan Jackman <jackmanb@google.com>,
@@ -177,30 +151,26 @@ Cc: David Hildenbrand <david@redhat.com>,
 	wireguard@lists.zx2c4.com,
 	x86@kernel.org,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH RFC 26/35] mspro_block: drop nth_page() usage within SG entry
-Date: Thu, 21 Aug 2025 22:06:52 +0200
-Message-ID: <20250821200701.1329277-27-david@redhat.com>
+Subject: [PATCH RFC 28/35] mmc: drop nth_page() usage within SG entry
+Date: Thu, 21 Aug 2025 22:06:54 +0200
+Message-ID: <20250821200701.1329277-29-david@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250821200701.1329277-1-david@redhat.com>
 References: <20250821200701.1329277-1-david@redhat.com>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 7_sE1aMkIclVy6TntFypThGdJm4ZENqug554QO2aGj8_1755806900
+X-Mimecast-MFC-PROC-ID: OCtDAODxFWd3cB3ZlXhBZlh7uHA-AwM0H-sR3eTE5yQ_1755806907
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
-X-HE-Meta: U2FsdGVkX1/HYjtfy7hKxjsDHxuZr0LwohjgigBsj1m5R6YvuqNbA4sbh7FTccrcRcRVq/htY5zI3zBeParApz2uzYXWAs+ngKHLZLR2HPJulrIuMkD2C+0+0xliM7Jlf7EIHPp/tHKJFA6KCo/FXGkxWdjRFfZ6T7Ziz5naRIhPIMjLnoKCPXy1lsajLSXqjJvOvfvUkk5VtNXjJMXk5Dlt6q7NIeyztC8TMuzdS9G1JMQFi+2cf5qLeyYcpqMxDWWTUXG7LzGN89dc9JT4HRTixA6DbEnnmioEhu3u8wL1lZx8wZbiRAHaOM0UtNmEymXJTgCAdq4BKSfEP3Istcvxc9t+2qm+0UMV9dFHhiJxbAAsOorWIa1VYDbReAJtuzXagJTKwy1TzTPNl1uUvBPTA/2qbck89gqs0sjOrOmJMgsrt7dyF1Op9Auai6KzTDGDW8uXuliP2w03YPjLw7Cv8gu2DxCU9pXRd4BnVJtx5WQycUcB2ABvJOauEv24RHfcYlVufit9KmldlzAqYliAaTj2djO24Mi8UEjQ23jP0iRYvNAaRp5s6PR2CpPHK9drh0LxhM7oIHE7M8q3Yx0O44W92ojD8JDNS6UiUOdxIaAKNv0RCXsiPACGIVo/nXILwbdmCCiY/p6IKgXt5MMB3iq05tbsP8gx0Szpn5+CcIa3HGrKJuCNDbfKhlVZAnRhORULOD+8b8a3BMolnd6ofivWunD/Wdu1GAo/GSSuOZSfLYNGU1Cbfa6lCWWIZk19F9pdJfa+MF4pWiE8+e3C9+NQPI2T2UpKdfWPBg2/Ku3Q56piJrQbQ6QmEArg86ikq3Nlmhx0CRuWyqbfQGcSNOXuPocw9uEIjwn+X0Rb750K5r+ppaSsBW3beJ0Mjlxq/WDgPPtPKlB8Bruao8z4wG+Hd17f6KHdkDQ1GhvGgIuARvaMGna1d0VsMNDyYC1CHugcYUs9IUu39wD
- 8RUqWyll
- fdokYrb52XChJmyAmhgfC8GzoMZpBJx8SKuCp8aO77K/oleNtEcpwLmY/foQwVnKib/qDniMKeqV3C8Y28+qBxFuqrk7fokVWiL5cdRKiuolw7Axpy4liMcu4DYWGSBEbNAcaa7f7ECI0y7hXkVjZI+PZEJ61vmzy7gtcaX2O6/EbK72MpI2vJvy8q33HU1O/Q2T2pUAMZh+cK68T8yC/iHivp7eYeqmoNhVuT81n6FtN2Mz5r3ht35jLPHJ9aUMAt1C48dxpOri4uodl2khiqYZd/UkBPMJah1PFHYGAzECEr93bMTmSJjYoqgEyjkuw5NDhazIR7GmZaB1675xpm6fNbw7qtj+0X6t1G0VTe4rDarRg6iQwBThxGi8EkuQWLPrue0MEkma02Xqrv4RG4LauyC6FP1f8CAa/GwkD4LGXFKUayiugDNRJb7X8s0n1awMskM2UGdzASql33DkzTOri/OsPGA0Hh0bXiYVRyEm7qmWC0jDGQ9+1OprOGLylyGhc9fTdcfjy7bN9A1mZGZeoD5b+pBY2AB+M8PoYpD6+LhJL9zlaE4e3JV/wkfThHR0hIuMJ4KoAtsCFc86aGouQa/eSnuhP7AdNRbv6z2UlOjBTBZ8yoY0fmCaGgVmUPss9dQqi/6jcgDyvfqimDajA8cpRUuhIw9ML
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A2C8C40002
-X-Stat-Signature: 3ygujwgtd81agbehpsu6ju1oii1z1uhq
-X-HE-Tag-Orig: 1755806903-93565
-X-HE-Tag: 1755806906-14560
-X-HE-Meta: U2FsdGVkX1/xuuAHK21QiYj+uYgOR3ZEARgp7g+VPuhw1nBlpd/V+PqgAIsZ32jp9dRT8rNT2D4UnCsIqegsa3VgoaePb45ApCwV764uveNDJTTchDyNyXAUrdO4s7lSuJM6aLz+M76bAAu9slfOiyS8arTujHuACADCh+kt1d6koeey/j1Oy0hZBq46ZwRRntDtjdWPrTpv4f0ib1QlbNovdY1JbQxJ1rq40Td6RcWQWb9oynvJZLLB0cfClUa4cSElMonFVrSNJfblfcC7W9Mb5J4FDwhJCSoIfpw23SkB2wyKOgET6JJnV+KOaSk+aMDc1fXetb2MFBydf5BUfzpoaSldvYPQhZZZtw9TZeltPodVZ+/wXEc0EFAb0CHnTHcsGgeLUmKNfbrNqDjH+tfrvpxSpKThfnbYuUMQk6XdVffObyz/rDf47uEy3Mfd58rBt1MI789Fa/O7C7rhbVrB2RsgmzvDXl4El2q6x78bda3ozeFW2h4KmWBz0rxiM9oz+RSAY5jMGrg7W1tYxH/5xpS+M8bCTyJedecg7vTNDvkEvfmK2Jkasf3x8mM4BpdBgdn3JfwMH8EJatNjTsCo1huhtPyBNv9zxUzO7C2+ST7NnhBhTv0Pb/K1qNZsUshRM3mqSDUxq7pc/ptN0OGvQ+2ZV2e64TQqhHK3WCGLItUOt1gSu36geNKSsIBJ4njebFWJRwzay6s4A6WaoKAMNNrdgd0TEdN4AzNlYDccTImda8PNYseEKWmoYun/mtCKFPaBMQ8TmRWgr2ZUA+L8p4HDvWSPnqJ0n6eHYQRp7/egmvlhHMoZvzUCB9TuLpKzO0NeZjFTRoh2NwBGp1vtydM1DBq4qmY++qw9huE03Y9yV1U6MTdT3RtKe3wWhIBZ2M0uuwuRgsKxOeJFlqCnK7nw3etU3Wx6nqjQ9PqgvsSC7qCSNIlaG2tI/x3Iy77yghmj3Aoznyb9J8Q
- aqhitBcg
- OeXmWTFzK1pk9CVmZd3UwA6kFmNfCmu9LRptnryOQ60431psGbXzfMCrbu3Q1GcQZFkgrM56cZ7za4vHfxTXbpe4mLp8N0TUBp8w6AM0d4S5kWuapRPtC/0owR+6YkhiQNyAGmCq0ETdnxfg7hKDyu6rUtHw62hp/M5yWpRNbo8sc7yj9DM979JP+JOE4Ljf/QzH3LXD4n/pWJLoP0NZL0x3y9+BYNyhe8ARcHcPnzEOsXsf2DTRoaVh62IvylVkHfYTFo5Nxykl570Z44k0RKV4sP0JcThUFfw8KLleXXCn7o/VavbXUooUdkau8din6GWmaRA8t4BrC/uwHiHHJAuFrx+jsHM4PaBk8Zc8gbu/XIoP6ahQsoxdHKFt6tr6YdoJ/GbeTqKUi3zUYS/hElA0e725UONoTwMPegwvupEjUYn4ySq8UGnpNR1/Tu1Ks3lXMt+02U8D6lssU1S3AHkFn8EaVyC27puG/x1G0qA3VSXp6frs1ZtYhrxm52zqcb3MqG+2FJozou4LQ5QS4YwUCOg==
+X-Rspamd-Queue-Id: 292EA140005
+X-Stat-Signature: n3obmng9okts86mnsncjeaca9bgc6n3a
+X-HE-Tag: 1755806910-115412
+X-HE-Meta: U2FsdGVkX19I9Hh7q6o153c24wHQNIbguPzIYCbPwjPEX6+b6H8xZAyVcfTqbS5TmB4/kBfblp5zbxlhmvnq49R/Tw9VNUNIXo09nQHQXtoWCANj3MUNi+lFq4AUPRuU15FT64GF/2bWkD8ba9U9r924mQRQdZCA4EwH+0D+tHB/xvk0ExCEPu5+iICBw8p5HQ7oaRqt6hw4UPtPV/TxEm1yLEp/xeSNGxAUmbx57zRE59kDKHduUH6GEIyvoHnuOixGzkEcbQaQEnyWQ71LbA0wUj/uP+wZh8NU2RIcMAUGAyLOuZ0ZLxRQZj6O3+KtMNAe5WyUiDo3N/gNTrAU3DxwtugIY1pQ2+5NjiPmxn0MluP/o+doftV2ooyGeHF0wIUOQWz0O086POdXnxuLgYJYLKqYUNEFQfV90iu/dAUmWio56VHzTE1u4FbFx2DcfSbhPapaZs8dFjiyM6pZZ2FStTTfLRK7KRSCJhqy4G4LWjZQ3M23utmrAQZycafRY0Tx9bc6I3xXAS0LWUd57nVdRz6uhD7lkoweNHahMupuhDgKnMzFR22cS8v/XymTWn66S2VbP4TFxvfHacodwY1f6hPlsM8DqTVf4YKu+VgaBCk1FFO+WupxaXwZe2+z/4idoIaePQf9wkqxhixpfBfSXjax13rVzokezt20fXbrqS4sWWUnh7Q6EBEcAjIoVG60PA/EJXzoOaEqAjeoaRzi2oJ0aA0JZthwP9Onfnf0GlrLkjYQ73S76w9HX09ecJbW1sIFT5bL8j1dU5NC+KVIpwBgpz6AlYi9GJ/cjvlitTXICSIGTcBvIbQ3vsuMUglAmUrtYumKKvIajSjmKDOP7bXbvWCDYHdZb/2OFa8abOnlfqxSafisRZ/5OdkgldSWzXJR/fZO9Zc5dJrE9OBA9f9EBqM3CVpJ6pFBQzerFg/jUY6JOf3jLlL+aXnQo6io2BNYm5AVkZJdI6C
+ ec0nTJ1H
+ 52z4EaugqYS1RUtRlUizKBDiseGCU6lv1EsrGQ5EtV8bCyxivq7STkhjHy0BSyvgXNqGsEOi4sZoG0b5TJj/VmgyWlrIWaCzKgE83r2+KTgCLLFHfiPQOHYJcKm7LLiNcy4jHKtYJ5WQ2g/BSG0BuB/PoRd7OSwTf2dmrYKvJaJWAG/xWB1mkc9CniX2603ZuFp4RmSq4lR2ZRXZcQlTVl1O9kIiwHMk0AIrUsKygpN0BPfrTKIaEeHyDsVs/xz4hmhLJJaT8mdtCi/N6hHLUVYkMUp/wyS06hZFo89fTMpBha7iREl2FST9as81fhKFynBotjEWGJxHGYHFGmOlHKe3FWvN0Vy4JEuxZaGz7W4qe2PcLOuCFc+qMD+HVS3TspnNV8kMzEO2VFCyTs60UHoBmgLefi0gSKyJRzo9P9r1PV9KL1/Eaw6RKIRuYt4/5t1u5e8uPEVCoeOnE/xtmpNpQJGkWa6tfDtgDUPRiTAu/jLN3QIh1M4jy9/381A7/9jPTXcd3H4JuMuyXBeKoBoZmsh09xeb7bFiupTJHkfsNrkoJjvhKhtt/REf5k9obOsAWS1NEBYGKvWis7af1hQvAEnWYevAfwgQ4B4SOihg/djUCJSbSLBqM5sECe0BftQRJDNP0WTvH2m/czFvze2SRNSCpiSwBsvnxDdZ9LF83x7AxmM5RBso49e9k6QiAoD52
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -212,30 +182,61 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 It's no longer required to use nth_page() when iterating pages within a
 single SG entry, so let's drop the nth_page() usage.
 
-Cc: Maxim Levitsky <maximlevitsky@gmail.com>
 Cc: Alex Dubov <oakad@yahoo.com>
 Cc: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Jesper Nilsson <jesper.nilsson@axis.com>
+Cc: Lars Persson <lars.persson@axis.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- drivers/memstick/core/mspro_block.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/mmc/host/tifm_sd.c    | 4 ++--
+ drivers/mmc/host/usdhi6rol0.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/memstick/core/mspro_block.c b/drivers/memstick/core/mspro_block.c
-index c9853d887d282..985cfca3f6944 100644
---- a/drivers/memstick/core/mspro_block.c
-+++ b/drivers/memstick/core/mspro_block.c
-@@ -560,8 +560,7 @@ static int h_mspro_block_transfer_data(struct memstick_dev *card,
- 		t_offset += msb->current_page * msb->page_size;
+diff --git a/drivers/mmc/host/tifm_sd.c b/drivers/mmc/host/tifm_sd.c
+index ac636efd911d3..f1ede2b39b505 100644
+--- a/drivers/mmc/host/tifm_sd.c
++++ b/drivers/mmc/host/tifm_sd.c
+@@ -191,7 +191,7 @@ static void tifm_sd_transfer_data(struct tifm_sd *host)
+ 		}
+ 		off = sg[host->sg_pos].offset + host->block_pos;
  
- 		sg_set_page(&t_sg,
--			    nth_page(sg_page(&(msb->req_sg[msb->current_seg])),
--				     t_offset >> PAGE_SHIFT),
-+			    sg_page(&(msb->req_sg[msb->current_seg])) + t_offset / PAGE_SIZE,
- 			    msb->page_size, offset_in_page(t_offset));
+-		pg = nth_page(sg_page(&sg[host->sg_pos]), off >> PAGE_SHIFT);
++		pg = sg_page(&sg[host->sg_pos]) + off / PAGE_SIZE;
+ 		p_off = offset_in_page(off);
+ 		p_cnt = PAGE_SIZE - p_off;
+ 		p_cnt = min(p_cnt, cnt);
+@@ -240,7 +240,7 @@ static void tifm_sd_bounce_block(struct tifm_sd *host, struct mmc_data *r_data)
+ 		}
+ 		off = sg[host->sg_pos].offset + host->block_pos;
  
- 		memstick_init_req_sg(*mrq, msb->data_dir == READ
+-		pg = nth_page(sg_page(&sg[host->sg_pos]), off >> PAGE_SHIFT);
++		pg = sg_page(&sg[host->sg_pos]) + off / PAGE_SIZE;
+ 		p_off = offset_in_page(off);
+ 		p_cnt = PAGE_SIZE - p_off;
+ 		p_cnt = min(p_cnt, cnt);
+diff --git a/drivers/mmc/host/usdhi6rol0.c b/drivers/mmc/host/usdhi6rol0.c
+index 85b49c07918b3..3bccf800339ba 100644
+--- a/drivers/mmc/host/usdhi6rol0.c
++++ b/drivers/mmc/host/usdhi6rol0.c
+@@ -323,7 +323,7 @@ static void usdhi6_blk_bounce(struct usdhi6_host *host,
+ 
+ 	host->head_pg.page	= host->pg.page;
+ 	host->head_pg.mapped	= host->pg.mapped;
+-	host->pg.page		= nth_page(host->pg.page, 1);
++	host->pg.page		= host->pg.page + 1;
+ 	host->pg.mapped		= kmap(host->pg.page);
+ 
+ 	host->blk_page = host->bounce_buf;
+@@ -503,7 +503,7 @@ static void usdhi6_sg_advance(struct usdhi6_host *host)
+ 	/* We cannot get here after crossing a page border */
+ 
+ 	/* Next page in the same SG */
+-	host->pg.page = nth_page(sg_page(host->sg), host->page_idx);
++	host->pg.page = sg_page(host->sg) + host->page_idx;
+ 	host->pg.mapped = kmap(host->pg.page);
+ 	host->blk_page = host->pg.mapped;
+ 
 -- 
 2.50.1
-
 
 
