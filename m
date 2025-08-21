@@ -4,114 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EB91CA0EFA
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 19:18:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02B6FCA0EEB
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 19:25:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5DF7D8E0022; Thu, 21 Aug 2025 15:18:06 -0400 (EDT)
+	id 440F86B00C0; Thu, 21 Aug 2025 15:25:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 590208E0001; Thu, 21 Aug 2025 15:18:06 -0400 (EDT)
+	id 3F1E56B00C2; Thu, 21 Aug 2025 15:25:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A6378E0022; Thu, 21 Aug 2025 15:18:06 -0400 (EDT)
+	id 3078F6B00C3; Thu, 21 Aug 2025 15:25:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A0DB8E0001
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 15:18:06 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C3088138A5C
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 19:18:05 +0000 (UTC)
-X-FDA: 83801724930.09.0724FD3
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D5F06C0005
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 19:18:03 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="f+vzXQl/";
-	spf=pass (imf10.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2027A6B00C0
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 15:25:15 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 772A21404ED
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 19:25:14 +0000 (UTC)
+X-FDA: 83801742948.07.74707EC
+Received: from relay.hostedemail.com (unirelay05 [10.200.18.68])
+	by imf06.hostedemail.com (Postfix) with ESMTP id B9EEE180007
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 19:25:12 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755803883;
+	s=arc-20220608; t=1755804312;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OIUfadtyrX+885VNIhzlz6298Jbid8a7B3cqJAhGNyw=;
-	b=uVz7ZIHRJSdUp1vTzIUaMIpItO1fEqjSW1ksmEaxBS1BNWWoo1TOiCi68k4Dk91wHyvsnE
-	ZApEYEHp0fd9CQ1ODXursMgsnsyGkgKZblVr9D55iWhl73Ky0XzLCpUKEGRi6vk/CBsjz6
-	37hMNbrurW6ABWZXM2KShSg2/iXQYnw=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4Wit7p2EUM1bs1hD3ePlBQbP7SkBYA/PoDl+ZaP00zA=;
+	b=XgMZBeVSeoJ3YJ1zJMZteMG3sBkXzolF15LxaeINcswX2JEWQlJ0LI8SRUFq85mpM1QhhJ
+	ncQ6LVhKZS5ANiOYeGN9hEyNaBjw03pIWG4vMqhuHSJHBu5cn3oiGyitkeEdkn5aayMF3X
+	wbuXTcYsAQ2DK6OoR13ffUFCl7H4uuU=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="f+vzXQl/";
-	spf=pass (imf10.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755803883; a=rsa-sha256;
+	imf06.hostedemail.com;
+	none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755804312; a=rsa-sha256;
 	cv=none;
-	b=QFK+h7/w+vUhswWY2DiUZc3/+Hi3xJVaze56rgSwe2Zzi811SR2Fwqh2GvE8lkpUMRnWus
-	vUv26ShxEqJp7BBlSAYMbBF44QfsBMEnwZm8EdUqHLWiXh+svwfhRibPgj5Ccv77LxrQpm
-	66oETGJgJQnM3XK4W9BFXi5vBQOACOs=
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3c43399ea42so959316f8f.1
-        for <linux-mm@kvack.org>; Thu, 21 Aug 2025 12:18:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755803882; x=1756408682; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OIUfadtyrX+885VNIhzlz6298Jbid8a7B3cqJAhGNyw=;
-        b=f+vzXQl/WvY1+ZR66rbGNmqRxlb6ZNQAfvAt7j6T66Gep2ep4Et5EM2lwY/WNC9SB7
-         o/zTqvHfWa2Lu8mpSBKsS0kX/c55O5jNS21GPseObRYdhhxP1PvLx8RhBbaw2Cn5oW3t
-         CR/dxkG9Kzg7He6Atk9G2pj57EwZa4qk4rFn2VEfQTpbpapE7D1RLm6v7m6oV3TL13FY
-         205HTDCuzpzNZ6kYvvQ3N+P1nim5vBlN/ot755UzGJTftCJknKkQBw0ODGv1xJflEDZD
-         P4CYFM38c1QNqZPbtmMOYQ9zkEd+H/I8UNzhujZlPdoqoChLly1qDt5UYii1zHkHWAfL
-         wLnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755803882; x=1756408682;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OIUfadtyrX+885VNIhzlz6298Jbid8a7B3cqJAhGNyw=;
-        b=ZleBmzHQkms/W1IIWwpLg1SDSIIHy2AC0HrWRsk7dqjYPZwLARU2XUcIysDd59JR3u
-         Bz/j6jYggr8tNKTvuXX3Ckq51N7d/78q32SNdd4585W2aCCNKejQPTrU3HTgS7NiEDjs
-         2pwJHakiFtmhriPQfUAmtNcx6JVDF5xmJmyYXacYUgOiEbT/P4gdgtaEYrJ09dXcCflY
-         JPOG0klrSWrAyC48hHFUr78sHsc12bQ2KfhDm6bEdk5MJmaNNipfCuaIIPhozsF7lcCF
-         tuOXwKPkIkd+bJ09v1lCcMEP1vKgk+FavZU9zjrlFDofomiMkEsOA8fhlVxjEf0lcu8/
-         eRag==
-X-Forwarded-Encrypted: i=1; AJvYcCUITnXPfIXTlPM0BNUMpM5VBoexH7Yusi0jAoX2sElFcuTr8eYFK/cKGukLD39WAtigWwfEKXGLng==@kvack.org
-X-Gm-Message-State: AOJu0YwIsvPRL3TQ9gbgM2K4a3dJJisHLokE2AO7XUqtmf1YD13wLBP6
-	R4NeL3Qf90vcdvHRnhHZJ24/JFs4Rah45RmcJvx7FY2kqBK+fnSRWHXw
-X-Gm-Gg: ASbGnct19NQWU7oPoKWCc1fuIUTn12cg0c+2foSf5PcnoOFrqm1Q3ktxM5bFVky41ci
-	vy99Bhs3W+Cbpeu6KECVfKlrGVovy/bM54e/unbS4UhGqhajEV8RLDLhOsAh13acoC5bEIwKbLj
-	XcWWnXr+UIFprMnQEm5RayZEJG4oexAZtr12PUU/ztQYihrXoiN4lm5E8LoRxDh46Tpsx/IS51Q
-	pYlNVOKF3gjh7PansJRpPerHWatbBrRQWYwxhrsJ828JUsPPyB4v567kD/qLdU7mOO1OATKWcFJ
-	AsOuSgENggc8P0ta5Itx7/OouC3PSxnKT95mVaRzdx4vGyxzOK09iuLcZXoPiTg8FMIMcfYSnTH
-	p+j4obz8VCPbPX+Hg4+HBPPyIHDZc/opABX+x2Ro=
-X-Google-Smtp-Source: AGHT+IHjaDlr+iR209Oc/z6JbUmzDrJHC9V+eZOuu4bHyOSAYWtRWU7bYzUgOQc1ufCzQDegRKL3yA==
-X-Received: by 2002:a5d:64cf:0:b0:3c4:39cc:366 with SMTP id ffacd0b85a97d-3c5daa292d1mr128606f8f.15.1755803882226;
-        Thu, 21 Aug 2025 12:18:02 -0700 (PDT)
-Received: from devbig569.cln6.facebook.com ([2a03:2880:31ff:4e::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c077789d1dsm12574809f8f.49.2025.08.21.12.18.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Aug 2025 12:18:01 -0700 (PDT)
-Date: Thu, 21 Aug 2025 12:18:00 -0700
-From: Yueyang Pan <pyyjason@gmail.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC 0/1] Try to add memory allocation info for cgroup oom kill
-Message-ID: <aKdw6Pkj2H4B6QDb@devbig569.cln6.facebook.com>
-References: <cover.1755190013.git.pyyjason@gmail.com>
- <6qu2uo3d2msctkkz5slhx5piqtt64wsvkgkvjjpd255k7nrds4@qtffskmesivg>
+	b=gJVpeTUcjEpFjIrGtTrlhHiEG4y/N9DtsZgZLDKYM2IUuTpWmm9zZSs6SvZaiXaOzmqtAd
+	jGpnr8u9EPphF7fK3KjppODGW9oRLGORrFbcH6n1wLSrxSy7XyB/SU/fMnvuT5DY+hRWk5
+	RhKE4Ww6d7VEf57iC2kIBN52com3JgE=
+Received: from omf03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DFB08591EC;
+	Thu, 21 Aug 2025 19:25:09 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf03.hostedemail.com (Postfix) with ESMTPA id 09C846000A;
+	Thu, 21 Aug 2025 19:25:04 +0000 (UTC)
+Date: Thu, 21 Aug 2025 15:25:09 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Andy Lutomirski
+ <luto@kernel.org>, Borislav Petkov <bp@alien8.de>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Daniel Gomez <da.gomez@samsung.com>, Dave
+ Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, "Liam
+ R. Howlett" <Liam.Howlett@oracle.com>, Luis Chamberlain
+ <mcgrof@kernel.org>, Mark Rutland <mark.rutland@arm.com>, Masami Hiramatsu
+ <mhiramat@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra
+ <peterz@infradead.org>, Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen
+ <samitolvanen@google.com>, Thomas Gleixner <tglx@linutronix.de>, Yann
+ Ylavic <ylavic.dev@gmail.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-modules@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v3 8/8] x86/ftrace: enable EXECMEM_ROX_CACHE for ftrace
+ allocations
+Message-ID: <20250821152509.391c1ebe@gandalf.local.home>
+In-Reply-To: <aKa4otIF6AbhD2X3@kernel.org>
+References: <20250713071730.4117334-1-rppt@kernel.org>
+	<20250713071730.4117334-9-rppt@kernel.org>
+	<20250820184743.0302a8b5@gandalf.local.home>
+	<aKa4otIF6AbhD2X3@kernel.org>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6qu2uo3d2msctkkz5slhx5piqtt64wsvkgkvjjpd255k7nrds4@qtffskmesivg>
-X-Rspamd-Queue-Id: D5F06C0005
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1+CMQG1BETxfdgNxC+cxIEgpiTvO2qKdGo=
+X-HE-Meta: U2FsdGVkX184fcxufunVUclfn8DfVrb7JSHS5xeDl0+1DGaNCkqXSAQB78+nX+M9qFzJ+XEGE2xq2wEmhekhDhz0ls29PxPTia0KyCKj2DS3zUHhUKuOG29rvKqA+da4TRvTzYXkmRMxM9yYhP18JaBtbtIBqbDN8KtB5JlbHT5fUu9woGnAPIAoY03eAKVC7nP20wT5veRaNV7o/14O3bY+RR1I2T2s4pkHB1P2h+mTipvoybEfHmn99WxpnapDf4+skh9FOH6Xu6SLdfXz2koCvyMhzz1Aqg8laodsKkDWG+QUPEdGygjNSu+CKwtFaktA/6OzKZRKcuRIwbXZLnWXVDAgIOzhUUC3b75/yXlYBgamghT2isHwhNVCZfb5pWzA9SRRaB2BrM3UVRUBdg==
+X-Stat-Signature: cyn6qk3us8ocdtde5jpyb3zckzedttjn
 X-Rspam-User: 
-X-Stat-Signature: oepta4m5sa1bicixbgssmfham66y9hhf
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1755803883-286774
-X-HE-Meta: U2FsdGVkX1/A9+KWwQOxCSdAhkVoc03eLgzb8S/9xGQ4t+P7NsoWEq3rOUohBosCnP3ekdj0xadkw0GvX4OeWBSxlMxdy3PC5YVGCZTHyLgGAQnOxNG9CXoQoFzNGv3vTmF7bCp5Vg+HBEsU3qwvDefph5l7x4H9CX8CghZw4kuy+WgIHRd9SgWSepLrK6CNaNNQFHtjsaea6HGQ8+54v8LTJyl2s1movgodcA8zL+84Japx8z3fB+mkCXL0OJq9NrWkzKPYb1fARTlMpm65OIW0NzW2Jc0wQJOjh/vB5zMZRiKB1JH6UukReM+hrNvPrcQJoORJLKQNOyUpO6DgnaGFRc7VvRN5gi+gxkgPyJ0Xh8rmzNqoIDs4z0KaaYjqAaFPZviVtqo6J6D+V+0mrYYqwVV/p7VXwX1CrpPNZJSF1a9nrC36/uJ0F44lbGL1L4o595v/zkWx1UQBXcP6M7zKOpWBcT+Qg0BtevpJy39INZjyO+KkjOlMQy10OSN3hTBOenHqvebVfPEkWNmgjVqvj+wnJ/XNSR9aOH4HQ0lm8uJDFKJs2Dqb7/4q3cTjyi6/L7WTla1jCjfo19M5q28NhIhPYcGPI1RzLhbawP7/+ce+IUVXR3uySANKro62pES2sQtDOvsnWX60sl4hJ/BqACBdMMc2koKIRq2xpBLE2gblwtw7crrfkG8p9hvRXGgIvw+hW4jfNpImBg9FdXOCyaLbEJTzUgtANkFWtW0450hhhIvbMENL5XZ6ZaKLONLT2dhGLLRNhp0Bf2zFD5a2Ia2GG3W8682LNkQA4nQmGlRgg39cvFVBGOPNTP9obnxgX0z/AnJ3eEkuvGFxFxEcxCE7zJzVWdG8/lhVGyETSmU/Qi1EOg/OVw+SkhxQpHL1qAVE2uBndHCokT5LgavIeagrK+xc+Jjhw6FrF9jfyCcv6CoOYIUGznUG/meZ9ZuOpmP/s7t/glyiSUW
- G7BXw1TU
- OT0e0HaGveCd3YokM6hVcYSCpVjMWCoNvMcMiW83g5nXlBRPqj/35Zlxy5IK/qI7mudG80VwgimdO2moT3TAaXlvckJ1dZSHwgoygcQDEkvGyf1UIWUpT+RVHf6SHQrgPaKeTRrGVfrrZF8DPtTxZIOgWWn3VlXfBwdNMPkuY+Byt8m7hcZPiTYY/55LY/tjeQD8XNRnX6DdOE5uRflagI4tKqx0ISEpvC3H+uQsBR56d2uJRnQKeDqD9WEjTzl6kKMqHsZnY+TY7tlE4oW1LPU+w6/31w5nje7AkrXg7vIB0b0dZbryPPrZZzNDW7JrxLdPkS96YTaqoDsKAFY2ka69tLyl8R+UFmmO0DIn/8fQ4nwIk00rlIaUMaHi1Db9Wp5klNUgOLZZVG2pEi03BS5bgQSHjN8QLTQjv3PQHFtGFT3/hSVK848SJ/USK10D2emCIMIu9n0Z+aHQpYUffusepyj1rLGtA6JZ88ft89xxV/WQ+qFWaYcqozw==
+X-Rspamd-Queue-Id: B9EEE180007
+X-HE-Tag-Orig: 1755804304-494471
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755804312-905189
+X-HE-Meta: U2FsdGVkX1+CGWwJgblq0nx8gYIOlb+ETlPnTWTafFRNMc4YDJXg+5HyMgAs8e811HRhUKuhozcM2eZWmq3evqVRf3D0kte/9jXViSw09pQtJNcrAXXs5vYjemhT1kOwTRfjEEjLH+1JepyuGY1L8wFJBueQ85VZde6PMlYemBkCKNdMMi4XiaCujgp1UWWjOpbBL0q4ovY/F2fQS7CBgy/7lETpKi8/LICOladwGSgdS7gv63EbwnDsvgiUY4zgpNHm9Y06uUFyyuaqbqf9k9+nRF6SnRsjJhS3kUaYi3R/ATiTlp2FKM4rK5U8wtBusr9plcfznGrIxwrRYvkSpj3YBgt3ZXPC9AeK7qg9j2Evve8mcE7kpeAnxiVAZpWpJK6PECGwfl4OZLFqn36IkyOF7O7j6GEQO/EwJNKethu+wZLBPnb76mtFaLFJ5AVfaRLsAV+qvudNxu1JKFwsCd30MUJIBui1cwNmN15Se5ytpEzFZKco2rneIBepbm56HIHi1A7ay0epqDDyj68iez1tF9Se45xQPhOuNkoX5EG/6bOKK6QkKCM5XBb7p2YInJM1iqzfw333s9kHdKZPQXZ7467Sb4PJ8jDZ9emjJwm77W+gDsajSfhhGhp9ft/A6kv9iOJCEBXC2B5UIgOv9JC9u4CFxJGONEM3Hr10ZPuho+TEncjBbAFKKTles6IeG1IEQsOCl0IFOjS7Cyhhkx3ghj20//AHu1HBsgSQFhX3y3f8MJSdeJpq0RFm2BcMqdVbLSfFZyl0J3B8v+7Wjqk+o2Bp6S2nemM9mGFvp7Sf2kPJtwT5MMEyXEnFBmy/+Q1lGGisYHuVR/8jJnBAUeGqYOtg2SSQEntctJFDdcQZRnn76+1DqhE8pBeiYN00U0uqu3vIFuk+0mS25tLit7t8WbxeY06t22rvtET8xEY5V7KRa8aT5JBh1vu7op2Q/Bc1MMzOMacT5i17i8p
+ 5DLDsYao
+ Vty+eDSn767a09w4exdPvmPQgBiD7Ck81MT45Uel7vEJ3qObmJuYEKofi9ugkFtHmCC2UgOm4OvOZ8LtYpk4SO1I7yx9IgAjNsQ5fYw3j3Ukj0L5UbmmbcSTx2ZBJazEyvWQw
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,33 +97,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 21, 2025 at 11:35:19AM -0700, Shakeel Butt wrote:
-> On Thu, Aug 14, 2025 at 10:11:56AM -0700, Yueyang Pan wrote:
-> > Right now in the oom_kill_process if the oom is because of the cgroup 
-> > limit, we won't get memory allocation infomation. In some cases, we 
-> > can have a large cgroup workload running which dominates the machine. 
-> > The reason using cgroup is to leave some resource for system. When this 
-> > cgroup is killed, we would also like to have some memory allocation 
-> > information for the whole server as well. This is reason behind this 
-> > mini change. Is it an acceptable thing to do? Will it be too much 
-> > information for people? I am happy with any suggestions!
-> 
-> For a single patch, it is better to have all the context in the patch
-> and there is no need for cover letter.
+On Thu, 21 Aug 2025 09:11:46 +0300
+Mike Rapoport <rppt@kernel.org> wrote:
 
-Thanks for your suggestion Shakeel! I will change this in the next version.
-
+> maple tree is initialized after ftrace, so the patch below should fix it:
 > 
-> What exact information you want on the memcg oom that will be helpful
-> for the users in general? You mentioned memory allocation information,
-> can you please elaborate a bit more.
-> 
+> diff --git a/init/main.c b/init/main.c
+> index 0ee0ee7b7c2c..5753e9539ae6 100644
+> --- a/init/main.c
+> +++ b/init/main.c
+> @@ -956,6 +956,7 @@ void start_kernel(void)
+>  	sort_main_extable();
+>  	trap_init();
+>  	mm_core_init();
+> +	maple_tree_init();
+>  	poking_init();
+>  	ftrace_init();
+>  
+> @@ -973,7 +974,6 @@ void start_kernel(void)
+>  		 "Interrupts were enabled *very* early, fixing it\n"))
+>  		local_irq_disable();
+>  	radix_tree_init();
+> -	maple_tree_init();
+>  
+>  	/*
+>  	 * Set up housekeeping before setting up workqueues to allow the unbound
+>  
 
-As in my reply to Suren, I was thinking the system-wide memory usage info 
-provided by show_free_pages and memory allocation profiling info can help 
-us debug cgoom by comparing them with historical data. What is your take on 
-this?
+Tested-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 
 Thanks,
-Pan
+
+-- Steve
 
