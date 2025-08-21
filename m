@@ -2,95 +2,243 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DEB13CA0EEB
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 12:03:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2CAC7CA0EEB
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 12:06:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82A148E004F; Thu, 21 Aug 2025 08:03:11 -0400 (EDT)
+	id BDB7E8E004B; Thu, 21 Aug 2025 08:06:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 801D58E004B; Thu, 21 Aug 2025 08:03:11 -0400 (EDT)
+	id BB2FC8E003D; Thu, 21 Aug 2025 08:06:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 717AA8E004F; Thu, 21 Aug 2025 08:03:11 -0400 (EDT)
+	id A7AC78E004B; Thu, 21 Aug 2025 08:06:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D58F8E004B
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 08:03:11 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 25ABC117824
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 12:03:11 +0000 (UTC)
-X-FDA: 83800628982.30.EAFCBE9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 95C3D40007
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 12:03:09 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LhEkKVFb;
-	spf=pass (imf04.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755777789; a=rsa-sha256;
-	cv=none;
-	b=PrRNyElUxkVOCc1vICaCzJ+EjHs7wp6ENl6WKbXLCtfXmPXkZNtSg7Y9HFD/JUWll8DvSv
-	843u3SixcTdQImjB6B+q48pEbNPlj0LaYKF01ztfEKl0HH9YZLeaQwQ2Q4NibqeRw60+Yk
-	Dm1ZhN8OHl+NozcjYNVeT370QmF460c=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LhEkKVFb;
-	spf=pass (imf04.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755777789;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 928038E003D
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 08:06:36 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1BFCF1A03A9
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 12:06:36 +0000 (UTC)
+X-FDA: 83800637592.27.7D9F557
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B0299180010
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 12:06:32 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=dTk3LNY6;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=nWeizl9p;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf16.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755777992;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7xJv4XuDxPCPqywob5UmUTJcF6VVKgAMmJCawh67JV4=;
-	b=FZe87cfRo905E0mtWmRAluj16XxAVTmAHpNPl7jsSNmYPktHeb68Sw0Scfp7Y/sXPdLVCb
-	HlcayOFzeFUiUNw4410SLrFofmnDMoO6R7B6r/57ytH+uGEFfjEO1vFFhwygpkCSKSMEKN
-	thnpRAiGByaFF2qcoF5I0WXiX+ZX43s=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E940D60200;
-	Thu, 21 Aug 2025 12:03:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ACEFC4CEED;
-	Thu, 21 Aug 2025 12:03:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755777788;
-	bh=qdF3Pto+X4Hhldow3UAlSfqaqqGJrpaeFr7AsWRmtck=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=LhEkKVFbvIvIwX+gwWgsaV1Lf9L6vkIJ2AT5YymmlIIia5qYp/F3waMYz6zVEvcl/
-	 aRc1ij0Zom5pY4fn0YU5pks9y/5EAutRuz4JeEElDE7Qn6dTHms27EQ9s7bql6SC7z
-	 7fmTWlmio2CnQeMUZuJIKffZVDpNRBEGQmyAKA4+eWb8unyjB8su3P3pQv9CdQ4B9I
-	 JE5CR9Xc3zem7upR5akDhSFGNTdqGEQW5xiawSSTVv7Fv+taulYKyzvEO7VVuZUXIH
-	 0+2KHpaZxVabB3WIBWbhP6ICw1779/PAHKjCfgWAWW2i9iYGXd1MYk/F4b8cC92FiR
-	 i1eG7mcn2JvkQ==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 21 Aug 2025 14:03:03 +0200
-Message-Id: <DC83A2M3G8EH.12FRM3C05ABCR@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- "Uladzislau Rezki" <urezki@gmail.com>, "Alice Ryhl" <aliceryhl@google.com>,
- "Vlastimil Babka" <vbabka@suse.cz>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, "Bjorn
- Roy Baron" <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor Gross"
- <tmgross@umich.edu>, "Johannes Weiner" <hannes@cmpxchg.org>, "Yosry Ahmed"
- <yosry.ahmed@linux.dev>, "Nhat Pham" <nphamcs@gmail.com>,
- <linux-mm@kvack.org>
-To: "Vitaly Wool" <vitaly.wool@konsulko.se>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2] rust: zpool: add abstraction for zpool drivers
-References: <20250821111718.512936-1-vitaly.wool@konsulko.se>
-In-Reply-To: <20250821111718.512936-1-vitaly.wool@konsulko.se>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 95C3D40007
-X-Stat-Signature: wngqyz7uw8kh4nkn8idtmho6wy7skxhx
+	bh=sNAQMR3uGnWbNV/nsmK2QPybnBJbbMQxR0ynQy/0t9s=;
+	b=wtDQjtG4rIA9xxLa6Nzvmy2W2SC3gvSqoqIyNfEzLrgZmdZStFKjG7gxqAPof+sJs8756t
+	gNIdbh+U9vLWoWOPpJqtDcE46w2pBInDQ55fk4nUU3VG0lobYJVZ7LHZdyla7TlcOUOhXL
+	0959Gt1UlYHVLTjXm2QNfoITMzIgV/o=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=dTk3LNY6;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=nWeizl9p;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf16.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755777992; a=rsa-sha256;
+	cv=pass;
+	b=hW5RSHmOP2WzLGPiBkoNwAQhO+z4fsNrfUp7ESbLct9xZeGNTk99V4//K2AMy526p8uJ+V
+	FBpvwBImn1Y3ewjjMOBOltsvU/MtJhteq8BAWAaSrVS0vjrc2+MSISMzevSU5vKS926zwT
+	QJtkSbQZuQ1aedY8x/+WVg0qGuEXkpc=
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57LBfXw6018513;
+	Thu, 21 Aug 2025 12:05:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=sNAQMR3uGnWbNV/nsm
+	K2QPybnBJbbMQxR0ynQy/0t9s=; b=dTk3LNY6Aq9tDoFrUALThGeIrhbqhZnOYY
+	PXwsD8eb15CSHuyZ6NT2TGiGyNUunWtIp74JwpVsKhxT64h68OhzwR/Ar0AVNiuE
+	AerS1hwpOFVQonaOUN2Pz3JuABoF9BrJVE+aSyTCtfwl9MPYnKi0xS904hnNY+Iy
+	JP7ho5yB/2X0i2BdUvsKPU6Z732nMEmf0EaBWgxw8h+W/krqkK5Qei2AVE2BlqS0
+	0cD2xX97tilyaszMFBh7bdJXeuk0EJWf24jp8DAGadkJMyPuawNZeUkehezqk5r6
+	yOsn91RfglqIBDHfmWXefn7lD6dUzFVIUuOdDNe/i9JBT2C7yzOQ==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48n0tr39k7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 21 Aug 2025 12:05:49 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57LB0IuT030239;
+	Thu, 21 Aug 2025 12:05:48 GMT
+Received: from nam02-dm3-obe.outbound.protection.outlook.com (mail-dm3nam02on2077.outbound.protection.outlook.com [40.107.95.77])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 48my3v9nx3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 21 Aug 2025 12:05:48 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vvoVxhQcem6wyma2/6sxfLFyDapKkdmjY3Br8Pld+SIWufgcVXqqyBQ2CyvKjJnCxLVgRZQROWEkMm9pkcN33wwK5tlRxuQkRArBQBATJ6PldP6UcRNMi0MWYU07P7Z/09D5VRiTpZYcPdSlcGkvJQMh5wR/W+7/KYlL0OHphSHovj6hPND2+GK5CaHjRnXLpYPpRKgGki1iYvDBidm3nHwq6wxZzkWmkBiEQBjnEQcfSVHySROuCLIcU/dqBftHFLjvewugJsqWYzXq1RqDBilWr8vKS1BB79eP9GBqjsfLg87+ETPZTx8eJpOQzc1DruQa793eycdeqBfrEJaJPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sNAQMR3uGnWbNV/nsmK2QPybnBJbbMQxR0ynQy/0t9s=;
+ b=GMQrQg8hlLwrcrqZ8q3LLSD5DvAKuoYcewASQASJQ7ErQij1fTSA9/qs/a8cp/6IUmizbNdRYBOmdUAaqxvz2ZuasgYXoV0b7zDlnAH9hFNctfuSfFjxnb94P/wZTbZ3oWEyYSNErBbuM3Rlbmmskq3l1cKQ7N+s67fpUEP28fKeDkkGbEqslD66KEA6BvnP+EpHjFpydnnkEyoyXx4GKWuNOrLn9y0lSp99SYfiDQuf6TebqlSws0BRuzpWFAFU0RcaRCJtSC7IfSCVhP9eFl/TVr0nq4nJqFnOe/MHFMjjrZFM6aofufFM+q2bSszO5u3/NZX8xdnje0SljyCP+w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sNAQMR3uGnWbNV/nsmK2QPybnBJbbMQxR0ynQy/0t9s=;
+ b=nWeizl9pAfAMFScJvyBA+wCka5AnapOUgb+DH+YM4XaBLPCtbAoIV3NStZ6xIFaWCZv9KyaV9egAht99lDInU/UPemZqp3yYE8wVP/5+4lPjG1SM6KKDyoD3PxbQ0YBzwIxCF5lBLJrejHwjYkL/yLj+d3YdQxHBFSsI4brcwIw=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by CO1PR10MB4562.namprd10.prod.outlook.com (2603:10b6:303:93::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.14; Thu, 21 Aug
+ 2025 12:05:44 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9031.024; Thu, 21 Aug 2025
+ 12:05:44 +0000
+Date: Thu, 21 Aug 2025 13:05:42 +0100
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Nico Pache <npache@redhat.com>
+Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        david@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+        Liam.Howlett@oracle.com, ryan.roberts@arm.com, dev.jain@arm.com,
+        corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org,
+        mathieu.desnoyers@efficios.com, akpm@linux-foundation.org,
+        baohua@kernel.org, willy@infradead.org, peterx@redhat.com,
+        wangkefeng.wang@huawei.com, usamaarif642@gmail.com,
+        sunnanyong@huawei.com, vishal.moola@gmail.com,
+        thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com,
+        kirill.shutemov@linux.intel.com, aarcange@redhat.com,
+        raquini@redhat.com, anshuman.khandual@arm.com, catalin.marinas@arm.com,
+        tiwai@suse.de, will@kernel.org, dave.hansen@linux.intel.com,
+        jack@suse.cz, cl@gentwo.org, jglisse@google.com, surenb@google.com,
+        zokeefe@google.com, hannes@cmpxchg.org, rientjes@google.com,
+        mhocko@suse.com, rdunlap@infradead.org, hughd@google.com
+Subject: Re: [PATCH v10 07/13] khugepaged: skip collapsing mTHP to smaller
+ orders
+Message-ID: <b6ebe641-0a0b-40b2-a34b-07393f883985@lucifer.local>
+References: <20250819134205.622806-1-npache@redhat.com>
+ <20250819134205.622806-8-npache@redhat.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250819134205.622806-8-npache@redhat.com>
+X-ClientProxiedBy: MM0P280CA0014.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:190:a::23) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CO1PR10MB4562:EE_
+X-MS-Office365-Filtering-Correlation-Id: bb75c59e-f697-4ba1-3e19-08dde0ab0eb1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?hkkRrouedwyK5OkYVvLYeOLs5y73s/28Qw62pgw9x/tYnAZzLF60TyEzoXkb?=
+ =?us-ascii?Q?5K2dJwU+nIgYZKPmzqs4daKoFBLGGT/g8Q0vh3GvSSazKO2VEmppw/42ALuL?=
+ =?us-ascii?Q?eK/yytMQ3T92RyM4q38Z+ksOnMSmTkLOiwpu/zUCjQd21zFOmQ/L2sJ6pDmn?=
+ =?us-ascii?Q?SBTBaTZjaEW7Y2fHLEv98IjjqLOFvgySfp/QlfnwH9A5yNiFjncyONw9lWgW?=
+ =?us-ascii?Q?dYD5+VWg4QKFIQQc8tz/O9VdHDK+5Kj0zFMEDPtkp5z2o/2AZF9oophOConm?=
+ =?us-ascii?Q?7akT74R02iv4OIqdGiQygsjOQ+dBVKDdErfhzGjHlWVCzsraTPeZ983Su4R9?=
+ =?us-ascii?Q?/5275auoYV7GfgWaMi1Mvl7QP1B3bvi5vCLWI+D+M5VvmxMiivc0E2xJ6qKP?=
+ =?us-ascii?Q?CfbfOn6/S3ny3jTU7e5nQY6/1lmBY+hcWSoFF9VZ8xBmlrAhSKUDV+dh7RFC?=
+ =?us-ascii?Q?68pLpV1gCfL6R3jv0YJqxzGRXcKeCRDKBNHtMH2jMc71QWqQyqyRo/yfYJjY?=
+ =?us-ascii?Q?i4kqtraM30tBaU2axDjxDQ3Ik91P2X25EoK0KMhy2Mpde/VyOr3ZkAx5wEEy?=
+ =?us-ascii?Q?paF6xf9YnL+P16xgVdtNsPwKoO4euOhD2gYDp35H12AlW0/+Gp6Ny2KI60N/?=
+ =?us-ascii?Q?YrEv5/hpNcJAnKkm0GrlhKu8cojfDzOQ5KlabJh65hSIJpFc9jreh4gKFL5V?=
+ =?us-ascii?Q?+8tJVBaOknk2uNN7k5WueC2tzOeqbqmcp9jTp1hYAnX35jdSIBT/vaLieUHP?=
+ =?us-ascii?Q?guUYpNrb9AnNx1IOzuGELEkCLR4hACCBpioJDSzT8dAl2RtzIdjkNO01lO1A?=
+ =?us-ascii?Q?dG2B2gijyff4fufeI2AKGfaFGypr+5tOOUNw31M0IvlCl6hyKH99cvYxFB8q?=
+ =?us-ascii?Q?5+XIxfDSvAsaz9tRnLUMIK8wvNV4TTWJqCo624nRkQmsK5/lj9bdHIM9Ccng?=
+ =?us-ascii?Q?UJ2J7JL/Pu+AvvWtcDC+v8Hx/q2nwhRBr9la2JJY6rTZnNyLS/iVFpqHQPst?=
+ =?us-ascii?Q?MXaaeGEvncK16xof7mN5q2Dt05gS3TrkgIKf8FgPqHe+47nEeInCYIMbKaSC?=
+ =?us-ascii?Q?yo+Tzz39xxE2Vhpo4fEqhB6dx11owdtJu5IJoG0Ec5q/966VFI1jT2LxlYrW?=
+ =?us-ascii?Q?k0MT0qMFUssZTaQvdDMF7AHSW5n5qJrhWPo5/B+m8BoyITTcPzTBCtiqjiot?=
+ =?us-ascii?Q?SIZiA0eJoaJjJAEcH4zkVARebtuKYMDdU8wIP8E712+Dmj98ikk1lFHIHYoj?=
+ =?us-ascii?Q?exOK6KpYJ5uJ8j5o2HiWNPT7s8twiTd2lNsHNRVXrH7kNu8hAg8+fQCabgrd?=
+ =?us-ascii?Q?pLOPRHVCgJlTmvRdmAXFfkqqnSrU8V0vzL4utgnOvV+Z1Fmi3UsqaLw5BtHo?=
+ =?us-ascii?Q?moYJYo7C4kx5aPnrxzeuZsqWGLDD2tNYpQXMKHD1xEndlp+pbWTxXUvNgBIh?=
+ =?us-ascii?Q?PoBccMbocoY=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?dxxOVSvSC2xQoCgHhoQppzFM0JbEfEmVs95VXjCln4LlPuY2IgA6wnW6q85a?=
+ =?us-ascii?Q?PkSRFlqaFzx9HDwvpmjzUjNgm1AXINCGYhz0U2oFDLGsJgwTPjAMyFYn9PH4?=
+ =?us-ascii?Q?Hx6SeSDVpbazrit2qnRzFAA+E908BF6xS/4cLU8VfAvyehkF3magD/f2Kvlz?=
+ =?us-ascii?Q?D6+JPuGRlH+NqKnJRBHytPuoE9mzyXyLMu5vRO6V5C0Kwuv7KXcEaM31Ujj3?=
+ =?us-ascii?Q?n9P22tt8OYjQp0yCmUh7f+cb/6iWwit7g/uwCsHiqZxvzzEYiqbxQ9sW0tIP?=
+ =?us-ascii?Q?4ghueAEjTVczuTxylVLR1MmlRXXSBKLt0Qc8asDZyLAwmCrz4BsIgP/LvwD9?=
+ =?us-ascii?Q?pfarknDdUwa9vFqB7IAHobhVAkFu8Cgqy8NlENgtfdK69NBrTJu8SZVjJkOi?=
+ =?us-ascii?Q?i7CgwXmoYro12sB+Sk44rsubWl8hrae33EGg8ETgoV0/LTUqLXr7bQSGrMAf?=
+ =?us-ascii?Q?Ru8cCNTBMmh2lMYMNRqO0YWsQ5Wi1z5elZW07YymiDuyKRp96Xz4BKgC9F3U?=
+ =?us-ascii?Q?3uo8p/0KQLt1RlzCxP/O5p0893M4S4FpXrmPbPn9C6QPfpL18EC5rn0Ko2Zk?=
+ =?us-ascii?Q?0r0sol13R7+CPdTWUMQ1f3OgKY0GShJUzpsH9dCq6Q0fkG9vQq506Ta9/+wa?=
+ =?us-ascii?Q?0UjJUzGuA67k4nK3LbmaWPX4g5+SxqfawVmxCIOMKRRK4mYD9FWVErioSU1J?=
+ =?us-ascii?Q?Rc6VLYDVHYbAiIofkgsxo7tz5Q+zSwqhQNLFJfY2Ejg6YR7l5gOrT5YimfXM?=
+ =?us-ascii?Q?zAle5LHIa4UplxhfceCi3tVeQBCimUf6VNGAfBI8MNejxAqz006PStGxHcES?=
+ =?us-ascii?Q?YWfsML1gxv56nXwpV9lAPbm3NZVhJZ+8ISbtPrBLtOe6KQ7sv1Uk6YPgbGoe?=
+ =?us-ascii?Q?IWp9xRK6r7Tv4JKVNhjBYypOcnB3VBy6cLa4XVEMNJ/kSAtSPnzjPi/AzBSO?=
+ =?us-ascii?Q?W6kw0DMEDDc38bui33a7Gs8wJUrY7TpjrLV3ZxbLe4wQYrJsKMk+h+a2owm1?=
+ =?us-ascii?Q?sk4RFdb09Rl05V/qYueELqiPya2WJEBEkbFKFtLOtKPrdjvbPkUnOEQPqE60?=
+ =?us-ascii?Q?zZ8AVpuu+AuM644Z9RxbSzXp3RnXfhPFGQXC5A3hiqRRv3cXcMsWTRarwQ/i?=
+ =?us-ascii?Q?cx8gnHEiSHWBvRFvf+PSq4QNaS0QnwMeiuxaktjEtllg4iny2cG0vNhSYcpX?=
+ =?us-ascii?Q?7SmSnJTr+LJBO2Asp17byw24E23a7MoRFX/YDnn8jbu7PGeKAyG2IcAH5GAZ?=
+ =?us-ascii?Q?yo/vVqZ9CY7haKXODl/b4ImSTsDGZZLfh3oqhBz4UD/iIOWiA6c0SXQ07Oyn?=
+ =?us-ascii?Q?toeZ5rSHgZ3vQwbkMfEJESZ0Ft9E0LjkWKRCj5u0iREbL3E1z74m6sSCY4nm?=
+ =?us-ascii?Q?IMcyhd6VGet2DZ42miFWhD9RxYgcJM5NPEYjUwvUhVZ5F1GLX2wbAvsO2Ozl?=
+ =?us-ascii?Q?q5myU63iGkMFaapTkwhmCV6nxneCv5be3la/9pOTNnEdRU/5s4L3jbE/DDD5?=
+ =?us-ascii?Q?eonl+vxdP7MUl/yXEZl4Qw0/r2wZI+eH3L3d9NtBVh4gGiX9LmdUjH+VhlZd?=
+ =?us-ascii?Q?f2M2V1fIXVnG1UJGAJrpp0AiY8zyBrcS+qPRECOvrenSPTIEgHVR66aXd1rR?=
+ =?us-ascii?Q?ZQ=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	6fIVtWorZMYOYxUlQPPk5Sx1d789X+c9+HrDjWTQZfjqFxg2VvKflYXzoHtb7Ov3zv12TPTUnM/pKlVnoXpCo+Zf2xRz9PlGQ/XylW0ghpxRIi7NiECIvJXOceZK3sea6Hs5sEOsBdZiEwdLVZtccmULXI7ucGPEl9NvKVPKu+PvW0mzvGRTsafixFv0Sv4Lg4Q8pIL6gieVwFGgilOSmFinn88zSAeCUEKGxgUr7ki0MTxgFatJC0wScwtFlowxnKe7jm/16GGdoeVE4DMjxOMFWJb/GPWEXyKmaP4RmZy/HoKv+um72OxzMLiHr103JRlDvj0lclzMXA3m8Cn8ffUFWtdqGis/kZHapVVUNCDE+U6Ujb30aIvqu8dY6Waekqj4skOCbCwxHjfbpJOslj/HlovO4StKU3RJn4QXdTQxrHopF5BVk9tHQxcd1omhOm9INGCnI/OyEGtcWXaludvzcwW4JI1Vp6XB3c/yIC51WbRmZgBAr/yRnCNB/ZP+c7O11vZkWBXeMG68QqRYXp012+ymW9ii4zJsQ2hLzi9/kaMjJp2vYL+gimZ1NsrNjildvCVNvFcT95WRMMGNjIsLZgp1S9w6qXIZbghIKDE=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bb75c59e-f697-4ba1-3e19-08dde0ab0eb1
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2025 12:05:44.7671
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 43PY5iIlDrFfCOCRrX7pzDYohA3J65BdHrN5+6c8AN4v3NB3M6VzdlwtSGNFNgEc/pRq6olcyeubY/ATpbRyHd5G8pKasv9tdbN77+jHm/I=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR10MB4562
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-21_03,2025-08-20_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0 phishscore=0
+ mlxscore=0 adultscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
+ definitions=main-2508210096
+X-Proofpoint-GUID: 6x67j_PuY8uo00kKK-MLJ-nRngqouZWo
+X-Authority-Analysis: v=2.4 cv=FY1uBJ+6 c=1 sm=1 tr=0 ts=68a70b9d b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=VwQbUJbxAAAA:8 a=7CQSdrXTAAAA:8
+ a=20KFwNOVAAAA:8 a=SRrdq9N9AAAA:8 a=yPCof4ZbAAAA:8 a=Uente50hndm2D6paeE8A:9
+ a=CjuIK1q_8ugA:10 a=a-qgeE7W1pNrGK8U0ZQC:22 cc=ntf awl=host:13600
+X-Proofpoint-ORIG-GUID: 6x67j_PuY8uo00kKK-MLJ-nRngqouZWo
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE5MDE5NyBTYWx0ZWRfX1yq1B9n/ofn3
+ PJQNedrkrDp0eryy8ZAwQT0o1vqJdJ95WJWf2c68ak/qlGCPIvhP9+Mda8IQ3P/f5uw6dJ5Fz67
+ c90M8m8AelKT6Fx3yqVnhYxtgNLK88Oak7xZPNxvQpC3WxXyR8Gt0e0nfpl4Mb9y3J2xpw7wsb9
+ 9Ynsb51x7IlcBH/oaLw0Rm5G8LxMsp2hUnzDtbBmMYmUMAJW7NQbRh2zkvPlUqHj7d7kt34dHgo
+ o1hpMhSKYue5L4vysPUtfK/43Kbfg0mpKgGwRcmYzjCDF7JFWwoiUFgssxDHnZd48YbPWXDQW56
+ nyyjGxVByY50qeJKgyt6aI3/Owcqd5PSXp6FNj9aGMZ1uRcJHwC+MpcdwoPxhhmj12bX/3KaBwQ
+ Yg+R6rSIPgKox4+lbhAzSnpgghDUu9GTFjI2Qz7prykrUVOf1FM=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B0299180010
+X-Stat-Signature: qmcrwtzsj54x8dgo8cyeu7jozetp4jxz
 X-Rspam-User: 
-X-HE-Tag: 1755777789-127754
-X-HE-Meta: U2FsdGVkX1+6JEPZm9WImh57nBh6K2j+h49eubnGv97sfg6PJ4hKs7fnhpMwz/gZ8z9Kcw3tsbbWpF9Nyx0y1YKkIniaQTJLMlh4PAWpRtUU02g36SE6d6DnxdjPR1pKWwO/h4h4ZudATC5kL0kBubryu882TOaR4PFN4uoR5RxSjQqZDRt3od34A4raGazPJhnjt8W8CV6ju3RaOjtYMfiq6XErpvShATUZuCDS9fjjgP7yYkQe/tqyC0cmb7rQjlR6cacTlKVAJYaHvat12w6PT4P0+ie5KDa70wQrtOmL+x2dZzZvSWHv7P/hzca0XytG/axTFTSnixChUo15vvdlUGsZ5d9xDMmgbUUkgb1gOo2lwpsIp6Tj3xLVe34Ad++zTon6w+PJ/9DgCpX66DQ+v5FuokpMrd9uLsFKslgdd0fUV9CzcmJO+hr/EvlpDpqtudzIuq+vRgDhcLhBg4aiNmGuQPp4OqG7iE7l8X4RMxBtbizTCsJhrMdrRCR5qBwc71IE0m1yxqn1qx2oP39/lu6ZgAKQnu6Q6DvweIpTosL0oUdOqEJZefj3bJdwariZU6kP1djPvuuQ4Dk9cg6TgDtnSFfAUDKzRxjqTw3r0yqNtt9Y7+Rj1obTrd5sCcjiK5UeRuMflV7CBWViHR68+smfX/agxdlUQGeDsG3IHvx17IY3TFbRnzfnjqqdpJcnx7IL2sCs2KBMWlwGaY5F+7LTDmHMo59UZNkAhdc1iegDNWG72W/1KJA1SigDeFPoDttNskMk1S+cKxfxMC6QTBiGzsILgsgt2qpGBIKdRkU0uNkHBvw0daHVYUtRa3crEUWuj4ARy0jpbCGZXiRrggEB3IVf7+lizXGlSJIVElABkVqMG9VJWlrnQ4dziCZW+Yp4BAoCYvbVi8Lna0OY720YHYQv3HBcegLnkSkySURDAYirmGosHmp5b6qvWct9tNk26HXzhBWTskU
- PmWYgdNA
- LnpMByhCgZNYrVDllX+wlNbT7ztFtSSdstmM81sIhNszmOAVks6OlcFsVnjInBn3hfZRky1LTOT6UKJJoatlazO6VG1JemRP0E/tVpDaGao95hVBMaFkNtJG1Lb2d6tgEMdopgAxr4HVUNLEPosFjir4LTZAAZ7vTUQGrpK4RctrvDDZnr1t8vH5L39eLEX+y5vGVywORT30YSC/N++w2iRQNyzq9HnPXfy/SRXZPWFnge4boNOVImTv77u2PgNQ9L0fXCeirOeknDn4GmiKSqr4UdRr7riKPmaE8uTWXEhkde6ZV9yN3oNujOS+dGjhI92iFifn98AFXyYPRUB0OOy4RByjIP9wIQ/TeaRcS16VfwTHzQ4gs6rp8GQ==
+X-HE-Tag: 1755777992-494684
+X-HE-Meta: U2FsdGVkX1/qf1wFPFfNIX8HYvGcSOtLFrhPyQmo4GUkCUI7xcH+PaRhm3yN0sM6EwOIgV4XvJLKiW2sOECIBIVSMO4sTDQG0cdYHxKdQFrmNgM2wM1qHkfPsbQaR5CBMkLfL4uyxGvdi8FmDTSgL1EVw8DdGZfGmxM1IUGZZuYfXRrBrCPphYD1J0b7gqjSIztP234TGPeySFZfwYsMNKatQhs6Cq5tGodLhcnamBI1IVQhdiX+NtGx9+LsMJkpeiKVn/CPD8jSCKIAjfcMy+sHQxD23B6+ruSjf3SZvzD8hBqN6JVtgdOfyYZD9CtVpDl0QCjoYzr+QZ0sYnkxYTCstfr9dHEgUnjOhVh0zPQO4U8BzPt8N8pA9/yhwwt3AP/TT4LHHrQwqyYQ+nCqcLZBDmBIZ+RFFXnEuieVtDIADcxGS/cpCkXEvWxy6mSnAbxrlI69DcPplLitGozDhnaMHh1Ze2isM0YqC56oOLp9lkqxZvdoG/RWOB0OR1QNTjgV58kOAGoEZlZSGO1bL78G7vBYAUusOLMfosAlSY9lhebWQZwukKW2Y8Jk4mUtW6Dvbe72ntsp4guwH4PLF0gkjMHwUCHqhPfjQbFlNXouyW5UktMOttOEfNwdGijEOZXqZ/6xqbgSC5SLwtFp7YJ60PmRVpNUuXhTI/WvmfG6NIYoeuFU6EEPf5JZiMZEi5JCrutFSu+FLWrLvupsiLnHrESnkF2KhSklqTsIhHjw+JAv83n21dXYB+lCmdAYkz7y9jaST4Y4ZIAfN53T+xyidG3oyczH93TLbYhxDkEjyVBNEHQe1GOMRsRQswr4D7y/81m/rdgg6LbQZmgxC7oHewiox3TAxM0N8bw8z1jqvWGyvahCm1LiH3V/DQFVyQUXDOXSt3YvhjZK9kyWyXvDL07fjgmz6e6/DAMIeeECm4SxBZoU1fkRxBeu/pguC781PAxDi4VNF8o3gyP
+ M82XVkV/
+ FdqZre3CEmBCt1RL+S5dMMW/iYvoIrRFOaoqgSuI45Li0XDTLo5ZMSe0ipKiR0QmdDin79BHNe4iBGQwjp15Iv/qfbqDmpU7l0T9LrupKA8UkPvJcWipu6q9RxYOSEHGar7XBkLunthtp85SmUupsaZcVrx/XcDlcO61dKsJB2CK84IzhQRgIr6PQdknJ3IrzqMtGnOuMXdscMKaTfQl3yTKuLArhIeWhWECOrO51iS10/KRDtqUe/nv67bmCMA1tSRrtRcoa5QkN1XuNo1Hu7POJ4RAY6bKciQtvnChE5zUpV6NH2Lv9erkNHligssFI7hwfcWlZ9kYANOyX59m8qUUv4U3QB7u1cgSXPU51lGjkcyG1TMfytExy2koJdGmtGvHJFN2D5QraegWrEBZ/E+bNeTpjd47V3T/xevikT8r3068ON1jrpLnvBu/LzDOnLs6GU4BqgYg7wn16PJEjWpr6FnTOUbZUIkvrCZYQ8SGwL1zt9igFtj4o0HYhJVBARvC7w0l2x2qIYtSWi43R41NDSDxKjo+ZUPqrfPGlCLRx8KSpJp0SGPu99y2ByCE/zmavRFMNKaMB8QplIrInNsLj8qZFf94bDrPcAHn6EL85XtKUQuWuv4KfGZO5fY5JjY0SAvxKMB2VqqcSKER1ITghNprHN8c8TfKzv2bzHaUlVisVz2q3z6EYBxLmREz9l6jhMIKySzSiv+I26Isj4kD5Geh+4o36492kfLTRE5tI1BoRBQu7FxAkBCt6bxqbI8LgYbaTRvkHHMWEicXEsbD1iwv2vRtuSIPdy3qT0RBCY7B6hTJcd1VqG+RS4uv5WRdioMFRo5IRrmYmGhuBGI8IZ/KWh2fG2+P7NqoTcsOaGbivbNzdUUjEJfwL94IgCzkK4Omg4G1XP4phz2+NeZT3NQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,214 +247,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Aug 21, 2025 at 1:17 PM CEST, Vitaly Wool wrote:
-> Zpool is a common frontend for memory storage pool implementations.
-> These pools are typically used to store compressed memory objects,
-> e. g. for Zswap, the lightweight compressed cache for swap pages.
+On Tue, Aug 19, 2025 at 07:41:59AM -0600, Nico Pache wrote:
+> khugepaged may try to collapse a mTHP to a smaller mTHP, resulting in
+> some pages being unmapped. Skip these cases until we have a way to check
+> if its ok to collapse to a smaller mTHP size (like in the case of a
+> partially mapped folio).
 >
-> This patch provides the interface to use Zpool in Rust kernel code,
-> thus enabling Rust implementations of Zpool allocators for Zswap.
+> This patch is inspired by Dev Jain's work on khugepaged mTHP support [1].
 >
-> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+> [1] https://lore.kernel.org/lkml/20241216165105.56185-11-dev.jain@arm.com/
+>
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Co-developed-by: Dev Jain <dev.jain@arm.com>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> Signed-off-by: Nico Pache <npache@redhat.com>
 
-If this is co-developed by Alice it also needs her SoB. It's either both or=
- none
-of them in this case. :)
+Other than comment below, LGTM so:
 
-> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
-> +pub trait ZpoolDriver {
-> +    /// Opaque Rust representation of `struct zpool`.
-> +    type Pool: ForeignOwnable;
-> +    /// Create a pool.
-> +    fn create(name: &'static CStr, gfp: Flags) -> Result<Self::Pool>;
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+
+> ---
+>  mm/khugepaged.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+>
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 1ad7e00d3fd6..6a4cf7e4a7cc 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -611,6 +611,15 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
+>  		folio = page_folio(page);
+>  		VM_BUG_ON_FOLIO(!folio_test_anon(folio), folio);
+>
+> +		/*
+> +		 * TODO: In some cases of partially-mapped folios, we'd actually
+> +		 * want to collapse.
+> +		 */
+
+Not a fan of adding todo's in code, they have a habit of being left forever. I'd
+maybe put a more written  out comment something similar to the commit message.
+
+> +		if (order != HPAGE_PMD_ORDER && folio_order(folio) >= order) {
+> +			result = SCAN_PTE_MAPPED_HUGEPAGE;
+> +			goto out;
+> +		}
 > +
-> +    /// Destroy the pool.
-> +    fn destroy(pool: Self::Pool);
-> +
-> +    /// Allocate an object of size `size` using GFP flags `gfp` from the=
- pool `pool`, wuth the
-
-typo: "with"
-
-> +    /// preferred NUMA node `nid`. If the allocation is successful, an o=
-paque handle is returned.
-> +    fn malloc(
-> +        pool: <Self::Pool as ForeignOwnable>::BorrowedMut<'_>,
-> +        size: usize,
-> +        gfp: Flags,
-> +        nid: NumaNode,
-> +    ) -> Result<usize>;
-
-I still think we need a proper type representation of a zpool handle that
-guarantees validity and manages its lifetime.
-
-For instance, what prevents a caller from calling write() with a random han=
-dle?
-
-Looking at zsmalloc(), if I call write() with a random number, I will most
-likely oops the kernel. This is not acceptable for safe APIs.
-
-Alternatively, all those trait functions have to be unsafe, which would be =
-very
-unfortunate.
-
-> +    /// Free a previously allocated from the `pool` object, represented =
-by `handle`.
-> +    fn free(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>, handle: =
-usize);
-
-What happens if I forget to call free()?
-
-> +    /// Make all the necessary preparations for the caller to be able to=
- read from the object
-> +    /// represented by `handle` and return a valid pointer to the `handl=
-e` memory to be read.
-> +    fn read_begin(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>, ha=
-ndle: usize)
-> +        -> NonNull<u8>;
-
-Same for this, making it a NonNull<u8> is better than a *mut c_void, but it=
-'s
-still a raw pointer. Nothing prevents users from using this raw pointer aft=
-er
-read_end() has been called.
-
-This needs a type representation that only lives until read_end().
-
-In general, I think this design doesn't really work out well. I think the d=
-esign
-should be something along the lines of:
-
-  (1) We should only provide alloc() on the Zpool itself and which returns =
-a
-      Zmem instance. A Zmem instance must not outlive the Zpool it was allo=
-cated
-      with.
-
-  (2) Zmem should call free() when it is dropped. It should provide read_be=
-gin()
-      and write() methods.
-
-  (3) Zmem::read_begin() should return a Zslice which must not outlive Zmem=
- and
-      calls read_end() when dropped.
-
-> +
-> +    /// Finish reading from a previously allocated `handle`. `handle_mem=
-` must be the pointer
-> +    /// previously returned by `read_begin`.
-> +    fn read_end(
-> +        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
-> +        handle: usize,
-> +        handle_mem: NonNull<u8>,
-> +    );
-> +
-> +    /// Write to the object represented by a previously allocated `handl=
-e`. `handle_mem` points
-> +    /// to the memory to copy data from, and `mem_len` defines the lengt=
-h of the data block to
-> +    /// be copied.
-> +    fn write(
-> +        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
-> +        handle: usize,
-> +        handle_mem: NonNull<u8>,
-> +        mem_len: usize,
-> +    );
-> +
-> +    /// Get the number of pages used by the `pool`.
-> +    fn total_pages(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>) -=
-> u64;
-> +}
-> +
-> +/// An "adapter" for the registration of zpool drivers.
-> +pub struct Adapter<T: ZpoolDriver>(T);
-> +
-> +impl<T: ZpoolDriver> Adapter<T> {
-> +    extern "C" fn create_(name: *const c_uchar, gfp: u32) -> *mut c_void=
- {
-> +        // SAFETY: the memory pointed to by name is guaranteed by zpool =
-to be a valid string
-> +        let pool =3D unsafe { T::create(CStr::from_char_ptr(name), Flags=
-::new(gfp)) };
-> +        match pool {
-> +            Err(_) =3D> null_mut(),
-> +            Ok(p) =3D> T::Pool::into_foreign(p),
-> +        }
-> +    }
-> +    extern "C" fn destroy_(pool: *mut c_void) {
-> +        // SAFETY: The pointer originates from an `into_foreign` call.
-> +        T::destroy(unsafe { T::Pool::from_foreign(pool) })
-> +    }
-> +    extern "C" fn malloc_(
-> +        pool: *mut c_void,
-> +        size: usize,
-> +        gfp: u32,
-> +        handle: *mut usize,
-> +        nid: c_int,
-> +    ) -> c_int {
-> +        // SAFETY: The pointer originates from an `into_foreign` call. I=
-f `pool` is passed to
-> +        // `from_foreign`, then that happens in `_destroy` which will no=
-t be called during this
-> +        // method.
-> +        let pool =3D unsafe { T::Pool::borrow_mut(pool) };
-> +        let real_nid =3D match nid {
-> +            bindings::NUMA_NO_NODE =3D> Ok(NumaNode::NO_NODE),
-> +            _ =3D> NumaNode::new(nid),
-> +        };
-> +        if real_nid.is_err() {
-> +            return -(bindings::EINVAL as i32);
-> +        }
-> +
-> +        let result =3D T::malloc(pool, size, Flags::new(gfp), real_nid.u=
-nwrap());
-
-Please don't use unwrap() it may panic() the whole kernel. It is equivalent=
- to
-
-	if (ret)
-		panic();
-	else
-		do_something();
-
-in C.
-
-Also, please use from_result() instead.
-
-> +        match result {
-> +            Err(_) =3D> -(bindings::ENOMEM as i32),
-> +            Ok(h) =3D> {
-> +                // SAFETY: handle is guaranteed to be a valid pointer by=
- zpool
-> +                unsafe { *handle =3D h };
-> +                0
-> +            }
-> +        }
-> +    }
-
-<snip>
-
-> +/// Declares a kernel module that exposes a zpool driver (i. e. an imple=
-mentation of the zpool API)
-> +///
-> +/// # Examples
-> +///
-> +///```ignore
-> +/// kernel::module_zpool_driver! {
-> +///     type: MyDriver,
-> +///     name: "Module name",
-> +///     authors: ["Author name"],
-> +///     description: "Description",
-> +///     license: "GPL",
-> +/// }
-> +///```
-> +#[macro_export]
-> +macro_rules! module_zpool_driver {
-> +($($f:tt)*) =3D> {
-> +    $crate::module_driver!(<T>, $crate::zpool::Adapter<T>, { $($f)* });
-> +};
-> +}
-
-Thanks for sticking to the existing generic infrastructure, this looks much
-better. :)
+>  		/* See collapse_scan_pmd(). */
+>  		if (folio_maybe_mapped_shared(folio)) {
+>  			++shared;
+> --
+> 2.50.1
+>
 
