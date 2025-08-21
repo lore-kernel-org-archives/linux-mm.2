@@ -4,82 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00649CA0EEB
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 18:35:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A238CA0EFA
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 18:44:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 273828E0020; Thu, 21 Aug 2025 14:35:30 -0400 (EDT)
+	id 71C1E6B0108; Thu, 21 Aug 2025 14:44:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 224048E0001; Thu, 21 Aug 2025 14:35:30 -0400 (EDT)
+	id 6F3206B0109; Thu, 21 Aug 2025 14:44:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13A9D8E0020; Thu, 21 Aug 2025 14:35:30 -0400 (EDT)
+	id 62FB46B010A; Thu, 21 Aug 2025 14:44:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F31408E0001
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 14:35:29 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 91A5E5930A
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 18:35:29 +0000 (UTC)
-X-FDA: 83801617578.18.55112B9
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by imf02.hostedemail.com (Postfix) with ESMTP id B401480005
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 18:35:27 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=u7Ere37+;
-	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755801328; a=rsa-sha256;
-	cv=none;
-	b=3WNWJjzbXF8+jOp25uFByZ3BBSxWRayRDupaVb/ghetN0Rh0b40bI+hb2AHou2u3qP6Zf9
-	tW/724Kdzk09gh6aXAETPg/mSBXYG6ock/VY4sugX1cxAxQoKq8Z9FKfOLW45/G3JqV33t
-	WDamwvoLld5GV/bWmzSIr95XzS2y5gg=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=u7Ere37+;
-	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4EA616B0108
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 14:44:14 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0B42E1A0505
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 18:44:14 +0000 (UTC)
+X-FDA: 83801639628.19.91D58D4
+Received: from mail-internal.sh.cz (mail-internal.sh.cz [95.168.196.40])
+	by imf25.hostedemail.com (Postfix) with ESMTP id AFD09A0007
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 18:44:11 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=cdn77.com header.s=dkim2019 header.b=CbHGaVTf;
+	spf=pass (imf25.hostedemail.com: domain of matyas.hurtik@cdn77.com designates 95.168.196.40 as permitted sender) smtp.mailfrom=matyas.hurtik@cdn77.com;
+	dmarc=pass (policy=quarantine) header.from=cdn77.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755801328;
+	s=arc-20220608; t=1755801852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lYKvb2dH0bTbVOPzrM44BfmX5KXCxGsEa01RWtRNfdw=;
-	b=5uTaJkcJr1FyHVq1wKNhjF+JX5m0MnHmjzVAyIXsse2rO3W9AK9rPXrTlfdbYYKMOqHOvn
-	ekcdifCDht1v/sc457M5fvEnr+jb36wY17/UaO3zc1qdMa5ESXXp8Yz+Rf7n1gJnyu5qPF
-	UfgY3VyqNK+IkUeSFe8QMXuXryMiq0Q=
-Date: Thu, 21 Aug 2025 11:35:19 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755801325;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lYKvb2dH0bTbVOPzrM44BfmX5KXCxGsEa01RWtRNfdw=;
-	b=u7Ere37+9zchNOCm3RVOb4Y4tTbmmqMZwwRwzwD8nVr+Ux4rter4+q9m/8C9/kcuNGwegc
-	9HEuDvjL2v+gNwk/aJEpKtXjS+Hf6MAcAO1dPhmdry5Uu4bhLth+b6FjeyzhMwmqFgudF5
-	25yO/1kH8+xsZn1lqgEktk9bbFdloE8=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Yueyang Pan <pyyjason@gmail.com>
-Cc: Suren Baghdasaryan <surenb@google.com>, 
-	Kent Overstreet <kent.overstreet@linux.dev>, Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC 0/1] Try to add memory allocation info for cgroup oom kill
-Message-ID: <6qu2uo3d2msctkkz5slhx5piqtt64wsvkgkvjjpd255k7nrds4@qtffskmesivg>
-References: <cover.1755190013.git.pyyjason@gmail.com>
+	bh=bjBzbYOJlLNoEFfSNXFlpKexNeNZRAUPsNyoE1U3vUI=;
+	b=gNaA/RsDy+Mh9G7psziGSmwuMN9cLR4nbZkIsUBGl1yPOdBOQOmffod2sE/jCCQE0OzPdM
+	xAbsA2SV1TmJdkhH7vcfpvCwEDRbdq9gKO+KpIsIoEORBRAFPuoZsvV/+oqDMIFDb4Lem7
+	SZzEd+0rPslbuhlA2ZAJhDgjuOxQF/Q=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=cdn77.com header.s=dkim2019 header.b=CbHGaVTf;
+	spf=pass (imf25.hostedemail.com: domain of matyas.hurtik@cdn77.com designates 95.168.196.40 as permitted sender) smtp.mailfrom=matyas.hurtik@cdn77.com;
+	dmarc=pass (policy=quarantine) header.from=cdn77.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755801852; a=rsa-sha256;
+	cv=none;
+	b=Bes15B9hZh7wgDvAToaDEEzlNxfBDC55+6/C//D55w7NzedYr74QbTi8L1YjNO/yfQCLHx
+	zaJAFFS14DiumoA2XFEn/5J3gWyS5khhx2uMqhJREN9D68Afdn9sOvzWkoPRuHRHdqiDiK
+	wsgPeOmTitPdHc2XLkfU/ElKFwFV6wQ=
+DKIM-Signature: a=rsa-sha256; t=1755801849; x=1756406649; s=dkim2019; d=cdn77.com; c=relaxed/relaxed; v=1; bh=bjBzbYOJlLNoEFfSNXFlpKexNeNZRAUPsNyoE1U3vUI=; h=From:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:References;
+   b=CbHGaVTf3If/ptzjPsO+GpjYx0DXlemHfrAiFMy0U7WTbRDbxZp2J6MO/2+YuOhAKa/Y9Exp0OxEZU4i/3lovvcwdy+E+8L0FaLtBu+1VCjDfb9PtfikwJKsZiQTtpCGJQhEXl8uMauNzHdJ96PEmE8AEhKBoLwn7KF7BCAsoHw=
+Received: from [192.168.0.206] ([78.44.198.142])
+        by mail.sh.cz (14.1.0 build 16 ) with ASMTP (SSL) id 202508212044088574;
+        Thu, 21 Aug 2025 20:44:08 +0200
+Message-ID: <29defc2f-1dd4-4269-8677-34bb1ce44a55@cdn77.com>
+Date: Thu, 21 Aug 2025 20:44:07 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1755190013.git.pyyjason@gmail.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B401480005
-X-Stat-Signature: 9ktemogw7f7hyhr8c8y8883s9azukbd3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] memcg: expose socket memory pressure in a cgroup
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Tejun Heo <tj@kernel.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
+ <mkoutny@suse.com>, Daniel Sedlak <daniel.sedlak@cdn77.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ David Ahern <dsahern@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org,
+ netdev@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org
+References: <20250805064429.77876-1-daniel.sedlak@cdn77.com>
+ <aJeUNqwzRuc8N08y@slm.duckdns.org>
+ <gqeq3trayjsylgylrl5wdcrrp7r5yorvfxc6puzuplzfvrqwjg@j4rr5vl5dnak>
+ <aJzTeyRTu_sfm-9R@slm.duckdns.org>
+ <e65222c1-83f9-4d23-b9af-16db7e6e8a42@cdn77.com>
+ <aKYb7_xshbtFbXjb@slm.duckdns.org>
+ <fa039702-3d60-4dc0-803a-b094b41fd2b9@cdn77.com>
+ <kyy6mxg4g6aer2mht3xawiq56ytveg7vllg7o6f7dgivkoh52z@ccinqivomtyl>
+Content-Language: en-US, cs
+From: Matyas Hurtik <matyas.hurtik@cdn77.com>
+In-Reply-To: <kyy6mxg4g6aer2mht3xawiq56ytveg7vllg7o6f7dgivkoh52z@ccinqivomtyl>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CTCH: RefID="str=0001.0A002101.68A768F9.0008,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0"; Spam="Unknown"; VOD="Unknown"
+X-Rspamd-Queue-Id: AFD09A0007
 X-Rspam-User: 
-X-HE-Tag: 1755801327-317927
-X-HE-Meta: U2FsdGVkX18ICk5KFcW0x00kA30jr5O2LNb96whROLBRN6hMoIJENsoy1shWoLtw8LmgEPvgYDOyInhFr+DnxNuQhO2RrIW3npS6Gfxof3p0df6WP/rETQtU5v1HqQB0Jdo372luOP3rLOruiFqiE0QrFLTe4wROahj7g5PPSqoAoAe1psHBssVupMdJfr5suskBB1XovrHlNg+GuoK2WPgKumLiQRM7OVaUDZSqKQ1DAQaU+jjO5orhjdNM9WX38Ql2Bym3Dv4xJQfrALN39DNi4jpelVTWzU3NbTjL2m0W4Jx9HTH2Y2ijJL+PRrOlO6UIzMwgFDqhmAn/fGYvArHvSAG1JBSOoCAGY6AJZ0WaNi3QobBnJxDr7VeVeWK+xbvVY/v+kqBZQZ7l9ml+8tJfVsx5DwtcJpLxeOxTQHlaTrvknXOv4u6kce2BBOxVyLB5M4pCEAQ8jt3NJC+KePpwFPUXw0LpPKAfzwcXwPfDLPc6FWXqNA4Y/ut+6QKwEpbHrVXXyFud/P1BjczsalpLxs7kNLX4Dj0bNv4cjhewO451vfI4yE/no4cKaDjW949R/eVj2FNG40KIP76yYJq5QOrZmA7D4l1MbaoWLkYvhIWi2+2GIItSFAyy+9SzGifJXWWQ4uVjG3UOtlDkBybUYW0uVF2x5tFqXqHOhqi3ojWo/jIsDKbj5OWV2oW+DySZWQIxVjDeOjRF5y2VOeIKE13YmTtR0nz+ngiYQjWQVAxv2IFrqz513FdrhZUdehq4dXr2AqVvdFL50BXZBVVXItxZrYTfAedL5NxKDhzNlRrtqTn4OcdF0MIuyXMVxBN1VwLbPxs6z2n9e5sXIijxX0ryr6VAynwI4BJBmATaOjoIBdR6V4gjyln1NaJlyD+k+TS6w5ScICRz5dzmHpmUk1nsHI1mSAOP7WvmUU1w7MSKmc8wteuuiRhlIflNSIDP/b+MqpgLYamqORP
- OW6kA041
- NTdpGDXMGqFlO5beIRz1Sl4IUqPiRk1dp+igf/BTR6qF0NEkwQKUgFO2LHXVa1jFFh11XaOGXRW3lI/Y6OMWtqbL3i11UTV8pwxCBwhWZGn9K9ZhrsAA2MIksZ+6nBUdv5Xr+uBk6m4X+OWhx3zK6Nqumq4QIjLkkflsz6igzsE4KAPKmVHlk+6jIRysxGBFU5g1l35tJE+dxJrNSBGxxzhVw/jq4Su8QFfWB6TuBu6sT1KY=
+X-Stat-Signature: ckwo1qeiu4psqkm7e14c5f6jr178adpt
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1755801851-421600
+X-HE-Meta: U2FsdGVkX1+mwM8Ukg5xGsYz+syhoJsX9lvURGDoNvvIkIw77AHrsGAQfqXetihyVpU/ZJzB7LD5041o+UAjZyF0WkEXVv94G5jdfA6fuVhddKw82C1Vp12HalLut98DA8C0Nhy3NDw8Q5+diIxqz6SE34fWgBlM0LHpPnuF33jhWUu5qEh0r077GCIm9StJkqE3XpAJmzcGwj0cr5bBWmN1xxgwh2iy9MTHVLGABWmjwBlUo5Xx5N/WpbwBHUZBmkCclg8maM32hzLH8VBxUppDnjZuklXolY/I0iU16y/ttb1uvqWWqYE9sjPek1PAdt80/Jn/7tunSr6Rp+4Oq2bvOitE53H+zNOTJGyoZYjLihy9zYqM3gw3zgWjt66bJykUZepYFx1PgdCeOfc51/sdxka7F5AMgMf2cRIPFvk4yIajdpaibo+TiyKxstl71hHyQllm/9AM5E7CAZoH4qn3YPASM7p+8D42AVZKPRvsu4Z+7f13IZFnDsmgnrEVVw/NlX5i0dpgVX08kE8AtiLbnVJfm8M5K6K6PPYUCgAeZKiDUjApUu0EdZ/QvHd7bokdtowejgjV8E3aeDmdJukr/kztXsMoNfW3rMpWNt03r1kuqW86CDD0ughUk3ylS3Qhl6Q3dKQI0/38KrTl7YOMyqJIzG5QpfLh0tH59JZmws9OlU1CvAUCxRtn61kr/pUEAImtw6rhSN2fV23KTMXU1gfU3pUDhHpB4D02AcHYl5ycsB9ubHVG/iy/dbwuAtcK1mzkPVRp3TBjluPvOd8dxIC4DkRivgj0/UXv6x835K0X32l39Wsc+v/QY9tWgJN5NilQxXY8G1IRgImISG8jztiWVGDq5meQhcov5K+xogwue4gPF2+l28CuVsF1/Yw2GgdBhHHECdZcQ6u7HEPS9eOgV6vX5cDH9Wx7hZ+J//lSsywzefkRtZkzLN6ocfGHFjZPtCObDDI8ZXQ
+ Xqvutgkx
+ YVBS8e2c9cTHm24iL4SrKgYFKYsh+8lCbW5viz/SuHGY4+niOsvnQZ7UI/OAVcs0U/u02DswH8DBmgwi1iWODMb1qM0WQo3JyACdz0DWfF383ng3tvt9UTEDZXb6xQLaG68k3SgBtPTAIMhRD4T+OHMgTp5wEmtaKQzRpv+ZxsF38MgZTNNHXqIBFbseeGkR534Z7GAsOHERf/d8mLeIrDm20/Farx0Y1zqThz47cpsuMj2izz9IfQ5JiUuptfY30OEo0VmzUsV2VNcWkxUR+bU7s87VSppzKzCTaKoSwCXI0m3c=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,21 +101,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 14, 2025 at 10:11:56AM -0700, Yueyang Pan wrote:
-> Right now in the oom_kill_process if the oom is because of the cgroup 
-> limit, we won't get memory allocation infomation. In some cases, we 
-> can have a large cgroup workload running which dominates the machine. 
-> The reason using cgroup is to leave some resource for system. When this 
-> cgroup is killed, we would also like to have some memory allocation 
-> information for the whole server as well. This is reason behind this 
-> mini change. Is it an acceptable thing to do? Will it be too much 
-> information for people? I am happy with any suggestions!
+Hello,
 
-For a single patch, it is better to have all the context in the patch
-and there is no need for cover letter.
+On 8/20/25 11:34 PM, Shakeel Butt wrote:
+> On Wed, Aug 20, 2025 at 10:37:49PM +0200, Matyas Hurtik wrote:
+>> Result of mem_cgroup_under_socket_pressure() depends on whether self 
+>> or any ancestors have had socket_pressure set. So any duration of an 
+>> ancestor being throttled would also mean the child was being 
+>> throttled. By summing our and our ancestors socket_pressure_duration 
+>> we should get our total time being throttled (possibly more because 
+>> of overlaps). 
+> This is not how memcg stats (and their semantics) work and maybe that 
+> is not what you want. In the memcg stats semactics for a given memcg 
+> the socket_pressure_duration metric is not the stall duration faced by 
+> sockets in memcg but instead it will be stall duration caused by the 
+> memcg and its descendants. If that is not what we want, we need to do 
+> something different and orthogonal to memcg stats.
 
-What exact information you want on the memcg oom that will be helpful
-for the users in general? You mentioned memory allocation information,
-can you please elaborate a bit more.
+By memcg stats, do you mean only the contents of the memory.stat file?
+
+Would it be semantically consistent if we were to put it into
+a separate file (like memory.net.throttled) instead?
+
+Just to summarize the proposals of different methods of hierarchical 
+propagation:
+
+1) None - keeping the reported duration local to that cgroup:
+
+    value = self
+
+    Would not be too out of place, since memory.events.local
+    already does not accumulate hierarchically.
+    To determine whether sockets in a memcg were throttled,
+    we would traverse the /sys/fs/cgroup/ hierarchy from root to
+    the cgroup of interest and sum those local durations.
+
+2) Propagating the duration upwards (using rstat or simple iteration
+    towards root memcg during write):
+
+    value = self + sum of children
+
+    Most semantically consistent with other exposed stat files.
+    Could be added as an entry into memory.stat.
+    Since the pressure gets applied from ancestors to children
+    (see mem_cgroup_under_socket_pressure()), determining the duration of
+    throttling for sockets in some cgroup would be hardest in this variant.
+
+    It would involve iterating from the root to the examined cgroup and
+    at each node subtracting the values of its children from that nodes 
+value,
+    then the sum of that would correspond to the total duration throttled.
+
+3) Propagating the duration downwards (write only locally,
+    read traversing hierarchy upwards):
+
+    value = self + sum of ancestors
+
+    Mirrors the logic used in mem_cgroup_under_socket_pressure(),
+    increase in the reported value for a memcg would coincide with more
+    throttling being done to the sockets of that memcg.
+
+I think that variant 3 would be the most useful for diagnosing
+when this socket throttling happens in a certain memcg.
+
+I'm not sure if I understand the use case of variant 2.
+
+Thanks,
+Matyas
 
 
