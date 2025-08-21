@@ -2,115 +2,114 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CD935CA0EEB
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 09:07:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 40F56CA0EEB
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 09:34:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58A6B6B00DB; Thu, 21 Aug 2025 05:07:06 -0400 (EDT)
+	id AAB548E003F; Thu, 21 Aug 2025 05:34:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 561FE6B00DD; Thu, 21 Aug 2025 05:07:06 -0400 (EDT)
+	id A83468E0002; Thu, 21 Aug 2025 05:34:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 478546B00E0; Thu, 21 Aug 2025 05:07:06 -0400 (EDT)
+	id 9C0758E003F; Thu, 21 Aug 2025 05:34:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 35F806B00DB
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 05:07:06 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 895A48E0002
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 05:34:56 -0400 (EDT)
 Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A6A361173D4
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 09:07:05 +0000 (UTC)
-X-FDA: 83800185210.18.D05DD6F
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 1E8B2100010
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 09:07:02 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755767223; a=rsa-sha256;
-	cv=none;
-	b=0/b9arb7xd89hMmSldXI//xHFHJkzmqC5S4dSvv8juf8IWxxuCVAh5nhYjsmvxxGFlkO8o
-	BAB+YW/xaj21T2+I6vMqgSswvH9jrbpl1eKPkiM1W4nwKwsW4XofuBUHJRQaSK7UQGqVEn
-	Mi31KkGFlo4KI9xkRaEeBzGPAQ8ufQ4=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 30B8C137F02
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 09:34:56 +0000 (UTC)
+X-FDA: 83800255392.18.649EB11
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5E15E140009
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 09:34:53 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Typ8VIxP;
+	spf=none (imf23.hostedemail.com: domain of thomas.hellstrom@linux.intel.com has no SPF policy when checking 192.198.163.17) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755767223;
+	s=arc-20220608; t=1755768894;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P6KHGN++9B0cHzCAf7lktA/0F6sC9E6N1flDJmOjn2c=;
-	b=uanNUc32Dh05cWm//NtHFRP+u0IAkxysTHLG25vYFF45SUul+2T66Eid5dsz60alPY+uMm
-	nNndyfW6oIU/+3iov2Yn28vO9ME9ufDvi/n0AR4PrC8B0zAMdHmCfJRqm2eAXtJRAcV4rS
-	P9X+gpgfKJYxYx8RUMVcfHZ47p+6I8o=
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4c6y9t4GNYz6JBWR;
-	Thu, 21 Aug 2025 17:06:42 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 43D6A1400DB;
-	Thu, 21 Aug 2025 17:06:58 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 21 Aug
- 2025 11:06:56 +0200
-Date: Thu, 21 Aug 2025 10:06:55 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Mike Rapoport <rppt@kernel.org>
-CC: Shiju Jose <shiju.jose@huawei.com>, "rafael@kernel.org"
-	<rafael@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, "tony.luck@intel.com" <tony.luck@intel.com>,
-	"lenb@kernel.org" <lenb@kernel.org>, "leo.duran@amd.com" <leo.duran@amd.com>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "mchehab@kernel.org"
-	<mchehab@kernel.org>, Linuxarm <linuxarm@huawei.com>, "rientjes@google.com"
-	<rientjes@google.com>, "jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "naoya.horiguchi@nec.com"
-	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
-	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
-	<duenwen@google.com>, "gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
-	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, tanxiaofei
-	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>, Roberto
- Sassu <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
-	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>
-Subject: Re: [PATCH v11 1/3] mm: Add support to retrieve physical address
- range of memory from the node ID
-Message-ID: <20250821100655.00003942@huawei.com>
-In-Reply-To: <aKX_rk0DasbDgJrS@kernel.org>
-References: <20250812142616.2330-1-shiju.jose@huawei.com>
-	<20250812142616.2330-2-shiju.jose@huawei.com>
-	<20250819175420.00007ce6@huawei.com>
-	<aKV6dVkPiBPw595T@kernel.org>
-	<20250820095413.00003bd7@huawei.com>
-	<964fc2721fb7499daa5f49eddfed54ff@huawei.com>
-	<aKX_rk0DasbDgJrS@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6Vk2rNv6sQPb2ve7Pj2mP/GF1p2TJt4JFMI53lJXfL8=;
+	b=H8n1Ij+Kk0i96pPK8qFWXONfedBFfoOOHUKAf8TQYb850c9v5Fo1FlJFRUfch940MLUvgq
+	SqU0kN/BVSsG5mqlGkmwRN6Ng/UYIV2H3ezcjT3hqlTt22PxIpoZvv69SCXkCP6sa4dw08
+	9fnaryZt7d3nUqoGyG575XAihwWLzXs=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Typ8VIxP;
+	spf=none (imf23.hostedemail.com: domain of thomas.hellstrom@linux.intel.com has no SPF policy when checking 192.198.163.17) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755768894; a=rsa-sha256;
+	cv=none;
+	b=cg/Blqja9lqyHYrY838rWstxKbqXfJvxj7zQ/PPWEnauMN07FtDkWJIaZSfG04apFaoX2z
+	qofRFz+EcYj2ujTt7f5IaDGnHt35MetBXqTirkWnIVWdLbeiN2/dipnIlx2tFiWQV6B/+K
+	8MhGHpciNeSNjIzblVt9ebPwoiOZ8Ls=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755768894; x=1787304894;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=6Vk2rNv6sQPb2ve7Pj2mP/GF1p2TJt4JFMI53lJXfL8=;
+  b=Typ8VIxPV3UsrB7G4rx7ApQ3hf0FEUTM2xiCJmUXQM3tLBYD8HvgeUkM
+   sDLcDrx60E+ERXnplP2sM/J9OhwIS6S9941rye4TK/8BoPIEgb3TCb6x9
+   KyUMFUzhD739NcuBu7EGxB4Su8WnV8xdJ3Jq/aW5tcgX6qNPw5IuABbdF
+   IcQ/r16Xpt/nazuEFQwJ3snvzGiAFY/s33lmF87yaLk1uJqCAp2BNW3MV
+   y92DJML0V0I/JOeEWIKFgqqVB+38h+QLlQveyniWDzjrN6SxNvm91UMhE
+   Dczxa94SwOqj7LNuwIZMAF8Q3sG3MLtVyqF8b1Xt+hMosb3z0FOJZUldO
+   g==;
+X-CSE-ConnectionGUID: ytuuIcn7ReSZS3qrS9nJTA==
+X-CSE-MsgGUID: gZS0mkMHRVqvpL3cGmYSTw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="57978883"
+X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
+   d="scan'208";a="57978883"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 02:34:52 -0700
+X-CSE-ConnectionGUID: Y0heiNaWTYy4UVfXra6P2w==
+X-CSE-MsgGUID: N5zt3aWDSC2Q5n+oE/9ILg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
+   d="scan'208";a="172786862"
+Received: from johunt-mobl9.ger.corp.intel.com (HELO [10.245.245.201]) ([10.245.245.201])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 02:34:31 -0700
+Message-ID: <05360f1a920afe31ddd743d21f217d7bf8ff1c45.camel@linux.intel.com>
+Subject: Re: [RFC PATCH 1/6] mm/mmu_notifier: Allow multiple struct
+ mmu_interval_notifier passes
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: Alistair Popple <apopple@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	intel-xe@lists.freedesktop.org, Andrew Morton <akpm@linux-foundation.org>, 
+ Simona Vetter <simona.vetter@ffwll.ch>, Dave Airlie <airlied@gmail.com>,
+ dri-devel@lists.freedesktop.org, 	linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Christian =?ISO-8859-1?Q?K=F6nig?=	
+ <christian.koenig@amd.com>
+Date: Thu, 21 Aug 2025 11:34:25 +0200
+In-Reply-To: <aKSZ1JduQwAFSFQn@lstrano-desk.jf.intel.com>
+References: <20250809135137.259427-1-thomas.hellstrom@linux.intel.com>
+	 <20250809135137.259427-2-thomas.hellstrom@linux.intel.com>
+	 <20250818160726.GH599331@ziepe.ca>
+	 <aKNT8GUu0r3i4Ikq@lstrano-desk.jf.intel.com>
+	 <20250818163617.GI599331@ziepe.ca>
+	 <aKNYUaPS0PiRk/yj@lstrano-desk.jf.intel.com>
+	 <20250818164655.GJ599331@ziepe.ca>
+	 <4lsv2lcd7lssyvcjvkqe4t2foubxbhuxrt2ptzee3csymz5gg3@jwrg3xow72lm>
+	 <e96dcfd4ce7c84a5b66ff9d5f082ea209266ce48.camel@linux.intel.com>
+	 <aKSZ1JduQwAFSFQn@lstrano-desk.jf.intel.com>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
- frapeml500008.china.huawei.com (7.182.85.71)
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1E8B2100010
-X-Stat-Signature: ruytua3y3fdxitu4pcc5h89uauf3surw
+X-Rspamd-Queue-Id: 5E15E140009
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1755767222-454099
-X-HE-Meta: U2FsdGVkX1/uq05OVgBrj0EXeTho9E8exd/2SFg3kd0JvZSsCeL+rnR1KX4ghxrsS0pzVP/T3K9Jd88B/+WOoBiklIVK2cnsoTcRaHA2u4u+StSf3WyPpdAlC0rC7eb3Pp9y0qdpFze/jLUYGeNlMKyr+hqlhCxX2NIWWUUshvOOSt7LmJFirf5kex+TPjozsiEi5Zu6Kdn0BbpC32SQDgZ5AEGZuj+gokyfZpLvtabE7YjfqKVf6jzOzx0k0Hl6EwK7KMLskGdEno3nW2Y/YyeLCYQzjeSLPqL4qSrDbTN790l6GucxC9S5vxDC86vz+Ai2dUsCR6GazvFmcUBKkp80oqeUObdCziNqm09JOurzLDWepLHbH2w23sgy5/aNfx6XHlcxoU7PfR4QcKHp44JT75zUu+ER1+Xy1wA6ImEScVGeqNYe7Bo29XACL7EWjBYLjcVMyDuSE1KKnIPOkAmlGuWXmGDhn8+p+LREsKSpiZG3sUC0AJmO+mDACYNvCyUF61YBL/0t0vKX88bZhlZ4P/elGR3fAsDGLNZqcNvvN1XWt61lUImhnBNssGh9yrLKl08wBI5h9ku2lafeoJrQBDFCA+Ls4DKJxS7irtbYFT3OI7HU+Iqa53XHtsmGdO9MGjAFQOV3TFTMQBv6o/AVFzWaeJL/1c7RczNndDi4mPlJzUZZqhqeLL9S1nsEBtb/PLORyuYn9OhY/fEu+2mHfhycbwWDjbrU3OnAilpcp7Rry2jyc34eNXRX/Wxva4KhvFwvcuBfL2WhkDrINeKou0V3ByXky5i1gkFdalAwD5QR1CwPInUoadjCBy3CS0DAc2NKq92b/YS2DVJ72qK6oW3XgLIHNLwOjbXla+UguKybKbZmHZ+mSC573pVxW2UUkhtdSv5yHky2W6VY+CQUcIik6Ukm454wuc/SvWW94gtaoNRsmjl08tntm/j8EjDOFUNxGqhEwySH54B
- +QuOBy4l
- Ct+nY8QAzKf64EDKiE7733GyRU24UgFr1Q83CUjPkLtadQib89NdTUtu2W2Pd/lOReJNvHAVKgcSeJ7V03+zDXkff1OgT6W9B+THSDnPIrpD/h7V/ORhtoqVNcXUbAMduN+rkKisrqzQ6Fu3H3xgz7TqLO5f2hPxMtvO8CEuFpb6BkfS6bu1T0E2th4bBnJFp7vZePXWoJO5gqMZ36Dg1WtB1zKiyoOBTX3d6BFDybX1iuWB9Ws/xdaN436UUzlClAoJfDyBRWA9jTZ+IFDop4H4O5XS5ZPoDmdrQRDbHd+xGChUx9iX9pt0ppbitq8zc5MXbnK1LmNhBf4a2I6cDJSOKuKMZ3JpDGUqIVemCcD2m5UrJRII/gfmtPxxio/db98XVBljBhD33V/CjKcLY4wRqMdBpzsinmm5YazBJCEnvk5yWuI9M5BAdwC+TrMQfCvEb4LoMRpYzJTR0oWneFHZqzX+gvmjiuJTd2ZLU241KFSKOYIThJ+Lxg7RL6wXUjPxxQIiGb81hl8xQWA+ADyCvLVO7z82rJZpJfWx2lUHtkZOewkW2I/O2bGxeudirCrrjfoGIHFV4jCIyJIq3PXpuhIsNSzdyx3Pzkqtv5K8AiSUQLBb4WGni73jn9pVuXju3vNezRScXpQ1Lh3x+Ge0b1PhEVPCyfxE9pgB8lrrtNWrlgbCBIUb/9AhC4sgbcOnhPH443WR5uRmMffKpiz/HC0P5+rPjkBk5HlpdMLV8w9qcwKniNFoGros19FMWPp/DwbcKtL4TfAwFVyq2zrXrbXLH+jU41Gl9O9WqG2iNSjavT5QWmd9yaZFqCfScmMzvcPCamp2leqc5pWmyEUvZIZ7jMe0+TMVPuqGI1daQUd15LI16CWKpAA==
+X-Stat-Signature: jedomhnesdw165wsor8h53opbh7b5g5c
+X-HE-Tag: 1755768893-785282
+X-HE-Meta: U2FsdGVkX1/D+aKy+Gtoxd2rcgY/QDY88spmwCcMh9CEW5mSdwhOf0HRB4doUHKzbonXlJc9PXjzl93TNT09H/LykXynRW4sB0FfvaWe9M6eyM+Y3ga6IXK2xELcXotTf1qezn6Hp/R5s10MSEjmhST92adu8TmAEA9xZwOZAtqSTKaf/O6FuicDtKIuQIioHgy2IRiWFamqONnf5ffwtFjsVzqjGCptMYt+xC14kVhZ1FKfUDxd2RvhWDXMIgdjqjL8QUiUdm6vVbQ6VEml9HQ1hGBPyHuUfJTGVDezC1CuyWV4jhWmDLlVM4SEi76pCDFTbK5XVm9rn+t+itQu95Lql4Q2O5EvVJ+UqFW/16Gwz44qDQf//QS8Ts07QugCweA35hCAf+uTv60xcILalm7W7MQOpQjhF2qQsDhRSSI5NtnBK+hf2kRSaatztpoIzEXC2Wiu6VnBTIDixHxBl7vdyJvxhpDhV/6+nVS+yySJwpMFGudOgkmxetPTZPBGT3bCD2TT2fEKSkuh5FGxEJ+oWzR1yCEaasX8dt30fkv4fPZkpfBtyZ8mQyRCQhRrCzMDWny8ZXSaB8NLPWa7flv1/UASHHePrjD+mmSDv0pJQ6fxO2ReNex88s+J9JIC8jqfjiqrqRYHx912QXDoF/y+XLCJcr/bf1GmkbEyEuT84lZ7lj6ua4QAVHB4Ly2Ec99ypqS47qLBe/ysXNp7WUg44+si5XNvKGEuAF8Mjmsyikij7fJ1XpcPsJAwa7L8stJzYbv7l4zJeNO+CHMagcUQmkUveSfs8EhtV9HA81iEn97qX+BVmUkOphyc4ZbRRyhLNJjST3z0mH6LgrYuZqw0FeV677wQl3EZKb4FpWUtXgfTpTUKR+1kCvnBJFNXa6yP2/gsMJYfS9OhPlFkraHJoVkzV0iaMYaydDbTK9+THjXjpD0Gx3kYq3rYQrlKM3xgiQvAYpDJU+nkxzJ
+ e3gtggch
+ qDyyeoX4Cji2HZQdFw6sNTxEkPMji/xqhfLvxpzq+ztj8HskOwuzvAFX+rbDaBAQ0npu0zu0KKmgT+Lf/LmWc+fu37CmUt2R8yMubyYx1tqU3IZzKI/L9EONYlnAvhfueWRtginiJEJa95+zaQ3GhwE+8KMR9b6Yrvk8BquFL+6XRCtMujztu4pCq3cz8TexIp8tnTk0s/gzoQ9HA5deyu9JCDL4uANrHLa65WJ6DQbuCKFmXfE5eaBsCRSgUXruHB9l1FauHFG4QDbnvFB95b97iZw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,118 +118,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 20 Aug 2025 20:02:38 +0300
-Mike Rapoport <rppt@kernel.org> wrote:
+On Tue, 2025-08-19 at 08:35 -0700, Matthew Brost wrote:
+> On Tue, Aug 19, 2025 at 01:33:40PM +0200, Thomas Hellstr=C3=B6m wrote:
+> > On Tue, 2025-08-19 at 19:55 +1000, Alistair Popple wrote:
+> > > On Mon, Aug 18, 2025 at 01:46:55PM -0300, Jason Gunthorpe wrote:
+> > > > On Mon, Aug 18, 2025 at 09:44:01AM -0700, Matthew Brost wrote:
+> > > > > On Mon, Aug 18, 2025 at 01:36:17PM -0300, Jason Gunthorpe
+> > > > > wrote:
+> > > > > > On Mon, Aug 18, 2025 at 09:25:20AM -0700, Matthew Brost
+> > > > > > wrote:
+> > > > > > > I think this choice makes sense: it allows embedding the
+> > > > > > > wait
+> > > > > > > state from
+> > > > > > > the initial notifier call into the pass structure. Patch
+> > > > > > > [6]
+> > > > > > > shows this
+> > > > > > > by attaching the issued TLB invalidation fences to the
+> > > > > > > pass.
+> > > > > > > Since a
+> > > > > > > single notifier may be invoked multiple times with
+> > > > > > > different
+> > > > > > > ranges but
+> > > > > > > the same seqno,
+> > > > > >=20
+> > > > > > That should be explained, but also seems to be a bit of a
+> > > > > > different
+> > > > > > issue..
+> > > > > >=20
+> > > > > > If the design is really to only have two passes and this
+> > > > > > linked
+> > > > > > list
+> > > > > > is about retaining state then there should not be so much
+> > > > > > freedom to
+> > > > > > have more passes.
+> > > > >=20
+> > > > > I=E2=80=99ll let Thomas weigh in on whether we really need more t=
+han
+> > > > > two
+> > > > > passes;
+> > > > > my feeling is that two passes are likely sufficient. It=E2=80=99s
+> > > > > also
+> > > > > worth
+> > > > > noting that the linked list has an added benefit: the
+> > > > > notifier
+> > > > > tree only
+> > > > > needs to be walked once (a small time-complexity win).
+> > > >=20
+> > > > You may end up keeping the linked list just with no way to add
+> > > > a
+> > > > third
+> > > > pass.
+> > >=20
+> > > It seems to me though that linked list still adds unnecessary
+> > > complexity. I
+> > > think this would all be much easier to follow if we just added
+> > > two
+> > > new callbacks
+> > > - invalidate_start() and invalidate_end() say.
+> >=20
+> > One thing that the linked list avoids, though, is traversing the
+> > interval tree two times. It has O(n*log(n)) whereas the linked list
+> > overhead is just O(n_2pass).
+> >=20
+> > >=20
+> > > Admitedly that would still require the linked list (or something
+> > > similar) to
+> > > retain the ability to hold/pass a context between the start and
+> > > end
+> > > callbacks.
+> > > Which is bit annoying, it's a pity we need to allocate memory in
+> > > a
+> > > performance
+> > > sensitive path to effectively pass (at least in this case) a
+> > > single
+> > > pointer. I
+> > > can't think of any obvious solutions to that though.
+> >=20
+> > One idea is for any two-pass notifier implementation to use a small
+> > pool. That would also to some extent mitigate the risk of out-of-
+> > memory
+> > with GFP_NOWAIT.
+> >=20
+>=20
+> I think we can attach a preallocated list entry to the driver-side
+> notifier state; then you=E2=80=99d only need to allocate (or block) if th=
+at
+> notifier is invoked more than once while a wait action (e.g., a TLB
+> invalidation) is outstanding. Multiple invocations are technically
+> possible, but in practice I=E2=80=99d expect them to be rare.
+>=20
+> I=E2=80=99m not sure how much of a win this is, though. On Intel hardware=
+,
+> TLB
+> invalidations are several orders of magnitude slower than the
+> software
+> steps our notifiers perform. Ultimately, whether to allocate or
+> preallocate is a driver-side choice.
 
-> On Wed, Aug 20, 2025 at 10:00:50AM +0000, Shiju Jose wrote:
-> > >-----Original Message-----
-> > >From: Jonathan Cameron <jonathan.cameron@huawei.com>
-> > >Sent: 20 August 2025 09:54
-> > >To: Mike Rapoport <rppt@kernel.org>
-> > >Cc: Shiju Jose <shiju.jose@huawei.com>; rafael@kernel.org; bp@alien8.de;
-> > >akpm@linux-foundation.org; dferguson@amperecomputing.com; linux-
-> > >edac@vger.kernel.org; linux-acpi@vger.kernel.org; linux-mm@kvack.org; linux-
-> > >doc@vger.kernel.org; tony.luck@intel.com; lenb@kernel.org;
-> > >leo.duran@amd.com; Yazen.Ghannam@amd.com; mchehab@kernel.org;
-> > >Linuxarm <linuxarm@huawei.com>; rientjes@google.com;
-> > >jiaqiyan@google.com; Jon.Grimm@amd.com; dave.hansen@linux.intel.com;
-> > >naoya.horiguchi@nec.com; james.morse@arm.com; jthoughton@google.com;
-> > >somasundaram.a@hpe.com; erdemaktas@google.com; pgonda@google.com;
-> > >duenwen@google.com; gthelen@google.com;
-> > >wschwartz@amperecomputing.com; wbs@os.amperecomputing.com;
-> > >nifan.cxl@gmail.com; tanxiaofei <tanxiaofei@huawei.com>; Zengtao (B)
-> > ><prime.zeng@hisilicon.com>; Roberto Sassu <roberto.sassu@huawei.com>;
-> > >kangkang.shen@futurewei.com; wanghuiqiang <wanghuiqiang@huawei.com>
-> > >Subject: Re: [PATCH v11 1/3] mm: Add support to retrieve physical address
-> > >range of memory from the node ID
-> > >
-> > >On Wed, 20 Aug 2025 10:34:13 +0300
-> > >Mike Rapoport <rppt@kernel.org> wrote:
-> > >  
-> > >> On Tue, Aug 19, 2025 at 05:54:20PM +0100, Jonathan Cameron wrote:  
-> > >> > On Tue, 12 Aug 2025 15:26:13 +0100
-> > >> > <shiju.jose@huawei.com> wrote:
-> > >> >  
-> > >> > > From: Shiju Jose <shiju.jose@huawei.com>
-> > >> > >
-> > >> > > In the numa_memblks, a lookup facility is required to retrieve the
-> > >> > > physical address range of memory in a NUMA node. ACPI RAS2 memory
-> > >> > > features are among the use cases.
-> > >> > >
-> > >> > > Suggested-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> > >> > > Signed-off-by: Shiju Jose <shiju.jose@huawei.com>  
-> > >> >
-> > >> > Looks fine to me.  Mike, what do you think?  
-> > >>
-> > >> I still don't see why we can't use existing functions like
-> > >> get_pfn_range_for_nid() or memblock_search_pfn_nid().
-> > >>
-> > >> Or even node_start_pfn() and node_spanned_pages().  
-> > >
-> > >Good point.  No reason anyone would scrub this on memory that hasn't been
-> > >hotplugged yet, so no need to use numa-memblk to get the info.
-> > >I guess I was thinking of the wrong hammer :)
-> > >
-> > >I'm not sure node_spanned_pages() works though as we need not to include
-> > >ranges that might be on another node as we'd give a wrong impression of what
-> > >was being scrubbed.  
-> 
-> If nodes are not interleaved node_spanned_pages() would work, even if there
-> are holes inside the node, like e.g. e820-reserved memory.
-> So with non-interleaved nodes node_start_pfn() and either
-> node_spanned_pages() or node_end_pfn() will give the node extents and they
-> are faster than get_pfn_range_for_nid().
-> 
-> If the nodes are interleaved, though, a single mem_base, mem_size are not
-> enough for a node as there are a few contiguous ranges in that node, e.g.
-> 
->   0              4G              8G             12G            16G
->   +-------------+ +-------------+ +-------------+ +-------------+
->   |    node 0   | |    node 1   | |    node 0   | |    node 1   |
->   +-------------+ +-------------+ +-------------+ +-------------+
-> 
-> I didn't look into the details of the RAS2 driver, but isn't it's something
-> it should handle?
+I agree we shouldn't enforce anything at this point. But if we envision
+a situation where multiple subsystem two-pass notifiers subscribe, the
+GFP_NOWAIT memory might be exhausted by the notifiers called first. A
+greedy behavior that might eventually cause serialization anyway.
 
-The aim here is that a query prior to setting a specific range returns
-data for at least a range that the scrub controller covers and nothing
-it doesn't. So just presenting the first chunk for a node is fine.
-There is plenty of info for userspace to figure things out if it wants
-to trigger a scrub on 8-12G in your example, but until it does we want
-to return 0-4G for the default range.
+So to behave nicely towards other notifier subscriptions, an
+implementation should ideally have something pre-allocated.
 
-I hacked up some SRAT tables to give something like the above for testing.
-> 
-> > >Should be able to use some combination of node_start_pfn() and maybe
-> > >memblock_search_pfn_nid() to get it though (that also gets the nid we already
-> > >know but meh, no ral harm in that.)  
-> > 
-> > Thanks Mike and Jonathan.
-> > 
-> > The following approaches were tried as you suggested, instead of newly proposed
-> > nid_get_mem_physaddr_range().
-> > Methods 1 to 3 give the same result as nid_get_mem_physaddr_range(), but
-> > Method 4 gives a different value for the size.  
-> 
-> I believe that's because on x86 the node 0 is really scrambled because of
-> e820/efi reservations that never make it to memblock.
-
-Fun question of whether we should take any notice of those.
-Would depend on whether anyone's scrub firmware gets confused if we scrub
-them and they aren't backed by memory.  If they are we can rely on system
-constraints refusing to scrub that stuff at an 'unsafe' level and if we
-set it higher than it otherwise would be only possibility is we see earlier
-error detections in those and have to deal with them.
-
-Jonathan
+/Thomas
 
 
->  
-> > Please advise which method should be used for the RAS2?
-> > 
-> > Thanks,
-> > Shiju
-> >   
-> 
+>=20
+> Matt
+>=20
+> > /Thomas
+> >=20
+> >=20
+> > >=20
+> > > > Jason
+> > > >=20
+> >=20
 
 
