@@ -2,117 +2,98 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 457E5CA0EEB
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 10:31:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E5F3ECA0EEB
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 10:34:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB2108E0016; Thu, 21 Aug 2025 06:31:33 -0400 (EDT)
+	id 84D5B8E0009; Thu, 21 Aug 2025 06:34:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C89A98E0003; Thu, 21 Aug 2025 06:31:33 -0400 (EDT)
+	id 8249F8E0003; Thu, 21 Aug 2025 06:34:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC7238E0016; Thu, 21 Aug 2025 06:31:33 -0400 (EDT)
+	id 762118E0009; Thu, 21 Aug 2025 06:34:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AB0EB8E0003
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 06:31:33 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5D545B84E5
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 10:31:33 +0000 (UTC)
-X-FDA: 83800398066.11.CD42AE7
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 7EBAEA0017
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 10:31:31 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mbRggUby;
-	spf=pass (imf15.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 683B88E0003
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 06:34:54 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 09E6F14032B
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 10:34:54 +0000 (UTC)
+X-FDA: 83800406508.22.4E55EFB
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E5142160007
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 10:34:51 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755772492; a=rsa-sha256;
+	cv=none;
+	b=c/fGubPa5xFsy2YntVfHgbHLwE+8qX8lFsAKk6V+el/Zu/GGbR1kfHUC0Tl4J5KXnR8bcq
+	CNZG/2U2jSQt4zX2KQI7wuJkvNEkKiuIB2h/ZGuj7MnrHc5lAeP+viIZGOcgJSEifeEWyq
+	LYswXLMhFShmYlhu08ySlUUHql1iBtE=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755772291;
+	s=arc-20220608; t=1755772492;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=913Rz1D2vRcGEtURPFrrhnXSizcosdo+3hWGTRcSM8I=;
-	b=X7szKI98pUB9PTLviunBt77IhEsuQ8l24gGCnPx+45++PCPXkn32rtRBkrUBQ0QTdyTB3G
-	WcmSBmEF7zhEpdBoHAt/bBcUaBBrgUD5hwUWXI2jZCZimdIxHFEU1jqcM4gsEvdzfw+2rG
-	RmHNNVy5o7TgQf3cTCJsY57g63FkAc0=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mbRggUby;
-	spf=pass (imf15.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755772291; a=rsa-sha256;
-	cv=none;
-	b=e6TDSeTxStPyY6RFeuPga+aQiUq9yPoZnI/zyjPQo3oM+8em6eqW7kajtGdXmFo408wOHf
-	B4d1D0pB/7Qa6iPlrI/M76N2wJhW55yvFI2vGt/LQcZ9TuMqcGTWFwE373mTtxYFmwHJWs
-	1MRWj/u/HUra9YWnqjXdiSrbE9/D7xw=
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-24457f3d233so1455035ad.0
-        for <linux-mm@kvack.org>; Thu, 21 Aug 2025 03:31:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755772290; x=1756377090; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=913Rz1D2vRcGEtURPFrrhnXSizcosdo+3hWGTRcSM8I=;
-        b=mbRggUbynVVPCESkU1Sji8c97u/Rn3zAWhSsGES0Lv/qJAfja90e/eXesUNyoEHAhV
-         Qood4J0ZnnJTxJ6BXtHZHPSnfwg7a2Whx0uBECVPCvOJDaeheDnc8RBXtkgE2PoB75Li
-         xkI9/pNXgW6BM2H0JcWNcqsu5H8Ud2BnzLWZylrauqSMD2Uu5aP//DJ1jjqrC0VIObl+
-         ECRRWoVNFSVaWZpNIgfW7lPfDE8XAr51dxJl98MDtPey8pT1eH+YkkhmAf07fs0vokyv
-         NLXM2mc7vKI3ZfJRFRduFQitIkxT3OaCiKsqF2SMIfThfh/C0y+T00muwhoZPTKCOJOv
-         jb9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755772290; x=1756377090;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=913Rz1D2vRcGEtURPFrrhnXSizcosdo+3hWGTRcSM8I=;
-        b=OltHkdxe0rDw000oP9zIl5vC1qDsKDmPVho6wr+arbBISfO/BBRGkjOVVRqf5P4j7r
-         jgm6pFp5vGKn5o8ZVNsqdgoy+FDvR3mSeFMtByzlaWdsxT0AnFJ3LhRrJm9mWHcV9uUv
-         sz+Tj1xaXCBh/5pSBxz0OZThxZFv+I/OQOmPVnf1H/K24RepU2FXLqUxent1acpezC5K
-         v48Bgr+mKMqzt0kfhVQj2m4lwLuQvsSY620xRDF3+9FVE9Nu6Dry83SdZf9wi+Rqn5qM
-         uJ2OkKm7deVi4Id/qL2Z/jRWMHVNBGs9UyvKItOZ96pSilMKJvBnED39I6NG2Hnbrxq3
-         5lMg==
-X-Forwarded-Encrypted: i=1; AJvYcCXytQ4gDCOaM51URce6wx9uyiG71x4k8ycS5WPmZEnRWSLJ9f4RLzbJkq9PTuX1dUgUIIYxskylkg==@kvack.org
-X-Gm-Message-State: AOJu0YxtuLIluN+wVSYgSroDRBkmJkxIexpoTnyWc32LXbqsA3doAP1d
-	bo4V8cxNvP9ER3MBGYxWr0wlekGPzxlQak5edwK8jbe3CIzXdo3zQNakEy0udla3sFDLVUUkfvO
-	FSCIx+IHNs/9DMEprktJVAOQNvDl0l4o=
-X-Gm-Gg: ASbGncv+GjxIo9sG7XZzTfrPomHAkmAztzdSXZJSNzqcnftGgeB42/ozqLHmaErWHcD
-	CnhWpGWUkn1ceOtB/X/Wp+O9r9izLuSDjKZTyw4BL+cdtgNvaPP3PJG2/1Ij6P8MmYM4njbSZWh
-	NN6/bL4XqWkJ6rMkBgUW/YP7mSFWoERhZyxM9JyrJDoCOW2lmXXQd0tDwZtD6QWKKB2CfbPPq0J
-	ZcWQJbbpe2LHEXatZ4=
-X-Google-Smtp-Source: AGHT+IEjm0pT1tYKH4wdQFS+4SLVyM2EzMLuRZ4+YtmFOUPkssVGEQdTiYEF5APh7HBsvfeJHB94RTHEn016hNWb+Uk=
-X-Received: by 2002:a17:902:fc47:b0:23f:fd0e:e5c0 with SMTP id
- d9443c01a7336-245ff86b777mr14664805ad.9.1755772290139; Thu, 21 Aug 2025
- 03:31:30 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references;
+	bh=+OLfCyXr2CrZmXchqbRfbJ+rDJLfW84SDNBllWsEol0=;
+	b=8fLY5k5+g7P4S077xuy8hEc5bCxAvLNCeWlx6iW44JYowm5jNAV8dYRIYbrFey3dHx/dgy
+	mbC29/BSnu7jDuvDAuM3n2l20k14qQvE2+KTvUJ3pdokxD0A6EfCczEQ/eo4nQmEgF9QGO
+	mFoLlQd+b9738ci8BKX+3kbmikbCpHc=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3830C152B;
+	Thu, 21 Aug 2025 03:34:42 -0700 (PDT)
+Received: from [10.57.91.188] (unknown [10.57.91.188])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 334CD3F63F;
+	Thu, 21 Aug 2025 03:34:44 -0700 (PDT)
+Message-ID: <f997a8ec-26aa-45f3-a757-d221321c8607@arm.com>
+Date: Thu, 21 Aug 2025 12:34:41 +0200
 MIME-Version: 1.0
-References: <20250812132712.61007-1-baptiste.lepers@gmail.com>
- <20250820162927.34201cfb395ec7319b15920a@linux-foundation.org> <CAH5fLghx7K1fsdx15VsaTT1i3DRQD8zH2Yd-sEwumiByefTVAQ@mail.gmail.com>
-In-Reply-To: <CAH5fLghx7K1fsdx15VsaTT1i3DRQD8zH2Yd-sEwumiByefTVAQ@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 21 Aug 2025 12:31:18 +0200
-X-Gm-Features: Ac12FXxLCRtkAiXZ0gKUbVmOrCcrysG0-2smcnGVwz7_v545hEOcpz9rG47jg8I
-Message-ID: <CANiq72k1o7bi9tE0tQxaiu39_Drbvz3bPNXibeCightzEuDjWg@mail.gmail.com>
-Subject: Re: [PATCH] rust: mm: Mark VmaNew as transparent
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Baptiste Lepers <baptiste.lepers@gmail.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Jann Horn <jannh@google.com>, 
-	linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7EBAEA0017
-X-Stat-Signature: g1catwkdkb3smcbjzhk9bmodhc9rxo5e
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/8] selftests/mm: Add -Wunreachable-code and fix
+ warnings
+To: Muhammad Usama Anjum <usama.anjum@collabora.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Leon Romanovsky <leon@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, Shuah Khan <shuah@kernel.org>
+Cc: kernel@collabora.com
+References: <20250731160132.1795351-1-usama.anjum@collabora.com>
+ <20250731160132.1795351-2-usama.anjum@collabora.com>
+ <c09a2a13-8571-44e5-b780-c704598df764@arm.com>
+ <46dce2ac-adb5-4a6b-8847-fe214c1599a7@collabora.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <46dce2ac-adb5-4a6b-8847-fe214c1599a7@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: E5142160007
+X-Stat-Signature: fd7wopy4u5ubd6y3ygufaykpxqxhct9w
 X-Rspam-User: 
-X-HE-Tag: 1755772291-159266
-X-HE-Meta: U2FsdGVkX192BXAdAWJmunztAbfdQki2VjK56dz5rOfRLkHZ5jqOTB5374Xw8RAsJRzWvLsugW/meUGjoCXxKYzxim5y2hQy+4DRyzMyGPhwRJ1Ic0c/1To/E71eSekmqe4YBQM4hbzSvd5JY6TG2P5pKZZAb1Ebasa+Ozi1wl+f1OjV69KKnvZoo4K+W1rR2Z8yJoced+/sMnlTEnMimvZDan5xTwHRxR5PobhA7ygXSGSBINAckTq0CpvQE4QEM1Pdr3bDBsRWelNuD61Df3EGy6PcgpBdbsWChqG3pVSiyD2BXtfVv6Z6RmA7AX3eU6LKwyfTHLVnP7uex+iSoZZLfjcvdb1VEyurq8r//+fOMMLPIz5Dbt3vry2OOumpZ4j9P9pOU+t9HZBcN6DXg9FQ5h9tEsvu1VDvm4sjIJB4CwWKo9N9wFenEpOTVF7lNkK6BuqWxaVJHviC1bDQ6v3OV5m1YVhAA6Qx9IDfRo5VLINVwFtFertu3UqA6bPzpwUVc1GdoYDN7wPmYgPW8uZ1ikmGvvgL5bIaJ1cTaEfoqSlrKsQiLmMk5RX7u6uiAOAsHM0x9VVupGRqDCcW1TsLYnfSMVI2QSyo8Arz1HATG+395Co3iMNTVTWffm4bJBWwwUeqxMFvJk+xZKU/o7VrNl10TUHHJ1AFOu1Rq4h4oinElyD0B4Jjzo8xnZH+cNM6hTedq7XP+QQ5USqHmrSUQ20/G6OHfib55RedhNIvl6wcQ7X98bNcjFpAF1EbRnueN4Ld19l3I3D39WE/oR4/yHYGku9oFpJ0koXyeCQOnmmJzJP3bENMk+tY5mb1JeTt+ITLd4GUojalP0JFhpQBpQxIVZG7HuLEyneJnsA764kc7UgHsdnuTY6hkB+jvV2EDpIJBhhvcZmJwRc+tSQc513chpTbfEVvKDwCyyxTYhdnk/fT1NwQaco9wDUzlomtgEM8zyfCKvC8xIs
- CSKA+Q7T
- ROc3pUvWOoq2Sd3MFnghTsZYXOlSNWRj8gKrEHRruxvCjGk2OtKeRccPfGALYWdmFNstWYOmct+ClxICdIRLvEYMP+wRwoZHTKN9xUm+CBjZ7f0SMOeBE2I+VktliT/wUz7AdtgtisfeQP0LDNmBjJ+PRrbTTEZba8xnQs4W5f8RvdFdj7z1HqT5k+wKyLaVcke7WrSeA/pFOim07TxcaLfPBtwKhyJEn8hIXX/+kGc1zgmWU3UrGfhSP6LAAILEqBcbZ7tjEa43QoJ7NQXABo6hwjQhLp3ZkM0OalbRKdASpFgRGo2Vzym3Q6RyguCniwBeDQjGcOMtkCgcQ77NjHr6FIVNXDnQkPXl6OEQvZJ7YT/6m+1Cf5dsSqPbFMJQRR8aakInxf3sOXq733MZrIqJCe+L7yfppoM+xgVZoT2GTS6XIY2Ce2soIUn4iLpOkIF3b0rh7+SORzg7ccLVACS26rHNcCDxVPw0H7n9r5QvmxGE=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1755772491-118867
+X-HE-Meta: U2FsdGVkX1+XXeBQVTVj5GJNru1gm+SDdf8W5rHox+6+D4NotqmicJeMPN33jCzjoADYXibKN6ik5nQ+c9DGWGWwZMfhqp0FQQkMjiNJfugxSKMwd+UrZYLDOVRlThwSREx8dbm5FAeA6g5KUhIanlX+RK8CqAvhRJZYtRXHzFC/8MbqA4oYlU+uSc//y0eDpscxWIRTLs6ai/5Oedd+g7ii/3D7jeDlh6XfBzecbOPkm2K4avho3PXDYyhZySjApGq5vDFeR8UkSoyAo//uXcxAabmBHMC4YsJtT5PKsQcanerqWCWUm6jkwnlb4FNgPjrOJ4CTPfZqOEeJ/5usktNTJlRihjXnuxaRB0K+v2IdMnc2GTTkZbKYEQTwRQxNKBCmZW6vEDbKZuyxvbPoiX85RsukA6p/rg8Y6qDEjVz8iEkyXnj+u26Z+BOAgAYqlQbU30tcuWihAWWjOgpBJ5QYCIkvpqnarrLKIWLa/DCtVy3rdlveTPNo/Yux663/QHnIQdGs6jziV/XQllG7bckAPD0AVm32tofU2Rnzun0GtN+xIrNvxMF3WfS1BsD1Q2LVHwCMx0HbGd7/6wiNMVFvENoVRTqQOdNVW49s2F+SC9LG0PFvuSdgUFsETgbNQbPCSrsgoQ6A8wSgHT//OThb92It4y40lcpHdBH/rdEfOOdE69agSuAX5Vgypvh7b7lVKmhNJRqm0rixiNhLoqE+ruyMKyRtS9Hbf0kRHX0l3gkwhfP24uOcyGqWkot8IShsQlmF6D+y5AVX+mEqyCNAD35BcDqHQ9u9xo9tGaaF6jjMoqGdkVLv+wysSre+Xl7mfqONowz/q0C13Mxa6J8gkC3zmJryjkJ+s8kuY0VWyAyxmel7q6s18ukFWaWJGRRQrmJV+OAw3+uAspqlFK4Dz9qTeGQbPu+XlpOlzmpsAg6VzVcKNrkd+TlPjGd+n8PItVXiIgftrBAycr3
+ VhfAR1eQ
+ 3XW+IsoycnIYE74UbGsPu/tIxU7fs3jiKS5WrPax48ImKRgP+jb1fODSgeiHF0sZOaTFpapwOPTWXJeIjkNRKsq5eIrerF+CBiJ8u4qeIIW1r8/iC346G0F2vLsZ4WasD6HZeDHURmtYbLO4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,33 +102,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 21, 2025 at 11:45=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
-wrote:
->
-> seen many things get backported when they are incorrect even if it
-> works in practice, so that is why I suggested to backport it anyway.
+On 21/08/2025 08:19, Muhammad Usama Anjum wrote:
+>>> [...]
+>>>
+>>> diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+>>> index 05de1fc0005b7..a85b2e393e4e8 100644
+>>> --- a/tools/testing/selftests/mm/split_huge_page_test.c
+>>> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
+>>> @@ -296,10 +296,8 @@ void split_file_backed_thp(int order)
+>>>  		ksft_exit_fail_msg("Unable to create a tmpfs for testing\n");
+>>>  
+>>>  	status = snprintf(testfile, INPUT_MAX, "%s/thp_file", tmpfs_loc);
+>>> -	if (status >= INPUT_MAX) {
+>>> +	if (status >= INPUT_MAX)
+>>>  		ksft_exit_fail_msg("Fail to create file-backed THP split testing file\n");
+>>> -		goto cleanup;
+>> At that point the mount() call has succeeded so I think we do want to
+>> keep the goto and just print the error message instead of calling
+>> replace ksft_exit_fail_msg().
+> The cleanup tag does cleanup and then calls ksft_exit_fail_msg() without printing the
+> actual reason of failure. So current flow seems good where information about the error
+> is being printed.
 
-To clarify: "incorrect" here means in the stable kernel, i.e. not the
-backported patch.
+My point is that with this patch, ksft_exit_fail_msg() still causes the
+test to exit right away without the cleanup steps (i.e.
+unmounting/removing the directory) being executed. Printing a specific
+error message is good but we should also run the cleanup steps.
 
-Andrew: in the past, I was quite conservative in what I would mark as
-Cc: stable for Rust, but after discussing a few past cases with the
-current stable kernel team and/or being requested to add the tag, I am
-nowadays way more optimistic in tagging. Some backports would not pass
-the stated rules in principle, but they still wanted them.
-
-For instance, I tag even Clippy cleanups (so far, since it seems
-doable to keep it clean with the amount of code we have).
-Nevertheless, I still skip the tag when I really feel there is no
-point, and let their scripts pick them up if they really, really want
-them.
-
-For this particular case, since we support several compiler versions
-nowadays, I would have just tagged it if it had went through my
-branch. There is also little risk whether it gets backported or not.
-
-I hope that gives some context.
-
-Cheers,
-Miguel
+- Kevin
 
