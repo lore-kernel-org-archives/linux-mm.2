@@ -4,91 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3805CA0EEB
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 16:59:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E0FECA0EEB
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 16:59:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2ACFE8E0013; Thu, 21 Aug 2025 12:59:16 -0400 (EDT)
+	id 76A298E0014; Thu, 21 Aug 2025 12:59:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25E1E8E0001; Thu, 21 Aug 2025 12:59:16 -0400 (EDT)
+	id 71A0B8E0001; Thu, 21 Aug 2025 12:59:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 173D78E0013; Thu, 21 Aug 2025 12:59:16 -0400 (EDT)
+	id 657728E0014; Thu, 21 Aug 2025 12:59:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 045578E0001
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 12:59:16 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A2B9B1A0493
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:59:15 +0000 (UTC)
-X-FDA: 83801375070.26.F75A689
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 320D7160013
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:59:14 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nlj+MY03;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755795554; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 54F308E0001
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 12:59:49 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 09535117A70
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:59:49 +0000 (UTC)
+X-FDA: 83801376498.06.645A906
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3D98618000B
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:59:47 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=af+Hak+N;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755795587; a=rsa-sha256;
 	cv=none;
-	b=W6tlbZ6qgqt/z/mG0D3R1ciXSWLYGghuf3ywE2NGe8Ad3BAGtqPWcNR2cuOkZiiAuqE8By
-	qjrUa/35+fj6ShEBX5v1hFhhkUknzFvroA4teo8SbhlrNx0SpydZ5/+pveyAJsCnW5x7pG
-	VhuwPOJZGAM7AfiF0yRsH4NjBucjsKY=
+	b=Nc25/1SjJlQVYf8fK5BCkGuJeDSGVfSU76o3EveThsX0gsNH2XGkIBoAl9Q6Hq40/T3TMA
+	MCK2gAGP8um7UUYteGoSDBzAQz/T2ueiCy4LfdXGZ8a/sa4CLSzCYYhvmmcbOF3Oji7/M0
+	8T7EFcYQHGuSiNLRhVU2BxIndpbSoaY=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nlj+MY03;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=af+Hak+N;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755795554;
+	s=arc-20220608; t=1755795587;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TQ/cDFfjWJP4WPajez2z+JpjI3arDhlyuHRUj3zMXgc=;
-	b=FjWcyvturvAtUq6qsDoS04sw+xyKy/JYtSBvtN4kS+pbcFmF+0q1BQu+CHTLNKHMm4ZjIk
-	voo86LDIHcHFk2F1oqJBbK5RyoaAcXTjK2IJLb3rXTTcn7+dzG7aQFJjyVyNLfPUh0I/QY
-	tQiGHEbKUbq3ngazfIz28hzOWGF+zDA=
+	bh=fkZAa15LuBS2AmEIVvDAYKNM1p5/m3Ph4Sr+M3jkWbc=;
+	b=gqar4bKJ21HN2ZoJ9LldeoPsphJJF0ZOlqWbMAE7IdCtL83xaGPQIZWC/qXD/yPICPX2ZJ
+	3ZV+btsfjt0SDq/89m8bnOmzjy/0bxkhGRn4NRHNaDNwSiLqi9vFp0srE4WzF2eAKzKXI6
+	GZdpjhv9n4hlMkxDiF5YqN/n8liqKNQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 95618601F8;
-	Thu, 21 Aug 2025 16:59:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 278FBC4CEEB;
-	Thu, 21 Aug 2025 16:59:13 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3111E43942;
+	Thu, 21 Aug 2025 16:59:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2A4DC4CEEB;
+	Thu, 21 Aug 2025 16:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755795553;
-	bh=lluNge2cWGquXLKIKjAjPmT4YYpm8dK1DV0H182H8zE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nlj+MY03Ri0+qCpt6vlRjDsttq+/Tpvtz0u7ivy1P1So/s98IONLh5iE18yM/xUnn
-	 zVGoSQ1Th6Apgif30FDi42/4ue2M/7HZwJBB7yGFnlBLi4ct6gxRyhCnJB7Q2dvnnR
-	 lscIiFco7yEwKKRbM636Zs4vXI+y9EyDnFwO3WVKrMsrO0VB2pdpVh8TPO5OyUa9rI
-	 UuyMk1jiP1syw0EIma0xOUy7atHBezZ1lH2R3/5CBZ6pfvWm79OMYFeFFAvT2qhb0p
-	 OrWrLsUxZ5ovod1iYxqeY8VdQZoe43RNSWO3lucjmmzvWaxq8H8hhlnwRl7LYhX2td
-	 eno4p/QFg7o+Q==
-From: SeongJae Park <sj@kernel.org>
-To: Quanmin Yan <yanquanmin1@huawei.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	wangkefeng.wang@huawei.com,
-	zuoze1@huawei.com,
-	apanyaki@amazon.com
-Subject: Re: [PATCH] mm/damon/core: prevent unnecessary overflow in damos_set_effective_quota()
-Date: Thu, 21 Aug 2025 09:59:11 -0700
-Message-Id: <20250821165911.79204-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250821125555.3020951-1-yanquanmin1@huawei.com>
-References: 
+	s=k20201202; t=1755795586;
+	bh=pp/gk4pOi/0v1HmMWUiDkoQlsk+QIM6imhIi2GSSpK0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=af+Hak+Nfuz0y6X0Qr8P866fWXKOmFsFqBUtxHcrew5O8pLnWjiqhMEcRwul5lFqf
+	 uDCDxPRYZ1BuFhfghVTm+7r4DJWCvD+ES0luQVuh3/4x9Mio9Q9Yzn0bjAvy4EQp3I
+	 3tgigV4T3NrYBKO4FVr7LkF0SpONlzLKAPcdDMQ8F0ZwA3Hc3HO69utwGNyFYsu0LI
+	 Xnzid3gnttQZM4kZTUzOAs5IHLkuMBGVw+hZ6Krg4nXe/KsdTdSTPFMoxT+8RVAYg7
+	 H0GuZPtY4Z0BcnLVXy3ZUiltSZMtcwU+VLqIB+ll+7ePtZufzYkWmSsMRfPsEJB0L8
+	 63lviEWaVEnfg==
+Date: Thu, 21 Aug 2025 06:59:44 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Julian Sun <sunjunchao@bytedance.com>
+Cc: linux-fsdevel@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, viro@zeniv.linux.org.uk, brauner@kernel.org,
+	jack@suse.cz, hannes@cmpxchg.org, mhocko@kernel.org,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, axboe@kernel.dk
+Subject: Re: [External] Re: [PATCH] memcg: Don't wait writeback completion
+ when release memcg.
+Message-ID: <aKdQgIvZcVCJWMXl@slm.duckdns.org>
+References: <20250820111940.4105766-1-sunjunchao@bytedance.com>
+ <20250820111940.4105766-4-sunjunchao@bytedance.com>
+ <aKY2-sTc5qQmdea4@slm.duckdns.org>
+ <CAHSKhtf--qn3TH3LFMrwqb-Nng2ABwV2gOX0PyAerd7h612X5Q@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 320D7160013
-X-Stat-Signature: 189jfspy7gpz3k7w41bg9rd6tyggcfqk
+In-Reply-To: <CAHSKhtf--qn3TH3LFMrwqb-Nng2ABwV2gOX0PyAerd7h612X5Q@mail.gmail.com>
+X-Rspamd-Queue-Id: 3D98618000B
+X-Stat-Signature: 1yew3t8w9wreywmppc5949m9ksosk155
 X-Rspam-User: 
-X-HE-Tag: 1755795554-932164
-X-HE-Meta: U2FsdGVkX191iRidoK08eNRvZuBT4a39rHpM+5zFbu83Q7caqneKajxn31Xx+7ZCLhabG8CnVB+o+KDC46oKv99PaWu73U5ibLj5kFUq6b0eLnkvGrhhNKZYKkPvM19lYm4Ar7JqrCBbtyrECmke60obaKBWccdmwRo/fiB3bhcMB3v2Ar1ij2EHZw/z6pOaKmFsBna72aleFZEPo8eYC0jsRBWkV81373le3L97VhS9UE6DLFQ+xtmBNNnD9dutMwRTVu4Dt7BwgibYJZX59vEQX2wd2+WQr/lqFm6xDWOQ0Ydg+9aOqAN4SgnO92wCvgb9rDAuLYJEHiQi504i3PVTUhGFCAlJWzJMunpdufcrBsimVVYWLprqVZLya5VhQ6nsyAM2XTq6DmEYV0dXsCQrZ1x6aFgjUoXVuMU2ABUGP9MUh85Ol7i/Y4oCkND7d88rQ4HenhcpyLXe5sIUh2acRlmTe7xgJuYKUK6uae1kzlcuvnJDr2YR675sAPHC0SpgdWZq8ElBALpe7GTGk3bdUSB8OB9S78N+Kt1VavkapY9LWkDrvyw4+RJq1CB50R8R7VKOMWxkrqCO+HlKfEM656vJQWn1E0hg2JPaybi05WIATi2p/PTE2JnIdpgG//QiFcDWmGBVTYjzepCnw95Hwp2tsyaJ/0Ro7blfwcgNwIb6lDsoXUfJP8It3sCGOxFXmWYGOQKRcM2H9nFCi56mBhSU76LeqrKihWx7xYnqb7m44E0N5PH0MP9LclgA87RyP5sux5bGps0JYZSJG3sQcoO/bVDzOExCNkE1So956K+TmiBAlDYTq1Cfj8PZPVqUqZo2s1m4JDbOb2KF1y2uiq+w2jjUM6/j+FpMMB6xWLdEEE0RwSlM+xaIY868ysfbRSTu2h7RwCPlC4+EgEHbSkTbl+B8xgtPMtjxCEFL59DxQnrPmi7xWK0cITaD3jcU+fP8btyi3ERITp1
- IjSOagNx
- ZXl2b
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1755795587-790076
+X-HE-Meta: U2FsdGVkX1+LMe4rmGLR6PS4h9p42uG2heCvGsm4gEI7Chi1UbkIvdosIEgTfRcWrlP51g9UO4HeO3SPYwY+QxbuJNVY4wFugi32znVwQcoZT8SP2JJjvH8TCpN79oEeib0ivIUetGLwLX53PTV3EyOiJTOkUYoztVKz5TESDKe3FCaQEPe7xth3s0/LLmwCSWkmo+rNlnB5RY+YJVSjLv+5itTnomQyrzFsxIzaXVV0dQnfOXvSucQQjUYAtWe2IyBWgOCkFQv+U895L37vC6wk5dK9/iytLTeVqXtHV6gEbftNPwRJpt+Fk0lfRQ5CDJ7KAoMQ30c7zox2Ghzjm6COn/vjL0YWFfKZz/WDbkNop95vF6KTPhXv3dRVfc4b952ZeGM8sR7Ncd8ikrJQulyMrRNZElQTBzulpBTMENWvDy8xa6O3iZyCuCbmRLl6hTnxWEzps7OIb1Ekaf3kiuDt8Zz31WQwI5M9BrgYyk4qnKRBTorW/a5EIf2OL3rdTMOwzQ2RkF7FBNhXMQRj810s4lcz02UOShb7PUxfMHJ2YCiYxfWSbPAc8eN41kO++45k0Zq2ziihid0T+qwrkA01yY9dwGnja3VBXcNbOOfJUjliESjH5veR6ivW+qBFgCE+SDb0TMSbAilQh1D97FUlZ0n5xjHjL2SUyIU/crIrHdB8biN3t32pr2cB+dxKK7jMk3qj0CahVrAMcHlAyd83UDgjD7lQ3oQvTfYMGYYtokhMp/viCOr6xO2Ww8a+OEQgy+j+MWjAdnwKoeMI7K7/wlngpxTl5yv6760xk3rkxJo2Ypdq/Az0F1flzDtEtPhT9noXsAgnj/m5FOFcN3ri7HUkcegWAAiuYGkf9mLkvP52TMuqGRhnmJV1DSz4kyy08BJIAyYgYMLlFtgrDtvZ949uXiGg+QwHYk32Hx979vJs31BTkgXiE3tDsPaVD5OQrshXSMrhi05M+0k
+ /7tvk8Qb
+ xfgOF7guFNtOcTkWG1wfjhmhpSA5YOkny8tM++JWvvd9sS6trYfkWvWy89gyi14a9Q/tZ06JHM7c5ndTtS+neHgcKoXYZFLdaBaiBABYuukC9OgIb3Mbt9mIl6QaMVuOQ4DoVjzKeZUzYDVcK+2f1stI8Pbn6x0gn6xUAEnlGfv23ykfxFt0h50HfbdGW00g9Rv+l1vt4OGytMPW4jNWC/zKEle/p5PmcUbuHbL6rNMVqnBfM8SWSDNw2lsZiWU33SZmYaIecY1Q+FCE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,32 +100,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 21 Aug 2025 20:55:55 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
+Hello,
 
-> On 32-bit systems, the throughput calculation in function
-> damos_set_effective_quota() is prone to unnecessary multiplication
-> overflow. Using mult_frac() to fix it.
+On Thu, Aug 21, 2025 at 10:30:30AM +0800, Julian Sun wrote:
+> On Thu, Aug 21, 2025 at 4:58 AM Tejun Heo <tj@kernel.org> wrote:
+> >
+> > On Wed, Aug 20, 2025 at 07:19:40PM +0800, Julian Sun wrote:
+> > > @@ -3912,8 +3921,12 @@ static void mem_cgroup_css_free(struct cgroup_subsys_state *css)
+> > >       int __maybe_unused i;
+> > >
+> > >  #ifdef CONFIG_CGROUP_WRITEBACK
+> > > -     for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++)
+> > > -             wb_wait_for_completion(&memcg->cgwb_frn[i].done);
+> > > +     for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++) {
+> > > +             struct wb_completion *done = memcg->cgwb_frn[i].done;
+> > > +
+> > > +             if (atomic_dec_and_test(&done->cnt))
+> > > +                     kfree(done);
+> > > +     }
+> > >  #endif
+> >
+> > Can't you just remove done? I don't think it's doing anything after your
+> > changes anyway.
 > 
-> Andrew Paniakin also recently found and privately reported this
-> issue, on 64 bit systems. This can also happen on 64-bit systems,
-> once the charged size exceeds ~17 TiB. On systems running for long
-> time in production, this issue can actually happen.
+> Thanks for your review.
 > 
-> More specifically, when a DAMOS scheme having the time quota run
-> for longtime, throughput calculation can overflow and set esz too
-> small. As a result, speed of the scheme get unexpectedly slow.
+> AFAICT done is also used to track free slots in
+> mem_cgroup_track_foreign_dirty_slowpath() and
+> mem_cgroup_flush_foreign(), otherwise we have no method to know which
+> one is free and might flush more than what MEMCG_CGWB_FRN_CNT allow.
 > 
-> Fixes: 1cd243030059 ("mm/damon/schemes: implement time quota")
-> Cc: <stable@vger.kernel.org> # 5.16.x
-> Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
-> Reported-by: Andrew Paniakin <apanyaki@amazon.com>
-> Closes: N/A # privately reported
+> Am I missing something?
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
+No, I missed that. I don't think we need to add extra mechanisms in wb for
+this tho. How about shifting wb_wait_for_completion() and kfree(memcg) into
+a separate function and punt those to a separate work item? That's going to
+be a small self-contained change in memcg.
 
+Thanks.
 
-Thanks,
-SJ
-
-[...]
+-- 
+tejun
 
