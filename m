@@ -2,114 +2,87 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AC92BCA0EDC
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 01:26:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 55326CA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 01:37:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37CD18E002C; Wed, 20 Aug 2025 21:26:11 -0400 (EDT)
+	id CC43A8E0014; Wed, 20 Aug 2025 21:37:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3068D8E0002; Wed, 20 Aug 2025 21:26:11 -0400 (EDT)
+	id C95688E0002; Wed, 20 Aug 2025 21:37:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F5BE8E002C; Wed, 20 Aug 2025 21:26:11 -0400 (EDT)
+	id BD2888E0014; Wed, 20 Aug 2025 21:37:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0AF538E0002
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 21:26:11 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C5755137926
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 01:26:10 +0000 (UTC)
-X-FDA: 83799023700.11.B02C7E0
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 22C61100007
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 01:26:08 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=DXf7kKTp;
-	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id AC39F8E0002
+	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 21:37:19 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2466F1601E8
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 01:37:19 +0000 (UTC)
+X-FDA: 83799051798.19.C72B0A6
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 2E342A0004
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 01:37:16 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=TBCnFIAu;
+	spf=pass (imf15.hostedemail.com: domain of chengming.zhou@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=chengming.zhou@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755739569;
+	s=arc-20220608; t=1755740237;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UnEnB+OmfWctn0N7nbpiwPaAHdKfBNMlU6IYB1kOEBY=;
-	b=tGVf+Tky9OBl9jBFygANDvWq7eQuwHBt2vhzZrYN5VktZ76PEimRfbrtizyR8G/wM1QDfX
-	tsMe31dHX7oTdLAGVZD7hl1Fx6cgkTRZQBb9NxlNHw8xAV5L7No5kxevE3VCILb4Zw1VSf
-	mf+eiWVRnhSN0CbUGbiWxAR3UVqQeyc=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=DXf7kKTp;
-	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755739569; a=rsa-sha256;
+	bh=75+8cTaUWk1uklVVN6F+RONMTl3pG47VWO/D9dtV4/M=;
+	b=MAEgi39x9dFImDMUehraY6uy14l9rro6PUJD7bw54Y0S+MB1GIUrbq0TPwM+TUjcNcQ/uB
+	nCS9O0u3OoLVMY4osa2zPveyu0oQDuR8T7csMIHf/B75kpH3Vy9KgKCTQmzcuzmxF68jS6
+	bK0Z/Dr7BxChWbTo8M6wmYxjCa8n3fs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755740237; a=rsa-sha256;
 	cv=none;
-	b=yNBvEl/ISXna7biCSo5FNFITBFWFJvhxj87uD+J2Vzz97NNoG3qdekssER456i32WCQlv2
-	WyNV4iNVgFlC/vGkVrbnNmuRIJ0qrSVUCHJmu+mvbZmPr9xS+KuDg9Axz7LXIXuG9CVW8H
-	GrmOyoZoJNHxs7seJSvkbJAh7LcrcJ4=
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4b12b123e48so157341cf.0
-        for <linux-mm@kvack.org>; Wed, 20 Aug 2025 18:26:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755739568; x=1756344368; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UnEnB+OmfWctn0N7nbpiwPaAHdKfBNMlU6IYB1kOEBY=;
-        b=DXf7kKTpx/ghqEljsceFY3e9Uh128T3rhfQc1QNr8FZpZDBPz0cf+7kk91iLlIego9
-         Q6WzUP36ONNcU48p6QhYgXFvjvWt9EXUEVfPmLhUUDHyT8pouj1bfgnj57uRokqw7CL0
-         tkGq+2H2imZAhqptHXrkVMg6Sd6s2hpW0ifnFwcLGAyZ3ri9Y7Uf0xhxMo9NBeZxL+nn
-         2eH/sQEeUODWE4a5FGk1/+bvSUPVYyiRjUbxSLIglHd0K6+tvS5ClmZDIKFVXLjuc0r7
-         K4iEYidD0/W5kMbb1lGVeGN5IZOiKDQBK/2Nv/SihvfKyKTUoRFppitkPUkqCxwodTdl
-         E3Lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755739568; x=1756344368;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UnEnB+OmfWctn0N7nbpiwPaAHdKfBNMlU6IYB1kOEBY=;
-        b=ZYZ1SpH6Vh36JR7rO2BzTt1WPnwNhE87OUIpwb5D3qrmKnCIvLAVC8E7UYkdEZ76AE
-         BGhxb6/ta44E9PZg96gPE7O+aBFDOOVarNIw9zwgIRBQEkMOb4Xq68WrG8jtyAW7EDte
-         LdSd9JrqFieQPxhNuxYkdQnbPmOypc57iylZ9n7gbT9st6pwd9M2y3q3vxUSNyBo1C9y
-         EnSY5dC3Qt9ThwfUNzRym9j8SY4JliJlf/ezS0EIn9ebsqvbjuGbtuxaHoeS7PMQObW3
-         a9EfIMJA8KnFYaxIsp9xAlroZAg86GwVLluub/JRo34Gw9/gZryDz/22zcR9bRbgxM4R
-         tc0g==
-X-Forwarded-Encrypted: i=1; AJvYcCVnY2MJDQB8XOJGn7WQy8alLJFO430qOPkpScYRPRN9+zOB0STWy5Ztis95kMZYXiOpE4l/CDRk0g==@kvack.org
-X-Gm-Message-State: AOJu0YwsvBbwyEaRDp37hXBGHLRoVUAmavNkaFPYUf9ZWQ9esChpqwP2
-	D7itaMV/hZwgvuuUFDZULx6KlG/KhzOFKV5hcNJ2aNdSh6DkD8QHKfq/jC8NI/QmsVGN3oCHmzP
-	sxrpklrITmODq8JrySjJOLZbq17KLfviOgNdn2XXE
-X-Gm-Gg: ASbGnctGeyspWZ4WhopjElqbj0FsrRCEZTKBBLhdizUAHGN4ryF6xXzwQfSCgqshwzc
-	3FLFzUOqXWUS6TXMHePjAUQvC0x1aCqzBampUybL56I+G+/SiI27AA1xLu+EElnhReIvjY/2Ci9
-	i8dN+vJbxN7+JsqmFM1IFTBpE7KY5a48nkOEnxZkb3krxJMq+Euiw934KpUOKt+rIYcDdExsAHW
-	ItyntHLjvdwK159MIaLMfw=
-X-Google-Smtp-Source: AGHT+IF25yXOemiZH2ZR4Arkb61fkkHIrHwpV+wk+bChi5o1xR1rtRMEG0QaE7vvEbDuUircQFhw++4IAgrYcJ5sqPA=
-X-Received: by 2002:a05:622a:1aa0:b0:4a5:a83d:f50d with SMTP id
- d75a77b69052e-4b29fa06aadmr1313601cf.11.1755739567869; Wed, 20 Aug 2025
- 18:26:07 -0700 (PDT)
+	b=GVxyZYLlL5Mf4cOx02FrK0UBzqfzKI9TLosNhSb8HtxiAB/dy6eDvKea+DFudSeed+L1px
+	V5iyk4UByaOsgEAZt6OvG/yKGsPbTEgyctLbBeei+3ekC9KuA/G8/4CC6Y1I4Fyrq9MZfn
+	BBlUNoM5/zTuSMgdBG3xhBCHUFDR/Mo=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=TBCnFIAu;
+	spf=pass (imf15.hostedemail.com: domain of chengming.zhou@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=chengming.zhou@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <65263090-79a9-4d18-a016-c8f08dcfff8d@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1755740235;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=75+8cTaUWk1uklVVN6F+RONMTl3pG47VWO/D9dtV4/M=;
+	b=TBCnFIAu1PLgJoeXwQrNHUVpHUlTNud0dY3FaEv5oSA0S1cjvkpMChiG7plAF289VMem4C
+	N9dhNnRIE8T0H1rfSDTQ98t/Hs5CgLNF8dJ//tFT2JlFb8FnKndFEPwgJNkI/SJVzgEcEH
+	1qwU/IW9XXb3ucGKI3i+KACQZxfDCKE=
+Date: Thu, 21 Aug 2025 09:36:42 +0800
 MIME-Version: 1.0
-References: <790da5ffebf18a5a1211ad8dbe4e5b4a19871408.1755190013.git.pyyjason@gmail.com>
- <20250814201114.1921580-1-joshua.hahnjy@gmail.com> <aKM3j3geY7JiPGQ8@devbig569.cln6.facebook.com>
-In-Reply-To: <aKM3j3geY7JiPGQ8@devbig569.cln6.facebook.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 20 Aug 2025 18:25:56 -0700
-X-Gm-Features: Ac12FXxfS-7fdVyZ0dA_OJvGZ-bAD31CipxCzxMcWrdx3YWMjTVoIUgJPZr-Bpg
-Message-ID: <CAJuCfpF11tbq7eEhzJ-7cneGKXDg5cxQrdWNVo1whyLuFQGzmg@mail.gmail.com>
-Subject: Re: [RFC 1/1] Add memory allocation info for cgroup oom
-To: Yueyang Pan <pyyjason@gmail.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>, Kent Overstreet <kent.overstreet@linux.dev>, 
-	Usama Arif <usamaarif642@gmail.com>, Michal Hocko <mhocko@suse.com>, 
-	David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 22C61100007
-X-Rspamd-Server: rspam04
+Subject: Re: [PATCH] mm/zswap: reduce the size of the compression buffer to a
+ single page
+To: Nhat Pham <nphamcs@gmail.com>, SeongJae Park <sj@kernel.org>
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, yosry.ahmed@linux.dev,
+ herbert@gondor.apana.org.au, linux-mm@kvack.org, kernel-team@meta.com,
+ linux-kernel@vger.kernel.org
+References: <20250820181547.3794167-1-nphamcs@gmail.com>
+ <20250820224659.88528-1-sj@kernel.org>
+ <CAKEwX=NLvQyZTqv15kACZP2wErO9hyv9W+0j-BWrgOh5ZX1LJA@mail.gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Chengming Zhou <chengming.zhou@linux.dev>
+In-Reply-To: <CAKEwX=NLvQyZTqv15kACZP2wErO9hyv9W+0j-BWrgOh5ZX1LJA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: n8okf9tbgfn97n61y3qnm1ub1sxbdxqy
-X-HE-Tag: 1755739568-978
-X-HE-Meta: U2FsdGVkX1+T+JSWSsANAyZpTJORfCEcZ1KYi6eGrtpZs2ioo1UzCsxaponcPsMXvvXuFjVVH9Oowr95hXyJqAJ2/t/xoafvdb/1lLlvbvcu51oI27Dt6PhAtbiZ3mucsTzw0dOV9VL9rrOCYETml/OEQk4ngfQmOIhiWg9aP6wcw8Q40EOp9y3taPkulJsjMgz/iRxNcRKwVfvFUTP8NMjNK7pab7FOEX1KxVQKEcU+7Hw2qBPBBaMr2nEjoJDuKNuzhhb/bXY5XAnR+sZUISy7h3CqzuvKLXBqaV+34uUSMvsNhFtXvVE0s0GeG2AvTsOsMs6zJauzva7UauwdgcfRMLZSdeDyLsuo6k9WuwYz/aJzH74djyoAiEwvVhUe4xe4axO8Odw+Wj4uMLtHHDsMykxCcpgqfDYEAzgwhUasOFwvBT+jaadGWb87/oxJ/NHLcxM4iWYfKdwofK4z/gRRISEMd3MAcSRJZgFQC/3seeNru/PS/drnLOpTrB7raqxoLKjT+eIY9u/OvZvYMROevhT1DlHSvxX9z9ehsP/pJZhHOKRIw4AWiemsSAQ0gGPL65FNclEQInXzrtch3pHaiQyAqHODGqy7SX6YfxoIH5z2L3SmBI74RX6WWT8lAcVsuNsv+QToHsbirSSU+F3jy3TEoPU+6AQ/I/k1MjCLGMSVtwS8xW4qvra+cOVbCb4UWdfpSnPMOFOK73IszAwfem0yZKLBkuudJ7NcuKMOsAXCEL/SJmb6qp9WFKi9zs0i/hL9BVz9nAGe3qk5w5Yd2BaXbpVCWGBbwo9AfQuvVz6DXzMIsmOI/U1WeK5mPd4kCKv5dRgJuwK66hwbJ+E44o6FR9Pt4g9C8QrOqgJn7CO3sfN/KiqNiKC2f29scwTpo/Y2ar1xPoQAj7iJAz3mIGtbVNrcfAZxxR7cJh1wwuD+ExSbb2k+XM5MtDOH5cZ/FW6FkAmA+k5IiUG
- wCfkczr/
- MvcjwY9Jt95uawYc=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2E342A0004
+X-Stat-Signature: rhqffpjh1d4kzo55e73ezg9xwxditj8x
+X-HE-Tag: 1755740236-506290
+X-HE-Meta: U2FsdGVkX1+YhpXGa1oQow/7wDbl6rjmPQj8e01rbiy8L551mO+bA8EvaanRXQsOYp3LI4gZqZaXzKNfLrJ2JlVB/vSwJkj8E/6Xz6ClLkkrpzI06k4f6D6OkCSW9JAy0HIAyZpEPDQg/edOndE0gl+d/35fvMa1LlcblRwYUX2EpO1NVyp3f7aLcuWHghiUe2X/t6tWmIHUUJ25NbCsy5Bn9N407m3psa2nlgQF7Bsl3ptm9hdhUhN0GWKvEw55HW0rD+7IonXdqzrdEaaVsLQ435fv+HokQZoGYoC7R5XYCygO/x6nmxxorbrCtGnemq6TEYMO740CCt1eWAT9imX1gBuzI4f2i4V8NduKRCyWkgAE/yc8P1q3skqZAnhNoSI8Jfhcv0Aqbo+KFGigqZAzeAV4CVjVQ/nyAUNKq+SvPiZWnwMRXJfnO2SB3uLQsR8bKnWY+lVhna0D/X4oLKgwJhixF/2evoBiDQmX7k8xSCySpqJMg8nhLXqqKCTQKnGa4zdEtM/9zXW4DlWPL4P/KUx81KKV+EbMzehrFxlwHFtlFPMs1fA//74gaN2OQ/89fhYaH1Ril80YxEtoCU8utQSf4xWkyAxLL+dOLMtUtnMO2oErj0PPzdqAx4d10xk/DDGDk9s91c6/32qs1fodzyhFXAYRFSUWf/pqJT84BwJDl/h8uDIaXJAdV4NQnvg9sCdQLuqCQ9bnoVFUkPVKGJvHk836IaW3gfkyJZlFBSrtJZE6xO+sk5wZj7ARtPVpkaFUw2aBRb+azPv36n5DngTlIJhUYqEDdTAvOcuLpMlgWqJAIxxNLmr+Xhnnt7sItk/P38/rqSJUnFQQ8boTPXkdwpDgfXI54J1iT9VTajqJ+kwQzBf0oe7JYP+VDDryAC2F4SjYVsw1XJ3D7Aj90qXmbFHsLnvmi+sR5LIJ1tFaztaASN1UTrLXyIjrXT6ouSbPvg6KEbt0qpU
+ 49GHfB78
+ +as74es2xPdYwaMNdrGXyjSZoUCPyEN/UqSBrGOowVNApB57zETmR5Vmx36HSCyGMCQCFtme9NoH66qCm06lUlMZpSSjHnUqy2mSsYidgDYipEMYbvUmG1pJPDjWMXkvffdiGjenjHm4yOBwhuv6FC1BuArwWihh3CH9w13ojtEGq6gfpK9+i0VrecW3IOj1n1K2POokQlj9lnc0wKTslN4+/6H5uioXWkz51ludcMtjOmG5A/4A6rnt9R5QC6vFEdDJOjNL5TGhjbnDRuRaP8AHtwrNW7kwEKcZIUQWsf3/AuWWZxnoFJrAOWbpS4jrfmujquXMkViWbwCcgexnJry2tJmUH+/ThTZ9+0SkeDWeW57WTWJq5/kQ5l456Wl3Habbtdzkkig0tT2rbpOhTJBZ4Kch+hSg16+GT
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,103 +91,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 18, 2025 at 7:24=E2=80=AFAM Yueyang Pan <pyyjason@gmail.com> wr=
-ote:
->
-> On Thu, Aug 14, 2025 at 01:11:08PM -0700, Joshua Hahn wrote:
-> > On Thu, 14 Aug 2025 10:11:57 -0700 Yueyang Pan <pyyjason@gmail.com> wro=
-te:
-> >
-> > > Enable show_mem for the cgroup oom case. We will have memory allocati=
-on
-> > > information in such case for the machine.
+On 2025/8/21 06:56, Nhat Pham wrote:
+> On Wed, Aug 20, 2025 at 3:47 PM SeongJae Park <sj@kernel.org> wrote:
+>>
+>> On Wed, 20 Aug 2025 11:15:47 -0700 Nhat Pham <nphamcs@gmail.com> wrote:
+>>
+>>> Reduce the compression buffer size from 2 * PAGE_SIZE to only one page,
+>>> as the compression output (in the success case) should not exceed the
+>>> length of the input.
+>>>
+>>> In the past, Chengming tried to reduce the compression buffer size, but
+> 
+> Yeah, this should include the reference below. My bad. So it should be:
+> 
+> In the past, Chengming tried to reduce the compression buffer size
+> (see [1]), but
+> 
+> Andrew, would it be OK if you fix it for me when you put this patch in
+> your tree :) Or I can also send a new version if that's better. Thank
+> you!
+> 
+>>> ran into issues with the LZO algorithm (see [2]). Herbert Xu reported
+>>> that the issue has been fixed (see [3]). Now we should have the
+>>> guarantee that compressors' output should not exceed one page in the
+>>> success case, and the algorithm will just report failure otherwise.
 
-Memory allocations are only a part of show_mem(), so I would not call
-this change memory allocation profiling specific. The title and the
-changelog should be corrected to reflect exactly what is being done
-here - logging system in addition to cgroup memory state during cgroup
-oom-kill.
-As for whether it makes sense to report system memory during cgroup
-oom-kill... I'm not too sure. Maybe people who use memcgs more
-extensively than what I've seen (in Android) can chime in?
+Great!
 
+Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
 
-> >
-> > Hi Pan,
-> >
-> > Thank you for your patch! This makes sense to me. As for your concerns =
-from the
-> > cover letter on whether this is too much information: personally I don'=
-t think
-> > so, but perhaps other developers will have different opinions?
-> >
-> > I just have a few comments / nits.
->
-> Thanks for your comment, Joshua.
->
-> >
-> > > Signed-off-by: Yueyang Pan <pyyjason@gmail.com>
-> > > ---
-> > >  mm/oom_kill.c | 4 +++-
-> > >  1 file changed, 3 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-> > > index 17650f0b516e..3ca224028396 100644
-> > > --- a/mm/oom_kill.c
-> > > +++ b/mm/oom_kill.c
-> > > @@ -465,8 +465,10 @@ static void dump_header(struct oom_control *oc)
-> > >             pr_warn("COMPACTION is disabled!!!\n");
-> > >
-> > >     dump_stack();
-> > > -   if (is_memcg_oom(oc))
-> > > +   if (is_memcg_oom(oc)) {
-> > >             mem_cgroup_print_oom_meminfo(oc->memcg);
-> > > +           show_mem();
-> >
-> > Below, there is a direct call to __show_mem, which limits node and zone
-> > filtering. I am wondering whether it would make sense to also call __sh=
-ow_mem
-> > with the same arguments? show_mem() is just a wrapper around __show_mem=
- with
-> > default parameters (i.e. not filtering out nodes, not filtering out
-> > zones).
->
-> The reason why I call show_mem here directly is because cgroup is not bou=
-nd to
-> a specific zone or node (correctly me if I am wrong). Thus I simply invok=
-e
-> show_mem to show system-wide memory info.
->
-> >
-> > If you think this makes sense, we can even take it out of the if-else s=
-tatement
-> > and call it unconditionally. But this is just my opinion, please feel f=
-ree to
-> > keep the unfiltered call if you believe that fits better in here.
-> >
-> > > +   }
-> >
-> > NIT: Should this closing brace be on the same line as the following els=
-e
-> > statement, as per the kernel style guide [1]
->
-> Sorry for this. I will run checkpatch for my formal patch definitely
->
-> >
-> > >     else {
-> > >             __show_mem(SHOW_MEM_FILTER_NODES, oc->nodemask, gfp_zone(=
-oc->gfp_mask));
-> > >             if (should_dump_unreclaim_slab())
-> > > --
-> > > 2.47.3
-> >
-> > Thanks again Pan, I hope you have a great day!
-> > Joshua
-> >
-> > [1] https://docs.kernel.org/process/coding-style.html
-> >
-> > Sent using hkml (https://github.com/sjp38/hackermail)
->
-> Sorry that I forgot to cc some maintainers so I added them in this reply.
-> Pan
+Thank you!
+
+>>>
+>>> With this patch, we save one page per cpu (per compression algorithm).
+>>>
+>>> [1]: https://lore.kernel.org/linux-mm/20231213-zswap-dstmem-v4-1-f228b059dd89@bytedance.com/
+>>
+>> This is not mentioned anywhere.  Probably you added this as a reference for the
+>> past work from Chengming?
+> 
+> Thanks for taking a look, SJ!
+> 
+>>
+>>> [2]: https://lore.kernel.org/lkml/0000000000000b05cd060d6b5511@google.com/
+>>> [3]: https://lore.kernel.org/linux-mm/aKUmyl5gUFCdXGn-@gondor.apana.org.au/
+>>>
+>>> Co-developed-by: Chengming Zhou <chengming.zhou@linux.dev>
+>>> Signed-off-by: Chengming Zhou <chengming.zhou@linux.dev>
+>>> Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+>>
+>> Acked-by: SeongJae Park <sj@kernel.org>
 
