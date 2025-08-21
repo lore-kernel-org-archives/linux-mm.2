@@ -4,99 +4,193 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04E05CA0EFA
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 21:41:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8FEECA0EFA
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 21:51:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4DE548E0063; Thu, 21 Aug 2025 17:41:56 -0400 (EDT)
+	id 235E7940007; Thu, 21 Aug 2025 17:51:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48DCD8E0056; Thu, 21 Aug 2025 17:41:56 -0400 (EDT)
+	id 20C558E0056; Thu, 21 Aug 2025 17:51:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 354DC8E0063; Thu, 21 Aug 2025 17:41:56 -0400 (EDT)
+	id 0FE78940007; Thu, 21 Aug 2025 17:51:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D3938E0056
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 17:41:56 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C135CBA018
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 21:41:55 +0000 (UTC)
-X-FDA: 83802087390.15.F7E8475
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 0536C20004
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 21:41:53 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fZvB6nlq;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F0F748E0056
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 17:51:50 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 31AE1C0540
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 21:45:28 +0000 (UTC)
+X-FDA: 83802096336.13.867FEED
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 9688714000C
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 21:45:25 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dRqQIkhv;
+	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755812514;
+	s=arc-20220608; t=1755812725;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eIFS0csaB1k7FOeyUy61obVUEGBpqFFKCT2cPJmBt1c=;
-	b=ct6h0Nf9kK85P1fjJb0P4u21xWDkp48mEggS3dwMON4ymVY5HeRVaSpONHIHSybnLkU0zl
-	vweDfLxXOF5XvCmlUzOmWNiU+j5xsPSFnqzLjPXbGToO/bHZxwSaUBKidXFCeTEO4Bxdpr
-	Cp4zCIbfaimDxN/d+9Cv+kK3l0wxHE0=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fZvB6nlq;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755812514; a=rsa-sha256;
+	bh=xgU+Z5k4KPqEraeKDWCOzJcpc8HGVmW4oZxLQRmx6Ws=;
+	b=zweeVPTkXlFY8ZGjqkALrXM/G7LmRWdtb7XFKQVBOiJzfGHbsbjW+dWpLCuWNxcrZjrvoY
+	o/I7tTBjsIDUZrvbyjaxc+mKzO2KbJefogx821UNkLtxmeLtsJTShIUB+mRIHFe9g/yyZl
+	vxJFY+4sp8p3G/s6MdQy4hIg7hOhEbI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755812725; a=rsa-sha256;
 	cv=none;
-	b=OJJRwp4cnerVO9B+UrHNCDHcxAZ7m1SE/9NHufCLYFGzr+UrURt4i39a6koHnLFz9jVBVj
-	6n+br7gWcH9ql/8cvVItvyGvoDXtmF/lSq/cQrAQggK6CfktxI+239oyXmooHxVysCIWfj
-	F3I2MaTgZq+6oEkdyu0TI9w6WyR38e8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 1C93A5C5D72;
-	Thu, 21 Aug 2025 21:41:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8962AC4CEEB;
-	Thu, 21 Aug 2025 21:41:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755812512;
-	bh=dN2haf/5HOTLTD8G28EiqnCMdgRUmDTwnhod7N/s36k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fZvB6nlq1xfjgHLIGy2a+G5b3O1Vf62M+K3G0ySm9RFVhVvORhyqGntOIHjF2lyWq
-	 CWD0h1c9HfC/YrcxGWGFKBRLIEmwWOhcAEoUnnFAES7bj/ZaQoOSZDIaRvVERvj6B/
-	 jpwjmyqTh3ZrH/HGWqqw2WT/YwSPUQIj+ZUA07AzkzH0TpRESnpETMzjltIUSjhKD7
-	 MAIfCiwHW9Ho/WdX5yxqi69kkBSvlnBnkIkOIetdrRHwmHSQnVPaLlZAZN4fsgT4eW
-	 G3NUAf10RQpWUg18T/hTt/2U+H+c548KnRu/lwyBzf8koyJL6QLiXVBvfBGMelm7db
-	 bfq7/OBLD1Xuw==
-From: SeongJae Park <sj@kernel.org>
-To: Chris Li <chrisl@kernel.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	kernel-team@meta.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Takero Funaki <flintglass@gmail.com>,
-	David Hildenbrand <david@redhat.com>,
-	Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Kairui Song <kasong@tencent.com>
-Subject: Re: [PATCH v4] mm/zswap: store <PAGE_SIZE compression failed page as-is
-Date: Thu, 21 Aug 2025 14:41:50 -0700
-Message-Id: <20250821214150.1911-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <CAF8kJuO7vQS3TB34dDZ6reTfeDpfSL9CNQqEwZWjZsGdhirs7Q@mail.gmail.com>
-References: 
+	b=fC+gVqW9yND7/A4efcxYL7Yc/bRwlQJcRmB+cgYtk4MW+1GBq2uxrHb3bc0LlyxcJr2UhP
+	RFAp7zp01GJC+PBxbWwNiiYc46vJORosx43am+DHrfpgE4FO73nLo0jfclhsMaaMS9h5i7
+	P34IsEsHnOW+vnG153nKmzvcTXqLYp4=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dRqQIkhv;
+	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755812724;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=xgU+Z5k4KPqEraeKDWCOzJcpc8HGVmW4oZxLQRmx6Ws=;
+	b=dRqQIkhvznsxHhME/+IsWavrsBXHmsqA0USw2cVx2/8Cna6y7TDXT7A4V4YY0RH+Vyq445
+	cqT9YJffSaWiz53FMiq5lWOj7T5uEy3nhzvy3Lhlxxc+eG9yvep4UwD5yR53gAaUEx77Qt
+	8YtGULrUxS3zsblyXIHRYH0/wkdNEZw=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-670-6sosH_vMPQGCSBnHlgylMw-1; Thu, 21 Aug 2025 17:45:23 -0400
+X-MC-Unique: 6sosH_vMPQGCSBnHlgylMw-1
+X-Mimecast-MFC-AGG-ID: 6sosH_vMPQGCSBnHlgylMw_1755812722
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3c380aa1ad1so542125f8f.0
+        for <linux-mm@kvack.org>; Thu, 21 Aug 2025 14:45:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755812722; x=1756417522;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xgU+Z5k4KPqEraeKDWCOzJcpc8HGVmW4oZxLQRmx6Ws=;
+        b=I77/Nn9VlaR79iYvuRFtW7PLqcZyN2+jmznyMbmgpA6iZLgrLgg0jQF8SPHBu+//3X
+         o/purlw9cqxnaQAgmgO11pTjyUXjebaIAnnUDkDWg3aUHcu8P4KZq7dS9Fjxwd9RvQyd
+         hnwhmeJOSrhm7Aw5G7K11amfEAEfMo9UQJaOvL7FfSKaCPfM0wBorxxzboQqKJJaDJi+
+         zoKbGsV3XoEkmV4SZpeMQ1zNoVUV+yJx6JfmeCOyFF2IcEFWoBaZ796uBmsEms0rmmLa
+         gjUNu8rHlu2T10bPmUICwmE1rfLbfj5+SzmwMN24sxKbUqleRrAl/TYfjmBALFFyu5/a
+         SBlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX73CYyK317N/fUe2rh9aOoqCk47XQMvPeTzwNYQxFTwSpzBEWS2xVrNxW8HwnMnIX628n9fG1QJA==@kvack.org
+X-Gm-Message-State: AOJu0YzabBuzzfcboP3712KRMp+Psjs4Fc4AaK+KGtHknXRoIHKpBafD
+	sKBrcZHGv8qMIeLw8yZl6LcKxMHW8KtYHQSjARtRoL+hHcZDbWcAV2RWVfh8mrmsjAgqn+wSsxz
+	E2UamtkN3Clt5OetRNoJy5MOFSk9LaCJw5co8X3n6JEERPZbf2q9d
+X-Gm-Gg: ASbGncsQYCpRoOKP2vddNHz3c39oF2u+/8Lxgb4npj1mihf1AU7EU/suOniILZALDEI
+	f7ou6I4vTu/WJq8W2q6hbcMsH0mBTZcGnkR2v3eUC4+l4a1Lf46zeSixboV8P5arlx+y1OQ0SiA
+	h/MGE13/x2Q62u2RCdTLx12OWsLa+vIKfZoT+Lb1YPeNMNVainvaCyrCfzjoncEDnl2zD7il4Vw
+	nsrCz1yr25hvAqvc6gEeRHbMnQf6REVg1hlbclys5NxU4FcsiCJw1OM7uh7XPiWzWjxZsGHyyaA
+	kb5RaVTbxEkEwwxPh4DySr3SmcltuesNfU2rYtO2M0Z9b0c3Bkif/s8acUEIv84cn96lJUF8xN0
+	zROPslgqE2rlISpViW441uIwBKD0OmSqPNqolrcfTiKYdOROTsuuAWJBLLA4ELw==
+X-Received: by 2002:a05:6000:2902:b0:3b8:f925:8d4 with SMTP id ffacd0b85a97d-3c5db2da00amr300070f8f.26.1755812721886;
+        Thu, 21 Aug 2025 14:45:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEfnhl0R8ZwVLuxUZYmGD7nMrbthuKRx51tD/iqNpCQL5sxy24UygUdE3xc6j7fC/B+t7+yTQ==
+X-Received: by 2002:a05:6000:2902:b0:3b8:f925:8d4 with SMTP id ffacd0b85a97d-3c5db2da00amr300045f8f.26.1755812721421;
+        Thu, 21 Aug 2025 14:45:21 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f26:ba00:803:6ec5:9918:6fd? (p200300d82f26ba0008036ec5991806fd.dip0.t-ipconnect.de. [2003:d8:2f26:ba00:803:6ec5:9918:6fd])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b4e25da97sm22067085e9.1.2025.08.21.14.45.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 Aug 2025 14:45:20 -0700 (PDT)
+Message-ID: <b09b7ef4-5b06-4bb8-9be3-1194e3904c92@redhat.com>
+Date: Thu, 21 Aug 2025 23:45:18 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0536C20004
-X-Stat-Signature: 6wi9cfwyxdjd16j5xajumwbpotanh3w1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 33/35] kfence: drop nth_page() usage
+From: David Hildenbrand <david@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Brendan Jackman <jackmanb@google.com>,
+ Christoph Lameter <cl@gentwo.org>, Dennis Zhou <dennis@kernel.org>,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ iommu@lists.linux.dev, io-uring@vger.kernel.org,
+ Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
+ Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
+ kasan-dev@googlegroups.com, kvm@vger.kernel.org,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
+ linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+ linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
+ Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+ virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
+ wireguard@lists.zx2c4.com, x86@kernel.org, Zi Yan <ziy@nvidia.com>
+References: <20250821200701.1329277-1-david@redhat.com>
+ <20250821200701.1329277-34-david@redhat.com>
+ <1a13a5cb-4312-4c01-827b-fa8a029df0f1@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <1a13a5cb-4312-4c01-827b-fa8a029df0f1@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 3XaWbA2mhIXUQpoxs_OfMrUorNxs7bnVCzFjEqJHJZs_1755812722
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1755812513-2403
-X-HE-Meta: U2FsdGVkX1958FZMCByJ9sYiNBoXT8LoAFnMGJYNTx0uBGsI++fgZiOoQccU7pxujRTjeEI2Ojc48bU82MHqQRAfIybHfKQ7tGs1oAZVT2Ur879NHGsrEmADzXB1vzWUfYI9sAjMvmVtiEObJpXbKJ/zSzbZjk//akjdoywV96+egqRBcF/S4jKt5Zn3tZ6VBVQ0acfrY0tpBBOSIiSzWrG8yfXuBFKnVrUH3fOmWOMrFDOrwvcrNyS64FAbe3IglRUBrWPbEFy2cEksFlAruNaT+GuZTwCP3EAfd9AEJmu5xxnXztk5vwVkQP6l/0k0Kk93Z9P26ogVCqaTwkUgZyhyWGNMmRJRqv3+kz6dUWnPaOMEt/yZzPeA4vegKsultUtZMpUjScMZJn7m4OEideJ2Ktu6PBA0eKv5HH/5sgJwQMOaHn5SsBSLq8YSrchTzt8Rmt8uYX4+XnY3vjehGMSLeUV4DohWUGO8SoIGE+4BRRyErA3PiGY0GbV0UK9tPUo55Nu+7II83OqCWStlXk6LPZ5ulVAwmPo+EbYumA1Una0y22RHpY3QEgBBJI7QIPVBw4qz6UbnuHloiNmOQPzMuZP3fK1hZo2qhQqaLFFFhKxQbrpMGhK17ZK2Slxfcf72UQQmV0aD/WZWeCC0lziVEaLoG/MBXTcodEz4yjBqTfbil1a475ghH2TCvClp1g2yD/KOCNzWhrFSyjNy8WIb9jXOiJhUHOVpsr4QnM8uc2H1OEKkSLYA+BFJPHj95OKEeWiqSMdCmylNbYLsjTGSWK+3abEP49JMbs2F0U7S8YITtKBt2aDfYWnNMbXefZ7Iey9k26+c5iWG/+1HynwXim6LrskdhKtX2KUbvCCeWCk8pz2YCm2d5I4m7pjT9fpATMcrgxykDPLZekiup4hWcFWayuqWyGGYx2mbJmaNyaMcXKBB1b92RH4BM5PEse70GU3Gc5ptVXWi69Q
- Pyxn99fd
- T2QqU+e8NG7EAWUsGnqM1x+PZOH22tbgkywWyT+IyDCB19NFjH4/+EeqBxUYL5/1/ynFyNdNCRPmn9X56H5yG0X5H8wdTb2YsCeyZ/J0gkWY6oTnZysNYeR9v69Ze2QZ5NpMu5flnO9aNcP22Tp+PVERdy4iVHioAjcaQqccsG0dylKoNrXt0POXh0ZVzLAbwdBKDc6YvbMTzE4Sdbu5SeyXD1mKy2kKjBcXp2aVvbupfCghEJ2INzT0ra8RrPg2d1j3kW5LmxrFx0CglQJPx/6/vXGlQ/9YX+ghxqizCJi1odp+7xQ2PQKMbcjTXdT2z4NG5gG2JqcWW7Yv7WQCErFuuqlUEIT1sXd8MNCKkU2gnpp4=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9688714000C
+X-Stat-Signature: qnqd5tec389iuf9itor86bz774rghsat
+X-HE-Tag: 1755812725-77374
+X-HE-Meta: U2FsdGVkX18ewcSBE62bdp1Pw3uIvlDiINxAlKywgZNVEZGVdqUu09b2sUrG5NBDMrQvr+6S3b5oqnyLWUfNKlTVp984tfLlVQGOJjGOLSN360h9GILRoERdWN40Ycj4jz7LqacDG3UVfql2yk1Co0pfGrJENApxL/gzAZ71d1L2Tt9HLo0xzATpj71946JN6G5gk0k+QBBRUXND9KMet1PHcGU1kwL/bAnvdcqQjWfMkyGaUYS3ACtRDDk60uaNqmg9JoM2+E/KiH9kNPGPTkfQNuDMkXp7uWxLE8WmJ3FHpokWUBO4Bkt0lv7uBctTYO5k0MFSEkPzSuQxDyfbDmVPTzQdbvla62SU6Xe8AGfF1WtxMONszCugop8NJqc8Yhvh/vM+cb4Nxi6KCygHeVmITyDA4ohLz7HxSs5L+JcV7YgreaiuelR1zIFtCtPb21yRdicuQKyhaAqvDSZkxnAD56FmKlD7GGTNuiJKLlsE2PLba0WV+uDSp3KPpl57snzqTNCBnrPvKEXqFEArsMZ/tQsS7VO8smgjgheM+hzH6DSrMhbyQV7JbPA/gLjzFrGAc2mUUGOfFKAHOdFA4OnkrN7MOa0f7cSpKT1kEGCVsQWnwF3q6Pv3PZQxHT+zAyCcTG+E0EzMCIJKfhou0XKLeO36zcKCm0ROpPSeDwiarjaiN4wjmXY8PvL/LJ63nE3O1mQWfjR4M9nDm75n67hL3akfTx6hnnCXs1tY246C9ViSUN2flDVzGpSUbNG/KH9OkSLZrKP2bwBhTqlWqvmalXffZtXL1MSet1YLXO2KoWq5a4UVDERDh9KHDPfqnuEwbUwDUtC95GgkH+OhMIp4/MrZiD79TfuHC0yfswV6Hbctih/3eZ76jd0WZTmqtuCig4wWWK763GCT0JjBGtl6ZfWFWuUxruoqDZVVUaLNjbOW4U6V+W5qUjo6fUX0Ge6TLGGnl8tAooHW45c
+ 31eHZDmc
+ Wsg478/xXICGp9rBa7cT2ISdTlNFXBGPvsfTWe6vwAiQVyucQXcmK7x5zX/E8XbgaYlh5gKgqsTKaZHzLQmuv1PoEYRwhZyOfLMGew2hMSAX9eFCO/SCyAQMpu3oWtNryAHon8zvaPJ4S8UM4nB3apx+fWsfqxSaSQ3Lr54RQheOK5iXHU04XjeLSRut/XTR6nWe53pd6EaPtrNoNnLjfXNGra0LkuM/pgO5721/gwvIYGsUqSeEuAAB/TodQF2JKmTv60yr83YRI/8/F0ZSOPWA+7Tx5foCUOchN571xFViXRFKiSP9WDUgY2/+c0zi7ir6rBMTMZ0vcLUoIg8tsny8RSKbxbX1KRkvfKM1rRCUS6enN5v9deMjm5zAt+4LzuATrOtDf4qgJZcvPklwjXnFm8CNNQsIL58k6aiP2TZBrRgMTaaYoFsGUKe68/NhfSuw+4rUZplW1KILeLbDjutVrjw0eWLTBgbw9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,61 +199,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 21 Aug 2025 14:21:11 -0700 Chris Li <chrisl@kernel.org> wrote:
-
-> On Tue, Aug 19, 2025 at 12:34 PM SeongJae Park <sj@kernel.org> wrote:
-[...]
-> > Historically, writeback disabling was introduced partially as a way to
-> > solve the LRU order issue.  Yosry pointed out[4] this is still suboptimal
-> > when the incompressible pages are cold, since the incompressible pages
-> > will continuously be tried to be zswapped out, and burn CPU cycles for
-> > compression attempts that will anyway fail.  One imaginable solution for
-> > the problem is reusing the swapped-out page and its struct page to store
-> > in the zswap pool.  But that's out of the scope of this patch.
-> >
-> > [1] https://github.com/sjp38/eval_zswap/blob/master/run.sh
-> > [2] https://lore.kernel.org/20231017003519.1426574-3-nphamcs@gmail.com
-> > [3] https://lore.kernel.org/20240706022523.1104080-6-flintglass@gmail.com
-> > [4] https://lore.kernel.org/CAJD7tkZXS-UJVAFfvxJ0nNgTzWBiqepPYA4hEozi01_qktkitg@mail.gmail.com
-[...]
-> > +       /*
-> > +        * If a page cannot be compressed into a size smaller than PAGE_SIZE,
-> > +        * save the content as is without a compression, to keep the LRU order
-> > +        * of writebacks.  If writeback is disabled, reject the page since it
-> > +        * only adds metadata overhead.  swap_writeout() will put the page back
-> > +        * to the active LRU list in the case.
-> > +        */
-> > +       if (comp_ret || !dlen) {
+On 21.08.25 22:32, David Hildenbrand wrote:
+> On 21.08.25 22:06, David Hildenbrand wrote:
+>> We want to get rid of nth_page(), and kfence init code is the last user.
+>>
+>> Unfortunately, we might actually walk a PFN range where the pages are
+>> not contiguous, because we might be allocating an area from memblock
+>> that could span memory sections in problematic kernel configs (SPARSEMEM
+>> without SPARSEMEM_VMEMMAP).
+>>
+>> We could check whether the page range is contiguous
+>> using page_range_contiguous() and failing kfence init, or making kfence
+>> incompatible these problemtic kernel configs.
+>>
+>> Let's keep it simple and simply use pfn_to_page() by iterating PFNs.
+>>
 > 
-> Looks good other than the feedback provided by Barry as well. Need to
-> handle the -ENOSPC.
-> Other errors will depend on your plan to drop this counter or not. I
-> will wait for your next version.
-
-Ack.  The next version will keep -ENOSPC comp_ret value so that
-reject_compress_poor counter is not broken, like I replied to Barry.
-
+> Fortunately this series is RFC due to lack of detailed testing :P
 > 
+> Something gives me a NULL-pointer pointer here (maybe the virt_to_phys()).
 > 
-> > +               zswap_crypto_compress_fail++;
-> > +               dlen = PAGE_SIZE;
-> > +       }
-> > +       if (dlen >= PAGE_SIZE) {
-> > +               if (!mem_cgroup_zswap_writeback_enabled(
-> > +                                       folio_memcg(page_folio(page)))) {
-> > +                       comp_ret = -EINVAL;
-> > +                       goto unlock;
-> I saw you mention this in the cover letter, so just to confirm we are
-> on the same page. Current patch still has the issue [4] of write back
-> disabled cases, the incompressible page will stay in the page LRU and
-> possibly attempt to reclaim over and over again, right?
+> Will look into that tomorrow.
 
-You are correct.  This patch is not making a change for writeback disabled
-cases.
+Okay, easy: relying on i but not updating it /me facepalm
 
+-- 
+Cheers
 
-Thanks,
-SJ
+David / dhildenb
 
-[...]
 
