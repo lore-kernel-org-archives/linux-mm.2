@@ -4,112 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 963F0CA0EEB
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 16:18:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96F5ACA0EFC
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 16:19:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E39F48E000A; Thu, 21 Aug 2025 12:18:47 -0400 (EDT)
+	id DC72B8E000B; Thu, 21 Aug 2025 12:19:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E111A8E0001; Thu, 21 Aug 2025 12:18:47 -0400 (EDT)
+	id D76A38E0001; Thu, 21 Aug 2025 12:19:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4E6C8E000A; Thu, 21 Aug 2025 12:18:47 -0400 (EDT)
+	id CB3F38E000B; Thu, 21 Aug 2025 12:19:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C46898E0001
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 12:18:47 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 77C73B904D
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:18:47 +0000 (UTC)
-X-FDA: 83801273094.19.0A97D55
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 9A9BC160004
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:18:45 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lFdHfLnB;
-	spf=pass (imf08.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.161.49 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id BB5A18E0001
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 12:19:27 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8E015B9895
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:19:27 +0000 (UTC)
+X-FDA: 83801274774.18.13572A0
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D14171C000D
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:19:25 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OiZDOg5D;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755793125;
+	s=arc-20220608; t=1755793166;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2/kgWz84JgBVeLVTDbEVdswXhuU3eGT9Q6c09Y/7GpI=;
-	b=lxYZqDpzp1FmWrwx2hpwkqc4ok4N857ETivd0/ZY1T8r6fS28t3TAFI/i0q8/UCDrHmjcT
-	Dt/1XkMASTImsbMdBxVqWwt6IFnvLX9NdVqJtbpN5Wk4LVT6sSStfNH2RA3dvtTQmrNIKm
-	O49gLHqC/M2N2c0YnqNf3BIVFE0pShI=
+	bh=9U9sHMnRN2PHre+DKxM/ny5WG9bUK7rj+7eoB/DEi5w=;
+	b=gTen/j4GnwN2rQzfq6tzkmJQsQ3Ohx53qc46Yge/2YhMWEFX3ftdrpLct5bQK4T4WBr6Rp
+	M50MpXFUmXh5iUAr0fXbPv96IcOBC+kYtKa5ihNFEAaURzzONvKXiXPdYOw441Jj2mRQWA
+	Rc7l1dc4N+VS8iQn9cfD/F8eL9VnF9M=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lFdHfLnB;
-	spf=pass (imf08.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.161.49 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755793125; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OiZDOg5D;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755793166; a=rsa-sha256;
 	cv=none;
-	b=0FD4CI2ZwfuG0OuM+Dvimh5V8Us/SYVaJ/2VoACxJ9h/hkrb/xFGiZ+J2pV/aJoUvUkfmh
-	noDZxhHamscpbwyX+7pOk9NGO2XElup1cujPnvTTRdnTROencmtiLU2GKMzVD8oFtsx56K
-	O+2nWjh+sVgA5I/ItzOlzxLgkK6qUKQ=
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-61c13125538so306775eaf.2
-        for <linux-mm@kvack.org>; Thu, 21 Aug 2025 09:18:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755793124; x=1756397924; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2/kgWz84JgBVeLVTDbEVdswXhuU3eGT9Q6c09Y/7GpI=;
-        b=lFdHfLnBWgp/No2XkHRgXVXuDrVL/3GVzNG4qdJbH5aHBS8ckOs4gN5Ybj0ZFMwhGv
-         N0WIiFFfHLIXQnSLxu/Bsmc6wa57eRpdZBEvVZU45lHaerH18+Vmcj+qlYDX1MOFxVGR
-         quye/N+gvGlBnBYEg6I/TsDXVJ7DIkg4iEE45EL7zcUmGcuuKnwdBslLt/Bl48TEUAd7
-         BAhPxRykxZwDt+EJ6hrUGlTG2hpxsR8vsLlH7Gev0SJXrkebECkmMvHPfvVJh7BhHBVs
-         yP9M0S2kfYd+QaEHH2wS7cgJEZYjpo+YhYsXqpO8KQenAsqlxaHVzDzYWWCvqUW0nC3b
-         SZ8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755793124; x=1756397924;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2/kgWz84JgBVeLVTDbEVdswXhuU3eGT9Q6c09Y/7GpI=;
-        b=eLnfXaSS97OX7kTgwpM7tTskW63VHbe8BCqCb7G2YTkhuLJnbDSKqhAbP+hxh5pFa2
-         B1vcSnNmx2LzZuoyWXjuELL/3DxRbKlZEWuyKomn5W84UILgrC4xVsBANue9GGP+CEm3
-         hii+/AAghzGySgJWwADD+7sgK2VmS/OXTW0kNC7SYuM3SXfiG+H6hqysTrbqu0HYU7ut
-         Nm82Mgh5/ihx+qBMjFBJyvarGBCNJZN5l7NpeKS6dYGszBYI+XYknB14tt2IHlB46gHE
-         TxES6KR7rE2xGcktHhY2Yx3rJIVRxsyGCyc4k7qR79b1rrpdcxFboSzHM0wXeheY/u3S
-         /hBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWmT0OWUA1YZ3rtRMVwyymeTYxy4qcVVmXcEH3BTQ+ZCaWrB5EhYnE26C7LD8k3J2vQG0eExtsnmQ==@kvack.org
-X-Gm-Message-State: AOJu0YxwpYj4fbtR9gkUBWAq2+2XrXQzl6mZxtSynCSIQwEDcTHBzETn
-	3XV99/mYoxkspNCcXPK1+DigcxRk+X/SqG/Np1oEMsuQIEzXg9Shp3Z9IlJbJh+W+UKhnO+adcd
-	MEbfUElPqi0iNlJihpBouKFHRfdOLD9ZHG0sI
-X-Gm-Gg: ASbGncuy5r2CfwMj5ZE1yKeN8B0hdnvlh7Z52r0LEYySN7G7s4LMmt1uxu7V8TXheFj
-	5nbSL5Sgz5Lng2zF8YB4FooM8VwinJFxoGEAaJSec11j730MPPjoUfN10fqQpzWSd/vMnpWmrIM
-	LI57qQiw4SHuwNdPUWs8mEXwA581eL+LR9HuaGWHHI4ZJoH/Bb5OUYy6Q9TnnLsIkkwvnnj0M0/
-	7LJ
-X-Google-Smtp-Source: AGHT+IGxmLuafPwAwDkyNnqlueog5FlfgG/j27pU5nhQ2cB04Y8TJM9Suwdckz/XzevG80YdbjM0/bKtFAjNu506HBg=
-X-Received: by 2002:a05:6820:1c99:b0:61c:4fa:7465 with SMTP id
- 006d021491bc7-61dab06512emr1351756eaf.0.1755793124399; Thu, 21 Aug 2025
- 09:18:44 -0700 (PDT)
+	b=QbW9sFkf2vqqf3ibL6q4MZCfIfAQleopSg+O0Mp5jJ9rrbEBMvbxiIfu7aEJRPtFZEZj2T
+	/kpbsrZA8hDaUtb1UtvT2Vl1CKhbcyl4Tgozsk/MaG0P8hRw40GJ5tbScJKGw1s938iZpr
+	O7rlOJ7pIZI3T/jc6yzaCkLrL8QIdfQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 4950EA58501;
+	Thu, 21 Aug 2025 16:19:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5423C4CEEB;
+	Thu, 21 Aug 2025 16:19:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755793164;
+	bh=1QmruyZo3DKu0eWoZjVlLIS1lofS9SNdP9MW4v2BJPE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=OiZDOg5DCZOotIQ1qrB3ymxLpRQ1nTSlEa0a7kwnwwtcvUtivowpB6GodOP8XymS7
+	 4oxf7aFl2oTTi9wKxzHLmjXeQGpYi0fJ6xQ8OyA1aTHo98gTUmG8UGdG0tPxS9zhqg
+	 7sStSsp96QotS1iDrZlV3rGiTzyr4pY5GbE6o41XPG7k0LnTniZ4EVZvpYdwPYlOCR
+	 m74IZP/AaqkgNDfpysFhPIiNrecTEQz28Uea0lqUOBccTT5CtjGa21wQ+7iE4NZpCK
+	 cG9ZRhRUbm5HGpp8OG3QPCZyz3YvMlPk3kIjX+0DKCo4sBP3xYjcy2yBBCgeHwemtY
+	 nMBy0IGZvuarw==
+From: SeongJae Park <sj@kernel.org>
+To: kernel test robot <lkp@intel.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	oe-kbuild-all@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [linux-next:master 3382/3950] mm/zswap.c:48:15: sparse: sparse: symbol 'zswap_stored_incompressible_pages' was not declared. Should it be static?
+Date: Thu, 21 Aug 2025 09:19:22 -0700
+Message-Id: <20250821161922.78301-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <202508211706.DnJPQQMn-lkp@intel.com>
+References: 
 MIME-Version: 1.0
-References: <CABFDxMHgOPt5zx3q=KRxGGfp86R4V0AgO+FrHDftqLYoG20BWw@mail.gmail.com>
- <20250821155833.57597-1-sj@kernel.org>
-In-Reply-To: <20250821155833.57597-1-sj@kernel.org>
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-Date: Fri, 22 Aug 2025 01:18:32 +0900
-X-Gm-Features: Ac12FXzi3h9xpcGpuOkzdRydRGIYtRmhUHBmyrmZ9RELoX71HPL9qduVXxKXs_E
-Message-ID: <CABFDxMFy18rb3K0NYYKifsBVD8MoA=O5Aj=g+KS5gR1R9GCEdQ@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/damon/core: set quota->charged_from to jiffies at
- first charge window
-To: SeongJae Park <sj@kernel.org>
-Cc: honggyu.kim@sk.com, damon@lists.linux.dev, linux-mm@kvack.org, 
-	stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9A9BC160004
-X-Stat-Signature: rcq3cbra5zzgucbhknhbttsj4fxs75rr
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: D14171C000D
 X-Rspam-User: 
-X-HE-Tag: 1755793125-390111
-X-HE-Meta: U2FsdGVkX1+JSXxsfLKPv8jwsZJxKNAlGf0qTbkE/1xuZNf4oh9CXypKhyP6WrmQS5KzYd8X5Lx7VbCqDgk1QW8NECz//BPYowuE1P/r7e4wdo6qsEXyjqM8LqOL/itVAX6n9wYNkimsmy8p3QCxk7iWEywhNxB4CVei3QVCPzYhqp/iH/l/cCbrmfOlG/mHgWrBn/e9BMUQWmzgoXH2FbwaRc2fOE2gZebEfjCx/Xly6hvgx9icncHjU0DDNhuMTtiKFIPxt7peSri2uysIJ52tU2W6ZmmtIIuneahSxoPTNVUwpFmgy21K84pGIbGz5u2fdxGL/dm46i5fK8B5cZIm/RiCkUmJWAcUkHrjQBO5isXioSDFjmfBu3UJXdvL5kUtGeEQcnml3y+jA+OUDRfxWiTyH0pN6yWn6CX0CHAabbvBFUWNRTgPQFcIeM+cSQaBeV0Fij9EvGgc93KKJ4qKVwl/Ep3TCwLoiX0F/OsJLEWaVybnQPiyT9nlSNVPge6RxKoB+c9CEEXNiSvtIRiwjF2c3jE3AA946/pUJVYpB3XGlOanZmDpvl7fFtArc2wBXiQ/8lKHnChu1Clo447Q+3Jm/CBE/0y4R38aNekfV4SLYfCWGxu4m+NGgCcBv1DlusHyigskucnCR8/ewUyMLK/2hpCML6sq9+XWdirJa71ZLJJ1y1oj3fqmzhNO9V+xtn6Nt1mZqzA9GPFHJ1JWdqGJNok3IyGkb5p0/kuUk+BmSqmXANvZMQGj22rwjLUxvGyO2UFQxFTq1oIxkUS+Ie91UivtPlr58edvyCe/STCIWj2XoITFoRZV1rIE+LxfRR6839tCEGusBIcoFdDRQvmumKFva5x6rP3K7M17YMjNc/jD+NsWGVjxLIvTCo1p5sb5DiwMsZmOZOD1oWGCBYot5Ub2p7huHYgt8NdFrjGn2pbMYb6jjRTBSrwiwqFfirGlYwQvNlD4iOM
- RmkJdRQ/
- hIUR6QYfDmh7JpXDWaxpWXiQCBIAJYsy1Qof2kH5TEaV6YqtjAVzDw7GQWJntiZAe8Pk0PQP69KHmw8iCHNzQCxOnKLJDzeS7El94TGTN7pVRrYAAulRaLPtCCZnadwAAGSmU9arpNAGXYlkdM6zkIy/x/BjDfbMn92UaMqUfaPMA1Z86P1H8qliWiCaro9+oy/9xziQWVle8tfNBJwBrNa4LGYyTaKtZDr7hsBmzzEWf983tF00jfywJHK3G+15wUaZuCFWPdYvYPOy38ZbBsnmNmGAwK8pmR6NeNKt+9bLUhRoRyZje98o+l0Ba9wuqSupX88phucQ23WX0ApqMThLyVUfN8ULP/3tEdvwTmz2cS0LRM/oipp2vQvmK3E0E67ZEnSu6EsFwDLd02h3WFk5lsNpkXhZ5fSGSqkeLhL5cCkSwcmKXcinjrsORZ8nKPc+u
+X-Stat-Signature: 5zw3z5g8t784ytzsfmoxetd6zp5wrzqq
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1755793165-103696
+X-HE-Meta: U2FsdGVkX1/+qwghdfJABhOBrGZsXoptEjRD49PtJVdg+OntmMC5rpODbjLfe/s5PRm4cnff7etekZf64H+TxGkTHpd6ZYCrkebE3Mkoav87hUYFIlu7TSzQFAPU807XwrjMaskTsJ6AszM5ghmBMFww6NzZYvSGSJeVUdn+q2+Or/foz4NVKPYw0hkLqnGgKbPtwy35DGDWNZStwnA7WuO8aOH3OJ3LqZW0gm1dP+V9fLAy3xTlLEtzv99WPC5DSnXWoM31bDeywFWoHZ7LgGX6JgONB1Ke3WFIkL5B7bqiBi72BA6bXuM7eLOEx/3PX0zSj6Me00ci2I83fpN6z3vz16E0cu7K/PpQVc+w6zuLTYFJOfeCy/79nnX65rGcBpOwzRyxoj8GMsxJrY7FL4ft0Qismf6jxHW1EAu0oBF+MX3DJawshY3XMCDKr3A+HVHakEvW37+V6KoEDVAbJ50PeRBVDzQtj27nTk2jEEgtG8C0ULCrUgSbnrqcMAB1SgWIb7Ft/tktTmjHdkaZSZU4aAHo5MuXoplL9Ch+vPGpN+c1uJjNLXzMSoSWD6fNN7dy3nZFADr4q3mYlfBnXIavmV7b2DBfyFmB6FDsB62PLmhFuNlbZnbg0bg7rIDSY9267JO0H6HYH5P3Z+VdKS2Ng4jAYbDIhBAFLEKZn5Na60mi6AtzQKNbkGEAKRZ0jsvfp3HycVRAAhksMUFUnVLY9T0EgVQvj7/eLkQdd5p80pWBBeMTnCp0wKWG6bKYPEqOgqLVaeIFGJ/aIjJ4JjL2hDrrxh8W7fmTApKMJCTj3oyHmxQPvwUyXOog6Wd0lDHwElVlGjZUm+m2giYywDMn9rN6ufD4XmKkfL7JN75Tsw0/LXq5e6NPfgyrUrURXup16BZ+Wpj0R0pTmEGJi4P+qU3MQgnLmtXBOV4IRewAnDyzdgZSPEpxhqApT5sZyFdBi1YN9BRclz0cP8t
+ fEwG9NKD
+ 5wnzM309tVLHNUriIPYa7D9gfMYLxQuyUFSkQu6wZZ6RRCwMEgRVBeuduupvYYFUTUAmYxYAcJyLRtIqJyxXBoeaK/TZwFmeeKT5fw2iX9HNVJX/H68YR0Jv7ZZ7gwvPgQFDPE/HYX0mztNvaAfQdLk7XdAUzrFTeB+CWaHbR1SAlzBmmOEXfP192PoSJBIl/aYJbFJAdV/OnK605th1XfsvSU2sAh0lp+K5a4RIy7UarQEMZKLFWn/lhsd3fB57LVd7tTIVyH9X5nhqkRq/DaQNoQ63KY3Jiqb3fq9J3L+zdPn8pGJCKIZ71AxWQZ4FBxnEZ23VRUE5MM+52v9KN/lg6v8lWksKo9jet48OXrAOoMg/cRp0iV4nySvZTlGPytCOkWd/riN4Q5pOjM+XFgdrHW7GZ4aTd4hg1z0Kp3BUOLd5MW2fwrm7R4Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,94 +93,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 22, 2025 at 12:58=E2=80=AFAM SeongJae Park <sj@kernel.org> wrot=
-e:
->
-> On Thu, 21 Aug 2025 20:06:58 +0900 Sang-Heon Jeon <ekffu200098@gmail.com>=
- wrote:
->
-> > On Thu, Aug 21, 2025 at 2:41=E2=80=AFPM SeongJae Park <sj@kernel.org> w=
-rote:
-> [...]
-> > > Let's restart.  Could you please rewrite the commit log for this patc=
-h and send
-> > > the draft as a reply to this?
-> > >
-> > > We can further discuss on the new draft if it has more things to impr=
-ove.  And
-> > > once the discussion is finalized, you can post v4 of this patch with =
-the
-> > > updated commit message.
-> >
-> > Good Idea. This is the draft for commit message. Also, Thank you for
-> > your patience and understanding.
->
-> Thank you for accepting my humble suggestion.
->
-> >
-> > Kernel initialize "jiffies" timer as 5 minutes below zero, as shown in
-> > include/linux/jiffies.h
-> >
-> > /*
-> >  * Have the 32 bit jiffies value wrap 5 minutes after boot
-> >  * so jiffies wrap bugs show up earlier.
-> >  */
-> >  #define INITIAL_JIFFIES ((unsigned long)(unsigned int) (-300*HZ))
-> >
-> > And jiffies comparison help functions cast unsigned value to signed to
-> > cover wraparound
-> >
-> >  #define time_after_eq(a,b) \
-> >   (typecheck(unsigned long, a) && \
-> >   typecheck(unsigned long, b) && \
-> >   ((long)((a) - (b)) >=3D 0))
-> >
-> > When quota->charged_from is initialized to 0, time_after_eq() can incor=
-rectly
-> > return FALSE even after reset_interval has elapsed. This occurs when
-> > (jiffies - reset_interval) produces a value with MSB=3D1, which is inte=
-rpreted
-> > as negative in signed arithmetic.
-> >
-> > This issue primarily affects 32-bit systems because:
-> > On 64-bit systems: MSB=3D1 values occur after ~292 million years from b=
-oot
-> > (assuming HZ=3D1000), almost impossible.
-> >
-> > On 32-bit systems: MSB=3D1 values occur during the first 5 minutes afte=
-r boot,
-> > and the second half of every jiffies wraparound cycle, starting from da=
-y 25
-> > (assuming HZ=3D1000)
-> >
-> > When above unexpected FALSE return from time_after_eq() occurs, the
-> > charging window will not reset. The user impact depends on esz value
-> > at that time.
-> >
-> > If esz is 0, scheme ignores configured quotas and runs without any
-> > limits.
-> >
-> > If esz is not 0, scheme stops working once the quota is exhausted. It
-> > remains until the charging window finally resets.
-> >
-> > So, change quota->charged_from to jiffies at damos_adjust_quota() when
-> > it is considered as the first charge window. By this change, we can avo=
-id
-> > unexpected FALSE return from time_after_eq()
->
-> This new draft looks good to me.  I find nothing to further modify.  Coul=
-d you
-> please send v3 of this patch with the above commit log?
+On Thu, 21 Aug 2025 17:43:16 +0800 kernel test robot <lkp@intel.com> wrote:
 
-I'm really glad to hear that! Your thoughtful comments really brought
-this together.
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+> head:   7fa4d8dc380fbd81a9d702a855c50690c9c6442c
+> commit: 6d522abd7b4fc78d51934e6c9a53d8e2349f5d3e [3382/3950] mm/zswap: store <PAGE_SIZE compression failed page as-is
+> config: arc-randconfig-r123-20250821 (https://download.01.org/0day-ci/archive/20250821/202508211706.DnJPQQMn-lkp@intel.com/config)
+> compiler: arc-linux-gcc (GCC) 13.4.0
+> reproduce: (https://download.01.org/0day-ci/archive/20250821/202508211706.DnJPQQMn-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202508211706.DnJPQQMn-lkp@intel.com/
+> 
+> sparse warnings: (new ones prefixed by >>)
+>    mm/zswap.c: note: in included file (through arch/arc/include/asm/cacheflush.h, include/linux/cacheflush.h, include/linux/highmem.h):
+>    include/linux/mm.h:80:9: sparse: sparse: preprocessor token PAGES_TO_MB redefined
+>    mm/zswap.c: note: in included file (through arch/arc/include/asm/irqflags-compact.h, arch/arc/include/asm/irqflags.h, include/linux/irqflags.h, ...):
+>    arch/arc/include/asm/arcregs.h:155:9: sparse: this was the original definition
+> >> mm/zswap.c:48:15: sparse: sparse: symbol 'zswap_stored_incompressible_pages' was not declared. Should it be static?
+>    mm/zswap.c:1250:23: sparse: sparse: context imbalance in 'shrink_memcg_cb' - unexpected unlock
+> 
+> vim +/zswap_stored_incompressible_pages +48 mm/zswap.c
+> 
+>     41	
+>     42	/*********************************
+>     43	* statistics
+>     44	**********************************/
+>     45	/* The number of pages currently stored in zswap */
+>     46	atomic_long_t zswap_stored_pages = ATOMIC_LONG_INIT(0);
+>     47	/* The number of incompressible pages currently stored in zswap */
+>   > 48	atomic_long_t zswap_stored_incompressible_pages = ATOMIC_LONG_INIT(0);
+>     49	
 
->
-> Thanks,
-> SJ
->
-> [...]
+Thank you for this report!  I just sent a fixup patch:
+https://lore.kernel.org/20250821161750.78192-1-sj@kernel.org
 
-Best Regards
-Sang-Heon Jeon
+
+Thanks,
+SJ
+
+[...]
 
