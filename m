@@ -2,97 +2,83 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E78ECA0EDC
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 10:43:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3100BCA0EDC
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 11:05:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF4448E000F; Thu, 21 Aug 2025 06:43:25 -0400 (EDT)
+	id B2BAB8E0017; Thu, 21 Aug 2025 07:05:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCC318E0003; Thu, 21 Aug 2025 06:43:25 -0400 (EDT)
+	id AB5898E0003; Thu, 21 Aug 2025 07:05:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE21F8E000F; Thu, 21 Aug 2025 06:43:25 -0400 (EDT)
+	id 9CB608E0017; Thu, 21 Aug 2025 07:05:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id ACE418E0003
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 06:43:25 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6A5E11603C7
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 10:43:25 +0000 (UTC)
-X-FDA: 83800427970.19.3D95625
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B18B5100007
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 10:43:23 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 876508E0003
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 07:05:54 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4F6011A039E
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:05:54 +0000 (UTC)
+X-FDA: 83800484628.11.8608C1F
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 2E85AA0019
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:05:50 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
 	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	spf=pass (imf15.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755773003;
+	s=arc-20220608; t=1755774352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xA5z4QGiRT8EMnfJu0zYHYDYsBX5hfHAvWyffpSGsoI=;
-	b=MNbpKB9+TWsAXvu3w4pdKOCLXeWKmLW3DVPqDAXY4ZWj2cxHC1AFvyfrDFvjIsmZN6XA2W
-	qthx/iKCta2S9SFKC/e1TOd9Vxo8vP3TxxsQQCnL4DCR7UptLx2vv0tvzZ1aTEvj9lnBEe
-	5EaR0hmCSIQX/sogS6Wb44S5Gk2mrq8=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=sTLiLiZEEEAtWfxlgsbKPguJNBXVeLx26ch4OcP4+68=;
+	b=29rGC94ZOjeWb18ZE/LuGvBMDh4j+LcjBBV4xu9Xu2SOMtRcXLNbN7T5NYCntBMuuxF8ZK
+	GfmBCmyyaAZ0u9IR8LzZGTuxxvosp/ZVMqXTr2RN8s3JxeHBQAQBSIN8rpcQGTY30YPhQS
+	LZtJ0L2vmL8O1ANipkfcYuXyEiyCV1g=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
+	imf15.hostedemail.com;
 	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755773003; a=rsa-sha256;
+	spf=pass (imf15.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755774352; a=rsa-sha256;
 	cv=none;
-	b=5d9Xrs4BkV7oNNboX7PkFJiZi8NmiSRwyqKr53sVc0po5RNldBPirgv5Bl6eHkyNALVuRu
-	YYfIRJP8j1JN5F2RTR5mFcQlcZOsPFRZ/96mhrZm10hBcISMe5Z+yJTzUckIVXbeGN4Hn1
-	cbMBaM4irixVl1/bXm+HLxzSR9tVGMk=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 51F9D152B;
-	Thu, 21 Aug 2025 03:43:14 -0700 (PDT)
-Received: from [10.57.91.188] (unknown [10.57.91.188])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 298EB3F63F;
-	Thu, 21 Aug 2025 03:43:14 -0700 (PDT)
-Message-ID: <88ea592c-c6ff-4a19-a366-eadeca66b039@arm.com>
-Date: Thu, 21 Aug 2025 12:43:12 +0200
+	b=R/92hip/9UfG51UtVv+IA+oKNuz7u/8a7Uf05cV3Q4Wpr+UXUCuoSyv7pnz8CPBitRE6cd
+	Ccvnjbbi/YBovFVdNFPmSYyfu/n7kMULNEqEhyh6ywPdmsahhoUQ5DUj8A/e9mKCYzapf0
+	bf422JJF978pTpltCsb8Zh2sOhns+20=
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4c70jt6QFJzPqd8;
+	Thu, 21 Aug 2025 19:01:06 +0800 (CST)
+Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
+	by mail.maildlp.com (Postfix) with ESMTPS id D13E218048D;
+	Thu, 21 Aug 2025 19:05:42 +0800 (CST)
+Received: from huawei.com (10.50.85.135) by dggpemf200018.china.huawei.com
+ (7.185.36.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 21 Aug
+ 2025 19:05:42 +0800
+From: Quanmin Yan <yanquanmin1@huawei.com>
+To: <sj@kernel.org>
+CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<yanquanmin1@huawei.com>, <wangkefeng.wang@huawei.com>, <zuoze1@huawei.com>
+Subject: [PATCH 00/11] mm/damon: support ARM32 with LPAE
+Date: Thu, 21 Aug 2025 18:51:48 +0800
+Message-ID: <20250821105159.2503894-1-yanquanmin1@huawei.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/8] selftests/mm: Add -Wunused family of flags
-To: Muhammad Usama Anjum <usama.anjum@collabora.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Leon Romanovsky <leon@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, Shuah Khan <shuah@kernel.org>
-Cc: kernel@collabora.com
-References: <20250731160132.1795351-1-usama.anjum@collabora.com>
- <20250731160132.1795351-5-usama.anjum@collabora.com>
- <57c816d6-a9ba-47c9-8f40-3978580b7f67@arm.com>
- <8e9d7c59-46b4-4e1b-8a55-1898302f5080@collabora.com>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <8e9d7c59-46b4-4e1b-8a55-1898302f5080@collabora.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B18B5100007
-X-Stat-Signature: b95f5ywo1cxaqywmqkj4obkdqynpzmba
+Content-Type: text/plain
+X-Originating-IP: [10.50.85.135]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ dggpemf200018.china.huawei.com (7.185.36.31)
+X-Rspamd-Queue-Id: 2E85AA0019
 X-Rspam-User: 
-X-HE-Tag: 1755773003-466076
-X-HE-Meta: U2FsdGVkX18/4TXqieMSEqYakgySsanQCnIlHaO3qVcXYbB+we51Mmbl7PT4FmD9zffzcZI8y+0Gg//WH62xy3SlX4wYF11e5MWbqzSYelktP/cGTdHoJ1FG8uf94QGQxEUNosEz39K8OIgcXUemJmBRlb6vNvBqyTXp5VH3nQ46YeufidLlXOgY5qZoh/Qhk2D3T2dpIrtRPASGsXHmnuthd5Ya3W2VtmydE0v69Zgs69N8f/N40RZxXxXdwdg1fhnMjjKaj6fNM31Y/oby7KTjrP0bJ/Deae9ugBJUCQbrpJV1iR+dPSLQyCJc+M/4kJyFgOmcsCiZCnsm+dSO2YaDP5sq3yMJWw0t28B1P1iNpui2FTH1RABOaosNoMB4le7yICPeCRMT0qo+dmwxkebYWedP/1kTHq3KshdzroSd4GWUFXjXqS2wTvAlUadObLOZphVoR4qKYqGONBvLbItVNQ3/E5MryyZxd31jrJ2lI4HmdTHot3A8Dtxo6HQ+aM88dgnK1DXKYmm5rrYy3We01KINwb01f01x1QBrdvP9lmL+8/3h3zAt7qJjZ5IMzORPfF8H1D2g3+HJ+ChltYj6wO1UqMbaShpBbuIrI7rdBedrlDCGmzcfZiJUVaME+0BB8O8zoa2nFNNSQMaulbytATSd1Vjq1XmUVsg0SyBNkAE/5JQYOTf6YQcWgKzVxG5HKzQfQ4fGYnZa+Hrf9HilNsCHoVcuJE4wUPC3wRo+fbgfciXWk36Eq6b1pOKgVu46g4QwwUl/lh+6dAYVYNThUGg6VSYqMg+4WsFpKGsP+yUY5XGU2An8rkua7BelQ7FMHoFkn1Q+x3VlquXbVhZohlO5h3HJbccnPGH+b+XJVnGqqCKp8xezEtA9F/pTHF5JLNNSHx3pymuOdSaGhcGMWUaOaTDc2bEEKN1mroxb96JJJCwLWEEOGTQUtGsS5xWEPTlpFVR8UrfNnW3
- vF3mM2Hx
- nZW+3gzLX0KobZd3QJ+IfzuenB1z4gzTFZDun1GJQs8gAqGceuWRbPhQnDMVRxPcFRt9WOmUdJBQr2lCrOK3Ljvism0Wh/zxvzsuz73DKYDN+tL/9isAyDXs7oSiuKaWHHIP/zgLU/PHa6Poim9Zdqhg+yHhDgY2HEwlFQlc01tdDWOY=
+X-Stat-Signature: oxyxt6trnp3izp4mkjgec5xdb38e4qg8
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1755774350-531111
+X-HE-Meta: U2FsdGVkX1+Vt1m7V0k+DvEnPrx6blQdo49+UH/p89b3eY/hyz/OALiku50CMB7CRSrgB1keySwCOF7AmuKjuo9sCiZxPgoCwmiRAM9V3psAkr//75MV9CRDfonJFXI+d/S24NhDRHVPedMqd6JiHoo2/JvfdHgxqq4eXTO/9M185JX61Alig+vyweznQ/gryuH0ZdN6OJn94onWvpjQHheFsfvJYrcdBIDyz1qUzPRJ/m/H0D0U/PqmWbjmPYJngVuzB67Ytvb2ymZiWXEi/gpen7sUY56+cAjjox01QEBdggXvAxvhKrslltXeLPpE8nAX0MEmNSfU0R7um6Wd8IBZrJ06rduYHD3+6nRK6TzwZnAe14amkX30xsmSoKCwE0EtL0NbzjyXsacLbMpQIu3lY8b1luVHNIRdLKs8jeS521we6UIJcK+41oS5P56YzKFznXFYprWIR5W+6VmZ/VObBqscPMTUW4WL7mB+zg9QD9TH1K9Yt+qWVpv46MbPoxF8mH0q9wXPqS7Ztdh4jCE/hr+O0JxN9ZTBGkhqox5er2xmNKk/S24pWYYViVDBNDtJR7+js5eAvC+IWC44SXJeKwmTX9BW7bVEx73pkZSg4eNvjAq+ylSMRX82PyxiMgPsIgeNE65tWg8tRS+NzeYD190D4SuUVZYChUvYYTHrVs2RPVbU/TaPt1TLgigMmYjzD00zcvuPk/g6ChYkyXdCkuc0+KhMFsdqBdY4EmaMgGNASbE9azaFMIdD7RdMIry0/ZcmOEjWwWTNAg1ZCJefLlx96oMuhA36myIDz1liibKb3tGk1sInkqlcY+KXeXUgoIBwYjj4rgXDQwmN3VxSfJJlelRfO8aWObPHQIW8izmEzmNLliNMcZLefA5X8guKwzG1V5YrwwHKYWXfTuPwj7uFD3cNe0twbvQ4yUv5YplOJvJ9qd4vuiJKvP2d/OvrUUoSmiAfPsto407
+ zCvoGrXu
+ MRhX9mvE/yaV2IjGYGZVaRL7y1jdMic1dNEvc77lZ9FS5rNohSMHrAp4GFtQa++GrMgP5LFtdf3rNByVtVhk75QRao3NFuGmPzNeGmXJXTCCaTukSxptd0BlHp3BYVi1Ha6JnwB0z+cxGJKs5Nvx5JDFryOlPmrCv/ce0kpVw33drDgwpzoEjzzRiHeqhn7/ItLQaNx5uSzBX4zc6+i2iM049TA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,36 +87,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 21/08/2025 08:28, Muhammad Usama Anjum wrote:
->> As to -Wunused-parameter I am frankly not convinced it's worth the
->> hassle. We're getting 90 lines changed in patch 6-8 just to mark
->> parameters as unused, in other words noise to keep the compiler happy.
->> It is not enabled by default in the kernel proper precisely because it
->> is so noisy when callbacks are involved.
->>
->> Patch 5 is clearly an improvement, but I'd rather take it without
->> actually enabling -Wunused-parameter. The rest of this patch isn't that
->> useful either IMHO.
-> Patch 5 removes genuinely unused parameters flagged by the compiler. If we
-> drop the -Wunused-parameter option, however, new unused parameters will
-> continue to creep in with future patches. The goal of enabling this warning
-> is to surface such issues early so developers can address them during
-> development, rather than later during review or debugging.
->
-> Long term, I’d like us to rely more on compiler and static analysis just like
-> kernel to catch these kinds of problems proactively, instead of waiting until
-> they’re reported or someone fixes them later. While it may feel like noise
-> initially, this is largely a one-time cleanup—once done, developers will
-> simply fix warnings as they arise, keeping the codebase cleaner going forward.
+Previously, DAMON's physical address space monitoring only supported
+memory ranges below 4GB on LPAE-enabled systems. This was due to
+the use of 'unsigned long' in 'struct damon_addr_range', which is
+32-bit on ARM32 even with LPAE enabled[1].
 
-Agreed on the general principle, but I think the hassle is just too big
-for what we're getting in return here (see also Andrew's reply). New
-code may also introduce a bunch of unused parameters for legitimate
-reasons and it's easy to imagine contributors ignoring such seemingly
-harmless/irrelevant warnings instead of sprinkling __unused all over. My
-feeling is that unused parameters are expected to be allowed in the
-kernel and it isn't helpful to go against that expectation in just a
-small subset of kselftests.
+To add DAMON support for ARM32 with LPAE enabled, a new core layer
+parameter called 'addr_unit' was introduced[2]. Operations set layer
+can translate a core layer address to the real address by multiplying
+the parameter value to the core layer address. Support of the parameter
+is up to each operations layer implementation, though. For example,
+operations set implementations for virtual address space can simply
+ignore the parameter. Add the support on paddr, which is the DAMON
+operations set implementation for the physical address space, as we have
+a clear use case for that.
 
-- Kevin
+[1]https://lore.kernel.org/all/20250408075553.959388-1-zuoze1@huawei.com/
+[2]https://lore.kernel.org/all/20250416042551.158131-1-sj@kernel.org/
+
+Changes from RFC v2
+(https://lore.kernel.org/all/20250820080623.3799131-1-yanquanmin1@huawei.com/)
+- Rename 'min_region' to 'min_sz_region'.
+- Separate the overflow prevention in damos_set_effective_quota() from
+  this series.
+- Drop RFC tag.
+
+Changes from RFC v1
+(https://lore.kernel.org/all/20250813050706.1564229-1-yanquanmin1@huawei.com/)
+- Set DAMOS_PAGEOUT, DAMOS_LRU_[DE]PRIO, DAMOS_MIGRATE_{HOT,COLD} and
+  DAMOS_STAT stat in core address unit.
+- Pass ctx->min_region value to replace the original synchronization.
+- Drop the DAMOS stats type changes, keep them as 'unsigned long' type.
+- Separate add addr_unit support for DAMON_RECLAIM and LRU_SORT from
+  this patch series.
+
+Quanmin Yan (1):
+  mm/damon: add damon_ctx->min_region
+
+SeongJae Park (10):
+  mm/damon/core: add damon_ctx->addr_unit
+  mm/damon/paddr: support addr_unit for access monitoring
+  mm/damon/paddr: support addr_unit for DAMOS_PAGEOUT
+  mm/damon/paddr: support addr_unit for DAMOS_LRU_[DE]PRIO
+  mm/damon/paddr: support addr_unit for MIGRATE_{HOT,COLD}
+  mm/damon/paddr: support addr_unit for DAMOS_STAT
+  mm/damon/sysfs: implement addr_unit file under context dir
+  Docs/mm/damon/design: document 'address unit' parameter
+  Docs/admin-guide/mm/damon/usage: document addr_unit file
+  Docs/ABI/damon: document addr_unit file
+
+ .../ABI/testing/sysfs-kernel-mm-damon         |   7 ++
+ Documentation/admin-guide/mm/damon/usage.rst  |  11 +-
+ Documentation/mm/damon/design.rst             |  16 ++-
+ include/linux/damon.h                         |   7 +-
+ mm/damon/core.c                               |  70 +++++++-----
+ mm/damon/paddr.c                              | 106 +++++++++++-------
+ mm/damon/sysfs.c                              |  41 ++++++-
+ mm/damon/tests/core-kunit.h                   |  21 ++--
+ mm/damon/tests/vaddr-kunit.h                  |   2 +-
+ mm/damon/vaddr.c                              |   2 +-
+ 10 files changed, 191 insertions(+), 92 deletions(-)
+
+-- 
+2.43.0
+
 
