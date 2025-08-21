@@ -4,87 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96F5ACA0EFC
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 16:19:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D26CCA0EEB
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 16:20:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC72B8E000B; Thu, 21 Aug 2025 12:19:27 -0400 (EDT)
+	id 8E7068E000C; Thu, 21 Aug 2025 12:20:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D76A38E0001; Thu, 21 Aug 2025 12:19:27 -0400 (EDT)
+	id 8962C8E0001; Thu, 21 Aug 2025 12:20:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB3F38E000B; Thu, 21 Aug 2025 12:19:27 -0400 (EDT)
+	id 7D3208E000C; Thu, 21 Aug 2025 12:20:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BB5A18E0001
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 12:19:27 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8E015B9895
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:19:27 +0000 (UTC)
-X-FDA: 83801274774.18.13572A0
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CDCF8E0001
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 12:20:00 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2A0EF1DD6B2
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:20:00 +0000 (UTC)
+X-FDA: 83801276160.12.3EC33EE
 Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf21.hostedemail.com (Postfix) with ESMTP id D14171C000D
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:19:25 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OiZDOg5D;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf27.hostedemail.com (Postfix) with ESMTP id 6D45440008
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:19:58 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=redhat.com (policy=quarantine);
+	spf=pass (imf27.hostedemail.com: domain of "SRS0=upZg=3B=redhat.com=david@kernel.org" designates 147.75.193.91 as permitted sender) smtp.mailfrom="SRS0=upZg=3B=redhat.com=david@kernel.org"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755793166;
+	s=arc-20220608; t=1755793198;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9U9sHMnRN2PHre+DKxM/ny5WG9bUK7rj+7eoB/DEi5w=;
-	b=gTen/j4GnwN2rQzfq6tzkmJQsQ3Ohx53qc46Yge/2YhMWEFX3ftdrpLct5bQK4T4WBr6Rp
-	M50MpXFUmXh5iUAr0fXbPv96IcOBC+kYtKa5ihNFEAaURzzONvKXiXPdYOw441Jj2mRQWA
-	Rc7l1dc4N+VS8iQn9cfD/F8eL9VnF9M=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=l73kjzY3ZAMDBMjTpy8HUP02H/3wG+BXP6fxZxluQ5k=;
+	b=eQLZmt9yfjYdLaXi77l0UOIDCQJnIohvP5qstjm+jmBMN4THR8x3Ckp5SmisX7e4MjO2Ts
+	PTHxhDM5NGbs/acdYrDz0cYzvfouDPCpHSvKRw2pI2S22IPtx08OTbEa8HubKSsQ1TBRiz
+	Xbtx4B1d0tYXhkXxxCGaaqE4uPAOoUc=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OiZDOg5D;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755793166; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=redhat.com (policy=quarantine);
+	spf=pass (imf27.hostedemail.com: domain of "SRS0=upZg=3B=redhat.com=david@kernel.org" designates 147.75.193.91 as permitted sender) smtp.mailfrom="SRS0=upZg=3B=redhat.com=david@kernel.org"
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755793198; a=rsa-sha256;
 	cv=none;
-	b=QbW9sFkf2vqqf3ibL6q4MZCfIfAQleopSg+O0Mp5jJ9rrbEBMvbxiIfu7aEJRPtFZEZj2T
-	/kpbsrZA8hDaUtb1UtvT2Vl1CKhbcyl4Tgozsk/MaG0P8hRw40GJ5tbScJKGw1s938iZpr
-	O7rlOJ7pIZI3T/jc6yzaCkLrL8QIdfQ=
+	b=IIJE1aJnICVyzInFlacGBSOExkhJxJYGaBpifY3nJRG28j7i6myfIZS7m64ZWcojVr09tZ
+	bXGUqUImZAwcX2bvEv5fcW5u1RTZWxGoQWFz9TN7Ptl8xcbogILbMyYY0Z1Fab6K8F50rY
+	nwrnQN8PLGZBXwPkjUbLfQkkMAevruA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 4950EA58501;
-	Thu, 21 Aug 2025 16:19:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5423C4CEEB;
-	Thu, 21 Aug 2025 16:19:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755793164;
-	bh=1QmruyZo3DKu0eWoZjVlLIS1lofS9SNdP9MW4v2BJPE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OiZDOg5DCZOotIQ1qrB3ymxLpRQ1nTSlEa0a7kwnwwtcvUtivowpB6GodOP8XymS7
-	 4oxf7aFl2oTTi9wKxzHLmjXeQGpYi0fJ6xQ8OyA1aTHo98gTUmG8UGdG0tPxS9zhqg
-	 7sStSsp96QotS1iDrZlV3rGiTzyr4pY5GbE6o41XPG7k0LnTniZ4EVZvpYdwPYlOCR
-	 m74IZP/AaqkgNDfpysFhPIiNrecTEQz28Uea0lqUOBccTT5CtjGa21wQ+7iE4NZpCK
-	 cG9ZRhRUbm5HGpp8OG3QPCZyz3YvMlPk3kIjX+0DKCo4sBP3xYjcy2yBBCgeHwemtY
-	 nMBy0IGZvuarw==
-From: SeongJae Park <sj@kernel.org>
-To: kernel test robot <lkp@intel.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [linux-next:master 3382/3950] mm/zswap.c:48:15: sparse: sparse: symbol 'zswap_stored_incompressible_pages' was not declared. Should it be static?
-Date: Thu, 21 Aug 2025 09:19:22 -0700
-Message-Id: <20250821161922.78301-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <202508211706.DnJPQQMn-lkp@intel.com>
-References: 
+	by nyc.source.kernel.org (Postfix) with ESMTP id E38BBA58172;
+	Thu, 21 Aug 2025 16:19:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09403C4CEEB;
+	Thu, 21 Aug 2025 16:19:54 +0000 (UTC)
+Message-ID: <443d3d83-2b1b-4def-99c4-1b09ddc9879b@redhat.com>
+Date: Thu, 21 Aug 2025 18:19:52 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D14171C000D
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/huge_memory: remove enforce_sysfs from
+ __thp_vma_allowable_orders
+To: Usama Arif <usamaarif642@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, lorenzo.stoakes@oracle.com,
+ linux-mm@kvack.org
+Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, kernel-team@meta.com
+References: <20250821150038.2025521-1-usamaarif642@gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250821150038.2025521-1-usamaarif642@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: stjiodxhjortp1redpnu9o6h7ax5o4te
 X-Rspam-User: 
-X-Stat-Signature: 5zw3z5g8t784ytzsfmoxetd6zp5wrzqq
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1755793165-103696
-X-HE-Meta: U2FsdGVkX1/+qwghdfJABhOBrGZsXoptEjRD49PtJVdg+OntmMC5rpODbjLfe/s5PRm4cnff7etekZf64H+TxGkTHpd6ZYCrkebE3Mkoav87hUYFIlu7TSzQFAPU807XwrjMaskTsJ6AszM5ghmBMFww6NzZYvSGSJeVUdn+q2+Or/foz4NVKPYw0hkLqnGgKbPtwy35DGDWNZStwnA7WuO8aOH3OJ3LqZW0gm1dP+V9fLAy3xTlLEtzv99WPC5DSnXWoM31bDeywFWoHZ7LgGX6JgONB1Ke3WFIkL5B7bqiBi72BA6bXuM7eLOEx/3PX0zSj6Me00ci2I83fpN6z3vz16E0cu7K/PpQVc+w6zuLTYFJOfeCy/79nnX65rGcBpOwzRyxoj8GMsxJrY7FL4ft0Qismf6jxHW1EAu0oBF+MX3DJawshY3XMCDKr3A+HVHakEvW37+V6KoEDVAbJ50PeRBVDzQtj27nTk2jEEgtG8C0ULCrUgSbnrqcMAB1SgWIb7Ft/tktTmjHdkaZSZU4aAHo5MuXoplL9Ch+vPGpN+c1uJjNLXzMSoSWD6fNN7dy3nZFADr4q3mYlfBnXIavmV7b2DBfyFmB6FDsB62PLmhFuNlbZnbg0bg7rIDSY9267JO0H6HYH5P3Z+VdKS2Ng4jAYbDIhBAFLEKZn5Na60mi6AtzQKNbkGEAKRZ0jsvfp3HycVRAAhksMUFUnVLY9T0EgVQvj7/eLkQdd5p80pWBBeMTnCp0wKWG6bKYPEqOgqLVaeIFGJ/aIjJ4JjL2hDrrxh8W7fmTApKMJCTj3oyHmxQPvwUyXOog6Wd0lDHwElVlGjZUm+m2giYywDMn9rN6ufD4XmKkfL7JN75Tsw0/LXq5e6NPfgyrUrURXup16BZ+Wpj0R0pTmEGJi4P+qU3MQgnLmtXBOV4IRewAnDyzdgZSPEpxhqApT5sZyFdBi1YN9BRclz0cP8t
- fEwG9NKD
- 5wnzM309tVLHNUriIPYa7D9gfMYLxQuyUFSkQu6wZZ6RRCwMEgRVBeuduupvYYFUTUAmYxYAcJyLRtIqJyxXBoeaK/TZwFmeeKT5fw2iX9HNVJX/H68YR0Jv7ZZ7gwvPgQFDPE/HYX0mztNvaAfQdLk7XdAUzrFTeB+CWaHbR1SAlzBmmOEXfP192PoSJBIl/aYJbFJAdV/OnK605th1XfsvSU2sAh0lp+K5a4RIy7UarQEMZKLFWn/lhsd3fB57LVd7tTIVyH9X5nhqkRq/DaQNoQ63KY3Jiqb3fq9J3L+zdPn8pGJCKIZ71AxWQZ4FBxnEZ23VRUE5MM+52v9KN/lg6v8lWksKo9jet48OXrAOoMg/cRp0iV4nySvZTlGPytCOkWd/riN4Q5pOjM+XFgdrHW7GZ4aTd4hg1z0Kp3BUOLd5MW2fwrm7R4Q==
+X-Rspamd-Queue-Id: 6D45440008
+X-Rspamd-Pre-Result: action=add header;
+	module=dmarc;
+	Action set by DMARC
+X-Rspamd-Server: rspam05
+X-Rspam: Yes
+X-HE-Tag: 1755793198-349801
+X-HE-Meta: U2FsdGVkX18R8FMK79KCMkizWXl0+hQCbuIlxub/+dWtGKAZybaD51zK5H6BvfrfWcMt49xhne/hax4I1bQ+Zj7KTrC7/2P3aC0jqzhJTTVApLj4PhQ2RD6ySBulbs00oR1HxdcOaKncHbWLeQMibsaFhDr+DLOiF+wk2mvGmCCxhCMsGWyo5rHyxeiP4VYbHnQDpRfY0+MHvfU0Js2rWl1BEHQe1udaRQ8iumPIGhH5JQAnGgQ/Z0ejDrHIugaST5ORJaNUT+d19LSkqIK8SIv8FpCB5v+e07KSrL8hSopjvTkVqZHDg4Vl3+oWMFTs8c/BU6zY7DmHRU/PaX6hktIY272QS45ty3UcgdA6I2hAaCXGeJxM/0LtE60mmnVmX4DwQK/b6AP7h+NHuncvJoJEdoCXZzYWm+94kUI72fy4F5IjMUPzrcpvM0og1dzn8t3tbj7LPTKbjTuesL2bz0hHO43y667LhAK5BTHk70bo7X3upxqB7TaZ4Ti752yRQtQgLzNdPJl2kcqDcBnAgiswW350g2nETiJ+waAxsB+Y2MebA73Tr+6Dec7aNuqy1qgpppN8xdWU57o+ufh6dD2PE1+cR25cG46w3OWUcwb7W/d0EGzo1nsjMCXcP74SKZq9pwZKcspBTQJ9TpOKJN9FYtJwCmNsezfssIrz9+khKMAfRUk1cLsF52VVOBuyh8g8n8+Y9xfxwkddZkNGL4WDMZyfls/c48v1FGfKQVmqHGUuR/tU33YlBJmJ/2E7L59S0ks+q+RqustFtyCVzQmrcG9kjb1YZQplyyMmPiuK8GNoaJgUJpailCosIM7zPEnlT22CIDA4Em2ACUmI0fpzmQSIayb6SPc9TdTagrpRh1oDeiGkYWVlRsCh3yVjdGIXNvYBDAhxahY8a4UJZpIw1ZO6FzXV6uG/fQuyijLGnQYl21zQj2ROrms/GL6GEOZb0EuJZv9PEWMnoCj
+ rBWSfTa5
+ huLpSkoTYeRCAFLgT+mi10LqgTv/HR6W2eDImUlbuew2gT+PdsiII6ya3Y6cI9u2DV6SuZm0S8MDSyvXpMrhQfTyBzmhflRbX5gLrTS1i+rcclKXaCYfRgIX7YWVSq2CLWsaFstVFnqwb0aH0ztmBXQle+lc+oefaNZPmr7rUu7qtHYHt0ZmYJYlMXlaENRXI+rwpCSFZd2gZH/eTVFp/+psKXkrP3LkhI5nMG5s3hMYyvHyccdtJRG4WQhFTQC2BikN6cCr8FdykjDcAIiac4Zzy8qfNvk5Quv05FfA8juUSXpEAoGwuXqQz7JUmdgkMDxGD0Q0sfPvYliHFkBLXyr8PgseWnkB5xKi0xdmIEKuip/uYVrT1hoXyZScJIhmCVCTmtH0KDAVupC3jDxtlU4oFw+o0NQgzMPTqGZMKx8wuRzQUJKv4T+hONN1+R1VGjl+5ZnLL9UMcLoM96YBn0Aj4nmmvRrJLRT5H
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,46 +136,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 21 Aug 2025 17:43:16 +0800 kernel test robot <lkp@intel.com> wrote:
-
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-> head:   7fa4d8dc380fbd81a9d702a855c50690c9c6442c
-> commit: 6d522abd7b4fc78d51934e6c9a53d8e2349f5d3e [3382/3950] mm/zswap: store <PAGE_SIZE compression failed page as-is
-> config: arc-randconfig-r123-20250821 (https://download.01.org/0day-ci/archive/20250821/202508211706.DnJPQQMn-lkp@intel.com/config)
-> compiler: arc-linux-gcc (GCC) 13.4.0
-> reproduce: (https://download.01.org/0day-ci/archive/20250821/202508211706.DnJPQQMn-lkp@intel.com/reproduce)
+On 21.08.25 17:00, Usama Arif wrote:
+> Using forced_collapse directly is clearer and enforce_sysfs is not
+> really needed.
 > 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202508211706.DnJPQQMn-lkp@intel.com/
-> 
-> sparse warnings: (new ones prefixed by >>)
->    mm/zswap.c: note: in included file (through arch/arc/include/asm/cacheflush.h, include/linux/cacheflush.h, include/linux/highmem.h):
->    include/linux/mm.h:80:9: sparse: sparse: preprocessor token PAGES_TO_MB redefined
->    mm/zswap.c: note: in included file (through arch/arc/include/asm/irqflags-compact.h, arch/arc/include/asm/irqflags.h, include/linux/irqflags.h, ...):
->    arch/arc/include/asm/arcregs.h:155:9: sparse: this was the original definition
-> >> mm/zswap.c:48:15: sparse: sparse: symbol 'zswap_stored_incompressible_pages' was not declared. Should it be static?
->    mm/zswap.c:1250:23: sparse: sparse: context imbalance in 'shrink_memcg_cb' - unexpected unlock
-> 
-> vim +/zswap_stored_incompressible_pages +48 mm/zswap.c
-> 
->     41	
->     42	/*********************************
->     43	* statistics
->     44	**********************************/
->     45	/* The number of pages currently stored in zswap */
->     46	atomic_long_t zswap_stored_pages = ATOMIC_LONG_INIT(0);
->     47	/* The number of incompressible pages currently stored in zswap */
->   > 48	atomic_long_t zswap_stored_incompressible_pages = ATOMIC_LONG_INIT(0);
->     49	
+> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+> ---
 
-Thank you for this report!  I just sent a fixup patch:
-https://lore.kernel.org/20250821161750.78192-1-sj@kernel.org
+Acked-by: David Hildenbrand <david@redhat.com>
 
+-- 
+Cheers
 
-Thanks,
-SJ
-
-[...]
+David / dhildenb
 
