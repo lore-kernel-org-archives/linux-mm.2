@@ -2,115 +2,109 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E0406CA0EEB
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 12:15:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AC320CA0EF8
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 12:31:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 697F58E0050; Thu, 21 Aug 2025 08:15:09 -0400 (EDT)
+	id DE8508E003D; Thu, 21 Aug 2025 08:31:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6751B8E003D; Thu, 21 Aug 2025 08:15:09 -0400 (EDT)
+	id D992A8E0020; Thu, 21 Aug 2025 08:31:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 585DC8E0050; Thu, 21 Aug 2025 08:15:09 -0400 (EDT)
+	id CAF0A8E003D; Thu, 21 Aug 2025 08:31:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 412BE8E003D
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 08:15:09 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id ACA491603AC
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 12:15:08 +0000 (UTC)
-X-FDA: 83800659096.30.9D4A1CE
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A23FA80008
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 12:15:06 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=XSJsYvNA;
-	spf=pass (imf02.hostedemail.com: domain of 3yA2naAgKCMs0rt13r4sx55x2v.t532z4BE-331Crt1.58x@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3yA2naAgKCMs0rt13r4sx55x2v.t532z4BE-331Crt1.58x@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BA3A18E0020
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 08:31:32 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 14884C03E8
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 12:31:32 +0000 (UTC)
+X-FDA: 83800700424.09.ED11F01
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0C2E220014
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 12:31:29 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=pxY2U7T6;
+	spf=pass (imf13.hostedemail.com: domain of usama.anjum@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755778506;
+	s=arc-20220608; t=1755779490;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=igGD2SRqvbl6NKcwwFrW6mZ2nrTeSMfrqJN+WQf8wf8=;
-	b=mti9+pm0aj7EXE6qDqdAsLgTv+buUqDfyBJYFk6W51CGqa561p7f+E1HWeVCD0c//g//0U
-	/QpgqtufbrcDEaCUURGkqaVEnPEDRkapbDr14I5+dElItEF4oQGou35kngh58dcPSgr/Bi
-	WdGeM/4Mxi5T1XJG9nH7UCGMbIllnDg=
+	bh=Q0Pa53Um5cV6psLWFzf5R9C2ysYXE6Bche9EpkTiSqE=;
+	b=fOOg2TAEQDklDGyo2YyD6BWQsnM2XX+V4gUd88EHX1m6SLVDc2aa/kcnIZRNcXFHUpXgiC
+	1hI6lQooWjBgoItBN4j0SSvbp5t22vTcnuqBJftuTctOhJ+qYM1X9sraQgVd5DuIPNmj+2
+	iRHjgWqAmdJRN/S9+a3909v8/KVYOB4=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=XSJsYvNA;
-	spf=pass (imf02.hostedemail.com: domain of 3yA2naAgKCMs0rt13r4sx55x2v.t532z4BE-331Crt1.58x@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3yA2naAgKCMs0rt13r4sx55x2v.t532z4BE-331Crt1.58x@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755778506; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=pxY2U7T6;
+	spf=pass (imf13.hostedemail.com: domain of usama.anjum@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755779490; a=rsa-sha256;
 	cv=none;
-	b=GD3QzLOCnazN8O5WD6oIctbLqUATAgLCOY4m57sOiMJMJv6NlWVpSXCppV1P6uHTaINkua
-	GgL38UKIFHVYDJ8FD4upXoIfddVtAGibzl5+oO7mVyDe5ZEEspXNJBuRp/3Nbvb4KQMRUP
-	x/E8h1sno0BqCEJVunYkvVmZFIwqliw=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-45a1b0c5377so4754735e9.3
-        for <linux-mm@kvack.org>; Thu, 21 Aug 2025 05:15:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755778505; x=1756383305; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=igGD2SRqvbl6NKcwwFrW6mZ2nrTeSMfrqJN+WQf8wf8=;
-        b=XSJsYvNA62SYVRI0GsszQ5+OEVNV+2iTNOEmeoCdok6/XBmJbanApnBciEXj7glXJc
-         owrZYaJLCxpuo3ysyeIPP2XRX/me/MO9JOrXzk+bKHoSyemWfS6Ars5I1ZWsrtJK1wT4
-         G4f0IuX2Rg9LG6clOQJkqu9i4u5H3uD263YiQK49MkWnJAggCjI6NuJDvPE8fsHeoKoX
-         pG8YYnSkIeqeqznw//IOKlmOF8C7I/Vhjb1BH2mTOuoCMZDNv8rqrOgZMOKmnzLdLyfm
-         yrTgeldtQVS0E30orodyBSXvotWDVRgDJ78+cnmaIgHuPKn4XzjSgjSOYSFoAUcOfI1K
-         oIoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755778505; x=1756383305;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=igGD2SRqvbl6NKcwwFrW6mZ2nrTeSMfrqJN+WQf8wf8=;
-        b=FQ18qFm5MWsZCSGdVDeD2/BO3sIjdSndvqcL9xraysjz3eUYJyBqAm1epY8He8ihbR
-         aAPa2eK6xSQpV+X5uLDXHlRnonyzn2WYBmy6wSDMMKkygL7HRUh9cv10f/SrviQFQECg
-         8Oc3osMwvYBrz/nROS82V3JazDpAAyhEqkpDFVd2K7AhFC6it4UcJN4eVazgK6zJI56I
-         XKQQiDJRwx32/OLf1bEyumP8qaE43aKwihkqtw2WSRjQ2u7RMs/su7O+AUNY3TWX0dwU
-         JIQ9oldhNL1MRinIBabgE+7jpR3Sbl03NR5DRo8lvCRzZSkozqzijAPj3EsO7Xwr5kA3
-         pJdw==
-X-Forwarded-Encrypted: i=1; AJvYcCVhErGtYCaU0EaheD38FX0/PIgca+C/wrnF5pJBvpzkXFFKnw3ivmjq+ejcnPJMra+MAfddkHSMtA==@kvack.org
-X-Gm-Message-State: AOJu0YyoEUFMbsi2FtT82qqnRF+OY/3RnqVxAevdN4AtX23RTjq6BHT0
-	xMK4Qc+9T2w1bDVZbbHwT4K3WP5tGWYckcui9B6o7Zu0Joff/S5JT7AfDFuCB6wLIlh9i57l34x
-	JyZxq5aW3AAfAjA==
-X-Google-Smtp-Source: AGHT+IE4l5fOXizJgcLdQXp5PpoE+yrfzIr6P0oIHw56mmXq1KE5PErHW4FPmgRshbk/sdE2ZGHB43wQ96mM1Q==
-X-Received: from wmbdw4.prod.google.com ([2002:a05:600c:6384:b0:459:dcf5:1b54])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:c8c:b0:459:d645:bff7 with SMTP id 5b1f17b1804b1-45b4d7e34dfmr21875165e9.12.1755778504936;
- Thu, 21 Aug 2025 05:15:04 -0700 (PDT)
-Date: Thu, 21 Aug 2025 12:15:04 +0000
-In-Reply-To: <cdccc1a6-c348-4cae-ab70-92c5bd3bd9fd@lucifer.local>
-Mime-Version: 1.0
-References: <20250812173109.295750-1-jackmanb@google.com> <cdccc1a6-c348-4cae-ab70-92c5bd3bd9fd@lucifer.local>
-X-Mailer: aerc 0.20.1
-Message-ID: <DC83J9RSZZ0E.3VKGEVIDMSA2R@google.com>
-Subject: Re: [Discuss] First steps for ASI (ASI is fast again)
-From: Brendan Jackman <jackmanb@google.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: <peterz@infradead.org>, <bp@alien8.de>, <dave.hansen@linux.intel.com>, 
-	<mingo@redhat.com>, <tglx@linutronix.de>, <akpm@linux-foundation.org>, 
-	<david@redhat.com>, <derkling@google.com>, <junaids@google.com>, 
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <reijiw@google.com>, 
-	<rientjes@google.com>, <rppt@kernel.org>, <vbabka@suse.cz>, <x86@kernel.org>, 
-	<yosry.ahmed@linux.dev>, Matthew Wilcox <willy@infradead.org>, 
-	Liam Howlett <liam.howlett@oracle.com>, "Kirill A. Shutemov" <kas@kernel.org>, 
-	Harry Yoo <harry.yoo@oracle.com>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Andy Lutomirski <luto@kernel.org>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Kees Cook <kees@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	b=Ht352zdiWJk/oFF7ZaY98/w11zD3L0b1L1cmPa7FJ4kdTKtwYrmPXTNNyWQRqE06V+KUOO
+	GMQSv3KJDFxMATTNP7woNPosjWn014sZSzW9D1Fht1FL7h1znTZPa9AKqwfkdLLUqkxX2+
+	Y4ptqGxYzBgoUbhzhTu94MvwsPh91K0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1755779487;
+	bh=1X8YBWQ47kcR3NLnc+BPXG4nANE+2JC2KP0lrQKG31k=;
+	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
+	b=pxY2U7T6feWMfT06C+jDFtze1Osu/4/30Jd05L50qRP1+VvZiFq28HhygitP/Ob3X
+	 7AgKEzRJm4aK65dep/E37eDo07STb6zGmIi+1+o2wGt4mG3JJF6H6B/GVyz/+s3BIq
+	 5HUlOnikVBzFqJn+/fRC+dqu3++s9wG4MPjSjg+tIE7auAevL/3Uxkm2mKAOju655V
+	 f7Y854pDGZHftB2+BHbQ73Mb+mKQr2yHyg/sFlDVH2WsrBiY+nBVp7YEXrVOgeJom7
+	 M25vTND0UIyH52A1ZGChgPa4YAVPMHoBlP6iVU0/TmnMIzYYlBlt+P7oQ4ziPu4UU+
+	 LZZjStQTddfhQ==
+Received: from [192.168.100.175] (unknown [103.151.43.82])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: usama.anjum)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id E4E8D17E0154;
+	Thu, 21 Aug 2025 14:31:22 +0200 (CEST)
+Message-ID: <4abd97fe-412d-4e3e-9efc-cf3092d66e57@collabora.com>
+Date: Thu, 21 Aug 2025 17:31:21 +0500
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: usama.anjum@collabora.com, kernel@collabora.com,
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Vlastimil Babka <vbabka@suse.cz>, Albert Ou <aou@eecs.berkeley.edu>,
+ Zi Yan <ziy@nvidia.com>, David Hildenbrand <david@redhat.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Mike Rapoport
+ <rppt@kernel.org>, Peter Xu <peterx@redhat.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Leon Romanovsky <leon@kernel.org>,
+ Shuah Khan <shuah@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Alexandre Ghiti <alex@ghiti.fr>, Barry Song <baohua@kernel.org>,
+ Dev Jain <dev.jain@arm.com>, linux-kselftest@vger.kernel.org,
+ Paul Walmsley <paul.walmsley@sifive.com>, linux-mm@kvack.org,
+ Nico Pache <npache@redhat.com>, John Hubbard <jhubbard@nvidia.com>,
+ Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH v2 4/8] selftests/mm: Add -Wunused family of flags
+To: Kevin Brodsky <kevin.brodsky@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <20250731160132.1795351-1-usama.anjum@collabora.com>
+ <20250731160132.1795351-5-usama.anjum@collabora.com>
+ <57c816d6-a9ba-47c9-8f40-3978580b7f67@arm.com>
+ <8e9d7c59-46b4-4e1b-8a55-1898302f5080@collabora.com>
+ <88ea592c-c6ff-4a19-a366-eadeca66b039@arm.com>
+Content-Language: en-US
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+In-Reply-To: <88ea592c-c6ff-4a19-a366-eadeca66b039@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A23FA80008
-X-Stat-Signature: jyax1yr4p3sksw1eqjmp934yhe31geii
+X-Rspamd-Queue-Id: 0C2E220014
+X-Stat-Signature: gj4ed5tx5r68f8rd5btzgz3dshawrnjt
 X-Rspam-User: 
-X-HE-Tag: 1755778506-735664
-X-HE-Meta: U2FsdGVkX18Bd61qBLstZ19eyd0PMJBiHU0M+j4XR33wp3MxBeTmQPx4F0fwdhGxKkhy2pmWDcXVhoieV0aSI8JV0g4xt2D4Q611owcpJXsF18ZrsViJrUpABPxbUDh1XOESmFZAwbygPDSprS3ROrrb14kElPowz2/CSvOI9N7mDLvOUsrZEewZOs+RiLPv57n0hkbWKGz6VD/7Mu/8ejM18q+NghERD1BOFSIK9h7zjKwPrsauVUhbNtP37TPv1yKeqE2tPwSg2VPSJV6Q6hZJJIo4HuoF9znC5Vf9WCg+9LXx/JVrNypcAzSflw7ETEZKbR4ASiHpQFPajBapEahlV+C+j6CXHNloDobeaXeHjOuqn6wrtwwP9BTkJh4Euy0GVY6w1VQon1fYQE7UGtvfjuhr78c9igdUQvCxmY8C/ZZJgPb9GV9kR/MmvQuQHcjI/ipLa2TLNFqkjV+2+PsiBNTAocTEHBZAkYofUPUQ43dhLBN3sDTJavE7COPMO22k8nZ6/ifvRqDG8pG1d722vskVxk72q0LlVShdGi3P4xVKQGkwFYhCgfsQByqsGIfFT2TGN++k+q0M528XWRCe9PPgBF9tHzukpjU01PB2gnwY/aSSpahnBAoQrOdhrB0fyODQ78bLk4oeRUiMh4xs7YThCXm7+nG90sf0tCpKvxfsWXkt9lFLdRVhpq1GRHC08DUqT8qTQM1BpKqYp5Q4J4UHZ2Q4A1RDMKajf+96MNI7Gkcrt/Yn9EfeWcAlG/Xwt2FcSchdyRzwirpX3z/+5lQrCUw79dACMIWAumBd7vOw9NLyYeiRqrXGB1J1zeJwFjNrEeLzSNb+GZO7pcaKvvAObJlJURKe9fzR71F/EsUPoLCo4aERSyopoKMGzh4bwFpetO0dlAhJ1WF/D4iOQy+EL/RHRpFyYxYbDL+5VadIuWpq9ysbAA+/h4QpEKCZ96x3W2oVc2/GOyg
- cIzCrDXH
- T51q9nZ9gkLqI09jdZ44ItRf4Zct6q7UirDerWGLCZM/eci/y3+VZGEd3QgVDg9uIIEX16H7N7vnVRAqG2cDFOmLEiVV860oamPLJPG+qKAnpFziPnmGbXG6S54y3bxEEpaSUfUKWFIO8qL4pMUjTxgK4TXyMpFJcvYmJATtE5yfSRPizUnhPiqanvkYuhF1QaQvXbgdhZoW2IQ78DuxhofGUWj2EsS/xBqmjKI/wc6LWXg5fasCFCj8dhUXkpeu4zIT43Of/IHTfcbIfWuX/LLY2YK8uRnco+c2+LXsnA1IIhlNySn3hzf5v4WCTAo00+brYxrfDF2CioH9MoUFDw61CtPOs3qWPwvgonha2c0MN0n6KIi8DydNlBTUj/dEixR8Nrv4gsILnW6ohYNGwaHyByrt029v6USduyaCyI8Z7tbJVGW/2AK1ebqlzw9q+bqN9UiLYSayboKV8G6SblxaOg+zVZQ5IwHEzAYzMRbEpkI+a39B2qacNdDpuOD5LPuNUsBfU0mfcKxsHgDYLdajRuBD/76hKLwNuFXSEoczBFvGjv5KLCYmvMZeVG6b65eb33hsAx3Khf5661Mc6xQ0E0NrTeBSltJJAG6uS40rEwcpmAmfWP5ISVw==
+X-HE-Tag: 1755779489-49804
+X-HE-Meta: U2FsdGVkX19aAX4OW9oaOBy7XjL5qo7ioRAh2/4HZHOQijTPI6YMoe4YofE4VaT29J4DeknGodjmR9cGY5oUNQyhPq/zx438rVoEiQfdQEYOq/hyxiegbEatX11JiqTvU5A3JIUC4EHygDyaby9NOyjyO33oN024iNCHhLgHKmXCA7PRBWA6p0Jk0xHqZEniBeMUrGNJbPj1mWhnWRH0WNydiFF5C15APJRmRDRABXw+QvLPKS9lsoKVloKNR14Ddp9YWltjOog0lz3kKrii1q1rFNl+UrHMXI86ps0XLpZVwrHQW/wYHD7hUbzi19M2iXMJB4oWao0Jr9UGSRhsmoxRpwAUwY/uqPMZimhGST+XxqmQpR+/qBmJEiANbOP5bUWWq0QYmYChdWPZNKnr2hY0QSmnW0lwqn44tcZFiZR+6PtPnxbj2GlBfilwTglJ+PFhZGiQxfsrHphJXNU7fLU1FpIwcw11rhgFYYuNHCe2jrVZ+/2KntVX2uqZlEtD+eZasTjXoe1KaMn3d/opQRxJln/Ira2HMkYTmawdyikcKJVbo8UI9QQGmZCp1gkq0iIzka/U5PFaGy2WYJ6azeVc9PXZoOTRpw1xtXs0PeCkox8NQV493ehCigY31yJ/Qa4vviB1gq2QeiWL5UJgjOc9ZLTNCUyJm6ai1DGRTmpqs46P3ErNwmS/4lKszqazmx2G4ZGrg+BHjdqxerrQwhu2a4ToOlJobqBzZFk/GK4XFswQWSf4cS+r4bmLMrCabajEOM86fdD3iqNHlaPcubbxXpzU6WRW6j2qyb4lS0pwlOFv8ko4UD6abOgGPwKTQ4wUlO/B7PRH9QECsWo7nnNQ+vvkMfg6y581hj4gFo1Y2k6AyqBvO2zygi38JkPKh9D33bBB6JPAP3IooSiwTEBZD2UyJv5t5mtO5MjMZrrjhurgiOsMjFFkuVvQqFpuyb0SSlNSiB2cyBwBllu
+ c8RAGtZO
+ 537tUWovXmWSFkOwgOToLhbcZk0z5IekXLNHZZLGflS4JPrZIhMPzWs+k1tZyW1dl7MfLeBiXTbk/A6yRaz1hcU74Cxx9fnj1ZiywKEzsOOj4Jp0yekjlEAkZjP0rfnQ4nEL5O9m9j9gr/9X/loKB4BfQYhbz8fvX+bWwESFgDZ7hVybL+7g/kKvPVu6qhumAap3LU7i50rZkBrC6IcXC18djv6g5TQnoOM4HGsUpP65qwDYixTamOYSz7EEjS30Y6afxCKTNYyQJnQQf6lNknRmk9H/e8wll4b8uPAkkEYlL0Qa8+mJ0iLhym7Gp52CjNlb/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,516 +113,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Aug 21, 2025 at 8:55 AM UTC, Lorenzo Stoakes wrote:
-> +cc Matthew for page cache side
-> +cc Other memory mapping folks for mapping side
-> +cc various x86 folks for x86 side
-> +cc Kees for security side of things
->
-> On Tue, Aug 12, 2025 at 05:31:09PM +0000, Brendan Jackman wrote:
->> .:: Intro
+On 8/21/25 3:43 PM, Kevin Brodsky wrote:
+> On 21/08/2025 08:28, Muhammad Usama Anjum wrote:
+>>> As to -Wunused-parameter I am frankly not convinced it's worth the
+>>> hassle. We're getting 90 lines changed in patch 6-8 just to mark
+>>> parameters as unused, in other words noise to keep the compiler happy.
+>>> It is not enabled by default in the kernel proper precisely because it
+>>> is so noisy when callbacks are involved.
+>>>
+>>> Patch 5 is clearly an improvement, but I'd rather take it without
+>>> actually enabling -Wunused-parameter. The rest of this patch isn't that
+>>> useful either IMHO.
+>> Patch 5 removes genuinely unused parameters flagged by the compiler. If we
+>> drop the -Wunused-parameter option, however, new unused parameters will
+>> continue to creep in with future patches. The goal of enabling this warning
+>> is to surface such issues early so developers can address them during
+>> development, rather than later during review or debugging.
 >>
->> Following up to the plan I posted at [0], I've now prepared an up-to-dat=
-e ASI
->> branch that demonstrates a technique for solving the page cache performa=
-nce
->> devastation I described in [1]. The branch is at [5].
->
-> Have looked through your branch at [5], note that the exit_mmap() code is
-> changing very soon see [ljs0]. Also with regard to PGD syncing, Harry int=
-roduced
-> a hotfix series recently to address issues around this generalising this =
-PGD
-> sync code which may be usefully relevant to your series.
->
-> [ljs0]:https://lore.kernel.org/linux-mm/20250815191031.3769540-1-Liam.How=
-lett@oracle.com/
-> [ljs1]:https://lore.kernel.org/linux-mm/20250818020206.4517-1-harry.yoo@o=
-racle.com/
+>> Long term, I’d like us to rely more on compiler and static analysis just like
+>> kernel to catch these kinds of problems proactively, instead of waiting until
+>> they’re reported or someone fixes them later. While it may feel like noise
+>> initially, this is largely a one-time cleanup—once done, developers will
+>> simply fix warnings as they arise, keeping the codebase cleaner going forward.
+> 
+> Agreed on the general principle, but I think the hassle is just too big
+> for what we're getting in return here (see also Andrew's reply). New
+> code may also introduce a bunch of unused parameters for legitimate
+> reasons and it's easy to imagine contributors ignoring such seemingly
+> harmless/irrelevant warnings instead of sprinkling __unused all over.
 
-Thanks, this is useful info.
 
->>
->> The goal of this prototype is to increase confidence that ASI is viable =
-as a
->> broad solution for CPU vulnerabilities. (If the community still has to d=
-evelop
->> and maintain new mitigations for every individual vuln, because ASI only=
- works
->> for certain use-cases, then ASI isn't super attractive given its complex=
-ity
->> burden).
->>
->> The biggest gap for establishing that confidence was that Google's deplo=
-yment
->> still only uses ASI for KVM workloads, not bare-metal processes. And ind=
-eed the
->> page cache turned out to be a massive issue that Google just hasn't run =
-up
->> against yet internally.
->>
->> .:: The "ephmap"
->>
->> I won't re-hash the details of the problem here (see [1]) but in short: =
-file
->> pages aren't mapped into the physmap as seen from ASI's restricted addre=
-ss space.
->> This causes a major overhead when e.g. read()ing files. The solution we'=
-ve
->> always envisaged (and which I very hastily tried to describe at LSF/MM/B=
-PF this
->> year) was to simply stop read() etc from touching the physmap.
->>
->> This is achieved in this prototype by a mechanism that I've called the "=
-ephmap".
->> The ephmap is a special region of the kernel address space that is local=
- to the
->> mm (much like the "proclocal" idea from 2019 [2]). Users of the ephmap A=
-PI can
->> allocate a subregion of this, and provide pages that get mapped into the=
-ir
->> subregion. These subregions are CPU-local. This means that it's cheap to=
- tear
->> these mappings down, so they can be removed immediately after use (eph =
-=3D
->> "ephemeral"), eliminating the need for complex/costly tracking data stru=
-ctures.
->
-> OK I had a bunch of questions here but looked at the code :)
->
-> So the idea is we have a per-CPU buffer that is equal to the size of the =
-largest
-> possible folio, for each process.
->
-> I wonder by the way if we can cache page tables rather than alloc on brin=
-g
-> up/tear down? Or just zap? That could help things.
+> My
+> feeling is that unused parameters are expected to be allowed in the
+> kernel and it isn't helpful to go against that expectation in just a
+> small subset of kselftests.
+I thought kernel must be giving error for unused parameters as well (from
+my memory). But just checked and it doesn't seem like it. I'm okay with
+dropping -Wunused-parameters.
 
-Yeah if I'm catching your gist correctly, we have done a bit of this in
-the Google-internal version. In cases where it's fine to fail to map
-stuff (as is the case for ephmap users in this branch) you can just have
-a little pool of pre-allocated pagetables that you can allocate from in
-arbitrary contexts. Maybe the ALLOC_TRYLOCK stuff could also be useful
-here, I haven't explored that.
+We need to drop patch 6/7 and in Patch 4 should have only:
 
->>
->> (You might notice the ephmap is extremely similar to kmap_local_page() -=
- see the
->> commit that introduces it ("x86: mm: Introduce the ephmap") for discussi=
-on).
->
-> I do wonder if we need to have a separate kmap thing or whether we can ju=
-st
-> adjust what already exists?
+-CFLAGS += -Wunused  -Wunused-parameter -Wunused-function -Wunused-label -Wunused-variable -Wunused-value
++CFLAGS += -Wunused
 
-Yeah, I also wondered this. I think we could potentially just change the
-semantics of kmap_local_page() to suit ASI's needs, but I'm not really
-clear if that's consistent with the design or if there are perf
-concerns regarding its existing usecase. I am hoping once we start to
-get the more basic ASI stuff in, this will be a topic that will interest
-the right people, and I'll be able to get some useful input...
+@Andrew, Should I resend the entire series or would you can make the change?
 
-> Presumably we will restrict ASI support to 64-bit kernels only (starting =
-with
-> and perhaps only for x86-64), so we can avoid the highmem bs.
+> 
+> - Kevin
 
-Yep.
 
->>
->> The ephmap can then be used for accessing file pages. It's also a generi=
-c
->> mechanism for accessing sensitive data, for example it could be used for
->> zeroing sensitive pages, or if necessary for copy-on-write of user pages=
-.
->>
->> .:: State of the branch
->>
->> The branch contains:
->>
->> - A rebased version of my "ASI integration for the page allocator" RFC [=
-3]. (Up
->>   to "mm/page_alloc: Add support for ASI-unmapping pages")
->> - The rest of ASI's basic functionality (up to "mm: asi: Stop ignoring a=
-si=3Don
->>   cmdline flag")
->> - Some test and observability conveniences (up to "mm: asi: Add a tracep=
-oint for
->>   ASI page faults")
->> - A prototype of the new performance improvements (the remainder of the
->>   branch).
->>
->> There's a gradient of quality where the earlier patches are closer to "c=
-omplete"
->> and the later ones are increasingly messy and hacky. Comments and commit=
- message
->> describe lots of the hacky elements but the most important things are:
->>
->> 1. The logic to take advantage of the ephmap is stuck directly into mm/s=
-hmem.c.
->>    This is just a shortcut to make its behaviour obvious. Since tmpfs is=
- the
->>    most extreme case of the read/write slowdown this should give us some=
- idea of
->>    the performance improvements but it obviously hides a lot of importan=
-t
->>    complexity wrt how this would be integrated "for real".
->
-> Right, at what level do you plan to put the 'real' stuff?
->
-> generic_file_read_iter() + equivalent or something like this? But then yo=
-u'd
-> miss some fs obv., so I guess filemap_read()?
-
-Yeah, just putting it into these generic stuff seemed like the most
-obvious way, but I was also hoping there could be some more general way
-to integrate it into the page cache or even something like the iov
-system. I did not see anything like this yet, but I don't think I've
-done the full quota of code-gazing that I'd need to come up with the
-best idea here. (Also maybe the solution becomes obvious if I can find
-the right pair of eyes).
-
-Anyway, my hope is that the number of filesystems that are both a) very
-special implementation-wise and b) dear to the hearts of
-performance-sensitive users is quite small, so maybe just injecting into
-the right pre-existing filemap.c helpers, plus one or two
-filesystem-specific additions, already gets us almost all the way there.
-
->>
->> 2. The ephmap implementation is extremely stupid. It only works for the =
-simple
->>    shmem usecase. I don't think this is really important though, whateve=
-r we end
->>    up with needs to be very simple, and it's not even clear that we actu=
-ally
->>    want a whole new subsystem anyway. (e.g. maybe it's better to just ad=
-apt
->>    kmap_local_page() itself).
->
-> Right just testing stuff out, fair enough. Obviously not an upstremable t=
-hing
-> but sort of test case right?
-
-Yeah exactly.=20
-
-Maybe worth adding here that I explored just using vmalloc's allocator
-for this. My experience was that despite looking quite nicely optimised
-re avoiding synchronisation, just the simple fact of traversing its data
-structures is too slow for this usecase (at least, it did poorly on my
-super-sensitive FIO benchmark setup).
-
->> 3. For software correctness, the ephmap only needs to be TLB-flushed on =
-the
->>    local CPU. But for CPU vulnerability mitigation, flushes are needed o=
-n other
->>    CPUs too. I believe these flushes should only be needed very infreque=
-ntly.
->>    "Add ephmap TLB flushes for mitigating CPU vulns" is an illustrative =
-idea of
->>    how these flushes could be implemented, but it's a bit of a simplisti=
-c
->>    implementation. The commit message has some more details.
->
-> Yeah, I am no security/x86 expert so you'll need insight from those with =
-a
-> better understanding of both, but I think it's worth taking the time to h=
-ave
-> this do the minimum possible that we can prove is necessary in any real-w=
-orld
-> scenario.
-
-I can also add a bit of colour here in case it piques any interest.
-
-What I think we can do is an mm-global flush whenever there's a
-possibility that the process is losing logical access to a physical
-page. So basically I think that's whenever we evict from the page cache,
-or the user closes a file.
-
-("Logical access" =3D we would let them do a read() that gives them the
-contents of the page).
-
-The key insight is that a) those events are reeelatively rare and b)
-already often involve big TLB flushes. So doing global flushes there is
-not that bad, and this allows us to forget about all the particular
-details of which pages might have TLB entries on which CPUs and just say
-"_some_ CPU in this MM might have _some_ stale TLB entry", which is
-simple and efficient to track.
-
-So yeah actually this doesn't really require too much security
-understanding, it's mostly just a job of making sure we don't forget a
-place where the flush would be needed, and then tying it nicely with the
-existing TLB infrastructure so that we can aggregate the flushes and
-avoid redundant IPIs. It's fiddly, but in a fun way. So I think this is
-"the easy bit".
-
-> It's good to start super conservative though.
->
->>
->> .:: Performance
->>
->> This data was gathered using the scripts at [4]. This is running on a Sa=
-pphire
->> Rapids machine, but with setcpuid=3Dretbleed. This introduces an IBPB in
->> asi_exit(), which dramatically amplifies the performance impact of ASI. =
-We don't
->> know of any vulns that would necessitate this IBPB, so this is basically=
- a weird
->> selectively-paranoid configuration of ASI. It doesn't really make sense =
-from a
->> security perspective. A few years from now (once the security researcher=
-s have
->> had their fun) we'll know what's _really_ needed on this CPU, it's very =
-unlikely
->> that it turns out to be exactly an IBPB like this, but it's reasonably l=
-ikely to
->> be something with a vaguely similar performance overhead.
->
-> I mean, this all sounds like you should drop this :)
->
-> What do the numbers look like without it?
-
-Sure, let's see...
-
-(Minor note: I said above that setcpuid=3Dretbleed triggered this IBPB but
-I just noticed that's wrong, in the code I've posted the IBPB is
-hard-coded. So to disable it I'm setting clearcpuid=3Dibpb).
-
-metric: compile-kernel_elapsed (ns)   |  test: compile-kernel_host
-+---------+---------+--------+--------+--------+------+
-| variant | samples |   mean |    min |    max | =CE=94=CE=BC   |
-+---------+---------+--------+--------+--------+------+
-| asi-off |       0 | 35.10s | 35.00s | 35.16s |      |
-| asi-on  |       0 | 36.85s | 36.77s | 37.00s | 5.0% |
-+---------+---------+--------+--------+--------+------+
-
-My first guess at the main source of that 5% would be the address space
-switches themselves. At the moment you'll see that __asi_enter() and
-asi_exit() always clear the noflush bit in CR3 meaning they trash the
-TLB. This is not particularly difficult to address, it just means
-extending all the existing stuff in tlb.c etc to deal with an additional
-address space (this is done in Google's internal version).
-
-(But getting rid of the asi_exits() completely is the higher-priority
-optimisation. On most CPUs that TLB trashing is gonna be less
-significant than the actual security flushes, which can't be avoided if
-we do transition. This is why I introduced the IBPB, since otherwise
-Sapphire Rapids makes things look a bit too easy. See the bullet points
-below for what I think is needed to eliminate most of the transitions).
-
->> Native FIO randread IOPS on tmpfs (this is where the 70% perf degradatio=
-n was):
->> +---------+---------+-----------+---------+-----------+---------------+
->> | variant | samples |      mean |     min |       max | delta mean    |
->> +---------+---------+-----------+---------+-----------+---------------+
->> | asi-off |      10 | 1,003,102 | 981,813 | 1,036,142 |               |
->> | asi-on  |      10 |   871,928 | 848,362 |   885,622 | -13.1%        |
->> +---------+---------+-----------+---------+-----------+---------------+
->>
->> Native kernel compilation time:
->> +---------+---------+--------+--------+--------+-------------+
->> | variant | samples |   mean |    min |    max | delta mean  |
->> +---------+---------+--------+--------+--------+-------------+
->> | asi-off |       3 | 34.84s | 34.42s | 35.31s |             |
->> | asi-on  |       3 | 37.50s | 37.39s | 37.58s | 7.6%        |
->> +---------+---------+--------+--------+--------+-------------+
->>
->> Kernel compilation in a guest VM:
->> +---------+---------+--------+--------+--------+-------------+
->> | variant | samples |   mean |    min |    max | delta mean  |
->> +---------+---------+--------+--------+--------+-------------+
->> | asi-off |       3 | 52.73s | 52.41s | 53.15s |             |
->> | asi-on  |       3 | 55.80s | 55.51s | 56.06s | 5.8%        |
->> +---------+---------+--------+--------+--------+-------------+
->
-> (tiny nit but I think the bottom two are meant to be negative or the firs=
-t
-> postiive :P)
-
-The polarities are correct - more FIO IOPS is better, more kernel
-compilation duration is worse. (Maybe I should make my scripts aware of
-which direction is better for each metric!)
-
->> Despite my title these numbers are kinda disappointing to be honest, it'=
-s not
->> where I wanted to be by now, but it's still an order-of-magnitude better=
- than
->> where we were for native FIO a few months ago. I believe almost all of t=
-his
->> remaining slowdown is due to unnecessary ASI exits, the key areas being:
->
-> Nice, this broad approach does seem simple.
->
-> Obviously we really do need to see these numbers come down significantly =
-for
-> this to be reasonably workable, as this kind of perf impact could really =
-add up
-> at scale.
->
-> But from all you say it seems very plausible that we can in fact signific=
-ant
-> reduce this.
->
-> Am guessing the below are general issues that are holding back ASI as a w=
-hole
-> perf-wise?
->
->>
->> - On every context_switch(). Google's internal implementation has fixed =
-this (we
->>   only really need it when switching mms).
->
-> How did you guys fix this?
-
-The only issue here is that it makes CR3 unstable in places where it was
-formerly stable: if you're in the restricted address space, an interrupt
-might show up and cause an asi_exit() at any time. (CR3 is already
-unstable when preemption is on because the PCID can get recycled). So we
-just had to updated the CR3 accessor API and then hunt for places that
-access CR3 directly.
-
-Other than that, we had to fiddle around with the lifetime of struct asi
-a bit (this doesn't really add complexity TBH, we just made it live as
-long as the mm_struct). Then we can stay in the restricted address space
-across context_switch() within the same mm, including to a kthread and
-back.
-
->> - Whenever zeroing sensitive pages from the allocator. This could potent=
-ially be
->>   solved with the ephmap but requires a bit of care to avoid opening CPU=
- attack
->>   windows.
->
-> Right, seems that having a per-CPU mapping is a generally useful thing. I=
- wonder
-> if we can actually generalise this past ASI...
->
-> By the way a random thought, but we really do need some generic page tabl=
-e code,
-> there's mm/pagewalk.c which has install_pte(), but David and I have spoke=
-n quite
-> few times about generalising past this (watch this space).
-
-OK good to know, Yosry and I both did some fiddling around trying to
-come up with cute ways to write this kinda code but in the end I think
-the best way is quite dependent on maintainer preference.
-
-> I do intend to add install_pmd() and install_pud() also for the purposes =
-of one
-> of my currently many pending series :P
->
->>
->> - In copy-on-write for user pages. The ephmap could also help here but t=
-he
->>   current implementation doesn't support it (it only allows one allocati=
-on at a
->>   time per context).
->
-> Hmm, CoW generally a pain. Could you go into more detail as to what's the=
- issue
-> here?
-
-It's just that you have two user pages that you wanna touch at once
-(src, dst). This crappy ephmap implementation doesn't suppport two
-mappings at once in the same context, so the second allocation fails, so
-you always get an asi_exit().
-
->>
->> .:: Next steps
->>
->> Here's where I'd like to go next:
->>
->> 1. Discuss here and get feedback from x86 folks. Dave H said we need "li=
-ne of
->>    sight" to a version of ASI that's viable for sandboxing native worklo=
-ads. I
->>    don't consider a 13% slowdown "viable" as-is, but I do think this sho=
-ws we're
->>    out of the "but what about the page cache" black hole. It seems prova=
-bly
->>    solvable now.
->
-> Yes I agree.
->
-> Obviously it'd be great to get some insight from x86 guys, but strikes me=
- we're
-> still broadly in mm territory here.
-
-Implementation wise, certainly. It's just that I'd prefer not to take
-up loads of everyone's time hashing out implementation details if
-there's a risk that the x86 guys NAK it when we get to their part.
-
-> I do think the next step is to take the original ASI series, make it full=
-y
-> upstremable, and simply introduce the CONFIG_MITIGATION_ADDRESS_SPACE_ISO=
-LATION
-> flag, default to N of course, without the ephmap work yet in place, rathe=
-r a
-> minimal implementation.
-
-I think even this would actually be too big, reviewing all that at once
-would be quite unpleasant even in the absolutely minimal case. But yes I
-think we can get a series-of-series that does this :)
-
-> And in the config/docs/commit msgs etc. you can indicate its limitations =
-and
-> perf overhead.
->
-> I think with numerous RFC's and talks we're good for you to just send tha=
-t as a
-> normal series and get some proper review going and ideally some bots runn=
-ing
-> with ASI switched on also (all* + random configs should do that for free)=
- + some
-> syzbot action.
->
-> That way we have the roots in place and can build further upon that, but =
-nobody
-> is impacted unless they decide to consciously opt in despite the document=
-ed
-> overhead + limitations.
->
->>
->> 2. Once we have some x86 maintainers saying "yep, it looks like this can=
- work
->>    and it's something we want", I can start turning my page_alloc RFC [3=
-] into a
->>    proper patchset (or maybe multiple if I can find a way to break thing=
-s down
->>    further).
->>
->> Note what I'm NOT proposing is to carry on working on this branch until =
-ASI is
->> as fast as I am claiming it eventually will be. I would like to avoid do=
-ing that
->> since I believe the biggest unknowns on that path are now solved, and it=
- would
->> be more useful to start getting down to nuts and bolts, i.e. reviewing r=
-eal,
->> PATCH-quality code and merging precursor stuff. I think this will lead t=
-o more
->> useful discussions about the overall design, since so far all my posting=
-s have
->> been so long and rarefied that it's been hard to really get a good conve=
-rsation
->> going.
->
-> Yes absolutely agreed.
->
-> Send the ASI core series as normal series and let's get the base stuff in=
- tree
-> and some serious review going.
->
->>
->> .:: Conclusion
->>
->> So, x86 folks: Does this feel like "line of sight" to you? If not, what =
-would
->> that look like, what experiments should I run?
->
-> From an mm point of view, I think obviously the ephmap stuff you have now=
- is
-> hacky (as you point out clearly in [5] yourself :) but the general approa=
-ch
-> seems sensible.
-
-Great, thanks so much for taking a look!
+-- 
+---
+Thanks,
+Usama
 
