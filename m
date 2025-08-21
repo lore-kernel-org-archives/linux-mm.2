@@ -2,134 +2,87 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 55477CA0EEB
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 03:42:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 01CA6CA0EEB
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 04:24:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85D228E0006; Wed, 20 Aug 2025 23:41:59 -0400 (EDT)
+	id 1C0B36B00D7; Thu, 21 Aug 2025 00:24:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 834E78E0002; Wed, 20 Aug 2025 23:41:59 -0400 (EDT)
+	id 1690D6B00D8; Thu, 21 Aug 2025 00:24:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 723A08E0006; Wed, 20 Aug 2025 23:41:59 -0400 (EDT)
+	id 07F6A6B00D9; Thu, 21 Aug 2025 00:24:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DC3F8E0002
-	for <linux-mm@kvack.org>; Wed, 20 Aug 2025 23:41:59 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 959ED5740B
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 03:41:58 +0000 (UTC)
-X-FDA: 83799365916.26.075CC80
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B188740002
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 03:41:56 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=i0UB2b+S;
-	spf=pass (imf17.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E8A406B00D7
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 00:24:27 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 53AFE116FF9
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 04:24:27 +0000 (UTC)
+X-FDA: 83799472974.07.EF0ADBB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7A9D81C0006
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 04:24:25 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=f8fCfwFh;
+	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755747716;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1755750265;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ly8HhEQvY9JxMVhrYHzoh/hAff3HjFqcoEOj5b7KCq4=;
-	b=bT3X1FSlrcAsnZncr9znfBBPM87RmdSKWfWqyG6KCmy2hkPkkx6fngebKJZtpk48eMlmAR
-	gnCZZJcPvl8Gt0huITY0wjYXRfNqg1Reljnicc7xuTFlEllUNX2eKxmyFMZLbDkbY0zgnu
-	GzuyiLHSiral9tvaEpy8TDtWgKTq47Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755747716; a=rsa-sha256;
-	cv=none;
-	b=e7za/R/R/8voL4RCKsE2iIBRTbcHFxgDAzrNBEULn1xoITrEuxgJvLrQABtSZuWmE5BV0v
-	I4i3H0T04nbuzeQLxHWNULqHB7tOAXSW/sm9fMXqAnJVKY8/o7hsGyIk98vg0f5tzavxZo
-	FyU3RZuHLO1LKAlQPA+w2cmIutWsaSw=
+	bh=8rnmsPSWmxS4qqEi5T5wWykmcbV6Cb4nyfG8QckWqeo=;
+	b=IBAG8KFuGvrAIxy1bMVkaT+QwmFXhafTHz55sxOjSFKdgx1BXWnsgxJLziTSq3RHSGFyVP
+	yKeTcY7qwqTwpSxpCpuAYbdbnSlQVFujUEZYAsVNhIAi2D0BUpn+2k0dvcU4oyA+SjPj/w
+	dXGCYRSRXW9OOath4Ro2rdlLo3P9DQg=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=i0UB2b+S;
-	spf=pass (imf17.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-afcb7a3b3a9so68262566b.2
-        for <linux-mm@kvack.org>; Wed, 20 Aug 2025 20:41:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755747715; x=1756352515; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ly8HhEQvY9JxMVhrYHzoh/hAff3HjFqcoEOj5b7KCq4=;
-        b=i0UB2b+SCcuRknsfgpBGPtnOuA+Hz3lF7vfuvElpV8/ZYIWRIwT90ElCF163CIcab2
-         yLtFpv0YdgH3u1i/2bHfEjODg8c1fRCiphqdLte2CGGtVPZyKUzZ5unxsNGr0B8sno0Y
-         AxDUyElJMAufisXlTVSCmSqxJR/Z0s+vYi/rgMtsztFGGY4hdQMJTTsfLIufg9Raqlpy
-         byH0Dw/CJgVZPzrKyW7aLA6hF+CernvJ0YmohcLobkgpzi1JTIXPVxGAilOaYl99izKq
-         7ET6ULB+vJyMdie5XZc0j8sPZJOgvYtCpw7sxwpoE/lnU8w4EUSzzV4pELtCYcLy7E1g
-         Qy4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755747715; x=1756352515;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ly8HhEQvY9JxMVhrYHzoh/hAff3HjFqcoEOj5b7KCq4=;
-        b=sHYX4SggvSbY7k0IVCseDVvhpe7epP0bCOmt/Bfbmmo6kqsTscEd9XMO0YeL2FN7wm
-         QjSBYF4pQaIP7eOPUdo3xeJ/TSTtpHcD+VB8sG8Qb9JcMYuwta92LNY7Z6Cblmo7PDXY
-         U5kDXOwsDu6IypNaDapdDPb+bcltWHtxdK2e/uJY3jK9HtBPmwAgCPBOquMFly5mMnXA
-         LcawIuXv8q1ExDuKCVS5CtvhkvSpYhr4ALB47ir02oAlvMI4OJpxRoJcArySGkp9UyMb
-         KlNPoa1b7EjpPsygWzDSMKGfo9Dgxm1x23m9rmZQFIaYu5Yc8FBXdk4jrS3mr0RTkbXp
-         gaZg==
-X-Forwarded-Encrypted: i=1; AJvYcCWRRltNaUMkb9e2YBIucsdrNoLDjrVTPX3FBwHreZ7b+ajNeQhGCfTwSKRTNQVy4BA939OErkw/pw==@kvack.org
-X-Gm-Message-State: AOJu0YxE2ZWyMZc+4Q/vsz3kx94meqtexEod8GV3Ze1o1lB05Xv82a2x
-	bzG/uVilW7yYELr0x0n5hFS3n1ngLZDaDghQvBjWMf8xZXy6UmfeAgoi
-X-Gm-Gg: ASbGnctD+3Lp1go4lgJEKzKJKP0oBZKWlaYc7BVtj/Icmn//Y29Z4K1SveK4N/0E0CU
-	O2zAINjCI5OS5DWoN0guGr7PMU2bIyEGRIIAwjZO/aM0Ae0U124MbDMh8qJqbOkp1BfQKc488rX
-	ylYSMul7s8oiTltSVlWWpAy5tU8TYanjJBQDUHk+/XqCluDvvpZyeK8+b5l946mKF2aJKnbuKz4
-	FzUzMVXkd0mKCNg+JIodrwQJP+fcDckk+168Ugm0b0+5BUbZ5QQO4MTcMhhvChJSme9v4hKJjSe
-	byrVMqWQivCKweygrPaMPPmtjQpWNAmuLdXuo3PjXaH6g8dK+TlCBe9Z/XyVCZxCi2ieWf1SviZ
-	klWcj9Cfyfdnas/3PIQwc8A==
-X-Google-Smtp-Source: AGHT+IGaJqB8Du4nZbwZH6+ZZ1UR1jsjKqH51Z9VenWWYM+Y2riY0qwNibopPt1+EA0CWK1IUnGClQ==
-X-Received: by 2002:a17:907:3e8d:b0:af2:5a26:b32a with SMTP id a640c23a62f3a-afe07c154d7mr97515766b.30.1755747714772;
-        Wed, 20 Aug 2025 20:41:54 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afded2ba31dsm299249166b.12.2025.08.20.20.41.54
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 20 Aug 2025 20:41:54 -0700 (PDT)
-Date: Thu, 21 Aug 2025 03:41:53 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Nico Pache <npache@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, linux-mm@kvack.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, david@redhat.com,
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com, akpm@linux-foundation.org,
-	baohua@kernel.org, willy@infradead.org, peterx@redhat.com,
-	wangkefeng.wang@huawei.com, usamaarif642@gmail.com,
-	sunnanyong@huawei.com, vishal.moola@gmail.com,
-	thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com,
-	kirill.shutemov@linux.intel.com, aarcange@redhat.com,
-	raquini@redhat.com, anshuman.khandual@arm.com,
-	catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org,
-	dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org,
-	jglisse@google.com, surenb@google.com, zokeefe@google.com,
-	hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
-	rdunlap@infradead.org, hughd@google.com
-Subject: Re: [PATCH v10 03/13] khugepaged: generalize hugepage_vma_revalidate
- for mTHP support
-Message-ID: <20250821034153.uyxjy5yvxx5no5sf@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250819134205.622806-1-npache@redhat.com>
- <20250819134205.622806-4-npache@redhat.com>
- <cd4dd743-679f-4c55-9635-6d32e6fa5ff7@lucifer.local>
- <CAA1CXcDORXqm4JoHn4ZSEhT3ajsuY2MAPwefMXk3+YMXcpvqkw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAA1CXcDORXqm4JoHn4ZSEhT3ajsuY2MAPwefMXk3+YMXcpvqkw@mail.gmail.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B188740002
-X-Stat-Signature: qrwy49953nb3iwjefq1gaexbjoriitrj
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=f8fCfwFh;
+	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755750265; a=rsa-sha256;
+	cv=none;
+	b=x8z669LGy8XGVMWmtplfuiOLZS3qvaql7H/txoDW8FRKM7+XJfTZe1Z4KCGsCVoBRr9twX
+	k5n0H4K/yp+VdkTGPxJJWN6kwDxwJnPntCeiFeA33a+3Db5hCDnHSB1p9pqto0rqr+kXiB
+	iUhDE9By8ONcI4htadrx3gNdj2hHjfs=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2DE1143BC2;
+	Thu, 21 Aug 2025 04:24:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D09BEC113CF;
+	Thu, 21 Aug 2025 04:24:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1755750264;
+	bh=yEbxrMCEYmcIooCbdM8kiby0WKYLYX/mSci3aAy4yVM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=f8fCfwFh4Z1og95qFf//8M53G5+NpB0yLPawo58P+nEJ33AB0QDoMmwRNquGqfk1S
+	 tsu4nuflWvmc2k2+b/tD4Yo2VUE6pT7IUR7ZuBev1amEvdmaRaGakAhitSeYTBEzes
+	 Yn3DvWs4xjELaW3Hr13oWRpJRwYQUcg2i4cxPTps=
+Date: Wed, 20 Aug 2025 21:24:23 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: david@redhat.com, surenb@google.com, aarcange@redhat.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/userfaultfd: fix kmap_local LIFO ordering for
+ CONFIG_HIGHPTE
+Message-Id: <20250820212423.fbac2b17eb4f6a9667a8c979@linux-foundation.org>
+In-Reply-To: <aI04CQZZzgCDO2A5@lappy>
+References: <20250731144431.773923-1-sashal@kernel.org>
+	<20250801141101.9f3555a172609cb64fde7f71@linux-foundation.org>
+	<aI04CQZZzgCDO2A5@lappy>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: i9ixmsmz1uunz5uic39gyswuk6dr66kf
 X-Rspam-User: 
-X-HE-Tag: 1755747716-749487
-X-HE-Meta: U2FsdGVkX1/e2FPG3/EvsirlaLtw83cgghXdGYNI6/S/22wGUmtRB5caX679hn5yDhpPJXOGFMEpTpT6v8Tmc1m/HUUa20OwvF4G1yK8NaWHEB6B+iWrMTB7Lw+fiy7a5KAtIUVG9lWw82IQQyZxAB+yPTGiHsEroXDiyM0HikgjZhi06kgyfQtir4jPKgm5xL+ZMTCfnaG7hjYguFndYHPuIdGO8/8syOa96j+4psYl2+smgr6yZSyQWraNmLwxpPUbkv2Z4jdfNpRWWRBvTd9kbS8hTSy4QyVGCvDSNwO3e7hGFD6YrmI/18cpqwqfYnkMh5g55YsGHKuJpryvYD1M9MNumQiklgPMMc6JmY5quMRufPW+K1oaIT2G6Kargc56PB1AxAoUJe+y6iN6lRIA7gv8CPMSdjuJ2MnFz256R+HTC+9IGwVPIjZWoHMyAvq82jee/jAwk0LEAUMpQ0+0sm+IfXVDsvNeDKExG6T05kFzhHrn0UHCqi+UjsuKCbVSi/E9Ok/odLOYzPjoqC4wDPHkisOTNBY+w2HO5yJJK166cEHRfH/H//zQed5D5bmeDBJ7odsQ7HRJ4BzShJB2byb3IG6AhT3mNpAgCTSwZGUA2RyfObOhzb+by4+uHAwrJgtZtCBVlHrT7Ykyyv7YFDkx75XBg4laNjU068HK6N9qksUXyfJ7f8f8GARM+F8lIw4regJ+Rhldf70BR4uHHWdr1P/EVQCHDDwKEPsnPfXWEh9VlvlO2DwF3JmUsNPDJZ9lm3Qse2WaPAsxGNFl4RrRpgvgcZAFqTfMq4j59MeGbrFUhNPqEY8ohc6FX8fDvD3MDb+Dp3C1ISzrRKmZ4K5ze3sCrSZ0Xjxv+1AQHQRNzL7M3GOEJQD+BG3e79g7Gab2i3O+fCMDMtrXr4iUKaO0ZUEJUFm/iwYNNmQRZ2gTlW5Fy6bVVn55Hb+QYGnikwaxgN8WWhjWhBi
- MHE7qQKt
- eIShV8f1qD+YMdbfJ2zz3qgbvhCR2AbqBGJ6pZBphQks0OFFiQXV6kb2Od5UXHpmzGRErnTZwJGloEqlQ04BkiLxf/ArFBJfLOkL0kayfSYvIqM88pAxcnzsvKyzNKV6RYofyvmVnM2R3XdGQeB+/11wCo4D5xS3FkcXJiw8LsfKteiDeydSEfF61nRQRZiQi4EXxuPY7H0dYSrVm4c5xuUSGMQIS5YgkiHAtHFeJRB65khptC/M2PphUY3kOb80ZS5kjYv2Vk90d2gtYsa34ewY8cCrSEOaJXsgsPv4KdkhzTAeJlACYlJnwMVrnO2xHVUa2
+X-Rspamd-Queue-Id: 7A9D81C0006
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755750265-987369
+X-HE-Meta: U2FsdGVkX182t9cib/ekamod5TWSbDZJ54YdcLQ4maN1a25nRzEJL2BCVaygA9kEMSgpX4jH3ma/yg+9db7YKkMcOSwDX/6W4F3ZY8L/mGKaEPsKuOH3GWBvzAvWib0O5OhrbISo9o1bVP2A7fm16tBiIxNoNcWUVQxXJmgA+QJb2DUUxUzoFirDf9rcohCRpBdD4R+0R3CCVMy9EXBOc8dY+NR1vjH0ms5mVUVvo6SQGo8/n/0cnpK4s7S7aSNUg3dm7ypbWIsYh+tskYCihbHenyiPJGnGjX4k6kebiC2eTJXcXppxZQ4Y6KIo4saWWmW9ThaKqZhBhy2TvH9Tz0ifQmA+lNwEguHrxY47Ebs73JjGu1nZgYqLuaTjLGdo57UJI94QKGRA9aDtMGTnoZyuxi7YPRrAzfer14f+muL2/Ca0h4xDdUkNQnV1t2y0sBS74Gt3cGyretJ+yGE9TnFxYvsx9YV8IsfUjipOVx3aVSdAZAXGcRpIeS6lve0odbUd0nPpq6DBQTQxX+D/5HS6cKNbE6FrLopsbdu+K5e0YxQ+XWyYef94h/CoLkkPKhjJUrEmxvPzBPFawyn9iMVDpB+iCY/kC+6MpprE0dGFSW1FZrig7qqzZhN1UYfG+O9brISWB2tIwSNo1L0KZ10BM4cjJLPMDColQPXEmPLr02u9seR7y0LUjPZWii6JzGhyWFW3vAEs/R99l/3st0fqG4wP+mkDbrDOPDFZXJDz7QLwAiOvX60qkeUcX+yAVB6BtJH7wQW2orKn0iMhzeLrfcKVE5P+FQlvzJm6Eeo2tVptYn6NhXXXlxN1U/XPj27d3AmHNXXNM3scDe9pEYoRRqXSiCuYvToYIC1MRbQ81YKKBZrsYvaXCTa9/q7W5OSjPLLhaNfIeoCd/wgNIIfemBNvAWOb5CNy/3vRLiSe6OOspRI9jW6Zsk6mhcQvyHVuuhdMZXHTAaGJIF9
+ Pt/pbsZK
+ Jq4TztPH586nooSUoJW+2RbJDZf8NNx/UShM6JCdoYDLsX97b5E7uDlP3T8pep0AfGptt26tOgVPvhmgbG/lFBcLOeOm1xzjKcT0AW9+/CJtqJh88Go8X3ys5SBD194GAef7ZGG9E5d8XBNDE2eZL4PNQ6+yGFg0UpAcVooSBlNR6dgqaIoEJCDuYFugOsvldelfJCh8mdoxTiAtDTG/yhVHRsw0dmOe8qL6g5o1A8y+P/lglMFvEBRl8yzYDkC8DMPsap5UpujoO9R/8r2qTEhqNIqyZ0Ds3wQ5pz3jR9tzqDGHcrtrb0icKhxztOLK3XwL0tQxsGDsfFEFb0MZsBd3YUA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,62 +91,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 20, 2025 at 09:40:40AM -0600, Nico Pache wrote:
-[...]
->>
->> >       if (!thp_vma_suitable_order(vma, address, PMD_ORDER))
->> >               return SCAN_ADDRESS_RANGE;
->> > -     if (!thp_vma_allowable_order(vma, vma->vm_flags, type, PMD_ORDER))
->> > +     if (!thp_vma_allowable_orders(vma, vma->vm_flags, type, orders))
->> >               return SCAN_VMA_CHECK;
->> >       /*
->> >        * Anon VMA expected, the address may be unmapped then
->> > @@ -1134,7 +1135,8 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
->> >               goto out_nolock;
->> >
->> >       mmap_read_lock(mm);
->> > -     result = hugepage_vma_revalidate(mm, address, true, &vma, cc);
->> > +     result = hugepage_vma_revalidate(mm, address, true, &vma, cc,
->> > +                                      BIT(HPAGE_PMD_ORDER));
->>
->> Shouldn't this be PMD order? Seems equivalent.
->Yeah i'm actually not sure why we have both... they seem to be the
->same thing, but perhaps there is some reason for having two...
+On Fri, 1 Aug 2025 17:56:25 -0400 Sasha Levin <sashal@kernel.org> wrote:
 
-I am confused with these two, PMD_ORDER above and HPAGE_PMD_ORDER from here.
+> >> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+> >> Co-developed-by: Claude claude-opus-4-20250514
+> >
+> >Well this is innovative.  I doubt if Co-developed-by: is appropriate
+> >for this (where's Claude's Signed-off-by:?)
+> 
+> Claude (or any other AI) can't legally sign off on code :)
+> 
+> >I'd support creating a new changelog tag for this case.
+> 
+> This is in the context of a proposal on workflows@:
+> https://lore.kernel.org/workflows/20250728105634.GF787@pendragon.ideasonboard.com/T/#t
+> 
+> The Co-developed-by: usage wasn't my proposal, but it looked like the
+> majority of folks were okay with it.
+> 
 
-Do we have a guide on when to use which?
+I need to do something about this and the discussion over on
+ksummit@lists.linux.dev has been as beer-addled as one would expect.
 
->>
->> >       if (result != SCAN_SUCCEED) {
->> >               mmap_read_unlock(mm);
->> >               goto out_nolock;
->> > @@ -1168,7 +1170,8 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
->> >        * mmap_lock.
->> >        */
->> >       mmap_write_lock(mm);
->> > -     result = hugepage_vma_revalidate(mm, address, true, &vma, cc);
->> > +     result = hugepage_vma_revalidate(mm, address, true, &vma, cc,
->> > +                                      BIT(HPAGE_PMD_ORDER));
->> >       if (result != SCAN_SUCCEED)
->> >               goto out_up_write;
->> >       /* check if the pmd is still valid */
->> > @@ -2807,7 +2810,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
->> >                       mmap_read_lock(mm);
->> >                       mmap_locked = true;
->> >                       result = hugepage_vma_revalidate(mm, addr, false, &vma,
->> > -                                                      cc);
->> > +                                                      cc, BIT(HPAGE_PMD_ORDER));
->> >                       if (result  != SCAN_SUCCEED) {
->> >                               last_fail = result;
->> >                               goto out_nolock;
->> > --
->> > 2.50.1
->> >
->>
->
+Oh well.  I guess for now we can welcome Claude to the kernel
+development team.
 
--- 
-Wei Yang
-Help you, Help me
 
