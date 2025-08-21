@@ -2,112 +2,106 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3FBBCCA0EF8
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 11:07:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5BC8DCA0EDC
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 11:17:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D79368E003B; Thu, 21 Aug 2025 07:07:12 -0400 (EDT)
+	id 971898E002A; Thu, 21 Aug 2025 07:17:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D02298E002A; Thu, 21 Aug 2025 07:07:12 -0400 (EDT)
+	id 9494D8E0013; Thu, 21 Aug 2025 07:17:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCA1F8E003B; Thu, 21 Aug 2025 07:07:12 -0400 (EDT)
+	id 864708E002A; Thu, 21 Aug 2025 07:17:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A47B38E002A
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 07:07:12 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 60E5B13843F
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:07:12 +0000 (UTC)
-X-FDA: 83800487904.24.6506AE9
-Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 81C4818000A
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:07:10 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YaAs2I7c;
-	spf=pass (imf06.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.161.47 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 75C1C8E0013
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 07:17:35 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CEBDE1603A5
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:17:34 +0000 (UTC)
+X-FDA: 83800514028.29.A3319DD
+Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 8C16A140012
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 11:17:32 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=konsulko.se header.s=rsa1 header.b=mrHgVwxF;
+	dkim=pass header.d=konsulko.se header.s=ed1 header.b=U1Qaw8Wq
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755774430;
+	s=arc-20220608; t=1755775053;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hiIZ6lQmGLvY+69EJfMpz5tBA2tanpZN8rHbO7rGKac=;
-	b=E28punajbKM5Hjs/6t1X6ZHW8brfB4OBNKFivwW/6jZpDhx/d03wl/O+r3kuzJtpG9oiTK
-	DJA+14Qq+wrSZfhoV3IsPwtQc2Lx9AIyvEs3XAEODL9p6dnZQ5XvSnQscaH6FbnBZVqF1X
-	sChp3X5KwvWtQnZHUgPmqOBy/ZcvJdQ=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YaAs2I7c;
-	spf=pass (imf06.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.161.47 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755774430; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=90mdrgdRq9HDlMW2ikk8FQxgFJBsKRfFPXP+WnfuSBA=;
+	b=gFUH2xCZI9OmUxk8wUylEE6wd//qiOvYRC5rvVn1ypuecHIztK4WIb5ld8hkGCwXD8V1nT
+	F42oTsY396/ToHJ28gyfYwcl9JCVxmlnjfcz83Y4damBTxiA8aZ6HNrOD9lTZe4Jvs9GGn
+	iCryWm/DhMFvXQkPt2zsWdu0V3teSKs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755775053; a=rsa-sha256;
 	cv=none;
-	b=FWQm47bcdnjM/9UWAixY1n7bGN4FJnwtHOVtYc9jhRzePbU/FkXVdfNxACsENbIwopM2+j
-	N5FJyRyF6Dp3oZnP3OaC21WAbiyNb6FkENnSTrvo39YJsFBZNZQGJrFqVLJAqkqP7f+WhH
-	134lr2IlK6BjLa8U/N34YnJxNa96ftY=
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-61da3cf98efso186871eaf.1
-        for <linux-mm@kvack.org>; Thu, 21 Aug 2025 04:07:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755774429; x=1756379229; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hiIZ6lQmGLvY+69EJfMpz5tBA2tanpZN8rHbO7rGKac=;
-        b=YaAs2I7ccXoIV3YWTULRkldpKzyVbUKOZyiBWMkf2SSpIodO8Sl5TfqL6QTj4UYeuW
-         TuO7SZf64XDdtV5GHepMa5peoIhMVl6oG1p9zQX0SGZV9IL8Wl5pmKYZMmLTpdC6FlKC
-         qGbuHc8VBkNl+qGKBIrZjqnMsr6hFnO1VzOgOYRQR0Jp7r7UEn+xNoKsmbYmT/G95/6R
-         XMGFSGWXgcNApOFFnG3jbbwRGPr5XYh2GRNc4qSJ+z6YrZqcl8wlEeobC6lIEOel4wd9
-         skaaFgysAcJotUr9dhfhaap1s4SEFyu43YVjVhk5NZUvPeOzID1wOel26RIKdEKpkITv
-         ZvZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755774429; x=1756379229;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hiIZ6lQmGLvY+69EJfMpz5tBA2tanpZN8rHbO7rGKac=;
-        b=le+cYsd7rjTrQbxsTpJQu51pXLg4f3e3mTUI/hpMOg4e/tmLjsen8Upoo3PS/G3+OE
-         DNNcFex347EVWCjbxuzQhBxNFlEVP+Wwp22wxFe9jKu589bXpfGsCz3nWmso/N+3OcBD
-         jFbQQE8Boo4ERXAkClnhbx51PZ0M3sL/RczF5K0Fc5kTkq0FFDJXYvLC3Tp9w8Qla4E3
-         cOTTXKlYV4N9M6qyJss9j1y5lNCCP/wW0p1OBoMdKe+Y2PrH5BfPh8ldjmMtn3Cwbb9U
-         XWioutklo4jBzSnStS98T+0hIJGTUX9wGBeAbRydB4nIO36JLQ9CG7947m34zso5N6gh
-         cFCg==
-X-Forwarded-Encrypted: i=1; AJvYcCX7HH/9cXGc9flIdBFuWZfdfDufSs0C+yS2mY+f3/N8a4Eu0mfLyrQzB12ADRvLIJzLG9EDCbN/Cw==@kvack.org
-X-Gm-Message-State: AOJu0YxXFuzYe19BdGDcklZoKJS7K8aaUDIuPSCHp3W5NulHZnQCw2F6
-	cDfkbGWVqMHuDsjZV/1smA8zva3zJwSOpfziXooUTa2jmSvn+2Op2LLALFeV37LgciTVZ0PrsFQ
-	2lpzGI5uiA83EsiwMB4X1JnYgCfA2e/Q=
-X-Gm-Gg: ASbGnctREVjO5+efeU6F+Q3P0Rpo4BPo47lutt0E0k94ncL9BPJcRMyRSEVly0yJN6j
-	me1rVEiwMeplb7HmTVuFuSZG//zkUZoYWs/LhFbf0Q8nXhnjofi3GeHACcmp9MojDIKYXnFPVWH
-	9rWhWe4GwG7xqfAWR0LIt8hxehkfQGtm6mKo1585tX+gedBvrL5BnB+2LrCTQMWfjrXXxpkS0B1
-	3eQOr+LdMOprSs=
-X-Google-Smtp-Source: AGHT+IHDLck68A4uwh4SnafV/XdhO0tvddlIcwAPIaIuldKdKV8FYfx8DQctiAAl9nm4vwx0UEGSyaMl0wGd0sRiAZE=
-X-Received: by 2002:a05:6820:60f:b0:61d:95ee:b387 with SMTP id
- 006d021491bc7-61dab39122amr828362eaf.8.1755774429258; Thu, 21 Aug 2025
- 04:07:09 -0700 (PDT)
+	b=ROEUNwrwvwlCt+fnSWh9jIJ7vLOz9w6W53v6PeMptgWO2xoNB8lQ32Oor+X0zCAWb5AFEk
+	GAh22BpsHSCH+S5CXDkmnkIDhi4ahlQ2JZed/MvuMGI8NAnMFAoOn9kIHd/PTsZcpWPEus
+	264iEVmqq99e7EGqbgESu/0CjQIbRUA=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=konsulko.se header.s=rsa1 header.b=mrHgVwxF;
+	dkim=pass header.d=konsulko.se header.s=ed1 header.b=U1Qaw8Wq;
+	spf=none (imf26.hostedemail.com: domain of vitaly.wool@konsulko.se has no SPF policy when checking 46.30.212.3) smtp.mailfrom=vitaly.wool@konsulko.se;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1755775049; x=1756379849;
+	d=konsulko.se; s=rsa1;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=90mdrgdRq9HDlMW2ikk8FQxgFJBsKRfFPXP+WnfuSBA=;
+	b=mrHgVwxFroahu7FKfc3q3GusY2eSbRM0nPGfQvGZptMXkiA/Ehd8Bn3NDqCOe4nrGNnCr8HUi8CRo
+	 f/dW3tLbq9NaMzbtDrIYrif/eW+GQXi3Z8kgf0p3FLpuhog2tFhV9A/K0j1/vbTK4vVhq6A22L3WT7
+	 EZ4iZNaljCJ6t5dodOv9FVdy49wp+MFJh6jMItcKKqvc5kwcZqIE5PUuxLXO0A7g2DpR319ttq33E3
+	 16ITBJz3j7BbQGc/5YBDv1kiCc+csGkEC4Ofi8iMnKgQpSUkJDtChTdG/CYhz97a94IQxuI3Vo+20s
+	 nBFBMUflHhUU9Wh4P6mKInvAQO2WRQg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1755775049; x=1756379849;
+	d=konsulko.se; s=ed1;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=90mdrgdRq9HDlMW2ikk8FQxgFJBsKRfFPXP+WnfuSBA=;
+	b=U1Qaw8WqBDBhI0gpgYRoGAcb67fkq1VZgEKwHQugnRDY+SlSWG9U+MagGM7aHJjlflrJlBY5k9ArA
+	 DlWe9s2BQ==
+X-HalOne-ID: 6abf2def-7e80-11f0-beae-494313b7f784
+Received: from slottsdator.home (host-95-203-16-218.mobileonline.telia.com [95.203.16.218])
+	by mailrelay6.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
+	id 6abf2def-7e80-11f0-beae-494313b7f784;
+	Thu, 21 Aug 2025 11:17:28 +0000 (UTC)
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+To: rust-for-linux@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Nhat Pham <nphamcs@gmail.com>,
+	linux-mm@kvack.org,
+	Vitaly Wool <vitaly.wool@konsulko.se>
+Subject: [PATCH v2] rust: zpool: add abstraction for zpool drivers
+Date: Thu, 21 Aug 2025 13:17:18 +0200
+Message-Id: <20250821111718.512936-1-vitaly.wool@konsulko.se>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <CABFDxME5ZEAn+6=0GRWybTi-xBzbhhz7U38pMni3SdKjA+Aj-A@mail.gmail.com>
- <20250821054148.53746-1-sj@kernel.org>
-In-Reply-To: <20250821054148.53746-1-sj@kernel.org>
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-Date: Thu, 21 Aug 2025 20:06:58 +0900
-X-Gm-Features: Ac12FXwihon6gThYHt62W99b3GivzmKJ4uU22wv-CFXcXYs_nLemAr_4GPQ0U3U
-Message-ID: <CABFDxMHgOPt5zx3q=KRxGGfp86R4V0AgO+FrHDftqLYoG20BWw@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/damon/core: set quota->charged_from to jiffies at
- first charge window
-To: SeongJae Park <sj@kernel.org>
-Cc: honggyu.kim@sk.com, damon@lists.linux.dev, linux-mm@kvack.org, 
-	stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: wukaytkwu5du4ist4atry3hzh1sj9dzc
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8C16A140012
+X-Stat-Signature: q9pw7jcjrzz68fjxoktgf3xoco7iii91
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 81C4818000A
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755774430-334462
-X-HE-Meta: U2FsdGVkX18RYa8LcTzS0g8DwsCL2Z0e1jVi1H/u5MUYrwaYOmYu0gtWJdNGiKA0/z5S9kA8A41R9lM9T55VC7zKyd/4UsvZ8mdjDnE71GZtTW8vEsplfMFyl/vvPn97IPITQli7K0gadL3fCInKjKHA1g6AJ+gqEpuERTkRrlYWIovQHEE9cpwKfuWyOmXbRF6SwTJihdJk2226LzOdKl0zmsQfyThS7azhJeY9Ivto3nX1lE43o8jgt1VPGwZDLRvFzT9dW8X0z3CwTegc62foMkfMXjpksdDndyB22Dqfo0CufpPBhX2HXr4nKr1wDSayUjKC+VF7EWb4Zctq04Gx7k8moWcb8RRmRWgUNBQv7MRhH4Cn4kTQpw2qLJ8AxhktkEmAC3GR9o5hkLyVOb6u+Ir0N27Oktyoxf+eWG4KaFk0xInrN/EN9tJxwgYVfe3tSin6dliSQ6LagMfgn8U+U+jUBsLwp4MB39Ds/j7NdZsUKdrCrDn7+8AV1MpmdhmtkShj5BcX2z9830HoZ0BV4TVAQiukRjYMi5i4nqUBR/d35E2fJhK5GRJsm1Zi44b12xalv+nvF4CQ5ee+Z1YCUlhRvtBmW12lAdVf9vFnp2g4ULcEuKUjL6VBRBm2CfmwZNQnbxxB97EkAsVxAejcvNBOZmPjY6Ent2F4gJns3tzv0mXt0N7ZElCAWYwTIIHaJVKYZ41y+jn6bCV0xIYdl/sqV+tlbruV6sRb8HVeWxNsSCTTWgA1UgbDC26OAJO0QgF4ZXD9hJxUpTh2/wq5qkbXw6mbEnziI6s6D/gkR1FxW6dcwifSTcXjYSJzrpqbtnmmRsir+AZDvPMcFTTpTsVFZ4PNM0nmrzMYNxu/Q90d2oMq8XqvNinZE8DneYdfo+xXdGnzq3EPzAfUmdAQe6qcRZNhChn1bpGAWqfDAR3QBAO5d8XXv6OLocpeP11MYyvFroIaorzQP5m
- FlT4OPuP
- /On6QjVoCN8ZviLwFXxOzBxnph6NVYPP3Y18895h7o0YrAMkUuTK0NQ0d2fR3oVGLGArCftAWW2xFmW/WUn1aU8sTJ4ladkXL4gMn8JBDWuFWlk8itU4/jB+pXG1h1NuKs9YMpf/CiyGU4b+xBsa0jp8jpHCjR3RwuaOrFpHht6NeADp9Mb9OFV3KbsDoSt4D0OBL8Nd90L9WoH1I/A+MxACsnAhc7paYhE3eDEJYFocnJy1soBviZRNBg7ka7YQKv/IZ4XLMnUR1mjMD8fzsh/LyzGsBC1u2X5FqFlULtfLXCcce/p1l6y4F6zn4xW6UCW/HSjmGHUqryPNTXgaXVcU0+zF8DJF7imYUlahHAuj+3OcAzow/mbBev8r7KOEgc54otUhNdKFf1JejRsYnazSIhJX+uSnv5m8g/hN8kgAwVMYc9JJ0fVB3UQpzb9du1vjq
+X-HE-Tag: 1755775052-109557
+X-HE-Meta: U2FsdGVkX18c8RJlfSUOrtmDBfscB33snu8yDW3upRPazlE1z+ovzUFO6GkG0P0aHXzqSm+n8h9sv3fV0C26d8wJUy7Cgyct514Ldh0aNu0e/GBRMKn8a5HKGmZxPMx20bbz2FChmGong91yd2/Y824BERlF+tXDzV6PCzIqYnUxvtsuPw1tk0WsCQCw8tFQI79tE4AltvdjPbTre7bn1lYQkbpjl9bGUWgV7I/7V/OJ5Rp7y3vgzGmfHUsmrNkX8Lyy8pY30ozgXVTPEBjpsqBNLu1ly1VFrciZduYl397alui229ykPr2bjzgr2M/fg7u5YPt1wFK2l3ktN0NYPZho+/T4yjRB4dtn2BT1uNf4amcTs7PdtXHqN3VgkobPq2tlb63YuJsoTczAL4Alk5dEC+vFREgiWpBZjOhThvsd9lO4aDMocgXQBen3EIQtOFLAXi16iJ4za1K9PQfMhBCJoKZDOMsRe+q1UJfGiMTNwD+X2UIerLkZcWGBrK3L5mi9UABKZPoTQqyIikyU4TRmjNkV7jF4Paz6pGuaq6ZPLJHu394hv+C04m+eP+g7nqD+6V0FqEDsUMFONh3twK4SYU/PBngHOgWbhthKgoWn7huDw643ESMplaNCgv5frr6tnR6bSxZXr6NBp3kTvdktR0l9bruPFgCLLNMYysihfLScYmTdTTf8ow3twRPLG/gom56OHr1v161HwG4VJw0+Cv032tVwgJoFhIA8kUOqqguHrcEYbcs95wyBFiUqR/EFeQKUh0kniUa3I4raIFPLoWWV3f/P74shVeFpRUD6sYR5jdw6NYw0sT/lSizczRSz20pmotjQU1F+oaFHzd0L2R7xbrqSiYrhpKrEfUDdVlxbQT0Z9t3z+qXdl91qFxuUtry7nyMr2YqdprzOILcE1k51E7pW5Vlilb0e3kCLcx0fJQg2Vw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,141 +110,357 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 21, 2025 at 2:41=E2=80=AFPM SeongJae Park <sj@kernel.org> wrote=
-:
->
-> On Thu, 21 Aug 2025 13:29:04 +0900 Sang-Heon Jeon <ekffu200098@gmail.com>=
- wrote:
->
-> > On Thu, Aug 21, 2025 at 11:54=E2=80=AFAM SeongJae Park <sj@kernel.org> =
-wrote:
-> > >
-> > > On Thu, 21 Aug 2025 10:08:03 +0900 Sang-Heon Jeon <ekffu200098@gmail.=
-com> wrote:
-> > >
-> > > > On Thu, Aug 21, 2025 at 3:27=E2=80=AFAM SeongJae Park <sj@kernel.or=
-g> wrote:
-> > > > >
-> > > > > On Wed, 20 Aug 2025 22:18:53 +0900 Sang-Heon Jeon <ekffu200098@gm=
-ail.com> wrote:
-> > > > >
-> > > > > > Hello, SeongJae
-> > > > > >
-> > > > > > On Wed, Aug 20, 2025 at 2:27=E2=80=AFAM SeongJae Park <sj@kerne=
-l.org> wrote:
-> > > > > > >
-> > > > > > > On Wed, 20 Aug 2025 00:01:23 +0900 Sang-Heon Jeon <ekffu20009=
-8@gmail.com> wrote:
-> > > [...]
-> > > > I think that I checked about user impact already but it should be
-> > > > insufficient. As you said, I should discuss it first. Anyway, the
-> > > > whole thing is my mistake. I'm really so sorry.
-> > >
-> > > Everyone makes mistakes.  You don't need to apologize.
-> > >
-> > > >
-> > > > So, Would it be better to send an RFC patch even now, instead of
-> > > > asking on this email thread? (I'll make next v3 patch with RFC tag,
-> > > > it's not question of v3 direction and just about remained question =
-on
-> > > > this email thread)
-> > >
-> > > If you unsure something and there is no reason to send a patch withou=
-t a
-> > > discussion for the point, please discuss first.  To be honest I don't
-> > > understand the above question at all.
-> >
-> > Ah, I just mean that I need to make a new RFC patch instead of
-> > replying to this email thread.
->
-> Why?
->
-> > I'll just keep asking about previous
-> > comments on this email thread.
->
-> You said you will send a new patch instead of replying here, and then now=
- you
-> are saying you will keep aking to this thread.
->
-> I'm confused.
+Zpool is a common frontend for memory storage pool implementations.
+These pools are typically used to store compressed memory objects,
+e. g. for Zswap, the lightweight compressed cache for swap pages.
 
-I think I miscommunicated something. I'll just follow your suggestion
-below. it's the same as my first thought (discussion here, new patch
-after discussion finished)
+This patch provides the interface to use Zpool in Rust kernel code,
+thus enabling Rust implementations of Zpool allocators for Zswap.
 
-> [...]
->
-> Ok, I think this discussion is going unnecessarily deep and only wasting =
-our
-> time at clarifying intention of past sentence.  Meanwhile apparently you
-> understood my major points.  To repeat, please clarify what is the proble=
-m and
-> user impacts, when and how it happens, and why the solution solves it.
->
-> Let's restart.  Could you please rewrite the commit log for this patch an=
-d send
-> the draft as a reply to this?
->
-> We can further discuss on the new draft if it has more things to improve.=
-  And
-> once the discussion is finalized, you can post v4 of this patch with the
-> updated commit message.
+Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+---
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/helpers.c          |   1 +
+ rust/helpers/zpool.c            |   6 +
+ rust/kernel/alloc.rs            |   5 +
+ rust/kernel/lib.rs              |   2 +
+ rust/kernel/zpool.rs            | 262 ++++++++++++++++++++++++++++++++
+ 6 files changed, 277 insertions(+)
+ create mode 100644 rust/helpers/zpool.c
+ create mode 100644 rust/kernel/zpool.rs
 
-Good Idea. This is the draft for commit message. Also, Thank you for
-your patience and understanding.
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 84d60635e8a9..f0c4c454882b 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -75,6 +75,7 @@
+ #include <linux/wait.h>
+ #include <linux/workqueue.h>
+ #include <linux/xarray.h>
++#include <linux/zpool.h>
+ #include <trace/events/rust_sample.h>
+ 
+ #if defined(CONFIG_DRM_PANIC_SCREEN_QR_CODE)
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 7cf7fe95e41d..e1a7556cc700 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -51,3 +51,4 @@
+ #include "wait.c"
+ #include "workqueue.c"
+ #include "xarray.c"
++#include "zpool.c"
+diff --git a/rust/helpers/zpool.c b/rust/helpers/zpool.c
+new file mode 100644
+index 000000000000..71ba173f917a
+--- /dev/null
++++ b/rust/helpers/zpool.c
+@@ -0,0 +1,6 @@
++#include <linux/zpool.h>
++
++void rust_helper_zpool_register_driver(struct zpool_driver *driver)
++{
++	zpool_register_driver(driver);
++}
+diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
+index b39c279236f5..0fec5337908c 100644
+--- a/rust/kernel/alloc.rs
++++ b/rust/kernel/alloc.rs
+@@ -41,6 +41,11 @@
+ pub struct Flags(u32);
+ 
+ impl Flags {
++    /// Create from the raw representation
++    pub fn new(f: u32) -> Self {
++        Self(f)
++    }
++
+     /// Get the raw representation of this flag.
+     pub(crate) fn as_raw(self) -> u32 {
+         self.0
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index ed53169e795c..165d52feeea4 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -129,6 +129,8 @@
+ pub mod uaccess;
+ pub mod workqueue;
+ pub mod xarray;
++#[cfg(CONFIG_ZPOOL)]
++pub mod zpool;
+ 
+ #[doc(hidden)]
+ pub use bindings;
+diff --git a/rust/kernel/zpool.rs b/rust/kernel/zpool.rs
+new file mode 100644
+index 000000000000..1d143ff7fed1
+--- /dev/null
++++ b/rust/kernel/zpool.rs
+@@ -0,0 +1,262 @@
++use crate::{
++    bindings,
++    error::Result,
++    kernel::alloc::Flags,
++    str::CStr,
++    types::{ForeignOwnable, Opaque},
++};
++use core::ffi::{c_int, c_uchar, c_void};
++use core::ptr::{null_mut, NonNull};
++use kernel::alloc::NumaNode;
++use kernel::driver;
++use kernel::ThisModule;
++
++/// Zpool API.
++///
++/// The [`ZpoolDriver`] trait serves as an interface for Zpool drivers implemented in Rust.
++/// Such drivers implement memory storage pools in accordance with the zpool API.
++///
++/// # Example
++///
++/// A zpool driver implementation which does nothing but prints pool name on its creation and
++/// destruction, and panics if zswap tries to actually read from a pool's alleged object.
++///
++/// ```
++/// use core::ptr::NonNull;
++/// use kernel::alloc::{Flags, KBox, NumaNode};
++/// use kernel::zpool::*;
++///
++/// struct MyZpool {
++///     name: &'static CStr,
++/// }
++///
++/// struct MyZpoolDriver;
++///
++/// impl ZpoolDriver for MyZpoolDriver {
++///     type Pool = KBox<MyZpool>;
++///
++///     fn create(name: &'static CStr, gfp: Flags) -> Result<KBox<MyZpool>> {
++///         let myPool = MyZpool { name };
++///         let mut pool = KBox::new(myPool, gfp)?;
++///
++///         pr_info!("Created pool {}\n", pool.name);
++///         Ok(pool)
++///     }
++///     fn destroy(p: KBox<MyZpool>) {
++///         let pool = KBox::into_inner(p);
++///         pr_info!("Removed pool {}\n", pool.name);
++///     }
++///     fn malloc(_pool: &mut MyZpool, _size: usize, _gfp: Flags, _nid: NumaNode) -> Result<usize> {
++///         Ok(0) // TODO
++///     }
++///     fn free(_pool: &MyZpool, _handle: usize) {
++///         // TODO
++///     }
++///     fn read_begin(_pool: &MyZpool, _handle: usize) -> NonNull<u8> {
++///         panic!("read_begin not implemented\n"); // TODO
++///     }
++///     fn read_end(_pool: &MyZpool, _handle: usize, _handle_mem: NonNull<u8>) {}
++///     fn write(_pool: &MyZpool, _handle: usize, _handle_mem: NonNull<u8>, _mem_len: usize) {}
++///     fn total_pages(_pool: &MyZpool) -> u64 { 0 }
++/// }
++/// ```
++pub trait ZpoolDriver {
++    /// Opaque Rust representation of `struct zpool`.
++    type Pool: ForeignOwnable;
++
++    /// Create a pool.
++    fn create(name: &'static CStr, gfp: Flags) -> Result<Self::Pool>;
++
++    /// Destroy the pool.
++    fn destroy(pool: Self::Pool);
++
++    /// Allocate an object of size `size` using GFP flags `gfp` from the pool `pool`, wuth the
++    /// preferred NUMA node `nid`. If the allocation is successful, an opaque handle is returned.
++    fn malloc(
++        pool: <Self::Pool as ForeignOwnable>::BorrowedMut<'_>,
++        size: usize,
++        gfp: Flags,
++        nid: NumaNode,
++    ) -> Result<usize>;
++
++    /// Free a previously allocated from the `pool` object, represented by `handle`.
++    fn free(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>, handle: usize);
++
++    /// Make all the necessary preparations for the caller to be able to read from the object
++    /// represented by `handle` and return a valid pointer to the `handle` memory to be read.
++    fn read_begin(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>, handle: usize)
++        -> NonNull<u8>;
++
++    /// Finish reading from a previously allocated `handle`. `handle_mem` must be the pointer
++    /// previously returned by `read_begin`.
++    fn read_end(
++        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
++        handle: usize,
++        handle_mem: NonNull<u8>,
++    );
++
++    /// Write to the object represented by a previously allocated `handle`. `handle_mem` points
++    /// to the memory to copy data from, and `mem_len` defines the length of the data block to
++    /// be copied.
++    fn write(
++        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
++        handle: usize,
++        handle_mem: NonNull<u8>,
++        mem_len: usize,
++    );
++
++    /// Get the number of pages used by the `pool`.
++    fn total_pages(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>) -> u64;
++}
++
++/// An "adapter" for the registration of zpool drivers.
++pub struct Adapter<T: ZpoolDriver>(T);
++
++impl<T: ZpoolDriver> Adapter<T> {
++    extern "C" fn create_(name: *const c_uchar, gfp: u32) -> *mut c_void {
++        // SAFETY: the memory pointed to by name is guaranteed by zpool to be a valid string
++        let pool = unsafe { T::create(CStr::from_char_ptr(name), Flags::new(gfp)) };
++        match pool {
++            Err(_) => null_mut(),
++            Ok(p) => T::Pool::into_foreign(p),
++        }
++    }
++    extern "C" fn destroy_(pool: *mut c_void) {
++        // SAFETY: The pointer originates from an `into_foreign` call.
++        T::destroy(unsafe { T::Pool::from_foreign(pool) })
++    }
++    extern "C" fn malloc_(
++        pool: *mut c_void,
++        size: usize,
++        gfp: u32,
++        handle: *mut usize,
++        nid: c_int,
++    ) -> c_int {
++        // SAFETY: The pointer originates from an `into_foreign` call. If `pool` is passed to
++        // `from_foreign`, then that happens in `_destroy` which will not be called during this
++        // method.
++        let pool = unsafe { T::Pool::borrow_mut(pool) };
++        let real_nid = match nid {
++            bindings::NUMA_NO_NODE => Ok(NumaNode::NO_NODE),
++            _ => NumaNode::new(nid),
++        };
++        if real_nid.is_err() {
++            return -(bindings::EINVAL as i32);
++        }
++
++        let result = T::malloc(pool, size, Flags::new(gfp), real_nid.unwrap());
++        match result {
++            Err(_) => -(bindings::ENOMEM as i32),
++            Ok(h) => {
++                // SAFETY: handle is guaranteed to be a valid pointer by zpool
++                unsafe { *handle = h };
++                0
++            }
++        }
++    }
++    extern "C" fn free_(pool: *mut c_void, handle: usize) {
++        // SAFETY: The pointer originates from an `into_foreign` call. If `pool` is passed to
++        // `from_foreign`, then that happens in `_destroy` which will not be called during this
++        // method.
++        let pool = unsafe { T::Pool::borrow(pool) };
++        T::free(pool, handle)
++    }
++    extern "C" fn obj_read_begin_(
++        pool: *mut c_void,
++        handle: usize,
++        _local_copy: *mut c_void,
++    ) -> *mut c_void {
++        // SAFETY: The pointer originates from an `into_foreign` call. If `pool` is passed to
++        // `from_foreign`, then that happens in `_destroy` which will not be called during this
++        // method.
++        let pool = unsafe { T::Pool::borrow(pool) };
++        let non_null_ptr = T::read_begin(pool, handle);
++        non_null_ptr.as_ptr().cast()
++    }
++    extern "C" fn obj_read_end_(pool: *mut c_void, handle: usize, handle_mem: *mut c_void) {
++        // SAFETY: The pointer originates from an `into_foreign` call. If `pool` is passed to
++        // `from_foreign`, then that happens in `_destroy` which will not be called during this
++        // method.
++        let pool = unsafe { T::Pool::borrow(pool) };
++
++        // SAFETY: handle_mem is guaranteed to be non-null by zpool
++        let handle_mem_ptr = unsafe { NonNull::new_unchecked(handle_mem.cast()) };
++        T::read_end(pool, handle, handle_mem_ptr)
++    }
++    extern "C" fn obj_write_(
++        pool: *mut c_void,
++        handle: usize,
++        handle_mem: *mut c_void,
++        mem_len: usize,
++    ) {
++        // SAFETY: The pointer originates from an `into_foreign` call. If `pool` is passed to
++        // `from_foreign`, then that happens in `_destroy` which will not be called during this
++        // method.
++        let pool = unsafe { T::Pool::borrow(pool) };
++
++        // SAFETY: handle_mem is guaranteed to be non-null by zpool
++        let handle_mem_ptr = unsafe { NonNull::new_unchecked(handle_mem.cast()) };
++        T::write(pool, handle, handle_mem_ptr, mem_len);
++    }
++    extern "C" fn total_pages_(pool: *mut c_void) -> u64 {
++        // SAFETY: The pointer originates from an `into_foreign` call. If `pool` is passed to
++        // `from_foreign`, then that happens in `_destroy` which will not be called during this
++        // method.
++        let pool = unsafe { T::Pool::borrow(pool) };
++        T::total_pages(pool)
++    }
++}
++
++// SAFETY: A call to `unregister` for a given instance of `RegType` is guaranteed to be valid
++// because preceding call to `register` never fails for zpool.
++unsafe impl<T: ZpoolDriver + 'static> driver::RegistrationOps for Adapter<T> {
++    type RegType = bindings::zpool_driver;
++
++    unsafe fn register(
++        pdrv: &Opaque<Self::RegType>,
++        name: &'static CStr,
++        _module: &'static ThisModule,
++    ) -> Result {
++        // SAFETY: It's safe to set the fields of `struct zpool_driver` on initialization.
++        unsafe {
++            (*(pdrv.get())).type_ = name.as_char_ptr().cast_mut();
++            (*(pdrv.get())).create = Some(Self::create_);
++            (*(pdrv.get())).destroy = Some(Self::destroy_);
++            (*(pdrv.get())).malloc = Some(Self::malloc_);
++            (*(pdrv.get())).free = Some(Self::free_);
++            (*(pdrv.get())).obj_read_begin = Some(Self::obj_read_begin_);
++            (*(pdrv.get())).obj_read_end = Some(Self::obj_read_end_);
++            (*(pdrv.get())).obj_write = Some(Self::obj_write_);
++            (*(pdrv.get())).total_pages = Some(Self::total_pages_);
++
++            bindings::zpool_register_driver(pdrv.get());
++        }
++        Ok(())
++    }
++    unsafe fn unregister(pdrv: &Opaque<Self::RegType>) {
++            // SAFETY: `pdrv` is guaranteed to be a valid `RegType`.
++            unsafe { bindings::zpool_unregister_driver(pdrv.get()) };
++    }
++}
++
++/// Declares a kernel module that exposes a zpool driver (i. e. an implementation of the zpool API)
++///
++/// # Examples
++///
++///```ignore
++/// kernel::module_zpool_driver! {
++///     type: MyDriver,
++///     name: "Module name",
++///     authors: ["Author name"],
++///     description: "Description",
++///     license: "GPL",
++/// }
++///```
++#[macro_export]
++macro_rules! module_zpool_driver {
++($($f:tt)*) => {
++    $crate::module_driver!(<T>, $crate::zpool::Adapter<T>, { $($f)* });
++};
++}
++
++
+-- 
+2.39.2
 
-Kernel initialize "jiffies" timer as 5 minutes below zero, as shown in
-include/linux/jiffies.h
-
-/*
- * Have the 32 bit jiffies value wrap 5 minutes after boot
- * so jiffies wrap bugs show up earlier.
- */
- #define INITIAL_JIFFIES ((unsigned long)(unsigned int) (-300*HZ))
-
-And jiffies comparison help functions cast unsigned value to signed to
-cover wraparound
-
- #define time_after_eq(a,b) \
-  (typecheck(unsigned long, a) && \
-  typecheck(unsigned long, b) && \
-  ((long)((a) - (b)) >=3D 0))
-
-When quota->charged_from is initialized to 0, time_after_eq() can incorrect=
-ly
-return FALSE even after reset_interval has elapsed. This occurs when
-(jiffies - reset_interval) produces a value with MSB=3D1, which is interpre=
-ted
-as negative in signed arithmetic.
-
-This issue primarily affects 32-bit systems because:
-On 64-bit systems: MSB=3D1 values occur after ~292 million years from boot
-(assuming HZ=3D1000), almost impossible.
-
-On 32-bit systems: MSB=3D1 values occur during the first 5 minutes after bo=
-ot,
-and the second half of every jiffies wraparound cycle, starting from day 25
-(assuming HZ=3D1000)
-
-When above unexpected FALSE return from time_after_eq() occurs, the
-charging window will not reset. The user impact depends on esz value
-at that time.
-
-If esz is 0, scheme ignores configured quotas and runs without any
-limits.
-
-If esz is not 0, scheme stops working once the quota is exhausted. It
-remains until the charging window finally resets.
-
-So, change quota->charged_from to jiffies at damos_adjust_quota() when
-it is considered as the first charge window. By this change, we can avoid
-unexpected FALSE return from time_after_eq()
-
-
->
-> Thanks,
-> SJ
-
-Best Regards
-Sang-Heon Jeon
 
