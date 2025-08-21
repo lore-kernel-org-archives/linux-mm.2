@@ -4,101 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F0CDCA0EEB
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 22:13:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B8DECA0EFA
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 22:25:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E27D8E0068; Thu, 21 Aug 2025 18:13:14 -0400 (EDT)
+	id 58BF58E0069; Thu, 21 Aug 2025 18:25:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BA688E0056; Thu, 21 Aug 2025 18:13:14 -0400 (EDT)
+	id 53D878E0056; Thu, 21 Aug 2025 18:25:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F8998E0068; Thu, 21 Aug 2025 18:13:14 -0400 (EDT)
+	id 452CC8E0069; Thu, 21 Aug 2025 18:25:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C28F8E0056
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 18:13:14 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F367C1DCB4F
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 22:13:13 +0000 (UTC)
-X-FDA: 83802166266.02.61C2795
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 436BE80009
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 22:13:12 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=h8Pefxhw;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 34A938E0056
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 18:25:38 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D052411806A
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 22:25:37 +0000 (UTC)
+X-FDA: 83802197514.24.0090FCD
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf29.hostedemail.com (Postfix) with ESMTP id E76AA120014
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 22:25:35 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=A5PI+cn1;
+	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755814392;
+	s=arc-20220608; t=1755815136;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1we+bJ6V2AfpLkp6IHq5DrAWOpBX+5HfYRZm0i8tWDg=;
-	b=y7oHVj/qvSqmaGM4Eu+Dd4NkxteaYILZJ/0iAg0vkJM6AK2SSDfjg1OIA2x7XVGmZIJUzr
-	7Xscqwl5H4+TcPHHnD0jfWYhCMoDdgU+HshY/F5mAj9PHHmUxAlxZNbm8P3I1HWBnFwR21
-	DmLseyz4NZ2OebAYSAOPG70gg+sClOA=
+	bh=UxGwaneklEuoMgdpuTZgMXLt8KwC3lX/BurqK3SzmgQ=;
+	b=6hzJA02hMnFbQ2oONh1nlJXXyFPZBtxQGGik3gdun6UnxUMD/43/jgObw+c/IlWVTn2grq
+	oXoKA6igvrdRq5/jprSLpAF/A3TOqbDd5jkuMjM2q79ZkDK+r1nMmaV0XnWkLxt/KmxXv1
+	iUpwVYW9yeEzrA8skGuVN3nXIRlE/Lo=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=h8Pefxhw;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755814392; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=A5PI+cn1;
+	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755815136; a=rsa-sha256;
 	cv=none;
-	b=iuclwBED9Ne3NBoLg78Qhxp3BqEYLPAj8kWzbUEVkyG3yClF/Ilxr9tA2WXn1xWJcsmT6e
-	WNhAWJATZxB45zl4a0ONyX7AM1PPtlq+vyphdTDx+oyYBYkwXRND7Kij6FKXPEctpSlTl0
-	PB6p0k29LchqSVHtYd65bdAH8QBSyuw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id C71F85C5996;
-	Thu, 21 Aug 2025 22:13:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA09C4CEEB;
-	Thu, 21 Aug 2025 22:13:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1755814390;
-	bh=OZVsV1pjh5cFcCuKO5I5KInQUt83XkwpyN8e5LAvhKs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=h8PefxhwzUDkEVO/G7Udqk5ywBFaWt9v80jL/AxtOQi2x3HrajmGLKlp/Jzy3IK33
-	 jRNdGw8nWXvygM/jJFn4eftYLX1BV7wHKc/GKOYZJypKp3M12AanRlfcEb8RG6EBDB
-	 3AU+Ot/yjoAk7wmY5xRhet+2x2RivUMY3LZGC/Qg=
-Date: Thu, 21 Aug 2025 15:13:08 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>, kernel@collabora.com,
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, Vlastimil
- Babka <vbabka@suse.cz>, Albert Ou <aou@eecs.berkeley.edu>, Zi Yan
- <ziy@nvidia.com>, David Hildenbrand <david@redhat.com>, Suren Baghdasaryan
- <surenb@google.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Baolin
- Wang <baolin.wang@linux.alibaba.com>, Mike Rapoport <rppt@kernel.org>,
- Peter Xu <peterx@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, Palmer
- Dabbelt <palmer@dabbelt.com>, Ryan Roberts <ryan.roberts@arm.com>, Leon
- Romanovsky <leon@kernel.org>, Shuah Khan <shuah@kernel.org>, Lorenzo
- Stoakes <lorenzo.stoakes@oracle.com>, Alexandre Ghiti <alex@ghiti.fr>,
- Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
- linux-kselftest@vger.kernel.org, Paul Walmsley <paul.walmsley@sifive.com>,
- linux-mm@kvack.org, Nico Pache <npache@redhat.com>, John Hubbard
- <jhubbard@nvidia.com>, Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH v2 4/8] selftests/mm: Add -Wunused family of flags
-Message-Id: <20250821151308.915362b14e82f5626f659481@linux-foundation.org>
-In-Reply-To: <4abd97fe-412d-4e3e-9efc-cf3092d66e57@collabora.com>
-References: <20250731160132.1795351-1-usama.anjum@collabora.com>
-	<20250731160132.1795351-5-usama.anjum@collabora.com>
-	<57c816d6-a9ba-47c9-8f40-3978580b7f67@arm.com>
-	<8e9d7c59-46b4-4e1b-8a55-1898302f5080@collabora.com>
-	<88ea592c-c6ff-4a19-a366-eadeca66b039@arm.com>
-	<4abd97fe-412d-4e3e-9efc-cf3092d66e57@collabora.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 436BE80009
+	b=57JdKD0QaHQ6XkMX3dYKBckKeVi91dedvPS0VgUPP7ZCAdYPQoIxzUWjPckCQ9dg4ryYw5
+	oHebGKInL272UDU1Ew/U+rKBw5CKFJSTO1Bt352ic3C8ZbbBvkdanAP9NYP8odmFyl2KoI
+	tS4ZSPXkVcw4Tj7KZRQFwhN6zjerKmU=
+Date: Thu, 21 Aug 2025 15:25:28 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1755815133;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UxGwaneklEuoMgdpuTZgMXLt8KwC3lX/BurqK3SzmgQ=;
+	b=A5PI+cn1DU9QLvz2iLs8e7hbKx5Tu80+L3JyEkBLiwMXENfZDbmMKIUR7U3/BcGTymVzpF
+	i7IKbkQUN9fZryt8R4lKD+3aA2vUbSthhaFICBXDkNDbwwhL+vJrhudaRREzYcJ5Drv5v7
+	UD9So2ZuJwcfvQ+FZ0dcxI5UNWsUOEk=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Boris Burkov <boris@bur.io>
+Cc: akpm@linux-foundation.org, linux-btrfs@vger.kernel.org, 
+	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, kernel-team@fb.com, wqu@suse.com, 
+	willy@infradead.org, mhocko@kernel.org, muchun.song@linux.dev, 
+	roman.gushchin@linux.dev, hannes@cmpxchg.org
+Subject: Re: [PATCH v4 1/3] mm/filemap: add AS_KERNEL_FILE
+Message-ID: <kagqatguxrcxsb7ka3vq5xfm2vbjly7ixletkxwbyyq2uisnly@frthso35okfd>
+References: <cover.1755812945.git.boris@bur.io>
+ <f09c4e2c90351d4cb30a1969f7a863b9238bd291.1755812945.git.boris@bur.io>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f09c4e2c90351d4cb30a1969f7a863b9238bd291.1755812945.git.boris@bur.io>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E76AA120014
+X-Stat-Signature: n3e6gzzr9u1gzgm5hmtsfzpqrzzxm1nq
 X-Rspam-User: 
-X-Stat-Signature: 4zuqaeg99rt8fmoqxg599eqjrmsu1g43
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1755814392-270735
-X-HE-Meta: U2FsdGVkX19O6ZCq+Y+GFnCkUBIN4FMdvDpMXLuNBdcs3GMHYvEzE9RQL8aTY92PjG9Esdc+VyUECn2ti0b5hFAZml29bLFj1spkw1kN2YWUKgzbgpNi3DkhToC6UG638CVUgrTDxDtXR9HGPyqo7hi0ytKmHXaLe/ee0luVTtIeDYeK4K2ACNAs8/iRlOX6Q/0U5+qJq7vIVAqP1Pkcgvqr8EYjvPplmM40orlvE4+iLCv23TAd99gP2hay2YWhvhvjmFfEuXWq4KtEFMAVDrcqp1TUDX6cdSCe6VAnzwHWGuG2MqYbQmZ5TQLbPPdjtiHEpn7h/RElwOmvwYou+iLp3uSUm9d4qOvVx05jsh4y5YKL8utojWsZCkJXK5AmmK+t+RyAIngQinoH3fJ5h5MbfcmNgfdU8jhDJLjYfmzPT+7UFO/6dDGOX7Yo2kRCx8OToYw3dTfWMcpOgi6YYnkRmKFGd7LUNMhFGQBI1o56eZEAO4BslR2+eAOW2mooOw76jPyhN1rNKbCYhCVb3bsc8uDcmwcyb+gzB5dyqCk7mkskfz8sjYBBKtBn1eb8H5b+H0Ah+nHx9FmHah+wS4QlC8awNtD3FuwGevseCfO8bXCBhz8qLNgXsF9uCgdmMVAuJsvDQ4nDoqApHWMUIHqhsD28pBWJdp4kOuHGpMd4BQ/Z2w6FZxLfQ8g5pWalpcUCUHTezKL/zH9TXmKLHuY889qazkz7ne3+bTrhONSYdByXWOXl7MstD9YCYI6i31yaS23qxwWiNN2ft63yS4MFu4qH1oyZZr12vDVjJ70xqhFkNrFfhpHFy+CwS1lydC4z3N/X32RYcieLZPPM1hNigLoaqPwDp+KSm4m1yyhPLz11cHNHgwVmjsVbQsCVH+WCWKMLTPW8+TO/+CSFlaxvPd8ZQQBF6Pzb6mXSJGNJ/R1lZUOSyJ6Mn6QfvlGKMrecxAc54AjBK3S17bZ
- RjP9rFYq
- q1cuYalkPFgJgGhnmdT4AylbqwNW5w3cVro4U2SlOHfqxCXtyW0iTOcxmCQjWyOQ6pBatO8SA9sEDUnVZ+7vlzu6YWHyLK16/RzjtHYhOiCH3OvvusWgVsdzTYTC2sKCGkcMTcbYMjKKeR9kqHoGs0oK4frrZ8X6bw9d5IPfdPSFX49Y0xybu/ClrO2mwlA3RnA56GBDjlNjQZapxNkf2Jjhkft5wPPVhH32U78gt5ViQZrdeN36qDn8HFdMMni7nn7g9JBAmFxCyTdr66aFq6TpPNvE6QCvy2sUARP8OQ6TdS/e3xZHbfP6zCA==
+X-HE-Tag: 1755815135-804346
+X-HE-Meta: U2FsdGVkX1/VdZZbfYOs+QDLQ4ifOq27sW341tBr13xqPjLSPSuNy699Zcytwcumh6/j7/cqRDRehQA7kCWDD8h7DZrTh23dsDzFrGwvnDy/tXJcsnjLBaf87G8sGXW5C14hp6NiYozvzu9vojoTqJdvF48egNMEUvzbORIgoHyp8TQvL7s8kqB7vtRHTmCq9Aextr785NoHmjZH/WgEeR5LqsyW9fXqDFSwM14zounv5AT3htkaQdOhWcUGn9ytxr3OcEonmLv++q8WhhTdpyp3lCQRtZeywMOAhJlp8T4eujFq7D+5d5o0EdCnF0iYMyvLmUALI0Kesc7Iqi34/DuscXTA6p5OKTkrfV5zAgN3+/9tV0xN1yblGjR/4sbY/jUz0og0hDmMULeIS7PT3DnV6RgidJLb0QChB4urbVkjuCPbiLtmUz0gyOk+3K6vR/56Jt2m8dkl4boe0htSh1rWHrrSWEuxuMLWZCiPgsv7uGRaEZXkLPmljfyLl4TQEw1RI2bnFNajKAUKItOcle1hGW+Upr0xkFH+19/kg1WREA9BR3a4jmrQiu5qfSw7VvszKEUI5GMgPPP4aRDZuadpW5LI2fU2DPj9bI0kXz23urmYMfI/dATDoeRNe5+a32B41qQeRX5GsavEtTEKoVpUoDx4Qb/IHSEeLzSPoqZSu5kE25+YeDYEePaAw8WxqY9f2qUitBCXVFJKdPdZy2tyVwBdbmdCBQfe+VaW8HCrEWcdYx0OhlP2PqREBVRh0Y3+GZqwml0HQRSmZCMKW8+3wXmwzp+R1CsjxKJ8a+i40OriJocwbzl3ajTqB4UtmNFQXF6OAjHEFI5ras0k3p7Y3NqX/OxEXX9fvwLRSyJ/tn6ICx7AFwpVKLHVd7a2yJgp4sCg+obk4Qj6B7HWXtLP8KPCE0kzwpB/5PdgkN+LClXgusUibSp11BX+zYw8HZxFvxcvm7FI0poydfw
+ ldfVBHO1
+ 5prday9lnTR0oe5zOdCpDG+BBjXcR4lxqp2ykl+mc5uWTCBMBJRtdCeR/Ep37S8KPLP/09CjFXOe+BIB77Z4fsYVH68SvMGrs71WF8b5VJYLmiYtlbIoCvflKEdAxWs8pgXs1sfZUo1h85Y96BD2M1sz5CN6QYA9gpBqRCjx+rxd8VhhGSyKNGgmOIVcpzg56/kR1QhZdt3afpwachGMMWZ5UAT0JrKM18b1zwVI5EM0zMhSStYklLJhgY/1Inv04t8HiQ+lH2mD42hSYkwbXFPd0Lv0USlrkxPL/XMT+KR7WWg80GgIzalq2Dr2qr/ePpNUhGSpN2C/DHsg2TcfNWfyJxkzXE/zzMPiKvjCMzEB1SJqx3zfwuzCFIB+OckBNsAIEoIgVD9U52vBuCo7qkhk+Cg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,23 +90,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 21 Aug 2025 17:31:21 +0500 Muhammad Usama Anjum <usama.anjum@collabora.com> wrote:
+On Thu, Aug 21, 2025 at 02:55:35PM -0700, Boris Burkov wrote:
+> Btrfs currently tracks its metadata pages in the page cache, using a
+> fake inode (fs_info->btree_inode) with offsets corresponding to where
+> the metadata is stored in the filesystem's full logical address space.
+> 
+> A consequence of this is that when btrfs uses filemap_add_folio(), this
+> usage is charged to the cgroup of whichever task happens to be running
+> at the time. These folios don't belong to any particular user cgroup, so
+> I don't think it makes much sense for them to be charged in that way.
+> Some negative consequences as a result:
+> - A task can be holding some important btrfs locks, then need to lookup
+>   some metadata and go into reclaim, extending the duration it holds
+>   that lock for, and unfairly pushing its own reclaim pain onto other
+>   cgroups.
+> - If that cgroup goes into reclaim, it might reclaim these folios a
+>   different non-reclaiming cgroup might need soon. This is naturally
+>   offset by LRU reclaim, but still.
+> 
+> We have two options for how to manage such file pages:
+> 1. charge them to the root cgroup.
+> 2. don't charge them to any cgroup at all.
+> 
+> 2. breaks the invariant that every mapped page has a cgroup. This is
+> workable, but unnecessarily risky. Therefore, go with 1.
+> 
+> A very similar proposal to use the root cgroup was previously made by
+> Qu, where he eventually proposed the idea of setting it per
+> address_space. This makes good sense for the btrfs use case, as the
+> behavior should apply to all use of the address_space, not select
+> allocations. I.e., if someone adds another filemap_add_folio() call
+> using btrfs's btree_inode, we would almost certainly want to account
+> that to the root cgroup as well.
+> 
+> Link: https://lore.kernel.org/linux-mm/b5fef5372ae454a7b6da4f2f75c427aeab6a07d6.1727498749.git.wqu@suse.com/
+> Suggested-by: Qu Wenruo <wqu@suse.com>
+> Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Tested-by: syzbot@syzkaller.appspotmail.com
+> Signed-off-by: Boris Burkov <boris@bur.io>
 
-> > My
-> > feeling is that unused parameters are expected to be allowed in the
-> > kernel and it isn't helpful to go against that expectation in just a
-> > small subset of kselftests.
-> I thought kernel must be giving error for unused parameters as well (from
-> my memory). But just checked and it doesn't seem like it. I'm okay with
-> dropping -Wunused-parameters.
-> 
-> We need to drop patch 6/7 and in Patch 4 should have only:
-> 
-> -CFLAGS += -Wunused  -Wunused-parameter -Wunused-function -Wunused-label -Wunused-variable -Wunused-value
-> +CFLAGS += -Wunused
-> 
-> @Andrew, Should I resend the entire series or would you can make the change?
-
-I think a new series would be clearer, please.  It's unclear (to me)
-whether Kevin's various comments have all been addressed.
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
