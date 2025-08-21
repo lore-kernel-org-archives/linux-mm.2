@@ -4,126 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44B1ACA0EFA
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 20:40:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5B2BCA0EEB
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 20:42:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 908788E0052; Thu, 21 Aug 2025 16:40:29 -0400 (EDT)
+	id 081378E0053; Thu, 21 Aug 2025 16:42:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DFCC8E0048; Thu, 21 Aug 2025 16:40:29 -0400 (EDT)
+	id 059D08E0048; Thu, 21 Aug 2025 16:42:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 81E798E0052; Thu, 21 Aug 2025 16:40:29 -0400 (EDT)
+	id ED8798E0053; Thu, 21 Aug 2025 16:42:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7096B8E0048
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:40:29 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DC0188E0048
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 16:42:27 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 44AF913565A
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 20:40:29 +0000 (UTC)
-X-FDA: 83801932578.20.A513809
-Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 68D904000E
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 20:40:27 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=R6H4k+oG;
-	spf=pass (imf27.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.219.173 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755808827; a=rsa-sha256;
-	cv=none;
-	b=WA4Juw5Xj+4zmE07OG/CRI98SkbQHYVB5z7iFAidJA3r6pIdm8eqsd7ivKR2yMKJpe6gj3
-	CBio0/Rdcty8z7sWn/OPc7SbI7vYX8SeqJh1EUb0koTnkP7O2NimNkY4luDAfJPzYiwgzG
-	b/+d0ifXq3ke0b57sNOQhA2ZjUwuqsg=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=R6H4k+oG;
-	spf=pass (imf27.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.219.173 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 99A99C04FD
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 20:42:27 +0000 (UTC)
+X-FDA: 83801937534.20.CFCCCB7
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf22.hostedemail.com (Postfix) with ESMTP id A32E3C000A
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 20:42:25 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uWyAPBk6;
+	spf=pass (imf22.hostedemail.com: domain of chrisl@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755808827;
+	s=arc-20220608; t=1755808945;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lHa4LrampbSXQx1Wyi9Bh9OjrywcR0PvG9lus2xsnNw=;
-	b=QPCICWM0k5NwW05l9pa4Uq5L7PIi8DcVaNXSH5n7S7S2xHnxF/9553roNIRMu8DTbCrMSU
-	Jl+QxmmAFFsA77espMGXVHzqnnaox+gSY/VfDHcNtdluqpI7GGLkefZjVmWawa5X3iG0Yo
-	futz80JsPc9hqmyxrU009m40smN/vII=
-Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-e931cddb0e2so1169480276.3
-        for <linux-mm@kvack.org>; Thu, 21 Aug 2025 13:40:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1755808826; x=1756413626; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lHa4LrampbSXQx1Wyi9Bh9OjrywcR0PvG9lus2xsnNw=;
-        b=R6H4k+oGWaHKuCtAhN+oHaiJxpHeZ4o+F5OUzImIso7+gQOQg0WEzxZc8tV9rXmmfR
-         djXnrg1RwAzNxdbb7hp1SC4unEtgXpIFadMhm7CsDZ5g8SdHI9bAd+whkV5fyO/b/iJU
-         k7RyW2EM97aHSa1Dxi6P+RnuD+Ej9rB8LyP+g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755808826; x=1756413626;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lHa4LrampbSXQx1Wyi9Bh9OjrywcR0PvG9lus2xsnNw=;
-        b=jFqXJ/FWFlFWi7KgPuKpbCQTzTgdAhgu/3buEer99l5VHPqrJs5echDqDdWWCAfwGr
-         E6wc4hGHb4ypjxruSXAfheYq5ZzijTS7Mo84YC0svbXTQ1nDfykkO5aY53VVUNaYkZrj
-         7az1RP7Zd5IUHa1+z0IjVAILaFVO3lIb/KrPTMFslubCzGC6nMx3+82S9vBqne/gzjLr
-         36COGnhRv+XQe2m6py1QGH6kXMGhHJ84JOOaOOefeo7T26QNqua92bc+kJcrFZCChUNV
-         4bI9Q4Vamnl64OqkC3L6kVixDo8Ia6YW6LugNrxyadD97Hzjl0Q6L1GMKlvpXinWGqCC
-         h2ww==
-X-Forwarded-Encrypted: i=1; AJvYcCWFpO/uAZxjiQjb38T/LiTWLE2QH1nE+O1d4X+gxz7rL8CtNZ9Ogd+gqmg/k+J3Lr+ZNQbqArlANw==@kvack.org
-X-Gm-Message-State: AOJu0YyMxAhZ6znP+YU0aGNE7X/xy+VCLZlhHj7gXUuzsKcawYJF6N0M
-	LheyfUjy6IPVyUv8HnpJa+xU5NO/GYng7Fs5HtOrjhbfLHorJGmvRngfA13iJwbwugPFgl9vFnl
-	B/Qhvt6CtFrQVlTVaMvixnyrmCLk5kGs8Ynixe93M+g==
-X-Gm-Gg: ASbGncvaHlk2cZqPecjqyRdg4OUdqFW2dL6Tz8EGtWwNtWY88ownPIN0UoHXHt4zwnB
-	CAQPXkw4iD17nuAmtkxnsptpEAn9zwWKzUYbTqsLwbQTqnCyWbyM+syht3W9eZdNCF7PYrhHxFU
-	XOzhhK8xaB6mZvACVaLiFSpuJT6bMfs6BLGGh6xIcN5sA6x5ehCEvV6TwxdMhYi5701xn6qP1uO
-	P3JWunMWKnNKbB0
-X-Google-Smtp-Source: AGHT+IEDbX/Imr3oMuC/SvPpVgA4gK54+Q+BCEwHjysz7tgNECdpdXbU462KLrYXAP4tYmTYkQFLOtkp14xdKE7/w+U=
-X-Received: by 2002:a05:6902:c12:b0:e93:457a:37b0 with SMTP id
- 3f1490d57ef6-e951c33ee1bmr998901276.20.1755808826442; Thu, 21 Aug 2025
- 13:40:26 -0700 (PDT)
+	bh=eOrpqfc8n93v97pF20SR6SfrUdLBJXo3INEmRyMuyqQ=;
+	b=M7CwzVSPItYBYdw8GR8opUkfJHCzjA+8H1XD8EGtOMcRh67TwUAYvtFzXSJObneGAlvxwM
+	rspqBM8mKSu/RfKQXni0dZwh8RuoKDqjMKDvBgVX0GaZmqdmwDfkIDjBQ/cCMhU3EUwo6j
+	RyZykQFxP2gfVy4dz0RLkJOaKTC0vVE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755808945; a=rsa-sha256;
+	cv=none;
+	b=MYE1P2yIV5obk63udszmtuHwUFOPUWcKWn1UgQ0Udn4qIbYFxXdFkeUTGLmGHtdutHJXPR
+	wxo+u5u3ir04UvhREC+pcolCJBDVNQ4Ah1y0fDTNuccSBZfvprGddW6d/YNmsWfDOniq3T
+	53VL+ak3lK+PapkpI38utpPobSXBcX0=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uWyAPBk6;
+	spf=pass (imf22.hostedemail.com: domain of chrisl@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 9711E5C0579
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 20:42:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428E2C116D0
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 20:42:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755808944;
+	bh=Xyr2vTQWJi84phHGI09fHiyAc/a2HiFJYMzB+7vMKUY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=uWyAPBk6TQh4uZnvEeJ07eNzt1pl5zG9rmldduuxYxRyfKEAMUVD8cQsfBbfwVSBD
+	 pP1s8CGg9G7iP+YLi0bLtxLzMTq+WGQl+nV13zWSNa+QvXZ+H7d0QYkfn01nKyY2nA
+	 gCKFjQCOm8iOJ5JTPikff45cTnMpvdrxFPNiGbh7YGBXH41c7Ii62rLhoAXNqzTv4X
+	 v4OzAQbyIUkRZgTdciycY40FqqkLhJ5mCKk9PjrojY5Xu6Vvi2gtj2EilksoznfVyJ
+	 w8sHlKuVPcC9EJ6fUUf4Y+xJ0sXKFKeYdt8tlfHECs6PWt4BGAeK6/mGXjjXlBXjf1
+	 T0HjMag/QYNVg==
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-459fbca0c95so21365e9.0
+        for <linux-mm@kvack.org>; Thu, 21 Aug 2025 13:42:24 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVtU2n6BsgO9HFl2X28QjE88yPRSK7AETN1h6jx3oeOKQqwkf32m4OLbJJG2K1G1e5IROIyicTpAw==@kvack.org
+X-Gm-Message-State: AOJu0Ywq3+/dsL79O+BfiPTZ6Ce+XCNLkmJhpe/jl1huFLq+LxAnmMUO
+	fH6whcm2YJ/RIXuflk1wWNBEheaa+xjUpvQpxBToWcBcq+9CF4P4egpXnNGcPeQX0V7uF8y8rGo
+	rXbo5mIcJc1I9WO6iXgPz+1N3gdxO+7CoxA7HiFBE
+X-Google-Smtp-Source: AGHT+IHDZCalgfqlYi7MkLgFbyjbhsH3CZf0MNkISUXvgYgeAZsgXeUqGGDOaCg+VIv8TDFRobw1n05v/ADvT2/804M=
+X-Received: by 2002:a05:600c:8b01:b0:453:79c3:91d6 with SMTP id
+ 5b1f17b1804b1-45b52119c8dmr9385e9.1.1755808942940; Thu, 21 Aug 2025 13:42:22
+ -0700 (PDT)
 MIME-Version: 1.0
-References: <20250821200701.1329277-1-david@redhat.com> <20250821200701.1329277-32-david@redhat.com>
- <CAHk-=wjGzyGPgqKDNXM6_2Puf7OJ+DQAXMg5NgtSASN8De1roQ@mail.gmail.com> <2926d7d9-b44e-40c0-b05d-8c42e99c511d@redhat.com>
-In-Reply-To: <2926d7d9-b44e-40c0-b05d-8c42e99c511d@redhat.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 21 Aug 2025 16:40:13 -0400
-X-Gm-Features: Ac12FXw_AatpwCNNPCEiMwiwdQxQbayKDzVf5K7yc3iQ5tLY7APrv3zl2U8Z_SA
-Message-ID: <CAADWXX_5AJxTsk5m_RvP58d=quRMqT4-XbnQQx=obBTKjHr1Og@mail.gmail.com>
-Subject: Re: [PATCH RFC 31/35] crypto: remove nth_page() usage within SG entry
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, 
-	"David S. Miller" <davem@davemloft.net>, Alexander Potapenko <glider@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Brendan Jackman <jackmanb@google.com>, 
-	Christoph Lameter <cl@gentwo.org>, Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>, 
-	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
-	iommu@lists.linux.dev, io-uring@vger.kernel.org, 
-	Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>, 
-	John Hubbard <jhubbard@nvidia.com>, kasan-dev@googlegroups.com, kvm@vger.kernel.org, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-arm-kernel@axis.com, 
-	linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org, 
-	linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Marco Elver <elver@google.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>, Peter Xu <peterx@redhat.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>, 
-	virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>, wireguard@lists.zx2c4.com, 
-	x86@kernel.org, Zi Yan <ziy@nvidia.com>
+References: <20250819193404.46680-1-sj@kernel.org> <CAGsJ_4ygTv1tCJeuF43NhRR4E0kiMLpk6i8c+UHoUMt6LXykww@mail.gmail.com>
+ <aKUi7hvcaK0h0oMg@gondor.apana.org.au> <CAGsJ_4z6YvQULrEmNjFjLNrJ4RK6w0+d9uF2-7v06gOYirrYRw@mail.gmail.com>
+ <CAF8kJuNJ8s2D9NBdXDQ4vpBP0a-5k7r_=DdFuJJ95nMKmm6LBg@mail.gmail.com>
+ <aKVYyGWiWRYgxfE-@gondor.apana.org.au> <CAF8kJuPPsLzWu8+xm2A_UPHMBhb7OTjJNErM1Kp3hPmvHXNDUQ@mail.gmail.com>
+ <aKVbqi6wd3Spz-TM@gondor.apana.org.au>
+In-Reply-To: <aKVbqi6wd3Spz-TM@gondor.apana.org.au>
+From: Chris Li <chrisl@kernel.org>
+Date: Thu, 21 Aug 2025 13:42:11 -0700
+X-Gmail-Original-Message-ID: <CAF8kJuOJsZ2RbvFedfKADVqa0TUrkO-ceqrtaMXgiHAS0V19hw@mail.gmail.com>
+X-Gm-Features: Ac12FXwy1vPVdOsVeHesiENd9Xc9-_4Gop9B9f4wYnWvLSSwoexOz99om6lRJM4
+Message-ID: <CAF8kJuOJsZ2RbvFedfKADVqa0TUrkO-ceqrtaMXgiHAS0V19hw@mail.gmail.com>
+Subject: Re: [PATCH v4] mm/zswap: store <PAGE_SIZE compression failed page as-is
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Barry Song <21cnbao@gmail.com>, SeongJae Park <sj@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, kernel-team@meta.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, Takero Funaki <flintglass@gmail.com>, 
+	David Hildenbrand <david@redhat.com>, Baoquan He <bhe@redhat.com>, Kairui Song <kasong@tencent.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 68D904000E
-X-Stat-Signature: uj5faibyna7daqk15rdur9zmar9o9kqj
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A32E3C000A
+X-Stat-Signature: fuany53camzs5aeyxexew7wrhx4xwfqh
 X-Rspam-User: 
-X-HE-Tag: 1755808827-516577
-X-HE-Meta: U2FsdGVkX198sRPpF4yWUe20NtuzZLGqEBmNMjgqB6RsWNB0xHS0hlDyMzhEe/KcYylLjlS/wgYCyB6IjD6euBmDIfSA1y0ENAAxeuI7AtCiIEggSKXe80hivc5aY2TG3oVAe+7nz0sFwVIz34V1ThdEDw9c7nIrn0tw9u3HH/3VdNkVU2OaR4ZxvL2R3kEF4rR1Vy6usAMMrziqhf32mzQiAjRNEmuMpkcFn45slFkWHnocFHp5CsbFk0y1lEnX4FfOZgmLM1xy9Uv+J9vkOMWtYjqzlgGE7VJ03M0p6UKsX07kNdxLd/S4n6QjJXASZY2oLpLqV9YrvgNmoyF/OhjZN2vIEy067015zSRslkwx3bctcMwRk82mhlbyamYOVhZWfmXkN2vHjF6Qlf+O64N2WRin9mrXq5h5n0TKyBZYjLPK8yRopxec762Yqb3sTzEfv/IHC862Jlnv/xhp1AOeycv4m/q9TF+GhdxFMSc2V2v1+hUBPFDF7TFXvRmKoYsIslkhyJeryu7k5xeQu2C9VPfhryt/VBm/DwA892l9HGZOdNzNaKJ8oInnMaah0833bGDmeNY4w9qf64Xxvi7uPj+FPV1w6ZwXGWMFubaHz9fvIhU6qoAeocbwm3IEwdrgXyVq2f4Y41UdSbqkPt/BnFoVaVFpWYNn4V3iXb6VsOWbOO6KwaH5o8akqg75QPiyDVMZGaf+49+AB1WGXURZvGJGB2tA65FqqAwB5zffUG98dSGdsMXXtKm+IcYLl/mUiIelWKVXFetjiMxpYLyOL6pbD/Xn8TN9jigaNJxJGns/v4ViCIcNgRwpI9ExXCnb3D1zECfD0zl5JmcZOyOEJTFrC2XzZmw6QhgKXTAhnIDi2G23xe5af3hC8vImGYRmHyczmEd7Tu13YuhWDhWpNc6yG07ynB5cCk5x40zFswmJRbxuiZHo/QB6L7uwVtfoqV1ttZzWSihdq1T
- sskuYndI
- LzlLNGVUhfDuNqHyL4eKjoC9uuVxwft4HFnLFfujx/SQSVCUaIEKf9ODAP6mtwwU4wC+om1OC0W8ZYbYLn8DQFOtb/y1LR9ZT+KGzpN45Hri6XESQY2ESa6wMZVz2zZWSB5gHbKLNfKVfFT1QiAs00aJnTBo/m0i6uXXMZx1emy53wckfJ9FopaIsVgWh0lM1Z9Hby/T0Nk/vDfxLjz1BqIvhuahqClaZsUZirbIrEtsTNfUr/ap3fGVQ8NSnXRmyLpZyM/UYWS+HcjcJuHs1yJrs+ADqwX/STZRUYb+0ZKdj2x2S4doDYA1WuWv4nsU9EPdF4lzGMA4KbbcTnZ+51wH12NvmYsH2MtqNlGxdzyVGYo96aWQEKI1+QW8coTRXTxm5fINjhJvPPZBs0feFI2NaLKh0wEh63BTXuDFCPMYPmNmkOZfBkRXEUTMSxUbXbvjWIfUX7Al4RlqiMel8mpaVTw==
+X-HE-Tag: 1755808945-96567
+X-HE-Meta: U2FsdGVkX1+a8JonNT3Qyqsw7DCPw6p8NQy2W8+YOw+jO43A8pcHannmpS4HnEBYdw89U/omgjGKjv9/KEpdj1HQ6ss3s8VjA+7cCuCWutkecvVGNQnBinT3qrOrz2OsPv88c1WjHnfjmUtnZnVbUra0WoPA0X1wm4I6uC1t+u4nZKqI38bv4cZsGDMOnYVBEXiS536DgACzEJomUef4VEOn8gM1BqSQAojqNWrebRNWqDsG1FmcnUhb3Wjh+5nM6ZAXGQ4Hgk0zepVfS6NopdkkT75J+8AoL71yhMswsY8AD1mdtQtFrGvePsD1CgLtDiniXnW8LIgxlyEryRGfyAs96Xodxs8NGKgOiHK9Lnh67V8CnPmQ6ECoBr3JormkVeBmCkUbpSFhxaEVWWKGFC377vKrwSx4eyZJbzh0CQbeM75VNp6jAbR3wkFHfDna2TdZOqOx15IHkM71POosKb9UQ5KvE9c9gYU5wAHkLmH3/gpPOt+aITxebIN94bFzk80IxubnGDW512sbUAPIqg/uaWcQ1kc0hdNU4Mt79Dl6oXRwyP0ibKUHEjgubK9VFNIuwFsubm4ZqF69NO/E16YL7hd0u3EeOd42dlv2O8U9UL0JWZWsyc2mZr/by2I/mgSfQhrfc6+qzGRHys4i9OwmNGpe/Qm93XaPCv+2Uo69JYZHp1W1pXr2kWEPmSCGRbEy4bA55yLNO1YoNE/fx5BAirTY2bniOZE7AxRHKjOGCn9rZ0ACNjUpcwaahh7Gd2XGwXhrphuWNFZSjXTomZVawuRI3M9mL70H8MJxOUYB+TWAnD40FQplaMtKjxr8qp4dDv1E0pvIoGyQWSiYzA4XaltwvltkoyipQpV6wOu8lsQe7AT1au2L/AbACR1yaSHZ3Kfq9VH7OaXxF8cDWt8qFR3ACNkxY23OCyzXu+WPBcekAppwoTRwduHf1i49sEGVd7wO/ZUQRe8Z0ir
+ AT4gfdDv
+ CzBWdhw8MYt19Vsahd3e8OrYXAgL0EFjiJspwbxPYvt31mNh8KO34iaAKEoRZPW5wvYDkSKUSAPU3wRam91I9BaGpDW3smhg1VuhxDhdSAnvNaPA4TZu+mWwDfU0Kh5WtYIyWJGcQX2odoZlBTwmg0UwqTszcrAdVROU1uQBuDLF8Edq22buFXmaJRvXb6moKcoqiLZT/zbiMVO1OZmqFtI3jvCQW+p/zv+sAJFnPEuWUGc1Y/jCZNv1SOvIer5iULysItqsWmHzWZ2qrhiXL0VUhIClkVFckoYgp+kMRnOQy+GP0wlu4YaeRDL+yqnlVo7uBLHhqcRVOMEakgMLBo3lOlgMsZrQWxc1FromdfujTscK7FaQk3vKei8pMA/WoAT13b8HImZ4pnjo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,37 +112,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 21, 2025 at 4:29=E2=80=AFPM David Hildenbrand <david@redhat.com=
-> wrote:
-> > Because doing a 64-bit shift on x86-32 is like three cycles. Doing a
-> > 64-bit signed division by a simple constant is something like ten
-> > strange instructions even if the end result is only 32-bit.
+On Tue, Aug 19, 2025 at 10:23=E2=80=AFPM Herbert Xu <herbert@gondor.apana.o=
+rg.au> wrote:
 >
-> I would have thought that the compiler is smart enough to optimize that?
-> PAGE_SIZE is a constant.
+> On Tue, Aug 19, 2025 at 10:20:45PM -0700, Chris Li wrote:
+> >
+> > In that case it is fair game for the caller to check for the error
+> > other than -ENOSPC. If the return value is -EINPROGRESS during
+> > synchronous crypto compression, it is a bug. We are not encouraged to
+> > use WARN_ON, then having an error count to check that something truly
+> > unlikely but possible to happen is better than folding it into
+> > incompressible and pretend the error never happened. At least we can
+> > know such an error case happened.
+>
+> Sure warning on -EINPROGRESS is fine.  But every other non-zero
+> return value should be treated as incompressible.
 
-Oh, the compiler optimizes things. But dividing a 64-bit signed value
-with a constant is still quite complicated.
+Ack.
 
-It doesn't generate a 'div' instruction, but it generates something like th=
-is:
+Thanks for the feedback.
 
-    movl %ebx, %edx
-    sarl $31, %edx
-    movl %edx, %eax
-    xorl %edx, %edx
-    andl $4095, %eax
-    addl %ecx, %eax
-    adcl %ebx, %edx
-
-and that's certainly a lot faster than an actual 64-bit divide would be.
-
-An unsigned divide - or a shift - results in just
-
-    shrdl $12, %ecx, %eax
-
-which is still not the fastest instruction (I think shrld gets split
-into two uops), but it's certainly simpler and easier to read.
-
-           Linus
+Chris
 
