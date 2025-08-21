@@ -2,90 +2,104 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B1D03CA0EEB
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 05:43:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D5200CA0EDC
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 06:12:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3285E6B00E1; Thu, 21 Aug 2025 01:43:55 -0400 (EDT)
+	id 33DD38E000C; Thu, 21 Aug 2025 02:12:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FFBE6B00EA; Thu, 21 Aug 2025 01:43:55 -0400 (EDT)
+	id 2EF928E0002; Thu, 21 Aug 2025 02:12:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23D586B00EB; Thu, 21 Aug 2025 01:43:55 -0400 (EDT)
+	id 205698E000C; Thu, 21 Aug 2025 02:12:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 187706B00E1
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 01:43:55 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 672E71DBD69
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 05:43:54 +0000 (UTC)
-X-FDA: 83799673188.28.51C7D40
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id CF13B80004
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 05:43:52 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 114FB8E0002
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 02:12:01 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8005682D5D
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 06:12:00 +0000 (UTC)
+X-FDA: 83799744000.24.5C1AEF5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C4C0C80010
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 06:11:58 +0000 (UTC)
 Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MKOLoolX;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755755032;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pTvsanUWoBaejWouvp7fsU2byoIYqvCJ9DKWrUenbC8=;
-	b=SCmn8CI52DKPkAlmP5V3uGwf4QC/jIjpaVX6Xzy9+36t8zgcEdoaLkh6rAOewBojIMfwhL
-	0bl8j8PZ3dWElNPSfTPrjDqqQ+G58Odv5lACd3QqOEefDJxKTPxz2i7UCcWQcDNEPYK6IW
-	t2ZWPzSbUt20wOFjuQrJX7fJ8YO4jMY=
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qP+aS7CD;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755756719; a=rsa-sha256;
+	cv=none;
+	b=BGrOVP6tY/fbiadn2nbM2/MXBSa1hLwg9nHv/EBHXt74fDqHsVjyS37yHbMOCc78d2LKTs
+	/c87gQocS+NQThVtTlSluUxmyzUCdz4pRID1RMAtLgoW4+jz/QRzKoj9zP4nILdtOyhGVQ
+	aH66PcSxQaCW+SoMjf8UHsZpHrTleBY=
 ARC-Authentication-Results: i=1;
 	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MKOLoolX;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755755032; a=rsa-sha256;
-	cv=none;
-	b=8b1/B8tmkZBN4oaYKkv/ydY41Oko+XiwPICsRVDq9DKE4Khrae6VUfbWGkkNb+FomycEdz
-	qyqcFvBKiP2ARqMh+Jh+AVRzwrlX72+0ra9iLE+xwEi8vVX6d9UEtKLWiVBRKIaf3Y2c3j
-	mrxkoGv+xGwYHvyEhImlNMxJwl6FH9w=
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qP+aS7CD;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755756719;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=44grnMZ+lfm7bRh7/NW89Mb44lGvvNMD/U+BuxtC924=;
+	b=i78XR8Y9hfdHlp0AjE5vbVmLNjx3JogIFrx8tJeTyWf4djayKfUQ+ehpxLTIPsRfhNhaf8
+	7MPMKaJ3WGwuRGeGZxLHI/1MfEXW4CzYmEj5CD7zz20Rxb02H0LMA1LoVhsi676FAXUBA7
+	t5epdvS54Lbc7W5L1xmFRr72wiz5NTI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0B3A961138;
-	Thu, 21 Aug 2025 05:43:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95591C4CEED;
-	Thu, 21 Aug 2025 05:43:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5FF9644A34;
+	Thu, 21 Aug 2025 06:11:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D8EFC4CEED;
+	Thu, 21 Aug 2025 06:11:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755755031;
-	bh=wslDGFckcPcpSuCYM0gIHtwPLeSyL94Zl1WSFhikYZQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MKOLoolXYQgU4+4/ayOBQeg1NhhN6jqhwTGUyHdOP5KYTBJEoUR2DHP8JdwoR6Iax
-	 NdPTTkxgSgUpVVrgtDLfUTcC3V/v/hk40V9cUE9A4hUT8u+rNxC0X+DZQwb4EWji9J
-	 4eAeiL+vrgMnaY49yxWDn2dYRAZXz3q44PAEPbuYcOapOsFpyBfp9NsRAIVtyLiJ8z
-	 217tSLRuV0G3S01ystBbpw+fJXf4BLTX/wNEJJtyeOYZB6hqcHMlPmllkW49HuHWf4
-	 IlZYyjypoz91OyMSs+vXrQ5iIXrn815UBENGVewk9kxwMlBzIQPDJSyaTNzemYBuAT
-	 QxzXYs/D8bLXA==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Sang-Heon Jeon <ekffu200098@gmail.com>,
-	honggyu.kim@sk.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/damon/core: set quota->charged_from to jiffies at first charge window
-Date: Wed, 20 Aug 2025 22:43:49 -0700
-Message-Id: <20250821054350.53849-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250821054148.53746-1-sj@kernel.org>
-References: 
+	s=k20201202; t=1755756717;
+	bh=+PhorBsR6XMQ86wn4MXz/aLDVw7PeqDWpjqLZ/xx6is=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qP+aS7CDTcx3AaSCB8aROP8Z3j5y7rpn2d+cQ4/5rom6GopCD2X8201ocHvfjnbPq
+	 o/Cqmum51WzIu7FGUPN30V/Q1n6m5dy0uwtUrdhJW1EV/uJuj/LsDDJ2sDRmKQqJo2
+	 CDMaQEuOQUOPifZxG8sSL97Jjg1Azpr1lNncNe8HEw0UAEVpeN7hHxCIuv8ABSHBtf
+	 ah/5gVJtO3HEOHaOFnydT/vSubHbRhIUY++u+Vr8YnV3gnCseqsBygmFo/gYGa45bo
+	 T7HdPJpFfC9C6URSWpKF+U5IQlLjeZifbgPzsNweYN9q2OxnY1BS8BTLpZ4uV/EAXI
+	 AaBmI9I71YYBw==
+Date: Thu, 21 Aug 2025 09:11:46 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Yann Ylavic <ylavic.dev@gmail.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-modules@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v3 8/8] x86/ftrace: enable EXECMEM_ROX_CACHE for ftrace
+ allocations
+Message-ID: <aKa4otIF6AbhD2X3@kernel.org>
+References: <20250713071730.4117334-1-rppt@kernel.org>
+ <20250713071730.4117334-9-rppt@kernel.org>
+ <20250820184743.0302a8b5@gandalf.local.home>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CF13B80004
-X-Stat-Signature: knmfm7u9fh8cjncubjjwqw83q94cx1ni
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250820184743.0302a8b5@gandalf.local.home>
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1755755032-689171
-X-HE-Meta: U2FsdGVkX19jkiJeVAG8sRD1fsFVn/vYUPOvMbj/AliNj80qrfIguhSSn6oPNjpPUBEWci7ksxcOnlwLKtjn6cjLhkR69LU9sXtwnu/ASpU573YHyQcHw2zo3ET8E5ULdmJK/0AFzBs8OdT48XMjjgXvFJ2Z1BxeZooP4U7o6iqGZo6o9SSfFpT/+1iWMeeUdqlYzXztYhiX3MT8Y3GXwK5lHK1cwFUlMaDJPEDs5+cv5A7XPwgwHwX2c0/NTrqNQSI7IkHAh4FYFBY+IkcnT7olWOZaj5M/8Nm/GDOIx+bZqWqIrOMeTVQBkBuAVyKKP1QAKXWnUevUgUfDX2+4i686+FmEEwjA6gOpKHa/X8DY0Z7tJS/t/NqYDHrVdaHo0HL8SwKJ7lbXOOwWqjy9QL6v2I/NHqzIUVqKXGTacb3eZ3yLQoi/zQwbiIXi58gh4FEQVjuL6x+Rbzf1xC/VvmZzfT9XconLye2wDSUJutv1yW03Ins3FoWYRBJ1OLRUAC/gqdKzjdIv1nsJ0kCoLgdO8P/In0JSYw0qPQP7/+iodsyWNe7O2VJuBmPmfzlG8RJVAB9tIc5A3y1ST+2aG/0LqPG9+jWIykr5a7wEKlpIcOpTgdb8Y+xv3wSzXODSUiwG5GOtq+Z0aELDWQjXTDfmsDf5OWtQNT6V5be+hnBXkC8TLjipTlyFv4ilOOGknt2j+rMwkLSnv2nBcPCAGW0fp1SFeRlL54RQV3tc/nosAx+H1GgVrdEaJSrcdaxG/4Md8Q0A/BiuNF47egVbaal8BLDEfEpimwUQ3IQKmtBuQ/y8ZDT0isBxlE/VPNetg9jwdYk6rW42GIRiTfh4oysZ52Zx7mMOAsjVMj6YLKLsGk/kReprpSrIGZp67TJa/MiZve4Y9ewaZZpj0Icta5VwEHn0GXmf/r0SAwlLkRE3o4ugGRX5brkJOItVejdlKqyaxTCXtbHWxZZ5X/Y
- 2WC4Envk
- wiPqhic5Sh7UQmXABxhThVp0V8dYYKn0p2x1sN92W1ef/LeOyFLk3ZctBu3Kqc2efxGMTCK/vft481yF61wzSooAFxFU/Gz8TczqyCAVSbKpWCtnrKQoYjEiFiwggTcfq2Q+oQob2MBcb1D+MAnFubekNoRMOidt7INpa1sSH8NBEGC7pU9X8sOP6R12IT85rI9wZownSqLC59CZyWOOTORjuq0dLHFtMIAZx0LCzc6pSb12+7OUlyqmoi68aPYR96IFrhue1PVBuetskbqckzNFXlIDIY98cpnCrQPdl06lWHThDQ6s+atL/zZ33dv4BRopHwbXHm3PS8hU=
+X-Rspamd-Queue-Id: C4C0C80010
+X-Stat-Signature: p7gudaeb4o764mdnymrbpitwzhaee8ec
+X-HE-Tag: 1755756718-446761
+X-HE-Meta: U2FsdGVkX1+FwTE6ESuW+vMfiV5oPf39AMZTb+vk3z8xtx1qFMEMfeJ1Eprqa2Tys26eCRU5xG79TwMFNDbOMxlbrWSmYzKJUfOUvVWLxaeZknAfo9PGehxgxyTFWBjFeHUEevkbO0oEMJvf87CSkbPeQtNvC1ywPJT/pvdoZMvF5zf/mPHG/N2dtOUxhF+sdpWk/Ln7GbIhNDuGcg2BTrCNCjGAlhufkQ0K4OZ5gQsG2lHIAcEZWXwGuOfbtYWl04ESrbAxkSg7sHp4xaf4C6FHJa+hmx1CdIEnK7A1epB47ugxwCdA/0RcLYnf4PzqbTmOAaVtX9+pne7gdzws97r8aIc5+m8mBmxHoW7hgxwL8VY9boIS8KjJ9JSd9i9uRpZtgDc/75U4Rm+oSPvcSGkAN8186UiuGBI9IHfDC2ezafUD9ixgxWvOD7f+TI++mnZCHWxgyCX0FrZo4YVha8mFJdB6eQRtdjRombK9m/4TKJcCVK9/iIePS6BPXsfedSAgJ3yfLLFdql3WoMoDu1KR6C/Atz0VT60fZ52XZO1+MwbZlsZth9SQaCnxt21pv73xns+krS1aA/3Ct9y2Hn2X+McRX/SBPNBWd8ChKKr3S3JhvUgQqmuaaP9d6pToZmy4pzLvmjrjpIff26tT7D2pDUmx7/kLfoqkzLjjo07EdRLFuzRykPQtQuHC64rT+fz8N5y2O8uESSazSvQ94gX+8aXjwcGU8VrI3q+bllAE+NqHaXQp2VT0gtGi/szdpm/ijaoaSr5ctf+6PuL6rrhM5rFEbk0p8R0BLcfBsPpwVOXCSr1oCt6S/K/mi2WF+sYxgwqDANj/M6d6aCDE5mE1yHSbv/UPx9svLtAQ5rAvEFfOT5lSA/e1UjPK3oxXdJmi9IncPh2PbaQwMU+ZjSnLOgNkuEwGknzddXYu2+vIMA1iJJIywEOtIfZTBnEtkKY0DudBKE6ZPIZ5ih8
+ ZsIV1tRQ
+ RQ+4vO7WRIf/p/6tZnDi2QMr3QzlQZlNWQSq3sZmHTchUTFGGkxjvIV9Zm4NIfurSqB35V6p0cIt3U5jup6TW2sLcIRnP0Jlyq+a5HDeXPuBFfP8VcoGOPPfGTZROzjH1jdiMTl1Y0dp3MH3cnsdjTjbduqFten924kRMbYy2BoOf82egY9VLuBv4Xf7SsXNIbIJkFpwydLUHlD7WqRI2BQCWOHatHxIWhXATEdP+p+4sPxsebhxi7ghnJZKnVjH27afqwIs8W90pVmp30PV4OyLaey//hYPCadDdxQMEcCTv7Qnt+fY9y+IVqtGoVmMq5TfXkQV33U8GRo48Lxg84yt79/slov4gRRMyv5OYmFl/XdB6HXWrAUrHh9b3jmw5odwxJsHM65HpufnYXr6dY5prhK04JpgAbZ9Jp73Et6bldRBzD5M+TIVqpHCNnpSGiGH1d3sYSzymtl0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,74 +108,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 20 Aug 2025 22:41:48 -0700 SeongJae Park <sj@kernel.org> wrote:
-
-> On Thu, 21 Aug 2025 13:29:04 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
+On Wed, Aug 20, 2025 at 06:47:43PM -0400, Steven Rostedt wrote:
+> On Sun, 13 Jul 2025 10:17:30 +0300
+> Mike Rapoport <rppt@kernel.org> wrote:
 > 
-> > On Thu, Aug 21, 2025 at 11:54 AM SeongJae Park <sj@kernel.org> wrote:
-> > >
-> > > On Thu, 21 Aug 2025 10:08:03 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
-> > >
-> > > > On Thu, Aug 21, 2025 at 3:27 AM SeongJae Park <sj@kernel.org> wrote:
-> > > > >
-> > > > > On Wed, 20 Aug 2025 22:18:53 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
-> > > > >
-> > > > > > Hello, SeongJae
-> > > > > >
-> > > > > > On Wed, Aug 20, 2025 at 2:27 AM SeongJae Park <sj@kernel.org> wrote:
-> > > > > > >
-> > > > > > > On Wed, 20 Aug 2025 00:01:23 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
-> > > [...]
-> > > > I think that I checked about user impact already but it should be
-> > > > insufficient. As you said, I should discuss it first. Anyway, the
-> > > > whole thing is my mistake. I'm really so sorry.
-> > >
-> > > Everyone makes mistakes.  You don't need to apologize.
-> > >
-> > > >
-> > > > So, Would it be better to send an RFC patch even now, instead of
-> > > > asking on this email thread? (I'll make next v3 patch with RFC tag,
-> > > > it's not question of v3 direction and just about remained question on
-> > > > this email thread)
-> > >
-> > > If you unsure something and there is no reason to send a patch without a
-> > > discussion for the point, please discuss first.  To be honest I don't
-> > > understand the above question at all.
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > > 
-> > Ah, I just mean that I need to make a new RFC patch instead of
-> > replying to this email thread.
+> > For the most part ftrace uses text poking and can handle ROX memory.
+> > The only place that requires writable memory is create_trampoline() that
+> > updates the allocated memory and in the end makes it ROX.
+> > 
+> > Use execmem_alloc_rw() in x86::ftrace::alloc_tramp() and enable ROX cache
+> > for EXECMEM_FTRACE when configuration and CPU features allow that.
+> > 
+> > Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > ---
 > 
-> Why?
+> The "ftrace=function" kernel command line started crashing with v6.17-rc1,
+> and I bisected it down to this commit:
 > 
-> > I'll just keep asking about previous
-> > comments on this email thread.
+>  5d79c2be5081 ("x86/ftrace: enable EXECMEM_ROX_CACHE for ftrace allocations")
 > 
-> You said you will send a new patch instead of replying here, and then now you
-> are saying you will keep aking to this thread.
+> On boot I hit this:
 > 
-> I'm confused.
-> 
-> [...]
-> 
-> Ok, I think this discussion is going unnecessarily deep and only wasting our
-> time at clarifying intention of past sentence.  Meanwhile apparently you
-> understood my major points.  To repeat, please clarify what is the problem and
-> user impacts, when and how it happens, and why the solution solves it.
-> 
-> Let's restart.  Could you please rewrite the commit log for this patch and send
-> the draft as a reply to this?
-> 
-> We can further discuss on the new draft if it has more things to improve.  And
-> once the discussion is finalized, you can post v4 of this patch with the
-> updated commit message.
+> [    0.159269] BUG: kernel NULL pointer dereference, address: 000000000000001c
+> [    0.160254] #PF: supervisor read access in kernel mode
+> [    0.160975] #PF: error_code(0x0000) - not-present page
+> [    0.161697] PGD 0 P4D 0
+> [    0.162055] Oops: Oops: 0000 [#1] SMP PTI
+> [    0.162619] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.17.0-rc2-test-00006-g48d06e78b7cb-dirty #9 PREEMPT(undef)
+> [    0.164141] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> [    0.165439] RIP: 0010:kmem_cache_alloc_noprof (mm/slub.c:4237) 
+> [    0.177483] Call Trace:
+> [    0.177828]  <TASK>
+> [    0.178123] mas_alloc_nodes (lib/maple_tree.c:176 (discriminator 2) lib/maple_tree.c:1255 (discriminator 2)) 
+> [    0.178692] mas_store_gfp (lib/maple_tree.c:5468) 
+> [    0.179223] execmem_cache_add_locked (mm/execmem.c:207) 
+> [    0.179870] execmem_alloc (mm/execmem.c:213 mm/execmem.c:313 mm/execmem.c:335 mm/execmem.c:475) 
+> [    0.180397] ? ftrace_caller (arch/x86/kernel/ftrace_64.S:169) 
+> [    0.180922] ? __pfx_ftrace_caller (arch/x86/kernel/ftrace_64.S:158) 
+> [    0.181517] execmem_alloc_rw (mm/execmem.c:487) 
+> [    0.182052] arch_ftrace_update_trampoline (arch/x86/kernel/ftrace.c:266 arch/x86/kernel/ftrace.c:344 arch/x86/kernel/ftrace.c:474) 
+> [    0.182778] ? ftrace_caller_op_ptr (arch/x86/kernel/ftrace_64.S:182) 
+> [    0.183388] ftrace_update_trampoline (kernel/trace/ftrace.c:7947) 
+> [    0.184024] __register_ftrace_function (kernel/trace/ftrace.c:368) 
+> [    0.184682] ftrace_startup (kernel/trace/ftrace.c:3048) 
+> [    0.185205] ? __pfx_function_trace_call (kernel/trace/trace_functions.c:210) 
+> [    0.185877] register_ftrace_function_nolock (kernel/trace/ftrace.c:8717) 
+> [    0.186595] register_ftrace_function (kernel/trace/ftrace.c:8745) 
+> [    0.187254] ? __pfx_function_trace_call (kernel/trace/trace_functions.c:210) 
+> [    0.187924] function_trace_init (kernel/trace/trace_functions.c:170) 
+> [    0.188499] tracing_set_tracer (kernel/trace/trace.c:5916 kernel/trace/trace.c:6349) 
+> [    0.189088] register_tracer (kernel/trace/trace.c:2391) 
+> [    0.189642] early_trace_init (kernel/trace/trace.c:11075 kernel/trace/trace.c:11149) 
+> [    0.190204] start_kernel (init/main.c:970) 
+> [    0.190732] x86_64_start_reservations (arch/x86/kernel/head64.c:307) 
+> [    0.191381] x86_64_start_kernel (??:?) 
+> [    0.191955] common_startup_64 (arch/x86/kernel/head_64.S:419) 
+> [    0.192534]  </TASK>
+> [    0.192839] Modules linked in:
+> [    0.193267] CR2: 000000000000001c
+> [    0.193730] ---[ end trace 0000000000000000 ]---
 
-s/v4/v3/
+maple tree is initialized after ftrace, so the patch below should fix it:
 
-Sorry for the typo.
+diff --git a/init/main.c b/init/main.c
+index 0ee0ee7b7c2c..5753e9539ae6 100644
+--- a/init/main.c
++++ b/init/main.c
+@@ -956,6 +956,7 @@ void start_kernel(void)
+ 	sort_main_extable();
+ 	trap_init();
+ 	mm_core_init();
++	maple_tree_init();
+ 	poking_init();
+ 	ftrace_init();
+ 
+@@ -973,7 +974,6 @@ void start_kernel(void)
+ 		 "Interrupts were enabled *very* early, fixing it\n"))
+ 		local_irq_disable();
+ 	radix_tree_init();
+-	maple_tree_init();
+ 
+ 	/*
+ 	 * Set up housekeeping before setting up workqueues to allow the unbound
+ 
+> -- Steve
 
-
-Thanks,
-SJ
-
-[...]
+-- 
+Sincerely yours,
+Mike.
 
