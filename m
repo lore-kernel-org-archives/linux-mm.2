@@ -4,89 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29915CA0EFA
-	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 17:53:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97E57CA0EFA
+	for <linux-mm@archiver.kernel.org>; Thu, 21 Aug 2025 17:56:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D3A76B00AF; Thu, 21 Aug 2025 13:53:12 -0400 (EDT)
+	id A58B46B00A9; Thu, 21 Aug 2025 13:56:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 485D86B00B2; Thu, 21 Aug 2025 13:53:12 -0400 (EDT)
+	id A306E6B00B2; Thu, 21 Aug 2025 13:56:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 399DF6B00B4; Thu, 21 Aug 2025 13:53:12 -0400 (EDT)
+	id 946506B00D1; Thu, 21 Aug 2025 13:56:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2909E6B00AF
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 13:53:12 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9C3E4B86AB
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 17:53:11 +0000 (UTC)
-X-FDA: 83801510982.18.3C61FC1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 07A9EA0013
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 17:53:09 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Vh6qw56/";
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 814266B00A9
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 13:56:18 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3105E117DA9
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 17:56:18 +0000 (UTC)
+X-FDA: 83801518836.10.7BF4CDD
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 3FFBBC0015
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 17:56:16 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=2FPR+GiC;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf28.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=lokeshgidra@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755798790;
+	s=arc-20220608; t=1755798976;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f7pV/Ed1D/9vy7zoYMRil8TE2d1o5varxFodIBJr+l0=;
-	b=gBiknFotWGSyiuyReQdtr1hR7zKe/gqRdtqbtq2GlugTvlzzbKV/fvFGapshG1mC6Gyque
-	kWgNVA8Z2ptav7/C9ef7SfuJmtqTFYhxruLSczeElOysIjEjzzC7MrPcPiFKE2rChKmOCQ
-	KCkQwWMTx/L9r+8oznj6T48RJeV41ps=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755798790; a=rsa-sha256;
-	cv=none;
-	b=pGOiRobzY7xLdD3FDcYZLcSFLWf3ZhMdTTAmzAr2IgxHfDe6XCFhRjAUCy1yq9TUbgDNb4
-	u7Y+Yx7C84VJTqEuLDRLNgYso0dlCHZ362Kn5wlR8dQx/70yaH/pFNb44hx9iiAuKo6SxE
-	sxyc+/XWnwMemhStgAr7VcXvxsT/+TY=
+	bh=7OaNKB4ZUL7yid73jmJTsnRphjsenr0Bd6ivArlhGHc=;
+	b=EHXKOPA4xebMemzv5PKATa+/Z+nwHUQzczosx7Es0S9QDYIxvL7mG8G6V0SSHCn5ZWIJl5
+	hQFawqYzX1NgCk6oslSSMnecacOxYQHFHH9SCFamGUnMRtvhjZrO+dDnX+OYN73CXHPpPc
+	Gh4YX3KWeoEzl6xDMUTSJRdOKaPl0Hs=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Vh6qw56/";
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 16EDD601F8;
-	Thu, 21 Aug 2025 17:53:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BFB5C4CEEB;
-	Thu, 21 Aug 2025 17:53:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755798788;
-	bh=HkSJibYAsBk+7KP9bP1bTvrw2NGup1d12g9fEzw+9e8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vh6qw56/5TCRJBeoEyYFxuGjnHdIl62D3lD+4oUm9BrnAlZOENKlkw2cNDA5pxA0N
-	 zbmDSfe+l1ff6aXaymdNeyugqMpSAS8xZtUfB4782aF916hoIri8Zr4X2h5ImrxFwN
-	 x29SAXXKL09OySO0DZWKsy59QOX5wk5OXAT0/lZvpvrjPE9agaIvYbIYyisNTxox1C
-	 UvxzUSUowp6IN7N/Toerpz9O0ifNHCqmwCXuNGOvHAoAoEM1jikMUx6VBcuHm4RA5c
-	 0rYadFlZwAWd1UOk1Wl1RALPu1rCx8Whkaj7V0q+5J8hr6PQsevFSdmw7BN4Sxsy6d
-	 oDrJw0quz0+KA==
-From: SeongJae Park <sj@kernel.org>
-To: Sang-Heon Jeon <ekffu200098@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	honggyu.kim@sk.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] mm/damon/core: set quota->charged_from to jiffies at first charge window
-Date: Thu, 21 Aug 2025 10:53:06 -0700
-Message-Id: <20250821175307.82928-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250821163346.1690784-1-ekffu200098@gmail.com>
-References: 
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=2FPR+GiC;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf28.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=lokeshgidra@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755798976; a=rsa-sha256;
+	cv=none;
+	b=BHLoBLI52FsEXbt3WPm0Asbm0McLwPoLoOByvoXplu4xpAfwfQLJagrqpbhiPw3DJWKoN1
+	sCZuOZM1GTO+Xfhl0jnuvadolEvAWHTDz8XYwDHlfDFEc86RLLXT/AUDvETCXBB6rT/GyZ
+	WgL1MaDDpY1AjjDkNUtfwBi/qhnsZEg=
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-618076f9545so1154a12.1
+        for <linux-mm@kvack.org>; Thu, 21 Aug 2025 10:56:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755798974; x=1756403774; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7OaNKB4ZUL7yid73jmJTsnRphjsenr0Bd6ivArlhGHc=;
+        b=2FPR+GiCmNO09eDJieFUDdOhOvRiVbpEMtpsYbI9OXgNh1G4UqZgJqEhYFfJVwKMWC
+         1acRqh4+iRDQuPl8SaJT0y4PiXU/3k9vqV/NzlPNAKNpY+Q7e0WeY0ShCXQnJlZdMf6i
+         5nbJfeB9SlDeBGwJCXFMHW4QrqVntMTzCKzBX12vCvH0LNOv2FhlSaaf1fF3owyEfLk1
+         IIHNeXf1Q2WrX28ex0NU1+ksX+qZmjdRzdrUO3GMXxUkTCeURWhOInYL2y+etkJ8hTHL
+         RsVLcJU4pikppXN3AaJLpi5/yBs2NyHnu9t9Z+EC7wlkuBZnmXvaA757dWzMcE2/pOjM
+         MR6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755798974; x=1756403774;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7OaNKB4ZUL7yid73jmJTsnRphjsenr0Bd6ivArlhGHc=;
+        b=jc1T4+ZH+7FPwBqAmV0sxEjeyZhS+4jSqx2JFKa4iuB/tq/BU+slMeZ+zl9hOvW8H7
+         NAvh6qg1ptc34hTp+4XxFEmdQ0cxc32QGNYB3N2RzqXfn3iUkT7cNToiWHEOrK13giKB
+         yWZFNq2XUFvLPEajaRHc7PRgd3RxcS2F8jNp2RelSt1oXfCa/3e2HY+AcGCgOTO+yiKL
+         Ys+fiA4ezYQd1409yndy5hMUHwLq4JpfNtKVwYD0thi45aZQ/4Hkco9Ox3/jmfiYSQWi
+         bAaKx+RAVJ0tO41DrSJWiVeeQwh6PXCXtimWV3z6cMYX+rLVN7hKHsDWdHvD6DcbUai3
+         NH3w==
+X-Forwarded-Encrypted: i=1; AJvYcCWp7OQnd66bkLa2eB5CS2rSLhK/fgdNvQXBefz3uuRBehNojPzVeHhhLtnmyNCbo8Kmaj8tfy6G/g==@kvack.org
+X-Gm-Message-State: AOJu0YwH7oAjlB6CJmLsY2dRX1ct0wrPPK2RHsh3y+8VldNB29PlBi4A
+	N1qMqmL/3QGR24ZrxJNPWlDnJGLLBNL+2X0fIii+mjrIdt39h9l0hgzghytCoXvKdHvIUn7kzbO
+	DCVhOCfvcx+LqIThwi06VvavP41HfgVb+N0dRz7VR
+X-Gm-Gg: ASbGncvAj6rM6fL4kUGDoroCMUkwNEZomsk+gIxfK98sD7aRTv1WFzNh5QYJ9mzVJ1x
+	GhZHBTQ7yyAaPLasLm6bZqsW76/es/7v0vd6qBzLXAHsfgFhRjm2p/6H3xEhFb3FWCJ3//omSnq
+	QHyUIOaYwsGHHkHrXxfMaKGz6LeUJ1JleGvUY1+kQpZq1SL9gqbO4ZiEy3KbKfN2Bu/Dk6OTM3n
+	Bos9XT522zJGTD+20GkhJrjKUzi4D16ygKnjr8LO8UlNHJsu+HN6oo=
+X-Google-Smtp-Source: AGHT+IFVRVvBfVGiJbFfaLa/SK3Cvgemy51aTnB6Yc4MQ127iC8/HJ5Is7jFT8FdwiTWxhYGMok8W/PgES6NTiKSXRQ=
+X-Received: by 2002:aa7:c717:0:b0:618:8198:de66 with SMTP id
+ 4fb4d7f45d1cf-61c1a3a823dmr2524a12.2.1755798974364; Thu, 21 Aug 2025 10:56:14
+ -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CA+EESO6dR5=4zaecmYqQqOX4702wwGSTX=4+Ani_Q9+o+WUnQA@mail.gmail.com>
+ <CA+EESO6iqowMAOnBPJjERqZym_qvd6kx8BDMQG8+3xQSrNFytw@mail.gmail.com>
+ <CAGsJ_4xccre0rz5zgRTA=NbFzF4FLS-ZUohgLFnfTGY9Jdequg@mail.gmail.com> <3133F0B4-4684-4EC7-81FC-BC12A430E4C2@nvidia.com>
+In-Reply-To: <3133F0B4-4684-4EC7-81FC-BC12A430E4C2@nvidia.com>
+From: Lokesh Gidra <lokeshgidra@google.com>
+Date: Thu, 21 Aug 2025 10:56:02 -0700
+X-Gm-Features: Ac12FXw91HcIA-HfMpgbMbkQ0W-eNhyjVh_auRuyvKiToz0-CS0TI7_uW_klo84
+Message-ID: <CA+EESO7_-64GU5v1FTMXbemQixPX+xo6SGm8r0txohZJLs97cA@mail.gmail.com>
+Subject: Re: [RFC] Unconditionally lock folios when calling rmap_walk()
+To: Zi Yan <ziy@nvidia.com>
+Cc: Barry Song <21cnbao@gmail.com>, "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>, Peter Xu <peterx@redhat.com>, 
+	David Hildenbrand <david@redhat.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Kalesh Singh <kaleshsingh@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	android-mm <android-mm@google.com>, linux-kernel <linux-kernel@vger.kernel.org>, 
+	Jann Horn <jannh@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 3FFBBC0015
+X-Stat-Signature: dkm6apmcy67z1zumgbwch6ome6t5bcfu
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 07A9EA0013
-X-Stat-Signature: 98g8mc7tbt9gnzoz81as4xgd7fzwngng
-X-HE-Tag: 1755798789-913769
-X-HE-Meta: U2FsdGVkX1/Gt2ZBhVa6oTnNyrIHGWQGy8MH6DOpP5FinLRmEkEOazCG4jzczIVMxUSwtcPePlwmvsHIFk84hUBtquzbI6mLwRSjsdTHSPq9q91pfq1OvHfZtUL6mWqPwq9Z5YJ8b4ke1V/6z/UJnHJIvd8BlFxJPGkx7XPiTz2Ra9wHbKiKOEbtMCf968+r3pl78FwfeQR6+ByoOO2cE+i2enGPxqTyhxGAD4OADhimAEkHcnLyrrQaYLyOveJj04qr2rTn74pU1BWsmrTp6evcb8imcvYgxMK2EvLzf2xnke2FEPmK6a6SBqusMT5BeQaI/y1DYRxaB1JlTLEhdoleRtYW2EwM+kWJDip7nlxULRwfb9bDe7JmYHv64rqk0OJ15NMsRqLkRCPiWwH9M5v1ojllg6E/XcLCTUIXK15GyPRI0F2JYaXZm0hB4NrQxY3pIfK26tL3IvmvP6N0u57iIG9lbTzzyOFoDXzUjK2VOQwGYWNXpXuD9l/1oaIbmGyuALRP5OQBHwI6csJwoVEQ1sWt5ppVf0WsJN3Axmw0wqfssu19bVVXEkW69NtOQjEPSTcsWpkkksFupTIDAsx/u9e4WxqtS0iNaMOcGQ2hX1CHemxZ7wBr6o5qY6o3dLVPZ0M6mVVogaLyt2/whecEv9moIr+v5Nmh4DP4V+uCLrwmdXHullnmXYCsv8UoUCBkOC35skcAsypK+CuusLlzsl2zjrE9bGCIXM5jATiQczMYebRCDBXS+2p+XwMiCunlZB5Pb4AvE8ib3PB98urMSOFiY+0NwAjL5o4aW7w/sbZj7xI7bcVH+eOZn6BItKwvT+aWLYLty7s7MHNNlimT7iYcfJ0R5pn4EP0buIs6a1CzCXvC6nBSMd59I/kJ+j8nLCiEQODWkEEOtz+qNaTPzAzX8Ho8Q8RfT3ky/87A36RS/U/pU3oLrRwFxsxboPliuIeRGCeZGweORaU
- LVYf5SJS
- Uk+hGIpW9jp/ICC0VoN48HxUeYY0qNRLFNBjngGyhH6QDTmTk5llFKLB95scS+HKYSygo/3XqhY39mhBM9xEa83GJnGxKzQS/eVxG9QD5nrCjvSMJjQPQDvbycOGviLMBH14EM/8SOGreyhBlQvAE8K7i2yoUJEzU/AqrBDOmvVtME7TrcEVHWfIlnc34/OCcNEwk1GD9RxJQ9yg9jb+gyVgn6lvjvqWkFdGY/bgUJmllob0=
+X-HE-Tag: 1755798976-218493
+X-HE-Meta: U2FsdGVkX193lCAJrIihQzfoFDjiHMM7cpFU1c12HxZ9r5qp0W0eXub+prVKyshWgEfN29iO271k9kI8jQZWBSFpZH9j2P/6HSaPGS6fR8fG5Xs2fPT1vCAeR6MePV3REIBAtOrn36FIFjHd9UgHWQrXUSjhQooN9ode5jI8goTtJR6MmwUTYtJB26xRdqWTD3tThH5RE/hqdVE4XFJu8CCEGtIXgpPiUKyBB7N5x4wHA5RxnERNfeO3/2fc7rcfhRrx9QOpalOJTcCe2M3IpJqK+qNMqnV+LM+waTf9LXYihkp/voM5MyvQ5Dbl3s9QQtE/zD7UI5G/PsaJkNn2fWNCBm/8wvG2V4XEVzpzuO8FNIVi0FMwdX0SWzGgDk59U90y5Q4QEQ3RYq/V/rLZZ7OxZ4pxuNrKRW7IiWVBvspZDZ59U/q21zx2JliywqyXEl1EGnBD2D3Al34zUNHrC+cqg7GFS8PgQLLPu46XoPAmXjSvLl5pVH+VUoOQ7QisiOo68hbfebw3arWnQxY4rSCmabyu7FhiZkC6RVWYyyTTg5RcUUuBlLAVkVzWDQ+BHREVf9zU8KbRUZJRSMVjJiRuR0EGYlL+PDBMFoe4HksJBFcMM57blEOPaErRxpQVlWt1807yotgPJt7TKa5st7u/ovXDh+MeZgjZ11e/l4be61py2Ubh2JBobd/PLv5V6Uj0lOSs7Rqq8vSZ3bBabgdks9J1Hz5Ggkk1U66g9Nvxa+ORwvmLXYKWQ8eIO1ru7SNoyCAD8Lt3SR25hWeFdwPWEMiK8msc03afqB1mxQW01xgor2yeEvt6sHnUE4YA7MWt9h8NrBR5JmNImMvy8Clr6M2L3CscL04oz2HbcdCzL8A3iYr81FfuT2Lj5VWkVrqAWEBRc54gXv9u/kuLEhnvjsXAcjtYfqzi60hFsRjGS1wuuk8RH04X416nTVbqjtVLykXD3i5BdygESqs
+ V13YASXZ
+ +4i13Rjjk1nAeqj4IPDHoru0Q5LLx7fadX6CsSTZa+GFcduX2N0/1TpMY1IDD7aZzcM/qAOl5vc+6fJg12svM+31FIJyUQEPt/Tq5CeuHs+Ccb8zjeJWmiCqi8NVbxdpKi0hrgeDuoXOAo2fHH7ejkTWk10mhqSNbnF0jvReA/C4LcElHnlbQs6+nFjQs8UlA9KBvDPnNDkwp5pNgTRJi+HoZOnEy02RYB/vduFXlRuikOxq7PxwOGgK+HAxiKmWxCmf/B9RLudrPHVhLI8A8XssyMA4teZ32EZrF
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,70 +121,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 22 Aug 2025 01:33:46 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
+ (
 
-> Kernel initialize "jiffies" timer as 5 minutes below zero, as shown in
-> include/linux/jiffies.h
-> 
-> /*
-> * Have the 32 bit jiffies value wrap 5 minutes after boot
-> * so jiffies wrap bugs show up earlier.
-> */
-> #define INITIAL_JIFFIES ((unsigned long)(unsigned int) (-300*HZ))
-> 
-> And jiffies comparison help functions cast unsigned value to signed to
-> cover wraparound
-> 
-> #define time_after_eq(a,b) \
->  (typecheck(unsigned long, a) && \
->  typecheck(unsigned long, b) && \
->  ((long)((a) - (b)) >= 0))
-> 
-> When quota->charged_from is initialized to 0, time_after_eq() can incorrectly
-> return FALSE even after reset_interval has elapsed. This occurs when 
-> (jiffies - reset_interval) produces a value with MSB=1, which is interpreted
-> as negative in signed arithmetic.
-> 
-> This issue primarily affects 32-bit systems because:
-> On 64-bit systems: MSB=1 values occur after ~292 million years from boot
-> (assuming HZ=1000), almost impossible.
-> 
-> On 32-bit systems: MSB=1 values occur during the first 5 minutes after boot,
-> and the second half of every jiffies wraparound cycle, starting from day 25
-> (assuming HZ=1000)
-> 
-> When above unexpected FALSE return from time_after_eq() occurs, the
-> charging window will not reset. The user impact depends on esz value
-> at that time.
-> 
-> If esz is 0, scheme ignores configured quotas and runs without any
-> limits.
-> 
-> If esz is not 0, scheme stops working once the quota is exhausted. It
-> remains until the charging window finally resets.
-> 
-> So, change quota->charged_from to jiffies at damos_adjust_quota() when
-> it is considered as the first charge window. By this change, we can avoid
-> unexpected FALSE return from time_after_eq()
+On Thu, Aug 21, 2025 at 9:14=E2=80=AFAM Zi Yan <ziy@nvidia.com> wrote:
+>
+> On 21 Aug 2025, at 8:01, Barry Song wrote:
+>
+> > On Thu, Aug 21, 2025 at 12:29=E2=80=AFPM Lokesh Gidra <lokeshgidra@goog=
+le.com> wrote:
+> >>
+> >> Adding linux-mm mailing list. Mistakenly used the wrong email address.
+> >>
+> >> On Wed, Aug 20, 2025 at 9:23=E2=80=AFPM Lokesh Gidra <lokeshgidra@goog=
+le.com> wrote:
+> >>>
+> >>> Hi all,
+> >>>
+> >>> Currently, some callers of rmap_walk() conditionally avoid try-lockin=
+g
+> >>> non-ksm anon folios. This necessitates serialization through anon_vma
+> >>> write-lock when folio->mapping and/or folio->index (fields involved i=
+n
+> >>> rmap_walk()) are to be updated. This hurts scalability due to coarse
+> >>> granularity of the lock. For instance, when multiple threads invoke
+> >>> userfaultfd=E2=80=99s MOVE ioctl simultaneously to move distinct page=
+s from
+> >>> the same src VMA, they all contend for the corresponding anon_vma=E2=
+=80=99s
+> >>> lock. Field traces for arm64 android devices reveal over 30ms of
+> >>> uninterruptible sleep in the main UI thread, leading to janky user
+> >>> interactions.
+> >>>
+> >>> Among all rmap_walk() callers that don=E2=80=99t lock anon folios,
+> >>> folio_referenced() is the most critical (others are
+> >>> page_idle_clear_pte_refs(), damon_folio_young(), and
+> >>> damon_folio_mkold()). The relevant code in folio_referenced() is:
+> >>>
+> >>> if (!is_locked && (!folio_test_anon(folio) || folio_test_ksm(folio)))=
+ {
+> >>>         we_locked =3D folio_trylock(folio);
+> >>>         if (!we_locked)
+> >>>                 return 1;
+> >>> }
+>
+> This seems to be legacy code from commit 5ad6468801d2 ("ksm: let shared p=
+ages be
+> swappable"). From the commit log, the lock is used to protect KSM stable
+> tree from concurrent modification.
+>
+It seems like the conditional locking of file page/folio was added in
+a 2004 commit  edcc56dc6a7c758c ("maplock: kill page_map_lock"). Later
+in the commit you mentioned locking was also added for KSM, and now
+only non-KSM anon folios are left :-)
 
-Thank you for this patch, Sang-Heon!  But, checkpatch.pl raises below three
-warnings.  Could you please fix those and send yet another version?
-
-    WARNING: Commit log lines starting with '#' are dropped by git as comments
-    #16:
-    #define INITIAL_JIFFIES ((unsigned long)(unsigned int) (-300*HZ))
-
-    WARNING: Commit log lines starting with '#' are dropped by git as comments
-    #21:
-    #define time_after_eq(a,b) \
-
-    WARNING: Prefer a maximum 75 chars per line (possible unwrapped commit description?)
-    #26:
-    When quota->charged_from is initialized to 0, time_after_eq() can incorrectly
-
-
-Thanks,
-SJ
-
-[...]
+> >>>
+> >>> It=E2=80=99s unclear why locking anon_vma (when updating folio->mappi=
+ng) is
+> >>> beneficial over locking the folio here. It=E2=80=99s in the reclaim p=
+ath, so
+> >>> should not be a critical path that necessitates some special
+> >>> treatment, unless I=E2=80=99m missing something.
+>
+> The decision was made before the first git commit 1da177e4c3f4 based on
+> git history. Maybe it is time to revisit it and improve it.
+>
+>
+> >>>
+> >>> Therefore, I propose simplifying the locking mechanism by
+> >>> unconditionally try-locking the folio in such cases. This helps avoid
+> >>> locking anon_vma when updating folio->mapping, which, for instance,
+> >>> will help eliminate the uninterruptible sleep observed in the field
+> >>> traces mentioned earlier. Furthermore, it enables us to simplify the
+> >>> code in folio_lock_anon_vma_read() by removing the re-check to ensure
+> >>> that the field hasn=E2=80=99t changed under us.
+> >
+> > Thanks, I=E2=80=99m personally quite interested in this topic and will =
+take a
+> > closer look as well. Beyond this one userfaultfd move, we=E2=80=99ve ob=
+served
+> > severe anon_vma lock contention between fork, unmap (process exit), and
+> > memory reclamation. This has caused noticeable UI stutters, especially
+> > when many VMAs share the same anon_vma root.
+> >
+> > Thanks
+> > Barry
+>
+>
+> --
+> Best Regards,
+> Yan, Zi
 
