@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC95ECA0EED
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 17:47:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C816CA0EEB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 17:47:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E63998E00C0; Fri, 22 Aug 2025 13:47:25 -0400 (EDT)
+	id C1BED8E00C1; Fri, 22 Aug 2025 13:47:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3B648E009D; Fri, 22 Aug 2025 13:47:25 -0400 (EDT)
+	id B7D5C8E009D; Fri, 22 Aug 2025 13:47:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB59F8E00C0; Fri, 22 Aug 2025 13:47:25 -0400 (EDT)
+	id A44CF8E00C1; Fri, 22 Aug 2025 13:47:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AE40C8E009D
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 13:47:25 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 76C11B785C
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 17:47:25 +0000 (UTC)
-X-FDA: 83805125250.16.1D988BB
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 9BBC71C0014
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 17:47:23 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=rivosinc.com header.s=google header.b=Wl3QAlgF;
-	spf=pass (imf21.hostedemail.com: domain of jesse@rivosinc.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=jesse@rivosinc.com;
-	dmarc=pass (policy=none) header.from=rivosinc.com
+	by kanga.kvack.org (Postfix) with ESMTP id 8B89E8E009D
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 13:47:28 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 59F4D13843A
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 17:47:28 +0000 (UTC)
+X-FDA: 83805125376.17.4805C02
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 87CB9A0004
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 17:47:26 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=rivosinc.com header.s=google header.b="Lc758Qm/";
+	dmarc=pass (policy=none) header.from=rivosinc.com;
+	spf=pass (imf15.hostedemail.com: domain of jesse@rivosinc.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=jesse@rivosinc.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755884843;
+	s=arc-20220608; t=1755884846;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QfYucjg1h8+O9tUzDFG8M32q+vBz17OTGpTy9qZYkXU=;
-	b=T+HW4Ut1rUgmjCjoe5WXZwsR3w/kG/ZHrrYV5gf6ktWSMaDHEb/4vokYO5vY7JvDeiGclh
-	qoMeaA6LqdOa5B/IO0ppbfxHrgmOuAFuAabbpypBkmrW+qB33bK5cWTAXyszmJX3J1Kjl8
-	vsZqizBwdePtexD0kOWHjtPZh3jkTS8=
+	bh=7icmFEtMbjG8nHUlUz3H6xEpzLvZfrYx0hP4AUrTZT0=;
+	b=Xcp2D6dh0Ug3UWzfmuMwG3/kstFC2Y2DigEsNRNn+9TB66/rSIQscxDHmZPXEeJKXYyc6Y
+	DPAnIiRTMJbeCjzBkfP5xx45X5Wvv/1ilmdjUUT2GnY4KKzRGNBefzFtfD/EPMETRcsEtv
+	CPJGaMOmfu/7uBBmqEYQR11if6SLeMI=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=rivosinc.com header.s=google header.b=Wl3QAlgF;
-	spf=pass (imf21.hostedemail.com: domain of jesse@rivosinc.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=jesse@rivosinc.com;
-	dmarc=pass (policy=none) header.from=rivosinc.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755884843; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=rivosinc.com header.s=google header.b="Lc758Qm/";
+	dmarc=pass (policy=none) header.from=rivosinc.com;
+	spf=pass (imf15.hostedemail.com: domain of jesse@rivosinc.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=jesse@rivosinc.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755884846; a=rsa-sha256;
 	cv=none;
-	b=5XGWIhVohz2TkrLs29qADz7b3cuxAX4z0I3xuw3GBwT2SMG61aRS80qfphyzrYHwuDZn+j
-	HJmLSbl/qvE356rtVLlGwCmXt2EsvaU6pQ+ABrmwzbalcnrlVXlq4pdrgtDb30msLSVDHd
-	m4ypq0J5nklcCyzWCkAyjeHI4U/xARk=
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4b10c1abfe4so37042811cf.2
-        for <linux-mm@kvack.org>; Fri, 22 Aug 2025 10:47:23 -0700 (PDT)
+	b=x00hpFgg7FSu4FkfQ+xZ+yz/7cZ4dErFyiFSKmSaquoa0iePxy1vQxZ8rYIuMdUBh9n7sd
+	3zP4JZB080ADKXrMukZxqEYvrrjdvz8k8rmF3BmXMcsmqIT9n0NpmbAD+LKHwB6CScQ6fh
+	p24hsfQoAgHqKP4SvFzbyifPA5hRHhs=
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4b28184a8b3so26772071cf.1
+        for <linux-mm@kvack.org>; Fri, 22 Aug 2025 10:47:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc.com; s=google; t=1755884843; x=1756489643; darn=kvack.org;
+        d=rivosinc.com; s=google; t=1755884845; x=1756489645; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QfYucjg1h8+O9tUzDFG8M32q+vBz17OTGpTy9qZYkXU=;
-        b=Wl3QAlgFcqiE/DuR1/eEW3IO2rbJSYEcWKA/3VwjfDaowkCW2z5av5B1muBL2wjmgq
-         2zhpGHka0hZPt3jejYSYMrXvaSIZbzYfHzOxbuglTH61l3Ho/4nPru04eDVpweN4OnZW
-         Vb0Tt1FJKHPfFuUmZ1zpv2FKzUp0hwllAM0/nx+pgPx80b+B6E4FrBqMK7AnsRtfq6bU
-         w9BU2pW0qBaJiFymVinAtvyNFguVTUXk9eOQtTq37q2Ib7nUOXkgq0WFwGyFEE5sqw8l
-         6yA05BO36eUb+nSbbj0dSW2ap9Bngl7kxEi2nhO13K/ZI/mGWH2/4zlljPRU2R7slhlK
-         cruA==
+        bh=7icmFEtMbjG8nHUlUz3H6xEpzLvZfrYx0hP4AUrTZT0=;
+        b=Lc758Qm/6lzScXYUBr0jkRwmTg2vjW03WMc72iCOyi7TVdHca2cx1C966uF/jq4uyn
+         xQRkzA5sTHf13YlHsgYsDapncYu+tCDeEbpc6IWEe1Qd2ryDTYy4A9BgiF/pQhI/w5Gp
+         RC1aEli7kdGk7AhF6X7R7GkiW2hEW56ftrfEsS0Qx378zhgFGxyj276kxBbvYbV99mpt
+         qKWwWy4LNQwOlpi6Rsvgz//D0wdpb4xke+UdUSTiL5e2HMzxnGU/E9XV4plHPHdwRxmh
+         p3fvRuKb65Zx7aT6c49CrgUWFdRg6n7HevR1E0qTjuqYMidUqgaJ7n84EOpVBOrPUmAR
+         n9PQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755884843; x=1756489643;
+        d=1e100.net; s=20230601; t=1755884845; x=1756489645;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QfYucjg1h8+O9tUzDFG8M32q+vBz17OTGpTy9qZYkXU=;
-        b=C+1bLwQIvF9BCO4LK9dkn0hnIPAWL02smK6fgmGGu1oOWPnNzqe8qlF+xsTvC2hoUV
-         dMP4v4imbTKUewiBxbqi4QhdHRmO+j9LzsuNB7ryVBEyFjXkFBtdpu2vkAEhkpuGnU+z
-         t+K3+EyiuPfyRo2TOQ4BAxxBE4i9jcPZI+6cxCAAGBGl9ITTwZL/1llQKDUS+eT4rAeK
-         sC9AanTrA+buPNZqn4a7oM3JWy6A+f1tkT1uHgyVob7XGO47mhWQccXQ67Q2xgsbLDRA
-         CDjOnSNg1f9r1lGZ9HJoqmkFurKaMjRlBnSM3Gsx1nU3nmjAfVbOvK4XPq0DDqi2cNK9
-         Gd+A==
-X-Forwarded-Encrypted: i=1; AJvYcCXmdjz0Orc0QGWb0DdSXokuZ28g4wpwGmQz9T2iI+3S/PM2KXC0MCILQohL/jNYxB/2VOgG2ant+w==@kvack.org
-X-Gm-Message-State: AOJu0Yyf+VKAaGaXtidTmHuhCTa7tDSqg3Ct2+nTncaQ7LFrHc5yg/CX
-	pwQXVfvmZS9+SmH9z41zCHG53JMw+QkbdOXA5wuac7CWkySUKTAsCvZtrPmSKuIlszI=
-X-Gm-Gg: ASbGncsWYVR9g7XBM0Xxz6SK95oZ235UwXIV6jGSHg5L/Xrunsu9reNgzajdm5J5kr/
-	xHtwah0fMxsk7dXbVQjV3tl1f7AlPbg+CQm8L2unno6tvQ5Ym1YR6m3zC1W4CDRdKw5RX4Ef6rC
-	j5DCKY+LchLuCnx3T5CNPfnzjPL/il4GZOITxC+S/YzcDDPSQHHKGLEnSjkxB992z0ye/3h/VrX
-	pQ7jtOghSRrPi7G3rdlpZVvf7+Q8R1FAiSEh4y9JlB+a6TxN3nRIu0NqwtCaT0uBxJrFA0vzuv9
-	aqImxxpNGKH4hoAOC5dna3t2JovSFOoAMI8Gl0ueg7tXqXp+5Q6sHgZFmSV/CVODN4hYiE4ht2W
-	nOeS+iI0V+4PBJGGCYhYF7mPCRiHK5kkRXhMJStTGNU0AdoX8khnpLDCr7EVDPlX74OHkikQpqU
-	ry7JmciA==
-X-Google-Smtp-Source: AGHT+IGIVSOen45mpOt0xYdR05GnbUoonndymEzs2Y2tUjKO6oUDKgrfkoqnPSp/0zNTXeE4BQVymQ==
-X-Received: by 2002:a05:622a:2615:b0:4b0:75ed:bbf9 with SMTP id d75a77b69052e-4b2aaacb9dfmr44784981cf.33.1755884842505;
-        Fri, 22 Aug 2025 10:47:22 -0700 (PDT)
+        bh=7icmFEtMbjG8nHUlUz3H6xEpzLvZfrYx0hP4AUrTZT0=;
+        b=OeUd0JksxsFOqc+n0tNsJYeLELGb97Y+ZmML/LqE8wpLOJLjwx/eNPhKE1KUMhJqV6
+         I+igX9Jwn1HFE0otmZw5Hs8CTVqMHeTdDm6qsVbDuJIP58c4i+rhKVyXmfk/FKjlBA/H
+         5oycWwgpSp3VnnmnEnwiurFR9S0SfkACF818U2jwkV1VP68znmXFOQLWhvmSoI80SRnR
+         cRwdQxtNmVtO5qny3kNivhhL/nkTyIAKUzLKc17W4nto2x0/erxpKgDRZxceL2OqUKqp
+         hUZSEzaHPoV8W3Q45lN5TQKYdzcm9ukI6EkkhIbMqLHdl516JLVE0UYvAGrhpz/pKRUX
+         aFnw==
+X-Forwarded-Encrypted: i=1; AJvYcCUe06WHRrSMBiUm1LHIFsHeh62flD1dPY5cb8tPire9DX5H2V2WjvVhlPFaRQPIg5hdhGQGtK01Dg==@kvack.org
+X-Gm-Message-State: AOJu0YzAMudLOvQjRbG7xwRhULSeY44KlR8LzsozKCHdWsNK/HkhTOcu
+	tg4E05Ttw4Kb/f3KfWhpOG1wbSS6kRK33AnV3O6IQ4ZUR4COp9KUkZlgHuVz5xTOpEw=
+X-Gm-Gg: ASbGnctpRCKp+gCkSiNHOkfNfL2uRGdQRgrdsTmvGjtI2ZD4ieWHCBxyRKqcmOXZGxI
+	FLj/iQuKNThBP0f59KLjHH120Z96qZs8wZG8WQv+Oqk7ioJC4BoWJuSTFiBXUP74M1l20QUv4lC
+	iL6Y321GRs0uZ8uXg/a8hCFw1rqjbCRFpcSE5GSt1LH8bZru4MKo+Hin3EFxMiL04ewFlYn7pXQ
+	YA3r+PBD3+dw8J0wErYg4SkRGsfs1lw8/81cVK8nJ6hk4OXCzfIndzU38/nVdDazDMp2kBZtG0a
+	p/NQk17g+IpKUPuUfQZkct0pziYnuNFTLySiFBHbeqzH5picxkQO6ETDyNGkIeGWdHq4do1hAY0
+	sOXlXZFj5jOh00XdBu0w1D2Ju95KwIjFf2eOphJJvGI0IuVs/fGK1ZR8EZrG4mUbHfwTT6KzqFS
+	yvQ0vmXA==
+X-Google-Smtp-Source: AGHT+IGt5FtRUkeNaYf2QqcOOYK1voNcUZefaLnp0B87objwjhy4KKvTzMxzHCr1EhOf/GN0KqwnNQ==
+X-Received: by 2002:ac8:5dd1:0:b0:4b1:103b:bb6f with SMTP id d75a77b69052e-4b2aab276d4mr43535751cf.61.1755884845347;
+        Fri, 22 Aug 2025 10:47:25 -0700 (PDT)
 Received: from jesse-lt.jtp-bos.lab (pool-108-26-215-125.bstnma.fios.verizon.net. [108.26.215.125])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b2b8e6023asm3121361cf.53.2025.08.22.10.47.20
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b2b8e6023asm3121361cf.53.2025.08.22.10.47.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Aug 2025 10:47:22 -0700 (PDT)
+        Fri, 22 Aug 2025 10:47:25 -0700 (PDT)
 From: Jesse Taube <jesse@rivosinc.com>
 To: linux-riscv@lists.infradead.org
 Cc: Paul Walmsley <paul.walmsley@sifive.com>,
@@ -145,22 +145,22 @@ Cc: Paul Walmsley <paul.walmsley@sifive.com>,
 	linux-perf-users@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	Joel Stanley <joel@jms.id.au>
-Subject: [PATCH 2/8] riscv: Add SBI debug trigger extension and function ids
-Date: Fri, 22 Aug 2025 10:47:09 -0700
-Message-ID: <20250822174715.1269138-3-jesse@rivosinc.com>
+Subject: [PATCH 3/8] riscv: insn: Add get_insn_nofault
+Date: Fri, 22 Aug 2025 10:47:10 -0700
+Message-ID: <20250822174715.1269138-4-jesse@rivosinc.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250822174715.1269138-1-jesse@rivosinc.com>
 References: <20250822174715.1269138-1-jesse@rivosinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: yz9mesfp6gzthwjgfepnkt3wk3d4kkzo
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 87CB9A0004
+X-Stat-Signature: b1f3snko9z1ikqc8npyidki9penpzm6x
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9BBC71C0014
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1755884843-171078
-X-HE-Meta: U2FsdGVkX1/OojmHg3GsVMsk5NE/a9dVKj4MoCPExYHdlJtnMf3B8sGJi3bvoOxupccp2+HVkyzOPOr2UAsrRJtEuMdNFNKDKB38dU2ml2CZxhs8ByokAMrOa+b2Zkhtqi64rLK7zT6qN6mdpeT0Cc6O+Z75oNC5DszuioKZapCSV7BVDFp0V3EaIOyCSx7canIYbaAj9S8cvdXz98Bn2kYkQnbSMvp+qk+ntuI+ZC7JXW72OLC64vc6zB/mQpXCFxVA+VXxT6eWPgbYHNcYFGEd4kgy4cRjPvvH6aeMlyMBvZyMI6OUSNqjGMEyd/d7OIbcpkawAi3FNEUd6fnL7YShxHyQT0WB3WpT0XnJfBTlNng9v7Xj7jiOfPYm7BKOPYVruf4hS1MMIQnvKkM+PWoLVvn0GSUpPuIExUVOHQy1giYzNwTgNZiC4S2OUsQh60mjiFxXA7oL6t+StnkcJl6hlrrgS5CR2xwn8EYFTH3wVcnzXJxK+DVya1kBXYCoUo7ZdnzyFdKH8UBGPkeiYDOheAjcDlZrI/TSZizBF+SZCPhrJ/aosA6sa2YMVwSgKPTe4m6q31EaMNZ2Kh/14kJkEudQ4PEdcEqc8Dfmc76SKRWEiVi/ZeygaMX2N/u4GpA7n4o8qJtxI42/L42tNGNAZoEXTPaDLaxQ8lsqmshwCDH0iB/c//scwyOH2ZQipbdoZlbwLCEce9DIzbHrseOV/qYYZXbpui/Fh4rLW1Mj7FhgC6sAHNpLxE1owOysS5O+Ez0MG9Kr+SkJs3FrIUhB3/q7UFGq/kBuPO8eVrRM2nsUR2oxyP/yk6xPtjMOjy8bGxdrRX4IDTUAMqhbbAZqvWcyFpADPfl06tdXaY0H74GvocqQ678a9QdFH1E93JGd2PXniL4F68QBuvWqsJulLnyNt+aD+YGTpi7EOX5J+syazQNph7tg0GkWrgrexzOReW6uXr6bOiK4bZ1
- tiHAVz62
- AhQhQHCTjd4rfHsOWr5myHSTvIhRYqKL4RyOo00OusltM4lq8UtkDJQ3fBJF5CMEG+NvGzUxVYdJ704qfELSCSPpNj+r2fCckvj1ekVuCuSlHfswLi2LP17kqet5IJzH6HM3FY9LSDSxVp+uKt3hlMVOoR5r0fRF9Fmp1QCkojpCQOock2BmaFw5P1+SNRXZ1LKDB1tPkbB+Ih1+kH3CwIjUnrGCC2AvB7f+CyireAKZyEnaS6+PZd4Z5O8d85NPDR5RwfMB0EHpssmHA3XbsQfGK7bx77oxXNVm2ydpM+vbmF8R/hqZaIVD0y4NtWpN1iHcihSoY6sL541azBKeVV/Q3hLaqa6yVGsbBaPCrJvepc6KYlzAzWh9Hsmf+zoPAnrFY/EiS3+Xi4ss=
+X-HE-Tag: 1755884846-121042
+X-HE-Meta: U2FsdGVkX1/Q6avoYu0QOkEUW36MrzouI6/G3i8q0bosrt2VRpLIOuHVzDGL3cQbyZhm/q5wx14sxMO6aVMfGKbobBCZvpC8fR5K7WI+hsatsa0k5g6kiVUw7XsmT1PEdE2ft3E+N/VhZ2/9ca2oq9U8KL9p+UBNz75PidMdHtqq0ofe7zyCjj21ZZ4tpEnDjq0hLCO8wHSYOG+M2HDfpOMMR6JMWTDewnuom6yD9hVGEsgR5eeBouT5gp2XilykNPzIhL/ISD07vjTAu/0P230B+aQx3gbJiX2pEKOV74e/nVQWtrjAHHQ/pH7yUnI+SYlgJWXXNPWHuwrxaDtLOcR7eumsxU9hqVeIebAv92c/GIqggYhBnZkJ/N+Av+Msn1TGlqsnXiQByCN7RzwIopSmZiHkUY1de9eYHAt9nKOhtre/DYlWcPKZ1+aFaxtIgpWNxr/A3h4zy598aWToLcaHFe1dMDtOT17ZwiQXH4tOxeGf6JBKXRY1Qizz99uxuvcM3lVnamJgBnQfty/kdBxePDyA+h275efyxANlogv68LF0Cq6R62Uz+DQwYGoV6duCwUi7Rh2dRDJxjXUZGEnsiJwSvntbON+WGJV/wTWJ5MaQUqvZPmZoLu60j15wTR1ONXeElcdgJDfxRKtnXgzTw1llpTRWHBwLPgaFmOGfiXUJW2KFQZHi33ZC4vzMacD76PHhFQHBI4+tsB418r/VzfT6O1FN8bIMiRI6FFmVE0mMtHO+BditzOXILawLPrM1GFp69hRQO6/Z5M+LnyULyYFx5rAMU5ZBPEvxk0xKZ8TWTl4WGbRuWFj/PWIOhoioIp9B1bx+rFBQ/se+BsCJiGUXOB4QRjUZbQ5TXXWukx8LZFlB+O+cYBlw2XiKKT47o5NAnIosZ0kLXM88j/UPBVaPmfv3FqajI4OEAKmYpo71awxtUZPYoqW9fkF/cDEfIIF3ru7+6GrMMEJ
+ BJSVytTT
+ +jLm7wZ9JG4RTyHb76yNZ7lP29F64+tcY/bzaRvcxa4lypQklZFWAAACHzPwKVu64Dc9OH6E9E4y7RYzYLEgo8dPmUbEUkyOYB26oLeI11BCskJsdh+wxQpGtqmgC6EI4S1uYb6AOcS2d8QVOmHfzKdxxc25Ry5DTkEsMTQ0GgJlSELKYIC/5e/x8R7adQXlNvuY2UDMZuxhEExCkLAIfNMTS55CdJonUYJrB/CAEo4bVwIOvzg37NmYT3fi+gnVUueB/zEdl52wS5xboW2lWa5P9cF9CR96AAZv412HeIS2vwhu/CUzN3kjLt4baFfoBvW3Yer7OK7Qr07DaOGzMIP7dH4shOwJXuHVzdEX5xd09rjNZ+fcWYx/Ze6MwFSTjgXt9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -169,74 +169,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Himanshu Chauhan <hchauhan@ventanamicro.com>
+get_insn_nofault uses get_insn with pagefaults dissabled, allowing it to
+be called in an atomic context.
 
-Debug trigger extension is a proposed SBI extension to support
-native debugging in S-mode and VS-mode.
-
-The proposal for the extension can be found at:
-https://lists.riscv.org/g/sig-hypervisors/message/361
-
-This patch adds the extension and the function IDs defined
-by the extension.
-
-Signed-off-by: Himanshu Chauhan <hchauhan@ventanamicro.com>
+Signed-off-by: Jesse Taube <jesse@rivosinc.com>
 ---
+Unsure if copy_from_kernel_nofault is an acceptable replacement for
+direct dereference in __read_insn.
+
 RFC -> V1:
- - No change
+ - Add new function instead of using copy_from_user_nofault
 V1 -> V2:
  - No change
 ---
- arch/riscv/include/asm/sbi.h | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ arch/riscv/include/asm/insn.h |  1 +
+ arch/riscv/kernel/insn.c      | 14 ++++++++++++++
+ 2 files changed, 15 insertions(+)
 
-diff --git a/arch/riscv/include/asm/sbi.h b/arch/riscv/include/asm/sbi.h
-index 3d250824178b..be2ca8e8a49e 100644
---- a/arch/riscv/include/asm/sbi.h
-+++ b/arch/riscv/include/asm/sbi.h
-@@ -35,6 +35,7 @@ enum sbi_ext_id {
- 	SBI_EXT_DBCN = 0x4442434E,
- 	SBI_EXT_STA = 0x535441,
- 	SBI_EXT_NACL = 0x4E41434C,
-+	SBI_EXT_DBTR = 0x44425452,
+diff --git a/arch/riscv/include/asm/insn.h b/arch/riscv/include/asm/insn.h
+index ba74e5b8262c..f87e0a48f786 100644
+--- a/arch/riscv/include/asm/insn.h
++++ b/arch/riscv/include/asm/insn.h
+@@ -553,6 +553,7 @@ static inline void riscv_insn_insert_utype_itype_imm(u32 *utype_insn, u32 *itype
+ #include <asm/ptrace.h>
  
- 	/* Experimentals extensions must lie within this range */
- 	SBI_EXT_EXPERIMENTAL_START = 0x08000000,
-@@ -402,6 +403,34 @@ enum sbi_ext_nacl_feature {
- #define SBI_NACL_SHMEM_SRET_X(__i)		((__riscv_xlen / 8) * (__i))
- #define SBI_NACL_SHMEM_SRET_X_LAST		31
+ int get_insn(struct pt_regs *regs, ulong epc, ulong *r_insn);
++int get_insn_nofault(struct pt_regs *regs, ulong epc, ulong *r_insn);
+ unsigned long get_step_address(struct pt_regs *regs, u32 code);
  
-+/* SBI debug triggers function IDs */
-+enum sbi_ext_dbtr_fid {
-+	SBI_EXT_DBTR_NUM_TRIGGERS = 0,
-+	SBI_EXT_DBTR_SETUP_SHMEM,
-+	SBI_EXT_DBTR_TRIG_READ,
-+	SBI_EXT_DBTR_TRIG_INSTALL,
-+	SBI_EXT_DBTR_TRIG_UPDATE,
-+	SBI_EXT_DBTR_TRIG_UNINSTALL,
-+	SBI_EXT_DBTR_TRIG_ENABLE,
-+	SBI_EXT_DBTR_TRIG_DISABLE,
-+};
+ #endif /* _ASM_RISCV_INSN_H */
+diff --git a/arch/riscv/kernel/insn.c b/arch/riscv/kernel/insn.c
+index dd2a6ef9fd25..c8f77c0093c9 100644
+--- a/arch/riscv/kernel/insn.c
++++ b/arch/riscv/kernel/insn.c
+@@ -2,6 +2,9 @@
+ /*
+  * Copyright 2025 Rivos, Inc
+  */
 +
-+struct sbi_dbtr_data_msg {
-+	unsigned long tstate;
-+	unsigned long tdata1;
-+	unsigned long tdata2;
-+	unsigned long tdata3;
-+};
++#include <linux/uaccess.h>
 +
-+struct sbi_dbtr_id_msg {
-+	unsigned long idx;
-+};
+ #include <asm/insn.h>
+ #include <asm/ptrace.h>
+ #include <asm/uaccess.h>
+@@ -74,6 +77,17 @@ int get_insn(struct pt_regs *regs, ulong epc, ulong *r_insn)
+ 	}
+ }
+ 
++int get_insn_nofault(struct pt_regs *regs, ulong epc, ulong *r_insn)
++{
++	int ret;
 +
-+union sbi_dbtr_shmem_entry {
-+	struct sbi_dbtr_data_msg data;
-+	struct sbi_dbtr_id_msg id;
-+};
++	pagefault_disable();
++	ret = get_insn(regs, epc, r_insn);
++	pagefault_enable();
 +
- /* SBI spec version fields */
- #define SBI_SPEC_VERSION_DEFAULT	0x1
- #define SBI_SPEC_VERSION_MAJOR_SHIFT	24
++	return ret;
++}
++
+ /* Calculate the new address for after a step */
+ unsigned long get_step_address(struct pt_regs *regs, u32 code)
+ {
 -- 
 2.43.0
 
