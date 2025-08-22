@@ -4,112 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F88FCA0EEB
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 17:20:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BFA7CA0EED
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 17:21:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA51D8E00BB; Fri, 22 Aug 2025 13:20:32 -0400 (EDT)
+	id 5762E8E00BC; Fri, 22 Aug 2025 13:21:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A7C8E8E009D; Fri, 22 Aug 2025 13:20:32 -0400 (EDT)
+	id 54E0E8E009D; Fri, 22 Aug 2025 13:21:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9BA668E00BB; Fri, 22 Aug 2025 13:20:32 -0400 (EDT)
+	id 48B1A8E00BC; Fri, 22 Aug 2025 13:21:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BCA78E009D
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 13:20:32 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5A77616020A
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 17:20:32 +0000 (UTC)
-X-FDA: 83805057504.20.F9BECB1
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 98C0B4000F
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 17:20:30 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=tCaOAGyv;
-	spf=pass (imf07.hostedemail.com: domain of 33aaoaAgKCBo902AC0D16EE6B4.2ECB8DKN-CCAL02A.EH6@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=33aaoaAgKCBo902AC0D16EE6B4.2ECB8DKN-CCAL02A.EH6@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 344DC8E009D
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 13:21:13 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E3BD5138372
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 17:21:12 +0000 (UTC)
+X-FDA: 83805059184.25.D684BB9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 54E6D20006
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 17:21:11 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U88LAdsT;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755883230;
+	s=arc-20220608; t=1755883271;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hAIfYRgGwZxY2d+J+2Tw9OQSooCUHaphp7wteQwPLhs=;
-	b=GltfHGFrqGPuLzYbCXV+dAGnLszjFxorbMnBqLi+tPcAe7a6YksLpEbHFkqpWQp4sSMknZ
-	oCGZJOzAkvoU5NR4QA/F5HpuB4+Us+oE47taSf2+MsfwlyeY+lcGbg7x5EmozZc4M+mkmB
-	HAbKKzOkeM4Z1sRcO47JwjJgGvW/vks=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755883230; a=rsa-sha256;
-	cv=none;
-	b=YciXIXqn8VyZsvMuRFUA67GJxCBf0y2hLjVL74u2ooL2galnvXE5thOlFSvsQNv//g4Qgj
-	MagG88s52s3xuuPD9cDswMwJ/XCyN5tQBOgIecZHaq8rUCtP7rKqIqWEj6BZtVugRahpGE
-	bhOzKqS0wsWribcaM5PPHx2D6GQDAzg=
+	bh=+Is22SgmMKUS2ZE23qEhAt0e4AbTdCr+63QUIFCZFyI=;
+	b=6/qNcTqYVXsHorsU5CKIPO6lWXq56ufHurEaHAKMSaRAfg3PtdexGLF9adaGu8BuUypu2n
+	6ingLT+eQXxMN1nC+XemHx2wuHdiiTEUhhfIGGCkdC2zWIsdxhij1F7wA2W1/Ya776UxfC
+	kV9XF8wCCf+GAP61VUZ6goIEmbOHAyg=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=tCaOAGyv;
-	spf=pass (imf07.hostedemail.com: domain of 33aaoaAgKCBo902AC0D16EE6B4.2ECB8DKN-CCAL02A.EH6@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=33aaoaAgKCBo902AC0D16EE6B4.2ECB8DKN-CCAL02A.EH6@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-45a1b0071c1so11692995e9.0
-        for <linux-mm@kvack.org>; Fri, 22 Aug 2025 10:20:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755883229; x=1756488029; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hAIfYRgGwZxY2d+J+2Tw9OQSooCUHaphp7wteQwPLhs=;
-        b=tCaOAGyvb2rJD4oOdkFoagLRse0ACozJUHGMaQ8U6y4TKgKYo3FP9ydjQ2PlSrk07b
-         V2I7+0R8jaqEQJ9MFpRMQBVv6JjQfu5BvVbyp5PZE6ToQeuJN2V35qczfJz/NQ1wuJ6f
-         7DLmbjmIxdto6PPx0Tcxm/pFrurh3PVvH7wFoVwNKSoQ8KHWNR6KFDTdmY++cHSvZnpX
-         RGDVYr3gIR9ZKYGYERF5cYUtk9rqcheEPIzQTwqdyeILyjmNO+DuKUnr4So90csktcZB
-         cYCN+OwmzkAfktL8S9RGBiv+EY2uGnFQHfaynpllHIgGjzx8It2yRR2KxhWmbkavgcsB
-         0MtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755883229; x=1756488029;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hAIfYRgGwZxY2d+J+2Tw9OQSooCUHaphp7wteQwPLhs=;
-        b=YUqrre/vq/aDywR94J1O555EtVYNM/YkR98v4o8U7JChaP1kKjeOSdD9tu+zEvR8XJ
-         j6QgCEcjiv2vHh2BcEJsto/G8vSK5GyPysHr/PVR569Qpe0YGnhfkM2DU0mytZGqIdRJ
-         2ZtH3TBzx3YvFJtqqJhCSKBO1S7NiJ1nh6aHUPYRTGs8iGG/NNzHJ3Ou+QGxk+gtscJE
-         INrSoRsiQ1+Q8wxrZTUjSOQkCDNwqsbBadRtpM0NZEUMw0z03iWP/PDuebWRON/njUBe
-         eKt6CUUO4jabh3U0CTLoO2w07GnWY4+xrJzHYK1Nv/NYPqRr3bxl9JtK9ceEswnHq52H
-         is3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUGiSFM3JO6T8LzjxSK0MTIQaYlfXRVm/gfE7DUJeiygpyNxZZ1O0OdJvav6pnIkdEDYwjPnnKyuA==@kvack.org
-X-Gm-Message-State: AOJu0YyhvsNzM4pvkLjFkPc3TqaM94XZ7dd4g0kD+KP4JLO80gfyWyPG
-	FWJBjEWSrPmwAqORxltVC1eKgrpLaU9Ji0YzbIWPgyi2eNbaVSgF54dG7L+3TtotN1l/wV3ly7X
-	xRirKnZmqmk4Ykg==
-X-Google-Smtp-Source: AGHT+IGAQ3nKBaK3QO/Ktb7KuI028hAduXrZ22Qu6Xo0zqvcqENW+BUAAlbLyqUJ713Bt/ANAuJrBwMOcBFf1A==
-X-Received: from wmbes27.prod.google.com ([2002:a05:600c:811b:b0:459:db77:fc89])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1f95:b0:456:1846:6566 with SMTP id 5b1f17b1804b1-45b517d903amr28510805e9.29.1755883229001;
- Fri, 22 Aug 2025 10:20:29 -0700 (PDT)
-Date: Fri, 22 Aug 2025 17:20:28 +0000
-In-Reply-To: <aKihQv8fWzZIgnAW@pc636>
-Mime-Version: 1.0
-References: <20250812173109.295750-1-jackmanb@google.com> <cdccc1a6-c348-4cae-ab70-92c5bd3bd9fd@lucifer.local>
- <DC83J9RSZZ0E.3VKGEVIDMSA2R@google.com> <aKihQv8fWzZIgnAW@pc636>
-X-Mailer: aerc 0.20.1
-Message-ID: <DC94NN6SM15D.3DQVRLO2E282W@google.com>
-Subject: Re: [Discuss] First steps for ASI (ASI is fast again)
-From: Brendan Jackman <jackmanb@google.com>
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, <peterz@infradead.org>, <bp@alien8.de>, 
-	<dave.hansen@linux.intel.com>, <mingo@redhat.com>, <tglx@linutronix.de>, 
-	<akpm@linux-foundation.org>, <david@redhat.com>, <derkling@google.com>, 
-	<junaids@google.com>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
-	<reijiw@google.com>, <rientjes@google.com>, <rppt@kernel.org>, 
-	<vbabka@suse.cz>, <x86@kernel.org>, <yosry.ahmed@linux.dev>, 
-	Matthew Wilcox <willy@infradead.org>, Liam Howlett <liam.howlett@oracle.com>, 
-	"Kirill A. Shutemov" <kas@kernel.org>, Harry Yoo <harry.yoo@oracle.com>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Andy Lutomirski <luto@kernel.org>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Kees Cook <kees@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 98C0B4000F
-X-Stat-Signature: dmcbe3h7dhksi566egtx19xtrcq7ngjg
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U88LAdsT;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755883271; a=rsa-sha256;
+	cv=none;
+	b=N4NSuiN6qdDOa9wEXxkXsSzfmSVvK34Bygnw8kc3/b1u5wL76XaDfWdNqP53UD/xr9K92N
+	wZUqBxxJ0D8/0LxaO0HYRkDFE4xZAmOjIsgYXxp/6EegjdP0Kq0XiNbyGxasY+RNFSCt1Q
+	5JTJG1+e3m9x5IjrzOF4CnXTJdC1T8Y=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D6AC143DC6;
+	Fri, 22 Aug 2025 17:21:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BA7C4CEED;
+	Fri, 22 Aug 2025 17:21:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755883269;
+	bh=ZImj3pjcYuC2ihJZo92yeY0fuEGYuXc7qZ1H0GE4D34=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=U88LAdsTJUm1l/MTizSKP6oUQ3Htzz0sjYBWkSHEKk3dYvNK+5a4X++WJUqfFLOpR
+	 a/0qT8uuJcJYFZmDuwKoU+HngpPEm4rABiiWLp0NwjnycF3JTrjHjl8wzAQ4GENfPt
+	 T8DRqTpfCso4pA0qrwiEllba4qK+ZTFF/MsHHyQO6ifMrLmAdQdxJ01G88VnowxySo
+	 kdgXDuDbxry+dk14E9/kOQ6Eb8lcNCQv/Z+GAccUdv6kYSndGlyRpSRaQWlKrN+Nxu
+	 iz6E+4qTobnX4H5Gx/KD0kTJ244st+C2gWSSGk0Vr6lZQ4NeirIM8iPjsHqTw7swyI
+	 s47KU38XvZKjQ==
+From: SeongJae Park <sj@kernel.org>
+To: Quanmin Yan <yanquanmin1@huawei.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	wangkefeng.wang@huawei.com,
+	zuoze1@huawei.com
+Subject: Re: [PATCH v2 00/11] mm/damon: support ARM32 with LPAE
+Date: Fri, 22 Aug 2025 10:21:07 -0700
+Message-Id: <20250822172107.53905-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250822093420.2103803-1-yanquanmin1@huawei.com>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 54E6D20006
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1755883230-664271
-X-HE-Meta: U2FsdGVkX18Dh6RLvE9IB1Zt38LnfQNBOOX2NI4ohfIaq0sTOP1wzLxNBt+r7q8vmstDXa1vHHFQzfZIQv2xbDDnglCP73USmuZhGuv1ti9So0rv5rdIyKd3Nm0RYlusKH9PmhB1ANRKN9RLJr6JtG9OIZNX++HsvIVOAUJJYMRthR60zhfw9LJ+tkluo5zqgnJAcdoG7xcKez7vJ6pKV8+KUnmpAqBAzMcCHdIBjIK1WhdWZVQlBSO/PaFlOqFsKCR+QSDkSwRC9r1WAg5xw7ctm4XrxkuydRgwWhNofqR8FAyvuWbh42nRyzXaoO1rK2SIqLRUDRt3Jt5QkrPBKQ6oiopdffJrDJhyX+h5TG3FHaILgwKX6SlxZN/cfPjdjBkGj6iwbk+gQAkMNOmCIlAIr/cfG2eCa3hifROZZqQoqgTfi92wW8V4ok1iIajXUjujBRwtiaSh8OWGUzNj0YJX+ZWWGyJQrDc3jtf9zepDRixvAIk0dbGO3bkq/50dEgvB1sIIaKluSlpwnAqITC+1m04Ftg+fUQCbs0rlv3snllXlhuABwu659d0EWZgvUETFVFA2CAgfTlBvq2P4po6OJnAGuhnEMPNVFqBkFSjtT/gNJiJKQ2+9CrTY1Szldjwxhi0HDxDo4gKfAKJo8mXS+J7fM2Phwyy6W5Guj6VRgMvz6PxMe5WGzzaqzaKqXqvbeLSY/tfy2UDZTw3SOqBkr1kNsVch3mTn7CERIO3rWV1V3cG3+0f9kyC3m8Ym8sfksKq/TzgPXH+eQ6ycH+s4UZM5h44+OGI6dNFINhsxNlPok3Lol7/YY8RA1VykbzbcqKsZDNwbegkW2xTfcBU/m38GpcZEC4PMGqG+6DAviVShqQyRwZ8YauXkRzX+b4o28g7vuvkkdabH/eBag/1LtI4YQBpyffDCehsxFxLUi1sH3GM1fvHtRPx7mSNC8oomH4VDJk0Ijdapb+x
- NVZS3My3
- /SlFLoWkJBPMlBfZ+3SJWu4IhAXfmVOqtYosM9RLGuthcKmEDElgUpuoQjt+nVKayPiIjdpXeP0xiS4Bmpz5svjSqeob/b3A1hv4X7/LBBvYZ6HqF17jgeJbQJO43kRuAyYGEY6yPDPKdc2xoLMR55ECWaiBjX0/tstgVotT4M1Y7joubJ88LE4V87h9YZya3jCXeKlTLd2Mc4013NvIA8/LEnVzCFbRl7Lj0glHoqJLndA0/HiQURZ24XAZzYJraG9IBpzQDgjpzbadcJaygIUSNAw==
+X-Stat-Signature: 7rt8pi8kuua7g1erfapde51bdtm66d8r
+X-HE-Tag: 1755883271-968596
+X-HE-Meta: U2FsdGVkX1+dlAN9XjJ2XkC8iPFfudCdLiwUx48Nl5GeA8tnlgEKvwj+q7hTxB2HHAS5ky+MkIOrJkOrQb4nMkI8XdFoxNPMX44wBbB5c1gNLEAS9grsCSdEc8fen0zf27v3uh2Kaqp9ASCtXrpx6qZQScf/2DvqIY4BC+aTA833ndPaMd99EGyb+UO+mssXSJuc4Snyp5E5EwYvEUWOfXdbNRVvhcsJUMOE2Qoq3ZF4KGf3OQlaL/GnfZA9Xn6KZ/lyQ/oZDfEB1mExfX2iWm+THBRDmAVcLWexc2fiP4OFVhexyeN/aH6zVSJ4JJdiv35XnVma8cl628FOr7B5b5/JPgrUA5Kjzzqw0V0ODYGGndgaL92w2UQGfIxS1WZOF4WTCk1Zt+zbgixLoLn4DepurO2wEqu2sj9DxPEWprAkqWWvGFLzTFvUa2uHEQtIjMqkrWx5ci1LAyD+GBJ8NYjxjbrZg7WVCD9OmhiKqhIkhpDKW6vb3zA9naL1YErtZXH8BKr7k2R8V8g0vexFAxb2d3y8bZj+O90mFJ3AooM3JhnzhC+15yL5gd7Fq2xe31d2o2CQNHs5t2UnBVjN+8Yyfm85PrEi7iIF2bSxGN7l7rHcXmcJhRmlhYjWLvB/ZsveLVrMjNjUAC+1JA7xWylTtmtPz38WpvB3k90tThkZ4SjmpV4cV8r5jJO77EB4KHx6C9tM8Bt2RmAWJWLGHfbyclmFzD9YPWORpPQgAHkZxvBP8ECnC8hJfG/nh3jXKLftXD6d3ZS0+1hy7qP89xcmXAHacZJuOWBuMIhlAU6Pfprx1VyLXgM9HtcqboWQiG+ZSr0xz2Q6xm+yFPS9LRhjqfm10jobeXiNrYJKpT1KRoOVvnIpTSczpnASNnuKOZwxjuTMhaQ8/GcHDDZc8zBWaWTr6LTRd0J1iosAwHOfj+RBf0Eb1A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,50 +94,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri Aug 22, 2025 at 4:56 PM UTC, Uladzislau Rezki wrote:
->> >> 2. The ephmap implementation is extremely stupid. It only works for the simple
->> >>    shmem usecase. I don't think this is really important though, whatever we end
->> >>    up with needs to be very simple, and it's not even clear that we actually
->> >>    want a whole new subsystem anyway. (e.g. maybe it's better to just adapt
->> >>    kmap_local_page() itself).
->> >
->> > Right just testing stuff out, fair enough. Obviously not an upstremable thing
->> > but sort of test case right?
->> 
->> Yeah exactly. 
->> 
->> Maybe worth adding here that I explored just using vmalloc's allocator
->> for this. My experience was that despite looking quite nicely optimised
->> re avoiding synchronisation, just the simple fact of traversing its data
->> structures is too slow for this usecase (at least, it did poorly on my
->> super-sensitive FIO benchmark setup).
->> 
-> Could you please elaborate here? Which test case and what is a problem
-> for it?
+On Fri, 22 Aug 2025 17:34:08 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
 
-What I'm trying to do here is allocate some virtual space, map some
-memory into it, read it through that mapping, then tear it down again.
-The test case was an FIO benchmark reading 4k blocks from tmpfs, which I
-think is a pretty tight loop. Maybe this is the kinda thing where the
-syscall overhead is pretty significant, so that it's an unrealistic
-workload, I'm not too sure. But it was a nice way to get a maximal
-measure of the ASI perf hit on filesystem access.
+> Previously, DAMON's physical address space monitoring only supported
+> memory ranges below 4GB on LPAE-enabled systems. This was due to
+> the use of 'unsigned long' in 'struct damon_addr_range', which is
+> 32-bit on ARM32 even with LPAE enabled[1].
+> 
+> To add DAMON support for ARM32 with LPAE enabled, a new core layer
+> parameter called 'addr_unit' was introduced[2]. Operations set layer
+> can translate a core layer address to the real address by multiplying
+> the parameter value to the core layer address. Support of the parameter
+> is up to each operations layer implementation, though. For example,
+> operations set implementations for virtual address space can simply
+> ignore the parameter. Add the support on paddr, which is the DAMON
+> operations set implementation for the physical address space, as we have
+> a clear use case for that.
+> 
+> [1]https://lore.kernel.org/all/20250408075553.959388-1-zuoze1@huawei.com/
+> [2]https://lore.kernel.org/all/20250416042551.158131-1-sj@kernel.org/
+> 
+> Changes from v1
+> (https://lore.kernel.org/all/20250821105159.2503894-1-yanquanmin1@huawei.com/)
+> - Set dst->min_sz_region as src->min_sz_region in damon_commit_ctx().
+> - Fixed the incorrect 'min_region' in the commit message.
 
-I didn't make careful notes but I vaguely remember I was seeing
-something like 10% hits to this workload that I attributed to the
-vmalloc calls based on profiling with perf.
+Thank you for continuing this work, Quanmin!  Now the entire series looks good
+to me :)
 
-I didn't interpret this as "vmalloc is bad" but rather "this is an abuse
-of vmalloc". Allocating anything at all for this usecase is quite
-unfortunate really.
 
-Anyway, the good news is I don't think we actually need a general
-purpose allocator here. I think we can just have something very simple,
-stack based and completely CPU-local. I just tried vmalloc() at the
-beginning coz it was the hammer I happened to be holding at the time!
+Thanks,
+SJ
 
-> You can fragment the main KVA space where we use a rb-tree to manage
-> free blocks. But the question is how important your use case and
-> workload for you?
-
+[...]
 
