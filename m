@@ -4,100 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65780CA0EED
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 18:13:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECD8BCA0EEB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 18:26:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BC906B8009; Fri, 22 Aug 2025 14:13:56 -0400 (EDT)
+	id 45AE26B800A; Fri, 22 Aug 2025 14:26:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96D2A8E009D; Fri, 22 Aug 2025 14:13:56 -0400 (EDT)
+	id 432848E009D; Fri, 22 Aug 2025 14:26:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8AA526B8009; Fri, 22 Aug 2025 14:13:56 -0400 (EDT)
+	id 34A876B800A; Fri, 22 Aug 2025 14:26:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 798908E009D
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 14:13:56 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 39583832EC
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 18:13:56 +0000 (UTC)
-X-FDA: 83805192072.23.47422FD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 24C7C100007
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 18:13:53 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="J0/qh204";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755886434; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 260978E009D
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 14:26:49 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A2F23583A2
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 18:26:48 +0000 (UTC)
+X-FDA: 83805224496.09.D99BEA2
+Received: from relay.hostedemail.com (unirelay09 [10.200.18.72])
+	by imf09.hostedemail.com (Postfix) with ESMTP id DBBD3140003
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 18:26:46 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755887206; a=rsa-sha256;
 	cv=none;
-	b=r+9QjUc1t//3Cbgw55reNZ/tOYTyKhaskmmTuXQPJIHFLpkvOoqSE+Oxbahp/1hK/27HWi
-	mNZ2lIlXpA4NP3Qqfh0xOVTXdAifKNR9IrPRR7X7CrHMGTvFHL1e5LIOoGURdv1rabvR/U
-	zu5BiG0BCDhw11hHJEhDdvHFLtaxl/s=
+	b=XJNw6U8gNlWrQlNxDu3A8fYuVONS8SePLy9lMiSQjZg1ZKl2zbLD8xvfMXglkAVWER3bQ9
+	66EsCmR4LvvM1/def8Kj+iSQbmcLPPdguqwzBpCI3VbaCWBF0impUZd85taR9fMxceo+mh
+	faEJgIuFOvUgd0dw+XqtQUxbDZpRW/0=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="J0/qh204";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+	imf09.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755886434;
+	s=arc-20220608; t=1755887206;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yd0UGZ1tH2WngY0j+8mIqNNexSK9NpPBJac5HIkojTE=;
-	b=J1fzg462JbHNmjoetZ/eFMnFPrNw/8Qeii2iyGmGXTdlmhCA2QOW+95NIK+6tTkm19DvVr
-	5rC5vbLLUisblHceJgAk+McEeg4IzAON4jUoSb21TttCsCXgiMY+46YIzZXKE4O7IH6QK5
-	+0ri82uv2ZkVkvTUT27T7I1rSy/Lidw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0EE1043D37
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 18:13:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4822C116B1
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 18:13:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755886432;
-	bh=vU343fTAxgZmpgPZkktnORXe5EWIuSgLimMaZupOkQE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=J0/qh204A+4yfnTJ2NWo8b6v5sEJUk2J6Am+cWkIYuF7hk8eW6vHEeIfZv4DCg3e2
-	 XRoXxlcezc/MkUUxB3/nLG8fEwQB5CLqXAEhpOZsS2+sOnHhn0sMM6O9Wnfh4XEHB/
-	 vTlDpo/vsf+XBdF8EVTXikfB1BxWP/gKLcrKo75sdxv5jrBSwQNPOwt5bjpjZavgw7
-	 u3mv8t+rBqapKK9qDQbTrVpI/OIKx/TA0yTS4MrKtM3MNnQJUiJg0gWTBGjU0CmmkS
-	 FZV2D2loitmjwFdJg+1mTAPkv6gFS8xgH0eJZbjiH3m+PxhecWe/rTKCbEbT6aBi7R
-	 xLJJfCWtZ2n+w==
-Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-e9513a4b346so2032300276.1
-        for <linux-mm@kvack.org>; Fri, 22 Aug 2025 11:13:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXSvDqfcJ4LNeKT81NgFLwGZ7O63N8nyztOoBwtmIS21YSSda3KRtAd0ztVFhCvUCi7xD3sPxINng==@kvack.org
-X-Gm-Message-State: AOJu0YzHwBTudnpLDNNP7zgjtg6h7iLuD/hxZa0aXiDZWB7rMycWkwtt
-	7bVU6luN0/XaHpr79Bf8fCM7C5o8rA9In57X7A1BoFGxSwzV6uz7RrVIaGH+EJDh0wq1WPsIN9p
-	pHQPUIKx7hzR4VUfFL5FwcGkvHLEXXtkpjHEgxAceNA==
-X-Google-Smtp-Source: AGHT+IHhRf2TaqCZn/6kRt8XjIKqpaL9R5RJhn8UTmBo6Oybg2svLWl6m5S/cJDHVVyZbVAu3WydAGxqOV8Ga0ecPRc=
-X-Received: by 2002:a05:6902:1891:b0:e95:11d6:258 with SMTP id
- 3f1490d57ef6-e9511d6033cmr6400849276.16.1755886432211; Fri, 22 Aug 2025
- 11:13:52 -0700 (PDT)
-MIME-Version: 1.0
-References: <aKgm+wisMipLqnL4@yjaykim-PowerEdge-T330> <aKihqI8PWLFL1b5i@casper.infradead.org>
- <20250822131022.4df59a60@gandalf.local.home> <aKisJJYL9LV20qzg@casper.infradead.org>
-In-Reply-To: <aKisJJYL9LV20qzg@casper.infradead.org>
-From: Chris Li <chrisl@kernel.org>
-Date: Fri, 22 Aug 2025 11:13:41 -0700
-X-Gmail-Original-Message-ID: <CACePvbUYp7w68C8z_TeMhOJQ0hmWw1jkwy+D_Lb+N5WbmufAug@mail.gmail.com>
-X-Gm-Features: Ac12FXyVtLiDu6js8Zea8UB6FyOKcVFb0xZCJLZ3n24tp2pC2drBWSymijPbbTU
-Message-ID: <CACePvbUYp7w68C8z_TeMhOJQ0hmWw1jkwy+D_Lb+N5WbmufAug@mail.gmail.com>
+	 in-reply-to:in-reply-to:references:references;
+	bh=Scrpg9qTQ5EIvKqqpHuBJQRkHz9Mbbchdf8twG8T0XU=;
+	b=VkrtOrJNy7pUK6zSvIJiiRyocBuhWmJNPgV4LSMX7TxUEbb3w8d9wDFqjkdW4jssTnfmU8
+	kHrRp30MC+1svGktMm327FfZ3/52nCpA+/CgbxyiOBgbLEBZAnZ2BtB+anBdX4y5YO+FB7
+	VwCflCR8RKuxoo+UtcA0Xpf3ZDXdSFM=
+Received: from omf18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CC684819ED;
+	Fri, 22 Aug 2025 18:26:45 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf18.hostedemail.com (Postfix) with ESMTPA id C440231;
+	Fri, 22 Aug 2025 18:26:43 +0000 (UTC)
+Date: Fri, 22 Aug 2025 14:26:50 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Chris Li <chrisl@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>, YoungJun Park
+ <youngjun.park@lge.com>, ksummit@lists.linux.dev, gunho.lee@lge.com,
+ taejoon.song@lge.com, linux-mm@kvack.org, David Hildenbrand
+ <david@redhat.com>
 Subject: Re: [TECH TOPIC] Per-cgroup Swap Device Control
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, YoungJun Park <youngjun.park@lge.com>, ksummit@lists.linux.dev, 
-	gunho.lee@lge.com, taejoon.song@lge.com, linux-mm@kvack.org, 
-	David Hildenbrand <david@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
+Message-ID: <20250822142650.572507ff@gandalf.local.home>
+In-Reply-To: <CACePvbUYp7w68C8z_TeMhOJQ0hmWw1jkwy+D_Lb+N5WbmufAug@mail.gmail.com>
+References: <aKgm+wisMipLqnL4@yjaykim-PowerEdge-T330>
+	<aKihqI8PWLFL1b5i@casper.infradead.org>
+	<20250822131022.4df59a60@gandalf.local.home>
+	<aKisJJYL9LV20qzg@casper.infradead.org>
+	<CACePvbUYp7w68C8z_TeMhOJQ0hmWw1jkwy+D_Lb+N5WbmufAug@mail.gmail.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX19qApwMrh7stjceUbbTYGOhEuvVEc9W+D0=
+X-HE-Meta: U2FsdGVkX18C6W5l/ocCnOU79zFmh36vZY7+wfTLac660UKzn13RzukaFrddo4l44BiOL+UWqAxbmdGL9fRRLeuWhUKHha6eFN9MU6taVE4q9Sq8QwcGuAZ64bi6hu2YpGTjAnWpES1ewABidgMmUjgtlXxUELGR62hBkXt9fwTQRzT3q0BpPfDVjCpxqbjK1cGCWf3x8SCEe4IVsYb2ziylmyzH/sxMTjxJHg7nCJ220wjShgTb5kEmbxMh7Kzmivcm5u8fABxWILQsSxzv2rsd311ZIUv1hw3zOB/8MsSMDnLHSUvg700JGAFZ72dqkrTp2s2dARstE3zbkrX8rFzDwpPmovPhuGKfFICgs58ZZUEjiG/u4rhA9HwxrvLUI/pLpUTFAQumhEULY7nEkryE7nGCnETyIxOogG0pWC3PWYEhsZEjGQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DBBD3140003
+X-Stat-Signature: w48wfyqhd6b68pd3568aew8eknfxz6ni
+X-HE-Tag-Orig: 1755887203-398458
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 24C7C100007
-X-Stat-Signature: 6qkx6bem1tp1f6gtmbfurfwzpejzpxff
-X-HE-Tag: 1755886433-386839
-X-HE-Meta: U2FsdGVkX1+GIEsF/V8s50r1+gAvB0YQsRH/aZaN7byJFThsVwUc8yUZV1a3/tpYfJIjJUVJNvAp/eH/78IB1ucQn3UZn1OCQnm9F2exCVKYEFZTCOjFyz3HY6l6ceCdt0DW116mQQw+mZH+tMgw3O8BlALUwI17zerlwYi6a5n2QBsoRzd38GLVHzHJSgRCXZNlUAki/q8XlX3rM+Vh9dD6AjVjeteaL+yU9IExoQrS1NSWu4tDc8MFWqRwMynwumuqJ0VJqKwzzulO9KEPT/Rweu7tyRgjbDBYQaXb6L+YO3bUJyZYfDRZLkBJVlnbIstE/hZkxJ+JbOJhuk+XAbauKgEjRbpW9O5wL8eBomHjz/t3e6936cJOsEiVW6mBDLIPsAsrfy3Vv0+P6tbsTK0O/B6qeIUjrB9J9d6Us2ev0WdhMHmhsMx9u6x4DSltIk8/wPH48n5cGeseYyhCxGN642EBcBIBsYB3tCS/PiokKtwT8s7faeJDKcTUZL6AUb210F/qo62J6QNkJwqlpjiyLcYkw92sCz/9QtfVD932KQYDwDWZWEIyV98JG5OQjq19s/o0qHiVEEmYd6Rn2h8Qxh3/UUMOZAmjjw7ThwTeCh/NzKDiLsHcCgwROFCuiO1i3bz1aewJc2kHISxDbxF5d9bsj+bGXtH73admCCkmNvGF+rCmkUkXm/W1qNA1fK8oDBVwsEXCPhTRs9QDuAUH7kQjQcJoIlYsqm7m37BwsqH1gm/HgOE1TeuQ2suSdw85bNCbw3H6hx17KQYg1t7IBHQutK2fM4vKHsD0gfDjPkEysLcboE8mr9pSjkUzMGfUkYETaToAa9NQWaaArfgGzOYJjzQZSmPfK1AgCrL/LfOo+KSC9ZVl7V0MscA5GLFS7F4b6L0Aea8irGS7xqVmAmpI1JpsqRh/rQivSlpufuujV60z0xZGXIyPQPo2QbOr1CQeYJC7f8qZ4pG
- et97AJF9
- r8OHuWe2SbXNr7JMhkFKh2RCfP7moABRdHn+D64/5iJcBVff1xQcQ1qhHzMYjsCaZfUeC56QmcKRx6qpbD0kEa9oxoDfi1//SaB9YLO4mFPBlorsxA5gzFwnV2aUvHeYLZS9Qz2ijXFpyl03HqwMZOz54359ZxdrlqeLE9XscmSg3zvrA2+g9N+tYYYJQ6u4d/SrfqMhGRZh6RKxQMx0rJ/mejmhs1Lvt0uTI82CcVnG3lkH6J4EjaysEgtyNCW9oaHS2eoaBO9H7JhPdH8lG48HOjfkfQWgsVjmqfFAi3pQzGBa7a3cHF+CKpPliE3GlXKzL2w9V0Fz7GKpvcgTUDj7Jjk1Hew4R8b7HyksH6UT11cxr3ZzX95xRhQTGTEEPfyW84Em9ZFnz99sVlupZsP6tLQ1EuoP5UzndpUVzOzYshj4PKc4RTdwLvg==
+X-HE-Tag: 1755887206-656689
+X-HE-Meta: U2FsdGVkX1/BpKLvcHYWsWCIGO2fGI9oJ0PRWnXG+50CQWZlt0kYWmprfIM3ushWkYY0ev5BEDd/2K+vCzsQjD4u+cGn+doFHpXiJ0GxRtAIWoEwW3DULAKwzL0hBCAMPd8tKf2TC8Mt4M2WL0/78TyIE5KUvU4QDFM6mIHprrP7RL3egfucd82ZMkY69L54c2kaTWUc3nq5B9D0LxucBCk7lci6D2/AmRGu3+rww3fWA0B+3mFanOIlo1B1aCiL0ehod+M3KtXpEg+Yk6KTPBtxwQqEwsc49jvOyhDvG8/AzhFaWmbnoyBsbfJeirBn8JbfBhYmBDu4fUgIYHRKxhY6znzLpKoHhwH3RSjt3DhIicTYOTFe8mnE+zUHRMVWwqg+tX4SH94oqRJ7/yDj0uPT3v/tibQ9ysc+3dUghVxtmCc74zSBWHFf3NY7rfHtoEARiLA4JC8EKVqcjoRejjwaYrKns1W1kNN2/46RS0Rukk/bdQQ7yjZFlR/554l4IouZKq1ctCD7xr4BfEmdxc3KMd7BvxeS4XuNjlka/cm+/kAYrFKInz5v8IleqkQNLoCSmPMmBnO6ubcsxI/mdKAcUOQlRbQUHB+cijUYHmT0LoU7iHXPpEEchhELEG7vwsyTJz5Na4MoGmGmF/pfTjJN199V4cNngz6bCRYFhdvrblPZ2b+DsedUJkd1B0hNF95jGoKfQCwlUrx7IDEJ9iGvWRO9FoYYJEusXWfFesDcNNV+IlHSkr48AIHK8FcPhAA99GUPQ5f95keX+++GibAfXbeHsNKQO3eiJ+ScQ1cTLWuvzpUQ4ebHN01pd51oBcZ9h+JtTJOmmJj1xcUDijiHbsKHzZ2EClC4GhmQ42F+q8ZNTPN0Y8cRtAOvXrq8MvOFTqwfE84+RN8WJ91qu3JebWmpVuVRwM0rtNLi2u19s2Ylh0C1cDlwpw0c5c3GgD6UH/Fkj8yAOcU0BRY
+ 8Fanznfd
+ bUhzzU9QWIqbqKqsFs/xJPereLj7XwS02Iqlo
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,82 +89,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 22, 2025 at 10:43=E2=80=AFAM Matthew Wilcox <willy@infradead.or=
-g> wrote:
->
-> On Fri, Aug 22, 2025 at 01:10:22PM -0400, Steven Rostedt wrote:
-> > On Fri, 22 Aug 2025 17:58:16 +0100
-> > Matthew Wilcox <willy@infradead.org> wrote:
-> >
-> > > > Proposal:
-> > > > I am developing on a restricted internal platform where there is a
-> > > > technical requirement to use idle devices as extended memory.
-> > >
-> > > I don't think this is appropriate for the maintainer summit.  You
-> > > can submit it to the Plumbers MM microconf [1] or LSFMM in May.
-> > >
-> > > [1] https://lpc.events/event/19/contributions/1995/
-> > >
-> > > Also you should have cc'd linux-mm for this kind of thing, adding
-> > > it now.  Preserving the rest of the proposal for those who are
-> > > interested.
-> >
-> > From Ted's original email: https://lore.kernel.org/all/20250805144357.G=
-A762104@mit.edu/
-> >
-> >   Related to the Maintainer's Summit, the Kernel Summit is organized as=
- a
-> >   track which is run in parallel with the other tracks at the Linux
-> >   Plumbers Conference (LPC), and is open to all registered attendees of
-> >   LPC.  The goal of the Kernel Summit track will be to provide a forum =
-to
-> >   discuss specific technical issues that would be easier to resolve in
-> >   person than over e-mail.  The program committee will also consider
-> >   "information sharing" topics if they are clearly of interest to the w=
-ider
-> >   development community (i.e., advanced training in topics that would b=
-e
-> >   useful to kernel developers).
-> >
-> >   To suggest a topic for the Kernel Summit, please do two things. by
-> >   September 10th, 2025. First, please send e-mail with a subject prefix=
- of
-> >   [TECH TOPIC] to ksummit@lists.linux.dev.  As before, please use a
-> >   separate e-mail for each topic.
-> >
-> > So this appears to be appropriate.
->
-> My mistake.  I thought tech topics were part of maintainer summit, not
-> part of the kernel track.  It'll be up to the kernel track organiser(s)
-> whether to accept it to that track or whether they think it'll be more
-> appropriate in the MM microconf.
+On Fri, 22 Aug 2025 11:13:41 -0700
+Chris Li <chrisl@kernel.org> wrote:
 
-That is partly my fault as well. I suggest to YoungJun for the LPC
-2025 in this email:
+> Anyway, is there any conflict to apply to LPC MM Micro Conference
+> track as well? Of course which conference to apply to is a decision
+> for YoungJun to make. I am just curious what options are available
+> now.
 
-https://lore.kernel.org/linux-mm/CAF8kJuMo3yNKOZL9n5UkHx_O5cTZts287HOnQOu=
-=3DKqQcnbrMdg@mail.gmail.com/
+Note that MC topics are more discussion focused than either the Refereed or
+Kernel Summit tracks. A MC topic is between 15 to 30 minutes which does not
+give much time for presentations. A Track topic is longer and allows more
+presentation of the topic. Also, acceptance to a Track talk gives a pass to
+Plumbers, whereas acceptance to an MC topic does not guarantee one.
 
-What I have in mind is extract as you said, the MM track Micro
-Conference, and CC the linux-mm mail list as well. I forgot to mention
-the details of the MM Micro Conference track part in my suggestion
-email.
+> 
+> Hi, YoungJun,
+> 
+> If you decide to apply for LPC MM MC track as well, don't forget to
+> register yourself as a speaker on the LPC website.
+> https://lpc.events/event/19/abstracts/
+> The lower right of the page, there is a button "Submit a new abstract",
+> Click on that to start the process. Don't forget to select the pull
+> down menu MM Micro conference.
 
-Anyway, is there any conflict to apply to LPC MM Micro Conference
-track as well? Of course which conference to apply to is a decision
-for YoungJun to make. I am just curious what options are available
-now.
+The part I left out of Ted's email was:
 
-Hi, YoungJun,
+   Secondly, please create a topic at the Linux Plumbers Conference
+   proposal submission site and target it to the Kernel Summit track:
 
-If you decide to apply for LPC MM MC track as well, don't forget to
-register yourself as a speaker on the LPC website.
-https://lpc.events/event/19/abstracts/
-The lower right of the page, there is a button "Submit a new abstract",
-Click on that to start the process. Don't forget to select the pull
-down menu MM Micro conference.
+        https://lpc.events/event/19/abstracts
 
-Hopefully see you in LPC then.
+   Please do both steps.  I'll try to notice if someone forgets one or the
+   other, but your chances of making sure your proposal gets the necessary
+   attention and consideration are maximized by submitting both to the
+   mailing list and the web site.
 
-Chris
+
+So YoungJun has already signed up to the website and proposed a Kernel
+Summit track. It can be switched over to a MM MC topic by editing the
+submitted abstract and switch the Track over to:
+
+  "Kernel Memory Management MC"
+
+-- Steve
 
