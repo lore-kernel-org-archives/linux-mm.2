@@ -4,94 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A29ECA0EED
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 17:18:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 110D0CA0EEB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 17:19:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A2C098E00B8; Fri, 22 Aug 2025 13:18:22 -0400 (EDT)
+	id 60EDE8E00B9; Fri, 22 Aug 2025 13:19:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9DB758E009D; Fri, 22 Aug 2025 13:18:22 -0400 (EDT)
+	id 5E6BB8E009D; Fri, 22 Aug 2025 13:19:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CAFB8E00B8; Fri, 22 Aug 2025 13:18:22 -0400 (EDT)
+	id 4FCC08E00B9; Fri, 22 Aug 2025 13:19:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7738F8E009D
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 13:18:22 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 45209830B4
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 17:18:22 +0000 (UTC)
-X-FDA: 83805052044.14.E6EFFFD
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 6E45020002
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 17:18:20 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=EFGePOGa
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DCAA8E009D
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 13:19:37 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C042D830B4
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 17:19:36 +0000 (UTC)
+X-FDA: 83805055152.22.B6EF0B1
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 3A74D1C0006
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 17:19:35 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G73CbZDC;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755883100;
+	s=arc-20220608; t=1755883175;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TgAdJ3j72gnDK10Zxbk1Jlr1gL3qO4aUda16rZ52SIc=;
-	b=3teHM3h6MG+Q8RAWc0CEqAYgXQm7nGL/cJNOd+NVj4I8nNnQzyr5f9MYXCRAD0ZkTs/PkI
-	Lnz8Bh1xX5EfgSy9P8DVyuPPY/5maA+5EMV8b8ZlLu1UCuK0bnDF4ryJVqyoFG2GOkQoQ1
-	sZ5JTK9lMdLnTUCWgPh2b+/4SQEibps=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755883100; a=rsa-sha256;
-	cv=none;
-	b=b+69J8DVq4CliKgAbBfWMrjeWj0YK+LmiiAJVBHvtFSIDHRhVIK44IabMliAQoCA6EnX5l
-	znRvgUtKgToZ5NsWgIBnu15/HoaQ7XDR2QC7cY6gN3OJVACaJn6/XQET4R3QDiNGYHT1BX
-	n2Gk7eZZ9592TQWC+O/+TMPRWw30hjQ=
+	bh=GExbt+9NkOP7e5N77Re41QVaqPOlBYQr9613Z9xF/fo=;
+	b=T/Jwnj0Lo/7iBIXJGY/HdU0sNaVMWAEBV8TlUylQExq3kBytOJeiFnqhRuQTyV8mT9Befw
+	Kl4jDBKhdeG95a+OpXNgYpXcJeQMc3OVju25qGjgsLkPK+/7AagiBWjZ1wVk3oaq1DXGLU
+	wf+A0IREI9VF0W9QiLMNl75vpus6I84=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=EFGePOGa;
-	spf=none (imf03.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=TgAdJ3j72gnDK10Zxbk1Jlr1gL3qO4aUda16rZ52SIc=; b=EFGePOGa6D2SXlxUpDRnjmCtgR
-	yQtukIuL7IB5xaiOeg3u1jG2TssWZ64qIqI+TewseLBkChcx2+xSm69lZLM8FK8WbJSGoY/RP23yI
-	WY79LyvzwIAlAGiTsyvo6Q18e/Vd5vjxYbX/xNsdnpB2PWx4T+LFGTbVFKmLwVotVNS7nKPPSlRO0
-	b1ymmdHBMN4a8A1fm6/889OWlGZTj5Qg9/WWlpshs2MrPhbVhrfCXx1yImIwU4XUiU5D8rja0sY9q
-	TdedtQXlnhupdQLxVtQDduSnCJYRRocNwY99v/JzUKhHUOFwo/SrCRGNTXFSwB5W5THmjkl5ec5JK
-	HGWRWnyQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1upVP1-0000000ASDO-1DGI;
-	Fri, 22 Aug 2025 17:18:11 +0000
-Date: Fri, 22 Aug 2025 18:18:11 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Brendan Jackman <jackmanb@google.com>, peterz@infradead.org,
-	bp@alien8.de, dave.hansen@linux.intel.com, mingo@redhat.com,
-	tglx@linutronix.de, akpm@linux-foundation.org, david@redhat.com,
-	derkling@google.com, junaids@google.com,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, reijiw@google.com,
-	rientjes@google.com, rppt@kernel.org, vbabka@suse.cz,
-	x86@kernel.org, yosry.ahmed@linux.dev,
-	Liam Howlett <liam.howlett@oracle.com>,
-	"Kirill A. Shutemov" <kas@kernel.org>,
-	Harry Yoo <harry.yoo@oracle.com>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>, Andy Lutomirski <luto@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>, Kees Cook <kees@kernel.org>
-Subject: Re: [Discuss] First steps for ASI (ASI is fast again)
-Message-ID: <aKimU6tf7-RnwISE@casper.infradead.org>
-References: <20250812173109.295750-1-jackmanb@google.com>
- <cdccc1a6-c348-4cae-ab70-92c5bd3bd9fd@lucifer.local>
- <DC83J9RSZZ0E.3VKGEVIDMSA2R@google.com>
- <05c32a14-805c-4603-9afc-80e8f29b7957@lucifer.local>
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G73CbZDC;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755883175; a=rsa-sha256;
+	cv=none;
+	b=1LYMXkfOBuRBiG2MEwWl1XJEbjIjvbJArN51+9lY6ug2DNnq1E3w2mYwQP8RgExLudSxd/
+	9w6lOt/bTyofuoMf11chi9+Sk0DW8hnouApwfjo70c82SSo7f2y1GDluvn9QIRox6yye8H
+	hAXnf1j3B2wAJx8pYIz4T6/xNmoUhZs=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id A219AA58B34;
+	Fri, 22 Aug 2025 17:19:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D1FDC4CEED;
+	Fri, 22 Aug 2025 17:19:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755883174;
+	bh=2swlyeBT/bcwBSubBT1dYyvfKoicsRMLgw49qnxgwb8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=G73CbZDCMKUrbLz74C9Z7C8zuSKg/AfoA8WMBWCumKR7Qv9T3vcqsQ7sVZ2hTBDeC
+	 PmFOUcAJXDKQFxMWe+P2HbRHHvynJ8eWBYSr8+nRilaqVBK11MV/50QC7M2C0Fbboo
+	 Yo8alWdAVccYKHphkxE+6r+lgp2noo6o/aIpcBQRPfoM3CVyL7qoFHVqdV9qNWbKoM
+	 Ly3dF9X/Le8+Pi6Qwtg3Vc2Hh89FDwAIIOhbBB2ziZt+FOPkL+3jwm5uCIRGtXQQ2h
+	 WfVVLNP+C0wwqXnFiTRL3P/zRmbYm29D3n6hOUSOat1QXoLJTjvQgk2rHczq5egcb8
+	 Hv0HZPNXfSctQ==
+From: SeongJae Park <sj@kernel.org>
+To: Quanmin Yan <yanquanmin1@huawei.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	wangkefeng.wang@huawei.com,
+	zuoze1@huawei.com
+Subject: Re: [PATCH v2 11/11] mm/damon: add damon_ctx->min_sz_region
+Date: Fri, 22 Aug 2025 10:19:32 -0700
+Message-Id: <20250822171932.53804-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250822093420.2103803-12-yanquanmin1@huawei.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <05c32a14-805c-4603-9afc-80e8f29b7957@lucifer.local>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3A74D1C0006
+X-Stat-Signature: jtdjrgh3eweidt1grrnotnfr6ftnpfgu
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6E45020002
-X-Stat-Signature: t97cggzqqjnfxqhh9kwuctbr71mgwh5t
-X-HE-Tag: 1755883100-287241
-X-HE-Meta: U2FsdGVkX1/LAQ/IqmKDqIAo3b4l3s7QzvsPImo4At5et1tsDTwTIdlYNEOTKlurwnzbNTmAhmg4a1KKJlBQlQevM1zLZbabchOUxFjT+smWNllokGKMU27EuqbzlvCPvXwId1VwjQ3rn/HJFLrbVvA6mTDZiioIGo9Rn2MqFzXw9LXDPXt6pd5N3b9RQPXspnO8BM0O72+WU85DQo7WcQi7eDMSEgxfIlcNo9lg3SHA43tz9jZPSpXC7vuuO2hrjtDXGXNOjpO2ikF1fzAfvjU0A+mdDNpjoeptcIz3+/3u583uKoWTb+KU4d7NftX0NKBg0dlgulKuCGL/0v4as36cqzub2Q705UUe/T5FEL6y4BISvdF50FdLnIjhJVd9EAKFlso3cBxYQrRXOm6mTEAMqDbiMsGNCd8vqxypfrEysKFVmeJ3lpQWf/oln7L9smXfaRen+ERFCnmynnXPNp6X0Nc8KtlHhq7S2ZTao6EuVbzR00j79Ps+qEePRLFNtJyuNeTYE4xlFA0bAss/NK/oMHnXX3HDLBGmBq5r8bb7IttSt2dTpqQyMMTuw1PpdAi131e8TmtDwlIMmdjEsy87hV8RGNrF/yZy9tT0LoukkVM8PiF12H+gQ3qdcgcaJZaBj3Nrfj1X1crxKiighIXyOFvsOlS5pyAEw4RP1L2gyco9IhtrsHLMxIhjJjZCvV1U6+n4Nf7j5fyOkMTFP0KUb/QiMepEMci9Xgn2n7nMDNCQKkZxiy3HBhJTS5jeO5dCHKC32FKQebb8fUqwHHz+PPEBT5N4v+irssuMFj8eRaaIUefPzlb0k0TkK7L4g1vGJYLChwUNLi6Ewvbfh9v5Abz6nZUfVNFusKcppL7Bi00IPmF3ZHIy8g+JAX9y7dMtKgiRUciFgGamdRbcoi65mYY4JpIREkNA0QVBms95/gRd9LUDPpN+CwrQt0fpZKwydBDisjjDwWojA3G
- CLj4PfWQ
- 7q8sky2YfP7ll4klzNvfVXCl6uJVDebHZwKLgZtax/t0WjR9LlX9IHBvIi4yjoHlNCV95bYLJ4wmFaGKly4LySs0nMiK1q21piIvVwyPibxdFaILMUQYu4L3Jpfvh1sX7AF2ZTyPMfFoewV/OAj/gWF6NW/Iys5X2zBsfEq5eXfe0c6UbeJKf0fqmKA==
+X-HE-Tag: 1755883175-568661
+X-HE-Meta: U2FsdGVkX1+PzkvrsPlVIB4tKgC9uUEBoQATpntz6a9JMkXrRmBsnt68oWFF2VLUZP4hVSko6bZomZpa7BXlYdhdZjzhywlhGqWz0H2Xnj3DviV1w02x3kDFdIy9QsFALYr9EwlMPJTv/wJvYekjE0N/ZB5YSGs71qeUMR4muYhnVXZ5AKkg6a7AXX13mS4lKhaHpDFVEcjBxKt0Pja9Wbm/mpVg5Lm6wZu9L9IKPTgiMnR0+moMbgc4BOBjrgiIG8Yc2nCQMzS9IzEn+2i+vPuaJvkGjGmDKNJ0JOZKs98VtG5822buNhXjneGEUpRcwKc2vHu3JpTLdDS6Q/Hki7XUHgznA4NtwrHT3ZvtsN0Kyw7JwFB60DqhIftFygtTLkoba47IIgcGoWErCT005JUmbUudEnw4prWzkfyz0GIHtMxUnFfAZ6JtmA5fBXzqIA2Zgg34tOXOjCSd3od+HGW3fMf7rX5LxKFyu3rRibg/FpBI+hnlH8Q2VGFUHZ4MppoObOoUyoaTfctCMoYo0dl5CY7TZK2XBsLxpwIzubQshcO3Rp/5J1H+bG9rUgqE+YL8gxfelQZhs8/Vju575MnXhNmQzSKxPi/ScaqN2g3nTqoIThZoVu/rbFbnYsdRv3Ra18nzFuxT7vRrRcB+N9R6MxOnVsLnnppKlESrL7nm3ea6bc+OOHBqZ4Fbea4xT1NAEcLSLFj83i3T8f9LwF+lieiCpvW/xY1/Xb9LGIcQ580tzQK4Sgv3qDyYGgGYqXhEnPzHyD+BLfMDnKX1mqgb5PW2dMciZq1YY2JMA1U9izNzDcFnFGcsquuKzrRL03kj6a5SGdX2HrmeoURTS7FIsIrE053ouaHIo0UwPN4fTrT3zOpqommK+a82R0OBNGQh+NrQKtsp7tu23b8vpaaZJqbsUX5ehsfzgAcA3mEvG/5xf0ib0CO0WMu9+b9fVzUyfXkhQ0IvXCdTKP8
+ FYCpB3oh
+ +LTLi6ZFqr0XaLm6iqkxFS15qV5ts57+IWW6ZBNgDAsFx9yz24mVvkEgKZIRD2XX2drn+C6zK6Mx46Yg09m6kfGr2rpVTEg+AXchDML2YR8KeswXuXrG4K6zq+9O49rtBagj14LeertZdm5uNhwvr0OtUSF10hALl6KV/SRIexnCGMkSWWsW9p5OAMztDEntdVoga0Pa33jzRTHrNqbLFd4d8pUFRozLHsw1fNxQ5ksdh4VgtIJhk5DDMaeLK/Pool5czTLJcw7LE8UuBVPkPyBQIrDIndbVFMDigyNWYpjvsNew=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,56 +96,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 22, 2025 at 03:22:04PM +0100, Lorenzo Stoakes wrote:
-> > What I think we can do is an mm-global flush whenever there's a
-> > possibility that the process is losing logical access to a physical
-> > page. So basically I think that's whenever we evict from the page cache,
-> > or the user closes a file.
-> >
-> > ("Logical access" = we would let them do a read() that gives them the
-> > contents of the page).
-> >
-> > The key insight is that a) those events are reeelatively rare and b)
-> > already often involve big TLB flushes. So doing global flushes there is
-> > not that bad, and this allows us to forget about all the particular
-> > details of which pages might have TLB entries on which CPUs and just say
-> > "_some_ CPU in this MM might have _some_ stale TLB entry", which is
-> > simple and efficient to track.
+On Fri, 22 Aug 2025 17:34:19 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
+
+> Adopting addr_unit would make DAMON_MINREGION 'addr_unit * 4096'
+> bytes and cause data alignment issues[1].
 > 
-> I guess rare to get truncation mid-way through a read(), closing it mid-way
-> would be... a bug surely? :P
-
-Truncation isn't a problem.  The contents of the file were visible to
-the process before.  The folio can't get recycled while we have a
-reference to it.  You might get stale data, but that's just the race
-going one way instead of the other.
-
-> > > Hmm, CoW generally a pain. Could you go into more detail as to what's the issue
-> > > here?
-> >
-> > It's just that you have two user pages that you wanna touch at once
-> > (src, dst). This crappy ephmap implementation doesn't suppport two
-> > mappings at once in the same context, so the second allocation fails, so
-> > you always get an asi_exit().
+> Add damon_ctx->min_sz_region to change DAMON_MIN_REGION from a global
+> macro value to per-context variable.
 > 
-> Right... well like can we just have space for 2 then? ;) it's mappings not
-> actually allocating pages so... :)
+> [1] https://lore.kernel.org/all/527714dd-0e33-43ab-bbbd-d89670ba79e7@huawei.com
+> 
+> Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
 
-For reference, kmap_local/atomic supports up to 16 at once.  That may
-be excessive, but it's cheap.  Of course, kmap only supports a single
-page at a time, not an entire folio.  Now, the tradeoffs for kmap_local
-are based on how much address space is available to a 32-bit process (ie
-1GB, shared between lowmem, vmalloc space, ioremap space, kmap space,
-and probably a bunch of things I'm forgetting.
+Reviewed-by: SeongJae Park <sj@kernel.org>
 
-There's MUCH more space available on 64-bit and I'm sure we can find
-32MB to allow us to map 16 * 2MB folios.  We can even make it easy and
-always map on 2MB boundaries.  We might get into A Bit Of Trouble if
-we decide that we want to map x86 1GB pages or ARM 512MB (I think ARM
-actually goes up to 4TB theoretically).
 
-If we're going this way, we might want to rework
-folio_test_partial_kmap() callers to instead ask "what is the mapped
-boundary of this folio", which might actually clean them up a bit.
+Thanks,
+SJ
 
+[...]
 
