@@ -4,113 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99CFBCA0EFA
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 01:59:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF793CA0EEB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 02:01:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9135280006; Thu, 21 Aug 2025 21:59:30 -0400 (EDT)
+	id 2742A280007; Thu, 21 Aug 2025 22:01:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B41EA8E0056; Thu, 21 Aug 2025 21:59:30 -0400 (EDT)
+	id 21E878E0056; Thu, 21 Aug 2025 22:01:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A584D280006; Thu, 21 Aug 2025 21:59:30 -0400 (EDT)
+	id 10CF9280007; Thu, 21 Aug 2025 22:01:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 957A78E0056
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 21:59:30 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 46D7C1A0437
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 01:59:30 +0000 (UTC)
-X-FDA: 83802736500.25.48C615B
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6DC4E1C0004
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 01:59:28 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="fwCb0/jz";
-	spf=pass (imf21.hostedemail.com: domain of dlemoal@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F06988E0056
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 22:01:34 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9C5B81A0619
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 02:01:34 +0000 (UTC)
+X-FDA: 83802741708.12.C7EC48E
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	by imf20.hostedemail.com (Postfix) with ESMTP id DEDB01C0005
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 02:01:31 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf20.hostedemail.com: domain of tujinjiang@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755828092; a=rsa-sha256;
+	cv=none;
+	b=WuAL4+SfAf2W3sLd57FQR0rMsjocZsO+ggAVeGT16s1Gxad0JrE9sOtqepS+2HxjP9RgRz
+	4MlsGqagWeQH1yHvafm7j+T9rfzf+08Cug/BBS1iaHNtbZiTpIw9U1OFVS6IXXK9L4milK
+	2yHQDMatW2sCP6VVz9iHpypS5AC0qM8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf20.hostedemail.com: domain of tujinjiang@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755827968;
+	s=arc-20220608; t=1755828092;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TYwcfR40TeWsfT3bxGe5ccvVRM+x9ilYYyOeQE763K8=;
-	b=DWO8DzerqvBiLux1JI3MY3M14ti0R2WL4ZRbRxVxNVIg+Rb2S5+Etwo6bMr5dHTejYxyko
-	AJz1FTdQnKS2lMlq7rRuYfaw9QZU78Zy0+nDrXNavi9I708jBA6/8tDJ0MP10ItgfN5KKZ
-	1y695C2gSVURZIGZT5aJmm/xgyMMqSE=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="fwCb0/jz";
-	spf=pass (imf21.hostedemail.com: domain of dlemoal@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755827968; a=rsa-sha256;
-	cv=none;
-	b=eTGJBGxObhwZDO708pNvf9SFCH836k8Z2Lez/zQt0cpQbrN8aRTj2OH1axHgih87843Sy0
-	DL6DSfH/Jslv7KUtpcYj0XPR+lBTFYK89FFY1I/eujpYPJqDplaYcvOiR8S8puTdAg2dgW
-	T5/QCoWgUUQbhwME1AyQ0E9SBrC+Xk0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id BB83A5C6103;
-	Fri, 22 Aug 2025 01:59:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0940C4CEEB;
-	Fri, 22 Aug 2025 01:59:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755827964;
-	bh=hEGBgFk9rer7lwQXMpzjj4FPsIa17LEhE/UyLSIHv80=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fwCb0/jzIQkNPwEVBU6dtHyOVey66bf/HcR/iNP6aS0AhxrgrvMe34HD6vjnkGUZf
-	 z1O8tLkMNZpr+UzcBZV9dLBbBCwOaf+NQwl5ntySvGabL1KCpUaRFv+wfDydW+poVi
-	 X5XvF2zmqSX16ZKS+hqRP+DFJCxEdKcM7wYo6L7tOqHJI3XrYsnweALvOp8+KSqJnD
-	 2bWhxr7953gGHvjXyBJUoUfk/Lgb2omKSw1C8cEO/Qv3yAqSEKl2XaKQVhYluUWO/h
-	 UsLkNxPauxpS9RjmwleNolFzOVx4bdRBpqA+ZD7ACyej3l0Oe7T142W2dhwsBnQaC9
-	 DSd2Q1+ARL+Zw==
-Message-ID: <3812ed9e-2a47-4c1c-bd69-f37768e62ad3@kernel.org>
-Date: Fri, 22 Aug 2025 10:59:15 +0900
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IdLWXeDWl9pCD5D4sY9b3UoHjcmQ5mBfOjHUzl63O/A=;
+	b=iYPEQ54EPHbni6bRHfku1AK5K7eCUDN/UHp0WS/z1iv9ozAQs6qasoAlBuBAoDaSIgbM+T
+	R5NKSgzNUjEjUJX8CuT+w2zY8xpszARnZaiq1RTapBVCTHQ8LDxT1z7y7AJVyAX3M9RDjS
+	l7Fyr5Bk9POVYvFAAGIbWBAwnm05+5w=
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4c7NdP1ZZbz1R8kT;
+	Fri, 22 Aug 2025 09:58:33 +0800 (CST)
+Received: from kwepemo200002.china.huawei.com (unknown [7.202.195.209])
+	by mail.maildlp.com (Postfix) with ESMTPS id 083361A0188;
+	Fri, 22 Aug 2025 10:01:27 +0800 (CST)
+Received: from [10.174.178.49] (10.174.178.49) by
+ kwepemo200002.china.huawei.com (7.202.195.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 22 Aug 2025 10:01:26 +0800
+Content-Type: multipart/alternative;
+	boundary="------------vsv5Kpa9cMDEP2Z9L30niGRU"
+Message-ID: <4bd32b35-f244-4f39-a009-38c028d86a06@huawei.com>
+Date: Fri, 22 Aug 2025 10:01:25 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 24/35] ata: libata-eh: drop nth_page() usage within SG
- entry
-To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
-Cc: Niklas Cassel <cassel@kernel.org>, Alexander Potapenko
- <glider@google.com>, Andrew Morton <akpm@linux-foundation.org>,
- Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
- Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
- dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- iommu@lists.linux.dev, io-uring@vger.kernel.org,
- Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
- Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
- kasan-dev@googlegroups.com, kvm@vger.kernel.org,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
- linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
- linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Marco Elver <elver@google.com>, Marek Szyprowski <m.szyprowski@samsung.com>,
- Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, netdev@vger.kernel.org,
- Oscar Salvador <osalvador@suse.de>, Peter Xu <peterx@redhat.com>,
- Robin Murphy <robin.murphy@arm.com>, Suren Baghdasaryan <surenb@google.com>,
- Tejun Heo <tj@kernel.org>, virtualization@lists.linux.dev,
- Vlastimil Babka <vbabka@suse.cz>, wireguard@lists.zx2c4.com, x86@kernel.org,
- Zi Yan <ziy@nvidia.com>
-References: <20250821200701.1329277-1-david@redhat.com>
- <20250821200701.1329277-25-david@redhat.com>
-Content-Language: en-US
-From: Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <20250821200701.1329277-25-david@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6DC4E1C0004
-X-Rspamd-Server: rspam04
+Subject: Re: [PATCH] filemap: optimize order0 folio in filemap_map_pages
+To: Matthew Wilcox <willy@infradead.org>
+CC: <fengwei.yin@intel.com>, <akpm@linux-foundation.org>, <david@redhat.com>,
+	<linux-mm@kvack.org>, <wangkefeng.wang@huawei.com>
+References: <20250819140653.3229136-1-tujinjiang@huawei.com>
+ <aKSdsH_yk69EvkMX@casper.infradead.org>
+ <b7a1100c-2302-4781-97c3-1146ed2b44a7@huawei.com>
+ <aKXCz0QOlE8QkPIn@casper.infradead.org>
+ <98f0333d-1ae6-4a5b-b5cd-c8abddbfae5e@huawei.com>
+ <aKcU-fzxeW3xT5Wv@casper.infradead.org>
+From: Jinjiang Tu <tujinjiang@huawei.com>
+In-Reply-To: <aKcU-fzxeW3xT5Wv@casper.infradead.org>
+X-Originating-IP: [10.174.178.49]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemo200002.china.huawei.com (7.202.195.209)
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: 1ofc837x5sp6xnpf49xpff4i8rfi3yn9
-X-HE-Tag: 1755827968-750256
-X-HE-Meta: U2FsdGVkX1+eGHviy8QeGN4XGfMY+N016xnl2S+NEOxIdUb6BvGFRcA8risR5px6dBoq/2cOV4nX1yQTVX8f2XBxOP6Pk2LTY/3gqli0skyW5hMz8QNGButyP0VeScmwxADFKY6WuqBsc1rUHOZEFW0msfhfHXWWPKXsbV5MJGPYLEJG+pbvvXXIAn0nGNnMOHc4vNK6bFIZspx6cQpcrR7BiYEAbIZOS97Ox2jKWt776qRnRp6ZWe7op4OFu879hHcxm5gMk8aRz3F3py/M+tUTjwggIUbBa7x8YESLCFh1A5ORHrRb3Fo8zTXFkfuc0y7+Jliz/Z1rtgh5FBGPwbcAyJLy2VF7qSceAMBdpJ6C7eJiiGTmueZWuyovYQR3L0+DEnguFoMZVI5Y1mHs7qGMkN6y9B9jpy2KAkOIMcRuUhJt7dYSM3FLcLANcIZOZL/WyEmWHUx9E/c8RM02Jaz5Zb4ptfG9E+nBKz+H5XTTSP5pseTDHtM2pinL8BesptxRL3PJwCNRm1dgy7Sc5UV02pwasF4yaAWpQZpmjc6tLc9ITfJ7I0+VgfaweOgA1dEIdE/ZgGV7HbKuYfzEjo/vibC2b5vDT4R3T70H+/FzzETiPdNY5ZJrTlNRw9ia61NQ5wdFh//zY1fgkjkz6aTcbkGcXOnr7eF/x/PjRBNdVwgVXxVXVkHSPkLwdn6eWUSg0n34I/AHIQf4W8YulriHHi7ygRaQV4oKjSzvf8ylmTzZ2Jh+4Gncilk8wDnZ1qoz1TFh0L6+XB1BxSYrqUEmm5U0CPzRlzaDrZrrBGapWSbEcOkyghmM2uZFIr4uOBUo6ae8uV4Ne7RHjty2Hd2x6Qfpfy9atIQBMUi2fevPNZ3xob0N1T+D1wG3Jyzp5H/8wNROWF4EAg/nm5dAuSAna6GFQ3IM2JG+ZfHiB120i2pHfjsrkXaTH/xllV5Oyvvdu7yiOnphNExQ9DE
- 50G6S8Xe
- hDCLNyWfukkTsoy4fXW9hPiMq0ehgEv/4V1xhQpt/gLC9FmA/RdlUwVltDOwwryZH+Gjak/6qFkbnNpO3j7FjXcwC1GeHAyprfTEx2WWOuI7hzHXAhUyQR6RZj3jxX4TUTRSCC0HndFxCjVOj5cBLU8P1r2XBUCQocv8MOwmVk1py+wL8PDUbVDvoO69k0MauWwoc02hshXy/I4Q4yXzWLfAL5fhFJqELlti16lykYw9SkMU6w6eu7TBOkg9FSgChR//7KlBFDYqcKevSolYEhGupRKfDTHKdGleKWr9ze0jb1DQa5Q3rjTtv4EnQCLjVA4Rt8gKuCoH2CFoLLARmHqERicVXbpycnRwYJuGm5U27JZxnoY/JRiEcwxhZSeyNnPil
+X-Rspamd-Queue-Id: DEDB01C0005
+X-Stat-Signature: es5wo41m8s6ahsemqea3szctbr8jo8h8
+X-HE-Tag: 1755828091-798254
+X-HE-Meta: U2FsdGVkX19hyyRVo8dGY8A1kKHMOkk4UUPVpwvLYzOBx10sBQ2avUJpOrMI8seKj8MF82Xh8rrCpp1+nPVvWdt5IlmpB3pkEy7Y8VDpWUFpmiQmRwOlgc79+xEePPKJikIjfio9oDa1ItExg9UncwJtX82N6flBcuaoIMI87cL3CoKyEU8z/uk2bDVDwrYq+qEEKU5yd0Tvpu4nEw79/RlQV2DgbXmBRMGOXc0vbmJ3yWHXupeeg/514ArWvvbMBnjuIePDsyhVxWY7uXY84upXig4IE4lC9c/Fh25/DKKOhGjlXXpSGBek+vVffCdBOBs8tclAzM1oFG4aoUxXD+CaUbsxMLdwHHbagD6E0VUiHJn7J8qVpMbTasIf2vacQMJzBDjRT+TL+B+8bdK6B7kNy7JHALOV00aam6qzav/NoeWR/qhDSmZ0zAIKJh/xQxDiQRnD8Qw35bOMOUd/eo/XZKHQ7jMdJd5bhJSrONlqsGUhZn6Cvkd/w9cHEcZaIGmGltM0cCjyas0xj9z8ggtFzf1FikswuOAbtiEZI0dJOc5xRykTVyvKrsaG0hLjURwD1poMOC2atMLxRXiMblMh3G1oTKCdO/+LDzElNu+JQcD97k1ZCAF3qdoe7KWv3NWF6vaaDbqeWNHS1TExgUIGIlWtK9EDOloQ0OZKCokMaMm9CCQRpmU9kpxQuWWF+QZfOVQNBLJ50xAnCZj51tKWYvx28Px++iFdU5T5fknlvV68XW7FcwenV+RKNK/shozgZ2IGQlujBMZkTnL3qGLsLX3tv8Uw3ldXNPVPp05vFyg7traCqeITTJgWu5iZsJTVI4FMTiPWsMzWUIGAxk3rH7kiDfTuSvPDGQClzFNV40ix8kyXF+tTRhIpJ+f4qsYo2wATY+hyfSgghWKsvNUX153N/3xWa3TXZDQ6VPdqVBVHtLr+VlF+2z95a7mAP8catFoMV+WhnM23O0d
+ Z3aTIuUO
+ N8/WCZaqngxWto5682ANevP2eWjYK4RGb2yqv8wo8KegLx+oXvb7tZI1ALJCEMY79cd//yW+O2vOD2tSie9mytbMspuxkGQlVuF0C5JZt0/hbDHC38D7UpsGU03dbC0DjWvqLuVpbQQZc0Lzk/FIHkzL+x2Wy/d51vRnOCHpDtqNmgtUA3z3CvmRyslFNn/smGtRkgik9Qorp9CQ1Boby9csN+yRbXZReWOf1qlHgkEueXusEkNJVm0MvsGg2t40ag/ypOKUgppBXn3YveKD7fRtC3H5s8V0Eapz9Hefm2kMUGTNEm8K6vz2b0/AC2CefNay8Wq9mVGENAIPJVFe+TB4Onm9CsMVH2vfJsRqzCEQit73d+z6ZlrDfMLk+3vnewIt3XkPhzuUNProoomT6hNKNBoOQr7t4h6XF6eGyi5SZ8obzERjsBGHFruBVxFlYy49p
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,57 +95,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/22/25 05:06, David Hildenbrand wrote:
-> It's no longer required to use nth_page() when iterating pages within a
-> single SG entry, so let's drop the nth_page() usage.
-> 
-> Cc: Damien Le Moal <dlemoal@kernel.org>
-> Cc: Niklas Cassel <cassel@kernel.org>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->  drivers/ata/libata-sff.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/ata/libata-sff.c b/drivers/ata/libata-sff.c
-> index 7fc407255eb46..9f5d0f9f6d686 100644
-> --- a/drivers/ata/libata-sff.c
-> +++ b/drivers/ata/libata-sff.c
-> @@ -614,7 +614,7 @@ static void ata_pio_sector(struct ata_queued_cmd *qc)
->  	offset = qc->cursg->offset + qc->cursg_ofs;
->  
->  	/* get the current page and offset */
-> -	page = nth_page(page, (offset >> PAGE_SHIFT));
-> +	page += offset / PAGE_SHIFT;
-
-Shouldn't this be "offset >> PAGE_SHIFT" ?
-
->  	offset %= PAGE_SIZE;
->  
->  	/* don't overrun current sg */
-> @@ -631,7 +631,7 @@ static void ata_pio_sector(struct ata_queued_cmd *qc)
->  		unsigned int split_len = PAGE_SIZE - offset;
->  
->  		ata_pio_xfer(qc, page, offset, split_len);
-> -		ata_pio_xfer(qc, nth_page(page, 1), 0, count - split_len);
-> +		ata_pio_xfer(qc, page + 1, 0, count - split_len);
->  	} else {
->  		ata_pio_xfer(qc, page, offset, count);
->  	}
-> @@ -751,7 +751,7 @@ static int __atapi_pio_bytes(struct ata_queued_cmd *qc, unsigned int bytes)
->  	offset = sg->offset + qc->cursg_ofs;
->  
->  	/* get the current page and offset */
-> -	page = nth_page(page, (offset >> PAGE_SHIFT));
-> +	page += offset / PAGE_SIZE;
-
-Same here, though this seems correct too.
-
->  	offset %= PAGE_SIZE;
->  
->  	/* don't overrun current sg */
+--------------vsv5Kpa9cMDEP2Z9L30niGRU
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
--- 
-Damien Le Moal
-Western Digital Research
+在 2025/8/21 20:45, Matthew Wilcox 写道:
+> On Thu, Aug 21, 2025 at 09:22:48AM +0800, Jinjiang Tu wrote:
+>> 在 2025/8/20 20:42, Matthew Wilcox 写道:
+>>> On Wed, Aug 20, 2025 at 09:10:56AM +0800, Jinjiang Tu wrote:
+>>>> We should call folio_unlock() before folio_put(). In filemap_map_order0_folio(),
+>>>> if we doesn't set folio into pte, we should unlock and put folio.
+>>> I agree that folio_unlock() needs to be called before folio_put().
+>>> What I don't understand is why we need to delay folio_unlock() until
+>>> right before folio_put().  Can't we leave folio_unlock() where it
+>>> currently is and only move the folio_put()?
+>> In filemap_map_order0_folio(), assuming the page is hwpoisoned, we skip set_pte_range(),
+>> the folio should be unlocked and put. If we only move folio_put() to filemap_map_order0_folio(),
+>> the folio is unlocked when filemap_map_pages() doesn't hold any folio refcount.
+> Oh, I see.  I misread your patch; sorry about that.
+>
+> However, it is still safe to move only the folio_put() and not move
+> the folio_unlock()!  It's a little subtle, so I'll explain.
+>
+> We must not free a locked folio.  The page allocator has checks for this
+> and will complain (assuming appropriate debug options are enabled).  So
+> this sequence:
+>
+> 	folio_put(folio);
+> 	folio_unlock(folio);
+>
+> is _generally_ unsafe because the folio_put() might be the last put of
+> the refcount which will cause the folio to be freed.  However, if we know
+> that the folio has a refcount > 1, it's safe because the folio_put()
+> won't free the folio.  We do know that the folio has a refcount >1
+> because it's in the page cache, which keeps a refcount on the folio.
+> Since we have it locked, we know that truncation will wait for the unlock
+> to happen, and truncation will be the last one to put the refcount.
+
+Ah, I see. Thanks for explaining this.
+
+The performance gain is from decreasing atomic operations of folio's refcount,
+is irrelevant to folio_unlock() call. So maybe it's no need to introduce this sublte change?
+
+--------------vsv5Kpa9cMDEP2Z9L30niGRU
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">在 2025/8/21 20:45, Matthew Wilcox 写道:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:aKcU-fzxeW3xT5Wv@casper.infradead.org">
+      <pre wrap="" class="moz-quote-pre">On Thu, Aug 21, 2025 at 09:22:48AM +0800, Jinjiang Tu wrote:
+</pre>
+      <blockquote type="cite">
+        <pre wrap="" class="moz-quote-pre">在 2025/8/20 20:42, Matthew Wilcox 写道:
+</pre>
+        <blockquote type="cite">
+          <pre wrap="" class="moz-quote-pre">On Wed, Aug 20, 2025 at 09:10:56AM +0800, Jinjiang Tu wrote:
+</pre>
+          <blockquote type="cite">
+            <pre wrap="" class="moz-quote-pre">We should call folio_unlock() before folio_put(). In filemap_map_order0_folio(),
+if we doesn't set folio into pte, we should unlock and put folio.
+</pre>
+          </blockquote>
+          <pre wrap="" class="moz-quote-pre">I agree that folio_unlock() needs to be called before folio_put().
+What I don't understand is why we need to delay folio_unlock() until
+right before folio_put().  Can't we leave folio_unlock() where it
+currently is and only move the folio_put()?
+</pre>
+        </blockquote>
+        <pre wrap="" class="moz-quote-pre">
+In filemap_map_order0_folio(), assuming the page is hwpoisoned, we skip set_pte_range(),
+the folio should be unlocked and put. If we only move folio_put() to filemap_map_order0_folio(),
+the folio is unlocked when filemap_map_pages() doesn't hold any folio refcount.
+</pre>
+      </blockquote>
+      <pre wrap="" class="moz-quote-pre">Oh, I see.  I misread your patch; sorry about that.
+
+However, it is still safe to move only the folio_put() and not move
+the folio_unlock()!  It's a little subtle, so I'll explain.
+
+We must not free a locked folio.  The page allocator has checks for this
+and will complain (assuming appropriate debug options are enabled).  So
+this sequence:
+
+	folio_put(folio);
+	folio_unlock(folio);
+
+is _generally_ unsafe because the folio_put() might be the last put of
+the refcount which will cause the folio to be freed.  However, if we know
+that the folio has a refcount &gt; 1, it's safe because the folio_put()
+won't free the folio.  We do know that the folio has a refcount &gt;1
+because it's in the page cache, which keeps a refcount on the folio.
+Since we have it locked, we know that truncation will wait for the unlock
+to happen, and truncation will be the last one to put the refcount.
+</pre>
+    </blockquote>
+    <pre>Ah, I see. Thanks for explaining this.
+
+The performance gain is from decreasing atomic operations of folio's refcount,
+is irrelevant to folio_unlock() call. So maybe it's no need to introduce this sublte change?</pre>
+    <blockquote type="cite"
+      cite="mid:aKcU-fzxeW3xT5Wv@casper.infradead.org">
+      <pre wrap="" class="moz-quote-pre">
+</pre>
+    </blockquote>
+  </body>
+</html>
+
+--------------vsv5Kpa9cMDEP2Z9L30niGRU--
 
