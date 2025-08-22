@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75D28CA0EEB
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 13:28:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5348BCA0EEB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 13:28:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A247B8E00AA; Fri, 22 Aug 2025 09:28:24 -0400 (EDT)
+	id 9FDAF8E00AB; Fri, 22 Aug 2025 09:28:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FBD38E009D; Fri, 22 Aug 2025 09:28:24 -0400 (EDT)
+	id 9AF188E009D; Fri, 22 Aug 2025 09:28:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 939668E00AA; Fri, 22 Aug 2025 09:28:24 -0400 (EDT)
+	id 875D48E00AB; Fri, 22 Aug 2025 09:28:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 824A28E009D
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:28:24 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 427271DA5D9
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 13:28:24 +0000 (UTC)
-X-FDA: 83804472528.26.17C0DCC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id A0FC51C0007
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 13:28:22 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MCPvCLvt;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf20.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755869302; a=rsa-sha256;
-	cv=none;
-	b=TnCO00ZaUH/8CTFFD6XEzBODbPUvgf56BWKUko783k7lbd9PDHa1p4z1umEYWV3hOV5iMT
-	VbLWy8+LEJ96jTDiyvv38ruQQfjixfn5+ClNa+7CYBJaHxmoj+PB5Fp+7kIHsn6b7WSk/e
-	VOQgfVIDm0FMA7BY+58HoRVUn7ukRpY=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MCPvCLvt;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf20.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 776EF8E009D
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:28:28 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 02F9B116AE3
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 13:28:27 +0000 (UTC)
+X-FDA: 83804472696.23.6E6AADC
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 3D48140003
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 13:28:26 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VYSuwc5z;
+	spf=pass (imf07.hostedemail.com: domain of gregkh@linuxfoundation.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755869302;
+	s=arc-20220608; t=1755869306;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=0coQVjM2MkecgVNQYHuctXCkjyU502OEx0D+TJ+GK2w=;
-	b=lwjdMNASqTUr480UJcS1ZokQizoQVc91+btHvUFWEmKu0LRRAqUDUkEgklB1gLfSWY3xcH
-	qCNn2Rccb4XhyF+BGcxMGPCSn0JqdgJW5WMkNNNgQQxTx5iPsnk4THX26rIEdomGOU3Odb
-	TgXotNRtWKafz2WwbFqegaEYNcj8JMQ=
+	bh=fqC/Spz2Hq2FVjUT65d+ktoThn3kySBVEzXaDURClfI=;
+	b=fj/4chkARqEtSkPjrSJ4W6HPkbPg5VUKFwfPLR6g7h9f2EvWR9WWuhKnvIR13xznbdgRyM
+	8LlYzZ+zEz5I/5o3QlzRxXgS1RVDWCyNZD/e3UrZK2DYcdFGGYLMivlvKeURVUfkt0AZSp
+	oQN2mwF3l8621eZ+8apMEX8kuHhIrYM=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VYSuwc5z;
+	spf=pass (imf07.hostedemail.com: domain of gregkh@linuxfoundation.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755869306; a=rsa-sha256;
+	cv=none;
+	b=boqWaMxS0Zo6TyWhp67M6my+OcZF7XhKcjb15tFM9NOf+3fk4+j7pjyTVX5ijImdNYb/Aj
+	ueclZCOgvrnv0BKrPEK3GAVaGlf1Wk2dZDVTHUMwFUNP+e62bS3VAaWBRICsBcbKAH1P46
+	Ohug2Y9kiMdKwGF15ikV48pNq2J9exM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 107E66026E;
-	Fri, 22 Aug 2025 13:28:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CFF1C113CF;
-	Fri, 22 Aug 2025 13:28:21 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id A3904A58A0E;
+	Fri, 22 Aug 2025 13:28:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D468C4CEED;
+	Fri, 22 Aug 2025 13:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755869301;
-	bh=Qmw/eiL8JcdFuBvzIRsykB9uK/Y0cvX9AVZ4Z07ntPY=;
+	s=korg; t=1755869305;
+	bh=0qXYlDRajCqE1UuEPQ9xvBU0VYwa8pcHwIGL0Wg2jbU=;
 	h=Subject:To:Cc:From:Date:In-Reply-To:From;
-	b=MCPvCLvtaU4tXwVeFE1Ai6JGbXJUZE16/b7+0WsWFqPZJegasz4XkUmphfmGw3FSh
-	 AJP2127VJU0cWtMH9zWnJwyxxxxT4cUD/nnx8zkTOcL+22xtbGG4BU/YWy9AviX5Ym
-	 daY760ikUy2UAZ4ShIHjeUnR6va4l8yWAmUKqCEM=
-Subject: Patch "mm: reinstate ability to map write-sealed memfd mappings read-only" has been added to the 5.15-stable tree
-To: Liam.Howlett@Oracle.com,Liam.Howlett@oracle.com,akpm@linux-foundation.org,aliceryhl@google.com,baolin.wang@linux.alibaba.com,david@redhat.com,gregkh@linuxfoundation.org,hughd@google.com,isaacmanjarres@google.com,jannh@google.com,ju.orth@gmail.com,kernel-team@android.com,linux-mm@kvack.org,lorenzo.stoakes@oracle.com,mhocko@suse.com,pfalcato@suse.de,rppt@kernel.org,shuah@kernel.org,surenb@google.com,torvalds@linux-foundation.org,vbabka@suse.cz
+	b=VYSuwc5zkT68u0lT2K9gbmc+5JrVROybe25+DpiNr9hZC8PD+m1MZQsPh7Bv8L0Xh
+	 aHQrq2LOGdAxOkJNRjr4s+amDmsBF36CXwTUc/blsD09Kc2t2gYBOeN/1P/zBeIODU
+	 Tr2hajjWN6XZlvdwAxRfqxsv6qxcOfrnES4c+VDs=
+Subject: Patch "mm: update memfd seal write check to include F_SEAL_WRITE" has been added to the 5.15-stable tree
+To: Liam.Howlett@oracle.com,akpm@linux-foundation.org,aliceryhl@google.com,baolin.wang@linux.alibaba.com,brauner@kernel.org,david@redhat.com,gregkh@linuxfoundation.org,hughd@google.com,isaacmanjarres@google.com,jack@suse.cz,kernel-team@android.com,linux-mm@kvack.org,lorenzo.stoakes@oracle.com,lstoakes@gmail.com,luto@kernel.org,mhocko@suse.com,mike.kravetz@oracle.com,muchun.song@linux.dev,osalvador@suse.de,rppt@kernel.org,surenb@google.com,vbabka@suse.cz,viro@zeniv.linux.org.uk,willy@infradead.org
 Cc: <stable-commits@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Fri, 22 Aug 2025 15:28:10 +0200
-In-Reply-To: <20250730015337.31730-4-isaacmanjarres@google.com>
-Message-ID: <2025082210-broadly-handclasp-7537@gregkh>
+In-Reply-To: <20250730015337.31730-3-isaacmanjarres@google.com>
+Message-ID: <2025082210-preface-grimy-5a21@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-stable: commit
 X-Patchwork-Hint: ignore 
-X-Rspamd-Queue-Id: A0FC51C0007
-X-Stat-Signature: hcso3pfbwqucghs8qezb6ofmeuu3uekc
+X-Stat-Signature: 9t1efcr31iexqsbgy5s5y8oyb55j1cd7
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1755869302-403392
-X-HE-Meta: U2FsdGVkX180ZGYivo6GLgqBwm3lbgKrNfGRNzslsoTOsx2AvmtlUkYy+Pr9nYPSJpZIPFidKZF4GAgYswNPibpSpndGDMr4+FgQVuQ83nsdxOwLnCf/xu45FgKH5Okyd4oGPdtUQt9AzxTbePdzkCjcaM8s1H+2T86tITX2/cM8YgKOEobj1s8WKNUmSXRFfD7IvSKVHba0pxgheUlJmHmR/kc7Q5PWxh5wdJnhBj3j9qMCyanXCCWEoxwuGMoHasefHBUOy7SeSGu+Mm0rHCAINPT6Ziu0TQTE4uGVu7Nxmzndex4+9wLvlf1LtIY32o+6HqoQ9k7JVwOBQqnmbbe+szdItM7zhHbThC5iarlYNYppMSR+WX/R9iL1ZKJi2naYTuYVajPZ3UrYDc9zFeJl3nrSe6TCvbw3ntWTE7d7rVauOuahDAvaLVfoKeXIuen/dSx0vMA9zMlQpSIu4Pwg4y+fuytD6HyD3cgXGgKpQP5VBxxR4jr4Ylgqrko7WNC3aWxM268xT9UAZVXlZ6qg7l6EBgYo/0sDVurjUOReejeuiGpyTFw/tf9Kcpv1hd7+iMXxpBfL94qblB7BY4CIVJw/ejl60yCRKuL244oHTNLAhs/FR4g08uWCQ3udFxM3PtfJSxGIDu8UWmKd4UR2FXBranPgnTg/Nq1WE1vviyynJPM+BES46ZUaB1tLQTMc29go0M4mdEjOemMdKGCgDvixQ3GlD433IYopZgB6m5l2wMhfk2P2XKESPptZvd9wNUWVmdv8gm+yGCl452IYzniJnTdHdyGDrurGqxEtdLxpiJE0i6n/ZEX9IRrJ42MLN4by+ZKBSYBzHwFOIT3A5vSRzJMM2NW8rTcPI5Z5TiUpLBVpWCUvaux71vjVOjZVD690IgjVMxJKWpPqXPDPXpsGN7LbYYCeuBtZ+/scbz1cLxL95XDak0vKGuA7upTRZU/XdOpZex7InbW
- oMNy2vKq
- S5rKKnBLSu+90N1bv+IspauNrsQz0zuFEfHs2ZyqhcJ5ioE9B0V91XIMVVmkO7l7LkcDbsfRJe2KCAsm0JopUyfDcXr5n8lVKvDN6vwg6qkBCWtguj4BE92XZx4UufSUN/R5vyZTNHR4Pk348MpFGrTVIpgCEUlsRSY3IlSz1g87tHMF+2bfZspCFRJFqxjfDZZG7fdVZdZv+Auw0xJ1h7FPb+dYwilAQCKVArMitbdOwcqqztuVLyUbYVgToZEFHpb6DcoprFfwAVihyR7EkeSDfy9YJvlXWONrnVKxJs2wKoT1JO45ujfNdzTRW057BK3VCvddGmD/MorEudLJd9SusXi92m88sRYP3lxj9vdM3WahHX4IdBGdx9SYUtjosIuftUFsRVmnIMWjxNFZh5326XXIGe0Q82CZk+ou016y5/acV3xbL8C5t4bvFt2Z/nBhCrFeVoq1ED/dOm8MXm+IN3ihFi+gPZBHSp3x+6M+pcx5LNWxbuKyMp+VCSEaMmKCOoOzr/9rMEzbNLqaggECvd7OpD+Qx3rgSvOWvFNtMj/9jSSpBhAO+5rFU5XN7L1Rdx4g3kbcxKkOnXI0m3q/aaaXDmyk/MMYM0SbL7EjX45gWAdddfDoM21shbE86R7tkDlrIKnQkaJr3mf6vIHclbW3GjEdxmpZ0CS/mX+HNc/WHvNeHWzwZ50tzk59gCRUvmnNqB1TwhDnEToBYBZyd//CbS7LfoL8g2gYMOuGHJIsZBlPEvz3JcMSlHZrDmKH+r3dtpLiFmVTgnxGrlLBiQxKPXusZ9fHP5+krsfilpHuCaCEoR95byNaIkQQp/1ZF
+X-Rspamd-Queue-Id: 3D48140003
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755869306-513111
+X-HE-Meta: U2FsdGVkX1/2rgpeQBAQFyPmJEPSpSHEskAgtp+Dc968Dzyu5oGSkmLU06b7Cml8Ok20rt+pwFTZ9c2QCh79y/UUKwY1swRxUE/dGY2ZzuUQnl3m3tuUjmGy+s3lv8FguGacn4M/zDDKBHcYz6kGvpWNsJsIRkpV7K1SA0K3S27MehO6rszi7jXUf7RbmA8OPKc/kctoSSwLCykhCPFG/wfKPh4ZDFiSmpaBaLuEV96MxWdZ0KKS+AkoVBKW9kJuMjc6H5GBw3Xse+eSBtZEVoxBLUBeB/QDVF1BG59vYS1c4s3G3kxRc8WRp3Ddn521dungKvRr6a96ucqlW9Nw9cpzu3ddWmy+m/pRg7sj5iM0viYDcIrPSRadOIx9BlfmAXVc/gYjAv3BL/qUwyZrsrSCpC9c774jT88E+JQpW893ocGkedlCH69NYr2ZYl2H1nq4RfsFVzzwLlnbDRmYMQpKx3gutceOtVhzwSPNvu2MimGeA4kEeiGG61chc62NyBqDWdgK3fjYZ9xzZIRbeR4An/nsJKhZHi3pEzMmwjvpNi05MPkE04uUjBTRCKJTYlRTqZ5vZF/ZPga3WS91RZi2tbSJTMaB1Ga1xtrS3GTK1Ffpdc3t1f3Osg3Fo7Isv80lEuOJsgkl5Ngc8TpTNhVEqNK35hE+YQe0rP9evX75kW68UGrG8sT9grT4eRWTURp+hojF54pocW1dM5/ry+XrEAz1O3AdqWGkuwqqKROn+3bRGbBb/ZzASaVYAvP0XNhKwF3vq79L4Qu0aSuLIcqeursYvhGx3VmPlVEKw2BX++xofY3leSnCFOdZLqiNnXtD9iVxXA0d+pRLxyqMZt5SWUWcnvRuxz0wHTXuA3Q0ilGojA+HpvEi5Ef52c882W11D7XtP7AOKeTD3oL6Gdm1niM1UpyOI0VPiXC1PB9u71ZL1BY3oS3At9seN3H5WkN9MxXp65cpFNmo7gP
+ l8wfCpGd
+ bkOjM8DAnIrZVSPqRRb0kcCtHwSWqODvXnUlBybVpG94+RLK3G1rrrgxeKAYBgMdGnLafLkUEsdyBDMEw6JL96eHaFtmWqzYi+BR1AF3Elocc4tpEJCdLuWLn0euuaZAM7hi96hMIC9efjoMHDnWiOXOXhTGcieWJ4liDfftqXEF4gtvk8FxN8+t4WpsL1b6giXu9OrHwOU+HfrcNG0ImxNeg8TefK8gRF37tD8dehX6/88x/2L6dCrXCY8WBVkOaNN7SFCAUpZCxJ6ffZJepan8oeUOUwGpco5+hbMuXeU4ZAwXBUCtpkhjt8rnanM0EqL/mlBxsDtz/3U2tzlzDeX1mxF5vayH0i7DactxHWSiejwqmNJAD/APM0dM5bpDzFl9XyLkJ7p6vMMk4BpM4ArzUQptMI1EcH4AltSRsKze4hCWETPfUVt+ryvls6V5gzO6OgMl+Rqrq5apoRUr9xPsdKxPZcPZYJHBB4zZWkjZDmo8pbFjRdnfVE3yCm6t6UVXn0a74TaZixxZJLInBoneYPmjBeGFfFVKa1LAn2n0FG+N+yH9B7gYKRfk3igcvpGOyrAtq1SgwmBfK37KQJJQRSvyEWWy8Mpb3pHFUTCGi/BoIX1+NpWrILt1/E4nbt6gPNxzMAr+bIDMm44xXlcuSv+rI4fiOFs+oGupjV14vlJQi0oti+RwiG0Pe1ZkOzoRuxpEVwQ8O6629CF9op7ptavNFR16npK3XZlqi4a/S6YObUB/u88vgi90kgaa1wnvL4gmTcXOA5b/cDJqk37VIBk2J0pmiByjXviBXHXN1BgMePDzYZ5JpKXMGhbSGgeSPASZrgC8i6jxNUrhlwK5z9LEXEn7cQpXO4VJPlVAWc3Lc5eiwtrAGdce1U8ELbTK2d3vu7VwhZcLOD03nJi6a80hplVThbEYp
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,253 +92,123 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 This is a note to let you know that I've just added the patch titled
 
-    mm: reinstate ability to map write-sealed memfd mappings read-only
+    mm: update memfd seal write check to include F_SEAL_WRITE
 
 to the 5.15-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     mm-reinstate-ability-to-map-write-sealed-memfd-mappings-read-only.patch
+     mm-update-memfd-seal-write-check-to-include-f_seal_write.patch
 and it can be found in the queue-5.15 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
 
 
-From stable+bounces-165171-greg=kroah.com@vger.kernel.org Wed Jul 30 03:55:14 2025
+From stable+bounces-165170-greg=kroah.com@vger.kernel.org Wed Jul 30 03:55:00 2025
 From: "Isaac J. Manjarres" <isaacmanjarres@google.com>
-Date: Tue, 29 Jul 2025 18:53:32 -0700
-Subject: mm: reinstate ability to map write-sealed memfd mappings read-only
-To: lorenzo.stoakes@oracle.com, gregkh@linuxfoundation.org,  Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,  Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>,  "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>,  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,  Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>
-Cc: aliceryhl@google.com, stable@vger.kernel.org,  "Isaac J. Manjarres" <isaacmanjarres@google.com>, kernel-team@android.com,  Julian Orth <ju.orth@gmail.com>, "Liam R. Howlett" <Liam.Howlett@Oracle.com>,  Linus Torvalds <torvalds@linux-foundation.org>, Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,  linux-kernel@vger.kernel.org
-Message-ID: <20250730015337.31730-4-isaacmanjarres@google.com>
+Date: Tue, 29 Jul 2025 18:53:31 -0700
+Subject: mm: update memfd seal write check to include F_SEAL_WRITE
+To: lorenzo.stoakes@oracle.com, gregkh@linuxfoundation.org,  Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,  David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>,  "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>,  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,  Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: aliceryhl@google.com, stable@vger.kernel.org,  "Isaac J. Manjarres" <isaacmanjarres@google.com>, kernel-team@android.com,  Lorenzo Stoakes <lstoakes@gmail.com>, Jan Kara <jack@suse.cz>,  Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,  Christian Brauner <brauner@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,  Mike Kravetz <mike.kravetz@oracle.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Message-ID: <20250730015337.31730-3-isaacmanjarres@google.com>
 
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+From: Lorenzo Stoakes <lstoakes@gmail.com>
 
-[ Upstream commit 8ec396d05d1b737c87311fb7311f753b02c2a6b1 ]
+[ Upstream commit 28464bbb2ddc199433383994bcb9600c8034afa1 ]
 
-Patch series "mm: reinstate ability to map write-sealed memfd mappings
-read-only".
+The seal_check_future_write() function is called by shmem_mmap() or
+hugetlbfs_file_mmap() to disallow any future writable mappings of an memfd
+sealed this way.
 
-In commit 158978945f31 ("mm: perform the mapping_map_writable() check
-after call_mmap()") (and preceding changes in the same series) it became
-possible to mmap() F_SEAL_WRITE sealed memfd mappings read-only.
+The F_SEAL_WRITE flag is not checked here, as that is handled via the
+mapping->i_mmap_writable mechanism and so any attempt at a mapping would
+fail before this could be run.
 
-Commit 5de195060b2e ("mm: resolve faulty mmap_region() error path
-behaviour") unintentionally undid this logic by moving the
-mapping_map_writable() check before the shmem_mmap() hook is invoked,
-thereby regressing this change.
+However we intend to change this, meaning this check can be performed for
+F_SEAL_WRITE mappings also.
 
-This series reworks how we both permit write-sealed mappings being mapped
-read-only and disallow mprotect() from undoing the write-seal, fixing this
-regression.
+The logic here is equally applicable to both flags, so update this
+function to accommodate both and rename it accordingly.
 
-We also add a regression test to ensure that we do not accidentally
-regress this in future.
-
-Thanks to Julian Orth for reporting this regression.
-
-This patch (of 2):
-
-In commit 158978945f31 ("mm: perform the mapping_map_writable() check
-after call_mmap()") (and preceding changes in the same series) it became
-possible to mmap() F_SEAL_WRITE sealed memfd mappings read-only.
-
-This was previously unnecessarily disallowed, despite the man page
-documentation indicating that it would be, thereby limiting the usefulness
-of F_SEAL_WRITE logic.
-
-We fixed this by adapting logic that existed for the F_SEAL_FUTURE_WRITE
-seal (one which disallows future writes to the memfd) to also be used for
-F_SEAL_WRITE.
-
-For background - the F_SEAL_FUTURE_WRITE seal clears VM_MAYWRITE for a
-read-only mapping to disallow mprotect() from overriding the seal - an
-operation performed by seal_check_write(), invoked from shmem_mmap(), the
-f_op->mmap() hook used by shmem mappings.
-
-By extending this to F_SEAL_WRITE and critically - checking
-mapping_map_writable() to determine if we may map the memfd AFTER we
-invoke shmem_mmap() - the desired logic becomes possible.  This is because
-mapping_map_writable() explicitly checks for VM_MAYWRITE, which we will
-have cleared.
-
-Commit 5de195060b2e ("mm: resolve faulty mmap_region() error path
-behaviour") unintentionally undid this logic by moving the
-mapping_map_writable() check before the shmem_mmap() hook is invoked,
-thereby regressing this change.
-
-We reinstate this functionality by moving the check out of shmem_mmap()
-and instead performing it in do_mmap() at the point at which VMA flags are
-being determined, which seems in any case to be a more appropriate place
-in which to make this determination.
-
-In order to achieve this we rework memfd seal logic to allow us access to
-this information using existing logic and eliminate the clearing of
-VM_MAYWRITE from seal_check_write() which we are performing in do_mmap()
-instead.
-
-Link: https://lkml.kernel.org/r/99fc35d2c62bd2e05571cf60d9f8b843c56069e0.1732804776.git.lorenzo.stoakes@oracle.com
-Fixes: 5de195060b2e ("mm: resolve faulty mmap_region() error path behaviour")
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reported-by: Julian Orth <ju.orth@gmail.com>
-Closes: https://lore.kernel.org/all/CAHijbEUMhvJTN9Xw1GmbM266FXXv=U7s4L_Jem5x3AaPZxrYpQ@mail.gmail.com/
-Cc: Jann Horn <jannh@google.com>
-Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/913628168ce6cce77df7d13a63970bae06a526e0.1697116581.git.lstoakes@gmail.com
+Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Muchun Song <muchun.song@linux.dev>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
 Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/memfd.h |   14 ++++++++++++
- include/linux/mm.h    |   58 ++++++++++++++++++++++++++++++++++----------------
- mm/memfd.c            |    2 -
- mm/mmap.c             |    4 +++
- 4 files changed, 59 insertions(+), 19 deletions(-)
+ fs/hugetlbfs/inode.c |    2 +-
+ include/linux/mm.h   |   15 ++++++++-------
+ mm/shmem.c           |    2 +-
+ 3 files changed, 10 insertions(+), 9 deletions(-)
 
---- a/include/linux/memfd.h
-+++ b/include/linux/memfd.h
-@@ -6,11 +6,25 @@
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -148,7 +148,7 @@ static int hugetlbfs_file_mmap(struct fi
+ 	vma->vm_flags |= VM_HUGETLB | VM_DONTEXPAND;
+ 	vma->vm_ops = &hugetlb_vm_ops;
  
- #ifdef CONFIG_MEMFD_CREATE
- extern long memfd_fcntl(struct file *file, unsigned int cmd, unsigned long arg);
-+unsigned int *memfd_file_seals_ptr(struct file *file);
- #else
- static inline long memfd_fcntl(struct file *f, unsigned int c, unsigned long a)
- {
- 	return -EINVAL;
- }
-+
-+static inline unsigned int *memfd_file_seals_ptr(struct file *file)
-+{
-+	return NULL;
-+}
- #endif
+-	ret = seal_check_future_write(info->seals, vma);
++	ret = seal_check_write(info->seals, vma);
+ 	if (ret)
+ 		return ret;
  
-+/* Retrieve memfd seals associated with the file, if any. */
-+static inline unsigned int memfd_file_seals(struct file *file)
-+{
-+	unsigned int *sealsp = memfd_file_seals_ptr(file);
-+
-+	return sealsp ? *sealsp : 0;
-+}
-+
- #endif /* __LINUX_MEMFD_H */
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -3286,6 +3286,37 @@ void mem_dump_obj(void *object);
- static inline void mem_dump_obj(void *object) {}
+@@ -3287,25 +3287,26 @@ static inline void mem_dump_obj(void *ob
  #endif
  
-+static inline bool is_write_sealed(int seals)
-+{
-+	return seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE);
-+}
-+
-+/**
-+ * is_readonly_sealed - Checks whether write-sealed but mapped read-only,
-+ *                      in which case writes should be disallowing moving
-+ *                      forwards.
-+ * @seals: the seals to check
-+ * @vm_flags: the VMA flags to check
-+ *
-+ * Returns whether readonly sealed, in which case writess should be disallowed
-+ * going forward.
-+ */
-+static inline bool is_readonly_sealed(int seals, vm_flags_t vm_flags)
-+{
-+	/*
-+	 * Since an F_SEAL_[FUTURE_]WRITE sealed memfd can be mapped as
-+	 * MAP_SHARED and read-only, take care to not allow mprotect to
-+	 * revert protections on such mappings. Do this only for shared
-+	 * mappings. For private mappings, don't need to mask
-+	 * VM_MAYWRITE as we still want them to be COW-writable.
-+	 */
-+	if (is_write_sealed(seals) &&
-+	    ((vm_flags & (VM_SHARED | VM_WRITE)) == VM_SHARED))
-+		return true;
-+
-+	return false;
-+}
-+
  /**
-  * seal_check_write - Check for F_SEAL_WRITE or F_SEAL_FUTURE_WRITE flags and
-  *                    handle them.
-@@ -3297,24 +3328,15 @@ static inline void mem_dump_obj(void *ob
+- * seal_check_future_write - Check for F_SEAL_FUTURE_WRITE flag and handle it
++ * seal_check_write - Check for F_SEAL_WRITE or F_SEAL_FUTURE_WRITE flags and
++ *                    handle them.
+  * @seals: the seals to check
+  * @vma: the vma to operate on
+  *
+- * Check whether F_SEAL_FUTURE_WRITE is set; if so, do proper check/handling on
+- * the vma flags.  Return 0 if check pass, or <0 for errors.
++ * Check whether F_SEAL_WRITE or F_SEAL_FUTURE_WRITE are set; if so, do proper
++ * check/handling on the vma flags.  Return 0 if check pass, or <0 for errors.
   */
- static inline int seal_check_write(int seals, struct vm_area_struct *vma)
+-static inline int seal_check_future_write(int seals, struct vm_area_struct *vma)
++static inline int seal_check_write(int seals, struct vm_area_struct *vma)
  {
--	if (seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE)) {
--		/*
--		 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
--		 * write seals are active.
--		 */
--		if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_WRITE))
--			return -EPERM;
--
--		/*
--		 * Since an F_SEAL_[FUTURE_]WRITE sealed memfd can be mapped as
--		 * MAP_SHARED and read-only, take care to not allow mprotect to
--		 * revert protections on such mappings. Do this only for shared
--		 * mappings. For private mappings, don't need to mask
--		 * VM_MAYWRITE as we still want them to be COW-writable.
--		 */
--		if (vma->vm_flags & VM_SHARED)
--			vma->vm_flags &= ~(VM_MAYWRITE);
--	}
-+	if (!is_write_sealed(seals))
-+		return 0;
-+
-+	/*
-+	 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
-+	 * write seals are active.
-+	 */
-+	if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_WRITE))
-+		return -EPERM;
+-	if (seals & F_SEAL_FUTURE_WRITE) {
++	if (seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE)) {
+ 		/*
+ 		 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
+-		 * "future write" seal active.
++		 * write seals are active.
+ 		 */
+ 		if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_WRITE))
+ 			return -EPERM;
  
- 	return 0;
- }
---- a/mm/memfd.c
-+++ b/mm/memfd.c
-@@ -133,7 +133,7 @@ static int memfd_wait_for_pins(struct ad
- 	return error;
- }
+ 		/*
+-		 * Since an F_SEAL_FUTURE_WRITE sealed memfd can be mapped as
++		 * Since an F_SEAL_[FUTURE_]WRITE sealed memfd can be mapped as
+ 		 * MAP_SHARED and read-only, take care to not allow mprotect to
+ 		 * revert protections on such mappings. Do this only for shared
+ 		 * mappings. For private mappings, don't need to mask
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -2262,7 +2262,7 @@ static int shmem_mmap(struct file *file,
+ 	struct shmem_inode_info *info = SHMEM_I(file_inode(file));
+ 	int ret;
  
--static unsigned int *memfd_file_seals_ptr(struct file *file)
-+unsigned int *memfd_file_seals_ptr(struct file *file)
- {
- 	if (shmem_file(file))
- 		return &SHMEM_I(file_inode(file))->seals;
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -47,6 +47,7 @@
- #include <linux/pkeys.h>
- #include <linux/oom.h>
- #include <linux/sched/mm.h>
-+#include <linux/memfd.h>
+-	ret = seal_check_future_write(info->seals, vma);
++	ret = seal_check_write(info->seals, vma);
+ 	if (ret)
+ 		return ret;
  
- #include <linux/uaccess.h>
- #include <asm/cacheflush.h>
-@@ -1486,6 +1487,7 @@ unsigned long do_mmap(struct file *file,
- 
- 	if (file) {
- 		struct inode *inode = file_inode(file);
-+		unsigned int seals = memfd_file_seals(file);
- 		unsigned long flags_mask;
- 
- 		if (!file_mmap_ok(file, inode, pgoff, len))
-@@ -1524,6 +1526,8 @@ unsigned long do_mmap(struct file *file,
- 			vm_flags |= VM_SHARED | VM_MAYSHARE;
- 			if (!(file->f_mode & FMODE_WRITE))
- 				vm_flags &= ~(VM_MAYWRITE | VM_SHARED);
-+			else if (is_readonly_sealed(seals, vm_flags))
-+				vm_flags &= ~VM_MAYWRITE;
- 			fallthrough;
- 		case MAP_PRIVATE:
- 			if (!(file->f_mode & FMODE_READ))
 
 
 Patches currently in stable-queue which might be from isaacmanjarres@google.com are
