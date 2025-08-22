@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 614DECA0EEB
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 08:23:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 976C4CA0EEB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 08:23:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B1C148E0079; Fri, 22 Aug 2025 04:23:14 -0400 (EDT)
+	id D8CE08E007A; Fri, 22 Aug 2025 04:23:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF32C8E0056; Fri, 22 Aug 2025 04:23:14 -0400 (EDT)
+	id D3D218E0056; Fri, 22 Aug 2025 04:23:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E22A8E0079; Fri, 22 Aug 2025 04:23:14 -0400 (EDT)
+	id C2CCA8E007A; Fri, 22 Aug 2025 04:23:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 858DC8E0056
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 04:23:14 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 251E61406A9
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 08:23:14 +0000 (UTC)
-X-FDA: 83803703508.28.106C6B2
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AC5088E0056
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 04:23:19 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6EA031406BB
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 08:23:19 +0000 (UTC)
+X-FDA: 83803703718.03.D51D7BE
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 77F724000F
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 08:23:12 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=OGkNfH2+;
-	spf=pass (imf11.hostedemail.com: domain of usama.anjum@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4FD9E20002
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 08:23:17 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b="Aw86Od/f";
+	spf=pass (imf03.hostedemail.com: domain of usama.anjum@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
 	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755850992;
+	s=arc-20220608; t=1755850997;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XYJ0HYY9NqlVyRWcfV9rBpKj3nrAUZ6hFe9JiCDznz0=;
-	b=rp/qoR6jb8PxMyz7Am9p2gMf7sIncyl/9pD1Qjll8dt4pdu4Pu9BqrS6egr9l9n/THtHG5
-	kmnhpad1cmfPdyJBjUJ375Iy2NY13m6bfGR+CKibtkqjuY3MIPjavsQ4rF2aLqrUgoof84
-	u0drQg0YIIR4R8C35V88t04L3BGKSkw=
+	bh=qBDTGA5AhhNQonv3AdRNARJFN46vJFSfeKE1m0Pq6NA=;
+	b=FFsOhHWZlwd33HQs91mbinPGHoAZE+rdOaiK3KrD3cPe5ut+/oYRKRyoYcWuNAfYbJSuw0
+	uhdWyobr3Kov1nAwuNg7hMdqIfLcglwy95c9G56uFvx804op1mvXLgi4zLucA9h5iqaLAu
+	MHop7yhA0VTIXql83vrvQhaZIkKz5wE=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=OGkNfH2+;
-	spf=pass (imf11.hostedemail.com: domain of usama.anjum@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
+	imf03.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b="Aw86Od/f";
+	spf=pass (imf03.hostedemail.com: domain of usama.anjum@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
 	dmarc=pass (policy=none) header.from=collabora.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755850992; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755850997; a=rsa-sha256;
 	cv=none;
-	b=S3b6uJAXYsYFKMK7Bez7OH/82i1CGaWpNfQGo9K4ryHa5JtQuZdBApN+eVURcv0kcINz2e
-	YOOkC9Y384K2agVYOFSe98nhegMAu+lTW7lwg6getx7SQh7qjgrcjQfRBsuA+Oa/VRSa61
-	Kn56gwRfjmyr4KchMpOcVjKW0bVFkvA=
+	b=Rm0uORlX0dc4wn+Wex/4/osOcDwj/qKIBdOptqEshyt9VcW5MERyTdl0Qt8mtuZd1Sokhc
+	feh8ZOVmyECDXwsZIVJdPW3Ypp4Vk4N+/EYlzTbqZrUbzkQqvO4dFzb5nwXTQ1E8J/VJSx
+	rKp7ARiaVtsLhSr2FsSPd4rMn5nfQxQ=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1755850990;
-	bh=aHdKM33fPfvODogG5EIfl2ZQHN+nSUZVsocpGCSr2PI=;
+	s=mail; t=1755850995;
+	bh=5GRdMvMknEDtQxLhJ0PglmBblpugxYHK0GugaJg1PIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OGkNfH2+jOKoqsx4XZqdfcwgt5aP8gbPPl82/usiD/mSerW8TBt/XWrm8vxI1zLpK
-	 eqcr1/i/34b4xZc0sJCqCeN9WAVRV28rq+MnTzIFG95wrWT8p2l16Nom1XVGvbRMkU
-	 /XfZMJLkH4q/k3giOG1XhtkdHJUte8XcUlb4m3GG1+vS++hxw0RDLbu67zL0pWxBp9
-	 Y0fe+ERCypRn+qaBnXtNXTwGEfvJmiG6AnmA9QIziJ59Ql4CoOWW/skcucNYUfH3nz
-	 2Y+8tIu4BinYPStQB/I8QnEondQp1YOhBDz76oVxE6fLq0URfGaLnzH5UM4IOS9m1d
-	 MfHrw+RQE2ltA==
+	b=Aw86Od/fsjrieQijnYclqM5PWDqAiTAmVQaTrMwbtNwhSwuvHfvm2DJgYvL7eHoAw
+	 YUILuEv70EPIlE1MAO+a4o5sCE6kzXSboqmQRZqjnRh/5byudc5X95/piGi6Nuyut9
+	 YDEVbJPbaoi5PP6RD/OELr36M52nYsclRJ8MVcuRG/q1OVNls0yCS3zpUd79Fz6/pF
+	 VOc6XGOYfSeCrlzMvStb3gfh+v2HDL5+3mVhwTkX+0p2Ut3FpXDmgYsrL+27E1287C
+	 yHQxkFKOkkA07d+oWmY+C4K+kd+v5bSh2BuFO4mpj8bJasMALBOQnYKClV8llxNPXl
+	 uWP6fHLdsqynw==
 Received: from mt.tail9873f4.ts.net (unknown [103.151.43.82])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: usama.anjum)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id D0F1817E137E;
-	Fri, 22 Aug 2025 10:23:04 +0200 (CEST)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 810C417E12FF;
+	Fri, 22 Aug 2025 10:23:10 +0200 (CEST)
 From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 To: Shuah Khan <shuah@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -95,24 +95,23 @@ To: Shuah Khan <shuah@kernel.org>,
 	linux-riscv@lists.infradead.org,
 	kevin.brodsky@arm.com
 Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	kernel@collabora.com,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Subject: [PATCH v3 2/8] selftests/mm: protection_keys: Fix dead code
-Date: Fri, 22 Aug 2025 13:20:59 +0500
-Message-ID: <20250822082145.4145617-3-usama.anjum@collabora.com>
+	kernel@collabora.com
+Subject: [PATCH v3 3/8] selftests: kselftest.h: Add unused macro
+Date: Fri, 22 Aug 2025 13:21:00 +0500
+Message-ID: <20250822082145.4145617-4-usama.anjum@collabora.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250822082145.4145617-1-usama.anjum@collabora.com>
 References: <20250822082145.4145617-1-usama.anjum@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: d6nth3ixpkqn1zp8rrdm9g7tpxatcst8
+X-Stat-Signature: 8nggohyp5xjf6jy7imtoxpxd8qrhbpy3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 77F724000F
+X-Rspamd-Queue-Id: 4FD9E20002
 X-Rspamd-Server: rspam05
-X-HE-Tag: 1755850992-324225
-X-HE-Meta: U2FsdGVkX18RKZaqTW3LLLAAPKowoiwI47Js8FXkJdmxi+QVc9hhPsbMET0z6Fql6q5WOaTtnqlmBw9JJZuXItf93zFszC1c3+6UjYLHd/DfpFICWy3YmMfaMQlfYt1g6HwDGb0Hdp3oRGtM0Lf0fKX1lGOGGwa9pq4Y8OFefbzAXREe6npnecYKVMbpRfvUXxKS23IE8geOVv4xifSz47pKP3JwSHHTOJHJ7Pa2WZGtCAgOE894Gfxq3ycknYza1U+xO9QJ+UjJbFveR5/NBmjLv/GgnQw47nlE6IboZYB7nGsz66ikw1VeLppfqf+pfFOLfWl/O/g4ZxiDdnJflZ5N9fus2eGyeY2oYqzKSG9nd+wYpsxC6jdcZovtn7NXUUzj6GEHj6OKgpV0MJ1FcwaHjBD6x2enRsi0bTFSULImZKyTMmZlruX2mTaLvM78TXKYILctPRkPBXNolvXl7bJGOAeRq+rvk8Jjs9W7nJNFo+1xawE2sojS4cnRxXhdl1ZVvNJxpL/yaW88hr9STauEehtwAZHXHnkpofSRsjErKM5ndM5X+RElmL6X79DnvlqyIU4TcjIoON7ZJpngyHQlQkyC1BF3Okfysbcpj4tdZkadkO//5CU0q3aJZ2MAPKZxDsGMoZTU2Zt1fdpRE16fHaRmM7qu9Rww23MWLg3BFV0A3v7IAcnPHVG5iDVvrPsmqwryOCigYEOXMAKPMmx0NQ0Z8c/MT2YaTLfMNoQsdDt9A8f8L0LgNx8gPIpcdSklO+6bivoEkJ9BxP9QWNGH+1Jd8yilUayYbqcdXaqMpDmULV6NcyDOwVrzE7rdUytY/gDhbyvwgkftUCXWJbiph46NH4raCQT4Wfj8eqScSS8cbwhfeadon3dKP86NoLy0LMQiYRJQ9rRnRiHE7YgTnEVFLfOE1zxFDdFOMtvrd1VcY771jtB/5GaVo23idynLNcM01uAQvvjldJN
- GnUMBDPb
- bRLAsxpvZOrXqbYgQCf+8/M2DzFqHe1TSBu0jNhoMLYaiFKbRWxoFrODkDqjtKfBqm7+krBwNNgY8WN2ZjhMJo+Wx5YYGLsjIwoC7TJxA6Qb8coj4bLswDC/WW2NZPkSWJuLrjeZCrf2kmS7nA4wd6Eh+JOBZeUnSbdTgwzr+vxt8OsPJBQ4gnOpKpvpVVfCzGMJ2f1X/7MRRrE7OBR+agVKqKyZxqM0wGgNgHKHo76/4AF4CXp0tUnFIZiXleY+9JkSQE4CSP+tumuOwHoSI5c4IlOYmiY2f2TaUqm16sSCUfBYcAu/+bE5SDe7Zyyez2VWn1cGI8w/kzP07eIefi3lOAeMyYT9mQDGn5fB87J4TRjXLPId/ubMhTQ==
+X-HE-Tag: 1755850997-565605
+X-HE-Meta: U2FsdGVkX18ALRLSlYjCTwhO25r9jxa70AbPnMOb2mCClDsSixA24L/cz6pkxuxKwIqOLIZ/1oGS2+HY06FWktCL13LBLgV0cviTiG0INTWDofE2suxcnatEdWUYoZGg/kjGFMCNj7Z+RMotO4CNaT8PYAPQH5Z5fAdhL/H40osWqKMX2k7le89l+vgzkHvww9j0JfrGfWl9bY0Zf0XgDasZrGTwkvys2YgbI+aRdv5jHutrPl98SZx3xojm1CUrg/mJUhiyM6WyHjyCIJzRn08xqmerkZMNwoVpdVUAopKP1QBMEfpz8C8zcbsLsSDsudtWAfQqMapELGTp2vvUA2eYH6jtrwzafNrJQmfA+jALrLKMiwRBv8EOtPGcFAalnU5dh7E3HCHh5CsiIb9uGz8I2CZGWJHh3+c9P1G4V7EVlCwL3FgSpwrO/UO2hcr9Yvu1cUTSJ5wIzlte8TDMMzVfjEsHYDA5Krp/fIXNpFHEtyxvpVK5wXDuLpS4dsKlsNOz5lhzvtj4RKXEWfiG6ufnP9hqKpj+L2eoQglhYAM48d0AsXvuO9gIXkIR7tQ+1iHgaC4zit4aUKo6WRkojOiDcVYclWAdpUJ41kFdhNfUKfwLeMvelA2mPsS2XTQ/+yEpLcu8UTLJR6+HS0n1UShdi7hjrkw8VW1kSSaVHmQwreP7m4IsQfCX/pLDGmoM9G1YRKWP/jYYZEE1BM9ijc3GhcYRRM/72ZFLu10c5Mt92eadGouJm0iry3/Log6d9gz1sn8W6JjWqOKurJtIjKYwUDXQAu63INzeXt6YTdAwvQpKeJoXD7IFvvu2YxfGyxwOaIwYP/2SOAAsMuTQvAe1H1okNge+7WB+SiIboOSKA229x4G0cBcrKEQi2RLbJPKotRlquA6P8ie2pE2Rz0LJ7hHc5OYJFPK2UJtk60RI7skg/tmRSyvFsGDxFV4TnMCnQbxZzhOhhCS6Ses
+ tMyBSoVe
+ T4Bic0iQHpVhVX65vM60r32M+I56cgVZxIxzcq/eMKtxDOhNuLIvflEWbkXrlbJvy/b6ecw8aicNNeQC4vgTQFySJT2gq3vdw3mria9sSx7XAGfHSrzRqwY5dAN14ipBBZ4ivi/IaN+wibKMIQouVQx9BJKD1+JkKbygCYRrFqaG7A8VuKtlulmePzvuFK/yMPQ88cwE17c8K6eBYGkJamPsTdYJhizzOMi8IiZNl3h6/8DNMbGky5nPHsE76auvfhHoLi7MgSb1buvtZdmPY+kVd9agSXhivCFXLEbTjR5IiUFGn5GeTCo9jrw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,40 +120,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The while loop doesn't execute and following warning gets generated:
+Add unused macro instead of using the complete verbose unused compiler
+attribute. The raw __attribute__((__unused__)) is quite long and makes
+code too much verbose to the kernel developer's taste.
 
-protection_keys.c:561:15: warning: code will never be executed
-[-Wunreachable-code]
-                int rpkey = alloc_random_pkey();
+Add always_unused and maybe_unused variants just like kernel itself
+have.
 
-Let's enable the while loop such that it gets executed nr_iterations
-times. Simplify the code a bit as well.
-
-Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
 Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
 ---
- tools/testing/selftests/mm/protection_keys.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+Changes since v2:
+- Add always_unused and maybe_unused instead of __unused macro
+---
+ tools/testing/selftests/kselftest.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/tools/testing/selftests/mm/protection_keys.c b/tools/testing/selftests/mm/protection_keys.c
-index 23ebec367015f..6281d4c61b50e 100644
---- a/tools/testing/selftests/mm/protection_keys.c
-+++ b/tools/testing/selftests/mm/protection_keys.c
-@@ -557,13 +557,11 @@ int mprotect_pkey(void *ptr, size_t size, unsigned long orig_prot,
- 	int nr_iterations = random() % 100;
- 	int ret;
+diff --git a/tools/testing/selftests/kselftest.h b/tools/testing/selftests/kselftest.h
+index c3b6d2604b1e4..274480e3573ab 100644
+--- a/tools/testing/selftests/kselftest.h
++++ b/tools/testing/selftests/kselftest.h
+@@ -92,6 +92,14 @@
+ #endif
+ #define __printf(a, b)   __attribute__((format(printf, a, b)))
  
--	while (0) {
-+	while (nr_iterations-- >= 0) {
- 		int rpkey = alloc_random_pkey();
- 		ret = sys_mprotect_pkey(ptr, size, orig_prot, pkey);
- 		dprintf1("sys_mprotect_pkey(%p, %zx, prot=0x%lx, pkey=%ld) ret: %d\n",
- 				ptr, size, orig_prot, pkey, ret);
--		if (nr_iterations-- < 0)
--			break;
- 
- 		dprintf1("%s()::%d, ret: %d pkey_reg: 0x%016llx"
- 			" shadow: 0x%016llx\n",
++#ifndef __always_unused
++#define __always_unused __attribute__((__unused__))
++#endif
++
++#ifndef __maybe_unused
++#define __maybe_unused __attribute__((__unused__))
++#endif
++
+ /* counters */
+ struct ksft_count {
+ 	unsigned int ksft_pass;
 -- 
 2.47.2
 
