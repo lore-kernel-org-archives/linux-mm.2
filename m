@@ -4,81 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2480BCA0EFA
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 01:21:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D575CA0EFA
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 01:21:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E77A280003; Thu, 21 Aug 2025 21:21:26 -0400 (EDT)
+	id 56F9A280004; Thu, 21 Aug 2025 21:21:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BFCE8E0056; Thu, 21 Aug 2025 21:21:26 -0400 (EDT)
+	id 547668E0056; Thu, 21 Aug 2025 21:21:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D6D1280003; Thu, 21 Aug 2025 21:21:26 -0400 (EDT)
+	id 4859F280004; Thu, 21 Aug 2025 21:21:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 181D28E0056
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 21:21:26 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A7A3159C33
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 01:21:25 +0000 (UTC)
-X-FDA: 83802640530.28.65C9693
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 15EA4140009
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 01:21:23 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=VmRuWpWJ;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 383098E0056
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 21:21:52 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B34FF1A060B
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 01:21:51 +0000 (UTC)
+X-FDA: 83802641622.05.25AF9A8
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 93A9040009
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 01:21:49 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hHvQWgG8;
+	spf=pass (imf17.hostedemail.com: domain of ming.lei@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=ming.lei@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755825684;
+	s=arc-20220608; t=1755825709;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=vnORHGlz03Wk6RfleqHIIxWcloS3qF5km1DubhdHtnw=;
-	b=B68qgzVn9qtqeufYo2aq2WJfhDiu/t8rCDFbc+yYiMgLl86ZGb7UNeU9hgoZkma/J3aqik
-	/YnnA3bO3jeuFls6NVAfLbstoD3BqZqVmlMVBqxZRpRtD4uPOu3m9CxEVFoajIZZqTc8z4
-	iNpxhta9v3coZ7BoO6d20f0ruB/mV/I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755825684; a=rsa-sha256;
-	cv=none;
-	b=8J83bCf+bUvSoHOsl198A1ZVjwS+wWcx9uDlVQ31NztSmU8Xr4NM89M+MW6mJQ2L5Y90yX
-	gQkuy3ITEH1tcGWoIlPEeFlku7D1HPDLfVP6B2IebCFBYpsLuj0Kzxskk8B05pk0T4W89o
-	g4I7s8GNkVBuQMu8Ne0jauntpVfFI/w=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pP1gIuRFr7tSKsLKFv1sUFXkEDX22rWdnjLkvx8Dr3w=;
+	b=B/8u5Joa7D/UbC0zaAXEDZ7J+Zshx92Oz7Z6fuJPKpW0I3oORP9Fa7svgG/hMaMHwyYa3K
+	VYwp0/+T4b+wuDxAPQPJkyS/jRDN495EFNaNSELg1mHEN4K5PXDiuEZGB8dnrl40yx6LCk
+	aIkGAC5uLiEW2ye29mtbYjLraKL3oTg=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=VmRuWpWJ;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 48C6B6020A;
-	Fri, 22 Aug 2025 01:21:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7DCC4CEEB;
-	Fri, 22 Aug 2025 01:21:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1755825683;
-	bh=tVhsYHxxFfX7gGzpp6/1LpcEhJi77iuO99nxuLjq6VE=;
-	h=Date:From:To:Cc:Subject:From;
-	b=VmRuWpWJNQvSp2Yp6FHRGVB4G0XYU6yBwuR9Ey439kdy0gKxIPav8VKcWWeG4FGoV
-	 sEX1+CDT1U/YivRO40cVHX1BZEd3SOcRIejgpo3+zRTbetfu+lfNvQlGUBuzoAs04+
-	 WICZ4EUJJ9tgfCVPCdSjzDxiWpAsmP621V3ogmzc=
-Date: Thu, 21 Aug 2025 18:21:22 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: [GIT PULL] hotfixes for 6.17-rc3
-Message-Id: <20250821182122.eb19072cafdbc6612e76ac8f@linux-foundation.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 15EA4140009
-X-Stat-Signature: 839qmzrrg96re6y5j3weakikqgfzpfen
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hHvQWgG8;
+	spf=pass (imf17.hostedemail.com: domain of ming.lei@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=ming.lei@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755825710; a=rsa-sha256;
+	cv=none;
+	b=iUTQFZRT3fSd1njiRG5bsIb5WVpwNEtB3Q+LHnE4XO8boVfWFs1QK2vNmHfT+gNx9nuB1A
+	mMTlVJ75Jh/NFkM1txCHHE8PdJExUykmUuiQCKQ9iHMKksniY9lpZsqpy9GVLX2d9RKtJs
+	ZwJuvMjGOIHK+1FLs7Igc5c1ErSYxhY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755825708;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pP1gIuRFr7tSKsLKFv1sUFXkEDX22rWdnjLkvx8Dr3w=;
+	b=hHvQWgG8NY97QSYkFazA3BB2e3kqgx/vbjoio6O+s+h9YcA3Gm20ATGChvygcSeEGdp926
+	lkhOGQ23iTG39uMJ5iCEnsrSSw2oqgQANF56a9kn8Dcx+pwnJC/VTMpoHxx/EKL9tnzX6z
+	cpK4KCg9eaYaABAirS7i+JiYWImNa/w=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-167-NdzZ7o2eMMy-971uUgmbKA-1; Thu,
+ 21 Aug 2025 21:21:47 -0400
+X-MC-Unique: NdzZ7o2eMMy-971uUgmbKA-1
+X-Mimecast-MFC-AGG-ID: NdzZ7o2eMMy-971uUgmbKA_1755825704
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5BF62180035C;
+	Fri, 22 Aug 2025 01:21:43 +0000 (UTC)
+Received: from fedora (unknown [10.72.116.34])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 18ED9180028F;
+	Fri, 22 Aug 2025 01:21:29 +0000 (UTC)
+Date: Fri, 22 Aug 2025 09:21:24 +0800
+From: Ming Lei <ming.lei@redhat.com>
+To: Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>
+Cc: akpm@linux-foundation.org, shuah@kernel.org, mic@digikod.net,
+	gnoack@google.com, david@redhat.com, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, skhan@linuxfoundation.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-security-module@vger.kernel.org, linux-mm@kvack.org,
+	netdev@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-block@vger.kernel.org
+Subject: Re: [PATCH] selftests: centralise maybe-unused definition in
+ kselftest.h
+Message-ID: <aKfGFB2MmkbA4BBC@fedora>
+References: <20250821101159.2238-1-reddybalavignesh9979@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250821101159.2238-1-reddybalavignesh9979@gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Stat-Signature: tiftcu7f7hbxhpapsnfzidru1pzp3ksq
 X-Rspam-User: 
-X-HE-Tag: 1755825683-126817
-X-HE-Meta: U2FsdGVkX1/4B7otq38CqZa9ek8tXDrHdCP1VxhbK+k7SeWT+9A/GJKwxWr7QW4I7kQB7FrAK53ThGgkBaVZq0kBzFuOno3ragAR9WDaXIyCa9F0HhxS+v6CfmkF7aO2TV6Y8ZD48/m+fRaHXTyb6gwtvOjAsuL3B1LLJQRfbJjEW3aRrzI2mOXXCq055ZiJTqR/6l4BQ6ZU18fV3ii5XVoPteO5ypxVlva9rlO1JB0O1k7R/MO9gy5N7IDENW5C7Ro5N+4bPWUsbtNoqbke/uHix6OzfBkIc2oKdRAdJZZQOrDNl+f2V8GiKrDavLgkl6ifWKaz0Er+p6GwLNEsRf16l2jKu+ezPMknyFxtn6s6Cm6PLdCFYcLWevH58annNJwT9bBsZPjQ/h13YqCaxoX5XafeIoLuC6xB3D6BJ9byR/R4g1rFz4ImdIT8IG+mBIA7RYU6xmwOyikZpclhgpXASrThPeD81Qb9GOPagjxXyBE180ZBwYWKLWtUcSHN7wYyFScACUroj11ZHFHSqWkcbZnMq9QrP2H+eFzKIyZfff4zeS7MiP87r5I5w4pWP0+zBz2+WEMQEWsBOdgGyKLMNEQQDuKAdYTsLe7H9X2dUa+aieXjHMDN0/qtmIgDcmQckd6gIqGHsJCNof3nt/YSxfDeErFYrkwepBz7tIdQcLhjy/SyH74wda5iWuztXGtDoZ/E0c6MFTF7MV9YHgqiYuNzHEa54uSQgI2PRhEaRRT09tWwZm2F0gwOVqKjjMgHrdNgk0BEmGEUbBImvvW+GBF6x0fXJF2+VcujkHy9ahQfbMxeOp8VUjbS2JLFPkIZWBbcvSIubAELiHgBUM2n4i5rbeXflZDRv+eMau7woy3q09myUPtYwWwUf77kNIJ7xJ6UNu48rr4d3yPFJVpfURs/rFHa/MzN7/J3rr2n4Bc1tItyxTCQMFvCkfm1oWYoCcpDfbvgeYEue/P
- saXC0tYB
- 5gXits9Hf5lKcodm6pfBdJfih6I9nV5n/J6cIB1qanLm0y4N7wAbSlN+Z/lQnHewCpSz0yp7MEUhNb4N5Gb/shFmwp0QM6vyK/wJmwr6hnKFAJ0ITNjOgu4QArr73lboT3YsDit5a782BXWad3/5tpRQpo902Esz59ENM16/n3nZRmGgKxZrFyO8pqda6UcIOgXRqkkSeqXluKGcd3ul2Pc3UsRauWZEWPOE6bT4TgUPrIDTw2/06900eTZmJ/q6VCr2hF4Cqog5XmKY=
+X-Rspamd-Queue-Id: 93A9040009
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755825709-279751
+X-HE-Meta: U2FsdGVkX18TcYLBGKzoJ3YPfsKyuPcwxHqDUGVGyAjgTRwYAEwT9aAKEr4GCBKt3KdTnvG5JdgUPPRrL4nURqXKEt7g2VJk++3VFk3GpaEif4YtX+OYcoHoz5kQgapxxMSPPZIopunz8oNyP2BGhArO+dQMMwUVT8BC0dTLkEipe8JkoZYgRAEs8x7EGG4ne/Krhe/hTrHIOtxmnQ6oU6bCHjtH9j9VP2ApdDq4MdfCjmVWMInUB8ity8Gv8ke4XmcaCfjl/M4hP2nvIeQm0Ha/UE4iakvZVqHeK3FDaIRVt0YiNVIFhXDELNgY77AA1NpHykDsWuIE1pSpnVhnonAgFcifi7+yImGsvJTP2JkoWmoKNJaz+dBdpoKRWi59pJuNfqLcs1kUeuw1I88X/14O1LcAYaGjzrdaUqg1SvjHDe+7Vx32Peang5Az63vc/iL3jf93Eptrp+PVZFY/NiXC27CeWbFPPN8IvfTaVCQpkyE3EzRNbOsZW8TJy6YWyWIRZjmmDILb3yDmydOrx1TCC/s8gqid5wVvNJHb4z9KbwCfoCL/+geGNV7HkI0/F1b3i3SxxHhVZaEFF7Y1fyNQ07hY+iyDN50uns1dPg6kAcCmtCrrhc7gVdH63pWWbPnkzuzJGX9wRzOeoctsZDM0Zmadqhxn/6qW/jBvZtvxiVNToi+4RGdZWa1Qk7hgNhvKo+i7SCcrHg5FkoHZ45rmfKFdl0nOXQzagXmoB0qGLrESvRxDB9Ji2x+cKILZ60Spg6R0cSzHhW61Eg7besyK7wCLHaM10rA6cgSLZaDQY8DJ+4GCszEsgS5EeVY78xC55At+tzaf1LIAyv6/xrwOaiqW5Myqdmd/w9K8Du7fMZTcRFb8dfll5WoLJRI7tT2CEDHBortEAm5svFZasHrENVv/QguBIsmDUv2M33KRoo+2EB7WcHWh9w4/VcbkfwGyKGaNwB+rfWUaDu+
+ pvVQyXUc
+ qUFpiMA4wqA3lgandWh+m64eL8711PzKSUiUYXutrsPgra5mMvI+23pzLfrq5Ps8jI7Xib7cDtVJbQDUyLhY+Qn1e5mqPO0cFPsYJQyNxqTNaN45pcgoTNVMvaQCVk743Sjw0hMNV11/N3DBz45jF39zRBmvHrQ9uTwYKlms+g883ahfsVe0AYToziKx7Rq55yhj4FL6MhSZucV5Rtn3NVbMYKtSxn114TqLNLLWR6mOMvbUkL3Hh0PS/UVclD5feKV8RDVNVX1Bxmcy34CpwjxLLSkKy60zsVW6jgcGb9suRKcl/A6gmswpK/qcB2My+yURN2ZtzmPmf2RxI3HLziCqxiZ5bmQGslL00plcZHERkOwLLEVgcjMpnUnykiYj4lgG8/xxrjaYhSqPM6qEUGZNu7Jnts4nsWDp2ATDViZWBPxngnKMX5wS8c4dNEBeZYBGm
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -87,98 +111,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Aug 21, 2025 at 03:41:59PM +0530, Bala-Vignesh-Reddy wrote:
+> Several selftests subdirectories duplicated the define __maybe_unused,
+> leading to redundant code. Moved to kselftest.h header and removed
+> other definition.
+> 
+> This addresses the duplication noted in the proc-pid-vm warning fix
+> 
+> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+> Link:https://lore.kernel.org/lkml/20250820143954.33d95635e504e94df01930d0@linux-foundation.org/
+> 
+> Signed-off-by: Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>
 
-Linus, please merge this week's bunch of mainly-MM hotfixes, thanks.
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
 
-
-The following changes since commit c17b750b3ad9f45f2b6f7e6f7f4679844244f0b9:
-
-  Linux 6.17-rc2 (2025-08-17 15:22:10 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2025-08-21-18-17
-
-for you to fetch changes up to 772e5b4a5e8360743645b9a466842d16092c4f94:
-
-  mm/mremap: fix WARN with uffd that has remap events disabled (2025-08-19 16:35:57 -0700)
-
-----------------------------------------------------------------
-20 hotfixes.  10 are cc:stable and the remainder address post-6.16 issues
-or aren't considered necessary for -stable kernels.  17 of these fixes are
-for MM.
-
-As usual, singletons all over the place, apart from a three-patch series
-of KHO followup work from Pasha which is actually also a bunch of
-singletons.
-
-----------------------------------------------------------------
-Alice Ryhl (1):
-      mm: rust: add page.rs to MEMORY MANAGEMENT - RUST
-
-Axel Rasmussen (1):
-      MAINTAINERS: mark MGLRU as maintained
-
-David Hildenbrand (1):
-      mm/mremap: fix WARN with uffd that has remap events disabled
-
-Dominique Martinet (1):
-      iov_iter: iterate_folioq: fix handling of offset >= folio size
-
-Easwar Hariharan (1):
-      .mailmap: add entry for Easwar Hariharan
-
-Herton R. Krzesinski (1):
-      mm/debug_vm_pgtable: clear page table entries at destroy_args()
-
-Huacai Chen (1):
-      mm/migrate: fix NULL movable_ops if CONFIG_ZSMALLOC=m
-
-Jinjiang Tu (1):
-      mm/memory-failure: fix infinite UCE for VM_PFNMAP pfn
-
-Lorenzo Stoakes (4):
-      tools/testing: add linux/args.h header and fix radix, VMA tests
-      mm/mremap: allow multi-VMA move when filesystem uses thp_get_unmapped_area
-      mm/mremap: catch invalid multi VMA moves earlier
-      selftests/mm: add test for invalid multi VMA operations
-
-Pasha Tatashin (3):
-      kho: init new_physxa->phys_bits to fix lockdep
-      kho: mm: don't allow deferred struct page with KHO
-      kho: warn if KHO is disabled due to an error
-
-Phillip Lougher (1):
-      squashfs: fix memory leak in squashfs_fill_super
-
-Sang-Heon Jeon (3):
-      mm/damon/core: fix commit_ops_filters by using correct nth function
-      selftests/damon: fix selftests by installing drgn related script
-      mm/damon/core: fix damos_commit_filter not changing allow
-
-SeongJae Park (1):
-      mm/damon/sysfs-schemes: put damos dests dir after removing its files
-
- .mailmap                                 |   2 +
- MAINTAINERS                              |  19 +++
- fs/squashfs/super.c                      |  14 +-
- include/linux/iov_iter.h                 |  20 +--
- include/linux/migrate.h                  |   5 +
- kernel/Kconfig.kexec                     |   1 +
- kernel/kexec_handover.c                  |  29 +++-
- mm/balloon_compaction.c                  |   6 +
- mm/damon/core.c                          |  15 +-
- mm/damon/sysfs-schemes.c                 |   2 +-
- mm/debug_vm_pgtable.c                    |   9 +-
- mm/memory-failure.c                      |   8 +
- mm/migrate.c                             |  38 ++++-
- mm/mremap.c                              |  82 ++++++----
- mm/zsmalloc.c                            |  10 ++
- tools/include/linux/args.h               |  28 ++++
- tools/testing/selftests/damon/Makefile   |   1 +
- tools/testing/selftests/mm/mremap_test.c | 264 ++++++++++++++++++++++++++++++-
- tools/testing/shared/linux/idr.h         |   4 +
- 19 files changed, 487 insertions(+), 70 deletions(-)
- create mode 100644 tools/include/linux/args.h
+Thanks,
+Ming
 
 
