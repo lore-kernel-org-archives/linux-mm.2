@@ -4,111 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32204CA0EEB
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 17:30:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B033CA0EEB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 17:43:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 36E608E00BD; Fri, 22 Aug 2025 13:30:08 -0400 (EDT)
+	id 9781244015D; Fri, 22 Aug 2025 13:43:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F1188E009D; Fri, 22 Aug 2025 13:30:08 -0400 (EDT)
+	id 950028E009D; Fri, 22 Aug 2025 13:43:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B88D8E00BD; Fri, 22 Aug 2025 13:30:08 -0400 (EDT)
+	id 8656044015D; Fri, 22 Aug 2025 13:43:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 03CC88E009D
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 13:30:08 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AF9BB1A029E
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 17:30:07 +0000 (UTC)
-X-FDA: 83805081654.04.704ED5E
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	by imf08.hostedemail.com (Postfix) with ESMTP id DE25D160013
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 17:30:05 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=u9NJWzVH;
-	spf=pass (imf08.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 754FB8E009D
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 13:43:09 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2A06B1602BC
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 17:43:09 +0000 (UTC)
+X-FDA: 83805114498.15.CC05F62
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 681C114000E
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 17:43:07 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=DN6I9sm7
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755883806;
+	s=arc-20220608; t=1755884587;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=252UfE/vBQ9r0TEDviOY2kI9MCQU3kCqK3n/Zyt8oR4=;
-	b=chV9YIp+/4dd7EXQqDwqbzFUtK/XLb2U5ImZuk0ToSxI0uVcu2RrX2zt83K94BvUGu3IqX
-	Pp8tgzABUHanVj8pYJs2OIsaftWcT05tbBCHVtBt+z7xXC3OTNODuBriinw3e+ps01Q2xZ
-	CfSJw2UerWMzjVAYqfs00nF8HQ+R/MU=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=3At4kmhBLGosGoYl3W4xiNGWvgZL4G7WKLe5QnrFXMI=;
+	b=HqTw+ByGPop9Y1Mqy0N05Ny/6rvU3qv5L4/vN30YwWrTQN4WgF3wIqhkPrKMRy2gkFsPId
+	8b7s/bsaoheojeji/uP+4VocWxvuT70+T23d/Det93V+Gxi+zF4KNFRICj6cPfcsl+e8sQ
+	G496bQzF8zRPnjdOBMrnx/ud5VPGHk0=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=u9NJWzVH;
-	spf=pass (imf08.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755883806; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=DN6I9sm7;
+	spf=none (imf26.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755884587; a=rsa-sha256;
 	cv=none;
-	b=npdivfq//F4PAXDAV0fCPMz6Map1iZwWNRc1GVNvEQviYoJtNGZCbRobRFVtkcehdbkfX2
-	Pns41/DEVIyFOPexnvuMUgfymgn8JJG/zSnSwitvNIvml2O13szWTP6irgjY7vNNo0SUJr
-	DOP8lKKMUVHAjV5kR5umX/rya8f63Wk=
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-61c169a9720so721a12.1
-        for <linux-mm@kvack.org>; Fri, 22 Aug 2025 10:30:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755883804; x=1756488604; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=252UfE/vBQ9r0TEDviOY2kI9MCQU3kCqK3n/Zyt8oR4=;
-        b=u9NJWzVHa3mkSiJRNBk3hU9jyM9HDcei/xW4YHQYvuBqsvV7s7dRFqrPQXju7OVyV8
-         n/av88UxmtyrbFjrfZDt07lp7xRSBuhojmbnnD/4msPE45KG+IpesueJM9CWXSuRwk6t
-         q96mjUzevbjG+W5cUMsCL/BwoaKUouMUxIz99pk0WXunLfaf8gh4Q0zw5t0a27uDKM0s
-         wllEbY/DFmiz9/DXSC1i2Ht3RgYxo07ISHJMNPZz8B8DTbFshlJKS6BpyzEVMP2lDbuG
-         m4TC3cBox2qXcuuDAvEPz0IFFiOMfjRZ7NlgArEa7antill972QEoPVC0gFcSmwB24sS
-         p8ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755883804; x=1756488604;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=252UfE/vBQ9r0TEDviOY2kI9MCQU3kCqK3n/Zyt8oR4=;
-        b=RbnDa6V6gVPYdlUq/T8cSgPvuKhzAx/VrnBucTrUtyKu4tzypDeSOuJw2R5HdVNE9I
-         cdu3ud9qICyEIVHGyvM2TL4Ibaf2N0wsHV91XP+kZPAztAX1wo+TRnaK7hclx21uDcHX
-         4LN197t5xO06J7omCoD6904PWu0HiApjeOhkVDrI41mdjpb2xsitx8k+h5mX4KkNNbCF
-         /S1hwsHbnmbCMavK6bBya/QVjZ6Ab9nktHo/lYpeqzJyh8Tq/Rgc25uNDKCSWKlQhFvF
-         ur4/Aa8CJd0gKTjWB7CdVjjlRLd3Qs7mRXQ5KRWHmmeDo318F8djgHXw/u6BH7SfzqRg
-         VGug==
-X-Forwarded-Encrypted: i=1; AJvYcCVP9h4uv+DR2A4C48+DQzcdYVckWJRN7q4u0QyXDk9Pe8SloXbRBfYpzIJ9hBfl/bAsWWyvdI//1w==@kvack.org
-X-Gm-Message-State: AOJu0YweWl95lrl6IYEjkwMGeLOK51K+7wI04H+Z7y/AQC9pEuTs+WQX
-	FBdPzRfGq9HnuLvDFz1l590SHBqporjBAT90vOllrS0F+9GijMIT92kQNmAufN/uiYt/pj9x59v
-	haLbTRfgT9XUjDKRCj5rN+kxNVXnTpC1ReO03NMiA
-X-Gm-Gg: ASbGnct5qIOWQ4NDfE+guBdzmziX5DiVrXmZxFTmuGkaAo6cddqC8IDec35rdcDAgaB
-	BGpydmkMhboLnUjyw3OqvKes1IPIaS4fRxI5oXibrXEH6Gre2fQnPYWTg3ScCIDIXU2N6BoCnJ3
-	6M9SZOe293AHNKXH+HSqJParzKjllP8a2zC1D/KOArnFWv0vdazLtzD18bu0l1RXPlV+g0o8yw1
-	INGiMQRFo375+cr93wwrKcWlNQHU/dV4ZFE+1Xav07d
-X-Google-Smtp-Source: AGHT+IHnj5c0AQcYtFrhkC1wYBFb2YmVQM0FxMX03JVK1XoHfCrOErryzWCv9sPurRICdZwmIRfZ9c2Qqy8fv/ZcGyg=
-X-Received: by 2002:aa7:c458:0:b0:61c:18b3:4e4c with SMTP id
- 4fb4d7f45d1cf-61c1d7fd22bmr100263a12.5.1755883804135; Fri, 22 Aug 2025
- 10:30:04 -0700 (PDT)
+	b=cjUmVxmoD4K4qawbpkoSkN5BoDTojZAU/E6g/2e4gahpFssindyeoPj4GW+vFMY2ZHU74R
+	/4WILBSVFwCbtmqxUiP3KB8sX3I7Vrt7k2iaR4HYiRi0lgs84wLCIsh477rLM8piAZMcPZ
+	kOjpIacNzNHcoRSa+oNc0ED9SiGxNh8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=3At4kmhBLGosGoYl3W4xiNGWvgZL4G7WKLe5QnrFXMI=; b=DN6I9sm7tzwK15MtkSMSc7C+GL
+	uX2OeS9q6qX46kxHR2IPnC9EeCOE11ZTi2ZW2xEi41RR+khyjkTdfGI9XyTmCLRwOY7tu2HVu/s1u
+	QAt8gUbRLCM2CXHY8gFzeVuisHBMAQq086Nl4JuYbKdrK6w4v/0r6iI3ejCbVMPh9hWwbdehjgoFq
+	SqLZqIKzLfXjG7l6HjMQnjpgSCsWelhInpvcdnlYRZbam7fDCW/wCKIkCBkz1qAcjkXcC2EWRzkWA
+	TPfOmoLH2PWdaolhAbnNQywtokkDsjo4U8Z2gV7C2sMgQA5m0IOxnraVVtC0njMVI0aFZ/3YCICWZ
+	DWh57imQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1upVn2-0000000AmIO-2TDV;
+	Fri, 22 Aug 2025 17:43:00 +0000
+Date: Fri, 22 Aug 2025 18:43:00 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: YoungJun Park <youngjun.park@lge.com>, ksummit@lists.linux.dev,
+	chrisl@kernel.org, gunho.lee@lge.com, taejoon.song@lge.com,
+	linux-mm@kvack.org, David Hildenbrand <david@redhat.com>
+Subject: Re: [TECH TOPIC] Per-cgroup Swap Device Control
+Message-ID: <aKisJJYL9LV20qzg@casper.infradead.org>
+References: <aKgm+wisMipLqnL4@yjaykim-PowerEdge-T330>
+ <aKihqI8PWLFL1b5i@casper.infradead.org>
+ <20250822131022.4df59a60@gandalf.local.home>
 MIME-Version: 1.0
-From: Lokesh Gidra <lokeshgidra@google.com>
-Date: Fri, 22 Aug 2025 10:29:52 -0700
-X-Gm-Features: Ac12FXypkWhwPQn0ViSOI46R77FnBhepBanwmGZ60DMp2xuHG2FRINOwhF4PUNM
-Message-ID: <CA+EESO4Z6wtX7ZMdDHQRe5jAAS_bQ-POq5+4aDx5jh2DvY6UHg@mail.gmail.com>
-Subject: [DISCUSSION] Unconditionally lock folios when calling rmap_walk()
-To: David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Zi Yan <ziy@nvidia.com>, Barry Song <21cnbao@gmail.com>, 
-	"open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>, Peter Xu <peterx@redhat.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	android-mm <android-mm@google.com>, linux-kernel <linux-kernel@vger.kernel.org>, 
-	Jann Horn <jannh@google.com>, Rik van Riel <riel@surriel.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 99tpinmohr595ibi73wshjntwrfybjxi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250822131022.4df59a60@gandalf.local.home>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 681C114000E
+X-Stat-Signature: 9k8nf6h77spj87fhayag7dga5e9h9p53
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DE25D160013
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1755883805-263273
-X-HE-Meta: U2FsdGVkX1/+rJqwdFVmnfFW9GSMRkzq0V0whbOsoDAaa6AUOa9/h8ms+ie2khu61SPB3NLXhBboWucM+/C+F5YDxZJTVSnrunU/gZwFVz2ePaZmVlpK1WZhYng0DhUocAu7shWNq2Ctvy3a78+hGRB5nQUBizwhsCSWcRq/n33/4w5uDX2jV4YVUUdxRo7L3CgmFjid1r529dHRGBRw4MKL9dqR+uVsojCXh5UoDU0laRga4VvavNINGN0h6NDv1u4R+BaSHndtWqf4c2fOtw6oJjI+QMrGLH2JtR7jmJ/IjKlKKBUyBD/MyeOLZIEwhJUBosm4DFBI6T09+cH+fRbAqf+Zg596qOcIFgyZZmZbm31ahUMg3th3h4wWgnWFi5ms3Ue0HH/U9mJFqIOLfiULOj1hC3+0HN0WB9L+a3FviRQKEoeXQYajvjeDKqfFpDIHKXQXOfMZ37/EBXRaXCQe4ST6x5lVlQxEnXEaSDFpW73K2ShyZz7bImRUkJ8f0ROlN9yXYFHmQPhf/u9PG6VKqKE0wLNMxEmU/SGQns9fIzIRT4SN2u4me6S3RxEwTz3fgt4MA+/KKHaJPCRYIunSBwkTwDop/DaCqUVG40aBF7uoa/yJ0fWccj23kogzY5KKt0P5NHqpihIvXdsgkTUFR1kpxz3xPb6h4zkrpN20U/ucaJbvYL5/tebvovmRp/5ExkC9vSlIR+HAuKYGwyiOHHUzq461TGKayWEqlrXN60rk3rkX4bYhyi/QkgmAsHQSksIY02Gy/9Qn6g6g8rETer3U9IOzzWISSyN534YEAi3JGktI3/3JbWGgbx2gClA0QgIHWQWwC3s5C5z9EyzIMdSaivtpd0aksKLxS5SjTRafK/vNrd6UkZCuF/AJlcn6hLzacW1WYIqrtxqBdxG7aFFAVa86eB2Rz0g5bkUOZbLVOfPo6dwxf9Ub5pba58FcUHmrTiaBgIsqL9+
- qagrkAp3
- L6PTxUYFqaIhvqPvOD3oC3mLzq27P3INNRAirfZ82FHRs3/4yGOaI1Vzt31ZLKMXyPUBsGC2By0vi3/dkPAhKmzCZGOmr8FxHrggzHs/1pRpGL4be7Eapkjl7+Nu1+/pzggpuhUR4to0ZMpcYki3mw0YyRkP+OXwuqXU49HQ91/vOOVFG6y9VmDkYw07wZZlsxwqE4XgPbESks6xSuK9kk6qYeBBJzE2V0iA1bFRXEJ7QSRM=
+X-HE-Tag: 1755884587-691241
+X-HE-Meta: U2FsdGVkX18wlK/NEMWDZcEUH5EiNG6kLLLjvqPp7ziytnB40dHpkdNnDmwU9pNG5i8CMdIKh31BlAppgLqSDX+x6bfL9ooZTJAXDPZ7Qw97HxKFiuTBURJERSsfGjmRKTiCgO4fGumAUznwXTX1ZE0HSIH/P2Ac7eKPQCmmLm3vn1uClijRz2XgZsOSiSg98UBd5fqaUlqfQVWhb/5QTflOxHu5FBY1VglKgNuUVZjW67VgagZK/z4QOyBYFTIEXZAAoHloUKTvQyH2aoeHcfHfKDqK0YYz9Y7MMqFKvpEjz4EQ5/niEtiRIDYg4EK4ZshTn4NA7UdGWeztD1e/6oBX3U4wq48aEliVoveZWt6tvOOxVIfNTRgaj5xLmorn4Kx3AtfuLPvFQubxgZccFYb5M84k2YsbFhYD2K2IuyRJADZm2d27/o0TFvx155crz8iK86bI0VWfNp6s5KGDdR0p57Yfm14pa03yOuEOC16BkrltRW9hZ+ORPNypRPnEo7g/HQ6F7mg9tizJor0TDYGkKosmbfO4eZx9jIhJgOyI7IhQawRhVnJmh3vZm+lGyg7XB++k8kih12hLhr6rIQBYG+u0HzVGgW3PXd4SE+sAZ+kNcPjrFUVoxyt8aGcLNo9OL2MDUASY8sABsLmgIlp5HXFGVUQh3PN0tkIFBD5zc1lDo9AREj5AtxFRNx+eYUEzRk11FMiWHB9fmJWxtp8UBklxTN13jdBZqv6+SZaOX6DHYH/sqg+QKnkW12uzCzfr6V1Gl9EP500XCR+oOddPDq3Sehsfsy40khn8Uw2ahZR/jWdvwAoKNJeoY/bD09Xdck10YbU/tJ75OzIwsrZ65NqhjAaAHLcKvuy+pxCaLEqQA3+QRW8GUapcj4As3e04HUoXjFbKWNt+gEw986mO1LahTerobh2HAicqr17ikd03ooFxFRKDllSF7tMI7BIA5wRRXA4NVuwjInB
+ QbhxxpQ9
+ 8a2klwTI84/7okBgclfDkJQaeIHq6Uxjx9NgKfSEk874+s1Dn21LLCBxYKZRH+582U0gFE3hunElcr1PfDXYbysRDE4Q6uxYrBaS8y+LACJl1BVe0ER0H/Z5eTyJ7VBp1PqctyKRwaqRkOFM9P1oTh6lg/clWOh2QWOBgoxUL/xexrQNQGczxj4Wank+SiGEuwF+pj1UvN9L1O0N82Zgc/MPlT1eWualhMq2nm+7M+adpX8fpWIcECrwEwLIomcZNK0ttbNTAYW8iu4MOrHgYH78gOP39TZ+JCrz/faSm5bFdi6O0EuStM9/XczRkWUBdLcJNCqpGi1YNA/ueI3GmNUKG9A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,45 +90,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all,
+On Fri, Aug 22, 2025 at 01:10:22PM -0400, Steven Rostedt wrote:
+> On Fri, 22 Aug 2025 17:58:16 +0100
+> Matthew Wilcox <willy@infradead.org> wrote:
+> 
+> > > Proposal:
+> > > I am developing on a restricted internal platform where there is a
+> > > technical requirement to use idle devices as extended memory.  
+> > 
+> > I don't think this is appropriate for the maintainer summit.  You
+> > can submit it to the Plumbers MM microconf [1] or LSFMM in May.
+> > 
+> > [1] https://lpc.events/event/19/contributions/1995/
+> > 
+> > Also you should have cc'd linux-mm for this kind of thing, adding
+> > it now.  Preserving the rest of the proposal for those who are
+> > interested.
+> 
+> From Ted's original email: https://lore.kernel.org/all/20250805144357.GA762104@mit.edu/
+> 
+>   Related to the Maintainer's Summit, the Kernel Summit is organized as a
+>   track which is run in parallel with the other tracks at the Linux
+>   Plumbers Conference (LPC), and is open to all registered attendees of
+>   LPC.  The goal of the Kernel Summit track will be to provide a forum to
+>   discuss specific technical issues that would be easier to resolve in
+>   person than over e-mail.  The program committee will also consider
+>   "information sharing" topics if they are clearly of interest to the wider
+>   development community (i.e., advanced training in topics that would be
+>   useful to kernel developers).
+> 
+>   To suggest a topic for the Kernel Summit, please do two things. by
+>   September 10th, 2025. First, please send e-mail with a subject prefix of
+>   [TECH TOPIC] to ksummit@lists.linux.dev.  As before, please use a
+>   separate e-mail for each topic.
+> 
+> So this appears to be appropriate.
 
-Currently, some callers of rmap_walk() conditionally avoid try-locking
-non-ksm anon folios. This necessitates serialization through anon_vma
-write-lock elsewhere when folio->mapping and/or folio->index (fields
-involved in rmap_walk()) are to be updated. This hurts scalability due
-to coarse granularity of the lock. For instance, when multiple threads
-invoke userfaultfd=E2=80=99s MOVE ioctl simultaneously to move distinct pag=
-es
-from the same src VMA, they all contend for the corresponding
-anon_vma=E2=80=99s lock. Field traces for arm64 android devices reveal over
-30ms of uninterruptible sleep in the main UI thread, leading to janky
-user interactions.
-
-Among all rmap_walk() callers that don=E2=80=99t lock anon folios,
-folio_referenced() is the most critical (others are
-page_idle_clear_pte_refs(), damon_folio_young(), and
-damon_folio_mkold()). The relevant code in folio_referenced() is:
-
-if (!is_locked && (!folio_test_anon(folio) || folio_test_ksm(folio))) {
-        we_locked =3D folio_trylock(folio);
-        if (!we_locked)
-                return 1;
-}
-
-It=E2=80=99s unclear why locking anon_vma exclusively (when updating
-folio->mapping, like in uffd MOVE) is beneficial over walking rmap
-with folio locked. It=E2=80=99s in the reclaim path, so should not be a
-critical path that necessitates some special treatment, unless I=E2=80=99m
-missing something.
-
-Therefore, I propose simplifying the locking mechanism by ensuring the
-folio is locked before calling rmap_walk(). This helps avoid locking
-anon_vma when updating folio->mapping, which, for instance, will help
-eliminate the uninterruptible sleep observed in the field traces
-mentioned earlier. Furthermore, it enables us to simplify the code in
-folio_lock_anon_vma_read() by removing the re-check to ensure that the
-field hasn=E2=80=99t changed under us.
-
-Thanks,
-Lokesh
+My mistake.  I thought tech topics were part of maintainer summit, not
+part of the kernel track.  It'll be up to the kernel track organiser(s)
+whether to accept it to that track or whether they think it'll be more
+appropriate in the MM microconf.
 
