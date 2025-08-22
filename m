@@ -4,100 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE2BECA0EED
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 21:42:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3CCBCA0EEB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 21:48:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C2F718E000D; Fri, 22 Aug 2025 17:42:44 -0400 (EDT)
+	id 118578E0019; Fri, 22 Aug 2025 17:48:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE11F6B00EC; Fri, 22 Aug 2025 17:42:44 -0400 (EDT)
+	id 0F0A48E0018; Fri, 22 Aug 2025 17:48:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF5BC8E000D; Fri, 22 Aug 2025 17:42:44 -0400 (EDT)
+	id 006098E0019; Fri, 22 Aug 2025 17:48:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EB7E6B00E9
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 17:42:44 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4256458914
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 21:42:44 +0000 (UTC)
-X-FDA: 83805718248.21.B20BF4A
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 62CE280007
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 21:42:41 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=OmVyCrAa;
-	spf=pass (imf30.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E2DF48E0018
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 17:48:41 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 71330839BA
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 21:48:41 +0000 (UTC)
+X-FDA: 83805733242.27.CB81334
+Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 93CA6C000B
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 21:48:39 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Hvdy1eqR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.174 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755898962;
+	s=arc-20220608; t=1755899319;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dx0ZmPP36PUthq9WgX18jt0ATxpXQol7Z82Al7MjsWY=;
-	b=4cUkkc7a/KzYPYUNR9/9sb1G5onLt9/WMsg+/92yiIm0pk9K2alRMEVfyaRDMF2l+LtZQK
-	xOAL+lRtbTbMIDKJ7lBv15a5oFieQvz0zi3qFRvpUFm0rk5F00l81s0/BfnUV+6NfqqGCg
-	WJYkxPckbgqJPDb6t9N36ucOtuJ+om8=
+	bh=KAIEX27cljqcvEISCgHpGYN/71b+wZUhIVArwfYHUjE=;
+	b=yJDWs76Q28l/XRhDl+0FzCI/jcnJpJmhffyZS69vRAh1Yujc0V6ki/H/P12iYe7O51sLwZ
+	JdLXsVuKhOkUrUSdwfENmXwmoUoRVPjl4FY6EvktFEcZm/9EjKna49mwZ5+iMdIggpRDUI
+	0zWbatT39fuB48oQb6LqF8KmFX4+b2w=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=OmVyCrAa;
-	spf=pass (imf30.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755898962; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Hvdy1eqR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.174 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755899319; a=rsa-sha256;
 	cv=none;
-	b=TpItznMWMtgth3fmHT1mfyx9yP3falcxh0pPyle35GIIiShiOgagNn2TwGTmPrlUbAKL+d
-	a9ap5CQHJ2Yjiu6LlkNCdTl2ufzIO1GgzQaDirL1qZ7Kuz8u4b4cRMYX/RnXYLrZgUUA+c
-	SaSynxeD1h3y4wk2UEpGSiMKOkC66Fo=
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20250822214238euoutp029b6c89fa7385fccd7b8a5b07e384bca6~eNMzCjpr23123631236euoutp02o
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 21:42:38 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20250822214238euoutp029b6c89fa7385fccd7b8a5b07e384bca6~eNMzCjpr23123631236euoutp02o
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1755898958;
-	bh=Dx0ZmPP36PUthq9WgX18jt0ATxpXQol7Z82Al7MjsWY=;
-	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
-	b=OmVyCrAaFVEznrRnFPcMsVHGsbytQF4Kc6TLjJ5mxoOyng4aiNF9TvUSj4XO8+UQ0
-	 AN/5h51AVJxBHQ2v0PjMnLbEDsN+xpWk4RoMSPYyS1LBNXN9HRT2RWxsVKjxn/FKnR
-	 xe5+LOZv9Lbxmvt2g2/bwAUXByisnZg9sLi6pAHM=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20250822214238eucas1p16934a3c0a9575e6044b61e11f3635af0~eNMyasDET1601216012eucas1p1T;
-	Fri, 22 Aug 2025 21:42:38 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20250822214237eusmtip1fb955c175b6ebe784beb9e12ceb3ed1e~eNMxoaVER0144901449eusmtip1R;
-	Fri, 22 Aug 2025 21:42:37 +0000 (GMT)
-Message-ID: <2acaa457-2c9f-4285-8403-2896a152f929@samsung.com>
-Date: Fri, 22 Aug 2025 23:42:36 +0200
+	b=7IXtGkuzXXnhMolEokhMSdSuTgLZJsExxrl1V88oPuxW+XU3FjyfHa/ospUPV50r4Gy1NS
+	oAt8gneOUUIRr+dYrsE/YDOnRB9dwxhCS8VIZYaqBJP8bY+7Ve4LdS/G6tct6igFcQy4X5
+	kE5W1zrVydHjfcNCpELej6qWSwy2+d8=
+Received: by mail-il1-f174.google.com with SMTP id e9e14a558f8ab-3e57010c2bbso12376715ab.3
+        for <linux-mm@kvack.org>; Fri, 22 Aug 2025 14:48:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755899318; x=1756504118; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KAIEX27cljqcvEISCgHpGYN/71b+wZUhIVArwfYHUjE=;
+        b=Hvdy1eqRmc515OV+AaXCaKR08wa9PBHe5T3ODgeudnsaPKszXnwmhqM2NcdipF5cel
+         1WYdJo12eEOWxoabZZDIeSSKTdNNZBk1+lyZfooWaPOGW/ndQ230uhM0POhILTO8sHpR
+         pga/FN0rmATbWvPveu5+iJB10H6rEA843/eBUJaSnoYR0gZnIvgTGqA5rbsn44pzJtXo
+         iDGW7zKZwiivp2xKEM5QK8ogw/MNZzYo07P2+XQJirMfPNCs/6C4SwxTiN/W9eLGEPLa
+         yO5o/vJN4mKfBNSdJ7GZ1X85mj5KJaY5Lr9iA5DBT7OjrXwXMXe3YaDNeA3jbvJHFZnP
+         I2HQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755899318; x=1756504118;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KAIEX27cljqcvEISCgHpGYN/71b+wZUhIVArwfYHUjE=;
+        b=qr4XbGMuRo0Zaiy5c18wab9AJFawJFWP1HQGgkI1JRZdyiUG0gPZ7C+Ok3VCj8EvtG
+         yJmOkZSmb5UJN3pjZhH7pXeuWcMr9EJ0zmOMBmiTC3e5Zm2I4k/dJG7hIy6smtEM2u7N
+         bOCDV6l9hFg8pGjQRDfed8oiSDY5a9iHsj4+4cNjgSZMKejWoE5CRZkM9aZfm4vZmiM4
+         NR1D0WqVdJqXoVNu9V+zDO0rsttOkcWlEooSerPonN9dMJoLwxNZx/rDFHS5tvpM6RlQ
+         71tAA0pUY4Ywlgp+TRrxnz6YPuD/tana73g84Z8eY8ob6ADZiuOwNUE3vsBRpoEy0V0Z
+         FpMg==
+X-Forwarded-Encrypted: i=1; AJvYcCUuJTzV2LkDlkQNQOr6ZcECrnBVygqrcfcCtqDgeUPfv0cXbVd/aNwaJ/xmgExdJh9cm8yHalclJQ==@kvack.org
+X-Gm-Message-State: AOJu0YzPEP27g10ao2BSyZBJTMsY2XfsRg4K9gNnyiVW8xap7hYWteQm
+	jR3bgdN0ddn4bsMQVzeaw4E1z3o/DOWFFF/Bjmun6C4JVkAoUnMPbXf7KzifkDb0axV4DjBTH79
+	es8bmCoGAWZL92bCghKDrvbmYWFH/O9iK3FtE
+X-Gm-Gg: ASbGncsF95wRJyh4mLxuJXVhQ8sfZoU7lP0suOYNfzlDZvPxHbd9PkWRjoJoE87LJJJ
+	xaKGpDmKHowx831pRnBazdqhSjhPoo9NBk+IS6nfHBkW2VD4WEO1AciN0hwlUtCY+wZ/e8a5OHl
+	9+4unY9lsGRpwUrYH1JVIHeEQhacq1syvDKNIdPsMOP2mJkapHTJIEyg9vdiUq0W6ptIHC7O19t
+	WeN9S8=
+X-Google-Smtp-Source: AGHT+IFfbgSDdnSYcbN+8LjYRoerwSuYliGkWYiz8XOJtJi017qiYSnfomfKss31HGiJ8+cI3oMP28PIFron2nX1K9I=
+X-Received: by 2002:a05:6e02:1d89:b0:3e5:41a2:d71f with SMTP id
+ e9e14a558f8ab-3e921a5c909mr68305415ab.14.1755899318504; Fri, 22 Aug 2025
+ 14:48:38 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH v2 2/2] mm: remove BDI_CAP_WRITEBACK_ACCT
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-To: Joanne Koong <joannelkoong@gmail.com>, miklos@szeredi.hu
-Cc: linux-fsdevel@vger.kernel.org, david@redhat.com, willy@infradead.org,
-	linux-mm@kvack.org
-Content-Language: en-US
-In-Reply-To: <a91010a8-e715-4f3d-9e22-e4c34efc0408@samsung.com>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20250822214238eucas1p16934a3c0a9575e6044b61e11f3635af0
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250822214238eucas1p16934a3c0a9575e6044b61e11f3635af0
-X-EPHeader: CA
-X-CMS-RootMailID: 20250822214238eucas1p16934a3c0a9575e6044b61e11f3635af0
-References: <20250707234606.2300149-1-joannelkoong@gmail.com>
-	<20250707234606.2300149-3-joannelkoong@gmail.com>
-	<a91010a8-e715-4f3d-9e22-e4c34efc0408@samsung.com>
-	<CGME20250822214238eucas1p16934a3c0a9575e6044b61e11f3635af0@eucas1p1.samsung.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 62CE280007
-X-Stat-Signature: nnmr1d56t4bfdc64zp9hs8zdmyeiezko
+References: <20250801043642.8103-1-kanchana.p.sridhar@intel.com>
+ <20250801043642.8103-19-kanchana.p.sridhar@intel.com> <aJ7Fk6RpNc815Ivd@gondor.apana.org.au>
+ <PH7PR11MB81210ABFD0BF9F73214080E8C93DA@PH7PR11MB8121.namprd11.prod.outlook.com>
+In-Reply-To: <PH7PR11MB81210ABFD0BF9F73214080E8C93DA@PH7PR11MB8121.namprd11.prod.outlook.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Fri, 22 Aug 2025 14:48:27 -0700
+X-Gm-Features: Ac12FXzqUx4hJnuCRyNUz_zHahXkhP9hKAQsHKGI5_cWZzqkZgjo1ddcP3KfUPk
+Message-ID: <CAKEwX=M2HCsPZVmXpvpAuF2N=4BXbXAMQMrLLRp7nCdotb=abA@mail.gmail.com>
+Subject: Re: [PATCH v11 18/24] crypto: acomp - Add crypto_acomp_batch_size()
+ to get an algorithm's batch-size.
+To: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"hannes@cmpxchg.org" <hannes@cmpxchg.org>, "yosry.ahmed@linux.dev" <yosry.ahmed@linux.dev>, 
+	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, 
+	"usamaarif642@gmail.com" <usamaarif642@gmail.com>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>, 
+	"21cnbao@gmail.com" <21cnbao@gmail.com>, 
+	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"senozhatsky@chromium.org" <senozhatsky@chromium.org>, 
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, "davem@davemloft.net" <davem@davemloft.net>, 
+	"clabbe@baylibre.com" <clabbe@baylibre.com>, "ardb@kernel.org" <ardb@kernel.org>, 
+	"ebiggers@google.com" <ebiggers@google.com>, "surenb@google.com" <surenb@google.com>, 
+	"Accardi, Kristen C" <kristen.c.accardi@intel.com>, "Gomes, Vinicius" <vinicius.gomes@intel.com>, 
+	"Feghali, Wajdi K" <wajdi.k.feghali@intel.com>, "Gopal, Vinodh" <vinodh.gopal@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 93CA6C000B
+X-Stat-Signature: jmn87ycqay9j1cmiibdcmsijprga9m18
 X-Rspam-User: 
-X-HE-Tag: 1755898961-752585
-X-HE-Meta: U2FsdGVkX1/l+nXJh/M4rj5VbwJW7iH4FfBFgoz9keiJtUMI4ap6N0YfONGmGUpcsuWKObavucxiofbl0AvurWsH8fxVUwkva/wBnD6Np6RnW/lhXGQX4QU2dvVwckDBd6ysZ9W67BnQ/fC1Ry6h6W8U9tKQj/X6bBWH89B1Ct+tJRmC/zoN9YZPN2/abrHbvrEJu17dpXpOyGaucR0vZVukuVvUKZif7QBw1anTaxevbyU98Pmf1M45B8JuoGdp6SV76Mu9wdS5Nb5xQvfBvbl6/z+2a0IlLBQmxAt4m/gRntgWf/TlQ1kOu0/k+qir920dP+F2LH11aBBEMrNzX/vE4DQKusM6nt/JNXctu/ulQ1zc6leaciBIJMTP+nQoFfwwkcwTONnpcmkB65rO41Tufb+3kF/wm7TskdwNPIEQQWGl6eziVj5QN4O9UfsYfiox+X3btmSM3Cz5ec6gOQLqANGsdy9F/vabdSHFUH3dOwSmIJ5+lE9dhsEsaZbwkqef2BRhmgj5EAe5xtvpBmVElZ3WK30/xaDiEg54TsyGfYvyn1QC9/yRX6wa6W8SsVYpE72QaAScgJ/bWalYQylicERQ/omfIFlh1n26BmHp76D+tf33DcY9ntXaRde+nmowxMFFXCd7Ev/9YkXh2ADBwrgXuoP1ra61j47XHyIF+IGYIMEwOJYGFZ1pl4x9RYgOLfDfjzdOnPlBmMNyo9EHsWm0MCL0J7POgbAh6xCTrXIRF6X4aKg9lpryrCO6Eu2t6MwFcRlANlMeYq6YNYLVlSeZ/rYxVAfWedJuOG/p9+h0imd9ONwB+1cRmwCl1YB/NgTCfJO7nmGgrzRPL6cBwQyKZCLfChQNNcjFxeKnqzwhNXJMzo2bAOzJb+FZr8ylwiBmQVi8NxGP2+u4ND1RZgFxHGO1NTjp4A/lclWPnve3SrfrrZ8I3YK+04g5io5ZHDPdrgMPrRzkRtq
- a7WReM2a
- 5WzqTuF8khDHVX9I5R4ibBTgYr0TflqnIfQTEoVWSEUVczmdcDdCtd8AATgH+whcvJc2CBVqnmi5T/6sSjDyacwEq4qrUb8vOTXBmgw3nhwvZfuJhpxmc3V9dO1A2L2U6tT8FrRTUgoC6IuIbpOuQ3dXg2JCcLhuJm/IX3IsKxWcB5xE=
+X-HE-Tag: 1755899319-488992
+X-HE-Meta: U2FsdGVkX18PKCZLGqNsOMfbZJmNnuK+Hd2LYP/r9JnYCZuRjc2STyHPQkotHagk7CgCRJ7983l1riMUEFDc52A6jgSz7mTB+zAn1zwGU6nrn3t3VWL9W4BwDlj4OnWeS8UDHbcNhAqDkHpHQEa79m91HNi7qu3nO6/lvAl2bGs7rGNtQv+vy6H4js37tzUg+HqmzydBqXyKieyO1fZepIPcVGGo+1vZmErYIbymGRSK8T36ASGJbWUTD3NQv71iHcY8X86xI6i899OV00Aq8kcyUnoM3kyET6TcF8VH4cYM6xB8cpujfYKWEOpxqMOoLmyvbA/UPazsj6Xn8w3FSi0/gVqGUJjZJhwMnUPTp4uB/7BjlCVyFZUeSWzQbuC4RvhPHQNeB5OLlz+kQyeNoU3eQ/7hm9365GJwcNwG0l4NUtIF7VR3GeytJjjakFgTCNZxbNeDwSr0d8WPWgfcKZPOEyiYfdB/VLExrJrAY3HEf2Fy9euPGdhHwNXnUeYK4IBJFZnOH+zdblrKyK460R+0M8O7LqIo50FmCGXp8td1tKM3AS8eHb0+LwnHjDocItyi2RsC9EXJ+rG3B4oX1CUl7wJbQDrlx+IE2uY9UiWVP5hiYFKifeZxUaI5DrCXKny5+rssHCvHvq+jKAf5K38Sjq2baLpsofuQ2R0TaG80yu1AOk58UKQSBoVEQIwUfvSFhr9uYqiResLZ2BJ3dz/DfmU4QahXfMt9eavkDazqXKzlmxcGptmDRxSi0SPVr2KVzkEplMO5hiiKg8nzzXXgulSnzaTrTqafTw6ITh3s1ssR8lUXR5ih4yoMJbgZwgfDc7ewmS4BpDqWxvR1EF9ODYii7UP3bU3rAnFE9RD7aSVfn41LgX7HkdbQkbSj7wd3KDxM4T4hd8EJNWguyWizbenR6jpsmPEu9WlHGMf84bIjR23qUXgjVWa9khD5tFYOa2NEKrQjF5JX9C5
+ dR+3m3Rc
+ wuKNwwLMeBSCB90hkq5f/1jrLoQnOe6nRCnM8p4ZmRuBV0w6yfE4jLrSTWyaKNEhoBLHHJzRtdc8JrTUW2ghU9UBUhzaILhEHjZLlMJsTNxbfGcXMMDxV/f5DuCCgQkmJeSFZE8q8iOV+srNqBFgruWXpTCWuYUWWVKGtE5wWzjytI4IQgRkzoltHwT5obHv4YOCZfOdylah50oWNzymD5i4iiDwsDhp7+NYHBY45ZxnA2w5ihV1M1kRiYSNU7yVbo+AjmmzWITr/2gfbmGQ2sRYF3qBf3ElobYMTAoC+PIUzuLsGXPVjkslNuSvImScisf82KNht3ZkAZbfqXc0j78CbwFqwxGiQJVJFdSs0c5OIEVa1xPJ+FEcghM3zzIy+y5GsaSoofZIOtiB2v5x7GegP9m2eCxzLvd4GfhA07YVCpHqp6pXxQLPzVAQ5waoP6LyWE65vx8ZZepRtjKg0tKP6UHneiYWWze4FEBT+7etWgCyBM8cBOKUmVuxqokurtULrHPCzaGiyUJpBCqDE8TVqytsGgS1J3BJfvY7fK44xflOAbYI6LrYjfcOSMtC4DexToAOg2dBqwi6Van9az6aK9jCcuA19Wz449y9Uvp25q9SxYCW2tV8q3Lazmb7O2sw0mkIR4PQrACtI/RmaBjCzzqQp4cNpjSR2OsuouJ0s+9PPqBELeCZem2swQZW3Px5BQtcDNXYaxBEXHRv3yk0MOJ9OB81xdSxUfl09SHiaK5PQhdhHYiwI6RvJHQCFj6F1M/2rUax1nYlhV85HElzqFxwGjeCU4t/PyU/a2Gdetcza1IEcE2kfDsyLAkfyZ7pUlF0J05jd6AKj/Cuf5rYqL+6QlwqLLL4um4ZCk2eXGAerOfbuDhyNgowpWXnMF6V8B9WigV7BF1V6xHh+7/o1ysnUo/RNAfFxiLuNQ9V01O4RZeD+3557m84e0I/aG5+CEYzhR/omGzr+ln9wo1wgwUHf
+ jGu2SZof
+ P21CI+zhj/VuF3qM+nMKiA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,118 +133,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 22.08.2025 13:01, Marek Szyprowski wrote:
-> On 08.07.2025 01:46, Joanne Koong wrote:
->> There are no users of BDI_CAP_WRITEBACK_ACCT now that fuse doesn't do
->> its own writeback accounting. This commit removes
->> BDI_CAP_WRITEBACK_ACCT.
->>
->> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
->> Acked-by: David Hildenbrand <david@redhat.com>
+On Fri, Aug 22, 2025 at 12:31=E2=80=AFPM Sridhar, Kanchana P
+<kanchana.p.sridhar@intel.com> wrote:
 >
-> This patch landed recently in linux-next as commit 167f21a81a9c ("mm: 
-> remove BDI_CAP_WRITEBACK_ACCT"). In my tests I found that it triggers 
-> the ./include/linux/backing-dev.h:239 warning. Reverting $subject on 
-> top of current linux-next fixes/hides this issue. Here is a detailed log:
 >
-> ------------[ cut here ]------------
-> WARNING: ./include/linux/backing-dev.h:239 at 
-> __folio_start_writeback+0x25a/0x26a, CPU#1: swapper/0/1
-> Modules linked in:
-> CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 
-> 6.17.0-rc2-next-20250822 #10852 NONE
-> Hardware name: StarFive VisionFive 2 v1.2A (DT)
-> epc : __folio_start_writeback+0x25a/0x26a
->  ra : __folio_start_writeback+0x258/0x26a
+> > -----Original Message-----
+> > From: Herbert Xu <herbert@gondor.apana.org.au>
+> > Sent: Thursday, August 14, 2025 10:29 PM
+> > To: Sridhar, Kanchana P <kanchana.p.sridhar@intel.com>
+> > Cc: linux-kernel@vger.kernel.org; linux-mm@kvack.org;
+> > hannes@cmpxchg.org; yosry.ahmed@linux.dev; nphamcs@gmail.com;
+> > chengming.zhou@linux.dev; usamaarif642@gmail.com;
+> > ryan.roberts@arm.com; 21cnbao@gmail.com;
+> > ying.huang@linux.alibaba.com; akpm@linux-foundation.org;
+> > senozhatsky@chromium.org; linux-crypto@vger.kernel.org;
+> > davem@davemloft.net; clabbe@baylibre.com; ardb@kernel.org;
+> > ebiggers@google.com; surenb@google.com; Accardi, Kristen C
+> > <kristen.c.accardi@intel.com>; Gomes, Vinicius <vinicius.gomes@intel.co=
+m>;
+> > Feghali, Wajdi K <wajdi.k.feghali@intel.com>; Gopal, Vinodh
+> > <vinodh.gopal@intel.com>
+> > Subject: Re: [PATCH v11 18/24] crypto: acomp - Add
+> > crypto_acomp_batch_size() to get an algorithm's batch-size.
+> >
+> > On Thu, Jul 31, 2025 at 09:36:36PM -0700, Kanchana P Sridhar wrote:
+> > >
+> > > diff --git a/include/crypto/internal/acompress.h
+> > b/include/crypto/internal/acompress.h
+> > > index ffffd88bbbad3..2325ee18e7a10 100644
+> > > --- a/include/crypto/internal/acompress.h
+> > > +++ b/include/crypto/internal/acompress.h
+> > > @@ -28,6 +28,8 @@
+> > >   *
+> > >   * @compress:      Function performs a compress operation
+> > >   * @decompress:    Function performs a de-compress operation
+> > > + * @get_batch_size:        Maximum batch-size for batching
+> > compress/decompress
+> > > + *                 operations.
+> > >   * @init:  Initialize the cryptographic transformation object.
+> > >   *         This function is used to initialize the cryptographic
+> > >   *         transformation object. This function is called only once =
+at
+> > > @@ -46,6 +48,7 @@
+> > >  struct acomp_alg {
+> > >     int (*compress)(struct acomp_req *req);
+> > >     int (*decompress)(struct acomp_req *req);
+> > > +   unsigned int (*get_batch_size)(void);
+> >
+> > I can't imagine a situation where this needs to be dynamic.
+> > Please just make it a static value rather than a callback function.
 >
-> [<ffffffff80202222>] __folio_start_writeback+0x25a/0x26a
-> [<ffffffff802f3260>] __block_write_full_folio+0x124/0x39c
-> [<ffffffff802f4b6e>] block_write_full_folio+0x8a/0xbc
-> [<ffffffff804dbf42>] blkdev_writepages+0x3e/0x8a
-> [<ffffffff802030fa>] do_writepages+0x78/0x11a
-> [<ffffffff801f2e0e>] filemap_fdatawrite_wbc+0x4a/0x62
-> [<ffffffff801f6d66>] __filemap_fdatawrite_range+0x52/0x78
-> [<ffffffff801f6fdc>] filemap_write_and_wait_range+0x40/0x68
-> [<ffffffff804dacae>] set_blocksize+0xd8/0x152
-> [<ffffffff804dae18>] sb_min_blocksize+0x44/0xce
-> [<ffffffff803a0c7a>] ext4_fill_super+0x182/0x2914
-> [<ffffffff802a72e6>] get_tree_bdev_flags+0xf0/0x168
-> [<ffffffff802a736c>] get_tree_bdev+0xe/0x16
-> [<ffffffff8039a09e>] ext4_get_tree+0x14/0x1c
-> [<ffffffff802a5062>] vfs_get_tree+0x1a/0xa4
-> [<ffffffff802d17d4>] path_mount+0x23a/0x8ae
-> [<ffffffff80c20cd4>] init_mount+0x4e/0x86
-> [<ffffffff80c01622>] do_mount_root+0xe0/0x166
-> [<ffffffff80c01814>] mount_root_generic+0x11e/0x2d6
-> [<ffffffff80c02746>] initrd_load+0xf8/0x2b6
-> [<ffffffff80c01d38>] prepare_namespace+0x150/0x258
-> [<ffffffff80c01310>] kernel_init_freeable+0x2f2/0x316
-> [<ffffffff80b6d896>] kernel_init+0x1e/0x13a
-> [<ffffffff80012288>] ret_from_fork_kernel+0x14/0x208
-> [<ffffffff80b79392>] ret_from_fork_kernel_asm+0x16/0x18
-> irq event stamp: 159263
-> hardirqs last  enabled at (159263): [<ffffffff805e7e4a>] 
-> percpu_counter_add_batch+0xa6/0xda
-> hardirqs last disabled at (159262): [<ffffffff805e7e40>] 
-> percpu_counter_add_batch+0x9c/0xda
-> softirqs last  enabled at (159248): [<ffffffff8002e972>] 
-> handle_softirqs+0x3ca/0x462
-> softirqs last disabled at (159241): [<ffffffff8002eb72>] 
-> __irq_exit_rcu+0xe2/0x10c
-> ---[ end trace 0000000000000000 ]---
+> Hi Herbert,
+>
+> I am not sure I understand.. Kernel users such as zswap/zram need to quer=
+y
+> the algorithm to get the maximum supported batch-size so they can allocat=
+e
+> resources for dst buffers. The get_batch_size() callback and associated
+> crypto_acomp_batch_size() wrapper help accomplish this.
 
-I've played a bit with the code modified by the $subject patch and it 
-looks that the following change fixes the issue, although I didn't 
-analyze exactly where struct bdi_writeback is being modified:
+I think he meant stored it as a static unsigned int field, rather than
+a function pointer (i.e dynamic) like this.
 
-diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-index 99e80bdb3084..3887ac2e6475 100644
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -2984,7 +2984,7 @@ bool __folio_end_writeback(struct folio *folio)
-
-         if (mapping && mapping_use_writeback_tags(mapping)) {
-                 struct inode *inode = mapping->host;
--               struct bdi_writeback *wb = inode_to_wb(inode);
-+               struct bdi_writeback *wb;
-                 unsigned long flags;
-
-                 xa_lock_irqsave(&mapping->i_pages, flags);
-@@ -2992,6 +2992,7 @@ bool __folio_end_writeback(struct folio *folio)
-                 __xa_clear_mark(&mapping->i_pages, folio_index(folio),
-                                         PAGECACHE_TAG_WRITEBACK);
-
-+               wb = inode_to_wb(inode);
-                 wb_stat_mod(wb, WB_WRITEBACK, -nr);
-                 __wb_writeout_add(wb, nr);
-                 if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK)) {
-@@ -3024,7 +3025,7 @@ void __folio_start_writeback(struct folio *folio, 
-bool keep_write)
-         if (mapping && mapping_use_writeback_tags(mapping)) {
-                 XA_STATE(xas, &mapping->i_pages, folio_index(folio));
-                 struct inode *inode = mapping->host;
--               struct bdi_writeback *wb = inode_to_wb(inode);
-+               struct bdi_writeback *wb;
-                 unsigned long flags;
-                 bool on_wblist;
-
-@@ -3035,6 +3036,7 @@ void __folio_start_writeback(struct folio *folio, 
-bool keep_write)
-                 on_wblist = mapping_tagged(mapping, 
-PAGECACHE_TAG_WRITEBACK);
-
-                 xas_set_mark(&xas, PAGECACHE_TAG_WRITEBACK);
-+               wb = inode_to_wb(inode);
-                 wb_stat_mod(wb, WB_WRITEBACK, nr);
-                 if (!on_wblist) {
-                         wb_inode_writeback_start(wb);
-
-
-> ...
-
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
-
+Does batch size ever change at runtime?
 
