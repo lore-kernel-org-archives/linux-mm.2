@@ -4,30 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20F32CA0EED
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 09:48:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9C45CA0EEB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 09:48:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 793D68E0086; Fri, 22 Aug 2025 05:48:16 -0400 (EDT)
+	id 12C558E008D; Fri, 22 Aug 2025 05:48:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7470B8E008C; Fri, 22 Aug 2025 05:48:16 -0400 (EDT)
+	id 10A8B8E008C; Fri, 22 Aug 2025 05:48:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 634B98E0086; Fri, 22 Aug 2025 05:48:16 -0400 (EDT)
+	id E70CC8E008D; Fri, 22 Aug 2025 05:48:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 486C88E008C
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D35BF8E008C
 	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 05:48:16 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 13937138E6B
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 93B0FC06CA
 	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:48:16 +0000 (UTC)
-X-FDA: 83803917792.20.2E699DF
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 4C85E20002
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:48:12 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
+X-FDA: 83803917792.04.0EC7C59
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 34737120010
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:48:13 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf03.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
+	spf=pass (imf29.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1755856094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -35,55 +35,55 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MA0mrnWlW46E7cfjYA/9rD/IGNF/iHDOOPqWCUOdjTQ=;
-	b=A48jPdx8ArWoiH0+BMkxVR8hT7PQxjn8Jxcabl6kU3y/B1WrtL9xoU1eEu89MfO0iKdDNh
-	A+2iR0AKM4Wqnl6njvi33p6xWcXQobyHz2SzUGQ9oQBN97P4qdAxZ4EXcVejxoLLiwrz01
-	W7tEtwzW+6ckntQQxPr96i8c+nutTm0=
+	bh=lE55YGWAQ6Jw6zuanxQZWGEb8lUWvJaGpVYZBtzkJRk=;
+	b=sNnB0pAGpu8BFYXzXALb74yuJ/48QuwZzUYeLxDFcBRQtbUmQWcj4Ke3XFP0EAFo60fxzC
+	7vBZK9XL2S1xwNe6ayTcsgwAETnzATZ1xfb6EFw+D+q5RQgUO+9mPQp24XjTPwNp28+iJp
+	jbnNemGJjTaR36CgASYCBNxKr3Gq/NI=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
+	imf29.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf03.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
+	spf=pass (imf29.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755856094; a=rsa-sha256;
 	cv=none;
-	b=NmpIqDS0YWu9YpD+ZGOyJ7B5FdOAhYmNHGKV05+5WFvKcTLwll8gYwKr7+gzDkHl6c+WrT
-	i0RddBM9sV02JTVlOLMt+qJaB1rqqZ5f1qk8RBSdckjnp5AMoAlFT6deIr70OwbPDRCgS5
-	2bbnKPJ8U3zsEAR25Jo4XCEWdxgAMFg=
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4c7b4W6ts5z27jJ3;
-	Fri, 22 Aug 2025 17:49:15 +0800 (CST)
+	b=1qBCVWkAeLab+37ZkX/ZiTJl3MDlqFQNCqCF2wB+coJQXNsZzdFhh1KQr4000g/g6UFH6a
+	W32t7BFZCYo0I44Tirna8JpsU8s9CFwdYPikgHnlz7RFnXcNswTuSNqIEPUdxVJrlY9gIo
+	AAUPkVfJwpFblsqfP9mOT4pKRPcfcKc=
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4c7b3B5g00z14MWC;
+	Fri, 22 Aug 2025 17:48:06 +0800 (CST)
 Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
-	by mail.maildlp.com (Postfix) with ESMTPS id 40FED1401F1;
-	Fri, 22 Aug 2025 17:48:10 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 75914180495;
+	Fri, 22 Aug 2025 17:48:11 +0800 (CST)
 Received: from huawei.com (10.50.85.135) by dggpemf200018.china.huawei.com
  (7.185.36.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 22 Aug
- 2025 17:48:09 +0800
+ 2025 17:48:10 +0800
 From: Quanmin Yan <yanquanmin1@huawei.com>
 To: <sj@kernel.org>
 CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
 	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
 	<yanquanmin1@huawei.com>, <wangkefeng.wang@huawei.com>, <zuoze1@huawei.com>
-Subject: [PATCH v2 07/11] mm/damon/sysfs: implement addr_unit file under context dir
-Date: Fri, 22 Aug 2025 17:34:15 +0800
-Message-ID: <20250822093420.2103803-8-yanquanmin1@huawei.com>
+Subject: [PATCH v2 09/11] Docs/admin-guide/mm/damon/usage: document addr_unit file
+Date: Fri, 22 Aug 2025 17:34:17 +0800
+Message-ID: <20250822093420.2103803-10-yanquanmin1@huawei.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250822093420.2103803-1-yanquanmin1@huawei.com>
 References: <20250822093420.2103803-1-yanquanmin1@huawei.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 X-Originating-IP: [10.50.85.135]
 X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
  dggpemf200018.china.huawei.com (7.185.36.31)
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4C85E20002
-X-Stat-Signature: 6o3wh67jwwh8g83ey3i7pzoem9irm3yo
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 34737120010
+X-Stat-Signature: k5ug8913wy3suth1a4os6f7th56un3h3
 X-Rspam-User: 
-X-HE-Tag: 1755856092-147901
-X-HE-Meta: U2FsdGVkX18dtJw7tK+aN9NXXzB8OwDxqI8BTWYSvpnUJs79IUB18nqkd59agV+VtOv+VgCJca5VWoHKE8xBtnLfWJGiGVPprhuL9qcfi4Ij9ieWiaVeqEean6Y6DCHJ+PCP8jxw/sUKbtK6yw//hSTDt/NlruYFIp7D7TJAa3EAq0F3BCAlsESC5jz8AaIZpMLeuSIAC7J2R5iphBvvk6i/18z1AcWNdsT4K+s3o6Oj3a0ciIdnWBAAJzsKqs/u4VoIzxTac6knF0PMzECVwof5wv379SolaGyjcit2jEZGsweRRDb8CeoZKPA/L998Qnfy1FJhRoYpuVNMbWTUR+9fFgzT+5z3szl+2rOdjZrugGlsAh0s2bIoPC4Ta7NTTxi2Pqs6v+IAlaVoqb03ktr0qbRaOXFo8omMpx+7Wq9IkT1SwL/bUn4XJDYDA3Na2dVjKjsHKXvUiQMXpczEdRa/yVJ+fC4HYKRVLhhUArL+imWfdjRX1YehFWv5WOq1FOOEfPaMMFOdX/yS12semMmPUgOxx/H9bElP1oLVH6WClnvrGodx4H0Xt3TiIuPIPBFWVHAj0JIRSJHXsVGjM5uP8gGkrnH6iMFg+2RnAEA6dLwwEzmLvcDDH+FeVvCpu9wbUbEfbqMhS+ZyZgOSnxYyghGOgSqzlG+VKCaxupd6beguvVjT6JkKmacSBDb29r9RLwRKUyN+gzix2SroGCXDzZ4EUtYLsflGmGp1rMkfWzh/sECciH6Ew4hG21EJOSP8E1Oz0mgbVkirULV3prh4q6uOCrfxelT9JVMfCtRgOOT+pNUPAWnNU0nWR46BxQPjAJp63bVj/xOxpt6z+AtwjWoNwk7jEcDTDZbVlnvzv5fre+PaPagmbwo/U+jEM/2PfKJxcpX/VkVAQFCsNQ2KZQ+V8e0UNG6g26P/vvsjtl9ZEGzbWaQU7UQttsJfsujMSeGAHa7+UrirWeS
- YGY4SCWC
- j0V2A3L9cIkq7tqRbmNn72guY8Gcow90vuwq3djRCOaQWwKuWbFHO/A2G/3W4Fm4EUdDeY/Lt4vj2zweUxF8mqx28I1X+P1uFEkqiFQJcn5QsT8XrHG0j/73x4+bD87c5M7VMxC83wPwRoOhKx7zZonjBJM1+Pj6HvcvIP79yqv0rqhYvJAJJR3tDXBU8byAdpJDg4DvynQq6no6PsjG2VkRj91fwtRkPB8E4UxSsGtc3VH1/WRDgxACT6SW2C7Q+KP74
+X-HE-Tag: 1755856093-101572
+X-HE-Meta: U2FsdGVkX192gRkIyY1/7HJvg+vFBiBpRQlh6HZdki+HlkMpKdGehKkB4x3iN0vWIi6ArAqxmEDiMC9EFE/AafFxqWtjFQPcf8XayQxrAlvU+pAAj1SUzlIaX7+fW09LWvRlINxOaAR8ieFIb7QJ0O4m0AlM0gEufgVf2IckBAsoYM+aJQVQ09U1AGNZhiIyw2GMdZ6kWKNmHCCra91dRHhsO6uIO2AmVvxGcboYrK0LSxSPbihVe7xhe8irLJiY2P6e9YV/e+1eGeNVOTiJGBhQy1ZYKU85uGszlilz34/mZQFZbM4qdeWbLEhMMCtl8RmPVg4cMUM5MWOghVS7PEbsSxF/7PZw2DKKC0Xqi428KPzetz0ydc6sS+jl2Gd9AuPmHANL9VmyHj6KiiCZePh/kNNljj1+vRK0nn/hIRsfqqrqQx7P9Atid2AhPK5OhZVhLMPRdDOy4yaozrJX6v15cC2D6kQ1qJIIl42XgNn/bSZxcuXHmI/AfsqohoxhzDkvOYSfJVpv1oGgvq1kTlo7VmfWOBVm98PigLzMaSRBfcvhnahTP62MSjlO/kOw/HjcUl31gJeNR5hmwY8CnQw4FmYPiqS8OV1D3L5ueS5h0agnTJrDOdEmt3lZjU5jRAgTQ4QXGrG6gN12hMk6laC6W5Mcezc2o6rtxAWmOagBRlunBnS0juG6NiTB3qtfiHhRGBqpGlOpA9G7wqK5jqB/g1SOT+B0o23xtxE3z/bBZzKzLZtqQYh1EOmOvFCePD+RsplWKunka1/0e5CLnLwWOhfaGAma0bTqqPGZ08TSsdq4CqfxQZ22SsWSI8h7Vt3nd6w3S7S4m3bvU6NDGZo7SCsrNz4WUlt7jFgnH9q5NXUbaiEv4NQMObsVYQipBOwvwFltTtvZrOVsCICFFCGcOLFlETAyORue1YYbp/b3IbU0mhXpMhXEsbZYzV6cQDA6u+o4d0d93Ycj/0h
+ E7x7gGIM
+ bJcUpeeqhh3nURWwvV0Duz8LhuQypohytJafvWQx1hSUcj5QEL4SxA6VaEhRaL2xfFIHo5VjVMrZVQyCInaZvuEXTefgYk814CAFiefq15+gIQWM9GLR6ppJkk72u/OmS9r6IkdPwt8opo/ITEtp8S2fjwHfPvL4XpA6BiZ21Wx3xTthYnZHRfxdYtche7iaYG/aG0ggyy1J+Ufo6gOr3ec+laWCMfNiU6bVT10I1CJe/cGFK6rFNRH13pbTjYWqsL1NtQxPK2O0Kuzlt5ohNKo5PZs3ZwCn4/nXQ9fTz7CVNN08=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,93 +94,65 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: SeongJae Park <sj@kernel.org>
 
-Only DAMON kernel API callers can use addr_unit parameter.  Implement a
-sysfs file to let DAMON sysfs ABI users use it.
-
-Additionally, addr_unit must be set to a non-zero value.
+Document addr_unit DAMON sysfs file on DAMON usage document.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
 Reviewed-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/sysfs.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ Documentation/admin-guide/mm/damon/usage.rst | 11 +++++++----
+ Documentation/mm/damon/design.rst            |  2 ++
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 6d2b0dab50cb..98bf15d403b2 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -834,6 +834,7 @@ static const struct damon_sysfs_ops_name damon_sysfs_ops_names[] = {
- struct damon_sysfs_context {
- 	struct kobject kobj;
- 	enum damon_ops_id ops_id;
-+	unsigned long addr_unit;
- 	struct damon_sysfs_attrs *attrs;
- 	struct damon_sysfs_targets *targets;
- 	struct damon_sysfs_schemes *schemes;
-@@ -849,6 +850,7 @@ static struct damon_sysfs_context *damon_sysfs_context_alloc(
- 		return NULL;
- 	context->kobj = (struct kobject){};
- 	context->ops_id = ops_id;
-+	context->addr_unit = 1;
- 	return context;
- }
+diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
+index ff3a2dda1f02..2cae60b6f3ca 100644
+--- a/Documentation/admin-guide/mm/damon/usage.rst
++++ b/Documentation/admin-guide/mm/damon/usage.rst
+@@ -61,7 +61,7 @@ comma (",").
+     │ :ref:`kdamonds <sysfs_kdamonds>`/nr_kdamonds
+     │ │ :ref:`0 <sysfs_kdamond>`/state,pid,refresh_ms
+     │ │ │ :ref:`contexts <sysfs_contexts>`/nr_contexts
+-    │ │ │ │ :ref:`0 <sysfs_context>`/avail_operations,operations
++    │ │ │ │ :ref:`0 <sysfs_context>`/avail_operations,operations,addr_unit
+     │ │ │ │ │ :ref:`monitoring_attrs <sysfs_monitoring_attrs>`/
+     │ │ │ │ │ │ intervals/sample_us,aggr_us,update_us
+     │ │ │ │ │ │ │ intervals_goal/access_bp,aggrs,min_sample_us,max_sample_us
+@@ -188,9 +188,9 @@ details).  At the moment, only one context per kdamond is supported, so only
+ contexts/<N>/
+ -------------
  
-@@ -997,6 +999,32 @@ static ssize_t operations_store(struct kobject *kobj,
- 	return -EINVAL;
- }
+-In each context directory, two files (``avail_operations`` and ``operations``)
+-and three directories (``monitoring_attrs``, ``targets``, and ``schemes``)
+-exist.
++In each context directory, three files (``avail_operations``, ``operations``
++and ``addr_unit``) and three directories (``monitoring_attrs``, ``targets``,
++and ``schemes``) exist.
  
-+static ssize_t addr_unit_show(struct kobject *kobj,
-+		struct kobj_attribute *attr, char *buf)
-+{
-+	struct damon_sysfs_context *context = container_of(kobj,
-+			struct damon_sysfs_context, kobj);
-+
-+	return sysfs_emit(buf, "%lu\n", context->addr_unit);
-+}
-+
-+static ssize_t addr_unit_store(struct kobject *kobj,
-+		struct kobj_attribute *attr, const char *buf, size_t count)
-+{
-+	struct damon_sysfs_context *context = container_of(kobj,
-+			struct damon_sysfs_context, kobj);
-+	unsigned long input_addr_unit;
-+	int err = kstrtoul(buf, 0, &input_addr_unit);
-+
-+	if (err)
-+		return err;
-+	if (!input_addr_unit)
-+		return -EINVAL;
-+
-+	context->addr_unit = input_addr_unit;
-+	return count;
-+}
-+
- static void damon_sysfs_context_release(struct kobject *kobj)
- {
- 	kfree(container_of(kobj, struct damon_sysfs_context, kobj));
-@@ -1008,9 +1036,13 @@ static struct kobj_attribute damon_sysfs_context_avail_operations_attr =
- static struct kobj_attribute damon_sysfs_context_operations_attr =
- 		__ATTR_RW_MODE(operations, 0600);
+ DAMON supports multiple types of :ref:`monitoring operations
+ <damon_design_configurable_operations_set>`, including those for virtual address
+@@ -205,6 +205,9 @@ You can set and get what type of monitoring operations DAMON will use for the
+ context by writing one of the keywords listed in ``avail_operations`` file and
+ reading from the ``operations`` file.
  
-+static struct kobj_attribute damon_sysfs_context_addr_unit_attr =
-+		__ATTR_RW_MODE(addr_unit, 0600);
++``addr_unit`` file is for setting and getting the :ref:`address unit
++<damon_design_addr_unit>` parameter of the operations set.
 +
- static struct attribute *damon_sysfs_context_attrs[] = {
- 	&damon_sysfs_context_avail_operations_attr.attr,
- 	&damon_sysfs_context_operations_attr.attr,
-+	&damon_sysfs_context_addr_unit_attr.attr,
- 	NULL,
- };
- ATTRIBUTE_GROUPS(damon_sysfs_context);
-@@ -1397,6 +1429,7 @@ static int damon_sysfs_apply_inputs(struct damon_ctx *ctx,
- 	err = damon_select_ops(ctx, sys_ctx->ops_id);
- 	if (err)
- 		return err;
-+	ctx->addr_unit = sys_ctx->addr_unit;
- 	err = damon_sysfs_set_attrs(ctx, sys_ctx->attrs);
- 	if (err)
- 		return err;
+ .. _sysfs_monitoring_attrs:
+ 
+ contexts/<N>/monitoring_attrs/
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index d9d5baa1ec87..80354f4f42ba 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -135,6 +135,8 @@ the interference is the responsibility of sysadmins.  However, it solves the
+ conflict with the reclaim logic using ``PG_idle`` and ``PG_young`` page flags,
+ as Idle page tracking does.
+ 
++.. _damon_design_addr_unit:
++
+ Address Unit
+ ------------
+ 
 -- 
 2.43.0
 
