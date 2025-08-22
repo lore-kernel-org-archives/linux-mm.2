@@ -4,124 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E47FCA0EED
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 14:12:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00B51CA0EED
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 14:13:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8CA2280020; Fri, 22 Aug 2025 10:12:05 -0400 (EDT)
+	id 364178E00B1; Fri, 22 Aug 2025 10:13:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A63838E009D; Fri, 22 Aug 2025 10:12:05 -0400 (EDT)
+	id 33BE28E009D; Fri, 22 Aug 2025 10:13:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97A43280020; Fri, 22 Aug 2025 10:12:05 -0400 (EDT)
+	id 279388E00B1; Fri, 22 Aug 2025 10:13:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 833F58E009D
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 10:12:05 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 010F5160208
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 14:12:04 +0000 (UTC)
-X-FDA: 83804582610.01.8D81A0C
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1BFEF2000D
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 14:12:02 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=A0jNfxg1;
-	spf=pass (imf03.hostedemail.com: domain of giorgitchankvetadze1997@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=giorgitchankvetadze1997@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E3EC8E009D
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 10:13:52 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AA7801DA810
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 14:13:51 +0000 (UTC)
+X-FDA: 83804587062.20.79FBAE6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id E761D8000B
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 14:13:49 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IpLlZ7W+;
+	spf=pass (imf30.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755871923;
+	s=arc-20220608; t=1755872030;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SUrkI8gRxT8al9H8bcipd0cfLDrY2l84rj0Cw0HvR90=;
-	b=yzlVOsCsWh1FCscAIM/WXVMtI2PbpRid14DTAAjPlTM7RVqW/+uRMgUf2ZJzqytBwuaweH
-	jdj40Zbw2io2voPnVjFyOEfkZdFXUmscHXVAS8uTivlW2dj67gWZMb0D4WPLXpO8/ily5W
-	2R6Xixksp65smAdI1kOSRyYn7xX9KX0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755871923; a=rsa-sha256;
-	cv=none;
-	b=bFG/ACkrOcbFgHngXUPMlO2OxFfMbkoNJHYNq3BzEZJIU9liODDoqs7rdcz+GSqn4ewJ3K
-	Nv1TO2ZSiPAQXoRFlfQKfbB7f66Uhwtb2HOzsfxzxuOFOYdbYwHbVM2yI7SjZ8n4B8CpJ4
-	7z+nROD1Tl6gAa8MO8t51L/VgM5J0GQ=
+	bh=TMi7J1QR6W3/gcyM30+enHbGJh4rShyDF4HtA89El6s=;
+	b=CHHrgk49kLRKhLe+pe2tOyvQNOI5Uf6/x8vFq4WIQSTkIV0l4MFE9QzhsF0ZyF2z0/Sxi2
+	MTwtMOEPb9SWaDTxQk3ZnQR1W3lBFESBoDk2mXLxqbP5pvxI98tayiD3cnNPLip9h8anON
+	4oTRf4sZWJn0dpOjl0WARKiqsALa0gw=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=A0jNfxg1;
-	spf=pass (imf03.hostedemail.com: domain of giorgitchankvetadze1997@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=giorgitchankvetadze1997@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3b9e411f79dso87058f8f.1
-        for <linux-mm@kvack.org>; Fri, 22 Aug 2025 07:12:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755871921; x=1756476721; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SUrkI8gRxT8al9H8bcipd0cfLDrY2l84rj0Cw0HvR90=;
-        b=A0jNfxg1hFVd6FlWQ+RgqrJU1TS34BIyYjoX8I/tmHK8hF5jHJJz7kkpiA4lap8O06
-         jJX5scxhbvVSG39XGLzzlxm/R6m0WQBjOT1ZOzogpf/EGEoU2M/Dkf1nP2/34sBrfgUi
-         P4PrSu1B1kfCHqwEhN7+FSyohXpUbO+T8km0FZaLl/xSEaCwbd835LvKUbcyy8bZ2o07
-         pgwcYw5tAtqBaqoFZvdWKm2Yt0BA0B90pJG4lIYdXWSqmVe3IB5eHy2DgmDm4Y2pUJAD
-         +NaNBAp4JMyOad18cHwnxH+38SbNXaUeeX3fg1dN/Oa4Vw0dPbxy5+9TrSm6fQPk4DuJ
-         o7yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755871921; x=1756476721;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SUrkI8gRxT8al9H8bcipd0cfLDrY2l84rj0Cw0HvR90=;
-        b=qSyA7T811ayAq/qtTbO0qhx9jTd3H5Vx4Rw7FSV3goHba0OZSWfVEsUcdTiYMlxOLW
-         mLvc8DbNw71oumR7BQeEXR2Q5iUyuDIm8EuqggBo5zexvVGOiaGGK/v1Gc6LvJA5iL3D
-         GdOyAjOjB0zIxFrGDppWJgLTjrfU+jQZPwjz00K7GsOXpEzlACMv3PeE+oR6g98So4c8
-         SlVzJQJVQPjqRfe8gG77SnhbiIYULb3x/FrXe89c/DzzGqSvyoMLZEbvvCRSaxYsDr9E
-         Vx2QLQcK09bXsA8m927HBk5IUsJ8D3qOKTK8vuzDg77yBXQjLdlmwNIsIn01420BP0tX
-         HjqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVTbb17NIcONBBCfAZhdyKdZ4adMkmtxvr0zjhZ+uwaxY1nkTUpJHYqcX9JZNndO1dO9Ayv53d4Rw==@kvack.org
-X-Gm-Message-State: AOJu0YyhUMLRX/RvOMdgneiC6T+NFzbE5NPL3H7Pk2G0GChtmUym7lDk
-	bhC26CNAbDAik5WQeyOnNq08o83J85f1Eykm1v1hgRNwIru1hASZ57oA
-X-Gm-Gg: ASbGncu8BVYtuOYRDoD9kR2LU7xeOVImPldJjmHthNayo3H2Pf3J8kZy/Xehb9toCFt
-	c+e3I5mKZkdAdUnq/rD7PLEKJ90DGB6HQ1lDedDpMLoYrX+Fjrs+Ub4o+yqPTYDj+1MmciY+CpR
-	rPakpcDe0AJr9rVQzW5IeRnP4ZRfJ67PDYl+sdzrb1EItDGI2y0q8zOHTKALDYjeXesBweKlEo2
-	G+PMh3MtOzVCT6Kxgu6oWbefBmn/ALXJ9gOGgKPNlyw+TCZSwuYLbBNEFPslwyGUP9qq0QUNPEp
-	I1MJ6FgH3ADhP30kQlyUzdiCqUjgzNgxnyYBCw6Tp/mmshRKLhAXFIBmq8UBquZQOOBub5Gfg8/
-	Qvj2iI3zY6Gpv7w8H5teyAhrkPOpgOmG69oUWmpKd/rKNd0hnBwHUsXeIhPJUf/MTF/WZSecYTR
-	hN9oDl2ayB
-X-Google-Smtp-Source: AGHT+IFjwShx3D0jJMvSWdaLG4T39JgpaQyzemTxwtJre4OZUc8C3M5BPxw9JQYLkgJW8PLQe/esRQ==
-X-Received: by 2002:a05:6000:25c3:b0:3c5:7050:e2af with SMTP id ffacd0b85a97d-3c5dcdfc35fmr1024231f8f.9.1755871921342;
-        Fri, 22 Aug 2025 07:12:01 -0700 (PDT)
-Received: from [192.168.100.6] ([149.3.87.76])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c6c737b303sm576035f8f.47.2025.08.22.07.11.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 Aug 2025 07:12:00 -0700 (PDT)
-Message-ID: <98191ca5-9581-44fd-b9b1-6f0b932f141e@gmail.com>
-Date: Fri, 22 Aug 2025 18:11:58 +0400
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: torvalds@linux-foundation.org
-Cc: akpm@linux-foundation.org, andrealmeid@igalia.com, brauner@kernel.org,
- christophe.leroy@csgroup.eu, daniel@iogearbox.net,
- dave.hansen@linux.intel.com, dave@stgolabs.net,
- david.laight.linux@gmail.com, dvhart@infradead.org, jack@suse.cz,
- linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mingo@redhat.com,
- mpe@ellerman.id.au, npiggin@gmail.com, peterz@infradead.org,
- tglx@linutronix.de, viro@zeniv.linux.org.uk
-References: <CAHk-=whKeVCEtR2mQJQjT2ndSOXGDdb+L0=WoVUQUGumm88VpA@mail.gmail.com>
-Subject: Re: [PATCH v2 02/10] uaccess: Add speculation barrier to
- copy_from_user_iter()
-Content-Language: en-US
-From: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
-In-Reply-To: <CAHk-=whKeVCEtR2mQJQjT2ndSOXGDdb+L0=WoVUQUGumm88VpA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1BFEF2000D
-X-Stat-Signature: sjund11g3dckyxjsxp1xd6k74cn418bm
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IpLlZ7W+;
+	spf=pass (imf30.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755872030; a=rsa-sha256;
+	cv=none;
+	b=MumMB1xPFAd+j/s/N9W8fphcueAMMyec2Rh7zsGpwuZ6b4J9HM0VJhaSdOfo7GmJIWx52z
+	kZNXDvNiRaWZ49YQhT663QknqLRssiFb/cLNFQW5tYy7ygh4niY2pZr64oduL5H+WJgM3v
+	mkanQitnGuhtHGlUbBiHRs4If5IYlnc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8B0E744E89;
+	Fri, 22 Aug 2025 14:13:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E21D3C4CEED;
+	Fri, 22 Aug 2025 14:13:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755872028;
+	bh=gkGj9UWuXL3nI8EdViAz29uJOXaZrL/MrAfy4WjmCY0=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=IpLlZ7W+4YplB3G6RYJsjQrmGAPRW4BoWjqVQnLVt9SLvkUQIF/pdGgfpjiGHpoOM
+	 Rdnt1feqFSB2rtl8OV5EWZGTwC4xWZZsjkS6Y/QiHDaGS0wubFduuk9Ws1HU9/slul
+	 0ijRMtxTR+ufUZDtwrErlJ+Nv9MC6tawd/MYXVOgLnEvRBCKxjb8jiOHzQ64IbBRwJ
+	 CY+MrI6afrAZV5LuFF8dpBQ0duWEHvS3LU1G4akTzBuI4PRBOdQf5gqwO0lEGMZJD0
+	 jfGCg2A51/fJMCEs2Yt6owosiulzUFE2FIwdwDKNqJXuElWVptbFe52TuPo2wrRqCO
+	 JSZ9H4H1Rz/JQ==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 22 Aug 2025 16:13:43 +0200
+Message-Id: <DC90ONOZLKAZ.35P6HOCCAIPW1@kernel.org>
+Subject: Re: [PATCH v3] rust: zpool: add abstraction for zpool drivers
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ "Uladzislau Rezki" <urezki@gmail.com>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, "Bjorn
+ Roy Baron" <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor Gross"
+ <tmgross@umich.edu>, "Johannes Weiner" <hannes@cmpxchg.org>, "Yosry Ahmed"
+ <yosry.ahmed@linux.dev>, "Nhat Pham" <nphamcs@gmail.com>,
+ <linux-mm@kvack.org>
+To: "Vitaly Wool" <vitaly.wool@konsulko.se>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250822133935.674282-1-vitaly.wool@konsulko.se>
+In-Reply-To: <20250822133935.674282-1-vitaly.wool@konsulko.se>
+X-Rspamd-Queue-Id: E761D8000B
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1755871922-591510
-X-HE-Meta: U2FsdGVkX19EddXrg2obhneN9wqnDeiDZ1a4VJadr78OJBCxecdT1McGwe9+l+xSBtTJkcDF9WiUpCjfVtuLUEnGAw6uVoK/qQUpSXVvSOoYJ8AwAmenRGxURSmOwMgZrs6lb8+YQiItQ6AYrMMzDlw7nRODUIohvyXBYVNJ9G5uNtUhnS5FbvAtNM624haAGYJlH/tujniex23h8RAO/E3ccjihLl/oSJftrPmw2rc5a1UMeYLjx8iwZADKyzbhPDJAN33LnuBp5/gTCWf8ilL/MpDBa0y6DfcbP0Sx+X0LQMjy1cSXRvuhUHD4LXHzRtX2o5ZtR9PFeoMBca/FhgK3630fE208W8Ajm4I5mgyr1OKXj8JkgeIqxYCDlDbcBSURe+k5giUDyJKrHrlFag7LqOtfeVZ4i0nxeUzFkdtBMqR2AlPq9L/E0tkLJSBD4PzLgU3mzcmn+4bQ6TkIqsDs4F4MFcLY3gupG9T3jxCnTWCHInl5prnS+VSczbjF9gILY21iRuyqUeCBbqDir/7i0aJ17ZEyskN3/wrBGFxpZNiGQSFBD+W1yvwqypofTv5o1azXjROB/mH+eh/c8Wkbb+FAMIX4SKdjVnycuKLFNX/aI3mYs+H7IVSTiUKh0WQf7Ky7/ZGb7JQLSujalrLFD6pOI8VXNduSHNAmx6U4k1chOoCBl3QccCydG3Tk2bup610snY993hekYpp0Qn/DsrjSx0SvvqGbaKomhGHjWY4IZ2jn/ZB1B1XmOELbtI43gR164Xj5GryVNA3P2h2HSiiCXGAMxtLvaXCD5fGNEiDsFURoQmaJZw4oLQCYgf+Zw+STtB9O4rzAsx1nCyInf8BblH1uhT0USCygA29rHJFwtA86iCh+Zt8j8xmicxpEFuTALV0YWACxpHHwMR6DHjFA8r8dPd4zCqRzDXAVV7x556YTBgaEdWgjncZF57kty+8dqts+Vz4ArDm
- /G1bmrlF
- S/Cew8uMb24/OVGXQNYLuKp4BmGTn7+xpdl4oewKOopPwcJW2ngYjNYhs+hvDixKUoTc4pzSNiDT//HULnzaJDEGxyzvom5d/X5KJw5GY3cbWGvRxLAGuYB95YS55wIES6New+Xw/nkggaTYESarr7lVSSjiAULhkm5PcQde54tHISis=
+X-Stat-Signature: hn6jxke3n3o3fozibzkmqdbwiru9tcj1
+X-HE-Tag: 1755872029-903808
+X-HE-Meta: U2FsdGVkX1/L5iW9Ff8Xj16DbFr8eBPjH0ndaCf6t/dUDce45VHz/T2nPl7cBgjS3i4DXD1zrhn+el2lTyiZGvUCJHN3JwyfDIe/2aCIpTsaRxhtyp0dbDdUn15cGGoHxGloDmzpCGEJK5rrf6pb0U0VcCQGenZS8KzBzcOBOcTQX4q2AIBPp3r8M7V2F42gKHrt74sV17EC+uUqbBFo9cyFAZDnwy+YjrmLzB92Na2LxVn8DE4OnYBzWeEnbxk7r1Q25fBjO4KphBF3R7fDickSY+QL+2+ZVRFRuv278CyDzQtyaJ/uCIXnDdvKmYDaJJ+bEPtueYqv/VzXs5KYk3HjovlbFBcec4AasHnnE/eyPHHUluHLQTWtWpbGALbi8e3LhUs2EEMIu+6nVkN63VsIDL48+hIzHwAcAxyzkwW0nWaM5+56cTQkq5zJEMMT9aPv9axcorDgCzXZD1httbn5M9rX+MMAay/oJhueMtK3bbZrKCK7oG3LTolG7xprnj1xDs22uNHmyTkBd9sph3k2xLcUettvQXtkXoJo60SR4ItFnSa8LW8ve6xyiiDG7ou2cNQ/Tb0onnfFCn2JUY2w0uo6NMNVbRMf5bYMKRkD4eccjezsXiCNIqwYHtTVJkBL1dLbyZZhtLRY25+ZO0ld8doNCQLbFoMOhAiYbAHIfWNUnlJc5yx+Am7HZp5ol4MT+frf7ZhpOmPxeNjaEx9kbOjLNndN+fLxvRIZw0g/vRlmR4ol/nEJMA44yydsVAQL/afkN6RUT4iQMlfYXNjvX8PVLrDhGO/oZEJp+nmRIhR0oo+/tXq9gvuY1nXggSjI9j/3YO4JwSLXwICK7Zxp0Fjh02/hEJd3RHibrYdbYZBhed26AgUsfEBrxB+lX5iHJVcTdOqBF8si/V22aIDtlCwTkQHBGLt/ZhNeHbJttETSyACm2gUUJ7gsW6EhV6lnHWtjbuow52mhpQo
+ 3ITplVuf
+ 9jOcrdcDtuTTY8XnLV5VHe3IWOm/rnQznAkAJBe5RDRR8DnLG0hSCip/Yg03R8PIS6kJh4izLAgHcAOqaGffd0PNf6CNaMQNRKtoM3UyW3jRopbD87ZY9Ne0kEQvyi3wxaDBsg2G20X5ORQSQd4Wr57PXvYHUZmOEWtEn3bwQlV+tL3oYH1jLWhNkdFMmr/xgq+suGtmmXQbqk3dD5pnIxBL5jjvmd9npBTzEnXq8Sc9uMVx4ACuZkAZjG+xCu5HQjdh3t3O+rc0RdP67b4dSnV0a2GmffmBKrJDj19jfb1z+izvJLeyTxhLAqVTGyLwHTjUzl337D6K0gJ0hmdm7LqMhce84dOThaQaUYJoK6zEqVjkWRTWr/NG+ek5a6WLMkDgSIO59sV0HE0vws6KH0k9e2g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,31 +101,173 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-so we can use speculation barrier? and fix the problem locally
+On Fri Aug 22, 2025 at 3:39 PM CEST, Vitaly Wool wrote:
+> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
+> index b39c279236f5..0fec5337908c 100644
+> --- a/rust/kernel/alloc.rs
+> +++ b/rust/kernel/alloc.rs
+> @@ -41,6 +41,11 @@
+>  pub struct Flags(u32);
+> =20
+>  impl Flags {
+> +    /// Create from the raw representation
+> +    pub fn new(f: u32) -> Self {
+> +        Self(f)
+> +    }
 
+I didn't notice this change before.
 
-On 8/22/2025 5:52 PM, Linus Torvalds wrote:
-> On Fri, 22 Aug 2025 at 05:58, Christophe Leroy
-> <christophe.leroy@csgroup.eu> wrote:
->> > The results of "access_ok()" can be mis-speculated. The result is 
-> that > you can end speculatively: > > if (access_ok(from, size)) > // 
-> Right here
-> I actually think that we should probably just make access_ok() itself do this.
-> 
-> We don't have *that* many users since we have been de-emphasizing the
-> "check ahead of time" model, and any that are performance-critical can
-> these days be turned into masked addresses.
-> 
-> As it is, now we're in the situation that careful places - like
-> _inline_copy_from_user(), and with your patch  copy_from_user_iter() -
-> do maybe wethis by hand and are ugly as a result, and lazy and
-> probably incorrect places don't do it at all.
-> 
-> That said, I don't object to this patch and maybe we should do that
-> access_ok() change later and independently of any powerpc work.
-> 
->                   Linus
-> 
+This function should be crate private, called from_raw() and document that =
+the
+given value must be a valid combination of GFP flags.
 
+Please also make the addition of alloc::Flags::from_raw() a separate patch.
 
+> +/// # Example
+> +///
+> +/// A zpool driver implementation which does nothing but prints pool nam=
+e on its creation and
+> +/// destruction, and panics if zswap tries to actually read from a pool'=
+s alleged object.
+> +///
+> +/// ```
+> +/// use core::ptr::NonNull;
+> +/// use kernel::alloc::{Flags, KBox, NumaNode};
+> +/// use kernel::zpool::*;
+> +///
+> +/// struct MyZpool {
+> +///     name: &'static CStr,
+> +/// }
+> +///
+> +/// struct MyZpoolDriver;
+> +///
+> +/// impl ZpoolDriver for MyZpoolDriver {
+> +///     type Pool =3D KBox<MyZpool>;
+> +///
+> +///     fn create(name: &'static CStr, gfp: Flags) -> Result<KBox<MyZpoo=
+l>> {
+> +///         let myPool =3D MyZpool { name };
+> +///         let mut pool =3D KBox::new(myPool, gfp)?;
+
+Why mutable?
+
+> +///
+> +///         pr_info!("Created pool {}\n", pool.name);
+
+I think this print is unnecessary.
+
+> +///         Ok(pool)
+> +///     }
+
+Please add empty lines between functions.
+
+> +///     fn destroy(p: KBox<MyZpool>) {
+> +///         let pool =3D KBox::into_inner(p);
+
+Why the call to into_inner()? What do we get from moving the value?
+
+> +///         pr_info!("Removed pool {}\n", pool.name);
+
+Same as above, I think the print is unnecessary.
+
+> +///     }
+> +///     fn malloc(_pool: &mut MyZpool, _size: usize, _gfp: Flags, _nid: =
+NumaNode) -> Result<usize> {
+> +///         Ok(0) // TODO
+> +///     }
+> +///     unsafe fn free(_pool: &MyZpool, _handle: usize) {
+> +///         // TODO
+
+I'm not sure the TODO comments add any value.
+
+> +///     }
+> +///     unsafe fn read_begin(_pool: &MyZpool, _handle: usize) -> NonNull=
+<u8> {
+> +///         panic!("read_begin not implemented\n"); // TODO
+
+Please don't use panic!() here, we only ever panic the kernel when there is=
+ no
+other way to prevent undefined bahvior, i.e. as a last resort.
+
+I know it's just an example and it's not even run, but it might trick peopl=
+e
+into thinking that is is OK, given that it is an example.
+
+> +///     }
+> +///     unsafe fn read_end(_pool: &MyZpool, _handle: usize, _handle_mem:=
+ NonNull<u8>) {}
+> +///     unsafe fn write(_p: &MyZpool, _h: usize, _handle_mem: NonNull<u8=
+>, _mem_len: usize) {}
+> +///     fn total_pages(_pool: &MyZpool) -> u64 { 0 }
+> +/// }
+
+Overall, I feel like the example doesn't add much value as it is. I think i=
+t
+would be better to provide a real example that actually implements the
+callbacks.
+
+What about doing adding the most simple implementation using a plain VVec f=
+or
+backing the pool? This way we can even run the example. :)
+
+> +/// ```
+> +pub trait ZpoolDriver {
+> +    /// Opaque Rust representation of `struct zpool`.
+> +    type Pool: ForeignOwnable;
+> +
+> +    /// Create a pool.
+> +    fn create(name: &'static CStr, gfp: Flags) -> Result<Self::Pool>;
+> +
+> +    /// Destroy the pool.
+> +    fn destroy(pool: Self::Pool);
+> +
+> +    /// Allocate an object of size `size` using GFP flags `gfp` from the=
+ pool `pool`, with the
+
+I think you can just write "Allocate an object of `size` bytes from `pool`"=
+,
+which should sound a bit more organic.
+
+> +    /// preferred NUMA node `nid`. If the allocation is successful, an o=
+paque handle is returned.
+> +    fn malloc(
+> +        pool: <Self::Pool as ForeignOwnable>::BorrowedMut<'_>,
+> +        size: usize,
+> +        gfp: Flags,
+> +        nid: NumaNode,
+> +    ) -> Result<usize>;
+> +
+> +    /// Free a previously allocated from the `pool` object, represented =
+by `handle`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// - `handle` should be a valid handle previously returned by `mall=
+oc`
+
+"must be"; please also add a period at the end of a sentences (applies to t=
+he
+whole patch).
+
+> +    unsafe fn free(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>, h=
+andle: usize);
+> +
+> +    /// Make all the necessary preparations for the caller to be able to=
+ read from the object
+> +    /// represented by `handle` and return a valid pointer to the `handl=
+e` memory to be read.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// - `handle` should be a valid handle previously returned by `mall=
+oc`
+
+A handle that has been given to free() already cannot be used here anymore.
+However, as by your safety documentation this would be valid.
+
+More generally, for the safety documentation I recommend having a look at t=
+he
+documentation of the Allocator trait [1].
+
+[1] https://rust.docs.kernel.org/src/kernel/alloc.rs.html#139-216
 
