@@ -4,105 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EFBBCA0EED
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 09:59:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F174BCA0EED
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 09:59:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FAFC8E009A; Fri, 22 Aug 2025 05:59:00 -0400 (EDT)
+	id C92868E009E; Fri, 22 Aug 2025 05:59:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7ACB58E009D; Fri, 22 Aug 2025 05:59:00 -0400 (EDT)
+	id B2F298E009D; Fri, 22 Aug 2025 05:59:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62BEB8E009A; Fri, 22 Aug 2025 05:59:00 -0400 (EDT)
+	id 9F60D8E009E; Fri, 22 Aug 2025 05:59:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A9398E009A
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 05:59:00 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 10B8B83DA5
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:59:00 +0000 (UTC)
-X-FDA: 83803944840.16.2CD67D3
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 88E408E009D
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 05:59:05 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 369A0BAF24
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:59:05 +0000 (UTC)
+X-FDA: 83803945050.28.444E63B
 Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 56BF0A000F
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:58:58 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=BdvDutww;
-	dmarc=pass (policy=none) header.from=linaro.org;
-	spf=pass (imf25.hostedemail.com: domain of ulf.hansson@linaro.org designates 209.85.128.173 as permitted sender) smtp.mailfrom=ulf.hansson@linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755856738; a=rsa-sha256;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 5973D1C0007
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:59:03 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=KD8n7R3b;
+	spf=pass (imf18.hostedemail.com: domain of ulf.hansson@linaro.org designates 209.85.128.173 as permitted sender) smtp.mailfrom=ulf.hansson@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755856743; a=rsa-sha256;
 	cv=none;
-	b=Y+sqeSSAIEI7h78m3CDJNQjAMQ0v99hQKzc+eGGSOOZn1fNudR4CzNjp//eJpaaSQZv9Qp
-	1J3HOBPtxlNs0Q4tWFe1g9jXk/h+lB9ArevCdjicvmWQ5AEhPfIxlqkWyU2ian0VRPIK20
-	4T7RBtF225SVhMM3cr2s9hJR5WcE1to=
+	b=WAPoQKp3Uz9QAui94Z7N60C4HWFMo0lNg1eHwMUdAxwUHCzbYfGNYqlXzEaaNS4PnXY8lb
+	HQ3bI5g5rLqYAcna/F303aVBPYAGpS6SqRZGX2oOZRHJKvfiXzXXI6crNKJH4sxLOaFPTK
+	UnlsSTODXcGW77YPYzfkO0sjoelZKVI=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=BdvDutww;
-	dmarc=pass (policy=none) header.from=linaro.org;
-	spf=pass (imf25.hostedemail.com: domain of ulf.hansson@linaro.org designates 209.85.128.173 as permitted sender) smtp.mailfrom=ulf.hansson@linaro.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=KD8n7R3b;
+	spf=pass (imf18.hostedemail.com: domain of ulf.hansson@linaro.org designates 209.85.128.173 as permitted sender) smtp.mailfrom=ulf.hansson@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755856738;
+	s=arc-20220608; t=1755856743;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ta0x0Etwp/qHFHu8i5E2Zmb/9HCL2i+tnxSvK4L8KnM=;
-	b=SlAId1KRdSkLBJui33cwJxTOFmq8KMbTcUUxvWIMcPEIyPJFJeVFK/Ggyls/5/SBRwo8kx
-	mfP+DAxHIPESCKGC9zQcG+mUI13CIFfUqCln6bV/DIBY3gulBhks8C+2JS8jR3zDTOBwww
-	qSSkgKF6wngUDmrrR/8QGsNjdblt5bI=
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-71d60110772so17435967b3.0
-        for <linux-mm@kvack.org>; Fri, 22 Aug 2025 02:58:58 -0700 (PDT)
+	bh=MupVyM5V8S7xfEuqt+V4G4FxecFOk8NDMM0guvbljvg=;
+	b=yevZEyhQOOXTbz4uEddUEKAts5aczYR91T62EOygk5RbmW8ThMmlZad7jl22j7D0HLZiOD
+	n3Vob5hWP6dDefamF9hwvmCu74boiS6NLKvdgyXwwiSI5MseJnvqlZIaHcbdtTTDyhPb8s
+	8HmcybkPoiYEAXzwx8xxcgGP35ysaEY=
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-71d603b60cbso16840967b3.1
+        for <linux-mm@kvack.org>; Fri, 22 Aug 2025 02:59:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755856737; x=1756461537; darn=kvack.org;
+        d=linaro.org; s=google; t=1755856742; x=1756461542; darn=kvack.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ta0x0Etwp/qHFHu8i5E2Zmb/9HCL2i+tnxSvK4L8KnM=;
-        b=BdvDutwwjSslgBANMrE0BVWTME67jZfrV5cz6rPR7ORMTGBZnwNsdW2DTHoit7+qq4
-         +/tymryzCZLu0C/gtZeIlDxUXsQM9EiGOlM82J0gPMfraWEshcw+fPZiIML+5aUKpKFr
-         i8J8SxsZ3G+5UPrw7X+OICZVgZQczboN0dtRLVq1GQbwTtKXk5lUhtsoYHEB07oibgyd
-         9OfrtWpHCk4VPIijWTmvHwaU0A4/JN4rx3tseadp6KlkHYkOZxBcfjHLZouii5gZHlU8
-         CM7M4NSMAe2dufkvib4gQWFmjIsWwoC2hqQqKpEosZsJMFYdPHY6g+j1maw9lcfXav6B
-         US1A==
+        bh=MupVyM5V8S7xfEuqt+V4G4FxecFOk8NDMM0guvbljvg=;
+        b=KD8n7R3bSIbaXoZ2eYdJXRW2l06At2D5M3RYWF3wFM7/yB0n0o9NxLqx4QAkcPQQwJ
+         Yc6pvco16nr6Mm0hXWeKPH9mCGU4Lkheti0kP3NFeriNVsJJ4yDi/YHTwfTansZ1JGyb
+         K+tjMmoD/5pCIIuR0HD74dxjyAdhQfu2nNkxq8qxLAE0YjdkXwnZFJD40PW+1ieUEbac
+         u74Y+smz0gZRH+JIHh5h/cOotR2FG/N4DHYtJdJGkskiaQV8Ln9x9O1y9WNPTRC+goVp
+         86oghCJuQ+GNrWSMuim5e7PfNTdo+MccLIFzEbYAvgHASgzg7kdrM8Wy2UBr2tQWJoXu
+         x/Xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755856737; x=1756461537;
+        d=1e100.net; s=20230601; t=1755856742; x=1756461542;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ta0x0Etwp/qHFHu8i5E2Zmb/9HCL2i+tnxSvK4L8KnM=;
-        b=CvqHqY/55rgROjstvxWPtQGg/8M5M3Zayvnd5cYq1yHAE18oNFfLwOIhxk4bArwDUR
-         MQIyFpyMqvLfOLH/ccWTw+4+m7yKwHndk9WvgIMI0ILi5NYrOKaP2LsnNxYiuZaxjTQ2
-         /wO2myw6Pq+KRBizNvILiXMY7vzk+DTRFBvNgMToDnV7KxWwbxazRgGeeTl1BEtXmJtV
-         klV1rCQ/ozY+lKuwFWV6LSJSlr5KJ+tWs2NpcoV4QQRPJwkanPPhLrQExtWXWHJ9ufzG
-         2JMrp+KOgmtFt75bWtIB4Oihu2wd5Mg4m9Ll21pN+yQKjFKzEpN7M0NsiW8eBupmUzll
-         6ZeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXLSkbEHK5SXhrgMcpW2G6Ws3EdNwOpNtPZ43mhklZh8xvsHjIpk33MkFYC3pkPBk0xwEHDuPECZw==@kvack.org
-X-Gm-Message-State: AOJu0Yx/UzZWMMK4zQycwA2cY1+wV2UogA+sH7q6YPxyETlXG0lBnAhP
-	RIwS9IW4aNUSvGM3QvHlC1JXWNQG4Okw8R/6PfmVWfcnjMLqk/BwY3U60LJsjTrYpYq2j9cukOB
-	aXfcZfgBdW7yGO7cw9TTnX2shqFb145GueQeTAAgF2g==
-X-Gm-Gg: ASbGncudhE8tehgSe4l08oDftsi1qAwQqlp5F9vWCVeQwAPTieIvRDYv2vEUTDhjw/0
-	/80/R57cYuUCykc1xexYSpzuH0IyZ6mFFahLSmPGmtiqYwkqZ/Ws8DR8YTpAjqRMw4Wawuc1lNb
-	+q6bFV0AArocfZphnnutOA6T87WKa9tUkbeSJOsrvxPVXncY91MYKNRU97opS/w2cwarAdOYkys
-	sYzKB/r
-X-Google-Smtp-Source: AGHT+IFd0X7jkwq2XGOJ7EKMxon9dbw2ksIcL5ljDLbAAX3e91uv+L7uUO91qQDTLkLCO0orfNEA4dlYcWAaDmDw/cI=
-X-Received: by 2002:a05:690c:6702:b0:71b:68ab:8bdd with SMTP id
- 00721157ae682-71fdc437461mr24057427b3.39.1755856737275; Fri, 22 Aug 2025
- 02:58:57 -0700 (PDT)
+        bh=MupVyM5V8S7xfEuqt+V4G4FxecFOk8NDMM0guvbljvg=;
+        b=q0FaMaVnlK760lSXGzRp5NWfnNdQ6IBzeTXZKwuAAasc2EYO3BeqHwC+eoRa6zKip2
+         FkOSJOZzigW9ocqKnhvyuUtc5KJL5eQEG1+jUobqOu12ipPhX4w/wtoFCTTWjl2ZcCZv
+         fHXPt7OAKR4XImZvf8D/rUJM17Fsw7UEmE9A9lLGdxmnOtDp9MipcBGvxUSDRtn96s+G
+         dYIQQVPwzzh0g8sKHSoE26SGwNT6NPD4y/Cq9jpV76qVFRAImW5noEswfYj1cGGCDBaS
+         ZOirxaJTLuNcgssXNj6hBfVEOIlWAq4pgm81uVjK+PRDSSSTPNS9Q+KRyBoVOV8nf0q8
+         okaA==
+X-Forwarded-Encrypted: i=1; AJvYcCXd6KDvM1waIhcNINlAfYd9kA1n9XLM5FGC/AjjAQEkw/SHhNShfkZKowPBrqricEUD9ZDY1/gl6Q==@kvack.org
+X-Gm-Message-State: AOJu0Yx9Udet/RTDNdixcD7i5jLFoa1feMeNscfAWWM1kHahEPsvB9cL
+	8xadeCMwRii8FLcYhYN2Imof5QzU/jzOUBcFD5UpreW/TGtZ8mh0sl8QcOWkcBAEkUCg/U6Nm5J
+	TME8eqloojY+fMjQyLhFNTUaEg8y0nWiqMDaC/AtdTA==
+X-Gm-Gg: ASbGncs4X7LuUe0HZs1aWLPFMKTp9RvIAWRpdQ2ezSyTtu0PQ9wZpsWP4ZLo9R5tpET
+	gw/1Pd20Tb/W5lnL0TPRMw5QEnQpPahuZRYgpNBH+hAP2MiE0O3KbLGMgWcaZW8BGhw2iwjJGQM
+	rlIKpyjzFCpcpSJseC6dPycMC8YRnRWGgegXh6qN9uX2QRcaqSjpopg5RCWvxxRPkXQ9AGf2MmI
+	aVsfFww
+X-Google-Smtp-Source: AGHT+IGW1UTX6fQaw19toVL97OISC/Ry0Xp6bS03YAWQ8SWHpLi2Fv4YjzcA1kwnxqqHARhMhn919UITNadOtX73TGY=
+X-Received: by 2002:a05:690c:7006:b0:71a:1bbf:bc04 with SMTP id
+ 00721157ae682-71fdc30ae9fmr27985117b3.19.1755856742203; Fri, 22 Aug 2025
+ 02:59:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250821200701.1329277-1-david@redhat.com> <20250821200701.1329277-27-david@redhat.com>
-In-Reply-To: <20250821200701.1329277-27-david@redhat.com>
+References: <20250821200701.1329277-1-david@redhat.com> <20250821200701.1329277-28-david@redhat.com>
+In-Reply-To: <20250821200701.1329277-28-david@redhat.com>
 From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Fri, 22 Aug 2025 11:58:21 +0200
-X-Gm-Features: Ac12FXyNlpfyW29hh3KLyFNs0xgg6UyHwa_qnpYtINLnggZTT9u4v5G4XN84Gbc
-Message-ID: <CAPDyKFrAth_76byLZG+5+CA1ZELJVH6XaFzfo2i7nYfnMYKa=A@mail.gmail.com>
-Subject: Re: [PATCH RFC 26/35] mspro_block: drop nth_page() usage within SG entry
+Date: Fri, 22 Aug 2025 11:58:26 +0200
+X-Gm-Features: Ac12FXy5YAgos3FlxeTAUjV_qUtOvnPUJMl5UU6P6i8dKRZPvTVLextRAtA1LQY
+Message-ID: <CAPDyKFrMR2bfnra1hWiLwqTqt7AFgALHzYCn+35PqU_wq+GhBA@mail.gmail.com>
+Subject: Re: [PATCH RFC 27/35] memstick: drop nth_page() usage within SG entry
 To: David Hildenbrand <david@redhat.com>
 Cc: linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org, 
 	linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 56BF0A000F
-X-Stat-Signature: gmy56gfqo1sxhkg5czqsrtohk3kryorf
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5973D1C0007
+X-Stat-Signature: ec74559gjsbengrzas3mmbgq65ng51ib
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1755856738-920168
-X-HE-Meta: U2FsdGVkX1/DjJMDEwwDZEduvmv3hbiM7V7dIbFRBjmWatEkUVdOJSwsdYcv8AIyu1dm/GbBBG9xmWKQqr7/q6zmxfqoFp92o5+JBJhuB2MbWqdfpHiAZvxjKc5002U9pGrxTcIEYCWT3BL7NnqErfWeUM2bRQOZuBchVM1627yE126HO8bp4X7uHbbYXdnKuP5jmpHLyANJcpoCCuy3I4rg33Qcmlz4C9DxP4fuqCcr6q23WilyqoX8kUcVtj+ge53fc4dvevfHYr7+r4+WM6iZZJq1TrF17KYNzZOezR5eZcdnPKaMPrbATabLerlirwVkQYTPU4dT0CQlnM07mc7GejEl5Uk6nztLmz4z0xLWG17+zTW0PdVcVpZwk3Nck7QyB6rAg3553TufCvCLc9WXPN/96UFjysYwVDnpv/6Ut+jRLSFD6rv904+kxPB5M0ywn3VoaxtepGqK0vVg39BHuFOgozeCovZ+efS7sJReWWRfT8wyMHjV1CsWwZQx+Bg9qgGGEz88Nls6gDr0k2lZ9UQsEwuNC0mz36XUxSXxPB7c95FgFSXAgDqP4V2lQ7ySbMemJ6+MFpUTuKKW/NqM4HYK2Lq/1Wn0rvtTyY9zKQ0eTTgqmzSt51YEOBnTrQyxQ1Azw7pYW6VfP1sMUtTa84GqxCdqy7svGwHj0MfQkipCkqHjZFRuDlFNESW0jGzvc1a5HSfTny3931R7PPOfuhZ/f3VGxuIOTu3UXaDMSh4qqQmf3XEJXaq55WOxI6fB4vRNecBHVYHUvHcDUsQaO0lIqkvlPgkfwkRw9Nz8VtEd5HBxycotDi7XHwtUXl5X2orxZUh9guJUFR7P+lFHt3vAygHTRerZ5+ozopk03VoZuEy+jwZ8Zr8ROQ4qevmdDkUq3fTHzuBAqzERGF5+8/Yv32s6lNzNp8LEajuXuQd4ObIbGLQWXr+4YXP2zPYOnnV1nmw=
+X-HE-Tag: 1755856743-254588
+X-HE-Meta: U2FsdGVkX1941UnNhqkn43fSidDQ0d8StNNiB8BdFUWkwsvEYxknwtTMy5csMpUaiQ+2a1JPS4nYbAHdbOQ1cjJUtpv94yhxMwgAuAcAdOABtvjKihCi8GBkSLI3BkhGTkrayG73Qog3BNZKH1QUVnRrTQAnZE7uFFd1QSgHKrDVIxXQJtQOZ8GveMijypL+vtUBQ45U4scb66+S9UuLZzKH0kQqOhVuqLXh0f8jrPIIj/EtqhaMzn0kbtJ/XzhH53kTeeuXx80/IjECq/ja6SUGyq0T52EScBj2yKfl6UF9YZyKEqUHMbcHSaV1JWmZUBuFEL8Ui+7jUzbvEoXsiD5oWU6GCJexUrsfLcu9d2I0p3X3zudDH71/WbWaI+hpq2kM89PfbL04BchKHyfGcHVjurwEY/6W0LlPhl4gzbI6rCRvPccaKVZ67eyOlmdBjMUq+PKtncd3TlxXe81Djsj2Vr9dCGbJ0MsmittZd5CqehnDbMUa0Ply7hNzWNAdMVuJ1QDy4etXZ5VvTJocqnW5QjOZLOka+muZ7Z5ff39BPuHjsbBcxGXbnUpgnxiRNHj20AltI2pscKkyFSJBqnSevVrROfNPeeGaZQALJ9tMyVHXmgOtvlECaE7lulHG0SoFoyxlBc/ngNLIUk5WPkOop/hrbFXlQ2DJ8bgZPi/3WwAYpQW+AifG5H9kXamMDjS0ZcpNzdTYGSm5B6nIB8EpRVeHOZiFRl8dUSvDTFirXWUsn6AerLh9XvwAoTMF6OJZ8FeUTlwOkWAFMziNl+GbDipkqeE5TNNqhW/oLweCmNNdbcYJxBdTXGC/DRBH/O+aZFDOvq7oSQ24ZmWdi5CO/Coyki6p0gdyWneMbo0cl9ehHN39Doft1CNqNlQzfBJeUObSj1b6TOeVTtXtIajTklr6GlmPdPx7UwsY198fqFlKZrPkJG5ke9sULoE+UljIXnJFJbRUE2BNa99
+ JgM9aKF8
+ 1y7pCtbUg/iVFPfnsdXQdtg3dSBQjnDXJtONVVOBMjBqTtx8tgmormsK6ZqC69PbI4N6/cEBRlbxqwOMbye34RU2GGRAcGeVovzIrLNFaJ5vBh+EdpOxIPfaTRCO4mP2DAxu45excWfQZTKDrGEhXExEyjBfprn8gc0bk54N2t49dzexWYokZKFEWAqigL2w0Hrx+9i/o61SHu7OjejKHmMgN3WTK4lyM31KRZxJRY6x6oiIz2Y6+obyzzIBvORUPclURDGJsNtwSD67rLh5C4QFOZjuTeti0Aw9qdsXtjvFUM3CvylaRRcSLVJ9Jxi+hrGbVqwpOOxe9xTeHmpKLEv0XMTMdhVPGgUJ33IpmkgJSl3U=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,25 +132,39 @@ Uffe
 
 
 
-
 > ---
->  drivers/memstick/core/mspro_block.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+>  drivers/memstick/host/jmb38x_ms.c | 3 +--
+>  drivers/memstick/host/tifm_ms.c   | 3 +--
+>  2 files changed, 2 insertions(+), 4 deletions(-)
 >
-> diff --git a/drivers/memstick/core/mspro_block.c b/drivers/memstick/core/mspro_block.c
-> index c9853d887d282..985cfca3f6944 100644
-> --- a/drivers/memstick/core/mspro_block.c
-> +++ b/drivers/memstick/core/mspro_block.c
-> @@ -560,8 +560,7 @@ static int h_mspro_block_transfer_data(struct memstick_dev *card,
->                 t_offset += msb->current_page * msb->page_size;
+> diff --git a/drivers/memstick/host/jmb38x_ms.c b/drivers/memstick/host/jmb38x_ms.c
+> index cddddb3a5a27f..c5e71d39ffd51 100644
+> --- a/drivers/memstick/host/jmb38x_ms.c
+> +++ b/drivers/memstick/host/jmb38x_ms.c
+> @@ -317,8 +317,7 @@ static int jmb38x_ms_transfer_data(struct jmb38x_ms_host *host)
+>                 unsigned int p_off;
 >
->                 sg_set_page(&t_sg,
-> -                           nth_page(sg_page(&(msb->req_sg[msb->current_seg])),
-> -                                    t_offset >> PAGE_SHIFT),
-> +                           sg_page(&(msb->req_sg[msb->current_seg])) + t_offset / PAGE_SIZE,
->                             msb->page_size, offset_in_page(t_offset));
+>                 if (host->req->long_data) {
+> -                       pg = nth_page(sg_page(&host->req->sg),
+> -                                     off >> PAGE_SHIFT);
+> +                       pg = sg_page(&host->req->sg) + off / PAGE_SIZE;
+>                         p_off = offset_in_page(off);
+>                         p_cnt = PAGE_SIZE - p_off;
+>                         p_cnt = min(p_cnt, length);
+> diff --git a/drivers/memstick/host/tifm_ms.c b/drivers/memstick/host/tifm_ms.c
+> index db7f3a088fb09..0d64184ca10a9 100644
+> --- a/drivers/memstick/host/tifm_ms.c
+> +++ b/drivers/memstick/host/tifm_ms.c
+> @@ -201,8 +201,7 @@ static unsigned int tifm_ms_transfer_data(struct tifm_ms *host)
+>                 unsigned int p_off;
 >
->                 memstick_init_req_sg(*mrq, msb->data_dir == READ
+>                 if (host->req->long_data) {
+> -                       pg = nth_page(sg_page(&host->req->sg),
+> -                                     off >> PAGE_SHIFT);
+> +                       pg = sg_page(&host->req->sg) + off / PAGE_SIZE;
+>                         p_off = offset_in_page(off);
+>                         p_cnt = PAGE_SIZE - p_off;
+>                         p_cnt = min(p_cnt, length);
 > --
 > 2.50.1
 >
