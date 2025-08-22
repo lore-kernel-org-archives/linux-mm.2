@@ -4,89 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C334CA0EED
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 18:00:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A254CA0EED
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 18:02:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88D6E6B8003; Fri, 22 Aug 2025 14:00:31 -0400 (EDT)
+	id A6DE38E00C8; Fri, 22 Aug 2025 14:02:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 864ED8E009D; Fri, 22 Aug 2025 14:00:31 -0400 (EDT)
+	id A17B48E009D; Fri, 22 Aug 2025 14:02:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A2366B8003; Fri, 22 Aug 2025 14:00:31 -0400 (EDT)
+	id 9063A8E00C8; Fri, 22 Aug 2025 14:02:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 669528E009D
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 14:00:31 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 255C01A02CF
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 18:00:31 +0000 (UTC)
-X-FDA: 83805158262.18.B20F442
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 6F68980016
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 18:00:29 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DM39cQLp;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755885629; a=rsa-sha256;
-	cv=none;
-	b=Ao09kMfBoRAh3beHtMHq/bmkQ1whjYnBkMuc+25ZDWx1zOY+tSsFL9VTmT9j6pe+hRDTfb
-	AiWVIwLgxe7DoMiIgpyHNrc8/BROIDTnwjenW5PRr7ZQyE/uhtdS2sv/kW5AZI7DPzE+3H
-	xfZcIEwtuLU3Cp3w2UhBf3HqmYHpknI=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DM39cQLp;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A5DA8E009D
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 14:02:38 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3D40D140285
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 18:02:38 +0000 (UTC)
+X-FDA: 83805163596.22.E874735
+Received: from 004.mia.mailroute.net (004.mia.mailroute.net [199.89.3.7])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 43B0DC0006
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 18:02:36 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=acm.org header.s=mr01 header.b=jIHiaXUZ;
+	spf=pass (imf22.hostedemail.com: domain of bvanassche@acm.org designates 199.89.3.7 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
+	dmarc=pass (policy=reject) header.from=acm.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755885629;
+	s=arc-20220608; t=1755885756;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KkEnuQKGJXZ1yxPD98pZwWtLLDRGdSZY3/lbdHtR8gA=;
-	b=juf1vLaMw5BxtZs+rMGaiwxYnaWj5LgtB65W49gcpwzQf6twjGKBKrGaJOUaVk2M4ZeFS8
-	jL+thr7vYZ68QyYgtmxPj/CkU9ian6LeLV+FSXhPqcsWmlLJny5+oKHV1CWgtTraFhHVrg
-	lPmNlZCXggSVFuQ6Vuu89HlDB0sbwBA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 5B3065C4B8C;
-	Fri, 22 Aug 2025 18:00:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D31DCC4CEED;
-	Fri, 22 Aug 2025 18:00:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755885628;
-	bh=+5NIoRI3gqVex+BUi5UZsNV1yheEo0BfWMcN1z3yUSI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DM39cQLpXocbfHciUQyB13E5+LoZ9yMqZwjosYd3WryN1bSmWKHUovDu9cWyHfmrZ
-	 F1Vnabz9BnTGW1hhUyaEdKJGAEH/JHNDFVO/2xJ6bHe7k7JNMGtQU/HdqC/8tc2NIh
-	 TfjsQPWZoKxnfk3PMB8skY6hApMiAut6WFn6x4ijyIv+GdwSLCGW1bS/Nwa2Yb5XI/
-	 1f4F/uZyMLRpLbNT5QiYN14yRp5AaDFyRUGLJKozPOR6lgZ/KcRNK17zDkdZm5gqp/
-	 WnRIpZnwGgmhKL0yXwRIV5dfJtRp/ScJ9ukg84R5/kWwSWhZfE3EMmlgOby7Cm9W94
-	 kU8J+J+BAxlGA==
-From: SeongJae Park <sj@kernel.org>
-To: Sang-Heon Jeon <ekffu200098@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	honggyu.kim@sk.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v4] mm/damon/core: set quota->charged_from to jiffies at first charge window
-Date: Fri, 22 Aug 2025 11:00:12 -0700
-Message-Id: <20250822180012.47379-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250822025057.1740854-1-ekffu200098@gmail.com>
-References: 
+	bh=lOWWilxxOW7+2VFeqILToF3FfKlMIiqdFUMj7Kr1eMs=;
+	b=AWN734GWjw+qM/WaejwteiimvSn+QgF43OiHqRSR2sEt7gTtMcX4N/kuzVZlKVoJkxMmCy
+	0VanXOgzBm0TzZ1brzdu2+vKI5X3Tk4m4Op/ClRQokA5unbvnJp6asPTovt8oPG5gqdIT7
+	Rw3wygqFPZW4nITiE6GH9TNqSpcUSRc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755885756; a=rsa-sha256;
+	cv=none;
+	b=RkUOtKVsEiSbkb+luoROawkSf3exmz+WUCyBRLM53jlDxGfGqkzsl2oAun/7DSyPRS4Yqe
+	pKiYRQfrbqI3U9Tf3JQ4wQM9xASIxgpkVIbcH0GA9XVYL06wZ+QERNMZ+/seEVRo7ZVsyT
+	JnpmhG2ZushrUUtBm7rNBK/GPrCNVQk=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=acm.org header.s=mr01 header.b=jIHiaXUZ;
+	spf=pass (imf22.hostedemail.com: domain of bvanassche@acm.org designates 199.89.3.7 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
+	dmarc=pass (policy=reject) header.from=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 004.mia.mailroute.net (Postfix) with ESMTP id 4c7p1l0sq5zm0jvk;
+	Fri, 22 Aug 2025 18:02:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1755885747; x=1758477748; bh=lOWWilxxOW7+2VFeqILToF3F
+	fKlMIiqdFUMj7Kr1eMs=; b=jIHiaXUZ4a593YVAmQUji/OXI8ZOHuy4KoDqdDsN
+	58VfzQCide0+H5Soq0lOaHim7utGBp85yd4TVec/He8eSJaEr0S2QMbIL/R/v50G
+	REy9REjBcUkTJuBw3HHmfYoLlR1WNAs0/AuKPOafAhc+qcEkQgAYy7xjbaBw1u1g
+	U/z1nX2JBLXLQyO/89G55vSyN53ByvfYmVd1rVmU9cGfu9CmFM1RmYCGRPWih361
+	3SEND/VGUpbDsbMpeaiIGxU559aePIaIJvP6dzsdyNy+XOIvcQerQoCWbkkZ0+iv
+	zE2zZ/+N2HfKRFU0le6ozhjHgt3LcQW5vt0XTPzWIir5yw==
+X-Virus-Scanned: by MailRoute
+Received: from 004.mia.mailroute.net ([127.0.0.1])
+ by localhost (004.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id TWskR_z3NWFT; Fri, 22 Aug 2025 18:02:27 +0000 (UTC)
+Received: from [100.66.154.22] (unknown [104.135.204.82])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 004.mia.mailroute.net (Postfix) with ESMTPSA id 4c7p0l0k1mzm1756;
+	Fri, 22 Aug 2025 18:01:41 +0000 (UTC)
+Message-ID: <58816f2c-d4a7-4ec0-a48e-66a876ea1168@acm.org>
+Date: Fri, 22 Aug 2025 11:01:40 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6F68980016
-X-Stat-Signature: d6nghiyqm94upq1si71p9r58nhytej4m
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 29/35] scsi: core: drop nth_page() usage within SG
+ entry
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Doug Gilbert <dgilbert@interlog.com>, Alexander Potapenko
+ <glider@google.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
+ Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ iommu@lists.linux.dev, io-uring@vger.kernel.org,
+ Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
+ Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
+ kasan-dev@googlegroups.com, kvm@vger.kernel.org,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
+ linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+ linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Marco Elver <elver@google.com>, Marek Szyprowski <m.szyprowski@samsung.com>,
+ Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, netdev@vger.kernel.org,
+ Oscar Salvador <osalvador@suse.de>, Peter Xu <peterx@redhat.com>,
+ Robin Murphy <robin.murphy@arm.com>, Suren Baghdasaryan <surenb@google.com>,
+ Tejun Heo <tj@kernel.org>, virtualization@lists.linux.dev,
+ Vlastimil Babka <vbabka@suse.cz>, wireguard@lists.zx2c4.com, x86@kernel.org,
+ Zi Yan <ziy@nvidia.com>
+References: <20250821200701.1329277-1-david@redhat.com>
+ <20250821200701.1329277-30-david@redhat.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20250821200701.1329277-30-david@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 43B0DC0006
+X-Stat-Signature: fqrrxjep5bkf9chb9r6qo1chhtgw4xt7
 X-Rspam-User: 
-X-HE-Tag: 1755885629-131609
-X-HE-Meta: U2FsdGVkX19zStWJ5TTXRZzqju2mv6cf7mMkuv/k85eONNkUccD+Nk8kYA1AXzQTNeGOB1vEca8LtOTQRMO2q0E7MuSQcfA1Rs2S3NysD6MJ6aoUmJ4mmOharDa2zd9QVqO4DZzdHvPZKpzbk6az0yNAFHcXLMPf6bDyS2K2jQ5ON9jw29nZmjvKacBaqGRkauCGf6X/L4iacn5XTT++0UOIMleh7sY9KtSggV/uwm7VQ8MovBJNAF04xiRAwgc491dJDElm3nDdNSaea44Uq44wp37H/6fewMoXzOSLLpVSUcrHngNoXP2AWslB+LcPIIuzX/t0IljsPDtv+6W/DYlZp7+66IDqv88yNRuNDAbUvyp7rpfyT0NjZpMk1LhKCoPGumX98xAe6Tb4EP/BSCA70JfhaMbOcVozqDxesSYoXoez8xgdACao9CNl9oYZzOGjDc9sLx6gHIfx6QcP2HjBIMn6P2Xug9bI9heaqqU4W+LfJ17N5Gt88w53g+j8SVHZrx9VjP06VL2DYghQ0qFluJVr2oEJy5VqCJgzVCNMYCi1tulSGn7bJS/vEzE+zP0rgN6/3anZSsp7CZcNF7s/KxjvfVmPf6jtzuqmKzs7ihqpYHpE6hO43i/6Vz8Pm0WCHvll2FQpjlCMbYwFvZcToQEgxPp9/D0/PDK0F/F/XoP6IOs/zji/ciVY23jyCSFUX3Ap0XdHQPrnXG60vdkc3E8dEOW2Bw0l3UL4IUlzL50tKKcYRSvmbmpgEfkl50OJM+6tCpRC122Dfg0Uxrrf5XeH3QNWRJVGNtWfw2P8pmxyifAvjIm7FrVE5MgxbUwKTfsPvnnYyToAx9GGAMO/o2DoW4ZK6F9d2gTVdq7VXzRr4og8J4nqmP33xV27IaWJbMSqN/Kp2k7cUVW4doX0mh6Uo58HnQrg4koh8QNnE5OUORu1kpuh+xLeT8wZVfYlBUsgalPNggYB1ib
- hHuvLVsU
- CTRJrGH82cacXFIxo6wCMsFBi6E8DgIqHX8181KdRgsryX/JeIyqyX0q/kWGCn/kfSVKTXmbDXC/mZ+i8didIKH6B66XrFIwU87eMqK7vJtzAwITLrSppiftmjcnMB41RTRfQMgnErTJENqyTtZmvsVXzaEp+4GLanyNRg+McZN0e9DfJ8an6SlUkMIQ+nTNcyD/Q24LsOKWQQBoVLYHXWH/gGaVLSkaKsQ94J1VVB3MljKi1u5n02HLWef3DFPYR/O2gWm7QXHtyIbf2ogvP74t+or2OpikwafHi95oHxOdyAls=
+X-HE-Tag: 1755885756-825239
+X-HE-Meta: U2FsdGVkX183brgZdHQR40BYjpSmefhsKBp4ON3sjk6T0Y83F4MSAjtLCaqVkRE3l6Hm0hCqh9osbqTJGEMGPEknNujFsR0vZwtMZ/LQfhvt5q+lM65fkiU2c086YQ2HAppRX1U8UEzR+wd622gHYo6bW0VTnKJ1YKMCmgJmfTlVw+E3F/9pTp9ypWU5k7gBPH7xkiLD2JX0p290itI84a+vlnhsXi2nvH0oG0UjeAm86+lLgT5VMiyhP+WOrAMcvDwaVkFG+GasYTIx8kx/ni9Z6NOdsFzgNbgJO8gQdmLKs3YlaKl9CX/uUsqj90rpozqYEWAzc6Z1ubsaJtk6avtlBPL7hP7aMPUKPgfDgP/J4HwtOH/2dPiiwcL7Z9b4+7X6cnUB+lwgtr99N2hELsW4fmM9QvF/Li06QPSB28rvCSCb4rkoKNvpOew/AA+e77bcsTUY362Fac6sotJox7bA2V5/Q7YQkxup5EN12BpfavxVVEAXvT6o7QdlymuMx/iu44+2Atmm90OG0TljuGFb2XFCQmPjbcLMehaWRs6tGYP4prId+q0EeHP14jpQiTRvUNQ/p+rHukdjP5pRpkmWO631c2UCWs+cKGV4cD416il0Q426dIVmN2FpNZwCIURcfRePOrpIKQ9ZXVxWBq5a46ssEB2J3g9erGo57piEFjWPDH4KDaNpJS4qesF2c4U3GHgmxNTpsZs90V2nVa59tOqR7I0UaTpyl0M2+onhermF7evNldhuP9d0nZjpH+OgrDOfom20lwBz3yxzo96Np8BfvUfXTiZa8i1gEe89wecwtMKBwJgJ8g3wa3IiYGkEMO48UHYeHx+V5mkGn2RBI81jlxsNqTrvIltz6CephnAQZYCt/bfmAnb+fHYdfY/2SvzXHVeG2cdmApZ6VQfR3JbsBVm/P/m7EWw1UXGXcEOxZHdxtrwztmgBu+KHx4auXPAeLY01t1EIBOK
+ KSAt2i8d
+ GfHrg0o3RiVrKkCBdleOYaVqFEYD8VD1UDA4tufAkUr3cVaVn8ntSDN9UJ82btegwd13qGDlG0Sw8e3OWKVob7nGLscKE6pwG5f98JtxMxQGR6nakt25ootMFpgy55Ymg0nsZJ91Z5wIty9+5ED7wnouyIkD4MyuJvIfjMbxvP4+m7KTeTLv4unN/MmZxGOVt4sQdzgL1KGlL/5tvCAZZh9rxgMfev2mzAq31bpoD4YyZkYtURVa6fbKrAqgEKx/UiK/fnDRY4O543/mGC02bmvZgD8ySnCB4gDM1WmlQ+ifrQC5WVPzMf5prju6EaHDeBSawORJi6i2otV+O+uDmW+YfhW7TGNlhbjNnSZDaEclNmSQZtXOe3Ib8Ee6t8j9neapm
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,67 +130,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 22 Aug 2025 11:50:57 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
+On 8/21/25 1:06 PM, David Hildenbrand wrote:
+> It's no longer required to use nth_page() when iterating pages within a
+> single SG entry, so let's drop the nth_page() usage.
+Usually the SCSI core and the SG I/O driver are updated separately.
+Anyway:
 
-> Kernel initialize "jiffies" timer as 5 minutes below zero, as shown in
-> include/linux/jiffies.h
-> 
->  /*
->  * Have the 32 bit jiffies value wrap 5 minutes after boot
->  * so jiffies wrap bugs show up earlier.
->  */
->  #define INITIAL_JIFFIES ((unsigned long)(unsigned int) (-300*HZ))
-> 
-> And jiffies comparison help functions cast unsigned value to signed to
-> cover wraparound
-> 
->  #define time_after_eq(a,b) \
->   (typecheck(unsigned long, a) && \
->   typecheck(unsigned long, b) && \
->   ((long)((a) - (b)) >= 0))
-> 
-> When quota->charged_from is initialized to 0, time_after_eq() can 
-> incorrectly return FALSE even after reset_interval has elapsed.
-> This occurs when (jiffies - reset_interval) produces a value with MSB=1, 
-> which is interpreted as negative in signed arithmetic.
-> 
-> This issue primarily affects 32-bit systems because:
-> On 64-bit systems: MSB=1 values occur after ~292 million years from boot
-> (assuming HZ=1000), almost impossible.
-> 
-> On 32-bit systems: MSB=1 values occur during the first 5 minutes after 
-> boot, and the second half of every jiffies wraparound cycle, starting
-> from day 25 (assuming HZ=1000)
-> 
-> When above unexpected FALSE return from time_after_eq() occurs, the
-> charging window will not reset. The user impact depends on esz value
-> at that time.
-> 
-> If esz is 0, scheme ignores configured quotas and runs without any
-> limits.
-> 
-> If esz is not 0, scheme stops working once the quota is exhausted. It
-> remains until the charging window finally resets.
-> 
-> So, change quota->charged_from to jiffies at damos_adjust_quota() when
-> it is considered as the first charge window. By this change, we can avoid
-> unexpected FALSE return from time_after_eq()
-> 
-> Fixes: 2b8a248d5873 ("mm/damon/schemes: implement size quota for schemes application speed control") # 5.16
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-
-Reviewed-by: SeongJae Park <sj@kernel.org>
-
-> ---
-> Changes from v3 [3]
-> - fix checkpatch script errors
-
-Thank you for doing this, Sang-Heon!
-
-
-Thanks,
-SJ
-
-[...]
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 
