@@ -4,118 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 395BECA0EED
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 13:50:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CAE3CA0EEB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 13:52:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 578458E00AD; Fri, 22 Aug 2025 09:50:53 -0400 (EDT)
+	id 9C2D98E00AE; Fri, 22 Aug 2025 09:52:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54FF68E009D; Fri, 22 Aug 2025 09:50:53 -0400 (EDT)
+	id 999468E009D; Fri, 22 Aug 2025 09:52:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48C448E00AD; Fri, 22 Aug 2025 09:50:53 -0400 (EDT)
+	id 8D6258E00AE; Fri, 22 Aug 2025 09:52:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 385CA8E009D
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:50:53 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C7F391360BB
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 13:50:52 +0000 (UTC)
-X-FDA: 83804529144.08.B8DB8A4
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	by imf30.hostedemail.com (Postfix) with ESMTP id BD86080008
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 13:50:50 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lFCfhXPk;
-	spf=pass (imf30.hostedemail.com: domain of giorgitchankvetadze1997@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=giorgitchankvetadze1997@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E2308E009D
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:52:14 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 00193B6FAD
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 13:52:13 +0000 (UTC)
+X-FDA: 83804532546.10.7309BAA
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	by imf08.hostedemail.com (Postfix) with ESMTP id DE050160011
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 13:52:11 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=Vi+RpGgq;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.51 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755870732; a=rsa-sha256;
+	cv=none;
+	b=pdGJj1fBRfGCWjMMv6cO12koxdzGlum1TZYJOuzs1WvskPH4ddqQRGTxDG0FilE79gKbPr
+	96hhucuwALo+qen/sbEcWA7IgsLMaAJl8svlTRTV5Ee/3QxRHQXoBXz/TVpVL7fIoTNpif
+	iDvn4NxdMflR/j9MHex200oV02mnKZ8=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=Vi+RpGgq;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.51 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755870650;
+	s=arc-20220608; t=1755870732;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mGhO3kmVIYGRWufT14ynMiV/yGtuvvh15Hsd9JEr9n8=;
-	b=pL3ZnrykcVk23bigtiCdwcAzniGFxlzU6tkrxlZkycKg3P04yOD4qyDylueRRcEfyE6WNP
-	d28xzOb8OIsIeLer++AJYAEASYuB/DoWl37MYSTKxBvUpuTsYQd1vKPYt/qLVGHyy/XHEC
-	WExKb0qOzPEb4E7V6W2fHSNlhwHXvMQ=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lFCfhXPk;
-	spf=pass (imf30.hostedemail.com: domain of giorgitchankvetadze1997@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=giorgitchankvetadze1997@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755870650; a=rsa-sha256;
-	cv=none;
-	b=kopscvqfLQKbOnTCjn5wf2mFZryJkk9GECSIR4sVAfJ7CHGmt/sfBiP74y8TLNfTeF1yOm
-	AAO9TqL0NsowlDbvaSpOcMB5tNCqOTDl2iyTbaYcGxZ4XXRlXv3fsQy0VXHxpw6ppcBC8Z
-	Nk/tozrQfo/CFDSKmteZ86VNsMX5aaQ=
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3c6ed2ec758so2443f8f.1
-        for <linux-mm@kvack.org>; Fri, 22 Aug 2025 06:50:50 -0700 (PDT)
+	bh=NRu/0FoVw+bU0VwjyXzuUF8CXZhxspV/ZyS4JSE6Hqs=;
+	b=tficmACxYw5T+VL6HkxLOPvMqjTnV/Y2VYxWyi9spf703l6TgtRvkfy+CPXFOr/lnozhUR
+	t2Cdd4D3kzcyg7Lqy5gpvNHZ4dhyZS48qpZkiKAuCQ3pN+ypmoq60YhX1bfB20chOfisnk
+	EWeJjC3CmLJEYZMQXHV0zq+lixyIPfI=
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-afcb78fb04cso279047166b.1
+        for <linux-mm@kvack.org>; Fri, 22 Aug 2025 06:52:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755870649; x=1756475449; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mGhO3kmVIYGRWufT14ynMiV/yGtuvvh15Hsd9JEr9n8=;
-        b=lFCfhXPkUqr6j102ZUqzGTuymcUDJjwH89N6xsJfubSJD/apbCgW6W7g+UDTfRgI1u
-         zitX4+KjCUsOi/wrmvc2sixvL2XmFC237hrBdeX83k/hcIDwnnbgV2IDxF31Gc0+mk9D
-         cX2fLRmlk+ZgSutjkXbJKO1qjJWMz6FHa7zK9IcphBN85lWEOUxYt/J/WyfB1FUT+8AF
-         7GYk+wH6sR10E/1wzAo0zf88KVY/RzuD6aYeSQAiWPqu2aR1ipU5LK4ZyilMja+IpshK
-         zbRug7Ns+oM2/8tP+V3OVHNw3cf0wU/b0jtzsqIkjLW2TN2swPZ8DIs7ppCxmHVjRJe4
-         Y0Lg==
+        d=linux-foundation.org; s=google; t=1755870730; x=1756475530; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=NRu/0FoVw+bU0VwjyXzuUF8CXZhxspV/ZyS4JSE6Hqs=;
+        b=Vi+RpGgqoYRSbqhjJmDRXYxVxu9QFcbcT+XWRv95TlKBmQMMG82kWIsP3YSgZnIUYZ
+         JaNc2RF+FnZWt05+/9+y6kkCzl93Uj5ia3CDZgfo5wNw1mfECeeia/R/RD74hKiZWtSB
+         QjciHm78xOh1JGmiodw9NW1aPUaE1ZSymcDzo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755870649; x=1756475449;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mGhO3kmVIYGRWufT14ynMiV/yGtuvvh15Hsd9JEr9n8=;
-        b=g0kqIOW9LeNFr1RSAZHX0/JmKj8j3dg0jliwgZxWxB1AyZnY2GIUId6ikCL/SolohY
-         jtMyfyplaYM2OwNy/sTHpKqEUN36A2g3XnJpn6qyv1a/FnqHAFi99KPVokycxRqtbTy7
-         A0uLFhPsKzkqPrxfb0g+mrNwLt6/EC6PlgZ5aJp6gsewBmW+v4JblZcpFvfJhOJx+XSC
-         AY4Xug1hGJF4Tf/0pUGQRb6CoZVofsZEmrvkYOHy0R1VosPLhIJPsOo4wgKrlN8bqCxs
-         H5dxkIDXwRhksJq/D6VhdrUbCWoF/UM1DtRMyvcstMQ/iMEXVtW+aDzep/GF4O37+iJz
-         NWig==
-X-Forwarded-Encrypted: i=1; AJvYcCXtpl6ChRkct/7TqRoKGi/f6y4Zb6EifGw2ZWyC7uX6CAY7gIFkPoZInD0vt3rKM9hLskXJt3cF0Q==@kvack.org
-X-Gm-Message-State: AOJu0YycPMHK9W3X0kCLATfqJsZ7hR+Wqh4iVmMq93xVbNxXyABcIeTA
-	2u4hRjtfoV5bTonL1wtgJeqYQnjah9So0GdXb/sfoHiNK/Xp/GmWzGIe
-X-Gm-Gg: ASbGncv3tZz5DE9z//gPlCWX5JMbLTHBZb54cujsM7nA6Z3wxPCyBNhGEP9+5oLs/J5
-	91PBsWLKx1/31awUyJzCLc/hSmf3uRII6bFL3kEJSSGy03dkkxkMirFUxLuLDp1jvipEVwcFc4a
-	zOAtjenC+AiuUMMki45tK5yibvsmwa9s1XkyqxkVSB3lH0LHLB/kro7Llsg0sIPquXzlOB8QHFL
-	JH4xy8CJcP5Sx1V2LbHicrpbTO8sru9XTZPif67oWNvGbCaa9VrkHtrp2kgLTyd/lz6OGiG/Ebn
-	G0MXa2NYw5v6DGU8JUMe+iMdD/Ew6BFWgw2T2EVUa/Ka46StmF1M/oWPd6AFr6uPPb/+EkBMpvI
-	fFvA7XouJYP2Fxh5H+4HVXmakflwtf9Qb4HrBYHNnVQok+DfTDbHgRuyXtz79NyAz6W3+3DP9GT
-	m8wsqW5Njio01AOj3mRjE=
-X-Google-Smtp-Source: AGHT+IFgLJnsa2QDWZ7yy8ttoVwSdR672VRHn6w/2d2eIUK/l081Cm2xTXQ1WfEHFk7l29E3EP1adg==
-X-Received: by 2002:a05:6000:240c:b0:3c3:c280:d43c with SMTP id ffacd0b85a97d-3c5d7ea4ba8mr1184915f8f.0.1755870648896;
-        Fri, 22 Aug 2025 06:50:48 -0700 (PDT)
-Received: from [192.168.100.6] ([149.3.87.76])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c6e2d3f2aesm165454f8f.58.2025.08.22.06.50.47
+        d=1e100.net; s=20230601; t=1755870730; x=1756475530;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NRu/0FoVw+bU0VwjyXzuUF8CXZhxspV/ZyS4JSE6Hqs=;
+        b=V7wtNghcd+gYbiYjhWQiolhLSh7y7KQ7ryLy1b7YE+Rq/SikY17Vz1NpWHEmJ2h0QE
+         gYjWPNJkYIPKacAjvhmQ3nCWjykboMpDAStWYm6C96MS3ScFdPtHYoDKMPAGpzrsmb4Z
+         EWSyOXUT5YanVR09viADa7DCoibqgUGEcqtFc2ShxPs+zAXeqlduJxmPMfH4Yacv0WHZ
+         9MuLvLRR5eRGtTdckkbOKNPJZ43ASmbGzFUzghgp32e48O72GnEmWtdfiIXjd4jBO6M9
+         4vvuWPhcaQ50eBLQQrlvI8ia/dyFJ65srhlVh9CX8Z3vtJnc7jyI7N+EwjtJAPoSAuZz
+         kHiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUdD+MhfWVJ8c0AbDw1z6DISGNB7b5RwsdvmQdLDvcNy41QsSddqELPSOibuzYmX+YruruvPn0nwQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy4W72pDhOdg0Fj4bmv3NWoDQ4tEIrxgUaaThtMiC07RysZWaHb
+	tVLGts2CvSJOEcZ82trUJJwvOe65VB+Ee7HZrpj+bJjC5E7S63glD8DPD7dcZNnxbNo/7J0Y34i
+	Md6t0+Mw=
+X-Gm-Gg: ASbGncvFd+B4KoBapn7mB5mlKbZ4GqxMYq9xtpP7aA5hrxaYz38mgroeC+8147MqtQ7
+	Cvcm6LKDsZqtQBV7Xd3NT7B0+EBA1BbMGHDzP7aCNsnkqEVZZceOSZ90E80qdAA/Hj2Er4gAfML
+	K9eJq7REk9kzMPK5Ka9OE/wmCenRxXKyVsdQFaqqt/hru7tEZPKQN8sHquSUugxpLnLytyb92x+
+	hIikSGk1vUkD5FoY1MbletKOR73MUQrYnfpeFax+I7tz9TAZYRhiwM3BTFqRiMJz++DRvNqjJUO
+	3hYkIqoiv7SzOs131liIcMBffFFx85PUeM2ObN1mv/1+Vo6sh5jzFEHOtT/WTYzXW87f8F7qnvV
+	oCt6lhMj+gKoQXmiZAsAdCiC1ndh/GQNxmPSnO0b+SvUx+xCNP/5KWnzovrxgRV64Flg6H4+6
+X-Google-Smtp-Source: AGHT+IFEAKUr6eT3eBvvuQWLrCZG6WJY8b33arqrzcrtzSoik3qpgmQUVaURBpC62i7i++cuugQ8Qw==
+X-Received: by 2002:a17:907:1c92:b0:afc:b617:de96 with SMTP id a640c23a62f3a-afe2963b638mr247994466b.49.1755870730051;
+        Fri, 22 Aug 2025 06:52:10 -0700 (PDT)
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com. [209.85.221.47])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afded479020sm615071066b.74.2025.08.22.06.52.09
+        for <linux-mm@kvack.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 Aug 2025 06:50:48 -0700 (PDT)
-Message-ID: <4391e3f5-e0a5-4920-bd50-05337b7764e7@gmail.com>
-Date: Fri, 22 Aug 2025 17:50:47 +0400
+        Fri, 22 Aug 2025 06:52:09 -0700 (PDT)
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3c6df24f128so64883f8f.3
+        for <linux-mm@kvack.org>; Fri, 22 Aug 2025 06:52:09 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUMZjzZ9aZ4ZsKJ6KsPHgK3o5IT68Nra5WrTrlteNbGWZ5V16yYwzbKDNSZTVr+yrUGkfy0YRljlw==@kvack.org
+X-Received: by 2002:a05:6402:5110:b0:615:6481:d1c with SMTP id
+ 4fb4d7f45d1cf-61c1b450840mr2274281a12.1.1755870414406; Fri, 22 Aug 2025
+ 06:46:54 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: lirongqing@baidu.com
-Cc: akpm@linux-foundation.org, david@redhat.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, muchun.song@linux.dev,
- osalvador@suse.de, xuwenjie04@baidu.com
-References: <20250822112828.2742-1-lirongqing@baidu.com>
-Subject: Re: [PATCH] mm/hugetlb: two-phase hugepage allocation when
- reservation is high
-Content-Language: en-US
-From: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
-In-Reply-To: <20250822112828.2742-1-lirongqing@baidu.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BD86080008
-X-Stat-Signature: ar4fbwgkwgxutp5gs4ht4nkraktcppst
+References: <cover.1755854833.git.christophe.leroy@csgroup.eu> <82b9c88e63a6f1f5926e39471364168b345d84cc.1755854833.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <82b9c88e63a6f1f5926e39471364168b345d84cc.1755854833.git.christophe.leroy@csgroup.eu>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Fri, 22 Aug 2025 09:46:37 -0400
+X-Gmail-Original-Message-ID: <CAHk-=whKeVCEtR2mQJQjT2ndSOXGDdb+L0=WoVUQUGumm88VpA@mail.gmail.com>
+X-Gm-Features: Ac12FXyg7aT4BFeJsiyaeWdfrE2FPhwu5xUJIJ1D8_vj4L1z_hVeZFuzgKfsNNk
+Message-ID: <CAHk-=whKeVCEtR2mQJQjT2ndSOXGDdb+L0=WoVUQUGumm88VpA@mail.gmail.com>
+Subject: Re: [PATCH v2 02/10] uaccess: Add speculation barrier to copy_from_user_iter()
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Darren Hart <dvhart@infradead.org>, Davidlohr Bueso <dave@stgolabs.net>, 
+	Andre Almeida <andrealmeid@igalia.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Laight <david.laight.linux@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Daniel Borkmann <daniel@iogearbox.net>, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-block@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1755870650-402449
-X-HE-Meta: U2FsdGVkX18Kh5R+Vrj4seaEmFexyiUN2B3rH7LvZmbVJoGv/8BnkHFm5oO/w/VaRcXoFL1ykyXDlxQvtHv+UtPLK99U0ASz0D6vJ7Y+SLORoYNdCr6ME1NLTdnUbQFlYmgbOUwrT4a6GNL4FuJhYT/NNL5SzHCoYE19jI0DliD05W4Z8rZpewPwrGbX/dwhAkiCEvW4HlmiSrP/IEvWok1Vv2RJByCwmTVF2muHV7o5CxwvLvmKJZzi4RqegmunLidQP44uc/EUx227um2eUG91VEvrjVhjFlHZAHsJN3Cg8Sdvf0AoJ0iOWmAguUA71cW+1Oug+3WxOQDFd/cth/0Y/g9k+RVYv8qKCAT84SOV+ZMCro1DxVzZQowD4xQGA++A4Is7TpvByVOCjKKybYV4ixMzope8K9Qns/G1BdPL5sT7ehbhzKuV+ogKB5MguRO1WEPwwaXq+LH+VQ8ZcCcFWqnKeX8vsRF4u6wVJUWNn4iyL2jovmAsfdbVAo9HoQTUA1KUyqUlcsqjMf1rDkVeXIQz8gAbU6aaw7J3/JyOLLFv3FftQuGZSXLv7knXmQCQU2ATXq8qLrFKvUlfyF+OktZnatwA72uopMZqa34XsAFjhRDsYRAtXKPhXDitQbcl+QQLoz4u/gvJWFA8dbEx+IYel936E7rVIaeGA4MEGPoF/RuKfvvdHUh+qYuBPPHaZQK5qD84ZTJvE9Rv4FvdAI+zgt01urXygvptfrMF+pgiWSDoy/yVjF3I57X5pwN6rTmFJvv7QRnfpjCsLpjMDvRXyFLKlGoWEj00qCzPtUArZCuWG5x/C9gWtcr4BRetaa8gN9SDYfeZvLmERYCMqHBdLOEJgOzVXRWk/WbLNcwoV+5wG3XMjSpjuyKokHsKCpUP7wMk4aS7znZCNkg7JQ6CTLdebVnDmP0pT9TCzxMfC/BWGzzvfLPSGVUQfQL1alwfWxglct4m4i8
- R4izl6A7
- No6fLHYpM0ddAM623nfX3rSloowgr111ftgbG0bxxVhbLBwrEzB4U9/X41lrKVYHsHNJx6J7FTv6qLOUWO39zvTAfVWHfTsDIuP3HOhXBMg03Wq7TTuzSphf+2gWdugNmEjdUY26GqMINFfs6DeZGaxF7YZx04oXKAxlmozjlzICShG6TjtuVYNP2IKD1NXBD+gONMG0aVFZdDsFqE0/9wy8MFxPLgaH8e2nSTQAC+0NGamRI+dA3+0YNEffeWl5iVSqGNaEHVuOUbE0wBunyGG6J163ja948YSpSPhO/z6U/8gFSK7K4f9Vqacn+zyhl62XSnBZbrpwKEJgasYw31bR9mcf/QJ9l7+bqT7rUpTjQe3oSRhiBA8/zwRbQtBwobxP+jSdsOZsEyx+vFaj73SM38tzN56Zg3GEJJ9YfnEXpH6ex2UmNji6byqT71aai+JsNX4FxQvnrJiKKh5ccnNwMiZxwzTDQOobyLnb97y4GCRrPWwdUahl2ZQad4EcetMFb
+X-Rspamd-Queue-Id: DE050160011
+X-Stat-Signature: ea6ajcob8wu9gqunqx38hywb1stphm5y
+X-HE-Tag: 1755870731-78391
+X-HE-Meta: U2FsdGVkX1/c+hM2P3ltu/dwxUt1Oif8RZHHW7HL/BW1VffX/BiiH3WRjYIngVMYRIEC7g0U2LGUIe+89QC82R1ysUJ+5Bc3xHrdGGLPG4Foy1MA4axaSUxaWj5vQSANvVZLfa9A/DOxRi2pFcNpY5f7TzqPMJ/vZsHzUiSd6Q7i6lw3bJowBBOLriNwwqxVdj9MhIn2ZWU4dND6FoZVwcU3wyCoS/E2Rm95jVHUF1CRBH2FKq98Asw7BLKhJMbnfyq5tOGi1gIdBt1gUtWbHOkjJCk6DBDRO8gP4d/8J1ZrGDgXIiwsc3E3hawr+tCc0q4TcML3idzpC3H9pV3Dh7rfJuKdpFeUp1eMQoCUHni5BR0mlv7CMFNJwJ3vHm86E2EjeqM4RuJjrI0us1BrXMoKlI8HDWHyId7La8Z032PXG3kVkzfAvEwxB4foDWB1nh3Bfciu2+AgNGRGSj+sL/TGq/95Mw2JYkXPfKGP5A+3OMufzGawloZsMtGz51A6xv1okLZnL+kXCcbJCxNXbXq8fKVtdE4cfHjas/O1SVEWGJ1Swfk6sKruLkZ/jr/DORoqqT4LJjwfbLi5scfUZ/5ygJaRp5G2rJhPsRN3HL81pXclCIlyAd3qVszSNese1pmsVFTS3mIdBO7ALDF+zcRcgSy8rUwWCMrm4h6tTNz+ERh/cCdq8DqYQRYe8Ma/iiS+Aw9K/5XCTFFGeP6b9EiWAtavxL3ffdZvu7T3trlRa5PyyAekwyuhiM1q/pnracsNhzWio2DqgVHrHJHMaCmlEt03KhxSQtWj5u0jjdC1rFKGEqbjZSIIynol1HOkOWUzya0hns8W9FuX1+lu4N2f4hXmWo7zM6+YPwGnC/K2xMDJbs8eg+RaCorTqglXhl+nLdNRwicF7wtWOKoKk4jfIfQEo4NlQ14mYQq/9kUkeEwq1wHj5CpsGmZOuWRMSbEJiFF6yGsOdJqFA9h
+ 5359a1zg
+ NBuiizqDEQjS53uFcwYkP3OF65qK67FHyqYnRwStbMV/h47akzz8qFEINV2mJXuKKNjUle1qC6BGqQymD0/QTMiG8KSBwmIbB9y/MqNLS3wU0h3QhiWVWmTNPxkUhne/B1h2OnLOdfgCHBLn9J+hg+i5/S9P67Jzb83VolqjvGVfI2MvxyZsCVbYHRadhMJFRVdj1ioO/wtHdcmPrCRDq6Oc4U71XOGcQDruLt5R4jJFRLuhvsuvfIs7B16svM7Gr786l21LVQeKRa02ZveYnvSG1SYUjAtV8b0ks7+Tb0spiweoHY/FVsWLpuQGrNDqHhtf5+Aaud2Lc7i9VCguHZjITJCe1zqL9HfYmb5dzOR+hvPEHFUDswmFKIBz968eCeX3x0ElaOi1ZBqRh/VAM4/hTpeUj+hi2R4EqRza14jjQF/4uzh71RRltnG01w9BpzLbYBLUjeDx1zJ4XtTtnVJZ7eNMxnJuuFBVXt/UPDo68dZdYFmuLShsqf7JKv0YSKvjpsD8BlnI89dkho2hxyWNciYbl6MJOsxFvdI2ZpC6ih5fjLFtTMSe5urBCIin1IXdPsWHWjltTNJpQz3emRtgAO6xVaFxiUJiL1sB9qBr7aBQ7RKRcNsAzP12b011PVC54SIea6uJ78J+4Hkj8XSj24vo4OWIFYOkSF0Oivz/pLxaZepFF8t4i1w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,80 +131,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi there. The 90% split is solid. Would it make sense to (a) log a 
-one-time warning if the second pass is triggered, so operators know why 
-boot slowed, and (b) make the 90% cap a Kconfig default ratio, so 
-distros can lower it without patching? Both are low-risk and don’t 
-change the ABI
+On Fri, 22 Aug 2025 at 05:58, Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+> The results of "access_ok()" can be mis-speculated.  The result is that
+> you can end speculatively:
+>
+>         if (access_ok(from, size))
+>                 // Right here
 
-Thanks
-On 8/22/2025 3:28 PM, lirongqing wrote:
-> From: Li RongQing <lirongqing@baidu.com>
-> 
-> When the total reserved hugepages account for 95% or more of system RAM
-> (common in cloud computing on physical servers), allocating them all in one
-> go can lead to OOM or fail to allocating huge page during early boot.
-> 
-> The previous hugetlb vmemmap batching change (91f386bf0772) can worsen
-> peak memory pressure under these conditions by deferring page frees,
-> exacerbating allocation failures. To prevent this, split the allocation
-> into two equal batches whenever
-> 	huge_reserved_pages >= totalram_pages() * 90 / 100.
-> 
-> This change does not alter the number of padata worker threads per batch;
-> it merely introduces a second round of padata_do_multithreaded(). The added
-> overhead of restarting the worker threads is minimal.
-> 
-> Before:
-> [    8.423187] HugeTLB: allocation took 1584ms with hugepage_allocation_threads=48
-> [    8.431189] HugeTLB: allocating 385920 of page size 2.00 MiB failed.  Only allocated 385296 hugepages.
-> 
-> After:
-> [    8.740201] HugeTLB: allocation took 1900ms with hugepage_allocation_threads=48
-> [    8.748266] HugeTLB: registered 2.00 MiB page size, pre-allocated 385920 pages
-> 
-> Fixes: 91f386bf0772 ("hugetlb: batch freeing of vmemmap pages")
-> 
-> Co-developed-by: Wenjie Xu <xuwenjie04@baidu.com>
-> Signed-off-by: Wenjie Xu <xuwenjie04@baidu.com>
-> Signed-off-by: Li RongQing <lirongqing@baidu.com>
-> ---
->   mm/hugetlb.c | 21 +++++++++++++++++++--
->   1 filechanged <https://lore.kernel.org/linux-mm/20250822112828.2742-1-lirongqing@baidu.com/#related>, 19 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c index 753f99b..a86d3a0 100644 
-> --- a/mm/hugetlb.c +++ b/mm/hugetlb.c @@ -3587,12 +3587,23 @@ static 
-> unsigned long __init hugetlb_pages_alloc_boot(struct hstate *h)  		.numa_aware	= true
->   	};
->   
-> + unsigned long huge_reserved_pages = h->max_huge_pages << h->order; + 
-> unsigned long huge_pages, remaining, total_pages;  	unsigned long jiffies_start;
->   	unsigned long jiffies_end;
->   
-> + total_pages = totalram_pages() * 90 / 100; + if (huge_reserved_pages > 
-> total_pages) { + huge_pages = h->max_huge_pages * 90 / 100; + remaining 
-> = h->max_huge_pages - huge_pages; + } else { + huge_pages = h- 
->  >max_huge_pages; + remaining = 0; + } +  	job.thread_fn	= hugetlb_pages_alloc_boot_node;
->   	job.start	= 0;
-> - job.size = h->max_huge_pages; + job.size = huge_pages;  
->   	/*
->   	 * job.max_threads is 25% of the available cpu threads by default.
-> @@ -3616,10 +3627,16 @@ static unsigned long __init 
-> hugetlb_pages_alloc_boot(struct hstate *h)  	}
->   
->   	job.max_threads	= hugepage_allocation_threads;
-> - job.min_chunk = h->max_huge_pages / hugepage_allocation_threads; + 
-> job.min_chunk = huge_pages / hugepage_allocation_threads;  
->   	jiffies_start = jiffies;
->   	padata_do_multithreaded(&job);
-> + if (remaining) { + job.start = huge_pages; + job.size = remaining; + 
-> job.min_chunk = remaining / hugepage_allocation_threads; + 
-> padata_do_multithreaded(&job); + }  	jiffies_end = jiffies;
->   
->   	pr_info("HugeTLB: allocation took %dms with hugepage_allocation_threads=%ld\n",
-> -- 
-> 2.9.4
-> 
-> 
+I actually think that we should probably just make access_ok() itself do this.
 
+We don't have *that* many users since we have been de-emphasizing the
+"check ahead of time" model, and any that are performance-critical can
+these days be turned into masked addresses.
+
+As it is, now we're in the situation that careful places - like
+_inline_copy_from_user(), and with your patch  copy_from_user_iter() -
+do maybe wethis by hand and are ugly as a result, and lazy and
+probably incorrect places don't do it at all.
+
+That said, I don't object to this patch and maybe we should do that
+access_ok() change later and independently of any powerpc work.
+
+                 Linus
 
