@@ -4,73 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9C20CA0EFC
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 11:28:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B857CA0EED
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 11:31:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1042828001A; Fri, 22 Aug 2025 07:28:52 -0400 (EDT)
+	id B1862280028; Fri, 22 Aug 2025 07:31:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B1F38E009D; Fri, 22 Aug 2025 07:28:52 -0400 (EDT)
+	id AEFDC8E009D; Fri, 22 Aug 2025 07:31:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE21828001A; Fri, 22 Aug 2025 07:28:51 -0400 (EDT)
+	id A0567280028; Fri, 22 Aug 2025 07:31:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D3C208E009D
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 07:28:51 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7790A1361FE
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 11:28:51 +0000 (UTC)
-X-FDA: 83804171262.08.B423FA2
-Received: from baidu.com (mx22.baidu.com [220.181.50.185])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 8E1444000A
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 11:28:48 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of lirongqing@baidu.com designates 220.181.50.185 as permitted sender) smtp.mailfrom=lirongqing@baidu.com;
-	dmarc=pass (policy=quarantine) header.from=baidu.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755862130; a=rsa-sha256;
-	cv=none;
-	b=W1t5gmp9lLbcLol4KGU3QNOY34YRU74Kat4oz+OP8Y5wW8rCL/hk+YdR38KIp3QPboNe5u
-	El5e6maEeLFibaVHL0lX4obM56EuMXnht4igFKF1eRe5WqXsLqPcTLNZhi7cBqCr6eTYZf
-	7ZMuEca79TU2ImzGbr4VhGyMmvjDZ4M=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of lirongqing@baidu.com designates 220.181.50.185 as permitted sender) smtp.mailfrom=lirongqing@baidu.com;
-	dmarc=pass (policy=quarantine) header.from=baidu.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CB7E8E009D
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 07:31:32 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0C3C8809F7
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 11:31:32 +0000 (UTC)
+X-FDA: 83804178024.28.7E8DAA5
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 0A97B100013
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 11:31:29 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gNraIgo8;
+	spf=pass (imf05.hostedemail.com: domain of asml.silence@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=asml.silence@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755862130;
+	s=arc-20220608; t=1755862290;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=NThDOcz/SS+C7YL4hFid1zydYXIRoVikVjEAvLriz/o=;
-	b=CNzl4DbBaPEeXhV7tDR2KyVp5ISrzx9S4NnYmEkLV397no7u2OBAaazsqNEGMlfxR8hPwo
-	LWFrTqjMNwQ7HUfPaFzga+nHDtXiHy0O+ESKFwOSaCRZHp4Cge+arnMD7xrvBpj0Om/Jtj
-	Kv1Q0W41+WLKydFcUkLk7btx0AYuaP4=
-From: lirongqing <lirongqing@baidu.com>
-To: <muchun.song@linux.dev>, <osalvador@suse.de>, <david@redhat.com>,
-	<akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-CC: Li RongQing <lirongqing@baidu.com>, Wenjie Xu <xuwenjie04@baidu.com>
-Subject: [PATCH] mm/hugetlb: two-phase hugepage allocation when reservation is high
-Date: Fri, 22 Aug 2025 19:28:28 +0800
-Message-ID: <20250822112828.2742-1-lirongqing@baidu.com>
-X-Mailer: git-send-email 2.17.1
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=SfbHPH5Jjp8Rpz5+ZFUkvP8crb1ywqdy8VPh1hjPgaM=;
+	b=kjWndKaP3ZpI0LbhurvczPc84nyqWwpesGYYs8Ile7D1QS3zP/QQnGsiQQof0pBhuvDNQX
+	9Bfbuu2YXvrJwwy2ZAjPBNIWbIQ+h9OsVK0/FEx1PW7DcwaHbVZ7OOMcTT7hTkkt5MTQnJ
+	9Rz8a2KNYAgDx3qFjiKprThNdhq7brg=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gNraIgo8;
+	spf=pass (imf05.hostedemail.com: domain of asml.silence@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=asml.silence@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755862290; a=rsa-sha256;
+	cv=none;
+	b=dPqD/lKF4T9VsxRk/LcMFRNwwQaOtCCLmyJMRWGOo6zKxcXpwApbMPK0KSNR78oqNoYZZR
+	5+D4hT4gNII0AdLQS15UQxnUwBEzbxP9BRc6iiKsBKv+pyNdRE/QIFOECefdatmUuF4EoN
+	wTbs/kaSqx+MrO+feILKSBgTII1i9s4=
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-45a1b00a65fso9944065e9.0
+        for <linux-mm@kvack.org>; Fri, 22 Aug 2025 04:31:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755862288; x=1756467088; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SfbHPH5Jjp8Rpz5+ZFUkvP8crb1ywqdy8VPh1hjPgaM=;
+        b=gNraIgo8GeL3loXv2UIksPfHLqseTMs0txUpDvyiMP39vvjCjktP7Q9C7YqRtGwp97
+         rWi4ENa4vsHmAO+SuRHGHE53mOth/4QV2tNLxY7DWMMb3mr1tMTbV3D+dOI6atoNTmPW
+         aLYpPq4wqd9+GkNCHTa/oI7pttS1bX4DKh7JOg5cPV4CHj7HPzVsc6+R1pOHvWM4zea8
+         Fuf9CYfE2Gg8ZZgAC/WhYWKQAFZI3+IdMwDhvKUOacQDW07OagpBDYbRY1gfOlkHMYiX
+         DTZfngE9UUjjlOtOTTA3U5PEF66Mr104NTybjun+LYcS+BC9s3uEYoXHlqdxbVwJWwQZ
+         zMAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755862288; x=1756467088;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SfbHPH5Jjp8Rpz5+ZFUkvP8crb1ywqdy8VPh1hjPgaM=;
+        b=FylTdCfHDFSjhe2Cg52vDDf68r3LK9wbXaoN4fwIfYS4U0GLef8WhlluRg+8oQCUhU
+         tOqg1jHuLacDWeYqPF93gs1yHTW9hLTTKynX9InXLsC/1wJyewfjR3FLSPPo0mwFO9Si
+         1YW0lznNbZbHe/RUnP/SmxdZjk9X5v69ZkXa5KBmjDlQrq8Jp/ET8uR96mD98LNCpkE6
+         ERanPGlPLbOniwsfOEi/+fLIu/Sg+ODbJ0poo10/KJFUryv3VBCRbkdb3V9A1LLHnbCB
+         jVbGVVwMZJ2ztJ5sFk07cvsrqcC3UUnvz6giW93hC/IMx0QiewDtlwE39AwQhKSMMaNU
+         hZ5A==
+X-Forwarded-Encrypted: i=1; AJvYcCX/ovRCDVVfGi+In2jlBZDVvBddVk/GELm10zjRK839x1eXy6s4LdYfMtookAZQyYp/x0mF7a0T8Q==@kvack.org
+X-Gm-Message-State: AOJu0Yw5pYT6sDIamO/TxvaZjuQXF04TVFCMlw4shd073OAQ5zEAR0T2
+	95l5zkHtAPjHgLg2cqvSjYbHUMHvTHphp+GDIHPPELZ3SvP3d2SppPhz
+X-Gm-Gg: ASbGncsagrKryN3xPigP9I5kl0+e3vGKE68DdUhVD5j685ud0L74v930vsif1+BCez3
+	fuiFxp/9RY+pBr8dxVLPMJwmXwNU4GF+VXrVyySpIAHUtcJfJX6+aItY/jz/oKRfKRlRu9ml2eS
+	3nnrtVIQBMrIVmly//Mk93l5LvNGxIINfdPk8aSECUTS5Uu3TycPN3rh9aJBZXJceFnRj2ME+NZ
+	Lk9bOwzoez/6wZLXmlN/1qzwKeu5A5Nt/k37kXTho4QqwhZprYBvLXpseghdyBX1VSoMvp+5QPw
+	D1vrufzxRjbhWFLqy/Qg475+Tlqb6coaKfTGwl2+Q0qTtX9OAb7Bfw2tvbpRi7GOHtilPYYLhnT
+	Da2mmc0P5LoTsWoIIrnqCO/4Vlpvv4HS5sEpj2mEWkwGtbJjFyhc/vVI=
+X-Google-Smtp-Source: AGHT+IGRxFKrTZ5eDvBkmi1zEgN6s0gJ3t3AoyWptSyZJnQ5Bb32czELomyx9FMDxkr1p0nFemiRbQ==
+X-Received: by 2002:a05:600c:4747:b0:459:e094:92cb with SMTP id 5b1f17b1804b1-45b517ad81bmr24844685e9.12.1755862287996;
+        Fri, 22 Aug 2025 04:31:27 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c096:325:77fd:1068:74c8:af87? ([2620:10d:c092:600::1:1b93])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b50e4241dsm35921185e9.24.2025.08.22.04.31.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 22 Aug 2025 04:31:27 -0700 (PDT)
+Message-ID: <b5b08ad3-d8cd-45ff-9767-7cf1b22b5e03@gmail.com>
+Date: Fri, 22 Aug 2025 12:32:58 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.127.73.8]
-X-ClientProxiedBy: bjhj-exc8.internal.baidu.com (172.31.3.18) To
- bjkjy-exc3.internal.baidu.com (172.31.50.47)
-X-FEAS-Client-IP: 172.31.50.47
-X-FE-Policy-ID: 52:10:53:SYSTEM
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8E1444000A
-X-Stat-Signature: 9symz7prxsibambm1etyj1ssbsfne8p6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 18/35] io_uring/zcrx: remove "struct io_copy_cache"
+ and one nth_page() usage
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+Cc: Jens Axboe <axboe@kernel.dk>, Alexander Potapenko <glider@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
+ Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ iommu@lists.linux.dev, io-uring@vger.kernel.org,
+ Jason Gunthorpe <jgg@nvidia.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ John Hubbard <jhubbard@nvidia.com>, kasan-dev@googlegroups.com,
+ kvm@vger.kernel.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
+ linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+ linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Marco Elver <elver@google.com>, Marek Szyprowski <m.szyprowski@samsung.com>,
+ Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, netdev@vger.kernel.org,
+ Oscar Salvador <osalvador@suse.de>, Peter Xu <peterx@redhat.com>,
+ Robin Murphy <robin.murphy@arm.com>, Suren Baghdasaryan <surenb@google.com>,
+ Tejun Heo <tj@kernel.org>, virtualization@lists.linux.dev,
+ Vlastimil Babka <vbabka@suse.cz>, wireguard@lists.zx2c4.com, x86@kernel.org,
+ Zi Yan <ziy@nvidia.com>
+References: <20250821200701.1329277-1-david@redhat.com>
+ <20250821200701.1329277-19-david@redhat.com>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <20250821200701.1329277-19-david@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: o4m36qgh7a1srietpacb76csmgka9gxj
 X-Rspam-User: 
-X-HE-Tag: 1755862128-353525
-X-HE-Meta: U2FsdGVkX1+8pG3S4DM1eEmP0GruttUzwawnQbGjNtLYZCJmP3g9rwHXemkicwvSFvwyiSnOrZVyJn7nnRYdgxj95hid4+zookedpSmI8zQ0yjOo992u/EOSLv0fsPhkOO+mr2grwgeoS1HYsh03OpfM7JGq0B8ohXYcIhUl3ObQQEgsGnx4Ct8YZRYiZLrOGNsu7tPNVgW0u+IYufwoPVrazffRpNLDRAaeFHi8vvYbLjna1eG8neQ8/uIVFKHxhQAMb51ZqKCNyUWReue3nmKNg0ZPuaX3VwdEhkYq2VZsXtbkKsyM0Z1p+I6GIOux5qEp+lc8yI4/+V9z7c4W7XK1D6Thjy6prWVJ62oYBy3wUIb6uEL/hnCNMX3I+AhzDfXZ1N3132IsYfI9ZqV3UMF4IJn6DFPXL9tRl9yVtYZ0z3KgJBElF4KmqYwh8AfEZmHwYmVn9BY434jQJnGa6jpqhETu0oKokhWPVc9MpHa2skt6qppLPfSVwj3YTF4Qb82lqjmhtyvFGIH7OfCorkDYJ4AFYFSk/1G21pEhZzTj0j+dtX/6ZDZ30U6Lh5gjN5joOgBmzC32TfMrgHosnea+fIzxDCRulcZDqy+incir5+ubBZExeEO8ePtttx3DHFmiyMROP8CImjcXTBbBNE8TIafvE6lNLUAbQ8D0Lr02oJhwo8D1LPv1zHz/Sh4HedhjvelD/AK5WypJg2y3jww/wLnoH9eFrog0kWYBF9CKglnBbZuJEX8Ol3/Lbwanm6AySnE54qdSRA0lwY+kwnLIvUNttFm5ApUu6LeX6T1UZCiox82v7tbmiQJIHvzy8O8TOZXyF3J84XPUdL22j67xX055FGwu+glSfjTih4m1FsmNfOXnMvY353enfcExQkSAYl7VuEl8vmDPzSq6zR1ntHjfshQ82TSJO8jnwq8y8TrEaRwQPZfnfdRoXDbiScF8aaE2CqNAp9gX4vl
- Ou3vlcbR
- x4kkCme8ZZ50EIQjmj6XR0AG8bK/qXDlQbuSgN0SsDAZDmPP/IKjde9NZ9wiRyYMfnwj2PAzQxyEUaL6faiGQJUU+OFBcpJD9aEeOwZQFOe00vJ8=
+X-Rspamd-Queue-Id: 0A97B100013
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1755862289-411373
+X-HE-Meta: U2FsdGVkX18PCj065Kw8OVR/F0ZXNlvzbBo83+HiHZ1goTIZvJALbbgysXCH8GfTSagsRhmb0TqDtl/aLa3sdw5py/MgAVKgUaRYMS4PPiZhpCtL/WNjRD9zUjXonPmG+xpi47NXxaf6iuYDKcIaYsejaszliXMxOdP4msnJ95Ru5Mtr2DJWiRBv2Fs3cSBaW1PvyDDBdlFb8sYzBdgOlkdgOkF9cZFPF0AoAs6pl398mk/kXKnCSXvhgsk4Yn81bKGlQaVPnO2WZJhzq/AmjmiRPQ9bXOsUxpgdz2gmSQiswJHjnEw5gi3U5iSX0hfbGR501VqwE1CdM2e5EWrT+6AcFIb4rsWKecGtSIL3OUiDDfJJ9a+JP4FapKIhl1Dm4FeNPlj3jdRQlaFZSuk39cZU1ZFHw3e08l+GO+j5pfhwfrg9P/d/EMEAIWgKYeoj4gWRh1Zi7UE+g9VJZiIlfQnQH1kvr5+4uZvav2HFYHniVghmYsFQ8fyaV7Ky111Z6sVHzVn0aRSQ4TwafZjKc385x0gqSZNn+WwG/BKGuyqDUuhHsjuJT/6mntEsKPNjX4LhIKQD2aiInZmRaP88SQq698U8Y6tPcA7lCDb3OYgltzc7An0T3xFiXR9BoS25ggN0oSPqtMeDTRUDcTZydRNwzIAqEdBLYS41svSoE523souhoVrtq8pR56X4KMXZzlEJo7S78jInaojq0O4bSd2I1Y+V+5tGVaf2JFYpSBDB68Xy6RQ7DcWoPziRkfufpB2AX9ibT73nbpyxQP3FidMR1E7obQ3tA/MP0V64WLf+iNcK+1euITt9gUFgAIlIPBkE4BdNv+KlY5JLx1LiT2to/5XVsxOld2ZCIEG20U+n4q9Y7bbY1qloWTgsJtFbSirL47rY1oQvzJ5dZAofxuN5Dt5SoFZdl0r3FyXsCi6rjSQY+9TK15VqC/BhDJcM2rraNS7Gxc/q7vf09sj
+ cuFiroH4
+ wDHR3Je7BVkg7QNBwsyV77nYICxPtC9CdowBTT6t+KFfxleGFBb/81t4yqewWnRC7/xxk2xJW8kX9W6WyQS9IIWDpnoBwfrrODvwlvEpS8aBPFruO2lKyjHcioUglLZe0ZKhmTxCUwZftNFVU1kB3jQnDDcAsBZAsTDKf0wQdNwq1IR6C10so6ui7atD+VW7Ss2cGv8VtHX4qJ01jx5OwylBS5Rco9qFjY4qi/PjQgKzXRuVv99SNGfIfPkUL+ryz+jTYDnahp1/ScUSvKDmdQ3lTyL0hDz3wYl8biWEYRchaxHFvn1yzDaNWRMLqQ8jWJL5ovzpX5zAjx57UqNk2eyQKQG7XZduBaU1O5qq8VA/5xLCHQwfpB1mXODCK2Yi4/PXD/cde2Hna7Fl6HuMu+5dxGQDJsakKaffb9xMD+1vb01F2zp4zFmOYe0skkcpxC5apyciRlktOBZE/cEUr2DzmiNBa/aLq5NnERnmM+3Sta1kYIxxS4v02piS9BiqT5EW6MfYCptfk2jY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -79,87 +144,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Li RongQing <lirongqing@baidu.com>
+On 8/21/25 21:06, David Hildenbrand wrote:
+> We always provide a single dst page, it's unclear why the io_copy_cache
+> complexity is required.
 
-When the total reserved hugepages account for 95% or more of system RAM
-(common in cloud computing on physical servers), allocating them all in one
-go can lead to OOM or fail to allocating huge page during early boot.
+Because it'll need to be pulled outside the loop to reuse the page for
+multiple copies, i.e. packing multiple fragments of the same skb into
+it. Not finished, and currently it's wasting memory.
 
-The previous hugetlb vmemmap batching change (91f386bf0772) can worsen
-peak memory pressure under these conditions by deferring page frees,
-exacerbating allocation failures. To prevent this, split the allocation
-into two equal batches whenever
-	huge_reserved_pages >= totalram_pages() * 90 / 100.
+Why not do as below? Pages there never cross boundaries of their folios.
 
-This change does not alter the number of padata worker threads per batch;
-it merely introduces a second round of padata_do_multithreaded(). The added
-overhead of restarting the worker threads is minimal.
+Do you want it to be taken into the io_uring tree?
 
-Before:
-[    8.423187] HugeTLB: allocation took 1584ms with hugepage_allocation_threads=48
-[    8.431189] HugeTLB: allocating 385920 of page size 2.00 MiB failed.  Only allocated 385296 hugepages.
+diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
+index e5ff49f3425e..18c12f4b56b6 100644
+--- a/io_uring/zcrx.c
++++ b/io_uring/zcrx.c
+@@ -975,9 +975,9 @@ static ssize_t io_copy_page(struct io_copy_cache *cc, struct page *src_page,
+  
+  		if (folio_test_partial_kmap(page_folio(dst_page)) ||
+  		    folio_test_partial_kmap(page_folio(src_page))) {
+-			dst_page = nth_page(dst_page, dst_offset / PAGE_SIZE);
++			dst_page += dst_offset / PAGE_SIZE;
+  			dst_offset = offset_in_page(dst_offset);
+-			src_page = nth_page(src_page, src_offset / PAGE_SIZE);
++			src_page += src_offset / PAGE_SIZE;
+  			src_offset = offset_in_page(src_offset);
+  			n = min(PAGE_SIZE - src_offset, PAGE_SIZE - dst_offset);
+  			n = min(n, len);
 
-After:
-[    8.740201] HugeTLB: allocation took 1900ms with hugepage_allocation_threads=48
-[    8.748266] HugeTLB: registered 2.00 MiB page size, pre-allocated 385920 pages
-
-Fixes: 91f386bf0772 ("hugetlb: batch freeing of vmemmap pages")
-
-Co-developed-by: Wenjie Xu <xuwenjie04@baidu.com>
-Signed-off-by: Wenjie Xu <xuwenjie04@baidu.com>
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
----
- mm/hugetlb.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 753f99b..a86d3a0 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -3587,12 +3587,23 @@ static unsigned long __init hugetlb_pages_alloc_boot(struct hstate *h)
- 		.numa_aware	= true
- 	};
- 
-+	unsigned long huge_reserved_pages = h->max_huge_pages << h->order;
-+	unsigned long huge_pages, remaining, total_pages;
- 	unsigned long jiffies_start;
- 	unsigned long jiffies_end;
- 
-+	total_pages = totalram_pages() * 90 / 100;
-+	if (huge_reserved_pages > total_pages) {
-+		huge_pages =  h->max_huge_pages * 90 / 100;
-+		remaining = h->max_huge_pages - huge_pages;
-+	} else {
-+		huge_pages =  h->max_huge_pages;
-+		remaining = 0;
-+	}
-+
- 	job.thread_fn	= hugetlb_pages_alloc_boot_node;
- 	job.start	= 0;
--	job.size	= h->max_huge_pages;
-+	job.size	= huge_pages;
- 
- 	/*
- 	 * job.max_threads is 25% of the available cpu threads by default.
-@@ -3616,10 +3627,16 @@ static unsigned long __init hugetlb_pages_alloc_boot(struct hstate *h)
- 	}
- 
- 	job.max_threads	= hugepage_allocation_threads;
--	job.min_chunk	= h->max_huge_pages / hugepage_allocation_threads;
-+	job.min_chunk	= huge_pages / hugepage_allocation_threads;
- 
- 	jiffies_start = jiffies;
- 	padata_do_multithreaded(&job);
-+	if (remaining) {
-+		job.start   = huge_pages;
-+		job.size    = remaining;
-+		job.min_chunk   = remaining / hugepage_allocation_threads;
-+		padata_do_multithreaded(&job);
-+	}
- 	jiffies_end = jiffies;
- 
- 	pr_info("HugeTLB: allocation took %dms with hugepage_allocation_threads=%ld\n",
 -- 
-2.9.4
+Pavel Begunkov
 
 
