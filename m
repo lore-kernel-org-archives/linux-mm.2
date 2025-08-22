@@ -4,101 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E71EDCA0EED
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 21:32:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE2BECA0EED
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 21:42:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D9428E0017; Fri, 22 Aug 2025 17:32:13 -0400 (EDT)
+	id C2F718E000D; Fri, 22 Aug 2025 17:42:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 389B28E000D; Fri, 22 Aug 2025 17:32:13 -0400 (EDT)
+	id BE11F6B00EC; Fri, 22 Aug 2025 17:42:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 278968E0017; Fri, 22 Aug 2025 17:32:13 -0400 (EDT)
+	id AF5BC8E000D; Fri, 22 Aug 2025 17:42:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 133108E000D
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 17:32:13 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 829FB160379
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 21:32:12 +0000 (UTC)
-X-FDA: 83805691704.04.6CEEFD0
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B854B100010
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 21:32:09 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=hP7lh31S;
-	spf=pass (imf05.hostedemail.com: domain of lkp@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EB7E6B00E9
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 17:42:44 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4256458914
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 21:42:44 +0000 (UTC)
+X-FDA: 83805718248.21.B20BF4A
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 62CE280007
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 21:42:41 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=OmVyCrAa;
+	spf=pass (imf30.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755898330;
+	s=arc-20220608; t=1755898962;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=xFQtOq6I8Z45oqGIVoHFyl208N3uZPSPZF/53fSrG5E=;
-	b=5bIanDPzi4Or1DjNZCVn6cb6P8rPT5h5H2ZAH+/ikf5l6DgknF2HVPnmiRMoFz4YBDDQrK
-	gBuplFfxNdxEBaX2XTetlhEjL0VO9oOUPYupS5qbq+ajeTATosRe1WPB9JMtRsfI8RzX93
-	+02fI135XY8VRFis8redA4Q5lPuN4b8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755898330; a=rsa-sha256;
-	cv=none;
-	b=sSSoA5rplJTY0cVP3enr4utZVCMGtqBtTfB5O/jSAvZneZW7n8ploKqd3QNlT2FP0qWLrf
-	HfG4ol1vRQhmp+JOUqK8MnmK2Vjp9tj2CUjRKdJ8TcxmXByp59AMXynehH7Ey/BjuDs0/f
-	3CD+NH5MinM+vxhwxaSEu4Ib5hoWi3Y=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Dx0ZmPP36PUthq9WgX18jt0ATxpXQol7Z82Al7MjsWY=;
+	b=4cUkkc7a/KzYPYUNR9/9sb1G5onLt9/WMsg+/92yiIm0pk9K2alRMEVfyaRDMF2l+LtZQK
+	xOAL+lRtbTbMIDKJ7lBv15a5oFieQvz0zi3qFRvpUFm0rk5F00l81s0/BfnUV+6NfqqGCg
+	WJYkxPckbgqJPDb6t9N36ucOtuJ+om8=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=hP7lh31S;
-	spf=pass (imf05.hostedemail.com: domain of lkp@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755898330; x=1787434330;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=Wl9kBX66Z0TKjWVUHQeTmjamBi1LEqMsL/BdZ6WQ0qc=;
-  b=hP7lh31Se5/vgkExjU6UYF4Sw4ef3Q0tddbJywYJcvhvP6CwN7lZJGy3
-   wEweeZpPPulWeWnBAFyAo3VX+D/U2XI8kimyNBFg1tRZCYo+fv5eZQTkU
-   ntK4kmyHK/mWnmiEcDnEZOzec/hE0q0SxBq5ObsVmlQJ/Y3K6TfDJkLPh
-   Vc9TIwziUPdYi7kTnHVmmXuPLMBzWyJgpkBsDca6YZkJhPU21AHTy+8hc
-   MKcJNSONfefw6Uk/rYCt39ZUOO6hxOAb//X2C/ptFMHybsAtK5Pr05nME
-   lQ2wzMsowzN2tZiqEydgrG0NHHWecVFptofBAT7a8OxUF3jDFSiClIbUv
-   w==;
-X-CSE-ConnectionGUID: 5gcY88ntTbCp3fE5BUkyVg==
-X-CSE-MsgGUID: KftpcMdMTqa8zRT1I06pAw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="58161406"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="58161406"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2025 14:32:09 -0700
-X-CSE-ConnectionGUID: Bf7s2TwDQNuTpTP88xTo9g==
-X-CSE-MsgGUID: CoOCDXvQQM60UdW/G10kZA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="168032442"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa010.jf.intel.com with ESMTP; 22 Aug 2025 14:32:06 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1upZMR-000LqT-1B;
-	Fri, 22 Aug 2025 21:31:54 +0000
-Date: Sat, 23 Aug 2025 05:30:45 +0800
-From: kernel test robot <lkp@intel.com>
-To: Rohan McLure <rmclure@linux.ibm.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Andrew Donnellan <ajd@linux.ibm.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>
-Subject: [akpm-mm:mm-new 216/233] arch/riscv/include/asm/pgtable.h:951:36:
- error: too few arguments to function call, expected 3, have 2
-Message-ID: <202508230551.qiEQu04P-lkp@intel.com>
+	imf30.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=OmVyCrAa;
+	spf=pass (imf30.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755898962; a=rsa-sha256;
+	cv=none;
+	b=TpItznMWMtgth3fmHT1mfyx9yP3falcxh0pPyle35GIIiShiOgagNn2TwGTmPrlUbAKL+d
+	a9ap5CQHJ2Yjiu6LlkNCdTl2ufzIO1GgzQaDirL1qZ7Kuz8u4b4cRMYX/RnXYLrZgUUA+c
+	SaSynxeD1h3y4wk2UEpGSiMKOkC66Fo=
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20250822214238euoutp029b6c89fa7385fccd7b8a5b07e384bca6~eNMzCjpr23123631236euoutp02o
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 21:42:38 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20250822214238euoutp029b6c89fa7385fccd7b8a5b07e384bca6~eNMzCjpr23123631236euoutp02o
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1755898958;
+	bh=Dx0ZmPP36PUthq9WgX18jt0ATxpXQol7Z82Al7MjsWY=;
+	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
+	b=OmVyCrAaFVEznrRnFPcMsVHGsbytQF4Kc6TLjJ5mxoOyng4aiNF9TvUSj4XO8+UQ0
+	 AN/5h51AVJxBHQ2v0PjMnLbEDsN+xpWk4RoMSPYyS1LBNXN9HRT2RWxsVKjxn/FKnR
+	 xe5+LOZv9Lbxmvt2g2/bwAUXByisnZg9sLi6pAHM=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20250822214238eucas1p16934a3c0a9575e6044b61e11f3635af0~eNMyasDET1601216012eucas1p1T;
+	Fri, 22 Aug 2025 21:42:38 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20250822214237eusmtip1fb955c175b6ebe784beb9e12ceb3ed1e~eNMxoaVER0144901449eusmtip1R;
+	Fri, 22 Aug 2025 21:42:37 +0000 (GMT)
+Message-ID: <2acaa457-2c9f-4285-8403-2896a152f929@samsung.com>
+Date: Fri, 22 Aug 2025 23:42:36 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH v2 2/2] mm: remove BDI_CAP_WRITEBACK_ACCT
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+To: Joanne Koong <joannelkoong@gmail.com>, miklos@szeredi.hu
+Cc: linux-fsdevel@vger.kernel.org, david@redhat.com, willy@infradead.org,
+	linux-mm@kvack.org
+Content-Language: en-US
+In-Reply-To: <a91010a8-e715-4f3d-9e22-e4c34efc0408@samsung.com>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20250822214238eucas1p16934a3c0a9575e6044b61e11f3635af0
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250822214238eucas1p16934a3c0a9575e6044b61e11f3635af0
+X-EPHeader: CA
+X-CMS-RootMailID: 20250822214238eucas1p16934a3c0a9575e6044b61e11f3635af0
+References: <20250707234606.2300149-1-joannelkoong@gmail.com>
+	<20250707234606.2300149-3-joannelkoong@gmail.com>
+	<a91010a8-e715-4f3d-9e22-e4c34efc0408@samsung.com>
+	<CGME20250822214238eucas1p16934a3c0a9575e6044b61e11f3635af0@eucas1p1.samsung.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 62CE280007
+X-Stat-Signature: nnmr1d56t4bfdc64zp9hs8zdmyeiezko
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B854B100010
-X-Stat-Signature: 5qqjkhdxqpgkytmbod4s6tp76rtfs5mg
-X-HE-Tag: 1755898329-170583
-X-HE-Meta: U2FsdGVkX19dWoA1v7OHFM38pH8l63l7Y5GHHbgnhS7BPxxkmkPBC7yA6FlADhcODKdnzBp2o2gTD1TKRJJ/mI47EpeUOys5vnnuWtbwsS0vKfm+5DvysfJULq4fRGEzICai5SBEu0KXcsw2OWH7g3GFd/qqT8Ilc5eOd+NH34ugFF7DtvblSVFUKlFLQ3JadmkDdCW/yEpahA8sjHFNaXMQAI34hQdUgLx/29pB824OWOlgv6s5pfylaiRiBGYca70gQpGd9efflJkQrSMITDjc0xXuV3kBy8z88s4nida0gW/PdGN9o6kg7gsmPVhdiSH/uJEuwOnWRyRr0ld2ehRlNebOCLOE6xWjoDcUTdlsOm894B8SB7eprh0l14/3mL9pU4vVQLGjTSq0gXJwI/WcNouRnsFT2ysTNZP+Xvfl16jxrVCXGkrB5khwjWIvIPwWE2w1n+3o0v76pLkGcVlYIRwAnMGXeb8BDgVzS1jqSQHS1PRCxlkiUe7l3Wn62TDna0qu3R2An2OqA83Xbnblb/6HPv3q9HGknOZi+z8CbgsHWCzi2umUXU8lCucu9e7OHWTqP7Yz0V/1PBPuuCOl5myAL+jMXhOYf3gle/pl6PGnLuoVeY/gbfMHiIOncdQyCrPOkdfqbss3KnTp6dDeXVEBUAchP99Pv8HztADOrGsfUjFQlwL60n1iV179YWJ3tiHmwlNbjhjXW6+nBzzUkGx7SPmyTCOOMmj5/Xa0YN2DdtTIvt/Rofi6Uoj87G4qcqAC0MCi+Ukytjtlx7+BqHwVr27hQg8gAxpBXLdMA+KdFUcmevw6yygjA9WnN82fvuB4dIUr1CJMsfM3Ovn3IE4fnYsDYooYFlKjYTsmGUfc3/ffPu9RIGB2l6Shet1kWKy/Izw2F4qVFStQFNmJ8VNfNycIAQjjOZjZ7yds7+kSp/E9QZCgFiDIrIYnN6Bmtb74WGjQOpSkaKS
- X3bCdtCk
- D5DR/+wPE0OeT4ELhGSr8VECS8BGkeZCIyzfsEr11ZmqObKDeutE9sd1HgAmXJl3isadh0XqSEvgXev98KKztqvuqghWCKbotwjy6LOfr5QGDoFNAmxjIDbqozEYBNsvuJ0JvWt4AVbarhtiZu9SNff0b7MrEJfctV2y06sbjgUxay9gWxg7aHDBjBPOcPk9z5vbs/Wp24tvKPpCUHO4jCPX6b2IVKX3ZuFdzQZkB6HSXx8oOZjFwtmcdV7h3jc2p+uTY49+Rag4RCzVgNcbltruCsYhCABUl2QO71gwV04kcVQ/CWIrDk+cEMO/4re41ARI69IAQQhH2Ltxc/jFCxrGzGWWORaCW3oOLAdLgx1ngNNbYvqTgNkxWWp2uDILXLswkhy2pDApnvATTYVNOgQcjv7uMddRpIAyCiGN/Wn4O78NcS/+l0rUFN99zrjy7y4O9sTMkKJgApZPIYanN0Ej+9REOh+KP1AjJ
+X-HE-Tag: 1755898961-752585
+X-HE-Meta: U2FsdGVkX1/l+nXJh/M4rj5VbwJW7iH4FfBFgoz9keiJtUMI4ap6N0YfONGmGUpcsuWKObavucxiofbl0AvurWsH8fxVUwkva/wBnD6Np6RnW/lhXGQX4QU2dvVwckDBd6ysZ9W67BnQ/fC1Ry6h6W8U9tKQj/X6bBWH89B1Ct+tJRmC/zoN9YZPN2/abrHbvrEJu17dpXpOyGaucR0vZVukuVvUKZif7QBw1anTaxevbyU98Pmf1M45B8JuoGdp6SV76Mu9wdS5Nb5xQvfBvbl6/z+2a0IlLBQmxAt4m/gRntgWf/TlQ1kOu0/k+qir920dP+F2LH11aBBEMrNzX/vE4DQKusM6nt/JNXctu/ulQ1zc6leaciBIJMTP+nQoFfwwkcwTONnpcmkB65rO41Tufb+3kF/wm7TskdwNPIEQQWGl6eziVj5QN4O9UfsYfiox+X3btmSM3Cz5ec6gOQLqANGsdy9F/vabdSHFUH3dOwSmIJ5+lE9dhsEsaZbwkqef2BRhmgj5EAe5xtvpBmVElZ3WK30/xaDiEg54TsyGfYvyn1QC9/yRX6wa6W8SsVYpE72QaAScgJ/bWalYQylicERQ/omfIFlh1n26BmHp76D+tf33DcY9ntXaRde+nmowxMFFXCd7Ev/9YkXh2ADBwrgXuoP1ra61j47XHyIF+IGYIMEwOJYGFZ1pl4x9RYgOLfDfjzdOnPlBmMNyo9EHsWm0MCL0J7POgbAh6xCTrXIRF6X4aKg9lpryrCO6Eu2t6MwFcRlANlMeYq6YNYLVlSeZ/rYxVAfWedJuOG/p9+h0imd9ONwB+1cRmwCl1YB/NgTCfJO7nmGgrzRPL6cBwQyKZCLfChQNNcjFxeKnqzwhNXJMzo2bAOzJb+FZr8ylwiBmQVi8NxGP2+u4ND1RZgFxHGO1NTjp4A/lclWPnve3SrfrrZ8I3YK+04g5io5ZHDPdrgMPrRzkRtq
+ a7WReM2a
+ 5WzqTuF8khDHVX9I5R4ibBTgYr0TflqnIfQTEoVWSEUVczmdcDdCtd8AATgH+whcvJc2CBVqnmi5T/6sSjDyacwEq4qrUb8vOTXBmgw3nhwvZfuJhpxmc3V9dO1A2L2U6tT8FrRTUgoC6IuIbpOuQ3dXg2JCcLhuJm/IX3IsKxWcB5xE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,148 +106,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-head:   a8af4c2fd982fd94fffde3c5b6b764fd20af68fe
-commit: e009b0f3187482a5756ff3b015cf30277cc1cfd9 [216/233] mm/page_table_check: reinstate address parameter in [__]page_table_check_pud_clear()
-config: riscv-randconfig-001-20250823 (https://download.01.org/0day-ci/archive/20250823/202508230551.qiEQu04P-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project d26ea02060b1c9db751d188b2edb0059a9eb273d)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250823/202508230551.qiEQu04P-lkp@intel.com/reproduce)
+On 22.08.2025 13:01, Marek Szyprowski wrote:
+> On 08.07.2025 01:46, Joanne Koong wrote:
+>> There are no users of BDI_CAP_WRITEBACK_ACCT now that fuse doesn't do
+>> its own writeback accounting. This commit removes
+>> BDI_CAP_WRITEBACK_ACCT.
+>>
+>> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+>> Acked-by: David Hildenbrand <david@redhat.com>
+>
+> This patch landed recently in linux-next as commit 167f21a81a9c ("mm: 
+> remove BDI_CAP_WRITEBACK_ACCT"). In my tests I found that it triggers 
+> the ./include/linux/backing-dev.h:239 warning. Reverting $subject on 
+> top of current linux-next fixes/hides this issue. Here is a detailed log:
+>
+> ------------[ cut here ]------------
+> WARNING: ./include/linux/backing-dev.h:239 at 
+> __folio_start_writeback+0x25a/0x26a, CPU#1: swapper/0/1
+> Modules linked in:
+> CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 
+> 6.17.0-rc2-next-20250822 #10852 NONE
+> Hardware name: StarFive VisionFive 2 v1.2A (DT)
+> epc : __folio_start_writeback+0x25a/0x26a
+>  ra : __folio_start_writeback+0x258/0x26a
+>
+> [<ffffffff80202222>] __folio_start_writeback+0x25a/0x26a
+> [<ffffffff802f3260>] __block_write_full_folio+0x124/0x39c
+> [<ffffffff802f4b6e>] block_write_full_folio+0x8a/0xbc
+> [<ffffffff804dbf42>] blkdev_writepages+0x3e/0x8a
+> [<ffffffff802030fa>] do_writepages+0x78/0x11a
+> [<ffffffff801f2e0e>] filemap_fdatawrite_wbc+0x4a/0x62
+> [<ffffffff801f6d66>] __filemap_fdatawrite_range+0x52/0x78
+> [<ffffffff801f6fdc>] filemap_write_and_wait_range+0x40/0x68
+> [<ffffffff804dacae>] set_blocksize+0xd8/0x152
+> [<ffffffff804dae18>] sb_min_blocksize+0x44/0xce
+> [<ffffffff803a0c7a>] ext4_fill_super+0x182/0x2914
+> [<ffffffff802a72e6>] get_tree_bdev_flags+0xf0/0x168
+> [<ffffffff802a736c>] get_tree_bdev+0xe/0x16
+> [<ffffffff8039a09e>] ext4_get_tree+0x14/0x1c
+> [<ffffffff802a5062>] vfs_get_tree+0x1a/0xa4
+> [<ffffffff802d17d4>] path_mount+0x23a/0x8ae
+> [<ffffffff80c20cd4>] init_mount+0x4e/0x86
+> [<ffffffff80c01622>] do_mount_root+0xe0/0x166
+> [<ffffffff80c01814>] mount_root_generic+0x11e/0x2d6
+> [<ffffffff80c02746>] initrd_load+0xf8/0x2b6
+> [<ffffffff80c01d38>] prepare_namespace+0x150/0x258
+> [<ffffffff80c01310>] kernel_init_freeable+0x2f2/0x316
+> [<ffffffff80b6d896>] kernel_init+0x1e/0x13a
+> [<ffffffff80012288>] ret_from_fork_kernel+0x14/0x208
+> [<ffffffff80b79392>] ret_from_fork_kernel_asm+0x16/0x18
+> irq event stamp: 159263
+> hardirqs last  enabled at (159263): [<ffffffff805e7e4a>] 
+> percpu_counter_add_batch+0xa6/0xda
+> hardirqs last disabled at (159262): [<ffffffff805e7e40>] 
+> percpu_counter_add_batch+0x9c/0xda
+> softirqs last  enabled at (159248): [<ffffffff8002e972>] 
+> handle_softirqs+0x3ca/0x462
+> softirqs last disabled at (159241): [<ffffffff8002eb72>] 
+> __irq_exit_rcu+0xe2/0x10c
+> ---[ end trace 0000000000000000 ]---
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508230551.qiEQu04P-lkp@intel.com/
+I've played a bit with the code modified by the $subject patch and it 
+looks that the following change fixes the issue, although I didn't 
+analyze exactly where struct bdi_writeback is being modified:
 
-All errors (new ones prefixed by >>):
+diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+index 99e80bdb3084..3887ac2e6475 100644
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -2984,7 +2984,7 @@ bool __folio_end_writeback(struct folio *folio)
 
-   In file included from arch/riscv/kernel/asm-offsets.c:8:
-   In file included from include/linux/mm.h:31:
-   In file included from include/linux/pgtable.h:6:
->> arch/riscv/include/asm/pgtable.h:951:36: error: too few arguments to function call, expected 3, have 2
-     951 |         page_table_check_pud_clear(mm, pud);
-         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~        ^
-   include/linux/page_table_check.h:128:20: note: 'page_table_check_pud_clear' declared here
-     128 | static inline void page_table_check_pud_clear(struct mm_struct *mm,
-         |                    ^                          ~~~~~~~~~~~~~~~~~~~~~
-     129 |                                               unsigned long addr, pud_t pud)
-         |                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   In file included from arch/riscv/kernel/asm-offsets.c:8:
-   In file included from include/linux/mm.h:36:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:98:11: warning: array index 3 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-      98 |                 return (set->sig[3] | set->sig[2] |
-         |                         ^        ~
-   include/uapi/asm-generic/signal.h:62:2: note: array 'sig' declared here
-      62 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/riscv/kernel/asm-offsets.c:8:
-   In file included from include/linux/mm.h:36:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:98:25: warning: array index 2 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-      98 |                 return (set->sig[3] | set->sig[2] |
-         |                                       ^        ~
-   include/uapi/asm-generic/signal.h:62:2: note: array 'sig' declared here
-      62 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/riscv/kernel/asm-offsets.c:8:
-   In file included from include/linux/mm.h:36:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:99:4: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-      99 |                         set->sig[1] | set->sig[0]) == 0;
-         |                         ^        ~
-   include/uapi/asm-generic/signal.h:62:2: note: array 'sig' declared here
-      62 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/riscv/kernel/asm-offsets.c:8:
-   In file included from include/linux/mm.h:36:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:101:11: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-     101 |                 return (set->sig[1] | set->sig[0]) == 0;
-         |                         ^        ~
-   include/uapi/asm-generic/signal.h:62:2: note: array 'sig' declared here
-      62 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/riscv/kernel/asm-offsets.c:8:
-   In file included from include/linux/mm.h:36:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:114:11: warning: array index 3 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     114 |                 return  (set1->sig[3] == set2->sig[3]) &&
-         |                          ^         ~
-   include/uapi/asm-generic/signal.h:62:2: note: array 'sig' declared here
-      62 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/riscv/kernel/asm-offsets.c:8:
-   In file included from include/linux/mm.h:36:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:114:27: warning: array index 3 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     114 |                 return  (set1->sig[3] == set2->sig[3]) &&
-         |                                          ^         ~
-   include/uapi/asm-generic/signal.h:62:2: note: array 'sig' declared here
-      62 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/riscv/kernel/asm-offsets.c:8:
-   In file included from include/linux/mm.h:36:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:115:5: warning: array index 2 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     115 |                         (set1->sig[2] == set2->sig[2]) &&
-         |                          ^         ~
-   include/uapi/asm-generic/signal.h:62:2: note: array 'sig' declared here
-      62 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/riscv/kernel/asm-offsets.c:8:
-   In file included from include/linux/mm.h:36:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:115:21: warning: array index 2 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     115 |                         (set1->sig[2] == set2->sig[2]) &&
-         |                                          ^         ~
-   include/uapi/asm-generic/signal.h:62:2: note: array 'sig' declared here
-      62 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/riscv/kernel/asm-offsets.c:8:
-   In file included from include/linux/mm.h:36:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:116:5: warning: array index 1 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     116 |                         (set1->sig[1] == set2->sig[1]) &&
-         |                          ^         ~
-   include/uapi/asm-generic/signal.h:62:2: note: array 'sig' declared here
-      62 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/riscv/kernel/asm-offsets.c:8:
-   In file included from include/linux/mm.h:36:
-   In file included from include/linux/rcuwait.h:6:
+         if (mapping && mapping_use_writeback_tags(mapping)) {
+                 struct inode *inode = mapping->host;
+-               struct bdi_writeback *wb = inode_to_wb(inode);
++               struct bdi_writeback *wb;
+                 unsigned long flags;
+
+                 xa_lock_irqsave(&mapping->i_pages, flags);
+@@ -2992,6 +2992,7 @@ bool __folio_end_writeback(struct folio *folio)
+                 __xa_clear_mark(&mapping->i_pages, folio_index(folio),
+                                         PAGECACHE_TAG_WRITEBACK);
+
++               wb = inode_to_wb(inode);
+                 wb_stat_mod(wb, WB_WRITEBACK, -nr);
+                 __wb_writeout_add(wb, nr);
+                 if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK)) {
+@@ -3024,7 +3025,7 @@ void __folio_start_writeback(struct folio *folio, 
+bool keep_write)
+         if (mapping && mapping_use_writeback_tags(mapping)) {
+                 XA_STATE(xas, &mapping->i_pages, folio_index(folio));
+                 struct inode *inode = mapping->host;
+-               struct bdi_writeback *wb = inode_to_wb(inode);
++               struct bdi_writeback *wb;
+                 unsigned long flags;
+                 bool on_wblist;
+
+@@ -3035,6 +3036,7 @@ void __folio_start_writeback(struct folio *folio, 
+bool keep_write)
+                 on_wblist = mapping_tagged(mapping, 
+PAGECACHE_TAG_WRITEBACK);
+
+                 xas_set_mark(&xas, PAGECACHE_TAG_WRITEBACK);
++               wb = inode_to_wb(inode);
+                 wb_stat_mod(wb, WB_WRITEBACK, nr);
+                 if (!on_wblist) {
+                         wb_inode_writeback_start(wb);
 
 
-vim +951 arch/riscv/include/asm/pgtable.h
+> ...
 
-c3cc2a4a3a23faf Alexandre Ghiti 2025-03-21  944  
-f2716df5ec97bde Alexandre Ghiti 2025-08-14  945  #define __HAVE_ARCH_PUDP_HUGE_GET_AND_CLEAR
-f2716df5ec97bde Alexandre Ghiti 2025-08-14  946  static inline pud_t pudp_huge_get_and_clear(struct mm_struct *mm,
-f2716df5ec97bde Alexandre Ghiti 2025-08-14  947  					    unsigned long address, pud_t *pudp)
-f2716df5ec97bde Alexandre Ghiti 2025-08-14  948  {
-f2716df5ec97bde Alexandre Ghiti 2025-08-14  949  	pud_t pud = __pud(atomic_long_xchg((atomic_long_t *)pudp, 0));
-f2716df5ec97bde Alexandre Ghiti 2025-08-14  950  
-f2716df5ec97bde Alexandre Ghiti 2025-08-14 @951  	page_table_check_pud_clear(mm, pud);
-f2716df5ec97bde Alexandre Ghiti 2025-08-14  952  
-f2716df5ec97bde Alexandre Ghiti 2025-08-14  953  	return pud;
-f2716df5ec97bde Alexandre Ghiti 2025-08-14  954  }
-f2716df5ec97bde Alexandre Ghiti 2025-08-14  955  
-
-:::::: The code at line 951 was first introduced by commit
-:::::: f2716df5ec97bde2827d917452dc4de45a6c737c riscv: use an atomic xchg in pudp_huge_get_and_clear()
-
-:::::: TO: Alexandre Ghiti <alexghiti@rivosinc.com>
-:::::: CC: Andrew Morton <akpm@linux-foundation.org>
-
+Best regards
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
+
 
