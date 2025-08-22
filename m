@@ -4,97 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C69ACA0EED
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 06:59:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60C17CA0EEB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 07:24:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 816268E0073; Fri, 22 Aug 2025 02:59:41 -0400 (EDT)
+	id 5E3426B0027; Fri, 22 Aug 2025 03:23:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C70D8E0056; Fri, 22 Aug 2025 02:59:41 -0400 (EDT)
+	id 53EEE6B0028; Fri, 22 Aug 2025 03:23:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68E648E0073; Fri, 22 Aug 2025 02:59:41 -0400 (EDT)
+	id 42D6F6B0029; Fri, 22 Aug 2025 03:23:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4DF838E0056
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 02:59:41 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E5B51138A3D
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 06:59:40 +0000 (UTC)
-X-FDA: 83803492920.03.F4099FF
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B985D40008
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 06:59:37 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="pfiimE/s";
-	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C1476B0027
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 03:23:59 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7F3A11DD786
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 07:23:58 +0000 (UTC)
+X-FDA: 83803554156.25.A79BCC0
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 158A22000C
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 07:23:54 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=none;
+	spf=pass (imf03.hostedemail.com: domain of gubowen5@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=gubowen5@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755847436; a=rsa-sha256;
+	cv=none;
+	b=3SInvN/U5uEZ0/6dzqPnre4AlPPhsRNDMsiXlh19BU5MWkJM7cKtM4KSAGw2GKQ4f0sOkg
+	ri1QX34+08IYW3FfFZonHF+pzeQBwGXP8EZMfK7qx1YJvARR+bL9w+nlSRAVxtzzxfRse5
+	aUejvhqFhAJOge0JwfKeUm8AQ2CLW4Y=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=none;
+	spf=pass (imf03.hostedemail.com: domain of gubowen5@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=gubowen5@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755845979;
+	s=arc-20220608; t=1755847436;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YkM4XdDBFAdRbT5J+s3/gC6XHNJgFJP15TsoieCtwm0=;
-	b=eWR8g+mCSVE+xF7p8yv9G8kVHoBulZ0Ib+ngQEdRN5xgQvB1S4TsynE6E8QTJAdZlCMm+E
-	+kt6oo9+pXPD40EzgcUdVZHae3i3gCfFKWMYm600Bcb0P924z9QfJYdqNIgysj8hB+l77x
-	/gz5uZHCaCK3uRgkh2klTDbPkztuldk=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="pfiimE/s";
-	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755845979; a=rsa-sha256;
-	cv=none;
-	b=DA+g3vGw8ba8QE4wwnst3gg59MPH1NW2tiXraXXJfEJAoSddFCJxg3qj2N+7i4efHx/Yrp
-	t3v0CKzxeGWI8vMa1YUqdTtgfiRnNkb3kUlXnICIH/mIZI2CV/qh9NP73aQsFr1IKZlOfK
-	Vl/HjWcG8vyW78k99Og0VYnSlRpFfeA=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1755845972; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=YkM4XdDBFAdRbT5J+s3/gC6XHNJgFJP15TsoieCtwm0=;
-	b=pfiimE/sbJXXZYInYbU3Sf/EO98R9P8qAcMF/8UcgB+8AXTq2Tg/0EBBodgWh/nsqveczHn83y7iO6mUXa7YK1xJVVfrNM+I8k5JFE0CwHHKUNdYlTqHKRtsNXkkNV2jZqnwk5TU6AmvwPhhvfgYyfoOpJgkoz2wXbFCJUJSWGM=
-Received: from 30.74.144.125(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WmIuUdM_1755845969 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 22 Aug 2025 14:59:30 +0800
-Message-ID: <0269b6d4-23ce-416f-8c44-907478c3d6dd@linux.alibaba.com>
-Date: Fri, 22 Aug 2025 14:59:28 +0800
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=a/NNzoi5Ne0fMAS/06BXSVF/gh8aGsljrg/ePT3NtW4=;
+	b=oJrEJmYayRC49nT/iwkQCRNtVlhq7ATj86Y/EWdR6rmv0xzA/xuU5jt76256Xw/flI6vty
+	h1FJ5MIQ8RA/TUkpBt0Fkffv/gbgCKLmR4r6fuPafNi3yhD1pnfm2jrrcfP3LCrBNGoDph
+	vSYwq8WBM8untEnahHueT2a0U73mRM0=
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4c7Wrf0dhYz14MYw;
+	Fri, 22 Aug 2025 15:23:46 +0800 (CST)
+Received: from kwepemh100007.china.huawei.com (unknown [7.202.181.92])
+	by mail.maildlp.com (Postfix) with ESMTPS id AD39214027A;
+	Fri, 22 Aug 2025 15:23:50 +0800 (CST)
+Received: from huawei.com (10.67.174.33) by kwepemh100007.china.huawei.com
+ (7.202.181.92) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 22 Aug
+ 2025 15:23:50 +0800
+From: Gu Bowen <gubowen5@huawei.com>
+To: Catalin Marinas <catalin.marinas@arm.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Waiman Long <llong@redhat.com>
+CC: <stable@vger.kernel.org>, <linux-mm@kvack.org>, Breno Leitao
+	<leitao@debian.org>, John Ogness <john.ogness@linutronix.de>, Lu Jialin
+	<lujialin4@huawei.com>, Gu Bowen <gubowen5@huawei.com>
+Subject: [PATCH v5] mm: Fix possible deadlock in kmemleak
+Date: Fri, 22 Aug 2025 15:35:41 +0800
+Message-ID: <20250822073541.1886469-1-gubowen5@huawei.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 10/13] khugepaged: kick khugepaged for enabling
- none-PMD-sized mTHPs
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Nico Pache <npache@redhat.com>
-Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- david@redhat.com, ziy@nvidia.com, Liam.Howlett@oracle.com,
- ryan.roberts@arm.com, dev.jain@arm.com, corbet@lwn.net, rostedt@goodmis.org,
- mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
- akpm@linux-foundation.org, baohua@kernel.org, willy@infradead.org,
- peterx@redhat.com, wangkefeng.wang@huawei.com, usamaarif642@gmail.com,
- sunnanyong@huawei.com, vishal.moola@gmail.com,
- thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com,
- kirill.shutemov@linux.intel.com, aarcange@redhat.com, raquini@redhat.com,
- anshuman.khandual@arm.com, catalin.marinas@arm.com, tiwai@suse.de,
- will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org,
- jglisse@google.com, surenb@google.com, zokeefe@google.com,
- hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
- rdunlap@infradead.org, hughd@google.com
-References: <20250819134205.622806-1-npache@redhat.com>
- <20250819134205.622806-11-npache@redhat.com>
- <d9a02ed5-0d6e-41e6-985d-23f5a2de093d@lucifer.local>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <d9a02ed5-0d6e-41e6-985d-23f5a2de093d@lucifer.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: g8wm654r843eii4ofeps8zkhcyrxex3h
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.67.174.33]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemh100007.china.huawei.com (7.202.181.92)
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 158A22000C
+X-Stat-Signature: d1wzxinppun9yih7p1annkh4stbajce1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B985D40008
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755845977-16178
-X-HE-Meta: U2FsdGVkX19GhV/oI82aH6UPQJLoWtKKBzMDvi64twjwSBf9TkwvelG9Mu2jGmgzj3zHNzs2EwWfXfzFOpxc24xr+PnyFwrvO7+JJS5PH7iVQprbd14Er1xVCA0RVB5qwjUYIZAuqJF4TuyGKt7jfx0QocecZ2olGpfL/uxPO7kZlZYtSBn6RnHASxdY79enzqb3qApew6Y5ZD10tFmMPCqwu//WOqqzGqPzvhQXqSS/p5p51bgIgXnwJDwKg4vyd425VIn8gClor//7Hair9M1TZrlP5GATiw/3CSchaPqRPcfUtAbcKSSOGgvNur2bG2I6tmxkasPohzxeW6f3YfzYWE460hAbwyuhfuOMLAtxAFfghrRWE9MJmZtWhlJ6MVbYKB2xMoAJwZQ0zYCOiTtpy4K3kSLLVMFtYTQ3jfXPbaIWQj2ehQu1mKNycMItP9ljAt32q4ZzZmnpH2dhdR/+VG53sO1QrquoZj0bV29gY/PM7g3xy8RpJqMW9tJMiPorXp/rumx4savF7ra2oqpy7UKREpOxkp3BeSbR26rXFVSV5A6HhOjU/AsxYXiOqoClQodgUOCddu2i3tkMPnSvV4I1tGyLkOtfBVifs7edpOk+s1Am1J0D5rTBuMNajDu5HdLcqhkZYO5LuD22NZZuU+UnLCr3yDwq9pN+svIJtFu1oNibMkbnEwAWeWJ8dtJF5nMsLPxWsfnFpy/irvPH0CCMR8bLu8pS1SmZmVJhadFODHRxFN4XA5WW/iLUqpq+iO5TdevJ3x/sPWs8StY92ZrGGwiIAAYYiaZzWGU3/jMd3UTs9wIOKfjsm1gxvIHBYTdeWzRPDOGWB0yLgVu93y6z5ViOmiUFe4DuIA2GqDLFigFfpIBUsdrt57FhjtpFkQJx8zc16lFHKCja8rqmbadU8RCIO2KO+ruGl5GfB+gpDmz/uioPRnMYoIYHn76Kxfd9hyxGtGUMlms
- V4L8S1ch
- P3EjUqYcxNblUJX/njcSTgY3Q5/fS+HaO+Qapf7GiV3lC+CJaCT5eO4shomAnpMNp8yed8LCbs62Tf6EUCZaF0iPqsiNhCEGH6XMyBc7dkSupFGpI90hKmTB/LlWY3Y+t9u10xUttPMgt8FbjrAVGNaKxq16CWy+efJORRQg5IOQZrAWmoNlD4gcIDEmWMZjURMmWEiG1zpn6CCC/MwMDi6BtFZ2keeUtLC138DPnAGBNm84Z6N88t7cI9gNYQTIFVgr5LCrJFNHmZBpe9wuu8BiDTh72ua4igt7F5Kq3OOoCcM7CowA/sdBJ+HFTGs8uT0ccDp1lVcd4mJC46kquZGiW7T7NBOwcJ8sqTf5n0go/+oAXND+j9jir6g7KQGhaZNnidbplG1mKRWc=
+X-HE-Tag: 1755847434-894778
+X-HE-Meta: U2FsdGVkX1/hM5w+MUI9OgurnxdXola5Fihwswmf0V8nV5P4EJeHxxZcyT2cD1E7aAJATzimqfI+avgeqyHXDyLWQ13oEdN2GkGTDTcKkeIWhN9QhkLMWHtBnmEmHdg0kCncJNY9QXjaV7WLT12QO2EZ+6H9BH8FTkvGke+Ziz0OlJxK/NI/uW5JHanFb3+mnttyRmlmr6kzBx5Ii95UD8MteCvQ4kqvKM/fe2REEYiRPVYRS3gqBZbZo3Pvqns9EsjuTOotN+xRclbytUKbPEsMopFvbiyKqAs7AlpRP7vPmSENucodWU7IAczh9Wn8fWftLOBnqtUIJB9b+FndFOrKfHNUYLyJJDG84vzAa2a1cagWw2SwsuMdxfvwdFORZhWTm2jQj89D8C27Mmp74IgNsDB0JSnf60CS4mmDw1PQIgRuSusgAWOOF2SEZ5vycVx5a326TYrAncJx15dk6kgESNhhBRSOdlzpbe9jRIPeNBP4GTj9z/5fD0BhJTxU9o/3UM5r1eVb5Sckd8w8yc5XrVj7ljBy4zh6rHgQmkB7/hWEUDrXhD5g6gSiKh5/RrGXKdUHoCgVCoVsO47m8N3MSDpOw0MxIX65xdV711/im/ASV9N3VRcSPf6cnceytvcGQfz+A9xuIF5CsA0CUlQ6Q4QUK033wV1QVTNcRkvo4dJmqd4/FF7rm2epPT50dk9TWn9KZubz3cE/JzM7SUd3OO7uE+gXL81YwoUxgv2bsmURtVyzH2kfhr+ifXPoTlFfVUJrhOxZwRihk4a+hZfB88keLYmNKZMHHgzD4I5Egw3AtJg7A2xNBBye60f+FM6yPWUVGZp5/kIVcllKMjifUpuve9u7tgAOBadg6hEhLq+oARISEgTf0ekpJxgccCDqHev96bmn66OCFEw/BGWmBC4Kkc5JBRlR685lZPmhWa4niO39UoMwkuaAw0AfsO5PCAEenJup7ddcPcM
+ ABEOCJfR
+ bFivBS9Oaj1tTZH/wJ1MA9UzFLRLsJeqtQHEmbaaawFdAoGNNGjSeXWTbZcRkMOsvmaWfFMmhXaEpoo/BopxDBj5pxvMpUTG49TwiABMXC8+t8jDEacrplbku1IGLHT2pKXI6QlkoebuIGGiGPGb2NGua2kLo69RSUp0yQDIspoo/b5Lcigq1t16A6/L07+RE5DGQLMl4Bf4GrRcA0i4DGSe/eoOK089O0LRVHLfhECqFKVQV9HVAmwh+0iBpTbH26YS/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,103 +91,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+There are some AA deadlock issues in kmemleak, similar to the situation
+reported by Breno [1]. The deadlock path is as follows:
 
+mem_pool_alloc()
+  -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
+      -> pr_warn()
+          -> netconsole subsystem
+	     -> netpoll
+	         -> __alloc_skb
+		   -> __create_object
+		     -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
 
-On 2025/8/21 22:18, Lorenzo Stoakes wrote:
-> On Tue, Aug 19, 2025 at 07:42:02AM -0600, Nico Pache wrote:
->> From: Baolin Wang <baolin.wang@linux.alibaba.com>
->>
->> When only non-PMD-sized mTHP is enabled (such as only 64K mTHP enabled),
-> 
-> I don't think this example is very useful, probably just remove it.
-> 
-> Also 'non-PMD-sized mTHP' implies there is such a thing as PMD-sized mTP :)
-> 
->> we should also allow kicking khugepaged to attempt scanning and collapsing
-> 
-> What is kicking? I think this should be rephrased to something like 'we should
-> also allow khugepaged to attempt scanning...'
-> 
->> 64K mTHP. Modify hugepage_pmd_enabled() to support mTHP collapse, and
-> 
-> 64K mTHP -> "of mTHP ranges". Put the 'Modify...' bit in a new paragraph to
-> be clear.
-> 
->> while we are at it, rename it to make the function name more clear.
-> 
-> To make this clearer let me suggest:
-> 
-> 	In order for khugepaged to operate when only mTHP sizes are
-> 	specified in sysfs, we must modify the predicate function that
-> 	determines whether it ought to run to do so.
-> 
-> 	This function is currently called hugepage_pmd_enabled(), this
-> 	patch renames it to hugepage_enabled() and updates the logic to
-> 	check to determine whether any valid orders may exist which would
-> 	justify khugepaged running.
+To solve this problem, switch to printk_safe mode before printing warning
+message, this will redirect all printk()-s to a special per-CPU buffer,
+which will be flushed later from a safe context (irq work), and this
+deadlock problem can be avoided. The proper API to use should be
+printk_deferred_enter()/printk_deferred_exit() [2]. Another way is to
+place the warn print after kmemleak is released.
 
-Thanks. This looks good to me.
+[1]
+https://lore.kernel.org/all/20250731-kmemleak_lock-v1-1-728fd470198f@debian.org/#t
+[2]
+https://lore.kernel.org/all/5ca375cd-4a20-4807-b897-68b289626550@redhat.com/
+====================
 
->> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->> Signed-off-by: Nico Pache <npache@redhat.com>
-> 
->> ---
->>   mm/khugepaged.c | 20 ++++++++++----------
->>   1 file changed, 10 insertions(+), 10 deletions(-)
->>
->> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> index 2cadd07341de..81d2ffd56ab9 100644
->> --- a/mm/khugepaged.c
->> +++ b/mm/khugepaged.c
->> @@ -430,7 +430,7 @@ static inline int collapse_test_exit_or_disable(struct mm_struct *mm)
->>   		mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm);
->>   }
->>
->> -static bool hugepage_pmd_enabled(void)
->> +static bool hugepage_enabled(void)
->>   {
->>   	/*
->>   	 * We cover the anon, shmem and the file-backed case here; file-backed
->> @@ -442,11 +442,11 @@ static bool hugepage_pmd_enabled(void)
-> 
-> The comment above this still references PMD-sized, please make sure to update
-> comments when you change the described behaviour, as it is now incorrect:
-> 
-> 	/*
-> 	 * We cover the anon, shmem and the file-backed case here; file-backed
-> 	 * hugepages, when configured in, are determined by the global control.
-> 	 * Anon pmd-sized hugepages are determined by the pmd-size control.
-> 	 * Shmem pmd-sized hugepages are also determined by its pmd-size control,
-> 	 * except when the global shmem_huge is set to SHMEM_HUGE_DENY.
-> 	 */
-> 
-> Please correct this.
+Signed-off-by: Gu Bowen <gubowen5@huawei.com>
+---
+ mm/kmemleak.c | 27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
 
-Sure. How about:
+diff --git a/mm/kmemleak.c b/mm/kmemleak.c
+index 84265983f239..1ac56ceb29b6 100644
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -437,9 +437,15 @@ static struct kmemleak_object *__lookup_object(unsigned long ptr, int alias,
+ 		else if (untagged_objp == untagged_ptr || alias)
+ 			return object;
+ 		else {
++			/*
++			 * Printk deferring due to the kmemleak_lock held.
++			 * This is done to avoid deadlock.
++			 */
++			printk_deferred_enter();
+ 			kmemleak_warn("Found object by alias at 0x%08lx\n",
+ 				      ptr);
+ 			dump_object_info(object);
++			printk_deferred_exit();
+ 			break;
+ 		}
+ 	}
+@@ -736,6 +742,11 @@ static int __link_object(struct kmemleak_object *object, unsigned long ptr,
+ 		else if (untagged_objp + parent->size <= untagged_ptr)
+ 			link = &parent->rb_node.rb_right;
+ 		else {
++			/*
++			 * Printk deferring due to the kmemleak_lock held.
++			 * This is done to avoid deadlock.
++			 */
++			printk_deferred_enter();
+ 			kmemleak_stop("Cannot insert 0x%lx into the object search tree (overlaps existing)\n",
+ 				      ptr);
+ 			/*
+@@ -743,6 +754,7 @@ static int __link_object(struct kmemleak_object *object, unsigned long ptr,
+ 			 * be freed while the kmemleak_lock is held.
+ 			 */
+ 			dump_object_info(parent);
++			printk_deferred_exit();
+ 			return -EEXIST;
+ 		}
+ 	}
+@@ -856,13 +868,8 @@ static void delete_object_part(unsigned long ptr, size_t size,
+ 
+ 	raw_spin_lock_irqsave(&kmemleak_lock, flags);
+ 	object = __find_and_remove_object(ptr, 1, objflags);
+-	if (!object) {
+-#ifdef DEBUG
+-		kmemleak_warn("Partially freeing unknown object at 0x%08lx (size %zu)\n",
+-			      ptr, size);
+-#endif
++	if (!object)
+ 		goto unlock;
+-	}
+ 
+ 	/*
+ 	 * Create one or two objects that may result from the memory block
+@@ -882,8 +889,14 @@ static void delete_object_part(unsigned long ptr, size_t size,
+ 
+ unlock:
+ 	raw_spin_unlock_irqrestore(&kmemleak_lock, flags);
+-	if (object)
++	if (object) {
+ 		__delete_object(object);
++	} else {
++#ifdef DEBUG
++		kmemleak_warn("Partially freeing unknown object at 0x%08lx (size %zu)\n",
++			      ptr, size);
++#endif
++	}
+ 
+ out:
+ 	if (object_l)
+-- 
+2.43.0
 
-/*
-  * We cover the anon, shmem and the file-backed case here; file-backed
-  * hugepages, when configured in, are determined by the global control.
-  * Anon hugepages are determined by its per-size mTHP control.
-  * Shmem pmd-sized hugepages are also determined by its pmd-size control,
-  * except when the global shmem_huge is set to SHMEM_HUGE_DENY.
-  */
-
->>   	if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
->>   	    hugepage_global_enabled())
->>   		return true;
->> -	if (test_bit(PMD_ORDER, &huge_anon_orders_always))
->> +	if (READ_ONCE(huge_anon_orders_always))
->>   		return true;
->> -	if (test_bit(PMD_ORDER, &huge_anon_orders_madvise))
->> +	if (READ_ONCE(huge_anon_orders_madvise))
->>   		return true;
->> -	if (test_bit(PMD_ORDER, &huge_anon_orders_inherit) &&
->> +	if (READ_ONCE(huge_anon_orders_inherit) &&
->>   	    hugepage_global_enabled())
-> 
-> I guess READ_ONCE() is probably sufficient here as memory ordering isn't
-> important here, right?
-
-Yes, I think so.
 
