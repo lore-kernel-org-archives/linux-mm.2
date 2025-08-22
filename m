@@ -4,95 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FC1FCA0EEB
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 00:00:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEE55CA0EFA
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 00:24:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 070AC8E006A; Thu, 21 Aug 2025 20:00:09 -0400 (EDT)
+	id 00B66280001; Thu, 21 Aug 2025 20:24:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0201F8E0056; Thu, 21 Aug 2025 20:00:08 -0400 (EDT)
+	id EFD8E8E0056; Thu, 21 Aug 2025 20:24:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E78B38E006A; Thu, 21 Aug 2025 20:00:08 -0400 (EDT)
+	id DEB9E280001; Thu, 21 Aug 2025 20:24:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D33F38E0056
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 20:00:08 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2F69959A80
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 00:00:08 +0000 (UTC)
-X-FDA: 83802435696.11.D57943E
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0B39920008
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 00:00:04 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=LV1SdtVT;
-	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C98BF8E0056
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 20:24:29 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5B5821405AA
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 00:24:29 +0000 (UTC)
+X-FDA: 83802497058.29.9276686
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 67ECDC0009
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 00:24:27 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=e6po8DxD;
+	spf=pass (imf22.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755820806;
+	s=arc-20220608; t=1755822267;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=0kahc4iWiUSMStOLGES2Hmi8eq0KtVoBAbmljTT0/KE=;
-	b=WEs8M88dZ86KvxX0limza8w4b2tYtIkO96ciI30NUxl0KjQsw6a21Xhbo997/b40NJ1TEc
-	JEiDPbMZt7ccBUgd15vU5VlsKPyWhd55zMm/lmUHo51IHDMnhGpELHDkRmWAgopNk479c3
-	LQ68LHrRcD0rVzWiWlg6yrDDbIRjQho=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=sCSTC0WIj5wZxnOAo09AXpNhmufPIU9VpSHbeth6h8Y=;
+	b=G6EciCjG7UjRG8JMm5nsPegfCiW+vQbsiozn7jgc+2CdXisJP6K1X2OlvLyd3QKsc0iJH5
+	ZhiF2oc2Ot78BMNcCL9ljyBPhgJ3FacSXPamk96bbuuOEp7NQpdTu6U6tlTS17WNIoJtEh
+	ZK1fjsiFAuwZ5nhvQ+OLMjB2J/ZI2j8=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=LV1SdtVT;
-	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755820806; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=e6po8DxD;
+	spf=pass (imf22.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755822267; a=rsa-sha256;
 	cv=none;
-	b=EHx44KHSrSzJJNA+TDoUIV9/K5ybib1l+SNDUBhUC+obO2oeF3Zc8orTXYpyxSA03WctX3
-	P+N4n8jw92TM7JTficQB+MP7SBTUhgpoAkCwQRvynph/7qsucq9y5aXiFnMSTZ+9U/Bs/4
-	Mlr9LZeYVhLLYmYOl231WuiAeUurhuU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755820805; x=1787356805;
-  h=date:from:to:cc:subject:message-id;
-  bh=SKRvmY0OfNbbB0kUdFan1SvwKfHMQB6Tc+sGG4zvvas=;
-  b=LV1SdtVTjGVkQZVc1YnN1xru5LZyo6tYsvKIZP1AFvs/qqeiOgDeT1cM
-   DTzXCbMJ67HQz8qXjLUvNbMGWhPvLRStY7dkL5QZUUpt/7uyu0S7MV9ra
-   KUqO7ZUQaqWzEWPvgvTdNeXH9pkw6+fHGtJUVz82ubLINmBxmJQcKpHay
-   AQVOggxgtfyKTIkJBmVykGhGMEAG895n4PLhQ5Gv1sN9DftJzibSZP+jI
-   HNaMSloeDAeBctxCaZk+SMVkxIeC1a8Oh8UItkQDWoGKAuYgWPCZ0WPjj
-   bhp9wahRg42bQeWuJcFHWmIUpu8iUdYHIhx2QDHcpYU1MOLk971dnt1jn
-   A==;
-X-CSE-ConnectionGUID: hUPnzhurScC8SotImAJEsQ==
-X-CSE-MsgGUID: n9Vc41uKQqWccwgHoHuD7Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="68394428"
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
-   d="scan'208";a="68394428"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 17:00:03 -0700
-X-CSE-ConnectionGUID: o/bd6DQgSGyYWJn1PZCAAg==
-X-CSE-MsgGUID: d4yXPudSQUel9RkNfsZJZw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
-   d="scan'208";a="172750618"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa003.jf.intel.com with ESMTP; 21 Aug 2025 17:00:01 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1upFCJ-000Klb-0q;
-	Thu, 21 Aug 2025 23:59:59 +0000
-Date: Fri, 22 Aug 2025 07:59:17 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: linux-mm@kvack.org
-Subject: [rppt-memblock:for-next] BUILD SUCCESS
- 66e537433fac24bc002463056156ad9eb61979ff
-Message-ID: <202508220711.xHqxn8yA-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Rspamd-Queue-Id: 0B39920008
+	b=Bsm9Q0Jv2izqAn11V1BWXGUj8y+U9yIJHofbQubUNzNOQbUh42A8HSeWRZMAq4v0nUyVij
+	6P+qHT6iYjQIUFGB4VEpj8aDamJu8yS1X8QX/6fneXX+RgIxMVMujswNPDwH1KN7NVDLsC
+	HsvXfjJLXxa+3tUfDDRAYYI8jwrZHbk=
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-459fc675d11so17125e9.1
+        for <linux-mm@kvack.org>; Thu, 21 Aug 2025 17:24:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755822266; x=1756427066; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sCSTC0WIj5wZxnOAo09AXpNhmufPIU9VpSHbeth6h8Y=;
+        b=e6po8DxD/2QVMKQ7ya7BcWmqplQDwCW1h6ATkNsbuK8DiCvcLMtAI50os233E7jWMv
+         BIIt0yiaGdHBDudGFRUFNuwdwHgNAIBs283NsAU1HTDFvKtoIhClKghvowpDHZ623vjj
+         COBLZD5KdBmCBfv23EiMSYN+jhIpOpGN7EtTCByDyR4Sn5/Os6Qsi/Y9pBGbzI1FwUB/
+         Nc2rzSbmr5ppektgtVrXG8GS/aosC3G0KRrQJqVOFjyJZP3+Hq6lOQoQSJlL/re6A35y
+         RE8EBZdPEXjrCmkD0MZYpeKl1gRo3zlLlChxh24DqnMqQmOB4xexuLlzlPxNnrkYa7bG
+         irFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755822266; x=1756427066;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sCSTC0WIj5wZxnOAo09AXpNhmufPIU9VpSHbeth6h8Y=;
+        b=rj/73vEpN3U6zhbSlhg180ou5M5jS7uYD/mLwnmShqs6URI3arVQez07kUq3wEKBNI
+         XKujG0ejUeRzl8Hnt3IsRUx9G1wVY/p9UNN+YnrwsVBgqibxmOavXoC6cFrXX32C1Z/E
+         m493kU4yz3JVkT6cbbkAmKiMLVxv92WMmsLePHddpRJnJh5xLZIl0gEDeThJ0WiQq7U8
+         40ZcFyb4rxWZ/Qr8x52txgMa4CODM8il2A1Tv9Ath95BzdvJxlUQ7KzP6nHv66/UY1dn
+         ruw20YD1x1V03MTg/vcjJiXG4HOxM3/GvXzo9holA7nHX26t627IOp+AR7ui0t1a6lXE
+         vWsw==
+X-Forwarded-Encrypted: i=1; AJvYcCVUq3KeQf9myew3d8FStY6R6HkVe3MnEs9dttqkYvt4as27srKFkunJJmJf37JsTGRMPIcJVEMkmA==@kvack.org
+X-Gm-Message-State: AOJu0YwzPg3RblaGHsn0aiRlGk8mMk5T86Zn7AhFX0V35TXXVp8x9v8A
+	KkR0jJmOahSqb2jqRMGbzj04+eSfgB+ilGSMkL3ssqsBgRERS/HIzmuc29y3YJED+WDEigzNQs0
+	Vz+GCXDAQeqI7f7giulQXMZYraYKVL7vKUoWeO+Ud
+X-Gm-Gg: ASbGncsjbosMW6leTnCaV7+9/fCUktdZq1n5T2IRppNVOjgdPMZ+/+W/D+g8LfyBA+e
+	KaDqQt9SUwNlbA19VykAM960Cyj9+6Knhds4Mm8DyfyMti5AAw8OwTZsN1lvg2aah8lJ6iNsQlL
+	j2eF/geg6DXxeS+M+g43Fc124oTMXN93UkoaLd/QFMB+IntI1yQKA46umzZkjyRvFD7Y/1uM850
+	JeKCQJa+RYf9pxVgIs4DACJF81UxIj465a1mYNbph0y
+X-Google-Smtp-Source: AGHT+IGH3NeXHDM/VzClhYP4trwtkdeO3+yJ+kVPFdTAwoZ40UPilU+wF+IASK3XljS4g/6haDSsaWYELnnhb5+t924=
+X-Received: by 2002:a05:600c:4b9a:b0:453:65f4:f4c8 with SMTP id
+ 5b1f17b1804b1-45b52119e54mr240435e9.3.1755822265590; Thu, 21 Aug 2025
+ 17:24:25 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250821164445.14467-1-kyle.meyer@hpe.com> <CACw3F53KmKRJyH+ajicyDUgGbPZT=U3VE4n+Jt3E62BxEiiCGA@mail.gmail.com>
+ <aKd1K3ueTacGTf1W@hpe.com>
+In-Reply-To: <aKd1K3ueTacGTf1W@hpe.com>
+From: Jiaqi Yan <jiaqiyan@google.com>
+Date: Thu, 21 Aug 2025 17:24:13 -0700
+X-Gm-Features: Ac12FXxEDY6SrAotIEMY6iY0lvmtqJulbKla6z5zGMm5JvGnSkWnazlZYTp7qjU
+Message-ID: <CACw3F527M-x=UeB0tN_sjCgp_YP_8yLkVRCLP2dLO2bzXrqWsA@mail.gmail.com>
+Subject: Re: [PATCH] mm/memory-failure: Do not call action_result() on already
+ poisoned pages
+To: Kyle Meyer <kyle.meyer@hpe.com>, linmiaohe@huawei.com
+Cc: akpm@linux-foundation.org, david@redhat.com, tony.luck@intel.com, 
+	bp@alien8.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-edac@vger.kernel.org, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, nao.horiguchi@gmail.com, jane.chu@oracle.com, 
+	osalvador@suse.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 67ECDC0009
 X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: cby1tg5oo34negyzesrk4dowp1y5ft99
-X-HE-Tag: 1755820804-534268
-X-HE-Meta: U2FsdGVkX18bxe6RBVWmrscJSlgaN3FtXJ+nBgu7lgECCDrW66Pgx8pA6PIMDeWANcC9WTOtMedOssjiwZAfFD9tUSPwXvaSJbc4BbJV8C6Qoz01KkWPCzQRxHV3x9QUME2XUIE3Nj/0z0n3U2fbGdNErXgiT0cCsHQ9kOGtccBcoFoc2pgaN0msGdEMbVCY8SuIJHxMvUSd3qbm3+Ln4Yd0D7EKkbTY02ChYsn2dfrENXYCdiI6fDhDlTbC7xefc/oMU44CdILw1KJ5PwSuE/bsV93voshy36VSHiZb7eNl9DN4lNCe++xuzBir8q7W5yJKb4sxO+2XBmK5ZZODBLYhCO9UJedbq8CoWjr2V7feBZE3kV0EpFfBWLurzFz9+Tj5piQsKOsvnrP0Kvj1oBARslya3kfXGbv7rNZkSSxbBYyTHPsiVtRIH02V6JuWnouwJ58/BZkfqp8wkcdkZODYo/bZhFRZVlgLJi16Ig8/bws6TVzftzb2D8UGj2rddyNRQO1SYW2nEe4VsRVNhMAcNnx4RaLeYsJ9UHn3XOLH6PHJ2zniNWvFde7bedANaYjIj3ycokSycKbDqtoZU6SSpXPM2j6WKUJEKkQN7caFfmf6FWahBlWClyVi0lCjTZjeMU/Q2hmgX25hsPRcOEWG3VAZbVjqOJ5+5a/LLXQ2uKSdh2NAGfySIhNUCMUYwrkiSil8CuE4ybx8N3Bkssi6EFSzi5O63DevlqgkgSbbrF+yOLo77ybYl14FsvVa+NygD5Trrb0d98AfqMXqMihPz0LYuKC/9WT/XoJzrkZqfSTcCapvC2JAo2xZ+A/1+DJdCjPakXicsBJPAyrekXUL3xcwmCJyqEqUhMd5ucKm9Ik5ue+47BY1VwsIrm5L0XjArWaEJRVUDFc9iVqOxyaF25j/WxD12z9riF8FxJZYbGH3rlaOWvCifmKIKc8Xha4jxD8F7fITpIMC0cT
- xIecu5qL
- sWw+zhbFwvD7Jx4bPoyGsGYT+IkE7E45pwdc3njJTnN8/8HxtIJ9Vfugg6mQJfkxVOdNhsHGxjxyjRji0TFfEcqu//m0kB22uWRNx2pat6/hL40uZDN3Zzz1MyGZigAqFNVjf9iIZldtzT9u2da9/MyCi3uv+8MHszx6Y
+X-Stat-Signature: 4oyibdr3edzmsbgcszaen9oh71mt11nm
+X-HE-Tag: 1755822267-365309
+X-HE-Meta: U2FsdGVkX1//PCLCLDt3v/1ZYFhvaJYmNL6YhseTGcGwv/5F4ye+cuHrFzhn+pmIZ68NPsuGnl/fy+9K+d+Hao5ZqzJXLGx3FIaBahny5TWWOlw4MNT7JkvIKMjMo4IwZ0qs6YbpGxaaYNyeitFnHWWgFi+Z7p1kThy2L4YaOVZRcM2YU6btg1xRNOy4ISbkhqGF8cjGNPcRhMGLgCBgefA0vpofbkTqNdXNLpxiEnfLa4h3PNTW2MexcCb96vh/CgPMscOZvmJRIKIek+q+8JlXq37QgdUy8X0BgQxKLvhfpZelFNbefevddt1iS/xK8GRWPawS/ZIG9PYPqabziwBg9FL2pXnGy82qwW2hbazFS9rAH4mu/WMKosDfcp4FKCRTP/BZKgfCUyTkPQXUGAge1nMRrvlaZ79ppVcln0F0xgTX5g/5UlNAibDxUnIJYLNvl+GSaDS9WR0ElBuO38Ae13mdqu1PhZLlYYSrPFmGc7v9SBgi+xAsYEDzPZrrqoFDNggp4k50qOXNWVpuWcBfBIQnqH7qIy2kgEkEdSv+jf+WAy8Hgs6/0AZl3V8Z5AzTsRMRfKclHxz7RI6paROW+KZWLsup9OucyRYKa6g+k83W6e64eT2XttDwaFj5u3czmynjrrhjAWR2lka7bYpax232vrfh4PxNuIvxgkdkbV6iLUkFl+CertATqNnp4vjmwJw0YtJI0+VDx2z/sZF3JvWiU5WISoGIGCfx4ATaXQFXZG0cmlUvDcSMYMAWTlsucncK5QW/TaehDlyi/vgvXC6UtgeclD8+/S2oMCY7SwoC2JrMvl/EdWFoI65dmyMYgg+xOMdDoVk9UMjafGLg6jiKNW4MUVbnkWCQeQp9h2pi2UyQEHm54CVCcuUfWEhhnePwylQPNo3r2ziJvQcEUB1xMmoMYtA3kKWfku+5TSOu6QxhT1Og63RHLuF4JON32Wz9LPOYLquVC/S
+ S8La8L+Q
+ nVRqs1bHH3vNyrFdDnFUfj1Greo7bfVN129DFIRDjrNwGwJtlieZ5DV3KHYlrlLRT0hnQ5fCBy4pc7u8uEC0OmVhVoQ3Wj0GGPv4Ay/OPQzeH9fto6joTjI4wkouC4zFwwLC7PrIhppoSvJ/tbrbAFJyeY5U2iIGcrhmFxK1dZuU69o8XHgVO/QqBe2CR5wChS+0xRelJMncLL2F82foW9x0nQzEhdq30qvAlpNDh8KGqUP02BxIYXR/X5XucUunrPRbcsygp4kN2GQoQNg7Wx7Rnol3Q5c7eHyYoLZHjryId3ZYyBovIzpVxr6htTN19lkd2Gqv/mzFL7LU3atbk7Sc2eA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,261 +122,154 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git for-next
-branch HEAD: 66e537433fac24bc002463056156ad9eb61979ff  memblock: drop for_each_free_mem_pfn_range_in_zone_from()
+On Thu, Aug 21, 2025 at 12:36=E2=80=AFPM Kyle Meyer <kyle.meyer@hpe.com> wr=
+ote:
+>
+> On Thu, Aug 21, 2025 at 11:23:48AM -0700, Jiaqi Yan wrote:
+> > On Thu, Aug 21, 2025 at 9:46=E2=80=AFAM Kyle Meyer <kyle.meyer@hpe.com>=
+ wrote:
+> > >
+> > > Calling action_result() on already poisoned pages causes issues:
+> > >
+> > > * The amount of hardware corrupted memory is incorrectly incremented.
+> > > * NUMA node memory failure statistics are incorrectly updated.
+> > > * Redundant "already poisoned" messages are printed.
+> >
+> > All agreed.
+> >
+> > >
+> > > Do not call action_result() on already poisoned pages and drop unused
+> > > MF_MSG_ALREADY_POISONED.
+> >
+> > Hi Kyle,
+> >
+> > Patch looks great to me, just one thought...
+> >
+> > Alternatively, have you thought about keeping MF_MSG_ALREADY_POISONED
+> > but changing action_result for MF_MSG_ALREADY_POISONED?
+> > - don't num_poisoned_pages_inc(pfn)
+> > - don't update_per_node_mf_stats(pfn, result)
+> > - still pr_err("%#lx: recovery action for %s: %s\n", ...)
+> > - meanwhile remove "pr_err("%#lx: already hardware poisoned\n", pfn)"
+> > in memory_failure and try_memory_failure_hugetlb
+>
+> I did consider that approach but I was concerned about passing
+> MF_MSG_ALREADY_POISONED to action_result() with MF_FAILED. The message is=
+ a
+> bit misleading.
 
-elapsed time: 849m
+Based on my reading the documentation for MF_* in static const char
+*action_name[]...
 
-configs tested: 241
-configs skipped: 6
+Yeah, for file mapped pages, kernel may not have hole-punched or
+truncated it from the file mapping (shmem and hugetlbfs for example)
+but that still considered as MF_RECOVERED, so touching a page with
+HWPoison flag doesn't mean that page was failed to be recovered
+previously.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+For pages intended to be taken out of the buddy system, touching a
+page with HWPoison flag does imply it isn't isolated and hence
+MF_FAILED.
 
-tested configs:
-alpha                             allnoconfig    clang-22
-alpha                             allnoconfig    gcc-15.1.0
-alpha                            allyesconfig    clang-19
-alpha                            allyesconfig    gcc-15.1.0
-alpha                               defconfig    clang-19
-arc                              allmodconfig    clang-19
-arc                               allnoconfig    clang-22
-arc                               allnoconfig    gcc-15.1.0
-arc                              allyesconfig    clang-19
-arc                                 defconfig    clang-19
-arc                        nsimosci_defconfig    gcc-15.1.0
-arc                   randconfig-001-20250821    gcc-9.5.0
-arc                   randconfig-001-20250822    clang-22
-arc                   randconfig-002-20250821    gcc-13.4.0
-arc                   randconfig-002-20250822    clang-22
-arc                           tb10x_defconfig    gcc-15.1.0
-arm                              allmodconfig    clang-19
-arm                               allnoconfig    clang-22
-arm                              allyesconfig    clang-19
-arm                                 defconfig    clang-19
-arm                   randconfig-001-20250821    gcc-13.4.0
-arm                   randconfig-001-20250822    clang-22
-arm                   randconfig-002-20250821    clang-22
-arm                   randconfig-002-20250822    clang-22
-arm                   randconfig-003-20250821    clang-22
-arm                   randconfig-003-20250822    clang-22
-arm                   randconfig-004-20250821    clang-22
-arm                   randconfig-004-20250822    clang-22
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    clang-22
-arm64                             allnoconfig    gcc-15.1.0
-arm64                               defconfig    clang-19
-arm64                 randconfig-001-20250821    clang-22
-arm64                 randconfig-001-20250822    clang-22
-arm64                 randconfig-002-20250821    clang-22
-arm64                 randconfig-002-20250822    clang-22
-arm64                 randconfig-003-20250821    gcc-11.5.0
-arm64                 randconfig-003-20250822    clang-22
-arm64                 randconfig-004-20250821    gcc-13.4.0
-arm64                 randconfig-004-20250822    clang-22
-csky                              allnoconfig    clang-22
-csky                              allnoconfig    gcc-15.1.0
-csky                                defconfig    clang-19
-csky                  randconfig-001-20250821    gcc-13.4.0
-csky                  randconfig-001-20250822    clang-22
-csky                  randconfig-002-20250821    gcc-15.1.0
-csky                  randconfig-002-20250822    clang-22
-hexagon                          allmodconfig    clang-17
-hexagon                          allmodconfig    clang-19
-hexagon                           allnoconfig    clang-22
-hexagon                          allyesconfig    clang-19
-hexagon                          allyesconfig    clang-22
-hexagon                             defconfig    clang-19
-hexagon               randconfig-001-20250821    clang-20
-hexagon               randconfig-001-20250822    clang-22
-hexagon               randconfig-002-20250821    clang-22
-hexagon               randconfig-002-20250822    clang-22
-i386                             allmodconfig    clang-20
-i386                              allnoconfig    clang-20
-i386                             allyesconfig    clang-20
-i386        buildonly-randconfig-001-20250821    gcc-12
-i386        buildonly-randconfig-001-20250822    clang-20
-i386        buildonly-randconfig-002-20250821    gcc-12
-i386        buildonly-randconfig-002-20250822    clang-20
-i386        buildonly-randconfig-003-20250821    clang-20
-i386        buildonly-randconfig-003-20250822    clang-20
-i386        buildonly-randconfig-004-20250821    gcc-12
-i386        buildonly-randconfig-004-20250822    clang-20
-i386        buildonly-randconfig-005-20250821    gcc-12
-i386        buildonly-randconfig-005-20250822    clang-20
-i386        buildonly-randconfig-006-20250821    clang-20
-i386        buildonly-randconfig-006-20250822    clang-20
-i386                                defconfig    clang-20
-i386                  randconfig-001-20250822    clang-20
-i386                  randconfig-002-20250822    clang-20
-i386                  randconfig-003-20250822    clang-20
-i386                  randconfig-004-20250822    clang-20
-i386                  randconfig-005-20250822    clang-20
-i386                  randconfig-006-20250822    clang-20
-i386                  randconfig-007-20250822    clang-20
-i386                  randconfig-011-20250822    gcc-12
-i386                  randconfig-012-20250822    gcc-12
-i386                  randconfig-013-20250822    gcc-12
-i386                  randconfig-014-20250822    gcc-12
-i386                  randconfig-015-20250822    gcc-12
-i386                  randconfig-016-20250822    gcc-12
-i386                  randconfig-017-20250822    gcc-12
-loongarch                        allmodconfig    clang-19
-loongarch                         allnoconfig    clang-22
-loongarch                           defconfig    clang-19
-loongarch             randconfig-001-20250821    gcc-14.3.0
-loongarch             randconfig-001-20250822    clang-22
-loongarch             randconfig-002-20250821    gcc-15.1.0
-loongarch             randconfig-002-20250822    clang-22
-m68k                             allmodconfig    clang-19
-m68k                             allmodconfig    gcc-15.1.0
-m68k                              allnoconfig    gcc-15.1.0
-m68k                             allyesconfig    clang-19
-m68k                             allyesconfig    gcc-15.1.0
-m68k                                defconfig    clang-19
-microblaze                       alldefconfig    gcc-15.1.0
-microblaze                       allmodconfig    clang-19
-microblaze                       allmodconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                       allyesconfig    clang-19
-microblaze                       allyesconfig    gcc-15.1.0
-microblaze                          defconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-nios2                             allnoconfig    gcc-11.5.0
-nios2                             allnoconfig    gcc-15.1.0
-nios2                               defconfig    gcc-11.5.0
-nios2                               defconfig    gcc-15.1.0
-nios2                 randconfig-001-20250821    gcc-9.5.0
-nios2                 randconfig-001-20250822    clang-22
-nios2                 randconfig-002-20250821    gcc-10.5.0
-nios2                 randconfig-002-20250822    clang-22
-openrisc                          allnoconfig    clang-22
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                         allyesconfig    gcc-15.1.0
-openrisc                            defconfig    gcc-12
-parisc                           allmodconfig    gcc-15.1.0
-parisc                            allnoconfig    clang-22
-parisc                            allnoconfig    gcc-15.1.0
-parisc                           allyesconfig    gcc-15.1.0
-parisc                              defconfig    gcc-15.1.0
-parisc                randconfig-001-20250821    gcc-12.5.0
-parisc                randconfig-001-20250822    clang-22
-parisc                randconfig-002-20250821    gcc-8.5.0
-parisc                randconfig-002-20250822    clang-22
-parisc64                            defconfig    gcc-15.1.0
-powerpc                          allmodconfig    gcc-15.1.0
-powerpc                           allnoconfig    clang-22
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc                          allyesconfig    gcc-15.1.0
-powerpc                       ebony_defconfig    gcc-15.1.0
-powerpc               randconfig-001-20250821    clang-17
-powerpc               randconfig-001-20250822    clang-22
-powerpc               randconfig-002-20250821    clang-22
-powerpc               randconfig-002-20250822    clang-22
-powerpc               randconfig-003-20250821    gcc-9.5.0
-powerpc               randconfig-003-20250822    clang-22
-powerpc64             randconfig-001-20250822    clang-22
-powerpc64             randconfig-002-20250821    clang-22
-powerpc64             randconfig-002-20250822    clang-22
-powerpc64             randconfig-003-20250821    clang-22
-powerpc64             randconfig-003-20250822    clang-22
-riscv                            allmodconfig    gcc-15.1.0
-riscv                             allnoconfig    clang-22
-riscv                             allnoconfig    gcc-15.1.0
-riscv                            allyesconfig    gcc-15.1.0
-riscv                               defconfig    gcc-12
-riscv                 randconfig-001-20250821    clang-17
-riscv                 randconfig-001-20250822    clang-22
-riscv                 randconfig-002-20250821    gcc-9.5.0
-riscv                 randconfig-002-20250822    clang-22
-s390                             allmodconfig    clang-18
-s390                             allmodconfig    gcc-15.1.0
-s390                              allnoconfig    clang-22
-s390                             allyesconfig    gcc-15.1.0
-s390                                defconfig    gcc-12
-s390                  randconfig-001-20250821    gcc-14.3.0
-s390                  randconfig-001-20250822    clang-22
-s390                  randconfig-002-20250821    clang-18
-s390                  randconfig-002-20250822    clang-22
-sh                               allmodconfig    gcc-15.1.0
-sh                                allnoconfig    gcc-15.1.0
-sh                               allyesconfig    gcc-15.1.0
-sh                                  defconfig    gcc-12
-sh                    randconfig-001-20250821    gcc-15.1.0
-sh                    randconfig-001-20250822    clang-22
-sh                    randconfig-002-20250821    gcc-13.4.0
-sh                    randconfig-002-20250822    clang-22
-sh                          rsk7203_defconfig    gcc-15.1.0
-sparc                            allmodconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                               defconfig    gcc-15.1.0
-sparc                 randconfig-001-20250821    gcc-14.3.0
-sparc                 randconfig-001-20250822    clang-22
-sparc                 randconfig-002-20250821    gcc-15.1.0
-sparc                 randconfig-002-20250822    clang-22
-sparc64                             defconfig    gcc-12
-sparc64               randconfig-001-20250821    gcc-8.5.0
-sparc64               randconfig-001-20250822    clang-22
-sparc64               randconfig-002-20250821    clang-22
-sparc64               randconfig-002-20250822    clang-22
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-22
-um                               allyesconfig    clang-19
-um                               allyesconfig    gcc-12
-um                                  defconfig    gcc-12
-um                             i386_defconfig    gcc-12
-um                    randconfig-001-20250821    clang-19
-um                    randconfig-001-20250822    clang-22
-um                    randconfig-002-20250821    clang-22
-um                    randconfig-002-20250822    clang-22
-um                           x86_64_defconfig    gcc-12
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20250821    clang-20
-x86_64      buildonly-randconfig-001-20250822    clang-20
-x86_64      buildonly-randconfig-002-20250821    clang-20
-x86_64      buildonly-randconfig-002-20250822    clang-20
-x86_64      buildonly-randconfig-003-20250821    clang-20
-x86_64      buildonly-randconfig-003-20250822    clang-20
-x86_64      buildonly-randconfig-004-20250821    gcc-12
-x86_64      buildonly-randconfig-004-20250822    clang-20
-x86_64      buildonly-randconfig-005-20250821    clang-20
-x86_64      buildonly-randconfig-005-20250822    clang-20
-x86_64      buildonly-randconfig-006-20250821    clang-20
-x86_64      buildonly-randconfig-006-20250822    clang-20
-x86_64                              defconfig    clang-20
-x86_64                                  kexec    clang-20
-x86_64                randconfig-001-20250822    clang-20
-x86_64                randconfig-002-20250822    clang-20
-x86_64                randconfig-003-20250822    clang-20
-x86_64                randconfig-004-20250822    clang-20
-x86_64                randconfig-005-20250822    clang-20
-x86_64                randconfig-006-20250822    clang-20
-x86_64                randconfig-007-20250822    clang-20
-x86_64                randconfig-008-20250822    clang-20
-x86_64                randconfig-071-20250822    clang-20
-x86_64                randconfig-072-20250822    clang-20
-x86_64                randconfig-073-20250822    clang-20
-x86_64                randconfig-074-20250822    clang-20
-x86_64                randconfig-075-20250822    clang-20
-x86_64                randconfig-076-20250822    clang-20
-x86_64                randconfig-077-20250822    clang-20
-x86_64                randconfig-078-20250822    clang-20
-x86_64                               rhel-9.4    clang-20
-x86_64                           rhel-9.4-bpf    gcc-12
-x86_64                          rhel-9.4-func    clang-20
-x86_64                    rhel-9.4-kselftests    clang-20
-x86_64                         rhel-9.4-kunit    gcc-12
-x86_64                           rhel-9.4-ltp    gcc-12
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                randconfig-001-20250821    gcc-11.5.0
-xtensa                randconfig-001-20250822    clang-22
-xtensa                randconfig-002-20250821    gcc-10.5.0
-xtensa                randconfig-002-20250822    clang-22
-xtensa                    xip_kc705_defconfig    gcc-15.1.0
+In summary, seeing the HWPoison flag again doesn't necessarily
+indicate what the recovery result was previously; it only indicate
+kernel won't re-attempt to recover?
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>
+> How about introducing a new MF action result? Maybe MF_NONE? The message =
+could
+> look something like:
+
+Adding MF_NONE sounds fine to me, as long as we correctly document its
+meaning, which can be subtle.
+
+Let's see what Miaohe's thoughts are.
+
+>
+> Memory failure: 0xXXXXXXXX: recovery action for already poisoned page: No=
+ne
+>
+> > This way, all the MF recovery result kernel logs out will be sitting
+> > in one place, action_result, instead of scattering around all over the
+> > place.
+>
+> That sounds better to me.
+>
+> > >
+> > > Fixes: b8b9488d50b7 ("mm/memory-failure: improve memory failure actio=
+n_result messages")
+> > > Signed-off-by: Kyle Meyer <kyle.meyer@hpe.com>
+> > > ---
+> > >  include/linux/mm.h      | 1 -
+> > >  include/ras/ras_event.h | 1 -
+> > >  mm/memory-failure.c     | 3 ---
+> > >  3 files changed, 5 deletions(-)
+> > >
+> > > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > > index 1ae97a0b8ec7..09ce81ef7afc 100644
+> > > --- a/include/linux/mm.h
+> > > +++ b/include/linux/mm.h
+> > > @@ -4005,7 +4005,6 @@ enum mf_action_page_type {
+> > >         MF_MSG_BUDDY,
+> > >         MF_MSG_DAX,
+> > >         MF_MSG_UNSPLIT_THP,
+> > > -       MF_MSG_ALREADY_POISONED,
+> > >         MF_MSG_UNKNOWN,
+> > >  };
+> > >
+> > > diff --git a/include/ras/ras_event.h b/include/ras/ras_event.h
+> > > index c8cd0f00c845..f62a52f5bd81 100644
+> > > --- a/include/ras/ras_event.h
+> > > +++ b/include/ras/ras_event.h
+> > > @@ -374,7 +374,6 @@ TRACE_EVENT(aer_event,
+> > >         EM ( MF_MSG_BUDDY, "free buddy page" )                       =
+   \
+> > >         EM ( MF_MSG_DAX, "dax page" )                                =
+   \
+> > >         EM ( MF_MSG_UNSPLIT_THP, "unsplit thp" )                     =
+   \
+> > > -       EM ( MF_MSG_ALREADY_POISONED, "already poisoned" )           =
+   \
+> > >         EMe ( MF_MSG_UNKNOWN, "unknown page" )
+> > >
+> > >  /*
+> > > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> > > index e2e685b971bb..7839ec83bc1d 100644
+> > > --- a/mm/memory-failure.c
+> > > +++ b/mm/memory-failure.c
+> > > @@ -948,7 +948,6 @@ static const char * const action_page_types[] =3D=
+ {
+> > >         [MF_MSG_BUDDY]                  =3D "free buddy page",
+> > >         [MF_MSG_DAX]                    =3D "dax page",
+> > >         [MF_MSG_UNSPLIT_THP]            =3D "unsplit thp",
+> > > -       [MF_MSG_ALREADY_POISONED]       =3D "already poisoned",
+> > >         [MF_MSG_UNKNOWN]                =3D "unknown page",
+> > >  };
+> > >
+> > > @@ -2090,7 +2089,6 @@ static int try_memory_failure_hugetlb(unsigned =
+long pfn, int flags, int *hugetlb
+> > >                 if (flags & MF_ACTION_REQUIRED) {
+> > >                         folio =3D page_folio(p);
+> > >                         res =3D kill_accessing_process(current, folio=
+_pfn(folio), flags);
+> > > -                       action_result(pfn, MF_MSG_ALREADY_POISONED, M=
+F_FAILED);
+> > >                 }
+> > >                 return res;
+> > >         } else if (res =3D=3D -EBUSY) {
+> > > @@ -2283,7 +2281,6 @@ int memory_failure(unsigned long pfn, int flags=
+)
+> > >                         res =3D kill_accessing_process(current, pfn, =
+flags);
+> > >                 if (flags & MF_COUNT_INCREASED)
+> > >                         put_page(p);
+> > > -               action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED=
+);
+> > >                 goto unlock_mutex;
+> > >         }
+> > >
+> > > --
+> > > 2.50.1
+> > >
+> > >
 
