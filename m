@@ -4,131 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE9BECA0EEB
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 16:02:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3918BCA0EEB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 16:28:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8D6C280022; Fri, 22 Aug 2025 12:02:48 -0400 (EDT)
+	id DDADE280023; Fri, 22 Aug 2025 12:28:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E632D8E009D; Fri, 22 Aug 2025 12:02:48 -0400 (EDT)
+	id DB21D8E009D; Fri, 22 Aug 2025 12:28:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D78A6280022; Fri, 22 Aug 2025 12:02:48 -0400 (EDT)
+	id CA13C280023; Fri, 22 Aug 2025 12:28:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C635B8E009D
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 12:02:48 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7E97FB77C7
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 16:02:48 +0000 (UTC)
-X-FDA: 83804861616.04.4736AAF
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 6F5721C000D
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 16:02:46 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lyZNvW7o;
-	spf=pass (imf20.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B5DB98E009D
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 12:28:36 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 853AFB785C
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 16:28:36 +0000 (UTC)
+X-FDA: 83804926632.08.59A34BC
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A7A5BC000D
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 16:28:34 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=R8ZbCkDM;
+	spf=pass (imf10.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755878566;
+	s=arc-20220608; t=1755880114;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x+hhnaziEbvfcvK+nslqj/VWqrGu2JLJjIG2S0rWuqQ=;
-	b=RPX1aBWHMS/GclMYiXgvP5QV3zfaZfEl3wu30GNq9PENM9KqSQsoy1hoV6CU/FISNisAZn
-	gPG9cBxVXjbVaRlXcuOO8WkBK6Tp+5hJu+qCj8DXgatL/1ddQtcl86awJzea0vtXjeAVam
-	2Daz1tq4AeFP+kO8rNaSMk4LZs73iqg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755878566; a=rsa-sha256;
+	bh=Wf+lgLCtUqo6j13pKWPsvYiNR6tNGJ0wVHF5rG3wEgE=;
+	b=wh6eesvIorynnGTEkdloa8WmdGU9tug/pqXD/5p0yRiX/Aq4gIdCMCHpqz2s/OoXZ5OJgv
+	oGuh4c/JufCHRvj7dVDruXPXWTYmcU8WGH0NEPhwSKUBTddcEhu/nXdz2yG05xy38dFPU9
+	Jy/QA5CrG2a5vCYopicLjWXadGdd2+k=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755880114; a=rsa-sha256;
 	cv=none;
-	b=JK4bsL5oJJR5jrjEcF4vwfkYr+GNbT3b0yxNUsB6TsVQxkRNs45HXUKLD7tQ9UHcvjy4KT
-	6z9vuCPVvaSBJiU/dIISYxvMidSpRtv/d84O0tpinzyhX5jR4V8PUHVjmIT77nz4Xpp8ZL
-	oKieAqSaJxTsZfGCgs9Zi8ZGZSs00Mo=
+	b=b1+qXc0kkU0VmJp0oRYebpDK7muEJLcmpPFaZPOQB9mjzuMkt2Hh8cYtba22hKDrlRVwzW
+	Aal/NDvWtkHdr4iH1mSwbascALskl7h+DwA4ChSkcNqTzYoJlSZYi8j9VocumBSuNh7Syn
+	uHInHrfJeP8yS9qjsSLoAdRriqIWpzc=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lyZNvW7o;
-	spf=pass (imf20.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-55e00f938dfso336556e87.0
-        for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:02:46 -0700 (PDT)
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=R8ZbCkDM;
+	spf=pass (imf10.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4b29b714f8cso329421cf.1
+        for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:28:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755878564; x=1756483364; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=x+hhnaziEbvfcvK+nslqj/VWqrGu2JLJjIG2S0rWuqQ=;
-        b=lyZNvW7o/A8ItdqZX4M5sgtKCw+pTGgnvDS38kZ+Nii2Tmr7YX4nHcg1sjijBHa+YW
-         FDAyEGNdcSL2uHx7AdwrwvfHN9aNo885faTYI83Vcf7W1iX706XvlkWgm8Q1dKZxBbxd
-         4gWWOAvErAsQQENW7qSyc4eKM3F9kfoR2on6hUEJ9QCacepbGsDMN2phA0EntE4R7BvR
-         dailgC6BGi3cK8QNdTozU32NZAMLoGsyDnMgn3M+GG/9deqoWqjVC5CbjK2KA1qRglSB
-         6HVYsPR5gqZ2CEcjMold+mLH6Y0NwxagFupyegmnB4Zq6QltooO8No/BzJa0xgomY2qS
-         UPxA==
+        d=google.com; s=20230601; t=1755880114; x=1756484914; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Wf+lgLCtUqo6j13pKWPsvYiNR6tNGJ0wVHF5rG3wEgE=;
+        b=R8ZbCkDMb4h7Vw3auFzsg2bqFBqNsdlqtl//qNnOw51RAUwdnwhemS8eWJWH4qYDvs
+         AmQ467hAtDa1DNnd9Y8a75VsZ1gT7P9gfX7v9q/s4z39nayijMppO/P2kIjn/DSwSuA6
+         Iuk6I06iyzsrHRg60JPl0iIkn9LiQRbTDOXazYQzi5C92C/s1zhhMOzOcJuw/oFdcPNk
+         76dcYn5DZ/CCfsPaoaYme3e7FjmxBwsJ72kcFM8whbZiHKTsRKKzKOhW7LnZwfl4M/7h
+         rFweFpRizesmMlCUoc8RmcvSvI4n3+Uzf5pPP+ilXMUljBkql/XiOGSzm3gWY5nDiZAm
+         sT0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755878564; x=1756483364;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=x+hhnaziEbvfcvK+nslqj/VWqrGu2JLJjIG2S0rWuqQ=;
-        b=jnNWvGhxqWWjj09235zds3SkxQYhw5T+KwMJEAFaXg+fv30aindBSrZWwcsw3Ct0U8
-         Z46o7sLc4uRSx/3FIguaYNdQgRQaYkDR6fpoRHTU6UwikSeMWzZNS+JiBVscSIOvGnNT
-         Kg4VmEhQGb4RWiPB2CMsVTBmllfkkk/Lo4JUz8gZaTW4NRZGzpmydB3rU1mbggwLAsGH
-         GAKDQQWVFN7u/ef97hYIypM4YSC1icklWBQ3v50nguDsBGLJdKSWJLIyhHYc3Y2ZB73P
-         YA1c+NdSgKPKGZb7CX59+Qb2iaSc6bV++j8EWXQTmqyHwlUzEZAhc/tBm0PAJWkj8IUj
-         hdiw==
-X-Forwarded-Encrypted: i=1; AJvYcCUo3cZ72hH7edd4gKENk2xTPiMd5uI91XuVCEhm8Ke87d5XK7TKoUcWiBVDnRYtZFbZHK2yO63kLA==@kvack.org
-X-Gm-Message-State: AOJu0YzOsAb68LHYnsbFoIimHXXv9dT0AFNVBi7yU5Cq4g3N+ed85ph6
-	myN66ill24JuyTG5O1y0++Pbw3rJHcIuYOL618osA3Ie96y78VcFvNEQ
-X-Gm-Gg: ASbGncuHZdmmJuwftXhzD19IADcoq0ZpXmJbTgWG/2cAkiV2cKrOU04qPp8SRG4caX5
-	9UwuJ5XjApFNEQojD8Ams5NsuQfO5vExq4GwI9FyZt8JmFbuIped8cm35HvVWh7krR8k6uevNTh
-	a88dG5pvRmmnf+k0RBHYNJpmXFH6gYer7qHnLQDMkqVAUUolqH0vSOeKdgeTUHQjlzzvJsoBNJV
-	mFtpMofBlc46CbkiEcFo+UEskfvdBLsx97JJeOGDJwXX6lbprKQ2qVyYrS7+m57ycuJvzhYcJmm
-	pmv51wK9n8F56P/o2N49zF5ite6Qxt6pJIFoF6VleYh+5w9mrlN8wOiuCfQISeHuTLRvP+Y0QBv
-	RDd0XSfhzk0opI91zAuYcgpP2acuQ
-X-Google-Smtp-Source: AGHT+IGQszajDGNQAKf7QN48qEfm9n4yUiAaOTXLuqd4oLvJ2QirlJ8t5DPSvNvccFn1KcRv53kJsg==
-X-Received: by 2002:a05:6512:220f:b0:55b:2242:a9d8 with SMTP id 2adb3069b0e04-55f0d36fademr679617e87.7.1755878564032;
-        Fri, 22 Aug 2025 09:02:44 -0700 (PDT)
-Received: from [10.214.35.248] ([80.93.240.68])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55f35c02c89sm37612e87.34.2025.08.22.09.02.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 Aug 2025 09:02:43 -0700 (PDT)
-Message-ID: <2fb52098-3952-48f1-b6c3-bbc95ce00d8d@gmail.com>
-Date: Fri, 22 Aug 2025 18:02:40 +0200
+        d=1e100.net; s=20230601; t=1755880114; x=1756484914;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Wf+lgLCtUqo6j13pKWPsvYiNR6tNGJ0wVHF5rG3wEgE=;
+        b=n3wmJ95Dgkp6eyCFJuJktOhccHXR3yxUfI7ovhBvXFv5PzZpnLIRmQ+FT5oe4eT9If
+         yjlKVJh2ajSlDtHvbLQrdPP7Ij/dX+qZIYhKKNau20rk5LwdOnFlsUhQn1mfPfqgHwBR
+         ut03Ebapv1XHUxiK9EjpFXCQdskVtZ9DViOxc5livxNcPTPhiC9QNsV0FAxWG41SWaVO
+         /Z6JJsiteKJhtl25LZv3wvJqio/Zw7RSHoCAqgUJI+GNNRDboEhpRphgFqqvT+oRPJq1
+         03kx/jtnuW4mLLGcmqGQLo6icUvRUu+MWFEC6TpM9yHtP15pxgb0rMbIvK2WpHfALhvO
+         qU7g==
+X-Forwarded-Encrypted: i=1; AJvYcCVA0BGPLP7yjr6i9fXzkgNpeS2GbdCsG8Cof95X8kDsi8vcdr/6S6yzz3wOhP1Tg/leicSHl5q5Lg==@kvack.org
+X-Gm-Message-State: AOJu0Yzj6wgcbpJvfMSzHi67w8YtXx3dGh/VzBEy27zKkW+EOSrpjVhJ
+	/mRfk6d9gK+zHKSmsGQZ7N7jHoM0sk9xFTIyy9zEeaMkwZD3UAA0MeugSPIBUSBarwUOOKmFVKG
+	ULzgUx2pIY2zI3z/BhOz+TvANMGoNxsu5ST4Y/u56
+X-Gm-Gg: ASbGnctrTBi8Fe0O7Zlt3MJpwBOLHk9iiMU2EM739sgWkrTyLsX9iCF4oezjSDFMeUm
+	60FqLCE/wS0FTw8TUYXA+ghK7KvYc9a7pkQsouiMsabj9QWXl9d4GBQ+jjzXm0FUFXmWY9j8OSz
+	hjtP8HHg325/j904mrg+XAx3AMIW1HTJBLNPXMxOeXStsDh6rNmDla2lfhJih0Bk84D5NSrt1vK
+	lAlcQzvQw7A
+X-Google-Smtp-Source: AGHT+IEeB9T4qbL+UK0u9FG3kDDzOikNRJHFqBW5WtIsltP7tBFpOKmY+dFwDmwerpPmhmqCXCSRQaTv+MbAq/hPPUs=
+X-Received: by 2002:a05:622a:180b:b0:4a7:179e:5fec with SMTP id
+ d75a77b69052e-4b2ac5b8096mr6202121cf.15.1755880113114; Fri, 22 Aug 2025
+ 09:28:33 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: fix KASAN build error due to p*d_populate_kernel()
-To: Harry Yoo <harry.yoo@oracle.com>, Dave Hansen <dave.hansen@intel.com>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, andreyknvl@gmail.com,
- aneesh.kumar@linux.ibm.com, anshuman.khandual@arm.com, apopple@nvidia.com,
- ardb@kernel.org, arnd@arndb.de, bp@alien8.de, cl@gentwo.org,
- dave.hansen@linux.intel.com, david@redhat.com, dennis@kernel.org,
- dev.jain@arm.com, dvyukov@google.com, glider@google.com,
- gwan-gyeong.mun@intel.com, hpa@zyccr.com, jane.chu@oracle.com,
- jgross@suse.de, jhubbard@nvidia.com, joao.m.martins@oracle.com,
- joro@8bytes.org, kas@kernel.org, kevin.brodsky@arm.com,
- linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, lorenzo.stoakes@oracle.com, luto@kernel.org,
- maobibo@loongson.cn, mhocko@suse.com, mingo@redhat.com, osalvador@suse.de,
- peterx@redhat.com, peterz@infradead.org, rppt@kernel.org,
- ryan.roberts@arm.com, stable@vger.kernel.org, surenb@google.com,
- tglx@linutronix.de, thuth@redhat.com, tj@kernel.org, urezki@gmail.com,
- vbabka@suse.cz, vincenzo.frascino@arm.com, x86@kernel.org,
- zhengqi.arch@bytedance.com
-References: <20250821093542.37844-1-harry.yoo@oracle.com>
- <20250821115731.137284-1-harry.yoo@oracle.com>
- <3976ef5d-a959-408a-b538-7feba1f0ab7a@intel.com> <aKfDrKBaMc24cNgC@hyeyoo>
-Content-Language: en-US
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-In-Reply-To: <aKfDrKBaMc24cNgC@hyeyoo>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250723-slub-percpu-caches-v5-0-b792cd830f5d@suse.cz> <20250723-slub-percpu-caches-v5-5-b792cd830f5d@suse.cz>
+In-Reply-To: <20250723-slub-percpu-caches-v5-5-b792cd830f5d@suse.cz>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Fri, 22 Aug 2025 09:28:21 -0700
+X-Gm-Features: Ac12FXwI69etioIK7mYTuyWUpdhOHZOX0stE9nJoaN7MNJhvTMXHGKoJ0u9Mnow
+Message-ID: <CAJuCfpHR=hceuAcnaCr3Hg-3mknvsmYy7jSScA8SATn7iwoN_w@mail.gmail.com>
+Subject: Re: [PATCH v5 05/14] tools: Add testing support for changes to rcu
+ and slab for sheaves
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, rcu@vger.kernel.org, 
+	maple-tree@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6F5721C000D
-X-Stat-Signature: 1uyd96z31wb7hdt7oxrehkwto5xxc35o
-X-HE-Tag: 1755878566-881230
-X-HE-Meta: U2FsdGVkX18+1AH0KLVXxgASXW9cszA4pNTAe0C2XSFMuiy0a5JI8UcuokMEfd+MFmPx4dslo8R3+vgVwFpWKEzZJQVVM8fWDoaKSxeFFCnQrE2px/1EWeivruMfmLqFe4B0ZfutRLHcde232Qq9LoUgcDhoDsZQRcXyltz6nSNHEjflA5BRHb9nfCQli3mr9rAGK8/blqHISuaEk8KUGGENa++T3FLBPhnppmHepCGfEJtcQbh0mYFd1IBmBb9mQgSYpSq3wMJSij8au5r53G+BedEsrq8M3tIs3rGQzlTwcMvS9fUKHddyxuNHFX90Mx1lpQEGabZenzvIFSVKX/q2RoyWQnu049np9TDzzHJc87elKKreAeXlrv7CL5w81AljvB+4C6E6RK1bh64oQF8BQm5Y9w5KViGrjGx6cPSQq89/PRwkSGDeHR8ZODUSaDXOwFgWI5jdOAELNCHnY8k8PdC43kJjLdQpSI7AjrncBQTBGHO65PvymGI4OKc+s6JuslL2OeXIPNe2jZj2JS1kPFBiAqXkd/3opBbpLMkgqi08WJRu9S189dCcRbZg3V23k79VACeysbhnG0+KyJ6Oud20RO1abyV7+vRpAuSKVLpMoqPeISm1LYdFqmdvMqMoJ4y023NThEPNjJsv1akL7HxmMiChDw70l7PDceCNJws0p1G5VK+WI6iOJlvW85OUVdsqX8fEOpEuOLjMSLe1toiLcFleSCw1Oqxh9xWnraopj1MREAh2ovW9z57raTDWA5FOjhgYEjHYLDcZpCS9eoHwNEPcua4aZUNG/fh1l3HhnuYKr5AgYI6fHK+zfMY+qosa5Vww5GeTHevXQKpVI66X+uV95PyBSOdeXmY7nniVWDty2Cpiv9TH00YvkyoV03Nt8848hNrntw3fJ8Uo+OnZn+VtoBj8UxkJTWbh0RMSb4Q+8T9HyTVn0AHzcrjLKnYv+auC85Kg4LJ
- m+zMvugt
- qC6VrKt6Onn2D9KN8B6W53Sc9SPsFvnYBaEzeBXQTAd6z6eo8lL+yRljjzRl6coGfArfnaZLxPagSpRIgultd3TvdYzeQOLSKtACNZ5vq0tpMgLjcZKNFb/rnyh2+7v/LsIE7ckl407ylxMCXIJoG6BBrmhyAMS29DQmCoBkrwDIW+ZKE5mpLut0MZ8eKruhRGInWfy2Jajhe4FKPCltMnikxZZBSeQo4enaLJP1NCQqKoYh+wIxXgPd/Pr75SqbYwg93L6/BEg859mWiA5XfDruVTvQIgM5zEjoASYdQioieorKlx2nABfiv7Ngx9akFK7htnhYgYqYFoLtiwutabwzzUA7jiTin0bMuOjCTZ3EK7iklTcPKfPnsSaTwZ0ZDNtPvvu5Ie0jFMpUuC5DVOWKxhzfTXhYy8PSo4YIli4JjV4SZy26W69PX7bSYgnEeda2Nlvo/1cGtkiFxcUpYwq+pCy+nXnJgqUY89eDTaZftYF5V+5jBmubet29BPRrWCVcT+2tW1ECmQpZ24rBjb9KSSpMiO8h0OA8YZWFEm/gjDlpDOkvrXgTzXg==
+X-Rspamd-Queue-Id: A7A5BC000D
+X-Stat-Signature: izxktunc41pj5k877fi17q9m3s49rw68
+X-HE-Tag: 1755880114-278779
+X-HE-Meta: U2FsdGVkX1+gybnlbiw8otmYOPQNdUV/rgiDeLXD9oNIalS7lQ2fAZ/e4zkfMjKvsHlUZmZthAnogQvomG38oFFfKJqtLo8gHVgfFitSARrlH4fDUjA6Jxj5CT5YT7Y3kXcms/IFfAd//aTYHS0tz/1gJcgPRly+oJqBV3VSbD3IjyzSCKvhwx2qQU5KBHhZ1dNSe8o01TcyULQEavhH0C0NuURPSMOCHalS8xbHlyOzfMH1n6knvCLkvsh5hTMK5ifafmA/nUuIIoerlSptE+zJY5x6R/CoLHFZGSWtMqBTFouSN9mH3vyjTbykEiZp3JzyZAHIQQVH8lOcMFX3MmNGUbFwIBJGXwXD43CCTGRGTXTjXs1b6P8beuxf00+7C5kuaLY7FXRBM3lFxJKHfStx0ultKFUyTrqHXJdzZpKuy6tul6cl/YepQThIV7eAjlYo8Q2xY0FaT4dTKarHHDY+6i5TQJomCTgVpIk/ARnTOG7Oy5mcok62GKx3W/jeXsSonvficwjs0XuV+IQ6tEYXVEJrlLuQJiDUK86OjvGDtdLtpkEUjXNV6gj+enuIrRUOnH2yIRgi/ladT4Dsy84o8aiWGk0FkHbj7VrWJeJLbwX3iT3dpcWr10YswXGTctD0LAtCkFnYBqI5VvOMaCGoI/cLb57gjbqUdIx9NALhMsiK5qj4K4w8GjypWByVBCEHn+4s88mK41nqCv62sNmM7kzwEZLbN5Fdt0su12oGGbGUs2JcUkiv7fzCl5cSRCqJskvCLf7H11CkxBfR8F+TOpCD3CchCAR3BmyiOBbs11o4fR5UXnf+h/iEGHwpdO+E5vERlgr1N41WwFfgmBEtlZSeLdlqxDyL8pdQfQ+sEICkjvPmYoWVk0SW/IvyscjwEmx7DE0HDtt/PD3C+JxuXvtGAkt4xSxsqe0Sy9DEMXw15ZT3g7IRpThsokgICzjQk87Y5vtMAta03sE
+ WT7OKSlS
+ bVq9sQicU3SJF9WyLIA7sf4FVF1uV/Ujo7uDvLSbXHN2KY9l1YOuhJySaQFes2i6Is4htr/I+UyU3SjISxJSfP3f7IrbS6KxgdAKZ632n3iDqw9b4kL8HtcDG8VPSCP9cloEVJ1W71ISaj1t6pJ4KKTAYdItgdCm/nqQh7sLWXP1gel9aqoq0SJeBvW1ZIzcAseumGNOQNjGm9yNf8ufU/841StFYLp+t7jY+1xkimwvsZ92Nz4Oje/D5YK8xeKkHlfYC7/j3FbLWXCw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,95 +120,234 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Jul 23, 2025 at 6:35=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
+ote:
+>
+> From: "Liam R. Howlett" <Liam.Howlett@Oracle.com>
+>
+> Make testing work for the slab and rcu changes that have come in with
+> the sheaves work.
+>
+> This only works with one kmem_cache, and only the first one used.
+> Subsequent setting of kmem_cache will not update the active kmem_cache
+> and will be silently dropped because there are other tests which happen
+> after the kmem_cache of interest is set.
+>
+> The saved active kmem_cache is used in the rcu callback, which passes
+> the object to be freed.
+>
+> The rcu call takes the rcu_head, which is passed in as the field in the
+> struct (in this case rcu in the maple tree node), which is calculated by
+> pointer math.  The offset of which is saved (in a global variable) for
+> restoring the node pointer on the callback after the rcu grace period
+> expires.
+>
+> Don't use any of this outside of testing, please.
+>
+> Signed-off-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 
+Couple nits but otherwise LGTM.
 
-On 8/22/25 3:11 AM, Harry Yoo wrote:
-> On Thu, Aug 21, 2025 at 10:36:12AM -0700, Dave Hansen wrote:
->> On 8/21/25 04:57, Harry Yoo wrote:
->>> However, {pgd,p4d}_populate_kernel() is defined as a function regardless
->>> of the number of page table levels, so the compiler may not optimize
->>> them away. In this case, the following linker error occurs:
-> 
-> Hi, thanks for taking a look, Dave!
-> 
-> First of all, this is a fix-up patch of a mm-hotfixes patch series that
-> fixes a bug (I should have explained that in the changelog) [1].
-> 
-> [1] https://lore.kernel.org/linux-mm/20250818020206.4517-1-harry.yoo@oracle.com
-> 
-> I think we can continue discussing it and perhaps do that as part of
-> a follow-up series, because the current patch series need to be backported
-> to -stable and your suggestion to improve existing code doesn't require
-> -stable backports.
-> 
-> Does that sound fine?
-> 
->> This part of the changelog confused me. I think it's focusing on the
->> wrong thing.
->>
->> The code that's triggering this is literally:
->>
->>>                         pgd_populate(&init_mm, pgd,
->>>                                         lm_alias(kasan_early_shadow_p4d));
->>
->> It sure _looks_ like it's unconditionally referencing the
->> 'kasan_early_shadow_p4d' symbol. I think it's wrong to hide that with
->> macro magic and just assume that the macros won't reference it.
->>
->> If a symbol isn't being defined, it shouldn't be referenced in C code.:q
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
+> ---
+>  tools/include/linux/slab.h            | 41 +++++++++++++++++++++++++++++=
++++---
+>  tools/testing/shared/linux.c          | 24 ++++++++++++++++----
+>  tools/testing/shared/linux/rcupdate.h | 22 +++++++++++++++++++
+>  3 files changed, 80 insertions(+), 7 deletions(-)
+>
+> diff --git a/tools/include/linux/slab.h b/tools/include/linux/slab.h
+> index c87051e2b26f5a7fee0362697fae067076b8e84d..d1444e79f2685edb828adbce8=
+b3fbb500c0f8844 100644
+> --- a/tools/include/linux/slab.h
+> +++ b/tools/include/linux/slab.h
+> @@ -23,6 +23,12 @@ enum slab_state {
+>         FULL
+>  };
+>
+> +struct kmem_cache_args {
+> +       unsigned int align;
+> +       unsigned int sheaf_capacity;
+> +       void (*ctor)(void *);
+> +};
+> +
+>  static inline void *kzalloc(size_t size, gfp_t gfp)
+>  {
+>         return kmalloc(size, gfp | __GFP_ZERO);
+> @@ -37,9 +43,38 @@ static inline void *kmem_cache_alloc(struct kmem_cache=
+ *cachep, int flags)
+>  }
+>  void kmem_cache_free(struct kmem_cache *cachep, void *objp);
+>
+> -struct kmem_cache *kmem_cache_create(const char *name, unsigned int size=
+,
+> -                       unsigned int align, unsigned int flags,
+> -                       void (*ctor)(void *));
+> +
+> +struct kmem_cache *
+> +__kmem_cache_create_args(const char *name, unsigned int size,
+> +               struct kmem_cache_args *args, unsigned int flags);
+> +
+> +/* If NULL is passed for @args, use this variant with default arguments.=
+ */
+> +static inline struct kmem_cache *
+> +__kmem_cache_default_args(const char *name, unsigned int size,
+> +               struct kmem_cache_args *args, unsigned int flags)
+> +{
+> +       struct kmem_cache_args kmem_default_args =3D {};
+> +
+> +       return __kmem_cache_create_args(name, size, &kmem_default_args, f=
+lags);
+> +}
+> +
+> +static inline struct kmem_cache *
+> +__kmem_cache_create(const char *name, unsigned int size, unsigned int al=
+ign,
+> +               unsigned int flags, void (*ctor)(void *))
+> +{
+> +       struct kmem_cache_args kmem_args =3D {
+> +               .align  =3D align,
+> +               .ctor   =3D ctor,
+> +       };
+> +
+> +       return __kmem_cache_create_args(name, size, &kmem_args, flags);
+> +}
+> +
+> +#define kmem_cache_create(__name, __object_size, __args, ...)           =
+\
+> +       _Generic((__args),                                              \
+> +               struct kmem_cache_args *: __kmem_cache_create_args,     \
+> +               void *: __kmem_cache_default_args,                      \
+> +               default: __kmem_cache_create)(__name, __object_size, __ar=
+gs, __VA_ARGS__)
+>
+>  void kmem_cache_free_bulk(struct kmem_cache *cachep, size_t size, void *=
+*list);
+>  int kmem_cache_alloc_bulk(struct kmem_cache *cachep, gfp_t gfp, size_t s=
+ize,
+> diff --git a/tools/testing/shared/linux.c b/tools/testing/shared/linux.c
+> index 0f97fb0d19e19c327aa4843a35b45cc086f4f366..f998555a1b2af4a899a468a65=
+2b04622df459ed3 100644
+> --- a/tools/testing/shared/linux.c
+> +++ b/tools/testing/shared/linux.c
+> @@ -20,6 +20,7 @@ struct kmem_cache {
+>         pthread_mutex_t lock;
+>         unsigned int size;
+>         unsigned int align;
+> +       unsigned int sheaf_capacity;
+>         int nr_objs;
+>         void *objs;
+>         void (*ctor)(void *);
+> @@ -31,6 +32,8 @@ struct kmem_cache {
+>         void *private;
+>  };
+>
+> +static struct kmem_cache *kmem_active =3D NULL;
+> +
+>  void kmem_cache_set_callback(struct kmem_cache *cachep, void (*callback)=
+(void *))
+>  {
+>         cachep->callback =3D callback;
+> @@ -147,6 +150,14 @@ void kmem_cache_free(struct kmem_cache *cachep, void=
+ *objp)
+>         pthread_mutex_unlock(&cachep->lock);
+>  }
+>
+> +void kmem_cache_free_active(void *objp)
+> +{
+> +       if (!kmem_active)
+> +               printf("WARNING: No active kmem_cache\n");
+> +
+> +       kmem_cache_free(kmem_active, objp);
+> +}
+> +
+>  void kmem_cache_free_bulk(struct kmem_cache *cachep, size_t size, void *=
+*list)
+>  {
+>         if (kmalloc_verbose)
+> @@ -234,23 +245,28 @@ int kmem_cache_alloc_bulk(struct kmem_cache *cachep=
+, gfp_t gfp, size_t size,
+>  }
+>
+>  struct kmem_cache *
+> -kmem_cache_create(const char *name, unsigned int size, unsigned int alig=
+n,
+> -               unsigned int flags, void (*ctor)(void *))
+> +__kmem_cache_create_args(const char *name, unsigned int size,
+> +                         struct kmem_cache_args *args,
+> +                         unsigned int flags)
+>  {
+>         struct kmem_cache *ret =3D malloc(sizeof(*ret));
+>
+>         pthread_mutex_init(&ret->lock, NULL);
+>         ret->size =3D size;
+> -       ret->align =3D align;
+> +       ret->align =3D args->align;
+> +       ret->sheaf_capacity =3D args->sheaf_capacity;
+>         ret->nr_objs =3D 0;
+>         ret->nr_allocated =3D 0;
+>         ret->nr_tallocated =3D 0;
+>         ret->objs =3D NULL;
+> -       ret->ctor =3D ctor;
+> +       ret->ctor =3D args->ctor;
+>         ret->non_kernel =3D 0;
+>         ret->exec_callback =3D false;
+>         ret->callback =3D NULL;
+>         ret->private =3D NULL;
+> +       if (!kmem_active)
+> +               kmem_active =3D ret;
+> +
+>         return ret;
+>  }
+>
+> diff --git a/tools/testing/shared/linux/rcupdate.h b/tools/testing/shared=
+/linux/rcupdate.h
+> index fed468fb0c78db6f33fb1900c7110ab5f3c19c65..c95e2f0bbd93798e544d7d34e=
+0823ed68414f924 100644
+> --- a/tools/testing/shared/linux/rcupdate.h
+> +++ b/tools/testing/shared/linux/rcupdate.h
+> @@ -9,4 +9,26 @@
+>  #define rcu_dereference_check(p, cond) rcu_dereference(p)
+>  #define RCU_INIT_POINTER(p, v) do { (p) =3D (v); } while (0)
+>
+> +void kmem_cache_free_active(void *objp);
+> +static unsigned long kfree_cb_offset =3D 0;
+> +
+> +static inline void kfree_rcu_cb(struct rcu_head *head)
+> +{
+> +       void *objp =3D (void *) ((unsigned long)head - kfree_cb_offset);
+> +
+> +       kmem_cache_free_active(objp);
+> +}
+> +
+> +#ifndef offsetof
+> +#define offsetof(TYPE, MEMBER) __builtin_offsetof(TYPE, MEMBER)
+> +#endif
+> +
 
-That's not exactly the case for the kernel. It historically relied on being
-compiled with optimization and compiler being able to eliminate unused references.
-AFAIR BUILD_BUG_ON() works like that, there are also plenty of code like
+We need a comment here that concurrent kfree_rcu() calls are not
+supported because they would override each other's kfree_cb_offset.
+Kinda obvious but I think unusual limitations should be explicitly
+called out.
 
-if  (IS_ENABLED(CONFIG_SOMETHING))
-	ptr = &something;
-else
-	ptr = &something_else; 
+> +#define kfree_rcu(ptr, rhv)                                            \
+> +do {                                                                   \
+> +       if (!kfree_cb_offset)                                           \
+> +               kfree_cb_offset =3D offsetof(typeof(*(ptr)), rhv);       =
+ \
+> +                                                                       \
+> +       call_rcu(&ptr->rhv, kfree_rcu_cb);                              \
+> +} while (0)
 
-e.g. irq_remaping_prepare();
+Any specific reason kfree_rcu() is a macro and not a static inline function=
+?
 
-
-> 
-> A fair point, and that's what KASAN code has been doing for years.
-> 
->> The right way to do it is to have an #ifdef in a header that avoids
->> compiling in the reference to the symbol.
-> 
-> You mean defining some wrapper functions for p*d_populate_kernel() in
-> KASAN with different implementations based on ifdeffery?
-> 
-> Just to clarify, what should be the exact ifdeffery to cover these cases?
-> #if CONFIG_PGTABLE_LEVELS == 4 and 5, or
-> #ifdef __PAGETABLE_P4D_FOLDED and __PAGETABLE_PUD_FOLDED ?
-> 
-
-I think ifdef should be the same as for symbol, so '#if CONFIG_PGTABLE_LEVELS > 4'
-for *_p4d and '#if CONFIG_PGTABLE_LEVELS > 3' for *_pud
-
-
-> I have no strong opinion on this, let's hear what KASAN folks think.
-> 
-
-So, I think we have following options:
-
-1. Macros as you did.
-2. Hide references in function under  '#if CONFIG_PGTABLE_LEVELS > x', like Dave suggested.
-3. It should be enough to just add if in code like
-            if (CONFIG_PGTABLE_LEVELS > 4)
-		pgd_populate_kernel(addr, pgd,
-                                          lm_alias(kasan_early_shadow_p4d));
-Compiler should be able to optimize it away.
-
-4. I guess that the link error is due to enabled CONFIG_DEBUG_VIRTUAL=y
-lm_alias() ends up with __phys_addr_symbol() function call which compiler can't optimize away.
-Technically we can declare __phys_addr_symbol() with __attribute__((pure)), so compiler will
-be able to optimize away this call, because the result should be unused.
-But I'm not sure we really want that, because it's debug function and even if the result is unused
-we might want to still have a check if symbol address is correct.
-
-
-I would probably prefer 3rd option, but I don't really have very strong opinion, so either way is fine.
-
+> +
+>  #endif
+>
+> --
+> 2.50.1
+>
 
