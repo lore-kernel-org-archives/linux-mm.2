@@ -4,112 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EA7ECA0EFA
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 02:57:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F839CA0EEB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 03:46:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1C4C8E006D; Thu, 21 Aug 2025 22:57:44 -0400 (EDT)
+	id 559076B0140; Thu, 21 Aug 2025 23:46:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CBE28E0056; Thu, 21 Aug 2025 22:57:44 -0400 (EDT)
+	id 530C66B0141; Thu, 21 Aug 2025 23:46:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 893E48E006D; Thu, 21 Aug 2025 22:57:44 -0400 (EDT)
+	id 446446B0142; Thu, 21 Aug 2025 23:46:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 707488E0056
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 22:57:44 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E4C2D1A0541
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 02:57:43 +0000 (UTC)
-X-FDA: 83802883206.30.41F83D4
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 67B574000B
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 02:57:42 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OsbxunWD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755831462; a=rsa-sha256;
-	cv=none;
-	b=CqtkU2DKhj7oA82RhgcopWOh72Pe64IwxWwLzDgr8AdRKgdDvrzazOfJbV7qGDsR8KS0wJ
-	bvOcNL2ND57dEsaadUspIQsnfs0ss2xxxBAVXmk4rEomYM/gL53bN1LhNQEpLzGSuRnMDe
-	HldiwtQ1fdz1y2JdTwDBw/jAaZ8O8DU=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OsbxunWD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 357686B0140
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 23:46:56 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CFBBAB9AA8
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 03:46:55 +0000 (UTC)
+X-FDA: 83803007190.15.673DD04
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 1064EA0004
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 03:46:52 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=D+YeRstv;
+	spf=pass (imf15.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755831462;
+	s=arc-20220608; t=1755834414;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=QM6ZZcjAsWUjNjLk9+5e3bZNbCpR3x1yF6anLCH5Nas=;
-	b=AMcZhBdzdgac02s0jqu3rKYx25bTVtFcZeN/yJe3NFSOa41Z6UBFAGJYfVBzNS+yLiI9WS
-	BgGjywUspyQd80RWvNm1cj7R8uaW01+YGFfQhBuj0E/aVWSkx0OKDblGhRCQlVX29K+zQd
-	ucqa3N5SsSBIvofH9IUP5jS6oQNsdbM=
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-afcb7a8dd3dso241165266b.3
-        for <linux-mm@kvack.org>; Thu, 21 Aug 2025 19:57:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755831461; x=1756436261; darn=kvack.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QM6ZZcjAsWUjNjLk9+5e3bZNbCpR3x1yF6anLCH5Nas=;
-        b=OsbxunWDlk02KPxUYp2hRqFzNtp8WvvSV2LocMLxmfadhA5iJtzWSSBSYqYcbdam6Q
-         r9hyVGrYBqdSHpBCMZEqeRnlrY+xpE4BIcZaXifuuPrT/Hi6oGhGBnB02VFIIyhn1Y7q
-         hXQil9ul7eukYoAuOVh2jlSLovfVhaQsG7Gf1npywMiZ0eDVPwFYX5jBqay1miGXTLqY
-         xbnSbTH6mv00CM9gsF3kaqN5eMzYU0zJvW8zLTnN5eAD0QW4hK2MCehxglDUkQIM3JLL
-         9mZcBH64tlg83dqbFVfHoqc4boZ3lT3f8ODwEmQ6DeDtejFraIEq5rUISqz9KNl/Soqo
-         fxhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755831461; x=1756436261;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QM6ZZcjAsWUjNjLk9+5e3bZNbCpR3x1yF6anLCH5Nas=;
-        b=YA2TxuB3dHWJjMMMzcKDO51FjFhnlAU8v2Ev+5YeWIOOTckQ9wSKceHBz8eCz/FQWx
-         8z/PXlr6lrt1zxpDq8YlkZCfRO/bD52xglAPHWj4TTXfWI3klP09SCM8iXEIe6/Z5pGr
-         XS1hvaf+lk86asp0VZpfvHpVp3NVpSxPac0Khp35L/AlTCbraVABMiduys2NZBA2wK1I
-         O1svuSgttOKoSSvj9PjDFnBYDCMvl3Rsd6RMQPa549BCm/JTnH5eSDVEFZSjjhew0LO+
-         zlcwHG4w5Y2pGCOTGSXqedNp1wt3kIXqOHmyLOjexrIjLPB18Kb2tYInurCPQQXb8hDE
-         SZ6Q==
-X-Gm-Message-State: AOJu0Yz1m9156H5s35/t2xACr21tYhuqcWDj8uj6uxE5y7447xKgcUyt
-	JPnjFIyYqGUXtIcSffRauRmqU45PbzwtRoTgeJgG7/SlX9mG63vmAhI7
-X-Gm-Gg: ASbGnctSpq/OUHPoIIQssM2t54oLO+1pa6ABrrlqL3+IRfAbYVeqS34u5R7RLsAhFCi
-	8y2ncmxoXImf/TSaWKZZNfCHYtqo7aZbfM97uGlVcRdj5iVQWQ8F5+h+EHjyvVYYsxq8BlpRipX
-	kNLk7DLSIwCd5zrYeuf3Se22r+EAyLE+ulo2nkAzivbAuxrGxZYrKmJ+j8ZTS38lg7CgORp0Om0
-	SD8/jyeGA7PZt1Pcb9MLqHX34E/ySTqlGSpjtkvvDccgTBOkDLf6bI/VFJO3zGn+PJWXlE4bpkE
-	qhxGpF8xZadP690MkQFn4bryaotVDRteJy4sMwVs+wAO+/CWggyEngvmSscIEUXWXIDtKA4U0Oo
-	RB+rHx9HLnuv24dvKJhrJ4+OHnBTdzKOU6ZH9
-X-Google-Smtp-Source: AGHT+IEXzzswC0XQ9rLOu1GUP+4XTKR6zYMMVXmXre93BzbdLCw7Gam4vNP85w3+Dy5997Tzsyd2GA==
-X-Received: by 2002:a17:907:1c91:b0:af9:341b:7fd7 with SMTP id a640c23a62f3a-afe29605d3fmr98808366b.49.1755831460519;
-        Thu, 21 Aug 2025 19:57:40 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afded4c8713sm514489766b.78.2025.08.21.19.57.40
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 21 Aug 2025 19:57:40 -0700 (PDT)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org
-Cc: linux-mm@kvack.org,
-	Wei Yang <richard.weiyang@gmail.com>
-Subject: [PATCH] mm/khugepaged: use list_xxx() helper to improve readability
-Date: Fri, 22 Aug 2025 02:57:32 +0000
-Message-Id: <20250822025732.9025-1-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
-X-Rspamd-Server: rspam03
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+sWNjhBxu8PhYFRc5QOiVV8JYxNP7JQ9csrDkux4Wew=;
+	b=Fh/Nb2p8j/FxcK0+wXfNls+GzgeHvMUaM1BCBBb/nXYJdkCQHh28WsIQd8khCFougAUa81
+	FAZi4X0owQALn++Vi6ddTvNlBbOLfdb8J2pO5OaUE2Uh1jBKVg+DnpULQ9vInouS97eP2a
+	hZJ+JgIAN3emvoOEA93mybg9J6b9yuU=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=D+YeRstv;
+	spf=pass (imf15.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755834414; a=rsa-sha256;
+	cv=none;
+	b=EYsI6LK6OWDo7Jt/oaBBAUx+u2ljyjnaff8jQutIqI+9s5rm7Z7TTq2rQiDmcRihTNqOQV
+	1Eu6bRfTyp74akWSb2fM9wq20oqaAYq4oLMtaAksbL6UukR0n7GRJ9gYDL/sQjEvwbH1Ah
+	VUm9G56Smu2xTxOogrjt0jfrdQWgAlc=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1755834410; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=+sWNjhBxu8PhYFRc5QOiVV8JYxNP7JQ9csrDkux4Wew=;
+	b=D+YeRstv3nHWk4oDPdwOPXRphNPCTqGLgorHOvLfoU9ICRoxUlkZEMQLgQTSbF/IfFPhDFqamjw7ySDghtv5v3lc1gIa6M/oeyQ0YQ0uGadD4mRqEz30Bzewv6O1DemQliU5q0iZz6Hc3EPrpjIyzOy6aM3tY6rzbkhgzbaPPfM=
+Received: from 30.74.144.125(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WmIBLI8_1755834407 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 22 Aug 2025 11:46:47 +0800
+Message-ID: <ad4ccd32-173e-43ef-b00f-afc05035e28e@linux.alibaba.com>
+Date: Fri, 22 Aug 2025 11:46:47 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/huge_memory: remove enforce_sysfs from
+ __thp_vma_allowable_orders
+To: Usama Arif <usamaarif642@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, david@redhat.com,
+ lorenzo.stoakes@oracle.com, linux-mm@kvack.org
+Cc: ziy@nvidia.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ kernel-team@meta.com
+References: <20250821150038.2025521-1-usamaarif642@gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20250821150038.2025521-1-usamaarif642@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 1064EA0004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 67B574000B
-X-Stat-Signature: 17rrce9wnh3o5z7qizsoao5wxcws97uz
-X-HE-Tag: 1755831462-235302
-X-HE-Meta: U2FsdGVkX19N407HhssjTXduXZADy/DHj1jrCk0BQOIJvxDAGnRaPW0q4E5R7VytWGGNCPsp5M/D5a3bOrDplsvA1QEjQXMN5DM16lv2nk9K1nlg9HcUw67UQ8+UrAOZODvjPkaOPfko/ur9DwK+1Yi4/LY8XyljP8WdcjIOZ3GpZTZpJil8E5r/5FZSEhZcQU2f2/SlIWJ4aYH/N/HICQ0a2SJY9fcS+zcUA4eRgV+wVzaaTDXQTZEE3Qq2xShiDkBZ/HAe6NnjYmhEhD4acaXkxkAgeBHzLZQjnawKkCCdqeJXhwfzn38g9x/3IfkjemeQtxBJXu6kcwzgFRJwifP3Al4fOlyO5dK4ozvbv2ZmXWHX3aSV0fjXbNb8XIObGS+7tpPm9jWvhDhzZMummT0dYSdTODZrjE7S4PTKTuolzzAAplZoFFHyrjzb9+MD31iN5VsSjsZGo7En4FBzzaqqlSK4QrgitMne1pwW5vecGWtX3X9LC9UB3hisbNrS3JWiH7ENI5kV+cF6nkeffpDbiQpndEdsdwUxdG1K5wsIQMBis0qwjiZFtgF5tk3VzEWEJcwCEvSr7xmD3MpK5iGaZtdY0n2kwc5okNWQH/KhLL3WlzGy7wHDO0Cnwq8f8rSTQORkIBtRK6gk57zVdoeLSBhm+C63v1ffynNDKqF3pFuOWI80AIUW3N+y+xite93+IseNYCkt7A5a8lw8wxISz1KGrhvGvsm+LUyvqhMbYApr6F9FcFQybCSGqQJ+UoA75hX6hXbWEB86FOll9dfgt4QJHTs4eoMmWyQrLeSjvUTD/XJZvuBWabsGZ+9jzA5E6bcGIRm/pmTyTaKHdgOXiMhSIzUmWGO8x90UuC0Ph9ta6SakbslG0IFinWHCg8P8RmVroLI+zSJs5H2i6FzGiyragXNb0PxN14z9IjxzBIkzG9MZRlxoh40JWAILaYqGUfJP/7NJAC+PFHp
- wJ99zebF
- q5PmY1MaLAaz1yH5m0Gr9Lln4QWxH65mPmED8Yof411L8wgo577/D4I0K+JOJ9uOPtuNNh1UGFeAkdjraw7TiIqIAPjC3JevpBYugTkaOmNY/QgKgpEw7TJvvaD70pQ4gdJJdoIIar2AkzWZUEzO1RrFYN+5UxjJd0z8e8cw1XFEdQCCtp18m99583cTRlWlQUin1KdkzSmJoANEC4jwylGLoJ06/aBmgD77KyHlpkWd8/5KEQfaS26+LzA==
+X-Stat-Signature: caweph1xhjn91bz4mgbpzpb345aujqh4
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1755834412-400528
+X-HE-Meta: U2FsdGVkX1/ww+u0HKIA4CEJw4DojOx0hTLRD25zogpN8ZVK4YkNw9YJ8mjDhafqEyuH7x8fx3Q27vulIF9lzdzZfTdlGSbYJMImoVJCo3Wr6vlrTYrXIe6OSB2dT8K+x0R4b+CybOA83UpdymaMT+UAiiL7CE7UHM+CysIZ9YGWyHnzGDHlJjDD8oOx3XFq2a+iZ0vEET0FpeO8U7yLfrstxWI1/UME9qEE9mLIK8N8pppY+H0lbuqWZzZ79QL9XNI+GZSOwTo4115Dh4oCTwD1d617h9h8prKTqAr0IveV+9n4Qczk2/fl2hE8vfMBZpaWn0He6EFTEvtwOx/FKZ2lD+5VdUKONtUq9X6O38qz9D+vNXN0w+kYPXZhCrwbyTbKbJ+ZI1L7h3j7U40aGeuBlx5/wTk2qwPiTQ62iPeE4c9ipwziMWharYHW+YbQGqy3k9JDxCHE8HQ24999RyzH6XuKwvFZIhmNld57/jTopJGpI/wz4Y4IyhJVtSaOkWt20b2zgopPOfPPI7dQeG8uduitHADaX8hHYDBjRkEvr97MEkSN6byIEc7lymiaj3CRVixF5wxadgONhtciqJ5k1Cze7Dwl5G7lDjrECI5kVDT9Qgt6Gu1lMVVnjIwSSIyxhgvSDT1+XYJ47tReuFzOAkbpRhTAJeIlER8WJThgvOmRQw46ROi4Aa1h3sp7OqPcb6qJTfgB5LkNdGcWNqMvX1DYau2yrO5vylmciUUA38Dw86M3pny1wH/jYGLzFAB1aysGTdtyoKxkN0LwAYqDO06CaQB8rDQqkfzjcl3tCuQtkP5jn+LIzLH/FNpsKIjKt/HkxJvpykXaaZJDyADHJJqpkTd54GEE0A0Y5LcbqOrVHctrWfVDPMMVg0OX1BXZOzUNn28hzndr9vAkJAvoi654bpxZXU4UVX/HYh5OM6jt72xypcqHlJjwz2dTXdhTWE00bU8k+t6YRyG
+ IJdbi9T6
+ 1p5W29+L/U2tO37bhvKU7y7GrmXp2ZJL7zHfaXHUfm/XSuHPydol+LOr8hScZzhg0Vs7tcLVoyt02YSs54Ra1GT7eFDudrxA+z3gIF/ZJHmtEfmUQjlHdryBuWcKLPQHKVFrpgIY/69KTd1NypenmY9c7tWuaS4tiWedkf4b0fVwutgGFalsowedS7/GUuLrVnauA74gi8Usq4LH4edJwuImV2YDrIXS0BMH0BLexFBpEeOhEyc1OorogsOOAGVrrczgUi5SQX+MBDwg2jmIRJRKAManNv//CW6tKtFE8mjZZ2eKJNvDBnQkGBgm+IqQYCSB7tNbEDqUAXlU7WBfFSnSo1ejI/JoUy5Me8I7WZ9I6OLTD3JDtc4oxedbV6YU6/qXAasSyQ8g87RQv5/tRZse0EqgDFOYT/3/I9c8GwJcv4Us=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,45 +90,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In general, khugepaged_scan_mm_slot() iterates khugepaged_scan.mm_head list
-to get a mm_struct for collapse memory.
 
-Use list_xxx() helper would be more obvious to the list iteration
-operation.
 
-No functional change.
+On 2025/8/21 23:00, Usama Arif wrote:
+> Using forced_collapse directly is clearer and enforce_sysfs is not
+> really needed.
+> 
+> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+> ---
 
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
----
- mm/khugepaged.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index d3d4f116e14b..24e18a7f8a93 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -2402,7 +2402,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
- 		mm_slot = khugepaged_scan.mm_slot;
- 		slot = &mm_slot->slot;
- 	} else {
--		slot = list_entry(khugepaged_scan.mm_head.next,
-+		slot = list_first_entry(&khugepaged_scan.mm_head,
- 				     struct mm_slot, mm_node);
- 		mm_slot = mm_slot_entry(slot, struct khugepaged_mm_slot, slot);
- 		khugepaged_scan.address = 0;
-@@ -2515,9 +2515,8 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
- 		 * khugepaged runs here, khugepaged_exit will find
- 		 * mm_slot not pointing to the exiting mm.
- 		 */
--		if (slot->mm_node.next != &khugepaged_scan.mm_head) {
--			slot = list_entry(slot->mm_node.next,
--					  struct mm_slot, mm_node);
-+		if (!list_is_last(&slot->mm_node, &khugepaged_scan.mm_head)) {
-+			slot = list_next_entry(slot, mm_node);
- 			khugepaged_scan.mm_slot =
- 				mm_slot_entry(slot, struct khugepaged_mm_slot, slot);
- 			khugepaged_scan.address = 0;
--- 
-2.34.1
+> This was agreed upon in [1]
+> [1] https://lore.kernel.org/all/cd99f0f2-260d-4494-bbf6-99daec3e0683@gmail.com/
+> ---
+>   mm/huge_memory.c | 7 +++----
+>   1 file changed, 3 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 6fd714bd04844..5220dbc9fcb31 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -105,7 +105,6 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+>   	const bool smaps = type == TVA_SMAPS;
+>   	const bool in_pf = type == TVA_PAGEFAULT;
+>   	const bool forced_collapse = type == TVA_FORCED_COLLAPSE;
+> -	const bool enforce_sysfs = !forced_collapse;
+>   	unsigned long supported_orders;
+>   
+>   	/* Check the intersection of requested and supported orders. */
+> @@ -168,14 +167,14 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+>   	if (!in_pf && shmem_file(vma->vm_file))
+>   		return orders & shmem_allowable_huge_orders(file_inode(vma->vm_file),
+>   						   vma, vma->vm_pgoff, 0,
+> -						   !enforce_sysfs);
+> +						   forced_collapse);
+>   
+>   	if (!vma_is_anonymous(vma)) {
+>   		/*
+> -		 * Enforce sysfs THP requirements as necessary. Anonymous vmas
+> +		 * Enforce THP collapse requirements as necessary. Anonymous vmas
+>   		 * were already handled in thp_vma_allowable_orders().
+>   		 */
+> -		if (enforce_sysfs &&
+> +		if (!forced_collapse &&
+>   		    (!hugepage_global_enabled() || (!(vm_flags & VM_HUGEPAGE) &&
+>   						    !hugepage_global_always())))
+>   			return 0;
 
 
