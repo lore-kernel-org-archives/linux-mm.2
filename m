@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68DC1CA0EED
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 09:58:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDE92CA0EEB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 09:58:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CF598E0096; Fri, 22 Aug 2025 05:58:28 -0400 (EDT)
+	id 032548E0099; Fri, 22 Aug 2025 05:58:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97FAD8E008C; Fri, 22 Aug 2025 05:58:28 -0400 (EDT)
+	id 0095F8E008C; Fri, 22 Aug 2025 05:58:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86F308E0096; Fri, 22 Aug 2025 05:58:28 -0400 (EDT)
+	id E146E8E0099; Fri, 22 Aug 2025 05:58:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E4DC8E008C
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 05:58:28 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3F34483D9B
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:58:28 +0000 (UTC)
-X-FDA: 83803943496.03.BF77DB6
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0EB658E0098
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 05:58:41 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CAE971606E7
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:58:40 +0000 (UTC)
+X-FDA: 83803944000.18.A0C648A
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 354BE40008
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:58:25 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
+	by imf14.hostedemail.com (Postfix) with ESMTP id A5C41100007
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:58:38 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
 	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755856706; a=rsa-sha256;
-	cv=none;
-	b=V+OxGW1Y+XkyyapDoXIqlqOSzlAwnlc8OQ53cwV/ow2ItICjxBxsE+/0/I/Pzk00fLqQdc
-	xFMuD2IepmGZgcQXEdM6CFpojxLqm6EgivXoj2o2+J0mYLG8xdL6TB4UjP20SfoPF/WDxb
-	Y+5Zv0+ofg5pJGuDkvBFM3aEyELLC8Q=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
+	spf=pass (imf14.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755856706;
+	s=arc-20220608; t=1755856718;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=o8buzcW/UN4/h4LCvWa/BS8NAykGhPfW596PyvWifB0=;
-	b=1obqZdZ22uXw8vW9Ibt3FYbY/iAmkywVb6AbRGo0kqgWm5Md54ydzBcPyCjpafhIGc0OMd
-	h/a29UPS8R0I3FbB9L9vP4aN8hwmOYiCrnWyOIs/mZc1xW6d8n3PP0JrQoB8/+QfJfAcvv
-	7GKvQbMZ8gTfWgjRewNXyxn0EqS58OA=
+	bh=LMrku/+hV+gSS7kLKAAreTIeCCFGj17q+6KCLLSm+C4=;
+	b=2WlhkGrcPBK3mcdxquXRNO8r1ym0Gqwd2ZFU3IbSWCJsjvSgyIVtlOGyX7QtpwNktSoDa3
+	0ckAxSqwjB8geaicvsAS2g43rSBFJVZbleHfPo93OzhWp2TxhKKQkc+RbYFvOzaLf9VU92
+	kL6ZQ/ueIFP3Xku7EW/TuY/HexNgTco=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755856718; a=rsa-sha256;
+	cv=none;
+	b=5ppmFngWyQ2dnrwXdZMWIJz0L5yzYxKDhNqFsIRiENCi8Lo+YUSz7o2uRBOpJt3u7WvfdI
+	Bxl46nmSx8tgQz1P1JegNtPYJz9cPUL0V7BuCAJXTWSyYC8Pif7L2XofDB4Ggf2dXYmdg/
+	MBZCEQtZTz3xu5Gz0qAbQDLX2oQ6IOc=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
+	spf=pass (imf14.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
 Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4c7bGp5G2dz9sSW;
-	Fri, 22 Aug 2025 11:58:10 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4c7bGv1dQ5z9sSg;
+	Fri, 22 Aug 2025 11:58:15 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id L-iQubse_0cd; Fri, 22 Aug 2025 11:58:10 +0200 (CEST)
+	with ESMTP id Rouyl7AiVSEH; Fri, 22 Aug 2025 11:58:15 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4c7bGp4Kv4z9sSV;
-	Fri, 22 Aug 2025 11:58:10 +0200 (CEST)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4c7bGv0Zshz9sSf;
+	Fri, 22 Aug 2025 11:58:15 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 799BB8B781;
-	Fri, 22 Aug 2025 11:58:10 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 001748B781;
+	Fri, 22 Aug 2025 11:58:14 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id Jh8il3hsJZQH; Fri, 22 Aug 2025 11:58:10 +0200 (CEST)
+	with ESMTP id DplApH3IrGdC; Fri, 22 Aug 2025 11:58:14 +0200 (CEST)
 Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7612B8B775;
-	Fri, 22 Aug 2025 11:58:09 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id F189D8B780;
+	Fri, 22 Aug 2025 11:58:13 +0200 (CEST)
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
@@ -92,24 +92,24 @@ Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-block@vger.kernel.org
-Subject: [PATCH v2 04/10] powerpc/uaccess: Move barrier_nospec() out of allow_read_{from/write}_user()
-Date: Fri, 22 Aug 2025 11:58:00 +0200
-Message-ID: <90ce0c90c53d3132023d753650b1741fab60dcd3.1755854833.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 08/10] powerpc/32s: Fix segments setup when TASK_SIZE is not a multiple of 256M
+Date: Fri, 22 Aug 2025 11:58:04 +0200
+Message-ID: <f8fa4d4b5b8b07c0ac97415fdf7dbf1d17f1deab.1755854833.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1755854833.git.christophe.leroy@csgroup.eu>
 References: <cover.1755854833.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755856679; l=3128; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=W6hpcedkcWK/fNdxM9/tYip/yiX0Wu6MZIyees7Pogw=; b=DUD1UUmtiwXNWatGhsXc9CjjVSp+31iz3JZAC3Kq7lY2UnNgEKtP/hJS7JrJ7X+vsKhFuWqba zo1szpJqvm5BrN9GBW2DIAx7C5wqNiWIty4eJINj4EQofJ+cdDrJaFQ
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755856679; l=4811; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=wvMxtbYlp4If4vdp7ThT8540zw2Qu4BJbU9ujWqfR94=; b=0XuuBKVXcmYYwRlGwBO3iW+/I/d5f9LBhxzTnJgplI/yzvAaD7n5HlA3+nF5oS7YSR/9hIYLw 8yogXkQaywPCaVJBpa6G7Gi3GpY9iDaMyFhJOv8VOsJKAj7rkSEY5AI
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 354BE40008
-X-Stat-Signature: 4gnj491zwefdh4gysr31xid57iczy98e
 X-Rspam-User: 
-X-HE-Tag: 1755856705-90648
-X-HE-Meta: U2FsdGVkX1/mCPBHQjRn9zffHujMG4Dqx9GYAHZyxaOrkG3SvTln4+Mp+bOqoyqw8roWF3vyOitxEYa7xmswEi3cQU1mpbvdk3EYzICnlDrCElqQcFRrD6HTlNoFkBycyn9FLC5NL3H1GbN0LGnAaw+wtJiuL+jU2Uzl8QJAr2V//73lW13BHlQuNUPSOlCwUI3QC/BXiwvrpDo1PPj6azpzWlLdEv1A4bY+Z4vJIc7MLkZ5n6R7VUcCuH1FEmi/S2sTqyREVRkS8xNGwAiCTTI+zQeH+kw1V6dZDtL58zDlFpotOfQynX50EFYbeRCLf0bDzXV/EJ6werAhbbIxAfG7xdQfIGjC1Ov9RguERuzHmyXvTxXPoOtlx+YQC9q5Hdfmdu1h6jbZwxjbXT0vNDzgZyWD7Kq3OkNPO4JkVBCDubhxKSX65KcTWcGWovgO9teuNrXErKwMZ3gifGP60PgepzT5TIi/6lIMCuIzvlbG8XhxT72Z6pZ3cPO6PUtM7l5JWRtXMNUWgk8H3TcAtmcWaMj1C9elBMwYovDsaEC8mKBpNkeEcl6hxF2xgeyZTP1dtq71NGt4bBlHfxm7Ibbt766mSI0juWQa59L98jtRz4PSlB9lCN0pdmMLA1t4CVLYuTQTMrZ6nlOd2CwcwkpeTW2zMpFJ5lSDf+b/TQ65+XFt6kiO9iZO8aoG0JXdd2BIKgNHLQW+xCU1UCWV0jIERljWPz/LemBw8b5mJR4pQ2G6hQ1KP1NNOwc/ogM3xk6eXGNhO1l9eHnCIqE9hM6AwyBA1yBzKjTTJa5lb6D5M9jH+VnHimQQmEZ2yZzCITJqm6O2ngtc8vg3qgx1fxy0AVexsetjMNjb3CDuxYH5g7DS3URRq/iiSdaFwg3pDELoltIfIyHhrtlIIqrc+ueNU/tJlaABmpO8G7omStsnT2/RgJKCEHluPfWQJ/iGhFyS6BJc9buIocV6kkc
- AhRluvre
- UwcNhMt1wGuR+7oc=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A5C41100007
+X-Stat-Signature: st4sjeoanxe3nf9km6tbbuhij8ndhxsx
+X-HE-Tag: 1755856718-187975
+X-HE-Meta: U2FsdGVkX1+ofDT4kxwf0iiiQuAwBnwAn08hpEsVHcnP4CPPIBb/lfVw3EB5uvvVMBypI0OPEj3J0LqgqqKLDEO9GYj19oeFKIHE6oM02GIi16m+VYNTXGrf5T4mN/vHZOmEzDpDBGSYp33nSmJ5//TRcjlrloWa7VJJW4AQhKTz9Cl2RAcpZZa3/5J8C3b/QuZ89leSQxnfnFkSpI5wjLcj8ZM+iRcxpcQddJfI9TJ/8cpCrWdWGnwYdEUiYBF3qH2k/U5pWRE4AwdRy+ucxH4oG/uSQCyNIoUS8bjZzFkOn43gTsmIgC+BD8Fps5UoBDzUQG4/0/ulmy3GASlwsld/3cdjNPW+01fd+3i6aZBpSZ9qIKd1pO43MOP/4ErC6jqSiWAMrrTKIwT42CvS5e/AmWX73j6QpiWiS5KBKXLc2vaZB2UHGpivy0IicbZTZiiNQo4hMc9Edtm983/3hJfi2DoVBZVxe2ZuGA1d61IBBoNN3lAPoVEj9ZlnAIbrMFU/OEwOoBJgO0MVNdif8BwFtJF4TuB9Xno08qkAylp6XYYg3LWlzZkimw7JFuhO5bzBC2TUq0p/y2k7S51Kb2LQtb7rXJPiCdOPX8xa275z9lFdQ8k+y8T7seoM4QatrmOWz+6zInfmGLgA7OEGWgjTg21KV64QYSy6iaTgA3/E0AhlAxt4Ee2aarhvlCOfrKp76arfACZWNvPXuuh2Xt4YEn3fuNMveMxOk0YMUuwaGYEdyzm/nqM9LOhgbgnFL3dTifDvn/weEcx3ckwAd7YZkmiByHDh/MEoRbiuYHai1UixLS5+klM5+bQzR8u0KSxKF7cBpgWZdOJ6dggXlUT0QktdrZyTq3eOlDHzIpQheMzw8GZXOU9g88TetzfwCD1wcq2akkvm6DQBObD4675twHNXMWliIK5TGVnfqV1HOZX0a5LHBMK5HZxJFcp3j6Bsf4I6+0klBObxTGy
+ 1JanepIg
+ 6RKPAWrWFEhwc/rjRvp17goYtr5FABf6VjIuK6ECUcdL4UGyvTKh13CPtq+dVL4RFq3ZukiGP5qCyeMvaukcHXixtoRQmOo7LNUZnHyCJZJafyi7vQLpRtZCh5IhJnNhOwz34IpNwliJIkeHW0Jx/BQxBarQIvZkm5ozMPRxUjWunmMDZerENHzULUVV2mm5ATQnvjzopz/HxETKDkIa6w+nS+iMw5jUV5Q7k0sNsVFztfo/HSJAUTpTjHR26MROKFkFjNJHMpyJEuKvrnQeNic0HYkn47j+XcS79Vxk5Ymx6/tQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,88 +118,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 74e19ef0ff80 ("uaccess: Add speculation barrier to
-copy_from_user()") added a redundant barrier_nospec() in
-copy_from_user(), because powerpc is already calling
-barrier_nospec() in allow_read_from_user() and
-allow_read_write_user(). But on other architectures that
-call to barrier_nospec() was missing. So change powerpc
-instead of reverting the above commit and having to fix
-other architectures one by one. This is now possible
-because barrier_nospec() has also been added in
-copy_from_user_iter().
+For book3s/32 it is assumed that TASK_SIZE is a multiple of 256 Mbytes,
+but Kconfig allows any value for TASK_SIZE.
 
-Move barrier_nospec() out of allow_read_from_user() and
-allow_read_write_user(). This will also allow reuse of those
-functions when implementing masked user access which doesn't
-require barrier_nospec().
+In all relevant calculations, align TASK_SIZE to the upper 256 Mbytes
+boundary.
 
-Don't add it back in raw_copy_from_user() as it is already called
-by copy_from_user() and copy_from_user_iter().
+Also use ASM_CONST() in the definition of TASK_SIZE to ensure it is
+seen as an unsigned constant.
 
-Fixes: 74e19ef0ff80 ("uaccess: Add speculation barrier to copy_from_user()")
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/kup.h     | 2 --
- arch/powerpc/include/asm/uaccess.h | 4 ++++
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/book3s/32/mmu-hash.h | 5 ++++-
+ arch/powerpc/include/asm/task_size_32.h       | 2 +-
+ arch/powerpc/kernel/asm-offsets.c             | 2 +-
+ arch/powerpc/kernel/head_book3s_32.S          | 6 +++---
+ arch/powerpc/mm/book3s32/mmu.c                | 2 +-
+ arch/powerpc/mm/ptdump/segment_regs.c         | 2 +-
+ 6 files changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
-index 2bb03d941e3e..6737416dde9f 100644
---- a/arch/powerpc/include/asm/kup.h
-+++ b/arch/powerpc/include/asm/kup.h
-@@ -134,7 +134,6 @@ static __always_inline void kuap_assert_locked(void)
+diff --git a/arch/powerpc/include/asm/book3s/32/mmu-hash.h b/arch/powerpc/include/asm/book3s/32/mmu-hash.h
+index 78c6a5fde1d6..df00be5b4044 100644
+--- a/arch/powerpc/include/asm/book3s/32/mmu-hash.h
++++ b/arch/powerpc/include/asm/book3s/32/mmu-hash.h
+@@ -192,12 +192,15 @@ extern s32 patch__hash_page_B, patch__hash_page_C;
+ extern s32 patch__flush_hash_A0, patch__flush_hash_A1, patch__flush_hash_A2;
+ extern s32 patch__flush_hash_B;
  
- static __always_inline void allow_read_from_user(const void __user *from, unsigned long size)
++#include <linux/sizes.h>
++#include <linux/align.h>
++
+ #include <asm/reg.h>
+ #include <asm/task_size_32.h>
+ 
+ static __always_inline void update_user_segment(u32 n, u32 val)
  {
--	barrier_nospec();
- 	allow_user_access(NULL, from, size, KUAP_READ);
+-	if (n << 28 < TASK_SIZE)
++	if (n << 28 < ALIGN(TASK_SIZE, SZ_256M))
+ 		mtsr(val + n * 0x111, n << 28);
  }
  
-@@ -146,7 +145,6 @@ static __always_inline void allow_write_to_user(void __user *to, unsigned long s
- static __always_inline void allow_read_write_user(void __user *to, const void __user *from,
- 						  unsigned long size)
- {
--	barrier_nospec();
- 	allow_user_access(to, from, size, KUAP_READ_WRITE);
- }
+diff --git a/arch/powerpc/include/asm/task_size_32.h b/arch/powerpc/include/asm/task_size_32.h
+index de7290ee770f..30edc21f71fb 100644
+--- a/arch/powerpc/include/asm/task_size_32.h
++++ b/arch/powerpc/include/asm/task_size_32.h
+@@ -6,7 +6,7 @@
+ #error User TASK_SIZE overlaps with KERNEL_START address
+ #endif
  
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 4f5a46a77fa2..3987a5c33558 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -301,6 +301,7 @@ do {								\
- 	__typeof__(sizeof(*(ptr))) __gu_size = sizeof(*(ptr));	\
- 								\
- 	might_fault();					\
-+	barrier_nospec();					\
- 	allow_read_from_user(__gu_addr, __gu_size);		\
- 	__get_user_size_allowed(__gu_val, __gu_addr, __gu_size, __gu_err);	\
- 	prevent_read_from_user(__gu_addr, __gu_size);		\
-@@ -329,6 +330,7 @@ raw_copy_in_user(void __user *to, const void __user *from, unsigned long n)
- {
- 	unsigned long ret;
+-#define TASK_SIZE (CONFIG_TASK_SIZE)
++#define TASK_SIZE ASM_CONST(CONFIG_TASK_SIZE)
  
-+	barrier_nospec();
- 	allow_read_write_user(to, from, n);
- 	ret = __copy_tofrom_user(to, from, n);
- 	prevent_read_write_user(to, from, n);
-@@ -415,6 +417,7 @@ static __must_check __always_inline bool user_access_begin(const void __user *pt
+ /*
+  * This decides where the kernel will search for a free chunk of vm space during
+diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
+index b3048f6d3822..2c7fadddae4a 100644
+--- a/arch/powerpc/kernel/asm-offsets.c
++++ b/arch/powerpc/kernel/asm-offsets.c
+@@ -330,7 +330,7 @@ int main(void)
  
- 	might_fault();
+ #ifndef CONFIG_PPC64
+ 	DEFINE(TASK_SIZE, TASK_SIZE);
+-	DEFINE(NUM_USER_SEGMENTS, TASK_SIZE>>28);
++	DEFINE(NUM_USER_SEGMENTS, ALIGN(TASK_SIZE, SZ_256M) >> 28);
+ #endif /* ! CONFIG_PPC64 */
  
-+	barrier_nospec();
- 	allow_read_write_user((void __user *)ptr, ptr, len);
- 	return true;
- }
-@@ -431,6 +434,7 @@ user_read_access_begin(const void __user *ptr, size_t len)
+ 	/* datapage offsets for use by vdso */
+diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/head_book3s_32.S
+index cb2bca76be53..c1779455ea32 100644
+--- a/arch/powerpc/kernel/head_book3s_32.S
++++ b/arch/powerpc/kernel/head_book3s_32.S
+@@ -420,7 +420,7 @@ InstructionTLBMiss:
+ 	lwz	r2,0(r2)		/* get pmd entry */
+ #ifdef CONFIG_EXECMEM
+ 	rlwinm	r3, r0, 4, 0xf
+-	subi	r3, r3, (TASK_SIZE >> 28) & 0xf
++	subi	r3, r3, NUM_USER_SEGMENTS
+ #endif
+ 	rlwinm.	r2,r2,0,0,19		/* extract address of pte page */
+ 	beq-	InstructionAddressInvalid	/* return if no mapping */
+@@ -475,7 +475,7 @@ DataLoadTLBMiss:
+ 	lwz	r2,0(r1)		/* get pmd entry */
+ 	rlwinm	r3, r0, 4, 0xf
+ 	rlwinm.	r2,r2,0,0,19		/* extract address of pte page */
+-	subi	r3, r3, (TASK_SIZE >> 28) & 0xf
++	subi	r3, r3, NUM_USER_SEGMENTS
+ 	beq-	2f			/* bail if no mapping */
+ 1:	rlwimi	r2,r0,22,20,29		/* insert next 10 bits of address */
+ 	lwz	r2,0(r2)		/* get linux-style pte */
+@@ -554,7 +554,7 @@ DataStoreTLBMiss:
+ 	lwz	r2,0(r1)		/* get pmd entry */
+ 	rlwinm	r3, r0, 4, 0xf
+ 	rlwinm.	r2,r2,0,0,19		/* extract address of pte page */
+-	subi	r3, r3, (TASK_SIZE >> 28) & 0xf
++	subi	r3, r3, NUM_USER_SEGMENTS
+ 	beq-	2f			/* bail if no mapping */
+ 1:
+ 	rlwimi	r2,r0,22,20,29		/* insert next 10 bits of address */
+diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.c
+index be9c4106e22f..afc9b5cac5a6 100644
+--- a/arch/powerpc/mm/book3s32/mmu.c
++++ b/arch/powerpc/mm/book3s32/mmu.c
+@@ -225,7 +225,7 @@ int mmu_mark_initmem_nx(void)
  
- 	might_fault();
+ 	BUILD_BUG_ON(ALIGN_DOWN(MODULES_VADDR, SZ_256M) < TASK_SIZE);
  
-+	barrier_nospec();
- 	allow_read_from_user(ptr, len);
- 	return true;
- }
+-	for (i = TASK_SIZE >> 28; i < 16; i++) {
++	for (i = ALIGN(TASK_SIZE, SZ_256M) >> 28; i < 16; i++) {
+ 		/* Do not set NX on VM space for modules */
+ 		if (is_module_segment(i << 28))
+ 			continue;
+diff --git a/arch/powerpc/mm/ptdump/segment_regs.c b/arch/powerpc/mm/ptdump/segment_regs.c
+index 9df3af8d481f..c06704b18a2c 100644
+--- a/arch/powerpc/mm/ptdump/segment_regs.c
++++ b/arch/powerpc/mm/ptdump/segment_regs.c
+@@ -31,7 +31,7 @@ static int sr_show(struct seq_file *m, void *v)
+ 	int i;
+ 
+ 	seq_puts(m, "---[ User Segments ]---\n");
+-	for (i = 0; i < TASK_SIZE >> 28; i++)
++	for (i = 0; i < ALIGN(TASK_SIZE, SZ_256M) >> 28; i++)
+ 		seg_show(m, i);
+ 
+ 	seq_puts(m, "\n---[ Kernel Segments ]---\n");
 -- 
 2.49.0
 
