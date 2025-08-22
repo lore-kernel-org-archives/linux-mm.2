@@ -4,118 +4,192 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB5BBCA0EED
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 22:14:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5ED60CA0EED
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 22:55:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC5588E001C; Fri, 22 Aug 2025 18:14:58 -0400 (EDT)
+	id 4BB9E8E001D; Fri, 22 Aug 2025 18:55:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9DDF8E0018; Fri, 22 Aug 2025 18:14:58 -0400 (EDT)
+	id 4936F8E0018; Fri, 22 Aug 2025 18:55:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB2C78E001C; Fri, 22 Aug 2025 18:14:58 -0400 (EDT)
+	id 35B1A8E001D; Fri, 22 Aug 2025 18:55:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AA25E8E0018
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 18:14:58 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 58C571603A8
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 22:14:58 +0000 (UTC)
-X-FDA: 83805799476.08.2132DE0
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 6AEEE1C0004
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 22:14:56 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="1gxyxU/9";
-	spf=pass (imf20.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755900896;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1EE238E0018
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 18:55:25 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 635B281556
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 22:55:24 +0000 (UTC)
+X-FDA: 83805901368.04.85DCB4C
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2066.outbound.protection.outlook.com [40.107.223.66])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A08DC180006
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 22:55:21 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=llHF91lR;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf24.hostedemail.com: domain of vdumitrescu@nvidia.com designates 40.107.223.66 as permitted sender) smtp.mailfrom=vdumitrescu@nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755903321; a=rsa-sha256;
+	cv=pass;
+	b=PnUHS8p+mJlqDodCjj7BpgdXDlizdA/98SWQAT87wjwWIj5oxgaNqP6VXFpcx2ZeVgSzqQ
+	YG6m7pbvy27LlYkkBTf7Roq9BReAvSrRJ/hQIENVYce+Fv5yoopiJ3JJEN7QsTIFoSOPv0
+	Wfr8oVIxk7GHZyB0CjWoqEDdlNoZc5A=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=llHF91lR;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf24.hostedemail.com: domain of vdumitrescu@nvidia.com designates 40.107.223.66 as permitted sender) smtp.mailfrom=vdumitrescu@nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755903321;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zzZSfviXYIPEvuX2dWBngQDyNZJlgkc73v8w1kdFqFY=;
-	b=5kbVsAy7/E8TlwtGjPbaairwRVeV++vhsojSAfDOvHjrlUj06jeXGVFDjDu/dpZ3FvAqwk
-	/EXwaWovKXMzqUZ3MhCMuYjkpfExHf6C24JC6bgpy1DLNsi53PdKjTGodeQKAIFHrE+5ha
-	QzjHZ7Nl5zHiMmvYZmadNKYPcDNAhkQ=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="1gxyxU/9";
-	spf=pass (imf20.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755900896; a=rsa-sha256;
-	cv=none;
-	b=PcYAvczg+f4+N14NLYTed3ITc6BzufDehH2Ftp4l+PAMUkAkhqDZFN3IbrpE5Iquha6pm1
-	WbIwW3QifQ1qaRZMrQs1bl7NW7FQdBwOTZ2F7AZxVaUjUyKz7Gyyt8EUFYme0VTleLdAQq
-	Y276GRtvMu+kUyFVwRNRm9TEr2RrhEc=
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4b12b123e48so106331cf.0
-        for <linux-mm@kvack.org>; Fri, 22 Aug 2025 15:14:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755900895; x=1756505695; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zzZSfviXYIPEvuX2dWBngQDyNZJlgkc73v8w1kdFqFY=;
-        b=1gxyxU/9DaM4VXlX3LMw1PUCMt/nOdk6Os8MAfT4rwAcy76QnnfpaQYkpkEZZTaStT
-         QMjfNvvykm9nrT7MDxogMCipKenfGt8en5ttJZlajs6Np6GDrb6Q3qpMpOLFIq7EnR0d
-         959Fo9+FUZwhDLLhlAyKcYEGhyC1h/0omSpzY3k3ZCMYCIsdAhgtyZU8ejASP7So1RVc
-         OMI9CZDlpQEmt5d+vs8OBJBRHe00NATuHletcnbBYTzBQ+xbXHLsWT2zx0xEaY325SV5
-         O32bfx5Zg+C3p3NUX0TI7hWIrcaHWBPtGCphkmBj0NyMVfqB8iDnrAMdw7OXijAF89oJ
-         c6Nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755900895; x=1756505695;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zzZSfviXYIPEvuX2dWBngQDyNZJlgkc73v8w1kdFqFY=;
-        b=K2UFxb33bXca/ANjBR0iNkzJnfhJJnqWEZ5kcENly7iXRfVdOwR+QtqD1nMgsa/iYa
-         zQ6X3hvLZi0DULIbUP/oN5ep1AzawapyUqVQO8RWGWTA8jOC+jpE0h1MdGq9WawMFaZx
-         2dtXiUajqq/lYRMYSkxNa2Dbbs6HpAHArDsaTUwC0kA/mAC731nI3EbP89qxfD8RXh6Y
-         Lt6LQ7QgJr60mOIcN3c3Kcp1/5rmg1zrkY+Wi2korLvo91W4QmtKK37O4C/1h6wGhmMs
-         n+fLowz2jYk+ZF9sBTLBZ9BQTSPojReBKSRf/+lJsk2wh/qcLS3+MtGfQ2VgxedGVTGz
-         tvUA==
-X-Forwarded-Encrypted: i=1; AJvYcCUEo9XYs8pa5rsHtsEfSBMtr2IHk489oMHYos67y9TL7005NJtA9xT+U1hLQOtC0cYJsRA7leZHMw==@kvack.org
-X-Gm-Message-State: AOJu0Yw/mzVw+2PRksM5egbUTFvPfX2Le+cZir/7V7Ks8xUF1ANKQ6Mg
-	vxZM4198RycZ1ZghY/9empP+bqiWurjPQwxbI+BSHCFHHHrG++kBtb2yJ3FyXhy6wCprGYxsM0w
-	YcOLHZZV+6K1XJ+ACjxBvXUuL/pwuEyKJ1zBIdwqG
-X-Gm-Gg: ASbGncsNeg4PRsArBgyObF0CtSXr1jqbBbZhSZ3kyXWXMfGb6S7bPW/I4NbweykuQoO
-	MOvwPUdeEfKohy67EY8SfEjri/+mdh+rymn0fbOgz66EqMJK9zkNgyyUcUJgtcqrlv4yaQs96Vz
-	bBvIpyG0xyG1hhZG57TNIS1Th2RNF52Rl6uTOqNzHs2fNJ/llYqGsFgS3Oy849nhbpCW7lH0TYI
-	y9tpN5ktq70
-X-Google-Smtp-Source: AGHT+IEpXpizlhAN0qep6IIUs4y1op5hwhDyRU508ixFdh/d1QuIamAU489hb4IBBG79NUE+ofbFqU0oW+oeUXhRZeQ=
-X-Received: by 2002:ac8:5fcf:0:b0:4a7:179e:5fec with SMTP id
- d75a77b69052e-4b2bc44cf74mr495891cf.15.1755900894992; Fri, 22 Aug 2025
- 15:14:54 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ktGT4bbvvZ7I1Q3qVa27WlbHjl1spnruvu/v1iAFkFg=;
+	b=OZfDWY5mmE957NpL44+6xwlnCDPSUaZXpJj6Zm+pESBrlKWjZoRwLsZASh7Dx9dRoyK5om
+	srIgta/j0i8sQSqlByqEkOjuxuxx3/fK2CHlk3sH/b1QDToICFsIH1vSDoDBBRQuS+QsRp
+	RRB1ZpGL8P9ICLAbBrodY+e/djJkX2Q=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kyFBKSHVq8p8xg2tpkwJG8Xlu38FxhthZUB85B9NhgZVh1YcQ6UgU2ov6rjWGVL4vWE4VmeegMwe+1hVvsqgb69tAT6yWFjIjDqtZC4v1x92tpZG9HZlNjYxQQr/Hm20+hZ2A6tEtvdqtZCwQChW8AVc1IgrHBLn+4/x8velGN9F1piI4ydDHPq2mwW27bA0UjwTQ1CsZO0GC1zhdnxgwPBiKoWSHJGakDR8VF2J0y3tlteiL5Oyna+3KyR7cINFjTJMl21XMNzxquFEhdKIRyJSuCOmWA9d1ijs7zMAFh5jikl3RCxL59dMWXFwueIedsdLD7Rf78zywNXCH/lNUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ktGT4bbvvZ7I1Q3qVa27WlbHjl1spnruvu/v1iAFkFg=;
+ b=jRFA33tW0vmksusmAsIFH2ffjm3XDg+cj3q9Me/ajBwVpepR6y4/y5XEYiqhO96ZEvx3WlhZCXTIIZ0o9jcVGXAVFoNcbbUon8YtkJ+C1kDPksf2AIzF3v1d8wcHtSOYArET0Q+8pKh1o1MbwKRyI7GI1tHAM5wH5DIht6WHparwktc86agJHFok9+dQSkKiE+3lfM6ByEFYWA27dNHLM3Krma0KeGmrDRH+5FD8NAUf4Aql2cNcf5KyLO6nm8n+Zd+heNMHV9bpkw0LZ/eYSq8J6kybnJhNifNFFA3xshBYC+Rpp/yW0l0NzCSD050h1l+EmiloIqO16CSPsB7bdQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ktGT4bbvvZ7I1Q3qVa27WlbHjl1spnruvu/v1iAFkFg=;
+ b=llHF91lR8MclaTojnEN+zZm5tEIsN1MSVIA0lD/QZKDu1T2GrZbUcVFBrh8g0ex8KpuvP69Mu1rSlnI3JyQdaeZeGfaSiOqc0wZ77eL3Sx4S5rRPi3m755Ov3hWnMUxAWNHRix+dorHTXzfqSLWsdQIGgOuQYQ8Lrb4AhXJXJu9NSlwIXOjhlyyvbL+MKUB7me+iCL/HQ7Uf97Nqb8kULErcg5mMPYGUog5sBVs19iI3BCFCx7IOXzIPA/lT10hnKndnx3K0QLa8IFynyHHwu0jYg04tOZ2KecZP3l+b5n7ZQ2BAQe80G6AIO2TFVecEG1tSlHIpr6ptBBjQzcoVQw==
+Received: from BL1PR12MB5205.namprd12.prod.outlook.com (2603:10b6:208:308::17)
+ by MN2PR12MB4126.namprd12.prod.outlook.com (2603:10b6:208:199::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.22; Fri, 22 Aug
+ 2025 22:55:18 +0000
+Received: from BL1PR12MB5205.namprd12.prod.outlook.com
+ ([fe80::604c:d57f:52e0:73fe]) by BL1PR12MB5205.namprd12.prod.outlook.com
+ ([fe80::604c:d57f:52e0:73fe%4]) with mapi id 15.20.9052.014; Fri, 22 Aug 2025
+ 22:55:18 +0000
+Message-ID: <ab22061a-a62f-4429-945b-744e5cc4ba35@nvidia.com>
+Date: Fri, 22 Aug 2025 15:55:16 -0700
+User-Agent: Mozilla Thunderbird
+From: Vlad Dumitrescu <vdumitrescu@nvidia.com>
+Subject: [PATCH] percpu: fix race on alloc failed warning limit
+To: Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+ Christoph Lameter <cl@gentwo.org>
+Cc: Baoquan He <bhe@redhat.com>, Andrew Morton <akpm@linux-foundation.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY3PR05CA0028.namprd05.prod.outlook.com
+ (2603:10b6:a03:254::33) To BL1PR12MB5205.namprd12.prod.outlook.com
+ (2603:10b6:208:308::17)
 MIME-Version: 1.0
-References: <CAJuCfpEWVEqsivd7oTvp4foEho_HaD1XNP8KTeKWzG_X2skfGQ@mail.gmail.com>
- <7944006e-8209-4074-85da-14f5545cd8b6@redhat.com> <Z6H4qCZDthSpI3nN@raptor>
- <CAJuCfpHZFAH4YvzekBgL2Np9UE95tw6ueevxapFzLXpf8UeoqA@mail.gmail.com>
- <CAJuCfpFyJBf1PX_d6NKDVSgg3EhXcbebVCYjMMpti6d5VnAJwg@mail.gmail.com> <CAJuCfpGghAELOpAxcUrAsGt86th-faAdOebw0SfYesS0+2cGmg@mail.gmail.com>
-In-Reply-To: <CAJuCfpGghAELOpAxcUrAsGt86th-faAdOebw0SfYesS0+2cGmg@mail.gmail.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 22 Aug 2025 15:14:44 -0700
-X-Gm-Features: Ac12FXzoTVSLJSaXdsfu2-ndoCaY5thYL1IaQKwkf2fWyWMlXOTJm45tQ7njKzw
-Message-ID: <CAJuCfpEXBMBTPB6j3OS9uaKT_NbyqivnpA35hRYRiPikgyO6AQ@mail.gmail.com>
-Subject: Re: [LSF/MM/BPF TOPIC] Guaranteed CMA
-To: Alexandru Elisei <alexandru.elisei@arm.com>
-Cc: David Hildenbrand <david@redhat.com>, lsf-pc@lists.linux-foundation.org, 
-	SeongJae Park <sj@kernel.org>, Minchan Kim <minchan@kernel.org>, m.szyprowski@samsung.com, 
-	aneesh.kumar@kernel.org, Joonsoo Kim <iamjoonsoo.kim@lge.com>, mina86@mina86.com, 
-	Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <liam.howlett@oracle.com>, 
-	Michal Hocko <mhocko@kernel.org>, linux-mm <linux-mm@kvack.org>, 
-	android-kernel-team <android-kernel-team@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 6AEEE1C0004
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5205:EE_|MN2PR12MB4126:EE_
+X-MS-Office365-Filtering-Correlation-Id: c7d6a4c4-a910-4fc4-7784-08dde1cef72a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RWhwMW0wYUR5c3RqTUVVSktwanc5RzZMMHJYUDFxMlBVWWk2Q0svQlB6aUI3?=
+ =?utf-8?B?N2JEbEhOOWo2V1MvUkNIN1p5V1Z2aTVvVDF1NmErY2FBMXF0TkpDak1QNHg5?=
+ =?utf-8?B?Z1RTOGI2Z3R2SVRrRXhyWk43MERFMWVtbmhjajczRW53K0dsOGF1ME9EVUN6?=
+ =?utf-8?B?WHE0SFgxMHhjN1NHdVdrK0ZHL2pyQ2xlL1JrV09YOXYzLzkyQVFMOFdTdk1l?=
+ =?utf-8?B?V3NMVFZuazRUQVVidWZkMjZEbzh4MTl1bXlnZjg4cnNXVjdURXBwZFJOKzlG?=
+ =?utf-8?B?S010VjNtZFduUEp4VHhHbzNvOU52blJlbUxFVTBodlNucHdRdjZDNkd2OWtz?=
+ =?utf-8?B?QTF5eWZIbEk1ODd4NjBzY2h0TnRWbFVXWU1JN05lbWh0V0xIOTBnaGN6MmI4?=
+ =?utf-8?B?emlneXVMUmZoQ3VHSlNhOUNldW9uWW1GVGhhRko5aVlzWHNrSGpZTXpCSWph?=
+ =?utf-8?B?SS9EMmNnQ2hzdkxLemlRWEJ6UUZFTVJ5MmFOSSs3ckZ4RTRMdFV5T0JUSDZi?=
+ =?utf-8?B?WWJUaitXYjhDSHBFbFhXdURRL0pZRVpzMVdvbHk3NDUwMnU5cWUvK3hiekgv?=
+ =?utf-8?B?aUNuUWx5Tm9jYWxTY1JjQjY0NUhZRnhjc2pBMTdncHBCM1FqMXNlSXluTS9E?=
+ =?utf-8?B?bFBtSVA2ZG4rek4rM0dlNXU1MjlORGc4NmVZUEFqLzV1eVBKN1pJcTgxTmF3?=
+ =?utf-8?B?d285bW03L0pmODl4SFJDVytSSVptR0hOY1phWDBCRitJdlhJa2o3bTJoOFZC?=
+ =?utf-8?B?a1VDMTBBdXBGdWlYcDJ5Y1RxS0dDbVhqWis5bDlZQTVXMGRYQU4vMStVbVg4?=
+ =?utf-8?B?WEtrRWMxTWlxY0dwbTFTcFh5eThZTkpXQkF6WDREejRQZCtwWnMwY1JFeWpZ?=
+ =?utf-8?B?T3AzNE1rem9EU0o5b3FGZEExM3YvRFplMUpzY3oxVkZ3S3puV0I1clJlQUs3?=
+ =?utf-8?B?NWF1c21iM0FScjhQdUdnM01McUtzWTc0eTVyQlZCT2NOdDVNckVvWnFqZVBY?=
+ =?utf-8?B?aWNOY3ltbkFDeWpaKzM0TjFwYnJxb0dmK0ZoYXU0VXZFQnpPNklmM2NtdFh1?=
+ =?utf-8?B?dFdPR3V2bjlBQ3IwYWtvVGxiOE5HbEh6TkxHUWlXVk9Kcms3UGEyTEtHalR3?=
+ =?utf-8?B?MVdiTjd5QUIrYkdpQ0I0WERjSlgyRWV2ZGRFZkFpa1FzZisvUnU3cG43NGJH?=
+ =?utf-8?B?aTk3ZXl0aXVPQkxHWlNpOHRZeU9od29IWEpEMUR3ZE04Sjg2cFRHOGlmcEg3?=
+ =?utf-8?B?VWZ5SEhzYUF1dndqWjcrNm9JRWtyRG1wbXJzbUh3WEFpM21pL1poN0xUbWND?=
+ =?utf-8?B?bnBIRDNqa0U1c21oNWJEbVJhdUI2T2FLNVRHMnhsODRPZDNtbTNnSFB0UVFF?=
+ =?utf-8?B?OEVCRnhvbzZCTnI3dDFpclhkVFR5V21VUStRVWhNczRXOSt0cUJrcEJId2tq?=
+ =?utf-8?B?UjdNMHlTSE02L1A0NE5vYllaSkRub1ZNcS9LTkNzYWlpU2QxL2dGN0h5Y3du?=
+ =?utf-8?B?VDR5d1FrWkkvbGFDdEdYVjhkWDlDRU85Mms4NTJqcEFzcCtacXFCYVQ0YkRo?=
+ =?utf-8?B?ZUpMbExMVVFWSjBIQ3JMUUkxQklPdjlEVkFROGg0WXlud1ZYNXYvSjVEUFdn?=
+ =?utf-8?B?Ylc5Z2NEUVkvT2RNc0JKY0FGM1FRaTZFSGpPMmNNN1ZLdEtPa3Y0OFlFVkYr?=
+ =?utf-8?B?bmhBZE1vL3pzVVlWYTRWeGtHZTEwQ2x6OHV4S25FOHprbGRJcFlMSVkxVXMx?=
+ =?utf-8?B?V2tWM1d2a2lxL3dWTDJxUXhPTXgyUTd4WC9FMENRTDBlQ09aWHBwTDM2a3Zx?=
+ =?utf-8?B?eVV6RFZSZ01Tdmt0emxVcVNUTFNBL3gwbk54WG8zSmNYVjRzYTJ2VzhFT0Z1?=
+ =?utf-8?B?NnV2VGVrSnhMME0zVUdhcElOWDAzU2pMSUZoNjZ6RCtMVmdmUXpub09SWWdM?=
+ =?utf-8?Q?BWewsbJxMvI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5205.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Uzk1eDZ5bU1EQmhhck1DQlZhMVJHb2pERStKVTk1cytzb2NIM0cxcWhLUmsw?=
+ =?utf-8?B?cFNTMGQrTEJIQmxoVC9CSFlGOTVoTU1ZUG01cW9XTDBGMCtWYm5xNUVOUDlh?=
+ =?utf-8?B?UjVZL09EbmZKUW5LbzUvM2RQdDh6UE9qbkx1amQyRnR0NFpOSFFMajZhc3NI?=
+ =?utf-8?B?Z3Z4Y2oxcVkrRGRzVWVETmxkY3p2MVc1MUJUVmtXdEZBaGFBNnc3YU9Qa01W?=
+ =?utf-8?B?a0VoLzQ4b2cwMlFVYVk5UmF5YVZqS0pBZHc3bXpQdXBwYTh0RXorUXFkeFZJ?=
+ =?utf-8?B?VVZhUzFLaVptYnlJSEErTzQ4VHRVc1ZYa2lyNzVkNU9YQmlZNGxZSXpvQU9L?=
+ =?utf-8?B?WTBHSDByYk5tTW9sdFg0S1Fha0YyMXRJd3lidk9iNDFoQXY1eG5ScUhlTVFZ?=
+ =?utf-8?B?a3NkY2M2dnVCUjkrRGsvdTNlTmdxeUFmV0pWMmxQRnd6MEJiSk1xV3dHcnVx?=
+ =?utf-8?B?VDVVOWc4MlpWQU9jZEU3b2xPODloNmoyZXZZM2x4WGFRaWV5S0hjQ0dBSnY4?=
+ =?utf-8?B?VTFGU2lGaW5iWk04NG8vOG9JckhUY0cwWlgrTjlDTUU2ZFhSUWJtajdKajBi?=
+ =?utf-8?B?c1VvclFqOW5yQW1ZSU9QaFpEbis0YnJmN2NieXhoMXM5Q1h4a3JIUTNVanlC?=
+ =?utf-8?B?SFk1cndReFV3Y0RzTDZub0JVNDVKNlJhSllqWXF5WW8relpEY2Z3Y2JBRjFp?=
+ =?utf-8?B?dUJCemYzVUNlb2hnbm10aWVlT2NwYXVsQWRyeUNhRytUYlNhNzhuWlIxR08v?=
+ =?utf-8?B?dUlZOEpoK1E1cGN6b3AzZHMxU3A3UzNQWG1VOVAxejJiWnkwZnBUY3YyekV4?=
+ =?utf-8?B?RHU4TkU5WVZabkQxdGlrcmM3cWRXbE43cUc0TlNMVVR5TnIyM1VBUDZCdkhs?=
+ =?utf-8?B?VUw3WEhPc1QydXlVM1RvT1FBbjhwcGVsUDVvTzNPN2NGbzFXTEo2eUdSVXgr?=
+ =?utf-8?B?UzlWdG5Vb1lzZ3d6NU5pUUdqQ25JdkVyT2dsVlRkbHNvcHhpZnNoclB1dTNP?=
+ =?utf-8?B?ditOd05uWXY4Vk9zclVVU3RXUlRscXVtS3Mxc213SStlazkzc3J5cmNOcVhS?=
+ =?utf-8?B?eFdmMXA1NzljcjFWdkhlNFZtb2dENXJFdHV5ZUpPTWZqdlhJc3J2d0lzTUlp?=
+ =?utf-8?B?UFpRTnluak9OQVo0Wlg3L2JNNkpoN0JoYWVXTXNFWmFlVGo4OGtnRHp3TlB2?=
+ =?utf-8?B?SWxIR2kxT2JuSnBsRWloSEo3RGFCY1J0eGFJUXpxT1VHV2lRZnVEaWwvUkM4?=
+ =?utf-8?B?dzNUUnU2Y2NkSGQzYUJUMGk3aFA1b2JpUGJPM2M1d1JDTDVWcXpqV2lMdEsv?=
+ =?utf-8?B?ajlkVm1rTDVoeXVac2VMaHpCMXBqeUt0U3hHTlNvSThKU2tiYTBTMkJtOVJw?=
+ =?utf-8?B?L3NOaXBuTHMzRGFiU1ExRVRXOFBLVFdMaDdScko4ZFVJNFVJRzM1djlvL3U1?=
+ =?utf-8?B?ZGFFam9nTUtKd3VrN3BtWk93L2UxODlWVGVrc0E2YTgvRklmVVBwZlpUL0hF?=
+ =?utf-8?B?RWFNWnhnV0s0NWdnaGRqSG9SdmlzRDl5YzREV1hqeWRVUnQ0anNYZzBMMk5h?=
+ =?utf-8?B?Q2k3dFF2eHdUQk1FaUIxRVdUT3Y5ZUxvdkRRRHc0ZEdWRjBxZWtWdmZYSGli?=
+ =?utf-8?B?UzVTSjh5Lzk2UklQQVdjN0ZYbmRRbDlKUkpUM2FZSytUWlIveCtSd09kYVhr?=
+ =?utf-8?B?RXdLZ2MzZE1iMzAyYWhJMS92RXJ5c3owWTZ0MFhYMFVkbG9xYUMxdVFBcG9x?=
+ =?utf-8?B?VG5XeEVTaUxuVk5qREc3K0hidVFSalJjNmVQV1pVN2FhMVYvQStSVG1aTFdB?=
+ =?utf-8?B?aUlBZVlMWWtJcXZlRzBsb2NJNVhjT0c1NEw3dXpzZ0NCSERwZE40Zlg4SjZl?=
+ =?utf-8?B?UFE3SnlMZnpac0MxUG1YZGNFY2FvblFGQkljQ2w1RHNuMjZ4YWFGVGFmZlIr?=
+ =?utf-8?B?a2tyblJYckdxS3NVRGZxNm1sTmxObkxhNGFObkpxSngySVJ0cHNtb1NJYzZL?=
+ =?utf-8?B?b3NEVno3OFZLNk5VSHJZRDUzRm9OTFFmUXhDbjZyVEllcmR4WmoxZGxCVXFy?=
+ =?utf-8?B?cTFIWi85dXpiczdqbWY5NFlSUE1Qb2FyOWNsQ0ZXS29aR3pFL3Ztc0RBVWxx?=
+ =?utf-8?B?VDJRUHhUcUs5N3duYlJsTHFuZGt0R1BXQkVlTWpXY2lHYTllTnJqSDJiTTVo?=
+ =?utf-8?B?Smc9PQ==?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c7d6a4c4-a910-4fc4-7784-08dde1cef72a
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5205.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Aug 2025 22:55:18.4743
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BWpMdqcTDM5KmHU+PQ8jniKntyCQWg6j/N3gWvqKZ1LJG/ivNFPD0V2Bqp4N1YTW4Q8O8hak3QxocP1961au9Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4126
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: ezz3ujdeq64pq3ukkt1jq81iut9crajh
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1755900896-750387
-X-HE-Meta: U2FsdGVkX1+SJi3vMDfwMTJMz9UUVj2AgUkb7hqNGmmdAysceJ6ql54RB9XUrrCyZBZAkxRNZmBmQDuuHbkXSjaa+XuJGKBvKnz8s+JAOzNVRWXKHZp0sVsQUbjA3iQbHL21Ra7jLBg6wLsaU/mXj9QgJDG7pXOMm/ioXu0zqdvgWVXRsfCVNMiZ9eNEPwUrKhtua0MWpzLKfw/owE12nv85qGQQNiUL8j47PBOMQ1aQZQCNhDdlzaz4Su9JXMp8AeQ9WXs2pxalx8C3/95PyXGJ9cK1814OP9trcstmI8Xc1K+v5ae5ZO2d0xcprAM1CxfOIJijmDGCRmORNbCsjsRbJMEJ1Iqs1i++tvDyhdWNsKw6typSckO8VFSAw1Bar4My4lAjX3SQLmI4K7LdB8+KHqiq2Nkr6pZQYDMkhKf2oWG/PNiq6Cp1Dgh2smfxGwmjlitHN2szevlwSMSpstCcs7GK1BQXGme1ShIGBJXkJPM+PAmuK+7J7vvieiHn24AWXvF8SYVSICCk+im3L+JI1Va9rtumVZGfzVbAWa3gc8mbJSqYnXHY5db1Mv6n3zXduEIBr4jfplMdkB4wl6OkG8akZ1uKfnGdpCTjSkVZ5QJh4a554lS7ElRzs9CEqV6mgXzNs82MKwOtI0gkeAS/EJz+XXp8RDmiyfdJsOPLakacfYpm0fk7BAoAzEZiAkuxc8QJrXoEQHjuZ+uJY1RsKQL3jvcsjtOK94THrn1u0F4WIq3Wqiv+myFpH25IFLedPQOzheysO8E+o3ZZmW1WKUq8UZNvN41f3O9YHZ0f/UNSKorsDJ2HCWhg4Y4iabOSk1opAtZPDS/RsHAeJY+EfDy4S5SdDOQZqPl1c3RX2lLPlbOTfVlx5r6FY+pA4qCqaUQG0nS30lmXHzaDWy8x9xkAKJPllbng58Eq/LoZnlUpz7GafPYV5hiV5heovRXbSprDO1CZunNd48W
- HwtH0DyI
- 35FmyXRyAfkDIZUUrSz86iMgJuCo7nSsM3PlJ2uquSi1rOYF9V1kmCfs0OMN1FJNcWM4edet4oE19//6u9HZfC5HOj799lc+JQM77kIXPevc7R7rZ8V23JotnyxrPa5B8pemozKfMrl2UHe6Prp1mL7thinTTd77mtg8zsgaWWBOOKwtL8szpK3aNPJZHR8o/nGyrxuAR3FExNm6UD/9i7ONL1wzbU7X6DpVApsmkvZE0tIYfPK64YKGSzNm7iio8EZizA3zvZRYKmHUG+1xDZqGxPmhuSV++yp/rW3bDB8m10B8waoL9y34yDEUBPFSf9nzYiG3BJUKpEMI=
+X-Rspamd-Queue-Id: A08DC180006
+X-Stat-Signature: 1copk5jc465qh9qtho1hg47knh9jrdow
+X-HE-Tag: 1755903321-828370
+X-HE-Meta: U2FsdGVkX18BDnf2bUKxGwZR3Eo+z20fhvuYrHkhOsTLVeMjphRfbe9VsXR1yNF0+gBlBC1H8SWDjMwseSUQoLssCL8ySBC7pVsFjeSUGr6sQ9legSlNqEbLwElGVQ9t3vhJKevYfjx7w5+qMKzTWHxHUtx2R4iRqYQ/NeGGP+ergkWz4327zL0NRYS6ONwjeG/KA2tItL05HP7igR7p1/OZ4nTLRvOi+fXaSJ142PYQN9JD1hQHLgqokS7ZbJ9QzJt0JOMYiDmbDIPHhoXcnnTgpOeP49hbFOClEE27z7W8uh56tb+K/t4aJdrP/D2rDO9W6q/SRAXq38B/SSPVMjFFaEYKMU6V6zJRBqAbfMxxmfS/pGqy5UuoLVIOslwOsKtom+ZGTojyUz183Y1Sqxx19K7nEcR4l6THDmnQSr4oxO+cdneEpMgP2WmtockfFQhncqzTijygs3z6H6KAoYwSlpSUFXKNFSvuKtxOIICZQM2g6EMg69Wnk6UfQDF3a4r45zwTC9hwWHrJwnXcNkBxX9fnDAVP4ENt9Okp2wSlP9cCa2MpFYZxspM0vK9nB0iPcKdup5nxRIOwK8+he8ruXrRTNnwVmCDV509YIJW+M5Fz98WmS1uHC3M8Aa5jQjLNScYY5t37+qi1BtsLwA33wCsqERzSBBZze/bQ/cvTiak2wImE5qdlVrzhrJzdu2bnJyLfubwSX7dXTpuW3CWY9kZAMHvRaST/6lIgQXdI9TTfb7syJuT1ekEU/gyhRT0g1CXGZi4XEgMPjLskKnRimUGyHNGNosiu0y9xBdzAk/Y887ohAw98jNgs0l+oJbsEjN77Uk5ESQ5bp2lmk44GfokYwuh8ftvyBFSdQtfaZHhPv3YUJvXPotjh3MkoRZ2ffEX1SyL7CLMKu+bfuOKFFFkpOiKbCA69OUmnQUbxuOfd/QNEY5LvRc7jgxgfovYDVOP7JyFS1NOsGaW
+ T8LTy3z1
+ fBpkHKfiNy1Y1r/vYskQGj5HSB5Kk7akeMI5yCHxQgTAHQiolsmBrO05O7wUSCTImdDW0lmDeR9edHqtg1fa7Ov5oLXDSnXiddMIrmw1zSCeg6poNZGlne2pCcmJVr5/dlAMC3IFJyjXCO+zX3VZBLGmHG/9xqXfhxax5pPzzygGxTqQulvkkQ08ldhakSlpBspBHc3AJGoulr1WLELR8mcRgj+DuQsPJQJC1cUFMaZKS2zJtmiBYhXvWLOwDGcQHgl8+0idkPU3kgBb1dVmzhdum5D6PsF0I7kckev4+q92SF5iwlXXc/ksUwqLYaqGijozVi2cJ0PLjeZ+z7Ykm9nODLdpFhYEcavBUIKf1a83D4KzrTnZHwe7SKGDGLgNxLRa/AzHsrYae0avm110bUiPJkozp7LtMI1fgTcftozWF1Hu0+bLkBnS79MRQrZ64QGd8sRGXZ/0fbJ9qhHsGVg8JO0AUrnNps8ylsFDD6mVQvn7VI9lVxYKXujMTdTbU5/9zWwI/CsNdn62O81PBpAfjDw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,171 +198,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 2, 2025 at 9:35=E2=80=AFAM Suren Baghdasaryan <surenb@google.co=
-m> wrote:
->
-> On Thu, Mar 20, 2025 at 11:06=E2=80=AFAM Suren Baghdasaryan <surenb@googl=
-e.com> wrote:
-> >
-> > On Tue, Feb 4, 2025 at 8:33=E2=80=AFAM Suren Baghdasaryan <surenb@googl=
-e.com> wrote:
-> > >
-> > > On Tue, Feb 4, 2025 at 3:23=E2=80=AFAM Alexandru Elisei
-> > > <alexandru.elisei@arm.com> wrote:
-> > > >
-> > > > Hi,
-> > > >
-> > > > On Tue, Feb 04, 2025 at 09:18:20AM +0100, David Hildenbrand wrote:
-> > > > > On 02.02.25 01:19, Suren Baghdasaryan wrote:
-> > > > > > Hi,
-> > > > >
-> > > > > Hi,
-> > > > >
-> > > > > > I would like to discuss the Guaranteed Contiguous Memory Alloca=
-tor
-> > > > > > (GCMA) mechanism that is being used by many Android vendors as =
-an
-> > > > > > out-of-tree feature, collect input on its possible usefulness f=
-or
-> > > > > > others, feasibility to upstream and suggestions for possible be=
-tter
-> > > > > > alternatives.
-> > > > > >
-> > > > > > Problem statement: Some workloads/hardware require physically
-> > > > > > contiguous memory and carving out reserved memory areas for suc=
-h
-> > > > > > allocations often lead to inefficient usage of those carveouts.=
- CMA
-> > > > > > was designed to solve this inefficiency by allowing movable mem=
-ory
-> > > > > > allocations to use this reserved memory when it=E2=80=99s other=
-wise unused.
-> > > > > > When a contiguous memory allocation is requested, CMA finds the
-> > > > > > requested contiguous area, possibly migrating some of the movab=
-le
-> > > > > > pages out of that area.
-> > > > > > In latency-sensitive use cases, like face unlock on phones, we =
-need to
-> > > > > > allocate contiguous memory quickly and page migration in CMA ta=
-kes
-> > > > > > enough time to cause user-perceptible lag. Such allocations can=
- also
-> > > > > > fail if page migration is not possible.
-> > > > > >
-> > > > > > GCMA (Guaranteed CMA) is a mechanism previously proposed in [1]=
- which
-> > > > > > was not upstreamed but got adopted later by many Android vendor=
-s as an
-> > > > > > out-of-tree feature. It is similar to CMA but backing memory is
-> > > > > > cleancache backend, containing only clean file-backed pages. Mo=
-st
-> > > > > > importantly, the kernel can=E2=80=99t take a reference to pages=
- from the
-> > > > > > cleancache, therefore can=E2=80=99t prevent GCMA from quickly d=
-ropping them
-> > > > > > when required. This guarantees GCMA low allocation latency and
-> > > > > > improves allocation success rate.
-> > > > > >
-> > > > > > We would like to standardize GCMA implementation and upstream i=
-t since
-> > > > > > many Android vendors are asking to include it as a generic feat=
-ure.
-> > > > > >
-> > > > > > Note: removal of cleancache in 5.17 kernel due to no users (sor=
-ry, we
-> > > > > > didn=E2=80=99t know at the time about this use case) might comp=
-licate
-> > > > > > upstreaming.
-> > > > >
-> > > > > we discussed another possible user last year: using MTE tag stora=
-ge memory
-> > > > > while the storage is not getting used to store MTE tags [1].
-> > > > >
-> > > > > As long as the "ordinary RAM" that maps to a given MTE tag storag=
-e area does
-> > > > > not use MTE tagging, we can reuse the MTE tag storage ("almost or=
-dinary RAM,
-> > > > > just that it doesn't support MTE itself") for different purposes.
-> > > > >
-> > > > > We need a guarantee that that memory can be freed up / migrated o=
-nce the tag
-> > > > > storage gets activated.
-> > > >
-> > > > If I remember correctly, one of the issues with the MTE project tha=
-t might be
-> > > > relevant to GCMA, was that userspace, once it gets a hold of a page=
-, it can pin
-> > > > it for a very long time without specifying FOLL_LONGTERM.
-> > > >
-> > > > If I remember things correctly, there were two examples given for t=
-his; there
-> > > > might be more, or they might have been eliminated since then:
-> > > >
-> > > > * The page is used as a buffer for accesses to a file opened with
-> > > >   O_DIRECT.
-> > > >
-> > > > * 'vmsplice() can pin pages forever and doesn't use FOLL_LONGTERM y=
-et' - that's
-> > > >   a direct quote from David [1].
-> > > >
-> > > > Depending on your usecases, failing the allocation might be accepta=
-ble, but for
-> > > > MTE that wasn't the case.
-> > > >
-> > > > Hope some of this is useful.
-> > > >
-> > > > [1] https://lore.kernel.org/linux-arm-kernel/4e7a4054-092c-4e34-ae0=
-0-0105d7c9343c@redhat.com/
-> > >
-> > > Thanks for the references! I'll read through these discussions to see
-> > > how much useful information for GCMA I can extract.
-> >
-> > I wanted to get an RFC code ahead of LSF/MM and just finished putting
-> > it together. Sorry for the last minute posting. You can find it here:
-> > https://lore.kernel.org/all/20250320173931.1583800-1-surenb@google.com/
->
-> Sorry about the delay. Attached are the slides from my GCMA
-> presentation at the conference.
+The 'allocation failed, ...' warning messages can cause unlimited log
+spam, contrary to the implementation's intent.
 
-Hi Folks,
-As I'm getting close to finalizing the GCMA patchset, one question
-keeps bugging me. How do we account the memory that is allocated from
-GCMA... In case of CMA allocations, they are backed by the system
-memory, so accounting is straightforward, allocations contribute to
-RSS, counted towards memcg limits, etc. In case of GCMA, the backing
-memory is reserved memory (a carveout) not directly accessible by the
-rest of the system and not part of the total_memory. So, if a process
-allocates a buffer from GCMA, should it be accounted as a normal
-allocation from system memory or as something else entirely? Any
-thoughts?
-Thanks,
-Suren.
+The warn_limit variable is accessed without synchronization. If more
+than <warn_limit> threads enter the warning path at the same time, the
+variable will get decremented past 0. Once it becomes negative, the
+non-zero check will always return true leading to unlimited log spam.
 
-> Thanks,
-> Suren.
->
-> > Thanks,
-> > Suren.
-> >
-> >
-> > >
-> > > >
-> > > > Thanks,
-> > > > Alex
-> > > >
-> > > > >
-> > > > > We continued that discussion offline, and two users of such memor=
-y we
-> > > > > discussed would be frontswap, and using it as a memory backend fo=
-r something
-> > > > > like swap/zswap: where the pages cannot get pinned / turned unmov=
-able.
-> > > > >
-> > > > > [1] https://lore.kernel.org/linux-mm/ZOc0fehF02MohuWr@arm.com/
-> > > > >
-> > > > > --
-> > > > > Cheers,
-> > > > >
-> > > > > David / dhildenb
-> > > > >
+Use atomic operations to access warn_limit and change the check to test
+for positive (> 0) as it can still become negative.
+
+While the change cited in Fixes is only adjacent, the warning limit
+implementation was correct before it. Only non-atomic allocations were
+considered for warnings, and those happened to hold pcpu_alloc_mutex
+while accessing warn_limit.
+
+Fixes: f7d77dfc91f7 ("mm/percpu.c: print error message too if atomic alloc failed")
+Signed-off-by: Vlad Dumitrescu <vdumitrescu@nvidia.com>
+---
+ mm/percpu.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
+
+diff --git a/mm/percpu.c b/mm/percpu.c
+index a56f35dcc417..c1a4089eb4c3 100644
+--- a/mm/percpu.c
++++ b/mm/percpu.c
+@@ -1734,7 +1734,7 @@ void __percpu *pcpu_alloc_noprof(size_t size, size_t align, bool reserved,
+ 	bool is_atomic;
+ 	bool do_warn;
+ 	struct obj_cgroup *objcg = NULL;
+-	static int warn_limit = 10;
++	static atomic_t warn_limit = ATOMIC_INIT(10);
+ 	struct pcpu_chunk *chunk, *next;
+ 	const char *err;
+ 	int slot, off, cpu, ret;
+@@ -1904,13 +1904,17 @@ void __percpu *pcpu_alloc_noprof(size_t size, size_t align, bool reserved,
+ fail:
+ 	trace_percpu_alloc_percpu_fail(reserved, is_atomic, size, align);
+ 
+-	if (do_warn && warn_limit) {
+-		pr_warn("allocation failed, size=%zu align=%zu atomic=%d, %s\n",
+-			size, align, is_atomic, err);
+-		if (!is_atomic)
+-			dump_stack();
+-		if (!--warn_limit)
+-			pr_info("limit reached, disable warning\n");
++	if (do_warn && atomic_read(&warn_limit) > 0) {
++		int remaining = atomic_dec_return(&warn_limit);
++
++		if (remaining >= 0) {
++			pr_warn("allocation failed, size=%zu align=%zu atomic=%d, %s\n",
++				size, align, is_atomic, err);
++			if (!is_atomic)
++				dump_stack();
++			if (remaining == 0)
++				pr_info("limit reached, disable warning\n");
++		}
+ 	}
+ 
+ 	if (is_atomic) {
+-- 
+2.49.0
 
