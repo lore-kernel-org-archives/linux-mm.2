@@ -4,83 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48583CA0EED
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 08:26:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9E71CA0EED
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 08:49:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 814F08E0081; Fri, 22 Aug 2025 04:26:18 -0400 (EDT)
+	id D786E6B0183; Fri, 22 Aug 2025 04:49:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79F078E0056; Fri, 22 Aug 2025 04:26:18 -0400 (EDT)
+	id D4FC58E0056; Fri, 22 Aug 2025 04:49:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68D228E0081; Fri, 22 Aug 2025 04:26:18 -0400 (EDT)
+	id C65636B0185; Fri, 22 Aug 2025 04:49:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5454E8E0056
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 04:26:18 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 220DA1406BC
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 08:26:18 +0000 (UTC)
-X-FDA: 83803711236.13.99C30F5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 5352F80006
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 08:26:16 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=g8iODTFB;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf02.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755851176; a=rsa-sha256;
-	cv=none;
-	b=OK+b1nCFOrHjo1VrM/3fXGGetSs28xUbxe2O6ZDRHmiEDipMfXwQKO3tV34ommAigIgQCq
-	Plbi5wI29Qc98ZSCUmd8gfOBp5n5FRYgLaqcJNQncfiehhlt5RSD1jHUsQYFTi7O1WIDjj
-	XJl4EhtreT1IfqIcAMbbNSckqWDcrXE=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=g8iODTFB;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf02.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AF4B06B0183
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 04:49:19 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7DA841A06D2
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 08:49:19 +0000 (UTC)
+X-FDA: 83803769238.07.55D8F2E
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 06513C000B
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 08:49:16 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=VQaeNILa;
+	spf=pass (imf28.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755851176;
+	s=arc-20220608; t=1755852557;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=dLVaAUvgbp0lAyleb/edU3Ng39dz3X+9ydCBtvN8TGo=;
-	b=uqepvgbuSH0fL3Z7Jj8cxFup7DNmLZlTxEt3qhdSLb6EWUGtPq+0tWmuYUXAkCNG20RgcS
-	mkGvWvuITjKFe1NW52HLtcUP9Bxe+66XVk0UtuFx77VVyn+hZ2wUbOMGopcjVrSypdq0N/
-	iHlaJCQwMfqc6rTwOhBDmrWNId+RKbc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CFB7A44C63;
-	Fri, 22 Aug 2025 08:26:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A5FFC4CEF1;
-	Fri, 22 Aug 2025 08:26:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755851174;
-	bh=XlioSjdWZfVw3qSe0B9YKADl0bSx2EpBj8ze080WeqA=;
-	h=Subject:To:Cc:From:Date:In-Reply-To:From;
-	b=g8iODTFBcsB3PDeQ1v/uDN8CcdczXM2zAO7fcFxy++Qu+cW9spHj0W6Cw1RkdGpWD
-	 El+kV+Z8rj64UpUgR5oTggDxaO191pC9MHIzI3P75K3FT1SZa+GoafamDbOWNx6uUf
-	 29581bjp1axzrfJtUJJ86Z7DC1BJjHeWLB/JXUfM=
-Subject: Patch "mm: update memfd seal write check to include F_SEAL_WRITE" has been added to the 6.6-stable tree
-To: Liam.Howlett@oracle.com,akpm@linux-foundation.org,aliceryhl@google.com,baolin.wang@linux.alibaba.com,brauner@kernel.org,david@redhat.com,gregkh@linuxfoundation.org,hughd@google.com,isaacmanjarres@google.com,jack@suse.cz,kernel-team@android.com,linux-mm@kvack.org,lorenzo.stoakes@oracle.com,lstoakes@gmail.com,luto@kernel.org,mhocko@suse.com,mike.kravetz@oracle.com,muchun.song@linux.dev,osalvador@suse.de,rppt@kernel.org,surenb@google.com,vbabka@suse.cz,viro@zeniv.linux.org.uk,willy@infradead.org
-Cc: <stable-commits@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Fri, 22 Aug 2025 10:26:01 +0200
-In-Reply-To: <20250730015152.29758-3-isaacmanjarres@google.com>
-Message-ID: <2025082200-elude-until-b70e@gregkh>
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=mPZVwvfWavV4HClz+jY+wxIvWkfGxruR0/gW4y6TrKM=;
+	b=0tRKobV81ZzqqG2YZD6ocdpBSmuxiGxVHRtPI5XxRgcU7vz1BkNVvnEwVtuOHMhkIhhyQ3
+	IY4mqEyKGfGKPyFLv8VgzIt9eYgPkRY4nqGcdQF1sdKAcXjCgvINHgBmIknGl3hWYN9TyH
+	BuH4Y15NdTVPrlz64s7h5NVOt1+80yM=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=VQaeNILa;
+	spf=pass (imf28.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755852557; a=rsa-sha256;
+	cv=none;
+	b=Y5k5JMkSW0HF0PrrvLYYEBVueZnnqRL7VjJgSwBhwPV8T+wkBXRBsx23nngoIEGDfjruCg
+	OyG9WJmI9fpxHgruxTja5kNhqWmxvxnRYyhMNUJ9RANUedzo4iCc1NJiSTZGJAWN/fsp8t
+	UkFerlqmoOqlw3SaZtLmo9Hns1c4TI4=
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57M8mOL1026300;
+	Fri, 22 Aug 2025 08:48:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=mPZVwvfWavV4HClz+jY+wxIvWkfG
+	xruR0/gW4y6TrKM=; b=VQaeNILa9B3AgzWLpyCVVWiaRKtwnE4kf1D6iQXAoEeX
+	METzk0xAAbpmNhxbUSpIjiGGZzDdsIKwXEIJBPYvmxbCwX5R8wq0MOSIk4U2V9NF
+	xOyVkIHMWRWos+58SCZxp2wl7UzLYZviezlVlb2eREoiSFs1cMQ8ryK0IMkqRvcI
+	s/Nt7aaHsrMNa2tGsysXyKYnEehXU2rm2py8CpAfK2t5f1RMwHCnZdzWxDiz0SvC
+	B7ZVQBam7OCbCq0de5a7ojIGi2XN9NzcZ0aLGu3Hch5CxX5EF5gtmhPiVjBkmrFV
+	NyW3k2hfaiyqbLkMaOt4jl5z27HeZHzkkAXqwfwlMQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48n38vngyt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Aug 2025 08:48:57 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57M8mvMa024344;
+	Fri, 22 Aug 2025 08:48:57 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48n38vngyr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Aug 2025 08:48:57 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57M87Lkh031994;
+	Fri, 22 Aug 2025 08:48:56 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 48my5ycess-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Aug 2025 08:48:56 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57M8msAJ19005740
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 22 Aug 2025 08:48:54 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5DF372004B;
+	Fri, 22 Aug 2025 08:48:54 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8EA6F20040;
+	Fri, 22 Aug 2025 08:48:50 +0000 (GMT)
+Received: from li-06431bcc-2712-11b2-a85c-a6fe68df28f9.ibm.com.com (unknown [9.39.21.51])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 22 Aug 2025 08:48:50 +0000 (GMT)
+From: Donet Tom <donettom@linux.ibm.com>
+To: David Hildenbrand <david@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Oscar Salvador <osalvador@suse.de>, Zi Yan <ziy@nvidia.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Ritesh Harjani <ritesh.list@gmail.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
+        Danilo Krummrich <dakr@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Alison Schofield <alison.schofield@intel.com>,
+        Yury Norov <yury.norov@gmail.com>, Dave Jiang <dave.jiang@intel.com>,
+        KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
+        Donet Tom <donettom@linux.ibm.com>
+Subject: [PATCH v2] drivers/base/node: Handle error properly in register_one_node()
+Date: Fri, 22 Aug 2025 14:18:45 +0530
+Message-ID: <20250822084845.19219-1-donettom@linux.ibm.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-stable: commit
-X-Patchwork-Hint: ignore 
-X-Rspamd-Server: rspam03
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE5MDIyMiBTYWx0ZWRfX7UGMZhipVthh
+ Stkntuj7VehdRWzLVmeeIYhxx+ktPQmeIjH0hxbyqppNZ3hWEdvDOomTYwOCjTjuUx4HLPImmAH
+ fyS+WmmBTuAH60ixmzm/z0ebD7a8WMtPdjl3HUhASVRqpXLgX5MLwTr6barBoNtFHRoaFaeskbQ
+ llqZElV0MhUFD4O7cUESeYKJRo2c1rqBb7g+mzPPQyoKELr4qZHYbz/r8EY6JSApLiw+EH03UkM
+ y0+cjHS5PZGGYkzf2gDLir7Mc09Jnxfj43QEzswTukwLjrJ/qSDPCu8WEbKGuz7yWEDS2fzBNkV
+ HBmanuclNar8kd3l7KnbucT7Fczt6ROu6fRryj42ce+GTe35NzI3gGoyscj4ZpI/+w104889HXE
+ RmieLP+bIEbn0aXrmILgYWdvc5aqTg==
+X-Authority-Analysis: v=2.4 cv=PMlWOfqC c=1 sm=1 tr=0 ts=68a82ef9 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=5ll99_7Qev2jIdKbKUkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-GUID: 0aVtIqSXgZCth1bRsup1cSf5pxWqzXqn
+X-Proofpoint-ORIG-GUID: QrZJ9-yrqYdAn9qvjzfnpcfgC97BJz8S
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-22_03,2025-08-20_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 bulkscore=0 adultscore=0 priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 spamscore=0 phishscore=0 suspectscore=0
+ clxscore=1011 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2508110000
+ definitions=main-2508190222
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 06513C000B
+X-Stat-Signature: bwbooqi9rny3tfq4sgpbmfg4eaqbsgo6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5352F80006
-X-Stat-Signature: uhink5xydebkwzzg5jhetzwcdodjeko7
-X-HE-Tag: 1755851176-236406
-X-HE-Meta: U2FsdGVkX18HaN1QZw2M1BgiO42aXJ8gJe+R0weRgA900NevZbx3q85I7ctflLY0eF8P9Csb+lkDJecD4atEZwd9z0WRxoYWDl3XFfTHPfc01oJvkVvzKcXUA0xcfZRG4mFKFG2rdXAAW7NeXUvM1ssHxSNlltYnLmLtZsbQgTRxW/XNtSKRNMG5PzcYNyc1vBgI2dn57BUA/83+PY6Wnq6jk8VI0aVUEcXQ5xgBxSrYImkIAkw9efBuwhD2JymWXoBhscBLdvxEYWeP5Enj1+B/yECJlwr5GIGlkTBBzWyK3GWEtLs9qGuzNVsWaOOsM4H54lE9mxC2nH4IbV2kNNyl4noSjPuV8MBVLACDfg9E3TDfowikD3Vw/olhdPxl8MlGnM7+zWI8gipxDVX4Nm2dYDHy1ew/PDQcCGn6SquSACuW9BMrIfJNTnaOY0SBGDzDhQvp87jkkOwjiTipl4PYVS/KHnybH3x1D5lfSSmFA5CCxNvU/5gyqwgMEhBhZJLHI4OwIXGlDbLzF2hMgWfViI5c2eTQ33uu7NmTycF1cpZqSXGE5wba+28vkCd/FYZjig50AXZ1GCPA4R/WthijPYQPwmZXi3GnTYiQzJR84z7OzsqhfxFFIqLUAuaIGxjHQ8RndlgXRnbi9+3gYQlFrIjvSAhBqTcng24p9GI0ddPMBAZNhKzjezMYGVcKrVBkiaAptG5oqcFltEUcCgukDimsrh3I9Cbk+iStw1DNX+LtfYdLnyq3nwmCiEmilH2oRqExj0amZQa2AGdxS/3VqMG6pqFLWqkV7BQFZAKy5jI1YOsZ2NMHBZqaLcC+n4e5x7NQ33qgFHJ708+95Dbpx8jLkVBmjNWAX0sV2pLcvMDHBo+0gZTQT98IfzpXlI78I/uqZLVKu/dObkXBDYqbCl2bJQSXptvnGa3AugiXXdKlrakqkeooI/Xm7CfjPvfPebyWXZN5JKCjp3F
- oiJFTkUR
- AbjFixl1dpZpnqDGfrpumScvo3CmG04buJqTS3ilnjAqRjmpODZhc9Ys1ztqFz0ahJA7dSrzK9lnYNDcxUUrioucA0ZBniTuptANS97CJOkC8J/GImnRNPgs+iTuLfFv+SjmAgcei2yRj2WPZCpZ0DKjx6RHwyiMCZUzDtGd2oM4kY3nfRfjqd9R1/YJBYve/kF4sWwDSyYB+6gJTr2FfUV+HU77D6elYNaL4b+ysYhVFW3BLpapd50y2u7MyjDrgdMfB/K5iJzqCo97VoofxrGb8x8UjGYHKZSPc98Uy9bqO2PXxXFhZyVjRNGXlec4CrwD4Zg5WfhFjGnsmOfJVLHjDw58utXszskIwLVK3HG7Mnmdm5BO/GBDbkMVqSVPTLvjGxZEoS/g+3ieHjVtnI4Mrw5dZUiooQmEEtKd9nmt+mvvL7w2i5Yq7VCdyKC3QNR9ktnuw0J5dGIty9ndQsDwVq/Qc/jkBkW0CAHeJoAZc5HEUGJGYua6cChkF7xnxqBpIOBFUdWo02GoekMzt3fwuH4L05FaSTx+qafjwr9Q2Ie7Us1EeBkJljJvgS7Lz2nP05E+5OBqZAZ05A+gF8hPJifjfJwzMnjLCK406buOka+OVL5ZBcMSrJFLwA0niajJH3N8s7N1O86FrYitfa4bXpm9XLFCewWPGAObRwTpxxcXvOoLqhvarnafyy6JrN+obNOGxz82dleoTbuFg3YoqFxvHIQSOItyJNcUJ9Wh8J5DBsObT9vvHg/BgTfYduFakKyHcoAEaRXGk7gIgQQg0JD/Fmz21U4ib4gzgtOhbC51D2znTfLpeXqAO7b8s4mjaF6BgKJqGFZZiQiyYA7oAV8ct1+m50QVLc/6bRF+FUPOp2L8gD1Jnmcd7DLjyAMKXhDIAk/WTNYQRJpRFrPMbOkm/PBB3IEiEEB84gPmyO6iktt7TFJHHs3hT0ft0CKCF
+X-HE-Tag: 1755852556-379072
+X-HE-Meta: U2FsdGVkX19EEa0wc2TSm5LzmCituk0LLCi8zQpn0PfWNV/KLfUpoNYKC5MkabYgiw4Kkn0IUZ/JexzmJdIuPw3hvybJhxT/O6189keYPYHEutLJu4XW/WRo9jxyGDztgQJUuua22C9HV+BMmcIanLnp/YnueWNkbSg8qYjbFz/lzYhJCl/pV6gzywQCKFXHNTipmWryd0UCvlbsBZqFDLipXqfcLgIz9Ri36DrYO3Y05M1Asz+JSXoUsKGMrCy4Ico4ETt474kP9BLvRJsZrtx/kFcjiftuxDFsKr5t20jwjT5Di5O0L/w5he7fH1nSNSDVeBSdEugxDWCugac6gsHCLVoYkMNcLhStEaiW8bKUnHl0IpCKwZE9PCauV5N2m+Buf26sEe2b6f/zIimNkfQpzIqGnhDn8iK84sJjecv0C/GKWLaI6On2WNzo4hDUNiOPtWr4ut8j4G83sN7x+llYasrVGRKHJbM8sLsR07lMGKX5apV5+NtSjds1m6BSZ+WtQUCPhZ4kji7WusK5R/B9l6m+CSXMmK19CCYlyyj0UW6cfpUC5Zx+4fedEU/6a15C2LGUowuyifM8r+XCNmhosNb6guCnUM3pqD1nIZmjV8F+MJEsmJM2qlQQCOBjN1YOebtp+t9C3rBaaZG/wtHhC5GUN4kL7w3Kyt8Wu6wyIgOCAhxbFK4wObUIxAoYw80Nc6hMHAGfc+ATNJARHcQ9dKJT+AoFYHjlcblclsQYr5n8bfgzOxPCsenjao+xhPnwz+TAAAZxwstUvwHbQeaCkmxqWqSb/TMdDNiCIn1ZjbSjrQOPvp09HHCE0ltGNsQLZ5Fw0wRYyqpMLabWG85RU6cZ67gdV8lSgizmtaKFx+oEEtuKMZlNTiyS8SwK+INdEJY5jXLzdZgszhAJJIryPqATqdlwtU+h4Q/6IynTe95WUdr460bdPn4s29uv6ZYxT4KKMiiuzCPPFL0
+ /RrgGVdX
+ pXRrTDJVLVvMqHlQE7GIVmkdkfp71qoL9+SWRRk5rGpEJA42rgpnoy+715GbbBrbKgsy/08mwuXkEWqSVjM32pY11DZ6b8/JnRMHwkKO7CR5cxA1tANqpHn07i6oyDCG8ek82HHnm15zvsPbU1h8RMyVPcDG3F8D9N0Fuh/I9Wxre4MXgN2wqsPRlFKEE2asAGmEENIvdxCWKQL8QLZUdMpkYzbY4SwihITcTU04uRA1pdMWE5OgErBoKriKVgYzPbnQzxFfZb6kgF/v4qq+QFf8vn14SHmMEsCmW/x69ZH04jjTbWmrVPrGDVHEws4OGfalI5ONdfoxR5+LDU5wnMMZM/IdN0UoLMMeRXDZhRjt+KQzVR1EW2iMoXWW2I28PbxdZz3zv7QSRKqEiJF/I3Rzrkup7Os3SYSbVLkuf3TRq0Q+LsDpYVkT+cGa7CYDFzfUCVL5fawGf+eb8HdoMEv158Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,134 +151,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+If register_node() returns an error, it is not handled correctly.
+The function will proceed further and try to register CPUs under the
+node, which is not correct.
 
-This is a note to let you know that I've just added the patch titled
+So, in this patch, if register_node() returns an error, we return
+immediately from the function.
 
-    mm: update memfd seal write check to include F_SEAL_WRITE
-
-to the 6.6-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     mm-update-memfd-seal-write-check-to-include-f_seal_write.patch
-and it can be found in the queue-6.6 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
-
-
-From stable+bounces-165160-greg=kroah.com@vger.kernel.org Wed Jul 30 03:52:41 2025
-From: "Isaac J. Manjarres" <isaacmanjarres@google.com>
-Date: Tue, 29 Jul 2025 18:51:46 -0700
-Subject: mm: update memfd seal write check to include F_SEAL_WRITE
-To: lorenzo.stoakes@oracle.com, gregkh@linuxfoundation.org,  Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,  David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>,  "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>,  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,  Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: aliceryhl@google.com, stable@vger.kernel.org,  "Isaac J. Manjarres" <isaacmanjarres@google.com>, kernel-team@android.com,  Lorenzo Stoakes <lstoakes@gmail.com>, Jan Kara <jack@suse.cz>,  Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,  Christian Brauner <brauner@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,  Mike Kravetz <mike.kravetz@oracle.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Message-ID: <20250730015152.29758-3-isaacmanjarres@google.com>
-
-From: "Isaac J. Manjarres" <isaacmanjarres@google.com>
-
-From: Lorenzo Stoakes <lstoakes@gmail.com>
-
-[ Upstream commit 28464bbb2ddc199433383994bcb9600c8034afa1 ]
-
-The seal_check_future_write() function is called by shmem_mmap() or
-hugetlbfs_file_mmap() to disallow any future writable mappings of an memfd
-sealed this way.
-
-The F_SEAL_WRITE flag is not checked here, as that is handled via the
-mapping->i_mmap_writable mechanism and so any attempt at a mapping would
-fail before this could be run.
-
-However we intend to change this, meaning this check can be performed for
-F_SEAL_WRITE mappings also.
-
-The logic here is equally applicable to both flags, so update this
-function to accommodate both and rename it accordingly.
-
-Link: https://lkml.kernel.org/r/913628168ce6cce77df7d13a63970bae06a526e0.1697116581.git.lstoakes@gmail.com
-Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 76b67ed9dce6 ("[PATCH] node hotplug: register cpu: remove node struct")
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
 ---
- fs/hugetlbfs/inode.c |    2 +-
- include/linux/mm.h   |   15 ++++++++-------
- mm/shmem.c           |    2 +-
- 3 files changed, 10 insertions(+), 9 deletions(-)
+v1 -> v2
+Made the changes based on Oscar’s review comments.
 
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -136,7 +136,7 @@ static int hugetlbfs_file_mmap(struct fi
- 	vm_flags_set(vma, VM_HUGETLB | VM_DONTEXPAND);
- 	vma->vm_ops = &hugetlb_vm_ops;
- 
--	ret = seal_check_future_write(info->seals, vma);
-+	ret = seal_check_write(info->seals, vma);
- 	if (ret)
- 		return ret;
- 
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4023,25 +4023,26 @@ static inline void mem_dump_obj(void *ob
- #endif
- 
- /**
-- * seal_check_future_write - Check for F_SEAL_FUTURE_WRITE flag and handle it
-+ * seal_check_write - Check for F_SEAL_WRITE or F_SEAL_FUTURE_WRITE flags and
-+ *                    handle them.
-  * @seals: the seals to check
-  * @vma: the vma to operate on
-  *
-- * Check whether F_SEAL_FUTURE_WRITE is set; if so, do proper check/handling on
-- * the vma flags.  Return 0 if check pass, or <0 for errors.
-+ * Check whether F_SEAL_WRITE or F_SEAL_FUTURE_WRITE are set; if so, do proper
-+ * check/handling on the vma flags.  Return 0 if check pass, or <0 for errors.
-  */
--static inline int seal_check_future_write(int seals, struct vm_area_struct *vma)
-+static inline int seal_check_write(int seals, struct vm_area_struct *vma)
- {
--	if (seals & F_SEAL_FUTURE_WRITE) {
-+	if (seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE)) {
- 		/*
- 		 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
--		 * "future write" seal active.
-+		 * write seals are active.
- 		 */
- 		if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_WRITE))
- 			return -EPERM;
- 
- 		/*
--		 * Since an F_SEAL_FUTURE_WRITE sealed memfd can be mapped as
-+		 * Since an F_SEAL_[FUTURE_]WRITE sealed memfd can be mapped as
- 		 * MAP_SHARED and read-only, take care to not allow mprotect to
- 		 * revert protections on such mappings. Do this only for shared
- 		 * mappings. For private mappings, don't need to mask
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -2396,7 +2396,7 @@ static int shmem_mmap(struct file *file,
- 	struct shmem_inode_info *info = SHMEM_I(inode);
- 	int ret;
- 
--	ret = seal_check_future_write(info->seals, vma);
-+	ret = seal_check_write(info->seals, vma);
- 	if (ret)
- 		return ret;
- 
+v1 - https://lore.kernel.org/all/20250702112856.295176-1-donettom@linux.ibm.com/
+---
+ drivers/base/node.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
+diff --git a/drivers/base/node.c b/drivers/base/node.c
+index c65b4917794e..1608816de67f 100644
+--- a/drivers/base/node.c
++++ b/drivers/base/node.c
+@@ -883,6 +883,11 @@ int register_one_node(int nid)
+ 	node_devices[nid] = node;
+ 
+ 	error = register_node(node_devices[nid], nid);
++	if (error) {
++		node_devices[nid] = NULL;
++		kfree(node);
++		return error;
++	}
+ 
+ 	/* link cpu under this node */
+ 	for_each_present_cpu(cpu) {
+-- 
+2.50.1
 
-Patches currently in stable-queue which might be from isaacmanjarres@google.com are
-
-queue-6.6/mm-update-memfd-seal-write-check-to-include-f_seal_write.patch
-queue-6.6/selftests-memfd-add-test-for-mapping-write-sealed-memfd-read-only.patch
-queue-6.6/mm-reinstate-ability-to-map-write-sealed-memfd-mappings-read-only.patch
-queue-6.6/mm-drop-the-assumption-that-vm_shared-always-implies-writable.patch
 
