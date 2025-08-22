@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 246B2CA0EED
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 08:23:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D197CA0EEB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 08:23:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 579498E007C; Fri, 22 Aug 2025 04:23:31 -0400 (EDT)
+	id 9E4588E007D; Fri, 22 Aug 2025 04:23:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 464F08E0056; Fri, 22 Aug 2025 04:23:31 -0400 (EDT)
+	id 995728E0056; Fri, 22 Aug 2025 04:23:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 32D598E007C; Fri, 22 Aug 2025 04:23:31 -0400 (EDT)
+	id 85D7C8E007D; Fri, 22 Aug 2025 04:23:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 098EB8E0056
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 04:23:31 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FB498E0056
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 04:23:36 -0400 (EDT)
 Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B904C118385
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 08:23:29 +0000 (UTC)
-X-FDA: 83803704138.05.2E38F7F
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 19E141406B1
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 08:23:36 +0000 (UTC)
+X-FDA: 83803704432.05.1194D58
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf09.hostedemail.com (Postfix) with ESMTP id EDDB1140008
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 08:23:27 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=aLiHlr7y;
-	spf=pass (imf09.hostedemail.com: domain of usama.anjum@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 559CA180005
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 08:23:34 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=Vqqzialm;
+	spf=pass (imf16.hostedemail.com: domain of usama.anjum@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755851014; a=rsa-sha256;
+	cv=none;
+	b=ep8IJkB9xv8CHvtu/H+HE1xfrzePPG6oxyjN05uK1vBC8e9Xh5CghY56IWdirbxchZA54S
+	s6pPZQECvQASefrlj1DqEIS+E05zoRWZ1vQ45h3m2QBO9owpYvuxagdupYCoxjcg9h57HG
+	R+KkMb2gWHsEDKjUvB7cqhUTVbm9qrY=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=Vqqzialm;
+	spf=pass (imf16.hostedemail.com: domain of usama.anjum@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
 	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755851008;
+	s=arc-20220608; t=1755851014;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Nhat7QbyJ9VFS0Nednpi0uuvkleu4TkUjQY8eR3CM40=;
-	b=MrrXVsIMYWuG9EQEj1H7Qx8W00g0m12pcUHm2ZCutmeahJfV0N7JpyF4UtAck3vp6Vn9/8
-	b0Dnc+U6wqaKAi7M2ze0qp/rAPQCxblOojoaZtZhezTRvd0rkLu8p/+KIJGrIrZVWYm85R
-	/0hPldCICHcokCY6rb05+/au/9RZmuQ=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=aLiHlr7y;
-	spf=pass (imf09.hostedemail.com: domain of usama.anjum@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755851008; a=rsa-sha256;
-	cv=none;
-	b=rY5+OV26zMSM+RzrKP4Wmuedjq9d5wFjuTdMA7Da8YUqPBTqVXDvy+/g7RvGNfb/y06hU+
-	QwKUv5mUKeZhPyyP9vG/uYgRKXBaRo7bebQ501LqGgJX/hJJBdCBVCR8VxbaJzzie5WxJD
-	DB2CO7kUPLYwQmnv94lODxIjjYzUZ6A=
+	bh=MAUyAK5flnACgu6L0ZUmdj46/dvGaDDed41Ka5MO9KQ=;
+	b=KieRIl2oDPHaJ74nKIQ+mbO0EBbrhxa2WH0CzOciDdV3btiYU+oSwxOSy8GICtKFRHSw4R
+	eEUFUV/HKp1vEf6xKkv971AD1I+FZedwLOQq4jyQPYAqVaXkdf2F7ZhJ18aBOgIXq4Bcp7
+	mVetTb9wGFnFIzKDEG4FI90ccJUJ7vw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1755851006;
-	bh=a5UE+pImjGxYNd7vPvGSvbIoUcbPZrmvcLKnaYtTnQM=;
+	s=mail; t=1755851012;
+	bh=6J5PSXxqtGmjRoT5d0cfiijsJ6CAzjFznigi7LNiQE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aLiHlr7yOB77l4M5/FWrsuLfngueLhplsq9hVGF/cnoYI6RVbZr6MGPiKM031EtFp
-	 IR2lBVECBod0Or/+3ocW2HVOHxfsYDHZx5F98NCx2x7F9KXv9rx6eTF9+evMhF3j1t
-	 /sByzeXybMWJF7lNDNTeOvvRt8dFSF6Kfbxn7+eI/qurYaGTFJswm3Ny3GQ2RE6vjb
-	 clYjanlmOtSfe5gJCBG8sx7QSZmrcDg0PrzEU1FHfrUtwHfQp97qzwsmBCdBUOGy55
-	 dIP3dRCrfYObZG6HHwBXUrftPtmy3yZvc8vBUkVLvUsCC/AIcv60k8X3/cX+Iq0Z4y
-	 GHluESMdGlBTQ==
+	b=Vqqzialm4g5wrtv4tvyw9MWWk2aTcdXQRG/VnvvvKbnIolO8f8llGOC4Oc6EVk4BN
+	 XM9SJgbGlENhJR55OH6sBWy3cuyX5s//oWsx8t4qNIo7DDmccDvzX8FWuyEJ/SvIX/
+	 UIRQzy1GoYwa/2d2Exavog6avBcMun0Tslwrn1CX64BdpOyMfGQxgMefXXVlRkSiTu
+	 GvO0r4vVX028IQWvhrdiPZ0keGQKh6Zk9+NVXJdH4TC3LXdbdTs6pcIpcdc/vSZ48S
+	 bTYiBDOB4vR9KrDQOnhiRVV/SbnAU/+HiIG9x7/AqJPe6wrPSuqJpoLqJT5o3wOlgJ
+	 Nv1Ox3SSXTWhw==
 Received: from mt.tail9873f4.ts.net (unknown [103.151.43.82])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: usama.anjum)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id C730717E05F0;
-	Fri, 22 Aug 2025 10:23:20 +0200 (CEST)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id BA4FC17E12DF;
+	Fri, 22 Aug 2025 10:23:26 +0200 (CEST)
 From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 To: Shuah Khan <shuah@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -96,22 +96,22 @@ To: Shuah Khan <shuah@kernel.org>,
 	kevin.brodsky@arm.com
 Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>,
 	kernel@collabora.com
-Subject: [PATCH v3 5/8] selftests/mm: Remove unused parameters
-Date: Fri, 22 Aug 2025 13:21:02 +0500
-Message-ID: <20250822082145.4145617-6-usama.anjum@collabora.com>
+Subject: [PATCH v3 6/8] selftests/mm: Fix unused parameter warnings for different architectures
+Date: Fri, 22 Aug 2025 13:21:03 +0500
+Message-ID: <20250822082145.4145617-7-usama.anjum@collabora.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250822082145.4145617-1-usama.anjum@collabora.com>
 References: <20250822082145.4145617-1-usama.anjum@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 49w9uqd9gr4q5rkf4gunn37auieef5pz
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 559CA180005
+X-Stat-Signature: jntcetq3geckntqschh3j5jktc6mo8u4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EDDB1140008
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755851007-163238
-X-HE-Meta: U2FsdGVkX1/8d4D5Cz0/fuitZPqOpTyxK5Ee82Mmkl16DYoIvtRAT3b7jKe2j7JIqtSve3S3S+l1cGiEapxM9Vs1F5AFbnxvZ+YM63pTJiMWJhxAKvcLFS3etviFR50JYrdWcoKKryGv8q1en6nJwdt+iwTfpjDWNqOcYD0yOy6Z8VeKvnL19y3oOsA8ah1hiCDcP50FLQvclOFNAnMYRebmg0mQYjVLldeJucWOSTOxeHOQ5zW7wWSMoefq+cf125iKGvgwWzuZJPoCiix/OvMwlYT0LJal5JZJ6Mlqoqln96QU2OMKlgoIIpee4OsmC2sEcyGXiS9gVG7jdJdwGH2ij4DcccyCxCb7WeK6X/VOT+CRjNhtiz/vGCV9mU+7L0SFfGRc2InerqR00fZYeUZQDmluE9o2Pf2ZGx3slt89QUCY4b/Yz2Ozd+Qd4nAeXs+sJK1cObTqDrFeGoC1vQoFVIdMc6gAcbrAd1Cj1lm9R/97xia9lGGE7gE3gbY+EudIrAWrOPhZ08hGB2VPJiCK/uOr2tDbHhqShflszv1P3Y+VZMGC4Xiznb86XAq6IFVHSyWCaNr/D38kvlvewC7fnkyr1Rz2KtU1+qpvPRxuPU/A3QppsCpVbVvEgwrnFQpQcq44EOebunKv1vC/cH6jzq42Jrf81YivO8w+j9A5kmw1Vt5b3TfGuUEI3XCyEmf79C10ov+P95c8UApaJa3tu15hYNswLZQh8Zk4aJ0XWKUvDSmDDVpEcCG88xW1DXtaGAoztP+TRwOgU3FXZRyj5hUiYHAgQQM7kR8tTvJhMb7LNhh3s/4u5p6hgWT+ylgowj2FvGjQnaOIxdI8IbsrTZADDowBj927Y68D9hktnwdh/rwyA8zRfb1wlHvl5Sgd1p7tjIhixt6vjEybZlJvkk9mMz4FcP3oAdiekQF7tTaPmBEZNRo/BeYg8LFLR3JBOUFqDjJ8G+bdRFn
- GnQ8K34a
- pHF1o4vC6Re16eco3QYTpCh6NAy6+Chszfb2eRl6CzgvZ0hBl/BJBgI+Vs1JFeximnmloyJrXjea4eX9d0y2qF+b5M3ri7wHfSSDtniNzYvYwBnnDqSDI/2AzmK0MIKW8vi7W6idj7+/ae4V8wknrJWvuSiHDpReuILH69lWFumQQS48mgYqLDYpPWrmSct3w8aALBorPIid/p9YqlzrlldXR2j3NXVzHRrHzvPpexiaUh4aiFxi8pUEVQ74CtMk8dDHur0AHRtN5UCVhDJWIB1QU6+/UAaDSOtAMZ16HaHlWgN4=
+X-HE-Tag: 1755851014-61829
+X-HE-Meta: U2FsdGVkX185k8Yzv8nGr0eZvudLY1R8Vnvk0TJEeQW+SruBveiYnrADvxpmBnZE6sJQ+mB86s+iJgZNi53lgkWuTkruIVyXN+aJ1nQwwWHdT8i6F/lbS6H+Q8bfsr2wexzMVXcaw9/vdM+gx5qS8RmSflVb8puW/zP0cWV1oej0+2vl04Y7p0CgqSMlCfOSqT2eGez4/jKETAGgiLmfhdeyNEm44u2YU9VDJltDDDfS9XN/4H9hjcbk04sibF2JcN1w4MMSuyLQ/5k2NJw8rM2uZQImEjpnkKGEGghOJo9fMHmnXt5fZn2DCVtZv+vpgLDCu7CuCZhhPg5Ocr1756R0ppvS8mEQW/AQ5uHg5djkiSqPYWxucgK1yu3AMzREysw1lJDYwEfZxZXYe0UmXNAeIm6BRiSWhsBxoaHFGEb4khBX7WUZS9YFeZU2N3DL06FqvD2Ibu7IF30PmeNmPFLW3qPjIJsyhyq3WH0O5YXMUnmYq0kWkHIU34mrrYwxPWzdlZe8mfp7rp43Whg0679kjMvvO/Xtio3dIl6IGoZcLRFQeB+PywxN99GReWyBV1lkZQ7o73X9H9GbCBQhCUovXuYV7F1OglOgGco/lk9BgWMDk5Fl1EmUEc9QEtSLjt8KEmDszqOaXOmq+tcRfhJ1fCsNDuRmDfKDxhWJA1fs6c4vfdwSwwMtydGp/Bfa4xn1dW4nZz+sYQgEoUzrsDn+ZKgci01mVq2XYFM+gxmPKZHV0E3U0w+BFSH+DmSacmv5SmWcVi9QNFSNJDzyDqCkoYL7pfziUwO8WZbnwBoK67c2njqovi+kWTusexIiqcZD8XNtFt3iD6pBq5oPb2db7bjqDNFmYxlTogeGlnOGxAex7S7Q+nztHKIkD876hCZJhg0X1e+xTOcNp9TpjR5XV4UUn/QuOWuD9Xkmvn9qTotlJEseAQymvkuY1LuYIF6GXmqQI7nrda6kEsq
+ 8oPEnhu0
+ VwI96eKhOA/zXue6n5PlfeWV2V1SN0DiwYAOOzG0oiZOFWo8YD+0uRy66HxPv1X80cu8A0jIr3cSVaHRwDBNP36gaI1lAw6uKt0expo+I/WsGjqdtSegi1oVVlupv0VhWeHJijmqxmfE2wQr69NMXFDWqfpj5E2ty0nGPZVy4TOs+Ons8hmJvpJ06rAv53h3HGnpZhexzsm3ChClrO/IzX880jL/Lp2jQ1rojsek5IxPEuhsooNW3kqw96VLgNPiEDNoJPtJt+ehSFWcDQMlepFOfnaZdVygig3Al07cFQFNkO38=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,187 +120,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Cleanup code and remove the unused arguments
+There are functions which have unused arguments for different
+architectures. Separate the code for each architecture and move #ifdef
+arch outside these functions.
 
 Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
 ---
- tools/testing/selftests/mm/ksm_tests.c       | 17 +++++++----------
- tools/testing/selftests/mm/soft-dirty.c      |  4 ++--
- tools/testing/selftests/mm/uffd-common.c     |  4 ++--
- tools/testing/selftests/mm/uffd-common.h     |  2 +-
- tools/testing/selftests/mm/uffd-stress.c     |  2 +-
- tools/testing/selftests/mm/uffd-unit-tests.c |  8 ++++----
- 6 files changed, 17 insertions(+), 20 deletions(-)
+ tools/testing/selftests/mm/mseal_test.c       |  8 +++++--
+ .../selftests/mm/pkey_sighandler_tests.c      | 21 ++++++++++++++++---
+ 2 files changed, 24 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/ksm_tests.c b/tools/testing/selftests/mm/ksm_tests.c
-index b77462b5c240b..f5dabb513ed7f 100644
---- a/tools/testing/selftests/mm/ksm_tests.c
-+++ b/tools/testing/selftests/mm/ksm_tests.c
-@@ -238,8 +238,7 @@ static int ksm_merge_pages(int merge_type, void *addr, size_t size,
- 	return 0;
+diff --git a/tools/testing/selftests/mm/mseal_test.c b/tools/testing/selftests/mm/mseal_test.c
+index 005f29c86484e..4c2a232796866 100644
+--- a/tools/testing/selftests/mm/mseal_test.c
++++ b/tools/testing/selftests/mm/mseal_test.c
+@@ -131,17 +131,21 @@ static unsigned int __read_pkey_reg(void)
+ 	return pkey_reg;
  }
  
--static int ksm_unmerge_pages(void *addr, size_t size,
--			     struct timespec start_time, int timeout)
-+static int ksm_unmerge_pages(void *addr, size_t size)
++#if defined(__i386__) || defined(__x86_64__) /* arch */
+ static void __write_pkey_reg(u64 pkey_reg)
  {
- 	if (madvise(addr, size, MADV_UNMERGEABLE)) {
- 		perror("madvise");
-@@ -456,7 +455,7 @@ static int get_first_mem_node(void)
- 	return get_next_mem_node(numa_max_node());
- }
+-#if defined(__i386__) || defined(__x86_64__) /* arch */
+ 	unsigned int eax = pkey_reg;
+ 	unsigned int ecx = 0;
+ 	unsigned int edx = 0;
  
--static int check_ksm_numa_merge(int merge_type, int mapping, int prot, int timeout,
-+static int check_ksm_numa_merge(int merge_type, int timeout,
- 				bool merge_across_nodes, size_t page_size)
+ 	asm volatile(".byte 0x0f,0x01,0xef\n\t"
+ 			: : "a" (eax), "c" (ecx), "d" (edx));
+-#endif
+ }
++#else
++static void __write_pkey_reg(u64 __always_unused pkey_reg)
++{
++}
++#endif
+ 
+ static unsigned long pkey_bit_position(int pkey)
  {
- 	void *numa1_map_ptr, *numa2_map_ptr;
-@@ -520,8 +519,7 @@ static int check_ksm_numa_merge(int merge_type, int mapping, int prot, int timeo
- 	return KSFT_FAIL;
- }
- 
--static int ksm_merge_hugepages_time(int merge_type, int mapping, int prot,
--				int timeout, size_t map_size)
-+static int ksm_merge_hugepages_time(int merge_type, int timeout, size_t map_size)
+diff --git a/tools/testing/selftests/mm/pkey_sighandler_tests.c b/tools/testing/selftests/mm/pkey_sighandler_tests.c
+index eb4ef8532c0bf..bfa88fe188f66 100644
+--- a/tools/testing/selftests/mm/pkey_sighandler_tests.c
++++ b/tools/testing/selftests/mm/pkey_sighandler_tests.c
+@@ -41,11 +41,12 @@ static siginfo_t siginfo = {0};
+  * syscall will attempt to access the PLT in order to call a library function
+  * which is protected by MPK 0 which we don't have access to.
+  */
++#ifdef __x86_64__
+ static __always_inline
+ long syscall_raw(long n, long a1, long a2, long a3, long a4, long a5, long a6)
  {
- 	void *map_ptr, *map_ptr_orig;
- 	struct timespec start_time, end_time;
-@@ -656,7 +654,7 @@ static int ksm_unmerge_time(int merge_type, int mapping, int prot, int timeout,
- 		perror("clock_gettime");
- 		goto err_out;
- 	}
--	if (ksm_unmerge_pages(map_ptr, map_size, start_time, timeout))
-+	if (ksm_unmerge_pages(map_ptr, map_size))
- 		goto err_out;
- 	if (clock_gettime(CLOCK_MONOTONIC_RAW, &end_time)) {
- 		perror("clock_gettime");
-@@ -884,8 +882,8 @@ int main(int argc, char *argv[])
- 						page_size);
- 		break;
- 	case CHECK_KSM_NUMA_MERGE:
--		ret = check_ksm_numa_merge(merge_type, MAP_PRIVATE | MAP_ANONYMOUS, prot,
--					ksm_scan_limit_sec, merge_across_nodes, page_size);
-+		ret = check_ksm_numa_merge(merge_type, ksm_scan_limit_sec, merge_across_nodes,
-+					   page_size);
- 		break;
- 	case KSM_MERGE_TIME:
- 		if (size_MB == 0) {
-@@ -900,8 +898,7 @@ int main(int argc, char *argv[])
- 			printf("Option '-s' is required.\n");
- 			return KSFT_FAIL;
- 		}
--		ret = ksm_merge_hugepages_time(merge_type, MAP_PRIVATE | MAP_ANONYMOUS, prot,
--				ksm_scan_limit_sec, size_MB);
-+		ret = ksm_merge_hugepages_time(merge_type, ksm_scan_limit_sec, size_MB);
- 		break;
- 	case KSM_UNMERGE_TIME:
- 		if (size_MB == 0) {
-diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/selftests/mm/soft-dirty.c
-index e62be4136f69e..751fbc52857ea 100644
---- a/tools/testing/selftests/mm/soft-dirty.c
-+++ b/tools/testing/selftests/mm/soft-dirty.c
-@@ -76,7 +76,7 @@ static void test_vma_reuse(int pagemap_fd, int pagesize)
- 	munmap(map2, pagesize);
- }
+ 	unsigned long ret;
+-#ifdef __x86_64__
++
+ 	register long r10 asm("r10") = a4;
+ 	register long r8 asm("r8") = a5;
+ 	register long r9 asm("r9") = a6;
+@@ -53,12 +54,26 @@ long syscall_raw(long n, long a1, long a2, long a3, long a4, long a5, long a6)
+ 		      : "=a"(ret)
+ 		      : "a"(n), "D"(a1), "S"(a2), "d"(a3), "r"(r10), "r"(r8), "r"(r9)
+ 		      : "rcx", "r11", "memory");
++	return ret;
++}
+ #elif defined __i386__
++static __always_inline
++long syscall_raw(long n, long a1, long a2, long a3, long a4, long a5, long __always_unused a6)
++{
++	unsigned long ret;
++
+ 	asm volatile ("int $0x80"
+ 		      : "=a"(ret)
+ 		      : "a"(n), "b"(a1), "c"(a2), "d"(a3), "S"(a4), "D"(a5)
+ 		      : "memory");
++	return ret;
++}
+ #elif defined __aarch64__
++static __always_inline
++long syscall_raw(long n, long a1, long a2, long a3, long a4, long a5, long a6)
++{
++	unsigned long ret;
++
+ 	register long x0 asm("x0") = a1;
+ 	register long x1 asm("x1") = a2;
+ 	register long x2 asm("x2") = a3;
+@@ -71,11 +86,11 @@ long syscall_raw(long n, long a1, long a2, long a3, long a4, long a5, long a6)
+ 		      : "r"(x0), "r"(x1), "r"(x2), "r"(x3), "r"(x4), "r"(x5), "r"(x8)
+ 		      : "memory");
+ 	ret = x0;
++	return ret;
++}
+ #else
+ # error syscall_raw() not implemented
+ #endif
+-	return ret;
+-}
  
--static void test_hugepage(int pagemap_fd, int pagesize)
-+static void test_hugepage(int pagemap_fd)
- {
- 	char *map;
- 	int i, ret;
-@@ -210,7 +210,7 @@ int main(void)
- 
- 	test_simple(pagemap_fd, pagesize);
- 	test_vma_reuse(pagemap_fd, pagesize);
--	test_hugepage(pagemap_fd, pagesize);
-+	test_hugepage(pagemap_fd);
- 	test_mprotect_anon(pagemap_fd, pagesize);
- 	test_mprotect_file(pagemap_fd, pagesize);
- 
-diff --git a/tools/testing/selftests/mm/uffd-common.c b/tools/testing/selftests/mm/uffd-common.c
-index a37088a23ffef..815c22114b57e 100644
---- a/tools/testing/selftests/mm/uffd-common.c
-+++ b/tools/testing/selftests/mm/uffd-common.c
-@@ -416,7 +416,7 @@ static void continue_range(int ufd, __u64 start, __u64 len, bool wp)
- 		    ret, (int64_t) req.mapped);
- }
- 
--int uffd_read_msg(int ufd, struct uffd_msg *msg)
-+int uffd_read_msg(struct uffd_msg *msg)
- {
- 	int ret = read(uffd, msg, sizeof(*msg));
- 
-@@ -537,7 +537,7 @@ void *uffd_poll_thread(void *arg)
- 		}
- 		if (!(pollfd[0].revents & POLLIN))
- 			err("pollfd[0].revents %d", pollfd[0].revents);
--		if (uffd_read_msg(uffd, &msg))
-+		if (uffd_read_msg(&msg))
- 			continue;
- 		switch (msg.event) {
- 		default:
-diff --git a/tools/testing/selftests/mm/uffd-common.h b/tools/testing/selftests/mm/uffd-common.h
-index 7700cbfa39756..2e7066d69103d 100644
---- a/tools/testing/selftests/mm/uffd-common.h
-+++ b/tools/testing/selftests/mm/uffd-common.h
-@@ -117,7 +117,7 @@ void uffd_stats_report(struct uffd_args *args, int n_cpus);
- int uffd_test_ctx_init(uint64_t features, const char **errmsg);
- void uffd_test_ctx_clear(void);
- int userfaultfd_open(uint64_t *features);
--int uffd_read_msg(int ufd, struct uffd_msg *msg);
-+int uffd_read_msg(struct uffd_msg *msg);
- void wp_range(int ufd, __u64 start, __u64 len, bool wp);
- void uffd_handle_page_fault(struct uffd_msg *msg, struct uffd_args *args);
- int __copy_page(int ufd, unsigned long offset, bool retry, bool wp);
-diff --git a/tools/testing/selftests/mm/uffd-stress.c b/tools/testing/selftests/mm/uffd-stress.c
-index c0f64df5085c4..24aac0ae96c6c 100644
---- a/tools/testing/selftests/mm/uffd-stress.c
-+++ b/tools/testing/selftests/mm/uffd-stress.c
-@@ -137,7 +137,7 @@ static void *uffd_read_thread(void *arg)
- 	/* from here cancellation is ok */
- 
- 	for (;;) {
--		if (uffd_read_msg(uffd, &msg))
-+		if (uffd_read_msg(&msg))
- 			continue;
- 		uffd_handle_page_fault(&msg, args);
- 	}
-diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
-index 50501b38e34e7..df7b82bbebaad 100644
---- a/tools/testing/selftests/mm/uffd-unit-tests.c
-+++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-@@ -248,7 +248,7 @@ static void *fork_event_consumer(void *data)
- 	ready_for_fork = true;
- 
- 	/* Read until a full msg received */
--	while (uffd_read_msg(args->parent_uffd, &msg));
-+	while (uffd_read_msg(&msg));
- 
- 	if (msg.event != UFFD_EVENT_FORK)
- 		err("wrong message: %u\n", msg.event);
-@@ -1352,11 +1352,11 @@ static void *uffd_mmap_changing_thread(void *opaque)
- 	return NULL;
- }
- 
--static void uffd_consume_message(int fd)
-+static void uffd_consume_message(void)
- {
- 	struct uffd_msg msg = { 0 };
- 
--	while (uffd_read_msg(fd, &msg));
-+	while (uffd_read_msg(&msg));
- }
- 
- static void uffd_mmap_changing_test(uffd_test_args_t *targs)
-@@ -1407,7 +1407,7 @@ static void uffd_mmap_changing_test(uffd_test_args_t *targs)
- 	 * All succeeded above!  Recycle everything.  Start by reading the
- 	 * event so as to kick the thread roll again..
- 	 */
--	uffd_consume_message(uffd);
-+	uffd_consume_message();
- 
- 	ret = pthread_join(tid, NULL);
- 	assert(ret == 0);
+ static inline long clone_raw(unsigned long flags, void *stack,
+ 			     int *parent_tid, int *child_tid)
 -- 
 2.47.2
 
