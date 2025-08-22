@@ -4,69 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 341FDCA0EEB
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 09:58:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94548CA0EEB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 09:58:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 671B88E0092; Fri, 22 Aug 2025 05:58:12 -0400 (EDT)
+	id E3AAA8E0093; Fri, 22 Aug 2025 05:58:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 623628E008C; Fri, 22 Aug 2025 05:58:12 -0400 (EDT)
+	id DEB0F8E008C; Fri, 22 Aug 2025 05:58:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EB278E0092; Fri, 22 Aug 2025 05:58:12 -0400 (EDT)
+	id CB44E8E0093; Fri, 22 Aug 2025 05:58:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 375E08E008C
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 05:58:12 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AB9C51183C3
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:58:11 +0000 (UTC)
-X-FDA: 83803942782.10.4E911F5
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B6D068E008C
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 05:58:15 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5E4641A01FF
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:58:15 +0000 (UTC)
+X-FDA: 83803942950.19.ABB93DF
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 915231C0006
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:58:09 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 45E281A0004
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:58:13 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
-	spf=pass (imf20.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
+	spf=pass (imf19.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755856689;
+	s=arc-20220608; t=1755856693;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=FcS1WAEyrERG/l/cB7IXboLAElQpLk48UPtyl1AZjVc=;
-	b=UqPiRkeXIV8dZNhhxn3dbN7uV9LuG77HO1eJLUv1wNg2Ln+8odMh4aR8s37ZgF4x2ipjV3
-	c5Wco/ImidHLBMlcNiZ6fmFJQi/choIkuc4fV/B0t+NHvDV2CzQr9F6qLQ6Yv6iSTzHdLa
-	YirAcPdL4xzTeUYJqzgpEMjVL1xXkU0=
+	 in-reply-to:in-reply-to:references:references;
+	bh=cMQwBnBBP5+VROS/fzRmjMjvBPSMHFQ5vje/ziRMtMo=;
+	b=MzZ/LvCR9oS6wLuT8Xn6Up+hs5EObCA4GUz9kiRlfgKANnvJMFXJFv8jlF0QDqoah6R9IB
+	S4PkFC3CRNsjxRfxD1j2MuPuLbPoh+U7CRWyZUzUorPmWf2ifY7eA+9d18f8SnJRMmX7UO
+	u9NRl1aW+GL4CF+ITRJiGhpC7iAVh0M=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
+	imf19.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
-	spf=pass (imf20.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755856689; a=rsa-sha256;
+	spf=pass (imf19.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755856693; a=rsa-sha256;
 	cv=none;
-	b=CWHB4PlJbRVKAOiI4eVCOSeWsp43JjV1ZthPQOb9/e83lnG53CjXtWAVcWFogLEdWaqT+w
-	NkpfFSbIw2DTM8gyc5xcfqMwd5Us1uyznSZLXqQclrOWTjmQulHL+H5uv+fluBwM9dWFyZ
-	xMWtmzTWcn+FtEZOmPz8BdV4I+K8RrM=
+	b=7PDpYZmj9btq5GJs6Ow1vxjcc+vQBve7TbCfM8COawoFWfGioSzLpWO2vXztnUV+OWsqX3
+	TJBrvySjHv0LlJq+OaOfRGAemKKKMvv2ff/OUXCwRY+QN58x4ciwaz5L+s80iDrwQHlsc8
+	88PwAAyaggfPnp5zL5UNSXIwi2RUcI0=
 Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4c7bGk5BLBz9sS8;
-	Fri, 22 Aug 2025 11:58:06 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4c7bGl4ldxz9sSH;
+	Fri, 22 Aug 2025 11:58:07 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id IWDZVwqsS1ox; Fri, 22 Aug 2025 11:58:06 +0200 (CEST)
+	with ESMTP id 4MzYiAzePFXF; Fri, 22 Aug 2025 11:58:07 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4c7bGk4BThz9sRs;
-	Fri, 22 Aug 2025 11:58:06 +0200 (CEST)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4c7bGl3zRbz9sSC;
+	Fri, 22 Aug 2025 11:58:07 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7BEF38B781;
-	Fri, 22 Aug 2025 11:58:06 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6EE2F8B775;
+	Fri, 22 Aug 2025 11:58:07 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id eIHQVHg49t7f; Fri, 22 Aug 2025 11:58:06 +0200 (CEST)
+	with ESMTP id Mz748sD3BeoZ; Fri, 22 Aug 2025 11:58:07 +0200 (CEST)
 Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6BEC98B775;
-	Fri, 22 Aug 2025 11:58:05 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 78E258B780;
+	Fri, 22 Aug 2025 11:58:06 +0200 (CEST)
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
@@ -91,22 +92,24 @@ Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-block@vger.kernel.org
-Subject: [PATCH v2 00/10] powerpc: Implement masked user access
-Date: Fri, 22 Aug 2025 11:57:56 +0200
-Message-ID: <cover.1755854833.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 01/10] iter: Avoid barrier_nospec() in copy_from_user_iter()
+Date: Fri, 22 Aug 2025 11:57:57 +0200
+Message-ID: <9aa2e04f1c80d45151e2c3d06a45b6a4f29ff576.1755854833.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <cover.1755854833.git.christophe.leroy@csgroup.eu>
+References: <cover.1755854833.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755856678; l=3745; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=/phN/AgtMsLAd6ka2rRe1+fTTKRpm5UtXySxy3tBMG8=; b=1V9AFEKpjDyk6FnUrGnkLYoDWwBrkQcqv5fCGwg429FpoGvEzmMQhX1fRZY0SIQqSAI16OrRi R6sNAdKx0x1A+t4how5qZX/b5neGHfNC9U+6+4eTmM1L60Bhm6fz49y
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755856678; l=1324; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=btOGI5kT/X4BbGkbG9xKSloQXaxXSRXRdA+8gWVdMNQ=; b=U0aP36j9qq2Z+EzK6fHDU51410l7VDxWduQrkADDOwWueGyv0Sg4bw5dV64YBIg/yRboGmHiq A0ibcHLG9K8DbJhbI+wPLCKPMFbswE9LEUkmxBSkb4CSYHqbanY0rSP
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 915231C0006
-X-Stat-Signature: zi36tfmryozwbgukzj39gsimhu7so5s3
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 45E281A0004
+X-Stat-Signature: 5t6e8qq4mgui4iwgacpzdeui3b4cnhu5
 X-Rspam-User: 
-X-HE-Tag: 1755856689-311999
-X-HE-Meta: U2FsdGVkX181eKSB6C8ayrtyWirv5+TDZs2I/oKJ5qQ2h+vBO68fJ+cOFtdIpQYsJi6o9O9a+LQL5RgUG0ptMrzZWGXhPjYHM6SG+pc9z2WzynS/euVwRRfYFl9s0Ym21rEmDj1NyL7c6T13En1Fs9gt+MTR3wrilV7z1aBxODhd45cKUs16xIxMQbLtJAasQXNblRMYpDSTWlQ9j8xQWwT6bKf4zC2weLp1zvNzppamiW1fXQRDgS2DzPf2Tkts/pruE3m/oMd3OjfKgOOuIbXHOB0DlV8Z6L+8UNUaqxKH8/urzfzuQwtpjx9e4lWD+nCqAlOY02ZeNplRYOjCxGYdSHhQNRZlDpoOog8lVvTCTnRBINiIQ64InOYrPIdFSGXQ6uf/JqKcD4bZHm7e1yidY4IJf/esLPZ0dW4eCWTiWP/9wG5I2AKydzwtSFiVLkWMeWZk4+LDijmGp76mSLi27HJD3uep/Lg74s07tEdQvN58oc+dq2IHOvjbSkLwOMlUQVNELwhxOj8q8iScJWimrOAJgcJSqHlCAI7joFxvbwE9sW5kglJUGCPxZt+jfhD56xwSAzfzCsT67eIc4X1llJ5cXPG+8MXnG8QgL//mt8gF2s2gv9KyUv9rc9I+Xws41kruAi9NvWMNwRsg4lBWTS+tX9C4afiGUEKPqBI3JdR+WqGoKkuqFmri/maKMV7RqDx3cN2eg31Z/noAaiKG02rJYmGhqq91NrKS9dye473pbz9DWI/0asE7joETPS9BfgnOgaNy+dVghmCoK4luxRRTALQb6GoG7tForPgg4/7S4Ur60ZmoQmd7e0Rqu0hwrBH+tLRilmlbwgWeDmr95VkxQ6Z9Acqz0J6jakHBjbL41GMi8bNhCCWB75Wz5TK675z/3NlT+HV1apZSfRKqlSPY2mgaHrY5POxEXCl5zrkouWNW57xOZz7h1CT8ODhO8uQGtG5md6QzYw8
- 6mAqz0hw
- uocjv+QglNCBe6pgBdB/fnkrq0gQdAbsgVDi5bSwiKJcFC6vsrGEg/a15YjgbOi2TYfbJERD8s53EV4JvHrRs3vEtYyxKAuIugFie+6c577payr1JXMWcQz6xA+oZEr1IdRCf9o+evaoz/16G21His0LOtKOTw95DitVMloe8XXwQpDvpnSmXu0RPUgaDt5oWvSnqknh0Xlv/Hi2T0DVYuoQc4KHU32JvMYuk
+X-HE-Tag: 1755856693-93048
+X-HE-Meta: U2FsdGVkX1/zrVl6WGMQTDpSYDFOrTPG4eIMhgfgKjOL+ZJA3OGyxZdf0d5TBvbcbWLNwArdbGSLULsufI7AwSHLdWrk57mo5vnhZxLE7GqE0kFIUD3zn57SpVc2uE+9UHuat2lU4IjEUuHkcQUNkxS8ALYLyp78dRNBIhlgxx1Gd9AW3Os/HV+GZyQcfkgk0RFT2qYdXOXl3WR44I8z39HJlwDhtnc+3A636y7x+KAWLl/jyHOngPOM56XxqXPl/EEQlTyGPiO38OlY4dG6VkAYcjywP4uqPzKQeSZw9LYyW8bqgQV0/3F5urWOL8NaOJx+xS4PFIJbEFiHIc1TIH5Srl28aREySajGYpabG5taCbf9HljhXE33M7ZB5H4HVPEFG9suLYrrZbNsc0VS+2wk6YJQ+Rzxls1Q1Xoh2NAhSgBW3l8hl8iI1lxLQGZla19AdOXLDLND//x4jYUdZltqJE+uTH1J9Foqg1HMvoqGU9IAxkAV1b5qoBiQrUQ3lu8BohN9NBbgI76E/OZQkhut3kdPtCsiLmXYSv/qonLklRALPWnlsQnStls1CTYByQt8Jb3KkGRPXbP6NQbSc/TZhkO9+tOPa4MBg86hCBpGMgR+IVNHFpEHTnOJtA+5NwK7VVgsoC06iIJxvc9CTPJIZlvruskakpsxQp7JWtsS2uABP5+q3oSuE5zW8/oZyM+XDeUx4V0uLQHGGjFxYMM+Utl/D0p12OgYxMrIUnGPp6WBKgL7vlBz6L2RciyT+cRRKpbnZtBTCkuY9wYqwCHzyUKHoyVsD1RVbeKoBwxzyhicKVEsQ8t7sbeV8Y3Bv5KEbaZpTvDy3NCbQqNR4+mH2u0Gq3jLrcCkqJ80HVDjKXAeDoGh/gBEOJRQDE2H+GKkxiQxkr4YB//IWcKtBogyZ7/PFActN6j+oI+qL993+XZXfV97p9lrlmbkK1sWfMeuCaRdzYnhcxQhOJA
+ SFQKi8xn
+ 1HUuWuygRJunKhPln7ZOgbr75SvzNZVqrHeUat/IykZ2/AypVPOgQZTIIwz+LWDd8YkAkmR+eMTQcCDGeirN7/G7ds7it+8DrGfSVGkTzJeXkbTdJ8/dJceWikYSHZ3XZISArGZ4ZPYy2jSN/Otm4v8ag39177Cu83afce7yYaz4z6MoAy5z72OZ/UbJVRl6D3DRVcOlVXkJ7B4xh4FNSc/j6Dv2XJUnfiW1MaPEuPjS1G7NXdAAM4rNFJ06DsgHf0Bqgevd7ab6NLi9Y2pIaq+S/g+cuZ4QahZ3r
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,83 +118,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Masked user access avoids the address/size verification by access_ok().
-Allthough its main purpose is to skip the speculation in the
-verification of user address and size hence avoid the need of spec
-mitigation, it also has the advantage to reduce the amount of
-instructions needed so it also benefits to platforms that don't
-need speculation mitigation, especially when the size of the copy is
-not know at build time.
+Following patch will add missing barrier_nospec() to
+copy_from_user_iter().
 
-Patches 1,2,4 are cleaning up some redundant barrier_nospec()
-introduced by commit 74e19ef0ff80 ("uaccess: Add speculation barrier
-to copy_from_user()"). To do that, a speculation barrier is added to
-copy_from_user_iter() so that the barrier in powerpc raw_copy_from_user()
-which is redundant with the one in copy_from_user() can be removed. To
-avoid impacting x86, copy_from_user_iter() is first converted to using
-masked user access.
+Avoid it for architectures supporting masked user
+accesses, the same way as done for copy_from_user() by
+commit 0fc810ae3ae1 ("x86/uaccess: Avoid barrier_nospec()
+in 64-bit copy_from_user()")
 
-Patch 3 adds masked_user_read_access_begin() and
-masked_user_write_access_begin() to match with user_read_access_end()
-and user_write_access_end().
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+v2: New in v2
+---
+ lib/iov_iter.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-Patches 5,6,7 are cleaning up powerpc uaccess functions.
-
-Patches 8 and 9 prepare powerpc/32 for the necessary gap at the top
-of userspace.
-
-Last patch implements masked user access.
-
-Changes in v2:
-- Converted copy_from_user_iter() to using masked user access.
-- Cleaned up powerpc uaccess function to minimise code duplication
-when adding masked user access
-- Automated TASK_SIZE calculation to minimise use of BUILD_BUG_ON()
-- Tried to make some commit messages more clean based on feedback from
-version 1 of the series.
-
-Christophe Leroy (10):
-  iter: Avoid barrier_nospec() in copy_from_user_iter()
-  uaccess: Add speculation barrier to copy_from_user_iter()
-  uaccess: Add masked_user_{read/write}_access_begin
-  powerpc/uaccess: Move barrier_nospec() out of
-    allow_read_{from/write}_user()
-  powerpc/uaccess: Remove unused size and from parameters from
-    allow_access_user()
-  powerpc/uaccess: Remove
-    {allow/prevent}_{read/write/read_write}_{from/to/}_user()
-  powerpc/uaccess: Refactor user_{read/write/}_access_begin()
-  powerpc/32s: Fix segments setup when TASK_SIZE is not a multiple of
-    256M
-  powerpc/32: Automatically adapt TASK_SIZE based on constraints
-  powerpc/uaccess: Implement masked user access
-
- arch/powerpc/Kconfig                          |   3 +-
- arch/powerpc/include/asm/barrier.h            |   2 +-
- arch/powerpc/include/asm/book3s/32/kup.h      |   3 +-
- arch/powerpc/include/asm/book3s/32/mmu-hash.h |   5 +-
- arch/powerpc/include/asm/book3s/32/pgtable.h  |   4 -
- arch/powerpc/include/asm/book3s/64/kup.h      |   6 +-
- arch/powerpc/include/asm/kup.h                |  52 +------
- arch/powerpc/include/asm/nohash/32/kup-8xx.h  |   3 +-
- arch/powerpc/include/asm/nohash/32/mmu-8xx.h  |   4 -
- arch/powerpc/include/asm/nohash/kup-booke.h   |   3 +-
- arch/powerpc/include/asm/task_size_32.h       |  28 +++-
- arch/powerpc/include/asm/uaccess.h            | 134 +++++++++++++-----
- arch/powerpc/kernel/asm-offsets.c             |   2 +-
- arch/powerpc/kernel/head_book3s_32.S          |   6 +-
- arch/powerpc/mm/book3s32/mmu.c                |   4 +-
- arch/powerpc/mm/mem.c                         |   2 -
- arch/powerpc/mm/nohash/8xx.c                  |   2 -
- arch/powerpc/mm/ptdump/segment_regs.c         |   2 +-
- fs/select.c                                   |   2 +-
- include/linux/uaccess.h                       |   7 +
- kernel/futex/futex.h                          |   4 +-
- lib/iov_iter.c                                |  22 ++-
- lib/strncpy_from_user.c                       |   2 +-
- lib/strnlen_user.c                            |   2 +-
- 24 files changed, 172 insertions(+), 132 deletions(-)
-
+diff --git a/lib/iov_iter.c b/lib/iov_iter.c
+index f9193f952f49..48bd0cbce8c2 100644
+--- a/lib/iov_iter.c
++++ b/lib/iov_iter.c
+@@ -49,12 +49,16 @@ size_t copy_from_user_iter(void __user *iter_from, size_t progress,
+ 
+ 	if (should_fail_usercopy())
+ 		return len;
+-	if (access_ok(iter_from, len)) {
+-		to += progress;
+-		instrument_copy_from_user_before(to, iter_from, len);
+-		res = raw_copy_from_user(to, iter_from, len);
+-		instrument_copy_from_user_after(to, iter_from, len, res);
+-	}
++	if (can_do_masked_user_access())
++		iter_from = mask_user_address(iter_from);
++	else if (!access_ok(iter_from, len))
++		return res;
++
++	to += progress;
++	instrument_copy_from_user_before(to, iter_from, len);
++	res = raw_copy_from_user(to, iter_from, len);
++	instrument_copy_from_user_after(to, iter_from, len, res);
++
+ 	return res;
+ }
+ 
 -- 
 2.49.0
 
