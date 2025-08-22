@@ -4,127 +4,230 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B82E9CA0EED
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 19:21:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4E83CA0EED
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 19:26:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B3EAE8E000F; Fri, 22 Aug 2025 15:21:43 -0400 (EDT)
+	id C13EE8E0010; Fri, 22 Aug 2025 15:26:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AEF198E000D; Fri, 22 Aug 2025 15:21:43 -0400 (EDT)
+	id BE4AA8E000D; Fri, 22 Aug 2025 15:26:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 969F78E000F; Fri, 22 Aug 2025 15:21:43 -0400 (EDT)
+	id A85338E0010; Fri, 22 Aug 2025 15:26:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 78A798E000D
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 15:21:43 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3EAF8834FE
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 19:21:43 +0000 (UTC)
-X-FDA: 83805362886.29.C5AA9DD
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 487141C0004
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 19:21:41 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XkUeHTum;
-	spf=pass (imf21.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755890501;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FB798E000D
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 15:26:46 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 087A81601A4
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 19:26:46 +0000 (UTC)
+X-FDA: 83805375612.16.FC1A01D
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 3CE2E20005
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 19:26:40 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=LT9HCFl0;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf03.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755890802;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=beM5HIc5H97tJfr+Bv+Qn5iVpdoA6CB95zAhcoVOSug=;
-	b=QSmWKcN5aDaixTYORlnJ4KJkK2E9Ulg21NCQmrUn9rVjNE9UFtkjL44mmp0KQwfwpI0lR6
-	yTaX44qoVCYVxC8zFPePWmDvWAwBijR8YOwQZQzmJGuISK5bZ8sdtFXO6bPRrK5BtTIy/a
-	af6iW5cfNovgZt2qnCWjH1fTYTf/nr0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755890501; a=rsa-sha256;
-	cv=none;
-	b=5GQDqz2KQwAomVt+MDSOsQYg1wx4oDTPj7jOb96fVYrbWRDQX3cPIsl2B1ZiXkR4MYxKua
-	9MzsTnXsn6RWz2RnVaA7nh7X8kalDiLHhXIwF9jjTEv54cXnbW/VFOq6wmjpUoEUQgsSRc
-	j1/Am0b4Dp9BPjUC85vS8daqxlXCCSo=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XkUeHTum;
-	spf=pass (imf21.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-70d9a65c373so12705156d6.3
-        for <linux-mm@kvack.org>; Fri, 22 Aug 2025 12:21:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755890500; x=1756495300; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:reply-to:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=beM5HIc5H97tJfr+Bv+Qn5iVpdoA6CB95zAhcoVOSug=;
-        b=XkUeHTumoSXZGpoN/5XSmVLDqxUUxtyrFypLdy8ReUnQvhiZZKaCZjS+XLIXf9gSC+
-         dPJxiljaXOTHtfWQ+sulcnzmc00VmwhZxik/jz9OVK2OCXJAWDla+PAibipBtqr0erwJ
-         MM0FFGDpEt9LZUDGTaYa0iBMofCIUtYHI0cU3W34riY2DfQOI5H1CndOU5/S9Yfvhwjk
-         z+QFwwC/FEV3Ig4d5RFPpoDw6EbrsPAkJCJl56TZ4lFBe0mYMp8aHT5ag8GUSCK+XTPL
-         BvoTYMH5o5d3e50zOYTGK4p859fy1C91EgecldG/d0fEJhxHP2c1Vvh4aqfE3A+88FsC
-         JUpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755890500; x=1756495300;
-        h=content-transfer-encoding:mime-version:reply-to:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=beM5HIc5H97tJfr+Bv+Qn5iVpdoA6CB95zAhcoVOSug=;
-        b=fr4yecCO0LxjlHOyeHjZzZfuaRYXf4K6N+XTV57RU0nQHPefNhri9+TOS/tB9xQKxG
-         rXvNqWNKHZ3SEPaHs6ZaIE2Ih9DZC2tmxThcWV71JBWpCXMfrMLxGOL2KuJB9sP8TA74
-         2RuH/m4RgkI6WwF8kguB2WWBFzLxeoHbMi0jWZrBRFRXTEvS1clMNx6mjR1f/Xj5FQZa
-         Ryr3aPnYWxRtu/Dc3RrEbkmvwVRr7w8w3bILWBPxFQ5sPAIg8GvOH62DPZGlfr/qnjPY
-         svkS+psiCjj1p6+OAaZ7fJhFYhwhNexkBZfXz+oVvq+o31EckIQp+blaba9x9I07F84p
-         hddA==
-X-Gm-Message-State: AOJu0YwYTOE7i/cSwMG3ZGNPIomWi7b4vNbHocmslD0lrzZGcw0/Qmx9
-	4ZvlW+4G2YnAlHpQP/MrLnC11BOZw26NWZ44OxewyBTgR8BgdHahOiaQkisMY+xMwgg=
-X-Gm-Gg: ASbGncsv20S5i9N/cObNY8A9omKd5iVEALy/9dvK+s45SldHMHwDknVtZogjIKe6M++
-	ZEmsXHAyOXx7QPotoZH334SnzS+OAWNvbLMhMo1ZEJ/Uow9I4Iq8xtNjR24J6nPOWc/hzn8Vb74
-	31v5B0VHRGrdV3OaAN+VcJc7l7h1gkV8x2l1/qCoRls81v7vlpgkuA1MCPPEMFxde+8AIZlkpDQ
-	L/3QaxakGZKMavDZrLUw1bMzTijKijzScw8FE6Hn9TPxUSVIVzSx10RW6qms0w/vwfKlO2e9OnZ
-	Mpt9zdVN4p9Cog/AxuncG9KRCzhCgQGQljF0oNUFIr6Di8v2SFNwFlZFFnxNPwnMj6ve2EsydRB
-	BPRhkQt+1gXuJBcgegRR+Ux5Dc+5/Pi48QSLZIVLPUb8=
-X-Google-Smtp-Source: AGHT+IGDvVKjUk3ao3C3T4+HLvJurBFSlIikKQIK2AlVn7WhL5Fvzgj5Yph3zvj5UA7QSkPoWKGNyw==
-X-Received: by 2002:ad4:4b32:0:b0:70d:a44c:786d with SMTP id 6a1803df08f44-70da44c7c63mr16656606d6.7.1755890499801;
-        Fri, 22 Aug 2025 12:21:39 -0700 (PDT)
-Received: from KASONG-MC4.tencent.com ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70da72b04a6sm3843656d6.52.2025.08.22.12.21.34
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 22 Aug 2025 12:21:39 -0700 (PDT)
-From: Kairui Song <ryncsn@gmail.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Hugh Dickins <hughd@google.com>,
-	Chris Li <chrisl@kernel.org>,
-	Barry Song <baohua@kernel.org>,
-	Baoquan He <bhe@redhat.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@redhat.com>,
-	Yosry Ahmed <yosryahmed@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org,
-	Kairui Song <kasong@tencent.com>
-Subject: [PATCH 9/9] mm, swap: use a single page for swap table when the size fits
-Date: Sat, 23 Aug 2025 03:20:23 +0800
-Message-ID: <20250822192023.13477-10-ryncsn@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250822192023.13477-1-ryncsn@gmail.com>
-References: <20250822192023.13477-1-ryncsn@gmail.com>
-Reply-To: Kairui Song <kasong@tencent.com>
+	bh=KbauquOY7+bDeJpebSqkeXRr3jqtfS6+L/kPg5qstfw=;
+	b=RIeS+znv7hbbMKZ0vEJflboL0vpKSRKo8zowffjItPvDstLg3/i0EHKcbAfVRPUBb2Cut1
+	6BR0QzgsywKl4xxo18IfqSmvucaG7HLoFIzhV/T6g9h7HdzoDQ0of9BfVHGfrsOewaFzjL
+	jgqD216x7srp5Wcc9LfL1DYMToFzT30=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755890802; a=rsa-sha256;
+	cv=pass;
+	b=LbrZT4b7Rxft8Jew5vjZhqUNbBxV5AfQORi9PnwYA2+ibHfb7PBHTfGjqPVVJ218FHDpA/
+	x3uAWIll0qjagq/SDuypXI/b5jVAVseoT9alxxZrqyQTc1UWdTUwcKwFFcJbTJwoHWkG0z
+	v0o/2a5jGXLpYzSQWQKtyu3aK7cJ8/w=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=LT9HCFl0;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf03.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755890801; x=1787426801;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=AhVzoTAwG8CKBFdMHiSLuC8DhKWpi3gomlxqHJbe40U=;
+  b=LT9HCFl0e6sq5jG3HDRQPHE8QxN6q5mRZOswrj6ThKQq2H9h4ODDNjkB
+   80e3YSHNnjYlqSFc+K3B3/WzW7kXWsQDAL27l4OhFXv3i1QqVPXbZnnh0
+   mA+Al7EFmsyGTIYfnzSk78bsssqqPS31D1BlsboGOuYU7sh423mo/VLZ8
+   25tfbpTwXS6WtKKLup+CUBTpN3YPiThpLfvwsQrB14r8QPegjxkion/TG
+   dLA8fgXlQhKfbxqzY07yY9jKo7o9oF6pwhWKDnvX2sfR4ThHFxDrwboNx
+   +MuJzn06y1JzSFvz8k1pHXBEIRupz3qw3esXJPJWgE+V/iYnYXAEoMyKG
+   w==;
+X-CSE-ConnectionGUID: 1FJizGLoTdW0wvyFckmw4w==
+X-CSE-MsgGUID: +fsdZCg6QNCNUwn0vCm0uA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="75660561"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="75660561"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2025 12:26:39 -0700
+X-CSE-ConnectionGUID: ik4VxBO/RS+PBnGU7EE96A==
+X-CSE-MsgGUID: IU6MNBgdSTuu/ypMjO374Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="168680797"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2025 12:26:40 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Fri, 22 Aug 2025 12:26:38 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17 via Frontend Transport; Fri, 22 Aug 2025 12:26:38 -0700
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (40.107.237.55)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Fri, 22 Aug 2025 12:26:37 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BL0ZCQapiDgHLlXHpPb0KaRZ3zS2hZy1WfnX2VhBkCxL5iixCnyIw9KTM2bXkGdcRUlYhvIu9ieyW3RvD5/jCiq7gEo4cUpZT6bOj/KWImyiTDZOUrAJ5yWtnup1guAbs+M/rE2rlZiBMIaCwmoZvIs9RHQKIShIGynx+v0nSrqeaeqYUIuJqCjhrQORLLeDnud2mxzdz5hzhKJ4ML2bltPnLWfOQrWW5BW6p6IuCRIBG1wd0GxYo77tWle7nQUAJfUDmRxaa1lzpxrwwLiQy68f6rcIJ2SccAlEiuA/3U8+tCutVKrN5YqFF4blRy78AfwmvMQeNae3NDkxIZYy7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KbauquOY7+bDeJpebSqkeXRr3jqtfS6+L/kPg5qstfw=;
+ b=yldw7xpTmifGpzNF98L4PNJxkcI0JIWLJQYbgjmyDfvVncxUKdvWNcsbwGAmZp7qj2plbistV5suDcGS1dXW9zCwC6SUCO+nHf2aiI9u+mSvk0wJbDkkoGWPFePFGJggiUFQCUFNIBfjGePMf9kRfoWlxuju/AOidHkE4GKyWHh/R1pYUpemGPFp7HGMWsrqNuT0Tko7McnMUeNsY/0OdIYAhyGAikgDLGW43dS5S268lUqoBIvKUqtBYwdObQa06wkZn3cbL0BLTHav+S81lIO933UNRMJWLvdfv5zboF+ysNDIZW9k+tGjPUGmW92cvvmCOkXceqw2Su7WGTWpyw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB8121.namprd11.prod.outlook.com (2603:10b6:510:234::14)
+ by DM6PR11MB4563.namprd11.prod.outlook.com (2603:10b6:5:28e::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.15; Fri, 22 Aug
+ 2025 19:26:34 +0000
+Received: from PH7PR11MB8121.namprd11.prod.outlook.com
+ ([fe80::ec4e:64cf:cf1f:daab]) by PH7PR11MB8121.namprd11.prod.outlook.com
+ ([fe80::ec4e:64cf:cf1f:daab%7]) with mapi id 15.20.9052.017; Fri, 22 Aug 2025
+ 19:26:34 +0000
+From: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
+To: Herbert Xu <herbert@gondor.apana.org.au>, Nhat Pham <nphamcs@gmail.com>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "hannes@cmpxchg.org"
+	<hannes@cmpxchg.org>, "yosry.ahmed@linux.dev" <yosry.ahmed@linux.dev>,
+	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
+	"usamaarif642@gmail.com" <usamaarif642@gmail.com>, "ryan.roberts@arm.com"
+	<ryan.roberts@arm.com>, "21cnbao@gmail.com" <21cnbao@gmail.com>,
+	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"senozhatsky@chromium.org" <senozhatsky@chromium.org>,
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+	"davem@davemloft.net" <davem@davemloft.net>, "clabbe@baylibre.com"
+	<clabbe@baylibre.com>, "ardb@kernel.org" <ardb@kernel.org>,
+	"ebiggers@google.com" <ebiggers@google.com>, "surenb@google.com"
+	<surenb@google.com>, "Accardi, Kristen C" <kristen.c.accardi@intel.com>,
+	"Gomes, Vinicius" <vinicius.gomes@intel.com>, "Feghali, Wajdi K"
+	<wajdi.k.feghali@intel.com>, "Gopal, Vinodh" <vinodh.gopal@intel.com>,
+	"Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
+Subject: RE: [PATCH v11 00/24] zswap compression batching with optimized
+ iaa_crypto driver
+Thread-Topic: [PATCH v11 00/24] zswap compression batching with optimized
+ iaa_crypto driver
+Thread-Index: AQHcAp3n35LtSdVMgUSnKQGImY3Y0LRZeWoAgAnL+YCAC+jI8A==
+Date: Fri, 22 Aug 2025 19:26:34 +0000
+Message-ID: <PH7PR11MB812143269E98B00ED4E5BE4DC93DA@PH7PR11MB8121.namprd11.prod.outlook.com>
+References: <20250801043642.8103-1-kanchana.p.sridhar@intel.com>
+ <CAKEwX=Pj30Zymib2fEoDW9UyD1vAwxRKO3p28RPtK9DZWAdv8w@mail.gmail.com>
+ <aJ7FSUdvxtZyiHBq@gondor.apana.org.au>
+In-Reply-To: <aJ7FSUdvxtZyiHBq@gondor.apana.org.au>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR11MB8121:EE_|DM6PR11MB4563:EE_
+x-ms-office365-filtering-correlation-id: c6bc808f-4514-489e-171b-08dde1b1ce95
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024|38070700018;
+x-microsoft-antispam-message-info: =?us-ascii?Q?TXI5qcusSEePO0TpRUfg9uc/jlEBjWNDo1jY0x4W3nZMIaWawKRrmk5RLwGf?=
+ =?us-ascii?Q?yWYl4h+rhBARoHbmncb2K0VBYQBmeArv8T1GwheFQxMGFDk0hMnRtIm4yUfk?=
+ =?us-ascii?Q?6axomghHzgLe20gJ7Mf5WIdLDukq0GPnn6D9g2nDSLt/eKneyZsvC7kHIdc2?=
+ =?us-ascii?Q?Ehu7BJ1Mz91yqcV5cU1RNfqVHIiGs5ZJJCy2uf+v1QgDw9NqPuKvJDBNVQ23?=
+ =?us-ascii?Q?0RnQ8kiY6wyUfTlSAnAN6N0znZlup4ZCtB2f4njQGgR7745JYPjYE8UzwuWr?=
+ =?us-ascii?Q?wc61OYr0LAR28gCfo5XuXT2kiYXnLSrLHp6ziJprXFBo4ir2NEuwy6WeGD3M?=
+ =?us-ascii?Q?QqT+2GvcrnULT808xc9xogETdBDRkxOABg24JE2jx+Vl4zJGewfJ8vAqK0pQ?=
+ =?us-ascii?Q?uEdmUiTsb6LBGj3cO+oBqcSq6eUAxNkMy5Q6uxyvY3tmSfKIWlPMvMSCMwxA?=
+ =?us-ascii?Q?PhzQsTONm8wp9S6tRMoec7SQAYofCF3zZGP9uGAmPb64FeM4YaMIN5pfQv4m?=
+ =?us-ascii?Q?+kWZLR4cBT2J42KLn+g76ZLaL6xzE6eqU4nzHyA0k27zecNr0BOGs6NcRAtI?=
+ =?us-ascii?Q?9ygmi9brHG3xtT+uuSVmp32KbhU+rppwHHDE5XzaU0dh9TK1ZaT6Pp4wClAU?=
+ =?us-ascii?Q?WI7m95DWLyDbDcbfa3SABlSYsOIhvlxR0kI0eRUPdLr7SqV3grmNMakRTsQv?=
+ =?us-ascii?Q?QgaFNxfqby/NRpRX3EczrTMTrlIL6FhjRlPm10GUFkmatcthAcqVwUxFaX8N?=
+ =?us-ascii?Q?nXxxO8XfB2Q+F9P1CFyemjiMhYSqrRoe3rP0I9rKCRt6SVh7XRfjNK1yxWjW?=
+ =?us-ascii?Q?Cv1s/f9SXG3xd5SMAjEE1xIn7EO4D/9cdlkbfelOB9D8sDeefKQakXC01Hd3?=
+ =?us-ascii?Q?CLS+WxJk5XTMMirsvmQS9uXvqJjuGlETDR1nZ5RMVnVAQxN8pHF0qYy9gvcB?=
+ =?us-ascii?Q?ANlkA9CSoZq68Ny9yYC+o3+T6gI1AdpKOYx0GT/evEp0aMsvBCg0DKqnlhxN?=
+ =?us-ascii?Q?OHT+k0f59wm9H8pnsWPB4phn/EwTXd7Rdawz+6eT5NkAE4swyC8BdNcqMbZr?=
+ =?us-ascii?Q?SP2P5u2jO8LeACzcKTvApDcDoTvbXy5W/V4giGFJDmeqDg6ODJazb4YB0gVy?=
+ =?us-ascii?Q?iJfZQa7qqqEgrtFHUuPWrnqBAA34Ov1BPhXM+CkWea1dF+NvTnbLBl8a/5mi?=
+ =?us-ascii?Q?AbxkAND0z9JIjYwVVUqZMrnhYg8Q5NG4GBrHKfmyvVdu85+HeHheHkQrniuq?=
+ =?us-ascii?Q?k8Wj1n+/WKJzj1YpHJEQnTmPKegQxfWBU7aj9TQ48UQblJGaa21pw7JRhYqg?=
+ =?us-ascii?Q?XQE+o4lC6pBOixk9i2bNCThWPebwFn1dmGRcja4xeJ1JucNVmwy60hF6kGcb?=
+ =?us-ascii?Q?FwtJO3HLe4mvd/2IFlXvqQ/HeClz9WcwdZKfIQj/foNfMtaE6JeSPPFwbvrN?=
+ =?us-ascii?Q?hiJADw7XLs0=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB8121.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?BAnd9meIPyeFBhipy8ipJIxYJrpqIPARSsTvSP5tOFOTC5GpUf+KfD3y2k2h?=
+ =?us-ascii?Q?gcZqe4m0cUdFhtxHwDYccO7HFMidtv3kDuHdKVA3XmSrUAYAdEMg2VbEorRf?=
+ =?us-ascii?Q?N0Vlp0dMgna1fjLdXVYXn2OMUjr5ZZvhgAo0adu9+HkXSE/4IM6Wc+6Cc/2S?=
+ =?us-ascii?Q?5MZ1fp8i1Zsy04mJhS2EI1cDMXlJ4Lvb/81oX1oO6DtoVQpoQkb5jP7A3Nn9?=
+ =?us-ascii?Q?11E4XEV6J49jmxkIJJmugaoFNRGpwYzrdl9spGxCL1Fa4Zk4ayJBbiMD53jg?=
+ =?us-ascii?Q?0x4AmZnSf5e4Sn+pT++QOjEK2BT4bde+1ho7hcKlnHKRFlTaD2A/wDc6wDCs?=
+ =?us-ascii?Q?IE3NSixED6sK1PJTSczEdQOB7Ix6xPB3XClRoP8SYBt56xzSL9K5W3yBt9w5?=
+ =?us-ascii?Q?7YSJ+lIL5OxKzMS+4+M1i5ZnnF67mTH8gUeKZR0TiOvlYKW6vYyVFCB9t5CO?=
+ =?us-ascii?Q?BhvWfLoFSM7NX5v/im8QPZZ3e9XSZLykpWar4VD8ZVThH5t8yCz7LrHyEzC/?=
+ =?us-ascii?Q?YFL6DyAgF/sLRyz6LnV1HwzZ2JMxbC2fbVYUrJVWCSsOeYayYG2o2aJSebqt?=
+ =?us-ascii?Q?P6D45ny6TOoetAikU4AoTvMiOxLtU1nteESmJcTbQdZCa4uhcC1t9HCbqwtZ?=
+ =?us-ascii?Q?YAKO5kX+vlD1zz1ub67MWoeeOyr3Q4YBYQxHaYBZXJgonmxF/1vdP2DAywrV?=
+ =?us-ascii?Q?naSQ0qx87ixx5r/L4vMjGY0WPVtNhPEFNMeXhqMUdqJCE7p9WzvUe2aCg4Ug?=
+ =?us-ascii?Q?iuGW8u13BGsPobQh+7uc2es/o0Z2MLh9ukqc2xpRY51U11m5wCIOaX/zFran?=
+ =?us-ascii?Q?xLfkmBDq1/2oR0eDsrk27rCPmnXECfE9pHiWGQLF9xYqnyiHvFiz7bQFLON2?=
+ =?us-ascii?Q?+SFRMd6C9Et91bYZADE8seNeJAuuiFlgU3KTiIDbMvTe0V6dsH81L2Kbj3/h?=
+ =?us-ascii?Q?jZzDUQlm4UDd9OYkFSHla1xZjjF9mTotiq9qpQarJo0HCC3PRvYPKQr/XjVb?=
+ =?us-ascii?Q?HLqpxSBVIh2FktxeCm7ygX603KaoDY/Ewse+RRxMUIsjKCVbR0qJK9PjC6tj?=
+ =?us-ascii?Q?R9z99TNYiJT3fHRsm59pN9uzJGiDcJXtMaNzsCANFlKLlTGIhEwJ4OWQgvm1?=
+ =?us-ascii?Q?nREhJiiUDfc9obXYrfkx76/ixSx0o0j1+soSpP/EVTNBj+OUTomTihggw03k?=
+ =?us-ascii?Q?oOaFEYnj/8gQPcWPA0yW3XbkE/uwVG+A26xTrbjI2MrYkTKzdvTAUScKNk13?=
+ =?us-ascii?Q?++bEbTyYNbzi9QAsmFQvEKt35A3g9Li9r+c0SpW7w5h3t53zgnQR3a7NaPk7?=
+ =?us-ascii?Q?QAgMpfYdCLKrisqYnyGMAqsnRQxOabgj/8QTO0Y1R1kxztSAka4Yu+A58Rmz?=
+ =?us-ascii?Q?zZZEqov7uaIWBzJ7duP+tND3YFJE2xDRXHD42U34BhDh+TbbRdoVp8ZwH2vM?=
+ =?us-ascii?Q?ZWtXYMblnoyI+5ofG3LOHJp355KkzPycHhYb2qmtM674oLGrq15onliKS3vd?=
+ =?us-ascii?Q?bgbt7VL15fyK631FIp3raLG9A26Uso7ovE3URPBt/oqiVZKHmvd/eYpQgDps?=
+ =?us-ascii?Q?CRomKp2udNEzGNr2ryNNlURJLg+ngSZ842VZTqQ7VTEvmovpNzUJ1vt7bNQA?=
+ =?us-ascii?Q?vw=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB8121.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c6bc808f-4514-489e-171b-08dde1b1ce95
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Aug 2025 19:26:34.7781
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 9a7U4Hv3l7ggu08/EiZMmfAEpSV/VvBin62TXRvJ6VscQvAZanGPzwYoc1RSj/tUdV5lmnC5SFWxOWw2Ly6+HvKVuHVIAy3MJZQg51PKpxI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4563
+X-OriginatorOrg: intel.com
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3CE2E20005
+X-Stat-Signature: qdpz8bg5axskha3k75sdh9ceo94u1g5r
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 487141C0004
-X-Stat-Signature: n7r4hik1owcgf5sugho7wii55ut3xr93
-X-HE-Tag: 1755890501-213155
-X-HE-Meta: U2FsdGVkX1/SJPQEnFRMoYbROmI2P8OGn7vzLcXvit75ftpdgv4HQwWHIuiShDg4x7tHCC/aO32Wq1BU1+/xX6aI0jiNkq/LDZWEl+1ubsfZHbqA+64gNeoES0HagrWC+649e3VPuNJJulLgU/C7c4nIkEYjlIlJCGiT2+/uNOCCJquWOM9PshjwGS/OG5u7AwFahkwOuem6RUPPCtTIHrJiLBSEykxqpq0qluB8NPUtgTOWaSMWCcDNkYqscUGIZynqCF3BLc/SYVhnJDOIhiUo9ystHaEYlWvudtvGWPf5XoukJsJB4LfGcfH2bOQG8jqNa/5NRDMrlM/I/SkDZFQS4J9ejfwqCIbBZCULQbS4VzyM3W7KShOFwybnjlUqNKGvlIAPg9zKOfnSl08RyCmLZT8AXqwFn7umIutiykNBuMo3UyNbRDmpApF92GEfmzRCNc1m1Q3NGGB7kccGA8X64GnpCET3t4aws5qiGN0ob0hINS21PgbjVuw2dRPARw1+4ZfPanHf5d/oMmSc/iq8e1/+W0FB3La7uxau0FpPm0oe64AZkLPn/8tFCPaSZd5BSWq5hNsJZ/fvvDJcZXZenqjCfKErn5BCsupYQBCvAT28M+Clv/nCBaugQj/PcICf3yFgO1yXUhYwG7xwx3VRBVT4zlLMYVRCHSoieao21LAxChjDFvyjzqwK4g4FI4Em1giGhlHSv/HANvbhMg2DPIKNISZV6kX5eBIeA3SdBCctKt183HClA8NpFUm8V24UPrAU4BP/pfznHrjIFfD7dD62TysKwkaUZQ2oqiYeCe8xkYkW+Ez7mo6uPwWOecgfnkzor7YCu5Fhjvo/796kTHhHjJcIXKOG4LVUjUMafxVuSJQRHErCBFMEp5rS47QCpZPg1Uh4PpSVgqx2S9+kIonD90K8E1BoXSTTelYqjHi6GEgQfcjQrshjnxyVBUWh/g2ryYkeKftYKyu
- x0NphXUH
- abO5ZOCEw6pqKzTFzy0ul7/bgIw1MK6w7J4Vidl9pUTdj4KmX2cXx55050+qmKHCqghs12tyehMP4XOxasvvNCDQxI4Yezuq3bXSWpef52EfkeQIt3pRdkwzcBizLmsZwqSePC72B6ViSOJYC91rR6LK6QEpZ/wMSOiK8KnPEX2elI5kdI/kw9rixRi1BThLaA2SyYHN+sDVPewGkVNlMe2ISBzdjOA6KtFmApZ//agNrg39tguxnb9T8EJ5sXcpt01GlogRqnNxy5icAsd/xPDnt1cKNpbhe2TbmMZjmOKxehLLYik9eObiXxj3Ingsy5nQVAbXgbvVGxPvzYi8wt/EOyDZ0dWaB8xmOs10+H+M9j6tYNh7+Uv6OwfB1nURrAlAOsLGquG4J/esuKYXG2PGF6qBBkJWjvelxYuomWZ3qlANVxRc92iq0B3Tz+/xgAVyDehHOB99nJAfkg+TFS/TfIYrRIq4p6eVowD5l7xZ/Mj6tDHBXI/8he9vEXkT4lyuspIJsHjJtRTeZ4r3EnHN8PHD8zmk3N+v9NXXqUJ3tstYirWecUCkdTOoWnvuP07FNGRlbTDkZ5kTVHT1ynZ09qe4iY4h4UhvfadunX51YNsYVKrXIni2wuf4+aVoewWWcyd4EWXR6WrZs18PNFhWjtkAdzH4g0FFq
+X-HE-Tag: 1755890800-819673
+X-HE-Meta: U2FsdGVkX1+3bdqTghRu/XTRJ58ePKx8JI4X/vSozLABipzalgLRPS48MtCXwZSScO15/F31FO7evKvNZ0TzOYTWuVfW6OSZ1lzCurdR/TsTtBeaFej1OpujhQWCQZc5eWWP6+8RXpe+2AIgJyKRTUhpBxaPkQbYsWTym6hOvLPDUlgsf+Pmv0nuGI9EA5SSpn1TQTtbEUuO8GqCzJ5euPHvuATF0n/xL3Oja5cKS3XgBGRIN91rDL3iUKKCDQ8wuULimw9GE7DgpKOK3oihoMNlQbx08RU/GT+oG1yikIi1AUJT3C61Ab98D4kxg2Nh6Lka/zWXqPsrly6szEmBvs18DG7KHSkEYIIBsW2TOPW9mmz2NMBv07FWO3gJVx1FL1XO41DRyHknSF9TtInHnqprqnVhJk5Ei0IhPckCrd8LQZR5+50sWUPXFHjgFqpUvHCKrCcf9810syhQHwJ5sf/XXNcz9qrd1QG87UZmN23bg68d6GWTN0iqHlqspO154B0KYXCUf2a7PqQ0rtYwk+HaJOzFneJ7MD0OTA9OGMEXlwid4jBgJvXXKR7koqENRUGg/hd+oWTHslHpt5hAePp8BsZIgsXGzgwpo2Pay9u+qCJo7RE+/nwRgjIwjlgWhyyePSiRxwVztKtgKjBi8qHExFOBIGnsOy6kv5syz3/PeCiMEi4+cIZAWt/zDdgL61gUly4RR2yC01ZvrPwCu/JujdLvsDpgiIMH/BafQIPbHZJBEx9VTEG9ppPMhyERUWbGYoj1NBnPm8dsWzktdhmYeeTExV7p7Yur8y+S9AIVLcUPzHGqbp8j1xXpQyJ6O2Kwzh7e7X6pjythF/OAZEqeJhrQciYfkN56wuzv1NUxq22gc3k3szeZ+1XLFGrG/dSDtpN0RPdwWwrrmARVXc7XTbC2AVBAb/mj/YgE6e9WNo70Gt6icPmzdmTNqkl95Xg59YqMbUK4dEIEiO1
+ NLvEKNmP
+ x5QHLn+Lr/+mIbxTpPTW7M7w1KFXh8JtrCBvJLstYaeN80/MbTRqAJVZsrKQYioG9qRLwyetFqXDG9DmOgzpZMtFm6ljP1DLGYOFBRID89EgXPBoXzIuKNNNtjhOuYHr4Ez57E2E4XmwVxESz7J5kjNm68tBLlQ8b2GT4J0snbGhPQt6vgpCmoyKK4pEvRE0GiVVbIxAb/nJYPf5wvyUSFWIJTcJU2ZVH6HzjEZEHEbT1pQwacNWL9UbySRuw8M8AwmdjJ7QCM6ru2g0W9n9zgouctLhRywGUss4/YHA5W+lCphXtxjaxsj6etmNhmyJWFht77DFCONcFd0zg5U8C76qclapfA6GQPpnM99THGxr0J+/sj6j/AvSN80iju6if9l3KB919/NoURHDKX1dBEDy80/0D5YXeUcgrH+DHb8UT4gWrnoCqWlxEk3GMHIithv3a19Y6XpmNp+mw/YgVzYQ9yW+rgJmnFAibynjmGssWwa4FCP1i0jC1FgVUmzPMvhclrlmFgEVrPk5u93WBNnsH8HFxhYUsptgtyeqLxNBykz3iboT/lLqyX/JyAWVLvYCIWXs2QAMJux59lP2HcRVaxVsYRrawMyQcArMPdMRbt3lq3ahU4FqZbQKH/p0/hFbC6FJ67SkD3nhCCk0I8lnH2oajl/mQJUhdRAnRFzJW7pueTAt+0D4sjwwojgN40BatGTaXyY5FQWRDOqTfHQsuOBM0BFx1rJo2/ha2UKEeMN7i8p70Nes/ES55EPdO7QoFsrFDIVySCApnBRULgU9e7XpIYRH7bu0puFhZ+g3QxCR3py6YL8kk9Wt/Uax9pE0lQDuLVy2KydWYS+XkALvvXcLYCpup8Yfej2BN6C/bufD9AbjYDk/5R4WzN+SQ6I/woU/ACgp83tyEhMm/yl+Q5tPWtOvoxE+mcTBLrblMfCmVxEsZ37AfHAKtWJzKF1fWoY99OF095xqiXt0DA3p6CdQa
+ rQHzDi2q
+ vC9N945IJw8xBhxtz0UrgbE8u6RCmnjfxynSL/d5/W45L74xYoIx/LeMWXiw2uN1WvWz40lwScBev8XSXKnt71pzTdC3RPEH0+KhiomO1ajLXh24Y9uwnA43wrFoOHBsmDdt9EFM/dh4Q9w9YakT7HGYDtzIYOBU+HPUmpqD8I7qt8mC3uegSRvHf8fDn9416C8vJRr5atg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,139 +236,634 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kairui Song <kasong@tencent.com>
 
-We have a cluster size of 512 slots. Each slot consumes 8 bytes in swap
-table so the swap table size of each cluster is exactly one page (4K).
+> -----Original Message-----
+> From: Herbert Xu <herbert@gondor.apana.org.au>
+> Sent: Thursday, August 14, 2025 10:28 PM
+> To: Nhat Pham <nphamcs@gmail.com>
+> Cc: Sridhar, Kanchana P <kanchana.p.sridhar@intel.com>; linux-
+> kernel@vger.kernel.org; linux-mm@kvack.org; hannes@cmpxchg.org;
+> yosry.ahmed@linux.dev; chengming.zhou@linux.dev;
+> usamaarif642@gmail.com; ryan.roberts@arm.com; 21cnbao@gmail.com;
+> ying.huang@linux.alibaba.com; akpm@linux-foundation.org;
+> senozhatsky@chromium.org; linux-crypto@vger.kernel.org;
+> davem@davemloft.net; clabbe@baylibre.com; ardb@kernel.org;
+> ebiggers@google.com; surenb@google.com; Accardi, Kristen C
+> <kristen.c.accardi@intel.com>; Gomes, Vinicius <vinicius.gomes@intel.com>=
+;
+> Feghali, Wajdi K <wajdi.k.feghali@intel.com>; Gopal, Vinodh
+> <vinodh.gopal@intel.com>
+> Subject: Re: [PATCH v11 00/24] zswap compression batching with optimized
+> iaa_crypto driver
+>=20
+> On Fri, Aug 08, 2025 at 04:51:14PM -0700, Nhat Pham wrote:
+> >
+> > Can we get some comments from crypto tree maintainers as well? I feel
+> > like this patch series is more crypto patch than zswap patch, at this
+> > point.
+> >
+> > Can we land any zswap parts without the crypto API change? Grasping at
+> > straws here, in case we can parallelize the reviewing and merging
+> > process.
+>=20
+> My preference is for a unified interface that caters to both
+> software compression as well as parallel hardware compression.
+>=20
+> The reason is that there is clear advantage in passing a large
+> batch of pages to the Crypto API even for software compression,
+> the least we could do is to pack the compressed result together
+> and avoid the unnecessary copying of the compressed output that
+> is currently done in zswap.
+>=20
+> However, since you guys are both happy with this patch-set,
+> I'm not going stand in the way.
+>=20
+> But I do want some changes made to the proposed Crypto API interface
+> so that it can be reused for IPComp.
+>=20
+> In particular, instead of passing an opaque pointer (kernel_data)
+> to magically turn on batching, please add a new helper that enables
+> batching.
+>=20
+> I don't think we need any extra fields in struct acomp_req apart
+> from a new field called unit_size.  This would be 4096 for zswap,
+> it could be the MTU for IPsec.
+>=20
+> So add something like this and document that it must be called
+> after acmop_request_set_callback (which should set unit_size to 0):
+>=20
+> static inline void acomp_request_set_unit_size(struct acomp_req *req,
+> 					       unsigned int du)
+> {
+> 	req->unit =3D du;
+> }
+>=20
+> static inline void acomp_request_set_callback(struct acomp_req *req, ...)
+> {
+> 	...
+> +	req->unit =3D 0;
+> }
+>=20
+> For the source, nothing needs to be done because the folio could
+> be passed in as is.
+>=20
+> For the destination, construct an SG list for them and pass that in.
+> The rule should be that the SG list must contain a sufficient number
+> of pages for the compression output based on the given unit size.
+>=20
+> For the output lengths, just set the lengths in the destination
+> SG list after compression.  If a page is incompressible (including
+> an error), just set the length to a negative value (-ENOSPC could
+> be used for incompressible input, as we already do).  Even though
+> struct scatterlist->length is unsigned, there should be no issue
+> with storing a negative value there.
 
-If that condition is true, allocate one page direct and disable the slab
-cache to reduce the memory usage of swap table and avoid fragmentation.
+Hi Herbert, Nhat,
 
-Co-developed-by: Chris Li <chrisl@kernel.org>
-Signed-off-by: Chris Li <chrisl@kernel.org>
-Signed-off-by: Kairui Song <kasong@tencent.com>
----
- mm/swap_table.h |  2 ++
- mm/swapfile.c   | 50 ++++++++++++++++++++++++++++++++++++++++---------
- 2 files changed, 43 insertions(+), 9 deletions(-)
+Thanks Herbert for these suggestions! I have implemented the new crypto API
+and the SG list suggestion. While doing so, I was also able to consolidate =
+the
+new scatterlist based zswap_compress() implementation for software and hard=
+ware
+(i.e. batching) compressors, within the constraints of not changing anythin=
+g
+below the crypto layer for software compressors.
 
-diff --git a/mm/swap_table.h b/mm/swap_table.h
-index 4e97513b11ef..984474e37dd7 100644
---- a/mm/swap_table.h
-+++ b/mm/swap_table.h
-@@ -11,6 +11,8 @@ struct swap_table {
- 	atomic_long_t entries[SWAPFILE_CLUSTER];
+I wanted to provide some additional details so that you can review the over=
+all
+approach and let me know if things look Ok. I will rebase the code to the l=
+atest
+mm-unstable and start working on v12 in the meantime.
+
+1) The zswap per-CPU acomp_ctx has two sg_tables added, one each for
+   inputs/outputs, with nents set to the pool->compr_batch_size (1 for soft=
+ware
+   compressors). This per-CPU data incurs additional memory overhead per-CP=
+U,
+   however this is memory that will anyway be allocated on the stack in
+   zswap_compress(); and less memory overhead than the latter because we kn=
+ow
+   exactly how many sg_table scatterlists to allocate for the given pool
+   (assuming we don't kmalloc in zswap_compress()). I will make sure to qua=
+ntify
+   the overhead in v12's commit logs.
+
+2) I added new sg_alloc_table_node() and sg_kmalloc_node() to facilitate th=
+is.
+
+3) I added the acomp_request_set_unit_size() helper for
+   batching; initialized the unit_size to 0 in
+   acomp_request_set_callback(). zswap_cpu_comp_prepare() will set the unit=
+_size
+   to PAGE_SIZE after the call to acomp_request_set_callback().
+
+4) Unified code in zswap_compress() for software and hardware compressors t=
+o use
+   the per-CPU SG lists. Some unavoidable changes for software path to use =
+the
+   acomp_req->dlen instead of the SG list output length.
+
+5) A trade-off I had to make in the iaa_crypto driver to adhere to the new =
+SG
+   list based batching architecture:
+
+   Currently, all calls to dma_map_sg() in iaa_crypto_main.c use
+   sg_nents(req->src[dst]). This requires the sg_init_marker() is set corre=
+ctly
+   based on the number of pages in the batch. This in turn requires
+   sg_unmark_end() to be called to clear the termination marker before
+   returning. All this adds latency to zswap_compress() (i.e. per batch com=
+press
+   call) with the new approach and causes regression wrt v11.
+
+   To make the new approach functional and performant, I have changed all
+   the calls to dma_map_sg() to use nents of 1. This should not be a concer=
+n,
+   since it eliminates redundant computes to scan an SG list with only one
+   scatterlist for existing kernel users, i.e. zswap with the zswap_compres=
+s()
+   modifications described in (4). This will continue to hold true with the=
+ zram
+   IAA batching support I am developing. There are no kernel use cases for =
+the
+   iaa_crypto driver that will break this assumption.
+
+6) "For the source, nothing needs to be done because the folio could be pas=
+sed
+   in as is.". As far as I know, this cannot be accomplished without
+   modifications to the crypto API for software compressors, because compre=
+ssed
+   buffers need to be stored in the zswap/zram zs_pools at PAGE_SIZE
+   granularity.
+  =20
+I have validated the above v12 changes applied over the v11 patch-series,
+on Sapphire Rapids:
+
+  1) usemem30: Both zstd and deflate-iaa have comparable performance to v11=
+.
+
+  2) kernel_compilation test: Mostly better performance than baseline, but =
+worse
+     than v11. Slightly worse sys time than baseline for zstd/PMD.
+
+
+  usemem30 with 64K folios:
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D
+ =20
+     zswap shrinker_enabled =3D N.
+ =20
+     ----------------------------------------------------------------------=
+-
+                     mm-unstable-7-30-2025             v11             v12
+     ----------------------------------------------------------------------=
+-
+     zswap compressor          deflate-iaa     deflate-iaa     deflate-iaa
+     ----------------------------------------------------------------------=
+-
+     Total throughput (KB/s)     7,153,359      10,856,388      10,714,236
+     Avg throughput (KB/s)         238,445         361,879         357,141 =
+        =20
+     elapsed time (sec)              92.61           70.50           68.87
+     sys time (sec)               2,193.59        1,675.32        1,613.11
+     ----------------------------------------------------------------------=
+-
+   =20
+     ----------------------------------------------------------------------=
+-
+                     mm-unstable-7-30-2025             v11             v12
+     ----------------------------------------------------------------------=
+-
+     zswap compressor                 zstd            zstd            zstd
+     ----------------------------------------------------------------------=
+-
+     Total throughput (KB/s)     6,866,411       6,874,244       6,922,818
+     Avg throughput (KB/s)         228,880         229,141         230,760
+     elapsed time (sec)              96.45           89.05           87.75
+     sys time (sec)               2,410.72        2,150.63        2,090.86 =
+   =20
+     ----------------------------------------------------------------------=
+-
+
+
+  usemem30 with 2M folios:
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+ =20
+     zswap shrinker_enabled =3D N.
+   =20
+     ----------------------------------------------------------------------=
+-
+                     mm-unstable-7-30-2025             v11             v12
+     ----------------------------------------------------------------------=
+-
+     zswap compressor          deflate-iaa     deflate-iaa     deflate-iaa
+     ----------------------------------------------------------------------=
+-
+     Total throughput (KB/s)     7,268,929      11,312,195      10,943,491
+     Avg throughput (KB/s)         242,297         377,073         364,783
+     elapsed time (sec)              80.40           68.73           69.19
+     sys time (sec)               1,856.54        1,599.25        1,618.08
+     ----------------------------------------------------------------------=
+-
+ =20
+     ----------------------------------------------------------------------=
+-
+                     mm-unstable-7-30-2025             v11             v12
+     ----------------------------------------------------------------------=
+-
+     zswap compressor                 zstd            zstd            zstd =
+         =20
+     ----------------------------------------------------------------------=
+-
+     Total throughput (KB/s)     7,560,441       7,627,155       7,600,588
+     Avg throughput (KB/s)         252,014         254,238         253,352
+     elapsed time (sec)              88.89           83.22           87.55
+     sys time (sec)               2,132.05        1,952.98        2,079.26
+     ----------------------------------------------------------------------=
+-
+
+
+  kernel_compilation with 64K folios:
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+     zswap shrinker_enabled =3D Y.
+ =20
+     ----------------------------------------------------------------------=
+----
+                        mm-unstable-7-30-2025             v11             v=
+12
+     ----------------------------------------------------------------------=
+----
+     zswap compressor             deflate-iaa     deflate-iaa     deflate-i=
+aa
+     ----------------------------------------------------------------------=
+----
+     real_sec                          901.81          840.60          895.=
+94
+     sys_sec                         2,672.93        2,171.17        2,584.=
+04
+     zswpout                       34,700,692      24,076,095      37,725,6=
+71
+     zswap_written_back_pages       2,612,474       1,451,961       3,050,5=
+57
+     ----------------------------------------------------------------------=
+----
+
+     ----------------------------------------------------------------------=
+----
+                        mm-unstable-7-30-2025             v11             v=
+12
+     ----------------------------------------------------------------------=
+----
+     zswap compressor                    zstd            zstd            zs=
+td
+     ----------------------------------------------------------------------=
+----
+     real_sec                          882.67          837.21          872.=
+98 =20
+     sys_sec                         3,573.31        2,593.94        3,301.=
+67
+     zswpout                       42,768,967      22,660,215      36,810,3=
+96
+     zswap_written_back_pages       2,109,739         727,919       1,475,4=
+80
+     ----------------------------------------------------------------------=
+----
+
+
+  kernel_compilation with PMD folios:
+  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+     zswap shrinker_enabled =3D Y.
+
+     ----------------------------------------------------------------------=
+----
+                        mm-unstable-7-30-2025             v11             v=
+12
+     ----------------------------------------------------------------------=
+----
+     zswap compressor             deflate-iaa     deflate-iaa     deflate-i=
+aa
+     ----------------------------------------------------------------------=
+----
+     real_sec                          838.76          804.83          826.=
+05
+     sys_sec                         3,173.57        2,422.63        3,128.=
+11
+     zswpout                       59,544,198      38,093,995      60,072,1=
+19
+     zswap_written_back_pages       2,726,367         929,614       2,324,7=
+07
+     ----------------------------------------------------------------------=
+----
+=20
+=20
+     ----------------------------------------------------------------------=
+----
+                        mm-unstable-7-30-2025             v11             v=
+12
+     ----------------------------------------------------------------------=
+----
+     zswap compressor                    zstd            zstd            zs=
+td=20
+     ----------------------------------------------------------------------=
+----
+     real_sec                          831.09          813.40          827.=
+84
+     sys_sec                         4,251.11        3,053.95        4,406.=
+65
+     zswpout                       59,452,638      35,832,407      63,459,4=
+71
+     zswap_written_back_pages       1,041,721         423,334       1,162,9=
+13
+     ----------------------------------------------------------------------=
+----
+
+
+I am still in the process of verifying if modifying zswap_decompress() to u=
+se
+the per-CPU SG lists improves kernel_compilation, but thought this would be=
+ a
+good sync point to get your thoughts.
+
+I would greatly appreciate your comments on the approach and trade-offs, an=
+d
+guidance on how to proceed.
+
+
+"v12" zswap.c diff wrt v11:
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D
+
+diff --git a/mm/zswap.c b/mm/zswap.c
+index c30c1f325f57..58ad257e87e8 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -152,6 +152,8 @@ struct crypto_acomp_ctx {
+ 	struct acomp_req *req;
+ 	struct crypto_wait wait;
+ 	u8 **buffers;
++	struct sg_table *sg_inputs;
++	struct sg_table *sg_outputs;
+ 	struct mutex mutex;
+ 	bool is_sleepable;
  };
- 
-+#define SWP_TABLE_USE_PAGE (sizeof(struct swap_table) == PAGE_SIZE)
+@@ -282,6 +284,16 @@ static void acomp_ctx_dealloc(struct crypto_acomp_ctx =
+*acomp_ctx, u8 nr_buffers)
+ 			kfree(acomp_ctx->buffers[i]);
+ 		kfree(acomp_ctx->buffers);
+ 	}
 +
- /*
-  * A swap table entry represents the status of a swap slot on a swap
-  * (physical or virtual) device. The swap table in each cluster is a
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 00651e947eb2..7539ee26d59a 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -432,6 +432,38 @@ static inline unsigned int cluster_offset(struct swap_info_struct *si,
- 	return cluster_index(si, ci) * SWAPFILE_CLUSTER;
- }
- 
-+static struct swap_table *swap_table_alloc(gfp_t gfp)
-+{
-+	struct folio *folio;
-+
-+	if (!SWP_TABLE_USE_PAGE)
-+		return kmem_cache_zalloc(swap_table_cachep, gfp);
-+
-+	folio = folio_alloc(gfp | __GFP_ZERO, 0);
-+	if (folio)
-+		return folio_address(folio);
-+	return NULL;
-+}
-+
-+static void swap_table_free_folio_rcu_cb(struct rcu_head *head)
-+{
-+	struct folio *folio;
-+
-+	folio = page_folio(container_of(head, struct page, rcu_head));
-+	folio_put(folio);
-+}
-+
-+static void swap_table_free(struct swap_table *table)
-+{
-+	if (!SWP_TABLE_USE_PAGE) {
-+		kmem_cache_free(swap_table_cachep, table);
-+		return;
++	if (acomp_ctx->sg_inputs) {
++		sg_free_table(acomp_ctx->sg_inputs);
++		acomp_ctx->sg_inputs =3D NULL;
 +	}
 +
-+	call_rcu(&(folio_page(virt_to_folio(table), 0)->rcu_head),
-+		 swap_table_free_folio_rcu_cb);
-+}
-+
- static void swap_cluster_free_table(struct swap_cluster_info *ci)
++	if (acomp_ctx->sg_outputs) {
++		sg_free_table(acomp_ctx->sg_outputs);
++		acomp_ctx->sg_outputs =3D NULL;
++	}
+ }
+=20
+ static struct zswap_pool *zswap_pool_create(char *type, char *compressor)
+@@ -922,6 +934,7 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, str=
+uct hlist_node *node)
  {
- 	unsigned int ci_off;
-@@ -445,7 +477,7 @@ static void swap_cluster_free_table(struct swap_cluster_info *ci)
- 	table = (void *)rcu_dereference_protected(ci->table, true);
- 	rcu_assign_pointer(ci->table, NULL);
- 
--	kmem_cache_free(swap_table_cachep, table);
-+	swap_table_free(table);
- }
- 
- /*
-@@ -469,8 +501,7 @@ swap_cluster_alloc_table(struct swap_info_struct *si,
- 	lockdep_assert_held(&ci->lock);
- 	lockdep_assert_held(&this_cpu_ptr(&percpu_swap_cluster)->lock);
- 
--	table = kmem_cache_zalloc(swap_table_cachep,
--				  __GFP_HIGH | __GFP_NOMEMALLOC | __GFP_NOWARN);
-+	table = swap_table_alloc(__GFP_HIGH | __GFP_NOMEMALLOC | __GFP_NOWARN);
- 	if (table) {
- 		rcu_assign_pointer(ci->table, table);
- 		return ci;
-@@ -485,7 +516,7 @@ swap_cluster_alloc_table(struct swap_info_struct *si,
- 	if (!(si->flags & SWP_SOLIDSTATE))
- 		spin_unlock(&si->global_cluster_lock);
- 	local_unlock(&percpu_swap_cluster.lock);
--	table = kmem_cache_zalloc(swap_table_cachep, __GFP_HIGH | GFP_KERNEL);
-+	table = swap_table_alloc(__GFP_HIGH | GFP_KERNEL);
- 
- 	local_lock(&percpu_swap_cluster.lock);
- 	if (!(si->flags & SWP_SOLIDSTATE))
-@@ -522,7 +553,7 @@ swap_cluster_alloc_table(struct swap_info_struct *si,
- 
- free_table:
- 	if (table)
--		kmem_cache_free(swap_table_cachep, table);
-+		swap_table_free(table);
- 	return ci;
- }
- 
-@@ -740,7 +771,7 @@ static int inc_cluster_info_page(struct swap_info_struct *si,
- 
- 	ci = cluster_info + idx;
- 	if (!ci->table) {
--		table = kmem_cache_zalloc(swap_table_cachep, GFP_KERNEL);
-+		table = swap_table_alloc(GFP_KERNEL);
- 		if (!table)
- 			return -ENOMEM;
- 		rcu_assign_pointer(ci->table, table);
-@@ -4076,9 +4107,10 @@ static int __init swapfile_init(void)
- 	 * only, and all swap cache readers (swap_cache_*) verifies
- 	 * the content before use. So it's safe to use RCU slab here.
+ 	struct zswap_pool *pool =3D hlist_entry(node, struct zswap_pool, node);
+ 	struct crypto_acomp_ctx *acomp_ctx =3D per_cpu_ptr(pool->acomp_ctx, cpu);
++	int cpu_node =3D cpu_to_node(cpu);
+ 	int ret =3D -ENOMEM;
+ 	u8 i;
+=20
+@@ -936,7 +949,7 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, str=
+uct hlist_node *node)
+ 	if (!IS_ERR_OR_NULL(acomp_ctx->acomp))
+ 		return 0;
+=20
+-	acomp_ctx->acomp =3D crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_to=
+_node(cpu));
++	acomp_ctx->acomp =3D crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_no=
+de);
+ 	if (IS_ERR_OR_NULL(acomp_ctx->acomp)) {
+ 		pr_err("could not alloc crypto acomp %s : %ld\n",
+ 				pool->tfm_name, PTR_ERR(acomp_ctx->acomp));
+@@ -960,13 +973,13 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, s=
+truct hlist_node *node)
+ 				     crypto_acomp_batch_size(acomp_ctx->acomp));
+=20
+ 	acomp_ctx->buffers =3D kcalloc_node(pool->compr_batch_size, sizeof(u8 *),
+-					  GFP_KERNEL, cpu_to_node(cpu));
++					  GFP_KERNEL, cpu_node);
+ 	if (!acomp_ctx->buffers)
+ 		goto fail;
+=20
+ 	for (i =3D 0; i < pool->compr_batch_size; ++i) {
+ 		acomp_ctx->buffers[i] =3D kmalloc_node(PAGE_SIZE * 2, GFP_KERNEL,
+-						     cpu_to_node(cpu));
++						     cpu_node);
+ 		if (!acomp_ctx->buffers[i])
+ 			goto fail;
+ 	}
+@@ -981,6 +994,26 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, st=
+ruct hlist_node *node)
+ 	acomp_request_set_callback(acomp_ctx->req, CRYPTO_TFM_REQ_MAY_BACKLOG,
+ 				   crypto_req_done, &acomp_ctx->wait);
+=20
++	acomp_request_set_unit_size(acomp_ctx->req, PAGE_SIZE);
++
++	acomp_ctx->sg_inputs =3D kmalloc_node(sizeof(*acomp_ctx->sg_inputs),
++					    GFP_KERNEL, cpu_node);
++	if (!acomp_ctx->sg_inputs)
++		goto fail;
++
++	if (sg_alloc_table_node(&acomp_ctx->sg_inputs, pool->compr_batch_size,
++				GFP_KERNEL, cpu_node))
++		goto fail;
++
++	acomp_ctx->sg_outputs =3D kmalloc_node(sizeof(*acomp_ctx->sg_outputs),
++					     GFP_KERNEL, cpu_node);
++	if (!acomp_ctx->sg_outputs)
++		goto fail;
++
++	if (sg_alloc_table_node(&acomp_ctx->sg_outputs, pool->compr_batch_size,
++				GFP_KERNEL, cpu_node))
++		goto fail;
++
+ 	mutex_init(&acomp_ctx->mutex);
+ 	return 0;
+=20
+@@ -1027,17 +1060,14 @@ static bool zswap_compress(struct folio *folio, lon=
+g start, unsigned int nr_page
+ 			   struct zswap_entry *entries[], struct zswap_pool *pool,
+ 			   int node_id)
+ {
++	unsigned int nr_comps =3D min(nr_pages, pool->compr_batch_size);
++	unsigned int dlens[ZSWAP_MAX_BATCH_SIZE];
+ 	struct crypto_acomp_ctx *acomp_ctx;
+-	struct scatterlist input, output;
+ 	struct zpool *zpool =3D pool->zpool;
+-
+-	unsigned int dlens[ZSWAP_MAX_BATCH_SIZE];
+-	int errors[ZSWAP_MAX_BATCH_SIZE];
+-
+-	unsigned int nr_comps =3D min(nr_pages, pool->compr_batch_size);
+-	unsigned int i, j;
+-	int err;
++	struct scatterlist *sg;
++	unsigned int i, j, k;
+ 	gfp_t gfp;
++	int err;
+=20
+ 	gfp =3D GFP_NOWAIT | __GFP_NORETRY | __GFP_HIGHMEM | __GFP_MOVABLE;
+=20
+@@ -1045,59 +1075,58 @@ static bool zswap_compress(struct folio *folio, lon=
+g start, unsigned int nr_page
+=20
+ 	mutex_lock(&acomp_ctx->mutex);
+=20
++	prefetchw(acomp_ctx->sg_inputs->sgl);
++	prefetchw(acomp_ctx->sg_outputs->sgl);
++
+ 	/*
+ 	 * Note:
+ 	 * [i] refers to the incoming batch space and is used to
+-	 *     index into the folio pages, @entries and @errors.
++	 *     index into the folio pages and @entries.
++	 *
++	 * [k] refers to the @acomp_ctx space, as determined by
++	 *     @pool->compr_batch_size, and is used to index into
++	 *     @acomp_ctx->buffers and @dlens.
  	 */
--	swap_table_cachep = kmem_cache_create("swap_table",
--			    sizeof(struct swap_table),
--			    0, SLAB_PANIC | SLAB_TYPESAFE_BY_RCU, NULL);
-+	if (!SWP_TABLE_USE_PAGE)
-+		swap_table_cachep = kmem_cache_create("swap_table",
-+				    sizeof(struct swap_table),
-+				    0, SLAB_PANIC | SLAB_TYPESAFE_BY_RCU, NULL);
- 
- #ifdef CONFIG_MIGRATION
- 	if (swapfile_maximum_size >= (1UL << SWP_MIG_TOTAL_BITS))
--- 
-2.51.0
+ 	for (i =3D 0; i < nr_pages; i +=3D nr_comps) {
+-		if (nr_comps =3D=3D 1) {
+-			sg_init_table(&input, 1);
+-			sg_set_page(&input, folio_page(folio, start + i), PAGE_SIZE, 0);
++		for_each_sg(acomp_ctx->sg_inputs->sgl, sg, nr_comps, k)
++			sg_set_page(sg, folio_page(folio, start + k + i), PAGE_SIZE, 0);
+=20
+-			/*
+-			 * We need PAGE_SIZE * 2 here since there maybe over-compression case,
+-			 * and hardware-accelerators may won't check the dst buffer size, so
+-			 * giving the dst buffer with enough length to avoid buffer overflow.
+-			 */
+-			sg_init_one(&output, acomp_ctx->buffers[0], PAGE_SIZE * 2);
+-			acomp_request_set_params(acomp_ctx->req, &input,
+-						 &output, PAGE_SIZE, PAGE_SIZE);
+-
+-			errors[i] =3D crypto_wait_req(crypto_acomp_compress(acomp_ctx->req),
+-						    &acomp_ctx->wait);
+-			if (unlikely(errors[i]))
+-				goto compress_error;
+-
+-			dlens[i] =3D acomp_ctx->req->dlen;
+-		} else {
+-			struct page *pages[ZSWAP_MAX_BATCH_SIZE];
+-			unsigned int k;
+-
+-			for (k =3D 0; k < nr_pages; ++k)
+-				pages[k] =3D folio_page(folio, start + k);
+-
+-			struct swap_batch_comp_data batch_comp_data =3D {
+-				.pages =3D pages,
+-				.dsts =3D acomp_ctx->buffers,
+-				.dlens =3D dlens,
+-				.errors =3D errors,
+-				.nr_comps =3D nr_pages,
+-			};
+-
+-			acomp_ctx->req->kernel_data =3D &batch_comp_data;
+-
+-			if (unlikely(crypto_acomp_compress(acomp_ctx->req)))
+-				goto compress_error;
++		/*
++		 * We need PAGE_SIZE * 2 here since there maybe over-compression case,
++		 * and hardware-accelerators may won't check the dst buffer size, so
++		 * giving the dst buffer with enough length to avoid buffer overflow.
++		 */
++		for_each_sg(acomp_ctx->sg_outputs->sgl, sg, nr_comps, k)
++			sg_set_buf(sg, acomp_ctx->buffers[k], PAGE_SIZE * 2);
++
++		acomp_request_set_params(acomp_ctx->req,
++					 acomp_ctx->sg_inputs->sgl,
++					 acomp_ctx->sg_outputs->sgl,
++					 nr_comps * PAGE_SIZE,
++					 nr_comps * PAGE_SIZE);
++
++		err =3D crypto_wait_req(crypto_acomp_compress(acomp_ctx->req),
++				      &acomp_ctx->wait);
++
++		if (unlikely(err)) {
++			if (nr_comps =3D=3D 1)
++				dlens[0] =3D err;
++			goto compress_error;
+ 		}
+=20
++		if (nr_comps =3D=3D 1)
++			dlens[0] =3D acomp_ctx->req->dlen;
++		else
++			for_each_sg(acomp_ctx->sg_outputs->sgl, sg, nr_comps, k)
++				dlens[k] =3D sg->length;
++
+ 		/*
+ 		 * All @nr_comps pages were successfully compressed.
+ 		 * Store the pages in zpool.
+ 		 *
+ 		 * Note:
+ 		 * [j] refers to the incoming batch space and is used to
+-		 *     index into the folio pages, @entries, @dlens and @errors.
++		 *     index into the folio pages and @entries.
+ 		 * [k] refers to the @acomp_ctx space, as determined by
+ 		 *     @pool->compr_batch_size, and is used to index into
+ 		 *     @acomp_ctx->buffers.
+@@ -1113,7 +1142,7 @@ static bool zswap_compress(struct folio *folio, long =
+start, unsigned int nr_page
+ 			 * non-batching software compressors.
+ 			 */
+ 			prefetchw(entries[j]);
+-			err =3D zpool_malloc(zpool, dlens[j], gfp, &handle, node_id);
++			err =3D zpool_malloc(zpool, dlens[k], gfp, &handle, node_id);
+=20
+ 			if (unlikely(err)) {
+ 				if (err =3D=3D -ENOSPC)
+@@ -1124,9 +1153,9 @@ static bool zswap_compress(struct folio *folio, long =
+start, unsigned int nr_page
+ 				goto err_unlock;
+ 			}
+=20
+-			zpool_obj_write(zpool, handle, acomp_ctx->buffers[k], dlens[j]);
++			zpool_obj_write(zpool, handle, acomp_ctx->buffers[k], dlens[k]);
+ 			entries[j]->handle =3D handle;
+-			entries[j]->length =3D dlens[j];
++			entries[j]->length =3D dlens[k];
+ 		}
+ 	} /* finished compress and store nr_pages. */
+=20
+@@ -1134,9 +1163,9 @@ static bool zswap_compress(struct folio *folio, long =
+start, unsigned int nr_page
+ 	return true;
+=20
+ compress_error:
+-	for (j =3D i; j < i + nr_comps; ++j) {
+-		if (errors[j]) {
+-			if (errors[j] =3D=3D -ENOSPC)
++	for (k =3D 0; k < nr_comps; ++k) {
++		if (dlens[k] < 0) {
++			if (dlens[k] =3D=3D -ENOSPC)
+ 				zswap_reject_compress_poor++;
+ 			else
+ 				zswap_reject_compress_fail++;
 
+
+
+Thanks,
+Kanchana
+
+>=20
+> Cheers,
+> --
+> Email: Herbert Xu <herbert@gondor.apana.org.au>
+> Home Page: http://gondor.apana.org.au/~herbert/
+> PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
