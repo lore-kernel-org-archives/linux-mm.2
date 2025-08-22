@@ -4,120 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D006CA0EED
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 08:58:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9728DCA0EEB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 08:58:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8CF1280016; Fri, 22 Aug 2025 04:58:05 -0400 (EDT)
+	id D16B5280017; Fri, 22 Aug 2025 04:58:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D63788E0056; Fri, 22 Aug 2025 04:58:05 -0400 (EDT)
+	id CEF0E8E0056; Fri, 22 Aug 2025 04:58:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C525D280016; Fri, 22 Aug 2025 04:58:05 -0400 (EDT)
+	id C04CF280017; Fri, 22 Aug 2025 04:58:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id ADCF28E0056
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 04:58:05 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 766268E0056
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 04:58:14 -0400 (EDT)
 Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 804A7118315
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 08:58:05 +0000 (UTC)
-X-FDA: 83803791330.17.6BE283E
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B37E91C0004
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 08:58:03 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=F0wSB6sC;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of davidgow@google.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=davidgow@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755853083; a=rsa-sha256;
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3BBAE1606CD
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 08:58:14 +0000 (UTC)
+X-FDA: 83803791708.17.2F1BA0B
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 86E7640009
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 08:58:12 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=DIpNdzSI;
+	spf=pass (imf17.hostedemail.com: domain of davidgow@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=davidgow@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755853092; a=rsa-sha256;
 	cv=none;
-	b=fN5s+EqrRPeO6ICQOjVnqZ3p5I9UFcyFLhO+iOuSj8/aECGhDGsNOTKFExb4B9PnyMg//+
-	0IKZU1afp656i89VSAdIN426STy3GAvISJDYW8wUcygUNEvLVqJrIl0p9J9gR9SwZds1Ps
-	1Mgc4C4xvjw6ow9F1MZ4JSuYOKrFRts=
+	b=FfzXexcsbTKmta1Jer+INCMra5SDambTysJcvi/yVyRfLl2p+F61WMcnULVfDGr9bK7G/3
+	+9kLGns5J9cIpMucrPI/eM/yrVb9osK672goVJOCZ4Q/uD3FzHeOeVfubu0ZoJMmYy7d63
+	qW174Tedf6zsqJIoNuPOUC/cn4m+1iA=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=F0wSB6sC;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of davidgow@google.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=davidgow@google.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=DIpNdzSI;
+	spf=pass (imf17.hostedemail.com: domain of davidgow@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=davidgow@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755853083;
+	s=arc-20220608; t=1755853092;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8e1nOqzcCjF8iVfh/2xTZIoTQVavzRcc+FWRUPi5xfc=;
-	b=zFWLAaC9MSFpTHgcjaap6BsGkLulbDnPCwxniigyqOdifOIaa/7Ma5TxDIPmOyaunY9/fo
-	0aPUs+oO+knmiOBBZdPC7f8Gy6HE9DN4pmtGWqH67nHsUOC8JIfuYB5Y9BW64BW2WnMg8f
-	1W2WVeyKy6fsXhto+HGwilkjRc/rqww=
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-70d9a65c371so3740186d6.2
-        for <linux-mm@kvack.org>; Fri, 22 Aug 2025 01:58:03 -0700 (PDT)
+	bh=76++tlF2PJ8cTzQzb17ITyN0aykAZvesPQfq+VFueCU=;
+	b=WM4Xb/BpNk5AxeREwY6Po4JWOsLRiCfY8jH4URlhHFE9bywSWQR7Te0B7qafOcV7OHefkb
+	+howXu/jc45wpUXNNS4QlL3uLTgCKza5irLu+k7sgQhpp9wF5mX2nKEuFdVe7ld5S0K9T5
+	m/8SKnUZBXIaxajuLUiFoN/oizn6cSI=
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4b109c4af9eso15278561cf.3
+        for <linux-mm@kvack.org>; Fri, 22 Aug 2025 01:58:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755853083; x=1756457883; darn=kvack.org;
+        d=google.com; s=20230601; t=1755853092; x=1756457892; darn=kvack.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=8e1nOqzcCjF8iVfh/2xTZIoTQVavzRcc+FWRUPi5xfc=;
-        b=F0wSB6sCTyyUoF1tmHXIHG5Wu3HrxvLRrlv1AXMH+nelbcOlnV/KQOsJcRyUJZ+A1k
-         i8Il+ieRiVVim4KDJBR5JWRLn9zeAa/hmvTh+p+0tWZ+5anMRk3gT7hx8lXRpwdssPdp
-         0PBvUmYDiUFBACBnCRQUS0Pp0peyt9ntFNaBGOIxIamKbiPt8lHiJAd0fISNfCFuX3ZU
-         REwjXhfWfVPO6d6rs6M6CLstCZSxqm2klyNi6qyUxRi7Y29nYWgIiSDtc9E0cR0Y/cbA
-         0VN8P4rMQn25sNnXIO6pCUhEG3j7+Ineji222E8/ziPqs7E+qET+69EMzJpGLrg/HgAH
-         34xA==
+        bh=76++tlF2PJ8cTzQzb17ITyN0aykAZvesPQfq+VFueCU=;
+        b=DIpNdzSIvZlJZfsbPVUuYBH4ZrW7J/wZeQSiGgdc4M09mYr/Rwrg/+m+XU9Nh0X7Pd
+         4/C4RzWkS2lWpaUGdQ+HTgQX23Siqu49cl+0gUEeH8cvo8GM4VA7vQJ4JMvls9tTDUM7
+         6YplZm6tTXwaVeOt3hH9bv1Ywm3gWS4WX5fsrglg6NVglYOObnecrKlJ14WR6UIzRjyK
+         wXkpq/CHExd7rEc9dzzaymx9zh9oUIleCxgAlzx7k5MAu7+WNeY0+2jIvxE+WqSOPuJI
+         KyNU+gw9MoqEznEo/mr4br1HU+WUOht5eQ0V775T1f4RQPfDVKohORu+6ZZ8zz3ikZWc
+         UNLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755853083; x=1756457883;
+        d=1e100.net; s=20230601; t=1755853092; x=1756457892;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=8e1nOqzcCjF8iVfh/2xTZIoTQVavzRcc+FWRUPi5xfc=;
-        b=Kh/+Nf/mzNUqBB43u/ii5Tw3mT7OC5wZc4k4eDqJC+ZKwaVUtgmvDB0sthBaqk9I8U
-         a8IzpGgOAS3xLeTMK5t/1ntVgCPhmKlzds4+oIu38WdaHEjCjG+/7QIdBeGw6KpONZUJ
-         JS0gmuz4nxTW0NldvvWcwikvR3LZ1RLF1vtX37mvJC94Cxj81B9jpCy9TqP6XFmO0cZ/
-         IS62KiQReapW+TMEHl5LR06dpeTTVU7P6zTmiyUUux35EHaWetLrYknc6UgtmSF/6TE6
-         yWUf7HHIE1e2dSDB9pXf/KQrMbKJChB/aslO38g2AQCZT6TWeldlclGFRzwWRV5B6kc4
-         5JKw==
-X-Forwarded-Encrypted: i=1; AJvYcCWyjMOqGxUqsCBneJMmDnAmVqKCWVhTQcJKFPhinOL1RbDqcQnj1wjpLPZNw+RjK6vQoDOt3P995g==@kvack.org
-X-Gm-Message-State: AOJu0Yz7fSc5IENWVUzdKilL+TDm8YunMOUBLRIDomTVEBbcNQ251IxL
-	eh5L1FhK8hisNo0ey5+TmPZonM0oyA2hLxP0p7vhGYkt6eeFgXGZt6M0gROuZAj54U2nH3SVjIb
-	Jg0JY3H2XyxyYFxvs0XCyFOEdP5t+P+JyvMnL2NdN
-X-Gm-Gg: ASbGnctdYdgNlBKhLyTQKLnRNIJxdhLXHkuLA164aMk4Fb2sX7ey5xxxRr88ri85CVs
-	y2ZUqPU/9oOOjD1xIC9WJhXv6+jjfAMer+5qD94IsqpdXdEcEWzyhnW/bX9KrnfRI/XckwP6X/b
-	LZHs8y23en/uBct2qhxVCkQ/9kvafqvPq5easGol8Ut5+6w2+wwCuTUBNwbARyokY7P//hllBRr
-	+Xq4skVhMQW
-X-Google-Smtp-Source: AGHT+IF3c1yLJidJzZUVZ9l29G/SnoKEGAF/5ONlc8c84CWTzJTLZ0ZRzg6LQbZvkByeQnyXh9t2hqoVTcjT4bVEWd0=
-X-Received: by 2002:ad4:5bab:0:b0:707:55d3:9984 with SMTP id
- 6a1803df08f44-70d97325aeamr29917046d6.45.1755853082204; Fri, 22 Aug 2025
- 01:58:02 -0700 (PDT)
+        bh=76++tlF2PJ8cTzQzb17ITyN0aykAZvesPQfq+VFueCU=;
+        b=qJo1S7gioxctr+llSuaiUUKnoeJ2EgZ9zTJz3CZbPkNkjPp7gTR937TY49ukBujEUJ
+         EIX7UAy/6JGBDhWe5Xospn7HNJN56K9GZ9t+LCGu22UR3ZFBNyesubBowJ+uiBsC5l/P
+         TqyO8zY2EEdBFlk9FRoXpmvldKqow+xLQnl7HgxV/3zM1c5urhkoapeNYtxYMXQGbp9V
+         8sqeX/93vbxL3NDdUwFMISgLs8kuIY2w3Bp90HjKqNhyxZ3ZanAYcK4PgICLRu/kQxMM
+         uMqWnZOw2pujHRMV7zDFqfUVMOI8Wt/nIxw49edzKxjt+WT37Op6JSBAd3DWL1Rd0nqv
+         tlog==
+X-Forwarded-Encrypted: i=1; AJvYcCXqnvuzp386YLkf/RSy7qEEr6szgbx2D90updwWw3Dwb56U/sEKNfGKqfdnyvaDkQtQpOHzKa1hFA==@kvack.org
+X-Gm-Message-State: AOJu0Yy/w6OLnLJbBDlAYXHO4Gh189qH9nECUpaPDi8E7jERo7GAJozO
+	kxHTtRIqSbxDLjkUPdzSOvcqgW09SrtVqBaESVh6xhJR774JLRSisUO+BAlnWJmn3elZJ683cPP
+	mekHNe4GqkwM09wjCS/dzcTb6YPD9BauiYAeIvE3F
+X-Gm-Gg: ASbGncsXyKfz+DBIwu1omc/kII3QzHa/kxOvOYH8tFcWGeKyS95LfI2nQm/MJGJEOVP
+	U1ljtZ4nloWT9gK5k10RdoVGhb4NZ8E4Hhw7X70kpMwBl2PSJYHaLEADAoWvJrngv8U05Pt87BD
+	3wNwIcFvmzkrArUAkR34DyleJsGv1XjlB/+OWqkAM0CdclKvuU4SK8U1R4IXsMM6Yl6ionHDJEf
+	BdpR1eCty1e
+X-Google-Smtp-Source: AGHT+IGgJFs81Tkm9cnzx99Wu/VuJAA14zxdl2jbbJSm45ct37oH5geS2KLImcOs+RJFkvoeWeLf9t4MCdcRp1M/isQ=
+X-Received: by 2002:ac8:5e10:0:b0:4b0:b7d2:763f with SMTP id
+ d75a77b69052e-4b2aab20bb8mr24115191cf.47.1755853091220; Fri, 22 Aug 2025
+ 01:58:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250813133812.926145-1-ethan.w.s.graham@gmail.com>
- <20250813133812.926145-7-ethan.w.s.graham@gmail.com> <CANpmjNMXnXf879XZc-skhbv17sjppwzr0VGYPrrWokCejfOT1A@mail.gmail.com>
- <CALrw=nFKv9ORN=w26UZB1qEi904DP1V5oqDsQv7mt8QGVhPW1A@mail.gmail.com>
- <20250815011744.GB1302@sol> <CALrw=nHcpDNwOV6ROGsXq8TtaPNGC4kGf_5YDTfVs2U1+wjRhg@mail.gmail.com>
- <CANpmjNOdq9iwuS9u6NhCrZ+AsM+_pAfZXZsTmpXMPacjRjV80g@mail.gmail.com>
-In-Reply-To: <CANpmjNOdq9iwuS9u6NhCrZ+AsM+_pAfZXZsTmpXMPacjRjV80g@mail.gmail.com>
+References: <20250813133812.926145-1-ethan.w.s.graham@gmail.com> <20250813133812.926145-4-ethan.w.s.graham@gmail.com>
+In-Reply-To: <20250813133812.926145-4-ethan.w.s.graham@gmail.com>
 From: David Gow <davidgow@google.com>
-Date: Fri, 22 Aug 2025 16:57:49 +0800
-X-Gm-Features: Ac12FXzJsp2vCYslm6ERlK05gi4KeqjE3YdvQXHbGJxUAQ-w3a_LzfiA2QZcy44
-Message-ID: <CABVgOS=7wrxywmgn8YRW4o_sUN=wOxa4k7NbTObAxA5okmr+CQ@mail.gmail.com>
-Subject: Re: [PATCH v1 RFC 6/6] crypto: implement KFuzzTest targets for PKCS7
- and RSA parsing
-To: Marco Elver <elver@google.com>
-Cc: Ignat Korchagin <ignat@cloudflare.com>, Eric Biggers <ebiggers@kernel.org>, 
-	Ethan Graham <ethan.w.s.graham@gmail.com>, ethangraham@google.com, glider@google.com, 
-	andreyknvl@gmail.com, brendan.higgins@linux.dev, dvyukov@google.com, 
-	jannh@google.com, rmoar@google.com, shuah@kernel.org, tarasmadan@google.com, 
+Date: Fri, 22 Aug 2025 16:57:59 +0800
+X-Gm-Features: Ac12FXzU8xu8PyzsDwHHn4kmmXyplfDG-OPyeaz3YpQBir8tDT1g8D3RnS31l3M
+Message-ID: <CABVgOSkrbAxBUqvSWQ2ME5Vx0SXpCRmN3F-i6qJj=0BEZg_2dg@mail.gmail.com>
+Subject: Re: [PATCH v1 RFC 3/6] kfuzztest: implement core module and input processing
+To: Ethan Graham <ethan.w.s.graham@gmail.com>
+Cc: ethangraham@google.com, glider@google.com, andreyknvl@gmail.com, 
+	brendan.higgins@linux.dev, dvyukov@google.com, jannh@google.com, 
+	elver@google.com, rmoar@google.com, shuah@kernel.org, tarasmadan@google.com, 
 	kasan-dev@googlegroups.com, kunit-dev@googlegroups.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	David Howells <dhowells@redhat.com>, Lukas Wunner <lukas@wunner.de>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
-	"open list:HARDWARE RANDOM NUMBER GENERATOR CORE" <linux-crypto@vger.kernel.org>
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000004b7db7063cf06798"
-X-Rspamd-Server: rspam03
+	boundary="000000000000d38283063cf067c4"
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 86E7640009
+X-Stat-Signature: nsqcdy8z5h7adwqxpa6ice4b3tqsnr5u
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B37E91C0004
-X-Stat-Signature: auzsk4r1zb7idn4pmazsxz5omopkyqs1
-X-HE-Tag: 1755853083-369010
-X-HE-Meta: U2FsdGVkX18zcSQ3iYDnL0mEvypvUC1y9yolshCeGzf1vfYM/wBJ2H+O176YvX0ZjedE/VQA6WNfmPy7Ez5HOfS1RfScXkNl6T+YjfDR7c+cAH5WngPvcyoU8WfdW4SJnDl5580LGAXcdDvpMzl+yKQaFgRgQMcldbDmq6qQsEx/9ajB40n6REG5C6rCnhEVNx8OqMz8MlZboawZrLzuH4A9MRJsDsednYXhIXrSGyoE8XehZbTVqrN8bOTvarZRLA6j6LhXgdLmH7XlW98H3ATOQxm6lPq0rKRi0l1Jw+ghEiHKkXs894WMRsNQZFb3ic0T9CFjOh3JG3v7G2iuKjkEM7pPAvC8wi1IaBiCJQE4jeVLtRfTe8FzgCdooHSYV9h2yLdYwyGahWoGOfCw9scnZ5PmsfTsZnqaNOtmDk2jK5VXVvXvgET8BBWMU4zJgWjaWZlMjPpE7ArPnhAINWg2e+FMCO8PgiEf8sWmdsm07yCMqtjbj8r/kaBUAjL2Vq/RkKJcD6g3AtwuQqTH588ElcopysKYEcjdQrNGZSvEHUy48CQlSrLHrowzsQmIqrWPrylgCzeDpfSpm7WTlMq13wOR6mPzjhH3HD6s7YOcF/K+50iBe0IEk/UTIB7j4Puxsl3z8ZGCXcchr8fqzHuFQjiRSbwRCqUxyeFwmJK37LH+p9OdIZI8nkhL6PJa4qNzpn+np27Wng/8F71bOiNMyQgaeAOkLHwgM22UUq6W2jiOzsukl7iehW9L5xPYzqMiZigtlQzLJ7V+l9/dSGgxx629uKcXxZukwUxQZu1B6fXekx9QCnknkVXgafCPGK/wboB2fYSLXSE9etYbIQKVj8Ld3suEtEdr/lXUr9nF+cTJckUDvYqecWgQgr+fuix9ay+sVGFWpbUXIDLHjjyjI8ppWTP8FbqnpZ+Hz3+Ofbh4NsHImgH4DIrKFFPfDuE7YfEfznAKA1Pwhfk
- O/xjMofa
- dyAQIu/RS+OeLT+/0Ee3kq+oXa+XtGT7L2up2GZppCpxDptU2MvjK8hj/J5u4xVnheG2SyOeR0jckh8lSfSPR5Ls2diclb0F027aBde4ogbtKABMaDg56GHLSumHKs2LPmrgvIatlFUf2VVr4gziyD/ZAfoN7t1yxh9xvKPkjz3833+uvEmXhy3S10ZxXZyQ4r00V8X8ZL2tOdjnEbJv4OyEPaT0UJRric2EXHCzBBwLpCwX3FDPy9/o2yczT+Hv5FRJw1oIdtLVeKest3W+eDrWTqsKzwsQ7rK8LF9JuzBZaDbajaW50kNSdkXMheafj05O9iSEA1CBJeqgIANTn5wgk48Xocd2AC+ujLqdSq2tQzPBnyAxYAV1gBDKKKEuvfHumzloSm4MEX9DJVmUb/qjt71nvzIYIfsDNJIp/Q0N7p/LaUrrCYZF9uEFr31PQRu8S1+dBKfIqYznwN1praXE/2+7rmwzWEDjCBJqReiPROcIv0me9jwhiMQ==
+X-HE-Tag: 1755853092-234979
+X-HE-Meta: U2FsdGVkX1+K9u+XG1mX5JsgocjZ1xNB1LFG8gaFFkm6r9yb1C5th8C0em4xE/gY5DI1/g5m/kcLnDNyCt32adRirXXMWjShu8B03l4IlxoGt+NhDGwH3GtzrefNl9g7zgf+eDsc/d7WDpnfKEAINMdbhv6GDG3LPjHCF+sj9LBdUZ/bDsIk5/HhxEo8PVRPP62FAxHQLvKjY7rW2Qj/HsORyFXm6+BbwL/nu5yXha8EHgtYEyq9msHCi2ryzrpBaTlYzhIEqrPHtG4mspEQ0mMNUQUejrqP+7GyZ1C8Qx7sL0LtIFaF5jZVhkrXmqi/GbgWji0p8Jwb9EcPX2Ae/p3TzCF8JlriBk3CbdiKADQIk60wHTUDnE2m53vBbwUSpZgV8xE80Ckyz9ms4vUVCdYd2d93kTk+aHL0KbuOlyzft0wRZaf9kW0id4ABeBMyH+J7tiVZ4Bwf4ue+OlGGWIRGSZbTT34KTLoWOoj/DWS2Q40DsOufiqljUcYRJb7sZ44wQrcbI82g1yWC1xsEFIkiXBtv5J+zZinIETNNz4ChqkC9jj8FFY8rfYcb3D7sjyIgbLkdJTFW3ywzlbpKkx5in1je68Am20foZR8//qs1LSEEdibq6GnpNPvONI4/Gm1ZxKR8reBU2jzCMSzTNnmEXWCoD7zNNWFJUa3K0olWHyr05+WzN9M86H8j52oJghI7B2xlSV99EAn+7fuWWvyXQRyVL+/ZYhsmMV6jR+Pjqubfs5EaMaM6VOiepblpBzZho/Bc0qbIuHC026tQfUgrIqP5jqcQx6ltW8tpThfzwAo0BTqvnyt8fNQtAhHImr/FJj2NqKg0vdCawX0xewSsfaPtRxn8wBp9RhuS9kjFfsBrTBnSQSLt0L/lyveyHsd8kNm6WAS8x6nIzH4qeaY/PUujWRS1qEn+QKDGjX3b8C2tQuotY5S05HkMZiESgZ3iMzfUKsS0Xnl0Lud
+ 4rw0rWAP
+ nbSfABP24kLyXONYhXsKaOYvU842WzrXn4tqdgN/VvNpF3hepzrif8Zear6SIGpZ36hBzXlvRSdBGAAtfAysrk9cIa2vqKTASlg/kNy7L+h7eQXo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,132 +117,458 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---0000000000004b7db7063cf06798
+--000000000000d38283063cf067c4
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, 19 Aug 2025 at 18:08, Marco Elver <elver@google.com> wrote:
+On Wed, 13 Aug 2025 at 21:38, Ethan Graham <ethan.w.s.graham@gmail.com> wrote:
 >
-> On Fri, 15 Aug 2025 at 15:00, Ignat Korchagin <ignat@cloudflare.com> wrot=
-e:
-> >
-> > On Fri, Aug 15, 2025 at 2:18=E2=80=AFAM Eric Biggers <ebiggers@kernel.o=
-rg> wrote:
-> > >
-> > > On Thu, Aug 14, 2025 at 04:28:13PM +0100, Ignat Korchagin wrote:
-> > > > Not sure if it has been mentioned elsewhere, but one thing I alread=
-y
-> > > > don't like about it is that these definitions "pollute" the actual
-> > > > source files. Might not be such a big deal here, but kernel source
-> > > > files for core subsystems tend to become quite large and complex
-> > > > already, so not a great idea to make them even larger and harder to
-> > > > follow with fuzz definitions.
-> > > >
-> > > > As far as I'm aware, for the same reason KUnit [1] is not that popu=
-lar
-> > > > (or at least less popular than other approaches, like selftests [2]=
-).
-> > > > Is it possible to make it that these definitions live in separate
-> > > > files or even closer to selftests?
-> > >
-> > > That's not the impression I get.  KUnit suites are normally defined i=
-n
-> > > separate files, and KUnit seems to be increasing in popularity.
-> >
-> > Great! Either I was wrong from the start or it changed and I haven't
-> > looked there recently.
-> >
-> > > KFuzzTest can use separate files too, it looks like?
-> > >
-> > > Would it make any sense for fuzz tests to be a special type of KUnit
-> > > test, instead of a separate framework?
-> >
-> > I think so, if possible. There is always some hurdles adopting new
-> > framework, but if it would be a new feature of an existing one (either
-> > KUnit or selftests - whatever fits better semantically), the existing
-> > users of that framework are more likely to pick it up.
+> From: Ethan Graham <ethangraham@google.com>
 >
-> The dependency would be in name only (i.e. "branding"). Right now it's
-> possible to use KFuzzTest without the KUnit dependency. So there is
-> technical merit to decouple.
+> Add the core runtime implementation for KFuzzTest. This includes the
+> module initialization, and the logic for receiving and processing
+> user-provided inputs through debugfs.
 >
-
-There's definitely some overlap between KFuzzTest and KUnit, from the
-relatively superficial API similarities: both having similar
-ASSERT/EXPECT macros; to the more specific: KUnit parameterised tests
-allow running the same 'test' code against several different pieces of
-input data.
-
-Then again, there are definitely some differences, too: KUnit doesn't
-have a way of describing complex binary data (though it's definitely a
-feature we'd like one day), and the purpose of KUnit tests, while
-having some overlap, is different than exposing fuzz targets.
-
-If there's a bit of KUnit functionality you can reasonably re-use or
-otherwise take advantage of, I'd not discourage you from doing so.
-There's a balance to be struck between taking the extra dependency and
-ending up with duplicate implementations of the same thing.
-
-I also think that what Ignat says below around simply ensuring that
-the API is familiar (i.e., not deviating from what KUnit or other
-frameworks do without a good reason) is a good middle ground here.
-
-So my gut feeling is that you could end up with one of three things:
-- Make KFuzzTests a special case of (parameterised) KUnit tests. This
-would probably involve adding a way to run the tests with a parameter
-from debugfs or a kernel command-line argument using the metadata
-format, and teaching the fuzzer to run KUnit tests. KUnit already has
-an attributes mechanism that could be used to note which tests are
-fuzz targets, and maybe even providing some of the annotation, but
-there'd be some work needed to improve it. The big advantage here is
-that you'd automatically gain the ability to use KUnit helpers to set
-up things like memory regions, fake devices, etc.
-- Share some of the implementation details between KUnit and
-KFuzzTest, but keep them as separate things. We already have a bunch
-of, e.g., work on assertions, logging, etc, which could possibly be
-helpful. This could be done by depending on CONFIG_KUNIT or by
-splitting those out into a shared test library.
-- Keep them separate, but be careful to make the APIs similar enough
-to be familiar. KFuzzTest already looks pretty similar to me, so I
-think we're already in a good place here.
-
-Personally, I'd quite like for there to be a bit more overlap/code
-sharing -- at least eventually -- as I could see some benefits to
-"borrowing" some KFuzzTest code to allow, e.g., providing custom
-inputs/outputs for tests.
-
-> Would sufficient documentation, and perhaps suggesting separate files
-> to be the canonical way of defining KFuzzTests, improve the situation?
+> On module load, the framework discovers all test targets by iterating
+> over the .kfuzztest_target section, creating a corresponding debugfs
+> directory with a write-only 'input' file for each of them.
 >
-> For example something like:
-> For subsystem foo.c, define a KFuzzTest in foo_kfuzz.c, and then in
-> the Makfile add "obj-$(CONFIG_KFUZZTEST) +=3D foo_kfuzz.o".
-> Alternatively, to test internal static functions, place the KFuzzTest
-> harness in a file foo_kfuzz.h, and include at the bottom of foo.c.
+> Writing to an 'input' file triggers the main fuzzing sequence:
+> 1. The serialized input is copied from userspace into a kernel buffer.
+> 2. The buffer is parsed to validate the region array and relocation
+>    table.
+> 3. Pointers are patched based on the relocation entries, and in KASAN
+>    builds the inter-region padding is poisoned.
+> 4. The resulting struct is passed to the user-defined test logic.
 >
-> Alex, Ethan, and KUnit folks: What's your preference?
+> Signed-off-by: Ethan Graham <ethangraham@google.com>
+> ---
 
-I think that keeping tests in separate files by default is the right
-way to go, but obviously either #including them or using a whole bunch
-of conditional symbol exports (either with symbol namespaces or
-something like EXPORT_SYMBOL_IF_KUNIT) will be necessary in some cases
-to get coverage of internal functions.
-
-I'd suggest being a little careful with the naming scheme, as Linus
-was not happy with the foo_test.c names we were using as they make tab
-completion more annoying; we ended up putting tests in a 'tests/'
-subdirectory where appropriate:
-https://docs.kernel.org/dev-tools/kunit/style.html
-
-But ultimately, I think this is a style decision, not a critically
-important technical one: provide some good practices to follow -- and
-encourage people to be consistent -- but understand that occasionally
-a maintainer will override it (sometimes even for good reason).
+I haven't had a chance to look over this in detail yet (though I
+definitely love some of the ideas here), but I'd strongly encourage
+you to taint the kernel (with TAINT_TEST) if this is enabled/used.
 
 Cheers,
 -- David
 
---0000000000004b7db7063cf06798
+
+>  lib/Makefile           |   2 +
+>  lib/kfuzztest/Makefile |   4 +
+>  lib/kfuzztest/main.c   | 161 +++++++++++++++++++++++++++++++
+>  lib/kfuzztest/parse.c  | 208 +++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 375 insertions(+)
+>  create mode 100644 lib/kfuzztest/Makefile
+>  create mode 100644 lib/kfuzztest/main.c
+>  create mode 100644 lib/kfuzztest/parse.c
+>
+> diff --git a/lib/Makefile b/lib/Makefile
+> index c38582f187dd..511c44ef4b19 100644
+> --- a/lib/Makefile
+> +++ b/lib/Makefile
+> @@ -354,6 +354,8 @@ obj-$(CONFIG_GENERIC_LIB_CMPDI2) += cmpdi2.o
+>  obj-$(CONFIG_GENERIC_LIB_UCMPDI2) += ucmpdi2.o
+>  obj-$(CONFIG_OBJAGG) += objagg.o
+>
+> +obj-$(CONFIG_KFUZZTEST) += kfuzztest/
+> +
+>  # pldmfw library
+>  obj-$(CONFIG_PLDMFW) += pldmfw/
+>
+> diff --git a/lib/kfuzztest/Makefile b/lib/kfuzztest/Makefile
+> new file mode 100644
+> index 000000000000..142d16007eea
+> --- /dev/null
+> +++ b/lib/kfuzztest/Makefile
+> @@ -0,0 +1,4 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +obj-$(CONFIG_KFUZZTEST) += kfuzztest.o
+> +kfuzztest-objs := main.o parse.o
+> diff --git a/lib/kfuzztest/main.c b/lib/kfuzztest/main.c
+> new file mode 100644
+> index 000000000000..fccda1319fb0
+> --- /dev/null
+> +++ b/lib/kfuzztest/main.c
+> @@ -0,0 +1,161 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * KFuzzTest core module initialization and debugfs interface.
+> + *
+> + * Copyright 2025 Google LLC
+> + */
+> +#include <linux/debugfs.h>
+> +#include <linux/fs.h>
+> +#include <linux/kfuzztest.h>
+> +#include <linux/module.h>
+> +#include <linux/printk.h>
+> +
+> +MODULE_LICENSE("GPL");
+> +MODULE_AUTHOR("Ethan Graham <ethangraham@google.com>");
+> +MODULE_DESCRIPTION("Kernel Fuzz Testing Framework (KFuzzTest)");
+> +
+> +extern const struct kfuzztest_target __kfuzztest_targets_start[];
+> +extern const struct kfuzztest_target __kfuzztest_targets_end[];
+> +
+> +/**
+> + * struct kfuzztest_dentry - A container for a debugfs dentry and its fops.
+> + * @dentry: Pointer to the created debugfs dentry.
+> + * @fops: The file_operations struct associated with this dentry.
+> + *
+> + * This simplifies state management by keeping a file's dentry and its
+> + * operations bundled together.
+> + */
+> +struct kfuzztest_dentry {
+> +       struct dentry *dentry;
+> +       struct file_operations fops;
+> +};
+> +
+> +/**
+> + * struct kfuzztest_debugfs_state - Per-test-case debugfs state.
+> + * @test_dir: The top-level debugfs directory for a single test case, e.g.,
+> + * /sys/kernel/debug/kfuzztest/<test-name>/.
+> + * @input_dentry: The state for the "input" file, which is write-only.
+> + *
+> + * Wraps all debugfs components created for a single test case.
+> + */
+> +struct kfuzztest_debugfs_state {
+> +       struct dentry *target_dir;
+> +       struct kfuzztest_dentry input_dentry;
+> +};
+> +
+> +/**
+> + * struct kfuzztest_simple_fuzzer_state - Global state for the KFTF module.
+> + * @kfuzztest_dir: The root debugfs directory, /sys/kernel/debug/kfuzztest/.
+> + * @debugfs_state: A statically sized array holding the state for each
+> + *     registered test case.
+> + */
+> +struct kfuzztest_state {
+> +       struct file_operations fops;
+> +       struct dentry *kfuzztest_dir;
+> +       struct kfuzztest_debugfs_state *debugfs_state;
+> +};
+> +
+> +/* Global static variable to hold all state for the module. */
+> +static struct kfuzztest_state state;
+> +
+> +const umode_t KFUZZTEST_INPUT_PERMS = 0222;
+> +
+> +/**
+> + * kfuzztest_init - Initializes the debug filesystem for KFuzzTest.
+> + *
+> + * Each registered test in the ".kfuzztest" section gets its own subdirectory
+> + * under "/sys/kernel/debug/kfuzztest/<test-name>" with one files:
+> + *     - input: write-only file to send input to the fuzz driver
+> + *
+> + * Returns:
+> + *     0 on success.
+> + *     -ENODEV or other error codes if debugfs creation fails.
+> + */
+> +static int __init kfuzztest_init(void)
+> +{
+> +       const struct kfuzztest_target *targ;
+> +       int ret = 0;
+> +       int i = 0;
+> +       size_t num_test_cases;
+> +
+> +       num_test_cases = __kfuzztest_targets_end - __kfuzztest_targets_start;
+> +
+> +       state.debugfs_state =
+> +               kzalloc(num_test_cases * sizeof(struct kfuzztest_debugfs_state),
+> +                       GFP_KERNEL);
+> +       if (!state.debugfs_state)
+> +               return -ENOMEM;
+> +
+> +       /* Create the main "kfuzztest" directory in /sys/kernel/debug. */
+> +       state.kfuzztest_dir = debugfs_create_dir("kfuzztest", NULL);
+> +       if (!state.kfuzztest_dir) {
+> +               pr_warn("KFuzzTest: could not create debugfs");
+> +               return -ENODEV;
+> +       }
+> +
+> +       if (IS_ERR(state.kfuzztest_dir)) {
+> +               state.kfuzztest_dir = NULL;
+> +               return PTR_ERR(state.kfuzztest_dir);
+> +       }
+> +
+> +       for (targ = __kfuzztest_targets_start; targ < __kfuzztest_targets_end;
+> +            targ++, i++) {
+> +               /* Create debugfs directory for the target. */
+> +               state.debugfs_state[i].target_dir =
+> +                       debugfs_create_dir(targ->name, state.kfuzztest_dir);
+> +
+> +               if (!state.debugfs_state[i].target_dir) {
+> +                       ret = -ENOMEM;
+> +                       goto cleanup_failure;
+> +               } else if (IS_ERR(state.debugfs_state[i].target_dir)) {
+> +                       ret = PTR_ERR(state.debugfs_state[i].target_dir);
+> +                       goto cleanup_failure;
+> +               }
+> +
+> +               /* Create an input file under the target's directory. */
+> +               state.debugfs_state[i].input_dentry.fops =
+> +                       (struct file_operations){
+> +                               .owner = THIS_MODULE,
+> +                               .write = targ->write_input_cb,
+> +                       };
+> +               state.debugfs_state[i].input_dentry.dentry =
+> +                       debugfs_create_file(
+> +                               "input", KFUZZTEST_INPUT_PERMS,
+> +                               state.debugfs_state[i].target_dir, NULL,
+> +                               &state.debugfs_state[i].input_dentry.fops);
+> +               if (!state.debugfs_state[i].input_dentry.dentry) {
+> +                       ret = -ENOMEM;
+> +                       goto cleanup_failure;
+> +               } else if (IS_ERR(state.debugfs_state[i].input_dentry.dentry)) {
+> +                       ret = PTR_ERR(
+> +                               state.debugfs_state[i].input_dentry.dentry);
+> +                       goto cleanup_failure;
+> +               }
+> +
+> +               pr_info("KFuzzTest: registered target %s", targ->name);
+> +       }
+> +
+> +       return 0;
+> +
+> +cleanup_failure:
+> +       debugfs_remove_recursive(state.kfuzztest_dir);
+> +       return ret;
+> +}
+> +
+> +static void __exit kfuzztest_exit(void)
+> +{
+> +       pr_info("KFuzzTest: exiting");
+> +       if (!state.kfuzztest_dir)
+> +               return;
+> +
+> +       debugfs_remove_recursive(state.kfuzztest_dir);
+> +       state.kfuzztest_dir = NULL;
+> +
+> +       if (state.debugfs_state) {
+> +               kfree(state.debugfs_state);
+> +               state.debugfs_state = NULL;
+> +       }
+> +}
+> +
+> +module_init(kfuzztest_init);
+> +module_exit(kfuzztest_exit);
+> diff --git a/lib/kfuzztest/parse.c b/lib/kfuzztest/parse.c
+> new file mode 100644
+> index 000000000000..6010171190ad
+> --- /dev/null
+> +++ b/lib/kfuzztest/parse.c
+> @@ -0,0 +1,208 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * KFuzzTest input parsing and validation.
+> + *
+> + * Copyright 2025 Google LLC
+> + */
+> +#include <linux/kfuzztest.h>
+> +#include <linux/kasan.h>
+> +
+> +/*
+> + * Enforce a fixed struct size to ensure a consistent stride when iterating over
+> + * the array of these structs in the dedicated ELF section.
+> + */
+> +static_assert(sizeof(struct kfuzztest_target) == 32, "struct kfuzztest_target should have size 32");
+> +static_assert(sizeof(struct kfuzztest_constraint) == 64, "struct kfuzztest_constraint should have size 64");
+> +static_assert(sizeof(struct kfuzztest_annotation) == 32, "struct kfuzztest_annotation should have size 32");
+> +
+> +static int kfuzztest_relocate_v0(struct reloc_region_array *regions, struct reloc_table *rt, void *payload_start,
+> +                                void *payload_end)
+> +{
+> +       struct reloc_region reg, src, dst;
+> +       void *poison_start, *poison_end;
+> +       uintptr_t *ptr_location;
+> +       struct reloc_entry re;
+> +       size_t i;
+> +
+> +       /* Patch pointers. */
+> +       for (i = 0; i < rt->num_entries; i++) {
+> +               re = rt->entries[i];
+> +               src = regions->regions[re.region_id];
+> +               ptr_location = (uintptr_t *)((char *)payload_start + src.offset + re.region_offset);
+> +               if (re.value == KFUZZTEST_REGIONID_NULL)
+> +                       *ptr_location = (uintptr_t)NULL;
+> +               else if (re.value < regions->num_regions) {
+> +                       dst = regions->regions[re.value];
+> +                       *ptr_location = (uintptr_t)((char *)payload_start + dst.offset);
+> +               } else
+> +                       return -EINVAL;
+> +       }
+> +
+> +       /* Poison the padding between regions. */
+> +       for (i = 0; i < regions->num_regions; i++) {
+> +               reg = regions->regions[i];
+> +
+> +               /* Points to the beginning of the inter-region padding */
+> +               poison_start = payload_start + reg.offset + reg.size;
+> +               if (i < regions->num_regions - 1)
+> +                       poison_end = payload_start + regions->regions[i + 1].offset;
+> +               else
+> +                       poison_end = payload_end;
+> +
+> +               if ((char *)poison_end > (char *)payload_end)
+> +                       return -EINVAL;
+> +
+> +               kasan_poison_range(poison_start, poison_end - poison_start);
+> +       }
+> +
+> +       /* Poison the padded area preceding the payload. */
+> +       kasan_poison_range((char *)payload_start - rt->padding_size, rt->padding_size);
+> +       return 0;
+> +}
+> +
+> +static bool kfuzztest_input_is_valid(struct reloc_region_array *regions, struct reloc_table *rt, void *payload_start,
+> +                                    void *payload_end)
+> +{
+> +       size_t payload_size = (char *)payload_end - (char *)payload_start;
+> +       struct reloc_region reg, next_reg;
+> +       size_t usable_payload_size;
+> +       uint32_t region_end_offset;
+> +       struct reloc_entry reloc;
+> +       uint32_t i;
+> +
+> +       if ((char *)payload_start > (char *)payload_end)
+> +               return false;
+> +       if (payload_size < KFUZZTEST_POISON_SIZE)
+> +               return false;
+> +       usable_payload_size = payload_size - KFUZZTEST_POISON_SIZE;
+> +
+> +       for (i = 0; i < regions->num_regions; i++) {
+> +               reg = regions->regions[i];
+> +               if (check_add_overflow(reg.offset, reg.size, &region_end_offset))
+> +                       return false;
+> +               if ((size_t)region_end_offset > usable_payload_size)
+> +                       return false;
+> +
+> +               if (i < regions->num_regions - 1) {
+> +                       next_reg = regions->regions[i + 1];
+> +                       if (reg.offset > next_reg.offset)
+> +                               return false;
+> +                       /*
+> +                        * Enforce the minimum poisonable gap between
+> +                        * consecutive regions.
+> +                        */
+> +                       if (reg.offset + reg.size + KFUZZTEST_POISON_SIZE > next_reg.offset)
+> +                               return false;
+> +               }
+> +       }
+> +
+> +       if (rt->padding_size < KFUZZTEST_POISON_SIZE) {
+> +               pr_info("validation failed because rt->padding_size = %u", rt->padding_size);
+> +               return false;
+> +       }
+> +
+> +       for (i = 0; i < rt->num_entries; i++) {
+> +               reloc = rt->entries[i];
+> +               if (reloc.region_id >= regions->num_regions)
+> +                       return false;
+> +               if (reloc.value != KFUZZTEST_REGIONID_NULL && reloc.value >= regions->num_regions)
+> +                       return false;
+> +
+> +               reg = regions->regions[reloc.region_id];
+> +               if (reloc.region_offset % (sizeof(uintptr_t)) || reloc.region_offset + sizeof(uintptr_t) > reg.size)
+> +                       return false;
+> +       }
+> +
+> +       return true;
+> +}
+> +
+> +static int kfuzztest_parse_input_v0(void *input, size_t input_size, struct reloc_region_array **ret_regions,
+> +                                   struct reloc_table **ret_reloc_table, void **ret_payload_start,
+> +                                   void **ret_payload_end)
+> +{
+> +       size_t reloc_entries_size, reloc_regions_size;
+> +       size_t reloc_table_size, regions_size;
+> +       struct reloc_region_array *regions;
+> +       void *payload_end, *payload_start;
+> +       struct reloc_table *rt;
+> +       size_t curr_offset = 0;
+> +
+> +       if (input_size < sizeof(struct reloc_region_array) + sizeof(struct reloc_table))
+> +               return -EINVAL;
+> +
+> +       regions = input;
+> +       if (check_mul_overflow(regions->num_regions, sizeof(struct reloc_region), &reloc_regions_size))
+> +               return -EINVAL;
+> +       if (check_add_overflow(sizeof(*regions), reloc_regions_size, &regions_size))
+> +               return -EINVAL;
+> +
+> +       curr_offset = regions_size;
+> +       if (curr_offset > input_size)
+> +               return -EINVAL;
+> +       if (input_size - curr_offset < sizeof(struct reloc_table))
+> +               return -EINVAL;
+> +
+> +       rt = (struct reloc_table *)((char *)input + curr_offset);
+> +
+> +       if (check_mul_overflow((size_t)rt->num_entries, sizeof(struct reloc_entry), &reloc_entries_size))
+> +               return -EINVAL;
+> +       if (check_add_overflow(sizeof(*rt), reloc_entries_size, &reloc_table_size))
+> +               return -EINVAL;
+> +       if (check_add_overflow(reloc_table_size, rt->padding_size, &reloc_table_size))
+> +               return -EINVAL;
+> +
+> +       if (check_add_overflow(curr_offset, reloc_table_size, &curr_offset))
+> +               return -EINVAL;
+> +       if (curr_offset > input_size)
+> +               return -EINVAL;
+> +
+> +       payload_start = (char *)input + curr_offset;
+> +       payload_end = (char *)input + input_size;
+> +
+> +       if (!kfuzztest_input_is_valid(regions, rt, payload_start, payload_end))
+> +               return -EINVAL;
+> +
+> +       *ret_regions = regions;
+> +       *ret_reloc_table = rt;
+> +       *ret_payload_start = payload_start;
+> +       *ret_payload_end = payload_end;
+> +       return 0;
+> +}
+> +
+> +static int kfuzztest_parse_and_relocate_v0(void *input, size_t input_size, void **arg_ret)
+> +{
+> +       struct reloc_region_array *regions;
+> +       void *payload_start, *payload_end;
+> +       struct reloc_table *reloc_table;
+> +       int ret;
+> +
+> +       ret = kfuzztest_parse_input_v0(input, input_size, &regions, &reloc_table, &payload_start, &payload_end);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       ret = kfuzztest_relocate_v0(regions, reloc_table, payload_start, payload_end);
+> +       if (ret < 0)
+> +               return ret;
+> +       *arg_ret = payload_start;
+> +       return 0;
+> +}
+> +
+> +int kfuzztest_parse_and_relocate(void *input, size_t input_size, void **arg_ret)
+> +{
+> +       u32 version, magic;
+> +
+> +       if (input_size < sizeof(u32) + sizeof(u32))
+> +               return -EINVAL;
+> +
+> +       magic = *(u32 *)input;
+> +       if (magic != KFUZZTEST_HEADER_MAGIC)
+> +               return -EINVAL;
+> +
+> +       version = *(u32 *)((char *)input + sizeof(u32));
+> +       switch (version) {
+> +       case KFUZZTEST_V0:
+> +               return kfuzztest_parse_and_relocate_v0(input + sizeof(u64), input_size - sizeof(u64), arg_ret);
+> +       }
+> +
+> +       return -EINVAL;
+> +}
+> --
+> 2.51.0.rc0.205.g4a044479a3-goog
+>
+
+--000000000000d38283063cf067c4
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -341,14 +658,14 @@ Vumvw5QTHe29TYxSiusovM6OD5y0I+4zaIaYDx/AtF0mMOFXb1MDyynf1CDxhtkgnrBUseHSOU2e
 MYs7IqzRap5xsgpJS+t7cp/P8fdlCNvsXss9zZa279tKwaxR0U2IzGxRGsWKGxDysn1HT6pqMDGC
 Al0wggJZAgEBMGgwVDELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExKjAo
 BgNVBAMTIUdsb2JhbFNpZ24gQXRsYXMgUjYgU01JTUUgQ0EgMjAyMwIQAUXA7LnOuRz2DvkWTeMc
-0TANBglghkgBZQMEAgEFAKCBxzAvBgkqhkiG9w0BCQQxIgQg9H0TO/qid64EtuSTX99+cSgt7eo0
-VC+zREg+oYNxnT4wGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjUw
-ODIyMDg1ODAzWjBcBgkqhkiG9w0BCQ8xTzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
+0TANBglghkgBZQMEAgEFAKCBxzAvBgkqhkiG9w0BCQQxIgQgFacMd25Haozy8Dbg6EJAtvfsW9wo
+SnPlSrB25d/HNGMwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjUw
+ODIyMDg1ODEyWjBcBgkqhkiG9w0BCQ8xTzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
 YIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcN
-AQEBBQAEggEAH5FxfGzMR9w2OCmWaVMafGBbv4Qguo1JgOQbNeS2a4bIuN9GrZEM9hu4pgF+OKQP
-cR6eMy7Ac7IUZk0H0oWcNqxbVPFgtoqynW9/FhZa4iLA7P2j38xNJa/5PJVt/rxXqWYJ+W6Rnmyh
-FsiFNn9ZjDTD7/CsvVpmmd1Gu/kFadQRcxby4chuBRHxTO1pV3ml7XN3hNzoyxmtEyJnh9NoZgiM
-e3z/CR5MvdRnOB8CxVDIg/TpinvTbGBbQnEMDbpIF2TzL3nkUqYbhLISvKOPAVADMa9dsBG8wiSC
-+oqZYUCZ0y2TRXLHvED/0mrTygSNSzPvxs+QCLCijyJ89lmfaA==
---0000000000004b7db7063cf06798--
+AQEBBQAEggEAFkROjVr1YhHNkPXeWTf5GpcExI+3Ws5/V29G97/nkHijD3DB+HmlG4ZgfhuVD5V4
+iWYneS3m9ndH0QljtcPKjrzpdtuIcACG+cF8olwmT0f1j2chfCLNVThKoFXnyptroruZ3eIjM861
+E+FchO9pvHnFkLWjFSn6DjEXWM8j44HKoKwKmrZjgaceD9NRJYm6OeEomStEhTVimcXDWmL/i2vo
+Is0lVU27tJb5AVZkFPbskK7vP868WoRj9e1KhHYQhUoqEK9AM2LBCpB8lfpHFFLxjce6IEb25v9Z
+YD51Bxtjru0+V/BBSdu+ZWjiZcwmKfYHVR9zYjGvL1kA/s/syQ==
+--000000000000d38283063cf067c4--
 
