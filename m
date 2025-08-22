@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94548CA0EEB
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 09:58:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB99DCA0EEB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 09:58:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3AAA8E0093; Fri, 22 Aug 2025 05:58:15 -0400 (EDT)
+	id 3E2E98E0094; Fri, 22 Aug 2025 05:58:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEB0F8E008C; Fri, 22 Aug 2025 05:58:15 -0400 (EDT)
+	id 38E188E008C; Fri, 22 Aug 2025 05:58:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB44E8E0093; Fri, 22 Aug 2025 05:58:15 -0400 (EDT)
+	id 27B0C6B0023; Fri, 22 Aug 2025 05:58:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B6D068E008C
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 05:58:15 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5E4641A01FF
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:58:15 +0000 (UTC)
-X-FDA: 83803942950.19.ABB93DF
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 13DA06B0006
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 05:58:20 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 81C63138F3F
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:58:19 +0000 (UTC)
+X-FDA: 83803943118.20.5BDC812
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 45E281A0004
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:58:13 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 59B96C0008
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:58:17 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
 	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
+	spf=pass (imf22.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
 	dmarc=pass (policy=quarantine) header.from=csgroup.eu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755856693;
+	s=arc-20220608; t=1755856697;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cMQwBnBBP5+VROS/fzRmjMjvBPSMHFQ5vje/ziRMtMo=;
-	b=MzZ/LvCR9oS6wLuT8Xn6Up+hs5EObCA4GUz9kiRlfgKANnvJMFXJFv8jlF0QDqoah6R9IB
-	S4PkFC3CRNsjxRfxD1j2MuPuLbPoh+U7CRWyZUzUorPmWf2ifY7eA+9d18f8SnJRMmX7UO
-	u9NRl1aW+GL4CF+ITRJiGhpC7iAVh0M=
+	bh=zeGGKSxmF7i3vYkKfI2pzpK4m5vG9ZbzD3DnVV/u23c=;
+	b=NeQmx4c9iVVRlvgX7/mYputw1OvfSQBJ2od3kPqISFjMmlPwDsLtPkMn+p7zD3KeeR8RzQ
+	l20DDeJNh5RR8dj3S1F5LA3CIkXHvR11SWpgr3X01BgxsyoF2pq8hX4adUy5MLZiUr9zNF
+	zI0sb3bKJ85sSuwYSgIBqIsGmgopU7I=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
+	imf22.hostedemail.com;
 	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
+	spf=pass (imf22.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
 	dmarc=pass (policy=quarantine) header.from=csgroup.eu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755856693; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755856697; a=rsa-sha256;
 	cv=none;
-	b=7PDpYZmj9btq5GJs6Ow1vxjcc+vQBve7TbCfM8COawoFWfGioSzLpWO2vXztnUV+OWsqX3
-	TJBrvySjHv0LlJq+OaOfRGAemKKKMvv2ff/OUXCwRY+QN58x4ciwaz5L+s80iDrwQHlsc8
-	88PwAAyaggfPnp5zL5UNSXIwi2RUcI0=
+	b=tS7T//rNH6vTAMh0DIZ542V6JVfJI4Mt8Vs93Dv2q/yBo4TZotSO5C4HxerZduTNdo8LwB
+	M/lCIP1FltPSDQ8LlZLGyDqXuofSUoRbfzu8Rpj+1LUHXt0raVerOQL8CD5Uf5K0Xk7Wcm
+	gq+2JPA/85cR2avoRns4UmWDvMTlYhI=
 Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4c7bGl4ldxz9sSH;
-	Fri, 22 Aug 2025 11:58:07 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4c7bGm4MbWz9sSN;
+	Fri, 22 Aug 2025 11:58:08 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 4MzYiAzePFXF; Fri, 22 Aug 2025 11:58:07 +0200 (CEST)
+	with ESMTP id 1R7C9v1g2tlo; Fri, 22 Aug 2025 11:58:08 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4c7bGl3zRbz9sSC;
-	Fri, 22 Aug 2025 11:58:07 +0200 (CEST)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4c7bGm3cnpz9sSL;
+	Fri, 22 Aug 2025 11:58:08 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6EE2F8B775;
-	Fri, 22 Aug 2025 11:58:07 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 687F58B775;
+	Fri, 22 Aug 2025 11:58:08 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id Mz748sD3BeoZ; Fri, 22 Aug 2025 11:58:07 +0200 (CEST)
+	with ESMTP id 260MbcVDPASD; Fri, 22 Aug 2025 11:58:08 +0200 (CEST)
 Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 78E258B780;
-	Fri, 22 Aug 2025 11:58:06 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 754DD8B781;
+	Fri, 22 Aug 2025 11:58:07 +0200 (CEST)
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
@@ -92,24 +92,24 @@ Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-block@vger.kernel.org
-Subject: [PATCH v2 01/10] iter: Avoid barrier_nospec() in copy_from_user_iter()
-Date: Fri, 22 Aug 2025 11:57:57 +0200
-Message-ID: <9aa2e04f1c80d45151e2c3d06a45b6a4f29ff576.1755854833.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 02/10] uaccess: Add speculation barrier to copy_from_user_iter()
+Date: Fri, 22 Aug 2025 11:57:58 +0200
+Message-ID: <82b9c88e63a6f1f5926e39471364168b345d84cc.1755854833.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1755854833.git.christophe.leroy@csgroup.eu>
 References: <cover.1755854833.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755856678; l=1324; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=btOGI5kT/X4BbGkbG9xKSloQXaxXSRXRdA+8gWVdMNQ=; b=U0aP36j9qq2Z+EzK6fHDU51410l7VDxWduQrkADDOwWueGyv0Sg4bw5dV64YBIg/yRboGmHiq A0ibcHLG9K8DbJhbI+wPLCKPMFbswE9LEUkmxBSkb4CSYHqbanY0rSP
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755856678; l=1419; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=XwlsUHUFJUpz+VqDmhFyhZF843JW5vLl0ICFNZPjHwg=; b=OMJi7NtS5t9H8b/LM9QX7LNwGLYVRhm3b1ohh2Ifek1Ac+dVg5W2gO7XbDwDHd3D5fgUdFcH6 CiFpzXB8IzvDR8zy+bYW8ctsDTYL16XT29wlRQ8tKvZye/dJFBYy7QM
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 45E281A0004
-X-Stat-Signature: 5t6e8qq4mgui4iwgacpzdeui3b4cnhu5
+X-Rspamd-Queue-Id: 59B96C0008
+X-Stat-Signature: iomgtxgueh9admg3whcib36bci89ht56
 X-Rspam-User: 
-X-HE-Tag: 1755856693-93048
-X-HE-Meta: U2FsdGVkX1/zrVl6WGMQTDpSYDFOrTPG4eIMhgfgKjOL+ZJA3OGyxZdf0d5TBvbcbWLNwArdbGSLULsufI7AwSHLdWrk57mo5vnhZxLE7GqE0kFIUD3zn57SpVc2uE+9UHuat2lU4IjEUuHkcQUNkxS8ALYLyp78dRNBIhlgxx1Gd9AW3Os/HV+GZyQcfkgk0RFT2qYdXOXl3WR44I8z39HJlwDhtnc+3A636y7x+KAWLl/jyHOngPOM56XxqXPl/EEQlTyGPiO38OlY4dG6VkAYcjywP4uqPzKQeSZw9LYyW8bqgQV0/3F5urWOL8NaOJx+xS4PFIJbEFiHIc1TIH5Srl28aREySajGYpabG5taCbf9HljhXE33M7ZB5H4HVPEFG9suLYrrZbNsc0VS+2wk6YJQ+Rzxls1Q1Xoh2NAhSgBW3l8hl8iI1lxLQGZla19AdOXLDLND//x4jYUdZltqJE+uTH1J9Foqg1HMvoqGU9IAxkAV1b5qoBiQrUQ3lu8BohN9NBbgI76E/OZQkhut3kdPtCsiLmXYSv/qonLklRALPWnlsQnStls1CTYByQt8Jb3KkGRPXbP6NQbSc/TZhkO9+tOPa4MBg86hCBpGMgR+IVNHFpEHTnOJtA+5NwK7VVgsoC06iIJxvc9CTPJIZlvruskakpsxQp7JWtsS2uABP5+q3oSuE5zW8/oZyM+XDeUx4V0uLQHGGjFxYMM+Utl/D0p12OgYxMrIUnGPp6WBKgL7vlBz6L2RciyT+cRRKpbnZtBTCkuY9wYqwCHzyUKHoyVsD1RVbeKoBwxzyhicKVEsQ8t7sbeV8Y3Bv5KEbaZpTvDy3NCbQqNR4+mH2u0Gq3jLrcCkqJ80HVDjKXAeDoGh/gBEOJRQDE2H+GKkxiQxkr4YB//IWcKtBogyZ7/PFActN6j+oI+qL993+XZXfV97p9lrlmbkK1sWfMeuCaRdzYnhcxQhOJA
- SFQKi8xn
- 1HUuWuygRJunKhPln7ZOgbr75SvzNZVqrHeUat/IykZ2/AypVPOgQZTIIwz+LWDd8YkAkmR+eMTQcCDGeirN7/G7ds7it+8DrGfSVGkTzJeXkbTdJ8/dJceWikYSHZ3XZISArGZ4ZPYy2jSN/Otm4v8ag39177Cu83afce7yYaz4z6MoAy5z72OZ/UbJVRl6D3DRVcOlVXkJ7B4xh4FNSc/j6Dv2XJUnfiW1MaPEuPjS1G7NXdAAM4rNFJ06DsgHf0Bqgevd7ab6NLi9Y2pIaq+S/g+cuZ4QahZ3r
+X-HE-Tag: 1755856697-134703
+X-HE-Meta: U2FsdGVkX19yW9OE8ouOw2Z1VUnpgsmhQzIOaWVNqoFJojtOfFz7z6aIjpzOldb2A3hIRf91v4ZxCoO4XmZe32uLO4D3Vcveou/DU6XUWV/XPXuJFWLYnbqbZVV8LBC6zlDexLEkaYVSqpAexmquST8Q7vnr2ASDVbNbXFJZHnfnyv+dZPVBcZY+EOgZ/cS/m6y8a35+k4w1KX8f333jL85nmr5jXdw+8XYk5s9fHwzONCWKS8jjbjQlndWGsuYqaDznmqJwIagvRia28GWokJMLT4R3e5KP8//WrjuXX9kvojAF0c3VW0cE7k4qUaAwNYr9VYQO7tqHENag7mL2clgPa/eSjbHzUxmKPjuRB8LWVpwRBtHEnSbMid5dLlr0+m9qq9r+R1SiX7iTkUQAuMZCQGL4nrPC09t0oV5Ae5tUnxciHiJQvQK7ltNa3JydDvWkiNbcqEVwJsZwXc95hICvE/nmnhDItenGxVwWkcKl7e5GRHO+vZAUt9T17ezU+9VDFa/Iupw9kJrw/qj3TjAH0jonHb52LUHFECk1getRZXp++b14S5gz5YPCAQUhUwQlZ5Gy0Wdk9N1AI+5djg8QbEFbEUEAM6T2wJSLfNy93TEXTR1gyOQUmWeUAJAa/fAFjlNzZ5L98a/uGfC/dR5H9i2WPIbqmIHGN1kHDx9+qOPwjwCZMVO/VD8quDbRHspmQHwRWResIZG+/gaewKB6sqWzrKT1MmWBrcirjgesVji+jYqs4alVX8CXrmunkyroXWZs6tW/SLN3iMVvba7AcW2cHzfV34YcaP4LTxmekoP9Gl7Jx+lB5RSGqy4KjYrkjz4FfPSMcjbGRqXVriQZTBJE3yYa+VW2ZPX3B19C+h9K3HXieU2YtO1YfQbx9Jr6U6KadYAkhhJFAN+oZH1wpEYu96BkIfqxIG8ls9byI1V/VFXi2Nc6oV0xd284u8QHw2SBAPUJ1lPMJ5k
+ DkWZkjdu
+ z0WG0Yf1FaD2xTB28o/wukKCDU35Woufl5ecIG9gl735Y2EWwR5M1PN3X1bmuisVHyjfTVZ9pNvmALKaEtVikNsK/1zMxLNZrii+CvVsVwauXgvPhf3/aki8Fklq/7XGEj6Pw1Or+9AlLJno0E4rwmul1+B0VzbSOdhnAlFOuho5GOeF1V5LtMq/czcJSQBIbBYF/L5QXpup0kXtAd2uCYPX+9s6lQ/Pd5a6cXNbdbkGS6zMSe33wamEK0E9Chvw4ZqnaoEInlbhRMJixScxHfqDbdcXTGAmnEc/rHZt21dqoiew=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,48 +118,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Following patch will add missing barrier_nospec() to
-copy_from_user_iter().
+The results of "access_ok()" can be mis-speculated.  The result is that
+you can end speculatively:
 
-Avoid it for architectures supporting masked user
-accesses, the same way as done for copy_from_user() by
-commit 0fc810ae3ae1 ("x86/uaccess: Avoid barrier_nospec()
-in 64-bit copy_from_user()")
+	if (access_ok(from, size))
+		// Right here
+
+For the same reason as done in copy_from_user() by
+commit 74e19ef0ff80 ("uaccess: Add speculation barrier to
+copy_from_user()"), add a speculation barrier to copy_from_user_iter().
+
+See commit 74e19ef0ff80 ("uaccess: Add speculation barrier to
+copy_from_user()") for more details.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
-v2: New in v2
----
- lib/iov_iter.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ lib/iov_iter.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
 diff --git a/lib/iov_iter.c b/lib/iov_iter.c
-index f9193f952f49..48bd0cbce8c2 100644
+index 48bd0cbce8c2..8d08b3435174 100644
 --- a/lib/iov_iter.c
 +++ b/lib/iov_iter.c
-@@ -49,12 +49,16 @@ size_t copy_from_user_iter(void __user *iter_from, size_t progress,
+@@ -49,11 +49,19 @@ size_t copy_from_user_iter(void __user *iter_from, size_t progress,
  
  	if (should_fail_usercopy())
  		return len;
--	if (access_ok(iter_from, len)) {
--		to += progress;
--		instrument_copy_from_user_before(to, iter_from, len);
--		res = raw_copy_from_user(to, iter_from, len);
--		instrument_copy_from_user_after(to, iter_from, len, res);
--	}
-+	if (can_do_masked_user_access())
-+		iter_from = mask_user_address(iter_from);
-+	else if (!access_ok(iter_from, len))
-+		return res;
-+
-+	to += progress;
-+	instrument_copy_from_user_before(to, iter_from, len);
-+	res = raw_copy_from_user(to, iter_from, len);
-+	instrument_copy_from_user_after(to, iter_from, len, res);
-+
- 	return res;
- }
+-	if (can_do_masked_user_access())
++	if (can_do_masked_user_access()) {
+ 		iter_from = mask_user_address(iter_from);
+-	else if (!access_ok(iter_from, len))
+-		return res;
++	} else {
++		if (!access_ok(iter_from, len))
++			return res;
  
++		/*
++		 * Ensure that bad access_ok() speculation will not
++		 * lead to nasty side effects *after* the copy is
++		 * finished:
++		 */
++		barrier_nospec();
++	}
+ 	to += progress;
+ 	instrument_copy_from_user_before(to, iter_from, len);
+ 	res = raw_copy_from_user(to, iter_from, len);
 -- 
 2.49.0
 
