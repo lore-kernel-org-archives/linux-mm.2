@@ -4,79 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 471CFCA0EED
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 15:09:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A393CA0EED
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 15:10:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B0E46B011F; Fri, 22 Aug 2025 11:09:28 -0400 (EDT)
+	id B858E6B0122; Fri, 22 Aug 2025 11:10:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 789448E009D; Fri, 22 Aug 2025 11:09:28 -0400 (EDT)
+	id B359B8E009D; Fri, 22 Aug 2025 11:10:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C6FC6B0122; Fri, 22 Aug 2025 11:09:28 -0400 (EDT)
+	id A73B06B0124; Fri, 22 Aug 2025 11:10:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BEA06B011F
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 11:09:28 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0D08A137F85
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 15:09:28 +0000 (UTC)
-X-FDA: 83804727216.07.71ED16C
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 95A4A6B0122
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 11:10:45 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3259814020A
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 15:10:45 +0000 (UTC)
+X-FDA: 83804730450.10.5204978
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 378AD1C000D
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 15:09:26 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Prntf9uZ;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 80CD420011
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 15:10:43 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MfKWAMlW;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755875366;
+	s=arc-20220608; t=1755875443;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vCOsOz88mPScACBG1/CQZuInDpdXn6Z4TRAWSkNAAYc=;
-	b=L4PSM/+FFY/HlzWdCdfnOwdB04SpmLTwIZqUqEQylaBmUqcv61IH54GzqR7HlzelY+v/as
-	7Knx4apXRnbT71VxX8BupaxtjzSOrevErQJXx5RQ2l07u8hU5yOSCleo4as/gRPXN6oX9n
-	keOh3Bi/P0WJhOJgWNUd+smoECEaMk8=
+	bh=7oUqMfc5Rr6TMbgE/wenfxbF6AVX4t+wpxIGqlOIW+c=;
+	b=BBH4FC1HLQ/5+x1DANfgpKa1ZThtLS4Ty42EQfYf21jNg14DN8IUfWGQZUSU8gEEmJB4bF
+	1ktSj4ptuW24Te4ihHOneJmFCAAd5hjPakPgtyyaZ/6jiO0INF8AEhhCbhUInelNviRJpH
+	oKjR8cAkJjyvry9iQMOy6/LaWZ4Oap0=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Prntf9uZ;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MfKWAMlW;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755875366; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755875443; a=rsa-sha256;
 	cv=none;
-	b=DUqMi1gpZUdI+vfOvnTM5Z8pRnK+ytfVWrhk2c5b3qCMDyq471+Rs2U3f0Cnlh/VAdh0PZ
-	zkHWhNbnsbdXiYIO8BnpKr4ZOK9+Wb2Lho+sT48IJCiDyvMKNPdgJJ4DoDCv3suNWJzLNf
-	CTtwNEZ4Al0H0x/7R5AJXPryA6Xr3JE=
+	b=YQ9/f6MJ2ev5VCvoAZwjdoJEX4oZLGO+pXzOKiodhKpbpT3TN+N/Fotd8isz+6ZiIGmPQv
+	Kl3QNDRLHjgfk2EHTaCYHq0JdZY4OLz53s6LQa4ZcK79IX22Cm8R72xSL3X23qzHmoqNiz
+	omlhmuc4GgTY7PrSK59vfBQttEtmQFI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B028D4368F;
-	Fri, 22 Aug 2025 15:09:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC2FC113D0;
-	Fri, 22 Aug 2025 15:09:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5905E44023;
+	Fri, 22 Aug 2025 15:10:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA78EC4CEED;
+	Fri, 22 Aug 2025 15:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755875364;
-	bh=BbeE+oYVvXyCl/P3cWovjJUaU7WzCVAlNkMT749qO5w=;
+	s=k20201202; t=1755875442;
+	bh=CAY5DlsOHyGeAuJSXFXVAByj59QIAOw2AekVjj0R+b4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Prntf9uZKZis/U/bJlHQFXtv4HnPV3FVBr1/P31JtBZdZlx8pNyYQrIV2U1OHL2Ph
-	 KWg0PSoWLWhirFvfgHCyLwMGddND32c/PoybCUWyTY4uJJaWAm3pqSnmsGRF97A6G4
-	 VDGi/p4toQ5nig1708cGRPMAz3wCxoj5eCkSR54XvHPYG/bVMzGFIuTMu74kogSth9
-	 uZBDebwYJugk9IlUMY2oDzjDlJybUXGUDToJl2tsj04xT1jSsHqLJwHeqPJg2mwSqm
-	 1JhNQxwyrU8QnJ30mOJ/Iq/kXqrUNLLTQ0bAe831b6zLWD86rnmkM7tBokSIpXtEvj
-	 XiFVPUzX/IwAA==
-Date: Fri, 22 Aug 2025 18:09:03 +0300
+	b=MfKWAMlWZSLolf5Er8IdYEE5zQV86o5SRIWNfuGwAevHaro0KNr+O0AUudzUFXmc3
+	 fsRmTkuzMKyOWmo+8Ib/4pg6uAO607N85i/ZR6XdaP13USRH/bc4QgbG247YDVGntr
+	 dIuimCsUgCJa1CldCgolX2CMa2bqt+CMes53Pgq69q6mqbsJBHuaoP74dMUUlUNsww
+	 SqsEK32SbicopH2MuZVGLxcSstv41b7vIfL/1490jZeCkzm9ukqxF1GXRENu39XO4p
+	 GF/7+asbsxkyC7LQAOGokPKRMO8cxy0hNc1JtEMo2NFHS86o6qSj3ySEtrOWX+tEVg
+	 yHfXvZ0oyq//A==
+Date: Fri, 22 Aug 2025 18:10:24 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: David Hildenbrand <david@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
+Cc: linux-kernel@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Alexander Potapenko <glider@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Brendan Jackman <jackmanb@google.com>,
@@ -103,23 +94,23 @@ Cc: linux-kernel@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
 	virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
 	wireguard@lists.zx2c4.com, x86@kernel.org, Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH RFC 01/35] mm: stop making SPARSEMEM_VMEMMAP
- user-selectable
-Message-ID: <aKiID8i6dYrlVi5T@kernel.org>
+Subject: Re: [PATCH RFC 02/35] arm64: Kconfig: drop superfluous "select
+ SPARSEMEM_VMEMMAP"
+Message-ID: <aKiIYJoshnWwrJQ3@kernel.org>
 References: <20250821200701.1329277-1-david@redhat.com>
- <20250821200701.1329277-2-david@redhat.com>
+ <20250821200701.1329277-3-david@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250821200701.1329277-2-david@redhat.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 378AD1C000D
-X-Stat-Signature: fzormeqtx8mse1optzbniwmkq7qg6sf1
+In-Reply-To: <20250821200701.1329277-3-david@redhat.com>
+X-Stat-Signature: 3ih6yusegdbpbnjsc6p3f6nijndgnyfi
 X-Rspam-User: 
-X-HE-Tag: 1755875365-284340
-X-HE-Meta: U2FsdGVkX18gJYFjCsKXkV0/9s8fUFAJ7r9ZSwVR55eU+VKU+ctzjRxnAb2qvxIXD/cyrWL/LeuppKbIKM5ujzuvWvazpby2YlSxp0Kk1WzeFOBkVWRUOz7qv7B/AcQISTEFoxAK2kDT18Tg02jR8JxSkyVgwxNmep/LzQbaB3mTNEnr81l5H9o3gkqZ0/Es5n8WWPebzNtq96VvHFubrMoABvBDKSCfKYCdSeJvdO46cO0BrXJ9VwMlQdZoqd/KW3DJ8ilU1W/pp2Sw4cLQ0UQ6Z0dcoae3RAI8ROY/T4+q/WZ867JjTxOAd6F6i0mP3gOvhciJUqf1tOj9xcPBAU3yHYYw687/qCWK644PLMzxLMVQVW+r0NvMeD6KqaikTX2JZKztzTiESjaz9y51VVWEGC+9lVodvLoJUmHwHuJB7Z5YA+gqWEF37jXtVlpFXorC+w/DlF5njGC4zXsIt5Oa9ZU3lkfdf8hDWCM1sjiVcBoE72367Tx1Esxk1Z8QZmFL+WhQZNW4umQe3P5Rp3PpRpmRM99mAJGPNWg3clcyc8sQ2fquaiLIKgaUt3uAnqOIOJedVuHh4sZ3SZaiRSMxhqkRWPk0oUP2XgaVt0gh+2LA0lPH5J5JZAicwsHwqMOLAOjnGV08fZXqo88b4I4qKvmJxNidYPmTJnD8/zKTEO2i8XjWqUNBqTIs+uRhlT5/uLGQnZ+IBivrWJxH3ppw/fNxhiUXPfxlryp3yqDT/dmAPIlXWnFaGBYGk02aqx2lLaiGNjpR7F4Rd6XmidcmNgxl+znTYHKWb+ylRAPKqQzN3u443yTIlbYJcijJLBf3KTpr8MO30TGGcLoMvVjq9ZLWEekPknIx5YlV+kxL3jALKzZh5xr2HfXaml80KvW4kmSwO6J6XpCj5d19J86hQUBMn68QrMrEkJSrj51o3pahY7ZXIqwtgqz7QxrrcObPNvUH/wPJ6P5jiOM
- c/FhYHdH
- PwWZUULcqbEAdj7UIll6737e0iKge5ntHp6kGB0ryQi9WXBMjnXWfLSNLiwNIPeMPwPgN4iS9kaiWzCgsluc5Ket379Gfvw1NOka0P9IKYjmP6Y9zqDzzBQ3Q5f58Or0+E9IULJcze5QGEiBN11hU62t853wThaToxasBBLUtzLLHN9GRcGV2LJMkLyRxeJkUsOznARjlEH4wgx7Pl18zklMskQoGcn1GI1vVR+ahoya0ErkTJuUPCC7MekFUSpsKPZockUGR5nYSAvRdzqb6nhGtZGzfWmmgLoSMRcN2Wk+/9Br9tL5WKUOIBSx8ZK1UTy7jfLx1gZr35boBv2H39F4KpWD/F1TTJUKqpNZuU4klfXp3dDwVm/gzrrttOYtrxuYMWApj0BCaLaStsW75bLTSrPINGzsZP1Ev9hIEkkTKFm8rawrvHTiYDnD6DFZM5AwLk4kIvtONySuJRHKkrO6Jsov3iAuMkPLZVNW+hMEUshcM71aeSBPMiEJhk6MXL5zf+pnQQf1edU8TKPWAZIykxdqQZAVslNKHTQwMkAbclM8f2Gj5GWjPOAAOAokzfcNwJA+loHWtArISfKDTdU8HTGIxTRhURd9IvGDbJxXOelNNQ1oy0kSx5LajJ0CFriFBD8Wz/5sNYqYvXzo0iVy82+z8s91BIP8SkQ9k3lT6wM/mObfS1CBE7Q==
+X-Rspamd-Queue-Id: 80CD420011
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755875443-29944
+X-HE-Meta: U2FsdGVkX18LSEr4JD+X220XlkmoGy5myzYgdJm91ugyn8sTZnI/6mGwuZ12Rmb+P79zYP24ibQjIJFqejtNtbN3FhRZxCglb1+BFkoqKf/FGN3QTyvqxVswx0KynPGbnJ3WqeGIpdtD5ly2o03NO5DvMCAXNprInscydGej/zHasKnUXOHol7wCC/pxWnU3Kmb6xf8BAH+2HwhQZACWc5+Cb2ndv/0xVyQH4jz5qau1g1HjIitqlV81XxxS5R5ht+KUlh3YfXrz2esUnCuX9Slx8LBcj38U2+iewKH0eZqg7GXdn2iZwUKTIRnh3A3qdZoa+tf/nHVNjbNLHIxPjPc+vs9UvMd81HIq71PEy+eyQlyM0wVkgSrfAmmF0L0hnkxNXsu2Zhba7zL+pJ+KUGoiRaV/Y+OQWpckvzKzP7GM04w+I6ffhHjjW65bHGnB2iS9uzWj4rOjWqm834pSRmak/ZtjNBSgQz8YFFgwco0OdCL5tHzMLKi3mAOY09XfICYRfqoGnNZAEgQkykbCu3fosNB5KljTBglBhCZZkxmYqGNuAV7MP43ZSe3FccnwcmUfZBzsT7a4HA0VGtQTU07uvSPioLmt3yIxe5RpF5VBXYyco7W189xFE1nAx2+rsCwvdLN+DXMW2Zzw/DSlfVGREmShj8LZGj49V9EPwp7UdmBeS0z0Vvcs5chBBAED1B8R8/rZIcV5jzml5FA6YjFri6tyLTN3uaaazDTGXHzDTDeHBNAQWFBGfotcxtkEjLD3PckPJz5b0hWeqGEAoJzBvTCGkFP/8N5bAxhVgqY8PLawvEB5NkRxWWHfrNQYKmE4Uw4iE5XJDwJQVssqrcf2GIUm6gLcUI+iZq84r2t6XySx6zSyB3E56u5P2tt/WuxaN+uRRsXX1OpGJLaQqPaPhmDQX75iXml1CeeVdNW8r63zCuQp0MmsFWwyuNIvugib4LNVTANaQQhoVmg
+ PhWBSGaY
+ VjAthSv+S3hHBhdcxl2Q56SZeJpSh3CyA/Y6B1VFJRcuHhyC87m6zBTkH+HgIvKMt5p5IRTdXiI5rAXwlZ8kDxFmYOtgHtKYL/rd+1Jnvw6PXEf3F1FkpI7wTxU7D0wbZJ/woqHx3Ru+2qQJLgQmxLRq+JaNstJwLwkugj5xs50XL9En4HegAL8SqGO3sri6YzYNXy66GJqtxNeAdSGMYVoVdB0rSJoKzctvvn8kp2hN1sBo4aDAomvnXKLbS/7XfNYFj5IYmxT3JlTVEVWKvJmhzcx7qhCaBm6HimhMPXMot7vrs15mtnZS18S7sJqzm/IhoqeitBQC1er0hR0aZJHiqjLKmBx6tHMYqUuVJlxGTh+3IrvCuVRy+4BOKCi/RTGNgoNlsGuAtLMu0QZyBMXy2Mwuzot5MuvT3
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,67 +119,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 21, 2025 at 10:06:27PM +0200, David Hildenbrand wrote:
-> In an ideal world, we wouldn't have to deal with SPARSEMEM without
-> SPARSEMEM_VMEMMAP, but in particular for 32bit SPARSEMEM_VMEMMAP is
-> considered too costly and consequently not supported.
+On Thu, Aug 21, 2025 at 10:06:28PM +0200, David Hildenbrand wrote:
+> Now handled by the core automatically once SPARSEMEM_VMEMMAP_ENABLE
+> is selected.
 > 
-> However, if an architecture does support SPARSEMEM with
-> SPARSEMEM_VMEMMAP, let's forbid the user to disable VMEMMAP: just
-> like we already do for arm64, s390 and x86.
-> 
-> So if SPARSEMEM_VMEMMAP is supported, don't allow to use SPARSEMEM without
-> SPARSEMEM_VMEMMAP.
-> 
-> This implies that the option to not use SPARSEMEM_VMEMMAP will now be
-> gone for loongarch, powerpc, riscv and sparc. All architectures only
-> enable SPARSEMEM_VMEMMAP with 64bit support, so there should not really
-> be a big downside to using the VMEMMAP (quite the contrary).
-> 
-> This is a preparation for not supporting
-> 
-> (1) folio sizes that exceed a single memory section
-> (2) CMA allocations of non-contiguous page ranges
-> 
-> in SPARSEMEM without SPARSEMEM_VMEMMAP configs, whereby we
-> want to limit possible impact as much as possible (e.g., gigantic hugetlb
-> page allocations suddenly fails).
-> 
-> Cc: Huacai Chen <chenhuacai@kernel.org>
-> Cc: WANG Xuerui <kernel@xen0n.name>
-> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Cc: Paul Walmsley <paul.walmsley@sifive.com>
-> Cc: Palmer Dabbelt <palmer@dabbelt.com>
-> Cc: Albert Ou <aou@eecs.berkeley.edu>
-> Cc: Alexandre Ghiti <alex@ghiti.fr>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Andreas Larsson <andreas@gaisler.com>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
 > Signed-off-by: David Hildenbrand <david@redhat.com>
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 > ---
->  mm/Kconfig | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+>  arch/arm64/Kconfig | 1 -
+>  1 file changed, 1 deletion(-)
 > 
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 4108bcd967848..330d0e698ef96 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -439,9 +439,8 @@ config SPARSEMEM_VMEMMAP_ENABLE
->  	bool
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index e9bbfacc35a64..b1d1f2ff2493b 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -1570,7 +1570,6 @@ source "kernel/Kconfig.hz"
+>  config ARCH_SPARSEMEM_ENABLE
+>  	def_bool y
+>  	select SPARSEMEM_VMEMMAP_ENABLE
+> -	select SPARSEMEM_VMEMMAP
 >  
->  config SPARSEMEM_VMEMMAP
-> -	bool "Sparse Memory virtual memmap"
-> +	def_bool y
->  	depends on SPARSEMEM && SPARSEMEM_VMEMMAP_ENABLE
-> -	default y
->  	help
->  	  SPARSEMEM_VMEMMAP uses a virtually mapped memmap to optimise
->  	  pfn_to_page and page_to_pfn operations.  This is the most
+>  config HW_PERF_EVENTS
+>  	def_bool y
 > -- 
 > 2.50.1
 > 
