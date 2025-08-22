@@ -4,113 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 858C2CA0EED
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 15:44:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE9BECA0EEB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 16:02:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B57F4440147; Fri, 22 Aug 2025 11:44:01 -0400 (EDT)
+	id E8D6C280022; Fri, 22 Aug 2025 12:02:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B06F78E009D; Fri, 22 Aug 2025 11:44:01 -0400 (EDT)
+	id E632D8E009D; Fri, 22 Aug 2025 12:02:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F4E8440147; Fri, 22 Aug 2025 11:44:01 -0400 (EDT)
+	id D78A6280022; Fri, 22 Aug 2025 12:02:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 859E88E009D
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 11:44:01 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 47F0116023C
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 15:44:01 +0000 (UTC)
-X-FDA: 83804814282.01.A384C77
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 276054000D
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 15:43:58 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b=YMa17ozj;
-	spf=pass (imf07.hostedemail.com: domain of daniel.almeida@collabora.com designates 136.143.188.112 as permitted sender) smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	arc=pass ("zohomail.com:s=zohoarc:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755877439;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C635B8E009D
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 12:02:48 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7E97FB77C7
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 16:02:48 +0000 (UTC)
+X-FDA: 83804861616.04.4736AAF
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6F5721C000D
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 16:02:46 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lyZNvW7o;
+	spf=pass (imf20.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755878566;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PqUCUnihyJxvxzkXqOwwRycVnt4eGXHpARTB8PXlkd4=;
-	b=ZVtjh4s2g3joqn8tTF1nEEOAZYpJedHNO9gDfIEdmNdac3XC7YV0NKwyonfsN9LMf8D56+
-	OjlHFwS+5yVbS+UDQnA/8MTPuz7O96k4YA7rEDO7vVb4oL9V/9pciCaZ/M8syh8yQ0H9ra
-	aWWaWEo8K9+LWcCqULQ+ueab+xbUx24=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b=YMa17ozj;
-	spf=pass (imf07.hostedemail.com: domain of daniel.almeida@collabora.com designates 136.143.188.112 as permitted sender) smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	arc=pass ("zohomail.com:s=zohoarc:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1755877439; a=rsa-sha256;
-	cv=pass;
-	b=DK8EBPAouG5x5uDvL9VrpknaXCuS2E9QRJCzT5ghq447O1Gq/i09m9VjvksJ81KcygaTFu
-	DPbxpJqqV/x4vtZnPERirHDZYmc3Kyaash9ZzR5/SvBOl2jVhLoO4RLFBn9rSFtq/174w5
-	bxHqEX/NzsWve7WtPSZP1ThSrDKnyYA=
-ARC-Seal: i=1; a=rsa-sha256; t=1755877419; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=ZLj7PhIDrAAGOK1HcqBj9174GgMM/NrCu6pQaUWEjDkYCAZp695q5c8s1daNnGtmuURLWDDhWlDI4av0pMsHSHjbKyM6fOHLKVAU55ZZPvuX5EKAjqn2NJ5GzWq00vJ3lElwJaP2MyNxe8BBBkDmBAKZj62D9uAmDzCTvmZupZo=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1755877419; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=PqUCUnihyJxvxzkXqOwwRycVnt4eGXHpARTB8PXlkd4=; 
-	b=mAMf1ce8SjIPMNcV5WrE8n0Ibe3VOjJ/uZQPwKKQHqlZ7Fx7pe/GY4z3Euvyko5RJwQ4lGM8YVNBg8w/W7fwzioLwFxzjd2ToXYc2tiVxTTlYNzwDsScnvjqCNZidh4iYwFApWn6pr6bSsBhlrrvSGY3BeLliCSIrTSFxUYStSY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1755877419;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=PqUCUnihyJxvxzkXqOwwRycVnt4eGXHpARTB8PXlkd4=;
-	b=YMa17ozjFiGBqdgmByRQBEdRvbipYETo7tl/7XaV71HtPJuo8CaITtsujNXWGT5M
-	H3GTjeeKeRO0LsrtSTXp8UM6dNUbV8JEo4dyzbYqMCfkGhPtQxtn+DZ/88xRGcmueax
-	6yOhHWhelQ067nk++opz3l5/UeeYYB6lRxlkSrdI=
-Received: by mx.zohomail.com with SMTPS id 175587741672544.27711383068004;
-	Fri, 22 Aug 2025 08:43:36 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v2 3/5] rust: maple_tree: add MapleTree::lock() and load()
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <mrc7a7s7g4ylxvxfezwx3rf7ry7sng4adn64i443aikpjfz5ik@jq4co7zq7ryq>
-Date: Fri, 22 Aug 2025 12:43:20 -0300
-Cc: Alice Ryhl <aliceryhl@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Andrew Ballance <andrewjballance@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- linux-kernel@vger.kernel.org,
- maple-tree@lists.infradead.org,
- rust-for-linux@vger.kernel.org,
- linux-mm@kvack.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <FD22178C-8BCE-478B-8A2A-12FEFFA8DFC3@collabora.com>
-References: <20250819-maple-tree-v2-0-229b48657bab@google.com>
- <20250819-maple-tree-v2-3-229b48657bab@google.com>
- <38B2DEA2-774D-45B5-8923-C5330B975FB9@collabora.com>
- <mrc7a7s7g4ylxvxfezwx3rf7ry7sng4adn64i443aikpjfz5ik@jq4co7zq7ryq>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
-X-Stat-Signature: 3wodhf6nh11b36jkjsieywqhzwxnk5aq
+	bh=x+hhnaziEbvfcvK+nslqj/VWqrGu2JLJjIG2S0rWuqQ=;
+	b=RPX1aBWHMS/GclMYiXgvP5QV3zfaZfEl3wu30GNq9PENM9KqSQsoy1hoV6CU/FISNisAZn
+	gPG9cBxVXjbVaRlXcuOO8WkBK6Tp+5hJu+qCj8DXgatL/1ddQtcl86awJzea0vtXjeAVam
+	2Daz1tq4AeFP+kO8rNaSMk4LZs73iqg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755878566; a=rsa-sha256;
+	cv=none;
+	b=JK4bsL5oJJR5jrjEcF4vwfkYr+GNbT3b0yxNUsB6TsVQxkRNs45HXUKLD7tQ9UHcvjy4KT
+	6z9vuCPVvaSBJiU/dIISYxvMidSpRtv/d84O0tpinzyhX5jR4V8PUHVjmIT77nz4Xpp8ZL
+	oKieAqSaJxTsZfGCgs9Zi8ZGZSs00Mo=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lyZNvW7o;
+	spf=pass (imf20.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-55e00f938dfso336556e87.0
+        for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:02:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755878564; x=1756483364; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=x+hhnaziEbvfcvK+nslqj/VWqrGu2JLJjIG2S0rWuqQ=;
+        b=lyZNvW7o/A8ItdqZX4M5sgtKCw+pTGgnvDS38kZ+Nii2Tmr7YX4nHcg1sjijBHa+YW
+         FDAyEGNdcSL2uHx7AdwrwvfHN9aNo885faTYI83Vcf7W1iX706XvlkWgm8Q1dKZxBbxd
+         4gWWOAvErAsQQENW7qSyc4eKM3F9kfoR2on6hUEJ9QCacepbGsDMN2phA0EntE4R7BvR
+         dailgC6BGi3cK8QNdTozU32NZAMLoGsyDnMgn3M+GG/9deqoWqjVC5CbjK2KA1qRglSB
+         6HVYsPR5gqZ2CEcjMold+mLH6Y0NwxagFupyegmnB4Zq6QltooO8No/BzJa0xgomY2qS
+         UPxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755878564; x=1756483364;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=x+hhnaziEbvfcvK+nslqj/VWqrGu2JLJjIG2S0rWuqQ=;
+        b=jnNWvGhxqWWjj09235zds3SkxQYhw5T+KwMJEAFaXg+fv30aindBSrZWwcsw3Ct0U8
+         Z46o7sLc4uRSx/3FIguaYNdQgRQaYkDR6fpoRHTU6UwikSeMWzZNS+JiBVscSIOvGnNT
+         Kg4VmEhQGb4RWiPB2CMsVTBmllfkkk/Lo4JUz8gZaTW4NRZGzpmydB3rU1mbggwLAsGH
+         GAKDQQWVFN7u/ef97hYIypM4YSC1icklWBQ3v50nguDsBGLJdKSWJLIyhHYc3Y2ZB73P
+         YA1c+NdSgKPKGZb7CX59+Qb2iaSc6bV++j8EWXQTmqyHwlUzEZAhc/tBm0PAJWkj8IUj
+         hdiw==
+X-Forwarded-Encrypted: i=1; AJvYcCUo3cZ72hH7edd4gKENk2xTPiMd5uI91XuVCEhm8Ke87d5XK7TKoUcWiBVDnRYtZFbZHK2yO63kLA==@kvack.org
+X-Gm-Message-State: AOJu0YzOsAb68LHYnsbFoIimHXXv9dT0AFNVBi7yU5Cq4g3N+ed85ph6
+	myN66ill24JuyTG5O1y0++Pbw3rJHcIuYOL618osA3Ie96y78VcFvNEQ
+X-Gm-Gg: ASbGncuHZdmmJuwftXhzD19IADcoq0ZpXmJbTgWG/2cAkiV2cKrOU04qPp8SRG4caX5
+	9UwuJ5XjApFNEQojD8Ams5NsuQfO5vExq4GwI9FyZt8JmFbuIped8cm35HvVWh7krR8k6uevNTh
+	a88dG5pvRmmnf+k0RBHYNJpmXFH6gYer7qHnLQDMkqVAUUolqH0vSOeKdgeTUHQjlzzvJsoBNJV
+	mFtpMofBlc46CbkiEcFo+UEskfvdBLsx97JJeOGDJwXX6lbprKQ2qVyYrS7+m57ycuJvzhYcJmm
+	pmv51wK9n8F56P/o2N49zF5ite6Qxt6pJIFoF6VleYh+5w9mrlN8wOiuCfQISeHuTLRvP+Y0QBv
+	RDd0XSfhzk0opI91zAuYcgpP2acuQ
+X-Google-Smtp-Source: AGHT+IGQszajDGNQAKf7QN48qEfm9n4yUiAaOTXLuqd4oLvJ2QirlJ8t5DPSvNvccFn1KcRv53kJsg==
+X-Received: by 2002:a05:6512:220f:b0:55b:2242:a9d8 with SMTP id 2adb3069b0e04-55f0d36fademr679617e87.7.1755878564032;
+        Fri, 22 Aug 2025 09:02:44 -0700 (PDT)
+Received: from [10.214.35.248] ([80.93.240.68])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55f35c02c89sm37612e87.34.2025.08.22.09.02.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 22 Aug 2025 09:02:43 -0700 (PDT)
+Message-ID: <2fb52098-3952-48f1-b6c3-bbc95ce00d8d@gmail.com>
+Date: Fri, 22 Aug 2025 18:02:40 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm: fix KASAN build error due to p*d_populate_kernel()
+To: Harry Yoo <harry.yoo@oracle.com>, Dave Hansen <dave.hansen@intel.com>
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, andreyknvl@gmail.com,
+ aneesh.kumar@linux.ibm.com, anshuman.khandual@arm.com, apopple@nvidia.com,
+ ardb@kernel.org, arnd@arndb.de, bp@alien8.de, cl@gentwo.org,
+ dave.hansen@linux.intel.com, david@redhat.com, dennis@kernel.org,
+ dev.jain@arm.com, dvyukov@google.com, glider@google.com,
+ gwan-gyeong.mun@intel.com, hpa@zyccr.com, jane.chu@oracle.com,
+ jgross@suse.de, jhubbard@nvidia.com, joao.m.martins@oracle.com,
+ joro@8bytes.org, kas@kernel.org, kevin.brodsky@arm.com,
+ linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, lorenzo.stoakes@oracle.com, luto@kernel.org,
+ maobibo@loongson.cn, mhocko@suse.com, mingo@redhat.com, osalvador@suse.de,
+ peterx@redhat.com, peterz@infradead.org, rppt@kernel.org,
+ ryan.roberts@arm.com, stable@vger.kernel.org, surenb@google.com,
+ tglx@linutronix.de, thuth@redhat.com, tj@kernel.org, urezki@gmail.com,
+ vbabka@suse.cz, vincenzo.frascino@arm.com, x86@kernel.org,
+ zhengqi.arch@bytedance.com
+References: <20250821093542.37844-1-harry.yoo@oracle.com>
+ <20250821115731.137284-1-harry.yoo@oracle.com>
+ <3976ef5d-a959-408a-b538-7feba1f0ab7a@intel.com> <aKfDrKBaMc24cNgC@hyeyoo>
+Content-Language: en-US
+From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+In-Reply-To: <aKfDrKBaMc24cNgC@hyeyoo>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 276054000D
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755877438-764323
-X-HE-Meta: U2FsdGVkX1+g6Z/Op6t2vhT1BNAFlehGPNWYuNJsW33vEGjJQKfgZOFMABrPw95j+F+qxG7HwVJFK0nuu6ZYiwhJUPRDke2INK1oY68BvrkFU9Vy4jIsfjgBZf2TjhXUBnW/yeduHRkzy2XtYaYsxc5J1oDDFJTDezC2NCbZWvPU+kDCpLogU/ayzHZFqQfW1gfhGp/fkUPrnxs1RyKHEdToF/9tMF7hqNBNGnfqKI1Hk8x/QbtmTOF3sG7e50AERlqYcttICaBYSTW8pxLAkDmVG8BxhKEuOrui8fVXCeYeLv2abdxJzoYrfncSOQD2xzlneTJJYcujrWVelQN5SoGsTYjqXUKX3vK+7tQzj6jtRHrb2FMJyeg8WwkycMbXsn28WGarE879gJ1sRufbd204u713JWh/OcduWefn2X3O0iKoFKPD7VOYPbtY+1v/QPD2Q8JAERv5bkny1KNcmHQMK60CAt6ipF+guj4aHTRKZUDuUXGYbj5dd8kU6Sc7YkSZLdKBePnvRkm43rbBlStm7RgUm4Ew0SBDIVjfpScgbzB3RFAiYqVbH5ArMdSFLRqhMZNU9kWghmp9SUUrOgBddQQixu2szrIkHbooCHeWG9xY3aQ0utdApgBTIjcb1vvkBJdRlSZ6Zw1Sf6YPrCiLFcohKXRNZVm0cEzjtsufpmVukG03zpwMnBtZR8l5nKdLVVV3rgJfy6lWCMw69IWR170UjZ7po7EQnUZHYQ5vpQ5XM5mQtjKgtOlI2mecg6PFVpeMawNRbnmd+3IYcyXWO2yKjDvXMzFf9n040Fg413skWP3MQc9fImnDZSbne9e9PilTE9xVSYiuSnzPoRQTw6E/DfnMEkw3qOHIBE8pXTT4Iqi+3kjR+7O68SASA4AEM1WmlERQUP2UsOQVTivlnuIngZEmJOxbb/+oK2MLi+YHkV6EVGKDZPNpR1OokYvpFHlnalUUZOcNnmq
- 3lZRkFTM
- rk9UDt+mTWv/T/Ud4km4LZpt8PM+uSWxRqMOZw3n37jheXJgCVmFT6GfxkQUqrW4txVRu4xt6mlZn2BF8rAJhkI8uhxS7yBAgM7p7v+Ld/tarOsnitwtqxRlb0LY2IAgt0NNfVPDT6wAI2NEanTzgwrwdzQdo3RahbYNoKZ4xuvsFaxm/OLLPORKWUsM8Zo/1un9LlrWez/67RvK/cIkzlhF2aszs7ygP0c3Ktvn7Zyf91Zijtp7GPJHo6JLfd4Z/+uUnW1ZkO8D48wZjhGuL5gzAwZy1P8+W+k60mJDDdVIuuel6mmstJzB74nIYVFmxuvMX4iMeymVry5qE/XpIIFdZU3Ktnlye6ws0GJO7E6jnsoQsOLJWYPjL/YroPJmYvLdDvbBHIWCF6pvnDApfFzrf08skZ6lUi0AaexoRxHjQBcULOCnDYfVFgX3RtKP4bMfEQjAgVvUePwFhHpDYyF/zYt0bvJd+PEdqnz7L/z5gULAYOTX/v/fc/L+8yOwpjxFBpjIGcq8yFygP7YBw4WOQBw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6F5721C000D
+X-Stat-Signature: 1uyd96z31wb7hdt7oxrehkwto5xxc35o
+X-HE-Tag: 1755878566-881230
+X-HE-Meta: U2FsdGVkX18+1AH0KLVXxgASXW9cszA4pNTAe0C2XSFMuiy0a5JI8UcuokMEfd+MFmPx4dslo8R3+vgVwFpWKEzZJQVVM8fWDoaKSxeFFCnQrE2px/1EWeivruMfmLqFe4B0ZfutRLHcde232Qq9LoUgcDhoDsZQRcXyltz6nSNHEjflA5BRHb9nfCQli3mr9rAGK8/blqHISuaEk8KUGGENa++T3FLBPhnppmHepCGfEJtcQbh0mYFd1IBmBb9mQgSYpSq3wMJSij8au5r53G+BedEsrq8M3tIs3rGQzlTwcMvS9fUKHddyxuNHFX90Mx1lpQEGabZenzvIFSVKX/q2RoyWQnu049np9TDzzHJc87elKKreAeXlrv7CL5w81AljvB+4C6E6RK1bh64oQF8BQm5Y9w5KViGrjGx6cPSQq89/PRwkSGDeHR8ZODUSaDXOwFgWI5jdOAELNCHnY8k8PdC43kJjLdQpSI7AjrncBQTBGHO65PvymGI4OKc+s6JuslL2OeXIPNe2jZj2JS1kPFBiAqXkd/3opBbpLMkgqi08WJRu9S189dCcRbZg3V23k79VACeysbhnG0+KyJ6Oud20RO1abyV7+vRpAuSKVLpMoqPeISm1LYdFqmdvMqMoJ4y023NThEPNjJsv1akL7HxmMiChDw70l7PDceCNJws0p1G5VK+WI6iOJlvW85OUVdsqX8fEOpEuOLjMSLe1toiLcFleSCw1Oqxh9xWnraopj1MREAh2ovW9z57raTDWA5FOjhgYEjHYLDcZpCS9eoHwNEPcua4aZUNG/fh1l3HhnuYKr5AgYI6fHK+zfMY+qosa5Vww5GeTHevXQKpVI66X+uV95PyBSOdeXmY7nniVWDty2Cpiv9TH00YvkyoV03Nt8848hNrntw3fJ8Uo+OnZn+VtoBj8UxkJTWbh0RMSb4Q+8T9HyTVn0AHzcrjLKnYv+auC85Kg4LJ
+ m+zMvugt
+ qC6VrKt6Onn2D9KN8B6W53Sc9SPsFvnYBaEzeBXQTAd6z6eo8lL+yRljjzRl6coGfArfnaZLxPagSpRIgultd3TvdYzeQOLSKtACNZ5vq0tpMgLjcZKNFb/rnyh2+7v/LsIE7ckl407ylxMCXIJoG6BBrmhyAMS29DQmCoBkrwDIW+ZKE5mpLut0MZ8eKruhRGInWfy2Jajhe4FKPCltMnikxZZBSeQo4enaLJP1NCQqKoYh+wIxXgPd/Pr75SqbYwg93L6/BEg859mWiA5XfDruVTvQIgM5zEjoASYdQioieorKlx2nABfiv7Ngx9akFK7htnhYgYqYFoLtiwutabwzzUA7jiTin0bMuOjCTZ3EK7iklTcPKfPnsSaTwZ0ZDNtPvvu5Ie0jFMpUuC5DVOWKxhzfTXhYy8PSo4YIli4JjV4SZy26W69PX7bSYgnEeda2Nlvo/1cGtkiFxcUpYwq+pCy+nXnJgqUY89eDTaZftYF5V+5jBmubet29BPRrWCVcT+2tW1ECmQpZ24rBjb9KSSpMiO8h0OA8YZWFEm/gjDlpDOkvrXgTzXg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,56 +137,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Liam,
 
-[=E2=80=A6]
 
->>=20
->>> +    ///
->>> +    /// # Examples
->>> +    ///
->>> +    /// Iterate the maple tree.
->>> +    ///
->>> +    /// ```
->>> +    /// use kernel::maple_tree::{MapleTree, InsertErrorKind};
->>> +    /// use kernel::sync::Arc;
->>> +    ///
->>> +    /// let tree =3D KBox::pin_init(MapleTree::<Arc<i32>>::new(), =
-GFP_KERNEL)?;
->>> +    ///
->>> +    /// let ten =3D Arc::new(10, GFP_KERNEL)?;
->>> +    /// let twenty =3D Arc::new(20, GFP_KERNEL)?;
->>> +    /// tree.insert(100, ten, GFP_KERNEL)?;
->>> +    /// tree.insert(200, twenty, GFP_KERNEL)?;
->>> +    ///
->>> +    /// let mut ma_lock =3D tree.lock();
->>> +    /// let mut iter =3D ma_lock.ma_state(0, usize::MAX);
->>> +    ///
->>> +    /// assert_eq!(*iter.mas_find(usize::MAX).unwrap(), 10);
->>> +    /// assert_eq!(*iter.mas_find(usize::MAX).unwrap(), 20);
->>> +    /// assert!(iter.mas_find(usize::MAX).is_none());
->>> +    /// # Ok::<_, Error>(())
->>> +    /// ```
->>> +    #[inline]
->>> +    pub fn mas_find(&mut self, max: usize) -> =
-Option<T::BorrowedMut<'_>> {
->>=20
->> Should we drop the =E2=80=9Cmas=E2=80=9D prefix here? I think that =
-=E2=80=9Cfind()=E2=80=9D is fine.
->=20
-> The maple tree has two interfaces, the advanced one which starts with
-> mas_ and the simple on that uses mt_.  This is probably why the mas_ =
-is
-> here?
->=20
+On 8/22/25 3:11 AM, Harry Yoo wrote:
+> On Thu, Aug 21, 2025 at 10:36:12AM -0700, Dave Hansen wrote:
+>> On 8/21/25 04:57, Harry Yoo wrote:
+>>> However, {pgd,p4d}_populate_kernel() is defined as a function regardless
+>>> of the number of page table levels, so the compiler may not optimize
+>>> them away. In this case, the following linker error occurs:
+> 
+> Hi, thanks for taking a look, Dave!
+> 
+> First of all, this is a fix-up patch of a mm-hotfixes patch series that
+> fixes a bug (I should have explained that in the changelog) [1].
+> 
+> [1] https://lore.kernel.org/linux-mm/20250818020206.4517-1-harry.yoo@oracle.com
+> 
+> I think we can continue discussing it and perhaps do that as part of
+> a follow-up series, because the current patch series need to be backported
+> to -stable and your suggestion to improve existing code doesn't require
+> -stable backports.
+> 
+> Does that sound fine?
+> 
+>> This part of the changelog confused me. I think it's focusing on the
+>> wrong thing.
+>>
+>> The code that's triggering this is literally:
+>>
+>>>                         pgd_populate(&init_mm, pgd,
+>>>                                         lm_alias(kasan_early_shadow_p4d));
+>>
+>> It sure _looks_ like it's unconditionally referencing the
+>> 'kasan_early_shadow_p4d' symbol. I think it's wrong to hide that with
+>> macro magic and just assume that the macros won't reference it.
+>>
+>> If a symbol isn't being defined, it shouldn't be referenced in C code.:q
 
-Yeah but we should probably not expose this nomenclature directly in =
-Rust, or
-at least not in the function name itself. Perhaps we can implement the =
-mt_* API
-as a separate type, with its own find() function?
 
-=E2=80=94 Daniel
+That's not exactly the case for the kernel. It historically relied on being
+compiled with optimization and compiler being able to eliminate unused references.
+AFAIR BUILD_BUG_ON() works like that, there are also plenty of code like
 
+if  (IS_ENABLED(CONFIG_SOMETHING))
+	ptr = &something;
+else
+	ptr = &something_else; 
+
+e.g. irq_remaping_prepare();
+
+
+> 
+> A fair point, and that's what KASAN code has been doing for years.
+> 
+>> The right way to do it is to have an #ifdef in a header that avoids
+>> compiling in the reference to the symbol.
+> 
+> You mean defining some wrapper functions for p*d_populate_kernel() in
+> KASAN with different implementations based on ifdeffery?
+> 
+> Just to clarify, what should be the exact ifdeffery to cover these cases?
+> #if CONFIG_PGTABLE_LEVELS == 4 and 5, or
+> #ifdef __PAGETABLE_P4D_FOLDED and __PAGETABLE_PUD_FOLDED ?
+> 
+
+I think ifdef should be the same as for symbol, so '#if CONFIG_PGTABLE_LEVELS > 4'
+for *_p4d and '#if CONFIG_PGTABLE_LEVELS > 3' for *_pud
+
+
+> I have no strong opinion on this, let's hear what KASAN folks think.
+> 
+
+So, I think we have following options:
+
+1. Macros as you did.
+2. Hide references in function under  '#if CONFIG_PGTABLE_LEVELS > x', like Dave suggested.
+3. It should be enough to just add if in code like
+            if (CONFIG_PGTABLE_LEVELS > 4)
+		pgd_populate_kernel(addr, pgd,
+                                          lm_alias(kasan_early_shadow_p4d));
+Compiler should be able to optimize it away.
+
+4. I guess that the link error is due to enabled CONFIG_DEBUG_VIRTUAL=y
+lm_alias() ends up with __phys_addr_symbol() function call which compiler can't optimize away.
+Technically we can declare __phys_addr_symbol() with __attribute__((pure)), so compiler will
+be able to optimize away this call, because the result should be unused.
+But I'm not sure we really want that, because it's debug function and even if the result is unused
+we might want to still have a check if symbol address is correct.
+
+
+I would probably prefer 3rd option, but I don't really have very strong opinion, so either way is fine.
 
 
