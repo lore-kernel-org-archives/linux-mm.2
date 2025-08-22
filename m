@@ -4,92 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1CE6CA0EED
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 14:51:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 471CFCA0EED
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 15:09:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E95748E00B2; Fri, 22 Aug 2025 10:51:16 -0400 (EDT)
+	id 7B0E46B011F; Fri, 22 Aug 2025 11:09:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3ED78E009D; Fri, 22 Aug 2025 10:51:16 -0400 (EDT)
+	id 789448E009D; Fri, 22 Aug 2025 11:09:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D2EA08E00B2; Fri, 22 Aug 2025 10:51:16 -0400 (EDT)
+	id 6C6FC6B0122; Fri, 22 Aug 2025 11:09:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B7F388E009D
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 10:51:16 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5506E1A01F8
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 14:51:16 +0000 (UTC)
-X-FDA: 83804681352.06.9A60A0A
-Received: from smtp-190a.mail.infomaniak.ch (smtp-190a.mail.infomaniak.ch [185.125.25.10])
-	by imf03.hostedemail.com (Postfix) with ESMTP id F36EA2000E
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 14:51:13 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=digikod.net header.s=20191114 header.b=TvcZ+Kjv;
-	spf=pass (imf03.hostedemail.com: domain of mic@digikod.net designates 185.125.25.10 as permitted sender) smtp.mailfrom=mic@digikod.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BEA06B011F
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 11:09:28 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0D08A137F85
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 15:09:28 +0000 (UTC)
+X-FDA: 83804727216.07.71ED16C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 378AD1C000D
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 15:09:26 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Prntf9uZ;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755874274;
+	s=arc-20220608; t=1755875366;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zTTfmyqDupOjx6oqqavArctJ4iCrnJ+ZVQgZlvGbaKA=;
-	b=XXjtW/8hyP76dS6KFVRki7Tam3WtXWLsO1IQPF/J3zD4HR2wRY1SaV9C1a3dEJFVKV5RO7
-	E81wzqtybyRJfx/CKZeFCXGaeJZIWchHyBavtiA+YA/KAicDV+/vOvM8t25uVckY/c84s+
-	zBIfMesy7NrALkEL/tDvVtJmXOoIbLU=
+	bh=vCOsOz88mPScACBG1/CQZuInDpdXn6Z4TRAWSkNAAYc=;
+	b=L4PSM/+FFY/HlzWdCdfnOwdB04SpmLTwIZqUqEQylaBmUqcv61IH54GzqR7HlzelY+v/as
+	7Knx4apXRnbT71VxX8BupaxtjzSOrevErQJXx5RQ2l07u8hU5yOSCleo4as/gRPXN6oX9n
+	keOh3Bi/P0WJhOJgWNUd+smoECEaMk8=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=digikod.net header.s=20191114 header.b=TvcZ+Kjv;
-	spf=pass (imf03.hostedemail.com: domain of mic@digikod.net designates 185.125.25.10 as permitted sender) smtp.mailfrom=mic@digikod.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755874274; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Prntf9uZ;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755875366; a=rsa-sha256;
 	cv=none;
-	b=dB+hYpaEcnzyGXPp9YHeH4ZQRX6gUIOXKCTEwunYkEJhoc1q3yPDvmc3RjHC4dyJee58Y8
-	dQqb0z2fa55uIFJVui5vARpjZ0SwcKqvKNfsyig82uptwTXy4G8PsQTZhro6V4jsn7d1cd
-	tcgDipGsvriJUrXUJ97N5uHl0InLmvU=
-Received: from smtp-3-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246c])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4c7jmv6Yzyz997;
-	Fri, 22 Aug 2025 16:51:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
-	s=20191114; t=1755874271;
-	bh=zTTfmyqDupOjx6oqqavArctJ4iCrnJ+ZVQgZlvGbaKA=;
+	b=DUqMi1gpZUdI+vfOvnTM5Z8pRnK+ytfVWrhk2c5b3qCMDyq471+Rs2U3f0Cnlh/VAdh0PZ
+	zkHWhNbnsbdXiYIO8BnpKr4ZOK9+Wb2Lho+sT48IJCiDyvMKNPdgJJ4DoDCv3suNWJzLNf
+	CTtwNEZ4Al0H0x/7R5AJXPryA6Xr3JE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B028D4368F;
+	Fri, 22 Aug 2025 15:09:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC2FC113D0;
+	Fri, 22 Aug 2025 15:09:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755875364;
+	bh=BbeE+oYVvXyCl/P3cWovjJUaU7WzCVAlNkMT749qO5w=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TvcZ+Kjv3uiFSzBmD6CV25iFw47KiUlXV6COeYfUKWUrElaR53ZVWrCnbp9ydTekv
-	 6UsvJuVk02SEcKusMSylawRGBOCGBi4Qv9BNyoTgDZPnVA7pj2yrujLWENWoohYZv6
-	 yCsGRC0FUxE07oBZSN53cZxCMXLrRrgGZYhsCVak=
-Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4c7jmt2VbwzFpN;
-	Fri, 22 Aug 2025 16:51:10 +0200 (CEST)
-Date: Fri, 22 Aug 2025 16:51:09 +0200
-From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
-To: Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>
-Cc: akpm@linux-foundation.org, shuah@kernel.org, gnoack@google.com, 
-	david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, 
-	vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org, ming.lei@redhat.com, skhan@linuxfoundation.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org
-Subject: Re: [PATCH] selftests: centralise maybe-unused definition in
- kselftest.h
-Message-ID: <20250822.Ahno5pong1Ai@digikod.net>
-References: <20250821101159.2238-1-reddybalavignesh9979@gmail.com>
+	b=Prntf9uZKZis/U/bJlHQFXtv4HnPV3FVBr1/P31JtBZdZlx8pNyYQrIV2U1OHL2Ph
+	 KWg0PSoWLWhirFvfgHCyLwMGddND32c/PoybCUWyTY4uJJaWAm3pqSnmsGRF97A6G4
+	 VDGi/p4toQ5nig1708cGRPMAz3wCxoj5eCkSR54XvHPYG/bVMzGFIuTMu74kogSth9
+	 uZBDebwYJugk9IlUMY2oDzjDlJybUXGUDToJl2tsj04xT1jSsHqLJwHeqPJg2mwSqm
+	 1JhNQxwyrU8QnJ30mOJ/Iq/kXqrUNLLTQ0bAe831b6zLWD86rnmkM7tBokSIpXtEvj
+	 XiFVPUzX/IwAA==
+Date: Fri, 22 Aug 2025 18:09:03 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Christoph Lameter <cl@gentwo.org>, Dennis Zhou <dennis@kernel.org>,
+	Dmitry Vyukov <dvyukov@google.com>, dri-devel@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org, iommu@lists.linux.dev,
+	io-uring@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
+	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+	John Hubbard <jhubbard@nvidia.com>, kasan-dev@googlegroups.com,
+	kvm@vger.kernel.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	linux-arm-kernel@axis.com, linux-arm-kernel@lists.infradead.org,
+	linux-crypto@vger.kernel.org, linux-ide@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Marco Elver <elver@google.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
+	Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
+	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+	virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
+	wireguard@lists.zx2c4.com, x86@kernel.org, Zi Yan <ziy@nvidia.com>
+Subject: Re: [PATCH RFC 01/35] mm: stop making SPARSEMEM_VMEMMAP
+ user-selectable
+Message-ID: <aKiID8i6dYrlVi5T@kernel.org>
+References: <20250821200701.1329277-1-david@redhat.com>
+ <20250821200701.1329277-2-david@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250821101159.2238-1-reddybalavignesh9979@gmail.com>
-X-Infomaniak-Routing: alpha
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F36EA2000E
-X-Stat-Signature: 4e5ur8fxu1dntew63dnoigy36n1r8qoc
+In-Reply-To: <20250821200701.1329277-2-david@redhat.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 378AD1C000D
+X-Stat-Signature: fzormeqtx8mse1optzbniwmkq7qg6sf1
 X-Rspam-User: 
-X-HE-Tag: 1755874273-285237
-X-HE-Meta: U2FsdGVkX186fKqDiFDoCS/T1kmNa/ogpHFxa7rB0rNOvIUg9t+aSZtQZctbaIK5tQwxcd+RNubv00WOKPEFassHOCGqyVebiXtyNDThHbJQNOlHEaW2CWAgePOLHC3EHO3712mOwE7RQx7dBWvBDEzV0Thbi4opIQuncJZzHM8rf/Kehm1sj6h/1KRZWd17WS0ilcoyZkKldRXiCmd9uBl+AGSO+yoMkx582/PmQmzBKapRcpPkux62LfCJ00vB0zrgSaPRX0ccycj3X37Xef+F5qRQYKt6OJkAs3lwlefsWFfVmK2EugOjfdyA10yIWZin3sULU+qY5Vlmn2zA+hslwpSop2gbYcP6AvwXXrH7isix/y4V9cD5sUmbdon/MFK+7FU+nKmXKGdzIUQV2tCuBkpSOF+Q9AArvWTQ3qSddB9PzJelN6L+wDJlCFgL5/XhQ5qZJiWl6YjLR/j5CcpVpGpTtoMchj2Iiby3Sw10Q8F8Y9sW6uFTm3iA5RZDguXJ1ZBBpt0IKdAtqTYZOJAOXOq/wejmmF8ledk/gS64u5pVQUxMbrkhHgPgf3DmIi3GIOlw0oy2OARvxwnBRNcg9QUORMFIgDQ0qRj1r/iy6Bpeb7oDezmpNji4A+p8fN8F/9PLAemvuq3Tkmjg9L6yYlXARR5irYOXXRE57qqgoX6/JLMXmLYbjdC22bHEoyKOV6QLtQa7u+ZMD+R/l66Se0P5hKdszzACgxPZ5FTuFu/ICSBkf+1fn7LM3Bujbpglkta4foZ+LIl5GlH+8xe4ctsExtHzrWdHc7QczTAe9lGybvjAs0AmTKhLC1jETgVOh8JQ+r+ja7xQT+Bbek+yLMrA/PpHJ8EznMX1nmP1+NcrKEovpITG686l1au9FGQA3zN28LXAgTtS8OLnPokvtfmc+VwEzGEhodfol12k/4KBRCtrpTffC7Qv7xpGtXYQG2jsB+jPItbEFmc
- TbrZvksQ
- pZLmfc/WegWu+9JnfmEvgt9JIG4JR/6DVYGfI1CY6QR+IZowz2ezPRoyIdRf0es9zcCyDQWI+kLKUHApqox4VHGFUTeodBjTzvp6FTk/O8U4s8k5qSTTe1H2RZoZBiLGc1Zeo/P18h+8FIHzuFBSGT6jVVWsACQmDz/3dASgMyN+ZLvnIYe2/fn4D1m7vWaJXdPYp6RRl0mUuFHLnvp92dUVq8uP+YsuCeDoI7P5aS+Tj7bWGH0JKTCCHY5Z8IKMDhf1KSrRFFDQi0jFQSfq5JilMrKSqdSF7xZwR9F6ey9OyLVOmjXFpA1/wFtWLOXEGLHMdzSitT8assMUUvGkAfBsIfr770BmwkZ0aVsRvWishBHkh1XowX/17tiRdCyYb7uPslpkGiLowlDkibCOrgV3EGclBHQ+INHwGrS16iVSL9MYZq2Vblgh7uVGlTN9hJbcqNpirNfxb3mwvf+9U2k7dWX9d3pPCQoSn
+X-HE-Tag: 1755875365-284340
+X-HE-Meta: U2FsdGVkX18gJYFjCsKXkV0/9s8fUFAJ7r9ZSwVR55eU+VKU+ctzjRxnAb2qvxIXD/cyrWL/LeuppKbIKM5ujzuvWvazpby2YlSxp0Kk1WzeFOBkVWRUOz7qv7B/AcQISTEFoxAK2kDT18Tg02jR8JxSkyVgwxNmep/LzQbaB3mTNEnr81l5H9o3gkqZ0/Es5n8WWPebzNtq96VvHFubrMoABvBDKSCfKYCdSeJvdO46cO0BrXJ9VwMlQdZoqd/KW3DJ8ilU1W/pp2Sw4cLQ0UQ6Z0dcoae3RAI8ROY/T4+q/WZ867JjTxOAd6F6i0mP3gOvhciJUqf1tOj9xcPBAU3yHYYw687/qCWK644PLMzxLMVQVW+r0NvMeD6KqaikTX2JZKztzTiESjaz9y51VVWEGC+9lVodvLoJUmHwHuJB7Z5YA+gqWEF37jXtVlpFXorC+w/DlF5njGC4zXsIt5Oa9ZU3lkfdf8hDWCM1sjiVcBoE72367Tx1Esxk1Z8QZmFL+WhQZNW4umQe3P5Rp3PpRpmRM99mAJGPNWg3clcyc8sQ2fquaiLIKgaUt3uAnqOIOJedVuHh4sZ3SZaiRSMxhqkRWPk0oUP2XgaVt0gh+2LA0lPH5J5JZAicwsHwqMOLAOjnGV08fZXqo88b4I4qKvmJxNidYPmTJnD8/zKTEO2i8XjWqUNBqTIs+uRhlT5/uLGQnZ+IBivrWJxH3ppw/fNxhiUXPfxlryp3yqDT/dmAPIlXWnFaGBYGk02aqx2lLaiGNjpR7F4Rd6XmidcmNgxl+znTYHKWb+ylRAPKqQzN3u443yTIlbYJcijJLBf3KTpr8MO30TGGcLoMvVjq9ZLWEekPknIx5YlV+kxL3jALKzZh5xr2HfXaml80KvW4kmSwO6J6XpCj5d19J86hQUBMn68QrMrEkJSrj51o3pahY7ZXIqwtgqz7QxrrcObPNvUH/wPJ6P5jiOM
+ c/FhYHdH
+ PwWZUULcqbEAdj7UIll6737e0iKge5ntHp6kGB0ryQi9WXBMjnXWfLSNLiwNIPeMPwPgN4iS9kaiWzCgsluc5Ket379Gfvw1NOka0P9IKYjmP6Y9zqDzzBQ3Q5f58Or0+E9IULJcze5QGEiBN11hU62t853wThaToxasBBLUtzLLHN9GRcGV2LJMkLyRxeJkUsOznARjlEH4wgx7Pl18zklMskQoGcn1GI1vVR+ahoya0ErkTJuUPCC7MekFUSpsKPZockUGR5nYSAvRdzqb6nhGtZGzfWmmgLoSMRcN2Wk+/9Br9tL5WKUOIBSx8ZK1UTy7jfLx1gZr35boBv2H39F4KpWD/F1TTJUKqpNZuU4klfXp3dDwVm/gzrrttOYtrxuYMWApj0BCaLaStsW75bLTSrPINGzsZP1Ev9hIEkkTKFm8rawrvHTiYDnD6DFZM5AwLk4kIvtONySuJRHKkrO6Jsov3iAuMkPLZVNW+hMEUshcM71aeSBPMiEJhk6MXL5zf+pnQQf1edU8TKPWAZIykxdqQZAVslNKHTQwMkAbclM8f2Gj5GWjPOAAOAokzfcNwJA+loHWtArISfKDTdU8HTGIxTRhURd9IvGDbJxXOelNNQ1oy0kSx5LajJ0CFriFBD8Wz/5sNYqYvXzo0iVy82+z8s91BIP8SkQ9k3lT6wM/mObfS1CBE7Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,160 +128,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 21, 2025 at 03:41:59PM +0530, Bala-Vignesh-Reddy wrote:
-> Several selftests subdirectories duplicated the define __maybe_unused,
-> leading to redundant code. Moved to kselftest.h header and removed
-> other definition.
+On Thu, Aug 21, 2025 at 10:06:27PM +0200, David Hildenbrand wrote:
+> In an ideal world, we wouldn't have to deal with SPARSEMEM without
+> SPARSEMEM_VMEMMAP, but in particular for 32bit SPARSEMEM_VMEMMAP is
+> considered too costly and consequently not supported.
 > 
-> This addresses the duplication noted in the proc-pid-vm warning fix
+> However, if an architecture does support SPARSEMEM with
+> SPARSEMEM_VMEMMAP, let's forbid the user to disable VMEMMAP: just
+> like we already do for arm64, s390 and x86.
 > 
-> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-> Link:https://lore.kernel.org/lkml/20250820143954.33d95635e504e94df01930d0@linux-foundation.org/
+> So if SPARSEMEM_VMEMMAP is supported, don't allow to use SPARSEMEM without
+> SPARSEMEM_VMEMMAP.
 > 
-> Signed-off-by: Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>
+> This implies that the option to not use SPARSEMEM_VMEMMAP will now be
+> gone for loongarch, powerpc, riscv and sparc. All architectures only
+> enable SPARSEMEM_VMEMMAP with 64bit support, so there should not really
+> be a big downside to using the VMEMMAP (quite the contrary).
+> 
+> This is a preparation for not supporting
+> 
+> (1) folio sizes that exceed a single memory section
+> (2) CMA allocations of non-contiguous page ranges
+> 
+> in SPARSEMEM without SPARSEMEM_VMEMMAP configs, whereby we
+> want to limit possible impact as much as possible (e.g., gigantic hugetlb
+> page allocations suddenly fails).
+> 
+> Cc: Huacai Chen <chenhuacai@kernel.org>
+> Cc: WANG Xuerui <kernel@xen0n.name>
+> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Paul Walmsley <paul.walmsley@sifive.com>
+> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> Cc: Albert Ou <aou@eecs.berkeley.edu>
+> Cc: Alexandre Ghiti <alex@ghiti.fr>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Andreas Larsson <andreas@gaisler.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 
-Looks good for Landlock:
-
-Acked-by: Mickaël Salaün <mic@digikod.net>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 > ---
->  tools/testing/selftests/kselftest.h                    | 4 ++++
->  tools/testing/selftests/landlock/audit.h               | 6 ++----
->  tools/testing/selftests/landlock/common.h              | 4 ----
->  tools/testing/selftests/mm/pkey-helpers.h              | 3 ---
->  tools/testing/selftests/net/psock_lib.h                | 4 ----
->  tools/testing/selftests/perf_events/watermark_signal.c | 2 --
->  tools/testing/selftests/proc/proc-pid-vm.c             | 4 ----
->  tools/testing/selftests/ublk/utils.h                   | 2 --
->  8 files changed, 6 insertions(+), 23 deletions(-)
+>  mm/Kconfig | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 > 
-> diff --git a/tools/testing/selftests/kselftest.h b/tools/testing/selftests/kselftest.h
-> index c3b6d2604b1e..661d31c4b558 100644
-> --- a/tools/testing/selftests/kselftest.h
-> +++ b/tools/testing/selftests/kselftest.h
-> @@ -92,6 +92,10 @@
->  #endif
->  #define __printf(a, b)   __attribute__((format(printf, a, b)))
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index 4108bcd967848..330d0e698ef96 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -439,9 +439,8 @@ config SPARSEMEM_VMEMMAP_ENABLE
+>  	bool
 >  
-> +#ifndef __maybe_unused
-> +#define __maybe_unused __attribute__((__unused__))
-> +#endif
-> +
->  /* counters */
->  struct ksft_count {
->  	unsigned int ksft_pass;
-> diff --git a/tools/testing/selftests/landlock/audit.h b/tools/testing/selftests/landlock/audit.h
-> index b16986aa6442..02fd1393947a 100644
-> --- a/tools/testing/selftests/landlock/audit.h
-> +++ b/tools/testing/selftests/landlock/audit.h
-> @@ -20,14 +20,12 @@
->  #include <sys/time.h>
->  #include <unistd.h>
->  
-> +#include "../kselftest.h"
-> +
->  #ifndef ARRAY_SIZE
->  #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
->  #endif
->  
-> -#ifndef __maybe_unused
-> -#define __maybe_unused __attribute__((__unused__))
-> -#endif
-> -
->  #define REGEX_LANDLOCK_PREFIX "^audit([0-9.:]\\+): domain=\\([0-9a-f]\\+\\)"
->  
->  struct audit_filter {
-> diff --git a/tools/testing/selftests/landlock/common.h b/tools/testing/selftests/landlock/common.h
-> index 88a3c78f5d98..9acecae36f51 100644
-> --- a/tools/testing/selftests/landlock/common.h
-> +++ b/tools/testing/selftests/landlock/common.h
-> @@ -22,10 +22,6 @@
->  
->  #define TMP_DIR "tmp"
->  
-> -#ifndef __maybe_unused
-> -#define __maybe_unused __attribute__((__unused__))
-> -#endif
-> -
-
-We could explicitly include kselftest.h in this file, but it's already
-included by kselftest_harness.h, so that's OK.
-
->  /* TEST_F_FORK() should not be used for new tests. */
->  #define TEST_F_FORK(fixture_name, test_name) TEST_F(fixture_name, test_name)
->  
-> diff --git a/tools/testing/selftests/mm/pkey-helpers.h b/tools/testing/selftests/mm/pkey-helpers.h
-> index ea404f80e6cb..fa15f006fa68 100644
-> --- a/tools/testing/selftests/mm/pkey-helpers.h
-> +++ b/tools/testing/selftests/mm/pkey-helpers.h
-> @@ -84,9 +84,6 @@ extern void abort_hooks(void);
->  #ifndef noinline
->  # define noinline __attribute__((noinline))
->  #endif
-> -#ifndef __maybe_unused
-> -# define __maybe_unused __attribute__((__unused__))
-> -#endif
->  
->  int sys_pkey_alloc(unsigned long flags, unsigned long init_val);
->  int sys_pkey_free(unsigned long pkey);
-> diff --git a/tools/testing/selftests/net/psock_lib.h b/tools/testing/selftests/net/psock_lib.h
-> index 6e4fef560873..067265b0a554 100644
-> --- a/tools/testing/selftests/net/psock_lib.h
-> +++ b/tools/testing/selftests/net/psock_lib.h
-> @@ -22,10 +22,6 @@
->  
->  #define PORT_BASE			8000
->  
-> -#ifndef __maybe_unused
-> -# define __maybe_unused		__attribute__ ((__unused__))
-> -#endif
-> -
->  static __maybe_unused void pair_udp_setfilter(int fd)
->  {
->  	/* the filter below checks for all of the following conditions that
-> diff --git a/tools/testing/selftests/perf_events/watermark_signal.c b/tools/testing/selftests/perf_events/watermark_signal.c
-> index e03fe1b9bba2..b3a72f0ac522 100644
-> --- a/tools/testing/selftests/perf_events/watermark_signal.c
-> +++ b/tools/testing/selftests/perf_events/watermark_signal.c
-> @@ -17,8 +17,6 @@
->  
->  #include "../kselftest_harness.h"
->  
-> -#define __maybe_unused __attribute__((__unused__))
-> -
->  static int sigio_count;
->  
->  static void handle_sigio(int signum __maybe_unused,
-> diff --git a/tools/testing/selftests/proc/proc-pid-vm.c b/tools/testing/selftests/proc/proc-pid-vm.c
-> index 978cbcb3eb11..2a72d37ad008 100644
-> --- a/tools/testing/selftests/proc/proc-pid-vm.c
-> +++ b/tools/testing/selftests/proc/proc-pid-vm.c
-> @@ -47,10 +47,6 @@
->  #include <sys/resource.h>
->  #include <linux/fs.h>
->  
-> -#ifndef __maybe_unused
-> -#define __maybe_unused __attribute__((__unused__))
-> -#endif
-> -
->  #include "../kselftest.h"
->  
->  static inline long sys_execveat(int dirfd, const char *pathname, char **argv, char **envp, int flags)
-> diff --git a/tools/testing/selftests/ublk/utils.h b/tools/testing/selftests/ublk/utils.h
-> index 36545d1567f1..a852e0b7153e 100644
-> --- a/tools/testing/selftests/ublk/utils.h
-> +++ b/tools/testing/selftests/ublk/utils.h
-> @@ -2,8 +2,6 @@
->  #ifndef KUBLK_UTILS_H
->  #define KUBLK_UTILS_H
->  
-> -#define __maybe_unused __attribute__((unused))
-> -
->  #ifndef min
->  #define min(a, b) ((a) < (b) ? (a) : (b))
->  #endif
+>  config SPARSEMEM_VMEMMAP
+> -	bool "Sparse Memory virtual memmap"
+> +	def_bool y
+>  	depends on SPARSEMEM && SPARSEMEM_VMEMMAP_ENABLE
+> -	default y
+>  	help
+>  	  SPARSEMEM_VMEMMAP uses a virtually mapped memmap to optimise
+>  	  pfn_to_page and page_to_pfn operations.  This is the most
 > -- 
-> 2.43.0
+> 2.50.1
 > 
-> 
+
+-- 
+Sincerely yours,
+Mike.
 
