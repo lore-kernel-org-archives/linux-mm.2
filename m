@@ -4,114 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 472E2CA0EED
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 06:33:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C69ACA0EED
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 06:59:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 740148E0072; Fri, 22 Aug 2025 02:33:40 -0400 (EDT)
+	id 816268E0073; Fri, 22 Aug 2025 02:59:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 717898E0056; Fri, 22 Aug 2025 02:33:40 -0400 (EDT)
+	id 7C70D8E0056; Fri, 22 Aug 2025 02:59:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 606498E0072; Fri, 22 Aug 2025 02:33:40 -0400 (EDT)
+	id 68E648E0073; Fri, 22 Aug 2025 02:59:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D24C8E0056
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 02:33:40 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DF838E0056
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 02:59:41 -0400 (EDT)
 Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E8930160668
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 06:33:39 +0000 (UTC)
-X-FDA: 83803427358.03.B4A6973
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 4B6381C0003
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 06:33:38 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="fWf9bF/F";
-	spf=pass (imf21.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E5B51138A3D
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 06:59:40 +0000 (UTC)
+X-FDA: 83803492920.03.F4099FF
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+	by imf11.hostedemail.com (Postfix) with ESMTP id B985D40008
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 06:59:37 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="pfiimE/s";
+	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755844418;
+	s=arc-20220608; t=1755845979;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=nYgWrTDKeCSkoPnBZGqn59HSOrAsr0K77JqRZD3h0Wk=;
-	b=cskCJEU3r+vN+DEgcKlK/yoAmJQWGgLQ3+H5PmyBLXQ18CCjYTfSMqMTdk/4EfCJXYjico
-	CrCya21icEz9GPgE2frUTeWkSeyRucTtv0dTuVuFQjdJu9mRv3QVGEE35UtB5sIJFR+rGA
-	z6SSMe2dVvAne5u1yxGM6MNcTl3OEmg=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=YkM4XdDBFAdRbT5J+s3/gC6XHNJgFJP15TsoieCtwm0=;
+	b=eWR8g+mCSVE+xF7p8yv9G8kVHoBulZ0Ib+ngQEdRN5xgQvB1S4TsynE6E8QTJAdZlCMm+E
+	+kt6oo9+pXPD40EzgcUdVZHae3i3gCfFKWMYm600Bcb0P924z9QfJYdqNIgysj8hB+l77x
+	/gz5uZHCaCK3uRgkh2klTDbPkztuldk=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="fWf9bF/F";
-	spf=pass (imf21.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755844418; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="pfiimE/s";
+	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755845979; a=rsa-sha256;
 	cv=none;
-	b=xnhaAV/724SxZFBTl1fzRmnn7Y+vViPFeFY+n8niqr9wPUbXOzaZfwuq2aiF5AOw0DoCo7
-	9coekdOHA8GdBOcn4eXtUaaWNOWQLL7TEiNsnPBXhxMGO4yyKr+ndENdp0ZWMh3wTdmfy4
-	+if24UvDXL9p7Z2cPM3TKmTob1g3S34=
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-afcb7a3a085so287950266b.2
-        for <linux-mm@kvack.org>; Thu, 21 Aug 2025 23:33:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755844417; x=1756449217; darn=kvack.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nYgWrTDKeCSkoPnBZGqn59HSOrAsr0K77JqRZD3h0Wk=;
-        b=fWf9bF/FibIgiAFY7sDwDNLbIyX+LMRNFdZ+SOpoy9Qja49PIFfpwSbH+yse5W5Kbx
-         aGkgsH+RMQziBx9d7dxEx8rN4qu235sM/LaEu7Nfsvm9M6myholwzdSELjY5wTp4TaxZ
-         8Ft5SndlPtDFQNyEceYP1mlImdDA7meiwetaE1B7gAPmnit6mTaGyCF220cbapkTxcSF
-         fI5dbTZH54lLpc7SIL35Pb4WvSIs2kPWOGdLVL3EiKXmoOmUdS6q2zjG6k4BpdH+YnGG
-         mP7wCijTkQikBQzdDxoR28+KXN4KjmvKpItUF0t+HTHjfRrzUR1lPvGGWzLW3rfBJicT
-         +MSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755844417; x=1756449217;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nYgWrTDKeCSkoPnBZGqn59HSOrAsr0K77JqRZD3h0Wk=;
-        b=DdqMDvHFVc7IF+XcxKAZUG/xoZ3nybQhRGJ8jF8QphIJFaRnblK5W4LCbyY100jlZh
-         F9J6Q3fHPrjvxvQKhYDCQY3W8EP3189tepElYsBffjINzKoAFZUGPFz8HzdWiV7h05gG
-         VZdh11dhuFuCZbt+mTM7UG9lSp5zKxluIRSk6HLmyiQESg37eiiRV31aIHBrwgwa5LPh
-         7Zf18g3Bv7Ove9OXUoh2L+Jl1mcmkjiYhOjxh2TYI4+FNBLVuGqCklGAmeulHZm26qVP
-         s98YMWyWDVzLtq6zywqBSxFfOEJyhlJYZG244CXICOCi0Il/I6H/K2a6ojFErhZGA9dP
-         lkYA==
-X-Gm-Message-State: AOJu0YypJxlAlc6JAGwUgiapA8x03k+RH9tGmvRAD+jh4d4RzYCfaLUC
-	9GY7+BqbOFnpXhcpQLyEZcUTg0LrjLA67KGUxh3mD+EQCJ6FbQ5NcpFK
-X-Gm-Gg: ASbGncsX7DWEmnVLAnZWR+fKqXpvUbeZpjhmW7gHh9lJUUW9qNRaPEg0uw+jTOX9rFJ
-	YlFwexSJNJNTCIiC/DUW8xL5kAhoZMPSnCeOejQhu6aPTs/a6IVMb57futXGDZueYFZ1saX4Mwj
-	w1ha+AYWlQhbcau4JwfQQR5N9mnCVGrtjl12Id3Ttd4OQPsLQDEWBx2SJM/99geRMBdhddDHsSj
-	93kHPY9ddzCADSj4jXhwqsa10Ph1GTzcIVgBVwYmelN1ErgtMc7mngqirgPQL47ifcva7+yVLOF
-	fBEmau7pzh/oWd33XrpzpssVhRuJGyba2PLGKQBaOTRlJzQWu1zHpFpCZnVtfk+3q2awFPyq1hd
-	ykN/wDRbg9NFYGgneGRbGg2Z9YqgJ22e/nua1
-X-Google-Smtp-Source: AGHT+IH9r+KFcy5AFRt3q+bnI1jzb1hmCjNuSgGHLfGMNgn5kympgvMzvvGImWzn/C5lT7w7/btAtw==
-X-Received: by 2002:a17:907:72d4:b0:afd:d9e4:5a4a with SMTP id a640c23a62f3a-afe296b7cafmr157878166b.62.1755844416438;
-        Thu, 21 Aug 2025 23:33:36 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afded2fc568sm542472066b.38.2025.08.21.23.33.35
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 21 Aug 2025 23:33:36 -0700 (PDT)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org
-Cc: linux-mm@kvack.org,
-	Wei Yang <richard.weiyang@gmail.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/khugepaged: fix the address passed to notifier on testing young
-Date: Fri, 22 Aug 2025 06:33:18 +0000
-Message-Id: <20250822063318.11644-1-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
-X-Stat-Signature: a9e7sh4nih33q9cmdoxk4yt4izn5ic7t
+	b=DA+g3vGw8ba8QE4wwnst3gg59MPH1NW2tiXraXXJfEJAoSddFCJxg3qj2N+7i4efHx/Yrp
+	t3v0CKzxeGWI8vMa1YUqdTtgfiRnNkb3kUlXnICIH/mIZI2CV/qh9NP73aQsFr1IKZlOfK
+	Vl/HjWcG8vyW78k99Og0VYnSlRpFfeA=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1755845972; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=YkM4XdDBFAdRbT5J+s3/gC6XHNJgFJP15TsoieCtwm0=;
+	b=pfiimE/sbJXXZYInYbU3Sf/EO98R9P8qAcMF/8UcgB+8AXTq2Tg/0EBBodgWh/nsqveczHn83y7iO6mUXa7YK1xJVVfrNM+I8k5JFE0CwHHKUNdYlTqHKRtsNXkkNV2jZqnwk5TU6AmvwPhhvfgYyfoOpJgkoz2wXbFCJUJSWGM=
+Received: from 30.74.144.125(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WmIuUdM_1755845969 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 22 Aug 2025 14:59:30 +0800
+Message-ID: <0269b6d4-23ce-416f-8c44-907478c3d6dd@linux.alibaba.com>
+Date: Fri, 22 Aug 2025 14:59:28 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 10/13] khugepaged: kick khugepaged for enabling
+ none-PMD-sized mTHPs
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Nico Pache <npache@redhat.com>
+Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ david@redhat.com, ziy@nvidia.com, Liam.Howlett@oracle.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, corbet@lwn.net, rostedt@goodmis.org,
+ mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
+ akpm@linux-foundation.org, baohua@kernel.org, willy@infradead.org,
+ peterx@redhat.com, wangkefeng.wang@huawei.com, usamaarif642@gmail.com,
+ sunnanyong@huawei.com, vishal.moola@gmail.com,
+ thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com,
+ kirill.shutemov@linux.intel.com, aarcange@redhat.com, raquini@redhat.com,
+ anshuman.khandual@arm.com, catalin.marinas@arm.com, tiwai@suse.de,
+ will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org,
+ jglisse@google.com, surenb@google.com, zokeefe@google.com,
+ hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
+ rdunlap@infradead.org, hughd@google.com
+References: <20250819134205.622806-1-npache@redhat.com>
+ <20250819134205.622806-11-npache@redhat.com>
+ <d9a02ed5-0d6e-41e6-985d-23f5a2de093d@lucifer.local>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <d9a02ed5-0d6e-41e6-985d-23f5a2de093d@lucifer.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: g8wm654r843eii4ofeps8zkhcyrxex3h
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4B6381C0003
+X-Rspamd-Queue-Id: B985D40008
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1755844418-831033
-X-HE-Meta: U2FsdGVkX1+TW6MrCdf95j+OClyIpyRL3AxtEX158BqjvCwdgxpVGJhVVstFT09/kzaJf3akA99B8KNBXsrNhjhuJrtX9Y7wa9Ku+PViamY3huAp4gPut17mZQ+6kgP+7U7xa93BXF+IUlF+Dwm5FWLzhXSMSpqRQG7zL6nZ6t5Vx7+TIZwbGIqecMHGdn5cryiwuRzOBKnuYSta2Dvy5mI/ssQRJ4DcoDc+GD9tUgt/ErmyqzzAC6zgv4y9T0RZLwznfQefTupAwDtrC0uzRtHeFdQ0AgnThO1x+hG3BzwlEHBFj5d7kT8vy4Spxpw0UYQszKmv/zpDmYErqn09OLtR37DV/MEjI5l83q7eZK4W3JVHD+A9AA4D2fkIUk8/GSGmqfjOkVXvHPRhLR+B/YxPSiMTkwsEdLoDYSMv/OnY+ANntdivHhRyeZG7UASAPsU0/5fkrxAAxzOaQCMADb1ga1y42N0q1BM14OxeKaaW9xCDrNvQo/Ta619hpJ4uQzi9Bsp6Wl8RpUyDk4n6Y+qeOJtV7PuLdivBrt3hin8myhKNr8SALMA0RnWh8nw2V7Gfl0Fk3RNsRfVxuXOVtGTTpW5UleQwhrTS08oqDqK2oGQ5V9NasR5KO+w0ZAJrzt/kCnoduPc6PqVsSN2+cxYEeCmRZAnI8RpSO/9OV2gD6NQPxx9PsjOLVl9VQEiOFh37v3Zk7G3a0xJHybFtNSmOzx0AuRqyFXGZP3ZT0i/5sSjsZuolD4nF49pvlPUc+9gkQyb3uOEtFv6nHJIwHOnlYmcesOh1LXjoFlb8XyZnF9y4xMY0z0vdp14rE8JlBSeQL2IAKPrv0Yo9cbURPpYR9jbpQrTzB2eFNp8n38zYykjMgYXDXPYrwmICXWcXuxILXJdy4koqcQ36Mcj/3wNRL+8MVJXj+9Rb8XLO6KHjQXuKqA1OKbNhMfEFuBp8WUXQihG3PJSaGss0jcr
- zrV0TdLF
- OvZ5HfFtHfiSWJZu8LiP49Ip+K5gOmHkhGWCSMw9VoV9UBLoNU/wG8naxMmXVH39LTcfK4j+m6xlGchHtfpx/Ez/zKx79pc+0IIOqbCKzwzQYRMlkNw3G5GT+oY9P8zKgs9hKKtOhbE2BGPArgZ7PSbpsF1MT2r5WurYWzkh6nNRO9tZta/o2irjPmq3m5Qt1Vw1sg9ZNXKXctpbO+Ric01fOGq9UJAaoCBl/xMqflxGbSGOvPqm47XwSwdq/Nl4aQag36OHrVJg8kfEyCc69cONCpRsxVO879/q+BrGu8AZO+DxBic1Uc1/mhpfUmAGqEq0mwiAatLXm91x5NEnB4x4FdgHbC9NdJ39SDkl5OdCyhk1SNJ1sQ1NRlB3DkmvX/6c/UhlB8kxAsChdf8BtpsIWR7b7JiD+fznNivWNE7d+H21tF5xR4mIogzacDMmLKsT/XFEIFNlbrLxd6thCRiupWzJieWmJRrR2AcW4YG6AU08EOrSnU5PydE5l8pTGwBTeDjvyCBHGwGA0G3ClptnbE9NgxkYjl76S0swAMga9QF4A2eT9f7walg7KKdVs87wLSwInmsjiJo21m0eeShbKpqAFTHVxruxhLHZxKdwWwsApzRfVFrXqeS7qCzIL8PTg1o5pGwXuXissts2eGjyLN20YRZWPwDKMEBzlCmvhLKbRRDttZGM9dCP0D/hxPFXILMj8mJ9UxII7pSgcxZtc80xy7qwsK6L0
+X-HE-Tag: 1755845977-16178
+X-HE-Meta: U2FsdGVkX19GhV/oI82aH6UPQJLoWtKKBzMDvi64twjwSBf9TkwvelG9Mu2jGmgzj3zHNzs2EwWfXfzFOpxc24xr+PnyFwrvO7+JJS5PH7iVQprbd14Er1xVCA0RVB5qwjUYIZAuqJF4TuyGKt7jfx0QocecZ2olGpfL/uxPO7kZlZYtSBn6RnHASxdY79enzqb3qApew6Y5ZD10tFmMPCqwu//WOqqzGqPzvhQXqSS/p5p51bgIgXnwJDwKg4vyd425VIn8gClor//7Hair9M1TZrlP5GATiw/3CSchaPqRPcfUtAbcKSSOGgvNur2bG2I6tmxkasPohzxeW6f3YfzYWE460hAbwyuhfuOMLAtxAFfghrRWE9MJmZtWhlJ6MVbYKB2xMoAJwZQ0zYCOiTtpy4K3kSLLVMFtYTQ3jfXPbaIWQj2ehQu1mKNycMItP9ljAt32q4ZzZmnpH2dhdR/+VG53sO1QrquoZj0bV29gY/PM7g3xy8RpJqMW9tJMiPorXp/rumx4savF7ra2oqpy7UKREpOxkp3BeSbR26rXFVSV5A6HhOjU/AsxYXiOqoClQodgUOCddu2i3tkMPnSvV4I1tGyLkOtfBVifs7edpOk+s1Am1J0D5rTBuMNajDu5HdLcqhkZYO5LuD22NZZuU+UnLCr3yDwq9pN+svIJtFu1oNibMkbnEwAWeWJ8dtJF5nMsLPxWsfnFpy/irvPH0CCMR8bLu8pS1SmZmVJhadFODHRxFN4XA5WW/iLUqpq+iO5TdevJ3x/sPWs8StY92ZrGGwiIAAYYiaZzWGU3/jMd3UTs9wIOKfjsm1gxvIHBYTdeWzRPDOGWB0yLgVu93y6z5ViOmiUFe4DuIA2GqDLFigFfpIBUsdrt57FhjtpFkQJx8zc16lFHKCja8rqmbadU8RCIO2KO+ruGl5GfB+gpDmz/uioPRnMYoIYHn76Kxfd9hyxGtGUMlms
+ V4L8S1ch
+ P3EjUqYcxNblUJX/njcSTgY3Q5/fS+HaO+Qapf7GiV3lC+CJaCT5eO4shomAnpMNp8yed8LCbs62Tf6EUCZaF0iPqsiNhCEGH6XMyBc7dkSupFGpI90hKmTB/LlWY3Y+t9u10xUttPMgt8FbjrAVGNaKxq16CWy+efJORRQg5IOQZrAWmoNlD4gcIDEmWMZjURMmWEiG1zpn6CCC/MwMDi6BtFZ2keeUtLC138DPnAGBNm84Z6N88t7cI9gNYQTIFVgr5LCrJFNHmZBpe9wuu8BiDTh72ua4igt7F5Kq3OOoCcM7CowA/sdBJ+HFTGs8uT0ccDp1lVcd4mJC46kquZGiW7T7NBOwcJ8sqTf5n0go/+oAXND+j9jir6g7KQGhaZNnidbplG1mKRWc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,48 +103,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 8ee53820edfd ("thp: mmu_notifier_test_young") introduced
-mmu_notifier_test_young(), but we should pass the address need to test.
-In xxx_scan_pmd(), the actual iteration address is "_address" not
-"address". We seem to misuse the variable on the very beginning.
 
-Change it to the right one.
 
-Fixes: 8ee53820edfd ("thp: mmu_notifier_test_young")
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Barry Song <baohua@kernel.org>
-CC: <stable@vger.kernel.org>
+On 2025/8/21 22:18, Lorenzo Stoakes wrote:
+> On Tue, Aug 19, 2025 at 07:42:02AM -0600, Nico Pache wrote:
+>> From: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>
+>> When only non-PMD-sized mTHP is enabled (such as only 64K mTHP enabled),
+> 
+> I don't think this example is very useful, probably just remove it.
+> 
+> Also 'non-PMD-sized mTHP' implies there is such a thing as PMD-sized mTP :)
+> 
+>> we should also allow kicking khugepaged to attempt scanning and collapsing
+> 
+> What is kicking? I think this should be rephrased to something like 'we should
+> also allow khugepaged to attempt scanning...'
+> 
+>> 64K mTHP. Modify hugepage_pmd_enabled() to support mTHP collapse, and
+> 
+> 64K mTHP -> "of mTHP ranges". Put the 'Modify...' bit in a new paragraph to
+> be clear.
+> 
+>> while we are at it, rename it to make the function name more clear.
+> 
+> To make this clearer let me suggest:
+> 
+> 	In order for khugepaged to operate when only mTHP sizes are
+> 	specified in sysfs, we must modify the predicate function that
+> 	determines whether it ought to run to do so.
+> 
+> 	This function is currently called hugepage_pmd_enabled(), this
+> 	patch renames it to hugepage_enabled() and updates the logic to
+> 	check to determine whether any valid orders may exist which would
+> 	justify khugepaged running.
 
----
-The original commit 8ee53820edfd is at 2011.
-Then the code is moved to khugepaged.c in commit b46e756f5e470 ("thp:
-extract khugepaged from mm/huge_memory.c") in 2022.
----
- mm/khugepaged.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks. This looks good to me.
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 24e18a7f8a93..b000942250d1 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1418,7 +1418,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
- 		if (cc->is_khugepaged &&
- 		    (pte_young(pteval) || folio_test_young(folio) ||
- 		     folio_test_referenced(folio) || mmu_notifier_test_young(vma->vm_mm,
--								     address)))
-+								     _address)))
- 			referenced++;
- 	}
- 	if (!writable) {
--- 
-2.34.1
+>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> Signed-off-by: Nico Pache <npache@redhat.com>
+> 
+>> ---
+>>   mm/khugepaged.c | 20 ++++++++++----------
+>>   1 file changed, 10 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index 2cadd07341de..81d2ffd56ab9 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -430,7 +430,7 @@ static inline int collapse_test_exit_or_disable(struct mm_struct *mm)
+>>   		mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm);
+>>   }
+>>
+>> -static bool hugepage_pmd_enabled(void)
+>> +static bool hugepage_enabled(void)
+>>   {
+>>   	/*
+>>   	 * We cover the anon, shmem and the file-backed case here; file-backed
+>> @@ -442,11 +442,11 @@ static bool hugepage_pmd_enabled(void)
+> 
+> The comment above this still references PMD-sized, please make sure to update
+> comments when you change the described behaviour, as it is now incorrect:
+> 
+> 	/*
+> 	 * We cover the anon, shmem and the file-backed case here; file-backed
+> 	 * hugepages, when configured in, are determined by the global control.
+> 	 * Anon pmd-sized hugepages are determined by the pmd-size control.
+> 	 * Shmem pmd-sized hugepages are also determined by its pmd-size control,
+> 	 * except when the global shmem_huge is set to SHMEM_HUGE_DENY.
+> 	 */
+> 
+> Please correct this.
 
+Sure. How about:
+
+/*
+  * We cover the anon, shmem and the file-backed case here; file-backed
+  * hugepages, when configured in, are determined by the global control.
+  * Anon hugepages are determined by its per-size mTHP control.
+  * Shmem pmd-sized hugepages are also determined by its pmd-size control,
+  * except when the global shmem_huge is set to SHMEM_HUGE_DENY.
+  */
+
+>>   	if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
+>>   	    hugepage_global_enabled())
+>>   		return true;
+>> -	if (test_bit(PMD_ORDER, &huge_anon_orders_always))
+>> +	if (READ_ONCE(huge_anon_orders_always))
+>>   		return true;
+>> -	if (test_bit(PMD_ORDER, &huge_anon_orders_madvise))
+>> +	if (READ_ONCE(huge_anon_orders_madvise))
+>>   		return true;
+>> -	if (test_bit(PMD_ORDER, &huge_anon_orders_inherit) &&
+>> +	if (READ_ONCE(huge_anon_orders_inherit) &&
+>>   	    hugepage_global_enabled())
+> 
+> I guess READ_ONCE() is probably sufficient here as memory ordering isn't
+> important here, right?
+
+Yes, I think so.
 
