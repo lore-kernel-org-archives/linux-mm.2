@@ -4,85 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60C17CA0EEB
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 07:24:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D194CA0EEB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 07:30:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E3426B0027; Fri, 22 Aug 2025 03:23:59 -0400 (EDT)
+	id BB6CB8E0074; Fri, 22 Aug 2025 03:30:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53EEE6B0028; Fri, 22 Aug 2025 03:23:59 -0400 (EDT)
+	id B67F38E0056; Fri, 22 Aug 2025 03:30:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42D6F6B0029; Fri, 22 Aug 2025 03:23:59 -0400 (EDT)
+	id A57408E0074; Fri, 22 Aug 2025 03:30:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C1476B0027
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 03:23:59 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7F3A11DD786
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 07:23:58 +0000 (UTC)
-X-FDA: 83803554156.25.A79BCC0
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 158A22000C
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 07:23:54 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=none;
-	spf=pass (imf03.hostedemail.com: domain of gubowen5@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=gubowen5@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755847436; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 93F058E0056
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 03:30:22 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1821EC05EF
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 07:30:22 +0000 (UTC)
+X-FDA: 83803570284.04.02A95DB
+Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com [209.85.217.53])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 34B6D40010
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 07:30:20 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Nwp6/0MX";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.217.53 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755847820; a=rsa-sha256;
 	cv=none;
-	b=3SInvN/U5uEZ0/6dzqPnre4AlPPhsRNDMsiXlh19BU5MWkJM7cKtM4KSAGw2GKQ4f0sOkg
-	ri1QX34+08IYW3FfFZonHF+pzeQBwGXP8EZMfK7qx1YJvARR+bL9w+nlSRAVxtzzxfRse5
-	aUejvhqFhAJOge0JwfKeUm8AQ2CLW4Y=
+	b=FO3rRFvsWeyR/72QM9rifFzLiuIksKQt9/yahEJ/MRCYwPaFOzHnjBN5Q44OEuiIQQ2KGf
+	dVTpXFzRRK+XcHOPv3m+rLFDwjhCCfV7+29F0ZjrlDHWsbQIZSGXkLvE0s9HS4ldthZR0y
+	yd7ke4F8ieBgNBFCLiVwuAt5tDoN6+Y=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=none;
-	spf=pass (imf03.hostedemail.com: domain of gubowen5@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=gubowen5@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Nwp6/0MX";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.217.53 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755847436;
+	s=arc-20220608; t=1755847820;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=a/NNzoi5Ne0fMAS/06BXSVF/gh8aGsljrg/ePT3NtW4=;
-	b=oJrEJmYayRC49nT/iwkQCRNtVlhq7ATj86Y/EWdR6rmv0xzA/xuU5jt76256Xw/flI6vty
-	h1FJ5MIQ8RA/TUkpBt0Fkffv/gbgCKLmR4r6fuPafNi3yhD1pnfm2jrrcfP3LCrBNGoDph
-	vSYwq8WBM8untEnahHueT2a0U73mRM0=
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4c7Wrf0dhYz14MYw;
-	Fri, 22 Aug 2025 15:23:46 +0800 (CST)
-Received: from kwepemh100007.china.huawei.com (unknown [7.202.181.92])
-	by mail.maildlp.com (Postfix) with ESMTPS id AD39214027A;
-	Fri, 22 Aug 2025 15:23:50 +0800 (CST)
-Received: from huawei.com (10.67.174.33) by kwepemh100007.china.huawei.com
- (7.202.181.92) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 22 Aug
- 2025 15:23:50 +0800
-From: Gu Bowen <gubowen5@huawei.com>
-To: Catalin Marinas <catalin.marinas@arm.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Waiman Long <llong@redhat.com>
-CC: <stable@vger.kernel.org>, <linux-mm@kvack.org>, Breno Leitao
-	<leitao@debian.org>, John Ogness <john.ogness@linutronix.de>, Lu Jialin
-	<lujialin4@huawei.com>, Gu Bowen <gubowen5@huawei.com>
-Subject: [PATCH v5] mm: Fix possible deadlock in kmemleak
-Date: Fri, 22 Aug 2025 15:35:41 +0800
-Message-ID: <20250822073541.1886469-1-gubowen5@huawei.com>
-X-Mailer: git-send-email 2.43.0
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7+LKVPc9kKW7P+wvIba70K2T/PYJXPwn/uceRk+y08s=;
+	b=ki4KE+EbiJdcdNAifseTglEHXHuJiGYI84bOV2H1fh7vGovWgNcD8YkZ0VfTebDLWlYaec
+	esyfJCIwJDkrD1EB2CTEzz2/IL8aZK/P187avEKIs/v3d6CT8pGm2DZV6dPVDa7wioaZ5/
+	zXQhyxb0v6u9Vjc9oF1WQLP30pTK3iY=
+Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-519d3c38bc9so527597137.0
+        for <linux-mm@kvack.org>; Fri, 22 Aug 2025 00:30:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755847819; x=1756452619; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7+LKVPc9kKW7P+wvIba70K2T/PYJXPwn/uceRk+y08s=;
+        b=Nwp6/0MXmX/UnRtW2eYWpWXQ8bpCE2ZzEs7fRzvhmczt+S0O+utHMgIY2mbmX3mxx5
+         W1xK4YUi6iDzoxIaB67ZsbJdKBlhAmMYuN4wjUMVRDtvFqqyOyy1O5FqRASNErtYpsPz
+         nmQnPFec+yhnThnFi0qPDvLfBmMQqDOnu3Ilw4Jf+ataju0Pr5nLRD8LrBvFgMJRoEJv
+         oE8X4J1g6EgN2Wc0+WjQeWLY6M6O3j66IxRAJYDR4d4SbTb9tWJeoGdB9Ax1lJV2DCxa
+         SQHBYJS8n4AGk3ZLqckW++0bLqt4mwJ6uU0Wjr8xHceeE7BzPST4auqiB0W5BswAWc6O
+         rtew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755847819; x=1756452619;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7+LKVPc9kKW7P+wvIba70K2T/PYJXPwn/uceRk+y08s=;
+        b=sp6E13D8AaKqwjVJAXxxlazV9uMEnd3y3C+Q6W+0NJ79af1tB4LB69XfASl4nhrZaH
+         XOB/NJxo7BNgYfC+ON1++EifCe2Kcyz6GO0EwNph9cQeJD5gKcSyFjyrLzqeXBqTkBw+
+         Ea/y9qz+/YO29C9klp1hFuC+PnXpgvznLSYA/DpB31SzbqzF8s9CfCtpfkLY0n0TyY5S
+         nWoPY60q3Mw1DpTTGBVN8k6O/CmsnoAPOMSF5lPNWkkHfySWBGeuPt12sX7UMafIwNQU
+         vWKLdtI7gtt9UV6FefQUtbvmCx5exIRZh2NGzuCpE6r/gVeZve4iYxr7qwZj6gbgQErt
+         WpGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW3tWrG68n0XDNs25cvRb+kqow7+2g7Zq1ZQAv8hHjFylEvYiTX+Jz5P6V8uI9iLtrCjxQ7ttZcTg==@kvack.org
+X-Gm-Message-State: AOJu0YyHkpta0B9SvoTCArxTnVWhcEixSrfa1XOB+j0xuYCWuvfQC109
+	BlBNxV9Ryxitfra0wmLkVIIrAny7A2TcdOducGzQ4ewknkGCmGYDDxc7vul3M7si23XrJTEV0WB
+	VkDKBTMKhwP/MEdFMHk3g6rC7JYet/+g=
+X-Gm-Gg: ASbGncuy0z4eukd3XUNnobDBU8s4ZDLZgQ8WHAYQNyHUrkTjNjbFQQL5LFStHQ5vrRd
+	fWm/rj3jtAiXg5QGlDVaZV010xo7AWcB6C/r+rfv3vK5bNN3jfUWfvahsT9rZAQ5YSgGMruLISB
+	igtp0b6eqWmEc6OxALoZTHxsAl14uqZ/lx25ixBzT4tQjdqPabY+lxCZK6sYLees+aOW6+EV9jD
+	UFu5w0=
+X-Google-Smtp-Source: AGHT+IEtNwyUDOVJSiLdLX6NwOJBzlsyvEjMMa4jsxgGzjp5jPh2OUBTcyj8Lz5j55noj3cQHm2jQALdssibJnWImjI=
+X-Received: by 2002:a05:6102:3e88:b0:4e7:db51:ea5d with SMTP id
+ ada2fe7eead31-51d0cde2937mr458403137.6.1755847819116; Fri, 22 Aug 2025
+ 00:30:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.67.174.33]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemh100007.china.huawei.com (7.202.181.92)
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 158A22000C
-X-Stat-Signature: d1wzxinppun9yih7p1annkh4stbajce1
+References: <CAF8kJuM++mc5PjcN_bxjZjbByT7QpVdOqRQte=vGJnuQxSTVfw@mail.gmail.com>
+ <20250821213630.1771-1-sj@kernel.org> <CAGsJ_4xLKVM+1LqKzbwjd0vB_OYnb2E-h-Wb_C2bBxiSdU=3WA@mail.gmail.com>
+ <aKgF_uJT99rBiyDd@gondor.apana.org.au>
+In-Reply-To: <aKgF_uJT99rBiyDd@gondor.apana.org.au>
+From: Barry Song <21cnbao@gmail.com>
+Date: Fri, 22 Aug 2025 15:30:07 +0800
+X-Gm-Features: Ac12FXyv6CwezG7VPt_wlv2AiL1S_xRAYOxgC4WUz0F7iC1cnJ5iDPsKPK7KeYw
+Message-ID: <CAGsJ_4xR3bvWTEfbu_navPHGiVacAJTY-87BvOH2QQd4xAM4VA@mail.gmail.com>
+Subject: Re: [PATCH v4] mm/zswap: store <PAGE_SIZE compression failed page as-is
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: SeongJae Park <sj@kernel.org>, Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, kernel-team@meta.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Takero Funaki <flintglass@gmail.com>, David Hildenbrand <david@redhat.com>, Baoquan He <bhe@redhat.com>, 
+	Kairui Song <kasong@tencent.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1755847434-894778
-X-HE-Meta: U2FsdGVkX1/hM5w+MUI9OgurnxdXola5Fihwswmf0V8nV5P4EJeHxxZcyT2cD1E7aAJATzimqfI+avgeqyHXDyLWQ13oEdN2GkGTDTcKkeIWhN9QhkLMWHtBnmEmHdg0kCncJNY9QXjaV7WLT12QO2EZ+6H9BH8FTkvGke+Ziz0OlJxK/NI/uW5JHanFb3+mnttyRmlmr6kzBx5Ii95UD8MteCvQ4kqvKM/fe2REEYiRPVYRS3gqBZbZo3Pvqns9EsjuTOotN+xRclbytUKbPEsMopFvbiyKqAs7AlpRP7vPmSENucodWU7IAczh9Wn8fWftLOBnqtUIJB9b+FndFOrKfHNUYLyJJDG84vzAa2a1cagWw2SwsuMdxfvwdFORZhWTm2jQj89D8C27Mmp74IgNsDB0JSnf60CS4mmDw1PQIgRuSusgAWOOF2SEZ5vycVx5a326TYrAncJx15dk6kgESNhhBRSOdlzpbe9jRIPeNBP4GTj9z/5fD0BhJTxU9o/3UM5r1eVb5Sckd8w8yc5XrVj7ljBy4zh6rHgQmkB7/hWEUDrXhD5g6gSiKh5/RrGXKdUHoCgVCoVsO47m8N3MSDpOw0MxIX65xdV711/im/ASV9N3VRcSPf6cnceytvcGQfz+A9xuIF5CsA0CUlQ6Q4QUK033wV1QVTNcRkvo4dJmqd4/FF7rm2epPT50dk9TWn9KZubz3cE/JzM7SUd3OO7uE+gXL81YwoUxgv2bsmURtVyzH2kfhr+ifXPoTlFfVUJrhOxZwRihk4a+hZfB88keLYmNKZMHHgzD4I5Egw3AtJg7A2xNBBye60f+FM6yPWUVGZp5/kIVcllKMjifUpuve9u7tgAOBadg6hEhLq+oARISEgTf0ekpJxgccCDqHev96bmn66OCFEw/BGWmBC4Kkc5JBRlR685lZPmhWa4niO39UoMwkuaAw0AfsO5PCAEenJup7ddcPcM
- ABEOCJfR
- bFivBS9Oaj1tTZH/wJ1MA9UzFLRLsJeqtQHEmbaaawFdAoGNNGjSeXWTbZcRkMOsvmaWfFMmhXaEpoo/BopxDBj5pxvMpUTG49TwiABMXC8+t8jDEacrplbku1IGLHT2pKXI6QlkoebuIGGiGPGb2NGua2kLo69RSUp0yQDIspoo/b5Lcigq1t16A6/L07+RE5DGQLMl4Bf4GrRcA0i4DGSe/eoOK089O0LRVHLfhECqFKVQV9HVAmwh+0iBpTbH26YS/
+X-Rspamd-Queue-Id: 34B6D40010
+X-Stat-Signature: q5ruqtzwammfxofa5ug3ansq7yxhadk9
+X-HE-Tag: 1755847820-815531
+X-HE-Meta: U2FsdGVkX1+1l14+r7ndcoLB2iwJJzGDbRAG+hbYQVMNEXmT7kZj7T0zfsx6LFHHxV0Mdo+NbkjmceRV31sF9RkwbrQyebq55wtwV+VItcYoSudwezZP4FpTEC8GVw3I8CUmN+unBsu0ksdMlheqdPyhoWIgy6ZyEEDjsYf5zXB0/mSZnLmzQnlTJOJODVZY26M7zEz7ihjJQu0bGbcHmoLgctOU/zo+JomtJTvCMTglALNqmL3rMvir8R2LuXw/RXLgCjYk9EJ7zoSppcVWOSgVthtYmqOW4wHDU7ajt4E+ez8B2dvfkLTsGeNFUxgzUHPZKe+B6edREDqM2dvfIhwpVN5mIqerDIyL/TF4CZ5YXajY1n5liEj2X2ECL9MHx4MX99KQQ8QBuzO045XPrccxZbdJ/GdJX7dBKbZMea/HAoNC3LcXd2tXqTQc51ES4F7nnR3ju+waKte3wWfn6nltR3qPFSSEPa4vOTn7aAiXr0OozQXYHFHMFAa5BOk7zRWfKWI5anR9//95LwxZJrhiG6UhbKfsySopnTcmH7win6OhIpPnQlo4uL40K5Xe1lqUbvlrDeArzdbvGhuRUdyUaKuMzI+HMPrzpry5WEzkGuFpiRKkUhczjEYxNBVhNU6HWdsMKrLDsLvTZSdtilRxnHAxmgRydiM/dF9nsUUrDgdiDHaOlzlpBIdTAo52YVeuFe1bby1jdMAjbLNo/9AvbjTe8+MCOiQoK3wlvYnH8vAFClOAXomBSPG+5wF/6E2zjR5qiX0mCi/MeT3QbGaZsiMFU/ioBX6JqZoc2cRs13pxw6kEd8euspvHz+DSRa8kiG2OHurO+yDduLivp47nuPfhhWYBgqbI6AGPXB3hVQFUd2lcJhuAXLDDnzm56RhoTM6QflbYKOctpeZUTuyZ2ZvW/+fj7qKQhBUj5x6XCY70LtbeeHDkew8jbF6Oi6uOWXeqYGgrFqNpbC3
+ vJYY50UV
+ wMpe9udMWm0kUn6s3iNV9sov1/mBqGYzvY3H7rjRCGrloyvl826dJ/yU3VZAS63mAu/38XM8pipn9tKx3ACNC6PYPI3jFjkly1Z76g1uvCSeJ/kBx6oj0rDlRb2JF9B0JiWIEcBP67yORRXySPoLJt7W0g76BvULRvGvkAYNB5ZPE0YS4STZ+mJQJ9T9gTMLFFDxqU0w1c7qL4GWNLb3O9NNeTt283YE4glnwBh7Gxh6MQ8XpbVIhvVvnjrUuyaQNLYhY3WYVLbKcrjAuotuhNWQRfLgjx3e8/pt6u0o2CUEPXWDN0+JogYtpHky3DJZ053u46yy9CqYxzQFHWCZlN2N4ZCQCy3E7tAbBCWY7U8c1ihyvDWQLuiESyVWE0j/0av9ZSO+/cGl6Fa45EJfbRg3gdn2c/JmzlRjPhCgXpcKx76swDdovaw0hxnliTit5Q8oS7Opvo5CmamsYYHaoLf9gsA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,108 +122,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There are some AA deadlock issues in kmemleak, similar to the situation
-reported by Breno [1]. The deadlock path is as follows:
+On Fri, Aug 22, 2025 at 1:54=E2=80=AFPM Herbert Xu <herbert@gondor.apana.or=
+g.au> wrote:
+>
+> On Fri, Aug 22, 2025 at 12:48:27PM +1200, Barry Song wrote:
+> >
+> > Is it even possible for crypto_wait_req() to return -EINPROGRESS, since
+> > crypto_req_done() will not call complete(&wait->completion) in that cas=
+e at
+> > all?
+>
+> Of course crypto_wait_req cannot return -EINPROGRESS.  However,
+> I was responding to a request to make the crypto_acomp_compress
+> call return a boolean instead of an error code.  That is not
+> possible because it has to be able to return -EINPROGRESS.
+>
+> Nor is it possible to change crypto_wait_req to be boolean since
+> other Crypto API operations (including decompression) can indeed
+> fail.
+>
 
-mem_pool_alloc()
-  -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
-      -> pr_warn()
-          -> netconsole subsystem
-	     -> netpoll
-	         -> __alloc_skb
-		   -> __create_object
-		     -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
+Ok. zswap only cares about the return value of crypto_wait_req(),
+not crypto_acomp_compress(). So it=E2=80=99s clear now=E2=80=94any error re=
+turn
+means the page is incompressible.
 
-To solve this problem, switch to printk_safe mode before printing warning
-message, this will redirect all printk()-s to a special per-CPU buffer,
-which will be flushed later from a safe context (irq work), and this
-deadlock problem can be avoided. The proper API to use should be
-printk_deferred_enter()/printk_deferred_exit() [2]. Another way is to
-place the warn print after kmemleak is released.
-
-[1]
-https://lore.kernel.org/all/20250731-kmemleak_lock-v1-1-728fd470198f@debian.org/#t
-[2]
-https://lore.kernel.org/all/5ca375cd-4a20-4807-b897-68b289626550@redhat.com/
-====================
-
-Signed-off-by: Gu Bowen <gubowen5@huawei.com>
----
- mm/kmemleak.c | 27 ++++++++++++++++++++-------
- 1 file changed, 20 insertions(+), 7 deletions(-)
-
-diff --git a/mm/kmemleak.c b/mm/kmemleak.c
-index 84265983f239..1ac56ceb29b6 100644
---- a/mm/kmemleak.c
-+++ b/mm/kmemleak.c
-@@ -437,9 +437,15 @@ static struct kmemleak_object *__lookup_object(unsigned long ptr, int alias,
- 		else if (untagged_objp == untagged_ptr || alias)
- 			return object;
- 		else {
-+			/*
-+			 * Printk deferring due to the kmemleak_lock held.
-+			 * This is done to avoid deadlock.
-+			 */
-+			printk_deferred_enter();
- 			kmemleak_warn("Found object by alias at 0x%08lx\n",
- 				      ptr);
- 			dump_object_info(object);
-+			printk_deferred_exit();
- 			break;
- 		}
- 	}
-@@ -736,6 +742,11 @@ static int __link_object(struct kmemleak_object *object, unsigned long ptr,
- 		else if (untagged_objp + parent->size <= untagged_ptr)
- 			link = &parent->rb_node.rb_right;
- 		else {
-+			/*
-+			 * Printk deferring due to the kmemleak_lock held.
-+			 * This is done to avoid deadlock.
-+			 */
-+			printk_deferred_enter();
- 			kmemleak_stop("Cannot insert 0x%lx into the object search tree (overlaps existing)\n",
- 				      ptr);
- 			/*
-@@ -743,6 +754,7 @@ static int __link_object(struct kmemleak_object *object, unsigned long ptr,
- 			 * be freed while the kmemleak_lock is held.
- 			 */
- 			dump_object_info(parent);
-+			printk_deferred_exit();
- 			return -EEXIST;
- 		}
- 	}
-@@ -856,13 +868,8 @@ static void delete_object_part(unsigned long ptr, size_t size,
- 
- 	raw_spin_lock_irqsave(&kmemleak_lock, flags);
- 	object = __find_and_remove_object(ptr, 1, objflags);
--	if (!object) {
--#ifdef DEBUG
--		kmemleak_warn("Partially freeing unknown object at 0x%08lx (size %zu)\n",
--			      ptr, size);
--#endif
-+	if (!object)
- 		goto unlock;
--	}
- 
- 	/*
- 	 * Create one or two objects that may result from the memory block
-@@ -882,8 +889,14 @@ static void delete_object_part(unsigned long ptr, size_t size,
- 
- unlock:
- 	raw_spin_unlock_irqrestore(&kmemleak_lock, flags);
--	if (object)
-+	if (object) {
- 		__delete_object(object);
-+	} else {
-+#ifdef DEBUG
-+		kmemleak_warn("Partially freeing unknown object at 0x%08lx (size %zu)\n",
-+			      ptr, size);
-+#endif
-+	}
- 
- out:
- 	if (object_l)
--- 
-2.43.0
-
+Thanks
+Barry
 
