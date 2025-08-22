@@ -4,113 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABA89CA0EEB
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 02:51:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EA7ECA0EFA
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 02:57:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F168D280009; Thu, 21 Aug 2025 22:51:44 -0400 (EDT)
+	id A1C4C8E006D; Thu, 21 Aug 2025 22:57:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC7998E0056; Thu, 21 Aug 2025 22:51:44 -0400 (EDT)
+	id 9CBE28E0056; Thu, 21 Aug 2025 22:57:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDE02280009; Thu, 21 Aug 2025 22:51:44 -0400 (EDT)
+	id 893E48E006D; Thu, 21 Aug 2025 22:57:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CCF148E0056
-	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 22:51:44 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4A5151403CD
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 02:51:44 +0000 (UTC)
-X-FDA: 83802868128.11.259E9D9
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7EF70180005
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 02:51:42 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Hzg0X4qW;
-	spf=pass (imf16.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755831102;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=5y1fBCXfKiFD4O4AUiF2Q1s/sYVAdN3oCGBndILrhJI=;
-	b=yYuQglzT+C5p1j92zqYOzip/gAHtBmSaFtrNqnlmEfsZKk349YHNjWX5/tpaHcgeMpEJ1J
-	/66Uc3op3OxKIjddyDh0OoBtDiD5YfTD5yo153IGd3QBqN1lf80U2JOJG/utvwjf1tGHK8
-	yt9uQgssERcgpBOUxg8DUhwTjjRMqnk=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Hzg0X4qW;
-	spf=pass (imf16.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755831102; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 707488E0056
+	for <linux-mm@kvack.org>; Thu, 21 Aug 2025 22:57:44 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E4C2D1A0541
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 02:57:43 +0000 (UTC)
+X-FDA: 83802883206.30.41F83D4
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 67B574000B
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 02:57:42 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OsbxunWD;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755831462; a=rsa-sha256;
 	cv=none;
-	b=itT7Dj/IGvb5sEGPzC3WVVbTpuTzH7rbS0tpfXB9D03NsO8KjajZSTmQz/26hLdcRAOZ2V
-	uXOiZ8KlhGsy7o1eodP09BzQpPSolqUrWwMgRwpD73OT97T34R+ETe4gV43kLAD/6dp4wQ
-	2lCcSSCoxgPev0bN4Jwlv+nwKIPNzDM=
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2445806d44fso13752905ad.1
-        for <linux-mm@kvack.org>; Thu, 21 Aug 2025 19:51:42 -0700 (PDT)
+	b=CqtkU2DKhj7oA82RhgcopWOh72Pe64IwxWwLzDgr8AdRKgdDvrzazOfJbV7qGDsR8KS0wJ
+	bvOcNL2ND57dEsaadUspIQsnfs0ss2xxxBAVXmk4rEomYM/gL53bN1LhNQEpLzGSuRnMDe
+	HldiwtQ1fdz1y2JdTwDBw/jAaZ8O8DU=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OsbxunWD;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1755831462;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=QM6ZZcjAsWUjNjLk9+5e3bZNbCpR3x1yF6anLCH5Nas=;
+	b=AMcZhBdzdgac02s0jqu3rKYx25bTVtFcZeN/yJe3NFSOa41Z6UBFAGJYfVBzNS+yLiI9WS
+	BgGjywUspyQd80RWvNm1cj7R8uaW01+YGFfQhBuj0E/aVWSkx0OKDblGhRCQlVX29K+zQd
+	ucqa3N5SsSBIvofH9IUP5jS6oQNsdbM=
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-afcb7a8dd3dso241165266b.3
+        for <linux-mm@kvack.org>; Thu, 21 Aug 2025 19:57:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755831101; x=1756435901; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5y1fBCXfKiFD4O4AUiF2Q1s/sYVAdN3oCGBndILrhJI=;
-        b=Hzg0X4qWlnKJQ6cZ0GfC9/v+/viS8hKkm19wFTKQSsFJQvpVTbrQ/c2xWolLw5nakG
-         y2HtZ9f/mjJmtZLEd9zjldnbn/dzzxB2iKKivdcwFLdL/Yy/Xd4fvREVRJPKoPLIJUlp
-         +P3fPRZYkJXkZYpfWXzVMl7Yy2pEyzMANGw8HMBFSY8EPOat8qtglV4gmaZYqx+k31KK
-         XH0QbqKdOUL/ah8iwRvOtlTVcGYD9Ll4PvxZ8/81mhfsPHYBROvvTejFvo47mJ+1+GcH
-         WLVHPxWiqFolrteWTDaoY5TvUA/r15ocAnCwU83TKXcFB4jf/boyXCBjzgTTvz+jHRyi
-         rmeg==
+        d=gmail.com; s=20230601; t=1755831461; x=1756436261; darn=kvack.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QM6ZZcjAsWUjNjLk9+5e3bZNbCpR3x1yF6anLCH5Nas=;
+        b=OsbxunWDlk02KPxUYp2hRqFzNtp8WvvSV2LocMLxmfadhA5iJtzWSSBSYqYcbdam6Q
+         r9hyVGrYBqdSHpBCMZEqeRnlrY+xpE4BIcZaXifuuPrT/Hi6oGhGBnB02VFIIyhn1Y7q
+         hXQil9ul7eukYoAuOVh2jlSLovfVhaQsG7Gf1npywMiZ0eDVPwFYX5jBqay1miGXTLqY
+         xbnSbTH6mv00CM9gsF3kaqN5eMzYU0zJvW8zLTnN5eAD0QW4hK2MCehxglDUkQIM3JLL
+         9mZcBH64tlg83dqbFVfHoqc4boZ3lT3f8ODwEmQ6DeDtejFraIEq5rUISqz9KNl/Soqo
+         fxhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755831101; x=1756435901;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5y1fBCXfKiFD4O4AUiF2Q1s/sYVAdN3oCGBndILrhJI=;
-        b=NIvR2WW4yuV4/4fOta25FGoH3JgqK4xqg59EcQFJP+du0pbfc5+kx4+OC0en0ETBI7
-         KIvfaQc5qtlJ/3IaYi67sxF/SlBofis/owSuKyiVh+fjNbyyzgJyTRthok1X/KoiLgak
-         +7+zl/SULnLcB6ddw6Tfw1X4REMw4UeKc/KEAMj6LuQOPxkmGri4/kqliSpzHbohydAF
-         xlcBEmxawMJaEKLeXZIkUAhCN+OO4tP6mgI2N48mLHynPOWLFmVTa0/iFjO80hQO/uiQ
-         Ujq79xuEYWP+lbpDMBrLs1vWNTCO6Asj4Vi++v7SGLEgyVbWPLiyt80t7zBdu3ytGWrQ
-         QBlw==
-X-Forwarded-Encrypted: i=1; AJvYcCVRJvXEJvz3XvUwvkh77MWE4VOgpBUWOvPMUOKAWIsBCtZ32NJbGH2LdOF4Ndg6JTIl5PghReKw+Q==@kvack.org
-X-Gm-Message-State: AOJu0YxKReO7hs79Hg1g/2gnAhfbAXnryPieLs833h4/wWZHfHi4wxbN
-	cz6ZOa2eZE0yEeiKHuTSgzCsEFYVADrTIgLBXF+94C4BNCT6N4Sb/8gm
-X-Gm-Gg: ASbGnctEBFyUZBf2FNx/lswWDQxrQ+9q0L37wpzgqi+wYnJobQSMQOaXGPfuoM6iuzH
-	P/WaXoL4MlkwIBc5+oAjJKh0bs0Y6ttj76l9IOBsNzWIWPRDrqwhEqJZWYkKZCxgwuKllo/StUk
-	OAibaNilAJnscpiklRiubtmcuOWn7C+LLK8IVSGB60afKa7P5IXHieDxReXSRZOZ3dis97qeCG2
-	viZTKje6qIpbcOWgZ4e9oWHlej+zzWE+zaiOeKqJtWfqs8kvOZa1ohoQsP02it41VCpmyZWVkbR
-	txkf+08w3L5HXauXbfUeTDaMjVPAjppf0BZIQyg1NN4TPNA/MDskh0GdxaxGz1TjCb83N5AP69o
-	oxDqCdoqM2DoRLKag
-X-Google-Smtp-Source: AGHT+IG6EHV8ZRai6TgzlWPeLJW94eI6szB0VIDlvVy7DY/ryr2+cLBvv/1oIXijaDK6rW2eCMhxtw==
-X-Received: by 2002:a17:903:1a2b:b0:242:9d61:2b60 with SMTP id d9443c01a7336-2462edac937mr23760035ad.6.1755831101073;
-        Thu, 21 Aug 2025 19:51:41 -0700 (PDT)
-Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24614a8e166sm27790215ad.75.2025.08.21.19.51.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Aug 2025 19:51:40 -0700 (PDT)
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-To: sj@kernel.org,
-	honggyu.kim@sk.com
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	Sang-Heon Jeon <ekffu200098@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v4] mm/damon/core: set quota->charged_from to jiffies at first charge window
-Date: Fri, 22 Aug 2025 11:50:57 +0900
-Message-ID: <20250822025057.1740854-1-ekffu200098@gmail.com>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7EF70180005
-X-Rspamd-Server: rspam04
+        d=1e100.net; s=20230601; t=1755831461; x=1756436261;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QM6ZZcjAsWUjNjLk9+5e3bZNbCpR3x1yF6anLCH5Nas=;
+        b=YA2TxuB3dHWJjMMMzcKDO51FjFhnlAU8v2Ev+5YeWIOOTckQ9wSKceHBz8eCz/FQWx
+         8z/PXlr6lrt1zxpDq8YlkZCfRO/bD52xglAPHWj4TTXfWI3klP09SCM8iXEIe6/Z5pGr
+         XS1hvaf+lk86asp0VZpfvHpVp3NVpSxPac0Khp35L/AlTCbraVABMiduys2NZBA2wK1I
+         O1svuSgttOKoSSvj9PjDFnBYDCMvl3Rsd6RMQPa549BCm/JTnH5eSDVEFZSjjhew0LO+
+         zlcwHG4w5Y2pGCOTGSXqedNp1wt3kIXqOHmyLOjexrIjLPB18Kb2tYInurCPQQXb8hDE
+         SZ6Q==
+X-Gm-Message-State: AOJu0Yz1m9156H5s35/t2xACr21tYhuqcWDj8uj6uxE5y7447xKgcUyt
+	JPnjFIyYqGUXtIcSffRauRmqU45PbzwtRoTgeJgG7/SlX9mG63vmAhI7
+X-Gm-Gg: ASbGnctSpq/OUHPoIIQssM2t54oLO+1pa6ABrrlqL3+IRfAbYVeqS34u5R7RLsAhFCi
+	8y2ncmxoXImf/TSaWKZZNfCHYtqo7aZbfM97uGlVcRdj5iVQWQ8F5+h+EHjyvVYYsxq8BlpRipX
+	kNLk7DLSIwCd5zrYeuf3Se22r+EAyLE+ulo2nkAzivbAuxrGxZYrKmJ+j8ZTS38lg7CgORp0Om0
+	SD8/jyeGA7PZt1Pcb9MLqHX34E/ySTqlGSpjtkvvDccgTBOkDLf6bI/VFJO3zGn+PJWXlE4bpkE
+	qhxGpF8xZadP690MkQFn4bryaotVDRteJy4sMwVs+wAO+/CWggyEngvmSscIEUXWXIDtKA4U0Oo
+	RB+rHx9HLnuv24dvKJhrJ4+OHnBTdzKOU6ZH9
+X-Google-Smtp-Source: AGHT+IEXzzswC0XQ9rLOu1GUP+4XTKR6zYMMVXmXre93BzbdLCw7Gam4vNP85w3+Dy5997Tzsyd2GA==
+X-Received: by 2002:a17:907:1c91:b0:af9:341b:7fd7 with SMTP id a640c23a62f3a-afe29605d3fmr98808366b.49.1755831460519;
+        Thu, 21 Aug 2025 19:57:40 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afded4c8713sm514489766b.78.2025.08.21.19.57.40
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 21 Aug 2025 19:57:40 -0700 (PDT)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org
+Cc: linux-mm@kvack.org,
+	Wei Yang <richard.weiyang@gmail.com>
+Subject: [PATCH] mm/khugepaged: use list_xxx() helper to improve readability
+Date: Fri, 22 Aug 2025 02:57:32 +0000
+Message-Id: <20250822025732.9025-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: eez6zqj4fwke1wbtdztsi9obth7x4wu6
-X-HE-Tag: 1755831102-936941
-X-HE-Meta: U2FsdGVkX1/gnAtWAF8YgBkRnnUBVFm+bZQeB2AL+zaL8/NbqUPGx5VwkdYmyAOXKwwVsWIyy1BIN51iLud7lHCHZGDuCdLCLV6USTfb8NdXs2DRGVNkKzNa3zNmYB7KwNfZTT51exqonmeLv5CHHxhOUPs463wTFQf/Dh3j23CHJndi4UQ/cNjkwX1riY3DRK1HfrjKCrUTpwux9FH9A6HhEguutt5YbZvkHRkYX6djbtcAnx0ey+8aJeA9erTw+IBHSX2yj4paD4C+HJrxeBaeE5qCVc4BTA92z/15KOQfiYYtoZ3ZXeTDXV3cbqjRGWmMUukde/PHRFLFj9xFy8v8PqLnnW7m70CpnIC/XqZjoLoj4ZS9Ugg4vUUxDeAdPLXKb/kyMUkNx6rauEbB/EZccqpNx1dhR5WrLK5QIzqDRfl+J7Zh2LNA2l5OZh4xpxPMIODFEK9/3hEL7kAdgZhRS3UPRjB4MH0ECQDGEVhpX6xGP4cOzHPrVgaaai7Htb8lgRc6gdNav4gzJ33Dk1fRaFe/yOcsTpGWVTB8oqzvS2pkaYMk6eqinNQhkU+s2NyIjWoOBDTKYVOF5BD2gpHB+Ubk11XqE07IoQ7CLFwagZE2azH5L3qvUvB9K5yiep0ddn4o8LKrZiQcSSqvFm/mdOFKbeKMF7k7gYuAnMCG/x5tY+sBnpltZnJaIPqRi7SCYUtii5BbFAkli88bA7tQjoP83xApMza0r7iCcKbhoc69atu9SvoR3A9z2lyi4fl7iWcqE6YAO+8OzQ+b4rXHoA4qm65VILiWWiMdZNm4RG89z6TNXG90litozfmwY3nkp85KzmxkUi3motE5YVSz7U+MaGrxeX86iUgfb7hFvLtLmNHFsD4/c8w+xfG3W7eX9ac1+NhxcJHlTeuTb150T+HtJamhaG7Do/l2ri68O5+0KwtZw2CZtUgifMZKL8u4yPDFDxII1Aa+EXo
- y3DJV6bZ
- esPNb6uruZSuV1LDl2qdFwc9eku2U4toYGDfMK4Kc6GAPyD7a3mtPiai7PoEtMUHKWOP0kWeQjBh01C9nLYozXqLMTuXryCUBtVojGwohWpv1LgcpoVwG5wqHmlxFyWwep/Q02Fi++4mK7fSfVJ5QohAmms8fGpM/OUouRihJ5pyDtiKdAvXTwvarX1S2MfdJh8+4MWaJ1F3opMQDVFZuC2HoiyzWqiBRHVUh6tMKcT6CVfGW91xQPFVbCKXhgdYM12AIsd4yHl7XDQhc3+/wVPAMaPNO/fOSdtgZigsArD0uitxRaZHD2XuW3/xwjpQFVQQdNM9lV9iyOR5KgpoqyrsXe9F9ysmyVjlXK1qSCFrm/E9bFaohjihzg/TOZwTJjNcL9vQFEJ2Xd/f4tjagP2GTUwVOEWlp0yeenC2U2k4/4wMpMMkA86rIovS9Woi6WTfSwVsD3DzSAiWvXzOFWZ6rKCjQjt7ZncNkcvN6fz43Wyo=
+X-Rspamd-Queue-Id: 67B574000B
+X-Stat-Signature: 17rrce9wnh3o5z7qizsoao5wxcws97uz
+X-HE-Tag: 1755831462-235302
+X-HE-Meta: U2FsdGVkX19N407HhssjTXduXZADy/DHj1jrCk0BQOIJvxDAGnRaPW0q4E5R7VytWGGNCPsp5M/D5a3bOrDplsvA1QEjQXMN5DM16lv2nk9K1nlg9HcUw67UQ8+UrAOZODvjPkaOPfko/ur9DwK+1Yi4/LY8XyljP8WdcjIOZ3GpZTZpJil8E5r/5FZSEhZcQU2f2/SlIWJ4aYH/N/HICQ0a2SJY9fcS+zcUA4eRgV+wVzaaTDXQTZEE3Qq2xShiDkBZ/HAe6NnjYmhEhD4acaXkxkAgeBHzLZQjnawKkCCdqeJXhwfzn38g9x/3IfkjemeQtxBJXu6kcwzgFRJwifP3Al4fOlyO5dK4ozvbv2ZmXWHX3aSV0fjXbNb8XIObGS+7tpPm9jWvhDhzZMummT0dYSdTODZrjE7S4PTKTuolzzAAplZoFFHyrjzb9+MD31iN5VsSjsZGo7En4FBzzaqqlSK4QrgitMne1pwW5vecGWtX3X9LC9UB3hisbNrS3JWiH7ENI5kV+cF6nkeffpDbiQpndEdsdwUxdG1K5wsIQMBis0qwjiZFtgF5tk3VzEWEJcwCEvSr7xmD3MpK5iGaZtdY0n2kwc5okNWQH/KhLL3WlzGy7wHDO0Cnwq8f8rSTQORkIBtRK6gk57zVdoeLSBhm+C63v1ffynNDKqF3pFuOWI80AIUW3N+y+xite93+IseNYCkt7A5a8lw8wxISz1KGrhvGvsm+LUyvqhMbYApr6F9FcFQybCSGqQJ+UoA75hX6hXbWEB86FOll9dfgt4QJHTs4eoMmWyQrLeSjvUTD/XJZvuBWabsGZ+9jzA5E6bcGIRm/pmTyTaKHdgOXiMhSIzUmWGO8x90UuC0Ph9ta6SakbslG0IFinWHCg8P8RmVroLI+zSJs5H2i6FzGiyragXNb0PxN14z9IjxzBIkzG9MZRlxoh40JWAILaYqGUfJP/7NJAC+PFHp
+ wJ99zebF
+ q5PmY1MaLAaz1yH5m0Gr9Lln4QWxH65mPmED8Yof411L8wgo577/D4I0K+JOJ9uOPtuNNh1UGFeAkdjraw7TiIqIAPjC3JevpBYugTkaOmNY/QgKgpEw7TJvvaD70pQ4gdJJdoIIar2AkzWZUEzO1RrFYN+5UxjJd0z8e8cw1XFEdQCCtp18m99583cTRlWlQUin1KdkzSmJoANEC4jwylGLoJ06/aBmgD77KyHlpkWd8/5KEQfaS26+LzA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,99 +118,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Kernel initialize "jiffies" timer as 5 minutes below zero, as shown in
-include/linux/jiffies.h
+In general, khugepaged_scan_mm_slot() iterates khugepaged_scan.mm_head list
+to get a mm_struct for collapse memory.
 
- /*
- * Have the 32 bit jiffies value wrap 5 minutes after boot
- * so jiffies wrap bugs show up earlier.
- */
- #define INITIAL_JIFFIES ((unsigned long)(unsigned int) (-300*HZ))
+Use list_xxx() helper would be more obvious to the list iteration
+operation.
 
-And jiffies comparison help functions cast unsigned value to signed to
-cover wraparound
+No functional change.
 
- #define time_after_eq(a,b) \
-  (typecheck(unsigned long, a) && \
-  typecheck(unsigned long, b) && \
-  ((long)((a) - (b)) >= 0))
-
-When quota->charged_from is initialized to 0, time_after_eq() can 
-incorrectly return FALSE even after reset_interval has elapsed.
-This occurs when (jiffies - reset_interval) produces a value with MSB=1, 
-which is interpreted as negative in signed arithmetic.
-
-This issue primarily affects 32-bit systems because:
-On 64-bit systems: MSB=1 values occur after ~292 million years from boot
-(assuming HZ=1000), almost impossible.
-
-On 32-bit systems: MSB=1 values occur during the first 5 minutes after 
-boot, and the second half of every jiffies wraparound cycle, starting
-from day 25 (assuming HZ=1000)
-
-When above unexpected FALSE return from time_after_eq() occurs, the
-charging window will not reset. The user impact depends on esz value
-at that time.
-
-If esz is 0, scheme ignores configured quotas and runs without any
-limits.
-
-If esz is not 0, scheme stops working once the quota is exhausted. It
-remains until the charging window finally resets.
-
-So, change quota->charged_from to jiffies at damos_adjust_quota() when
-it is considered as the first charge window. By this change, we can avoid
-unexpected FALSE return from time_after_eq()
-
-Fixes: 2b8a248d5873 ("mm/damon/schemes: implement size quota for schemes application speed control") # 5.16
-Cc: stable@vger.kernel.org
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
 ---
-Changes from v3 [3]
-- fix checkpatch script errors
+ mm/khugepaged.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-Changes from v2 [2]
-- remove unnecessary example about time_after_eq()
-- remove description of unexpected reset of quota->charged_from
-- clarify user impacts and when bug happens
-
-Changes from v1 [1]
-- not change current default value of quota->charged_from
-- set quota->charged_from when it is consider first charge below
-- add more description of jiffies and wraparound example to commit
-  messages
-
-[1] https://lore.kernel.org/damon/20250818183803.1450539-1-ekffu200098@gmail.com/
-[2] https://lore.kernel.org/damon/20250819150123.1532458-1-ekffu200098@gmail.com/
-[3] https://lore.kernel.org/damon/20250821163346.1690784-1-ekffu200098@gmail.com/
----
-I checked patch by checkpatch.pl script, just leave result for reference.
-
-./scripts/checkpatch.pl ../patch/250822/v4-0001-mm-damon-core-set-quota-charged_from-to-jiffies-at-f.patch
-total: 0 errors, 0 warnings, 10 lines checked
-
-../patch/250822/v4-0001-mm-damon-core-set-quota-charged_from-to-jiffies-at-f.patch has no obvious style 
-problems and is ready for submission.
----
- mm/damon/core.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index cb41fddca78c..93bad6d0da5b 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2130,6 +2130,10 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
- 	if (!quota->ms && !quota->sz && list_empty(&quota->goals))
- 		return;
- 
-+	/* First charge window */
-+	if (!quota->total_charged_sz && !quota->charged_from)
-+		quota->charged_from = jiffies;
-+
- 	/* New charge window starts */
- 	if (time_after_eq(jiffies, quota->charged_from +
- 				msecs_to_jiffies(quota->reset_interval))) {
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index d3d4f116e14b..24e18a7f8a93 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -2402,7 +2402,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+ 		mm_slot = khugepaged_scan.mm_slot;
+ 		slot = &mm_slot->slot;
+ 	} else {
+-		slot = list_entry(khugepaged_scan.mm_head.next,
++		slot = list_first_entry(&khugepaged_scan.mm_head,
+ 				     struct mm_slot, mm_node);
+ 		mm_slot = mm_slot_entry(slot, struct khugepaged_mm_slot, slot);
+ 		khugepaged_scan.address = 0;
+@@ -2515,9 +2515,8 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+ 		 * khugepaged runs here, khugepaged_exit will find
+ 		 * mm_slot not pointing to the exiting mm.
+ 		 */
+-		if (slot->mm_node.next != &khugepaged_scan.mm_head) {
+-			slot = list_entry(slot->mm_node.next,
+-					  struct mm_slot, mm_node);
++		if (!list_is_last(&slot->mm_node, &khugepaged_scan.mm_head)) {
++			slot = list_next_entry(slot, mm_node);
+ 			khugepaged_scan.mm_slot =
+ 				mm_slot_entry(slot, struct khugepaged_mm_slot, slot);
+ 			khugepaged_scan.address = 0;
 -- 
-2.43.0
+2.34.1
 
 
