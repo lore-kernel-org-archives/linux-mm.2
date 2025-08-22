@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB99DCA0EEB
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 09:58:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ADA7CA0EEB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 09:58:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E2E98E0094; Fri, 22 Aug 2025 05:58:20 -0400 (EDT)
+	id 5FEB38E0095; Fri, 22 Aug 2025 05:58:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 38E188E008C; Fri, 22 Aug 2025 05:58:20 -0400 (EDT)
+	id 5B1B88E008C; Fri, 22 Aug 2025 05:58:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27B0C6B0023; Fri, 22 Aug 2025 05:58:20 -0400 (EDT)
+	id 476418E0095; Fri, 22 Aug 2025 05:58:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 13DA06B0006
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 05:58:20 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 81C63138F3F
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:58:19 +0000 (UTC)
-X-FDA: 83803943118.20.5BDC812
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 308258E008C
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 05:58:24 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AC7E2C06A0
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:58:23 +0000 (UTC)
+X-FDA: 83803943286.30.B9BDEF7
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 59B96C0008
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:58:17 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8EAAE40007
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:58:21 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
 	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
+	spf=pass (imf04.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755856697;
+	s=arc-20220608; t=1755856701;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zeGGKSxmF7i3vYkKfI2pzpK4m5vG9ZbzD3DnVV/u23c=;
-	b=NeQmx4c9iVVRlvgX7/mYputw1OvfSQBJ2od3kPqISFjMmlPwDsLtPkMn+p7zD3KeeR8RzQ
-	l20DDeJNh5RR8dj3S1F5LA3CIkXHvR11SWpgr3X01BgxsyoF2pq8hX4adUy5MLZiUr9zNF
-	zI0sb3bKJ85sSuwYSgIBqIsGmgopU7I=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755856697; a=rsa-sha256;
+	bh=ZDsMiuOA3dT+ZP0vxJtn5aA698LnzwNsTPXPCWK7pa8=;
+	b=dVOsa+4JV3vqMb7qghOWudRS3X6f+N9EMk05FkrT54/+4pPLf2KbEfQFIoyzEiC1uRhbzP
+	+f/GJ4YbUDwXsOS9SGyk/MDduTushy8oyU2/3BCfcmDeudAJEWrNoaMfqLNMnK7/weafqx
+	dr27wgotjC2/1QbE2XJQzQUJ6+QVtps=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755856701; a=rsa-sha256;
 	cv=none;
-	b=tS7T//rNH6vTAMh0DIZ542V6JVfJI4Mt8Vs93Dv2q/yBo4TZotSO5C4HxerZduTNdo8LwB
-	M/lCIP1FltPSDQ8LlZLGyDqXuofSUoRbfzu8Rpj+1LUHXt0raVerOQL8CD5Uf5K0Xk7Wcm
-	gq+2JPA/85cR2avoRns4UmWDvMTlYhI=
+	b=RvukUJOd0vxjBKMRlsvIB5nOcn1VZZXQSyZZFzDZI2o0P/WqsAegTQ/bP+7ZZ8tqn2bNBw
+	yYZi2P4pN29nL4/EX2i31K4I3yEYvWog6C/QxOnw1097mQFxR8ZZDKWGfmt1zA8Zpv13PZ
+	fj9JVmtOJOh8fUD0+mCDNdhIjekJmQM=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
+	spf=pass (imf04.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
 Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4c7bGm4MbWz9sSN;
-	Fri, 22 Aug 2025 11:58:08 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4c7bGn55hjz9sSS;
+	Fri, 22 Aug 2025 11:58:09 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 1R7C9v1g2tlo; Fri, 22 Aug 2025 11:58:08 +0200 (CEST)
+	with ESMTP id Pu_SUmsG5KVL; Fri, 22 Aug 2025 11:58:09 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4c7bGm3cnpz9sSL;
-	Fri, 22 Aug 2025 11:58:08 +0200 (CEST)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4c7bGn4GTMz9sSR;
+	Fri, 22 Aug 2025 11:58:09 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 687F58B775;
-	Fri, 22 Aug 2025 11:58:08 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7E0CC8B781;
+	Fri, 22 Aug 2025 11:58:09 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 260MbcVDPASD; Fri, 22 Aug 2025 11:58:08 +0200 (CEST)
+	with ESMTP id i33fjxtVLFhx; Fri, 22 Aug 2025 11:58:09 +0200 (CEST)
 Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 754DD8B781;
-	Fri, 22 Aug 2025 11:58:07 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 704358B780;
+	Fri, 22 Aug 2025 11:58:08 +0200 (CEST)
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
@@ -92,24 +92,24 @@ Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-block@vger.kernel.org
-Subject: [PATCH v2 02/10] uaccess: Add speculation barrier to copy_from_user_iter()
-Date: Fri, 22 Aug 2025 11:57:58 +0200
-Message-ID: <82b9c88e63a6f1f5926e39471364168b345d84cc.1755854833.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 03/10] uaccess: Add masked_user_{read/write}_access_begin
+Date: Fri, 22 Aug 2025 11:57:59 +0200
+Message-ID: <7b570e237f7099d564d7b1a270169428ac1f3099.1755854833.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1755854833.git.christophe.leroy@csgroup.eu>
 References: <cover.1755854833.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755856678; l=1419; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=XwlsUHUFJUpz+VqDmhFyhZF843JW5vLl0ICFNZPjHwg=; b=OMJi7NtS5t9H8b/LM9QX7LNwGLYVRhm3b1ohh2Ifek1Ac+dVg5W2gO7XbDwDHd3D5fgUdFcH6 CiFpzXB8IzvDR8zy+bYW8ctsDTYL16XT29wlRQ8tKvZye/dJFBYy7QM
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755856678; l=4235; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=dM/STExlfioZ7RWL1LZ1zuqJ7l+Gd1UGLLRM2BZr8VQ=; b=LfW2Zrcf/qOLKMyRJmXFszZyR+auMiNHDPsO2CmZ3LWYtqVMaj5jy30Bs37sk/DpkfpY4ScpY BhH/brYHdWZCciqcb6YZXz9IaYEwPiyBPpDY3g/qom3TrZu+gfvLQVX
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 59B96C0008
-X-Stat-Signature: iomgtxgueh9admg3whcib36bci89ht56
 X-Rspam-User: 
-X-HE-Tag: 1755856697-134703
-X-HE-Meta: U2FsdGVkX19yW9OE8ouOw2Z1VUnpgsmhQzIOaWVNqoFJojtOfFz7z6aIjpzOldb2A3hIRf91v4ZxCoO4XmZe32uLO4D3Vcveou/DU6XUWV/XPXuJFWLYnbqbZVV8LBC6zlDexLEkaYVSqpAexmquST8Q7vnr2ASDVbNbXFJZHnfnyv+dZPVBcZY+EOgZ/cS/m6y8a35+k4w1KX8f333jL85nmr5jXdw+8XYk5s9fHwzONCWKS8jjbjQlndWGsuYqaDznmqJwIagvRia28GWokJMLT4R3e5KP8//WrjuXX9kvojAF0c3VW0cE7k4qUaAwNYr9VYQO7tqHENag7mL2clgPa/eSjbHzUxmKPjuRB8LWVpwRBtHEnSbMid5dLlr0+m9qq9r+R1SiX7iTkUQAuMZCQGL4nrPC09t0oV5Ae5tUnxciHiJQvQK7ltNa3JydDvWkiNbcqEVwJsZwXc95hICvE/nmnhDItenGxVwWkcKl7e5GRHO+vZAUt9T17ezU+9VDFa/Iupw9kJrw/qj3TjAH0jonHb52LUHFECk1getRZXp++b14S5gz5YPCAQUhUwQlZ5Gy0Wdk9N1AI+5djg8QbEFbEUEAM6T2wJSLfNy93TEXTR1gyOQUmWeUAJAa/fAFjlNzZ5L98a/uGfC/dR5H9i2WPIbqmIHGN1kHDx9+qOPwjwCZMVO/VD8quDbRHspmQHwRWResIZG+/gaewKB6sqWzrKT1MmWBrcirjgesVji+jYqs4alVX8CXrmunkyroXWZs6tW/SLN3iMVvba7AcW2cHzfV34YcaP4LTxmekoP9Gl7Jx+lB5RSGqy4KjYrkjz4FfPSMcjbGRqXVriQZTBJE3yYa+VW2ZPX3B19C+h9K3HXieU2YtO1YfQbx9Jr6U6KadYAkhhJFAN+oZH1wpEYu96BkIfqxIG8ls9byI1V/VFXi2Nc6oV0xd284u8QHw2SBAPUJ1lPMJ5k
- DkWZkjdu
- z0WG0Yf1FaD2xTB28o/wukKCDU35Woufl5ecIG9gl735Y2EWwR5M1PN3X1bmuisVHyjfTVZ9pNvmALKaEtVikNsK/1zMxLNZrii+CvVsVwauXgvPhf3/aki8Fklq/7XGEj6Pw1Or+9AlLJno0E4rwmul1+B0VzbSOdhnAlFOuho5GOeF1V5LtMq/czcJSQBIbBYF/L5QXpup0kXtAd2uCYPX+9s6lQ/Pd5a6cXNbdbkGS6zMSe33wamEK0E9Chvw4ZqnaoEInlbhRMJixScxHfqDbdcXTGAmnEc/rHZt21dqoiew=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8EAAE40007
+X-Stat-Signature: up57hds3ppqy63x4kjmow7cxtaynwemh
+X-HE-Tag: 1755856701-502650
+X-HE-Meta: U2FsdGVkX1+qkJGh4ffyVFpXfe/aQPYalz5MoeR7o9Y5ADjUF7oaKA2UoLu3Hc+yZnDfTt50o125MlOwoNWbnEWIjY1+MRyyfhin3fvnw8ElADoUkyEhGqnVSaQGOQZDai7UOTSzGT+VR120XmMuKAs4TWMihg6bHc7I81G+HQ67zMYzZ5C+NC/AmkGXbBJWQr+CplMdMcx39wt4hExc+e/K5R0ToDkcrUWrLE+v5NRy1P6PXAOCME7dGZa8WCeJgDIZihnJdI3UWIm2JuhKmhW3zmNbI2Ud82SG0IgxUEnqn8zZgNEKdb5qnzAS6ZEMqmNzmc6y6KwQhwWHGgKmwifxAW8W+Q4V9GVyD0hlfWcCsAvjlDWXv7c3A4H5lbU7eXoXLHl549oLa+zaq8qF6tiQK1//J8+KajP5Sn5M+FKDmVItxhvHWKfcK6hO2vbLy0m4zTnyBi8vEGCkhIgXCI7WTJ3+AL7Y0jqT+BXFNocCKAMwk+H972reffaMWZkEfwf7e0B8dZRoDiBcCz6tKuoN4JGmIyhUAYboH67mMT4e9htCDg7/gBOXQPjU7NzSq+6/pPauruxYuTGjsnBPzxWWTeZbT2yVZHDJRYehX+60zvF54JgVqyxQP26J4Wiidt6biAibH3uWY5MtUBORCE89KZ9p2qyEBLdKkG67Et+F2fDmTHS5kYuCc3vMXml2YMEvWx2ExnKarSmOGT/rq6VbCGMY6gyKr9/yUIJJ5TYF3MBULR14Grs88skrbmoaEkVr8//am+ND8wnuXjPDCOnEskWkH6wasDYsxp+UAuzvo1+ecPy5dE3tlYin1XqVOK9htIdUUDb8xTo7U9rcf+C2bDZfKQDHVbXqkz++L4ZjxKqSGEUl9G7OO13XCcDb4l39gi2Cc8DOjL0cQYeudr6BMdYjyqXhDu/sWGiM/qAb9CMmcVJeaBozTbqyR49s8ebctP1G5DbVn8F723Q
+ +H+trtTZ
+ 9/cniUdsW5W0XA97soy8PA0FGBuGhcvtJgN50vv96TY5YBS5ilIM9ilBMKlZASXF2Vdc4iiR5iVes3cG+XeVbRDkcJleJPSopt6MyHH8I3UrAXpHCnlvCKDguRJdQBfEH1l9Jkiw8LrMYYLnktSFCpV+xgL8YJpVvGreeVzgW/Q5o/jleDWk6/NrhsR6ffP3njllJoZ5ivPe7S6hre1OU3TgtQ7y8rQJmCOVVZw8Mv1gnfeXNZgQJzyjFJ57zsehxbAmfUkM7mYPTb1TN0m0kr9Om9ceAbfGGkWDEQON3vMC6VUEZ/MGLGAPjEcfaPikDoDEEMAqmKPgvzSM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,51 +118,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The results of "access_ok()" can be mis-speculated.  The result is that
-you can end speculatively:
+Allthough masked_user_access_begin() is to only be used when reading
+data from user at the moment, introduce masked_user_read_access_begin()
+and masked_user_write_access_begin() in order to match
+user_read_access_begin() and user_write_access_begin().
 
-	if (access_ok(from, size))
-		// Right here
+That means masked_user_read_access_begin() is used when user memory is
+exclusively read during the window, masked_user_write_access_begin()
+is used when user memory is exclusively writen during the window,
+masked_user_access_begin() remains and is used when both reads and
+writes are performed during the open window. Each of them is expected
+to be terminated by the matching user_read_access_end(),
+user_write_access_end() and user_access_end().
 
-For the same reason as done in copy_from_user() by
-commit 74e19ef0ff80 ("uaccess: Add speculation barrier to
-copy_from_user()"), add a speculation barrier to copy_from_user_iter().
-
-See commit 74e19ef0ff80 ("uaccess: Add speculation barrier to
-copy_from_user()") for more details.
+Have them default to masked_user_access_begin() when they are
+not defined.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- lib/iov_iter.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+v2: Added more explanations in the commit message following comments received.
+---
+ fs/select.c             | 2 +-
+ include/linux/uaccess.h | 7 +++++++
+ kernel/futex/futex.h    | 4 ++--
+ lib/strncpy_from_user.c | 2 +-
+ lib/strnlen_user.c      | 2 +-
+ 5 files changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/lib/iov_iter.c b/lib/iov_iter.c
-index 48bd0cbce8c2..8d08b3435174 100644
---- a/lib/iov_iter.c
-+++ b/lib/iov_iter.c
-@@ -49,11 +49,19 @@ size_t copy_from_user_iter(void __user *iter_from, size_t progress,
+diff --git a/fs/select.c b/fs/select.c
+index 082cf60c7e23..36db0359388c 100644
+--- a/fs/select.c
++++ b/fs/select.c
+@@ -777,7 +777,7 @@ static inline int get_sigset_argpack(struct sigset_argpack *to,
+ 	// the path is hot enough for overhead of copy_from_user() to matter
+ 	if (from) {
+ 		if (can_do_masked_user_access())
+-			from = masked_user_access_begin(from);
++			from = masked_user_read_access_begin(from);
+ 		else if (!user_read_access_begin(from, sizeof(*from)))
+ 			return -EFAULT;
+ 		unsafe_get_user(to->p, &from->p, Efault);
+diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
+index 1beb5b395d81..aa48d5415d32 100644
+--- a/include/linux/uaccess.h
++++ b/include/linux/uaccess.h
+@@ -41,6 +41,13 @@
+  #define mask_user_address(src) (src)
+ #endif
  
- 	if (should_fail_usercopy())
- 		return len;
--	if (can_do_masked_user_access())
-+	if (can_do_masked_user_access()) {
- 		iter_from = mask_user_address(iter_from);
--	else if (!access_ok(iter_from, len))
--		return res;
-+	} else {
-+		if (!access_ok(iter_from, len))
-+			return res;
++#ifndef masked_user_write_access_begin
++#define masked_user_write_access_begin masked_user_access_begin
++#endif
++#ifndef masked_user_read_access_begin
++#define masked_user_read_access_begin masked_user_access_begin
++#endif
++
+ /*
+  * Architectures should provide two primitives (raw_copy_{to,from}_user())
+  * and get rid of their private instances of copy_{to,from}_user() and
+diff --git a/kernel/futex/futex.h b/kernel/futex/futex.h
+index 2cd57096c38e..a1120a318c18 100644
+--- a/kernel/futex/futex.h
++++ b/kernel/futex/futex.h
+@@ -303,7 +303,7 @@ static __always_inline int futex_get_value(u32 *dest, u32 __user *from)
+ 	u32 val;
  
-+		/*
-+		 * Ensure that bad access_ok() speculation will not
-+		 * lead to nasty side effects *after* the copy is
-+		 * finished:
-+		 */
-+		barrier_nospec();
-+	}
- 	to += progress;
- 	instrument_copy_from_user_before(to, iter_from, len);
- 	res = raw_copy_from_user(to, iter_from, len);
+ 	if (can_do_masked_user_access())
+-		from = masked_user_access_begin(from);
++		from = masked_user_read_access_begin(from);
+ 	else if (!user_read_access_begin(from, sizeof(*from)))
+ 		return -EFAULT;
+ 	unsafe_get_user(val, from, Efault);
+@@ -318,7 +318,7 @@ static __always_inline int futex_get_value(u32 *dest, u32 __user *from)
+ static __always_inline int futex_put_value(u32 val, u32 __user *to)
+ {
+ 	if (can_do_masked_user_access())
+-		to = masked_user_access_begin(to);
++		to = masked_user_write_access_begin(to);
+ 	else if (!user_write_access_begin(to, sizeof(*to)))
+ 		return -EFAULT;
+ 	unsafe_put_user(val, to, Efault);
+diff --git a/lib/strncpy_from_user.c b/lib/strncpy_from_user.c
+index 6dc234913dd5..5bb752ff7c61 100644
+--- a/lib/strncpy_from_user.c
++++ b/lib/strncpy_from_user.c
+@@ -126,7 +126,7 @@ long strncpy_from_user(char *dst, const char __user *src, long count)
+ 	if (can_do_masked_user_access()) {
+ 		long retval;
+ 
+-		src = masked_user_access_begin(src);
++		src = masked_user_read_access_begin(src);
+ 		retval = do_strncpy_from_user(dst, src, count, count);
+ 		user_read_access_end();
+ 		return retval;
+diff --git a/lib/strnlen_user.c b/lib/strnlen_user.c
+index 6e489f9e90f1..4a6574b67f82 100644
+--- a/lib/strnlen_user.c
++++ b/lib/strnlen_user.c
+@@ -99,7 +99,7 @@ long strnlen_user(const char __user *str, long count)
+ 	if (can_do_masked_user_access()) {
+ 		long retval;
+ 
+-		str = masked_user_access_begin(str);
++		str = masked_user_read_access_begin(str);
+ 		retval = do_strnlen_user(str, count, count);
+ 		user_read_access_end();
+ 		return retval;
 -- 
 2.49.0
 
