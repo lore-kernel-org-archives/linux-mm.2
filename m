@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ADA7CA0EEB
-	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 09:58:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68DC1CA0EED
+	for <linux-mm@archiver.kernel.org>; Fri, 22 Aug 2025 09:58:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5FEB38E0095; Fri, 22 Aug 2025 05:58:24 -0400 (EDT)
+	id 9CF598E0096; Fri, 22 Aug 2025 05:58:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B1B88E008C; Fri, 22 Aug 2025 05:58:24 -0400 (EDT)
+	id 97FAD8E008C; Fri, 22 Aug 2025 05:58:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 476418E0095; Fri, 22 Aug 2025 05:58:24 -0400 (EDT)
+	id 86F308E0096; Fri, 22 Aug 2025 05:58:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 308258E008C
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 05:58:24 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AC7E2C06A0
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:58:23 +0000 (UTC)
-X-FDA: 83803943286.30.B9BDEF7
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E4DC8E008C
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 05:58:28 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3F34483D9B
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:58:28 +0000 (UTC)
+X-FDA: 83803943496.03.BF77DB6
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 8EAAE40007
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:58:21 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 354BE40008
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 09:58:25 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
-	spf=pass (imf04.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
+	spf=pass (imf01.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755856706; a=rsa-sha256;
+	cv=none;
+	b=V+OxGW1Y+XkyyapDoXIqlqOSzlAwnlc8OQ53cwV/ow2ItICjxBxsE+/0/I/Pzk00fLqQdc
+	xFMuD2IepmGZgcQXEdM6CFpojxLqm6EgivXoj2o2+J0mYLG8xdL6TB4UjP20SfoPF/WDxb
+	Y+5Zv0+ofg5pJGuDkvBFM3aEyELLC8Q=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=none;
+	spf=pass (imf01.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755856701;
+	s=arc-20220608; t=1755856706;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZDsMiuOA3dT+ZP0vxJtn5aA698LnzwNsTPXPCWK7pa8=;
-	b=dVOsa+4JV3vqMb7qghOWudRS3X6f+N9EMk05FkrT54/+4pPLf2KbEfQFIoyzEiC1uRhbzP
-	+f/GJ4YbUDwXsOS9SGyk/MDduTushy8oyU2/3BCfcmDeudAJEWrNoaMfqLNMnK7/weafqx
-	dr27wgotjC2/1QbE2XJQzQUJ6+QVtps=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755856701; a=rsa-sha256;
-	cv=none;
-	b=RvukUJOd0vxjBKMRlsvIB5nOcn1VZZXQSyZZFzDZI2o0P/WqsAegTQ/bP+7ZZ8tqn2bNBw
-	yYZi2P4pN29nL4/EX2i31K4I3yEYvWog6C/QxOnw1097mQFxR8ZZDKWGfmt1zA8Zpv13PZ
-	fj9JVmtOJOh8fUD0+mCDNdhIjekJmQM=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
-	spf=pass (imf04.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
+	bh=o8buzcW/UN4/h4LCvWa/BS8NAykGhPfW596PyvWifB0=;
+	b=1obqZdZ22uXw8vW9Ibt3FYbY/iAmkywVb6AbRGo0kqgWm5Md54ydzBcPyCjpafhIGc0OMd
+	h/a29UPS8R0I3FbB9L9vP4aN8hwmOYiCrnWyOIs/mZc1xW6d8n3PP0JrQoB8/+QfJfAcvv
+	7GKvQbMZ8gTfWgjRewNXyxn0EqS58OA=
 Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4c7bGn55hjz9sSS;
-	Fri, 22 Aug 2025 11:58:09 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4c7bGp5G2dz9sSW;
+	Fri, 22 Aug 2025 11:58:10 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id Pu_SUmsG5KVL; Fri, 22 Aug 2025 11:58:09 +0200 (CEST)
+	with ESMTP id L-iQubse_0cd; Fri, 22 Aug 2025 11:58:10 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4c7bGn4GTMz9sSR;
-	Fri, 22 Aug 2025 11:58:09 +0200 (CEST)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4c7bGp4Kv4z9sSV;
+	Fri, 22 Aug 2025 11:58:10 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7E0CC8B781;
-	Fri, 22 Aug 2025 11:58:09 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 799BB8B781;
+	Fri, 22 Aug 2025 11:58:10 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id i33fjxtVLFhx; Fri, 22 Aug 2025 11:58:09 +0200 (CEST)
+	with ESMTP id Jh8il3hsJZQH; Fri, 22 Aug 2025 11:58:10 +0200 (CEST)
 Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 704358B780;
-	Fri, 22 Aug 2025 11:58:08 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7612B8B775;
+	Fri, 22 Aug 2025 11:58:09 +0200 (CEST)
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
@@ -92,24 +92,24 @@ Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-block@vger.kernel.org
-Subject: [PATCH v2 03/10] uaccess: Add masked_user_{read/write}_access_begin
-Date: Fri, 22 Aug 2025 11:57:59 +0200
-Message-ID: <7b570e237f7099d564d7b1a270169428ac1f3099.1755854833.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 04/10] powerpc/uaccess: Move barrier_nospec() out of allow_read_{from/write}_user()
+Date: Fri, 22 Aug 2025 11:58:00 +0200
+Message-ID: <90ce0c90c53d3132023d753650b1741fab60dcd3.1755854833.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1755854833.git.christophe.leroy@csgroup.eu>
 References: <cover.1755854833.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755856678; l=4235; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=dM/STExlfioZ7RWL1LZ1zuqJ7l+Gd1UGLLRM2BZr8VQ=; b=LfW2Zrcf/qOLKMyRJmXFszZyR+auMiNHDPsO2CmZ3LWYtqVMaj5jy30Bs37sk/DpkfpY4ScpY BhH/brYHdWZCciqcb6YZXz9IaYEwPiyBPpDY3g/qom3TrZu+gfvLQVX
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755856679; l=3128; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=W6hpcedkcWK/fNdxM9/tYip/yiX0Wu6MZIyees7Pogw=; b=DUD1UUmtiwXNWatGhsXc9CjjVSp+31iz3JZAC3Kq7lY2UnNgEKtP/hJS7JrJ7X+vsKhFuWqba zo1szpJqvm5BrN9GBW2DIAx7C5wqNiWIty4eJINj4EQofJ+cdDrJaFQ
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 354BE40008
+X-Stat-Signature: 4gnj491zwefdh4gysr31xid57iczy98e
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8EAAE40007
-X-Stat-Signature: up57hds3ppqy63x4kjmow7cxtaynwemh
-X-HE-Tag: 1755856701-502650
-X-HE-Meta: U2FsdGVkX1+qkJGh4ffyVFpXfe/aQPYalz5MoeR7o9Y5ADjUF7oaKA2UoLu3Hc+yZnDfTt50o125MlOwoNWbnEWIjY1+MRyyfhin3fvnw8ElADoUkyEhGqnVSaQGOQZDai7UOTSzGT+VR120XmMuKAs4TWMihg6bHc7I81G+HQ67zMYzZ5C+NC/AmkGXbBJWQr+CplMdMcx39wt4hExc+e/K5R0ToDkcrUWrLE+v5NRy1P6PXAOCME7dGZa8WCeJgDIZihnJdI3UWIm2JuhKmhW3zmNbI2Ud82SG0IgxUEnqn8zZgNEKdb5qnzAS6ZEMqmNzmc6y6KwQhwWHGgKmwifxAW8W+Q4V9GVyD0hlfWcCsAvjlDWXv7c3A4H5lbU7eXoXLHl549oLa+zaq8qF6tiQK1//J8+KajP5Sn5M+FKDmVItxhvHWKfcK6hO2vbLy0m4zTnyBi8vEGCkhIgXCI7WTJ3+AL7Y0jqT+BXFNocCKAMwk+H972reffaMWZkEfwf7e0B8dZRoDiBcCz6tKuoN4JGmIyhUAYboH67mMT4e9htCDg7/gBOXQPjU7NzSq+6/pPauruxYuTGjsnBPzxWWTeZbT2yVZHDJRYehX+60zvF54JgVqyxQP26J4Wiidt6biAibH3uWY5MtUBORCE89KZ9p2qyEBLdKkG67Et+F2fDmTHS5kYuCc3vMXml2YMEvWx2ExnKarSmOGT/rq6VbCGMY6gyKr9/yUIJJ5TYF3MBULR14Grs88skrbmoaEkVr8//am+ND8wnuXjPDCOnEskWkH6wasDYsxp+UAuzvo1+ecPy5dE3tlYin1XqVOK9htIdUUDb8xTo7U9rcf+C2bDZfKQDHVbXqkz++L4ZjxKqSGEUl9G7OO13XCcDb4l39gi2Cc8DOjL0cQYeudr6BMdYjyqXhDu/sWGiM/qAb9CMmcVJeaBozTbqyR49s8ebctP1G5DbVn8F723Q
- +H+trtTZ
- 9/cniUdsW5W0XA97soy8PA0FGBuGhcvtJgN50vv96TY5YBS5ilIM9ilBMKlZASXF2Vdc4iiR5iVes3cG+XeVbRDkcJleJPSopt6MyHH8I3UrAXpHCnlvCKDguRJdQBfEH1l9Jkiw8LrMYYLnktSFCpV+xgL8YJpVvGreeVzgW/Q5o/jleDWk6/NrhsR6ffP3njllJoZ5ivPe7S6hre1OU3TgtQ7y8rQJmCOVVZw8Mv1gnfeXNZgQJzyjFJ57zsehxbAmfUkM7mYPTb1TN0m0kr9Om9ceAbfGGkWDEQON3vMC6VUEZ/MGLGAPjEcfaPikDoDEEMAqmKPgvzSM=
+X-HE-Tag: 1755856705-90648
+X-HE-Meta: U2FsdGVkX1/mCPBHQjRn9zffHujMG4Dqx9GYAHZyxaOrkG3SvTln4+Mp+bOqoyqw8roWF3vyOitxEYa7xmswEi3cQU1mpbvdk3EYzICnlDrCElqQcFRrD6HTlNoFkBycyn9FLC5NL3H1GbN0LGnAaw+wtJiuL+jU2Uzl8QJAr2V//73lW13BHlQuNUPSOlCwUI3QC/BXiwvrpDo1PPj6azpzWlLdEv1A4bY+Z4vJIc7MLkZ5n6R7VUcCuH1FEmi/S2sTqyREVRkS8xNGwAiCTTI+zQeH+kw1V6dZDtL58zDlFpotOfQynX50EFYbeRCLf0bDzXV/EJ6werAhbbIxAfG7xdQfIGjC1Ov9RguERuzHmyXvTxXPoOtlx+YQC9q5Hdfmdu1h6jbZwxjbXT0vNDzgZyWD7Kq3OkNPO4JkVBCDubhxKSX65KcTWcGWovgO9teuNrXErKwMZ3gifGP60PgepzT5TIi/6lIMCuIzvlbG8XhxT72Z6pZ3cPO6PUtM7l5JWRtXMNUWgk8H3TcAtmcWaMj1C9elBMwYovDsaEC8mKBpNkeEcl6hxF2xgeyZTP1dtq71NGt4bBlHfxm7Ibbt766mSI0juWQa59L98jtRz4PSlB9lCN0pdmMLA1t4CVLYuTQTMrZ6nlOd2CwcwkpeTW2zMpFJ5lSDf+b/TQ65+XFt6kiO9iZO8aoG0JXdd2BIKgNHLQW+xCU1UCWV0jIERljWPz/LemBw8b5mJR4pQ2G6hQ1KP1NNOwc/ogM3xk6eXGNhO1l9eHnCIqE9hM6AwyBA1yBzKjTTJa5lb6D5M9jH+VnHimQQmEZ2yZzCITJqm6O2ngtc8vg3qgx1fxy0AVexsetjMNjb3CDuxYH5g7DS3URRq/iiSdaFwg3pDELoltIfIyHhrtlIIqrc+ueNU/tJlaABmpO8G7omStsnT2/RgJKCEHluPfWQJ/iGhFyS6BJc9buIocV6kkc
+ AhRluvre
+ UwcNhMt1wGuR+7oc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,112 +118,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Allthough masked_user_access_begin() is to only be used when reading
-data from user at the moment, introduce masked_user_read_access_begin()
-and masked_user_write_access_begin() in order to match
-user_read_access_begin() and user_write_access_begin().
+Commit 74e19ef0ff80 ("uaccess: Add speculation barrier to
+copy_from_user()") added a redundant barrier_nospec() in
+copy_from_user(), because powerpc is already calling
+barrier_nospec() in allow_read_from_user() and
+allow_read_write_user(). But on other architectures that
+call to barrier_nospec() was missing. So change powerpc
+instead of reverting the above commit and having to fix
+other architectures one by one. This is now possible
+because barrier_nospec() has also been added in
+copy_from_user_iter().
 
-That means masked_user_read_access_begin() is used when user memory is
-exclusively read during the window, masked_user_write_access_begin()
-is used when user memory is exclusively writen during the window,
-masked_user_access_begin() remains and is used when both reads and
-writes are performed during the open window. Each of them is expected
-to be terminated by the matching user_read_access_end(),
-user_write_access_end() and user_access_end().
+Move barrier_nospec() out of allow_read_from_user() and
+allow_read_write_user(). This will also allow reuse of those
+functions when implementing masked user access which doesn't
+require barrier_nospec().
 
-Have them default to masked_user_access_begin() when they are
-not defined.
+Don't add it back in raw_copy_from_user() as it is already called
+by copy_from_user() and copy_from_user_iter().
 
+Fixes: 74e19ef0ff80 ("uaccess: Add speculation barrier to copy_from_user()")
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
-v2: Added more explanations in the commit message following comments received.
----
- fs/select.c             | 2 +-
- include/linux/uaccess.h | 7 +++++++
- kernel/futex/futex.h    | 4 ++--
- lib/strncpy_from_user.c | 2 +-
- lib/strnlen_user.c      | 2 +-
- 5 files changed, 12 insertions(+), 5 deletions(-)
+ arch/powerpc/include/asm/kup.h     | 2 --
+ arch/powerpc/include/asm/uaccess.h | 4 ++++
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/select.c b/fs/select.c
-index 082cf60c7e23..36db0359388c 100644
---- a/fs/select.c
-+++ b/fs/select.c
-@@ -777,7 +777,7 @@ static inline int get_sigset_argpack(struct sigset_argpack *to,
- 	// the path is hot enough for overhead of copy_from_user() to matter
- 	if (from) {
- 		if (can_do_masked_user_access())
--			from = masked_user_access_begin(from);
-+			from = masked_user_read_access_begin(from);
- 		else if (!user_read_access_begin(from, sizeof(*from)))
- 			return -EFAULT;
- 		unsafe_get_user(to->p, &from->p, Efault);
-diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
-index 1beb5b395d81..aa48d5415d32 100644
---- a/include/linux/uaccess.h
-+++ b/include/linux/uaccess.h
-@@ -41,6 +41,13 @@
-  #define mask_user_address(src) (src)
- #endif
+diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
+index 2bb03d941e3e..6737416dde9f 100644
+--- a/arch/powerpc/include/asm/kup.h
++++ b/arch/powerpc/include/asm/kup.h
+@@ -134,7 +134,6 @@ static __always_inline void kuap_assert_locked(void)
  
-+#ifndef masked_user_write_access_begin
-+#define masked_user_write_access_begin masked_user_access_begin
-+#endif
-+#ifndef masked_user_read_access_begin
-+#define masked_user_read_access_begin masked_user_access_begin
-+#endif
-+
- /*
-  * Architectures should provide two primitives (raw_copy_{to,from}_user())
-  * and get rid of their private instances of copy_{to,from}_user() and
-diff --git a/kernel/futex/futex.h b/kernel/futex/futex.h
-index 2cd57096c38e..a1120a318c18 100644
---- a/kernel/futex/futex.h
-+++ b/kernel/futex/futex.h
-@@ -303,7 +303,7 @@ static __always_inline int futex_get_value(u32 *dest, u32 __user *from)
- 	u32 val;
- 
- 	if (can_do_masked_user_access())
--		from = masked_user_access_begin(from);
-+		from = masked_user_read_access_begin(from);
- 	else if (!user_read_access_begin(from, sizeof(*from)))
- 		return -EFAULT;
- 	unsafe_get_user(val, from, Efault);
-@@ -318,7 +318,7 @@ static __always_inline int futex_get_value(u32 *dest, u32 __user *from)
- static __always_inline int futex_put_value(u32 val, u32 __user *to)
+ static __always_inline void allow_read_from_user(const void __user *from, unsigned long size)
  {
- 	if (can_do_masked_user_access())
--		to = masked_user_access_begin(to);
-+		to = masked_user_write_access_begin(to);
- 	else if (!user_write_access_begin(to, sizeof(*to)))
- 		return -EFAULT;
- 	unsafe_put_user(val, to, Efault);
-diff --git a/lib/strncpy_from_user.c b/lib/strncpy_from_user.c
-index 6dc234913dd5..5bb752ff7c61 100644
---- a/lib/strncpy_from_user.c
-+++ b/lib/strncpy_from_user.c
-@@ -126,7 +126,7 @@ long strncpy_from_user(char *dst, const char __user *src, long count)
- 	if (can_do_masked_user_access()) {
- 		long retval;
+-	barrier_nospec();
+ 	allow_user_access(NULL, from, size, KUAP_READ);
+ }
  
--		src = masked_user_access_begin(src);
-+		src = masked_user_read_access_begin(src);
- 		retval = do_strncpy_from_user(dst, src, count, count);
- 		user_read_access_end();
- 		return retval;
-diff --git a/lib/strnlen_user.c b/lib/strnlen_user.c
-index 6e489f9e90f1..4a6574b67f82 100644
---- a/lib/strnlen_user.c
-+++ b/lib/strnlen_user.c
-@@ -99,7 +99,7 @@ long strnlen_user(const char __user *str, long count)
- 	if (can_do_masked_user_access()) {
- 		long retval;
+@@ -146,7 +145,6 @@ static __always_inline void allow_write_to_user(void __user *to, unsigned long s
+ static __always_inline void allow_read_write_user(void __user *to, const void __user *from,
+ 						  unsigned long size)
+ {
+-	barrier_nospec();
+ 	allow_user_access(to, from, size, KUAP_READ_WRITE);
+ }
  
--		str = masked_user_access_begin(str);
-+		str = masked_user_read_access_begin(str);
- 		retval = do_strnlen_user(str, count, count);
- 		user_read_access_end();
- 		return retval;
+diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+index 4f5a46a77fa2..3987a5c33558 100644
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -301,6 +301,7 @@ do {								\
+ 	__typeof__(sizeof(*(ptr))) __gu_size = sizeof(*(ptr));	\
+ 								\
+ 	might_fault();					\
++	barrier_nospec();					\
+ 	allow_read_from_user(__gu_addr, __gu_size);		\
+ 	__get_user_size_allowed(__gu_val, __gu_addr, __gu_size, __gu_err);	\
+ 	prevent_read_from_user(__gu_addr, __gu_size);		\
+@@ -329,6 +330,7 @@ raw_copy_in_user(void __user *to, const void __user *from, unsigned long n)
+ {
+ 	unsigned long ret;
+ 
++	barrier_nospec();
+ 	allow_read_write_user(to, from, n);
+ 	ret = __copy_tofrom_user(to, from, n);
+ 	prevent_read_write_user(to, from, n);
+@@ -415,6 +417,7 @@ static __must_check __always_inline bool user_access_begin(const void __user *pt
+ 
+ 	might_fault();
+ 
++	barrier_nospec();
+ 	allow_read_write_user((void __user *)ptr, ptr, len);
+ 	return true;
+ }
+@@ -431,6 +434,7 @@ user_read_access_begin(const void __user *ptr, size_t len)
+ 
+ 	might_fault();
+ 
++	barrier_nospec();
+ 	allow_read_from_user(ptr, len);
+ 	return true;
+ }
 -- 
 2.49.0
 
