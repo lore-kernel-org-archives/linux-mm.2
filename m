@@ -4,112 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E248DCA0FE1
-	for <linux-mm@archiver.kernel.org>; Sat, 23 Aug 2025 17:55:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27746CA0EFF
+	for <linux-mm@archiver.kernel.org>; Sat, 23 Aug 2025 18:18:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E21956B00B9; Sat, 23 Aug 2025 13:55:25 -0400 (EDT)
+	id 442696B0007; Sat, 23 Aug 2025 14:18:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF8FE6B00BA; Sat, 23 Aug 2025 13:55:25 -0400 (EDT)
+	id 41A586B0008; Sat, 23 Aug 2025 14:18:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D153E6B00BB; Sat, 23 Aug 2025 13:55:25 -0400 (EDT)
+	id 357C06B000A; Sat, 23 Aug 2025 14:18:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BDFC76B00B9
-	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 13:55:25 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1C912118738
-	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 17:55:25 +0000 (UTC)
-X-FDA: 83808774210.08.6D5F4FF
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 64905140003
-	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 17:55:22 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=KF1eNQhr;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 215536B0007
+	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 14:18:07 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 898241DDE01
+	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 18:18:06 +0000 (UTC)
+X-FDA: 83808831372.22.9777577
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
+	by imf04.hostedemail.com (Postfix) with ESMTP id D6A2940008
+	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 18:18:04 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of 32wWqaAkbANoOUVG6HHAN6LLE9.CKKCHAQOAN8KJPAJP.8KI@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.71 as permitted sender) smtp.mailfrom=32wWqaAkbANoOUVG6HHAN6LLE9.CKKCHAQOAN8KJPAJP.8KI@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755971723;
+	s=arc-20220608; t=1755973084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pvl9c6cQ/v3Ith5O9jHlM84cQ80gOrdpUe2c7aLFCNQ=;
-	b=QJQqrM6/tLV8X5tDYMFvQ9HeqHSOlGAFqB3EtxmWkrGyUIDFrOlcxCYQpmFjkbt2mRSOxD
-	UZWHxFjyrzrCGAc2oW8hR4986x53K7PyJOL5mWDOt14sAOjziISWHx4Zj+NEnxudzFLmI8
-	Jebq2QwPipjmSLNLxbEr8h7byoZNCIk=
+	 in-reply-to:in-reply-to:references;
+	bh=AvrGI5lO0JIHO5yIhJ25utXK+qOPL1vuXZ2aqhdEn0Q=;
+	b=PyaVXUXWSCZqdBkOUHPcPyVxA5PzUGLQ/HhIMlwIbv0R6oHvWC9/fLMq3w/Dhouw6iG9ns
+	bCDaIt6P3lRM4IDf1TqawXhwVLERh9PdlEHzMQ/eIjemTbXU3rWwUaWOFmM0jD0XRIIlN3
+	31G+w8M1b+PrFnRnB7H4aYUk2TT33Wg=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=KF1eNQhr;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755971723; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of 32wWqaAkbANoOUVG6HHAN6LLE9.CKKCHAQOAN8KJPAJP.8KI@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.71 as permitted sender) smtp.mailfrom=32wWqaAkbANoOUVG6HHAN6LLE9.CKKCHAQOAN8KJPAJP.8KI@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755973084; a=rsa-sha256;
 	cv=none;
-	b=MH0+OhpopVFyawvb/9U/kX6zqsmvEn9GdNGkuCjiBV8DVmgrYiIp1N8dRj+696JPXq70oo
-	Wh2GUZdenv/0q4FYocTc9WFEcQG8GLBhun6m0Nwlw0RighxLWuCv4/yOpi90SwklGftp3w
-	5ohj2ZyO20Tsg+TxBw7TFqvkL8juQac=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755971723; x=1787507723;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fBJPHujQaTfeJ/QhlahQ1Q7Dchv0xfwiZ8tXvM4XPX0=;
-  b=KF1eNQhr832835eaQU7rRmy+5mDMjkcO0NJ86M6Y8qiNtTwejZdvxsKu
-   oFlXeCWtvuYxkD1Mq4VySaez6OrmJDrIQeA5b2QqIGVCaJ/0yOSuP3UzI
-   laBeY5uLklbXcG1AYmvginkCvoU9dWxmE7H2nt1fJNVAr7Mm4Xbr/W1GF
-   QKyarfSuhuyzlfv7rUZwZz74mb6ve/kCyjBfPjBqjSjuldEJcd6rvFsgV
-   HmQjxU0ahiiohJ/b4Rk8qXBb2JBuuk7ubpjRGEC2/2FWNhW28hOOUKVN2
-   RyqXz/+Kq1gJWvC6wkkAciHmPIoWvKN8WKIqjhX2SXxGAkmC6aZyWswQK
-   w==;
-X-CSE-ConnectionGUID: HewRjnYySxCVUj6tV+/Gwg==
-X-CSE-MsgGUID: vQopoDcbTM+s85gt0ykhWA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="75699938"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="75699938"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2025 10:55:21 -0700
-X-CSE-ConnectionGUID: aWklkkZATGyZegBWr3QXJg==
-X-CSE-MsgGUID: 4XPQOh4hSRmImI3tNEsAzw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="174247581"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa005.jf.intel.com with ESMTP; 23 Aug 2025 10:55:17 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1upsSQ-000MUB-0W;
-	Sat, 23 Aug 2025 17:55:14 +0000
-Date: Sun, 24 Aug 2025 01:54:52 +0800
-From: kernel test robot <lkp@intel.com>
-To: Steven Rostedt <rostedt@goodmis.org>, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: Re: [PATCH v6 2/3] tracing: Add a tracepoint verification check at
- build time
-Message-ID: <202508240152.kQo4DBMl-lkp@intel.com>
-References: <20250820174828.080947631@kernel.org>
+	b=DZ9jcbmLrYw7Mpo9Q40X2FIorOLuG4ExBJ2g1e4igyz+lkK+rftYPbtckIef4TQ6hYmbzm
+	LaUEwJGMqLXALv12GcSRDqxtNlu6OjIEV0A3aZLbMs9+AJdEcPnwCfkAMm1PzwRkn8hrMu
+	y4+U7Bc/EGWw0Az3Tos85SgWyIdENgU=
+Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-88432d88f64so724055239f.1
+        for <linux-mm@kvack.org>; Sat, 23 Aug 2025 11:18:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755973084; x=1756577884;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AvrGI5lO0JIHO5yIhJ25utXK+qOPL1vuXZ2aqhdEn0Q=;
+        b=dL9F2q1jDR6JbKk0Bh6+k9xNxpSAmtLt4HI66uIB1Khql30ZstX25/SXgCQTqPbllk
+         33q2g6JVgUaHpKKa3ip347gJLvkTzVRE439XyMJ38NOVrfw/hrUuqbsBAyabKAfGgcHS
+         6oBiqsNBPBwDcot/LW9ASDschCAfpkhZUM7roYrtFZhAAnu/CWOOSpiHIrGscMkXBTbe
+         ot1qfQ+cU34lF6Ie1sjdaCHyYGZsbbHajBCVLBQOKlLSKq9kexQGwl+P5jLmwSgA6dKx
+         idoR91JJdzO8xn2bncFo5uyNdapM+8Hub927L80tiZSkxjJTrcgtjyt8FblpjqtiUcDx
+         z+jQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWOCOxOAEWosGO/tb2sHYfmBwPSxvXFb8TTvvK9u6fFQRmff/zTKMHytxdZK5QaUlBu3nLzes/LuA==@kvack.org
+X-Gm-Message-State: AOJu0YzI6oE8CS8ubgUKR0t40onu8gkcaY5C/D/YoAOHqyWGgoBEJ0/V
+	PKlfYe/wtfZ3U9pwkYdYGTjYxwMRzxrERXi1Jb6qE7/Obn6I+4HOP3v5G1NRVtLpv76BgshdfhU
+	ot76hL+dMEay87ykvFRpgalg5v/WGZMvBASwW6UnJjk2u7Lko94dubO3nDVk=
+X-Google-Smtp-Source: AGHT+IFVwc7hI9obtt58xxmeGlSqaexaNaLEJlVyz/6DHUm5aTWR3nDdjKIhdaWkxLxfEoeiFurMgXW4Mo4jsyqrFY4PSYwGOcQk
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250820174828.080947631@kernel.org>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 64905140003
-X-Stat-Signature: mgiwg547y9dz47ks4o5xi4i1uocm99bd
+X-Received: by 2002:a05:6e02:184f:b0:3eb:5862:7cea with SMTP id
+ e9e14a558f8ab-3eb586280a4mr20689245ab.15.1755973083974; Sat, 23 Aug 2025
+ 11:18:03 -0700 (PDT)
+Date: Sat, 23 Aug 2025 11:18:03 -0700
+In-Reply-To: <20250823100703.0a0239d204ca2487363d2adf@linux-foundation.org>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68aa05db.050a0220.37038e.0069.GAE@google.com>
+Subject: Re: [syzbot] [mm?] kernel BUG in page_table_check_set
+From: syzbot <syzbot+49a796ed2c9709652f1e@syzkaller.appspotmail.com>
+To: ajd@linux.ibm.com, akpm@linux-foundation.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, pasha.tatashin@soleen.com, ritesh.list@gmail.com, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: D6A2940008
 X-Rspam-User: 
-X-HE-Tag: 1755971722-909403
-X-HE-Meta: U2FsdGVkX18v23WE23Yyx6alVfGkdg3BkfbPxSyxgC0gMb0eHongsViNarq70piaTmOxPgpfLnpF+Q7B27zvY38eLDZrNE4dk72Cvv737Uhwhu7HBLEx41Ap/y87HcwAkVakEDCqXo694XSzebagTFYGTwbTEIOjl8LsWqcjymMXq7uwaE5w18Nyqcy75poxnR2yyN55NEXakPXYmT3CGow6vwV28yNFyagPWiRZdPLscmFt7r+l4pIPdm8Vvxv4Io/THwJjt+QwrOegEv0jUNAA4riI4oP6XJjllDuKwmktpWdwwjZaDbR5bruG2yHsZ6BgrQrunaYsT1LFQkBbIS/+rAZoCHpjRvpSxBDVRXJATEPjccRDFmk1o7ShXVVFuTbnZTZMu2x1t/1YQPD28NH2kxGS+gbiU4Qdx0Un1mq+FC8EfkoxsOTyhYpajYSaqPPqCLKsh+Y1GGDGS1JuI2JneCrKIS5E3IaTiKgIh8s/i+ODkRP2B/mrKPtuAHkJJekG2xH0CM20LLlDrLgNimOaiQdjaDAK+wYtybMwBOs0uI96i11G68wz2j+J4yDuURxZ6D5PQ7L+mqmUu/RodHkYP9/+C0yLB9+akIiC5mm/iRMIyWPdTv6Eu7O4q4Dhr/o5DLJRHVTO17SMeMf4Q1JYbvS9CtOxrElOjRGP+Q5AaS0AI5b5xXZLyMGWi4aku6dkAJNSKZX//AQrKEfD8MpSsJRtCtJpe+N20Vw7FXachd4FACum6NBazUlVBcgdVe9aHujSzZWjKM9eTPYLrCfrgxbzh8Xd+mnE7bKsWTshkjucLTT7PCH1y7K4NIgXR30P6xa85XIygIh3PodMSB3vsjvekNSARAhQsDKAqAU8+L+xY0+6QEH9yw2o/N79rDPg2nKnX7CST0ZikNRYfo9AkJGMBuvbKr6o9HRqvaADh3MBsKLic/gZiWh1O8PSGAo89UssNiMeyY/LJE2
- WyuUuJL6
- mIbB0wH8f0sRPU0gLQoBUDbeX8bshga1a3st+5wYEM5CuFKQ3Sg8lgSuNGtgiYOdM/Fs5yZ01+TT5Bi+h815OfEuOrnd6P8JZ3ooFCRj0VOhWXhuByCbwgQY30I2ajWvYn7dC+j/RFmM37h4NacYpBvKIXE5MXy4r3UnKXV8UAatRhsRcR0yqhmpdwjcoOTKY06KJc7oPEXZloIOYA53rXO+t5LZRgWQZCCF+TsRjqOnBS58K9vuweYSJgW66KL9qA/I76ChRm7ezO4SgMP94wa+dudtFFLHc/OxI/BJtS0nmBQSqk/sUm26qqf4nUx43wSnOe511cUbVoV0g59R+qVpGHlUCtjMMQpikXvjHZuUWns3eJH9N1tGIxG3nzv9MDgeXJFPSHbGh5UH7afMmP1109ZB4XYIGYQl9X+M9rihOIYc=
+X-Stat-Signature: dk96qtuqxo659wwq3q8aguqss6abjsj5
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1755973084-510448
+X-HE-Meta: U2FsdGVkX19lFUF/X+L43TUnsX5G6AI7B5xsDHwJ9ORqFJaxRupcee7DgHqDmGOQmspLu/8rBuvWE7Ln2adDzU6qyLCCDC3OY4liIMkWyLW03+6l2kw2lBn4gKCzZp/I+GVt4YViOdCb2vMOCXO+Jwdp1adSCESxu+HS0SZdht6QluqOfR8gkHSVnevZpJa7kykamg1xA1sWqC2lK6BvDi7EeXi/Tqx+6VQo9fvMOjK7QykKilzT7cHB3enxJ8sKjat1S8yp9pBlEXORVleTi45xhyY1O37G8aFGx/F8SU+c3BqXze5AYTEE40cMKNhd4r2jPH5VBklYTJPSsAMRdddgudMg0YYm8guukv5gngp1nMDavET6H9P+twT+hWgn2APoZO+WHKblBrzmIvH1aGWQHmnUwsmm7uREEeh+LhaepgclpF9roigEOfpmbaNizdkn3wdzXfc3fkcdHLiuvRM9aGxtmRmH5dGCA308R98YmAFChtxXzKJS9h2PkSozyUAYXNz/NHNP9+xeD1x1v2ffXJc+RvU1vaX1FY4qD2LI/ADlLFwPyur5VY+vrpohSfxA8Y5wl8a8PnOha6NprUc9N4T1udN4Rz+VN0G1zIwCUQkTVgUgKMD8he9SjxqeCc/C7Ks3kV/QJ5yTOr5QzmkjEdtTtvwvPkbBYIVxipQ8pTYnwIjRO7IENylPYBEBVXHMkRlxQE+5i2Q9GmJPHrURpd4uuPhvXRK5hERlEcLKHQlqvWpZF+BeHU53vSH5j+7s7JCIqBAWr8wOkgwcT1MiW9myha+DmAD+Oewohkhp3O3WHtbH3fizrPJACreGK0aE61f4hTj3vJFHjycYHQ1o8RN9msuRZFUQeUygw8UhMSEZqeitM3+X7gmuLQxGIOO8waoENizEYg730aoPRpL3kCiH0/S91TnaukOtrLzO2Uhpb0jiJ+yymi/k0Y/rMYr/S5G7S4SqKnUWLP6
+ n6Z6CowU
+ tqw93g7v+WyVrTspOoJma+tHgqAblvRG2xrWVoT+IB5v7/qaIOKf144bW/ecUXRD1XTvxr7EEM3p6TDMxiYIgINp+edKjpwGQMIm9N/ulUh1hrKfeqopAdElc7vLm1XSTknr2Da5MJMarg0H8MiAG/7H8/iR6FInEXwzzodTHcGpMdtbEK8a97BCBGlmreCAlkdaAiywxrGjdLMp7GYEmSDyABYo186xv5DCy1ylyKfZslPeq80bR0BEvtl1SaHragwRN+oOzPZsF6MwWItJi0xj2OwWFGmemDACHoC1McCUWMGgsUTEs1B7ufmTGgaw1JxDQIoW3kOsmqMoDbRp2ZkGdkYY8QwdyZkGRHEBfpUt6ea1pXeKh/c9iCOcaUAH4WDpttCwB2+HZnPmlyACFnDudUTLUshEJJGDaFZmF1sRTM7DWu+B8Hkla4TblZHPRu/6+EXupRHqgCj6WJgxuaZPUkLMfTkHIWs9ZjPdZ4lVwNxLkXoBRRB4Vc/0v6LVwgLCNoIrr7ZpMd16AdlPRGV9e7ywFxqSSeWu2hSXvZne/r5ezmGL79l0Yu9ehpVbV4ka5vGBNa76gcW+uBu1PA62NJEWztn2C0dK5/hCp8b+3ot/r6JLrdVZQ23QIDBx6TpH8p5rgFmxyoSfOe+KsisqALGllt9KJR2eIDTrAmlhAD5Dj6gRSTkGlbg4VyUB99B6ppuRa3aaOfGdsIKlcr1r6hCpIj20+B6g9oJcfN+Kj725lnlL/FQvr549Co79gSYFI2Dt+nuq6hGIj6hZJejKSrEYe9+ZxSnotUeOE597pPOR8uvvHiIF2jaaOAddGP4dCZ0jt0/IkabSGG+lGyoRjUAlO1nD9WdX4w+93I55NyqJYkJUeBmm+tek+Hq/JcFr7VgGZAkJMGxocQUajqPtVjG7Vm8o1FP6DM/Dz7I6mR+UqBCGjJvRXvAiO1GsZVqGVYl3utv2wS9tr/vIMy1MONMi/
+ lQQY+q29
+ 3LDTpqiqeE+m8zdyhcQp8cecjqmhZC660PsN90r5xfYJtqXNLAG8H9LOrfat8zp6YAeITKdSb38=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,176 +99,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Steven,
+Hello,
 
-kernel test robot noticed the following build warnings:
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-[auto build test WARNING on trace/for-next]
-[also build test WARNING on akpm-mm/mm-everything linus/master v6.17-rc2 next-20250822]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Reported-by: syzbot+49a796ed2c9709652f1e@syzkaller.appspotmail.com
+Tested-by: syzbot+49a796ed2c9709652f1e@syzkaller.appspotmail.com
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Steven-Rostedt/sorttable-Move-ELF-parsing-into-scripts-elf-parse-ch/20250821-015048
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace for-next
-patch link:    https://lore.kernel.org/r/20250820174828.080947631%40kernel.org
-patch subject: [PATCH v6 2/3] tracing: Add a tracepoint verification check at build time
-config: x86_64-randconfig-003-20250823 (https://download.01.org/0day-ci/archive/20250824/202508240152.kQo4DBMl-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14+deb12u1) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250824/202508240152.kQo4DBMl-lkp@intel.com/reproduce)
+Tested on:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508240152.kQo4DBMl-lkp@intel.com/
+commit:         c17b750b Linux 6.17-rc2
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+console output: https://syzkaller.appspot.com/x/log.txt?x=1058a7bc580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=34aa432f9050e15d
+dashboard link: https://syzkaller.appspot.com/bug?extid=49a796ed2c9709652f1e
+compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+userspace arch: arm64
 
-All warnings (new ones prefixed by >>):
-
-   warning: tracepoint 'nfsd_cb_setup_err' is unused.
-   warning: tracepoint 'nfsd_cb_setup' is unused.
-   warning: tracepoint 'nfsd_cb_rpc_release' is unused.
-   warning: tracepoint 'nfsd_cb_rpc_done' is unused.
-   warning: tracepoint 'nfsd_cb_rpc_prepare' is unused.
-   warning: tracepoint 'nfsd_cb_shutdown' is unused.
-   warning: tracepoint 'nfsd_cb_lost' is unused.
-   warning: tracepoint 'nfsd_cb_probe' is unused.
-   warning: tracepoint 'nfsd_cb_new_state' is unused.
-   warning: tracepoint 'nfsd_cb_start' is unused.
-   warning: tracepoint 'nfsd_cb_nodelegs' is unused.
-   warning: tracepoint 'nfsd_cb_args' is unused.
-   warning: tracepoint 'nfsd_clid_confirmed_r' is unused.
-   warning: tracepoint 'nfsd_clid_fresh' is unused.
-   warning: tracepoint 'nfsd_clid_verf_mismatch' is unused.
-   warning: tracepoint 'nfsd_clid_cred_mismatch' is unused.
-   warning: tracepoint 'nfsd_grace_complete' is unused.
-   warning: tracepoint 'nfsd_grace_start' is unused.
-   warning: tracepoint 'nfsd_mark_client_expired' is unused.
-   warning: tracepoint 'nfsd_clid_stale' is unused.
-   warning: tracepoint 'nfsd_clid_renew' is unused.
-   warning: tracepoint 'nfsd_clid_purged' is unused.
-   warning: tracepoint 'nfsd_clid_replaced' is unused.
-   warning: tracepoint 'nfsd_clid_admin_expired' is unused.
-   warning: tracepoint 'nfsd_clid_destroyed' is unused.
-   warning: tracepoint 'nfsd_clid_confirmed' is unused.
-   warning: tracepoint 'nfsd_clid_reclaim_complete' is unused.
-   warning: tracepoint 'nfsd_clid_expire_unconf' is unused.
-   warning: tracepoint 'nfsd_slot_seqid_sequence' is unused.
-   warning: tracepoint 'nfsd_slot_seqid_unconf' is unused.
-   warning: tracepoint 'nfsd_slot_seqid_conf' is unused.
-   warning: tracepoint 'nfsd_seq4_status' is unused.
-   warning: tracepoint 'nfsd_stateowner_replay' is unused.
-   warning: tracepoint 'nfsd_stid_revoke' is unused.
-   warning: tracepoint 'nfsd_open_confirm' is unused.
-   warning: tracepoint 'nfsd_preprocess' is unused.
-   warning: tracepoint 'nfsd_deleg_return' is unused.
-   warning: tracepoint 'nfsd_deleg_write' is unused.
-   warning: tracepoint 'nfsd_deleg_read' is unused.
-   warning: tracepoint 'nfsd_open' is unused.
-   warning: tracepoint 'nfsd_layout_recall_release' is unused.
-   warning: tracepoint 'nfsd_layout_recall_fail' is unused.
-   warning: tracepoint 'nfsd_layout_recall_done' is unused.
-   warning: tracepoint 'nfsd_layout_recall' is unused.
-   warning: tracepoint 'nfsd_layout_return_lookup_fail' is unused.
-   warning: tracepoint 'nfsd_layout_commit_lookup_fail' is unused.
-   warning: tracepoint 'nfsd_layout_get_lookup_fail' is unused.
-   warning: tracepoint 'nfsd_layoutstate_free' is unused.
-   warning: tracepoint 'nfsd_layoutstate_unhash' is unused.
-   warning: tracepoint 'nfsd_layoutstate_alloc' is unused.
-   warning: tracepoint 'nfsd_delegret_wakeup' is unused.
-   warning: tracepoint 'nfsd_clone_file_range_err' is unused.
-   warning: tracepoint 'nfsd_compound_encode_err' is unused.
-   warning: tracepoint 'nfsd_compound_op_err' is unused.
-   warning: tracepoint 'nfsd_compound_decode_err' is unused.
-   warning: tracepoint 'nfsd_compound_status' is unused.
-   warning: tracepoint 'nfsd_compound' is unused.
-   warning: tracepoint 'xfs_metadir_link' is unused.
-   warning: tracepoint 'xfs_metadir_start_link' is unused.
-   warning: tracepoint 'xfs_file_dax_write' is unused.
-   warning: tracepoint 'xfs_file_dax_read' is unused.
-   warning: tracepoint 'xrep_done' is unused.
-   warning: tracepoint 'xrep_attempt' is unused.
-   warning: tracepoint 'cachefiles_ondemand_fd_release' is unused.
-   warning: tracepoint 'cachefiles_ondemand_fd_write' is unused.
-   warning: tracepoint 'cachefiles_ondemand_cread' is unused.
-   warning: tracepoint 'cachefiles_ondemand_read' is unused.
-   warning: tracepoint 'cachefiles_ondemand_close' is unused.
-   warning: tracepoint 'cachefiles_ondemand_copen' is unused.
-   warning: tracepoint 'cachefiles_ondemand_open' is unused.
-   warning: tracepoint 'ocfs2_encode_fh_begin' is unused.
-   warning: tracepoint 'ocfs2_duplicate_clusters_by_jbd' is unused.
-   warning: tracepoint 'zonefs_file_dio_append' is unused.
-   warning: tracepoint 'edma_readb' is unused.
-   warning: tracepoint 'edma_readw' is unused.
-   warning: tracepoint 'xe_exec_queue_supress_resume' is unused.
-   warning: tracepoint 'xe_vm_restart' is unused.
-   warning: tracepoint 'xe_vma_userptr_rebind_exec' is unused.
-   warning: tracepoint 'xe_vma_userptr_rebind_worker' is unused.
-   warning: tracepoint 'xe_vma_flush' is unused.
-   warning: tracepoint 'dma_fence_emit' is unused.
-   warning: tracepoint 'scsi_zone_wp_update' is unused.
-   warning: tracepoint 'scsi_prepare_zone_append' is unused.
-   warning: tracepoint 'ata_sff_flush_pio_task' is unused.
-   warning: tracepoint 'atapi_send_cdb' is unused.
-   warning: tracepoint 'atapi_pio_transfer_data' is unused.
-   warning: tracepoint 'ata_sff_pio_transfer_data' is unused.
-   warning: tracepoint 'ata_sff_port_intr' is unused.
-   warning: tracepoint 'ata_sff_hsm_command_complete' is unused.
-   warning: tracepoint 'ata_sff_hsm_state' is unused.
-   warning: tracepoint 'ata_bmdma_status' is unused.
-   warning: tracepoint 'ata_bmdma_stop' is unused.
-   warning: tracepoint 'ata_bmdma_start' is unused.
-   warning: tracepoint 'ata_bmdma_setup' is unused.
-   warning: tracepoint 'ata_exec_command' is unused.
-   warning: tracepoint 'ata_tf_load' is unused.
-   warning: tracepoint 'ice_tx_tstamp_complete' is unused.
-   warning: tracepoint 'ice_tx_tstamp_fw_done' is unused.
-   warning: tracepoint 'ice_tx_tstamp_fw_req' is unused.
-   warning: tracepoint 'ice_tx_tstamp_request' is unused.
->> warning: tracepoint 'mlx5e_rep_neigh_update' is unused.
-   warning: tracepoint 'xhci_dbc_giveback_request' is unused.
-   warning: tracepoint 'xhci_dbc_queue_request' is unused.
-   warning: tracepoint 'xhci_dbc_free_request' is unused.
-   warning: tracepoint 'xhci_dbc_alloc_request' is unused.
-   warning: tracepoint 'xhci_dbc_gadget_ep_queue' is unused.
-   warning: tracepoint 'xhci_dbc_handle_transfer' is unused.
-   warning: tracepoint 'xhci_dbc_handle_event' is unused.
-   warning: tracepoint 'musb_req_deq' is unused.
-   warning: tracepoint 'musb_req_enq' is unused.
-   warning: tracepoint 'musb_req_start' is unused.
-   warning: tracepoint 'musb_req_free' is unused.
-   warning: tracepoint 'musb_req_alloc' is unused.
-   warning: tracepoint 'musb_req_rx' is unused.
-   warning: tracepoint 'musb_req_tx' is unused.
-   warning: tracepoint 'musb_req_gb' is unused.
-   warning: tracepoint 'ufshcd_wl_resume' is unused.
-   warning: tracepoint 'ufshcd_wl_suspend' is unused.
-   warning: tracepoint 'ufshcd_system_resume' is unused.
-   warning: tracepoint 'ufshcd_system_suspend' is unused.
-   warning: tracepoint 'br_mdb_full' is unused.
-   warning: tracepoint 'tcp_hash_md5_mismatch' is unused.
-   warning: tracepoint 'tcp_hash_md5_unexpected' is unused.
-   warning: tracepoint 'devlink_hwerr' is unused.
-   warning: tracepoint 'rpc_socket_reset_connection' is unused.
-   warning: tracepoint 'rxrpc_rxgk_rekey' is unused.
-   warning: tracepoint 'rxrpc_drop_ack' is unused.
-   warning: tracepoint 'rxrpc_rx_response' is unused.
-   warning: tracepoint 'rxrpc_rx_challenge' is unused.
-   warning: tracepoint 'rxrpc_tx_challenge' is unused.
-   warning: tracepoint 'cfg80211_return_u32' is unused.
-   warning: tracepoint 'cfg80211_return_uint' is unused.
-   warning: tracepoint 'cfg80211_chandef_dfs_required' is unused.
-   warning: tracepoint 'cfg80211_send_rx_auth' is unused.
-   warning: tracepoint 'rdev_return_void_tx_rx' is unused.
-   warning: tracepoint 'rdev_resume' is unused.
-   warning: tracepoint 'rdev_suspend' is unused.
-   warning: tracepoint 'tipc_node_dump' is unused.
-   warning: tracepoint '802154_rdev_resume' is unused.
-   warning: tracepoint '802154_rdev_suspend' is unused.
-   warning: tracepoint '802154_new_scan_event' is unused.
-   warning: tracepoint '802154_drv_set_pan_coord' is unused.
->> warning: tracepoint 'batadv_dbg' is unused.
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Note: no patches were applied.
+Note: testing is done by a robot and is best-effort only.
 
