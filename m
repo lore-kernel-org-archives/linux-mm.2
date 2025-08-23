@@ -4,116 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32F68CA0EED
-	for <linux-mm@archiver.kernel.org>; Sat, 23 Aug 2025 15:17:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96140CA0EED
+	for <linux-mm@archiver.kernel.org>; Sat, 23 Aug 2025 17:02:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 154406B00B4; Sat, 23 Aug 2025 11:17:35 -0400 (EDT)
+	id 8F0468E0027; Sat, 23 Aug 2025 13:02:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12BEF6B00B5; Sat, 23 Aug 2025 11:17:35 -0400 (EDT)
+	id 8A1978E0018; Sat, 23 Aug 2025 13:02:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 019D56B00B7; Sat, 23 Aug 2025 11:17:34 -0400 (EDT)
+	id 790718E0027; Sat, 23 Aug 2025 13:02:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E1E136B00B4
-	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 11:17:34 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 36D91139279
-	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 15:17:34 +0000 (UTC)
-X-FDA: 83808376428.21.DD78E6D
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D3904C0005
-	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 15:17:31 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=GaxgiJzq;
-	spf=pass (imf10.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.219.176 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 64F848E0018
+	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 13:02:19 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0242813931B
+	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 17:02:18 +0000 (UTC)
+X-FDA: 83808640398.01.AD402A0
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 379AB8000B
+	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 17:02:17 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZkLcfEEI;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of allyheev@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=allyheev@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755968537; a=rsa-sha256;
+	cv=none;
+	b=sqaLgvbAL7pc9inRgDLeaYvHBHT14phL46845dbUyJF2cdIvZZM/gMdjLQklTslah1vsJ0
+	WCd3oeB5H1JT/zKkwIrAlp8ylwjzpxEM2NnOWPvUsttyCjFj546k/lzG2BBd9CVFYJ6XLw
+	Jt8+GM0mOphq2iDcBey/DtEZ2jBalhE=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZkLcfEEI;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of allyheev@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=allyheev@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755962252;
+	s=arc-20220608; t=1755968537;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GuRxDgISxpxh2GnvxFHQaLERLGxx6pa9QJkvdj6dXFA=;
-	b=z7yhPBeGHbfcdlRbn2Vaf9zgzaAo5M6YjKFYw6iKuprw4qK5EYZhDwkQmEIUTJmoYvGtLx
-	lrl68EnthTt4Ppn+XgwHqnMER61WkT9HjfW5aTheddU7maxDeMh2ETovgju4XEfjEUxbgQ
-	595x/WlgwxYn5dJw3vDIunula3NN9h4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755962252; a=rsa-sha256;
-	cv=none;
-	b=eT/sa1WyCwSX8l+VJvaeDkBcacbKdw9O5qyPOAKtJ4Xcxhx5bp0JKGBTI79j4WPPhT8aue
-	iLRa1nvIAWTaXs4q38/RSCe6p/QolNt+rN6a71Js7FjtIXsvlfUykBfNavHGYcmxuwtN8S
-	hXGeSIFUSex+vaUROGkZHlmHfp+l+/k=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=GaxgiJzq;
-	spf=pass (imf10.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.219.176 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e9526271af9so1054050276.3
-        for <linux-mm@kvack.org>; Sat, 23 Aug 2025 08:17:31 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Hk+p5ghEzTAvQDShLGqOKKNyxsexSgFKL80k6vJGfUg=;
+	b=EdvO17NcbRMtYPkANFpVBJd9lGb1HqSJfodwh6Laz65DWOmIyE0MOMUd4684sxCEsqgVn2
+	dikqAFQlslidLE/Y8ZRDFFZrZr4LeTpCVbT/WYyfTAZkbPTYTyoNGYlyFnkK+ucNGRRRuE
+	TMQkZf/wnGfN9HtWx8IhlSfcNjIP9Rw=
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-b475dfb4f42so2080700a12.0
+        for <linux-mm@kvack.org>; Sat, 23 Aug 2025 10:02:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1755962251; x=1756567051; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GuRxDgISxpxh2GnvxFHQaLERLGxx6pa9QJkvdj6dXFA=;
-        b=GaxgiJzqN07hctDSshzJOzXoy70vlxkaNVye6jEP5uGD6YPmdB5KVOiiCnsrlob/9k
-         s2esJNFD3+sUDxNWd2L0liR5j0be3c/wXaRWtEQ/E1/xpb7yHS2doT3PI98GUHQo0/dy
-         bNCI/lj/2FCbxaJuMWHggNmHoRWCKTvBjiMy8BgXCz2uh0QBcqxXEOnXh6bZ/fN6oS8u
-         iNfZOHxzSfgxlu3wM25xpLE1fYWvpv6zOv9l2bPmPvNflcD/2dQRcVcA8+y6sbzRWm+0
-         vbg0TGRXlm0CEbCuqV/5h+rbYkDDzEiSvMSHvIlZP1vPspnEki4X0hK65yvcrnZjMHJh
-         sjow==
+        d=gmail.com; s=20230601; t=1755968536; x=1756573336; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Hk+p5ghEzTAvQDShLGqOKKNyxsexSgFKL80k6vJGfUg=;
+        b=ZkLcfEEIepnvgtkP6dMQKAa9pYFOi/S5zLENwPnDvf/uojrqS24jij1GsyYBr3iWcn
+         ir1JtLjWY4ewB/ALoptpj898DWyhd5z1kCEFvErDzic7ca5KHJ5Afdry8/WERM5C0GEx
+         BPXZ/XA7ykKtdUccnyBkmNbok06YNHSg/inywMC5rmfxJoI+3Sluc1S5Qa36+cynX6i2
+         1CcJdoqdbPpKAyj0QWy+1L4y+VlJxCldPaXoJ7JHQAAe6XyqhhminnmY/FyMBc3ziwh1
+         qNs/boOC9rADPrAzP/JYFhG9JZSg+exizUna3JolRGPAfM2PGLLtxAlLwf67NSRY3sTO
+         LfNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755962251; x=1756567051;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GuRxDgISxpxh2GnvxFHQaLERLGxx6pa9QJkvdj6dXFA=;
-        b=eoDILyBmx2vV346xww0r3t3PTF5VtvqCGwpXVjH47Z8GbU9ZMMuqdSN0ZPBA+NTLnR
-         z24sRYOMhgdcIN325bvUG+2xN0A6uw61NHrnLguPjfeavJZ8wjkDQPaZb4UVyMtmlDTW
-         JHqWQyf+QJ9wPSgoRbel7DjDAVU3Cg11k8ffS05gD+llpnpWj04XfGiiPhQDEQrvEGu0
-         YXaCUnZ60axgg2gv62XvqlDv9EiJnOBysBbAnvqFE4EJvE5gAgwmnV1wVXtON1OPiY7L
-         NzsAR8/r/r69M2gZtwWENm1xu8/9xWtCxnRToEhJJ+qhJunj7yUhDrAtQOenNz71N92n
-         887w==
-X-Forwarded-Encrypted: i=1; AJvYcCVvI7LAqbyjNwAVpEIXf/lX1veQzrgmGAw1PD7Kv0QTEJZrdrXQwSpNC0UW1I1wgOXbomjQW4sOzA==@kvack.org
-X-Gm-Message-State: AOJu0YwrK6qW+Nu8dNmLRdSM3c0xqsuHj/O0eNLjO9e3vAS6qIp7P/Xm
-	wt/SdLeMVLBOX4fJVSy8fQkKOxbEMXDUD1p/d+sLgkC/F4cKcAv6fYTcLTy1U400PTrlOky1fj7
-	o98HJLsgduZhBq8vm4Al6dPxjR+EkfhUhOxmJQTcR+Q==
-X-Gm-Gg: ASbGncs8zqFW/w7uYkODLi6X2XitZvwH6tM/e5yWKpaEVfSCloYcD/QtUjRsG6UOsMs
-	0WmowNQ6N0rzBIPI7a1qQM1ma52tY2L95J+bWzocsi5GTCiyAh+2jgKVVTyxFGlhHZCN/sAeZ8i
-	DHUlYNt2V5cKjn+tANb2/vI6TluyCrK3OaghF9/kSY+zQbafHtlJoecNrKGu0/dEjIMZTw39MFk
-	c47rJmoAuAn
-X-Google-Smtp-Source: AGHT+IGfmqDZeqPR9mSevC/rcJ40kyyYwYfMlgm7zFyEEtXeFJRkcrNU7yLh0iiiwELRzs/EafzpuCacOFikh66vbYo=
-X-Received: by 2002:a05:690c:6102:b0:71f:f866:bba4 with SMTP id
- 00721157ae682-71ff866f374mr19817227b3.17.1755962250487; Sat, 23 Aug 2025
- 08:17:30 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1755968536; x=1756573336;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Hk+p5ghEzTAvQDShLGqOKKNyxsexSgFKL80k6vJGfUg=;
+        b=FYEErmILr+LPESNzldRXHH3cJ6GBYvOUup/5WYxyWgqSSrdaTUH97l4GFL1d8gtokL
+         /YRCH1Q7XkPQvZ23WKODThfRZA7IQkOzEX65OGKu4BXISUdvPJ7d5oESvYI9oym9OAzj
+         crx4FSEAPIfLC8uu45wGWuaqKYFaDLso1xHW4URoeVMIykKS2vesbjzSrMa/UoipSqLP
+         V4HtqjYs26cR2ltBrsHedrl/Npxh1t70bG/w5ZrDzYwTun+dVV/8J2l1OBNsc/9cNiXS
+         Le0bzj2Yb3WorGWJKkOvFMM+UNz1u/VxrbLGQL6qo/dH/EgrQEiiwpY00pPuD0PYEa3D
+         vw7w==
+X-Forwarded-Encrypted: i=1; AJvYcCVK42u0+3jzgQym2m5Sf3IUqZSLfc8Jjk0tnYJxY6VR0dj5stXLs5L2wKvrbhZT0iK01zrINy+AjA==@kvack.org
+X-Gm-Message-State: AOJu0YwqxAVD6LhmlOCRXiDzr2MS+59pOjqH1zPmJ3ozL9ArbGPXo4ye
+	V8StW4ymgC4//EEQOvUkZ4ywDLrSoibluX5EiTup7kAGQlr/IccShWJt
+X-Gm-Gg: ASbGnctQlIyqQd3u593y8i6zxiL88Az/b8ez2tHlqRLAADy2s3ne7XXSPJcEG3iucgN
+	Y1MRw1gUB3j1/HzbewF7Wh6KBy7igxbBY6DJl9zkmIYvk5VjKJzAuoBmacvIWeqiAaWQ4WbMSiT
+	/KNjdMDo2VhDjLNdywSxvwpk+Qpx97hqaV3HCDlk/D3BZnCCm5uU3FW+5a+JPk3IgQAf6H9wWup
+	hN1O5M0SmesWcyyrAfdqaoTCM2UnfBvcMq05mWILCnyoF3hPhH5YwbGQYwlH0k4+QgCA5uj6GzB
+	1eLWxiCKv3m8PMDZy9rxDIylDYTqNEBaByA6JFPhdMqnj7XdmSBm7Thv0Wa2frKaK8DFPeiUe8b
+	NLYdB+j08Adv1tBdUyBIyevDjrVV/FTAOaZyysJWLMCzOjqa3zsZh1VcIL+hC
+X-Google-Smtp-Source: AGHT+IH2ShbvDYkTHBSBnl1YUhuZP8E16J7gyLk2VDXODCN3OD494KKcUR6j+r39w3Xzpc8VsjYNAA==
+X-Received: by 2002:a17:902:d486:b0:23f:cd6e:8d0f with SMTP id d9443c01a7336-2462ee1a473mr78779365ad.13.1755968535825;
+        Sat, 23 Aug 2025 10:02:15 -0700 (PDT)
+Received: from vicky-pop-os.. ([2401:4900:8fcf:2a2b:8899:f1d3:d5cd:752a])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2467e3238fasm17808055ad.104.2025.08.23.10.02.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 23 Aug 2025 10:02:14 -0700 (PDT)
+From: ally heev <allyheev@gmail.com>
+To: skhan@linuxfoundation.org,
+	akpm@linux-foundation.org,
+	david@redhat.com,
+	shuah@kernel.org
+Cc: ally heev <allyheev@gmail.com>,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] kselftest: mm: fix typos in test_vmalloc.sh
+Date: Sat, 23 Aug 2025 22:32:08 +0530
+Message-Id: <20250823170208.184149-1-allyheev@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <CAHSKhtd_oM8yXBwgm1-6FGhDEaDGCWunohMnb4AtV8Y-__z-zg@mail.gmail.com>
- <a3f9e0fd-28fd-41ea-9c78-e3c971e7445c@gmail.com>
-In-Reply-To: <a3f9e0fd-28fd-41ea-9c78-e3c971e7445c@gmail.com>
-From: Julian Sun <sunjunchao@bytedance.com>
-Date: Sat, 23 Aug 2025 23:17:19 +0800
-X-Gm-Features: Ac12FXwWa1i1Z_eWULAcABG_D4uLHUyCsSFkbKNqIneaeOcJBr_iJqr2a3VgmDw
-Message-ID: <CAHSKhtewVTFTsfnLQwjJeaqg950Rn-_Jde5pQq8knoJaX=XsLQ@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH] memcg: Don't wait writeback completion
- when release memcg.
-To: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
-Cc: axboe@kernel.dk, brauner@kernel.org, cgroups@vger.kernel.org, 
-	hannes@cmpxchg.org, jack@suse.cz, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev, 
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev, tj@kernel.org, 
-	viro@zeniv.linux.org.uk
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 379AB8000B
+X-Stat-Signature: 93jyr81fkpbm4eq17xd4swkh5mtmp35h
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D3904C0005
-X-Stat-Signature: fqb1zqxym8eq46epc94n5no88mihkjbe
-X-HE-Tag: 1755962251-989658
-X-HE-Meta: U2FsdGVkX19R0fd453LX4yYGyieHjkM7iq19N+pLSHhy+YASKdwO91FLj8uNaDKmeI8Ng+PY1aQdD6V59CSDmVOATdoZT7CE9G6j63EdanQUZ1LsC5rCYy5VcMDcKRvCLDAFVt+cVgdS3BrqNBvVa+VTiw0Y2YWYhS2QtJQ/y1AvYFSsrD3PEkm8L2o3bc5gJBvlVOBsA2zrHAWGlBCkH58MmCQEib4ar8rXFLedkL2ypTNnev/KqvJC+Z4ZTHGerGeINfxX3AqpADHvDRROT/5Cy90ugpTnVtH7CHctyXBtDP3nXo2LYNR5WieWieBeoTDhnFRKtddFZdEKyQR0jguS8mGn+94necmr9PVNo4E++XadgBB3HiyaNaoR52fDgRvbrDsYMdRvwQJAvxVtCwcOTJXmXTnmZ6gCT8FNJ2WdGtOTy33jjPrbVDG+eWgCAS6h3SujJDjxEmFMGAG7ZBXUS3WpcLQa+jevNesNGO7UwjYqCu4ZdqbWcPs4qMsf724IUJVkxu9dJOcIn/QeRyTCCty/Gneoi1+zUEKZp3BL2tp94IsROpNDshUcSa8s1IYTVkb7mZ8acQwxcfKXYx5ZF9vfVLrteHq18fm/wr47IgqwpXX5CWghH+BsGlHIYOmyV21r8zY48rHSbwFXy4/kV8o0uVc8ekf8FzDqXoXK2S5Vd4LZHySWADZpEZ3FV9YIK1VDi4fobea3uG8xkLQLHYHmCDULs+nk0eP/P8FQEV1TqmR+sfrdgbf3SDh6wip7b+4TXMAHO+5ugOl7X6Q/TT2KvXAyVaPhDO7kRYrRD+NfRK8IgahkOsIm9cV6bE7Oqou0evihJ/QzrKW3/QD3wmOiUFDAqCnsptPqE2HQ5byqlD4NKsnK1SgTzOZaTEzoPpciCeY04PdU3Sns0eA4uvHopIV471Aadh5CxgR48K7k/MJ8P5U76428pARdwx6iG7aqOZgg2aPNGNU
- Uz4wzVax
- lBV5mcDgPMHGHojYr7kz76UAK40gdhyu3hqRcy1wdgOc39XaZpRHGVHKeCcSK+bapToPvBLd0D4m16UfBwlIWVWkbqX3r3S6uu9vPcYK5vXWaiGxbtwh3nwnP2Gp70FlRz4irF2PEaQJkRFuLkZFqDveebaHLlQeJSNoUqxIL80WZlpsX4OUn4tKx6yoq8lK9McZcy7R+y1UvRiWQP1hrEe2e6KREabXxZRBlGwl29GMeN6UfBW39Tlm4GR9JA9CIgy++YOaa9QZdUJGa6bJNwSXXFg==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1755968537-413330
+X-HE-Meta: U2FsdGVkX1+QdmZZ/3bPFp40rt7yUuCyglMdOn3nMUpUJNUz9bsT2jZVkzcjNOha3XnTinD32uJ2PC8m4rVgnRGSOn+WqIWKCupJ2pjs0cAtsCiCyQLzEsRh9lPRxr4lngs3VvuH4Ak7jTgKRmWBCXQsCAd5VSo4QEd2zzk0gLJE2Haggwp9RB4Zd1ehHg19g+d8dKUnM2tJYfY2jV+zSwiWGCqYHi423p08rHbvxuQznpxjWX719ZvANk/19DHdrXoc+aS915slbsIqniOIUbhGeA4y/rt9Kvabr+fsNMJnH4/lAYdRVxRonzUvAEO/YrSRn2bweT/pIE/wiv9+fJLK0Pzls+iQc/rLNVDeW5GzMH1podsjHHb2sGEbjwMMw+/t8tll1xeghYOHIXvfiNVCO36LzHPDWTrikOtwqTsfbrRDdtPX5wc98IjctbiKirw1IPdKjdJFQWZXlteCC/t4/5naGXW6RyjQZjUkNUq42yRd+ql2MsqyvSHZD/rgfMZt8hMoFFsvmUkru8AvVdsVi4EkP6f18ol8RSox4h/zSo2bgiEXLWktGuFzUB7+SSqWXh0P4oXQY9siH1BxtN/YJB23HazPO8bj0H5a+lcE9bvInGw6ehhq6VVab2Kpp9vxBQAuSnWKmdv23NJU+lSySBtY7s/0vpRl/epNDE5mEEWFK5jua0sxWqXQHJg9h67HYyvwuBQMWWiyt8Q3Yis1pydNS1HihuUvTNSlkRIugZKPDUf7D8KHT6N+sTTop2/DUe2odOtRzrgrii7zviO6KRqeX3SceTu/MCD6HBYjuLg8TZjtJ9YGCCwomCXiZ2IPMt1YDNJDi+ttootelE9JY67K0UuaJpuGSNs/jEuY+KYQ2E0Ohu5wIaAZT931t4ADF0IGWFq+XjH2vIbhzlk/J9EJW8btVdQyRJWrhpoGJK8mFZGT4a67dUhpzQhoNaMZobnNLIhbVROMs1M
+ MAWtoedO
+ pe3IEPi89BxIMcBOkerV4Yt17/x3bof6BnvpDaTifaKXzfBw/g45Pl2zlka+s+S3h64MOT/R1VJmckfero+2jeNOA10g4wJDv1Gm8of/yE+2ESL+HFHPe3z7vxSVXnQ7alNySBYspIQz52iWg5hKE6AC8/DEb4kQbw8er101tRt9q4cTq3EYUEIMGkpHVLcI1kJ0y+FdOwDIdrAYqsIPjqo2yquXx512Eqi4Mvnnsn2nM8+/kexjhl4XdVIxg0d3OJX7/V4AdHIky9hzQaujExG/Z63E3qzLHt9+nQ0DWxujJ87vBE/2kE1W6P6yEGZh+nnh+OVJzL8sstQeS2g2LrFeAPe1e+so02HVA6xJc1DyxEMw/1+adwY709Nc1fo6rlkYjVtY3EQDTKyu1swHUJoErBmEkqGzjwhHY3wNWqBY3v9yMQMBtGHZW3Mj5VLy6AIv4+dufQrt2z5FqPnSegsjcew==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000122, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,109 +120,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+Signed-off-by: ally heev <allyheev@gmail.com>
+---
+ tools/testing/selftests/mm/test_vmalloc.sh | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-On Sat, Aug 23, 2025 at 10:09=E2=80=AFPM Giorgi Tchankvetadze
-<giorgitchankvetadze1997@gmail.com> wrote:
->
-> Makes sense, yeah. What about using a shared, long-lived completion
-> object (done_acc) inside cgwb_frn. All writeback jobs point to this same
-> object via work->done =3D &frn->done_acc.
+diff --git a/tools/testing/selftests/mm/test_vmalloc.sh b/tools/testing/selftests/mm/test_vmalloc.sh
+index d73b846736f1..d39096723fca 100755
+--- a/tools/testing/selftests/mm/test_vmalloc.sh
++++ b/tools/testing/selftests/mm/test_vmalloc.sh
+@@ -47,14 +47,14 @@ check_test_requirements()
+ 	fi
+ }
+ 
+-run_perfformance_check()
++run_performance_check()
+ {
+ 	echo "Run performance tests to evaluate how fast vmalloc allocation is."
+ 	echo "It runs all test cases on one single CPU with sequential order."
+ 
+ 	modprobe $DRIVER $PERF_PARAM > /dev/null 2>&1
+ 	echo "Done."
+-	echo "Ccheck the kernel message buffer to see the summary."
++	echo "Check the kernel message buffer to see the summary."
+ }
+ 
+ run_stability_check()
+@@ -160,7 +160,7 @@ function run_test()
+ 		usage
+ 	else
+ 		if [[ "$1" = "performance" ]]; then
+-			run_perfformance_check
++			run_performance_check
+ 		elif [[ "$1" = "stress" ]]; then
+ 			run_stability_check
+ 		elif [[ "$1" = "smoke" ]]; then
+-- 
+2.34.1
 
-Well, IMO there's still no method to know which work has finished and
-which hasn't. All we know is whether all the work has finished or not,
-isn't it?
->
-> On 8/23/2025 12:23 PM, Julian Sun wrote:
-> > Hi,
-> >
-> > On Sat, Aug 23, 2025 at 4:08=E2=80=AFPM Giorgi Tchankvetadze
-> > <giorgitchankvetadze1997@gmail.com> wrote:
-> >> > Hi there. Can we fix this by allowing callers to set work->done =3D
-> > NULL > when no completion is desired?
-> > No, we can't do that. Because cgwb_frn needs to track the state of wb
-> > work by work->done.cnt, if we set work->done =3D Null, then we can not
-> > know whether the wb work finished or not. See
-> > mem_cgroup_track_foreign_dirty_slowpath() and
-> > mem_cgroup_flush_foreign() for details.
-> >
-> >> The already-existing "if (done)" check in finish_writeback_work() > al=
-ready provides the necessary protection, so the change is purely >
-> > mechanical. > > > > On 8/23/2025 10:18 AM, Julian Sun wrote: > > Hi, > =
->
-> >  > > On Sat, Aug 23, 2025 at 1:56=E2=80=AFAM Tejun Heo <tj@kernel.org> =
-wrote: >
-> >  >> > Hello, > > On Fri, Aug 22, 2025 at 04:22:09PM +0800, Julian Sun >
-> >  > wrote: > > +struct wb_wait_queue_head { > > + wait_queue_head_t
-> > waitq; > > > > + wb_wait_wakeup_func_t wb_wakeup_func; > > +}; > >
-> > wait_queue_head_t > > itself already allows overriding the wakeup
-> > function. > Please look for > > init_wait_func() usages in the tree.
-> > Hopefully, that should > contain > > the changes within memcg. > >
-> > Well... Yes, I checked this function before, but it can't do the same >
-> >  > thing as in the previous email. There are some differences=E2=80=94p=
-lease > >
-> > check the code in the last email. > > > > First, let's clarify: the key
-> > point here is that if we want to remove > > wb_wait_for_completion() an=
-d
-> > avoid self-freeing, we must not access > > "done" in
-> > finish_writeback_work(), otherwise it will cause a UAF. > > However,
-> > init_wait_func() can't achieve this. Of course, I also admit > > that
-> > the method in the previous email seems a bit odd. > > > > To summarize
-> > again, the root causes of the problem here are: > > 1. When memcg is
-> > released, it calls wb_wait_for_completion() to > > prevent UAF, which i=
-s
-> > completely unnecessary=E2=80=94cgwb_frn only needs to > > issue wb work=
- and no
-> > need to wait writeback finished. > > 2. The current
-> > finish_writeback_work() will definitely dereference > > "done", which
-> > may lead to UAF. > > > > Essentially, cgwb_frn introduces a new scenari=
-o
-> > where no wake-up is > > needed. Therefore, we just need to make
-> > finish_writeback_work() not > > dereference "done" and not wake up the
-> > waiting thread. However, this > > cannot keep the modifications within
-> > memcg... > > > > Please correct me if my understanding is incorrect. >
-> >  >> > Thanks. > > -- > tejun > > > > Thanks, > > -- > > Julian Sun
-> > <sunjunchao@bytedance.com> > > > > > > Hi, > > > > On Sat, Aug 23, 2025
-> > at 1:56=E2=80=AFAM Tejun Heo <tj@kernel.org> wrote: > >> > Hello, > > O=
-n Fri,
-> > Aug 22, 2025 at 04:22:09PM +0800, Julian Sun > > wrote: > > +struct
-> > wb_wait_queue_head { > > + wait_queue_head_t waitq; > > > > +
-> > wb_wait_wakeup_func_t wb_wakeup_func; > > +}; > > wait_queue_head_t > >
-> > itself already allows overriding the wakeup function. > Please look for
-> >  > > init_wait_func() usages in the tree. Hopefully, that should >
-> > contain > > the changes within memcg. > > Well... Yes, I checked this
-> > function before, but it can't do the same > > thing as in the previous
-> > email. There are some differences=E2=80=94please > > check the code in =
-the last
-> > email. > > > > First, let's clarify: the key point here is that if we
-> > want to remove > > wb_wait_for_completion() and avoid self-freeing, we
-> > must not access > > "done" in finish_writeback_work(), otherwise it wil=
-l
-> > cause a UAF. > > However, init_wait_func() can't achieve this. Of
-> > course, I also admit > > that the method in the previous email seems a
-> > bit odd. > > > > To summarize again, the root causes of the problem her=
-e
-> > are: > > 1. When memcg is released, it calls wb_wait_for_completion() t=
-o
-> >  > > prevent UAF, which is completely unnecessary=E2=80=94cgwb_frn only=
- needs to
-> >  > > issue wb work and no need to wait writeback finished. > > 2. The
-> > current finish_writeback_work() will definitely dereference > > "done",
-> > which may lead to UAF. > > > > Essentially, cgwb_frn introduces a new
-> > scenario where no wake-up is > > needed. Therefore, we just need to mak=
-e
-> > finish_writeback_work() not > > dereference "done" and not wake up the
-> > waiting thread. However, this > > cannot keep the modifications within
-> > memcg... > > > > Please correct me if my understanding is incorrect. >
-> >  >> > Thanks. > > -- > tejun > > > > Thanks, > > -- > > Julian Sun
-> > <sunjunchao@bytedance.com> > > > >
-> > Thanks,
-> > --
-> > Julian Sun <sunjunchao@bytedance.com>
-> >
->
-
-Thanks,
---=20
-Julian Sun <sunjunchao@bytedance.com>
 
