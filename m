@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51D3CCA0EEB
-	for <linux-mm@archiver.kernel.org>; Sat, 23 Aug 2025 01:29:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABA84CA0EFC
+	for <linux-mm@archiver.kernel.org>; Sat, 23 Aug 2025 01:32:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EC866B00E9; Fri, 22 Aug 2025 21:29:58 -0400 (EDT)
+	id 5CF5E6B009C; Fri, 22 Aug 2025 21:32:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79C9F6B00EA; Fri, 22 Aug 2025 21:29:58 -0400 (EDT)
+	id 580366B009D; Fri, 22 Aug 2025 21:32:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 664E16B010D; Fri, 22 Aug 2025 21:29:58 -0400 (EDT)
+	id 4969B6B009E; Fri, 22 Aug 2025 21:32:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 51C716B00E9
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 21:29:58 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C9884138C9C
-	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 01:29:57 +0000 (UTC)
-X-FDA: 83806290834.07.DD75755
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	by imf12.hostedemail.com (Postfix) with ESMTP id F036740002
-	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 01:29:55 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=NYGehTJQ;
-	spf=pass (imf12.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 34E006B009C
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 21:32:34 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D9E6A138D6A
+	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 01:32:33 +0000 (UTC)
+X-FDA: 83806297386.17.DFE804A
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D4046180003
+	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 01:32:31 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Kw5rXZ6G;
+	spf=pass (imf16.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755912596;
+	s=arc-20220608; t=1755912751;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KN436an4cyg/kh8RbzRxkUUwckCMwEPPW4Ijt1oCsdA=;
-	b=kKmHRxdh2rW0rgMouTTmCdvh08LKc3JbOTPzqUddWO5/aQcIgXDCASDHLL5o74qFrXhh5u
-	3h7Qj29y9sU13rcwenGTdkBB2lsdrvxxABiUUDEA4a5kvyACRUuQR9iB/fOQNX/QouxenA
-	EeXE6T9IOO7UIs9uEwpacDgs1vugeAc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755912596; a=rsa-sha256;
-	cv=none;
-	b=2iLZzfJd7QyMULh5b2nERAT2znIUVUOW+pEEsdENYF6aoOsx2uu2kHoRnHoRvxdC64hIVB
-	CvffpM8Oo2SUBtkxnC6aeXJBEp4I6y1k9EQxXEysdNVlFLfC6wO/hJ4VApiJQ0QApk/wmU
-	DE7R/qT/KjjQR+6WxxLbr2k7bLJ6SXg=
+	bh=EJZrbfzvth3UC+HZU+WUnSg75LyO0CB51/ryaxjmXYY=;
+	b=BMpZulwPtQAsshePGmeRw684xqJAHUfrF/nCXdNLLi+6chug41oSR1K6ZsqwvwM5I/yxUl
+	DTxobwIelBXGe+KZ1Qje9IZVFKmRJZmclJrYzij7wT9Mi0GAqUjTslsOizWpseXXvq3KMO
+	v+rDk4f7FSGWdGekO47OLYDNMMKlB6o=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=NYGehTJQ;
-	spf=pass (imf12.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Kw5rXZ6G;
+	spf=pass (imf16.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-afcb78c66dcso385144966b.1
-        for <linux-mm@kvack.org>; Fri, 22 Aug 2025 18:29:55 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755912751; a=rsa-sha256;
+	cv=none;
+	b=zW4QzY04cmEhFPHo3ddbKCNBtsvQSwM83iWYeps02n3DXaW5Bz/KxOZ2iqgkiXeX9t7Ajg
+	x8Si+Im3NGurqVjerNmxArSlF+ZTlQFwHheCzIKN5axu4B1EBaTtY5FBLoxINYbsclziye
+	aPhAPY87A+tVChGvSE215c7JYGteDno=
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6188b5ad4f0so3723673a12.0
+        for <linux-mm@kvack.org>; Fri, 22 Aug 2025 18:32:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755912594; x=1756517394; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1755912750; x=1756517550; darn=kvack.org;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KN436an4cyg/kh8RbzRxkUUwckCMwEPPW4Ijt1oCsdA=;
-        b=NYGehTJQiA88fQFYd7pY2Tng1yvCymFT/xGw2OyZcrXjVUngAG0B0KoUM5NkTnJjYh
-         rZRot1ju6q8G7+8An+WTVeLPUt5hz7Fz8FfawbzXWxITw69EDScHuzU9tYX0f2jZkPjO
-         ueql0JrevZL1lqWFR6upj4YCO4eV7RjRtVedQzeVHJiiryg3OV7QSAvPSWk3G6z416g0
-         mopJIYsHi8awfrRWKSk8abAYAsXk9UqBs22gn6/WyZ4i1Cgp3If9KIJd7v9BIfMWS76f
-         S+Q+b6WZ2G8ZNmXni+p2BZsWiLLG4bpOABlJEnd8m+zHYtaLSzsy72cPxOctNSJPi1VM
-         o+UQ==
+        bh=EJZrbfzvth3UC+HZU+WUnSg75LyO0CB51/ryaxjmXYY=;
+        b=Kw5rXZ6GAzxkyNzBuTEC+5PMDzXzFlSsvt58ckB+lcQIo8Btpj8aO9oGibnS/GmQnL
+         JKshexQi6gj0X2GMCSon79MJqoDiYRSPNpirSIPGodganWl82cePa8yrWvH7J4v0H/YA
+         tr622VaEueqckOg4S0d/ZnIwU3qKQqnPSA10ysLC5iAHQMRFu25RbpNsj3JyE4HhapWZ
+         r/Wy7cnWBq4JtXIdZ51UUJFv04c6LqNxaTHt8TQoaV3oLME2gvBc5CPXJiGzTeEmoiMk
+         Z7IGR15VzIMyPFFztNEeTAnKfVuDLvIiWmRR8Fen8fNNdOPoJvct7doD1G6vNVFR70Sx
+         AT9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755912594; x=1756517394;
+        d=1e100.net; s=20230601; t=1755912750; x=1756517550;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=KN436an4cyg/kh8RbzRxkUUwckCMwEPPW4Ijt1oCsdA=;
-        b=Y+7PX6owPK+TvT44HpScs/skzKnWD/AEfFUCeQP3mMhxafjmi4cF003ZyTDaMpseR8
-         3FdoEABqtjjxqm2tfSIBzhQXtIrp187VwZARAwFbc8QvWeHc1+pnN15S3gSlAirOzBBi
-         aTf6UEo0HtwtUFDpFSCNBEEkmGr8z8C2k5/jvwplBzpNx7VLLSkw8H/NSvwAjEUijkph
-         pS17ke4WQQIGjODvNteuTk3B9CJd2xSHW2Y+Id1Q8KTWIquTAiZLU4736R5D9UurAkM9
-         655KEXLOy2LavHVPMyTJpkSPVwmR3yFmk1R/BYEws/i2+AUZyeoLe3sLsI/Ic+zmsFZK
-         Lbvg==
-X-Forwarded-Encrypted: i=1; AJvYcCUs+BbIQnVIPfp6zwN5X/OAmZkEHn8td38+BQDEsk58WmCydHJJAiNDK0/dMnTBd3Ov9pYrGr6/HA==@kvack.org
-X-Gm-Message-State: AOJu0YwM/fMMRJqN7bTTGsLhmf3U3Rn5fbQOKqqi4lN/r2TkjQH67zbu
-	/mVKEN+ONdG8qn1APucV2RENds8HAWsjiSO/THRSBNG7kiaRd7G3h9Is
-X-Gm-Gg: ASbGncsqDzfTd3ClbqqEBqrk05aK4MD0d9uagu664i14fKXDM1P7WUtezK6htm3cSL7
-	aLRRRuGWf0aVe0KIooKb7zujIwBRVgUmd29dJJU1DOlvGcIvXShTdp1098UyLYw/j86Ddts6Kvr
-	23Fjqogkn6N50FK8E7gOZYwwhWgcRK+tChPI5d8ezibQ2dxwjJi+KjT7ctqR4NRhd0r1U+NEEt6
-	hNreeCU+n+Dzp3dX4WNqyJCtrl+k46R1MnrOj3x6roaXG+AfrzmPCRvlEEkhuEwo67vQ20UDvOj
-	slQZRhYrofeiMHvesX+dMtGXm1QvjKOa+Xzs9Fa0R4d7seNdW4XtAArGs6wRsDyUUlnb3YWrFZ+
-	vjArKRfeF+wqUU7N91w8297wxNQ==
-X-Google-Smtp-Source: AGHT+IGwiQlMtlwhYU6c6Jpd6fvq0eyeiYuF/MNEi+zrWiwOkFs9MPE6qPvzRUsvh7G0hZYVa8USog==
-X-Received: by 2002:a17:906:c115:b0:af9:d300:c60f with SMTP id a640c23a62f3a-afe28f161c6mr411116666b.18.1755912594089;
-        Fri, 22 Aug 2025 18:29:54 -0700 (PDT)
+        bh=EJZrbfzvth3UC+HZU+WUnSg75LyO0CB51/ryaxjmXYY=;
+        b=Y6bB4qHlu8DkTaFn/ZAPBkhP7AmimMMb+itS1zPWWpksSaUtr9Bai1thMGPS6yCP47
+         6oSlv6hQQrjs/jtdGyFnqQ6Efic39ZVAmR+SvU9uy9SBdaBr+VzIUv9oVT1/2cdGXuZJ
+         Nqs92XSbUQBpZxDhj3n+SkiGUti9u7huO5AFXSe0Labrl+2UIcV+kt/FsBGeUIXHW9jc
+         8Kx1lA66QsgA284QZsFYsEqIw5BWk02VPmVSrBesRo2k4RpytLXMwSg+3kDUd+3FKAi1
+         FglyCD9l76tUvTXVBQ9VQN0Ko/WR79ZnYdXl0U2K5jP2lmE++wa4jnkyobcZBkh+O/W/
+         LD/w==
+X-Forwarded-Encrypted: i=1; AJvYcCXL8ZV7OQybhozgBw2kw6txAMsQTJHsl0NaeyRrxVU7Eg2e2LIfp9+2hu9LPz+KgEWkeIBN079TLg==@kvack.org
+X-Gm-Message-State: AOJu0YxPuEfTmeh0Qd+Z4I6RI0x0rWcYab0ublJ5d7NOJNHLkPZjow/H
+	fgjQFQbT13rexdprdBiPPF/F3tuRP1BGFSfN3HLonsRcMjvFskdEsuji
+X-Gm-Gg: ASbGncvWi61hjnAAlao0/LnDa9z1VPgEUPtbCWndlUUFRtjEaofdyQ0kAoqag5L3omJ
+	aeykpRGBgsLtXek55I6buzzu+QUtLJTxJfYl7yPEYfify4hBvOr8Jxvbo7kJdpN87emZnYzVJF5
+	X/sL/+q4IuqvCX5Q9V0+pD3R8qOV8EDNge4dwkcMUudcUgDVqPChMbVgHfwWU35GRApsjPhfIXd
+	Ln7HmwwrG3IIKXE+QC068DtwxqmxcL8rCDc4YE4nfQR2BZ8WV4PyMMs79TEhE9IVkIEiBySoSw3
+	VYxVWsSqWH3OTl/JxuKNSxce+0aYlYwPwtc6DT4MTuy0gCf0z8KwhNJlFBQNGlb53dqsszq8+4R
+	uLeD8NvXtJIMcIIgBoGI910njmdW7SuhYLqde
+X-Google-Smtp-Source: AGHT+IFrUheQ0C0VLXzuSQMa42TWZMqpsBCr2Jh2MxTjESBmMtPLtQ5Hp5XdppMyJWgBmT5t2kHZMg==
+X-Received: by 2002:a05:6402:a0c5:b0:618:1706:d48b with SMTP id 4fb4d7f45d1cf-61c1b714110mr3683563a12.20.1755912750201;
+        Fri, 22 Aug 2025 18:32:30 -0700 (PDT)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afe4937a15asm71906166b.115.2025.08.22.18.29.53
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61c312c4cdesm770186a12.23.2025.08.22.18.32.28
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 22 Aug 2025 18:29:53 -0700 (PDT)
-Date: Sat, 23 Aug 2025 01:29:53 +0000
+        Fri, 22 Aug 2025 18:32:29 -0700 (PDT)
+Date: Sat, 23 Aug 2025 01:32:28 +0000
 From: Wei Yang <richard.weiyang@gmail.com>
 To: Dev Jain <dev.jain@arm.com>
 Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
@@ -101,23 +101,23 @@ Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
 	stable@vger.kernel.org
 Subject: Re: [PATCH] mm/khugepaged: fix the address passed to notifier on
  testing young
-Message-ID: <20250823012953.cw2n3j7nuqfsle2j@master>
+Message-ID: <20250823013228.5gybt5tuaygyunze@master>
 Reply-To: Wei Yang <richard.weiyang@gmail.com>
 References: <20250822063318.11644-1-richard.weiyang@gmail.com>
- <55735a20-1048-4c04-bcd4-45eff0079f61@arm.com>
+ <a68e4e65-883a-4625-bebf-da4569ccda7c@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <55735a20-1048-4c04-bcd4-45eff0079f61@arm.com>
+In-Reply-To: <a68e4e65-883a-4625-bebf-da4569ccda7c@arm.com>
 User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: F036740002
-X-Stat-Signature: 3it8ne87qczy3mmutpomdz3cnb3m43rx
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D4046180003
+X-Stat-Signature: c344wqy7t7tpgcgp3zuwhc8wicqp4gt8
 X-Rspam-User: 
-X-HE-Tag: 1755912595-350944
-X-HE-Meta: U2FsdGVkX181WlkoFy+Mo9umpgEmT0tRq7Fh0anBc3BZHGacVeCbniLso7Co9kQDHIU53Ma8rFLczYi0y2NSViuYacqr6AFN4P72oE0uyJPzmVmBEr2I8j5zDn34VGO/exeS1aYWsBXGufCcR5ak4YfagdqM3Qn2SAcsfgw3STmwc2k7SSOA/xIbSTgGzP2oqVGgeO6/YGEvZRVXVfEgTRVLsVCq7Zg7AHlcgxSvqNDGBbdJ+gW73anwuAz0NfiKRtbvtCp2a22IXUQg6ZtVoztNaKPWE/Vq2Qq2ZhFIBE5UjEFky4m99jIJtMKOQBSBvNNsMcLqtBA1jPbVw8/xuOtGElFx6QXu7BDAvBZrhRX6X02qlpkU+/kx1O69UHmkN+KDRMrbPt0YzJ+Y3ScvvFiOh8k0WYGGpmrikwCkUTI4GFW8wTlHttNdjTjifk96YDY3SvaPseGuuq5jHqsxCA902jJPyyziAk21oX//lGw8AXnjIjYVJYYCZvCQxRBzSb6resiekzD4WJU5gHndiTDgVi6hAbZu1/58bkcx8x2zD9N4f02ct1wA37FNTDpUFmJ8GvKEx+lVaaMEhWV+K2ycypCHZU1UxfUu+t5v8M4NTX4QoSjQ3FCa1AvzH+B1/EZOEr9DDL+Hym6b0n9hADk33MlyMxpzv4Sy32pTzZhU33QoU1ToeGYQQ4bdTdJBTB0fh3jYkBbRaPCb3oXVzdSBn/IaWB2nffq+lT/GuuoBJV5whDn9jfZq2B8Hpw6ww1Zlfo64SnZ8KD0AsKkCCnWThMiYpMOovAPyhxYCOJioFj4jJQRtReCBue7X5dbwfkwrhZHAYdmptsuXhwFGhoqPy9qNHaeSi7DzVQf/DyRmCWqYpE6/Q7XSO1/VnycyVCJXEAQF+P0lz6WzlNH+MSNWTljaJIcgh9sIgbkGM4fBbnram6pA3toP7wg4BD8gDs315Y8qQ9P53Xl+eb/
- 0FyA9iQw
- O/dKGt8Q3mqYt7bOm9X8rb6FEfL5w0897mmf1FTngE62yPVmhDICCmv3ZO2IYL6ZVBr0GFfYwGnJrry0tKCGxhuX29Vu7DkovHz+ueDUdUovqWuKYNyIzeGZ7vNQcxrTnFdP0TEZFqAt9KU8kKHq9zmD/7K+df0r4nK9FWuGENHqVbTTEteHSyVKCUenTkD6kHXmw79YYUjJW114T4kP8XyEw3DmENjPtaqdgBhQ7XYsfKQ6hL1lt4ExQQ72rw5/8pHdenA+/C4c6emM=
+X-HE-Tag: 1755912751-566272
+X-HE-Meta: U2FsdGVkX1/G5e6M6mmXBDKOeqVxGGod6fNZ+O0ofhVEH/Z3BKaIHpwxir2prX7KTIzQMzuP84oRoPr5Wu3Hl1ZcvuKabhuc9DMlDOjgG8GM3pvsnQVvwob9R5794UyX/nz+5rtPBZ4v8Se7H8xxyEuGu1J9/KavvRl5nbzGjqMOgCuJMLk8qIM6WzVjM1sZ1sBX3t+CVIWMtAF0UJKXk+GbzpnKDvRhdg3XG+xAlQTKuz9A6BzuS4D0n2ogpT7t/ePZtapZ+BVdiOnNrVj42DRjgDPqTuDTvluqkRausFSxh19cBzf8ggcvR3q1ikIVOx7FLEFuen37IVdXoPH/onlWMRLzxzG8yXXW9mhgLF0diKKdYfLjqaj/HxLSNt0w+UaI/KoaLKGqXZ5KRJAw+x5Kj8qsJVxneymEK86yLBvocq8ssQAJx4d+Ik1XirpaWm6A6SwSd6dXTNW2mfVUfu+SgRjYD0xKJweTBPdnTKsGZysm9bwQ+mB/60tb8izQ2QvnLyQJgx0EdyIFWNra/MEB9FToeDJlSyCFgThjXyZPQ3TF7z44036d2VF8hYtzBtJrvh8BXFX/HR+NFcrY/Bl3LkgmMSaL9T/ob7LurMn8GXXBKI5x1BFAfdOyv1vtZWCbqleox0k1lUHuW5MaJXdzsOhHQBoG9sSclz6LktrijOZsz93FDifuqKE0npa3zxLoBjmcVhi+HgAcZG5XCxSFWAQCiEEgIH79xYWAxLUdeKixUUJIXHIi+WiDLBajYlcCBEAglaPnOMKvKLkrJMyV1SfqMY81O3VPetNZbqTMKsMUY5sqAb77fLtGsla3pyIUGZJqWNl6yXoDAobW8iw/9SDa6/oLYU/bWAxIj0WZvzxAlL/JRK7OE6qU1UVVQVmrASCjycTlSXswWZWwKpCIevHXXs4oS0sKRwaTqIxJATE2F0A0w8vA91QYBGztq+oHPVoz5CztCR31Q8t
+ ZX1jB29b
+ HsQFXtHZCtbUU+9rUOiervOWc1NZ+B7ML9YDcpfCCYHfdmJWwWD32sU0uNsSvvO8Naam+05ks0zLooGtp1il9czL1LJrlqg4GHLzLA6kWwrEy+WZZC2zQ0I8Tf2yBJTW2nLivmiy/1yeGBH/ESg6FL73Qjj4xZigWugyIQisSHuAC+kjd1FH6F8B7MQJxWADksqgslFKLUVWHjH7G54mUsKWya0cd6uAiXVispBASIhGGhWqvXTz8YWfqxGDxGCwpQUYY7x+Rxb4SDXd78s3c4s/IRnrCiEWJEAUKkXKxLTlETNJ0LTVSPOCIuz6Gil2pA/tTkh6hMPnNUoXaUI7Q3AbfTo0rTbmGModzWMTWp7yNzjuuk3BjfU0zGjmfJ4URfCqHjsXOp01W/1ANB8iUAStSaLYkIVv8vNrYJpAzbHlrgybHkf89xEVhuYiu8S9ZaeWqrhZMdMJ048GV9owN6vYSRHXkNXRjsLd3bBSjgt/b7okK0x7zECyWQJn0UR1Ci7IQROMhaTouwDQwF0c5dKS7+RJdfM3ZB1URiAcugQP7z4xfIrMtUDlP9N6F0xui0/nizr98ZV7oEF/Qxq54HdK8sqVDMFe9/z24QGNKrir+MGgeI7rRkwHKR1/7TcJZ3wis8IfI3mMncqKg1Z67kJZ+CNz+5H05zPwP2R1sROR8iVqjPBfmRa7gyhKvANW8AkOYBb0QKy4zk7GvgMFUKGzE0P2KlCuxAD4tHSkk2e4h3NJ/OJ0KWdozmE77PWI+V+wd5rsByNzRA73o6c+EZEUFz6Ptoy1weATBOjJEaV30chTssuaZpsprofYLUq34sdUTmLLLFqb66i0CVJANbJucHxpIgMaAFBpL/JzAjOgo2Dxto7uwiQ37LYjBZXDQRlcvAxkVceJeADNWkauIEQ8NAWGWRGCkxi41NM0EGD8j2Tsuf9J024hXBhI1qQ/eFidR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,7 +126,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 22, 2025 at 01:08:57PM +0530, Dev Jain wrote:
+On Fri, Aug 22, 2025 at 01:04:51PM +0530, Dev Jain wrote:
 >
 >On 22/08/25 12:03 pm, Wei Yang wrote:
 >> Commit 8ee53820edfd ("thp: mmu_notifier_test_young") introduced
@@ -150,14 +150,31 @@ On Fri, Aug 22, 2025 at 01:08:57PM +0530, Dev Jain wrote:
 >> CC: <stable@vger.kernel.org>
 >> 
 >> ---
+>> The original commit 8ee53820edfd is at 2011.
+>> Then the code is moved to khugepaged.c in commit b46e756f5e470 ("thp:
+>> extract khugepaged from mm/huge_memory.c") in 2022.
+>> ---
+>>   mm/khugepaged.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>> 
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index 24e18a7f8a93..b000942250d1 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -1418,7 +1418,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+>>               if (cc->is_khugepaged &&
+>>                   (pte_young(pteval) || folio_test_young(folio) ||
+>>                    folio_test_referenced(folio) || mmu_notifier_test_young(vma->vm_mm,
+>> -                                                                  address)))
+>> +                                                                  _address)))
+>>                       referenced++;
+>>       }
+>>       if (!writable) {
 >
->I hope you must have rebased since your previous patch got pulled, and
->the difference of time between these two events is less than 1.5 hours :)
+>Wow, I have gone through this code so many times and never noticed this.
 >
 
-Thanks
-
-I took a look at the latest mm-new, this one applies.
+Yeah, also I am surprised when noticing it.
 
 
 -- 
