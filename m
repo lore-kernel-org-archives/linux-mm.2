@@ -4,81 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E92B2CA0EED
-	for <linux-mm@archiver.kernel.org>; Sat, 23 Aug 2025 00:42:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04DC6CA0EEB
+	for <linux-mm@archiver.kernel.org>; Sat, 23 Aug 2025 00:43:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E38948E001F; Fri, 22 Aug 2025 20:42:37 -0400 (EDT)
+	id 4EAB68E0020; Fri, 22 Aug 2025 20:43:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE9588E0018; Fri, 22 Aug 2025 20:42:37 -0400 (EDT)
+	id 4C2098E0018; Fri, 22 Aug 2025 20:43:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFEEF8E001F; Fri, 22 Aug 2025 20:42:37 -0400 (EDT)
+	id 3FEFB8E0020; Fri, 22 Aug 2025 20:43:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BC80F8E0018
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 20:42:37 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 38282C0269
-	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 00:42:37 +0000 (UTC)
-X-FDA: 83806171554.26.4B1EA5E
-Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C4160100009
-	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 00:42:33 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf14.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B1838E0018
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 20:43:05 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A45E5160402
+	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 00:43:04 +0000 (UTC)
+X-FDA: 83806172688.08.DA9BD6E
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9B54040004
+	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 00:43:02 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=S8hZWVU6;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755909755;
+	s=arc-20220608; t=1755909782;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0JLXbiU9hpBNBe++O6Gf31scyXGyjJMmWi/9YeZlkZo=;
-	b=lIJgYOLYfVeIqU3ganz92aJ+zBowqeo3hBd1bu+pjl28jLKANniMPsKw5mAw7izImcDcVF
-	t2pcpL/KURX8aeRWkhe2/gpZ3kf2n7UBS9pc3uJUh4vlOkSENReTRvizUzR1BTx1ELc3Z0
-	R3JBBVArAT2Yi7w+jrHp/jguBtgZr2Q=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jpLXHOhq7VVSPWOqro21Ta67IQ8IMqaTYxa6KczFO94=;
+	b=kpeFbMc9Tv7+Eu1fuFkMC7/JN4P2F7cqskII7bp+s13JCuKyTHaHoYnQ6FnElRGB/p0Vlw
+	9Aw8eoewtgUUD8CXM4N8SzpR+hoXMw5SR6RZnz7w3FUS+R1I5wEGNyQw/pz5w3md2rzyQy
+	3Tw9ahsU+SoWktESJpvaPgc2mNxjkO8=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf14.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755909755; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=S8hZWVU6;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755909782; a=rsa-sha256;
 	cv=none;
-	b=CwZvZ5wTcE1Z7rRo2wR4vZKSmC43g4l2pWNwAcXMEY+jXzzLS/j4unqaM7kj5M0RYqJd2K
-	q6KuyxSvf1CvzyfEiNEYGgj+MUHDaCLgFelfb18/jD9vH4SnExPQUZgVeKBYUpvk5RmrOG
-	s7xxUMMUpSUeLQXSxMMm/TAMOOi8zPw=
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.103 with ESMTP; 23 Aug 2025 09:42:30 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Sat, 23 Aug 2025 09:42:30 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Chris Li <chrisl@kernel.org>, Matthew Wilcox <willy@infradead.org>,
-	ksummit@lists.linux.dev, gunho.lee@lge.com, taejoon.song@lge.com,
-	linux-mm@kvack.org, David Hildenbrand <david@redhat.com>
-Subject: Re: [TECH TOPIC] Per-cgroup Swap Device Control
-Message-ID: <aKkOdkGJh3pQtJ/u@yjaykim-PowerEdge-T330>
-References: <aKgm+wisMipLqnL4@yjaykim-PowerEdge-T330>
- <aKihqI8PWLFL1b5i@casper.infradead.org>
- <20250822131022.4df59a60@gandalf.local.home>
- <aKisJJYL9LV20qzg@casper.infradead.org>
- <CACePvbUYp7w68C8z_TeMhOJQ0hmWw1jkwy+D_Lb+N5WbmufAug@mail.gmail.com>
- <20250822142650.572507ff@gandalf.local.home>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250822142650.572507ff@gandalf.local.home>
-X-Stat-Signature: qh6sw9thwibzrxw4g7kdmncabycbjfda
+	b=aVsP6QgFdCSfJhNhq7a72hBPDykcYCBruTASItlWfRjcP+ADNrlx1+fJCwVj2rjYtGOCK1
+	fr5R0ZuRTNOuq0UmTbCk4j3BKmcUqFuxImt2uXeDm4j7kQa3w+HMYoV8lYrQdzfCRQPH/q
+	BXGIXHmF/PUVi12lr0Q6jrUPGh/K2yE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id B9068A566E7;
+	Sat, 23 Aug 2025 00:43:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C7C6C4CEED;
+	Sat, 23 Aug 2025 00:43:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1755909781;
+	bh=EKwFARSCxE6DW/3EQ5i9Wr8vmKaZVfVfckT18HUdQE8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=S8hZWVU6hakZ1AbQJY4qDd9ZvCnTU2Gw+bC1eFg4cq0BeGVUmBchZh/wksiAWI8pu
+	 +XFkJju44Ls9/D8MWUzK+x4U/k8MLbI6bDadFCqMj2rSDYTHoSNyxSMXs7k1OJ9ML/
+	 3HkdUAtQiBgCUKib2sOu+2fDGf1bDvrdTvP73/d4=
+Date: Fri, 22 Aug 2025 17:42:59 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Shuah Khan <shuah@kernel.org>, David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard
+ <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Leon Romanovsky
+ <leon@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, Ryan
+ Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+ <baohua@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Palmer
+ Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre
+ Ghiti <alex@ghiti.fr>, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, kevin.brodsky@arm.com,
+ kernel@collabora.com
+Subject: Re: [PATCH v3 0/8] selftests/mm: Add compiler flags and fix found
+ warnings
+Message-Id: <20250822174259.bf4ed76a0da7d0d6f80ba2c1@linux-foundation.org>
+In-Reply-To: <20250822082145.4145617-1-usama.anjum@collabora.com>
+References: <20250822082145.4145617-1-usama.anjum@collabora.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 75gcriont8qfogqjufsicrsrbqqic8zk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C4160100009
+X-Rspamd-Queue-Id: 9B54040004
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1755909753-518601
-X-HE-Meta: U2FsdGVkX1/r2try/TBsn2e2YdVGRO2U8uy+UA6NUItfzujYBfP4NwYmwxr6Q9XQXd3qgxePYF/tk6N8DuW9UYOQon/qRYYLIkgwq7b+0AYqP+KaAD97oyAPqSV8y3ElbFDJKbmtpZ222LO0gy1Ytp8iW/yCc0KWsjP8rh2MIcZ3l5MXbdNNGZ8+1aFmPOfFErFrqVMH81fPjnCOaPJlYjjp4egchcCtYh9Az5AKI0C0Ozu/lu1q2QDfELuhFX7HbWgKNylIVo0ow6kHK16Ofz84YeVosWJichVltGhOqGq8pVbbokYcFZqozr9R1DAlGIveC5dtsIdTskjd8SH7iyFDK1sSpj1Z2T8USXhy9OeQUlBZo99nAVp1dCRhtYeDpwaxHhskTM1PCXdzBbl9JQZLEM9pG92Qo5MgYXsIrS2wMOs/fvIImJS6odIAriKaGR+UT0Wcfo72fKwf6+C8WiPdFY39MmRbQt3zSpWQ0qSxyNfmHvoV7tVIUzDb7QdoHW++jhjujOGN+AbNDzmbLdxGCs0uqeIxvCN5lQqboxeqb4WVI7XXCyEXaOfbPQuNvWYkMwBEV/ijan0IZUnd84cSd3ZMhlLXhlJpWWKlBeKX6ZD/I2m8NJPx09kdbHnUuoqFoROY3N/jsiWUB8rCi07wOiVNkMiCZa+8UwRI1wnQDg3+l2qGwzK/Z9isR4N6QIbP57StLeF8VQa+tgbHHtcUtUBMpL5OG2DKYaxtyRO7USaOCFKU+pVjUlY5+U1ocaJYGo6BY/BCpkmtUZBSsBGUpfwwQEtTWNf05sQPSkKDq6rf7SmZewjEj0WLQAt0zuayB/3x72749m905T3eLoM+J9QMMH+7ebslYg5JZslXOz6i56O9FPfmBBrVBGeXO92KmHKIQ4iwwvIMQd2U+cuKA7b6L9x2WYrBx0wOagu3najOmHrBQghUUqsVoKH+BaW/qVivH3gP0ih9qXD
- 9hWEunxD
- Au/YdyLLXT73hSiqLCXIdpi2J4o7oc2AygL+GeYfAFibFFKwqfq+i6nrHSBP5kjIMRSV33p6jaMnL/0DPdt4PHMBWNL5CUX2kvZyC+/B5DNZ7gf93QDOLGQNj+LnK5EtiSUhQoIa6LLPDWXOOe/GAJ8bucnkNg5+xp6Dmr5PCFTjmKcnBFIdtasMZ4DBVYqGLCu16SFw3ACyZKvXGdtnXyCVeEJoq6icgo2fg4DZSZhkKQtehj5hzPyR5munMMJKnl9neCUYwczwqRmrafsvJvOSxLOnYM2orVfBrTWynk8iyY/DS4RvWFDyMvijJFgITCFQ8
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000058, version=1.2.4
+X-HE-Tag: 1755909782-218611
+X-HE-Meta: U2FsdGVkX18vbtUXkqRjLmhOUiLrCgAHQb0L5ypK0ybAYcYDhyrihuK0omuGGOsNSxrpGt3X7HZnm6slsotqY7JVhuLFdC1c3+qiUsjHfE3DZLuve7A82DCx0qFSCkj4qNWNyRoZwKkonvbKyZzW/tQWX3DTkVeyfXvNOKLJyLCUWCtUtfXXEMivfGSnpBupEpDh+cNLkEXcxhUnO9gct/8E0hLcjuQ51X0d4dKRV8Ctf3R+v+e9xOjMfUGC8V/uH3jujnqk6NAwmeLNDm6XpE/LLkqiRPB53Lk/y8P/kUZSkj2KseN6b4cktX9j/xP+H5gJrToCOS6bVMIFDH4wHIiPtnd0pXlj3esSHSRooKwxHSUmxVhs7Rn4Ox7jGd94XoD7XmH8awbUseeWi/8U233YUYw1f4IQMYiz5z6z4k5xvn54lXg0PWBDOj+zn8VrGVBueJtGgsWcF0kCOujlbzhWNnWtZ1DhGqVZzLn/hvzZ2NpLl5De+COD0bwkBOUBb1Dvu8gS78qtlNp0ViJnKbqXJAe4rijPAqjTU36ltJxBPJuvxExHc+OqYQk0dmJtWjR9Siq7dHgcD+V8jffXRrYLQZEAxvBTrWFapyNv64Dy1FeZPJncSJoH8/eqeZ7y5449BTyPUTkl9BMZboX1V0kprBPOSm+eM6baPqO9e6ifDjY7qbBKpc6zw5Rp3uLIyO9z9hbS7IdjQ64h2XAtEAk5sr4F9Ayen94MzmRaO/qvMJnb4iDf30FTBgUlC4AgIXdRxW5qYT/XFl0ZA7pWcZWjz3Wb9CuaYdXv+7s1sd5+IpVpWaET2JyS5Im9fkhbks2TVwEDG4Attz5EXYpFNteccIxLyZyGarEqCf7/FP33abvxOc+Z0XRwWHwonMDZWoNzwsZBpnSsPjy3uD4pvPHYuq8dPYp0wf5+KILpBGMFYE3DrN7vAk1lgVn6YJOmq5dy322btnxCUrdzPtt
+ sl3TAzW0
+ lTNGR+IImynvdap9bNj2NXSiFdXrjMpCmbrTLylpM5zyQoduTUOMA0/Sto7Wev26h3XOoXOe4YNRDo02bAuNjhE3DCnzjBhgyXAAWXebLMerM7zN7RuECEfZFYSo8mWA+hLcigNTrx2bGAfr1fNOmIEsci2kxGS1J0K22jBECo+xvHLIvmseSQSQ1Csq/EOCT1jwvd7GqRc+mf5jBBm9rqvmxOfQNP/+qNuSZ05uQCTsU65r9mfXfElgECc1MssHZIf/EdUTHU6TS8J3pUmywvzoFkSgxJhVZ0PkDRVDZy1ghVeQNoaBRXlPy2dIu3UUf5p54ne96ctYxJU4=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,56 +104,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 22, 2025 at 02:26:50PM -0400, Steven Rostedt wrote:
-> On Fri, 22 Aug 2025 11:13:41 -0700
-> Chris Li <chrisl@kernel.org> wrote:
-> 
-> > Anyway, is there any conflict to apply to LPC MM Micro Conference
-> > track as well? Of course which conference to apply to is a decision
-> > for YoungJun to make. I am just curious what options are available
-> > now.
-> 
-> Note that MC topics are more discussion focused than either the Refereed or
-> Kernel Summit tracks. A MC topic is between 15 to 30 minutes which does not
-> give much time for presentations. A Track topic is longer and allows more
-> presentation of the topic. Also, acceptance to a Track talk gives a pass to
-> Plumbers, whereas acceptance to an MC topic does not guarantee one.
-> 
-> > 
-> > Hi, YoungJun,
-> > 
-> > If you decide to apply for LPC MM MC track as well, don't forget to
-> > register yourself as a speaker on the LPC website.
-> > https://lpc.events/event/19/abstracts/
-> > The lower right of the page, there is a button "Submit a new abstract",
-> > Click on that to start the process. Don't forget to select the pull
-> > down menu MM Micro conference.
-> 
-> The part I left out of Ted's email was:
-> 
->    Secondly, please create a topic at the Linux Plumbers Conference
->    proposal submission site and target it to the Kernel Summit track:
-> 
->         https://lpc.events/event/19/abstracts
-> 
->    Please do both steps.  I'll try to notice if someone forgets one or the
->    other, but your chances of making sure your proposal gets the necessary
->    attention and consideration are maximized by submitting both to the
->    mailing list and the web site.
-> 
-> 
-> So YoungJun has already signed up to the website and proposed a Kernel
-> Summit track. It can be switched over to a MM MC topic by editing the
-> submitted abstract and switch the Track over to:
-> 
->   "Kernel Memory Management MC"
-> 
-> -- Steve
+On Fri, 22 Aug 2025 13:20:57 +0500 Muhammad Usama Anjum <usama.anjum@collabora.com> wrote:
 
-Thanks everyone for the clarifications and helpful guidance.  
-I have updated my submission and switched the track to
-"Kernel Memory Management MC"
+> Recently, I reviewed a patch on the mm/kselftest mailing list about a
+> test which had obvious type mismatch fix in it. It was strange why that
+> wasn't caught during development and when patch was accepted. This led
+> me to discover that those extra compiler options to catch these warnings
+> aren't being used. When I added them, I found tens of warnings in just
+> mm suite.
+> 
+> In this series, I'm adding these flags and fixing those warnings. In the
+> last try several months ago [1], I'd patches for individual tests. I've
+> made patches better by grouping the same type of fixes together. Hence
+> there is no changelog for individual patches.
 
-Best Regards,
-Youngjun Park.
+I think it would be best to avoid adding warnings to selftests which
+aren't present in the main kernel code.  If only to avoid surprising
+people over what isn't permissible in selftests/.
+
+In particular, there's an expectation that we can do
+
+#else
+static inline int some_stub(type1 arg1, type2 arg2)
+{
+}
+#endif
+
+without warning.  We do this extensively.
+
+Also, please be aware that there's already a patch in mm-new which
+centralizes selftests' __maybe_unused definition.
+https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-centralise-maybe-unused-definition-in-kselftesth.patch
 
