@@ -4,115 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96140CA0EED
-	for <linux-mm@archiver.kernel.org>; Sat, 23 Aug 2025 17:02:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6D1DCA0EE4
+	for <linux-mm@archiver.kernel.org>; Sat, 23 Aug 2025 17:07:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F0468E0027; Sat, 23 Aug 2025 13:02:19 -0400 (EDT)
+	id 9BE566B00B2; Sat, 23 Aug 2025 13:07:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A1978E0018; Sat, 23 Aug 2025 13:02:19 -0400 (EDT)
+	id 96FB26B00B3; Sat, 23 Aug 2025 13:07:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 790718E0027; Sat, 23 Aug 2025 13:02:19 -0400 (EDT)
+	id 885896B00B5; Sat, 23 Aug 2025 13:07:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 64F848E0018
-	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 13:02:19 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0242813931B
-	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 17:02:18 +0000 (UTC)
-X-FDA: 83808640398.01.AD402A0
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 379AB8000B
-	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 17:02:17 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZkLcfEEI;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of allyheev@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=allyheev@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755968537; a=rsa-sha256;
-	cv=none;
-	b=sqaLgvbAL7pc9inRgDLeaYvHBHT14phL46845dbUyJF2cdIvZZM/gMdjLQklTslah1vsJ0
-	WCd3oeB5H1JT/zKkwIrAlp8ylwjzpxEM2NnOWPvUsttyCjFj546k/lzG2BBd9CVFYJ6XLw
-	Jt8+GM0mOphq2iDcBey/DtEZ2jBalhE=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZkLcfEEI;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of allyheev@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=allyheev@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 784B76B00B2
+	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 13:07:07 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 361281A02A8
+	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 17:07:07 +0000 (UTC)
+X-FDA: 83808652494.28.8895E57
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7A9F640007
+	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 17:07:05 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LpYMMTV9;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755968537;
+	s=arc-20220608; t=1755968825;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Hk+p5ghEzTAvQDShLGqOKKNyxsexSgFKL80k6vJGfUg=;
-	b=EdvO17NcbRMtYPkANFpVBJd9lGb1HqSJfodwh6Laz65DWOmIyE0MOMUd4684sxCEsqgVn2
-	dikqAFQlslidLE/Y8ZRDFFZrZr4LeTpCVbT/WYyfTAZkbPTYTyoNGYlyFnkK+ucNGRRRuE
-	TMQkZf/wnGfN9HtWx8IhlSfcNjIP9Rw=
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-b475dfb4f42so2080700a12.0
-        for <linux-mm@kvack.org>; Sat, 23 Aug 2025 10:02:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755968536; x=1756573336; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Hk+p5ghEzTAvQDShLGqOKKNyxsexSgFKL80k6vJGfUg=;
-        b=ZkLcfEEIepnvgtkP6dMQKAa9pYFOi/S5zLENwPnDvf/uojrqS24jij1GsyYBr3iWcn
-         ir1JtLjWY4ewB/ALoptpj898DWyhd5z1kCEFvErDzic7ca5KHJ5Afdry8/WERM5C0GEx
-         BPXZ/XA7ykKtdUccnyBkmNbok06YNHSg/inywMC5rmfxJoI+3Sluc1S5Qa36+cynX6i2
-         1CcJdoqdbPpKAyj0QWy+1L4y+VlJxCldPaXoJ7JHQAAe6XyqhhminnmY/FyMBc3ziwh1
-         qNs/boOC9rADPrAzP/JYFhG9JZSg+exizUna3JolRGPAfM2PGLLtxAlLwf67NSRY3sTO
-         LfNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755968536; x=1756573336;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Hk+p5ghEzTAvQDShLGqOKKNyxsexSgFKL80k6vJGfUg=;
-        b=FYEErmILr+LPESNzldRXHH3cJ6GBYvOUup/5WYxyWgqSSrdaTUH97l4GFL1d8gtokL
-         /YRCH1Q7XkPQvZ23WKODThfRZA7IQkOzEX65OGKu4BXISUdvPJ7d5oESvYI9oym9OAzj
-         crx4FSEAPIfLC8uu45wGWuaqKYFaDLso1xHW4URoeVMIykKS2vesbjzSrMa/UoipSqLP
-         V4HtqjYs26cR2ltBrsHedrl/Npxh1t70bG/w5ZrDzYwTun+dVV/8J2l1OBNsc/9cNiXS
-         Le0bzj2Yb3WorGWJKkOvFMM+UNz1u/VxrbLGQL6qo/dH/EgrQEiiwpY00pPuD0PYEa3D
-         vw7w==
-X-Forwarded-Encrypted: i=1; AJvYcCVK42u0+3jzgQym2m5Sf3IUqZSLfc8Jjk0tnYJxY6VR0dj5stXLs5L2wKvrbhZT0iK01zrINy+AjA==@kvack.org
-X-Gm-Message-State: AOJu0YwqxAVD6LhmlOCRXiDzr2MS+59pOjqH1zPmJ3ozL9ArbGPXo4ye
-	V8StW4ymgC4//EEQOvUkZ4ywDLrSoibluX5EiTup7kAGQlr/IccShWJt
-X-Gm-Gg: ASbGnctQlIyqQd3u593y8i6zxiL88Az/b8ez2tHlqRLAADy2s3ne7XXSPJcEG3iucgN
-	Y1MRw1gUB3j1/HzbewF7Wh6KBy7igxbBY6DJl9zkmIYvk5VjKJzAuoBmacvIWeqiAaWQ4WbMSiT
-	/KNjdMDo2VhDjLNdywSxvwpk+Qpx97hqaV3HCDlk/D3BZnCCm5uU3FW+5a+JPk3IgQAf6H9wWup
-	hN1O5M0SmesWcyyrAfdqaoTCM2UnfBvcMq05mWILCnyoF3hPhH5YwbGQYwlH0k4+QgCA5uj6GzB
-	1eLWxiCKv3m8PMDZy9rxDIylDYTqNEBaByA6JFPhdMqnj7XdmSBm7Thv0Wa2frKaK8DFPeiUe8b
-	NLYdB+j08Adv1tBdUyBIyevDjrVV/FTAOaZyysJWLMCzOjqa3zsZh1VcIL+hC
-X-Google-Smtp-Source: AGHT+IH2ShbvDYkTHBSBnl1YUhuZP8E16J7gyLk2VDXODCN3OD494KKcUR6j+r39w3Xzpc8VsjYNAA==
-X-Received: by 2002:a17:902:d486:b0:23f:cd6e:8d0f with SMTP id d9443c01a7336-2462ee1a473mr78779365ad.13.1755968535825;
-        Sat, 23 Aug 2025 10:02:15 -0700 (PDT)
-Received: from vicky-pop-os.. ([2401:4900:8fcf:2a2b:8899:f1d3:d5cd:752a])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2467e3238fasm17808055ad.104.2025.08.23.10.02.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Aug 2025 10:02:14 -0700 (PDT)
-From: ally heev <allyheev@gmail.com>
-To: skhan@linuxfoundation.org,
-	akpm@linux-foundation.org,
-	david@redhat.com,
-	shuah@kernel.org
-Cc: ally heev <allyheev@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] kselftest: mm: fix typos in test_vmalloc.sh
-Date: Sat, 23 Aug 2025 22:32:08 +0530
-Message-Id: <20250823170208.184149-1-allyheev@gmail.com>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 379AB8000B
-X-Stat-Signature: 93jyr81fkpbm4eq17xd4swkh5mtmp35h
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qBwWq5lmFaFvwvC4oRY3NPUL5Nqmk+1Qt1RsSfXLUow=;
+	b=f8I4vYPYLzkKBwm4l3l6Cai2S2X/yvM5jyBer9Sfqco3DwaiIqnpefvPpDE/OoMWTjSjsW
+	MRmLBJiB5K510Vk6FXfL8dugioIF3qDdIBK1Btw0EI4hc9/I7lhIv+YmeU9BsjyrYfRp/o
+	vxTdmFXcLn1dv2aCLzM/40RYph5Yqwc=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LpYMMTV9;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755968825; a=rsa-sha256;
+	cv=none;
+	b=hPr88oYJXXQf8H/LRlFYZb7bbPf3uX3inXhrvB0iF47+ILtr390CeTH/pAVQY1oZXX/4Vy
+	hnvHOTC8nwu7MkoN/ZcgPyxonGpAAt//vTiHiisQaEbwrVqqFwNrkE9XjhSg4eZmdkARCW
+	p54W8ZnBObD/BkfVH3nxTTwcqwlm6WA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 25A9E40518;
+	Sat, 23 Aug 2025 17:07:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5EFAC4CEE7;
+	Sat, 23 Aug 2025 17:07:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1755968824;
+	bh=zsnLpOJ+msRihUwNBF9a5KmdzajefwvuxfqUE283cp8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=LpYMMTV9QibwTHYmaRpvNBq+xiR0jSQM86DOFG9fPeqgQH1S5TinNmns1FwCAxM2L
+	 lBqCmVK+wN156VaB0d9J4p2KYFnuEBpxaecgqzD9U7aTtp7KwuaZWGpREvoo6EKVMr
+	 umTzZzvQOqT3Q5+ysFuXtoi9Ukf3QqwOSjxY7Nvk=
+Date: Sat, 23 Aug 2025 10:07:03 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Cc: syzbot <syzbot+49a796ed2c9709652f1e@syzkaller.appspotmail.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ pasha.tatashin@soleen.com, syzkaller-bugs@googlegroups.com, Andrew
+ Donnellan <ajd@linux.ibm.com>
+Subject: Re: [syzbot] [mm?] kernel BUG in page_table_check_set
+Message-Id: <20250823100703.0a0239d204ca2487363d2adf@linux-foundation.org>
+In-Reply-To: <875xeeafgv.fsf@gmail.com>
+References: <68a7ef20.050a0220.37038e.004d.GAE@google.com>
+	<20250822181653.cd2024360870ef94cdb7db07@linux-foundation.org>
+	<875xeeafgv.fsf@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 7A9F640007
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1755968537-413330
-X-HE-Meta: U2FsdGVkX1+QdmZZ/3bPFp40rt7yUuCyglMdOn3nMUpUJNUz9bsT2jZVkzcjNOha3XnTinD32uJ2PC8m4rVgnRGSOn+WqIWKCupJ2pjs0cAtsCiCyQLzEsRh9lPRxr4lngs3VvuH4Ak7jTgKRmWBCXQsCAd5VSo4QEd2zzk0gLJE2Haggwp9RB4Zd1ehHg19g+d8dKUnM2tJYfY2jV+zSwiWGCqYHi423p08rHbvxuQznpxjWX719ZvANk/19DHdrXoc+aS915slbsIqniOIUbhGeA4y/rt9Kvabr+fsNMJnH4/lAYdRVxRonzUvAEO/YrSRn2bweT/pIE/wiv9+fJLK0Pzls+iQc/rLNVDeW5GzMH1podsjHHb2sGEbjwMMw+/t8tll1xeghYOHIXvfiNVCO36LzHPDWTrikOtwqTsfbrRDdtPX5wc98IjctbiKirw1IPdKjdJFQWZXlteCC/t4/5naGXW6RyjQZjUkNUq42yRd+ql2MsqyvSHZD/rgfMZt8hMoFFsvmUkru8AvVdsVi4EkP6f18ol8RSox4h/zSo2bgiEXLWktGuFzUB7+SSqWXh0P4oXQY9siH1BxtN/YJB23HazPO8bj0H5a+lcE9bvInGw6ehhq6VVab2Kpp9vxBQAuSnWKmdv23NJU+lSySBtY7s/0vpRl/epNDE5mEEWFK5jua0sxWqXQHJg9h67HYyvwuBQMWWiyt8Q3Yis1pydNS1HihuUvTNSlkRIugZKPDUf7D8KHT6N+sTTop2/DUe2odOtRzrgrii7zviO6KRqeX3SceTu/MCD6HBYjuLg8TZjtJ9YGCCwomCXiZ2IPMt1YDNJDi+ttootelE9JY67K0UuaJpuGSNs/jEuY+KYQ2E0Ohu5wIaAZT931t4ADF0IGWFq+XjH2vIbhzlk/J9EJW8btVdQyRJWrhpoGJK8mFZGT4a67dUhpzQhoNaMZobnNLIhbVROMs1M
- MAWtoedO
- pe3IEPi89BxIMcBOkerV4Yt17/x3bof6BnvpDaTifaKXzfBw/g45Pl2zlka+s+S3h64MOT/R1VJmckfero+2jeNOA10g4wJDv1Gm8of/yE+2ESL+HFHPe3z7vxSVXnQ7alNySBYspIQz52iWg5hKE6AC8/DEb4kQbw8er101tRt9q4cTq3EYUEIMGkpHVLcI1kJ0y+FdOwDIdrAYqsIPjqo2yquXx512Eqi4Mvnnsn2nM8+/kexjhl4XdVIxg0d3OJX7/V4AdHIky9hzQaujExG/Z63E3qzLHt9+nQ0DWxujJ87vBE/2kE1W6P6yEGZh+nnh+OVJzL8sstQeS2g2LrFeAPe1e+so02HVA6xJc1DyxEMw/1+adwY709Nc1fo6rlkYjVtY3EQDTKyu1swHUJoErBmEkqGzjwhHY3wNWqBY3v9yMQMBtGHZW3Mj5VLy6AIv4+dufQrt2z5FqPnSegsjcew==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000122, version=1.2.4
+X-Stat-Signature: um1gdisfmtdqymah9j5m1ck9ko7taq75
+X-HE-Tag: 1755968825-116670
+X-HE-Meta: U2FsdGVkX1/PdfkuJYX4kAL9W814BVxppvCNSuV8mo7gO6zOvVmQ69kwkaEEGi61vOE8KKEuLCbnQBq7tvYikoe1OmplGTET2DVcq2L6bJkvAkhihN+ZwExxlu/tqjQ4KJJIMfWeMZaijJoS9Pkmo6IFWsOFbxEz2I1R50EzLa+H+ZP23RYYpBlpAFm3xqqLxjj9PSGh78OkvyA+zIrWvgPgchUfpV9RJeR5czMD5+aqHrc7i0sY0VJpEvdjFKJp/4VK3S7ss0CUXes2sCOUkEJ3irc2hCYEOxVwMbH5uVDewZIpqNfohJUvo+dbRjVVmQHGoskP6MD8QHG4ERQTGirsXbpJ6eEM5fds3gjtw6b2fqDVeBkk9IIiMEHnSFBENBfEPeeyq81LCE205PN4yAqUHMCuUgak0bPeC/FZMcggat9gM3H99kW0kosqhH1KqlR9j4y/fKN2jURd1gfKTBjGA/x9BgoP+tf8474w69mYqTLxg9I/fAnmIeQqaAko6eH/ov8SFG2cLYKvdOhnGWLb+z5kbDschnIlkEBK+YxECwv/IWufjOSboqjWjOpgOmv5gVYX9umq7Wnzn5l5/oHbxWNDpX/seJk8M07kZJRZGTMlyxNck8uuAXc/kAg+TSwboPLmIjC0iWfZLblKjq5HIl7olT0brw//ABsaTadEo96RI629NHuJpVxPRb6diiMWqhylEDwtF68ILDuVHkq9It8hoSjt2M0tsYmVUTx9rxbPBTUCUarjA985i4MKH7QuCwNSf+DlDdvxcKx/FXVY8BZF8Ug2ybGMT85LLJ+Y7B7mI2h0PywYECmmGw8ERF7sygv6P2oToBbRnOBV7SGIv7VtoGHh1ye+NLwNSYLJuTy0tbSubtDJLxp5tRDBht+TgRsuhSbBSrrEbKSJFdWjs9wvZpXuyWtOhEMucyybllRGjt2SdEQITFujNf2LYTws00INw7h18KnjA/D
+ P94MbSGc
+ 1FKlqh6Gv2HSAXNdNWqiYaY/IeV8YpPREafsgoSWrI847gnO8ouzKbsWiiTkGeFdxpP+f5BosGLH+KUJJSnId/MEEBRu4z/F1e0KyGkrKsEKasj0igzegJsKBhtUJoIgmyTO75mQDyELl3g754giPix1H5pAM+cj8+TmmZ+g6OKuJl9DPWxsXjlwCs5ZMtpNtatxM4A7vim5kLX1nGNRZIjyL/PdeVJ/qApV7zeicwh4zd37tSX9Ek1kE1k5mryF58kIk2yEyA352I1wm9aHfmAqVuNI3R2nANt9OevzOq+kUCEeqQYWjWeaPnhk/IRdvp7PQq9IzxB5khOLyF4XQb5pR4d/uFUfoBTYeV24yTgIdMYcVSfwiALxVGyaiyuNqSxopRdy5P0xVs4ribqrvgbo70LF5g2cQe7BOZRDHoGmYF9u89D/h1sJjGy0UGHUOH/BU6A2dSPpTbftgVJgWXmtegxnJzFm6twom39H60kdFOA2QLeed64eIoGlamxfYwbbCKlQtxPvRPj954NA5p0kd94McVV1ylk3FYwvzz+AtjnSU65MYLUKUTgMLMjHobOpDN06ZBvRNRHeUIsOpzgyZjdbr2N+CtmdWmrM8JyPIgiIR4puereKazwTXVY8IHih5PsjwIlX8HR0dlzoBgiZGTEthZDpnlwhMr0rCQK8T8a6bAZUIdkcfv5Wxf63PLz+WS62VmyzutHQHi4pKtXIxcZ85XmZWvEFO/1lseWVSyPe7azeGkXBcsnto3sjfJML7ErFAxblgpwuIj1Uty+6y4RnKqo0qc+gxJNDhe+OpCcg0PjPuJ0yoPC3OWDsGYvLMOLjdEmWJmRn445SYHyHA9v1zloFD/HgKd3FzNKfN4yr99At9ilasdVi48nTTvZGuiyXm+i8RsFePDJ8ec/2t/Bhr1ujyMBCrXDMiPNBhrazhHOWf5jV+L+7DpC4ezfbPop3RaR0rew+pNcfi6z4PHbPI
+ FWmm8Mi2
+ QxaRdgCIzf3UDmjiOLGXAS+4ZPDXVzkoqEkQHw8FUY41Ihw70EuQKQ==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,42 +96,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Signed-off-by: ally heev <allyheev@gmail.com>
----
- tools/testing/selftests/mm/test_vmalloc.sh | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+On Sat, 23 Aug 2025 08:53:28 +0530 Ritesh Harjani (IBM) <ritesh.list@gmail.com> wrote:
 
-diff --git a/tools/testing/selftests/mm/test_vmalloc.sh b/tools/testing/selftests/mm/test_vmalloc.sh
-index d73b846736f1..d39096723fca 100755
---- a/tools/testing/selftests/mm/test_vmalloc.sh
-+++ b/tools/testing/selftests/mm/test_vmalloc.sh
-@@ -47,14 +47,14 @@ check_test_requirements()
- 	fi
- }
- 
--run_perfformance_check()
-+run_performance_check()
- {
- 	echo "Run performance tests to evaluate how fast vmalloc allocation is."
- 	echo "It runs all test cases on one single CPU with sequential order."
- 
- 	modprobe $DRIVER $PERF_PARAM > /dev/null 2>&1
- 	echo "Done."
--	echo "Ccheck the kernel message buffer to see the summary."
-+	echo "Check the kernel message buffer to see the summary."
- }
- 
- run_stability_check()
-@@ -160,7 +160,7 @@ function run_test()
- 		usage
- 	else
- 		if [[ "$1" = "performance" ]]; then
--			run_perfformance_check
-+			run_performance_check
- 		elif [[ "$1" = "stress" ]]; then
- 			run_stability_check
- 		elif [[ "$1" = "smoke" ]]; then
--- 
-2.34.1
+> Andrew Morton <akpm@linux-foundation.org> writes:
+> 
+> > On Thu, 21 Aug 2025 21:16:32 -0700 syzbot <syzbot+49a796ed2c9709652f1e@syzkaller.appspotmail.com> wrote:
+> >
+> >> Hello,
+> >> 
+> >> syzbot found the following issue on:
+> >> 
+> >> HEAD commit:    8f5ae30d69d7 Linux 6.17-rc1
+> >> git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
+> >> console output: https://syzkaller.appspot.com/x/log.txt?x=15f926f0580000
+> >> kernel config:  https://syzkaller.appspot.com/x/.config?x=8c5ac3d8b8abfcb
+> >> dashboard link: https://syzkaller.appspot.com/bug?extid=49a796ed2c9709652f1e
+> >> compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+> >> userspace arch: arm64
+> >> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15faa7a2580000
+> >> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=144143bc580000
+> >> 
+> >> Downloadable assets:
+> >> disk image: https://storage.googleapis.com/syzbot-assets/18a2e4bd0c4a/disk-8f5ae30d.raw.xz
+> >> vmlinux: https://storage.googleapis.com/syzbot-assets/3b5395881b25/vmlinux-8f5ae30d.xz
+> >> kernel image: https://storage.googleapis.com/syzbot-assets/e875f4e3b7ff/Image-8f5ae30d.gz.xz
+> >> 
+> >> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> >> Reported-by: syzbot+49a796ed2c9709652f1e@syzkaller.appspotmail.com
+> >> 
+> >> ------------[ cut here ]------------
+> >> kernel BUG at mm/page_table_check.c:118!
+> >
+> > Thanks.
+> >
+> > Presumably due to the series "Support page table check on PowerPC". 
+> 
+> The syzbot triggered this on:
+>  HEAD commit:    8f5ae30d69d7 Linux 6.17-rc1
+>  git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
+> 
+> This tree does not have "Support page table check on PowerPC", correct?
 
+Yep, sorry.
+
+> Also, I guess Dev's change fixes this reported problem which could happen in
+> this path: commit_anon_folio_batch() -> change_pte_range() ... 
+> 
+> [1]: https://lore.kernel.org/all/20250812060124.C9344C4CEF0@smtp.kernel.org/
+> [2]: https://lore.kernel.org/all/68a80cc6.050a0220.3809a8.0002.GAE@google.com/
+
+Cool.  Dev's fix is in 6.17-rc2 as cf1b80dc31a1.
+
+#syz test git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git c17b750b3ad9
 
