@@ -4,115 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5508FCA0EE4
-	for <linux-mm@archiver.kernel.org>; Sat, 23 Aug 2025 08:23:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84907CA0EFA
+	for <linux-mm@archiver.kernel.org>; Sat, 23 Aug 2025 08:52:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9967E6B00AD; Sat, 23 Aug 2025 04:23:14 -0400 (EDT)
+	id 62B8D8E0024; Sat, 23 Aug 2025 04:52:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96F556B00BE; Sat, 23 Aug 2025 04:23:14 -0400 (EDT)
+	id 603438E0018; Sat, 23 Aug 2025 04:52:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8AB2F6B00C0; Sat, 23 Aug 2025 04:23:14 -0400 (EDT)
+	id 53FDA8E0024; Sat, 23 Aug 2025 04:52:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AE856B00AD
-	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 04:23:14 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 766A1B9D75
-	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 08:23:13 +0000 (UTC)
-X-FDA: 83807332266.19.01378ED
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 9875940005
-	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 08:23:10 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b="WKchbwK/";
-	spf=pass (imf12.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 431388E0018
+	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 04:52:43 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8311BB9E3A
+	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 08:52:42 +0000 (UTC)
+X-FDA: 83807406564.18.CC26080
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf04.hostedemail.com (Postfix) with ESMTP id E332A40004
+	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 08:52:39 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BOzR7LYH;
+	spf=pass (imf04.hostedemail.com: domain of giorgitchankvetadze1997@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=giorgitchankvetadze1997@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755937391;
+	s=arc-20220608; t=1755939160;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6ECUzsLpIGLfSNANJzOpUlmNgO6Xf1gnfi/48aM/B14=;
-	b=pHt4Vw3xLK/0u9pbVyEAIWHaHuqz+yjtCYsyI3y0WTvOK5jXqhpl4eS4LuisQtkVFrIuEf
-	GIUrH4iPH4xMk2lrC44L8Zkdo2N5/5GfFWLvoI7T55X+obCMIBAYtpDK9uPIKPr+eGE8Ut
-	3Zbqsl5bKEIcd8kFdA0HmGDL9DwDNXQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755937391; a=rsa-sha256;
-	cv=none;
-	b=FiM6b1caYmGRz+uuihczaSvh03fEzRIJ7LHrbP8BO0sxiPh4+L0FYkBmttupzUcqD0oAyC
-	Bf26LGXZ2d79cwuzHz1r0aeayXzfcBdZUDpEXwZJiZnlc2Hqr+GvAY9UYKyxIGNXdNYRD6
-	qCy2McaN9vddy5vWUx/df+JfzfaO4IM=
+	bh=7PP5wLYO2zlvHpx8ruISXTqTGXsZ44eUfMj/9ZfnRZE=;
+	b=bZT/jbpfOohfl92GymSkXB5g1cInDGTfIPV02H/XTOIs0gx4qBpebZap5hxj/PZ2mgQGd4
+	24XRnLyBQKlXR3pM7aqfC8bcu4NgHc7NPsZFmk+ZWIEJdgMySV/p1q8nFYo151048keFPi
+	hnbzY9/WdHo6kCoNc0hW8urX8oCka/g=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b="WKchbwK/";
-	spf=pass (imf12.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-71d6059643eso22368777b3.3
-        for <linux-mm@kvack.org>; Sat, 23 Aug 2025 01:23:10 -0700 (PDT)
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BOzR7LYH;
+	spf=pass (imf04.hostedemail.com: domain of giorgitchankvetadze1997@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=giorgitchankvetadze1997@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755939160; a=rsa-sha256;
+	cv=none;
+	b=iDZp5MU0PAvjd+NQSZ8ynPY5i0vjJ6t/YnEQPWMZWkfLeUhQVo9RUL97YNTa69QLSp6SYq
+	yhjB6DX08LFLNydgoMIBPEkfTN64yv4pC4dLcNmR/ZJ/UbHGzfjVEg68qRTXFyGCtcmccv
+	p/EqNn6ExSRorD+ogEfogUOJ6veNuZY=
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-45b4b25cdb5so3677705e9.2
+        for <linux-mm@kvack.org>; Sat, 23 Aug 2025 01:52:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1755937388; x=1756542188; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6ECUzsLpIGLfSNANJzOpUlmNgO6Xf1gnfi/48aM/B14=;
-        b=WKchbwK/9f92Ksf1VyEYiF/2Tqj4zDNrqd17jG134zMPnE8wE+wTSeca6TuSBGu3+P
-         DhJtxpHsjuMBnLoJduFM0QfpbL/Mb1etFBtpGru3LXAq0IitTL9PWThQSTEDWY+Ut72L
-         e1y2wqcWrZC5EEcLieptMTO0JVNG8zEp/3/KKeTtUR6Q1mO+D6yoqnHYKo6z5wr/bEH6
-         ib6iOjVdOZ+qx6l+OehemaP4orjwAfm6W6U4MzvOYh89PRTFc9Ul4KBRb7FTFa/RWllx
-         yvSTRc3ADBdHDoihpBHZr+llu+OBJLplcWLT4QbPFyfI+SoblAgw7TJLUoMuMYp18+7L
-         uraw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755937388; x=1756542188;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=gmail.com; s=20230601; t=1755939158; x=1756543958; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language:subject
+         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6ECUzsLpIGLfSNANJzOpUlmNgO6Xf1gnfi/48aM/B14=;
-        b=s+F4KVUzewehDdVgvS7di0hOddLEqWXpZ3IQCcCC3f7qy3WTLtCgix9MZD8KirjzEY
-         oiW2i2hQASYzn0E5wtgyWh6lEIYAI3Vf/RY0H4hK1cxl9eT6K3B8N0aHOzHuGj3R7T9p
-         wEsZOF9C/Wk75on1ik4lvRdv+wVzwJA9Vv+wW8AI7atuoE4YSTGSEhqSfHRTMmDpwjXP
-         5smzUEp46qdNqBr5KF465f6OYtdcEUQiG2tcRqTBY5arhQMDfYJ3ix5DXkibmf1i0/zM
-         mdu8Bz721ikplRHnlRV/sGRQlfkKd2faLFrxsKbmhHoNcb3HznPFW7cu5rrwjL5WX3Bk
-         Arfw==
-X-Forwarded-Encrypted: i=1; AJvYcCUoxofde7yKyVP0Lhkg8Hk09MfcSrrT1J/wRhZ8Gf7VY6x3ArokzshHzwLfY+mrPtWc11IwbTwGFQ==@kvack.org
-X-Gm-Message-State: AOJu0YwGXulOF74+H+QZpRBmJBtwvZYyNxQ8+sGb23HwNwAns/6gHcj9
-	Gdy4Vzqrqk+c4MXlZW0hTBzTRAM0FYQ59dz3VU+lbFjZU/fHLOe1+bIeHq8tJQPcUb7rYAjlZSL
-	Hjy/Dk7terhtQyvNa0FSpfDcwnCztKcR8UZ3UW3VNTg==
-X-Gm-Gg: ASbGncve6QMBYZoyTMjJBbs/8HcN0/nmOOp87oxCoBFFV1Geiz0W6gpyvhDPGC2ss2N
-	vR/v9SrIkgN5iFcPM/w1FSAAaUQA8XbovnE7Bg/2NYnjrIAghm1O4IpmbZEj/mFkBwDTBKkebOB
-	31gfX3ZQMTU4trqo3mMHHx8pnE7Y0TtNguFbQ8VBe31r3KFfw3Daq+B8YRSKTEqoGVOpTHAcO3C
-	3S1VCD9btQM
-X-Google-Smtp-Source: AGHT+IH0BVIyZiw5bWrCKqslz5gV80c6AufAKs2rnSguLnlMSKmrPRYkojH4j4/wRFQ/wNMvYf2Fi3seu0hZ9/B27eE=
-X-Received: by 2002:a05:690c:4c09:b0:719:f37e:e69c with SMTP id
- 00721157ae682-71fdc421889mr66924497b3.36.1755937388335; Sat, 23 Aug 2025
- 01:23:08 -0700 (PDT)
+        bh=7PP5wLYO2zlvHpx8ruISXTqTGXsZ44eUfMj/9ZfnRZE=;
+        b=BOzR7LYHLy0S5Ep/Z1MLRElX+N5z+8c90Auz/eVqiur1UNpbteMP/6/Umx7kO68A1c
+         FWstfyu+/AID+07wlV2gAGfCKz7wpVZFDXikx3dIKz3Ta2YaAX9U/cw1uOEWBfo4wVFJ
+         N4ZqVkIlpxCjnRZG/iwY6dm79qnWHHFMCQn9reTKN3tqQz5SMHSuxLrjSKlbuAW7E1AH
+         NvavzCauvaTrK239ILb2qztfpmiphUdR0FGBbdsn93/3nRvFSyhgQJj79MBnNqHUHHz9
+         k18Ckiiba4HkjRaW55K6Fd25SfuD0xchsGUGhVLlonSNdeW3v+k/UskuqRLygKZBgZq8
+         friA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755939158; x=1756543958;
+        h=content-transfer-encoding:in-reply-to:from:content-language:subject
+         :references:cc:to:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7PP5wLYO2zlvHpx8ruISXTqTGXsZ44eUfMj/9ZfnRZE=;
+        b=OeNae39qfXahBfYT01lMi4eodsg8js1VKNpQyR/RShGihWBU0nhyg7eeKtduddS/4O
+         qXqqT8B8uqor2CqYUJBeSHXOSYMNWMVf/2P4YdSBVtjAfGZApF/6qkxIdOY4RuC6HoCT
+         LFIIcJVlBjVkh5UpIf6gNfFzdZP7GrUst/ExAx2VCfIcq5u8YgRbl9R32IUqZishcMSx
+         punV1DKQpaKLZ8Xvd1/OTCF9MDeEffH9/qw7bxlvEbHZ+QuzzSy227TpdzMr9/MHetvF
+         pDiBr16HW2HGdTsP6ovnyqALck2siBUwwEAiwxHEZQQ3h+XplTBNP4WTeJNBXJ/Wf6Fr
+         zP2g==
+X-Forwarded-Encrypted: i=1; AJvYcCWeayNa9VwJy58BKknVzA41HAxzIwfMll3c+R9TmgN6QTSsewIiCvb1ZKQOLEhyCa9iMYdmh1cPKw==@kvack.org
+X-Gm-Message-State: AOJu0Yy+YYV+3pDxT0nfSqdpyUqzwfmq3XEBA1+iQgBWhVhWrM/0RsY0
+	nIx4ThKDZQtexWEQWG4+eGG3Np8bUDFYozVX6S52ZcrVX7WwDixsNeWP
+X-Gm-Gg: ASbGnct1lRAonGaVLwenv5guA1H/dtxDzxGQWlFAWNamZ7Us2FHEqC/N5pVPobyy6oZ
+	XKTNHdToIbVONx2/IPSkqe28mdvGb6SjSiTC9sAZqSlAgWMb9SpjcxW367PYLBCFydTy1cmgexi
+	+9xU4n/Z71dkdyyud71teQnKDjj4d7cGx2e8+0uaQwFlc6vMGOyH9d3uwsXSB35k56s+brvx2WI
+	spePJEV5RG5LQNq8/4cvXFjF2aKfTU5BQ4tyV3xfVT6vpGGgghHMv8TIy85939u2MAhQHpOj3PG
+	8tkDRV/5TzdimXXJenhvWRqJADQK3tsdC7rbueQfJb8VnxYem9LCwgJarKkyxIOFSSOu5Xriebc
+	OBNE6kizguhF8j3giYyV5R2pLqlJdzeBEmMSySXL+LMfrEHOduiCW
+X-Google-Smtp-Source: AGHT+IHodoiT3tBSjX0hwuDcLRmhYNw6cAIJpzxg7LcK2D4rgZHgimwZ/kdkV0/kf5RKPnxladSDAw==
+X-Received: by 2002:a05:600c:8b26:b0:456:1823:f10 with SMTP id 5b1f17b1804b1-45b552eb575mr18571825e9.8.1755939158114;
+        Sat, 23 Aug 2025 01:52:38 -0700 (PDT)
+Received: from [192.168.100.6] ([149.3.87.76])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c7116e1397sm2714908f8f.49.2025.08.23.01.52.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 23 Aug 2025 01:52:37 -0700 (PDT)
+Message-ID: <1757f780-0228-476c-a5a0-ed980209852d@gmail.com>
+Date: Sat, 23 Aug 2025 12:52:34 +0400
 MIME-Version: 1.0
-References: <CAHSKhtebXWE5m0RcesWe_w2z1Gpqt1n5X0wuE9oD1tX6VxztUg@mail.gmail.com>
- <76a95839-00b1-43b8-af78-af4da8a2941c@gmail.com>
-In-Reply-To: <76a95839-00b1-43b8-af78-af4da8a2941c@gmail.com>
-From: Julian Sun <sunjunchao@bytedance.com>
-Date: Sat, 23 Aug 2025 16:22:57 +0800
-X-Gm-Features: Ac12FXyXLbqkgSJ552CB_VB52RDuHyiA8g2c5o9dPYHcJpfZiX_QPTNVRfVvNBQ
-Message-ID: <CAHSKhtd_oM8yXBwgm1-6FGhDEaDGCWunohMnb4AtV8Y-__z-zg@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH] memcg: Don't wait writeback completion
- when release memcg.
-To: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
-Cc: axboe@kernel.dk, brauner@kernel.org, cgroups@vger.kernel.org, 
-	hannes@cmpxchg.org, jack@suse.cz, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev, 
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev, tj@kernel.org, 
-	viro@zeniv.linux.org.uk
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9875940005
-X-Stat-Signature: 5hoghugn9z59ak3gjrtcpnx7db7fj97k
+User-Agent: Mozilla Thunderbird
+To: akpm@linux-foundation.org
+Cc: aha310510@gmail.com, david@redhat.com, leitao@debian.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, muchun.song@linux.dev,
+ osalvador@suse.de, syzbot+417aeb05fd190f3a6da9@syzkaller.appspotmail.com
+References: <20250822180708.86e79941d7e47e3bb759b193@linux-foundation.org>
+Subject: Re: [PATCH] mm/hugetlb: add missing hugetlb_lock in
+ __unmap_hugepage_range()
+Content-Language: en-US
+From: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
+In-Reply-To: <20250822180708.86e79941d7e47e3bb759b193@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 9h93uhf3tjk835fksof5h7jzx1zkyd3z
 X-Rspam-User: 
-X-HE-Tag: 1755937390-872118
-X-HE-Meta: U2FsdGVkX19E8ksdqOUSMjGSxqvNIb5+40R+Rz/Kzhkcpq6UpjLCELbNvPtaAugcYiw88LyUBtzkzHSnaOOC6PREuSET13elmwngis9gmHhAqo6qSjJM8jdhXJXEGnU3CnHDXqIpT4INT5TAUg5dg53uExzBrPQ5Y61au1Y8WU3GvgQayPiNAfIDAqIgbLlny1gr7WBrPVw2SEUimOofxk/RRBXgKEsKiqrtcPrz/9P71kRs/8uYHEA56BsYAGYORgRy+YM2PMFQwe/mKJkQKKFzjxzbgbUhDE9e+bwUizOYb/AJHYmy4SiFC1Ob8SPQrgdrW5HQdqL/gj52YidUGApT+DvtjoIeBUGqSrgMhb4NCB6HJg/McC5fcosxBeOiI9hLdnMvfMSae34jMwY0L+qvKSSV6KbSNAGv/4dZkgrVndHZCrern5FeMvbMDaqEN9FVqUXzkdb8PtoF0eG5CAx03Vn4Kf4AgdynMMwBt0v1oAiQ7q/OXjrlACVLOA/j2O3mHhwHUeYQFzNofAPJP/SC4aMyZ1zAFTL2W7Rt1to8qdBLdCScHXL/9azYrzz2J+HWPyCxAS/rw2/xL4/Hu7A8cjVV2oyqT6TV02a3COx3hTOioJSs0Hck3DoMLyUEwLhmadTi+Jl6++8DZWewZQow+HLVNKKIhKDA99ctTgu/Qj3G5BBT5cWoVirI1usXy6WaUqtFpE0a9oXnBZZ87L3YaTtBzhICAkq/vM1Xrg2Tgcm7/Zw5yY4VpKJ1tUGOGYTlzeVv7DS4BhKHJGG8wzlD2PuYrNSXe5M2SAmifAa2hTGzB2zLziiYVzj2jNziDvnI9dlzaq0YdqzVMTev3kXdq1m83IYfE219Ro/dZ8prQHUWjAxtMzxFOpw8IjWMskuEzjnnEZL4oPN/5pYubG8BwEp1qUOVeqW9pd5rjhDJwYhYJ77Z2rdzxWfZLaoZC8bn9VfsGrLhvLS90wl
- xYjo4FSs
- 7yAju+vmFNoFQGlAGix3N1+Malrh2z0DHeCRwQN/TBEiMH1JHtEhWGSSK6SxC23Nl5g8Ze6MTTWn0EMSF3FbLSierT8UzDgbhb8WFrGR8viyEaHx/oOznv4kEarX2YXkFgEUqMUYbo+jlBpzZY59C00iEjAqd+ChjwWfRqPHVeK/9Ei6KDhYQUm5ApLSZ2kcxx9HXLRdZRK+Tj3QPG/+J4vfRu31YOqgjJXJcsQpaOOeCtJOstSzg37JcFr7dXDPk45LgMhXo60NryNPxBM5DRu3G7A==
+X-Rspamd-Queue-Id: E332A40004
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1755939159-458167
+X-HE-Meta: U2FsdGVkX19AF/uosAqe1xSOmsO6dLzDauH35Y13eUSyTzQDZimp6qbceblnpBqE9gE4JkNKs0QxeN8gbs3uOd9UZrId0tH/73U93BnZ8DiRICnNBV9yymfDBaDnkJ8ctxdSi3gaXGGvCG49ws0pTUD1DhM/WQe8cnDSxJTyIUOKq/5fhKtOMItgT590vkMhOSqgpoMfy7gb2MVPeS+n4Z3hlcft2ondVcpAJCR1PLtyh/xPz3sKJlMkzZh6EK8OdSckiWAomnvxffd/2u1PYCi3SzClQfbUwk5SHdNDp94J5PAA82I47qxkrM3phSdAAVEV5WgZ6bf5eRn3OgnsnDvvKtER8NkdrGY8N20sbqOhkAXRFe0kVR2339FJMGIC1YcFCm2G5TQnK1Ti024TMZE6KrF+gy9VT4hy9Xp3Cya1FYeHRnOcIczURlQC9vwzCI5euUxZd9RWrkrOJgSscHcOqjvXDgLPGTuDn5+Fws1iJZFo2+te8qagJAX9S9wzANRjRD/awyj+nniljCJ6ilISlA4JQIwZ2roslhOadMqf/KyQzK69QyIIt5p/uzXLBTyBK6qvegkW0aTuc5HhmT/x2TubCA2BqnM4k0JHVPAPQUdcf4UJUIg8ND7OzZAC19F0YmxBphM0/h0KgndocrHaeGz6BoGJ/N5vAg4T34EtU1UI2Y3jhs4yhR6RmjJVQRmQQZgD2iu0F/ZQi3HoezG8wJgasJ9ZtNT8LHy/SxXLLs41qweQYKQhYFj7YM2P+HK9uDdNl5powDuCBelKVq1kh4LNrfC9iGVz3PKucEvUWcHY2EUFqTsYdUMCC6AZnWmQzdF0BtBcqu/Jjw0dvOwdRyCj/mlzFJ9zuQm4NikMfaEQVvohLUsv348OgV2Ef+PDA9nXN3DMX82jXpuBQ/HO77zQ6chVr+Yd3CUaCx0HhT9cKUIEhRmZnWYo8edctEnWFnhWGAQ9SrfMi1H
+ rVIeKlUq
+ /GMiqVHt9wUlSUikM82JM+NfycUSZRkez3Dv6zCjXYPnOAiG4QurGJiXZ1Of8qxNUT4hU33TfX+2tjlWqzXYHGUC5Sh+kyUk9iEvdhOZFPiNmkiInDSLxvMQrhrmUCpYVIQx2+RJ6qVRqMASPh9eL/wNdYzc3aeDQFqq37l5zBxT5o7jKPTbt5Cs37DC6HNQaYEK8Q9/Mz2k6b//OW0rlzyjDK49g76SoMTplQrRsESm/+9kGYouNdPiCspfJLCZoisBI3gMtQ7xeijwrQSaEKMGgSD70SNOCnZXb2vAJb00tNLF/eb1Eb96rD1n4FMDwjI2Hy6bUxvRYJasgwfOm1sUvXJmpxROiGAjany2OYC4HR+z1Q5OrkkCzEEDA+eQ8t5GFAsAC2lXh+XTKv/nQSQE2WTEpgY/EsYOTVRdr3fKNly2aausxz08IDU0tTV6l4IDB6cangA23CP/KnDfdrtuwZ1XWJS0z778nqg/M/A0JI1UYbkktxkKYxfTgft8nB0j5c91dt/Xpk8HykVIysguTE7u+701Wh8VvDb2ZBpjr0n3mfr/VmiQRuqL8hNSk0MFkmex1kaQ8tsERTYZKZ6q7r7qPOZ5lR/MX
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,119 +123,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
++		/*
++		 * Check surplus_huge_pages without taking hugetlb_lock.
++		 * A race here is okay:
++		 *   - If surplus goes 0 -> nonzero, we skip restore.
++		 *   - If surplus goes nonzero -> 0, we also skip.
++		 * In both cases we just miss a restore, which is safe.
++		 */
++		{
++			unsigned long surplus = READ_ONCE(h->surplus_huge_pages);
++
++			if (!surplus &&
++			    __vma_private_lock(vma) &&
++			    folio_test_anon(folio) &&
++			    READ_ONCE(h->surplus_huge_pages) == surplus) {
++				folio_set_hugetlb_restore_reserve(folio);
++				adjust_reservation = true;
++			}
++		}
 
-On Sat, Aug 23, 2025 at 4:08=E2=80=AFPM Giorgi Tchankvetadze
-<giorgitchankvetadze1997@gmail.com> wrote:
->
-> Hi there. Can we fix this by allowing callers to set work->done =3D NULL
-> when no completion is desired?
+  		spin_unlock(ptl);
 
-No, we can't do that. Because cgwb_frn needs to track the state of wb
-work by work->done.cnt, if we set work->done =3D Null, then we can not
-know whether the wb work finished or not. See
-mem_cgroup_track_foreign_dirty_slowpath() and
-mem_cgroup_flush_foreign() for details.
 
-> The already-existing "if (done)" check in finish_writeback_work()
-> already provides the necessary protection, so the change is purely
-> mechanical.
->
->
->
-> On 8/23/2025 10:18 AM, Julian Sun wrote:
-> > Hi,
-> >
-> > On Sat, Aug 23, 2025 at 1:56=E2=80=AFAM Tejun Heo <tj@kernel.org> wrote=
-:
-> >> > Hello, > > On Fri, Aug 22, 2025 at 04:22:09PM +0800, Julian Sun
-> > wrote: > > +struct wb_wait_queue_head { > > + wait_queue_head_t waitq; =
->
-> >  > + wb_wait_wakeup_func_t wb_wakeup_func; > > +}; > > wait_queue_head_=
-t
-> > itself already allows overriding the wakeup function. > Please look for
-> > init_wait_func() usages in the tree. Hopefully, that should > contain
-> > the changes within memcg.
-> > Well... Yes, I checked this function before, but it can't do the same
-> > thing as in the previous email. There are some differences=E2=80=94plea=
-se
-> > check the code in the last email.
-> >
-> > First, let's clarify: the key point here is that if we want to remove
-> > wb_wait_for_completion() and avoid self-freeing, we must not access
-> > "done" in finish_writeback_work(), otherwise it will cause a UAF.
-> > However, init_wait_func() can't achieve this. Of course, I also admit
-> > that the method in the previous email seems a bit odd.
-> >
-> > To summarize again, the root causes of the problem here are:
-> > 1. When memcg is released, it calls wb_wait_for_completion() to
-> > prevent UAF, which is completely unnecessary=E2=80=94cgwb_frn only need=
-s to
-> > issue wb work and no need to wait writeback finished.
-> > 2. The current finish_writeback_work() will definitely dereference
-> > "done", which may lead to UAF.
-> >
-> > Essentially, cgwb_frn introduces a new scenario where no wake-up is
-> > needed. Therefore, we just need to make finish_writeback_work() not
-> > dereference "done" and not wake up the waiting thread. However, this
-> > cannot keep the modifications within memcg...
-> >
-> > Please correct me if my understanding is incorrect.
-> >> > Thanks. > > -- > tejun
-> >
-> > Thanks,
-> > --
-> > Julian Sun <sunjunchao@bytedance.com>
-> >
->
->
-> > Hi,
-> >
-> > On Sat, Aug 23, 2025 at 1:56=E2=80=AFAM Tejun Heo <tj@kernel.org> wrote=
-:
-> >> > Hello, > > On Fri, Aug 22, 2025 at 04:22:09PM +0800, Julian Sun
-> > wrote: > > +struct wb_wait_queue_head { > > + wait_queue_head_t waitq; =
->
-> >  > + wb_wait_wakeup_func_t wb_wakeup_func; > > +}; > > wait_queue_head_=
-t
-> > itself already allows overriding the wakeup function. > Please look for
-> > init_wait_func() usages in the tree. Hopefully, that should > contain
-> > the changes within memcg.
-> > Well... Yes, I checked this function before, but it can't do the same
-> > thing as in the previous email. There are some differences=E2=80=94plea=
-se
-> > check the code in the last email.
-> >
-> > First, let's clarify: the key point here is that if we want to remove
-> > wb_wait_for_completion() and avoid self-freeing, we must not access
-> > "done" in finish_writeback_work(), otherwise it will cause a UAF.
-> > However, init_wait_func() can't achieve this. Of course, I also admit
-> > that the method in the previous email seems a bit odd.
-> >
-> > To summarize again, the root causes of the problem here are:
-> > 1. When memcg is released, it calls wb_wait_for_completion() to
-> > prevent UAF, which is completely unnecessary=E2=80=94cgwb_frn only need=
-s to
-> > issue wb work and no need to wait writeback finished.
-> > 2. The current finish_writeback_work() will definitely dereference
-> > "done", which may lead to UAF.
-> >
-> > Essentially, cgwb_frn introduces a new scenario where no wake-up is
-> > needed. Therefore, we just need to make finish_writeback_work() not
-> > dereference "done" and not wake up the waiting thread. However, this
-> > cannot keep the modifications within memcg...
-> >
-> > Please correct me if my understanding is incorrect.
-> >> > Thanks. > > -- > tejun
-> >
-> > Thanks,
-> > --
-> > Julian Sun <sunjunchao@bytedance.com>
-> >
->
->
 
-Thanks,
---=20
-Julian Sun <sunjunchao@bytedance.com>
+
+On 8/23/2025 5:07 AM, Andrew Morton wrote:
+> On Fri, 22 Aug 2025 14:58:57 +0900 Jeongjun Park <aha310510@gmail.com> wrote:
+> 
+>> When restoring a reservation for an anonymous page, we need to check to > freeing a surplus. However, __unmap_hugepage_range() causes data 
+> race > because it reads h->surplus_huge_pages without the protection of 
+>  > hugetlb_lock. > > Therefore, we need to add missing hugetlb_lock. > 
+>  > ... > > --- a/mm/hugetlb.c > +++ b/mm/hugetlb.c > @@ -5951,6 +5951,8 
+> @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct 
+> vm_area_struct *vma, > * If there we are freeing a surplus, do not set 
+> the restore > * reservation bit. > */ > + spin_lock_irq(&hugetlb_lock); 
+>  > + > if (!h->surplus_huge_pages && __vma_private_lock(vma) && > 
+> folio_test_anon(folio)) { > folio_set_hugetlb_restore_reserve(folio); > 
+> @@ -5958,6 +5960,7 @@ void __unmap_hugepage_range(struct mmu_gather 
+> *tlb, struct vm_area_struct *vma, > adjust_reservation = true; > } > > + 
+> spin_unlock_irq(&hugetlb_lock); > spin_unlock(ptl); >
+> Does hugetlb_lock nest inside page_table_lock?
+> 
+> It's a bit sad to be taking a global lock just to defend against some
+> alleged data race which probably never happens.  Doing it once per
+> hugepage probably won't matter but still, is there something more
+> proportionate that we can do here?
+> 
+
+
 
