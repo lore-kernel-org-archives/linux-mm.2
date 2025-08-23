@@ -4,120 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABA84CA0EFC
-	for <linux-mm@archiver.kernel.org>; Sat, 23 Aug 2025 01:32:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2DF0CA0EFC
+	for <linux-mm@archiver.kernel.org>; Sat, 23 Aug 2025 01:45:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CF5E6B009C; Fri, 22 Aug 2025 21:32:34 -0400 (EDT)
+	id 180438E0022; Fri, 22 Aug 2025 21:45:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 580366B009D; Fri, 22 Aug 2025 21:32:34 -0400 (EDT)
+	id 131758E0018; Fri, 22 Aug 2025 21:45:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4969B6B009E; Fri, 22 Aug 2025 21:32:34 -0400 (EDT)
+	id 06E3E8E0022; Fri, 22 Aug 2025 21:45:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 34E006B009C
-	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 21:32:34 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D9E6A138D6A
-	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 01:32:33 +0000 (UTC)
-X-FDA: 83806297386.17.DFE804A
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D4046180003
-	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 01:32:31 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Kw5rXZ6G;
-	spf=pass (imf16.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EB2ED8E0018
+	for <linux-mm@kvack.org>; Fri, 22 Aug 2025 21:45:47 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3C5E01403B9
+	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 01:45:47 +0000 (UTC)
+X-FDA: 83806330734.22.C7E80AC
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 57255C0007
+	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 01:45:45 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=c+IHBkVA;
+	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755912751;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1755913545;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EJZrbfzvth3UC+HZU+WUnSg75LyO0CB51/ryaxjmXYY=;
-	b=BMpZulwPtQAsshePGmeRw684xqJAHUfrF/nCXdNLLi+6chug41oSR1K6ZsqwvwM5I/yxUl
-	DTxobwIelBXGe+KZ1Qje9IZVFKmRJZmclJrYzij7wT9Mi0GAqUjTslsOizWpseXXvq3KMO
-	v+rDk4f7FSGWdGekO47OLYDNMMKlB6o=
+	bh=VlKW5Pgv256mFzDnuzti/r6dmiOCKNtOIQXBnteKRRE=;
+	b=i5MRzfGdjbc92Mt7tijP2ZwFqEvf8YqA0oddXXxN1T+rHPWk2yEmtZEgR44yPvZCOxaVIh
+	VreUP1MHgRQmfsmffK1pVu3wjc62w/jpDMMnH84bS0rSA9kklDT8XPsP4knDPfe31sRgMA
+	HLCDqb5wvilTkDXcAK3LpX3CxPNvsy8=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Kw5rXZ6G;
-	spf=pass (imf16.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755912751; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=c+IHBkVA;
+	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755913545; a=rsa-sha256;
 	cv=none;
-	b=zW4QzY04cmEhFPHo3ddbKCNBtsvQSwM83iWYeps02n3DXaW5Bz/KxOZ2iqgkiXeX9t7Ajg
-	x8Si+Im3NGurqVjerNmxArSlF+ZTlQFwHheCzIKN5axu4B1EBaTtY5FBLoxINYbsclziye
-	aPhAPY87A+tVChGvSE215c7JYGteDno=
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6188b5ad4f0so3723673a12.0
-        for <linux-mm@kvack.org>; Fri, 22 Aug 2025 18:32:31 -0700 (PDT)
+	b=V0yi7itcGfDQUyd82hiqXKjTXb1KakIcQXNpZrZdOVSHVMGNSYPO4HfknDBV5WRhToyptK
+	ff6y1BUCR+dsiQU9IdRwpzvzXfvdX5d5CxtAzwL9vWajj2gSudc2SKX8UXH7B2clT77Vi8
+	cvuMnmlBnKgJauPTqu8X23VJsRfXcng=
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4b2b7563392so9563881cf.1
+        for <linux-mm@kvack.org>; Fri, 22 Aug 2025 18:45:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755912750; x=1756517550; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+        d=soleen.com; s=google; t=1755913544; x=1756518344; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EJZrbfzvth3UC+HZU+WUnSg75LyO0CB51/ryaxjmXYY=;
-        b=Kw5rXZ6GAzxkyNzBuTEC+5PMDzXzFlSsvt58ckB+lcQIo8Btpj8aO9oGibnS/GmQnL
-         JKshexQi6gj0X2GMCSon79MJqoDiYRSPNpirSIPGodganWl82cePa8yrWvH7J4v0H/YA
-         tr622VaEueqckOg4S0d/ZnIwU3qKQqnPSA10ysLC5iAHQMRFu25RbpNsj3JyE4HhapWZ
-         r/Wy7cnWBq4JtXIdZ51UUJFv04c6LqNxaTHt8TQoaV3oLME2gvBc5CPXJiGzTeEmoiMk
-         Z7IGR15VzIMyPFFztNEeTAnKfVuDLvIiWmRR8Fen8fNNdOPoJvct7doD1G6vNVFR70Sx
-         AT9Q==
+        bh=VlKW5Pgv256mFzDnuzti/r6dmiOCKNtOIQXBnteKRRE=;
+        b=c+IHBkVAAdY2a/mau7902wzrhwq3zJWIZTt9brbzP933YYhzhDQEXYoMCJVuEP9tur
+         Um3Cy2Kx794tOHERAf5OK5C1R9TgZnUFYyRe/2rwXexHP/+HVjqF2udMd8kzbfMzfHQi
+         Xcjzm3juDHFWA8Z+ZQ7PkBafVER285XARASrMRAGdxtIeejuxpJefBIg2Z+FEvsyOOpE
+         ElfBsN182lMmGho4V9xljArO9fAy+nBMbmo7XM7IZlseUtVCf8Ab605CRrrtcO/aUExS
+         Ef+WQSoPKsdMZpHGAZolV5vLpLaUnm6hxzUR6oqmuAbIBbBo7e9DPVbo6u26qRFwYUEG
+         ZGeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755912750; x=1756517550;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=EJZrbfzvth3UC+HZU+WUnSg75LyO0CB51/ryaxjmXYY=;
-        b=Y6bB4qHlu8DkTaFn/ZAPBkhP7AmimMMb+itS1zPWWpksSaUtr9Bai1thMGPS6yCP47
-         6oSlv6hQQrjs/jtdGyFnqQ6Efic39ZVAmR+SvU9uy9SBdaBr+VzIUv9oVT1/2cdGXuZJ
-         Nqs92XSbUQBpZxDhj3n+SkiGUti9u7huO5AFXSe0Labrl+2UIcV+kt/FsBGeUIXHW9jc
-         8Kx1lA66QsgA284QZsFYsEqIw5BWk02VPmVSrBesRo2k4RpytLXMwSg+3kDUd+3FKAi1
-         FglyCD9l76tUvTXVBQ9VQN0Ko/WR79ZnYdXl0U2K5jP2lmE++wa4jnkyobcZBkh+O/W/
-         LD/w==
-X-Forwarded-Encrypted: i=1; AJvYcCXL8ZV7OQybhozgBw2kw6txAMsQTJHsl0NaeyRrxVU7Eg2e2LIfp9+2hu9LPz+KgEWkeIBN079TLg==@kvack.org
-X-Gm-Message-State: AOJu0YxPuEfTmeh0Qd+Z4I6RI0x0rWcYab0ublJ5d7NOJNHLkPZjow/H
-	fgjQFQbT13rexdprdBiPPF/F3tuRP1BGFSfN3HLonsRcMjvFskdEsuji
-X-Gm-Gg: ASbGncvWi61hjnAAlao0/LnDa9z1VPgEUPtbCWndlUUFRtjEaofdyQ0kAoqag5L3omJ
-	aeykpRGBgsLtXek55I6buzzu+QUtLJTxJfYl7yPEYfify4hBvOr8Jxvbo7kJdpN87emZnYzVJF5
-	X/sL/+q4IuqvCX5Q9V0+pD3R8qOV8EDNge4dwkcMUudcUgDVqPChMbVgHfwWU35GRApsjPhfIXd
-	Ln7HmwwrG3IIKXE+QC068DtwxqmxcL8rCDc4YE4nfQR2BZ8WV4PyMMs79TEhE9IVkIEiBySoSw3
-	VYxVWsSqWH3OTl/JxuKNSxce+0aYlYwPwtc6DT4MTuy0gCf0z8KwhNJlFBQNGlb53dqsszq8+4R
-	uLeD8NvXtJIMcIIgBoGI910njmdW7SuhYLqde
-X-Google-Smtp-Source: AGHT+IFrUheQ0C0VLXzuSQMa42TWZMqpsBCr2Jh2MxTjESBmMtPLtQ5Hp5XdppMyJWgBmT5t2kHZMg==
-X-Received: by 2002:a05:6402:a0c5:b0:618:1706:d48b with SMTP id 4fb4d7f45d1cf-61c1b714110mr3683563a12.20.1755912750201;
-        Fri, 22 Aug 2025 18:32:30 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61c312c4cdesm770186a12.23.2025.08.22.18.32.28
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 22 Aug 2025 18:32:29 -0700 (PDT)
-Date: Sat, 23 Aug 2025 01:32:28 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Dev Jain <dev.jain@arm.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
-	david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com, npache@redhat.com,
-	ryan.roberts@arm.com, baohua@kernel.org, linux-mm@kvack.org,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/khugepaged: fix the address passed to notifier on
- testing young
-Message-ID: <20250823013228.5gybt5tuaygyunze@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250822063318.11644-1-richard.weiyang@gmail.com>
- <a68e4e65-883a-4625-bebf-da4569ccda7c@arm.com>
+        d=1e100.net; s=20230601; t=1755913544; x=1756518344;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VlKW5Pgv256mFzDnuzti/r6dmiOCKNtOIQXBnteKRRE=;
+        b=qsktaqZ3Ns6HmbXD9h31LgrjlcoHcpoZ7e2g/gJCBjMcNHH9/rOl1w7qHJXrejoF7M
+         9bGbenFJuNV2C/mP451z/5UeTOztuA8EDogWpcSf44w+lEbXbj4gFk7zA9AIESK0vZsG
+         c9FISQpZaINrroc3Z3ABe+60tGJp6yZa0H/RW2iArudC3jQPHFtzCoTo9IQ5VVwjCY1r
+         Yo6O9U1QIydpzN2xxuMtP8kIDe/MRxunxNBL7ryViPpCSuQr2g0a0kIlrinIhMvrw9gT
+         YkqjM82XYXILCenN7a0WsJNBIpJa4sAqCV6pqXqPj0Uavv0Ei3fpwhxDp3UF6fu9sdXX
+         i1vA==
+X-Forwarded-Encrypted: i=1; AJvYcCVo8v+DGOO7LkYUWjrqfDZGxh0UnyjXo8Q2skhQ7fGGff8IItzpyB5NVCigeNhixSjmVQH2nTgeAQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw0x7YW5XEmbhZH7foumSZjfEmPo5tFDEYqyYoa7I7Mpmy2txQ1
+	x0eZCkthCZsfHAqGcG8HgkxbkrDaezcQwNiOffg69+m3JIcVnP0yYbvZtWWefZN3IreJwiePtzE
+	aZtnfCtpHU9pBf89hxVniBJklZFKNWsyjAozNCLTXfw==
+X-Gm-Gg: ASbGnct8zjx/q6J/mRRQarf73CoudWRVsa5H4DjaK3hy3ynqAphP1PIfvZQbdlqkNt9
+	w1iJPsxuK+AU7nsm9qvcvCSZMN9OVi3ul0sTXiThndOJJ4ID1utD6H5tfgo3FJjqRqMgj+A2eR1
+	u6JiwwDXimGp2YLVPIZOf+zoEJh6aXRQGew399bpP3UhDuEMttG/i0W2BHDhm0bBGqJfmpON5L6
+	rLyjQJpXW2zvp4ds369Fz5/WHQTSy8dan0E
+X-Google-Smtp-Source: AGHT+IFJ3PRRZe34Y4dSRHIRs+lJLBqamedt/1JiUCGODfabndaZOKA8Y9oOxhqNavyQwvJCLdmtJ4j87/jk0IKCppU=
+X-Received: by 2002:ac8:57c4:0:b0:4b0:f1f3:dd71 with SMTP id
+ d75a77b69052e-4b2aab3af96mr62370361cf.52.1755913544346; Fri, 22 Aug 2025
+ 18:45:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a68e4e65-883a-4625-bebf-da4569ccda7c@arm.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D4046180003
-X-Stat-Signature: c344wqy7t7tpgcgp3zuwhc8wicqp4gt8
+References: <68a7ef20.050a0220.37038e.004d.GAE@google.com> <20250822181653.cd2024360870ef94cdb7db07@linux-foundation.org>
+In-Reply-To: <20250822181653.cd2024360870ef94cdb7db07@linux-foundation.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Sat, 23 Aug 2025 01:45:07 +0000
+X-Gm-Features: Ac12FXwM4kAP0laHI3d1brUQefKqoyrow-mZmbYi0Nok45Ky9c4wi2PUkolUc_s
+Message-ID: <CA+CK2bBrv_Cvhce5N_RoNjaSL5380he3ZRaDeTC79hhjYxSmRQ@mail.gmail.com>
+Subject: Re: [syzbot] [mm?] kernel BUG in page_table_check_set
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: syzbot <syzbot+49a796ed2c9709652f1e@syzkaller.appspotmail.com>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	syzkaller-bugs@googlegroups.com, Andrew Donnellan <ajd@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 57255C0007
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1755912751-566272
-X-HE-Meta: U2FsdGVkX1/G5e6M6mmXBDKOeqVxGGod6fNZ+O0ofhVEH/Z3BKaIHpwxir2prX7KTIzQMzuP84oRoPr5Wu3Hl1ZcvuKabhuc9DMlDOjgG8GM3pvsnQVvwob9R5794UyX/nz+5rtPBZ4v8Se7H8xxyEuGu1J9/KavvRl5nbzGjqMOgCuJMLk8qIM6WzVjM1sZ1sBX3t+CVIWMtAF0UJKXk+GbzpnKDvRhdg3XG+xAlQTKuz9A6BzuS4D0n2ogpT7t/ePZtapZ+BVdiOnNrVj42DRjgDPqTuDTvluqkRausFSxh19cBzf8ggcvR3q1ikIVOx7FLEFuen37IVdXoPH/onlWMRLzxzG8yXXW9mhgLF0diKKdYfLjqaj/HxLSNt0w+UaI/KoaLKGqXZ5KRJAw+x5Kj8qsJVxneymEK86yLBvocq8ssQAJx4d+Ik1XirpaWm6A6SwSd6dXTNW2mfVUfu+SgRjYD0xKJweTBPdnTKsGZysm9bwQ+mB/60tb8izQ2QvnLyQJgx0EdyIFWNra/MEB9FToeDJlSyCFgThjXyZPQ3TF7z44036d2VF8hYtzBtJrvh8BXFX/HR+NFcrY/Bl3LkgmMSaL9T/ob7LurMn8GXXBKI5x1BFAfdOyv1vtZWCbqleox0k1lUHuW5MaJXdzsOhHQBoG9sSclz6LktrijOZsz93FDifuqKE0npa3zxLoBjmcVhi+HgAcZG5XCxSFWAQCiEEgIH79xYWAxLUdeKixUUJIXHIi+WiDLBajYlcCBEAglaPnOMKvKLkrJMyV1SfqMY81O3VPetNZbqTMKsMUY5sqAb77fLtGsla3pyIUGZJqWNl6yXoDAobW8iw/9SDa6/oLYU/bWAxIj0WZvzxAlL/JRK7OE6qU1UVVQVmrASCjycTlSXswWZWwKpCIevHXXs4oS0sKRwaTqIxJATE2F0A0w8vA91QYBGztq+oHPVoz5CztCR31Q8t
- ZX1jB29b
- HsQFXtHZCtbUU+9rUOiervOWc1NZ+B7ML9YDcpfCCYHfdmJWwWD32sU0uNsSvvO8Naam+05ks0zLooGtp1il9czL1LJrlqg4GHLzLA6kWwrEy+WZZC2zQ0I8Tf2yBJTW2nLivmiy/1yeGBH/ESg6FL73Qjj4xZigWugyIQisSHuAC+kjd1FH6F8B7MQJxWADksqgslFKLUVWHjH7G54mUsKWya0cd6uAiXVispBASIhGGhWqvXTz8YWfqxGDxGCwpQUYY7x+Rxb4SDXd78s3c4s/IRnrCiEWJEAUKkXKxLTlETNJ0LTVSPOCIuz6Gil2pA/tTkh6hMPnNUoXaUI7Q3AbfTo0rTbmGModzWMTWp7yNzjuuk3BjfU0zGjmfJ4URfCqHjsXOp01W/1ANB8iUAStSaLYkIVv8vNrYJpAzbHlrgybHkf89xEVhuYiu8S9ZaeWqrhZMdMJ048GV9owN6vYSRHXkNXRjsLd3bBSjgt/b7okK0x7zECyWQJn0UR1Ci7IQROMhaTouwDQwF0c5dKS7+RJdfM3ZB1URiAcugQP7z4xfIrMtUDlP9N6F0xui0/nizr98ZV7oEF/Qxq54HdK8sqVDMFe9/z24QGNKrir+MGgeI7rRkwHKR1/7TcJZ3wis8IfI3mMncqKg1Z67kJZ+CNz+5H05zPwP2R1sROR8iVqjPBfmRa7gyhKvANW8AkOYBb0QKy4zk7GvgMFUKGzE0P2KlCuxAD4tHSkk2e4h3NJ/OJ0KWdozmE77PWI+V+wd5rsByNzRA73o6c+EZEUFz6Ptoy1weATBOjJEaV30chTssuaZpsprofYLUq34sdUTmLLLFqb66i0CVJANbJucHxpIgMaAFBpL/JzAjOgo2Dxto7uwiQ37LYjBZXDQRlcvAxkVceJeADNWkauIEQ8NAWGWRGCkxi41NM0EGD8j2Tsuf9J024hXBhI1qQ/eFidR
+X-Stat-Signature: 3ykzumg947gpc7kw5fbpkky7hinuxqhu
+X-HE-Tag: 1755913545-558392
+X-HE-Meta: U2FsdGVkX19gpSkine/G2r6xWEFNWm/x6W7As5QTKTtB+ocVZhRbaie0ESTqWwzidWqxZhqP4LrYnVru68UZpU8PQWQ/Pf8ceYxoOwWqvwKrQRh3L2tI0hW05QqKy0v9IvUjes3ojknh3HPz6XuA/SQttb5WBI1xlXvF70jQNXBjT9+4TfTXAUkGf8h6MyGdvP1OB2GI3ewofu5zplLxSpnZR7qCRF/WtFJuAiLHYw8zmUTqKx0igDXInI1aDWmxXeoRSF0GnQpZfxGYW7qvHUvFJuJsGiv6IYhv2Zhk78onxRRtdEaQT9d/YciAHP9ErHZxKFxp0sU6AYxk9S0pwzX03NzWs2uUFkkZXOD5ZbNfafrqBoGf/77aD2WBbaL2wDqhLhhuuZ95LibEXjpRLXSjYucuEaNTj7zEL54m5llXqir49nJdKvLfwIDHf8+bR7XwujQ2N/FWtgtrIFiboLIWUmItoDbB4y7i6VU28aQKRFF2dclf8ZK+tB4djsDIHK95D5Ol7AbDTi6Rnap6A6Lmbm0xfULQgTqrn4UFM4ZMAt1mrcoeYeeH1e0V/Rtr0n5tzBPLJNWHdyMKotiOKZRx8lK23M+WnZAAPHnkHNjwJuJRRrwRd28XQ871mHlKmIZSOvV7lc7eNOXKudcc+yRdyb4eJ4skWkP3MdhCTG7nF1WA+YVlMRbQtreUpHd64Ho+wM6sw0wsFhmTITJDYY3A/kHZnw68xOkIWSjzI1NZADVtELYn9kM6PDC8SiyVN1mnb+zfHplyIfWImTW5lLm/+v1VyOZGpw1mH6LIEr33Olzy5LSlaBDCYQRVfROskp7Vp9RVPJnSe8HBVbemi9aJPOC7GNRbfLJezHgOLoQW8lkdmB82FQZaeuIEQ0uhAfVuJ+luNjVc/B2Vfv34koC3zy6MJ+h5ogs6rfo509lx2u4EnigCpkAiwVTOqPpNz72lDbSQEYY4z6fNevG
+ BQgMW1Ud
+ j4Jm/tolXiAuAj+wLf7MZ9tOosZWxTudQssMhvuQcrWzT7A88fiQhzZYjsP2TE4Yab3lS+DnkPXTnYrBtdZxeygdrjUPam/Kez2dteJB47gwBf2p5mOGTPHZwAOfyk7yQl1AaX8RM0+f/Mg8NY6tJqRFZLNClGoYf1epwEc8sYbmSE+XeLiS74stVjQnOS3Sr60n5i7r5TUMDY5c97zAN4ewRw0EdkRLdRjh2La/rCmF+9gXH8/Lj4wFt3x5LEvzM2YxXHoK99qP8q9gB8qb+HImrIqWEEHzhxUp3HQa5URc3azZ956fXPPEQAmaRZnfW2WCHXpqdREV/zG2F0CiGfXKEw8zHaj2ubm0cMPsX71Gp41FtWdI4ge51o0sWtgR7LsWIQjB/Enw3+JObqdujATpuJ//80agf8I/EhKwa7D3Glwd+t3D/tsXY7MsquAHBW9neZDgTANcSfXDlZKwqNaZPLWlPrexWbob9xXZleeUb1IctRrr+ohwFA35EVpORO7dS87Vc6GjLcbr6Zk7UnsXgRZpIsYGXtZVYs9y4qCVK/Ue/cGOYSfO+9SfdMH2YlyF4vXGMhtDPPmVEhomcMvpXvuggkPJawGJxGouGGk9TJxvsOTsrV9KGzHxjr4kcKH+FylMt/1CdMlBo6jUPnilU8C176EhC9bZfj6DrQJCJXT2Di2kHf/k2dtOzgmKD54BUXupRKtI2wtWjfPR1LCHBZD+GtSInNDgsDB+rKYdzyk79SVerXPP4jHwetJFGLZSbIwDb23JmD1wGCPHINbWpsPtL7XHaZIdmjB0ipIm9XAYwRAeBLiAcHPpHpw1ka0tx4V0jbCNEycNnXGKZjIJgz28pp4Z1EjxQwxZyZIOqhxDQA5qXX4niYJOEWU7SNNNj/1/7ut/fjD+lconPcuX0T2Upc2yV0ICe0TxUHGzmqf0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,58 +117,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 22, 2025 at 01:04:51PM +0530, Dev Jain wrote:
+On Sat, Aug 23, 2025 at 1:16=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
 >
->On 22/08/25 12:03 pm, Wei Yang wrote:
->> Commit 8ee53820edfd ("thp: mmu_notifier_test_young") introduced
->> mmu_notifier_test_young(), but we should pass the address need to test.
->> In xxx_scan_pmd(), the actual iteration address is "_address" not
->> "address". We seem to misuse the variable on the very beginning.
->> 
->> Change it to the right one.
->> 
->> Fixes: 8ee53820edfd ("thp: mmu_notifier_test_young")
->> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->> Cc: David Hildenbrand <david@redhat.com>
->> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->> Cc: Zi Yan <ziy@nvidia.com>
->> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
->> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
->> Cc: Nico Pache <npache@redhat.com>
->> Cc: Ryan Roberts <ryan.roberts@arm.com>
->> Cc: Dev Jain <dev.jain@arm.com>
->> Cc: Barry Song <baohua@kernel.org>
->> CC: <stable@vger.kernel.org>
->> 
->> ---
->> The original commit 8ee53820edfd is at 2011.
->> Then the code is moved to khugepaged.c in commit b46e756f5e470 ("thp:
->> extract khugepaged from mm/huge_memory.c") in 2022.
->> ---
->>   mm/khugepaged.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->> 
->> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> index 24e18a7f8a93..b000942250d1 100644
->> --- a/mm/khugepaged.c
->> +++ b/mm/khugepaged.c
->> @@ -1418,7 +1418,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
->>               if (cc->is_khugepaged &&
->>                   (pte_young(pteval) || folio_test_young(folio) ||
->>                    folio_test_referenced(folio) || mmu_notifier_test_young(vma->vm_mm,
->> -                                                                  address)))
->> +                                                                  _address)))
->>                       referenced++;
->>       }
->>       if (!writable) {
+> On Thu, 21 Aug 2025 21:16:32 -0700 syzbot <syzbot+49a796ed2c9709652f1e@sy=
+zkaller.appspotmail.com> wrote:
 >
->Wow, I have gone through this code so many times and never noticed this.
+> > Hello,
+> >
+> > syzbot found the following issue on:
+> >
+> > HEAD commit:    8f5ae30d69d7 Linux 6.17-rc1
+> > git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/lin=
+ux.git for-kernelci
+> > console output: https://syzkaller.appspot.com/x/log.txt?x=3D15f926f0580=
+000
+> > kernel config:  https://syzkaller.appspot.com/x/.config?x=3D8c5ac3d8b8a=
+bfcb
+> > dashboard link: https://syzkaller.appspot.com/bug?extid=3D49a796ed2c970=
+9652f1e
+> > compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6=
+049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+> > userspace arch: arm64
+> > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D15faa7a25=
+80000
+> > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D144143bc580=
+000
+> >
+> > Downloadable assets:
+> > disk image: https://storage.googleapis.com/syzbot-assets/18a2e4bd0c4a/d=
+isk-8f5ae30d.raw.xz
+> > vmlinux: https://storage.googleapis.com/syzbot-assets/3b5395881b25/vmli=
+nux-8f5ae30d.xz
+> > kernel image: https://storage.googleapis.com/syzbot-assets/e875f4e3b7ff=
+/Image-8f5ae30d.gz.xz
+> >
+> > IMPORTANT: if you fix the issue, please add the following tag to the co=
+mmit:
+> > Reported-by: syzbot+49a796ed2c9709652f1e@syzkaller.appspotmail.com
+> >
+> > ------------[ cut here ]------------
+> > kernel BUG at mm/page_table_check.c:118!
 >
+> Thanks.
+>
+> Presumably due to the series "Support page table check on PowerPC".
+> Andrew, could you please take a look?
+>
+> The series has been in mm.git for a week so I guess the impact of this
+> is small.  I won't drop it at this time, but prompt attention would be
+> appreciated.
 
-Yeah, also I am surprised when noticing it.
+page_table_check_set()
+     BUG_ON(atomic_inc_return(&ptc->anon_map_count) > 1 && rw);
 
+This code triggers a BUG_ON if we attempt to set a new PTE in a user
+page table with RW permission for an anonymous page that is already
+mapped elsewhere. Anonymous pages can only be shared with RO
+permissions for COW; otherwise, it can't be shared.
 
--- 
-Wei Yang
-Help you, Help me
+Pasha
 
