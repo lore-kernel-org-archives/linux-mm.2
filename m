@@ -4,131 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89B0BCA0EE4
-	for <linux-mm@archiver.kernel.org>; Sun, 24 Aug 2025 01:37:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F9E7CA0EFA
+	for <linux-mm@archiver.kernel.org>; Sun, 24 Aug 2025 03:08:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 518506B009A; Sat, 23 Aug 2025 21:37:53 -0400 (EDT)
+	id DF91F6B00A2; Sat, 23 Aug 2025 23:08:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F0366B00A1; Sat, 23 Aug 2025 21:37:53 -0400 (EDT)
+	id DA8CD6B00A3; Sat, 23 Aug 2025 23:08:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42D506B00A2; Sat, 23 Aug 2025 21:37:53 -0400 (EDT)
+	id CBE6F6B00A4; Sat, 23 Aug 2025 23:08:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 330D16B009A
-	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 21:37:53 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B35BF1A07B1
-	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 01:37:52 +0000 (UTC)
-X-FDA: 83809939584.01.D837668
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	by imf15.hostedemail.com (Postfix) with ESMTP id C24BEA0006
-	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 01:37:50 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XfIa1Bam;
-	spf=pass (imf15.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B613C6B00A2
+	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 23:08:00 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8226A5A72B
+	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 03:07:51 +0000 (UTC)
+X-FDA: 83810166342.05.32E769E
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7BDB740003
+	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 03:07:49 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KGCxe9w1;
+	spf=pass (imf07.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1755999470;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1756004869;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6UBZPF5YbhnRufm437C0PF5qAjXN/Uh/I6Zgp8tz2Ts=;
-	b=rg8qsbNHZwlx1V2NZbF9lEDRSiCv2Fc+5pXn4owX9SNMtWAwuHqCDcF4z/h1tA2T2378Z/
-	rYpGHbU0c6MLxELePMxx8ikdSz0Ei2nbiDc7qc5D7MYMix++a+Y/PPQpMPUhxVBQ+RBD70
-	q59Zg9zAPc4OJ84TVxmWqGVYEyA0ehU=
+	bh=miYmcZ7PQT39UWbb5PapaKAE5Ak3MX6JFaE0vARmqPw=;
+	b=8pfZBodwun8oA8gW11qOvI8lNxTUJZFEk03qDth1G9fzrvucEfP9lG5J2QmwpilCmb6/Cm
+	z5I318YGVaoyTiGKrt+pgiQRbhILVuPatRTcTfguwIZ0r74wGVDLjjob7cv95Lu2dAXrBv
+	MsWQvcj/X/sX+IVJWgO2rNVHlBSb/YU=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XfIa1Bam;
-	spf=pass (imf15.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1755999470; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KGCxe9w1;
+	spf=pass (imf07.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756004869; a=rsa-sha256;
 	cv=none;
-	b=ibSWRQuPWw1rVE78Cj3ttd0J3bJWWI5s2vlKl2usKC0lg1rcFS2qh3j78gGH6ayDUr0bGW
-	KfIQxSW3MgiUbcj1/nwTJh41nTEbDk3XfVjeGjdfye7cbeKdgvhfv5gJ0vkT9rf9ZcuTXv
-	fTEvzFJhe9Ci3Yt81l8zF6dDnDmYu3I=
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-61c266e81caso1740997a12.3
-        for <linux-mm@kvack.org>; Sat, 23 Aug 2025 18:37:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755999469; x=1756604269; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6UBZPF5YbhnRufm437C0PF5qAjXN/Uh/I6Zgp8tz2Ts=;
-        b=XfIa1BamUglntw2cHDPYuTcKtOXbNekaE5B1B3x7vydeBQE4QtHfae3avSh503PUnZ
-         s0W/3tMZv/v1MeaN6JcORyUNyANr25GlrfkMD5wKIBsFtQPNnKLUdOxVvTDvCAffU1V4
-         OP98pXjIEjLMivLlo6qUuEUyHkZ3XPDdBvcHS+riJmTWObLyDcXtsq8rrfOSiX8bID27
-         +EOkUe8zIuYBhiDulIDxM7XDvULPMFdlPVdHQxGhFNFh8mBjUYusxzBM4Kvfe81KTOQg
-         0X/qJN/R1Jbdyr2CHgI7GUWtQWD1JV75Uif3VmqukYELlqEhcSQE+dLG+JGy1pmTs+j5
-         /Tig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755999469; x=1756604269;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6UBZPF5YbhnRufm437C0PF5qAjXN/Uh/I6Zgp8tz2Ts=;
-        b=f8xicxKAw7jiwi/YwItmvkBW1nTWBBMmqIXK0wp5uPQA8/osqmDhrKJTGmJ2lb3hLk
-         oKRBkpV3QtjJ/l9se5BmXprQ1ju7mIzIqtr+W+7XztlYCVOnGIMVgJdjxu6ZajzaVQ8e
-         RvPozOcFEh3XGOUZjYmOarYvW7rPvE+K7f9Eso+OYpsP+lkWaUf6O86lcE02KVufc3RN
-         6owzhgJBD+hGeb/OKOzcw8Z+NMwC3+/w8yow2e4oop/h9oAyHifkRk1fNXuqQrDEda0p
-         wj46jIrmff38QwLyVCx+nCJReCJ7sX8Ui/nkjTo+tQhUEjhmdtkEEAZKrP3M72DH86AQ
-         /v2Q==
-X-Gm-Message-State: AOJu0Yzqw5YKCqgdB/urjA9/9vZMGn4Uz8mGSxAXh7UMtP4MHWy1fuXK
-	zFbIaFPmoP6xMlEIoNHpzp26xjg4XevqBErB7QWVyDX3qyNEq85gvq7J
-X-Gm-Gg: ASbGncvaBIMUTJdyR/y+22C2qfw7gdCmPVQjfQhXwKVtcVhJbU2jRbIW3Wgm8Pjkvgh
-	tYwZhCaHLfECQU7KuWZTxkl3BiXA2TmGiDZL1hoWjm1gElt5jqw7ffZ8r5aaCp8vFhb2x4wq0xf
-	tpwNVXfevEXB6stoml35GYjMocEhpUUPunsYoiNbCTTlqRB7ij8boXV1LYZjkTzLTY/xrSzBxzv
-	nVVGZtzOdQvVqD/lw+yJgXOJDEUeyUstiwol1iu828k57AlMMFSBydsP//yQxtpJ6b3fdK2u9Ej
-	8IEZVXXb68+EyPBqxMn2/4FnrvkwmpMQjSNWQ0DMn5QE86mDxUJdZUALE6lyWWACU1/sNmFmq+1
-	CooJo7qLiBJkBKxAhUjb81OsETQ==
-X-Google-Smtp-Source: AGHT+IHxdAZXliDg4Pz7o7ZUiSoOONIAXZLqOCQdY0hkLH1p+jqAseH5s/K0XVWooeUz0LaIMhIjAQ==
-X-Received: by 2002:a05:6402:5057:b0:61a:8c7c:a1f4 with SMTP id 4fb4d7f45d1cf-61c1b48f5e9mr5913145a12.11.1755999468866;
-        Sat, 23 Aug 2025 18:37:48 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61c3174f4d4sm2476072a12.54.2025.08.23.18.37.46
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 23 Aug 2025 18:37:47 -0700 (PDT)
-Date: Sun, 24 Aug 2025 01:37:46 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Nico Pache <npache@redhat.com>
-Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	david@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	ryan.roberts@arm.com, dev.jain@arm.com, corbet@lwn.net,
-	rostedt@goodmis.org, mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com, akpm@linux-foundation.org,
-	baohua@kernel.org, willy@infradead.org, peterx@redhat.com,
-	wangkefeng.wang@huawei.com, usamaarif642@gmail.com,
-	sunnanyong@huawei.com, vishal.moola@gmail.com,
-	thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com,
-	kirill.shutemov@linux.intel.com, aarcange@redhat.com,
-	raquini@redhat.com, anshuman.khandual@arm.com,
-	catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org,
-	dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org,
-	jglisse@google.com, surenb@google.com, zokeefe@google.com,
-	hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
-	rdunlap@infradead.org, hughd@google.com
-Subject: Re: [PATCH v10 03/13] khugepaged: generalize hugepage_vma_revalidate
- for mTHP support
-Message-ID: <20250824013746.bvsz3vajjj2kphrl@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250819134205.622806-1-npache@redhat.com>
- <20250819134205.622806-4-npache@redhat.com>
+	b=U693/ruSAlq1eHZxno5riOB4j2nnNZ3l8pOwQ+S6AjYY1VBOU5e86O03nSBrnAuK10cqhg
+	GIVgcKrGo0AZcqAPDPC/Qnycdcllke/tllNBlWqtyvIh23+fhW+F44FYa+t5JQmOAC7f9m
+	JyPwD8yPpptI7FuAnsuPP0Qf8R/kSKE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756004867;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=miYmcZ7PQT39UWbb5PapaKAE5Ak3MX6JFaE0vARmqPw=;
+	b=KGCxe9w19OEOv9IL6HgjxCbQTYadVUsP+Jg8Dt71M094r5MLbFCmvvRpCvPuJh5KVnlmaZ
+	1sREJPXl0yx6sDAhX//19LWR8lsulpOwtXXxBg7GXH1SnFD+SaXhl+xxX3vIy6XrJEBfRB
+	1wCGwr27KcFBmWglxdU78TC01GbuVAQ=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-211-tR_AURjPN1Wuh7rvfLaEWA-1; Sat,
+ 23 Aug 2025 23:07:42 -0400
+X-MC-Unique: tR_AURjPN1Wuh7rvfLaEWA-1
+X-Mimecast-MFC-AGG-ID: tR_AURjPN1Wuh7rvfLaEWA_1756004861
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 74DD4180045C;
+	Sun, 24 Aug 2025 03:07:40 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.99])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CAFBE180047F;
+	Sun, 24 Aug 2025 03:07:38 +0000 (UTC)
+Date: Sun, 24 Aug 2025 11:07:34 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Vlad Dumitrescu <vdumitrescu@nvidia.com>
+Cc: Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] percpu: fix race on alloc failed warning limit
+Message-ID: <aKqB9sGmgJwsTXGg@MiWiFi-R3L-srv>
+References: <ab22061a-a62f-4429-945b-744e5cc4ba35@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250819134205.622806-4-npache@redhat.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Stat-Signature: gab4ezyshixoeczjwemsrgr7a64qgtco
+In-Reply-To: <ab22061a-a62f-4429-945b-744e5cc4ba35@nvidia.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Rspamd-Queue-Id: 7BDB740003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C24BEA0006
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1755999470-29440
-X-HE-Meta: U2FsdGVkX1+cSS2MYqU6P3IHilikqSnhuvKCOTHuGicR5klvkeOS3n05Cox7LeflwShY0kcFcxz1EeBB96cGRSYAXulJHoeCw7nyhijj+blI0FWAxjGbo44/aG6YBEzIINr+maWQjSd8am3mXJpeRnX8hfWALfjWc1PwlBDr3URN866UtNLLNhc+mVZuwJRKJLaIDqWyUNLw7Cl6gJLecnMsJUR4uK/8753MXD1OUW6kfxvbroRXmlDVU+erCTMbgbM6DRK5yX3PPh5cfhpw0k9X5F3YsCkfL8NHBT+gEywuf0TW8dDAeK9uKkIDHMOneYC0p5m1uI5y8+9cDJ02e3fXGzitEgXlweX4oTf4gSRsX3gq8bMwf9eiZbwelsLiNfUnoHzV62jYS2nMyvM9ku5KgKemx/diKW4e9fOclVSf6hhzZxVeN9V1dj+R5eWTkmLL8qeH0QBSDeKwfYUCt8AblujtdRIBG60lvE2hwbG22RDUrHXcZROljvUZuE36g9CtwKjAwJ3POXW5+BpldPolbDfWY9Dx3pxRvURH84+e+DD97h7oBCH9gt0aiO4Ksqd69BAEjDssb8CIuBZ5hKHdBr8DbWfgKzuNBZ+Q4U6QPKzTHchr+fWDGiS0OiarpGJq8rIXxjjRT+sjDOTchLntlE7bbEWPqrQw79c92iwQ+zGaaEsQzfcu0sd3M48IVBVtLE0XwZpScx57pqaOAMlTBGYgrBcMqxeLuzfzb4m56Z2zO1ptdPlqm/6c6kfd83jUGqt+iTHZjcibjGpu83TFrd9ATewi4/0y4nrgVD+jyFmI8qi+WXhhMz+ErThBQCI7mvebJtz673pigqfR4e6rYh3hCBFCaoJmU1BDHEGQK+EHMaY/rl3BBqgpOY5l/qMzr4Vods6chK31WYK9SeFf+F0R7Ve7HROHU0sqjJDDLLMV9LCzD1shNNFH+DzeueqAt7Sr9Jee4LmNgwi
- H4Xxj/ZJ
- X9H521LDkh9VfuKrqELLJUnkSGMY2QaYbqLvaM0uDGWaTA4CnIPXi08piOeIMFtHi2732XBw3HO/PpFIWoO4quWzVrQrnmbSCn0i2x0cIBtDX0LjGcq8QGSQuPsSUGRYbFkUAwQvSw3Mk/nTrkvbQjrAPHMFK+Z7fU3jVlRKO/vJLbe+s3K/3I7sAtecQ0iw2elqNDJz32CdwHjTsmVRr+ILq7IHwpXwp4BxRi200I5B8bMQs90qKLwx9CwWs4VVZ9LJHOixn9D8L4EcyEdqH2aYB7ZZ+1FW0boXSnxxaNjkXhClpkDqmIXsT5LCL61xfhVli8bE8aXz0asnzxsyA4seI4wp9/85lLOqmvpI2Z2Det1vxM4kAPFzkjiESMGwgatb4ROhcB9ggh3RjUjdBeeStEq/IhUu3U6+rb4dGBXJ3iOA7V5XI338jESpgG2Q5bsrwSZr2juIpZc06pLgjPHS6SMq1Uqvf7w1vkilY0HwzXZtXja9JJpw+BCEVnEY+ALXp2GylG8vSch3CX+EAXcw34CRyDbH3NzpalKz/fTYzBaqCkroehEL05MNEtmSd4pdEye+S69teJ/RugqKj4k9fvHLxIyf0RqOy0DKKfMDj1qAvjNZo9Av5aWPRDknWQVip9XtfDWW7jEaRIrFVL4/1Z7Wd5kWnkV7A6nOCw2h1qSO36iFI+O6FRiac4EhRyWB70Gd5H6DWECy692nod7z00jyhNBE9tCKY4JTexe8F7z7dYhEzCdCWIr4Px8wfSEMgUYzfB1+xs78xVVx1uRDKe/RhsBs3y/ovEygjEpnN1jV2X4IC49k8ivNPXdaFryHV6RqQofVJN0MvDHdFtgsLXj2I/Pe+6kn0lou+2U1MDkfbKtCbLRwz6PTvNRXN4tlecGAWx75M1Qg=
+X-Stat-Signature: jbmrz1451hbp5sdgjac8m39rph87bec5
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1756004869-131321
+X-HE-Meta: U2FsdGVkX1++b4UYEyJmW+hrt7Mrp4p6ZzkR+oj9MPRfHZecagSGeGh3CEumrJSitpV3feKie3C+PbG5NIhJH60TRQ6zO36QXQ/m1jswwo5FclAV/9Mj0A8I5foVLz3cCHGX96/A9MbQbHNB7awuP2GcCAaQZNuPAdDaaiqNl991n4edS0a3oenKPiKAAcLeBchjpxuUw49a/85/u+zHFdnDKmIfhXv+mR64U+LpFeHfzZqYgLjZtxmi9ylCwo11zxBPhuQE/iJHH1/+ZScrAnvReR/OBJo0RhqGi9eQfq4Aql+wcjSkVcSBjNVFJKEDkth5UtQo14cEtWojFKsoa5E1Sn7ZW5gR0tcgSOFA4Wl73mwZjKwswai4LKOYdJLOl2KLwxMpQRq94v2vZvL5MQq5jhWO4Pf0uMCbXHxWmidXVKDGQQg8eTYsNXdKAw0TxuNTNs8Cfe0pfE1s6/rKXQqZ1GooA7UL9dEq08vvcaQ3P30dkRwaqIHLIP8voLGun+NJ71dFgLmcZf6afUQQncnGP49uDKakS4t9iRef52BQlsFcLELIpSVaGXDpu+qeKbAuczkGKhvzzdkwb6Y9EsyM6PZR2kSRyNC/amOrHRmOqjIf62atM5Ly335ef2hpRRDT/UQglUoyqzWB6vFYMlT/GfVbEzAu9zSf3XkXpqtT75bH/uNz54euGJxVLBynES9VX6JzImq9IMxgmmVjyjWXoVr/r6cLe4pDhle+oh+quervjXj79MmSPx3h20NRf9A92ISJaBnJd/PqhcT4OCbl0Ew/T/8U8SXKfS2XiWv9JPp8BqoWrUzu05USML1+StOThQm8yf9MMde0YxJidDqEyCylYruXn00hUqnOh2nF7bkaYfOwVsiYjchA3zsZKHGgfvWywczecU+25DpKrGsMVnOXuO6dv4wyxgpX89dDALAgtZn175B+jxYRZIGrBelZ+IJNfuMAyr4LNuP
+ cCwR2X32
+ Hl5coLnWnMS6B7pr4p5wk56rHb7Ov9pP1MWPssTToOewGePpw+tlCFZApUfApg101v1cosN/q+PGA4QaE07kkYov+ZE6tqag8AVWrRNvZdslI0YcxPO+aP+dJrN5RmgT0kdCXZTmfOXrDOSQOhkQ9v1AFxwhevM9Gp3ZM4Y2JSuv5e2MYqUovq0TRD1noPcVuV0/iIqTU724IpSBCFweGtszSCWTRtw0hY5CT9Ft3OoB3cwjdjKGIkab1LxMlsYwIyjaEzb/kXyktCAAbcU7fwvCfhEjluui72fHIabF6DghgTpyZR3nghw5EIAfVIY0yV47GVOPqceyWRbnebbaucDpQdntAd2ncLlzTJwx3BEbSj/dEBRCnfvwahAQV1CT4yI6dx8FEUR2VxFC+nPnjI16hQcBET6E8vm+iJWoMM+Qzwz+CW2KsXrc12qZcN1Jh3aYi
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,100 +104,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, Nico
-
-Some nit below.
-
-On Tue, Aug 19, 2025 at 07:41:55AM -0600, Nico Pache wrote:
->For khugepaged to support different mTHP orders, we must generalize this
->to check if the PMD is not shared by another VMA and the order is enabled.
->
->To ensure madvise_collapse can support working on mTHP orders without the
->PMD order enabled, we need to convert hugepage_vma_revalidate to take a
->bitmap of orders.
->
->No functional change in this patch.
->
->Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->Acked-by: David Hildenbrand <david@redhat.com>
->Co-developed-by: Dev Jain <dev.jain@arm.com>
->Signed-off-by: Dev Jain <dev.jain@arm.com>
->Signed-off-by: Nico Pache <npache@redhat.com>
->---
-> mm/khugepaged.c | 13 ++++++++-----
-> 1 file changed, 8 insertions(+), 5 deletions(-)
->
->diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->index b7b98aebb670..2d192ec961d2 100644
->--- a/mm/khugepaged.c
->+++ b/mm/khugepaged.c
-
-There is a comment above this function, which says "revalidate vma before
-taking mmap_lock".
-
-I am afraid it is "after taking mmap_lock"? or "after taking mmap_lock again"?
-
->@@ -917,7 +917,7 @@ static int collapse_find_target_node(struct collapse_control *cc)
-> static int hugepage_vma_revalidate(struct mm_struct *mm, unsigned long address,
-> 				   bool expect_anon,
-> 				   struct vm_area_struct **vmap,
->-				   struct collapse_control *cc)
->+				   struct collapse_control *cc, unsigned long orders)
-> {
-> 	struct vm_area_struct *vma;
-> 	enum tva_type type = cc->is_khugepaged ? TVA_KHUGEPAGED :
->@@ -930,9 +930,10 @@ static int hugepage_vma_revalidate(struct mm_struct *mm, unsigned long address,
-> 	if (!vma)
-> 		return SCAN_VMA_NULL;
+On 08/22/25 at 03:55pm, Vlad Dumitrescu wrote:
+> The 'allocation failed, ...' warning messages can cause unlimited log
+> spam, contrary to the implementation's intent.
 > 
->+	/* Always check the PMD order to insure its not shared by another VMA */
-> 	if (!thp_vma_suitable_order(vma, address, PMD_ORDER))
-> 		return SCAN_ADDRESS_RANGE;
->-	if (!thp_vma_allowable_order(vma, vma->vm_flags, type, PMD_ORDER))
->+	if (!thp_vma_allowable_orders(vma, vma->vm_flags, type, orders))
-> 		return SCAN_VMA_CHECK;
-> 	/*
-> 	 * Anon VMA expected, the address may be unmapped then
-
-Below is a comment, "thp_vma_allowable_order may return".
-
-Since you use thp_vma_allowable_orders, maybe we need to change the comment
-too.
-
->@@ -1134,7 +1135,8 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
-> 		goto out_nolock;
+> The warn_limit variable is accessed without synchronization. If more
+> than <warn_limit> threads enter the warning path at the same time, the
+> variable will get decremented past 0. Once it becomes negative, the
+> non-zero check will always return true leading to unlimited log spam.
 > 
-> 	mmap_read_lock(mm);
->-	result = hugepage_vma_revalidate(mm, address, true, &vma, cc);
->+	result = hugepage_vma_revalidate(mm, address, true, &vma, cc,
->+					 BIT(HPAGE_PMD_ORDER));
-> 	if (result != SCAN_SUCCEED) {
-> 		mmap_read_unlock(mm);
-> 		goto out_nolock;
->@@ -1168,7 +1170,8 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
-> 	 * mmap_lock.
-> 	 */
-> 	mmap_write_lock(mm);
->-	result = hugepage_vma_revalidate(mm, address, true, &vma, cc);
->+	result = hugepage_vma_revalidate(mm, address, true, &vma, cc,
->+					 BIT(HPAGE_PMD_ORDER));
-> 	if (result != SCAN_SUCCEED)
-> 		goto out_up_write;
-> 	/* check if the pmd is still valid */
->@@ -2807,7 +2810,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
-> 			mmap_read_lock(mm);
-> 			mmap_locked = true;
-> 			result = hugepage_vma_revalidate(mm, addr, false, &vma,
->-							 cc);
->+							 cc, BIT(HPAGE_PMD_ORDER));
-> 			if (result  != SCAN_SUCCEED) {
-> 				last_fail = result;
-> 				goto out_nolock;
->-- 
->2.50.1
->
+> Use atomic operations to access warn_limit and change the check to test
+> for positive (> 0) as it can still become negative.
+> 
+> While the change cited in Fixes is only adjacent, the warning limit
+> implementation was correct before it. Only non-atomic allocations were
+> considered for warnings, and those happened to hold pcpu_alloc_mutex
+> while accessing warn_limit.
+> 
+> Fixes: f7d77dfc91f7 ("mm/percpu.c: print error message too if atomic alloc failed")
+> Signed-off-by: Vlad Dumitrescu <vdumitrescu@nvidia.com>
+> ---
+>  mm/percpu.c | 20 ++++++++++++--------
+>  1 file changed, 12 insertions(+), 8 deletions(-)
+> 
+> diff --git a/mm/percpu.c b/mm/percpu.c
+> index a56f35dcc417..c1a4089eb4c3 100644
+> --- a/mm/percpu.c
+> +++ b/mm/percpu.c
+> @@ -1734,7 +1734,7 @@ void __percpu *pcpu_alloc_noprof(size_t size, size_t align, bool reserved,
+>  	bool is_atomic;
+>  	bool do_warn;
+>  	struct obj_cgroup *objcg = NULL;
+> -	static int warn_limit = 10;
+> +	static atomic_t warn_limit = ATOMIC_INIT(10);
+>  	struct pcpu_chunk *chunk, *next;
+>  	const char *err;
+>  	int slot, off, cpu, ret;
+> @@ -1904,13 +1904,17 @@ void __percpu *pcpu_alloc_noprof(size_t size, size_t align, bool reserved,
+>  fail:
+>  	trace_percpu_alloc_percpu_fail(reserved, is_atomic, size, align);
+>  
+> -	if (do_warn && warn_limit) {
+> -		pr_warn("allocation failed, size=%zu align=%zu atomic=%d, %s\n",
+> -			size, align, is_atomic, err);
+> -		if (!is_atomic)
+> -			dump_stack();
+> -		if (!--warn_limit)
+> -			pr_info("limit reached, disable warning\n");
+> +	if (do_warn && atomic_read(&warn_limit) > 0) {
+> +		int remaining = atomic_dec_return(&warn_limit);
+> +
+> +		if (remaining >= 0) {
+> +			pr_warn("allocation failed, size=%zu align=%zu atomic=%d, %s\n",
+> +				size, align, is_atomic, err);
+> +			if (!is_atomic)
+> +				dump_stack();
+> +			if (remaining == 0)
+> +				pr_info("limit reached, disable warning\n");
+> +		}
 
--- 
-Wei Yang
-Help you, Help me
+A good catch, and the new code logic makes code more robust, thanks for
+the fix.
+
+Reviewed-by: Baoquan He <bhe@redhat.com>
+
+>  	}
+>  
+>  	if (is_atomic) {
+> -- 
+> 2.49.0
+> 
+
 
