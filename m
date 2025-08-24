@@ -4,98 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F9E7CA0EFA
-	for <linux-mm@archiver.kernel.org>; Sun, 24 Aug 2025 03:08:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD84DCA0EFC
+	for <linux-mm@archiver.kernel.org>; Sun, 24 Aug 2025 04:18:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF91F6B00A2; Sat, 23 Aug 2025 23:08:00 -0400 (EDT)
+	id 8A3216B00A4; Sun, 24 Aug 2025 00:18:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA8CD6B00A3; Sat, 23 Aug 2025 23:08:00 -0400 (EDT)
+	id 854926B00A5; Sun, 24 Aug 2025 00:18:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBE6F6B00A4; Sat, 23 Aug 2025 23:08:00 -0400 (EDT)
+	id 76A1B6B00A6; Sun, 24 Aug 2025 00:18:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B613C6B00A2
-	for <linux-mm@kvack.org>; Sat, 23 Aug 2025 23:08:00 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8226A5A72B
-	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 03:07:51 +0000 (UTC)
-X-FDA: 83810166342.05.32E769E
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 7BDB740003
-	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 03:07:49 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KGCxe9w1;
-	spf=pass (imf07.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 656976B00A4
+	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 00:18:28 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D68AF160803
+	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 04:18:27 +0000 (UTC)
+X-FDA: 83810344254.08.FD1EE8F
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E76D11C0007
+	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 04:18:25 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=SDsRtCZ2;
+	spf=pass (imf20.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756004869;
+	s=arc-20220608; t=1756009106;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=miYmcZ7PQT39UWbb5PapaKAE5Ak3MX6JFaE0vARmqPw=;
-	b=8pfZBodwun8oA8gW11qOvI8lNxTUJZFEk03qDth1G9fzrvucEfP9lG5J2QmwpilCmb6/Cm
-	z5I318YGVaoyTiGKrt+pgiQRbhILVuPatRTcTfguwIZ0r74wGVDLjjob7cv95Lu2dAXrBv
-	MsWQvcj/X/sX+IVJWgO2rNVHlBSb/YU=
+	bh=ZDkfim7mr7a4yUojop8vd0ATFOSgpSTb8reNVp1wDps=;
+	b=trgTdgkdEeFlruulb3fnRxvKuZIy/zlQ50LSL4WZBs3EOvJlZBkVThnClKaH1aIDj+1d5G
+	lP0Pu3RPn4SzqhL7G1fWa7dZ+uTM/yZRsRQIjelHBsCXHWJLeMXFdSHJer24pmNc4Vann5
+	ZBjOlmh0ubdXR8nBCwC2GpDbbjDuWlU=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KGCxe9w1;
-	spf=pass (imf07.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756004869; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=SDsRtCZ2;
+	spf=pass (imf20.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756009106; a=rsa-sha256;
 	cv=none;
-	b=U693/ruSAlq1eHZxno5riOB4j2nnNZ3l8pOwQ+S6AjYY1VBOU5e86O03nSBrnAuK10cqhg
-	GIVgcKrGo0AZcqAPDPC/Qnycdcllke/tllNBlWqtyvIh23+fhW+F44FYa+t5JQmOAC7f9m
-	JyPwD8yPpptI7FuAnsuPP0Qf8R/kSKE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756004867;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=miYmcZ7PQT39UWbb5PapaKAE5Ak3MX6JFaE0vARmqPw=;
-	b=KGCxe9w19OEOv9IL6HgjxCbQTYadVUsP+Jg8Dt71M094r5MLbFCmvvRpCvPuJh5KVnlmaZ
-	1sREJPXl0yx6sDAhX//19LWR8lsulpOwtXXxBg7GXH1SnFD+SaXhl+xxX3vIy6XrJEBfRB
-	1wCGwr27KcFBmWglxdU78TC01GbuVAQ=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-211-tR_AURjPN1Wuh7rvfLaEWA-1; Sat,
- 23 Aug 2025 23:07:42 -0400
-X-MC-Unique: tR_AURjPN1Wuh7rvfLaEWA-1
-X-Mimecast-MFC-AGG-ID: tR_AURjPN1Wuh7rvfLaEWA_1756004861
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 74DD4180045C;
-	Sun, 24 Aug 2025 03:07:40 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.99])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CAFBE180047F;
-	Sun, 24 Aug 2025 03:07:38 +0000 (UTC)
-Date: Sun, 24 Aug 2025 11:07:34 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Vlad Dumitrescu <vdumitrescu@nvidia.com>
-Cc: Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] percpu: fix race on alloc failed warning limit
-Message-ID: <aKqB9sGmgJwsTXGg@MiWiFi-R3L-srv>
-References: <ab22061a-a62f-4429-945b-744e5cc4ba35@nvidia.com>
+	b=QAnXMXXZ5M2OJ6+x7fGrDJg0G/B4tucwLm2o/mM72GQOyo508RAsxV9VdtdQ8mu1P5E7Ml
+	4YHccAsN2k50SRux+sJnJKLxm68QkpkyAjGXbJJ0v5iMLUy7JNH1obv7thhnRqhLiBwB1m
+	TM2KsvhvAF1rViAaWQHg9PL8/5Swh0k=
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-618076f9545so4881a12.1
+        for <linux-mm@kvack.org>; Sat, 23 Aug 2025 21:18:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756009104; x=1756613904; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZDkfim7mr7a4yUojop8vd0ATFOSgpSTb8reNVp1wDps=;
+        b=SDsRtCZ24h8A4vHDiMzap2VSh0BlLzuKkYKZW0Ph2gTs87c8RjTvFEq9Ot3WY0uJzy
+         Oj1pSfGh611Qz13ZtwMwlalEheTa8KxlkwU5hu7vqIMeXmz6j9QZ5fZd0qTWQwmhgQ2E
+         tfso3Mlebi73gm9YQ50gFbtnbF+pC+m1k96Uu5DYxKRFkESr5QSDs9jK6a6FBtNxkKKM
+         rnggJzqRJqK+B8Io1Ki1RdB60/qwt7LgR4gvl7Hw7MoSJGTl+DSkaqrIQAPIfZ9uCjMW
+         hyzDddYDa9HLkaq0B57a2twMXvxhYbU+iJWxGDSiQFIXrUhusZ9nWc4iTB/r5cdmP/p6
+         aKVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756009104; x=1756613904;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZDkfim7mr7a4yUojop8vd0ATFOSgpSTb8reNVp1wDps=;
+        b=VnNOlct4AqicoH2k7f74wctkoAJ/xO2DwHsCLdRlGOLUjuWw9y0+Ag5b/mrnsSJif+
+         4F10k38Vi7R3fn/tj3Nj3e/vGDKLe/unC+VaDGN3kY17bCjmImcL3rgTVbIM09HL7caH
+         6SZ05XKCyODZZ2qnV4OsC8J58C4bQ0SgDO2FDNaxS8rhPxGdjPntz6f8oePHEhK095Ce
+         9V+/tI5zxxwRyL26ioFc5YqmJT7ltQfi/X0wxtsoTgGvkhRX9UoWC0GPJ3qoNh1hjulH
+         VofZnsIWOFe5mCJMVYIjKuSwkTsqbjbv6YepTvMkn4Da9j9XCBUdd1Ice+FvlA+6O4xR
+         EUxA==
+X-Forwarded-Encrypted: i=1; AJvYcCV6aqoPUnHctjlAOY+ZQqAN9WK6mjj1Gyryk+Guqt33uAjJqhOz1wGA4vBRsGPO8e4LfxH71Q0tUg==@kvack.org
+X-Gm-Message-State: AOJu0Ywwr2H47b2PRgQArrh619F8nCm++B3qMzI1WjI/0YnPq+O89RCV
+	qmpiKGdFQFDCfzXlAqzBk6XFOrFgph5I7FJ4ZgwZty134OrBsZGjPP9L814TVs7zySJXs01K1Ex
+	SuzcW6Ac5B5KXpcugWbvNesjVNkIdrSRrqIt3dJXo
+X-Gm-Gg: ASbGncuSRak7IGiLAaeuEmD3CKQUccRCK/3hIQP5RQwRqbm5oxeE4mOJ54hdIElSo8L
+	RD+u7zZcbC/XXToJsSF/KMVvTLv/dNfYhcAJmq3M8ruHOL9euPMRpIQPJSOjMIMnP8gx7PYlO+S
+	ydgCVl2NiRz38efejmtGY1VcZAOL8DEd1CHU0dapRKObL2OxlQJpgOPVEQIIdaHwb7fuj4F6Bqq
+	mE2VkK/YXnzY5+LKKqE6cY2i5CPljMofAwoViWj1PBsAL0=
+X-Google-Smtp-Source: AGHT+IHIKQ3cw094VGjPpaAth752X722oMGWvEZSKC7NcrOHJ/wxzYPnBBhd8NLKWJ383A4CKTort8ybeKLqsLz34bQ=
+X-Received: by 2002:a50:8d53:0:b0:618:8198:de66 with SMTP id
+ 4fb4d7f45d1cf-61c352aac29mr69238a12.2.1756009104038; Sat, 23 Aug 2025
+ 21:18:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ab22061a-a62f-4429-945b-744e5cc4ba35@nvidia.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Rspamd-Queue-Id: 7BDB740003
+References: <CA+EESO4Z6wtX7ZMdDHQRe5jAAS_bQ-POq5+4aDx5jh2DvY6UHg@mail.gmail.com>
+In-Reply-To: <CA+EESO4Z6wtX7ZMdDHQRe5jAAS_bQ-POq5+4aDx5jh2DvY6UHg@mail.gmail.com>
+From: Lokesh Gidra <lokeshgidra@google.com>
+Date: Sat, 23 Aug 2025 21:18:11 -0700
+X-Gm-Features: Ac12FXwhGKxi7sszb9FQfuKpWK6TDNlDZe7vik_4urMen1Es4eNpzZtoyOAFRuI
+Message-ID: <CA+EESO7j4dY3KjBWybTG6uQmXJ8kyhBrid3rTk5XAP7poZOhYQ@mail.gmail.com>
+Subject: Re: [DISCUSSION] Unconditionally lock folios when calling rmap_walk()
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+	Barry Song <21cnbao@gmail.com>, "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>, Peter Xu <peterx@redhat.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	android-mm <android-mm@google.com>, linux-kernel <linux-kernel@vger.kernel.org>, 
+	Jann Horn <jannh@google.com>, Rik van Riel <riel@surriel.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, David Hildenbrand <david@redhat.com>, 
+	Andrew Morton <akpm@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E76D11C0007
+X-Stat-Signature: 89n5ywdr3bicwuj8d8rog491ncf18k7h
 X-Rspam-User: 
-X-Stat-Signature: jbmrz1451hbp5sdgjac8m39rph87bec5
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756004869-131321
-X-HE-Meta: U2FsdGVkX1++b4UYEyJmW+hrt7Mrp4p6ZzkR+oj9MPRfHZecagSGeGh3CEumrJSitpV3feKie3C+PbG5NIhJH60TRQ6zO36QXQ/m1jswwo5FclAV/9Mj0A8I5foVLz3cCHGX96/A9MbQbHNB7awuP2GcCAaQZNuPAdDaaiqNl991n4edS0a3oenKPiKAAcLeBchjpxuUw49a/85/u+zHFdnDKmIfhXv+mR64U+LpFeHfzZqYgLjZtxmi9ylCwo11zxBPhuQE/iJHH1/+ZScrAnvReR/OBJo0RhqGi9eQfq4Aql+wcjSkVcSBjNVFJKEDkth5UtQo14cEtWojFKsoa5E1Sn7ZW5gR0tcgSOFA4Wl73mwZjKwswai4LKOYdJLOl2KLwxMpQRq94v2vZvL5MQq5jhWO4Pf0uMCbXHxWmidXVKDGQQg8eTYsNXdKAw0TxuNTNs8Cfe0pfE1s6/rKXQqZ1GooA7UL9dEq08vvcaQ3P30dkRwaqIHLIP8voLGun+NJ71dFgLmcZf6afUQQncnGP49uDKakS4t9iRef52BQlsFcLELIpSVaGXDpu+qeKbAuczkGKhvzzdkwb6Y9EsyM6PZR2kSRyNC/amOrHRmOqjIf62atM5Ly335ef2hpRRDT/UQglUoyqzWB6vFYMlT/GfVbEzAu9zSf3XkXpqtT75bH/uNz54euGJxVLBynES9VX6JzImq9IMxgmmVjyjWXoVr/r6cLe4pDhle+oh+quervjXj79MmSPx3h20NRf9A92ISJaBnJd/PqhcT4OCbl0Ew/T/8U8SXKfS2XiWv9JPp8BqoWrUzu05USML1+StOThQm8yf9MMde0YxJidDqEyCylYruXn00hUqnOh2nF7bkaYfOwVsiYjchA3zsZKHGgfvWywczecU+25DpKrGsMVnOXuO6dv4wyxgpX89dDALAgtZn175B+jxYRZIGrBelZ+IJNfuMAyr4LNuP
- cCwR2X32
- Hl5coLnWnMS6B7pr4p5wk56rHb7Ov9pP1MWPssTToOewGePpw+tlCFZApUfApg101v1cosN/q+PGA4QaE07kkYov+ZE6tqag8AVWrRNvZdslI0YcxPO+aP+dJrN5RmgT0kdCXZTmfOXrDOSQOhkQ9v1AFxwhevM9Gp3ZM4Y2JSuv5e2MYqUovq0TRD1noPcVuV0/iIqTU724IpSBCFweGtszSCWTRtw0hY5CT9Ft3OoB3cwjdjKGIkab1LxMlsYwIyjaEzb/kXyktCAAbcU7fwvCfhEjluui72fHIabF6DghgTpyZR3nghw5EIAfVIY0yV47GVOPqceyWRbnebbaucDpQdntAd2ncLlzTJwx3BEbSj/dEBRCnfvwahAQV1CT4yI6dx8FEUR2VxFC+nPnjI16hQcBET6E8vm+iJWoMM+Qzwz+CW2KsXrc12qZcN1Jh3aYi
+X-HE-Tag: 1756009105-945601
+X-HE-Meta: U2FsdGVkX19RMFV7IsgooyGiLv+meGpZPnrSrtedK7JZh+29juleEFkWl24RKdVe9qeSnoTfla5B7e2qOy+dPZZFRUzesFMOKt0HV16xVeVgWGT1O4qMDmQV+qYD3crIV/gyXC8ny6C3DPojcwk3yPP0T4pq5uju70Tf2q6fAP8JQAYFsswEnV9zHYKe9fSZm8INP5uqXHjAISnYU8xDknxYVCpem/XxNRDQug/TK/2Sy9uvqERzDYIeKgaPEoYtcHbJWDshBWG/njamGTqBBkQ/i4eQbx+v5/uI4pfHYgmwGZjHtsto0AesdPMPHkcl/RL+dwHevMxDuwPkfN7OGIL8DEzRXhrGD8dWZDs/s/FIbOqMK+ZVpBro5mfAekyd9QuAQL1oDmHVdrkvt7Sqg6Laq8EZ9V0tUBDXGgAJSuIU7PUfOjtBs8019PQUGfxZwES+cWqAILe27SHIu5J0OpMZRpL3Zua92keZy3S8vsi2/YUMrAy4oexGkdckKPGaOOOsWnhy5IC3KFTVDAgK/nMuBQUrnmlSWwRzU8mpKkFWf9mbG1x/lEZcgy5AXvcnmGO+3WZx5uK8iniUSb3ILc73mOPn7NLjzwgv9/IxZmnC/6ulFNt9hSXG2j/DpfpWkvpJK/241/YC3ctoTscsmfXQKJdK4bsm3XmIhXYsTQWHiy1P5sDsFKmh3yY38lZp97b+G6CKmYWSbLvlFg5uJZy2jOBkV+bZfVL4vtYxw7e7ckVz+fJ8BgnM4Brb/Xveq3w4yQZIxr0/xH7D16Ax3+jnMMLJnwsz5Qd4eus2qbbKVwiee99T+BqdBl2IVI9wDsV3yRYmEvCIet81lN5j4q6gk+F746iiBfCdhWCtx0w3i9sfz54j0AhuXPKn1JfZSbrPGrL7f7/EvgbLQcf4OLNsC1Kmlu+5M2mLPSOfKBroeZGUaA4v3mzlIRRLuq2/dVroI3dqcU9QBocwNtf
+ BbB9cx/Y
+ P/CM2gNCgNHpsljEy3pjTVLKxUda8MvWUPyde2nacDOl0LW2HFshoY4c4sgVb67DZGmkP5iBPQjjK663GycUd/Bko/WPjHtgTY1PeTgc6u/vi0U4FGa+9Bo/aoVSVWstZyiBlyOn3AbXkY1TKdAxN2TAPrLHMgDFvjOHQJJIMMkQeACtDqJGCi2pXLL6fFYDB8La0EoBtqvjxNZ/pvjLcEIe6dhPSEEyQbzK9R1HVbBrPiul+eFgD+gpIs4oGvc37lbvl8eGN0wyDuXBCmeF/hCNgIsiHi9z8owAdskssHkmqdaz6gBsEqson5g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,75 +121,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08/22/25 at 03:55pm, Vlad Dumitrescu wrote:
-> The 'allocation failed, ...' warning messages can cause unlimited log
-> spam, contrary to the implementation's intent.
-> 
-> The warn_limit variable is accessed without synchronization. If more
-> than <warn_limit> threads enter the warning path at the same time, the
-> variable will get decremented past 0. Once it becomes negative, the
-> non-zero check will always return true leading to unlimited log spam.
-> 
-> Use atomic operations to access warn_limit and change the check to test
-> for positive (> 0) as it can still become negative.
-> 
-> While the change cited in Fixes is only adjacent, the warning limit
-> implementation was correct before it. Only non-atomic allocations were
-> considered for warnings, and those happened to hold pcpu_alloc_mutex
-> while accessing warn_limit.
-> 
-> Fixes: f7d77dfc91f7 ("mm/percpu.c: print error message too if atomic alloc failed")
-> Signed-off-by: Vlad Dumitrescu <vdumitrescu@nvidia.com>
-> ---
->  mm/percpu.c | 20 ++++++++++++--------
->  1 file changed, 12 insertions(+), 8 deletions(-)
-> 
-> diff --git a/mm/percpu.c b/mm/percpu.c
-> index a56f35dcc417..c1a4089eb4c3 100644
-> --- a/mm/percpu.c
-> +++ b/mm/percpu.c
-> @@ -1734,7 +1734,7 @@ void __percpu *pcpu_alloc_noprof(size_t size, size_t align, bool reserved,
->  	bool is_atomic;
->  	bool do_warn;
->  	struct obj_cgroup *objcg = NULL;
-> -	static int warn_limit = 10;
-> +	static atomic_t warn_limit = ATOMIC_INIT(10);
->  	struct pcpu_chunk *chunk, *next;
->  	const char *err;
->  	int slot, off, cpu, ret;
-> @@ -1904,13 +1904,17 @@ void __percpu *pcpu_alloc_noprof(size_t size, size_t align, bool reserved,
->  fail:
->  	trace_percpu_alloc_percpu_fail(reserved, is_atomic, size, align);
->  
-> -	if (do_warn && warn_limit) {
-> -		pr_warn("allocation failed, size=%zu align=%zu atomic=%d, %s\n",
-> -			size, align, is_atomic, err);
-> -		if (!is_atomic)
-> -			dump_stack();
-> -		if (!--warn_limit)
-> -			pr_info("limit reached, disable warning\n");
-> +	if (do_warn && atomic_read(&warn_limit) > 0) {
-> +		int remaining = atomic_dec_return(&warn_limit);
-> +
-> +		if (remaining >= 0) {
-> +			pr_warn("allocation failed, size=%zu align=%zu atomic=%d, %s\n",
-> +				size, align, is_atomic, err);
-> +			if (!is_atomic)
-> +				dump_stack();
-> +			if (remaining == 0)
-> +				pr_info("limit reached, disable warning\n");
-> +		}
+On Fri, Aug 22, 2025 at 10:29=E2=80=AFAM Lokesh Gidra <lokeshgidra@google.c=
+om> wrote:
+>
+> Hi all,
+>
+> Currently, some callers of rmap_walk() conditionally avoid try-locking
+> non-ksm anon folios. This necessitates serialization through anon_vma
+> write-lock elsewhere when folio->mapping and/or folio->index (fields
+> involved in rmap_walk()) are to be updated. This hurts scalability due
+> to coarse granularity of the lock. For instance, when multiple threads
+> invoke userfaultfd=E2=80=99s MOVE ioctl simultaneously to move distinct p=
+ages
+> from the same src VMA, they all contend for the corresponding
+> anon_vma=E2=80=99s lock. Field traces for arm64 android devices reveal ov=
+er
+> 30ms of uninterruptible sleep in the main UI thread, leading to janky
+> user interactions.
+>
+> Among all rmap_walk() callers that don=E2=80=99t lock anon folios,
+> folio_referenced() is the most critical (others are
+> page_idle_clear_pte_refs(), damon_folio_young(), and
+> damon_folio_mkold()). The relevant code in folio_referenced() is:
+>
+> if (!is_locked && (!folio_test_anon(folio) || folio_test_ksm(folio))) {
+>         we_locked =3D folio_trylock(folio);
+>         if (!we_locked)
+>                 return 1;
+> }
+>
+> It=E2=80=99s unclear why locking anon_vma exclusively (when updating
+> folio->mapping, like in uffd MOVE) is beneficial over walking rmap
+> with folio locked. It=E2=80=99s in the reclaim path, so should not be a
+> critical path that necessitates some special treatment, unless I=E2=80=99=
+m
+> missing something.
+>
+> Therefore, I propose simplifying the locking mechanism by ensuring the
+> folio is locked before calling rmap_walk(). This helps avoid locking
+> anon_vma when updating folio->mapping, which, for instance, will help
+> eliminate the uninterruptible sleep observed in the field traces
+> mentioned earlier. Furthermore, it enables us to simplify the code in
+> folio_lock_anon_vma_read() by removing the re-check to ensure that the
+> field hasn=E2=80=99t changed under us.
+Hi Harry,
 
-A good catch, and the new code logic makes code more robust, thanks for
-the fix.
+Your comment [1] in the other thread was quite useful and also needed
+to be responded to. So bringing it here for continuing discussion.
 
-Reviewed-by: Baoquan He <bhe@redhat.com>
+It seems from your comment that you misunderstood my proposal. I am
+not suggesting replacing anon_vma lock with folio lock during rmap
+walk. Clearly, it is essential for all the reasons that you
+enumerated. My proposal is to lock anon folios during rmap_walk(),
+like file and KSM folios.
 
->  	}
->  
->  	if (is_atomic) {
-> -- 
-> 2.49.0
-> 
+This helps in improving scalability (and also simplifying code in
+folio_lock_anon_vma_read()) as then we can serialize on folio lock
+instead of anon_vma lock when moving the folio to a different root
+anon_vma in folio_move_anon_rmap() [2].
 
+[1] https://lore.kernel.org/all/aKhIL3OguViS9myH@hyeyoo/
+[2] https://lore.kernel.org/all/e5d41fbe-a91b-9491-7b93-733f67e75a54@redhat=
+.com/
+>
+> Thanks,
+> Lokesh
 
