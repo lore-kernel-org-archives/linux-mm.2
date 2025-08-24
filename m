@@ -4,92 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCDBACA0EFC
-	for <linux-mm@archiver.kernel.org>; Sun, 24 Aug 2025 13:05:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74B8FCA0EEB
+	for <linux-mm@archiver.kernel.org>; Sun, 24 Aug 2025 13:08:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF9C18E0007; Sun, 24 Aug 2025 09:05:08 -0400 (EDT)
+	id A68858E0008; Sun, 24 Aug 2025 09:08:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD18E8E0001; Sun, 24 Aug 2025 09:05:08 -0400 (EDT)
+	id A198C8E0001; Sun, 24 Aug 2025 09:08:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0E218E0007; Sun, 24 Aug 2025 09:05:08 -0400 (EDT)
+	id 92E8E8E0008; Sun, 24 Aug 2025 09:08:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AFA1A8E0001
-	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 09:05:08 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 07006C010E
-	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 13:05:08 +0000 (UTC)
-X-FDA: 83811671496.27.A5BBB75
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7EE848E0001
+	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 09:08:12 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EB425114C3A
+	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 13:08:11 +0000 (UTC)
+X-FDA: 83811679182.12.F22EBDF
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 77E8C80003
-	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 13:05:06 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vL767a0O;
-	spf=pass (imf02.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 772734000E
+	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 13:08:10 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CMLqhO8Y;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756040890; a=rsa-sha256;
+	cv=none;
+	b=H5c5Zty2x18GZCRY4a7ENAg6GbtscSaeG3rkyB9Cw4Vr1cjXftQ0egZtNj58KZ6gK22k+P
+	iV5Yd0SW70WpN5f3w5H8EardK1ARthnnZnWRd/3cCea1rxbGamAIajz3TcoUNTHWnqa30H
+	eDeeBgoFANs8ThwyE035LLR4iFcoriQ=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CMLqhO8Y;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756040706;
+	s=arc-20220608; t=1756040890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dFb0+w3p/PU8Uh01PYLXl2lR7W2bA0wQT2K3ZDv6cVs=;
-	b=gjUOkUb6aAzMG/kZeieEYianFz54Mvu5ZXqVbio9evCB+XHvoW0Ibb8LeTjD76CFCRyTqk
-	CmfQ/wU490B/qRasgDbNtw9wu+uVxw4Ktni8UolNKPCzyUYjn8HHk7yAAw6dkz7DwWcTns
-	fJtgpeEpbCcnBqjkXYoCv67QII8w8gY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756040706; a=rsa-sha256;
-	cv=none;
-	b=bclBgfhgN1BGsSLhyZtjgsgHMMXU3aTF74m0cCxjT0nkcaF5uF5m98j51weI3haKFJk8oj
-	qKDlv66KgmAETUUmG03rP1F9sj/x5+bfm3rMwOnd+Vdc8ddPmNv5Q216+LtGRT4V+/uc+U
-	eXvxeVXEEcF5dpVOBU8nqMrdDSRP0CQ=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vL767a0O;
-	spf=pass (imf02.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=pp8ToLUkKJ1HOeEJXTubDWsSZ9lYngLBdR/X7Ieo04g=;
+	b=YmTSKtZwt26EmJdDSJ5KMVN6zVx/ZLHw2+cXPVQBB53PLUaGaY0Qja23GW51pBp4s7y9ur
+	B82Y5nj2LtdNP7ON2ECrOaJBDSKudCSDTfrcHSPJxsDA2lNa11KM3422Uo/NO42vm/3XxK
+	CqlXGOoBy9m1Zc4ZQioMugTI9SgQqSU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 52C05601DF;
-	Sun, 24 Aug 2025 13:05:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F53C4CEEB;
-	Sun, 24 Aug 2025 13:05:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CE3D6601E2;
+	Sun, 24 Aug 2025 13:08:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A3AC4CEEB;
+	Sun, 24 Aug 2025 13:08:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756040705;
-	bh=W5xOQKuMNnSf7+aFccIF+sA9AEbiG2iUEybWWHNvCk4=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=vL767a0OPT/0ICHw30ZcuWNYyRmxXsJnKrCo6leec5cPZPTC7AYgYzNhY5nAQCNGT
-	 nqMR/jf0EuvJbaSeheX2vIGOY+rTAq2pyoO4D1blCxrHMmaCcubYMQEM8SX52ekfl1
-	 1CdtRKw2FUlPujy92LLQe1fg3bguJRf1GvLez5LdOR4ucJkxTNLChTVY3gqHU9MKvO
-	 6dqVq0XOTRinTPQQveASgmnLxmvV6RWwsm5i07QqGypsHKsaksYR1HKy/DsvYXVpvA
-	 kUvbEqm7DPh12hhTXvoigsKDmlKdK9GJ9Udccc8Frss6fKQnZro2ceARBq9z+ZzEnT
-	 wKiEo7rgjppFw==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 24 Aug 2025 15:04:58 +0200
-Message-Id: <DCAOH44U57K3.2CVDYWF8MJBWL@kernel.org>
-Subject: Re: [PATCH] rust: alloc: add missing trait item MIN_ALIGN to
- Cmalloc
-Cc: <lorenzo.stoakes@oracle.com>, <vbabka@suse.cz>,
- <Liam.Howlett@oracle.com>, <urezki@gmail.com>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
- <linux-mm@kvack.org>, "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250824120656.208978-1-dakr@kernel.org>
- <CAH5fLgjkqcyzoZD7PP2i4g4r2uqpdbDKVW5hLfm6c9ysbxkPuw@mail.gmail.com>
-In-Reply-To: <CAH5fLgjkqcyzoZD7PP2i4g4r2uqpdbDKVW5hLfm6c9ysbxkPuw@mail.gmail.com>
+	s=k20201202; t=1756040887;
+	bh=c/pmFE4hhHdYRQMOehbBMtIk9AjMFS+JxZ7MckvIVMM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=CMLqhO8YykEmBddsn1YaWApi85Vtax3IOM8A5OtISl56VsnwYsRIogHVJZNsDeWJx
+	 sGLwfH8I/jGN0HKUiLenRDinB1qGvTGkme1JfyOcjRFNJIgbtzY1QDVBdoMTZGrkW7
+	 TLhBuvWQOJ3ZxKEv6/lZhIuUXQlVKBtLzLGvDgJc/1bNbez8AS46SSHDqhtKzf68EY
+	 OYMDlPy1y+HwKEC2XZ2EG5M/rdQC/DTrQs/rG9E1EsHFY8wPUWF0T3wxgRlE7HaBL4
+	 CWkYghfcyCF/3ACTCVLM/MaFKdmlEVGYCsD2y7/G8cPYXYOEK96mu8K6syMW+H1A9e
+	 OvKx3AFqX+VNw==
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	x86@kernel.org
+Subject: [PATCH] init/main.c: fix boot time tracing crash
+Date: Sun, 24 Aug 2025 16:07:59 +0300
+Message-ID: <20250824130759.1732736-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.50.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 772734000E
+X-Stat-Signature: xqz9r79a61endqjh8wz6bococu6c7z5z
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 77E8C80003
-X-Stat-Signature: 636d1fgmrdzzx7z1rw6bdxjtshynmgo7
-X-HE-Tag: 1756040706-682724
-X-HE-Meta: U2FsdGVkX1/bEsXW4qvv7MXRhfFeTEWjezsKjc7QHUOpJHsZYdc8VhhHkGJVozevBBUIOVTj98BTeT8S5aZ1CqwVjwXojINV2x72loT6L0evkZshBhmAM9vrxVt3x4uSW/zlXB4cTeAP9VYht1Nsoqm4Tcb1Dt5BdMrTRnlBynuThbjuv8K1udpsq8EFLnIJpP3RxrZI39lBRhh8bQ+vvaCw+OuwTQxQvuXY36pggUy4duzi0N5ysY3wNodGzEJu7ppciy8kc/XOTwMnq8o33S/lCknffVYnK1o9mv1Jp8KQCUiA1NQzziankDBTpf/45xG25mnNsGFtb33Ll81/Nd5jc3CMi5BGy/ycGexON2xESxw+L2aqGL8wM/4HoohTMu2+Ap+9O548oRYYLCVFVXBLklZ504YcCPEdOYlqiGsyP3En3zUqXGIhzfb00ZNgvaj3rSPi4HeDS+SUZqcPWK4fdZj9qXux0rh4lACe46Tj6Hc6AWiQFOk9gzRpFVn6OvdZYMN8WHIPChZ34ZDpkM5hOHAGfBivEgdSKjUJmYK9A21Dvy5tEODdY4/GBah4FAkCTY7LlWUS9VdNJKTEhldlzr2nNuFI+tT2TU+w9hJHAby1Fhniz9Q/4yNDTPT+IUxqO85jtrGE3LThwhL4nxoKCji9dttNzl3BR9F57xOx22ouL/J4OVLb/H9caJehtxVzlYt6a7a9sjABSi9LKYA6Kq6pSDHTcysovhgzexAm2LAV5oAvmMs4aMeT7ZM8qJGsrYhPGKe4mPn/uZTv4g9kxagWN9zVdBJeQ4sEuy//vzeciPPSKbGahOMQQONoPLY+f7by8GOM9O7pbXyWQdbUmbfynEh1LUKFukCWmdk/bajoRtl62RuFlGqwbJhl7x+0j4VpOdbaIbluD+c6Cmo6TD1U6o6iEbenY26txZiOaaeEFjIppjh3h5nUbXl7BmQ4kW1//S9aHb24CP/
- 7WfotMFk
- 5shKt8YMq5LLdEiapZydr7OvZmgHdrj6AS4GPtBykG98A6wXoPw4rIh6tXTlRRU3Ea4eFQXj6Zags4EwBT7BlmGzmkItz1JnFEoBd+DYTNl+PoWDI2nG4Vxom5k09F6UUHwCzP54G2ye3V253dyqQTu3AxwkZZ87aiiO9NvSqt4l4c+Wg5vcoqt8xMZ7J7q18aFTmjuXN8Nw29haPvyT82yzMYTPhwm3K619aut315IUHhCEqx/GdvuQDtG1ECTS8NVfM7c6yY9ythImEYwcBQChVUdXbt9cJZtxi4jBNHXFKnjF/01ExJ9G/wd2QYRk9UpdEYRtLswf2rf3AnJEqSPyUfWZVltgp3zuYYxWYwhEaYtit991+B8UHl/czjT8Rr529FNXyD3c8rhmhUQ2QlUJeB8eRGQSxDcN3guhN4IfaupTykiOT/8HuU2daLhra4urj
+X-HE-Tag: 1756040890-498936
+X-HE-Meta: U2FsdGVkX1+iLx95xgBBvQ9WHFj2XJkW1X/tOzEW07t33kLvKxNGrApxKI8IpNgeUbb7PSg7KYHLfrJLKPIh46iDYpkxfHWONHVzY80VLhglF+3Z/nZlA6Y58U+Zb5vZ+SGaoRzve+BkQg7dJ25h2V07IvqGanoU/87ZujqMThjaudGBQTfbbnEv/t05EMfsZgvCK1XNlGkoXq6V/b94SRIg8F4e15MCmne/sUuYes6A+pXSXQqrRF8qBnuLHE/cFjX4l/+L13FKySSGMiF4ONf6Ie1OwdwhAJrv7mnHBXq993ygxbI/sm6J4KYj6zXlavk3BF/J7oLdWQfGzkR7mpRIBFSh/sCs63tKk4aAchpTSxzSzsqOrkn4xCcdDvEq5NC1IVaFzCaoMg86e5pQlTYGzG3ng7GNsBy0ilwea4AJMQFbH7YZWEYYJJTrV8PTno6+EdT5Mt9n9J/6CV3cynXnFnYoug3RF48PdTL7JfEWzosyBoqvAUgIE4Iw49d/tu7UAXHjWVUDnSnux14/h/sntQcXLhe6XHeWOs6vE9mrFY4kNKUn8hKZZ3BhT+cB3vqamx2L1CobNVANKqbAMRLSNwCBn+Lueg3Jwi9omgkFLZ7T6+wD2+gMfcEKoqpYlvSSP+QJY/2o3H3Pcg6Kia/iXGFwQmjLYXYAru5TYAZ46yxJVfxMEzhmqSx0alCVkZzhXUk+AeDjw73+q4++5VWl1953QDmjTUa/30D6Tc8aMk5Hkc7/8zxuYFcSAE9nmWfbhU84bbV44kZzJlWOU7xg6ZXXEbddM5cxz148IdY5nWb0IXvtkyv4APuFAzzZ69wCJvuZ/GzdMvcL2C0tXikYyZZ0ZabT8nRFH5/aT46570+LPJ5uPWIUN41lhzavAOybPPZTChaOzv0DJDI9MX8xuHEPu0V5bqKNcHLWRaXcoTwRMNotZBOUze8or0gtO/Y2mv40W6PFnSxoiJq
+ ZPI2Dwz2
+ bxYinFYIbu/nxfJ1bOJRynyP+NojAKSbkSzCXTFLnLPtVIXld8sB5WZx/Kc8X0XJHn1FQFQEt+ft1nndStcw5QBihme6gFmjpNNVhZXKZa0eCApj/fUWAiMNxJHgaH3C85Th4dDFTs0TbXwKDtH9eWe5FdG5u/h+wrpDP02ynJxshs3A1e1NRxClXUbJCDv6skKiI7gmePPkS1ma5gySNJGCkaKfVj5boejOs2XR+SswB7K0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,28 +100,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun Aug 24, 2025 at 2:36 PM CEST, Alice Ryhl wrote:
-> On Sun, Aug 24, 2025 at 2:07=E2=80=AFPM Danilo Krummrich <dakr@kernel.org=
-> wrote:
->> +    const MIN_ALIGN: usize =3D bindings::ARCH_KMALLOC_MINALIGN;
->
-> Is this the right value for normal malloc?
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Heh! ARCH_KMALLOC_MINALIGN should be correct, because the Cmalloc implement=
-ation
-should (ideally) enforce a minimum alignment of ARCH_KMALLOC_MINALIGN for
-compatibility reasons.
+Steven Rostedt reported a crash with "ftrace=function" kernel command
+line:
 
-However, double checking the existing code, it doesn't. Hence, the correct =
-value
-must either be
+[    0.159269] BUG: kernel NULL pointer dereference, address: 000000000000001c
+[    0.160254] #PF: supervisor read access in kernel mode
+[    0.160975] #PF: error_code(0x0000) - not-present page
+[    0.161697] PGD 0 P4D 0
+[    0.162055] Oops: Oops: 0000 [#1] SMP PTI
+[    0.162619] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.17.0-rc2-test-00006-g48d06e78b7cb-dirty #9 PREEMPT(undef)
+[    0.164141] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[    0.165439] RIP: 0010:kmem_cache_alloc_noprof (mm/slub.c:4237)
+[ 0.166186] Code: 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 55 48 89 e5 41 57 41 56 41 55 41 54 49 89 fc 53 48 83 e4 f0 48 83 ec 20 8b 05 c9 b6 7e 01 <44> 8b 77 1c 65 4c 8b 2d b5 ea 20 02 4c 89 6c 24 18 41 89 f5 21 f0
+[    0.168811] RSP: 0000:ffffffffb2e03b30 EFLAGS: 00010086
+[    0.169545] RAX: 0000000001fff33f RBX: 0000000000000000 RCX: 0000000000000000
+[    0.170544] RDX: 0000000000002800 RSI: 0000000000002800 RDI: 0000000000000000
+[    0.171554] RBP: ffffffffb2e03b80 R08: 0000000000000004 R09: ffffffffb2e03c90
+[    0.172549] R10: ffffffffb2e03c90 R11: 0000000000000000 R12: 0000000000000000
+[    0.173544] R13: ffffffffb2e03c90 R14: ffffffffb2e03c90 R15: 0000000000000001
+[    0.174542] FS:  0000000000000000(0000) GS:ffff9d2808114000(0000) knlGS:0000000000000000
+[    0.175684] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    0.176486] CR2: 000000000000001c CR3: 000000007264c001 CR4: 00000000000200b0
+[    0.177483] Call Trace:
+[    0.177828]  <TASK>
+[    0.178123] mas_alloc_nodes (lib/maple_tree.c:176 (discriminator 2) lib/maple_tree.c:1255 (discriminator 2))
+[    0.178692] mas_store_gfp (lib/maple_tree.c:5468)
+[    0.179223] execmem_cache_add_locked (mm/execmem.c:207)
+[    0.179870] execmem_alloc (mm/execmem.c:213 mm/execmem.c:313 mm/execmem.c:335 mm/execmem.c:475)
+[    0.180397] ? ftrace_caller (arch/x86/kernel/ftrace_64.S:169)
+[    0.180922] ? __pfx_ftrace_caller (arch/x86/kernel/ftrace_64.S:158)
+[    0.181517] execmem_alloc_rw (mm/execmem.c:487)
+[    0.182052] arch_ftrace_update_trampoline (arch/x86/kernel/ftrace.c:266 arch/x86/kernel/ftrace.c:344 arch/x86/kernel/ftrace.c:474)
+[    0.182778] ? ftrace_caller_op_ptr (arch/x86/kernel/ftrace_64.S:182)
+[    0.183388] ftrace_update_trampoline (kernel/trace/ftrace.c:7947)
+[    0.184024] __register_ftrace_function (kernel/trace/ftrace.c:368)
+[    0.184682] ftrace_startup (kernel/trace/ftrace.c:3048)
+[    0.185205] ? __pfx_function_trace_call (kernel/trace/trace_functions.c:210)
+[    0.185877] register_ftrace_function_nolock (kernel/trace/ftrace.c:8717)
+[    0.186595] register_ftrace_function (kernel/trace/ftrace.c:8745)
+[    0.187254] ? __pfx_function_trace_call (kernel/trace/trace_functions.c:210)
+[    0.187924] function_trace_init (kernel/trace/trace_functions.c:170)
+[    0.188499] tracing_set_tracer (kernel/trace/trace.c:5916 kernel/trace/trace.c:6349)
+[    0.189088] register_tracer (kernel/trace/trace.c:2391)
+[    0.189642] early_trace_init (kernel/trace/trace.c:11075 kernel/trace/trace.c:11149)
+[    0.190204] start_kernel (init/main.c:970)
+[    0.190732] x86_64_start_reservations (arch/x86/kernel/head64.c:307)
+[    0.191381] x86_64_start_kernel (??:?)
+[    0.191955] common_startup_64 (arch/x86/kernel/head_64.S:419)
+[    0.192534]  </TASK>
+[    0.192839] Modules linked in:
+[    0.193267] CR2: 000000000000001c
+[    0.193730] ---[ end trace 0000000000000000 ]---
 
-	const MIN_ALIGN: usize =3D align_of::<crate::ffi::c_ulonglong>();
+The crash happens because on x86 ftrace allocations from execmem require
+maple tree to be initialized.
 
-instead. Or, we have to actually enforce ARCH_KMALLOC_MINALIGN.
+Move maple tree initialization that depends only on slab availability
+earlier in boot so that it will happen right after mm_core_init().
 
-Given that this fix is only for within the -rc cycles, i.e. we will remove
-allocator_test.rs before the MIN_ALIGN stuff ever hits an actual release, j=
-ust
-using align_of::<crate::ffi::c_ulonglong>() should be fine.
+Fixes: 5d79c2be5081 ("x86/ftrace: enable EXECMEM_ROX_CACHE for ftrace allocations")
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+ init/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/init/main.c b/init/main.c
+index 0ee0ee7b7c2c..5753e9539ae6 100644
+--- a/init/main.c
++++ b/init/main.c
+@@ -956,6 +956,7 @@ void start_kernel(void)
+ 	sort_main_extable();
+ 	trap_init();
+ 	mm_core_init();
++	maple_tree_init();
+ 	poking_init();
+ 	ftrace_init();
+ 
+@@ -973,7 +974,6 @@ void start_kernel(void)
+ 		 "Interrupts were enabled *very* early, fixing it\n"))
+ 		local_irq_disable();
+ 	radix_tree_init();
+-	maple_tree_init();
+ 
+ 	/*
+ 	 * Set up housekeeping before setting up workqueues to allow the unbound
+
+base-commit: c17b750b3ad9f45f2b6f7e6f7f4679844244f0b9
+-- 
+2.50.1
+
 
