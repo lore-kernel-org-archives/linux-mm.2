@@ -4,98 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A39F8CA0EEB
-	for <linux-mm@archiver.kernel.org>; Sun, 24 Aug 2025 10:59:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5838CA0EEB
+	for <linux-mm@archiver.kernel.org>; Sun, 24 Aug 2025 11:38:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 835426B009B; Sun, 24 Aug 2025 06:59:46 -0400 (EDT)
+	id DBDD76B00B7; Sun, 24 Aug 2025 07:38:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E5B46B00B5; Sun, 24 Aug 2025 06:59:46 -0400 (EDT)
+	id D959E6B00B8; Sun, 24 Aug 2025 07:38:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D4C06B00B6; Sun, 24 Aug 2025 06:59:46 -0400 (EDT)
+	id CD2716B00B9; Sun, 24 Aug 2025 07:38:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 50B726B009B
-	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 06:59:46 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E2599BBEBC
-	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 10:59:45 +0000 (UTC)
-X-FDA: 83811355530.11.DAC88CA
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 01D0F40004
-	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 10:59:42 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=jtKYRjJG;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756033184; a=rsa-sha256;
-	cv=none;
-	b=6nxfCMvUf/5fmFPw5iCm87MlaCnhI0ScYsjeW9/Japr9xHTalTsIHOio5eYX3E5sgFoIJZ
-	KO2TB0MtvujZYLxKlbb8ZKxZ9hzH8gJb9H1VM4fsteDvRDFHc7rrSWSlEHlxED0Qa7JWac
-	GMo78A+THg7CVAdi+CvqSB4DH7ca9iA=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=jtKYRjJG;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B3BAA6B00B7
+	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 07:38:50 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6DAF016091F
+	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 11:38:50 +0000 (UTC)
+X-FDA: 83811454020.21.970713E
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8D0FA180008
+	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 11:38:48 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=GZakf7SR;
+	spf=pass (imf16.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756033184;
+	s=arc-20220608; t=1756035528;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=yOowplzVG9nXMdEOni7fVfTsx2ez+9jgmELGuniqxl0=;
-	b=CCAeNznBs527zda/nHTTbwJWdNoQ2P8r5Ez7TLwiyCJoqoFzVMVDDARLkv7JktbscNU4QV
-	xlsO8Hng/ox3m16wfCz78ZVBNsyqdNz+BD/X+E9IqknfcorpL8G/UCjC46TQvSEXbBITZV
-	+5xud9pOD9CEs0axjTPfhb7emUzjPOc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756033183; x=1787569183;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=F0lWeHRbdG/4Nlqj7hTHDy63+PkTIai8BN9s+1ojUZU=;
-  b=jtKYRjJGcOiJ/oWsKeSV8J9YqGy26vb1rds1+U+PzYhnGsMJyVcXWKj2
-   862HCFbLw/dvQXUdFM6Jr0lEkb/957WPmXAceAy9LowzzpGa4w6z5Jq15
-   YzwUmy2DDSJ16GsGnQ5iJXhFFTKqMCtHQdIx+C418bNNUcraEQA4Nt8bM
-   k0/M5W4TD9XgnT4h5YLn3pJ9VB3AC9zJetA05QeIozsnCaDnsGMHU4kiw
-   L5dnn49BmOp3iAzuvHLunb0u0H0RpuxhSMvR0uTj5ica7I2ad2WalhLWc
-   INJtbOFTSXvK017lfaibZGTrfxdkluWGwtPl0NNC7BoEQy4++09eDDueu
-   g==;
-X-CSE-ConnectionGUID: mAuvsORBTnKmDLFJryNTbQ==
-X-CSE-MsgGUID: sEFST+PcSkm+OkD3127wJw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="45842670"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="45842670"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2025 03:59:41 -0700
-X-CSE-ConnectionGUID: rQRz4ha9QDaP+C9BtzTEHw==
-X-CSE-MsgGUID: esxzoi6OQQKNh2gBmJmnqQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="168577898"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by fmviesa007.fm.intel.com with ESMTP; 24 Aug 2025 03:59:39 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uq8R4-000MxD-1c;
-	Sun, 24 Aug 2025 10:58:57 +0000
-Date: Sun, 24 Aug 2025 18:58:07 +0800
-From: kernel test robot <lkp@intel.com>
-To: SeongJae Park <sj@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Quanmin Yan <yanquanmin1@huawei.com>
-Subject: [akpm-mm:mm-new 237/249] mm/damon/paddr.c:193: undefined reference
- to `__udivdi3'
-Message-ID: <202508241831.EKwdwXZL-lkp@intel.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9cDqNbqcDUrKN9I6FwLpcYOrNjGw94QGbdTT6OM3Mgs=;
+	b=V/KV3guHQmNeHg4G45VbsP/rifgO+fSkOt2z7BqGUdpBduF5e2Nn2gm3QjJU7a8A3+8P3E
+	VxxeoVQ/bQmRTQHTDtt7l2WyBv/dPinyqUKTxvnWefLu+aJMp7nHSlypFXdQWF9QNISl2d
+	6E67B+ZzvK0R8kIHQ6rTvK7JRDZpfv8=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=GZakf7SR;
+	spf=pass (imf16.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756035528; a=rsa-sha256;
+	cv=none;
+	b=W5r6sDlRLr/8mFLDlf5iqklyrwH8Vkz/ChOuyvBKPOHzhpBtdfzhUXTC7fWy3kFFIhE1i2
+	PcAgHuV6NARxyqL6lOjqB90dmEpkV2aBfed7P2CyZZQD9D26hyjjruXFYgp+m1cJCEpIOA
+	axiW/TzP/ilYMXp46KKynNKQrXBUjVg=
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-b47173edabaso593023a12.1
+        for <linux-mm@kvack.org>; Sun, 24 Aug 2025 04:38:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756035527; x=1756640327; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9cDqNbqcDUrKN9I6FwLpcYOrNjGw94QGbdTT6OM3Mgs=;
+        b=GZakf7SRLYy9m4ZZjMU2TboVUNfSnY9c4Hd7QC/dEIGvS41aNU3vff4umulTJIkZgf
+         kWF35yCPsju/CkCfmupBhCOKpQ654m48kxLi5OiBa9RhbytRem0bchqgRfx9VS7YgSYD
+         KgzG6L7ylhve9JuYfrOmlPdxlqY1jgEEfATEQMgIZ0B8oehfeGhppH57BLxCEzFMmICZ
+         550fXCaNFQRXVnnuAwgHOvGrbkrg6Fi099xvNpXiKr7T4BFAS4vzD3f+LL9XhjBummql
+         StE4xaKZWbuCGlD5bSnR9IbrG9LpPKgYvLLg9LpLB5y1UgoDk9DOdHXGdIrfDjwwjpHE
+         RnKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756035527; x=1756640327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9cDqNbqcDUrKN9I6FwLpcYOrNjGw94QGbdTT6OM3Mgs=;
+        b=AuZ8x8SDnisN3VDEI/VVjHhdocfo/8ATr+2h2veOKAYSb4DzkE3zpaPDJUy6ihOBIj
+         1YtpfR5vVMm1DDhD4hyUg+bh4OgSnrSmr1euke08tjjCTMIcWPINAmVa53N39tfQLAJd
+         RmAf2IpIsZHSBFK9Vx2D5nQswq1m5n10r2r9klhB/IRETNAkPWZrluZgdMeRfNKJTG1m
+         tR2HdQHgWNnHwQAUROp9xP09eosu9wHCrD0HhxYvc6u+1m1hpM5cPtEOTdBXCslrBhwW
+         4w+VktdufEOWrlGTMotIPuiSQ0+YITyYsizBf/JbgAC+H+YOoAEg9cN3elQ2HGL0CwLd
+         JAEA==
+X-Forwarded-Encrypted: i=1; AJvYcCUkp/SkD3w5bmTMM4ljUiwIQapiIGVZ9bltGkbmPDuhjbHxjo8RLbRBuAQs9dbam5/JKRxeAISv9w==@kvack.org
+X-Gm-Message-State: AOJu0Ywjz2zWvjtNY6kf8nP+o1khgJSyHyr0X+HItx93y1xhVZ9IBh+/
+	gK2Xl9s2qbNaa6hiN8XMi7L7YEIFk4rXpz6yPz/tnbbm5pej0viAztog2wvjCV1nmf2U5eXR9dx
+	9pVHhp0LUZespBRCn1/t2wLdYiUWyNxZeU4MD
+X-Gm-Gg: ASbGncsTgvAE4Yd12qHTjn2/44EmB7c3tLm61ShIIFM1M5iHGvZjQnsAiLaWxeQQ5RH
+	vsI4EwVDANZOmhcEBFPXsRh3FoeuuHGLKyHPcWxTwz0mn8xoZdTE1QTKJ1rFKjkdmpMvXR2vQoa
+	nRDiPErTEjWWjan4i7CpDFAUv4E7h5HmSYX6BdsV9x57CO9a20D/8yuF1+sXphUFv8U7Y3BX9s/
+	Vz53FohTMtlBY9ty0Z2+yPLPdkqJywV+FYJkygsTqImicY35Vk2752TSdBHw0Za+dziJqzeLA7L
+	JYF3L2cNGs9Hawx24xNpl2taqw==
+X-Google-Smtp-Source: AGHT+IEDeQcH9/cmzvxp/cnplp8sqsKYB9Imynqz0W/6Icoa1vEMhVJTFtyjOb1zgaJdMSz9KZMeBG8x7XunTdy8Nx0=
+X-Received: by 2002:a17:902:e888:b0:240:280a:5443 with SMTP id
+ d9443c01a7336-2462ee5d589mr55989045ad.3.1756035527288; Sun, 24 Aug 2025
+ 04:38:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Queue-Id: 01D0F40004
-X-Stat-Signature: cxgtsc96z4gknwjstwms6p9aag98mzba
+References: <20250811-align-min-allocator-v2-0-3386cc94f4fc@google.com> <DC38NDRET9NB.31UDI8FHB7WAY@kernel.org>
+In-Reply-To: <DC38NDRET9NB.31UDI8FHB7WAY@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 24 Aug 2025 13:38:34 +0200
+X-Gm-Features: Ac12FXwORJcKw5BWVPRfeLB42EncV6m0mvAs8xiRT-uFV3AfSlGlkdcdd5BVvsQ
+Message-ID: <CANiq72k0FSBTB2yOjiAy9PnAuyM=-PHxL3uQQ_Cv+zwswnr_bA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] Take ARCH_KMALLOC_MINALIGN into account for
+ build-time XArray check
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Matthew Wilcox <willy@infradead.org>, Tamir Duberstein <tamird@gmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 8D0FA180008
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756033182-622754
-X-HE-Meta: U2FsdGVkX18XMCdgnp2vLw/uFKq8g3gDh08OKHzNXcIzyYkHuUBeka+yTRpUuB6f3Z2JrvX+ypiJKMYRRaz0JwkxgY33c4gltX86CPjetoVXVh4zYJcQEzplqPjlwYK/NwXWN8SaEk0szWBAzwaVsW15y5CPdCpSPasfOsZqaIjE7AaowVDl1TwAOCFiMcFebY61Xom7ZlozQNqRazRkuTOPpgs64jmx4sQkIHZ1yl/05Ggfkmyy7Iuz83rTtpy/oBYt/T4FhOiBp4tMmuGeesS973dOR/2ko7tolhhYMLiIAkBIs0sc0So+3xF+bA2YTfhCYqk5VqBo+XdIyPeDGRiPdOlazj2BViVNp9hhGzzUfhT82xg4adrhP5igIHQEGfae+7UEvrNdy6XiniHJBNqNXivhMByLpHv8PKeHfB1F3yyPPJbaEdlReN60mIhNTSTIZ8x6pypQyIw+R/cXWeLpfEWDOhyTR40zzWMpiJdimdBJWaSklvICbdFRF+56O0P590i8sRMkhI1VlcKPIPm6nvhyN7bamgnR6lgVhBtGarKbJNDUfK8t4UVowjdmTPttTAo545RDoOfqJL3224uwvBXpQk/9PcsrPOgdPoO1h7HkroJw8TpF2VZT4RM12MsIJCqsOdbJHvmRfGKTvfD+MsFNMMFpIIL3IUZeyBtzogy7hCubqQZ4PXAIlfgHYp4nU8taITXOu77pRrxA4+5KZ6SaX15cuRO/f9FGbY1Bf6vQIHolq/lOP/tTMZAy05E5cn/HN3BYQQSXe/55YL/ewPCI/m2NwewcmI/ppuHlssXuNQx3YrnX5KlhN4wRME0258+HTauS9304zE9wMHq0sDT38tDKlOhaMMMaI5z7UFmZe+syhHqh/sCUG8jYSQy/wMvMwOxmxkDsRvGySRKXKtSgMqWccOhKNsb6//U=
+X-Stat-Signature: 6xo3n1bd3r5yiy6xra7tkryybtnnpw8r
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1756035528-465350
+X-HE-Meta: U2FsdGVkX18gookL3iQUbpQm1Z9EJ9RG2CCdDRhNsGelz4XptvVXgBz4JxuajypBlOc9CNZtXuyjZEKkXViLncAKiqXHBqy/nlfkK0CTG5//BpIhtRne8/hg4P0TPN4o2dCsEn7GgG1WVJE2zS/iyBxuoYzzN0Q71Xublb1Y891ovyr0qdQUcARImtf2jOT74Vkd0nAbZSFY3vrx73hgwKdqLlXI+4UtLJJ0igT4+cUIPW8xXvVGQQz0pPn00hi74hSWFrYfEn3MY72sRVRFrtHfNfa0hOXwJw/MX3YyhjAHbgx8LTQdRArUBk/bqDkupOwdawuhLgzCym5WwOfQDxHNyfnKYqrp1HEjnwv6AV7T+/4GH1V4/nJvD/Sw6AnzjXhIZaqDZ0sLS7Dr24p8MrBtmvl6sdo8S6XpVkiQPPapwbunNDv5xuUfYwhkF5IGbZpCRdM2Z2NU2Yd52ynx66Ab8ngKxpZC/UL43LxmaTDRVAosxSbfzGORK5JWTclAsss461hxKGzRZJHot7ncn0gFBsO7h4MWbrNtPIX3iEBBrfZCicTOdDfulBcW3eAy97vY/leOPMYU/f3Cc8nZZ5pasFp8q5qUkze0Rg6sFvLcsqaEdd6N/Pym/aTFEjXztVivS7iJhrNyrjhLpetMlf9F39f6g3gp+dLP0fcslHYFPvWpcuh+OzMrMWxXSdM1UDqwwyv4Y9JerkMmr3oWaNuqxW4zrsCqtmIvkzh5gxfGIcigWqdNb8k3IhpNfrf44/U25uT1OfpcdicpKMwcbBGnvAq8t6SuLrbmMvPuJAJMaO7eDiz0y43FKWBK6z5vBhx9bTSYfcpmvsuMFsdtX4SIjiXhYBPGPbjH/kwF+qbmmsWzId1oOcwfu9vP9jDK6zPT7YAAyevBYMTpI/R8ZhtpdCR5BiC3YeUf6ki5pWguPFrCf6oDm9yV/QGBA/LaID95oGvjZi/4qaoGMV1
+ l/FITvt1
+ pe39yTkrtOPQ2FHec7nX+uT37BSph9bn2mjiQj0vRuz8MVG98Ia0y74oCkc0tq3ncrXrYsMlPi4mS8UCfXzVIUVhg8Ce3KXd37ekfknx0+Kt+VQzUwo/Z5NkRnhxoNNg+uNUCMvi3FwydEmaVBpyviXGQwjB6e9i15cGV3uMmmUQSh9SzalSiTUr0jjO69DERuQb1AeT5CAkPcchsCWf7Zd3t/3QLUxi/WbYXKgpLZfvJGYUlMlZqgCNHLYgxJD5KBBjb1POiApsPAt4LEoLJl+CunIHOOIPOhvQ2ph08BY9w5tsP7Bm8X9cxJWw4gMmU2XyIjfh/obikHtE5UTjK+mPlo1UtvWYi9y5y16zMUCruCnjotqH1TfJdfbzmkFcUN+wMXGeswqjVKBvC/gRx3XpiIbsWB5IbAm1mvnnvuKJGlelP4INx1i9XLCbrS9uxkhGca2YXFrzA+IhHdijasRTuEMA6nc56qTPOWRkQCXVZU2ZegOskRdQMt0mSphN25/+4yMh4woDuL9LCG55DfXT9xg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,87 +124,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-head:   fad61af0eb8692a522c1f75241e36d405249cebd
-commit: 9c8b46a2965cff89ee6d5025ab95a83ff1d59826 [237/249] mm/damon/paddr: support addr_unit for DAMOS_PAGEOUT
-config: i386-randconfig-052-20250824 (https://download.01.org/0day-ci/archive/20250824/202508241831.EKwdwXZL-lkp@intel.com/config)
-compiler: gcc-11 (Debian 11.3.0-12) 11.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250824/202508241831.EKwdwXZL-lkp@intel.com/reproduce)
+On Fri, Aug 15, 2025 at 9:12=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> diff --cc rust/kernel/alloc.rs
+> index b39c279236f5,907301334d8c..000000000000
+> --- a/rust/kernel/alloc.rs
+> +++ b/rust/kernel/alloc.rs
+> @@@ -164,7 -137,15 +164,15 @@@ impl NumaNode
+>   /// - Implementers must ensure that all trait functions abide by the gu=
+arantees documented in the
+>   ///   `# Guarantees` sections.
+>   pub unsafe trait Allocator {
+> +     /// The minimum alignment satisfied by all allocations from this al=
+locator.
+> +     ///
+> +     /// # Guarantees
+> +     ///
+> +     /// Any pointer allocated by this allocator is guaranteed to be ali=
+gned to `MIN_ALIGN` even if
+> +     /// the requested layout has a smaller alignment.
+> +     const MIN_ALIGN: usize;
+> +
+>  -    /// Allocate memory based on `layout` and `flags`.
+>  +    /// Allocate memory based on `layout`, `flags` and `nid`.
+>       ///
+>       /// On success, returns a buffer represented as `NonNull<[u8]>` tha=
+t satisfies the layout
+>       /// constraints (i.e. minimum size and alignment as specified by `l=
+ayout`).
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508241831.EKwdwXZL-lkp@intel.com/
+`MIN_ALIGN` is missing in `Cmalloc` -- from `rusttest`:
 
-All errors (new ones prefixed by >>):
+     error[E0046]: not all trait items implemented, missing: `MIN_ALIGN`
+       --> rust/kernel/alloc/allocator_test.rs:48:1
+        |
+    48  | unsafe impl Allocator for Cmalloc {
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ missing `MIN_ALIGN` in
+implementation
+        |
+       ::: rust/kernel/alloc.rs:173:5
+        |
+    173 |     const MIN_ALIGN: usize;
+        |     ---------------------- `MIN_ALIGN` from trait
 
-   ld: mm/damon/paddr.o: in function `damon_pa_pageout':
->> mm/damon/paddr.c:193: undefined reference to `__udivdi3'
+i.e. similar to the other one.
 
-
-vim +193 mm/damon/paddr.c
-
-   137	
-   138	static unsigned long damon_pa_pageout(struct damon_region *r,
-   139			unsigned long addr_unit, struct damos *s,
-   140			unsigned long *sz_filter_passed)
-   141	{
-   142		phys_addr_t addr, applied;
-   143		LIST_HEAD(folio_list);
-   144		bool install_young_filter = true;
-   145		struct damos_filter *filter;
-   146		struct folio *folio;
-   147	
-   148		/* check access in page level again by default */
-   149		damos_for_each_ops_filter(filter, s) {
-   150			if (filter->type == DAMOS_FILTER_TYPE_YOUNG) {
-   151				install_young_filter = false;
-   152				break;
-   153			}
-   154		}
-   155		if (install_young_filter) {
-   156			filter = damos_new_filter(
-   157					DAMOS_FILTER_TYPE_YOUNG, true, false);
-   158			if (!filter)
-   159				return 0;
-   160			damos_add_filter(s, filter);
-   161		}
-   162	
-   163		addr = damon_pa_phys_addr(r->ar.start, addr_unit);
-   164		while (addr < damon_pa_phys_addr(r->ar.end, addr_unit)) {
-   165			folio = damon_get_folio(PHYS_PFN(addr));
-   166			if (damon_pa_invalid_damos_folio(folio, s)) {
-   167				addr += PAGE_SIZE;
-   168				continue;
-   169			}
-   170	
-   171			if (damos_pa_filter_out(s, folio))
-   172				goto put_folio;
-   173			else
-   174				*sz_filter_passed += folio_size(folio) / addr_unit;
-   175	
-   176			folio_clear_referenced(folio);
-   177			folio_test_clear_young(folio);
-   178			if (!folio_isolate_lru(folio))
-   179				goto put_folio;
-   180			if (folio_test_unevictable(folio))
-   181				folio_putback_lru(folio);
-   182			else
-   183				list_add(&folio->lru, &folio_list);
-   184	put_folio:
-   185			addr += folio_size(folio);
-   186			folio_put(folio);
-   187		}
-   188		if (install_young_filter)
-   189			damos_destroy_filter(filter);
-   190		applied = reclaim_pages(&folio_list);
-   191		cond_resched();
-   192		s->last_applied = folio;
- > 193		return applied * PAGE_SIZE / addr_unit;
-   194	}
-   195	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Cheers,
+Miguel
 
