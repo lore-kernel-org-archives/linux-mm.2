@@ -4,111 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0912CA0FE8
-	for <linux-mm@archiver.kernel.org>; Sun, 24 Aug 2025 13:24:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C475CA0EEB
+	for <linux-mm@archiver.kernel.org>; Sun, 24 Aug 2025 13:29:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0CA4E8E0009; Sun, 24 Aug 2025 09:24:55 -0400 (EDT)
+	id 3E1C18E000A; Sun, 24 Aug 2025 09:29:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07B928E0001; Sun, 24 Aug 2025 09:24:55 -0400 (EDT)
+	id 3B9708E0001; Sun, 24 Aug 2025 09:29:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED31A8E0009; Sun, 24 Aug 2025 09:24:54 -0400 (EDT)
+	id 2CEDD8E000A; Sun, 24 Aug 2025 09:29:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D8B768E0001
-	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 09:24:54 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 84EF81D3192
-	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 13:24:54 +0000 (UTC)
-X-FDA: 83811721308.15.EB6C91F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C680F18000A
-	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 13:24:52 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SquWihWK;
-	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D00D8E0001
+	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 09:29:16 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 983CD1CF791
+	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 13:29:15 +0000 (UTC)
+X-FDA: 83811732270.26.BB6B539
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 0F0EF14000F
+	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 13:29:13 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h3J5NmeT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756041893;
+	s=arc-20220608; t=1756042154;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sTgVSQ/agc49mf+WMVj/m/VVuvPKZX5i68p4dayRd8w=;
-	b=UukvlV3pQseopq2q3IAkd//sDeXWdGOzpeLyKPGzUL2tZQAYkduV0jVP7reFSFgjcLClFF
-	sQR3yS+VE5FYIxYTFOEPNfUf/OrIhAGg2vyBsLgmNh0+4TDhtROkXSKNGB+KfVgQT9cDld
-	OknJZp0l1TCxGYIM5yLWMBhit1EICdQ=
+	bh=Za5HcBGWgH59fgpcQngk4nJcZ1D4Mmel47j+ShPVRrM=;
+	b=V+VNmroBFSalFJg4sToMVWGfOt+wjlg0/hDZwCiPx8tbGPBbKFSHP/jjhrCmoZPvZhuF9q
+	SL8qCGZxc9/Jt9Yc02YTBGZqZxGRUlia+tBOnAN2Mviy2ttiOZxNzwL7DEn/SnbmJCl7Mj
+	HidRAbtFGrjANuaMHybgMbcrsg4ZYEA=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SquWihWK;
-	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756041893; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h3J5NmeT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756042154; a=rsa-sha256;
 	cv=none;
-	b=5U+/LyRXUDoj5qyLhDYtA3mGX3dH+i6atKMT96e49SVO55wRpaYKMZLGZiPS9IBM/AC3Sz
-	iIDJCPG4hjEy54Ay+fefgNMFYIHJ2YbgQNGSMBhp2Ej6W2MBFg8+gKByfNSIa6ex4opDSL
-	yigu7SItsAI0aIXhmRZdplTs9ICgsdo=
+	b=AmJ9FHnNkQaLhZmrz1ah6RbNstJ2zg6ATPVlEpUBGbPh4s4ux3YnHxDdGpvbHkjDWV0lsM
+	HtVV2qW6hreHKMjcwSIXvhGcb9vE7oJeSbe3MgeLNXsnYLvmsNZEFHNF/Oo8fK4O2Uy+xv
+	Xvitc3ljBEo/FiMbwGI5Zo3JEpNGAEc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7D3EC43442;
-	Sun, 24 Aug 2025 13:24:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4638C4CEEB;
-	Sun, 24 Aug 2025 13:24:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 70CC1601DF;
+	Sun, 24 Aug 2025 13:29:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C5B3C4CEEB;
+	Sun, 24 Aug 2025 13:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756041880;
-	bh=ULWSWvx5qOQocuXhhEVwmUdZJ/jQrpo8zzXV1kr+XYk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SquWihWK3f+VpRPVHREvb/KU1Ip2U18TP7N1MuJITOAx4rQrPZH3cvqtkOP5SvK7q
-	 i6NO1TPVUbZk8RWkAk3LTCsFqBTBZ14HIKev8nasvhFuIsLkIUiO3cKzio2Q51II/F
-	 wyed5FtAlddWEWPif7U0YGP0VU7Jz0WnTx8oiBRZXCVwF7SJXztCvl7h61L8oudm/m
-	 ZzJcPQiQ6a3vkdslZGaL+map5bzuxrOH69hNlp4a8gDkADVHKqlXnjP6H9fUKUPAle
-	 G5RP+5YSDJFPCZAOfsIK30ngRx5fl+uNMhMZuFtvohYRU68gjsyw/nUrRlnisE/5CR
-	 1GDLoGVBUCvXA==
-Date: Sun, 24 Aug 2025 16:24:23 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Alexander Potapenko <glider@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Jackman <jackmanb@google.com>,
-	Christoph Lameter <cl@gentwo.org>, Dennis Zhou <dennis@kernel.org>,
-	Dmitry Vyukov <dvyukov@google.com>, dri-devel@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org, iommu@lists.linux.dev,
-	io-uring@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
-	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
-	John Hubbard <jhubbard@nvidia.com>, kasan-dev@googlegroups.com,
-	kvm@vger.kernel.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	linux-arm-kernel@axis.com, linux-arm-kernel@lists.infradead.org,
-	linux-crypto@vger.kernel.org, linux-ide@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mips@vger.kernel.org,
-	linux-mmc@vger.kernel.org, linux-mm@kvack.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Marco Elver <elver@google.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
-	Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
-	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
-	virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
-	wireguard@lists.zx2c4.com, x86@kernel.org, Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH RFC 12/35] mm: limit folio/compound page sizes in
- problematic kernel configs
-Message-ID: <aKsSh0OEjf4GLmIG@kernel.org>
-References: <20250821200701.1329277-1-david@redhat.com>
- <20250821200701.1329277-13-david@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250821200701.1329277-13-david@redhat.com>
-X-Stat-Signature: 3u635bh8qc519bser9fh7bmtophkg5u5
+	s=k20201202; t=1756042153;
+	bh=Za5HcBGWgH59fgpcQngk4nJcZ1D4Mmel47j+ShPVRrM=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=h3J5NmeTAgHwCvms9IKXJOPBaphM0ZJfFYo2OtkdNt4eiIPFT1UGwn3I6sGWkvUot
+	 xnQ9o6aEaaAyXbViHVnhBSgYxvinB7TMlMRQxKdnTSkLnMmRoHmWoan6S9nLbIJdJi
+	 md6kzFhajZgKW608fuoeGZu6ljwvOBgQ3mRL/tnb9TbgDEkzb+EI6qJfMIv7w9jeit
+	 bbyrxtgpboSj0alrAYNkiwHW0VBsPDu82Wc9W+mEzTPSTA24KmNb7qIWNgLG93YvAc
+	 EnItGxPiMPtC5eglRnYW0UwTT9O7n6Gu3MQ+5MKUohFmd5DOEX6HvCAVolIdwpJM1K
+	 zuIm0SPA+QuSA==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 24 Aug 2025 15:29:07 +0200
+Message-Id: <DCAOZLKAFK8Y.43MJ1XPUJ1OG@kernel.org>
+Subject: Re: [PATCH] rust: alloc: add missing trait item MIN_ALIGN to
+ Cmalloc
+Cc: <lorenzo.stoakes@oracle.com>, <vbabka@suse.cz>,
+ <Liam.Howlett@oracle.com>, <urezki@gmail.com>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
+ <linux-mm@kvack.org>, "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250824120656.208978-1-dakr@kernel.org>
+ <CAH5fLgjkqcyzoZD7PP2i4g4r2uqpdbDKVW5hLfm6c9ysbxkPuw@mail.gmail.com>
+ <DCAOH44U57K3.2CVDYWF8MJBWL@kernel.org>
+ <DCAOREAIJOR9.2N5JW0SC9YT93@kernel.org>
+In-Reply-To: <DCAOREAIJOR9.2N5JW0SC9YT93@kernel.org>
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0F0EF14000F
+X-Stat-Signature: swi1sbnea9iwj6fjxsziim9ahpqnomjz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C680F18000A
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1756041892-359013
-X-HE-Meta: U2FsdGVkX1/bSabyEmi3Sf36ClVg+2ZXXM3Nj5Ga40A9RKOlkTKvnxNkaBYKECouFNT5RANeeAzY7SvJyKjY7Dsa8D0iyFQC16eH/vusENWIPclyDuHS0tXV62WWze0aZBq866jTIqGleunYtkzWRjhmX0NZi3Wzw3cNkgv3adIgb7vnWvHaDhRa37xaJqDCeXzRjEVGccjFecbOTf9X8grCPqNwt/YbLi1zmGB1rcqtoVbYXwaki4WtC3J2vZqMzDAOq2jeqsN429OI7IAjnI/DY30ADMT3znJQvHC/shdQEI6fwXE79oAwYoSDrkBFo/yztI+IdegsPRjzw+RFglhUl209hYnjMoHaBE8Lh7qaV1v981unNQX4k6XC5W4jfW8tgR1MRzjTpP1tCpoOsJ4c7SMirLeSJFDwL6qo6GPO6ORhJAA1dWnYLoCWGZRxUnoGre4/KHmcoXQeDVavnyc7dTwlhe3YiLzIyeBRzyqaFASp0y4Vom7cBs9ANsBDSmUqlh8gXKcgTZsOn7G6lsiEYPTPhF5YyJ1dxHEuZ0eJLO06MpFGibSFkG6wnsmjb8XDRMVi9PVEN29ZTxAxiSCbt5CbLkz9MsFm2bfwf4XQx8LLPDilUmteREwNloTeCW9tAJsA/UHnPBAkSr+9pCqeb5NetuVLP3DCpn3HiKyRGuzPTHcPVLHEpN0a+sXxZeAJJarCi8YN43KVs7XknVIFrPKkzZ2KnM59kC6DeWCnHVOQ+Rf/6iCWQ7uu+NysZsj+9GCXBfC+gnXx7C/V8VzmZhP4igmo2Qo4TTokt912JX4qbhxMdhpkUymQ1aKf1Gks/tRy+3s7tosXA+3suvP0Fj8HXRRaCGSOsWuJjuwrnv/lH3fOBP3q0gwQmQObG9xS1a3Ow9IvqGdVdnw25L3ztUrz2xRohdzd6xF7kiQFvtS0CkywKcNu481ztWvhSgf16AmSG7pTwY8Gyr4
- cf8i6TwZ
- W0iJB+Z9klgE3VeZPrr/xb5TNn/9IIhM4lYnYhPbh1gJQkG1mvWQnC2adFgshsKYFEWGliYF7wr+IgzeFShTTZ80cWyWVILfwR30pePU7SHyu8aHPFv8/uX6tVqLQiXIDfAFWHZnjKDbXv1U+KKctdcn7ZPh71tix8KgIZpLAsGr08PieRkl4rc4brxV4nq9ElrflJukDdJaN5EXH5gl8zh0yfBhbGogndm5jrl7GBtTvrTUn160wqoqL5zMG0TbRbJ4tyM3mXOvUNwOuKyMDGxqHqDXi6xxvvgFd1LU1D7BngnQfpu02LbvgoN0+jaesfdRSZtO5ZNuG6qI=
+X-HE-Tag: 1756042153-363371
+X-HE-Meta: U2FsdGVkX1/lsYyG8unyhrCnZwowaFz7j0fMXYXyYpo1tTYzwW8Lfk0uCo0oXPLgS9zoFZ2F0D2ON3Ak2hmfKSVAtjUsY9lOFixoDARzpgDWyMcLVm+THZFgexpCtYaGtFnie+mwneIPhIi6NA6+1/S4QulQNy3QChrPX5uii4w6y6udSuhAjVe/mfvJ4Cm0985U/JeznratCyHfW3TyBzDbqrQw9Ol8+c/BNFNB+MrM0ntuFp2p5JPoF79h9vfUuvoZSecAwbv9KluDPLIbOoaUR+7UErrE9x4g7qepSkqo8gc1fSMH0j9HYLTtg55lGR0GN7hYEj5tXtSTqe1HblbZBtuesbGKXD8mInCrEJwpLoRKhTCxwx6tSyjg4OQnFSTMYyxsDLhypIWHSw8wznVZjv0DjBbhYknrkI5OSQjMk3AUhT1lflVTJtx/AieNKIEYw7MqEPL8DXBYwSByc13AHqn5m0DJF1+Fm/sYLDZPkZxiFCu1acvRpLq889TWpxDtP5fjlNXcAGPYuM6OfRVxiewq5QqnY1czgU6fRpImnXL6x/vOw8wpc+aq1R4W9eBhaiXQ0kLSkZ3VKLfFH6FmGoEwevlszEJ6X4YIWtdd0pamEhGiAPuXkaaMkZxPYaHs5OWrGLrPj7EOpGBgC5wfeZ5laXRDYoKdK3VcukolMaGZMhgIJdbLNw1KZY+nAS6c7X6zrqUhAtTIjoCpWDgOftT/Nq07u2Ysvk691XtMixSXVSIDENRCvP0/35mjaV1q2FFq0rxti10R5RSxcSt3qathTC9K95/6Fog6vd7DKP2oG2HjSTItQHCPgYw7NWSAFDcB0mvKwovwHMixNLrR6UaoSMOG375jsI6CjOyir4KWQVVql7tbSPCWip1SqAEokoLqCvhN2Luk2ZVUQKbWMilfGJsiD/zUii6uxB6kpZD/cgL/UUBx2OURJ+z+08sQwlUYPbebInJzJ2H
+ 3RVWlW+C
+ nmPCwyBOVkJbFDlaCEP1zANbG4pQIVWl7Afk9604kJpKPys3rRXqrIpAobCbLSex+9JvfUEtenr2wo+Us2c4yEb2WCrkj+j9tgyW7GQpRpFa7++lrn3jJyrYFeR68eETKSKQIQRDXz7IkONXxW8sFw0RN0mXmYgRc4mqxAHjCY7kFIRsHR1pDDV5ATFHIcXV6zaQyDpcIaVokLhkB+xlIy3hMjZn8GA+CF0FaaT4StzjkmVqkAByv8/MO8DXGT7dsYnwy1Z+LSSw8lyLFkfzhmfxzqjKII4yhWMt2UJm5BVb+3vprPWzSqYPNRrQlGnNJZ10PZVqAxs7sNWW+O2nx4vrU0qsrzQ/nLDjtazrYZEKIUXtvsoG3YwQbBDcoTpN6usH2
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,72 +100,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 21, 2025 at 10:06:38PM +0200, David Hildenbrand wrote:
-> Let's limit the maximum folio size in problematic kernel config where
-> the memmap is allocated per memory section (SPARSEMEM without
-> SPARSEMEM_VMEMMAP) to a single memory section.
-> 
-> Currently, only a single architectures supports ARCH_HAS_GIGANTIC_PAGE
-> but not SPARSEMEM_VMEMMAP: sh.
-> 
-> Fortunately, the biggest hugetlb size sh supports is 64 MiB
-> (HUGETLB_PAGE_SIZE_64MB) and the section size is at least 64 MiB
-> (SECTION_SIZE_BITS == 26), so their use case is not degraded.
-> 
-> As folios and memory sections are naturally aligned to their order-2 size
-> in memory, consequently a single folio can no longer span multiple memory
-> sections on these problematic kernel configs.
-> 
-> nth_page() is no longer required when operating within a single compound
-> page / folio.
-> 
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+On Sun Aug 24, 2025 at 3:18 PM CEST, Danilo Krummrich wrote:
+> In the end, just another argument for getting rid of allocator_test.rs. :=
+)
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Actually, I think it's better to just do it:
 
-> ---
->  include/linux/mm.h | 22 ++++++++++++++++++----
->  1 file changed, 18 insertions(+), 4 deletions(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 77737cbf2216a..48a985e17ef4e 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -2053,11 +2053,25 @@ static inline long folio_nr_pages(const struct folio *folio)
->  	return folio_large_nr_pages(folio);
->  }
->  
-> -/* Only hugetlbfs can allocate folios larger than MAX_ORDER */
-> -#ifdef CONFIG_ARCH_HAS_GIGANTIC_PAGE
-> -#define MAX_FOLIO_ORDER		PUD_ORDER
-> -#else
-> +#if !defined(CONFIG_ARCH_HAS_GIGANTIC_PAGE)
-> +/*
-> + * We don't expect any folios that exceed buddy sizes (and consequently
-> + * memory sections).
-> + */
->  #define MAX_FOLIO_ORDER		MAX_PAGE_ORDER
-> +#elif defined(CONFIG_SPARSEMEM) && !defined(CONFIG_SPARSEMEM_VMEMMAP)
-> +/*
-> + * Only pages within a single memory section are guaranteed to be
-> + * contiguous. By limiting folios to a single memory section, all folio
-> + * pages are guaranteed to be contiguous.
-> + */
-> +#define MAX_FOLIO_ORDER		PFN_SECTION_SHIFT
-> +#else
-> +/*
-> + * There is no real limit on the folio size. We limit them to the maximum we
-> + * currently expect.
-> + */
-> +#define MAX_FOLIO_ORDER		PUD_ORDER
->  #endif
->  
->  #define MAX_FOLIO_NR_PAGES	(1UL << MAX_FOLIO_ORDER)
-> -- 
-> 2.50.1
-> 
+Miguel, mind if I just apply [1] and [2]? (Just recognizing, probably this =
+was
+your intention anyways?)
 
--- 
-Sincerely yours,
-Mike.
+[1] https://lore.kernel.org/rust-for-linux/20250726180750.2735836-1-ojeda@k=
+ernel.org/
+[2] https://lore.kernel.org/rust-for-linux/20250816211900.2731720-1-ojeda@k=
+ernel.org/
 
