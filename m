@@ -4,121 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83654CA0FE7
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 14:48:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB603CA0EFA
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 14:57:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AAEE18E002E; Mon, 25 Aug 2025 10:48:43 -0400 (EDT)
+	id 14C498E002F; Mon, 25 Aug 2025 10:57:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A86648E0001; Mon, 25 Aug 2025 10:48:43 -0400 (EDT)
+	id 124758E0001; Mon, 25 Aug 2025 10:57:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99BD08E002E; Mon, 25 Aug 2025 10:48:43 -0400 (EDT)
+	id 061188E002F; Mon, 25 Aug 2025 10:57:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8226B8E0001
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 10:48:43 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 07F9911585F
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 14:48:43 +0000 (UTC)
-X-FDA: 83815561326.13.6B05588
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4B7368000C
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 14:48:41 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VFGz6IN3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756133321; a=rsa-sha256;
-	cv=none;
-	b=YZEzCIdjsey7OSnKosobMhEGHLgC47bI03+V+Y2PnpakygQ9tMqfvGm1TUfhsCiSKFOG6H
-	tn7sHjAj5Eu8NP1Kcd7O1NPwig41U14PKOclll3H3vfKe/h4uXJpNWK8AoG9IpPgjZgVUq
-	10/mYvhUOOznd/a6xINdmck7N2TSkR0=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VFGz6IN3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id E73F58E0001
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 10:57:34 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 98FA814041F
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 14:57:34 +0000 (UTC)
+X-FDA: 83815583628.09.92884F3
+Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 5AE48180003
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 14:57:31 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=hvi8BJVL;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf24.hostedemail.com: domain of linyongting@bytedance.com designates 209.85.210.196 as permitted sender) smtp.mailfrom=linyongting@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756133321;
+	s=arc-20220608; t=1756133852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LaBi4h9qQ27W+z3VVAxCvJfwUOkIuGF9RWMFwT6gLh0=;
-	b=1b0yWZYq1Dq65klgIZZaru7zYYyVu5KWBXRIMNbSLrLWEj4SJQtcpGY5OhpMWtZaAry3wn
-	4zdHc0JCamFUaAoA5rL2f0W/ZR4M0HgEwoS8ukpwQmnWtEBAepk2VgEd6ptFYa1FajRyPQ
-	r9AFLr3WvxGEIGRvw0+63wfN4ul6Gss=
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-71d60157747so35427847b3.0
-        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 07:48:41 -0700 (PDT)
+	 in-reply-to:references:dkim-signature;
+	bh=VdEVZ5TCp58sTeVk+nfvlA0Ah5Y1WxCmV7eSgrEVDls=;
+	b=5UBXMD2ZvZSB3y/zglKB9GDlq/y5Ll1I2eLJEZZOIkaDTosZyGtP8wIHzWvuGTYrA6Q6lp
+	4ylRvmfI2zdBe5XpYDtoaY2fioNUQaqiKzAmt0TLdoGGbLeb/GCm8e/7Cpi56gO8JcbEa3
+	W+MABwy+9NKdVVRQcm4gQeFV4aYXCG8=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=hvi8BJVL;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf24.hostedemail.com: domain of linyongting@bytedance.com designates 209.85.210.196 as permitted sender) smtp.mailfrom=linyongting@bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756133852; a=rsa-sha256;
+	cv=none;
+	b=7tjYr6B/SrXZnO45j5JrN18/KaOERvfA94p4mqDcCKXO92Id/z0Qp54q5Qfrv4vVD9WiUc
+	Fou8bTqf7r8BbpsAulo3EbLj4ZZmV4r+j6xrx4RrkxYP90i0dT1OrCagAN5Z5ZXhK61+OQ
+	zobS+tYMkGIGY+JOC4x9iVAWnT53PKs=
+Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-771e15ce64eso794118b3a.0
+        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 07:57:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756133320; x=1756738120; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LaBi4h9qQ27W+z3VVAxCvJfwUOkIuGF9RWMFwT6gLh0=;
-        b=VFGz6IN3KD6O15WAxT53yFHgT5FxtTB3oAjh/yHK11QDBF5fwY0msketOgCDUMa0Am
-         KMcWdTTZ6cYI1LXhw13CPCS3vl3Y2aTa8gQ/XoGzgnZP7lAjRp4DwlrPn6VBPWlA8VRN
-         XbTMki3p2Qne6e1CmEaOBlMn+tZkb5OikalWdpYI5io0mVGefMD8XV/Ds2yqIqjgHhni
-         PPyskzOBm9ss6piYL3mz5XU99OADQEaXmiwJ7ucBChWozqwFYUJ6ajsNGzoJWV25uudk
-         MxRlhMmi5STKG0QvbtJHx/NgjndyW5yUcTKKF/zkBiQjVQq8EvbIhtv7QV+rSw3Cx7z1
-         LtBg==
+        d=bytedance.com; s=google; t=1756133850; x=1756738650; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VdEVZ5TCp58sTeVk+nfvlA0Ah5Y1WxCmV7eSgrEVDls=;
+        b=hvi8BJVL0bhLOXk2tvZY7DO9xDXyNPuAmqvlfUqVmmIrxW7zWkcct70i2x9oQtToA+
+         IRQvz+JBUTkltBbw5CkXtvaaGFfStFfUD1R8wZKzTlymzmd0iHlzT59iX3jbgii+QOOQ
+         Yz5swy3gaKCu8tgEppygKdLecBslhzVt8i2dM5dRPhapZQmPQM2GT/MWk+DXKSZ958q1
+         l3MnFIl3LAzqAJvTcoluR5pPZjv2ebfS0trZRzisxEAWV6jx4hQcpIxBP+YWxXno8Jo1
+         zoLs5aC5EOVwBpIifD72ql48XLeoWnWYjmq/ZCIwHORUGmGCVxNRCa6kNmKwPGOdrAHT
+         I0IQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756133320; x=1756738120;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LaBi4h9qQ27W+z3VVAxCvJfwUOkIuGF9RWMFwT6gLh0=;
-        b=oZlY1vuxRoH90kEQde7xPYVyzmSqJDTG1MMar2rWgOaE9L4uqeU0NVNv1ypkDUEQkH
-         eaAAzdq7/MWapiTBc1Jz0b+EpX7pTrgEFw7n5Nv6OdNAK5hNoc5XVSStQJj2v3t9/n7c
-         oiis3588Cc4H0r/IjeKfwaTS9n6dv6b4yuH6xhbsOUxe+f5/el+p4zyeB3iC6xyLZ8no
-         hU4k+SnOGKq6/HCY5BGEXfmmNk5wNy4ekNdOqksLU+ZOHp8A1rlvlVtwpwUE3cVJ9ga1
-         Z+g/fZ1ckejxf5d9TLcvbelVzP+V/0dokdBpkdqOTSe+AtNpABsmzW90ftCGEnQKvM+I
-         /yxw==
-X-Forwarded-Encrypted: i=1; AJvYcCWz+QlETufzIszXN/RR7eXrQLbWcAcrQBs1JyBJy6UewG7og5yyTaiQGTNkbmtm1U8MKHK4HYdvhA==@kvack.org
-X-Gm-Message-State: AOJu0YxITCHZboyR7/mSsamMUbYy7M7+Qt3uDZEsftK8Y3N6wU3JrHLd
-	STJRog3QfqLcuB6B859wV6Vs4h6bLt+T1ZP5vebxAnHN3HANZwgoiuJ4
-X-Gm-Gg: ASbGnctjL19p7lCJqcn5U3lJU1S3POUYZNoPHK5Q1vwjWTDBBG2tDas3DIWmzZgqSIC
-	JSkYwiwCkh1WOUkS27i2nRtq/x0XQa/aVe8r3qdP7ZbU+MveHvV3SyGxa5d//SQw+a/4sChTLo5
-	th0S4iLqjTp7RqiEw0WsGWj3cBT261YJr+GEkx0ep7SII85uZ+wAf68PH7R8q6Tw6N3F+keIx84
-	ZUfRCBKXxEQyYNRGCnJliJeclz9dCSpHX/qAQh09VQNMkg6cvtEGm8is1Go0U8k13O9du1GFs8p
-	8a9ljW0yBbRs1tUZJMXRjOIqsNIN/zbxegOsfulCzey/pmLXZ+qSC21bygD0c5s9WBhqoyZBTZo
-	ELAJ4OhF/MrT0pcW+Cah+kbJHSIPL8pVOzJsq2A7PFls/AowZedj/Zg==
-X-Google-Smtp-Source: AGHT+IFX6t2g2RWBiaV9FhXCN/YWOlqlLXpi8FKYaFoeKCWyWmCmS3h7Sg/R2hd57jDnYX+t3o6YZQ==
-X-Received: by 2002:a05:690c:a87:b0:720:378:bed6 with SMTP id 00721157ae682-7200378d942mr77175157b3.41.1756133320165;
-        Mon, 25 Aug 2025 07:48:40 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:43::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-71ff173633esm17768947b3.27.2025.08.25.07.48.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Aug 2025 07:48:39 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Kuan-Wei Chiu <visitorckw@gmail.com>
-Cc: vbabka@suse.cz,
+        d=1e100.net; s=20230601; t=1756133850; x=1756738650;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VdEVZ5TCp58sTeVk+nfvlA0Ah5Y1WxCmV7eSgrEVDls=;
+        b=qQ14tk+sEfP90alV6hvGHptALYHgBPJPLWLzdPRwT3uq2JHT5v8ff6qkIhAf3gUOWq
+         VdrHCUc2NyZ007/WA8M0wR3VMPjCUXlXB7DteZORvz1jIHjArVR5/a8P6BX+qgIAMQZB
+         TCo+FjchpIuOi61v3TXD+7Z4iWFxt52fXOJqvbWRGgkx4E1/AQGSA7loStpy98eMJ435
+         Uj9MJYAMHMg7oSu46HdMbejgvjTC+l7WiL4N3ywqifTdWZckIJqf1PSZivk9SrrgYkxL
+         iNCuSSnWFI9QqRaK07vnJYeIOEd6amzro++YvwtEIGYgmeCkCJuukx4AGMV0nghvfGT5
+         JhDw==
+X-Forwarded-Encrypted: i=1; AJvYcCU/VIHpvDWHS/07pr+QRAxj9Ijchtya9j+zW6qhep6XczZowTPJB4M2DOACs8F9bXp3iDWR0p3VRQ==@kvack.org
+X-Gm-Message-State: AOJu0YwI9Rs6Lkfh5TWr6G+LWt8wcwnYDgldwWx30ySb02E4ImdrVVFy
+	fdrTuMD/EZv6wc5Ob3GYciEOAEYiDO/BmAx3EJ+bVuVqYM+1hGBHvZsoMulmP882Esw=
+X-Gm-Gg: ASbGnctJInlbrl3I7An1D3uIK5LFK7whAZ8jHcv9clF3Naoe4YA1D1ulhidIyLCdwoP
+	ggMunIxngHF5teSh/zdnSyaTT6v4pep3PNh9BE8eS42jbiyzRilIfeI/LjBPbqpai5ejx4ecP+m
+	PPQwoG2/8tLvrXehylMz1H+s6gKxdyM4Z725WrkaMiR9Kuw6Vn49usgPL4Hn8rwhn5Pv751ygmd
+	1RbRcPVL4uWxw0TkoJJ70RsvurDeVtd6FRgedN+FlVFd0w7EusOMIRgnyJ2SXWCLN7vC9Y55l/0
+	3dJGF/oZSp+hV2VRhPhjv4lw3JJHmjt6mI4+XbhovKPqqLP3dnWTNZ970MqyESSY/fAGo1ikPgf
+	jZ1fUiR2JzGAzVhNXVsfEK1mwmxrdMtNZ8vSNz+ESEu/aPj3TgI3oJsVw2r/Y
+X-Google-Smtp-Source: AGHT+IENPQBoFqdndLCJHhCszx3PtbFlasr7HlxuUT0VwFZeQm4kkp41cyvWYH6QXY7aP4DPdWilzw==
+X-Received: by 2002:a05:6a00:bd92:b0:76e:7aee:35f1 with SMTP id d2e1a72fcca58-7702fc09f00mr14592628b3a.29.1756133849771;
+        Mon, 25 Aug 2025 07:57:29 -0700 (PDT)
+Received: from H3DJ4YJ04F.bytedance.net ([203.208.189.7])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-770401b190asm7803436b3a.74.2025.08.25.07.57.26
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 25 Aug 2025 07:57:29 -0700 (PDT)
+From: Yongting Lin <linyongting@bytedance.com>
+To: anthony.yznaga@oracle.com,
+	khalid@kernel.org,
+	shuah@kernel.org,
+	linyongting@bytedance.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
 	akpm@linux-foundation.org,
-	cl@gentwo.org,
-	rientjes@google.com,
-	roman.gushchin@linux.dev,
-	harry.yoo@oracle.com,
-	glittao@gmail.com,
-	jserv@ccns.ncku.edu.tw,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm/slub: Fix cmp_loc_by_count() to return 0 when counts are equal
-Date: Mon, 25 Aug 2025 07:48:36 -0700
-Message-ID: <20250825144838.4081382-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20250825013419.240278-2-visitorckw@gmail.com>
-References: 
+	linux-mm@kvack.org
+Subject: [PATCH 0/8] Add selftests for mshare
+Date: Mon, 25 Aug 2025 22:57:03 +0800
+Message-Id: <20250825145719.29455-1-linyongting@bytedance.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4B7368000C
-X-Stat-Signature: eu6xdb3ir7azm3xk3skpxf1mm3ygzp9a
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5AE48180003
+X-Stat-Signature: 5zd3noqajsmikmopp5jf7t7pe77331u1
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756133321-870505
-X-HE-Meta: U2FsdGVkX1+Iv7RNZvISs05PqOMdUvjHa8lx1po80Drju1luzDjyEuIKUtJf5tsb9ZBVf88gt3ayJIdbRkl7X0pBwRaMv2tgrUn+Dh1Oj3/pocGrBCKM4HiakacjCEgllAKwL0aoQteycbK73eIcQYlDHwY3YEMgiTu7fnIQ4S8AVckusHl8z4kmgbLm8j9qy7tmrlSWGKEHk0HQOIh6XPWSK0Q7Rx7E52L7jF+cCfxZ3v/93Wk3lEKKKN/ls3Y9J0gLZqGh3S21pHmPyg+WO5pg6dLQZ7ur8g7ZkTXNt5aVrjD7uq6BN+gWnzDVfeCa4BjxZW0gxobQ3z1JcIpSvcepd8eBoFKEWD7oZ0gBUC3nmDXlRRtK1ZmyKr11wnOW+VwA8eo8vNOjKfQm+MqK070a+1XL/d9nj5YC9E9gcQqxgCIYRhwk0DZuWRIwepyU4h1FrJSlCfau7Gf2JqUvLVok9bl5mDm8joN5YpcFsLi41Kk/81iDcZ18pC0YnE2gw3bSgzG06CepgonWJ5mY70e2gf6w9m4q0rmgXBjTHclCoXYp8s6i0r8TJVcdfLvlaXxRmlqH1BGZ10WleYDcPOrwiBFG65R7uBPndUND4pJs7mR1StIbcBwFX3NaIobdGF/iGfgoRGlPR5m+ZmhJo5XR9KZITkTTm2l+Foy9pRU3k4gJPINwBIPz3db3GHxcuJ+KeIMhpHK3NkxgyBf06T2Xen4q77gJwJN5mkKBtYja9cxzlWruSRrSLXPd+r6g/6FZjqn0PIvANUYU9bXb6vtTOoFo/iXuNp8ebzt4RJmKlqCm50WuIRHdcG0RgkLUSmO0/MvZwi+IuweoCpnIxHIVp5wPWINDdMVxfCr4GDTiuFH9M7XcAAHxvpsNv7lEoDCmgj6qoQKnXP7S7v9/AHVsMdpLl2m4l1xd1uL0ZhEEWGKLrd5dVRC0zGABJV3k0AIyewjwUkJ+xwesOLd
- EMp/7hGZ
- FbC2EAsyyLd3fPEYE0XLM7+M0tu3G1fC787mkMjOGdSgaamZV7eBcclSWwnYwumHu3GwR08gTuVzMP4uLUB4GGJEy3kT+hqK+OIh/B1N9xBE5hRpKEA689589vz7SNbwfEPDDBndHsdjwdYsuwX+FGtM7cDvB9j3ekyOREsoLEVO1I3F2pHSRs+ajBw==
+X-HE-Tag: 1756133851-109448
+X-HE-Meta: U2FsdGVkX1803z8F704MqYm+/9AeLHUbt/HSwY8C2t+hfHvG8O44PNxdarJagliuxrmZ8ktewm4hSl9ue2HK4e5tMmxWR/KRZVlTHVJyfvafyFtjWtUN1ixlY5sf6JH8S5Hqf8maT3A3V+B3tF3sB1I1zB/qEijgsfGKvfC9/JL5FJSOtLTQUjT5FwlAz4SuZW6r7aidPjpM2Xnd4BqpFusox8LAkSMYhPteRHLY3WlKtKhKe/H1bbK7+ZCW7JxkSqsSqWfjv86ztbvkKyHSzAqX4zOZQEBL+m4l5JlMazW9tf5yNqxn9QjTPdmFOQESCgdyqciSPulci147f1L3Fr//0TXbRKHMOTsViTFZoSjPvuqeTN5md8tPI6KscvpNB/qiO7SgBBSds0BUWizB/FMDMWBV+M0dsVjK08cq61us/xZIlhKp1hkJFizmV2MdUVHykibhtKFHyOXCEhDK15YPYdGxC2sP5DvlUy1SG0UD8XfcW4lEWjR34l6b4Lg+KdcK0YFVFIPNizVerkiQ3evnYXMJeg4bi/9YElBp+xm2nO/bG0wHyaO+0XRkr0JasO83xiTOaSw54kU6hZyvEYxYBtw8VjCr/17Z/v2/p7Q6zo3D+rFQoDkgT561QWVKlIwJVG5A9PwxeBySWxNTkIMknEGHiKqaxEpTDIjnq6b2IleSPYMqUI3O7dYi+2pVQZf34XI950qFpq32QfMSf5RLYNn7JI/O+AtFrUy8pBqZeoxs0XYftGst2rigNi3xvwlEsEsKWX6kcj4mKDKF+/3GBtQZ3vp1o+MEMvXv+1amdpyohF0Ejc576hjNImvGY1yHLp3kG/smYjjysgaMap4DsLvbPMtFm1DRjxsAzyFhA5pz63e6pqT+OHkIgF7tq4rcj6H7O+IM8lpszyKne3giqBUfjREtnAR/PV5SnkW2kSL5lBH8XkkRJNS+ASxeZK1ssz8jPJjD9JORdOk
+ HbRzYRZd
+ c7QjxZAq83A73U8d3QIBkWYNOp6PXyV6GWQBgGMXbU7o0jxxlMWmbmfptAhmDob4i/K9K3IyLkvm/+1vh68xiALrKVMSSUmh9JCc08V7avK49hyE6euwQb8R0Qp+Mho0essWbi4sxJhmcRxoWv26sWr6KeZ/62FQgBdFUr0k7CC0xtFxGSfTFXqwRLVXHBWXCvHH7jyA9y3OiiynZs/ohsVBLIg94G6Apv5kVUXqDrysoliIkiekWRs7wJvvF0Yb3qiC+HifkkqnLdlQEllHgUsvA3JzrZtl5bhYb5RtSu7Si1uFRYSaFflkeVvuvQz5rinRnqxF0Gc2krLl9yfTaICUE0IHYhV7ES4xjMi5lWtHK/Z0BXohPNA739XAOKKooKbFPEmLdb7NTCLEsZUy/mvzC+EYrOcsgBClJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,61 +120,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 25 Aug 2025 09:34:18 +0800 Kuan-Wei Chiu <visitorckw@gmail.com> wrote:
+Mshare is a developing feature proposed by Anthony Yznaga and Khalid Aziz
+that enables sharing of PTEs across processes. The V3 patch set has been
+posted for review:
 
-> The comparison function cmp_loc_by_count() used for sorting stack trace
-> locations in debugfs currently returns -1 if a->count > b->count and 1
-> otherwise. This breaks the antisymmetry property required by sort(),
-> because when two counts are equal, both cmp(a, b) and cmp(b, a) return
-> 1.
-> 
-> This can lead to undefined or incorrect ordering results. Fix it by
-> explicitly returning 0 when the counts are equal, ensuring that the
-> comparison function follows the expected mathematical properties.
-> 
-> Fixes: 553c0369b3e1 ("mm/slub: sort debugfs output by frequency of stack traces")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-> ---
->  mm/slub.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 30003763d224..c91b3744adbc 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -7718,8 +7718,9 @@ static int cmp_loc_by_count(const void *a, const void *b, const void *data)
->  
->  	if (loc1->count > loc2->count)
->  		return -1;
-> -	else
-> +	if (loc1->count < loc2->count)
->  		return 1;
-> +	return 0;
->  }
+https://lore.kernel.org/linux-mm/20250820010415.699353-1-anthony.yznaga@oracle.com/
 
-Hello Kuan-Wei,
+This patch set adds selftests to exercise and demonstrate basic
+functionality of mshare.
 
-This is a great catch! I was thinking that in addition to separating out the
-== case, we can also simplify the behavior by just opting to use the
-cmp_int macro, which is defined in the <linux/sort.h> header, which is
-already included in mm/slub.c. For the description, we have:
+The initial tests use open, ioctl, and mmap syscalls to establish a shared
+memory mapping between two processes and verify the expected behavior.
 
- * Return: 1 if the left argument is greater than the right one; 0 if the
- * arguments are equal; -1 if the left argument is less than the right one.
+Additional tests are included to check interoperability with swap and
+Transparent Huge Pages.
 
-So in this case, we can replace the entire code block above with:
+Future work will extend coverage to other use cases such as integration
+with KVM and more advanced scenarios.
 
-return cmp_int(loc2->count, loc1->count);
+This series is intended to be applied on top of mshare V3, which is
+based on mm-new (2025-08-15).
 
-or
+Yongting Lin (8):
+  mshare: Add selftests
+  mshare: selftests: Adding config fragment
+  mshare: selftests: Add some helper function for mshare filesystem
+  mshare: selftests: Add test case shared memory
+  mshare: selftests: Add test case ioctl unmap
+  mshare: selftests: Add some helper functions for reading and
+    controlling cgroup
+  mshare: selftests: Add test case to demostrate the swaping of mshare
+    memory
+  mshare: selftests: Add test case to demostrate that mshare doesn't
+    support THP
 
-return -1 * cmp_int(loc1->count, loc2->count);
+ tools/testing/selftests/mshare/.gitignore |   3 +
+ tools/testing/selftests/mshare/Makefile   |   7 +
+ tools/testing/selftests/mshare/basic.c    | 108 ++++++++++
+ tools/testing/selftests/mshare/config     |   1 +
+ tools/testing/selftests/mshare/memory.c   |  82 +++++++
+ tools/testing/selftests/mshare/util.c     | 251 ++++++++++++++++++++++
+ 6 files changed, 452 insertions(+)
+ create mode 100644 tools/testing/selftests/mshare/.gitignore
+ create mode 100644 tools/testing/selftests/mshare/Makefile
+ create mode 100644 tools/testing/selftests/mshare/basic.c
+ create mode 100644 tools/testing/selftests/mshare/config
+ create mode 100644 tools/testing/selftests/mshare/memory.c
+ create mode 100644 tools/testing/selftests/mshare/util.c
 
-if you prefer to keep the position of loc1 and loc2. I guess we do lose
-some interpretability of what -1 and 1 would refer to here, but I think
-a comment should be able to take care of that.
+-- 
+2.20.1
 
-Please let me know what you think. I hope you have a great day!
-Joshua
 
