@@ -4,181 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0769CA0EFA
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 14:46:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83654CA0FE7
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 14:48:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2467C8E002D; Mon, 25 Aug 2025 10:46:55 -0400 (EDT)
+	id AAEE18E002E; Mon, 25 Aug 2025 10:48:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F6C78E0001; Mon, 25 Aug 2025 10:46:55 -0400 (EDT)
+	id A86648E0001; Mon, 25 Aug 2025 10:48:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0BF188E002D; Mon, 25 Aug 2025 10:46:55 -0400 (EDT)
+	id 99BD08E002E; Mon, 25 Aug 2025 10:48:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EAABF8E0001
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 10:46:54 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8226B8E0001
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 10:48:43 -0400 (EDT)
 Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5828EC042E
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 14:46:54 +0000 (UTC)
-X-FDA: 83815556748.13.9BD680B
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 003651C0013
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 14:46:51 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CQDVxarI;
-	spf=pass (imf18.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756133212; a=rsa-sha256;
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 07F9911585F
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 14:48:43 +0000 (UTC)
+X-FDA: 83815561326.13.6B05588
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4B7368000C
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 14:48:41 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VFGz6IN3;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756133321; a=rsa-sha256;
 	cv=none;
-	b=fG6Kgm7w+OX51vYcpzmDayfkh7ThISdOKbtU6ER5qC//Z4Ik4wj+HG0IKtE5tRbvNVIqJP
-	neF2skG/Z+LQ+rdLjAi8SfDInN5agPdDzAETOQ8NaiMFTYZit8TiP/4ghZaUEv1cijdbVt
-	Jm/dqWZ/VdDI4KGRl8OonpX+73Zk4ZA=
+	b=YZEzCIdjsey7OSnKosobMhEGHLgC47bI03+V+Y2PnpakygQ9tMqfvGm1TUfhsCiSKFOG6H
+	tn7sHjAj5Eu8NP1Kcd7O1NPwig41U14PKOclll3H3vfKe/h4uXJpNWK8AoG9IpPgjZgVUq
+	10/mYvhUOOznd/a6xINdmck7N2TSkR0=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CQDVxarI;
-	spf=pass (imf18.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VFGz6IN3;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756133212;
+	s=arc-20220608; t=1756133321;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KY2wm3NrmZibOSyrPDfEQp80W2axFO0h9jlPQgJYcCQ=;
-	b=Lh7xUTlV1FdkpFXDkXmQcAlr9CkVtnZn8yEc756drUfjjNKWNTHH1Yhd0EkIYzIZNlJzxB
-	IKPojsdqq6n6P9ye1m154DsLX/KtOJE8v2n6tywgk6M9uo4zSxVVqQ2ziSxrqMgbD9I6Lj
-	BWwZQRdoBm07/XXFKsnPustv6ldLtbo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756133211;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=KY2wm3NrmZibOSyrPDfEQp80W2axFO0h9jlPQgJYcCQ=;
-	b=CQDVxarI+RUaIuVrQbYyyOpJS5YMAg+uCJVdvCApxsHEn2oSrGblC4XJRuH10ryx0asboz
-	/hEyuGw4gTtYOqOZlMtUpItBq6aP0jWN3KdVWZzLJlFz0xO6T+/nn8Ab9FnOAZsDjLu3Ij
-	ZjJp3paMdvOviaFnbvcer52Q4PMvdlk=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-32-RkD_3cWoOnat_7ikUBoSJg-1; Mon, 25 Aug 2025 10:46:49 -0400
-X-MC-Unique: RkD_3cWoOnat_7ikUBoSJg-1
-X-Mimecast-MFC-AGG-ID: RkD_3cWoOnat_7ikUBoSJg_1756133209
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3c79f0a5babso607204f8f.0
-        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 07:46:49 -0700 (PDT)
+	bh=LaBi4h9qQ27W+z3VVAxCvJfwUOkIuGF9RWMFwT6gLh0=;
+	b=1b0yWZYq1Dq65klgIZZaru7zYYyVu5KWBXRIMNbSLrLWEj4SJQtcpGY5OhpMWtZaAry3wn
+	4zdHc0JCamFUaAoA5rL2f0W/ZR4M0HgEwoS8ukpwQmnWtEBAepk2VgEd6ptFYa1FajRyPQ
+	r9AFLr3WvxGEIGRvw0+63wfN4ul6Gss=
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-71d60157747so35427847b3.0
+        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 07:48:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756133320; x=1756738120; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LaBi4h9qQ27W+z3VVAxCvJfwUOkIuGF9RWMFwT6gLh0=;
+        b=VFGz6IN3KD6O15WAxT53yFHgT5FxtTB3oAjh/yHK11QDBF5fwY0msketOgCDUMa0Am
+         KMcWdTTZ6cYI1LXhw13CPCS3vl3Y2aTa8gQ/XoGzgnZP7lAjRp4DwlrPn6VBPWlA8VRN
+         XbTMki3p2Qne6e1CmEaOBlMn+tZkb5OikalWdpYI5io0mVGefMD8XV/Ds2yqIqjgHhni
+         PPyskzOBm9ss6piYL3mz5XU99OADQEaXmiwJ7ucBChWozqwFYUJ6ajsNGzoJWV25uudk
+         MxRlhMmi5STKG0QvbtJHx/NgjndyW5yUcTKKF/zkBiQjVQq8EvbIhtv7QV+rSw3Cx7z1
+         LtBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756133208; x=1756738008;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KY2wm3NrmZibOSyrPDfEQp80W2axFO0h9jlPQgJYcCQ=;
-        b=jS/0BIopCYHSAKoAZyRQs7VqLu4Tj9CRle6dm+NSihGzq7/oEM3NTwHGi7OQeIM1mW
-         C1QTqI5b8esFRoxHx8iY5TaeMupOhab+l7Whp8hadVP175K3t+FZ/TSZaMzGphfW66LL
-         jLS8nHXFLbyWtza9E938tFDe37nyYz+8nd+HYrnDm7JVtohbBWfRVFq9tl6ad0Ncg039
-         5Q5AA7pbI1o5ZwQB7zsWCo9Oa/zdlaCQCKsQpUOIgayKvE9cj08oJxNhoIWTkNpK7Hze
-         zREplWWsYu5+cR+CdCPsP1j/a2YdFNb+bXvm06M8etO39V/S0abWeljJSnw2AhsPojWl
-         Q6MQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUT1hBuNO1SF0MPQz3xPyfwrqQMJDlaYls9MrSIoqHSY07IKyCnfLGTrtUrGgqNDeWjfuxzbyAF5w==@kvack.org
-X-Gm-Message-State: AOJu0YxJNZFYRWBn6fRRlcz7ipFWXmtMK87plzE85f0JdmpdpxhcYG+e
-	Fb+vvMd5/7ZKv8rxRlY+1LE/m7dIBvvAS8Cee0z6QSEKPzExZJe3aWKMuZpb6L7/fWDeCSgDlGh
-	9sWQEiYtvhEr1ug3eULKfq3ndLqYMBMqb84kubhUwLOeEv/U5JbZ9
-X-Gm-Gg: ASbGncv4lSXqzst6fBopgSembLOP5f3BgcmdVPPG/d0HFp30VCUfH54dJqnwCYn0l61
-	gh94yetsASDjWWfiUFO+UYwR+tE1Y9G4ao+UhM/EqQ34wv9Dni3nbQxFv0K26VELy2+Zy3G0loQ
-	jyhm1WmH8O+ekPONxz5+TvCgQnFR3jaRxrXsCrxRudNH8RBiqY6aAa3xIv3xllj1XRsas3/PcL+
-	ivbfdMNcHAwe+cKLvNUZdyfypvtQ18FNFeXsKYLJMw9G+s1CncvXZo5q9Rce+qgT1RG0ocqxdO8
-	gjMtbKNIyosdLdeO2foJ4+hXlqd5/u0aaNOJUju1hj6QwDmu3qAY8lJS+KS8wxIxEXk9JwQKAFq
-	qWNIy0wK3TrFYlYI5F7acazBu9TS0fNh1yWHgdp4lhxdGu7Mnulj00EzWB/ZnA0ROCuM=
-X-Received: by 2002:a5d:4283:0:b0:3c6:71c4:15b1 with SMTP id ffacd0b85a97d-3c671c41891mr6599860f8f.37.1756133208519;
-        Mon, 25 Aug 2025 07:46:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFtUFUJHVoJc+4Q00c4CeDXG5Gf93RhjBiSX4FnqG9Oi+HjScx8FQNE8maF1Zwc4YLjexR1iw==
-X-Received: by 2002:a5d:4283:0:b0:3c6:71c4:15b1 with SMTP id ffacd0b85a97d-3c671c41891mr6599840f8f.37.1756133208084;
-        Mon, 25 Aug 2025 07:46:48 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f4f:1300:42f1:98e5:ddf8:3a76? (p200300d82f4f130042f198e5ddf83a76.dip0.t-ipconnect.de. [2003:d8:2f4f:1300:42f1:98e5:ddf8:3a76])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b57487910sm111202325e9.15.2025.08.25.07.46.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Aug 2025 07:46:47 -0700 (PDT)
-Message-ID: <9cb4adf8-94c7-4fa0-8bed-2f9274969b48@redhat.com>
-Date: Mon, 25 Aug 2025 16:46:46 +0200
+        d=1e100.net; s=20230601; t=1756133320; x=1756738120;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LaBi4h9qQ27W+z3VVAxCvJfwUOkIuGF9RWMFwT6gLh0=;
+        b=oZlY1vuxRoH90kEQde7xPYVyzmSqJDTG1MMar2rWgOaE9L4uqeU0NVNv1ypkDUEQkH
+         eaAAzdq7/MWapiTBc1Jz0b+EpX7pTrgEFw7n5Nv6OdNAK5hNoc5XVSStQJj2v3t9/n7c
+         oiis3588Cc4H0r/IjeKfwaTS9n6dv6b4yuH6xhbsOUxe+f5/el+p4zyeB3iC6xyLZ8no
+         hU4k+SnOGKq6/HCY5BGEXfmmNk5wNy4ekNdOqksLU+ZOHp8A1rlvlVtwpwUE3cVJ9ga1
+         Z+g/fZ1ckejxf5d9TLcvbelVzP+V/0dokdBpkdqOTSe+AtNpABsmzW90ftCGEnQKvM+I
+         /yxw==
+X-Forwarded-Encrypted: i=1; AJvYcCWz+QlETufzIszXN/RR7eXrQLbWcAcrQBs1JyBJy6UewG7og5yyTaiQGTNkbmtm1U8MKHK4HYdvhA==@kvack.org
+X-Gm-Message-State: AOJu0YxITCHZboyR7/mSsamMUbYy7M7+Qt3uDZEsftK8Y3N6wU3JrHLd
+	STJRog3QfqLcuB6B859wV6Vs4h6bLt+T1ZP5vebxAnHN3HANZwgoiuJ4
+X-Gm-Gg: ASbGnctjL19p7lCJqcn5U3lJU1S3POUYZNoPHK5Q1vwjWTDBBG2tDas3DIWmzZgqSIC
+	JSkYwiwCkh1WOUkS27i2nRtq/x0XQa/aVe8r3qdP7ZbU+MveHvV3SyGxa5d//SQw+a/4sChTLo5
+	th0S4iLqjTp7RqiEw0WsGWj3cBT261YJr+GEkx0ep7SII85uZ+wAf68PH7R8q6Tw6N3F+keIx84
+	ZUfRCBKXxEQyYNRGCnJliJeclz9dCSpHX/qAQh09VQNMkg6cvtEGm8is1Go0U8k13O9du1GFs8p
+	8a9ljW0yBbRs1tUZJMXRjOIqsNIN/zbxegOsfulCzey/pmLXZ+qSC21bygD0c5s9WBhqoyZBTZo
+	ELAJ4OhF/MrT0pcW+Cah+kbJHSIPL8pVOzJsq2A7PFls/AowZedj/Zg==
+X-Google-Smtp-Source: AGHT+IFX6t2g2RWBiaV9FhXCN/YWOlqlLXpi8FKYaFoeKCWyWmCmS3h7Sg/R2hd57jDnYX+t3o6YZQ==
+X-Received: by 2002:a05:690c:a87:b0:720:378:bed6 with SMTP id 00721157ae682-7200378d942mr77175157b3.41.1756133320165;
+        Mon, 25 Aug 2025 07:48:40 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:43::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-71ff173633esm17768947b3.27.2025.08.25.07.48.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Aug 2025 07:48:39 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Kuan-Wei Chiu <visitorckw@gmail.com>
+Cc: vbabka@suse.cz,
+	akpm@linux-foundation.org,
+	cl@gentwo.org,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
+	harry.yoo@oracle.com,
+	glittao@gmail.com,
+	jserv@ccns.ncku.edu.tw,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm/slub: Fix cmp_loc_by_count() to return 0 when counts are equal
+Date: Mon, 25 Aug 2025 07:48:36 -0700
+Message-ID: <20250825144838.4081382-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250825013419.240278-2-visitorckw@gmail.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 0/1] writeback: add sysfs to config the number of writeback
- contexts
-To: wangyufei <wangyufei@vivo.com>, Andrew Morton
- <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Stephen Rothwell <sfr@canb.auug.org.au>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:MEMORY MANAGEMENT - MISC" <linux-mm@kvack.org>,
- "open list:PAGE CACHE" <linux-fsdevel@vger.kernel.org>
-Cc: kundan.kumar@samsung.com, anuj20.g@samsung.com, hch@lst.de,
- bernd@bsbernd.com, djwong@kernel.org, jack@suse.cz,
- opensource.kernel@vivo.com
-References: <20250825122931.13037-1-wangyufei@vivo.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20250825122931.13037-1-wangyufei@vivo.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 0f9HDizjvLIKHQTcGFh3nBPG18mivujh9oB-g3PSGwM_1756133209
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 003651C0013
-X-Stat-Signature: 58tocat9mzgkhgyr56pwtppooqj6yz1w
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4B7368000C
+X-Stat-Signature: eu6xdb3ir7azm3xk3skpxf1mm3ygzp9a
 X-Rspam-User: 
-X-HE-Tag: 1756133211-171225
-X-HE-Meta: U2FsdGVkX18fkFLBWgX1UHlAjWnb1rG3zLdj2pCbHSOUZIyOHq2tAp8+SNiMs5GTMli2SkP8oyi0KlFPSlIFAFJGk/TyoVOpG2Ei9SwWZvDVvQvB5bb2rAQ5MsVFbNutjs4iskxwG/A2+X7/HTzT5P1ltqoPWE+iXCLt88upySMrJMAbxyUbTjAr2SQOw0hi+hD8MVgXXbnwYr7BF1P8o2iMfL+P5JwcKaJRW7W79uqw/Kq0YKVrFjSzIcEZ7RMaNc8vNYJ3yIm+l+5eC385kbFZH1KGXSpy4+TlB1KD3BLSdu/WU8RS2KS92KQlwFEqn+9hWcxcndSk7lcvOdRpQrbaeAwmAT6pf7diWktFI6e3O5hPeffYix/mfPeZGSSX2+OGE399hEDRhhej3VTrMt7t286mvFk4MrWjvlxqiY0JY5ffBy3FWhTSxo7oYDjqoed4EG3isISCyuNsaVrXLjmJh7pVNaGOk6zx0MXsIxV+rYsB+grtir0lu3kWZ6xG1lSCrhh/le7yJB9XnUMYqb/idqbV3CjHdgxmqhu9/GEpT+MouWGIj4bpPJ9U53LoQFiom0J12WJELYH+jlk6VUZMvAFkcFWEGKwUjNoQLTxxzo+DDjjbbODfBiKfg8+QGIe0MpT8v8dOhH2UgJyDu9weJz7dqgZKax5BTiU+hGuKvFMl3Jla8cgRq1yyhWM/vFsMitdVoJYuXOyupA8jpILv1RXgWeNf1u0+iW9kIsbAO7m1t+cOkJWGqWeq4hG9kEjCE05W3G2NvG4b2QjmrbPkNNVfPj2N8RUV08laCTNNTuOQpGIUO8Be6rUHp8JgJ13f8RpgurkynNe/MCLmH3rpUYrMY/KdiQ2mfOFiIM6zjHo6bCfLdr8hyD7XqcXRb2k9VU4WP61Nez6+VuasungUs1YwkXNyTepLnfQcn+9wNGf61zzWQA6hjf6BPqTAKoscg2YUAcazmnz85Em
- 1kJcGjsj
- czO9D3NIF5JPPND3S8BO2z5DMBCu3XpvjRx3Eed+/shI6rR0=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756133321-870505
+X-HE-Meta: U2FsdGVkX1+Iv7RNZvISs05PqOMdUvjHa8lx1po80Drju1luzDjyEuIKUtJf5tsb9ZBVf88gt3ayJIdbRkl7X0pBwRaMv2tgrUn+Dh1Oj3/pocGrBCKM4HiakacjCEgllAKwL0aoQteycbK73eIcQYlDHwY3YEMgiTu7fnIQ4S8AVckusHl8z4kmgbLm8j9qy7tmrlSWGKEHk0HQOIh6XPWSK0Q7Rx7E52L7jF+cCfxZ3v/93Wk3lEKKKN/ls3Y9J0gLZqGh3S21pHmPyg+WO5pg6dLQZ7ur8g7ZkTXNt5aVrjD7uq6BN+gWnzDVfeCa4BjxZW0gxobQ3z1JcIpSvcepd8eBoFKEWD7oZ0gBUC3nmDXlRRtK1ZmyKr11wnOW+VwA8eo8vNOjKfQm+MqK070a+1XL/d9nj5YC9E9gcQqxgCIYRhwk0DZuWRIwepyU4h1FrJSlCfau7Gf2JqUvLVok9bl5mDm8joN5YpcFsLi41Kk/81iDcZ18pC0YnE2gw3bSgzG06CepgonWJ5mY70e2gf6w9m4q0rmgXBjTHclCoXYp8s6i0r8TJVcdfLvlaXxRmlqH1BGZ10WleYDcPOrwiBFG65R7uBPndUND4pJs7mR1StIbcBwFX3NaIobdGF/iGfgoRGlPR5m+ZmhJo5XR9KZITkTTm2l+Foy9pRU3k4gJPINwBIPz3db3GHxcuJ+KeIMhpHK3NkxgyBf06T2Xen4q77gJwJN5mkKBtYja9cxzlWruSRrSLXPd+r6g/6FZjqn0PIvANUYU9bXb6vtTOoFo/iXuNp8ebzt4RJmKlqCm50WuIRHdcG0RgkLUSmO0/MvZwi+IuweoCpnIxHIVp5wPWINDdMVxfCr4GDTiuFH9M7XcAAHxvpsNv7lEoDCmgj6qoQKnXP7S7v9/AHVsMdpLl2m4l1xd1uL0ZhEEWGKLrd5dVRC0zGABJV3k0AIyewjwUkJ+xwesOLd
+ EMp/7hGZ
+ FbC2EAsyyLd3fPEYE0XLM7+M0tu3G1fC787mkMjOGdSgaamZV7eBcclSWwnYwumHu3GwR08gTuVzMP4uLUB4GGJEy3kT+hqK+OIh/B1N9xBE5hRpKEA689589vz7SNbwfEPDDBndHsdjwdYsuwX+FGtM7cDvB9j3ekyOREsoLEVO1I3F2pHSRs+ajBw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -187,38 +127,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 25.08.25 14:29, wangyufei wrote:
-> Hi everyone,
+On Mon, 25 Aug 2025 09:34:18 +0800 Kuan-Wei Chiu <visitorckw@gmail.com> wrote:
+
+> The comparison function cmp_loc_by_count() used for sorting stack trace
+> locations in debugfs currently returns -1 if a->count > b->count and 1
+> otherwise. This breaks the antisymmetry property required by sort(),
+> because when two counts are equal, both cmp(a, b) and cmp(b, a) return
+> 1.
 > 
-> We've been interested in this patch about parallelizing writeback [1]
-> and have been following its discussion and development. Our testing in
-> several application scenarios on mobile devices has shown significant
-> performance improvements.
+> This can lead to undefined or incorrect ordering results. Fix it by
+> explicitly returning 0 when the counts are equal, ensuring that the
+> comparison function follows the expected mathematical properties.
 > 
-> Currently, we're focusing on how the number of writeback contexts impacts
-> the performance on different filesystems and storage workloads. We noticed
-> the previous discussion about making the number of writeback contexts an
-> opt-in configuration to adapt to different filesystems [2]. Currently, it
-> can only be set via a sysfs interface at system initialization. We'd like
-> to discuss the possibility of supporting dynamic runtime configuration of
-> the number of writeback contexts.
+> Fixes: 553c0369b3e1 ("mm/slub: sort debugfs output by frequency of stack traces")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+> ---
+>  mm/slub.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> We have developed a mechanism that allows the number of writeback contexts
-> to be configured at runtime via a sysfs interface. To configure, use:
-> echo <nr_wb_ctx> > /sys/class/bdi/<dev>/nwritebacks.
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 30003763d224..c91b3744adbc 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -7718,8 +7718,9 @@ static int cmp_loc_by_count(const void *a, const void *b, const void *data)
+>  
+>  	if (loc1->count > loc2->count)
+>  		return -1;
+> -	else
+> +	if (loc1->count < loc2->count)
+>  		return 1;
+> +	return 0;
+>  }
 
-What's the target use case for updating it dynamically?
+Hello Kuan-Wei,
 
-If it's mostly for debugging/testing (find out what works, what 
-doesn't), it might better go into debugfs or just carried out of tree.
+This is a great catch! I was thinking that in addition to separating out the
+== case, we can also simplify the behavior by just opting to use the
+cmp_int macro, which is defined in the <linux/sort.h> header, which is
+already included in mm/slub.c. For the description, we have:
 
-If it's about setting sane default based on specific filesystems, maybe 
-it could be optimized from within the kernel, without the need to expose 
-this to an admin?
+ * Return: 1 if the left argument is greater than the right one; 0 if the
+ * arguments are equal; -1 if the left argument is less than the right one.
 
--- 
-Cheers
+So in this case, we can replace the entire code block above with:
 
-David / dhildenb
+return cmp_int(loc2->count, loc1->count);
 
+or
+
+return -1 * cmp_int(loc1->count, loc2->count);
+
+if you prefer to keep the position of loc1 and loc2. I guess we do lose
+some interpretability of what -1 and 1 would refer to here, but I think
+a comment should be able to take care of that.
+
+Please let me know what you think. I hope you have a great day!
+Joshua
 
