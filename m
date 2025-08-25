@@ -4,109 +4,197 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDBAACA0FE1
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 12:30:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06B34CA0FE1
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 12:30:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 246268E001A; Mon, 25 Aug 2025 08:30:20 -0400 (EDT)
+	id 4B6738E001B; Mon, 25 Aug 2025 08:30:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21D578E0001; Mon, 25 Aug 2025 08:30:20 -0400 (EDT)
+	id 4678B8E0001; Mon, 25 Aug 2025 08:30:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15A5E8E001A; Mon, 25 Aug 2025 08:30:20 -0400 (EDT)
+	id 32F418E001B; Mon, 25 Aug 2025 08:30:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 058138E0001
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 08:30:20 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id ACFA91DD7A0
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:30:19 +0000 (UTC)
-X-FDA: 83815212558.02.E52047F
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D9032140009
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:30:17 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=nt46Qorf;
-	spf=pass (imf09.hostedemail.com: domain of 3WFesaAkKCAUfqnhjw3mqlttlqj.htrqnsz2-rrp0fhp.twl@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3WFesaAkKCAUfqnhjw3mqlttlqj.htrqnsz2-rrp0fhp.twl@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756125018;
+	by kanga.kvack.org (Postfix) with ESMTP id 1F83F8E0001
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 08:30:26 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EA1FA1403BB
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:30:25 +0000 (UTC)
+X-FDA: 83815212810.03.21C1131
+Received: from SEYPR02CU001.outbound.protection.outlook.com (mail-koreacentralazon11013033.outbound.protection.outlook.com [40.107.44.33])
+	by imf15.hostedemail.com (Postfix) with ESMTP id C2983A0019
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:30:20 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=vivo.com header.s=selector2 header.b=NG3hDkI0;
+	spf=pass (imf15.hostedemail.com: domain of wangyufei@vivo.com designates 40.107.44.33 as permitted sender) smtp.mailfrom=wangyufei@vivo.com;
+	dmarc=pass (policy=quarantine) header.from=vivo.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756125021;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SLj1YIFjwaRAHRpa3eawEDP1UKRYIus63pdnhlf7p74=;
-	b=4rS/QgPYUDvwlXdI0BrqQODkvixw4b331Hvfa87Y1AGq87IMJNW1XMsgXbIcVym8nRYpr3
-	ULa0FaZoeG3DdQl0kkCHMAMb5Gec7m2NH3RMTzOWRuYH9e62vVHg0sGoHifwQoVebJLfn6
-	g4sI7df/N9ozcAhi3H5j2Ub3RBhlXW8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756125018; a=rsa-sha256;
-	cv=none;
-	b=R8x0mWETy/JS2MF96BTjMct8MndRtAKlLKgEc9ca89mWorrYmaZowKksNQCDFTomtMYmKR
-	FRX67r+czmusBpklaeuucyh1on7mGP+Z3VWGGCuz5cjM+A/EMIqvLM55cULqsAemynBu3Y
-	gCH8cYik9Pz/b6cysAxFRL6O45UzWRY=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=nt46Qorf;
-	spf=pass (imf09.hostedemail.com: domain of 3WFesaAkKCAUfqnhjw3mqlttlqj.htrqnsz2-rrp0fhp.twl@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3WFesaAkKCAUfqnhjw3mqlttlqj.htrqnsz2-rrp0fhp.twl@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3b9edf5b346so1875871f8f.3
-        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 05:30:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756125016; x=1756729816; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=SLj1YIFjwaRAHRpa3eawEDP1UKRYIus63pdnhlf7p74=;
-        b=nt46QorfEGc/aL/y3y1gLtvtiXNKY+r0COgTtWE5OSZ5wirithPtlpCsroJ5Yp47K0
-         W9b4SVaQ2+5vDNHU7bsNc17LZCNSz8ECKQkJDGQ5N5Au8CoXr6wXGmNLf8fl5YDC+eNG
-         xVvLlvxUXqgGTnSnX/2DfwKQcXmCGaDxr/XjPlRaEzi+ZbcP1OLtKH9SoLgHIhjpOYfm
-         MQkXomxKWVYYhRqoGfMgmIc1TJFMtHL0HBdHzkOx5Bv17X4UTMZzkCobQVrJKB9pvCdY
-         tdGe1FWPvUlQKon7B9dwdesSABxMwyK4NoC/qDhnAV7rJokGcHSua1DZGM0yCQT4HWvJ
-         4tCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756125016; x=1756729816;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SLj1YIFjwaRAHRpa3eawEDP1UKRYIus63pdnhlf7p74=;
-        b=IA58fBWUSeed2JJqXoouGR3ZRHahP3gaSM674AnOT2scau0D5rZOtJaC64NfXnJoql
-         XrAlVoPsds8qWwdqDfLMtA/YC8wP+f7lLg/u2WhJ2krWiRDJXgdklyJ6mwL4UvyK2UFf
-         pms1CqOgLA3AJgjit9d4L0GLDG9CuxEcCQgxzhAM+Cafd4cXvN/88VK/ruLzVGse/ipL
-         DkW13P/+IJl8jeRv94cKvqgkWbPwLPj4BWfif80QJxhxS63WX36Tgwg7BGJD1rNAqgQ1
-         zci659qvlunaQo35G4wa79F8/Jz6orikWrvRNJrDVS158hFuQYau2N6iR677UkH75oQz
-         mZeg==
-X-Forwarded-Encrypted: i=1; AJvYcCUFi8Qoye9y741uN/cWQaYi1JWZIjfSbqxyf2cJ3LS7pLKAlazj5CbBMAB8l0srR1gZ7uxnZB7onw==@kvack.org
-X-Gm-Message-State: AOJu0YzHOAw9EgAL20o6vDAeDOKFgk7d1pKRfX1g+lmt3ntiIj13bIeG
-	CIoWBn0iUA946feibhM2qi3P10MYqMG3sUbElsFe5n0295EAS4TXqfEcnxd80vjs8vcNvHCRhw+
-	BKc5J82v25ZJLQW9viA==
-X-Google-Smtp-Source: AGHT+IGfNfFcJqlPPh2CO3TEuFlkWXy0Jp7NPDl4lcwbEkAaO8Ya/l16lBvI3Ir5wd+v5zFUtMC7R0Fb1fNxLXs=
-X-Received: from wrbeh5.prod.google.com ([2002:a05:6000:4105:b0:3c9:38ca:2c34])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a5d:5887:0:b0:3b7:78c8:9392 with SMTP id ffacd0b85a97d-3c5daa2b898mr7662572f8f.19.1756125016321;
- Mon, 25 Aug 2025 05:30:16 -0700 (PDT)
-Date: Mon, 25 Aug 2025 12:30:15 +0000
-In-Reply-To: <5ssx3vakl3enjeaygpxfqtb26ufehwfjvcwqfna4xbhc645xpj@lzuvaf3my3f6>
-Mime-Version: 1.0
-References: <20250819-maple-tree-v2-0-229b48657bab@google.com>
- <20250819-maple-tree-v2-5-229b48657bab@google.com> <DC6DQKE6LVNQ.3BBD8WF8XGROO@kernel.org>
- <5ssx3vakl3enjeaygpxfqtb26ufehwfjvcwqfna4xbhc645xpj@lzuvaf3my3f6>
-Message-ID: <aKxXV5BgpW9Gzw-v@google.com>
-Subject: Re: [PATCH v2 5/5] rust: maple_tree: add MAINTAINERS entry
-From: Alice Ryhl <aliceryhl@google.com>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Ballance <andrewjballance@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	maple-tree@lists.infradead.org, rust-for-linux@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="utf-8"
+	bh=H+UbWGEtSqqFR1xFLWbOVoiHJ4Tx30wQR17QGn8q76E=;
+	b=xkDmWJE1PjOT3loJ1vl1e4pQRuiJ7jaKMz4YLcSdpFGq1W/z2jsRitSczN4JTga1mdSwSK
+	ElqcJI8Oy7elUbgkGnE9dNZpjZaaKoaDrQ9MVWp2DgJ8KRCTj2jE4eGNFsRv4fFxGj2MHC
+	mR2QkvlK2yqCrJ/EvlYiniw2Flq9hHY=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=vivo.com header.s=selector2 header.b=NG3hDkI0;
+	spf=pass (imf15.hostedemail.com: domain of wangyufei@vivo.com designates 40.107.44.33 as permitted sender) smtp.mailfrom=wangyufei@vivo.com;
+	dmarc=pass (policy=quarantine) header.from=vivo.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756125021; a=rsa-sha256;
+	cv=pass;
+	b=Rkw9yStD10wL5h/5YBct+KMPtXsweOYvMwYxLdjM39ddFbqgil3WtRrVbynj8qOFSoiTnf
+	M9OOzrCv3IFI/3tBRpAZUOkyFUssUiCUuIoDkmILtQkgIC7CBcxoMr7DVTQPM95oFm3xvu
+	t2cQXzxOmpsknAaJyfb639vfDj4X0tg=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=b61IuaWGPXDP5VEXRTwuN7TNwmizn+dAxH5vi2jD85C3jmP1aZ37WHFPoN+fHHBI7LipLhi/wqZWPhPSX5F/Il2NPq0AuZp2bGYEfQ38k3B1HoAppGfgPYZ8hyyefv1x9+v81+u1bEQK6h1Mm3mY9kx+F4w40j4T0BOBP2vZX6xM+ihu1rtfD/9okDyIkuHCVY+VLHtBpuoKx/FJoL998RDGPFto/GrY4o+eB9D4FqzKCydl9KayQuq2n7e1H8Xx5Xul1BkujhPCmPr/OwMcpV/1FVfM7UojfDR9Z1IFyDDxlo/uN9Z9kjUIgxXQ6SrhSgH1C3VhcfxEV5kzt4wemw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=H+UbWGEtSqqFR1xFLWbOVoiHJ4Tx30wQR17QGn8q76E=;
+ b=GCBTwMNj4pe+ynSiwKSJd9vM67YSp2q5ubKKtkis0uX2ZK5LoDYid9vqo5Wk6DyxuoMeVXF8tBMGhkPDn7Q9qaoIE+FXZr2O9WIrAnGMfihQZU0SXz8i8Zrk3G5ozvcpCrrrAmlXgys8bctcjstZNSBD+kj4udSZ6ttv5JbsWhiuspYf6PCDaBVISc2NidyBJqWtatZE6K2nhEhbcJ+lHnknsRKekD9b36nJWPpZheSAp2buXR8zfoSolIFjDbKfsds9rn9ta8SyjhIsu3dpc2ZWCguI8tCD3FucXlD/ZLCRE74FTi2JJ1Fams3I8dNwinE4SAYPsnIseYrVvfIR7g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=H+UbWGEtSqqFR1xFLWbOVoiHJ4Tx30wQR17QGn8q76E=;
+ b=NG3hDkI0tMj5Ym8pFm9Bcn0rAvZ9rXZoBGCTsYkrRKYjmqr1v8hpH8E6hVCnB+2+QI/7KDVidv39TrbzLrra900eP0/noYd9g7FurzdjCIkjK0mRDUOeYHGbb+GcQMQlvUCqZ0zeAFdCgGduYUzgIPo3HReuPx+d4rLtGSL3i5u5PCTy3N4B1ZdfAAZz0792ka1tcwJlk1tVFd2M5ZSo4mnjSxKlGOetljonJ4NvlLelTFpjPiQdcMtXhfXOeFC1bHrebUyZSnNKyJtaOexJfb/cF/JsGd9OvUai2JcwKMG60cSV/BLLP7LhwGFmBcW7BXDuv5s6exwVlI+THqUoQA==
+Received: from SE3PR06MB7957.apcprd06.prod.outlook.com (2603:1096:101:2e4::9)
+ by TYZPR06MB6113.apcprd06.prod.outlook.com (2603:1096:400:335::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.21; Mon, 25 Aug
+ 2025 12:30:16 +0000
+Received: from SE3PR06MB7957.apcprd06.prod.outlook.com
+ ([fe80::388b:158a:e14b:79c4]) by SE3PR06MB7957.apcprd06.prod.outlook.com
+ ([fe80::388b:158a:e14b:79c4%4]) with mapi id 15.20.9052.019; Mon, 25 Aug 2025
+ 12:30:16 +0000
+From: wangyufei <wangyufei@vivo.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	wangyufei <wangyufei@vivo.com>,
+	linux-kernel@vger.kernel.org (open list),
+	linux-mm@kvack.org (open list:MEMORY MANAGEMENT - MISC),
+	linux-fsdevel@vger.kernel.org (open list:PAGE CACHE)
+Cc: kundan.kumar@samsung.com,
+	anuj20.g@samsung.com,
+	hch@lst.de,
+	bernd@bsbernd.com,
+	djwong@kernel.org,
+	jack@suse.cz,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	opensource.kernel@vivo.com
+Subject: [RFC 1/1] writeback: add sysfs to config the number of writeback contexts
+Date: Mon, 25 Aug 2025 20:29:30 +0800
+Message-Id: <20250825122931.13037-2-wangyufei@vivo.com>
+X-Mailer: git-send-email 2.39.0
+In-Reply-To: <20250825122931.13037-1-wangyufei@vivo.com>
+References: <20250825122931.13037-1-wangyufei@vivo.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR02CA0099.apcprd02.prod.outlook.com
+ (2603:1096:4:92::15) To SE3PR06MB7957.apcprd06.prod.outlook.com
+ (2603:1096:101:2e4::9)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SE3PR06MB7957:EE_|TYZPR06MB6113:EE_
+X-MS-Office365-Filtering-Correlation-Id: ad1e146f-7adc-47d2-ea6a-08dde3d32512
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|52116014|1800799024|366016|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?t3luDM+Ecgcw4zbeH1itaC0prbhqHhl/G1kSqaaeB5aAINL/Z4LrreSG9dTl?=
+ =?us-ascii?Q?1BRH+KdeddY0d8soUCXOplfsO/6ktnCyXUR5H+ulJcTfiaeX1+nEIvFBn/jJ?=
+ =?us-ascii?Q?9FADZRWccKi6ILO84ZDywdjmVlCLCJggHX6qkg7zBCKnzPg8OJCSgVZW4J41?=
+ =?us-ascii?Q?qs0j8+dWvfrGRpwhyfJ+UimsJZ2vZzjuer0rTf9yuLqQ3SL4qk6yZyYthzYD?=
+ =?us-ascii?Q?qx3hKDrywST4dMCO6F+VYVSeZvbnGPJMy/zsWtjPNRjiWOoJ5ssf1fQEspq7?=
+ =?us-ascii?Q?Ws+2cg9PTplvDHPi7VRyJtcbqUpujUpt8tDRHbrNucEyYCG39iXRnjr1d7HJ?=
+ =?us-ascii?Q?VMvWldrL6clASYu1X48Lbqw5IrUXhGN9kJTBhHj3jVYG+FgsNA/KfYJhBReL?=
+ =?us-ascii?Q?N7gviw1uGo6MIdiQYsweLwQHxnab8Ab768yD9xFEuPiTZGtp0l6ZiEw6Cn5P?=
+ =?us-ascii?Q?pTIUwcHPJzdEhcbnZtjh/yaYX4Xes2kBIQEIV//aNHzzGUsZ8FmQfzMbTsWQ?=
+ =?us-ascii?Q?ajeJR2dh5y52mfv51CHICTGX/9vPVdR3GBcWdd6yUhZbwZmfaIPRkvpfzXMi?=
+ =?us-ascii?Q?IljRSxV3Tay7odaV8cter+egFJ9DlyjDgScz+Choz2W/gLbS2ofMPMpzzzFl?=
+ =?us-ascii?Q?Q9OupFNxESd4wwnK+cYuqwqCyd43Ceuj2i7ejyJ7p5cnzwwayxxLQ5nFSiEz?=
+ =?us-ascii?Q?SlW860CHeZqv5iqahoRrsPsykhBBiMOs50waMvwIrMw8nebGOV5jX5nXpWhC?=
+ =?us-ascii?Q?KLmBLw2mC4QkbFGG+eIc+Wl/OIlR2xNE0xxBVmA3BQV9iO7HmkVMmbaeGxxf?=
+ =?us-ascii?Q?bEPgfv3vlqBjhwtuBxyCO+8KkF95YGubXb81zxRu7uNSqpcCpHZXeDB60JvH?=
+ =?us-ascii?Q?8Y3mWQri5drifrd64QsbeSMW6/yIm2Vgrlbja6RHzyLAdmS3J26/wM9GzPw9?=
+ =?us-ascii?Q?LXAHOhW1Hx2IZZg4xANmjql47B+V6EkTKfEez0cpGMG/hpKy87h3+wfVkH19?=
+ =?us-ascii?Q?Tyq7JrOu5Hv/R77xMvaGOYrDV4b6zqsZsB2zbz2kiy/dUOEXU/WmZ5vRdLYD?=
+ =?us-ascii?Q?BxNaTxCgN5BT1yOmxXsolZuRjoT6Wfw1aLm65XJbhWhRIDWuI0Im7huLDX9W?=
+ =?us-ascii?Q?3ZHTBaVoJp2uKVgTGZ4nJ2FpfFy9Iyqh6+dy3XPW31Qlw48feHgwHLwkS2XP?=
+ =?us-ascii?Q?CgKaw8++mqs75KTJNu/1P1pKzw3XgvvZbsvP3wXmBMAlnuNbFMYM6nBS80VO?=
+ =?us-ascii?Q?ugRWbuh+FG3I8vLvZPt4MJyF5HVuISGQ/JWVqPiPqTujCTmER+/zsFxE/ESr?=
+ =?us-ascii?Q?qxr5rZdvWJJoogmjW+skWE3SMixokZ7djwXSV19DU4prxqa10i93+lMw1FSP?=
+ =?us-ascii?Q?VkTyNMWsSzfH1Zej1yo+1yPUdAON1KCHT5qruQd0j1p/JFKGfZz5wWX6gsoC?=
+ =?us-ascii?Q?tDRljV6XhL2ipfRDJrP4uf7BHGTjocbMHEo07qNAWVkdMNBvciJV1xa1S5KW?=
+ =?us-ascii?Q?DBwYHtK6B3GegHg=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SE3PR06MB7957.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(1800799024)(366016)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ErFRX/webDnEKTvN6eGEsIUxvAWC7VafaQbIxIYCNngqIXJn2+WX4Fzv1UzK?=
+ =?us-ascii?Q?7KwrR+Fm7Cu5mitijyBnQd+LruNmhUiqA2QRO7V2yg3jW0MuEqx0MX13XDBv?=
+ =?us-ascii?Q?N1eUdvX/YtkOcgXX5sSDFbtgPO2CdbWUJmyA+oNyAPbn9+pcqwxhi7FXTBPc?=
+ =?us-ascii?Q?Y6IjoPMmDDZuXShobyMJ4bIioYKJqIGnO/D8ClpzL98R4h/o6MQlHw0cWCA0?=
+ =?us-ascii?Q?qiFVJfBcHD28AX2vR1LcCh2TYwKnwtaIo7fVFY4kFlS6z+4l6q7ek7qeR2qc?=
+ =?us-ascii?Q?aoRVyTvLkRKU8ncGZ8uE6ICKT5RvXFFZkdcgrdA3O5v98S6n7eP3/bbYLvU8?=
+ =?us-ascii?Q?b3yycKnToW69RLu53UzxOrAuMOSXGxxUxzlEnz7xC77AItoBEIoKSfUIxUfZ?=
+ =?us-ascii?Q?XrDVKuzByRjsAnI7eb2D7kzpNIBu0UPL8YAhRDkMVINDScQcZOd+BwUJgXPx?=
+ =?us-ascii?Q?jVnAjyy8K/Z6835NMz+0KnSRE4tVBUyPhxcSWPye8kwK3HBcHpgAh9oRJMpt?=
+ =?us-ascii?Q?PCo5BWNrNw4Kps7oFlQ8yJOmYcivZkSxET6mlKnyaXdDLYA1bojSR3YN+JdH?=
+ =?us-ascii?Q?FefgUsfckQ2PPC58rxgeEFLMENnPSfs1fH+feEjehoRYAhUQ8SuxcUTC2ulY?=
+ =?us-ascii?Q?Yn6XBkMTTj+jZ3fuP+k4X6nmJMQZQdd/L/yE/8Fg+E0yQMLdre6iDA2lB1Kz?=
+ =?us-ascii?Q?Vl6n2e40J719jrQOV8w1GxtO1NETFYT9jF7+OE1cDhs0sq7IqmTygAc0MwLp?=
+ =?us-ascii?Q?DIV0OrfYFqFE9Nn1onXQm4sqCYecH0sTsitxZ82El1PqfcIZkBiLsvn1edcw?=
+ =?us-ascii?Q?KDqABTFNU5tPExk4RFgDzJCI175FRPk6n0XNrAiKBiZPlVYOnVmIlemqSFYQ?=
+ =?us-ascii?Q?2SOihlCofvJ3xcUu+CVk2mLjR3dEWQfk8y56MoRD3MK3uZRzEBbtuWlxBuoL?=
+ =?us-ascii?Q?l92sKp11hJDJaarmsfdKSfts7474roQo10DaD9F8lJ8DXcL9Qw3AGqnQ7yEU?=
+ =?us-ascii?Q?u+2rP1Wda7/k2LKbUf1AaDvwOsubn4hrALz5croOYTp1hOmkFef17EHlorFr?=
+ =?us-ascii?Q?xFSOUbuQ6TULsl2h7FcnZidk4Ee+aOp4D6NQz4U+swvXCKvXWNpnkNT8Wj3c?=
+ =?us-ascii?Q?E1iKJGSSa8/AxDo/wyFvZ5nqcJGLwJ+bw+vrpNI/U4poFcOqT+JStpyCY1mC?=
+ =?us-ascii?Q?+jocGAk9jrLBjC2NcNEJxIrdBlP5619m6nfRBIwceU82oFzA2FydhSrbUbxM?=
+ =?us-ascii?Q?WNqQIc6ML5KMp1XW+MHxMIOVjqqY5oZmyrnFILYwX1avJ4X+Lgc6w3j/F1ca?=
+ =?us-ascii?Q?ce8w7ieagMP1Q/XEBL16IDQ2GRrO0J+er9YlSIbKeeczBTAu5TsQZOw9xp95?=
+ =?us-ascii?Q?jUlwROov7BjdgJv5JAo4qX2lOzVHmMakqPZfoyd+cts1sRf+KEPasPzx26u9?=
+ =?us-ascii?Q?4eyDlsauRtYffAyw/9UDTSpHkOpn3bpSQLDVv2IFzkb5jdjR0vFmW3+4JSbn?=
+ =?us-ascii?Q?pNehGXohmruV5D+/dMvugmEIfDXxOqKEWqlBjjdCoYsObI/MEufwRZ7kK5hm?=
+ =?us-ascii?Q?MQrd+GjoszuF0lKLFkPcjkPr3T+ZBPqAxSiS5v7c?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ad1e146f-7adc-47d2-ea6a-08dde3d32512
+X-MS-Exchange-CrossTenant-AuthSource: SE3PR06MB7957.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2025 12:30:15.9104
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: snpljeU/y/YXAW8BSEZ5gwYk/Xh8PzpzWlp8BBV82xRgNayYnOX3SOcDU1dsebKomSM6PowkUTGoR4OcPyr9Cw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR06MB6113
+X-Rspamd-Queue-Id: C2983A0019
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D9032140009
-X-Stat-Signature: f8whf4z1uachaewg8xrf1fdwgteboiby
-X-HE-Tag: 1756125017-938543
-X-HE-Meta: U2FsdGVkX1/RFAobm2hE6/VTkrxEhbqzm0FMm7NAC8cWjrUOHwgUjZJQQpIf0d3kcZHXa+OTSzxIitxj2OIcwl22gmg+3lH3uAn4MBUTxxwdgPCqwLRdnnfp+fb1dXSaUMdLavSogGWee/xGW+m8cMJwpkRYz7iK3Nng1JZdpR3Byr/B5kfq5Yr3t+Z+al6h8sqnMUwbL8rcqd2SHiztyjYL3E2O0v0/FHWwFfrFVZgHNQnTAWwQFALkLRZqSfrnjxaNj2pMoGwGa+jdBJr8n7UOGwTNvr2pV0hlc/f9BtoIYYwgKWiDk1D6DuZK/SebN+toX48bt4xllBSWfUA/+/H8QZBImWzNx8nYteraz6Nx/HhUAUAv0g6eWTTF5PI0KnWX0iOyHeUy7RQNlUqs+yYu4niAHA6AuNkLgKNyGUaj+nlYo2qUkKXy7zoWNmDNIDuKeIgSc0F1rbphJEShBCDmrdmex+q+33s+zFSyYl2La5ksEIeqF8tMgCZmmMu60FSmNWPEAxfU9f55Wyh9lOMXdlb/oURf9ts83g4EOWZzkqveK9+Vpk8TWSvju8OWhzybEE1u0+XQAYwWv6VNeXDzDyntLynuBKKdhOKpjDDCg1xrX4K/cLUOwGIlEaEChjkD2Djkw4CNuMfG7NyKpvcqZphGqLgWI2WQXjQcGtpY+6xRT8rhn5+qiH5zk8UqPXHmG5mEm2apo2N+2XNz2kdzCX+160fFvr/Q7PpdLemOJV/7Pm7HDroXjtMH6psVW9a59YQVtIf4HUXox4XnVSsrrgxq2jFwBAWkzf8fFK6gDZEKS9W14f5lacpRToQGPS2poLAi/k3yfcY1x3GcYykWFnNM/NgfWBv31dEKnpLGt0N+sCgP2+1/oqEL0CblAlnHGlPaTmawmkGhJQ42FNd6DLhvbntsVovtgaK3SMcZg5EkXIlcPiK7WkIgtFIUOXNQUgSv2+IKBoPMNeM
- 8cmRBxUy
- MSPBNS43mY9QWNRxYmV9SpILQZuRZGtGs3YEWxDiy4U1TiYFMFkodj9aTben1k8XgIvNuo5Ox0GCl0WWWv7syLDsnRx/m7wpGw7pexNABR3I5/6G7Mz+/UByyKvSwrAyuK9twun/+Sxke9OgKT8GId5dswQwSTu+5bw8kvdPbro3r2UTaE933/n5D3LaZhMW0KzlD61ax/DgLIZzk2+SyfZOSuIxPOHLwhcobJZ8g10tgC4TAUwDeOfkCtjwPq6w6e9Ahmkxhs5x/c7UlcQ2M/eU6B68wW5yLziJcFelo07Tsad4NZm/qtYMWTmriQGaghVcvoxojTfw+gneupMP3dwVUhFv7yeMEnio+uttcbN4KbIL0iLbwaWCWJMzOcbYj5dWUw0MdBJFxW6T5GyrZ2cjB1B9+aM4HwlcUrfNYKqxc57DBb41VDYJde2ZbExvtBnCCwyOpYAEV/1RRUFaHQHiXi4xhDzF7jXUSUcjGBurpHElhZx51WIovKItyq5Zm1s6LKtK1mko39vK6JvQb900VZzC28A66Sz+Ox/qY3mcblmfg32lA4aCoDcxX3MgEoMK2AttIU8jguT7ScNtdUipha560C7DN5z5c8NQnNBAC93LnK65iq7HQrkhQ7wYYTMnws127W4l0JM5x7Bh9LK3a6HzwFp8N7DHRkhKyXL0lC+8UZjXVB4bgsd4pbXu2SOQvkfk9tsUTpI+xEbMQydIh7AP147ycq3uEpboRWItk+wejUCilrTtNPMmVVYV8Lp8BTGbEPjh0L+IcUboYdIl+rR4qg6uJtJVGwJV7s5OIXT0+/WMNRLNWyjUc3pe0t9UK/9Lzk+p0lU7sGjkloFTViYqRIDdq7RL2k04dOvNN0TivkZ8+ZvNFixP6YaiOGMy5MAkIayvULg7xsrV7Efwg/w==
+X-Stat-Signature: z3ng8xqdjpb5axdr8qzui3xcqeqmbkk1
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1756125020-533852
+X-HE-Meta: U2FsdGVkX188kh7SKSoEPVuPWG60zUSyGHv0njPcXTEYRxSX8cwMe1OYvXHxBrOM79LmPYxHb/OahDA8c1FVneBVHNUFIWs3wVmT17feLQRYnfggjDyrCkobNbagGfLFiB7GxjFSXqQnaNZX68RmSy9eboALiMWHcHmO4PCn96ACmsAHYXXS9cIM82fkLKEpJkyPQB+0PdirFT3TNn508oDHQIB/whO4nvbV400kCo0rC1O3usJICnkdAEI3xEovGTpFNWJO5T2YxtksIc2EZscT7FHyHdueSmgme+K024bnQrXrMNGprBy3T0V0J76IbMUug+cXf0zMBsVgaC44A8K93nQUkeGExX8kklRIumRExqdDO0xrXK5Y2zaGD61M174aYUCbiEncHIrTD6sstngZoJU30m0U2Y+jjnaW121MC8mGRL/aSIzs4K8kFOFrPwu6h2DFva3R/Jh+6Lh+1+OIvNB+sLhiIVAQ26kuP+gj2v2UuU+7sCdfP1OJUgOTRZIpQ4qi3n+migJ8Ki56xFWDOVS9o5mjAXhNbQwolYoQOniBk9fhdSALQvkPtwS9yny6ufJqv3QC9em6mndUWYU25PiXbphJ7ESjuCgedgLzQ6JcO7ykokC8oeNZQUTdayvUh/zQp4mKgjPAhyMhfZK2WEKud+G5rO5E7FhjPyX0ydPUnbeMigJftmm8HpEsxly2gKBwxLmcXly0mtYEmzgcvZl1AKPmky7iRe0bywsT2Jl1ZPr65Va3U1UIaaYVo6UsU5gnaVJ547XbXU/qKlVIqWzBWR1nMIYi4O8jQ+HnLd1A3UfEif9mdonErdTA0kagX9Q/JGdM7YlzcX8ZfsPEFIOZzX4ecKnzGrbt3XYbiHQQACi6C8vjbGeriEzlI6wbY0bBhlhwOsLvtmbZMBMagU00NtYI8F8h7PfvHxgrffh2YikDbBJZqAYFT+uojYPu+LWyIWK0yyiSJwp
+ jPquNGXg
+ poa3WmAMB1MUmmmH5rwFqreX8vpQdP9AzAgxUT8Q14Q0bMzk+sWay50C3NNgzvTrZ+jQIpL3AOFQ9PITaaD68RjjQ0mx5eA+HV6TwetQiwFCoPbeFQHdM8ibMPBFL0yOVR4cNRkrl/NuqzDuHyJ6LC89jjzbqLHDbWA2akPz2UxSBmlDc1y3WCb5wBNs8pAnMlx0SHxQWVSIwGqZZK7Owrig2k7emgiEQkScyzcl52ZeWx5zxNDs8+VDisKa7Re7dANBCjlLjFwo5TBaIxMcMyPEA15SnPyAsFWNmuo7ARdd76TuX7kSlGv012aoQ/ZwsDGQpKxszQzdPnfosLiQfxQlc06QNhyllEHXVZ1ZfOYgrlwPWEFTEcv4hPe1R1d/8BQrDqWr0yur6hF3Fmz5P4skNRSbKG04idAWTQp4AwMszmOYvY9jTSxRrD1igdUSm/0gJmZ4vOqrOu2ggBwVx2OYUraD4U+AysEAz0u78gvGy0QqUJGuHF+J0jprEl+ZgHsqKPcrKkkrf/lQt5IKMayUyypbA10qA23HD5I89+yrCWEBdSPQc9yCJpg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,66 +203,209 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 19, 2025 at 09:36:10AM -0400, Liam R. Howlett wrote:
-> * Danilo Krummrich <dakr@kernel.org> [250819 07:49]:
-> > On Tue Aug 19, 2025 at 12:34 PM CEST, Alice Ryhl wrote:
-> > > Similar to and just below the existing MAPLE TREE entry.
-> > >
-> > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > > ---
-> > > Liam: I'm not sure what you prefer for the MAINTAINERS entry, so let me
-> > > know if you want anything changed. There are also a few other options,
-> > > for example, I could just add the files under the existing MAPLE TREE
-> > > entry? The get_maintainers script should still send any relevant patches
-> > > my way because they also match the RUST entry that has a wildcard on the
-> > > rust/ directory.
-> > 
-> > From v1 [1]:
-> > 
-> > 	>> We should have another section for the maple tree, since it's not just
-> > 	>> used for mm.  Your stated plan is to use it for GPU allocations and the
-> > 	>> code doesn't live in mm/, wdyt?
-> > 	
-> > 	> Sure, I can add a new section if you prefer that.
-> > 
-> > Maple tree is already used outside of mm, e.g. for regmap stuff and I also use
-> > it in nouveau. Hence, I read this as moving maple tree to e.g. lib/ adjusting
-> > the existing entry.
-> > 
-> > I personally think that - of course unless the affected people prefer otherwise
-> > - it is usually best to keep a single maintainers entry for the C and the Rust
-> > code. Maybe Alice can simply be added to the existing maintainers entry?
-> > 
-> > What do you think?
-> 
-> I'm not sure what you mean by lib/ since the lib files are spread into
-> other entries by the looks of it?
-> 
-> I'm okay with the entry below or adjusting the existing one.
+The number of writeback contexts is set to the number of CPUs by
+default. To test the impact of the number of writeback contexts
+on the writeback performance of filesystems, we introduce a sysfs
+interface 'nwritebacks' for adjusting bdi->wb_ctx_arr in runtime.
+However, only increasing the bdi->wb_ctx_arr is supported; support
+for reducing it is still under development.
 
-In that case, I suggest we do this:
+Signed-off-by: wangyufei <wangyufei@vivo.com>
+---
+ include/linux/backing-dev.h |  3 ++
+ mm/backing-dev.c            | 59 +++++++++++++++++++++++++++++++++++
+ mm/page-writeback.c         | 61 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 123 insertions(+)
 
- MAPLE TREE
- M:	Liam R. Howlett <Liam.Howlett@oracle.com>
-+R:	Alice Ryhl <aliceryhl@google.com>
-+R:	Andrew Ballance <andrewjballance@gmail.com>
- L:	maple-tree@lists.infradead.org
- L:	linux-mm@kvack.org
- S:	Supported
- F:	Documentation/core-api/maple_tree.rst
- F:	include/linux/maple_tree.h
- F:	include/trace/events/maple_tree.h
- F:	lib/maple_tree.c
- F:	lib/test_maple_tree.c
-+F:	rust/helpers/maple_tree.c
-+F:	rust/kernel/maple_tree.rs
- F:	tools/testing/radix-tree/maple.c
- F:	tools/testing/shared/linux/maple_tree.h
+diff --git a/include/linux/backing-dev.h b/include/linux/backing-dev.h
+index 30a812fbd..c59578c25 100644
+--- a/include/linux/backing-dev.h
++++ b/include/linux/backing-dev.h
+@@ -112,6 +112,7 @@ int bdi_set_max_ratio_no_scale(struct backing_dev_info *bdi, unsigned int max_ra
+ int bdi_set_min_bytes(struct backing_dev_info *bdi, u64 min_bytes);
+ int bdi_set_max_bytes(struct backing_dev_info *bdi, u64 max_bytes);
+ int bdi_set_strict_limit(struct backing_dev_info *bdi, unsigned int strict_limit);
++int bdi_set_nwritebacks(struct backing_dev_info *bdi, int nwritebacks);
+ 
+ /*
+  * Flags in backing_dev_info::capability
+@@ -128,6 +129,8 @@ int bdi_set_strict_limit(struct backing_dev_info *bdi, unsigned int strict_limit
+ extern struct backing_dev_info noop_backing_dev_info;
+ 
+ int bdi_init(struct backing_dev_info *bdi);
++int bdi_wb_ctx_init(struct backing_dev_info *bdi, struct bdi_writeback_ctx *bdi_wb_ctx);
++void bdi_wb_ctx_exit(struct backing_dev_info *bdi, struct bdi_writeback_ctx *bdi_wb_ctx);
+ 
+ /**
+  * writeback_in_progress - determine whether there is writeback in progress
+diff --git a/mm/backing-dev.c b/mm/backing-dev.c
+index a5b44dd79..44b24c1e4 100644
+--- a/mm/backing-dev.c
++++ b/mm/backing-dev.c
+@@ -469,6 +469,34 @@ static ssize_t strict_limit_show(struct device *dev,
+ }
+ static DEVICE_ATTR_RW(strict_limit);
+ 
++static ssize_t nwritebacks_show(struct device *dev,
++			      struct device_attribute *attr,
++			      char *buf)
++{
++	struct backing_dev_info *bdi = dev_get_drvdata(dev);
++
++	return sysfs_emit(buf, "%d\n", bdi->nr_wb_ctx);
++}
++
++static ssize_t nwritebacks_store(struct device *dev,
++		struct device_attribute *attr, const char *buf, size_t count)
++{
++	struct backing_dev_info *bdi = dev_get_drvdata(dev);
++	int nr;
++	ssize_t ret;
++
++	ret = kstrtoint(buf, 10, &nr);
++	if (ret < 0)
++		return ret;
++
++	ret = bdi_set_nwritebacks(bdi, nr);
++	if (!ret)
++		ret = count;
++
++	return ret;
++}
++static DEVICE_ATTR_RW(nwritebacks);
++
+ static struct attribute *bdi_dev_attrs[] = {
+ 	&dev_attr_read_ahead_kb.attr,
+ 	&dev_attr_min_ratio.attr,
+@@ -479,6 +507,7 @@ static struct attribute *bdi_dev_attrs[] = {
+ 	&dev_attr_max_bytes.attr,
+ 	&dev_attr_stable_pages_required.attr,
+ 	&dev_attr_strict_limit.attr,
++	&dev_attr_nwritebacks.attr,
+ 	NULL,
+ };
+ ATTRIBUTE_GROUPS(bdi_dev);
+@@ -1004,6 +1033,22 @@ static int __init cgwb_init(void)
+ }
+ subsys_initcall(cgwb_init);
+ 
++int bdi_wb_ctx_init(struct backing_dev_info *bdi, struct bdi_writeback_ctx *bdi_wb_ctx)
++{
++	int ret;
++
++	INIT_RADIX_TREE(&bdi_wb_ctx->cgwb_tree, GFP_ATOMIC);
++	mutex_init(&bdi->cgwb_release_mutex);
++	init_rwsem(&bdi_wb_ctx->wb_switch_rwsem);
++
++	ret = wb_init(&bdi_wb_ctx->wb, bdi_wb_ctx, bdi, GFP_KERNEL);
++	if (!ret) {
++		bdi_wb_ctx->wb.memcg_css = &root_mem_cgroup->css;
++		bdi_wb_ctx->wb.blkcg_css = blkcg_root_css;
++	}
++	return ret;
++}
++
+ #else	/* CONFIG_CGROUP_WRITEBACK */
+ 
+ static int cgwb_bdi_init(struct backing_dev_info *bdi)
+@@ -1292,3 +1337,17 @@ const char *bdi_dev_name(struct backing_dev_info *bdi)
+ 	return bdi->dev_name;
+ }
+ EXPORT_SYMBOL_GPL(bdi_dev_name);
++
++int bdi_wb_ctx_init(struct backing_dev_info *bdi, struct bdi_writeback_ctx *bdi_wb_ctx)
++{
++	return wb_init(&bdi_wb_ctx->wb, bdi_wb_ctx, bdi, GFP_KERNEL);
++}
++
++void bdi_wb_ctx_exit(struct backing_dev_info *bdi, struct bdi_writeback_ctx *bdi_wb_ctx)
++{
++	wb_shutdown(&bdi_wb_ctx->wb);
++	cgwb_bdi_unregister(bdi, bdi_wb_ctx);
++
++	WARN_ON_ONCE(test_bit(WB_registered, &bdi_wb_ctx->wb.state));
++	wb_exit(&bdi_wb_ctx->wb);
++}
+diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+index 6f283a777..87c77004b 100644
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -740,6 +740,59 @@ static int __bdi_set_max_ratio(struct backing_dev_info *bdi, unsigned int max_ra
+ 	return ret;
+ }
+ 
++static int __bdi_set_wb_ctx(struct backing_dev_info *bdi, int nwritebacks)
++{
++	struct bdi_writeback_ctx **new_ctx_arr, **old_ctx_arr;
++	int i, ret;
++
++	new_ctx_arr = kcalloc(nwritebacks, sizeof(struct bdi_writeback_ctx *), GFP_KERNEL);
++	if (!new_ctx_arr)
++		return -ENOMEM;
++
++	for (i = 0; i < min(bdi->nr_wb_ctx, nwritebacks); i++)
++		new_ctx_arr[i] = bdi->wb_ctx_arr[i];
++
++	for (i = bdi->nr_wb_ctx; i < nwritebacks; i++) {
++		new_ctx_arr[i] = (struct bdi_writeback_ctx *)
++			kzalloc(sizeof(struct bdi_writeback_ctx), GFP_KERNEL);
++		if (!new_ctx_arr[i]) {
++			pr_err("Failed to allocate %d", i);
++			while (--i >= bdi->nr_wb_ctx)
++				kfree(new_ctx_arr[i]);
++			kfree(new_ctx_arr);
++			return -ENOMEM;
++		}
++		INIT_LIST_HEAD(&new_ctx_arr[i]->wb_list);
++		init_waitqueue_head(&new_ctx_arr[i]->wb_waitq);
++	}
++
++	for (i = bdi->nr_wb_ctx; i < nwritebacks; i++) {
++		ret = bdi_wb_ctx_init(bdi, new_ctx_arr[i]);
++		if (ret) {
++			while (--i >= bdi->nr_wb_ctx) {
++				bdi_wb_ctx_exit(bdi, new_ctx_arr[i]);
++				kfree(new_ctx_arr[i]);
++			}
++			kfree(new_ctx_arr);
++			return ret;
++		}
++		list_add_tail_rcu(&new_ctx_arr[i]->wb.bdi_node, &new_ctx_arr[i]->wb_list);
++		set_bit(WB_registered, &new_ctx_arr[i]->wb.state);
++	}
++
++	// Make sure the initialization is done before assignment
++	smp_wmb();
++
++	old_ctx_arr = bdi->wb_ctx_arr;
++	spin_lock_bh(&bdi_lock);
++	bdi->wb_ctx_arr = new_ctx_arr;
++	bdi->nr_wb_ctx = nwritebacks;
++	spin_unlock_bh(&bdi_lock);
++
++	kfree(old_ctx_arr);
++	return 0;
++}
++
+ int bdi_set_min_ratio_no_scale(struct backing_dev_info *bdi, unsigned int min_ratio)
+ {
+ 	return __bdi_set_min_ratio(bdi, min_ratio);
+@@ -818,6 +871,14 @@ int bdi_set_strict_limit(struct backing_dev_info *bdi, unsigned int strict_limit
+ 	return 0;
+ }
+ 
++int bdi_set_nwritebacks(struct backing_dev_info *bdi, int nwritebacks)
++{
++	if (nwritebacks < bdi->nr_wb_ctx)
++		return -EINVAL;
++
++	return __bdi_set_wb_ctx(bdi, nwritebacks);
++}
++
+ static unsigned long dirty_freerun_ceiling(unsigned long thresh,
+ 					   unsigned long bg_thresh)
+ {
+-- 
+2.39.0
 
-Optionally we could add (RUST) similar to the LOCKING PRIMITIVES
-maintainers entry.
-
-Thoughts?
-
-Alice
 
