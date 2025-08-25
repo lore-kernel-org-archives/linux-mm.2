@@ -4,108 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 124ABCA0EED
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 00:04:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73E16CA0FE1
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 00:17:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DDE006B0092; Sun, 24 Aug 2025 20:04:42 -0400 (EDT)
+	id 7E0986B0007; Sun, 24 Aug 2025 20:17:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D8EEF6B0093; Sun, 24 Aug 2025 20:04:42 -0400 (EDT)
+	id 791D66B0095; Sun, 24 Aug 2025 20:17:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA5166B0095; Sun, 24 Aug 2025 20:04:42 -0400 (EDT)
+	id 6A7006B0096; Sun, 24 Aug 2025 20:17:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BB5C86B0092
-	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 20:04:42 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 80DF3B7C6D
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 00:04:42 +0000 (UTC)
-X-FDA: 83813333604.27.66E6B70
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E59C51C0006
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 00:04:40 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=jkRx1u6W;
-	spf=pass (imf21.hostedemail.com: domain of ramsonpetros006@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=ramsonpetros006@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756080281;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=vtGll6+zndhKXIeObjmr1nBAsXHtf0JgNgfznIpa1hc=;
-	b=hlhJvpiIic6dsLK6BmWPvzMqLCr49fHVFCUiluQz6p2qbLlY5xNQ/2Ea2602ztmg/zxXHp
-	yfEa5IaR8A8/Qzkm+fsqoK8bClrcmiwLHOYA+KrV1yZzBT8MAiMzOwM7GmgPcHQjXsCGjs
-	fWlu8fCR4Kd00p9v69ebMogf2FbJFy8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756080281; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 529616B0007
+	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 20:17:28 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DA4D31401C0
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 00:17:27 +0000 (UTC)
+X-FDA: 83813365734.06.C9B4300
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 117C2A000D
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 00:17:25 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=xWdozaNU;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756081046; a=rsa-sha256;
 	cv=none;
-	b=i0H49t8NUkLOnaVRrxFGWU0Lge4S+g8u4z/yzS2QF41/iGzUyOi9Tzo/36gT2GyE1qVW+R
-	ybXrGOdNCpqzLJxowqzYw9zcap0yHbmdiy1ThOzSg8catSUWnuQfFwes5kkfZAuIZt7sQZ
-	F/BE8zeCvTSFK/7Xf2ip2Utp+tAqToc=
+	b=devOs/oA9yFdIMU+OO0iPnV0cCdOH6kZI8xcjcoED3XExbHRXVNmszq69DaLeV+Bguj+Fq
+	6VJzIlUi1aYyUWtjysXH8PvRoBgpasREZeEB2zbCVpt9WcoBA+aojJ8LUfzJmTlU6jrQlR
+	hwsdrwWNWQn27nnmdWk/iybRqgTRdws=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=jkRx1u6W;
-	spf=pass (imf21.hostedemail.com: domain of ramsonpetros006@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=ramsonpetros006@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-45b4d892175so17509665e9.2
-        for <linux-mm@kvack.org>; Sun, 24 Aug 2025 17:04:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756080279; x=1756685079; darn=kvack.org;
-        h=date:subject:reply-to:to:from:mime-version:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vtGll6+zndhKXIeObjmr1nBAsXHtf0JgNgfznIpa1hc=;
-        b=jkRx1u6WG7MSIcWLKpk/ZL/gRT3XKDL2/i9VgiSd+MSXbAZh64Pr6qHx8Yr6/5fBiv
-         /XEHiC3abv5WCnUGCLN+Kp/9pq1PWQpvFeWQVoF/ORJXHxBjbSZy4Rv67wb/EJv3EhAk
-         H5XUk405/l+EDLuAcfE+gYHt3vMZVtUcccUpzT/kFDSbduklPfcEWeNvuo6MJO6oXFxe
-         870S0ZtaYl9gDP8esinUn3JqJrTY4jRuaJxQnnY1+wgclHc5xmlMab8QrRar3uor9xAO
-         GEBwAOCOZTbob7a1v7AxOLv8qUppaHz6mCxMihj5PWjcH1CipbCPFsr/7o+dpuzxj/nj
-         jDtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756080279; x=1756685079;
-        h=date:subject:reply-to:to:from:mime-version:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vtGll6+zndhKXIeObjmr1nBAsXHtf0JgNgfznIpa1hc=;
-        b=iSK4CXr6aK9ssTTqPFvkCudI17QyziyYqRq0slpX3/lExmxvNRCB4XzAcvCcv8Zzy0
-         Lzn5BnbT2yTIpY09ZVjraoT+tvPnLvmg1EnEmRS8XyddTboGTvh1G5Uy/NU0/sLxuRzI
-         zqiCfRwKGPS43yRWMxuHyT/wxvBe7nTcFjV27/TuHrS41Q3bc/9r8u9/t2DUuDzbm0D8
-         FudaAH2xFjQgYHeTNrrD0vR4onAjV55kSeUwi65DdRIysA31guQkST3hvVKYCiEc902P
-         2oegqCsq30grkKSko6VsMdRhctsuWzjFdTbPLIriFDvi5+cYIeHE37mGVRqyDyE4jwAW
-         XBSg==
-X-Gm-Message-State: AOJu0YzYHq7mCRVc4e3pDS5/fCyr0MemVfr0A/YS4eMbSuX2eIrEKOcw
-	5dLKPpZnRz0l5zveF8I/1FYPg2DNO1dX1uS4u3vKxXbrwAUkxKMcsXfv+84mscv4
-X-Gm-Gg: ASbGnctZYkAM2KmhTHjTH+oFCcf8t2GQbRWPOuR7/r0uGPTRjKmdD9jFJOdyJ9gV2uS
-	LH4S8ahesMn5AAyvLa+1RJk+okx7DDjlYuYjqgwQEyQV7eP5FGkqIaRwtolSCEw7VUc+6E58jwu
-	7XTrM2qtxag5Qbx3mr02UfrcbaujTHbxcD4VTHLPsKYSVI4xi8gggdpU0y6judt7OuI1vI9XV+8
-	i4mHKfAo3azWuNwmMUtN36PVy4Qxh6rM/wPCTEAKwfcOdhgpRjYj3rQNncb6ff7cY2tkW8VJdIz
-	s1L90AHWv2gCsoF6qhsjuvdBDbNKbccduJoORs9d8S0z7ErXij+ZtaSIrR/FwYbNQMP4SsYqDCK
-	bumiZvS7ZKmcoY+URg+UzRL5L9NEu7/nfxhVgRKZKDJpunI1uLbMhMUsztlBgj6CZoXq4OuU0FX
-	UWpe3XGg==
-X-Google-Smtp-Source: AGHT+IHvfcay25Z4epGB+BRoODVWMOn1Dav9p2OFZWOw0R9bRQRdjb2NXkGS66mE8HLIrXrieJKr+Q==
-X-Received: by 2002:a05:600c:1d1e:b0:458:ba04:fe6d with SMTP id 5b1f17b1804b1-45b517a069emr64198675e9.14.1756080279127;
-        Sun, 24 Aug 2025 17:04:39 -0700 (PDT)
-Received: from [192.168.0.200] ([105.113.116.69])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b506bdd9csm79741785e9.3.2025.08.24.17.04.36
-        for <linux-mm@kvack.org>
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Sun, 24 Aug 2025 17:04:38 -0700 (PDT)
-Message-Id: <UM31KU1L-BNY0-VEOZ-43ZR-KNZK6SZKMU0T@gmail.com>
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=xWdozaNU;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756081046;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7LGExPFq06Jg72HR9++kMuMOHkDGt7UXctoAScatuPE=;
+	b=wojQX3rGKefQRwz+WW8IIM3O7GeHWFms/xapjXVyOTwJBZJWvcHqu8X6lyP6kYYj1H9lOw
+	YORQ3GRiwfYXMIMRMY6vswPkmVdLGzzOv5JYMEB6zprX0rKx2SBpuf8K+SBhjowwGMENUf
+	zs9oZVpPE7j+RroB5NZzVxgmbkYE/Sg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9D7A84441D;
+	Mon, 25 Aug 2025 00:17:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D48C4CEEB;
+	Mon, 25 Aug 2025 00:17:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1756081043;
+	bh=+Za+wb6QlHF1oKYfGWLR5av6WtH0xmMNI+APb0Y7x4Y=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=xWdozaNUWTmGFXHzJFS5GZ8QXqnbZtN3AvSpzBqbjScoXDixsEO6vXIenhumbcla4
+	 8/5+eJbB1Bh7BTq9IGPn4zRCdCcX2vahmbtONiBS9f6GVrHlE3CjuR3vTtTAM/am5i
+	 j04OlJ172kNwu77bDTGfxdPhs+SB323Gn6wbzooE=
+Date: Sun, 24 Aug 2025 17:17:22 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: ally heev <allyheev@gmail.com>, skhan@linuxfoundation.org,
+ david@redhat.com, shuah@kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] kselftest: mm: fix typos in test_vmalloc.sh
+Message-Id: <20250824171722.ea915592ea3bd060c6b17a38@linux-foundation.org>
+In-Reply-To: <aKq25rlqbyYDaWVo@pc636>
+References: <20250823170208.184149-1-allyheev@gmail.com>
+	<aKq25rlqbyYDaWVo@pc636>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-From: Retired Colonel John Marshall Bill <ramsonpetros006@gmail.com>
-To: "linux-mm" <linux-mm@kvack.org>
-Reply-To: johnmarshallbill@outlook.com
-Subject: Urgent Attention
-Date: Mon, 25 Aug 2025 01:04:35 +0100
-X-Bounce-Tracking-Info: <bGludXgtbW0JCQlsaW51eC1tbUBrdmFjay5vcmcJVXJnZW50IEF0dGVudGlvbgk4MzM4CQk1OTkJYm91bmNlCW5vCW5v>
-Content-type: multipart/alternative; Boundary="--=BOUNDARY_82514_IMWJ_UDHK_EBEL_LWIN"
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E59C51C0006
-X-Stat-Signature: j3efbu3wt7htbicpjgph7omdm8qxzrt8
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 117C2A000D
+X-Stat-Signature: 71zk7bezp45dr5k1c86gfi575ap95cih
 X-Rspam-User: 
-X-HE-Tag: 1756080280-314504
-X-HE-Meta: U2FsdGVkX1+/n+Iu8x5x2XS5eVwrVVGfFLtCHOD0xy0OVmPiDwv1jL/7+Cf8BfRVTkWR5nY3ZOKbIdv+gzSftCFCaidIqsXetYfTFenVfly5fNQsuffg7TjNCvdhopMP3w7/S2IJCSVUiC9zOvFOr2SEnXHysRaI6jwCSN3NuZHARFS+ENIQsDFnPzpM9bR3ljgJScAsGERBffFXjDKfZsIZuPq8ov+e7hQm8qpl1Q336LGwjEr7WROptx/X6gp7wNz5NzQl5oaCLmkCJG3S5dGC2uNwnGrhgRcPK356cW81GKNytKUvafAkHS9gkTKYHcBY6swY9/csaMo4zvINO6FQHekA+F2vj48rBbN8/1CdXylB/ssZyiGbiLOz+Ed/qhUteZmVNpAolnoL78o0TzqsjC71EIAb1SW9d9ZyuG1R2VGEwKEO6Q9HkWgVTqk4/2HlbXHAYkwrpi1pEhAU1/5zicsWOSfy5rryfwLnZ/aF6XxsjpEcvV0exhMSgFNhL+90AqcZXTp8G9UEtkOak4RiWKvW1xyNMvPUkWaKvZPwJnARzm+eahtlLcPAqI6fMH0UxGNz+GJxVCLPG6pSwZ/Fcjp2Xw9Sw9fFaEDzJPo4tGrsvYlbSqpBFwErSJ7aO58JKfVMqoIKb5IV4mFAViy3G4HSVdicIzoB5zJX4XqHE/BL2gaFlRvGQtnEQ4XE/cT4KEUcmb4TV/LHgZoSXG61uKGR2JupgES8NHf3dySqe9pPGQ6f1KS0mZM3K5of8vctVVtZEBXa5TkMFfsiFI+wF1ecEhecL8nztXuS9gLWhJOzhK/OVM5M7KnZpLWYQ0nhh+VhH5BC/T7qOl1V50YuVH/KLjiP1umqcy7YYEfxL5O//igFPwIhGbZQG4FbTS5Jbj5j+OkBYe8dierXBtLZlN4qKWXDxqTyxYp3I1PYvJoM/J24imduvk2wQsR5lxEPaEVjOn5/wAU32sj
- 8j1/BhSK
- kef+PlHpf5FBhpnQOFJHgBRCutErvjZU6sxtVsBmRQZZf7U4pN8g34j/mtSoKKdIuDP99r87vB0VB7iRy7ptE7JOTcTvl1NijZrKEVlnQ10FzzvNho4iwNobAVskUMUcm0MN9l9MkyV2CPVzFAI4CG5FQVe129YR2yygntIinBKdcHEEm4NIgUi/Raj/zFgiMlBAmQ+2BzDMgpsHFcfHZp2UNws6kVXXoghmE+zbJMUnZVoaNqZTuVLkXAMmKhIfnLt18oFx49EFqgX7W4oLyn3xplA==
-X-Bogosity: Unsure, tests=bogofilter, spamicity=0.455221, version=1.2.4
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756081045-694313
+X-HE-Meta: U2FsdGVkX19w0rbBq8F/7rl2gu1syjwL4RMIl5bOkPJRkfdC24wIgk+YLfhy0Kk34nDnbvgFlbapMSV7LO4iigiJeQMop8SU8CPnWtm/z0DxwdcXvY457/YSdTQvasP2F/m1mc/sOwDidI1kuMETeaRJmg91AU0ucQNxJD80vT1f2F5vZJavqluXo2MsyFo6Moma04oglZ887GNesAQp3WPs5XQx0liF0vrjvwpT8x+WAkIWGk26Av3bZwj2bt6PssgeSzbZ15eFpPtYqjG3VOdFNjB1yPtKlMiy+0r7lgHWutCe8mlf1z8lu7f/dOiNae5+MgSiSdteemaEzWeYGsaDLQ/YaR7iX+imE4Sy11yWTPugWtCC70mstp3Nmh9Kmxy2J2x/KbEQgY3aZ+fWSxZ1SrQ2g7DyyllbI1Fy9MrBTXv4lYIyTqHV5UfitqEFwIlQHSVVQGzPpMLBUT/ruX0cjcIgYGvpuZDEVtqbn/Ai9RNx9hSei7UTT9lUMesgb7LeW0GyAd3ol919hWAUXFq7OHKeRd4Qmps9Umk+3ZFuNq0A78QZpuu+5NwwADMuw1qtFji/Y8CZ1XcFTaZM8LKDIiXcVpEtCwwxvFiSGnAHD9tD/VmFYQFTuuEaiYgGq58LcdMqSKFzeHlXyn3haADKR7pC4y7EIpXZxLriFnW6aQYcwOScrxQVLtRqsObKh+KjTDFPHucPzPS6zbJ5XKPd9VY0VbtVuTLMC+QhYFc+jDZOTCm3xBufoBILvF/JNxtUfDn1l3DfjhFnFE/7HCbLVfRw/XtyvkmbpljprAWngmn0egXDypjbUBFtljYc/nLEXjHC0sR8fp6dYSfkCo8llX4DRncYGkKenZgt6wB40kss8jnZ4vh3f5SH2dxRL8WjXxypVLhdQMpXZyDWweX/t656sOEzCRHi/Zee35tss4p3oowLshfdVNBRhufSbXO7ibohr7S89qUp6yW
+ Y3myZnzf
+ x1soebvHlTu4S64s3qgbdJlDRnNq9pqlPK/dL7QE4Cd1EmqUhH6sXH+NE1wOyxOBpqjiLPg26jod5PDVuMgJATzYR15ZL95QtCQ+NQWS0Fb+3V0QSzGe04veDfzNz9UVphnC4nfmsv1Cbsf2MSz09CgdMokHVaCFYOxm79aU3O95NV0K8XmfbohfZ+vuQFLltrGQeQ12Q7eOL2CDBhdCdhZcJFVwOnjORpp4ZLpPFjT119Zah0KkMomfyhZ8tEyd8RTvHgFEFYBeCHGaTrIVINnd4r+AIzDtCoBCynyYdXQyTaThC9FWVCHqqE+mwslSDhIRb
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,53 +92,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This message is in MIME format. Since your mail reader does not understand
-this format, some or all of this message may not be legible.
+On Sun, 24 Aug 2025 08:53:26 +0200 Uladzislau Rezki <urezki@gmail.com> wrote:
 
-----=BOUNDARY_82514_IMWJ_UDHK_EBEL_LWIN
-Content-type: text/plain; charset=iso-8859-1; format=flowed
-Content-transfer-encoding: quoted-printable
+> >  run_stability_check()
+> > @@ -160,7 +160,7 @@ function run_test()
+> >  		usage
+> >  	else
+> >  		if [[ "$1" = "performance" ]]; then
+> > -			run_perfformance_check
+> > +			run_performance_check
+> >  		elif [[ "$1" = "stress" ]]; then
+> >  			run_stability_check
+> >  		elif [[ "$1" = "smoke" ]]; then
+> > -- 
+> > 2.34.1
+> > 
+> > 
+> ./scripts/checkpatch.pl ./0001-kselftest-mm-fix-typos-in-test_vmalloc.sh.patch
+> WARNING: Missing commit description - Add an appropriate one
+> 
+> total: 0 errors, 1 warnings, 24 lines checked
+> 
+> NOTE: For some of the reported defects, checkpatch may be able to
+>       mechanically convert to the typical style using --fix or --fix-inplace.
+> 
+> ./0001-kselftest-mm-fix-typos-in-test_vmalloc.sh.patch has style problems, please review.
+> 
+> NOTE: If any of the errors are false positives, please report
+>       them to the maintainer, see CHECKPATCH in MAINTAINERS.
+> 
+> Can you add a commit message?
 
-Good day to you,
+A changelog would be identical to the subject.  checkpatch is being a
+bit excessive here.
 
-Have you received my proposal? Are you willing and ready to work with me? P=
-lease confirm your readiness if you are willing and ready to work with me t=
-o enable me to let you in on the next line of action=2E
-
-I wait for your earliest response=2E
-
-Best Regards,
-
-John Marshall Bill
-
-----=BOUNDARY_82514_IMWJ_UDHK_EBEL_LWIN
-Content-type: text/html; charset=iso-8859-1
-Content-transfer-encoding: quoted-printable
-
-<html>
-<head>
-<title>HTML Message</title>
-<meta name=3Dgenerator content=3DAdvanced HTML parser v2>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
-1">
-</head>
-<body>
-<table border=3D"0" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0">
-<tr>
-<td>
-<font face=3D'Segoe UI' size=3D'2'>Good day to you,<br><br>Have you receive=
-d my proposal? Are you willing and ready to work with me? Please confirm yo=
-ur readiness if you are willing and ready to work with me to enable me to l=
-et you in on the next line of action=2E<br><br>I wait for your earliest res=
-ponse=2E<br><br>Best Regards,<br><br>John Marshall Bill<br></font>
-</td>
-</tr>
-</table>
-</body>
-</html>
-
-
-----=BOUNDARY_82514_IMWJ_UDHK_EBEL_LWIN--
-
-
+Oh well, I'll add the obvious text.
 
