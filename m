@@ -4,125 +4,188 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE1D9CA0EFA
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 13:11:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2856CA0FE7
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 13:20:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DEF298E0021; Mon, 25 Aug 2025 09:11:41 -0400 (EDT)
+	id E9FAE8E0022; Mon, 25 Aug 2025 09:20:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC7308E0001; Mon, 25 Aug 2025 09:11:41 -0400 (EDT)
+	id E779B8E0001; Mon, 25 Aug 2025 09:20:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDD148E0021; Mon, 25 Aug 2025 09:11:41 -0400 (EDT)
+	id D66C58E0022; Mon, 25 Aug 2025 09:20:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BC34F8E0001
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 09:11:41 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 65EE6C040C
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 13:11:41 +0000 (UTC)
-X-FDA: 83815316802.28.D3B53CF
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 741CFC0006
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 13:11:39 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=C40dst5v;
-	spf=pass (imf22.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C65228E0001
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 09:20:21 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5245458EB0
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 13:20:21 +0000 (UTC)
+X-FDA: 83815338642.09.C95D318
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf05.hostedemail.com (Postfix) with ESMTP id F09B1100018
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 13:20:18 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DGlD45vg;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756128019; a=rsa-sha256;
+	cv=none;
+	b=avvGMxbn7SxIKS1x0uVr57xb9Z6PAhoYdPgHeG6x1J5v9hYyDvD4RQDxgyvww8qJ+dllBf
+	LgxXWg1f+4AEVoQ+ljfq/Yt8C+CZjAlI0Ost9dW1z3TYTwkZXLBlNXJU7HOFr0hVLqleRH
+	fEAFSm1FSQ6+n2dBcQ7d4myzzVGYTnc=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DGlD45vg;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756127499;
+	s=arc-20220608; t=1756128019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r7uHrtrZhpgZRk0gGbUgDzQJCGEajHuc5dkdvC0IEnM=;
-	b=upOaFWIWajcpSeYT71EGwAIqMS5vgUH9CAnz/TFVoiV2nj3XPnJ5hQ+xkjMkhzPtaEjP9P
-	UwA9HWrNhEqegpT28bBDYx+Lu7wUpF7G0hVnSFQj5PPK/cGOdDLushO8CZkDjwdVJtMy5G
-	Ckb8FTHhKhaijwxVeS3My4b4nfo7cds=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756127499; a=rsa-sha256;
-	cv=none;
-	b=XSx9sNc2PDXJKUOOPPdUxfMaiflLbh1S5tKM0zVYVyQle2z2KIcJxq4TcdinxrmsmzxAWG
-	szKDJVROrWtagmNzgioOEjcimnbRLdtTLJs5EmHBEP/8UCVkHzTJsXsO5HzdmLQRoLqVC8
-	Dnvnnp6SQ0fbLpXq5ILbgutnPW0IL9Q=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=C40dst5v;
-	spf=pass (imf22.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b49d3b48d8aso1095895a12.2
-        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 06:11:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756127498; x=1756732298; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=r7uHrtrZhpgZRk0gGbUgDzQJCGEajHuc5dkdvC0IEnM=;
-        b=C40dst5vbp4iG6qbj2RQEuUT+5Hd8M5AX2RJ+3H6zEQRnA8NJ6ua2xMxna+vHH979H
-         kYNXXr7nQpssGKOY33PSlcK73cobmzalFWzfFWzb9rK3KF9hKGww6RDdBaDqb8Q7Lf7G
-         DNapN+E8DVd9AD5wKj5Wx/lcRttFxExULcXYc6BV1W9ZkXwRsBpQ5JLEkwrYIe4YdN8v
-         fA4cgzmDabEh2BJa2YB/sXQhaTARg2kZQGU+9Zdf30LtuISaPkaZyVG23FON5ZIA7clA
-         GTvw9SMnz8fHmiZUaKRgcs7Gb8Esn593vQoIiZfbNyo/2Dd75FkXeEXdeAnoXj3umJI4
-         1lZw==
+	bh=xanPEdPEE3D5dOZlqK4VGPHY2abbjAoznKTXD9A7MGY=;
+	b=Aydm3GnCqFkE816Sza+Xa2jTIqoBVX8dI2gUlutNQssyY+wz00bvZHFWabsh6u3mOJuJbL
+	ITyCX29tT2jaxcSmM3KO9E308CL2mqtqv9PIiFwyZWV84VdD6iPYqbX5UR2DvKyll+dxgQ
+	DXXvpVT4T1spwm0kcXsqrF4XOsm3Lxc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756128018;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=xanPEdPEE3D5dOZlqK4VGPHY2abbjAoznKTXD9A7MGY=;
+	b=DGlD45vgogFOnmNirGnK6pe2kjVEFm0sjvqpAQNxEbhNEWv3HAE5aRTg+FotMdfU3H9/53
+	jtaoel+eL/RL08LvNLp0mZtYBVlQXWrRNjQuIT7jhmOZmSKrPvYwaWRlTWPT5IxFc4qMym
+	Bq4i5Ec78h34ie72D8KB3VqR70gnviw=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-104-OJkLyoGVPYiPt_kw7mrsew-1; Mon, 25 Aug 2025 09:20:17 -0400
+X-MC-Unique: OJkLyoGVPYiPt_kw7mrsew-1
+X-Mimecast-MFC-AGG-ID: OJkLyoGVPYiPt_kw7mrsew_1756128016
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45a1b0cb0aaso33553035e9.3
+        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 06:20:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756127498; x=1756732298;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=r7uHrtrZhpgZRk0gGbUgDzQJCGEajHuc5dkdvC0IEnM=;
-        b=DSzRWBMiqoMiYZm6qKf8ltdNbWuQ8U1EQ/JZIG05FkiD0W6csfsLEmwFLY48SNG3kW
-         luHpl51iT9BGyCZgKr5DoBuRStmGEuf55S+rMSQfzBxlBA93Pce8Y3388Oi8MxuYT8fr
-         Vgqos5QSZk7t7AHuMxS5xZBvtlH1pn8BQ+amxH/8hcWPaUY4T55OwBHbyhGknYs4gee3
-         wMlNgd13IGuf1dvRO3KdZtQAB72+bFwnvIvFGglXrM3FSVQKo/RI8xSZYQzixvKt61B1
-         CGKHQ8XxIVFuj+AFIAiW6/HQ1Ls7BcUtcvjBH/YFxLooEiWskHWlL2t5jCicA3B0rOLM
-         4REw==
-X-Forwarded-Encrypted: i=1; AJvYcCXm/frSjjLyDM45w+AdVTbdGpkQ5SOUqcGozv0noIamqNxr0HbeJWFHsLTzwoG8PBTF57EKndESlQ==@kvack.org
-X-Gm-Message-State: AOJu0YxwTP0IPgUl6SH0EGcM8SRyXPZaphq3X9OaJYVAmqfVVGm1pIKY
-	YcTnaDprGu9MygPk7KqHQ1rysrfQrXV6xuMEj+RwDNaN2Ys7hZQRzYBJ
-X-Gm-Gg: ASbGncvWW0F/Jf/KsOADnQ7yExgnCdfG1rQsmFdQJB55GKLi/jKrK4EMU3CBBOEdTRj
-	nM6Uo/4ITdEMcgplhqVMEI9ZJySAXHAeUF3Q1m11YdiWbh9bWpGbg/6EMo5rh9ZopNQZRNdmT4Q
-	/UupXnWQjYZhfD0Q+EV/iLx6Uu8zZf/TlGDWO0pXSbD+U4kQql1uk3dfwBQM7HGNSc+d2pjt4PS
-	1jK8CYQjlZuO6ylXBenn+YTLrGVqhbgvcV+gtMJdnNPZb8UOfv1bx5k89/NI9ZDpOFw5GuT8so6
-	dWhxqkTooB5XsJ6nCN4Doqn4WIh5P/+qhzKseNmRF7AiEm3PCA/UeAyeoa4S6z70N5ZMRMy4Iae
-	6FUA1qMcTG2OyoQxuCKRGN0bJZg==
-X-Google-Smtp-Source: AGHT+IFbVFBJFVzIAzDQKA+W3eY4HXKeve+wc3ajfKtFsEqnzzGcvnDoGfuQcjBfLypQsN30CCxKvQ==
-X-Received: by 2002:a17:902:ec88:b0:242:9bbc:3644 with SMTP id d9443c01a7336-2462efacca1mr191818555ad.54.1756127498092;
-        Mon, 25 Aug 2025 06:11:38 -0700 (PDT)
-Received: from [127.0.0.1] ([2403:2c80:6::3058])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2466885ed8fsm68579725ad.71.2025.08.25.06.11.34
+        d=1e100.net; s=20230601; t=1756128016; x=1756732816;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xanPEdPEE3D5dOZlqK4VGPHY2abbjAoznKTXD9A7MGY=;
+        b=q6xHkXYz4Et8STrWQYrVN1vVXv0ZlTmxsT2vowS2AAs+3VF9aqE7Crn+06HEJKqX11
+         kCkD/SZTtnuXqEXkeYD26T2mPosK4/VF0QTllGThKqBohUY3b8hRMafqeLKtq7vggR7N
+         2q34ym5n/8dCxGBdz3Dtdv8fncVZ4VPqvZpU7ZDXsBpATnw47Z/JwmXJ4Dt164frRzyU
+         yeQFPIWuEJt8DW5xUetldkENLSkx1IGvJET3FQ5UdhvZ9/QPV9kR2u6o/LPF3xctTyfL
+         +zE/HEMuV+LefygF2n1W17uXrDSFFuPsLGUo553wmhvQTscWLy7vlNbdK0z6t41brdYe
+         DoeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW4kMUUcCJY97MVzdXwfgk2/8GIjhtWm88KZzf56TRP/ZCo2a8NHZFGOaTpHZFdr+vAj300K9EvPg==@kvack.org
+X-Gm-Message-State: AOJu0YzSh6/3frhv8qPeFmAd85mx7CqgGZ2fJoMR1k+acuw97ijZingQ
+	aawap2PvGsiaSmJVrDUuhXb4E7cPt3B37NBumzkH1EJ2d9OOynFuyjY1f40aXIVQFnd9ZEhA1WX
+	eHBX4lLtbYfpytoutSAz8ymznu4pxoVqd0QknM8DzQY7WsrtW1tzb
+X-Gm-Gg: ASbGncuBNJg24Bn/ldxEmZrjn76cWH9iJ3zufez8vsWquoGYE1zGtIg/xyRqd6jjuug
+	Kd/3PH8/Yb/O2iYJPJB27adI7ORLhyt3AIUVdmvxFQ12+xmjix2eD/tqY0dL4OOfgf/dyICroec
+	2gba9jBcTR+uoorEC3sVVh/4B16ysFj+at3oFW69vnIsVj4CMvPCBmLiUOXkK+93MqSQSnQZADh
+	QgzrRiISTroRW7fU2PViFWdcUAaS6GCXoxRS1MyAbY9CrSAUZBaAMrwSzLHEK/Cxd02tcgI51Tn
+	VJnzrMb1Q+UgeC3iy6uDBsJFLEa/Pr2+EAqaTd8Nvs9If43bJi4HNJzIybfkZcjbAKnmi8N9mv6
+	xJOdLJBqscmNTDI7WXCKRZz15qGMqSUcRaPJ8ifMTCGfGwnSrFbKYfM/h68tsEpdsPc4=
+X-Received: by 2002:a05:600c:4f03:b0:458:a7b5:9f6c with SMTP id 5b1f17b1804b1-45b5ec68358mr40532165e9.11.1756128015758;
+        Mon, 25 Aug 2025 06:20:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHvrXUbP05G5QAqAXL/0e5bs4AE6awYxmrv92zt0i3Fp8EOJw//DKRQZAygSokTsHc8FeRx2w==
+X-Received: by 2002:a05:600c:4f03:b0:458:a7b5:9f6c with SMTP id 5b1f17b1804b1-45b5ec68358mr40531705e9.11.1756128015277;
+        Mon, 25 Aug 2025 06:20:15 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f4f:1300:42f1:98e5:ddf8:3a76? (p200300d82f4f130042f198e5ddf83a76.dip0.t-ipconnect.de. [2003:d8:2f4f:1300:42f1:98e5:ddf8:3a76])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b506bdd9csm92855095e9.3.2025.08.25.06.20.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Aug 2025 06:11:37 -0700 (PDT)
-Message-ID: <abcfe0ce-0c0b-4717-9069-a6798bb13b76@gmail.com>
-Date: Mon, 25 Aug 2025 21:11:30 +0800
+        Mon, 25 Aug 2025 06:20:14 -0700 (PDT)
+Message-ID: <f1f290fc-b2f0-483b-96d5-5995362e5a8b@redhat.com>
+Date: Mon, 25 Aug 2025 15:20:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 07/13] mm/kstackwatch: Add kprobe and stack watch
- control
+Subject: Re: [RFC][PATCH v2 22/29] mm/numa: Register information into Kmemdump
+To: Eugen Hristev <eugen.hristev@linaro.org>, Michal Hocko <mhocko@suse.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org, tglx@linutronix.de,
+ andersson@kernel.org, pmladek@suse.com,
+ linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
+ corbet@lwn.net, mojha@qti.qualcomm.com, rostedt@goodmis.org,
+ jonechou@google.com, tudor.ambarus@linaro.org,
+ Christoph Hellwig <hch@infradead.org>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>
+References: <20250724135512.518487-1-eugen.hristev@linaro.org>
+ <20250724135512.518487-23-eugen.hristev@linaro.org>
+ <ffc43855-2263-408d-831c-33f518249f96@redhat.com>
+ <e66f29c2-9f9f-4b04-b029-23383ed4aed4@linaro.org>
+ <751514db-9e03-4cf3-bd3e-124b201bdb94@redhat.com>
+ <aJCRgXYIjbJ01RsK@tiehlicka>
+ <e2c031e8-43bd-41e5-9074-c8b1f89e04e6@linaro.org>
+ <23e7ec80-622e-4d33-a766-312c1213e56b@redhat.com>
+ <f43a61b4-d302-4009-96ff-88eea6651e16@linaro.org>
+ <77d17dbf-1609-41b1-9244-488d2ce75b33@redhat.com>
+ <ecd33fa3-8362-48f0-b3c2-d1a11d8b02e3@linaro.org>
+ <9f13df6f-3b76-4d02-aa74-40b913f37a8a@redhat.com>
+ <64a93c4a-5619-4208-9e9f-83848206d42b@linaro.org>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <64a93c4a-5619-4208-9e9f-83848206d42b@linaro.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: edfPj-B09Iht805LrPSEfEoXEAltpigd8JKXuydgSEM_1756128016
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-To: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc: akpm@linux-foundation.org, naveen@kernel.org, davem@davemloft.net,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
-References: <20250818122720.434981-1-wangjinchao600@gmail.com>
- <20250818122720.434981-2-wangjinchao600@gmail.com>
- <20250818122720.434981-3-wangjinchao600@gmail.com>
- <20250818122720.434981-4-wangjinchao600@gmail.com>
- <20250818122720.434981-5-wangjinchao600@gmail.com>
- <20250818122720.434981-6-wangjinchao600@gmail.com>
- <20250818122720.434981-7-wangjinchao600@gmail.com>
- <20250818122720.434981-8-wangjinchao600@gmail.com>
- <20250825193127.a0acb9831733e0e51a5ef81d@kernel.org>
-From: Jinchao Wang <wangjinchao600@gmail.com>
-In-Reply-To: <20250825193127.a0acb9831733e0e51a5ef81d@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 741CFC0006
-X-Stat-Signature: ieozs16fupf8qyieu6pi856cmwwsnort
+X-Rspamd-Queue-Id: F09B1100018
+X-Stat-Signature: 3dr9aydsuufg458hqf11c53uajbyrcwo
 X-Rspam-User: 
-X-HE-Tag: 1756127499-996501
-X-HE-Meta: U2FsdGVkX1+ktZp8ccuJ5Cx1q4rl3UImJye9LsgMZ1v1mXRNTcAhwf+GgGJtNoDjOFxC+1rYFIw4p9sjK8ig2WKy532EGdK/qH/x2puwnm0PSzOho2vwx29GmVtkruebRZckmoLkIQGsAI2iEGvDyFvBCQQQT+JS7xPZiEQTXth4Vynkn9VT4NJ+JU3xmZDw7CIjr4U/Cu4iReMX/xyjjYCNKVyypGgIqa53RQwIS5O4Bv6Z7pHFl9O5ldP6wrGgrEvTj4oVEm2anuSiMyP2EKVJ7PYI7rJKvpKqElV06RcP6Ff9fCLG+t3nQXFfj8oM6kxWiLgz3NlxgL5AfRZxZDHLEbNXgcyIICWB6Yuq28CqOvYTC2Sx7rKaRK72x7whbTfLYoofPJVhmq81/2+o70DgWv67V6B19TSxGeRGLqqp0C4en+XE0gw2UoU77EwFYA62lxRLe6u2ZqkJHcyl4yVmIoGsAOaV0iMl9NCkfc67kDWnhsBVMrEZTHUpTOrSwRZMKC4Tw/gRiko5k/RYAM44hTtWqDEhb9NM4S4QC4lwNXaEU/8j+kLMgxxF/wReiJ68yuqhzl1jkJvVF4r0D8WKc9CUPMhDl7P1KGk4yayleetgh2qjC3jGcPhKqWG+lxXoIJd9tWdEUhmkffPsARFeqabF/f8is77NcXJWJMeZqxqOBbYT9eL6dB0oVmVjOe1Dw4c2CFKmOrB/FAKDL06aL8LIaEuciQSjm61KGalWrEWFMTcoItiUwPLskiHu773Fc7/BANcrxdWK8WznsmW986QeH9DeTCM7lXZtRUuMXAHaAb7RZ9gnLC9C/VO1Vna/5Yzu2MSEEUJlPe5er92xj0GYTB118kvmVcn8pUMi/GS3AYMIqad6cVkIoAQVxr7Pjx8pulHXKpNJnYFx1VMvt1JxCPq6w8JTGum7KECN7ZNz9pK6h9R1EFCki+KrVZ2/B6v/S0zLdOnJJCp
- xhqi9did
- kc58Tbnvv/A+H585jkeX/RB3gJjcq3IVH18P5IJRy/ybP7e0UJk/Kb+R9Vy1RFK4x16WlyhTMm66R8Ov4MSZi2uU1K6KNEIDZtBTd3SqWbAFq1GTq8dldbuYBZicm89r2hxFia1QOu1pgArIdWRCqoqdaFMuQvWwTXKupRwLkxjW6l4BV3jpQhcKDqwRZUpBxLcP1dJJSGOPxPSffDFQ1xPwxtSJghShIpFp/0b2SwQsCFl/pD72hx9tXWMcRKS17HzqvhS3ldQJd46YTVgnVNDBD+/sQjN2zTyRi546MXSBdA1COCKqnft0ZnM7Su214UtWt3ltgsErNeUVptYRDyrL6kttmNdPDmf5M0Rh69OMbGUDkAfEWdBUfhVLABkZQme2+GdQ34WLaiJrg6pYllU0vpJ7WA++Bsfe8d5l94jgatQ+y4eqjZHV8uD/hRdbcxE4W1TQYAH9VTWEVYy5uzwwAeup6qhqMsRLVYyLxmvmsPzs3IU4RDzw55gRG7h8K244oziGVXi5Py7wFwNz+qOlvp2ZHx/A9XiRB
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756128018-647609
+X-HE-Meta: U2FsdGVkX1+sxdvu3OdNc3NRExZewn7YXdEyTO4U1zW3QGqitHf3hAfhL7Vcli5m3XmrSkrCmEHNApPEUoto2KNZDlSqnHDx/w++5wGPBIBozYPAkx+UEd35K+jWhDi1NyaMS1L2cbPAupWycLP4DGD9qkm0zVqYIT9/7bKEBc83PtAP7yt4egwI+zlgN4uArytfOyIiaPCO60GJEP2eKEu1OVCiI+uXV6HHBT1Tq1yaOGT62NijdlX30lqbbO0kZqs2YsUkuneZoSB1kirk4yW6Xec/x6V2dKMQN+wavN261ZP6RKn8zStjFJeLHBRZXopSiz1oq85sukbU+vyf7lMWZZqv6mPsyMZV7puzX29fizYR/P0vFNYujz2A99EA1U5xvhSBk7VFkh7piOkSRmuXeCea+ET4WM8pjtZuLq3LpXJ+PHXpL+acY5S53IGeUfuEmm1GkFE1RT9q4MrtjbbYVaD1JR3fnrG2mkPuZ999PHkqwqJ6rDeS1ug7F6OQJLChxTrnvlkjDut8vi0Kq8FMKCT6AiyCOgDRCcyQgFD/4PGfm31BdcCrVDAFbJk92qVPOJPmfr42R0oKr/q6TgY4YX2Qp+XBtdufwW7tYEh42lXEyl6Er38ykGvXy4h78VPO/6KfIWv4Y6fmBbVpsaSvPyWBfBSXk4MazfdwOqVc5qqTqSFdITtUA4rlfEE+INM7VSFA27Upkz5MtY9XW/SJuDTKmgHYzrPzL4rmBntttOi3EAti5y3UeFZaVz5dfaqGl4Rt79nHu6pX7va486zvbTYoEc0CSkV3ATaEoJM418MdKrFpAbV2hx4lSdQax1/+Kou6s/DkTY3KeHruKn67HNG8Wwto8OUBpWM/7ORtafFvozuIqpyB1Qy8gFAMWmsYPOV+BuegPN8U8Y9sUOmYXVUHANGiysCeHzMgSrGTj5GhtQhceUAtkM+fC1CYOHwha9UCU2w95jMisxe
+ rcEWmrpZ
+ TyBHCac4vmo2UN2Ns2BU/o0tbyImTwo2Ux9dpnp4nKImmSZvQMP8a9AUb+A4qzc2JBHXBEBrvbB23v79FQx97QpYRQO0jEbnil+TE3+BEzGNXAlh0m0R9aw0rkhGf209DBRcAsE3FHQLpKOXFCM7SI5HWLWs7W+ah7+uxdkesqlNlRobFDDCJbWUByN5xA3w+qse85M00/H4kpgybMF/nXuSew9nM7GTsULklLyCWh1gPThImC0NIjPiku2j6Ohoz/8jr6bLiiWB7I0PfVV5Rvpw8yVzJiy7GK+0Nk080+tby1QFgUCheWvW4cZGP/EJFfuMklCCklwaqIYgNQFsT6epM/kA8WXJH8z9ktqlV1EwxBFSyn1xLCEckzbn8xX/rCbQzLVgwlw46D1zEhODLjvHKuqks1628beWHTlqI3HtyRkwlPXKaXltXjg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,32 +194,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/25/25 18:31, Masami Hiramatsu (Google) wrote:
-> On Mon, 18 Aug 2025 20:26:12 +0800
-> Jinchao Wang <wangjinchao600@gmail.com> wrote:
-> 
->> This patch adds the core logic for controlling the kernel
->> stack watch mechanism using a combination of kprobes and kretprobes.
+
 >>
->> A kprobe is registered at function + ip_offset to turn on
->> the hardware breakpoint that monitors the stack. This allows
->> the tool to begin watching from a specific instruction within
->> the function. At the same time, a kretprobe is registered to be
->> triggered when the function returns. Its handler is responsible
->> for turning off the hardware breakpoint.
+>> IIRC, kernel/vmcore_info.c is never built as a module, as it also
+>> accesses non-exported symbols.
 > 
-> Could you use fprobe instead of kretprobe for hooking function exit?
-> kretprobe is an old feature and will be replaced by fprobe.
+> Hello David,
 > 
-> You can find an example in samples/fprobe/fprobe_example.c
+> I am looking again into this, and there are some things which in my
+> opinion would be difficult to achieve.
+> For example I looked into my patch #11 , which adds the `runqueues` into
+> kmemdump.
 > 
-> Thank you,
-Hi Masami,
-Thanks for the feedback.
-I will respin the patchset and replace the kretprobe with fprobe, as you
-advised.
+> The runqueues is a variable of `struct rq` which is defined in
+> kernel/sched/sched.h , which is not supposed to be included outside of
+> sched.
+> Now moving all the struct definition outside of sched.h into another
+> public header would be rather painful and I don't think it's a really
+> good option (The struct would be needed to compute the sizeof inside
+> vmcoreinfo). Secondly, it would also imply moving all the nested struct
+> definitions outside as well. I doubt this is something that we want for
+> the sched subsys. How the subsys is designed, out of my understanding,
+> is to keep these internal structs opaque outside of it.
+
+All the kmemdump module needs is a start and a length, correct? So the 
+only tricky part is getting the length.
+
+One could just add a const variable that holds this information, or even 
+better, a simple helper function to calculate that.
+
+Maybe someone else reading along has a better idea.
+
+Interestingly, runqueues is a percpu variable, which makes me wonder if 
+what you had would work as intended (maybe it does, not sure).
+
+> 
+>  From my perspective it's much simpler and cleaner to just add the
+> kmemdump annotation macro inside the sched/core.c as it's done in my
+> patch. This macro translates to a noop if kmemdump is not selected.
+
+I really don't like how we are spreading kmemdump all over the kernel, 
+and adding complexity with __section when really, all we need is a place 
+to obtain a start and a length.
+
+So we should explore if there is anything easier possible.
+
+>>
+>>>
+>>> So I am unsure whether just removing the static and adding them into
+>>> header files would be more acceptable.
+>>>
+>>> Added in CC Cristoph Hellwig and Sergey Senozhatsky maybe they could
+>>> tell us directly whether they like or dislike this approach, as kmemdump
+>>> would be builtin and would not require exports.
+>>>
+>>> One other thing to mention is the fact that the printk code dynamically
+>>> allocates memory that would need to be registered. There is no mechanism
+>>> for kmemdump to know when this process has been completed (or even if it
+>>> was at all, because it happens on demand in certain conditions).
+>>
+>> If we are talking about memblock allocations, they sure are finished at
+>> the time ... the buddy is up.
+>>
+>> So it's just a matter of placing yourself late in the init stage where
+>> the buddy is already up and running.
+>>
+>> I assume dumping any dynamically allocated stuff through the buddy is
+>> out of the picture for now.
+>>
+> 
+> The dumping mechanism needs to work for dynamically allocated stuff, and
+> right now, it works for e.g. printk, if the buffer is dynamically
+> allocated later on in the boot process.
+
+You are talking about the memblock_alloc() result, correct? Like
+
+new_log_buf = memblock_alloc(new_log_buf_len, LOG_ALIGN);
+
+The current version is always stored in
+
+static char *log_buf = __log_buf;
+
+
+Once early boot is done and memblock gets torn down, you can just use 
+log_buf and be sure that it will not change anymore.
+
+> 
+> To have this working outside of printk, it would be required to walk
+> through all the printk structs/allocations and select the required info.
+> Is this something that we want to do outside of printk ?
+
+I don't follow, please elaborate.
+
+How is e.g., log_buf_len_get() + log_buf_addr_get() not sufficient, 
+given that you run your initialization after setup_log_buf() ?
+
 
 -- 
-Best regards,
-Jinchao
+Cheers
+
+David / dhildenb
+
 
