@@ -4,88 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19629CA0EFF
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 03:03:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7357DCA0EFF
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 03:04:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 252906B00A5; Sun, 24 Aug 2025 23:03:01 -0400 (EDT)
+	id 95B0D6B00AD; Sun, 24 Aug 2025 23:04:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 229A76B00A6; Sun, 24 Aug 2025 23:03:01 -0400 (EDT)
+	id 932EF6B00AE; Sun, 24 Aug 2025 23:04:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1666D6B00AB; Sun, 24 Aug 2025 23:03:01 -0400 (EDT)
+	id 86F976B00AF; Sun, 24 Aug 2025 23:04:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 047A36B00A5
-	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 23:03:01 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8487F1A01A4
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 03:03:00 +0000 (UTC)
-X-FDA: 83813782920.29.04E6BDB
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	by imf21.hostedemail.com (Postfix) with ESMTP id F1EEB1C000B
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 03:02:56 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=jUDtO3+j;
-	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 729096B00AD
+	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 23:04:53 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EF46957C03
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 03:04:52 +0000 (UTC)
+X-FDA: 83813787624.17.1F17312
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 9EDE740009
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 03:04:49 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf27.hostedemail.com: domain of linmiaohe@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756090978;
+	s=arc-20220608; t=1756091091;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YDyIr1bDDorwY28+AGmaE7j4FXIULd86PhLUjg5+Yc8=;
-	b=xNaY2i/o/wYM6bMjAYw7BG2DmyYyGRicsMtCQetTtX5S63LApITC5DlxiIWBLRQbUlf0OS
-	H42XJ3+KbIGwbozj4V40lh/frH9XZyTXPPcMaob1J5IbjEVI6YOjsFjxtRihcfy3InAYAT
-	WpbgUF4Vl+Miod/A1M8HTinGWNqSWkM=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=jUDtO3+j;
-	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756090978; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=1/ZyKyb3PYCT+J0ggUYrRCpaNcwhspcF9XqlGkZzy0w=;
+	b=6C1ZZvLHo75lOJ3uGbAIXEek9LjcQVnaXKecLSmrgagUfTX0/ZtCZA4AX2kEV9OjqrPLbm
+	H/VCZXvSTFXWKsz6lzGQvVudYmWq7XjqMiiYVGJ3j6TEZf4YU3Io8T9Ant8X7oxWUQ1RTs
+	RkbPoes75YrekRxcjiE3Mg7vdzbqQSE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756091091; a=rsa-sha256;
 	cv=none;
-	b=6GLoSlP4NhUgZRWAgeJHs9SS1pFmCHTTk3EMLQwlI/HLghcHHiEZ6wRnpHIFDAAtO9iYLq
-	1RXcakj8QdSPfiaKGEBoSRjlROD22/e+Tmb6fivj78QTKIUdHm1n+ijDor8Opqe3XbbUqa
-	SYjBPX4EidVP2CPjVRar4HwVxdwy9iY=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1756090973; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=YDyIr1bDDorwY28+AGmaE7j4FXIULd86PhLUjg5+Yc8=;
-	b=jUDtO3+jbT8AD3KfX7spJLLQrgLJEWVBb2k5R93YaPI+pcxanjNCqsiecRCKzkFHXdKYENaj9duQDPXb6lMPIy7h6NpGy3m7Bp2vxPO53l2yJUw54oJ52hrwo/0Q/pRsp1aoJ1uDAZ7lCwAsWIdlrBMhRqhp1VuKUlAm9Bj86ak=
-Received: from 30.74.144.124(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WmPuZG-_1756090970 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 25 Aug 2025 11:02:51 +0800
-Message-ID: <0fc6e083-b7be-4144-a50c-d1a7a2e1c3a5@linux.alibaba.com>
-Date: Mon, 25 Aug 2025 11:02:47 +0800
+	b=PHJtdaLUykKPQBgrR/fLKJWwDMDFAAwoSigTSGxZVmqi7HCY0CiX8vKuz6JyvJHraR4hJu
+	dzQ+Fqj7umOp26vZGdjoohFkQuFCCHFnBUMqNOrT5yBC700FKV68XRtBWGpYz5C3zXwtkW
+	+dqOhHT+GszvudUmAMigxZtga804UAU=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf27.hostedemail.com: domain of linmiaohe@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4c9FyH2v90z14MWR;
+	Mon, 25 Aug 2025 11:04:39 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 4F012180B58;
+	Mon, 25 Aug 2025 11:04:45 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 25 Aug 2025 11:04:45 +0800
+Received: from [10.173.125.236] (10.173.125.236) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 25 Aug 2025 11:04:43 +0800
+Subject: Re: [PATCH] mm/memory-failure: Do not call action_result() on already
+ poisoned pages
+To: Jiaqi Yan <jiaqiyan@google.com>, Kyle Meyer <kyle.meyer@hpe.com>
+CC: <akpm@linux-foundation.org>, <david@redhat.com>, <tony.luck@intel.com>,
+	<bp@alien8.de>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<linux-edac@vger.kernel.org>, <lorenzo.stoakes@oracle.com>,
+	<Liam.Howlett@oracle.com>, <vbabka@suse.cz>, <rppt@kernel.org>,
+	<surenb@google.com>, <mhocko@suse.com>, <nao.horiguchi@gmail.com>,
+	<jane.chu@oracle.com>, <osalvador@suse.de>
+References: <20250821164445.14467-1-kyle.meyer@hpe.com>
+ <CACw3F53KmKRJyH+ajicyDUgGbPZT=U3VE4n+Jt3E62BxEiiCGA@mail.gmail.com>
+ <aKd1K3ueTacGTf1W@hpe.com>
+ <CACw3F527M-x=UeB0tN_sjCgp_YP_8yLkVRCLP2dLO2bzXrqWsA@mail.gmail.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <14a0dd45-388d-7a32-5ee5-44e60277271a@huawei.com>
+Date: Mon, 25 Aug 2025 11:04:43 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/9] mm/shmem, swap: remove redundant error handling for
- replacing folio
-To: Kairui Song <kasong@tencent.com>, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>,
- Chris Li <chrisl@kernel.org>, Barry Song <baohua@kernel.org>,
- Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>,
- Kemeng Shi <shikemeng@huaweicloud.com>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@redhat.com>,
- Yosry Ahmed <yosryahmed@google.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- linux-kernel@vger.kernel.org
-References: <20250822192023.13477-1-ryncsn@gmail.com>
- <20250822192023.13477-6-ryncsn@gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20250822192023.13477-6-ryncsn@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F1EEB1C000B
-X-Stat-Signature: uttqxafrxge4opufr61a9g9kooa5a5c1
+In-Reply-To: <CACw3F527M-x=UeB0tN_sjCgp_YP_8yLkVRCLP2dLO2bzXrqWsA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.173.125.236]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
 X-Rspam-User: 
-X-HE-Tag: 1756090976-556699
-X-HE-Meta: U2FsdGVkX188WGn3uHq6GR1hlCAs7dRLswZK5Br2OCSiuyvQwTH8GgZuzy7oVwXzYE4xFJ1AncifZfunHfErryobBTobJUQjQiZaPwWY6ZBij4r6KI8gT1bgX9163WYrIWMmDpQlq7TBo9N791Ii6cpD22WTl8dExNhRaTK4ByGhyRJEHA0jXXJ9ZUEN1FuDj89n0HRxEIxI4I+SbnBR+xPeufloloNyYO6KFWYSsPO6mfzp67a82z9MG8x4c8ug6H+LuBGCPIc7DuFZ6Zsf0R8ycXlqnIOsXldxW2vjoPHJNQBGUIk7Mfy4Q58mWgc0hErUsXyFCb7PwUSeaRmommw4CjA1yJNwTuh8zMzlJMk5LrKGN0R5TLVLwbng105W3Gk0q6nZQOR7FbV1Byw+8g1+TWyqYGiOss066/fwdP1h9OqTokJps5L0H1gHWhvntxLFgBZYLPsGPs1hf60f2TFCg2XF3h8Wb37kCgiYIEwy8SGoENAbONyfOYCNvTyn7L7qrXgBzqVlXELq8iZcZdCBnNdXE+6A9PuglxqniUpn61noTQNPzBi9rElhOIK/Ntv8AE77V3WjoPprH8gZgxImFC69hSwKrTUgmKekWbb+szarAxgBsZ+UOXDidQUop4auVP12RaW9lnNvSyupYk6JBX1MmDsc2cQLLf/LHT2/ACqHBJ9+RnMXLlTz5hcUBrKXYsfsvrtYCdO5yUQgGcOwFnv8hskbg36Eex3ljaWHtpH6jcCCUwXgRnwBCcE/0Eq8rkWeaVRnJ11Omg+o96w52tinNkUXlsdz3MEGkb7NDNIj5NSOUlYmTJQIonZ2AWV1d6qFUL4Hx4TpeOwmkm7pugadHqSJkCDvsa9Lj6/01Xo2Zgz0xzKt7AxIZ4tddX4v5AdEOhG8+AO8pK+g0hIWcushDbhl
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9EDE740009
+X-Stat-Signature: 6cmywief9i4z9cdn8immmgy56xro36ee
+X-HE-Tag: 1756091089-459349
+X-HE-Meta: U2FsdGVkX19KemttozUE9vVYhjueq2RZqdK/pWyYpPKrdCvTvym1Xw5fpYfXbamQJmOUvuPF75rJYqoccWRSAk+nXMNl2U/ctpw6n8ruKG11Vkal8G370ZaO/TaB+xLv7QcKN0NglJ05qHw8i0fbxFy4iE7ugVLqmM4vzJeIsHZW9dbKdygSqWd9F4q2vpq41orFl+D5VgmOcLJ5XyPOq43dALl+hEOssAPZqz+cwvJITwJ7Ad9Q7qJz/0TVYXMId9vSwGyoB091fUspQFut+lYMIIKbdtWNV7oJAPg7moHMPpAJKPEgLp1iPWWWdahruOorKqf/RTLCrdCDHO0L8nEjTK3oVAmri4mLtXFH7vB8+9ZFrWETNiueEvLXNWm1xVHmPIeL7Y9v2u2RWp9yr6sAvTXyn70JR0i7GLkYQAtNFNB1o0jPeLm65eNSCrGrD1F0pfnoxdOtmATFdbj6DttD6sDYJjSA9IhphqvqKmaaBeqhLGRCxy+qtB2P98r4Kr1o6/FzzOLIm1LzIDfxG+WVLa03QpE3oTvKeHNDXy1pYNQPfUPRXLXYLCa997Oisek0nlUnO3mYESTBS1o+I/a5nk4MsH0dEmpdRWX2rdS4GBqABdBsK6EOEnmFqQnAZ5hJyjLThL4RXVBcdM66vigd1htQ1ETVZ9bIY+gkHC+heHHZmN+YT3Qvwxvfnk1gCDmsQmZ/nutNatrZ6hBpTW7xl60inv0YOe4R2/ixu+SrhHt5kmJyDKLXCqay0Lzm3+lCQgPIVjVvNnMCk5lIEFPjPdeBCf1gYhvnAsjVjYHDQb29tDLqLJ5FmmbVgi2NFALQsPgeDG9G5U/RM+dGkluZAbvruEvLUBUwNgWptqpF+fGUkv9lJlXlXuCdyHT9HnvecJSV79dN3jgVSOxdbynr0oy9xMr8FALpvgPAVaxXZg3LyFG9ywi0RCLO+wn4Nppi0tO2kpHfTDilymF
+ sF22sNOE
+ VkbIDxHOWMDpWc+jBXRZNk+gxTi8mVA61Yt3uhmK7ZFH5x1Zqkb2ciGE9dhbaMn/0keI03X3XpiBm1VfyYBoxOUd32JmmNMbibUJ2MSPSvTcHYtXpsMwlbF1FOVXAuWtJwwqFicJaR+qxSVv7aPdRh11WsoYWCcSvKvntblUQRMOKbtkXUqZZEKT2QnGSo4gtxzamZK/fE80ZA9NWozpukCUJQoqzbd1pEvEZGnvCJ3mTBZ67YStc9moTRFHhD44XHLpn9wJo1bzHiEhEohZZPv495rKzCm0PPmH6IFIYi8gaxPLtAWdwPxYIv1g7YIZIY9rFTTeWtZ4wQKZCZNWMDA7mnA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,73 +105,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 2025/8/22 8:24, Jiaqi Yan wrote:
+> On Thu, Aug 21, 2025 at 12:36 PM Kyle Meyer <kyle.meyer@hpe.com> wrote:
+>>
+>> On Thu, Aug 21, 2025 at 11:23:48AM -0700, Jiaqi Yan wrote:
+>>> On Thu, Aug 21, 2025 at 9:46 AM Kyle Meyer <kyle.meyer@hpe.com> wrote:
+>>>>
+>>>> Calling action_result() on already poisoned pages causes issues:
+>>>>
+>>>> * The amount of hardware corrupted memory is incorrectly incremented.
+>>>> * NUMA node memory failure statistics are incorrectly updated.
+>>>> * Redundant "already poisoned" messages are printed.
+>>>
+>>> All agreed.
+>>>
+>>>>
+>>>> Do not call action_result() on already poisoned pages and drop unused
+>>>> MF_MSG_ALREADY_POISONED.
+>>>
+>>> Hi Kyle,
+>>>
+>>> Patch looks great to me, just one thought...
 
+Thanks both.
 
-On 2025/8/23 03:20, Kairui Song wrote:
-> From: Kairui Song <kasong@tencent.com>
+>>>
+>>> Alternatively, have you thought about keeping MF_MSG_ALREADY_POISONED
+>>> but changing action_result for MF_MSG_ALREADY_POISONED?
+>>> - don't num_poisoned_pages_inc(pfn)
+>>> - don't update_per_node_mf_stats(pfn, result)
+>>> - still pr_err("%#lx: recovery action for %s: %s\n", ...)
+>>> - meanwhile remove "pr_err("%#lx: already hardware poisoned\n", pfn)"
+>>> in memory_failure and try_memory_failure_hugetlb
+>>
+>> I did consider that approach but I was concerned about passing
+>> MF_MSG_ALREADY_POISONED to action_result() with MF_FAILED. The message is a
+>> bit misleading.
 > 
-> Shmem may replace a folio in the swap cache if the cached one doesn't
-> fit the swapin's GFP zone. When doing so, shmem has already double
-> checked that the swap cache folio is locked, still has the swap cache
-> flag set, and contains the wanted swap entry. So it is impossible to
-> fail due to an Xarray mismatch. There is even a comment for that.
+> Based on my reading the documentation for MF_* in static const char
+> *action_name[]...
 > 
-> Delete the defensive error handling path, and add a WARN_ON instead:
-> if that happened, something has broken the basic principle of how the
-> swap cache works, we should catch and fix that.
+> Yeah, for file mapped pages, kernel may not have hole-punched or
+> truncated it from the file mapping (shmem and hugetlbfs for example)
+> but that still considered as MF_RECOVERED, so touching a page with
+> HWPoison flag doesn't mean that page was failed to be recovered
+> previously.
 > 
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->   mm/shmem.c | 28 +++-------------------------
->   1 file changed, 3 insertions(+), 25 deletions(-)
+> For pages intended to be taken out of the buddy system, touching a
+> page with HWPoison flag does imply it isn't isolated and hence
+> MF_FAILED.
+
+There should be other cases that memory_failure failed to isolate the
+hwpoisoned pages at first time due to various reasons.
+
 > 
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index b4d39f2a1e0a..e03793cc5169 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -2158,35 +2158,13 @@ static int shmem_replace_folio(struct folio **foliop, gfp_t gfp,
->   	/* Swap cache still stores N entries instead of a high-order entry */
->   	xa_lock_irq(&swap_mapping->i_pages);
->   	for (i = 0; i < nr_pages; i++) {
-> -		void *item = xas_load(&xas);
-> -
-> -		if (item != old) {
-> -			error = -ENOENT;
-> -			break;
-> -		}
-> -
-> -		xas_store(&xas, new);
-> +		WARN_ON_ONCE(xas_store(&xas, new));
->   		xas_next(&xas);
->   	}
-> -	if (!error) {
-> -		mem_cgroup_replace_folio(old, new);
-> -		shmem_update_stats(new, nr_pages);
-> -		shmem_update_stats(old, -nr_pages);
-> -	}
+> In summary, seeing the HWPoison flag again doesn't necessarily
+> indicate what the recovery result was previously; it only indicate
+> kernel won't re-attempt to recover?
 
-It looks like the shmem statistics update was mistakenly deleted?
+Yes, kernel won't re-attempt to or just cannot recover.
 
-( Continue to understand the whole series:) )
+> 
+>>
+>> How about introducing a new MF action result? Maybe MF_NONE? The message could
+>> look something like:
+> 
+> Adding MF_NONE sounds fine to me, as long as we correctly document its
+> meaning, which can be subtle.
 
->   	xa_unlock_irq(&swap_mapping->i_pages);
->   
-> -	if (unlikely(error)) {
-> -		/*
-> -		 * Is this possible?  I think not, now that our callers
-> -		 * check both the swapcache flag and folio->private
-> -		 * after getting the folio lock; but be defensive.
-> -		 * Reverse old to newpage for clear and free.
-> -		 */
-> -		old = new;
-> -	} else {
-> -		folio_add_lru(new);
-> -		*foliop = new;
-> -	}
-> +	folio_add_lru(new);
-> +	*foliop = new;
->   
->   	folio_clear_swapcache(old);
->   	old->private = NULL;
+Adding a new MF action result sounds good to me. But IMHO MF_NONE might not be that suitable
+as kill_accessing_process might be called to kill proc in this case, so it's not "NONE".
 
+Thanks.
+.
 
