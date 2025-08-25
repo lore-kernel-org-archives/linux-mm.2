@@ -4,129 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C302CA0EFA
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 11:53:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF812CA0FE1
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 12:08:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 091E28E0014; Mon, 25 Aug 2025 07:53:04 -0400 (EDT)
+	id D5F378E0015; Mon, 25 Aug 2025 08:08:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 042C08E0001; Mon, 25 Aug 2025 07:53:03 -0400 (EDT)
+	id D0F848E0001; Mon, 25 Aug 2025 08:08:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9AC08E0014; Mon, 25 Aug 2025 07:53:03 -0400 (EDT)
+	id BFE1F8E0015; Mon, 25 Aug 2025 08:08:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D51818E0001
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 07:53:03 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DE2E883FCB
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 11:53:02 +0000 (UTC)
-X-FDA: 83815118604.28.43CF0AD
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 91467140003
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 11:53:00 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=BLdfv054;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=O7drp4zQ;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hxlNOytD;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2reUtbC+;
-	spf=pass (imf26.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id A779E8E0001
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 08:08:26 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 578FB1A03DA
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:08:26 +0000 (UTC)
+X-FDA: 83815157412.19.8628DBA
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 9163914000F
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:08:23 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=KUSYqSs4;
+	spf=pass (imf23.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756122781;
+	s=arc-20220608; t=1756123704;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2nTexNPNCcUbIAPjVulE+NnEcHNOirgIMW9iyl6DGTw=;
-	b=QvqJgN22N5R5EqvESYvaRroLkox+W/LZq4NH7XD0tHip89GP5ZVSYE/IW7Q4H1CGbX/r4t
-	1pqm4+6Dk5TgG5nWibXzx0KBIgUAr3pPJK9wc3p1PE+srjsSftYR2wCrKyxL9Lx+6bQhLV
-	UxL1ufa9C2oy0UmAFR6GWtSe5jIFIcs=
+	bh=djLIMBABOQ5QMilKv8RGXgyY8Eozctcb9yd8r0Ea10E=;
+	b=fIw9wdnhPLgWkKFfjz9tGR4O/jlUFKs9n8pRVv4Z1laKC9c+3QpvImA7d+YNdK/8NoENPU
+	1mu/fPXxZbXuK9LmMJwKkWiPIV7LQNZAD/NevajpgKn8MuEr6cd9CSg+010Y2wCS+vZ1MK
+	2oaMxihj6QiBmJCKdTWgoUgZwLVNE2E=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=BLdfv054;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=O7drp4zQ;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hxlNOytD;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2reUtbC+;
-	spf=pass (imf26.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756122781; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=KUSYqSs4;
+	spf=pass (imf23.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756123704; a=rsa-sha256;
 	cv=none;
-	b=hK8RNCP49lO48e9+pgNC82zH7oG3nOGhuDm+mx6b5Ei+sTCYLDWFLXIyqKzrG2wIYaZomu
-	Y3g2o4UE+FHvEwBya2w5EyPGrUDlVsPAeTaLvUozCiaG8/g+ZlzXMlQ68hKRTD8HrcPeeU
-	YHdBXn4jEIGL2VRltPPAcBuPvtv9jzQ=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D67D91F79A;
-	Mon, 25 Aug 2025 11:52:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756122779; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2nTexNPNCcUbIAPjVulE+NnEcHNOirgIMW9iyl6DGTw=;
-	b=BLdfv054/p/malDxY9teiJzF9lSukSG4D6BpJmBipN0NdWdSW+xQ78Zp+mX96AOFCJ4or6
-	zbtqKq1WT7TjodcVLV0bt7J1MZOfzgwccf3JUIl6s8+kVZikdeS2skIvtGyG2OhlZoKg6Q
-	JUss4nIpYcq8CgiicsCS81+f175aL1I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756122779;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2nTexNPNCcUbIAPjVulE+NnEcHNOirgIMW9iyl6DGTw=;
-	b=O7drp4zQKKa11N3xPKWzBS/Q0YDI7TmPrZK8qGmy4XbGkcAVUk/3ZlwnODZ9si0dCo8+P7
-	5I/V+iy8CB2E8QBQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756122778; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2nTexNPNCcUbIAPjVulE+NnEcHNOirgIMW9iyl6DGTw=;
-	b=hxlNOytD4XOs/AoLjAcVDIzjRMdvyScfjPWrBeLqnx0djwZ/JXkk86x1sLkDhnlw/4E/ni
-	uYxxucfiTI9vedgKCrWJcx7BY+QluNhfdm4l2MpQlzHhl1brp6XTlNTSvpowKMI6Sw5rkX
-	USEgKImf2GD1KiVkKNFJec81wPqbFec=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756122778;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2nTexNPNCcUbIAPjVulE+NnEcHNOirgIMW9iyl6DGTw=;
-	b=2reUtbC+KuaceUTmG97zLnb9fIt9VqqRYRCJqi9iT5L3d2xW2yZVplRnOVQlakwqC3C18m
-	1Nr4U8+V7VDSZaAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CAD161368F;
-	Mon, 25 Aug 2025 11:52:58 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Scl9MZpOrGivCQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 25 Aug 2025 11:52:58 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 0FDFAA0A6B; Mon, 25 Aug 2025 10:16:40 +0200 (CEST)
-Date: Mon, 25 Aug 2025 10:16:40 +0200
-From: Jan Kara <jack@suse.cz>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>
-Subject: Re: [PATCH] mm: readahead: improve mmap_miss heuristic for
- concurrent faults
-Message-ID: <nbhyazac6tig3u753upst4brgmlo6qlwdntxdgwtfslpmmvp6h@gakfswzn3p75>
-References: <20250815183224.62007-1-roman.gushchin@linux.dev>
+	b=x9Pk7SkfULhY5h4up85r1TYQOUpdpaPs+yoPPjQglYWUDatfBUZePM3ufoErss2Nv2uG8n
+	496pPycpfSmu9yxFS1vl2fnmbLZZxxMEzi1772eO8mfgkrWq55Hvor1Eb1wMyzrQJiibTW
+	u6bX4R8bDCuATOhfByvpWmr2rqVOGlg=
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-76e2ea933b7so3699831b3a.1
+        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 05:08:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1756123702; x=1756728502; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=djLIMBABOQ5QMilKv8RGXgyY8Eozctcb9yd8r0Ea10E=;
+        b=KUSYqSs4gez4ehcbWosb5LCgHqrX39vXLjjmssI5WN0/VCdyHNeUbzuvtTUrchhTXn
+         Bn/9qkI6HeHsU1nVmOlD/AB6zC699ZEGzksESbjhiBAMty26UatAhFjVBUlPwkBoY2Bi
+         4SZkeEBVfGB7zahg+f0PZ/DZ+hlOpg/hTm6yecpv1owx5ZU+YfM1NcsAW2kd9MRsf4Jl
+         fPmV40XHFCfvUDaJisnEOG/1+/tC8Iic39LbJwTaYMVIxfm4ne5yhGHgvPLHVKHh2WfE
+         IClz6c1a35Q3DMsY0nCdxGjsF1mlpIv76rSVdhhqHwlM4NjSnAcdu/sH8wIVzKU0Cx7g
+         HyCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756123702; x=1756728502;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=djLIMBABOQ5QMilKv8RGXgyY8Eozctcb9yd8r0Ea10E=;
+        b=aZAEgFKSs0kIpIdqAG1qdrg36ACxpbvHHgogViM2tt8m3fcwtBBveo7LJEnYiKu/9W
+         v4E8CdRMZVzrSqZAGZx1dGlL12paB3WGYHlMwa7LxN1MLpEtIh0DbkUyVKYrk8Q93DxX
+         1Yal9IP/wPz3Qpr/0HzSxEGydUYt8p7iwj2V9EHKY3a1zaUaRQNpi+48NLKViLUJM6M+
+         VJd2lc9DraPn0U/y5ezT1vAf9bZr2qRHl2VVP/nyzzeRBpp/PIw4MNGYvxu4wuxJ9bZr
+         8HZwx2YSjIdtXndBpvSxbfLyf+hll9ZXrmidxANVhBHBnMypXusV/NVH5jwS1CenzojG
+         6Vzw==
+X-Forwarded-Encrypted: i=1; AJvYcCU5wRfr3d0MjsRDU51U+9d+WVZoV8dYRcRMVsCcU4JSqUECMcjyJWIPCOsjgklji5EfAjmjt4SuGA==@kvack.org
+X-Gm-Message-State: AOJu0Yzoh5WSuB8dA50h1sR64SAVChXIAcswXQ/2MKE6mvMeCXKqDJqu
+	2qEFvDMracsm9zsjzkSvYiN1cJQBAIWIuqwp4qGHVVp/s+MdeIhBNYltHyooYyxCxfU=
+X-Gm-Gg: ASbGnct8qZJxodpARVkn4CHTdu7FSQaZXPrZAaTBVMuiMKoQ3CpBwLh7ijzXiyAbAMc
+	+jXebHV2ITBaxm23ytI9p0Bt36mN6o1EnIIprreU4LVhrzJxXMF2lzAvTPlRZx0IwHIRmujxeOW
+	u2PlVdpj4ieMHXG/7qYJ6YtwGt3K0kiIlzd13LmY5E82MTnyyQBgi22Wxr71OXzeYmsjSpuxVOG
+	ehaOA2iGaEcapE4mZ7YWi5TjpxW76sbY7TluzjLHDp+YcDME+oBqWetCJinBAr3qXbe8oG1+ut9
+	Sh7jYkrw2HTNNfdbNc8MulGrZbeyyKfqkzIg0E3D7WCFJuXsovi7bFEKk72rHBzFBBxXTx8+cwj
+	Zc/CBtZqX4THNiAqIS3ESV6KWpLMJYGAYlK88NNnCW/ayYJQ2OoCnfKEVjEX3SVFQhNMXPqM=
+X-Google-Smtp-Source: AGHT+IEANcNrkMuJ1PjBmSdPjmdk9y77EAYoFZYgAnfWDeZy+q3lUhQjHBWmnTqj+0/HSjBZ/qdDeQ==
+X-Received: by 2002:a05:6a20:5493:b0:240:10d2:adf5 with SMTP id adf61e73a8af0-24340b57600mr17869147637.2.1756123701840;
+        Mon, 25 Aug 2025 05:08:21 -0700 (PDT)
+Received: from [10.88.210.107] ([61.213.176.55])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-324f3818abfsm6684739a91.0.2025.08.25.05.08.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Aug 2025 05:08:21 -0700 (PDT)
+Message-ID: <6d54e933-5ff4-4711-abb9-96d39a5dd62e@bytedance.com>
+Date: Mon, 25 Aug 2025 20:08:13 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250815183224.62007-1-roman.gushchin@linux.dev>
-X-Rspamd-Action: no action
-X-Stat-Signature: 4iwg75tkeej6os8cfgy68kbmjqit9q5r
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] memcg: Don't wait writeback completion when release
+ memcg.
+To: Jan Kara <jack@suse.cz>
+Cc: Tejun Heo <tj@kernel.org>, linux-fsdevel@vger.kernel.org,
+ cgroups@vger.kernel.org, linux-mm@kvack.org, viro@zeniv.linux.org.uk,
+ brauner@kernel.org, hannes@cmpxchg.org, mhocko@kernel.org,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ axboe@kernel.dk
+References: <20250820111940.4105766-1-sunjunchao@bytedance.com>
+ <20250820111940.4105766-4-sunjunchao@bytedance.com>
+ <aKY2-sTc5qQmdea4@slm.duckdns.org>
+ <CAHSKhtf--qn3TH3LFMrwqb-Nng2ABwV2gOX0PyAerd7h612X5Q@mail.gmail.com>
+ <lvycz43vcro2cwjun4tswjv67tz5sg4tans3hragwils3gvnbh@hxbjk6x6v5zk>
+From: Julian Sun <sunjunchao@bytedance.com>
+In-Reply-To: <lvycz43vcro2cwjun4tswjv67tz5sg4tans3hragwils3gvnbh@hxbjk6x6v5zk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 9163914000F
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 91467140003
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1756122780-668982
-X-HE-Meta: U2FsdGVkX1+M2KY41er+uqqXuD8bG/t45C8f3MYjokMaWOSfe0vYsvxvcbn13kO2czHAdgsk93HPBHUr5midGxalluvJFLQUiZXhVipOIjO72rXewvuTju6pnDccX0wNIgWlhrOW9dfO+7odg5iYKHYHgL/2h3BtPYdi51aJ8fpWeWU4PaU37gSi4zirqwAsmcTagl6ccfzBvfr2Tn+L3BdUy4B/ZHuhYtGWT1ikoDjI+b4OlDP2yvnHLMuyO79ZgmPOq45cRuulqaKsqTXzwW87YD3Fsp3BgooMrRbXj1aC0ijR4wcM2DZ7G5gtKLmzV4nz0EqFAlIspXlqaSblyn7kq74Z2dp1kLs6znYba28i4aHwEf83tVapMNwG4PsoN0tCSOr/EIRQKFFNBSW/eZMN50nYy5WI/ANZvpl307ENw1QDeYu+0IuWEvx+RHdMqwblMt0OxkX2fIttXzmAFWzHPtdOfSw2cEkngK+XrSg4z8QangUxUpAyz6rRXW75mmXa1MfBY4hyIH/B3WppRuI5d1TF6DJCEgrojaTCeY8WfdDJ+la1OYyOIzT8jPhrKVwWAM5ZHxSR+9Zyy8VEm1gntmVQg0Tvv3AfkCSFNAP0gMKvJHBXMKGu7jvj89us7EkcuwjOulhxi4bA2+HGljgWalvGwxCLchzH5iGwhjsqsXZlzn7Ax+A1gM4z5iZfqIX2wRDjbfkEoJKQd74mN15aBCHogKVMmR9QQdgxOgbLRi4JoX8QTFa0hxavYyWn6ef22gPjvnhnEL/QCyHi827GYV+LeLpfsGlQo/Jt1uKZSpwM2et2WjMCDpwcvED/3GtIQNXAp7U5bt9mHeYMGl3GzO+kzfQo8qLHCU2GvgTn4FpjuVoiZfcc4Ai/dng3fHlSVuTWQMQQp9IO33Wd3lS/B0VRtoEmvvxfVuaIB6GtkrM9JxGGz6BqRc2JsAv/DAG15+LTuOZd0a+BGBB
- OAIE6rrS
- ptXvQWHf2wE8JwTm5aZtFXHzLpxaQx96jvoLnBU/69R8e4MXJrzahxCIZtpz4YSDleCel+gdCANBtvbp6kbLvU7MhaxkpKZJ6MdNJBI2pJCLopUUzEeVEzzp2pLjLyQJvHYl/lD+Vvoy9P/UqyPNk6lgYRa1GP5Dgx2JNbmTz4hL2YCrr5kI8ELCT42cazlFEJ8uujRf+2IuauJwOMr2Zrtx8J9372YoDLxSMp+le6uiuKk7rc3hSaLQ3r4SFzHV17mEZvmvhgYVE0k7kgI1CeHZM1ztIGcxHQMNARlZ7QL3tYFnBvgJdo/gJR4HkekEanfpIvpo81S6JV4+LJAC3AmCoEmzj96XT2AjXN30OZJ+8bAuWqIhYI9K1HLq1o+nvw7j7n7ykCaLM8tfxVmU3AVsDlPOdhVLeRVuh7YAi+/Yonc8LV9N5aY2LKnAbpd2EJj3bBRiThVZR5d8HhXmxtiYdhNpb3mA2iQ5eRrMzI8ajAreGQQ1C1GtaDA==
+X-Stat-Signature: bjzpy896s56kjt5ep3inm13qkwgndo4z
+X-HE-Tag: 1756123703-448260
+X-HE-Meta: U2FsdGVkX195lHU4SUTgEPgZIfbQXmm4kPf2nL4kf9TwSaDn0PTOFspGzeGBHKNvON/TK0TVBjJxlme1B33R2OOJADN0FIbluZ3SfqXYHJcxq9JjM8Jxr9GhJ/VY2OKI6MtfI/pzMDTQMK4MvdTuBsAahvDEwLL3yQfjxcVlxE+lGlGjCcDCGKYK5ChiMhnDVMm6yYmIt5FlBa/K9S+A3XHdF+XZf422Tn/RnWeVoloEKW8Lpa1oZFcvdDJ1AvJqEKYLRbtX16aZitklICrxqXXHxZvR5od1KcFdbM4s/GhAOBrSpn6VtxiIFJER3r6E9OxJBAvvY3AtcBgu7+8XmJ5tljI6zN8HU2mzkxkJ7wGxuF47x/e3ax7rGm1QJWDoGnYqiG9gsjL8maqKhXu4rvZBxPA/ieY1rcKv5DsmXUoP78VmCt+jOVP5306RgpWzKQQ/dEajyMekkfZ+D+/WocpR1F+7rTc5nC0YpckKHuq6QWJ7Xvb5r9lxdd90xNQoAWCqG5MmnaGrI4TFYYPVQhs5wa4HsrCJaFM71NQOyZsJeuFTbhqUZiw13y4eKCqFYAtw8Bkj5SiqG3DSVRO3vqT2BO/WjqsnYvd9qWclIZQAzybmIlWCVrGDpyB/RV1SIFjc7NGWX0X4Dbl1MQJXV9eGtfYgXMSIRlc1G3JAHGqtxTpZtUr9lchYP6RvY01+r8Mpj5TrazWs8LdyG6IlOMQGA+jGMPR1Ko6rG24jDpdm/mNpHOPdIhnXnddFE4TWM9SjBrJnTgXqwYD57u/xvt7pdSm9omaDQ0EEiSaf8IcoCH2ybQx6E5gCvI8pK4zI6B4PIblJVPyA1jSPMXzUKEbadY6qe3rKYbI0a2s6SxXZ0QmHi7YP9zF3fMTNMY5cwLiNMNECYkLW789wxw1fNd2fOXRqF4KpEOcUpQTSfM0uEQm/NNdGL9a+rbLPydUTquMXakwAE8wnHf4tfQ6
+ a0PKOVQx
+ u+b3AiAIyrP7RSI635PgNmFaQCFU6PQDWnJKLLIAKZNQ3XsNAG3hGEpaoRfl+HeZcFuEeuZ3TTCbzFY6EqrSbJSJFJ6a1lnCMlkKPWb/zVy9vNSF5y+m4uG/TF/Olx5S2smhwCL5KogNPoGwQ6pkLrm844lqMUwlo7IwBDea7ZrkECepOhN4PqBpe5nwNHV1wQ5epjtH5SlYhh4+IR+eDC75XjBNq+W4WnydSa9RlSFKtG9T28eYizmCGHdMo5wBQI8d2wgLKWbb181i4/A6MaUT9BfWSK1AU1Yuzh5FYQkIZrtOzirE+yxgpCjg7AbE23HdvSWB9Y0Gs7c5BDVg4PhnhydMjeLT7WcEqvWxSLHsRUJmHsh5Wb3YKHwxFv2WcI10uvtV1oilhST5DJ4U92k7JJWFAfiCXuUna
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,68 +128,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 15-08-25 11:32:24, Roman Gushchin wrote:
-> If two or more threads of an application faulting on the same folio,
-> the mmap_miss counter can be decreased multiple times. It breaks the
-> mmap_miss heuristic and keeps the readahead enabled even under extreme
-> levels of memory pressure.
-> 
-> It happens often if file folios backing a multi-threaded application
-> are getting evicted and re-faulted.
-> 
-> Fix it by skipping decreasing mmap_miss if the folio is locked.
-> 
-> This change was evaluated on several hundred thousands hosts in Google's
-> production over a couple of weeks. The number of containers being
-> stuck in a vicious reclaim cycle for a long time was reduced several
-> fold (~10-20x), as well as the overall fleet-wide cpu time spent in
-> direct memory reclaim was meaningfully reduced. No regressions were
-> observed.
-> 
-> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Cc: Jan Kara <jack@suse.cz>
-> Cc: linux-mm@kvack.org
+在 2025/8/25 18:13, Jan Kara 写道:
 
-Looks good! Feel free to add:
+Hi, Jan
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+Thanks for your review and comments.
 
-								Honza
-
-> ---
->  mm/filemap.c | 14 +++++++++++---
->  1 file changed, 11 insertions(+), 3 deletions(-)
+> On Thu 21-08-25 10:30:30, Julian Sun wrote:
+>> On Thu, Aug 21, 2025 at 4:58 AM Tejun Heo <tj@kernel.org> wrote:
+>>>
+>>> On Wed, Aug 20, 2025 at 07:19:40PM +0800, Julian Sun wrote:
+>>>> @@ -3912,8 +3921,12 @@ static void mem_cgroup_css_free(struct cgroup_subsys_state *css)
+>>>>        int __maybe_unused i;
+>>>>
+>>>>   #ifdef CONFIG_CGROUP_WRITEBACK
+>>>> -     for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++)
+>>>> -             wb_wait_for_completion(&memcg->cgwb_frn[i].done);
+>>>> +     for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++) {
+>>>> +             struct wb_completion *done = memcg->cgwb_frn[i].done;
+>>>> +
+>>>> +             if (atomic_dec_and_test(&done->cnt))
+>>>> +                     kfree(done);
+>>>> +     }
+>>>>   #endif
+>>>
+>>> Can't you just remove done? I don't think it's doing anything after your
+>>> changes anyway.
+>>
+>> Thanks for your review.
+>>
+>> AFAICT done is also used to track free slots in
+>> mem_cgroup_track_foreign_dirty_slowpath() and
+>> mem_cgroup_flush_foreign(), otherwise we have no method to know which
+>> one is free and might flush more than what MEMCG_CGWB_FRN_CNT allow.
+>>
+>> Am I missing something?
 > 
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index c21e98657e0b..983ba1019674 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -3324,9 +3324,17 @@ static struct file *do_async_mmap_readahead(struct vm_fault *vmf,
->  	if (vmf->vma->vm_flags & VM_RAND_READ || !ra->ra_pages)
->  		return fpin;
->  
-> -	mmap_miss = READ_ONCE(ra->mmap_miss);
-> -	if (mmap_miss)
-> -		WRITE_ONCE(ra->mmap_miss, --mmap_miss);
-> +	/*
-> +	 * If the folio is locked, we're likely racing against another fault.
-> +	 * Don't touch the mmap_miss counter to avoid decreasing it multiple
-> +	 * times for a single folio and break the balance with mmap_miss
-> +	 * increase in do_sync_mmap_readahead().
-> +	 */
-> +	if (likely(!folio_test_locked(folio))) {
-> +		mmap_miss = READ_ONCE(ra->mmap_miss);
-> +		if (mmap_miss)
-> +			WRITE_ONCE(ra->mmap_miss, --mmap_miss);
-> +	}
->  
->  	if (folio_test_readahead(folio)) {
->  		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
-> -- 
-> 2.50.1
+> True, but is that mechanism really needed? Given the approximate nature of
+> foreign flushing, couldn't we just always replace the oldest foreign entry
+> regardless of whether the writeback is running or not? I didn't give too
+> deep thought to this but from a quick look this should work just fine...
+
+
+AFAICT the mechanism is used to make the max number of wb works that we 
+issue concurrently less than MEMCG_CGWB_FRN_CNT(4). If we replace the 
+oldest and flush wb work whether the writeback is running or not, it 
+seems that we are likely to flush more than MEMCG_CGWB_FRN_CNT wb works 
+concurrently, I'm not sure how much influence this will have...
 > 
+> 								Honza
+
+Thanks,
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Julian Sun <sunjunchao@bytedance.com>
 
