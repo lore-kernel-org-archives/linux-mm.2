@@ -4,197 +4,192 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06B34CA0FE1
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 12:30:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2389ACA0EFA
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 12:31:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B6738E001B; Mon, 25 Aug 2025 08:30:26 -0400 (EDT)
+	id 6B4E98E001C; Mon, 25 Aug 2025 08:31:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4678B8E0001; Mon, 25 Aug 2025 08:30:26 -0400 (EDT)
+	id 63DFF8E0001; Mon, 25 Aug 2025 08:31:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 32F418E001B; Mon, 25 Aug 2025 08:30:26 -0400 (EDT)
+	id 4B6ED8E001C; Mon, 25 Aug 2025 08:31:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F83F8E0001
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 08:30:26 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EA1FA1403BB
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:30:25 +0000 (UTC)
-X-FDA: 83815212810.03.21C1131
-Received: from SEYPR02CU001.outbound.protection.outlook.com (mail-koreacentralazon11013033.outbound.protection.outlook.com [40.107.44.33])
-	by imf15.hostedemail.com (Postfix) with ESMTP id C2983A0019
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:30:20 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=vivo.com header.s=selector2 header.b=NG3hDkI0;
-	spf=pass (imf15.hostedemail.com: domain of wangyufei@vivo.com designates 40.107.44.33 as permitted sender) smtp.mailfrom=wangyufei@vivo.com;
-	dmarc=pass (policy=quarantine) header.from=vivo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756125021;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B6B68E0001
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 08:31:10 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C527084025
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:31:09 +0000 (UTC)
+X-FDA: 83815214658.09.23948A4
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 4CFF6180012
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:31:07 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bnynJcsI;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756125067; a=rsa-sha256;
+	cv=none;
+	b=FByQ137hp8PtcLs1dq34Ni+ZtA3B5N8+0oWSzOGDkxh+JLb4FCAPtcG0cuD/Xpjkn9dBq+
+	obXx6xzvjmvePrfNsfx3s29UM4G8EnLNEhaUlqrKtNTEQL8wZZ6sNrysOhqOgOCEn5mT9q
+	utF2mn/CDxkC5ZyJBBkoZ3A1sK/EFxQ=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bnynJcsI;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756125067;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H+UbWGEtSqqFR1xFLWbOVoiHJ4Tx30wQR17QGn8q76E=;
-	b=xkDmWJE1PjOT3loJ1vl1e4pQRuiJ7jaKMz4YLcSdpFGq1W/z2jsRitSczN4JTga1mdSwSK
-	ElqcJI8Oy7elUbgkGnE9dNZpjZaaKoaDrQ9MVWp2DgJ8KRCTj2jE4eGNFsRv4fFxGj2MHC
-	mR2QkvlK2yqCrJ/EvlYiniw2Flq9hHY=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=vivo.com header.s=selector2 header.b=NG3hDkI0;
-	spf=pass (imf15.hostedemail.com: domain of wangyufei@vivo.com designates 40.107.44.33 as permitted sender) smtp.mailfrom=wangyufei@vivo.com;
-	dmarc=pass (policy=quarantine) header.from=vivo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756125021; a=rsa-sha256;
-	cv=pass;
-	b=Rkw9yStD10wL5h/5YBct+KMPtXsweOYvMwYxLdjM39ddFbqgil3WtRrVbynj8qOFSoiTnf
-	M9OOzrCv3IFI/3tBRpAZUOkyFUssUiCUuIoDkmILtQkgIC7CBcxoMr7DVTQPM95oFm3xvu
-	t2cQXzxOmpsknAaJyfb639vfDj4X0tg=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=b61IuaWGPXDP5VEXRTwuN7TNwmizn+dAxH5vi2jD85C3jmP1aZ37WHFPoN+fHHBI7LipLhi/wqZWPhPSX5F/Il2NPq0AuZp2bGYEfQ38k3B1HoAppGfgPYZ8hyyefv1x9+v81+u1bEQK6h1Mm3mY9kx+F4w40j4T0BOBP2vZX6xM+ihu1rtfD/9okDyIkuHCVY+VLHtBpuoKx/FJoL998RDGPFto/GrY4o+eB9D4FqzKCydl9KayQuq2n7e1H8Xx5Xul1BkujhPCmPr/OwMcpV/1FVfM7UojfDR9Z1IFyDDxlo/uN9Z9kjUIgxXQ6SrhSgH1C3VhcfxEV5kzt4wemw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H+UbWGEtSqqFR1xFLWbOVoiHJ4Tx30wQR17QGn8q76E=;
- b=GCBTwMNj4pe+ynSiwKSJd9vM67YSp2q5ubKKtkis0uX2ZK5LoDYid9vqo5Wk6DyxuoMeVXF8tBMGhkPDn7Q9qaoIE+FXZr2O9WIrAnGMfihQZU0SXz8i8Zrk3G5ozvcpCrrrAmlXgys8bctcjstZNSBD+kj4udSZ6ttv5JbsWhiuspYf6PCDaBVISc2NidyBJqWtatZE6K2nhEhbcJ+lHnknsRKekD9b36nJWPpZheSAp2buXR8zfoSolIFjDbKfsds9rn9ta8SyjhIsu3dpc2ZWCguI8tCD3FucXlD/ZLCRE74FTi2JJ1Fams3I8dNwinE4SAYPsnIseYrVvfIR7g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H+UbWGEtSqqFR1xFLWbOVoiHJ4Tx30wQR17QGn8q76E=;
- b=NG3hDkI0tMj5Ym8pFm9Bcn0rAvZ9rXZoBGCTsYkrRKYjmqr1v8hpH8E6hVCnB+2+QI/7KDVidv39TrbzLrra900eP0/noYd9g7FurzdjCIkjK0mRDUOeYHGbb+GcQMQlvUCqZ0zeAFdCgGduYUzgIPo3HReuPx+d4rLtGSL3i5u5PCTy3N4B1ZdfAAZz0792ka1tcwJlk1tVFd2M5ZSo4mnjSxKlGOetljonJ4NvlLelTFpjPiQdcMtXhfXOeFC1bHrebUyZSnNKyJtaOexJfb/cF/JsGd9OvUai2JcwKMG60cSV/BLLP7LhwGFmBcW7BXDuv5s6exwVlI+THqUoQA==
-Received: from SE3PR06MB7957.apcprd06.prod.outlook.com (2603:1096:101:2e4::9)
- by TYZPR06MB6113.apcprd06.prod.outlook.com (2603:1096:400:335::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.21; Mon, 25 Aug
- 2025 12:30:16 +0000
-Received: from SE3PR06MB7957.apcprd06.prod.outlook.com
- ([fe80::388b:158a:e14b:79c4]) by SE3PR06MB7957.apcprd06.prod.outlook.com
- ([fe80::388b:158a:e14b:79c4%4]) with mapi id 15.20.9052.019; Mon, 25 Aug 2025
- 12:30:16 +0000
-From: wangyufei <wangyufei@vivo.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	wangyufei <wangyufei@vivo.com>,
-	linux-kernel@vger.kernel.org (open list),
-	linux-mm@kvack.org (open list:MEMORY MANAGEMENT - MISC),
-	linux-fsdevel@vger.kernel.org (open list:PAGE CACHE)
-Cc: kundan.kumar@samsung.com,
-	anuj20.g@samsung.com,
-	hch@lst.de,
-	bernd@bsbernd.com,
-	djwong@kernel.org,
-	jack@suse.cz,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	opensource.kernel@vivo.com
-Subject: [RFC 1/1] writeback: add sysfs to config the number of writeback contexts
-Date: Mon, 25 Aug 2025 20:29:30 +0800
-Message-Id: <20250825122931.13037-2-wangyufei@vivo.com>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20250825122931.13037-1-wangyufei@vivo.com>
-References: <20250825122931.13037-1-wangyufei@vivo.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR02CA0099.apcprd02.prod.outlook.com
- (2603:1096:4:92::15) To SE3PR06MB7957.apcprd06.prod.outlook.com
- (2603:1096:101:2e4::9)
+	bh=48cMTSslcB0ziBS4SAU+081Ps38xL0HjCpNxL+9nzl0=;
+	b=MgUuPfssYUQw9giEn8vOQfnBJuA6uVIL9qgI5F05JOmpLS6AgIs0acoTEJt+3lTKnkP8Wu
+	J5KfBLu9aTZOYKUlUhv5zE+ndQRCWVsZDnTk32bg9LNbyX5T2Or5d872Ta5yrxyNV4+5wH
+	hxBFSAbGVfDmamZLtE1L5zrMBZAoo3E=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756125066;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=48cMTSslcB0ziBS4SAU+081Ps38xL0HjCpNxL+9nzl0=;
+	b=bnynJcsIIlGvpV5g4BJqvnLuZVKNuU6i/DGv4o0HpTle+UI+1UnzSJtz2bSVzgTEEdmrgV
+	ekEK7ZxGtvGDgTg+dPBUjkdJ5TYMPPq/lcIwmQkjq2d78QHLNCtEGcRFwdUcT9Pu116vE9
+	JoNW2j3oEciIbqszydEYJYlSebIG/cA=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-257-TPTqCAcAMRatOC_LwmqnYQ-1; Mon, 25 Aug 2025 08:31:05 -0400
+X-MC-Unique: TPTqCAcAMRatOC_LwmqnYQ-1
+X-Mimecast-MFC-AGG-ID: TPTqCAcAMRatOC_LwmqnYQ_1756125064
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3c380aa1ac0so1608548f8f.0
+        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 05:31:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756125064; x=1756729864;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=48cMTSslcB0ziBS4SAU+081Ps38xL0HjCpNxL+9nzl0=;
+        b=Swm72twUTks80gOF3kn1rJh9jwMQzhHze3eAaU0huYkDnqZkF6gpaaMn9D/eJzq7JJ
+         ayF5Oak3XABPL7fcjtm8rgqpoCanurD1WLKrsEbF/4KP3/mBRSGzj8kbpAX3wsbku9xz
+         si2ghrVgecW/ZeDyToRuuVBOFnb6Q6qRjr20Prf1BhyILi5QWxMXwIS4WVcy3TMSZtCj
+         UdQkT8SyL8/CkZOqVWoQY0tvt+46njMViJ5ytDfmCD6AtkVjfR4UKZtJQM0BiqcLrSM6
+         itRHpdZc5lp3eMjeOeDXq6igmxL84aA3Jt7Xdl9Wp2kNia4Q4MkGuFmaw1DhISquBVuB
+         hYFQ==
+X-Gm-Message-State: AOJu0YxoUrHC5NTuwQM/CeGMIEA4gbdlwuMnNmGezrMEErwrVBEg1iWs
+	8ErSDQGBfdm6xg0oshcW8EjVndGLbYrjJS3SBXWpIZ6YOy4GJBtuZVuRlm74f5a8tnitvyj2ZYz
+	DnsZUyXYn5+W3IsKNt0li2KUp6lQkZWEk69GpDLP/0FL3iIeNhlgKFAh3YoXg
+X-Gm-Gg: ASbGncv4YoWdJSeP4e6y+H8NOeFW4qW95n/cPF7Uaeo/IidtXPOQsZxXdthaslyNI3q
+	XANpgn3/uIgKhJfZkH/E+MVyphhgttu15hQ1Zp95TCe5oJ8jZ2XB1huBrR4ANzupM9RpHZDga+m
+	J4CqSSgiarbtGUfbhSJdgFfuM1N+lTZgoXcWl+FMIJvj5MhdaG0r4f5mGSEF2DLy8W958R4AnhV
+	x5zIM027nXHhSuhSPdpf0jZBCSVyxB1d39eG/mflqVAn3+EOH2w9CvIIkZbn5e5rwzzWI1NUKhm
+	spOeiKC/sWX7Pad6LXSKBoNpBS26ypblpM51NA1H9tLZRMWhp0l9a7aeRMFBtu7z3ysrkyn/TZ5
+	Km8O8NUguPU9gj5C6jRXVcPWoqBTsaBk+CuNkeBUSiVOO7K0BbwGnIyCkNDxb9mG+PXI=
+X-Received: by 2002:a05:6000:40dc:b0:3c9:469d:c087 with SMTP id ffacd0b85a97d-3c9469dc445mr3271490f8f.25.1756125063880;
+        Mon, 25 Aug 2025 05:31:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEvPKmvGXwFDJWJm849Yt5wXoDEn2seO+ZEF1/8AbV43w5FimZ47X7SqR0IFDLk15EedM+8Mg==
+X-Received: by 2002:a05:6000:40dc:b0:3c9:469d:c087 with SMTP id ffacd0b85a97d-3c9469dc445mr3271446f8f.25.1756125063406;
+        Mon, 25 Aug 2025 05:31:03 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f4f:1300:42f1:98e5:ddf8:3a76? (p200300d82f4f130042f198e5ddf83a76.dip0.t-ipconnect.de. [2003:d8:2f4f:1300:42f1:98e5:ddf8:3a76])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b575929a0sm106632785e9.25.2025.08.25.05.31.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Aug 2025 05:31:02 -0700 (PDT)
+Message-ID: <923b279c-de33-44dd-a923-2959afad8626@redhat.com>
+Date: Mon, 25 Aug 2025 14:31:00 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SE3PR06MB7957:EE_|TYZPR06MB6113:EE_
-X-MS-Office365-Filtering-Correlation-Id: ad1e146f-7adc-47d2-ea6a-08dde3d32512
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|52116014|1800799024|366016|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?t3luDM+Ecgcw4zbeH1itaC0prbhqHhl/G1kSqaaeB5aAINL/Z4LrreSG9dTl?=
- =?us-ascii?Q?1BRH+KdeddY0d8soUCXOplfsO/6ktnCyXUR5H+ulJcTfiaeX1+nEIvFBn/jJ?=
- =?us-ascii?Q?9FADZRWccKi6ILO84ZDywdjmVlCLCJggHX6qkg7zBCKnzPg8OJCSgVZW4J41?=
- =?us-ascii?Q?qs0j8+dWvfrGRpwhyfJ+UimsJZ2vZzjuer0rTf9yuLqQ3SL4qk6yZyYthzYD?=
- =?us-ascii?Q?qx3hKDrywST4dMCO6F+VYVSeZvbnGPJMy/zsWtjPNRjiWOoJ5ssf1fQEspq7?=
- =?us-ascii?Q?Ws+2cg9PTplvDHPi7VRyJtcbqUpujUpt8tDRHbrNucEyYCG39iXRnjr1d7HJ?=
- =?us-ascii?Q?VMvWldrL6clASYu1X48Lbqw5IrUXhGN9kJTBhHj3jVYG+FgsNA/KfYJhBReL?=
- =?us-ascii?Q?N7gviw1uGo6MIdiQYsweLwQHxnab8Ab768yD9xFEuPiTZGtp0l6ZiEw6Cn5P?=
- =?us-ascii?Q?pTIUwcHPJzdEhcbnZtjh/yaYX4Xes2kBIQEIV//aNHzzGUsZ8FmQfzMbTsWQ?=
- =?us-ascii?Q?ajeJR2dh5y52mfv51CHICTGX/9vPVdR3GBcWdd6yUhZbwZmfaIPRkvpfzXMi?=
- =?us-ascii?Q?IljRSxV3Tay7odaV8cter+egFJ9DlyjDgScz+Choz2W/gLbS2ofMPMpzzzFl?=
- =?us-ascii?Q?Q9OupFNxESd4wwnK+cYuqwqCyd43Ceuj2i7ejyJ7p5cnzwwayxxLQ5nFSiEz?=
- =?us-ascii?Q?SlW860CHeZqv5iqahoRrsPsykhBBiMOs50waMvwIrMw8nebGOV5jX5nXpWhC?=
- =?us-ascii?Q?KLmBLw2mC4QkbFGG+eIc+Wl/OIlR2xNE0xxBVmA3BQV9iO7HmkVMmbaeGxxf?=
- =?us-ascii?Q?bEPgfv3vlqBjhwtuBxyCO+8KkF95YGubXb81zxRu7uNSqpcCpHZXeDB60JvH?=
- =?us-ascii?Q?8Y3mWQri5drifrd64QsbeSMW6/yIm2Vgrlbja6RHzyLAdmS3J26/wM9GzPw9?=
- =?us-ascii?Q?LXAHOhW1Hx2IZZg4xANmjql47B+V6EkTKfEez0cpGMG/hpKy87h3+wfVkH19?=
- =?us-ascii?Q?Tyq7JrOu5Hv/R77xMvaGOYrDV4b6zqsZsB2zbz2kiy/dUOEXU/WmZ5vRdLYD?=
- =?us-ascii?Q?BxNaTxCgN5BT1yOmxXsolZuRjoT6Wfw1aLm65XJbhWhRIDWuI0Im7huLDX9W?=
- =?us-ascii?Q?3ZHTBaVoJp2uKVgTGZ4nJ2FpfFy9Iyqh6+dy3XPW31Qlw48feHgwHLwkS2XP?=
- =?us-ascii?Q?CgKaw8++mqs75KTJNu/1P1pKzw3XgvvZbsvP3wXmBMAlnuNbFMYM6nBS80VO?=
- =?us-ascii?Q?ugRWbuh+FG3I8vLvZPt4MJyF5HVuISGQ/JWVqPiPqTujCTmER+/zsFxE/ESr?=
- =?us-ascii?Q?qxr5rZdvWJJoogmjW+skWE3SMixokZ7djwXSV19DU4prxqa10i93+lMw1FSP?=
- =?us-ascii?Q?VkTyNMWsSzfH1Zej1yo+1yPUdAON1KCHT5qruQd0j1p/JFKGfZz5wWX6gsoC?=
- =?us-ascii?Q?tDRljV6XhL2ipfRDJrP4uf7BHGTjocbMHEo07qNAWVkdMNBvciJV1xa1S5KW?=
- =?us-ascii?Q?DBwYHtK6B3GegHg=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SE3PR06MB7957.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(1800799024)(366016)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ErFRX/webDnEKTvN6eGEsIUxvAWC7VafaQbIxIYCNngqIXJn2+WX4Fzv1UzK?=
- =?us-ascii?Q?7KwrR+Fm7Cu5mitijyBnQd+LruNmhUiqA2QRO7V2yg3jW0MuEqx0MX13XDBv?=
- =?us-ascii?Q?N1eUdvX/YtkOcgXX5sSDFbtgPO2CdbWUJmyA+oNyAPbn9+pcqwxhi7FXTBPc?=
- =?us-ascii?Q?Y6IjoPMmDDZuXShobyMJ4bIioYKJqIGnO/D8ClpzL98R4h/o6MQlHw0cWCA0?=
- =?us-ascii?Q?qiFVJfBcHD28AX2vR1LcCh2TYwKnwtaIo7fVFY4kFlS6z+4l6q7ek7qeR2qc?=
- =?us-ascii?Q?aoRVyTvLkRKU8ncGZ8uE6ICKT5RvXFFZkdcgrdA3O5v98S6n7eP3/bbYLvU8?=
- =?us-ascii?Q?b3yycKnToW69RLu53UzxOrAuMOSXGxxUxzlEnz7xC77AItoBEIoKSfUIxUfZ?=
- =?us-ascii?Q?XrDVKuzByRjsAnI7eb2D7kzpNIBu0UPL8YAhRDkMVINDScQcZOd+BwUJgXPx?=
- =?us-ascii?Q?jVnAjyy8K/Z6835NMz+0KnSRE4tVBUyPhxcSWPye8kwK3HBcHpgAh9oRJMpt?=
- =?us-ascii?Q?PCo5BWNrNw4Kps7oFlQ8yJOmYcivZkSxET6mlKnyaXdDLYA1bojSR3YN+JdH?=
- =?us-ascii?Q?FefgUsfckQ2PPC58rxgeEFLMENnPSfs1fH+feEjehoRYAhUQ8SuxcUTC2ulY?=
- =?us-ascii?Q?Yn6XBkMTTj+jZ3fuP+k4X6nmJMQZQdd/L/yE/8Fg+E0yQMLdre6iDA2lB1Kz?=
- =?us-ascii?Q?Vl6n2e40J719jrQOV8w1GxtO1NETFYT9jF7+OE1cDhs0sq7IqmTygAc0MwLp?=
- =?us-ascii?Q?DIV0OrfYFqFE9Nn1onXQm4sqCYecH0sTsitxZ82El1PqfcIZkBiLsvn1edcw?=
- =?us-ascii?Q?KDqABTFNU5tPExk4RFgDzJCI175FRPk6n0XNrAiKBiZPlVYOnVmIlemqSFYQ?=
- =?us-ascii?Q?2SOihlCofvJ3xcUu+CVk2mLjR3dEWQfk8y56MoRD3MK3uZRzEBbtuWlxBuoL?=
- =?us-ascii?Q?l92sKp11hJDJaarmsfdKSfts7474roQo10DaD9F8lJ8DXcL9Qw3AGqnQ7yEU?=
- =?us-ascii?Q?u+2rP1Wda7/k2LKbUf1AaDvwOsubn4hrALz5croOYTp1hOmkFef17EHlorFr?=
- =?us-ascii?Q?xFSOUbuQ6TULsl2h7FcnZidk4Ee+aOp4D6NQz4U+swvXCKvXWNpnkNT8Wj3c?=
- =?us-ascii?Q?E1iKJGSSa8/AxDo/wyFvZ5nqcJGLwJ+bw+vrpNI/U4poFcOqT+JStpyCY1mC?=
- =?us-ascii?Q?+jocGAk9jrLBjC2NcNEJxIrdBlP5619m6nfRBIwceU82oFzA2FydhSrbUbxM?=
- =?us-ascii?Q?WNqQIc6ML5KMp1XW+MHxMIOVjqqY5oZmyrnFILYwX1avJ4X+Lgc6w3j/F1ca?=
- =?us-ascii?Q?ce8w7ieagMP1Q/XEBL16IDQ2GRrO0J+er9YlSIbKeeczBTAu5TsQZOw9xp95?=
- =?us-ascii?Q?jUlwROov7BjdgJv5JAo4qX2lOzVHmMakqPZfoyd+cts1sRf+KEPasPzx26u9?=
- =?us-ascii?Q?4eyDlsauRtYffAyw/9UDTSpHkOpn3bpSQLDVv2IFzkb5jdjR0vFmW3+4JSbn?=
- =?us-ascii?Q?pNehGXohmruV5D+/dMvugmEIfDXxOqKEWqlBjjdCoYsObI/MEufwRZ7kK5hm?=
- =?us-ascii?Q?MQrd+GjoszuF0lKLFkPcjkPr3T+ZBPqAxSiS5v7c?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ad1e146f-7adc-47d2-ea6a-08dde3d32512
-X-MS-Exchange-CrossTenant-AuthSource: SE3PR06MB7957.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2025 12:30:15.9104
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: snpljeU/y/YXAW8BSEZ5gwYk/Xh8PzpzWlp8BBV82xRgNayYnOX3SOcDU1dsebKomSM6PowkUTGoR4OcPyr9Cw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR06MB6113
-X-Rspamd-Queue-Id: C2983A0019
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 08/11] mm/memory: convert print_bad_pte() to
+ print_bad_page_map()
+To: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, xen-devel@lists.xenproject.org,
+ linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev,
+ linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Juergen Gross <jgross@suse.com>, Stefano Stabellini
+ <sstabellini@kernel.org>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+ Dan Williams <dan.j.williams@intel.com>, Matthew Wilcox
+ <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ Hugh Dickins <hughd@google.com>, Oscar Salvador <osalvador@suse.de>,
+ Lance Yang <lance.yang@linux.dev>
+References: <20250811112631.759341-1-david@redhat.com>
+ <20250811112631.759341-9-david@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250811112631.759341-9-david@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 1tfgrEZ80J5sB7pZvvImCtDnXFpVz35rxuVP82td2nY_1756125064
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: z3ng8xqdjpb5axdr8qzui3xcqeqmbkk1
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756125020-533852
-X-HE-Meta: U2FsdGVkX188kh7SKSoEPVuPWG60zUSyGHv0njPcXTEYRxSX8cwMe1OYvXHxBrOM79LmPYxHb/OahDA8c1FVneBVHNUFIWs3wVmT17feLQRYnfggjDyrCkobNbagGfLFiB7GxjFSXqQnaNZX68RmSy9eboALiMWHcHmO4PCn96ACmsAHYXXS9cIM82fkLKEpJkyPQB+0PdirFT3TNn508oDHQIB/whO4nvbV400kCo0rC1O3usJICnkdAEI3xEovGTpFNWJO5T2YxtksIc2EZscT7FHyHdueSmgme+K024bnQrXrMNGprBy3T0V0J76IbMUug+cXf0zMBsVgaC44A8K93nQUkeGExX8kklRIumRExqdDO0xrXK5Y2zaGD61M174aYUCbiEncHIrTD6sstngZoJU30m0U2Y+jjnaW121MC8mGRL/aSIzs4K8kFOFrPwu6h2DFva3R/Jh+6Lh+1+OIvNB+sLhiIVAQ26kuP+gj2v2UuU+7sCdfP1OJUgOTRZIpQ4qi3n+migJ8Ki56xFWDOVS9o5mjAXhNbQwolYoQOniBk9fhdSALQvkPtwS9yny6ufJqv3QC9em6mndUWYU25PiXbphJ7ESjuCgedgLzQ6JcO7ykokC8oeNZQUTdayvUh/zQp4mKgjPAhyMhfZK2WEKud+G5rO5E7FhjPyX0ydPUnbeMigJftmm8HpEsxly2gKBwxLmcXly0mtYEmzgcvZl1AKPmky7iRe0bywsT2Jl1ZPr65Va3U1UIaaYVo6UsU5gnaVJ547XbXU/qKlVIqWzBWR1nMIYi4O8jQ+HnLd1A3UfEif9mdonErdTA0kagX9Q/JGdM7YlzcX8ZfsPEFIOZzX4ecKnzGrbt3XYbiHQQACi6C8vjbGeriEzlI6wbY0bBhlhwOsLvtmbZMBMagU00NtYI8F8h7PfvHxgrffh2YikDbBJZqAYFT+uojYPu+LWyIWK0yyiSJwp
- jPquNGXg
- poa3WmAMB1MUmmmH5rwFqreX8vpQdP9AzAgxUT8Q14Q0bMzk+sWay50C3NNgzvTrZ+jQIpL3AOFQ9PITaaD68RjjQ0mx5eA+HV6TwetQiwFCoPbeFQHdM8ibMPBFL0yOVR4cNRkrl/NuqzDuHyJ6LC89jjzbqLHDbWA2akPz2UxSBmlDc1y3WCb5wBNs8pAnMlx0SHxQWVSIwGqZZK7Owrig2k7emgiEQkScyzcl52ZeWx5zxNDs8+VDisKa7Re7dANBCjlLjFwo5TBaIxMcMyPEA15SnPyAsFWNmuo7ARdd76TuX7kSlGv012aoQ/ZwsDGQpKxszQzdPnfosLiQfxQlc06QNhyllEHXVZ1ZfOYgrlwPWEFTEcv4hPe1R1d/8BQrDqWr0yur6hF3Fmz5P4skNRSbKG04idAWTQp4AwMszmOYvY9jTSxRrD1igdUSm/0gJmZ4vOqrOu2ggBwVx2OYUraD4U+AysEAz0u78gvGy0QqUJGuHF+J0jprEl+ZgHsqKPcrKkkrf/lQt5IKMayUyypbA10qA23HD5I89+yrCWEBdSPQc9yCJpg==
+X-Rspamd-Queue-Id: 4CFF6180012
+X-Stat-Signature: 4odwcabkbnkmpatcu5q7igh684qngujn
+X-HE-Tag: 1756125067-84350
+X-HE-Meta: U2FsdGVkX1907HVwGmlC33ZmoBFpfbbyet7U1Atp9W5czrR8tkzFKyu7EgBJ4FPjCEHcN3mbvaAbOIZGeEXrLzsChFfwWXE4gIrkBad5K7cCy7bIOFiD77o6vmHbszq3x9PlhuZCWz2dhLEqhOSesgmMRRSh3eOSu/4nfd4FgpSNFzStWWFyubIjkKFA6APnvwHwLfmYFzoNuu2/G13ddKlQcm8l6agBFoDalPZiLilmHfZGjeDISewfk3mL/EpoG6XY3jaHvCi3TVndVxR5gAAg9iz72t8JY1DaakoAK4sQ91fn6cPkOCEViOLphcSO5VUpyFGJWz4SjiUVF+x6YQv6cxtGNO/40AmpQUS8D8zfvnqFDq/lX8vnbH8x1eBp1wE4eSzQmvkACcSHlLyRzUf4vGka/LqKJQYwMFY4RnCxphRTjH+J09KEEeLuGAmEZsVGS26n5KChQDsuAWrmFEmbpcpR0VjEwCf3h1ILxbGaTI7llQ+GAKnOgoGlrUPVK2IGOyquDhhjabpOvkjLBop7DGrW0Nc7BhHXRlnmMvbvQmWSha4h/hSi+tbqpk5KySRsSibyqfSyqgdEGb8PXwp0YQagN2v3uOpSrX1iyDKMZ8A0TEv5675M4+PTqXAuZRBy503AAIeYmtPS3XFCUDzMWE59VG1jwNjFOSI5XVaTkqAc+AnoZ1FHc+9I5yF7cqEDNDMroDkF8iLPhABiSfwHaNzUc/ykspa8L5LWjIOLQqwJMKYrogCNS2nzozvMKcwXwc+CWy3kcRhVF5bEqR/nrwvhfPiJuVjtF5Ag+D03x0Rf8zgbUCc/aUgkpI7rkJXhBEx2gvG543jOKJhpF8HeocyW/rcT4fYk1MIhuMn/Sea5r2R/rEc1Grc3qJSit9XIVoQFvpleV8QprSEbfTJhaf74Fgnll1IgSOyoWQn4jxJgI2gyBJzzWVoC/HW3bunqrgDjRvY5Y/5wvqG
+ YaWuzPZm
+ XQzLgvu4CRJyo/lr0S6BEX8+dT22Xo8GabO1VKbywEQeQuw8gCp/AIyR0GpprQqLFzhKcqQQfHlUhA/tkt47iD0g6+QMy/B3fml0s8GaBy0FZs+ce9tlUIdzKDe05MGJSliac5ZM2+DYXP7kxidaRYtpE/kirLk0imq/GRBFd1/JKpKp16+IgMOBPK/k2wznh9YoxVM/xMJFopGwrq83955s0aJ5oEMJlj+e7A4ej79nvApzO3lQwFFCmsl/uS3qXtOCDcFMq1qZtpjIEIQNsEK55XSkM49qjH9De67PIdZXgqQpLsodGFn9UGSvR0wqTlSUSNWw6wZYWw9tm4Oj5uVzYLmzVnQHG88UszK70j9QnDtN2wyPPHFe5//o5sGSbhQNsbppwmfV1idj9BYYy1+Zbs1DvU4iNqX/MmxBz/cWeBs50xrdnctMDpt+EvpNHCpThEOVidDXtHMy31sshOm5rlTzb2ZW2t1mJXGNWCnYktkQL44q8Ib0Eyw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -203,209 +198,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The number of writeback contexts is set to the number of CPUs by
-default. To test the impact of the number of writeback contexts
-on the writeback performance of filesystems, we introduce a sysfs
-interface 'nwritebacks' for adjusting bdi->wb_ctx_arr in runtime.
-However, only increasing the bdi->wb_ctx_arr is supported; support
-for reducing it is still under development.
+On 11.08.25 13:26, David Hildenbrand wrote:
+> print_bad_pte() looks like something that should actually be a WARN
+> or similar, but historically it apparently has proven to be useful to
+> detect corruption of page tables even on production systems -- report
+> the issue and keep the system running to make it easier to actually detect
+> what is going wrong (e.g., multiple such messages might shed a light).
+> 
+> As we want to unify vm_normal_page_*() handling for PTE/PMD/PUD, we'll have
+> to take care of print_bad_pte() as well.
+> 
+> Let's prepare for using print_bad_pte() also for non-PTEs by adjusting the
+> implementation and renaming the function to print_bad_page_map().
+> Provide print_bad_pte() as a simple wrapper.
+> 
+> Document the implicit locking requirements for the page table re-walk.
+> 
+> To make the function a bit more readable, factor out the ratelimit check
+> into is_bad_page_map_ratelimited() and place the printing of page
+> table content into __print_bad_page_map_pgtable(). We'll now dump
+> information from each level in a single line, and just stop the table
+> walk once we hit something that is not a present page table.
+> 
+> The report will now look something like (dumping pgd to pmd values):
+> 
+> [   77.943408] BUG: Bad page map in process XXX  pte:80000001233f5867
+> [   77.944077] addr:00007fd84bb1c000 vm_flags:08100071 anon_vma: ...
+> [   77.945186] pgd:10a89f067 p4d:10a89f067 pud:10e5a2067 pmd:105327067
+> 
+> Not using pgdp_get(), because that does not work properly on some arm
+> configs where pgd_t is an array. Note that we are dumping all levels
+> even when levels are folded for simplicity.
+> 
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>   include/linux/pgtable.h |  19 ++++++++
+>   mm/memory.c             | 104 ++++++++++++++++++++++++++++++++--------
+>   2 files changed, 103 insertions(+), 20 deletions(-)
+> 
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index bff5c4241bf2e..33c84b38b7ec6 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -1966,6 +1966,25 @@ enum pgtable_level {
+>   	PGTABLE_LEVEL_PGD,
+>   };
+>   
+> +static inline const char *pgtable_level_to_str(enum pgtable_level level)
+> +{
+> +	switch (level) {
+> +	case PGTABLE_LEVEL_PTE:
+> +		return "pte";
+> +	case PGTABLE_LEVEL_PMD:
+> +		return "pmd";
+> +	case PGTABLE_LEVEL_PUD:
+> +		return "pud";
+> +	case PGTABLE_LEVEL_P4D:
+> +		return "p4d";
+> +	case PGTABLE_LEVEL_PGD:
+> +		return "pgd";
+> +	default:
+> +		VM_WARN_ON_ONCE(1);
+> +		return "unknown";
+> +	}
+> +}
 
-Signed-off-by: wangyufei <wangyufei@vivo.com>
+One kernel config doesn't like the VM_WARN_ON_ONCE here, and I don't think we
+really need it. @Andrew can you squash:
+
+ From 0b8f6cdfe2c9d96393e7da1772e82048e096a903 Mon Sep 17 00:00:00 2001
+From: David Hildenbrand <david@redhat.com>
+Date: Mon, 25 Aug 2025 14:25:59 +0200
+Subject: [PATCH] fixup: mm/memory: convert print_bad_pte() to
+  print_bad_page_map()
+
+Let's just drop the warning, it's highly unlikely that we ever run into
+this, and if so, there is serious stuff going wrong elsewhere.
+
+Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- include/linux/backing-dev.h |  3 ++
- mm/backing-dev.c            | 59 +++++++++++++++++++++++++++++++++++
- mm/page-writeback.c         | 61 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 123 insertions(+)
+  include/linux/pgtable.h | 1 -
+  1 file changed, 1 deletion(-)
 
-diff --git a/include/linux/backing-dev.h b/include/linux/backing-dev.h
-index 30a812fbd..c59578c25 100644
---- a/include/linux/backing-dev.h
-+++ b/include/linux/backing-dev.h
-@@ -112,6 +112,7 @@ int bdi_set_max_ratio_no_scale(struct backing_dev_info *bdi, unsigned int max_ra
- int bdi_set_min_bytes(struct backing_dev_info *bdi, u64 min_bytes);
- int bdi_set_max_bytes(struct backing_dev_info *bdi, u64 max_bytes);
- int bdi_set_strict_limit(struct backing_dev_info *bdi, unsigned int strict_limit);
-+int bdi_set_nwritebacks(struct backing_dev_info *bdi, int nwritebacks);
- 
- /*
-  * Flags in backing_dev_info::capability
-@@ -128,6 +129,8 @@ int bdi_set_strict_limit(struct backing_dev_info *bdi, unsigned int strict_limit
- extern struct backing_dev_info noop_backing_dev_info;
- 
- int bdi_init(struct backing_dev_info *bdi);
-+int bdi_wb_ctx_init(struct backing_dev_info *bdi, struct bdi_writeback_ctx *bdi_wb_ctx);
-+void bdi_wb_ctx_exit(struct backing_dev_info *bdi, struct bdi_writeback_ctx *bdi_wb_ctx);
- 
- /**
-  * writeback_in_progress - determine whether there is writeback in progress
-diff --git a/mm/backing-dev.c b/mm/backing-dev.c
-index a5b44dd79..44b24c1e4 100644
---- a/mm/backing-dev.c
-+++ b/mm/backing-dev.c
-@@ -469,6 +469,34 @@ static ssize_t strict_limit_show(struct device *dev,
- }
- static DEVICE_ATTR_RW(strict_limit);
- 
-+static ssize_t nwritebacks_show(struct device *dev,
-+			      struct device_attribute *attr,
-+			      char *buf)
-+{
-+	struct backing_dev_info *bdi = dev_get_drvdata(dev);
-+
-+	return sysfs_emit(buf, "%d\n", bdi->nr_wb_ctx);
-+}
-+
-+static ssize_t nwritebacks_store(struct device *dev,
-+		struct device_attribute *attr, const char *buf, size_t count)
-+{
-+	struct backing_dev_info *bdi = dev_get_drvdata(dev);
-+	int nr;
-+	ssize_t ret;
-+
-+	ret = kstrtoint(buf, 10, &nr);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = bdi_set_nwritebacks(bdi, nr);
-+	if (!ret)
-+		ret = count;
-+
-+	return ret;
-+}
-+static DEVICE_ATTR_RW(nwritebacks);
-+
- static struct attribute *bdi_dev_attrs[] = {
- 	&dev_attr_read_ahead_kb.attr,
- 	&dev_attr_min_ratio.attr,
-@@ -479,6 +507,7 @@ static struct attribute *bdi_dev_attrs[] = {
- 	&dev_attr_max_bytes.attr,
- 	&dev_attr_stable_pages_required.attr,
- 	&dev_attr_strict_limit.attr,
-+	&dev_attr_nwritebacks.attr,
- 	NULL,
- };
- ATTRIBUTE_GROUPS(bdi_dev);
-@@ -1004,6 +1033,22 @@ static int __init cgwb_init(void)
- }
- subsys_initcall(cgwb_init);
- 
-+int bdi_wb_ctx_init(struct backing_dev_info *bdi, struct bdi_writeback_ctx *bdi_wb_ctx)
-+{
-+	int ret;
-+
-+	INIT_RADIX_TREE(&bdi_wb_ctx->cgwb_tree, GFP_ATOMIC);
-+	mutex_init(&bdi->cgwb_release_mutex);
-+	init_rwsem(&bdi_wb_ctx->wb_switch_rwsem);
-+
-+	ret = wb_init(&bdi_wb_ctx->wb, bdi_wb_ctx, bdi, GFP_KERNEL);
-+	if (!ret) {
-+		bdi_wb_ctx->wb.memcg_css = &root_mem_cgroup->css;
-+		bdi_wb_ctx->wb.blkcg_css = blkcg_root_css;
-+	}
-+	return ret;
-+}
-+
- #else	/* CONFIG_CGROUP_WRITEBACK */
- 
- static int cgwb_bdi_init(struct backing_dev_info *bdi)
-@@ -1292,3 +1337,17 @@ const char *bdi_dev_name(struct backing_dev_info *bdi)
- 	return bdi->dev_name;
- }
- EXPORT_SYMBOL_GPL(bdi_dev_name);
-+
-+int bdi_wb_ctx_init(struct backing_dev_info *bdi, struct bdi_writeback_ctx *bdi_wb_ctx)
-+{
-+	return wb_init(&bdi_wb_ctx->wb, bdi_wb_ctx, bdi, GFP_KERNEL);
-+}
-+
-+void bdi_wb_ctx_exit(struct backing_dev_info *bdi, struct bdi_writeback_ctx *bdi_wb_ctx)
-+{
-+	wb_shutdown(&bdi_wb_ctx->wb);
-+	cgwb_bdi_unregister(bdi, bdi_wb_ctx);
-+
-+	WARN_ON_ONCE(test_bit(WB_registered, &bdi_wb_ctx->wb.state));
-+	wb_exit(&bdi_wb_ctx->wb);
-+}
-diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-index 6f283a777..87c77004b 100644
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -740,6 +740,59 @@ static int __bdi_set_max_ratio(struct backing_dev_info *bdi, unsigned int max_ra
- 	return ret;
- }
- 
-+static int __bdi_set_wb_ctx(struct backing_dev_info *bdi, int nwritebacks)
-+{
-+	struct bdi_writeback_ctx **new_ctx_arr, **old_ctx_arr;
-+	int i, ret;
-+
-+	new_ctx_arr = kcalloc(nwritebacks, sizeof(struct bdi_writeback_ctx *), GFP_KERNEL);
-+	if (!new_ctx_arr)
-+		return -ENOMEM;
-+
-+	for (i = 0; i < min(bdi->nr_wb_ctx, nwritebacks); i++)
-+		new_ctx_arr[i] = bdi->wb_ctx_arr[i];
-+
-+	for (i = bdi->nr_wb_ctx; i < nwritebacks; i++) {
-+		new_ctx_arr[i] = (struct bdi_writeback_ctx *)
-+			kzalloc(sizeof(struct bdi_writeback_ctx), GFP_KERNEL);
-+		if (!new_ctx_arr[i]) {
-+			pr_err("Failed to allocate %d", i);
-+			while (--i >= bdi->nr_wb_ctx)
-+				kfree(new_ctx_arr[i]);
-+			kfree(new_ctx_arr);
-+			return -ENOMEM;
-+		}
-+		INIT_LIST_HEAD(&new_ctx_arr[i]->wb_list);
-+		init_waitqueue_head(&new_ctx_arr[i]->wb_waitq);
-+	}
-+
-+	for (i = bdi->nr_wb_ctx; i < nwritebacks; i++) {
-+		ret = bdi_wb_ctx_init(bdi, new_ctx_arr[i]);
-+		if (ret) {
-+			while (--i >= bdi->nr_wb_ctx) {
-+				bdi_wb_ctx_exit(bdi, new_ctx_arr[i]);
-+				kfree(new_ctx_arr[i]);
-+			}
-+			kfree(new_ctx_arr);
-+			return ret;
-+		}
-+		list_add_tail_rcu(&new_ctx_arr[i]->wb.bdi_node, &new_ctx_arr[i]->wb_list);
-+		set_bit(WB_registered, &new_ctx_arr[i]->wb.state);
-+	}
-+
-+	// Make sure the initialization is done before assignment
-+	smp_wmb();
-+
-+	old_ctx_arr = bdi->wb_ctx_arr;
-+	spin_lock_bh(&bdi_lock);
-+	bdi->wb_ctx_arr = new_ctx_arr;
-+	bdi->nr_wb_ctx = nwritebacks;
-+	spin_unlock_bh(&bdi_lock);
-+
-+	kfree(old_ctx_arr);
-+	return 0;
-+}
-+
- int bdi_set_min_ratio_no_scale(struct backing_dev_info *bdi, unsigned int min_ratio)
- {
- 	return __bdi_set_min_ratio(bdi, min_ratio);
-@@ -818,6 +871,14 @@ int bdi_set_strict_limit(struct backing_dev_info *bdi, unsigned int strict_limit
- 	return 0;
- }
- 
-+int bdi_set_nwritebacks(struct backing_dev_info *bdi, int nwritebacks)
-+{
-+	if (nwritebacks < bdi->nr_wb_ctx)
-+		return -EINVAL;
-+
-+	return __bdi_set_wb_ctx(bdi, nwritebacks);
-+}
-+
- static unsigned long dirty_freerun_ceiling(unsigned long thresh,
- 					   unsigned long bg_thresh)
- {
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 9f0329d45b1e1..94249e671a7e8 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -1997,7 +1997,6 @@ static inline const char *pgtable_level_to_str(enum pgtable_level level)
+  	case PGTABLE_LEVEL_PGD:
+  		return "pgd";
+  	default:
+-		VM_WARN_ON_ONCE(1);
+  		return "unknown";
+  	}
+  }
 -- 
-2.39.0
+2.50.1
+
+
+-- 
+Cheers
+
+David / dhildenb
 
 
