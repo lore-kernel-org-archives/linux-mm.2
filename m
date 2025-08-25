@@ -4,170 +4,190 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DED00CA0FE7
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 13:47:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDEB0CA0EFA
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 13:58:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 060888E0027; Mon, 25 Aug 2025 09:47:17 -0400 (EDT)
+	id 0EEFA8E0028; Mon, 25 Aug 2025 09:58:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00FF48E0001; Mon, 25 Aug 2025 09:47:16 -0400 (EDT)
+	id 0C73E8E0001; Mon, 25 Aug 2025 09:58:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1A1D8E0027; Mon, 25 Aug 2025 09:47:16 -0400 (EDT)
+	id EF7928E0028; Mon, 25 Aug 2025 09:58:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CDE228E0001
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 09:47:16 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 84BA21A0437
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 13:47:16 +0000 (UTC)
-X-FDA: 83815406472.25.7413A23
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 1BA9F140013
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 13:47:13 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ZMQTpjUB;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nK8fbP6x;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ZMQTpjUB;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nK8fbP6x;
-	spf=pass (imf26.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D835E8E0001
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 09:58:46 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 01304840EA
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 13:58:45 +0000 (UTC)
+X-FDA: 83815435452.16.2CE3541
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 93E86100011
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 13:58:43 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ELeLPwyW;
+	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756129634;
+	s=arc-20220608; t=1756130323;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6GlwXmq6kbIWIColIFVeW2+LyxHSdo8BUYgwpSLJsOE=;
-	b=WFqds6rxkmOOVNdk57tueaxN4xHY/oXnCjNrCytpGjVrMklpUsdk7dbw2BxQNUIq5wvQQL
-	ZtZrGXG1/h0Eel56m9enrouGn1bKCjNLZ4M8Vo/JY+pLDuqcwWGCGt3QYDf4JpIWudeQTt
-	ej7u8T3dnzJA8GBxzPFq6SUKUfH2ZT0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756129634; a=rsa-sha256;
-	cv=none;
-	b=8r86XHwQWiIGuth30L96K/GguuqsVMItVje+xwZaCnyTKXJ5lUnHfwFdm/2q3Mnhr+EwUN
-	O50/2n28qL2cBOujwn5IrwVPbptpd7ef8U5pZArAsRIQ3YlOJBDKM0g4t5/fnXXHMV2gEr
-	vkVlrQEG1LK3gNlYN4hzH9wRW94bKN4=
+	bh=lxZho4Y+KRx8y6j3h2szyprS6aHvfITwJX6ZtyYAuvU=;
+	b=VZrySI5ddAxwBS/zxIIU0zp1gNZDTbTEcr3CZbEbkIOJxo2GZ2v4fdFf0MsrRNFKejWgeu
+	Zx3cfOckWpOfaCucHGeqF8RpiCXVezLgUJKN1XouXLMtXs/Dve6Lh/WY8+RoDaThu6Wg2e
+	ttUwV+elKMtfvOEbrxgagdB1BpfYd/0=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ZMQTpjUB;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nK8fbP6x;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ZMQTpjUB;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nK8fbP6x;
-	spf=pass (imf26.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 340071F792;
-	Mon, 25 Aug 2025 13:47:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756129632; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ELeLPwyW;
+	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756130323; a=rsa-sha256;
+	cv=none;
+	b=NN3RZunF83FF12Xr/nlB0qOVX54M/AXhQN1/Mc7i15ySBYL1xk8iBWepIjKV4scm2qFS02
+	osj+SjKdjp9T3WUiDQiX4D5GRCM92gAfmwOtAmfhZ/BZ7ZJkSe8cbCJGTPWc8v/Pmd3yx4
+	gZLJue7QxQ9bIL6VTeJydrrl6/b1uJ4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756130323;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=6GlwXmq6kbIWIColIFVeW2+LyxHSdo8BUYgwpSLJsOE=;
-	b=ZMQTpjUBWKxSxljjSDMmMkazWnWsCPK2VOyVp0Dky25NVF4tY+QNDlXzayd++5aghl7Krt
-	MHp/QlFqp09Y5Sbur4hEKis/ltC3uOSMxhapefBosnAycmT1HQRuonPuHtk03ZcHFWyH2D
-	bqqSdGvlQW5dbOKlHl7uE+S5WoTTrwA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756129632;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=6GlwXmq6kbIWIColIFVeW2+LyxHSdo8BUYgwpSLJsOE=;
-	b=nK8fbP6x2CUvXEJZrBQ7qF7hfZHU4s9rlpfmqjdhvbL8A5NlVXfzOrzMw+spE9QZKCz6Na
-	y7ZFI3WAYYvwgdBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756129632; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=6GlwXmq6kbIWIColIFVeW2+LyxHSdo8BUYgwpSLJsOE=;
-	b=ZMQTpjUBWKxSxljjSDMmMkazWnWsCPK2VOyVp0Dky25NVF4tY+QNDlXzayd++5aghl7Krt
-	MHp/QlFqp09Y5Sbur4hEKis/ltC3uOSMxhapefBosnAycmT1HQRuonPuHtk03ZcHFWyH2D
-	bqqSdGvlQW5dbOKlHl7uE+S5WoTTrwA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756129632;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=6GlwXmq6kbIWIColIFVeW2+LyxHSdo8BUYgwpSLJsOE=;
-	b=nK8fbP6x2CUvXEJZrBQ7qF7hfZHU4s9rlpfmqjdhvbL8A5NlVXfzOrzMw+spE9QZKCz6Na
-	y7ZFI3WAYYvwgdBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 142541368F;
-	Mon, 25 Aug 2025 13:47:12 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id bpyKBGBprGiRKgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 25 Aug 2025 13:47:12 +0000
-Message-ID: <d64a369e-c0e1-4dd1-b032-660f467914a6@suse.cz>
-Date: Mon, 25 Aug 2025 15:47:11 +0200
+	bh=lxZho4Y+KRx8y6j3h2szyprS6aHvfITwJX6ZtyYAuvU=;
+	b=ELeLPwyWqZOcgc+UzyrYqr555Wezwtj28gfzbCPIQSF0+AR+sEdOeYngKKULBzZLSRuSPJ
+	L2drEs8+vGqPkj8mgK4g8vBHnlo+nz0s9lRkC9ik66GYtm9+x4rJDztJ5WvnLDDEkag512
+	aGHtkfm4dvF2G3n12Q65itJUwvdf9cI=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-132-gFZ0SeVGM9az93hvKrzKdA-1; Mon, 25 Aug 2025 09:58:40 -0400
+X-MC-Unique: gFZ0SeVGM9az93hvKrzKdA-1
+X-Mimecast-MFC-AGG-ID: gFZ0SeVGM9az93hvKrzKdA_1756130319
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45b51411839so21227965e9.0
+        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 06:58:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756130319; x=1756735119;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lxZho4Y+KRx8y6j3h2szyprS6aHvfITwJX6ZtyYAuvU=;
+        b=S6pRR+gHTYq+TqOsDQYDR57mpnp/5XZl5HAResULktPSE3oap4jLzhUvcjtIFSGWEF
+         4sFK2Ehc7EmAOCA4g13TD+DLwy1q7qLEFTLwGK22DNO23sxtaiTH64sjanJaaVWNswcn
+         GQtPlmc0Fh+4om8e3tYc4x5V7YGLgxFDIrMo1iRlCkKSx3XRqVY3YyzEn41K1cH93K3h
+         mLrEnG3xJg0eOqQEyz51Tc9FMo8BLZfT9bgo5gdlAJWrRr6yVo37mhQs4f+Qv79edqyK
+         GmgEnUG5yBw3E/736dBozw+qylbntq4294+dVLagCuLbfbjt8PECwaImXth9qcwiqJy+
+         Mmlg==
+X-Forwarded-Encrypted: i=1; AJvYcCX8MXixIsszYIWBqI63hfiUqkQaTp0VZypeHjEvH8CBdAiEkyO+EnB120wQGFnQ6SQnDYknAOE9uw==@kvack.org
+X-Gm-Message-State: AOJu0YwH4/RyWpVF1JodUeOhlbRsoiSvNrrFz73eIKhAz/YgOnt3ItO9
+	1a5aZRiGe8k4eYws2s/Uyb0TK023l2ZBDT7AKsmTSuay/mBi9gHtfwzm1VRjqQmg/mUeTsr/jj6
+	DRzbkEJby3Jj4aq29t4Fh6vhvk+wkg1ySOB38r90urGmO0pkoy3fO
+X-Gm-Gg: ASbGncthB5hhLyamfWnnEYi3SwCK2t1OIK03lOh3SHIC2keTAcGTDeaCS9lz56NFtpV
+	sj6fe/cuHPa7qcBOGwmdMSzR8glS2XLypHW6/tFeym2DzUVQsmnV9fT1X0lOVTOexnyZjqsAPqo
+	7HBdKdqanO6ul/+sZRiTUaF9lYSF/0OYMeEmzSIC+4C3kXgIpBfqFD65gNhs3Ck5U8HQI+I9n/2
+	5cgkfd2SLwnI4WCuIDIb5wlK6edyK4cltIO3MJcuZMEgJIzDiJjbzMKqe8iOD7NXd8DqEAN7EvN
+	MdGIZ04zjMXFuHeDKSGodKpoqxQV7Id8BjSbNHzPXTZ6O8iMnQTee3KFwIAtmCZLhqzvX5v06pf
+	nIuIH5Juw40PjzaaPHjgYRuo5/51AdPWfDsGeqou1PA3c43OPQVHazVDl8HoJpMFWbYo=
+X-Received: by 2002:a05:600c:4fcd:b0:459:db71:74d7 with SMTP id 5b1f17b1804b1-45b517d40damr96554815e9.27.1756130319420;
+        Mon, 25 Aug 2025 06:58:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFUP97mRYMAecNrJv9oVP9Z9C++b8mVPFeDAzLUacXcCy2KdCSOT3ajUA1Q373UfCMlAX2K9A==
+X-Received: by 2002:a05:600c:4fcd:b0:459:db71:74d7 with SMTP id 5b1f17b1804b1-45b517d40damr96554435e9.27.1756130318929;
+        Mon, 25 Aug 2025 06:58:38 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f4f:1300:42f1:98e5:ddf8:3a76? (p200300d82f4f130042f198e5ddf83a76.dip0.t-ipconnect.de. [2003:d8:2f4f:1300:42f1:98e5:ddf8:3a76])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b4e1d77e0sm112049385e9.0.2025.08.25.06.58.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Aug 2025 06:58:38 -0700 (PDT)
+Message-ID: <aab5e2af-04d6-485f-bf81-557583f2ae4b@redhat.com>
+Date: Mon, 25 Aug 2025 15:58:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mempool: rename struct mempool_s to struct mempool
-To: Christoph Hellwig <hch@lst.de>, akpm@linux-foundation.org
-Cc: cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
- harry.yoo@oracle.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20250812083105.371295-1-hch@lst.de>
+Subject: Re: [RFC][PATCH v2 22/29] mm/numa: Register information into Kmemdump
+To: Eugen Hristev <eugen.hristev@linaro.org>, Michal Hocko <mhocko@suse.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org, tglx@linutronix.de,
+ andersson@kernel.org, pmladek@suse.com,
+ linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
+ corbet@lwn.net, mojha@qti.qualcomm.com, rostedt@goodmis.org,
+ jonechou@google.com, tudor.ambarus@linaro.org,
+ Christoph Hellwig <hch@infradead.org>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>
+References: <20250724135512.518487-1-eugen.hristev@linaro.org>
+ <20250724135512.518487-23-eugen.hristev@linaro.org>
+ <ffc43855-2263-408d-831c-33f518249f96@redhat.com>
+ <e66f29c2-9f9f-4b04-b029-23383ed4aed4@linaro.org>
+ <751514db-9e03-4cf3-bd3e-124b201bdb94@redhat.com>
+ <aJCRgXYIjbJ01RsK@tiehlicka>
+ <e2c031e8-43bd-41e5-9074-c8b1f89e04e6@linaro.org>
+ <23e7ec80-622e-4d33-a766-312c1213e56b@redhat.com>
+ <f43a61b4-d302-4009-96ff-88eea6651e16@linaro.org>
+ <77d17dbf-1609-41b1-9244-488d2ce75b33@redhat.com>
+ <ecd33fa3-8362-48f0-b3c2-d1a11d8b02e3@linaro.org>
+ <9f13df6f-3b76-4d02-aa74-40b913f37a8a@redhat.com>
+ <64a93c4a-5619-4208-9e9f-83848206d42b@linaro.org>
+ <f1f290fc-b2f0-483b-96d5-5995362e5a8b@redhat.com>
+ <01c67173-818c-48cf-8515-060751074c37@linaro.org>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <01c67173-818c-48cf-8515-060751074c37@linaro.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: C-RwNi_am_iiQlhbb3JTlVKCwweiA436olC3Xw7wAmI_1756130319
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20250812083105.371295-1-hch@lst.de>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1BA9F140013
-X-Stat-Signature: q7zy16a4cqxjnstf5ukqh95gajkqzekn
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 93E86100011
+X-Stat-Signature: wn46b386jecnwqj5hspgfmdze3cpqdh6
 X-Rspam-User: 
-X-HE-Tag: 1756129633-547894
-X-HE-Meta: U2FsdGVkX18BeZbISEMFNn5sjHEmnZ5k0zrbgaHN6FLR3ynCeUSsqJ1WqLOGjNaQ5PaWVXlSHlctbKcYDaIQScMGaj0rOBlOCBbK0E1NbxEhubazz6IpTQSiaL33vqtehPd87ce9jxluHlr7lKeVptryU1WmuEin9wa0xnU7d9e+63vZpsHbRnwnH1Q+MrCKLyvoiMx07ne6AeTq9CHG6Wsw6i1mn4Uee6B/09Opyf0Rnz3PtUaPBF3c7upWhF2m5jq/XKhgClHLHjPgJD8w+YrPtgiTFkkf0lls5d8lYabvkt2mVK3IiS7vtfQzDmy1R7fBsLmPLrJ4PbnUZdHlgj3yRQ5KM9v6VQcFzF+VOqgPjCr2TkwrWJqvWVifgsg6KRmfVZqEQ6/fGeYLz325xdh4FzA1V5zjfe94cnr93zYoFdhO2rcZV+qkRl67PV3c5RQHsRzuVyECkUd61TC8OSZuNXN9bWieXqsuzGQSzLJLWZm65GFwoHnoLb55HuEmHC4f+jFWATHbtex9jdlJFo29FDBcOZYaA8/wRokNZz1WWU92PHFoC1fBZ96QaAgkSZCyhdFtNpuqTw7JlS96D65yV8parjoaJp2ZWlErkvkDVcK8QabJagNsKhLFa3N5ae1g4325+csmrM7jk1ThFnvBSzAm/3IAgtnSTZqJG3bMn3o9kMStCYdRZTaC9HHaWL7kTNsx0ZH/bopgzltuLOAiIG3Wvd0L+pKAPk8WcHxRFVtGBSMSPjSiedI5vR3vMqGCSU/OxDrljIkXfrhX/wkfWbvd6+NHJeQl0e6QbLCQh1DvLApjSlvbGx47s8tWtJFMozd8RX+dCsSxO8Q2TN+MLs4ad+u6qnHsJo3wCBYemrE/3l7h9xiQ/fmTjsr43qk3ZkPLxjhCKvtkd1DIBgfSkU0w+QkCguD9/S233nZVJA6zIkGBe7YRi6pl4DrjZAdI2Vma4b93wTnb5i7
- nVmRWgQN
- GrCC89qdYLoAcM87EtEQsgInuHxhgCYdvOqZtjYKAIk0va2cADQqmZpetj/VYpOYSHoviMk+zmeqTE6lKMF3/VkXR3/CmIWS6nr9+iDVHblclLSFMo2TrD5QDmsb6OiTfJD4RGZ/1gt7pAEKMsQDOy5chsC7QDLXin6ciC4XR0dkFDXj63YoBgtoeISv8qn3F2l3IL3XYTIrNs2i56jMlBu8a2qO+yZsx8rvrE5w8AsypVijRDteNK9vju03zoMm14ltW7S1sC1kAMX0xRGZje3bhh3IZmm4afCGUXPJ5HBeV063W/g5qZo3XpRo6fSPsOMMb9Lw/8fKtccfbQEWHb6AKo6PD71yU7JGR/upItNZCWU8LF5f028xLEA==
+X-HE-Tag: 1756130323-605429
+X-HE-Meta: U2FsdGVkX186E6qWXdKCwYiluZNHA6P7Gc8FNcr31ZTjIEs5/9aAcItgpgL5aTeGrJP0D6vIUJ5sl7SHC0IKBLpy6WhPqg0NXrjqop6GqF5keCil50wNKSH+kQEGa5Q/542eDT51ZFZqbhmnZqmizuxBHyFtpzaiUgZHHhtwXoAmfinZ1BZba+An7u5B8/51kZK7K8WUfOtU9kRXhuQ1GqzR/k3NOoCKsxESx7lwwAIiX17k3YIMfDLLpwZGzrRasT2+aG8JGAfyflDJ/xvN8gBEJImHoqXZhC+rBxwhail2COFseM4dJLSjq6j0TL23UPtYxCx+eZWaf8PAcJhzC57ljcGeuRq1Z+0KX8PGYMFeWlgEHwIHfsbc5LYVjEDc3LSyy4GWJtSSvoRF2F7NkoBzr1+12exLfL4Z/rtd4TFah5YXWSyI1yjSg4K8mC9UsDiaaRmqWa5S898LvPEKomoLWDkMtlL26ei/UrBpyCvRcr0XMtzhEcbbYPjAl2jOuGkQwtiVo2u/O+H2xATIFSb9InqiNbMaQMUHS4uiv1cZTULO8iMI6nhpX2cQpFOYIUEn+v+wzdW9K+OmsHLuDpJDCP6kn/eCho+LlwJ7lwOQ36iFMMJPn4cHMc+fiWjxbrfZhfbhHBxjZ97iJPtEk2TYlDVjQys+CHYWI8F2zuwOBc1RjNdHYn1dPaO/uCHfjec+4V7w7Y8a/YYdTkqq5DeA1OVbYjk2HqFMTRGAPrBIiJKRcWRCIhRsAaMCyDaf/gfBaJDcAaSeEcOBPVXHf4DCUxnyyHmFnoedj77t4emmALl/2HlF+ghUPPQXfz0uK7nKLvMZLMmkSlktuQ0PVkkSfIFWth6APc12gbKcJshYzdFVeA54q/u1b5n+jJI8lEva0MtbOHnCXQFWrUSxF6uAV2f+OJkiu7CmXjOum5uoTNiZFmZTx5Nr6Ex5FCDXh/ScLfcCK8vM3PYQzXX
+ v8h8ToU/
+ KMIIH6KlVEc5SbeVP1DOI6kd4pTcB3bXK/hqGLKU7SauOzdIMA6aYk9nXMhL2ECnq/TwDbQWZf7Jj/cZnBkizMT+ah8J7O06G6wsLos7QeVxxNZj63jpTA6ujLdNFbUb/G0HenvpXkgASjltg7iUhydJ6+BmyQU5Kuq1Q+nrK/BqifJi/LELJCoMTijerKapY8dv5ur19ESo+ERAJ3mbPe8rSzXIA+gk/G2bil6yv1nfvzB6iWTaPW4Tcfj4NQM/W7UPFRYgTQPsQ5x1XEqX2hdwBxEPWFRF0T0TVKUvymXBAU/NNezYs3CUpEUledYOrCMqDlNyVsPplvcxvXbZvoVkaxktjHHSilAr6ZJQYF6amZgidUsafOVV+aaT3lATAlqF9TcxmTclm+A92C/2rWORz8y+43As+K0ehwV5IPOVCszlTHvPSeMNnftdjg/qUrBCvJ3yjsHdyC34=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -176,60 +196,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/12/25 10:30, Christoph Hellwig wrote:
-> Drop the pointless _s prefix and align to the usual struct naming to
-> prepare for actually using the struct instead of the typedef so that
-> random headers don't need to include mempool.h for just having a
-> pointer to the mempool.
+On 25.08.25 15:36, Eugen Hristev wrote:
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-
-> ---
->  include/linux/blkdev.h  | 2 +-
->  include/linux/mempool.h | 2 +-
->  include/linux/netfs.h   | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-> index 95886b404b16..c3f3ec5bb864 100644
-> --- a/include/linux/blkdev.h
-> +++ b/include/linux/blkdev.h
-> @@ -199,7 +199,7 @@ struct gendisk {
->  	unsigned int		zone_wplugs_hash_bits;
->  	atomic_t		nr_zone_wplugs;
->  	spinlock_t		zone_wplugs_lock;
-> -	struct mempool_s	*zone_wplugs_pool;
-> +	struct mempool		*zone_wplugs_pool;
->  	struct hlist_head	*zone_wplugs_hash;
->  	struct workqueue_struct *zone_wplugs_wq;
->  #endif /* CONFIG_BLK_DEV_ZONED */
-> diff --git a/include/linux/mempool.h b/include/linux/mempool.h
-> index 7b151441341b..34941a4b9026 100644
-> --- a/include/linux/mempool.h
-> +++ b/include/linux/mempool.h
-> @@ -15,7 +15,7 @@ struct kmem_cache;
->  typedef void * (mempool_alloc_t)(gfp_t gfp_mask, void *pool_data);
->  typedef void (mempool_free_t)(void *element, void *pool_data);
->  
-> -typedef struct mempool_s {
-> +typedef struct mempool {
->  	spinlock_t lock;
->  	int min_nr;		/* nr of elements at *elements */
->  	int curr_nr;		/* Current nr of elements at *elements */
-> diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-> index 185bd8196503..270ed0822efa 100644
-> --- a/include/linux/netfs.h
-> +++ b/include/linux/netfs.h
-> @@ -21,7 +21,7 @@
->  #include <linux/rolling_buffer.h>
->  
->  enum netfs_sreq_ref_trace;
-> -typedef struct mempool_s mempool_t;
-> +typedef struct mempool mempool_t;
->  struct folio_queue;
->  
->  /**
+> On 8/25/25 16:20, David Hildenbrand wrote:
+>>
+>>>>
+>>>> IIRC, kernel/vmcore_info.c is never built as a module, as it also
+>>>> accesses non-exported symbols.
+>>>
+>>> Hello David,
+>>>
+>>> I am looking again into this, and there are some things which in my
+>>> opinion would be difficult to achieve.
+>>> For example I looked into my patch #11 , which adds the `runqueues` into
+>>> kmemdump.
+>>>
+>>> The runqueues is a variable of `struct rq` which is defined in
+>>> kernel/sched/sched.h , which is not supposed to be included outside of
+>>> sched.
+>>> Now moving all the struct definition outside of sched.h into another
+>>> public header would be rather painful and I don't think it's a really
+>>> good option (The struct would be needed to compute the sizeof inside
+>>> vmcoreinfo). Secondly, it would also imply moving all the nested struct
+>>> definitions outside as well. I doubt this is something that we want for
+>>> the sched subsys. How the subsys is designed, out of my understanding,
+>>> is to keep these internal structs opaque outside of it.
+>>
+>> All the kmemdump module needs is a start and a length, correct? So the
+>> only tricky part is getting the length.
+> 
+> I also have in mind the kernel user case. How would a kernel programmer
+> want to add some kernel structs/info/buffers into kmemdump such that the
+> dump would contain their data ? Having "KMEMDUMP_VAR(...)" looks simple
+> enough.
+
+The other way around, why should anybody have a saying in adding their 
+data to kmemdump? Why do we have that all over the kernel?
+
+Is your mechanism really so special?
+
+A single composer should take care of that, and it's really just start + 
+len of physical memory areas.
+
+> Otherwise maybe the programmer has to write helpers to compute lengths
+> etc, and stitch them into kmemdump core.
+> I am not saying it's impossible, but just tiresome perhaps.
+
+In your patch set, how many of these instances did you encounter where 
+that was a problem?
+
+>>
+>> One could just add a const variable that holds this information, or even
+>> better, a simple helper function to calculate that.
+>>
+>> Maybe someone else reading along has a better idea.
+> 
+> This could work, but it requires again adding some code into the
+> specific subsystem. E.g. struct_rq_get_size()
+> I am open to ideas , and thank you very much for your thoughts.
+> 
+>>
+>> Interestingly, runqueues is a percpu variable, which makes me wonder if
+>> what you had would work as intended (maybe it does, not sure).
+> 
+> I would not really need to dump the runqueues. But the crash tool which
+> I am using for testing, requires it. Without the runqueues it will not
+> progress further to load the kernel dump.
+> So I am not really sure what it does with the runqueues, but it works.
+> Perhaps using crash/gdb more, to actually do something with this data,
+> would give more insight about its utility.
+> For me, it is a prerequisite to run crash, and then to be able to
+> extract the log buffer from the dump.
+
+I have the faint recollection that percpu vars might not be stored in a 
+single contiguous physical memory area, but maybe my memory is just 
+wrong, that's why I was raising it.
+
+> 
+>>
+>>>
+>>>   From my perspective it's much simpler and cleaner to just add the
+>>> kmemdump annotation macro inside the sched/core.c as it's done in my
+>>> patch. This macro translates to a noop if kmemdump is not selected.
+>>
+>> I really don't like how we are spreading kmemdump all over the kernel,
+>> and adding complexity with __section when really, all we need is a place
+>> to obtain a start and a length.
+>>
+> 
+> I understand. The section idea was suggested by Thomas. Initially I was
+> skeptic, but I like how it turned out.
+
+Yeah, I don't like it. Taste differs ;)
+
+I am in particular unhappy about custom memblock wrappers.
+
+[...]
+
+>>>
+>>> To have this working outside of printk, it would be required to walk
+>>> through all the printk structs/allocations and select the required info.
+>>> Is this something that we want to do outside of printk ?
+>>
+>> I don't follow, please elaborate.
+>>
+>> How is e.g., log_buf_len_get() + log_buf_addr_get() not sufficient,
+>> given that you run your initialization after setup_log_buf() ?
+>>
+>>
+> 
+> My initial thought was the same. However I got some feedback from Petr
+> Mladek here :
+> 
+> https://lore.kernel.org/lkml/aBm5QH2p6p9Wxe_M@localhost.localdomain/
+> 
+> Where he explained how to register the structs correctly.
+> It can be that setup_log_buf is called again at a later time perhaps.
+> 
+
+setup_log_buf() is a __init function, so there is only a certain time 
+frame where it can be called.
+
+In particular, once the buddy is up, memblock allocations are impossible 
+and it would be deeply flawed to call this function again.
+
+Let's not over-engineer this.
+
+Peter is on CC, so hopefully he can share his thoughts.
+
+-- 
+Cheers
+
+David / dhildenb
 
 
