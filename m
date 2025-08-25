@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DD36CA0FE7
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 20:30:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19471C8303F
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 20:31:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC20D8E007B; Mon, 25 Aug 2025 16:30:52 -0400 (EDT)
+	id 630958E007C; Mon, 25 Aug 2025 16:31:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6BEC8E0038; Mon, 25 Aug 2025 16:30:52 -0400 (EDT)
+	id 5E12B8E0038; Mon, 25 Aug 2025 16:31:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D338F8E007B; Mon, 25 Aug 2025 16:30:52 -0400 (EDT)
+	id 4A9278E007C; Mon, 25 Aug 2025 16:31:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BCE098E0038
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:30:52 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 84F631404EC
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 20:30:52 +0000 (UTC)
-X-FDA: 83816423544.01.0146983
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 362D08E0038
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:31:15 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 12D26B9E89
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 20:31:15 +0000 (UTC)
+X-FDA: 83816424510.03.41012FB
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 859D8A001D
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 20:30:50 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=mex5CDkD;
-	spf=pass (imf15.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
+	by imf23.hostedemail.com (Postfix) with ESMTP id E991514000F
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 20:31:12 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=cbDXQGmi;
+	spf=pass (imf23.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756153850;
+	s=arc-20220608; t=1756153873;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XP32GgD+gomeVeYmlRqjPEh/ESuam3YgqvUl7LwQmAI=;
-	b=PGQMVKSTW9KCnbcvSwgGFdCesW9AJZ9+e96b24kU6Wb4NN1Hr+LbP7BcTns8SUD8GE9d4B
-	J1ph6stPWpVbWdTUQFzW6a41q53gkU5A1FVQG56gbMNk/4V8A8yMoOO/1eVjvoaAS3t3zA
-	Jz+zhDvWPZCxTKy3C8el/FuJ4LPSBuQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756153850; a=rsa-sha256;
+	bh=qByZNR5hO3dUXGXI9QaSwPLK/rlDhrexMNx3Hyo52Qk=;
+	b=g3MODvJGWjGpEi1aDxz9AFVZq1r0OpmbYDH4IQifGB595XCm2BkeK8tiBbQGWHvOugy2om
+	OYOcrqj2OaXVttRLGZGSuYLGMuvkE091Qz5+GcenkoNY2BkCUxSFthf9zpplOkOeElJuIc
+	TfO5Vl38QZYOBP2+ihb9lxeOP2XFCpI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756153873; a=rsa-sha256;
 	cv=none;
-	b=TBEJQhHqhQfcVwFWtU/Noa0IGA7PlN+MLT1nAOU1SsprjdFGwpztQGSe7InoOC5ji1IIf9
-	p6x37y3kJU6Qb1lhmVDjz4YRBWj6pzQWmtDyzQAwpPy2+zeIa1y7jqNSruurhrliwUA81N
-	o79whcgBIDz/5fGA67tu1zmB6HEBAdM=
+	b=T7QFSv/nFILlyA9U6FjCHMb1mw14oSDNAXa1Cv5Vi9ZqM0CTcvJ85TNOWCLM62AcjPHP/0
+	I1V75kw398iHKOBrJABwSSlq5UPxkoLhnd6f2sgiq1U6ekioYEZKm00GSB2KGy0yuiPhv8
+	4V63L056Dlup8oy3TRROTgD8LFxa7NU=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=mex5CDkD;
-	spf=pass (imf15.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
+	imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=cbDXQGmi;
+	spf=pass (imf23.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756153850; x=1787689850;
+  t=1756153873; x=1787689873;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=o5F0wPdxTZ0bQcRnx5I19obOwawHIRj4vxPdiutM1tI=;
-  b=mex5CDkD/ANAKmy3gBH56xVFNyRPTF+ocF1HtHbNOvZwqxJGAVTKglLE
-   E0+CNFlkJ3cJ06pT09THIQLD6lX4Yn/pR/nPhupJcjUacgdTutMdoQN34
-   z/HGXBnoad6o6YYJRT5w21DyZIC8X6WIBxqNBPb2lW2XwYinDBNUnQfXs
-   gpgezLpaAGay/nBJRDaKB6aKeOZkhZ/w3rvtdGOaA9Md95lgKAH3e23gF
-   ta4LY47rcqVGCq//YoaqaKTAsSUsDfiPvPOYLhTo937+bOwDPpcS9RMU9
-   od7X8oc/Fz7aoPLbbq7PBsOB3ZS961T6HVIJMxW6RVD6otf4zNefZqBbP
+  bh=J8CXiM6R9Pwi3hQrlGW0UyxoKzu/ihlIQqlipezAJ2A=;
+  b=cbDXQGmii4cEiJVp8nXgo+j4WMvnr/kCGoDjBSgh2hPoPm6e/qGYwQCH
+   F8yMdowvexuuUu0u2r6eRxvwfSQ7O7CSxwalweSTqTVwKZIpxtvGBjhWQ
+   pCRFOr7/naetrI7DzNRXfsmH5Al8cSjaA1Uzgmkd/gkXaWwEf6nH6qI1P
+   tOe1ylNISuKgTiRs0mRopUqHbQ3KPXbVC9eBecFESdcyJTjMO6owgJXCj
+   YlXajNaWOYC1s6Hpyny2VtH0fzmLmi+c5g0s84rMtBtQPglADiyQaoVzb
+   7G58YDa1nIqymm4VKpP+1qD3rwY57d2HnfQB/N9dVP8BIwniUEGG1ZZPh
    Q==;
-X-CSE-ConnectionGUID: k6ulGiGDTN6acRqYzFmhsg==
-X-CSE-MsgGUID: d/jW/CtWSc+sgrEk7fMB3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="68971043"
+X-CSE-ConnectionGUID: lgcGYhSRRgi3QWzfFPE5jQ==
+X-CSE-MsgGUID: TDZ/17PCSu6YY8JA4TTopQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="68971106"
 X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="68971043"
+   d="scan'208";a="68971106"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 13:30:48 -0700
-X-CSE-ConnectionGUID: K2BRmtlySGeelzThEKb4eQ==
-X-CSE-MsgGUID: X0GDFQZSSQO4ZbqrrO+rdg==
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 13:31:11 -0700
+X-CSE-ConnectionGUID: MQA+TzInQqevwz5W19OOTw==
+X-CSE-MsgGUID: GAgjeP88RDmDgTZRoDSocQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="169780899"
+   d="scan'208";a="169780957"
 Received: from bergbenj-mobl1.ger.corp.intel.com (HELO wieczorr-mobl1.intel.com) ([10.245.245.6])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 13:30:27 -0700
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 13:30:49 -0700
 From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 To: sohil.mehta@intel.com,
 	baohua@kernel.org,
@@ -157,20 +157,22 @@ Cc: x86@kernel.org,
 	kasan-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v5 15/19] kasan: x86: Apply multishot to the inline report handler
-Date: Mon, 25 Aug 2025 22:24:40 +0200
-Message-ID: <2f8115faaca5f79062542f930320cbfc6981863d.1756151769.git.maciej.wieczor-retman@intel.com>
+Subject: [PATCH v5 16/19] kasan: x86: Logical bit shift for kasan_mem_to_shadow
+Date: Mon, 25 Aug 2025 22:24:41 +0200
+Message-ID: <169510f5490cba60916b144398543a489c31e2c1.1756151769.git.maciej.wieczor-retman@intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1756151769.git.maciej.wieczor-retman@intel.com>
 References: <cover.1756151769.git.maciej.wieczor-retman@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 859D8A001D
-X-Stat-Signature: iuqa4xdabaggzyxam1k8s8onxy65myjy
+X-Rspamd-Queue-Id: E991514000F
+X-Stat-Signature: n99dikh7aeg7ixjazsoxdq44jjyaggkw
 X-Rspam-User: 
-X-HE-Tag: 1756153850-335875
-X-HE-Meta: U2FsdGVkX19HToYqwCu+oo9pDUHGvlP/KjFNSM4rcuExfn5KlNiRCnnEOPrNQWmq3cdxxUdXUgOgnKwJi+I7lhZCVBpTsRVkSzICHBxguywy5mFbhXe+rPAgczjcmHcOqNm5naJQbLqFz9XSGullKZXttRAnsVkLyBwz4JXm8mHmFXoGDtICgLSGIKX7NfUw/EP/zltJLGSgZakbCn8xf7p/86ykVEeCt4dN/q3+Mg0Al1RL8oXCpIWn6sc5tEj/Fk7b8/UwMUDTwLVedBvwGYtextuiFv+GKDXN8+TJJ2s47ECZI4ORLkGau3wGLHnmq7td2qU0rUnpcyGZFQ3ts/qYL45tISJbngX2h9vhdyB9PMZy7h+9tgfSSndYShlB6Cu+MDMkXrjS0kDoYU0AtBW//jjxWZZ8FuL5TsuGFmvbG6aVj//JzV7Y1I/wAUOtOsspUtOc4rzS9uw5gj20ZdGqt/OkhEedEVvfHjoQPgf2+wIfwgEnXMfAyEOEl2nSHkyltLqsXHNnRlHaTqjTDXpxtdt1gRAlodtqlbcFF4ZEw80TXtupC47IaZ3Y3m3Smk/RZXzlWsxTIv6gQg7aBUPDupxlr2Bu0DvMTo/RShUxjABWsyYuE6V4jOOeinXFCfn28+ToFun4llsOCCKZjk+E63eXNu5PtNkkGyS709qRz3b4iiql9kAzIMqfv85jt4ljHwEBu/2v6f2n+K1URwt7xQd5UR6zm3QfzQnVvA2fKerhmLy+phDBAQaEtvAJk3nrFVhUmNhZvz5aBs8gP+i+mb5BUwhDzVmQYfUO3VsiV9bgijqcsz+7nDArDoIuS4tBSpaR13A/Pq5PdyubaYnM2aa2M1RVmt2UH41/QfwK7V+Hv8BIvcjoOZbTYYdxDc9wARYztXf9DRLQAURYPONZuffUBSCnPpG/Q9rjw5tiM2QcBUmMLJkAPhl/IxE772JY/sMUbk4=
+X-HE-Tag: 1756153872-381798
+X-HE-Meta: U2FsdGVkX19k5cyDGkBOfvCqcansU/uxXJ2HNF6KYiWriFRwG6NeXbI/fqTCYxwyzRxe3/wBDaB46NR0xnuIvbTpBSyD955JAPhDPHtwoojqqaEUDpNoM3pdSw8qL4FlR9OxHRNTL4XwHmezFB3mfEALaP+nlQUgjxpuinkRnmz3LsNgMdzw9mrFUt32vziPipJZm6vcl8l5w15nl0JscR6BQwLPadiFhchmPDCJWBCxez3nwhaBegsbvcXsuogs8ZaWTY0kAyXZLsOA/rPQk5yjyXR01DrDOTnZL19FiX/j+CF/LnpENMmt4vH//iVSTY4NtKInrgAygyeFQIdov/tcA+2IaxDFq72n7OeDXast8t+Sav864iPs+3JZpjOcRnAItfF/fGdMzJQYOL+9/+jk9QUPlj+3bbS6TsjCJLkLSl2IyKPairy0xdl6hIShDtp6x+0l62st68mbm3P6tey9M4t8tP4dH2BoV2jqC5awXSCqRTmI17fuYGl+wIeP6sc/ldQhBv5WfymsY9iiZxlq1cv0dyHY24VRbd7T0nc1FGki6kELr5WUjKElGu21LcbGUc4JeE8eMwkLaXG9hQAuUv5b55eo469Zj2G22qqd2H5X0ZVmAPb6WqOwnUEMbHW4Ou03rDIHCy9BiKcvlxDvMD69XcTTZ2jgdfrdc+I97QRSwhR/wW5kRtBXF3bMikSWzmIZ4Gz+cuY8668z6R+Czp6meMoLAhd0Ht4/rJUbcb41u9MsZkQCfzPH2UKMberfmvR8x16FZ1utxtVRS1hMcUkPw+/feqYz2xfgNtywT5LpNzfzm2I0b3+ptXPJP+TMis2k1vUHTrRDS6KKuhIm17Y+aAmGNbD6dh1ZWsGbkeQqqGWUXuI7k+jpcvWqDoBEeClNKjQ+eB2HyebcF+Ww5ZnGnmB4gK0KMzOQi+xZcJ1ajWQp+ZI55VxnWOsX+LAClMq3adTyhzJRVlF
+ 7f1OI+ZT
+ ilN+WRdVyHGJixSPGqwa9aPvI/j3nBRfwDHXIjzha25ajzBjGOdQzPDKaCagXdrA+skcAaIgxVMdibhIk48IMi7crSslukOamCl0IWapF+BABjSymIC0o+MddH0vQKeIIqab+Dz/ukXFwVDQhf1IIGgcak+H387NPYk74McicT95/mIxaNteYPD7n61P/Srs95RMmR2R87rNemSZJEiCwiTVM6Xm49+69j7eBxxPFNMOnA+6enFK2QNo9bJ97ZsP9DYMsubkfCt4k5v4oWxZMLV5d/3wP9pU28OzkAxnuycVr/BefVh01OPkEDSFVngF9qr5NSS56tF6j35r0e7cRYdgB3Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,85 +181,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-KASAN by default reports only one tag mismatch and based on other
-command line parameters either keeps going or panics. The multishot
-mechanism - enabled either through a command line parameter or by inline
-enable/disable function calls - lifts that restriction and allows an
-infinite number of tag mismatch reports to be shown.
+While generally tag-based KASAN adopts an arithemitc bit shift to
+convert a memory address to a shadow memory address, it doesn't work for
+all cases on x86. Testing different shadow memory offsets proved that
+either 4 or 5 level paging didn't work correctly or inline mode ran into
+issues. Thus the best working scheme is the logical bit shift and
+non-canonical shadow offset that x86 uses for generic KASAN, of course
+adjusted for the increased granularity from 8 to 16 bytes.
 
-Inline KASAN uses the INT3 instruction to pass metadata to the report
-handling function. Currently the "recover" field in that metadata is
-broken in the compiler layer and causes every inline tag mismatch to
-panic the kernel.
+Add an arch specific implementation of kasan_mem_to_shadow() that uses
+the logical bit shift.
 
-Check the multishot state in the KASAN hook called inside the INT3
-handling function.
+The non-canonical hook tries to calculate whether an address came from
+kasan_mem_to_shadow(). First it checks whether this address fits into
+the legal set of values possible to output from the mem to shadow
+function.
+
+Tie both generic and tag-based x86 KASAN modes to the address range
+check associated with generic KASAN.
 
 Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 ---
 Changelog v4:
 - Add this patch to the series.
 
- arch/x86/mm/kasan_inline.c | 3 +++
- include/linux/kasan.h      | 3 +++
- mm/kasan/report.c          | 8 +++++++-
- 3 files changed, 13 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/kasan.h | 8 ++++++++
+ mm/kasan/report.c            | 5 +++--
+ 2 files changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/mm/kasan_inline.c b/arch/x86/mm/kasan_inline.c
-index 9f85dfd1c38b..f837caf32e6c 100644
---- a/arch/x86/mm/kasan_inline.c
-+++ b/arch/x86/mm/kasan_inline.c
-@@ -17,6 +17,9 @@ bool kasan_inline_handler(struct pt_regs *regs)
- 	if (!kasan_report((void *)addr, size, write, pc))
- 		return false;
+diff --git a/arch/x86/include/asm/kasan.h b/arch/x86/include/asm/kasan.h
+index 5bf38bb836e1..f3e34a9754d2 100644
+--- a/arch/x86/include/asm/kasan.h
++++ b/arch/x86/include/asm/kasan.h
+@@ -53,6 +53,14 @@
  
-+	if (kasan_multi_shot_enabled())
-+		return true;
-+
- 	kasan_inline_recover(recover, "Oops - KASAN", regs, metadata, die);
- 
- 	return true;
-diff --git a/include/linux/kasan.h b/include/linux/kasan.h
-index 8691ad870f3b..7a2527794549 100644
---- a/include/linux/kasan.h
-+++ b/include/linux/kasan.h
-@@ -663,7 +663,10 @@ void kasan_non_canonical_hook(unsigned long addr);
- static inline void kasan_non_canonical_hook(unsigned long addr) { }
- #endif /* CONFIG_KASAN_GENERIC || CONFIG_KASAN_SW_TAGS */
- 
-+bool kasan_multi_shot_enabled(void);
-+
  #ifdef CONFIG_KASAN_SW_TAGS
+ 
++static inline void *__kasan_mem_to_shadow(const void *addr)
++{
++	return (void *)((unsigned long)addr >> KASAN_SHADOW_SCALE_SHIFT)
++		+ KASAN_SHADOW_OFFSET;
++}
 +
- /*
-  * The instrumentation allows to control whether we can proceed after
-  * a crash was detected. This is done by passing the -recover flag to
++#define kasan_mem_to_shadow(addr)	__kasan_mem_to_shadow(addr)
++
+ #define __tag_shifted(tag)		FIELD_PREP(GENMASK_ULL(60, 57), tag)
+ #define __tag_reset(addr)		(sign_extend64((u64)(addr), 56))
+ #define __tag_get(addr)			((u8)FIELD_GET(GENMASK_ULL(60, 57), (u64)addr))
 diff --git a/mm/kasan/report.c b/mm/kasan/report.c
-index 50d487a0687a..9e830639e1b2 100644
+index 9e830639e1b2..ee440ed1ecd3 100644
 --- a/mm/kasan/report.c
 +++ b/mm/kasan/report.c
-@@ -121,6 +121,12 @@ static void report_suppress_stop(void)
- #endif
- }
+@@ -648,13 +648,14 @@ void kasan_non_canonical_hook(unsigned long addr)
+ 	const char *bug_type;
  
-+bool kasan_multi_shot_enabled(void)
-+{
-+	return test_bit(KASAN_BIT_MULTI_SHOT, &kasan_flags);
-+}
-+EXPORT_SYMBOL(kasan_multi_shot_enabled);
-+
- /*
-  * Used to avoid reporting more than one KASAN bug unless kasan_multi_shot
-  * is enabled. Note that KASAN tests effectively enable kasan_multi_shot
-@@ -128,7 +134,7 @@ static void report_suppress_stop(void)
-  */
- static bool report_enabled(void)
- {
--	if (test_bit(KASAN_BIT_MULTI_SHOT, &kasan_flags))
-+	if (kasan_multi_shot_enabled())
- 		return true;
- 	return !test_and_set_bit(KASAN_BIT_REPORTED, &kasan_flags);
- }
+ 	/*
+-	 * For Generic KASAN, kasan_mem_to_shadow() uses the logical right shift
++	 * For Generic KASAN and Software Tag-Based mode on the x86
++	 * architecture, kasan_mem_to_shadow() uses the logical right shift
+ 	 * and never overflows with the chosen KASAN_SHADOW_OFFSET values (on
+ 	 * both x86 and arm64). Thus, the possible shadow addresses (even for
+ 	 * bogus pointers) belong to a single contiguous region that is the
+ 	 * result of kasan_mem_to_shadow() applied to the whole address space.
+ 	 */
+-	if (IS_ENABLED(CONFIG_KASAN_GENERIC)) {
++	if (IS_ENABLED(CONFIG_KASAN_GENERIC) || IS_ENABLED(CONFIG_X86_64)) {
+ 		if (addr < (unsigned long)kasan_mem_to_shadow((void *)(0UL)) ||
+ 		    addr > (unsigned long)kasan_mem_to_shadow((void *)(~0UL)))
+ 			return;
 -- 
 2.50.1
 
