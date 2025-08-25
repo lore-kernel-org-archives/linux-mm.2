@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBB31CA0FE7
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 15:13:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0566CCA0EFA
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 15:15:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E42BF8E0042; Mon, 25 Aug 2025 11:13:58 -0400 (EDT)
+	id 481588E0043; Mon, 25 Aug 2025 11:15:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF37F8E0038; Mon, 25 Aug 2025 11:13:58 -0400 (EDT)
+	id 459358E0038; Mon, 25 Aug 2025 11:15:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE2588E0042; Mon, 25 Aug 2025 11:13:58 -0400 (EDT)
+	id 36FCD8E0043; Mon, 25 Aug 2025 11:15:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B81F08E0038
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 11:13:58 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 256A18E0038
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 11:15:20 -0400 (EDT)
 Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5EB8A1187A1
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 15:13:58 +0000 (UTC)
-X-FDA: 83815624956.19.9304F44
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C02B0C044E
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 15:15:19 +0000 (UTC)
+X-FDA: 83815628358.19.089DF56
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id AF945160004
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 15:13:56 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bi3KNdil;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 1204BA0013
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 15:15:17 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z7LM5h6r;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756134836;
+	s=arc-20220608; t=1756134918;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ihnyLvMqFgwRsUSPEw5Tge2jcml8CkSqI+kjzDN6pmQ=;
-	b=GrQbweN+f7AEFyUBiwoqHfVWhcpzO9tOBiSMiQ2pOjBBSXg77fRbiBwj21nk5/xi7ek2QH
-	9dK29ec9ePrJr7NngpCpQ4dKcIPKSVw4RXodJ7f6yeIX9Eg+jkU55nDcNqW8ae01cP00+Y
-	H7o6gQCxDauI0FB2fYXi/23SJUJySX8=
+	bh=5ufG5QdeXI8kNB+9/4A7B8OOppUuutpVENvIRQJPe9U=;
+	b=HHz7JOPsnSlBRw2sbzH6BIHzwBHQpfb0i1CVMDClmMTwitxb1B+kNTAZpvatqxrvtq8zzO
+	DNZSalgYW4u6+uabhRNLhYm72CwioBprq1d1lrhgjx3YuhmGEyxYdh+WBTB7U0fBnZX65f
+	KbcQo+4QqXtZf1Qu2JvlvF6cy+jUZ1o=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bi3KNdil;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z7LM5h6r;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756134836; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756134918; a=rsa-sha256;
 	cv=none;
-	b=OUh//aa0EjuAxyY/5GqjQiud2Pu/DVAKNZLs2eQ/y+lczUyJy7NdKwgV0EydkQBtcyDD1x
-	puTmhdhYjj1TEFied762BhqqFigBkOOyePCfgNZXJO0zbYqmn2WBNXUHqH7OQbmCu2TNbe
-	kG9u8kSVn41qH7MKTgTEHdjDTGFJ6eg=
+	b=KLFSS7w4AiM6SKPnVFGqz1sAhjp7MqXDQqS8bCZm+sSBvb9o9F+ugeJ/IJKBgNzrM2+g9U
+	IapHAUd6GCA8327KBBSMjxrdiCrsYZbDC/kLpIxmEOIsAc6lTk0VmMkYv04+kWTouf9Iqd
+	di6FeNRjVcJnxEkp4z/PSrAyAsIa0zU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A8A684341E;
-	Mon, 25 Aug 2025 15:13:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E0FC4CEED;
-	Mon, 25 Aug 2025 15:13:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E392C43AFB;
+	Mon, 25 Aug 2025 15:15:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B5F8C4CEED;
+	Mon, 25 Aug 2025 15:15:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756134835;
-	bh=WZz+BEh/Ios9GLEN/uIEsnq1OHEvgWzXABBqfRy6Akk=;
+	s=k20201202; t=1756134916;
+	bh=7tycD1zCJNlDY1KA90lS8EoR/M9TmWIK/PYUIBU4mWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bi3KNdilY7L65uSGuh+wXZHJcTlHRrqDDZGm/3FiF5ruHGiEQNhqc6YfGiHitK+F1
-	 dPqSNqGqGBBND2/c8uQCURQaRSadSmRLyY7aO7PKOxjv9o5bI4JZkH+ISVpn7hER8S
-	 k5JaeR4QTvO4dP26VxEWXP6MQpV1IHzwkc/b08X7HGZdnwfrYFsweHn3TKu+maBWK8
-	 ZgSq5xeVm+jzYe5970Y+VcwsuyIlASBk0DPRK29VbjOU3PBYXii9145mL4R7yTdsy0
-	 SEM52H/4Fabq1MNznSczUogzmbdz2tgh3IClQsc1X82qdK+aO0o9LWf0LrNnmjj7xe
-	 uuIAvIhCVEXFA==
+	b=Z7LM5h6rNaU8atANolgGgAVEiTB51h4wGV3Rtm5WwLDh/1kO8+4mE5xM7F4VoWu1o
+	 c6CA1LGbm1mYTIKsgCONmDo0d4YmSGSmkyuBqZiQvV+1XHKK9B2fVHSVtXhu7KLNUc
+	 UBdkISmi9YaoqOz+RZFJh5QG/FD7LCmxzt9UDqFSfvz7kaKsMc6MfZYLjSyfj2i3OJ
+	 nFtYkPEgmBPVl8Jox7I23MYJ+0p0Aa/I6XWi70ezIo8HYDiB/tcqYZwvnWqKvbWZwu
+	 nB+Gab29wxO113RRdn5osBVuo0MrJxgx/5Fh1p/7IDisS96Os2kAEI0Swo8nItOxel
+	 X15y64ZEUQl6w==
 From: SeongJae Park <sj@kernel.org>
 To: Quanmin Yan <yanquanmin1@huawei.com>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -73,22 +73,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	wangkefeng.wang@huawei.com,
 	zuoze1@huawei.com,
 	kernel-team@meta.com
-Subject: Re: [PATCH v2 04/11] mm/damon/paddr: support addr_unit for DAMOS_LRU_[DE]PRIO
-Date: Mon, 25 Aug 2025 08:13:53 -0700
-Message-Id: <20250825151353.36392-1-sj@kernel.org>
+Subject: Re: [PATCH v2 05/11] mm/damon/paddr: support addr_unit for MIGRATE_{HOT,COLD}
+Date: Mon, 25 Aug 2025 08:15:13 -0700
+Message-Id: <20250825151513.36488-1-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250822093420.2103803-5-yanquanmin1@huawei.com>
+In-Reply-To: <20250822093420.2103803-6-yanquanmin1@huawei.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: AF945160004
-X-Stat-Signature: s3qgfz9ki3qjfx6pe3yjj834x7pge9ei
+X-Stat-Signature: d41qcy7a8g8t3bj3fbk8zsyqzpx5subr
 X-Rspam-User: 
-X-HE-Tag: 1756134836-989923
-X-HE-Meta: U2FsdGVkX19qgLV+EJFo4QAV6VNa3VlaxsPtYgtDZ1curQZ6wUFFIZPSpsIv55HTzBg2VdlF1c81OP0CCa3GuARj+hdSHbRRAAxUqwgyke1OvChNmNiEo84vRUvbQQt5BwZLXpZC5bUWcEebqw96Ip04WeH4j/2yqm9xWClxaUy2kSFBp6W3LBKJntMkpfXRO/UTgYnSYu6Z+yGczMXt0Fk4GofTC4minBnsQ2KYVcEvw7fYc7jgVxbNGni6uWdIW5zPkWYNaTFESySSjtYY65ha33LSVSJQFDfai3GJQSDXQxYbkSsk7z8ru/i53hJ9+ZCOtRmkjIHYLsW+aZDpy/oo6sxMLvFI32YwIdhGJJNG+4lyIsMLuKD4XsqIdbuE0k2Td80P+/zgbzaWfuM1XQDxCWLMprBhkh/fYILMO4w7yLFpKWbciX8KdLUH5qmdiznZ1EU/keOkXq5BoiW/cRdBSc66P3TJtPWWvQJCX1Ver5qsgppPGZ8lnCONtooODKoZ28t+VmANIEqf9MMlrPnC/UZZhJ93qVYC5nRPmiTrmne8GcJ4u0K0Mo/jGeYGPjd9vE7IKlA+wg9S8lvl7zWiWMUKx+BaND/HHi5QY3Yzp0lgNjA9mZo4wz+cw81bxgKqDI/ibAnRnCOy7A2llVbAFaOmme6apfZlmty9jkPHNawSg3cjM+goR1z/P8IE51wUjGA71zSuE/0gNleKIJWSUVTn7f1mnBgaJymdG6Qrlgo+Of5KC+P7wxYI+kh9TpO5S7FG04GMw9rDuhjETOeILYj/6MpR5jxnHUKZiqbYTm2K2ajObXryUU15n6HyOceU+dDVBwzXEh4GDh+3KnQbfDswu9fRcz1YX1e5Z/lYMqAtszMy4o7Zk5qq/C6mPn+QKPR85roHac3u0Xqbyb+RckWSAL3NfKljAFpEu9lnR8aRVTl1YuD+pzxHwxZOslvzHMGDAsbnQ8nf7b+
- kD9Eomqm
- Y2tfJhWPs9TqjriK0qxY5/oEjZ6kO51xc+BBpCtgskgUh6Sd+0ExZOeYrQmKNHGhNsQc0cwCT9rmowUhUCvtOCspUU+m/fWlEYPXKZJMwkd0d74EkHt4UWvOuVcvRxlu3ASrJ8u1VxHaQWV19rr4z0EIS2iFR0KNCwRkHBXJF2DMBxziXI90Nf01MpCmAGxDNu0S3Xi3HyeWFzCH0vVi/4krl+6oyy7lYwgMVryCi0W2bX8V+zy/aRi5uwPcLZ8N75pfl10dss6bogMSMXOMhFfpHaRSbFWbz1k01z6BzygPKU6qwa2fM7eU0U0rz68E903n1gYf3kFLNgHoxFgmnhMQ6ZUPaMv5fNIImyVdFHOm/rxuMUQ+QaU9NmMOGEcHZdLR/vy2VgzPu5C4KF6H/CXD2EhE3kVzDZuPbyhDABbDmT+JCIr2N/fZ+AS6ZG9ER9sOcIGPuBFY621PiW2tH7daHn20hz9PoLqVRqUOU9f+SP98MZw30tmYbnQ==
+X-Rspamd-Queue-Id: 1204BA0013
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756134917-400347
+X-HE-Meta: U2FsdGVkX19wDZQ/xUtKbHWMv2BguJcDiQh0vvhCwYdMSyg87yF5Lw3Z89tjNWMp2i3COvljZFxublFBem5fSMo3zOR7s8cPEhH0PguWWrgsTH4UtmC52NOWUYxEqXo5hMvKt1aXDcOd85uQwrzwI3Yloxa0QxsAkDJc5skm3UXjcuuvA4zOQjPDJoQfz3hmzeu7wqfuBOcbANFmhDOK67NlUbuKkRTuRXlb10rsyIbYxKTgeqA4fNM93DAHMXbdSHpH7HOlRSo91CcwNxTCc0hzwgANSTgCExsyv+VhwifLQIAo3Tsc7bPCThQEnqaRMyc27CvqTdoPLW8HAcrXZv9+irw0e5F8TYIRLUdHkLhPPVYuwWizh1PCcUdKbNrlMcJRCePvX+W/l3sI6O4wHSOgr3f1qoPNSeHSSqifwXQ4NDBIf7GWIjsRj/NdRKFoG+bgUtFSegKnpHZubaglp954URyXYn9TTE5gub1pbe14A+mp35nWLz0rNdsriIrvYOC7I4ehCgMvTmwi0huXTD0iRC1B7f1SP+ch6Hids6RfQ2L5FDfJCC60Hmzo6dfOpVIwz0vgPkQOUp6JM2lcsC44cK3StpbP5hfgP3ZAb6bTrOrIQsjf6gFl/CIlWpbsD/42FHo6UdC/Lg/7BDdsFBbY0heRLFWr4sK9/KiOGB4kTkXgiU/Lz+nXneNWvm13epYqdD1GeUuBgNjWyIU7GNjI23ZBidXDnxBj4zJnWSEPdVZqFPDbsEWQSI2FA8+C3M+VtSPrWRO2lbyG9iWAMjJhVo6/QeL/w0NYlQ8FUTbce39BmCtaIdiQ1sB+a2r8wEk33zUITjMhhmaaw8aTTrQP3YMH78SWCcsosCuM4xXTeXh3MrOaRkOMRvLh1wVccKFkTBPz0EuexRduA2alPgkCqsWY5i9O9DoGAgg0zniv0dz+bsQQBCzRtUKab+xvSijsz7+rO/B8XhNJuia
+ xWtoB1Xq
+ iEolvyQy+9u7eok2Y9aINjV0ldCfUlMDy36hioQRK5XNxP0Tk8tMvkL75i6W2a9VfJeu25v5XO3XfJuq6+S1ptHmg5YL87XEUnhrfpvCJcLaaBjk+TgW2ZCancA8Gnzq7U29zp77kCdG2GskoyGH37zDcBlWOm4DEqwa/GWKRbcPpRty8XBoA5VvkprDWz2ZRd9dwKI/KWytZpBVX07YU9A9Z6xkTJl3AKFFjnN8xt+XVEB1kOd/bQi1cO/INTf6eizKmE+Ry7xBIJhnm6MslwGOn38hpIZeUa5OV4pJp59V5aDSNNrz/vUaG1+bGL87/mcjdx8NuDUmfZjW2RuuOo9jQFz95bED4mKAJYTK+Bt3AElZsGMczqA0F9wUdS13TW6xGA4x5PPufT/B94KJqM0h1VBbgIvd0Ff5SLrDgVmZjKt2yvSPSwk5XMfyt9oWIwf102Bo0Yom2UKGgxGIwQ7YYGWYks0oHxGKV45JGvQcRFtBa0GgRbYXQrA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,20 +97,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 22 Aug 2025 17:34:12 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
+On Fri, 22 Aug 2025 17:34:13 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
 
 > From: SeongJae Park <sj@kernel.org>
 > 
-> Add support of addr_unit for DAMOS_LRU_PRIO and DAMOS_LRU_DEPRIO action
-> handling from the DAMOS operation implementation for the physical
+> Add support of addr_unit for DAMOS_MIGRATE_HOT and DAMOS_MIGRATE_COLD
+> action handling from the DAMOS operation implementation for the physical
 > address space.
 [...]
 > -	return applied * PAGE_SIZE;
 > +	return applied * PAGE_SIZE / addr_unit;
 >  }
 
-This can cause __udivdi3 linking issue similar to the report [1] from kernel
-test robot.  Andrew, could you please add below attaching fixup?
+This can cause __udivdi3 linking issue similar to a report [1] from kernel test
+robot.  Andrew, could you please add below attaching fixup?
 
 [1] https://lore.kernel.org/oe-kbuild-all/202508241831.EKwdwXZL-lkp@intel.com/
 
@@ -120,7 +120,7 @@ SJ
 
 [...]
 
-==== Attachment 0 (0002-mm-damon-paddr-use-do_div-on-i386-for-damon_pa_de_ac.patch) ====
+==== Attachment 0 (0003-mm-damon-paddr-use-do_div-on-i386-for-damon_pa_migra.patch) ====
 From hackermail Thu Jan  1 00:00:00 1970
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
@@ -129,9 +129,9 @@ Cc: damon@lists.linux.dev
 Cc: kernel-team@meta.com
 Cc: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org
-Date: Mon, 25 Aug 2025 07:45:24 -0700
-Subject: [PATCH 2/3] mm/damon/paddr: use do_div() on i386 for
-         damon_pa_de_activate() return value
+Date: Mon, 25 Aug 2025 07:46:24 -0700
+Subject: [PATCH 3/3] mm/damon/paddr: use do_div() on i386 for damon_pa_migrate()
+         return value
 
 Otherwise, __udivdi3 linking issue happens on certain configs.
 
@@ -141,18 +141,18 @@ Signed-off-by: SeongJae Park <sj@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-index 09c87583af6c..6fb92ecc513d 100644
+index 6fb92ecc513d..34248b742a73 100644
 --- a/mm/damon/paddr.c
 +++ b/mm/damon/paddr.c
-@@ -236,7 +236,7 @@ static inline unsigned long damon_pa_mark_accessed_or_deactivate(
- 		folio_put(folio);
- 	}
+@@ -286,7 +286,7 @@ static unsigned long damon_pa_migrate(struct damon_region *r,
+ 	applied = damon_migrate_pages(&folio_list, s->target_nid);
+ 	cond_resched();
  	s->last_applied = folio;
 -	return applied * PAGE_SIZE / addr_unit;
 +	return damon_pa_core_addr(applied * PAGE_SIZE, addr_unit);
  }
  
- static unsigned long damon_pa_mark_accessed(struct damon_region *r,
+ static unsigned long damon_pa_stat(struct damon_region *r,
 -- 
 2.39.5
 
