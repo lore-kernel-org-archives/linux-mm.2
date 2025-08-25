@@ -4,141 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 875DDCA0FE1
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 10:19:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7614CA0FE1
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 10:27:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A9918E000D; Mon, 25 Aug 2025 06:19:33 -0400 (EDT)
+	id D16618E000E; Mon, 25 Aug 2025 06:27:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 933658E0001; Mon, 25 Aug 2025 06:19:33 -0400 (EDT)
+	id CEE078E0001; Mon, 25 Aug 2025 06:27:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7ACA58E000D; Mon, 25 Aug 2025 06:19:33 -0400 (EDT)
+	id C03C08E000E; Mon, 25 Aug 2025 06:27:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 648898E0001
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 06:19:33 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0C45011856D
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 10:19:33 +0000 (UTC)
-X-FDA: 83814883026.26.ADC8928
-Received: from mx08-006a4e02.pphosted.com (mx08-006a4e02.pphosted.com [143.55.148.243])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5BD681C0003
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 10:19:30 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=iram.es header.s=dkim3 header.b=f276yTAV;
-	dmarc=pass (policy=none) header.from=iram.es;
-	spf=pass (imf21.hostedemail.com: domain of paubert@iram.es designates 143.55.148.243 as permitted sender) smtp.mailfrom=paubert@iram.es
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756117170; a=rsa-sha256;
-	cv=none;
-	b=jTTpC7zKJk3CLuj153ANJabDV2QGGFNh1e10Al8fUrOjBPmYChAztCxQoYPTucapQ225Gf
-	+LdI7mVoMtDp7IB82/J/huEnV0JoKoDv512Gkq1i1zvnXU6P85gomA75ZjR28zdM7MxHKf
-	Hsmx8OWRzKp2J8BndiYSypDn9kLUhYg=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=iram.es header.s=dkim3 header.b=f276yTAV;
-	dmarc=pass (policy=none) header.from=iram.es;
-	spf=pass (imf21.hostedemail.com: domain of paubert@iram.es designates 143.55.148.243 as permitted sender) smtp.mailfrom=paubert@iram.es
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AADBB8E0001
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 06:27:17 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2AF9A13909E
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 10:27:17 +0000 (UTC)
+X-FDA: 83814902514.27.B2803DF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 93631180010
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 10:27:15 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KbH6pmxm;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756117170;
+	s=arc-20220608; t=1756117635;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D2RQQU+xVYCIYE9iCJ4jbQxYZO59NkcR2A8V0GUG+Mo=;
-	b=0YcS9bxMQpWEP+vVjFV4QNVJbjWbsbt0Z1ZvDrTEWchmADOzBj5tFdgGllsI2czoBn8XRo
-	ucA8Z/LqRkMfUWgjuMEdDG1Ww6Ex1HhGXm1pZ2Lf8e2Hpr/q7OZYSIEeom+UJHERjRZWhV
-	Jx7vgiZ62MHdqhSEXBDoOm0AbFVbCzg=
-Received: from pps.filterd (m0316694.ppops.net [127.0.0.1])
-	by m0316694.ppops.net (8.18.1.2/8.18.1.2) with ESMTP id 57P6PW3W020069;
-	Mon, 25 Aug 2025 12:18:43 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iram.es; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=dkim3; bh=D2RQ
-	QU+xVYCIYE9iCJ4jbQxYZO59NkcR2A8V0GUG+Mo=; b=f276yTAVV1SD26/ulkZ2
-	ssJY8XTewysYT4tMLHnjnSIBPzgblP8WuCw3pnh/XAa52lQyDLxmxShvX17t1EXs
-	AoQda248LCfIMXON/nZwXpeu4+MTA43njmbgfGliPSIcYHT6eGt5tvWcsz+Ebm8/
-	4lIyyZv8wrgSbUY90OllDWqU/MTlR6SEhvM2DfGVcewE1Kv7qk7AtlaNhqjqabwW
-	IOCDoLYjGRp5sJ9N4qvDQOAd9gPixccJfFHXTLWq+WrJuREyVW1zYVGsiH/zFMSl
-	OAyS7jVvPh7W7XrmyRecvqRovk6Azt/V4iwX6CHVY52rTnzQCWQmiOXOKm2ygevf
-	nw==
-Received: from sim.rediris.es (mta-out04.sim.rediris.es [130.206.24.46])
-	by m0316694.ppops.net (PPS) with ESMTPS id 48qs26hbtk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 25 Aug 2025 12:18:43 +0200 (MEST)
-Received: from sim.rediris.es (localhost.localdomain [127.0.0.1])
-	by sim.rediris.es (Postfix) with ESMTPS id 26F1D181FAE;
-	Mon, 25 Aug 2025 12:18:42 +0200 (CEST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by sim.rediris.es (Postfix) with ESMTP id 00B66181FAC;
-	Mon, 25 Aug 2025 12:18:41 +0200 (CEST)
-X-Amavis-Modified: Mail body modified (using disclaimer) -
- mta-out04.sim.rediris.es
-Received: from sim.rediris.es ([127.0.0.1])
- by localhost (mta-out04.sim.rediris.es [127.0.0.1]) (amavis, port 10026)
- with ESMTP id T0a5k0mKOE42; Mon, 25 Aug 2025 12:18:41 +0200 (CEST)
-Received: from lt-gp.iram.es (haproxy02.sim.rediris.es [130.206.24.70])
-	by sim.rediris.es (Postfix) with ESMTPA id 4570418007C;
-	Mon, 25 Aug 2025 12:18:40 +0200 (CEST)
-Date: Mon, 25 Aug 2025 12:18:38 +0200
-From: Gabriel Paubert <paubert@iram.es>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Darren Hart <dvhart@infradead.org>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Andre Almeida <andrealmeid@igalia.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Laight <david.laight.linux@gmail.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Daniel Borkmann <daniel@iogearbox.net>, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
-        linux-mm@kvack.org, linux-block@vger.kernel.org
-Subject: Re: [PATCH v2 10/10] powerpc/uaccess: Implement masked user access
-Message-ID: <aKw4frSacjCoruSJ@lt-gp.iram.es>
-References: <cover.1755854833.git.christophe.leroy@csgroup.eu>
- <647f1b1db985aec8ec1163bf97688563ae6f9609.1755854833.git.christophe.leroy@csgroup.eu>
- <aKwnMo7UllLZkOcK@lt-gp.iram.es>
- <16679d56-5ee0-469d-a11c-475a45a1c2b9@csgroup.eu>
+	bh=1mowrh3frMbHEHD/HhUU5wlu9p9PDnaVvBi8ctUBS3M=;
+	b=LuDv//PzfCy5OTdEsYiyr2FaDjhDAkIFLoYuP11oaVNoroRcr/b+/WujcR2GagHzr/oHAm
+	6W6sNsugAJy7SyEbKsOTU204/aN9X/oQBnh/R5FE/Jg4jgWNIJJgENGeVBqCUKSx+w3MUZ
+	aTZr1NS8v045Zt+gMvhVmV8A+tqY5Do=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KbH6pmxm;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756117635; a=rsa-sha256;
+	cv=none;
+	b=o0hGuLW8xJhWX4vvwWwPvYNUBTMTjy7Z8JuQH8AVkZAk60oLipA0kb8UnB+E67ATJzcHJ3
+	nJUI9NQFVOgNh82aHWj9Y5KhyPXapIMAG4O8oNNZILYS9Oj+VQcoSa/zYD9MHUMKbfGyFP
+	kTDX9fw6Zn/SBfGxnMF++qs6PUiLAio=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C2BE3601EF;
+	Mon, 25 Aug 2025 10:27:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27661C4CEED;
+	Mon, 25 Aug 2025 10:27:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756117634;
+	bh=7eXQe0ppR67crwIxzEGbI8HTL2j+eg2UeV1vOND7m8c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KbH6pmxmwtV7AmRZ596tGKRt9t7M7lAxvdMbUw+oaoyUFMMA+EyQy05hGJ3g9WwsB
+	 Z1eMAAN0hLLeLUvb6KAzpYAn5REKd9ruZ9Tp7F7miFd9NnlMKIGXs/OUUbWERoUDQn
+	 aM7jJisqh7oNweuIFKK0Hpty4DmFY33T+XE2EIKeWWEBvYToPKgm2TpiWFGzodZPpc
+	 ks1MXF09AJ75Wy9QWZhT7FsaHaZiB2GuBTTwLlwykW8ZvOVYcxMceKfewYi5waVo5Y
+	 0cqenAwDmaLHn1YX3eGSdNdZn19a8DMMgJ68FVHFHIJDWIi4e0SmxzR+EZkFV5lmUG
+	 QfFpG5ucwxINw==
+Date: Mon, 25 Aug 2025 13:27:08 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: kernel test robot <oliver.sang@intel.com>
+Cc: oe-lkp@lists.linux.dev, lkp@intel.com,
+	David Hildenbrand <david@redhat.com>,
+	Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org
+Subject: Re: [linux-next:master] [mm/mm_init]  8a523d9e6f:
+ BUG:sleeping_function_called_from_invalid_context_at_mm/mm_init.c
+Message-ID: <aKw6fG9eryVNmeEc@kernel.org>
+References: <202508251443.f2d9f77f-lkp@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <16679d56-5ee0-469d-a11c-475a45a1c2b9@csgroup.eu>
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODI0MDAxMSBTYWx0ZWRfXyQKmoH9DesXw
- ky5qpDKRbPVEO1j5P6RR/dl92Vu5gG46S+qU0RD2h9TCpiV9lxYjE4Rf4eAAbziJN1WFf5iKIoL
- vwHyFf4hVFUMvanQ6xRm7ygYHGMCvWURJrObfA0zrkO/dAoKD6EpbGdosihHgY3UjjtywmHeIhh
- zadbuk6ri8Bjd//t+fuudKJvFfCA6JbBQ9N+HL1oXH8gyaqcVqF4z95oY0uvqMW92ZBVK+g2n6Z
- F5336k0OeSJ784mGbOt0xTivvX2ToRO8PW2UCuoqsfP7MIu8uTDDGoglgFl+oLkNRfmAFLuzTMV
- j3inHZqHmiMrvZjyNxDRXcurMFxlSzfQPLVCuFgRq2ZkLrTZLm79a044/SvNKtbKXHZ8D77pt49
- kvezQV2k
-X-Proofpoint-GUID: gpjt9l5GPC7skcU5Z664_moW2gPMxUzU
-X-Authority-Analysis: v=2.4 cv=GqFC+l1C c=1 sm=1 tr=0 ts=68ac3883 cx=c_pps
- a=Kke4r4mcy+kRAsMtzpf9hg==:117 a=Kke4r4mcy+kRAsMtzpf9hg==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=_EeEMxcBAAAA:8 a=LQ9UBoVtz5yYhqZLJvEA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: gpjt9l5GPC7skcU5Z664_moW2gPMxUzU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-25_05,2025-08-20_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=salida_notspam policy=salida score=0
- priorityscore=1501 malwarescore=0 phishscore=0 bulkscore=0 adultscore=0
- spamscore=0 suspectscore=0 clxscore=1011 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508240011
-X-Rspamd-Server: rspam03
+In-Reply-To: <202508251443.f2d9f77f-lkp@intel.com>
+X-Stat-Signature: jewo5f3djhtwayh579p8b6dch4pswd3k
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5BD681C0003
-X-Stat-Signature: o3jq5hhrjjudes4k6g6fxk84zkex8nqe
-X-HE-Tag: 1756117170-202268
-X-HE-Meta: U2FsdGVkX18zgfUuOp4ZkdjSlqzQdzKa00shgtz0qZNHXP0QlAk8t7wHwN5KadNKoDG6sqm03ATRfxCbfZQ7OV79ghXZ+yqOHechJO627HJ6vcrgXVLFc49FTdHsK1ifo/endwMwcFUCO1S9dUzPBslwhSZ/u3leSdsLErMwdoT+J5zEEePDZ6E6QYtuhFELRpMohIxoOUS8hVo3aoHXzUZvmbo+5uMzrP5BTeVJ0WJ/BzcxVDN9OGYRB0ZbS1bJg6aQ1gdIQputKM6ATushYN8zc6y3y7ZTEqXUDg0VgODEgIRfSvGCHlxmKv3mw2C1a8kTaH39+iJr4vLpTTPCXWgHPlJC4BwC8zP0dAPCz6TL36vqTU0SC4kAEUN+Jup3RbyjiaRLJD4cUIEcDBnkebLgZwV0ElVqr7RNOhquvlAqTtdLTqfvClNp87GrDW+KLluzfXEED8ihk60qHxIESyhHxizycR5EwCIIioV7fvAmVrCV8sQQHWFgxlApi2AjI/QCGPA566A1UjTTI5z0IAQiqOYaepSsjJSZBE3pbzdYcrWfwdJLanZ6LJkDay8783OqNClEo9qsbMPW6yJwEt+ybEnTjBjx4UgfjhaeWOIYyBQ/oqnAcxZoE33ZZPVXVGyiK+orqG49nvhRoKhT5YdTFtMeMyoX+1RAmALxxwVonuZ0OgyjnvrRIGERspydUY0SO+9hPsVR+QXp1wgxlNTnK7zb1OFbwd4zzZKaheUcMKRubAKtVuuidgceeQ9QzbkD4PbC4rpK7LiwEXvWAO5AYHOqOTxaS/XWb/U/gSrWKCsTp5f8U407EvxDR3r+CXGiWuRvscmxawNjZ1a20MUpz2rFB7JWxJfo+3JmW/4nK//PGl42GFB3seBR0okRJrz2GSL4i7h54cPRHE0Oucf6h/VhOLaTrn5GT32UiCjxh0bJZg0BKoUtCYF/50FteUN9+qVA0xyxFlNM7Rb
- h8dFSWAK
- uePS73oT84u8ddc2wVlEHSqiyb6L+eTaknFka7D5SJ7VAoGx53uOdRQRGT3kMmuu/Xe+Vyb1Ek8ehF1CaFHDFB3ubTZ54JEvtf+x4gbcm4gU//+VI4/zblhZFNYR3tnJn3X0cjrnkbbOPcFY7+eJOcYmwT4iq7ZrLWcDotthMV/GMuAxBQZjSqrU3ApD+zrVaf1efaWfrzokGgQg0aT9v3Hg5g49od3sZyFaAWUKmO8ofUronwbRfBy0Rf2RltkpZlpdd3/b4/rHmQaW4HwWozozi7GGzk0POg38hUi6vLncYVvuLi2CloQBW9sQJPIhO2PIJ/66YqUT2HSepd0LE3MNtePwA227taG9852dml1OU1SH/Ufm7xcw70A==
+X-Rspamd-Queue-Id: 93631180010
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756117635-227805
+X-HE-Meta: U2FsdGVkX1+YyuduFb6CKsufWimHGcHVyKDJXGzj/3bkldKDygBcQT3sJ+bkGbgOUeT0dnMy5mHKvO8D+Hc0k24rIoaf2ZMidzfOZww2MevS69mddJmYRfIXJt2ZGnreWi25TuMVL39HdpwPY/sh6uQIk26CVJSLrnBhPWoptJ3m7H033bJMDpnm5j+re3Y7mJzF9CPrYO3cJTWyzp9JmJq7z3uUNgjviLmiJQ/OpqFmQMXk1X84dOmU0vx/hpysN7Ad1ojkF+m1oeN5IY7LMU+gLdsB0dA8V0nvZGOzG92LjC/e/bAX1DjRp0Q9dzXb04V+/Q6+pCTkqo504P4Z5y9AMiAszK3+JpH97Mzsg7WkYXw+rFax5gjIDxcqd/MbKewUEPn549L7wGqeAoEnGSWOkg3iPdbrdYV8IkS92e16vYelKwvcVTD4EI1mc+O2StkMRORrvQCYwlRZy6pVkfd0XjjGpzxALV3LLoDtIYIHgKx8AnusEHOkYrycX2RMEOJkPGy8n/7uYHYesOvB4Q3JzkJv6ckh4LlgjMk+MTyOlGFNN+ap7QBEZiOq6ls0NknqagKGvki3Ht8rohpVKPy1PhPuKP0P7eUY2fAUeVzr8btp9GI85GBGI9B1u8BFJYQ06Jjn3Ttn+NcTywSQplhNNL75nS1ftMv43lMSHSqc+EdghrAu6edOYXnJKO9HDGxzd0duLSRQq7Bu5SwskYm7vzZ0BBKvaClJ+xkhj86yGkiCyRY+j0CCBcL19sf7fj7xSjgdfU6JKH5RyB94GmmDM5vgW4B5Gw4k8HGHPu9PpK4P37w/VtL8QwQ1Q+3uety+VT/hvxa3YtGmilC5sGWBsLxtxutx/bHOSggzK5p6ms0p9LEWi00yDiNVJyBk2NoMYDA6jqnBZutbuc6atejY8Kj33RLx4xsi6up/iPqd3b5c/CtkrpXx5Slf/AQdesvxQ61XUVz3iVfUYBU
+ f+1jwWLS
+ ZSFXmvxpNoi9k99J/4nlFuQaHtldbfR16GoiTBnKxMvJNMCJt1kQYw0BIr7gfcBMXKlUSWXcDGpwukQibdlT8alR7rmfKn+UMZcd39xqBE0Dxg941l1b+EF/6BHqy/l7fIw8hnP90313OFmD43uaMUGb38qPgls6mwpzw2rR/BZluveOeLgZQuEEOfjvRmL+EsldQJOPUY0MJ2wR06AJOJVLGg1uPdOt/USWj4Ww739/uCt3mP82SIcuvH2T4P4vLIFgbLjUeVpy+DKDdi4pag8T1K9zk1YDcLlv9NjlOQpH5DBblZWWlUdam6mAf2H+skWA1LJVkQm7g85GLPGBa/fF53lRJzSJSe1HIyUGywfK4mimzAhRap6eBJQmb/PdBZ08XEaTLFTan8ifFgz/WCMzgKfrfxFFiYfGBzsCf2u+kp7hJWCe8lUbLZ8YxrxAHasCMSQsqmUSMg9yIc0Hohkd0jODdq6Eb0kFzDkTpjd8SNsL3fqm41wmmVA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,121 +93,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 25, 2025 at 11:40:48AM +0200, Christophe Leroy wrote:
-> Hi Gabriel,
->=20
-> Le 25/08/2025 =C3=A0 11:04, Gabriel Paubert a =C3=A9crit=C2=A0:
-> > [Vous ne recevez pas souvent de courriers de paubert@iram.es. D?couvr=
-ez pourquoi ceci est important ? https://urldefense.com/v3/__https://aka.=
-ms/LearnAboutSenderIdentification__;!!D9dNQwwGXtA!QUcSIXoDBBj9wAtcyQ-z3nP=
-EAj-RnJpPgYwjOeb6LZWLejdLzq4uYsPMecQuK5Qy3147APjCNc-hcXGT71XuBh1AJI2M$  ]
-> >=20
-> > Hi Christophe,
-> >=20
-> > On Fri, Aug 22, 2025 at 11:58:06AM +0200, Christophe Leroy wrote:
-> > > Masked user access avoids the address/size verification by access_o=
-k().
-> > > Allthough its main purpose is to skip the speculation in the
-> > > verification of user address and size hence avoid the need of spec
-> > > mitigation, it also has the advantage of reducing the amount of
-> > > instructions required so it even benefits to platforms that don't
-> > > need speculation mitigation, especially when the size of the copy i=
-s
-> > > not know at build time.
-> > >=20
-> > > So implement masked user access on powerpc. The only requirement is
-> > > to have memory gap that faults between the top user space and the
-> > > real start of kernel area.
-> > >=20
-> > > On 64 bits platforms the address space is divided that way:
-> > >=20
-> > >        0xffffffffffffffff      +------------------+
-> > >                                |                  |
-> > >                                |   kernel space   |
-> > >                                |                  |
-> > >        0xc000000000000000      +------------------+  <=3D=3D PAGE_O=
-FFSET
-> > >                                |//////////////////|
-> > >                                |//////////////////|
-> > >        0x8000000000000000      |//////////////////|
-> > >                                |//////////////////|
-> > >                                |//////////////////|
-> > >        0x0010000000000000      +------------------+  <=3D=3D TASK_S=
-IZE_MAX
-> > >                                |                  |
-> > >                                |    user space    |
-> > >                                |                  |
-> > >        0x0000000000000000      +------------------+
-> > >=20
-> > > Kernel is always above 0x8000000000000000 and user always
-> > > below, with a gap in-between. It leads to a 4 instructions sequence=
-:
-> > >=20
-> > >    80: 7c 69 1b 78     mr      r9,r3
-> > >    84: 7c 63 fe 76     sradi   r3,r3,63
-> > >    88: 7d 29 18 78     andc    r9,r9,r3
-> > >    8c: 79 23 00 4c     rldimi  r3,r9,0,1
-> > >=20
-> > > This sequence leaves r3 unmodified when it is below 0x8000000000000=
-000
-> > > and clamps it to 0x8000000000000000 if it is above.
-> > >=20
-> >=20
-> > This comment looks wrong: the second instruction converts r3 to a
-> > replicated sign bit of the address ((addr>0)?0:-1) if treating the
-> > address as signed. After that the code only modifies the MSB of r3. S=
-o I
-> > don't see how r3 could be unchanged from the original value...
->=20
-> Unless I'm missing something, the above rldimi leaves the MSB of r3
-> unmodified and replaces all other bits by the same in r9.
->=20
-> This is the code generated by GCC for the following:
->=20
-> 	unsigned long mask =3D (unsigned long)((long)addr >> 63);
->=20
-> 	addr =3D ((addr & ~mask) & (~0UL >> 1)) | (mask & (1UL << 63));
->=20
->=20
-> >=20
-> > OTOH, I believe the following 3 instructions sequence would work,
-> > input address (a) in r3, scratch value (tmp) in r9, both intptr_t:
-> >=20
-> >          sradi r9,r3,63  ; tmp =3D (a >=3D 0) ? 0L : -1L;
-> >          andc r3,r3,r9   ; a =3D a & ~tmp; (equivalently a =3D (a >=3D=
- 0) ? a : 0)
-> >          rldimi r3,r9,0,1 ; copy MSB of tmp to MSB of a
-> >=20
-> > But maybe I goofed...
-> >=20
->=20
-> From my understanding of rldimi, your proposed code would:
-> - Keep r3 unmodified when it is above 0x8000000000000000
-> - Set r3 to 0x7fffffffffffffff when it is below 0x8000000000000000
->=20
-> Extract of ppc64 ABI:
->=20
-> rldimi RA,RS,SH,MB
->=20
-> The contents of register RS are rotated 64 left SH bits.
-> A mask is generated having 1-bits from bit MB
-> through bit 63=E2=88=92 SH and 0-bits elsewhere. The rotated
-> data are inserted into register RA under control of the
-> generated mask.
+Hi,
 
-Sorry, you are right, I got the polarity of the mask reversed in my
-head.
+On Mon, Aug 25, 2025 at 03:01:12PM +0800, kernel test robot wrote:
+> 
+> Hello,
+> 
+> kernel test robot noticed "BUG:sleeping_function_called_from_invalid_context_at_mm/mm_init.c" on:
+> 
+> commit: 8a523d9e6f30349ad2f8c34d850483db905e976b ("mm/mm_init: use deferred_init_memmap_chunk() in deferred_grow_zone()")
+> https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git master
+> 
+> [test failed on linux-next/master 0f4c93f7eb861acab537dbe94441817a270537bf]
+> 
+> in testcase: blktests
+> version: blktests-x86_64-34a7fc4-1_20250824
+> with following parameters:
+> 
+> 	disk: 1SSD
+> 	test: nvme-group-00
+> 
+> config: x86_64-rhel-9.4-func
+> compiler: gcc-12
+> test machine: 192 threads 2 sockets Intel(R) Xeon(R) 6740E  CPU @ 2.4GHz (Sierra Forest) with 256G memory
+
+This patch should fix it:
 
 
-Once again I may goof, but I believe that the following sequence
-would work:
-
-	sradi r9,r3,63
-	andc r3,r3,r9
-	rldimi r3,r9,63,0  ; insert LSB of r9 into MSB of R3
-
-Cheers,
-Gabriel
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index f907dc17387d..c26f33fdd32b 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -2085,7 +2085,10 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
+ 			deferred_free_pages(spfn, chunk_end - spfn);
  
+ 			spfn = chunk_end;
+-			cond_resched();
++			if (irqs_disabled())
++				touch_nmi_watchdog();
++			else
++				cond_resched();
+ 		}
+ 	}
+ 
+ 
+> (please refer to attached dmesg/kmsg for entire log/backtrace)
+> 
+> 
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <oliver.sang@intel.com>
+> | Closes: https://lore.kernel.org/oe-lkp/202508251443.f2d9f77f-lkp@intel.com
+> 
+> 
+> kern  :err   : [    9.708923] BUG: sleeping function called from invalid context at mm/mm_init.c:2153
+> kern  :err   : [    9.709485] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 1, name: swapper/0
+> kern  :err   : [    9.709485] preempt_count: 1, expected: 0
+> kern  :err   : [    9.709485] RCU nest depth: 0, expected: 0
+> kern  :warn  : [    9.709485] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.17.0-rc1-00003-g8a523d9e6f30 #1 PREEMPT(voluntary)
+> kern  :warn  : [    9.709485] Hardware name: IEIT SYSTEMS NF5180-M8-A0-R0-00/NF5180-M8-A0-R0-00, BIOS 00.14.04 09/23/2024
+> kern  :warn  : [    9.709485] Call Trace:
+> kern  :warn  : [    9.709485]  <TASK>
+> kern :warn : [    9.709485] dump_stack_lvl (lib/dump_stack.c:123 (discriminator 1)) 
+> kern :warn : [    9.709485] __might_resched (kernel/sched/core.c:8958) 
+> kern :warn : [    9.709485] deferred_init_memmap_chunk (include/linux/sched.h:2070 mm/mm_init.c:2153) 
+> kern :warn : [    9.709485] ? __pfx_deferred_init_memmap_chunk (mm/mm_init.c:2140) 
+> kern :warn : [    9.709485] ? __pfx_try_to_claim_block (mm/page_alloc.c:2291) 
+> kern :warn : [    9.709485] ? __pfx__raw_spin_lock_irqsave (kernel/locking/spinlock.c:161) 
+> kern :warn : [    9.709485] ? _raw_spin_lock_irqsave (arch/x86/include/asm/atomic.h:107 include/linux/atomic/atomic-arch-fallback.h:2170 include/linux/atomic/atomic-instrumented.h:1302 include/asm-generic/qspinlock.h:111 include/linux/spinlock.h:187 include/linux/spinlock_api_smp.h:111 kernel/locking/spinlock.c:162) 
+> kern :warn : [    9.709485] ? __pfx__raw_spin_lock_irqsave (kernel/locking/spinlock.c:161) 
+> kern :warn : [    9.709485] ? rmqueue+0x8f7/0x29d0 
+> kern :warn : [    9.709485] deferred_grow_zone (mm/mm_init.c:2286) 
+> kern :warn : [    9.709485] get_page_from_freelist (mm/page_alloc.c:3824) 
+> kern :warn : [    9.709485] __alloc_frozen_pages_noprof (mm/page_alloc.c:5148) 
+> kern :warn : [    9.709485] ? __pfx___alloc_frozen_pages_noprof (mm/page_alloc.c:5114) 
+> kern :warn : [    9.709485] ? __pfx_smp_call_function_many_cond (kernel/smp.c:784) 
+> kern :warn : [    9.709485] __alloc_pages_noprof (mm/page_alloc.c:5182) 
+> kern :warn : [    9.709485] dsalloc_pages (arch/x86/events/intel/ds.c:611) 
+> kern :warn : [    9.709485] ? __asan_memset (mm/kasan/shadow.c:84) 
+> kern :warn : [    9.709485] reserve_ds_buffers (arch/x86/events/intel/ds.c:631 arch/x86/events/intel/ds.c:789) 
+> kern :warn : [    9.709485] x86_reserve_hardware (arch/x86/events/core.c:420 arch/x86/events/core.c:409) 
+> kern :warn : [    9.709485] x86_pmu_event_init (arch/x86/events/core.c:673 arch/x86/events/core.c:2475) 
+> kern :warn : [    9.709485] ? kmem_cache_alloc_node_noprof (arch/x86/include/asm/jump_label.h:46 include/linux/memcontrol.h:1714 mm/slub.c:2210 mm/slub.c:4190 mm/slub.c:4229 mm/slub.c:4281) 
+> kern :warn : [    9.709485] perf_try_init_event (kernel/events/core.c:12581) 
+> kern :warn : [    9.709485] perf_event_alloc (kernel/events/core.c:12680 kernel/events/core.c:12954) 
+> kern :warn : [    9.709485] ? __pfx_watchdog_overflow_callback (kernel/watchdog_perf.c:107) 
+> kern :warn : [    9.709485] perf_event_create_kernel_counter (kernel/events/core.c:13779 (discriminator 1)) 
+> kern :warn : [    9.709485] hardlockup_detector_event_create (kernel/watchdog_perf.c:133 (discriminator 3)) 
+> kern :warn : [    9.709485] watchdog_hardlockup_probe (kernel/watchdog_perf.c:267) 
+> kern :warn : [    9.709485] lockup_detector_init (kernel/watchdog.c:1312) 
+> kern :warn : [    9.709485] kernel_init_freeable (init/main.c:1571) 
+> kern :warn : [    9.709485] ? __pfx_kernel_init (init/main.c:1461) 
+> kern :warn : [    9.709485] kernel_init (init/main.c:1471) 
+> kern :warn : [    9.709485] ? calculate_sigpending (kernel/signal.c:194) 
+> kern :warn : [    9.709485] ? __pfx_kernel_init (init/main.c:1461) 
+> kern :warn : [    9.709485] ret_from_fork (arch/x86/kernel/process.c:148) 
+> kern :warn : [    9.709485] ? __pfx_kernel_init (init/main.c:1461) 
+> kern :warn : [    9.709485] ret_from_fork_asm (arch/x86/entry/entry_64.S:258) 
+> kern  :warn  : [    9.709485]  </TASK>
+> 
+> 
+> The kernel config and materials to reproduce are available at:
+> https://download.01.org/0day-ci/archive/20250825/202508251443.f2d9f77f-lkp@intel.com
+> 
+> 
+> 
+> -- 
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
+> 
 
+-- 
+Sincerely yours,
+Mike.
 
