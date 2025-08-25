@@ -4,116 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84740CA0EFA
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 09:46:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 875DDCA0FE1
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 10:19:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE2768E000C; Mon, 25 Aug 2025 05:46:27 -0400 (EDT)
+	id 9A9918E000D; Mon, 25 Aug 2025 06:19:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBABB8E0001; Mon, 25 Aug 2025 05:46:27 -0400 (EDT)
+	id 933658E0001; Mon, 25 Aug 2025 06:19:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF6D78E000C; Mon, 25 Aug 2025 05:46:27 -0400 (EDT)
+	id 7ACA58E000D; Mon, 25 Aug 2025 06:19:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id ABEE98E0001
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 05:46:27 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 59A6A160352
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 09:46:27 +0000 (UTC)
-X-FDA: 83814799614.15.B40D681
-Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 75ABF1C0006
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 09:46:25 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YnXlke4o;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.166.176 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756115185; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 648898E0001
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 06:19:33 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0C45011856D
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 10:19:33 +0000 (UTC)
+X-FDA: 83814883026.26.ADC8928
+Received: from mx08-006a4e02.pphosted.com (mx08-006a4e02.pphosted.com [143.55.148.243])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 5BD681C0003
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 10:19:30 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=iram.es header.s=dkim3 header.b=f276yTAV;
+	dmarc=pass (policy=none) header.from=iram.es;
+	spf=pass (imf21.hostedemail.com: domain of paubert@iram.es designates 143.55.148.243 as permitted sender) smtp.mailfrom=paubert@iram.es
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756117170; a=rsa-sha256;
 	cv=none;
-	b=RgnO50Wp4rnrz2/UxlIPOu146orVK6TbcD7X4L9X+KtQ4EnKHszED2WuJ7NChPigtEgnHf
-	oroZNAoqlnZNzBejjGyREburh5eQNhgg3q7vsTCiO58KLfCIT2X9CeUyD0GtIn8o81wQyh
-	ld3hX7BO++2P9G4GC4UUbBxxghZ3D8E=
+	b=jTTpC7zKJk3CLuj153ANJabDV2QGGFNh1e10Al8fUrOjBPmYChAztCxQoYPTucapQ225Gf
+	+LdI7mVoMtDp7IB82/J/huEnV0JoKoDv512Gkq1i1zvnXU6P85gomA75ZjR28zdM7MxHKf
+	Hsmx8OWRzKp2J8BndiYSypDn9kLUhYg=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YnXlke4o;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.166.176 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=iram.es header.s=dkim3 header.b=f276yTAV;
+	dmarc=pass (policy=none) header.from=iram.es;
+	spf=pass (imf21.hostedemail.com: domain of paubert@iram.es designates 143.55.148.243 as permitted sender) smtp.mailfrom=paubert@iram.es
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756115185;
+	s=arc-20220608; t=1756117170;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=85vlzJV0/y5OBvRtH7AoGcRMx7r7vPAIreX71H+x3bg=;
-	b=IWq3A2IZfH8GIaJxuljk2hYDoUbiNYmWu2LTzFjECGNpW4qvS2WNT7sfXlP/7y/3B5Piqv
-	z6WExXCLG/83T+17gY1pOlx/zEpaXtT+7L29dKSzf7/SJ/UYNU6GeEi256jj+gI/XJXxPw
-	V/i+SeevaOWH+Yf7jVIFUr6/KR5YkuI=
-Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-3e94fc4de34so36595145ab.3
-        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 02:46:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756115184; x=1756719984; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=85vlzJV0/y5OBvRtH7AoGcRMx7r7vPAIreX71H+x3bg=;
-        b=YnXlke4op9R4HXJwIH4Jg4FoWIDOb8NqQOtlnUWW0t6K2MnFHzvf6MGwBBqXTz5Lm0
-         GF+QHfHHP9owMcwPTnw6ONKL0f2mlfYw7c0oCbcYg8ZbH8Uh31aLmdRdURLwKHmN0PWa
-         He/Y1Fm9F2Pf7K1EVSHZQmoDxqyQCKa9ID1LygwJLbmSLi+vuX4s25eXQ5ubM31HjcSd
-         33W5qdJiJKcwfKGX5VC0/xz4OVC51RHbtPsmMsbWgns8nQWdLIKl0lJ+fqmv6ZntSvAs
-         rqj2iGkWNTypNiON80XLBJxX+s6WaAjbU62qFoaQVzc7vQD6GXfPq/bpOgOW4VqBN8yE
-         vhCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756115184; x=1756719984;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=85vlzJV0/y5OBvRtH7AoGcRMx7r7vPAIreX71H+x3bg=;
-        b=ADaFAIuKVMIi3Y+vZDTcfebzLUDPMjCe+TIBN7Tdnu6VccnEcdddjKU3DM4BC7YQmt
-         QNi8I/vapCaeG0gmhflyKUsdO7tWVKM8kp/ao0aqRkvQHP5OgsmEh0Jh7PPUTn8H+SOK
-         1YQxBzKQNVyIySlA0LPhT216sTYb9TQKOnsdOdGy5wmG452aUQOjqtqxO/R2MWvZYtfB
-         0AQWeJ8J1I7mAiXnwZwMHvaJBITsIBXPmcESwtiKRB6WTWDB3HLlsfSoKPd9RbX+Dg8M
-         FoIK/sW1S6a+/h0mjGtyoGSSm53+Pyaz0nnRKn4ulSp8QZSlFkviyCbuIc/+p/Y/Ol3z
-         wsxg==
-X-Gm-Message-State: AOJu0YwI9i8D90zKwEQtpcayt+n/9W+9YfHAWt30lEsAuyk/gYdx8C1r
-	wSWl2WeY4QJKtSmv/9uWfR9ecmXgqcC9Lm4cVrqKWueztJSUB6sMqyUklveL1YoSHaKoh6fBfH6
-	6JIpi41poIG6bcmUiSucZ6TD2jHYQz9Y=
-X-Gm-Gg: ASbGncuCJCl00GhIr3fJKUDcUoFU5QOf1oxpSn7j2WStnOqTWv/bcKmYyF+fvhJwT5B
-	vh+JKaQpEO4BJLZOy3/DGL/apr4zvrtREsHODbwREFpOTlsI3xKG8vhWf6fQtRfpuqoQ1DyqxUm
-	e89dCuAdreIHnpFl8DQMZ/ZcMDUIAwjlzQkLkOjitecIS2rKSLBEwXWTpkO613+0CQZonlbK9CU
-	6D5GV0=
-X-Google-Smtp-Source: AGHT+IFAikaEYsWSht+/wJX3ArSZEhVcZhprdsD3mK3udXZtsifbgz8EMPUifSFtpWWEExAg/dCHwUQXkLQBVXtvV2I=
-X-Received: by 2002:a05:6e02:1988:b0:3e5:3521:46e3 with SMTP id
- e9e14a558f8ab-3e9228e492amr4932105ab.23.1756115184473; Mon, 25 Aug 2025
- 02:46:24 -0700 (PDT)
+	bh=D2RQQU+xVYCIYE9iCJ4jbQxYZO59NkcR2A8V0GUG+Mo=;
+	b=0YcS9bxMQpWEP+vVjFV4QNVJbjWbsbt0Z1ZvDrTEWchmADOzBj5tFdgGllsI2czoBn8XRo
+	ucA8Z/LqRkMfUWgjuMEdDG1Ww6Ex1HhGXm1pZ2Lf8e2Hpr/q7OZYSIEeom+UJHERjRZWhV
+	Jx7vgiZ62MHdqhSEXBDoOm0AbFVbCzg=
+Received: from pps.filterd (m0316694.ppops.net [127.0.0.1])
+	by m0316694.ppops.net (8.18.1.2/8.18.1.2) with ESMTP id 57P6PW3W020069;
+	Mon, 25 Aug 2025 12:18:43 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iram.es; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=dkim3; bh=D2RQ
+	QU+xVYCIYE9iCJ4jbQxYZO59NkcR2A8V0GUG+Mo=; b=f276yTAVV1SD26/ulkZ2
+	ssJY8XTewysYT4tMLHnjnSIBPzgblP8WuCw3pnh/XAa52lQyDLxmxShvX17t1EXs
+	AoQda248LCfIMXON/nZwXpeu4+MTA43njmbgfGliPSIcYHT6eGt5tvWcsz+Ebm8/
+	4lIyyZv8wrgSbUY90OllDWqU/MTlR6SEhvM2DfGVcewE1Kv7qk7AtlaNhqjqabwW
+	IOCDoLYjGRp5sJ9N4qvDQOAd9gPixccJfFHXTLWq+WrJuREyVW1zYVGsiH/zFMSl
+	OAyS7jVvPh7W7XrmyRecvqRovk6Azt/V4iwX6CHVY52rTnzQCWQmiOXOKm2ygevf
+	nw==
+Received: from sim.rediris.es (mta-out04.sim.rediris.es [130.206.24.46])
+	by m0316694.ppops.net (PPS) with ESMTPS id 48qs26hbtk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Aug 2025 12:18:43 +0200 (MEST)
+Received: from sim.rediris.es (localhost.localdomain [127.0.0.1])
+	by sim.rediris.es (Postfix) with ESMTPS id 26F1D181FAE;
+	Mon, 25 Aug 2025 12:18:42 +0200 (CEST)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by sim.rediris.es (Postfix) with ESMTP id 00B66181FAC;
+	Mon, 25 Aug 2025 12:18:41 +0200 (CEST)
+X-Amavis-Modified: Mail body modified (using disclaimer) -
+ mta-out04.sim.rediris.es
+Received: from sim.rediris.es ([127.0.0.1])
+ by localhost (mta-out04.sim.rediris.es [127.0.0.1]) (amavis, port 10026)
+ with ESMTP id T0a5k0mKOE42; Mon, 25 Aug 2025 12:18:41 +0200 (CEST)
+Received: from lt-gp.iram.es (haproxy02.sim.rediris.es [130.206.24.70])
+	by sim.rediris.es (Postfix) with ESMTPA id 4570418007C;
+	Mon, 25 Aug 2025 12:18:40 +0200 (CEST)
+Date: Mon, 25 Aug 2025 12:18:38 +0200
+From: Gabriel Paubert <paubert@iram.es>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Andre Almeida <andrealmeid@igalia.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Laight <david.laight.linux@gmail.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Daniel Borkmann <daniel@iogearbox.net>, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+        linux-mm@kvack.org, linux-block@vger.kernel.org
+Subject: Re: [PATCH v2 10/10] powerpc/uaccess: Implement masked user access
+Message-ID: <aKw4frSacjCoruSJ@lt-gp.iram.es>
+References: <cover.1755854833.git.christophe.leroy@csgroup.eu>
+ <647f1b1db985aec8ec1163bf97688563ae6f9609.1755854833.git.christophe.leroy@csgroup.eu>
+ <aKwnMo7UllLZkOcK@lt-gp.iram.es>
+ <16679d56-5ee0-469d-a11c-475a45a1c2b9@csgroup.eu>
 MIME-Version: 1.0
-References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-6-ryncsn@gmail.com>
- <0fc6e083-b7be-4144-a50c-d1a7a2e1c3a5@linux.alibaba.com>
-In-Reply-To: <0fc6e083-b7be-4144-a50c-d1a7a2e1c3a5@linux.alibaba.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Mon, 25 Aug 2025 17:45:46 +0800
-X-Gm-Features: Ac12FXxCEasX7WZXCdIE6kaZfUf7KCWB60OtwzH07oeIYEid6isVhNYOyBR6OGo
-Message-ID: <CAMgjq7A7_ZbSWJQj8wjhPb6vt=iLhHc5r=cJdzMeNpog-PcstQ@mail.gmail.com>
-Subject: Re: [PATCH 5/9] mm/shmem, swap: remove redundant error handling for
- replacing folio
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, 
-	Barry Song <baohua@kernel.org>, Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@redhat.com>, 
-	Yosry Ahmed <yosryahmed@google.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <16679d56-5ee0-469d-a11c-475a45a1c2b9@csgroup.eu>
 Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODI0MDAxMSBTYWx0ZWRfXyQKmoH9DesXw
+ ky5qpDKRbPVEO1j5P6RR/dl92Vu5gG46S+qU0RD2h9TCpiV9lxYjE4Rf4eAAbziJN1WFf5iKIoL
+ vwHyFf4hVFUMvanQ6xRm7ygYHGMCvWURJrObfA0zrkO/dAoKD6EpbGdosihHgY3UjjtywmHeIhh
+ zadbuk6ri8Bjd//t+fuudKJvFfCA6JbBQ9N+HL1oXH8gyaqcVqF4z95oY0uvqMW92ZBVK+g2n6Z
+ F5336k0OeSJ784mGbOt0xTivvX2ToRO8PW2UCuoqsfP7MIu8uTDDGoglgFl+oLkNRfmAFLuzTMV
+ j3inHZqHmiMrvZjyNxDRXcurMFxlSzfQPLVCuFgRq2ZkLrTZLm79a044/SvNKtbKXHZ8D77pt49
+ kvezQV2k
+X-Proofpoint-GUID: gpjt9l5GPC7skcU5Z664_moW2gPMxUzU
+X-Authority-Analysis: v=2.4 cv=GqFC+l1C c=1 sm=1 tr=0 ts=68ac3883 cx=c_pps
+ a=Kke4r4mcy+kRAsMtzpf9hg==:117 a=Kke4r4mcy+kRAsMtzpf9hg==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=_EeEMxcBAAAA:8 a=LQ9UBoVtz5yYhqZLJvEA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: gpjt9l5GPC7skcU5Z664_moW2gPMxUzU
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-25_05,2025-08-20_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=salida_notspam policy=salida score=0
+ priorityscore=1501 malwarescore=0 phishscore=0 bulkscore=0 adultscore=0
+ spamscore=0 suspectscore=0 clxscore=1011 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508240011
 X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 75ABF1C0006
-X-Stat-Signature: me9sxoszqpfe5zcefg4ba45d9813z5ru
-X-HE-Tag: 1756115185-450717
-X-HE-Meta: U2FsdGVkX1+xcur8rU4b4XAbM7Y2STQP1UPiYnFan9x1IWBERgFjsxyakukgUj9UHW2Mg/WyWWfYw/Chzavm5U6M+zxlF80S9mDJVbl+zgzGAtSsW1JxG/gZaDKSFCCJXRtnV72c//h2kyn2HUUNfrurjpaXblGXCjRqnG8M4iM+yjGfaJOsDDGZCawL+eXP9Sfei1lJ9MaqnEI6oWkMcKRQgtYIr//FSmfhpxYiJOpNHyAHjqGTBBT/dFtTVuwVF5O+k04OZoUXsMpBHAA07YmX2C8jZeuVXUDYpeRALT7WuPLg1yhMSdKdXGAx3W+s5n32RZ2vK/f5euxBdR4tyqN4cjfVLIUeULQWdkWU+2DHmPXXPCiEUMSM0Ffj8hQW+ZpEVBs/5KVxeIRdhZ/ms6ByfgdEXJtSe6rjaqDenpPgtgBH+p0vpzDaeU/vFEwQDEsnq0bcg9srxlIbVLeIlQXufQUg8QJbrnKRN2eXsNwnI2SHXIBvAU5dq9PoRhXH8NaMdT2CuWg/dxZNqaH1yXjAxIkBETdhp9p5p43OJuZu2zHR5RKLlLCwn3HQwGFdc+35B0+q/HchqXzp7i2scrNfP/kvukGBYc4d8R9GBhKv4ljbhfwQxVKXeN9QlKLCWAhLwbbRwEDfbbrutxdn11GTnLEkB5dCAalC7R8gaN3h5ElpcmqeDcnRZ0XAYTZvQ1jY0IFEgB1JUhGh6gLr5Alc00ouBeQ7BXxQ/sNnwvJ5cbSq4jzubobl9YrRy2CIg1r8X7y4SQR4rpA0RHhIjJVlTasEREIP8te3tFatDhDo3Af5NFnu8G8PHZE93G+Ivws5waUp/O8DXQv/U87+HPR9U/pMeXa1KuA0vPrOfWaAKTb1D1CeKNQFqASxhwohw+D9QGtqxdrYQOeVKXmdLzoSuOTykgNRZH6gaKO3E9m8fcNIZ16IZVNL8Avx8RaD21/H53kXJBBiaesUXzN
- FXZl4QVz
- 6YlCup75KRzjb5HA48Jqb0MlYeDY/htoRtCD0Jt97Xuxt+yeDnazYKZnjCwRx6GJ30EACza284SUgAj/Thy3mhmYuQkCIfiCI0y4Tep47WrGmQLU7GTfy93VgE7opZlIaL/AqpQ6dUxuxhDMd7r9nNl1VX4Rohx4mpmTrZwj5qMIf2iT+UZyAZbxRiwZ1Qd9WtWdxsxEeGA1YfhnlFWgmveFS5i6Qm5FPZ3S1sdwGa9TLFqu5B7EYBpvn5KE0JHKeVEPKZuIHMkFoyTs6TEQ2IbhstSkwurp+M550mMZmajCh3e8koTuSQnN3we+4XvEJjvR7yDCm1FSM0d+D0h04wrvxeHSdDwramRw9PtBgyQS3bbsA/CYQp0wnm2HpWhvdNxlxxU2Tjp83VqNWKPVYqZcvjQ==
+X-Rspamd-Queue-Id: 5BD681C0003
+X-Stat-Signature: o3jq5hhrjjudes4k6g6fxk84zkex8nqe
+X-HE-Tag: 1756117170-202268
+X-HE-Meta: U2FsdGVkX18zgfUuOp4ZkdjSlqzQdzKa00shgtz0qZNHXP0QlAk8t7wHwN5KadNKoDG6sqm03ATRfxCbfZQ7OV79ghXZ+yqOHechJO627HJ6vcrgXVLFc49FTdHsK1ifo/endwMwcFUCO1S9dUzPBslwhSZ/u3leSdsLErMwdoT+J5zEEePDZ6E6QYtuhFELRpMohIxoOUS8hVo3aoHXzUZvmbo+5uMzrP5BTeVJ0WJ/BzcxVDN9OGYRB0ZbS1bJg6aQ1gdIQputKM6ATushYN8zc6y3y7ZTEqXUDg0VgODEgIRfSvGCHlxmKv3mw2C1a8kTaH39+iJr4vLpTTPCXWgHPlJC4BwC8zP0dAPCz6TL36vqTU0SC4kAEUN+Jup3RbyjiaRLJD4cUIEcDBnkebLgZwV0ElVqr7RNOhquvlAqTtdLTqfvClNp87GrDW+KLluzfXEED8ihk60qHxIESyhHxizycR5EwCIIioV7fvAmVrCV8sQQHWFgxlApi2AjI/QCGPA566A1UjTTI5z0IAQiqOYaepSsjJSZBE3pbzdYcrWfwdJLanZ6LJkDay8783OqNClEo9qsbMPW6yJwEt+ybEnTjBjx4UgfjhaeWOIYyBQ/oqnAcxZoE33ZZPVXVGyiK+orqG49nvhRoKhT5YdTFtMeMyoX+1RAmALxxwVonuZ0OgyjnvrRIGERspydUY0SO+9hPsVR+QXp1wgxlNTnK7zb1OFbwd4zzZKaheUcMKRubAKtVuuidgceeQ9QzbkD4PbC4rpK7LiwEXvWAO5AYHOqOTxaS/XWb/U/gSrWKCsTp5f8U407EvxDR3r+CXGiWuRvscmxawNjZ1a20MUpz2rFB7JWxJfo+3JmW/4nK//PGl42GFB3seBR0okRJrz2GSL4i7h54cPRHE0Oucf6h/VhOLaTrn5GT32UiCjxh0bJZg0BKoUtCYF/50FteUN9+qVA0xyxFlNM7Rb
+ h8dFSWAK
+ uePS73oT84u8ddc2wVlEHSqiyb6L+eTaknFka7D5SJ7VAoGx53uOdRQRGT3kMmuu/Xe+Vyb1Ek8ehF1CaFHDFB3ubTZ54JEvtf+x4gbcm4gU//+VI4/zblhZFNYR3tnJn3X0cjrnkbbOPcFY7+eJOcYmwT4iq7ZrLWcDotthMV/GMuAxBQZjSqrU3ApD+zrVaf1efaWfrzokGgQg0aT9v3Hg5g49od3sZyFaAWUKmO8ofUronwbRfBy0Rf2RltkpZlpdd3/b4/rHmQaW4HwWozozi7GGzk0POg38hUi6vLncYVvuLi2CloQBW9sQJPIhO2PIJ/66YqUT2HSepd0LE3MNtePwA227taG9852dml1OU1SH/Ufm7xcw70A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,86 +147,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 25, 2025 at 11:09=E2=80=AFAM Baolin Wang
-<baolin.wang@linux.alibaba.com> wrote:
->
->
->
-> On 2025/8/23 03:20, Kairui Song wrote:
-> > From: Kairui Song <kasong@tencent.com>
-> >
-> > Shmem may replace a folio in the swap cache if the cached one doesn't
-> > fit the swapin's GFP zone. When doing so, shmem has already double
-> > checked that the swap cache folio is locked, still has the swap cache
-> > flag set, and contains the wanted swap entry. So it is impossible to
-> > fail due to an Xarray mismatch. There is even a comment for that.
-> >
-> > Delete the defensive error handling path, and add a WARN_ON instead:
-> > if that happened, something has broken the basic principle of how the
-> > swap cache works, we should catch and fix that.
-> >
-> > Signed-off-by: Kairui Song <kasong@tencent.com>
-> > ---
-> >   mm/shmem.c | 28 +++-------------------------
-> >   1 file changed, 3 insertions(+), 25 deletions(-)
-> >
-> > diff --git a/mm/shmem.c b/mm/shmem.c
-> > index b4d39f2a1e0a..e03793cc5169 100644
-> > --- a/mm/shmem.c
-> > +++ b/mm/shmem.c
-> > @@ -2158,35 +2158,13 @@ static int shmem_replace_folio(struct folio **f=
-oliop, gfp_t gfp,
-> >       /* Swap cache still stores N entries instead of a high-order entr=
-y */
-> >       xa_lock_irq(&swap_mapping->i_pages);
-> >       for (i =3D 0; i < nr_pages; i++) {
-> > -             void *item =3D xas_load(&xas);
-> > -
-> > -             if (item !=3D old) {
-> > -                     error =3D -ENOENT;
-> > -                     break;
-> > -             }
-> > -
-> > -             xas_store(&xas, new);
-> > +             WARN_ON_ONCE(xas_store(&xas, new));
-> >               xas_next(&xas);
-> >       }
-> > -     if (!error) {
-> > -             mem_cgroup_replace_folio(old, new);
-> > -             shmem_update_stats(new, nr_pages);
-> > -             shmem_update_stats(old, -nr_pages);
-> > -     }
->
-> It looks like the shmem statistics update was mistakenly deleted?
+On Mon, Aug 25, 2025 at 11:40:48AM +0200, Christophe Leroy wrote:
+> Hi Gabriel,
+>=20
+> Le 25/08/2025 =C3=A0 11:04, Gabriel Paubert a =C3=A9crit=C2=A0:
+> > [Vous ne recevez pas souvent de courriers de paubert@iram.es. D?couvr=
+ez pourquoi ceci est important ? https://urldefense.com/v3/__https://aka.=
+ms/LearnAboutSenderIdentification__;!!D9dNQwwGXtA!QUcSIXoDBBj9wAtcyQ-z3nP=
+EAj-RnJpPgYwjOeb6LZWLejdLzq4uYsPMecQuK5Qy3147APjCNc-hcXGT71XuBh1AJI2M$  ]
+> >=20
+> > Hi Christophe,
+> >=20
+> > On Fri, Aug 22, 2025 at 11:58:06AM +0200, Christophe Leroy wrote:
+> > > Masked user access avoids the address/size verification by access_o=
+k().
+> > > Allthough its main purpose is to skip the speculation in the
+> > > verification of user address and size hence avoid the need of spec
+> > > mitigation, it also has the advantage of reducing the amount of
+> > > instructions required so it even benefits to platforms that don't
+> > > need speculation mitigation, especially when the size of the copy i=
+s
+> > > not know at build time.
+> > >=20
+> > > So implement masked user access on powerpc. The only requirement is
+> > > to have memory gap that faults between the top user space and the
+> > > real start of kernel area.
+> > >=20
+> > > On 64 bits platforms the address space is divided that way:
+> > >=20
+> > >        0xffffffffffffffff      +------------------+
+> > >                                |                  |
+> > >                                |   kernel space   |
+> > >                                |                  |
+> > >        0xc000000000000000      +------------------+  <=3D=3D PAGE_O=
+FFSET
+> > >                                |//////////////////|
+> > >                                |//////////////////|
+> > >        0x8000000000000000      |//////////////////|
+> > >                                |//////////////////|
+> > >                                |//////////////////|
+> > >        0x0010000000000000      +------------------+  <=3D=3D TASK_S=
+IZE_MAX
+> > >                                |                  |
+> > >                                |    user space    |
+> > >                                |                  |
+> > >        0x0000000000000000      +------------------+
+> > >=20
+> > > Kernel is always above 0x8000000000000000 and user always
+> > > below, with a gap in-between. It leads to a 4 instructions sequence=
+:
+> > >=20
+> > >    80: 7c 69 1b 78     mr      r9,r3
+> > >    84: 7c 63 fe 76     sradi   r3,r3,63
+> > >    88: 7d 29 18 78     andc    r9,r9,r3
+> > >    8c: 79 23 00 4c     rldimi  r3,r9,0,1
+> > >=20
+> > > This sequence leaves r3 unmodified when it is below 0x8000000000000=
+000
+> > > and clamps it to 0x8000000000000000 if it is above.
+> > >=20
+> >=20
+> > This comment looks wrong: the second instruction converts r3 to a
+> > replicated sign bit of the address ((addr>0)?0:-1) if treating the
+> > address as signed. After that the code only modifies the MSB of r3. S=
+o I
+> > don't see how r3 could be unchanged from the original value...
+>=20
+> Unless I'm missing something, the above rldimi leaves the MSB of r3
+> unmodified and replaces all other bits by the same in r9.
+>=20
+> This is the code generated by GCC for the following:
+>=20
+> 	unsigned long mask =3D (unsigned long)((long)addr >> 63);
+>=20
+> 	addr =3D ((addr & ~mask) & (~0UL >> 1)) | (mask & (1UL << 63));
+>=20
+>=20
+> >=20
+> > OTOH, I believe the following 3 instructions sequence would work,
+> > input address (a) in r3, scratch value (tmp) in r9, both intptr_t:
+> >=20
+> >          sradi r9,r3,63  ; tmp =3D (a >=3D 0) ? 0L : -1L;
+> >          andc r3,r3,r9   ; a =3D a & ~tmp; (equivalently a =3D (a >=3D=
+ 0) ? a : 0)
+> >          rldimi r3,r9,0,1 ; copy MSB of tmp to MSB of a
+> >=20
+> > But maybe I goofed...
+> >=20
+>=20
+> From my understanding of rldimi, your proposed code would:
+> - Keep r3 unmodified when it is above 0x8000000000000000
+> - Set r3 to 0x7fffffffffffffff when it is below 0x8000000000000000
+>=20
+> Extract of ppc64 ABI:
+>=20
+> rldimi RA,RS,SH,MB
+>=20
+> The contents of register RS are rotated 64 left SH bits.
+> A mask is generated having 1-bits from bit MB
+> through bit 63=E2=88=92 SH and 0-bits elsewhere. The rotated
+> data are inserted into register RA under control of the
+> generated mask.
 
-Ah, you are right, I'll need to add it back. I somehow misread this as
-the error handling path. Need to add it back just drop the !error
-check.
+Sorry, you are right, I got the polarity of the mask reversed in my
+head.
 
-Thanks for the review.
 
->
-> ( Continue to understand the whole series:) )
->
-> >       xa_unlock_irq(&swap_mapping->i_pages);
-> >
-> > -     if (unlikely(error)) {
-> > -             /*
-> > -              * Is this possible?  I think not, now that our callers
-> > -              * check both the swapcache flag and folio->private
-> > -              * after getting the folio lock; but be defensive.
-> > -              * Reverse old to newpage for clear and free.
-> > -              */
-> > -             old =3D new;
-> > -     } else {
-> > -             folio_add_lru(new);
-> > -             *foliop =3D new;
-> > -     }
-> > +     folio_add_lru(new);
-> > +     *foliop =3D new;
-> >
-> >       folio_clear_swapcache(old);
-> >       old->private =3D NULL;
->
->
+Once again I may goof, but I believe that the following sequence
+would work:
+
+	sradi r9,r3,63
+	andc r3,r3,r9
+	rldimi r3,r9,63,0  ; insert LSB of r9 into MSB of R3
+
+Cheers,
+Gabriel
+ 
+
 
