@@ -4,95 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4529CA0EFA
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 16:16:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F6D0CA0FE8
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 16:17:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6E5B8E004C; Mon, 25 Aug 2025 12:16:14 -0400 (EDT)
+	id ECBF88E004D; Mon, 25 Aug 2025 12:17:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B45CE8E0038; Mon, 25 Aug 2025 12:16:14 -0400 (EDT)
+	id EA3FC8E0038; Mon, 25 Aug 2025 12:17:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A82C48E004C; Mon, 25 Aug 2025 12:16:14 -0400 (EDT)
+	id DB9F38E004D; Mon, 25 Aug 2025 12:17:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 943868E0038
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:16:14 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 31ED11393A8
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:16:14 +0000 (UTC)
-X-FDA: 83815781868.21.86D0F51
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf18.hostedemail.com (Postfix) with ESMTP id CB3C11C0011
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:16:11 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=m1SkkMPw
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756138572; a=rsa-sha256;
-	cv=none;
-	b=FxklMJtzUK7PhPhFfupyPukI3C/RcpwvHjBUQtIElWBtR1qyTTeVzltnlhIuNXh7ph7YRb
-	1U2P6s6jIsgASHrbde+mA9I3n0N+JntmgYGQbdoNwHsnCVmPgBwN+Kl1tZBlWYo/MQSA+H
-	9N6cm6E6XsxH3bPGwU++r9FUOqnhA1s=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=m1SkkMPw;
-	dmarc=none;
-	spf=none (imf18.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C7DF58E0038
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:17:23 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5ECEE591C9
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:17:23 +0000 (UTC)
+X-FDA: 83815784766.10.06E5902
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 8735D2000E
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:17:21 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z1X+B0ZG;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756138572;
+	s=arc-20220608; t=1756138641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ezOPy6YOeaUXwJlIYvyqJG1dN2vstuMGepcFcq7Oj8k=;
-	b=7XLQwlHx25lnDVwQiusNxSe7VslaWDRQal4JOmL+hiWx28x/93oY/vXHmGE1UNaFU9bHnr
-	nrigwa3EnunSQvYFAm1y9z+1M2CULSAL65pVGv1Dgg0HYqIgsQZeWKxgPRnIIYCfJ0SBEV
-	+vh7qwnW15+U9tBAfLcVPOPtdSPLYvA=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=ezOPy6YOeaUXwJlIYvyqJG1dN2vstuMGepcFcq7Oj8k=; b=m1SkkMPwv6b31zgukz8QqVS0gQ
-	RxHlNbfGnwSKppt0B8IK3RTmGhB0S4pIQ4GJMwXLL1vGzgXM3WVyeTYPoBQw6HQ3xbiFDYmfwdc9Y
-	sX2fGGKYMO66hPoNeqIUIrm/viU+BhkgynbTXFHw2vk6NZwDXOigyycqbh2xgn4G41PjMZP9/+8u2
-	C56t3vBHdnuCQl5cH3RpPiCUs1bByfXnT6qakdDMG20uAKSEwIBu7N8cpjZ91LVNakArsTk043ThA
-	gueq2DK+mzBY4w2ZgZvP13akdQn4FDaif59GcF+yjXZ1YMAlwF5j7A6Uun8O5WtEhoSHvCqYU6ufE
-	XxCGwdFw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uqZrQ-00000000QCV-2wLV;
-	Mon, 25 Aug 2025 16:15:56 +0000
-Date: Mon, 25 Aug 2025 17:15:56 +0100
-From: Matthew Wilcox <willy@infradead.org>
+	bh=yaUcnQjozmvTYDYURkWMjBxCsSnXy41d7hzIH1GSQGQ=;
+	b=N8zylL07qP+p1k9hZYnZIjGVMHHjwHP+o5AtaNv67ncHgS4mkRzPQTGCEvWqJpWNB8/aNZ
+	kq695yGQnzo6+JMfZfFnyTd5Z5tAkhTtj+RLGpxVHNhbPwMoK/H/InHrGvTazHDKwCdpUa
+	euFGw4pp6oto1JBYcseFBVk3mJTXAck=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z1X+B0ZG;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756138641; a=rsa-sha256;
+	cv=none;
+	b=kOtCu5ylAGzTztChdpuocSbGDWmFXUD+m6p3kyeh4cWzdw2LQWQyr+PwE/Xl3C7dQ9ZU4r
+	JjPB2+rzp/0Nps7RV6svAwBvf5sWsJgbE8yVdC40qDsb5X0tZu8qMwBIPgqIMjLdlHehM8
+	ZDzDrdnBV48pn2Y/hSNWOWyGSjZSrpo=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 523095C5FB5;
+	Mon, 25 Aug 2025 16:17:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3323DC4CEED;
+	Mon, 25 Aug 2025 16:17:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756138640;
+	bh=FANVRTF6GTKZEwwkEPlW/tWs0ubXGJ7R1OcvtRKQmn8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Z1X+B0ZGv7uHOoHuOLd4SJt16FexWEbZsjEQFQqRUrapr3OCpVgaCrasYjPdbbOyy
+	 eytOcCBL+pDQ3AWWdM11/NupldPVN7n787Ac52JA6muufv5Aq5hmbyZm6HiI3UG9/E
+	 S3WLhadcDWFA0vrOLjkLNWku02BCbOZumOEeIy+mLkW7A9OWvR0HBF0JMJQllwxMjH
+	 McwQict10AbNwzUaf3Fe4rhbDyKvQqV4mNkpdYsg1XXv1bkWDE2ZZQycNZSZHCAubw
+	 xxCEDJgzUrllwHg0O5i5LR3vB8H9ddKiEeoiX5nxByJsLox/KvefidsYGinF192ZU3
+	 LkZva/mIcA0xQ==
+Date: Mon, 25 Aug 2025 19:17:02 +0300
+From: Mike Rapoport <rppt@kernel.org>
 To: David Hildenbrand <david@redhat.com>
-Cc: wangyufei <wangyufei@vivo.com>,
+Cc: Mika =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	Alexander Potapenko <glider@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Christoph Lameter <cl@gentwo.org>, Dennis Zhou <dennis@kernel.org>,
+	Dmitry Vyukov <dvyukov@google.com>, dri-devel@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org, iommu@lists.linux.dev,
+	io-uring@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
+	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+	John Hubbard <jhubbard@nvidia.com>, kasan-dev@googlegroups.com,
+	kvm@vger.kernel.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	linux-arm-kernel@axis.com, linux-arm-kernel@lists.infradead.org,
+	linux-crypto@vger.kernel.org, linux-ide@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:MEMORY MANAGEMENT - MISC" <linux-mm@kvack.org>,
-	"open list:PAGE CACHE" <linux-fsdevel@vger.kernel.org>,
-	kundan.kumar@samsung.com, anuj20.g@samsung.com, hch@lst.de,
-	bernd@bsbernd.com, djwong@kernel.org, jack@suse.cz,
-	opensource.kernel@vivo.com
-Subject: Re: [RFC 0/1] writeback: add sysfs to config the number of writeback
- contexts
-Message-ID: <aKyMPH92SfYZcCM2@casper.infradead.org>
-References: <20250825122931.13037-1-wangyufei@vivo.com>
- <9cb4adf8-94c7-4fa0-8bed-2f9274969b48@redhat.com>
+	Marco Elver <elver@google.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
+	Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
+	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+	virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
+	wireguard@lists.zx2c4.com, x86@kernel.org, Zi Yan <ziy@nvidia.com>
+Subject: Re: [PATCH RFC 10/35] mm/hugetlb: cleanup
+ hugetlb_folio_init_tail_vmemmap()
+Message-ID: <aKyMfvWe8JetkbRL@kernel.org>
+References: <20250821200701.1329277-1-david@redhat.com>
+ <20250821200701.1329277-11-david@redhat.com>
+ <9156d191-9ec4-4422-bae9-2e8ce66f9d5e@redhat.com>
+ <7077e09f-6ce9-43ba-8f87-47a290680141@redhat.com>
+ <aKmDBobyvEX7ZUWL@kernel.org>
+ <a90cf9a3-d662-4239-ad54-7ea917c802a5@redhat.com>
+ <aKxz9HLQTflFNYEu@kernel.org>
+ <a72080b4-5156-4add-ac7c-1160b44e0dfe@redhat.com>
+ <aKx6SlYrj_hiPXBB@kernel.org>
+ <f8140a17-c4ec-489b-b314-d45abe48bf36@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <9cb4adf8-94c7-4fa0-8bed-2f9274969b48@redhat.com>
-X-Rspamd-Queue-Id: CB3C11C0011
-X-Stat-Signature: 1xs8dpdwzrmjcn41tyn5kd6r71ynmebr
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f8140a17-c4ec-489b-b314-d45abe48bf36@redhat.com>
+X-Rspamd-Queue-Id: 8735D2000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756138571-549391
-X-HE-Meta: U2FsdGVkX1+EkRbvyR1IU9B7MT83K45dMgvxzzFl6nN0eqMOrjKLI1m0hC35nkZ1oBjv2wvgSQIlZWtvA8/3Ws2kQfuf0mIv6NMLITvqAl9N2U1YODBJm9wiFW2SNxAEPlD65JVQKHU1VrDys6ITDGdBCEucwiEXfaYA2pCVWQBu9zKbFwdkLpmhIlBWQfG7/H5H75uNz7xICniAT7xuyWxilLf4OLa5y7sc0b7xEIE1lJ1zzRZITIxMYJzSwAMVXOGKxxCBbkWDPSnp61FL/rvDFcdoXlhEcESfeVj5h4ySV43XlGiWNGk78sEYj0iLBmtueC3Q+jYCdd51/bcY04JeIX/Dk7zQgl/cMUa1hr2qVgdSxzsmBiOsB7J238UPT1mbAbNISnv3xjaCGaXCNXYksn7r9sKfCmXOZA/AwfpqnV7pK5pAXkoz+FVbD7yGx/5zkvKrZr4wOwU2UyOZKBOvPLYBvTMDB+Aeh1ZbKVdYBNt9/OGraLsXfoL/0JxHtP9EhKu8jUzAr/Genb4V6OSSqZEuiXl6SHnNE30Qk4LXX8jt0TVW+Un4FSUh9R7LzYJi8uUMII7wHvb+3cUpUghfzF8njed/+yW7fjwUuEgeCVBkugjqHW/gPdOABR3v+abXaacbPJsXKi0aqsCL66aPq+/bTiv6xpdi3HQiwf2Vw2WQtx8YZUNHs7NsuGAbaihsdP1I+D5eZ+v+u4SB/LyPlSFV25fdB+LxsAF4YrmQKXNYKxdpFCxUMeHcKNCPCsE+UI3gOjRdj/kjGyx3CsU/XodD+i8nAgWoFho+hyN4BIy1XsKEEfh9pkKC78Do1pZdNuMm80T5gvmmz4/slD4Li1pBIwVw1asO4fFTTQTJv6tsjZmJpDQSRVtl04b5+wPveH2A8kAw1dDTpjXtQTdtzI5v1+mpMhS1QcNJlre0cRoepwwT6ZcexsIGmpLI7mJsqW0tjxvu/zBZizW
- 8c5XaWUZ
- 7inidz21CJVMfVKgb5/3QkovVC46M+HYEMwRApSHrULzcHzRvn1tf6jFhMHDWitl/37MfK77NeheoG00DPFKkw1li+4gjgvtSOyJX48L3FHBY32Wxun5yorM6/GTbyk5W+IDj/Z/ZzcVUQgWF7r2D+WtMAI0cC7gMSrx3mOMl11UXsUjFRE/4V4UQKg==
+X-Stat-Signature: j659nyo3jmmqcjtptx9jr5s7xwcqgqxo
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1756138641-424606
+X-HE-Meta: U2FsdGVkX18YeT0GxLEnqHSqbyCh5lKg71GAsGIpxPGN5YUQc4HNrEDn1dfBNTzEXfUYQC6KFi1C1Of14dSpT+6LLLJ7IMBeNLw2f/fyv0nywQAHmh+RjzNVI9WgblLD45/pp+EAjEP/S+Up6Lx7cZ3gh+EeeNr80B5tL4T55U39DA/vW2+JPan6VORmi07w1J/gQkYPh1LLkf+IFFy8T8n2wJAqclgcqXLa0QLTMHdEJLSQMd0eOBdl1cxaik7CHkteSXweipX6aIaLM2hgyN6j9NtaVQ8mxS732FwSjNbdLLGM4fls1u2TdcVJxirING8JCcK7jg0QkK7IT3HpWJqKfLb90MjpxJ2UDXGsvt69BeM9+uTJdl0bgsTOWqGY3Yfn5rbib3csg/p1GQkDRxS5KPV+SN7aV8CQZOwk9XoEZ9Dv6MJgrzjWjxVl1Bl4synV5IuezTMFx/9iQ1J4mSlHfWH795d2MtuhRptXk6Yu2NGZJIjN6XwazuSGkXuHKYqFzflZlqE2uWomma6/7QjeEeHXXvKhZnCUez16PQGS7MXjt0lpjBTTaBT0hktvTRcaVnHFky8je9CmQ7brZuAlR0sQWOcqCeZV9hbDgAU1q+5HTpeFObFmsE1oASWuhFOwfel0elhRSTtBG3mLhOgIllh53I2mCV5ILokrAZZ0Ha6sDmL0Cv0T0nMcHibQusz/pCF3m/Fpv/oe+Tdr+VQgJGSTB6eQ5jcFBxWtGRkAvfTyt0/QwZjnxBXwrna4VsSiLJL3rNbq4MsOBd2by7D+GGwinM+HKR0fX0YNaCSE5y9tFBwa+jFqTGNgFesh3h0EMsdmP2IB1SxDvhj/qiy14SGQkc1iAuq6R5zzBleaH/L82TIc2Gdqeh7lZ1CwkwOkL96g1OFf9f1d5K15TCa6N2V/SD7xQ+DnK82PmG0DFh12HIKyNTe/ulXm/qbsJwusZZGr0EoDlQ8Y9Ui
+ 7LYidyKg
+ Jol19R/oLEXUZupWfxuoMJpbHHSSlvSP4ShoVTQ67KXjzwyYsun58sRIxITTa6hT7vQh1ealpFR171JXhoIef0KpUybau9SYzT1EZO610W4PJJrxpOZ2fkzQptyCiDmoFNIzHBcw1T4ezmXIGwHmBlHalV/JPBbxpC32Vnz/wlZPamNIyY6F9oU86NEMftzoQU+wNjLG0ZB6BFpxNhoz5Ym4mdixA7ff1L/FhQ03Fa4ppNCDUhhDsqhbTKhrBae8Xlf/obem20AOzTaYwCKti5XoB88luWYJRywJwgkYBCehIFwml2STuvU02c+a/Zz3Tzuum5jZ81GfSYVE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,37 +129,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 25, 2025 at 04:46:46PM +0200, David Hildenbrand wrote:
-> On 25.08.25 14:29, wangyufei wrote:
-> > Hi everyone,
+On Mon, Aug 25, 2025 at 05:42:33PM +0200, David Hildenbrand wrote:
+> On 25.08.25 16:59, Mike Rapoport wrote:
+> > On Mon, Aug 25, 2025 at 04:38:03PM +0200, David Hildenbrand wrote:
+> > > On 25.08.25 16:32, Mike Rapoport wrote:
+> > > > On Mon, Aug 25, 2025 at 02:48:58PM +0200, David Hildenbrand wrote:
+> > > > > On 23.08.25 10:59, Mike Rapoport wrote:
+> > > > > > On Fri, Aug 22, 2025 at 08:24:31AM +0200, David Hildenbrand wrote:
+> > > > > > > On 22.08.25 06:09, Mika Penttilä wrote:
+> > > > > > > > 
+> > > > > > > > On 8/21/25 23:06, David Hildenbrand wrote:
+> > > > > > > > 
+> > > > > > > > > All pages were already initialized and set to PageReserved() with a
+> > > > > > > > > refcount of 1 by MM init code.
+> > > > > > > > 
+> > > > > > > > Just to be sure, how is this working with MEMBLOCK_RSRV_NOINIT, where MM is supposed not to
+> > > > > > > > initialize struct pages?
+> > > > > > > 
+> > > > > > > Excellent point, I did not know about that one.
+> > > > > > > 
+> > > > > > > Spotting that we don't do the same for the head page made me assume that
+> > > > > > > it's just a misuse of __init_single_page().
+> > > > > > > 
+> > > > > > > But the nasty thing is that we use memblock_reserved_mark_noinit() to only
+> > > > > > > mark the tail pages ...
+> > > > > > 
+> > > > > > And even nastier thing is that when CONFIG_DEFERRED_STRUCT_PAGE_INIT is
+> > > > > > disabled struct pages are initialized regardless of
+> > > > > > memblock_reserved_mark_noinit().
+> > > > > > 
+> > > > > > I think this patch should go in before your updates:
+> > > > > 
+> > > > > Shouldn't we fix this in memblock code?
+> > > > > 
+> > > > > Hacking around that in the memblock_reserved_mark_noinit() user sound wrong
+> > > > > -- and nothing in the doc of memblock_reserved_mark_noinit() spells that
+> > > > > behavior out.
+> > > > 
+> > > > We can surely update the docs, but unfortunately I don't see how to avoid
+> > > > hacking around it in hugetlb.
+> > > > Since it's used to optimise HVO even further to the point hugetlb open
+> > > > codes memmap initialization, I think it's fair that it should deal with all
+> > > > possible configurations.
+> > > 
+> > > Remind me, why can't we support memblock_reserved_mark_noinit() when
+> > > CONFIG_DEFERRED_STRUCT_PAGE_INIT is disabled?
 > > 
-> > We've been interested in this patch about parallelizing writeback [1]
-> > and have been following its discussion and development. Our testing in
-> > several application scenarios on mobile devices has shown significant
-> > performance improvements.
-> > 
-> > Currently, we're focusing on how the number of writeback contexts impacts
-> > the performance on different filesystems and storage workloads. We noticed
-> > the previous discussion about making the number of writeback contexts an
-> > opt-in configuration to adapt to different filesystems [2]. Currently, it
-> > can only be set via a sysfs interface at system initialization. We'd like
-> > to discuss the possibility of supporting dynamic runtime configuration of
-> > the number of writeback contexts.
-> > 
-> > We have developed a mechanism that allows the number of writeback contexts
-> > to be configured at runtime via a sysfs interface. To configure, use:
-> > echo <nr_wb_ctx> > /sys/class/bdi/<dev>/nwritebacks.
+> > When CONFIG_DEFERRED_STRUCT_PAGE_INIT is disabled we initialize the entire
+> > memmap early (setup_arch()->free_area_init()), and we may have a bunch of
+> > memblock_reserved_mark_noinit() afterwards
 > 
-> What's the target use case for updating it dynamically?
+> Oh, you mean that we get effective memblock modifications after already
+> initializing the memmap.
 > 
-> If it's mostly for debugging/testing (find out what works, what doesn't), it
-> might better go into debugfs or just carried out of tree.
-> 
-> If it's about setting sane default based on specific filesystems, maybe it
-> could be optimized from within the kernel, without the need to expose this
-> to an admin?
+> That sounds ... interesting :)
 
-I was assuming that this patch is for people who are experimenting to
-gather data more effectively.  I'd NAK it being included, but it's good
-to have it out on the list so other people don't have to reinvent it.
+It's memmap, not the free lists. Without deferred init, memblock is active
+for a while after memmap initialized and before the memory goes to the free
+lists.
+ 
+> So yeah, we have to document this for memblock_reserved_mark_noinit().
+> 
+> Is it also a problem for kexec_handover?
+
+With KHO it's also interesting, but it does not support deferred struct
+page init for now :)
+ 
+> We should do something like:
+> 
+> diff --git a/mm/memblock.c b/mm/memblock.c
+> index 154f1d73b61f2..ed4c563d72c32 100644
+> --- a/mm/memblock.c
+> +++ b/mm/memblock.c
+> @@ -1091,13 +1091,16 @@ int __init_memblock memblock_clear_nomap(phys_addr_t base, phys_addr_t size)
+>  /**
+>   * memblock_reserved_mark_noinit - Mark a reserved memory region with flag
+> - * MEMBLOCK_RSRV_NOINIT which results in the struct pages not being initialized
+> - * for this region.
+> + * MEMBLOCK_RSRV_NOINIT which allows for the "struct pages" corresponding
+> + * to this region not getting initialized, because the caller will take
+> + * care of it.
+>   * @base: the base phys addr of the region
+>   * @size: the size of the region
+>   *
+> - * struct pages will not be initialized for reserved memory regions marked with
+> - * %MEMBLOCK_RSRV_NOINIT.
+> + * "struct pages" will not be initialized for reserved memory regions marked
+> + * with %MEMBLOCK_RSRV_NOINIT if this function is called before initialization
+> + * code runs. Without CONFIG_DEFERRED_STRUCT_PAGE_INIT, it is more likely
+> + * that this function is not effective.
+>   *
+>   * Return: 0 on success, -errno on failure.
+>   */
+
+I have a different version :)
+ 
+diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+index b96746376e17..d20d091c6343 100644
+--- a/include/linux/memblock.h
++++ b/include/linux/memblock.h
+@@ -40,8 +40,9 @@ extern unsigned long long max_possible_pfn;
+  * via a driver, and never indicated in the firmware-provided memory map as
+  * system RAM. This corresponds to IORESOURCE_SYSRAM_DRIVER_MANAGED in the
+  * kernel resource tree.
+- * @MEMBLOCK_RSRV_NOINIT: memory region for which struct pages are
+- * not initialized (only for reserved regions).
++ * @MEMBLOCK_RSRV_NOINIT: memory region for which struct pages don't have
++ * PG_Reserved set and are completely not initialized when
++ * %CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled (only for reserved regions).
+  * @MEMBLOCK_RSRV_KERN: memory region that is reserved for kernel use,
+  * either explictitly with memblock_reserve_kern() or via memblock
+  * allocation APIs. All memblock allocations set this flag.
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 154f1d73b61f..02de5ffb085b 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -1091,13 +1091,15 @@ int __init_memblock memblock_clear_nomap(phys_addr_t base, phys_addr_t size)
+ 
+ /**
+  * memblock_reserved_mark_noinit - Mark a reserved memory region with flag
+- * MEMBLOCK_RSRV_NOINIT which results in the struct pages not being initialized
+- * for this region.
++ * MEMBLOCK_RSRV_NOINIT
++ *
+  * @base: the base phys addr of the region
+  * @size: the size of the region
+  *
+- * struct pages will not be initialized for reserved memory regions marked with
+- * %MEMBLOCK_RSRV_NOINIT.
++ * The struct pages for the reserved regions marked %MEMBLOCK_RSRV_NOINIT will
++ * not have %PG_Reserved flag set.
++ * When %CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled, setting this flags also
++ * completly bypasses the initialization of struct pages for this region.
+  *
+  * Return: 0 on success, -errno on failure.
+  */
+ 
+> Optimizing the hugetlb code could be done, but I am not sure how high
+> the priority is (nobody complained so far about the double init).
+> 
+> -- 
+> Cheers
+> 
+> David / dhildenb
+> 
+
+-- 
+Sincerely yours,
+Mike.
 
