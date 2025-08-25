@@ -4,113 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FD58CA0FE1
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 12:28:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD528CA0EFA
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 12:30:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A94D8E0017; Mon, 25 Aug 2025 08:28:12 -0400 (EDT)
+	id 1F6DB8E0018; Mon, 25 Aug 2025 08:30:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 881248E0001; Mon, 25 Aug 2025 08:28:12 -0400 (EDT)
+	id 1A7A48E0001; Mon, 25 Aug 2025 08:30:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BDB58E0017; Mon, 25 Aug 2025 08:28:12 -0400 (EDT)
+	id 0BE148E0018; Mon, 25 Aug 2025 08:30:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A7E88E0001
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 08:28:12 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0BE4183F9C
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:28:12 +0000 (UTC)
-X-FDA: 83815207224.23.BA5E2C8
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1F449C0007
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:28:09 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=TPjj42HA;
-	spf=pass (imf28.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EDAA98E0001
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 08:30:06 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6780F115CB6
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:30:06 +0000 (UTC)
+X-FDA: 83815212012.08.CBDAD5F
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C99194000B
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:30:03 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=N92dL++x;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf07.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756125004; a=rsa-sha256;
+	cv=none;
+	b=nfJzPbhaL6uFIUDY4+Z118/UsEMgFAp8HKz8w5XwMo0lBZnHp79JDbgomdlOgz10ebgsV5
+	vL6qBvzbFv93gibqFWw1nvUntg/4oBauIL7lXElCBi7T9g9tDFHEhrU3U6EcGT5yHPyUNt
+	nDbZnVLwmDek573tGpuOgt3BYTLiCBA=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=N92dL++x;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf07.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756124890;
+	s=arc-20220608; t=1756125004;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kPfDBfbpwUW+KOvZVoZK+orl1I1HkIgHCfW1U8nixbM=;
-	b=oAoicysMHBObRD14GjU5JIbxekHCezrDrT6JaRKe5DFvyBLwuMW4+9zHOH3MJNyy36AWv+
-	E47joV71n9uF1EwstvupDH6n19iCpJqFoK77l0k5vqQs2LekjO+2quXOpHz6nUNj3S0cNk
-	cLhXBMcXHM6IWfcCJwJ4y7T7wSozYTs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756124890; a=rsa-sha256;
-	cv=none;
-	b=k0953aprQQYzy6e+EwmKR9Xz3EH7iZ7cp1blwlNi+5pToxe79TiDrKboYUFnPLzmMZ29xo
-	6482JPEcORGzT+tnh1QyHHGP4qMQbBAD6Sp4xJ6qk9kpZ3JSn9a3+lBYIefBzImk63qDk1
-	J2QGSgDado56D4qkeaNxv0MDh830Kew=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=TPjj42HA;
-	spf=pass (imf28.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3c79f0a5fe0so1043990f8f.3
-        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 05:28:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756124888; x=1756729688; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kPfDBfbpwUW+KOvZVoZK+orl1I1HkIgHCfW1U8nixbM=;
-        b=TPjj42HA6o5t/ScmeieApokOFIwp0+LrE5IAXYwS7qMnbmYHoKq55EbQXQvwCAvEd8
-         X+VVR/6KGqzdV9HXf8xbEf3t2Ry6zZO0MrtFY83hiZ+6/eKPvHbMeBtWiM/JbyghiJVi
-         aUEaHPQmWMPvVSGLs6WKz76o4Rz36rWI9KvWa61YuHLm4VJhah3bz3on2jfLfg98R6r9
-         5a3CqqCC+Ln3cNeko3xFTXmcJYyPIjOLjMV5NSDXxLzZyQ6NvvybcS6hCqouZjgKchXm
-         kJ0q4W085Aj31gKWEPLna9GHh95zFp19of5+axnt5tlf680XF/uEUMUUj0YszwmUXm3U
-         kBNQ==
+	bh=1qkP7cC48R3McdGtVAl1xmnxt2NnQDjW6KguPLzrpC8=;
+	b=Qtvb6Ng13vxLj9H5XhuTOaus/OLuDb5iQ+jgHooxERic21WViPSgAimGPmcCfuqODFaXmV
+	wEHXp9zsGbFnpoVR5+6Pe84rOHzW70fcJTp1lZfEYk1t/h5YFDmzWUMkUGWEth9OvNKOvM
+	WQOEXsGEnbIqfC6kIVwiDfLtIJ8c9k0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756125003;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=1qkP7cC48R3McdGtVAl1xmnxt2NnQDjW6KguPLzrpC8=;
+	b=N92dL++xSAOrZES8dtD4a8e71m1fnmgiuwdb3x3BPE7aVQgTT/zwkVt+xdu39TOweEL65u
+	IPdPQsoyIXUEuFP0IY1x9QJDbDHmhEc8iQE002CNw6ikkMs1Ny+YUCI34Xi8EEZ3ga3jjv
+	4svSyWIkqQbOKwnWnBdkH/JHOvLugYA=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-292-vaZ_no5LN36NkMoPV1OzDQ-1; Mon, 25 Aug 2025 08:30:01 -0400
+X-MC-Unique: vaZ_no5LN36NkMoPV1OzDQ-1
+X-Mimecast-MFC-AGG-ID: vaZ_no5LN36NkMoPV1OzDQ_1756125000
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3c6ae25997cso1474336f8f.0
+        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 05:30:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756124888; x=1756729688;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kPfDBfbpwUW+KOvZVoZK+orl1I1HkIgHCfW1U8nixbM=;
-        b=XBuRt0rTOqQvjGFHEe3tuMfKVKlP0VEU6RZIe+GAcIEh9P0xOCMjJiIBQmWF/ziRUb
-         s6bA9+0zZn/G6LR98weqQYCOhK1ernfhvaubbbNq3+14SOfEkr5rLvKM7FbR0ZTt/08z
-         AbMWlVzIs7QRUgSShX+hTOU1DXfMLwR5euobD2+UUbOAlZw+JMKGhAb56B2fdw37jf79
-         4WYK5+egCeHgNtMYHGbHk0xS7mFtTmP81dmtKxJmBBxBgOjBN19QLDM8926/ECwLxmjs
-         rhK2H1P8uRKchrrFZL16jsR0kHVdJ/Rl6bYcJ/6hQAMyMC2rUxF2wvceu0TQ1Lw1/4yy
-         d1Zg==
-X-Forwarded-Encrypted: i=1; AJvYcCWPGE9JWVHDCUpDGMdOlkWMSTJyaZIAr3k5VujRemKg20RywuGIKtXd9Ej2zGv0iBWs8Yv9QWf4Ng==@kvack.org
-X-Gm-Message-State: AOJu0YxCebDTu+XUj0MDEm2Z+cE9NeBbEXtZuYSDeHQDFyGYDKbaVjUF
-	lfBMZvH8y9MeWwBAGs8zmEKRlaN7Ywc+7Fae7hz68/ICI5lg3F8CVCgF
-X-Gm-Gg: ASbGncvC3rXAdwhkziICf63H7S6lOF5z99e5wTc7fOSARE1tPHz7VZKYwQQKes/Rvdl
-	JLfZme4bkIwTmyslvOlM70vBkBlQgo6TYA2XqQU1/hDB3v+N+4JZqet9BxVv+63/4sJ9hpYYDPR
-	F4FyyHqkNG5ooLdNS7IadPL3L9WwtddqVx1EcCjIPIZda2MxWIiv++Dh1opQcaVjsOvnFa1IPks
-	zaY2yZlorXXD/EW+L+b3ggFavsash0hit+InY6HqhWM0nflR7UNvIDoH8TXpiblLV7tQXapFpMH
-	f7uOxr45qrD7k/HIlaD5SlO1SsZahbXvEUcakb7c/UJI2Gd38DZBM3Ij0Ifq8eKxI4LPyKv+CaY
-	I+/mUwhE6io6qlJZJdUNWzCAA75pr4Ajn5uk=
-X-Google-Smtp-Source: AGHT+IESgx9HYKPain/SQOUHC5A3qxDYmJ3/amsQb6PIdB8JBVmGFTgZXWbCC7qK1K4LPP+7blyqdQ==
-X-Received: by 2002:a05:6000:2585:b0:3b9:16a3:cf9b with SMTP id ffacd0b85a97d-3c5da64a8fbmr10103861f8f.5.1756124888325;
-        Mon, 25 Aug 2025 05:28:08 -0700 (PDT)
-Received: from f (cst-prg-2-200.cust.vodafone.cz. [46.135.2.200])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b5753adf7sm107780735e9.7.2025.08.25.05.28.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Aug 2025 05:28:07 -0700 (PDT)
-Date: Mon, 25 Aug 2025 14:27:58 +0200
-From: Mateusz Guzik <mjguzik@gmail.com>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>
-Subject: Re: [PATCH] mm: readahead: improve mmap_miss heuristic for
- concurrent faults
-Message-ID: <ynl23xmeglxarrkrmh4r3sj3idvqbofwatrnhgx6tsl4zfrsxp@juc5kmjelwjn>
-References: <20250815183224.62007-1-roman.gushchin@linux.dev>
+        d=1e100.net; s=20230601; t=1756125000; x=1756729800;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1qkP7cC48R3McdGtVAl1xmnxt2NnQDjW6KguPLzrpC8=;
+        b=qM5QRxegk85D9Vd3oQXnsAbuhSc2dCdfBJXfW82k+RuMELHNgz4GSIwGu3J6MfOth0
+         prMK0TWgWg9HCznNh0Pq9FyvX8GaAv/kdKynJnTlwHxt8qRrdKb/oEUqwXPmqIMdW4XC
+         fWLc+glSivvDTCcXmCXhJuL+VDtwl0xwimFuDfaYCReKYpFJL4/BVAo18/hrmLRc2XM5
+         X07OTnt5WQEy+QuM9QEEAbP0QbaNNfu1LXWU5LXf4VzuPJjpWRdYHO5ZyDVYz0IXN/2o
+         5fakVYglfrLARHasdYAzGJtHkv1UUZATSc8cizSO2JoCHwyqvsz9gAcRAK6k2lWgznD4
+         Ugdw==
+X-Forwarded-Encrypted: i=1; AJvYcCWcwNxiKAQOS2mKYgjgTHspV3Yv3cxLnj3FodVZqgr6SyQRGMFFwUZNjQs5w9sA4uw8nCBa6g8QNw==@kvack.org
+X-Gm-Message-State: AOJu0Yz8vV/RD/IO6HwfdgbHEEcwGWVFZTasUNaUyPX2a43iUnHpMJPK
+	qTf2AdRL6A3XvcBQHFVw1bsBkWI5usxQ6rkl7v39LQuO7k0PWhOQMDpkdQpzaqUQOZ6GzAm4b2O
+	/xF+widkiumlTdYP1s6qTjxA0bTV9aQ9b+z5w2RJ6L696izK+4p/F
+X-Gm-Gg: ASbGncvL17hEGMeM+q/UMsjSqvIqWZSFvsxIL6yvmWTrVHvfeC1TJ6dxiqRicsfzfga
+	yVSMKfLBppJOWf71F0A5yuLseE/VOy+knfjnP2L5NIngAyyM79DOgIwn0x3+NWT4VxXO5+0kLBU
+	SVhQDjVcqJQeC3eqWRG5s1jCpwaMvKChNh0+RrsAKVoEpBoOEq1JG4zKp7OkXB5mNMn6wK/MAjN
+	FMIxzjD/qmFZBh8lZLJ3HGYKt5go0iKuZQefWxDNc8KBFs0pCSqU3l4FtN8TOsLhAQGiKV3MXBh
+	mCQ3VqbRQ2EFo4tGNwIYFIfNuX14SI3DNoIxbq0fJpR/X4Gp1FqVbJnK3lSJkXXW2+ZtrLEivpQ
+	CdF63GFwC2t4WKpq1gBn40MgbhAGDNS5++ENB8Wmx44kR0QZ7VG+zzIvLFG/3A5i2IMU=
+X-Received: by 2002:a05:6000:4287:b0:3b8:ffd1:80d2 with SMTP id ffacd0b85a97d-3c5dac1aae7mr11054363f8f.24.1756125000384;
+        Mon, 25 Aug 2025 05:30:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEyzvAMPfQuR1qLbhAVikypL96VkyB/QYgs0RchKjLOu+NkcDo15lGJc6glNklhghjHWJxl4A==
+X-Received: by 2002:a05:6000:4287:b0:3b8:ffd1:80d2 with SMTP id ffacd0b85a97d-3c5dac1aae7mr11054345f8f.24.1756124999946;
+        Mon, 25 Aug 2025 05:29:59 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f4f:1300:42f1:98e5:ddf8:3a76? (p200300d82f4f130042f198e5ddf83a76.dip0.t-ipconnect.de. [2003:d8:2f4f:1300:42f1:98e5:ddf8:3a76])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b5f28fa02sm50710175e9.11.2025.08.25.05.29.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Aug 2025 05:29:59 -0700 (PDT)
+Message-ID: <b066d806-5fc5-42a8-b0db-74ca5b454683@redhat.com>
+Date: Mon, 25 Aug 2025 14:29:58 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250815183224.62007-1-roman.gushchin@linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [akpm-mm:mm-unstable 102/221] include/linux/pgtable.h:2000:17:
+ error: implicit declaration of function 'VM_WARN_ON_ONCE'; did you mean
+ 'WARN_ON_ONCE'?
+To: kernel test robot <lkp@intel.com>
+Cc: oe-kbuild-all@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+References: <202508250425.yEOYgcC5-lkp@intel.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
+ ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwZoEEwEIAEQCGwMCF4ACGQEFCwkIBwICIgIG
+ FQoJCAsCBBYCAwECHgcWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaJzangUJJlgIpAAKCRBN
+ 3hD3AP+DWhAxD/9wcL0A+2rtaAmutaKTfxhTP0b4AAp1r/eLxjrbfbCCmh4pqzBhmSX/4z11
+ opn2KqcOsueRF1t2ENLOWzQu3Roiny2HOU7DajqB4dm1BVMaXQya5ae2ghzlJN9SIoopTWlR
+ 0Af3hPj5E2PYvQhlcqeoehKlBo9rROJv/rjmr2x0yOM8qeTroH/ZzNlCtJ56AsE6Tvl+r7cW
+ 3x7/Jq5WvWeudKrhFh7/yQ7eRvHCjd9bBrZTlgAfiHmX9AnCCPRPpNGNedV9Yty2Jnxhfmbv
+ Pw37LA/jef8zlCDyUh2KCU1xVEOWqg15o1RtTyGV1nXV2O/mfuQJud5vIgzBvHhypc3p6VZJ
+ lEf8YmT+Ol5P7SfCs5/uGdWUYQEMqOlg6w9R4Pe8d+mk8KGvfE9/zTwGg0nRgKqlQXrWRERv
+ cuEwQbridlPAoQHrFWtwpgYMXx2TaZ3sihcIPo9uU5eBs0rf4mOERY75SK+Ekayv2ucTfjxr
+ Kf014py2aoRJHuvy85ee/zIyLmve5hngZTTe3Wg3TInT9UTFzTPhItam6dZ1xqdTGHZYGU0O
+ otRHcwLGt470grdiob6PfVTXoHlBvkWRadMhSuG4RORCDpq89vu5QralFNIf3EysNohoFy2A
+ LYg2/D53xbU/aa4DDzBb5b1Rkg/udO1gZocVQWrDh6I2K3+cCs7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <202508250425.yEOYgcC5-lkp@intel.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: zSihLIKIfI4OOA1aiHoWX4EnUB75vEtx8XqZ6Z0SW44_1756125000
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: C99194000B
+X-Stat-Signature: g3to3y3kuan9niwmp4kkko1z49ph9tk5
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1F449C0007
-X-Stat-Signature: zxqz6byjwdfd5s5myikgnbsnef8n8h1n
-X-HE-Tag: 1756124889-153512
-X-HE-Meta: U2FsdGVkX181UPupxIe5addK0gcKYzUnp/4Tueq2dIblbp74SAAvlMUIk8fTHqpnKhQBZ6HFvzaoi65+bnvTvaQyPm5efGz/mc3p6ilOe1SyItv5+62c+RPbpEHm4ku2BENfe8RYUEhn/XtSJDtoaQq1ZL3BK37NJ4j2/VPcuXV0xE8mYbBfkFlDzjrdcO9qSzO6HLHUQD3JrQYF2pQuYoPA/StZxwa+p/XFdIAcuB56YB9VWlunOkAvhxspF/FgbvUDRuPLOS4ek+vK+qXGfQeyNZnJDv9L9XpMasz2TvoqpjCB71wD5FNGfqQ6RDE7ij8DNl9R/PvS78w10/J/WdDEgYwreoCLD+z/HtaDPuK2BGVpHQb4GWXjN3KOdyLhFg2sWzei3OqOwjv3hyuVIZNX7qcSBI2VF+tZhby12l5V6YJ78kw3H/2VdY6iY4xsNQ+xoKUXsWQQbfKgk+UM5KELHFYPIleTrtEVuK+cnpNnkeh1jA9UuuGBlyCJjN/qIlVGVYlvVOKNDK+HXYFY6Ry08/u8JZrkhPw6NH8broYsdXzWkzD1wc/cT+weDpPxMwls0N9P+f5e2p8I2xcJmlUf07OGw0MTRTVrnBQxHDab6wj/L/QX19GlD+k26cyNvChS/IpjzRDB/d64SwsA0sIXB/KB3cuVCxhhm3iGP/BkiwOsc45jiuVQstjvpoYQXEtLKMX8GUFRhnkWlXMlkPHTGHUDs2cwdB/1eLULQ0vQ/GasYZpz+ibaZeNdpSJK34QL/wZb9eqihAIuNm6MSZ8BJUUaNLKCnES8JFRbB8wwD4kdvCNNVAHM/dokrawvtLqFlIM+t5gu01XT4I72QnkCQ6S/1AgNWsHz9DzZm7Xt8ev0968Wmr++eVmWPBoJjsHskh4jj1QCwGu6AbjMRmNPAJ3AiQ3lto9gUDXDSjoolq4pJ50gMhXxrBLdnQbcszyCjMDb9EL8NnZ9OrI
- ZUWLB/Y9
- G/A+uAhPYd6AxW72jRcaoP9TZcjE2i352pFflxU9xBoh1nwl+1CieM7XbrHS2lPy248EBiAMTtEY53MVbjC844dIIlWJicVkcNjMuoYVvZYG0qzWX1ISwNZhL567Cc0rjAk3yYIryIjUFJGUcj0fZe3zyAuKJvKwpenSTMYnPLlb1S0SQ8LJMHaXvW+ZM5kjCjvy2zVZz91V1BclKMDB0m5t49MCBh+IM27ZwG5NqYonWFa1pZiQFmVWhgVjwIkynGfnQQlAY0eomK9RFnTFcTmCIvuAHQhJ9n6OmhxOAt0jtFPKqvQzejGSCOtZGQ+fHK0Ok6D7YExo6G512mFs8FZUyy+z3WdNI7ZCVlyXtyS5UJyf7mHi6P3gfvCsGSJw+/ktnQVHxIXDXETJGItmbIi2Vdn++9NOhZhm5+vs5zzRcc8CRX6FKuQsRIPCCg+F5d9T5/wt6LwKpaxgHucE2wH8Ze1RHOGVsLR9sG27gLI/7NOwxmyLu8InT1Nn4RG6qSDUNz8wA3DUpGbNgiWE1woKTnGZoaA1080en4Nss9V5c3cuGwSwotBFBrU1lWzJdhOi84rjDTOgD0jJjWEG4g9PD9A==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756125003-813319
+X-HE-Meta: U2FsdGVkX1/Tik0JDwlDt5LWZQIIthc4v/mePdN8fIYOS8cDvHzONgUxJb+0rQ7wCTizHCOGWa+IzRnwjlRJE73ltQMwJgz8pYarl0rjmLg4Vqek2aI5vQLCyfmtut9lXsmWCnt8M5x/vjcc+De85I7aorC8DjYInQIMmWrY8mxTF+V+g3uGo83F6I1MvaBqKM9WVc2qCnxmodEcNBpYfnAFLxbHn0vSp20FDBrASSgK2w/9zsqTNrNtq3brMiZjtK/LqUMElh32lYwWIRmZn511wpkw1WvIJGFutMrwsk59tsIG09G8W0kFdXZxKkgfL1def735fR3/Fpf2ctYSTeHegRRhVgAvQISZb4ovCwW5gwrsaQ8AGFNWL9q7QVZii1bNv33mCmTgWauVe3554cnjbBVXS/wbnLIxy7Vtz9787flmhwrX/feS7QP8DV1aU/jjZE3YqsZjsb0di50Btd8Obwe2OR8pv5Kz1m96n8UFcN+sWrrQHvMA7h2zK9oadI+QV7gvBeEM5eDY02B4NXsO4Jr1CGTiANzvLQiTpu4UvkZRBjcaXTeY/TiyInarwNqHbLNBnk7QeIbAPZ8qfKP9XDn06lfk6oBkbs1vXIc/wPbM9aYK17LUYb6xS48b/xgFqRvGjoSgCb3n5pMHQnrL7QbrvYXz/+9Aupz6yzkIUQ5rQcRscJ2X1J0UvVZ5Y/ytvyE7G20LUwkV5mqGnUM+awjZxmk9A2fdFmANyi2SrCKsQLA3WmIYgOZghck8p4c9BuaQwyRFlKo3F0bdqqCm9EINTo2u2VSIQ9CPUIONzpgAXipKcGv3ljHDdphBHurXX5+jpIAfmzcKdKE1Sll9ETquZdrUyz0ophFbUrmkaO7XKZI9oaOI94S7Zn1bhUHBoSpAL6ODLHw4u15NnYCUGQWB/oU42y9zpLKJpZurgt0FD4L/nCOx/wXXTImkVaqPJBx+EB8MAef5A63
+ /Oec8pp8
+ 5qXCSTS8vi21ijfRIt+vmUQTBPhPgrtAbaeKF/zyVXzcYZTnJ4ao/fz56ELHWbcxAkDI3AyXdiFkNs6EJynOIWQpL3C5RpGhx1GB2phCOiQLgfED5YsQkHE1J98vv9V30K0YyqbhDwWJ5Vs9FrYLzkJK1m/TKr+c8bs10
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,59 +179,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 15, 2025 at 11:32:24AM -0700, Roman Gushchin wrote:
-> If two or more threads of an application faulting on the same folio,
-> the mmap_miss counter can be decreased multiple times. It breaks the
-> mmap_miss heuristic and keeps the readahead enabled even under extreme
-> levels of memory pressure.
+On 24.08.25 22:10, kernel test robot wrote:
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
+> head:   3c3393d4b766eebdc475ea5bd6bbd3a221e2526e
+> commit: d2e502b0fe1166f68c7ca5815e73ad12bf87e74d [102/221] mm/memory: convert print_bad_pte() to print_bad_page_map()
+> config: xtensa-nommu_kc705_defconfig (https://download.01.org/0day-ci/archive/20250825/202508250425.yEOYgcC5-lkp@intel.com/config)
+> compiler: xtensa-linux-gcc (GCC) 15.1.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250825/202508250425.yEOYgcC5-lkp@intel.com/reproduce)
 > 
-> It happens often if file folios backing a multi-threaded application
-> are getting evicted and re-faulted.
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202508250425.yEOYgcC5-lkp@intel.com/
 > 
-> Fix it by skipping decreasing mmap_miss if the folio is locked.
+> All errors (new ones prefixed by >>):
 > 
-> This change was evaluated on several hundred thousands hosts in Google's
-> production over a couple of weeks. The number of containers being
-> stuck in a vicious reclaim cycle for a long time was reduced several
-> fold (~10-20x), as well as the overall fleet-wide cpu time spent in
-> direct memory reclaim was meaningfully reduced. No regressions were
-> observed.
+>     In file included from arch/xtensa/include/asm/io.h:19,
+>                      from include/linux/io.h:12,
+>                      from lib/iomem_copy.c:8:
+>     include/linux/pgtable.h: In function 'pgtable_level_to_str':
+>>> include/linux/pgtable.h:2000:17: error: implicit declaration of function 'VM_WARN_ON_ONCE'; did you mean 'WARN_ON_ONCE'? [-Wimplicit-function-declaration]
+>      2000 |                 VM_WARN_ON_ONCE(1);
+>           |                 ^~~~~~~~~~~~~~~
+>           |                 WARN_ON_ONCE
 > 
-> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Cc: Jan Kara <jack@suse.cz>
-> Cc: linux-mm@kvack.org
-> ---
->  mm/filemap.c | 14 +++++++++++---
->  1 file changed, 11 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index c21e98657e0b..983ba1019674 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -3324,9 +3324,17 @@ static struct file *do_async_mmap_readahead(struct vm_fault *vmf,
->  	if (vmf->vma->vm_flags & VM_RAND_READ || !ra->ra_pages)
->  		return fpin;
->  
-> -	mmap_miss = READ_ONCE(ra->mmap_miss);
-> -	if (mmap_miss)
-> -		WRITE_ONCE(ra->mmap_miss, --mmap_miss);
-> +	/*
-> +	 * If the folio is locked, we're likely racing against another fault.
-> +	 * Don't touch the mmap_miss counter to avoid decreasing it multiple
-> +	 * times for a single folio and break the balance with mmap_miss
-> +	 * increase in do_sync_mmap_readahead().
-> +	 */
-> +	if (likely(!folio_test_locked(folio))) {
-> +		mmap_miss = READ_ONCE(ra->mmap_miss);
-> +		if (mmap_miss)
-> +			WRITE_ONCE(ra->mmap_miss, --mmap_miss);
-> +	}
 
-I'm not an mm person.
+The bot really had to try hard finding a config where that doesn't work :)
 
-The comment implies the change fixes the race, but it is not at all
-clear to me how.
+#syz test
 
-Does it merely make it significantly less likely?
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 9f0329d45b1e1..94249e671a7e8 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -1997,7 +1997,6 @@ static inline const char 
+*pgtable_level_to_str(enum pgtable_level level)
+  	case PGTABLE_LEVEL_PGD:
+  		return "pgd";
+  	default:
+-		VM_WARN_ON_ONCE(1);
+  		return "unknown";
+  	}
+  }
+
+-- 
+Cheers
+
+David / dhildenb
+
 
