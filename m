@@ -4,85 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91631CA0FE7
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 19:41:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93124CA0FE7
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 20:07:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEBFF8E0069; Mon, 25 Aug 2025 15:41:18 -0400 (EDT)
+	id 75A598E006A; Mon, 25 Aug 2025 16:07:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC3B18E0038; Mon, 25 Aug 2025 15:41:18 -0400 (EDT)
+	id 732128E0038; Mon, 25 Aug 2025 16:07:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C00678E0069; Mon, 25 Aug 2025 15:41:18 -0400 (EDT)
+	id 66F188E006A; Mon, 25 Aug 2025 16:07:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AAA988E0038
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 15:41:18 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 50C3259263
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 19:41:18 +0000 (UTC)
-X-FDA: 83816298636.28.6B5CF97
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 49B53140005
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 19:41:16 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Od9hXyeB;
-	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 51AF98E0038
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:07:24 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D387F1392B3
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 20:07:23 +0000 (UTC)
+X-FDA: 83816364366.16.9B7B74C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 3AC401C0007
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 20:07:22 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=okZorsbX;
+	spf=pass (imf20.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756150876;
+	s=arc-20220608; t=1756152442;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DaBOeTNdTjLlU52HNYXZjxccsI5utUG+maXgRXm46HY=;
-	b=4+wuGlhO1x40Gv4Jyit9tjTa+aecXKFLXC0ScIOwSHl0F4h1Bd04jh1nDLrOOAxUm/7VgS
-	ThqygSR6MLspvF2ovOO4slFfHT5lGZT/gJvgnFJdZxtHAS/uzecNBZ2KF1rruE7QfhivZ6
-	QQKZ102bYTRmDZaszBZGR2kJdTaErPg=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Od9hXyeB;
-	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756150876; a=rsa-sha256;
+	bh=53NkEfyxXcq7YABqgRu4OdDxg0bZnrXVbuQtaZ6hH8g=;
+	b=Wt+kPXwxd8Xdvz4Wrr3cYnVLTUYB/erKn7m13Yc92jMlams2TSxtJKaPjwacL3ow2Nnxhf
+	5CZy+ZlWTzV39/430bNXZyKqN7wr6FWfRGIT0VmHtd8vHcmfkFGY2354/HYxo77nngvkJf
+	Pa1A0D7zusHt1dyF2K0To3gIaDmqlAU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756152442; a=rsa-sha256;
 	cv=none;
-	b=rbA5Gva48O3kIiOjM2GKnOwEafBGYmCDvVWk3rGRl8kv7EC5lumYlVkzu8LWUmOhFk76zN
-	zn9/ON+pHK6Vy+ouW0XnSQTZkP5bUuqugvj1iZsZpJsqfWLCrd0dwG40Lq9ciKgD8gqP7w
-	MQBa7sr5cZruUzUg0jD5To5RdBdwWVE=
-Date: Mon, 25 Aug 2025 12:41:07 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1756150874;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DaBOeTNdTjLlU52HNYXZjxccsI5utUG+maXgRXm46HY=;
-	b=Od9hXyeBDyV69Pof8vMx+qvOo82ai07aCUAO1EJ1QkJzqhMLQ7bfgvI6AibxQBCAOpJxGb
-	WLboMc9Gu9foPdbGmBM5RmDRFzvBJ789zQQN1qv5isxftajqdtgxKQCH1ZnZubGJLQkbUL
-	KU2Dx4eXZN2eWKIX8jCubinBW/wd4gA=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: zhongjinji <zhongjinji@honor.com>
-Cc: mhocko@suse.com, rientjes@google.com, akpm@linux-foundation.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, tglx@linutronix.de, 
-	liam.howlett@oracle.com, lorenzo.stoakes@oracle.com, liulu.liu@honor.com, 
-	feng.han@honor.com, cgroups@vger.kernel.org
-Subject: Re: [PATCH v5 1/2] mm/oom_kill: Do not delay oom reaper when the
- victim is frozen
-Message-ID: <jzzdeczuyraup2zrspl6b74muf3bly2a3acejfftcldfmz4ekk@s5mcbeim34my>
-References: <20250825133855.30229-1-zhongjinji@honor.com>
- <20250825133855.30229-2-zhongjinji@honor.com>
+	b=VKjqL1OWKJLE2WRyn+5TMfVF9t759CGFFUPmf8fHBo+EbhEBPzPoGacbq5bHvJLeYVlEPC
+	pWNuMoxBQNTa/Czy6Y/DyyZ6AiAxYvtm0rcJnuiUvXdk7SmkLdPKv4Nv/vmBNHiXmqBBFx
+	idwkTQq/k0HMDS4LuOHkcb/4Kro1UUc=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=okZorsbX;
+	spf=pass (imf20.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 84C7260245;
+	Mon, 25 Aug 2025 20:07:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9BC1C116B1;
+	Mon, 25 Aug 2025 20:07:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756152440;
+	bh=/3rKbaJD+w6nURlr7+uhBX9TAhFoWk7q48ExNb7Wiq0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=okZorsbXLxI1C0tQJOJhpXkygrsAezPT+G9FqvCMtkuufdEJvwjZLRFO0eFxfdzbt
+	 4OU30VK3uzdtYHYGiKx51p+O4tgSHQ2BZDZEgWg2P6W/r2+1jZ8sRTH/203KgV057Q
+	 FV06YSnofD90bfoZch8IdffPcpOfHe230rO4CQaZlPBY7iAaqbfuGAvlNoecDVs12c
+	 JkrNfKYI33pZOXcAyup821Zi7LB+eNk/nGLE3f9lv2oacQrymSVCYdEsoHvu7cX6fO
+	 G2IFhjdufyv25hx2skCeLhtVbLKFTXKOr1In9l7fAhz7f0Sy4ZNl8aOarP9h/eyD84
+	 rW9rN/C+94/HA==
+Date: Mon, 25 Aug 2025 13:07:15 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: kernel test robot <lkp@intel.com>, Rohan McLure <rmclure@linux.ibm.com>,
+	llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Andrew Donnellan <ajd@linux.ibm.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>
+Subject: Re: [akpm-mm:mm-new 216/233]
+ arch/riscv/include/asm/pgtable.h:951:36: error: too few arguments to
+ function call, expected 3, have 2
+Message-ID: <20250825200715.GA598466@ax162>
+References: <202508230551.qiEQu04P-lkp@intel.com>
+ <20250822150906.7a6a87a7a8ad69f2ad67c817@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250825133855.30229-2-zhongjinji@honor.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 49B53140005
+In-Reply-To: <20250822150906.7a6a87a7a8ad69f2ad67c817@linux-foundation.org>
 X-Rspam-User: 
-X-Stat-Signature: 46hp7nk673jf8c4schxmdg3x3hu9yhau
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756150876-486311
-X-HE-Meta: U2FsdGVkX1/5zTM7CTDSsQginPe11mACGtZw32oJIjtCjO3B24Cnq7IWOfVeYz4yToiSv8zdD3PL1nuMiT+I5NGJn8Q1+bQVPdCd+CaHZ1xbPhx7nmhOUXTN3yE+w8zRyp7A1hQtwzpWVWSTRsTR3niJ5jEDqutCvSDzVrFMtlRF310SyTc4bnMp7MxLzzhmf5jhodMf2/B7sTNs2YdQAMvNUssoMUiu6jYGOMiRfACPuOkWcQoZc3+vD9wv2Y6CByfO/WWoH3RPcXtP5WyuQsrx756qDyXoODNIBu/cERNczdOPMhOLlIjht59ZSSUasJbQctLeYkVGod5LslGSa+tO15LEHYriAIexESmU1eQf/G8QHLVTY1vdkA7xICKxbN5WUvs+HoKz0FYVSw1ofs3bfa/wDwMLWjQ3aTl5uesR3hfbs/ot3cw5RkurTIjZKe89T1cffuw5KI86KkR5IPrfCWjXeOzcLvG4jfWUac+omkvLBdbcTVz9qrDMvCw18FzweFH4cbbVrJUxNi3hx/TMa3xh1/3ydBweHKKQa543FBdT/KWWm67eGh9yUK6vFtTU/+Yr64110M9abmpXE83Aregmg537uC37Exe6nkxgqTDn1i5dTdEmk7jmQli28f4xCbJSpZV6RGhT3v7bxT7ePrFTsOr4YApf3jenlOiPDmhrMG2jnOUgJWrYD7KhTNpElu9SEXbukYVmEWvZaDcX3ZbM4YhdjzfcEBLlbj+0wpI6sijWiA7LIUSngzunETu1k5aWneYyuxgOM85AoKDl8HgVa5JdeW4IbTGFPl5Aq3VE3mZMJzVz1f+rwJJ7anv4CH4J7qG6Vwxl0OUyW/XFUE3ddWv1O7Jm5WQOIyGIBkwp44ll9DrUrHZFf5Cr1DVunplgtwav86tqtSTIm+yBl/t6iV7EQ68iDEuvjmolXThlTyDRlw1R0Ec6u8yxAAaeJaruR7P23WJ2DS6
- vA0VMSag
- AuhxWAEIS2e41PBhAMDA1eQ2JSjWv1Urm8fJbh5CvdGheg7Rv5nRlUHrO3oOBg12uKbmtpn5Q7uv0I2mWGZdaMCjURbjcjRbOl5OXwDp5v2X7SQFc4cQvshaKQrzKAYBNWeWxygsTOVMLUH7O7cp7ndS/zVdkXQAGm7aB+jK+xJp+PuCSTzckUAwUE67GaeSKdNGPyMv7fBI8jVC6X90Z8nV8h75YiGpuONe+6khbqtJAB3f00T3Te4uCCPfmuuV+cxsRShLjoAoKde1ws0NDGR9/PFnMDIeXd//h2P/axsKuvbooXIaa4zeGLajclKF0VlTUCHQJyv5U2URVGXDCe9K6arFYBF6Crrg3JX/zLJQyAdSKBZVnw/dGS/wKbUSfSysL
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3AC401C0007
+X-Stat-Signature: 1hwt43z9dstiur8q43mnpguph47k7zmw
+X-HE-Tag: 1756152442-3040
+X-HE-Meta: U2FsdGVkX1/QtZnwQ1Ho++O9jut7QQ5ZRsfTMolMk0CMjsrD/SU8A2xRq2iVeSup8/syy7Q5/Lp6994tDZv4KGJ4Ntik784XtqM5h7DGvK3F1cS0UC+QO5FVN/IHutSYMWenz1hOIDG88kLdTisFsWiAr8LtLfmxoB73Cl6yCZvyyIsBIsUv0a5YnhGLBau0f2obX8yvBR9+9G9vJbxWy46uOf5Fwin86TASmTjh+V4+7q+U6iz1MkoynA6qQmSNIOCrLVD3kOJKl8g1L8XXDmgfKqN1rnCae2tLyymaWCTrZ7x5Uno4xXFEABC+lrTkvFCJxxb7iYTQA8YDcRYc1PjgbcBsdygZzXixsXovLcF/hT93D+ucNi1Kyla+4OJS1vGZcjM+IPX8fhWC7IBP58UoSpgW/M9c52cuzlM0lz43sNWqYbWhdr5WoEciuXexvNksevzO2UOKuJ/COwRLMTxTAy8VtKBJzY49Hwg0QG9Zzj6jv3atNG5+Svviz59tEWwSiclId4Wm0yePNrDMC6195JZaIHuF7Y1OFzb3vwIhjl6oa2ouNDDJjxWqkn6KQ4g80n1NaC1lgeocMkPDooctI1FyS0GZ3etrTMbz2+t16fR6m94DLMdB03t0N+J1Y/IIQrBnCvSG8VUHKQO8y47zDsyYrneC2+jDHKiM5eL7PF1SawxWB6REGGHN1YHOr6t0aFp7/tKQYNVWkie0Vh0Z9l5nGlSuf6PuJsrbJ6dRrdMpoQJbRdv5VSjtFEvztcbnuPEWwYkcXoIUTCRBNHCmhP/jEAOT5IK2ucNlIW99d6RPZtb8Si9mDQv3NNMQnHuGLgOGkoVDf0IIzjaWydEbKPdO7GwVeurWoRQ6e+P0fFn2yXUHW5U0PeF+310f0xPJyRlrar3Tl58Vn4WQIJad/+/CLgOB5r1SXDcZ1U0fc7G+vW4ZaIcjiETAXwSZMxgYbJka6FfxF1PrZNk
+ teuLsECY
+ n5geEPrjl9I8nQzLGH+PCIXzgeGn/nY3hVk06B5eRfEYS865ge/8Fiz6j3YbcU2DlnW2ZUXSLoy0mK5f9RqprmEw3aGWWShqKL90AIKfeVkkUsCZxcJ6/JbuV65hURvtPvfJOLn8v9XrIPri7k0FFgQLRkJ2r5Flw1FLjATDtR38qjoziPr4a4665ZPpmr7l4v32DT81qm6Ll7zAKZ+BcSqKkwLPz4+9KrKU8Vsvcrwfl2jSDMX+/H5fhOWqlKgdNFly7QigBGXBwjf2RenZqkvzeRSeeS8cJ0/wyTibgnGOyfyM2N99s5DuOJfyHHGK11TWD4Gt9As+o+GhU8E6aKizc3QzIYdnIx9mbEBJIsMixmA5xJ0ENAr065ZFI0FrNTuMDlS5XVFMWeAcyO+9zv9qY7Y5OAB74RNiM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,93 +97,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+cgroups
-
-On Mon, Aug 25, 2025 at 09:38:54PM +0800, zhongjinji wrote:
-> The OOM reaper can quickly reap a process's memory when the system
-> encounters OOM, helping the system recover. If the victim process is
-> frozen and cannot be unfrozen in time, the reaper delayed by two seconds
-> will cause the system to fail to recover quickly from the OOM state.
+On Fri, Aug 22, 2025 at 03:09:06PM -0700, Andrew Morton wrote:
+> On Sat, 23 Aug 2025 05:30:45 +0800 kernel test robot <lkp@intel.com> wrote:
 > 
-> When an OOM occurs, if the victim is not unfrozen, delaying the OOM reaper
-> will keep the system in a bad state for two seconds. Before scheduling the
-> oom_reaper task, check whether the victim is in a frozen state. If the
-> victim is frozen, do not delay the OOM reaper.
+> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+> > head:   a8af4c2fd982fd94fffde3c5b6b764fd20af68fe
+> > commit: e009b0f3187482a5756ff3b015cf30277cc1cfd9 [216/233] mm/page_table_check: reinstate address parameter in [__]page_table_check_pud_clear()
 > 
-> Signed-off-by: zhongjinji <zhongjinji@honor.com>
-> ---
->  mm/oom_kill.c | 40 +++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 39 insertions(+), 1 deletion(-)
+> > config: riscv-randconfig-001-20250823 (https://download.01.org/0day-ci/archive/20250823/202508230551.qiEQu04P-lkp@intel.com/config)
+> > compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project d26ea02060b1c9db751d188b2edb0059a9eb273d)
+> > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250823/202508230551.qiEQu04P-lkp@intel.com/reproduce)
+> > 
+> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> > the same patch/commit), kindly add following tags
+> > | Reported-by: kernel test robot <lkp@intel.com>
+> > | Closes: https://lore.kernel.org/oe-kbuild-all/202508230551.qiEQu04P-lkp@intel.com/
+> > 
+> > All errors (new ones prefixed by >>):
+> > 
+> >    In file included from arch/riscv/kernel/asm-offsets.c:8:
+> >    In file included from include/linux/mm.h:31:
+> >    In file included from include/linux/pgtable.h:6:
+> > >> arch/riscv/include/asm/pgtable.h:951:36: error: too few arguments to function call, expected 3, have 2
+> >      951 |         page_table_check_pud_clear(mm, pud);
+> >          |         ~~~~~~~~~~~~~~~~~~~~~~~~~~        ^
 > 
-> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-> index 25923cfec9c6..4b4d73b1e00d 100644
-> --- a/mm/oom_kill.c
-> +++ b/mm/oom_kill.c
-> @@ -683,6 +683,41 @@ static void wake_oom_reaper(struct timer_list *timer)
->  	wake_up(&oom_reaper_wait);
->  }
->  
-> +/*
-> + * When the victim is frozen, the OOM reaper should not be delayed, because
-> + * if the victim cannot be unfrozen promptly, it may block the system from
-> + * quickly recovering from the OOM state.
-> + */
-> +static bool should_delay_oom_reap(struct task_struct *tsk)
-> +{
-> +	struct mm_struct *mm = tsk->mm;
-> +	struct task_struct *p;
-> +	bool ret;
-> +
+> Thanks, I added this:
 
-On v2, shouldn't READ_ONCE(tsk->frozen) be enough instead of mm check
-and checks insode for_each_process()?
+It appears that this fix patch was applied to the wrong patch. The error
+is about page_table_check_pud_check().
 
-> +	if (!mm)
-> +		return true;
-> +
-> +	if (!frozen(tsk))
-> +		return true;
-> +
-> +	if (atomic_read(&mm->mm_users) <= 1)
-> +		return false;
-> +
-> +	rcu_read_lock();
-> +	for_each_process(p) {
-> +		if (!process_shares_mm(p, mm))
-> +			continue;
-> +		if (same_thread_group(tsk, p))
-> +			continue;
-> +		ret = !frozen(p);
-> +		if (ret)
-> +			break;
-> +	}
-> +	rcu_read_unlock();
-> +
-> +	return ret;
-> +}
-> +
->  /*
->   * Give the OOM victim time to exit naturally before invoking the oom_reaping.
->   * The timers timeout is arbitrary... the longer it is, the longer the worst
-> @@ -694,13 +729,16 @@ static void wake_oom_reaper(struct timer_list *timer)
->  #define OOM_REAPER_DELAY (2*HZ)
->  static void queue_oom_reaper(struct task_struct *tsk)
+> --- a/arch/riscv/include/asm/pgtable.h~mm-page_table_check-reinstate-address-parameter-in-page_table_check_pud_set-fix
+
+But this change is about page_table_check_pud_set(), so -next is now
+broken in the opposite way
+
+  arch/riscv/include/asm/pgtable.h:951:42: error: too many arguments to function call, expected 2, have 3
+    951 |         page_table_check_pud_clear(mm, address, pud);
+        |         ~~~~~~~~~~~~~~~~~~~~~~~~~~              ^~~
+  include/linux/page_table_check.h:125:20: note: 'page_table_check_pud_clear' declared here
+    125 | static inline void page_table_check_pud_clear(struct mm_struct *mm, pud_t pud)
+        |                    ^                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+as it does not appear that e009b0f3187482a5756ff3b015cf30277cc1cfd9
+is there.
+
+> +++ a/arch/riscv/include/asm/pgtable.h
+> @@ -948,7 +948,7 @@ static inline pud_t pudp_huge_get_and_cl
 >  {
-> +	bool delay;
-> +
->  	/* mm is already queued? */
->  	if (test_and_set_bit(MMF_OOM_REAP_QUEUED, &tsk->signal->oom_mm->flags))
->  		return;
+>  	pud_t pud = __pud(atomic_long_xchg((atomic_long_t *)pudp, 0));
 >  
->  	get_task_struct(tsk);
-> +	delay = should_delay_oom_reap(tsk);
->  	timer_setup(&tsk->oom_reaper_timer, wake_oom_reaper, 0);
-> -	tsk->oom_reaper_timer.expires = jiffies + OOM_REAPER_DELAY;
-> +	tsk->oom_reaper_timer.expires = jiffies + (delay ? OOM_REAPER_DELAY : 0);
->  	add_timer(&tsk->oom_reaper_timer);
+> -	page_table_check_pud_clear(mm, pud);
+> +	page_table_check_pud_clear(mm, address, pud);
+>  
+>  	return pud;
 >  }
->  
-> -- 
-> 2.17.1
+> _
+> 
 > 
 
