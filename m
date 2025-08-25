@@ -4,175 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A0CECA0FE7
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 20:32:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58B2AC8303F
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 21:05:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E978F8E007F; Mon, 25 Aug 2025 16:32:18 -0400 (EDT)
+	id 609298E0080; Mon, 25 Aug 2025 17:05:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E48688E0038; Mon, 25 Aug 2025 16:32:18 -0400 (EDT)
+	id 5B9E68E0038; Mon, 25 Aug 2025 17:05:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D10538E007F; Mon, 25 Aug 2025 16:32:18 -0400 (EDT)
+	id 4A8BD8E0080; Mon, 25 Aug 2025 17:05:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BB4FE8E0038
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:32:18 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 715FCC0442
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 20:32:18 +0000 (UTC)
-X-FDA: 83816427156.07.8DB09B9
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf04.hostedemail.com (Postfix) with ESMTP id F304640005
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 20:32:15 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=BvJHz6VI;
-	spf=pass (imf04.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 394368E0038
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 17:05:38 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3AD91139151
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 21:05:37 +0000 (UTC)
+X-FDA: 83816511114.11.DE3DE85
+Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 4417C1A0004
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 21:05:35 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=sifive.com header.s=google header.b=eSf1Fqgg;
+	dmarc=pass (policy=reject) header.from=sifive.com;
+	spf=pass (imf19.hostedemail.com: domain of samuel.holland@sifive.com designates 209.85.222.50 as permitted sender) smtp.mailfrom=samuel.holland@sifive.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756153936;
+	s=arc-20220608; t=1756155935;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e9dZ7HYFm04sYh+3FqLYILOU5ulghIY66izoMMIko1I=;
-	b=wOlktftFnBudfKdAYH3F0lzdln5gh43M1Lut6RfL8Q4Ani2jTTGF7ykc9HmmGFp0m0+FjT
-	eL/osPcsD5v3UL1lnfK/UmkqRpOkdh7OIechRZ7uGtgZjwTt7yWvy4vlaqRbQiZdP4dv75
-	2C6oJKI0MNKsuUaOkW8WEAL3IsZCenY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756153936; a=rsa-sha256;
-	cv=none;
-	b=hu5NqiGMHpg3xCce2FGqDuqxfmte5kohh15+H0ZQcwyz/XQ1FYNrE4fRq0n3XglE/a1GCs
-	+Ae4fUN4bNZhwpL6JB9T+88hrLozkT1yccKjnalb0cbrLoXdBX0Vvv2hKa7UHC2nzuTyo+
-	VxifNnoIaWOXB/ZO3tnfXpbl+v019o4=
+	bh=ZcPPbu+aYl9Xu1jLxey4/WhZ40S4z542awI5r/G6Sno=;
+	b=rWzjUuf63+hrBUqTmMSo245E6n+FbuX74vWEtFiBtv4LyngB1eCS+QxJz7J0Buwt6K6t6i
+	VUMFkXlvUL/RZnmCwLll4euBgS8Pxwj4KPodGIXi1aJ2/XhJk1vV1ExA15ubvu43EMYFmV
+	CDBe3lju5yq9/TaebaIotl3gdl8TUcU=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=BvJHz6VI;
-	spf=pass (imf04.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756153936; x=1787689936;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Vl29c6D1eR0f0U4vY2WrG9uFQFyXVuYuiDzYnN2VaZk=;
-  b=BvJHz6VIdQQHxCtIIG7qIy06/9KrB4MK9Rcf5cLjqYBecOqNW7Ge5XyY
-   Eq7PQUGEH81tFKhs+PBkJd/iYbdxBTT9mQ9sWFWZ6pLLRpRtraUidsRxz
-   qGv7TtGpeeBZIhbvemsSBNWQHM/np3JLJtZJSw20pVMa/DWXne2TR+XA9
-   mX+4JS7zQVulFDWl4LBd7ItQXjTcCZruFSL+VFEUxutA7wgWoUvq6gTJu
-   TQLtZIrRfCmvRP/6C3GKrXJkxRZIMxaLJUG2sI9JwfSeripPjMRJPDLfR
-   hngjGobo0BbXeInuxLiIFIeFx+x3bRmo/vuXA6Jysdf5QS5IGr/dmqVfo
-   A==;
-X-CSE-ConnectionGUID: mJpp/UmVRqy1CCE1hF5Bqg==
-X-CSE-MsgGUID: zMImEg//TVW+URet2GAIXQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="68971254"
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="68971254"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 13:32:14 -0700
-X-CSE-ConnectionGUID: cXWZ7dRGQvecpjyhpKanvw==
-X-CSE-MsgGUID: bpDPHCHLRsKzMlSFZem02A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="169781042"
-Received: from bergbenj-mobl1.ger.corp.intel.com (HELO wieczorr-mobl1.intel.com) ([10.245.245.6])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 13:31:53 -0700
-From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-To: sohil.mehta@intel.com,
-	baohua@kernel.org,
-	david@redhat.com,
-	kbingham@kernel.org,
-	weixugc@google.com,
-	Liam.Howlett@oracle.com,
-	alexandre.chartre@oracle.com,
-	kas@kernel.org,
-	mark.rutland@arm.com,
-	trintaeoitogc@gmail.com,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	joey.gouly@arm.com,
-	samitolvanen@google.com,
-	joel.granados@kernel.org,
-	graf@amazon.com,
-	vincenzo.frascino@arm.com,
-	kees@kernel.org,
-	ardb@kernel.org,
-	thiago.bauermann@linaro.org,
-	glider@google.com,
-	thuth@redhat.com,
-	kuan-ying.lee@canonical.com,
-	pasha.tatashin@soleen.com,
-	nick.desaulniers+lkml@gmail.com,
-	vbabka@suse.cz,
-	kaleshsingh@google.com,
-	justinstitt@google.com,
-	catalin.marinas@arm.com,
-	alexander.shishkin@linux.intel.com,
-	samuel.holland@sifive.com,
-	dave.hansen@linux.intel.com,
-	corbet@lwn.net,
-	xin@zytor.com,
-	dvyukov@google.com,
-	tglx@linutronix.de,
-	scott@os.amperecomputing.com,
-	jason.andryuk@amd.com,
-	morbo@google.com,
-	nathan@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	mingo@redhat.com,
-	brgerst@gmail.com,
-	kristina.martsenko@arm.com,
-	bigeasy@linutronix.de,
-	luto@kernel.org,
-	jgross@suse.com,
-	jpoimboe@kernel.org,
-	urezki@gmail.com,
-	mhocko@suse.com,
-	ada.coupriediaz@arm.com,
-	hpa@zytor.com,
-	maciej.wieczor-retman@intel.com,
-	leitao@debian.org,
-	peterz@infradead.org,
-	wangkefeng.wang@huawei.com,
-	surenb@google.com,
-	ziy@nvidia.com,
-	smostafa@google.com,
-	ryabinin.a.a@gmail.com,
-	ubizjak@gmail.com,
-	jbohac@suse.cz,
-	broonie@kernel.org,
-	akpm@linux-foundation.org,
-	guoweikang.kernel@gmail.com,
-	rppt@kernel.org,
-	pcc@google.com,
-	jan.kiszka@siemens.com,
-	nicolas.schier@linux.dev,
-	will@kernel.org,
-	andreyknvl@gmail.com,
-	jhubbard@nvidia.com,
-	bp@alien8.de
-Cc: x86@kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-mm@kvack.org,
-	llvm@lists.linux.dev,
-	linux-kbuild@vger.kernel.org,
-	kasan-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v5 19/19] x86: Make software tag-based kasan available
-Date: Mon, 25 Aug 2025 22:24:44 +0200
-Message-ID: <3db48135aec987c99e8e6601249d4a4c023703c4.1756151769.git.maciej.wieczor-retman@intel.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1756151769.git.maciej.wieczor-retman@intel.com>
-References: <cover.1756151769.git.maciej.wieczor-retman@intel.com>
+	imf19.hostedemail.com;
+	dkim=pass header.d=sifive.com header.s=google header.b=eSf1Fqgg;
+	dmarc=pass (policy=reject) header.from=sifive.com;
+	spf=pass (imf19.hostedemail.com: domain of samuel.holland@sifive.com designates 209.85.222.50 as permitted sender) smtp.mailfrom=samuel.holland@sifive.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756155935; a=rsa-sha256;
+	cv=none;
+	b=6rAljrHegfQGDI9+F8muMzvpA7Vm+TxgKkZSWGLUJh65RUy9SbEuDZr7qXFu2sKwe8oUPS
+	gvtrzkGVSx9Gq9FK1DWftVDnIvDzN8Wg4UZDqG5yIKthMniGFwGpUUBgHywglBXvK2IYA0
+	iIXvBIgYXcH57BAIumObhzpOUhlUkps=
+Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-89018e9f902so3451856241.0
+        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 14:05:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google; t=1756155934; x=1756760734; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZcPPbu+aYl9Xu1jLxey4/WhZ40S4z542awI5r/G6Sno=;
+        b=eSf1FqggxQbxww99B4eHFtegV41WTYK1zOc55p34YT7p0/B0DvmrBJUHfNTlPmC6xR
+         Cl9yht2JF8dgIKC0b8aId6lLn8+MRHwfPHGSKxQIJEAPhscPSGNKDyS/uWGTWr73IoWY
+         Gog800vsU2IOqGJJt/0AGR+wP+neNwIgpE3EQZEi5C6/wpv6QxjL2HFnfp51MZ242+bi
+         hOAtVyXmwL6TSvNuRiVfcD7EiB3W4a/e/GXgwkWSuq72EwuxkiAPDLIZdXNFOYSuNAsd
+         iYlZOt+i1mBdcbOcJrDr0Zq4zWBaYfD9NWkEJikHE3KjVwgncuqWbphN+8KKsd4FdqJs
+         fk8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756155934; x=1756760734;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZcPPbu+aYl9Xu1jLxey4/WhZ40S4z542awI5r/G6Sno=;
+        b=Y/Kiv2kZCt9yZY1HLoWuoDHlWONinMe3TrwbeVNYm77UNpb0g4X4OoJmmyLj4vA1Vt
+         jbTx9u8cVNz2mpjnbynMZIxwcDkb97D2zsK4LdI3SsfcNOhTjR29vaod3XonOpIM4JYa
+         3IwA9oe9pzhdBvmKN9bYWB3ZFMg+5a0d7WtMnPKaO0iqn0Lpd4CR3YXRtQNENi8vqt7t
+         +RX/3n/VVHevTexzS60DTBlwnqPdWccyy+djUjb5+cYgrIiSXrARORD837nMLXEGsc+h
+         WCV4uDgGzUbbUtzmbZtn3ot3AbUQLMsoqUrCB3yXi6uLfwxf96tfGaYR09EL+0vgK4eq
+         pJLA==
+X-Forwarded-Encrypted: i=1; AJvYcCVi2qEdoto/S0xCdyZKcTIizYDyghne9Gboc0DzJ1wEs3ftNN1aFLN5g2mjnoL2dREq0kSLEAwZLQ==@kvack.org
+X-Gm-Message-State: AOJu0YyliItvVXhlgKfxTmSIkrkUgc7wFr4Slfmswfp8jTwttcRqyvPN
+	G5EDbjqrgWqaeRJtuQm2y9OxuEy1bk4cpPGR56fGRwfSOrGd2UQxxGP0MCUGVqH9Ha4RUIwVbsa
+	OGyzfKzk=
+X-Gm-Gg: ASbGncsjB1RCYKqwXwVqXwdlktZssgKQgNncPEpbJ9PR9S/99CsimnfvIUlfiRjeeio
+	9Ll5tpJJhliddnaSp1sKrVPbu24V7DeVfD9w5NoPAd3YZU8VEJ5i8nq5wLS4cyEWQTlhHGpnVe/
+	WSU4UtBjW6wO0ONvxKn8Odnp3baYoxFQZZowVdGfm7wm1FdMBWVQhiqOIsF4Yqr5MPgXfc3+5fR
+	O920cx7qR+txXeIUDKzWRnGL/LJcoMjtDeUf0yPG4K90ZykUTheHmapoiRe9u+/VPdD9bE2ju65
+	erOxV57aEVSpCJoEJT+/PSkGGTi+GOkpK47e0lO+mGIabEhpzy/qRTgOyWuMhlSpL9OJhZZAXBk
+	0F2aZvX9VSIQ+UU+iEIUcE3GBI2LWn1tIb3ZIPadQqnsPJfy85+wh0Q==
+X-Google-Smtp-Source: AGHT+IGl5YyJO5cNchW3hMpUrsJFnsYaH0jFB/UnFZkvzedPO9loSjPBh1OzNXyW8MzaaJOPsbW11Q==
+X-Received: by 2002:a92:cdad:0:b0:3e9:eec4:9b5a with SMTP id e9e14a558f8ab-3e9eec49d85mr152368845ab.25.1756155593789;
+        Mon, 25 Aug 2025 13:59:53 -0700 (PDT)
+Received: from [100.64.0.1] ([136.226.102.202])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3ea4ec1fa3dsm54724275ab.45.2025.08.25.13.59.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Aug 2025 13:59:53 -0700 (PDT)
+Message-ID: <9ae927d3-0a66-4354-910f-155ff9ba3e0f@sifive.com>
+Date: Mon, 25 Aug 2025 15:59:46 -0500
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: F304640005
-X-Stat-Signature: juyr6oq7pj1cjdgfpokexykqr4ztkqit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 10/19] x86: LAM compatible non-canonical definition
+To: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Cc: x86@kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org,
+ llvm@lists.linux.dev, linux-kbuild@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, sohil.mehta@intel.com,
+ baohua@kernel.org, david@redhat.com, kbingham@kernel.org,
+ weixugc@google.com, Liam.Howlett@oracle.com, alexandre.chartre@oracle.com,
+ kas@kernel.org, mark.rutland@arm.com, trintaeoitogc@gmail.com,
+ axelrasmussen@google.com, yuanchu@google.com, joey.gouly@arm.com,
+ samitolvanen@google.com, joel.granados@kernel.org, graf@amazon.com,
+ vincenzo.frascino@arm.com, kees@kernel.org, ardb@kernel.org,
+ thiago.bauermann@linaro.org, glider@google.com, thuth@redhat.com,
+ kuan-ying.lee@canonical.com, pasha.tatashin@soleen.com,
+ nick.desaulniers+lkml@gmail.com, vbabka@suse.cz, kaleshsingh@google.com,
+ justinstitt@google.com, catalin.marinas@arm.com,
+ alexander.shishkin@linux.intel.com, dave.hansen@linux.intel.com,
+ corbet@lwn.net, xin@zytor.com, dvyukov@google.com, tglx@linutronix.de,
+ scott@os.amperecomputing.com, jason.andryuk@amd.com, morbo@google.com,
+ nathan@kernel.org, lorenzo.stoakes@oracle.com, mingo@redhat.com,
+ brgerst@gmail.com, kristina.martsenko@arm.com, bigeasy@linutronix.de,
+ luto@kernel.org, jgross@suse.com, jpoimboe@kernel.org, urezki@gmail.com,
+ mhocko@suse.com, ada.coupriediaz@arm.com, hpa@zytor.com, leitao@debian.org,
+ peterz@infradead.org, wangkefeng.wang@huawei.com, surenb@google.com,
+ ziy@nvidia.com, smostafa@google.com, ryabinin.a.a@gmail.com,
+ ubizjak@gmail.com, jbohac@suse.cz, broonie@kernel.org,
+ akpm@linux-foundation.org, guoweikang.kernel@gmail.com, rppt@kernel.org,
+ pcc@google.com, jan.kiszka@siemens.com, nicolas.schier@linux.dev,
+ will@kernel.org, andreyknvl@gmail.com, jhubbard@nvidia.com, bp@alien8.de
+References: <cover.1756151769.git.maciej.wieczor-retman@intel.com>
+ <c1902b7c161632681dac51bc04ab748853e616d0.1756151769.git.maciej.wieczor-retman@intel.com>
+From: Samuel Holland <samuel.holland@sifive.com>
+Content-Language: en-US
+In-Reply-To: <c1902b7c161632681dac51bc04ab748853e616d0.1756151769.git.maciej.wieczor-retman@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 4417C1A0004
+X-Stat-Signature: n3nnc9om69itum6h8waxzbrfaq3zbpy3
 X-Rspam-User: 
-X-HE-Tag: 1756153935-643850
-X-HE-Meta: U2FsdGVkX19ZSrbebQ0eH72VY6pDHsNHKZRbYeA53mc3mqlkQPUkYAbASpMTjoIIBt456A7yizZnAgJvNqio185lDARdHPPFlH0Gym0d6RBEzCpe/kdLIG+H8Mrl4Nfk5jq70dyGgdcVs3x+/q+EYuTRwoLFwyyzy8CxHzDRRAU3bvi8xKbhDVuWjHCqnZhApngvc3GjXwPD5af+KlKIyDqhWfoEO3r4iDSQPYgnaiEnEkAuiJPpO9qSwJtg42j63sLc5vgQAk/0uW2OOGQVSiB6gelxqRVoNhOYpkwipC8uMUtLHfp81FKk+QrloDsgoMUbqfD1Uwer1sIK6EO4mpS4dN5+mkIoCWey2MN782EUovi5hIEHfduvlUt4nWU7/99uIboJPRgTkGOtiu8dMoEeW/c649/FZSxInrxl1IbYTALsjjDkxFIk4jTtK/QLX1tSHpzVbEc/gZhJzmyNhpeK7s1PDr7jWRFhHrUhqU96oYU91MiOhmlXgwboyfYLdaaFkXidruac1hky1zf/RDJYdWvovquA+XaHZAG2QjmlurPK05ursKGT0M8S1wzYhGsuvIlFlNE1YVXiKqiU5QRGQ3ocvNYv/rWWZrxNcNxyCBO2/VNBQPV9foCQT31F0X4Jx3dC7OjfcewhpDQZSwH+TIzff3I7fBxXGYzIYDABAF650R4kVDM4nXtxnAWqcdMosKaeVmwpbaEUhChxyrNGnagrAsJWh/mYJA9SCqB/pBnXbXs9RLV2FYy9oDtgCht1hw+Fo4/fF7tT7ey7x+0fpdODl759rSjvK1NlM+KTSNxUOvu8JXcl6EpuXDolvuGsEvyLdXzlGm9ujcagDpCyYwqX8Ty3zqqLWDzKsgCFL1/in6oUVa/mN8Yo1Vi0DMhL5xL+Q7cWkBuPDn42t7blxDkZ+JFz9NUTG+dh9s0dv84SIV3BxwQeePTcEKPumoE+OOo6D76PEIZlVRk
- 9Xdbbw9e
- fz8ashXjJOj1gNSzukDw45fHcnkHeRr6v69JgIstU4FIhH2C+LQtxUpja7kVkZ/v/a3nlt8x7cYyIO+mgjvsBBC70HvnfLJ6rrgXHD9MW/yITst058IboDyIE5hH5dP3GAqMILNjns8I1Ihtyd9m5oq7r5guDAtd0IvFTU0CrTKRHUdjW0YR/oMhFUBVEuUQKvWWKfNx5jWju/I3HGPdKUlfkb0ZcqdI5TfdC2TLITyTLn1OB+Sso5giqXDSVjnOrqANP
+X-HE-Tag: 1756155935-639746
+X-HE-Meta: U2FsdGVkX18OhqyEPhdSMDc9bh1TvMMBF62K3zIJLN99sKBkMsRBViPS5saNNervDdKss7KJUCR3wA4E1icUWmRegVumZNgXWtmHtYqrZkcSXzyLNv1ywQiPCjWoV2NCtgZd0t9tDPcun82EjdRU0ZbGaFfdxKD0xfxuyFaO0zK7wA50aO00WPCmGYl5hoRAka7pRNtiyY66SLRDzUfmBNW+jVrW/qKmuHa2NcxsTp5lo6kkKlEI4vupVEo2JEh8qrWKXEoerQ3uKIZp0tUGCH82mCL9Wnu/epWgn2/+C8mWwCMgPKsjBL/+/UuP8Ve/6LBXhOEQC+5oJr02qHUXL4kmhuG0Jh7b5Y3LcAPM8ZrZULk6NcGnm5gzljXB4K1s2MI0WJh26WS0ftwlw8B0SdesxPFs8z15FzWDa44tQuN84nyaeDGVvWIGs4ouZl2JAeJard9hIipAif96quIaSQdO/miPhL0nMKJ3X99kOPOw/GOcUYjPRoBDPq8+ug3cCkko8RMy80LbsTz/ETOMaejYWxHOIrJmgxG/9NKanUXECiqKCMJ4B7GCd64/hAYb4fKXUr8XmYgOiRQZJ77avGm/rGQxreQe9zYvQzXcQ2jzQEvDV1hSWpTcA1MDTBHJZz6q9LkAxw2WLoUEE92s4lrPu2+SGCtdUtOQ3RcEG41ObgTxETb5P0hy2RF31NNkWZ8YtfRPAftcn/8lXW0+kQsoTJHilOMGVuc3khYgBaEPxN6iy6E0SbM7d9LVjv8lm6aIc9+OFpTl54/7Ucj2bWKfCjJ5XZA1//Vsu+bguE+fU7tJ5FbY5cZXcinRy7c8Thq/5Sf/Trldcj/rwuM/UTN5IZzqL6bpj2DEeR8Z5aRJ7bYlQ9y3GPiI6miLo0ush7M0VpCvIvOy73g3MMwHx2VRsxIkYmnhQFsLkl/KnR4YVWfXU11hdvPHFIkvM/79kNus37YzNCxNmouhiLE
+ tJiGAEBV
+ qB+zVcoreBwvU6uZcM3k32QeCMocxESoxz+zuANraLzZw79YBiLo1DsX2sXZPYe/kC1bJ89qdzvpZaV0brriwtiZALQWGdAE9uAwKnj8Hh65BRpMmOAlgtWbBCQ3CXXNsAfe4gwF4ehD44xLDGKqcAkObUlMqhzEXI3e0j6qjt2wEBhbVIC6WTsvyKQtA4ZiBG3zqPLa5P6I5rVjcdVh5u3gZpfyDUsSHIzG4LNohzE2t5w+4O4twaM2NXAD9MnHl7eO5ZjsjoEzTmfsJF5wvKLfvQsrTIeDDgdlLKRbpIR68MOojzciH+LetAtiMUHoy/U/XjysuFvV0P8f/Bmr3c0n7ycG8VpC24tqJnIn2XdaieOQHxu7VbPeaTisUF9gzWQbmxdaUj68SkJtspN3Kd9bSY81kS9I1ySV+
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -181,174 +148,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Make CONFIG_KASAN_SW_TAGS available for x86 machines if they have
-ADDRESS_MASKING enabled (LAM) as that works similarly to Top-Byte Ignore
-(TBI) that allows the software tag-based mode on arm64 platform.
+Hi Maciej,
 
-Set scale macro based on KASAN mode: in software tag-based mode 16 bytes
-of memory map to one shadow byte and 8 in generic mode.
+On 2025-08-25 3:24 PM, Maciej Wieczor-Retman wrote:
+> For an address to be canonical it has to have its top bits equal to each
+> other. The number of bits depends on the paging level and whether
+> they're supposed to be ones or zeroes depends on whether the address
+> points to kernel or user space.
+> 
+> With Linear Address Masking (LAM) enabled, the definition of linear
+> address canonicality is modified. Not all of the previously required
+> bits need to be equal, only the first and last from the previously equal
+> bitmask. So for example a 5-level paging kernel address needs to have
+> bits [63] and [56] set.
+> 
+> Add separate __canonical_address() implementation for
+> CONFIG_KASAN_SW_TAGS since it's the only thing right now that enables
+> LAM for kernel addresses (LAM_SUP bit in CR4).
+> 
+> Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+> ---
+> Changelog v4:
+> - Add patch to the series.
+> 
+>  arch/x86/include/asm/page.h | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/arch/x86/include/asm/page.h b/arch/x86/include/asm/page.h
+> index bcf5cad3da36..a83f23a71f35 100644
+> --- a/arch/x86/include/asm/page.h
+> +++ b/arch/x86/include/asm/page.h
+> @@ -82,10 +82,20 @@ static __always_inline void *pfn_to_kaddr(unsigned long pfn)
+>  	return __va(pfn << PAGE_SHIFT);
+>  }
+>  
+> +/*
+> + * CONFIG_KASAN_SW_TAGS requires LAM which changes the canonicality checks.
+> + */
+> +#ifdef CONFIG_KASAN_SW_TAGS
+> +static __always_inline u64 __canonical_address(u64 vaddr, u8 vaddr_bits)
+> +{
+> +	return (vaddr | BIT_ULL(63) | BIT_ULL(vaddr_bits - 1));
+> +}
+> +#else
+>  static __always_inline u64 __canonical_address(u64 vaddr, u8 vaddr_bits)
+>  {
+>  	return ((s64)vaddr << (64 - vaddr_bits)) >> (64 - vaddr_bits);
+>  }
+> +#endif
 
-Disable CONFIG_KASAN_INLINE and CONFIG_KASAN_STACK when
-CONFIG_KASAN_SW_TAGS is enabled on x86 until the appropriate compiler
-support is available.
+These two implementations have different semantics. The new function works only
+on kernel addresses, whereas the existing one works on user addresses as well.
+It looks like at least KVM's use of __is_canonical_address() expects the
+function to work with user addresses.
 
-Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
----
-Changelog v4:
-- Add x86 specific kasan_mem_to_shadow().
-- Revert x86 to the older unsigned KASAN_SHADOW_OFFSET. Do the same to
-  KASAN_SHADOW_START/END.
-- Modify scripts/gdb/linux/kasan.py to keep x86 using unsigned offset.
-- Disable inline and stack support when software tags are enabled on
-  x86.
+Regards,
+Samuel
 
-Changelog v3:
-- Remove runtime_const from previous patch and merge the rest here.
-- Move scale shift definition back to header file.
-- Add new kasan offset for software tag based mode.
-- Fix patch message typo 32 -> 16, and 16 -> 8.
-- Update lib/Kconfig.kasan with x86 now having software tag-based
-  support.
-
-Changelog v2:
-- Remove KASAN dense code.
-
- Documentation/arch/x86/x86_64/mm.rst | 6 ++++--
- arch/x86/Kconfig                     | 4 +++-
- arch/x86/boot/compressed/misc.h      | 1 +
- arch/x86/include/asm/kasan.h         | 1 +
- arch/x86/kernel/setup.c              | 2 ++
- lib/Kconfig.kasan                    | 3 ++-
- scripts/gdb/linux/kasan.py           | 4 ++--
- 7 files changed, 15 insertions(+), 6 deletions(-)
-
-diff --git a/Documentation/arch/x86/x86_64/mm.rst b/Documentation/arch/x86/x86_64/mm.rst
-index a6cf05d51bd8..ccbdbb4cda36 100644
---- a/Documentation/arch/x86/x86_64/mm.rst
-+++ b/Documentation/arch/x86/x86_64/mm.rst
-@@ -60,7 +60,8 @@ Complete virtual memory map with 4-level page tables
-    ffffe90000000000 |  -23    TB | ffffe9ffffffffff |    1 TB | ... unused hole
-    ffffea0000000000 |  -22    TB | ffffeaffffffffff |    1 TB | virtual memory map (vmemmap_base)
-    ffffeb0000000000 |  -21    TB | ffffebffffffffff |    1 TB | ... unused hole
--   ffffec0000000000 |  -20    TB | fffffbffffffffff |   16 TB | KASAN shadow memory
-+   ffffec0000000000 |  -20    TB | fffffbffffffffff |   16 TB | KASAN shadow memory (generic mode)
-+   fffff40000000000 |   -8    TB | fffffbffffffffff |    8 TB | KASAN shadow memory (software tag-based mode)
-   __________________|____________|__________________|_________|____________________________________________________________
-                                                               |
-                                                               | Identical layout to the 56-bit one from here on:
-@@ -130,7 +131,8 @@ Complete virtual memory map with 5-level page tables
-    ffd2000000000000 |  -11.5  PB | ffd3ffffffffffff |  0.5 PB | ... unused hole
-    ffd4000000000000 |  -11    PB | ffd5ffffffffffff |  0.5 PB | virtual memory map (vmemmap_base)
-    ffd6000000000000 |  -10.5  PB | ffdeffffffffffff | 2.25 PB | ... unused hole
--   ffdf000000000000 |   -8.25 PB | fffffbffffffffff |   ~8 PB | KASAN shadow memory
-+   ffdf000000000000 |   -8.25 PB | fffffbffffffffff |   ~8 PB | KASAN shadow memory (generic mode)
-+   ffeffc0000000000 |   -6    PB | fffffbffffffffff |    4 PB | KASAN shadow memory (software tag-based mode)
-   __________________|____________|__________________|_________|____________________________________________________________
-                                                               |
-                                                               | Identical layout to the 47-bit one from here on:
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index b8df57ac0f28..f44fec1190b6 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -69,6 +69,7 @@ config X86
- 	select ARCH_CLOCKSOURCE_INIT
- 	select ARCH_CONFIGURES_CPU_MITIGATIONS
- 	select ARCH_CORRECT_STACKTRACE_ON_KRETPROBE
-+	select ARCH_DISABLE_KASAN_INLINE	if X86_64 && KASAN_SW_TAGS
- 	select ARCH_ENABLE_HUGEPAGE_MIGRATION if X86_64 && HUGETLB_PAGE && MIGRATION
- 	select ARCH_ENABLE_MEMORY_HOTPLUG if X86_64
- 	select ARCH_ENABLE_MEMORY_HOTREMOVE if MEMORY_HOTPLUG
-@@ -199,6 +200,7 @@ config X86
- 	select HAVE_ARCH_JUMP_LABEL_RELATIVE
- 	select HAVE_ARCH_KASAN			if X86_64
- 	select HAVE_ARCH_KASAN_VMALLOC		if X86_64
-+	select HAVE_ARCH_KASAN_SW_TAGS		if ADDRESS_MASKING
- 	select HAVE_ARCH_KFENCE
- 	select HAVE_ARCH_KMSAN			if X86_64
- 	select HAVE_ARCH_KGDB
-@@ -403,7 +405,7 @@ config AUDIT_ARCH
- 
- config KASAN_SHADOW_OFFSET
- 	hex
--	depends on KASAN
-+	default 0xeffffc0000000000 if KASAN_SW_TAGS
- 	default 0xdffffc0000000000
- 
- config HAVE_INTEL_TXT
-diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
-index db1048621ea2..ded92b439ada 100644
---- a/arch/x86/boot/compressed/misc.h
-+++ b/arch/x86/boot/compressed/misc.h
-@@ -13,6 +13,7 @@
- #undef CONFIG_PARAVIRT_SPINLOCKS
- #undef CONFIG_KASAN
- #undef CONFIG_KASAN_GENERIC
-+#undef CONFIG_KASAN_SW_TAGS
- 
- #define __NO_FORTIFY
- 
-diff --git a/arch/x86/include/asm/kasan.h b/arch/x86/include/asm/kasan.h
-index f3e34a9754d2..385f4e9daab3 100644
---- a/arch/x86/include/asm/kasan.h
-+++ b/arch/x86/include/asm/kasan.h
-@@ -7,6 +7,7 @@
- #include <linux/types.h>
- #define KASAN_SHADOW_OFFSET _AC(CONFIG_KASAN_SHADOW_OFFSET, UL)
- #ifdef CONFIG_KASAN_SW_TAGS
-+#define KASAN_SHADOW_SCALE_SHIFT 4
- 
- /*
-  * LLVM ABI for reporting tag mismatches in inline KASAN mode.
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index 1b2edd07a3e1..5b819f84f6db 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -1207,6 +1207,8 @@ void __init setup_arch(char **cmdline_p)
- 
- 	kasan_init();
- 
-+	kasan_init_sw_tags();
-+
- 	/*
- 	 * Sync back kernel address range.
- 	 *
-diff --git a/lib/Kconfig.kasan b/lib/Kconfig.kasan
-index f82889a830fa..9ddbc6aeb5d5 100644
---- a/lib/Kconfig.kasan
-+++ b/lib/Kconfig.kasan
-@@ -100,7 +100,8 @@ config KASAN_SW_TAGS
- 
- 	  Requires GCC 11+ or Clang.
- 
--	  Supported only on arm64 CPUs and relies on Top Byte Ignore.
-+	  Supported on arm64 CPUs that support Top Byte Ignore and on x86 CPUs
-+	  that support Linear Address Masking.
- 
- 	  Consumes about 1/16th of available memory at kernel start and
- 	  add an overhead of ~20% for dynamic allocations.
-diff --git a/scripts/gdb/linux/kasan.py b/scripts/gdb/linux/kasan.py
-index fca39968d308..4b86202b155f 100644
---- a/scripts/gdb/linux/kasan.py
-+++ b/scripts/gdb/linux/kasan.py
-@@ -7,7 +7,7 @@
- #
- 
- import gdb
--from linux import constants, mm
-+from linux import constants, utils, mm
- from ctypes import c_int64 as s64
- 
- def help():
-@@ -40,7 +40,7 @@ class KasanMemToShadow(gdb.Command):
-         else:
-             help()
-     def kasan_mem_to_shadow(self, addr):
--        if constants.CONFIG_KASAN_SW_TAGS:
-+        if constants.CONFIG_KASAN_SW_TAGS and not utils.is_target_arch('x86'):
-             addr = s64(addr)
-         return (addr >> self.p_ops.KASAN_SHADOW_SCALE_SHIFT) + self.p_ops.KASAN_SHADOW_OFFSET
- 
--- 
-2.50.1
+>  
+>  static __always_inline u64 __is_canonical_address(u64 vaddr, u8 vaddr_bits)
+>  {
 
 
