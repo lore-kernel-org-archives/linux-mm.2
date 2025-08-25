@@ -4,106 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC5E4CA0FE1
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 07:15:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BD0ACA0EED
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 07:31:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 21A2B6B0096; Mon, 25 Aug 2025 03:15:05 -0400 (EDT)
+	id 91AE38E0003; Mon, 25 Aug 2025 03:31:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A3FB6B0099; Mon, 25 Aug 2025 03:15:05 -0400 (EDT)
+	id 8F30B8E0001; Mon, 25 Aug 2025 03:31:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06BAB6B009A; Mon, 25 Aug 2025 03:15:05 -0400 (EDT)
+	id 82FF88E0003; Mon, 25 Aug 2025 03:31:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E4BBE6B0096
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 03:15:04 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 05B7111828F
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 07:15:04 +0000 (UTC)
-X-FDA: 83814418128.11.D2B6006
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 24A841C000A
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 07:15:01 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=kK2qjz9J;
-	spf=pass (imf20.hostedemail.com: domain of usama.anjum@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 715A18E0001
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 03:31:57 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F2EFE1A02E3
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 07:31:56 +0000 (UTC)
+X-FDA: 83814460632.15.F8FF6DB
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf16.hostedemail.com (Postfix) with ESMTP id BDF2E180008
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 07:31:54 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf16.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756106102;
+	s=arc-20220608; t=1756107115;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Bt12uJ3R+VPfoKnsBt+E5M880rvbJ4uyE/4wyV20PgE=;
-	b=YYBfEJMpftPpnl5+b54PfCAqddYhtwaKaS07V8R6A2utF1Y1OF+ki10Kvknf3S8Y3d8JA1
-	5WSOFt9DNy/fZA47s/JYd4L3lr7t3o6jXmBsGIqsaZY2zEnpXTrVwWXLjz1XGC/1yTM67r
-	HX8l0F7tOIsa4MZKpb7wNxbNf2GJVWQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756106102; a=rsa-sha256;
-	cv=none;
-	b=u5g6rwfYHC4nvw5DnFsMEN/jSWvETBtp2kFk2M604LNCDmj65JVMMbTF3KSxeV9mB6Xa1n
-	Ax0UfDgcArd3ySJTLFCe25ii9fBmjAWplu+U3s/t9oBsc9sxdhKo+/IePhGRkan3CZIEXp
-	RFe81Yo3ZuMFA5tHwuiyQZPwFty+7/g=
+	 in-reply-to:in-reply-to:references:references;
+	bh=r50dDkvFDO+w+5+hTwJQC3IZEVejQAJBD9RW2mT+j/0=;
+	b=yAP6prpcScotA1t//ra6zv4fMWth8y7HQfuiyyohwHiNskBVoYqB3AKB4rjcYnsx9wzWpr
+	mlcF+/R03aKgOjcPCCyY3Vw7M3kLxdXFuTwxawzSDNrvaj99t7YmbxLsNGYP8p44O8bHDJ
+	zcR2JBtKv5PKdqniqoA+N1HGIMpa6AQ=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=kK2qjz9J;
-	spf=pass (imf20.hostedemail.com: domain of usama.anjum@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1756106099;
-	bh=eMGy4y29o/Xaojr66YRlL+mqETiAilNKbdnWyHcteLs=;
-	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-	b=kK2qjz9JmVvoqJbD+9Z2wBdusaJYnGDPmASxy0tVLx+dYO/BpufQRmUxwhZILWCGY
-	 XU7mzb/j2AgGn1PT4XVSPU+WLEmogXtQTIhUHJeQTMSGvGOW693yIzmaJ8fLbcQ2Zf
-	 TtLcR1DvxIjOI25VfZOtzLhyh5PbZpRcJmPZA0J5UYkPteGoxeZ11nGAd3eblYsxGn
-	 CDxzTf7MJZlv465pIZzrgFXb+3uRDM3YhN8OyMms1PvrN27kVTFD9rtaPOTLuGQWYG
-	 GHZjSthrN1HEe05yGba1hjLeFocUYqA1NAs9tDD3OFNtWA2AqIzacsZK0dwrzg9e4S
-	 3xOUmfKuPc9oQ==
-Received: from [192.168.100.175] (unknown [103.151.43.82])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: usama.anjum)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 08E4B17E110D;
-	Mon, 25 Aug 2025 09:14:53 +0200 (CEST)
-Message-ID: <a3928ec4-8c2f-4f04-bab4-9ef5c87c57de@collabora.com>
-Date: Mon, 25 Aug 2025 12:14:52 +0500
+	imf16.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf16.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756107115; a=rsa-sha256;
+	cv=none;
+	b=RpTzss1+YWO2ZQ4+QK1UocnK0Hhvsg+OzWGex/bJ1u+6+glhAYAGDP/rKzUGigKz7xjZKR
+	QP88mLAglz3a8O6aa+Zs8B41eLD0+tlK0SiSgVygnrAu1+RJEDsVv7+SmzsqjmvL14TjVw
+	ZiQD+ccypluqUe/uh9wOeBPZSDvQpIA=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 601921D70;
+	Mon, 25 Aug 2025 00:31:45 -0700 (PDT)
+Received: from [10.57.89.148] (unknown [10.57.89.148])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 366D23F738;
+	Mon, 25 Aug 2025 00:31:47 -0700 (PDT)
+Message-ID: <8e4e5648-9b70-4257-92c5-14c60928e240@arm.com>
+Date: Mon, 25 Aug 2025 09:31:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: usama.anjum@collabora.com, Shuah Khan <shuah@kernel.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Leon Romanovsky <leon@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, kevin.brodsky@arm.com, kernel@collabora.com
-Subject: Re: [PATCH v3 0/8] selftests/mm: Add compiler flags and fix found
- warnings
-To: Andrew Morton <akpm@linux-foundation.org>
-References: <20250822082145.4145617-1-usama.anjum@collabora.com>
- <20250822174259.bf4ed76a0da7d0d6f80ba2c1@linux-foundation.org>
-Content-Language: en-US
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
-In-Reply-To: <20250822174259.bf4ed76a0da7d0d6f80ba2c1@linux-foundation.org>
+Subject: Re: [RFC PATCH v5 00/18] pkeys-based page table hardening
+To: Yang Shi <yang@os.amperecomputing.com>, linux-hardening@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Andy Lutomirski <luto@kernel.org>, Catalin Marinas
+ <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, Ira Weiny <ira.weiny@intel.com>,
+ Jann Horn <jannh@google.com>, Jeff Xu <jeffxu@chromium.org>,
+ Joey Gouly <joey.gouly@arm.com>, Kees Cook <kees@kernel.org>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Marc Zyngier <maz@kernel.org>,
+ Mark Brown <broonie@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Maxwell Bland <mbland@motorola.com>, "Mike Rapoport (IBM)"
+ <rppt@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Pierre Langlois <pierre.langlois@arm.com>,
+ Quentin Perret <qperret@google.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, x86@kernel.org
+References: <20250815085512.2182322-1-kevin.brodsky@arm.com>
+ <98c9689f-157b-4fbb-b1b4-15e5a68e2d32@os.amperecomputing.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <98c9689f-157b-4fbb-b1b4-15e5a68e2d32@os.amperecomputing.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 24A841C000A
-X-Stat-Signature: 3z9h9etrw96z6zkboqhw6udcfhauwcan
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: BDF2E180008
+X-Stat-Signature: ynsm7pju6jebbszkiprgq66aiwzw4dwt
 X-Rspam-User: 
-X-HE-Tag: 1756106101-850199
-X-HE-Meta: U2FsdGVkX18H45A0tawYhaswQJpY4Ypb3mEMNxGpcEeLhYfQBeXBTq2+wxSWZ5wZvyvtD67Z+/sU5NNuoLgH+bASCn14ZOwEWDkk2jeb6vyUN1tgnFLIyD+rYIIjkOd2BATOrYol4e1eHkgO7stPcr0ZViXKHOEdjBhi+6H3rVcp0BcgDmf7HQwYQQ14vpCnZiAumdQdL6dZpoS1LfbqdXgaOJYcoZ0xfm0vwYPYcv0J5wEOhxDoJHJRH6HIrEc1J1maO5mhmX1iDGMwxalq/EEBpmUsOejTTqqrIWI8NSa9u6gSeJ2uiYRx7zvQWsCDe5vK6e1HUEraeY+BJx1uKeo1V74HAWSK0Vvc2/brL7k0Oh7SuCXu4LYdG9X3NopWzidNc51Vzirr5T4T08rRsLBO0eFi/bnozCz/B0Cl66va8M2Q03JiK8ZxXWlXIDXjdrQZ98ElSdj8ZrNdhw2Ln5vf0AOQ02PuR13TUxAXWOYdbYrxPeR3H6tYQQl0jXpX0AqYVkrVqNgDiND9rrWYSHFZpJu6l+dtphL6RlUEnPOO2BfyNbUsD0OMvwTlkjyWXzHVgNyJCJfRJymVuQIslWzbCTBBa59yVo37neaF9gxQwCLziDnuL3QDg04yxlnIvZemwJf105POsizUAoCLiX3ft7lw7Rpf4RaIeZkkKs24G1nli1FGTykzNOhUtltnLnO8ljcH4K9SMcrxeqUg4vYBtPQhtsYx7WExrW38HYA6TSNQBsOOT8Qlh1ma/g3aercM5HwSotrmf270TpPSpALgFtU4U+FnofLOnSIoyvH94ht5UHjo+g8CPlPrTM2TL7z15BjTIF9yqqZhQqJWVtnRuOPd3iS4WWtyqFvmS7OossquMnePP5KrRsC6k+IeHw2qcE0CDpfKH56hjlVXBYs6JcpnT/jYJZ0QSmNRR3+5lw/hRWcOGjsWXMAdgzUMVuXBzyJ6EutR15IxTVd
- zCASKFsB
- P11TEfhJFlEyIOR+W/Y7Fl0WXOQ4fMzw7ybYBdXomZqgvGI3ibBzVf673k80uewb3aqiM7fyq/gGGW0vOwQfpxVMhb8qDgid7e2egLLZESzCvAoMKaz6OW951hha5Bn+uEVan1s2lgIgJguuUQ0VYcmWvhzDjwQZM/gVQbcBCwS+Gz0dPxhmYu8tPLtZAdiewNsSM1xf5Fk7b47qQARe7WmIydpb9cTwN/NcBCeOmIoiqCPv6riUfrpaeHwM8TlGZ3Ml4h7ePyA3gUOLHsULJOTg8UPR2rEjU0N09HNco0pFnRfdMMXUvkJWkP4InT5WWKlpzfbHK4yC25weB+cF5Eu/FAhyrIvGSet3VOFBKPMv54HQ0MDJwfNYp2g==
+X-HE-Tag: 1756107114-398542
+X-HE-Meta: U2FsdGVkX19QZYSeZxfy4jE+rNkmPTDoiqis086FvmpNtwetUqTrRr+lecgDzNw6XG6TdMkytcsOAWhP7xlXJUsele1H8fHbiK4G5LkHrILQjQwMi/Cb19BDGZHBUUFlRGZ360Ag7GmgYfG7Y5yIcuW/u7t79qwZw5MyOaLgzWbGXjjCxX55DgdZ7JX2zDe31FH/NhGLmF1fWH0MgtErO6NPKLl91RzSUBlbz+vupqDKJWGYjhwWKmGZuSFp8RlJqeNtE7iDbfK1atGIVm2ULhf6QKTMHVs5MbssuW1Yj8LovwQEIX4onwDFYNH1um5/HTEhaGxHqlZzXyfulwTvUeCB7j1bqeJ57uTjOycqgH9zC2FsWcWA0D5KeubxDkCQBl3+yEcbp4kwQJMzFfD7uz4ux90rhPyq5kdx4ANc+JiPJEHOxoa8Ak61qDl6xrRpbtn0Jd9Pd/hhBJS4ZFCR1Z4ze2e/IWUsuwjB9kOsyOJGl/rU0YV3SkTxV9QBIS/erJ/PBlY0Y5R9OD/LFtitIaPYWKkJJ3pSCw5jhLfYRPn5ZpnMyNL8OvVBlJoDbFA3HBi9cLhfiiXodPaUQsxyfHqr/2Rq+veSYiFp++qsq52OFByoJ/KpmCOQ4DNAWS68FV0p1Yfg0kGxQWbYmI8LJhDHz1jJgYll7wwEzLxK/QP1QLYoG6j/20Le7LJAGMMmHbo91ufp0Kx7DZLScW/RwUD9F5m8rvIZeRTh3Q8tQHyGLkLzQkXgLzfOaT8uRdAxT2RE1IllSUY/r1YHL3ndoWI0oxtukxx6sEOTZQDq07FkQMsIvAa56KHCfaemAma/tn1GK+TvDwuz1sLlg3zN/S3YWbk2NezEbMrj5QqO4MtFRi+iBuRtrh/ZvCNNlNkZ4w2VekpxMU/mImbNle8dv9Gv3eQy5HuDME5aNm8XP18NSStTo8BF1Fj7Wch6BSt4eMB/JoH1CULJIXai9df
+ eLlfA81x
+ gO8d0dN9zlhAWkg5nz9R2wN3YxtjMBftaPYe6ZADqP9WxJRHflSnmwcF81R7edO3r+sWn80PTlsTPpz8kdgAyu71ors1iFTEVS8wrcC9MsCwrOLWDVfClEf+0zDmG9Iv47Z2/O2My9h7k9T0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,47 +101,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/23/25 5:42 AM, Andrew Morton wrote:
-> On Fri, 22 Aug 2025 13:20:57 +0500 Muhammad Usama Anjum <usama.anjum@collabora.com> wrote:
-> 
->> Recently, I reviewed a patch on the mm/kselftest mailing list about a
->> test which had obvious type mismatch fix in it. It was strange why that
->> wasn't caught during development and when patch was accepted. This led
->> me to discover that those extra compiler options to catch these warnings
->> aren't being used. When I added them, I found tens of warnings in just
->> mm suite.
+On 21/08/2025 19:29, Yang Shi wrote:
+> Hi Kevin,
+>
+> On 8/15/25 1:54 AM, Kevin Brodsky wrote:
+>> This is a proposal to leverage protection keys (pkeys) to harden
+>> critical kernel data, by making it mostly read-only. The series includes
+>> a simple framework called "kpkeys" to manipulate pkeys for in-kernel
+>> use,
+>> as well as a page table hardening feature based on that framework,
+>> "kpkeys_hardened_pgtables". Both are implemented on arm64 as a proof of
+>> concept, but they are designed to be compatible with any architecture
+>> that supports pkeys.
+>
+> [...]
+>
 >>
->> In this series, I'm adding these flags and fixing those warnings. In the
->> last try several months ago [1], I'd patches for individual tests. I've
->> made patches better by grouping the same type of fixes together. Hence
->> there is no changelog for individual patches.
-> 
-> I think it would be best to avoid adding warnings to selftests which
-> aren't present in the main kernel code.  If only to avoid surprising
-> people over what isn't permissible in selftests/.
-> 
-> In particular, there's an expectation that we can do
-> 
-> #else
-> static inline int some_stub(type1 arg1, type2 arg2)
-> {
-> }
-> #endif
-> 
-> without warning.  We do this extensively.
+>> Note: the performance impact of set_memory_pkey() is likely to be
+>> relatively low on arm64 because the linear mapping uses PTE-level
+>> descriptors only. This means that set_memory_pkey() simply changes the
+>> attributes of some PTE descriptors. However, some systems may be able to
+>> use higher-level descriptors in the future [5], meaning that
+>> set_memory_pkey() may have to split mappings. Allocating page tables
+>
+> I'm supposed the page table hardening feature will be opt-in due to
+> its overhead? If so I think you can just keep kernel linear mapping
+> using PTE, just like debug page alloc.
 
-I'm only adding -Wunreachable-code -Wunused flags now. The above shouldn't
-cause any warnings. I'll double check again in next series.
+Indeed, I don't expect it to be turned on by default (in defconfig). If
+the overhead proves too large when block mappings are used, it seems
+reasonable to force PTE mappings when kpkeys_hardened_pgtables is enabled.
 
-> 
-> Also, please be aware that there's already a patch in mm-new which
-> centralizes selftests' __maybe_unused definition.
-> https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-centralise-maybe-unused-definition-in-kselftesth.patch
-I'll rebase on top of it and send again.
+>
+>> from a contiguous cache of pages could help minimise the overhead, as
+>> proposed for x86 in [1].
+>
+> I'm a little bit confused about how this can work. The contiguous
+> cache of pages should be some large page, for example, 2M. But the
+> page table pages allocated from the cache may have different
+> permissions if I understand correctly. The default permission is RO,
+> but some of them may become R/W at sometime, for example, when calling
+> set_pte_at(). You still need to split the linear mapping, right?
 
+When such a helper is called, *all* PTPs become writeable - there is no
+per-PTP permission switching.
 
--- 
----
-Thanks,
-Usama
+PTPs remain mapped RW (i.e. the base permissions set at the PTE level
+are RW). With this series, they are also all mapped with the same pkey
+(1). By default, the pkey register is configured so that pkey 1 provides
+RO access. The net result is that PTPs are RO by default, since the pkey
+restricts the effective permissions.
+
+When calling e.g. set_pte(), the pkey register is modified to enable RW
+access to pkey 1, making it possible to write to any PTP. Its value is
+restored when the function exit so that PTPs are once again RO.
+
+- Kevin
 
