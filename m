@@ -4,177 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 782F9CA0FE7
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 16:04:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED3FDCA0EFA
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 16:10:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3F8F8E004A; Mon, 25 Aug 2025 12:04:50 -0400 (EDT)
+	id 287D48E004B; Mon, 25 Aug 2025 12:10:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF6738E0038; Mon, 25 Aug 2025 12:04:50 -0400 (EDT)
+	id 25FA08E0038; Mon, 25 Aug 2025 12:10:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB8C68E004A; Mon, 25 Aug 2025 12:04:50 -0400 (EDT)
+	id 175098E004B; Mon, 25 Aug 2025 12:10:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 93DA28E0038
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:04:50 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4BAA3590BF
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:04:50 +0000 (UTC)
-X-FDA: 83815753140.06.2627B88
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf08.hostedemail.com (Postfix) with ESMTP id D756416000D
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:04:47 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bfY4MSXo;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf08.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756137888; a=rsa-sha256;
-	cv=none;
-	b=CdQJ0hEr1E+hsqYryBpjfF/YSF35lywpHuMI+xwF7bJrCyIB0Eq016YHTVi/V8zL4OqLW3
-	IQN4NLT5X6Zw1eTGhKsOM8N3Gh8ivFQxMOalagO4RAhtiYDTnh7EfnxlfffJBASy6AJaCm
-	KgkDQ4hLJ44GFZJOBTbbVhF/BzexaHg=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bfY4MSXo;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf08.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 011C68E0038
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:10:08 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7F44D1DDB4B
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:10:08 +0000 (UTC)
+X-FDA: 83815766496.09.FBC4819
+Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 266B3180012
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:10:02 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=hpe.com header.s=pps0720 header.b=BZv7aZNE;
+	spf=pass (imf06.hostedemail.com: domain of kyle.meyer@hpe.com designates 148.163.143.35 as permitted sender) smtp.mailfrom=kyle.meyer@hpe.com;
+	dmarc=pass (policy=reject) header.from=hpe.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756137888;
+	s=arc-20220608; t=1756138203;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6MyZ3OtNfCvOIDwHkcmUtPUBmP76mzb4s7J5R7w3h4k=;
-	b=z9/W13t6qWn4EC3GkDEg3UvCFMtRvRswomQhU8kroFOX9X9wKpC5d+r0sqBZG8ygQGTSCb
-	IInHJOaRTTS6wumFWYYZ8J1u6I61HcfyEAOc+F1Q8vmU/oSQklS7j/GqUUqn+s1gWW+iYS
-	OETb3Pl5j4jzVJSfqReIM0fqytiXtkQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756137887;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=6MyZ3OtNfCvOIDwHkcmUtPUBmP76mzb4s7J5R7w3h4k=;
-	b=bfY4MSXoXTHGSTt0iTHWGNxguI/BH+OGgMc28H7/prH7Ul9+gq0Aw9U2gmyCPOeL4T4N3K
-	K1lWrqA9FcPAAYb6yNtuLfsAGC1mu2nwDelQ4FTgFZcXu//4nss9/y2sPSt8qKztHjpXPI
-	J+29ZvtM94MzC8+7x72nxu7KR+Qe6Cc=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-138-3xC0FeEcMLuo6VY5XJCmaw-1; Mon, 25 Aug 2025 12:04:43 -0400
-X-MC-Unique: 3xC0FeEcMLuo6VY5XJCmaw-1
-X-Mimecast-MFC-AGG-ID: 3xC0FeEcMLuo6VY5XJCmaw_1756137882
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3cabe21a5a5so145386f8f.0
-        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 09:04:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756137882; x=1756742682;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6MyZ3OtNfCvOIDwHkcmUtPUBmP76mzb4s7J5R7w3h4k=;
-        b=Rlpu5P6+OXP+rTonEhGqvGht4GKRQOcSAARFeSiXsjxXQwcnKLMaAjsBwxO7B3WPED
-         5HRVhIAyff9wGBIdij/q97T4DB229psrLUW8Nx55Ui1IOD9Cag088+t/eO0k1QUB/5/J
-         HgtJ3tYgrDKlEP9a6PlVSwE9BzFbNlagfmjRIxivdEPq5G5kqf5XZOgMxpfZIPPxFliR
-         +W7zoIVwW//tuAoqLLsx2dbsVuiBd43HcwyAi6od+2DzU8CzkuO8bOhTRUTGkOTLQD2n
-         GPxPn78PdKJYdQrjGT7Ong8xt7WGtZZRFHJEtFYFjTrK3Rgenm7bcahBkQrJPS/IBJy+
-         8AGg==
-X-Gm-Message-State: AOJu0YzoLgopHlAGjY5VYaxm5F0LOGRgyGPKDHk6LA8MU1GRUceSoH2V
-	w9VS33mAZXXH571H9onsUO4iIwekuQUqKGaA4N2KXWsFu5kxtSaCgUMbWNjI0ePSkiNYW8htNJf
-	YTjzD4RD87IIZ4KRAjZWUeZ9qf8tD3PNxWayZ/Y3Es/utNAPJ8qC1
-X-Gm-Gg: ASbGncvMMAtFmYzKgeAA4dp+oBJPtG8+uA0C1VMhW/1Om742hebjJg2/AvDQWCFbGCc
-	f9xT4NbixMS+DRyEL0XW7BMX1wRpBqGql9c94I4yfhM3dtwOZtoUVMnpvjWx6PcRfhpquW6XTZv
-	NxZnGWyFbudHfswkhp7r1ClGI4LVvMkxxKGYGWfAoQe1hzGmbt8IxTKgNBydFX6r5dR0k8jZiCZ
-	VBZoqH+kF1f5x5flPej3PfP/B4dpXEk0Je29U18x4/NGn3eilz0t9k+LzXd6/dY75rZXaxpm+j4
-	9Ko+WSIMk3j41zqorO6TB4eKa1YLk8sHrKKTf833bOkwuELi4n0ZuxxyveTUBELKXIgsusElT4O
-	HZZKNu5OCMHelaFbcZt1qg7K2mQgtyw/X8X6Mz5S0/zs3ZsHRPIQ+aKP8HrYeZNqoMD4=
-X-Received: by 2002:a05:6000:4021:b0:3b7:9d87:9808 with SMTP id ffacd0b85a97d-3cb04248189mr84060f8f.15.1756137881639;
-        Mon, 25 Aug 2025 09:04:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGP2kHBp04DrmSVsxC1Pmyfq33GFQ537iiA7ViWhutMa83yN8mVo2ShcNNYVc3OSQ+D26O32Q==
-X-Received: by 2002:a05:6000:4021:b0:3b7:9d87:9808 with SMTP id ffacd0b85a97d-3cb04248189mr84016f8f.15.1756137881091;
-        Mon, 25 Aug 2025 09:04:41 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f4f:1300:42f1:98e5:ddf8:3a76? (p200300d82f4f130042f198e5ddf83a76.dip0.t-ipconnect.de. [2003:d8:2f4f:1300:42f1:98e5:ddf8:3a76])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b60ab957bsm42578115e9.12.2025.08.25.09.04.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Aug 2025 09:04:40 -0700 (PDT)
-Message-ID: <4193fe50-dddb-495a-bc8f-e86c5e98fb1a@redhat.com>
-Date: Mon, 25 Aug 2025 18:04:39 +0200
+	bh=sQH2klu1q9w/NyJjrasqKq1tGmDd3ucFuLZtG1LKn80=;
+	b=Nr34KPy22T/drqpCWyTU3hwLBKWpby6pXS/rhILGMLarPp+LQJzpf858rIGP+4DEJIIe24
+	6aTKDIbRGKYcpysOFgC6BQWUTtoahcR2ABE5PN9CgKIxSw2uMcGP7XBdvxXq3o3TZAoCRp
+	Tx/0yicYTSLxkVtj2ia4MIg32n+N7cU=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=hpe.com header.s=pps0720 header.b=BZv7aZNE;
+	spf=pass (imf06.hostedemail.com: domain of kyle.meyer@hpe.com designates 148.163.143.35 as permitted sender) smtp.mailfrom=kyle.meyer@hpe.com;
+	dmarc=pass (policy=reject) header.from=hpe.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756138203; a=rsa-sha256;
+	cv=none;
+	b=adVsXZ3CdfMHU5s012Lvp+cBctlO2npu9kEeuSgVbhOx/cwX2Tr6BBQSDKmshPlG3YriEX
+	twE8xrG02r5k9F3NUMKPltK496WTolq9r22D2+qTBrAE6HgivFZmkxSg7MMoLgyV3hM2hx
+	as0+4nAJm30GW6uqJGeyvXpeG8FE+ao=
+Received: from pps.filterd (m0134425.ppops.net [127.0.0.1])
+	by mx0b-002e3701.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57PCNc4l029977;
+	Mon, 25 Aug 2025 16:09:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pps0720; bh=sQ
+	H2klu1q9w/NyJjrasqKq1tGmDd3ucFuLZtG1LKn80=; b=BZv7aZNECNBSQkdGA2
+	8twBMjCYGOwkxdSEOXhC1z9DwHwoNNt1eQIq97g8jtcPYLT0e4pRleKzYd4qRlNE
+	e5sSQTAOlZqZ7TgRYFJnpqbLO63L23IQ4pZxqF96n0kAsPit9+6Q7Iuqb2+mAHBo
+	7aSZn0pRR+1KLabMU+vsqPC/DLUH+aClU0hEvSkluWwqm28t0luI99KzkaS5D6RT
+	JrJUiJkfR1LTIDbArRsP93f6yRX5CPDFoy1vS7OFFCXyUfkjR6Y5/jClcq+KYayS
+	0hObwpsGkO1tBZgOkG4uI+Vb57PNOGz5uezsDgv8x9MC2rTvyEAZUMm+TxO/dr0h
+	kJiQ==
+Received: from p1lg14879.it.hpe.com ([16.230.97.200])
+	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 48q6xvq0wc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Aug 2025 16:09:15 +0000 (GMT)
+Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by p1lg14879.it.hpe.com (Postfix) with ESMTPS id 07E97130D5;
+	Mon, 25 Aug 2025 16:09:13 +0000 (UTC)
+Received: from HPE-5CG20646DK.localdomain (unknown [16.231.227.36])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTPS id 10E16801616;
+	Mon, 25 Aug 2025 16:09:10 +0000 (UTC)
+Date: Mon, 25 Aug 2025 11:09:06 -0500
+From: Kyle Meyer <kyle.meyer@hpe.com>
+To: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Jiaqi Yan <jiaqiyan@google.com>, akpm@linux-foundation.org,
+        david@redhat.com, tony.luck@intel.com, bp@alien8.de,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-edac@vger.kernel.org, lorenzo.stoakes@oracle.com,
+        Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+        surenb@google.com, mhocko@suse.com, nao.horiguchi@gmail.com,
+        jane.chu@oracle.com, osalvador@suse.de
+Subject: Re: [PATCH] mm/memory-failure: Do not call action_result() on
+ already poisoned pages
+Message-ID: <aKyKort2opfQYqgA@hpe.com>
+References: <20250821164445.14467-1-kyle.meyer@hpe.com>
+ <CACw3F53KmKRJyH+ajicyDUgGbPZT=U3VE4n+Jt3E62BxEiiCGA@mail.gmail.com>
+ <aKd1K3ueTacGTf1W@hpe.com>
+ <CACw3F527M-x=UeB0tN_sjCgp_YP_8yLkVRCLP2dLO2bzXrqWsA@mail.gmail.com>
+ <14a0dd45-388d-7a32-5ee5-44e60277271a@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/gup: Drain batched mlock folio processing before
- attempting migration
-To: Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Keir Fraser <keirf@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, Frederick Mayle <fmayle@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
- Rik van Riel <riel@surriel.com>, Vlastimil Babka <vbabka@suse.cz>,
- Ge Yang <yangge1116@126.com>
-References: <20250815101858.24352-1-will@kernel.org>
- <c5bac539-fd8a-4db7-c21c-cd3e457eee91@google.com>
- <aKMrOHYbTtDhOP6O@willie-the-truck> <aKM5S4oQYmRIbT3j@willie-the-truck>
- <9e7d31b9-1eaf-4599-ce42-b80c0c4bb25d@google.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <9e7d31b9-1eaf-4599-ce42-b80c0c4bb25d@google.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 2eOea94AoFSWmR2GglbJk7cJaS-RJcHfzNatAWMzusk_1756137882
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <14a0dd45-388d-7a32-5ee5-44e60277271a@huawei.com>
+X-Proofpoint-GUID: eAojbwjnBFsxwDzG-eJQqJ_iiTYjmQP3
+X-Authority-Analysis: v=2.4 cv=ArTu3P9P c=1 sm=1 tr=0 ts=68ac8aab cx=c_pps
+ a=5jkVtQsCUlC8zk5UhkBgHg==:117 a=5jkVtQsCUlC8zk5UhkBgHg==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=MvuuwTCpAAAA:8 a=ERPcR_hKxm5yt4fehIQA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODI1MDE0NSBTYWx0ZWRfX3Fhlj65ssQQh
+ iBxTfpOt7lv+4AFi8G63U53mKaWeYuCR6wPS6FvOcefIDLVr6N6IWqxUH+wGfyIm1PIUsrBVcZD
+ xqIlK2/HnzT/9/+QzwmaZX2UeC+gfWVsThm2oqmBQaxefjXFfKvAR97DhQmATQIAX/vEV2WZiIF
+ RqYr7Mb8Bz6xh1Ih/+HSos4C+lb/V3zaCiNOUp4ZVnbV+svX60RFioRGpOHMOXp/v2Rslx0nTiz
+ 4Wp9M7oU0f0yaGLDMF/d9hcjqWI8vCWFTBQ+J+u9SVw6kDP4Ut2cFD9R4QnRBfnkUBcHyg9Wg7Y
+ 6s3brve84JhuX92h9sU5l/FES2uNn7KPFCqzzIGHB0qiBKLYxiFTRDPTkc1lR3nVrmGbpQbmdqO
+ wQDgsmx0WHl/S4Owq8wLdwT4udB7hZSv28AaEyOA62CgztPuyFyIuPqdvbzV0MS8pA/gjsQo
+X-Proofpoint-ORIG-GUID: eAojbwjnBFsxwDzG-eJQqJ_iiTYjmQP3
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-25_07,2025-08-20_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 mlxscore=0 mlxlogscore=999 suspectscore=0 clxscore=1015
+ priorityscore=1501 bulkscore=0 adultscore=0 phishscore=0 spamscore=0
+ lowpriorityscore=0 impostorscore=0 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508250145
+X-Rspamd-Queue-Id: 266B3180012
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D756416000D
-X-Stat-Signature: iki8ndk38x8zcn8xtkc5jbwgwqzecho9
-X-HE-Tag: 1756137887-475471
-X-HE-Meta: U2FsdGVkX19s2nBVvhZqHnvtZvHu+EQDhUp2FOhs1IL+LWdeOoz4RWLkEOsdOSe17Ja9QWfaeZwJ4MqNOV49IQBNCzoTuGkBgXy4V5u0XC4fA2toxASy18MYfnYXqw156i3b3ktMdfRgfCbL69Oo/SRA+X8Oe0Fa+xN/aAZsqxpH1XMTyCz2e/f+bJZofo7MSYZ0RAi0/lESps+cdD/CLaf7cUqJeaGdcjtAgYJ2jymaTPELkK4koQq4RE3KWqOp9CORZS3VnDVQqOONmh7tLopIbFBsXH0NRKr2U/DXeo13bE3N6JksDPnDEKAQWtGsWmMVu7i79NpTb6BLNlFJpAAFXg+73L6zK7nvcOgiwM/qocTxyFFQ2TWVS1WywXJs3InbCpZd5m4/rXkAqNUN2kzXmD2h5bnDeXEfrZtap1KLjD8pSM8SXDUPwM5Yt1ZVFAYDHr3P7aoH26gcOomBeHe+g/xWKkrFDhhHfXPpPmvk3dBIJznD0ii02hGUrng3kosENP8SnVSdsboilZMbcEb3StIsB9SoWWWahuzDTezikWMWKKk50hplGKaMFZzJEm4kDXLcGJJCDNgnOF3F2UDpMHtMLJXYrSiG1Z2g29WMIxtqWEE2ILTyIlaEFR43cuY0XdapECIV1+eBo9pGF9o7r7e6Hnri0UM9dgJSe55FWgP0vTQ6sY1jiDr07Ey4BH1luqIIyXG51dtcJ9TMYpPGwHRsZcb3tU790Txrv4E40JCJHZ7n4qt8CCkypLAINghrRkXf2lfdDWilYgjLRwFMhlrfYogak7Ep8SL1tbR2KtX+ft6tgZVDoc4RYPKAUa+hZmZ/BmsPUEPPhOCkuqwf/kH02BZ8/O6jk3g3zbu/u67Qr62Z5QqFj941biZQRDKMsmhOTunRKcHfZ9P9M1p5Lgl3iYhizp+CCzIMO5dDk2REdWhSoEBrFuDDVLsYQBi+m165sC4+m3nksIL
- QFLVs+mE
- gEkknWV+grFo8aS0qRzaZpKgoScegY2RdUWCSsi+Q4haDqWtAf5knUDKI5s9hVO7VNyTy2u2V8c6xfVLK3KhS7Y6SLcGLTz3l5U70mpLPkqs01427VAn/nakIZ7zISS7FFlNPK3iaQmUMENLYvK0ZzR2xfRjXWdxcVuFBszeNQyG5wPhb1Sqe8erwt2eMFKvlpL+3f1sPHPb1JYY8Fj0Kh9Cmwj9NBa6kwcANSXp63uSHl87GfOUVKmJTnGp9mOt6hBilfBWwoOLPoqmBH0ZNQN6LNtuPYg3R6wW0Mi9/Y5xyv6IGOBUEY4fTZ3X3V4Kvzl69T1E7rXS5ruVTwSFNGck3OaLnzJpvmg3CCOv9v16F1NAujMsDn0Bmc25GESFNmNZi9AjsPoEr1UT5Q9a4DtUnuNOey5lHsRWaf5a/d1oJmlHwXrXEzyJufg==
+X-Stat-Signature: pyce19sx7bjnf7h3jy97fobfg1tn4xac
+X-HE-Tag: 1756138202-852954
+X-HE-Meta: U2FsdGVkX1/PZODywPlP5ooXDrHeh70/iqrxwY9wErEney77aW8l9tAgy5kzv9oxEsXlrR272CmoSh2XLltAteQvM00g7jfnlaRQq3lA0O384bT7sCzbPuZjhOb5R1dvLKJz2dJK0//BkObdNqanTVQdk+qwjqBCaTJALHbT4I8AMDcl5hGWCu6bO3WciGG4xUr25+wGUzEgs5iqO0gIFgqrfexAIUkmCkmJjW3EuU7H0a7J8j8504KMbTLAa9zp75PBsNftz6XD20B5YVB1B6ZMkGOFTtLjL9ObHJ/4sP9A3q2fABpzFXx6nGXe1OhjDs29mqnXJqTZURE1DO+bZQKDP4dKM18vJ3BjJRtFL2oCCIJOfdjdZY/mg2rAibPUF8q2XJyHTHk97Y150w0NBPONBx8JkrO64DSbqKWlRWD1ILnVqQZKsvxK+LV1YiBSTVNnbOhldAuMocqJ66xW8Mw+6VgCxs7fBQ/XV/upg12tsIDlgbNYKOKj9SzUJxEZTpBqgvAqzXmPZEg2af4woaCapmM6JhMYdE8pi23Ca27A/ujy+Vk1+a1zVKFxhmrHpanyVwBzWyowXAHbQvo3uQ7JLY/J5MgYjL+NGv1x9mvgGLAE0cIdBd28OwQqrQU0ZpIHYtZN8ZDgguIyIF6clqVE9MSSeXV75tJTkrs4q0NQ/OTh0aZsgRZSSlpn7snE4vdMBblDDCKt9xDVXXyCcKbmXN0OeVhkK3ItNgbLgbHvfzYLSA/r3U9dePafT9Wy4ex3wmtaz3QZBVULhkr67ydD+T0Owt04nBcfY4/3osIWKuBu1rtux2jxwG3euKgxYVaQgFnn7PZSnv+m5yHMMhGV60hbyaJ00CcFQt1p9rVbeF1auoGZegJZlDFJeK2k3m99592bWk+V1Yu7k+AVUQDb+yDM38MrVCbhHSktdn42F3Qpk7az2CKCLzLTVGwCiLzPA32QFLc3TGK6h0K
+ IuMtzBHm
+ eDDS/3dBPixigAr1PzuG0MSem/iSbP0jIMlUgBVReVOoykT4JWbD3faxlDU6GpOn7uzV/hjMTLdbaxKSeMNmjCGfsvFCzZMdE+95uYX7DfQK4la7+flcb9KlwRcQ22t+GDh/j4Sr5G7o6ZDH3K0QZ1hAEVAHAsZ/aR7nJSi9bK1i8aqjoo8DhiT7RKDJ4K4nLYH9BlLa1l/PuPyoW2CSb0c0wKvE4fPI+NUfycmkgCq1uhonX+CAKOKuUs+0p68UPCGM5yp1PVJ/UNM6zYUPBd+zCrIFapwflGXew/AW/DzOydPz136nI0yszR7R5PoS7+CLkAmJcTEBuGwCMUY6ILunVAVibUJiEJhb7bBb6DjgY7iQrsSxikCn0eYEiWSVdBM/vT0p48NSSZe6i1aLZIKjOgw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -183,65 +140,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 25.08.25 03:25, Hugh Dickins wrote:
-> On Mon, 18 Aug 2025, Will Deacon wrote:
->> On Mon, Aug 18, 2025 at 02:31:42PM +0100, Will Deacon wrote:
->>> On Fri, Aug 15, 2025 at 09:14:48PM -0700, Hugh Dickins wrote:
->>>> I think replace the folio_test_mlocked(folio) part of it by
->>>> (folio_test_mlocked(folio) && !folio_test_unevictable(folio)).
->>>> That should reduce the extra calls to a much more reasonable
->>>> number, while still solving your issue.
->>>
->>> Alas, I fear that the folio may be unevictable by this point (which
->>> seems to coincide with the readahead fault adding it to the LRU above)
->>> but I can try it out.
->>
->> I gave this a spin but I still see failures with this change.
+On Mon, Aug 25, 2025 at 11:04:43AM +0800, Miaohe Lin wrote:
+> On 2025/8/22 8:24, Jiaqi Yan wrote:
+> > On Thu, Aug 21, 2025 at 12:36 PM Kyle Meyer <kyle.meyer@hpe.com> wrote:
+> >>
+> >> On Thu, Aug 21, 2025 at 11:23:48AM -0700, Jiaqi Yan wrote:
+> >>> On Thu, Aug 21, 2025 at 9:46 AM Kyle Meyer <kyle.meyer@hpe.com> wrote:
+> >>>>
+> >>>> Calling action_result() on already poisoned pages causes issues:
+> >>>>
+> >>>> * The amount of hardware corrupted memory is incorrectly incremented.
+> >>>> * NUMA node memory failure statistics are incorrectly updated.
+> >>>> * Redundant "already poisoned" messages are printed.
+> >>>
+> >>> All agreed.
+> >>>
+> >>>>
+> >>>> Do not call action_result() on already poisoned pages and drop unused
+> >>>> MF_MSG_ALREADY_POISONED.
+> >>>
+> >>> Hi Kyle,
+> >>>
+> >>> Patch looks great to me, just one thought...
 > 
-> Many thanks, Will, for the precisely relevant traces (in which,
-> by the way, mapcount=0 really means _mapcount=0 hence mapcount=1).
+> Thanks both.
 > 
-> Yes, those do indeed illustrate a case which my suggested
-> (folio_test_mlocked(folio) && !folio_test_unevictable(folio))
-> failed to cover.  Very helpful to have an example of that.
+> >>>
+> >>> Alternatively, have you thought about keeping MF_MSG_ALREADY_POISONED
+> >>> but changing action_result for MF_MSG_ALREADY_POISONED?
+> >>> - don't num_poisoned_pages_inc(pfn)
+> >>> - don't update_per_node_mf_stats(pfn, result)
+> >>> - still pr_err("%#lx: recovery action for %s: %s\n", ...)
+> >>> - meanwhile remove "pr_err("%#lx: already hardware poisoned\n", pfn)"
+> >>> in memory_failure and try_memory_failure_hugetlb
+> >>
+> >> I did consider that approach but I was concerned about passing
+> >> MF_MSG_ALREADY_POISONED to action_result() with MF_FAILED. The message is a
+> >> bit misleading.
+> > 
+> > Based on my reading the documentation for MF_* in static const char
+> > *action_name[]...
+> > 
+> > Yeah, for file mapped pages, kernel may not have hole-punched or
+> > truncated it from the file mapping (shmem and hugetlbfs for example)
+> > but that still considered as MF_RECOVERED, so touching a page with
+> > HWPoison flag doesn't mean that page was failed to be recovered
+> > previously.
+> > 
+> > For pages intended to be taken out of the buddy system, touching a
+> > page with HWPoison flag does imply it isn't isolated and hence
+> > MF_FAILED.
 > 
-> And many thanks, David, for your reminder of commit 33dfe9204f29
-> ("mm/gup: clear the LRU flag of a page before adding to LRU batch").
+> There should be other cases that memory_failure failed to isolate the
+> hwpoisoned pages at first time due to various reasons.
 > 
-> Yes, I strongly agree with your suggestion that the mlock batch
-> be brought into line with its change to the ordinary LRU batches,
-> and agree that doing so will be likely to solve Will's issue
-> (and similar cases elsewhere, without needing to modify them).
+> > 
+> > In summary, seeing the HWPoison flag again doesn't necessarily
+> > indicate what the recovery result was previously; it only indicate
+> > kernel won't re-attempt to recover?
 > 
-> Now I just have to cool my head and get back down into those
-> mlock batches.  I am fearful that making a change there to suit
-> this case will turn out later to break another case (and I just
-> won't have time to redevelop as thorough a grasp of the races as
-> I had back then).  But if we're lucky, applying that "one batch
-> at a time" rule will actually make it all more comprehensible.
+> Yes, kernel won't re-attempt to or just cannot recover.
 > 
-> (I so wish we had spare room in struct page to keep the address
-> of that one batch entry, or the CPU to which that one batch
-> belongs: then, although that wouldn't eliminate all uses of
-> lru_add_drain_all(), it would allow us to efficiently extract
-> a target page from its LRU batch without a remote drain.)
+> > 
+> >>
+> >> How about introducing a new MF action result? Maybe MF_NONE? The message could
+> >> look something like:
+> > 
+> > Adding MF_NONE sounds fine to me, as long as we correctly document its
+> > meaning, which can be subtle.
+> 
+> Adding a new MF action result sounds good to me. But IMHO MF_NONE might not be that suitable
+> as kill_accessing_process might be called to kill proc in this case, so it's not "NONE".
 
-I like the idea of identifying what exactly to drain, especially
-regarding remote LRU draining.
+OK, would you like a separate MF action result for each case? Maybe
+MF_ALREADY_POISONED and MF_ALREADY_POISONED_KILLED?
 
-With separately allocated folios we later might have that space, but it 
-could mean growing the folio size, so it depends on other factors (and 
-also how to store that information).
+MF_ALREADY_POISONED can be the default and MF_ALREADY_POISONED_KILLED can be
+used when kill_accessing_process() returns -EHWPOISON.
 
-For now, I don't think we have any space to store this ... briefly 
-thought about using folio->lru for that purpose, but the whole reason 
-for batching is to no mess with folio->lru modifications but instead to 
-... defer batch them :)
+The log messages could look like...
 
+Memory failure: 0xXXXXXXXX: recovery action for already poisoned page: None
+	and
+Memory failure: 0xXXXXXXXX: recovery action for already poisoned page: Process killed
 
--- 
-Cheers
-
-David / dhildenb
-
+Thanks,
+Kyle Meyer
 
