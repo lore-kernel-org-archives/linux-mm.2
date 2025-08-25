@@ -4,123 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F6D0CA0FE8
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 16:17:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D8A8CA0EFA
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 16:18:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECBF88E004D; Mon, 25 Aug 2025 12:17:23 -0400 (EDT)
+	id 951458E004E; Mon, 25 Aug 2025 12:18:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA3FC8E0038; Mon, 25 Aug 2025 12:17:23 -0400 (EDT)
+	id 901C08E0038; Mon, 25 Aug 2025 12:18:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB9F38E004D; Mon, 25 Aug 2025 12:17:23 -0400 (EDT)
+	id 7C9A48E004E; Mon, 25 Aug 2025 12:18:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C7DF58E0038
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:17:23 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5ECEE591C9
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:17:23 +0000 (UTC)
-X-FDA: 83815784766.10.06E5902
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 8735D2000E
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:17:21 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z1X+B0ZG;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 68F5A8E0038
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:18:53 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2256F140455
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:18:53 +0000 (UTC)
+X-FDA: 83815788546.23.732E5C4
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3D75118000C
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:18:51 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=aEMbJWWF;
+	spf=pass (imf16.hostedemail.com: domain of visitorckw@gmail.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=visitorckw@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756138641;
+	s=arc-20220608; t=1756138731;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yaUcnQjozmvTYDYURkWMjBxCsSnXy41d7hzIH1GSQGQ=;
-	b=N8zylL07qP+p1k9hZYnZIjGVMHHjwHP+o5AtaNv67ncHgS4mkRzPQTGCEvWqJpWNB8/aNZ
-	kq695yGQnzo6+JMfZfFnyTd5Z5tAkhTtj+RLGpxVHNhbPwMoK/H/InHrGvTazHDKwCdpUa
-	euFGw4pp6oto1JBYcseFBVk3mJTXAck=
+	bh=vlupHTCaeWk9ty8cyG5BDMuBJjhBMKn4mUppCZ+fHyk=;
+	b=wDgG61h1857XRcOb/c2vaj8wq1zmdD+SUnRANvv/RsvAVQrDa7GRifhl8uTARWNfAbHHG/
+	FQPx1T7XvkzyAFm1dIyF7NnqwGVPD2PPhCGImDbMGpbJngLTKr68G9EOK8J6EQgYYFMmQR
+	jy0/ZiVL1fwL0tuy6k2dQEmiChYbCLU=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z1X+B0ZG;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756138641; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=aEMbJWWF;
+	spf=pass (imf16.hostedemail.com: domain of visitorckw@gmail.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=visitorckw@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756138731; a=rsa-sha256;
 	cv=none;
-	b=kOtCu5ylAGzTztChdpuocSbGDWmFXUD+m6p3kyeh4cWzdw2LQWQyr+PwE/Xl3C7dQ9ZU4r
-	JjPB2+rzp/0Nps7RV6svAwBvf5sWsJgbE8yVdC40qDsb5X0tZu8qMwBIPgqIMjLdlHehM8
-	ZDzDrdnBV48pn2Y/hSNWOWyGSjZSrpo=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 523095C5FB5;
-	Mon, 25 Aug 2025 16:17:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3323DC4CEED;
-	Mon, 25 Aug 2025 16:17:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756138640;
-	bh=FANVRTF6GTKZEwwkEPlW/tWs0ubXGJ7R1OcvtRKQmn8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Z1X+B0ZGv7uHOoHuOLd4SJt16FexWEbZsjEQFQqRUrapr3OCpVgaCrasYjPdbbOyy
-	 eytOcCBL+pDQ3AWWdM11/NupldPVN7n787Ac52JA6muufv5Aq5hmbyZm6HiI3UG9/E
-	 S3WLhadcDWFA0vrOLjkLNWku02BCbOZumOEeIy+mLkW7A9OWvR0HBF0JMJQllwxMjH
-	 McwQict10AbNwzUaf3Fe4rhbDyKvQqV4mNkpdYsg1XXv1bkWDE2ZZQycNZSZHCAubw
-	 xxCEDJgzUrllwHg0O5i5LR3vB8H9ddKiEeoiX5nxByJsLox/KvefidsYGinF192ZU3
-	 LkZva/mIcA0xQ==
-Date: Mon, 25 Aug 2025 19:17:02 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: David Hildenbrand <david@redhat.com>
-Cc: Mika =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	Alexander Potapenko <glider@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Jackman <jackmanb@google.com>,
-	Christoph Lameter <cl@gentwo.org>, Dennis Zhou <dennis@kernel.org>,
-	Dmitry Vyukov <dvyukov@google.com>, dri-devel@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org, iommu@lists.linux.dev,
-	io-uring@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
-	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
-	John Hubbard <jhubbard@nvidia.com>, kasan-dev@googlegroups.com,
-	kvm@vger.kernel.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	linux-arm-kernel@axis.com, linux-arm-kernel@lists.infradead.org,
-	linux-crypto@vger.kernel.org, linux-ide@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mips@vger.kernel.org,
-	linux-mmc@vger.kernel.org, linux-mm@kvack.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Marco Elver <elver@google.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
-	Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
-	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
-	virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
-	wireguard@lists.zx2c4.com, x86@kernel.org, Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH RFC 10/35] mm/hugetlb: cleanup
- hugetlb_folio_init_tail_vmemmap()
-Message-ID: <aKyMfvWe8JetkbRL@kernel.org>
-References: <20250821200701.1329277-1-david@redhat.com>
- <20250821200701.1329277-11-david@redhat.com>
- <9156d191-9ec4-4422-bae9-2e8ce66f9d5e@redhat.com>
- <7077e09f-6ce9-43ba-8f87-47a290680141@redhat.com>
- <aKmDBobyvEX7ZUWL@kernel.org>
- <a90cf9a3-d662-4239-ad54-7ea917c802a5@redhat.com>
- <aKxz9HLQTflFNYEu@kernel.org>
- <a72080b4-5156-4add-ac7c-1160b44e0dfe@redhat.com>
- <aKx6SlYrj_hiPXBB@kernel.org>
- <f8140a17-c4ec-489b-b314-d45abe48bf36@redhat.com>
+	b=rgilVu+1weeegZbr0SUE2hhxX1vaieiPlcDXHYIJh0yTs1z0eyhK0cC5TmMrhVU0avP5m7
+	J3ARDwJ3WVtjKP6EXIZlQl+mmf9PaQbNu8HGSqgzPo2d9xvSOjAlIhVhmajIw0ear76NC0
+	ms4sonWzy/k3YMiKTbcBRBdf8xXYkAQ=
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b49cfd967b9so1054180a12.3
+        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 09:18:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756138730; x=1756743530; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vlupHTCaeWk9ty8cyG5BDMuBJjhBMKn4mUppCZ+fHyk=;
+        b=aEMbJWWFcGTp7uEE3OE/8mi4VRXkMg5sFSlvZASD7WlR7R76snnPBcuC0RpRgXnaD+
+         /Xdg+XngfHI7bFEeJoGhJFDJytmNyP3KgTgf2dAJhu3vusxbJC9gLDPMiphpCq7GR7hS
+         rY7r8r2y8mXxI8f/k/0fGgSJZ5R+JsNc6mK2ymU0DZqrpx8H+HgCKtwVcpb/5fwlfZkS
+         78Y+uDk95Ohjb9XjwPkPt+nFHsKt6PuHCqBaDc0hnCl6BO8SKYmFcxLSsbLFiO+iFBAg
+         xJad7oH2KLUPgglsKZYfarQ41VLAjMgxPHXEumjctd2joh4CMxkMtFqSrtWh9/v3oaBx
+         0WFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756138730; x=1756743530;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vlupHTCaeWk9ty8cyG5BDMuBJjhBMKn4mUppCZ+fHyk=;
+        b=qOt+To0p1iVYm+ksg1BsaFykCF9P2B+jxgjpvxSGx+Ll1kmZh+H6AZwMDKaYI8eDpK
+         2P/5eSkqn6UlxNaqM/h8fRJ++Kxz+X4YAOwVIboWM4CQm9RZ2fCEvKGo+XDNzHP6UIo4
+         QKr7AqlIgJrFBE1osMa0uXZ3yHGBoHO7RJFmgO0b+i9gTJWQnhItd+M0SS9RIaoIN7A7
+         uFKnprgBe/caiYPhmEWrcUlQffm+cz55pX2eP3L4BpI3s5U3qHqJhMkpZgpiJHCq55vB
+         6wYNJ+ptJy20Egx8Z2EpuZFDb0ZpQuOB4tGXmYIllzQwQ/53VQaBdqiIRJBZASUlMX1x
+         Z4gw==
+X-Forwarded-Encrypted: i=1; AJvYcCXLZuGUNeUOQAGsY7wIYS2X/kVSJ5qG6QxUqNUcZnU6kuFtc/Au0pVmzmcg0mmUUsC0dftBS9HA7g==@kvack.org
+X-Gm-Message-State: AOJu0YylLyE3+wVfp0H3Q6C6o1D8jfKB8ALBfZEn1t/PDiucsAXMCK3H
+	Rr7N8zDQhz8wAcDIs9FZIH2W1ymZhyrpDSpNAokN5+TGrWXHfdV1HwGs
+X-Gm-Gg: ASbGncvmDyA6KL0lZr3jRGyLtJ87ZHNS+bPx+Pk8lThxYJse34mRb2Ois50qzH/8CSb
+	RwNNLJ1/V5lfq0Ev1CxIjc1FPnAPnTmaVbh21h6PryFhN+W6ouM2/gOXYRQ1j+VGFK3PifCaGId
+	N7ZI0BUT2/ebQWQz0sv4Xvg8tRJqat7eKO3Ii1VeeDmp3ZajEn2J7Pm7B85wLbdI8iYXV2prsKu
+	UkrMFWRkIQZUdDMH0lIg5ICqeEqsalh1jUou8kiVM2yXnmBKULXy++Ces9Tt/djfCQsUSgz2n07
+	qHiDzFFSilad3r2DlkE3hVIRF4BTf6BO0xr6PRqGak5cH1YQwjGG9HIlJ2vy0QPn4YkXEmwSMTh
+	LcPU3wQT4X2x93LwNOxOAkT+IlLuEbh94KWBSiNV+OjXN1SPxn68uJDTR/aJk
+X-Google-Smtp-Source: AGHT+IFb7x0FHZfUPJ1wZ6JfXOrSOGAtixKMgVkVGQtPT4Ho/IegHATmPfyAfPSeEwyj7QoVspRwuQ==
+X-Received: by 2002:a17:902:c94d:b0:235:ed02:288b with SMTP id d9443c01a7336-2462ef40318mr156684765ad.30.1756138729750;
+        Mon, 25 Aug 2025 09:18:49 -0700 (PDT)
+Received: from visitorckw-System-Product-Name ([140.113.216.168])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2466889f13esm72701465ad.148.2025.08.25.09.18.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Aug 2025 09:18:49 -0700 (PDT)
+Date: Tue, 26 Aug 2025 00:18:42 +0800
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: vbabka@suse.cz, akpm@linux-foundation.org, cl@gentwo.org,
+	rientjes@google.com, roman.gushchin@linux.dev, harry.yoo@oracle.com,
+	glittao@gmail.com, jserv@ccns.ncku.edu.tw, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm/slub: Fix cmp_loc_by_count() to return 0 when
+ counts are equal
+Message-ID: <aKyM4jZqy8/G2DGq@visitorckw-System-Product-Name>
+References: <20250825013419.240278-2-visitorckw@gmail.com>
+ <20250825144838.4081382-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f8140a17-c4ec-489b-b314-d45abe48bf36@redhat.com>
-X-Rspamd-Queue-Id: 8735D2000E
+In-Reply-To: <20250825144838.4081382-1-joshua.hahnjy@gmail.com>
+X-Stat-Signature: ientptfwjah1drat51dn1jbi7y7acedd
 X-Rspam-User: 
-X-Stat-Signature: j659nyo3jmmqcjtptx9jr5s7xwcqgqxo
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756138641-424606
-X-HE-Meta: U2FsdGVkX18YeT0GxLEnqHSqbyCh5lKg71GAsGIpxPGN5YUQc4HNrEDn1dfBNTzEXfUYQC6KFi1C1Of14dSpT+6LLLJ7IMBeNLw2f/fyv0nywQAHmh+RjzNVI9WgblLD45/pp+EAjEP/S+Up6Lx7cZ3gh+EeeNr80B5tL4T55U39DA/vW2+JPan6VORmi07w1J/gQkYPh1LLkf+IFFy8T8n2wJAqclgcqXLa0QLTMHdEJLSQMd0eOBdl1cxaik7CHkteSXweipX6aIaLM2hgyN6j9NtaVQ8mxS732FwSjNbdLLGM4fls1u2TdcVJxirING8JCcK7jg0QkK7IT3HpWJqKfLb90MjpxJ2UDXGsvt69BeM9+uTJdl0bgsTOWqGY3Yfn5rbib3csg/p1GQkDRxS5KPV+SN7aV8CQZOwk9XoEZ9Dv6MJgrzjWjxVl1Bl4synV5IuezTMFx/9iQ1J4mSlHfWH795d2MtuhRptXk6Yu2NGZJIjN6XwazuSGkXuHKYqFzflZlqE2uWomma6/7QjeEeHXXvKhZnCUez16PQGS7MXjt0lpjBTTaBT0hktvTRcaVnHFky8je9CmQ7brZuAlR0sQWOcqCeZV9hbDgAU1q+5HTpeFObFmsE1oASWuhFOwfel0elhRSTtBG3mLhOgIllh53I2mCV5ILokrAZZ0Ha6sDmL0Cv0T0nMcHibQusz/pCF3m/Fpv/oe+Tdr+VQgJGSTB6eQ5jcFBxWtGRkAvfTyt0/QwZjnxBXwrna4VsSiLJL3rNbq4MsOBd2by7D+GGwinM+HKR0fX0YNaCSE5y9tFBwa+jFqTGNgFesh3h0EMsdmP2IB1SxDvhj/qiy14SGQkc1iAuq6R5zzBleaH/L82TIc2Gdqeh7lZ1CwkwOkL96g1OFf9f1d5K15TCa6N2V/SD7xQ+DnK82PmG0DFh12HIKyNTe/ulXm/qbsJwusZZGr0EoDlQ8Y9Ui
- 7LYidyKg
- Jol19R/oLEXUZupWfxuoMJpbHHSSlvSP4ShoVTQ67KXjzwyYsun58sRIxITTa6hT7vQh1ealpFR171JXhoIef0KpUybau9SYzT1EZO610W4PJJrxpOZ2fkzQptyCiDmoFNIzHBcw1T4ezmXIGwHmBlHalV/JPBbxpC32Vnz/wlZPamNIyY6F9oU86NEMftzoQU+wNjLG0ZB6BFpxNhoz5Ym4mdixA7ff1L/FhQ03Fa4ppNCDUhhDsqhbTKhrBae8Xlf/obem20AOzTaYwCKti5XoB88luWYJRywJwgkYBCehIFwml2STuvU02c+a/Zz3Tzuum5jZ81GfSYVE=
+X-Rspamd-Queue-Id: 3D75118000C
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756138731-228735
+X-HE-Meta: U2FsdGVkX19GrLSIaR1T8cvyrSczuMle3E5Hfg/qOxhI5zqUQhCjffVYOE1zBaLUy+93xdxoZ7odEVm9azNPLhryvhn1XuKXwn+xR5vY6veHHcP3fTKzbMg3bMBJCBmBpzZjAhmN74lVYmN7bFa0+uMEht1dpy5cJe+wFEoRUE76gXEWN1Z6xr/I2910iZnfN7U3O5jV1akxjWgWNSbqPsqtJQ6h0sfvQvQ8x3w+JNk+hRqbBahzneDlRTL1UyW7UoOO48BML4NpcG+275qmPz3zJGehoxXA73b4dw68p7vl6rEGzRtApJ5q1NgcsbuOKI+0q1wVi2bABg0N1mSfS0FQdFDRHchsEto+R24MXTeCj2v8nTCHqIXbXmwNHlbVZrJpjqF8saO8E+UenYsHhcQfJoBiSdQpL4LceLMFpB4OvT5jBKMLbCwFFdUUDIxQhGMrHpCDOiQ0qFb7HsiTTU0MWatnnsKVs2cQ9xUGKamCEHsCohF878b6feZpHW2GAL/8/bJ4YoVZFWHSXUq/N2nrE9usGzXF8IUHxw+20mULKH2uz4F+A9CeVuxRKwb0iy2fqZz4WJiVbCLSoXEf80KOpCHF/fhbmexO1dl5UE6i6OPb8l35Ob/OEdRwokv1OCbcLyUJELxXer/CeOniCqytdEqp1jRVqN2QMUwndKcU5x8228+MCfnJ/lxbGz+UKe1fWzh9DHFAS+JZOsOUEmTZsUdBWl14pNmSTDgofDspDcQeoddtFWCdZVXJfPAhhCSGAqkdNN7TK7rT2ePOEhOWv5MWGQ2zuDLKjPBKhan4MP5uqJ/tPAAH9BheoORjVLXygIP96KaXKc9Tr1Q9D9fGu305mYpl6MtKvkcPIgBmxsMuCiB9bSeZzKQnyjO4se0OyuMBDCRhG4tntQVP0Oki1hjpeVNOOcK16VPEeBIHwkM6kkQdi6s5aZRusDxWFFK1GexkRnI8/vBJgBA
+ 5Hl3wC0P
+ sRUdc4Vm4Z4AW+BwgoCC75ztqpoqxWXzHQ4WKwfsz4jHq4Ilj3qQaXQGpTZ41i3UgxFjyyjYX/UKnHl6lAuzFK2QjhYzznyAHtV1i74xBy7PtjO2A/EqaPiHkybh4xt/ibkAdhKkvAE+LFFIIijV1hAGns/hU8NF7Zl+XSuhuLFg+J9ViGi97Uyvc+t7hufCqyxOhfApgz0eHEA1o3cQln2rme3Lt8RrxWp70v/lhXuipKNYqPGT14egdyegjh+uz3FsvuZxWS4SFlSUpTJEOzsrNbGZUmbtnJWKGC/+8OMYDzIk9F/MGEQcmN1Z6nvVpeuaaoyWewNt08kk3Iv1FLPKeiNYum9nRNlg3r/VFOWL/GEkI05deriMc8iIXCWpLfXT7I5miAxfB2puwUNS8HzUJjwk6MPthhZTgFdJ6/V4iyDFc4jyV2r8t3nvRmjlDfvzi3/pfMck5/NfgRU0rNp3jD+EH91PKCtJWsWvV2nZ+6neKJcygLx3fCTgqef3D2OAMKaOf2q1mOavXhb2hh1cRnqzxTAJdLhV1KUaov1v8QE7dW52U2PPMry9WucgWW916udO8JsFARIo6oN+crXuapQg1UIzWFQqwqPYe+dt4oZhkdrAf7B6AREIir1RIFR+a
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,152 +121,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 25, 2025 at 05:42:33PM +0200, David Hildenbrand wrote:
-> On 25.08.25 16:59, Mike Rapoport wrote:
-> > On Mon, Aug 25, 2025 at 04:38:03PM +0200, David Hildenbrand wrote:
-> > > On 25.08.25 16:32, Mike Rapoport wrote:
-> > > > On Mon, Aug 25, 2025 at 02:48:58PM +0200, David Hildenbrand wrote:
-> > > > > On 23.08.25 10:59, Mike Rapoport wrote:
-> > > > > > On Fri, Aug 22, 2025 at 08:24:31AM +0200, David Hildenbrand wrote:
-> > > > > > > On 22.08.25 06:09, Mika Penttilä wrote:
-> > > > > > > > 
-> > > > > > > > On 8/21/25 23:06, David Hildenbrand wrote:
-> > > > > > > > 
-> > > > > > > > > All pages were already initialized and set to PageReserved() with a
-> > > > > > > > > refcount of 1 by MM init code.
-> > > > > > > > 
-> > > > > > > > Just to be sure, how is this working with MEMBLOCK_RSRV_NOINIT, where MM is supposed not to
-> > > > > > > > initialize struct pages?
-> > > > > > > 
-> > > > > > > Excellent point, I did not know about that one.
-> > > > > > > 
-> > > > > > > Spotting that we don't do the same for the head page made me assume that
-> > > > > > > it's just a misuse of __init_single_page().
-> > > > > > > 
-> > > > > > > But the nasty thing is that we use memblock_reserved_mark_noinit() to only
-> > > > > > > mark the tail pages ...
-> > > > > > 
-> > > > > > And even nastier thing is that when CONFIG_DEFERRED_STRUCT_PAGE_INIT is
-> > > > > > disabled struct pages are initialized regardless of
-> > > > > > memblock_reserved_mark_noinit().
-> > > > > > 
-> > > > > > I think this patch should go in before your updates:
-> > > > > 
-> > > > > Shouldn't we fix this in memblock code?
-> > > > > 
-> > > > > Hacking around that in the memblock_reserved_mark_noinit() user sound wrong
-> > > > > -- and nothing in the doc of memblock_reserved_mark_noinit() spells that
-> > > > > behavior out.
-> > > > 
-> > > > We can surely update the docs, but unfortunately I don't see how to avoid
-> > > > hacking around it in hugetlb.
-> > > > Since it's used to optimise HVO even further to the point hugetlb open
-> > > > codes memmap initialization, I think it's fair that it should deal with all
-> > > > possible configurations.
-> > > 
-> > > Remind me, why can't we support memblock_reserved_mark_noinit() when
-> > > CONFIG_DEFERRED_STRUCT_PAGE_INIT is disabled?
+Hi Joshua,
+
+On Mon, Aug 25, 2025 at 07:48:36AM -0700, Joshua Hahn wrote:
+> On Mon, 25 Aug 2025 09:34:18 +0800 Kuan-Wei Chiu <visitorckw@gmail.com> wrote:
+> 
+> > The comparison function cmp_loc_by_count() used for sorting stack trace
+> > locations in debugfs currently returns -1 if a->count > b->count and 1
+> > otherwise. This breaks the antisymmetry property required by sort(),
+> > because when two counts are equal, both cmp(a, b) and cmp(b, a) return
+> > 1.
 > > 
-> > When CONFIG_DEFERRED_STRUCT_PAGE_INIT is disabled we initialize the entire
-> > memmap early (setup_arch()->free_area_init()), and we may have a bunch of
-> > memblock_reserved_mark_noinit() afterwards
+> > This can lead to undefined or incorrect ordering results. Fix it by
+> > explicitly returning 0 when the counts are equal, ensuring that the
+> > comparison function follows the expected mathematical properties.
+> > 
+> > Fixes: 553c0369b3e1 ("mm/slub: sort debugfs output by frequency of stack traces")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+> > ---
+> >  mm/slub.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/mm/slub.c b/mm/slub.c
+> > index 30003763d224..c91b3744adbc 100644
+> > --- a/mm/slub.c
+> > +++ b/mm/slub.c
+> > @@ -7718,8 +7718,9 @@ static int cmp_loc_by_count(const void *a, const void *b, const void *data)
+> >  
+> >  	if (loc1->count > loc2->count)
+> >  		return -1;
+> > -	else
+> > +	if (loc1->count < loc2->count)
+> >  		return 1;
+> > +	return 0;
+> >  }
 > 
-> Oh, you mean that we get effective memblock modifications after already
-> initializing the memmap.
+> Hello Kuan-Wei,
 > 
-> That sounds ... interesting :)
+> This is a great catch! I was thinking that in addition to separating out the
+> == case, we can also simplify the behavior by just opting to use the
+> cmp_int macro, which is defined in the <linux/sort.h> header, which is
+> already included in mm/slub.c. For the description, we have:
+> 
+>  * Return: 1 if the left argument is greater than the right one; 0 if the
+>  * arguments are equal; -1 if the left argument is less than the right one.
+> 
+> So in this case, we can replace the entire code block above with:
+> 
+> return cmp_int(loc2->count, loc1->count);
+> 
+> or
+> 
+> return -1 * cmp_int(loc1->count, loc2->count);
+> 
+> if you prefer to keep the position of loc1 and loc2. I guess we do lose
+> some interpretability of what -1 and 1 would refer to here, but I think
+> a comment should be able to take care of that.
+> 
+> Please let me know what you think. I hope you have a great day!
+> Joshua
 
-It's memmap, not the free lists. Without deferred init, memblock is active
-for a while after memmap initialized and before the memory goes to the free
-lists.
- 
-> So yeah, we have to document this for memblock_reserved_mark_noinit().
-> 
-> Is it also a problem for kexec_handover?
+Thanks for the suggestion!
+If we're going with the cmp_int() macro, I personally prefer
+return cmp_int(loc2->count, loc1->count);
+this avoids the need to explain the extra * (-1), and I think cmp_int()
+is simple enough to be easily understood by readers.
+That said, both options work fine for me.
 
-With KHO it's also interesting, but it does not support deferred struct
-page init for now :)
- 
-> We should do something like:
-> 
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index 154f1d73b61f2..ed4c563d72c32 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -1091,13 +1091,16 @@ int __init_memblock memblock_clear_nomap(phys_addr_t base, phys_addr_t size)
->  /**
->   * memblock_reserved_mark_noinit - Mark a reserved memory region with flag
-> - * MEMBLOCK_RSRV_NOINIT which results in the struct pages not being initialized
-> - * for this region.
-> + * MEMBLOCK_RSRV_NOINIT which allows for the "struct pages" corresponding
-> + * to this region not getting initialized, because the caller will take
-> + * care of it.
->   * @base: the base phys addr of the region
->   * @size: the size of the region
->   *
-> - * struct pages will not be initialized for reserved memory regions marked with
-> - * %MEMBLOCK_RSRV_NOINIT.
-> + * "struct pages" will not be initialized for reserved memory regions marked
-> + * with %MEMBLOCK_RSRV_NOINIT if this function is called before initialization
-> + * code runs. Without CONFIG_DEFERRED_STRUCT_PAGE_INIT, it is more likely
-> + * that this function is not effective.
->   *
->   * Return: 0 on success, -errno on failure.
->   */
-
-I have a different version :)
- 
-diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index b96746376e17..d20d091c6343 100644
---- a/include/linux/memblock.h
-+++ b/include/linux/memblock.h
-@@ -40,8 +40,9 @@ extern unsigned long long max_possible_pfn;
-  * via a driver, and never indicated in the firmware-provided memory map as
-  * system RAM. This corresponds to IORESOURCE_SYSRAM_DRIVER_MANAGED in the
-  * kernel resource tree.
-- * @MEMBLOCK_RSRV_NOINIT: memory region for which struct pages are
-- * not initialized (only for reserved regions).
-+ * @MEMBLOCK_RSRV_NOINIT: memory region for which struct pages don't have
-+ * PG_Reserved set and are completely not initialized when
-+ * %CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled (only for reserved regions).
-  * @MEMBLOCK_RSRV_KERN: memory region that is reserved for kernel use,
-  * either explictitly with memblock_reserve_kern() or via memblock
-  * allocation APIs. All memblock allocations set this flag.
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 154f1d73b61f..02de5ffb085b 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -1091,13 +1091,15 @@ int __init_memblock memblock_clear_nomap(phys_addr_t base, phys_addr_t size)
- 
- /**
-  * memblock_reserved_mark_noinit - Mark a reserved memory region with flag
-- * MEMBLOCK_RSRV_NOINIT which results in the struct pages not being initialized
-- * for this region.
-+ * MEMBLOCK_RSRV_NOINIT
-+ *
-  * @base: the base phys addr of the region
-  * @size: the size of the region
-  *
-- * struct pages will not be initialized for reserved memory regions marked with
-- * %MEMBLOCK_RSRV_NOINIT.
-+ * The struct pages for the reserved regions marked %MEMBLOCK_RSRV_NOINIT will
-+ * not have %PG_Reserved flag set.
-+ * When %CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled, setting this flags also
-+ * completly bypasses the initialization of struct pages for this region.
-  *
-  * Return: 0 on success, -errno on failure.
-  */
- 
-> Optimizing the hugetlb code could be done, but I am not sure how high
-> the priority is (nobody complained so far about the double init).
-> 
-> -- 
-> Cheers
-> 
-> David / dhildenb
-> 
-
--- 
-Sincerely yours,
-Mike.
+Regards,
+Kuan-Wei
 
