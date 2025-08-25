@@ -4,95 +4,177 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BD0ACA0EED
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 07:31:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 468F5CA0EED
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 07:36:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91AE38E0003; Mon, 25 Aug 2025 03:31:57 -0400 (EDT)
+	id 5CA3C6B00BA; Mon, 25 Aug 2025 03:36:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F30B8E0001; Mon, 25 Aug 2025 03:31:57 -0400 (EDT)
+	id 5A1BC6B00BB; Mon, 25 Aug 2025 03:36:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82FF88E0003; Mon, 25 Aug 2025 03:31:57 -0400 (EDT)
+	id 490A46B00BC; Mon, 25 Aug 2025 03:36:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 715A18E0001
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 03:31:57 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F2EFE1A02E3
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 07:31:56 +0000 (UTC)
-X-FDA: 83814460632.15.F8FF6DB
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf16.hostedemail.com (Postfix) with ESMTP id BDF2E180008
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 07:31:54 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf16.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756107115;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 384B36B00BA
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 03:36:27 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B5BC7138E2C
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 07:36:26 +0000 (UTC)
+X-FDA: 83814471972.09.94C8243
+Received: from OS8PR02CU002.outbound.protection.outlook.com (mail-japanwestazon11012014.outbound.protection.outlook.com [40.107.75.14])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 92DC5A000E
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 07:36:23 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=vivo.com header.s=selector2 header.b=E+piKSZN;
+	spf=pass (imf25.hostedemail.com: domain of zhao.xichao@vivo.com designates 40.107.75.14 as permitted sender) smtp.mailfrom=zhao.xichao@vivo.com;
+	dmarc=pass (policy=quarantine) header.from=vivo.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756107384;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r50dDkvFDO+w+5+hTwJQC3IZEVejQAJBD9RW2mT+j/0=;
-	b=yAP6prpcScotA1t//ra6zv4fMWth8y7HQfuiyyohwHiNskBVoYqB3AKB4rjcYnsx9wzWpr
-	mlcF+/R03aKgOjcPCCyY3Vw7M3kLxdXFuTwxawzSDNrvaj99t7YmbxLsNGYP8p44O8bHDJ
-	zcR2JBtKv5PKdqniqoA+N1HGIMpa6AQ=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf16.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756107115; a=rsa-sha256;
-	cv=none;
-	b=RpTzss1+YWO2ZQ4+QK1UocnK0Hhvsg+OzWGex/bJ1u+6+glhAYAGDP/rKzUGigKz7xjZKR
-	QP88mLAglz3a8O6aa+Zs8B41eLD0+tlK0SiSgVygnrAu1+RJEDsVv7+SmzsqjmvL14TjVw
-	ZiQD+ccypluqUe/uh9wOeBPZSDvQpIA=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 601921D70;
-	Mon, 25 Aug 2025 00:31:45 -0700 (PDT)
-Received: from [10.57.89.148] (unknown [10.57.89.148])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 366D23F738;
-	Mon, 25 Aug 2025 00:31:47 -0700 (PDT)
-Message-ID: <8e4e5648-9b70-4257-92c5-14c60928e240@arm.com>
-Date: Mon, 25 Aug 2025 09:31:44 +0200
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=xnNB3ovm+vT0otKaeA0KDgXPs2nV8zGo+Mbj1WP2628=;
+	b=TtUOF3M29wRlCNEKGCQwHsvf8inqhUkd+MvZakPcrNttInGYLVvfkm5ebgLnaGduF9Af2M
+	NhrIKuhydA3pRMfWbiA3jevtQEkenvdSUDlRBjkejo/iCM5oPC8h2ZeGQZKL4421xRdlet
+	KcoPqD+wDu6o1S3yK3l4qPODOSTxz7E=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=vivo.com header.s=selector2 header.b=E+piKSZN;
+	spf=pass (imf25.hostedemail.com: domain of zhao.xichao@vivo.com designates 40.107.75.14 as permitted sender) smtp.mailfrom=zhao.xichao@vivo.com;
+	dmarc=pass (policy=quarantine) header.from=vivo.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756107384; a=rsa-sha256;
+	cv=pass;
+	b=PPAogHMPCv8MqSTnyn7K+JMAp9vhYpcoga5+orHusZAXGYi/QlmCr4us2viAfkKLVv4wrN
+	+Bf2HwcSEWUuzYCmL6EX/5thC47OF6T2v9PeQ3VrxOEpQFsBkF2uDjUA1G/i/fsbIn5Czg
+	SVdEMijbPf5WS/ZKE4mzP/LcMPIh88Q=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=E3XZXMxgmqlfNnoZI4FyzrGWszxeBlN1p4zT68qA9sDSsMCxb4ZFglWzvxSBa0mWyEvaMdxL/bCOSzjbjNfs4cupFI00LYhxfj87O7JxAbW1U88OtFYF6HvK9Bumr3w35wHklj+z+dEVT5ThRkJY7nmR7L3D+1XXnR933K/g/HvM0NrAQr2uRkfgodhWkOWXqTTFDQUHSL7QFAoDZEFodW/rqf8yXOUG56q36689Dg5WRLc0CEuvnvW5+F7LyPshbjbVaL51Rn0/37iGDdsWR8ioaigMtvaQ/20rL9mqRdwrdCF19fFOxekqeldWH/g5i+hh+GVyInCUcGywLNU8BA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xnNB3ovm+vT0otKaeA0KDgXPs2nV8zGo+Mbj1WP2628=;
+ b=A5HyPJOfY3IrPjDZuRYuL4l9cN2/2AMld3OI2ag6VL2SzrmxftOY664a4XGt8A/j99O4qM1ROcg8xpxRYhSAEzFzXNUhr6xSA7mXyF7JXvfoDQ66CEwyxyTuWXtgqvCfNDIpoZnPnGCq2hJPUJB4xFohYilanMq3OxRIxiANDrjXmqjgZtBM7xQ3gX0ZSd7aQflcDZAT9wOD749D5Slrehmt3W5rI4KEbo0QwJOPoExZULiLKXjRgHeDrt/eVy5auMOIe7FxQytdURRg+qu2mVUtPbEHYW62UujhuoqG0UH8WsJr4abQNAz6y8UtwxlDWaQEq+Y5yexgd/c17abkug==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xnNB3ovm+vT0otKaeA0KDgXPs2nV8zGo+Mbj1WP2628=;
+ b=E+piKSZNvljW/uI0OPSBwajRcBOA/gvKMeLa6SssirGlecDvfGHofiZgiNUhq+QhY5cJxZPdk13PJbYh0B3Zqelic9y6JztH3yAtD1dsJ+/6HHF8Nb9zCbe9Bli6h/O9ffZOEbpnnFIn1c1YTNdALCLhtJw60+IGCi485PxJ7hEt9gMTPnZSIGCkbuLX3S3gn65aWCRx+CNDiqqm7Z+Q/uJ90I52c6+30ebHBN5yaBhAmgWaoGBKxUHiSXmM+9V5cO1q0t3qjRjHJC+thw3iUx5I1iINRah6sZZWZ6G3HuMdI8cW1bgf0ZGpt11TFDaXMOVxnE5XLciLXoDxpw5vzw==
+Received: from KL1PR06MB6020.apcprd06.prod.outlook.com (2603:1096:820:d8::5)
+ by KL1PR06MB6348.apcprd06.prod.outlook.com (2603:1096:820:e9::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.21; Mon, 25 Aug
+ 2025 07:36:18 +0000
+Received: from KL1PR06MB6020.apcprd06.prod.outlook.com
+ ([fe80::4ec9:a94d:c986:2ceb]) by KL1PR06MB6020.apcprd06.prod.outlook.com
+ ([fe80::4ec9:a94d:c986:2ceb%5]) with mapi id 15.20.9052.019; Mon, 25 Aug 2025
+ 07:36:17 +0000
+From: Xichao Zhao <zhao.xichao@vivo.com>
+To: kees@kernel.org,
+	viro@zeniv.linux.org.uk,
+	brauner@kernel.org
+Cc: jack@suse.cz,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Xichao Zhao <zhao.xichao@vivo.com>
+Subject: [PATCH] exec: Fix incorrect type for ret
+Date: Mon, 25 Aug 2025 15:36:09 +0800
+Message-Id: <20250825073609.219855-1-zhao.xichao@vivo.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR01CA0165.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:28::21) To KL1PR06MB6020.apcprd06.prod.outlook.com
+ (2603:1096:820:d8::5)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v5 00/18] pkeys-based page table hardening
-To: Yang Shi <yang@os.amperecomputing.com>, linux-hardening@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Andy Lutomirski <luto@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@redhat.com>, Ira Weiny <ira.weiny@intel.com>,
- Jann Horn <jannh@google.com>, Jeff Xu <jeffxu@chromium.org>,
- Joey Gouly <joey.gouly@arm.com>, Kees Cook <kees@kernel.org>,
- Linus Walleij <linus.walleij@linaro.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Marc Zyngier <maz@kernel.org>,
- Mark Brown <broonie@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Maxwell Bland <mbland@motorola.com>, "Mike Rapoport (IBM)"
- <rppt@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Pierre Langlois <pierre.langlois@arm.com>,
- Quentin Perret <qperret@google.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, x86@kernel.org
-References: <20250815085512.2182322-1-kevin.brodsky@arm.com>
- <98c9689f-157b-4fbb-b1b4-15e5a68e2d32@os.amperecomputing.com>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <98c9689f-157b-4fbb-b1b4-15e5a68e2d32@os.amperecomputing.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BDF2E180008
-X-Stat-Signature: ynsm7pju6jebbszkiprgq66aiwzw4dwt
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: KL1PR06MB6020:EE_|KL1PR06MB6348:EE_
+X-MS-Office365-Filtering-Correlation-Id: db7ec515-72fe-4f1f-2025-08dde3aa1410
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|52116014|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Zk3dJYuk+YXgqLSHGB7gyafu7jy26qiai+VsDFoTIPPCJMkJiYvT4qa0hNHI?=
+ =?us-ascii?Q?DW32chAqUHshcnzxvN87HSOfhaeeMunf9+2w4QqzsvlT2zDgxwvinmvu3H+t?=
+ =?us-ascii?Q?YDd7QksB8TrWjMweQd3mEXoubVVQozTPmf1+byZCLYInGD09XtZOFHCMzOWg?=
+ =?us-ascii?Q?4aCeEYZ0iRuqrVzuaxUzAhXWWQ41I6ceA4aiKnNd7AArzOJi6zDu1OCisNYR?=
+ =?us-ascii?Q?Dr1ldt08AiI80FHQi8KWfkdw0e3aWC2VziSaeOlG7/FiUalAk3vYyE7OXVvX?=
+ =?us-ascii?Q?GoD9CYdUP4TRJuB2IBcKIwwJKCWvj0YmuCBN57tabNI0u/N8c8S38uWFq2zH?=
+ =?us-ascii?Q?MlmD6hCJL1TeS7mdthVPpSmuZ3t4UkuMpJBi9c8tBStxTb5eMd08YnQzhSD9?=
+ =?us-ascii?Q?gknF1YDYYTQG1Tgc8H572XUExvqCcVo1yuH8wk/HNmxt72koO1Zy7M1tfNGv?=
+ =?us-ascii?Q?i8Djv57D5yH71RO5/FQYEM9FibOG34jea84mAKhNvRO0bzSnAU+TlTtazMFx?=
+ =?us-ascii?Q?2XAaRQbQOngw3rN1zL4DyYo7oMivpEqT/VbByGl0U4l3UqHB5RqIITbVPPVy?=
+ =?us-ascii?Q?Fdo4X2FYLpfLwptPKgNQzd9Ya6OaRJ/Wu50MAwZXW4IOipdGhMwnrWrgDIcw?=
+ =?us-ascii?Q?RfKKGnVDz4brGovoFuBqYLgI/jGtldJLS88qx2neT4uPJ2DDmjyHh7BkWj1t?=
+ =?us-ascii?Q?EO9w0EeaYeZP+tepbdHt6ea2sbhDdzmpeI8ybYPZD3vTblHsT+wgt9XzSHxu?=
+ =?us-ascii?Q?OMnlwYMto6JmICeNsprFCFjk9fi+noiFdFZ+CjqXCzFHwKnqljRCPBAEqayO?=
+ =?us-ascii?Q?0gevbGMf71zuTigNMSYNjCzTnfD0qOXY6+c6rONl+is0mYEh8NFSZOpsOh9C?=
+ =?us-ascii?Q?A8LnrLzcFJ1WkUop4QK++Agivlg8oFr8zLxZ6HYOGuJEVTUKzpHAPTGDuheO?=
+ =?us-ascii?Q?qllRlcFCsXyfnssEPZ5hB0IxU8JxXOS6ik7cNdpwDmzyf3grElHvq8fYah5w?=
+ =?us-ascii?Q?TaP/MpJDwtnfNbh6Z0e6ACydpAYXv5ttuE9myL2ymJS3hPM/1WXH3jSq1NRB?=
+ =?us-ascii?Q?vLB3e7CG0JXY2NjnaTKx19uyL6ailHP3gD61rzk7VJRNE/RPt/S42ouKgGr6?=
+ =?us-ascii?Q?+hXBIQcoTqguPT5tyNm91bjNVhcaMCxWuKagNZlPUTk52jTuwSzB5KqlHjsA?=
+ =?us-ascii?Q?U6ERJF6YEGEFxkkBqMkfN1dGfsC2CJwUPsEOoWHm29Lv9cnGqesUN0lYd8OH?=
+ =?us-ascii?Q?2XpxMhEwBLAvXiY3a2aRdd0GxBBVszPiFd2VZP6QwFw6p/pGmrXqnjaXLxUh?=
+ =?us-ascii?Q?GKZJ1xe4eMo9MQpLOXD1g0+/zmm+3n65ixG7jU0fKC755LzDfvG59VgfNqEB?=
+ =?us-ascii?Q?6ov6f78v6n8Yubc08FNSvUMMUpljXCa/6gn417+47SVHBnKOEpQ4LmB3nqEd?=
+ =?us-ascii?Q?Z/Z2zkyB8/ATvyCgNjo2SIrtuHwQix+ZeouxK0O6yXqfNE1f4m4i7w=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:KL1PR06MB6020.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Cu7Z+aQvou1vx9wp6p2gmOLnVjLVmAhD8ze8jXdZYZV/1kXMMgd5M1k+X7e9?=
+ =?us-ascii?Q?hCq0HvKf01ZWAX+Wo6WW2FxQzai2US5VfotiH0firUgT4YYrcyoRkp+d/D53?=
+ =?us-ascii?Q?cscw0XAGFqJTlqx5jZJfwhwAlrDi1KA2Dk+msAHPZW+DvGQukjzb0pfiCYdu?=
+ =?us-ascii?Q?zuK4e5c6zhUQIgeROSYYt4J+xO/ofjjtYW8R28t4av/dYILbjrfjyerfZ4ww?=
+ =?us-ascii?Q?/7KGJhoWcePbdRDfnkNdwkQuCXtubtW3bw7tgH/qnEOQTlDxnitHM3qRvSD0?=
+ =?us-ascii?Q?E2+f2NLIWOQLqOS+ccRNQMPzjjQykS40oZWI/aRr1bFbv5T371SSwZI2Py44?=
+ =?us-ascii?Q?U3EWvtSqj5HqZgdTPW7lDYM3p7nP1VI7Ut1P1Ol7wxNfBX/saKAaM/XnUWIX?=
+ =?us-ascii?Q?KEWEDr0k+h8g9CP0XDZjHAuyakYrFmfeJt2T7mGkLZ/0dB7Ds4xwp4kbWD5C?=
+ =?us-ascii?Q?D3WbmFTOSPnNFia36JU877B/soAaak4Tir9C2IZo31p/pZdEI/S59VjFDISb?=
+ =?us-ascii?Q?7FhjSzyR6wJ68VNQuU6fagGOiOnwo7uavIVCNoTGkHHgI8pdiIjXajPfHZ2i?=
+ =?us-ascii?Q?zXutnrKSHomhUZDhXtXVET65X+rTDZFCOJE2SZ3LuHPZWLC4yO3SzSdXdfTJ?=
+ =?us-ascii?Q?I2bx1Rhglwz4t9+isRYVKn3u29TABe2JnPNQNiBXybAFiVGi9A/CDbe+itOL?=
+ =?us-ascii?Q?6PfOO7AzfuL78+cRp+oxzEzfkgYoTTeRzYiiKg3ZacuU5lOsEXXQ4woe6oDJ?=
+ =?us-ascii?Q?cI+3MiPEfjgwsJm4/sF/tOX5F21jzLFtu3n7M46Hqu2z66R1VFLgca7TBnWT?=
+ =?us-ascii?Q?U+LIWbfekPEXZX3hovEigloLGmQPvY0y/e/EDWDrucpsNU7TaUYZTjqMegar?=
+ =?us-ascii?Q?uTlektEFxOO8qI4hQSWgOOKh5wxthQkeaJLHyLrZDNMaNAT82BH8hlv2b5CU?=
+ =?us-ascii?Q?hx+cQwrY9xdt3vURcHKzZtYkNi0zSiqKiKWN6bgZQFfHUKy4g6ZXIFhxeqmU?=
+ =?us-ascii?Q?/Itt0DTV47NiOd2fb2TMfOJrvv61xV4gES2pl0FuRkGECFLVFfoMlEaKBL+R?=
+ =?us-ascii?Q?dvaAe7zNyqWrXNlPq9r6FXLNqcBFFe9vwZck0dInFS9rmK1Ff7fEmFGJT7Je?=
+ =?us-ascii?Q?rHEXrDsK4W9kE+yUbTTzmL2348ahu+wj1PYWwnQNbWXRIlzXmtikSfJ89QAb?=
+ =?us-ascii?Q?S94RXuoxatIZTeADS87lMjGLldro0fE/22t/qTi5s9BMpTe8KgCJmORVfIMI?=
+ =?us-ascii?Q?0OhLoyRkyM5ezj0WneufGLQ1+J4GbeTkt0svThzP2l9WFKa+ta5zSdEB1AEd?=
+ =?us-ascii?Q?MNtwB3is4BTV2y4Y7QEd+XGvA1LGcSnBJ1nWiW9Ie2JxtbOZxNWFqncOw79T?=
+ =?us-ascii?Q?FXM16yb5r40JVDo9BAailb06d+pnNRylSf79vb6Mi2v8sr8LRy04hpD2WrK2?=
+ =?us-ascii?Q?EyDpIYOVXL1N/VSc/7VIYtpWGOfbxGCUOYhN/POyynisiH2tNQqyjZHBpS/P?=
+ =?us-ascii?Q?8cSxzC5P/aE1zWByxwjhKCsWdxqT93l8RDa7YIwOQTN0L2wRXot4lAlWgE4F?=
+ =?us-ascii?Q?+fC0l7xFhf7PczSjMUXrDAFt2qhdSREgQh4jynPz?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: db7ec515-72fe-4f1f-2025-08dde3aa1410
+X-MS-Exchange-CrossTenant-AuthSource: KL1PR06MB6020.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2025 07:36:17.8990
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bfFiRNBR+bTn4qEDSpITeaky9kYK4yfmZcZcnTHN0KSOa2fxwgwa7CZLmSDhdCZ3i0f9gzvR+N1Pv3OZK17/9Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: KL1PR06MB6348
+X-Rspamd-Queue-Id: 92DC5A000E
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1756107114-398542
-X-HE-Meta: U2FsdGVkX19QZYSeZxfy4jE+rNkmPTDoiqis086FvmpNtwetUqTrRr+lecgDzNw6XG6TdMkytcsOAWhP7xlXJUsele1H8fHbiK4G5LkHrILQjQwMi/Cb19BDGZHBUUFlRGZ360Ag7GmgYfG7Y5yIcuW/u7t79qwZw5MyOaLgzWbGXjjCxX55DgdZ7JX2zDe31FH/NhGLmF1fWH0MgtErO6NPKLl91RzSUBlbz+vupqDKJWGYjhwWKmGZuSFp8RlJqeNtE7iDbfK1atGIVm2ULhf6QKTMHVs5MbssuW1Yj8LovwQEIX4onwDFYNH1um5/HTEhaGxHqlZzXyfulwTvUeCB7j1bqeJ57uTjOycqgH9zC2FsWcWA0D5KeubxDkCQBl3+yEcbp4kwQJMzFfD7uz4ux90rhPyq5kdx4ANc+JiPJEHOxoa8Ak61qDl6xrRpbtn0Jd9Pd/hhBJS4ZFCR1Z4ze2e/IWUsuwjB9kOsyOJGl/rU0YV3SkTxV9QBIS/erJ/PBlY0Y5R9OD/LFtitIaPYWKkJJ3pSCw5jhLfYRPn5ZpnMyNL8OvVBlJoDbFA3HBi9cLhfiiXodPaUQsxyfHqr/2Rq+veSYiFp++qsq52OFByoJ/KpmCOQ4DNAWS68FV0p1Yfg0kGxQWbYmI8LJhDHz1jJgYll7wwEzLxK/QP1QLYoG6j/20Le7LJAGMMmHbo91ufp0Kx7DZLScW/RwUD9F5m8rvIZeRTh3Q8tQHyGLkLzQkXgLzfOaT8uRdAxT2RE1IllSUY/r1YHL3ndoWI0oxtukxx6sEOTZQDq07FkQMsIvAa56KHCfaemAma/tn1GK+TvDwuz1sLlg3zN/S3YWbk2NezEbMrj5QqO4MtFRi+iBuRtrh/ZvCNNlNkZ4w2VekpxMU/mImbNle8dv9Gv3eQy5HuDME5aNm8XP18NSStTo8BF1Fj7Wch6BSt4eMB/JoH1CULJIXai9df
- eLlfA81x
- gO8d0dN9zlhAWkg5nz9R2wN3YxtjMBftaPYe6ZADqP9WxJRHflSnmwcF81R7edO3r+sWn80PTlsTPpz8kdgAyu71ors1iFTEVS8wrcC9MsCwrOLWDVfClEf+0zDmG9Iv47Z2/O2My9h7k9T0=
+X-Stat-Signature: 3ps77thq7et7qy34bibieadnupfciqum
+X-HE-Tag: 1756107383-866612
+X-HE-Meta: U2FsdGVkX1+fTi+MWHQsIaeo+ULBQcXBh2fyKaRVP8n/8IARBx2NfYnwS2ffDsREcaBrPqZ7ZSVVfyKrbbB+hGACB/aJRaLzdZ1RHAEPD02g2cbHyXqaUFWuDiuiSrnujnS5XQ6BzVC0DN3kcX1OoLCu2xQVY0xUZb0oI8GtuzuCGSymIG51GD/oSDrUz6LSQqhikVYXRnasDtQmnUlsqMZM4BeVOf8vNGv2rWn8w8Sr4iVbndDz8EIdAdfEtYXXnNHutz6LGspHTqIBU8+xh5YcafoFarew1Ddk/CaAuP2K0qQdoaVlXfpcFWEWfS7ZQConGQ4p3QVdPWkN2dmLwzDSYuJGc+yFnYWVskO3QLaVmtc2VjTtltDgZhV5hAdVrZ+OogvZD+cdrdP3V2qmIKB+M3DcUYeWDw31MI97NbLi1K68qUj7h28RUnXot44vUzK1LdaIMrFedn6yKj2dhdaqgSV/Prz3hyZh2zQyqJ7Vy43M7CsRbusc8jINztTCFQTlzb9kKDUstXxCCpsKFhP19qnH4jZiMii6GeoOLEZxSQYMkL8YbuYPlsXC740hgRnV2UvPkCTg+AkT1E6Rujk58eMPuJed99HedJXj1iSf538bvDVDDeitsJq21sQR9XqwdNPS5IUiFGG7W+YQMaoDFmER31HNumRGl+YJNIji3ieB/Flstei27IolvBPOy/1beGcKeYs4kXPgPBzo2vm3m7PJJ4tvrYb1wZKrQMKU6KYtqCyR7/eLhELmG04uYkwvmAAa/HCCPa8FAV/jtUvbPdb8vOeU+5kxbJH4V45qojElaDVPpHtxGMA/oYroQd2AoFjfUL1cgQwnnTK9jPlV9hnD76RNwYhL8PHHQ5RbkwrMVrG6tV2p3o6J2LtoiQFmUfZuO28AHsO99KQrRdJHZOkhFU3EbKE44EMlz4Ia5J5A8rNRSs6ea/EIWCL4C5xYOuYqusBNgcgJgJC
+ EifA+0Y3
+ ZAQwxhIRP8CqcqJ9XqRXID1YAlAyUHRn1Ox0xBd8VYOEFLGM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,60 +183,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 21/08/2025 19:29, Yang Shi wrote:
-> Hi Kevin,
->
-> On 8/15/25 1:54 AM, Kevin Brodsky wrote:
->> This is a proposal to leverage protection keys (pkeys) to harden
->> critical kernel data, by making it mostly read-only. The series includes
->> a simple framework called "kpkeys" to manipulate pkeys for in-kernel
->> use,
->> as well as a page table hardening feature based on that framework,
->> "kpkeys_hardened_pgtables". Both are implemented on arm64 as a proof of
->> concept, but they are designed to be compatible with any architecture
->> that supports pkeys.
->
-> [...]
->
->>
->> Note: the performance impact of set_memory_pkey() is likely to be
->> relatively low on arm64 because the linear mapping uses PTE-level
->> descriptors only. This means that set_memory_pkey() simply changes the
->> attributes of some PTE descriptors. However, some systems may be able to
->> use higher-level descriptors in the future [5], meaning that
->> set_memory_pkey() may have to split mappings. Allocating page tables
->
-> I'm supposed the page table hardening feature will be opt-in due to
-> its overhead? If so I think you can just keep kernel linear mapping
-> using PTE, just like debug page alloc.
+In the setup_arg_pages(), ret is declared as an unsigned long.
+The ret might take a negative value. Therefore, its type should
+be changed to int.
 
-Indeed, I don't expect it to be turned on by default (in defconfig). If
-the overhead proves too large when block mappings are used, it seems
-reasonable to force PTE mappings when kpkeys_hardened_pgtables is enabled.
+Signed-off-by: Xichao Zhao <zhao.xichao@vivo.com>
+---
+ fs/exec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
->
->> from a contiguous cache of pages could help minimise the overhead, as
->> proposed for x86 in [1].
->
-> I'm a little bit confused about how this can work. The contiguous
-> cache of pages should be some large page, for example, 2M. But the
-> page table pages allocated from the cache may have different
-> permissions if I understand correctly. The default permission is RO,
-> but some of them may become R/W at sometime, for example, when calling
-> set_pte_at(). You still need to split the linear mapping, right?
+diff --git a/fs/exec.c b/fs/exec.c
+index 2a1e5e4042a1..5d236bb87df5 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -599,7 +599,7 @@ int setup_arg_pages(struct linux_binprm *bprm,
+ 		    unsigned long stack_top,
+ 		    int executable_stack)
+ {
+-	unsigned long ret;
++	int ret;
+ 	unsigned long stack_shift;
+ 	struct mm_struct *mm = current->mm;
+ 	struct vm_area_struct *vma = bprm->vma;
+-- 
+2.34.1
 
-When such a helper is called, *all* PTPs become writeable - there is no
-per-PTP permission switching.
-
-PTPs remain mapped RW (i.e. the base permissions set at the PTE level
-are RW). With this series, they are also all mapped with the same pkey
-(1). By default, the pkey register is configured so that pkey 1 provides
-RO access. The net result is that PTPs are RO by default, since the pkey
-restricts the effective permissions.
-
-When calling e.g. set_pte(), the pkey register is modified to enable RW
-access to pkey 1, making it possible to write to any PTP. Its value is
-restored when the function exit so that PTPs are once again RO.
-
-- Kevin
 
