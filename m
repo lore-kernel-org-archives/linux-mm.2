@@ -4,118 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC216CA0FE1
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 11:27:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3795DCA0FE1
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 11:33:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F25918E0012; Mon, 25 Aug 2025 07:27:27 -0400 (EDT)
+	id 806A08E0013; Mon, 25 Aug 2025 07:33:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED6958E0001; Mon, 25 Aug 2025 07:27:27 -0400 (EDT)
+	id 7DE558E0001; Mon, 25 Aug 2025 07:33:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEC3A8E0012; Mon, 25 Aug 2025 07:27:27 -0400 (EDT)
+	id 6F4158E0013; Mon, 25 Aug 2025 07:33:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CCD908E0001
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 07:27:27 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EF5ED1DBC9C
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 11:27:25 +0000 (UTC)
-X-FDA: 83815054050.13.FCCF557
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by imf20.hostedemail.com (Postfix) with ESMTP id AAEF31C0005
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 11:27:23 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C5288E0001
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 07:33:07 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DA170B904D
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 11:33:06 +0000 (UTC)
+X-FDA: 83815068372.08.D50F056
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 7368140015
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 11:33:04 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vM0JmMt8;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OOGTAtHz;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vM0JmMt8;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OOGTAtHz;
+	spf=pass (imf11.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756121244;
+	s=arc-20220608; t=1756121584;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=otgw8qHqXPzZM5+2y6XXu4fW6dpPzOVTknOMvuNTb0Y=;
-	b=snQOJVECk7ob3RI89Vd1pPisY7onlfXmEYW9yCgF+vWMb7sLxdP8pWBKURdECchPRIJr6n
-	Wp+sSEtjMMdM+CIWBoD4u5fJxC6cSkFyzdsWhnMCGLZZ8zfPlI67SqALHAqy9bpl5at+cd
-	/xiRw+jNEJXAvN7gZeC+LgL/9y82awk=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tomkV9nuT3frr0dWuW+rpHLgqKT+MFjV5H/omKZ8HQI=;
+	b=G13fmrxaTW+/UfWOXjl2iUWx/sSrzqMhHT2vVboQ4v89vxRLf5mEuIamxJZxubZW7LEJL9
+	dKeBJc2+AZnP1VQsEf2yKG4CSyt4HPzGqQxjuvkWzznSbCX8DCjBodOnyFABaZj5kFjitV
+	oBntqlOtDsKaO3lVwYaQydk594pXujU=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756121244; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vM0JmMt8;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OOGTAtHz;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vM0JmMt8;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OOGTAtHz;
+	spf=pass (imf11.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756121584; a=rsa-sha256;
 	cv=none;
-	b=sNWgE3675nPUgpVmUD3fdJxk7XJBd0/pCS+Px6nGxzR4Tqbu2YDVacNM4ZVNpLZEsN4rTo
-	pMlxxr+OWeaTJ/ex7lJeyX/5UsPHsPmJLBNrRbrFY37A9NqOT0YrSwkUO0epGVx3lpTJnJ
-	LWOwA+r7Z4kMygHzgmXwnHcURNd/vZQ=
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4c9T6K4ff8z9sSZ;
-	Mon, 25 Aug 2025 13:27:21 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id I9OzpNMcgXWv; Mon, 25 Aug 2025 13:27:21 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4c9T6K3JwMz9sSY;
-	Mon, 25 Aug 2025 13:27:21 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5974F8B764;
-	Mon, 25 Aug 2025 13:27:21 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 45RSxQ1kXYeU; Mon, 25 Aug 2025 13:27:21 +0200 (CEST)
-Received: from [10.25.207.160] (unknown [10.25.207.160])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id E37DF8B763;
-	Mon, 25 Aug 2025 13:27:20 +0200 (CEST)
-Message-ID: <26796993-5a17-487e-a32e-d9f7577216c3@csgroup.eu>
-Date: Mon, 25 Aug 2025 13:27:20 +0200
+	b=ogkD5O3E5p3W455LrAVVlr56S7Dw1p/iZ8QapGuM+h7fTx9bQXQto8K9MRY+1t842bBGv6
+	kVK3zTHf7YaqmheJhAdossYNUZpUjdp6D9rY5ECg/PzbMpXcHH/IbNoh4A73VGkqj9ZqSY
+	wDMnwvpNffAMRbtVezajXH/VcAlhZEI=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id BF0DE1F79A;
+	Mon, 25 Aug 2025 11:33:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756121582; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tomkV9nuT3frr0dWuW+rpHLgqKT+MFjV5H/omKZ8HQI=;
+	b=vM0JmMt8wvd1jNqgCn9PlBu1BKoOyBmc8g4JRayRBduJGl7G5bMeIHuWHqcyhxC7VVpw+o
+	OWpGDTFEoSWIOkpRGdNq+3RVobpP1dl+yx2gtS3yT/FVxFh/CeG4IzVl10PIoqWscbsWe8
+	Pe56YnYXL8LzIs+wmQbuCYduWVXw04A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756121582;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tomkV9nuT3frr0dWuW+rpHLgqKT+MFjV5H/omKZ8HQI=;
+	b=OOGTAtHzhWpJM/oD0VYEhQMvX4oTKFcCtFklyDgTAiZ3LpIwMIynTgFLBCUYmk31Bj7H2S
+	lagUB7SRl1wN2JAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756121582; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tomkV9nuT3frr0dWuW+rpHLgqKT+MFjV5H/omKZ8HQI=;
+	b=vM0JmMt8wvd1jNqgCn9PlBu1BKoOyBmc8g4JRayRBduJGl7G5bMeIHuWHqcyhxC7VVpw+o
+	OWpGDTFEoSWIOkpRGdNq+3RVobpP1dl+yx2gtS3yT/FVxFh/CeG4IzVl10PIoqWscbsWe8
+	Pe56YnYXL8LzIs+wmQbuCYduWVXw04A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756121582;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tomkV9nuT3frr0dWuW+rpHLgqKT+MFjV5H/omKZ8HQI=;
+	b=OOGTAtHzhWpJM/oD0VYEhQMvX4oTKFcCtFklyDgTAiZ3LpIwMIynTgFLBCUYmk31Bj7H2S
+	lagUB7SRl1wN2JAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AF20113867;
+	Mon, 25 Aug 2025 11:33:02 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id PY65Ku5JrGjqAwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 25 Aug 2025 11:33:02 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 9FFCCA0A94; Mon, 25 Aug 2025 12:13:53 +0200 (CEST)
+Date: Mon, 25 Aug 2025 12:13:53 +0200
+From: Jan Kara <jack@suse.cz>
+To: Julian Sun <sunjunchao@bytedance.com>
+Cc: Tejun Heo <tj@kernel.org>, linux-fsdevel@vger.kernel.org, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org, viro@zeniv.linux.org.uk, brauner@kernel.org, 
+	jack@suse.cz, hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
+	shakeel.butt@linux.dev, muchun.song@linux.dev, axboe@kernel.dk
+Subject: Re: [External] Re: [PATCH] memcg: Don't wait writeback completion
+ when release memcg.
+Message-ID: <lvycz43vcro2cwjun4tswjv67tz5sg4tans3hragwils3gvnbh@hxbjk6x6v5zk>
+References: <20250820111940.4105766-1-sunjunchao@bytedance.com>
+ <20250820111940.4105766-4-sunjunchao@bytedance.com>
+ <aKY2-sTc5qQmdea4@slm.duckdns.org>
+ <CAHSKhtf--qn3TH3LFMrwqb-Nng2ABwV2gOX0PyAerd7h612X5Q@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V4 mm-hotfixes 2/3] mm: introduce and use
- {pgd,p4d}_populate_kernel()
-To: Harry Yoo <harry.yoo@oracle.com>, Dennis Zhou <dennis@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>, x86@kernel.org,
- Borislav Petkov <bp@alien8.de>, Peter Zijlstra <peterz@infradead.org>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Tejun Heo <tj@kernel.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Christoph Lameter
- <cl@gentwo.org>, David Hildenbrand <david@redhat.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>, "H. Peter Anvin"
- <hpa@zytor.com>, kasan-dev@googlegroups.com, Mike Rapoport
- <rppt@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
- linux-kernel@vger.kernel.org, Dmitry Vyukov <dvyukov@google.com>,
- Alexander Potapenko <glider@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Huth <thuth@redhat.com>,
- John Hubbard <jhubbard@nvidia.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko
- <mhocko@suse.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- linux-mm@kvack.org, "Kirill A. Shutemov" <kas@kernel.org>,
- Oscar Salvador <osalvador@suse.de>, Jane Chu <jane.chu@oracle.com>,
- Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Joerg Roedel <joro@8bytes.org>, Alistair Popple <apopple@nvidia.com>,
- Joao Martins <joao.m.martins@oracle.com>, linux-arch@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250811053420.10721-1-harry.yoo@oracle.com>
- <20250811053420.10721-3-harry.yoo@oracle.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <20250811053420.10721-3-harry.yoo@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AAEF31C0005
+In-Reply-To: <CAHSKhtf--qn3TH3LFMrwqb-Nng2ABwV2gOX0PyAerd7h612X5Q@mail.gmail.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 7368140015
+X-Stat-Signature: ddyi89goygneh51w4e14ak6hk7x1diac
 X-Rspam-User: 
-X-Stat-Signature: rcmwh9z3mduru3f7zkscj7y4rd5iwi1o
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756121243-431551
-X-HE-Meta: U2FsdGVkX1+4zCvrsT7wdDIm3NOk3Sld9uBOB3fNLzGkSqOzNAouIh0ydxzY7KVcFiGeMjd+vNtmh4P4/dK1Nz/krppxBE664l0McTJ/aG7SNSgm8N+/ao1IKctGAiBEAbRdF5GASanVbyGDQ/wtBeqlGtPAhFs6Y3HINMe2I4nuD/b8z5fB5F45flIrDBaDec2dHYhyqjvmpV3Y7IBBjcXAQAy51iIZUZLwQxW1jn1z3em9NsEEUWeoQ/4rNHx+JBBqxtwQJ5rQYVcpAg4nwCc6tevOcmnGiwAXjK6C336qVh1FZpYQWCnvaGQuYQmS5a+CnFCLmbt7ytoFjCbUlf/N6wvQurdld5eZO/l/nD9FbuAga1pkzNUmBGdAxt4X4PLhDyeJgjRYlaXFhzUfky4B8mxnDJRgIzDBKUxkoF40Cwtw9rjuPUbLYbIActTK/wB3/gzCsb6q7lsEX1cSivmFo3d3hLbxlwyKvhTD+YzG+Y2T64ik4XzjM6cylxbJyU8so+sO7VDeqcU99KoA5c4U8wLb2LxPMij9M/G3ZyX29TRGRGLqZkiU+QOcFpfj5dIUZiiIH4uCq4OTEPYmsX6g27WYeMwU7yOwjgiUaBqQYH8b9jhTrgq7Aa/4xH9nvRsRio51nNLChTsCt5Ex7Zlv/jmIf+X/Lh5yc726ZArBmUyu8YI6aNRlcVj7V+ldkoD/lsEsq/R/NvcmYOHyJPvnYmDr6mKfpyMflsa5REpkQX4nHaI/iv84ejJDVlyPFKqCUO/VtpTMtOZzs6CBAMchimptvV0GVs4jA97Zjn7l3Y9Qe60Nhdmuluk2/b0dTn66FJx8fK7PyHjNPBTkPHEj7anUTNO9NM+VsQtWq7zn7/3HCwAV84h+Wx/ZQjTxWIES88XEMFvngMFoPNAMKw+XY/3pjaOW/y9maMDjF7vprJcUTkJ/THcaM0YV9yyLWypTXvVz5bOvu6kzNi9
- qT0HojZl
- MIzE7ousnEPBs38QQu20AjrCXF5qU9Itnj4WuxWUELbgC/cktpjb7yfuSty5iD5tezyxmaKrYWlfejzvkS+e0po7HX9wq0ePSy+WTH1snUI9GelzlTZjA7jzuT+bQNstwOD7UGd3XqPTB/3QXo5I3GL9NwHcu68q9gShSV82qtXakFWGBVYb8QrKr2zH2NTsd3wfxfisH9OSyunbYrg2VPr5Oq/KjHOBIYmFhX8Nf0JmXUvAn0WbGuTreH7OAFtWuFLcTDpPAueE6aGOPlWPZwFXQsi0KEc8EU60iIIeSq5w5FhQE/1MdJnBnPw==
+X-HE-Tag: 1756121584-721989
+X-HE-Meta: U2FsdGVkX19OUxYEDgVdSsJ3pDJoZBXz5oyAwi1kF2nBFZ4ZLEzqS3QwoW2u3C9BUonVFXZPjJ6hMq4hOppgWSJkV2huR7xkTlyBxAhBbM81DwhkIyZXoEF5zn7k7u1LKX75MYB8L1hes68bQCfHARSihtPnJXjxAqArbBjYqxejIRYXIniTJQugqg1SDWpnJvqHOtJ8Q7OgfMJvZeWdR0/XCNrpWcRCMLk+wL3hxG6Ph/Zt/CNCFVCNFg5yNtbGv059clp+pYWi7uyMZyfr3cn6xTLNO4SulWaEe3bb3rTdTHhIuAvrTJhDV7rV2R6FIgLWcXRwKOquZm/N3eJkh3dcTedbReBx3CtDprqzdh3q/9UP/cnF+XjY4cm9Et5lQaOfvha+g72afW/PmHcdy/OP/Wba0OBsJPZ4qci6d5xCjhQSAo99xiYpFlxqydjy4dpdaL7y+FSV2CMmTUAtUXEaTD74LUqmxCiItGj4kOm826FK/zrliaL+qYB6j4u6wrItvRn5EBqN0jIkuXM3aAWdWv1SZ19RSwKWIETsddpgd8K5E6ASlFqF4hHeVk6KWAsx7qMgcPQjExZEYsZjvzcvQSSvXi4EWQAJ3WWT7yozZmQAD5J3LNAnFcvz4W1U4htZH24Y1LdDVJM8smW0tpkUkqYtI6UiNi6UVQGjpXCrSKPj7cCNJpeNp3wetmAcQ4FzZJa0/TkC+E3N+ZJanYzvXO9nLrgZcbr6bUReSExOI5B1c9l929SkIgetifsr6xFWVokJbtMgU0vYNCVVBreJ0n7Oo/2v32w348f3w+5pbhguob20+xVdEETWZ37IkeKG7/qOjhfJ7jC10tcjwDvy45jHazMbAF9HCZ7uvVCkXAz2cVKBTHecIIqNXgmb1Y6Pw7IK3vl6oObwGUT0Njei8/NNw21Ix/r9Xe5wpN884ooBzHSm/l+PkQExWoHPH75/tF25pWmEBwUQgl5
+ uaJe26uV
+ HEH3n8PNkJgm3ihMMqmg2Nfg21HGNiGJpeMFYnmaBJRvmPGwg0b6Vf8a2ETPh3EqxYF/0r7SgXEnuMADesySHJ23wyAAAEyR39itL9yJ09bFuVzzbpAWlBqrJz9W0CAp2Sddp+drRCIP1+Q+kRo6HxAvyvagcf+D0lHYthqsI8+7isbuoyUMGyO+WtPWluDbRsoP9vlT/iplvGnHXIhVdvnQuUW9oDa0wxZfSJdXN6Yt4ZJbu+fBaupmWKI6SZODoEOH44eTHckUdDgnKkut8Wmk+fWdpSVNlzo5LwKl5K05PSs+V9Uq4wl3/T6PoyU3W7w+S8txZG7IynYXjqwZZrbTLtcfbHr0djeSmmWFoozUdHYp97paLPU+rrwoWZDE71tbE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,49 +144,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu 21-08-25 10:30:30, Julian Sun wrote:
+> On Thu, Aug 21, 2025 at 4:58 AM Tejun Heo <tj@kernel.org> wrote:
+> >
+> > On Wed, Aug 20, 2025 at 07:19:40PM +0800, Julian Sun wrote:
+> > > @@ -3912,8 +3921,12 @@ static void mem_cgroup_css_free(struct cgroup_subsys_state *css)
+> > >       int __maybe_unused i;
+> > >
+> > >  #ifdef CONFIG_CGROUP_WRITEBACK
+> > > -     for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++)
+> > > -             wb_wait_for_completion(&memcg->cgwb_frn[i].done);
+> > > +     for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++) {
+> > > +             struct wb_completion *done = memcg->cgwb_frn[i].done;
+> > > +
+> > > +             if (atomic_dec_and_test(&done->cnt))
+> > > +                     kfree(done);
+> > > +     }
+> > >  #endif
+> >
+> > Can't you just remove done? I don't think it's doing anything after your
+> > changes anyway.
+> 
+> Thanks for your review.
+> 
+> AFAICT done is also used to track free slots in
+> mem_cgroup_track_foreign_dirty_slowpath() and
+> mem_cgroup_flush_foreign(), otherwise we have no method to know which
+> one is free and might flush more than what MEMCG_CGWB_FRN_CNT allow.
+> 
+> Am I missing something?
 
+True, but is that mechanism really needed? Given the approximate nature of
+foreign flushing, couldn't we just always replace the oldest foreign entry
+regardless of whether the writeback is running or not? I didn't give too
+deep thought to this but from a quick look this should work just fine...
 
-Le 11/08/2025 à 07:34, Harry Yoo a écrit :
-> Introduce and use {pgd,p4d}_populate_kernel() in core MM code when
-> populating PGD and P4D entries for the kernel address space.
-> These helpers ensure proper synchronization of page tables when
-> updating the kernel portion of top-level page tables.
-> 
-> Until now, the kernel has relied on each architecture to handle
-> synchronization of top-level page tables in an ad-hoc manner.
-> For example, see commit 9b861528a801 ("x86-64, mem: Update all PGDs for
-> direct mapping and vmemmap mapping changes").
-> 
-> However, this approach has proven fragile for following reasons:
-> 
->    1) It is easy to forget to perform the necessary page table
->       synchronization when introducing new changes.
->       For instance, commit 4917f55b4ef9 ("mm/sparse-vmemmap: improve memory
->       savings for compound devmaps") overlooked the need to synchronize
->       page tables for the vmemmap area.
-> 
->    2) It is also easy to overlook that the vmemmap and direct mapping areas
->       must not be accessed before explicit page table synchronization.
->       For example, commit 8d400913c231 ("x86/vmemmap: handle unpopulated
->       sub-pmd ranges")) caused crashes by accessing the vmemmap area
->       before calling sync_global_pgds().
-> 
-> To address this, as suggested by Dave Hansen, introduce _kernel() variants
-> of the page table population helpers, which invoke architecture-specific
-> hooks to properly synchronize page tables. These are introduced in a new
-> header file, include/linux/pgalloc.h, so they can be called from common code.
-> 
-> They reuse existing infrastructure for vmalloc and ioremap.
-> Synchronization requirements are determined by ARCH_PAGE_TABLE_SYNC_MASK,
-> and the actual synchronization is performed by arch_sync_kernel_mappings().
-> 
-> This change currently targets only x86_64, so only PGD and P4D level
-> helpers are introduced. In theory, PUD and PMD level helpers can be added
-> later if needed by other architectures.
-
-AFAIK pmd_populate_kernel() already exist on all architectures, and I'm 
-not sure it does what you expect. Or am I missing something ?
-
-Christophe
-
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
