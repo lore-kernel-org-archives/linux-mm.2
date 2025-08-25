@@ -4,91 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93124CA0FE7
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 20:07:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F94CC8303F
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 20:18:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 75A598E006A; Mon, 25 Aug 2025 16:07:24 -0400 (EDT)
+	id B1EDA8E006B; Mon, 25 Aug 2025 16:18:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 732128E0038; Mon, 25 Aug 2025 16:07:24 -0400 (EDT)
+	id AF4E88E0038; Mon, 25 Aug 2025 16:18:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66F188E006A; Mon, 25 Aug 2025 16:07:24 -0400 (EDT)
+	id A31CE8E006B; Mon, 25 Aug 2025 16:18:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 51AF98E0038
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:07:24 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D387F1392B3
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 20:07:23 +0000 (UTC)
-X-FDA: 83816364366.16.9B7B74C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F037E8E0038
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:18:19 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7859C1A0568
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 20:18:19 +0000 (UTC)
+X-FDA: 83816391918.18.DC44E4B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 3AC401C0007
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 20:07:22 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=okZorsbX;
-	spf=pass (imf20.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id DA83614000F
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 20:18:17 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hFlxFsri;
+	spf=pass (imf09.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756152442;
+	s=arc-20220608; t=1756153097;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=53NkEfyxXcq7YABqgRu4OdDxg0bZnrXVbuQtaZ6hH8g=;
-	b=Wt+kPXwxd8Xdvz4Wrr3cYnVLTUYB/erKn7m13Yc92jMlams2TSxtJKaPjwacL3ow2Nnxhf
-	5CZy+ZlWTzV39/430bNXZyKqN7wr6FWfRGIT0VmHtd8vHcmfkFGY2354/HYxo77nngvkJf
-	Pa1A0D7zusHt1dyF2K0To3gIaDmqlAU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756152442; a=rsa-sha256;
-	cv=none;
-	b=VKjqL1OWKJLE2WRyn+5TMfVF9t759CGFFUPmf8fHBo+EbhEBPzPoGacbq5bHvJLeYVlEPC
-	pWNuMoxBQNTa/Czy6Y/DyyZ6AiAxYvtm0rcJnuiUvXdk7SmkLdPKv4Nv/vmBNHiXmqBBFx
-	idwkTQq/k0HMDS4LuOHkcb/4Kro1UUc=
+	bh=yNerjuxI+KYbw3mNCEHMV8i09CJJK9GCt86H4fr7e/g=;
+	b=e2t2SnYorU2dJkV41EvBrMRKHuuXgMiQMaCSMEN83I4ChDo8mqJyTDlzvdkuoHuiG2iRKT
+	XIlFP5Cjy8jQsZqpu5pj2taw8+aPp7IxEpZaL06zWviJsYQkOjqeyiN8xAugft0TG0rnjJ
+	t9dq7U04t8fjeJTzmCuiOy1z6Hg8JnA=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=okZorsbX;
-	spf=pass (imf20.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hFlxFsri;
+	spf=pass (imf09.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756153097; a=rsa-sha256;
+	cv=none;
+	b=hP2Z39Pop/sXWxFu8vjJqB2STFVR3NAKpNK3hDy8UXdM7GqcMtkRP31w8IDIBMfQFLhNF5
+	BQ5Dz9zFZ09UtMRjDBJhZyUkJP3hGnororuErEJsc38Nk7VmKQ+8VdqeBd89jKP258F3AJ
+	XYQEO2FVrys+gWVyz0su6MK0L1MLq0g=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 84C7260245;
-	Mon, 25 Aug 2025 20:07:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9BC1C116B1;
-	Mon, 25 Aug 2025 20:07:18 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 47722601E5;
+	Mon, 25 Aug 2025 20:18:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51237C4CEED;
+	Mon, 25 Aug 2025 20:18:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756152440;
-	bh=/3rKbaJD+w6nURlr7+uhBX9TAhFoWk7q48ExNb7Wiq0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=okZorsbXLxI1C0tQJOJhpXkygrsAezPT+G9FqvCMtkuufdEJvwjZLRFO0eFxfdzbt
-	 4OU30VK3uzdtYHYGiKx51p+O4tgSHQ2BZDZEgWg2P6W/r2+1jZ8sRTH/203KgV057Q
-	 FV06YSnofD90bfoZch8IdffPcpOfHe230rO4CQaZlPBY7iAaqbfuGAvlNoecDVs12c
-	 JkrNfKYI33pZOXcAyup821Zi7LB+eNk/nGLE3f9lv2oacQrymSVCYdEsoHvu7cX6fO
-	 G2IFhjdufyv25hx2skCeLhtVbLKFTXKOr1In9l7fAhz7f0Sy4ZNl8aOarP9h/eyD84
-	 rW9rN/C+94/HA==
-Date: Mon, 25 Aug 2025 13:07:15 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: kernel test robot <lkp@intel.com>, Rohan McLure <rmclure@linux.ibm.com>,
-	llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Andrew Donnellan <ajd@linux.ibm.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>
-Subject: Re: [akpm-mm:mm-new 216/233]
- arch/riscv/include/asm/pgtable.h:951:36: error: too few arguments to
- function call, expected 3, have 2
-Message-ID: <20250825200715.GA598466@ax162>
-References: <202508230551.qiEQu04P-lkp@intel.com>
- <20250822150906.7a6a87a7a8ad69f2ad67c817@linux-foundation.org>
+	s=k20201202; t=1756153097;
+	bh=yNerjuxI+KYbw3mNCEHMV8i09CJJK9GCt86H4fr7e/g=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=hFlxFsrioVHoPBVPmP1nQAdWfA6sGqieK/3eJIPNwb/fgHtGy72TnnSEvhYryibRv
+	 GFKFFoV8oSOgWAtWyCNJNocRKr9FJwZ2ZGpaUfnsOhsyI0kupY0SZiqYyBfPilEvcE
+	 lC8u05P6vI385iou8sEtH/JARLmrK/KjWR9Gq8DplgFKfLbZgXtCTwPYWtcQRGEdVk
+	 RPbLgoMWeYCoQ2qRe5bF0p/PlmOi7wwTGbEdmACDi9xjXr3qRzKZgG4IvzRNF2m7fK
+	 PHyxc8DoAeOJeLn60+cbpo9WKw0T1FU8V8yljOwRUbnW4SHutpvZMkzdJxcZLgjaNC
+	 4b0+vQDoj+Kgw==
+Date: Mon, 25 Aug 2025 16:17:53 -0400
+From: Kees Cook <kees@kernel.org>
+To: Marco Elver <elver@google.com>, elver@google.com
+CC: linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Alexander Potapenko <glider@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Andrey Konovalov <andreyknvl@gmail.com>,
+ David Hildenbrand <david@redhat.com>, David Rientjes <rientjes@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, Florent Revest <revest@google.com>,
+ GONG Ruiqi <gongruiqi@huaweicloud.com>, Harry Yoo <harry.yoo@oracle.com>,
+ Jann Horn <jannh@google.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Matteo Rizzo <matteorizzo@google.com>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ linux-hardening@vger.kernel.org, linux-mm@kvack.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_RFC=5D_slab=3A_support_for_compiler-?=
+ =?US-ASCII?Q?assisted_type-based_slab_cache_partitioning?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20250825154505.1558444-1-elver@google.com>
+References: <20250825154505.1558444-1-elver@google.com>
+Message-ID: <0DC67CE5-6006-4949-A81D-882DBDF4DAC4@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250822150906.7a6a87a7a8ad69f2ad67c817@linux-foundation.org>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: DA83614000F
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3AC401C0007
-X-Stat-Signature: 1hwt43z9dstiur8q43mnpguph47k7zmw
-X-HE-Tag: 1756152442-3040
-X-HE-Meta: U2FsdGVkX1/QtZnwQ1Ho++O9jut7QQ5ZRsfTMolMk0CMjsrD/SU8A2xRq2iVeSup8/syy7Q5/Lp6994tDZv4KGJ4Ntik784XtqM5h7DGvK3F1cS0UC+QO5FVN/IHutSYMWenz1hOIDG88kLdTisFsWiAr8LtLfmxoB73Cl6yCZvyyIsBIsUv0a5YnhGLBau0f2obX8yvBR9+9G9vJbxWy46uOf5Fwin86TASmTjh+V4+7q+U6iz1MkoynA6qQmSNIOCrLVD3kOJKl8g1L8XXDmgfKqN1rnCae2tLyymaWCTrZ7x5Uno4xXFEABC+lrTkvFCJxxb7iYTQA8YDcRYc1PjgbcBsdygZzXixsXovLcF/hT93D+ucNi1Kyla+4OJS1vGZcjM+IPX8fhWC7IBP58UoSpgW/M9c52cuzlM0lz43sNWqYbWhdr5WoEciuXexvNksevzO2UOKuJ/COwRLMTxTAy8VtKBJzY49Hwg0QG9Zzj6jv3atNG5+Svviz59tEWwSiclId4Wm0yePNrDMC6195JZaIHuF7Y1OFzb3vwIhjl6oa2ouNDDJjxWqkn6KQ4g80n1NaC1lgeocMkPDooctI1FyS0GZ3etrTMbz2+t16fR6m94DLMdB03t0N+J1Y/IIQrBnCvSG8VUHKQO8y47zDsyYrneC2+jDHKiM5eL7PF1SawxWB6REGGHN1YHOr6t0aFp7/tKQYNVWkie0Vh0Z9l5nGlSuf6PuJsrbJ6dRrdMpoQJbRdv5VSjtFEvztcbnuPEWwYkcXoIUTCRBNHCmhP/jEAOT5IK2ucNlIW99d6RPZtb8Si9mDQv3NNMQnHuGLgOGkoVDf0IIzjaWydEbKPdO7GwVeurWoRQ6e+P0fFn2yXUHW5U0PeF+310f0xPJyRlrar3Tl58Vn4WQIJad/+/CLgOB5r1SXDcZ1U0fc7G+vW4ZaIcjiETAXwSZMxgYbJka6FfxF1PrZNk
- teuLsECY
- n5geEPrjl9I8nQzLGH+PCIXzgeGn/nY3hVk06B5eRfEYS865ge/8Fiz6j3YbcU2DlnW2ZUXSLoy0mK5f9RqprmEw3aGWWShqKL90AIKfeVkkUsCZxcJ6/JbuV65hURvtPvfJOLn8v9XrIPri7k0FFgQLRkJ2r5Flw1FLjATDtR38qjoziPr4a4665ZPpmr7l4v32DT81qm6Ll7zAKZ+BcSqKkwLPz4+9KrKU8Vsvcrwfl2jSDMX+/H5fhOWqlKgdNFly7QigBGXBwjf2RenZqkvzeRSeeS8cJ0/wyTibgnGOyfyM2N99s5DuOJfyHHGK11TWD4Gt9As+o+GhU8E6aKizc3QzIYdnIx9mbEBJIsMixmA5xJ0ENAr065ZFI0FrNTuMDlS5XVFMWeAcyO+9zv9qY7Y5OAB74RNiM
+X-Stat-Signature: 3nko8go6op9a4esusep1wbzahobubqh7
+X-HE-Tag: 1756153097-411714
+X-HE-Meta: U2FsdGVkX1+g0ZeLcpkkuRQOytXAgAVGqr+oR9eeJna30oLv3O9w0A3UYMNyZsz56ABloAaLS5mSIfxOP79Tw6FTXU+w5U5tVpucDH5dRywo3IzSgvwmWPuQfe77LFoBnJjwgWA5E4yr5PuWVjh1DNbwu+4JRAuLhnd8W9Yz3VGjReeTzLhIkQ0+kMdb3dME+LzZqvtqVLBDv7KVwIyWRKtUTqzLC1tt05TdnK4gDw9DtvEO7EGcUjscGp+84KfKSm3LhgQD1GlEMXI7drEpfzTsD63OPr7cW2KlgNx+ZnahJxzAYqynXCHYeaaNTamMqf4AbZatyPH5UezfLY1RTWCAdgvBMQQtHLUflXJUSyVg1DDunjtaP7mQ4HB5EA9CMzj0NXXd3BJ0sxsKq9h01HYeU2+ZPSAdWDUzwida7ElqecZo8ej279cV4qDcadiBRIP6/aROulniBUUInTaP6T5Qdz6xJvgmkCEqv2XIuKfIRQqZQM4RIMMuamt+XkryPtTzcMsbkq7Jjf9XFDGovg6xxf/t+YtvYflICitn3IyEiOhLSnKeGz9CcLS1KjVw9hBiLeRzcs2IF1zoptp0sETf2kfeZv/LKmDP7pe1c8OQeucPrwLzJc/EEYSZ7RvMnpKhlhW7v9DsltvD4qDF1Zwz0oPTC0vQxwaEo/J98zqmqOQ9hhIfwet8XPD/HIfEbV4YnOG4HQfzgwUElfvmI6L7mTwfpp7WZfLwKnOuXD63ioAjH6yfVM8eKx/ky78PsN48ka0lWwG0l4Vh89jAgaCkE/bGv9V7PD2t6oZMMcjgWt20NqKEQeMIZqMbkIJA3BT0eDCwmXAVRu3skeYRxdh2k4oXFfC/Q/LdHm9pFKmp0ewGqobf8rPkPmsDkXZr9cnzm11lzXqw7HL8/vxeWMHrrjXYvtzBDHHvHTOiYM+QftR2ULZMn0iluYdYCps2DaAf68E98QiLBRQMXWQ
+ wef+Au1F
+ 9yStExhnvbQLN4B93haJtTXJaC6Hs0w11C9EhiTmMq0FLpPtqVQJj6iUHvVLLwfGY01JsS/ZDjqtiRzqqedT1/3oRCbbDSvma2ISjmt/i0X/q5uWFUu2FBIGl31PhxRxWuhGwpektGXZuePg0TZbJyAeolaf8ZLdLsMy9YGQFU1rQyjDe7dNuqTY67TyDDLAzxWa+UdsdD2GRaz9HxWv7oWWnwy07VIpHqggn9R5z9na2oS3i1AM2a6x/qUmRe8vK+pLtfQ2rqNV0H63pX+0JJNI3MTibGoeQtvmzl3+92iAsnzs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,62 +108,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 22, 2025 at 03:09:06PM -0700, Andrew Morton wrote:
-> On Sat, 23 Aug 2025 05:30:45 +0800 kernel test robot <lkp@intel.com> wrote:
-> 
-> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-> > head:   a8af4c2fd982fd94fffde3c5b6b764fd20af68fe
-> > commit: e009b0f3187482a5756ff3b015cf30277cc1cfd9 [216/233] mm/page_table_check: reinstate address parameter in [__]page_table_check_pud_clear()
-> 
-> > config: riscv-randconfig-001-20250823 (https://download.01.org/0day-ci/archive/20250823/202508230551.qiEQu04P-lkp@intel.com/config)
-> > compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project d26ea02060b1c9db751d188b2edb0059a9eb273d)
-> > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250823/202508230551.qiEQu04P-lkp@intel.com/reproduce)
-> > 
-> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> > the same patch/commit), kindly add following tags
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Closes: https://lore.kernel.org/oe-kbuild-all/202508230551.qiEQu04P-lkp@intel.com/
-> > 
-> > All errors (new ones prefixed by >>):
-> > 
-> >    In file included from arch/riscv/kernel/asm-offsets.c:8:
-> >    In file included from include/linux/mm.h:31:
-> >    In file included from include/linux/pgtable.h:6:
-> > >> arch/riscv/include/asm/pgtable.h:951:36: error: too few arguments to function call, expected 3, have 2
-> >      951 |         page_table_check_pud_clear(mm, pud);
-> >          |         ~~~~~~~~~~~~~~~~~~~~~~~~~~        ^
-> 
-> Thanks, I added this:
 
-It appears that this fix patch was applied to the wrong patch. The error
-is about page_table_check_pud_check().
 
-> --- a/arch/riscv/include/asm/pgtable.h~mm-page_table_check-reinstate-address-parameter-in-page_table_check_pud_set-fix
+On August 25, 2025 11:44:40 AM EDT, Marco Elver <elver@google=2Ecom> wrote=
+:
+>Additionally, when I compile my kernel with -Rpass=3Dalloc-token, which
+>provides diagnostics where (after dead-code elimination) type inference
+>failed, I see 966 allocation sites where the compiler failed to identify
+>a type=2E Some initial review confirms these are mostly variable sized
+>buffers, but also include structs with trailing flexible length arrays
+>(the latter could be recognized by the compiler by teaching it to look
+>more deeply into complex expressions such as those generated by
+>struct_size)=2E
 
-But this change is about page_table_check_pud_set(), so -next is now
-broken in the opposite way
+Can the type be extracted from an AST analysis of the lhs?
 
-  arch/riscv/include/asm/pgtable.h:951:42: error: too many arguments to function call, expected 2, have 3
-    951 |         page_table_check_pud_clear(mm, address, pud);
-        |         ~~~~~~~~~~~~~~~~~~~~~~~~~~              ^~~
-  include/linux/page_table_check.h:125:20: note: 'page_table_check_pud_clear' declared here
-    125 | static inline void page_table_check_pud_clear(struct mm_struct *mm, pud_t pud)
-        |                    ^                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+struct foo *p =3D kmalloc(bytes, gfp);
 
-as it does not appear that e009b0f3187482a5756ff3b015cf30277cc1cfd9
-is there.
+Doesn't tell us much from "bytes", but typeof(*p) does=2E=2E=2E
 
-> +++ a/arch/riscv/include/asm/pgtable.h
-> @@ -948,7 +948,7 @@ static inline pud_t pudp_huge_get_and_cl
->  {
->  	pud_t pud = __pud(atomic_long_xchg((atomic_long_t *)pudp, 0));
->  
-> -	page_table_check_pud_clear(mm, pud);
-> +	page_table_check_pud_clear(mm, address, pud);
->  
->  	return pud;
->  }
-> _
-> 
-> 
+--=20
+Kees Cook
 
