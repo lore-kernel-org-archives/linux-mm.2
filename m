@@ -4,107 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A57D2CA0FE1
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 09:40:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01B39CA0EFA
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 09:46:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A64498E0009; Mon, 25 Aug 2025 05:40:54 -0400 (EDT)
+	id 4CB868E000B; Mon, 25 Aug 2025 05:46:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A152D8E0001; Mon, 25 Aug 2025 05:40:54 -0400 (EDT)
+	id 4A36E8E0001; Mon, 25 Aug 2025 05:46:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92AEA8E0009; Mon, 25 Aug 2025 05:40:54 -0400 (EDT)
+	id 3B9528E000B; Mon, 25 Aug 2025 05:46:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F9928E0001
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 05:40:54 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4FA7883E64
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 09:40:53 +0000 (UTC)
-X-FDA: 83814785586.23.474611A
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 1454A140005
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 09:40:50 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
-	spf=pass (imf23.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 293ED8E0001
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 05:46:24 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D470914033D
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 09:46:22 +0000 (UTC)
+X-FDA: 83814799404.18.E43BEA3
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	by imf29.hostedemail.com (Postfix) with ESMTP id CB64C120006
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 09:46:20 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="US/l6LPu";
+	spf=pass (imf29.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.208.172 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756114851;
+	s=arc-20220608; t=1756115180;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0PCMP2DJBUtl6uDh+HQlNBdAOpBQeWcYe8UpTkRt06E=;
-	b=MInJhie1jQIDexlwicch/l/thiJvey/hjpjRQUykNvSSPdw0Ny49WEcbvdxfQKkVce2gD+
-	PSH0Qjarqzbe/eFsyyMIwHUzc61nvnuVPJmuNbBudNpe+92JQigj+MBT80jLcaAWckl+Hj
-	0CLqG24JWLoVOqKEhf1TdIbPjmGwvZg=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
-	spf=pass (imf23.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756114851; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vA6vI044zEdIbfha2CiMeRJA/WTffOEZFr4+NNjxx2k=;
+	b=EMPJD7dUYVeollN+uPEAfZqP3YhCoTHkx/YUlOoeckw5fFRUcj6VOQZm5p/RA9NVP8iQ7a
+	p3a9bB6mhEAxUnvOg2Eaq71leDrV3SdY7qJqP0AvALHYH5IJo860l4T5v3h6FdUF8QqSJU
+	mDwniHWF+cCkXc/BqmgJa/RCCs60Bb4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756115180; a=rsa-sha256;
 	cv=none;
-	b=wsyxvJRds9WIliJEdsc9FwpgdAzfJKoiISVy8gj88gi84taggROJXph9mE5cPiPs/dyaNF
-	ZNVykg1VuKE426aggQGUV9b0yvIwUwnGIRp0Nk7q43ob3QHPVl5SbjE5zDbyUU2yCNvTP1
-	gsqsQx13GO1lrfbYQq1Uyd3GO/o4O1A=
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4c9QlP1HkLz9sSh;
-	Mon, 25 Aug 2025 11:40:49 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id xXbQBsr7Ehxm; Mon, 25 Aug 2025 11:40:49 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4c9QlP04NMz9sSc;
-	Mon, 25 Aug 2025 11:40:49 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id D6B268B765;
-	Mon, 25 Aug 2025 11:40:48 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id gtwn_B0_QRlE; Mon, 25 Aug 2025 11:40:48 +0200 (CEST)
-Received: from [10.25.207.160] (unknown [10.25.207.160])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 763DD8B764;
-	Mon, 25 Aug 2025 11:40:48 +0200 (CEST)
-Message-ID: <16679d56-5ee0-469d-a11c-475a45a1c2b9@csgroup.eu>
-Date: Mon, 25 Aug 2025 11:40:48 +0200
+	b=ck/YQZGq7yUQc3KEVGWbeMvpGZ5NBaguR+DZ2+PZguHxIQxhE/hwmDZRihsyACN4gdoYT0
+	bnONWWGbJFCVumCqGfoHrlF1FZ19EhzOCvk/Hw9jIVadbktHRATnrBw25UsRBWkbZKu688
+	OK/tSsBf/IFSks/DKXmf9sjymcg0gyE=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="US/l6LPu";
+	spf=pass (imf29.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.208.172 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-3367cd3b7f3so594761fa.0
+        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 02:46:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756115179; x=1756719979; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vA6vI044zEdIbfha2CiMeRJA/WTffOEZFr4+NNjxx2k=;
+        b=US/l6LPudBoTtTEyDkHQ9f06ag2hy+HLobrTm2k4JVx18QkWGkGd6SugpNwCYf8P+w
+         kUA/e00rNCynLdCTSXdTLIGF9m2FF9SbniaO83WGhlvqSaNT14B4UtlBygDgUttdg3BE
+         SU3Dsp7G/H550UN9QRJYlhWHoyWHw0dxaizfxAWfTzJLXEUUptCbygRccI9UDcg1QHkm
+         uY+lOHbzwU+9QrftzV2HZP0ZM2wBD6vWerPheEH6tjD0UWWyrR8OWnKIyqHkn+uGzfVK
+         L0Dk3O5J7ZlK3FQQKx8NLsNTt4eoW/vruWPmJl9nGlN4I7kyteI4Kc1iFjasCvZtP4cL
+         wePg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756115179; x=1756719979;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vA6vI044zEdIbfha2CiMeRJA/WTffOEZFr4+NNjxx2k=;
+        b=FWs5L2MVPmEs0DtTY+vfinkVha3OoTvVFVqCwI93U7B3/ybHrN9S0ZK+JZkT3N2AbC
+         cQRCMTRP5Vz+x5AmyAWbXPfxGjzUofNKf0WfoBxvH1q4QTXHpoNxiIbEtPpZK1LHm++F
+         cLcPAc+mlb1w4nyHMhAKkAmOIPI7f+ngk5vySmDVxH11iM/kGh482TDf2En0g8iMx0CX
+         MLWi7IXjjBAuVMQlMXpSfh0q0BFdPecnPyW1SF4EZbTdVay64q2n4MOkQ5U0SOFUOXCO
+         p7B0Vb9fCchN2eeKosUn/16LYaNF6hHFgLoYNLUBaSg5GFxxcMnHImVBALRll691Pdkf
+         oQAA==
+X-Forwarded-Encrypted: i=1; AJvYcCVWl9AFBwpHm6WqKHLkMXhcVcKaOeC1BFOx0qx31yG0fxBoijJuvTXzJPBB6XbZ2MJNI24i2N/YMw==@kvack.org
+X-Gm-Message-State: AOJu0YwLY0apfF0lxL0sQf27JnP6Kg1ybxwJgELu8u8jLN4SZLt0VDlI
+	HsvJacJhm+/zqyq5YF90zkUIashgUANE7/DNHlSZmrlK8R3sSwBg/8aL
+X-Gm-Gg: ASbGnctSbZjAzf5HQro91zs8A8iCaiQaK/Edm6J0+zih3D0s+Vee/PVJidbsTrX4/ho
+	R5Zj2Dk+bxr0iDAdGu6X+0H8jNb7/5n8F0jTguwOmrSv/6GU8nl3hHaQNevr5Nm53uYJI6Ey3lg
+	5WWSAZ/HZ8+6DTEKE2NGuXs62LCswsIygYIxYBvzLjpUxTekU/vSMzK6yust7ebzdkpaxQXCAp5
+	G89CigEQIoqXq8wPUzu0V+Gigqyt2ZpOKqV4hzqnqjO33+sHp6BhU0/E3rxxeio+zAsYu3tw+Ma
+	MaRfQy53uCACkW1jXwhOH3KxcjynCrQbq0StNTqiifMF+0CmmOAI31Uq17ivInliEWi4YCbDYpr
+	EPN1BFN3BAgSfN3DzLFS9JW+il1ot
+X-Google-Smtp-Source: AGHT+IH1efX+K+mAJdmcOpmqJG6368qZBIn8i/p3/9xVotsBIWed+ijE4z8OQ+KPmvT3ummuxgSxVg==
+X-Received: by 2002:a05:6512:2527:b0:553:ad91:d400 with SMTP id 2adb3069b0e04-55f0cce52f4mr1975986e87.6.1756115178725;
+        Mon, 25 Aug 2025 02:46:18 -0700 (PDT)
+Received: from [10.214.35.248] ([80.93.240.68])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55f35c12072sm1557498e87.44.2025.08.25.02.46.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Aug 2025 02:46:17 -0700 (PDT)
+Message-ID: <8077d344-580b-431b-b7dc-a84dc4ba6b44@gmail.com>
+Date: Mon, 25 Aug 2025 11:46:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/10] powerpc/uaccess: Implement masked user access
-To: Gabriel Paubert <paubert@iram.es>
-Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
- <npiggin@gmail.com>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Darren Hart <dvhart@infradead.org>,
- Davidlohr Bueso <dave@stgolabs.net>, Andre Almeida <andrealmeid@igalia.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Laight <david.laight.linux@gmail.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Daniel Borkmann <daniel@iogearbox.net>, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-block@vger.kernel.org
-References: <cover.1755854833.git.christophe.leroy@csgroup.eu>
- <647f1b1db985aec8ec1163bf97688563ae6f9609.1755854833.git.christophe.leroy@csgroup.eu>
- <aKwnMo7UllLZkOcK@lt-gp.iram.es>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <aKwnMo7UllLZkOcK@lt-gp.iram.es>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 4szjgq1icaz5bz1cdh1no7bric7msrpg
+Subject: Re: [PATCH v2] mm: fix KASAN build error due to p*d_populate_kernel()
+To: Dave Hansen <dave.hansen@intel.com>, Harry Yoo <harry.yoo@oracle.com>
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, andreyknvl@gmail.com,
+ aneesh.kumar@linux.ibm.com, anshuman.khandual@arm.com, apopple@nvidia.com,
+ ardb@kernel.org, arnd@arndb.de, bp@alien8.de, cl@gentwo.org,
+ dave.hansen@linux.intel.com, david@redhat.com, dennis@kernel.org,
+ dev.jain@arm.com, dvyukov@google.com, glider@google.com,
+ gwan-gyeong.mun@intel.com, hpa@zyccr.com, jane.chu@oracle.com,
+ jgross@suse.de, jhubbard@nvidia.com, joao.m.martins@oracle.com,
+ joro@8bytes.org, kas@kernel.org, kevin.brodsky@arm.com,
+ linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, lorenzo.stoakes@oracle.com, luto@kernel.org,
+ maobibo@loongson.cn, mhocko@suse.com, mingo@redhat.com, osalvador@suse.de,
+ peterx@redhat.com, peterz@infradead.org, rppt@kernel.org,
+ ryan.roberts@arm.com, stable@vger.kernel.org, surenb@google.com,
+ tglx@linutronix.de, thuth@redhat.com, tj@kernel.org, urezki@gmail.com,
+ vbabka@suse.cz, vincenzo.frascino@arm.com, x86@kernel.org,
+ zhengqi.arch@bytedance.com
+References: <20250821093542.37844-1-harry.yoo@oracle.com>
+ <20250821115731.137284-1-harry.yoo@oracle.com>
+ <3976ef5d-a959-408a-b538-7feba1f0ab7a@intel.com> <aKfDrKBaMc24cNgC@hyeyoo>
+ <79027c6f-f2f3-41b2-9ff3-c5576fc06c5c@intel.com>
+Content-Language: en-US
+From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+In-Reply-To: <79027c6f-f2f3-41b2-9ff3-c5576fc06c5c@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1454A140005
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756114850-852612
-X-HE-Meta: U2FsdGVkX19DuoGK9CQIDzNTs120fiHwD9hv6DK4iub/CJujas9KJfEcDTJY5ccf6hOXVXht1k0CcSi/IqJAs2RjmWJ+kvqhwN9QHqrd+0/yAr/z7K5aheE+/l3gBUA66iOfyh1ciEEYwebWDi6aqBsBK9uWc17SpSAo018hVF5IVSYQoCqQo7dxt62zWtN6ww97YkL/jlJ1PDR0o4gO1VHtfwrCVKNM0X23bp/NS98CuPwgmhMuT22zR6jRhSa9NcCNxNTqm8YYKyuAo3RG9zFPjrhVhDXZlrum/fUW5E63BUn2oJq/ECV6wZihUilxhFdPiH67sZxbNEU4ZWvzfm+dEkqTuYWHJSjnv/hMfmndSzA51jbJ45VUsx/HBRxgR4p1pCuCV0ikzUrLJg99nQsJXg7ISGIBhEkI+wM+v+Z/WBT/J7gzOF2EA2Zk93TLJc3qLhXttoCsa6uhEqxkzDyBeINxVVdCivQexK2lMMsQeeiXndwq3hl9Mgl4naUIyaoxbtCfMBDbYU6Is5lKKDXWtWZU6BqI5QdkUxO+eU2YH//HpWOGIoUJD+Zjx+Hr5Da0/vP+AZbT4+AM91VwKj8lxfvLJmffa1WvgOD+SLHumFaXZstcNtaKHWA7QVtK1xKDg2TXqjAtdUs768LnwmAv7DAWNK1yqBHY2VtpDSgw0sfg+mDLP2sk19cYURnJH5q6C7Pm7vFnar56RTYLEiq4i9/KIjODpOD9I45/EtqiKQur/MFsGcppviCnc80jvfMix+NcuPQI3wUBjTE7R7JYqnKbxEOTlEZSmmFwqw8JJGJomq6qB+J8bMCgbNu/ewoyn0QsBjnmMH69zXjvN10ok/Yk72/bRru/hjHxIqb4xS9kh5Gje14bpdqhnqGlLcJm9X2XsPqZjZC0Jj59scLzK9CW2/p0J0iotVU1zewBS6iC1lKTQJFe23leN4j5CMN9P2myXWQJA0psY/q
- d2jzACT6
- LANzHwkENrLsJSKBpAD295SHh9/Q7bowA+T40j6lm3EBPUqQoJg20kz4EcnPnX+6mB39WiLy8RLJGbchAH9VH54o0jEo3r24cM2hbLVn+4dxThX0Jpr/G9omBXKcvwil6+mh7xYkoXWv0jogc5D9opXuxFa7RkBxnUhLP1lodU4XTyYNza5KN13jRtwXaDPfWf4QZODCQaxl7ivYd0g844Rw1t4zkUMySDm3eteCsUoM9SpHmUgqLbUEZWE9lHHSfBglv+Yh/tBAh4oJC6a6WjPUBZA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CB64C120006
+X-Stat-Signature: tjumccc55kcrqw3s86znjkbc61d8q1bz
+X-HE-Tag: 1756115180-203586
+X-HE-Meta: U2FsdGVkX1/EDW7HnFwZMOdFcRqf29y1ZHRixuVlWjPlHd7XZvNP+9NTGCcqEETCEFInqYtYDhbqT8Iod1MBMqFzA2n162iMExntjnxaJolIgIG1ciINivT/pPnCIRavaWMRo4IJw+FxIM9wzHB4w6lk4z7BOAE07WLh1O5tHbIMQOQkcELnShlY5tgZiEfs4BJfLWDZMmnIAH392JQyBvwrtTIJWgaUF8ZcXnqb+za6c8MFarNkQIDEIPPQi8UCw988/4AxXdnz9puC47Gx1b8XEM2TGSrIxyDic+AhwbRzbse5t4BEK/z/NXVdcoS0zXT/A2Jw5Vbx47jySjQCGMrg9mZeJVc6TdZBSM6sgzZS2TE5U3N/iV/z95/96omeAU110WXzmPG/sQ4GDDOJTbu5iW1rIejPokDpVrnVnkg1zHL3nn06xJgtjmbpLks71Mnkev+TvzIV27UJ3KosbYZ2b6NKgULWNdLpOi6y5GJxkir4xSq2QQ2X4vJsR7j7E8jlIvxsYmbnD5TknpUdm8Ls/x73I26njegTLYq6sD4IBMfEivQ7a7j34n2v+IrHByf/JfGJ6LUb1ErIlfIJJdogsPHDjRD4pAkRYvhG1NwNjuV7wWyDASsPkQmtAAsCyXP0oC8aSasR+pHgKJtENIdX83xMV8FWnAvQZqSRPhPp2tqtcbHz+Ygd4TDO4kyb2rjm/2LKN8YM+IyGFcf+EyYCd+ctFemqTpYse7LuMX6DkEMyVeGNag+TYvIEKri8/WlPonmFrCD0zucec9+KNjcUz06CPYoyKad4nGmNbCCPIWCO7WqVMdThRU1zie3sdJQwHEyFbLznIw9iVSe5HfcPUPpkNlhq5+PUoAoqopyaSqj8RgK/z98/0zJIgJ2tHh9pl8rnEeNdVQmd1N0SYeuB+1gdR29BG2H+bODhYLlxmp42pYXvUyOKXsdDHvGcW4MPrrC5HJy+8i2bIoH
+ e2ruK35U
+ d+oRf8zn+yi2knFWhh9JI3TqlG6F9cKYjSGc2Rtk3ZnYsaeqjSkhz2B49C6cbeDvTW9ZYZ6PDZLkNTZVZhXFXL/WubQJ3RUoeZw7WV0SkXZj/R+S766WVFjt6Zcxv6VBS5l3T6OLCoDHuivJIBJROLFdKlHCo/mVAFDzHLS7Bo1sfj7eUj3CIXuQN+hpEBLBboNTfBHv0ZVfFdRJjsFnz6NxLLjHzz1HJQP2g7ht+VsMWoZRkzdhA8aQd4Blo1pULq3OTBOWH9ms/XbvteECZiTmH5W0xswyAh1c6CChsPb4G5fzHwcF1eUb9QDuwv5kSQ0MYuzeipbniq0YL1p5U/Xf6HfT3sv6RxLo0X4DE6IooYB28E5nYyRu2SE1ZnkfEMX+bLsjbBSLy1lTqLUbKLN4EKMO28cmsxcsggY0V9k7Xcd8/j2zvmtwnd27lXgQGGAtyJCCYFpZH39DM+ZOby14FNGJ+ZGoGNGosCQ1Yp48kxpT+oH6VBYGAEySqSbzaC54X/9iCnKcEDSx4z/ksus5Uunco0b6J7ysRicM21sr1lE80PPst3oA6EA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,95 +138,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Gabriel,
 
-Le 25/08/2025 à 11:04, Gabriel Paubert a écrit :
-> [Vous ne recevez pas souvent de courriers de paubert@iram.es. D?couvrez pourquoi ceci est important ? https://aka.ms/LearnAboutSenderIdentification ]
+
+On 8/22/25 7:08 PM, Dave Hansen wrote:
+> On 8/21/25 18:11, Harry Yoo wrote:
+>> On Thu, Aug 21, 2025 at 10:36:12AM -0700, Dave Hansen wrote:
+>>> On 8/21/25 04:57, Harry Yoo wrote:
+>>>> However, {pgd,p4d}_populate_kernel() is defined as a function regardless
+>>>> of the number of page table levels, so the compiler may not optimize
+>>>> them away. In this case, the following linker error occurs:
+>>
+>> Hi, thanks for taking a look, Dave!
+>>
+>> First of all, this is a fix-up patch of a mm-hotfixes patch series that
+>> fixes a bug (I should have explained that in the changelog) [1].
+>>
+>> [1] https://lore.kernel.org/linux-mm/20250818020206.4517-1-harry.yoo@oracle.com
+>>
+>> I think we can continue discussing it and perhaps do that as part of
+>> a follow-up series, because the current patch series need to be backported
+>> to -stable and your suggestion to improve existing code doesn't require
+>> -stable backports.
+>>
+>> Does that sound fine?
+>>
+>>> This part of the changelog confused me. I think it's focusing on the
+>>> wrong thing.
+>>>
+>>> The code that's triggering this is literally:
+>>>
+>>>>                         pgd_populate(&init_mm, pgd,
+>>>>                                         lm_alias(kasan_early_shadow_p4d));
+>>>
+>>> It sure _looks_ like it's unconditionally referencing the
+>>> 'kasan_early_shadow_p4d' symbol. I think it's wrong to hide that with
+>>> macro magic and just assume that the macros won't reference it.
+>>>
+>>> If a symbol isn't being defined, it shouldn't be referenced in C code.:q
+>>
+>> A fair point, and that's what KASAN code has been doing for years.
+>>
+>>> The right way to do it is to have an #ifdef in a header that avoids
+>>> compiling in the reference to the symbol.
+>>
+>> You mean defining some wrapper functions for p*d_populate_kernel() in
+>> KASAN with different implementations based on ifdeffery?
 > 
-> Hi Christophe,
+> That would work.
 > 
-> On Fri, Aug 22, 2025 at 11:58:06AM +0200, Christophe Leroy wrote:
->> Masked user access avoids the address/size verification by access_ok().
->> Allthough its main purpose is to skip the speculation in the
->> verification of user address and size hence avoid the need of spec
->> mitigation, it also has the advantage of reducing the amount of
->> instructions required so it even benefits to platforms that don't
->> need speculation mitigation, especially when the size of the copy is
->> not know at build time.
->>
->> So implement masked user access on powerpc. The only requirement is
->> to have memory gap that faults between the top user space and the
->> real start of kernel area.
->>
->> On 64 bits platforms the address space is divided that way:
->>
->>        0xffffffffffffffff      +------------------+
->>                                |                  |
->>                                |   kernel space   |
->>                                |                  |
->>        0xc000000000000000      +------------------+  <== PAGE_OFFSET
->>                                |//////////////////|
->>                                |//////////////////|
->>        0x8000000000000000      |//////////////////|
->>                                |//////////////////|
->>                                |//////////////////|
->>        0x0010000000000000      +------------------+  <== TASK_SIZE_MAX
->>                                |                  |
->>                                |    user space    |
->>                                |                  |
->>        0x0000000000000000      +------------------+
->>
->> Kernel is always above 0x8000000000000000 and user always
->> below, with a gap in-between. It leads to a 4 instructions sequence:
->>
->>    80: 7c 69 1b 78     mr      r9,r3
->>    84: 7c 63 fe 76     sradi   r3,r3,63
->>    88: 7d 29 18 78     andc    r9,r9,r3
->>    8c: 79 23 00 4c     rldimi  r3,r9,0,1
->>
->> This sequence leaves r3 unmodified when it is below 0x8000000000000000
->> and clamps it to 0x8000000000000000 if it is above.
->>
+> So would something like:
 > 
-> This comment looks wrong: the second instruction converts r3 to a
-> replicated sign bit of the address ((addr>0)?0:-1) if treating the
-> address as signed. After that the code only modifies the MSB of r3. So I
-> don't see how r3 could be unchanged from the original value...
-
-Unless I'm missing something, the above rldimi leaves the MSB of r3 
-unmodified and replaces all other bits by the same in r9.
-
-This is the code generated by GCC for the following:
-
-	unsigned long mask = (unsigned long)((long)addr >> 63);
-
-	addr = ((addr & ~mask) & (~0UL >> 1)) | (mask & (1UL << 63));
-
-
-> 
-> OTOH, I believe the following 3 instructions sequence would work,
-> input address (a) in r3, scratch value (tmp) in r9, both intptr_t:
-> 
->          sradi r9,r3,63  ; tmp = (a >= 0) ? 0L : -1L;
->          andc r3,r3,r9   ; a = a & ~tmp; (equivalently a = (a >= 0) ? a : 0)
->          rldimi r3,r9,0,1 ; copy MSB of tmp to MSB of a
-> 
-> But maybe I goofed...
+> #if CONFIG_PGTABLE_LEVELS >= 4
+> extern p4d_t kasan_early_shadow_p4d[MAX_PTRS_PER_P4D];
+> #else
+> #define kasan_early_shadow_p4d NULL
+> #endif
 > 
 
- From my understanding of rldimi, your proposed code would:
-- Keep r3 unmodified when it is above 0x8000000000000000
-- Set r3 to 0x7fffffffffffffff when it is below 0x8000000000000000
+This won't work. It will fix the linker error, but will introduce runtime bug instead:
 
-Extract of ppc64 ABI:
+lm_alias(kasan_early_shadow_p4d) -> __va(__phys_addr_symbol(NULL))
 
-rldimi RA,RS,SH,MB
+On arm64:
 
-The contents of register RS are rotated 64 left SH bits.
-A mask is generated having 1-bits from bit MB
-through bit 63− SH and 0-bits elsewhere. The rotated
-data are inserted into register RA under control of the
-generated mask.
+phys_addr_t __phys_addr_symbol(unsigned long x)
+	VIRTUAL_BUG_ON(x < (unsigned long) KERNEL_START ||
+		       x > (unsigned long) KERNEL_END);
 
+And NULL is < KERNEL_START.
+
+Since __phys_addr_symbol() isn't pure or const,  compiler has no right to eliminate such
+call even though the return value is unused.
 
 
