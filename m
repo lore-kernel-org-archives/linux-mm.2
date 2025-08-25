@@ -4,122 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF812CA0FE1
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 12:08:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C73CCCA0FE1
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 12:18:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5F378E0015; Mon, 25 Aug 2025 08:08:26 -0400 (EDT)
+	id 204F18E0016; Mon, 25 Aug 2025 08:18:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D0F848E0001; Mon, 25 Aug 2025 08:08:26 -0400 (EDT)
+	id 1DC458E0001; Mon, 25 Aug 2025 08:18:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFE1F8E0015; Mon, 25 Aug 2025 08:08:26 -0400 (EDT)
+	id 1194F8E0016; Mon, 25 Aug 2025 08:18:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A779E8E0001
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 08:08:26 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 578FB1A03DA
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:08:26 +0000 (UTC)
-X-FDA: 83815157412.19.8628DBA
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 9163914000F
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:08:23 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=KUSYqSs4;
-	spf=pass (imf23.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F3BFB8E0001
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 08:18:51 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BFAD0B92FD
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:18:51 +0000 (UTC)
+X-FDA: 83815183662.15.9C244D9
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 3D3FB100011
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:18:48 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=htDE4r67;
+	spf=pass (imf05.hostedemail.com: domain of yangshiguang1011@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=yangshiguang1011@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756123704;
+	s=arc-20220608; t=1756124330;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=djLIMBABOQ5QMilKv8RGXgyY8Eozctcb9yd8r0Ea10E=;
-	b=fIw9wdnhPLgWkKFfjz9tGR4O/jlUFKs9n8pRVv4Z1laKC9c+3QpvImA7d+YNdK/8NoENPU
-	1mu/fPXxZbXuK9LmMJwKkWiPIV7LQNZAD/NevajpgKn8MuEr6cd9CSg+010Y2wCS+vZ1MK
-	2oaMxihj6QiBmJCKdTWgoUgZwLVNE2E=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=enQjVH9CPVENIVsHk7gsCn5/5+hGNNH2XndDe1QIK7w=;
+	b=kq/cUqCq11pWrhgkkdnwhGOmdO5GnSX16tSvVMGV8AL6JVVomIoVL7elbk2TK+8NRVDMKX
+	RfBPIKZlqLL10OPbxwLZ8UENvzVdisM2vJ3dysctXcfxpyIG02U3L3xbO4vc83bmhIbbfZ
+	TbB2vZvUb+cLR6pZgQrtoH1j0TazWa0=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=KUSYqSs4;
-	spf=pass (imf23.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756123704; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=htDE4r67;
+	spf=pass (imf05.hostedemail.com: domain of yangshiguang1011@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=yangshiguang1011@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756124330; a=rsa-sha256;
 	cv=none;
-	b=x9Pk7SkfULhY5h4up85r1TYQOUpdpaPs+yoPPjQglYWUDatfBUZePM3ufoErss2Nv2uG8n
-	496pPycpfSmu9yxFS1vl2fnmbLZZxxMEzi1772eO8mfgkrWq55Hvor1Eb1wMyzrQJiibTW
-	u6bX4R8bDCuATOhfByvpWmr2rqVOGlg=
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-76e2ea933b7so3699831b3a.1
-        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 05:08:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1756123702; x=1756728502; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=djLIMBABOQ5QMilKv8RGXgyY8Eozctcb9yd8r0Ea10E=;
-        b=KUSYqSs4gez4ehcbWosb5LCgHqrX39vXLjjmssI5WN0/VCdyHNeUbzuvtTUrchhTXn
-         Bn/9qkI6HeHsU1nVmOlD/AB6zC699ZEGzksESbjhiBAMty26UatAhFjVBUlPwkBoY2Bi
-         4SZkeEBVfGB7zahg+f0PZ/DZ+hlOpg/hTm6yecpv1owx5ZU+YfM1NcsAW2kd9MRsf4Jl
-         fPmV40XHFCfvUDaJisnEOG/1+/tC8Iic39LbJwTaYMVIxfm4ne5yhGHgvPLHVKHh2WfE
-         IClz6c1a35Q3DMsY0nCdxGjsF1mlpIv76rSVdhhqHwlM4NjSnAcdu/sH8wIVzKU0Cx7g
-         HyCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756123702; x=1756728502;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=djLIMBABOQ5QMilKv8RGXgyY8Eozctcb9yd8r0Ea10E=;
-        b=aZAEgFKSs0kIpIdqAG1qdrg36ACxpbvHHgogViM2tt8m3fcwtBBveo7LJEnYiKu/9W
-         v4E8CdRMZVzrSqZAGZx1dGlL12paB3WGYHlMwa7LxN1MLpEtIh0DbkUyVKYrk8Q93DxX
-         1Yal9IP/wPz3Qpr/0HzSxEGydUYt8p7iwj2V9EHKY3a1zaUaRQNpi+48NLKViLUJM6M+
-         VJd2lc9DraPn0U/y5ezT1vAf9bZr2qRHl2VVP/nyzzeRBpp/PIw4MNGYvxu4wuxJ9bZr
-         8HZwx2YSjIdtXndBpvSxbfLyf+hll9ZXrmidxANVhBHBnMypXusV/NVH5jwS1CenzojG
-         6Vzw==
-X-Forwarded-Encrypted: i=1; AJvYcCU5wRfr3d0MjsRDU51U+9d+WVZoV8dYRcRMVsCcU4JSqUECMcjyJWIPCOsjgklji5EfAjmjt4SuGA==@kvack.org
-X-Gm-Message-State: AOJu0Yzoh5WSuB8dA50h1sR64SAVChXIAcswXQ/2MKE6mvMeCXKqDJqu
-	2qEFvDMracsm9zsjzkSvYiN1cJQBAIWIuqwp4qGHVVp/s+MdeIhBNYltHyooYyxCxfU=
-X-Gm-Gg: ASbGnct8qZJxodpARVkn4CHTdu7FSQaZXPrZAaTBVMuiMKoQ3CpBwLh7ijzXiyAbAMc
-	+jXebHV2ITBaxm23ytI9p0Bt36mN6o1EnIIprreU4LVhrzJxXMF2lzAvTPlRZx0IwHIRmujxeOW
-	u2PlVdpj4ieMHXG/7qYJ6YtwGt3K0kiIlzd13LmY5E82MTnyyQBgi22Wxr71OXzeYmsjSpuxVOG
-	ehaOA2iGaEcapE4mZ7YWi5TjpxW76sbY7TluzjLHDp+YcDME+oBqWetCJinBAr3qXbe8oG1+ut9
-	Sh7jYkrw2HTNNfdbNc8MulGrZbeyyKfqkzIg0E3D7WCFJuXsovi7bFEKk72rHBzFBBxXTx8+cwj
-	Zc/CBtZqX4THNiAqIS3ESV6KWpLMJYGAYlK88NNnCW/ayYJQ2OoCnfKEVjEX3SVFQhNMXPqM=
-X-Google-Smtp-Source: AGHT+IEANcNrkMuJ1PjBmSdPjmdk9y77EAYoFZYgAnfWDeZy+q3lUhQjHBWmnTqj+0/HSjBZ/qdDeQ==
-X-Received: by 2002:a05:6a20:5493:b0:240:10d2:adf5 with SMTP id adf61e73a8af0-24340b57600mr17869147637.2.1756123701840;
-        Mon, 25 Aug 2025 05:08:21 -0700 (PDT)
-Received: from [10.88.210.107] ([61.213.176.55])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-324f3818abfsm6684739a91.0.2025.08.25.05.08.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Aug 2025 05:08:21 -0700 (PDT)
-Message-ID: <6d54e933-5ff4-4711-abb9-96d39a5dd62e@bytedance.com>
-Date: Mon, 25 Aug 2025 20:08:13 +0800
+	b=0V0QCS4ge0UqCIUzaW0xpQNnRcYs6nc/8uR2wGffgkt46bo/1/X8Dp+VMu/PZJyplsQ2mo
+	U7SKoZKK3MApr/eHzUlpgOkbefZLIehmCfmL2HbJlnx+SMN39R235k8sDpZDW6eeen3eNP
+	zVzZ16Vtn6P5IeSLGlSqUKd6Cr1C2UU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=en
+	QjVH9CPVENIVsHk7gsCn5/5+hGNNH2XndDe1QIK7w=; b=htDE4r67TWRW8/4/23
+	/qk3oo/CzwSXo0U2Fmra438wGVC795bfCZXAVAIaRY7dX8aio69L7Jf0x+eSTBc8
+	6jYS9HXn+8Ln/d1RjYbMWF+WJkGUMSmc4DxPQRFWFFKuOx+q3GLj0QEfB482ZDpf
+	qrSfHIurifvyA2n9H1bHX2weg=
+Received: from mi-work.mioffice.cn (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wBHsTdyVKxoeChoDw--.61651S4;
+	Mon, 25 Aug 2025 20:17:55 +0800 (CST)
+From: yangshiguang1011@163.com
+To: harry.yoo@oracle.com
+Cc: vbabka@suse.cz,
+	akpm@linux-foundation.org,
+	cl@gentwo.org,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
+	glittao@gmail.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	yangshiguang <yangshiguang@xiaomi.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] mm: slub: avoid wake up kswapd in set_track_prepare
+Date: Mon, 25 Aug 2025 20:17:37 +0800
+Message-ID: <20250825121737.2535732-1-yangshiguang1011@163.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] memcg: Don't wait writeback completion when release
- memcg.
-To: Jan Kara <jack@suse.cz>
-Cc: Tejun Heo <tj@kernel.org>, linux-fsdevel@vger.kernel.org,
- cgroups@vger.kernel.org, linux-mm@kvack.org, viro@zeniv.linux.org.uk,
- brauner@kernel.org, hannes@cmpxchg.org, mhocko@kernel.org,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- axboe@kernel.dk
-References: <20250820111940.4105766-1-sunjunchao@bytedance.com>
- <20250820111940.4105766-4-sunjunchao@bytedance.com>
- <aKY2-sTc5qQmdea4@slm.duckdns.org>
- <CAHSKhtf--qn3TH3LFMrwqb-Nng2ABwV2gOX0PyAerd7h612X5Q@mail.gmail.com>
- <lvycz43vcro2cwjun4tswjv67tz5sg4tans3hragwils3gvnbh@hxbjk6x6v5zk>
-From: Julian Sun <sunjunchao@bytedance.com>
-In-Reply-To: <lvycz43vcro2cwjun4tswjv67tz5sg4tans3hragwils3gvnbh@hxbjk6x6v5zk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9163914000F
-X-Rspamd-Server: rspam04
+X-CM-TRANSID:_____wBHsTdyVKxoeChoDw--.61651S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW3Jr43XFWkKF1UCFWkWryUWrg_yoW7CryfpF
+	W7WFy3tF48AF1jqFWUCw4Uur1SvrZ3CrW8Cr43Wa4ruF1Yvr48GFW7tFyYvFW5ArykuanF
+	ka109Fn3Ww4UXaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07juUDAUUUUU=
+X-Originating-IP: [1.202.162.48]
+X-CM-SenderInfo: 51dqw25klj3ttqjriiqr6rljoofrz/xtbBMRq05WisT9l87gAAs6
+X-Stat-Signature: ndwwzqeob66en9xjmupkdayj4mcgwwau
 X-Rspam-User: 
-X-Stat-Signature: bjzpy896s56kjt5ep3inm13qkwgndo4z
-X-HE-Tag: 1756123703-448260
-X-HE-Meta: U2FsdGVkX195lHU4SUTgEPgZIfbQXmm4kPf2nL4kf9TwSaDn0PTOFspGzeGBHKNvON/TK0TVBjJxlme1B33R2OOJADN0FIbluZ3SfqXYHJcxq9JjM8Jxr9GhJ/VY2OKI6MtfI/pzMDTQMK4MvdTuBsAahvDEwLL3yQfjxcVlxE+lGlGjCcDCGKYK5ChiMhnDVMm6yYmIt5FlBa/K9S+A3XHdF+XZf422Tn/RnWeVoloEKW8Lpa1oZFcvdDJ1AvJqEKYLRbtX16aZitklICrxqXXHxZvR5od1KcFdbM4s/GhAOBrSpn6VtxiIFJER3r6E9OxJBAvvY3AtcBgu7+8XmJ5tljI6zN8HU2mzkxkJ7wGxuF47x/e3ax7rGm1QJWDoGnYqiG9gsjL8maqKhXu4rvZBxPA/ieY1rcKv5DsmXUoP78VmCt+jOVP5306RgpWzKQQ/dEajyMekkfZ+D+/WocpR1F+7rTc5nC0YpckKHuq6QWJ7Xvb5r9lxdd90xNQoAWCqG5MmnaGrI4TFYYPVQhs5wa4HsrCJaFM71NQOyZsJeuFTbhqUZiw13y4eKCqFYAtw8Bkj5SiqG3DSVRO3vqT2BO/WjqsnYvd9qWclIZQAzybmIlWCVrGDpyB/RV1SIFjc7NGWX0X4Dbl1MQJXV9eGtfYgXMSIRlc1G3JAHGqtxTpZtUr9lchYP6RvY01+r8Mpj5TrazWs8LdyG6IlOMQGA+jGMPR1Ko6rG24jDpdm/mNpHOPdIhnXnddFE4TWM9SjBrJnTgXqwYD57u/xvt7pdSm9omaDQ0EEiSaf8IcoCH2ybQx6E5gCvI8pK4zI6B4PIblJVPyA1jSPMXzUKEbadY6qe3rKYbI0a2s6SxXZ0QmHi7YP9zF3fMTNMY5cwLiNMNECYkLW789wxw1fNd2fOXRqF4KpEOcUpQTSfM0uEQm/NNdGL9a+rbLPydUTquMXakwAE8wnHf4tfQ6
- a0PKOVQx
- u+b3AiAIyrP7RSI635PgNmFaQCFU6PQDWnJKLLIAKZNQ3XsNAG3hGEpaoRfl+HeZcFuEeuZ3TTCbzFY6EqrSbJSJFJ6a1lnCMlkKPWb/zVy9vNSF5y+m4uG/TF/Olx5S2smhwCL5KogNPoGwQ6pkLrm844lqMUwlo7IwBDea7ZrkECepOhN4PqBpe5nwNHV1wQ5epjtH5SlYhh4+IR+eDC75XjBNq+W4WnydSa9RlSFKtG9T28eYizmCGHdMo5wBQI8d2wgLKWbb181i4/A6MaUT9BfWSK1AU1Yuzh5FYQkIZrtOzirE+yxgpCjg7AbE23HdvSWB9Y0Gs7c5BDVg4PhnhydMjeLT7WcEqvWxSLHsRUJmHsh5Wb3YKHwxFv2WcI10uvtV1oilhST5DJ4U92k7JJWFAfiCXuUna
+X-Rspamd-Queue-Id: 3D3FB100011
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756124328-346490
+X-HE-Meta: U2FsdGVkX1+iUyLj5augq7RSHDkqsKTU3M0iy9gvaJLt369zS+DdoGJD+/GMq/GYJekrGqS3a4OCTGQlrVV/x6/6sBBhM+6ZfMRqLEGdI3KfxNSqUiE7Rvgz7o35qWVdgvUbOYPszWooxWtj/BMMEpj1khQ98vfqeV/mlmAAA0c7xqNn6RtIunBFsXFdDDyqt0S5GJiK6phOoyWX7AfSVCzXqiRtvgl1mue3hBQWCr2emZS7cDvRdge8MI2Xst/lGEhUeYjdufXmdHq7AlE08DFEMMqjTT1gjssuEasyeoeeWSgk0EF8SwzdJ8oAtLH2ZVxlh0rQhlIKuPIHcxcOUXYgN+tYDELGgnnzrYBHtfh4YsPgoTxG8A97Nwe/g6eH7fmL8W8LgnINKPEvxxojNu5lxh4zfwe2igk0n0dfAD1iJx1N8afHWNU4XnLCq/spZjN8tiayLGqZRRNPkmBJRKUw1mIGR04WDXQeQHZYVJhqkTYx8rF0BdGum7E27fDT0XCac0OSynirCk8gkc8lAz9ZwrkGRpuV9MqY/nMgjlq8A83t4qaMfnQqjqImUtBbsoxQfpG2aJNVfqFNfnFxnai0PBuG000HhImeIJrw53z2fkr80CZJGZKRLiteQ7sRi9elk1yLd01FG4Oc6tgvp5zGgdZrMF6VOsqTInTgHOJNyHzVXptLa4ULW/rgpXL0Ru/MUeSBEgwoh5dBHqef6+aOAbde+smUce9wfvxlT0K1+9f5k2N4ceMEPaDOyBlplML5I2raOXJqvztHVa9hlxQTu4jguMuMrwMbko/wQ1DRgf+5rjR9fQ0yOm0+pCiDOZpbBRnwlwzyK8gDH7eci2QZacEMXnCINv8g7xfrOcDLbXtz/fEXYf1F63FzfiU9nSs2seL0yfWgLm+V9w6nFVWuFFAo8Fo8fwNdJimkC4it0G2gGZSndTEMQbR3/XSqGrx1fYIcRDvSXwjkKkQ
+ TpvD9TpQ
+ jL5nCkGaqE6QwvqJCUr8A+PSRu1pTLzJikC2Ai/8pw0pmoiwqD9py7/w6vHdM3L0oC8wdZlUuCzb0MnkJtgA08Htwio1P+O+hqAQkEWpbGmXPCYCRugppJW59JU2yW5qR6jRm6raabKU0hpQuXrVvLXbliwgYYR+V8xRpIHemn2u8CMHIAACs5YaEY2dij82s4zAVS80cddOuTpgN4rZvBBbz9eUmLqqFx9dkqJZmB48USvtq28tLBESv8MAmXcXtOEwTr568bWEgIm5lv631rIAp2lco0L9KXcQiDg/IK02tOn5CGc2UuGnSrFCJ4zdYu1yPjS1ohW9gEHXSMN9Gqu9m23VFBjcKyD2JmaSfYteueOKQ+C+6P9hNw8TWby9mjJGvumZNSq7lwXBm/FiCAEdKyPICRjbpkoh3OlgQk0PS6j2xvinruvsU/uq2wAOEHkorUXW1jcOKgFrvCEfHERwOoYESM3fNeeHNcdmfh/9pHFk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,57 +98,160 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-在 2025/8/25 18:13, Jan Kara 写道:
+From: yangshiguang <yangshiguang@xiaomi.com>
 
-Hi, Jan
+From: yangshiguang <yangshiguang@xiaomi.com>
 
-Thanks for your review and comments.
+set_track_prepare() can incur lock recursion.
+The issue is that it is called from hrtimer_start_range_ns
+holding the per_cpu(hrtimer_bases)[n].lock, but when enabled
+CONFIG_DEBUG_OBJECTS_TIMERS, may wake up kswapd in set_track_prepare,
+and try to hold the per_cpu(hrtimer_bases)[n].lock.
 
-> On Thu 21-08-25 10:30:30, Julian Sun wrote:
->> On Thu, Aug 21, 2025 at 4:58 AM Tejun Heo <tj@kernel.org> wrote:
->>>
->>> On Wed, Aug 20, 2025 at 07:19:40PM +0800, Julian Sun wrote:
->>>> @@ -3912,8 +3921,12 @@ static void mem_cgroup_css_free(struct cgroup_subsys_state *css)
->>>>        int __maybe_unused i;
->>>>
->>>>   #ifdef CONFIG_CGROUP_WRITEBACK
->>>> -     for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++)
->>>> -             wb_wait_for_completion(&memcg->cgwb_frn[i].done);
->>>> +     for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++) {
->>>> +             struct wb_completion *done = memcg->cgwb_frn[i].done;
->>>> +
->>>> +             if (atomic_dec_and_test(&done->cnt))
->>>> +                     kfree(done);
->>>> +     }
->>>>   #endif
->>>
->>> Can't you just remove done? I don't think it's doing anything after your
->>> changes anyway.
->>
->> Thanks for your review.
->>
->> AFAICT done is also used to track free slots in
->> mem_cgroup_track_foreign_dirty_slowpath() and
->> mem_cgroup_flush_foreign(), otherwise we have no method to know which
->> one is free and might flush more than what MEMCG_CGWB_FRN_CNT allow.
->>
->> Am I missing something?
-> 
-> True, but is that mechanism really needed? Given the approximate nature of
-> foreign flushing, couldn't we just always replace the oldest foreign entry
-> regardless of whether the writeback is running or not? I didn't give too
-> deep thought to this but from a quick look this should work just fine...
+Avoid deadlock caused by implicitly waking up kswapd by
+passing in allocation flags.
 
+The oops looks something like:
 
-AFAICT the mechanism is used to make the max number of wb works that we 
-issue concurrently less than MEMCG_CGWB_FRN_CNT(4). If we replace the 
-oldest and flush wb work whether the writeback is running or not, it 
-seems that we are likely to flush more than MEMCG_CGWB_FRN_CNT wb works 
-concurrently, I'm not sure how much influence this will have...
-> 
-> 								Honza
+BUG: spinlock recursion on CPU#3, swapper/3/0
+ lock: 0xffffff8a4bf29c80, .magic: dead4ead, .owner: swapper/3/0, .owner_cpu: 3
+Hardware name: Qualcomm Technologies, Inc. Popsicle based on SM8850 (DT)
+Call trace:
+spin_bug+0x0
+_raw_spin_lock_irqsave+0x80
+hrtimer_try_to_cancel+0x94
+task_contending+0x10c
+enqueue_dl_entity+0x2a4
+dl_server_start+0x74
+enqueue_task_fair+0x568
+enqueue_task+0xac
+do_activate_task+0x14c
+ttwu_do_activate+0xcc
+try_to_wake_up+0x6c8
+default_wake_function+0x20
+autoremove_wake_function+0x1c
+__wake_up+0xac
+wakeup_kswapd+0x19c
+wake_all_kswapds+0x78
+__alloc_pages_slowpath+0x1ac
+__alloc_pages_noprof+0x298
+stack_depot_save_flags+0x6b0
+stack_depot_save+0x14
+set_track_prepare+0x5c
+___slab_alloc+0xccc
+__kmalloc_cache_noprof+0x470
+__set_page_owner+0x2bc
+post_alloc_hook[jt]+0x1b8
+prep_new_page+0x28
+get_page_from_freelist+0x1edc
+__alloc_pages_noprof+0x13c
+alloc_slab_page+0x244
+allocate_slab+0x7c
+___slab_alloc+0x8e8
+kmem_cache_alloc_noprof+0x450
+debug_objects_fill_pool+0x22c
+debug_object_activate+0x40
+enqueue_hrtimer[jt]+0xdc
+hrtimer_start_range_ns+0x5f8
+...
 
-Thanks,
+Signed-off-by: yangshiguang <yangshiguang@xiaomi.com>
+Fixes: 5cf909c553e9 ("mm/slub: use stackdepot to save stack trace in objects")
+Cc: stable@vger.kernel.org
+---
+
+v1 -> v2:
+    propagate gfp flags to set_track_prepare()
+v2 -> v3:
+    Remove the gfp restriction in set_track_prepare()
+
+[1]https://lore.kernel.org/all/20250801065121.876793-1-yangshiguang1011@163.com/
+[2]https://lore.kernel.org/all/20250814111641.380629-2-yangshiguang1011@163.com/
+---
+ mm/slub.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
+
+diff --git a/mm/slub.c b/mm/slub.c
+index 30003763d224..443411713e2f 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -962,19 +962,21 @@ static struct track *get_track(struct kmem_cache *s, void *object,
+ }
+ 
+ #ifdef CONFIG_STACKDEPOT
+-static noinline depot_stack_handle_t set_track_prepare(void)
++static noinline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
+ {
+ 	depot_stack_handle_t handle;
+ 	unsigned long entries[TRACK_ADDRS_COUNT];
+ 	unsigned int nr_entries;
++	/* Preemption is disabled in ___slab_alloc() */
++	gfp_flags &= ~(__GFP_DIRECT_RECLAIM);
+ 
+ 	nr_entries = stack_trace_save(entries, ARRAY_SIZE(entries), 3);
+-	handle = stack_depot_save(entries, nr_entries, GFP_NOWAIT);
++	handle = stack_depot_save(entries, nr_entries, gfp_flags);
+ 
+ 	return handle;
+ }
+ #else
+-static inline depot_stack_handle_t set_track_prepare(void)
++static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
+ {
+ 	return 0;
+ }
+@@ -996,9 +998,9 @@ static void set_track_update(struct kmem_cache *s, void *object,
+ }
+ 
+ static __always_inline void set_track(struct kmem_cache *s, void *object,
+-				      enum track_item alloc, unsigned long addr)
++				      enum track_item alloc, unsigned long addr, gfp_t gfp_flags)
+ {
+-	depot_stack_handle_t handle = set_track_prepare();
++	depot_stack_handle_t handle = set_track_prepare(gfp_flags);
+ 
+ 	set_track_update(s, object, alloc, addr, handle);
+ }
+@@ -1921,9 +1923,9 @@ static inline bool free_debug_processing(struct kmem_cache *s,
+ static inline void slab_pad_check(struct kmem_cache *s, struct slab *slab) {}
+ static inline int check_object(struct kmem_cache *s, struct slab *slab,
+ 			void *object, u8 val) { return 1; }
+-static inline depot_stack_handle_t set_track_prepare(void) { return 0; }
++static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags) { return 0; }
+ static inline void set_track(struct kmem_cache *s, void *object,
+-			     enum track_item alloc, unsigned long addr) {}
++			     enum track_item alloc, unsigned long addr, gfp_t gfp_flags) {}
+ static inline void add_full(struct kmem_cache *s, struct kmem_cache_node *n,
+ 					struct slab *slab) {}
+ static inline void remove_full(struct kmem_cache *s, struct kmem_cache_node *n,
+@@ -3878,7 +3880,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+ 			 * tracking info and return the object.
+ 			 */
+ 			if (s->flags & SLAB_STORE_USER)
+-				set_track(s, freelist, TRACK_ALLOC, addr);
++				set_track(s, freelist, TRACK_ALLOC, addr, gfpflags);
+ 
+ 			return freelist;
+ 		}
+@@ -3910,7 +3912,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+ 			goto new_objects;
+ 
+ 		if (s->flags & SLAB_STORE_USER)
+-			set_track(s, freelist, TRACK_ALLOC, addr);
++			set_track(s, freelist, TRACK_ALLOC, addr, gfpflags);
+ 
+ 		return freelist;
+ 	}
+@@ -4422,7 +4424,7 @@ static noinline void free_to_partial_list(
+ 	depot_stack_handle_t handle = 0;
+ 
+ 	if (s->flags & SLAB_STORE_USER)
+-		handle = set_track_prepare();
++		handle = set_track_prepare(__GFP_NOWARN);
+ 
+ 	spin_lock_irqsave(&n->list_lock, flags);
+ 
 -- 
-Julian Sun <sunjunchao@bytedance.com>
+2.43.0
+
 
