@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78AC5CA0FE7
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 14:58:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DC69CA0FE7
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 14:58:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFC378E0001; Mon, 25 Aug 2025 10:58:07 -0400 (EDT)
+	id 98B7E8E0039; Mon, 25 Aug 2025 10:58:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BAD8A8E0038; Mon, 25 Aug 2025 10:58:07 -0400 (EDT)
+	id 93D6A8E0038; Mon, 25 Aug 2025 10:58:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A99AE8E0001; Mon, 25 Aug 2025 10:58:07 -0400 (EDT)
+	id 7DE648E0039; Mon, 25 Aug 2025 10:58:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9140E8E0001
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 10:58:07 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4E67058FC3
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 14:58:07 +0000 (UTC)
-X-FDA: 83815585014.28.B79F43E
-Received: from mail-pg1-f194.google.com (mail-pg1-f194.google.com [209.85.215.194])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7BBC280008
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 14:58:05 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b="B/TKKkg+";
+	by kanga.kvack.org (Postfix) with ESMTP id 682FC8E0038
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 10:58:11 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 308B41DDA43
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 14:58:11 +0000 (UTC)
+X-FDA: 83815585182.01.8A4BE28
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 50B2E140009
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 14:58:09 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=PW9+M36j;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf30.hostedemail.com: domain of linyongting@bytedance.com designates 209.85.215.194 as permitted sender) smtp.mailfrom=linyongting@bytedance.com
+	spf=pass (imf09.hostedemail.com: domain of linyongting@bytedance.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=linyongting@bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756133889; a=rsa-sha256;
+	cv=none;
+	b=0t9DLbknmYhE7DczzaiCIVgby0NCQ75Jn+kw14Ny2MwChSQE+s/1N/yGaB8ZwnYbW4rOsw
+	mjVZTKd8SOgp0Oe8Wnbb0WInNxpnuUOnCuC5DvIj4J7WLtKhh33xYW+jBpn2KPy6KIfZgw
+	lI706YMXBlfvOUp84kfDinCD2ZFKLOI=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=PW9+M36j;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf09.hostedemail.com: domain of linyongting@bytedance.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=linyongting@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756133885;
+	s=arc-20220608; t=1756133889;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SS8UElWYPBKNDeTRQOyijx7AjeTpgm/xr/2yY07TeYU=;
-	b=y6KOWbJZ1lJ9ytHieQ9RlGj1OCRoUzeU7Tw/9YF5XlGJ6xgxWJaaC5q4grXi/kBws4JVmQ
-	RxiGLXvhVPg2UYrIB93cYq4zJ2KxmPuc/MGnb46owaePbkyeEsK2fmfU3UfV/GRAkLp3+b
-	heeKIN8fwQmVwyuwz33/P4GwUQQJ7Fc=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b="B/TKKkg+";
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf30.hostedemail.com: domain of linyongting@bytedance.com designates 209.85.215.194 as permitted sender) smtp.mailfrom=linyongting@bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756133885; a=rsa-sha256;
-	cv=none;
-	b=S+aXodJ19yIJykX+gUqfQpmiq7Hvdx80KkbdOibjnImaKJP5l4wzin//z9521medWC8fd1
-	LH0Om3wwtBJ9iu9MU1LORllNFdeDFc1RHeW4mvcJ1a4lcU2I4fwknKwvKP9U9xE92M2Tun
-	RYvTQtjF1iauaNCIeqLFsLWJhNPKckw=
-Received: by mail-pg1-f194.google.com with SMTP id 41be03b00d2f7-b49c1c130c9so2194126a12.0
-        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 07:58:05 -0700 (PDT)
+	bh=SXrNbcwSvagaIiS5O7F6FLpYe+f/n3DenUIqxElurVQ=;
+	b=AQqDS3C5KSaL8FM0srmjy1nlZPlx+A3G3PEb9+zwLNr7Uqu/S98CyLWKK5vIhSWYEo9dV5
+	lLAYk4PA/pg7AfHaUSzH7JCoP+TevJPuw527K4biZphvaO5p6FX2HEkuDuDYwB5Nqg3HKe
+	q/a/EAPeEu9XIOH4PS6nftRqyHcSrkk=
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-770522b34d1so1277278b3a.1
+        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 07:58:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1756133884; x=1756738684; darn=kvack.org;
+        d=bytedance.com; s=google; t=1756133888; x=1756738688; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SS8UElWYPBKNDeTRQOyijx7AjeTpgm/xr/2yY07TeYU=;
-        b=B/TKKkg+3qYZMTl5ymQC7jai5mDBii7Hzt8i0hHDz4eIZnvF58/hDtQ94Gpoep/t4/
-         Ro5BvOYcY1LSLsk0m8ZpKEb9GYfYI6XSTNj3KOuOGswCGe9izafYdiqVjR5KW1adCYuo
-         9zIHSWY35Xzpzeo6YIFfiRLVq9hAc63+3fx8gKXxfbPHGeSZ+h0x4nbJFzIzYce2Dpew
-         wQF9owiZH0dHh9cXlxe4Hsvfutw8co8fKgykuZBNNJWBrmG9rcBXRerAboCcb+oJ+LrU
-         hTtV6RjMza66vUEX6K6Sj3rP87Crb/yp7id45vwHT3KrB/Do7asvb81Q6PoIVc5D2wa6
-         E/JQ==
+        bh=SXrNbcwSvagaIiS5O7F6FLpYe+f/n3DenUIqxElurVQ=;
+        b=PW9+M36j0f48oVSrPp7gkJGmnIss35fvbSKniyQLIx7Nzh5punoeJj9oZjwrRWMrLU
+         8rCtXQme15IZOqcU1/4mVK2lXwcRAUlnl2Tu0hqDI/+dpxqVrhye4Cdjpplv1KU0Y3L7
+         xVKoEeKwgEWc7aMwhEgZc8EMCY/mhpY2CftedcnUynrPFnYEer2lG3eL2tmb5Dz+4YqB
+         o6G5KQOmo4EThs4xYT+wccpxX4uWM9LQeB4E0ChwaKBRj6DzQa5UQSHbBGw3u7Ih1odR
+         CfnycSLrTn/7h7n3wgrmB07drwsOWMXA3oQjKP1vOkhvyJHUkAIehbRQN0A/t0IFwhg5
+         3j7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756133884; x=1756738684;
+        d=1e100.net; s=20230601; t=1756133888; x=1756738688;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SS8UElWYPBKNDeTRQOyijx7AjeTpgm/xr/2yY07TeYU=;
-        b=QLvFaha8cUstbpo609KaI5KtMpkhedEW3V2nQSWaeUCabZS2AuIm9VsHbZBJgBXgrL
-         pVVA59BiSg3/YsU0+HTRSN8PAzLk300zuevJNfbZO8M9XUV3QB/JCulO/ESestxtHafm
-         f4j4GlsMZtRWAxPrtj/5L4w/B0hg5kfpQTt6IOHc+eRbNB/BAe0d4JJn8AADL71iTKs3
-         o2KLuh83cZ8a35rzgSPNquTeHScC9W4ihTQ6WKlVQkFrvTVxNO7nHqz7AS2SXaQ+LUoP
-         wC0nXI7r4cZ3CdSe42vh6pmoghNQUKRZ1NQokLxhi+RSyH3j+rxtSlfDx2Dku6B9afv+
-         FHLg==
-X-Forwarded-Encrypted: i=1; AJvYcCX50m/fzf3Wl6mvufihLo/YUMwbsGho5Y1PdgBs3zn/8ttj0ZdYyZStWPn7+JAETb36X8jkOVRnnQ==@kvack.org
-X-Gm-Message-State: AOJu0YzMLeGhjLee+VUeV0frtbtxkhXG+VdVPY7tVHs7vEv+nsSOG8At
-	5AvMSOzISuQ3E4H13cHuLUTdP8T+/2O1YNokHX5Oeugf49TME8ELAYu4CBBYfL6FLK4=
-X-Gm-Gg: ASbGnctoleUhTY1/1aCSJ3NjOLPKWu7fjGvCcGFHS7iZ1AS+qbaDzzVcBWzMZVRE7XH
-	kRmLr6lL98wCw91MrhTKVYPq4z3ihpUJl+I3bJpMNqsgkGwoR8YOun9J6qi5S6tJc/kcaN6uipE
-	qcAatJhmF9EHjIX5Nw23BF5Wz2ZK8VH3Jf2ZGtfhPRtzIkgJ86/RY/ly+GxA2s1DCOhYGusaFrV
-	aUwl1eip6Pj1HGRaCJBQ64YWAYZPuUbzjUXLz4msp2maIQRK4OfNBTMx+msjs38edht9xSzfa+H
-	qHl4M/LfVXCWoNUOS9rgLC/2cqqYWz1hS/6eO0+g23TMq6fzFiVxnknchf+e+Id/4oP0+MithX/
-	nt1Gx7y+SHH6LB51Ia7U8dYXLHBTblxLYYVe9TJNBnRTL1cE/UbBBC/wqliyI
-X-Google-Smtp-Source: AGHT+IHCWW/ShQpQHuPFTA6y+zNShKRdJnkteX326IPoMfo05QiaIWxdBNx+Yt2H9gYmCzshpIHnBQ==
-X-Received: by 2002:a17:90a:d60d:b0:31e:3d06:739c with SMTP id 98e67ed59e1d1-32517d1988fmr15265101a91.31.1756133884241;
-        Mon, 25 Aug 2025 07:58:04 -0700 (PDT)
+        bh=SXrNbcwSvagaIiS5O7F6FLpYe+f/n3DenUIqxElurVQ=;
+        b=U65znuK2Ya8W3mAg6PoFo1CAHwEYbb3+VSOFATiLTpwPtBx7TjWAczs2S6eOQHl94T
+         5MKqKdm8H8hZXoOWgPFrsvoYLPUvi/Z/MjigLBhGFjDRLrS/7kiRzgSTly/fUAwJD3cJ
+         vttHSrB1UPyO1YH9XFvoF3OEO27LZi4gNmhXRXYA+nESKqx57whRvpOj9vX8Jq4hWmCw
+         DCWh/N0aQ4+L7J8FNNrzYkAptp4uFKf8AaRS2+YM1+8ha3N5pxddx9HlBL9ZMuDO7j+U
+         TlrKjmHCcrRqmSw1qHdyWd0phjG1VIIk5hQKJsugPcTPpcb0IuerJTvrKp4IN9zhEJAn
+         Rzlw==
+X-Forwarded-Encrypted: i=1; AJvYcCVJvnf8KG95KwyCFeNY+JTtRWlWD4WxYENSZ0PXv1nMTgiIP7fVx9UJXBNSGZZkMKkZ6WLUPVJycQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw8XOOA+wVXoOcqecxPhvZdgRwvUjupe52KlPQiq4AW4kfYmJxX
+	w8qbWUuKQz/uI3fijOx3BPf7UrAZ2/bxZE7XeNdh7pyuwZX2/duvdEyeKJljvnqpWvA=
+X-Gm-Gg: ASbGncvxgLGsfqxwA9hsf8mtbB/PjPNvLDl8t87PGrHh9bfWaQ1sis26e0FbEruOCTl
+	Z2kMj9v9RLSgg4v3NguDdeqvG03o1weYXgi6IUaMdMQO2r0potU8FtZKtP4FCw61cEZphuF8R79
+	yGQf6pE13A8VzWoqEPtr+E9nMgSou5kstGf//j3gPSzH3BMHV+YUIcaJNnEbxwICk2qbUJrhz1r
+	t0Ac+Q9UOGuaSOVM27FNuZBj0hpgmYaUYY1f4qOBPqoU/CumvquzJRYItXvR2fZub5TgRiHb56d
+	Q3R8psAcgSbatyp09U+JkDHJk0P7qsUiYXgkWieSgPikScS/r6uYVyPed861X4YdqUReWkOORyZ
+	UdMepYDPL41f5V29iYEdXgiWN86I54gFSOWhA1wK8Z3yr2AmY2H3KmyKzCn4uCSgsvpFB0Rc=
+X-Google-Smtp-Source: AGHT+IGrjnb45Fa7DHzuc6Ch7rwJg1bCnvoGJ7/OuXRvlJDXrJ/ha9DOEb+cFlOakG8+pSYCIswgXw==
+X-Received: by 2002:a05:6a20:a106:b0:220:1843:3b7b with SMTP id adf61e73a8af0-24340b58322mr18480454637.4.1756133888059;
+        Mon, 25 Aug 2025 07:58:08 -0700 (PDT)
 Received: from H3DJ4YJ04F.bytedance.net ([203.208.189.7])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-770401b190asm7803436b3a.74.2025.08.25.07.58.00
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-770401b190asm7803436b3a.74.2025.08.25.07.58.04
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 25 Aug 2025 07:58:03 -0700 (PDT)
+        Mon, 25 Aug 2025 07:58:07 -0700 (PDT)
 From: Yongting Lin <linyongting@bytedance.com>
 To: anthony.yznaga@oracle.com,
 	khalid@kernel.org,
@@ -99,23 +99,23 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	akpm@linux-foundation.org,
 	linux-mm@kvack.org
-Subject: [PATCH 1/8] mshare: Add selftests
-Date: Mon, 25 Aug 2025 22:57:12 +0800
-Message-Id: <20250825145719.29455-10-linyongting@bytedance.com>
+Subject: [PATCH 2/8] mshare: selftests: Adding config fragment
+Date: Mon, 25 Aug 2025 22:57:13 +0800
+Message-Id: <20250825145719.29455-11-linyongting@bytedance.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20250825145719.29455-1-linyongting@bytedance.com>
 References: <20250825145719.29455-1-linyongting@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7BBC280008
-X-Stat-Signature: c7taa9errs4ozypkabj5cqnnbsi3btxt
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1756133885-223248
-X-HE-Meta: U2FsdGVkX1+BPXwb6DPuLHTOPNeNzHaOKD25Or/nrCdX7LyLlwIbRPbjmU81GjDlpk3IGtdSzQ9iCVNNVZgUCjZyzxElnYLwGAtFqtoUMFwvg/nWCXt6weIht3Wp60uAS7TsQbjyNk0okB7BysNnXHhr98gD1R70DJTXwld83Te2yMViU9qhqy+SNlcA42KYCfiNxJfL+SFo1KQgOClP5iYrX6KEddXDq5oTCUFIh1htnxpFiG7kDD7vd8aXJ73uY6HgllCbu9WX8xR1XQ1PrIM/PLd3mTt0YCch0JWHaCgk3p0D1POHXp3pOTpPv2u24FHKeqGqwGmLYBAb6T5lV9TUzNFaVu1A0TFFZXqBKfP5wYOcLZBNCOiW/PQ5IyLd6u8Epws9dE8DUrxqHJu4A3XY7S8UkmaiW265wCRM1AIYyWluOcPD1ARsc6qb8rINI4yJTwrL4Mch6PlXoam75FtqHIonyO4V+DmWxjua1nL0uiOj60AEQSQJw+dOMOLvY5Z6fgDJj9AXlsUbz8wJsAPCkTeApxkmwFs4++Zed69HeWY8gUlG6/jVECQwsuZ/PxSWq7dp/jmUPTRQEe8Be8F6NLNh62l4ka3M2kn1MnR8mmOJZlUbs6I0nDbLPPDR7fA+RtjOfPSIecDW1rGeMcU+GB5w2o4FKK4YYDCT0mjKXPiXPzUl3MUcW5udj2epQ78RYUbdNn5iZ3BBL2PztSOgYVGMWoGDc8AcPpYW90N2WY06QAMA71WYOfmR2h2bv9LPrnLQlkKejYU+tAwGk7IC/DxcBajGr5TGByFuQTVfEcK0Iulmcx9sdo6JlTb+6T4nJ93Ibr3Of9j2QaIFqLeN1vQk6Lkt6ULaJQWo9HAnSJSRzlTvmIbJkr6MedTPuklDbWcY/ig0PQOEmfCvhBiClwtv2pJ7fH+kXtkU4iFVx6Uae06JevG61pBGOcQVzZwGrw8RWxqlkIA6Vpk
- aO1XAm9p
- Mgh9Vi31lbssrgrs2e0Nhc0pXMsZxdALh7888Szzf/PTywCFoH8iRa5qh8ATE6I5wSfWY2zA4t9Uilc/CTDJxsJKRM2V8ASVN8AUo1dVuUE+dLAwk9D0raFaXvZSepD/oj24+xqNUQXoCLJXZ1lze+EbK+BmTi8y9ljkfwcH+bAXz2vnQ3wagE+wXWCVKc440qCGyhZqoROqa2Vtvs21bV6RVSthSIxykbHNw0OL7gO2lVMZfH+q0M6TwJOacpUy81+f2cPrPCtQuZbbr5tqa+zyBvblAC9+9c2cRDNJUpJ5blw06Du3lUdljQ1F9IlWeOKrim9jqzA/wBi/3caUf8qMW6InPWXtM9z3zifgclvp11+jaWd/6g5FkiMme5P8JyjiDPI5HWlNnu3jFSiDqKmC61A==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.032468, version=1.2.4
+X-Rspamd-Queue-Id: 50B2E140009
+X-Stat-Signature: qo1k8c73r5aiaja13khkc8ddxtagew7j
+X-HE-Tag: 1756133889-831871
+X-HE-Meta: U2FsdGVkX19snqALnBQnC9z1sRIsAmlFLzRWbl6WNl407GGprwumLBXQFTBSOrYNjGp71c87YwcahFne9Sl7/81oGr9Pv0YzL8cBXaJTatMVql6sX21snmtTG2PDWlmnqcgJkOxFEyfsdCItyI7QMJITYOXgis+H7iAB+/zbAs2Tt8NsOL5pkHHIlTLnEruSsVFxiaF6I/sNCFnoxyEnlnR90yJx+0SpzuceTTEXJWRIBZK1E5HDxcNsZRrQzhiwYc4AmYOt1VstpYeW5TTLnm67ZvTOBuASdJEWjgfB+j2ZPQdPED/JGmhn1rdEcfHjjtItNdSoA3VVlq3jPb90jLYhDrF1C9meoLU1QD59lO+vzR0HxDQmaohFv9cgoz3XmMStT4ftXMGrptkfcSKzIqGWCJL4QJnwoltcfwvj+mdQpofrpeX7fT5t2OP5Td5D2f4x/9qllhrTKtl3Pt9yWzp61EXqHbOHiMJXdM8w2acTQ4Wg4JfwZgwJJY9WnId/lB8f1wRshWtiym2g+0/O0V1VS+cK9CENISN/SU73taIDNQnG/VAK0yCjOGrUiMXsoUpENXcKygBbgf7+IAHxrPuGzZFHI1Q5blb/H16zi2k3er6GphSnRISa3ziOxDNRpxPOKvYgJL6t6NSfA9hytTgYb459OM6HNNdyjPvsUXAUPGU1k6DsMZ7xvGkHFbNonyUA8G/ps84BnjZ2cT8SUV/agEwr9FqBS0YEuVxU4SgypzbmI6j4JxKsXMwzz8H3BSdSYdF9HsDsPYhgz/yah4gCZ0tDwYxaTyDQapwaT60Eo11RSM1g3Q59ndhgiG+KyluqwAMxO/1dzX81mYRc3deE1tVKmX4lNx/Q0LxS56bWDUdYFf1eUSFNoO+lat6K7CAVVURWX2txafoEEVq0yzA69peXHelYjUEUA3xajq6oyoirxgpnOY7UejbeF9+5MNROEFF2W2pNJhjHFjf
+ Gck+HMQ3
+ LpuscQ0uIkmIWqX+578h5N+0B/8XyICjJMCSXEdJlhv/9Qs8+8JkE/rxMpZlwktdhCJGZGutRC/sUNjX4pGgw1aL2qNHuk8WDdjqkGoNtJx50oCbcgnBrjtgwF8D5eP7+88p55XoGtvEpYnubX+8fGLqAwnXYTosV+/26HT8lJyS+8zJtRirJwkhbi04W4blhYltdFur8mOD80ws7Re0tUiXtIU7U4njyFxZJW/yD+0QTegQZTXShvOef3m5si+G+F7FNLZIMcRTMJVPFVT1tLyF/bpx2qKsye8ff9hBTa8UVjXjkG9lZ+kBz/Q==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,57 +123,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch sets up the selftests project for mshare and add a
-'hello world' to project.
+mshare test cases need pre-required kernel configs for the test
+to get pass.
 
 Signed-off-by: Yongting Lin <linyongting@bytedance.com>
 ---
- tools/testing/selftests/mshare/.gitignore |  3 +++
- tools/testing/selftests/mshare/Makefile   |  7 +++++++
- tools/testing/selftests/mshare/basic.c    | 10 ++++++++++
- 3 files changed, 20 insertions(+)
- create mode 100644 tools/testing/selftests/mshare/.gitignore
- create mode 100644 tools/testing/selftests/mshare/Makefile
- create mode 100644 tools/testing/selftests/mshare/basic.c
+ tools/testing/selftests/mshare/config | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 tools/testing/selftests/mshare/config
 
-diff --git a/tools/testing/selftests/mshare/.gitignore b/tools/testing/selftests/mshare/.gitignore
+diff --git a/tools/testing/selftests/mshare/config b/tools/testing/selftests/mshare/config
 new file mode 100644
-index 000000000000..406f31bd432c
+index 000000000000..16fd9a3ca12a
 --- /dev/null
-+++ b/tools/testing/selftests/mshare/.gitignore
-@@ -0,0 +1,3 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
-+basic
-diff --git a/tools/testing/selftests/mshare/Makefile b/tools/testing/selftests/mshare/Makefile
-new file mode 100644
-index 000000000000..651658d091c5
---- /dev/null
-+++ b/tools/testing/selftests/mshare/Makefile
-@@ -0,0 +1,7 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+CFLAGS = $(KHDR_INCLUDES) -Wall -g -O2
-+
-+TEST_GEN_PROGS := basic
-+
-+include ../lib.mk
-diff --git a/tools/testing/selftests/mshare/basic.c b/tools/testing/selftests/mshare/basic.c
-new file mode 100644
-index 000000000000..482af948878d
---- /dev/null
-+++ b/tools/testing/selftests/mshare/basic.c
-@@ -0,0 +1,10 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include "../kselftest_harness.h"
-+
-+TEST(basic)
-+{
-+	printf("Hello mshare\n");
-+}
-+
-+TEST_HARNESS_MAIN
++++ b/tools/testing/selftests/mshare/config
+@@ -0,0 +1 @@
++CONFIG_MSHARE=y
 -- 
 2.20.1
 
