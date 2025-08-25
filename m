@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2BBECA0FE7
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 14:58:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42843CA0EFA
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 14:58:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 322218E0036; Mon, 25 Aug 2025 10:58:00 -0400 (EDT)
+	id 852D58E0037; Mon, 25 Aug 2025 10:58:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D3AF8E0001; Mon, 25 Aug 2025 10:58:00 -0400 (EDT)
+	id 8030A8E0001; Mon, 25 Aug 2025 10:58:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C1C98E0036; Mon, 25 Aug 2025 10:58:00 -0400 (EDT)
+	id 6CAA38E0037; Mon, 25 Aug 2025 10:58:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 06DA18E0001
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 10:58:00 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A3ACBC0439
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 14:57:59 +0000 (UTC)
-X-FDA: 83815584678.29.9B8806E
-Received: from mail-pf1-f193.google.com (mail-pf1-f193.google.com [209.85.210.193])
-	by imf01.hostedemail.com (Postfix) with ESMTP id B5D6F40013
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 14:57:57 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=gS3gzIH2;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf01.hostedemail.com: domain of linyongting@bytedance.com designates 209.85.210.193 as permitted sender) smtp.mailfrom=linyongting@bytedance.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 582FE8E0001
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 10:58:04 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C9DE858F14
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 14:58:03 +0000 (UTC)
+X-FDA: 83815584846.06.824305E
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 86E1940015
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 14:58:01 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=PD2aBxYw;
+	spf=pass (imf17.hostedemail.com: domain of linyongting@bytedance.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=linyongting@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756133877;
+	s=arc-20220608; t=1756133881;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8oaQVHpJSfD6iISTq4Fs9qiBmXO38S9TJM+RHgKSb1U=;
-	b=c0w/85beRwMw7NOCS32QQnEKtUrlV1cGvfP+BkeUhCmPu5hG1P/FlX17jAoD96LXRIoCpo
-	W4ue9+mvu/C/vDKAwdKF7v5NyCJ1BFcXw6B98C401bZflUdIF0CjLeUpp5dlkN8aYV1UP+
-	/PvPQrAXUCtGTYAswdztGS8jGSkJI4c=
+	bh=6KNNjy6jnCK8i9cBT6PGrQfVqxJIthxv9ctwdRDGY9o=;
+	b=E/p35hyYJ9yaVMzrsDoHVWlMO9a1Z4wQXP8/UAp/u8iF+d/oAtSPCsQmi4wZeLaEJu7atY
+	5ARfW8iVORJa0huxSW2elhCCHn1Ty92/Y9FugII7kg5ojDIdBAhqTTF/PeZ0tbEjHugZa2
+	GT4mrRxkhhkHocptdLuCLg9KgNWif0U=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=gS3gzIH2;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf01.hostedemail.com: domain of linyongting@bytedance.com designates 209.85.210.193 as permitted sender) smtp.mailfrom=linyongting@bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756133877; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=PD2aBxYw;
+	spf=pass (imf17.hostedemail.com: domain of linyongting@bytedance.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=linyongting@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756133881; a=rsa-sha256;
 	cv=none;
-	b=RKtu/i7b4pXPnkkcr3ihQjCkSwCHqTsrFvHcIhKq7t0vB/DDOcklI7PdecYa+kdzTQ84rn
-	yf04H+m8XkOsCPduFa8DtgeBMLstlOT+ocHjImYEuMXO3kHh9gM904olw3B+YwkpRsEQVQ
-	IEjpzkPcZBN5zl/TxaUr81xBKD3RiMY=
-Received: by mail-pf1-f193.google.com with SMTP id d2e1a72fcca58-76e434a0118so5252444b3a.0
-        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 07:57:57 -0700 (PDT)
+	b=oMboJL1PX7ZSAvuORPSQIF4HOTHXaawveFbVRPLlZdcJjkdtdMat1TkyJ9m5KTbWCzm2mo
+	1DXui0GCNa6/+IGLI7RjItD7QhoeWImPpOzml2+alU4OruUbiqDpt6ZHqxvWq3KdoQl0Ek
+	9DU1sPwNn/hVR2T3+CIQdZCIpytx/bc=
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-76e2ea933b7so3924123b3a.1
+        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 07:58:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1756133876; x=1756738676; darn=kvack.org;
+        d=bytedance.com; s=google; t=1756133880; x=1756738680; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8oaQVHpJSfD6iISTq4Fs9qiBmXO38S9TJM+RHgKSb1U=;
-        b=gS3gzIH297Jio1LoDUcX7aBp0TOczoqQmsvdLGdPRMJgnE6VT7ev6wCz7Es8jGodWC
-         MgGCutklEQBeLNyf1OGYkpJjG21bbnQHoz6UKYf8PRiK4q+vbcjAuJ7NBSSjqywDVcxW
-         0cMJc9ZGgSm0EvncGrZmGmnl6w++qjyv3eYbvnyYs3Uru/LQ12qQNICVaTz9WdUp8Oyl
-         h3aClk32FzZaThz7H7xAZ1OTxSCytqDFNizZgQ1UeYCZvorumweTOdNOwsld3yaXLIsz
-         0ZmNjsD9maMeoBVXGAohQwRW3ina/hboBElcdoX2W3i5CE9vpfD+OtnGMpF8nGNqeTD+
-         BXzw==
+        bh=6KNNjy6jnCK8i9cBT6PGrQfVqxJIthxv9ctwdRDGY9o=;
+        b=PD2aBxYwd5xKXrGZv6Dw4avy301USjJnJoez3rSeo3hGfKH9NHNOh+ZdGGnObvgm7n
+         NS3VhU2pJnTq4W452GBhaBV+w3/ruQYr1mp6gIJnMnQOyuAniXafqExk+MXfj7HBSFxt
+         n2rUQ726ZFCJ7jbUFCtdXJ5+ikJVC143ynXkZQz07eUNkLRWWO46oI1rnQFk9EBNPccA
+         GZHteTUfOjPO2xJqi1jemn1A12FcBZgNZetxghxHJnurh6Vy+laF6nVdBg4tcG6V1ajs
+         zjapgQL27HgN2JJOA/fZ6UNf6tKL/mFlRgx+iyPQK1CzVyQc+roiTnJYc8nvLLlpkgPd
+         lYjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756133877; x=1756738677;
+        d=1e100.net; s=20230601; t=1756133880; x=1756738680;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8oaQVHpJSfD6iISTq4Fs9qiBmXO38S9TJM+RHgKSb1U=;
-        b=I1oQnRf7wM+99u0TgoUdPalh8jKJI5KTDS7xWpHm+veRj5qLYMxWYIXrCNNNygGBS9
-         K6AebYCM0OBnRbZ2/0bBCC9onywM8MZNu0mEqXzGGzBY/ekJczxQ9fx+cNy9WFD+OFJ2
-         uol6rlMSlXBueJUApw4X6GiJJAyTabNHqP6HL/wXbu/0FRByMq1UJasXBgFyQGO2gTBB
-         YHCBPkAX30v5R7jFKztsBbJmyJ6aeSbOJNQoc3yfkt3FYu6DX5Jk0abCmPH6miinKPt4
-         9QTOrqH7/tbcAWSJDoxXKX1t7yNRIc1cln7C5lnIHVLzdyIR70PUIk8gjmt2yyO/JMuP
-         cA6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVp2bhVTcXVW1iKm58piQ98agBFl7E/EiiQzoa+vZaoxBBweSaPanl0RLrsEnKpoaZJIjUobx0i1w==@kvack.org
-X-Gm-Message-State: AOJu0YyVz8y5k3OoMhEDCEhtqUZFcInPHG3i5WAP3MWR5A/+B7/tB5eV
-	EOkYg3SFqAbaujXqPHqrBqiyRCrcFRB5nogcMHa8Apf6p7GhaIxdOMiBUUd/HBKtUqs=
-X-Gm-Gg: ASbGncsYL+F1Dh0vuvXDY/FviZm14jqgTYthuMM1BfyV53kbkmNgFHfBrk5hXm1AV1b
-	QHNgAsJ2QYnszhGj42NIOiSZWhblV/BOxT8UbjJ+2I75cor96K+6VAqkZFxillluGsS+kurD3yd
-	yJPJbbqfpB4mrCetxYeTSRYNwYbkjLkENoGhWqqGeSze1TosMXVYF7jBcOg4jFcEO2PFXc7bjdm
-	bMSGZEKWkA9mYTJXhgdwJ31k1dauFUCt9aK6PWuBJTjhHMqpz21ukV9futDVsGBZ2jvmCVmtbgH
-	Bj6hWxOzLny4B0ySIKLLB1PiGbDjKpBuUP5K8eh3KpKIgHAW5Ejt71ViCjUGag2edXXXVAcwQJ4
-	2jKOu7scvBziKuSI7j5a2FpvYSRT+fUNRnDS1vq0Am8C8WpwW45awn2th6qZY
-X-Google-Smtp-Source: AGHT+IEJgruw8paBQDNIopG839sPtxHYbVWhGydUTRYfwwhqmDIT8wYlFvzCj4LXmvnvNxNKmNvDrA==
-X-Received: by 2002:a05:6a00:3d96:b0:770:3d67:82b1 with SMTP id d2e1a72fcca58-7703d678890mr13756054b3a.32.1756133876538;
-        Mon, 25 Aug 2025 07:57:56 -0700 (PDT)
+        bh=6KNNjy6jnCK8i9cBT6PGrQfVqxJIthxv9ctwdRDGY9o=;
+        b=aaWBgrKuELTsroD77AS5m/5/S4WMALsrLv0jH3+5FsWSTF24zSi1qmY/LyW78idP/0
+         bydAw0pOld675BTR56TOQUtKzACzYSufoM1zjsR9v/P0PWDI3p9Jtt4TpL83LRKSaV8R
+         lEX64PA79tzONQuFKxWwFCe8DxfrEj3nMaHTESFvNGNlb/bXf7nVszAgUkNcVhJH507N
+         d89LgfYA9WdpjkPXdrC7ZaVlvC/jB30ic3VShwpHcmI4LeXSUZTqRM4a6RzF+AyUJBw+
+         OC7d7DC2WOx6niaEEa/Zmo1TPV4u8o3gWxOOgK5u37MJQB3LmnldBPJ55KU0RlTDVkHw
+         uReQ==
+X-Forwarded-Encrypted: i=1; AJvYcCULbOZfl8SKYumUccm6ovEWIe1+TaYpqpq3SO9/NuxGCDGE7Q93+1ngqlQ5PJr1ekDWP2opApaNiQ==@kvack.org
+X-Gm-Message-State: AOJu0YxCSNE1R3+3vqfSserM+0XaZGGogokup4nRRMumrRkgORQzsntW
+	vE1Xet2I0T9IYthsyV5sjogZLtHYFTxI5fts09Ris+X6KmmOuTqWer1wWs3qTsTWsM0=
+X-Gm-Gg: ASbGncs/4ilsNRGhETaBPgsoLbINKppTSCGd6kNiZn66zLgkQNVn5h0m4vKAfyvwNC2
+	VKkkmUwU/VQue0botK+kmyL4gWrgA8VPtzsSqLnyjl5KG0E/9cbUYJ0OZu9/s4hw77xrZjOYng0
+	53qehaC2YY1/gTCSgQXNTyGjhOHpcm4LC2kiu5FGqPYBjshtW+9nDOvvSZy1YrNwAONXDG+DB9B
+	eFtIkDSlistajHCrUwOIHcDSElydXW5ckWeUrwHiOviIibjpm32B5s9mDb2Mq6sbEqOoAr5OLnG
+	OzWk5KQunRB0cH8mfoVyP/2DpsAPlBpTZDCPkPStoqu8LrNP+Z4lzSmRQTgShaxPiC6hkl1o8pW
+	zYXNuizhuQNPyV5sJhxVYhfuTCNpINLjE4qm2w/t742/Zn5sb97JcgktEdI/0
+X-Google-Smtp-Source: AGHT+IGbWxmYTsBIeFlK1EvF3uLRm34ATqyatUoKhGCOYfILgtNZGvHj6AvQD4iDtUNoTtKa6iaYsQ==
+X-Received: by 2002:a05:6a00:4088:b0:770:4753:b984 with SMTP id d2e1a72fcca58-7704753bbf6mr10848203b3a.16.1756133880306;
+        Mon, 25 Aug 2025 07:58:00 -0700 (PDT)
 Received: from H3DJ4YJ04F.bytedance.net ([203.208.189.7])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-770401b190asm7803436b3a.74.2025.08.25.07.57.53
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-770401b190asm7803436b3a.74.2025.08.25.07.57.56
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 25 Aug 2025 07:57:56 -0700 (PDT)
+        Mon, 25 Aug 2025 07:57:59 -0700 (PDT)
 From: Yongting Lin <linyongting@bytedance.com>
 To: anthony.yznaga@oracle.com,
 	khalid@kernel.org,
@@ -99,22 +99,22 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	akpm@linux-foundation.org,
 	linux-mm@kvack.org
-Subject: [PATCH 7/8] mshare: selftests: Add test case to demostrate the swaping of mshare memory
-Date: Mon, 25 Aug 2025 22:57:10 +0800
-Message-Id: <20250825145719.29455-8-linyongting@bytedance.com>
+Subject: [PATCH 8/8] mshare: selftests: Add test case to demostrate that mshare doesn't support THP
+Date: Mon, 25 Aug 2025 22:57:11 +0800
+Message-Id: <20250825145719.29455-9-linyongting@bytedance.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20250825145719.29455-1-linyongting@bytedance.com>
 References: <20250825145719.29455-1-linyongting@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B5D6F40013
-X-Stat-Signature: 4iqz3ccegsyuf47fw3m4fmrtbxbi4fg5
+X-Rspamd-Queue-Id: 86E1940015
 X-Rspam-User: 
-X-HE-Tag: 1756133877-513679
-X-HE-Meta: U2FsdGVkX19sAN04zt5gWdR2K60Fl/soW5DWvxsYz8o4DVbT7qsKY5WYob5xiL2zzxg8YWniCob1nydR+gD5pw5/n7ge0wiG/qMfnw89/BoTMGIvSkNEkSzNOvsWZOYMzIIU0m4SRrim6kEAK3fksrr/QWCIHgwNiWHuqueu89fuIXzbiETwfti0Me7wi8oiMnpW0X+lrxFRf7tWW1CA5LqVoNw8wq+4cFf+9sRXVGod1vz5jjQ8tvge4EBttRHxR4fbUP8JhQlTnaD57ig0PHC2cIxjgACNP191Sx1HnSa+MZ93Y+i77c+04ZRZmg/zV+oFxxxtGw98sPhGwJE+r2X0Y2PxCfhKGLwgnYdfNBWUg5224YYaVpAZf9xHLNf8P6PPCuf+avHZ4qoon9xIV8JGpfPsGn3RjkNpAJgFZAri7/j+zszjhowfdytKeWa4Z3fNZ/IDvulrEn5jfL1DsEFc4la0vxO12YeiE0o48Yt9DI6fvUWkXG9JvCAqn1WDE58qbP/Yi12zlfSTFMok44B9U4GSdg6u6y7g/sw5wEXTvCnWXBNJP9qOdqDjTEIHSDQPcuVRcEBAqGjaaB6a7yUWEq13IzOm6B+7BvIFD5JFq2zN+tw0SJhrpLkxzSg8GE698sokq2xp/6vMrdoGuciP1XctOVeb/7YjUnPTMqLTKH6cOeRp1dPpEYzUAmyWKQqLiPsvwoawokMnwUaQplHxF7z3QUxJh42RprH0oX20mo74BqUFGaY57HfR71Tf/VKrBrvhAvmzk8PuUg+zHNqEk17CZE/4LsUBdamrdPrC3BDNJJnRouncT/bv/4bHDryqZ22Bief8P1kZ4iIMJbf8Ez9y/jpEGVTlSZQ9shBbFIxdDM8bkvyzyD4ECmxx+OPFgQTjP+dI9IJWHt3CxrcpsRPXnv7S0DTTlGCjsWwREKc2W2Ynb+eERXhbRqOYoIeMq8GeRugji2/RPCM
- P+FleVTx
- DzJuJKX9PdEhpNYe22WVYJIJmcZ1dxCcuBiwVerL/F8r6SxJgcYCOZ2M3d+t6uvPxCus/9wpIFCJW33YnodWHSkHYq1hwGMXmR21NC5qR7mmS9EgCD/9RIX2SBvIOBRG5poM6rWk2LXGRWSV+5ssUV8nMbk8De9gjU9iaAmEmb09UeYjbTQSqvjQuUjW2JtQP+nihwSoxkj5tktQwjv7Z4v3EWikcTijQrbXKbBDyRSwSaXaYL65JQNiAp/HrM1QFEBCsgQ/eUPsD5vbbTmF/FWm6kP2//3jNlIy0gYNcELPITj8CVs6Mq2rWYfxwLn6Ft+uhHUQmoOoJaI7i638L6fjXN+IfzPwqIchSlau0lL5WaiTnA9ywHAYPx6wM3K4U5+BcauYMj8bNnrrKeNzvis4KDA==
+X-Stat-Signature: bjqcnqpya39k4kypcunt5tsksktdc9ib
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1756133881-872712
+X-HE-Meta: U2FsdGVkX18D8ep8MivLyTtYVENmh4EOUZPIxRa4030vOYD9E55/JtEfVpkSEFKt28n0NXeKXO6tvrougqIA5RgDzcHkunnQWSIhNdC+ZQXhFpPCDVzk01Yf/T83E08+38xN9FQJfeKsqJzUKh0PLWlrDTktjDMnypPTd9ZbRv/MIxnjWzRoBxVqtvSm8gqk+doJ3Yk4X4tuuVFIf/r3L0SzBpl1gAQewBllducRqqt8TDXgTI6okj0Ut/UGWY8D5uOConCjfPWn1m4Jbb9L0ejpcwT3SuFjll9HvhaX3n+85LnHr7OEPpy34DlJKwZMwqRacn0y0Hmjakgss3G85qCP/MRXPcCSg/TlJ9uVs5vRkl+oXJhXKx0XGIxBQMUYPNzmNWBIs/Wctdj2MLJOaMubHEzh5mdPWLCjvhX29XSSCZj3ePEr0jwSpGdKK9gGDJYBKtpL38MDY4EdReFqgv7pTXlIq8PC8aYm8ddYeZkNoVz5ZEpv732o6Xtc/20zwSS+/pdVMImsodZWxlLCMN+ORvkUyX/tNC7t/Sr0vO5LQrx8V4zS5/kRE1bjLC4f9lLa6quUhSBUdlXj4G8WfgHnVraVmwFz1tciuIIoXBUMSA0iS1+WiT2xN0SKNeSvF6gJYemXzHEGI5JGNGbT0Jpm86M74flAGdQU9qyhsQ9runbq15bHA5VJm3d9YOMGiEzX/bSrQO7m11Yn8CBcbJEogbHqdUjUtAWljzDCBs9cMP0PcPA0TamPBWm0Db1EITzibtNx9kWHkcCh+VuwjbWCrwHXG0PWuPX1MHj+3qe4gvoi7ZQ/IH3Is5LsSH1DqOcDGGiR1hISEtO4XX12ZZ+Q+mc5CzJ6lrDfJHQowCslf1CFso+82YXzAExsiaLgi8BrMVgLnM6vPwRovbgcfyICg1J1hkWAk19H8dFRT7WBiyRobvZc2FeVxIg9tIVPnn44xNmSzccKr9Zcu6I
+ tNk4mWQ8
+ bvVCGiMu+mKpjofPn0gezofuX+Mv33RjgapCoDwT0HqvJdvs4PouHagb6nAjKpD3Ajhe8Uwqjvq8e1mObKz0CJN43q4P+LTPfnzaV78qLRw9U5ZzRVvi47FNmIHvm1pU+RYNvJKHeWMKoOcL3Um7V/Az4K0MoR9Wb1A3KwnWJ+05+2VrQ6jMzvnnDZMZ3j9n3jemhJ21RhcgssWjrbQLKMhb+6v8dZpYC71eMctYRufJbrSIAXw6QOhG8HBtKhflKhv5VjjE65B2HkfGty3JCEDQ3fn2PGy5ol5uzhSHR71obg5WQ9Btw90gXRjjYH5+uXF7NcDTDg6a+1nc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,106 +123,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This case is quit simple by using madvise(MADV_PAGEOUT), but for verifying
-the memory size of being swaped, we need to setup the memcg and attach test
+This case is quit simple by using madvise(MADV_HUGEPAGE), but for verifying
+the size of THP memory, we need to setup the memcg and attach test
 process to this memcg before perform the test.
+
+Because mshare doesn't support THP feature, the size of THP memory should
+be 0 even though we use madivse.
 
 Signed-off-by: Yongting Lin <linyongting@bytedance.com>
 ---
- tools/testing/selftests/mshare/Makefile |  2 +-
- tools/testing/selftests/mshare/memory.c | 71 +++++++++++++++++++++++++
- 2 files changed, 72 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/mshare/memory.c
+ tools/testing/selftests/mshare/memory.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/tools/testing/selftests/mshare/Makefile b/tools/testing/selftests/mshare/Makefile
-index 651658d091c5..b0418b8c30f2 100644
---- a/tools/testing/selftests/mshare/Makefile
-+++ b/tools/testing/selftests/mshare/Makefile
-@@ -2,6 +2,6 @@
- 
- CFLAGS = $(KHDR_INCLUDES) -Wall -g -O2
- 
--TEST_GEN_PROGS := basic
-+TEST_GEN_PROGS := basic memory
- 
- include ../lib.mk
 diff --git a/tools/testing/selftests/mshare/memory.c b/tools/testing/selftests/mshare/memory.c
-new file mode 100644
-index 000000000000..7754c0e33506
---- /dev/null
+index 7754c0e33506..2a415ce7bc01 100644
+--- a/tools/testing/selftests/mshare/memory.c
 +++ b/tools/testing/selftests/mshare/memory.c
-@@ -0,0 +1,71 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/mman.h>
-+
-+#include "../kselftest_harness.h"
-+#include "util.c"
-+
-+#define GB(x) ((x) * (1UL << 30))
-+
-+FIXTURE(memory)
+@@ -68,4 +68,15 @@ TEST_F(memory, swap)
+ 	ASSERT_GT(swap_size, GB(1) * 9 / 10);
+ }
+ 
++TEST_F(memory, thp)
 +{
-+	char filename[128];
-+	int fd;
-+
-+	char cgroup[128];
-+
-+	void *addr;
-+	size_t allocate_size;
-+};
-+
-+FIXTURE_SETUP(memory)
-+{
-+	ASSERT_NE(create_mshare_test_cgroup(self->cgroup, sizeof(self->cgroup)), -1);
-+
-+	attach_to_cgroup(self->cgroup);
-+
-+	self->allocate_size = mshare_get_info();
-+	self->fd = create_mshare_file(self->filename, sizeof(self->filename));
-+	ASSERT_NE(self->fd, -1);
-+	ASSERT_NE(ftruncate(self->fd, self->allocate_size), -1);
-+
-+	ASSERT_NE(mshare_ioctl_mapping(self->fd, self->allocate_size,
-+				MAP_ANONYMOUS | MAP_SHARED | MAP_FIXED),
-+			-1);
-+	self->addr = mmap(NULL, self->allocate_size, PROT_READ | PROT_WRITE,
-+						MAP_SHARED, self->fd, 0);
-+	ASSERT_NE(self->addr, MAP_FAILED);
-+}
-+
-+FIXTURE_TEARDOWN(memory)
-+{
-+	ASSERT_NE(munmap(self->addr, self->allocate_size), -1);
-+	close(self->fd);
-+
-+	ASSERT_NE(unlink(self->filename), -1);
-+	dettach_from_cgroup(self->cgroup);
-+
-+	ASSERT_NE(remove_cgroup(self->cgroup), -1);
-+}
-+
-+TEST_F(memory, swap)
-+{
-+	size_t swap_size;
-+
-+	/* touch 1G memory */
++	ASSERT_NE(madvise(self->addr, self->allocate_size, MADV_HUGEPAGE), -1);
++	/* touch 1G */
 +	memset(self->addr, 0x01, GB(1));
 +
-+	/* force to reclaim the memory of mshare */
-+	ASSERT_NE(madvise(self->addr, GB(1), MADV_PAGEOUT), -1);
-+
-+	swap_size = read_swap_from_cgroup(self->cgroup);
-+	ASSERT_NE(swap_size, -1);
-+
-+	/* convert to bytes */
-+	swap_size *= 4096;
-+
-+	/* allow an error of 10% */
-+	ASSERT_GT(swap_size, GB(1) * 9 / 10);
++	size_t huge = read_huge_from_cgroup(self->cgroup);
++	/* mshare don't support THP now */
++	ASSERT_EQ(huge, 0);
 +}
 +
-+TEST_HARNESS_MAIN
+ TEST_HARNESS_MAIN
 -- 
 2.20.1
 
