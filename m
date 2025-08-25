@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53B01CA0FE7
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 15:12:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBB31CA0FE7
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 15:13:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6EBFE8E0041; Mon, 25 Aug 2025 11:12:11 -0400 (EDT)
+	id E42BF8E0042; Mon, 25 Aug 2025 11:13:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69C208E0038; Mon, 25 Aug 2025 11:12:11 -0400 (EDT)
+	id DF37F8E0038; Mon, 25 Aug 2025 11:13:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B1CF8E0041; Mon, 25 Aug 2025 11:12:11 -0400 (EDT)
+	id CE2588E0042; Mon, 25 Aug 2025 11:13:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 439968E0038
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 11:12:11 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CAE3C160467
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 15:12:10 +0000 (UTC)
-X-FDA: 83815620420.17.1253395
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B81F08E0038
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 11:13:58 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5EB8A1187A1
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 15:13:58 +0000 (UTC)
+X-FDA: 83815624956.19.9304F44
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 1EE1B14000D
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 15:12:08 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RiRrf02A;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id AF945160004
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 15:13:56 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bi3KNdil;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756134729;
+	s=arc-20220608; t=1756134836;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tyFlJScCtQkbQgBnZmz9mPu9QvkCJE05iM3Z29qiiQw=;
-	b=CFL0iGO2tCjN5+zDWkCjJahL2Mp81FO6w1ovg//UnbextV4lc3NQ7LSLOCd7gP9R+BkJGu
-	fH9yobufArgEnwE/C5GT+cTjKfJgn6Zr53aKFMSGRReZFundQx/i/UpuRPf+Llc+5nOyHc
-	5HK8wqhQawULPrYv3wu4/Wdb9l8L3lw=
+	bh=ihnyLvMqFgwRsUSPEw5Tge2jcml8CkSqI+kjzDN6pmQ=;
+	b=GrQbweN+f7AEFyUBiwoqHfVWhcpzO9tOBiSMiQ2pOjBBSXg77fRbiBwj21nk5/xi7ek2QH
+	9dK29ec9ePrJr7NngpCpQ4dKcIPKSVw4RXodJ7f6yeIX9Eg+jkU55nDcNqW8ae01cP00+Y
+	H7o6gQCxDauI0FB2fYXi/23SJUJySX8=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RiRrf02A;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bi3KNdil;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756134729; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756134836; a=rsa-sha256;
 	cv=none;
-	b=bUY//jFVUKu+JCtMmVV9O8h4r1VdIKbYHAs4jVUxNYPGvVg0AWpBy1Nc2gxemFkwxjFDqG
-	rzh0vqWmcupwUr/74N1cV2QVnIi3SIVWAA32/R0OOZhfSuXIoPZVXjP8irIjSqrbHbRVtg
-	533atbbar00GkNqJQaJ+okbZTC/HP20=
+	b=OUh//aa0EjuAxyY/5GqjQiud2Pu/DVAKNZLs2eQ/y+lczUyJy7NdKwgV0EydkQBtcyDD1x
+	puTmhdhYjj1TEFied762BhqqFigBkOOyePCfgNZXJO0zbYqmn2WBNXUHqH7OQbmCu2TNbe
+	kG9u8kSVn41qH7MKTgTEHdjDTGFJ6eg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 06EF1419E2;
-	Mon, 25 Aug 2025 15:12:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B88D3C4CEED;
-	Mon, 25 Aug 2025 15:12:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A8A684341E;
+	Mon, 25 Aug 2025 15:13:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E0FC4CEED;
+	Mon, 25 Aug 2025 15:13:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756134727;
-	bh=RCzfFRa9bhcrr9RKjF/YQSphWZ97OW8ZYfBC6HmBfP0=;
+	s=k20201202; t=1756134835;
+	bh=WZz+BEh/Ios9GLEN/uIEsnq1OHEvgWzXABBqfRy6Akk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RiRrf02AmMTYLGGM314qi6OKtLmE6osCEHMol980vuE6MQZuBnyse61RheqKkDlUQ
-	 DtzLAiVgHeU48Pn5/tfFdDsTQMwCRVTiwKkR7DtAgR7VYPleF12dtPRgAtfyrnktI/
-	 fUznpf/s6C3U80anf45FZgF4TAgBLVUflzRM7XxS8XIoNPkaLm6qvuPnVlgP+Njl1m
-	 t2Mbt9hF06AWNNQvG/qU2TG5tWL1oUgpULkhftHzVmpnZwVhgwIHHN3jKzm+bakEv+
-	 q0WDSSspIeZ2vtGC0PaSU9L55d2dmZ4Bb/c52lJ+EgYLwkCNnxtkSVd7JtHn//N6P5
-	 qZdMt+Ax8S94g==
+	b=Bi3KNdilY7L65uSGuh+wXZHJcTlHRrqDDZGm/3FiF5ruHGiEQNhqc6YfGiHitK+F1
+	 dPqSNqGqGBBND2/c8uQCURQaRSadSmRLyY7aO7PKOxjv9o5bI4JZkH+ISVpn7hER8S
+	 k5JaeR4QTvO4dP26VxEWXP6MQpV1IHzwkc/b08X7HGZdnwfrYFsweHn3TKu+maBWK8
+	 ZgSq5xeVm+jzYe5970Y+VcwsuyIlASBk0DPRK29VbjOU3PBYXii9145mL4R7yTdsy0
+	 SEM52H/4Fabq1MNznSczUogzmbdz2tgh3IClQsc1X82qdK+aO0o9LWf0LrNnmjj7xe
+	 uuIAvIhCVEXFA==
 From: SeongJae Park <sj@kernel.org>
 To: Quanmin Yan <yanquanmin1@huawei.com>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -72,24 +72,23 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-mm@kvack.org,
 	wangkefeng.wang@huawei.com,
 	zuoze1@huawei.com,
-	kernel-team@meta.com,
-	kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v2 03/11] mm/damon/paddr: support addr_unit for DAMOS_PAGEOUT
-Date: Mon, 25 Aug 2025 08:12:05 -0700
-Message-Id: <20250825151205.36288-1-sj@kernel.org>
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 04/11] mm/damon/paddr: support addr_unit for DAMOS_LRU_[DE]PRIO
+Date: Mon, 25 Aug 2025 08:13:53 -0700
+Message-Id: <20250825151353.36392-1-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250822093420.2103803-4-yanquanmin1@huawei.com>
+In-Reply-To: <20250822093420.2103803-5-yanquanmin1@huawei.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 95y9gg1u9yfumg9md9nsf17sry77ij3u
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: AF945160004
+X-Stat-Signature: s3qgfz9ki3qjfx6pe3yjj834x7pge9ei
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1EE1B14000D
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1756134728-59499
-X-HE-Meta: U2FsdGVkX1/vN0dha6pBqx3JCTZvZeeSABnoh/vsZ+Kw5dJffVwhX+znTdvLaQ7aJwS2ypc7H7wGslovBKi9va+NF3qTZ9nZlhfyWx7O1JRxTgyKK8x/258AIwTH7elB9yl9Xbtsy6us5qiTTbsuDd2A8Z+wcbJT64QZRnkRXUfb6uVgAm2ObOv1ohkfeUmV/RDA0C8iBimR68yqzBr5ztPzIURnOCHO2UwM6lmYiL01hxtO2zYAihVz8en9CSOuta9cSiwUa8xguAuYDpPzWVFojRgjJu3v5igI4m+e3MWh3QSJQikNNffMV/xSZS37lwS8DqbTApZrHkyFANTSyAUzIrJBQsNY7GP84R+e9U5DQkmvsEuBww1mw7KH59Ay427LI0XlW6HemLRCwRvpxaL9swsTVm21gNZ1mBtyK8TqW2eIFd/0UwAyN5vbyP1Yba9YTZWRSllkJIw0a8GP1Juk/kyhqCCQYWY3kr3mtIoRtwLl4whe1+SjdlC0Kmrv+HVyMtqPnUBZiNPhsmrxpQkxy/20PnFrlJEZ6REN93M6uff0qW3bD5JBtMm4EE30ZUf9b2uVaFNsht7owjvBqjyHaH4/JQhwzwLxjf38uHUig9GjDQQdqLgaeYbNGrpbjrOXNoFDqROsg0V/CddHXmjiWiy9PmVyEWCEcDe1sCzL8bBcy+LNGFVQMM9fg97p7ebn5uqfdeYNwqyAbLuoei/J+HgxIeuiPT2IhCSAmLmpbx3jKf6WpckDkno5yKzZAVhu8aZlneJbOP9S7y6KoIJJzHU5IkrFuRaX3fUluc7DHHhAbWcTEm6YWvGLMP5mKW1I01rmpuuFtR2pzqwcEuadJHnOqw1eUCkSKnzFrbjeRz5558qXl5oZPyxGy0wEAKUCRrjU0GrqhMDxme5gHHo6E/gOjMHj7uoHA8Okbla65l+MKtv8GjIUfTZyjhykBpO47SiqhyvWbhzfyW9
- ivBWHY7+
- nCPZ2RfvUgbmvpF67iIO7wA1yOQjbQImJwBieqkj1DLkH++EsqcQbQkJm6DqTKzW8R5kmXmXg4Jr/6DBfYQmI4QRLCzQp6WXX+j3K1mbe1+gC8ZFJLouS3Loul7kZFQ6ymCszlANC5Fk5uQOvMI8JK8uFF2kqsDCiLetlE+aSTJbYlPabGS6IV3QKXboVNos+ZjCC00JAB/TW6ZwtZyIBOy2tQ6jH1XtMUSd2yr4irTfDF7cfoNCdBEICHKyY5utXvWRqNNHxkX22qffJsTTCH1TsNA7PPcN5kT4MtcYvE+48QOI122DHtTORV4M3IvZFz1iKeE0cbO7SSzzrHfks6KdY61ErzpKH/KSO28rnFJPOL3KIY9i4n+dfEzQoVosMCdB3Sut3BRRSKUV/A2r+mShSIrb77waAIP5hHxK0vxrh/T/DS2MjYbl/0l5fxPkz84BZap8F3Tr6qfP0tOmCqC/Daq7tdjYGhqLwY4qn1jk9fx20jFSSetGg2g==
+X-HE-Tag: 1756134836-989923
+X-HE-Meta: U2FsdGVkX19qgLV+EJFo4QAV6VNa3VlaxsPtYgtDZ1curQZ6wUFFIZPSpsIv55HTzBg2VdlF1c81OP0CCa3GuARj+hdSHbRRAAxUqwgyke1OvChNmNiEo84vRUvbQQt5BwZLXpZC5bUWcEebqw96Ip04WeH4j/2yqm9xWClxaUy2kSFBp6W3LBKJntMkpfXRO/UTgYnSYu6Z+yGczMXt0Fk4GofTC4minBnsQ2KYVcEvw7fYc7jgVxbNGni6uWdIW5zPkWYNaTFESySSjtYY65ha33LSVSJQFDfai3GJQSDXQxYbkSsk7z8ru/i53hJ9+ZCOtRmkjIHYLsW+aZDpy/oo6sxMLvFI32YwIdhGJJNG+4lyIsMLuKD4XsqIdbuE0k2Td80P+/zgbzaWfuM1XQDxCWLMprBhkh/fYILMO4w7yLFpKWbciX8KdLUH5qmdiznZ1EU/keOkXq5BoiW/cRdBSc66P3TJtPWWvQJCX1Ver5qsgppPGZ8lnCONtooODKoZ28t+VmANIEqf9MMlrPnC/UZZhJ93qVYC5nRPmiTrmne8GcJ4u0K0Mo/jGeYGPjd9vE7IKlA+wg9S8lvl7zWiWMUKx+BaND/HHi5QY3Yzp0lgNjA9mZo4wz+cw81bxgKqDI/ibAnRnCOy7A2llVbAFaOmme6apfZlmty9jkPHNawSg3cjM+goR1z/P8IE51wUjGA71zSuE/0gNleKIJWSUVTn7f1mnBgaJymdG6Qrlgo+Of5KC+P7wxYI+kh9TpO5S7FG04GMw9rDuhjETOeILYj/6MpR5jxnHUKZiqbYTm2K2ajObXryUU15n6HyOceU+dDVBwzXEh4GDh+3KnQbfDswu9fRcz1YX1e5Z/lYMqAtszMy4o7Zk5qq/C6mPn+QKPR85roHac3u0Xqbyb+RckWSAL3NfKljAFpEu9lnR8aRVTl1YuD+pzxHwxZOslvzHMGDAsbnQ8nf7b+
+ kD9Eomqm
+ Y2tfJhWPs9TqjriK0qxY5/oEjZ6kO51xc+BBpCtgskgUh6Sd+0ExZOeYrQmKNHGhNsQc0cwCT9rmowUhUCvtOCspUU+m/fWlEYPXKZJMwkd0d74EkHt4UWvOuVcvRxlu3ASrJ8u1VxHaQWV19rr4z0EIS2iFR0KNCwRkHBXJF2DMBxziXI90Nf01MpCmAGxDNu0S3Xi3HyeWFzCH0vVi/4krl+6oyy7lYwgMVryCi0W2bX8V+zy/aRi5uwPcLZ8N75pfl10dss6bogMSMXOMhFfpHaRSbFWbz1k01z6BzygPKU6qwa2fM7eU0U0rz68E903n1gYf3kFLNgHoxFgmnhMQ6ZUPaMv5fNIImyVdFHOm/rxuMUQ+QaU9NmMOGEcHZdLR/vy2VgzPu5C4KF6H/CXD2EhE3kVzDZuPbyhDABbDmT+JCIr2N/fZ+AS6ZG9ER9sOcIGPuBFY621PiW2tH7daHn20hz9PoLqVRqUOU9f+SP98MZw30tmYbnQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,19 +97,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 22 Aug 2025 17:34:11 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
+On Fri, 22 Aug 2025 17:34:12 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
 
 > From: SeongJae Park <sj@kernel.org>
 > 
-> Add support of addr_unit for DAMOS_PAGEOUT action handling from the
-> DAMOS operation implementation for the physical address space.
+> Add support of addr_unit for DAMOS_LRU_PRIO and DAMOS_LRU_DEPRIO action
+> handling from the DAMOS operation implementation for the physical
+> address space.
 [...]
 > -	return applied * PAGE_SIZE;
 > +	return applied * PAGE_SIZE / addr_unit;
 >  }
 
-Kernel test robot [1] found this can cause __udivdi3 linking issue.  Andrew,
-could you please add the below attached fixup?
+This can cause __udivdi3 linking issue similar to the report [1] from kernel
+test robot.  Andrew, could you please add below attaching fixup?
 
 [1] https://lore.kernel.org/oe-kbuild-all/202508241831.EKwdwXZL-lkp@intel.com/
 
@@ -120,7 +120,7 @@ SJ
 
 [...]
 
-==== Attachment 0 (0001-mm-damon-paddr-use-do_div-on-i386-for-damon_pa_pageo.patch) ====
+==== Attachment 0 (0002-mm-damon-paddr-use-do_div-on-i386-for-damon_pa_de_ac.patch) ====
 From hackermail Thu Jan  1 00:00:00 1970
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
@@ -129,51 +129,30 @@ Cc: damon@lists.linux.dev
 Cc: kernel-team@meta.com
 Cc: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org
-Date: Mon, 25 Aug 2025 07:41:33 -0700
-Subject: [PATCH 1/3] mm/damon/paddr: use do_div() on i386 for damon_pa_pageout()
-         return value
+Date: Mon, 25 Aug 2025 07:45:24 -0700
+Subject: [PATCH 2/3] mm/damon/paddr: use do_div() on i386 for
+         damon_pa_de_activate() return value
 
-Otherwise, __udidi3 linking problem happens on certain configs.
+Otherwise, __udivdi3 linking issue happens on certain configs.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202508241831.EKwdwXZL-lkp@intel.com/
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/paddr.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ mm/damon/paddr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-index 5fad2f9a99a0..09c87583af6c 100644
+index 09c87583af6c..6fb92ecc513d 100644
 --- a/mm/damon/paddr.c
 +++ b/mm/damon/paddr.c
-@@ -135,6 +135,18 @@ static bool damon_pa_invalid_damos_folio(struct folio *folio, struct damos *s)
- 	return false;
- }
- 
-+/* convert physical address to core-layer address */
-+static unsigned long damon_pa_core_addr(phys_addr_t pa,
-+		unsigned long addr_unit)
-+{
-+#ifdef __i386__
-+	do_div(pa, addr_unit);
-+	return pa;
-+#else
-+	return pa / addr_unit;
-+#endif
-+}
-+
- static unsigned long damon_pa_pageout(struct damon_region *r,
- 		unsigned long addr_unit, struct damos *s,
- 		unsigned long *sz_filter_passed)
-@@ -190,7 +202,7 @@ static unsigned long damon_pa_pageout(struct damon_region *r,
- 	applied = reclaim_pages(&folio_list);
- 	cond_resched();
+@@ -236,7 +236,7 @@ static inline unsigned long damon_pa_mark_accessed_or_deactivate(
+ 		folio_put(folio);
+ 	}
  	s->last_applied = folio;
 -	return applied * PAGE_SIZE / addr_unit;
 +	return damon_pa_core_addr(applied * PAGE_SIZE, addr_unit);
  }
  
- static inline unsigned long damon_pa_mark_accessed_or_deactivate(
+ static unsigned long damon_pa_mark_accessed(struct damon_region *r,
 -- 
 2.39.5
 
