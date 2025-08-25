@@ -4,116 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D8E3CA0FE7
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 18:46:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2EA3CA0FE7
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 18:53:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A41F8E0063; Mon, 25 Aug 2025 14:46:19 -0400 (EDT)
+	id D91728E0064; Mon, 25 Aug 2025 14:53:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67B978E0038; Mon, 25 Aug 2025 14:46:19 -0400 (EDT)
+	id D42198E0038; Mon, 25 Aug 2025 14:53:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5913B8E0063; Mon, 25 Aug 2025 14:46:19 -0400 (EDT)
+	id C57D98E0064; Mon, 25 Aug 2025 14:53:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4463F8E0038
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 14:46:19 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E73931A0525
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 18:46:18 +0000 (UTC)
-X-FDA: 83816160036.14.9188B6A
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 015A14000B
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 18:46:16 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=oCpUZ7gU;
-	spf=pass (imf11.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B41F98E0038
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 14:53:11 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 604F81604F4
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 18:53:11 +0000 (UTC)
+X-FDA: 83816177382.04.5C919CF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id B3CBD40002
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 18:53:09 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lb2uYPi3;
+	spf=pass (imf12.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756147577;
+	s=arc-20220608; t=1756147989;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ux5pqSqp7hAlsWtwMgovrQ8ypY3OKI7YYVef7eLTz/k=;
-	b=6iXgHd+sw6nZgUxcEWtxBm3EtvJBnSoKYaCpTbC1BuBlYy+DEEexZH4RsHwKm7mir1gnl4
-	BEpxzWwququf9KhV+nYEHxwomk2uBY1WOPRzxgz4usPnF6iBOQulS2xdtSv+DY6r/O0HH6
-	SvHF0fUK/ukJ5Agcd0FXw63TWge+bDE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756147577; a=rsa-sha256;
-	cv=none;
-	b=VjmmrHI8rgHuSKxpQyxvr8DcH0sVYa+MdtM+8YiOjzy+jvp6cPa9FHR4YMbd8/xJvjndJI
-	QvxDFcdG97Ne6rqEXXLVP76yQV7Gz8U9TkZIOpp77L0E6mCYqJJhsXyFNQIWLoq8JdcTqf
-	nurm2hCvlxqaiwOaV+p3HHp/hN2rCRU=
+	bh=x3rjkwd+yp81du5a0+5OxVddHSkCngCSEH8LmT8UTGg=;
+	b=6EVJ/KJ4adm3vsHErip2y0jbsApnudBXjfAECCAgnJSRKK/2WZl39TGKZ/JVoXM3Ck6opE
+	emlnObhhDXZx21yX4qk6whXzSJoCcNysfG556UPdJFya70X17+K9cQRlajOY/spEdZx1ZH
+	sBrxUCm4qeTKrq9VGbsC6jhMoEHEwIg=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=oCpUZ7gU;
-	spf=pass (imf11.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-61c386d3510so1917a12.0
-        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 11:46:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756147575; x=1756752375; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ux5pqSqp7hAlsWtwMgovrQ8ypY3OKI7YYVef7eLTz/k=;
-        b=oCpUZ7gUCZIWt6atnzEXRuuSbm8lJVVjfFsJbRr1Dr0X2emi4FiXXjZhYzc/Lyoc68
-         /mY+cJ8R0wmFmvR+Dhj/towum4x2W5TS9ly+Dwo+CpZu4n/DKkxQiGPR2vDMl6u+nXaC
-         n5cEz/A4BrnxIf6efhO2T/nyeZq+trmQqI+ZwcDgNFQjSzHE3M29CBWXTc0yoTwFb4j+
-         BmVOR+bckXeWL4+VlHFrR3QoPwJK957e76/tSv6hgdlwB30PK7I0h6NjwWFMZxbxLWTR
-         JcPK4RUTXoeUT0d0AwG78ItVaCPugPLf7sAgpZDuQeV3gmmKgaJw6YoxxqpstuU8JtPt
-         56GA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756147575; x=1756752375;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ux5pqSqp7hAlsWtwMgovrQ8ypY3OKI7YYVef7eLTz/k=;
-        b=tnhuTkVGdXHsGJRx8AsVKo6EBVUepvPWds/boBo46e5CYWzy56YVAGmVwrmH/Z66jK
-         1sA2sTSz2CoVkGhYhmHaG3gRhSqn3pPSp5IQnlU3WTgWxjh0CI2+IyPDmdVPC+bHXwqn
-         +5XTScHVIqtIAYyKGombskX2bsb5Rj8Gj56cIGSGx6yQSh9tciNc2l8dLIVbEYYs2Mah
-         h+rx9REq/qL2QiP4edyCehglVFWY8f/hEzPsEiZfYDMnx0IuymVmFWZ06w/rjf4maLTL
-         WsIH4GbcM0fn3fCO6z/ghKVLlq1ApHsgDe/YmKgxRvCJLnjrs5jaNy9QkSxQnF09TKTf
-         5NWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWY6W/hjqMJ4q4elRgs2TxIkOsEQjbZPn4k2V58bdpBPQRGfkskp9u+CmFus++UaB9DepdJD7iPRA==@kvack.org
-X-Gm-Message-State: AOJu0YxSij0s08fWiOum1hFAjIAhlbJhYZeROpAQzo7zkz/+/epo0gkO
-	Vk3zGxQNFKZnu8gOMHZ5DE0JefkrjwcM3ghbFD61Qt6sDZOtvx2jqJMpr6/EiEHrsoDZsFPaXK5
-	++qp4gign6z4UclHbZV0hjtS1qjgRnQ1w5S1u3N6f
-X-Gm-Gg: ASbGnctvrYYP84Q90TmObZ6jttyFrBMHFOqs44nKD+/YUhaT3TtMlUCCrzrMU40gfKN
-	MGc3nwOiK7NZtfY0DRmwI87XGaqWJEbNnnUxN9wrLy4p6RfINyTsFcuBdr2ub1XxUN+BlNDKKvN
-	zB7++exp0cZA9XNGWxlGoi2As8SJjEDkTCZ6kGg9FR0hf3Nj0Rw4TWTmb/t0YLbGGorhsAfCHE3
-	5/dZZ6O54WQT4NAg2ylDplTbIPwZHDxRy5FcV8ku6/7
-X-Google-Smtp-Source: AGHT+IFN9zeyztDK/DJYMBoWFLvCgU9cLZ58jhAV5frt/msh+5bP2f1s3CZwTmmQ3aTs+zi1KZm3UYRliuOoFyk86Pk=
-X-Received: by 2002:a05:6402:2682:b0:61a:1922:32ac with SMTP id
- 4fb4d7f45d1cf-61c8efaf08amr11498a12.0.1756147574955; Mon, 25 Aug 2025
- 11:46:14 -0700 (PDT)
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lb2uYPi3;
+	spf=pass (imf12.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756147989; a=rsa-sha256;
+	cv=none;
+	b=iLkUgmTJ3pREvo93umearPG4DibyoKuP3nzntVwe1iHyQO8jgI66DxblyzuPf1LAYM5ICi
+	WaUANppAegnaFR0rtgjVstSGSI0TV3xrBqqawJKQqd1SlRi52M1AsL44x5Yciy0+D4yIqt
+	P8K6CCRYGvmL8CtFKrGpZoWQxEwgmF8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6F1F6446BD;
+	Mon, 25 Aug 2025 18:53:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D076C4CEED;
+	Mon, 25 Aug 2025 18:53:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756147988;
+	bh=LEW9gsFvgQr17Q8Hvz8WKHs69INOEWZ5Ig+Zk2KyLtE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lb2uYPi3eOLm4CsBv3EOgir97hD2gec70fzgc/UUC8EgEShwvOdx+TqoWoH5I+vSU
+	 7J0r+U27tSe46fwR7OShP/BtBT5nwybHwJX2RupZSUSKL7xhLmcSuOA+A+mmzkeXtT
+	 J+Crq080KBH41tinXIe+SgBIsDfgokYByiFlW2K14TxcyDtVulXENi9UoRR717CSN0
+	 FlpLQ9TYYTcCPQLkLkzaRL2crTdOmVlP4mhzusombwS4zUE2sAWfin7EqyrsHqHV6w
+	 Nn7Qv0yfJezlb8xsRFvxlsR5QH9MNTob2gXIN61wUZzNxBeWCfl0f5ahcWY9fdFF53
+	 5VaWFk2ISjhvA==
+Date: Mon, 25 Aug 2025 08:53:07 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Julian Sun <sunjunchao@bytedance.com>
+Cc: linux-fsdevel@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, viro@zeniv.linux.org.uk, brauner@kernel.org,
+	jack@suse.cz, hannes@cmpxchg.org, mhocko@kernel.org,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, axboe@kernel.dk
+Subject: Re: [External] Re: [PATCH] memcg: Don't wait writeback completion
+ when release memcg.
+Message-ID: <aKyxE6QOR_PtQ0mT@slm.duckdns.org>
+References: <20250820111940.4105766-1-sunjunchao@bytedance.com>
+ <20250820111940.4105766-4-sunjunchao@bytedance.com>
+ <aKY2-sTc5qQmdea4@slm.duckdns.org>
+ <CAHSKhtf--qn3TH3LFMrwqb-Nng2ABwV2gOX0PyAerd7h612X5Q@mail.gmail.com>
+ <aKdQgIvZcVCJWMXl@slm.duckdns.org>
+ <CAHSKhtdhj-AuApc8yw+wDNNHMRH-XNMVD=8G7Mk_=1o2FQASQg@mail.gmail.com>
+ <aKds9ZMUTC8VztEt@slm.duckdns.org>
+ <f1ff9656-6633-4a32-ab32-9ee60400b9b0@bytedance.com>
+ <aKivUT2fSetErPMJ@slm.duckdns.org>
+ <CAHSKhtc3Y-c5aoycj06V-8WwOeofXt5EHGkr4GLrU9VJt_ckmw@mail.gmail.com>
 MIME-Version: 1.0
-References: <CA+EESO4Z6wtX7ZMdDHQRe5jAAS_bQ-POq5+4aDx5jh2DvY6UHg@mail.gmail.com>
- <dc92aef8-757f-4432-923e-70d92d13fb37@redhat.com>
-In-Reply-To: <dc92aef8-757f-4432-923e-70d92d13fb37@redhat.com>
-From: Lokesh Gidra <lokeshgidra@google.com>
-Date: Mon, 25 Aug 2025 11:46:02 -0700
-X-Gm-Features: Ac12FXyprwIn2v9rZSqr_G5ifLlee_clYu5PD3nxZlWW9msoXVKrPNU4V_wu43k
-Message-ID: <CA+EESO5Phk1W64mNm=YG8E1oNEXENP94cd5FUuq0PhcUsOe7+Q@mail.gmail.com>
-Subject: Re: [DISCUSSION] Unconditionally lock folios when calling rmap_walk()
-To: David Hildenbrand <david@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Harry Yoo <harry.yoo@oracle.com>, Zi Yan <ziy@nvidia.com>, Barry Song <21cnbao@gmail.com>, 
-	"open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>, Peter Xu <peterx@redhat.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	android-mm <android-mm@google.com>, linux-kernel <linux-kernel@vger.kernel.org>, 
-	Jann Horn <jannh@google.com>, Rik van Riel <riel@surriel.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 015A14000B
-X-Stat-Signature: tu5niykiipijdywauhf8dg4dse16ubk1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHSKhtc3Y-c5aoycj06V-8WwOeofXt5EHGkr4GLrU9VJt_ckmw@mail.gmail.com>
+X-Stat-Signature: 89cz1s8fdyuhgkr96k7b3ckioijfk1c5
 X-Rspam-User: 
-X-HE-Tag: 1756147576-727635
-X-HE-Meta: U2FsdGVkX19loTg9bss0Q6x6uL4rXml/mJgcPpoOHD/3cLOGw91+/QGTyA2YXFj0YSETEk7P9nK3NggSXSwjhcGctZ4sx2wnIGCPCy/Ha51zS5xlA1UImZhkK/L7WljNwfB4qQbn8o7iGSoKyMmgIR9H4my3GBjPkabovX9pRfBNKAQH+Ua/6/MImZYHybC1cfE90cD9troABwJMKfopBanIwsEAkehF9N+i5L89AQo+z6i62WmIFsPFm08DCbYDnUg5BC2rZnKW/0Wqyo7TwnRUBMiHz38lP3ScMOa/uLKOe4j67y1jDhmkyiEYvrPGtXGlB4Ou2IpMyvQcGSnb7TyU4UiHuIGRWpgtVdZgnDzlJ4uOo2Yqs3u2APEuLkKCR+KUSGlK7B6MhjYp7XHH6bqSjX8Bo0ePM+DGMHS0jQxpiOt2HPJ43ATW75pvIpdctHg+dyMlyYwQarJsWXPlAM3BM/IMcqNwZg4WIEof9HSmnxC1kUmeShoE2kce6HTYuMOi+J95V9rbn2IYrUvvD1mHWaIJjk0Viwk3+jnovk0OBmzF+gy/Z6+2IAeHv3tTyNL8+ISQwbaB3OAAGgBhzaaQ2TUszgSvE5kn2CS8tDC4gOWVXBkhm99oBkHiCpQ7DoJV0RN4CpdmLB3kLzHOGZrSxDzKG4KBqIyJ22QxB6iJSZ0vlmiWJAinDvwjhctPUY11bXeqOnf8YDv4wFwNTE0rgESn/aPBsT5YsP1g6hVOBFyaurlJ9eM4hVEJgAPU5LK5CEYu3JGgiAhgwr0Kl28HFYyZ32G/oelX64n6U8tXuO8w0iu56G7MEEZ8OvhJZE3RE0JxBgp0KPrThRU5b46Ydv/82+NGa/gt8fTH2mFHLNGcrIIosKGxgflRSErfLOSxAlZ9PRHog6T4x70R8IyemZ9YlaZTxT3U9wle9475jLqNpN42b0Th8Y0f5z01JcD7bC9STSTpSqvZd55
- KB4xRh3m
- 5pAMgyqfbQISwMVHaUjKcNpFrubYZfGMD09HVyPNTcZpcJvgPlX/ikmFXyubU5Hvhm798ZzOjq63IYktbGOHZGih7sRPiQWIaV+lWmoI8asZOGduAPoAycM4AGQPCk7+1FdQvTDy6kjScpsf5UzZIACUc2sDiCM4RN16//maTCu70/1cigfZpSNrJDbY4HqiVzH+oXIBTubKHWqCOwNUfSx5j/W92X1b9Zbg4w9kZUYKqM/PIEUWWvlFmUNhK3uBEAUhGDcsKOvYTUos=
+X-Rspamd-Queue-Id: B3CBD40002
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756147989-412867
+X-HE-Meta: U2FsdGVkX1/VKxe3EN+yJvNJO3PRNRxzdnW9J3rZOM2OKOVllYlzNdUMcokt1uQiuAhotPcKTa9inEVNO9mLvInBUu6Dp0NYGZidksHLcoiOqP2OKvpoTW4Ndad/Uzkj8NoJSZWKhosl1dI1gNfjpmLfyMKKaMV8jH7ExaGFPBYOR+acC1g+xuIXbPEOPhx8WvVlgbn9U3amS5pGAXmSMNO+GZys6mB9Y79lAv88P3QG+GbzT4T8IFramcxNisNUsJiicboiN13OC3uABA4Y9qrnX/s2ZqdCpgmLv98DLhC511RmdliUzsdm6Gr1qefH2eczw+7uud9mOHsDqV/VWid880Z3N70nsUYhaWGQ+Htv0BZBlJZd5fWYZmoSinh9vvAzbcq4mrC6UDValWC13kxDOQrZxIM8GYhg2mNEt/Lv2CQ4o8wNnyaWVOHMFImHLj+4sikvWZqcnMFvH1XIk3oz0Ikfqf0LRvFXKC84qg/eOxiZQeycAb8cWUu0a2yQA1oJbcMXxreQa4145OrWHYWHRq0hRfMdaxoR/HJ0g+v/eNJbOOY7VKG/TB53K5lIiMr2PlymgT5ZZ600tUVjjayLiuRVkRgc/cTaLXAGLZ0sp8EJWW5ASDZwxvavsr/3N65mVhGxWFH3xBkf+SS7qNeB+VZ75aUNWKCRIRDmSp13CQpSxhrQ394vSE+pSpg/J5L4FNF2YABuITu4JE53+FVcw4SpUxV7pohghHrEKpkqmgPOlcHk48XwGWgzOwvGwkb0PWdSxYhiwnjWGR9yTKNLv/6Vl26//2MRfYswQwBNYCvjVM3nK2H1oTuDHeTwk2UuaIiYIUzUgRoxDHt5l3yALDf/fLReKvH/WGe2Gj6zFDOT+CmkTWoRPxTEXG2mrlGpJdAzbC3PUKbDTBP7VvhBG/Ob+M4LGYDyeaMOMs5284Kq2eMJwWBKAb9nc0SUVvqDrXz4gx1uE1/3EwZ
+ nwb2324H
+ 9vzSZg9nKvk2PQrQn8vXXQ+sabV2Ntd+3xX+u9LRiY1v9trvHwnqovetah5eRl1pd5LkWR7KM4JyfTnh4BqffeIovEERbz3Xm5Rp0LPFyZCyD7A9lcD/A3xOZsj/0Rf4zk7wDlryOAjIuWqCcYJATSsCds8ibEVRb7UIxKm/Zc8GIST60WHWmtC7KEcNVGvkN7n+HYYvh5850cVPCt6q5U2TjpTp6frDc/6XUnGojOLGDBpk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,118 +106,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 25, 2025 at 8:19=E2=80=AFAM David Hildenbrand <david@redhat.com=
-> wrote:
->
-> On 22.08.25 19:29, Lokesh Gidra wrote:
-> > Hi all,
-> >
-> > Currently, some callers of rmap_walk() conditionally avoid try-locking
-> > non-ksm anon folios. This necessitates serialization through anon_vma
-> > write-lock elsewhere when folio->mapping and/or folio->index (fields
-> > involved in rmap_walk()) are to be updated. This hurts scalability due
-> > to coarse granularity of the lock. For instance, when multiple threads
-> > invoke userfaultfd=E2=80=99s MOVE ioctl simultaneously to move distinct=
- pages
-> > from the same src VMA, they all contend for the corresponding
-> > anon_vma=E2=80=99s lock. Field traces for arm64 android devices reveal =
-over
-> > 30ms of uninterruptible sleep in the main UI thread, leading to janky
-> > user interactions.
-> >
-> > Among all rmap_walk() callers that don=E2=80=99t lock anon folios,
-> > folio_referenced() is the most critical (others are
-> > page_idle_clear_pte_refs(), damon_folio_young(), and
-> > damon_folio_mkold()). The relevant code in folio_referenced() is:
-> >
-> > if (!is_locked && (!folio_test_anon(folio) || folio_test_ksm(folio))) {
-> >          we_locked =3D folio_trylock(folio);
-> >          if (!we_locked)
-> >                  return 1;
-> > }
-> >
-> > It=E2=80=99s unclear why locking anon_vma exclusively (when updating
-> > folio->mapping, like in uffd MOVE) is beneficial over walking rmap
-> > with folio locked. It=E2=80=99s in the reclaim path, so should not be a
-> > critical path that necessitates some special treatment, unless I=E2=80=
-=99m
-> > missing something.
-> >
-> > Therefore, I propose simplifying the locking mechanism by ensuring the
-> > folio is locked before calling rmap_walk().
->
-> Essentially, what you mean is roughly:
->
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 34333ae3bd80f..0800e73c0796e 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -1005,7 +1005,7 @@ int folio_referenced(struct folio *folio, int is_lo=
-cked,
->          if (!folio_raw_mapping(folio))
->                  return 0;
->
-> -       if (!is_locked && (!folio_test_anon(folio) || folio_test_ksm(foli=
-o))) {
-> +       if (!is_locked) {
->                  we_locked =3D folio_trylock(folio);
->                  if (!we_locked)
->                          return 1;
->
->
-> The downside of that change is that ordinary (!ksm) folios will observe b=
-eing locked
-> when we are actually only trying to asses if they were referenced.
->
-> Does it matter?
->
-> I can only speculate that it might have been very relevant before
-> 6c287605fd56 ("mm: remember exclusively mapped anonymous pages with PG_an=
-on_exclusive").
->
-> Essentially any R/O fault would have resulted in us copying the page, sim=
-ply because
-> there is concurrent folio_referenced() happening.
->
-> Before 09854ba94c6a ("mm: do_wp_page() simplification") that wasn't an is=
-sue, but
-> it would have meant that the write fault would be stuck until folio_refer=
-enced()
-> would be done, which is also suboptimal.
->
-> So likely, avoiding grabbing the folio lock was beneficial.
->
->
-> Today, this would only affect R/O pages after fork (PageAnonExclusive not=
- set).
->
->
-> Staring at shrink_active_list()->folio_referenced(), we isolate the folio=
- first
-> (grabbing reference+clearing LRU), so do_wp_page()->wp_can_reuse_anon_fol=
-io()
-> would already refuse to reuse immediately, because it would spot a raised=
- reference.
-> The folio lock does not make a difference anymore.
->
->
-> Is there any other anon-specific (!ksm) folio locking? Nothing exciting c=
-omes to mind,
-> except maybe some folio splitting or khugepaged that maybe would have to =
-wait.
->
-> But khugepaged would already also fail to isolate these folios, so probab=
-ly it's not that
-> relevant anymore ...
+Hello,
 
-Thanks so much for your thorough analysis. Very useful!
+On Tue, Aug 26, 2025 at 01:45:44AM +0800, Julian Sun wrote:
+...
+> Sorry for having misunderstood what you meant before. I’m afraid that
+> init_wait_func() cannot work the same way. Because calling
+> init_wait_func() presupposes that we are preparing to wait for an
+> event(like wb_wait_completion()), but waiting for such an event might
+> lead to a hung task.
+> 
+> Please correct me if I'm wrong.
 
-For folio splitting, it seems anon_vma lock is acquired exclusively,
-so it serializes against folio_referenced() anyways.
->
-> --
-> Cheers
->
-> David / dhildenb
->
+Using init_wait_func() does not require someone waiting for it. AFAICS, you
+should be able to do the same thing that you did - allocating the done
+entries individually and freeing them when the done count reaches zero
+without anyone waiting for it. waitq doesn't really make many assumptions
+about how it's used - when you call wake_up() on it, it just walks the
+queued entries and invoke the callbacks there.
+
+Thanks.
+
+-- 
+tejun
 
