@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EDD8C8303F
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 20:27:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9803DC8303F
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 20:27:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 787788E0070; Mon, 25 Aug 2025 16:27:01 -0400 (EDT)
+	id DF0B88E0071; Mon, 25 Aug 2025 16:27:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 737A58E0038; Mon, 25 Aug 2025 16:27:01 -0400 (EDT)
+	id D79978E0038; Mon, 25 Aug 2025 16:27:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FFD38E0070; Mon, 25 Aug 2025 16:27:01 -0400 (EDT)
+	id C1A558E0071; Mon, 25 Aug 2025 16:27:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 49DC28E0038
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:27:01 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0F058C0442
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 20:27:01 +0000 (UTC)
-X-FDA: 83816413842.19.326E78B
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AA3258E0038
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:27:23 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 539CD139501
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 20:27:23 +0000 (UTC)
+X-FDA: 83816414766.10.80F8F04
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf07.hostedemail.com (Postfix) with ESMTP id EACBF40004
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 20:26:58 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=cdWGJiCj;
-	spf=pass (imf07.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 086BE40003
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 20:27:20 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Ly50iY2g;
+	spf=pass (imf12.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756153619;
+	s=arc-20220608; t=1756153641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E1eXm8xfKIhjDNACz9/lPozC75PsVZy+RO5JY/jLRAo=;
-	b=X4ChXFUbj0MBrOIhhoCCNPLNuhu6bjAX2wgDOcafDA/ECAEi/r/LqErZ3A226fzOS3aft6
-	iO7JP28AQf1ulPx/AZyggO8r348NncsgSX3TBNpp88sU4yNd8u/hOatDB9kyZZRRzECSv9
-	KxcUB7dQM/sHAaf+ZbpNz3NyWGRQ7Bs=
+	bh=siX9X8C1ebWNpAl8jAmF0YHWnm6v4zSBKwYpTwwyAIU=;
+	b=fNLLtt/2CvPfFl24aSFWROGeDv+eaKKfYjx4hHf4GVACyCYLS2IwEbl5MBF1byeQxV3Dvw
+	QmR4gAjS/Ck5iDGmMRV1S0wgfp+a5HkukpDy+0w5ObI3PxS8vDa0t+Dd2KjZ7TkXY/ELCM
+	62p6BymhB8gf+2WV/qGRjj/QBg1pOWk=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=cdWGJiCj;
-	spf=pass (imf07.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
+	imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Ly50iY2g;
+	spf=pass (imf12.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756153619; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756153641; a=rsa-sha256;
 	cv=none;
-	b=4JgBMDpZSx0KYE9cbuIjyfn2upLgmqIYJRulzM6A+P1ls5DwiU2jCjluYOSLFCgydg89GG
-	qKh1AvEkEOpKU+7miCnhMPp4APPPT2UkE5AIOcX7lM/R23HgDnEPknXG3cho4AEoSOG1wz
-	SqqaJML9x+iBY1Z5JDa/DUH47LpxEyM=
+	b=BtGx8SzUTNmNAyiGRjwzJli5BKrxzILDoEpeCd77pS2MOxulYq/v8RNSNyeYh64jHKRy3/
+	kdyMdiHUVlq35PcUjCaWk8SkoGO1Bf/IJNq2M5PgUwSpUkdYh78HJVk5L2hcYGKpdx4/JB
+	dOZgCb8CFsZSPdCiXqWZf4gxFElYbpM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756153619; x=1787689619;
+  t=1756153641; x=1787689641;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=umSIEr/jpouxzkGHeJJ2QvhqsNKgw+HWF35dK6bLmas=;
-  b=cdWGJiCjLz3B9EWczTSZ0+DLmoik+VPPu/yRtjmeXdWM8j4TKlsAS7tF
-   zw9RcGeyjYoQ3CdQ0GjR9TafpBAUfDGFjqvSUjJM+qg5Ii231AAg7hTrG
-   enVN5SW1Lp417MyA63xYSuvN/5INLsXYYq5YIsewtfhhkGTwYj6qD4pes
-   UDJVhDK4vnP3VHYMn6UuKfBuBIqMXcVkgiGZpj3sy/p/ejeRZLvO0SqGt
-   AYJA/3IDH8A5kto4KHlZKtd1ORvYAj+2W3PCQoZKX/UlvOAT+bL+EzNKo
-   tQJ+bIAJMshQCdBFSwSQQVzYajiuUAzmPwRwcXsLRUdHJqKz6cz+lwkOj
-   g==;
-X-CSE-ConnectionGUID: /SPbHSFlQiCXL/vgBQIJOw==
-X-CSE-MsgGUID: 24AI4hrBT3Cn9KIkgmhDFw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="68970410"
+  bh=xm2JHVeyAyS1boSSRsktnh7jJ0yWea9I1N2uiKqy64Y=;
+  b=Ly50iY2gcnCB0l4eOF2jM34plWD+0LthEe40cazccYU4nthMV6id/Hfz
+   51RvOwMNE/5PeC31A1YJWa4/iq4+NF+JZrnG0yugyKKHwkIUogsmMMUlp
+   IHVzP0VmqT/X4zm/+BSeV968lSkJTRiPEj4p4BuWyp84uCiWCpKRf06bt
+   v8qh3LnEC2nWJNSYOxjvScha7kBvYQrzAT8pI4hGbCkrFrYDbWeJDZRkT
+   k7So7/28bc0X1BA1P6w0YlMzfJxoGN6tGuUCDuZaBM1Opw+Uzcw6fLkAm
+   g/0PxqN9jG8H80IOmFe3/K4pQqNCDXmebybPWmqIBIjTyUOm6I8RlB39l
+   A==;
+X-CSE-ConnectionGUID: 6ZeSObJ/TeWDSZ1ogJvY0Q==
+X-CSE-MsgGUID: rpf+9X9/RECug157/i4GmQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="68970473"
 X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="68970410"
+   d="scan'208";a="68970473"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 13:26:57 -0700
-X-CSE-ConnectionGUID: NLx4kw5FQRqFjJVf8cE+Cg==
-X-CSE-MsgGUID: 21hF26/3R2SLuLwXAqtixQ==
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 13:27:19 -0700
+X-CSE-ConnectionGUID: aQ202IPqRcWU0JmqPLmwhQ==
+X-CSE-MsgGUID: fhmF8QYeQ8GO7LAXlViwDA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="169780102"
+   d="scan'208";a="169780311"
 Received: from bergbenj-mobl1.ger.corp.intel.com (HELO wieczorr-mobl1.intel.com) ([10.245.245.6])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 13:26:35 -0700
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 13:26:57 -0700
 From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 To: sohil.mehta@intel.com,
 	baohua@kernel.org,
@@ -157,22 +157,22 @@ Cc: x86@kernel.org,
 	kasan-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v5 04/19] x86: Add arch specific kasan functions
-Date: Mon, 25 Aug 2025 22:24:29 +0200
-Message-ID: <7cb9edae06aeaf8c69013a89f1fd13a9e1531d54.1756151769.git.maciej.wieczor-retman@intel.com>
+Subject: [PATCH v5 05/19] kasan: arm64: x86: Make special tags arch specific
+Date: Mon, 25 Aug 2025 22:24:30 +0200
+Message-ID: <7a85ceb0918c6b204078e6d479b85fef6a6c1768.1756151769.git.maciej.wieczor-retman@intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1756151769.git.maciej.wieczor-retman@intel.com>
 References: <cover.1756151769.git.maciej.wieczor-retman@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EACBF40004
-X-Stat-Signature: gr6q4r4cjrwridph1uk91hh6mpbrpidj
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 086BE40003
+X-Stat-Signature: yh1jzfrip8shmfw9rwmgr8sg4byhrzoi
 X-Rspam-User: 
-X-HE-Tag: 1756153618-824377
-X-HE-Meta: U2FsdGVkX1+5WtUrhgCcTszktbvm33li1wYAZ6OFD1sVF9eFi653wQcCdpYDaCcUvC2U7fG/KFsI/F4ndUrugrZnuQvXDjenfcCk4nMt1sfk+VuO3di9bXDeyvlLZltKJcgLbEAPx7+/6M6zmb/j545qSO46C0qG/mbpYTLacCXy6Uf9H5Jg8obMmbZjMZxMA5ZOGIEqYL4DqLF/YsYGsP0MLAfYeqBjK3FqOvSLxYv26RPkXhtLOvlFbL6IOOXzrTHJ6SsZUk3jc4FsrFLwEQ705zkcFP8L3TGUHRBRnWU54OEBtipSBjm0vicAnme9UCOSczYA05qWSHI8oao67hE8d906Q1k1D3zzcOjRC9XXEQ4MAhmyFlQg7B+rcOUCNRJ4AQM6nQIhV1QZHHWYTQiMLzcsKS/fOW2FG25jD4/qxky5OCpfozkEScbdtlaihJiMq1hLVhEXKufoKGICMskfOiXxHcWVC8HzXL0EYJDGXX+X3F/3XJ7rJGy9DRZYPCaZXkF0IR0vq1HqDR9Eu1ZfOjoIHvwa+VX5x7EnSdbHkkJ+b0b0aYXjIXUXErbQ9LtaUHT3sd3Zj7t9rd9v3GvQuIdIbmqNJWS9OBgpej7iEXeB/GEpdRpwELPi+CBXLZhe+C11JdI+hP793aXoEzhlMj4DIFTT0pWZoMuvLmI9qrK6G4LeNXeV1qgigKGsxyDYrNOg/84utsikGZaHfLsV9O+I9rmE0j0JjmE8lR/MSJm2ycspOKxxTPsUH1RAQE3xobHlHzwh+Q9Pu0GZgqUbLmdky4g6Os8svHdUq2dJY6Fjcnyo+LFco2uT3nRgaqGs4ehJyC0jy8zdjXBsYjw3wqbejyHWEjHAJUL8VHiTbWMvTBu+54nMTdyhC2iz1GbW4Yki15cC72DxQytAYZHioUeGfYJwqbN5kju99QdRuKqburKxeTsln1RFpUrt1u+lTfqOoTmUl9vQ1Yd
- 08wbXASp
- /oKiY3iszjPpYvL6c+TwZO9NdDjfcn4zRDDeYGtCXCeCn3N8v1j/RE8aPSDOTT5lGVu78ahy5so9gqnnMwtFDlbOH8ZEhZqnly/pE8ppc9qhBQN2VvsBqoDYP4OiomYOaJBSaOxB9aduF0oiYaF+Devh3Vd5I5vjoPWfcaMNvehDt7zC7a12DrnVl9GQrbEhLMWu62h/8msUu6jDcRYUoU2I2ySetmM5m9lSPgR5JHMRnqQQakuzdb6iB/DdyDzbjEk+KjMHQpcXHLILwl1+KFylJeC4SygUWpSPcH5THJyFsJubVM2bVquHowUB9HuvPhtnQ
+X-HE-Tag: 1756153640-738524
+X-HE-Meta: U2FsdGVkX1/05DInEZlIjDsuffr9DB5elfelK2yfGeBZYDCZoQfV8oLZ2PBuDP7rCzQztrPVuw2w9UvQL4IcRo8oryMal4bof4lrEN2Me8OgSo36C6nQNkQVz/B7ehqbEM3jDvS0a/SVa2y9s4iq4yM4daL5hSO0ioSTsrTbRnBxA5QERiWzF5DscO4lA5anVTC4DukkVWaZxc5REGdDaogPzXPj/7zz/ThppJI6xknoczr3ftdXzhQyErUxRXQ1M9hmMUQHvohZxCwRe4jbhQW3G4Wd3iNV7szzlGwJX9NgsOSC6uAHzY4YvbywUJtNoxBr3IcDV5UBB0Q3cioDQIKkalVfnvfN9/eYIq66esUFpq/TIDU6o8+YWZCbucMjjm4nvThofwmOmSIOpVM5fetiMs70ls5vrHT5Y/fJxX/EFJflPAR+oUpp9NDKMu6ljKWXiAsWr+ES9MPyKK+M+E/AgkuCoif1BCIB/MT/2A4mBCQ+NAc5HNd8ZENHNu7n+T4+LauUQaio6I/sUPI0AqIM/LVtjbmAiqL3/TuuoG/KvjCqGA9Mu2aYoKL+v6bHgNOMkF0n3TTRaS+ZFYZPIgPEc997+WB7qWueYXNSb3aoe/tzLFFwo5HOp54bIsmNpgMc9HIdENmB7d6TEkg8aU+O1b6cHgnYRGg85Qu21MAP2tktGj7UDMM1CL4Ex//J4LmBsMUF0mS242kgDNkKzhKx71/Tz3WQg8SHyzz1KKdhqJ+OTwqmO3krVHHC+kFS9wxhzFdawuWVEkG+b2nkghQpImI85WJsLerLWDbVZRG4B85EMBcmpZmXpBCc9DBWZjIHxjMv7H/6S9l7quEPBCpzq2gnpnY+lDvsm4hepZE1cLenaWSjlAz807vT/xmWTPBn654sNYA4VXrm9wc9t+CGCpaBl+1TxfyCL7tacFiJS2ZWLOXTcr59tBWd3UDhvjgS3bd5wiVGW+FM8lx
+ CBkSl1pk
+ 8vkGSnUBDrREe8I3VqWIYx9utgYhjfr7tSwzuJiPGPTC5OyUh/N1qz9VdtLzIYGK+mLE/QW6ft1fRiRdt+6LV9gNuxWX0TAcb1ksodKgZPb4WeP4E+TdkQugu57jIB0PKzJPeYAKJRR3PWfDUQXGQ1t5D7thninsgT9YXTROTv3pT2NBmQud1QTTz+MV876h9gY3GInl6xDRWfn16hXQpHtJZrpOgO4VXbZMa14+jjSNOxCWxMPv87I65xN00mR8Kz/s2bBfGU2HoY6NG4iqLkBpff0WpLYfHwK5vqV5tt3+xbh3G73U32ljUaQ3rJPunCDBUwjRJoxkpErkRpMuDtXCsHy+Bf7HbqquZuGKjIL+k4OP9Wl7QfZNeCA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -181,89 +181,219 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-KASAN's software tag-based mode needs multiple macros/functions to
-handle tag and pointer interactions - to set, retrieve and reset tags
-from the top bits of a pointer.
+KASAN's tag-based mode defines multiple special tag values. They're
+reserved for:
+- Native kernel value. On arm64 it's 0xFF and it causes an early return
+  in the tag checking function.
+- Invalid value. 0xFE marks an area as freed / unallocated. It's also
+  the value that is used to initialize regions of shadow memory.
+- Max value. 0xFD is the highest value that can be randomly generated
+  for a new tag.
 
-Mimic functions currently used by arm64 but change the tag's position to
-bits [60:57] in the pointer.
+Metadata macro is also defined:
+- Tag width equal to 8.
+
+Tag-based mode on x86 is going to use 4 bit wide tags so all the above
+values need to be changed accordingly.
+
+Make native kernel tag arch specific for x86 and arm64.
+
+Replace hardcoded kernel tag value and tag width with macros in KASAN's
+non-arch specific code.
 
 Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 ---
+Changelog v5:
+- Move KASAN_TAG_MIN to the arm64 kasan-tags.h for the hardware KASAN
+  mode case.
+
 Changelog v4:
-- Rewrite __tag_set() without pointless casts and make it more readable.
+- Move KASAN_TAG_MASK to kasan-tags.h.
 
-Changelog v3:
-- Reorder functions so that __tag_*() etc are above the
-  arch_kasan_*() ones.
-- Remove CONFIG_KASAN condition from __tag_set()
+Changelog v2:
+- Remove risc-v from the patch.
 
- arch/x86/include/asm/kasan.h | 36 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 34 insertions(+), 2 deletions(-)
+ MAINTAINERS                         |  2 +-
+ arch/arm64/include/asm/kasan-tags.h | 13 +++++++++++++
+ arch/arm64/include/asm/kasan.h      |  4 ----
+ arch/x86/include/asm/kasan-tags.h   |  9 +++++++++
+ include/linux/kasan-tags.h          | 10 +++++++++-
+ include/linux/kasan.h               |  4 +++-
+ include/linux/mm.h                  |  6 +++---
+ include/linux/mmzone.h              |  1 -
+ include/linux/page-flags-layout.h   |  9 +--------
+ 9 files changed, 39 insertions(+), 19 deletions(-)
+ create mode 100644 arch/arm64/include/asm/kasan-tags.h
+ create mode 100644 arch/x86/include/asm/kasan-tags.h
 
-diff --git a/arch/x86/include/asm/kasan.h b/arch/x86/include/asm/kasan.h
-index d7e33c7f096b..1963eb2fcff3 100644
---- a/arch/x86/include/asm/kasan.h
-+++ b/arch/x86/include/asm/kasan.h
-@@ -3,6 +3,8 @@
- #define _ASM_X86_KASAN_H
+diff --git a/MAINTAINERS b/MAINTAINERS
+index fed6cd812d79..788532771832 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -13176,7 +13176,7 @@ L:	kasan-dev@googlegroups.com
+ S:	Maintained
+ B:	https://bugzilla.kernel.org/buglist.cgi?component=Sanitizers&product=Memory%20Management
+ F:	Documentation/dev-tools/kasan.rst
+-F:	arch/*/include/asm/*kasan.h
++F:	arch/*/include/asm/*kasan*.h
+ F:	arch/*/mm/kasan_init*
+ F:	include/linux/kasan*.h
+ F:	lib/Kconfig.kasan
+diff --git a/arch/arm64/include/asm/kasan-tags.h b/arch/arm64/include/asm/kasan-tags.h
+new file mode 100644
+index 000000000000..152465d03508
+--- /dev/null
++++ b/arch/arm64/include/asm/kasan-tags.h
+@@ -0,0 +1,13 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __ASM_KASAN_TAGS_H
++#define __ASM_KASAN_TAGS_H
++
++#define KASAN_TAG_KERNEL	0xFF /* native kernel pointers tag */
++
++#define KASAN_TAG_WIDTH		8
++
++#ifdef CONFIG_KASAN_HW_TAGS
++#define KASAN_TAG_MIN			0xF0 /* minimum value for random tags */
++#endif
++
++#endif /* ASM_KASAN_TAGS_H */
+diff --git a/arch/arm64/include/asm/kasan.h b/arch/arm64/include/asm/kasan.h
+index 4ab419df8b93..d2841e0fb908 100644
+--- a/arch/arm64/include/asm/kasan.h
++++ b/arch/arm64/include/asm/kasan.h
+@@ -7,10 +7,6 @@
+ #include <linux/linkage.h>
+ #include <asm/memory.h>
  
- #include <linux/const.h>
-+#include <linux/kasan-tags.h>
-+#include <linux/types.h>
- #define KASAN_SHADOW_OFFSET _AC(CONFIG_KASAN_SHADOW_OFFSET, UL)
- #define KASAN_SHADOW_SCALE_SHIFT 3
- 
-@@ -24,8 +26,37 @@
- 						  KASAN_SHADOW_SCALE_SHIFT)))
- 
- #ifndef __ASSEMBLER__
-+#include <linux/bitops.h>
-+#include <linux/bitfield.h>
-+#include <linux/bits.h>
-+
-+#ifdef CONFIG_KASAN_SW_TAGS
-+
-+#define __tag_shifted(tag)		FIELD_PREP(GENMASK_ULL(60, 57), tag)
-+#define __tag_reset(addr)		(sign_extend64((u64)(addr), 56))
-+#define __tag_get(addr)			((u8)FIELD_GET(GENMASK_ULL(60, 57), (u64)addr))
-+#else
-+#define __tag_shifted(tag)		0UL
-+#define __tag_reset(addr)		(addr)
-+#define __tag_get(addr)			0
-+#endif /* CONFIG_KASAN_SW_TAGS */
-+
-+static inline void *__tag_set(const void *__addr, u8 tag)
-+{
-+	u64 addr = (u64)__addr;
-+
-+	addr &= ~__tag_shifted(KASAN_TAG_MASK);
-+	addr |= __tag_shifted(tag);
-+
-+	return (void *)addr;
-+}
-+
-+#define arch_kasan_set_tag(addr, tag)	__tag_set(addr, tag)
-+#define arch_kasan_reset_tag(addr)	__tag_reset(addr)
-+#define arch_kasan_get_tag(addr)	__tag_get(addr)
- 
- #ifdef CONFIG_KASAN
-+
- void __init kasan_early_init(void);
- void __init kasan_init(void);
- void __init kasan_populate_shadow_for_vaddr(void *va, size_t size, int nid);
-@@ -34,8 +65,9 @@ static inline void kasan_early_init(void) { }
- static inline void kasan_init(void) { }
- static inline void kasan_populate_shadow_for_vaddr(void *va, size_t size,
- 						   int nid) { }
+-#ifdef CONFIG_KASAN_HW_TAGS
+-#define KASAN_TAG_MIN			0xF0 /* minimum value for random tags */
 -#endif
- 
--#endif
-+#endif /* CONFIG_KASAN */
+-
+ #define arch_kasan_set_tag(addr, tag)	__tag_set(addr, tag)
+ #define arch_kasan_reset_tag(addr)	__tag_reset(addr)
+ #define arch_kasan_get_tag(addr)	__tag_get(addr)
+diff --git a/arch/x86/include/asm/kasan-tags.h b/arch/x86/include/asm/kasan-tags.h
+new file mode 100644
+index 000000000000..68ba385bc75c
+--- /dev/null
++++ b/arch/x86/include/asm/kasan-tags.h
+@@ -0,0 +1,9 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __ASM_KASAN_TAGS_H
++#define __ASM_KASAN_TAGS_H
 +
-+#endif /* __ASSEMBLER__ */
++#define KASAN_TAG_KERNEL	0xF /* native kernel pointers tag */
++
++#define KASAN_TAG_WIDTH		4
++
++#endif /* ASM_KASAN_TAGS_H */
+diff --git a/include/linux/kasan-tags.h b/include/linux/kasan-tags.h
+index e07c896f95d3..fe80fa8f3315 100644
+--- a/include/linux/kasan-tags.h
++++ b/include/linux/kasan-tags.h
+@@ -2,7 +2,15 @@
+ #ifndef _LINUX_KASAN_TAGS_H
+ #define _LINUX_KASAN_TAGS_H
  
+-#include <asm/kasan.h>
++#if defined(CONFIG_KASAN_SW_TAGS) || defined(CONFIG_KASAN_HW_TAGS)
++#include <asm/kasan-tags.h>
++#endif
++
++#ifndef KASAN_TAG_WIDTH
++#define KASAN_TAG_WIDTH		0
++#endif
++
++#define KASAN_TAG_MASK		((1UL << KASAN_TAG_WIDTH) - 1)
+ 
+ #ifndef KASAN_TAG_KERNEL
+ #define KASAN_TAG_KERNEL	0xFF /* native kernel pointers tag */
+diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+index b396feca714f..54481f8c30c5 100644
+--- a/include/linux/kasan.h
++++ b/include/linux/kasan.h
+@@ -40,7 +40,9 @@ typedef unsigned int __bitwise kasan_vmalloc_flags_t;
+ 
+ #ifdef CONFIG_KASAN_SW_TAGS
+ /* This matches KASAN_TAG_INVALID. */
+-#define KASAN_SHADOW_INIT 0xFE
++#ifndef KASAN_SHADOW_INIT
++#define KASAN_SHADOW_INIT KASAN_TAG_INVALID
++#endif
+ #else
+ #define KASAN_SHADOW_INIT 0
  #endif
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 1ae97a0b8ec7..bb494cb1d5af 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -1692,7 +1692,7 @@ static inline u8 page_kasan_tag(const struct page *page)
+ 
+ 	if (kasan_enabled()) {
+ 		tag = (page->flags >> KASAN_TAG_PGSHIFT) & KASAN_TAG_MASK;
+-		tag ^= 0xff;
++		tag ^= KASAN_TAG_KERNEL;
+ 	}
+ 
+ 	return tag;
+@@ -1705,7 +1705,7 @@ static inline void page_kasan_tag_set(struct page *page, u8 tag)
+ 	if (!kasan_enabled())
+ 		return;
+ 
+-	tag ^= 0xff;
++	tag ^= KASAN_TAG_KERNEL;
+ 	old_flags = READ_ONCE(page->flags);
+ 	do {
+ 		flags = old_flags;
+@@ -1724,7 +1724,7 @@ static inline void page_kasan_tag_reset(struct page *page)
+ 
+ static inline u8 page_kasan_tag(const struct page *page)
+ {
+-	return 0xff;
++	return KASAN_TAG_KERNEL;
+ }
+ 
+ static inline void page_kasan_tag_set(struct page *page, u8 tag) { }
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 0c5da9141983..c139fb3d862d 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -1166,7 +1166,6 @@ static inline bool zone_is_empty(struct zone *zone)
+ #define NODES_MASK		((1UL << NODES_WIDTH) - 1)
+ #define SECTIONS_MASK		((1UL << SECTIONS_WIDTH) - 1)
+ #define LAST_CPUPID_MASK	((1UL << LAST_CPUPID_SHIFT) - 1)
+-#define KASAN_TAG_MASK		((1UL << KASAN_TAG_WIDTH) - 1)
+ #define ZONEID_MASK		((1UL << ZONEID_SHIFT) - 1)
+ 
+ static inline enum zone_type page_zonenum(const struct page *page)
+diff --git a/include/linux/page-flags-layout.h b/include/linux/page-flags-layout.h
+index 760006b1c480..b2cc4cb870e0 100644
+--- a/include/linux/page-flags-layout.h
++++ b/include/linux/page-flags-layout.h
+@@ -3,6 +3,7 @@
+ #define PAGE_FLAGS_LAYOUT_H
+ 
+ #include <linux/numa.h>
++#include <linux/kasan-tags.h>
+ #include <generated/bounds.h>
+ 
+ /*
+@@ -72,14 +73,6 @@
+ #define NODE_NOT_IN_PAGE_FLAGS	1
+ #endif
+ 
+-#if defined(CONFIG_KASAN_SW_TAGS)
+-#define KASAN_TAG_WIDTH 8
+-#elif defined(CONFIG_KASAN_HW_TAGS)
+-#define KASAN_TAG_WIDTH 4
+-#else
+-#define KASAN_TAG_WIDTH 0
+-#endif
+-
+ #ifdef CONFIG_NUMA_BALANCING
+ #define LAST__PID_SHIFT 8
+ #define LAST__PID_MASK  ((1 << LAST__PID_SHIFT)-1)
 -- 
 2.50.1
 
