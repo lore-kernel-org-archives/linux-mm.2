@@ -4,115 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D8A8CA0EFA
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 16:18:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C5F1CA0FE7
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 16:19:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 951458E004E; Mon, 25 Aug 2025 12:18:53 -0400 (EDT)
+	id 693978E004F; Mon, 25 Aug 2025 12:19:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 901C08E0038; Mon, 25 Aug 2025 12:18:53 -0400 (EDT)
+	id 644278E0038; Mon, 25 Aug 2025 12:19:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C9A48E004E; Mon, 25 Aug 2025 12:18:53 -0400 (EDT)
+	id 50B2F8E004F; Mon, 25 Aug 2025 12:19:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 68F5A8E0038
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:18:53 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2256F140455
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:18:53 +0000 (UTC)
-X-FDA: 83815788546.23.732E5C4
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 3D75118000C
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:18:51 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aEMbJWWF;
-	spf=pass (imf16.hostedemail.com: domain of visitorckw@gmail.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=visitorckw@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 335828E0038
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:19:17 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D9E261A04B4
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:19:16 +0000 (UTC)
+X-FDA: 83815789512.17.BED7085
+Received: from mout.web.de (mout.web.de [212.227.17.12])
+	by imf08.hostedemail.com (Postfix) with ESMTP id CDDBA160007
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:19:14 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=web.de header.s=s29768273 header.b=VP9FrBJH;
+	spf=pass (imf08.hostedemail.com: domain of Markus.Elfring@web.de designates 212.227.17.12 as permitted sender) smtp.mailfrom=Markus.Elfring@web.de;
+	dmarc=pass (policy=quarantine) header.from=web.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756138755; a=rsa-sha256;
+	cv=none;
+	b=TOFbpbwKPQeD0NOmf35WFjuecW/LrVb3s7DrCc4AzZHEUwIHSN9oXZcUZGLDMYorTqi07F
+	gr+/iHIowLaqFUNlHBkkSGqAKAgNor+8mIoVHFZcP9XQjX/hDknSBkqVyUkDjkxq4H+Q88
+	qb9AREm4SZcHJ698HYdD1XROhK/e/PI=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=web.de header.s=s29768273 header.b=VP9FrBJH;
+	spf=pass (imf08.hostedemail.com: domain of Markus.Elfring@web.de designates 212.227.17.12 as permitted sender) smtp.mailfrom=Markus.Elfring@web.de;
+	dmarc=pass (policy=quarantine) header.from=web.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756138731;
+	s=arc-20220608; t=1756138755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vlupHTCaeWk9ty8cyG5BDMuBJjhBMKn4mUppCZ+fHyk=;
-	b=wDgG61h1857XRcOb/c2vaj8wq1zmdD+SUnRANvv/RsvAVQrDa7GRifhl8uTARWNfAbHHG/
-	FQPx1T7XvkzyAFm1dIyF7NnqwGVPD2PPhCGImDbMGpbJngLTKr68G9EOK8J6EQgYYFMmQR
-	jy0/ZiVL1fwL0tuy6k2dQEmiChYbCLU=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aEMbJWWF;
-	spf=pass (imf16.hostedemail.com: domain of visitorckw@gmail.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=visitorckw@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756138731; a=rsa-sha256;
-	cv=none;
-	b=rgilVu+1weeegZbr0SUE2hhxX1vaieiPlcDXHYIJh0yTs1z0eyhK0cC5TmMrhVU0avP5m7
-	J3ARDwJ3WVtjKP6EXIZlQl+mmf9PaQbNu8HGSqgzPo2d9xvSOjAlIhVhmajIw0ear76NC0
-	ms4sonWzy/k3YMiKTbcBRBdf8xXYkAQ=
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b49cfd967b9so1054180a12.3
-        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 09:18:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756138730; x=1756743530; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vlupHTCaeWk9ty8cyG5BDMuBJjhBMKn4mUppCZ+fHyk=;
-        b=aEMbJWWFcGTp7uEE3OE/8mi4VRXkMg5sFSlvZASD7WlR7R76snnPBcuC0RpRgXnaD+
-         /Xdg+XngfHI7bFEeJoGhJFDJytmNyP3KgTgf2dAJhu3vusxbJC9gLDPMiphpCq7GR7hS
-         rY7r8r2y8mXxI8f/k/0fGgSJZ5R+JsNc6mK2ymU0DZqrpx8H+HgCKtwVcpb/5fwlfZkS
-         78Y+uDk95Ohjb9XjwPkPt+nFHsKt6PuHCqBaDc0hnCl6BO8SKYmFcxLSsbLFiO+iFBAg
-         xJad7oH2KLUPgglsKZYfarQ41VLAjMgxPHXEumjctd2joh4CMxkMtFqSrtWh9/v3oaBx
-         0WFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756138730; x=1756743530;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vlupHTCaeWk9ty8cyG5BDMuBJjhBMKn4mUppCZ+fHyk=;
-        b=qOt+To0p1iVYm+ksg1BsaFykCF9P2B+jxgjpvxSGx+Ll1kmZh+H6AZwMDKaYI8eDpK
-         2P/5eSkqn6UlxNaqM/h8fRJ++Kxz+X4YAOwVIboWM4CQm9RZ2fCEvKGo+XDNzHP6UIo4
-         QKr7AqlIgJrFBE1osMa0uXZ3yHGBoHO7RJFmgO0b+i9gTJWQnhItd+M0SS9RIaoIN7A7
-         uFKnprgBe/caiYPhmEWrcUlQffm+cz55pX2eP3L4BpI3s5U3qHqJhMkpZgpiJHCq55vB
-         6wYNJ+ptJy20Egx8Z2EpuZFDb0ZpQuOB4tGXmYIllzQwQ/53VQaBdqiIRJBZASUlMX1x
-         Z4gw==
-X-Forwarded-Encrypted: i=1; AJvYcCXLZuGUNeUOQAGsY7wIYS2X/kVSJ5qG6QxUqNUcZnU6kuFtc/Au0pVmzmcg0mmUUsC0dftBS9HA7g==@kvack.org
-X-Gm-Message-State: AOJu0YylLyE3+wVfp0H3Q6C6o1D8jfKB8ALBfZEn1t/PDiucsAXMCK3H
-	Rr7N8zDQhz8wAcDIs9FZIH2W1ymZhyrpDSpNAokN5+TGrWXHfdV1HwGs
-X-Gm-Gg: ASbGncvmDyA6KL0lZr3jRGyLtJ87ZHNS+bPx+Pk8lThxYJse34mRb2Ois50qzH/8CSb
-	RwNNLJ1/V5lfq0Ev1CxIjc1FPnAPnTmaVbh21h6PryFhN+W6ouM2/gOXYRQ1j+VGFK3PifCaGId
-	N7ZI0BUT2/ebQWQz0sv4Xvg8tRJqat7eKO3Ii1VeeDmp3ZajEn2J7Pm7B85wLbdI8iYXV2prsKu
-	UkrMFWRkIQZUdDMH0lIg5ICqeEqsalh1jUou8kiVM2yXnmBKULXy++Ces9Tt/djfCQsUSgz2n07
-	qHiDzFFSilad3r2DlkE3hVIRF4BTf6BO0xr6PRqGak5cH1YQwjGG9HIlJ2vy0QPn4YkXEmwSMTh
-	LcPU3wQT4X2x93LwNOxOAkT+IlLuEbh94KWBSiNV+OjXN1SPxn68uJDTR/aJk
-X-Google-Smtp-Source: AGHT+IFb7x0FHZfUPJ1wZ6JfXOrSOGAtixKMgVkVGQtPT4Ho/IegHATmPfyAfPSeEwyj7QoVspRwuQ==
-X-Received: by 2002:a17:902:c94d:b0:235:ed02:288b with SMTP id d9443c01a7336-2462ef40318mr156684765ad.30.1756138729750;
-        Mon, 25 Aug 2025 09:18:49 -0700 (PDT)
-Received: from visitorckw-System-Product-Name ([140.113.216.168])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2466889f13esm72701465ad.148.2025.08.25.09.18.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Aug 2025 09:18:49 -0700 (PDT)
-Date: Tue, 26 Aug 2025 00:18:42 +0800
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: vbabka@suse.cz, akpm@linux-foundation.org, cl@gentwo.org,
-	rientjes@google.com, roman.gushchin@linux.dev, harry.yoo@oracle.com,
-	glittao@gmail.com, jserv@ccns.ncku.edu.tw, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm/slub: Fix cmp_loc_by_count() to return 0 when
- counts are equal
-Message-ID: <aKyM4jZqy8/G2DGq@visitorckw-System-Product-Name>
-References: <20250825013419.240278-2-visitorckw@gmail.com>
- <20250825144838.4081382-1-joshua.hahnjy@gmail.com>
+	bh=y75WJecyZH/ILGMGG6dZA4C5UCx0iBq32CFgVYY7k4g=;
+	b=T0zeE731RHP1uZzV4vueBeCFYEuPxe7XTaR8Bg2JSAxX5t9RINh9AlQ7vQRihnR/rPsYaV
+	cWV93aftCKyaowMKvuxATBXzWDuaKyYROZpko4uPxACRFGXC1d1hCTmeX0SXLVezIOxZzn
+	tuARKNshvKsLNzTzXpECLiyBSwSajks=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1756138733; x=1756743533; i=markus.elfring@web.de;
+	bh=y75WJecyZH/ILGMGG6dZA4C5UCx0iBq32CFgVYY7k4g=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=VP9FrBJHq9byB9hm14eI9TV4s7ciwevgz3c64sdDd/h83Ojw1d93rz6qNCyKUAMD
+	 1gSWPnII4k3woBZsI9+FNYubEuDD+htLk9lWUpx9UauH69r2PM+LRwvGMzN/yVWS1
+	 z80XP2lZ9SAcom7UQimZi+SpDLh3i4/TDbJxB/JTbE1Y/PuCLINVXWusECY75w57F
+	 lW8DE9dZMN0Drx5Fnd29kJ0xdlIn3qzZ77sdzNQ9TZlr4hgmB1REZ9GRtKu0ltjIX
+	 Kq1NBqzCWCAA1rXwFrIkdjY/Ux8h2R1ZahyDJyaQGvptW799ACJIF3CHvYGMjYsbQ
+	 HBFX8P6BO6tHinfJUg==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.69.250]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MY5fb-1v0rQ02NkD-00IVrz; Mon, 25
+ Aug 2025 18:18:53 +0200
+Message-ID: <ab8d12b7-7013-48d8-8fd4-fdafd514f4a9@web.de>
+Date: Mon, 25 Aug 2025 18:18:51 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250825144838.4081382-1-joshua.hahnjy@gmail.com>
-X-Stat-Signature: ientptfwjah1drat51dn1jbi7y7acedd
+User-Agent: Mozilla Thunderbird
+To: Xichao Zhao <zhao.xichao@vivo.com>, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Kees Cook <kees@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>
+References: <20250825073609.219855-1-zhao.xichao@vivo.com>
+Subject: Re: [PATCH] exec: Fix incorrect type for ret
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20250825073609.219855-1-zhao.xichao@vivo.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:HM/bOy/cIhgXchmbTixKhanMhi+hSbgQqT2u/TV4uXh0/Xhx6cg
+ 4Kw5WMvHPUT/x3XADeJbeC4JZYhtehocVIxjmAGT8S7N1i5LO2zgb9OIJBHsPKpFU/s4MfA
+ 4ccUmM3OXDvJ8NlkAP1BJEQSeloXDpwmpW2z1QDWI7yTgtVCKueHDUhTEaRPDgA/8DdjDSB
+ KgrOrSKsRranxLQjo6flA==
+UI-OutboundReport: notjunk:1;M01:P0:4loINY1IS1g=;fdM/XQgCup8b1m32OwKp2jwDS1l
+ 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
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: CDDBA160007
+X-Stat-Signature: 6p7ozkzskzbdco5rabmq4i86q79zm7c5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3D75118000C
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756138731-228735
-X-HE-Meta: U2FsdGVkX19GrLSIaR1T8cvyrSczuMle3E5Hfg/qOxhI5zqUQhCjffVYOE1zBaLUy+93xdxoZ7odEVm9azNPLhryvhn1XuKXwn+xR5vY6veHHcP3fTKzbMg3bMBJCBmBpzZjAhmN74lVYmN7bFa0+uMEht1dpy5cJe+wFEoRUE76gXEWN1Z6xr/I2910iZnfN7U3O5jV1akxjWgWNSbqPsqtJQ6h0sfvQvQ8x3w+JNk+hRqbBahzneDlRTL1UyW7UoOO48BML4NpcG+275qmPz3zJGehoxXA73b4dw68p7vl6rEGzRtApJ5q1NgcsbuOKI+0q1wVi2bABg0N1mSfS0FQdFDRHchsEto+R24MXTeCj2v8nTCHqIXbXmwNHlbVZrJpjqF8saO8E+UenYsHhcQfJoBiSdQpL4LceLMFpB4OvT5jBKMLbCwFFdUUDIxQhGMrHpCDOiQ0qFb7HsiTTU0MWatnnsKVs2cQ9xUGKamCEHsCohF878b6feZpHW2GAL/8/bJ4YoVZFWHSXUq/N2nrE9usGzXF8IUHxw+20mULKH2uz4F+A9CeVuxRKwb0iy2fqZz4WJiVbCLSoXEf80KOpCHF/fhbmexO1dl5UE6i6OPb8l35Ob/OEdRwokv1OCbcLyUJELxXer/CeOniCqytdEqp1jRVqN2QMUwndKcU5x8228+MCfnJ/lxbGz+UKe1fWzh9DHFAS+JZOsOUEmTZsUdBWl14pNmSTDgofDspDcQeoddtFWCdZVXJfPAhhCSGAqkdNN7TK7rT2ePOEhOWv5MWGQ2zuDLKjPBKhan4MP5uqJ/tPAAH9BheoORjVLXygIP96KaXKc9Tr1Q9D9fGu305mYpl6MtKvkcPIgBmxsMuCiB9bSeZzKQnyjO4se0OyuMBDCRhG4tntQVP0Oki1hjpeVNOOcK16VPEeBIHwkM6kkQdi6s5aZRusDxWFFK1GexkRnI8/vBJgBA
- 5Hl3wC0P
- sRUdc4Vm4Z4AW+BwgoCC75ztqpoqxWXzHQ4WKwfsz4jHq4Ilj3qQaXQGpTZ41i3UgxFjyyjYX/UKnHl6lAuzFK2QjhYzznyAHtV1i74xBy7PtjO2A/EqaPiHkybh4xt/ibkAdhKkvAE+LFFIIijV1hAGns/hU8NF7Zl+XSuhuLFg+J9ViGi97Uyvc+t7hufCqyxOhfApgz0eHEA1o3cQln2rme3Lt8RrxWp70v/lhXuipKNYqPGT14egdyegjh+uz3FsvuZxWS4SFlSUpTJEOzsrNbGZUmbtnJWKGC/+8OMYDzIk9F/MGEQcmN1Z6nvVpeuaaoyWewNt08kk3Iv1FLPKeiNYum9nRNlg3r/VFOWL/GEkI05deriMc8iIXCWpLfXT7I5miAxfB2puwUNS8HzUJjwk6MPthhZTgFdJ6/V4iyDFc4jyV2r8t3nvRmjlDfvzi3/pfMck5/NfgRU0rNp3jD+EH91PKCtJWsWvV2nZ+6neKJcygLx3fCTgqef3D2OAMKaOf2q1mOavXhb2hh1cRnqzxTAJdLhV1KUaov1v8QE7dW52U2PPMry9WucgWW916udO8JsFARIo6oN+crXuapQg1UIzWFQqwqPYe+dt4oZhkdrAf7B6AREIir1RIFR+a
+X-HE-Tag: 1756138754-7318
+X-HE-Meta: U2FsdGVkX19QVhg+LT8FjL8rcrI82C6zl9alKmVzCe/Qoa7+sp92HzFheZPmdswfa6W9fnxPhe216ckxs2b4rMawqWJjp3/AB7Egvpxj6WhpzCratSSe//4QJou1xWgHs10G8jK0jDK1si0wUufz4N+VRnfZFuZd6d+qmHQ2PkHuHMGZhKKqD2bPc03+vEcSKKJV8I+R4rI3MDTon29jLNqtTvdguK1+otD475A5fgCKcNl0Yb4TtHH67O7d7Z3OR3lYSTKd53HdmlAXnus/dyBsGANjs7tbaioTwbbtAmpEwp178YHyVzGXwPqgRgRwp10UtFRDqsK+igCTsg36W8qi55lGyEr6jTVeYd0s1nK0PbTdfyRgMWc1xsAmzUd/Mg3Qv/1KbUlZLqoajYglTTS9kVZoiLOQNpNY3AtnSWW3XSJs6RU4OjC3UwroeZVPrCzy7PcLYJoOTimnu4PN2FdK/BjPVUyaawOrOVfu8BDsr/qVjlp5T/yQz2l/8YINwo4AKsGWLZd/M78RTj0xfeM97wxRJPs2LiEt/h3wVrJUebcMWWwQAA5fBvZOSJktaVDPK/vi/lXXReM4Uy5tp6J8EsucUhU3AYNKJOIKx5LdG22nduquuxHvcZlmnl0Y+GdOBCzU4dWO8CjuzS5MW4YzUBZlSfhqFxJyxxlIxjOUPAWjEjZ7rRLMwZzhOtYgIPWa/5dDdjjiFt+s7C3VecCuyJlMllmnSWRs9M2Cy7SWEIukt2VGTYbnGlRNlt2YPblM8MIMCHhgOc6gR8mBowxYuazho6PUB0GG/jhcBg91IRVBFohtXBhWd9NyaVhEv7leI2xmcpvVHCIJRIwV/eppSl8VIjNjLnm2ktUn0IZiXYx9yIGC+Fz3f1Ig+jHbTFuk3SZBpnRzl3URrVSqG6W2EA3uol+bKNa2lLr07beoPSGkqdV0rM79D1gjrQrKIwIcx4hNfDdATYdMnz8
+ zVUk1KVn
+ fis3ffN03ugwxR5yVFn+0GoQ+8P1RVMWnuDx+Rc1JF3BRL9IzDSLIFUzw2QAZjBTSvfGt05t4Spbl7MkSgiuzy8PJ3P3z1UTzCUA9ssXJXVrac32RljoBi4n4uJUmPvAl7MNR1RwBdnfxL34gAEs2AQP6SZhWq8qg6GcFy1l9bLbtUWriuJuzv5s4J6EYwH/W9TjDuunhuBFNNBFZF9HSsO+FpZv5Rvr19ZB/5Ljy62A2kgCeT1DgDhZF+U/gaQiI8611TL3KnZJP9zA38JHRa9AvO0jpUvq/vNeuCNDomNy+9kd183SycQDv+I3LDoyCf81wzygl1pNrcepMLexsSEsadxCbNt9jXmpUmCmmiw6FdBdVHekjoEH/uQd0P90g2GLf
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,74 +168,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Joshua,
+=E2=80=A6
+> The ret might take a negative value. Therefore, its type should
+> be changed to int.
 
-On Mon, Aug 25, 2025 at 07:48:36AM -0700, Joshua Hahn wrote:
-> On Mon, 25 Aug 2025 09:34:18 +0800 Kuan-Wei Chiu <visitorckw@gmail.com> wrote:
-> 
-> > The comparison function cmp_loc_by_count() used for sorting stack trace
-> > locations in debugfs currently returns -1 if a->count > b->count and 1
-> > otherwise. This breaks the antisymmetry property required by sort(),
-> > because when two counts are equal, both cmp(a, b) and cmp(b, a) return
-> > 1.
-> > 
-> > This can lead to undefined or incorrect ordering results. Fix it by
-> > explicitly returning 0 when the counts are equal, ensuring that the
-> > comparison function follows the expected mathematical properties.
-> > 
-> > Fixes: 553c0369b3e1 ("mm/slub: sort debugfs output by frequency of stack traces")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-> > ---
-> >  mm/slub.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/mm/slub.c b/mm/slub.c
-> > index 30003763d224..c91b3744adbc 100644
-> > --- a/mm/slub.c
-> > +++ b/mm/slub.c
-> > @@ -7718,8 +7718,9 @@ static int cmp_loc_by_count(const void *a, const void *b, const void *data)
-> >  
-> >  	if (loc1->count > loc2->count)
-> >  		return -1;
-> > -	else
-> > +	if (loc1->count < loc2->count)
-> >  		return 1;
-> > +	return 0;
-> >  }
-> 
-> Hello Kuan-Wei,
-> 
-> This is a great catch! I was thinking that in addition to separating out the
-> == case, we can also simplify the behavior by just opting to use the
-> cmp_int macro, which is defined in the <linux/sort.h> header, which is
-> already included in mm/slub.c. For the description, we have:
-> 
->  * Return: 1 if the left argument is greater than the right one; 0 if the
->  * arguments are equal; -1 if the left argument is less than the right one.
-> 
-> So in this case, we can replace the entire code block above with:
-> 
-> return cmp_int(loc2->count, loc1->count);
-> 
-> or
-> 
-> return -1 * cmp_int(loc1->count, loc2->count);
-> 
-> if you prefer to keep the position of loc1 and loc2. I guess we do lose
-> some interpretability of what -1 and 1 would refer to here, but I think
-> a comment should be able to take care of that.
-> 
-> Please let me know what you think. I hope you have a great day!
-> Joshua
-
-Thanks for the suggestion!
-If we're going with the cmp_int() macro, I personally prefer
-return cmp_int(loc2->count, loc1->count);
-this avoids the need to explain the extra * (-1), and I think cmp_int()
-is simple enough to be easily understood by readers.
-That said, both options work fine for me.
+See also:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?h=3Dv6.17-rc3#n94
 
 Regards,
-Kuan-Wei
+Markus
 
