@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9E17CA0FE7
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 20:29:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A08E1C8303F
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 20:29:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 409568E0076; Mon, 25 Aug 2025 16:29:06 -0400 (EDT)
+	id E43A78E0077; Mon, 25 Aug 2025 16:29:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B9CE8E0038; Mon, 25 Aug 2025 16:29:06 -0400 (EDT)
+	id DF3338E0038; Mon, 25 Aug 2025 16:29:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 282138E0076; Mon, 25 Aug 2025 16:29:06 -0400 (EDT)
+	id C97E68E0077; Mon, 25 Aug 2025 16:29:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 11EA58E0038
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:29:06 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A42EEC0510
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 20:29:05 +0000 (UTC)
-X-FDA: 83816419050.08.76837A6
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B0BD18E0038
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:29:26 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 70F80160534
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 20:29:26 +0000 (UTC)
+X-FDA: 83816419932.04.DD4FA2F
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 91D02140017
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 20:29:03 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=R0+tyzln;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf09.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756153743; a=rsa-sha256;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 470AEA0007
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 20:29:24 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dMNcrVXW;
+	spf=pass (imf25.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756153764; a=rsa-sha256;
 	cv=none;
-	b=pW7fXICLXePf7ZatO1FXpd6GOXvjgHlJzo9+tzlYwCgmJRgbJSP384IRYNftlksWSGlxbQ
-	nz0yyRNX61nZJG7R4I68BJm8QhgrSB8m4fW4XNTZXQDpBnon7svyU7Tk4/ymaJg+hn6Ive
-	05pDKzMhdbfQqvlo5CuWN3gGukzBhDc=
+	b=R9OE4DGk1EA0G/WmEecQi2lfxwbI4dPBf4rsryN5d7d3QedjAM/y1vPhhrvNzjH023QBuO
+	2DmPO/O0CJp45x0sCFNz3Z5RtdjBomHkcwhX89AQFJqwuSrMm5wcRIWUxS8kFzDOsjWrnq
+	I5T3tsdwcegpNka7WOLv7vkwm0p7vs0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=R0+tyzln;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf09.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dMNcrVXW;
+	spf=pass (imf25.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756153743;
+	s=arc-20220608; t=1756153764;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3VrKnxx0tLdbKl27xV7R8JaVVS1HXCMAhrp4rAkEYCM=;
-	b=WAIR9a4Zhb3F5RrlgrvMFTDLI/AHQAq3TYvts/svaeXu4m9ltu76r/AMVQvLZDuAAgrUH7
-	RUx41ZwrjR2y1eZUMfbMM57xVvF2IPD/1eoQ4r4MOUD1LmS3bBhsCm1IXyx92ZkA/wWJL7
-	3/HlmM1ANB7vdatYfjWTUV7mMfubRks=
+	bh=Vtq72QdDzuyXtvGk9IlmoBuW1v+doc629hK/mnAoeUQ=;
+	b=tfkF+m1PDLzVwRUk+88BqDA5qdiGAdt+M5VAQjqCu2FV2x6i6lXndp4LPj2qXgC5MItUSr
+	b2KwPGMjasVqvtX74Td971xlSS+57pMdXrY10NfJxT22+OyI7P3znxjlYxIr0s8fjWG74b
+	XNKliHq9AaD897/f80t6Ke/KzcrRqv4=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756153743; x=1787689743;
+  t=1756153764; x=1787689764;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=/h/qS5k+guufmpe0QiUnjnkdA3RIS+RF1dHh88nhkcM=;
-  b=R0+tyzlnURCKzVOH/YG3kG49QFxq2Y4bOq+w7PPo3XB5TY/4kinlKdaE
-   btSLNDGxYsreS2vFj2xmqZEqeUlYu82mvrH1vOkPgQx6zIdY/zrXdduBs
-   X5kwYP90cntW/nNrQ/ycMNqbtb9Pc3D7wLyTw/FaNS7uvUMdZNvRq6ZdA
-   7FvAGFYJliMiWAdn6K105Ys09W4BsdIFtHdxDFAgovFO1CDZrq4sM2t/t
-   5/Qdbaf/YNM4UcPmHr3iw/sh/wUK+G4vxB7OUeVo0ctZAQr7ek6pSRZkP
-   o3yJgAK3KoMGOkUyN6kTQKJamsAmnrwXNdRz25ENHGyeAlZZYKMnk6XBn
-   g==;
-X-CSE-ConnectionGUID: CwXqvBuYQHGnfSbHqRUdKg==
-X-CSE-MsgGUID: 00WMJG8sQl6yH8P6d/14ug==
-X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="68970715"
+  bh=UlbhFGz226HIxGPpl32TNHWjf4s+OegZMHU4Z5wVVAQ=;
+  b=dMNcrVXW2dqdFKO6K2QFPU+qRTx7jq/G1YGWVNuiHBmgkb8OmUvT3Xbu
+   z8ahOiGiwnzbd4zsrS9W9bXMCiYdzIOy5njTcX/3Dt6mLzSxxE+WsvI3L
+   pqWbRU77SQxO67weVtQy/rqpYgiMZL8eHtTN3Il+rMjcfIIhL4Ge2yIqE
+   SzFllKAIfyZsS/Ky6F4GlXRpnaxurCzq14U6j5kJTj1nbp6DNkHs2anYJ
+   Q/UH1PMoBj0dVZV+ZdrTWSciJW6Xe8qZYF/FenwOykZrjX2UrwjNzeaKa
+   EYwihvBROPo9T19rgmUEKHPS9hRL9LzveOTSZnDZ4WZCGSdGBdP+3MD4q
+   A==;
+X-CSE-ConnectionGUID: mFJgzXnAR1qeL8Q71HW2iQ==
+X-CSE-MsgGUID: Dg3KP1eUTEWxTCMIdKEcDA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="68970777"
 X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="68970715"
+   d="scan'208";a="68970777"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 13:29:02 -0700
-X-CSE-ConnectionGUID: w+rKNHaARBe+f4eoM8vVOQ==
-X-CSE-MsgGUID: /Hw/gZN7R822ANQdWoGk6A==
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 13:29:23 -0700
+X-CSE-ConnectionGUID: 2iU/MAdEQzuCmnajWPCpwA==
+X-CSE-MsgGUID: Li6ndXn4Q1+50YJZ69xiow==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="169780519"
+   d="scan'208";a="169780561"
 Received: from bergbenj-mobl1.ger.corp.intel.com (HELO wieczorr-mobl1.intel.com) ([10.245.245.6])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 13:28:39 -0700
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 13:29:02 -0700
 From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 To: sohil.mehta@intel.com,
 	baohua@kernel.org,
@@ -157,20 +157,22 @@ Cc: x86@kernel.org,
 	kasan-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v5 10/19] x86: LAM compatible non-canonical definition
-Date: Mon, 25 Aug 2025 22:24:35 +0200
-Message-ID: <c1902b7c161632681dac51bc04ab748853e616d0.1756151769.git.maciej.wieczor-retman@intel.com>
+Subject: [PATCH v5 11/19] x86: LAM initialization
+Date: Mon, 25 Aug 2025 22:24:36 +0200
+Message-ID: <ffd8c5ee9bfc5acbf068a01ef45d3bf506c191a3.1756151769.git.maciej.wieczor-retman@intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1756151769.git.maciej.wieczor-retman@intel.com>
 References: <cover.1756151769.git.maciej.wieczor-retman@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 91D02140017
-X-Stat-Signature: t869pww43cucckah5cqdgfnat8rmqfs4
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 470AEA0007
+X-Stat-Signature: dh7j6u8tnwqxom8b44641wwmkpw88kdz
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756153743-736402
-X-HE-Meta: U2FsdGVkX182hoPKw3I0gTiOdRjK0PQVuiJgj7ntSbPR4YwVr5sDut5QGdXp6wgB82VzVWdXDwaVL/MJjV1utI5zugfmOrfhfp7JaP1fjYBoZeXrLilnVDW92Q/Sd1T5bmn+G5kAkAkPG1OtntZjl7aYShMSpjagvkMahtl3I4a9iS6b3iSTKuitWblHB6d53zd1kes3QFQxHlQG9I8L8z09q7Za7PBDuKGGUkJlMM1CsVqmMDaW6D6mCp+FCS/yTwX7KtCd7u6xr5yXP5YeRILV9uZ0uQBLsw/j2eU6ouB+kOBjR2y5cc9FSpfjIxbiGcEdI2r1GL8VG9avgRp6dGjG6Bm0aYKDJEsQj4Em0egmbug/0SATt1fiXMN0Yr0L7eBScL2LlTrI3WB0SxrxC3x9P4je213ZJN41Oy8Fj9GYWV56V78VCrFk4aHhaTZLwpa72G9hkB3wgSBwWwdtxozr/K5kUWJhkHt8JlwBzyR+Ot/U2JbzXRXHldSVkcJU4Ma1akQ04kqKVYmjlH+emQBAKW/Or7XBVtnqkLtRqZdKF7VbjYJcqZUyFD+86DDTpGYwHCi/uAqYFDhMu57hBTkBcJ+T+J6i9io7eI+foUOaO3T3HIBHIgFChvfQzfzrVZGvjuFtQki/rfGmCSD774ssi1aBJ7T7NyUqlZ0eBqy9wdy6YYpVi/tWYD7pjEtadvJOYrFnmK5arSgkxgRfspD1WasQYyVIgiCUDpc0GIUjAeuD7MhNO+JYtGUWxz2Ltbb7JZh2Jj2VdOweARCA1PXT8kbe8RnjVfL9TBxBXPhBz0QMzEYApxMrYc+BLW7FeQ7t9s0zW8EY3gHTw3vXvE+qaRZECLTQZHjaIo0VXW9A3+XUz4f0o1dIce+ROcOtxLIGXbuexIxlCYvVGRnvu+CQnkwtuclKJCmy0BNzq/b7GWC+hXnFJzq26t+FvE5KvenBytcp03w=
+X-HE-Tag: 1756153764-892786
+X-HE-Meta: U2FsdGVkX18vYHQaEe7h4yYFVpyqmgpZFLmFU+ujzG2DGHf1O1xwFyK4MxL1F79/vkqucLdfTJKbB9kGOzlncc0JX3p2nfy2+T/myfVfe1gTec/o0n2qhPVvykIWIr3+hW0sbvqM8giplQxSP1I9HGKBy5fuRjXthhkgrmkflHfqWfUl67pSAE14+vLNLylByZ05wjKCWqct0fd0CXIGnTcEjSvkd9C99llzta07KYNPTjeS42gwlABq5rnFu9eIFW6r28BOwbfdH8IeXwsl9jm1eIE30tI9FMzFFS4KPsY1o6lOwK4FmxK4Q36fJB+aEsXDbQTkvF1MqhEbhZ8s1OyArf+3G4WCyJ2i5Rpxkky6PChakrsablbinc4pQrlWynSnJAU1lvTtdy+0ITI+RZko9t2ray2HkGTgNgNT12b9RjLEJa+N/VuledQvao2mpEqmp+tnPxI1OCnfaP8DQ+JHdWa8IIvPXsQ0rJD3YES0YzjjmUeY24gC1dxwm7IyzqmLqDjVAn3aTYlS06fOs01yYIy1Yfw06lIdypZgTsXQV03NeuuhG+SKt187dKU9+wtlT3rdPc7z4ah46ttF6NnunrWHNbhcTUhGCIEjjYIn4i8/jRvFeO10+Vs8VY0D9IA088nFH8gJCxaDnp8UgaQkljjjKfuRWADRZt7IQ+S2YKe+dPfrLUE13xoN7AA7E6JeEqwYBQQbaHOqCuSXXeaLzMg11vPgKj27ydG3lIfWReR90o6K1vlNhEcrsc4OdMV693T6NvK/nAXTtiCoVa9blCpj2VRrkcsX1NukfSktUv7HvY3bIehTfdfmzFKKkgGr438go1bMvYenIpPZ7RfJKTzww7vVAW/OSf1HNo/wfEWuubO3ld7mfAMz3Upq31Himd/6RNovWx52qXKa4DFrjXzGX5Sh3I8YssS7K6HHuqfejY/m0AildE4pye9xLBywkz4Xe81H0W5wRNW
+ KLvOF9R8
+ 4D/PwPUmq3XOnG2EknMATIu+nYWiPvTEgyuDDxGVUo71A0sDfF0OJveZfeRFPQC9wF+cJqicwEmdQ8FnB/2fMf0TF0CmLZEhsYoiwt0rsyPlT8TEsultWLjUY3NHuklEHcmTT1ZETW25ovWGOyUWAx9k6aCA2PLafTUK8cU8H69c+KeGn7khuFHrC4xka+eK0oXsKJ0mI5libZ1XbYOM9AyZp7ZJJBOFWCV5rQ374sqwRamK7T+Yt6hvIOq5lGXiofq2j
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,54 +181,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For an address to be canonical it has to have its top bits equal to each
-other. The number of bits depends on the paging level and whether
-they're supposed to be ones or zeroes depends on whether the address
-points to kernel or user space.
+To make use of KASAN's tag based mode on x86, Linear Address Masking
+(LAM) needs to be enabled. To do that the 28th bit in CR4 has to be set.
 
-With Linear Address Masking (LAM) enabled, the definition of linear
-address canonicality is modified. Not all of the previously required
-bits need to be equal, only the first and last from the previously equal
-bitmask. So for example a 5-level paging kernel address needs to have
-bits [63] and [56] set.
+Set the bit in early memory initialization.
 
-Add separate __canonical_address() implementation for
-CONFIG_KASAN_SW_TAGS since it's the only thing right now that enables
-LAM for kernel addresses (LAM_SUP bit in CR4).
+When launching secondary CPUs the LAM bit gets lost. To avoid this add
+it in a mask in head_64.S. The bitmask permits some bits of CR4 to pass
+from the primary CPU to the secondary CPUs without being cleared.
 
 Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 ---
-Changelog v4:
-- Add patch to the series.
+ arch/x86/kernel/head_64.S | 3 +++
+ arch/x86/mm/init.c        | 3 +++
+ 2 files changed, 6 insertions(+)
 
- arch/x86/include/asm/page.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/arch/x86/include/asm/page.h b/arch/x86/include/asm/page.h
-index bcf5cad3da36..a83f23a71f35 100644
---- a/arch/x86/include/asm/page.h
-+++ b/arch/x86/include/asm/page.h
-@@ -82,10 +82,20 @@ static __always_inline void *pfn_to_kaddr(unsigned long pfn)
- 	return __va(pfn << PAGE_SHIFT);
- }
- 
-+/*
-+ * CONFIG_KASAN_SW_TAGS requires LAM which changes the canonicality checks.
-+ */
-+#ifdef CONFIG_KASAN_SW_TAGS
-+static __always_inline u64 __canonical_address(u64 vaddr, u8 vaddr_bits)
-+{
-+	return (vaddr | BIT_ULL(63) | BIT_ULL(vaddr_bits - 1));
-+}
-+#else
- static __always_inline u64 __canonical_address(u64 vaddr, u8 vaddr_bits)
- {
- 	return ((s64)vaddr << (64 - vaddr_bits)) >> (64 - vaddr_bits);
- }
+diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
+index 3e9b3a3bd039..18ca77daa481 100644
+--- a/arch/x86/kernel/head_64.S
++++ b/arch/x86/kernel/head_64.S
+@@ -209,6 +209,9 @@ SYM_INNER_LABEL(common_startup_64, SYM_L_LOCAL)
+ 	 *  there will be no global TLB entries after the execution."
+ 	 */
+ 	movl	$(X86_CR4_PAE | X86_CR4_LA57), %edx
++#ifdef CONFIG_ADDRESS_MASKING
++	orl	$X86_CR4_LAM_SUP, %edx
 +#endif
+ #ifdef CONFIG_X86_MCE
+ 	/*
+ 	 * Preserve CR4.MCE if the kernel will enable #MC support.
+diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+index bb57e93b4caf..756bd96c3b8b 100644
+--- a/arch/x86/mm/init.c
++++ b/arch/x86/mm/init.c
+@@ -763,6 +763,9 @@ void __init init_mem_mapping(void)
+ 	probe_page_size_mask();
+ 	setup_pcid();
  
- static __always_inline u64 __is_canonical_address(u64 vaddr, u8 vaddr_bits)
- {
++	if (boot_cpu_has(X86_FEATURE_LAM) && IS_ENABLED(CONFIG_KASAN_SW_TAGS))
++		cr4_set_bits_and_update_boot(X86_CR4_LAM_SUP);
++
+ #ifdef CONFIG_X86_64
+ 	end = max_pfn << PAGE_SHIFT;
+ #else
 -- 
 2.50.1
 
